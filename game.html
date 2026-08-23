@@ -2990,6 +2990,55 @@ canvas{display:block;position:fixed;inset:0}
 // │                                                                     │
 // └─────────────────────────────────────────────────────────────────────┘
 
+/* ===== MOTION POLISH KERNEL v1 ===== */
+var MOTION = (function(){
+  var N = 256, N1 = 257, C = 6;
+  var LUT = new Float32Array(C * N1);
+  function _fill(id, fn){
+    var b = id * N1;
+    for (var i = 0; i <= N; i++) LUT[b + i] = fn(i / N);
+  }
+  _fill(0, function(t){ return t; });
+  _fill(1, function(t){ var u = 1 - t; return 1 - u*u*u; });
+  _fill(2, function(t){ var c1 = 1.70158, c3 = c1 + 1, u = t - 1; return 1 + c3*u*u*u + c1*u*u; });
+  _fill(3, function(t){ return t * t; });
+  _fill(4, function(t){ if (t <= 0) return 0; if (t >= 1) return 1; var c4 = (2*Math.PI)/3; return Math.pow(2, -10*t) * Math.sin((t*10 - 0.75) * c4) + 1; });
+  _fill(5, function(t){ return -(Math.cos(Math.PI * t) - 1) / 2; });
+  function ez(id, t){
+    var b = id * N1;
+    if (t <= 0) return LUT[b];
+    if (t >= 1) return LUT[b + N];
+    var f = t * N, i = f | 0, r = f - i;
+    b += i;
+    return LUT[b] + (LUT[b+1] - LUT[b]) * r;
+  }
+  function swing(t, aFrac, sFrac){
+    if (t <= 0 || t >= 1) return 0;
+    if (t < aFrac) return -ez(3, t / aFrac);
+    var s = aFrac + sFrac;
+    if (t < s) return ez(1, (t - aFrac) / sFrac);
+    return 1 - ez(2, (t - s) / (1 - s));
+  }
+  var _sq = new Float32Array(2);
+  function squash(t, amt){
+    var k = (1 - ez(4, t)) * amt;
+    _sq[0] = 1 + k; _sq[1] = 1 - k;
+    return _sq;
+  }
+  var _last = 0, DT_MAX = 0.05;
+  function dtStep(nowMs){
+    if (_last === 0){ _last = nowMs; return 0.016; }
+    var d = (nowMs - _last) * 0.001;
+    _last = nowMs;
+    if (d < 0) d = 0;
+    else if (d > DT_MAX) d = DT_MAX;
+    return d;
+  }
+  function dtReset(){ _last = 0; }
+  return { ez: ez, swing: swing, squash: squash, dtStep: dtStep, dtReset: dtReset,
+           LIN:0, OUT3:1, BACK:2, IN2:3, ELAS:4, SINE:5 };
+})();
+
 // ═══════════════════════════════════════
 //  [S00] IN-GAME CONFIRM MODAL
 // ═══════════════════════════════════════
@@ -4031,19 +4080,37 @@ var _rarLightCol=[[140,140,140],[68,204,68],[68,136,255],[187,68,255],[255,170,0
 var _shLightCol=[170,68,68];
 var _LIGHT_RADII=IS_MOBILE?[15,30,63,125,250]:[10,15,20,25,30,40,50,63,88,125,175,250,400];
 var _litColCvs=null,_litColCtx=null,_colStamps=null;
-var _COL_PRESET=[[255,172,72],[92,192,255],[178,92,255],[255,72,40],[110,255,142],[255,242,214]];
+var _COL_PRESET=[[255,172,72],[92,192,255],[178,92,255],[255,72,40],[110,255,142],[255,242,214],[255,214,158]];
 function _initColStamps(){
  if(_colStamps)return;_colStamps=[];
- for(var i=0;i<6;i++){var p=_COL_PRESET[i];var c=document.createElement('canvas');c.width=256;c.height=256;
+ for(var i=0;i<7;i++){var p=_COL_PRESET[i];var c=document.createElement('canvas');c.width=256;c.height=256;
   var x=c.getContext('2d');var g=x.createRadialGradient(128,128,0,128,128,128);
-  g.addColorStop(0,'rgba('+p[0]+','+p[1]+','+p[2]+',.95)');
-  g.addColorStop(.28,'rgba('+p[0]+','+p[1]+','+p[2]+',.52)');
-  g.addColorStop(.58,'rgba('+~~(p[0]*.7)+','+~~(p[1]*.6)+','+~~(p[2]*.5)+',.20)');
-  g.addColorStop(.82,'rgba('+~~(p[0]*.4)+','+~~(p[1]*.3)+','+~~(p[2]*.2)+',.05)');
-  g.addColorStop(1,'rgba(0,0,0,0)');
+  if(i===6){ // 프리셋6: 플레이어 등불(255,214,158) 전용 — 중앙 선명·외곽 급감(탁한 haze 제거). 프리셋0(주황)은 표준 falloff로 원복돼 모닥불/화염장판/보스광원/펫과 공유 유지
+   g.addColorStop(0,'rgba('+p[0]+','+p[1]+','+p[2]+',.95)');
+   g.addColorStop(.28,'rgba('+p[0]+','+p[1]+','+p[2]+',.40)');
+   g.addColorStop(.58,'rgba('+~~(p[0]*.7)+','+~~(p[1]*.6)+','+~~(p[2]*.5)+',.08)');
+   g.addColorStop(.82,'rgba('+~~(p[0]*.4)+','+~~(p[1]*.3)+','+~~(p[2]*.2)+',0)');
+   g.addColorStop(1,'rgba(0,0,0,0)');
+  }else{
+   g.addColorStop(0,'rgba('+p[0]+','+p[1]+','+p[2]+',.95)');
+   g.addColorStop(.28,'rgba('+p[0]+','+p[1]+','+p[2]+',.52)');
+   g.addColorStop(.58,'rgba('+~~(p[0]*.7)+','+~~(p[1]*.6)+','+~~(p[2]*.5)+',.20)');
+   g.addColorStop(.82,'rgba('+~~(p[0]*.4)+','+~~(p[1]*.3)+','+~~(p[2]*.2)+',.05)');
+   g.addColorStop(1,'rgba(0,0,0,0)');
+  }
   x.fillStyle=g;x.fillRect(0,0,256,256);_colStamps[i]=c}
+ // 프리셋7: 화염장판(fireZone) 전용 — 프리셋0(주황)과 동색, falloff만 날카롭게(전투 haze 축소). 인덱스7만 추가, 기존 프리셋0/6·루프 무수정
+ {var p7=_COL_PRESET[0];var c7=document.createElement('canvas');c7.width=256;c7.height=256;
+  var x7=c7.getContext('2d');var g7=x7.createRadialGradient(128,128,0,128,128,128);
+  g7.addColorStop(0,'rgba('+p7[0]+','+p7[1]+','+p7[2]+',1)');
+  g7.addColorStop(.30,'rgba('+p7[0]+','+p7[1]+','+p7[2]+',.45)');
+  g7.addColorStop(.55,'rgba('+~~(p7[0]*.7)+','+~~(p7[1]*.6)+','+~~(p7[2]*.5)+',.12)');
+  g7.addColorStop(.75,'rgba('+~~(p7[0]*.4)+','+~~(p7[1]*.3)+','+~~(p7[2]*.2)+',.03)');
+  g7.addColorStop(1,'rgba(0,0,0,0)');
+  x7.fillStyle=g7;x7.fillRect(0,0,256,256);_colStamps[7]=c7}
 }
 function _colIdx(r,g,b){
+ if(r===255&&g===214&&b===158)return 6; // 플레이어 등불 전용 슬롯 (전용 falloff)
  if(r>200&&g>200&&b>190)return 5;
  if(r>190&&g<110&&b<90)return 3;
  if(r>190&&g>130&&b<140)return 0;
@@ -4114,7 +4181,7 @@ function _initLight(){
   _lightCvs.width=_lightW;_lightCvs.height=_lightH;
   if(!_lightStamps[20])_initLightStamps();
 }
-function _pushLight(wx,wy,r,intensity,cr,cg,cb){
+function _pushLight(wx,wy,r,intensity,cr,cg,cb,ci){
   if(_lightCnt>=120)return;
   // 뷰포트 컬링 ±300px
   var dx=wx-G.cam.x,dy=wy-G.cam.y;
@@ -4123,10 +4190,11 @@ function _pushLight(wx,wy,r,intensity,cr,cg,cb){
   var l=_lights[_lightCnt++];
   l.sx=(dx+C.width/2)*.5; l.sy=(dy+C.height/2)*.5;
   l.r=~~(r*.5); l.a=intensity;
-  l.cr=cr;l.cg=cg;l.cb=cb;l.ci=_colIdx(cr,cg,cb);
+  l.cr=cr;l.cg=cg;l.cb=cb;l.ci=(ci!==undefined?ci:_colIdx(cr,cg,cb)); // ci 명시 시 색상유도 우회 (fireZone→7)
 }
 var LIT_COL_MIX=.62;
 var LIT_PLAYER_R=470,LIT_PLAYER_A=.86;
+var _CENTER_GLOW=false; // [임시] 중앙글로우(플레이어 등불 preset6 컬러 발광) OFF. 어둠홀은 유지→캐릭터 가시성 보존. true로 복구
 var _slArr=[],_slStage=-1,_slDirty=true;
 function _buildStaticLights(){
  _slArr.length=0;_slStage=G.stage;_slDirty=false;
@@ -4156,7 +4224,7 @@ function _collectLights(){
    for(var _fzL=0;_fzL<G._fireZones.length;_fzL++){
     var _fz=G._fireZones[_fzL];if(!_fz)continue;
     if(_fz.type==='iceStorm')_pushLight(_fz.x,_fz.y,_fz.r*2.4,.55,68,200,255);
-    else _pushLight(_fz.x,_fz.y,_fz.r*2.6,.68+Math.sin(_gameFrame*.13+_fzL)*.10,255,140,50);
+    else _pushLight(_fz.x,_fz.y,_fz.r*2.6,.68+Math.sin(_gameFrame*.13+_fzL)*.10,255,140,50,7); // 프리셋7(날카로운 falloff)로 전투 haze 축소
    }
   }
   if(_slStage!==G.stage||_slDirty)_buildStaticLights();
@@ -4200,7 +4268,7 @@ function _renderLighting(){
    var cx2=_litColCtx;cx2.clearRect(0,0,_lightW,_lightH);
    cx2.globalCompositeOperation='lighter';
    for(var ci=0;ci<_lightCnt;ci++){
-    var cl=_lights[ci];var cst=_colStamps[cl.ci||0];if(!cst)continue;
+    var cl=_lights[ci];if(!_CENTER_GLOW&&(cl.ci||0)===6)continue;var cst=_colStamps[cl.ci||0];if(!cst)continue;
     var cd=cl.r*2;cx2.globalAlpha=cl.a*.85;
     cx2.drawImage(cst,cl.sx-cl.r,cl.sy-cl.r,cd,cd);
    }
@@ -4979,10 +5047,14 @@ oC=c;}`;
   _freeMapTex=function(src){const e=src&&_texCache.get(src);if(e&&e.tex){_texGCQueue.push(e.tex);_texCache.delete(src);}};
 
   _getTex=function(src,_nearestHint){let e=_texCache.get(src);if(e&&e.v===(src._glVer||0))return e.tex;
+    const sw=src.width||src.naturalWidth||0,sh=src.height||src.naturalHeight||0;
     // [Track D] map 텍스처만: 버전 불일치로 캐시 덮어쓰기 직전, 구 텍스처를 프레임말 삭제 큐로.
     //   (invariant #1: 구 map 텍스처는 이후 frame에서 미사용 — 이 캐시 슬롯이 유일 참조였음)
-    //   비-map 텍스처(_mapTex 미설정)는 short-circuit → 핫패스/기존 동작 무영향.
-    if(e&&e.tex&&src._mapTex){_texGCQueue.push(e.tex);}
+    if(e&&e.tex&&src._mapTex){_texGCQueue.push(e.tex);e=null}
+    // 비-map 동적 캔버스(_atmCut 등): WebGPU와 같이 같은 크기면 GPU 텍스처 재사용.
+    //   매 프레임 createTexture 하면 WeakMap 교체로 WebGLTexture가 GC까지 누적 → 3~4초 주기 hitch.
+    else if(e&&e.tex&&(e.w==null||(e.w===sw&&e.h===sh))){e.v=src._glVer||0;e.w=sw;e.h=sh;return e.tex}
+    else if(e&&e.tex){_texGCQueue.push(e.tex)}
     const t=GL.createTexture();GL.bindTexture(GL.TEXTURE_2D,t);
     const _isCanvas=src instanceof HTMLCanvasElement||src instanceof ImageBitmap||_nearestHint;
     const _flt=_isCanvas?GL.NEAREST:GL.LINEAR;
@@ -4990,10 +5062,9 @@ oC=c;}`;
     GL.texParameteri(GL.TEXTURE_2D,GL.TEXTURE_MAG_FILTER,_flt);
     GL.texParameteri(GL.TEXTURE_2D,GL.TEXTURE_WRAP_S,GL.CLAMP_TO_EDGE);
     GL.texParameteri(GL.TEXTURE_2D,GL.TEXTURE_WRAP_T,GL.CLAMP_TO_EDGE);
-    const sw=src.width||src.naturalWidth||0,sh=src.height||src.naturalHeight||0;
     if(sw>0&&sh>0&&sw<=_glMaxTex&&sh<=_glMaxTex){try{GL.texImage2D(GL.TEXTURE_2D,0,GL.RGBA,GL.RGBA,GL.UNSIGNED_BYTE,src)}catch(e){GL.texImage2D(GL.TEXTURE_2D,0,GL.RGBA,1,1,0,GL.RGBA,GL.UNSIGNED_BYTE,new Uint8Array([0,0,0,0]))}}
     else{GL.texImage2D(GL.TEXTURE_2D,0,GL.RGBA,1,1,0,GL.RGBA,GL.UNSIGNED_BYTE,new Uint8Array([0,0,0,0]))}
-    GL.bindTexture(GL.TEXTURE_2D,_curTex);_texCache.set(src,{tex:t,v:src._glVer||0});return t};
+    GL.bindTexture(GL.TEXTURE_2D,_curTex);_texCache.set(src,{tex:t,v:src._glVer||0,w:sw,h:sh});return t};
 
   // ★ WebGL은 즉시 모드: flush마다 그리고 리셋
   //   [DCPROF] 원본을 그대로 설치 — dcprof OFF면 계측 참조/오버헤드 0 (핫패스 바이트동일).
@@ -5426,6 +5497,8 @@ const _EN={
 '잔해도 부숴서 열어. 악의와 장비가 숨어있다.':'Break the debris open too. Malice and gear hide inside.',
 '잔해에서 악의가 나온다! 보이면 다 주워!':'Debris drops malice! Grab every one you see!',
 '흰색 탄을 무서워하지 마. 악의가 강하다.':"Don't fear white bullets. Malice is strong.",
+'빨간 탄을 무서워하지 마. 악의가 강하다.':"Don't fear red bullets. Malice is strong.",
+'빨간 탄은 E. 무지개는 Q.':"Red shots: E. Rainbow: Q.",
 '패링으로 돌려주고, Q 보호막도 써! 악의를 잘 굴려!':'Parry them back, use Q shield too! Master your malice!',
 '무지개빛은 패링 불가! 피해!':"Rainbow shots can't be parried! Dodge!",
 '흰색은 E! Q는 안 돼!':"White = E! Q won't work!",
@@ -7820,10 +7893,10 @@ function _fogGLInit(){
           float f3=fbm(vec2(uv.x*ar*5.0+uTime*0.08,uv.y*4.0-uTime*0.03));
           float fog=f1*0.5+f2*0.35+f3*0.15;
           fog=smoothstep(0.15,0.85,fog);
-          // 플레이어 중심(화면 중앙) 투명 처리
+          // 중앙만 50% 더 옅게 — 구멍(0)이 아니라 가장자리→중앙 그라데이션
           float d=length((uv-vec2(0.5))*vec2(ar,1.0));
-          fog*=smoothstep(0.12,0.45,d);
-          float alpha=fog*0.82;
+          fog*=mix(0.50,1.0,smoothstep(0.0,0.62,d));
+          float alpha=fog*0.41;
           gl_FragColor=vec4(uCol*fog*0.8,alpha);
         }
       `
@@ -8321,9 +8394,8 @@ function _checkPetDialogue(){
     if(!_petTut.potionCraft&&P.lv>=100){_petTut.potionCraft=true;_petSayCD('tut_potionCraft','crow','G. 대장간에서 물약도 제작할 수 있다.',5,9999,'cat','악의로 물약 만들어! G키야!',4);return}
   }
   // 탄막 기본 가이드 — 첫 적 투사체 등장 시 (표시 성공까지 재시도)
-  if(!_petTut.bulletGuide){for(let i=0;i<projs.length;i++){if(projs[i].alive&&!projs[i].friendly){if(_petSayCD('tut_bullets','crow','흰색 탄은 E. 색있는 탄은 Q.',5,9999,'cat','색있는 탄은 전부 Q로 막아!',5))_petTut.bulletGuide=true;break}}}
-  // 흰색/색탄 튜토리얼 (흰색 물리=E 전용, 색/원소=Q 전용)
-  if(!_petTut.redBean){for(let i=0;i<projs.length;i++){if(projs[i].alive&&projs[i].parryable){_petTut.redBean=true;_petSayCD('tut_red','crow','흰색 탄을 무서워하지 마. 악의가 강하다.',5,9999,'cat','흰색은 E! Q는 안 돼!',5);break}}}
+  if(!_petTut.bulletGuide){for(let i=0;i<projs.length;i++){if(projs[i].alive&&!projs[i].friendly){if(_petSayCD('tut_bullets','crow','빨간 탄은 E. 무지개는 Q.',5,9999,'cat','색있는 탄은 전부 Q로 막아!',5))_petTut.bulletGuide=true;break}}}
+  if(!_petTut.redBean){for(let i=0;i<projs.length;i++){if(projs[i].alive&&projs[i].parryable){_petTut.redBean=true;_petSayCD('tut_red','crow','빨간 탄을 무서워하지 마. 악의가 강하다.',5,9999,'cat','패링으로 돌려주고, Q 보호막도 써! 악의를 잘 굴려!',5);break}}}
   if(!_petTut.rainbowBean){for(let i=0;i<projs.length;i++){if(projs[i].alive&&projs[i].rainbow){_petTut.rainbowBean=true;_petSayCD('tut_rainbow','crow','색있는 탄은 Q 패링이다. E는 안 통해.',4,9999,'cat','예쁘다고 만지면 죽어.',4);break}}}
   // 부활 몹 튜토리얼 — 호출처: ~22778줄 (기존)
 
@@ -8376,8 +8448,8 @@ function _checkPetDialogue(){
     if(_uE)_petBidCD('enh_hint','crow','…강화 안 하면 그냥 고철이야.',4,300,'cat','G 눌러서 대장간 가봐!',4)}
 
   // ══ [6] 패링 교육 + 대기 — 3종 ══
-  if(_petParryCnt<3)_petBidCD('parry_low','crow','흰색 탄은 E. 색있는 탄은 Q.',4,90,'cat','색있는 탄은 전부 Q로 막아!',4);
-  else if(_petParryCnt<10)_petBidCD('parry_mid','crow','흰색=E, 색탄=Q.',4,90,'cat','색있는 탄은 전부 Q!',4);
+  if(_petParryCnt<3)_petBidCD('parry_low','crow','빨간 탄은 E. 무지개는 Q.',4,90,'cat','색있는 탄은 전부 Q로 막아!',4);
+  else if(_petParryCnt<10)_petBidCD('parry_mid','crow','빨간 탄은 E. 무지개는 Q.',4,90,'cat','색있는 탄은 전부 Q!',4);
   {let _nE=true;for(let i=0;i<ens.length;i++){if(ens[i].alive){_nE=false;break}}
   if(_nE&&P.s==='idle')_petBidCD('idle_noE','crow','…멈추지 마. 여신은 기다리지 않는다.',4,60,'cat','앞으로 가자~',4)}
 
@@ -10938,6 +11010,13 @@ function _dispatchCtSkill(){
 
 document.addEventListener('keydown',(e)=>{
  if(_BOOTH_MODE)_boothIdle=0;
+ if(!_ATM_TUNE&&e.code==='F9'){ // [진단] ATMOS 레이어 순환: ALL→grade→lift→vig→farfog→nearfog→veil→ray→ALL
+  _atmDbgTouched=true;_atmDbgStep=(_atmDbgStep+1)%8;
+  _ATMDBG.grade=1;_ATMDBG.lift=1;_ATMDBG.vig=1;_ATMDBG.farfog=1;_ATMDBG.nearfog=1;_ATMDBG.veil=1;_ATMDBG.ray=1;
+  var _dbgN=['ALL ON','grade','lift','vig','farfog','nearfog','veil','ray'][_atmDbgStep];
+  if(_atmDbgStep>0)_ATMDBG[_dbgN]=0;
+  _atmDbgOffName=_dbgN;e.preventDefault();return;
+ }
  if(_ATM_TUNE){ // ATMOS 튜닝 HUD (디버그 전용, _ATM_TUNE=false면 전체 미실행)
   if(e.code==='F9'){_atmHudOn=!_atmHudOn;e.preventDefault();return}
   if(_atmHudOn){
@@ -11644,6 +11723,8 @@ function _pollGamepad(){
     _gpAxes[7]=Math.abs(_gpad.axes[7])<0.5?0:_gpad.axes[7];
   }
   if(_gpAxes[0]||_gpAxes[1]||_gpAxes[2]||_gpAxes[3])_anyInput=true;
+  // 부스: 패드 입력(버튼 눌림 or GP_DEAD=0.25 초과 스틱)도 유휴 리셋 — 폴링 경로라 여기서 처리(키보드/마우스와 동일 변수 _boothIdle, 어트랙트 오전환 방지)
+  if(_anyInput&&_BOOTH_MODE)_boothIdle=0;
 
   // ── 2단계: 입력 감지 → 패드모드 활성화 (드리프트/아날로그 잔압 무시 — 조이스틱 팬텀 자동전환 방지) ──
   // 자동전환은 "의도적 입력"만 인정: 디지털 버튼 실제 press 또는 스틱 0.5 이상 큰 편향. (idle 스틱 드리프트/트리거 잔압으로 패드모드 켜지지 않게)
@@ -12802,6 +12883,7 @@ const UNIQUE_SPECIAL={
   armor:           {ko:'피격 시 25% 확률로 데미지를 분노로 전환',           stat:'_uArmorRage',    val:0.25},
   helmet:          {ko:'마법 스킬 데미지 +50% + 마나 소모 -50%',           stat:'_uHelmMagic',    val:0.50},
   gloves:          {ko:'공격속도 +40%',                                   stat:'_uGloveSpd',     val:0.40},
+  cape:            {ko:'패링 성공 시 분노스킬 쿨다운 {s}초 회복',           stat:'_uParryRageCd',  val:30, roll:[30,60]},
 };
 // 어픽스 롤링 (아이템 생성 시 1회)
 function rollAffixes(grade,slot,brType){
@@ -13326,7 +13408,7 @@ function mkItem(slot,tier,el,rarity,wtype){
   if(rarity>=5){
     const _usKey=(slot==='weapon'&&item.wtype)?'weapon_'+item.wtype:slot;
     const _us=UNIQUE_SPECIAL[_usKey]||UNIQUE_SPECIAL[slot];
-    if(_us){item.uniqueSpecial={ko:_us.ko,stat:_us.stat,val:_us.val};item[_us.stat]=_us.val}
+    if(_us){let _uv=_us.val,_uko=_us.ko;if(_us.roll){_uv=_us.roll[0]+~~(Math.random()*(_us.roll[1]-_us.roll[0]+1));_uko=_us.ko.replace('{s}',(_uv/60).toFixed(1))}item.uniqueSpecial={ko:_uko,stat:_us.stat,val:_uv};item[_us.stat]=_uv}
   }
   // 아이템 레벨 = 캐릭터 레벨 기반, 10레벨 단위 (0~900), reqLv = itemLv-10
   const _pLv=P&&P.lv?P.lv:1;
@@ -13839,7 +13921,7 @@ function _resetProj(p){
   p.beam=p.maliceHunt=p.bladeShard=p.iceBlade=p._fromRainbow=false;
   p.bombR=p.bombAtk=p._tickCd=p._tickRate=0;p._aoeR=p._aoeDmg=0;
   p._trail=null; p._trH=0;p._typed=false;p._sprFr=0;p.bounces=0;
-  p.parryable=p.rainbow=p._lavaPool=p.noParry=false;p._bluHitCD=0;p._hitSet=null;p._eyeSkin=0;p.titanEye=false;
+  p.parryable=p.rainbow=p._lavaPool=p.noParry=false;p._bluHitCD=0;p._hitSet=null;p._eyeSkin=0;p.titanEye=false;p._commit=false;
   p.dx=p.dy=0;p.type='';p.owner=null;
 }
 // 유령 허수아비: 발사자(ex,ey) 기준 가까운 타겟 반환 (플레이어 vs 허수아비)
@@ -13865,13 +13947,21 @@ function spawnProj(props){
   // 적 탄막: 이동탄 개수 1/3(모듈로 드랍, 랜덤 아님) + sz 2배·r 1.3배 + 속도 최종 ×1.2 + 이동탄 dmg ×1.6 (정지 위험물은 배율 미적용)
   if(!p.friendly){
     const _moving=(p.vx*p.vx+p.vy*p.vy)>0;
-    if(_moving&&!p.titanEye){ // titanEye(거대괴수 혈안탄): 1/3드랍·전역배율(sz2/spd1.8/dmg2) 면제 — 10초 간격 발사 보장, 스폰값=최종값
-      // 탄막 밀도 1/3 — 이동 탄만 3발 중 1발 통과(모듈로 카운터)
-      _eProjDropCnt=(_eProjDropCnt+1)%3;if(_eProjDropCnt!==0){_recycleProj(p);return null;}
+    // 물리탄 공통 = 빨콩 베이스: 유도(선회 .005). 이빨=속도×1.3, 눈깔=스폰 spd 유지. 무지개·특수 제외
+    if(_moving&&p.titanEye){
+      p.homing=true;p.redBean=true;p.vx*=.7;p.vy*=.7; // 눈깔도 빨콩 체감 -30%, 그림은 titanEye
+    }else if(_moving&&p.el===EL.P&&!p.blackBean&&!p.gbBean&&!p.blueBean&&!p.web&&!p.mine&&!p.trap&&!p.bomb&&!p.swordWave&&!p.elemBall&&!p._coralSpike&&!p.phantomSword&&!p.pierce&&!p.poisonZone&&!p.iceZone&&!p.blizzard&&!p.dimRift){
+      p.homing=true;
+      if(!p.redBean){p.vx*=1.3;p.vy*=1.3;p.redBean=true}
+    }
+    if(_moving&&!p.titanEye){ // titanEye: 1/3드랍·전역배율 면제. _commit(차징 완료탄): 드랍만 면제, 배율은 적용
+      // 탄막 밀도 1/3 — 이동 탄만 3발 중 1발 통과(모듈로 카운터). 전조 완료탄은 스킵하면 원이 헛돔
+      if(!p._commit){_eProjDropCnt=(_eProjDropCnt+1)%3;if(_eProjDropCnt!==0){_recycleProj(p);return null;}}
       p.sz*=2;p.r*=1.3;    // 크기·피격판정(sz) 2배, r 1.3배
       p.vx*=1.8;p.vy*=1.8; // 속도 최종 ×1.8
       p.dmg=~~(p.dmg*2.0); // 이동 탄 데미지 ×2.0
       if(p.redBean)p.dmg=~~(p.dmg*0.5); // 빨콩 데미지 반감 (패링데미지) — 무변경
+      if(p.redBean){p.vx*=.7;p.vy*=.7} // 빨콩 체감 30% 하향 (유도 불변, 무지개 미적용)
     }
     // 정지 위험물(vx=vy=0): 데미지 배율 미적용(원본 유지)
     // 허수아비: 가까운 대상으로 발사 방향 변경 (무지개콩 제외, 보스탄 포함)
@@ -14516,6 +14606,98 @@ function shQuery(x,y,r){
   }
   return result;
 }
+function _fmXY(m,isFb){return (isFb&&m.tpT>0)?{x:m.tpX,y:m.tpY}:{x:m.x,y:m.y}}
+function _fmCanHit(m,isFb){
+  if(!m||m.hp<=0)return false;
+  if(isFb)return !m.hid||m.tpT>0; // 꿈틀 상승 중엔 맞음, 완전 소멸만 무적
+  if(m.phase==='hide'&&(m.hideT||0)>54)return false; // 매복 대기만 무적, 엿보기는 맞음
+  return true;
+}
+function _fmEnsureFbSheet(){
+  if(_fbSheet)return _fbSheet;
+  if(typeof _fbImg==='undefined'||!_fbImg.complete||!_fbImg.naturalWidth)return null;
+  _fbSheet=document.createElement('canvas');_fbSheet.width=1200;_fbSheet.height=600;
+  var s=_fbSheet.getContext('2d');s.imageSmoothingEnabled=true;
+  s.drawImage(_fbImg,0,0,_fbImg.naturalWidth,_fbImg.naturalHeight,0,0,1200,600);
+  return _fbSheet;
+}
+function _fmEnsureWmSheet(face){
+  face=face?1:0;
+  if(typeof _wmSheet==='undefined'||!_wmSheet)return null;
+  if(_wmSheet[face])return _wmSheet[face];
+  var img=typeof _wmImg!=='undefined'?_wmImg[face]:null;
+  if(!img||!img.complete||!img.naturalWidth)return null;
+  _wmSheet[face]=document.createElement('canvas');_wmSheet[face].width=600;_wmSheet[face].height=450;
+  var s=_wmSheet[face].getContext('2d');s.imageSmoothingEnabled=true;
+  s.drawImage(img,0,0,img.naturalWidth,img.naturalHeight,0,0,600,450);
+  return _wmSheet[face];
+}
+function _fmDrawSpriteTo(ctx,dw,dh,m,isFb){
+  if(!ctx||!m)return false;
+  try{
+    if(isFb){
+      var sh=_fmEnsureFbSheet();if(!sh)return false;
+      var fr=((m.frame||0)%8+8)%8,col=fr%4,row=(fr/4)|0;
+      ctx.drawImage(sh,col*300,row*300,300,300,0,0,dw,dh);
+      return true;
+    }
+    var sh=_fmEnsureWmSheet(m.face);if(!sh)return false;
+    var fr=((m.frame||0)%12+12)%12,col=fr%4,row=(fr/4)|0;
+    ctx.drawImage(sh,col*150,row*150,150,150,0,0,dw,dh);
+    return true;
+  }catch(_e){return false}
+}
+function _fmDeathFx(m,isFb,dmg){
+  if(!m||m._deathFxDone)return;
+  m._deathFxDone=true;
+  var p=_fmXY(m,isFb);
+  var r=m.r||(isFb?120:56);
+  var killAng=(typeof P!=='undefined'&&P)?Math.atan2(p.y-P.y,p.x-P.x):0;
+  var fake={x:p.x,y:p.y,r:r,ib:!!isFb,mhp:m.mhp||1,col:isFb?'#2266aa':'#884466',frame:m.frame||0,face:m.face||0,_fmKind:isFb?'fb':'wm'};
+  if(typeof deathFX==='function')deathFX(p.x,p.y,r,fake.col,!!isFb,false,isFb?200:50);
+  if(typeof _spawnLargeMonsterDeathFx==='function')_spawnLargeMonsterDeathFx(fake,killAng);
+  else{for(var k=0;k<(isFb?24:16);k++)addParts(p.x,p.y,isFb?'#66ddff':'#cc44ff',5)}
+  var _cp=Math.min(8,Math.max(isFb?5:2,(dmg||1)/Math.max(1,m.mhp||1)*20));
+  _addCorpse(fake,killAng,_cp);
+  var _gCommon=['flesh','flesh','flesh','blood','blood','intestine','organ','tendon'];
+  var _gRare=['bone','eye','skull','heart','finger','tooth'];
+  var _gPick=Math.random()<.8?_gCommon:_gRare;
+  _addGorePiece(p.x,p.y,_gPick[~~(Math.random()*_gPick.length)]);
+  if(isFb)_addGorePiece(p.x,p.y,Math.random()<.5?'flesh':'intestine');
+  _addDeathImpact(p.x,p.y,Math.min(32,r*.28));
+  shake(isFb?18:8);
+  if(isFb){G._flashT=4;G._flashCol='#66ddff';G._chromaT=3}
+}
+function _fmApply(m,dmg,isFb){
+  if((m.hitCd||0)>0)return false;
+  dmg=Math.max(1,~~dmg);
+  m.hp-=dmg;m.hitCd=8;
+  var p=_fmXY(m,isFb);
+  addTxt(p.x,p.y-(isFb?(m.r||120)*.5:30),''+dmg,'#ffdd44',isFb?30:26);
+  addParts(p.x,p.y,isFb?'#66ddff':'#ff88cc',4);
+  if(m.hp<=0){
+    _fmDeathFx(m,isFb,dmg);
+    if(isFb){showPH('필드보스 처치!','#ffcc44');G._fieldBoss=null;G._fbDone=true}
+  }
+  return true;
+}
+function _hurtFieldMobs(x,y,hitR,dmg,hitSet){
+  var n=0,fb=G._fieldBoss;
+  if(fb&&_fmCanHit(fb,1)){
+    var fp=_fmXY(fb,1);
+    if(dst(x,y,fp.x,fp.y)<hitR+(fb.r||120)&&!(hitSet&&hitSet.has(fb))){
+      if(hitSet)hitSet.add(fb);if(_fmApply(fb,dmg,1))n++;
+    }
+  }
+  var ws=G._worms;if(ws)for(var i=0;i<ws.length;i++){
+    var w=ws[i];if(!w||!_fmCanHit(w,0))continue;
+    if(dst(x,y,w.x,w.y)<hitR+(w.r||56)&&!(hitSet&&hitSet.has(w))){
+      if(hitSet)hitSet.add(w);if(_fmApply(w,dmg,0))n++;
+      if(w.hp<=0)ws[i]=null;
+    }
+  }
+  return n;
+}
 // 패링 유도 타겟: 한 프레임(탄막 패링 pass) 내 "플레이어 기준 최근접 적"을 1회만 shQuery(600)로 계산·공유.
 // dense 탄막을 한 프레임에 다발 패링할 때 N×shQuery(600) → 1×로 축소 (탄막 패링 스파이크 완화).
 let _phtDone=false,_phtTgt=null;
@@ -15070,6 +15252,19 @@ _tintImg('assets/vfx/Lightning_Lightning_FBF_4x3.png','#7733ff',c=>{_msStormImg2
 _tintImg('assets/vfx/Lightning_BasicImpact.png','#5566ff',c=>{_msStormImg3=c});
 // registerVFX('boss_revive_boom','assets/vfx/boss/boss_revive_boom.png',64,64,24,8); // 파일 미존재 — 절차적 폴백 (404 제거 2026-06-28)
 registerVFX('teleport_burst','assets/vfx/teleport_burst.png',64,64,9,9); // 순간이동 보라색 폭발 (9x1, 9프레임)
+registerVFX('kraken_tp','img/vfx/kraken_tp.png',512,512,8,4,'lighter'); // 크라켄 순간이동 도착 임펙트 (4x2, 8프레임)
+registerVFX('kraken_vanish','img/vfx/kraken_vanish.png',512,512,8,4,'lighter'); // 크라켄 순간이동 소멸 (4x2, 8프레임)
+const _kvImg=new Image();_kvImg.src='img/vfx/kraken_vanish.png'; // 도착지 역재생(꿈틀 상승)용 직접 로더
+function _fbDrawVanishFrame(frame,wx,wy,scale,wob){
+  if(!_kvImg.complete||!_kvImg.naturalWidth)return;
+  var cell=512,col=((frame%8)+8)%8,cc=col%4,rr=(col/4)|0;
+  var sx=C.width/2+(wx-G.cam.x),sy=C.height/2+(wy-G.cam.y),dsz=512*(scale||0.9);
+  X.save();X.setTransform(1,0,0,1,0,0);
+  X.globalCompositeOperation='lighter';
+  X.translate(sx,sy+dsz*.18);if(wob)X.rotate(wob);
+  X.drawImage(_kvImg,cc*cell,rr*cell,cell,cell,-dsz/2,-dsz*.88,dsz,dsz);
+  X.restore();
+}
 // ─── 보스 스킬 VFX 스프라이트 (LUDO AI 생성, 256×256×16f 4열) — 파일 미생성, 전체 비활성화 (404 제거 2026-06-28). 에셋 생성 시 주석 해제. playVFXAng는 미등록 id를 자동 폴백 처리. ───
 /*
 registerVFX('boss_judgeCut','assets/vfx/boss/boss_judgeCut.webp',256,256,16,4);
@@ -15199,6 +15394,10 @@ function updateCrescents(sp){
         playVFXAng('ice_slash',e.x,e.y,c.step===3?1.25:0.9,3,c.ang+(Math.random()-.5)*1.2,true);
         // 무한관통 — 같은 적만 중복히트 방지
       }
+    }
+    if(_hurtFieldMobs(c.x,c.y,c.r,c.dmg,c._hitSet)){
+      if(c.step===3){G.hitStop=Math.max(G.hitStop,6);shake(8);}
+      else G.hitStop=Math.max(G.hitStop,3);
     }
   }
 }
@@ -15402,23 +15601,50 @@ function _beanRoll(el,col,sz,spd,dmgMult,e){
   if(e){if(!e._beanCnt)e._beanCnt=0;e._beanCnt++;
     // 10% 확률로 들러리탄 (교대 카운트 안 올림)
     const _dr=Math.random();if(_dr<.10){e._beanCnt--;
-      if(_dr<.03)return{el:EL.P,col:'#111111',sz:1.6,spd:spd*1.1,dmgM:1.0,bwBean:true};
+      if(_dr<.03)return{el:EL.P,col:'#cc1100',sz:1.5,spd:spd*1.3,dmgM:1.2,redBean:true,homing:true}; // 물리 이빨 속도×1.3·유도
       if(_dr<.06)return{el:EL.I,col:'#22cc66',sz:1.6,spd:spd*1.1,dmgM:1.0,gbBean:true};
       if(_dr<.08)return{el:el,col:col||'#ffaa00',sz:sz||1.2,spd:spd*1.2,dmgM:1.0};
       return{el:EL.D,col:'#aa44ff',sz:1.4,spd:spd*.8,dmgM:1.0}}
     if(e._beanCnt%2!==0)return{el:EL.P,col:'#00aa00',sz:2.0,spd:4.4,dmgM:1.5,blackBean:true};
-    return{el:el,col:'#cc1100',sz:1.5,spd:spd*2.0,dmgM:1.2,redBean:true,homing:true}}
+    return{el:el,col:'#cc1100',sz:1.5,spd:spd*1.3,dmgM:1.2,redBean:true,homing:true}}
   const r=Math.random();
   if(r<.60)return{el:EL.P,col:'#00aa00',sz:2.0,spd:4.4,dmgM:1.5,blackBean:true};
-  if(r<.82)return{el:el,col:'#cc1100',sz:1.5,spd:spd*2.0,dmgM:1.2,redBean:true,homing:true};
-  if(r<.88)return{el:EL.P,col:'#111111',sz:1.6,spd:spd*1.1,dmgM:1.0,bwBean:true};
+  if(r<.82)return{el:el,col:'#cc1100',sz:1.5,spd:spd*1.3,dmgM:1.2,redBean:true,homing:true};
+  if(r<.88)return{el:EL.P,col:'#cc1100',sz:1.5,spd:spd*1.3,dmgM:1.2,redBean:true,homing:true}; // 물리 이빨 속도×1.3·유도
   if(r<.94)return{el:EL.I,col:'#22cc66',sz:1.6,spd:spd*1.1,dmgM:1.0,gbBean:true};
   if(r<.97)return{el:el,col:col||'#ffaa00',sz:sz||1.2,spd:spd*1.2,dmgM:1.0};
   return{el:EL.D,col:'#aa44ff',sz:1.4,spd:spd*.8,dmgM:1.0}}
 // 몬스터 입 오프셋: facing 방향으로 반지름×0.7 앞에서 발사
 function _eMouthXY(e,ang){const off=(e.r||12)*.7;return{x:e.x+Math.cos(ang||e.facing||0)*off,y:e.y+Math.sin(ang||e.facing||0)*off}}
 function radialProjs(e,count,spd,dmgMult,el,life,col,sz){count*=2;life=~~(life*1.5);const _fa=e.facing||Math.atan2(P.y-e.y,P.x-e.x);const _m=_eMouthXY(e,_fa);for(let i=0;i<count;i++){const a=Math.PI*2*i/count;const b=_beanRoll(el,col,sz,spd,dmgMult,e);spawnProj({x:_m.x,y:_m.y,vx:Math.cos(a)*b.spd,vy:Math.sin(a)*b.spd,dmg:~~(e.atk*b.dmgM),el:b.el,friendly:false,life:b.blackBean?400:life,ml:b.blackBean?400:life,col:b.col,sz:b.sz,redBean:b.redBean,blackBean:b.blackBean,bwBean:b.bwBean,gbBean:b.gbBean,homing:b.homing})}}
-function eProjAt(e,ang,spd,dmgMult,el,life,col,sz){life=~~(life*1.5);const b=_beanRoll(el,col,sz,spd,dmgMult,e);const _m=_eMouthXY(e,ang);spawnProj({x:_m.x,y:_m.y,vx:Math.cos(ang)*b.spd,vy:Math.sin(ang)*b.spd,dmg:~~(e.atk*b.dmgM),el:b.el,friendly:false,life:b.blackBean?400:life,ml:b.blackBean?400:life,col:b.col,sz:b.sz,redBean:b.redBean,blackBean:b.blackBean,bwBean:b.bwBean,gbBean:b.gbBean,homing:b.homing,_closeBean:b._closeBean})}
+function eProjAt(e,ang,spd,dmgMult,el,life,col,sz){life=~~(life*1.5);const b=_beanRoll(el,col,sz,spd,dmgMult,e);const _m=_eMouthXY(e,ang);spawnProj({x:_m.x,y:_m.y,vx:Math.cos(ang)*b.spd,vy:Math.sin(ang)*b.spd,dmg:~~(e.atk*b.dmgM),el:b.el,friendly:false,life:b.blackBean?400:life,ml:b.blackBean?400:life,col:b.col,sz:b.sz,redBean:b.redBean,blackBean:b.blackBean,bwBean:b.bwBean,gbBean:b.gbBean,homing:b.homing,_closeBean:b._closeBean,_commit:true})}
+function _cancelProjCharge(e){e._projChargeT=0;e._projChargeCol=null;e._projChargeBean=null}
+function _fireChargedProj(e){
+  const _aimAng=Math.atan2(P.y-e.y,P.x-e.x);
+  e.facing=_aimAng;
+  const _fb=e._projChargeBean;
+  const _pRange=ETYPE_RANGE[e.etype]||600;
+  const _pLife=~~(_pRange*.3);
+  if(_fb==='black'){
+    spawnProj({x:e.x,y:e.y,vx:Math.cos(e.facing)*4.4,vy:Math.sin(e.facing)*4.4,dmg:~~(e.atk*1.5),el:EL.P,friendly:false,life:400,ml:400,col:'#00aa00',sz:2.0,blackBean:true,_commit:true});
+    addParts(e.x,e.y,'#00aa00',3);
+  }else if(_fb==='red'){
+    spawnProj({x:e.x,y:e.y,vx:Math.cos(e.facing)*2.8,vy:Math.sin(e.facing)*2.8,dmg:~~(e.atk*2.5),el:e.el,friendly:false,life:Math.max(200,_pLife),ml:Math.max(200,_pLife),col:'#cc1100',sz:1.5,redBean:true,homing:true,_commit:true});
+    addParts(e.x,e.y,'#cc1100',3);
+  }else if(_fb==='special'){
+    spawnProj({x:e.x,y:e.y,vx:Math.cos(e.facing)*3,vy:Math.sin(e.facing)*3,dmg:~~(e.atk*1),el:e.el,friendly:false,life:_pLife,ml:_pLife,col:ELC[e.el]||e.col,sz:2.5,_commit:true});
+    addParts(e.x,e.y,e.col,3);
+  }else{
+    spawnProj({x:e.x,y:e.y,vx:Math.cos(e.facing)*3,vy:Math.sin(e.facing)*3,dmg:~~(e.atk*.8),el:e.el,friendly:false,life:_pLife,ml:_pLife,col:ELC[e.el]||e.col,sz:1.5,_commit:true});
+    addParts(e.x,e.y,e.col,2);
+  }
+  _cancelProjCharge(e);
+}
+function _tickProjCharge(e,sp){
+  if(!(e._projChargeT>0))return;
+  e._projChargeT-=sp;
+  if(e._projChargeT<=0)_fireChargedProj(e);
+}
 // ═══════════════════════════════════════
 //  [S09] SPRITES — Enemy/Boss/Player Body Drawing
 // ═══════════════════════════════════════
@@ -19134,11 +19360,92 @@ const _whiteBallImg=new Image();_whiteBallImg.src='img/balls/proj_bolt_phys.png'
 _whiteBallImg.onload=function(){_whiteBallReady=true};
 const _darkBallImg=new Image();_darkBallImg.src='img/balls/proj_bolt_dark.png';let _darkBallReady=false;
 _darkBallImg.onload=function(){_darkBallReady=true};
-// ── 드래곤아이 탄막 시트 (2026-08-23 교체): 6프레임×5행, 셀256px. 행: 0=불 1=얼음 2=어둠 3=번개/신성 4=흰(물리, E패링) ──
-// 무지개탄(blackBean)·블루콩(아군)은 기존 렌더 유지 — 피아/패링 가독성
+// ── 드래곤아이 탄막 시트 (폴백): 6프레임×5행, 셀256px. 행: 0=불 1=얼음 2=어둠 3=번개/신성 4=흰
+// 마법탄은 시트 없이 최초 무지개탄(_drawClassicRainbow) 통일. 물리탄은 이빨입 시트.
 const _eyeSheetImg=new Image();_eyeSheetImg.src='img/proj_eye_sheet.png';let _eyeSheetReady=false;
 _eyeSheetImg.onload=function(){_eyeSheetReady=true};
 const _EYE_ROW=[4,0,1,2,3,3,2]; // EL {P,F,I,D,L,H,E} → 시트 행
+// 물리탄 유기 이빨입 — 유저 제공 3장 패킹. 768×384셀, 행0=8프레임 수평비행, 행1=개구, 행2=곡선. 우향.
+const _physMouthImg=new Image();_physMouthImg.src='img/proj_phys_mouth.png?v=20260823-phys-user';let _physMouthReady=false;
+_physMouthImg.onload=function(){_physMouthReady=true};
+const _PHYS_MOUTH_FW=768,_PHYS_MOUTH_FH=384,_PHYS_MOUTH_N=[8,6,6];
+// 원소 일반탄 — 유저 시트 6행×6프레임, 셀512×256, 우향. 행: 0불 1어둠 2얼음 3번개 4대지 5신성. 무지개탄 미사용.
+const _elemOrbImg=new Image();_elemOrbImg.src='img/proj_elem_orb.png?v=20260823-elem-orb';let _elemOrbReady=false;
+_elemOrbImg.onload=function(){_elemOrbReady=true};
+const _ELEM_ORB_FW=512,_ELEM_ORB_FH=256;
+const _ELEM_ORB_ROW=[-1,0,2,1,3,5,4]; // EL {P,F,I,D,L,H,E}
+function _drawElemOrb(x,y,el,sz,ang,alpha){
+  if(!_elemOrbReady)return false;
+  const row=_ELEM_ORB_ROW[el];
+  if(row==null||row<0)return false;
+  const fi=((_gameFrame>>2)+(~~(x*.03)))%6;
+  const dh=sz,dw=sz*(_ELEM_ORB_FW/_ELEM_ORB_FH);
+  X.save();X.translate(x,y);X.rotate(ang);X.globalAlpha=alpha;
+  X.drawImage(_elemOrbImg,fi*_ELEM_ORB_FW,row*_ELEM_ORB_FH,_ELEM_ORB_FW,_ELEM_ORB_FH,-dw/2,-dh/2,dw,dh);
+  X.restore();X.globalAlpha=1;return true;
+}
+function _drawPhysMouth(x,y,sz,ang,alpha,row){
+  if(!_physMouthReady)return false;
+  if(row==null)row=0;
+  const n=_PHYS_MOUTH_N[row]||8;
+  const fi=((_gameFrame>>2)+(~~(x*.03)))%n;
+  const dh=sz,dw=sz*(_PHYS_MOUTH_FW/_PHYS_MOUTH_FH);
+  X.save();X.translate(x,y);X.rotate(ang);X.globalAlpha=alpha;
+  X.drawImage(_physMouthImg,fi*_PHYS_MOUTH_FW,row*_PHYS_MOUTH_FH,_PHYS_MOUTH_FW,_PHYS_MOUTH_FH,-dw/2,-dh/2,dw,dh);
+  X.restore();X.globalAlpha=1;return true;
+}
+function _drawClassicRainbow(p,fa,sSc){
+  const _rb=3.5*sSc;
+  const _pulse=.8+Math.sin(_now/50+p.x*.3)*.2;
+  const _flk=Math.sin(_now/35+p.y*.2)>.1?1:.6;
+  const _RC=_BEAN_RAINBOW;
+  const _bkT=(_now*.3+p.x*.5+p.y*.3);
+  const _ri=~~(_bkT/60)%7,_ri2=(_ri+1)%7,_ri3=(_ri+2)%7,_ri4=(_ri+3)%7;
+  X.globalAlpha=fa*.12*_pulse;X.fillStyle=_RC[_ri];
+  X.beginPath();X.arc(p.x,p.y,_rb*3.5,0,Math.PI*2);X.fill();
+  X.globalAlpha=fa*.2*_flk;X.fillStyle=_RC[_ri2];
+  X.beginPath();X.arc(p.x,p.y,_rb*2.2,0,Math.PI*2);X.fill();
+  X.globalAlpha=fa*.85*_flk;X.fillStyle=_RC[_ri3];
+  X.beginPath();X.arc(p.x,p.y,_rb,0,Math.PI*2);X.fill();
+  X.globalAlpha=fa*.9;X.fillStyle=_RC[_ri4];
+  X.beginPath();X.arc(p.x,p.y,_rb*.6,0,Math.PI*2);X.fill();
+  X.globalAlpha=fa*.7*_flk;X.fillStyle='#ffffff';
+  X.beginPath();X.arc(p.x-_rb*.15,p.y-_rb*.2,_rb*.3,0,Math.PI*2);X.fill();
+  const _gvx=p.vx,_gvy=p.vy;
+  X.globalAlpha=fa*.15;X.strokeStyle=_RC[_ri];X.lineWidth=_rb*1.8;
+  X.beginPath();X.moveTo(p.x,p.y);X.lineTo(p.x-_gvx*7,p.y-_gvy*7);X.stroke();
+  X.globalAlpha=fa*.25*_flk;X.strokeStyle=_RC[_ri2];X.lineWidth=_rb*1.1;
+  X.beginPath();X.moveTo(p.x,p.y);X.lineTo(p.x-_gvx*5,p.y-_gvy*5);X.stroke();
+  X.globalAlpha=fa*.35;X.strokeStyle=_RC[_ri3];X.lineWidth=_rb*.5;
+  X.beginPath();X.moveTo(p.x,p.y);X.lineTo(p.x-_gvx*3,p.y-_gvy*3);X.stroke();
+  for(let _fi=0;_fi<4;_fi++){
+    const _fa2=_now/25+_fi*Math.PI/2+p.x*.2;
+    const _fr=_rb*1.5+Math.sin(_now/30+_fi*3)*_rb*.5;
+    X.globalAlpha=fa*(.2+Math.sin(_now/40+_fi)*.1);X.fillStyle=_RC[(_ri+_fi)%7];
+    X.fillRect(p.x+Math.cos(_fa2)*_fr-1,p.y+Math.sin(_fa2)*_fr-1,2,2);
+  }
+  X.globalAlpha=1;
+}
+function _drawShootCharge(x,y,r,prog,col,sa){
+  if(sa==null)sa=1;
+  prog=prog<0?0:prog>1?1:prog;
+  const R=r+10;
+  X.save();
+  X.lineCap='round';
+  X.globalAlpha=sa*.28;X.strokeStyle='#080808';X.lineWidth=5;
+  X.beginPath();X.arc(x,y,R,0,Math.PI*2);X.stroke();
+  X.globalAlpha=sa*.4;X.strokeStyle=col||'#ff6644';X.lineWidth=2;
+  X.beginPath();X.arc(x,y,R,0,Math.PI*2);X.stroke();
+  if(prog>0){
+    X.globalAlpha=sa*(.8+prog*.2);X.strokeStyle=col||'#ff6644';X.lineWidth=3.5;
+    X.beginPath();X.arc(x,y,R,-Math.PI/2,-Math.PI/2+Math.PI*2*prog);X.stroke();
+  }
+  if(prog>.92){
+    X.globalAlpha=sa*.7;X.strokeStyle='#ffffff';X.lineWidth=1.5;
+    X.beginPath();X.arc(x,y,R,0,Math.PI*2);X.stroke();
+  }
+  X.restore();
+}
 function _drawEyeBullet(x,y,row,sz,ang,alpha){
   if(!_eyeSheetReady)return false;
   const fi=((_gameFrame>>2)+(~~(x*.03)))%6; // 15fps 애니 + 탄별 위상차
@@ -19146,7 +19453,7 @@ function _drawEyeBullet(x,y,row,sz,ang,alpha){
   X.drawImage(_eyeSheetImg,fi*256,row*256,256,256,-sz/2,-sz/2,sz,sz);
   X.restore();X.globalAlpha=1;return true;
 }
-// ── 거대괴수 혈안탄(titanEye) 시트: 4x2 8프레임, 셀300px. 필드보스(앵글러)/땅벌레 특수탄 — 10초 간격 초고속, 일반 눈탄 2배 크기 ──
+// ── 거대괴수 혈안탄(titanEye) 시트: 4x2 8프레임, 셀300px. 필드보스(앵글러)/지상뱀장어 특수탄 — 초고속, 일반 눈탄 2배 크기 ──
 const _titanEyeImg=new Image();_titanEyeImg.src='img/proj_titan_eye.png';let _titanEyeReady=false;
 _titanEyeImg.onload=function(){_titanEyeReady=true};
 // ── 흰색 물리탄(redBean) 바버폴(꽈배기) 스프라이트: 흰 바탕 + 45° 검은 줄무늬 (1회 생성, 회전은 drawImage에서) ──
@@ -19192,6 +19499,28 @@ function _drawShardSprite(x,y,el,sz,ang,alpha){
   const fi=~~(_now/80)%8;const fw=s.img.width/8,fh=s.img.height;
   X.save();X.translate(x,y);X.rotate(ang);X.globalAlpha=alpha;
   X.drawImage(s.img,fi*fw,0,fw,fh,-sz/2,-sz/2,sz,sz);X.restore();return true;
+}
+// ═══ 무지개 혜성 마법탄 (8프레임 가로형, 모든 마법 원소탄 통일 스프라이트) ═══
+const _cometImg=new Image();let _cometReady=false,_cometFW=254,_cometFH=137;
+const _cometTint=[]; // [el 1~6] = 원소색 틴트 시트 (boot 1회 베이크, ELC 기준). BULLET LANGUAGE 색-키 판별 보존
+function _bakeCometTints(){ // source-atop으로 원소색 오버레이(강도 .65, 원본 밝기 .35 보존). createElement=boot 1회만
+  if(!_cometReady||!_cometImg.width)return;
+  for(var el=1;el<=6;el++){
+    var c=document.createElement('canvas');c.width=_cometImg.width;c.height=_cometImg.height;
+    var cx=c.getContext('2d');cx.drawImage(_cometImg,0,0);
+    cx.globalCompositeOperation='source-atop';cx.globalAlpha=0.65;cx.fillStyle=ELC[el]||'#ffffff';cx.fillRect(0,0,c.width,c.height);
+    cx.globalCompositeOperation='source-over';cx.globalAlpha=1;_cometTint[el]=c;
+  }
+}
+_cometImg.onload=function(){_cometReady=true;_cometFW=_cometImg.width/8;_cometFH=_cometImg.height;_bakeCometTints();};
+_cometImg.src='img/balls/proj_bolt_comet.png';
+function _drawCometBullet(x,y,len,ang,alpha,fr,el){
+  if(!_cometReady||!_cometImg.width)return false;
+  const src=(el>=1&&el<=6&&_cometTint[el])?_cometTint[el]:_cometImg; // 원소별 사전 틴트 시트 (미베이크 시 원본)
+  const fi=((~~fr)%8+8)%8;const dw=len,dh=len*_cometFH/_cometFW;
+  X.save();X.translate(x,y);X.rotate(ang);X.globalAlpha=alpha;
+  X.drawImage(src,fi*_cometFW,0,_cometFW,_cometFH,-dw*0.62,-dh/2,dw,dh); // 머리(프레임 우측)=진행방향 앞
+  X.restore();return true;
 }
 
 let _booted=false;
@@ -19643,13 +19972,33 @@ function _addBurnCorpse(e){
   }
 }
 // ── 피 자국 시스템 (사망 지점 고정) ──
+// 모든 사망이 핏자국. 과한 건 scarlet 장판/거대 반경이지, 자국 자체를 없애는 게 아님.
 const _STAIN_MAX=30;const _stains=[];
-for(let i=0;i<_STAIN_MAX;i++)_stains.push({x:0,y:0,r:0,sz:0,t:0,mt:0,active:false,ang:0});
-function _addStain(x,y,sz){
+for(let i=0;i<_STAIN_MAX;i++)_stains.push({x:0,y:0,r:0,sz:0,t:0,mt:0,active:false,ang:0,large:false,ib:false,blobs:null,persist:false});
+function _isLargeMob(e){return!!e&&(!!e.ib||(e.r||0)>=18||(e.mhp||0)>=220)}
+function _leaveFloorTrace(e){return!!e}
+function _stainRadius(e){
+  if(!e)return 16;
+  if(e.ib||e._fmKind==='fb')return Math.max(36,Math.min(56,(e.r||40)*.5)); // 앵글러 56, 보스 36~56. 구 r*1.5=180 장판 금지
+  return Math.max(14,Math.min(36,(e.r||10)*1.4)); // 잡몹 14~26, 뱀장어 36
+}
+function _addStain(x,y,sz,large,ib){
   let oldest=0,minT=Infinity;
   for(let i=0;i<_STAIN_MAX;i++){if(!_stains[i].active){oldest=i;break}if(_stains[i].t<minT){minT=_stains[i].t;oldest=i}}
-  const s=_stains[oldest];s.x=x;s.y=y;s.sz=sz||10;s.ang=Math.random()*Math.PI*2;
-  s.mt=300;s.t=s.mt;s.active=true;
+  const s=_stains[oldest];s.x=x;s.y=y;s.sz=sz||16;s.ang=Math.random()*Math.PI*2;
+  s.large=!!large;s.ib=!!ib;s.blobs=null;s.persist=true;
+  s.mt=1e9;s.t=s.mt;s.active=true; // 맵 전환까지 유지 (누가 치운 것처럼 사라지지 않음)
+}
+function _addFloorTrace(e){
+  if(!OPT.deathFx||!_leaveFloorTrace(e))return;
+  var _ib=!!(e.ib||e._fmKind==='fb');
+  _addStain(e.x,e.y,_stainRadius(e),_ib||!!e._fmKind,_ib);
+  if(_ib||e._fmKind||(e.r||0)>=40)_addGorePiece(e.x,e.y,'flesh',true); // 살점은 대형만. 핏자국은 전원
+}
+function _clearDeathDecals(){
+  for(let i=0;i<_STAIN_MAX;i++)_stains[i].active=false;
+  for(let i=0;i<_CORPSE_MAX;i++)_corpses[i].active=false;
+  for(let i=0;i<_GORE_MAX;i++){if(_gorePieces[i]&&_gorePieces[i].ground)_gorePieces[i].active=false}
 }
 // ── 시체 잔해 시스템 (모든 사망) — 물리 기반 래그돌 ──
 const _CORPSE_MAX=15;const _corpses=[];
@@ -19657,24 +20006,28 @@ for(let i=0;i<_CORPSE_MAX;i++){const _cc=document.createElement('canvas');_cc.wi
 function _addCorpse(e,killAng,power){
   if(!OPT.deathFx)return;
   e._corpseSpawned=true;
-  // 피웅덩이: 몬스터 렌더 크기 기준 (스킨 몹 e.r*3.5, 보스 큰 값)
-  const _stainR=e.ib?Math.max(60,e.r*1.5):Math.max(14,e.r*1.4);
-  _addStain(e.x,e.y,_stainR);
+  _addFloorTrace(e); // 모든 사망 핏자국. 맵 전환까지 유지. 장판 스프라이트 없음
   let oldest=0,minT=Infinity;
   for(let i=0;i<_CORPSE_MAX;i++){if(!_corpses[i].active){oldest=i;break}if(_corpses[i].t<minT){minT=_corpses[i].t;oldest=i}}
   const c=_corpses[oldest];
   const a=killAng||0;
   const spd=Math.min(5,1.5+(power||1)*.8); // 거리 무관, 데미지 비례
-  // 시체 크기: 보스/큰몹 렌더 크기에 비례 (스킨몹 _bsz=r*2.8 기준)
-  c.x=e.x;c.y=e.y;c.sz=e.ib?Math.max(80,e.r*2.5):Math.max(28,Math.min(200,e.r*2.2));
+  // 시체 크기: 필드 대형몹은 납작 팬케이크가 과해서 작게. 일반 보스는 기존
+  c.x=e.x;c.y=e.y;
+  if(e._fmKind){c.sz=e._fmKind==='fb'?Math.max(52,Math.min(72,e.r*.55)):Math.max(32,Math.min(48,e.r*.75));c.mt=220}
+  else{c.sz=e.ib?Math.max(96,e.r*3.0):Math.max(40,Math.min(260,e.r*2.9));c.mt=e.ib?600:420}
   c.vx=Math.cos(a)*spd;c.vy=Math.sin(a)*spd;
   c.r=a+Math.PI*.5;c.rv=(Math.random()-.5)*.2; // 회전 속도
-  c.mt=e.ib?600:420;c.t=c.mt;c.active=true;c.bounced=0;
+  c.t=c.mt;c.active=true;c.bounced=0;
   c.ctx.clearRect(0,0,128,128);
   // 시체 이미지 캡처
   {let _cDrawn=false;
+  // ── 독립 필드몹: 전용 시트에서 현재 프레임 캡처 (아틀라스 없음) ──
+  if(!_cDrawn&&(e._fmKind==='fb'||e._fmKind==='wm')){
+    if(typeof _fmDrawSpriteTo==='function'&&_fmDrawSpriteTo(c.ctx,128,128,e,e._fmKind==='fb'))_cDrawn=true;
+  }
   // ── 보스: 보스 전용 아틀라스에서 캡처 ──
-  if(e.ib){
+  if(!_cDrawn&&e.ib){
     const _bsi=G.stage||0;
     // 1) 방향별 보스 아틀라스
     const _bda=_bossDirAtlas[_bsi];
@@ -19705,7 +20058,7 @@ function _addCorpse(e,killAng,power){
   }
   // ── 일반 몹: 8dir 아틀라스 ──
   if(!_cDrawn){
-    const _ca8=_ch8Atlas[1];
+    const _ca8=_ch8Atlas[e._mobCh]||_ch8Atlas[1]; // 몹 자기 챕터 아틀라스 (하드코딩 [1]→e._mobCh: 타챕터서 원 폴백 버그 수정)
     if(_ca8){
       let _cda=_ca8.dirs['south'];
       if(_cda&&_cda.ready&&e._mob8Col!==undefined){
@@ -19732,20 +20085,24 @@ function _addCorpse(e,killAng,power){
     c.ctx.beginPath();c.ctx.moveTo(20+Math.random()*88,20+Math.random()*88);
     c.ctx.quadraticCurveTo(20+Math.random()*88,20+Math.random()*88,20+Math.random()*88,20+Math.random()*88);c.ctx.stroke();
   }
-  // 눈알 (2~3개, 흰자+검은동공)
-  c.ctx.globalAlpha=0.85;
-  const _eyeN=2+~~(Math.random()*2);
-  for(let _ei=0;_ei<_eyeN;_ei++){
-    const _ex=24+Math.random()*80,_ey=24+Math.random()*80;
-    c.ctx.fillStyle='#ddddcc';c.ctx.beginPath();c.ctx.arc(_ex,_ey,4+Math.random()*3,0,Math.PI*2);c.ctx.fill();
-    c.ctx.fillStyle='#110000';c.ctx.beginPath();c.ctx.arc(_ex,_ey,2,0,Math.PI*2);c.ctx.fill();
-    c.ctx.fillStyle='rgba(200,0,0,0.4)';c.ctx.beginPath();c.ctx.arc(_ex,_ey,5+Math.random()*3,0,Math.PI*2);c.ctx.stroke();
+  // 눈알 — 필드 대형몹 시체에 그리면 거대 핏덩이처럼 보임
+  if(!e._fmKind){
+    c.ctx.globalAlpha=0.85;
+    const _eyeN=2+~~(Math.random()*2);
+    for(let _ei=0;_ei<_eyeN;_ei++){
+      const _ex=24+Math.random()*80,_ey=24+Math.random()*80;
+      c.ctx.fillStyle='#ddddcc';c.ctx.beginPath();c.ctx.arc(_ex,_ey,4+Math.random()*3,0,Math.PI*2);c.ctx.fill();
+      c.ctx.fillStyle='#110000';c.ctx.beginPath();c.ctx.arc(_ex,_ey,2,0,Math.PI*2);c.ctx.fill();
+      c.ctx.fillStyle='rgba(200,0,0,0.4)';c.ctx.beginPath();c.ctx.arc(_ex,_ey,5+Math.random()*3,0,Math.PI*2);c.ctx.stroke();
+    }
   }
   // 피 웅덩이 (시체 아래, 선홍색)
   c.ctx.globalAlpha=0.3;
   c.ctx.fillStyle='#cc1122';
   c.ctx.beginPath();c.ctx.ellipse(64,90,40+Math.random()*20,12+Math.random()*8,0,0,Math.PI*2);c.ctx.fill();
   c.ctx.globalAlpha=1.0;
+  // 중형+/보스: 대가리 한 조각이 처치방향으로 날아감 (통짜 시체와 병행, _isLarge 게이트는 _addHeadGib 내부)
+  _addHeadGib(e,a,power);
 }
 // ── 선홍색 고어 파편 아틀라스 (10종, 프리렌더) ──
 var _goreAtlas=document.createElement('canvas');_goreAtlas.width=320;_goreAtlas.height=32;
@@ -19779,6 +20136,7 @@ for(let i=0;i<_GIB_MAX;i++){const _gc=document.createElement('canvas');_gc.width
 const _gibC=document.createElement('canvas');_gibC.width=48;_gibC.height=48;const _gibX=_gibC.getContext('2d',{willReadFrequently:true});
 let _gibThrottle=0; // 프레임당 gib 생성 제한
 let _flingThrottle=0; // 프레임당 fling 생성 제한
+let _headGibThrottle=0; // 프레임당 머리 조각 생성 제한 (중형+/보스 사망)
 function _addGibs(e,boomX,boomY,boomR){
   if(!OPT.deathFx)return;
   if(_gibThrottle>5)return; // 프레임당 최대 6회
@@ -19840,6 +20198,54 @@ function _addGibs(e,boomX,boomY,boomR){
   for(let i=0;i<pn;i++){const a=ang+(Math.random()-.5)*2;
     poolPart(e.x,e.y,Math.cos(a)*(2+Math.random()*3)*pw,Math.sin(a)*(2+Math.random()*3)*pw-1.5,'#880022',2+Math.random()*3,10+Math.random()*8*pw,0,0,.1)}
 }
+// ── 머리 조각(대가리) 날림: 중형+/보스 사망 시 스프라이트 상단부 1조각을 처치방향으로 포물선 비행 ──
+// gib 풀 재사용(중력+회전 물리 공유). 프레임당 스로틀·풀 재활용으로 성능 부담 최소.
+function _addHeadGib(e,killAng,power){
+  if(!OPT.deathFx)return;
+  const _isLarge=!!e.ib||e.r>=18||e.mhp>=220;
+  if(!_isLarge)return;               // 중형+/보스만
+  if(_headGibThrottle>2)return;      // 프레임당 최대 3
+  _headGibThrottle++;
+  // ── 스프라이트를 48x48 임시 캔버스에 캡처 (모든 몹 타입 디스패치) ──
+  _gibX.clearRect(0,0,48,48);
+  let _hDrawn=false;
+  if((e._fmKind==='fb'||e._fmKind==='wm')&&typeof _fmDrawSpriteTo==='function'){
+    if(_fmDrawSpriteTo(_gibX,48,48,e,e._fmKind==='fb'))_hDrawn=true;
+  }
+  if(!_hDrawn&&e.ib){
+    const _bsi=G.stage||0;
+    const _bda=_bossDirAtlas[_bsi];
+    if(_bda&&_bda.ready){const _bcc=_bda.cell||_BWA_CELL;_gibX.drawImage(_bda.img,0,0,_bcc,_bcc,0,0,48,48);_hDrawn=true;}
+    if(!_hDrawn&&_bossWalkAtlas.ready&&_bsi>=0&&_bsi<=34){_gibX.drawImage(_bossWalkAtlas.img,0,_bsi*_BWA_CELL,_BWA_CELL,_BWA_CELL,0,0,48,48);_hDrawn=true;}
+  }
+  if(!_hDrawn){
+    const _ca8=_ch8Atlas[e._mobCh]||_ch8Atlas[1]; // 몹 자기 챕터 아틀라스 (하드코딩 [1]→e._mobCh: 타챕터서 원 폴백 버그 수정)
+    if(_ca8){const _cda=_ca8.dirs['south'];if(_cda&&_cda.ready&&e._mob8Col!==undefined){const _cc8=(_ca8.meta?_ca8.meta.cell:256);_gibX.drawImage(_cda.img,e._mob8Col*_cc8,e._mob8Row*_cc8,_cc8,_cc8,0,0,48,48);_hDrawn=true;}}
+  }
+  if(!_hDrawn){_gibX.fillStyle=e.col||'#cc0000';_gibX.beginPath();_gibX.arc(24,15,12,0,Math.PI*2);_gibX.fill();}
+  // ── 풀에서 슬롯 확보 (비활성 우선, 없으면 최단수명) ──
+  let oldest=0,minLife=Infinity;
+  for(let i=0;i<_GIB_MAX;i++){if(!_gibs[i].active){oldest=i;break}if(_gibs[i].life<minLife){minLife=_gibs[i].life;oldest=i}}
+  const g=_gibs[oldest];
+  g.ctx.clearRect(0,0,_GIB_MAX_CELL,_GIB_MAX_CELL);
+  // 머리 = 상단-중앙부 크롭 (48기준 x[10..38] y[2..30]) → 24x24로 확대
+  g.ctx.drawImage(_gibC,10,2,28,28,0,0,_GIB_MAX_CELL,_GIB_MAX_CELL);
+  // 목 절단면 붉은 피 (하단 중앙)
+  g.ctx.globalAlpha=0.55;g.ctx.fillStyle='#cc1122';
+  g.ctx.beginPath();g.ctx.ellipse(12,22,7,3.5,0,0,Math.PI*2);g.ctx.fill();g.ctx.globalAlpha=1;
+  // ── 물리: 처치방향 + 위로 튐 + 회전 (gib 업데이트가 중력·감속·스핀 처리) ──
+  const a=killAng||0;
+  const spd=(3.8+Math.min(3,(power||1)*.5))*(e.ib?1.25:1);
+  g.x=e.x;g.y=e.y-e.r*0.4;
+  g.vx=Math.cos(a)*spd*0.9+(Math.random()-.5)*1.2;   // 처치방향 수평 우세
+  g.vy=Math.sin(a)*spd*0.4-(2.8+Math.random()*1.8);  // 살짝 위로 튀어 포물선
+  g.r=Math.random()*Math.PI*2;
+  g.sz=Math.max(15,Math.min(30,e.r*(e.ib?0.58:0.85)));
+  g.life=200+Math.random()*70;g.ml=g.life;g.active=true; // 아크 후 페이드(화면 밖 질주 방지)
+  // 절단부 피 분사
+  for(let i=0;i<6;i++){const pa=a+(Math.random()-.5)*1.6;
+    poolPart(e.x,e.y-e.r*0.3,Math.cos(pa)*(1.5+Math.random()*2.2),Math.sin(pa)*(1.5+Math.random()*2.2)-1,'#aa0022',2+Math.random()*2,10+Math.random()*8,0,0,.12)}
+}
 // ── 데드 임팩트 시스템 (사망 시 혈흔 폭발 이펙트) ──
 const _DI_MAX=12;const _diPool=[];
 const _DI_NAMES=['blood_impact_2','blood_impact_3','blood_impact_4'];
@@ -19855,7 +20261,7 @@ function _addDeathImpact(x,y,r){
   for(let i=0;i<_DI_MAX;i++){if(!_diPool[i].active){oldest=i;break}if(_diPool[i].life<minL){minL=_diPool[i].life;oldest=i}}
   const d=_diPool[oldest];
   d.x=x;d.y=y;
-  d.maxSz=Math.max(40,r*4);
+  d.maxSz=Math.max(40,Math.min(120,r*2.2));
   d.life=1.0;d.ml=1.0;
   d.img=img;d.active=true;
 }
@@ -19877,7 +20283,7 @@ const _GORE_TYPES=[
 const _goreImgs={};let _goreReady=false;
 {let _gl=0;
 _GORE_TYPES.forEach(function(t){const img=new Image();img.onload=function(){_gl++;if(_gl>=_GORE_TYPES.length)_goreReady=true};img.onerror=function(){_gl++;if(_gl>=_GORE_TYPES.length)_goreReady=true};img.src='assets/gore/'+t+'.png';_goreImgs[t]=img})}
-for(let i=0;i<_GORE_MAX;i++)_gorePieces.push({x:0,y:0,vx:0,vy:0,rot:0,rv:0,life:0,ml:0,sz:0,img:null,active:false,camFling:false,scale:1,vz:0});
+for(let i=0;i<_GORE_MAX;i++)_gorePieces.push({x:0,y:0,vx:0,vy:0,rot:0,rv:0,life:0,ml:0,sz:0,img:null,active:false,camFling:false,scale:1,vz:0,ground:false,tSettle:0,persist:false});
 // 카테고리별 랜덤 풀
 const _GORE_CAT={
   flesh:['flesh_chunk_2','flesh_chunk_3','flesh_chunk_4','flesh_chunk_5','flesh_chunk_6'],
@@ -19896,15 +20302,30 @@ const _GORE_CAT={
 function _goreRand(cat){const arr=_GORE_CAT[cat];return arr?arr[~~(Math.random()*arr.length)]:cat}
 // 타입별 크기
 const _GORE_SZ={spine:40,spine_short:32,spine_broken:34,intestine_1:35,intestine_2:33,intestine_3:36,stomach:32,liver:30,flesh_chunk_2:28,flesh_chunk_3:30,flesh_chunk_4:24,flesh_chunk_5:26,flesh_chunk_6:26,blood_splat_1:32,bone_1:28,bone_2:26,bone_3:32,bone_4:22,bone_5:34,eye:22,eye_bloody:24,eye_torn:22,skull_chunk:30,skull_half:34,skull_crushed:28,heart:28,heart_damaged:26,tooth_1:16,tooth_2:14,finger_1:20,finger_2:18,severed_hand:28,tendon_1:24,tendon_2:22};
-function _addGorePiece(x,y,type){
+function _addGorePiece(x,y,type,ground){
   if(!OPT.deathFx||!_goreReady)return;
   const key=_goreRand(type)||type;
   const img=_goreImgs[key];if(!img||!img.complete||!img.naturalWidth)return;
-  let oldest=0,minL=Infinity;
-  for(let i=0;i<_GORE_MAX;i++){if(!_gorePieces[i].active){oldest=i;break}if(_gorePieces[i].life<minL){minL=_gorePieces[i].life;oldest=i}}
+  let oldest=0,minL=Infinity,flyOldest=-1;
+  for(let i=0;i<_GORE_MAX;i++){
+    const gp=_gorePieces[i];
+    if(!gp.active){oldest=i;flyOldest=-1;break}
+    if(gp.life<minL){minL=gp.life;oldest=i}
+    if(!gp.ground&&!gp.persist&&(flyOldest<0||gp.life<_gorePieces[flyOldest].life))flyOldest=i;
+  }
+  if(ground&&flyOldest>=0)oldest=flyOldest;
   const g=_gorePieces[oldest];
-  g.img=img;g.active=true;g.camFling=false;g.scale=1;g.vz=0;g.rv=0;
+  g.img=img;g.active=true;g.camFling=false;g.scale=1;g.vz=0;g.rv=0;g.ground=!!ground;g.persist=!!ground;g.tSettle=0;
   g.sz=(_GORE_SZ[key]||30)+(Math.random()-.5)*8;
+  if(ground){
+    g.camFling=false;
+    g.x=x+(Math.random()-.5)*26;g.y=y+(Math.random()-.5)*16;
+    const a=Math.random()*Math.PI*2,spd=.5+Math.random()*1.1;
+    g.vx=Math.cos(a)*spd;g.vy=Math.sin(a)*spd;g.tSettle=16;
+    g.rot=Math.random()*Math.PI*2;g.rv=(Math.random()-.5)*.06;
+    g.sz=Math.max(12,g.sz*.4);g.life=1e9;g.ml=1e9; // 맵 전환까지, 작게
+    return;
+  }
   // 30% 카메라 플링: 모니터 뚫고 튀어나오는 느낌 (프레임당 최대 5개)
   if(Math.random()<0.3&&_flingThrottle<5){
     _flingThrottle++;
@@ -24968,7 +25389,7 @@ function _enterBossArena(){
   // 아레나 전환: 던전 잔여 몹을 처치율에 반영 (소멸 = 킬로 카운트)
   {let _survCnt=0;for(let _si=0;_si<ens.length;_si++){if(ens[_si].alive&&!ens[_si].ib)_survCnt++}
   G._stageKills=(G._stageKills||0)+_survCnt;}
-  ens=[];for(let _i=0;_i<projs.length;_i++)_recycleProj(projs[_i]);projs.length=0;{for(let _ri=0;_ri<pProjs.length;_ri++)_recyclePProj(pProjs[_ri]);pProjs.length=0;};worldItems=[];G.parts=[];G.txts=[];
+  ens=[];for(let _i=0;_i<projs.length;_i++)_recycleProj(projs[_i]);projs.length=0;{for(let _ri=0;_ri<pProjs.length;_ri++)_recyclePProj(pProjs[_ri]);pProjs.length=0;};worldItems=[];G.parts=[];G.txts=[];if(typeof _clearDeathDecals==='function')_clearDeathDecals();
   G.hitStop=0;G.slowMo=0;G.curRoom=0;if(typeof _eSpCache!=='undefined')_eSpCache.clear();_impacts=[];_vfxAnims.length=0;_fireExps.length=0;
   G._ebBomb=null;G._mmBomb=null;G._gsBombs=[];G._bsBombs=[];G._boneWalls=[];G._fireZones=[];G._stProjs=[];G._gwLightning=null;G._voidScarecrow=null;G._editorEyes=[];
   G._spiralBullets=[];G._phantomSwords=[];G._doppelgangers=[];G._judgeCuts=[];G._pillars=[];
@@ -25703,7 +26124,7 @@ function initStage(si){
   _skinSeqIdx=0; // 스킨 순차 배정 카운터 리셋
   // _loadChAtlas(SI_TO_HELL[si]||0); // 레거시 4방향 비활성화 — 8dir 사용
   _load8DirAtlas(1); // 8dir 아틀라스 로드
-  ens=[];for(let _i=0;_i<projs.length;_i++)_recycleProj(projs[_i]);projs.length=0;{for(let _ri=0;_ri<pProjs.length;_ri++)_recyclePProj(pProjs[_ri]);pProjs.length=0;};worldItems=[];MAP_OBJS=[];G.parts=[];G.txts=[];G.hitStop=0;G.slowMo=0;G.curRoom=0;G._flashT=0;G._flashCol='#ffffff';G._chromaT=0;_eSpCache.clear();_impacts=[];_vfxAnims.length=0;_fireExps.length=0;G._ebBomb=null;G._mmBomb=null;G._gsBombs=[];G._bsBombs=[];G._boneWalls=[];G._fireZones=[];G._stProjs=[];G._gwLightning=null;_shDirty=true;_eyeObjs.length=0;_eyeInited=false;
+  ens=[];for(let _i=0;_i<projs.length;_i++)_recycleProj(projs[_i]);projs.length=0;{for(let _ri=0;_ri<pProjs.length;_ri++)_recyclePProj(pProjs[_ri]);pProjs.length=0;};worldItems=[];MAP_OBJS=[];G.parts=[];G.txts=[];G.hitStop=0;G.slowMo=0;G.curRoom=0;G._flashT=0;G._flashCol='#ffffff';G._chromaT=0;_eSpCache.clear();_impacts=[];_vfxAnims.length=0;_fireExps.length=0;G._ebBomb=null;G._mmBomb=null;G._gsBombs=[];G._bsBombs=[];G._boneWalls=[];G._fireZones=[];G._stProjs=[];G._gwLightning=null;_shDirty=true;_eyeObjs.length=0;_eyeInited=false;if(typeof _clearDeathDecals==='function')_clearDeathDecals();
   // ── 보스 패턴 배열 전수 초기화 (메모리 누수 방지) ──
   G._spiralBullets=[];G._phantomSwords=[];G._doppelgangers=[];G._judgeCuts=[];G._pillars=[];
   G._darkZones=[];G._mirrorClones=[];G._fissures=[];G._tideWaves=[];G._seekerMines=[];
@@ -26204,7 +26625,7 @@ function update(){
     else if(_boothIdle>=5400&&!_boothReloading){_boothReloading=true;location.reload()}
   }
   _fbTick(); // 필드보스(심연의 앵글러) 스폰/추적/피격/사망
-  _wmTick(); // 땅벌레(매복형) 맵 배치/들락날락/탄막/피격
+  _wmTick(); // 지상뱀장어: 소멸→캐릭터 옆 순간이동 출현→강타+혈안탄 2발
   _twRecord(); // 시간왜곡 링버퍼 기록
   // 충돌 분리 Worker (이전 프레임 결과 적용 + 새 디스패치)
   _applyColResult();
@@ -27741,8 +28162,8 @@ function update(){
       const _psDist=dst(P.x,P.y,p.x,p.y);
       const _psPrev=dst(P.x,P.y,p.x-p.vx*sp,p.y-p.vy*sp);
       if(_psDist<_psR+12||(_psPrev>_psR&&_psDist<_psR+40)){
-        if(P._sbParryT>0&&!p.redBean){
-          // 패링 윈도우: 반사 (빨콩 제외 — 빨콩은 우클릭만 패링 가능)
+        if(P._sbParryT>0&&!p.redBean&&!p.titanEye){
+          // 패링 윈도우: 반사 (빨콩·titanEye 제외 — 물리탄은 우클릭만 패링)
           {p.vx*=-1.5;p.vy*=-1.5;p.friendly=true;p.dmg=~~(pParryProjDmg(p.dmg,true)*1.2);p.life=80;p.ml=80;p.blueBean=true;p.parryBlueBean=true;p.magic=true;p.homing=true;p.col='#00e5ff';p._aoeR=0;p._aoeDmg=0;}
           addTxt(p.x,p.y-10,_T('🕊️💎 블루콩!'),'#00e5ff',35);
           P.parryBank=(P.parryBank||0)+p.dmg;
@@ -27946,6 +28367,7 @@ function update(){
     P.chargeSpd*=_cbDecay**sp;
     // ── Piercing charge: hit all enemies in path ──
     if(!P.chargeHits)P.chargeHits=new Set();
+    _hurtFieldMobs(P.x,P.y,P.r+(ar().chargeW||8)+12,~~(((ar().charge||10)+P.baseAtk)*10),P.chargeHits);
     for(let _cei=0;_cei<ens.length;_cei++){const e=ens[_cei];if(!e.alive||P.chargeHits.has(e))continue;
       const _cbHit=P.skills.chargeBoost||0;
       const _cbHitW=_cbHit>=1?12+(_cbHit-1)*2.5:0; // 성장폭 절반 하향 (5 -> 2.5)
@@ -28563,12 +28985,18 @@ function update(){
     rb.alpha=rb.frame<5?1:1-(rb.frame-5)/4;
   }
   // gib 조각 업데이트
-  _gibThrottle=0;_flingThrottle=0;
+  _gibThrottle=0;_flingThrottle=0;_headGibThrottle=0;
   for(let gi=0;gi<_GIB_MAX;gi++){const g=_gibs[gi];if(!g.active)continue;g.life-=sp;if(g.life<=0){g.active=false;continue}g.x+=g.vx*sp;g.y+=g.vy*sp;g.vy+=.15*sp;g.vx*=.97**sp;g.r+=g.vx*.08*sp;}
   // split 조각 업데이트 (중력+회전+감속)
   for(let si=0;si<_SPLIT_MAX;si++){const s=_splits[si];if(!s.active)continue;s.life-=sp;if(s.life<=0){s.active=false;continue}s.x+=s.vx*sp;s.y+=s.vy*sp;s.vy+=.12*sp;s.vx*=.96**sp;s.rot+=s.rv*sp;s.rv*=.98**sp;}
-  // gore 파편 업데이트 (중력+회전+감속)
-  for(let gi=0;gi<_GORE_MAX;gi++){const g=_gorePieces[gi];if(!g.active)continue;if(g.life<=0){g.active=false;continue}g.life-=sp;if(g.life<=0){g.active=false;continue}
+  // gore 파편 업데이트 (중력+회전+감속). 바닥 잔류는 안착 후 맵 전환까지 유지
+  for(let gi=0;gi<_GORE_MAX;gi++){const g=_gorePieces[gi];if(!g.active)continue;
+    if(g.ground){
+      if(g.tSettle>0){g.tSettle-=sp;g.x+=g.vx*sp;g.y+=g.vy*sp;g.vx*=.78**sp;g.vy*=.78**sp;g.rot+=g.rv*sp;g.rv*=.9**sp}
+      else{g.vx=0;g.vy=0;g.rv=0}
+      continue;
+    }
+    if(g.life<=0){g.active=false;continue}g.life-=sp;if(g.life<=0){g.active=false;continue}
     if(g.camFling){if(g.scale>3.0){g.life=0;g.active=false;continue}g.scale-=g.vz*sp;g.rot+=g.rv*sp;g.x+=g.vx*sp;g.y+=g.vy*sp}
     else{g.x+=g.vx*sp;g.y+=g.vy*sp;g.vy+=.10*sp;g.vx*=.97**sp;g.rot+=g.rv*sp;g.rv*=.97**sp}}
   // 데드 임팩트 업데이트 (life 1.0→0.0 감소, 속도=초당0.8)
@@ -28588,8 +29016,8 @@ function update(){
     // 불 경계에서 불꽃
     if(Math.random()<.5*sp){const fx=bc.x+(Math.random()-.5)*sz*.8;const fy=bc.y-sz/2+burnLine*scale;poolPart(fx,fy,(Math.random()-.5)*.8,-1-Math.random()*1.5,Math.random()<.4?'#ffdd00':'#ff6600',1.5+Math.random(),6+Math.random()*4,1,0,0)}
   }
-  // 피 자국 업데이트
-  for(let si=0;si<_STAIN_MAX;si++){const s=_stains[si];if(!s.active)continue;s.t-=sp;if(s.t<=0){s.active=false;continue}
+  // 피 자국 업데이트 — persist는 맵 전환까지 유지
+  for(let si=0;si<_STAIN_MAX;si++){const s=_stains[si];if(!s.active)continue;if(s.persist)continue;s.t-=sp;if(s.t<=0){s.active=false;continue}
     const _sAlpha=s.t<s.mt*.3?s.t/(s.mt*.3):1;if(_sAlpha<0.05){s.active=false}}
   // 시체 잔해 업데이트 — 물리: 마찰 + 벽 바운스
   for(let ci=0;ci<_CORPSE_MAX;ci++){const c=_corpses[ci];if(!c.active)continue;c.t-=sp;if(c.t<=0){c.active=false;continue}
@@ -28626,8 +29054,7 @@ function update(){
     // 타입 미지정 일반탄 → 랜덤 특수탄 변환
     if(!p._typed&&!p.friendly&&!p.redBean&&!p.blackBean&&!p.bwBean&&!p.gbBean&&!p.mine&&!p.bomb&&!p.trap&&!p.web&&!p.dimRift&&!p.poisonZone&&!p.iceZone&&!p.blizzard&&!p.elemBall&&!p.blueBean&&!p.swordWave&&!p._coralSpike&&!p._seaSlow&&!p._bpDrain){
       p._typed=true;const _tr=Math.random();
-      if(_tr<.25){p.bwBean=true;p.sz=Math.max(p.sz||1,1.6)}
-      else if(_tr<.50){p.gbBean=true;p.sz=Math.max(p.sz||1,1.6)}
+      if(_tr<.25){p.gbBean=true;p.sz=Math.max(p.sz||1,1.6)}
     }
     // 화톳불 배리어: 적 투사체 차단
     if(_bfActive&&!p.friendly&&dst2(_bf.x,_bf.y,p.x,p.y)<_bfR2){if(p.redBean){_addBoom(p.x,p.y,80,72,'fire_medium');addParts(p.x,p.y,'#ff2200',8)}p.life=-1;_recycleProj(p);continue}
@@ -28825,10 +29252,19 @@ function update(){
       if(_rbTgt){const _rbAng=Math.atan2(_rbTgt.y-P.y,_rbTgt.x-P.x);p.vx=Math.cos(_rbAng)*7;p.vy=Math.sin(_rbAng)*7}
       else{p.vx*=-4;p.vy*=-4}
       {p.friendly=true;p.life=240;p.ml=240;p.dmg=~~(pParryProjDmg(p.dmg,false)*1.5);p._aoeR=160;p._aoeDmg=p.dmg*2;}
-      p.redBean=false;p.blueBean=true;p.col='#00e5ff';p.homing=true;p.magic=true;p.parryBlueBean=true;
+      p.redBean=false;p.titanEye=false;p.blueBean=true;p.col='#00e5ff';p.homing=true;p.magic=true;p.parryBlueBean=true;
       _addBoom(p.x,p.y,80,72,'fire_medium'); // 빨콩 패링 Fire Medium 임팩트
       doParry(p.dmg,p.x,p.y,false,'red');
       projs[pw++]=p;continue;
+    }
+    // titanEye(크라켄/앵글러/지상뱀장어 대형 물리 눈알탄): E(sBash)만 패링. Q는 일반 피격. 데미지/배율은 흰 물리탄(bwBean)과 동일.
+    if(p.titanEye&&!_pHit&&_pDist<_rbDeflR&&_sbActive&&P.iframes<=0&&!P._ioActive){
+      let _teTgt=_parryHomingTarget();
+      if(_teTgt){const _teA=Math.atan2(_teTgt.y-P.y,_teTgt.x-P.x);const _teSpd=Math.max(5,Math.sqrt(p.vx*p.vx+p.vy*p.vy));p.vx=Math.cos(_teA)*_teSpd;p.vy=Math.sin(_teA)*_teSpd}
+      else{p.vx*=-2;p.vy*=-2}
+      {p.friendly=true;p.dmg=~~(pParryProjDmg(p.dmg,false)*1.5);p.life=180;p.ml=180;p.titanEye=false;p.blueBean=true;p.parryBlueBean=true;p.magic=true;p.homing=true;p.col='#00e5ff';p._aoeR=0;p._aoeDmg=0;}
+      addTxt(P.x,P.y-28,_T('🛡️💎 블루콩!'),'#00e5ff',50);
+      doParry(p.dmg,p.x,p.y,false,p.el);projs[pw++]=p;_pHit=true;continue;
     }
     // ══ 무지개콩탄: Q(sBlock)만 패링 가능, 우클릭(sBash) 시 데미지 ══
     const _wwDetAbs=P.s==='whirlwind'&&_isFused('whirlDet');
@@ -28945,7 +29381,7 @@ function update(){
     // ══ 일반탄: 원래 좁은 범위로 판정 (회전기폭: 빨콩도 넓은 흡수 범위) ══
     const _wwAbsR=_wwDetAbs?90:_normalR;
     if(!p.blackBean&&!p.noParry&&!p.poisonZone&&!_pHit&&_pDist<_wwAbsR&&P.iframes<=0&&!P._ioActive){
-      if(_anyPW&&!p.redBean){ // 일반 색/원소탄→Q 전용 패링(E는 흰색 물리탄만)
+      if(_anyPW&&!p.redBean&&!p.titanEye){ // 일반 색/원소탄→Q 전용. titanEye=물리→E만
         const ra=Math.atan2(p.vy,p.vx);
         for(let k=0;k<12;k++){const sa=ra+Math.PI+(Math.random()-.5)*2.2;const sv=3+Math.random()*5;
           poolPart(P.x+Math.cos(ra)*(-P.r-4),P.y+Math.sin(ra)*(-P.r-4),Math.cos(sa)*sv,Math.sin(sa)*sv,k%3===0?'#ffffff':k%3===1?'#ffee66':'#ffdd00',2+Math.random()*3,10+Math.random()*8)}
@@ -29160,6 +29596,7 @@ function update(){
     }
     if(dead){continue}
     let hit=false;
+    if(_hurtFieldMobs(p.x,p.y,(p.r||6)+8,p.dmg||p.atk||10,p._hitSet)){hit=true;if(!p.pierce&&!p.plagueBlade&&!p.venomBlade){if(!p._hitSet)p._hitSet=new Set()}}
     const _neP=shQuery(p.x,p.y,p.r+20);
     for(let _ni=0;_ni<_neP.length;_ni++){const e=_neP[_ni];if(!e.alive)continue;
       if(p._hitSet&&p._hitSet.has(e)&&!p.plagueBlade&&!p.venomBlade)continue; // 관통한 적 스킵 (폭독혈/독사는 같은 적 재히트 허용)
@@ -31378,6 +31815,7 @@ function hitArc(angle,range,arcW,baseDmg,el,type){
       }
       } // end !_isWW
     }}
+  _hurtFieldMobs(P.x,P.y,range,baseDmg);
   return _hitCount;
 }
 // ─── [S16e] BOSS_AI — 보스 AI 함수 (스코어/패턴/콤보) ───
@@ -32167,6 +32605,9 @@ function doParry(_inDmg,_px,_py,_forceQ,_parryEl){if(_px===undefined)_px=P.x;if(
   const _rageAdd=(_isRedParry?5:_isRainbowParry?15:10)+_uSR;
   P.rage=Math.min(_rageMax(),P.rage+_rageAdd);
   addTxt(P.x,P.y-90,_T('🔥분노+')+P.rage+'%','#ff4400',35);
+  // 유니크(망토): 패링 성공 시 분노스킬(대왕치기) 쿨다운 회복 — 프레임당 1회 게이트(탄막 다발 패링 남용 방지)
+  const _prRageCd=_uEq('_uParryRageCd');
+  if(_prRageCd&&P._gslCd>0&&P._parryCdFrame!==G.frame){P._parryCdFrame=G.frame;P._gslCd=Math.max(0,P._gslCd-_prRageCd);addTxt(P.x,P.y-120,_T('🔥분노스킬 쿨↓'),'#ffaa00',30)}
   // 분노 대사 (적립 후 체크)
   if(P.rage>=100)_petSayCD('rage_full','crow','…분노가 끓어넘친다. 스페이스로 적들에게 폭발시켜!',4,300,'cat','분노는 스페이스키 분노스킬로 폭발시킬 수 있어! 지금이야!!!',4);
   else if(P.rage>=50)_petSayCD('rage_half','crow','분노가 차오른다…',3,300,'cat','분노 '+P.rage+'%! 패링으로 분노 더 쌓아!',3);
@@ -32235,6 +32676,7 @@ function updateE(e,sp){
   // _stunImmune / _hitStun 은 루프 초반에서 이미 감소됨
   if(e._hitStun>0)return; // 피격 경직: AI 스킵
   if(e.stunned>0){
+    _cancelProjCharge(e);
     // 스턴 캡: 보스 3초(180f), 일반 3초(180f)
     if(e.stunned>180) e.stunned=180;
     // _maxStunned = 최초 스턴 시간 (게이지 비율 계산용)
@@ -32261,6 +32703,7 @@ function updateE(e,sp){
   e._prevX=e.x;e._prevY=e.y}
   // ═══ 프리즌(빙결) — 행동불가 + 파란 틴트 ═══
   if(e._frozen>0){
+    _cancelProjCharge(e);
     e._frozen-=sp;
     if(e._frozen<=0){e._frozen=0;e._freezeGauge=0;e._frozenImmune=e.ib?300:120} // 해제 후 면역 (보스5초/일반2초)
     return;
@@ -32482,6 +32925,7 @@ function updateE(e,sp){
   if(e._aAtkM!==1)e.atk=~~(e.atk*e._aAtkM);
   // 돌진 진행중(예고/돌격)이면 논타겟 — 사거리 밖으로 나가도 게이지/이동 멈추지 않고 끝까지 진행
   const _chgCommit=(e.s==='eChargeWind'||e.s==='eCharge');
+  _tickProjCharge(e,sp);
   if(!_chgCommit){
     if(!e._alerted&&!e.ib&&d>400)return; // 비어그로+멀면 대기
     // 스테이지 시작 후 5초간 비피격 몬스터 AI 비활성 (멀리서 달려오는 현상 방지)
@@ -34115,37 +34559,11 @@ function updateE(e,sp){
     if(e.projCd>=9000&&!e.ib&&!_noProjEtypes[e.etype]){e.projCd=~~(100+Math.random()*60);e.projT=e.projCd}
     // Ranged: 모든 몬스터 탄막 발사 (1초 차징 텔레그래프)
     if(e.projCd<9000){
-      // ── 차징 중: 깜빡임 후 발사 ──
-      if(e._projChargeT>0){
-        e._projChargeT-=sp;
-        if(e._projChargeT<=0){
-          // 차징 완료 → 발사 시점에 플레이어 방향 재조준
-          const _aimAng=Math.atan2(P.y-e.y,P.x-e.x);
-          e.facing=_aimAng;
-          const _fc=e._projChargeCol,_fb=e._projChargeBean;
-          // 탄 수명 = 사거리에 비례 (200=60, 400=120, 600=180, 800=240, 1000=300)
-          const _pRange=ETYPE_RANGE[e.etype]||600;
-          const _pLife=~~(_pRange*.3);
-          if(_fb==='black'){
-            spawnProj({x:e.x,y:e.y,vx:Math.cos(e.facing)*4.4,vy:Math.sin(e.facing)*4.4,dmg:~~(e.atk*1.5),el:EL.P,friendly:false,life:400,ml:400,col:'#00aa00',sz:2.0,blackBean:true});
-            addParts(e.x,e.y,'#00aa00',3);
-          }else if(_fb==='red'){
-            spawnProj({x:e.x,y:e.y,vx:Math.cos(e.facing)*2.8,vy:Math.sin(e.facing)*2.8,dmg:~~(e.atk*2.5),el:e.el,friendly:false,life:Math.max(200,_pLife),ml:Math.max(200,_pLife),col:'#cc1100',sz:1.5,redBean:true,homing:true});
-            addParts(e.x,e.y,'#cc1100',3);
-          }else if(_fb==='special'){
-            spawnProj({x:e.x,y:e.y,vx:Math.cos(e.facing)*3,vy:Math.sin(e.facing)*3,dmg:~~(e.atk*1),el:e.el,friendly:false,life:_pLife,ml:_pLife,col:ELC[e.el]||e.col,sz:2.5});
-            addParts(e.x,e.y,e.col,3);
-          }else{
-            spawnProj({x:e.x,y:e.y,vx:Math.cos(e.facing)*3,vy:Math.sin(e.facing)*3,dmg:~~(e.atk*.8),el:e.el,friendly:false,life:_pLife,ml:_pLife,col:ELC[e.el]||e.col,sz:1.5});
-            addParts(e.x,e.y,e.col,2);
-          }
-          e._projChargeT=0;e._projChargeCol=null;e._projChargeBean=null;
-        }
-      }else{
+      if(!(e._projChargeT>0)){
         e.projT-=sp;
         const _eRange=ETYPE_RANGE[e.etype]||700;
         if(e.projT<=0&&d<_eRange){e.projT=e.projCd;
-        // 탄 종류 사전 결정 + 차징 시작 (60프레임 = 1초)
+        // 탄 종류 사전 결정 + 차징 시작 (60프레임 = 1초). 카운트다운/발사는 _tickProjCharge
         const _beanChance=e.isBoss?.85:e.elite>=3?.80:e.elite>=2?.70:e.elite>=1?.60:.50;
         const _iR6=Math.random();
         if(_iR6<_beanChance){
@@ -36629,7 +37047,7 @@ function _detonateAssaultFlames(){
       if(_wasAlive&&!e.alive){
         _addBloodSplat(e.x,e.y,e.r||10,ang); // 캡 없는 전용 피 시스템
         _detDeaths.push(e.x,e.y,e.r||10,ang);
-        _addStain(e.x,e.y,Math.max(14,e.r*1.4));
+        _addFloorTrace(e);
       }
     }
     _shBufI--;
@@ -38917,6 +39335,7 @@ function _gSlamHit(dir,range,arcW,dmg,el,kbM,psM,stunRange){
         hitCol,2+Math.random()*4,10+Math.random()*10);
     }
   }
+  _hurtFieldMobs(P.x,P.y,range,dmg);
   _shBufI--;
   shake(18);
 }
@@ -43249,20 +43668,45 @@ const _kgEl=$('keyGuide');if(_kgEl)_kgEl.onclick=()=>{_kgEl.style.display='none'
 // 반딧불이 풀 (20개, new 금지)
 // ═══ ATMOS 후처리 레이어 (Ori 분위기) — 전역 ═══
 var _atmReady=false,_atmFogA=null,_atmFogB=null,_atmRay=null,_atmVig=null,_atmGradeHi=null,_atmGradeLo=null;
-var _atmMote=new Float32Array(96*5);
+var _atmMote=new Float32Array(82*8); // PHASE2: 82입자×8필드 [x,y,size,alpha,phase,parallax,driftAmp,riseSpd] — 3뎁스 패럴랙스 부유입자
+var _atmMoteColHell=-1,_atmMoteColStr='#ffffff'; // 챕터 bright색+흰40% 혼합 캐시 (hell 인덱스 변화시에만 재계산)
+// ═══ [SIDE-FOG] 사이드 입자 안개 — 화면 전체 덮는 흐림필터 폐기 대체. 좌우 사이드에만 큰 소프트 덩어리, lighter 가산, 중앙 배제 ═══
+var _sideFog=null,_sideFogStamps=[null,null,null],_sideFogHell=-1;
+function _bakeSideFogStamps(cr,cg,cb){ // 3종 소프트 그라데이션 스탬프 (색=챕터 bright+흰25%). boot 및 챕터전환시만 호출
+  for(var _si=0;_si<3;_si++){var c=_sideFogStamps[_si];if(!c){c=document.createElement('canvas');c.width=256;c.height=256;_sideFogStamps[_si]=c;}
+   var x=c.getContext('2d');x.clearRect(0,0,256,256);var g=x.createRadialGradient(128,128,0,128,128,128);var _e0=[0.55,0.42,0.68][_si];
+   g.addColorStop(0,'rgba('+cr+','+cg+','+cb+','+_e0+')');g.addColorStop(0.5,'rgba('+cr+','+cg+','+cb+','+(_e0*0.35)+')');g.addColorStop(1,'rgba('+cr+','+cg+','+cb+',0)');
+   x.fillStyle=g;x.fillRect(0,0,256,256);}
+}
+function _initSideFog(){ // boot 1회 — 36개 3뎁스, 좌우 사이드 밴드(0~22% / 78~100%)에만 스폰
+  _sideFog=new Float32Array(44*8);var bandW=C.width*0.22;
+  for(var i=0;i<44;i++){var b=i*8,vyL,vyH,szL,szH,aL,aH;
+   if(i<16){vyL=0.05;vyH=0.09;szL=0.14;szH=0.22;aL=0.12;aH=0.16;}       // 뎁스A 원경(느림/작음/옅음)
+   else if(i<32){vyL=0.09;vyH=0.14;szL=0.20;szH=0.28;aL=0.16;aH=0.20;} // 뎁스B 중경
+   else{vyL=0.14;vyH=0.20;szL=0.26;szH=0.34;aL=0.20;aH=0.24;}          // 뎁스C 근경(빠름/큼/진함)
+   _sideFog[b]=Math.random()*(bandW-14);               // bx(밴드 내 오프셋 px, sway 여유 14)
+   _sideFog[b+1]=Math.random()*C.height;               // y px
+   _sideFog[b+2]=szL+Math.random()*(szH-szL);          // sizeN(화면높이 비율)
+   _sideFog[b+3]=aL+Math.random()*(aH-aL);             // alpha
+   _sideFog[b+4]=Math.random()*6.28;                   // sway phase(미세 좌우 흔들 위상)
+   _sideFog[b+5]=vyL+Math.random()*(vyH-vyL);          // vy px/frame(느린 상승)
+   _sideFog[b+6]=(i%2)?1:-1;                           // side(-1좌/+1우 교대)
+   _sideFog[b+7]=(Math.random()*3)|0;}                // stamp 변종 0~2
+}
 var _atmT=0,_atmVigW=0,_atmVigH=0,_atmLoF=0,_atmHiF=0;
 // ATMOS 알파 상수 (0헤이즈틴트 1원경안개A 2갓레이1 3갓레이2 4근경안개B 5부유입자 6그레이드Hi 7그레이드Lo). [6][7]=이중틴트 완화(.09→.045/.10→.05)
-var _ATM_A=new Float32Array([.22,.10,.11,.06,.12,.55,.045,.05,.45,.55]); // +8 cutR(0~1→0~700px) +9 cutSoft(구멍 가장자리)
-var _ATM_A_DEF=[.22,.10,.11,.06,.12,.55,.045,.05,.45,.55]; // R 복원용
+var _ATM_A=new Float32Array([.22,.05,.11,.06,.06,.55,.045,.05,.45,.55]); // +8 cutR(0~1→0~700px) +9 cutSoft(구멍 가장자리). FogA/B 0.10/0.12→0.05/0.06 (2026-08-23 반감)
+var _ATM_A_DEF=[.22,.05,.11,.06,.06,.55,.045,.05,.45,.55]; // R 복원용
 // ═══ 대기 그레이딩 단일 파이프라인 (PP) — 알파 예산 단일 테이블 (PHASE2 파티클 알파 여기 추가 예정, 리터럴 금지) ═══
 var ATMO_LEGACY_GRADE=false; // 레거시 ATMOS 그레이딩(A군: 3-1 haze + 3-3 grade/vignette) 게이트. false=비활성(PP가 유일 그레이딩)
 var PP_ON=true;              // PP 그레이딩 마스터 토글 (콘솔 PP_ON=false로 즉시 비교, 키바인딩 없음)
 var PP_A_GRADE=0.18;         // L1 그레이딩 multiply 알파
 var PP_A_LIFT=0.10;          // L2 라이트리프트 screen 알파
 var PP_A_VIG=0.55;           // L3 비네트 방사형 세기(globalAlpha)
-var _atmCut=null,_atmCutX=null,_atmCutW=0,_atmCutH=0; // 광원 홀펀치 전용 합성 캔버스(순수 2D, 부팅/리사이즈 1회 생성)
+var _atmCut=null,_atmCutX=null,_atmCutW=0,_atmCutH=0; // ATMOS 안개 합성 캔버스(순수 2D, 부팅/리사이즈 1회 생성). 중앙은 그라데이션 50% 감쇠, 홀펀치 없음
 var _atmUserSet=0;      // A2: 사용자가 atmos 수동변경 시 1 → 자동승격 차단
 var _ATM_TUNE=false,_atmSel=0,_atmHudOn=false; // 튜닝 HUD (디버그 전용, _ATM_TUNE=false시 기존동작 100% 동일). F9=HUD가시성 토글
+var _ATMDBG={grade:0,lift:0,vig:0,farfog:0,nearfog:0,veil:0,ray:0,mote:0,sidefog:1},_atmDbgStep=0,_atmDbgOffName='ALL ON',_atmDbgTouched=false; // [롤백] 흐림계 레이어(grade~mote) 전부 OFF. sidefog=신규 사이드 입자안개 ON(흐림필터 대체). 삭제 아님·플래그만
 const _oriFireflies=[];for(let _fi=0;_fi<20;_fi++)_oriFireflies[_fi]={x:0,y:0,vx:0,vy:0,phase:_fi*0.31,bright:0,r:1.5+(_fi%3)*0.5};
 // 연기 풀 (10개)
 const _oriSmoke=[];for(let _si=0;_si<10;_si++)_oriSmoke[_si]={x:0,y:0,vx:0,vy:0,alpha:0,r:30+(_si%4)*15,phase:_si*0.63};
@@ -43324,7 +43768,19 @@ function _atmBuild(){
    const lg=g.createLinearGradient(0,0,0,256);lg.addColorStop(0,'rgb(0,0,0)');lg.addColorStop(1,'rgb(60,20,45)');
    g.fillStyle=lg;g.fillRect(0,0,1,256);_atmGradeLo=c;}
   // 부유입자 96개 (x,y,vx,vy,phase)
-  for(let i=0;i<96;i++){const b=i*5;_atmMote[b]=Math.random()*C.width;_atmMote[b+1]=Math.random()*C.height;_atmMote[b+2]=(Math.random()-.5)*.24;_atmMote[b+3]=(Math.random()-.5)*.24;_atmMote[b+4]=Math.random()*6.28;}
+  // 부유입자 82개 3뎁스 (A 0~39 / B 40~67 / C 68~81) — 인덱스 구간 고정, 런타임 분기 없음. Math.random은 boot 1회.
+  for(let i=0;i<82;i++){const b=i*8;let px,szL,szH,rs,daL,daH,shp;
+    if(i<40){px=.25;szL=1.0;szH=1.6;rs=.08;daL=6;daH=9;shp=.28;}       // 뎁스A 원경
+    else if(i<68){px=.55;szL=1.6;szH=2.6;rs=.14;daL=8;daH=11;shp=.44;} // 뎁스B 중경
+    else{px=.90;szL=2.4;szH=4.0;rs=.22;daL=11;daH=14;shp=.58;}         // 뎁스C 근경
+    _atmMote[b]=Math.random()*C.width;_atmMote[b+1]=Math.random()*C.height;
+    _atmMote[b+2]=szL+Math.random()*(szH-szL);          // size
+    _atmMote[b+3]=shp*(.85+Math.random()*.30);          // alpha = shape × 고정지터(0.85~1.15), draw서 ×_ATM_A[5]
+    _atmMote[b+4]=Math.random()*6.28;                   // phase
+    _atmMote[b+5]=px;                                   // parallax
+    _atmMote[b+6]=daL+Math.random()*(daH-daL);          // driftAmp
+    _atmMote[b+7]=rs;}                                  // riseSpd
+  _initSideFog(); // 사이드 입자 안개 부트 init (스탬프는 draw 첫 프레임 챕터체크서 lazy bake)
   _atmReady=true;
 }
 // ═══ 대기 포스트프로세싱 (PP) — 유일 그레이딩 소스. 월드 드로우 완료 직후 / HUD 직전 1회 ═══
@@ -43339,24 +43795,32 @@ function drawAtmosphere(ctx,w,h){
     PP_GRAD_TOP=ctx.createLinearGradient(0,0,0,h*0.4);
     PP_GRAD_TOP.addColorStop(0,'rgba(255,255,255,1)');
     PP_GRAD_TOP.addColorStop(1,'rgba(255,255,255,0)');
-    const _pcx=w*0.5,_pcy=h*0.5,_pr0=Math.min(w,h)*0.34,_pr1=Math.max(w,h)*0.72;
+    const _pcx=w*0.5,_pcy=h*0.5,_pr0=Math.min(w,h)*0.50,_pr1=Math.max(w,h)*0.57; // 중앙 클리어 코어 0.42→0.50 확대 + 외반경 0.72→0.57로 당김(코너 거리≈0.57*max, 16:9서 사이드 어둠 살림)
     PP_GRAD_VIG=ctx.createRadialGradient(_pcx,_pcy,_pr0,_pcx,_pcy,_pr1);
     PP_GRAD_VIG.addColorStop(0,'rgba(0,0,0,0)');
-    PP_GRAD_VIG.addColorStop(1,'rgba(0,0,0,1)'); // 가장자리 solid → 세기는 globalAlpha=PP_A_VIG로 조절
+    PP_GRAD_VIG.addColorStop(0.42,'rgba(0,0,0,0)');   // 중앙 투명 plateau 확장(0.30→0.42) — 코어 완전 클리어(캐릭터 안 먹힘)
+    PP_GRAD_VIG.addColorStop(0.80,'rgba(0,0,0,0.70)'); // 사이드 감쇠(흐림) 유지
+    PP_GRAD_VIG.addColorStop(1,'rgba(0,0,0,1)'); // 가장자리 solid → 세기는 globalAlpha=PP_A_VIG로 조절(값 불변)
   }
   const _ti=SI_TO_HELL[G.stage|0]||0;
   const _tone=PP_TONE[_ti]||PP_TONE[0];
   ctx.save();
   ctx.setTransform(1,0,0,1,0,0);
   // L1 그레이딩 — 챕터 톤 컬러 multiply (알파=PP_A_GRADE)
+  if(_ATMDBG.grade){
   ctx.globalCompositeOperation='multiply';ctx.globalAlpha=PP_A_GRADE;
   ctx.fillStyle=_tone;ctx.fillRect(0,0,w,h);
+  }
   // L2 라이트리프트 — 상단 40% screen 선형 그라디언트 (알파=PP_A_LIFT)
+  if(_ATMDBG.lift){
   ctx.globalCompositeOperation='screen';ctx.globalAlpha=PP_A_LIFT;
   ctx.fillStyle=PP_GRAD_TOP;ctx.fillRect(0,0,w,h*0.4);
+  }
   // L3 비네트 — 방사형 중심 투명→가장자리 검정 (세기=PP_A_VIG)
+  if(_ATMDBG.vig){
   ctx.globalCompositeOperation='source-over';ctx.globalAlpha=PP_A_VIG;
   ctx.fillStyle=PP_GRAD_VIG;ctx.fillRect(0,0,w,h);
+  }
   // L4 원복
   ctx.globalCompositeOperation='source-over';ctx.globalAlpha=1;
   ctx.restore();
@@ -44200,33 +44664,44 @@ function draw(){
   if(_fc2d){var _dSnap=_PERF_PROF._delta({di:0,st:0,fr:0,ga:0});_PERF_PROF._map_di=_dSnap.di;_PERF_PROF._map_st=_dSnap.st;_PERF_PROF._map_fr=_dSnap.fr;_PERF_PROF._map_ga=_dSnap.ga;var _snapEns=_PERF_PROF._snap()}
   // [EDITOR] 에디터 모드: 맵+MAP_OBJS까지만 그리고 종료
   if(_EDITOR_MODE){X.restore();return}
-  // ═══ ATMOS 3-1 DEPTH HAZE + 근경안개 + 광원 홀펀치 (_atmCut 파이프라인, 맵/데코 후·엔티티 전) ═══
+  // ═══ ATMOS 3-1 DEPTH HAZE + 근경안개 + 중앙 그라데이션 감쇠 (_atmCut 파이프라인, 맵/데코 후·엔티티 전) ═══
   if(OPT.atmos>=2&&_atmReady){
     if(!_atmCut){_atmCut=document.createElement('canvas');_atmCutX=_atmCut.getContext('2d');}
-    if(_atmCutW!==C.width||_atmCutH!==C.height){_atmCut.width=C.width;_atmCut.height=C.height;_atmCutW=C.width;_atmCutH=C.height;_atmCut._glVer=(_atmCut._glVer||0)+1;}
+    if(_atmCutW!==C.width||_atmCutH!==C.height){_atmCut.width=C.width;_atmCut.height=C.height;_atmCutW=C.width;_atmCutH=C.height;_atmCut._glVer=(_atmCut._glVer||0)+1;_atmCut._cx=1e9}
+    var _acx=G.cam.x|0,_acy=G.cam.y|0,_apx=P.x|0,_apy=P.y|0,_aa1=(_ATM_A[1]*1000)|0,_aa4=(_ATM_A[4]*1000)|0,_aa8=(_ATM_A[8]*1000)|0,_aa9=(_ATM_A[9]*1000)|0;
+    if(_atmCut._cx!==_acx||_atmCut._cy!==_acy||_atmCut._px!==_apx||_atmCut._py!==_apy||_atmCut._a1!==_aa1||_atmCut._a4!==_aa4||_atmCut._a8!==_aa8||_atmCut._a9!==_aa9||_atmCut._dbg!==_atmDbgStep){
+    _atmCut._cx=_acx;_atmCut._cy=_acy;_atmCut._px=_apx;_atmCut._py=_apy;_atmCut._a1=_aa1;_atmCut._a4=_aa4;_atmCut._a8=_aa8;_atmCut._a9=_aa9;_atmCut._dbg=_atmDbgStep;
     var _cg=_atmCutX;
     _cg.clearRect(0,0,C.width,C.height);
     // 1) haze 틴트 (A군 레거시 그레이딩 — ATMO_LEGACY_GRADE 게이트, 기본 OFF)
     if(ATMO_LEGACY_GRADE){_cg.globalCompositeOperation='source-over';_cg.globalAlpha=_ATM_A[0];_cg.fillStyle='#121a2a';_cg.fillRect(0,0,C.width,C.height);}
     // 2) 원경안개 A (lighter 커버타일)
+    if(_ATMDBG.farfog){
     _cg.globalCompositeOperation='lighter';_cg.globalAlpha=_ATM_A[1];
     var _ox=-((G.cam.x*.15)%512),_oy=-((G.cam.y*.15)%512);
     for(var _ty=_oy-512;_ty<C.height;_ty+=512)for(var _tx=_ox-512;_tx<C.width;_tx+=512)_cg.drawImage(_atmFogA,_tx,_ty,512,512);
+    }
     // 3) 근경안개 B (3-2에서 이관, lighter 커버타일)
+    if(_ATMDBG.nearfog){
     _cg.globalAlpha=_ATM_A[4];
     var _nfx=-((G.cam.x*.45)%512),_nfy=-((G.cam.y*.45)%512);
     for(var _nfty=_nfy-512;_nfty<C.height;_nfty+=512)for(var _nftx=_nfx-512;_nftx<C.width;_nftx+=512)_cg.drawImage(_atmFogB,_nftx,_nfty,512,512);
-    // 4) 광원 홀펀치 (destination-out, 주인공 화면좌표 중심)
+    }
+    // 4) 중앙 안개 그라데이션 — destination-out 완전 홀펀치 금지. 중심 50%만 걷고 가장자리로 부드럽게 복귀
     _cg.globalCompositeOperation='destination-out';_cg.globalAlpha=1;
-    var _cr=40+_ATM_A[8]*700,_cri=~~_cr;
     var _psx=C.width/2+(P.x-G.cam.x),_psy=C.height/2+(P.y-G.cam.y);
-    _cg.drawImage(_getTorchSmall(_cri),_psx-_cri,_psy-_cri,_cri*2,_cri*2);
-    if(_ATM_A[9]>0.5){_cg.globalAlpha=(_ATM_A[9]-.5)*1.2;var _cr2=~~(_cr*1.5);_cg.drawImage(_getTorchSmall(_cr2),_psx-_cr2,_psy-_cr2,_cr2*2,_cr2*2);}
-    // 5) 메인 캔버스 합성
+    var _fallR=Math.max(C.width,C.height)*(0.72+_ATM_A[8]*0.50); // 중앙 안개 clear 반경 0.50→0.72 확대(캐릭터 근처 안개 제거 강화). _ATM_A[8] 불변
+    var _fg=_cg.createRadialGradient(_psx,_psy,0,_psx,_psy,_fallR);
+    _fg.addColorStop(0,'rgba(0,0,0,1)');      // 중앙 코어 안개 완전제거(α0)
+    _fg.addColorStop(0.30,'rgba(0,0,0,0.60)'); // 긴 감쇠 시작
+    _fg.addColorStop(0.60,'rgba(0,0,0,0.22)'); // 기존 감쇠값 근처 유지
+    _fg.addColorStop(1,'rgba(0,0,0,0)');       // 가장자리 부드러운 복귀(원형 경계 방지)
+    _cg.fillStyle=_fg;_cg.fillRect(0,0,C.width,C.height);
     _cg.globalCompositeOperation='source-over';_cg.globalAlpha=1;
-    X.save();X.setTransform(1,0,0,1,0,0);X.globalCompositeOperation='source-over';X.globalAlpha=1;X.drawImage(_atmCut,0,0);X.restore();
-    // 6) GL 텍스처 고정 방지 (매 프레임 갱신)
+    // 내용이 바뀐 프레임만 GPU 텍스처 재업로드. 매 프레임 _glVer++는 정지 중 VRAM 누수 hitch의 원인.
     _atmCut._glVer=(_atmCut._glVer||0)+1;
+    }
+    if(_ATMDBG.veil){X.save();X.setTransform(1,0,0,1,0,0);X.globalCompositeOperation='source-over';X.globalAlpha=1;X.drawImage(_atmCut,0,0);X.restore();}
   }
   // Enemies (화면 내만 렌더, 최대 렌더 수 제한)
   const _eVpad=_hiFPS?120:200;
@@ -45252,16 +45727,10 @@ function draw(){
       X.fillText('❗',e.x,e.y-e.r-8);
       X.globalAlpha=sa;
     }
-    // ═══ 탄막 차징 전조 (차징 링 + 코어 빛) ═══
+    // ═══ 탄막 차징 전조 (트랙 + 라운드캡 호, 본체 채움 없음) ═══
     if(e._projChargeT>0&&e._projChargeCol){
-      const _pcProg=1-e._projChargeT/60;
-      X.globalAlpha=.6+_pcProg*.3;X.strokeStyle=e._projChargeCol;X.lineWidth=2.5;
-      X.beginPath();X.arc(e.x,e.y,e.r*1.6,-Math.PI/2,-Math.PI/2+Math.PI*2*_pcProg);X.stroke();
-      if(_pcProg>.7){
-        X.globalAlpha=(_pcProg-.7)*3*.4;X.fillStyle=e._projChargeCol;
-        X.beginPath();X.arc(e.x,e.y,e.r*.5,0,Math.PI*2);X.fill();
-      }
-      X.globalAlpha=sa;
+      const _pcCol=e._projChargeBean==='red'?'#ff2200':e._projChargeBean==='black'?_BEAN_RAINBOW[(_gameFrame>>2)%7]:e._projChargeCol;
+      _drawShootCharge(e.x,e.y,e.r,1-e._projChargeT/60,_pcCol,sa);
     }
     // ═══ 피격 플래시 (타이머만 감소, 원형 제거) ═══
     if(e._hitFlash > 0) {
@@ -45515,7 +45984,7 @@ function draw(){
     // 지면강타 충격파
     if(_eDecor&&e.s==='eSlamWind'){const prog=1-e.st2/40;X.globalAlpha=.3*prog;X.strokeStyle='#4a1a1a';X.lineWidth=4;X.beginPath();X.arc(e.x,e.y,e.r+20*prog,0,Math.PI*2);X.stroke();X.globalAlpha=sa}
     // 탄막 준비동작 이펙트
-    if(_eDecor&&e.s==='eShootWind'){const prog=1-e.st2/60;X.globalAlpha=.2+prog*.4;X.strokeStyle=e.col||'#ff6644';X.lineWidth=2+prog*3;X.beginPath();X.arc(e.x,e.y,e.r+8+prog*12,0,Math.PI*2);X.stroke();if(Math.random()<.3*prog){const pa=Math.random()*Math.PI*2;poolPart(e.x+Math.cos(pa)*(e.r+20),e.y+Math.sin(pa)*(e.r+20),-Math.cos(pa)*2,-Math.sin(pa)*2,e.col||'#ff6644',2,8)}X.globalAlpha=sa}
+    if(_eDecor&&e.s==='eShootWind'){const prog=1-e.st2/60;_drawShootCharge(e.x,e.y,e.r,prog,e.col||'#ff6644',sa)}
     // 방패돌격 잔상
     if(_eDecor&&e.s==='eShieldBash'){X.globalAlpha=.4;X.fillStyle='#6688cc';for(let ci=1;ci<=3;ci++){X.globalAlpha=.15/ci;X.beginPath();X.arc(e.x-(e.echDx||0)*8*ci,e.y-(e.echDy||0)*8*ci,e.r,0,Math.PI*2);X.fill()}X.globalAlpha=sa}
     // 리치 소환 채널링 글로우
@@ -45650,7 +46119,7 @@ function draw(){
   X.globalCompositeOperation='lighter';
   for(let _vi=0;_vi<_visProjs.length;_vi++){const p=projs[_visProjs[_vi]];
     if(p._eyeSkin)continue; // 눈스킨 탄: 스프라이트 단독 표시 (구형 가산 글로우 제거)
-    const _gc=p._cCol||(p.trap?'#ff2200':((p.iceZone||p.blizzard)&&p.el===EL.D)?'#5e10a8':p.bwBean?'#ffffff':p.gbBean?'#cc44ff':p.blackBean?'#ff00ff':p.redBean?'#ffffff':p.blueBean?'#00ccff':ELC[p.el]||p.col||'#ff4444');
+    const _gc=p._cCol||(p.trap?'#ff2200':((p.iceZone||p.blizzard)&&p.el===EL.D)?'#5e10a8':p.bwBean?'#ffffff':p.gbBean?'#cc44ff':p.blackBean?'#ff00ff':p.redBean?'#ff2200':p.blueBean?'#00ccff':ELC[p.el]||p.col||'#ff4444');
     const _isSpec=p.redBean||p.blackBean||p.blueBean||p.bwBean||p.gbBean;
     const _glR=_isSpec?12:6;
     const pulse=.7+Math.sin(_now/200+p.x)*.3;
@@ -45778,13 +46247,27 @@ function draw(){
       X.beginPath();X.arc(p.x,p.y,1.5*_sSc,0,Math.PI*2);X.fill();
       X.globalAlpha=1;continue;
     }
+    // ── 거대괴수 혈안탄 (titanEye): 눈깔 시트. 빨콩 베이스(유도·E패링)지만 그림만 눈깔 ──
+    if(p.titanEye){
+      const _teAng=Math.atan2(p.vy,p.vx),_teSz=21.7*_sSc; // 대형 눈깔만 추가-30% (31→21.7)
+      if(_titanEyeReady){
+        const _tfi=((_gameFrame>>2)+(~~(p.x*.02)))%8,_ttc=_tfi%4,_ttr=_tfi>>2;
+        X.save();X.translate(p.x,p.y);X.rotate(_teAng+Math.PI);X.globalAlpha=fa;
+        X.drawImage(_titanEyeImg,_ttc*300,_ttr*300,300,300,-_teSz/2,-_teSz/2,_teSz,_teSz);X.restore();
+        p._eyeSkin=1;
+      }else if(_drawEyeBullet(p.x,p.y,_EYE_ROW[EL.F]||0,_teSz,_teAng,fa)){p._eyeSkin=1}
+      else{
+        X.globalAlpha=fa*.85;X.fillStyle='#ff2233';X.beginPath();X.arc(p.x,p.y,10*_sSc,0,Math.PI*2);X.fill();
+        X.globalAlpha=fa*.6;X.fillStyle='#ffffff';X.beginPath();X.arc(p.x,p.y,4*_sSc,0,Math.PI*2);X.fill();
+      }
+      X.globalAlpha=1;continue;
+    }
     // ── 빨간콩탄: 위협적인 화염구 ──
-    if(p.redBean){ // 흰색 물리탄(구 빨콩) — E 전용 패링. 색만 흰색으로 재색
-      // ── 바버폴(꽈배기) 흑백 트위스트: 무지개탄과 확실히 구분 ──
-      const _rb=3.5*_sSc; // 기본 반지름
+    if(p.redBean){ // 물리탄 유기 이빨입 — E 전용 패링
+      const _rb=3.5*_sSc;
       const _pulse=.8+Math.sin(_now/50+p.x*.3)*.2;
-      // 본체: 드래곤아이 흰(물리) 스프라이트 단독 표시 (구형 오라/꼬리 없음) — 미로드 시 오라+바버폴 폴백
-      if(_drawEyeBullet(p.x,p.y,4,_rb*8.6,Math.atan2(p.vy,p.vx),fa)){p._eyeSkin=1}
+      if(_drawPhysMouth(p.x,p.y,_rb*6.3,Math.atan2(p.vy,p.vx),fa,0)){p._eyeSkin=1}
+      else if(_drawEyeBullet(p.x,p.y,4,_rb*8.6,Math.atan2(p.vy,p.vx),fa)){p._eyeSkin=1}
       else{
         X.globalAlpha=fa*.12*_pulse;X.fillStyle='#ffffff';
         X.beginPath();X.arc(p.x,p.y,_rb*3.2,0,Math.PI*2);X.fill();
@@ -45799,132 +46282,27 @@ function draw(){
       }
       X.globalAlpha=1;continue;
     }
-    // ── 무지개탄: 리얼블랙 코어 + 화이트/네온 무지개 ──
+    // ── 무지개탄: 리얼블랙 코어 + 화이트/네온 무지개 (최초 프로시저럴) ──
     if(p.blackBean){
-      const _rb=3.5*_sSc;
-      const _pulse=.8+Math.sin(_now/50+p.x*.3)*.2;
-      const _flk=Math.sin(_now/35+p.y*.2)>.1?1:.6;
-      const _RC=_BEAN_RAINBOW;
-      const _bkT=(_now*.3+p.x*.5+p.y*.3);
-      const _ri=~~(_bkT/60)%7,_ri2=(_ri+1)%7,_ri3=(_ri+2)%7,_ri4=(_ri+3)%7;
-      // 1) 넓은 위험 오라
-      X.globalAlpha=fa*.12*_pulse;X.fillStyle=_RC[_ri];
-      X.beginPath();X.arc(p.x,p.y,_rb*3.5,0,Math.PI*2);X.fill();
-      // 2) 중간 오라
-      X.globalAlpha=fa*.2*_flk;X.fillStyle=_RC[_ri2];
-      X.beginPath();X.arc(p.x,p.y,_rb*2.2,0,Math.PI*2);X.fill();
-      // 3) 콩 본체 (무지개색)
-      X.globalAlpha=fa*.85*_flk;X.fillStyle=_RC[_ri3];
-      X.beginPath();X.arc(p.x,p.y,_rb,0,Math.PI*2);X.fill();
-      // 4) 밝은 코어
-      X.globalAlpha=fa*.9;X.fillStyle=_RC[_ri4];
-      X.beginPath();X.arc(p.x,p.y,_rb*.6,0,Math.PI*2);X.fill();
-      // 5) 흰 핫스팟
-      X.globalAlpha=fa*.7*_flk;X.fillStyle='#ffffff';
-      X.beginPath();X.arc(p.x-_rb*.15,p.y-_rb*.2,_rb*.3,0,Math.PI*2);X.fill();
-      // 6) 꼬리 3겹 (무지개색)
-      const _gvx=p.vx,_gvy=p.vy;
-      X.globalAlpha=fa*.15;X.strokeStyle=_RC[_ri];X.lineWidth=_rb*1.8;
-      X.beginPath();X.moveTo(p.x,p.y);X.lineTo(p.x-_gvx*7,p.y-_gvy*7);X.stroke();
-      X.globalAlpha=fa*.25*_flk;X.strokeStyle=_RC[_ri2];X.lineWidth=_rb*1.1;
-      X.beginPath();X.moveTo(p.x,p.y);X.lineTo(p.x-_gvx*5,p.y-_gvy*5);X.stroke();
-      X.globalAlpha=fa*.35;X.strokeStyle=_RC[_ri3];X.lineWidth=_rb*.5;
-      X.beginPath();X.moveTo(p.x,p.y);X.lineTo(p.x-_gvx*3,p.y-_gvy*3);X.stroke();
-      // 7) 파편 4개 (무지개색 회전)
-      for(let _fi=0;_fi<4;_fi++){
-        const _fa=_now/25+_fi*Math.PI/2+p.x*.2;
-        const _fr=_rb*1.5+Math.sin(_now/30+_fi*3)*_rb*.5;
-        X.globalAlpha=fa*(.2+Math.sin(_now/40+_fi)*.1);X.fillStyle=_RC[(_ri+_fi)%7];
-        X.fillRect(p.x+Math.cos(_fa)*_fr-1,p.y+Math.sin(_fa)*_fr-1,2,2);
-      }
-      X.globalAlpha=1;continue;
+      _drawClassicRainbow(p,fa,_sSc);continue;
     }
-    // ── 블루콩: 아군 스카이블루 ──
+    // ── 블루콩: 최초 무지개탄 비주얼 ──
     if(p.blueBean){
-      p._eyeSkin=0; // 패링 변환된 탄: 아군 파랑 비주얼 복원 (글로우/벌브 재활성)
-      const _bb=3.5*_sSc;
-      const _bpulse=.8+Math.sin(_now/50+p.x*.3)*.2;
-      const _bflk=Math.sin(_now/35+p.y*.2)>.1?1:.6;
-      // 1) 넓은 오라
-      X.globalAlpha=fa*.12*_bpulse;X.fillStyle='#00ccff';
-      X.beginPath();X.arc(p.x,p.y,_bb*3.5,0,Math.PI*2);X.fill();
-      // 2) 중간 오라
-      X.globalAlpha=fa*.2*_bflk;X.fillStyle='#00ddff';
-      X.beginPath();X.arc(p.x,p.y,_bb*2.2,0,Math.PI*2);X.fill();
-      // 3) 콩 본체
-      X.globalAlpha=fa*.85*_bflk;X.fillStyle='#00aadd';
-      X.beginPath();X.arc(p.x,p.y,_bb,0,Math.PI*2);X.fill();
-      // 4) 밝은 코어
-      X.globalAlpha=fa*.9;X.fillStyle='#44eeff';
-      X.beginPath();X.arc(p.x,p.y,_bb*.6,0,Math.PI*2);X.fill();
-      // 5) 흰 핫스팟
-      X.globalAlpha=fa*.7*_bflk;X.fillStyle='#ccffff';
-      X.beginPath();X.arc(p.x,p.y-_bb*.2,_bb*.3,0,Math.PI*2);X.fill();
-      // 6) 꼬리 (3겹 스카이블루)
-      const _bvx=p.vx,_bvy=p.vy;
-      X.globalAlpha=fa*.15;X.strokeStyle='#0088cc';X.lineWidth=_bb*1.8;
-      X.beginPath();X.moveTo(p.x,p.y);X.lineTo(p.x-_bvx*7,p.y-_bvy*7);X.stroke();
-      X.globalAlpha=fa*.25*_bflk;X.strokeStyle='#00bbee';X.lineWidth=_bb*1.1;
-      X.beginPath();X.moveTo(p.x,p.y);X.lineTo(p.x-_bvx*5,p.y-_bvy*5);X.stroke();
-      X.globalAlpha=fa*.35;X.strokeStyle='#66eeff';X.lineWidth=_bb*.5;
-      X.beginPath();X.moveTo(p.x,p.y);X.lineTo(p.x-_bvx*3,p.y-_bvy*3);X.stroke();
-      // 7) 파편 (4개 회전)
-      for(let _bi2=0;_bi2<4;_bi2++){
-        const _ba2=_now/25+_bi2*Math.PI/2+p.x*.2;
-        const _br2=_bb*1.5+Math.sin(_now/30+_bi2*3)*_bb*.5;
-        X.globalAlpha=fa*(.2+Math.sin(_now/40+_bi2)*.1);X.fillStyle='#44ddff';
-        X.fillRect(p.x+Math.cos(_ba2)*_br2-1,p.y+Math.sin(_ba2)*_br2-1,2,2);
-      }
-      X.globalAlpha=1;continue;
+      _drawClassicRainbow(p,fa,_sSc);continue;
     }
-    // ── 거대괴수 혈안탄 (titanEye): 필드보스/땅벌레 특수탄, 일반 눈탄 2배 크기 ──
-    if(p.titanEye){
-      const _teAng=Math.atan2(p.vy,p.vx),_teSz=44*_sSc;
-      if(_titanEyeReady){
-        const _tfi=((_gameFrame>>2)+(~~(p.x*.02)))%8,_ttc=_tfi%4,_ttr=_tfi>>2;
-        X.save();X.translate(p.x,p.y);X.rotate(_teAng+Math.PI);X.globalAlpha=fa; // 시트 눈=좌향 → +PI 정렬
-        X.drawImage(_titanEyeImg,_ttc*300,_ttr*300,300,300,-_teSz/2,-_teSz/2,_teSz,_teSz);X.restore();
-        p._eyeSkin=1;
-      }else{ // 폴백: 붉은 구
-        X.globalAlpha=fa*.85;X.fillStyle='#ff2233';X.beginPath();X.arc(p.x,p.y,10*_sSc,0,Math.PI*2);X.fill();
-        X.globalAlpha=fa*.6;X.fillStyle='#ffffff';X.beginPath();X.arc(p.x,p.y,4*_sSc,0,Math.PI*2);X.fill();
-      }
-      X.globalAlpha=1;continue;
-    }
-    // ── 화이트볼 (방패 전용) ──
-    if(p.bwBean){
-      const _wbSz=22*_sSc;const ang=Math.atan2(p.vy,p.vx);
-      if(_drawEyeBullet(p.x,p.y,4,_wbSz*1.5,ang,fa)){p._eyeSkin=1;
-      }else if(_whiteBallReady&&_whiteBallImg.width>0){
-        const fi=~~(_now/80)%4;const fw=_whiteBallImg.width/4,fh=_whiteBallImg.height;
-        X.save();X.translate(p.x,p.y);X.rotate(ang);X.globalAlpha=fa;
-        X.drawImage(_whiteBallImg,fi*fw,0,fw,fh,-_wbSz/2,-_wbSz/2,_wbSz,_wbSz);X.restore();
-      }else{
-        X.globalAlpha=fa*.85;X.fillStyle='#ffffff';X.beginPath();X.arc(p.x,p.y,3.5*_sSc,0,Math.PI*2);X.fill();
-      }
-      // 흰 오라 (눈스킨일 땐 스킨 단독 표시)
-      if(!p._eyeSkin){X.globalAlpha=fa*.12;X.fillStyle='#ffffff';X.beginPath();X.arc(p.x,p.y,_wbSz*.6,0,Math.PI*2);X.fill()}
-      X.globalAlpha=1;continue;
-    }
-    // ── 다크볼 (Q 전용) ──
+    // ── 다크볼 (Q 전용): 최초 무지개탄 비주얼 ──
     if(p.gbBean){
-      const _dbSz=22*_sSc;const ang=Math.atan2(p.vy,p.vx);
-      if(_drawEyeBullet(p.x,p.y,2,_dbSz*1.5,ang,fa)){p._eyeSkin=1;
-      }else if(_darkBallReady&&_darkBallImg.width>0){
-        const fi=~~(_now/80)%4;const fw=_darkBallImg.width/4,fh=_darkBallImg.height;
-        X.save();X.translate(p.x,p.y);X.rotate(ang);X.globalAlpha=fa;
-        X.drawImage(_darkBallImg,fi*fw,0,fw,fh,-_dbSz/2,-_dbSz/2,_dbSz,_dbSz);X.restore();
-      }else{
-        X.globalAlpha=fa*.85;X.fillStyle='#cc44ff';X.beginPath();X.arc(p.x,p.y,3.5*_sSc,0,Math.PI*2);X.fill();
-      }
-      // 보라 오라 (눈스킨일 땐 스킨 단독 표시)
-      if(!p._eyeSkin){X.globalAlpha=fa*.12;X.fillStyle='#cc44ff';X.beginPath();X.arc(p.x,p.y,_dbSz*.6,0,Math.PI*2);X.fill()}
-      X.globalAlpha=1;continue;
+      _drawClassicRainbow(p,fa,_sSc);continue;
     }
-    // ── 빠른탄: 볼트 스프라이트 ──
+    // ── 빠른탄: 물리=이빨입, 원소=유저 오브 시트. 무지개 경로 아님 ──
     if(p.fast){
       const _fEl=p.el||0;const _fSz=18*_sSc;const _fAng=Math.atan2(p.vy,p.vx);
-      if(_drawEyeBullet(p.x,p.y,_EYE_ROW[_fEl]!==undefined?_EYE_ROW[_fEl]:0,_fSz*1.5,_fAng,fa))p._eyeSkin=1;
+      if(_fEl===EL.P){ // 물리탄 — 기존 유지(이빨입→눈알)
+        if(_drawPhysMouth(p.x,p.y,_fSz*1.19,_fAng,fa,0))p._eyeSkin=1;
+        if(!p._eyeSkin&&_drawEyeBullet(p.x,p.y,_EYE_ROW[_fEl]!==undefined?_EYE_ROW[_fEl]:0,_fSz*1.5,_fAng,fa))p._eyeSkin=1;
+      }else{ // 마법탄 — 무지개 혜성 단일 스프라이트 (원소 오브/눈알 버전 제거)
+        if(_drawCometBullet(p.x,p.y,_fSz*2.2,_fAng,fa,p._sprFr,_fEl))p._eyeSkin=1;
+      }
       if(!p._eyeSkin&&!_drawBoltSprite(p.x,p.y,_fEl,_fSz,_fAng,fa)){
         const _fC=_fEl===0?'#ff6633':(ELC[_fEl]||'#ff4444');
         X.globalAlpha=fa*.9;X.fillStyle=_fC;X.beginPath();X.arc(p.x,p.y,3*_sSc,0,Math.PI*2);X.fill();
@@ -45932,9 +46310,14 @@ function draw(){
       if(!p._eyeSkin){X.globalAlpha=fa*.08;X.fillStyle=ELC[_fEl]||'#ff6633';X.beginPath();X.arc(p.x,p.y,_fSz*.5,0,Math.PI*2);X.fill()}
       X.globalAlpha=1;continue;
     }
-    // ── 일반탄: 볼트 스프라이트 ──
+    // ── 일반탄: 물리=이빨입(그대로), 마법=무지개 혜성 스프라이트로 통일 ──
     {const _nEl=p.el||0;const _nSz=20*_sSc;const _nAng=Math.atan2(p.vy,p.vx);
-    if(_drawEyeBullet(p.x,p.y,_EYE_ROW[_nEl]!==undefined?_EYE_ROW[_nEl]:0,_nSz*1.5,_nAng,fa))p._eyeSkin=1;
+    if(_nEl===EL.P){ // 물리탄 — 기존 유지(이빨입→눈알)
+      if(_drawPhysMouth(p.x,p.y,_nSz*1.19,_nAng,fa,0))p._eyeSkin=1;
+      if(!p._eyeSkin&&_drawEyeBullet(p.x,p.y,_EYE_ROW[_nEl]!==undefined?_EYE_ROW[_nEl]:0,_nSz*1.5,_nAng,fa))p._eyeSkin=1;
+    }else{ // 마법탄 — 무지개 혜성 단일 스프라이트 (원소 오브/눈알 버전 제거)
+      if(_drawCometBullet(p.x,p.y,_nSz*2.2,_nAng,fa,p._sprFr,_nEl))p._eyeSkin=1;
+    }
     if(!p._eyeSkin&&!_drawBoltSprite(p.x,p.y,_nEl,_nSz,_nAng,fa)){
       const _nC=_nEl===0?'#ff6633':(ELC[_nEl]||'#ff4444');
       X.globalAlpha=fa*.9;X.fillStyle=_nC;X.beginPath();X.arc(p.x,p.y,3*_sSc,0,Math.PI*2);X.fill();
@@ -46156,17 +46539,17 @@ function draw(){
     X.globalCompositeOperation='source-over';X.globalAlpha=1;
   }}}
   const _tDP2=performance.now();
-  // 피 자국 + 시체 + 불타는 시체 렌더 (통합 캡 30)
+  // 피 자국 + 시체 + 불타는 시체 렌더 (시체 캡 25, 핏자국은 전량)
   let _corpDrw=0;
-  // 피 자국 렌더
+  // 잔류 핏자국 — 잡몹도 남김. 반경 캡으로 장판화 방지. 맵 전환까지
   for(let si=0;si<_STAIN_MAX;si++){const s=_stains[si];if(!s.active)continue;
-    if(s.x<_vl-40||s.x>_vr+40||s.y<_vt-40||s.y>_vb+40)continue;
-    if(++_corpDrw>25)break;
-    const fadeT=s.mt*.3;const alpha=s.t<fadeT?s.t/fadeT:1;
-    if(alpha<0.05)continue;
-    X.save();X.globalAlpha=alpha*.35;X.translate(s.x,s.y);X.rotate(s.ang);
-    X.fillStyle='#220000';X.beginPath();X.ellipse(0,0,s.sz,s.sz*.6,0,0,Math.PI*2);X.fill();
-    X.fillStyle='#440000';X.beginPath();X.ellipse(0,0,s.sz*.6,s.sz*.35,0,0,Math.PI*2);X.fill();
+    const pad=s.sz+8;
+    if(s.x<_vl-pad||s.x>_vr+pad||s.y<_vt-pad||s.y>_vb+pad)continue;
+    X.save();X.translate(s.x,s.y);X.rotate(s.ang);
+    X.globalAlpha=.42;X.fillStyle='#4a0508';
+    X.beginPath();X.ellipse(0,0,s.sz,s.sz*.58,0,0,Math.PI*2);X.fill();
+    X.globalAlpha=.30;X.fillStyle='#7a1018';
+    X.beginPath();X.ellipse(-s.sz*.08,s.sz*.04,s.sz*.62,s.sz*.32,0,0,Math.PI*2);X.fill();
     X.restore();
   }
   for(let ci=0;ci<_CORPSE_MAX;ci++){const c=_corpses[ci];if(!c.active)continue;
@@ -46201,8 +46584,12 @@ function draw(){
   if(!_fOverBudget){let _gibDrw=0;for(let gi=0;gi<_GIB_MAX;gi++){const g=_gibs[gi];if(!g.active||!g.c)continue;if(g.x<_vl-20||g.x>_vr+20||g.y<_vt-20||g.y>_vb+20)continue;if(++_gibDrw>10)break;const alpha=Math.min(1,g.life/g.ml*3);const sc=g.life>15?1:g.life/15;const gs=g.sz||10;X.save();X.globalAlpha=alpha;X.translate(g.x,g.y);X.rotate(g.r);X.drawImage(g.c,-gs*sc,-gs*sc,gs*2*sc,gs*2*sc);X.restore();}}
   // split 조각 렌더 (스프라이트 크롭 큰 조각)
   if(!_fOverBudget){for(let si=0;si<_SPLIT_MAX;si++){const s=_splits[si];if(!s.active||!s.c)continue;if(s.x<_vl-40||s.x>_vr+40||s.y<_vt-40||s.y>_vb+40)continue;const alpha=Math.min(1,s.life/s.ml*3);const sc=s.life>10?1:s.life/10;const hs=s.sz*sc*.5;X.save();X.globalAlpha=alpha;X.translate(s.x,s.y);X.rotate(s.rot);X.drawImage(s.c,-hs,-hs,s.sz*sc,s.sz*sc);X.restore();}}
-  // gore 파편 렌더 — 일반 (camFling=false만)
-  if(!_fOverBudget&&_goreReady){for(let gi=0;gi<_GORE_MAX;gi++){const g=_gorePieces[gi];if(!g.active||!g.img||g.camFling)continue;if(g.x<_vl-30||g.x>_vr+30||g.y<_vt-30||g.y>_vb+30)continue;const alpha=Math.min(1,g.life/g.ml*3);const sc=g.life>10?1:g.life/10;const hs=g.sz*sc*.5;X.save();X.globalAlpha=alpha;X.translate(g.x,g.y);X.rotate(g.rot);X.drawImage(g.img,-hs,-hs,g.sz*sc,g.sz*sc);X.restore();}}
+  // gore 파편 렌더 — 바닥 잔류(납작) + 비행 (camFling=false)
+  if(!_fOverBudget&&_goreReady){for(let gi=0;gi<_GORE_MAX;gi++){const g=_gorePieces[gi];if(!g.active||!g.img||g.camFling)continue;if(g.x<_vl-30||g.x>_vr+30||g.y<_vt-30||g.y>_vb+30)continue;
+    X.save();X.translate(g.x,g.y);X.rotate(g.rot);
+    if(g.ground){X.globalAlpha=.88;X.scale(1,.52);X.drawImage(g.img,-g.sz*.5,-g.sz*.5,g.sz,g.sz)}
+    else{const alpha=Math.min(1,g.life/g.ml*3);const sc=g.life>10?1:g.life/10;const hs=g.sz*sc*.5;X.globalAlpha=alpha;X.drawImage(g.img,-hs,-hs,g.sz*sc,g.sz*sc)}
+    X.restore();}}
   // 데드 임팩트 렌더 (additive blend 혈흔 폭발)
   if(!_fOverBudget&&_diReady){for(let di=0;di<_DI_MAX;di++){const d=_diPool[di];if(!d.active||!d.img)continue;if(d.x<_vl-60||d.x>_vr+60||d.y<_vt-60||d.y>_vb+60)continue;const _lt=1-d.life;const _eo=_lt<.3?_lt/.3:1+(_lt-.3)*.2;const sz=d.maxSz*_eo;const alpha=d.life<.3?1:1-(d.life-.3)/.7;X.save();X.globalAlpha=Math.max(0,alpha);X.globalCompositeOperation='lighter';X.drawImage(d.img,d.x-sz*.5,d.y-sz*.5,sz,sz);X.restore();}}
   // ── 폭발 사망 피 스플래시 (캡 없음, 직접 렌더) ──
@@ -46800,27 +47187,49 @@ function draw(){
   {const _bl0=performance.now();const _hasGlow=G.bossAlive||_blCnt>0||(G.pets&&G.pets.iris&&!G._irisOff);if(_hasGlow){if(_gameFrame%3===1){if(_useGPU||_useGL)_glFlush();_renderBloom()}else if(_bloomCvs&&OPT.bloom&&OPT.quality!=='low'&&OPT.quality!=='mid'){X.save();X.setTransform(1,0,0,1,0,0);X.globalCompositeOperation='lighter';X.globalAlpha=G.bossAlive?.15:.08;X.drawImage(_bloomCvs,0,0,C.width,C.height);X.globalCompositeOperation='source-over';X.globalAlpha=1;X.restore()}}if(_DEBUG_PERF)_dbgDBloom=performance.now()-_bl0}
   // [TORCH] 횃불 조명 어둠 오버레이 (_gameFrame%3===0 만 재계산)
   if(G._fieldBoss)_fbDraw(); // 필드보스 렌더 (엔티티 위, 안개/토치 아래)
-  if(G._worms)_wmDraw(); // 땅벌레 렌더
+  if(G._worms)_wmDraw(); // 지상뱀장어 렌더
   // ═══ ATMOS 3-2 RAY + NEAR FOG + MOTE (엔티티 후, 토치 합성 전) ═══
   if(OPT.atmos>=2&&_atmReady){
     X.save();X.setTransform(1,0,0,1,0,0);X.globalCompositeOperation='lighter';
     _atmT++;
+    if(_ATMDBG.ray){
     X.globalAlpha=_ATM_A[2];
     var _ax=-((G.cam.x*.05+Math.sin(_atmT*.0004)*18)%1024);
     for(var _art=_ax-1024;_art<C.width;_art+=1024)X.drawImage(_atmRay,_art,0,1024,512);
     X.globalAlpha=_ATM_A[3];
     var _ax2=-((G.cam.x*.09)%1024),_arw=1024*1.4,_arh=512*1.4;
     for(var _art2=_ax2-_arw;_art2<C.width;_art2+=_arw)X.drawImage(_atmRay,_art2,0,_arw,_arh);
-    // 근경안개B(_ATM_A[4])는 3-1 _atmCut 파이프라인으로 이관(광원 홀펀치 대상). 갓레이/부유입자는 lighter 발광이라 홀펀치 제외, 여기 유지.
-    var _ahell=SI_TO_HELL[G.stage||0]||0,_apal=HELL_PALETTES[_ahell]||HELL_PALETTES[0],_apb=_apal.bright;
-    X.fillStyle='rgb('+_apb[0]+','+_apb[1]+','+_apb[2]+')';
-    for(var _ami=0;_ami<96;_ami++){var _amb=_ami*5;
-      _atmMote[_amb]+=_atmMote[_amb+2];_atmMote[_amb+1]+=_atmMote[_amb+3];_atmMote[_amb+4]+=.014;
-      if(_atmMote[_amb]<0)_atmMote[_amb]=C.width;else if(_atmMote[_amb]>C.width)_atmMote[_amb]=0;
-      if(_atmMote[_amb+1]<0)_atmMote[_amb+1]=C.height;else if(_atmMote[_amb+1]>C.height)_atmMote[_amb+1]=0;
-      var _ama=.25+Math.sin(_atmMote[_amb+4])*.25;
-      X.globalAlpha=_ama*_ATM_A[5];X.fillRect(_atmMote[_amb]-1,_atmMote[_amb+1]-1,2,2);
-      X.globalAlpha=_ama;X.fillRect(_atmMote[_amb],_atmMote[_amb+1],1,1);
+    }
+    // 근경안개B(_ATM_A[4])는 3-1 _atmCut 파이프라인으로 이관(중앙 그라데이션 감쇠 대상). 갓레이/부유입자는 lighter 발광이라 제외, 여기 유지.
+    var _ahell=SI_TO_HELL[G.stage||0]||0;
+    if(_atmMoteColHell!==_ahell){_atmMoteColHell=_ahell;var _ambr=(HELL_PALETTES[_ahell]||HELL_PALETTES[0]).bright;_atmMoteColStr='rgb('+(~~(_ambr[0]*.6+102))+','+(~~(_ambr[1]*.6+102))+','+(~~(_ambr[2]*.6+102))+')';} // bright×0.6 + 흰255×0.4(=102), hell 변화시만
+    X.fillStyle=_atmMoteColStr;
+    var _amDrift=_atmT*.02; // 좌우 드리프트 위상 (기존 _atmT 재사용)
+    if(_ATMDBG.mote)for(var _ami=0;_ami<82;_ami++){var _amb=_ami*8;
+      _atmMote[_amb+1]-=_atmMote[_amb+7];                              // y 상승
+      if(_atmMote[_amb+1]<0)_atmMote[_amb+1]=C.height;                 // 상단 이탈 → y만 하단 리셋 (좌표 재사용)
+      var _amPx=_atmMote[_amb]+Math.sin(_amDrift+_atmMote[_amb+4])*_atmMote[_amb+6]-G.cam.x*_atmMote[_amb+5]; // sin 드리프트 + 카메라 패럴랙스 역보정
+      var _amPy=_atmMote[_amb+1]-G.cam.y*_atmMote[_amb+5];
+      _amPx=((_amPx%C.width)+C.width)%C.width;                        // 좌우 screen-space wrap
+      _amPy=((_amPy%C.height)+C.height)%C.height;
+      var _amS=_atmMote[_amb+2];
+      X.globalAlpha=_atmMote[_amb+3]*_ATM_A[5];                       // alpha = (shape×지터) × _ATM_A[5] 마스터
+      X.fillRect(_amPx,_amPy,_amS,_amS);
+    }
+    // ═══ [SIDE-FOG] 사이드 입자 안개 (흐림필터 대체, lighter 가산, 중앙 22~78% 배제) ═══
+    if(_ATMDBG.sidefog&&_sideFog){
+      if(_sideFogHell!==_ahell){_sideFogHell=_ahell;var _sfb0=(HELL_PALETTES[_ahell]||HELL_PALETTES[0]).bright;_bakeSideFogStamps(~~(_sfb0[0]*.75+64),~~(_sfb0[1]*.75+64),~~(_sfb0[2]*.75+64));} // bright×0.75 + 흰×0.25(≈+64), 챕터전환시만
+      var _sfSway=_atmT*0.005; // 미세 sway 위상 (기존 _atmT 재사용)
+      for(var _sfi=0;_sfi<44;_sfi++){var _sfb=_sfi*8;
+        var _sfsz=_sideFog[_sfb+2]*C.height;                                      // 크기 = 화면높이 비율(울트라와이드 대응)
+        _sideFog[_sfb+1]-=_sideFog[_sfb+5];                                        // 느린 상승 (카메라 비결합 → 튐 없음)
+        if(_sideFog[_sfb+1]<-_sfsz)_sideFog[_sfb+1]=C.height+_sfsz;                // 화면밖 seamless wrap (팝 은폐, 재생성 없음)
+        var _sfsy=_sideFog[_sfb+1];
+        var _sfbx=_sideFog[_sfb]+Math.sin(_sfSway+_sideFog[_sfb+4])*7;            // 고정 밴드 위치 + 미세 sway(±7px)
+        var _sfsx=_sideFog[_sfb+6]<0?_sfbx:C.width-_sfbx;                          // 좌(-1)/우(+1) 사이드 — 중앙 배제(밴드폭 0.22W 내)
+        X.globalAlpha=_sideFog[_sfb+3];
+        X.drawImage(_sideFogStamps[_sideFog[_sfb+7]|0],_sfsx-_sfsz*0.5,_sfsy-_sfsz*0.5,_sfsz,_sfsz);
+      }
     }
     X.restore();
   }
@@ -46948,8 +47357,8 @@ function draw(){
     const _flHell=SI_TO_HELL[G.stage||0];
     if(!_fogBotCvs||_fogLayerW!==C.width||_fogLayerH!==C.height||_fogLayerHell!==_flHell)_bakeFogLayers(C.width,C.height,_flHell);
     X.save();X.setTransform(1,0,0,1,0,0);
-    // (C) 가장자리 안개 두께 sin 진동 (alpha 0.55±0.15, 주기 4초)
-    const _fogPulse=.55+Math.sin(_now*Math.PI/2000)*.15;
+    // (C) 가장자리 안개 두께 sin 진동 (alpha 0.28±0.08, 주기 4초) — 2026-08-23 반감
+    const _fogPulse=.28+Math.sin(_now*Math.PI/2000)*.08;
     // 합성 캐시: 2장 → 1장 (5프레임마다 갱신)
     if(!_fogMerged||_fogMW!==C.width||_fogMH!==C.height||(_now|0)%5===0){
       if(!_fogMerged){_fogMerged=document.createElement('canvas');_fogMX=_fogMerged.getContext('2d')}
@@ -49925,6 +50334,12 @@ function drawP(){
       const _sqX=1+0.15*_lp; // 착지 순간 X 1.15배 → 점점 복귀
       X.translate(0,(_pScale*48*(1-_sqY))*0.5); // 스쿼시만큼 바닥에 붙이기
       X.scale(_pScale*_sqX,_pScale*_sqY);
+    }else if(P.s==='bladeDash'&&!_apDead){
+      // ── bladeDash 스쿼시: 발동순간 가로 stretch/세로 squash → 종료로 원복 (MOTION 커널, 시각 전용) ──
+      const _bdSq=MOTION.squash((12-P.st2)/12,0.22); // t=0 발동→[1.22,0.78], t=1 종료→[1,1]. 사전할당 배열 즉시 읽음
+      const _bdSy=_bdSq[1];
+      X.translate(0,(_pScale*48*(1-_bdSy))*0.5); // 발밑 고정(세로 압축 보정, 착지스쿼시 동일 idiom)
+      X.scale(_pScale*_bdSq[0],_pScale*_bdSy); // x=_dsq[0] 가로 stretch, y=_dsq[1] 세로 squash
     }else if(_apAnim==='idle'&&!_apDead){
       // ── 전투 자세 브리딩: 미세 상하 + Y스케일 숨쉬기 ──
       const _br=Math.sin(t/38)*.012; // 숨쉬기 Y스케일 ±1.2%
@@ -51298,6 +51713,8 @@ function _mmTickBuild(){
 }
 // ── [MM-PORTRAIT] 미니맵 플레이어 초상 마커 ────────────────
 let _mmFace=null,_mmFaceKey='';
+const _mmPortraitSrc=['img/ui/minimap_warrior.png','img/ui/minimap_silvertail.png'];
+const _mmPortraitImgs=_mmPortraitSrc.map(src=>{const img=new Image();img.decoding='async';img.src=src;return img;});
 function _mmBuildFace(src,sx,sy,sw,sh,D){
   const c=document.createElement('canvas');c.width=c.height=D;
   const g=c.getContext('2d');
@@ -51308,10 +51725,12 @@ function _mmBuildFace(src,sx,sy,sw,sh,D){
 }
 function _mmDrawPlayerMarker(MX,px,py,facing){
   const D=14,R=D/2;
-  // 1) 얼굴 캐시 — 플레이어 아틀라스 정면 idle 프레임(idle_s[0])에서 상단중앙 크롭
+  const portrait=_mmPortraitImgs[_charIdx]||_mmPortraitImgs[0];
+  const portraitReady=portrait&&portrait.complete&&portrait.naturalWidth>0;
+  // 1) 전용 초상 로딩 전/실패 시 플레이어 아틀라스 정면 idle 프레임으로 폴백
   const src=_atlasP_img;
   const _fr=_atlasP_frames&&_atlasP_frames.idle_s&&_atlasP_frames.idle_s[0];
-  if(src&&src.complete&&src.naturalWidth&&_fr){
+  if(!portraitReady&&src&&src.complete&&src.naturalWidth&&_fr){
     const key=(src.src||'')+'|'+D;
     if(_mmFaceKey!==key){
       const fw=_fr.w*0.5,fh=fw;                 // 얼굴 영역: 프레임 폭의 50%
@@ -51329,8 +51748,9 @@ function _mmDrawPlayerMarker(MX,px,py,facing){
     MX.fillStyle='#ffffff';MX.strokeStyle='#000000';MX.lineWidth=1;MX.fill();MX.stroke();
     MX.setTransform(1,0,0,1,0,0);
   }
-  // 3) 원형 얼굴 (없으면 흰 원 폴백)
-  if(_mmFace){MX.drawImage(_mmFace,px-R,py-R);}
+  // 3) 실버테일 전용 원형 초상 (미로딩/오류 시 아틀라스 얼굴, 최종 흰 원 폴백)
+  if(portraitReady){MX.drawImage(portrait,px-R,py-R,D,D);}
+  else if(_mmFace){MX.drawImage(_mmFace,px-R,py-R);}
   else{MX.beginPath();MX.arc(px,py,R,0,Math.PI*2);MX.fillStyle='#e8e2d0';MX.fill();}
   // 4) 테두리 — 검정+흰색 이중선 (어떤 배경에서도 읽힘)
   MX.beginPath();MX.arc(px,py,R+0.5,0,Math.PI*2);MX.strokeStyle='#000000';MX.lineWidth=2;MX.stroke();
@@ -51546,6 +51966,7 @@ function _fpsUpdate(){
 }
 function _fpsDraw(){
   if(!X)return;
+  if(_atmDbgTouched){X.save();X.setTransform(1,0,0,1,0,0);X.font='bold 14px monospace';X.textAlign='left';X.textBaseline='top';X.globalAlpha=1;X.fillStyle='#ff4444';X.fillText('ATMDBG OFF: '+_atmDbgOffName+'  [F9]',10,10);X.restore();}
   if(OPT.showFps){
     X.save();X.setTransform(1,0,0,1,0,0);
     X.font='bold 11px monospace';X.textAlign='right';X.textBaseline='middle';
@@ -51821,66 +52242,97 @@ function _fbTick(){
   if(G._fbStage!==G.stage){G._fbStage=G.stage;G._fbSpawnX=P.x;G._fbSpawnY=P.y;G._fbSpawned=false;G._fieldBoss=null} // 진입 기준점
   if(!G._fbSpawned&&!G._fieldBoss&&!G._fbDone&&dst(P.x,P.y,G._fbSpawnX,G._fbSpawnY)>2500){ // 진입점 2500px 이동해야 등장(구 500=시작하자마자 → 조금 진행 후)
     var _hp=~~(1800+P.lv*350);
-    G._fieldBoss={x:P.x+(P.x>=G._fbSpawnX?440:-440),y:P.y,r:120,hp:_hp,mhp:_hp,t:0,frame:0,atk:~~(20+P.lv*3),hitCd:0,shotCd:60,tpCd:0,tpT:0,tpX:0,tpY:0};
-    G._fbSpawned=true;showPH('심연의 앵글러','#66ddff');shake(14);
+    var _sx=P.x+(P.x>=G._fbSpawnX?440:-440),_sy=P.y,_tr=120,_tpCol='#66ddff';
+    G._fieldBoss={x:_sx,y:_sy,r:120,hp:_hp,mhp:_hp,t:0,frame:0,atk:~~(20+P.lv*3),hitCd:0,shotCd:120,tpCd:0,tpT:54,tpMax:54,tpX:_sx,tpY:_sy,hid:1,burst:0,burstGap:0,spawnIn:1}; // 첫 출현=순간이동과 같은 꿈틀 상승(본체 뿅 금지)
+    G._fbSpawned=true;showPH('심연의 앵글러','#66ddff');
+    for(var _tsi=0;_tsi<10;_tsi++){var _tsa=Math.PI*2*_tsi/10,_tsp=3+Math.random()*4;poolPart(_sx+Math.cos(_tsa)*_tr*.5,_sy+Math.sin(_tsa)*_tr*.5,Math.cos(_tsa)*_tsp,Math.sin(_tsa)*_tsp,_tpCol,3,10)}
+    _addTpSmoke(_sx,_sy,_tr*4,18,1);
+    shake(8);if(typeof SFX!=='undefined'&&SFX.magic)SFX.magic(1);
+    return; // 같은 프레임 tpT 감소 방지 — 순간이동과 같이 예고 54틱
   }
   var fb=G._fieldBoss;if(!fb){return}
   fb.t++;
   if(fb.hitCd>0)fb.hitCd--;if(fb.shotCd>0)fb.shotCd--;
   var _d=dst(fb.x,fb.y,P.x,P.y),_ang=Math.atan2(P.y-fb.y,P.x-fb.x);
   fb.frame=((Math.round(_ang/(Math.PI/4))%8)+8)%8; // 땅에 고정, 8방향으로 플레이어 바라보는 프레임(자동 로테이션 X)
-  // 충돌체: 통과 불가 — 겹치면 플레이어를 몸 경계 밖으로 밀어냄
-  if(_d<fb.r+P.r){var _pa=Math.atan2(P.y-fb.y,P.x-fb.x);P.x=fb.x+Math.cos(_pa)*(fb.r+P.r);P.y=fb.y+Math.sin(_pa)*(fb.r+P.r);_d=fb.r+P.r}
-  if(_d<fb.r+P.r+8&&P.iframes<=0&&P.s!=='charge')hurtP(fb.atk); // 접촉 데미지
-  // 전용 탄막: 머리 더듬이(루어)에서 발사, 초대형(sz16/r30). 마법탄=Q패링(blackBean)·물리탄=E패링(redBean) 번갈아. 1/3드랍 우회 위해 pool 직접 push
-  // 특수탄: 거대괴수 혈안탄(titanEye) 3-way — 10초 간격(600틱), 초고속(spd9), 일반 눈탄 2배(sz6.4). 색탄=Q패링 가능
-  if(fb.shotCd<=0){fb.shotCd=600;fb.tpCd=300;var _sa=Math.atan2(P.y-fb.y,P.x-fb.x); // 탄막 5초 후 순간이동 예약 (5초 교대: 탄막→TP→탄막→…)
-    for(var _fsi=-1;_fsi<=1;_fsi++){var _fa2=_sa+_fsi*0.14;
-      spawnProj({x:fb.x+Math.cos(_fa2)*fb.r*.7,y:fb.y+Math.sin(_fa2)*fb.r*.7,vx:Math.cos(_fa2)*9,vy:Math.sin(_fa2)*9,dmg:~~(fb.atk*1.6),el:EL.F,friendly:false,life:260,ml:260,col:'#ff2233',sz:6.4,r:12,titanEye:true,_typed:true});
-    }
-    if(typeof SFX!=='undefined'&&SFX.magic)SFX.magic(2);
+  // 충돌체: 통과 불가 — 소멸 중(hid)은 없음
+  if(!fb.hid){
+    if(_d<fb.r+P.r){var _pa=Math.atan2(P.y-fb.y,P.x-fb.x);P.x=fb.x+Math.cos(_pa)*(fb.r+P.r);P.y=fb.y+Math.sin(_pa)*(fb.r+P.r);_d=fb.r+P.r}
+    if(_d<fb.r+P.r+8&&P.iframes<=0&&P.s!=='charge')hurtP(fb.atk);
   }
-  // ═══ 순간이동 공격: 탄막 5초 후 플레이어 위치로 텔레포트 + 착지 강타 (예고 0.7초 → 회피 가능) ═══
+  // 전용 탄: 혈안 눈깔. 빨콩처럼 플레이어 조준 1발씩 3연사(유도). 직선 3-way 폐기
+  if(fb.shotCd<=0&&!fb.hid&&!(fb.tpT>0)){fb.shotCd=1200;fb.tpCd=600;fb.burst=3;fb.burstGap=0} // 탄막 20초, 10초 후 순간이동
+  if(fb.burst>0&&!fb.hid&&!(fb.tpT>0)){
+    if(fb.burstGap>0)fb.burstGap--;
+    else{
+      var _sa=Math.atan2(P.y-fb.y,P.x-fb.x);
+      spawnProj({x:fb.x+Math.cos(_sa)*fb.r*.7,y:fb.y+Math.sin(_sa)*fb.r*.7,vx:Math.cos(_sa)*9,vy:Math.sin(_sa)*9,dmg:~~(fb.atk*1.6),el:EL.F,friendly:false,life:260,ml:260,col:'#ff2233',sz:6.4,r:12,titanEye:true,_typed:true});
+      if(typeof SFX!=='undefined'&&SFX.magic)SFX.magic(1);
+      fb.burst--;fb.burstGap=24; // 0.4초 간격, 매번 재조준+유도
+    }
+  }
+  // ═══ 순간이동: 옛자리 소멸 + 도착지에서 꿈틀 상승(vanish 역재생) → 착지 강타 ═══
   if(fb.tpT>0){
     fb.tpT--;
-    if(fb.tpT===0){ // 도착: 순간이동 + AoE 슬램
-      addParts(fb.x,fb.y,'#66ddff',14); // 출발지 물보라
-      fb.x=fb.tpX;fb.y=fb.tpY;
+    if(fb.tpT===0){
+      var _nx=fb.tpX,_ny=fb.tpY,_tr=fb.r||120,_isSpawn=!!fb.spawnIn;
+      fb.x=_nx;fb.y=_ny;fb.hid=0;fb.spawnIn=0;
+      _addTpSmoke(_nx,_ny,_tr*5,22,1);
+      playVFXAng('kraken_tp',_nx,_ny,1.45,4,0,true);
+      _addBlastLight(_nx,_ny,_tr*10,16,102,221,255);
       shake(16);if(typeof SFX!=='undefined'&&SFX.detonate)SFX.detonate();
-      var _sd2=dst(fb.x,fb.y,P.x,P.y);
-      if(_sd2<fb.r+110&&P.iframes<=0&&P.s!=='charge'){
-        hurtP(~~(fb.atk*2));
-        var _ka2=Math.atan2(P.y-fb.y,P.x-fb.x);P.kb.x+=Math.cos(_ka2)*9;P.kb.y+=Math.sin(_ka2)*9;
-        addTxt(P.x,P.y-30,_T('💥심해강타!'),'#ff4444',40);
+      if(!_isSpawn){
+        var _sd2=dst(fb.x,fb.y,P.x,P.y);
+        if(_sd2<fb.r+110&&P.iframes<=0&&P.s!=='charge'){
+          hurtP(~~(fb.atk*2));
+          var _ka2=Math.atan2(P.y-fb.y,P.x-fb.x);P.kb.x+=Math.cos(_ka2)*9;P.kb.y+=Math.sin(_ka2)*9;
+          addTxt(P.x,P.y-30,_T('💥심해강타!'),'#ff4444',40);
+        }
       }
-      for(var _tk=0;_tk<16;_tk++){var _ta2=Math.PI*2*_tk/16;addParts(fb.x+Math.cos(_ta2)*fb.r*.8,fb.y+Math.sin(_ta2)*fb.r*.8,'#ff4455',3)}
+      for(var _tk=0;_tk<16;_tk++){var _ta2=Math.PI*2*_tk/16;poolPart(fb.x+Math.cos(_ta2)*fb.r*.8,fb.y+Math.sin(_ta2)*fb.r*.8,Math.cos(_ta2)*5,Math.sin(_ta2)*5,'#ff4455',3,12)}
     }
   }else if(fb.tpCd>0){
     fb.tpCd--;
     if(fb.tpCd===0){
-      if(_d<2200){fb.tpX=P.x;fb.tpY=P.y;fb.tpT=42;shake(6);if(typeof SFX!=='undefined'&&SFX.magic)SFX.magic(1)} // 예고 시작(목표 고정=회피 가능)
-      else fb.tpCd=300; // 너무 멀면 재대기
+      if(_d<2200){
+        fb.tpX=P.x;fb.tpY=P.y;fb.tpMax=54;fb.tpT=54;fb.hid=1; // 예고 시작: 본체 숨김, 도착지에 꿈틀 상승
+        var _ox=fb.x,_oy=fb.y,_tr=fb.r||120,_tpCol='#66ddff';
+        for(var _tsi=0;_tsi<10;_tsi++){var _tsa=Math.PI*2*_tsi/10,_tsp=3+Math.random()*4;poolPart(_ox+Math.cos(_tsa)*_tr*.5,_oy+Math.sin(_tsa)*_tr*.5,Math.cos(_tsa)*_tsp,Math.sin(_tsa)*_tsp,_tpCol,3,10)}
+        _addTpSmoke(_ox,_oy,_tr*4,18,0);
+        playVFXAng('kraken_vanish',_ox,_oy,0.9,4,0,true);
+        _addTpBolt(_ox,_oy,fb.tpX,fb.tpY,16,_tpCol);
+        shake(6);if(typeof SFX!=='undefined'&&SFX.magic)SFX.magic(1);
+      }else fb.tpCd=600;
     }
   }
-  for(var _pi=pProjs.length-1;_pi>=0;_pi--){var pp=pProjs[_pi];if(!pp)continue;if(dst(pp.x,pp.y,fb.x,fb.y)<fb.r+(pp.r||6)){fb.hp-=pp.atk||10;pp.dist=(pp.maxDist||9999)+1;addParts(pp.x,pp.y,'#66ddff',3)}}
-  if(fb.hitCd<=0&&_d<fb.r+70&&(P.s==='wSwing'||P.s==='whirlwind'||P.s==='sBash'||P.s==='giantSlam')){var _md=~~((P.baseAtk+(wp().atk||0))*2+40);fb.hp-=_md;fb.hitCd=12;addTxt(fb.x,fb.y-fb.r*.5,''+_md,'#ffdd44',30)}
-  if(fb.hp<=0){if(typeof _spawnLargeMonsterDeathFx==='function'){_spawnLargeMonsterDeathFx(fb,0)}else{for(var _k=0;_k<24;_k++)addParts(fb.x,fb.y,'#66ddff',6)}shake(18);showPH('필드보스 처치!','#ffcc44');G._fieldBoss=null;G._fbDone=true}
+  if(fb.hp<=0){_fmDeathFx(fb,true);if(!G._fbDone)showPH('필드보스 처치!','#ffcc44');G._fieldBoss=null;G._fbDone=true}
 }
 function _fbDraw(){
-  var fb=G._fieldBoss;if(!fb||!_fbImg.complete||!_fbImg.naturalWidth){return}
-  // 순간이동 예고 마커: 목표 지점 붉은 위험 원 (0.7초, 축소 수렴 펄스)
+  var fb=G._fieldBoss;if(!fb){return}
   if(fb.tpT>0){
     var _mx=C.width/2+(fb.tpX-G.cam.x),_my=C.height/2+(fb.tpY-G.cam.y);
-    var _mp=fb.tpT/42; // 1→0
+    var _tmax=fb.tpMax||54,_prog=1-fb.tpT/_tmax; // 0→1 상승
+    var _wr=fb.r+70;
     X.save();X.setTransform(1,0,0,1,0,0);
-    X.globalAlpha=.28*(1-_mp)+.12;X.fillStyle='#ff2233';
-    X.beginPath();X.arc(_mx,_my,fb.r+110,0,Math.PI*2);X.fill();
-    X.globalAlpha=.85;X.strokeStyle='#ff4455';X.lineWidth=3;
-    X.beginPath();X.arc(_mx,_my,(fb.r+110)*(.4+_mp*.6),0,Math.PI*2);X.stroke();
-    X.globalAlpha=.9;X.fillStyle='#ffdddd';X.font='bold 16px sans-serif';X.textAlign='center';
-    X.fillText('!',_mx,_my+6);
+    X.globalAlpha=.16+.12*_prog;X.fillStyle='#2244aa';
+    X.beginPath();X.arc(_mx,_my,_wr,0,Math.PI*2);X.fill();
+    X.globalAlpha=.7;X.strokeStyle='#66ddff';X.lineWidth=2.5;
+    X.beginPath();X.arc(_mx,_my,_wr*(.45+_prog*.4),0,Math.PI*2);X.stroke();
     X.restore();
+    // 옛자리 소멸(정방향) — 처음 32틱. 첫 출현(spawnIn)은 옛자리 없음
+    var _elapsed=_tmax-fb.tpT;
+    if(_elapsed<32&&!fb.spawnIn){
+      var _vf=Math.min(7,(_elapsed/4)|0);
+      _fbDrawVanishFrame(_vf,fb.x,fb.y,0.9,Math.sin(fb.t*.4)*0.06);
+    }
+    // 도착지 꿈틀 상승(역방향 0.9초): 작은 포탈→촉수→본체로 올라옴
+    var _rf=7-Math.min(7,(_prog*8)|0);
+    var _wob=Math.sin(fb.t*.38)*0.10+Math.sin(fb.t*.17)*0.05;
+    _fbDrawVanishFrame(_rf,fb.tpX,fb.tpY,1.05,_wob);
+    return; // 본체는 숨김
   }
+  if(fb.hid)return;
+  if(!_fbImg.complete||!_fbImg.naturalWidth)return;
   if(!_fbSheet){_fbSheet=document.createElement('canvas');_fbSheet.width=1200;_fbSheet.height=600;var _fsc=_fbSheet.getContext('2d');_fsc.imageSmoothingEnabled=true;_fsc.drawImage(_fbImg,0,0,_fbImg.naturalWidth,_fbImg.naturalHeight,0,0,1200,600)} // 프리스케일 캐시 1회(렉 방지)
   var sx=C.width/2+(fb.x-G.cam.x),sy=C.height/2+(fb.y-G.cam.y),dsz=300,col=fb.frame%4,row=(fb.frame/4)|0;
   X.save();X.setTransform(1,0,0,1,0,0);
@@ -51896,54 +52348,118 @@ function _fbDraw(){
   X.fillStyle='#dff';X.font='bold 13px sans-serif';X.textAlign='center';X.fillText(_T('심연의 앵글러'),sx,by-6);
   X.restore();
 }
-// ═══ 땅벌레(매복형) : 맵 중간중간 고정, 화면 들어오면 들락날락+탄막 (독립, etype 미사용) ═══
-const _wmImg=[new Image(),new Image()];_wmImg[0].src='img/worm_burrow1.png';_wmImg[1].src='img/worm_burrow2.png'; // 1448x1086, 12프레임 3x4
+// ═══ 지상뱀장어(매복형) : 소멸 → 캐릭터 옆 예고 → 솟음 강타+혈안탄 2발 → 재잠복 (독립, etype 미사용) ═══
+const _wmImg=[new Image(),new Image()];
+_wmImg[0].src='img/worm_burrow1.png'; // 우향 12프레임 4x3 셀384 (1536x1152)
+_wmImg[1].src='img/worm_burrow2.png'; // 좌향
 var _wmSheet=[null,null]; // 표시크기 프리스케일 캐시(600x450, 프레임 150)
+function _wmLockDest(w){
+  var nx=P.x,ny=P.y,ok=false;
+  for(var t=0;t<28;t++){
+    var a=Math.random()*Math.PI*2,d=48+Math.random()*40;
+    nx=P.x+Math.cos(a)*d;ny=P.y+Math.sin(a)*d;
+    if(!isW(nx,ny)&&dst(nx,ny,P.x,P.y)>36){ok=true;break}
+  }
+  if(!ok){nx=P.x;ny=P.y}
+  w.tpX=nx;w.tpY=ny;
+}
+function _wmFire(w){
+  var a=Math.atan2(P.y-w.y,P.x-w.x);
+  spawnProj({x:w.x+Math.cos(a)*w.r*.6,y:w.y+Math.sin(a)*w.r*.6,vx:Math.cos(a)*8,vy:Math.sin(a)*8,dmg:~~(w.atk*1.5),el:EL.F,friendly:false,life:240,ml:240,col:'#ff2233',sz:6.4,r:12,titanEye:true,_typed:true});
+  if(typeof SFX!=='undefined'&&SFX.magic)SFX.magic(1);
+}
+function _wmVanish(w){
+  var ox=w.x,oy=w.y,sr=w.r||56;
+  _addTpSmoke(ox,oy,sr*3,18,0);
+  for(var i=0;i<8;i++){var a=Math.PI*2*i/8;poolPart(ox,oy,Math.cos(a)*3,Math.sin(a)*3,'#6b4423',2,10)}
+  _wmLockDest(w);
+  w.x=w.tpX;w.y=w.tpY;
+  w.phase='hide';w.hideT=108;w.frame=0;w.ft=0;w.shots=0;w.shotF=-1;w.popHit=0; // 54 매복 + 54 엿보기 (빈도 1/2)
+}
+function _wmAppear(w){
+  w.x=w.tpX!=null?w.tpX:w.x;w.y=w.tpY!=null?w.tpY:w.y;
+  var sr=w.r||56;
+  _addTpSmoke(w.x,w.y,sr*2.2,16,1);
+  _addTpImpact(w.x,w.y,sr*2.2,16,'#cc6688');
+  w.face=(P.x<w.x)?1:0;
+  w.phase='emerge';w.frame=2;w.ft=0;w.shots=0;w.shotF=-1;w.popHit=0; // 엿보기(0~1) 다음부터 솟음
+}
 function _wmTick(){
   if(!G.on||!P||!G.map){return}
   if(G._wmStage!==G.stage){G._wmStage=G.stage;G._worms=null;G._wmEntryX=P.x;G._wmEntryY=P.y;G._wmReady=false} // 스테이지 변경 시 재배치+진입점 기록
   if(!G._wmReady){if(dst(P.x,P.y,G._wmEntryX==null?P.x:G._wmEntryX,G._wmEntryY==null?P.y:G._wmEntryY)<1500){return}G._wmReady=true} // 진입점 1500px 이동해야 배치(조금 진행 후)
   if(!G._worms){
-    G._worms=[];var _n=7;
-    for(var _i=0;_i<_n;_i++){var _wx=0,_wy=0,_ok=false;
-      for(var _t=0;_t<24;_t++){var _tx=2+~~(Math.random()*(G.mw-4)),_ty=2+~~(Math.random()*(G.mh-4));_wx=(_tx+.5)*T;_wy=(_ty+.5)*T;if(!isW(_wx,_wy)&&dst(_wx,_wy,P.x,P.y)>700){_ok=true;break}}
-      if(_ok){var _hp=~~(150+P.lv*45);G._worms.push({x:_wx,y:_wy,r:56,hp:_hp,mhp:_hp,frame:0,ft:0,shotF:-1,atk:~~(16+P.lv*2.5),hitCd:0,img:_i%2})}
+    G._worms=[];var _n=3;
+    for(var _i=0;_i<_n;_i++){
+      var _hp=~~(150+P.lv*45);
+      var w={x:P.x,y:P.y,r:56,hp:_hp,mhp:_hp,frame:0,ft:0,shotF:-1,atk:~~(16+P.lv*2.5),hitCd:0,face:0,phase:'hide',shots:0,hideT:96+_i*80+~~(Math.random()*16),popHit:0,tpX:P.x,tpY:P.y};
+      _wmLockDest(w);w.x=w.tpX;w.y=w.tpY;G._worms.push(w);
     }
   }
-  var _vw=(typeof VW!=='undefined'?VW:1280),_vh=(typeof VH!=='undefined'?VH:720);
   for(var _wi=0;_wi<G._worms.length;_wi++){var w=G._worms[_wi];if(!w)continue;
-    if(w.hitCd>0)w.hitCd--;if(w.beCd>0)w.beCd--;
-    var _onScr=Math.abs(w.x-G.cam.x)<_vw*.5+120&&Math.abs(w.y-G.cam.y)<_vh*.5+120;
-    if(!_onScr){w.frame=0;w.ft=0;continue} // 화면 밖: 매복(프레임0)
-    w.ft++;if(w.ft>=7){w.ft=0;w.frame=(w.frame+1)%12} // 0→11 루프 = 들락날락
-    var _out=(w.frame>=4&&w.frame<=8),_d=dst(w.x,w.y,P.x,P.y);
-    if(_out&&w.frame===5&&w.shotF!==w.frame&&!(w.beCd>0)){w.shotF=w.frame;w.beCd=600; // 아가리 벌릴 때 혈안탄(titanEye) 1발 — 10초 간격(600틱), 초고속(spd8), 2배 크기
-      var _wa2=Math.atan2(P.y-w.y,P.x-w.x);
-      spawnProj({x:w.x+Math.cos(_wa2)*w.r*.6,y:w.y+Math.sin(_wa2)*w.r*.6,vx:Math.cos(_wa2)*8,vy:Math.sin(_wa2)*8,dmg:~~(w.atk*1.5),el:EL.F,friendly:false,life:240,ml:240,col:'#ff2233',sz:6.4,r:12,titanEye:true,_typed:true});
-      if(typeof SFX!=='undefined'&&SFX.magic)SFX.magic(1);
+    if(w.hitCd>0)w.hitCd--;
+    if(!w.phase)w.phase='emerge';
+    if(P.x<w.x-16)w.face=1;else if(P.x>w.x+16)w.face=0;
+    if(w.phase==='hide'){
+      if(w.hideT>0)w.hideT--;
+      if(w.hideT===54){_wmLockDest(w);w.x=w.tpX;w.y=w.tpY} // 엿보기 시작 때 현재 플레이어 옆으로
+      if(w.hideT>54)continue; // 매복 대기(안 보임)
+      if(w.tpX==null){_wmLockDest(w);w.x=w.tpX;w.y=w.tpY}
+      w.frame=(w.hideT>27)?0:1; // 땅에 조금 보임: 0 흙더미 → 1 머리 엿보기. 이때 도망
+      if(w.hideT<=0)_wmAppear(w);
+      continue;
     }
+    w.ft++;
+    var _step=(w.phase==='shoot')?36:7; // 연사 체류 36틱 (탄 간격 ≈2.4초, 빈도 1/2)
+    if(w.ft>=_step){
+      w.ft=0;
+      if(w.phase==='emerge'){
+        w.frame++;
+        if(w.frame>=5){w.phase='shoot';w.frame=5;w.shots=0;w.shotF=-1}
+      }else if(w.phase==='shoot'){
+        if(w.shots>=2&&w.frame===7){w.phase='retreat';w.frame=8}
+        else{w.frame++;if(w.frame>7)w.frame=4}
+      }else if(w.phase==='retreat'){
+        w.frame++;
+        if(w.frame>11)_wmVanish(w);
+      }
+    }
+    var _out=(w.phase==='shoot'||(w.phase==='emerge'&&w.frame>=4)||(w.phase==='retreat'&&w.frame<=8));
+    var _d=dst(w.x,w.y,P.x,P.y);
+    if(w.phase==='emerge'&&w.frame>=4&&!w.popHit){
+      w.popHit=1;
+      if(_d<w.r+P.r+28&&P.iframes<=0&&P.s!=='charge'){
+        hurtP(~~(w.atk*1.8));
+        var _ka=Math.atan2(P.y-w.y,P.x-w.x);P.kb.x+=Math.cos(_ka)*7;P.kb.y+=Math.sin(_ka)*7;
+        shake(8);addTxt(P.x,P.y-28,_T('충격파!'),'#ff6688',28);
+      }
+    }
+    if(w.phase==='shoot'&&w.frame===5&&w.shotF!==5){w.shotF=5;_wmFire(w);w.shots++}
     if(w.frame!==5)w.shotF=-1;
-    if(_out&&_d<w.r+18&&P.iframes<=0&&P.s!=='charge')hurtP(w.atk); // 접촉 데미지
-    if(_out){ // 나온 상태만 피격
-      for(var _pi=pProjs.length-1;_pi>=0;_pi--){var pp=pProjs[_pi];if(!pp)continue;if(dst(pp.x,pp.y,w.x,w.y)<w.r+(pp.r||6)){w.hp-=pp.atk||10;pp.dist=(pp.maxDist||9999)+1;addParts(pp.x,pp.y,'#ff88cc',3)}}
-      if(w.hitCd<=0&&_d<w.r+70&&(P.s==='wSwing'||P.s==='whirlwind'||P.s==='sBash'||P.s==='giantSlam')){var _md=~~((P.baseAtk+(wp().atk||0))*2+30);w.hp-=_md;w.hitCd=12;addTxt(w.x,w.y-30,''+_md,'#ffdd44',26)}
-    }
-    if(w.hp<=0){if(typeof _spawnLargeMonsterDeathFx==='function'){_spawnLargeMonsterDeathFx(w,0)}else{for(var _k=0;_k<16;_k++)addParts(w.x,w.y,'#cc44ff',5)}shake(8);G._worms[_wi]=null}
+    if(_out&&_d<w.r+18&&P.iframes<=0&&P.s!=='charge')hurtP(w.atk);
+    if(w.hp<=0){_fmDeathFx(w,false);G._worms[_wi]=null}
   }
 }
 function _wmDraw(){
   if(!G._worms){return}
   var _vw=(typeof VW!=='undefined'?VW:1280),_vh=(typeof VH!=='undefined'?VH:720);
   for(var _wi=0;_wi<G._worms.length;_wi++){var w=G._worms[_wi];if(!w)continue;
+    if(w.phase==='hide'&&(w.hideT||0)>54)continue; // 매복 대기는 그리지 않음
     if(Math.abs(w.x-G.cam.x)>_vw*.5+150||Math.abs(w.y-G.cam.y)>_vh*.5+150)continue;
-    var _im=w.img||0,img=_wmImg[_im];if(!img||!img.complete||!img.naturalWidth)continue;
-    if(!_wmSheet[_im]){_wmSheet[_im]=document.createElement('canvas');_wmSheet[_im].width=600;_wmSheet[_im].height=450;var _wsc=_wmSheet[_im].getContext('2d');_wsc.imageSmoothingEnabled=true;_wsc.drawImage(img,0,0,img.naturalWidth,img.naturalHeight,0,0,600,450)} // 프리스케일 캐시 1회(렉 방지)
+    var _im=w.face?1:0,img=_wmImg[_im];if(!img||!img.complete||!img.naturalWidth)continue;
+    if(!_wmSheet[_im]){_wmSheet[_im]=document.createElement('canvas');_wmSheet[_im].width=600;_wmSheet[_im].height=450;var _wsc=_wmSheet[_im].getContext('2d');_wsc.imageSmoothingEnabled=true;_wsc.drawImage(img,0,0,img.naturalWidth,img.naturalHeight,0,0,600,450)} // 1536x1152 → 600x450 (셀384→150)
     var sh=_wmSheet[_im];
     var sx=C.width/2+(w.x-G.cam.x),sy=C.height/2+(w.y-G.cam.y),col=w.frame%4,row=(w.frame/4)|0,dsz=150;
     X.save();X.setTransform(1,0,0,1,0,0);
     X.drawImage(sh,col*150,row*150,150,150,sx-dsz/2,sy-dsz*.8,dsz,dsz); // 캐시 1:1 블릿
+    if(w.phase==='hide'){
+      var _hp2=0.5+0.5*Math.sin((54-(w.hideT||0))*0.25);
+      X.globalAlpha=.22+_hp2*.18;X.strokeStyle='#cc6688';X.lineWidth=2;
+      X.beginPath();X.arc(sx,sy,w.r+18+6*_hp2,0,Math.PI*2);X.stroke();
+      X.globalAlpha=1;
+    }
     X.restore();
-    var _out=(w.frame>=4&&w.frame<=8);
+    var _out=(w.phase==='shoot'||(w.phase==='emerge'&&w.frame>=4)||(w.phase==='retreat'&&w.frame<=8));
     if(_out&&w.hp<w.mhp){var bw=90,bh=6,bx=sx-bw/2,by=sy-dsz*.8-10;
       X.save();X.setTransform(1,0,0,1,0,0);
       X.fillStyle='rgba(0,0,0,.6)';X.fillRect(bx-1,by-1,bw+2,bh+2);
@@ -52474,7 +52990,14 @@ async function startGameFromDB(){
   showBootLoading(_T('맵과 몬스터 불러오는 중...'));
   // 1) 인증 체크 — 세션/캐릭터 없으면 로비로 리다이렉트
   let session=null;try{const r=await sb.auth.getSession();session=r?.data?.session}catch(e){}
-  if(!session||!_charId){window.location.href='/?lobby=1';return}
+  if(!session||!_charId){
+    if(_BOOTH_MODE){
+      console.log('[BOOTH] offline fallback -> demo boot');
+      _startDemoNew();
+      return;
+    }
+    window.location.href='/?lobby=1';return
+  }
 
   // 2) 기본 초기화 (mkP, 기본 아이템 등)
   setBootLoading(25,_T('기본 데이터 준비 중...'));
@@ -53710,7 +54233,7 @@ function _preloadAssets(){
       'img/vfx_pentagram_gold.png','img/vfx_pentagram_purple.png',
       'img/vfx_repentance.png','img/boom_plague.png','img/tp_impact.png',
       // projectiles
-      'img/balls/arrow.png','img/balls/proj_bolt_dark.png','img/balls/proj_bolt_phys.png',
+      'img/balls/arrow.png','img/balls/proj_bolt_dark.png','img/balls/proj_bolt_phys.png','img/proj_phys_mouth.png','img/proj_elem_orb.png',
       // map
       'assets/map/ch1/boss_room_bg.png','assets/map/ch1/collision/boss_pillar_01.webp',
       'assets/map/ch2/skull_wall_tile.png','assets/map/ch2/wall_edge_tile.png',
