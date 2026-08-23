@@ -13408,7 +13408,7 @@ function mkItem(slot,tier,el,rarity,wtype){
   if(rarity>=5){
     const _usKey=(slot==='weapon'&&item.wtype)?'weapon_'+item.wtype:slot;
     const _us=UNIQUE_SPECIAL[_usKey]||UNIQUE_SPECIAL[slot];
-    if(_us){let _uv=_us.val,_uko=_us.ko;if(_us.roll){_uv=_us.roll[0]+~~(Math.random()*(_us.roll[1]-_us.roll[0]+1));_uko=_us.ko.replace('{s}',(_uv/60).toFixed(1))}item.uniqueSpecial={ko:_uko,stat:_us.stat,val:_uv};item[_us.stat]=_uv}
+    if(_us){let _uv=_us.val,_usc;if(_us.roll){_uv=_us.roll[0]+~~(Math.random()*(_us.roll[1]-_us.roll[0]+1));_usc=(_uv/60).toFixed(1)}item.uniqueSpecial={ko:_us.ko,stat:_us.stat,val:_uv,secs:_usc};item[_us.stat]=_uv}
   }
   // 아이템 레벨 = 캐릭터 레벨 기반, 10레벨 단위 (0~900), reqLv = itemLv-10
   const _pLv=P&&P.lv?P.lv:1;
@@ -42207,7 +42207,7 @@ function _invCardFields(it){
   if(it.uniqueSpecial){
     stats+='<div style="margin-top:6px;padding:4px 6px;background:rgba(255,68,102,.15);border:1px solid #ff4466;border-radius:3px">';
     stats+='<div style="color:#ff4466;font-size:.75rem;font-weight:700;margin-bottom:2px">\u2726 '+_T('유니크 특수')+'</div>';
-    stats+='<div style="color:#ffaacc;font-size:.8rem">'+_T(it.uniqueSpecial.ko)+'</div></div>';
+    stats+='<div style="color:#ffaacc;font-size:.8rem">'+_T(it.uniqueSpecial.ko).replace('{s}',it.uniqueSpecial.secs!==undefined?it.uniqueSpecial.secs:'')+'</div></div>';
   }
   // ═══ 결정 슬롯 표시 ═══
   if(it.socketCount>0){
