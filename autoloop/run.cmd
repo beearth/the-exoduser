@@ -14,7 +14,7 @@ echo %DATE% %TIME% > "%AL%\LOCK.gamehtml"
 set RETRY=0
 :LOOP
 if exist "%AL%\STOP" goto :DONE
-for /f "tokens=1-4 delims=/ " %%a in ("%DATE%") do set "D=%%b%%c%%d"
+for /f "delims=" %%d in ('powershell -NoProfile -Command "Get-Date -Format yyyyMMdd"') do set "D=%%d"
 set "LOG=%AL%\logs\%D%.log"
 echo ==== START %DATE% %TIME% retry=!RETRY! ==== >> "%LOG%"
 type "%AL%\AUTOLOOP.md" | claude -p "�� ������ �۾� ���ü���. �״�� �����϶�." --permission-mode acceptEdits --max-turns 40 --max-budget-usd 3 --verbose >> "%LOG%" 2>&1
