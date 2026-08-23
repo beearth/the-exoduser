@@ -6,15 +6,18 @@ set "AL=%ROOT%\autoloop"
 cd /d "%ROOT%"
 if not exist "%AL%\logs" mkdir "%AL%\logs"
 if exist "%AL%\STOP" echo [SKIP] STOP flag & exit /b 0
-if exist "%AL%\LOCK" echo [SKIP] LOCK exists & exit /b 0
-echo %DATE% %TIME% > "%AL%\LOCK"
+if exist "%AL%\LOCK.gamehtml" echo [SKIP] LOCK.gamehtml exists & exit /b 0
+for /f "delims=" %%b in ('git rev-parse --abbrev-ref HEAD') do set "BR=%%b"
+if /i not "!BR!"=="main" echo [ABORT] branch=!BR! not main & exit /b 0
+echo [BRANCH] !BR! ok
+echo %DATE% %TIME% > "%AL%\LOCK.gamehtml"
 set RETRY=0
 :LOOP
 if exist "%AL%\STOP" goto :DONE
 for /f "tokens=1-4 delims=/ " %%a in ("%DATE%") do set "D=%%b%%c%%d"
 set "LOG=%AL%\logs\%D%.log"
 echo ==== START %DATE% %TIME% retry=!RETRY! ==== >> "%LOG%"
-type "%AL%\AUTOLOOP.md" | claude -p "À§ ¹®¼­°¡ ÀÛ¾÷ Áö½Ã¼­´Ù. ±×´ë·Î ¼öÇàÇÏ¶ó." --permission-mode acceptEdits --max-turns 40 --max-budget-usd 3 --verbose >> "%LOG%" 2>&1
+type "%AL%\AUTOLOOP.md" | claude -p "ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½Û¾ï¿½ ï¿½ï¿½ï¿½Ã¼ï¿½ï¿½ï¿½. ï¿½×´ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½Ï¶ï¿½." --permission-mode acceptEdits --max-turns 40 --max-budget-usd 3 --verbose >> "%LOG%" 2>&1
 set "CODE=!ERRORLEVEL!"
 echo ==== EXIT !CODE! %DATE% %TIME% ==== >> "%LOG%"
 if "!CODE!"=="0" goto :DONE
@@ -23,6 +26,6 @@ if !RETRY! GEQ 5 echo [ABORT] retry limit >> "%LOG%" & goto :DONE
 timeout /t 60 /nobreak > nul
 goto :LOOP
 :DONE
-del "%AL%\LOCK" 2>nul
+del "%AL%\LOCK.gamehtml" 2>nul
 endlocal
 exit /b 0

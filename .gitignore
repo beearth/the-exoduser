@@ -57,7 +57,7 @@ assets/cutscene/prologue/_p11_candidates/
 
 # AUTOLOOP 무인 실행 런타임 산출물 (추적 제외)
 autoloop/logs/
-autoloop/LOCK
+autoloop/LOCK.gamehtml
 autoloop/STOP
 
 # AUTOLOOP 라이브 상태파일 (매 사이클 변동, 추적 제외)

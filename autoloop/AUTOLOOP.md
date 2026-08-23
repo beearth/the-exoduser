@@ -6,17 +6,24 @@
 서버: localhost:3333
 G:\hell 은 구 빌드 복사본. 절대 건드리지 말 것.
 편집은 str_replace 전용. 파일 전체 재작성 금지. 커밋 금지 (명시 지시 시에만).
-상태파일: G:\exoduser\docs\AUTOLOOP_STATE.md (CURSOR/CYCLE/FAILSTREAK/QUEUE/DONE LOG/PENDING/BLOCKED)
-인박스: G:\exoduser\autoloop\INBOX.md (사람이 넣는 우선처리 지시)
+상태파일: G:\exoduser\STATUS.md (CURSOR/CYCLE/FAILSTREAK/QUEUE/DONE LOG/PENDING/BLOCKED)
+인박스: G:\exoduser\INBOX.md (사람이 넣는 우선처리 지시)
 
 === S0. INBOX 스캔 (매 사이클 최초) ===
-사이클 진입 시 먼저 G:\exoduser\autoloop\INBOX.md 를 읽는다.
+사이클 진입 시 먼저 G:\exoduser\INBOX.md 를 읽는다.
 - [NEW] 로 시작하는 미처리 항목이 있으면: 그 항목을 QUEUE 맨 앞에 임시 삽입하고 CURSOR 를 그 항목으로 돌린다. 처리 후 INBOX 해당 줄을 [DONE] 로 표시한다.
 - [NEW] 항목이 없으면: 기존 CURSOR 항목을 그대로 진행한다.
 INBOX 편집도 str_replace 전용. 없는 파일이면 스캔 스킵.
 
+=== S0.5 세션 가드 ===
+- 브랜치가 main 이 아니면 코드 파일 편집 금지. 문서 항목만 처리. CURSOR 가 코드 항목이면 BLOCKED 기록 후 STOP.
+- game.html 편집 항목인 경우에만 autoloop\LOCK.gamehtml 확인. 존재하면 STOP. 없으면 생성 후 작업, 작업 종료 시 삭제.
+- 문서 전용 항목은 LOCK 무시하고 진행.
+- 커밋 push rebase 전면 금지. 필요하면 BLOCKED 에 기록하고 도진님 지시 대기.
+- game.html 편집 시작 전 autoloop\snap.cmd 1회 실행.
+
 === 1. 상태 파일 확인 ===
-최초 1회: G:\exoduser\docs\AUTOLOOP_STATE.md 존재 확인.
+최초 1회: G:\exoduser\STATUS.md 존재 확인.
 없으면 아래 스키마로 생성. 있으면 읽고 CURSOR 다음 항목부터 재개.
 
 # AUTOLOOP STATE
