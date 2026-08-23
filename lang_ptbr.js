@@ -779,6 +779,7 @@
 "여기가 지옥인가":"Então isto é o inferno",
 "심연의 앵글러":"Tamboril abissal",
 "필드보스 처치!":"Chefe de campo derrotado!",
+"💥심해강타!":"💥Golpe Abissal!",
 "아무 키나 눌러 시작":"Pressione qualquer tecla",
 "다시 시작":"Reiniciar",
 '패링 많이 하면 ST 걱정 없어~':'Apara bastante e ST nunca é problema~',

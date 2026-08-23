@@ -1196,6 +1196,7 @@ const _ID={
 "여기가 지옥인가":"Jadi ini neraka",
 "심연의 앵글러":"Angler Jurang",
 "필드보스 처치!":"Bos Lapangan Tumbang!",
+"💥심해강타!":"💥Hantaman Laut Dalam!",
 "아무 키나 눌러 시작":"Tekan tombol apa saja",
 "다시 시작":"Mulai ulang",
 '패링 많이 하면 ST 걱정 없어~':'Sering parry dan ST tidak pernah masalah~',

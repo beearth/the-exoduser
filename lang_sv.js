@@ -763,6 +763,7 @@ const _SV={
 "여기가 지옥인가":"Så det här är helvetet",
 "심연의 앵글러":"Avgrundens marulk",
 "필드보스 처치!":"Fältboss besegrad!",
+"💥심해강타!":"💥Djuphavsslag!",
 "아무 키나 눌러 시작":"Tryck på valfri tangent",
 "다시 시작":"Börja om",
 '패링 많이 하면 ST 걱정 없어~':'Parera mycket och ST är aldrig ett problem~',

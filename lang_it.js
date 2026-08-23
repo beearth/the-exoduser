@@ -1214,6 +1214,7 @@ const _IT={
 "여기가 지옥인가":"Quindi è questo l'inferno",
 "심연의 앵글러":"Rana pescatrice abissale",
 "필드보스 처치!":"Boss di campo sconfitto!",
+"💥심해강타!":"💥Colpo abissale!",
 "아무 키나 눌러 시작":"Premi un tasto qualsiasi",
 "다시 시작":"Ricomincia",
 '패링 많이 하면 ST 걱정 없어~':'Para spesso e niente problemi di ST~',

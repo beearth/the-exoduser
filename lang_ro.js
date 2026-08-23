@@ -1196,6 +1196,7 @@ const _RO={
 "여기가 지옥인가":"Deci ăsta e iadul",
 "심연의 앵글러":"Pescarul abisal",
 "필드보스 처치!":"Boss de câmp înfrânt!",
+"💥심해강타!":"💥Lovitura abisului!",
 "아무 키나 눌러 시작":"Apasă orice tastă",
 "다시 시작":"Repornire",
 '패링 많이 하면 ST 걱정 없어~':'Parează mult și ST nu e niciodată o problemă~',

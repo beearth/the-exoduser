@@ -1196,6 +1196,7 @@ const _FI={
 "여기가 지옥인가":"Onko tämä helvetti",
 "심연의 앵글러":"Syvyyksien merikrotti",
 "필드보스 처치!":"Kenttäpomo kaadettu!",
+"💥심해강타!":"💥Syvyyksien isku!",
 "아무 키나 눌러 시작":"Paina mitä tahansa näppäintä",
 "다시 시작":"Aloita alusta",
 '패링 많이 하면 ST 걱정 없어~':'Torju paljon eikä ST lopu~',

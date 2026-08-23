@@ -745,6 +745,7 @@
 "여기가 지옥인가":"Ist das hier die Hölle",
 "심연의 앵글러":"Abgrund-Anglerfisch",
 "필드보스 처치!":"Feldboss besiegt!",
+"💥심해강타!":"💥Tiefsee-Schlag!",
 "아무 키나 눌러 시작":"Beliebige Taste drücken",
 "다시 시작":"Neustart",
 '패링 많이 하면 ST 걱정 없어~':'Pariere viel und ST ist nie ein Problem~',

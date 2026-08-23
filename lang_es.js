@@ -762,6 +762,7 @@ const _ES={
 "여기가 지옥인가":"¿Esto es el infierno?",
 "심연의 앵글러":"Rape abisal",
 "필드보스 처치!":"¡Jefe de campo abatido!",
+"💥심해강타!":"💥¡Golpe abisal!",
 "아무 키나 눌러 시작":"Pulsa cualquier tecla",
 "다시 시작":"Reiniciar",
 '패링 많이 하면 ST 걱정 없어~':'¡Para mucho y nunca te faltará Resistencia~',

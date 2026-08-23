@@ -766,6 +766,7 @@ const _NL={
 "여기가 지옥인가":"Dus dit is de hel",
 "심연의 앵글러":"Afgrondse zeeduivel",
 "필드보스 처치!":"Veldbaas verslagen!",
+"💥심해강타!":"💥Diepzeeslag!",
 "아무 키나 눌러 시작":"Druk op een toets",
 "다시 시작":"Opnieuw",
 '패링 많이 하면 ST 걱정 없어~':'Veel pareren en ST is nooit een probleem~',

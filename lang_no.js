@@ -757,6 +757,7 @@ const _NO={
 "여기가 지옥인가":"Så dette er helvete",
 "심연의 앵글러":"Avgrunnens breiflabb",
 "필드보스 처치!":"Feltboss beseiret!",
+"💥심해강타!":"💥Dyphavsslag!",
 "아무 키나 눌러 시작":"Trykk en tast",
 "다시 시작":"Start på nytt",
 '패링 많이 하면 ST 걱정 없어~':'Parér mye og ST er aldri et problem~',

@@ -612,6 +612,7 @@ const _CS={
 "여기가 지옥인가":"Tak tohle je peklo",
 "심연의 앵글러":"Hlubinný ďas",
 "필드보스 처치!":"Polní boss poražen!",
+"💥심해강타!":"💥Hlubinný úder!",
 "아무 키나 눌러 시작":"Stiskni libovolnou klávesu",
 "다시 시작":"Restart",
 '패링 많이 하면 ST 걱정 없어~':'Hodně paríruj — ST nebude problém~',

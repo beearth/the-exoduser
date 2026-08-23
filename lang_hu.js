@@ -1196,6 +1196,7 @@ const _HU={
 "여기가 지옥인가":"Hát ez a pokol",
 "심연의 앵글러":"Mélységi ördöghal",
 "필드보스 처치!":"Mezei főellenség legyőzve!",
+"💥심해강타!":"💥Mélytengeri csapás!",
 "아무 키나 눌러 시작":"Nyomj meg egy gombot",
 "다시 시작":"Újrakezdés",
 '패링 많이 하면 ST 걱정 없어~':'Sokat hárítva soha nem fogy el az ST~',

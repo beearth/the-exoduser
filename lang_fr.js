@@ -780,6 +780,7 @@
 "여기가 지옥인가":"C'est donc ça, l'enfer",
 "심연의 앵글러":"Baudroie des abysses",
 "필드보스 처치!":"Boss de terrain vaincu !",
+"💥심해강타!":"💥Frappe abyssale !",
 "아무 키나 눌러 시작":"Appuie sur une touche",
 "다시 시작":"Recommencer",
 '패링 많이 하면 ST 걱정 없어~':'Pare souvent et le ST n\'est plus un problème~',

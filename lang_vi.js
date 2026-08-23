@@ -1196,6 +1196,7 @@ const _VI={
 "여기가 지옥인가":"Vậy đây là địa ngục",
 "심연의 앵글러":"Cá Vực Thẳm",
 "필드보스 처치!":"Hạ Boss Sân!",
+"💥심해강타!":"💥Cú đập biển sâu!",
 "아무 키나 눌러 시작":"Nhấn phím bất kỳ để bắt đầu",
 "다시 시작":"Chơi lại",
 '패링 많이 하면 ST 걱정 없어~':'Đỡ nhiều là không lo ST~',

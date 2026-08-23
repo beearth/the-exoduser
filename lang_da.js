@@ -760,6 +760,7 @@ const _DA={
 "여기가 지옥인가":"Så det her er helvede",
 "심연의 앵글러":"Afgrundens havtaske",
 "필드보스 처치!":"Feltboss dræbt!",
+"💥심해강타!":"💥Dybhavsslag!",
 "아무 키나 눌러 시작":"Tryk på en vilkårlig tast",
 "다시 시작":"Genstart",
 '패링 많이 하면 ST 걱정 없어~':'Parér meget og ST er aldrig et problem~',

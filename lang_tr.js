@@ -1214,6 +1214,7 @@ const _TR={
 "여기가 지옥인가":"Demek cehennem burası",
 "심연의 앵글러":"Uçurum Fenerbalığı",
 "필드보스 처치!":"Saha Patronu Yenildi!",
+"💥심해강타!":"💥Derin Deniz Darbesi!",
 "아무 키나 눌러 시작":"Başlamak için bir tuşa bas",
 "다시 시작":"Yeniden başlat",
 '패링 많이 하면 ST 걱정 없어~':'Çok savuştur, ST sorun olmaz~',

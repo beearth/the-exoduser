@@ -1,0 +1,73 @@
+From 88a8fc60ec59b09b9ccaf339d692ffa812f33f2c Mon Sep 17 00:00:00 2001
+From: beearth <contact@voisun.com>
+Date: Sun, 23 Aug 2026 08:45:47 +0900
+Subject: [PATCH] perf: stream viewport threshold T*3, chunk evict valve
+
+---
+ game.html | 40 ++++++++++++++++++++++++++++------------
+ 1 file changed, 28 insertions(+), 12 deletions(-)
+
+diff --git a/game.html b/game.html
+index a2bc3cf9..5b949d47 100644
+--- a/game.html
++++ b/game.html
+@@ -43400,28 +43400,44 @@ function draw(){
+   }else if(_streamMap&&!_dcpHideMapCache){
+     // 대형 맵 스트리밍: 뷰포트 합성 캔버스 1장 방식
+     const _camL=s1*T,_camT=s2*T,_camR=e1*T,_camB=e2*T;
+-    const _vpW=_camR-_camL+T*4,_vpH=_camB-_camT+T*4;
++    const _vpW=_camR-_camL+T*8,_vpH=_camB-_camT+T*8;
+     const _stx0=Math.max(0,~~(s1/_STREAM_CHUNK)),_stx1=Math.min(~~((G.mw-1)/_STREAM_CHUNK),~~(e1/_STREAM_CHUNK));
+     const _sty0=Math.max(0,~~(s2/_STREAM_CHUNK)),_sty1=Math.min(~~((G.mh-1)/_STREAM_CHUNK),~~(e2/_STREAM_CHUNK));
+     const _camCx=~~(G.cam.x/(_STREAM_CHUNK*T)),_camCy=~~(G.cam.y/(_STREAM_CHUNK*T));
+-    const _drawX=_camL-T*2,_drawY=_camT-T*2;
++    const _drawX=_camL-T*4,_drawY=_camT-T*4;
+     _queueVisibleStreamChunks(_stx0,_sty0,_stx1,_sty1,_camCx,_camCy);
+     if(_streamChunkCnt===0&&_streamBuildQCount>0)_tickStreamChunkBuild(4,2);
+-    // 60프레임마다 뷰포트 밖 청크 퇴거 (메모리 누수 방지)
+-    if(++_streamEvictFrame>=60){
++    // 180프레임마다 뷰포트 밖 청크 퇴거 (메모리 누수 방지)
++    if(++_streamEvictFrame>=(_streamChunkCnt>_STREAM_MAX_CHUNKS?60:180)){
+       _streamEvictFrame=0;
+-      const _margin=2; // [PERF] 카운트게이트 제거 → 뷰포트+2청크 밖은 항상 퇴거 (대형 all-floor 맵 청크 누적=렉 방지). 재방문 시 재빌드는 _soilEdgeA 최적화로 저렴
+-      for(const _ek in _streamChunks){
+-        const _ec=_streamChunks[_ek];if(!_ec)continue;
+-        const _ui=_ek.indexOf('_'),_ecx=+_ek.substring(0,_ui),_ecy=+_ek.substring(_ui+1);
+-        if(_ecx<_stx0-_margin||_ecx>_stx1+_margin||_ecy<_sty0-_margin||_ecy>_sty1+_margin){
+-          if(_ec.bmp)try{_ec.bmp.close()}catch(e){}
+-          delete _streamChunks[_ek];_streamChunkCnt--;_streamVpDirty=true;
++      const _margin=4; // [PERF] 카운트게이트 제거 → 뷰포트+4청크 밖은 항상 퇴거 (대형 all-floor 맵 청크 누적=렉 방지). 재방문 시 재빌드는 _soilEdgeA 최적화로 저렴
++      // [PERF-STEP2] 퇴거 1패스 1개 제한: 최원거리(제곱거리, 정수) 청크만 기록 → 루프 후 단일 delete. 왕복 보행 반복 재빌드 진동 차단
++      // [PERF-STEP2.5] 압력 밸브: 청크 수>_STREAM_MAX_CHUNKS면 주기 60f+패스당 최대 4개 즉시 삭제(최원거리 계산 생략), 평상시엔 기존 1개 경로
++      let _evQuota=_streamChunkCnt>_STREAM_MAX_CHUNKS?4:0;
++      let _evKey=null,_evBest=-1,_evD=0,_evDx=0,_evDy=0,_evC=null,_evUi=0,_evCx=0,_evCy=0,_ek,_evDel=0;
++      for(_ek in _streamChunks){
++        _evC=_streamChunks[_ek];if(!_evC)continue;
++        _evUi=_ek.indexOf('_');_evCx=+_ek.substring(0,_evUi);_evCy=+_ek.substring(_evUi+1);
++        if(_evCx<_stx0-_margin||_evCx>_stx1+_margin||_evCy<_sty0-_margin||_evCy>_sty1+_margin){
++          if(_evQuota>0){
++            if(_evC.bmp)try{_evC.bmp.close()}catch(e){}
++            delete _streamChunks[_ek];_streamChunkCnt--;_evDel=1;
++            _evQuota--;if(_evQuota===0)break;
++          }else{
++            _evDx=_evCx-_camCx;_evDy=_evCy-_camCy;_evD=_evDx*_evDx+_evDy*_evDy;
++            if(_evD>_evBest){_evBest=_evD;_evKey=_ek}
++          }
+         }
+       }
++      if(_evDel)_streamVpDirty=true;
++      if(_evKey!==null){
++        _evC=_streamChunks[_evKey];
++        if(_evC&&_evC.bmp)try{_evC.bmp.close()}catch(e){}
++        delete _streamChunks[_evKey];_streamChunkCnt--;_streamVpDirty=true;
++      }
+     }
+     // 합성 캔버스의 양쪽 여백은 2타일이다. 1타일 이동마다 갱신해 빈 가장자리와 경계 점프를 막는다.
+-    const _vpMoved=Math.abs(_streamVpWorldX-_drawX)>T*1||Math.abs(_streamVpWorldY-_drawY)>T*1;
++    const _vpMoved=Math.abs(_streamVpWorldX-_drawX)>T*3||Math.abs(_streamVpWorldY-_drawY)>T*3;
+     // WebGPU(Mac): 매 프레임 재합성 — 합성기준(_offX)과 그리기위치(_drawX)를 항상 일치시켜 맵 드리프트/덜덜떨림 제거.
+     //   copyExternalImageToTexture가 빨라 120fps 유지. WebGL2(윈도우)는 3타일 임계 유지(매프레임 재업로드=swizzle 비용 회피).
+     if(_streamVpDirty||_vpMoved||!_streamVpCvs||_useGPU){
+-- 
+2.50.1.windows.1
+

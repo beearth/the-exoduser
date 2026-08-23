@@ -783,6 +783,7 @@ const _PL={
 "여기가 지옥인가":"Więc to jest piekło",
 "심연의 앵글러":"Otchłanna żabnica",
 "필드보스 처치!":"Boss terenowy pokonany!",
+"💥심해강타!":"💥Cios z głębin!",
 "아무 키나 눌러 시작":"Naciśnij dowolny klawisz",
 "다시 시작":"Restart",
 '패링 많이 하면 ST 걱정 없어~':'Paruj często i ST nigdy nie będzie problemem~',
