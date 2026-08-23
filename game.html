@@ -13865,7 +13865,7 @@ function spawnProj(props){
   // 적 탄막: 이동탄 개수 1/3(모듈로 드랍, 랜덤 아님) + sz 2배·r 1.3배 + 속도 최종 ×1.2 + 이동탄 dmg ×1.6 (정지 위험물은 배율 미적용)
   if(!p.friendly){
     const _moving=(p.vx*p.vx+p.vy*p.vy)>0;
-    if(_moving){
+    if(_moving&&!p.titanEye){ // titanEye(거대괴수 혈안탄): 1/3드랍·전역배율(sz2/spd1.8/dmg2) 면제 — 10초 간격 발사 보장, 스폰값=최종값
       // 탄막 밀도 1/3 — 이동 탄만 3발 중 1발 통과(모듈로 카운터)
       _eProjDropCnt=(_eProjDropCnt+1)%3;if(_eProjDropCnt!==0){_recycleProj(p);return null;}
       p.sz*=2;p.r*=1.3;    // 크기·피격판정(sz) 2배, r 1.3배
@@ -51821,7 +51821,7 @@ function _fbTick(){
   if(G._fbStage!==G.stage){G._fbStage=G.stage;G._fbSpawnX=P.x;G._fbSpawnY=P.y;G._fbSpawned=false;G._fieldBoss=null} // 진입 기준점
   if(!G._fbSpawned&&!G._fieldBoss&&!G._fbDone&&dst(P.x,P.y,G._fbSpawnX,G._fbSpawnY)>2500){ // 진입점 2500px 이동해야 등장(구 500=시작하자마자 → 조금 진행 후)
     var _hp=~~(1800+P.lv*350);
-    G._fieldBoss={x:P.x+(P.x>=G._fbSpawnX?440:-440),y:P.y,r:120,hp:_hp,mhp:_hp,t:0,frame:0,atk:~~(20+P.lv*3),hitCd:0,shotCd:60};
+    G._fieldBoss={x:P.x+(P.x>=G._fbSpawnX?440:-440),y:P.y,r:120,hp:_hp,mhp:_hp,t:0,frame:0,atk:~~(20+P.lv*3),hitCd:0,shotCd:60,tpCd:0,tpT:0,tpX:0,tpY:0};
     G._fbSpawned=true;showPH('심연의 앵글러','#66ddff');shake(14);
   }
   var fb=G._fieldBoss;if(!fb){return}
@@ -51834,11 +51834,33 @@ function _fbTick(){
   if(_d<fb.r+P.r+8&&P.iframes<=0&&P.s!=='charge')hurtP(fb.atk); // 접촉 데미지
   // 전용 탄막: 머리 더듬이(루어)에서 발사, 초대형(sz16/r30). 마법탄=Q패링(blackBean)·물리탄=E패링(redBean) 번갈아. 1/3드랍 우회 위해 pool 직접 push
   // 특수탄: 거대괴수 혈안탄(titanEye) 3-way — 10초 간격(600틱), 초고속(spd9), 일반 눈탄 2배(sz6.4). 색탄=Q패링 가능
-  if(fb.shotCd<=0){fb.shotCd=600;var _sa=Math.atan2(P.y-fb.y,P.x-fb.x);
+  if(fb.shotCd<=0){fb.shotCd=600;fb.tpCd=300;var _sa=Math.atan2(P.y-fb.y,P.x-fb.x); // 탄막 5초 후 순간이동 예약 (5초 교대: 탄막→TP→탄막→…)
     for(var _fsi=-1;_fsi<=1;_fsi++){var _fa2=_sa+_fsi*0.14;
       spawnProj({x:fb.x+Math.cos(_fa2)*fb.r*.7,y:fb.y+Math.sin(_fa2)*fb.r*.7,vx:Math.cos(_fa2)*9,vy:Math.sin(_fa2)*9,dmg:~~(fb.atk*1.6),el:EL.F,friendly:false,life:260,ml:260,col:'#ff2233',sz:6.4,r:12,titanEye:true,_typed:true});
     }
     if(typeof SFX!=='undefined'&&SFX.magic)SFX.magic(2);
+  }
+  // ═══ 순간이동 공격: 탄막 5초 후 플레이어 위치로 텔레포트 + 착지 강타 (예고 0.7초 → 회피 가능) ═══
+  if(fb.tpT>0){
+    fb.tpT--;
+    if(fb.tpT===0){ // 도착: 순간이동 + AoE 슬램
+      addParts(fb.x,fb.y,'#66ddff',14); // 출발지 물보라
+      fb.x=fb.tpX;fb.y=fb.tpY;
+      shake(16);if(typeof SFX!=='undefined'&&SFX.detonate)SFX.detonate();
+      var _sd2=dst(fb.x,fb.y,P.x,P.y);
+      if(_sd2<fb.r+110&&P.iframes<=0&&P.s!=='charge'){
+        hurtP(~~(fb.atk*2));
+        var _ka2=Math.atan2(P.y-fb.y,P.x-fb.x);P.kb.x+=Math.cos(_ka2)*9;P.kb.y+=Math.sin(_ka2)*9;
+        addTxt(P.x,P.y-30,_T('💥심해강타!'),'#ff4444',40);
+      }
+      for(var _tk=0;_tk<16;_tk++){var _ta2=Math.PI*2*_tk/16;addParts(fb.x+Math.cos(_ta2)*fb.r*.8,fb.y+Math.sin(_ta2)*fb.r*.8,'#ff4455',3)}
+    }
+  }else if(fb.tpCd>0){
+    fb.tpCd--;
+    if(fb.tpCd===0){
+      if(_d<2200){fb.tpX=P.x;fb.tpY=P.y;fb.tpT=42;shake(6);if(typeof SFX!=='undefined'&&SFX.magic)SFX.magic(1)} // 예고 시작(목표 고정=회피 가능)
+      else fb.tpCd=300; // 너무 멀면 재대기
+    }
   }
   for(var _pi=pProjs.length-1;_pi>=0;_pi--){var pp=pProjs[_pi];if(!pp)continue;if(dst(pp.x,pp.y,fb.x,fb.y)<fb.r+(pp.r||6)){fb.hp-=pp.atk||10;pp.dist=(pp.maxDist||9999)+1;addParts(pp.x,pp.y,'#66ddff',3)}}
   if(fb.hitCd<=0&&_d<fb.r+70&&(P.s==='wSwing'||P.s==='whirlwind'||P.s==='sBash'||P.s==='giantSlam')){var _md=~~((P.baseAtk+(wp().atk||0))*2+40);fb.hp-=_md;fb.hitCd=12;addTxt(fb.x,fb.y-fb.r*.5,''+_md,'#ffdd44',30)}
@@ -51846,6 +51868,19 @@ function _fbTick(){
 }
 function _fbDraw(){
   var fb=G._fieldBoss;if(!fb||!_fbImg.complete||!_fbImg.naturalWidth){return}
+  // 순간이동 예고 마커: 목표 지점 붉은 위험 원 (0.7초, 축소 수렴 펄스)
+  if(fb.tpT>0){
+    var _mx=C.width/2+(fb.tpX-G.cam.x),_my=C.height/2+(fb.tpY-G.cam.y);
+    var _mp=fb.tpT/42; // 1→0
+    X.save();X.setTransform(1,0,0,1,0,0);
+    X.globalAlpha=.28*(1-_mp)+.12;X.fillStyle='#ff2233';
+    X.beginPath();X.arc(_mx,_my,fb.r+110,0,Math.PI*2);X.fill();
+    X.globalAlpha=.85;X.strokeStyle='#ff4455';X.lineWidth=3;
+    X.beginPath();X.arc(_mx,_my,(fb.r+110)*(.4+_mp*.6),0,Math.PI*2);X.stroke();
+    X.globalAlpha=.9;X.fillStyle='#ffdddd';X.font='bold 16px sans-serif';X.textAlign='center';
+    X.fillText('!',_mx,_my+6);
+    X.restore();
+  }
   if(!_fbSheet){_fbSheet=document.createElement('canvas');_fbSheet.width=1200;_fbSheet.height=600;var _fsc=_fbSheet.getContext('2d');_fsc.imageSmoothingEnabled=true;_fsc.drawImage(_fbImg,0,0,_fbImg.naturalWidth,_fbImg.naturalHeight,0,0,1200,600)} // 프리스케일 캐시 1회(렉 방지)
   var sx=C.width/2+(fb.x-G.cam.x),sy=C.height/2+(fb.y-G.cam.y),dsz=300,col=fb.frame%4,row=(fb.frame/4)|0;
   X.save();X.setTransform(1,0,0,1,0,0);
@@ -51877,13 +51912,14 @@ function _wmTick(){
   }
   var _vw=(typeof VW!=='undefined'?VW:1280),_vh=(typeof VH!=='undefined'?VH:720);
   for(var _wi=0;_wi<G._worms.length;_wi++){var w=G._worms[_wi];if(!w)continue;
-    if(w.hitCd>0)w.hitCd--;
+    if(w.hitCd>0)w.hitCd--;if(w.beCd>0)w.beCd--;
     var _onScr=Math.abs(w.x-G.cam.x)<_vw*.5+120&&Math.abs(w.y-G.cam.y)<_vh*.5+120;
     if(!_onScr){w.frame=0;w.ft=0;continue} // 화면 밖: 매복(프레임0)
     w.ft++;if(w.ft>=7){w.ft=0;w.frame=(w.frame+1)%12} // 0→11 루프 = 들락날락
     var _out=(w.frame>=4&&w.frame<=8),_d=dst(w.x,w.y,P.x,P.y);
-    if(_out&&w.frame===5&&w.shotF!==w.frame){w.shotF=w.frame; // 아가리 벌릴 때 보통 적 탄막 1발(eProjAt→_beanRoll, 글로우/광택 포함)
-      eProjAt(w,Math.atan2(P.y-w.y,P.x-w.x),3,1.1,EL.D,220,null,1.5);
+    if(_out&&w.frame===5&&w.shotF!==w.frame&&!(w.beCd>0)){w.shotF=w.frame;w.beCd=600; // 아가리 벌릴 때 혈안탄(titanEye) 1발 — 10초 간격(600틱), 초고속(spd8), 2배 크기
+      var _wa2=Math.atan2(P.y-w.y,P.x-w.x);
+      spawnProj({x:w.x+Math.cos(_wa2)*w.r*.6,y:w.y+Math.sin(_wa2)*w.r*.6,vx:Math.cos(_wa2)*8,vy:Math.sin(_wa2)*8,dmg:~~(w.atk*1.5),el:EL.F,friendly:false,life:240,ml:240,col:'#ff2233',sz:6.4,r:12,titanEye:true,_typed:true});
       if(typeof SFX!=='undefined'&&SFX.magic)SFX.magic(1);
     }
     if(w.frame!==5)w.shotF=-1;
