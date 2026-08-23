@@ -1,5 +1,7 @@
 ﻿// 지옥의 길 — Tiếng Việt (vi)
 const _VI={
+'패링 성공 시 분노스킬 쿨다운 {s}초 회복':"Đỡ đòn thành công: hồi {s}s thời gian hồi chiêu kỹ năng Phẫn Nộ",
+'🔥분노스킬 쿨↓':"🔥Hồi chiêu kỹ năng Phẫn Nộ↓",
 '잘못 때렸군. 실수야.':"Đánh trượt rồi. Hụt.",
 '타이밍이야. 탄이 닿기 직전에 눌러.':"Là vấn đề thời điểm. Ra đòn ngay trước khi nó chạm vào.",
 // --- v7 신규 펫/UI 8종 (2026-07-05) ---

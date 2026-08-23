@@ -1,5 +1,7 @@
 ﻿// 지옥의 길 — Suomi (fi)
 const _FI={
+'패링 성공 시 분노스킬 쿨다운 {s}초 회복':"Onnistuneella torjunnalla: palauta {s}s Raivo-kyvyn jäähtymisaikaa",
+'🔥분노스킬 쿨↓':"🔥Raivo-kyvyn CD↓",
 '잘못 때렸군. 실수야.':"Ohi meni. Huti.",
 '타이밍이야. 탄이 닿기 직전에 눌러.':"Kyse on ajoituksesta. Iske juuri ennen osumaa.",
 // --- v7 신규 펫/UI 8종 (2026-07-05) ---

@@ -1,4 +1,6 @@
 ﻿const _FR={
+'패링 성공 시 분노스킬 쿨다운 {s}초 회복':"Parade réussie : récupère {s}s de temps de recharge de la compétence de Rage",
+'🔥분노스킬 쿨↓':"🔥Recharge comp. Rage↓",
 '잘못 때렸군. 실수야.':"Coup manqué. Dans le vide.",
 '타이밍이야. 탄이 닿기 직전에 눌러.':"Tout est dans le timing. Frappe juste avant l'impact.",
 // --- v7 신규 펫/UI 8종 (2026-07-05) ---

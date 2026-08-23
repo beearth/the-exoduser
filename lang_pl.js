@@ -1,5 +1,7 @@
 ﻿// 지옥의 길 — Polski (pl)
 const _PL={
+'패링 성공 시 분노스킬 쿨다운 {s}초 회복':"Po udanym sparowaniu: odnawia {s}s czasu odnowienia umiejętności Furii",
+'🔥분노스킬 쿨↓':"🔥Odnowienie umiej. Furii↓",
 '잘못 때렸군. 실수야.':"Nietrafione. Pudło.",
 '타이밍이야. 탄이 닿기 직전에 눌러.':"Liczy się timing. Uderz tuż przed trafieniem.",
 // --- v7 신규 펫/UI 8종 (2026-07-05) ---

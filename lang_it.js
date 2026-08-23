@@ -1,5 +1,7 @@
 ﻿// 지옥의 길 — Italiano (it)
 const _IT={
+'패링 성공 시 분노스킬 쿨다운 {s}초 회복':"Parata riuscita: recupera {s}s di ricarica dell’abilità Furia",
+'🔥분노스킬 쿨↓':"🔥Ricarica abilità Furia↓",
 '잘못 때렸군. 실수야.':"Colpo mancato. A vuoto.",
 '타이밍이야. 탄이 닿기 직전에 눌러.':"È tutta questione di tempismo. Colpisci un attimo prima che ti raggiunga.",
 // --- v7 신규 펫/UI 8종 (2026-07-05) ---

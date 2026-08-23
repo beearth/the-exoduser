@@ -1,5 +1,7 @@
 ﻿// 지옥의 길 — Magyar (hu)
 const _HU={
+'패링 성공 시 분노스킬 쿨다운 {s}초 회복':"Sikeres hárításkor: {s}mp visszatöltés a Düh képesség újratöltésén",
+'🔥분노스킬 쿨↓':"🔥Düh képesség CD↓",
 '잘못 때렸군. 실수야.':"Elhibáztad. Mellé.",
 '타이밍이야. 탄이 닿기 직전에 눌러.':"Minden az időzítésen múlik. Üss, épp mielőtt eltalál.",
 // --- v7 신규 펫/UI 8종 (2026-07-05) ---

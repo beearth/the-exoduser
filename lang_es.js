@@ -6,6 +6,8 @@
 // Whirlwind=Torbellino, Forge=Forja de Venganza, Enhancement=Mejora
 // Affix=Afijo, Crystal=Cristal, Poise=Postura
 const _ES={
+'패링 성공 시 분노스킬 쿨다운 {s}초 회복':"Al parar con éxito: recupera {s}s de enfriamiento de la habilidad de Furia",
+'🔥분노스킬 쿨↓':"🔥Enfriamiento hab. Furia↓",
 '잘못 때렸군. 실수야.':"Golpe fallido. Ni lo rozaste.",
 '타이밍이야. 탄이 닿기 직전에 눌러.':"Es cuestión de tiempo. Golpea justo antes de que te alcance.",
 // --- v7 신규 펫/UI 8종 (2026-07-05) ---

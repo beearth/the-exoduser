@@ -1,4 +1,6 @@
 ﻿const _PTBR={
+'패링 성공 시 분노스킬 쿨다운 {s}초 회복':"Ao aparar com sucesso: recupera {s}s de recarga da habilidade de Fúria",
+'🔥분노스킬 쿨↓':"🔥Recarga hab. Fúria↓",
 '잘못 때렸군. 실수야.':"Errou o golpe. Passou longe.",
 '타이밍이야. 탄이 닿기 직전에 눌러.':"É tudo questão de tempo. Acerte bem antes de te atingir.",
 // --- v7 신규 펫/UI 8종 (2026-07-05) ---

@@ -1,5 +1,7 @@
 ﻿// 지옥의 길 — Türkçe (tr)
 const _TR={
+'패링 성공 시 분노스킬 쿨다운 {s}초 회복':"Başarılı savuşturmada: Öfke yeteneği bekleme süresini {s}sn geri kazandırır",
+'🔥분노스킬 쿨↓':"🔥Öfke yeteneği bekleme↓",
 '잘못 때렸군. 실수야.':"Yanlış vurdun. Işkaladın.",
 '타이밍이야. 탄이 닿기 직전에 눌러.':"Her şey zamanlama. Tam sana değmeden vur.",
 // --- v7 신규 펫/UI 8종 (2026-07-05) ---

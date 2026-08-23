@@ -1,5 +1,7 @@
 ﻿// 지옥의 길 — Bahasa Indonesia (id)
 const _ID={
+'패링 성공 시 분노스킬 쿨다운 {s}초 회복':"Parry berhasil: pulihkan {s}d waktu jeda skill Amarah",
+'🔥분노스킬 쿨↓':"🔥Waktu jeda skill Amarah↓",
 '잘못 때렸군. 실수야.':"Ayunan meleset. Luput.",
 '타이밍이야. 탄이 닿기 직전에 눌러.':"Soal timing. Serang tepat sebelum mengenaimu.",
 // --- v7 신규 펫/UI 8종 (2026-07-05) ---

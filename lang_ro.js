@@ -1,5 +1,7 @@
 ﻿// 지옥의 길 — Română (ro)
 const _RO={
+'패링 성공 시 분노스킬 쿨다운 {s}초 회복':"La parare reușită: recuperează {s}s din reîncărcarea abilității Furie",
+'🔥분노스킬 쿨↓':"🔥Reîncărcare abilitate Furie↓",
 '잘못 때렸군. 실수야.':"Lovitură greșită. Pe lângă.",
 '타이밍이야. 탄이 닿기 직전에 눌러.':"Totul ține de sincronizare. Lovește chiar înainte să te atingă.",
 // --- v7 신규 펫/UI 8종 (2026-07-05) ---

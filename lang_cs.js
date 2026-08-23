@@ -1,5 +1,7 @@
 ﻿// 지옥의 길 — Čeština (cs)
 const _CS={
+'패링 성공 시 분노스킬 쿨다운 {s}초 회복':"Při úspěšném vykrytí: obnoví {s}s doby obnovy dovednosti Vzteku",
+'🔥분노스킬 쿨↓':"🔥Doba obnovy dovednosti Vzteku↓",
 '잘못 때렸군. 실수야.':"Špatný švih. Vedle.",
 '타이밍이야. 탄이 닿기 직전에 눌러.':"Je to o načasování. Udeř těsně předtím, než tě zasáhne.",
 // --- v7 신규 펫/UI 8종 (2026-07-05) ---

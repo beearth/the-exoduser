@@ -381,8 +381,11 @@ const UNIQUE_SPECIAL = {
   armor:           {ko:'피격 시 25% 확률로 데미지를 분노로 전환',   stat:'_uArmorRage',     val:0.25},
   helmet:          {ko:'마법 스킬 데미지 +50% + 마나 소모 -50%',   stat:'_uHelmMagic',     val:0.50},
   gloves:          {ko:'공격속도 +40%',                           stat:'_uGloveSpd',      val:0.40},
+  cape:            {ko:'패링 성공 시 분노스킬 쿨다운 {s}초 회복',     stat:'_uParryRageCd',   val:30, roll:[30,60]},
 };
 ```
+
+> **롤링 유니크**: `cape`는 `roll:[min,max]`(프레임)을 가지는 최초의 롤링 유니크 특수효과다. 아이템 생성 시 `_uv = roll[0] + ~~(rnd*(roll[1]-roll[0]+1))` 로 30~60프레임(0.5~1.0초) 중 하나가 결정되고, `uniqueSpecial.secs=(_uv/60).toFixed(1)` 로 초 표기값을 별도 저장한다. 표시용 `ko`에는 `{s}` 플레이스홀더를 유지하고, 툴팁 렌더(`_T(it.uniqueSpecial.ko).replace('{s}',secs)`)에서 치환한다 → 번역 테이블에는 `{s}` 포함 템플릿을 등록.
 
 #### 유니크 특수 효과 — 구현 상세 (2026-06-08)
 
@@ -399,10 +402,13 @@ const UNIQUE_SPECIAL = {
 | 8 | armor | `_uArmorRage` | 피격 시 25% 확률로 데미지→분노 전환 | `hurtP()` → HP 차감 직전, `a=0` 으로 데미지 무효화 + 분노 +10% | 확률적 데미지 면역 |
 | 9 | helmet | `_uHelmMagic` | 마법 데미지 +50%, MP 소모 -50% | `pMagicMul()` × (1+val), `pMagicCost()` 에서 val 차감 | 배율/비용 함수 직접 수정 |
 | 10 | gloves | `_uGloveSpd` | 공격속도 +40% | `statDex()` 에 val 합산 | 공속 배율 |
+| 11 | cape | `_uParryRageCd` | 패링 성공 시 분노스킬(대왕치기) 쿨다운 0.5~1.0초 회복 (롤) | `doParry()` → `_uEq('_uParryRageCd')` 조회, `P._gslCd=Math.max(0,P._gslCd-val)` | 프레임당 1회 게이트(`P._parryCdFrame!==G.frame`)로 탄막 다발 패링 남용 차단 |
 
 **헬퍼 함수**: `_uEq(stat)` — 전 장비 슬롯에서 해당 stat 값 반환 (없으면 0). 위치: `game.html:12376`
 
-**mkItem 저장**: `item[_us.stat] = _us.val` — 유니크 특수 효과의 stat/val을 아이템 객체에 직접 프로퍼티로 저장. `_uEq()`가 `INV.equipped[slot][stat]`으로 접근.
+**mkItem 저장**: `item[_us.stat] = _us.val` (롤링 유니크는 `_uv`) — 유니크 특수 효과의 stat/val을 아이템 객체에 직접 프로퍼티로 저장. `_uEq()`가 `INV.equipped[slot][stat]`으로 접근. 롤링 유니크(cape)는 추가로 `uniqueSpecial.secs`(초 표기)를 저장하고 `ko`엔 `{s}` 템플릿 유지.
+
+> **분노스킬 정의**: "분노스킬"=스페이스 키 **대왕치기**(`giantSlam`/`giantSlam2`), 쿨다운 변수 `P._gslCd`(기본 `Math.max(60,1800-(slv-1)*12)`프레임). `_uParryRageCd`는 이 단일 쿨다운을 차감한다. 패링은 근접(`doParry` 근접 호출)·탄막 반사(투사체당 `doParry` 호출) 모두 트리거하므로, 탄막 1발당 감소 누적을 막기 위해 `G.frame` 기준 프레임당 1회만 적용.
 
 **스테이지 리셋 변수**: `P._uReviveUsed`, `P._uInvisT` — 스테이지 시작 시 false/0으로 초기화.
 

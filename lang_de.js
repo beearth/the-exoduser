@@ -1,4 +1,6 @@
 ﻿const _DE={
+'패링 성공 시 분노스킬 쿨다운 {s}초 회복':"Bei erfolgreichem Parieren: {s}s Abklingzeit der Wut-Fähigkeit erstatten",
+'🔥분노스킬 쿨↓':"🔥Wut-Skill AZ↓",
 '잘못 때렸군. 실수야.':"Danebengehauen. Voll verfehlt.",
 '타이밍이야. 탄이 닿기 직전에 눌러.':"Alles Timing. Schlag genau bevor es dich trifft.",
 // --- v7 신규 펫/UI 8종 (2026-07-05) ---

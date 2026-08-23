@@ -6773,6 +6773,8 @@ const _EN={
 '패리 성공 시 반격 데미지 ×2':'Parry: counter DMG ×2',
 '피격 시 3초 쿨로 HP 5% 즉시 회복':'On Hit (3s CD): restore 5% HP instantly',
 '스킬 사용 시 20% 확률로 쿨다운 미소모':'Using skills: 20% chance no cooldown consumed',
+'패링 성공 시 분노스킬 쿨다운 {s}초 회복':'Parry: recover {s}s of Rage skill cooldown',
+'🔥분노스킬 쿨↓':'🔥Rage Skill CD↓',
 '공격속도 +20% + 기본공격에 랜덤 원소 추가':'ATK Speed +20% + basic attacks add random element',
 '이동 중 지속 HP 재생 (초당 HP의 1%)':'While moving: HP regen (1% HP/sec)',
 '회피 직후 첫 공격 데미지 +80%':'First attack after Dodge: DMG +80%',
@@ -20059,10 +20061,10 @@ function _addCorpse(e,killAng,power){
   // ── 일반 몹: 8dir 아틀라스 ──
   if(!_cDrawn){
     const _ca8=_ch8Atlas[e._mobCh]||_ch8Atlas[1]; // 몹 자기 챕터 아틀라스 (하드코딩 [1]→e._mobCh: 타챕터서 원 폴백 버그 수정)
-    if(_ca8){
+    if(_ca8&&_ca8.meta){ // meta 필수 (렌더 4650 `if(_a8&&_a8.meta)`와 동일 가드) — meta 없으면 seed col/row+cell추정이 빈 셀 샘플→진흑블럭. 없으면 원 폴백
       let _cda=_ca8.dirs['south'];
       if(_cda&&_cda.ready&&e._mob8Col!==undefined){
-        const _cc8=(_ca8.meta?_ca8.meta.cell:256);
+        const _cc8=_ca8.meta.cell||256;
         c.ctx.drawImage(_cda.img,e._mob8Col*_cc8,e._mob8Row*_cc8,_cc8,_cc8,0,0,128,128);
         _cDrawn=true;
       }
@@ -20220,7 +20222,7 @@ function _addHeadGib(e,killAng,power){
   }
   if(!_hDrawn){
     const _ca8=_ch8Atlas[e._mobCh]||_ch8Atlas[1]; // 몹 자기 챕터 아틀라스 (하드코딩 [1]→e._mobCh: 타챕터서 원 폴백 버그 수정)
-    if(_ca8){const _cda=_ca8.dirs['south'];if(_cda&&_cda.ready&&e._mob8Col!==undefined){const _cc8=(_ca8.meta?_ca8.meta.cell:256);_gibX.drawImage(_cda.img,e._mob8Col*_cc8,e._mob8Row*_cc8,_cc8,_cc8,0,0,48,48);_hDrawn=true;}}
+    if(_ca8&&_ca8.meta){const _cda=_ca8.dirs['south'];if(_cda&&_cda.ready&&e._mob8Col!==undefined){const _cc8=_ca8.meta.cell||256;_gibX.drawImage(_cda.img,e._mob8Col*_cc8,e._mob8Row*_cc8,_cc8,_cc8,0,0,48,48);_hDrawn=true;}}
   }
   if(!_hDrawn){_gibX.fillStyle=e.col||'#cc0000';_gibX.beginPath();_gibX.arc(24,15,12,0,Math.PI*2);_gibX.fill();}
   // ── 풀에서 슬롯 확보 (비활성 우선, 없으면 최단수명) ──
@@ -50340,6 +50342,14 @@ function drawP(){
       const _bdSy=_bdSq[1];
       X.translate(0,(_pScale*48*(1-_bdSy))*0.5); // 발밑 고정(세로 압축 보정, 착지스쿼시 동일 idiom)
       X.scale(_pScale*_bdSq[0],_pScale*_bdSy); // x=_dsq[0] 가로 stretch, y=_dsq[1] 세로 squash
+    }else if(P.s==='wSwing'&&!_apDead){
+      // ── 근접 스윙 엔벨로프: 선딜 되감기→스윙→후딜 복귀 (MOTION.swing, 시각 회전 전용, 판정/히트박스 무변경) ──
+      const _swV=MOTION.swing(P.swProg,0.15,0.25); // -값=되감기 / +1 피크(swProg 0.40=hitArc 프레임에 정렬) / 이후 복귀
+      const _swSign=Math.cos(_fa)>=0?1:-1;         // 좌우 facing 반전 대응
+      X.translate(0,-_pScale*10);                  // 어깨 높이 피벗(발밑 회전 시 넘어져 보임 방지)
+      X.rotate(_swV*0.35*_swSign);                 // SWING_ARC 0.35rad
+      X.translate(0,_pScale*10);
+      X.scale(_pScale,_pScale);
     }else if(_apAnim==='idle'&&!_apDead){
       // ── 전투 자세 브리딩: 미세 상하 + Y스케일 숨쉬기 ──
       const _br=Math.sin(t/38)*.012; // 숨쉬기 Y스케일 ±1.2%

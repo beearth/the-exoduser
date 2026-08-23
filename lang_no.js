@@ -1,5 +1,7 @@
 ﻿// 지옥의 길 — Norsk (no)
 const _NO={
+'패링 성공 시 분노스킬 쿨다운 {s}초 회복':"Ved vellykket parering: gjenopprett {s}s nedkjøling på Raseri-ferdigheten",
+'🔥분노스킬 쿨↓':"🔥Raseri-ferdighet CD↓",
 '잘못 때렸군. 실수야.':"Bomma. Forbi.",
 '타이밍이야. 탄이 닿기 직전에 눌러.':"Alt handler om timing. Slå rett før den treffer.",
 // --- v7 신규 펫/UI 8종 (2026-07-05) ---
