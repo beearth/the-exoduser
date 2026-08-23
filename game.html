@@ -50354,12 +50354,23 @@ function drawP(){
       const _bdSy=_bdSq[1];
       X.translate(0,(_pScale*48*(1-_bdSy))*0.5); // 발밑 고정(세로 압축 보정, 착지스쿼시 동일 idiom)
       X.scale(_pScale*_bdSq[0],_pScale*_bdSy); // x=_dsq[0] 가로 stretch, y=_dsq[1] 세로 squash
-    }else if(P.s==='wSwing'&&!_apDead){
-      // ── 근접 스윙 엔벨로프: 선딜 되감기→스윙→후딜 복귀 (MOTION.swing, 시각 회전 전용, 판정/히트박스 무변경) ──
-      const _swV=MOTION.swing(P.swProg,0.15,0.25); // -값=되감기 / +1 피크(swProg 0.40=hitArc 프레임에 정렬) / 이후 복귀
+    }else if((P.s==='wWindup'||P.s==='wSwing'||P.s==='wRecover')&&!_apDead){
+      // ── 근접 3단 스윙 엔벨로프: wWindup=되감기(0→-12°) / wSwing=내려침(-12°→+20°) / wRecover=복귀(+20°→0) (시각 회전 전용, 판정/히트박스/프레임수 무변경) ──
+      let _swAng;
+      if(P.s==='wWindup'){
+        const _totW=~~(10/(wp().spd||1))||1;const _tW=P.st2<=0?1:Math.max(0,Math.min(1,1-P.st2/_totW));
+        _swAng=-0.21*MOTION.ez(MOTION.OUT3,_tW);                 // 0 → -0.21rad(-12°) 뒤로 당김(OUT3 부드럽게)
+      }else if(P.s==='wSwing'){
+        const _tS=P.swProg;                                     // 0→1, hitArc=0.40
+        _swAng=-0.21+0.56*MOTION.ez(MOTION.OUT3,_tS);           // -0.21 → +0.35rad(+20°). OUT3이라 판정(0.40) 시 이미 +0.23(앞쪽)
+      }else{ // wRecover
+        const _totR=~~(16/((wp().spd||.3)*statDex()*(1+_eqAffix('meleeAtkSpd')+_eqAffix('glovesAtkSpd'))))||1;
+        const _tR=P.st2<=0?1:Math.max(0,Math.min(1,1-P.st2/_totR));
+        _swAng=0.35*(1-MOTION.ez(MOTION.OUT3,_tR));             // +0.35 → 0 복귀(힘 빠지며)
+      }
       const _swSign=Math.cos(_fa)>=0?1:-1;         // 좌우 facing 반전 대응
       X.translate(0,-_pScale*10);                  // 어깨 높이 피벗(발밑 회전 시 넘어져 보임 방지)
-      X.rotate(_swV*0.35*_swSign);                 // SWING_ARC 0.35rad
+      X.rotate(_swAng*_swSign);
       X.translate(0,_pScale*10);
       X.scale(_pScale,_pScale);
     }else if(_apAnim==='idle'&&!_apDead){
