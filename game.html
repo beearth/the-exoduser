@@ -4756,11 +4756,11 @@ function _getAtlasTxt(font,text,color){
   const fs=parseFloat(font)||14;const w=Math.ceil(met.width)+8,h=Math.ceil(fs*1.6)+8;
   if(w<2||h<2)return null;
   if(_txtAtlasX+w>2048){_txtAtlasX=0;_txtAtlasY+=_txtAtlasRH;_txtAtlasRH=0}
-  if(_txtAtlasY+h>512){_txtAtlasCtx.clearRect(0,0,2048,512);_txtAtlasX=0;_txtAtlasY=0;_txtAtlasRH=0;_txtUV.clear()}
+  if(_txtAtlasY+h>512){_txtAtlasCtx.clearRect(0,0,2048,512);_txtAtlasX=0;_txtAtlasY=0;_txtAtlasRH=0;_txtUV.clear();if(window._GV)window._GV.clr++;/* TEMP DIAG */}
   _txtAtlasCtx.font=font;_txtAtlasCtx.fillStyle=color;_txtAtlasCtx.textBaseline='middle';_txtAtlasCtx.textAlign='left';
   _txtAtlasCtx.fillText(text,_txtAtlasX+4,_txtAtlasY+h/2);
   uv={u0:_txtAtlasX/2048,v0:_txtAtlasY/512,u1:(_txtAtlasX+w)/2048,v1:(_txtAtlasY+h)/512,w,h,tw:met.width,age:_txtTick};
-  _txtUV.set(k,uv);_txtAtlasX+=w;_txtAtlasRH=Math.max(_txtAtlasRH,h);_txtAtlasV++;_txtAtlas._glVer=_txtAtlasV;_txtUVSize=_txtUV.size;return uv}
+  _txtUV.set(k,uv);_txtAtlasX+=w;_txtAtlasRH=Math.max(_txtAtlasRH,h);_txtAtlasV++;_txtAtlas._glVer=_txtAtlasV;_txtUVSize=_txtUV.size;window._GV=window._GV||{add:0,clr:0,f:0,_lf:0,_la:0,_lc:0};if(!window._GV._raf){window._GV._raf=1;(function _gf(){window._GV.f++;requestAnimationFrame(_gf)})();}window._GV.add++;if(window._GV.f%60===0&&window._GV._lf!==window._GV.f){console.log('[GLVER] atlasVer='+_txtAtlasV+' glyphAdd/f='+((window._GV.add-window._GV._la)/60).toFixed(2)+' clear/f='+((window._GV.clr-window._GV._lc)/60).toFixed(2)+' uvSize='+_txtUV.size);window._GV._lf=window._GV.f;window._GV._la=window._GV.add;window._GV._lc=window._GV.clr;}/* TEMP DIAG */return uv}
 _txtEvict=function(){if(_txtUV.size>600){for(const[mk,mv]of _txtUV)if(_txtTick-mv.age>120)_txtUV.delete(mk);_txtUVSize=_txtUV.size}};
 
 // ── 공통: _quad (오프셋 기반) ──
@@ -5234,13 +5234,13 @@ let _fsc=[0,0,0,1],_ssc=[0,0,0,1];
 let _pathA=[],_pathL=[],_pathR=[],_pathE=[];
 let _sstk=[],_sstkPool=[],_sstkPoolI=0;
 function _uploadCanvasTex(src){
-  window.__TU=window.__TU||{call:0,up:0,px:0,f:0};if(!window.__TU._raf){window.__TU._raf=1;(function _tf(){window.__TU.f++;requestAnimationFrame(_tf)})();}window.__TU.call++;if(window.__TU.f%60===0&&window.__TU._lf!==window.__TU.f){window.__TU._lf=window.__TU.f;var _gf=Math.max(1,window.__TU.f);console.log('[TEXUP] call/f='+(window.__TU.call/_gf).toFixed(2)+' up/f='+(window.__TU.up/_gf).toFixed(2)+' calls='+window.__TU.call+' ups='+window.__TU.up+' px='+window.__TU.px+' ('+(window.__TU.px/_gf/1e6).toFixed(2)+'Mpx/f)');} // TEMP DIAG
+  var _T=window.__TU=window.__TU||{call:0,up:0,px:0,f:0,_lf:0,_lc:0,_lu:0,_lp:0,mn:0,mv:0,ms:0,me:0,_lmn:0,_lmv:0,_lms:0,_lme:0,who:{}};if(!_T._raf){_T._raf=1;(function _tf(){window.__TU.f++;requestAnimationFrame(_tf)})();}_T.call++;if(_T.f%60===0&&_T._lf!==_T.f){var _dc=_T.call-_T._lc,_du=_T.up-_T._lu,_dp=_T.px-_T._lp;console.log('[TEXUP] up/f='+(_du/60).toFixed(2)+' call/f='+(_dc/60).toFixed(2)+' Mpx/f='+(_dp/60/1e6).toFixed(2)+' | totUp='+_T.up+' totCall='+_T.call);console.log('[TEXMISS] new='+((_T.mn-_T._lmn)/60).toFixed(2)+' ver='+((_T.mv-_T._lmv)/60).toFixed(2)+' size='+((_T.ms-_T._lms)/60).toFixed(2)+' etc='+((_T.me-_T._lme)/60).toFixed(2));var _wa=Object.keys(_T.who).map(function(k){return[k,_T.who[k]]}).sort(function(a,b){return b[1]-a[1]}).slice(0,10);console.log('[TEXWHO] '+_wa.map(function(e){return e[0]+' x'+e[1]}).join('  |  '));_T._lf=_T.f;_T._lc=_T.call;_T._lu=_T.up;_T._lp=_T.px;_T._lmn=_T.mn;_T._lmv=_T.mv;_T._lms=_T.ms;_T._lme=_T.me;_T.who={};} // TEMP DIAG
   if(_useGPU){const bg=_getTex(src);_setTex(bg);return}
   if(!_useGL||!GL)return; // WebGL context lost — GL 직접 호출 방지 (restored 시 _initWebGL로 텍스처 자동 재업로드)
   const tex=_getTex(src);_setTex(tex);
   const prev=_texUploaded.get(src);const ver=src._glVer||0;
   if(!prev||prev.w!==src.width||prev.h!==src.height||prev.v!==ver){
-    window.__TU.up++;window.__TU.px+=((src.width||0)*(src.height||0)); // TEMP DIAG
+    window.__TU.up++;window.__TU.px+=((src.width||0)*(src.height||0));var _r=!prev?'mn':(prev.w!==src.width||prev.h!==src.height)?'ms':(prev.v!==ver)?'mv':'me';window.__TU[_r]++;var _wk=(src.width||0)+'x'+(src.height||0);window.__TU.who[_wk]=(window.__TU.who[_wk]||0)+1; // TEMP DIAG
     if(src.width>0&&src.height>0&&src.width<=_glMaxTex&&src.height<=_glMaxTex){
       _flush();GL.bindTexture(GL.TEXTURE_2D,tex);
       try{GL.texImage2D(GL.TEXTURE_2D,0,GL.RGBA,GL.RGBA,GL.UNSIGNED_BYTE,src)}catch(e){}}
@@ -8656,7 +8656,7 @@ const BOSS_MOVES=[
   {id:'burst',    idx:0, tele:45,rec:40,canFeint:false,canDelay:0,  range:[0,999], phase:[0,1,2,3,4],combo:['fan','shock','charge'],tags:['aoe','ranged'],    cd:140},
   {id:'fan',      idx:1, tele:25,rec:35,canFeint:false,canDelay:.3, range:[60,300],phase:[0,1,2,3,4],combo:['charge','mine','multiDash'],tags:['ranged','frontal'],cd:100},
   {id:'charge',   idx:2, tele:40,rec:60,canFeint:true, canDelay:.5, range:[40,400],phase:[0,1,2,3,4],combo:['spin','grab','shock','multiDash'],tags:['gap-close','melee'],cd:100},
-  {id:'jump',     idx:3, tele:0, rec:0, canFeint:false,canDelay:0,  range:[80,500],phase:[0,1,2,3,4],combo:['shock','burst','spin'],tags:['gap-close','aoe'],cd:150},
+  {id:'jump',     idx:3, tele:34,rec:30,canFeint:false,canDelay:0,  range:[80,500],phase:[0,1,2,3,4],combo:['shock','burst','spin'],tags:['gap-close','aoe'],cd:150},
   {id:'laser',    idx:4, tele:40,rec:50,canFeint:false,canDelay:.4, range:[60,400],phase:[1,2,3,4],  combo:['fan','vortex','charge'],tags:['ranged','sustained'],cd:180},
   {id:'shock',    idx:5, tele:35,rec:40,canFeint:false,canDelay:0,  range:[0,180], phase:[0,1,2,3,4],combo:['summon','mine','charge'],tags:['aoe','melee'],   cd:120},
   {id:'summon',   idx:6, tele:45,rec:60,canFeint:false,canDelay:0,  range:[0,999], phase:[1,2,3,4],  combo:['charge','burst'],    tags:['utility'],           cd:300},
@@ -26400,10 +26400,10 @@ function hasLOS(x1,y1,x2,y2){
 }
 // [ISW-OPT] collision-only prefilter: MAP_OBJS 중 collision meta(_OBJ_META[type].collision||col) 보유 object만 hot-path 순회.
 // isW 판정 기준·값 100% 동일 — MAP_OBJS 재할당(identity)/length 변경 시에만 rebuild. (근거: docs 6.8, differential 363K query mismatch=0)
-var _colObjs=[],_colObjsSrc=null,_colObjsN=-1;
-function _rebuildColObjs(){var A=_colObjs;A.length=0;for(var _ci=0;_ci<MAP_OBJS.length;_ci++){var _co=MAP_OBJS[_ci];if(_co.noCol)continue;var _cm=_OBJ_META[_co.type];if(_cm&&(_cm.collision||_cm.col))A[A.length]=_co;}_colObjsSrc=MAP_OBJS;_colObjsN=MAP_OBJS.length;}
+var _colObjs=[],_colObjsSrc=null,_colObjsN=-1,_colScaleLogged=false;
+function _rebuildColObjs(){var A=_colObjs,_d3w=0,_d3h=0,_chapW=0,_chapH=0;A.length=0;for(var _ci=0;_ci<MAP_OBJS.length;_ci++){var _co=MAP_OBJS[_ci];if(_co.noCol)continue;var _cm=_OBJ_META[_co.type];if(_cm&&(_cm.collision||_cm.col)){const _pcs=_co.scale||1;_co._colW=(_cm.colW||0)*_pcs;_co._colH=(_cm.colH||_cm.colW||0)*_pcs;_co._colSz=(_cm.colSz||(_cm.sz||64)*.4)*_pcs;A[A.length]=_co;if(_co.type==='m_dragon_3d'){_d3w=_co._colW*2;_d3h=_co._colH*2}else if(_co.type==='m_mega_chapel'){_chapW=_co._colSz*2;_chapH=_chapW}}}if(!_colScaleLogged&&_d3w&&_chapW){console.log('[COL_SCALE] 3D 용 [118,55] '+_d3w.toFixed(1)+'x'+_d3h.toFixed(1)+' / 무너진 예배당 [118,181] '+_chapW.toFixed(1)+'x'+_chapH.toFixed(1));_colScaleLogged=true}_colObjsSrc=MAP_OBJS;_colObjsN=MAP_OBJS.length;}
 function _ensureColObjs(){if(_colObjsSrc!==MAP_OBJS||_colObjsN!==MAP_OBJS.length)_rebuildColObjs();}
-function isW(px,py,skipBone){_ensureColObjs();const tx=~~(px/T),ty=~~(py/T);if(tx<0||ty<0||tx>=G.mw||ty>=G.mh)return true;const v=G.map[ty][tx];if(v===1)return true;if(!skipBone&&G._boneWalls){for(let bi=0;bi<G._boneWalls.length;bi++){const bw=G._boneWalls[bi];if(bw.phase==='rise'&&bw.t<bw.riseT*0.5)continue;const dx=px-bw.x,dy=py-bw.y;const d2=dx*dx+dy*dy;const rIn=bw.ringR-bw.wallThk,rOut=bw.ringR+bw.wallThk;if(d2>=rIn*rIn&&d2<=rOut*rOut)return true}}for(let _pi=0;_pi<_colObjs.length;_pi++){const _po=_colObjs[_pi];if(_po.noCol)continue;const _pm=_OBJ_META[_po.type];if(_pm&&(_pm.collision||_pm.col)){const _pdx=px-_po.x,_pdy=py-_po.y;if(_pm.colW){const _rx=_pm.colW,_ry=_pm.colH||_pm.colW,_coy=_pm.colOy||0;const _pdy2=_pdy-_coy;if((_pdx*_pdx)/(_rx*_rx)+(_pdy2*_pdy2)/(_ry*_ry)<1)return true}else{const _pr=_pm.colSz||_pm.sz*.4;if(_pdx*_pdx+_pdy*_pdy<_pr*_pr)return true}}}return false}
+function isW(px,py,skipBone){_ensureColObjs();const tx=~~(px/T),ty=~~(py/T);if(tx<0||ty<0||tx>=G.mw||ty>=G.mh)return true;const v=G.map[ty][tx];if(v===1)return true;if(!skipBone&&G._boneWalls){for(let bi=0;bi<G._boneWalls.length;bi++){const bw=G._boneWalls[bi];if(bw.phase==='rise'&&bw.t<bw.riseT*0.5)continue;const dx=px-bw.x,dy=py-bw.y;const d2=dx*dx+dy*dy;const rIn=bw.ringR-bw.wallThk,rOut=bw.ringR+bw.wallThk;if(d2>=rIn*rIn&&d2<=rOut*rOut)return true}}for(let _pi=0;_pi<_colObjs.length;_pi++){const _po=_colObjs[_pi];if(_po.noCol)continue;const _pm=_OBJ_META[_po.type];if(_pm&&(_pm.collision||_pm.col)){const _pdx=px-_po.x,_pdy=py-_po.y;if(_po._colW){const _rx=_po._colW,_ry=_po._colH,_coy=_pm.colOy||0;const _pdy2=_pdy-_coy;if((_pdx*_pdx)/(_rx*_rx)+(_pdy2*_pdy2)/(_ry*_ry)<1)return true}else{const _pr=_po._colSz;if(_pdx*_pdx+_pdy*_pdy<_pr*_pr)return true}}}return false}
 function canMv(x,y,r){return!isW(x-r,y-r)&&!isW(x+r,y-r)&&!isW(x-r,y+r)&&!isW(x+r,y+r)}
 // 돌진 경로 클리어 판정: e→플레이어 방향으로 벽/오브젝트가 가로막으면 false (돌진 자체를 막음)
 function _chgPathClear(e,len){const a=Math.atan2(P.y-e.y,P.x-e.x),dx=Math.cos(a),dy=Math.sin(a),mx=Math.min(len||300,dst(P.x,P.y,e.x,e.y)+e.r+24);for(let t=e.r;t<mx;t+=12){if(isW(e.x+dx*t,e.y+dy*t))return false}return true}
@@ -31450,6 +31450,7 @@ function update(){
   if(G.stage===3&&G.bossAlive){
     if(!G._druidOrbs)G._druidOrbs=[];
     const _db=G._bossRef;G._druidOrbT=(G._druidOrbT||0)+sp;
+    if(_db&&_db.alive&&G._druidOrbT>=90&&G._druidOrbT<110){const _gr=60*(1-(G._druidOrbT-90)/20);for(let _g=0;_g<2;_g++){const _ga=G._druidOrbT*0.5+_g*3.14159;poolPart(_db.x+Math.cos(_ga)*_gr,_db.y-40+Math.sin(_ga)*_gr,-Math.cos(_ga)*1.5,-Math.sin(_ga)*1.5,'#66dd22',2,10);}} // [텔레그래프] 발사 20f전 집광(기존 파티클풀 재사용)
     if(_db&&_db.alive&&(_db._bossPhase||0)>=0&&G._druidOrbT>=110){G._druidOrbT=0;const _oa=Math.atan2(P.y-_db.y,P.x-_db.x);
       for(let _k=-1;_k<=1;_k++){const _a=_oa+_k*0.14;G._druidOrbs.push({x:_db.x,y:_db.y-40,vx:Math.cos(_a)*6.8,vy:Math.sin(_a)*6.8,t:0,r:26,dmg:~~((_db.atk||100)*.6)});}}
     let _ow=0;for(let oi=0;oi<G._druidOrbs.length;oi++){const o=G._druidOrbs[oi];o.t+=sp;o.x+=o.vx*sp;o.y+=o.vy*sp;let _del=false;
@@ -32041,7 +32042,7 @@ function _bossStartPattern(e,mv,d,phase,extraDelay){
     case'jump':{let jx=P.x,jy=P.y;
       if(!canMv(jx,jy,e.r)){const _jp=safePt(jx,jy,e.r);if(_jp){jx=_jp.x;jy=_jp.y}else{jx=e.x;jy=e.y}}
       e.jumpX=jx;e.jumpY=jy;e.jumpOx=e.x;e.jumpOy=e.y;
-      e.s='bossJump';e.st2=40;addTxt(e.x,e.y-30,_T('🦅 도약!'),'#cc66ff',40);SFX.slam();break;}
+      e.s='bossJumpWind';e.st2=tele||34;e._telegraphT=tele||34;e._telegraphR=e.r+30;addTxt(e.x,e.y-30,_T('🦅 도약 준비!'),'#cc66ff',40);SFX.charge();break;}
     case'laser':e.laserAng=e.facing;e.laserLen=0;
       e.s='bossLaserWind';e.st2=tele||50;addTxt(e.x,e.y-30,_T('⚡ 레이저!'),'#ff00ff',50);SFX.magic(0);break;
     case'shock':e.s='bossShockWind';e.st2=tele||45;addTxt(e.x,e.y-30,_T('🌊 충격파!'),'#44aaff',40);SFX.charge();break;
@@ -34895,6 +34896,7 @@ function updateE(e,sp){
     if(Math.random()>.3)poolPart(e.x+(Math.random()-.5)*10,e.y+(Math.random()-.5)*10,-e.echDx*3,-e.echDy*3,e.col,4+Math.random()*3,10);
     if(e.st2<=0){e.s='recover';e.st2=40}break}
   // ── 점프 공격: 도약 후 착지 충격 ──
+  case'bossJumpWind':{ if(e.st2<=0){e.s='bossJump';e.st2=40;addTxt(e.x,e.y-30,_T('🦅 도약!'),'#cc66ff',30);SFX.slam();}break} // [텔레그래프] 도약 선딜: 경고링(_telegraphT) 표시 후 도약
   case'bossJump':{
     const prog=1-e.st2/40;
     let _jx,_jy;
