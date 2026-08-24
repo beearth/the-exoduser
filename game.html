@@ -47848,9 +47848,7 @@ function drawP(){
     // 중심 점
     X.globalAlpha=.5;X.fillStyle='#ffd700';
     X.beginPath();X.arc(_hrTx,_hrTy,3,0,Math.PI*2);X.fill();
-    // 텍스트
-    X.globalAlpha=.8;X.fillStyle='#ffd700';X.font='bold 11px monospace';X.textAlign='center';
-    X.fillText('⚡ R:'+_hrAimR,_hrTx,_hrTy-_hrAimR-8);
+    // 반경 숫자 텍스트 제거 — 링이 이미 반경 표시(정보 중복), _hrR 값·공식 불변
     X.restore();
   }
   // ══ 폭풍소환 조준 인디케이터 (마우스 커서 위치 — 악의폭풍과 동일) ══
@@ -47914,7 +47912,7 @@ function drawP(){
         X.fillRect(bx-2,by-2,4,4);
       }
       X.globalAlpha=.8;X.fillStyle='#55cc77';X.font='bold 11px monospace';X.textAlign='center';
-      X.fillText('\u{1F9B4}'+((P._bnsCd||0)>0?((P._bnsCd/60).toFixed(1)+'s'):'OK'),_msTx,_msTy-_msAimR-8);
+      if((P._bnsCd||0)>0)X.fillText('\u{1F9B4}'+Math.ceil(P._bnsCd/60)+'s',_msTx,_msTy-_msAimR-8);// 정수초·완료시 미표시(글리프 churn 제거)
     }else{
       // 반투명 스카이블루 원
       X.globalAlpha=.1+.03*Math.sin(_mst*8);X.fillStyle='#2288cc';
