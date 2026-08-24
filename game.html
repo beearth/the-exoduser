@@ -5234,11 +5234,13 @@ let _fsc=[0,0,0,1],_ssc=[0,0,0,1];
 let _pathA=[],_pathL=[],_pathR=[],_pathE=[];
 let _sstk=[],_sstkPool=[],_sstkPoolI=0;
 function _uploadCanvasTex(src){
+  window.__TU=window.__TU||{call:0,up:0,px:0,f:0};if(!window.__TU._raf){window.__TU._raf=1;(function _tf(){window.__TU.f++;requestAnimationFrame(_tf)})();}window.__TU.call++;if(window.__TU.f%60===0&&window.__TU._lf!==window.__TU.f){window.__TU._lf=window.__TU.f;var _gf=Math.max(1,window.__TU.f);console.log('[TEXUP] call/f='+(window.__TU.call/_gf).toFixed(2)+' up/f='+(window.__TU.up/_gf).toFixed(2)+' calls='+window.__TU.call+' ups='+window.__TU.up+' px='+window.__TU.px+' ('+(window.__TU.px/_gf/1e6).toFixed(2)+'Mpx/f)');} // TEMP DIAG
   if(_useGPU){const bg=_getTex(src);_setTex(bg);return}
   if(!_useGL||!GL)return; // WebGL context lost — GL 직접 호출 방지 (restored 시 _initWebGL로 텍스처 자동 재업로드)
   const tex=_getTex(src);_setTex(tex);
   const prev=_texUploaded.get(src);const ver=src._glVer||0;
   if(!prev||prev.w!==src.width||prev.h!==src.height||prev.v!==ver){
+    window.__TU.up++;window.__TU.px+=((src.width||0)*(src.height||0)); // TEMP DIAG
     if(src.width>0&&src.height>0&&src.width<=_glMaxTex&&src.height<=_glMaxTex){
       _flush();GL.bindTexture(GL.TEXTURE_2D,tex);
       try{GL.texImage2D(GL.TEXTURE_2D,0,GL.RGBA,GL.RGBA,GL.UNSIGNED_BYTE,src)}catch(e){}}
@@ -31449,10 +31451,10 @@ function update(){
     if(!G._druidOrbs)G._druidOrbs=[];
     const _db=G._bossRef;G._druidOrbT=(G._druidOrbT||0)+sp;
     if(_db&&_db.alive&&(_db._bossPhase||0)>=0&&G._druidOrbT>=110){G._druidOrbT=0;const _oa=Math.atan2(P.y-_db.y,P.x-_db.x);
-      for(let _k=-1;_k<=1;_k++){const _a=_oa+_k*0.28;G._druidOrbs.push({x:_db.x,y:_db.y-40,vx:Math.cos(_a)*3.3,vy:Math.sin(_a)*3.3,t:0,r:26,dmg:~~((_db.atk||100)*.6)});}}
+      for(let _k=-1;_k<=1;_k++){const _a=_oa+_k*0.14;G._druidOrbs.push({x:_db.x,y:_db.y-40,vx:Math.cos(_a)*6.8,vy:Math.sin(_a)*6.8,t:0,r:26,dmg:~~((_db.atk||100)*.6)});}}
     let _ow=0;for(let oi=0;oi<G._druidOrbs.length;oi++){const o=G._druidOrbs[oi];o.t+=sp;o.x+=o.vx*sp;o.y+=o.vy*sp;let _del=false;
       if(P.iframes<=0&&dst(P.x,P.y,o.x,o.y)<o.r+P.r){hurtP(~~(o.dmg*elMul(EL.P,ar().el)));P.poison=(P.poison||0)+3;P._webSlow=Math.max(P._webSlow||0,80);addTxt(P.x,P.y-16,_T('☠속박!'),'#66dd22',22);_del=true;}
-      if(o.t>200||o.x<-40||o.y<-40||o.x>G.mw*T+40||o.y>G.mh*T+40)_del=true;
+      if(o.t>460||o.x<-40||o.y<-40||o.x>G.mw*T+40||o.y>G.mh*T+40)_del=true;
       if(!_del)G._druidOrbs[_ow++]=o;}G._druidOrbs.length=_ow;
   }
   // ═══ 용암 장판 업데이트 ═══
