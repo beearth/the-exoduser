@@ -9577,8 +9577,16 @@ function _drawDruidBoss(X,e,sa,tdY,spec){
   const key=_stage1CodexBossMotionKey(e);
   let sheet,cols,rows,frame,dir=_druidDir(e),dirless=false;
   const _nw=performance.now(); // 시간기반 프레임(프레임레이트 독립 — 고FPS서 빨라짐 방지)
+  // [다크드루이드] 순간이동(jump/tele) → 땅속 burrow 변신 (emerge 시트: 침강 0→7, 부상 7→0)
+  const _isBur=e.s&&(e.s==='bossJump'||e.s.indexOf('Tele')>=0||e.s.indexOf('tele')>=0);
   const _isCharge=e.s&&(e.s.indexOf('Charge')>=0||e.s.indexOf('charge')>=0||e.s.indexOf('Dash')>=0||e.s.indexOf('multiDash')>=0);
-  if(_isCharge&&_druidSheets.beast&&_druidSheets.beast.ready){sheet='beast';cols=4;rows=2;dirless=true;frame=dir;} // 돌진=야수 변신형(8방향 4x2, 셀=방향)
+  if(_isBur&&_druidSheets.emerge&&_druidSheets.emerge.ready){
+    if(e._lastBurS!==e.s){e._burMax=Math.max(1,e.st2||40);e._lastBurS=e.s}
+    const _pg=Math.max(0,Math.min(1,1-(e.st2/e._burMax)));
+    frame=_pg<0.5?Math.min(7,~~(_pg*16)):Math.max(0,7-~~((_pg-0.5)*16));
+    sheet='emerge';cols=4;rows=2;dirless=true;
+  }
+  else if(_isCharge&&_druidSheets.beast&&_druidSheets.beast.ready){sheet='beast';cols=4;rows=2;dirless=true;frame=dir;} // 돌진=야수 변신형(8방향 4x2, 셀=방향)
   else if(key==='slash'||key==='slam'||key==='windup'){sheet='attack';cols=4;rows=8;frame=(~~(_nw/150))%4;} // 공격 150ms/frame (~6.7fps, 1사이클 0.6s)
   else if(key==='walk'){sheet='walk';cols=4;rows=8;frame=(~~(_nw/150))%4;} // 걷기 150ms/frame
   else{sheet='walk';cols=4;rows=8;frame=(~~(_nw/600))%2;} // idle 600ms sway (walk시트 같은아트, 캐릭터 통일)
