@@ -4746,7 +4746,7 @@ _tq[6]=m[0]*x+m[2]*yh+m[4];_tq[7]=m[1]*x+m[3]*yh+m[5]}return _tq}
 function _syncTx(){const m=_mats[_mi];_txCtx.setTransform(m[0],m[1],m[2],m[3],m[4],m[5])}
 
 // ── 공통: 텍스트 아틀라스 ──
-const _txtAtlas=document.createElement('canvas');_txtAtlas.width=2048;_txtAtlas.height=512;_txtAtlas._tag='txtAtlas';/* TEMP DIAG */
+const _txtAtlas=document.createElement('canvas');_txtAtlas.width=2048;_txtAtlas.height=512;
 const _txtAtlasCtx=_txtAtlas.getContext('2d');
 let _txtAtlasV=0,_txtAtlasX=0,_txtAtlasY=0,_txtAtlasRH=0;
 const _txtUV=new Map();
@@ -4756,11 +4756,11 @@ function _getAtlasTxt(font,text,color){
   const fs=parseFloat(font)||14;const w=Math.ceil(met.width)+8,h=Math.ceil(fs*1.6)+8;
   if(w<2||h<2)return null;
   if(_txtAtlasX+w>2048){_txtAtlasX=0;_txtAtlasY+=_txtAtlasRH;_txtAtlasRH=0}
-  if(_txtAtlasY+h>512){_txtAtlasCtx.clearRect(0,0,2048,512);_txtAtlasX=0;_txtAtlasY=0;_txtAtlasRH=0;_txtUV.clear();if(window._GV)window._GV.clr++;/* TEMP DIAG */}
+  if(_txtAtlasY+h>512){_txtAtlasCtx.clearRect(0,0,2048,512);_txtAtlasX=0;_txtAtlasY=0;_txtAtlasRH=0;_txtUV.clear()}
   _txtAtlasCtx.font=font;_txtAtlasCtx.fillStyle=color;_txtAtlasCtx.textBaseline='middle';_txtAtlasCtx.textAlign='left';
   _txtAtlasCtx.fillText(text,_txtAtlasX+4,_txtAtlasY+h/2);
   uv={u0:_txtAtlasX/2048,v0:_txtAtlasY/512,u1:(_txtAtlasX+w)/2048,v1:(_txtAtlasY+h)/512,w,h,tw:met.width,age:_txtTick};
-  _txtUV.set(k,uv);_txtAtlasX+=w;_txtAtlasRH=Math.max(_txtAtlasRH,h);_txtAtlasV++;_txtAtlas._glVer=_txtAtlasV;_txtUVSize=_txtUV.size;window._GV=window._GV||{add:0,clr:0,f:0,_lf:0,_la:0,_lc:0};if(!window._GV._raf){window._GV._raf=1;(function _gf(){window._GV.f++;requestAnimationFrame(_gf)})();}window._GV.add++;if(window._GV.f%60===0&&window._GV._lf!==window._GV.f){console.log('[GLVER] atlasVer='+_txtAtlasV+' glyphAdd/f='+((window._GV.add-window._GV._la)/60).toFixed(2)+' clear/f='+((window._GV.clr-window._GV._lc)/60).toFixed(2)+' uvSize='+_txtUV.size);window._GV._lf=window._GV.f;window._GV._la=window._GV.add;window._GV._lc=window._GV.clr;}/* TEMP DIAG */return uv}
+  _txtUV.set(k,uv);_txtAtlasX+=w;_txtAtlasRH=Math.max(_txtAtlasRH,h);_txtAtlasV++;_txtAtlas._glVer=_txtAtlasV;_txtUVSize=_txtUV.size;return uv}
 _txtEvict=function(){if(_txtUV.size>600){for(const[mk,mv]of _txtUV)if(_txtTick-mv.age>120)_txtUV.delete(mk);_txtUVSize=_txtUV.size}};
 
 // ── 공통: _quad (오프셋 기반) ──
@@ -5234,13 +5234,11 @@ let _fsc=[0,0,0,1],_ssc=[0,0,0,1];
 let _pathA=[],_pathL=[],_pathR=[],_pathE=[];
 let _sstk=[],_sstkPool=[],_sstkPoolI=0;
 function _uploadCanvasTex(src){
-  var _T=window.__TU=window.__TU||{call:0,up:0,px:0,f:0,_lf:0,_lc:0,_lu:0,_lp:0,mn:0,mv:0,ms:0,me:0,_lmn:0,_lmv:0,_lms:0,_lme:0,who:{}};if(!_T._raf){_T._raf=1;(function _tf(){window.__TU.f++;requestAnimationFrame(_tf)})();}_T.call++;if(_T.f%60===0&&_T._lf!==_T.f){var _dc=_T.call-_T._lc,_du=_T.up-_T._lu,_dp=_T.px-_T._lp;console.log('[TEXUP] up/f='+(_du/60).toFixed(2)+' call/f='+(_dc/60).toFixed(2)+' Mpx/f='+(_dp/60/1e6).toFixed(2)+' | totUp='+_T.up+' totCall='+_T.call);console.log('[TEXMISS] new='+((_T.mn-_T._lmn)/60).toFixed(2)+' ver='+((_T.mv-_T._lmv)/60).toFixed(2)+' size='+((_T.ms-_T._lms)/60).toFixed(2)+' etc='+((_T.me-_T._lme)/60).toFixed(2));var _wa=Object.keys(_T.who).map(function(k){return[k,_T.who[k]]}).sort(function(a,b){return b[1]-a[1]}).slice(0,10);console.log('[TEXWHO] '+_wa.map(function(e){return e[0]+' x'+e[1]}).join('  |  '));_T._lf=_T.f;_T._lc=_T.call;_T._lu=_T.up;_T._lp=_T.px;_T._lmn=_T.mn;_T._lmv=_T.mv;_T._lms=_T.ms;_T._lme=_T.me;_T.who={};} // TEMP DIAG
   if(_useGPU){const bg=_getTex(src);_setTex(bg);return}
   if(!_useGL||!GL)return; // WebGL context lost — GL 직접 호출 방지 (restored 시 _initWebGL로 텍스처 자동 재업로드)
   const tex=_getTex(src);_setTex(tex);
   const prev=_texUploaded.get(src);const ver=src._glVer||0;
   if(!prev||prev.w!==src.width||prev.h!==src.height||prev.v!==ver){
-    window.__TU.up++;window.__TU.px+=((src.width||0)*(src.height||0));var _r=!prev?'mn':(prev.w!==src.width||prev.h!==src.height)?'ms':(prev.v!==ver)?'mv':'me';window.__TU[_r]++;var _wk=(src.width||0)+'x'+(src.height||0);window.__TU.who[_wk]=(window.__TU.who[_wk]||0)+1; // TEMP DIAG
     if(src.width>0&&src.height>0&&src.width<=_glMaxTex&&src.height<=_glMaxTex){
       _flush();GL.bindTexture(GL.TEXTURE_2D,tex);
       try{GL.texImage2D(GL.TEXTURE_2D,0,GL.RGBA,GL.RGBA,GL.UNSIGNED_BYTE,src)}catch(e){}}
@@ -5291,7 +5289,7 @@ else{const _m2=_mats[_mi];let _fcx=ar.x,_fcy=ar.y;
 for(let _li=0;_li<_pathL.length;_li++){if(_pathL[_li].t==='m'){_fcx=_pathL[_li].x;_fcy=_pathL[_li].y;break}}
 const _tcx=_m2[0]*_fcx+_m2[2]*_fcy+_m2[4],_tcy=_m2[1]*_fcx+_m2[3]*_fcy+_m2[5];
 const _sa2=ar.ccw?ar.ea:ar.sa,_ea2=ar.ccw?ar.sa:ar.ea;
-const _ns=Math.min(256,Math.max(6,~~(Math.abs(_ea2-_sa2)*Math.max(1,ar.r)/6)));/* FIX-A seg cap */
+const _ns=Math.max(6,~~(Math.abs(_ea2-_sa2)*Math.max(1,ar.r)/6));
 for(let _s=0;_s<_ns;_s++){const _a0=_sa2+(_ea2-_sa2)*_s/_ns,_a1=_sa2+(_ea2-_sa2)*(_s+1)/_ns;
 const _x0=ar.x+Math.cos(_a0)*ar.r,_y0=ar.y+Math.sin(_a0)*ar.r;
 const _x1=ar.x+Math.cos(_a1)*ar.r,_y1=ar.y+Math.sin(_a1)*ar.r;
@@ -5310,7 +5308,7 @@ if(Math.abs(ar.ea-ar.sa)>=Math.PI*1.99){const th=_lw/(ar.r*2+_lw),pad=_lw;
 _tQuad(ar.x-ar.r-pad,ar.y-ar.r-pad,(ar.r+pad)*2,(ar.r+pad)*2);
 _quad(_tq[0],_tq[1],_tq[2],_tq[3],_tq[4],_tq[5],_tq[6],_tq[7],0,0,1,1,c[0],c[1],c[2],a,2,th,0)}
 else{const _m3=_mats[_mi];const _ssa=ar.ccw?ar.ea:ar.sa,_sea=ar.ccw?ar.sa:ar.ea;
-const _sns=Math.min(256,Math.max(8,~~(Math.abs(_sea-_ssa)*Math.max(1,ar.r)/5)));/* FIX-A seg cap */
+const _sns=Math.max(8,~~(Math.abs(_sea-_ssa)*Math.max(1,ar.r)/5));
 const _hw=_lw/2;let _spx=ar.x+Math.cos(_ssa)*ar.r,_spy=ar.y+Math.sin(_ssa)*ar.r;
 for(let _ss2=1;_ss2<=_sns;_ss2++){const _sa3=_ssa+(_sea-_ssa)*_ss2/_sns;
 const _snx=ar.x+Math.cos(_sa3)*ar.r,_sny=ar.y+Math.sin(_sa3)*ar.r;
@@ -9580,12 +9578,12 @@ function _drawDruidBoss(X,e,sa,tdY,spec){
   let sheet,cols,rows,frame,dir=_druidDir(e),dirless=false;
   const _nw=performance.now(); // 시간기반 프레임(프레임레이트 독립 — 고FPS서 빨라짐 방지)
   // [다크드루이드] 순간이동(jump/tele) → 땅속 burrow 변신 (emerge 시트: 침강 0→7, 부상 7→0)
-  const _isBur=e.s==='bossTelePrep'; // 순간이동 준비(=땅속 잠행)만 burrow. 착지(bossTeleWarn)는 일반형
+  const _isBur=e.s==='bossTelePrep'||e.s==='bossTeleWarn'; // Prep=땅속 잠행(침강), Warn=기어나옴(부상)
   const _isCharge=e.s&&(e.s==='bossJump'||e.s.indexOf('Charge')>=0||e.s.indexOf('charge')>=0||e.s.indexOf('Dash')>=0||e.s.indexOf('multiDash')>=0); // 점프=러시인 포함
   if(_isBur&&_druidSheets.emerge&&_druidSheets.emerge.ready){
-    if(e._lastBurS!==e.s){e._burMax=Math.max(1,e.st2||40);e._lastBurS=e.s}
-    const _pg=Math.max(0,Math.min(1,1-(e.st2/e._burMax)));
-    frame=_pg<0.5?Math.min(7,~~(_pg*16)):Math.max(0,7-~~((_pg-0.5)*16));
+    const _pmax=(e.s==='bossTelePrep')?(e._telePrepMax||40):60;
+    const _pg=Math.max(0,Math.min(1,1-(e.st2/_pmax)));
+    frame=(e.s==='bossTelePrep')?Math.min(7,~~(_pg*8)):Math.max(0,7-~~(_pg*8)); // Prep=땅속 침강(0→7), Warn=기어나옴(7→0)
     sheet='emerge';cols=4;rows=2;dirless=true;
   }
   else if(_isCharge&&_druidSheets.beast&&_druidSheets.beast.ready){sheet='beast';cols=4;rows=2;dirless=true;frame=dir;} // 돌진=야수 변신형(8방향 4x2, 셀=방향)
@@ -47857,17 +47855,17 @@ function drawP(){
   }
   // ══ 폭풍소환 조준 인디케이터 (마우스 커서 위치 — 악의폭풍과 동일) ══
   if(P._mmAiming){
-    const _mmSlvR=P.skills.maliceMortar||1;const _aimR=400+(_mmSlvR-1)*18;const vR=window._NOCAP?_aimR:Math.min(_aimR,1100),_mmCap=_aimR>1100; // _aimR=판정불변, vR=드로우캡(FIX-A 오버드로우 축소)
+    const _mmSlvR=P.skills.maliceMortar||1;const _aimR=400+(_mmSlvR-1)*18; // 실제 소용돌이 반경(_mmR)과 일치 — 조준 미리보기 정합
     const _iceFuse=P.skills.iceOrb>=1&&_isFused('iceMortar');
     const _mmTx=P.x+Math.cos(P.facing)*(P._mmDist||150),_mmTy=P.y+Math.sin(P.facing)*(P._mmDist||150);
     const _mt=_now*.06;
     X.save();
     // 착지점 소용돌이 범위 미리보기
-    X.globalAlpha=(.08+Math.sin(_mt)*.04)*(_mmCap?.55:1);X.fillStyle=_iceFuse?'#224466':'#330044';
-    X.beginPath();X.arc(_mmTx,_mmTy,vR,0,Math.PI*2);X.fill();
+    X.globalAlpha=.08+Math.sin(_mt)*.04;X.fillStyle=_iceFuse?'#224466':'#330044';
+    X.beginPath();X.arc(_mmTx,_mmTy,_aimR,0,Math.PI*2);X.fill();
     // 소용돌이 회전 링
     for(let ri=0;ri<3;ri++){
-      const _rr=vR*(1-ri*.2);const _ra=_now*.003*(ri%2?1:-1);
+      const _rr=_aimR*(1-ri*.2);const _ra=_now*.003*(ri%2?1:-1);
       X.globalAlpha=.15+.05*Math.sin(_mt+ri);X.strokeStyle=_iceFuse?(ri%2?'#66ccff':'#aaeeff'):(ri%2?'#cc44ff':'#8822aa');
       X.lineWidth=2;X.setLineDash(_D10_8);X.lineDashOffset=-_now*.15*(ri%2?1:-1.5);
       X.beginPath();X.arc(_mmTx,_mmTy,_rr,_ra,_ra+Math.PI*2);X.stroke();X.setLineDash(_D0);
@@ -47877,7 +47875,7 @@ function drawP(){
     X.beginPath();X.moveTo(_mmTx-12,_mmTy);X.lineTo(_mmTx+12,_mmTy);X.moveTo(_mmTx,_mmTy-12);X.lineTo(_mmTx,_mmTy+12);X.stroke();
     // 텍스트
     X.globalAlpha=.8;X.fillStyle=_iceFuse?'#88ddff':'#cc88ff';X.font='bold 10px monospace';X.textAlign='center';
-    X.fillText((_iceFuse?'❄ ':'🌪️ ')+_T('폭풍소환'),_mmTx,_mmTy-vR-8);
+    X.fillText((_iceFuse?'❄ ':'🌪️ ')+_T('폭풍소환'),_mmTx,_mmTy-_aimR-8);
     X.restore();
   }
   // ══ 악의폭풍 조준 인디케이터 (마우스 커서 위치) ══
@@ -47885,7 +47883,7 @@ function drawP(){
     const _msLv=P.skills.maliceStorm||1;
     const _msBF=_isFused('boneStorm')||_isFused('elecRepent');
     const _bwLv=P.skills.boneWall||1;
-    const _msAimR=_msBF?(~~((200+(_bwLv-1)*22)*3/2)):(200+(_msLv-1)*22);const vRs=window._NOCAP?_msAimR:Math.min(_msAimR,1100),_msCap=_msAimR>1100;/* FIX-A: _msAimR 판정불변, vRs=드로우캡 */
+    const _msAimR=_msBF?(~~((200+(_bwLv-1)*22)*3/2)):(200+(_msLv-1)*22);
     let _msTx=mouse.x-VW/2+G.cam.x;
     let _msTy=mouse.y-VH/2+G.cam.y;
     const _msDst3=dst(P.x,P.y,_msTx,_msTy);if(_msDst3>1000){const _msA3=Math.atan2(_msTy-P.y,_msTx-P.x);_msTx=P.x+Math.cos(_msA3)*1000;_msTy=P.y+Math.sin(_msA3)*1000}
@@ -47893,10 +47891,10 @@ function drawP(){
     X.save();
     if(_msBF){
       // 해골번개 조준 — 뼈+암흑 테마
-      X.globalAlpha=(.08+.03*Math.sin(_mst*6))*(_msCap?.55:1);X.fillStyle='#334433';
-      X.beginPath();X.arc(_msTx,_msTy,vRs,0,Math.PI*2);X.fill();
+      X.globalAlpha=.08+.03*Math.sin(_mst*6);X.fillStyle='#334433';
+      X.beginPath();X.arc(_msTx,_msTy,_msAimR,0,Math.PI*2);X.fill();
       X.globalAlpha=.4;X.strokeStyle='#55cc77';X.lineWidth=14;X.setLineDash(_D8_6);X.lineDashOffset=-_now*.12;
-      X.beginPath();X.arc(_msTx,_msTy,vRs,0,Math.PI*2);X.stroke();X.setLineDash(_D0);
+      X.beginPath();X.arc(_msTx,_msTy,_msAimR,0,Math.PI*2);X.stroke();X.setLineDash(_D0);
       // 뼈기둥 미리보기
       const _bpCnt=12;
       for(let i=0;i<_bpCnt;i++){
@@ -47916,14 +47914,14 @@ function drawP(){
         X.fillRect(bx-2,by-2,4,4);
       }
       X.globalAlpha=.8;X.fillStyle='#55cc77';X.font='bold 11px monospace';X.textAlign='center';
-      X.fillText('\u{1F9B4}'+((P._bnsCd||0)>0?(~~(P._bnsCd/60)+'s'):'OK'),_msTx,_msTy-vRs-8);
+      X.fillText('\u{1F9B4}'+((P._bnsCd||0)>0?((P._bnsCd/60).toFixed(1)+'s'):'OK'),_msTx,_msTy-_msAimR-8);
     }else{
       // 반투명 스카이블루 원
-      X.globalAlpha=(.1+.03*Math.sin(_mst*8))*(_msCap?.55:1);X.fillStyle='#2288cc';
-      X.beginPath();X.arc(_msTx,_msTy,vRs,0,Math.PI*2);X.fill();
+      X.globalAlpha=.1+.03*Math.sin(_mst*8);X.fillStyle='#2288cc';
+      X.beginPath();X.arc(_msTx,_msTy,_msAimR,0,Math.PI*2);X.fill();
       // 점선 외곽
       X.globalAlpha=.5;X.strokeStyle='#55ccff';X.lineWidth=2;X.setLineDash(_D8_5);X.lineDashOffset=-_now*.1;
-      X.beginPath();X.arc(_msTx,_msTy,vRs,0,Math.PI*2);X.stroke();X.setLineDash(_D0);
+      X.beginPath();X.arc(_msTx,_msTy,_msAimR,0,Math.PI*2);X.stroke();X.setLineDash(_D0);
       // 십자선
       X.globalAlpha=.4;X.strokeStyle='#55ccff';X.lineWidth=1;
       X.beginPath();X.moveTo(_msTx-12,_msTy);X.lineTo(_msTx+12,_msTy);X.moveTo(_msTx,_msTy-12);X.lineTo(_msTx,_msTy+12);X.stroke();
@@ -47936,7 +47934,7 @@ function drawP(){
         X.beginPath();X.moveTo(bx,by);X.lineTo(bx+Math.cos(ba)*bl+(Math.random()-.5)*5,by+Math.sin(ba)*bl+(Math.random()-.5)*5);X.stroke();
       }
       X.globalAlpha=.8;X.fillStyle='#55ccff';X.font='bold 11px monospace';X.textAlign='center';
-      X.fillText('\u26A1 '+_T('악의폭풍'),_msTx,_msTy-vRs-8);
+      X.fillText('\u26A1 '+_T('악의폭풍'),_msTx,_msTy-_msAimR-8);
     }
     X.restore();
   }
