@@ -7248,6 +7248,7 @@ const _EN={
 '…아파? 당연하지. 여긴 지옥이야.':'...Hurt? Of course. This is Hell.',
 '…지옥문이 열렸다. 안에서 그것이 기다리고 있어.':'...The Hell Gate is open. It waits for you inside.',
 '문 열렸어! 이제 보스 잡으러 가자!':"The gate's open! Now let's go kill the boss!",
+'구역을 클리어하면 잠긴 지옥문이 열릴 거야.':'Clear the area and the sealed Hell Gate will open.',
 // --- Pet dialogue: key tutorials ---
 'F키도 스킬 슬롯이야!':'F-key is a skill slot too!',
 'L-CTRL로 유령걸음/얼음보주!':'L-CTRL for Ghost Walk / Ice Orb!',
@@ -8135,7 +8136,7 @@ const DIFF_MUL=[0.45,0.55,0.65,0.76,0.88,1.0,1.12,1.25,1.40,1.58,1.78]; // 난�
 const DIFF_MOB=[1,1,1,1,1,1,1,1,1,1,1]; // 레거시 호환용 (전부 1)
 const _diffSigned=()=>(((typeof OPT!=='undefined'&&OPT.diff!=null)?OPT.diff:5)-5); // 부호 난이도: -5(쉬움)~0(일반)~+5(어려움)
 
-// ─── [S03e] PET_DIALOGUE v6 — 펫 대사 172종 (티키타카) ───
+// ─── [S03e] PET_DIALOGUE v6 — 펫 대사 173종 (티키타카) ───
 // 말풍선 상태: {who:'crow'|'cat', txt:'', t:0, mt:300, pair:null|{who,txt,mt}}
 const _petBubble={who:null,txt:'',t:0,mt:0,pair:null,pairFired:false};
 const _petDlgCD={}; // 대사 쿨다운 {id: remainFrames}
@@ -8255,6 +8256,7 @@ function _petTierOf(id){
 }
 // 프레임 내 입찰 (경쟁 대사 — 최고 티어 1건, 동일티어는 코드순 먼저가 우선)
 function _petBidCD(id,who,txt,dur,cd,pw,pt,pd){
+  if(_MAP_QA_MODE)return false;
   if(_petDlgCD[id]>0)return;
   const tier=_petTierOf(id);
   if(tier<=_PB.tier)return; // 더 낮거나 같으면(먼저 입찰 우선) 무시
@@ -8300,6 +8302,7 @@ function _petBagNext(bag,len){
 }
 // 일반 즉시 대사 (튜토리얼·이벤트 콜백 전용 — 티어별 글로벌쿨 준수)
 function _petSayCD(id,who,txt,dur,cd,pw,pt,pd){
+  if(_MAP_QA_MODE)return false;
   if(_petDlgCD[id]>0||_petBubble.t>0)return false;
   const tier=_petTierOf(id);
   if(_petTierCD[tier]>0)return false;
@@ -9499,7 +9502,8 @@ const STAGE1_CODEX_BOSS_MOTION={
 const _CODEX_BOSS={
   0:{src:STAGE1_CODEX_BOSS_SKIN,v:'20260509',dw:6.1,dh:9.2,glow:'rgba(255,70,20,.45)',scr:'rgba(255,80,18,.35)'},
   1:{src:'assets/sprites/boss/stage1_codex_poison_mushroom_giant.png',v:'20260818',dw:6.6,dh:8.6,glow:'rgba(160,50,190,.40)',scr:'rgba(180,70,210,.30)'},
-  2:{src:'assets/sprites/boss/stage1_codex_hell_aberrant.png',v:'20260818',dw:7.0,dh:8.4,glow:'rgba(255,70,20,.42)',scr:'rgba(255,90,20,.32)'}
+  2:{src:'assets/sprites/boss/stage1_codex_hell_aberrant.png',v:'20260818',dw:7.0,dh:8.4,glow:'rgba(255,70,20,.42)',scr:'rgba(255,90,20,.32)'},
+  3:{src:'assets/sprites/boss/boss_dark_druid_f0.png',v:'20260824d',dw:6.2,dh:9.4,use2D:true,anim:true,glow:'rgba(120,220,90,.42)',scr:'rgba(140,235,110,.30)'}
 };
 const _codexBossImg={},_codexBossReady={};
 (function _loadCodexBosses(){
@@ -9534,6 +9538,16 @@ function _drawCodexBoss(X,e,sa,tdY,si){
   const t=G.stageTime||0,pulse=Math.sin(t*.12)*.025,shake=e.stunned>0?Math.sin(t*.9)*3:0;
   const dw=e.r*spec.dw*(m.sx+pulse),dh=e.r*spec.dh*(m.sy-pulse*.5);
   const glowA=sa*(m.glow+Math.max(0,Math.sin(t*.16))*.12);
+  if(spec.use2D){
+    if(spec.anim&&_drawDruidBoss(X,e,sa,tdY,spec))return true; // 8방향 프레임 애니 (walk/attack/idle)
+    // [2D-BOSS] 플레인 스프라이트 드로우 — 타원클립·그린 fillRect 없음(잘림/녹색박스 방지). 커스텀 투명PNG용
+    // 테스트베드 ×N 배율(3D모델용)은 2D 스프라이트엔 과대 → 역보정해 실제 크기 고정
+    X.save();X.translate(e.x+shake,e.y+(tdY||0)+m.y);const _un2d=1/(window._btScaleMul||1);X.scale(_un2d,_un2d);if(Math.abs(e.facing)>Math.PI/2)X.scale(-1,1);X.rotate(m.rot);
+    X.globalAlpha=glowA*.55;X.fillStyle=spec.glow;X.beginPath();X.ellipse(0,-dh*.30,dw*.34,dh*.30,0,0,Math.PI*2);X.fill();
+    X.globalAlpha=sa;X.drawImage(img,0,0,img.naturalWidth,img.naturalHeight,-dw/2,-dh*.86,dw,dh);
+    X.restore();
+    return true;
+  }
   X.save();X.translate(e.x+shake,e.y+(tdY||0)+m.y);if(Math.abs(e.facing)>Math.PI/2)X.scale(-1,1);X.rotate(m.rot);
   X.globalAlpha=glowA;X.fillStyle=spec.glow;X.beginPath();X.ellipse(0,-dh*.28,dw*.42,dh*.36,0,0,Math.PI*2);X.fill();
   X.globalAlpha=sa;X.beginPath();X.ellipse(0,-dh*.25,dw*.46,dh*.49,0,0,Math.PI*2);X.clip();
@@ -9543,6 +9557,44 @@ function _drawCodexBoss(X,e,sa,tdY,si){
   return true;
 }
 function _drawStage1CodexBoss(X,e,sa,tdY){return _drawCodexBoss(X,e,sa,tdY,0)}
+// ═══ [다크드루이드] 8방향 프레임 애니메이션 렌더러 (walk/attack=4열8행, idle=2x2) ═══
+const _druidSheets={};
+(function _loadDruidSheets(){
+  const files={walk:'walk.png',attack:'attack.png',idle:'idle.png',aoe:'aoe.png',orb:'orb.png',beast:'beast.png',transform:'transform.png'};
+  for(const k in files){const im=new Image();_druidSheets[k]={img:im,ready:false};
+    im.onload=(function(kk){return function(){_druidSheets[kk].ready=true}})(k);
+    im.src='assets/sprites/boss/boss_dark_druid_'+files[k]+'?v=20260824w';}
+})();
+// facing/이동각 → 0..7 방향 (행 순서: S,SW,W,NW,N,NE,E,SE — 검증 후 조정)
+const _DRUID_DIRMAP=[6,7,0,1,2,3,4,5];
+function _druidDir(e){
+  let ang=e.facing||0;
+  if((e.s==='eWalk'||e.s==='eChase'||e.s==='eApproach')&&(e.vx||e.vy))ang=Math.atan2(e.vy,e.vx);
+  let d=Math.round(ang/(Math.PI/4));d=((d%8)+8)%8;
+  return _DRUID_DIRMAP[d];
+}
+function _drawDruidBoss(X,e,sa,tdY,spec){
+  const key=_stage1CodexBossMotionKey(e);
+  let sheet,cols,rows,frame,dir=_druidDir(e),dirless=false;
+  const _nw=performance.now(); // 시간기반 프레임(프레임레이트 독립 — 고FPS서 빨라짐 방지)
+  const _isCharge=e.s&&(e.s.indexOf('Charge')>=0||e.s.indexOf('charge')>=0||e.s.indexOf('Dash')>=0||e.s.indexOf('multiDash')>=0);
+  if(_isCharge&&_druidSheets.beast&&_druidSheets.beast.ready){sheet='beast';cols=4;rows=2;dirless=true;frame=dir;} // 돌진=야수 변신형(8방향 4x2, 셀=방향)
+  else if(key==='slash'||key==='slam'||key==='windup'){sheet='attack';cols=4;rows=8;frame=(~~(_nw/150))%4;} // 공격 150ms/frame (~6.7fps, 1사이클 0.6s)
+  else if(key==='walk'){sheet='walk';cols=4;rows=8;frame=(~~(_nw/150))%4;} // 걷기 150ms/frame
+  else{sheet='walk';cols=4;rows=8;frame=(~~(_nw/600))%2;} // idle 600ms sway (walk시트 같은아트, 캐릭터 통일)
+  const S=_druidSheets[sheet];if(!S||!S.ready)return false;
+  const img=S.img,iw=img.naturalWidth,ih=img.naturalHeight,cw=iw/cols,ch=ih/rows;
+  let sx,sy;
+  if(dirless){sx=(frame%cols)*cw;sy=(~~(frame/cols))*ch;}
+  else{sx=frame*cw;sy=dir*ch;}
+  const dw=e.r*spec.dw,dh=e.r*spec.dh;
+  X.save();X.translate(e.x,e.y+(tdY||0)-6);const _un=1/(window._btScaleMul||1);X.scale(_un,_un);
+  X.globalAlpha=sa*.65;X.fillStyle=spec.glow;X.beginPath();X.ellipse(0,-dh*.32,dw*.42,dh*.36,0,0,Math.PI*2);X.fill();
+  X.globalAlpha=sa;X.drawImage(img,sx,sy,cw,ch,-dw/2,-dh*.86,dw,dh);
+  X.globalCompositeOperation='lighter';X.globalAlpha=sa*.25;X.drawImage(img,sx,sy,cw,ch,-dw/2,-dh*.86,dw,dh); // 셀프 라이튼(어두운 아레나서 존재감)
+  X.globalCompositeOperation='source-over';X.globalAlpha=1;
+  X.restore();return true;
+}
 // ── 대형보스 글로벌 설정 ──
 window._btScaleMul=4.0; // 보스 시각 스케일 배율
 window._b3Active=false; // 3D 보스 오버레이 활성 여부 (true면 2D 보스 렌더 차단)
@@ -13816,7 +13868,7 @@ const HELL_THEMES=[
   [{n:'HELL CASTLE',kr:'지옥성',w:'#1c1038',f:'#060410',ac:'#cc88ff',be:EL.D}],
 ];
 const HELL_BOSSES=[
-  ['흑요염 파괴자','독버섯 거인','지옥기형','숲의 기생수'],
+  ['흑요염 파괴자','독버섯 거인','지옥기형','다크드루이드'],
   ['벌레 수호자','점액 괴수','기생충 모체','거대 알주머니','살벽의 군주','여왕 구더기'],
   ['얼음 망령','서리의 기사','얼어붙은 감시자','얼음 속 봉인 괴물'],
   ['화염 악마','불기둥 수호자','용암의 심장','화염 전사','화염 쌍두','불벌레 군주','화염 감옥지기'],
@@ -14172,19 +14224,19 @@ const _CH_DECO={
     {id:'m_tomb',file:'tombstone.png',sz:56},{id:'m_wpile',file:'weapon_pile.png',sz:64},
     {id:'m_meat',file:'meat_stake.png',sz:64},
     {id:'m_acid',file:'acid_pool.png',sz:56},
-    {id:'m_ctree1',file:'cursed_tree_01.png',sz:400,large:1,dir:'collision',colSz:60},
-    {id:'m_ctree2',file:'cursed_tree_02.png',sz:400,large:1,dir:'collision',colSz:60},
-    {id:'m_ctree3',file:'cursed_tree_03.png',sz:400,large:1,dir:'collision',colSz:60},
-    {id:'m_ctree4',file:'cursed_tree_04.png',sz:400,large:1,dir:'collision',colSz:60},
-    {id:'m_ctree5',file:'cursed_tree_05.png',sz:400,large:1,dir:'collision',colSz:60},
-    {id:'m_ctree6',file:'cursed_tree_06.png',sz:400,large:1,dir:'collision',colSz:60},
-    {id:'m_ctree7',file:'cursed_tree_07.png',sz:400,large:1,dir:'collision',colSz:60},
-    {id:'m_ctree8',file:'cursed_tree_08.png',sz:400,large:1,dir:'collision',colSz:60},
-    {id:'m_ctree9',file:'cursed_tree_09.png',sz:400,large:1,dir:'collision',colSz:60},
-    {id:'m_ctree10',file:'cursed_tree_10.png',sz:400,large:1,dir:'collision',colSz:60},
-    {id:'m_ctree11',file:'cursed_tree_11.png',sz:400,large:1,dir:'collision'},
-    {id:'m_ctree12',file:'cursed_tree_12.png',sz:400,large:1,dir:'collision'},
-    {id:'m_atree1',file:'anim_tree_01.png',sz:400,large:1,dir:'collision'},
+    {id:'m_ctree1',file:'cursed_tree_01.png',sz:400,large:1,dir:'collision',colSz:60,hardAlpha:1},
+    {id:'m_ctree2',file:'cursed_tree_02.png',sz:400,large:1,dir:'collision',colSz:60,hardAlpha:1},
+    {id:'m_ctree3',file:'cursed_tree_03.png',sz:400,large:1,dir:'collision',colSz:60,hardAlpha:1},
+    {id:'m_ctree4',file:'cursed_tree_04.png',sz:400,large:1,dir:'collision',colSz:60,hardAlpha:1},
+    {id:'m_ctree5',file:'cursed_tree_05.png',sz:400,large:1,dir:'collision',colSz:60,hardAlpha:1},
+    {id:'m_ctree6',file:'cursed_tree_06.png',sz:400,large:1,dir:'collision',colSz:60,hardAlpha:1},
+    {id:'m_ctree7',file:'cursed_tree_07.png',sz:400,large:1,dir:'collision',colSz:60,hardAlpha:1},
+    {id:'m_ctree8',file:'cursed_tree_08.png',sz:400,large:1,dir:'collision',colSz:60,hardAlpha:1},
+    {id:'m_ctree9',file:'cursed_tree_09.png',sz:400,large:1,dir:'collision',colSz:60,hardAlpha:1},
+    {id:'m_ctree10',file:'cursed_tree_10.png',sz:400,large:1,dir:'collision',colSz:60,hardAlpha:1},
+    {id:'m_ctree11',file:'cursed_tree_11.png',sz:400,large:1,dir:'collision',hardAlpha:1},
+    {id:'m_ctree12',file:'cursed_tree_12.png',sz:400,large:1,dir:'collision',hardAlpha:1},
+    {id:'m_atree1',file:'anim_tree_01.png',sz:400,large:1,dir:'collision',hardAlpha:1},
     {id:'m_cage_gate',file:'cage_gate.png',sz:300,large:1,dir:'collision'},
     {id:'m_sword_pile',file:'sword_pile.png',sz:200,large:1,dir:'collision'},
     {id:'m_hang_cage',file:'hang_cage.png',sz:280,large:1,dir:'collision'},
@@ -14327,10 +14379,10 @@ const _MAP_COMPOSE={
       {id:'m_ctree1',x:14,y:176},{id:'m_ctree2',x:38,y:190},{id:'m_ctree3',x:166,y:188},{id:'m_ctree4',x:190,y:174},
       {id:'m_ctree5',x:10,y:148},{id:'m_ctree6',x:190,y:144},{id:'m_ctree7',x:10,y:112},{id:'m_ctree8',x:190,y:108},
       {id:'m_ctree9',x:10,y:76},{id:'m_ctree10',x:190,y:72},{id:'m_ctree11',x:30,y:36},{id:'m_ctree12',x:158,y:18},
-      // 유니크 실루엣: 북서 교수대, 남동 감옥문, 서쪽 해골제단
-      {id:'m_hang_cage',x:12,y:20},{id:'m_cage_gate',x:174,y:156},{id:'m_skull_altar',x:22,y:92},
+      // 유니크 실루엣: 북서 교수대, 남동 감옥문, 서쪽 검무더기
+      {id:'m_hang_cage',x:12,y:20},{id:'m_cage_gate',x:174,y:156},{id:'m_sword_pile',x:22,y:92},
       // 대형 실루엣 8종: START 양옆 + 3개 분지의 좌우 외곽을 20타일 이상 간격으로 프레이밍
-      {id:'m_atree1',x:82,y:181},{id:'m_obelisk',x:118,y:182},
+      {id:'m_skull_altar',x:82,y:181},{id:'m_obelisk',x:118,y:182},
       {id:'m_penta_circle',x:66,y:148},{id:'m_bone_arch',x:112,y:142},
       {id:'m_eye_tree',x:88,y:122},{id:'m_vine_pillar',x:142,y:112},
       {id:'m_rotten_tree',x:68,y:52},{id:'m_skull_totem',x:120,y:55},
@@ -14593,12 +14645,28 @@ function _keyMagentaSpr(im){
   }
   x.putImageData(id,0,0);c._keyed=1;c.complete=true;c.naturalWidth=c.width;c.naturalHeight=c.height;return c;
 }
+function _hardAlphaSpr(im){
+  if(!im||!im.complete||im.naturalWidth<4||im._hardAlpha)return im;
+  const c=document.createElement('canvas');c.width=im.naturalWidth;c.height=im.naturalHeight;
+  const x=c.getContext('2d');x.drawImage(im,0,0);
+  const id=x.getImageData(0,0,c.width,c.height),d=id.data;
+  for(let i=3;i<d.length;i+=4)if(d[i]<255)d[i]=0;
+  x.putImageData(id,0,0);c._hardAlpha=1;c.complete=true;c.naturalWidth=c.width;c.naturalHeight=c.height;return c;
+}
+function _lumaKeySpr(im,lo,hi){
+  if(!im||!im.complete||im.naturalWidth<4||im._lumaKeyed)return im;
+  const c=document.createElement('canvas');c.width=im.naturalWidth;c.height=im.naturalHeight;
+  const x=c.getContext('2d');x.drawImage(im,0,0);
+  const id=x.getImageData(0,0,c.width,c.height),d=id.data,_span=Math.max(1,hi-lo);
+  for(let i=0;i<d.length;i+=4){const mx=Math.max(d[i],d[i+1],d[i+2]);d[i+3]=~~(d[i+3]*Math.max(0,Math.min(1,(mx-lo)/_span)))}
+  x.putImageData(id,0,0);c._lumaKeyed=1;c.complete=true;c.naturalWidth=c.width;c.naturalHeight=c.height;return c;
+}
 // _CH_DECO 프리로드
 for(const[ch,list]of Object.entries(_CH_DECO)){
-  for(const d of list){const p='assets/map/ch'+(+ch+1)+'/'+(d.dir||'floor_objects')+'/'+d.file;_OBJ_SPR_MAP[d.id]=p;const im=new Image();im.onerror=function(){console.warn('[DECO] '+d.id+' 404→fallback');this.onerror=null;this.src='data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mNk+M9QDwADhgGAWjR9awAAAABJRU5ErkJggg=='};if(d.mega)im.onload=function(){_OBJ_SPR[d.id]=_keyMagentaSpr(this)};im.src=p;_OBJ_SPR[d.id]=im;const _prev=_OBJ_META[d.id]||{};_OBJ_META[d.id]=Object.assign(_prev,{sz:d.sz||32,light:d.light||0,large:d.large||0,mega:d.mega||0,rot:d.rot||0,flip:d.flip||0,col:d.col||_prev.col||0,collision:d.collision||_prev.collision||false,colSz:d.colSz||_prev.colSz,colW:d.colW||_prev.colW,colH:d.colH||_prev.colH,keepAR:d.keepAR||_prev.keepAR||0})}
+  for(const d of list){const p='assets/map/ch'+(+ch+1)+'/'+(d.dir||'floor_objects')+'/'+d.file;_OBJ_SPR_MAP[d.id]=p;const im=new Image();im.onerror=function(){console.warn('[DECO] '+d.id+' 404→fallback');this.onerror=null;this.src='data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mNk+M9QDwADhgGAWjR9awAAAABJRU5ErkJggg=='};if(d.mega||d.hardAlpha)im.onload=function(){_OBJ_SPR[d.id]=d.hardAlpha?_hardAlphaSpr(this):_keyMagentaSpr(this)};im.src=p;_OBJ_SPR[d.id]=im;const _prev=_OBJ_META[d.id]||{};_OBJ_META[d.id]=Object.assign(_prev,{sz:d.sz||32,light:d.light||0,large:d.large||0,mega:d.mega||0,rot:d.rot||0,flip:d.flip||0,col:d.col||_prev.col||0,collision:d.collision||_prev.collision||false,colSz:d.colSz||_prev.colSz,colW:d.colW||_prev.colW,colH:d.colH||_prev.colH,keepAR:d.keepAR||_prev.keepAR||0})}
 }
 // 용 해골 직접 프리로드 (img/ 경로)
-{const _dsImg=new Image();_dsImg.src='img/map_dragon_skeleton.png';_OBJ_SPR['m_dragon_skeleton']=_dsImg;_OBJ_SPR_MAP['m_dragon_skeleton']='img/map_dragon_skeleton.png'}
+{const _dsImg=new Image();_dsImg.onload=function(){_OBJ_SPR['m_dragon_skeleton']=_lumaKeySpr(this,16,80)};_dsImg.src='img/map_dragon_skeleton.png';_OBJ_SPR['m_dragon_skeleton']=_dsImg;_OBJ_SPR_MAP['m_dragon_skeleton']='img/map_dragon_skeleton.png'}
 {const _d3Img=new Image();_d3Img.src='img/map_dragon_3d.png';_OBJ_SPR['m_dragon_3d']=_d3Img;_OBJ_SPR_MAP['m_dragon_3d']='img/map_dragon_3d.png'}
 
 // ═══ RAM 최적화 시스템 ═══
@@ -25471,7 +25539,7 @@ function _enterBossArena(){
   MAP_OBJS=[];  // 던전 오브젝트 제거 (boss_gate_col 등 아레나에 불필요)
   G.map=arena.map;G.mw=arena.mw;G.mh=arena.mh;  G._fow=new Uint8Array(arena.mw*arena.mh);G._fowDirty=true;
   G.rooms=arena.rooms;G.exits=[];
-  G._bossArena=true;if(typeof _b3loadModel==='function')_b3loadModel(SI_TO_HELL[G.stage]||0);G._bossArenaExit={x:arena.exitX,y:arena.exitY};
+  G._bossArena=true;if(typeof _b3loadModel==='function'&&!(typeof _CODEX_BOSS!=='undefined'&&_CODEX_BOSS[G.stage]&&_CODEX_BOSS[G.stage].use2D))_b3loadModel(SI_TO_HELL[G.stage]||0);G._bossArenaExit={x:arena.exitX,y:arena.exitY};
   G._bossArenaGate={x:arena.exitX,y:arena.exitY}; // 12시 최상단 눈나무 위치
   G._bossArenaEntry={x:arena.entryX,y:arena.entryY}; // 6시 입구
   G.bossGate=null;G.bossGateOpen=true;G.bossSealed=true;_shDirty=true;
@@ -31366,7 +31434,18 @@ function update(){
   // ═══ 벽밀기 업데이트 ═══
   if(G._wallPushes&&G._wallPushes.length>0){let _wpW=0;for(let wi=0;wi<G._wallPushes.length;wi++){const wp2=G._wallPushes[wi];wp2.t+=sp;wp2.dist+=wp2.spd*sp;const _wpCx=wp2.x+Math.cos(wp2.ang)*wp2.dist,_wpCy=wp2.y+Math.sin(wp2.ang)*wp2.dist;const _wpPerp=wp2.ang+Math.PI/2;const _wpHw=wp2.w/2;if(!wp2.hit&&P.iframes<=0){const _toPx=P.x-_wpCx,_toPy=P.y-_wpCy;const _parD=Math.cos(wp2.ang)*_toPx+Math.sin(wp2.ang)*_toPy;const _perpD=Math.abs(Math.cos(_wpPerp)*_toPx+Math.sin(_wpPerp)*_toPy);if(Math.abs(_parD)<25&&_perpD<_wpHw){wp2.hit=true;hurtP(~~(wp2.dmg*elMul(wp2.el,ar().el)));const ka=wp2.ang;P.kb.x+=Math.cos(ka)*12;P.kb.y+=Math.sin(ka)*12;SFX.block();shake(10)}}if(!(wp2.dist>=wp2.maxDist||wp2.t>=wp2.maxT))G._wallPushes[_wpW++]=wp2}G._wallPushes.length=_wpW}
   // ═══ 독웅덩이 업데이트 ═══
-  if(G._poisonPools&&G._poisonPools.length>0){let _ppW=0;for(let pi=0;pi<G._poisonPools.length;pi++){const pp=G._poisonPools[pi];pp.t+=sp;pp.tickT=(pp.tickT||0)+sp;if(dst(P.x,P.y,pp.x,pp.y)<pp.r+P.r&&P.iframes<=0&&pp.tickT>=60){pp.tickT=0;hurtP(~~(pp.dmg*.5*elMul(pp.el,ar().el)));addTxt(P.x,P.y-15,_T('독!'),'#44cc00',20)}if(pp.t<pp.maxT)G._poisonPools[_ppW++]=pp}G._poisonPools.length=_ppW}
+  if(G._poisonPools&&G._poisonPools.length>0){let _ppW=0;for(let pi=0;pi<G._poisonPools.length;pi++){const pp=G._poisonPools[pi];pp.t+=sp;pp.tickT=(pp.tickT||0)+sp;if(dst(P.x,P.y,pp.x,pp.y)<pp.r+P.r&&P.iframes<=0&&pp.tickT>=60){pp.tickT=0;hurtP(~~(pp.dmg*.5*elMul(pp.el,ar().el)));addTxt(P.x,P.y-15,_T('독!'),'#44cc00',20);if(G.stage===3){P.poison=(P.poison||0)+2;P._webSlow=Math.max(P._webSlow||0,60);}}if(pp.t<pp.maxT)G._poisonPools[_ppW++]=pp}G._poisonPools.length=_ppW}
+  // [다크드루이드] orb 탄막 — 독+인탱글(webSlow)+패링불가(isPWin 미체크)
+  if(G.stage===3&&G.bossAlive){
+    if(!G._druidOrbs)G._druidOrbs=[];
+    const _db=G._bossRef;G._druidOrbT=(G._druidOrbT||0)+sp;
+    if(_db&&_db.alive&&(_db._bossPhase||0)>=0&&G._druidOrbT>=110){G._druidOrbT=0;const _oa=Math.atan2(P.y-_db.y,P.x-_db.x);
+      for(let _k=-1;_k<=1;_k++){const _a=_oa+_k*0.28;G._druidOrbs.push({x:_db.x,y:_db.y-40,vx:Math.cos(_a)*3.3,vy:Math.sin(_a)*3.3,t:0,r:26,dmg:~~((_db.atk||100)*.6)});}}
+    let _ow=0;for(let oi=0;oi<G._druidOrbs.length;oi++){const o=G._druidOrbs[oi];o.t+=sp;o.x+=o.vx*sp;o.y+=o.vy*sp;let _del=false;
+      if(P.iframes<=0&&dst(P.x,P.y,o.x,o.y)<o.r+P.r){hurtP(~~(o.dmg*elMul(EL.P,ar().el)));P.poison=(P.poison||0)+3;P._webSlow=Math.max(P._webSlow||0,80);addTxt(P.x,P.y-16,_T('☠속박!'),'#66dd22',22);_del=true;}
+      if(o.t>200||o.x<-40||o.y<-40||o.x>G.mw*T+40||o.y>G.mh*T+40)_del=true;
+      if(!_del)G._druidOrbs[_ow++]=o;}G._druidOrbs.length=_ow;
+  }
   // ═══ 용암 장판 업데이트 ═══
   if(G._lavaPools&&G._lavaPools.length>0){let _lpW=0;for(let li=0;li<G._lavaPools.length;li++){const lp=G._lavaPools[li];lp.t+=sp;if(lp.t>=lp.warnT){lp.tickT=(lp.tickT||0)+sp;if(dst(P.x,P.y,lp.x,lp.y)<lp.r+P.r&&P.iframes<=0&&lp.tickT>=30){lp.tickT=0;hurtP(~~(lp.dmg*.4*elMul(lp.el,ar().el)));addTxt(P.x,P.y-15,'🔥','#ff4400',20)}}if(lp.t<lp.maxT)G._lavaPools[_lpW++]=lp}G._lavaPools.length=_lpW}
   // ═══ 화염비 업데이트 ═══
@@ -35963,7 +36042,8 @@ function checkRooms(){
           // 지옥문 봉인 중(80% 미만)이면 입장 차단
           if(!G._bossUnlocked){
             if((_gameFrame||0)%45===0){const _bk=G._stageKills||0,_bt=G._totalSpawned||1,_gkB=G._gateGuardKilled?10:0;
-              addTxt(P.x,P.y-40,_L('지옥문이 봉인됨 — 처치 ','Gate sealed — kills ')+Math.min(100,~~(_bk/_bt*100)+_gkB)+_L('% (80% 필요)','% (80% needed)'),'#ff5544',40);}
+              addTxt(P.x,P.y-40,_L('지옥문이 봉인됨 — 처치 ','Gate sealed — kills ')+Math.min(100,~~(_bk/_bt*100)+_gkB)+_L('% (80% 필요)','% (80% needed)'),'#ff5544',40);
+              _petSayCD('tut_gate_locked','cat','구역을 클리어하면 잠긴 지옥문이 열릴 거야.',5,9999);}
             break;
           }
           G._bossLoadPhase=1;G._bossLoadT=0;G._bossLoadFade=0;
@@ -43793,6 +43873,7 @@ const ATMO_CH=[
   {pc:'#8b0000',pd:1.00,rc:'#ff4d4d',ra:0.36}, // CH7
 ];
 // ═══ [PHASE3] ATMOS 전경 실루엣 프레이밍 — 오프스크린 4장(부팅 할당, 챕터변경 시 내용만 재굽기) ═══
+var _ATMO_FG=false; // 전 화면 높이 기둥이 울트라와이드에서 세로 줄로 보여 기본 비활성화
 var FG_L_NEAR=null,FG_L_FAR=null,FG_R_NEAR=null,FG_R_FAR=null,_atmFgCh=-1;
 // 챕터 모티프(SI_TO_HELL 동일 인덱스): tint 프리렌더 색 / cnt 기둥수 / branch 곁가지수
 const ATMO_FG=[
@@ -43977,7 +44058,7 @@ function _atmFgBake(ti){
 }
 // ═══ [PHASE3] 전경 실루엣 드로우 — drawImage 4회(LOW 2회)·중앙 22~78% 하드 클램프 ═══
 function _atmoFgDraw(ctx){
-  if(window._ATMO_FG===false)return;                   // 런타임 토글(기본 true, 콘솔로 즉시 OFF)
+  if(window._ATMO_FG===false)return;                   // 런타임 토글(기본 false, 콘솔에서 true로 명시 활성화)
   if(!FG_L_NEAR)return;
   const _ti=SI_TO_HELL[G.stage|0]||0;
   if(_ti!==_atmFgCh)_atmFgBake(_ti);                   // 챕터 변경 시에만 재굽기(프레임당 아님)
@@ -49913,10 +49994,20 @@ function drawP(){
       X.closePath();X.fill();
     }X.globalAlpha=1;
   }
+  // ══ [다크드루이드] orb 탄막 렌더 (8프레임 회전) ══
+  if(G._druidOrbs&&G._druidOrbs.length&&typeof _druidSheets!=='undefined'&&_druidSheets.orb&&_druidSheets.orb.ready){
+    const im=_druidSheets.orb.img,cw=im.naturalWidth/4,ch=im.naturalHeight/2;
+    for(let oi=0;oi<G._druidOrbs.length;oi++){const o=G._druidOrbs[oi];const fr=(~~(_now/70))%8,sx=(fr%4)*cw,sy=(~~(fr/4))*ch,R=o.r*2.4;
+      X.drawImage(im,sx,sy,cw,ch,o.x-R,o.y-R,R*2,R*2);}
+  }
   // ══ 독웅덩이 렌더 ══
   if(G._poisonPools&&G._poisonPools.length>0){
     for(let pi=0;pi<G._poisonPools.length;pi++){
       const pp=G._poisonPools[pi];const _ppF=pp.t>pp.maxT*.8?(1-(pp.t-pp.maxT*.8)/(pp.maxT*.2)):Math.min(1,pp.t*5/pp.maxT);
+      // [다크드루이드] stage3 독장판 = 커스텀 8프레임 솟는 장판 아트
+      const _dz=(G.stage===3&&typeof _druidSheets!=='undefined'&&_druidSheets.aoe&&_druidSheets.aoe.ready)?_druidSheets.aoe:null;
+      if(_dz){const im=_dz.img,cw=im.naturalWidth/4,ch=im.naturalHeight/2,fr=Math.min(7,~~(pp.t/pp.maxT*8)),sx=(fr%4)*cw,sy=(~~(fr/4))*ch,R=pp.r*1.5;
+        X.globalAlpha=_ppF;X.drawImage(im,sx,sy,cw,ch,pp.x-R,pp.y-R,R*2,R*2);X.globalAlpha=1;continue;}
       X.globalAlpha=_ppF;
       X.drawImage(_zoneGradStamp('pp',pp.r,_PP_STOPS),pp.x-pp.r,pp.y-pp.r,pp.r*2,pp.r*2);
       X.globalAlpha=1;
@@ -55672,6 +55763,13 @@ function _b3animate(){
   if(typeof G==='undefined'||typeof P==='undefined'||!P||!G.on){if(_b3anchor.visible){_b3anchor.visible=false;_b3r.render(_b3s,_b3cam)}return}
   const bE=findBoss();
   if(!bE||!bE.alive||!G._bossArena){
+    window._b3Active=false;
+    if(_b3anchor.visible){_b3anchor.visible=false;_b3r.render(_b3s,_b3cam)}
+    return;
+  }
+
+  // [2D-BOSS] use2D 플래그 스테이지는 3D 오버레이 완전 스킵 → 2D 코덱스 스프라이트 렌더 (다크드루이드 등)
+  if(typeof _CODEX_BOSS!=='undefined'&&_CODEX_BOSS[G.stage]&&_CODEX_BOSS[G.stage].use2D){
     window._b3Active=false;
     if(_b3anchor.visible){_b3anchor.visible=false;_b3r.render(_b3s,_b3cam)}
     return;
