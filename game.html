@@ -9578,8 +9578,8 @@ function _drawDruidBoss(X,e,sa,tdY,spec){
   let sheet,cols,rows,frame,dir=_druidDir(e),dirless=false;
   const _nw=performance.now(); // 시간기반 프레임(프레임레이트 독립 — 고FPS서 빨라짐 방지)
   // [다크드루이드] 순간이동(jump/tele) → 땅속 burrow 변신 (emerge 시트: 침강 0→7, 부상 7→0)
-  const _isBur=e.s&&(e.s==='bossJump'||e.s.indexOf('Tele')>=0||e.s.indexOf('tele')>=0);
-  const _isCharge=e.s&&(e.s.indexOf('Charge')>=0||e.s.indexOf('charge')>=0||e.s.indexOf('Dash')>=0||e.s.indexOf('multiDash')>=0);
+  const _isBur=e.s&&(e.s.indexOf('Tele')>=0||e.s.indexOf('tele')>=0); // 순간이동만 burrow (점프는 러시인이라 beast)
+  const _isCharge=e.s&&(e.s==='bossJump'||e.s.indexOf('Charge')>=0||e.s.indexOf('charge')>=0||e.s.indexOf('Dash')>=0||e.s.indexOf('multiDash')>=0); // 점프=러시인 포함
   if(_isBur&&_druidSheets.emerge&&_druidSheets.emerge.ready){
     if(e._lastBurS!==e.s){e._burMax=Math.max(1,e.st2||40);e._lastBurS=e.s}
     const _pg=Math.max(0,Math.min(1,1-(e.st2/e._burMax)));
@@ -9599,7 +9599,8 @@ function _drawDruidBoss(X,e,sa,tdY,spec){
   X.save();X.translate(e.x,e.y+(tdY||0)-6);const _un=1/(window._btScaleMul||1);X.scale(_un,_un);
   X.globalAlpha=sa*.65;X.fillStyle=spec.glow;X.beginPath();X.ellipse(0,-dh*.32,dw*.42,dh*.36,0,0,Math.PI*2);X.fill();
   X.globalAlpha=sa;X.drawImage(img,sx,sy,cw,ch,-dw/2,-dh*.86,dw,dh);
-  X.globalCompositeOperation='lighter';X.globalAlpha=sa*.25;X.drawImage(img,sx,sy,cw,ch,-dw/2,-dh*.86,dw,dh); // 셀프 라이튼(어두운 아레나서 존재감)
+  X.globalCompositeOperation='lighter';X.globalAlpha=sa*.42;X.drawImage(img,sx,sy,cw,ch,-dw/2,-dh*.86,dw,dh); // 셀프 라이튼 ×2(어두운 아레나서 존재감)
+  X.globalAlpha=sa*.42;X.drawImage(img,sx,sy,cw,ch,-dw/2,-dh*.86,dw,dh);
   X.globalCompositeOperation='source-over';X.globalAlpha=1;
   X.restore();return true;
 }
