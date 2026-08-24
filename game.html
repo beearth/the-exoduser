@@ -3109,6 +3109,7 @@ const _mapTestReq=new URLSearchParams(window.location.search).get('mapTest')||''
 const _stageTestReq=(function(){const _v=new URLSearchParams(window.location.search).get('stage');return _v===null?-1:Math.max(0,~~(+_v||0))})();
 const _bossTestReq=(function(){const _v=new URLSearchParams(window.location.search).get('bosstest');return _v===null?-1:Math.max(0,~~(+_v||0))})();
 const _classicMap=new URLSearchParams(window.location.search).get('classic')==='1';
+const _MAP_QA_MODE=new URLSearchParams(window.location.search).get('mapqa')==='1';
 function _wantPlateTest(){return !_classicMap&&(_mapTestReq==='v4'||_mapTestReq==='1'||_stageTestReq===0)}
 // stage=0 QA plate: default PROD. Instant restore: ?stage=0&plate=fieldone
 const _kitPlateReq=(new URLSearchParams(window.location.search).get('plate')||'').toLowerCase();
@@ -10816,6 +10817,7 @@ let _bindTab=''; // 키설정 탭: 'kbm'(키보드·마우스) | 'pad'(게임패
 
 // ═══ 스킬 슬롯 통합 디스패치 ═══
 function _dispatchSkillSlot(slotIdx,keyCode){
+  if(_MAP_QA_MODE)return false;
   if(!G.on||G.paused)return false;
   if(P.s==='fallen'||P.s==='dead')return false;
   if(_gpActive)_gpAutoAim(400); // 게임패드: 스킬 발동 시 가까운 적 자동 에임
@@ -14319,7 +14321,49 @@ const _MAP_COMPOSE={
       {x:.19,y:.58,r:520}, // WEST 포켓(CENTRAL+LOWER 목)
       {x:.83,y:.45,r:500}  // EAST 포켓(CENTRAL+UPPER 목)
     ],
-    mega:[{id:'m_mega_ribs',x:.85,y:.17,sz:900}]
+    // CH1-1 HAND PROPS START — 타일 좌표, 전투 분지/10타일 주동선은 비우고 림+START 시야 가장자리에 고정 배치
+    handProps:[
+      // 대형 저주나무 12종: 서로 다른 실루엣으로 외곽 프레임 형성
+      {id:'m_ctree1',x:14,y:176},{id:'m_ctree2',x:38,y:190},{id:'m_ctree3',x:166,y:188},{id:'m_ctree4',x:190,y:174},
+      {id:'m_ctree5',x:10,y:148},{id:'m_ctree6',x:190,y:144},{id:'m_ctree7',x:10,y:112},{id:'m_ctree8',x:190,y:108},
+      {id:'m_ctree9',x:10,y:76},{id:'m_ctree10',x:190,y:72},{id:'m_ctree11',x:30,y:36},{id:'m_ctree12',x:158,y:18},
+      // 유니크 실루엣: 북서 교수대, 남동 감옥문, 서쪽 해골제단
+      {id:'m_hang_cage',x:12,y:20},{id:'m_cage_gate',x:174,y:156},{id:'m_skull_altar',x:22,y:92},
+      // 대형 실루엣 8종: START 양옆 + 3개 분지의 좌우 외곽을 20타일 이상 간격으로 프레이밍
+      {id:'m_atree1',x:82,y:181},{id:'m_obelisk',x:118,y:182},
+      {id:'m_penta_circle',x:66,y:148},{id:'m_bone_arch',x:112,y:142},
+      {id:'m_eye_tree',x:88,y:122},{id:'m_vine_pillar',x:142,y:112},
+      {id:'m_rotten_tree',x:68,y:52},{id:'m_skull_totem',x:120,y:55},
+      // 중형 고목: 큰 나무 사이의 빈 리듬만 보강
+      {id:'m_tree1',x:28,y:172},{id:'m_tree2',x:78,y:188},{id:'m_tree3',x:142,y:188},{id:'m_tree1',x:182,y:166},
+      {id:'m_tree2',x:24,y:146},{id:'m_tree3',x:174,y:136},{id:'m_tree1',x:24,y:116},{id:'m_tree2',x:176,y:104},
+      {id:'m_tree3',x:24,y:72},{id:'m_tree1',x:174,y:62},{id:'m_tree2',x:48,y:28},{id:'m_tree3',x:144,y:30},
+      // 뼈 10, 시체 5, 내장말뚝 4: 분지 가장자리의 서사 클러스터
+      {id:'m_fbones',x:78,y:174},{id:'m_fbones',x:124,y:176},{id:'m_fbones',x:46,y:150},{id:'m_fbones',x:150,y:148},
+      {id:'m_fbones',x:42,y:124},{id:'m_fbones',x:160,y:126},{id:'m_fbones',x:54,y:98},{id:'m_fbones',x:150,y:94},
+      {id:'m_fbones',x:56,y:58},{id:'m_fbones',x:138,y:58},
+      {id:'corpse',x:123,y:183},{id:'corpse',x:166,y:160},{id:'corpse',x:34,y:104},{id:'corpse',x:166,y:86},{id:'corpse',x:46,y:44},
+      {id:'m_meat',x:178,y:150},{id:'m_meat',x:182,y:120},{id:'m_meat',x:178,y:92},{id:'m_meat',x:168,y:52},
+      // 예약 늪 코너: 비충돌 웅덩이 8 + SW/SE 충돌 pit 각 1
+      {id:'m_puddle',x:8,y:190},{id:'m_puddle',x:88,y:190},{id:'m_puddle',x:180,y:190},{id:'m_puddle',x:192,y:180},
+      {id:'m_puddle',x:8,y:10},{id:'m_puddle',x:24,y:8},{id:'m_puddle',x:188,y:8},{id:'m_puddle',x:194,y:28},
+      {id:'pit_poison',x:14,y:168},{id:'pit_poison',x:186,y:162},
+      // 포인트 라이트/묘비/무기/산성 웅덩이: 림의 중간 거리 디테일
+      {id:'m_fblue',x:36,y:132},{id:'m_fyellow',x:164,y:116},{id:'m_fblue',x:40,y:84},
+      {id:'m_fyellow',x:160,y:72},{id:'m_fblue',x:112,y:172},{id:'m_fyellow',x:144,y:42},
+      {id:'m_tomb',x:77,y:181},{id:'m_tomb',x:162,y:178},{id:'m_tomb',x:28,y:122},{id:'m_tomb',x:172,y:98},
+      {id:'m_wpile',x:88,y:172},{id:'m_wpile',x:154,y:168},{id:'m_wpile',x:38,y:64},
+      {id:'m_acid',x:16,y:194},{id:'m_acid',x:188,y:192},{id:'m_acid',x:16,y:4}
+    ],
+    // CH1-1 HAND PROPS END
+    mega:[
+      {id:'m_mega_ribs',x:.70,y:.51,sz:900},
+      {id:'m_dragon_3d',x:.59,y:.275,sz:1800},
+      {id:'m_dragon_skeleton',x:.325,y:.74,sz:1200},
+      {id:'m_mega_statue',x:.45,y:.60,sz:600},
+      {id:'m_mega_chapel',x:.59,y:.905,sz:650},
+      {id:'m_mega_head',x:.41,y:.11,sz:800}
+    ]
   },
   1:{
     hand:1,vista:1,
@@ -21114,6 +21158,19 @@ function initMapObjects(){
         MAP_OBJS.push({type:L.id,x:_lmx,y:_lmy,hell,scale:_sc});
       }
     }
+    // ── CH1-1 손 배치: 자동 살포가 꺼진 hand 맵의 림/START 시야 가장자리 장식을 좌표 고정 ──
+    if(_cmp&&_cmp.handProps){
+      let _handPlaced=0;
+      for(let _hi=0;_hi<_cmp.handProps.length;_hi++){
+        const H=_cmp.handProps[_hi];
+        if(!_OBJ_META[H.id])continue;
+        const _hNear=_nearFloor(H.x|0,H.y|0);
+        if(!_hNear)continue;
+        MAP_OBJS.push({type:H.id,x:(_hNear.x+.5)*T,y:(_hNear.y+.5)*T,hell,_hand:1});
+        _handPlaced++;
+      }
+      console.log('[HAND_DECO] placed:'+_handPlaced+'/'+_cmp.handProps.length);
+    }
     // ── 유니크 충돌 오브젝트: 장별 1기씩, 중앙 배치 ──
     {
       const _uniByHell=[
@@ -26235,6 +26292,7 @@ function initStage(si){
     }
   }
   // forge 삭제됨 — 대장간은 G키로 어디서든 접근
+  if(_MAP_QA_MODE){ens.length=0;G.spawnHoles.length=0;G._gateGuard=null;G._fieldBoss=null;}
   G.cam.x=P.x;G.cam.y=P.y;
   G.pets={crow:{x:P.x,y:P.y-20,tx:P.x,ty:P.y,s:'follow',_tRef:null,_fetchT:0,t:0},cat:{x:P.x,y:P.y+10,tx:P.x,ty:P.y,s:'follow',_tRef:null,_fetchT:0,t:~~(Math.random()*100)},xbow:{x:P.x-30,y:P.y-28,tx:P.x,ty:P.y,s:'follow',_tRef:null,_fetchT:0,t:25,_atkCd:0,_ang:0},iris:{x:P.x+20,y:P.y-34,tx:P.x,ty:P.y,s:'follow',t:50,sz:G._irisSz||20,_feedT:0}};
   // ── 즉시 초기화 (게임 시작 전 필수) ──
@@ -43717,6 +43775,35 @@ var PP_ON=true;              // PP 그레이딩 마스터 토글 (콘솔 PP_ON=f
 var PP_A_GRADE=0.18;         // L1 그레이딩 multiply 알파
 var PP_A_LIFT=0.10;          // L2 라이트리프트 screen 알파
 var PP_A_VIG=0.55;           // L3 비네트 방사형 세기(globalAlpha)
+// ═══ [PHASE2] ATMOS 부유 파티클 패럴랙스 + 광선 빔 — 부팅 1회 풀(게임루프 생성 금지) ═══
+var ATMO_P=null;   // Float32Array(192*8) stride8 평면배열: [0]x [1]y [2]r [3]vy [4]drift [5]phase [6]a [7]L · 레이어 0..63/64..127/128..191
+var GOD_RAY=null;  // 광선 빔 5개(LOW=3): {x0,w,tilt,a,pulse}
+const ATMO_L_PARA=[0.22,0.48,0.86];              // 레이어 패럴랙스 계수(카메라X)
+const ATMO_L_SZ=[[0.8,1.6],[1.4,2.6],[2.4,4.2]]; // 레이어 크기 px 범위(부팅 롤)
+const ATMO_L_AR=[[0.10,0.22],[0.18,0.34],[0.26,0.48]]; // 레이어 알파 범위(부팅 롤→field a)
+const ATMO_L_ALPHA=[0.16,0.26,0.37];             // 레이어 대표 알파(그리기 시 레이어당 1회 적용, 파티클마다 변경 금지)
+// 챕터 테이블(PP_TONE와 동일 _ti=SI_TO_HELL 인덱스): pc 파티클색 / pd 파티클밀도(알파배) / rc 광선색 / ra 광선알파
+const ATMO_CH=[
+  {pc:'#c9a227',pd:0.85,rc:'#ffd98a',ra:0.30}, // CH1
+  {pc:'#8fb3a8',pd:0.70,rc:'#bcd9d0',ra:0.22}, // CH2
+  {pc:'#b03a2e',pd:1.00,rc:'#ff8c5a',ra:0.34}, // CH3
+  {pc:'#6c3fa0',pd:0.75,rc:'#b98cff',ra:0.26}, // CH4
+  {pc:'#7a7a7a',pd:0.90,rc:'#9aa0a6',ra:0.18}, // CH5
+  {pc:'#d4af37',pd:0.60,rc:'#ffe9a8',ra:0.40}, // CH6
+  {pc:'#8b0000',pd:1.00,rc:'#ff4d4d',ra:0.36}, // CH7
+];
+// ═══ [PHASE3] ATMOS 전경 실루엣 프레이밍 — 오프스크린 4장(부팅 할당, 챕터변경 시 내용만 재굽기) ═══
+var FG_L_NEAR=null,FG_L_FAR=null,FG_R_NEAR=null,FG_R_FAR=null,_atmFgCh=-1;
+// 챕터 모티프(SI_TO_HELL 동일 인덱스): tint 프리렌더 색 / cnt 기둥수 / branch 곁가지수
+const ATMO_FG=[
+  {tint:'#0a0d08',cnt:4,branch:4}, // CH1 죽은 나무 기둥
+  {tint:'#0b1210',cnt:3,branch:2}, // CH2 젖은 바위 기둥
+  {tint:'#140806',cnt:5,branch:3}, // CH3 불탄 뼈대
+  {tint:'#0d0714',cnt:4,branch:5}, // CH4 뒤틀린 촉수
+  {tint:'#0c0c0c',cnt:3,branch:1}, // CH5 무너진 석주
+  {tint:'#100c04',cnt:4,branch:3}, // CH6 황금 아치 파편
+  {tint:'#150404',cnt:5,branch:4}, // CH7 육질 기둥
+];
 var _atmCut=null,_atmCutX=null,_atmCutW=0,_atmCutH=0; // ATMOS 안개 합성 캔버스(순수 2D, 부팅/리사이즈 1회 생성). 중앙은 그라데이션 50% 감쇠, 홀펀치 없음
 var _atmUserSet=0;      // A2: 사용자가 atmos 수동변경 시 1 → 자동승격 차단
 var _ATM_TUNE=false,_atmSel=0,_atmHudOn=false; // 튜닝 HUD (디버그 전용, _ATM_TUNE=false시 기존동작 100% 동일). F9=HUD가시성 토글
@@ -43794,12 +43881,123 @@ function _atmBuild(){
     _atmMote[b+5]=px;                                   // parallax
     _atmMote[b+6]=daL+Math.random()*(daH-daL);          // driftAmp
     _atmMote[b+7]=rs;}                                  // riseSpd
+  // ═══ [PHASE2] 부유 파티클 192(3레이어×64) + 광선 빔 5 부팅 1회 할당 (Math.random 부팅1회) ═══
+  {const W=C.width||1280,H=C.height||720;ATMO_P=new Float32Array(192*8);
+   for(let i=0;i<192;i++){const b=i*8,L=i<64?0:i<128?1:2,sz=ATMO_L_SZ[L],ar=ATMO_L_AR[L];
+     ATMO_P[b]=Math.random()*W;                         // x
+     ATMO_P[b+1]=Math.random()*H;                       // y(화면공간)
+     ATMO_P[b+2]=sz[0]+Math.random()*(sz[1]-sz[0]);     // r px
+     ATMO_P[b+3]=-(0.10+Math.random()*0.22);            // vy -0.10~-0.32
+     ATMO_P[b+4]=0.12+Math.random()*0.30;               // drift 진폭
+     ATMO_P[b+5]=Math.random()*6.28;                    // phase
+     ATMO_P[b+6]=ar[0]+Math.random()*(ar[1]-ar[0]);     // a(파티클별 알파 field)
+     ATMO_P[b+7]=L;}                                    // L 레이어
+   GOD_RAY=new Array(5);
+   // x0: 폭 5등분 밴드 중앙 ±12% 지터 → 좌우 균등 분포(클러스터링 방지). tilt 축소로 화면 이탈 완화
+   for(let i=0;i<5;i++)GOD_RAY[i]={x0:((i+0.5)/5+(Math.random()-0.5)*0.12)*W,w:60+Math.random()*100,tilt:(Math.random()-0.5)*W*0.22,a:0.7+Math.random()*0.35,pulse:Math.random()*6.28};}
+  // ═══ [PHASE3] 전경 실루엣 오프스크린 4장(256×1024) 부팅 1회 할당 + 부팅 챕터 굽기 ═══
+  FG_L_NEAR=document.createElement('canvas');FG_L_NEAR.width=256;FG_L_NEAR.height=1024;
+  FG_L_FAR=document.createElement('canvas');FG_L_FAR.width=256;FG_L_FAR.height=1024;
+  FG_R_NEAR=document.createElement('canvas');FG_R_NEAR.width=256;FG_R_NEAR.height=1024;
+  FG_R_FAR=document.createElement('canvas');FG_R_FAR.width=256;FG_R_FAR.height=1024;
+  _atmFgBake(SI_TO_HELL[G.stage|0]||0);
   _initSideFog(); // 사이드 입자 안개 부트 init (스탬프는 draw 첫 프레임 챕터체크서 lazy bake)
   _atmReady=true;
 }
 // ═══ 대기 포스트프로세싱 (PP) — 유일 그레이딩 소스. 월드 드로우 완료 직후 / HUD 직전 1회 ═══
 const PP_TONE=['rgb(92,104,120)','rgb(120,64,72)','rgb(112,96,72)','rgb(72,104,128)','rgb(136,72,48)','rgb(64,64,96)','rgb(128,48,48)'];
 let PP_GRAD_TOP=null,PP_GRAD_VIG=null,PP_GRAD_W=0,PP_GRAD_H=0;
+// ═══ [PHASE2] 부유 파티클 갱신 — 단일 루프·인덱스 재활용만(splice/filter/forEach/new/Date 금지) ═══
+function _atmoStep(){
+  const A=ATMO_P;if(!A)return;
+  const W=C.width,H=C.height,f=G.frame;
+  for(let i=0;i<192;i++){const b=i*8;
+    A[b+1]+=A[b+3];                                   // y += vy (상승)
+    A[b]+=Math.sin(A[b+5]+f*0.008)*A[b+4];            // x 드리프트
+    if(A[b+1]<-8){A[b+1]=H+16;A[b]=Math.random()*W;A[b+5]=Math.random()*6.28;} // 재활용(재배치+phase)
+  }
+}
+// ═══ [PHASE2] 부유 파티클 + 광선 빔 드로우 — 레이어당 알파/색 1회, fillRect 반복(arc 금지) ═══
+function _atmoDraw(ctx){
+  const A=ATMO_P;if(!A||!ctx)return;
+  const W=C.width,H=C.height,f=G.frame,camX=(G.cam&&G.cam.x)||0;
+  const _ti=SI_TO_HELL[G.stage|0]||0,ch=ATMO_CH[_ti]||ATMO_CH[0];
+  const per=window._ATMO_LOW?32:64;                   // 저사양: 드로우 카운트 절반(루프 상한만 변경)
+  ctx.globalCompositeOperation='source-over';
+  for(let L=0;L<3;L++){                               // 레이어별 알파·색 1회 세팅
+    ctx.globalAlpha=ATMO_L_ALPHA[L]*ch.pd;
+    ctx.fillStyle=ch.pc;
+    const para=ATMO_L_PARA[L],base=L*64;
+    for(let k=0;k<per;k++){const b=(base+k)*8;
+      let sx=A[b]-camX*para;sx%=W;if(sx<0)sx+=W;       // 카메라X 패럴랙스 + 랩
+      const r=A[b+2];
+      ctx.fillRect(sx,A[b+1],r,r);
+    }
+  }
+  // 광선 빔: screen 합성, 상단 y=-60 → H*1.15 사다리꼴 path
+  ctx.globalCompositeOperation='screen';
+  ctx.fillStyle=ch.rc;
+  const rayN=window._ATMO_LOW?3:5,topY=-60,botY=H*1.15;
+  for(let i=0;i<rayN;i++){const g=GOD_RAY[i];
+    ctx.globalAlpha=ch.ra*(0.72+0.28*Math.sin(f*0.006+g.pulse))*g.a; // 빔 알파(펄스)
+    ctx.beginPath();
+    ctx.moveTo(g.x0-g.w*0.5,topY);
+    ctx.lineTo(g.x0+g.w*0.5,topY);
+    ctx.lineTo(g.x0+g.tilt+g.w*0.9,botY);
+    ctx.lineTo(g.x0+g.tilt-g.w*0.9,botY);
+    ctx.closePath();ctx.fill();
+  }
+  ctx.globalCompositeOperation='source-over';ctx.globalAlpha=1; // 그린 뒤 즉시 원복
+}
+// ═══ [PHASE3] 전경 실루엣 프리렌더(부팅/챕터변경 시만) — 절차적 path로 굽고 폐기(런타임 매프레임 path 없음) ═══
+function _atmFgBake(ti){
+  const m=ATMO_FG[ti]||ATMO_FG[0],cvs=[FG_L_NEAR,FG_L_FAR,FG_R_NEAR,FG_R_FAR];
+  for(let ci=0;ci<4;ci++){const cv=cvs[ci];if(!cv)continue;const g=cv.getContext('2d');
+    g.clearRect(0,0,256,1024);g.fillStyle=m.tint;
+    for(let p=0;p<m.cnt;p++){                          // 기둥 cnt개(좌우 캔버스 별도 시드=독립 random, 미러 아님)
+      const cx=18+Math.random()*220,w=28+Math.random()*46; // 중심x·폭28~74
+      const tx=cx+(Math.random()-0.5)*36,mx=cx+(Math.random()-0.5)*48,bx=cx+(Math.random()-0.5)*36; // 상/중/하 흔들림
+      g.beginPath();g.moveTo(tx-w*0.5,-40);            // 상단 y=-40 → 하단 y=1064 관통(곡선 기둥)
+      g.quadraticCurveTo(mx-w*0.5,512,bx-w*0.5,1064);
+      g.lineTo(bx+w*0.5,1064);
+      g.quadraticCurveTo(mx+w*0.5,512,tx+w*0.5,-40);
+      g.closePath();g.fill();
+      for(let k=0;k<m.branch;k++){                     // 곁가지 branch개: 길이40~120·각도-35~+35°
+        const ay=90+Math.random()*844,side=Math.random()<0.5?-1:1;
+        const ang=(-35+Math.random()*70)*Math.PI/180,len=40+Math.random()*80;
+        const ax=mx+side*w*0.42,bw=6+Math.random()*10;
+        const tipX=ax+Math.cos(ang)*len*side,tipY=ay-Math.sin(ang)*len;
+        g.beginPath();g.moveTo(ax,ay-bw*0.5);g.lineTo(ax,ay+bw*0.5);g.lineTo(tipX,tipY);g.closePath();g.fill();
+      }
+    }
+  }
+  _atmFgCh=ti;
+}
+// ═══ [PHASE3] 전경 실루엣 드로우 — drawImage 4회(LOW 2회)·중앙 22~78% 하드 클램프 ═══
+function _atmoFgDraw(ctx){
+  if(window._ATMO_FG===false)return;                   // 런타임 토글(기본 true, 콘솔로 즉시 OFF)
+  if(!FG_L_NEAR)return;
+  const _ti=SI_TO_HELL[G.stage|0]||0;
+  if(_ti!==_atmFgCh)_atmFgBake(_ti);                   // 챕터 변경 시에만 재굽기(프레임당 아님)
+  const W=C.width,H=C.height,camX=(G.cam&&G.cam.x)||0,camY=(G.cam&&G.cam.y)||0;
+  const over=80,dh=H+over*2;                            // 세로 오버스캔(갭 방지)
+  let yOff=camY*0.35;yOff=yOff<-over?-over:(yOff>over?over:yOff); // 카메라Y 0.35 미세추종(saturate)
+  const yTop=-over+yOff,scale=dh/1024,dw=256*scale;     // 종횡비 유지
+  const LmaxRight=W*0.22,RminLeft=W*0.78;               // 배치 폭 게이트 경계
+  ctx.globalCompositeOperation='source-over';
+  const low=(window._ATMO_LOW===true);
+  // NEAR (패럴랙스 1.32, 알파 0.90) — 하드 클램프 최후 적용
+  ctx.globalAlpha=0.90;
+  {let lx=-camX*(1.32-1.0)*0.04;if(lx<-dw*0.6)lx=-dw*0.6;if(lx>LmaxRight-dw)lx=LmaxRight-dw;ctx.drawImage(FG_L_NEAR,lx,yTop,dw,dh);}
+  {let rx=RminLeft+camX*(1.32-1.0)*0.04;if(rx>W-dw*0.4)rx=W-dw*0.4;if(rx<RminLeft)rx=RminLeft;ctx.drawImage(FG_R_NEAR,rx,yTop,dw,dh);}
+  // FAR (패럴랙스 1.06, 알파 0.52) — LOW면 스킵
+  if(!low){
+    ctx.globalAlpha=0.52;
+    {let lx=-camX*(1.06-1.0)*0.04;if(lx<-dw*0.6)lx=-dw*0.6;if(lx>LmaxRight-dw)lx=LmaxRight-dw;ctx.drawImage(FG_L_FAR,lx,yTop,dw,dh);}
+    {let rx=RminLeft+camX*(1.06-1.0)*0.04;if(rx>W-dw*0.4)rx=W-dw*0.4;if(rx<RminLeft)rx=RminLeft;ctx.drawImage(FG_R_FAR,rx,yTop,dw,dh);}
+  }
+  ctx.globalAlpha=1; // 즉시 원복
+}
 function drawAtmosphere(ctx,w,h){
   if(!PP_ON)return; // 비교 토글: 콘솔 PP_ON=false로 즉시 OFF
   if(!ctx||!w||!h)return;
@@ -43820,6 +44018,10 @@ function drawAtmosphere(ctx,w,h){
   const _tone=PP_TONE[_ti]||PP_TONE[0];
   ctx.save();
   ctx.setTransform(1,0,0,1,0,0);
+  // ═══ [PHASE2] 부유 파티클 패럴랙스 + 광선 빔 (합성 완료 직후·PP_TONE grade 직전) ═══
+  if(ATMO_P){_atmoStep();_atmoDraw(ctx);}
+  // ═══ [PHASE3] 전경 실루엣 프레이밍 (_atmoDraw 직후·PP_TONE grade 직전) ═══
+  _atmoFgDraw(ctx);
   // L1 그레이딩 — 챕터 톤 컬러 multiply (알파=PP_A_GRADE)
   if(_ATMDBG.grade){
   ctx.globalCompositeOperation='multiply';ctx.globalAlpha=PP_A_GRADE;
@@ -52271,6 +52473,7 @@ const _fbImg=new Image();_fbImg.src='img/fieldboss_angler.png'; // 1774x887, 8�
 var _fbSheet=null; // 표시크기 프리스케일 캐시(1200x600, 프레임 300)
 function _fbTick(){
   if(!G.on||!P){return}
+  if(_MAP_QA_MODE){G._fieldBoss=null;return}
   if(G.stage!==0){if(G._fieldBoss)G._fieldBoss=null;return} // 1-1 전용
   if(G._fbStage!==G.stage){G._fbStage=G.stage;G._fbSpawnX=P.x;G._fbSpawnY=P.y;G._fbSpawned=false;G._fieldBoss=null} // 진입 기준점
   if(!G._fbSpawned&&!G._fieldBoss&&!G._fbDone&&dst(P.x,P.y,G._fbSpawnX,G._fbSpawnY)>2500){ // 진입점 2500px 이동해야 등장(구 500=시작하자마자 → 조금 진행 후)
@@ -53015,7 +53218,7 @@ async function _startTestChar(){
     const _el=$('stageTransition');
     const _elapsed=Date.now()-_bootLoadShownAt;
     const _wait=Math.max(0,3000-_elapsed)+200;
-    setTimeout(()=>{if(_el){_el.style.opacity='0';_el.style.pointerEvents='none';}if(G.stage===0&&!G._cutsceneDone){_startIntroCutscene();}else{G.on=true;P.iframes=120;}r();},_wait); // 데모 첫 시작 시 인트로 컷신 (2026-07-27)
+    setTimeout(()=>{if(_el){_el.style.opacity='0';_el.style.pointerEvents='none';}if(G.stage===0&&!G._cutsceneDone){_startIntroCutscene();}else{G.on=true;P.iframes=_MAP_QA_MODE?999999:120;}r();},_wait); // 데모 첫 시작 시 인트로 컷신 (2026-07-27)
   });
 }
 // ═══ DB-aware startup ═══
