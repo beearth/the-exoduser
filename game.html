@@ -4746,7 +4746,7 @@ _tq[6]=m[0]*x+m[2]*yh+m[4];_tq[7]=m[1]*x+m[3]*yh+m[5]}return _tq}
 function _syncTx(){const m=_mats[_mi];_txCtx.setTransform(m[0],m[1],m[2],m[3],m[4],m[5])}
 
 // ── 공통: 텍스트 아틀라스 ──
-const _txtAtlas=document.createElement('canvas');_txtAtlas.width=2048;_txtAtlas.height=512;
+const _txtAtlas=document.createElement('canvas');_txtAtlas.width=2048;_txtAtlas.height=512;_txtAtlas._tag='txtAtlas';/* TEMP DIAG */
 const _txtAtlasCtx=_txtAtlas.getContext('2d');
 let _txtAtlasV=0,_txtAtlasX=0,_txtAtlasY=0,_txtAtlasRH=0;
 const _txtUV=new Map();
@@ -32407,6 +32407,11 @@ function _bossStartPattern(e,mv,d,phase,extraDelay){
     case'lavaPools':{
       // 용암 장판 — 맵 전체에 대형 용암, 안전지대 2~3곳만 남김
       if(!G._lavaPools)G._lavaPools=[];
+      if(G.stage===3){ // [다크드루이드] 맵전체 대신 플레이어 추적 독늪 3개
+        for(let _dl=0;_dl<3;_dl++){const _da=Math.random()*6.283,_dd=_dl*70+Math.random()*40;
+          G._lavaPools.push({x:P.x+Math.cos(_da)*_dd,y:P.y+Math.sin(_da)*_dd,t:0,warnT:70,maxT:300,r:160+Math.random()*40,dmg:~~(e.atk*.9),el:e.el,tickT:0});}
+        addTxt(e.x,e.y-30,_T('☠ 독 늪!'),'#66dd22',60);SFX.magic(3);e.s='recover';e.st2=25;break;
+      }
       const _lpPh=e._bossPhase||0;
       const _aW=(G.mw||50)*T,_aH=(G.mh||42)*T; // 맵 전체 px
       const _aCx=_aW/2,_aCy=_aH/2;
