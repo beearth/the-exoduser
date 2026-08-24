@@ -1,5 +1,5 @@
 ﻿// 지옥의 길 — Polski (pl)
-const _PL={
+const _PL={"⛓️ 관통!":"⛓️ Przebicie!","⛓️ 관통":"⛓️ Przebicie","⛓️ 돌파":"⛓️ Przełom","\\👻 유령!":"\\👻 Duch!","\\🦴 해골무덤!":"\\🦴 Grobowiec Kości!",
 '패링 성공 시 분노스킬 쿨다운 {s}초 회복':"Po udanym sparowaniu: odnawia {s}s czasu odnowienia umiejętności Furii",
 '🔥분노스킬 쿨↓':"🔥Odnowienie umiej. Furii↓",
 '잘못 때렸군. 실수야.':"Nietrafione. Pudło.",

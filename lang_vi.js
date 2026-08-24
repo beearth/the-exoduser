@@ -1,5 +1,5 @@
 ﻿// 지옥의 길 — Tiếng Việt (vi)
-const _VI={
+const _VI={"⛓️ 관통!":"⛓️ Xuyên Thấu!","⛓️ 관통":"⛓️ Xuyên Thấu","⛓️ 돌파":"⛓️ Đột Phá","\\👻 유령!":"\\👻 Ma!","\\🦴 해골무덤!":"\\🦴 Mộ Xương!",
 '패링 성공 시 분노스킬 쿨다운 {s}초 회복':"Đỡ đòn thành công: hồi {s}s thời gian hồi chiêu kỹ năng Phẫn Nộ",
 '🔥분노스킬 쿨↓':"🔥Hồi chiêu kỹ năng Phẫn Nộ↓",
 '잘못 때렸군. 실수야.':"Đánh trượt rồi. Hụt.",

@@ -1,5 +1,5 @@
 ﻿// 지옥의 길 — Bahasa Indonesia (id)
-const _ID={
+const _ID={"⛓️ 관통!":"⛓️ Penetrasi!","⛓️ 관통":"⛓️ Penetrasi","⛓️ 돌파":"⛓️ Terobosan","\\👻 유령!":"\\👻 Hantu!","\\🦴 해골무덤!":"\\🦴 Makam Tulang!",
 '패링 성공 시 분노스킬 쿨다운 {s}초 회복':"Parry berhasil: pulihkan {s}d waktu jeda skill Amarah",
 '🔥분노스킬 쿨↓':"🔥Waktu jeda skill Amarah↓",
 '잘못 때렸군. 실수야.':"Ayunan meleset. Luput.",

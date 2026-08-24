@@ -1,0 +1,3542 @@
+{
+ "lang": "hu",
+ "group": "2군",
+ "generated": "L08",
+ "note": "누락 키(union 기준). ko=한국어원문(키). obj=소속객체. tag=AUTO/TONE/HOLD(컷신제외)/SKIP(번역불필요). 번역값 미기입.",
+ "counts": {
+  "total": 588,
+  "main": 69,
+  "pfx": 0,
+  "base": 519
+ },
+ "keys": [
+  {
+   "key": "✟ 신성한 결계!",
+   "ko": "✟ 신성한 결계!",
+   "obj": "main",
+   "tag": "AUTO"
+  },
+  {
+   "key": "👻 유령총!",
+   "ko": "👻 유령총!",
+   "obj": "main",
+   "tag": "AUTO"
+  },
+  {
+   "key": "기절!  ",
+   "ko": "기절!  ",
+   "obj": "main",
+   "tag": "TONE"
+  },
+  {
+   "key": "녹슨",
+   "ko": "녹슨",
+   "obj": "main",
+   "tag": "AUTO"
+  },
+  {
+   "key": "화염의",
+   "ko": "화염의",
+   "obj": "main",
+   "tag": "AUTO"
+  },
+  {
+   "key": "악마팔찌",
+   "ko": "악마팔찌",
+   "obj": "main",
+   "tag": "TONE"
+  },
+  {
+   "key": "생명팔찌",
+   "ko": "생명팔찌",
+   "obj": "main",
+   "tag": "AUTO"
+  },
+  {
+   "key": "투구 착용",
+   "ko": "투구 착용",
+   "obj": "main",
+   "tag": "AUTO"
+  },
+  {
+   "key": "투구 해제",
+   "ko": "투구 해제",
+   "obj": "main",
+   "tag": "AUTO"
+  },
+  {
+   "key": "혼돈의 투구",
+   "ko": "혼돈의 투구",
+   "obj": "main",
+   "tag": "AUTO"
+  },
+  {
+   "key": "전지전능의 투구",
+   "ko": "전지전능의 투구",
+   "obj": "main",
+   "tag": "AUTO"
+  },
+  {
+   "key": "방향키 연타",
+   "ko": "방향키 연타",
+   "obj": "main",
+   "tag": "AUTO"
+  },
+  {
+   "key": "까마귀와 고양이가 아이템을 주워준다. 수거 범위 안이면.",
+   "ko": "까마귀와 고양이가 아이템을 주워준다. 수거 범위 안이면.",
+   "obj": "main",
+   "tag": "HOLD"
+  },
+  {
+   "key": "Ctrl 얼음보주로 탈출! 없으면 방향키 연타!",
+   "ko": "Ctrl 얼음보주로 탈출! 없으면 방향키 연타!",
+   "obj": "main",
+   "tag": "HOLD"
+  },
+  {
+   "key": " 뎀 ",
+   "ko": " 뎀 ",
+   "obj": "main",
+   "tag": "AUTO"
+  },
+  {
+   "key": "\\👻 유령!",
+   "ko": "\\👻 유령!",
+   "obj": "main",
+   "tag": "AUTO"
+  },
+  {
+   "key": "\\🦴 해골무덤!",
+   "ko": "\\🦴 해골무덤!",
+   "obj": "main",
+   "tag": "AUTO"
+  },
+  {
+   "key": "투구",
+   "ko": "투구",
+   "obj": "main",
+   "tag": "AUTO"
+  },
+  {
+   "key": "허리띠",
+   "ko": "허리띠",
+   "obj": "main",
+   "tag": "AUTO"
+  },
+  {
+   "key": "망토",
+   "ko": "망토",
+   "obj": "main",
+   "tag": "AUTO"
+  },
+  {
+   "key": "불꽃",
+   "ko": "불꽃",
+   "obj": "main",
+   "tag": "AUTO"
+  },
+  {
+   "key": "냉기",
+   "ko": "냉기",
+   "obj": "main",
+   "tag": "AUTO"
+  },
+  {
+   "key": "그림자",
+   "ko": "그림자",
+   "obj": "main",
+   "tag": "AUTO"
+  },
+  {
+   "key": "전기",
+   "ko": "전기",
+   "obj": "main",
+   "tag": "AUTO"
+  },
+  {
+   "key": "축복",
+   "ko": "축복",
+   "obj": "main",
+   "tag": "AUTO"
+  },
+  {
+   "key": "낡은",
+   "ko": "낡은",
+   "obj": "main",
+   "tag": "AUTO"
+  },
+  {
+   "key": "강철",
+   "ko": "강철",
+   "obj": "main",
+   "tag": "AUTO"
+  },
+  {
+   "key": "흑요석",
+   "ko": "흑요석",
+   "obj": "main",
+   "tag": "AUTO"
+  },
+  {
+   "key": "미스릴",
+   "ko": "미스릴",
+   "obj": "main",
+   "tag": "AUTO"
+  },
+  {
+   "key": "심판의",
+   "ko": "심판의",
+   "obj": "main",
+   "tag": "AUTO"
+  },
+  {
+   "key": "천벌의",
+   "ko": "천벌의",
+   "obj": "main",
+   "tag": "AUTO"
+  },
+  {
+   "key": "염화",
+   "ko": "염화",
+   "obj": "main",
+   "tag": "AUTO"
+  },
+  {
+   "key": "지옥불",
+   "ko": "지옥불",
+   "obj": "main",
+   "tag": "AUTO"
+  },
+  {
+   "key": "지옥화",
+   "ko": "지옥화",
+   "obj": "main",
+   "tag": "AUTO"
+  },
+  {
+   "key": "멸화의",
+   "ko": "멸화의",
+   "obj": "main",
+   "tag": "AUTO"
+  },
+  {
+   "key": "빙하",
+   "ko": "빙하",
+   "obj": "main",
+   "tag": "AUTO"
+  },
+  {
+   "key": "서리의",
+   "ko": "서리의",
+   "obj": "main",
+   "tag": "AUTO"
+  },
+  {
+   "key": "서리",
+   "ko": "서리",
+   "obj": "main",
+   "tag": "AUTO"
+  },
+  {
+   "key": "영겁빙",
+   "ko": "영겁빙",
+   "obj": "main",
+   "tag": "AUTO"
+  },
+  {
+   "key": "심연",
+   "ko": "심연",
+   "obj": "main",
+   "tag": "AUTO"
+  },
+  {
+   "key": "나락의",
+   "ko": "나락의",
+   "obj": "main",
+   "tag": "AUTO"
+  },
+  {
+   "key": "나락",
+   "ko": "나락",
+   "obj": "main",
+   "tag": "AUTO"
+  },
+  {
+   "key": "무간의",
+   "ko": "무간의",
+   "obj": "main",
+   "tag": "AUTO"
+  },
+  {
+   "key": "뇌신의",
+   "ko": "뇌신의",
+   "obj": "main",
+   "tag": "AUTO"
+  },
+  {
+   "key": "뇌신",
+   "ko": "뇌신",
+   "obj": "main",
+   "tag": "AUTO"
+  },
+  {
+   "key": "만뢰의",
+   "ko": "만뢰의",
+   "obj": "main",
+   "tag": "AUTO"
+  },
+  {
+   "key": "성광",
+   "ko": "성광",
+   "obj": "main",
+   "tag": "AUTO"
+  },
+  {
+   "key": "천사의",
+   "ko": "천사의",
+   "obj": "main",
+   "tag": "AUTO"
+  },
+  {
+   "key": "신벌의",
+   "ko": "신벌의",
+   "obj": "main",
+   "tag": "AUTO"
+  },
+  {
+   "key": "천",
+   "ko": "천",
+   "obj": "main",
+   "tag": "AUTO"
+  },
+  {
+   "key": "가죽",
+   "ko": "가죽",
+   "obj": "main",
+   "tag": "AUTO"
+  },
+  {
+   "key": "강철사",
+   "ko": "강철사",
+   "obj": "main",
+   "tag": "AUTO"
+  },
+  {
+   "key": "은",
+   "ko": "은",
+   "obj": "main",
+   "tag": "AUTO"
+  },
+  {
+   "key": "은사",
+   "ko": "은사",
+   "obj": "main",
+   "tag": "AUTO"
+  },
+  {
+   "key": "빙결의",
+   "ko": "빙결의",
+   "obj": "main",
+   "tag": "TONE"
+  },
+  {
+   "key": "암전의",
+   "ko": "암전의",
+   "obj": "main",
+   "tag": "AUTO"
+  },
+  {
+   "key": "대견갑",
+   "ko": "대견갑",
+   "obj": "main",
+   "tag": "AUTO"
+  },
+  {
+   "key": "전투화",
+   "ko": "전투화",
+   "obj": "main",
+   "tag": "AUTO"
+  },
+  {
+   "key": "갑주",
+   "ko": "갑주",
+   "obj": "main",
+   "tag": "AUTO"
+  },
+  {
+   "key": "건틀릿",
+   "ko": "건틀릿",
+   "obj": "main",
+   "tag": "AUTO"
+  },
+  {
+   "key": "각반",
+   "ko": "각반",
+   "obj": "main",
+   "tag": "AUTO"
+  },
+  {
+   "key": "벨트",
+   "ko": "벨트",
+   "obj": "main",
+   "tag": "AUTO"
+  },
+  {
+   "key": "부적",
+   "ko": "부적",
+   "obj": "main",
+   "tag": "AUTO"
+  },
+  {
+   "key": "반지",
+   "ko": "반지",
+   "obj": "main",
+   "tag": "AUTO"
+  },
+  {
+   "key": "팔찌",
+   "ko": "팔찌",
+   "obj": "main",
+   "tag": "AUTO"
+  },
+  {
+   "key": "귀걸이",
+   "ko": "귀걸이",
+   "obj": "main",
+   "tag": "AUTO"
+  },
+  {
+   "key": "⛓️ 관통!",
+   "ko": "⛓️ 관통!",
+   "obj": "main",
+   "tag": "TONE"
+  },
+  {
+   "key": "⛓️ 돌파",
+   "ko": "⛓️ 돌파",
+   "obj": "main",
+   "tag": "AUTO"
+  },
+  {
+   "key": "⛓️ 관통",
+   "ko": "⛓️ 관통",
+   "obj": "main",
+   "tag": "TONE"
+  },
+  {
+   "key": "...사라짐",
+   "ko": "...사라짐",
+   "obj": "base",
+   "tag": "AUTO"
+  },
+  {
+   "key": "2장 — 벌레굴",
+   "ko": "2장 — 벌레굴",
+   "obj": "base",
+   "tag": "AUTO"
+  },
+  {
+   "key": "3장 — 얼음굴",
+   "ko": "3장 — 얼음굴",
+   "obj": "base",
+   "tag": "AUTO"
+  },
+  {
+   "key": "5장 — 지옥의 군단",
+   "ko": "5장 — 지옥의 군단",
+   "obj": "base",
+   "tag": "AUTO"
+  },
+  {
+   "key": "6장 — 사도의 마굴",
+   "ko": "6장 — 사도의 마굴",
+   "obj": "base",
+   "tag": "AUTO"
+  },
+  {
+   "key": "7장 — 지옥성",
+   "ko": "7장 — 지옥성",
+   "obj": "base",
+   "tag": "AUTO"
+  },
+  {
+   "key": "AI 자동 강화",
+   "ko": "AI 자동 강화",
+   "obj": "base",
+   "tag": "AUTO"
+  },
+  {
+   "key": "DEF결정",
+   "ko": "DEF결정",
+   "obj": "base",
+   "tag": "AUTO"
+  },
+  {
+   "key": "HP 부족!",
+   "ko": "HP 부족!",
+   "obj": "base",
+   "tag": "AUTO"
+  },
+  {
+   "key": "HP물약 +1",
+   "ko": "HP물약 +1",
+   "obj": "base",
+   "tag": "AUTO"
+  },
+  {
+   "key": "HP물약 +2",
+   "ko": "HP물약 +2",
+   "obj": "base",
+   "tag": "AUTO"
+  },
+  {
+   "key": "MP 부족 — 광선 해제",
+   "ko": "MP 부족 — 광선 해제",
+   "obj": "base",
+   "tag": "AUTO"
+  },
+  {
+   "key": "MP 부족! (10)",
+   "ko": "MP 부족! (10)",
+   "obj": "base",
+   "tag": "AUTO"
+  },
+  {
+   "key": "MP 부족! (100)",
+   "ko": "MP 부족! (100)",
+   "obj": "base",
+   "tag": "AUTO"
+  },
+  {
+   "key": "MP결정",
+   "ko": "MP결정",
+   "obj": "base",
+   "tag": "AUTO"
+  },
+  {
+   "key": "SHIFT 사슬 발사",
+   "ko": "SHIFT 사슬 발사",
+   "obj": "base",
+   "tag": "AUTO"
+  },
+  {
+   "key": "SP부족!",
+   "ko": "SP부족!",
+   "obj": "base",
+   "tag": "AUTO"
+  },
+  {
+   "key": "ST 부족",
+   "ko": "ST 부족",
+   "obj": "base",
+   "tag": "AUTO"
+  },
+  {
+   "key": "ST결정",
+   "ko": "ST결정",
+   "obj": "base",
+   "tag": "AUTO"
+  },
+  {
+   "key": "WebGL2 활성",
+   "ko": "WebGL2 활성",
+   "obj": "base",
+   "tag": "AUTO"
+  },
+  {
+   "key": "⏳ 시간왜곡!",
+   "ko": "⏳ 시간왜곡!",
+   "obj": "base",
+   "tag": "AUTO"
+  },
+  {
+   "key": "☠ 독안개!",
+   "ko": "☠ 독안개!",
+   "obj": "base",
+   "tag": "AUTO"
+  },
+  {
+   "key": "☠ 죽음의 선고!",
+   "ko": "☠ 죽음의 선고!",
+   "obj": "base",
+   "tag": "AUTO"
+  },
+  {
+   "key": "⚓ 속박!",
+   "ko": "⚓ 속박!",
+   "obj": "base",
+   "tag": "AUTO"
+  },
+  {
+   "key": "⚔ 재단참!",
+   "ko": "⚔ 재단참!",
+   "obj": "base",
+   "tag": "AUTO"
+  },
+  {
+   "key": "⚠ 광역 발사!",
+   "ko": "⚠ 광역 발사!",
+   "obj": "base",
+   "tag": "AUTO"
+  },
+  {
+   "key": "⚠ 돌진!",
+   "ko": "⚠ 돌진!",
+   "obj": "base",
+   "tag": "AUTO"
+  },
+  {
+   "key": "⚠ 찌르기!",
+   "ko": "⚠ 찌르기!",
+   "obj": "base",
+   "tag": "AUTO"
+  },
+  {
+   "key": "⚡ 레이저!",
+   "ko": "⚡ 레이저!",
+   "obj": "base",
+   "tag": "AUTO"
+  },
+  {
+   "key": "⚡ 연쇄번개!",
+   "ko": "⚡ 연쇄번개!",
+   "obj": "base",
+   "tag": "AUTO"
+  },
+  {
+   "key": "⚡ 증표 ",
+   "ko": "⚡ 증표 ",
+   "obj": "base",
+   "tag": "AUTO"
+  },
+  {
+   "key": "⚡감전!",
+   "ko": "⚡감전!",
+   "obj": "base",
+   "tag": "AUTO"
+  },
+  {
+   "key": "⚡강화!",
+   "ko": "⚡강화!",
+   "obj": "base",
+   "tag": "AUTO"
+  },
+  {
+   "key": "⚡빔!",
+   "ko": "⚡빔!",
+   "obj": "base",
+   "tag": "AUTO"
+  },
+  {
+   "key": "⛧ 시전...",
+   "ko": "⛧ 시전...",
+   "obj": "base",
+   "tag": "AUTO"
+  },
+  {
+   "key": "✟ 관통의 영역!",
+   "ko": "✟ 관통의 영역!",
+   "obj": "base",
+   "tag": "AUTO"
+  },
+  {
+   "key": "✟ 권능의 영역!",
+   "ko": "✟ 권능의 영역!",
+   "obj": "base",
+   "tag": "AUTO"
+  },
+  {
+   "key": "✟ 물의 영역!",
+   "ko": "✟ 물의 영역!",
+   "obj": "base",
+   "tag": "AUTO"
+  },
+  {
+   "key": "✟ 침식의 영역!",
+   "ko": "✟ 침식의 영역!",
+   "obj": "base",
+   "tag": "AUTO"
+  },
+  {
+   "key": "✟ 파쇄의 영역!",
+   "ko": "✟ 파쇄의 영역!",
+   "obj": "base",
+   "tag": "AUTO"
+  },
+  {
+   "key": "❄ 무적!",
+   "ko": "❄ 무적!",
+   "obj": "base",
+   "tag": "AUTO"
+  },
+  {
+   "key": "❄빙결파!",
+   "ko": "❄빙결파!",
+   "obj": "base",
+   "tag": "AUTO"
+  },
+  {
+   "key": "가루",
+   "ko": "가루",
+   "obj": "base",
+   "tag": "AUTO"
+  },
+  {
+   "key": "가방이 가득 찼습니다!",
+   "ko": "가방이 가득 찼습니다!",
+   "obj": "base",
+   "tag": "AUTO"
+  },
+  {
+   "key": "가방이 비어있습니다",
+   "ko": "가방이 비어있습니다",
+   "obj": "base",
+   "tag": "AUTO"
+  },
+  {
+   "key": "가시!",
+   "ko": "가시!",
+   "obj": "base",
+   "tag": "AUTO"
+  },
+  {
+   "key": "가시덫",
+   "ko": "가시덫",
+   "obj": "base",
+   "tag": "AUTO"
+  },
+  {
+   "key": "가시의",
+   "ko": "가시의",
+   "obj": "base",
+   "tag": "AUTO"
+  },
+  {
+   "key": "감속!",
+   "ko": "감속!",
+   "obj": "base",
+   "tag": "AUTO"
+  },
+  {
+   "key": "감싸기!",
+   "ko": "감싸기!",
+   "obj": "base",
+   "tag": "AUTO"
+  },
+  {
+   "key": "감아올리기!",
+   "ko": "감아올리기!",
+   "obj": "base",
+   "tag": "AUTO"
+  },
+  {
+   "key": "감전",
+   "ko": "감전",
+   "obj": "base",
+   "tag": "AUTO"
+  },
+  {
+   "key": "감전!",
+   "ko": "감전!",
+   "obj": "base",
+   "tag": "AUTO"
+  },
+  {
+   "key": "강제기폭!",
+   "ko": "강제기폭!",
+   "obj": "base",
+   "tag": "AUTO"
+  },
+  {
+   "key": "강철 대검",
+   "ko": "강철 대검",
+   "obj": "base",
+   "tag": "AUTO"
+  },
+  {
+   "key": "강철 석궁",
+   "ko": "강철 석궁",
+   "obj": "base",
+   "tag": "AUTO"
+  },
+  {
+   "key": "강타",
+   "ko": "강타",
+   "obj": "base",
+   "tag": "AUTO"
+  },
+  {
+   "key": "강화 시",
+   "ko": "강화 시",
+   "obj": "base",
+   "tag": "AUTO"
+  },
+  {
+   "key": "강화 시작",
+   "ko": "강화 시작",
+   "obj": "base",
+   "tag": "AUTO"
+  },
+  {
+   "key": "강화!",
+   "ko": "강화!",
+   "obj": "base",
+   "tag": "AUTO"
+  },
+  {
+   "key": "개봉!",
+   "ko": "개봉!",
+   "obj": "base",
+   "tag": "AUTO"
+  },
+  {
+   "key": "거래 성공!",
+   "ko": "거래 성공!",
+   "obj": "base",
+   "tag": "AUTO"
+  },
+  {
+   "key": "거울의 사도",
+   "ko": "거울의 사도",
+   "obj": "base",
+   "tag": "AUTO"
+  },
+  {
+   "key": "결정 주머니 가득!",
+   "ko": "결정 주머니 가득!",
+   "obj": "base",
+   "tag": "AUTO"
+  },
+  {
+   "key": "결정이 없습니다",
+   "ko": "결정이 없습니다",
+   "obj": "base",
+   "tag": "AUTO"
+  },
+  {
+   "key": "경직!",
+   "ko": "경직!",
+   "obj": "base",
+   "tag": "AUTO"
+  },
+  {
+   "key": "경험의",
+   "ko": "경험의",
+   "obj": "base",
+   "tag": "AUTO"
+  },
+  {
+   "key": "경험치",
+   "ko": "경험치",
+   "obj": "base",
+   "tag": "AUTO"
+  },
+  {
+   "key": "고통의 왕 처치!",
+   "ko": "고통의 왕 처치!",
+   "obj": "base",
+   "tag": "AUTO"
+  },
+  {
+   "key": "고통의 화염지대",
+   "ko": "고통의 화염지대",
+   "obj": "base",
+   "tag": "AUTO"
+  },
+  {
+   "key": "골드의",
+   "ko": "골드의",
+   "obj": "base",
+   "tag": "AUTO"
+  },
+  {
+   "key": "공포!",
+   "ko": "공포!",
+   "obj": "base",
+   "tag": "AUTO"
+  },
+  {
+   "key": "과부하 ",
+   "ko": "과부하 ",
+   "obj": "base",
+   "tag": "AUTO"
+  },
+  {
+   "key": "관통",
+   "ko": "관통",
+   "obj": "base",
+   "tag": "AUTO"
+  },
+  {
+   "key": "관통!",
+   "ko": "관통!",
+   "obj": "base",
+   "tag": "AUTO"
+  },
+  {
+   "key": "광선 해제",
+   "ko": "광선 해제",
+   "obj": "base",
+   "tag": "AUTO"
+  },
+  {
+   "key": "광전",
+   "ko": "광전",
+   "obj": "base",
+   "tag": "AUTO"
+  },
+  {
+   "key": "광전사",
+   "ko": "광전사",
+   "obj": "base",
+   "tag": "AUTO"
+  },
+  {
+   "key": "광폭의",
+   "ko": "광폭의",
+   "obj": "base",
+   "tag": "AUTO"
+  },
+  {
+   "key": "구속의 영역",
+   "ko": "구속의 영역",
+   "obj": "base",
+   "tag": "AUTO"
+  },
+  {
+   "key": "궁극의",
+   "ko": "궁극의",
+   "obj": "base",
+   "tag": "AUTO"
+  },
+  {
+   "key": "균형...강화!",
+   "ko": "균형...강화!",
+   "obj": "base",
+   "tag": "AUTO"
+  },
+  {
+   "key": "그로기 보스 없음!",
+   "ko": "그로기 보스 없음!",
+   "obj": "base",
+   "tag": "AUTO"
+  },
+  {
+   "key": "급강하!",
+   "ko": "급강하!",
+   "obj": "base",
+   "tag": "AUTO"
+  },
+  {
+   "key": "급소",
+   "ko": "급소",
+   "obj": "base",
+   "tag": "AUTO"
+  },
+  {
+   "key": "기동불꽃 준비!",
+   "ko": "기동불꽃 준비!",
+   "obj": "base",
+   "tag": "AUTO"
+  },
+  {
+   "key": "기동불꽃!",
+   "ko": "기동불꽃!",
+   "obj": "base",
+   "tag": "AUTO"
+  },
+  {
+   "key": "기동칼날개",
+   "ko": "기동칼날개",
+   "obj": "base",
+   "tag": "AUTO"
+  },
+  {
+   "key": "기동칼날개 AUTO OFF",
+   "ko": "기동칼날개 AUTO OFF",
+   "obj": "base",
+   "tag": "AUTO"
+  },
+  {
+   "key": "기동파괴",
+   "ko": "기동파괴",
+   "obj": "base",
+   "tag": "AUTO"
+  },
+  {
+   "key": "기동파괴!",
+   "ko": "기동파괴!",
+   "obj": "base",
+   "tag": "AUTO"
+  },
+  {
+   "key": "기력결정",
+   "ko": "기력결정",
+   "obj": "base",
+   "tag": "AUTO"
+  },
+  {
+   "key": "기생충!",
+   "ko": "기생충!",
+   "obj": "base",
+   "tag": "AUTO"
+  },
+  {
+   "key": "기습!",
+   "ko": "기습!",
+   "obj": "base",
+   "tag": "AUTO"
+  },
+  {
+   "key": "기원",
+   "ko": "기원",
+   "obj": "base",
+   "tag": "AUTO"
+  },
+  {
+   "key": "기절 해제",
+   "ko": "기절 해제",
+   "obj": "base",
+   "tag": "AUTO"
+  },
+  {
+   "key": "기폭 준비!",
+   "ko": "기폭 준비!",
+   "obj": "base",
+   "tag": "AUTO"
+  },
+  {
+   "key": "기폭팔",
+   "ko": "기폭팔",
+   "obj": "base",
+   "tag": "AUTO"
+  },
+  {
+   "key": "꺼내기",
+   "ko": "꺼내기",
+   "obj": "base",
+   "tag": "AUTO"
+  },
+  {
+   "key": "끌려감!",
+   "ko": "끌려감!",
+   "obj": "base",
+   "tag": "AUTO"
+  },
+  {
+   "key": "낙하!",
+   "ko": "낙하!",
+   "obj": "base",
+   "tag": "AUTO"
+  },
+  {
+   "key": "난이도",
+   "ko": "난이도",
+   "obj": "base",
+   "tag": "AUTO"
+  },
+  {
+   "key": "내리찍기!",
+   "ko": "내리찍기!",
+   "obj": "base",
+   "tag": "AUTO"
+  },
+  {
+   "key": "냉기의",
+   "ko": "냉기의",
+   "obj": "base",
+   "tag": "AUTO"
+  },
+  {
+   "key": "냠!",
+   "ko": "냠!",
+   "obj": "base",
+   "tag": "AUTO"
+  },
+  {
+   "key": "너도 느껴봐라!",
+   "ko": "너도 느껴봐라!",
+   "obj": "base",
+   "tag": "AUTO"
+  },
+  {
+   "key": "뇌전걸음",
+   "ko": "뇌전걸음",
+   "obj": "base",
+   "tag": "AUTO"
+  },
+  {
+   "key": "능력치 (스탯/패시브)",
+   "ko": "능력치 (스탯/패시브)",
+   "obj": "base",
+   "tag": "AUTO"
+  },
+  {
+   "key": "단",
+   "ko": "단",
+   "obj": "base",
+   "tag": "AUTO"
+  },
+  {
+   "key": "당기기",
+   "ko": "당기기",
+   "obj": "base",
+   "tag": "AUTO"
+  },
+  {
+   "key": "대기",
+   "ko": "대기",
+   "obj": "base",
+   "tag": "AUTO"
+  },
+  {
+   "key": "대사도 처치!",
+   "ko": "대사도 처치!",
+   "obj": "base",
+   "tag": "AUTO"
+  },
+  {
+   "key": "대왕치기",
+   "ko": "대왕치기",
+   "obj": "base",
+   "tag": "AUTO"
+  },
+  {
+   "key": "대왕치기 2",
+   "ko": "대왕치기 2",
+   "obj": "base",
+   "tag": "AUTO"
+  },
+  {
+   "key": "대장",
+   "ko": "대장",
+   "obj": "base",
+   "tag": "AUTO"
+  },
+  {
+   "key": "대지",
+   "ko": "대지",
+   "obj": "base",
+   "tag": "AUTO"
+  },
+  {
+   "key": "더 필요",
+   "ko": "더 필요",
+   "obj": "base",
+   "tag": "AUTO"
+  },
+  {
+   "key": "뎀",
+   "ko": "뎀",
+   "obj": "base",
+   "tag": "AUTO"
+  },
+  {
+   "key": "도망!",
+   "ko": "도망!",
+   "obj": "base",
+   "tag": "AUTO"
+  },
+  {
+   "key": "도트",
+   "ko": "도트",
+   "obj": "base",
+   "tag": "AUTO"
+  },
+  {
+   "key": "독!",
+   "ko": "독!",
+   "obj": "base",
+   "tag": "AUTO"
+  },
+  {
+   "key": "독가스!",
+   "ko": "독가스!",
+   "obj": "base",
+   "tag": "AUTO"
+  },
+  {
+   "key": "독버섯 거인",
+   "ko": "독버섯 거인",
+   "obj": "base",
+   "tag": "AUTO"
+  },
+  {
+   "key": "독수호",
+   "ko": "독수호",
+   "obj": "base",
+   "tag": "AUTO"
+  },
+  {
+   "key": "독안개!",
+   "ko": "독안개!",
+   "obj": "base",
+   "tag": "AUTO"
+  },
+  {
+   "key": "독혈!",
+   "ko": "독혈!",
+   "obj": "base",
+   "tag": "AUTO"
+  },
+  {
+   "key": "돌파",
+   "ko": "돌파",
+   "obj": "base",
+   "tag": "AUTO"
+  },
+  {
+   "key": "동료불사",
+   "ko": "동료불사",
+   "obj": "base",
+   "tag": "AUTO"
+  },
+  {
+   "key": "레벨",
+   "ko": "레벨",
+   "obj": "base",
+   "tag": "AUTO"
+  },
+  {
+   "key": "레어몹",
+   "ko": "레어몹",
+   "obj": "base",
+   "tag": "AUTO"
+  },
+  {
+   "key": "레인라이트닝!",
+   "ko": "레인라이트닝!",
+   "obj": "base",
+   "tag": "AUTO"
+  },
+  {
+   "key": "로비로",
+   "ko": "로비로",
+   "obj": "base",
+   "tag": "AUTO"
+  },
+  {
+   "key": "리셋",
+   "ko": "리셋",
+   "obj": "base",
+   "tag": "AUTO"
+  },
+  {
+   "key": "리셋!",
+   "ko": "리셋!",
+   "obj": "base",
+   "tag": "AUTO"
+  },
+  {
+   "key": "마력광선",
+   "ko": "마력광선",
+   "obj": "base",
+   "tag": "AUTO"
+  },
+  {
+   "key": "마력연사",
+   "ko": "마력연사",
+   "obj": "base",
+   "tag": "AUTO"
+  },
+  {
+   "key": "마법",
+   "ko": "마법",
+   "obj": "base",
+   "tag": "AUTO"
+  },
+  {
+   "key": "마법관통",
+   "ko": "마법관통",
+   "obj": "base",
+   "tag": "AUTO"
+  },
+  {
+   "key": "마법보초",
+   "ko": "마법보초",
+   "obj": "base",
+   "tag": "AUTO"
+  },
+  {
+   "key": "마비!",
+   "ko": "마비!",
+   "obj": "base",
+   "tag": "AUTO"
+  },
+  {
+   "key": "만충! 재입력→폭발",
+   "ko": "만충! 재입력→폭발",
+   "obj": "base",
+   "tag": "AUTO"
+  },
+  {
+   "key": "만화광선",
+   "ko": "만화광선",
+   "obj": "base",
+   "tag": "AUTO"
+  },
+  {
+   "key": "만화방창",
+   "ko": "만화방창",
+   "obj": "base",
+   "tag": "AUTO"
+  },
+  {
+   "key": "맹독",
+   "ko": "맹독",
+   "obj": "base",
+   "tag": "AUTO"
+  },
+  {
+   "key": "맹렬한",
+   "ko": "맹렬한",
+   "obj": "base",
+   "tag": "AUTO"
+  },
+  {
+   "key": "멸살광선",
+   "ko": "멸살광선",
+   "obj": "base",
+   "tag": "AUTO"
+  },
+  {
+   "key": "목표치 설정",
+   "ko": "목표치 설정",
+   "obj": "base",
+   "tag": "AUTO"
+  },
+  {
+   "key": "무기 해방!",
+   "ko": "무기 해방!",
+   "obj": "base",
+   "tag": "AUTO"
+  },
+  {
+   "key": "문지기",
+   "ko": "문지기",
+   "obj": "base",
+   "tag": "AUTO"
+  },
+  {
+   "key": "물뿜기!",
+   "ko": "물뿜기!",
+   "obj": "base",
+   "tag": "AUTO"
+  },
+  {
+   "key": "민첩",
+   "ko": "민첩",
+   "obj": "base",
+   "tag": "AUTO"
+  },
+  {
+   "key": "밀어내기",
+   "ko": "밀어내기",
+   "obj": "base",
+   "tag": "AUTO"
+  },
+  {
+   "key": "밀어내기 모드",
+   "ko": "밀어내기 모드",
+   "obj": "base",
+   "tag": "AUTO"
+  },
+  {
+   "key": "바늘출!",
+   "ko": "바늘출!",
+   "obj": "base",
+   "tag": "AUTO"
+  },
+  {
+   "key": "반격",
+   "ko": "반격",
+   "obj": "base",
+   "tag": "AUTO"
+  },
+  {
+   "key": "반격 발사!",
+   "ko": "반격 발사!",
+   "obj": "base",
+   "tag": "AUTO"
+  },
+  {
+   "key": "반격!",
+   "ko": "반격!",
+   "obj": "base",
+   "tag": "AUTO"
+  },
+  {
+   "key": "반사의",
+   "ko": "반사의",
+   "obj": "base",
+   "tag": "AUTO"
+  },
+  {
+   "key": "방어!",
+   "ko": "방어!",
+   "obj": "base",
+   "tag": "AUTO"
+  },
+  {
+   "key": "방출!",
+   "ko": "방출!",
+   "obj": "base",
+   "tag": "AUTO"
+  },
+  {
+   "key": "버스트루프",
+   "ko": "버스트루프",
+   "obj": "base",
+   "tag": "AUTO"
+  },
+  {
+   "key": "번개결정",
+   "ko": "번개결정",
+   "obj": "base",
+   "tag": "AUTO"
+  },
+  {
+   "key": "번개의",
+   "ko": "번개의",
+   "obj": "base",
+   "tag": "AUTO"
+  },
+  {
+   "key": "보관",
+   "ko": "보관",
+   "obj": "base",
+   "tag": "AUTO"
+  },
+  {
+   "key": "보관 아이템",
+   "ko": "보관 아이템",
+   "obj": "base",
+   "tag": "AUTO"
+  },
+  {
+   "key": "보더리스",
+   "ko": "보더리스",
+   "obj": "base",
+   "tag": "AUTO"
+  },
+  {
+   "key": "보막",
+   "ko": "보막",
+   "obj": "base",
+   "tag": "AUTO"
+  },
+  {
+   "key": "보물 발견!",
+   "ko": "보물 발견!",
+   "obj": "base",
+   "tag": "AUTO"
+  },
+  {
+   "key": "보물 악마",
+   "ko": "보물 악마",
+   "obj": "base",
+   "tag": "AUTO"
+  },
+  {
+   "key": "보스 AI 디버그",
+   "ko": "보스 AI 디버그",
+   "obj": "base",
+   "tag": "AUTO"
+  },
+  {
+   "key": "보유 악의",
+   "ko": "보유 악의",
+   "obj": "base",
+   "tag": "AUTO"
+  },
+  {
+   "key": "보호막",
+   "ko": "보호막",
+   "obj": "base",
+   "tag": "AUTO"
+  },
+  {
+   "key": "봉인됨!",
+   "ko": "봉인됨!",
+   "obj": "base",
+   "tag": "AUTO"
+  },
+  {
+   "key": "부족",
+   "ko": "부족",
+   "obj": "base",
+   "tag": "AUTO"
+  },
+  {
+   "key": "부족!",
+   "ko": "부족!",
+   "obj": "base",
+   "tag": "AUTO"
+  },
+  {
+   "key": "부츠",
+   "ko": "부츠",
+   "obj": "base",
+   "tag": "AUTO"
+  },
+  {
+   "key": "부활",
+   "ko": "부활",
+   "obj": "base",
+   "tag": "AUTO"
+  },
+  {
+   "key": "부활 실패...",
+   "ko": "부활 실패...",
+   "obj": "base",
+   "tag": "AUTO"
+  },
+  {
+   "key": "부활의",
+   "ko": "부활의",
+   "obj": "base",
+   "tag": "AUTO"
+  },
+  {
+   "key": "부활의 영역",
+   "ko": "부활의 영역",
+   "obj": "base",
+   "tag": "AUTO"
+  },
+  {
+   "key": "분노",
+   "ko": "분노",
+   "obj": "base",
+   "tag": "AUTO"
+  },
+  {
+   "key": "분비!",
+   "ko": "분비!",
+   "obj": "base",
+   "tag": "AUTO"
+  },
+  {
+   "key": "분신 파괴!",
+   "ko": "분신 파괴!",
+   "obj": "base",
+   "tag": "AUTO"
+  },
+  {
+   "key": "분열",
+   "ko": "분열",
+   "obj": "base",
+   "tag": "AUTO"
+  },
+  {
+   "key": "분열!",
+   "ko": "분열!",
+   "obj": "base",
+   "tag": "AUTO"
+  },
+  {
+   "key": "분해",
+   "ko": "분해",
+   "obj": "base",
+   "tag": "AUTO"
+  },
+  {
+   "key": "분해! 가루 +",
+   "ko": "분해! 가루 +",
+   "obj": "base",
+   "tag": "AUTO"
+  },
+  {
+   "key": "불균형...저주!",
+   "ko": "불균형...저주!",
+   "obj": "base",
+   "tag": "AUTO"
+  },
+  {
+   "key": "불꽃의",
+   "ko": "불꽃의",
+   "obj": "base",
+   "tag": "AUTO"
+  },
+  {
+   "key": "불발...",
+   "ko": "불발...",
+   "obj": "base",
+   "tag": "AUTO"
+  },
+  {
+   "key": "불사 보호",
+   "ko": "불사 보호",
+   "obj": "base",
+   "tag": "AUTO"
+  },
+  {
+   "key": "브레스!",
+   "ko": "브레스!",
+   "obj": "base",
+   "tag": "AUTO"
+  },
+  {
+   "key": "비명!",
+   "ko": "비명!",
+   "obj": "base",
+   "tag": "AUTO"
+  },
+  {
+   "key": "비문 발견...",
+   "ko": "비문 발견...",
+   "obj": "base",
+   "tag": "AUTO"
+  },
+  {
+   "key": "비어있음",
+   "ko": "비어있음",
+   "obj": "base",
+   "tag": "AUTO"
+  },
+  {
+   "key": "비이이명!!",
+   "ko": "비이이명!!",
+   "obj": "base",
+   "tag": "AUTO"
+  },
+  {
+   "key": "빈 슬롯",
+   "ko": "빈 슬롯",
+   "obj": "base",
+   "tag": "AUTO"
+  },
+  {
+   "key": "빙결수호",
+   "ko": "빙결수호",
+   "obj": "base",
+   "tag": "AUTO"
+  },
+  {
+   "key": "빙마 처치!",
+   "ko": "빙마 처치!",
+   "obj": "base",
+   "tag": "AUTO"
+  },
+  {
+   "key": "뼈 파편!",
+   "ko": "뼈 파편!",
+   "obj": "base",
+   "tag": "AUTO"
+  },
+  {
+   "key": "사도의 마굴",
+   "ko": "사도의 마굴",
+   "obj": "base",
+   "tag": "AUTO"
+  },
+  {
+   "key": "사망폭발",
+   "ko": "사망폭발",
+   "obj": "base",
+   "tag": "AUTO"
+  },
+  {
+   "key": "사슬기동:충돌",
+   "ko": "사슬기동:충돌",
+   "obj": "base",
+   "tag": "AUTO"
+  },
+  {
+   "key": "사슬기동:화염!",
+   "ko": "사슬기동:화염!",
+   "obj": "base",
+   "tag": "AUTO"
+  },
+  {
+   "key": "사슬의",
+   "ko": "사슬의",
+   "obj": "base",
+   "tag": "AUTO"
+  },
+  {
+   "key": "사슬의 죄수",
+   "ko": "사슬의 죄수",
+   "obj": "base",
+   "tag": "AUTO"
+  },
+  {
+   "key": "사용 안 함",
+   "ko": "사용 안 함",
+   "obj": "base",
+   "tag": "AUTO"
+  },
+  {
+   "key": "산화...",
+   "ko": "산화...",
+   "obj": "base",
+   "tag": "AUTO"
+  },
+  {
+   "key": "삼키기!",
+   "ko": "삼키기!",
+   "obj": "base",
+   "tag": "AUTO"
+  },
+  {
+   "key": "색욕",
+   "ko": "색욕",
+   "obj": "base",
+   "tag": "AUTO"
+  },
+  {
+   "key": "생명결정",
+   "ko": "생명결정",
+   "obj": "base",
+   "tag": "AUTO"
+  },
+  {
+   "key": "선택분해",
+   "ko": "선택분해",
+   "obj": "base",
+   "tag": "AUTO"
+  },
+  {
+   "key": "설치 가능",
+   "ko": "설치 가능",
+   "obj": "base",
+   "tag": "AUTO"
+  },
+  {
+   "key": "세팅!",
+   "ko": "세팅!",
+   "obj": "base",
+   "tag": "AUTO"
+  },
+  {
+   "key": "소멸...",
+   "ko": "소멸...",
+   "obj": "base",
+   "tag": "AUTO"
+  },
+  {
+   "key": "소용돌이!",
+   "ko": "소용돌이!",
+   "obj": "base",
+   "tag": "AUTO"
+  },
+  {
+   "key": "소환",
+   "ko": "소환",
+   "obj": "base",
+   "tag": "AUTO"
+  },
+  {
+   "key": "속도결정",
+   "ko": "속도결정",
+   "obj": "base",
+   "tag": "AUTO"
+  },
+  {
+   "key": "속박!",
+   "ko": "속박!",
+   "obj": "base",
+   "tag": "AUTO"
+  },
+  {
+   "key": "쇠뇌력",
+   "ko": "쇠뇌력",
+   "obj": "base",
+   "tag": "AUTO"
+  },
+  {
+   "key": "수호",
+   "ko": "수호",
+   "obj": "base",
+   "tag": "AUTO"
+  },
+  {
+   "key": "수호신",
+   "ko": "수호신",
+   "obj": "base",
+   "tag": "AUTO"
+  },
+  {
+   "key": "수호의",
+   "ko": "수호의",
+   "obj": "base",
+   "tag": "AUTO"
+  },
+  {
+   "key": "순수결정",
+   "ko": "순수결정",
+   "obj": "base",
+   "tag": "AUTO"
+  },
+  {
+   "key": "숲의 감시자",
+   "ko": "숲의 감시자",
+   "obj": "base",
+   "tag": "AUTO"
+  },
+  {
+   "key": "숲의 기생수",
+   "ko": "숲의 기생수",
+   "obj": "base",
+   "tag": "AUTO"
+  },
+  {
+   "key": "숲의 사냥꾼",
+   "ko": "숲의 사냥꾼",
+   "obj": "base",
+   "tag": "AUTO"
+  },
+  {
+   "key": "스킬 해제",
+   "ko": "스킬 해제",
+   "obj": "base",
+   "tag": "AUTO"
+  },
+  {
+   "key": "스태거폭발의",
+   "ko": "스태거폭발의",
+   "obj": "base",
+   "tag": "AUTO"
+  },
+  {
+   "key": "스탯",
+   "ko": "스탯",
+   "obj": "base",
+   "tag": "AUTO"
+  },
+  {
+   "key": "슬롯:",
+   "ko": "슬롯:",
+   "obj": "base",
+   "tag": "AUTO"
+  },
+  {
+   "key": "시간왜곡",
+   "ko": "시간왜곡",
+   "obj": "base",
+   "tag": "AUTO"
+  },
+  {
+   "key": "시간의 사도",
+   "ko": "시간의 사도",
+   "obj": "base",
+   "tag": "AUTO"
+  },
+  {
+   "key": "시간의 조각!",
+   "ko": "시간의 조각!",
+   "obj": "base",
+   "tag": "AUTO"
+  },
+  {
+   "key": "시전 중...",
+   "ko": "시전 중...",
+   "obj": "base",
+   "tag": "AUTO"
+  },
+  {
+   "key": "시전...",
+   "ko": "시전...",
+   "obj": "base",
+   "tag": "AUTO"
+  },
+  {
+   "key": "신성",
+   "ko": "신성",
+   "obj": "base",
+   "tag": "AUTO"
+  },
+  {
+   "key": "신속",
+   "ko": "신속",
+   "obj": "base",
+   "tag": "AUTO"
+  },
+  {
+   "key": "신속의",
+   "ko": "신속의",
+   "obj": "base",
+   "tag": "AUTO"
+  },
+  {
+   "key": "심연의 분노!",
+   "ko": "심연의 분노!",
+   "obj": "base",
+   "tag": "AUTO"
+  },
+  {
+   "key": "쌍둥이의 분노!",
+   "ko": "쌍둥이의 분노!",
+   "obj": "base",
+   "tag": "AUTO"
+  },
+  {
+   "key": "쓰레기",
+   "ko": "쓰레기",
+   "obj": "base",
+   "tag": "AUTO"
+  },
+  {
+   "key": "아이템 줍기",
+   "ko": "아이템 줍기",
+   "obj": "base",
+   "tag": "AUTO"
+  },
+  {
+   "key": "아이템에 마우스를 올리거나 좌클릭으로 선택하세요",
+   "ko": "아이템에 마우스를 올리거나 좌클릭으로 선택하세요",
+   "obj": "base",
+   "tag": "AUTO"
+  },
+  {
+   "key": "악마화 부활",
+   "ko": "악마화 부활",
+   "obj": "base",
+   "tag": "AUTO"
+  },
+  {
+   "key": "악의",
+   "ko": "악의",
+   "obj": "base",
+   "tag": "AUTO"
+  },
+  {
+   "key": "악의 +",
+   "ko": "악의 +",
+   "obj": "base",
+   "tag": "AUTO"
+  },
+  {
+   "key": "악의 보호자",
+   "ko": "악의 보호자",
+   "obj": "base",
+   "tag": "AUTO"
+  },
+  {
+   "key": "악의 부족",
+   "ko": "악의 부족",
+   "obj": "base",
+   "tag": "AUTO"
+  },
+  {
+   "key": "악의 부족!",
+   "ko": "악의 부족!",
+   "obj": "base",
+   "tag": "AUTO"
+  },
+  {
+   "key": "악의 부족! (10)",
+   "ko": "악의 부족! (10)",
+   "obj": "base",
+   "tag": "AUTO"
+  },
+  {
+   "key": "악의 부족! (15)",
+   "ko": "악의 부족! (15)",
+   "obj": "base",
+   "tag": "AUTO"
+  },
+  {
+   "key": "악의 부족! (30)",
+   "ko": "악의 부족! (30)",
+   "obj": "base",
+   "tag": "AUTO"
+  },
+  {
+   "key": "악의 사냥",
+   "ko": "악의 사냥",
+   "obj": "base",
+   "tag": "AUTO"
+  },
+  {
+   "key": "악의구",
+   "ko": "악의구",
+   "obj": "base",
+   "tag": "AUTO"
+  },
+  {
+   "key": "악의폭풍",
+   "ko": "악의폭풍",
+   "obj": "base",
+   "tag": "AUTO"
+  },
+  {
+   "key": "안식처",
+   "ko": "안식처",
+   "obj": "base",
+   "tag": "AUTO"
+  },
+  {
+   "key": "암전",
+   "ko": "암전",
+   "obj": "base",
+   "tag": "AUTO"
+  },
+  {
+   "key": "암전수호",
+   "ko": "암전수호",
+   "obj": "base",
+   "tag": "AUTO"
+  },
+  {
+   "key": "암흑",
+   "ko": "암흑",
+   "obj": "base",
+   "tag": "AUTO"
+  },
+  {
+   "key": "암흑결정",
+   "ko": "암흑결정",
+   "obj": "base",
+   "tag": "AUTO"
+  },
+  {
+   "key": "암흑수호",
+   "ko": "암흑수호",
+   "obj": "base",
+   "tag": "AUTO"
+  },
+  {
+   "key": "암흑의",
+   "ko": "암흑의",
+   "obj": "base",
+   "tag": "AUTO"
+  },
+  {
+   "key": "약탈",
+   "ko": "약탈",
+   "obj": "base",
+   "tag": "AUTO"
+  },
+  {
+   "key": "어려움",
+   "ko": "어려움",
+   "obj": "base",
+   "tag": "AUTO"
+  },
+  {
+   "key": "어픽스 없음",
+   "ko": "어픽스 없음",
+   "obj": "base",
+   "tag": "AUTO"
+  },
+  {
+   "key": "얼음굴",
+   "ko": "얼음굴",
+   "obj": "base",
+   "tag": "AUTO"
+  },
+  {
+   "key": "얼음보주",
+   "ko": "얼음보주",
+   "obj": "base",
+   "tag": "AUTO"
+  },
+  {
+   "key": "얼음보주 안에선 사용 불가!",
+   "ko": "얼음보주 안에선 사용 불가!",
+   "obj": "base",
+   "tag": "AUTO"
+  },
+  {
+   "key": "업화선",
+   "ko": "업화선",
+   "obj": "base",
+   "tag": "AUTO"
+  },
+  {
+   "key": "없음",
+   "ko": "없음",
+   "obj": "base",
+   "tag": "AUTO"
+  },
+  {
+   "key": "연쇄의",
+   "ko": "연쇄의",
+   "obj": "base",
+   "tag": "AUTO"
+  },
+  {
+   "key": "연타",
+   "ko": "연타",
+   "obj": "base",
+   "tag": "AUTO"
+  },
+  {
+   "key": "열기",
+   "ko": "열기",
+   "obj": "base",
+   "tag": "AUTO"
+  },
+  {
+   "key": "영웅",
+   "ko": "영웅",
+   "obj": "base",
+   "tag": "AUTO"
+  },
+  {
+   "key": "영혼의",
+   "ko": "영혼의",
+   "obj": "base",
+   "tag": "AUTO"
+  },
+  {
+   "key": "완전 해방!",
+   "ko": "완전 해방!",
+   "obj": "base",
+   "tag": "AUTO"
+  },
+  {
+   "key": "완전결정",
+   "ko": "완전결정",
+   "obj": "base",
+   "tag": "AUTO"
+  },
+  {
+   "key": "왕관 착용",
+   "ko": "왕관 착용",
+   "obj": "base",
+   "tag": "AUTO"
+  },
+  {
+   "key": "왕관 해제",
+   "ko": "왕관 해제",
+   "obj": "base",
+   "tag": "AUTO"
+  },
+  {
+   "key": "용암비!",
+   "ko": "용암비!",
+   "obj": "base",
+   "tag": "AUTO"
+  },
+  {
+   "key": "용암소환",
+   "ko": "용암소환",
+   "obj": "base",
+   "tag": "AUTO"
+  },
+  {
+   "key": "용암자취",
+   "ko": "용암자취",
+   "obj": "base",
+   "tag": "AUTO"
+  },
+  {
+   "key": "우클릭 탭 칼등 처내기",
+   "ko": "우클릭 탭 칼등 처내기",
+   "obj": "base",
+   "tag": "AUTO"
+  },
+  {
+   "key": "웅크림",
+   "ko": "웅크림",
+   "obj": "base",
+   "tag": "AUTO"
+  },
+  {
+   "key": "원소",
+   "ko": "원소",
+   "obj": "base",
+   "tag": "AUTO"
+  },
+  {
+   "key": "원소전환의",
+   "ko": "원소전환의",
+   "obj": "base",
+   "tag": "AUTO"
+  },
+  {
+   "key": "유령",
+   "ko": "유령",
+   "obj": "base",
+   "tag": "AUTO"
+  },
+  {
+   "key": "유령 글로우",
+   "ko": "유령 글로우",
+   "obj": "base",
+   "tag": "AUTO"
+  },
+  {
+   "key": "유령 허수아비",
+   "ko": "유령 허수아비",
+   "obj": "base",
+   "tag": "AUTO"
+  },
+  {
+   "key": "유틸",
+   "ko": "유틸",
+   "obj": "base",
+   "tag": "AUTO"
+  },
+  {
+   "key": "윤회의",
+   "ko": "윤회의",
+   "obj": "base",
+   "tag": "AUTO"
+  },
+  {
+   "key": "은신...",
+   "ko": "은신...",
+   "obj": "base",
+   "tag": "AUTO"
+  },
+  {
+   "key": "음악 볼륨",
+   "ko": "음악 볼륨",
+   "obj": "base",
+   "tag": "AUTO"
+  },
+  {
+   "key": "의식!",
+   "ko": "의식!",
+   "obj": "base",
+   "tag": "AUTO"
+  },
+  {
+   "key": "이단",
+   "ko": "이단",
+   "obj": "base",
+   "tag": "AUTO"
+  },
+  {
+   "key": "이동식 복귀",
+   "ko": "이동식 복귀",
+   "obj": "base",
+   "tag": "AUTO"
+  },
+  {
+   "key": "이미 빙풍 지역!",
+   "ko": "이미 빙풍 지역!",
+   "obj": "base",
+   "tag": "AUTO"
+  },
+  {
+   "key": "이상",
+   "ko": "이상",
+   "obj": "base",
+   "tag": "AUTO"
+  },
+  {
+   "key": "인내의",
+   "ko": "인내의",
+   "obj": "base",
+   "tag": "AUTO"
+  },
+  {
+   "key": "인벤",
+   "ko": "인벤",
+   "obj": "base",
+   "tag": "AUTO"
+  },
+  {
+   "key": "일괄합성 완료",
+   "ko": "일괄합성 완료",
+   "obj": "base",
+   "tag": "AUTO"
+  },
+  {
+   "key": "읽기",
+   "ko": "읽기",
+   "obj": "base",
+   "tag": "AUTO"
+  },
+  {
+   "key": "자동 OFF",
+   "ko": "자동 OFF",
+   "obj": "base",
+   "tag": "AUTO"
+  },
+  {
+   "key": "자동 ON",
+   "ko": "자동 ON",
+   "obj": "base",
+   "tag": "AUTO"
+  },
+  {
+   "key": "자동 시도",
+   "ko": "자동 시도",
+   "obj": "base",
+   "tag": "AUTO"
+  },
+  {
+   "key": "자동 장착!",
+   "ko": "자동 장착!",
+   "obj": "base",
+   "tag": "AUTO"
+  },
+  {
+   "key": "자동기폭!",
+   "ko": "자동기폭!",
+   "obj": "base",
+   "tag": "AUTO"
+  },
+  {
+   "key": "자폭!",
+   "ko": "자폭!",
+   "obj": "base",
+   "tag": "AUTO"
+  },
+  {
+   "key": "작동중",
+   "ko": "작동중",
+   "obj": "base",
+   "tag": "AUTO"
+  },
+  {
+   "key": "사슬",
+   "ko": "사슬",
+   "obj": "base",
+   "tag": "AUTO"
+  },
+  {
+   "key": "잡힘!",
+   "ko": "잡힘!",
+   "obj": "base",
+   "tag": "AUTO"
+  },
+  {
+   "key": "장착 중",
+   "ko": "장착 중",
+   "obj": "base",
+   "tag": "AUTO"
+  },
+  {
+   "key": "재생",
+   "ko": "재생",
+   "obj": "base",
+   "tag": "AUTO"
+  },
+  {
+   "key": "재생의",
+   "ko": "재생의",
+   "obj": "base",
+   "tag": "AUTO"
+  },
+  {
+   "key": "저주받은 쌍둥이",
+   "ko": "저주받은 쌍둥이",
+   "obj": "base",
+   "tag": "AUTO"
+  },
+  {
+   "key": "저항!",
+   "ko": "저항!",
+   "obj": "base",
+   "tag": "AUTO"
+  },
+  {
+   "key": "전격반사",
+   "ko": "전격반사",
+   "obj": "base",
+   "tag": "AUTO"
+  },
+  {
+   "key": "전격이동",
+   "ko": "전격이동",
+   "obj": "base",
+   "tag": "AUTO"
+  },
+  {
+   "key": "전기장!",
+   "ko": "전기장!",
+   "obj": "base",
+   "tag": "AUTO"
+  },
+  {
+   "key": "전설",
+   "ko": "전설",
+   "obj": "base",
+   "tag": "AUTO"
+  },
+  {
+   "key": "전원소수호",
+   "ko": "전원소수호",
+   "obj": "base",
+   "tag": "AUTO"
+  },
+  {
+   "key": "전체 해제",
+   "ko": "전체 해제",
+   "obj": "base",
+   "tag": "AUTO"
+  },
+  {
+   "key": "전체화면",
+   "ko": "전체화면",
+   "obj": "base",
+   "tag": "AUTO"
+  },
+  {
+   "key": "전환!",
+   "ko": "전환!",
+   "obj": "base",
+   "tag": "AUTO"
+  },
+  {
+   "key": "절약의",
+   "ko": "절약의",
+   "obj": "base",
+   "tag": "AUTO"
+  },
+  {
+   "key": "점화",
+   "ko": "점화",
+   "obj": "base",
+   "tag": "AUTO"
+  },
+  {
+   "key": "접기",
+   "ko": "접기",
+   "obj": "base",
+   "tag": "AUTO"
+  },
+  {
+   "key": "정밀사격",
+   "ko": "정밀사격",
+   "obj": "base",
+   "tag": "AUTO"
+  },
+  {
+   "key": "정화의",
+   "ko": "정화의",
+   "obj": "base",
+   "tag": "AUTO"
+  },
+  {
+   "key": "제단",
+   "ko": "제단",
+   "obj": "base",
+   "tag": "AUTO"
+  },
+  {
+   "key": "제작",
+   "ko": "제작",
+   "obj": "base",
+   "tag": "AUTO"
+  },
+  {
+   "key": "제작 비용",
+   "ko": "제작 비용",
+   "obj": "base",
+   "tag": "AUTO"
+  },
+  {
+   "key": "제작!",
+   "ko": "제작!",
+   "obj": "base",
+   "tag": "AUTO"
+  },
+  {
+   "key": "조작 키 설정 (클릭하여 변경)",
+   "ko": "조작 키 설정 (클릭하여 변경)",
+   "obj": "base",
+   "tag": "AUTO"
+  },
+  {
+   "key": "죽음을 이겨냈다!",
+   "ko": "죽음을 이겨냈다!",
+   "obj": "base",
+   "tag": "AUTO"
+  },
+  {
+   "key": "중요잠금",
+   "ko": "중요잠금",
+   "obj": "base",
+   "tag": "AUTO"
+  },
+  {
+   "key": "지능",
+   "ko": "지능",
+   "obj": "base",
+   "tag": "AUTO"
+  },
+  {
+   "key": "지뢰",
+   "ko": "지뢰",
+   "obj": "base",
+   "tag": "AUTO"
+  },
+  {
+   "key": "지배자 처치!",
+   "ko": "지배자 처치!",
+   "obj": "base",
+   "tag": "AUTO"
+  },
+  {
+   "key": "지옥",
+   "ko": "지옥",
+   "obj": "base",
+   "tag": "AUTO"
+  },
+  {
+   "key": "지옥성",
+   "ko": "지옥성",
+   "obj": "base",
+   "tag": "AUTO"
+  },
+  {
+   "key": "지진기폭!",
+   "ko": "지진기폭!",
+   "obj": "base",
+   "tag": "AUTO"
+  },
+  {
+   "key": "지진폭풍",
+   "ko": "지진폭풍",
+   "obj": "base",
+   "tag": "AUTO"
+  },
+  {
+   "key": "진입!",
+   "ko": "진입!",
+   "obj": "base",
+   "tag": "AUTO"
+  },
+  {
+   "key": "집게찍기!",
+   "ko": "집게찍기!",
+   "obj": "base",
+   "tag": "AUTO"
+  },
+  {
+   "key": "집중!",
+   "ko": "집중!",
+   "obj": "base",
+   "tag": "AUTO"
+  },
+  {
+   "key": "집중...",
+   "ko": "집중...",
+   "obj": "base",
+   "tag": "AUTO"
+  },
+  {
+   "key": "집중력의",
+   "ko": "집중력의",
+   "obj": "base",
+   "tag": "AUTO"
+  },
+  {
+   "key": "집중의",
+   "ko": "집중의",
+   "obj": "base",
+   "tag": "AUTO"
+  },
+  {
+   "key": "찍기!",
+   "ko": "찍기!",
+   "obj": "base",
+   "tag": "AUTO"
+  },
+  {
+   "key": "차원 균열체",
+   "ko": "차원 균열체",
+   "obj": "base",
+   "tag": "AUTO"
+  },
+  {
+   "key": "차원 이동!",
+   "ko": "차원 이동!",
+   "obj": "base",
+   "tag": "AUTO"
+  },
+  {
+   "key": "차원의 결정!",
+   "ko": "차원의 결정!",
+   "obj": "base",
+   "tag": "AUTO"
+  },
+  {
+   "key": "참회",
+   "ko": "참회",
+   "obj": "base",
+   "tag": "AUTO"
+  },
+  {
+   "key": "채찍!",
+   "ko": "채찍!",
+   "obj": "base",
+   "tag": "AUTO"
+  },
+  {
+   "key": "챔피언",
+   "ko": "챔피언",
+   "obj": "base",
+   "tag": "AUTO"
+  },
+  {
+   "key": "처내기",
+   "ko": "처내기",
+   "obj": "base",
+   "tag": "AUTO"
+  },
+  {
+   "key": "처치!",
+   "ko": "처치!",
+   "obj": "base",
+   "tag": "AUTO"
+  },
+  {
+   "key": "처형",
+   "ko": "처형",
+   "obj": "base",
+   "tag": "AUTO"
+  },
+  {
+   "key": "처형 선고!",
+   "ko": "처형 선고!",
+   "obj": "base",
+   "tag": "AUTO"
+  },
+  {
+   "key": "철벽",
+   "ko": "철벽",
+   "obj": "base",
+   "tag": "AUTO"
+  },
+  {
+   "key": "체간삭감!",
+   "ko": "체간삭감!",
+   "obj": "base",
+   "tag": "AUTO"
+  },
+  {
+   "key": "체인!",
+   "ko": "체인!",
+   "obj": "base",
+   "tag": "AUTO"
+  },
+  {
+   "key": "초속",
+   "ko": "초속",
+   "obj": "base",
+   "tag": "AUTO"
+  },
+  {
+   "key": "촉수!",
+   "ko": "촉수!",
+   "obj": "base",
+   "tag": "AUTO"
+  },
+  {
+   "key": "촉수난타!",
+   "ko": "촉수난타!",
+   "obj": "base",
+   "tag": "AUTO"
+  },
+  {
+   "key": "최대 강화 달성 (+20)",
+   "ko": "최대 강화 달성 (+20)",
+   "obj": "base",
+   "tag": "AUTO"
+  },
+  {
+   "key": "최대 강화 달성!",
+   "ko": "최대 강화 달성!",
+   "obj": "base",
+   "tag": "AUTO"
+  },
+  {
+   "key": "최대HP",
+   "ko": "최대HP",
+   "obj": "base",
+   "tag": "AUTO"
+  },
+  {
+   "key": "최대콤보",
+   "ko": "최대콤보",
+   "obj": "base",
+   "tag": "AUTO"
+  },
+  {
+   "key": "최상위 일괄합성",
+   "ko": "최상위 일괄합성",
+   "obj": "base",
+   "tag": "AUTO"
+  },
+  {
+   "key": "최소 줍기 등급",
+   "ko": "최소 줍기 등급",
+   "obj": "base",
+   "tag": "AUTO"
+  },
+  {
+   "key": "최소 줍기 티어",
+   "ko": "최소 줍기 티어",
+   "obj": "base",
+   "tag": "AUTO"
+  },
+  {
+   "key": "최종 마법",
+   "ko": "최종 마법",
+   "obj": "base",
+   "tag": "AUTO"
+  },
+  {
+   "key": "추적자",
+   "ko": "추적자",
+   "obj": "base",
+   "tag": "AUTO"
+  },
+  {
+   "key": "축적 중...",
+   "ko": "축적 중...",
+   "obj": "base",
+   "tag": "AUTO"
+  },
+  {
+   "key": "출구",
+   "ko": "출구",
+   "obj": "base",
+   "tag": "AUTO"
+  },
+  {
+   "key": "출구가 열렸다!",
+   "ko": "출구가 열렸다!",
+   "obj": "base",
+   "tag": "AUTO"
+  },
+  {
+   "key": "충격파!",
+   "ko": "충격파!",
+   "obj": "base",
+   "tag": "AUTO"
+  },
+  {
+   "key": "취소",
+   "ko": "취소",
+   "obj": "base",
+   "tag": "AUTO"
+  },
+  {
+   "key": "치명결정",
+   "ko": "치명결정",
+   "obj": "base",
+   "tag": "AUTO"
+  },
+  {
+   "key": "치유",
+   "ko": "치유",
+   "obj": "base",
+   "tag": "AUTO"
+  },
+  {
+   "key": "치유!",
+   "ko": "치유!",
+   "obj": "base",
+   "tag": "AUTO"
+  },
+  {
+   "key": "치유의",
+   "ko": "치유의",
+   "obj": "base",
+   "tag": "AUTO"
+  },
+  {
+   "key": "침식의 영역",
+   "ko": "침식의 영역",
+   "obj": "base",
+   "tag": "AUTO"
+  },
+  {
+   "key": "칼날!",
+   "ko": "칼날!",
+   "obj": "base",
+   "tag": "AUTO"
+  },
+  {
+   "key": "칼등날개",
+   "ko": "칼등날개",
+   "obj": "base",
+   "tag": "AUTO"
+  },
+  {
+   "key": "캐릭터 선택",
+   "ko": "캐릭터 선택",
+   "obj": "base",
+   "tag": "AUTO"
+  },
+  {
+   "key": "캔슬",
+   "ko": "캔슬",
+   "obj": "base",
+   "tag": "AUTO"
+  },
+  {
+   "key": "쾌속의",
+   "ko": "쾌속의",
+   "obj": "base",
+   "tag": "AUTO"
+  },
+  {
+   "key": "쿨다운!",
+   "ko": "쿨다운!",
+   "obj": "base",
+   "tag": "AUTO"
+  },
+  {
+   "key": "퀵슬롯이 가득 찼습니다!",
+   "ko": "퀵슬롯이 가득 찼습니다!",
+   "obj": "base",
+   "tag": "AUTO"
+  },
+  {
+   "key": "클릭하여 선택결정 장착",
+   "ko": "클릭하여 선택결정 장착",
+   "obj": "base",
+   "tag": "AUTO"
+  },
+  {
+   "key": "탈취 반격!",
+   "ko": "탈취 반격!",
+   "obj": "base",
+   "tag": "AUTO"
+  },
+  {
+   "key": "탐식",
+   "ko": "탐식",
+   "obj": "base",
+   "tag": "AUTO"
+  },
+  {
+   "key": "탐욕",
+   "ko": "탐욕",
+   "obj": "base",
+   "tag": "AUTO"
+  },
+  {
+   "key": "탐욕!",
+   "ko": "탐욕!",
+   "obj": "base",
+   "tag": "AUTO"
+  },
+  {
+   "key": "텔레포트",
+   "ko": "텔레포트",
+   "obj": "base",
+   "tag": "AUTO"
+  },
+  {
+   "key": "파괴",
+   "ko": "파괴",
+   "obj": "base",
+   "tag": "AUTO"
+  },
+  {
+   "key": "파멸의",
+   "ko": "파멸의",
+   "obj": "base",
+   "tag": "AUTO"
+  },
+  {
+   "key": "파쇄의",
+   "ko": "파쇄의",
+   "obj": "base",
+   "tag": "AUTO"
+  },
+  {
+   "key": "파쇄의 영역",
+   "ko": "파쇄의 영역",
+   "obj": "base",
+   "tag": "AUTO"
+  },
+  {
+   "key": "파티클 양",
+   "ko": "파티클 양",
+   "obj": "base",
+   "tag": "AUTO"
+  },
+  {
+   "key": "파편",
+   "ko": "파편",
+   "obj": "base",
+   "tag": "AUTO"
+  },
+  {
+   "key": "파편 폭발!",
+   "ko": "파편 폭발!",
+   "obj": "base",
+   "tag": "AUTO"
+  },
+  {
+   "key": "파편!",
+   "ko": "파편!",
+   "obj": "base",
+   "tag": "AUTO"
+  },
+  {
+   "key": "패리의",
+   "ko": "패리의",
+   "obj": "base",
+   "tag": "AUTO"
+  },
+  {
+   "key": "패링!",
+   "ko": "패링!",
+   "obj": "base",
+   "tag": "AUTO"
+  },
+  {
+   "key": "패시브 스킬",
+   "ko": "패시브 스킬",
+   "obj": "base",
+   "tag": "AUTO"
+  },
+  {
+   "key": "펫 자동수거",
+   "ko": "펫 자동수거",
+   "obj": "base",
+   "tag": "AUTO"
+  },
+  {
+   "key": "펼치기",
+   "ko": "펼치기",
+   "obj": "base",
+   "tag": "AUTO"
+  },
+  {
+   "key": "포션강화의",
+   "ko": "포션강화의",
+   "obj": "base",
+   "tag": "AUTO"
+  },
+  {
+   "key": "포이즈",
+   "ko": "포이즈",
+   "obj": "base",
+   "tag": "AUTO"
+  },
+  {
+   "key": "포효!",
+   "ko": "포효!",
+   "obj": "base",
+   "tag": "AUTO"
+  },
+  {
+   "key": "폭독칼날",
+   "ko": "폭독칼날",
+   "obj": "base",
+   "tag": "AUTO"
+  },
+  {
+   "key": "폭력",
+   "ko": "폭력",
+   "obj": "base",
+   "tag": "AUTO"
+  },
+  {
+   "key": "폭발 허수아비",
+   "ko": "폭발 허수아비",
+   "obj": "base",
+   "tag": "AUTO"
+  },
+  {
+   "key": "폭발!",
+   "ko": "폭발!",
+   "obj": "base",
+   "tag": "AUTO"
+  },
+  {
+   "key": "폭발의",
+   "ko": "폭발의",
+   "obj": "base",
+   "tag": "AUTO"
+  },
+  {
+   "key": "피격반격의",
+   "ko": "피격반격의",
+   "obj": "base",
+   "tag": "AUTO"
+  },
+  {
+   "key": "필살기 해제",
+   "ko": "필살기 해제",
+   "obj": "base",
+   "tag": "AUTO"
+  },
+  {
+   "key": "핏방울!",
+   "ko": "핏방울!",
+   "obj": "base",
+   "tag": "AUTO"
+  },
+  {
+   "key": "덫",
+   "ko": "덫",
+   "obj": "base",
+   "tag": "AUTO"
+  },
+  {
+   "key": "합성",
+   "ko": "합성",
+   "obj": "base",
+   "tag": "AUTO"
+  },
+  {
+   "key": "합성!",
+   "ko": "합성!",
+   "obj": "base",
+   "tag": "AUTO"
+  },
+  {
+   "key": "합체 가능",
+   "ko": "합체 가능",
+   "obj": "base",
+   "tag": "AUTO"
+  },
+  {
+   "key": "해골무덤",
+   "ko": "해골무덤",
+   "obj": "base",
+   "tag": "AUTO"
+  },
+  {
+   "key": "해상도 스케일",
+   "ko": "해상도 스케일",
+   "obj": "base",
+   "tag": "AUTO"
+  },
+  {
+   "key": "해일!",
+   "ko": "해일!",
+   "obj": "base",
+   "tag": "AUTO"
+  },
+  {
+   "key": "해제",
+   "ko": "해제",
+   "obj": "base",
+   "tag": "AUTO"
+  },
+  {
+   "key": "해제!",
+   "ko": "해제!",
+   "obj": "base",
+   "tag": "AUTO"
+  },
+  {
+   "key": "해제기폭!",
+   "ko": "해제기폭!",
+   "obj": "base",
+   "tag": "AUTO"
+  },
+  {
+   "key": "행운",
+   "ko": "행운",
+   "obj": "base",
+   "tag": "AUTO"
+  },
+  {
+   "key": "행운결정",
+   "ko": "행운결정",
+   "obj": "base",
+   "tag": "AUTO"
+  },
+  {
+   "key": "혀!",
+   "ko": "혀!",
+   "obj": "base",
+   "tag": "AUTO"
+  },
+  {
+   "key": "혼돈변이",
+   "ko": "혼돈변이",
+   "obj": "base",
+   "tag": "AUTO"
+  },
+  {
+   "key": "화룡 처치!",
+   "ko": "화룡 처치!",
+   "obj": "base",
+   "tag": "AUTO"
+  },
+  {
+   "key": "화면 명암",
+   "ko": "화면 명암",
+   "obj": "base",
+   "tag": "AUTO"
+  },
+  {
+   "key": "화면 모드",
+   "ko": "화면 모드",
+   "obj": "base",
+   "tag": "AUTO"
+  },
+  {
+   "key": "화면 흔들림",
+   "ko": "화면 흔들림",
+   "obj": "base",
+   "tag": "AUTO"
+  },
+  {
+   "key": "화상!",
+   "ko": "화상!",
+   "obj": "base",
+   "tag": "AUTO"
+  },
+  {
+   "key": "화염",
+   "ko": "화염",
+   "obj": "base",
+   "tag": "AUTO"
+  },
+  {
+   "key": "화염결정",
+   "ko": "화염결정",
+   "obj": "base",
+   "tag": "AUTO"
+  },
+  {
+   "key": "화염장판!",
+   "ko": "화염장판!",
+   "obj": "base",
+   "tag": "AUTO"
+  },
+  {
+   "key": "환불",
+   "ko": "환불",
+   "obj": "base",
+   "tag": "AUTO"
+  },
+  {
+   "key": "환영",
+   "ko": "환영",
+   "obj": "base",
+   "tag": "AUTO"
+  },
+  {
+   "key": "환영 소멸!",
+   "ko": "환영 소멸!",
+   "obj": "base",
+   "tag": "AUTO"
+  },
+  {
+   "key": "환영!",
+   "ko": "환영!",
+   "obj": "base",
+   "tag": "AUTO"
+  },
+  {
+   "key": "환영술사",
+   "ko": "환영술사",
+   "obj": "base",
+   "tag": "AUTO"
+  },
+  {
+   "key": "활 타입",
+   "ko": "활 타입",
+   "obj": "base",
+   "tag": "AUTO"
+  },
+  {
+   "key": "활력의",
+   "ko": "활력의",
+   "obj": "base",
+   "tag": "AUTO"
+  },
+  {
+   "key": "회복",
+   "ko": "회복",
+   "obj": "base",
+   "tag": "AUTO"
+  },
+  {
+   "key": "회복량",
+   "ko": "회복량",
+   "obj": "base",
+   "tag": "AUTO"
+  },
+  {
+   "key": "회복의 영역",
+   "ko": "회복의 영역",
+   "obj": "base",
+   "tag": "AUTO"
+  },
+  {
+   "key": "회수",
+   "ko": "회수",
+   "obj": "base",
+   "tag": "AUTO"
+  },
+  {
+   "key": "회전기폭",
+   "ko": "회전기폭",
+   "obj": "base",
+   "tag": "AUTO"
+  },
+  {
+   "key": "회전참",
+   "ko": "회전참",
+   "obj": "base",
+   "tag": "AUTO"
+  },
+  {
+   "key": "회피!",
+   "ko": "회피!",
+   "obj": "base",
+   "tag": "AUTO"
+  },
+  {
+   "key": "휩쓸기!",
+   "ko": "휩쓸기!",
+   "obj": "base",
+   "tag": "AUTO"
+  },
+  {
+   "key": "흑요석 대검",
+   "ko": "흑요석 대검",
+   "obj": "base",
+   "tag": "AUTO"
+  },
+  {
+   "key": "흑요석 석궁",
+   "ko": "흑요석 석궁",
+   "obj": "base",
+   "tag": "AUTO"
+  },
+  {
+   "key": "흡수 완료!",
+   "ko": "흡수 완료!",
+   "obj": "base",
+   "tag": "AUTO"
+  },
+  {
+   "key": "흡수 중...",
+   "ko": "흡수 중...",
+   "obj": "base",
+   "tag": "AUTO"
+  },
+  {
+   "key": "흡수의",
+   "ko": "흡수의",
+   "obj": "base",
+   "tag": "AUTO"
+  },
+  {
+   "key": "흡혈!",
+   "ko": "흡혈!",
+   "obj": "base",
+   "tag": "AUTO"
+  },
+  {
+   "key": "🌀 중력장!",
+   "ko": "🌀 중력장!",
+   "obj": "base",
+   "tag": "AUTO"
+  },
+  {
+   "key": "🌀균열!",
+   "ko": "🌀균열!",
+   "obj": "base",
+   "tag": "AUTO"
+  },
+  {
+   "key": "🌊 오른→왼 파도!",
+   "ko": "🌊 오른→왼 파도!",
+   "obj": "base",
+   "tag": "AUTO"
+  },
+  {
+   "key": "🌊 왼→오른 파도!",
+   "ko": "🌊 왼→오른 파도!",
+   "obj": "base",
+   "tag": "AUTO"
+  },
+  {
+   "key": "🌋 균열!",
+   "ko": "🌋 균열!",
+   "obj": "base",
+   "tag": "AUTO"
+  },
+  {
+   "key": "🌋 시전...",
+   "ko": "🌋 시전...",
+   "obj": "base",
+   "tag": "AUTO"
+  },
+  {
+   "key": "🌑 암흑!",
+   "ko": "🌑 암흑!",
+   "obj": "base",
+   "tag": "AUTO"
+  },
+  {
+   "key": "👹 소환!",
+   "ko": "👹 소환!",
+   "obj": "base",
+   "tag": "AUTO"
+  },
+  {
+   "key": "💀 분노 폭발!",
+   "ko": "💀 분노 폭발!",
+   "obj": "base",
+   "tag": "AUTO"
+  },
+  {
+   "key": "💀 전멸!",
+   "ko": "💀 전멸!",
+   "obj": "base",
+   "tag": "AUTO"
+  },
+  {
+   "key": "💀소환!",
+   "ko": "💀소환!",
+   "obj": "base",
+   "tag": "AUTO"
+  },
+  {
+   "key": "💢 반격!",
+   "ko": "💢 반격!",
+   "obj": "base",
+   "tag": "AUTO"
+  },
+  {
+   "key": "💢 폭발!",
+   "ko": "💢 폭발!",
+   "obj": "base",
+   "tag": "AUTO"
+  },
+  {
+   "key": "💣 지뢰!",
+   "ko": "💣 지뢰!",
+   "obj": "base",
+   "tag": "AUTO"
+  },
+  {
+   "key": "💣 추적지뢰!",
+   "ko": "💣 추적지뢰!",
+   "obj": "base",
+   "tag": "AUTO"
+  },
+  {
+   "key": "💥 내던지기!",
+   "ko": "💥 내던지기!",
+   "obj": "base",
+   "tag": "AUTO"
+  },
+  {
+   "key": "💥 불꽃폭발! ",
+   "ko": "💥 불꽃폭발! ",
+   "obj": "base",
+   "tag": "AUTO"
+  },
+  {
+   "key": "💥 유령총 폭발!",
+   "ko": "💥 유령총 폭발!",
+   "obj": "base",
+   "tag": "AUTO"
+  },
+  {
+   "key": "💥폭독혈!",
+   "ko": "💥폭독혈!",
+   "obj": "base",
+   "tag": "AUTO"
+  },
+  {
+   "key": "💫 기절! 5초",
+   "ko": "💫 기절! 5초",
+   "obj": "base",
+   "tag": "AUTO"
+  },
+  {
+   "key": "💫 버스트루프 해금!",
+   "ko": "💫 버스트루프 해금!",
+   "obj": "base",
+   "tag": "AUTO"
+  },
+  {
+   "key": "🔥화상!",
+   "ko": "🔥화상!",
+   "obj": "base",
+   "tag": "AUTO"
+  },
+  {
+   "key": "🔥🔥🔥 6중폭!",
+   "ko": "🔥🔥🔥 6중폭!",
+   "obj": "base",
+   "tag": "AUTO"
+  },
+  {
+   "key": "🔥🔥🔥🔥 9중폭!",
+   "ko": "🔥🔥🔥🔥 9중폭!",
+   "obj": "base",
+   "tag": "AUTO"
+  },
+  {
+   "key": "🔨 제작",
+   "ko": "🔨 제작",
+   "obj": "base",
+   "tag": "AUTO"
+  },
+  {
+   "key": "🔴 빨간콩 폭풍!",
+   "ko": "🔴 빨간콩 폭풍!",
+   "obj": "base",
+   "tag": "AUTO"
+  },
+  {
+   "key": "🔷 마력광선!",
+   "ko": "🔷 마력광선!",
+   "obj": "base",
+   "tag": "AUTO"
+  },
+  {
+   "key": "🕷산란!",
+   "ko": "🕷산란!",
+   "obj": "base",
+   "tag": "AUTO"
+  },
+  {
+   "key": "🖐 잡기!",
+   "ko": "🖐 잡기!",
+   "obj": "base",
+   "tag": "AUTO"
+  },
+  {
+   "key": "🖐 탈취!",
+   "ko": "🖐 탈취!",
+   "obj": "base",
+   "tag": "AUTO"
+  },
+  {
+   "key": "🛡 방패돌진!",
+   "ko": "🛡 방패돌진!",
+   "obj": "base",
+   "tag": "AUTO"
+  },
+  {
+   "key": "🛡️💎 빨콩→블루콩!",
+   "ko": "🛡️💎 빨콩→블루콩!",
+   "obj": "base",
+   "tag": "AUTO"
+  },
+  {
+   "key": "🟢독!",
+   "ko": "🟢독!",
+   "obj": "base",
+   "tag": "AUTO"
+  },
+  {
+   "key": "🩸산란!",
+   "ko": "🩸산란!",
+   "obj": "base",
+   "tag": "AUTO"
+  },
+  {
+   "key": "🪞 반격!",
+   "ko": "🪞 반격!",
+   "obj": "base",
+   "tag": "AUTO"
+  },
+  {
+   "key": "⚫ 기둥강타!",
+   "ko": "⚫ 기둥강타!",
+   "obj": "base",
+   "tag": "AUTO"
+  },
+  {
+   "key": "⚡ 뇌전창!",
+   "ko": "⚡ 뇌전창!",
+   "obj": "base",
+   "tag": "AUTO"
+  },
+  {
+   "key": "화염의",
+   "ko": "화염의",
+   "obj": "base",
+   "tag": "AUTO"
+  },
+  {
+   "key": "기동칼날개 자동 켜기/끄기",
+   "ko": "기동칼날개 자동 켜기/끄기",
+   "obj": "base",
+   "tag": "AUTO"
+  },
+  {
+   "key": "누군가는 너를 기다리고 있다",
+   "ko": "누군가는 너를 기다리고 있다",
+   "obj": "base",
+   "tag": "AUTO"
+  },
+  {
+   "key": "로비로 돌아가기",
+   "ko": "로비로 돌아가기",
+   "obj": "base",
+   "tag": "AUTO"
+  },
+  {
+   "key": "아래로 이동",
+   "ko": "아래로 이동",
+   "obj": "base",
+   "tag": "AUTO"
+  },
+  {
+   "key": "왼쪽 이동",
+   "ko": "왼쪽 이동",
+   "obj": "base",
+   "tag": "AUTO"
+  },
+  {
+   "key": "오른쪽 이동",
+   "ko": "오른쪽 이동",
+   "obj": "base",
+   "tag": "AUTO"
+  },
+  {
+   "key": "사슬 이동",
+   "ko": "사슬 이동",
+   "obj": "base",
+   "tag": "AUTO"
+  },
+  {
+   "key": "일괄강화+합성",
+   "ko": "일괄강화+합성",
+   "obj": "base",
+   "tag": "AUTO"
+  },
+  {
+   "key": "뇌전창",
+   "ko": "뇌전창",
+   "obj": "base",
+   "tag": "AUTO"
+  },
+  {
+   "key": " 뎀",
+   "ko": " 뎀",
+   "obj": "base",
+   "tag": "AUTO"
+  },
+  {
+   "key": "🦴 해골무덤!",
+   "ko": "🦴 해골무덤!",
+   "obj": "base",
+   "tag": "AUTO"
+  },
+  {
+   "key": "녹슨",
+   "ko": "녹슨",
+   "obj": "base",
+   "tag": "AUTO"
+  },
+  {
+   "key": "MP 부족! (50)",
+   "ko": "MP 부족! (50)",
+   "obj": "base",
+   "tag": "AUTO"
+  },
+  {
+   "key": "계속 전투",
+   "ko": "계속 전투",
+   "obj": "base",
+   "tag": "AUTO"
+  },
+  {
+   "key": "이 길의 끝에 뭐가 있을까. ...알고 싶지도 않어.",
+   "ko": "이 길의 끝에 뭐가 있을까. ...알고 싶지도 않어.",
+   "obj": "base",
+   "tag": "AUTO"
+  }
+ ]
+}

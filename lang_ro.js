@@ -1,5 +1,5 @@
 ﻿// 지옥의 길 — Română (ro)
-const _RO={
+const _RO={"⛓️ 관통!":"⛓️ Penetrare!","⛓️ 관통":"⛓️ Penetrare","⛓️ 돌파":"⛓️ Străpungere","\\👻 유령!":"\\👻 Fantomă!","\\🦴 해골무덤!":"\\🦴 Mormânt de Oase!",
 '패링 성공 시 분노스킬 쿨다운 {s}초 회복':"La parare reușită: recuperează {s}s din reîncărcarea abilității Furie",
 '🔥분노스킬 쿨↓':"🔥Reîncărcare abilitate Furie↓",
 '잘못 때렸군. 실수야.':"Lovitură greșită. Pe lângă.",

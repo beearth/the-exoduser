@@ -1,5 +1,5 @@
 ﻿// 지옥의 길 — Dansk (da)
-const _DA={
+const _DA={"⛓️ 관통!":"⛓️ Gennemtrængning!","⛓️ 관통":"⛓️ Gennemtrængning","⛓️ 돌파":"⛓️ Gennembrud","\\👻 유령!":"\\👻 Ånd!","\\🦴 해골무덤!":"\\🦴 Bengrav!",
 '패링 성공 시 분노스킬 쿨다운 {s}초 회복':"Ved vellykket parering: gendan {s}s nedkøling af Raseri-evnen",
 '🔥분노스킬 쿨↓':"🔥Raseri-evne CD↓",
 '잘못 때렸군. 실수야.':"Forkert sving. Forbi.",

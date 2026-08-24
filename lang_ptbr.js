@@ -1,4 +1,4 @@
-﻿const _PTBR={
+﻿const _PTBR={"⛓️ 관통!":"⛓️ Penetração!","⛓️ 관통":"⛓️ Penetração","⛓️ 돌파":"⛓️ Ruptura","\\👻 유령!":"\\👻 Fantasma!","\\🦴 해골무덤!":"\\🦴 Tumba de Ossos!",
 '패링 성공 시 분노스킬 쿨다운 {s}초 회복':"Ao aparar com sucesso: recupera {s}s de recarga da habilidade de Fúria",
 '🔥분노스킬 쿨↓':"🔥Recarga hab. Fúria↓",
 '잘못 때렸군. 실수야.':"Errou o golpe. Passou longe.",

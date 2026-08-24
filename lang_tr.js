@@ -1,5 +1,5 @@
 ﻿// 지옥의 길 — Türkçe (tr)
-const _TR={
+const _TR={"⛓️ 관통!":"⛓️ Delme!","⛓️ 관통":"⛓️ Delme","⛓️ 돌파":"⛓️ Atılım","\\👻 유령!":"\\👻 Hayalet!","\\🦴 해골무덤!":"\\🦴 Kemik Mezar!",
 '패링 성공 시 분노스킬 쿨다운 {s}초 회복':"Başarılı savuşturmada: Öfke yeteneği bekleme süresini {s}sn geri kazandırır",
 '🔥분노스킬 쿨↓':"🔥Öfke yeteneği bekleme↓",
 '잘못 때렸군. 실수야.':"Yanlış vurdun. Işkaladın.",

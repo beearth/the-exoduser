@@ -1,5 +1,5 @@
 ﻿// 지옥의 길 — Čeština (cs)
-const _CS={
+const _CS={"⛓️ 관통!":"⛓️ Průraz!","⛓️ 관통":"⛓️ Průraz","⛓️ 돌파":"⛓️ Průlom","\\👻 유령!":"\\👻 Přízrak!","\\🦴 해골무덤!":"\\🦴 Kostěná hrobka!",
 '패링 성공 시 분노스킬 쿨다운 {s}초 회복':"Při úspěšném vykrytí: obnoví {s}s doby obnovy dovednosti Vzteku",
 '🔥분노스킬 쿨↓':"🔥Doba obnovy dovednosti Vzteku↓",
 '잘못 때렸군. 실수야.':"Špatný švih. Vedle.",

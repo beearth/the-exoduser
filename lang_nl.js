@@ -1,5 +1,5 @@
 ﻿// 지옥의 길 — Nederlands (nl)
-const _NL={
+const _NL={"⛓️ 관통!":"⛓️ Penetratie!","⛓️ 관통":"⛓️ Penetratie","⛓️ 돌파":"⛓️ Doorbraak","\\👻 유령!":"\\👻 Geest!","\\🦴 해골무덤!":"\\🦴 Botgraf!",
 '패링 성공 시 분노스킬 쿨다운 {s}초 회복':"Bij succesvolle parering: herstel {s}s afkoeltijd van de Woede-vaardigheid",
 '🔥분노스킬 쿨↓':"🔥Woede-vaardigheid CD↓",
 '잘못 때렸군. 실수야.':"Misgeslagen. Erlangs.",

@@ -1,5 +1,5 @@
 ﻿// 지옥의 길 — Norsk (no)
-const _NO={
+const _NO={"⛓️ 관통!":"⛓️ Gjennomtrengning!","⛓️ 관통":"⛓️ Gjennomtrengning","⛓️ 돌파":"⛓️ Gjennombrudd","\\👻 유령!":"\\👻 Ånd!","\\🦴 해골무덤!":"\\🦴 Bengrav!",
 '패링 성공 시 분노스킬 쿨다운 {s}초 회복':"Ved vellykket parering: gjenopprett {s}s nedkjøling på Raseri-ferdigheten",
 '🔥분노스킬 쿨↓':"🔥Raseri-ferdighet CD↓",
 '잘못 때렸군. 실수야.':"Bomma. Forbi.",

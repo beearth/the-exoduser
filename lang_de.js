@@ -1,4 +1,4 @@
-﻿const _DE={
+﻿const _DE={"⛓️ 관통!":"⛓️ Durchschlag!","⛓️ 관통":"⛓️ Durchschlag","⛓️ 돌파":"⛓️ Durchbruch","\\👻 유령!":"\\👻 Geist!","\\🦴 해골무덤!":"\\🦴 Knochengruft!",
 '패링 성공 시 분노스킬 쿨다운 {s}초 회복':"Bei erfolgreichem Parieren: {s}s Abklingzeit der Wut-Fähigkeit erstatten",
 '🔥분노스킬 쿨↓':"🔥Wut-Skill AZ↓",
 '잘못 때렸군. 실수야.':"Danebengehauen. Voll verfehlt.",

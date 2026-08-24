@@ -1,5 +1,5 @@
 ﻿// 지옥의 길 — Italiano (it)
-const _IT={
+const _IT={"⛓️ 관통!":"⛓️ Penetrazione!","⛓️ 관통":"⛓️ Penetrazione","⛓️ 돌파":"⛓️ Sfondamento","\\👻 유령!":"\\👻 Fantasma!","\\🦴 해골무덤!":"\\🦴 Tomba d'Ossa!",
 '패링 성공 시 분노스킬 쿨다운 {s}초 회복':"Parata riuscita: recupera {s}s di ricarica dell’abilità Furia",
 '🔥분노스킬 쿨↓':"🔥Ricarica abilità Furia↓",
 '잘못 때렸군. 실수야.':"Colpo mancato. A vuoto.",

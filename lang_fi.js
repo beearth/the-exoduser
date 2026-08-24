@@ -1,5 +1,5 @@
 ﻿// 지옥의 길 — Suomi (fi)
-const _FI={
+const _FI={"⛓️ 관통!":"⛓️ Läpäisy!","⛓️ 관통":"⛓️ Läpäisy","⛓️ 돌파":"⛓️ Läpimurto","\\👻 유령!":"\\👻 Haamu!","\\🦴 해골무덤!":"\\🦴 Luuhauta!",
 '패링 성공 시 분노스킬 쿨다운 {s}초 회복':"Onnistuneella torjunnalla: palauta {s}s Raivo-kyvyn jäähtymisaikaa",
 '🔥분노스킬 쿨↓':"🔥Raivo-kyvyn CD↓",
 '잘못 때렸군. 실수야.':"Ohi meni. Huti.",

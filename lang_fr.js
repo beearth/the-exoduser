@@ -1,4 +1,4 @@
-﻿const _FR={
+﻿const _FR={"⛓️ 관통!":"⛓️ Pénétration!","⛓️ 관통":"⛓️ Pénétration","⛓️ 돌파":"⛓️ Percée","\\👻 유령!":"\\👻 Fantôme!","\\🦴 해골무덤!":"\\🦴 Tombe d'Ossements!",
 '패링 성공 시 분노스킬 쿨다운 {s}초 회복':"Parade réussie : récupère {s}s de temps de recharge de la compétence de Rage",
 '🔥분노스킬 쿨↓':"🔥Recharge comp. Rage↓",
 '잘못 때렸군. 실수야.':"Coup manqué. Dans le vide.",

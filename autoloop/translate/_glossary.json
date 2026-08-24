@@ -1,0 +1,242 @@
+{
+ "generated": "L08",
+ "note": "고유명사 용어집. ko=한국어 원문, en=영문 표기. en 빈값=인간 확정 필요(번역 착수 전 결정). 타 언어 값은 번역 착수 시 채움. 이 용어집 확정 후 나머지 번역 일관 적용. 번역 실행 금지(준비 전용).",
+ "elements": [
+  {
+   "ko": "물리",
+   "en": "Physical"
+  },
+  {
+   "ko": "화염",
+   "en": "Fire"
+  },
+  {
+   "ko": "빙결",
+   "en": "Ice"
+  },
+  {
+   "ko": "암흑",
+   "en": "Dark"
+  },
+  {
+   "ko": "암전",
+   "en": "Lightning"
+  },
+  {
+   "ko": "신성",
+   "en": "Holy"
+  },
+  {
+   "ko": "대지",
+   "en": "Earth"
+  }
+ ],
+ "regions": [
+  {
+   "ko": "썩은 숲",
+   "en": "Rotten Forest"
+  },
+  {
+   "ko": "벌레굴",
+   "en": "Worm Nest"
+  },
+  {
+   "ko": "얼음굴",
+   "en": "Frozen Cavern"
+  },
+  {
+   "ko": "화염지대",
+   "en": "Flame of Agony"
+  },
+  {
+   "ko": "지옥 군단",
+   "en": "Hell Legion"
+  },
+  {
+   "ko": "사도의 마굴",
+   "en": "Apostle Lair"
+  },
+  {
+   "ko": "지옥성",
+   "en": "Hell Castle"
+  }
+ ],
+ "systems": [
+  {
+   "ko": "탄막 언어",
+   "en": "Bullet Language"
+  },
+  {
+   "ko": "사슬기동",
+   "en": "Chain Drive"
+  },
+  {
+   "ko": "전격이동",
+   "en": "Blade Dash"
+  },
+  {
+   "ko": "돌진",
+   "en": "Charge"
+  },
+  {
+   "ko": "패링",
+   "en": "Parry"
+  },
+  {
+   "ko": "방패",
+   "en": "Shield"
+  },
+  {
+   "ko": "에너지쉴드",
+   "en": "Energy Shield"
+  }
+ ],
+ "archetypes": [
+  {
+   "ko": "실버테일",
+   "en": "Silvertail"
+  }
+ ],
+ "bosses": [
+  {
+   "ko": "흑요염 파괴자",
+   "en": "Obsidian Ravager"
+  },
+  {
+   "ko": "독버섯 거인",
+   "en": "Toxicap Giant"
+  },
+  {
+   "ko": "지옥기형",
+   "en": "Hellspawn Aberrant"
+  },
+  {
+   "ko": "숲의 기생수",
+   "en": "Grove Parasite"
+  },
+  {
+   "ko": "벌레 수호자",
+   "en": "Vermin Warden"
+  },
+  {
+   "ko": "점액 괴수",
+   "en": "Ooze Horror"
+  },
+  {
+   "ko": "기생충 모체",
+   "en": "Parasite Matron"
+  },
+  {
+   "ko": "거대 알주머니",
+   "en": "Great Eggsac"
+  },
+  {
+   "ko": "살벽의 군주",
+   "en": "Lord of the Flesh Wall"
+  },
+  {
+   "ko": "여왕 구더기",
+   "en": "Maggot Queen"
+  },
+  {
+   "ko": "얼음 망령",
+   "en": "Frost Wraith"
+  },
+  {
+   "ko": "서리의 기사",
+   "en": "Knight of Rime"
+  },
+  {
+   "ko": "얼어붙은 감시자",
+   "en": "Frozen Watcher"
+  },
+  {
+   "ko": "얼음 속 봉인 괴물",
+   "en": "The Sealed in Ice"
+  },
+  {
+   "ko": "화염 악마",
+   "en": "Flame Fiend"
+  },
+  {
+   "ko": "불기둥 수호자",
+   "en": "Pyre Warden"
+  },
+  {
+   "ko": "용암의 심장",
+   "en": "Heart of Magma"
+  },
+  {
+   "ko": "화염 전사",
+   "en": "Ember Warrior"
+  },
+  {
+   "ko": "화염 쌍두",
+   "en": "Twinflame"
+  },
+  {
+   "ko": "불벌레 군주",
+   "en": "Lord of Cinder Worms"
+  },
+  {
+   "ko": "화염 감옥지기",
+   "en": "Flame Gaoler"
+  },
+  {
+   "ko": "전쟁의 잔해",
+   "en": "War Remnant"
+  },
+  {
+   "ko": "뼈산의 왕",
+   "en": "King of the Bone Peak"
+  },
+  {
+   "ko": "악마 사령관",
+   "en": "Demon Marshal"
+  },
+  {
+   "ko": "철벽 기사단장",
+   "en": "Ironwall Grandmaster"
+  },
+  {
+   "ko": "군단 지휘관",
+   "en": "Legion Commander"
+  },
+  {
+   "ko": "살점의 수호자",
+   "en": "Warden of Flesh"
+  },
+  {
+   "ko": "인간뼈 감시자",
+   "en": "Ossuary Watcher"
+  },
+  {
+   "ko": "뒤틀린 자",
+   "en": "The Contorted"
+  },
+  {
+   "ko": "촉수의 어미",
+   "en": "Mother of Tendrils"
+  },
+  {
+   "ko": "불완전 사도",
+   "en": "Unfinished Apostle"
+  },
+  {
+   "ko": "대사도",
+   "en": "High Apostle"
+  },
+  {
+   "ko": "검은 성의 수호자",
+   "en": "Keeper of the Black Keep"
+  },
+  {
+   "ko": "Killu",
+   "en": "Killu"
+  },
+  {
+   "ko": "지옥 군주",
+   "en": "Hell Lord"
+  }
+ ]
+}

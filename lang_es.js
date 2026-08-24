@@ -5,7 +5,7 @@
 // Ice Orb=Orbe de Hielo, Spike Trap=Trampa de Púas, Giant Slam=Gran Golpe
 // Whirlwind=Torbellino, Forge=Forja de Venganza, Enhancement=Mejora
 // Affix=Afijo, Crystal=Cristal, Poise=Postura
-const _ES={
+const _ES={"⛓️ 관통!":"⛓️ Penetración!","⛓️ 관통":"⛓️ Penetración","⛓️ 돌파":"⛓️ Ruptura","\\👻 유령!":"\\👻 Fantasma!","\\🦴 해골무덤!":"\\🦴 Tumba de Huesos!",
 '패링 성공 시 분노스킬 쿨다운 {s}초 회복':"Al parar con éxito: recupera {s}s de enfriamiento de la habilidad de Furia",
 '🔥분노스킬 쿨↓':"🔥Enfriamiento hab. Furia↓",
 '잘못 때렸군. 실수야.':"Golpe fallido. Ni lo rozaste.",

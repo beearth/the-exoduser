@@ -1,5 +1,5 @@
 ﻿// 지옥의 길 — Svenska (sv)
-const _SV={
+const _SV={"⛓️ 관통!":"⛓️ Genomträngning!","⛓️ 관통":"⛓️ Genomträngning","⛓️ 돌파":"⛓️ Genombrott","\\👻 유령!":"\\👻 Ande!","\\🦴 해골무덤!":"\\🦴 Bengrav!",
 '패링 성공 시 분노스킬 쿨다운 {s}초 회복':"Vid lyckad parering: återställ {s}s nedkylning för Raseri-förmågan",
 '🔥분노스킬 쿨↓':"🔥Raseri-förmåga CD↓",
 '잘못 때렸군. 실수야.':"Fel sving. Bom.",

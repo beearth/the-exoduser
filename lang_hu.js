@@ -1,5 +1,5 @@
 ﻿// 지옥의 길 — Magyar (hu)
-const _HU={
+const _HU={"⛓️ 관통!":"⛓️ Átütés!","⛓️ 관통":"⛓️ Átütés","⛓️ 돌파":"⛓️ Áttörés","\\👻 유령!":"\\👻 Szellem!","\\🦴 해골무덤!":"\\🦴 Csont Sírbolt!",
 '패링 성공 시 분노스킬 쿨다운 {s}초 회복':"Sikeres hárításkor: {s}mp visszatöltés a Düh képesség újratöltésén",
 '🔥분노스킬 쿨↓':"🔥Düh képesség CD↓",
 '잘못 때렸군. 실수야.':"Elhibáztad. Mellé.",
