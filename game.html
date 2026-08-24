@@ -8795,7 +8795,7 @@ const BOSS_PHASES={
 // null = 전체 49종 사용 (기본), Set = 해당 기술만 사용
 const _BOSS_MOVESET=[];
 // ── 1장 썩은 숲 (si 0~3): 흑요염 / 독버섯 / 지옥기형 / 기생수 ──
-_BOSS_MOVESET[0]=new Set(['slashCombo','slam','sweep','charge','jump','burst','shock','fan','groundFissure','poisonTrail','spin','grab','multiDash','tideWave','chaseAoe','elemBall','beanStorm','lavaPools','rapidMissile']);
+_BOSS_MOVESET[0]=new Set(['slashCombo','slam','sweep','charge','jump','burst','shock','fan','groundFissure','poisonTrail','spin','grab','multiDash','tideWave','chaseAoe','elemBall','beanStorm','lavaPools','rapidMissile','teleStrike']);
 _BOSS_MOVESET[1]=new Set(['slashCombo','slam','sweep','charge','jump','burst','shock','fan','groundFissure','poisonTrail','spin','grab','multiDash','tideWave','chaseAoe','elemBall','beanStorm','summon','mine','lavaPools','rapidMissile']);
 _BOSS_MOVESET[2]=new Set(['jump','charge','slashCombo','sweep','tailSwipe','spin','slam','beanStorm','fan','multiDash']);
 _BOSS_MOVESET[3]=new Set(['slashCombo','slam','sweep','charge','jump','burst','shock','fan','groundFissure','poisonTrail','spin','grab','multiDash','tideWave','chaseAoe','elemBall','beanStorm','summon','mine','cageTrap','seekerMines','lavaPools','rapidMissile']);
@@ -49633,6 +49633,11 @@ function drawP(){
   if(G._lavaPools&&G._lavaPools.length>0){
     for(let li=0;li<G._lavaPools.length;li++){
       const lp=G._lavaPools[li];
+      // [다크드루이드] stage3 lavaPools = 커스텀 녹색 가시 장판 아트(빨간원 대체)
+      const _dzl=(G.stage===3&&typeof _druidSheets!=='undefined'&&_druidSheets.aoe&&_druidSheets.aoe.ready)?_druidSheets.aoe:null;
+      if(_dzl){const im=_dzl.img,cw=im.naturalWidth/4,ch=im.naturalHeight/2,fr=Math.min(7,~~(lp.t/lp.maxT*8)),sx=(fr%4)*cw,sy=(~~(fr/4))*ch,R=lp.r*1.4;
+        const _la=lp.t<lp.warnT?(lp.t/lp.warnT*.7):(lp.t>lp.maxT*.8?(1-(lp.t-lp.maxT*.8)/(lp.maxT*.2)):1);
+        X.globalAlpha=_la;X.drawImage(im,sx,sy,cw,ch,lp.x-R,lp.y-R,R*2,R*2);X.globalAlpha=1;continue;}
       if(lp.t<lp.warnT){
         // 경고 원
         const _wp=lp.t/lp.warnT;
