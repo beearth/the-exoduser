@@ -26292,7 +26292,7 @@ function initStage(si){
     }
   }
   // forge 삭제됨 — 대장간은 G키로 어디서든 접근
-  if(_MAP_QA_MODE){ens.length=0;G.spawnHoles.length=0;G._gateGuard=null;G._fieldBoss=null;}
+  if(_MAP_QA_MODE){ens.length=0;G.spawnHoles.length=0;G._gateGuard=null;G._fieldBoss=null;G._bonfire=null;}
   G.cam.x=P.x;G.cam.y=P.y;
   G.pets={crow:{x:P.x,y:P.y-20,tx:P.x,ty:P.y,s:'follow',_tRef:null,_fetchT:0,t:0},cat:{x:P.x,y:P.y+10,tx:P.x,ty:P.y,s:'follow',_tRef:null,_fetchT:0,t:~~(Math.random()*100)},xbow:{x:P.x-30,y:P.y-28,tx:P.x,ty:P.y,s:'follow',_tRef:null,_fetchT:0,t:25,_atkCd:0,_ang:0},iris:{x:P.x+20,y:P.y-34,tx:P.x,ty:P.y,s:'follow',t:50,sz:G._irisSz||20,_feedT:0}};
   // ── 즉시 초기화 (게임 시작 전 필수) ──
@@ -43807,7 +43807,7 @@ const ATMO_FG=[
 var _atmCut=null,_atmCutX=null,_atmCutW=0,_atmCutH=0; // ATMOS 안개 합성 캔버스(순수 2D, 부팅/리사이즈 1회 생성). 중앙은 그라데이션 50% 감쇠, 홀펀치 없음
 var _atmUserSet=0;      // A2: 사용자가 atmos 수동변경 시 1 → 자동승격 차단
 var _ATM_TUNE=false,_atmSel=0,_atmHudOn=false; // 튜닝 HUD (디버그 전용, _ATM_TUNE=false시 기존동작 100% 동일). F9=HUD가시성 토글
-var _ATMDBG={grade:0,lift:0,vig:0,farfog:0,nearfog:0,veil:0,ray:0,mote:0,sidefog:1},_atmDbgStep=0,_atmDbgOffName='ALL ON',_atmDbgTouched=false; // [롤백] 흐림계 레이어(grade~mote) 전부 OFF. sidefog=신규 사이드 입자안개 ON(흐림필터 대체). 삭제 아님·플래그만
+var _ATMDBG={grade:0,lift:0,vig:0,farfog:0,nearfog:0,veil:0,ray:1,mote:1,sidefog:1},_atmDbgStep=0,_atmDbgOffName='ALL ON',_atmDbgTouched=false; // [롤백] 흐림계 레이어(grade~mote) 전부 OFF. sidefog=신규 사이드 입자안개 ON(흐림필터 대체). 삭제 아님·플래그만
 const _oriFireflies=[];for(let _fi=0;_fi<20;_fi++)_oriFireflies[_fi]={x:0,y:0,vx:0,vy:0,phase:_fi*0.31,bright:0,r:1.5+(_fi%3)*0.5};
 // 연기 풀 (10개)
 const _oriSmoke=[];for(let _si=0;_si<10;_si++)_oriSmoke[_si]={x:0,y:0,vx:0,vy:0,alpha:0,r:30+(_si%4)*15,phase:_si*0.63};
@@ -43924,7 +43924,7 @@ function _atmoDraw(ctx){
   const _ti=SI_TO_HELL[G.stage|0]||0,ch=ATMO_CH[_ti]||ATMO_CH[0];
   const per=window._ATMO_LOW?32:64;                   // 저사양: 드로우 카운트 절반(루프 상한만 변경)
   ctx.globalCompositeOperation='source-over';
-  for(let L=0;L<3;L++){                               // 레이어별 알파·색 1회 세팅
+  if(_ATMDBG.mote)for(let L=0;L<3;L++){               // [ATMOS-CLEAN] mote 게이트 편입 — 레이어별 알파·색 1회 세팅
     ctx.globalAlpha=ATMO_L_ALPHA[L]*ch.pd;
     ctx.fillStyle=ch.pc;
     const para=ATMO_L_PARA[L],base=L*64;
@@ -43935,6 +43935,7 @@ function _atmoDraw(ctx){
     }
   }
   // 광선 빔: screen 합성, 상단 y=-60 → H*1.15 사다리꼴 path
+  if(_ATMDBG.ray){                                    // [ATMOS-CLEAN] ray 게이트 편입
   ctx.globalCompositeOperation='screen';
   ctx.fillStyle=ch.rc;
   const rayN=window._ATMO_LOW?3:5,topY=-60,botY=H*1.15;
@@ -43946,6 +43947,7 @@ function _atmoDraw(ctx){
     ctx.lineTo(g.x0+g.tilt+g.w*0.9,botY);
     ctx.lineTo(g.x0+g.tilt-g.w*0.9,botY);
     ctx.closePath();ctx.fill();
+  }
   }
   ctx.globalCompositeOperation='source-over';ctx.globalAlpha=1; // 그린 뒤 즉시 원복
 }
@@ -47408,30 +47410,10 @@ function draw(){
   if(OPT.atmos>=2&&_atmReady){
     X.save();X.setTransform(1,0,0,1,0,0);X.globalCompositeOperation='lighter';
     _atmT++;
-    if(_ATMDBG.ray){
-    X.globalAlpha=_ATM_A[2];
-    var _ax=-((G.cam.x*.05+Math.sin(_atmT*.0004)*18)%1024);
-    for(var _art=_ax-1024;_art<C.width;_art+=1024)X.drawImage(_atmRay,_art,0,1024,512);
-    X.globalAlpha=_ATM_A[3];
-    var _ax2=-((G.cam.x*.09)%1024),_arw=1024*1.4,_arh=512*1.4;
-    for(var _art2=_ax2-_arw;_art2<C.width;_art2+=_arw)X.drawImage(_atmRay,_art2,0,_arw,_arh);
-    }
+    // [ATMOS-CLEAN] 구 mote/ray 호출 제거. 신규 ATMO_P/GOD_RAY 가 PP 패스에서 담당
     // 근경안개B(_ATM_A[4])는 3-1 _atmCut 파이프라인으로 이관(중앙 그라데이션 감쇠 대상). 갓레이/부유입자는 lighter 발광이라 제외, 여기 유지.
     var _ahell=SI_TO_HELL[G.stage||0]||0;
-    if(_atmMoteColHell!==_ahell){_atmMoteColHell=_ahell;var _ambr=(HELL_PALETTES[_ahell]||HELL_PALETTES[0]).bright;_atmMoteColStr='rgb('+(~~(_ambr[0]*.6+102))+','+(~~(_ambr[1]*.6+102))+','+(~~(_ambr[2]*.6+102))+')';} // bright×0.6 + 흰255×0.4(=102), hell 변화시만
-    X.fillStyle=_atmMoteColStr;
-    var _amDrift=_atmT*.02; // 좌우 드리프트 위상 (기존 _atmT 재사용)
-    if(_ATMDBG.mote)for(var _ami=0;_ami<82;_ami++){var _amb=_ami*8;
-      _atmMote[_amb+1]-=_atmMote[_amb+7];                              // y 상승
-      if(_atmMote[_amb+1]<0)_atmMote[_amb+1]=C.height;                 // 상단 이탈 → y만 하단 리셋 (좌표 재사용)
-      var _amPx=_atmMote[_amb]+Math.sin(_amDrift+_atmMote[_amb+4])*_atmMote[_amb+6]-G.cam.x*_atmMote[_amb+5]; // sin 드리프트 + 카메라 패럴랙스 역보정
-      var _amPy=_atmMote[_amb+1]-G.cam.y*_atmMote[_amb+5];
-      _amPx=((_amPx%C.width)+C.width)%C.width;                        // 좌우 screen-space wrap
-      _amPy=((_amPy%C.height)+C.height)%C.height;
-      var _amS=_atmMote[_amb+2];
-      X.globalAlpha=_atmMote[_amb+3]*_ATM_A[5];                       // alpha = (shape×지터) × _ATM_A[5] 마스터
-      X.fillRect(_amPx,_amPy,_amS,_amS);
-    }
+    // [ATMOS-CLEAN] 구 _atmMote 렌더 제거. 신규 ATMO_P 가 PP 패스에서 담당 (_ahell 은 SIDE-FOG 용으로 유지)
     // ═══ [SIDE-FOG] 사이드 입자 안개 (흐림필터 대체, lighter 가산, 중앙 22~78% 배제) ═══
     if(_ATMDBG.sidefog&&_sideFog){
       if(_sideFogHell!==_ahell){_sideFogHell=_ahell;var _sfb0=(HELL_PALETTES[_ahell]||HELL_PALETTES[0]).bright;_bakeSideFogStamps(~~(_sfb0[0]*.75+64),~~(_sfb0[1]*.75+64),~~(_sfb0[2]*.75+64));} // bright×0.75 + 흰×0.25(≈+64), 챕터전환시만
