@@ -8668,6 +8668,7 @@ const BOSS_MOVES=[
   {id:'slam',      idx:14,tele:35,rec:40,canFeint:false,canDelay:.4, range:[0,140], phase:[0,1,2,3,4],combo:['slashCombo','sweep','shock'],tags:['melee','aoe'],  cd:140},
   {id:'sweep',     idx:15,tele:25,rec:60,canFeint:false,canDelay:.2, range:[0,120], phase:[0,1,2,3,4],combo:['slashCombo','charge','slam'],tags:['melee','frontal'],cd:100},
   {id:'teleStrike',idx:16,tele:60,rec:35,canFeint:true, canDelay:.4, range:[60,400],phase:[1,2,3,4],  combo:['slashCombo','sweep','grab'],tags:['gap-close','melee'],cd:160},
+  {id:'burrowStrike',idx:58,tele:50,rec:40,canFeint:false,canDelay:0, range:[280,900],phase:[0,1,2,3,4],combo:['slashCombo','fan','burst'],tags:['gap-close','melee','ambush'],cd:200}, // [다크드루이드 전용] 일정거리서 발동: 땅속 다이빙→잠행→분출 매복공격
   {id:'beanStorm', idx:17,tele:20,rec:25,canFeint:false,canDelay:0,  range:[0,999], phase:[0,1,2,3,4],combo:['burst','fan','charge'],tags:['ranged','aoe','redbean'],cd:80},
   {id:'beanRain',  idx:18,tele:60,rec:60,canFeint:false,canDelay:0,  range:[60,400],phase:[1,2,3,4],  combo:['beanStorm','charge','vortex'],tags:['ranged','sustained','redbean'],cd:120},
   {id:'fanWave',   idx:19,tele:60,rec:40,canFeint:false,canDelay:0,  range:[60,500],phase:[0,1,2,3,4],combo:['charge','fan','slam'],tags:['ranged','frontal','aoe'],cd:160},
@@ -8793,7 +8794,7 @@ const BOSS_PHASES={
 // null = 전체 49종 사용 (기본), Set = 해당 기술만 사용
 const _BOSS_MOVESET=[];
 // ── 1장 썩은 숲 (si 0~3): 흑요염 / 독버섯 / 지옥기형 / 기생수 ──
-_BOSS_MOVESET[0]=new Set(['slashCombo','slam','sweep','charge','jump','burst','shock','fan','groundFissure','poisonTrail','spin','grab','multiDash','tideWave','chaseAoe','elemBall','beanStorm','lavaPools','rapidMissile','teleStrike']);
+_BOSS_MOVESET[0]=new Set(['slashCombo','slam','sweep','charge','jump','burst','shock','fan','groundFissure','poisonTrail','spin','grab','multiDash','tideWave','chaseAoe','elemBall','beanStorm','lavaPools','rapidMissile','teleStrike','burrowStrike']);
 _BOSS_MOVESET[1]=new Set(['slashCombo','slam','sweep','charge','jump','burst','shock','fan','groundFissure','poisonTrail','spin','grab','multiDash','tideWave','chaseAoe','elemBall','beanStorm','summon','mine','lavaPools','rapidMissile']);
 _BOSS_MOVESET[2]=new Set(['jump','charge','slashCombo','sweep','tailSwipe','spin','slam','beanStorm','fan','multiDash']);
 _BOSS_MOVESET[3]=new Set(['slashCombo','slam','sweep','charge','jump','burst','shock','fan','groundFissure','poisonTrail','spin','grab','multiDash','tideWave','chaseAoe','elemBall','beanStorm','summon','mine','cageTrap','seekerMines','lavaPools','rapidMissile']);
@@ -9560,7 +9561,7 @@ function _drawStage1CodexBoss(X,e,sa,tdY){return _drawCodexBoss(X,e,sa,tdY,0)}
 // ═══ [다크드루이드] 8방향 프레임 애니메이션 렌더러 (walk/attack=4열8행, idle=2x2) ═══
 const _druidSheets={};
 (function _loadDruidSheets(){
-  const files={walk:'walk.png',attack:'attack.png',idle:'idle.png',aoe:'aoe.png',orb:'orb.png',beast:'beast.png',transform:'transform.png'};
+  const files={walk:'walk.png',attack:'attack.png',idle:'idle.png',aoe:'aoe.png',orb:'orb.png',beast:'beast.png',transform:'transform.png',dive:'dive.png'};
   for(const k in files){const im=new Image();_druidSheets[k]={img:im,ready:false};
     im.onload=(function(kk){return function(){_druidSheets[kk].ready=true}})(k);
     im.src='assets/sprites/boss/boss_dark_druid_'+files[k]+'?v=20260824w';}
@@ -9580,7 +9581,14 @@ function _drawDruidBoss(X,e,sa,tdY,spec){
   // [다크드루이드] 순간이동(jump/tele) → 땅속 burrow 변신 (emerge 시트: 침강 0→7, 부상 7→0)
   const _isBur=e.s==='bossTelePrep'||e.s==='bossTeleWarn'; // Prep=땅속 잠행(침강), Warn=기어나옴(부상)
   const _isCharge=e.s&&(e.s==='bossJump'||e.s.indexOf('Charge')>=0||e.s.indexOf('charge')>=0||e.s.indexOf('Dash')>=0||e.s.indexOf('multiDash')>=0); // 점프=러시인 포함
-  if(_isBur&&_druidSheets.emerge&&_druidSheets.emerge.ready){
+  const _isDive=e.s==='bossDruidDive'||e.s==='bossDruidUnder'||e.s==='bossDruidErupt'; // [전용] 지네돌진: dive시트(침강0→7/잠행7/분출7→0)
+  if(_isDive&&_druidSheets.dive&&_druidSheets.dive.ready){
+    if(e.s==='bossDruidDive'){const _dp=Math.max(0,Math.min(1,1-e.st2/(e._diveMax||50)));frame=Math.min(7,~~(_dp*8));}
+    else if(e.s==='bossDruidUnder'){frame=7;}
+    else{const _dp=Math.max(0,Math.min(1,1-e.st2/(e._eruptMax||40)));frame=Math.max(0,7-~~(_dp*8));}
+    sheet='dive';cols=4;rows=2;dirless=true;
+  }
+  else if(_isBur&&_druidSheets.emerge&&_druidSheets.emerge.ready){
     const _pmax=(e.s==='bossTelePrep')?(e._telePrepMax||40):60;
     const _pg=Math.max(0,Math.min(1,1-(e.st2/_pmax)));
     frame=(e.s==='bossTelePrep')?Math.min(7,~~(_pg*8)):Math.max(0,7-~~(_pg*8)); // Prep=땅속 침강(0→7), Warn=기어나옴(7→0)
@@ -15352,6 +15360,7 @@ registerVFX('parry_impact_el4','assets/vfx/parry_impact_el4.png',128,128,16,16);
 registerVFX('parry_impact_el5','assets/vfx/parry_impact_el5.png',128,128,16,16);
 registerVFX('parry_impact_red','assets/vfx/parry_impact_red.png',128,128,16,16);
 registerVFX('parry_impact_rainbow','assets/vfx/parry_impact_rainbow.png',128,128,20,20);
+registerVFX('druid_hit','assets/vfx/druid_hit_impact.png',362,543,8,4); // [다크드루이드] 녹색 가시 폭발 — 탄막/오브 피격 임팩트
 // (삭제됨: purple_impact, blue_impact, vfx_burn_death — 파일 미존재)
 registerVFX('explode_scarecrow','assets/vfx/scarecrow_boom.png',64,64,9,9); // 폭발허수아비 전용 대형폭발 (9x1, 9프레임, 불속성)
 // ─── 악의폭풍 Power Lightning 스프라이트 (3레이어, 스카이블루 틴트) ───
@@ -31461,6 +31470,7 @@ function update(){
         {const _obNe=shQuery(o.x,o.y,_obR);for(let _oi=0;_oi<_obNe.length;_oi++){const re=_obNe[_oi];if(!re.alive)continue;const rd=dst(o.x,o.y,re.x,re.y);if(rd>_obR)continue;hurtE(re,_obDmg,Math.atan2(re.y-o.y,re.x-o.x),false,{noPoise:true},EL.P)}}
         for(let _pk=0;_pk<10;_pk++){const _psa=Math.PI*2*_pk/10,_psv=3+Math.random()*3;poolPart(o.x,o.y,Math.cos(_psa)*_psv,Math.sin(_psa)*_psv,_pk%2?'#66dd22':'#33aa22',3+Math.random()*3,12+Math.random()*6);}
         addParts(o.x,o.y,'#66dd22',8);
+        if(typeof playVFXAng==='function')playVFXAng('druid_hit',o.x,o.y,0.42,3,Math.random()*Math.PI*2,false); // 녹색 가시 폭발 임팩트
         if(_pw){doParry(0,o.x,o.y,false,EL.P);P.parryBank=(P.parryBank||0)+_obDmg;}
         else if(P.iframes<=0){hurtP(~~(o.dmg*elMul(EL.P,ar().el)));P.poison=(P.poison||0)+3;P._webSlow=Math.max(P._webSlow||0,80);addTxt(P.x,P.y-16,_T('☠속박!'),'#66dd22',22);}
         _del=true;
@@ -32082,6 +32092,11 @@ function _bossStartPattern(e,mv,d,phase,extraDelay){
       e._telePrepMax=tele||40;
       e.s='bossTelePrep';e.st2=tele||40;
       addTxt(e.x,e.y-30,_T('⚡ 순간이동 준비!'),'#aa00ff',50);SFX.charge();break;
+    }
+    case'burrowStrike':{ // [다크드루이드 전용] 일정거리서 발동: 땅속 다이빙→잠행→분출 매복공격
+      e._teleOx=e.x;e._teleOy=e.y;e.facing=Math.atan2(P.y-e.y,P.x-e.x);
+      e.s='bossDruidDive';e.st2=tele||50;e._diveMax=tele||50;
+      addTxt(e.x,e.y-30,'🌿⚠',60);SFX.charge();break;
     }
     case'beanStorm':e.s='bossBeanStormWind';e.st2=tele||25;e._bsWave=0;e._bsMaxWave=3+~~(phase);addTxt(e.x,e.y-30,_T('🔴 빨간콩 폭풍!'),'#cc1100',50);SFX.charge();break;
     case'beanRain':e.s='bossBeanRainWind';e.st2=tele||35;e._brT=0;e._brDur=80+phase*20;addTxt(e.x,e.y-30,_T('🔴🔴 콩 비!'),'#ff2200',55);SFX.magic(0);break;
@@ -35266,6 +35281,31 @@ function updateE(e,sp){
       }
       e.s='bossRec';e.st2=35;
     }break}
+  // ═══ [다크드루이드 전용] 지네돌진 — 땅속 다이빙→잠행→분출 매복공격 (burrowStrike) ═══
+  case'bossDruidDive':{
+    e.facing=Math.atan2(P.y-e.y,P.x-e.x);
+    if(Math.random()<.5){const _da=Math.random()*Math.PI*2,_dd=e.r*1.2;poolPart(e.x+Math.cos(_da)*_dd,e.y+Math.sin(_da)*_dd,-Math.cos(_da)*1.5,-Math.sin(_da)*1.5,'#66dd22',2+Math.random()*2,10);}
+    if(e.st2<=0){e._diveTx=P.x;e._diveTy=P.y;e.s='bossDruidUnder';e.st2=45;e._underMax=45;e.iframes=Math.max(e.iframes||0,50);SFX.groggy();}break}
+  case'bossDruidUnder':{
+    e._diveTx+=(P.x-e._diveTx)*.06*sp;e._diveTy+=(P.y-e._diveTy)*.06*sp;
+    const _up=1-e.st2/(e._underMax||45);
+    e.x=e._teleOx+(e._diveTx-e._teleOx)*_up;e.y=e._teleOy+(e._diveTy-e._teleOy)*_up;
+    e.iframes=Math.max(e.iframes||0,5);
+    if(Math.random()<.7)poolPart(e.x+(Math.random()-.5)*30,e.y+(Math.random()-.5)*30,(Math.random()-.5)*2,-1-Math.random()*2,'#66dd22',2+Math.random()*3,12+Math.random()*8);
+    if(e.st2<=0){e.x=e._diveTx;e.y=e._diveTy;e.s='bossDruidErupt';e.st2=40;e._eruptMax=40;e._eruptHit=false;addTxt(e.x,e.y-40,'🌿💥',60);SFX.detonate();shake(12);}break}
+  case'bossDruidErupt':{
+    if(!e._eruptHit&&e.st2<=(e._eruptMax-8)){
+      e._eruptHit=true;
+      const _erR=e.r+120,_erDmg=~~(e.atk*2.2);
+      for(let _k2=0;_k2<20;_k2++){const _ea=Math.PI*2*_k2/20,_ev=4+Math.random()*5;poolPart(e.x,e.y,Math.cos(_ea)*_ev,Math.sin(_ea)*_ev-2,_k2%2?'#66dd22':'#33aa22',3+Math.random()*3,14+Math.random()*8);}
+      _addBlastLight(e.x,e.y,_erR*1.2,14,120,220,90);
+      if(typeof playVFXAng==='function')playVFXAng('druid_hit',e.x,e.y,0.72,3,0,false); // 녹색 가시 분출 임팩트
+      if(dst(P.x,P.y,e.x,e.y)<_erR&&P.iframes<=0&&P.s!=='charge'){
+        if(isPWin()){const _pd=~~(((P.baseAtk+(wp().atk||0)+enhMulAtk(wp().enh||0)))*4*pParryDmg());e.stunned=60;hurtE(e,_pd,e.facing+Math.PI);P.parryBank=(P.parryBank||0)+_pd;doParry(e.atk,e.x,e.y,false,e.el);_poiseHit(e,20);}
+        else{hurtP(~~(_erDmg*elMul(e.el,ar().el)));P.poison=(P.poison||0)+4;P._webSlow=Math.max(P._webSlow||0,90);addTxt(P.x,P.y-16,_T('☠속박!'),'#66dd22',24);const _ka=Math.atan2(P.y-e.y,P.x-e.x);P.kb.x+=Math.cos(_ka)*14;P.kb.y+=Math.sin(_ka)*14;}
+      }
+    }
+    if(e.st2<=0){e.s='recover';e.st2=30;}break}
   // ═══ 곤봉 연속베기 (slashCombo) ═══
   case'bossSlashWind':{
     e.facing=Math.atan2(P.y-e.y,P.x-e.x);
