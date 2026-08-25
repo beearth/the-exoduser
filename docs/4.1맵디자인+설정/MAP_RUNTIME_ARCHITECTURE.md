@@ -59,8 +59,8 @@ kit builders (24417~24507)   ─┘        │
 | `safePt(x,y,r)` | 25990 | 나선 탐색 최근접 walkable |
 | `_pushOutWall(e)` | 25995 | 벽에서 엔티티 방출 |
 | `_chgPathClear(e,len)` | 25987 | 돌진 경로 레이마치 |
-- **isW 프리필터** `[ISW-OPT]` (25979): `_colObjs`는 충돌메타(`_OBJ_META[type].collision||col`) 가진 MAP_OBJS만 캐시, `_ensureColObjs`가 identity/length 변화 시에만 재빌드. **성능 핵심 — 손대면 회귀 위험.**
-- **다각형/알파 콜라이더 없음.** 오브젝트 충돌 = 원(colSz) 또는 타원(colW/colH/colOy)만.
+- **isW 프리필터** `[ISW-OPT]` (25979): `_colObjs`는 충돌메타(`_OBJ_META[type].collision||col`) 가진 MAP_OBJS만 캐시, `_ensureColObjs`가 identity/length 변화 시에만 재빌드. 재빌드 시 인스턴스 `scale||1`을 `colW`/`colH`/`colSz`에 곱한 `_colW`/`_colH`/`_colSz`를 1회 저장하며 `isW()`는 저장값만 읽는다. **성능 핵심 — 손대면 회귀 위험.**
+- **다각형/알파 콜라이더 없음.** 오브젝트 충돌 = 렌더 스케일이 반영된 원(colSz) 또는 타원(colW/colH/colOy)만.
 
 ---
 
@@ -116,7 +116,7 @@ kit builders (24417~24507)   ─┘        │
 | `spawnFormation(cx,cy,si,el,ri)` | 25689 | 방패+원거리 군집 |
 - **모든 스폰이 `canMv`/`safePt` 게이트** → 적은 PLAY(walkable) 안에만 생성. **Q4 답: 예, AI/스폰 모두 isW 경계 공유.** RIM/OUTER로 적 탈출 방지는 이 경계로 보장됨.
 - **소환굴(progressive spawn)**: `G.spawnHoles=[{x,y,size,timer,alive,room}]`, 런타임 emit 29644–29694(2000px 근접트리거, ~15s 순차, 700캡). `SPAWN_HOLE` 25370.
-- **필드 보스**(심연의 앵글러): `_fbTick` 51878, **CH1-1 전용**, 2500px 진행 후 게이트(월드몹 변형 1500px). 커밋 `29e91d85` 정합.
+- **필드 보스**(심연의 앵글러): `_fbTick`, **CH1-1 전용**, 2500px 진행 후 게이트(월드몹 변형 1500px). 등장=`spawnIn` 꿈틀 상승 54틱(본체 즉시 표시 없음). 커밋 `29e91d85` 정합.
 - 적 하드캡 700 (`[ENS-CAP]` 28487), AI 컬링 ±300px(28577).
 
 ---

@@ -20927,7 +20927,7 @@ function initMapObjects(){
   }
   MAP_OBJS=[];const hell=SI_TO_HELL[G.stage],map=G.map,rooms=G.rooms;
   // 공간 해시 그리드 (O(1) 근접 체크, O(n²) 제거)
-  const _GRID_SZ=200;const _moGrid={};
+  const _GRID_SZ=200;const _moGrid={};let _moGridMaxR=0;
   function _gridKey(x,y){return(~~(x/_GRID_SZ))+'_'+(~~(y/_GRID_SZ))}
   function _visR(type){
     const m=_OBJ_META[type];if(!m)return 40;
@@ -20935,10 +20935,10 @@ function initMapObjects(){
     if(m.large||sz>=150)return Math.max(sz*0.55,160);
     return Math.max(sz*0.5,28);
   }
-  function _gridAdd(x,y,type){const k=_gridKey(x,y);if(!_moGrid[k])_moGrid[k]=[];const m=_OBJ_META[type];const colR=(m&&(m.collision||m.col))?(m.colW||m.colSz||(m.sz||64)*.4):0;_moGrid[k].push({x,y,colR,visR:_visR(type)})}
+  function _gridAdd(x,y,type,sc){const k=_gridKey(x,y);if(!_moGrid[k])_moGrid[k]=[];const m=_OBJ_META[type],s=sc||1;const colR=((m&&(m.collision||m.col))?(m.colW||m.colSz||(m.sz||64)*.4):0)*s,visR=_visR(type)*s;_moGrid[k].push({x,y,colR,visR});if(visR>_moGridMaxR)_moGridMaxR=visR}
   function _gridNear(x,y,r,newVisR){
     const gx=~~(x/_GRID_SZ),gy=~~(y/_GRID_SZ);const _nvr=newVisR||0;
-    const reach=Math.max(r||0,_nvr,200);
+    const reach=Math.max(r||0,_nvr,_moGridMaxR,200);
     const cells=Math.ceil(reach/_GRID_SZ)+1;
     for(let dy=-cells;dy<=cells;dy++)for(let dx=-cells;dx<=cells;dx++){
       const c=_moGrid[(gx+dx)+'_'+(gy+dy)];if(!c)continue;
@@ -20951,7 +20951,7 @@ function initMapObjects(){
   function _moOk(x,y){return !_gridNear(x,y,120,0)}
   // MAP_OBJS.push 래핑: 추가 시 자동으로 그리드에 등록
   const _origPush=MAP_OBJS.push.bind(MAP_OBJS);
-  MAP_OBJS.push=function(o){_gridAdd(o.x,o.y,o.type);return _origPush(o)}
+  MAP_OBJS.push=function(o){_gridAdd(o.x,o.y,o.type,o.scale);return _origPush(o)}
   function _floorAt(tx,ty){return tx>=0&&ty>=0&&tx<G.mw&&ty<G.mh&&(map[ty][tx]===0||map[ty][tx]===4)}
   function _nearFloor(tx,ty){if(_floorAt(tx,ty))return{x:tx,y:ty};for(let r=1;r<10;r++)for(let dy=-r;dy<=r;dy++)for(let dx=-r;dx<=r;dx++){if(_floorAt(tx+dx,ty+dy))return{x:tx+dx,y:ty+dy}}return null}
   function _nearOffPath(tx,ty){
@@ -21207,7 +21207,6 @@ function initMapObjects(){
         const _msz=(_OBJ_META[L.id]&&_OBJ_META[L.id].sz)||L.sz||300;
         const _sc=L.sz?L.sz/_msz:1;
         const _vr=Math.max((L.sz||_msz)*.5,220);
-        const _lk=_gridKey(_lmx,_lmy);if(!_moGrid[_lk])_moGrid[_lk]=[];_moGrid[_lk].push({x:_lmx,y:_lmy,colR:_vr,visR:_vr});
         MAP_OBJS.push({type:L.id,x:_lmx,y:_lmy,hell,scale:_sc});
       }
     }else{
@@ -21231,23 +21230,26 @@ function initMapObjects(){
         const _lmx=(_lmNear.x+.5)*T,_lmy=(_lmNear.y+.5)*T;
         const _msz=(_OBJ_META[L.id]&&_OBJ_META[L.id].sz)||L.sz||600;
         const _sc=L.sz?L.sz/_msz:1;
-        const _vr=Math.max((L.sz||_msz)*.45,280);
-        const _lk=_gridKey(_lmx,_lmy);if(!_moGrid[_lk])_moGrid[_lk]=[];_moGrid[_lk].push({x:_lmx,y:_lmy,colR:_vr,visR:_vr});
         MAP_OBJS.push({type:L.id,x:_lmx,y:_lmy,hell,scale:_sc});
       }
     }
     // ── CH1-1 손 배치: 자동 살포가 꺼진 hand 맵의 림/START 시야 가장자리 장식을 좌표 고정 ──
     if(_cmp&&_cmp.handProps){
-      let _handPlaced=0;
+      let _handPlaced=0;let _handSkip=0;
       for(let _hi=0;_hi<_cmp.handProps.length;_hi++){
         const H=_cmp.handProps[_hi];
         if(!_OBJ_META[H.id])continue;
         const _hNear=_nearFloor(H.x|0,H.y|0);
         if(!_hNear)continue;
-        MAP_OBJS.push({type:H.id,x:(_hNear.x+.5)*T,y:(_hNear.y+.5)*T,hell,_hand:1});
+        const _hx=(_hNear.x+.5)*T, _hy=(_hNear.y+.5)*T;
+        const _hvr=_visR(H.id);
+        if(_gridNear(_hx,_hy,0,_hvr)){_handSkip++;continue;}
+        MAP_OBJS.push({type:H.id,x:_hx,y:_hy,hell,_hand:1});
         _handPlaced++;
       }
-      console.log('[HAND_DECO] placed:'+_handPlaced+'/'+_cmp.handProps.length);
+      let _d3x=-1,_d3y=-1,_chx=-1,_chy=-1;for(let _qi=0;_qi<MAP_OBJS.length;_qi++){const _qo=MAP_OBJS[_qi];if(_qo.type==='m_dragon_3d'){_d3x=_qo.x;_d3y=_qo.y}else if(_qo.type==='m_mega_chapel'){_chx=_qo.x;_chy=_qo.y}}
+      let _d3n=0,_d3vr=0,_chn=0,_chvr=0;if(_d3x>=0){const _dc=_moGrid[_gridKey(_d3x,_d3y)];if(_dc)for(let _di=0;_di<_dc.length;_di++)if(_dc[_di].x===_d3x&&_dc[_di].y===_d3y){_d3n++;_d3vr=_dc[_di].visR}}if(_chx>=0){const _cc=_moGrid[_gridKey(_chx,_chy)];if(_cc)for(let _ci=0;_ci<_cc.length;_ci++)if(_cc[_ci].x===_chx&&_cc[_ci].y===_chy){_chn++;_chvr=_cc[_ci].visR}}
+      console.log('[HAND_DECO] placed:'+_handPlaced+'/'+_cmp.handProps.length+' skip:'+_handSkip+' | [MO_GRID] 3D 용 entries:'+_d3n+' visR:'+_d3vr+' | 무너진 예배당 entries:'+_chn+' visR:'+_chvr+' | maxR:'+_moGridMaxR);
     }
     // ── 유니크 충돌 오브젝트: 장별 1기씩, 중앙 배치 ──
     {
@@ -31453,7 +31455,16 @@ function update(){
     if(_db&&_db.alive&&(_db._bossPhase||0)>=0&&G._druidOrbT>=110){G._druidOrbT=0;const _oa=Math.atan2(P.y-_db.y,P.x-_db.x);
       for(let _k=-1;_k<=1;_k++){const _a=_oa+_k*0.14;G._druidOrbs.push({x:_db.x,y:_db.y-40,vx:Math.cos(_a)*6.8,vy:Math.sin(_a)*6.8,t:0,r:26,dmg:~~((_db.atk||100)*.6)});}}
     let _ow=0;for(let oi=0;oi<G._druidOrbs.length;oi++){const o=G._druidOrbs[oi];o.t+=sp;o.x+=o.vx*sp;o.y+=o.vy*sp;let _del=false;
-      if(P.iframes<=0&&dst(P.x,P.y,o.x,o.y)<o.r+P.r){hurtP(~~(o.dmg*elMul(EL.P,ar().el)));P.poison=(P.poison||0)+3;P._webSlow=Math.max(P._webSlow||0,80);addTxt(P.x,P.y-16,_T('☠속박!'),'#66dd22',22);_del=true;}
+      if(dst(P.x,P.y,o.x,o.y)<o.r+P.r){
+        // [ORB 그자리 폭발] 보스전용 오브=패링 불가→접촉 시 무조건 제자리 녹색 폭발 + 적 AOE (패링 실패=폭발 원칙)
+        const _pw=isPWin();const _obR=90,_obDmg=Math.max(40,~~((o.dmg||60)*1.2));
+        {const _obNe=shQuery(o.x,o.y,_obR);for(let _oi=0;_oi<_obNe.length;_oi++){const re=_obNe[_oi];if(!re.alive)continue;const rd=dst(o.x,o.y,re.x,re.y);if(rd>_obR)continue;hurtE(re,_obDmg,Math.atan2(re.y-o.y,re.x-o.x),false,{noPoise:true},EL.P)}}
+        for(let _pk=0;_pk<10;_pk++){const _psa=Math.PI*2*_pk/10,_psv=3+Math.random()*3;poolPart(o.x,o.y,Math.cos(_psa)*_psv,Math.sin(_psa)*_psv,_pk%2?'#66dd22':'#33aa22',3+Math.random()*3,12+Math.random()*6);}
+        addParts(o.x,o.y,'#66dd22',8);
+        if(_pw){doParry(0,o.x,o.y,false,EL.P);P.parryBank=(P.parryBank||0)+_obDmg;}
+        else if(P.iframes<=0){hurtP(~~(o.dmg*elMul(EL.P,ar().el)));P.poison=(P.poison||0)+3;P._webSlow=Math.max(P._webSlow||0,80);addTxt(P.x,P.y-16,_T('☠속박!'),'#66dd22',22);}
+        _del=true;
+      }
       if(o.t>460||o.x<-40||o.y<-40||o.x>G.mw*T+40||o.y>G.mh*T+40)_del=true;
       if(!_del)G._druidOrbs[_ow++]=o;}G._druidOrbs.length=_ow;
   }
