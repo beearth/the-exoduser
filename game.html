@@ -9596,8 +9596,8 @@ function _drawDruidBoss(X,e,sa,tdY,spec){
   if(dirless){sx=(frame%cols)*cw;sy=(~~(frame/cols))*ch;}
   else{sx=frame*cw;sy=dir*ch;}
   const dw=e.r*spec.dw,dh=e.r*spec.dh;
-  X.save();X.translate(e.x,e.y+(tdY||0)-6);const _un=1/(window._btScaleMul||1);X.scale(_un,_un);
-  X.globalAlpha=sa*.65;X.fillStyle=spec.glow;X.beginPath();X.ellipse(0,-dh*.32,dw*.42,dh*.36,0,0,Math.PI*2);X.fill();
+  X.save();X.translate(e.x,e.y+(tdY||0)-6);const _un=1/(window._btScaleMul||1);X.scale(_un,_un);e._nameTopOff=(tdY||0)-6-dh*.86*_un-10; // 네임플레이트/HP바를 스프라이트 상단 위로(2026-08 유저요청: 다리 겹침 해소)
+  if(window._BOSS_GLOW){X.globalAlpha=sa*.30;X.fillStyle=spec.glow;X.beginPath();X.ellipse(0,-dh*.40,dw*.24,dh*.22,0,0,Math.PI*2);X.fill();} // 글로우 게이트(2026-08-25 유저요청: 원형 잔상 제거, _BOSS_GLOW=true 시만 그림). 삭제X 게이트만
   X.globalAlpha=sa;X.drawImage(img,sx,sy,cw,ch,-dw/2,-dh*.86,dw,dh);
   X.globalCompositeOperation='lighter';X.globalAlpha=sa*.42;X.drawImage(img,sx,sy,cw,ch,-dw/2,-dh*.86,dw,dh); // 셀프 라이튼 ×2(어두운 아레나서 존재감)
   X.globalAlpha=sa*.42;X.drawImage(img,sx,sy,cw,ch,-dw/2,-dh*.86,dw,dh);
@@ -9605,6 +9605,7 @@ function _drawDruidBoss(X,e,sa,tdY,spec){
   X.restore();return true;
 }
 // ── 대형보스 글로벌 설정 ──
+window._BOSS_GLOW=false; // 보스 하단 원형 글로우 오라 기본 OFF (2026-08-25 유저요청: 원으로 보임·불필요). true 시만 _drawDruidBoss 글로우 렌더
 window._btScaleMul=4.0; // 보스 시각 스케일 배율
 window._b3Active=false; // 3D 보스 오버레이 활성 여부 (true면 2D 보스 렌더 차단)
 window._btRotX=0.0; // 보스 3D X축 회전 (rad)
@@ -46308,7 +46309,7 @@ function draw(){
     // 속성 링 (보스만 — 일반몹은 스프라이트 캐시에 포함)
     // 속성 링 제거됨 (스프라이트 위에 원형 겹침 방지)
     // 속성 표시: 보스만 이모지 (일반몹은 스프라이트에 포함)
-    if(e.ib){X.font='16px sans-serif';X.textAlign='center';X.fillText(ELE[e.el],e.x,e.y-e.r-12)}
+    if(e.ib){X.font='16px sans-serif';X.textAlign='center';X.fillText(ELE[e.el],e.x,e.y+(e._nameTopOff!==undefined?e._nameTopOff+4:-e.r-12));X.textAlign='left'}
     // 눈: 보스만 (일반몹 arc 2개 절약)
     if(e.ib){X.fillStyle='#000';X.beginPath();X.arc(e.x+Math.cos(e.facing)*e.r*.3-2,e.y+Math.sin(e.facing)*e.r*.3,2,0,Math.PI*2);X.fill();
     X.beginPath();X.arc(e.x+Math.cos(e.facing)*e.r*.3+3,e.y+Math.sin(e.facing)*e.r*.3,2,0,Math.PI*2);X.fill()}
@@ -46322,7 +46323,7 @@ function draw(){
         X.closePath();X.fill()}
       X.globalAlpha=sa}
     // ═══ 에너지 바 (HP+쉴드 오버레이 → 그로기 → 프리즌) ═══
-    {const bw=e.r*2+6,bx=e.x-bw/2;let by=e.y-e.r-16;
+    {const bw=e.r*2+6,bx=e.x-bw/2;let by=e.y+(e._nameTopOff!==undefined?e._nameTopOff:-e.r-16);
     // 1) HP바 + 쉴드 오버레이 (쉴드=파랑이 빨강HP 위에 덮임, 보스바와 동일 구조)
     if(e.hp<e.mhp||(e.eShieldMax||0)>0&&e.eShield<e.eShieldMax){X.fillStyle='rgba(0,0,0,.6)';X.fillRect(bx,by,bw,4);X.fillStyle='#cc0000';X.fillRect(bx,by,bw*(e.hp/e.mhp),4);if(e.eShieldMax>0&&e.eShield>0){X.fillStyle='#44aaff';X.fillRect(bx,by,bw*Math.min(1,e.eShield/e.eShieldMax),4)}by-=5}
     // 2) 그로기바 (주황 3px, 스턴 중일 때만)
@@ -46332,7 +46333,7 @@ function draw(){
     else if(e._freezeGauge>0&&e._freezeMax>0){X.fillStyle='rgba(0,0,0,.5)';X.fillRect(bx,by,bw,3);X.fillStyle='#88ccee';X.fillRect(bx,by,bw*(e._freezeGauge/e._freezeMax),3);by-=4}
     }
     // 적 레벨 표시 (보스만)
-    if(e.ib&&e.lv){X.font='bold 12px monospace';X.fillStyle='#ff8844';X.textAlign='center';X.fillText('Lv.'+e.lv,e.x,e.y-e.r-28);X.textAlign='left'}
+    if(e.ib&&e.lv){X.font='bold 12px monospace';X.fillStyle='#ff8844';X.textAlign='center';X.fillText('Lv.'+e.lv,e.x,e.y+(e._nameTopOff!==undefined?e._nameTopOff-14:-e.r-28));X.textAlign='left'}
     // 마우스 호버 시 HP/레벨 표시
     {const _mx=mouse.x-VW/2+G.cam.x,_my=mouse.y-VH/2+G.cam.y;
     if(dst(_mx,_my,e.x,e.y)<e.r+15){
