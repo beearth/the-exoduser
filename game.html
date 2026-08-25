@@ -21619,6 +21619,8 @@ function initMapObjects(){
     }
     delete G._dragonCleanup;
   }
+  // ── 배치 시점 1회 Y정렬: 렌더 순서를 y오름차순으로 (painter). 게임루프 정렬 금지 ──
+  MAP_OBJS.sort(function(a,b){return a.y-b.y});
   console.log('[MAP_OBJS]',MAP_OBJS.length,'(editor:'+_editorObjs.length+')',MAP_OBJS.map(m=>m.type));
 }
 function _tseed(tx,ty){let s=tx*7919+ty*104729+31;return()=>{s=(s*1103515245+12345)&0x7fffffff;return s/0x7fffffff}}
