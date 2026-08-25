@@ -9564,7 +9564,7 @@ const _druidSheets={};
   const files={walk:'walk.png',attack:'attack.png',idle:'idle.png',aoe:'aoe.png',orb:'orb.png',beast:'beast.png',transform:'transform.png',dive:'dive.png'};
   for(const k in files){const im=new Image();_druidSheets[k]={img:im,ready:false};
     im.onload=(function(kk){return function(){_druidSheets[kk].ready=true}})(k);
-    im.src='assets/sprites/boss/boss_dark_druid_'+files[k]+'?v=20260825b';}
+    im.src='assets/sprites/boss/boss_dark_druid_'+files[k]+'?v=20260825c';}
 })();
 // facing/이동각 → 0..7 방향 (행 순서: S,SW,W,NW,N,NE,E,SE — 검증 후 조정)
 const _DRUID_DIRMAP=[6,7,0,1,2,3,4,5];
@@ -9580,7 +9580,8 @@ function _drawDruidBoss(X,e,sa,tdY,spec){
   const _nw=performance.now(); // 시간기반 프레임(프레임레이트 독립 — 고FPS서 빨라짐 방지)
   // [다크드루이드] 순간이동(jump/tele) → 땅속 burrow 변신 (emerge 시트: 침강 0→7, 부상 7→0)
   const _isBur=e.s==='bossTelePrep'||e.s==='bossTeleWarn'; // Prep=땅속 잠행(침강), Warn=기어나옴(부상)
-  const _isCharge=e.s&&(e.s==='bossJump'||e.s.indexOf('Charge')>=0||e.s.indexOf('charge')>=0||e.s.indexOf('Dash')>=0||e.s.indexOf('multiDash')>=0); // 점프=러시인 포함
+  const _isChgWind=e.s&&e.s.indexOf('Wind')>=0&&(e.s.indexOf('Charge')>=0||e.s.indexOf('Jump')>=0||e.s.indexOf('Dash')>=0); // 돌진 와인드업=변신 시퀀스(서있는→야수)
+  const _isCharge=e.s&&!_isChgWind&&(e.s==='bossJump'||e.s.indexOf('Charge')>=0||e.s.indexOf('charge')>=0||e.s.indexOf('Dash')>=0||e.s.indexOf('multiDash')>=0); // 실제 돌진=야수(8방향)
   const _isDive=e.s==='bossDruidDive'||e.s==='bossDruidUnder'||e.s==='bossDruidErupt'; // [전용] 지네돌진: dive시트(침강0→7/잠행7/분출7→0)
   if(_isDive&&_druidSheets.dive&&_druidSheets.dive.ready){
     if(e.s==='bossDruidDive'){const _dp=Math.max(0,Math.min(1,1-e.st2/(e._diveMax||50)));frame=Math.min(7,~~(_dp*8));}
@@ -9594,6 +9595,7 @@ function _drawDruidBoss(X,e,sa,tdY,spec){
     frame=(e.s==='bossTelePrep')?Math.min(7,~~(_pg*8)):Math.max(0,7-~~(_pg*8)); // Prep=땅속 침강(0→7), Warn=기어나옴(7→0)
     sheet='emerge';cols=4;rows=2;dirless=true;
   }
+  else if(_isChgWind&&_druidSheets.transform&&_druidSheets.transform.ready){const _tp=Math.max(0,Math.min(1,1-e.st2/45));frame=Math.min(7,~~(_tp*8));sheet='transform';cols=8;rows=1;dirless=true;} // 돌진 와인드업=변신 시퀀스 0→7(서있는→야수)
   else if(_isCharge&&_druidSheets.beast&&_druidSheets.beast.ready){sheet='beast';cols=4;rows=2;dirless=true;frame=dir;} // 돌진=야수 변신형(8방향 4x2, 셀=방향)
   else if(key==='slash'||key==='slam'||key==='windup'){sheet='attack';cols=4;rows=8;frame=(~~(_nw/150))%4;} // 공격 150ms/frame (~6.7fps, 1사이클 0.6s)
   else if(key==='walk'){sheet='walk';cols=4;rows=8;frame=(~~(_nw/150))%4;} // 걷기 150ms/frame
@@ -9604,7 +9606,7 @@ function _drawDruidBoss(X,e,sa,tdY,spec){
   if(dirless){sx=(frame%cols)*cw;sy=(~~(frame/cols))*ch;}
   else{sx=frame*cw;sy=dir*ch;}
   let dw=e.r*spec.dw,dh=e.r*spec.dh;
-  if(sheet==='beast'||sheet==='dive'){dh=e.r*spec.dh;dw=dh*(cw/ch)*1.12;} // [넉넉] 정사각 셀(돌진 야수/다이빙) 비율보존+12% 여유 — 가로 넓은 형태 안 짤리게
+  if(sheet==='beast'||sheet==='dive'||sheet==='transform'){dh=e.r*spec.dh;dw=dh*(cw/ch)*1.12;} // [넉넉] 정사각/세로 셀(돌진 야수/다이빙/변신) 비율보존+12% 여유 — 안 짤리게
   X.save();X.translate(e.x,e.y+(tdY||0)-6);const _un=1/(window._btScaleMul||1);X.scale(_un,_un);e._nameTopOff=(tdY||0)-6-dh*.86*_un-10; // 네임플레이트/HP바를 스프라이트 상단 위로(2026-08 유저요청: 다리 겹침 해소)
   if(window._BOSS_GLOW){X.globalAlpha=sa*.30;X.fillStyle=spec.glow;X.beginPath();X.ellipse(0,-dh*.40,dw*.24,dh*.22,0,0,Math.PI*2);X.fill();} // 글로우 게이트(2026-08-25 유저요청: 원형 잔상 제거, _BOSS_GLOW=true 시만 그림). 삭제X 게이트만
   X.globalAlpha=sa;X.drawImage(img,sx,sy,cw,ch,-dw/2,-dh*.86,dw,dh);
