@@ -20969,7 +20969,7 @@ function initMapObjects(){
   function _moOk(x,y){return !_gridNear(x,y,120,0)}
   // MAP_OBJS.push 래핑: 추가 시 자동으로 그리드에 등록
   const _origPush=MAP_OBJS.push.bind(MAP_OBJS);
-  MAP_OBJS.push=function(o){_gridAdd(o.x,o.y,o.type,o.scale);return _origPush(o)}
+  MAP_OBJS.push=function(o){if(!o.noGrid)_gridAdd(o.x,o.y,o.type,o.scale);return _origPush(o)}
   function _floorAt(tx,ty){return tx>=0&&ty>=0&&tx<G.mw&&ty<G.mh&&(map[ty][tx]===0||map[ty][tx]===4)}
   function _nearFloor(tx,ty){if(_floorAt(tx,ty))return{x:tx,y:ty};for(let r=1;r<10;r++)for(let dy=-r;dy<=r;dy++)for(let dx=-r;dx<=r;dx++){if(_floorAt(tx+dx,ty+dy))return{x:tx+dx,y:ty+dy}}return null}
   function _nearOffPath(tx,ty){
@@ -21268,6 +21268,29 @@ function initMapObjects(){
       let _d3x=-1,_d3y=-1,_chx=-1,_chy=-1;for(let _qi=0;_qi<MAP_OBJS.length;_qi++){const _qo=MAP_OBJS[_qi];if(_qo.type==='m_dragon_3d'){_d3x=_qo.x;_d3y=_qo.y}else if(_qo.type==='m_mega_chapel'){_chx=_qo.x;_chy=_qo.y}}
       let _d3n=0,_d3vr=0,_chn=0,_chvr=0;if(_d3x>=0){const _dc=_moGrid[_gridKey(_d3x,_d3y)];if(_dc)for(let _di=0;_di<_dc.length;_di++)if(_dc[_di].x===_d3x&&_dc[_di].y===_d3y){_d3n++;_d3vr=_dc[_di].visR}}if(_chx>=0){const _cc=_moGrid[_gridKey(_chx,_chy)];if(_cc)for(let _ci=0;_ci<_cc.length;_ci++)if(_cc[_ci].x===_chx&&_cc[_ci].y===_chy){_chn++;_chvr=_cc[_ci].visR}}
       console.log('[HAND_DECO] placed:'+_handPlaced+'/'+_cmp.handProps.length+' skip:'+_handSkip+' | [MO_GRID] 3D 용 entries:'+_d3n+' visR:'+_d3vr+' | 무너진 예배당 entries:'+_chn+' visR:'+_chvr+' | maxR:'+_moGridMaxR);
+    }
+    // ── CH1-1 비충돌 지면 데칼 산포: 20×20 그리드 지터, 겹침가드 무관(noGrid/noCol), 결정론 mkRng ──
+    if(G.stage===0){
+      const _decoRng=mkRng(G.stage*7919+4242);
+      const _decoPool=['m_fbones','m_flesh','m_puddle','m_poison','m_acid'];
+      const _DGC=20,_dcw=_mwPx/_DGC,_dch=_mhPx/_DGC;
+      let _decoPlaced=0;
+      for(let _gcy=0;_gcy<_DGC;_gcy++)for(let _gcx=0;_gcx<_DGC;_gcx++){
+        const _jx=(_gcx+.5)*_dcw+(_decoRng()-.5)*0.8*_dcw;
+        const _jy=(_gcy+.5)*_dch+(_decoRng()-.5)*0.8*_dch;
+        const _tx=~~(_jx/T),_ty=~~(_jy/T);
+        const _dt=_decoPool[~~(_decoRng()*_decoPool.length)];
+        const _dsc=0.6+_decoRng()*1.2;
+        if(_tx<0||_ty<0||_tx>=G.mw||_ty>=G.mh)continue;
+        if(map[_ty][_tx]!==0)continue;
+        let _dBlk=false;
+        if(G.bossGate){for(let _dbi=0;_dbi<G.bossGate.length;_dbi++){const _dg=G.bossGate[_dbi];if(Math.abs(_dg.x-_tx)<=3&&Math.abs(_dg.y-_ty)<=3){_dBlk=true;break}}}
+        if(!_dBlk&&G._portals){for(let _dpi=0;_dpi<G._portals.length;_dpi++){const _dp=G._portals[_dpi];if(Math.abs(_dp.x-_tx)<=3&&Math.abs(_dp.y-_ty)<=3){_dBlk=true;break}}}
+        if(_dBlk)continue;
+        MAP_OBJS.push({type:_dt,x:_jx,y:_jy,hell,noGrid:1,noCol:1,scale:_dsc});
+        _decoPlaced++;
+      }
+      console.log('[FLOOR_DECO] placed:'+_decoPlaced+' cells:'+(_DGC*_DGC));
     }
     // ── 유니크 충돌 오브젝트: 장별 1기씩, 중앙 배치 ──
     {
