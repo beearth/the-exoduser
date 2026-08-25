@@ -65,7 +65,7 @@ PLAY(플레이 가능)와 RIM(경계) 너머, **보이지만 플레이하지 않
 
 - **성능 봉인**: 평상시 140fps/700마리 60fps. OUTER draw 증가는 직접 위협 → 캐시 캔버스/저배속 권장, 엔티티당 draw 금지.
 - **경계 정합**: `_fillVoidWithFloor`+[EDGE-FADE]와 OUTER 렌더 **순서·클리핑** 충돌 주의(`43539` 비활성 사유).
-- **런타임 Y-sort 없음**(`CH1_MAP_KIT_OptionB §6`) → OUTER는 항상 최후면 레이어로만(플레이어 앞 렌더 불가 = 전경 occluder 별도).
+- **매 프레임 런타임 Y-sort 없음**(`CH1_MAP_KIT_OptionB §6`; 단 MAP_OBJS 빌드시 1회 Y정렬은 존재 = 데코 내부 앞뒤 순서 한정, OUTER 레이어링 무관) → OUTER는 항상 최후면 레이어로만(플레이어 앞 렌더 불가 = 전경 occluder 별도).
 - **줌 0.80**(보스) 시 OUTER 노출 면적 증가 → 스케일/컬링 재검토.
 - **원색 남발 금지**: OUTER 저채도 후퇴(아트 디렉션).
 

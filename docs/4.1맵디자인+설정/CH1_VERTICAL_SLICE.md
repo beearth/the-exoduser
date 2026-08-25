@@ -2,8 +2,8 @@
 
 > **역할**: CH1(썩은 숲)을 기준으로 한 **첫 수직 슬라이스** 완성형 레벨 스펙. 세미 오픈월드 규칙의 실증 케이스.
 > **원칙**: **CH1 전체를 새로 만들지 않는다.** 기존 DESIGN LOCK 데이터(`CH1_1_COMPOSE_초안.md`, `FIXED_MAPS[0]`, `_MAP_COMPOSE[0]`)를 **verbatim 보존**하고, 그 위에 수직 슬라이스 흐름만 얹는다.
-> **상태**: 2026-08-23. 코드 변경 없음.
-> ⚠ **CONFLICT**: `CH1_MAP_KIT_OptionB.md §2`는 `1-1 compose={keepDragon:1, mega sz1400}`이라 기록하나, **최신 DESIGN LOCK(`CH1_1_COMPOSE_초안.md`, 2026-08-20)은 keepDragon OFF·mega sz900**. 코드 실제값(`game.html:14221`)도 keepDragon 없음·sz900. → **초안+코드가 canonical**, OptionB의 sz1400/keepDragon 기록은 stale.
+> **상태**: 2026-08-24. CH1-1 기존 에셋 손 배치 구현 완료(`handProps` 80 + `mega` 6).
+> **정합**: legacy keepDragon 자동분기는 OFF, 용 2종은 mega 데이터 좌표에 배치하며 `CH1_MAP_KIT_OptionB.md`도 현행값으로 동기화됐다.
 
 ---
 
@@ -22,7 +22,7 @@ COMBAT C = UPPER 분지
   ↓
 [EXIT APPROACH = 보스 게이트 12시] → (보스 아레나 로딩)
 ```
-- CH1-1은 **미니보스/거대보스 존이 분지 흐름 뒤 보스게이트로 연결**되는 구조(별도 아레나). 필드보스(심연의 앵글러)는 CH1-1 한정 2500px 진행 후 등장.
+- CH1-1은 **미니보스/거대보스 존이 분지 흐름 뒤 보스게이트로 연결**되는 구조(별도 아레나). 필드보스(심연의 앵글러)는 CH1-1 한정 2500px 진행 후 `kraken_vanish` 역재생 54틱으로 등장(본체 뿅 금지).
 - "남→북, 어긋난 흙 분지 3개. 가운데는 비고, 기억할 뼈는 1~2시." (COMPOSE INTENT, 초안) — **원형 아레나 아님, 직선 복도 아님.**
 
 ---
@@ -70,13 +70,14 @@ COMBAT C = UPPER 분지
     {x:.19,y:.58,r:520},  // WEST 포켓(CENTRAL+LOWER 목)
     {x:.83,y:.45,r:500}   // EAST 포켓(CENTRAL+UPPER 목)
   ],
-  mega:[{id:'m_mega_ribs', x:.85, y:.17, sz:900}]
+  handProps:[/* 기존 CH1 에셋 80개 — 정확한 id/좌표는 CH1_1_COMPOSE_초안.md 표 */],
+  mega:[/* ribs + dragon 2종 + statue/chapel/head = 6개 */]
 }
 ```
 - `empty.r` = **픽셀**(world px), x/y = 정규화(0~1).
 - `hand:1` = auto-scatter/deco/uni/wall/scatter **OFF**. `lm:[]` = 중앙 기본 랜드마크 fall-through 차단.
-- **keepDragon 미설정 → 용해골 OFF** (게이팅 `game.html:20778–20794`, `G.stage===0 && !_testbed && _cmp.keepDragon`).
-- `empty`는 `hand:1` 하에서 **안전망+문서용** — 실제 손배치 props(ctree×8-12/hang_cage/cage_gate/skull_altar/독늪)는 **아직 코드 미배치**.
+- legacy **keepDragon 미설정 → 중앙/START 자동 용해골 OFF**. 대신 `mega` 데이터가 `m_dragon_3d`(118,55, sz1800)를 UPPER 동쪽, `m_dragon_skeleton`(65,148, sz1200)을 LOWER 서쪽에 1회 배치한다.
+- `empty`는 `hand:1` 하에서 **안전망+문서용**. 실제 손배치는 저주나무 12 + 기존 유니크 3 + 신규 대형 8 + 중형/소형 57 = `handProps` 80개다. START 첫 화면에는 비충돌 7개 + 대형 2개를 가장자리에 노출하고 스폰 반경 12타일은 비운다.
 
 ---
 
@@ -100,12 +101,12 @@ COMBAT C = UPPER 분지
 
 ---
 
-## 4. 랜드마크 — `m_mega_ribs` (뿔난 거대뼈)
+## 4. 랜드마크 — 주 앵커 ribs + 동선 권역 mega 5
 
-- 위치 tile **(170,34) ≈ (0.85,0.17)**, 1~2시 rim.
+- 위치 tile **(140,102) = (0.70,0.51)**, CENTRAL 동쪽 rim.
 - **size LOCK: 시작 900, QA 최대 1000. 1100/1400 금지.**
 - EXIT empty에서 ≥30타일, 소환굴(140,45)에서 ~32타일 이격.
-- bone_arch/skull_altar는 랜드마크로 **기각**(ribs 채택).
+- bone_arch는 LOWER 동쪽 보조 대형으로 채택하고, skull_altar는 서쪽 유니크 소품으로 유지한다.
 
 ---
 
@@ -120,7 +121,7 @@ COMBAT C = UPPER 분지
 
 ## 6. 스코프 격리 — LOCK (초안 §265–274)
 
-`hand:1` / `keepDragon off` / `_CH_DECO off` / 살점 scatter off 는 **si0 전용.** 전역화 금지(1-2~1-4 파괴됨).
+`hand:1` / legacy `keepDragon off` / `_CH_DECO off` / 살점 scatter off 는 **si0 전용.** 용 2종은 `mega` 데이터 전용이며 전역화 금지다.
 
 ---
 
@@ -156,7 +157,7 @@ COMBAT C = UPPER 분지
 
 ## 9. CH1 엔진 사실 (`CH1_MAP_KIT_OptionB.md §1–9`)
 - 바닥 1024²(dark_soil). 충돌 = 맵경계/타일===1/오브젝트 원·타원(**다각형 없음, 알파콜라이더 없음**).
-- **런타임 Y-sort 없음** → 큰 나무는 항상 플레이어 뒤에 렌더.
+- **매 프레임 런타임 Y-sort 없음** → 큰 나무는 항상 플레이어 뒤에 렌더. (단 2026-08 `initMapObjects` 말미에 MAP_OBJS **빌드시 1회 Y정렬**(painter, 데코끼리 앞뒤 순서만) 추가됨 — 플레이어/엔티티는 별도 렌더 패스라 오클루전 무영향)
 - 전경 occluder = **planned only, 코드 없음**("1차 구현에서 FG 제외 권장").
 
 ## 10. CODE CHANGE
