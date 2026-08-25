@@ -9564,7 +9564,7 @@ const _druidSheets={};
   const files={walk:'walk.png',attack:'attack.png',idle:'idle.png',aoe:'aoe.png',orb:'orb.png',beast:'beast.png',transform:'transform.png',dive:'dive.png'};
   for(const k in files){const im=new Image();_druidSheets[k]={img:im,ready:false};
     im.onload=(function(kk){return function(){_druidSheets[kk].ready=true}})(k);
-    im.src='assets/sprites/boss/boss_dark_druid_'+files[k]+'?v=20260824w';}
+    im.src='assets/sprites/boss/boss_dark_druid_'+files[k]+'?v=20260825b';}
 })();
 // facing/이동각 → 0..7 방향 (행 순서: S,SW,W,NW,N,NE,E,SE — 검증 후 조정)
 const _DRUID_DIRMAP=[6,7,0,1,2,3,4,5];
@@ -9603,7 +9603,8 @@ function _drawDruidBoss(X,e,sa,tdY,spec){
   let sx,sy;
   if(dirless){sx=(frame%cols)*cw;sy=(~~(frame/cols))*ch;}
   else{sx=frame*cw;sy=dir*ch;}
-  const dw=e.r*spec.dw,dh=e.r*spec.dh;
+  let dw=e.r*spec.dw,dh=e.r*spec.dh;
+  if(sheet==='beast'||sheet==='dive'){dh=e.r*spec.dh;dw=dh*(cw/ch)*1.12;} // [넉넉] 정사각 셀(돌진 야수/다이빙) 비율보존+12% 여유 — 가로 넓은 형태 안 짤리게
   X.save();X.translate(e.x,e.y+(tdY||0)-6);const _un=1/(window._btScaleMul||1);X.scale(_un,_un);e._nameTopOff=(tdY||0)-6-dh*.86*_un-10; // 네임플레이트/HP바를 스프라이트 상단 위로(2026-08 유저요청: 다리 겹침 해소)
   if(window._BOSS_GLOW){X.globalAlpha=sa*.30;X.fillStyle=spec.glow;X.beginPath();X.ellipse(0,-dh*.40,dw*.24,dh*.22,0,0,Math.PI*2);X.fill();} // 글로우 게이트(2026-08-25 유저요청: 원형 잔상 제거, _BOSS_GLOW=true 시만 그림). 삭제X 게이트만
   X.globalAlpha=sa;X.drawImage(img,sx,sy,cw,ch,-dw/2,-dh*.86,dw,dh);
