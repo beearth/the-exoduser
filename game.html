@@ -14245,6 +14245,9 @@ const _CH_DECO={
     {id:'m_tomb',file:'tombstone.png',sz:56},{id:'m_wpile',file:'weapon_pile.png',sz:64},
     {id:'m_meat',file:'meat_stake.png',sz:64},
     {id:'m_acid',file:'acid_pool.png',sz:56},
+    // ── 신규 지면 데칼 6종 (비충돌, 투명 RGBA, 캐릭터 180cm 환산 sz) ──
+    {id:'m_moss',file:'moss_patch.png',sz:90},{id:'m_leaf',file:'leaf_pile.png',sz:70},{id:'m_crack',file:'ground_crack.png',sz:120},
+    {id:'m_ash',file:'ash_pile.png',sz:60},{id:'m_root',file:'exposed_root.png',sz:110},{id:'m_mud',file:'mud_stain.png',sz:80},
     {id:'m_ctree1',file:'cursed_tree_01.png',sz:400,large:1,dir:'collision',colSz:60,hardAlpha:1},
     {id:'m_ctree2',file:'cursed_tree_02.png',sz:400,large:1,dir:'collision',colSz:60,hardAlpha:1},
     {id:'m_ctree3',file:'cursed_tree_03.png',sz:400,large:1,dir:'collision',colSz:60,hardAlpha:1},
@@ -21272,7 +21275,7 @@ function initMapObjects(){
     // ── CH1-1 비충돌 지면 데칼 산포: 20×20 그리드 지터, 겹침가드 무관(noGrid/noCol), 결정론 mkRng ──
     if(G.stage===0){
       const _decoRng=mkRng(G.stage*7919+4242);
-      const _decoPool=['m_fbones','m_flesh','m_puddle','m_poison','m_acid'];
+      const _decoPool=['m_moss','m_leaf','m_crack','m_ash','m_root','m_mud','m_moss','m_leaf','m_crack','m_ash','m_root','m_mud','m_fbones','m_flesh','m_puddle','m_poison','m_acid'];
       const _DGC=20,_dcw=_mwPx/_DGC,_dch=_mhPx/_DGC;
       let _decoPlaced=0;
       for(let _gcy=0;_gcy<_DGC;_gcy++)for(let _gcx=0;_gcx<_DGC;_gcx++){
