@@ -15379,7 +15379,7 @@ registerVFX('druid_hit','assets/vfx/druid_hit_impact.png',362,543,8,4); // [다�
 registerVFX('druid_poison','assets/vfx/druid_poison.png',256,256,8,8);
 registerVFX('druid_shockring','assets/vfx/druid_shockring.png',512,512,8,8);
 registerVFX('druid_roots','assets/vfx/druid_roots.png',256,256,10,10);
-registerVFX('druid_trail','assets/vfx/druid_trail.png',256,256,6,6);
+registerVFX('druid_trail','assets/vfx/druid_trail.png',256,256,5,5);
 registerVFX('druid_dust','assets/vfx/druid_dust.png',256,256,8,8);
 // (삭제됨: purple_impact, blue_impact, vfx_burn_death — 파일 미존재)
 registerVFX('explode_scarecrow','assets/vfx/scarecrow_boom.png',64,64,9,9); // 폭발허수아비 전용 대형폭발 (9x1, 9프레임, 불속성)
@@ -34953,7 +34953,7 @@ function updateE(e,sp){
     if(e.st2<=0){e.s='bossCharge';e.st2=50;e.echDx=Math.cos(e.facing);e.echDy=Math.sin(e.facing);
       SFX.charge();addParts(e.x,e.y,e.col,8)}break;
   case'bossCharge':{
-    if(G.stage===3&&G.frame%6===0&&typeof playVFXAng==='function')playVFXAng('druid_trail',e.x,e.y,e.r*2/256,7,e.facing||0,false); // 야수 돌진 잔상(6f 간격, si3 게이트)
+    if(G.stage===3&&G.frame%6===0&&typeof playVFXAng==='function')playVFXAng('druid_trail',e.x,e.y,e.r*2/256,3,e.facing||0,false); // 야수 돌진 잔상(6f 간격, si3 게이트)
     const spd=35*sp;const nx=e.x+e.echDx*spd,ny=e.y+e.echDy*spd;
     if(canMv(nx,ny,e.r)){e.x=nx;e.y=ny}
     else if(canMv(e.x+e.echDx*spd,e.y,e.r)){e.x+=e.echDx*spd}
@@ -34974,7 +34974,7 @@ function updateE(e,sp){
   // ── 점프 공격: 도약 후 착지 충격 ──
   case'bossJumpWind':{ if(e.st2<=0){e.s='bossJump';e.st2=40;addTxt(e.x,e.y-30,_T('🦅 도약!'),'#cc66ff',30);SFX.slam();}break} // [텔레그래프] 도약 선딜: 경고링(_telegraphT) 표시 후 도약
   case'bossJump':{
-    if(G.stage===3&&G.frame%6===0&&typeof playVFXAng==='function')playVFXAng('druid_trail',e.x,e.y,e.r*2/256,7,e.facing||0,false); // 야수 돌진 잔상(6f 간격, si3 게이트)
+    if(G.stage===3&&G.frame%6===0&&typeof playVFXAng==='function')playVFXAng('druid_trail',e.x,e.y,e.r*2/256,3,e.facing||0,false); // 야수 돌진 잔상(6f 간격, si3 게이트)
     const prog=1-e.st2/40;
     let _jx,_jy;
     if(prog<.5){const t=prog*2;_jx=e.jumpOx+(e.jumpX-e.jumpOx)*t*.3;_jy=e.jumpOy+(e.jumpY-e.jumpOy)*t*.3;
@@ -35233,7 +35233,7 @@ function updateE(e,sp){
       e.s='bossMultiDash';e.st2=12;SFX.charge();
     }break}
   case'bossMultiDash':{
-    if(G.stage===3&&G.frame%6===0&&typeof playVFXAng==='function')playVFXAng('druid_trail',e.x,e.y,e.r*2/256,7,e.facing||0,false); // 야수 돌진 잔상(6f 간격, si3 게이트·기존 poolPart 잔상 유지)
+    if(G.stage===3&&G.frame%6===0&&typeof playVFXAng==='function')playVFXAng('druid_trail',e.x,e.y,e.r*2/256,3,e.facing||0,false); // 야수 돌진 잔상(6f 간격, si3 게이트·기존 poolPart 잔상 유지)
     const spd=9*sp;const nx=e.x+e.echDx*spd,ny=e.y+e.echDy*spd;
     if(canMv(nx,ny,e.r)){e.x=nx;e.y=ny}
     else if(canMv(e.x+e.echDx*spd,e.y,e.r)){e.x+=e.echDx*spd}
