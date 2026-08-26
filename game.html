@@ -35227,7 +35227,7 @@ function updateE(e,sp){
   // ── 연속 대시 (Multi-Dash): 세키로 — 3~5회 빠른 지그재그 돌진 ──
   case'bossMultiDashWind':{
     e.facing=Math.atan2(P.y-e.y,P.x-e.x);
-    if(Math.random()>.6)poolPart(e.x,e.y,(Math.random()-.5)*3,(Math.random()-.5)*3,'#ff4488',2,6);
+    if(Math.random()>.6){if(G.stage===3)poolPart(e.x,e.y,(Math.random()-.5)*3,(Math.random()-.5)*3,Math.random()<.5?'#66dd22':'#33aa22',2,6);else poolPart(e.x,e.y,(Math.random()-.5)*3,(Math.random()-.5)*3,'#ff4488',2,6);} // [DEDUP] 드루이드 윈드업=초록 대체(동일 수/수명), 타보스 분홍 유지
     if(e.st2<=0){
       e.echDx=Math.cos(e.facing);e.echDy=Math.sin(e.facing);
       e.s='bossMultiDash';e.st2=12;SFX.charge();
