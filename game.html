@@ -35238,8 +35238,8 @@ function updateE(e,sp){
     if(canMv(nx,ny,e.r)){e.x=nx;e.y=ny}
     else if(canMv(e.x+e.echDx*spd,e.y,e.r)){e.x+=e.echDx*spd}
     else if(canMv(e.x,e.y+e.echDy*spd,e.r)){e.y+=e.echDy*spd}
-    // 잔상 파티클
-    poolPart(e.x,e.y,-e.echDx*2,-e.echDy*2,'#ff4488',e.r*.8,8);
+    // 잔상 파티클 ([DEDUP] 드루이드 si3만 제외=druid_trail로 대체, 타 보스는 유지)
+    if(G.stage!==3)poolPart(e.x,e.y,-e.echDx*2,-e.echDy*2,'#ff4488',e.r*.8,8);
     // 대시 중 히트
     if(dst(P.x,P.y,e.x,e.y)<P.r+e.r+10&&P.iframes<=0){
       if(isPWin()){const _pd=~~(((P.baseAtk+(wp().atk||0)+enhMulAtk(wp().enh||0)))*4*pParryDmg());
@@ -35339,14 +35339,13 @@ function updateE(e,sp){
     const _up=1-e.st2/(e._underMax||45);
     e.x=e._teleOx+(e._diveTx-e._teleOx)*_up;e.y=e._teleOy+(e._diveTy-e._teleOy)*_up;
     e.iframes=Math.max(e.iframes||0,5);
-    if(Math.random()<.7)poolPart(e.x+(Math.random()-.5)*30,e.y+(Math.random()-.5)*30,(Math.random()-.5)*2,-1-Math.random()*2,'#66dd22',2+Math.random()*3,12+Math.random()*8);
+    // [DEDUP] under 초록 poolPart 제거 — 흙두둑 ellipse(렌더)+dust 이탈과 3중 중복
     if(e.st2<=0){e.x=e._diveTx;e.y=e._diveTy;if(typeof playVFXAng==='function')playVFXAng('druid_dust',e.x,e.y,e.r*2*1.3/256,7,0,false);e.s='bossDruidErupt';e.st2=40;e._eruptMax=40;e._eruptHit=false;addTxt(e.x,e.y-40,'🌿💥',60);SFX.detonate();shake(12);}break} // 굴파기 이탈 dust(1.3배)
   case'bossDruidErupt':{
     if(!e._eruptHit&&e.st2<=(e._eruptMax-8)){
       e._eruptHit=true;
       const _erR=e.r+120,_erDmg=~~(e.atk*2.2);
-      for(let _k2=0;_k2<20;_k2++){const _ea=Math.PI*2*_k2/20,_ev=4+Math.random()*5;poolPart(e.x,e.y,Math.cos(_ea)*_ev,Math.sin(_ea)*_ev-2,_k2%2?'#66dd22':'#33aa22',3+Math.random()*3,14+Math.random()*8);}
-      _addBlastLight(e.x,e.y,_erR*1.2,14,120,220,90);
+      _addBlastLight(e.x,e.y,_erR*1.2,14,120,220,90); // [DEDUP] erupt 초록 poolPart×20 제거 — druid_roots가 같은 자리 분출 렌더(완전중복)
       if(typeof playVFXAng==='function')playVFXAng('druid_hit',e.x,e.y,0.72,7,0,false); // 녹색 가시 분출 임팩트
       if(typeof playVFXAng==='function')playVFXAng('druid_roots',e.x,e.y,_erR*2/256,7,0,false); // 뿌리 분출(burrowStrike 전용 상태·게이트 불필요)
       if(dst(P.x,P.y,e.x,e.y)<_erR&&P.iframes<=0&&P.s!=='charge'){
