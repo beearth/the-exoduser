@@ -8668,7 +8668,7 @@ const BOSS_MOVES=[
   {id:'slam',      idx:14,tele:35,rec:40,canFeint:false,canDelay:.4, range:[0,140], phase:[0,1,2,3,4],combo:['slashCombo','sweep','shock'],tags:['melee','aoe'],  cd:140},
   {id:'sweep',     idx:15,tele:25,rec:60,canFeint:false,canDelay:.2, range:[0,120], phase:[0,1,2,3,4],combo:['slashCombo','charge','slam'],tags:['melee','frontal'],cd:100},
   {id:'teleStrike',idx:16,tele:60,rec:35,canFeint:true, canDelay:.4, range:[60,400],phase:[1,2,3,4],  combo:['slashCombo','sweep','grab'],tags:['gap-close','melee'],cd:160},
-  {id:'burrowStrike',idx:58,tele:50,rec:40,canFeint:false,canDelay:0, range:[280,900],phase:[0,1,2,3,4],combo:['slashCombo','fan','burst'],tags:['gap-close','melee','ambush'],cd:200}, // [다크드루이드 전용] 일정거리서 발동: 땅속 다이빙→잠행→분출 매복공격
+  {id:'burrowStrike',idx:58,tele:50,rec:40,canFeint:false,canDelay:0, range:[150,600],phase:[0,1,2,3,4],combo:['slashCombo','fan','burst'],tags:['gap-close','melee','ambush'],cd:200}, // [다크드루이드 전용] 땅속 다이빙→잠행→발밑 분출 매복. range 280~900→150~600(2026-08 tags 근접/갭클로즈와 정합, 교전거리 포함)
   {id:'beanStorm', idx:17,tele:20,rec:25,canFeint:false,canDelay:0,  range:[0,999], phase:[0,1,2,3,4],combo:['burst','fan','charge'],tags:['ranged','aoe','redbean'],cd:80},
   {id:'beanRain',  idx:18,tele:60,rec:60,canFeint:false,canDelay:0,  range:[60,400],phase:[1,2,3,4],  combo:['beanStorm','charge','vortex'],tags:['ranged','sustained','redbean'],cd:120},
   {id:'fanWave',   idx:19,tele:60,rec:40,canFeint:false,canDelay:0,  range:[60,500],phase:[0,1,2,3,4],combo:['charge','fan','slam'],tags:['ranged','frontal','aoe'],cd:160},
@@ -32091,6 +32091,8 @@ function _bossScore(mv,d,ps,phase,e){
   const novelty=(e._lastMoves&&e._lastMoves.indexOf(mv.id)<0)?.35:0;
   let sc=(distFit*1+repeatPen*.6+counterAdj*.7+comboBonus*1.2+phasePref*.5+novelty)*(.85+Math.random()*.3);
   if(G.stage===2&&_HELL_ABERRANT_FACE.has(mv.id))sc+=2.0;
+  // [DRUID-AI] 근접 연속 3회 후 원거리 무브 스코어 보정(편향 교정). 계수 1.0=무보정(STEP3 튜닝값)
+  if(G.stage===3&&(e._meleeStreak||0)>=3&&(mv.tags.includes('ranged')||mv.tags.includes('ambush')))sc*=3.0; // [DRUID-AI] 근접 3연속 후 원거리/매복 스코어 ×3 (편향 교정, STEP3 튜닝값)
   return sc;
 }
 const _HELL_ABERRANT_FACE=new Set(['jump','charge','slashCombo','sweep','tailSwipe','beanStorm']);
@@ -32770,6 +32772,7 @@ function _bossAI(e,sp,d){
       if(e._moveCDs)e._moveCDs[nmv.idx]=nmv.cd*ph.cdM;
       e.bossPatT=~~(6+Math.random()*6);
       if(e._lastMoves){e._lastMoves.push(nmv.id);if(e._lastMoves.length>5)e._lastMoves.shift()}
+      e._meleeStreak=nmv.tags.includes('ranged')?0:((e._meleeStreak||0)+1); // [DRUID-AI] 콤보 픽도 streak 반영
       e._feinting=nmv.canFeint&&Math.random()<ph.feintC;
       let ed=0;if(nmv.canDelay>0&&Math.random()<ph.delayC)ed=~~(nmv.tele*nmv.canDelay);
       _bossStartPattern(e,nmv,d,e._bossPhase,ed);return;
@@ -32799,6 +32802,7 @@ function _bossAI(e,sp,d){
   if(OPT.bossDebug)e._dbgScores=scores;
   // ── 무브 기록 ──
   if(e._lastMoves){e._lastMoves.push(bestMv.id);if(e._lastMoves.length>5)e._lastMoves.shift()}
+  e._meleeStreak=bestMv.tags.includes('ranged')?0:((e._meleeStreak||0)+1); // [DRUID-AI] 원거리 픽=리셋, 근접=누적
   if(e._moveCDs)e._moveCDs[bestMv.idx]=bestMv.cd*ph.cdM;
   e.bossPatT=(e.bossPatCd+Math.random()*15)*ph.cdM;
   // ── 콤보 개시 ──
