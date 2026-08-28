@@ -14339,6 +14339,26 @@ const _CH_DECO={
     {id:'m_c3fbones',file:'frozen_bones.png',sz:56,scatter:1},
     {id:'m_c3bones',file:'bones.png',sz:44,scatter:1},
     {id:'m_c3deco',file:'deco_bones_03.png',sz:48,scatter:1},
+    // ── 바닥 데칼 2종 (2026-08-26, noCol) — 평평한 빙판 파괴 + 제단 의식장 ──
+    {id:'m_c3ritual',file:'prop_ice_ritual.png',sz:380,keepAR:1}, // 의식 마법진(제단 허브 바닥)
+    {id:'m_c3debris',file:'prop_ice_debris.png',sz:150,scatter:1}, // 바닥 잔해/눈더미 데칼
+    {id:'m_c3gsnow',file:'prop_ice_gsnow.png',sz:200,scatter:1},   // 바닥: 눈더미
+    {id:'m_c3gcrack',file:'prop_ice_gcrack.png',sz:240,scatter:1}, // 바닥: 발광 서릿발 균열
+    {id:'m_c3gplates',file:'prop_ice_gplates.png',sz:200,scatter:1},// 바닥: 깨진 얼음판
+    {id:'m_c3gdark',file:'prop_ice_gdark.png',sz:190,scatter:1},   // 바닥: 어두운 서리 지면
+    // ── 얼음굴 대형 랜드마크 8종 (2026-08-26, nano_banana_pro, 마젠타 투명 bake) — 입체+충돌=페이크맵 지형 ──
+    {id:'m_c3sealshrine',file:'prop_ice_sealshrine.png',sz:400,large:1,dir:'collision',col:1,colSz:92,keepAR:1}, // 봉인 결정 제단(센터피스)
+    {id:'m_c3crystals', file:'prop_ice_crystals.png', sz:340,large:1,dir:'collision',col:1,colSz:80,keepAR:1}, // 거대 얼음수정 군집
+    {id:'m_c3tree',     file:'prop_ice_tree.png',     sz:410,large:1,dir:'collision',col:1,colSz:62,keepAR:1}, // 얼어붙은 고목
+    {id:'m_c3corpse',   file:'prop_ice_corpsepile.png',sz:300,large:1,dir:'collision',col:1,colSz:96,keepAR:1}, // 냉동 시체 더미
+    {id:'m_c3stalag',   file:'prop_ice_stalag.png',   sz:320,large:1,dir:'collision',col:1,colSz:82,keepAR:1}, // 고드름 석순 군집
+    {id:'m_c3sealbeast',file:'prop_ice_sealbeast.png',sz:400,large:1,dir:'collision',col:1,colSz:92,keepAR:1}, // 얼음에 봉인된 괴수(보스 복선)
+    {id:'m_c3rampart',  file:'prop_ice_rampart.png',  sz:470,large:1,dir:'collision',col:1,colW:210,colH:72,keepAR:1}, // 깨진 빙벽 장벽(복도 차단)
+    {id:'m_c3bridge',   file:'prop_ice_bridge.png',   sz:490,large:1,dir:'collision',col:1,colW:220,colH:60,keepAR:1}, // 얼음다리 잔해(통로형)
+    // ── 사이드 채움용 입체 경계물 3종 (2026-08-26) — 통로 좌우를 둘러싸 "얼음동굴 협곡"화 ──
+    {id:'m_c3cavwall',  file:'prop_ice_cavwall.png',  sz:560,large:1,dir:'collision',col:1,colW:150,colH:80,keepAR:1}, // 동굴 빙벽(가장자리 연속)
+    {id:'m_c3cliff',    file:'prop_ice_cliff.png',    sz:560,large:1,dir:'collision',col:1,colSz:120,keepAR:1},        // 빙하 절벽(코너/측면 대형)
+    {id:'m_c3ridge',    file:'prop_ice_ridge.png',    sz:560,large:1,dir:'collision',col:1,colW:150,colH:55,keepAR:1}, // 얼음 능선띠(사이드 지형)
   ],
   3:[ // CH4 화염
     {id:'m_c4p1',file:'prop_a.png',sz:400,large:1,dir:'collision',col:1,colSz:72,keepAR:1},
@@ -14390,6 +14410,72 @@ const _CH_DECO={
 // 한 장씩만 채운다. 없으면 균등 살포(구 동작). 기획: docs/4.1맵디자인+설정/맵구성_1장.md
 // hand:1 = 중심 타일(통바닥) + compose에 적힌 커스텀만. 자동 살포/페인트맵 없음
 var DECO_FORCE_AUTO=false; // [FIX] 자동데코 OFF — 개활맵 ~300+ 데코 매프레임 draw/충돌이 렉 유발 + 맵디자인 임시(바닥베이스만). true로 재활성
+// ═══ 얼음굴(si10~13) authored 세트피스 — 기존 8 대형 프롭으로 장소별 명확한 구도 (신규 에셋 0) ═══
+// 맵=200×200 오픈필드(결정론). START(100,185) 하단중앙 · EXIT(100,7)/bossGate(100,5) 상단중앙 · 세로 종주.
+// 가시범위=플레이어 중심 ±20타일(x80~120)뿐 → 세트피스는 x[76,124]에 몰아 "종주 중 항상 보이게".
+// 규칙: 이동레인 x[90,110] 비움(대형 center는 x<=88 또는 x>=112) / START y>=168·EXIT y<=20 비움.
+//       양측 게이트웨이(좌우 동시)로 "장소" 인상 강화 → 무작위 흩뿌리기 제거. bones(scatter)=클러스터 디테일.
+function _iceC(cx,cy,arr){const o=[];for(let i=0;i<arr.length;i++){o.push({id:arr[i][0],x:cx+arr[i][1],y:cy+arr[i][2]})}return o}
+function _iceB(cx,cy,n,r,seed){const R=mkRng(seed),o=[],ids=['m_c3fbones','m_c3bones','m_c3deco'];for(let i=0;i<n;i++){const a=R()*6.2832,rr=r*(0.35+R()*0.65);o.push({id:ids[(R()*3)|0],x:Math.round(cx+Math.cos(a)*rr),y:Math.round(cy+Math.sin(a)*rr)})}return o}
+// 경계 봉쇄: 통로 바깥(x<77/x>123)을 입체 경계물로 두껍게 둘러싸 "얼음 동굴 협곡"화. 대형이 안쪽까지 벌크→프레이밍.
+// y11 간격+지터로 밀도↑(통과 갭 유지). 통로변 바닥잔해로 평평한 빙판 파괴. inner x73/x127(colW±3.75→x77/x123까지만 차단).
+function _iceBound(seed){const R=mkRng(seed),o=[],
+  IN=['m_c3crystals','m_c3stalag','m_c3cavwall','m_c3ridge','m_c3crystals','m_c3stalag'], // 안쪽=밝은 수정/석순 섞어 반짝임
+  OUT=['m_c3cavwall','m_c3cliff','m_c3ridge','m_c3cavwall'];                              // 바깥=어두운 암벽 심도
+  for(let y=8;y<=196;y+=9){
+    o.push({id:IN[(R()*IN.length)|0],x:80-((R()*6)|0),y:y+((R()*5)|0)-2});   // 좌 경계 안쪽(x80~74, 벌크→x87 프레임)
+    o.push({id:IN[(R()*IN.length)|0],x:120+((R()*6)|0),y:y+((R()*5)|0)-2});  // 우 경계 안쪽
+    o.push({id:OUT[(R()*OUT.length)|0],x:62-((R()*10)|0),y:y+((R()*6)|0)-3});// 좌 심도
+    o.push({id:OUT[(R()*OUT.length)|0],x:138+((R()*10)|0),y:y+((R()*6)|0)-3});// 우 심도
+    if(R()<0.45)o.push({id:'m_c3debris',x:88-((R()*6)|0),y:y+((R()*4)|0)-2}); // 좌 통로변 바닥잔해
+    if(R()<0.45)o.push({id:'m_c3debris',x:112+((R()*6)|0),y:y+((R()*4)|0)-2});// 우 통로변 바닥잔해
+    if(R()<0.35)o.push({id:(R()<0.5?'m_c3fbones':'m_c3bones'),x:92+((R()*16)|0),y:y+((R()*6)|0)-3}); // 스파인 소량 뼈 디테일
+  }
+  return o;
+}
+// 바닥 카펫: 걷는 전 영역(x80~120)을 지면 데칼(눈/균열/얼음판/서리, noCol)로 덮어 평평한 빙판 제거. 지터 그리드=결정론.
+function _iceGround(seed){const R=mkRng(seed),o=[],G=['m_c3gsnow','m_c3gcrack','m_c3gplates','m_c3gdark','m_c3gsnow','m_c3gcrack','m_c3gplates'];
+  for(let y=12;y<=190;y+=11)for(let x=80;x<=120;x+=13){
+    if(R()<0.72)o.push({id:G[(R()*G.length)|0],x:x+((R()*9)|0)-4,y:y+((R()*8)|0)-4});
+  }
+  return o;
+}
+// si10 얼음 황무지 (Frozen Wasteland 컨셉맵) — 중앙 봉인제단 허브 + 8존 링 + 경계 봉쇄. START(하단)→다리→제단→EXIT(상단).
+const _ICE10=[].concat(
+  _iceGround(10500),                                                                          // 바닥 카펫(눈/균열/얼음판/서리 — 빈 빙판 제거)
+  _iceBound(10100),                                                                           // 경계 봉쇄(좌우 2겹 동굴벽/절벽 + 통로변 잔해)
+  _iceC(84,170,[['m_c3cliff',0,0]]), _iceC(116,170,[['m_c3cliff',0,0]]), _iceB(100,172,5,12,10081), // ⑧ 얼어붙은 입구
+  _iceC(88,148,[['m_c3bridge',0,0]]), _iceC(116,150,[['m_c3stalag',0,0]]), _iceB(104,148,7,15,10071), // ⑦ 파괴된 다리 + 우 잔해
+  _iceC(82,112,[['m_c3corpse',0,0],['m_c3corpse',-8,9]]), _iceB(80,112,9,16,10051),            // ⑤ 시체 더미(좌)
+  _iceC(120,114,[['m_c3corpse',0,0],['m_c3rampart',2,-13]]), _iceB(119,114,9,16,10041),        // ④ 처형의 장(우)
+  _iceC(84,132,[['m_c3crystals',0,0]]), _iceC(116,130,[['m_c3stalag',0,0]]), _iceB(100,131,5,14,10131), // 갭채움 y130
+  _iceC(100,96,[['m_c3ritual',0,0]]), _iceC(105,89,[['m_c3sealshrine',0,0]]),                  // ① 봉인 제단 허브 — 마법진(중앙)+제단(스파인 비켜)
+  _iceC(100,96,[['m_c3crystals',-15,4],['m_c3stalag',15,4],['m_c3crystals',13,-8],['m_c3stalag',-14,-7]]), _iceB(100,98,6,20,10011), // 제단 결정/석순 링
+  _iceC(118,124,[['m_c3sealbeast',0,0]]), _iceB(114,126,8,16,10061),                           // ⑥ 봉인된 괴수 유해(우, 대형 랜드마크)
+  _iceC(84,72,[['m_c3tree',0,0]]), _iceC(116,72,[['m_c3crystals',0,0]]), _iceB(100,72,5,14,10072), // 갭채움 y72
+  _iceC(82,54,[['m_c3crystals',0,0],['m_c3stalag',-8,9],['m_c3crystals',7,-7]]), _iceB(82,54,6,13,10021), // ② 얼음 수정 군집(좌상)
+  _iceC(120,52,[['m_c3rampart',0,0],['m_c3rampart',-2,12]]), _iceB(119,52,6,13,10031),         // ③ 무너진 방벽(우상)
+  _iceC(86,32,[['m_c3tree',0,0]]), _iceC(114,32,[['m_c3tree',0,0]])                            // 상단 고목(출구 접근)
+);
+// si11 협곡·빙벽 통로: 좌우 빙벽이 길을 S자로 조이는 관문 연쇄(양벽 동시 가시).
+const _ICE11=[].concat(
+  _iceC(84,152,[['m_c3rampart',0,0]]), _iceC(116,152,[['m_c3rampart',0,0]]), _iceB(100,150,6,16,11001), // 1차 협착(좌우 빙벽)
+  _iceC(116,112,[['m_c3rampart',0,0],['m_c3stalag',6,12]]), _iceC(82,104,[['m_c3crystals',0,0]]), _iceB(112,112,4,12,11002), // 우벽 돌출→좌로 유도
+  _iceC(84,80,[['m_c3rampart',0,0],['m_c3crystals',4,-11]]), _iceC(118,86,[['m_c3stalag',0,0]]), _iceB(88,80,4,12,11003),    // 좌벽 돌출→우로 유도
+  _iceC(116,50,[['m_c3bridge',0,0]]), _iceC(84,46,[['m_c3stalag',0,0],['m_c3crystals',-4,10]]), _iceB(100,50,4,14,11004)     // 상단 다리잔해 + 좌 빙주
+);
+// si12 얼어붙은 전장: 시체더미·부서진 벽·무기 잔해(뼈 다수)가 양측에 널린 전장.
+const _ICE12=[].concat(
+  _iceC(112,92,[['m_c3corpse',0,0],['m_c3corpse',8,12],['m_c3rampart',6,-14]]), _iceC(86,96,[['m_c3corpse',0,0],['m_c3rampart',-2,14]]), _iceB(100,94,16,26,12001), // ★대전장(hero, 양측 시체+무너진벽)
+  _iceC(114,46,[['m_c3corpse',0,0],['m_c3stalag',6,8]]), _iceC(84,52,[['m_c3tree',0,0]]), _iceB(100,48,7,15,12002), // 상단 잔해
+  _iceC(86,156,[['m_c3corpse',0,0],['m_c3tree',-4,-12]]), _iceC(116,158,[['m_c3corpse',0,0]]), _iceB(100,157,6,14,12003) // 하단 진입 흔적
+);
+// si13 봉인 성소: 봉인된 괴수(보스 복선)로 오르는 의식 성소. 서편 봉인제단 + 동편 결정.
+const _ICE13=[].concat(
+  _iceC(108,46,[['m_c3sealbeast',0,0],['m_c3crystals',8,12],['m_c3stalag',8,-11]]), _iceC(84,52,[['m_c3crystals',0,0],['m_c3stalag',-2,-12]]), _iceB(100,50,7,15,13001), // ★상단 봉인괴수(hero)+좌 플랭크
+  _iceC(84,98,[['m_c3sealshrine',0,0],['m_c3stalag',4,-12],['m_c3crystals',-6,10]]), _iceC(118,100,[['m_c3crystals',0,0],['m_c3cage',4,10]]), _iceB(100,100,6,16,13002), // 중앙 성소(서 봉인제단 + 동 결정/새장)
+  _iceC(84,156,[['m_c3tree',0,0]]), _iceC(116,158,[['m_c3tree',0,0]]), _iceB(100,158,5,14,13003) // 하단 관문
+);
 const _MAP_COMPOSE={
   // CH1-1 (si0 본편) COMPOSE — DESIGN LOCK (docs/4.1맵디자인+설정/CH1_1_COMPOSE_초안.md)
   // hand:1=자동 살포/데코/uni/wall/scatter off. keepDragon 제거=1-1 용해골 off.
@@ -14471,7 +14557,12 @@ const _MAP_COMPOSE={
     uni:['m_throne','m_bone_arch','m_flesh_maw','m_skull_altar','m_penta_circle'],
     empty:[{x:.50,y:.52,r:1200},{x:.50,y:.88,r:400},{x:.50,y:.12,r:400}],
     rim:.22
-  }
+  },
+  // ── 얼음굴 si10~13 authored 세트피스 (hand=자동살포 off, lm:[]=중앙폴백 차단) ──
+  10:{hand:1,dense:1,lm:[],empty:[{x:.5,y:.93,r:520},{x:.5,y:.05,r:460}],handProps:_ICE10},
+  11:{hand:1,dense:1,lm:[],empty:[{x:.5,y:.93,r:520},{x:.5,y:.05,r:460}],handProps:_ICE11},
+  12:{hand:1,dense:1,lm:[],empty:[{x:.5,y:.93,r:520},{x:.5,y:.05,r:460}],handProps:_ICE12},
+  13:{hand:1,dense:1,lm:[],empty:[{x:.5,y:.93,r:520},{x:.5,y:.05,r:460}],handProps:_ICE13}
 };
 // _CH_DECO 프리로드는 _OBJ_META 선언 뒤에서 실행
 for(const[k,v]of Object.entries(_OBJ_SPR_MAP)){const im=new Image();im.src=v;_OBJ_SPR[k]=im}
@@ -21272,8 +21363,9 @@ function initMapObjects(){
         if(!_hNear)continue;
         const _hx=(_hNear.x+.5)*T, _hy=(_hNear.y+.5)*T;
         const _hvr=_visR(H.id);
-        if(_gridNear(_hx,_hy,0,_hvr)){_handSkip++;continue;}
-        MAP_OBJS.push({type:H.id,x:_hx,y:_hy,hell,_hand:1});
+        // dense=authored 밀집맵: 겹침 스킵 우회 + noGrid로 그리드 미오염(수동 배치라 겹침 직접 관리)
+        if(!_cmp.dense&&_gridNear(_hx,_hy,0,_hvr)){_handSkip++;continue;}
+        MAP_OBJS.push({type:H.id,x:_hx,y:_hy,hell,_hand:1,noGrid:_cmp.dense?1:0});
         _handPlaced++;
       }
       let _d3x=-1,_d3y=-1,_chx=-1,_chy=-1;for(let _qi=0;_qi<MAP_OBJS.length;_qi++){const _qo=MAP_OBJS[_qi];if(_qo.type==='m_dragon_3d'){_d3x=_qo.x;_d3y=_qo.y}else if(_qo.type==='m_mega_chapel'){_chx=_qo.x;_chy=_qo.y}}
