@@ -1,0 +1,95 @@
+<!doctype html><html lang="ko"><head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>BOSS GALLERY — 지옥의 길</title>
+<style>
+  :root{--bg:#0a0608;--pan:#140d11;--gold:#c9a35a;--red:#b3352a;--pur:#8a5cc0;--txt:#e8d9c4}
+  *{box-sizing:border-box}
+  body{margin:0;background:radial-gradient(circle at 50% 20%,#160e12,#060305 70%);color:var(--txt);
+    font-family:"Segoe UI",system-ui,sans-serif;min-height:100vh}
+  header{padding:18px 24px 8px;border-bottom:1px solid #2a1a1f;position:sticky;top:0;
+    background:linear-gradient(#0c0709,#0c070900);backdrop-filter:blur(4px);z-index:5}
+  h1{margin:0;font-size:20px;letter-spacing:2px;color:var(--gold);font-weight:800}
+  .sub{font-size:12px;color:#8a7360;margin-top:4px}
+  .ctrl{display:flex;gap:18px;align-items:center;flex-wrap:wrap;margin-top:12px;font-size:13px}
+  .ctrl label{display:flex;gap:8px;align-items:center;color:#bfa78e}
+  input[type=range]{accent-color:var(--red)}
+  .gal{display:flex;flex-wrap:wrap;gap:14px;justify-content:center;align-items:flex-end;padding:26px 18px 60px}
+  .card{display:flex;flex-direction:column;align-items:center;gap:8px;padding:10px 8px 12px;
+    background:linear-gradient(#160e12,#0e0709);border:1px solid #2c1b20;border-radius:10px;
+    box-shadow:0 6px 22px #0008, inset 0 0 30px #0006}
+  .card canvas{display:block;image-rendering:auto;filter:drop-shadow(0 4px 10px #000a)}
+  .nm{font-size:12px;color:var(--gold);letter-spacing:.5px;font-weight:700;text-align:center}
+  .meta{font-size:10px;color:#7a6555}
+  .tag{font-size:9px;padding:1px 6px;border-radius:6px;border:1px solid #3a2730;color:#a98}
+  .tag.anim{color:#c9a35a;border-color:#5a4326}
+</style></head><body>
+<header>
+  <h1>⚔ BOSS GALLERY</h1>
+  <div class="sub">전 보스 스프라이트 동시 표시 · 애니 시트는 idle 프레임 순환 · 인게임 렌더 크기 비교용</div>
+  <div class="ctrl">
+    <label>크기 <input id="scale" type="range" min="70" max="360" value="150"><span id="sv">150px</span></label>
+    <label>속도 <input id="fps" type="range" min="1" max="12" value="5"><span id="fv">5fps</span></label>
+    <label><input id="grid" type="checkbox"> 프레임 격자</label>
+    <label><input id="lbl" type="checkbox" checked> 이름</label>
+  </div>
+</header>
+<div class="gal" id="gal"></div>
+<script>
+const P='assets/sprites/boss/';
+// 보스 정의: single=정지1장, sheet=프레임시트(cols×rows, 순서 좌→우/상→하)
+const BOSSES=[
+  {nm:'라바 워브링어', file:'stage1_codex_lava_warbringer.png', type:'single', tag:'CH4·화염'},
+  {nm:'독버섯 거인', file:'stage1_codex_poison_mushroom_giant.png', type:'single', tag:'CH1·독'},
+  {nm:'지옥 기형체', file:'stage1_codex_hell_aberrant.png', type:'single', tag:'CH1·기형'},
+  {nm:'다크드루이드', file:'boss_dark_druid_idle.png', type:'sheet', cols:2, rows:2, frames:4, tag:'CH1·독 · 숲의기생수 교체'},
+  {nm:'퍼플 리퍼(무명)', file:'boss_reaper_maiden_idle.png', type:'sheet', cols:4, rows:1, frames:4, tag:'미배정 · 보라'},
+];
+const gal=document.getElementById('gal');
+const scaleI=document.getElementById('scale'),fpsI=document.getElementById('fps');
+const sv=document.getElementById('sv'),fv=document.getElementById('fv');
+const gridC=document.getElementById('grid'),lblC=document.getElementById('lbl');
+let H=+scaleI.value, FPS=+fpsI.value, showGrid=false, showLbl=true;
+const cards=[];
+BOSSES.forEach(b=>{
+  const card=document.createElement('div');card.className='card';
+  const cv=document.createElement('canvas');
+  const nm=document.createElement('div');nm.className='nm';nm.textContent=b.nm;
+  const meta=document.createElement('div');meta.className='meta';
+  const tag=document.createElement('span');tag.className='tag'+(b.type==='sheet'?' anim':'');
+  tag.textContent=b.type==='sheet'?('▶ '+b.frames+'프레임 · '+b.tag):('정지 · '+b.tag);
+  card.append(cv,nm,tag);gal.append(card);
+  const img=new Image();img.src=P+b.file+'?t='+Date.now();
+  const rec={b,cv,ctx:cv.getContext('2d'),img,nm,ready:false,fw:0,fh:0};
+  img.onload=()=>{
+    if(b.type==='sheet'){rec.fw=img.naturalWidth/b.cols;rec.fh=img.naturalHeight/b.rows}
+    else{rec.fw=img.naturalWidth;rec.fh=img.naturalHeight}
+    rec.ready=true;
+  };
+  img.onerror=()=>{nm.textContent=b.nm+' (로드실패)';nm.style.color='#b3352a'};
+  cards.push(rec);
+});
+let t0=performance.now(),frame=0;
+function draw(now){
+  if(now-t0>1000/FPS){t0=now;frame++}
+  for(const r of cards){
+    if(!r.ready)continue;
+    const asp=r.fw/r.fh, dh=H, dw=Math.round(dh*asp);
+    if(r.cv.width!==dw||r.cv.height!==dh){r.cv.width=dw;r.cv.height=dh}
+    const x=r.ctx;x.clearRect(0,0,dw,dh);
+    let sx=0,sy=0;
+    if(r.b.type==='sheet'){
+      const fi=frame%r.b.frames, col=fi%r.b.cols, row=(fi/r.b.cols)|0;
+      sx=col*r.fw;sy=row*r.fh;
+    }
+    x.drawImage(r.img,sx,sy,r.fw,r.fh,0,0,dw,dh);
+    if(showGrid){x.strokeStyle='#c9a35a55';x.strokeRect(.5,.5,dw-1,dh-1)}
+    r.nm.style.display=showLbl?'':'none';
+  }
+  requestAnimationFrame(draw);
+}
+scaleI.oninput=()=>{H=+scaleI.value;sv.textContent=H+'px'};
+fpsI.oninput=()=>{FPS=+fpsI.value;fv.textContent=FPS+'fps'};
+gridC.onchange=()=>showGrid=gridC.checked;
+lblC.onchange=()=>showLbl=lblC.checked;
+requestAnimationFrame(draw);
+</script></body></html>

@@ -112,6 +112,10 @@ docs/ 폴더는 게임의 **모든 기획·수치·공식·시스템 설계**를
 
 ### 5. 맵 시스템 규칙
 
+- **모든 맵 제작 에이전트 필수 선행 문서**: 맵 설계·geometry·collision·outer mass·baked/painted 환경·오브젝트 배치·랜드마크·카메라/전투 QA 중 하나라도 수행하면, 작업 시작 전에 `docs/4.1맵디자인+설정/EXODUSER_MAP_PRODUCTION_GUIDELINE_v0.9.md`를 **처음부터 끝까지 읽고** 현재 작업 계획에 적용할 것
+- 위 가이드는 맵 제작 **순서와 시각/QA GATE의 공통 기준**이다. 작업은 `MASTER PLAN → LARGE OUTER MASS → MEDIUM CONNECTION → GROUND CONNECTION → PLAYABLE/COMBAT → LANDMARK/CENTER → SMALL DETAIL → CAMERA QA → TECH QA` 순서를 기본으로 한다
+- 맵 작업 최종 보고에는 가이드 §23의 `MAP PRODUCTION REPORT` 항목과 `VISUAL VERDICT: PASS / RETOUCH / FAIL`을 반드시 포함할 것. 자동 테스트 PASS를 visual PASS로 대체하지 말 것
+- 수치·좌표·런타임 계약이 충돌하면 사용자 최신 지시와 해당 stage의 LOCK/SSOT 문서가 우선이며, 가이드는 그 값을 임의로 덮어쓰지 않는다. 맵 SSOT 읽기 순서는 `docs/4.1맵디자인+설정/_MAP_SSOT_INDEX.md`를 따른다
 - 맵 수정은 `genFromTemplate` 사용, `genGauntlet`은 폴백용
 - 시작 위치 6시, 출구 12시, 상단 통로 보장
 - scatter 데코 겹침 금지, 5타일 간격, 방 전체 랜덤 배치

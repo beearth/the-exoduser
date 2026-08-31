@@ -1,0 +1,86 @@
+<!doctype html>
+<html lang="ko">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>HELL ROAD // MAP FORGE</title>
+  <style>
+    :root{--ink:#e8dfca;--muted:#91897b;--void:#090a09;--panel:#111310;--line:#34372e;--ember:#f04f24;--acid:#b8d247;--cold:#7da5a5;--rail:320px}
+    *{box-sizing:border-box}html,body{height:100%;margin:0;background:var(--void);color:var(--ink);font-family:Bahnschrift,"Malgun Gothic",sans-serif;overflow:hidden}
+    body:before{content:"";position:fixed;inset:0;pointer-events:none;opacity:.16;background-image:linear-gradient(rgba(255,255,255,.025) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.018) 1px,transparent 1px);background-size:22px 22px}
+    button,select{font:inherit}.shell{height:100%;display:grid;grid-template-columns:var(--rail) 1fr;grid-template-rows:minmax(0,1fr);position:relative}
+    aside{background:linear-gradient(180deg,#151711 0%,#0c0e0c 70%);border-right:1px solid var(--line);display:flex;flex-direction:column;min-width:0;min-height:0;z-index:2}
+    .brand{padding:25px 23px 18px;border-bottom:1px solid var(--line);position:relative}.brand:after{content:"";position:absolute;left:23px;bottom:-1px;width:76px;height:2px;background:var(--ember);box-shadow:0 0 18px var(--ember)}
+    .eyebrow{font:700 10px/1 Consolas,monospace;letter-spacing:.26em;color:var(--acid)}h1{font:900 27px/.93 Georgia,serif;letter-spacing:-.04em;margin:9px 0 6px;text-transform:uppercase}.sub{font:11px/1.4 Consolas,monospace;color:var(--muted)}
+    .chapters{flex:1;min-height:0;overflow:auto;padding:12px 10px 28px;scrollbar-color:#454a3c transparent}.chapter{margin-bottom:11px}.chapter-head{display:flex;align-items:center;gap:9px;padding:7px 10px;color:#aaa290;font:700 10px/1 Consolas,monospace;letter-spacing:.13em}.chapter-head b{color:var(--ember);font-size:13px}.stage-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:5px}
+    .stage{min-height:43px;border:1px solid #2d3028;background:#171915;color:#a8a08f;cursor:pointer;text-align:left;padding:7px 9px;transition:.14s ease;position:relative}.stage:hover{border-color:#6f745d;color:var(--ink);transform:translateY(-1px)}.stage.active{background:var(--ink);color:#151611;border-color:var(--ink);box-shadow:5px 5px 0 var(--ember)}.stage strong{display:block;font:800 13px/1 Consolas,monospace}.stage small{display:block;margin-top:4px;font:9px/1 Consolas,monospace;opacity:.65}
+    main{min-width:0;min-height:0;display:grid;grid-template-rows:auto 1fr;background:#070807}.topbar{display:flex;align-items:center;gap:12px;padding:13px 16px;border-bottom:1px solid var(--line);background:rgba(15,17,14,.96)}
+    .stage-title{min-width:210px;margin-right:auto}.stage-title small{display:block;color:var(--acid);font:10px/1.2 Consolas,monospace;letter-spacing:.15em}.stage-title strong{display:block;margin-top:3px;font:700 17px/1.15 Georgia,serif}
+    .control{height:36px;border:1px solid #43473a;background:#181a16;color:var(--ink);padding:0 13px;cursor:pointer;transition:.15s}.control:hover{border-color:var(--acid);background:#24271f}.control.hot{border-color:var(--ember);color:#ffc2b1}.control.square{width:38px;padding:0;font:700 18px Consolas,monospace}.control:focus-visible,.stage:focus-visible,select:focus-visible{outline:2px solid var(--acid);outline-offset:2px}
+    select.control{min-width:112px}.preview-area{position:relative;min-width:0;min-height:0;margin:13px;overflow:hidden;background:#030403}.viewport{position:absolute;left:0;top:0;width:1920px;height:1080px;background:#000;box-shadow:0 18px 80px rgba(0,0,0,.5);outline:1px solid #393c33;transform-origin:top left;will-change:transform}iframe{width:1920px;height:1080px;border:0;display:block;background:#000}
+    .scan{position:absolute;inset:0;pointer-events:none;background:linear-gradient(transparent 50%,rgba(184,210,71,.018) 50%);background-size:100% 4px;mix-blend-mode:screen}.status{position:absolute;right:12px;bottom:12px;padding:7px 9px;background:rgba(7,8,7,.88);border:1px solid #34372e;color:var(--muted);font:10px/1 Consolas,monospace;letter-spacing:.08em}.status.live{color:var(--acid)}
+    @media(max-width:900px){:root{--rail:230px}.topbar{gap:6px}.stage-title{min-width:150px}.control{padding:0 8px}.stage-grid{grid-template-columns:repeat(2,1fr)}}
+  </style>
+</head>
+<body>
+  <div class="shell">
+    <aside>
+      <div class="brand"><div class="eyebrow">LOCAL QA TERMINAL</div><h1>Map Forge</h1><div class="sub">35 STAGES · CLASSIC GEOMETRY<br>NO-CACHE LIVE PREVIEW</div></div>
+      <div class="chapters" id="chapters"></div>
+    </aside>
+    <main>
+      <div class="topbar">
+        <div class="stage-title"><small id="code">STAGE 00 / SI 0</small><strong id="title">1장 썩은 숲 · 1구역</strong></div>
+        <button class="control square" id="prev" title="이전 맵 ([)">‹</button>
+        <select class="control" id="scale" aria-label="미리보기 표시 배율"><option value="fit" selected>FIT</option><option value="1">100%</option><option value=".75">75%</option><option value=".5">50%</option></select>
+        <button class="control" id="reload">새로고침</button>
+        <button class="control hot" id="combat">몬스터 ON</button>
+        <button class="control" id="editor">에디터</button>
+        <button class="control hot" id="open">새 창으로 열기</button>
+        <button class="control square" id="next" title="다음 맵 (])">›</button>
+      </div>
+      <div class="preview-area" id="previewArea"><div class="viewport" id="viewport"><iframe id="game" title="맵 테스트 미리보기" allow="autoplay"></iframe><div class="scan"></div><div class="status" id="status">LOADING MAP DATA…</div></div></div>
+    </main>
+  </div>
+  <script>
+    const CHAPTERS = [
+      {name:'썩은 숲',stages:4},{name:'벌레굴',stages:6},{name:'얼음굴',stages:4},
+      {name:'고통의 화염지대',stages:7},{name:'지옥의 군단',stages:5},
+      {name:'사도의 마굴',stages:6},{name:'지옥성',stages:3}
+    ];
+    const PREVIEW_W=1920;
+    const PREVIEW_H=1080;
+    const TOTAL=CHAPTERS.reduce((sum,ch)=>sum+ch.stages,0);
+    const $=id=>document.getElementById(id);
+    const clamp=n=>Math.max(0,Math.min(TOTAL-1,n|0));
+    let stage=clamp(Number(new URLSearchParams(location.search).get('stage')||0));
+    let combatPreview=stage===4;
+    let loadToken=Date.now();
+    function stageMeta(si){let start=0;for(let chapter=0;chapter<CHAPTERS.length;chapter++){const ch=CHAPTERS[chapter];if(si<start+ch.stages)return{chapter,floor:si-start,start,...ch};start+=ch.stages}return null}
+    function gameUrl(){return `/game.html?test=1&testchar=1&stage=${stage}&classic=1&mapqa=1&slot=map-test-${stage}&nocache=${loadToken}${combatPreview?'&combatqa=1':''}`}
+    function paintCombatButton(){const button=$('combat');const enabled=stage===4;button.disabled=!enabled;button.textContent=enabled?(combatPreview?'몬스터 ON':'몬스터 OFF'):'2-1 전용';button.classList.toggle('hot',enabled&&combatPreview)}
+    function applyPreviewScale(){
+      const area=$('previewArea'),frame=$('viewport'),mode=$('scale').value;
+      const fit=Math.min(area.clientWidth/PREVIEW_W,area.clientHeight/PREVIEW_H);
+      const displayScale=mode==='fit'?fit:Number(mode);
+      const shownW=PREVIEW_W*displayScale,shownH=PREVIEW_H*displayScale;
+      frame.style.transform=`scale(${displayScale})`;
+      frame.style.left=`${Math.max(0,(area.clientWidth-shownW)/2)}px`;
+      frame.style.top=`${Math.max(0,(area.clientHeight-shownH)/2)}px`;
+      frame.dataset.displayScale=String(displayScale);
+    }
+    function renderList(){let start=0;const fragment=document.createDocumentFragment();CHAPTERS.forEach((ch,ci)=>{const section=document.createElement('section');section.className='chapter';const head=document.createElement('div');head.className='chapter-head';const number=document.createElement('b');number.textContent=`0${ci+1}`;const name=document.createElement('span');name.textContent=ch.name;head.append(number,name);const grid=document.createElement('div');grid.className='stage-grid';for(let floor=0;floor<ch.stages;floor++){const si=start+floor;const button=document.createElement('button');button.className=`stage${si===stage?' active':''}`;button.dataset.stage=String(si);const label=document.createElement('strong');label.textContent=`${ci+1}-${floor+1}`;const code=document.createElement('small');code.textContent=`SI ${String(si).padStart(2,'0')}`;button.append(label,code);grid.append(button)}section.append(head,grid);fragment.append(section);start+=ch.stages});$('chapters').replaceChildren(fragment)}
+    function load(nextStage=stage){const previousStage=stage;stage=clamp(nextStage);if(stage===4&&previousStage!==4)combatPreview=true;if(stage!==4)combatPreview=false;loadToken=Date.now();const meta=stageMeta(stage);history.replaceState(null,'',`?stage=${stage}`);$('code').textContent=`STAGE ${String(stage).padStart(2,'0')} / SI ${stage}`;$('title').textContent=`${meta.chapter+1}장 ${meta.name} · ${meta.floor+1}구역`;$('status').textContent='LOADING MAP DATA…';$('status').classList.remove('live');paintCombatButton();$('game').src=gameUrl();renderList()}
+    $('chapters').addEventListener('click',event=>{const button=event.target.closest('[data-stage]');if(button)load(Number(button.dataset.stage))});
+    $('prev').onclick=()=>load(stage-1);$('next').onclick=()=>load(stage+1);$('reload').onclick=()=>load(stage);
+    $('combat').onclick=()=>{if(stage!==4)return;combatPreview=!combatPreview;loadToken=Date.now();paintCombatButton();$('game').src=gameUrl()};
+    $('open').onclick=()=>window.open(gameUrl(),'_blank','noopener');
+    $('editor').onclick=()=>window.open(`/game.html?editor=1&editorStage=${stage}&test=1`,'_blank','noopener');
+    $('scale').onchange=applyPreviewScale;
+    $('game').addEventListener('load',()=>{const view=$('game').contentWindow;$('status').textContent=`LIVE · SI ${stage} · ${view.innerWidth}×${view.innerHeight} · ${new Date().toLocaleTimeString('ko-KR')}`;$('status').classList.add('live');applyPreviewScale()});
+    new ResizeObserver(applyPreviewScale).observe($('previewArea'));
+    addEventListener('keydown',event=>{if(event.key==='[')load(stage-1);if(event.key===']')load(stage+1);if(event.key.toLowerCase()==='r')load(stage)});
+    load(stage);
+  </script>
+</body>
+</html>

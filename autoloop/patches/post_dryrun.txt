@@ -1,0 +1,44 @@
+MM INBOX.md
+ M STATUS.md
+A  autoloop/FORENSIC_SESSION_SYNC.md
+A  autoloop/patches/pre_dryrun.txt
+A  autoloop/patches/settings.local.json.bak
+M  "docs/0\353\247\210\354\212\244\355\204\260\355\224\214\353\236\234/EXODUSER_MASTER_BIBLE_v2_2 (2).md"
+M  "docs/12\355\215\274\355\217\254\353\250\274\354\212\244\302\267\354\265\234\354\240\201\355\231\224/12\355\215\274\355\217\254\353\250\274\354\212\244\302\267\354\265\234\354\240\201\355\231\224.md"
+M  "docs/1\354\240\204\354\262\264\352\267\270\353\236\230\355\224\275\354\204\270\355\214\205/\353\247\265_\355\231\224\353\251\264\355\232\250\352\263\274_\354\240\204\354\210\230\354\241\260\354\202\254.md"
+M  "docs/3.1 ui hud \353\224\224\354\236\220\354\235\270/exoduser-hud-redesign.md"
+M  "docs/4.1\353\247\265\353\224\224\354\236\220\354\235\270+\354\204\244\354\240\225/BOSS_CANONICAL_MAPPING.md"
+M  "docs/4.1\353\247\265\353\224\224\354\236\220\354\235\270+\354\204\244\354\240\225/CH1_1_BLOCKOUT_MASTER.md"
+M  "docs/4.1\353\247\265\353\224\224\354\236\220\354\235\270+\354\204\244\354\240\225/CH1_VERTICAL_SLICE.md"
+M  "docs/4.1\353\247\265\353\224\224\354\236\220\354\235\270+\354\204\244\354\240\225/MAP_RUNTIME_ARCHITECTURE.md"
+M  "docs/5.0\354\225\240\353\213\210\353\251\224\354\235\264\354\205\230\355\214\214\354\235\264\355\224\204\353\235\274\354\235\270/\353\252\254\354\212\244\355\204\260_\354\212\244\355\202\250_\354\213\234\354\212\244\355\205\234.md"
+M  "docs/5.1\354\236\204\355\216\231\355\212\270\353\224\224\354\236\220\354\235\270/VFX_\352\265\254\355\230\204\352\260\200\354\235\264\353\223\234.md"
+M  "docs/5.1\354\236\204\355\216\231\355\212\270\353\224\224\354\236\220\354\235\270/\354\202\254\353\247\235VFX_\353\263\200\352\262\275\353\241\234\352\267\270.md"
+M  "docs/8.0\353\252\254\354\212\244\355\204\260\353\224\224\354\236\220\354\235\270/\353\252\254\354\212\244\355\204\260_\352\263\265\352\262\251\354\213\234\354\212\244\355\205\234.md"
+M  "docs/8.0\353\252\254\354\212\244\355\204\260\353\224\224\354\236\220\354\235\270/\353\252\254\354\212\244\355\204\260_\354\264\235\352\264\200\353\246\254.md"
+M  "docs/8.0\353\252\254\354\212\244\355\204\260\353\224\224\354\236\220\354\235\270/\355\203\204\353\247\211\354\213\234\354\212\244\355\205\234_\354\264\235\354\240\225\353\246\254.md"
+M  docs/CHANGELOG_SYNC.md
+M  docs/PERF_MAC_CHROME_AUDIT.md
+MM game.html
+A  img/_bullet_work/pack_elem_orb.py
+A  img/_bullet_work/pack_phys_user.py
+A  img/_bullet_work/preview_elem_orb.png
+A  img/_bullet_work/src_elem_orb.png
+A  img/_bullet_work/src_phys_1.png
+A  img/_bullet_work/src_phys_2.png
+A  img/_bullet_work/src_phys_3.png
+A  img/proj_elem_orb.png
+A  img/proj_phys_mouth.png
+A  img/ui/minimap_silvertail.png
+A  img/ui/minimap_warrior.png
+A  img/vfx/kraken_tp.png
+A  img/vfx/kraken_vanish.png
+M  img/worm_burrow1.png
+M  img/worm_burrow2.png
+A  test/fieldBossSpawnEmerge.test.js
+A  test/fieldMobDeathFx.test.js
+A  test/minimapPlayerIcon.test.js
+A  test/projChargeTelegraph.test.js
+A  test/webglDynamicTexReuse.test.js
+M  tools/guard.baseline.json
+?? autoloop/patches/post_dryrun.txt

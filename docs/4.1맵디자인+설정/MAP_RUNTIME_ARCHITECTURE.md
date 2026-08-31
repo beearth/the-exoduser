@@ -43,7 +43,7 @@ kit builders (24417~24507)   ─┘        │
   | `4` | 바닥(1×1 fallback 전용) | `G.map=[[4]]` (25846), `_floorAt` (20548) |
   | `6` | 포탈/존 타일 | write 25032, read 35582 |
 - 에디터→게임 변환: `0=용암,1=바닥,2=벽,3=높은벽 → 게임 0=바닥,1=벽` (`24636`).
-- **Q1 답**: 이동가능(walkable) = `isW(px,py)===false` = 타일값 ≠ 1 AND bone-wall 없음 AND 충돌 MAP_OBJS 없음.
+- **Q1 답**: 이동가능(walkable) = `isW(px,py)===false` = 타일값 ≠ 1 AND CH1-1 authored hill cliff band 없음 AND bone-wall 없음 AND 충돌 MAP_OBJS 없음.
 
 ---
 
@@ -51,7 +51,7 @@ kit builders (24417~24507)   ─┘        │
 
 | 함수 | 라인 | 역할 |
 |---|---|---|
-| `isW(px,py,skipBone)` | 25984 | 핵심 벽 판정: OOB→solid, 타일===1→solid, `G._boneWalls` 링, 충돌메타 MAP_OBJS(`_colObjs`) |
+| `isW(px,py,skipBone)` | 식별자 grep | 핵심 벽 판정: OOB→solid, 타일===1→solid, CH1-1 `_ch1HillBandBlocks`, `G._boneWalls` 링, 충돌메타 MAP_OBJS(`_colObjs`) |
 | `canMv(x,y,r)` | 25985 | 4코너 AABB `isW` |
 | `canMvBlink(x,y,r)` | 25988 | skipBone=1 |
 | `_isWallTile(px,py)` | 25992 | **타일만** 판정(MAP_OBJS 무시) |
@@ -61,6 +61,25 @@ kit builders (24417~24507)   ─┘        │
 | `_chgPathClear(e,len)` | 25987 | 돌진 경로 레이마치 |
 - **isW 프리필터** `[ISW-OPT]` (25979): `_colObjs`는 충돌메타(`_OBJ_META[type].collision||col`) 가진 MAP_OBJS만 캐시, `_ensureColObjs`가 identity/length 변화 시에만 재빌드. 재빌드 시 인스턴스 `scale||1`을 `colW`/`colH`/`colSz`에 곱한 `_colW`/`_colH`/`_colSz`를 1회 저장하며 `isW()`는 저장값만 읽는다. **성능 핵심 — 손대면 회귀 위험.**
 - **다각형/알파 콜라이더 없음.** 오브젝트 충돌 = 렌더 스케일이 반영된 원(colSz) 또는 타원(colW/colH/colOy)만.
+
+### CH1-1 authored high-ground geometry (2026-08-29)
+
+- `_CH1_HILL={cx:147,cy:98,rx:18,ry:9,inner:.84,outer:1.04,rampX0:125,rampX1:135,rampY:98,rampHalf0:1.8,rampHalf1:3}`.
+- `_ch1HillBandBlocks(px,py)`는 `G.stage!==0`이면 즉시 false다. stage 0에서는 타원 band만 solid로 만들고 `_ch1HillRampAt` 내부는 false로 열어 둔다.
+- `_ch1HillHeightAt(px,py)`는 저지대 0, ramp smoothstep 0→1, inner plateau 1을 반환한다. 현행은 높이 기반 데미지/투사체 보정이 아니라 이동·시각 판독용 authored height다.
+- `_drawCh1Hill`은 기존 `m_c1gedge` 이미지를 offscreen canvas에 한 번 합성한 후 map floor 뒤, MAP_OBJS/엔티티 앞에 그린다. 이 지형은 `MAP_OBJS`가 아니며 현행 authored63/runtime64, hand collision22 수치에 포함되지 않는다.
+- 실제 WASD: low `(125.95,98.91,h=.026)` → mid `(131.14,98.10,h=.668)` → plateau `(137.99,98.10,h=1)` → 북벽 정지 → ramp descent `(123.33,98.00,h=0)` PASS.
+
+### CH1-1 stage0 baked outer + smoothing (2026-08-30)
+
+- 기본 탐험 phase의 smoothing master는 build 시 locked `baked_start_outer` 8192² base 위에 overlay를 합성한 완성본이다. runtime `_CH1_START_ROOT`는 smoothing 또는 outer-only 중 한 root만 선택해 그린다. 둘 다 8×8/64 chunk, core1024 + copy bleed1(파일1026)이다.
+- `?ch1StartPhase=outer`는 outer-only set 비교, `?ch1StartOuter=0`은 selected baked set 전체 OFF 비교다. `G._bossArena===true`에서는 자동 OFF다.
+- smoothing은 기존 stage0 cache/decode/GPU warm/draw 경로를 재사용한다. QA는 64/64 ready, error0, max warm<17ms, draw<=.4ms, pageerror/404 0이다.
+- `_MAP_COMPOSE[0].forestBoundary=1`, `MAP_ALL_FLOOR=false`다. `_buildCh1StartForestRLE(200,200)`이 side/top/south baked forest와 대응하는 canonical tile wall을 만들며 이 `G.map` 경계를 player `isW/canMv`, enemy 이동, flow/path, spawn `safePt`, minimap이 공통 사용한다.
+- `_applyCh1StartNorthGate`가 `bossCx=100`, `gateY=5`, exits `(99..101,7)`과 north approach `x88..112,y2..35`를 forest RLE 뒤에 재적용한다. procedural wall-edge/pillar fallback은 `_ch1StartOuterEnabled()`일 때 suppress한다.
+- `m_c1b*`/`m_c1cn/cs/ce/cw*` structural module 59개와 wall 뒤 `m_eye_tree(185,55)` 1개는 authored layout에서 제거했다. 따라서 과거 quadrant/perimeter alpha와 structural tone 경로는 호환 코드일 뿐 현행 instance 0이다. `m_c1tree`는 smoothing 조건에서 기존 metadata filter + CH1 tone을 단일 `_drawFilter`로 합쳐 기존 save/restore 경로를 사용한다.
+- 현행 authored63/runtime64, structural0, collision total23/hand22이며 tile은 floor23199/wall16495/exit3/gate3/boss300이다. baked outer/smoothing master와 landmark/vertical 수치는 유지한다.
+- 실제 WASD는 START `(100.5,185.5)`에서 north `y23.43`까지 전 segment PASS했고 exits는 y7이다. pageerror/404는 0/0이다.
 
 ---
 
@@ -91,7 +110,9 @@ kit builders (24417~24507)   ─┘        │
 | `_getFixedMapForStage(si)` | 24508 | fixed 템플릿 or null |
 | `genBossArena(si)` | 25059 | 별도 128×108 보스 아레나 |
 | `buildMapCache()` | 21496 | **G.map을 텍스처로 렌더**(생성 아님) |
-| `MAP_ALL_FLOOR` | 24589 | si0 전용, 내부 벽1→바닥0 (테두리만 벽) |
+| `MAP_ALL_FLOOR` | 식별자 grep | `false`; stage0은 all-floor 우회 대신 `forestBoundary:1` RLE 사용 |
+| `_buildCh1StartForestRLE(200,200)` | 식별자 grep | baked forest와 대응하는 canonical floor/wall geometry |
+| `_applyCh1StartNorthGate` | 식별자 grep | bossCx100/gateY5, exits y7, x88..112/y2..35 approach 복구 |
 - **NOT FOUND**: `StageSeeder`, `genMap`. → AUTOLOOP "불변보호영역 StageSeeder"는 **코드에 부재**. 실제 시드/생성 = `genFromTemplate`/`genGauntlet`. **보호 의도는 이 두 생성기 + `_MAP_COMPOSE` 데이터로 해석해야 함.** (§13 위험변경)
 
 ---
@@ -159,7 +180,7 @@ kit builders (24417~24507)   ─┘        │
   2. **적 하드캡 700**(28487) — 대형 존일수록 밀도 분산 튜닝 필요.
   3. `_streamVpCvs` 합성 비용 — 청크 퇴거 주기(60/180, margin4, 43605)와 재합성 임계(3타일 드리프트).
   4. MAP_OBJS/`_colObjs` 선형 순회 — 오브젝트 급증 시 isW 비용(프리필터가 완화하나 상한 있음).
-- **Q8(OUTER 데코 증가 → draw/render)**: OUTER는 패럴랙스(비활성 9631/43539) 재활성 또는 Vista 경로 사용. 원경은 저해상도 캐시 캔버스 1~2장 drawImage로 억제 권장(엔티티당 draw 아님). 성능 봉인(평상시 140fps/700마리 60fps) 준수 — `MAP_QA_GATES.md Performance`.
+- **Q8(OUTER 데코 증가 → draw/render)**: 전역 후보는 패럴랙스/Vista이나, CH1-1 stage0은 local 64-chunk outer+smoothing 예외를 사용한다. 원경 draw 증가는 cache/GPU warm 경로와 `MAP_QA_GATES.md Performance`로 봉인한다.
 
 ---
 
@@ -181,13 +202,13 @@ kit builders (24417~24507)   ─┘        │
 | 존 스왑(보스) | `_enterBossArena`/`_preArenaBackup` (25111) |
 | 로드 커튼 | `showStageTransition` (53641) |
 | 미니맵 | `drawMM`+`_mmCache` (51400) |
-| OUTER 렌더 | 패럴랙스 config(9631, 비활성 재활성) / Vista(9725) |
+| OUTER 렌더 | 전역 후보=패럴랙스/Vista; CH1-1 local=build-time outer+overlay 완성본인 `baked_start_smoothing` 또는 비교용 `baked_start_outer` 중 선택한 64-chunk set 하나 |
 | 경계 자연화 | `_fillVoidWithFloor`+`[EDGE-FADE]` (9781) |
 
 ### 신규 필요(최소)
 - **ZONE 정의 데이터**: PLAY/RIM/OUTER 및 START/COMBAT/SIDE/EVENT/MINIBOSS/BOSS/GATE 태깅. 후보: `_MAP_COMPOSE[si]`에 `zones:[]` 필드 추가(기존 `empty`/`rim` 확장), 또는 미사용 `fm.zones` 활성. **비침습 우선**.
 - **미니맵 마커 레이어**: 보스/게이트/이벤트/포켓 마커(drawMM 확장).
-- **OUTER 배경 재활성**: `_bgLayers=null`(43539) 조건부 복구.
+- **전역 OUTER 배경 재활성**: `_bgLayers=null`(43539) 조건부 복구. CH1-1 local baked 예외와 별개.
 - **거대보스 배경 표현 오브젝트 타입**: MAP_OBJS 비충돌 실루엣.
 
 ### 위험 변경 (건들면 안 됨 / 회귀 위험)

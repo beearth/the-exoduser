@@ -52,6 +52,15 @@ steam/output/
 exoduser-demo-web.zip
 assets/cutscene/prologue/_p11_candidates/
 
+# 로컬 QA/캡처/백업 산출물 (재생성 가능, 작업 소스는 보존)
+/tmp/
+/captures/
+/_autosave/
+/_bt_*.mjs
+/debug.log
+/ch1s1_spawn.png
+/ptest*_grid.png
+
 .env
 .env.*
 

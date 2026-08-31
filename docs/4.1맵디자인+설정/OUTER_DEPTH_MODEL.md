@@ -1,5 +1,7 @@
 # OUTER DEPTH MODEL — 외곽 심도 모델 (Section E)
 
+> 2026-08-30 구현 주석: 전역 OUTER 시스템 선택은 계속 미LOCK이다. 실제 CH1-1(stage0)은 locked outer + default smoothing 64-chunk local 예외와 `forestBoundary:1` canonical tile wall을 사용한다. baked visual과 geometry collision을 분리하며 authored63/runtime64다. CH1-2(stage1)의 opt-in 실험 기록과 혼용하지 않는다.
+
 > **역할**: OUTER를 3계층(OUTER-A/B/C)으로 정의. 각 계층의 시각 역할·gameplay 영향 여부.
 > **주의**: 구현 수단은 **LOCK하지 않는다.** 현재 runtime 가능 후보와 risk만 기록.
 > **상태**: 2026-08-23. 코드 변경 없음.

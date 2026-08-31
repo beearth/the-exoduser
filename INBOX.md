@@ -1,4 +1,4 @@
-# AUTOLOOP INBOX
+﻿# AUTOLOOP INBOX
 
 여기에 사람이 우선처리 지시를 넣는다. 형식:
 
@@ -11,5 +11,6 @@
 
 ## 지시 목록
 <!-- 아래에 [NEW] 항목 추가 -->
+[NEW] 모션 작업 중단. 맵 프레임 정리 우선
 [DONE] STATUS.md 의 LAST UPDATE 를 오늘 날짜로 갱신하고 종료
 [DONE] STATUS.md 의 CYCLE 값을 1 증가시키고 종료

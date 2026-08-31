@@ -52,6 +52,23 @@ Q01 / 왕복보행 청크 재빌드 진동 없는지 실런타임 확인
 ## PENDING-PERF
 Q01 / MAP STREAM SPIKE 재측정 (전량퇴거 후 프레임 스파이크)
 Q02 / ?perf=1 진입 실측: FRAME HITCH/MAP STREAM SPIKE 로그 수치 수집
+Q03 / [보류] texImage2D 매프레임 41회 — 텍스트 아틀라스 재업로드 (부스 2026.09.11 이후 조치) ↓
+
+=== 보류: texImage2D 매프레임 41회 [2026.08.24] ===
+증상: bosstest 모드에서 up/f=41.00 call/f=194.00 Mpx/f=42.99 고정, 실기 10fps
+확정: 텍스트 아틀라스 2048x512 매프레임 재업로드
+배제 완료: ATMOS PHASE2-3 / perf=1 / preserveDrawingBuffer / ENS-WARM / 엔티티 수 / 레벨 / 3D 오버레이 / F키 [일시정지 사양]
+미확인: 일반 플레이에서 동일 증상 발생 여부
+관련: 조준 프리뷰 링 반경 11398px, X.stroke 세그먼트 36000/frame [별건, 실사용 시 확인 필요]
+조치 시점: 부스 [2026.09.11] 이후
+근거: 부스 빌드는 데모 스테이지만 사용, bosstest 미사용. 일반 플레이 영향 미확인 상태에서 수정 시 회귀 리스크
+
+[클코 정정 2026.08.24 — 계측 실측 근거]
+- 텍스트 아틀라스 재업로드 원인: 글리프 add마다 _txtAtlas._glVer 범프(game.html:4763) + 풀차면 _txtUV.clear() 전체 wipe(4759). 실측 [GLVER] glyphAdd/f≈6.5(실기 41), clear/f≈3.5, uvSize 소수. [TEXMISS] ver가 미스 지배(new/size 아님). 근본수정=프레임당 _glVer 1회 반영 or 변경셀만 texSubImage2D or 아틀라스 확대.
+- "조준 링 세그먼트 36000/frame"은 미성립: 프리뷰 링은 풀서클(0,2π)→X.fill/stroke가 단일 quad 셰이더(game.html:5289/5309)로 렌더, 테셀레이션 안 함. _ns 세그먼트식은 '부분호'에만 적용.
+- 반경 11398은 캐릭터 레벨 아닌 스킬레벨×22 기준(예: 세이브 maliceStorm Lv11→420px). 통상 플레이선 화면대각 초과 거의 없음.
+- 조준 fps 저하(headless 14.5→7)는 SwiftShader 풀스크린 SDF fillrate 아티팩트로, 실 GPU 재현 불확실. 반경 캡 실험 결과 fps 개선 못함(오히려 소폭↓). FIX-A 전량 롤백함.
+=== 끝 ===
 ## BLOCKED
 Q03 / game.html 타세션 실시간 점유(미커밋 WIP 유동) / clean 시 재개
 Q05 / game.html 타세션 실시간 점유(+2 미커밋, mtime 23:14) / clean 시 재개

@@ -1,0 +1,73 @@
+{
+  "stage": 0,
+  "map": "CH1-1",
+  "defaultPhase": "smoothing",
+  "defaultEnabled": true,
+  "baseMaster": "assets/map/ch1/baked_start_outer/CH1_1_START_OUTER_MASTER.png",
+  "masterSize": [8192, 8192],
+  "chunkSize": 1024,
+  "bleed": 1,
+  "layerRoles": ["EDGE_SMOOTH", "CORNER_VARIATION", "TREE_BASIN", "SIDE_CONNECTION", "OPEN_FIELD"],
+  "compositionCounts": {
+    "EDGE_SMOOTH": 8,
+    "CORNER_VARIATION": 4,
+    "TREE_BASIN": 4,
+    "SIDE_CONNECTION": 10,
+    "OPEN_FIELD": 5,
+    "SMALL": 0
+  },
+  "additions": {
+    "geometry": false,
+    "collision": false,
+    "route": false,
+    "authoredObjects": 0,
+    "newStructures": 0,
+    "newLandmarks": 0,
+    "smallScatter": 0,
+    "newVerticalSilhouettes": 0
+  },
+  "cornerGrammar": {
+    "TL": "organic-root-fade",
+    "TR": "dark-heavy-wet-recess",
+    "BL": "open-ash-threshold",
+    "BR": "heavy-asymmetric-corpse-wet-mass"
+  },
+  "protected": {
+    "START": [100.5, 185.5],
+    "EXIT": [100, 18],
+    "TREE": [102, 90],
+    "CAMP": [45, 100],
+    "ALTAR": [147, 97],
+    "COCOON": [47, 50],
+    "TOXIC_POOL": [174, 50],
+    "LOWER_PIT": [162, 139],
+    "ALTAR_HILL": {"center": [147, 98], "rx": 18, "ry": 9, "westRamp": [125, 135]}
+  },
+  "combatQuietSamples": [[79, 90], [125, 90], [100, 116], [100, 66]],
+  "chunks": [
+    "0,0", "1,0", "2,0", "3,0", "4,0", "5,0", "6,0", "7,0",
+    "0,1", "1,1", "2,1", "3,1", "4,1", "5,1", "6,1", "7,1",
+    "0,2", "1,2", "2,2", "3,2", "4,2", "5,2", "6,2", "7,2",
+    "0,3", "1,3", "2,3", "3,3", "4,3", "5,3", "6,3", "7,3",
+    "0,4", "1,4", "2,4", "3,4", "4,4", "5,4", "6,4", "7,4",
+    "0,5", "1,5", "2,5", "3,5", "4,5", "5,5", "6,5", "7,5",
+    "0,6", "1,6", "2,6", "3,6", "4,6", "5,6", "6,6", "7,6",
+    "0,7", "1,7", "2,7", "3,7", "4,7", "5,7", "6,7", "7,7"
+  ],
+  "smallProps": 0,
+  "newVerticalSilhouettes": 0,
+  "visualContract": {
+    "treeBasinFootprintPx": [3100, 2200],
+    "treeBasinSoilOpacityRange": [0.28, 0.38],
+    "treeBasinAssetOpacity": [0.22, 0.32],
+    "macroOpacityRange": [0.16, 0.28],
+    "poiFootprintScaleRange": [1.5, 2.2],
+    "innerEdgeTonguesPerSideMin": 3,
+    "landmarkSpriteAlpha": 1,
+    "toxicContinuousChain": false,
+    "toxicWetSoilMasses": 3,
+    "toxicShortFragments": 5,
+    "toxicSaturationMax": 0.5,
+    "toxicBase": "brown-black-wet-soil"
+  }
+}

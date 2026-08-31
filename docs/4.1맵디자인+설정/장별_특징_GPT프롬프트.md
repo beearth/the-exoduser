@@ -38,14 +38,14 @@ Rotten forest hell plain, cracked black-brown soil with dried blood in the crack
 Moss swamp hell plain, wet black-brown mud with dark olive moss, huge queen husk or giant egg sac as the only colossal landmark, cocoons in distant clusters like islands, empty wet dirt between them, humid spore mist, overhead map view, no neon yellow chitin tiles.
 ```
 
-## 3장 얼음굴
-- **나라:** 숨이 멈추는 냉기. 얼굴이 언 동굴 평원.
-- **바닥:** 어두운 빙판·서리. 반사는 약하게.
+## 3장 지옥의 겨울 — HELL WINTER
+- **나라:** 지옥 내부의 끝없는 야외 동토. 검은 폭풍구름·재·폭설 아래 죽지 못한 학살지가 펼쳐진다. 동굴이 아니다.
+- **바닥:** 검은 언 땅, 갈라진 dirty ice, 회색 눈, 얼어붙은 피와 시체. 중앙은 대규모 전투용으로 넓게 비운다.
 - **빛:** 창백한 청백. 봉인 제단만 안이 빛남.
-- **주인공 소품:** **봉인 결정 제단** (얼음 고딕 문+속빛).
-- **프레임:** 고드름, 언 시체, 기둥은 적게.
-- **색:** #0c1620 바닥, #44ddee 악센트만.
-- **하지 말 것:** 흰 눈밭 테마파크, 기둥 숲.
+- **주인공 소품:** **NW 거대 악마 유해 + NE 동면 봉인괴수**. 괴수는 공격하지 않고 눈만 희미하게 떠 있다.
+- **프레임:** 검은 철제 요새 파편, 철장, 사슬, 언 시체와 말뚝을 외곽에만 둔다.
+- **색:** wall #20262b, floor #080b0e, accent #7a201b. 고립된 희미한 corpse-blue만 허용.
+- **하지 말 것:** 동굴, 흰 눈밭 테마파크, 밝은 cyan 수정, 오로라, 햇빛, 따뜻한 불빛, 기둥 숲.
 
 ```
 Frozen hell plain of dark ice, pale cyan glow only from a sealed crystal shrine in the distance, frozen faces in the ice walls at the rim, few ice pillars, empty ice sheet as the road, cold mist, overhead map view.

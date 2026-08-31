@@ -48,7 +48,8 @@ SSOT와 같음: 통이미지 한 장을 8000×8000에 늘리지 않는다.
 | 워크메쉬 | 기본 전 타일 바닥 `[1,40000]` 반전 아님. `basin`이면 `_buildBasinRLE`, `path`면 길 RLE |
 | 배치 | `_MAP_COMPOSE[si]` + `initMapObjects()` + `_CH_DECO` |
 | `hand:1` | 통바닥 + compose에 적은 커스텀만. 자동 살포 끔 |
-| 1-1 compose | `{keepDragon:1, mega:[{m_mega_ribs, x:.84, y:.22, sz:1400}]}` |
+| 1-1 compose | `{hand:1, dense:1, lm:[], mega:[], forestBoundary:1, handProps:63개}` — structural module 0, outer-enabled wall fallback 0 |
+| 1-1 우중 고지대 | `(147,98)`, `rx18/ry9`, west ramp `x125→135`; 기존 `m_c1gedge` 재사용, `MAP_OBJS` 추가 0 |
 | 스트리밍 | `_STREAM_CHUNK` 200×200에서 **64타일 (2560px)** |
 
 본편 1-1은 이미 이 골격이다. Option B는 여기를 비우고 림에 키트를 올리는 것.
@@ -68,8 +69,8 @@ SSOT와 같음: 통이미지 한 장을 8000×8000에 늘리지 않는다.
 `MAP_OBJS[]`. 소스:
 
 - `_CH_DECO[0]` 자동 살포 (large / scatter / 소형). `_testbed`면 살포 안 함
-- `_MAP_COMPOSE`의 `mega` / `lm` / `uni` / `empty` / `rim`
-- 용해골: `keepDragon`이면 `m_dragon_3d` + `m_dragon_skeleton`
+- `_MAP_COMPOSE`의 `empty` / `handProps` (CH1-1 현행 63개) / `forestBoundary:1`. `mega` / `lm` / `uni`는 현행 CH1-1에서 비활성
+- 용해골: legacy `keepDragon` 자동분기와 과거 `mega` 용 2종 모두 현행 reference miniature 배치에서 off
 
 메타: `_OBJ_META` + `_CH_DECO` 필드 (`sz`, `col`/`collision`, `colSz`/`colW`/`colH`/`colOy`, `keepAR`, `large`, `mega`, `flip`, `light`, `touchAnim`).
 
@@ -161,7 +162,7 @@ v2 룩(갈흑 흙, 독녹 늪, 검은 뿌리, 외곽 철창/제단)에 **거의 
 | `poison_puddle` `poison_pool` `m_acid` | GROUND/EDGE | 독늪 소품 (타일 아님) |
 | `pit_poison` | EDGE | 밟으면 벽. 큰 독웅덩이 |
 | `vine_roots` `m_vine_pillar` | EDGE | 뿌리. pillar 소스는 48px → modify |
-| `m_mega_ribs` | LANDMARK | 이미 1-1 compose. 스케일만 |
+| `m_mega_ribs` | LEGACY LANDMARK | 현행 1-1 reference compose에서는 미사용 |
 | `boss_gate` | LANDMARK | 12시 문 |
 | `OPT.fog` | VFX | 녹 안개 재튜닝 |
 | `OPT.ambPart` | VFX | 불씨. 기본 off |
@@ -243,7 +244,7 @@ v2 룩(갈흑 흙, 독녹 늪, 검은 뿌리, 외곽 철창/제단)에 **거의 
 | ruined gate | 폐허 문 | R | bone_arch 300, boss_gate, mega_chapel | col | 문만 FG 후보 | — |
 | mega ribs | 거대 뼈 | R | 1-1 림. **sz 900, QA≤1000** (1100/1400 금지) | colW380 | — | — |
 
-용해골은 1-1 기존 장면용. Option B 키트의 **필수 랜드마크는 아님.** 구역 문장이 용해골이면 유지.
+용해골 legacy 중앙 자동분기는 `keepDragon` OFF로 0개다. 2026-08-28 reference compose의 `mega:[]`도 비어 있으므로 si0 mega는 총 0개다.
 
 ### FOREGROUND
 
@@ -268,7 +269,7 @@ v2 룩(갈흑 흙, 독녹 늪, 검은 뿌리, 외곽 철창/제단)에 **거의 
 
 ## IMPLEMENTATION ORDER
 
-구현은 다음 지시 때. 순서만.
+2026-08-24 기준 2~5단계의 기존 에셋 손 배치가 구현됐다. 신규 에셋·GROUND 전이타일·FG Y소트는 여전히 후속 범위다.
 
 1. **docs LOCK** — 이 문서 + SSOT에 Option B 한 줄 (이번 단계).  
 2. **1-1 compose만** — `hand`에 가깝게. 중앙 `empty` 크게, 림에 나무+제단+철창 소수. 새 그림 없이 기존 에셋.  
@@ -294,12 +295,8 @@ v2 룩(갈흑 흙, 독녹 늪, 검은 뿌리, 외곽 철창/제단)에 **거의 
 
 ---
 
-## NEXT ACTION
+## CURRENT / NEXT
 
-에셋 생성하지 않음. 다음 지시 하나:
-
-**A.** 1-1 200×200 compose 초안만 문서에 쓴다 (좌표, empty 반경, 랜드마크 1개). 코드 없음.  
-**B.** `g_crack` / 뿌리 엣지 소품 **제작 스펙**(프롬프트·px)만 쓴다. 생성은 그 다음.  
-**C.** `?stage=0` 기본을 FIELD_ONE으로 되돌리는 패치 (구현 최소).
-
-추천: **A** — 키트가 어떤 필드에 앉는지 먼저 고정.
+- **현행 2026-08-30:** reference landmark 관계를 기존 CH1 에셋 `handProps` 63개로 유지하고, structural module 59개는 baked-aligned canonical forest tile boundary로 교체했다. mega/자동 filler는 0개다.
+- **후속:** `g_crack`/뿌리 엣지 소품, 늪 전이타일, FG Y소트는 아직 미구현이며 별도 승인 범위다.
+- `?stage=0` PROD/FIELD_ONE 테스트 경로는 이번 변경에서 건드리지 않았다.

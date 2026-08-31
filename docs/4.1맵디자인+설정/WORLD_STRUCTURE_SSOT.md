@@ -33,7 +33,7 @@ EXODUSER는 **지구형 평면 오픈월드가 아니다.** 세계는 **수직�
             ▲
         4. 고통의 화염지대    ← 최장(7에리어)
             ▲
-        3. 얼음굴
+        3. 지옥의 겨울
             ▲
         2. 벌레굴
             ▲
@@ -50,7 +50,7 @@ EXODUSER는 **지구형 평면 오픈월드가 아니다.** 세계는 **수직�
 전체 진행은 멀리서 보면 느슨한 **S자 상승 구조**를 가진다. 단, **플레이어가 실제로 걷는 길 자체를 가느다란 S자 복도로 만들면 안 된다** (→ `LEVEL_DESIGN_RULES_SSOT.md` RULE 1).
 
 - S자 = 층/스테이지들의 **거시 배치 곡선** (미니맵/월드맵 상의 흐름).
-- 미시 = 각 스테이지는 넓은 전투 분지 + 좁은 연결로의 리듬 (CH1-1의 지그재그 x=100→서88→동118→서92가 이미 이 원칙의 축소판).
+- 미시 = 각 스테이지는 넓은 전투공터 + side POI + 시선이 꺾이는 진행축의 리듬 (CH1-1은 x100 남북축에서 중앙 HERO를 x84로 우회).
 
 ---
 
@@ -60,7 +60,7 @@ EXODUSER는 **지구형 평면 오픈월드가 아니다.** 세계는 **수직�
 |---|---|---|---|---|---|---|
 | 1 | 썩은 숲 | ROTTEN_FOREST | 독/물리 | 4 | 0–3 | 숲의 기생수 |
 | 2 | 벌레굴 | WORM_NEST | 물리/독 | 6 | 4–9 | 여왕 구더기 |
-| 3 | 얼음굴 | FROZEN_CAVERN | 빙결 | 4 | 10–13 | 얼음 속 봉인 괴물 |
+| 3 | 지옥의 겨울 | HELL_WINTER | 빙결·동토 | 4 | 10–13 | 검은 동토의 학살지와 동면 봉인 괴물 |
 | 4 | 고통의 화염지대 | FLAME_OF_AGONY | 화염 | 7 | 14–20 | 화염 감옥지기 |
 | 5 | 지옥의 군단 | HELL_LEGION | 물리/암흑 | 5 | 21–25 | 군단 지휘관 |
 | 6 | 사도의 마굴 | APOSTLE_LAIR | 암흑/물리 | 6 | 26–31 | 대사도 |
@@ -87,7 +87,7 @@ EXODUSER는 **지구형 평면 오픈월드가 아니다.** 세계는 **수직�
 | 용어 | 이 프로젝트에서의 정의 |
 |---|---|
 | **세미 오픈월드** | 200×200(8000px) 단위의 **넓은 오픈 스테이지**를, 층 경계 로딩으로 연결한 상승형 구조. 스테이지 **내부는 seamless 자유 탐험**, 층/스테이지 **사이는 로딩 경계**. |
-| **오픈 전투지역** | 한 스테이지 내부의 넓은 분지(예: CH1-1 CENTRAL r1080px). 200×200 안에서 이미 성립. |
+| **오픈 전투지역** | 한 스테이지 내부의 넓은 negative space(예: CH1-1 중앙 HERO 반경 28타일). 200×200 안에서 이미 성립. |
 | **진짜 seamless 대형 존(>200×200)** | 현행 docs가 **명시적으로 거부**(`맵디자인_벤치마크.md §4`, QA Option C=OPEN). **미확정** → §13 UD-MAP-01. |
 
 **핵심**: 이번 세계 구조는 기존 200×200 스테이지 락과 **호환**된다. "세미 오픈월드"는 200×200 스테이지를 수직 연결한 것이지, 200×200을 깨는 것이 아니다.
@@ -190,9 +190,13 @@ CONFLICT-6  v2 PROD 이미지 사용(미해소 결정)
 - ZONE 타입 시스템(코드) — PROPOSED (`fm.zones` 미사용 상태).
 - 거대보스 배경 표현 — PROPOSED.
 - 스테이지 200×200 초과 확대 — NEEDS_USER (docs가 거부, §13 UD-MAP-01).
-- CH2~7 에리어별 레이아웃 — 미존재(얼굴만). NEEDS 후속 설계.
+- CH2-1(si4) 벌레굴 입구 — `_CH2S4` **109-entry** mega-first layout(locked base 78 + visual-only BACK/MID 9 + filler 12 + seam 10; backfill 9/boundary 50/landmark 18/detail 6/mask 4/filler 12/seam 10, collision/non-collision 51/58, authored runtime 109/109, skip 0; system 포함 `MAP_OBJS` 111) + `_MAP_COMPOSE[4]`의 `w:30,authoredWidth:1` S자 경로로 구현했다. CH2 전용 RGBA MEGA 10종 중 17개 배치와 giant carapace·giant hive·deep hive·organic EXIT frame은 고정한다. BACK/MID 9개는 사용자 제공 1254² RGBA wall skin 6종(alpha `.68`, `sz=1080~1120`), 기존 ridge L/R 2개, 중앙 오른쪽 collision recess용 `m_c2backHive (112,70,8°,overlap .16)` 1개이며 잠금 MEGA 뒤에 먼저 그린다. front MID connector 5종/12개와 web/chitin/egg seam 3종/10개가 top 7/central bridge 8/central recess 1/east pocket 7/lower 8개 체인의 접합부를 마감한다. backfill/filler/seam collision은 0이며 START·EXIT·중앙 gameplay core·기존 collision grid(`fefe09a0`)는 그대로다. legacy `m_c2edge*` authored 사용량 0, 반복 중형 세로 구조물 runtime-visible 57→42개(-26.32%), off-path 자동 배치·random wall eye 0을 유지한다. floor는 CH2 `ground.png` 연속 dark void base, 가변 반경 `(w+4)` render-only 유기형 마스크, 저알파 stain 10/vein 6/soft halo, 양쪽 3층 quadratic chitin rim으로 분리한다. 림은 2.25타일 샘플·2주기 반경 변주·shadow `6.4T`/body `4.5T`/highlight `.34T`이며 긴 대각 collision-only 면을 사각 타일 없이 연속 wall shoulder로 보이게 한다. 실제 WASD 종주 최종 world `(4017.72,1355.61)`, tile `(100,33)`, `isWall=false`, stuck/abnormal push 0이다. reported recess runtime은 `(111.5,70.5)`, prop collision false, pageerror와 CH2 broken sprite/asset 404는 0이다. 최신 비교는 `captures/ch2_reported_gap_20260830/after_recess_fix/`; 사용자 visual 승인 전 FINAL은 미확정이다. CH2-2~CH7 에리어별 레이아웃은 NEEDS 후속 설계.
 
 ---
+
+## 12c. CH2-1 전투 QA 계약 — 2026-08-30
+
+- si4 production은 기존 소환굴 11개(S 4/M 5/L 2), 총 스폰 예산 900과 etype 39 출구 문지기/동반 웨이브를 유지한다. `combatqa=1`은 map QA에서 이를 지우지 않는 stage4 전용 관람 옵션이며, 플레이어 무적·스킬/펫 대사 차단·시작 배리어 제거는 유지한다. 세계 geometry·collision·START/EXIT·동선·몬스터 밸런스에는 변화가 없다.
 
 ## 13. USER DECISION — 해소 기록 (2026-08-23 MAP-P0.5)
 

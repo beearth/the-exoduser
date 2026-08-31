@@ -14,7 +14,7 @@
 ```
 - **좁은 길에서 계속 전투하는 게임으로 만들지 않는다.**
 - 좁은 길의 역할: 이동 · 긴장 · 매복 · 탐험 · 공간 전환.
-- **핵심 전투는 넓은 공간에서.** (CH1-1 CENTRAL 분지 r1080px가 표준 전투장 스케일 예시)
+- **핵심 전투는 넓은 공간에서.** (CH1-1 중앙 HERO 반경 28타일의 negative space가 현행 예시)
 - 기존 근거: `맵제작_SSOT.md §18` `ROAD → COMBAT → NARROW → LANDMARK → COMBAT → TRANSITION`.
 
 ---
@@ -26,7 +26,7 @@
 | PLAY(이동+전투+포켓) | **65~72%** open ground | `CH1_1_COMPOSE_초안.md` 실측 |
 | ENVIRONMENT(RIM+OUTER) | 28~35% | `맵제작_SSOT.md §7` (PLAY 60~70 / ENV 30~40) |
 | 연결로 최소 폭 | **10 타일(400px) 이상** — 절대 축소 금지 | CH1-1 LOCK |
-| 전투 분지 지름 | 대략 1600~2200px (r800~1080) | CH1-1 LOWER/CENTRAL |
+| 전투 분지 지름 | 대략 1600~2240px | CH1-1 중앙 HERO 반경 28타일의 개방 공간 |
 
 ---
 
@@ -41,13 +41,14 @@
 ### RIM — PLAY와 외곽을 잇는 경계
 절벽 · 바위 · 뿌리 · 뼈 · 폐허 · 성벽 · 용암 균열 · 독늪 · 난간 · 잔해.
 - **목적: 플레이어가 invisible wall에 막혔다고 느끼지 않게 한다.**
-- 현재 구현: 맵 경계 void를 바닥타일+`[EDGE-FADE]` 그라디언트로 처리(`_fillVoidWithFloor`, `game.html:9781–9825`). RIM 오브젝트(절벽/뼈 벽)는 **CH1-1 설계엔 있으나 미배치**.
+- 현재 구현: CH1-1은 `_MAP_COMPOSE[0].forestBoundary=1`, `MAP_ALL_FLOOR=false`이며 `_buildCh1StartForestRLE(200,200)` canonical tile wall이 baked side/top/south forest와 같은 큰 경계를 만든다. 과거 structural boundary prop 59개는 제거했고 authored63/runtime64, structural0이다. START/중앙/north approach와 landmark pocket은 열어 두며 player/enemy/flow/spawn/minimap이 같은 tile 경계를 사용한다.
 - CH1-1 RIM: 8섹터(남/남서/남동/서/동/북서/북/북동), 대형 간격 ≥20타일.
+- CH1-1 고지대 실증: 우중 제단 `(147,98)`만 `rx18/ry9` 정상부 height 1로 만들고 서쪽 ramp `(x125→135,y98,반폭1.8→3)`만 개방한다. 절벽 band `.84≤d≤1.04`는 실제 `isW` collision이다. 메인 x100 남북축은 height 0/비충돌이며, side POI 고저차가 주 진행로를 강제하지 않는다.
 
 ### OUTER — 보이지만 플레이하지 않는 세계
 심연 · 거대 산맥 · 용암 바다 · 멀리 있는 지옥성 · 군단 · 폐허 도시 · 거대 생물 · 시체 산 · 거대 기계 · 뼈 구조물.
 - **목적: 세계의 스케일을 만든다.**
-- 현재 구현 상태: **비활성.** 패럴랙스 6레이어 config는 존재하나(`game.html:9631–9636`) `_bgLayers=null`(`43539`)로 하드 비활성 → OUTER 렌더 경로가 지금 **없음**. 이것이 OUTER 구현의 핵심 재활성 후보.
+- 현재 구현 상태: 전역 패럴랙스 OUTER는 여전히 **비활성**이다. 실제 CH1-1(stage0)은 locked outer를 build-time base로 포함한 default smoothing 완성 master와 `forestBoundary:1` tile geometry를 함께 사용한다. visual mass는 baked, 실제 큰 경계는 map geometry라는 가이드 §13 분리를 따른다. 상세는 `CH1_1_START_OUTER_MASS.md`, `CH1_1_SMOOTHING_PASS.md`다. CH1-2(stage1)의 `ch1OuterMass=*`는 별도 opt-in 실험 기록이다.
 - Vista 맵 경로(`_isVistaMap`/`_drawVistaWorld`, `game.html:9725/43593`)가 대안 OUTER 렌더 후보.
 
 ---
@@ -72,7 +73,7 @@
 
 ## 6. 사이드포켓(SIDE_ZONE)
 
-- **막다른 길 금지 = 최소 2개 진입로.** (CH1-1 WEST=CENTRAL+LOWER, EAST=CENTRAL+UPPER)
+- **막다른 길 금지 = 최소 2개 진입로.** CH1-1 side POI는 외곽 shoulder로 장면을 만들되 메인 남북축을 차단하지 않는다.
 - 비대칭 배치(좌우 대칭 금지). 목 폭 ≥10타일.
 - 보상: 전리품/소환굴/이벤트/랜드마크. 탐험 인센티브 제공.
 
@@ -111,7 +112,7 @@
 ## 10. 시야 유도
 
 - 넓은 전투장으로 향하는 방향에 밝기/랜드마크/조명을 배치해 자연 유도(BotW식).
-- CH1-1: `m_mega_ribs`(170,34, 1~2시)가 상행 방향 랜드마크. EXIT에서 ≥30타일 이격.
+- CH1-1: `m_c1tree`(102,90)가 유일한 중앙 HERO다. START=`m_cage_gate`(103,188), 좌상 cocoon, 좌중 camp, 좌하 bone arch, 우중 altar, 우상 pool, 우하 poison pit가 비대칭 side POI를 이룬다.
 - 미니맵에 의존하지 않는다 — "실루엣이 동선"(`맵디자인_벤치마크.md §4`).
 
 ---
@@ -146,4 +147,4 @@
 ---
 
 ## 14. CODE CHANGE
-**NONE.** 규칙 기획 전용. 구현은 `MAP_IMPLEMENTATION_ROADMAP.md` 단계별로만.
+2026-08-30 CH1-1 forest boundary 적용: `_MAP_COMPOSE[0].handProps` 63개, mega/자동 filler/structural module 0. 중앙 HERO와 START→north approach, side POI landmark를 보존하고 baked forest와 canonical tile wall의 일치, north gate exits y7, authored/runtime63/64를 회귀 기준으로 고정한다.

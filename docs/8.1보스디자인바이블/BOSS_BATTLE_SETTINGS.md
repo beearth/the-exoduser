@@ -23,7 +23,7 @@
 |---|---|---|---|
 | 0 (썩은 숲) | 0~3 | `0` | 원형 투기장 (기둥 없음) |
 | 1 (벌레굴) | 4~9 | `1` | 대성당 (직사각형 전체) |
-| 2 (얼음굴) | 10~13 | `2` | 십자형 (armW=30%, armH=30%) |
+| 2 (지옥의 겨울) | 10~13 | `2` | 십자형 (armW=30%, armH=30%) |
 | 3 (화염지대) | 14~20 | `3` | 팔각형 |
 | 4 (군단) | 21~25 | `4` | 타원형 |
 | 5 (사도의 마굴) | 26~31 | `0` | 원형 (재사용) |
@@ -173,7 +173,7 @@ shake(14 + _bp*4)                              // 페이즈별 18~30
 | 2 | 1장 | 사냥꾼 | + `cageTrap` |
 | 3 | 1장 | 기생수 | + `seekerMines` |
 | 4~9 | 2장 벌레굴 | 벌레 수호자~여왕 구더기 | 점진 해금: `fanWave→wallPush→shieldBash2→spiralBullet` |
-| 10~13 | 3장 얼음굴 | 얼음 망령~봉인 괴물 | + `laser, safeCorner, teleStrike, delaySlash, perilThrust, gravityWell` |
+| 10~13 | 3장 지옥의 겨울 | 얼음 망령~봉인 괴물 | + `laser, safeCorner, teleStrike, delaySlash, perilThrust, gravityWell` |
 | 14~20 | 4장 화염지대 | 화염 악마~화염 감옥지기 | + `meteor, radialLaser, swordWave, pillars, burstCounter, chainLightning` |
 | 21~25 | 5장 군단 | 전쟁의 잔해~군단 지휘관 | + `mirrorGuard, rewindStrike, orbWeave, mirrorClone` |
 | 26~31 | 6장 사도의 마굴 | 살점의 수호자~대사도 | + `itemSteal` |

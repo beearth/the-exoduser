@@ -24,6 +24,7 @@
 - **Mac context-loss = PENDING**: Windows/AMD는 실 loss 미재현 → **트리거 완화 메커니즘만** 검증(GC 대기 제거로 transient VRAM 피크 소거). **Mac 실기에서 동일 transition stress 후 context-loss=0 확인 시에만 Track D 전체를 FIXED/CLOSED로 승격.** 그 전까지 Mac root cause는 STRONGLY SUPPORTED(메커니즘 레벨), 완전 CONFIRMED 아님.
 - **D2 = DEFERRED**: `preserveDrawingBuffer`(true)/`depth`(true) **현재 변경 금지.** 새 실측 메모리/성능 증거 또는 Mac loss 재발 없이는 재개 금지. D1 lifetime fix와 혼합 금지(독립 측정 완료).
 - **git provenance**: 하단 §"git provenance — ae7eaf82 번들" 참조. `ae7eaf82`는 auto-sync cron이 boss3d 타세션 파일을 같은 commit에 흡수함. **이미 push된 history는 rewrite하지 않음.**
+- **2026-08-23 ATMOS idle hitch (D1 비재개)**: freeze 이후 추가된 `_atmCut`이 매 프레임 `_glVer++` → WebGL `_getTex`가 비-map 전체화면 텍스처를 누적 생성 → 3~4초 GPU GC hitch. 수정은 비-map 텍스처 재사용 + 정지 중 `_glVer` 스킵. **map `_mapTex` Track D 경로 무변경.** 상세: `docs/12퍼포먼스·최적화/12퍼포먼스·최적화.md` §ATMOS 정지 hitch.
 
 ---
 

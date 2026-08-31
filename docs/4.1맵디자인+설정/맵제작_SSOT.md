@@ -164,7 +164,7 @@ MASTER MAP
 | PLAY AREA | 60~70% | 이동, 전투, 몹, 투사체, 드랍 | 텍스처 노이즈↓, 큰 오브젝트↓, 명암 과함↓, 경계 명확, 캐릭터 실루엣 |
 | ENVIRONMENT | 30~40% | 장소성 | 절벽, 거목, 성벽, 거대 뼈, 조각상, 심연, 건축, 용암 |
 
-1-1이 맞는 이유: 용해골 1개가 장면을 먹고 옆은 **빈 흙**.
+1-1 현행(2026-08-28): `m_c1tree`(102,90) 하나가 중앙 HERO이며 START→EXIT 축은 negative space다. cocoon/camp/bone arch/altar/pool/poison pit가 좌우 side POI를 만든다. legacy keepDragon과 `mega`/`lm`/자동 filler는 모두 OFF다.
 
 ---
 
@@ -274,6 +274,16 @@ ROAD → COMBAT → NARROW → LANDMARK → COMBAT → TRANSITION
 ## 19. Height Illusion
 
 2D여도 절벽, 심연, 계단, 다리, overhang, foreground로 **높이가 있는 세계**처럼.
+
+2026-08-29 CH1-1 실증은 illusion만이 아니라 실제 stage-local collision/height를 갖는다.
+
+| 항목 | CH1-1 우중 제단 값 |
+|---|---|
+| 정상 | 중심 `(147,98)`, `rx18/ry9`, height 1 |
+| 절벽 | `.84≤정규화 타원거리≤1.04`, `isW` 차단 |
+| ramp | 서쪽 `x125→135,y98`, 반폭 `1.8→3`, smoothstep 0→1 |
+| 시각 | 기존 `m_c1gedge` 기반 뿌리 단구, 신규 에셋 없음 |
+| 금지 | 전 stage 자동 확산, 메인 진행축 고저 강제, `heightRle` 전역 구현으로 오기 |
 
 ---
 
@@ -386,6 +396,7 @@ CH1 야생 지옥 → CH2 생태계 → CH3 고대 → CH4 재해
 
 **키트 필드 테스트:** `http://localhost:3333/game.html?stage=0` → 기본 `CH1_MASTER_16x9_v2_PROD.jpg` (native 1:1, 55×31).  
 복구: `?stage=0&plate=fieldone` → `CH1_FIELD_ONE.png` 36×27. `?classic=1`이면 본편 1-1.  
+**35맵 본편 QA 허브:** `npm run serve:map` → `http://127.0.0.1:3334/`. 모든 맵에 `classic=1&mapqa=1`을 강제하며 `si 0~34`를 무전투 상태로 선택·새로고침·새 창·에디터로 열 수 있다. 세부 계약은 `MAP_TEST_SERVER.md`.
 인게임 구도 QA: `qa_ch1_master_16x9/QA_REPORT_INGAME.md` (**NEEDS_REVISION**, 한 화면≈맵).
 
 둘째 장(스트립)이 **카메라 정답**. 첫째 장은 **1장 소품·색**. 플레이트는 스트립처럼 길을 위에서 그리고, 비스타의 독녹·철창·성을 넣는다. 강한 소실점 한 장으로 밟지 않는다.

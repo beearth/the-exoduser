@@ -1,6 +1,462 @@
 # Sync Changelog
 
+## 2026-08-30 — LOCAL QA WORKTREE HYGIENE
+
+| 항목 | 종전 | 현행 | 처리 원칙 |
+|---|---:|---:|---|
+| `git status` 표시 | 총 13,622건 | **562건** | production 후보 보존 |
+| untracked | 13,553건 | **492건** | 실제 assets/test/docs/tools 유지 |
+| `tmp/` | 11,817건 노출 | Git 감시 제외 | 로컬 백업·진단 파일 보존 |
+| `captures/` | 1,188건 노출 | Git 감시 제외 | QA 이미지 보존 |
+
+- `.gitignore`에 루트 `tmp/`, `captures/`, `_autosave/`, `_bt_*.mjs`와 명시적인 로컬 debug 이미지/log 패턴을 추가했다. 파일은 삭제하지 않아 기존 QA 증거와 백업을 그대로 유지한다.
+- 루트에 잘못 생성된 0-byte 파일 `0)and(logs.append(m[0].text)))` 1개만 제거했다. 남은 untracked 492건 중 427건은 실제 제작 에셋이며 숨기거나 삭제하지 않았다.
+- `game.html`, gameplay, collision, route, START/EXIT는 변경하지 않았고 commit/push/deploy도 수행하지 않았다.
+
+## 2026-08-30 — CH2-1 REPORTED COLLISION-RECESS VISUAL FIX
+
+| 항목 | 종전 | 현행 | 보존 |
+|---|---:|---:|---|
+| `_CH2S4` authored/runtime | `108/108` | **`109/109`** | skipped 0 |
+| BACK/MID | 8 | **9** | filler 12 / seam 10 |
+| collision/non-collision | `51/57` | **`51/58`** | tile map hash `fefe09a0` |
+| 전체 `MAP_OBJS` | 110 | **111** | START/EXIT·route 불변 |
+
+- 사용자 캡처 `스크린샷 2026-08-30 162226.png`의 CH2-1 중앙 굽은 굴→깊은 굴 오른쪽 접합부는 S자 동선 바깥 collision recess인데, CH2 dark void base가 같은 ground 계열로 렌더되어 빈 통로처럼 판독됐다.
+- 기존 collision을 열거나 prop collider를 추가하지 않았다. 잠금 MEGA 뒤 BACK 레이어에 `m_c2backHive (112,70,rot 8°,overlap .16)` 한 장만 추가해 `m_c2skinDepthArch`와 `m_c2chitinArch` 사이를 막힌 유기질 깊이로 연결했다. runtime 좌표 `(111.5,70.5)`, prop collision false다.
+- TDD `test/ch2Si4WormEntranceLayout.test.js` **21/21 PASS**. 실제 WASD는 START→entry→egg plaza→east pocket 왕복→slime→bent tunnel→deep cave→boss gate→exit core **9/9**를 모두 `isWall=false`로 통과했다. 동일 카메라 4개 BEFORE/AFTER와 runtime report는 `captures/ch2_reported_gap_20260830/after_recess_fix/`에 보존했고 pageerror/404/broken sprite 0이다. commit/push/deploy는 수행하지 않았다.
+
+## 2026-08-30 — CH3-1 CENTRAL DETAIL PASS
+
+| 항목 | 종전 | 현행 | 보존 |
+|---|---:|---:|---|
+| 중앙 authored detail | ritual 1 + 작은 유해 흔적 | 기존 바닥 3 source × 2 = **6개 저알파 detail ring** | 64×64 collision/vertical prop 0 |
+| source/runtime authored | `340/337` | `346/343` | collision 101 |
+| runtime total | `338~339` | `344` 전체맵 / `345` 플레이 QA | START/EXIT·종주축 불변 |
+| 재사용 | filtered 34 / rotated 75 / composite 7 | filtered 40 / rotated 81 / composite 8 | source 21, crop 13종/87, mirror 30 |
+
+- `prop_ice_gdark.png`, `prop_ice_gplates.png`, `prop_ice_gcrack.png`만 재사용해 `m_c3hellcenter_stain/plate/vein`을 각 2개 배치했다. scale `.62~.78`, alpha `.055~.11`, 반경 `10~22` tile의 비대칭 authored 배치이며 신규 PNG·crop·random scatter는 0이다.
+- 세 모듈은 모두 `renderLayer=1` floor-only 비충돌이다. `x92..108` 남북 종주축에는 배치 0, central detail collision 0이며 ritual `(100,100)`, scale `4.7`, alpha `.56`과 기존 outer/landmark/collision/edgeErase는 변경하지 않았다.
+- TDD `test/ch3HellWinterLayout.test.js` **28/28 PASS**. 실제 브라우저는 pageerror/404/missing sprite 0이며 `captures/ch3_center_detail/{SI11_full,model_vs_runtime,central_arena}.png`와 `center_detail_report.json`에 보존했다.
+- ASSET REUSE SUMMARY: source images 21(+base ground 1), reused as-is 15, cropped/runtime crop 13종/87 instance, rotated 81, mirrored 30, runtime filtered 40, composite landmark 8, truly new asset 0. commit/push/deploy는 수행하지 않았다.
+
+## 2026-08-30 — 무지개탄 +50px/s / 일반 물리탄 평균 -50px/s
+
+| 구분 | 종전 | 현행 | 평균 변화 | 적용 |
+|---|---:|---:|---:|---|
+| 일반 물리탄 | 150~300px/s, 평균 225 | **100~250px/s, 평균 175** | **-50px/s** | `EL.P`·빨콩 일반탄 |
+| 일반 마법탄 | 250~400px/s, 평균 325 | **250~400px/s, 평균 325** | 0 | 비물리 원소·bw/gb/blue bean |
+| 무지개탄 | 250~400px/s, 평균 325 | **300~450px/s, 평균 375** | **+50px/s** | `blackBean` 전용 |
+
+- `ENEMY_RAINBOW_BULLET_SPEED_MIN/MAX=300/60,450/60`과 `_rollEnemyRainbowBulletSpeed`를 추가했다. `_normalizeEnemyBulletSpeed`는 `blackBean` 전용 band를 일반 마법 band보다 먼저 선택한다.
+- 탄속 band 폭은 모두 150px/s로 유지했다. 탄 방향, 발사 확률, 수명, 데미지, 크기, 패링 입력, 탄막 1/3 밀도와 특수 투사체 예외는 변경하지 않았다.
+- TDD에서 물리/무지개 기대값 RED를 확인한 뒤 `test/enemyProjectileSpeedBand.test.js` 5/5 PASS. 관련 SSOT `몬스터_공격시스템.md`, `몬스터_총관리.md`, `탄막시스템_총정리.md`를 동기화했다.
+- commit/push/deploy는 수행하지 않았다.
+
+## 2026-08-30 — CH1-1 BAKED-ALIGNED CANONICAL FOREST BOUNDARY
+
+| 항목 | 종전 | 현행 |
+|---|---:|---:|
+| stage0 geometry | `MAP_ALL_FLOOR` + authored structural rows | `MAP_ALL_FLOOR=false`, `forestBoundary:1` canonical RLE |
+| authored/runtime | `123/124` | `63/64` (hand63 + boss gate1) |
+| structural | `59` | `0` |
+| collision | total83 / hand82 | total23 / hand22 |
+| tile | floor39022 / wall3 / boss975 | floor23199 / wall16495 / exit3 / gate3 / boss300 |
+
+- `_buildCh1StartForestRLE(200,200)`이 side/top/south baked forest mass와 대응하는 canonical tile wall을 만든다. visual baked alpha에 collider를 붙이지 않고 map geometry가 player/enemy/flow/spawn/minimap 공통 경계를 담당한다.
+- `_applyCh1StartNorthGate`는 `bossCx=100`, `gateY=5`, exits `(99..101,7)`과 `x88..112,y2..35` approach를 forest RLE 뒤에 보존한다. 실제 WASD는 START `(100.5,185.5)`에서 north `y23.43`까지 모든 segment PASS했다.
+- 모든 `m_c1b*`/`m_c1cn|cs|ce|cw*` module 59개와 wall 뒤 dead prop `m_eye_tree(185,55)` 1개를 제거했다. `_ch1StartOuterEnabled()`이면 procedural wall-edge/pillar fallback도 suppress한다.
+- forest mask의 자동 `_nearFloor` 이동 5건을 `corpse(124,179)`, `m_vine_pillar(29,158)`, `m_c1gtoxic(168,40)`, `m_c1pool(167,43)`, `m_meat(164,47)` authored 좌표로 고정하고 기존 `m_puddle(164,53)`도 toxic 접합 위치로 고정했다. 6개 모두 runtime exact=true, deficit0이며 authored 총수 63은 유지한다.
+- baked outer/smoothing master, landmark 좌표, hill vertical 수학과 START→NORTH 진행 의미는 유지한다. pageerror/404는 0/0이며 commit/push/deploy는 수행하지 않았다.
+
+## 2026-08-30 — CH2-1 MAP-QA MONSTER COMBAT PREVIEW
+
+| 항목 | 종전 | 현행 | 적용 위치 |
+|---|---|---|---|
+| CH2-1 테스트 관람 | `mapqa=1`이 적·문지기·소환굴을 전부 제거 | `stage=4&mapqa=1&combatqa=1`에서 기존 전투 구성을 유지 | `game.html` |
+| 허브 기본값 | 전 스테이지 무전투 | si4 선택 시 `몬스터 ON`, 버튼으로 ON/OFF | `map-test.html` |
+| 직접 경로 | `/map/4`도 무전투 | `/map/4`가 `combatqa=1`을 포함해 리다이렉트 | `tools/local-static-server.mjs` |
+| 안전 계약 | 무적·스킬 차단·시작 배리어 제거 | 동일; 몬스터 미리보기에서도 플레이어 무적과 스킬/펫 대사 차단 유지 | `game.html` |
+
+- production CH2-1에는 이미 S 4개·M 5개·L 2개, 합계 **소환굴 11개 / 총 스폰 예산 900**과 etype 39 문지기 포함 출구 수비대가 있었다. 이번 변경은 production 밀도·몬스터 풀·AI를 늘리지 않고 테스트 모드가 지우던 기존 구성을 CH2-1에서만 선택적으로 보이게 한다.
+- `_MAP_QA_COMBAT`은 `_MAP_QA_MODE && stage===4 && combatqa=1`일 때만 참이다. 다른 34개 스테이지의 기존 무전투 관람 계약과 CH2-1 geometry·collision·START/EXIT·authored `108/108`·`MAP_OBJS=110`은 변경하지 않았다.
+- TDD `test/mapTestServer.test.js` **5/5 PASS**. Playwright 실브라우저에서 허브 `몬스터 ON`, `combatqa=true`, `G.spawnHoles=11`, 초기 적 16, pageerror 0을 확인했다. 캡처는 `captures/ch2_monster_preview_20260830/`에 보존했다.
+- commit/push/deploy는 수행하지 않았다.
+
+## 2026-08-30 — LOBBY CHAPTER/FLOOR INFORMATION CORRECTNESS
+
+| 항목 | 종전 | 현행 | 적용 위치 |
+|---|---|---|---|
+| 장 경계 | `Math.floor(stage/10)` 10구역 고정 | `4/6/4/7/5/6/3` 가변 구역 | 온라인·로컬 캐릭터 슬롯 |
+| 1~3장 명칭 | 얼음지옥 / 독충지옥 / 화염지옥 | 썩은 숲 / 벌레굴 / 지옥의 겨울 | 슬롯 진행도 |
+| 최초 스테이지 | `시작점` | `1장 썩은 숲 1층` | stage 0 |
+| 회귀 사례 | stage 12→`2장 독충지옥 3층` | stage 12→`3장 지옥의 겨울 3층` | `probe-12` 등 기존 세이브 |
+
+- `lobby-stage-info.js`에 `game.html`의 7장/35구역 경계를 반영한 공통 진행도 변환기를 추가하고, `index.html`의 온라인·로컬 중복 계산식을 모두 `_formatLobbyStageProgress(stage,_TL)`로 교체했다. 세이브 스키마와 저장된 `stage` 값은 변경하지 않았다.
+- `test/lobbyStageInfo.test.js`가 7개 장 경계, stage 12/13 표시, 두 렌더러의 공통 포맷터 사용 및 구형 10구역 공식을 고정한다.
+- 관련 SSOT 검색 결과 `docs/TEST_SERVER.md`와 마스터 바이블의 장명/구역 수는 이미 현행 코드와 일치했으며, `docs/3.1 ui hud 디자인/캐릭터선택_리모델링_기획서.md`의 stale `1장 얼음지옥` 예시 2곳을 동기화했다.
+- commit/push/deploy는 수행하지 않았다.
+
+## 2026-08-30 — CH1-1 STRUCTURE COLOR/CONTRAST RETOUCH
+
+| 항목 | 종전 | 현행 | 적용 범위 |
+|---|---:|---:|---|
+| perimeter structural alpha | smoothing `.42` | smoothing `.70` | stage0+smoothing+enabled+hand; locked outer는 `.42` 유지 |
+| NW band | `.28/.34/.42` | `.60/.68/.76` | 동일 |
+| SW band | `.44/.52/.60` | `.68/.76/.84` | 동일 |
+| NE band | `.52/.60/.68` | `.72/.80/.88` | 동일 |
+| SE band | `.38/.48/.58` | `.64/.72/.80` | 동일 |
+| corpse tree tone | 없음 | brightness `1.24`, contrast `1.10`, saturate `1.06` | `m_c1tree`, smoothing+enabled hand |
+| structural tone | 없음 | brightness `1.18`, contrast `1.08`, saturate `1.08` | `m_c1b*`, `m_c1cn/cs/ce/cw*`, smoothing+enabled hand |
+
+- 종전 smoothing의 room/border 감소, L-row stagger, toxic 3 wet mass+5 fragment, 열린 center는 보존하면서 바닥 톤에 잠기던 hand 구조물의 색·외곽선 판독만 복구했다. landmark alpha는 1을 유지한다.
+- 기존 unbaked metadata filter와 CH1 tone은 공백으로 연결한 단일 filter 문자열로 조합하고 기존 sprite FX save/filter·blend/draw/restore 경로를 사용한다. 추가 save stack이나 canvas filter 상태 누수는 만들지 않았다.
+- `?ch1StartPhase=outer`, `?ch1StartOuter=0`, boss arena, stage1에는 신규 alpha band/tone을 적용하지 않는다. geometry/collision/route/authored/height/isW와 `baked_start_outer`/`baked_start_smoothing` master/chunk는 변경 0이다.
+- contrast 전용 smoothing regression은 16/16 PASS, pageerror/404는 0/0이다. 캡처는 `captures/ch1_1_structure_contrast_retouch_20260830/`에 보존했다. 기존 baseline outer+smoothing 16/16 + hill 2/2(18/18) 이력은 아래 항목 그대로 유지한다.
+- commit/push/deploy는 수행하지 않았다.
+
+## 2026-08-30 — CH3-1 FINAL MACRO RETOUCH / VISUAL FINAL PASS
+
+| 항목 | 종전 | 현행 | 보존 |
+|---|---:|---:|---|
+| authored | source/runtime `324/321` | `340/337`, Final Macro crest 16 | collision 101, core/route blocker 0 |
+| rampart crop | 8종/71 instance | 13종/87 instance | 기존 source image 21(+base ground 1) |
+| 전역 톤 | floor `.46`, prop `.48/1.28/0` | floor `.49`, prop `.46/1.34/.18` | red accent는 fissure/landmark 국소만 |
+| ritual | alpha `.78` | alpha `.56` | `(100,100)`, scale `4.7`, 비충돌 |
+
+- `prop_hellwinter_rampart.png` 한 장에서 spire A/B, pillar, rubble A/B 5개 runtime crop을 추가했다. TOP/RIGHT/SOUTH/LEFT 각 4개씩 총 16개를 기존 tower anchor에 `.90~1.10` scale로 중첩해 4개 비대칭 silhouette family를 만들었다. base size `430~500`, alpha `.58~.70`, layer `-1`이며 전부 비충돌이다. rubble B 3개만 mirror한다.
+- 신규 PNG·신규 원화·random scatter·`edgeErase` 추가는 0이다. START/EXIT, 중앙 64×64 core, main route, collision wall, execution/prison/carcass/dormant 좌표·seam 처리는 변경하지 않았다.
+- 바닥 흑색 tone은 `rgba(6,8,10,.49)`, 프롭은 `brightness(.46) contrast(1.34) saturate(.18)`로 조정해 밝은 설원/청색 과포화를 억제하면서 dead blue-gray를 남겼다. ritual alpha는 `.56`으로 낮춰 30-enemy/적색 telegraph보다 낮은 hierarchy를 확인했다.
+- TDD는 27/27 PASS. runtime은 source/runtime authored `340/337`, 전체 `MAP_OBJS=338~339`, collision 101, silhouette breaker 16(각 family 4), pageerror/asset 404/missing sprite 0이다. WASD 6구간 `(100.5,185.5)→(100.5,11.50)` PASS, 최대 50ms 이동량 `43.41px`다.
+- 최종 캡처는 `captures/ch3_final_macro_retouch/{SI11_full,model_vs_runtime,outer_LEFT,outer_RIGHT,outer_TOP,central_arena}.png`다. 판정은 **WALL SYSTEM / GAMEPLAY / SILHOUETTE / REPETITION / DENSITY / LIGHTING / COLOR / CANONICAL COMPARISON PASS — CH3-1 VISUAL FINAL PASS**다.
+- ASSET REUSE SUMMARY: source images 21(+base ground 1), reused as-is 15, cropped/runtime crop 13종/87 instance, rotated 75, mirrored 30, runtime filtered 34, runtime edge-erased 4종/5 instance, composite landmark 7, truly new asset 0. commit/push/deploy는 수행하지 않았다.
+
+## 2026-08-30 — CH2-1 USER-SUPPLIED ORGANIC WALL CONNECTION KIT
+
+| 항목 | 현행 값 | 보존 |
+|---|---:|---|
+| supplied source | 1254×1254 RGBA PNG 6종 | hook L/R, rib arc, web arc, jaw arc, depth arch |
+| BACK/MID 배치 | supplied 6 + 기존 ridge L/R 2 = 8 | authored/runtime `108/108`, `MAP_OBJS=110` |
+| 맞물림 | `.12~.18`(12~18%) | 정밀 타일식 접합 금지, zone별 비대칭 회전 |
+| 접합 마감 | filler 12 + seam 10 | web/chitin/egg decal, collision 0 |
+
+- 제공된 6개 외벽 원화를 `assets/map/ch2/mega/wall_skin_*.png`로 등록하고 기존 BACK/MID 8개 슬롯 중 6개를 교체했다. 신규 authored entry를 추가하지 않았으며 giant carapace·giant hive·deep hive·organic EXIT frame, START→EXIT 동선, collision grid는 그대로다.
+- top/central/east/lower 네 외벽 구역에서 각 조각이 인접 MEGA·filler와 12~18% 맞물리도록 `overlap` metadata를 명시했다. front의 curved chitin/rib/jaw/egg filler와 web/chitin/egg seam이 접합부를 덮어 하나의 연속된 생물성 wall belt로 읽히게 한다.
+- supplied kit은 `authoredOnly:1`, `keepAR:1`, alpha `.68`, `sz=1080~1120`, collision flag 0이다. TDD는 supplied 6종의 단일 사용, RGBA 1254², 겹침 범위, zone별 filler/seam 존재, east pocket 외곽 anchor를 고정하며 CH1+CH2+CH3 layout regression **64/64 PASS**다.
+- runtime QA는 authored/runtime/skipped `108/108/0`, supplied skin collision 0, pageerror/asset 404/broken sprite 0이다. gameplay zoom 8장과 3000² 전체맵은 `captures/ch2_supplied_wall_kit_review2_20260830/`에 있고, 요청한 6개 파일명 묶음은 그 아래 `required/`에 있다. 사용자 캡처 승인 전 상태는 `VISUAL REVIEW READY`다. commit/push/deploy는 수행하지 않았다.
+
+## 2026-08-30 — CH1-1 DEFAULT SMOOTHING / PLAYABLE-LANDMARK CONNECTION PASS
+
+| 항목 | 현행 값 | 보존 |
+|---|---|---|
+| phase | stage0 기본 smoothing / `ch1StartPhase=outer` outer-only / `ch1StartOuter=0` full-off | boss arena 자동 OFF |
+| master | locked outer 8192² + `baked_start_smoothing/CH1_1_START_SMOOTHING_MASTER.png` 8192² | 각 64×1026, core1024+bleed1 |
+| layers | EDGE8 / CORNER4 / TREE_BASIN4 / SIDE_CONNECTION10 / OPEN_FIELD5 / SMALL0 | 신규 structure/landmark/vertical 0 |
+| gameplay | authored123/runtime124, collision83 total/82 hand, tiles39022/3/975 | geometry/collision/route/authored 불변 |
+
+- interior structural alpha를 NW .28~.42, SW .44~.60, NE .52~.68, SE .38~.58로 smoothing하고 perimeter .42, landmark 1을 유지했다. draw alpha만 바뀌며 `isW`·hill height/collision math는 동일하다.
+- tree `(102,90)`은 meta sz1450/scale1을 유지한 채 3100×2200 basin으로 지면 연결했다. camp `(45,100)`, altar `(147,97)`, hill `(147,98,rx18/ry9,ramp125→135)`, cocoon `(47,50)`, pool `(174,50)`, pit `(162,139)` 좌표는 불변이다.
+- visual retouch에서 room/border 인상을 줄이고 L-row를 stagger했으며 toxic S-chain을 wet mass 3 + fragment 5로 분해했다. center는 신규 vertical clutter 없이 open 상태를 유지해 visual PASS했다.
+- outer/smoothing map hash `f5c06037`, hand hash `031fc73e`가 동일하다. 첫 화면 outer request/ready/warm `16/16/16`, visible/drawn `4/4`, max warm/draw `5.2ms/0.1ms`; smoothing은 `16/16/16`, `4/4`, `11.7ms/0.1ms`다. full-map 64/64 ready, error0, pageerror/404 0이며 outer+smoothing 16/16 + hill 2/2(총 18/18) PASS다.
+- 비교 증거는 `captures/ch1_1_smoothing_20260830/COMPARISON/`, 상세 SSOT는 `4.1맵디자인+설정/CH1_1_SMOOTHING_PASS.md`다. commit/push/deploy는 수행하지 않았다.
+
+## 2026-08-30 — CH3-1 LANDMARK EDGE CLEANUP PASS 2 / FULL COMPARISON
+
+| 대상 | 비파괴 수정 | 좌표·충돌 보존 | 판정 |
+|---|---:|---|---|
+| W `m_c3hellexecution` | `edgeErase=.03` | `(29,99,1.62)`, `colW/H=165/76` | 접합 PASS |
+| E `m_c3hellprison` 군집 | `edgeErase=.03` | `(166,101,1.48)`·`(174,112,.96)`, `colW/H=145/88` | 접합 PASS |
+
+- 원본 PNG·authored 수량·collision은 변경하지 않았다. alpha bbox 하단·좌우 3%, 상단은 그 폭의 25%만 smoothstep feather했고 실제 카메라에서 실루엣 절단·사슬 소실·그림자 부유 0을 확인했다. 이후 micro-cleanup은 중단한다.
+- TDD RED 후 `test/ch3HellWinterLayout.test.js` 25/25 PASS. runtime edge bake 2/2, route/center blocker 0, pageerror/404/missing sprite 0, 전체맵 `MAP_OBJS=322`, collision object 101이다.
+- 현행 ASSET REUSE SUMMARY: object source 21(+base ground 1), reused as-is 15, cropped/runtime crop 8종/71 instance, rotated 75, mirrored 27, runtime filtered 34, runtime edge-erased 4종/5 instance, composite landmark 7, truly new asset 0.
+- `captures/ch3_cleanup_pass2/SI11_full.png`와 canonical `MAP 01`의 `model_vs_runtime.png`를 전체 비교했다. density gradient·landmark·중앙 전투 가독성·개별 seam은 PASS지만, 외곽 곡률과 죽은 청회색 냉기 atmosphere가 canonical보다 약하다.
+- 최종 판정은 **WALL SYSTEM PASS / CLEANUP PASS 2 PASS / CH3-1 VISUAL FINAL RETOUCH / GAMEPLAY PASS**다. 다음 작업은 추가 seam 정리가 아니라 outer silhouette/composition과 color/lighting의 macro retouch다.
+
+## 2026-08-30 — CH2-1 COLLISION-ONLY DIAGONAL RIM CLEANUP
+
+| 항목 | 종전 | 현행 | 보존 |
+|---|---|---|---|
+| 긴 대각 경계 | 밝은 `(w+4)` floor mask와 dark void의 색 차만 보여 collision-only 영역처럼 판독 | 경로 양쪽을 2.25타일 간격으로 샘플링하고 2주기 반경 변주를 적용한 quadratic side curve | `_MAP_COMPOSE[4]` 22점·`w:30` |
+| 유기형 림 | 직선 polyline soft halo + 얕은 내부 edge shadow | side별 shadow `6.4T` + shell body `4.5T` + highlight `.34T`의 3층 연속 chitin rim | collision grid·route·MAP_OBJS 무변경 |
+| 런타임 | authored/runtime `108/108` | authored/runtime `108/108`, 200×200 | MEGA 17, giant 구조물, START/EXIT |
+
+- 원인은 collision 누락이 아니라 render-only floor silhouette의 밝기 hard cutoff가 긴 대각 구간에서 구조물 없는 충돌면을 수학적 절단선처럼 드러낸 것이었다. `_traceCh2OrganicFloorSide`/`_paintCh2OrganicCollisionRim`을 CH2 dark void pass에 추가해 사각 타일이나 신규 오브젝트 없이 양쪽 wall shoulder를 연속 곡선으로 표시한다.
+- TDD에서 전용 curved-rim 부재 RED를 확인한 뒤 `test/ch2Si4WormEntranceLayout.test.js` 19/19 PASS, CH1+CH2+CH3 핵심 layout regression 60/60 PASS. 873×641 전 경로 스캔과 1920×1080 gameplay zoom은 `captures/ch2_collision_rim_review_20260830/`에 보존했다. pageerror/asset 404/authored broken sprite는 0이며 `boss_gate_col`·`lore`는 이미지가 없는 기존 system object라 sprite 집계 대상이 아니다.
+- commit / push / deploy는 수행하지 않았다. 사용자 캡처 확인 전 상태는 `VISUAL REVIEW READY`다.
+
+## 2026-08-30 — CH3-1 LANDMARK EDGE CLEANUP PASS 1
+
+| 대상 | 문제 | 비파괴 수정 | 보존 |
+|---|---|---:|---|
+| SW `m_c3hellcarcass` | 밝은 동토 바닥판이 shell 위에서 스티커처럼 판독 | `edgeErase=.08` | `(38,151)`, scale `2.1`, `colW/H=220/88` |
+| NE `m_c3helldormant` | 밝은 외곽 fringe와 fortress overlap | `edgeErase=.10` | `(160,47)`, scale `1.42`, `colW/H=170/96` |
+
+- `_edgeEraseMapSprite`는 원본 PNG를 수정하지 않고 로드 시 alpha bbox 하단·좌우를 smoothstep feather한다. 상단은 적용 폭의 25%만 지워 뿔·사슬 실루엣을 보존한다. PASS 1에서는 처형대·감옥·벽에 적용하지 않았다.
+- 신규 source asset 0, authored/runtime 수량 `324/321`, route/center blocker 0을 유지한다. `test/ch3HellWinterLayout.test.js` 24/24 PASS, edge bake 2/2, pageerror/404 0이다.
+- PASS 1 시점 ASSET REUSE SUMMARY는 object source 21(+base ground 1), reused as-is 17, cropped/runtime crop 8종/71 instance, rotated 75, mirrored 27, runtime filtered 34, runtime edge-erased 2, composite landmark 7, truly new asset 0이다.
+- close-up과 전체맵 증거는 `captures/ch3_cleanup_pass1/{carcass,dormant,SI11_full}.png`다. 전체 composition·landmark 좌표·collision은 변경하지 않았다.
+
+## 2026-08-30 — MAP TEST HiDPI 해상도 / 2배 확대 수정
+
+- 원인 1: 테스트맵도 일반 게임과 같이 `_dpr=1` 백킹을 사용해 Windows 200%/DPR 2 화면에서 1920×1080 캔버스가 2×2 물리 픽셀로 확대됐다. 원인 2: HiDPI 백킹을 켰을 때 `rz()`가 CSS 크기 캐시를 style 적용 전에 갱신해 캔버스 CSS까지 3840×2160이 되어 화면이 실제 2배 커졌다.
+- 현행: `mapqa=1`에서만 `_ssaa=clamp(devicePixelRatio,1,2)`를 적용한다. DPR 2 실측은 iframe/logical `1920×1080`, backing `3840×2160`, CSS `1920×1080`; 일반 게임은 1x, 카메라·월드 범위·오브젝트 크기는 불변이다.
+- TDD `test/mapTestServer.test.js` 4/4 PASS. Edge DPR 2 실브라우저에서 CH2-1 200×200, pageerror/asset 404 0을 확인했다. 증거: `captures/map_test_hidpi_20260830/ch2_si4_map_test_dpr2.png`, `report.json`.
+
+## 2026-08-30 — ACTUAL CH1-1(si0/stage0) START OUTER MASS
+
+- 이전 baked/outer 작업이 `si1(stage1/CH1-2)`를 대상으로 해 실제 시작맵에 보이지 않던 stage 식별 오류를 수정했다. `심연의 앵글러`가 존재하는 실제 CH1-1은 `si0 / G.stage===0`이다.
+- `assets/map/ch1/baked_start_outer/`: 기존 CH1 에셋만 사용한 8192×8192 master와 8×8=64개의 1026px bleed chunk를 추가했다. BACK14/LARGE20/MEDIUM16/GROUND_CONNECTION1/SMALL0이다.
+- `game.html`: CH1-1 outer를 기본 ON으로 로드하고, `ch1StartOuter=0` 비교 opt-out, boss arena 자동 OFF, viewport+1-neighbor progressive decode/GPU warm, perimeter collision-prop visual alpha 0.42 통합을 추가했다. collision/route/authored 좌표·수량은 바꾸지 않았다.
+- `test/ch1StartOuterMass.test.js`: stage0 manifest/loader, protected center alpha, continuous outer alpha, 64 chunks와 horizontal/vertical 1px bleed를 4/4 PASS로 고정했다.
+- actual runtime QA: normal START 요청/ready 15/15, visible/drawn 6/6, max warm 10.6ms, max draw 0.2ms, pageerror/404 0/0. authored123/runtime124, structural59, collision82, auto0 유지.
+- BEFORE/FINAL 전체맵과 1920×1080 camera 결과는 `captures/ch1_1_outer_mass_recovery_20260830/`에 보존했다. 최종 retouch는 연속 보라색 edge를 dark-brown broken shadow/root spread로 교체했으며, `FINAL_PASS/CH1_1_8_CAMERA_BOARD.png`에서 START·SOUTH L/R·MID L/R·TREE L/R·NORTH 8개 시야를 육안 PASS했다. 상세 SSOT는 `docs/4.1맵디자인+설정/CH1_1_START_OUTER_MASS.md`다.
+- commit / push / deploy는 수행하지 않았다.
+
+## 2026-08-30 — 적 마법탄 평균 탄속 +100px/s
+
+| 구분 | 종전 | 현행 | 평균 변화 | 적용 |
+|---|---:|---:|---:|---|
+| 일반 물리탄 | 150~300px/s | 150~300px/s | 225→225 | 변경 없음 |
+| 일반 마법탄 | 150~300px/s | **250~400px/s** | **225→325 (+100)** | 비물리 원소·black/bw/gb/blue bean |
+
+- `ENEMY_MAGIC_BULLET_SPEED_MIN/MAX=250/60,400/60`, `_rollEnemyMagicBulletSpeed`, `_isEnemyMagicBullet`을 추가했다. `_normalizeEnemyBulletSpeed`가 물리/마법 band를 선택하며 방향과 발사별 균등 랜덤 분포는 유지한다.
+- `titanEye`, `web`, `mine`, `trap`, `bomb`, `swordWave`, `elemBall`, `_coralSpike`, `phantomSword`, `pierce`, `poisonZone`, `iceZone`, `blizzard`, `dimRift`, 정지 위험물, 플레이어탄 예외는 변경하지 않았다.
+- TDD: 기존 마법탄이 150px/s로 나오는 RED를 확인한 뒤 `test/enemyProjectileSpeedBand.test.js` 4/4 PASS. 관련 SSOT는 `몬스터_공격시스템.md`, `탄막시스템_총정리.md`, `몬스터_총관리.md`에 동기화했다.
+
+## 2026-08-30 — MAP PRODUCTION GUIDELINE v0.9 전 에이전트 적용
+
+| 항목 | 현행 값 | 적용 위치 |
+|---|---|---|
+| 문서 | `EXODUSER_MAP_PRODUCTION_GUIDELINE_v0.9.md` | `docs/4.1맵디자인+설정/`, 다운로드 원문과 byte-identical |
+| 상태 | `v0.9 — FIELD TEST` | CH1/CH2 검증 후에만 v1.0 승격 |
+| 적용 대상 | 모든 맵 제작 에이전트 | 설계·geometry·collision·outer/baked·배치·랜드마크·camera/combat/tech QA |
+| 필수 순서 | MASTER→OUTER LARGE→MEDIUM→GROUND→PLAYABLE→LANDMARK/CENTER→SMALL→CAMERA→TECH | `AGENTS.md` 맵 시스템 규칙 |
+| 우선순위 | 사용자 최신 지시·stage LOCK/SSOT > 공통 제작 가이드 | 확정 좌표·수치 임의 변경 방지 |
+
+- 루트 `AGENTS.md`가 맵 작업 시작 전 가이드 전체 완독, 현재 계획 반영, §23 보고 형식과 visual verdict 사용을 강제한다.
+- `_MAP_SSOT_INDEX.md` 읽기 순서에 P-1 필수 제작 가이드로 등록했다. 자동 테스트 PASS는 visual PASS를 대체하지 않는다.
+
+## 2026-08-30 — CH2-1 WALL BELT BACK/MID RETOUCH
+
+| 항목 | 현행 값 | 적용 위치 / 의도 |
+|---|---:|---|
+| authored/runtime/skip | `108/108/0` | locked base 78 + BACK/MID 8 + front filler 12 + seam 10; system object 포함 `MAP_OBJS=110` |
+| 역할 | backfill 8 / boundary 50 / landmark 18 / detail 6 / mask 4 / filler 12 / seam 10 | collision 51 / non-collision 57 |
+| MEGA | 10종 등록 / 17개 배치 | giant carapace·giant hive·deep hive·organic EXIT frame의 위치·크기 고정 |
+| 연결층 | BACK/MID active id 8종 × 1 / front filler 5종 × 12 / seam 3종 × 10 | supplied RGBA 6종 + 기존 ridge L/R 2개, 전부 visual-only·authored-only |
+| 보강 구역 | top 7 / central 8 / east pocket 7 / lower 8 | 각 구역 BACK/MID 2개 + 기존 filler/seam, 중앙 gameplay core 보호 |
+| 충돌 영향 | backfill 0 / filler 0 / seam 0 | START·EXIT·S자 path·기존 collision semantics 무변경 |
+
+- 검은 void가 구조물 사이의 결손처럼 읽히던 원인은 front connector만 점 배치되어 MEGA 뒤의 배경 질량이 없었던 것이다. 초기에는 기존 CH2 원화 4종을 8회 재사용했으나, 현행은 사용자 제공 wall skin 6종과 기존 ridge L/R 2개를 BACK/MID 8개 슬롯에 한 번씩 사용한다. 잠금 MEGA 뒤에서 12~18% 맞물리도록 네 우선 구역에 2개씩 배치했다.
+- 기존 front filler 12개와 seam 10개는 같은 네 구역 안에서 연속 체인으로 유지한다. 신규 대형 구조물·세로 기둥·authored entry 증가는 0이며 반복 중형 세로 구조물 42개와 MEGA 17개를 유지한다.
+- 실제 WASD 종주 최종 world `(4017.72,1355.61)`, tile `(100,33)`, `G.exits=[(99,33),(100,33),(101,33)]`, `isWall=false`; stuck 0, abnormal push 0, pageerror/asset 404/broken sprite 0이다. 검토본은 `captures/ch2_wall_belt_review_20260830/`, 8카메라 보드는 `captures/ch2_wall_belt_retouch_after_20260830/`에 보존했다. 사용자 visual 승인 전 상태는 `VISUAL REVIEW READY`다.
+
+## 2026-08-30 — CH3-1 GUIDELINE v0.9 OUTER MASS RETOUCH
+
+- 기존 model-map/wall/collision LOCK은 유지하고, Guideline GATE 2~4 기준으로 외곽을 BACK 18 → MID full 8 + crop A/B 13 + tower 16 + gate 1 → FRONT rubble crop 14 → GROUND shadow 16의 연속 4-layer fortress mass로 재구성했다. visual layer는 전부 비충돌이며 `_colObjs=101`은 retouch 전후 불변이다.
+- `prop_hellwinter_rampart.png` 한 장에서 MID `[0,180,900,790]`/`[780,0,852,850]`, FRONT `[0,540,900,430]`/`[720,470,912,500]` 4개 runtime crop을 추가했다. full rampart silhouette는 8개 major anchor로 제한하고 scale/radius를 stagger해 repeated asset island를 줄였다. 신규 PNG·신규 원화는 0이다.
+- `_HELLWINTER10` source authored 324/runtime authored 321, 전체 `MAP_OBJS=322`(전체맵)/`323`(플레이 QA)다. source image 21(+base ground 1), cropped module 8, runtime crop 8종/71 instance, rotated 75, mirrored 27(+ground macro mirror 3), filtered runtime 34, composite landmark 7, truly new assets 0이다.
+- `test/ch3HellWinterLayout.test.js` 23/23 PASS. wall seam 32/32, corner/gate shoulder 8/8, gate passage 6/6, route/center blocker 0, pageerror/asset 404/missing sprite 0이다. 실제 WASD `(100.5,185.5)`→`(100.5,11.40)` 6구간 PASS, 최대 50ms 이동량 `49.59px < 50px`다.
+- Guideline GATE 8 증거는 `captures/ch3_guideline_retouch_pass5/camera_qa_board.png`, 30-enemy combat 판독은 `combat_readability.png`, 모델 비교는 `model_vs_runtime.png`, 전체맵은 `SI11_full.png`다. 최종 판정은 **WALL SYSTEM PASS / CH3-1 GUIDELINE v0.9 VISUAL PASS / GAMEPLAY PASS**다.
+
+## 2026-08-30 — CH3-1 MODEL MAP VISUAL PASS (GUIDELINE RETOUCH 전 기준)
+
+- 2026-08-29의 wall-only baseline(`source 122/runtime authored 119`)을 확장했다. wall system의 `WALL_I36/L2/END4/GATE2`·crop atlas·connector collision은 그대로 PASS 상태로 보존하고, 모델맵의 composition·원형 silhouette·CENTER→MID→OUTER density gradient·landmark·색·대기를 runtime에 추가했다.
+- 기존 `prop_hellwinter_tower/rampart/gate`를 비충돌 원경 shell로 재사용해 16 tower + 8 rampart + 북측 gate의 원형 skyline을 만들었다. SW 사체·SE gate/cage·NW 학살지·NE 동면괴물·W 처형대·E 감옥의 6개 POI와 외곽 fortress shell을 합쳐 composite landmark는 7개다.
+- `_HELLWINTER10`은 source authored 263, runtime authored 260, Pass 8 전체 `MAP_OBJS=261`이다. corpsefield 54, 유해·동토 잔해 각 13계열, ground decal 24, 적색 fissure 18로 중앙 저밀도/중간환 중밀도/외곽 고밀도를 만든다. canonical landmark scale은 carcass `2.1`, dormant `1.42`, execution `1.62`, prison `1.48/.96`이다.
+- `ground_hellwinter.png` 원본 1장을 2048px macro base로 확대하고 mirror 사본 3개를 극저알파 soft-light로 겹쳤다. black tone은 `.46`이다. 기존 `prop_ice_gcrack.png`는 런타임 적색 filter bake 후 screen 합성한다. GPU ProxyX가 CSS `filter`/`globalCompositeOperation`을 전달하지 않아 원본 청색으로 보이던 문제는 image load 시 Canvas texture로 bake하여 해결했다.
+- ASSET REUSE SUMMARY: object source images 21(+base ground 1), reused as-is 19, cropped modules 4, runtime crop 4종/44 instance, rotated 75, mirrored 27(+base macro mirror draw 3), runtime filtered 18, composite landmark 7, truly new assets 0.
+- `test/ch3HellWinterLayout.test.js` 20/20 PASS. 최종 브라우저 QA는 source/runtime authored `263/260`, `MAP_OBJS=262`, pageerror/asset 404/missing sprite/route blocker 모두 0이다. WASD는 `(100.5,185.5)`→`(100.5,11.42)` 6구간 PASS, 최대 50ms 이동량은 `47.75px < 50px`다. 최종 전체맵은 `captures/ch3_model_visual_pass8/SI11_full.png`, 모델 비교는 `captures/ch3_model_visual_pass8/model_vs_runtime.png`다. 최종 판정은 **WALL SYSTEM PASS / CH3-1 MODEL MAP VISUAL PASS / GAMEPLAY PASS**다.
+
+## 2026-08-29 — CH1 OUTER MASS FIRST / LARGE SIDE STRUCTURE PASS
+
+| 항목 | 현행 값 | 적용 위치 / 계약 |
+|---|---|---|
+| scope | CH1 si1 LEFT/RIGHT/TOP/SOUTH visual outer only | CENTER·geometry·collision·route·START/EXIT 무변경 |
+| phases | `ch1OuterMass=large`, `ch1OuterMass=large_medium`, `ch1OuterMass=landmark_center` | 기본 OFF, 기존 baked loader/draw 경로 재사용 |
+| composition | BACK 18 / LARGE 21 / MEDIUM 17 / SMALL 0 | LARGE→overlap→MEDIUM seam→ground connection 순서 |
+| master/chunk | phase별 `8192×8192`, `64×1026px` | 1024px core + 1px copy bleed |
+| runtime | request/ready/error `64/64/0`, authored `12/12` | pageerror 0, 404 0 |
+| geometry proof | source SHA `5bd88b…685f`, runtime map SHA `a67605…033` | CURRENT/LARGE/LARGE_MEDIUM 동일 |
+
+- LEFT는 낮고 넓은 horizontal root/corpse wall, RIGHT는 높고 뒤틀린 vertical corpse/root wall, TOP은 비대칭 dense funnel, SOUTH는 낮은 open threshold로 합성했다.
+- `bound_*`, `corner_*`, `mega_ribs/head`, `cursed_tree_03/11`을 30~50% overlap·crop·flip·scale로 먼저 구성하고 `prop_g_edge/root/corpse`, `prop_rootcage`, `prop_rib`은 접합부에만 사용했다. small prop은 0이다.
+- full-map 육안 검사에서 기존 빈 외곽이 continuous organic environment mass로 바뀌고 중앙 playable ground와 기존 landmark는 유지됐다. 최종 산출물: `captures/ch1_outer_mass_first_20260829/FINAL_OUTPUT/`.
+- 상세 SSOT: `4.1맵디자인+설정/CH1_OUTER_MASS_FIRST_PASS.md`.
+
+## 2026-08-29 — CH1 si1 ACTUAL STAGE GEOMETRY REDESIGN
+
+| 항목 | 이전 | 현행 |
+|---|---:|---:|
+| walkable | `39,964/40,000 (99.91%)` | `13,732/40,000 (34.33%)` |
+| geometry | `_cloneField11` full-floor fallback | `CH1_SI1_GEOMETRY.buildRLE()` stage 1 전용 |
+| width wave | 사실상 균일 full map | `34→89→43→89→38 tiles` |
+| authored/runtime | `75/75` | `12/12`, skip `0` |
+| boundary props | legacy rim/ground rows | 큰 경계는 tile mask, 별도 COLLISION/OCCLUDER/VISUAL_ONLY 행 `0` |
+| exit | 북측 기존 값 | runtime `(99~101,33)`, gate marker `(100,33)` |
+| painted SOUTH | geometry와 무관한 opaque master | walkable alpha `0`, non-walkable organic mass, edge feather `20px` |
+
+- 7-region: START threshold → 비대칭 SOUTH arena → toxic side pocket → cocoon hook → central compression(+camp pocket) → corpse-tree basin(+altar pocket, 좌/우 unequal bypass) → north offset funnel.
+- 실제 WASD 42 waypoint를 좌표 주입 없이 전부 통과했다. toxic/camp/altar 왕복, tree 좌/우 우회, boss approach에서 stuck·wall mismatch·pageerror·404가 모두 0이다.
+- painted opt-in은 기존 `ch1BakedSpike=1`, 20 chunk loader/warm 구조를 유지한다. runtime request/ready/error `20/20/0`, seam exact-pixel PASS다.
+- 전투 QA는 SOUTH arena에서 player, enemy 5, projectile 3, parry, fire/blue VFX 판독을 확인했다.
+- SSOT: `4.1맵디자인+설정/CH1_SI1_ACTUAL_STAGE_GEOMETRY.md`. 캡처: `captures/ch1_si1_geometry_redesign_20260829/`.
+
 게임 코드 변경과 `docs/` 반영을 같이 남기는 누적 로그다.
+
+## 2026-08-29 — CH2-1 CONTINUOUS ORGANIC WALL BELT (HISTORICAL FRONT-ONLY BASELINE)
+
+> 이 절의 100-entry 수치는 2026-08-30 BACK/MID retouch 전 검증 기록이다. 현행 production 값은 위의 108-entry 절을 따른다.
+
+| 항목 | 현행 값 | 적용 위치 / 의도 |
+|---|---:|---|
+| authored/runtime/skip | `100/100/0` | locked base 78 + wall-belt 22; system object 포함 `MAP_OBJS=102` |
+| 역할 | boundary 50 / landmark 18 / detail 6 / mask 4 / filler 12 / seam 10 | collision 51 / non-collision 49 |
+| MEGA | 10종 등록 / 17개 배치 | giant carapace·giant hive·deep hive·organic EXIT frame의 위치·크기 고정 |
+| wall connector kit | filler id 5종 / seam id 3종 | 기존 CH2 RGBA 소스 재사용, 전부 `authoredOnly:1`, visual-only, 회전 배치 |
+| 보강 구역 | top 5 / central 6 / east pocket 5 / lower 6 | filler는 3개씩, seam은 2/3/2/3개; 중앙 gameplay core 보호 |
+| 충돌 영향 | filler 0 / seam 0 | START·EXIT·S자 path·기존 collision semantics 무변경 |
+
+- `wall_ridge_l/r`, `wall_broken_mega`, `chitin_arch`, `hive_wall_mega`를 MID 크기로 재등록하고 web/chitin/egg seam을 10~20% 겹쳐 배치했다. 세로 기둥 계열은 추가하지 않아 runtime-visible 반복물은 42개를 유지한다.
+- 신규 원화 파일은 만들지 않았다. 기존 CH2 소스를 연결 키트로 재사용해 큰 구조물의 화풍과 알파 경계를 보존했다.
+- 실제 WASD 종주 최종 world `(4026.35,1358.91)`, tile `(100,33)`, `G.exits=[(99,33),(100,33),(101,33)]`, `isWall=false`; stuck 0, abnormal push 0, pageerror 0, CH2 broken sprite 0이다. 네트워크에는 범위 밖 기존 CH3 `prop_hellwinter_rampart/tower.png` preload 404 두 건이 fallback과 함께 남으며 CH2 wall-belt id의 404는 0이다. 캡처와 JSON은 `captures/ch2_wall_belt_review_20260829/`에 보존했다. 사용자 visual 승인 전 상태는 `VISUAL REVIEW READY`다.
+
+## 2026-08-29 — CH2-1 FLOOR DETAIL / BOUNDARY CLEANUP (HISTORICAL 78-ENTRY BASELINE)
+
+> 이 절의 78-entry 수치는 wall-belt 적용 전 검증 기록이다. 현행 production 값은 위의 108-entry BACK/MID wall-belt 절을 따른다.
+
+| 항목 | 현행 값 | 적용 위치 / 의도 |
+|---|---:|---|
+| authored/runtime/skip | `78/78/0` | `_CH2S4`; system object 포함 `MAP_OBJS=80` |
+| 역할 | boundary 50 / landmark 18 / detail 6 / mask 4 | collision 51 / non-collision 27 |
+| MEGA | 10종 등록 / 17개 배치 | giant carapace·giant hive·deep hive·organic EXIT frame 및 전체 실루엣 고정 |
+| 중형 세로 반복물 | 57→42, `-15(-26.32%)` | authored 단독 반복 8개 감량 + dense hand off-path 자동 누출 7개 차단 |
+| floor detail | stain 10 / vein 6 / soft halo | render-only; 경로·collision·START/EXIT 무변경 |
+| 자동 결함 | off-path 0 / random wall eye 0 / accidental floor patch 0 | `m_c2floorpatch`는 `authoredOnly:1`, boss-gate mask 4개만 허용 |
+
+- 검은 직사각형은 `ground.png`를 그리는 `m_c2floorpatch(sz=280)`가 generic off-path pool에 들어간 것이 원인이었다. authored-only로 격리하고 dense hand map의 off-path pass를 건너뛰어 원인을 제거했다.
+- 거대 눈은 dense authored CH2-1에도 실행되던 random wall-eye 배치에서 최대 약 10배 scale이 추첨된 것이 원인이었다. dense hand compose에서는 해당 pass를 실행하지 않는다.
+- 사용자 캡처의 대각 경계 바깥은 기존부터 collision tile `1/isWall=true`였다. collision을 추가하거나 이동하지 않고 가변 반경 `(w+4)` floor mask와 soft halo로 수학적 절단선을 유기적 void rim으로 바꿨다.
+- 실제 WASD 종주 최종 world `(4014.76,1344.44)`, tile `(100,33)`, `G.exits=[(99,33),(100,33),(101,33)]`, `isWall=false`; stuck/abnormal push/pageerror/asset 404/broken sprite 모두 0. 캡처와 JSON은 `captures/ch2_floor_detail_review_20260829/`에 보존했다. 사용자 visual 승인 전 상태는 `VISUAL REVIEW READY`다.
+
+## 2026-08-29 — CH1 SOUTH CANARY SIDE MASS VISUAL PASS
+
+| 항목 | 현행 값 | 비고 |
+|---|---|---|
+| 범위 | SOUTH master `(0,4096)`, `8192×4096 px` | START·남측 arena·toxic·cocoon·north transition만 |
+| baked chunk | 승인 목록 20장, 각 `1026×1026`, 1px copy bleed | 동일 master에서 재추출; 전체 64장 생성 없음 |
+| runtime | 기존 `ch1BakedSpike=1`, 기본 OFF | 새 loader·renderer architecture 없음 |
+| visual B | `ch1BakedSuppressVisual=1` | SOUTH hand visual-only 11 id를 draw-only suppression |
+| layout/collision | `_CH1S1` source/runtime `75/75`, skip `0` | 좌표·collision·landmark 불변 |
+
+- LEFT는 `corner_sw/corner_nw/bound_w` 3개 source composite를 30~50% 겹쳐 낮고 넓은 BACK/MID/FRONT root-toxic mass로 합성했다. RIGHT는 `bound_e/corner_ne/corner_sw/corner_nw` 4개 source composite를 같은 겹침 범위에서 높고 뒤틀린 corpse/cocoon mass로 합성했다. 개별 source silhouette는 scale/crop/flip/rotation/명도·채도·깊이 차로 숨겼다.
+- 중앙 보호 폭은 master x `3450..4800`, **1350px=33.75 tile**이며 대형 구조물을 추가하지 않고 ground paint만 허용했다. `m_c1pool`과 `m_c1cocoon` landmark는 B에서도 유지한다.
+- CURRENT/A/B 동일 카메라 5종, LEFT/RIGHT close-up, full SOUTH overview와 실제 전투 장면을 `captures/ch1_south_canary_side_mass_20260829/`에 보존했다. B에서 side hole·sticker·block-placement 인상이 해소되고 중앙 player/enemy/projectile/parry/skill VFX는 판독 가능하다.
+- 브라우저 실측 A/B 모두 baked request/ready/error `20/20/0`, pageerror `0`, asset 404 `0`; GPU warm 최대 A `12.7ms`, B `12.1ms`, baked draw 최대 A `0.2ms`, B `0.1ms`. 1px 인접 chunk seam 회귀도 exact-pixel PASS다.
+- 코드/빌드: `game.html`, `tools/build_ch1_south_mass.mjs`, `assets/map/ch1/baked_spike/south_visual_pass/{composition.json,CH1_SOUTH_BASE.png,CH1_SOUTH_MASTER.png,chunk_*.png}`. 회귀: `test/ch1SouthCanaryVisualPass.test.js`, `test/ch1PaintedStartSpike.test.js`. 상세 SSOT: `4.1맵디자인+설정/CH1_PAINTED_PHASE2_SOUTH_CANARY.md`.
+
+## 2026-08-29 (몬스터 크기 비례 사망 혈흔 폭발)
+
+- 원인: `_addDeathImpact`의 구 `clamp(r×2.2,40,120)` 최솟값 때문에 반지름 8~18 일반몹이 대부분 40px로 같았고, `death_blood`도 4단계 고정 배율이라 크기 변화가 끊겼다.
+- 현행: `death_blood`는 `clamp(0.35+r×0.075,0.8,4.8)`, `blood_impact_2/3/4`는 `clamp(r×3,24,240)`으로 원본 몬스터 반지름에 연속 비례한다.
+- 예시: r 8/12/18/30/56/120의 혈흔 폭발은 24/36/54/90/168/240px. 독립 필드몹도 축소값이 아닌 원본 r을 전달한다.
+- 회귀: `test/deathFxSizeScaling.test.js`. 문서: `사망VFX_변경로그.md`, `VFX_구현가이드.md`, `몬스터_총관리.md`.
+
+## 2026-08-29 (물리·마법 적탄 최종 탄속 랜덤화 — 마법탄 범위는 2026-08-30 상향으로 대체)
+
+- 당시 일반 물리탄·마법탄의 최종 속도를 발사별 균등 랜덤 **150~300px/s**(`2.5~5px/frame`, 60fps 기준)로 통일했다. 방향 유지·비행 중 재추첨 없음은 현행이며, 마법탄 범위만 2026-08-30에 250~400px/s로 대체됐다.
+- 구현: `ENEMY_BULLET_SPEED_MIN/MAX`, `_rollEnemyBulletSpeed`, `_normalizeEnemyBulletSpeed`; `spawnProj`에서 기존 속도/빨콩 보정 뒤 최종 벡터 크기 정규화.
+- 제외: `titanEye`, `web`, `mine`, `trap`, `bomb`, `swordWave`, `elemBall`, `_coralSpike`, `phantomSword`, `pierce`, `poisonZone`, `iceZone`, `blizzard`, `dimRift`, 정지 위험물과 플레이어탄. 특수 투사체의 기존 속도는 유지한다.
+- 검증: `test/enemyProjectileSpeedBand.test.js` — 최소·중간·최대 수치, 방향 보존, 일반 적탄 적용 위치를 회귀 테스트.
+
+## 2026-08-29 — E 처내기 / RMB 마법 스킬바 키캡 정합
+
+- 실제 입력은 `BINDS.shield='KeyE'`, `BINDS.beam='mouse2'`로 정상이나 `img/ui_bar_only.png`에 구 순서 `RMB … E`가 박혀 있어 아이콘·키캡이 서로 바뀐 것처럼 보이던 원인을 확인했다.
+- `_SK_SLOTS`의 레거시 DOM 위치 `skSlotRMB(left 436)`를 `bind:'shield'`, `qsE(left 522)`를 `bind:'beam'`으로 지정했다. KBM HUD는 y=121px에서 배경 글자를 덮어 각각 `E`, `RMB`를 표시하고, 패드 HUD는 기존 `X`, `RS`를 유지한다. 캐시 키에 두 현재 바인딩을 포함해 리바인딩도 즉시 반영한다.
+- `test/skillBarBindingLabels.test.js` 2/2 PASS. `server.cjs:3333` 브라우저 실측: E=`maliceSwipe`, RMB=`fireball`, pageerror 0, asset 404 0. 캡처: `captures/skillbar_e_rmb_fixed.png`.
+
+## 2026-08-29 — CH3 3-1 핏빛 황폐지 / HELL WINTER (WALL SYSTEM BASELINE, 2026-08-30 VISUAL PASS로 대체)
+
+- 공개 장명은 `3장 — 지옥의 겨울 (HELL WINTER)`이며 si10은 200×200 타원 open-air hell wasteland다. basin은 `(cx100,cy100,rx90,ry88,gateW12)`, START `(100,185)` 6시, EXIT `x99..101,y7`/bossGate `x99..101,y5` 12시다. `_applyHellWinterNorthGate`가 `x88..112,y2..35`의 25 tile 북문을 보장해 EXIT 주변 검은 타일 구멍을 제거했다.
+- 구형 `m_c3hellrampart` 32개를 좌표마다 계단식으로 잇고 `m_c3helltower` 16개로 접합부를 가리던 si10 배치를 제거했다. `CH3_HELLWINTER_V1` 전용 kit은 `WALL_I 36 / WALL_L 2 / WALL_END 4 / WALL_GATE 2`이며 모두 8 tile connector, scale 1, 인스턴스 rot 0/90/180/270 계약을 사용한다. START gate `(100,179,180°)`, EXIT gate `(100,21,0°)`이다.
+- `_HELLWINTER10` source authored 122개, runtime authored 119개다. 중앙 64×64 충돌 없는 전투 코어, x92..108 남북 종주축, corpsefield 30, SW 거대 사체, W 처형대, E 감옥 2, NE 동면 괴물을 유지했다. 전체 `MAP_OBJS=120`(2400px 전체맵)/`121`(플레이 검증), 중앙·주축 blockers 0이다.
+- loader가 module metadata의 `colParts/pivotX/pivotY/squareDraw/wallKit/wallUnit`을 보존하고, `isW()`는 module-local rotated rectangle을 인스턴스 회전과 합성한다. 직선 connector 32/32와 L 코너·gate 어깨 8/8은 충돌 연속, 북·남 중앙 passage 6/6은 무충돌이다.
+- IMAGE CROP / SLICE 규칙을 적용해 wall kit 빌드 원본 4개의 alpha bbox를 tight crop하고 `3072×2048 prop_hellwinter_wall_atlas.png` 1장으로 패킹했다. WALL_I/L/END/GATE는 각각 `srcRect/sourceSize/trimOffset`을 사용하며 `_drawMapObjectCrop()`이 crop 전 pivot을 복원한다. `_objImageByPath` 공유로 4 id의 runtime `Image`는 1개이고 PNG payload는 `5,342,545→2,358,543 bytes(-55.8%)`다. si10 실측은 source image path 15, cropped module 4, runtime crop 4종/44 instance, rot≠0 33, mirror 15, composite landmark 1, 이번 패스 신규 원화 0이다.
+- 밝은 `gt_ch3` screen 합성을 폐기하고 신규 `gt_hellwinter=assets/map/ch3/ground_hellwinter.png`를 1024px cache로 사용한다. `rgba(6,8,10,.28)` tone과 `(h&63)<=3` 빈도의 hash-회전 얼어붙은 피 균열만 얹어 타일 격자·수평 chevron carpet을 제거했다.
+- 기존 전용 에셋에 `prop_hellwinter_wall_{i,l,end,gate}.png` 4종과 `ground_hellwinter.png`를 추가했다. 밝은 legacy 에셋과 구형 rampart/tower/gate는 si10 authored 사용량 0이며 다른 stage registry는 보존했다.
+- `test/ch3HellWinterLayout.test.js` 14/14 PASS. `server.cjs:3333` 실측 pageerror 0·asset 404 0·missing sprite 0이며, 실제 키보드 START `(100.5,185.5)`→EXIT 앞 `(100.5,11.60)` 6구간 종주도 PASS했다. 최종 전체맵·모델 비교·구형/모듈 비교·코너/게이트/직선 캡처·충돌/재사용 보고서는 `captures/ch3_wall_atlas_final/`, 이동 보고서는 `captures/ch3_hell_winter_final/CH3_SI10_walk_report.json`이다. 상세 SSOT는 `4.1맵디자인+설정/CH3_1_HELL_WINTER_IMPLEMENTATION.md`다.
+
+## 2026-08-29 — CH1 1-1 RIGHT ALTAR HIGH GROUND
+
+- 우중 저주 제단을 중심 `(147,98)`, 반경 `rx18/ry9 tile`의 stage-local 고지대로 구현했다. 정상 height=1, 저지대=0이며 서쪽 ramp `x125→135,y98,반폭1.8→3`에서 smoothstep으로 0→1을 보간한다.
+- `_ch1HillBandBlocks`가 `.84≤정규화 타원거리≤1.04` 절벽을 `isW`에 합성하고 ramp만 연다. 다른 stage는 false/height0이며 START/EXIT/중앙 HERO/메인 x100 남북축은 변경하지 않았다.
+- 신규 에셋 없이 기존 `m_c1gedge`를 offscreen canvas에 1회 합성하여 map floor 뒤, authored prop 앞에 렌더한다. `handProps 123`, runtime `MAP_OBJS 124`, collision object 82, structural 59는 불변이다.
+- 실제 WASD: low `(125.95,98.91,h=.026)` → mid `(131.14,98.10,h=.668)` → plateau `(137.99,98.10,h=1)` → 북쪽 직벽 정지 → descent `(123.33,98.00,h=0)` PASS. 기존 START `(100.5,185.5)`→CENTER 서쪽 우회→EXIT `(99.49,21.61)`도 PASS. pageerror/404 0.
+- 회귀: `test/ch1HighGround.test.js` 포함 CH1 테스트 9/9 PASS. 캡처/리포트는 `captures/ch1_si1_high_ground/`, 전체맵은 `captures/ch1_si1_visual_depth/CH1_SI1_DEPTH_full_4000.png`.
+
+## 2026-08-28 — CH1 1-1 VISUAL DEPTH PASS
+
+- reference miniature의 START/EXIT, 실제 성문, 중앙 `m_c1tree`, 남북축, 여섯 side POI, structural boundary 59개를 잠근 채 SI1 `handProps`만 111→123개로 조정했다. 기존 과밀 side support 5개를 START/NORTH로 재사용했고 전환 장면 support는 12개만 순증했다.
+- START FORECOURT, LOWER TRANSITION, CENTER HERO CLEARING, LEFT/RIGHT POI, NORTH APPROACH를 각각 3~7개 단위 authored micro-setpiece로 정리했다. 저주나무 8개는 8종 scale과 비대칭 shoulder 위치로 반복을 끊었고, HERO 반경 28타일 및 x82~122 남측 주행축/x82~118 북측 EXIT축은 비웠다.
+- runtime `MAP_OBJS` 124 = authored 123 + 필수 `boss_gate_col` 1, skip 0, collision 82, structural 59, cursed tree 8, unique type 56. scatter/dense/carpet/mega/lm/auto 0, pageerror 0, asset 404 0이다.
+- 실제 WASD START (100.5,185.5)→CENTER 서쪽 우회→EXIT (99.63,22.02) 전 구간 PASS. 순간이동 없이 관통/끼임/비정상 밀림이 없고 START `isW=false`, `canMove=true`를 유지했다.
+- QA 산출물: `captures/ch1_si1_visual_depth/CH1_SI1_DEPTH_full_4000.png`, 여섯 1920×1080 장면, `CH1_SI1_DEPTH_contact_sheet.png`, `CH1_SI1_DEPTH_report.json`.
+
+## 2026-08-28 — CH1 1-1 REFERENCE MINIATURE AUTHORED RECOMPOSE
+
+- 내부 si0 `_MAP_COMPOSE[0]`을 기존 CH1 에셋만 사용하는 authored-only `handProps` 111개로 재구성했다. 중앙 `m_c1tree` 1개, START/EXIT 남북축, 좌상 cocoon·좌중 camp·좌하 root passage·우중 altar·우상 swamp·우하 poison pocket의 reference 위치 관계를 고정했다.
+- 자동 scatter/offPath/floor carpet/uni/large/lm/mega는 0개다. runtime `MAP_OBJS`는 authored 111 + 필수 `boss_gate_col` 1 = 112, skip 0, structural boundary 59, authored collision 82, cursed tree 8이다.
+- 남쪽 `bound_s`의 문 실루엣을 제거해 감염 성문 하나만 읽히게 했다. 성문은 (103,188), scale 1.2로 마지막 가시 culling row에 두고, 충돌 반경 144px/스폰 중심거리 약 170px로 START (100.5,185.5)에서 `isW=false`, `canMove=true`를 확보했다.
+- 실제 WASD로 START→중앙 HERO 서쪽 우회→EXIT (99.67,21.90)를 통과했다. 좌표 주입 없이 관통/끼임/비정상 밀림 0, 1920×1080 runtime pageerror/404 0, authored 111/111이다.
+- 동기화: `CH1_1_COMPOSE_초안.md`, `CH1_1_BLOCKOUT_MASTER.md`, `CH1_MAP_KIT_OptionB.md`, `CH1_VERTICAL_SLICE.md`, `LEVEL_DESIGN_RULES_SSOT.md`, `맵구성_1장.md`, `맵오브젝트_에셋목록.md`, `맵유형_확장기획.md`.
+
+## 2026-08-28 — CH1 si1 HISTORICAL 207 REVALIDATION (SUPERSEDED)
+
+- 이 항목은 이전 2열 경계 + 길 chain 기반 207-entry layout의 역사 검수 기록이며 **현재 canonical이 아니다**. 당시 ordered SHA-256은 `c4fc50cce4087e93bdf64967bc508cd9e0fd9ce96ea1bc6f2049b3ce79cd703d`였고, `99점`은 object count가 아니라 품질/baseline 표기였다.
+- 현재 production canonical은 `_CH1S1` **75 entries**, runtime placement **75/75**, skipped **0**이다. geometry/layout SSOT는 현재 `game.html`의 `_CH1S1`과 `_MAP_COMPOSE[1]`이다.
+- `captures/si1_canonical_recovery_20260828_run2/FINAL_REVALIDATION.json`과 관련 캡처는 삭제하지 않고 superseded historical QA evidence로 보존한다.
+
+## 2026-08-23 (핏자국 복원 — 장판만 금지, 자국은 전원)
+
+- 과하다고 해서 잡몹 핏자국을 없애고 대형도 9~17px로 지운 과보정 수정.
+- 모든 사망 `_leaveFloorTrace=!!e`. 잡몹 `clamp(r×1.4,14,36)`, 보스/앵글러 `clamp(r×0.5,36,56)`. 알파 0.42/0.30. 슬롯 30. persist 맵 전환까지.
+- `scarlet_splat_2` 거대 웅덩이는 복원하지 않음. 살점 1개는 대형만.
+- docs: `사망VFX_변경로그.md`, `VFX_구현가이드.md`, `몬스터_총관리.md`.
+
+## 2026-08-23 (심연의 앵글러 첫 출현 = 꿈틀 상승, 본체 뿅 금지)
+
+- 구 구현: 2500px 게이트 후 `hid:0`로 본체 스프라이트 즉시 표시.
+- 현재: `spawnIn:1` `hid:1` `tpT:54`. 순간이동 도착 연출 재사용 — `kraken_vanish` 역재생(포탈→촉수→본체) → `kraken_tp` 착지.
+- 옛자리 소멸 없음. 착지 강타 데미지 없음(첫 출현은 공격 아님). 배너는 예고 시작. shake 8→16.
+- docs: `몬스터_총관리.md`, `탄막시스템_총정리.md`, `VFX_구현가이드.md`, `CH1_1_BLOCKOUT_MASTER.md`, `CH1_VERTICAL_SLICE.md`, `BOSS_CANONICAL_MAPPING.md`, `MAP_RUNTIME_ARCHITECTURE.md`.
+
+## 2026-08-23 (대형몹 바닥 잔류 = 작은 핏자국+살조각, 맵 전환까지)
+
+- 큰 `scarlet_splat_2` 웅덩이가 1-1을 더럽히던 것 제거. 일반잡몹 자국도 없음.
+- (당시) 대상만: `ib` / `_fmKind` / `r>=40`. 핏자국 9~17. **같은 날 과보정으로 판정 → 전원 핏자국 복원(위 항목).** 시체 팬케이크·눈알 장판 제거(구 sz 300)는 유지.
+- 시간 지나 사라지지 않음(누가 치운 것처럼 보이던 문제). 스테이지 전환·아레나에서만 `_clearDeathDecals`.
+- docs: `사망VFX_변경로그.md`, `VFX_구현가이드.md`, `몬스터_총관리.md`.
+
+## 2026-08-23 (독립 필드몹 사망 = 시체 래그돌 + 고어 + 혈흔)
+
+- 심연의 앵글러·지상뱀장어 처치 시 `_spawnLargeMonsterDeathFx` 파티클만 나오던 것을 공용 `hurtE` 키트로 맞춤.
+- 당시 `_fmDeathFx`: `deathFX`(death_blood) + `_addCorpse`(전용 시트 캡처) + `_addGorePiece`(앵글러 5 / 뱀장어 2) + `_addDeathImpact`(r×4) + 대형 파티클 + shake. 현행 혈흔 공식은 위 2026-08-29 항목으로 대체됨.
+- `_addCorpse`가 `e._fmKind`을 보스 아틀라스보다 먼저 캡처 — ib 폴백이 스테이지 보스를 그리지 않음.
+- 당시 앵글러 시체 sz 300 / 혈흔 480 / death_blood 3.6, 뱀장어 sz ≈123 / 혈흔 224 / death_blood 2.1. 현행은 시체 크기 유지, 혈흔/`death_blood`만 각각 앵글러 240/4.8, 뱀장어 168/4.55.
+- docs: `몬스터_총관리.md` 처치·사망 VFX 행, `VFX_구현가이드.md`, `사망VFX_변경로그.md`, `몬스터_스킨_시스템.md`.
+
+## 2026-08-23 (마법탄 = 최초 무지개탄 통일)
+
+- 마법탄(blackBean, blueBean, gbBean, 원소 일반/빠른탄) 전부 `_drawClassicRainbow` (`_BEAN_RAINBOW` 7색 순환). 유저 마법 시트 미사용.
+- 물리탄은 유저 이빨입 시트. 이빨탄=redBean·일반/빠른 `EL.P`만(`_rb×6.3` / `×1.19`). **물리탄 공통=빨콩 베이스**: `homing`, 선회 `.005`, E패링, 체감 ×0.7. **titanEye(눈깔)도 동일 베이스**(그림만 `proj_titan_eye.png`). 앵글러 탄막: 구 3-way 직선 → **3연사**(24틱, 매번 조준+유도). 당시 무지개탄 속도는 2026-08-29에 150~300px/s, 다시 2026-08-30에 250~400px/s로 후속 변경됐다. 원소 일반/빠른탄 `img/proj_elem_orb.png`. **화이트볼 제거**.
+
+## 2026-08-23 (물리탄 유저 시트 적용)
+
+- `img/proj_phys_mouth.png` (6144×1152, 셀768×384): 유저 제공 유기 이빨입 3장 패킹. 행0 8프레임 비행 / 행1 개구 / 행2 곡선.
+- `_drawPhysMouth` → redBean + 일반/빠른 물리(`EL.P`). 원소탄은 기존 드래곤아이 유지. blackBean/blueBean 프로시저럴 유지.
+- 전조·글로우 redBean `#ff2200`. 펫 가이드 기존 키 `빨간 탄은 E. 무지개는 Q.` 재사용.
+- 패링 수치·판정 불변.
 
 ## 2026-05-01 (시간왜곡 신규 스킬 + 인간성/악마성 AP 패시브 이전)
 
@@ -44149,26 +44605,26 @@ mpR = 0.05 + s.int×0.005                                        [NO P.lv×0.001
 
 ## 2026-07-05 14:30 (auto)
 - _gamepad_test.html
-- docs/3.3 ?�바?�딩+?�정/게임?�드_?�러블슈??md
-- docs/8.0몬스?�디?�인/?�막?�스??총정�?md
-- docs/8.1보스?�자?�바?�블/BOSS_BATTLE_SETTINGS.md
+- docs/3.3 ?�바?�딩+?�정/게임?�드_?�러블슈??md
+- docs/8.0몬스?�디?�인/?�막?�스??총정�?md
+- docs/8.1보스?�자?�바?�블/BOSS_BATTLE_SETTINGS.md
 - game.html
 
 
 ## 2026-07-05 15:30 (auto)
-- docs/2_4 ?�시?�템/?�??개편_v7_?�계.md
+- docs/2_4 ?�시?�템/?�??개편_v7_?�계.md
 
 
 ## 2026-07-05 16:30 (auto)
 - _autosave/game_20260705_153603_pre_gp_reconnect.html
 - _autosave/game_20260705_161329_pre_deathdual.html
-- docs/16번역·로컬?�이?�이??번역?�???�체목록.md
-- docs/2_4 ?�시?�템/?�??개편_v7_?�계.md
-- docs/2_4 ?�시?�템/?�???�크립트.md
-- docs/3.3 ?�바?�딩+?�정/3.3 ?�바?�딩+?�정.md
-- docs/3.3 ?�바?�딩+?�정/게임?�드_?�러블슈??md
-- docs/8.0몬스?�디?�인/?�막?�스??총정�?md
-- docs/8.1보스?�자?�바?�블/BOSS_BATTLE_SETTINGS.md
+- docs/16번역·로컬?�이?�이??번역?�???�체목록.md
+- docs/2_4 ?�시?�템/?�??개편_v7_?�계.md
+- docs/2_4 ?�시?�템/?�???�크립트.md
+- docs/3.3 ?�바?�딩+?�정/3.3 ?�바?�딩+?�정.md
+- docs/3.3 ?�바?�딩+?�정/게임?�드_?�러블슈??md
+- docs/8.0몬스?�디?�인/?�막?�스??총정�?md
+- docs/8.1보스?�자?�바?�블/BOSS_BATTLE_SETTINGS.md
 - game.html
 - lang_ar.js
 - lang_bg.js
@@ -44200,11 +44656,11 @@ mpR = 0.05 + s.int×0.005                                        [NO P.lv×0.001
 
 
 ## 2026-07-05 17:30 (auto)
-- docs/16번역·로컬?�이?�이??번역?�???�체목록.md
-- docs/2_4 ?�시?�템/?�??개편_v7_?�계.md
-- docs/2_4 ?�시?�템/?�???�크립트.md
-- docs/3.3 ?�바?�딩+?�정/게임?�드_?�러블슈??md
-- docs/8.0몬스?�디?�인/?�막?�스??총정�?md
+- docs/16번역·로컬?�이?�이??번역?�???�체목록.md
+- docs/2_4 ?�시?�템/?�??개편_v7_?�계.md
+- docs/2_4 ?�시?�템/?�???�크립트.md
+- docs/3.3 ?�바?�딩+?�정/게임?�드_?�러블슈??md
+- docs/8.0몬스?�디?�인/?�막?�스??총정�?md
 - game.html
 - index.html
 - lang_ar.js
@@ -44236,8 +44692,8 @@ mpR = 0.05 + s.int×0.005                                        [NO P.lv×0.001
 
 
 ## 2026-07-05 18:30 (auto)
-- docs/2_4 ?�시?�템/?�???�크립트.md
-- docs/8.0몬스?�디?�인/?�막?�스??총정�?md
+- docs/2_4 ?�시?�템/?�???�크립트.md
+- docs/8.0몬스?�디?�인/?�막?�스??총정�?md
 - game.html
 
 
@@ -44246,20 +44702,20 @@ mpR = 0.05 + s.int×0.005                                        [NO P.lv×0.001
 
 
 ## 2026-07-05 21:30 (auto)
-- docs/16번역·로컬?�이?�이??번역?�???�체목록.md
+- docs/16번역·로컬?�이?�이??번역?�???�체목록.md
 - game.html
 
 
 ## 2026-07-05 22:30 (auto)
 - _autosave/game_20260705_221052_pre_tsarc_nerf.html
-- docs/14밸런???�치?�이�??�킬_밸런??리포??md
-- docs/14밸런???�치?�이�??�킬?��?지공식??md
-- docs/14밸런???�치?�이�??�킬�?DPS_?�원?�비??md
-- docs/16번역·로컬?�이?�이??번역?�???�체목록.md
-- docs/2_1 ?�킬관�??�체?�스???�원/2_1 ?�킬관�??�체?�스??md
-- docs/2_4 ?�시?�템/?�???�크립트.md
-- docs/3.3 ?�바?�딩+?�정/3.3 ?�바?�딩+?�정.md
-- docs/8.0몬스?�디?�인/?�막?�스??총정�?md
+- docs/14밸런???�치?�이�??�킬_밸런??리포??md
+- docs/14밸런???�치?�이�??�킬?��?지공식??md
+- docs/14밸런???�치?�이�??�킬�?DPS_?�원?�비??md
+- docs/16번역·로컬?�이?�이??번역?�???�체목록.md
+- docs/2_1 ?�킬관�??�체?�스???�원/2_1 ?�킬관�??�체?�스??md
+- docs/2_4 ?�시?�템/?�???�크립트.md
+- docs/3.3 ?�바?�딩+?�정/3.3 ?�바?�딩+?�정.md
+- docs/8.0몬스?�디?�인/?�막?�스??총정�?md
 - game.html
 
 
@@ -44297,26 +44753,26 @@ mpR = 0.05 + s.int×0.005                                        [NO P.lv×0.001
 
 
 ## 2026-07-06 15:30 (auto)
-- docs/16번역·로컬?�이?�이??번역?�???��???md
-- docs/2_4 ?�시?�템/?�???�크립트.md
+- docs/16번역·로컬?�이?�이??번역?�???��???md
+- docs/2_4 ?�시?�템/?�???�크립트.md
 
 
 ## 2026-07-12 18:30 (auto)
 - reports/2026-07-13_모닝브리??md
-- reports/README_?�?�킷.md
+- reports/README_?�?�킷.md
 - reports/dojin_quant.py
 
 
 ## 2026-07-12 19:30 (auto)
 - .gitignore
 - reports/.env.example
-- reports/README_?�?�킷.md
+- reports/README_?�?�킷.md
 - reports/dojin_quant.py
 - reports/run_alert.cmd
 
 
 ## 2026-07-12 20:30 (auto)
-- reports/README_?�?�킷.md
+- reports/README_?�?�킷.md
 - reports/dojin_quant.py
 - reports/positions.json
 
@@ -44382,3 +44838,121 @@ mpR = 0.05 + s.int×0.005                                        [NO P.lv×0.001
 - tools/verify_boss3d_load_race_browser.mjs: Added headed Chrome delayed-completion regression (`hell 0 → 1 → 0`) verifying final Vinebound only, no console errors, 4 scene children (3 lights + 1 anchor), and one anchor child.
 - tools/verify_vinebound_boss_integration_browser.mjs: Added headed Chrome real game-route verification for boss-gate entry, Vinebound idle/walk/run/slam/idle-return captures, HP-bar sync, 0px foot alignment, chapter swap, and zero console/request errors.
 - docs/8.1보스디자인바이블/BOSS_BATTLE_SETTINGS.md: Synced model/action table, scale formula, generation guard, raw provenance, Unsteady_Walk exclusion, and real-game offset default.
+## 2026-08-23 — 커스텀 미니맵 실버테일 아이콘
+
+- `img/ui/minimap_silvertail.png`: 캐릭터 선택 실버테일 초상을 기준으로 제작한 128×128 투명 미니맵 전용 얼굴 에셋을 추가했다.
+- `game.html`: `_mmDrawPlayerMarker()`가 전용 초상을 14×14px로 우선 렌더하고, 로딩 전/오류 시 기존 `atlas_player idle_s[0]` 얼굴 크롭과 단색 원으로 순차 폴백하도록 연결했다. 기존 방향 삼각형·이중 테두리·20프레임 갱신 주기는 유지했다.
+- `test/minimapPlayerIcon.test.js`: PNG 크기/알파와 전용 초상 우선·아틀라스 폴백 연결을 회귀 테스트로 고정했다.
+- `docs/3.1 ui hud 디자인/exoduser-hud-redesign.md`: 에셋, 14px 표시 규격, 방향 화살표 좌표, 테두리, 폴백 및 갱신 규칙을 표로 동기화했다.
+- `docs/0마스터플랜/EXODUSER_MASTER_BIBLE_v2_2 (2).md`: 현행 MinimapUI 플레이어 마커의 좌표 공식과 에셋/폴백 사양을 동기화했다.
+- 최종 에셋 교체: 최초 생성 초안 대신 사용자가 지정한 `ChatGPT Image 2026년 8월 23일 오전 10_57_10.png`를 알파 보존 128×128 PNG로 최적화해 `img/ui/minimap_silvertail.png`에 적용했다. 현행 아이콘은 은발·청안·하이 포니테일 얼굴 디자인이다.
+
+## 2026-08-23 — 대검전사 미니맵 아이콘 추가
+
+- `img/ui/minimap_warrior.png`: 사용자가 지정한 `ChatGPT Image 2026년 8월 23일 오전 11_03_23.png`를 알파 보존 128×128 PNG로 최적화해 대검전사 전용 미니맵 초상으로 추가했다.
+- `game.html`: `_mmPortraitImgs`를 `CHAR_LIST`와 같은 `[대검전사, 실버테일]` 순서로 구성하고 `_charIdx`에 맞는 초상을 선택한다. 범위 밖 인덱스는 대검전사로, 이미지 미로딩/오류는 기존 아틀라스 얼굴과 단색 원으로 폴백한다.
+- `test/minimapPlayerIcon.test.js`: 두 캐릭터 PNG의 크기/알파 및 `_charIdx` 기반 선택 연결을 회귀 테스트로 고정했다.
+- `docs/3.1 ui hud 디자인/exoduser-hud-redesign.md`, `docs/0마스터플랜/EXODUSER_MASTER_BIBLE_v2_2 (2).md`: 캐릭터별 id·한글명·수치·슬롯·선택 공식·폴백 규칙을 동기화했다.
+
+## 2026-08-24 — CH1-1 기존 에셋 손 배치
+
+- `game.html`: 1차 배치로 `_MAP_COMPOSE[0].handProps` 72개를 추가했다. 이후 같은 날짜 대형 보강에서 8개를 더해 현행 80개가 됐다.
+- `game.html`: `initMapObjects()`가 si0 compose의 손 배치를 타일 중심 좌표에 확정 생성하는 `[HAND_DECO]` 경로를 추가했다. 자동 살포, 다른 stage, keepDragon, 전투 수치는 변경하지 않았다.
+- `test/ch1HandDecor.test.js`: 당시 총 72개를 고정했고, 이후 대형 보강에서 현행 80개·mega 6 계약으로 갱신했다.
+- `docs/4.1맵디자인+설정/`: CH1-1 compose/vertical slice/blockout/map kit/레벨 규칙/맵 구성/에셋 목록/맵 유형 문서를 현행 id·개수·좌표·충돌·적용 범위와 동기화했다.
+
+## 2026-08-24 — 35맵 전용 테스트 서버
+
+| 항목 | 현행 값 | 적용 위치 |
+|---|---|---|
+| 실행 명령 | `npm run serve:map` | `package.json` |
+| 전용 서버 | `127.0.0.1:3334`, 루트가 `/map-test.html`로 302 | `tools/map-test-server.mjs`, `tools/local-static-server.mjs` |
+| 맵 범위 | `si 0~34`, 7장 35개 | `map-test.html` |
+| 직접 경로 | `/map/{si}` → `test=1&testchar=1&stage={si}&classic=1&mapqa=1` | `tools/local-static-server.mjs` |
+| 범위 보호 | `si 35` 이상은 HTTP 404 | `tools/local-static-server.mjs` |
+| QA 기능 | 1920×1080 고정 logical iframe, FIT/100/75/50 uniform 표시 배율, 이전/다음, 재로딩, 새 창, 에디터 | `map-test.html` |
+| 캐시 | 로드별 `nocache=<timestamp>`, 서버 응답 `no-store` | 허브/정적 서버 |
+
+- 1-1은 `classic=1` 강제로 QA 통그림이 아닌 200×200 본편 `_MAP_COMPOSE[0]` 구성을 연다. `mapqa=1`은 적·문지기·소환굴·필드보스·시작 화톳불 배리어를 제거하고 무적 999999프레임을 적용하며 스킬 슬롯 발동과 펫 대사를 차단해 환경 관람을 보장한다.
+- 허브 DOM은 `innerHTML` 부모 교체 없이 `createElement`와 `replaceChildren`으로만 목록을 갱신한다.
+- 2026-08-28 viewport 정상화: browser/sidebar 크기는 1920×1080 logical game viewport를 바꾸지 않고 바깥 `#viewport`의 단일 contain scale만 바꾼다. 1280×720·1920×1080·2560×900 host resize와 logical 중앙 클릭 `(960,540)`을 Playwright로 검증했다.
+- `test/mapTestServer.test.js`가 루트/직접 경로/범위/35스테이지/DOM 안전 계약을 고정하며, 기존 저장 API 테스트도 함께 통과한다.
+- 추적되지 않는 레거시 `docs/TEST_SERVER.md` 대신 `docs/4.1맵디자인+설정/MAP_TEST_SERVER.md`를 커밋 가능한 정식 SSOT로 추가했다.
+
+## 2026-08-24 — CH1-1 START 오브젝트 가시성 복구
+
+| 에셋 | 이전 타일 | 현행 타일 | 역할 |
+|---|---:|---:|---|
+| `m_tree2` | (52,184) | (78,188) | START 서쪽 가장자리 |
+| `m_fbones` | (48,168) | (78,174) | START 북서 가장자리 |
+| `corpse` | (34,160) | (123,183) | START 동쪽 가장자리 |
+| `m_puddle` | (22,184) | (88,190) | START 남서 가장자리 |
+| `m_fblue` | (62,158) | (112,172) | START 북동 포인트 라이트 |
+| `m_tomb` | (32,182) | (77,181) | START 서쪽 가장자리 |
+| `m_wpile` | (58,174) | (88,172) | START 북서 가장자리 |
+
+- 원인: 당시 72개가 모두 정상 생성됐지만 START `(100,185)`에서 가장 가까운 손 배치가 25.6타일 밖이라 첫 카메라가 사실상 빈 화면이었다.
+- 이 시점의 1차 보정: 첫 화면 추정 범위에 손 배치 8개, 스폰 12타일 코어 안 0개, 총 72개였다. 이후 대형 8개를 추가해 현행은 handProps 80개다.
+- `test/ch1HandDecor.test.js`에 START 첫 화면 최소 7개와 스폰 12타일 코어 보호 회귀 테스트를 추가했다.
+
+## 2026-08-24 — CH1-1 용 2종 + 대형 오브젝트 보강
+
+### handProps 대형 8개
+
+| id | 한글 역할 | 타일 `(x,y)` | 메타 크기 | 적용 권역 |
+|---|---|---:|---:|---|
+| `m_skull_altar` | 해골제단 | (82,181) | 300 | START 서쪽. 줄무늬가 베이크된 `m_atree1` 대체 |
+| `m_obelisk` | 오벨리스크 | (118,182) | 300 | START 동쪽 |
+| `m_penta_circle` | 오망성진 | (66,148) | 350 | LOWER 서쪽 |
+| `m_bone_arch` | 뼈아치 | (112,142) | 300 | LOWER 동쪽 |
+| `m_eye_tree` | 눈나무 | (88,122) | 350 | CENTRAL 서쪽 |
+| `m_vine_pillar` | 덩굴기둥 | (142,112) | 280 | CENTRAL 동쪽 |
+| `m_rotten_tree` | 거대 썩은나무 | (68,52) | 380 | UPPER 서쪽 |
+| `m_skull_totem` | 해골토템 | (120,55) | 240 | UPPER 동쪽 |
+
+- `m_atree1` 원본은 1,536×1,024 2프레임 시트이며 부분알파 픽셀이 222,709개이고, RGB에 세로 줄무늬까지 베이크되어 있었다. 시작 화면 배치에서 제외하고 (22,92)의 기존 해골제단 자리는 `m_sword_pile`, 해골제단은 (82,181)로 이동해 handProps 80개를 유지했다.
+- `_hardAlphaSpr`: `m_ctree1~12`, `m_atree1` 로드 시 `alpha < 255` 픽셀을 0으로 정리해 반투명 사각 배경을 차단한다. `test/mapObjectAlphaSanitization.test.js`가 실제 PNG의 200,000개 초과 부분알파 재현, 전처리 연결, 1-1의 `m_atree1` 제외를 고정한다.
+
+### mega 6개
+
+| id | 타일 | 렌더 size | scale | 역할 |
+|---|---:|---:|---:|---|
+| `m_mega_ribs` | (140,102) | 900 | 1.0 | CENTRAL 동쪽 주 방향 앵커 |
+| `m_dragon_3d` | (118,55) | 1800 | 0.6 | UPPER 동쪽 용 실루엣 |
+| `m_dragon_skeleton` | (65,148) | 1200 | 0.8 | LOWER 서쪽 용 해골 지형 |
+| `m_mega_statue` | (90,120) | 600 | 1.25 | CENTRAL 진입 석상 |
+| `m_mega_chapel` | (118,181) | 650 | 1.25 | START 무너진 예배당 |
+| `m_mega_head` | (82,22) | 800 | 1.111… | EXIT 거대 머리 |
+
+- 총 구성은 `handProps` 80 + mega 6이다. 대형 충돌 실루엣은 저주나무 12 + 기존 유니크 3 + 신규 대형 8 + 독 pit 2 + mega 6 = 31개다.
+- legacy `keepDragon` 자동분기는 계속 off다. 따라서 중앙/START 자동 용은 생성하지 않고, 용 2종은 `_MAP_COMPOSE[0].mega`의 외곽 좌표로만 생성한다.
+- 신규 대형 8개는 상호 20타일 이상, mega 6개는 정규화 거리 0.18 이상이다. 10타일 주동선과 START 12타일 스폰 코어는 유지한다.
+- 브라우저 실측: 200×200 본편 맵에서 hand 80, mega 6, 모든 mega 이미지 로드 성공. 맵 QA 런타임은 enemies 0 / spawnHoles 0이며 START 화면에 chapel이 렌더된다. `test/ch1HandDecor.test.js`가 수치·id·간격·용 2종과 START/LOWER/CENTRAL/UPPER/EXIT 카메라 밴드 가시성을 고정한다.
+
+## 2026-08-24 — CH1-1 세로 줄·용 해골 검은 판 제거
+
+| 대상 | 현행 값 | 적용 위치 | 변경 이유 |
+|---|---|---|---|
+| ATMOS 전경 실루엣 | `_ATMO_FG=false` | `_atmoFgDraw()` | `256×1024` 캔버스 4장에 폭 `28~74px`, y `-40~1064`로 구운 기둥을 좌우 22%에 alpha `0.90/0.52`로 그리던 패스가 울트라와이드에서 검은 세로 줄로 보였다. 기본 렌더를 끄고 명시적 `true`에서만 표시한다. |
+| `m_dragon_skeleton` 투명화 | `lo=16`, `hi=80` | `_lumaKeySpr()` 전용 로더 | `1536×1024` 원본의 고부분알파 픽셀 `852,840`개가 거대한 검은 판으로 보였다. `alpha'=alpha×clamp((maxRGB-16)/64,0,1)`로 검은 배경만 제거하고 골격 RGB는 보존한다. |
+
+- 런타임 전후 비교에서 `_ATMO_FG=false`일 때 좌우 세로 기둥이 사라지고 사이드 입자 안개는 유지됨을 확인했다.
+- `test/mapObjectAlphaSanitization.test.js`가 용 해골 루마키 연결과 전경 실루엣 기본 OFF를 회귀 테스트로 고정한다.
+
+## 2026-08-24 — 잠긴 지옥문 펫 안내 추가
+
+| id | 티어 | 트리거 | 화자 | 대사 | 표시/CD | 적용 위치 |
+|---|---:|---|---|---|---:|---|
+| `tut_gate_locked` | T1 튜토리얼 | `G._bossUnlocked=false` 상태에서 잠긴 지옥문 접촉 | 고양이 | 구역을 클리어하면 잠긴 지옥문이 열릴 거야. | `5초 / 9999초` | 출구 진입 체크의 지옥문 봉인 분기 |
+
+- 잠긴 문 안내 텍스트가 갱신되는 45프레임 주기에 `_petSayCD`를 재시도한다. 말풍선이 비면 한 번 출력되고 ID 쿨다운으로 같은 세션의 반복을 막는다.
+- 영문 번역은 `Clear the area and the sealed Hell Gate will open.`이며, 펫 대사 총수는 `172→173종`이다.
+- `test/petGateLockedDialogue.test.js`가 잠긴 문 분기 연결·정확한 한국어 문구·영문 번역을 고정한다.
+## 2026-08-30 — CH1 si1 GUIDELINE GATE 5~6 LANDMARK / CENTER PASS
+
+- `EXODUSER_MAP_PRODUCTION_GUIDELINE_v0.9.md` 순서에 따라 기존 OUTER GATE 2~4 뒤에서 실제 WASD/전투 GATE 5를 재검증하고 LANDMARK/CENTER GATE 6를 진행했다. 42개 movement segment, toxic/camp/altar 왕복, corpse-tree 양쪽 bypass, boss 접근이 PASS했다.
+- `ch1OuterMass=landmark_center` opt-in phase를 기존 64-chunk baked loader에 추가했다. geometry SHA-256 `5bd88b…85f`, runtime map SHA-256 `a67605…33`, authored/runtime `12/12`, START/EXIT, collision/route는 변경하지 않았다.
+- tree/camp/altar/toxic/cocoon 5개 POI에 기존 floor source 4종을 6회 저알파 합성했다. 신규 vertical prop·small prop·gameplay asset은 0이다. SOUTH combat void, central compression, tree 양쪽 bypass, boss approach는 baked alpha `0` 보호 공간으로 유지했다.
+- GATE 6/OUTER contract test `10/10 PASS`, baked `64/64/0`, pageerror/404 `0/0`, max warm `14.3ms`, max draw `0.1ms`다. SOUTH와 tree combat은 적 5·투사체 3·parry/VFX 상태에서 `canMove=true`, `inWall=false`로 직접 확인했다.
+- 동일 8카메라와 full-map 비교는 `captures/ch1_landmark_center_20260830/COMPARISON/`, 전투는 `GATE6_COMBAT/`, 상세 SSOT는 `4.1맵디자인+설정/CH1_LANDMARK_CENTER_PASS.md`에 기록했다. GATE 7 SMALL DETAIL은 미착수다.
+- commit / push / deploy는 수행하지 않았다.

@@ -1,0 +1,75 @@
+{
+  "stage": 1,
+  "masterSize": [8192, 8192],
+  "chunkSize": 1024,
+  "bleed": 1,
+  "geometrySource": "assets/map/ch1/geometry/ch1_si1_geometry.js",
+  "walkableTreatment": "transparent-runtime-ground",
+  "geometryEdgeBlendPx": 24,
+  "phaseOrder": ["LARGE", "LARGE_MEDIUM"],
+  "chunks": [
+    "0,0", "1,0", "2,0", "3,0", "4,0", "5,0", "6,0", "7,0",
+    "0,1", "1,1", "2,1", "3,1", "4,1", "5,1", "6,1", "7,1",
+    "0,2", "1,2", "2,2", "3,2", "4,2", "5,2", "6,2", "7,2",
+    "0,3", "1,3", "2,3", "3,3", "4,3", "5,3", "6,3", "7,3",
+    "0,4", "1,4", "2,4", "3,4", "4,4", "5,4", "6,4", "7,4",
+    "0,5", "1,5", "2,5", "3,5", "4,5", "5,5", "6,5", "7,5",
+    "0,6", "1,6", "2,6", "3,6", "4,6", "5,6", "6,6", "7,6",
+    "0,7", "1,7", "2,7", "3,7", "4,7", "5,7", "6,7", "7,7"
+  ],
+  "outerSides": {
+    "LEFT": "low-wide-horizontal-root-and-corpse-mass",
+    "RIGHT": "high-twisted-vertical-root-and-corpse-mass",
+    "TOP": "dense-asymmetric-natural-funnel",
+    "SOUTH": "lower-density-open-threshold"
+  },
+  "phases": {
+    "LARGE": {
+      "directory": "large",
+      "layers": ["BACK", "LARGE"],
+      "assets": [
+        "bound_n.png", "bound_s.png", "bound_w.png", "bound_e.png",
+        "corner_nw.png", "corner_ne.png", "corner_sw.png", "corner_se.png",
+        "mega_ribs.png", "mega_head.png", "cursed_tree_03.png", "cursed_tree_11.png"
+      ]
+    },
+    "LARGE_MEDIUM": {
+      "directory": "large_medium",
+      "layers": ["BACK", "LARGE", "MEDIUM", "GROUND_CONNECTION"],
+      "assets": [
+        "bound_n.png", "bound_s.png", "bound_w.png", "bound_e.png",
+        "corner_nw.png", "corner_ne.png", "corner_sw.png", "corner_se.png",
+        "mega_ribs.png", "mega_head.png", "cursed_tree_03.png", "cursed_tree_11.png",
+        "prop_g_edge.png", "prop_g_root.png", "prop_g_corpse.png", "prop_rootcage.png", "prop_rib.png"
+      ]
+    }
+  },
+  "landmarkCenter": {
+    "gate": 6,
+    "directory": "landmark_center",
+    "layers": ["GROUND_LANDMARK", "GROUND_TRANSITION"],
+    "primary": {"id": "m_c1tree", "tile": [83, 80], "role": "asymmetric-corpse-tree-basin"},
+    "secondary": [
+      {"id": "m_c1camp", "tile": [49, 122], "role": "ash-warm-decay"},
+      {"id": "m_c1altar", "tile": [151, 91], "role": "ritual-scar"}
+    ],
+    "tertiary": [
+      {"id": "m_c1pool", "tile": [49, 151], "role": "toxic-spread"},
+      {"id": "m_c1cocoon", "tile": [151, 136], "role": "organic-growth"}
+    ],
+    "protectedNegativeSpace": [
+      "south-combat-void", "central-compression", "tree-left-bypass", "tree-right-bypass", "boss-approach"
+    ],
+    "newVerticalProps": 0,
+    "geometryChanged": false,
+    "collisionChanged": false,
+    "routeChanged": false
+  },
+  "smallProps": [],
+  "centerTouched": false,
+  "geometryChanged": false,
+  "collisionChanged": false,
+  "routeChanged": false,
+  "startChanged": false,
+  "exitChanged": false
+}

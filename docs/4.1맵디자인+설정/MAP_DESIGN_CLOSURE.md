@@ -40,12 +40,12 @@
 
 ### P1을 막지 않는 미결(후속 PHASE/UD)
 - PLAY/RIM/OUTER 코드 시스템 = PROPOSED (P1은 데이터+RIM 오브젝트로 착수 가능, 풀 시스템 P2/P3)
-- OUTER 렌더 수단 = 미확정(후보 4종) — **P1 NON-GOAL**(OUTER 렌더는 P2)
+- 전역 OUTER 렌더 수단 = 미확정(후보 4종) — **P1 NON-GOAL**(전역 OUTER 렌더는 P2). 실제 CH1-1(stage0)은 locked outer+default smoothing 64-chunk local 예외이며, CH1-2(stage1)의 `ch1OuterMass=*`는 별도 opt-in 예외다. 두 경로 모두 전역 P2 선택을 확정하지 않는다.
 - ZONE 데이터 시스템 = PROPOSED — P1은 CH1 좌표 직접 사용, 풀 존시스템 P3
 - 위험타일 런타임 = 미구현 — archetype H/얼음·화염 던전 한정, CH1 P1 무관
 - 전경 occluder / Y-sort = planned only — P1 무관
 - si2 명칭 드리프트(지옥기형↔사냥꾼) = 표기 UD, P1 무관
-- CH2~7 레이아웃 = 미존재 — P1은 CH1 si0 단일이라 무관
+- CH2-1(si4)은 2026-08-30 **109-entry** mega-first authored 구성(locked base 78 + BACK/MID 9 + filler 12 + seam 10; backfill 9/boundary 50/landmark 18/detail 6/mask 4/filler 12/seam 10, collision/non-collision 51/58, authored runtime 109/109, skip 0; system 포함 `MAP_OBJS` 111)으로 정리했다. 소형/중형 205-entry 조립식 벽과 authored `wall_edge_tile` 12개는 폐기 상태를 유지하고 CH2 전용 RGBA MEGA 10종/실배치 17개 및 기존 giant 구조물도 고정했다. BACK/MID 9개는 사용자 제공 1254² RGBA 연결 원화 6종, 기존 ridge L/R 2개, 중앙 오른쪽 collision recess용 `m_c2backHive (112,70,8°,overlap .16)` 1개로 구성하며 잠금 MEGA보다 먼저 렌더한다. front MID connector 5종/12개와 web/chitin/egg seam 3종/10개가 top 7/central bridge 8/central recess 1/east pocket 7/lower 8개 체인의 접합부를 마감한다. backfill/filler/seam collision은 0이다. `w:30,authoredWidth:1` 경로·중앙 gameplay core·START/EXIT·기존 collision map hash `fefe09a0`은 바꾸지 않았고 반복 중형 세로 구조물은 runtime-visible 42개를 유지한다. floor cleanup은 연속 dark void base, `(w+4)` mask, stain 10/vein 6/soft halo에 양쪽 3층 quadratic chitin rim(shadow `6.4T`/body `4.5T`/highlight `.34T`)을 더해 긴 대각 collision-only color cutoff를 연속 wall shoulder로 표시하며 off-path/random eye 차단도 유지한다. 실제 WASD 종주 기준 EXIT world `(4017.72,1355.61)`, tile `(100,33)`까지 stuck/abnormal push 0이고 reported recess runtime `(111.5,70.5)`, prop collision false, pageerror/CH2 broken sprite/asset 404 0이다. 최신 비교는 `captures/ch2_reported_gap_20260830/after_recess_fix/`이며 사용자 전체맵 캡처 승인 전 visual FINAL은 미확정이다. CH2-2~CH7은 미존재이며 이 문서의 P1 판정에는 영향 없음.
 
 ### PASS 판정 규칙
 - P1 필수 조건 **전부 충족 + P1 blocker 0** → PASS.
@@ -79,7 +79,7 @@
 - UD-D: runtime-only 14보스에 로어 부여 여부/우선순위
 
 ## 구현 전에 빠진 것 (P1 이후 필요, P1 비차단)
-- CH2~7 에리어별 blockout (35 중 CH1-1만 완결)
+- CH2-1(si4) authored 벌레굴은 후속 구현 완료. CH2-2~CH7 잔여 에리어별 blockout 필요.
 - 위험타일 런타임(archetype H 선행)
 - 늪 전이타일 auto-tile, 전경 occluder, OUTER 렌더 재활성
 - hell1~6 per-boss 문서, runtime-only 보스 로어

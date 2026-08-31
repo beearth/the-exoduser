@@ -118,20 +118,13 @@
 ```javascript
 // 기존 _MTHEME 배열을 통째로 교체
 const _MTHEME = [
-  // 0 얼음굴 → "잠든 호수" (Ori Ginso Tree)
-  { w:'#1a2838', f:'#0c1620', ac:'#44ddee' },
-  // 1 곤충굴 → "독의 정원" (Hollow Knight Greenpath)
-  { w:'#1c2a18', f:'#0e1a0c', ac:'#66ee55' },
-  // 2 악마굴 → "불꽃의 성소" (Hollow Knight Kingdom's Edge + Ori Mount Horu)
-  { w:'#2a1418', f:'#180a0c', ac:'#ff8844' },
-  // 3 괴물굴 → "심연의 꿈" (Hollow Knight Deepnest + Ori Silent Woods)
-  { w:'#1a1428', f:'#0c0a18', ac:'#bb77ff' },
-  // 4 암전봉 → "폭풍의 제단" (Ori Forlorn Ruins)
-  { w:'#28241a', f:'#18140c', ac:'#ffcc44' },
-  // 5 백골묘 → "고요한 안식처" (Hollow Knight Resting Grounds)
-  { w:'#24221c', f:'#14120e', ac:'#ddcc99' },
-  // 6 허공균열 → "허무의 바다" (Hollow Knight Abyss)
-  { w:'#100820', f:'#060410', ac:'#cc88ff' },
+  { w:'#2a4020', f:'#1a0f08', ac:'#66ee55' }, // 0 썩은 숲
+  { w:'#2e3018', f:'#0e1008', ac:'#aacc44' }, // 1 벌레굴
+  { w:'#20262b', f:'#080b0e', ac:'#7a201b' }, // 2 지옥의 겨울
+  { w:'#3e1c22', f:'#180a0c', ac:'#ff8844' }, // 3 화염지대
+  { w:'#3c3624', f:'#18140c', ac:'#ffcc44' }, // 4 지옥 군단
+  { w:'#2a1e3e', f:'#0c0a18', ac:'#bb77ff' }, // 5 사도의 마굴
+  { w:'#1c1038', f:'#060410', ac:'#cc88ff' }, // 6 지옥성
 ];
 ```
 
@@ -1101,7 +1094,7 @@ function drawEnemy(e, frame){
 
 | 지옥 | 팔레트 톤 |
 |------|----------|
-| 얼음굴 | 파랑-흰, 서리 결정 |
+| 지옥의 겨울 | near-black·회백 dirty ice, dying crimson, 희미한 corpse-blue |
 | 곤충굴 | 초록-갈색, 키틴 광택 |
 | 악마굴 | 검붉은, 뿔/날개 강조 |
 | 괴물굴 | 보라-검정, 촉수/변이 |

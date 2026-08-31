@@ -1,0 +1,40 @@
+{
+  "id": "CH1_SOUTH_CANARY_SIDE_MASS_V1",
+  "masterBounds": { "x": 0, "y": 4096, "width": 8192, "height": 4096 },
+  "chunkSize": 1024,
+  "bleed": 1,
+  "chunks": [
+    "0,5", "1,5", "2,5", "3,5", "4,5", "5,5", "6,5", "7,5",
+    "0,6", "1,6", "2,6", "3,6", "4,6", "5,6", "6,6", "7,6",
+    "3,4", "4,4", "3,7", "4,7"
+  ],
+  "runtimeFlag": "ch1BakedSpike=1",
+  "suppressionFlag": "ch1BakedSuppressVisual=1",
+  "geometrySource": "assets/map/ch1/geometry/ch1_si1_geometry.js",
+  "walkableTreatment": "transparent-runtime-ground",
+  "geometryEdgeBlendPx": 20,
+  "protectedCenter": { "minX": 3450, "maxX": 4800, "treatment": "ground-paint-only" },
+  "left": {
+    "grammar": "low-wide-horizontal",
+    "sourceComposites": [
+      "assets/map/ch1/collision/corner_sw.png",
+      "assets/map/ch1/collision/corner_nw.png",
+      "assets/map/ch1/collision/bound_w.png"
+    ],
+    "overlapRange": [0.3, 0.5],
+    "depthLayers": ["BACK", "MID", "FRONT"],
+    "groundIntegration": ["root-tangle", "toxic-wetness", "soil-discoloration", "dark-recess"]
+  },
+  "right": {
+    "grammar": "high-twisted-vertical",
+    "sourceComposites": [
+      "assets/map/ch1/collision/bound_e.png",
+      "assets/map/ch1/collision/corner_ne.png",
+      "assets/map/ch1/collision/corner_sw.png",
+      "assets/map/ch1/collision/corner_nw.png"
+    ],
+    "overlapRange": [0.3, 0.5],
+    "depthLayers": ["BACK", "MID", "FRONT"],
+    "groundIntegration": ["organic-roots", "corpse-shadow", "cocoon-growth", "contaminated-ground"]
+  }
+}

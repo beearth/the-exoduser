@@ -294,12 +294,12 @@ path: '/v1/images/generations'
 
 | 단계 | 함수 | 앵글러 (필드보스, r=120, ib 취급) | 지상뱀장어 (r=56) |
 |---|---|---|---|
-| 사망음+혈흔 VFX | `deathFX` | `isBoss` → `death_boss`. `death_blood` scale **3.6** | et 50 → `death_demon`. `death_blood` scale **2.1** (r>20) |
+| 사망음+혈흔 VFX | `deathFX` | `isBoss` → `death_boss`. `death_blood` scale `clamp(0.35+r×0.075,0.8,4.8)` = **4.8** | et 50 → `death_demon`. 같은 공식 = **4.55** |
 | 대형 파티클 | `_spawnLargeMonsterDeathFx` | 26발 `#ff5577/#ffccdd` (ib) | 16발 `#ffaa66/#ffd9aa` (`r>=18` 또는 `mhp>=220`로 발동) |
 | 시체 래그돌 | `_addCorpse` | `_fbSheet` 8방향 현재 프레임 → 128×128. sz=`max(80,r*2.5)`=**300**. 수명 600. 파워 `max(5, dmg/mhp*20)` cap 8 → 비행 spd max 5 | `_wmSheet[face]` 현재 프레임. sz=`min(200,r*2.2)`≈**123**. 수명 420. 파워 min 2 |
 | 바닥 잔류 | `_addFloorTrace` | 핏자국 **56** + 살점 1. 시체 팬케이크 sz **66** (구 300). 맵 전환까지 | 핏자국 **36** + 살점 1. 시체 sz **42** |
 | 고어 파편 | `_addGorePiece` | 5개 (flesh/blood/내장 + skull/heart). 30% `camFling` | 2개 (공통 1 + 내장/장기 1) |
-| 혈흔 폭발 | `_addDeathImpact` | `maxSz=r*4`=**480**. `blood_impact_2/3/4` 랜덤 | `maxSz=r*4`=**224** |
+| 혈흔 폭발 | `_addDeathImpact` | `maxSz=clamp(r×3,24,240)`=**240**. `blood_impact_2/3/4` 랜덤 | 같은 공식 = **168** |
 | 카메라 | `shake` + 플래시 | shake 18, `_flashT=4` `#66ddff`, `_chromaT=3` | shake 8 |
 | 캡처 | `_fmDrawSpriteTo` | `_fbSheet` 셀 300, frame%8 | `_wmSheet` 셀 150, frame%12. face 0=우 1=좌 |
 
@@ -367,6 +367,14 @@ PixelLab에서 8프레임 애니메이션도 생성 완료했으나, MCP API로 
 - 배치: 좌 0~22% / 우 78~100% 밴드에만. 중앙 22~78% 스폰·wrap 양쪽 배제(밴드폭 `C.width*0.22` mod wrap → 중심점 절대 미진입). 크기=`sizeN×C.height`(**14~34%**), 알파 **0.12~0.24**(가시성 튜닝, 구 0.05~0.11 과소). 색=`bright×0.75+흰×0.25`, 스탬프 3종 boot 베이크·챕터전환시 recolor. 울트라와이드=비율기준 자동대응.
 - **중앙글로우 OFF (2026-08-23, `_CENTER_GLOW=false`)**: 플레이어 등불(preset6) 컬러 발광을 `_renderLighting` 컬러패스에서 `(cl.ci===6)continue`로 제외. 어둠홀(destination-out)은 유지 → 캐릭터 가시성 보존, 중앙 warm bloom만 제거. `true`로 복구.
 - 렌더=3-2 블록 내(기존 save+lighter 재사용), for 인덱스+drawImage만(arc/fill/shadowBlur 0). perf 저하 시 36→24.
+
+#### ATMOS PHASE 3 — 전경 실루엣 기본 비활성화 (2026-08-24)
+
+| 키 | 기본값 | 생성 수치 | 렌더 수치 | 적용 위치 | 결정 |
+|---|---:|---|---|---|---|
+| `_ATMO_FG` | `false` | 오프스크린 4장 `256×1024`, 기둥 폭 `28~74px`, y `-40~1064` | 좌 `0~22%` / 우 `78~100%`, NEAR alpha `0.90`, FAR alpha `0.52` | `_atmoFgDraw()` | 전 화면 높이의 절차형 기둥이 울트라와이드에서 검은 세로 줄로 판독되므로 기본 렌더를 끈다. 콘솔에서 `window._ATMO_FG=true`로 명시한 경우에만 표시한다. |
+
+사이드 입자 안개(`_ATMDBG.sidefog=1`)는 유지한다. 이번 비활성화 대상은 `FG_L_NEAR/FG_L_FAR/FG_R_NEAR/FG_R_FAR` 네 장을 그리는 전경 실루엣 패스뿐이다.
 
 #### ATMOS PHASE 2 — 부유입자 3뎁스 패럴랙스 (2026-08-23)
 Ori 수준 대기 깊이감. 광원 근처에서 존재감 나는 미세 입자. `_atmMote=Float32Array(82×8)` 재배치(신규 풀 아님, 기존 96×5 재사용). 렌더=3-2 블록 `lighter`, 갓레이 뒤·토치 앞. blend 전환 없음, save/restore 블록당 1회.

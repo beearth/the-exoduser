@@ -52,7 +52,7 @@ function createRootPrefix(rootDir) {
   return rootDir.endsWith(path.sep) ? rootDir : rootDir + path.sep;
 }
 
-export function createStaticServer({ rootDir = process.cwd(), host = '127.0.0.1', port = 8080 } = {}) {
+export function createStaticServer({ rootDir = process.cwd(), host = '127.0.0.1', port = 8080, mapTestMode = false } = {}) {
   const ROOT = path.resolve(rootDir);
   const ROOT_PREFIX = createRootPrefix(ROOT);
   const SAVES_DIR = path.resolve(ROOT, 'saves');
@@ -98,6 +98,29 @@ export function createStaticServer({ rootDir = process.cwd(), host = '127.0.0.1'
   return createServer(async (req, res) => {
     try {
       const reqUrl = new URL(req.url || '/', `http://${host}:${port}`);
+      if (mapTestMode && reqUrl.pathname === '/') {
+        res.writeHead(302, { Location: '/map-test.html' });
+        res.end();
+        return;
+      }
+      if (reqUrl.pathname === '/map-test') {
+        res.writeHead(302, { Location: '/map-test.html' });
+        res.end();
+        return;
+      }
+      const mapShortcut = reqUrl.pathname.match(/^\/map\/(\d+)$/);
+      if (mapShortcut) {
+        const stage = Number(mapShortcut[1]);
+        if (!Number.isInteger(stage) || stage < 0 || stage > 34) {
+          send(res, 404, 'Unknown stage');
+          return;
+        }
+        res.writeHead(302, {
+          Location: `/game.html?test=1&testchar=1&stage=${stage}&classic=1&mapqa=1${stage===4?'&combatqa=1':''}`
+        });
+        res.end();
+        return;
+      }
       if (reqUrl.pathname === '/1_4') {
         res.writeHead(302, { Location: '/game.html?stage=3' });
         res.end();

@@ -471,7 +471,7 @@ Space 슬롯(SKILL_SLOTS[4])에도 모든 스킬 쿨다운 오버레이+숫자 �
 | 슬롯 | 대상 쿨다운 | Max 공식 | 비고 |
 |------|------------|----------|------|
 | `skSlot0` (Shift/돌진) | `P.chargeCd` | `isDimBreach()?max(180,420-cbLv*20):(chargeBoost>=1?600:300)` | 스택<최대 && cd>0 일 때만 표시. `chargeBoost` 레벨에 따라 차원돌진 감소 반영 |
-| `qsE` (E/마법) | `activeMagicSk` 기반 | blueShot:300, fireAura:720, 나머지는 `SKILL_LIST[...].cd` | fireball/omniBeam/elemMissile/burstLoop은 내장 CD 없음 (미표시) |
+| `qsE` (레거시 id, RMB/마법) | `activeMagicSk` 기반 | blueShot:300, fireAura:720, 나머지는 `SKILL_LIST[...].cd` | fireball/omniBeam/elemMissile/burstLoop은 내장 CD 없음 (미표시) |
 | `qsQ` (Q/보호막) | `activeQSk==='peaceShield'?P._psCd:0` | `SKILL_LIST.peaceShield.cd` 또는 폴백 900 | 기본 `parry`는 CD 없음 |
 
 공통: pct = cdNow/cdMax, txt = `(cd/60).toFixed(1)+'s'`. 요소는 `._skCd` 클래스로 DOM 생성/제거.
@@ -682,7 +682,8 @@ Space 슬롯(SKILL_SLOTS[4])에도 모든 스킬 쿨다운 오버레이+숫자 �
 #### `_updateSkBarKeyLabels()` 함수
 - `_updateActionKeys()` 내부에서 호출 — HUD 갱신 시마다 실행
 - `_gpActive` 상태에 따라 `pad`/`kbm` 모드 감지, 모드가 바뀔 때만 DOM 재빌드 (`_skBarKeyMode` 캐시)
-- `#skBarKeyRow` 자식 노드를 전부 지우고 현재 모드 라벨로만 채움 → KBM+패드 라벨 동시 표시 버그 해결
+- `#skKeyBar` 자식 노드를 현재 입력모드 라벨로 재구성한다. KBM에서는 배경 이미지의 구 `RMB … E` 글자 두 개만 현재 `BINDS.shield`/`BINDS.beam` 키캡으로 덮고, 패드에서는 13슬롯 글리프를 표시한다.
+- `_skBarKeyMode` 캐시는 입력모드뿐 아니라 `BINDS.shield`·`BINDS.beam` 값도 포함하므로 리바인딩 직후 라벨이 갱신된다.
 
 #### 라벨 맵 (13슬롯)
 | 슬롯 ID | KBM 키 | 패드 라벨 |
@@ -692,13 +693,13 @@ Space 슬롯(SKILL_SLOTS[4])에도 모든 스킬 쿨다운 오버레이+숫자 �
 | qs2 | Digit3 | LT+Y |
 | qs3 | Digit4 | LT+X |
 | qs5 | KeyF | LT |
-| ultSlot | KeyZ | LT+RT |
+| ultSlot | KeyZ | RT |
 | skSlotLMB | mouse0 | A |
-| skSlotRMB | KeyE (2026-07-27 스왑, 구 mouse2) | RB |
+| skSlotRMB (레거시 id) | KeyE (2026-07-27 스왑, 구 mouse2) | X |
 | skSlot0 | ShiftLeft | LB |
-| qsE | mouse2 (2026-07-27 스왑, 구 KeyE) | X |
-| qsQ | KeyQ | RT |
-| skSlotCT | ControlLeft | Y |
+| qsE (레거시 id) | mouse2 (2026-07-27 스왑, 구 KeyE) | RS |
+| qsQ | KeyQ | Y |
+| skSlotCT | ControlLeft | RB |
 | skSlot1 | Space | B |
 
 - 라벨 위치: `slotEl.getBoundingClientRect()` 기준 실제 좌표 → `m.left` 폴백

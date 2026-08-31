@@ -27,6 +27,8 @@ P12 Regression / QA
 
 각 PHASE는 CH1 vertical slice(si0) **단일 스테이지만** 대상. CH2~7 확산은 CH1 P1~P12 통과 후 별도.
 
+> **2026-08-30 stage0 visual execution note:** CH1-1은 전역 P1/P2 geometry 시스템을 완료한 것이 아니라, geometry/collision/route를 그대로 둔 stage-local 64-chunk outer + default smoothing visual pass를 완료했다. `CH1_1_START_OUTER_MASS.md`, `CH1_1_SMOOTHING_PASS.md` 참고. 따라서 아래 P1 actual PLAY boundary와 전역 P2 선택은 여전히 별도 milestone이다.
+
 ---
 
 ## PHASE 0 — Documentation / baseline lock
@@ -151,7 +153,7 @@ P12 Regression / QA
 
 ## PHASE 10 — Art dressing
 - **GOAL**: RIM/OUTER/랜드마크 아트 배치(가독성 유지).
-- **INPUT**: `_CH_DECO[0]`, `m_mega_ribs`, blueprint/minimap 참조.
+- **INPUT**: `_CH_DECO[0]` 기존 에셋, `m_c1tree`, 2026-08-27 reference miniature. 현행 si0은 authored-only이며 mega 미사용.
 - **CODE SCOPE**: 데코 배치 데이터. 콜리전 무영향(비충돌 위주).
 - **NON-GOALS**: 신규 에셋 제작(별도), Y-sort/전경 occluder(planned only).
 - **IMPLEMENTATION IDEA**: hand-placed rim props(초안 리스트), 개활도 65~72% 유지.
@@ -160,6 +162,8 @@ P12 Regression / QA
 - **PASS**: 가독성+개활도+성능 유지.
 - **ROLLBACK**: 데코 데이터 제거.
 - **NEXT GATE**: 아트 가독성 승인.
+
+CH1-1 local 실행 결과: EDGE8/CORNER4/TREE4/SIDE10/OPEN5/SMALL0 smoothing 뒤 `forestBoundary:1` canonical tile wall을 적용했다. structural module 59개와 dead wall prop 1개를 제거해 authored63/runtime64, collision23, structural0이며 START→north route와 landmark/vertical 의미는 보존한다.
 
 ## PHASE 11 — Performance
 - **GOAL**: 대형 존/OUTER/데코 추가분 성능 검증·최적화.

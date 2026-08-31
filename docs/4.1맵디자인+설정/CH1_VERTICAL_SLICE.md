@@ -2,8 +2,24 @@
 
 > **역할**: CH1(썩은 숲)을 기준으로 한 **첫 수직 슬라이스** 완성형 레벨 스펙. 세미 오픈월드 규칙의 실증 케이스.
 > **원칙**: **CH1 전체를 새로 만들지 않는다.** 기존 DESIGN LOCK 데이터(`CH1_1_COMPOSE_초안.md`, `FIXED_MAPS[0]`, `_MAP_COMPOSE[0]`)를 **verbatim 보존**하고, 그 위에 수직 슬라이스 흐름만 얹는다.
-> **상태**: 2026-08-24. CH1-1 기존 에셋 손 배치 구현 완료(`handProps` 80 + `mega` 6).
-> **정합**: legacy keepDragon 자동분기는 OFF, 용 2종은 mega 데이터 좌표에 배치하며 `CH1_MAP_KIT_OptionB.md`도 현행값으로 동기화됐다.
+> **상태**: 2026-08-30. `forestBoundary:1` canonical tile wall, authored63/runtime64, structural0, 우중 제단 고지대, stage0 outer + default smoothing 적용.
+> **정합**: legacy keepDragon 자동분기는 OFF이며, 현행 si0에는 용 2종과 mega 배치가 없다. `CH1_MAP_KIT_OptionB.md`도 reference authored 값으로 동기화됐다.
+> 아래의 LOWER/CENTRAL/UPPER 분지·옛 지그재그 표는 2026-08-24 blockout archive다. 현행 시각 배치/앵커는 `CH1_1_COMPOSE_초안.md` CURRENT SSOT가 우선한다.
+
+---
+
+## 2026-08-29 우중 제단 고지대
+
+| 구분 | 런타임 값 |
+|---|---|
+| 위치 | 중심 `(147,98)`, 타원 반경 `18×9 tile` |
+| 고도 | 저지대 0 / 서쪽 ramp smoothstep 0→1 / 정상 1 |
+| 진입 | 서쪽 `x125→135`, `y98`, 반폭 `1.8→3 tile` 한 곳 |
+| 차단 | 타원 band `.84≤d≤1.04`를 `isW`에 합성, ramp 내부만 예외 |
+| 시각 | 기존 `m_c1gedge` 1장 기반 뿌리 단구. map floor 뒤/prop 앞 렌더 |
+| 메인 흐름 | x100 START→CENTER→EXIT 저지대 축과 중앙 HERO 위치 불변 |
+
+검증은 실제 WASD만 사용했다. ramp low `h=.026`, mid `h=.668`, plateau `h=1`, 북쪽 직벽 정지, ramp 하산 `h=0`을 확인했다. 이 지형은 stage-local authored geometry이며 `handProps`/`MAP_OBJS` 수를 늘리지 않는다.
 
 ---
 
@@ -39,7 +55,7 @@ COMBAT C = UPPER 분지
 | `f` | forge | 100,120 | rect | 8,5 | CENTRAL 게임플레이 | 랜드마크 아님 |
 | `r2` | combat | **80**,85 | ellipse | 16,9 | CENTRAL 서쪽 어긋남 | grade1 |
 | `r3` | combat | **120**,50 | ellipse | 16,9 | UPPER 동쪽 어긋남 | grade2 |
-| `b` | boss | 100,18 | ellipse | 20,12 | EXIT APPROACH | 12시 문, 4 pillars dx±10 dy±5 |
+| `b` | boss | bossCx100, gateY5 | forest gate | x88..112,y2..35 | EXIT APPROACH | exits 99..101,y7 |
 
 ### Corridors — maps_data.js:24–30
 체인 `s→r1(w10) → r1→f(w9) → f→r2(w10) → r2→r3(w10) → r3→b(w10)`, 전부 `style:"cave"`. 센터라인 지그재그 **100→100→100→80→120→100**.
@@ -50,7 +66,7 @@ COMBAT C = UPPER 분지
 ### 기타
 - corridorSpawns: `{100,138,g0}`, `{100,103,g0}`.
 - tileRLE: `[1,40000]` = 통바닥. spawnHoles 9개(아래). objs `{100,190,player_start}`.
-- **MAP_ALL_FLOOR**(si0 전용): 내부 벽1→바닥0, 테두리만 벽 (`game.html:24589/25038`).
+- **MAP_ALL_FLOOR=false**: si0은 all-floor 우회를 사용하지 않고 `_buildCh1StartForestRLE(200,200)` canonical floor/wall geometry를 사용한다.
 
 ### spawnHoles (9개, tile) — maps_data.js:41–51
 (70,170)M, (140,160)S, (55,140)M, (140,130)S, (80,105)M, (130,80)M, (60,60)S, (140,45)M, (100,25)L.
@@ -70,14 +86,14 @@ COMBAT C = UPPER 분지
     {x:.19,y:.58,r:520},  // WEST 포켓(CENTRAL+LOWER 목)
     {x:.83,y:.45,r:500}   // EAST 포켓(CENTRAL+UPPER 목)
   ],
-  handProps:[/* 기존 CH1 에셋 80개 — 정확한 id/좌표는 CH1_1_COMPOSE_초안.md 표 */],
-  mega:[/* ribs + dragon 2종 + statue/chapel/head = 6개 */]
+  handProps:[/* 기존 CH1 에셋 63개 — 정확한 앵커/수치는 CH1_1_COMPOSE_초안.md CURRENT SSOT */],
+  mega:[]
 }
 ```
 - `empty.r` = **픽셀**(world px), x/y = 정규화(0~1).
 - `hand:1` = auto-scatter/deco/uni/wall/scatter **OFF**. `lm:[]` = 중앙 기본 랜드마크 fall-through 차단.
-- legacy **keepDragon 미설정 → 중앙/START 자동 용해골 OFF**. 대신 `mega` 데이터가 `m_dragon_3d`(118,55, sz1800)를 UPPER 동쪽, `m_dragon_skeleton`(65,148, sz1200)을 LOWER 서쪽에 1회 배치한다.
-- `empty`는 `hand:1` 하에서 **안전망+문서용**. 실제 손배치는 저주나무 12 + 기존 유니크 3 + 신규 대형 8 + 중형/소형 57 = `handProps` 80개다. START 첫 화면에는 비충돌 7개 + 대형 2개를 가장자리에 노출하고 스폰 반경 12타일은 비운다.
+- legacy **keepDragon 미설정 → 중앙/START 자동 용해골 OFF**. 현행 reference authored compose는 `mega:[]`이므로 용 해골 2종도 배치하지 않는다.
+- `empty`는 `hand:1` 하에서 **안전망+문서용**. 실제 손배치는 structural boundary 0, `handProps` 63개다. START→중앙→north approach와 중앙 HERO negative space는 canonical forest RLE에서 유지한다.
 
 ---
 
@@ -93,18 +109,18 @@ COMBAT C = UPPER 분지
 | WEST POCKET | 18–58, 90–142 | CENTRAL+LOWER 2입구 |
 | EAST POCKET | 142–188, 58–122 | CENTRAL+UPPER 2입구 |
 
-- **센터라인 지그재그 LOCK**: x=100 → 서88 → 동118 → 서92 (LOWER→CENTRAL→UPPER). r2=80/r3=120과 정합.
+- **현행 진행축 LOCK**: START x100 → 중앙 HERO 서쪽 우회 x84 → 북쪽 x100 → EXIT. 중앙 전투공터는 열어 둔다.
 - **연결 최소폭 10타일 — 절대 축소 금지.**
-- **START/EXIT vs empty offset — LOCK**: START spawn(100,185)이지만 empty중심(0.50,0.88)→(100,176) = spawn보다 **북쪽 9타일**(첫 걸음 커버, 남쪽 rim 아님). EXIT 문(100,18)이지만 empty(0.50,0.14)→(100,28) = **남쪽 10타일**(접근로 커버). 스폰은 x=100 축 유지, 분지 x오프셋은 경로 굴곡이지 스폰 오프셋 아님.
-- **SIDE POCKET — LOCK**: 막다른 길 아님 = **각 2입구**. WEST=CENTRAL(overlap x46–58 w12)+LOWER(x48–58 w10). EAST=CENTRAL(x142–158 w16)+UPPER(x142–152 w10). 비대칭. 목 ≥10타일 아니면 배치 실패.
-- **MAIN ROUTE**: START(100,185)→LOWER(~88,150)→CENTRAL(~118,105)→UPPER(~92,52)→EXIT(100,18). x=100 직선복도 없음.
+- **START/NORTH LOCK**: START spawn(100,185)은 유지한다. 현행 north는 `_applyCh1StartNorthGate`의 bossCx100/gateY5, exits y7, approach x88..112/y2..35가 우선하며 과거 empty(100,28)는 archive다.
+- **SIDE POCKET — LOCK**: 좌상 cocoon, 좌중 camp, 좌하 root passage, 우중 altar, 우상 swamp, 우하 poison pocket을 서로 분리된 비대칭 cluster로 읽히게 한다.
+- **MAIN ROUTE**: START(100.5,185.5)→남쪽 개활지→중앙 시체나무 우회→north y23.43 실제 WASD PASS→exits y7.
 
 ---
 
-## 4. 랜드마크 — 주 앵커 ribs + 동선 권역 mega 5
+## 4. 랜드마크 — 중앙 HERO 시체나무 1 + 비대칭 side POI
 
-- 위치 tile **(140,102) = (0.70,0.51)**, CENTRAL 동쪽 rim.
-- **size LOCK: 시작 900, QA 최대 1000. 1100/1400 금지.**
+- 위치 tile **(102,90)**, 중앙. `m_c1tree` 하나만 HERO로 사용한다.
+- **현행 size LOCK: `_OBJ_META` sz1450, instance scale1.0.** 과거 900/QA1000은 mega_ribs archive 값이며 corpse tree에 적용하지 않는다.
 - EXIT empty에서 ≥30타일, 소환굴(140,45)에서 ~32타일 이격.
 - bone_arch는 LOWER 동쪽 보조 대형으로 채택하고, skull_altar는 서쪽 유니크 소품으로 유지한다.
 
@@ -121,7 +137,7 @@ COMBAT C = UPPER 분지
 
 ## 6. 스코프 격리 — LOCK (초안 §265–274)
 
-`hand:1` / legacy `keepDragon off` / `_CH_DECO off` / 살점 scatter off 는 **si0 전용.** 용 2종은 `mega` 데이터 전용이며 전역화 금지다.
+`hand:1` / legacy `keepDragon off` / `_CH_DECO off` / 살점 scatter off / floor carpet off는 **si0 전용.** 현행 si0의 `mega`는 빈 배열이며 이 설정을 다른 stage로 전역화하지 않는다.
 
 ---
 
@@ -131,12 +147,12 @@ COMBAT C = UPPER 분지
 - 기존 tileRLE 통바닥 + isW로 성립. RIM 오브젝트(절벽/뼈벽)는 **비충돌 or 충돌메타 오브젝트**로 경계 자연화(현재 미배치).
 
 ### OUTER
-- 썩은 숲 원경(먼 나무 실루엣/독안개 깊이). 패럴랙스 재활성 대상. **현재 미렌더.**
+- 전역 패럴랙스 원경은 비활성이다. CH1-1 탐험맵은 stage0 locked outer + default smoothing 64-chunk visual phase를 렌더하며 boss arena에서는 자동 OFF다.
 
 ### Art (에셋)
 - 바닥 `assets/map/ch1/ground_dark_soil.png` 1024². 데코 `_CH_DECO[0]`.
-- 랜드마크 `m_mega_ribs` 스프라이트. 참조: `compose_ch1/blueprint_1-1..1-4.png`, `minimap_1-1..1-4.png`, keyart `1-1_forest_gate.jpg`.
-- **MISSING**: 늪 전이 타일(auto-tile), 전경 occluder(planned only), hand-placed rim props.
+- 현행 랜드마크 `m_c1tree` 스프라이트. `m_mega_ribs`와 과거 blueprint/minimap은 2026-08-24 archive 참고 자료이며 현재 si0 배치에는 사용하지 않는다.
+- **MISSING**: 전역 늪 전이 타일(auto-tile), 전경 occluder(planned only). CH1-1 local은 authored63 + baked 64-chunk + canonical forest tile boundary로 충족하며 신규 hand prop은 추가하지 않는다.
 
 ### Runtime event
 - 필드보스 `_fbTick`(51878) 2500px 게이트 유지. 보스 아레나 `_enterBossArena`(25111).
@@ -149,7 +165,7 @@ COMBAT C = UPPER 분지
 ## 8. CH1-2 ~ CH1-4 (요약, tile-precise 미완)
 
 `맵구성_1장.md` §3 기준(1-1만 완전 blockout, 1-2~1-4는 문단 스펙):
-- **1-2 뒤틀린 숲길**(si1): `hand:1`+`vista:1`, basin `{cx:100,cy:122,rx:80,ry:64}`, empty START(.50,.88 r360)/EXIT(.50,.14 r320). 랜드마크 예배당+눈나무3.
+- **1-2 뒤틀린 숲길**(si1, 현행): `hand:1`+`vista:1`+`CH1_SI1_GEOMETRY`. 7-region 비대칭 mask, width `34→89→43→89→38t`, toxic/camp/altar 실제 pocket, corpse tree 좌/우 bypass, authored `12/12`. 상세 SSOT는 `CH1_SI1_ACTUAL_STAGE_GEOMETRY.md`.
 - **1-3 눈달린 버섯 군락**(si2): clusters (.28,.35)/(.72,.38)/(.50,.62) r800–900; uniques flesh_ball/penta_circle/flesh_maw/eye_tree/skull_altar; mega_head(.28,.35,980); empty START(.50,.88 r420)/EXIT(.50,.14 r380)/mid(.50,.48 r700).
 - **1-4 기생수의 둥지**(si3): edge-only 밀도, 중앙 r1100 void+왕좌(.50,.22); uniques throne/bone_arch/flesh_maw/skull_altar/penta_circle; lgMul1.25, lgDist640.
 
