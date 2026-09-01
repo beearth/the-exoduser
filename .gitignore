@@ -71,3 +71,7 @@ autoloop/STOP
 
 # AUTOLOOP 라이브 상태파일 (매 사이클 변동, 추적 제외)
 docs/AUTOLOOP_STATE.md
+
+# 트레일러 제작 빌드 산출물 (대용량 mp4/프레임, 추적 제외 — 최종본은 별도 전달)
+trailer/
+assets/vfx/boss/gen/
