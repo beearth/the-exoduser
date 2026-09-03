@@ -1,5 +1,15 @@
 # Sync Changelog
 
+## 2026-09-03 CH1 void wall 누락 자산·브라우저 404 해소
+
+| id/대상 | 발견 상태 | 현재 계약 | 생성/적용 위치 | 검증 |
+|---|---|---|---|---|
+| `gt_void_wall` | `_GT_FILES`와 렌더 분기는 `assets/map/ch1/wall_black_void_tile.png`를 참조했지만 실제 파일이 없어 게임 진입마다 HTTP 404 | 런타임 원본 `1024×1024` RGB PNG를 저장소에 포함하고 CH1 해골 벽 패턴 미준비 시 256px 단위로 반복 렌더 | `tools/generate-ch1-black-void-tile.mjs` → `assets/map/ch1/wall_black_void_tile.png` | `test/mapVoidWallTile.test.js` **4/4 PASS**, 헤드리스 Chrome 로컬 HTTP 4xx/5xx 0 |
+| 2×2 반복 미리보기 | 생성기는 QA 미리보기도 만들지만 출력물이 누락 | `2048×2048` RGBA PNG를 함께 보존해 이음선·반복 패턴을 육안 검사 | `assets/map/ch1/wall_black_void_tile_preview.png` | 2×2 원본 크기 육안 검사, 뚜렷한 이음선 없음 |
+
+- TDD: 등록 경로의 실제 파일 존재 검사를 먼저 추가해 1 RED/3 PASS를 확인한 뒤 기존 생성기를 실행했으며, 이후 4/4 PASS로 전환됐다.
+- 브라우저 QA: `game.html?testchar=1&stage=1&classic=1` 재실행에서 해당 PNG가 HTTP 200으로 로드됐고 `pageerror=0`, 로컬 HTTP 오류 0이었다. 같은 실행에서 지옥강타 1/지옥강타 2가 각각 올바른 시트를 512×512 셀로 잘라 900×900/980×980px에 렌더했다.
+
 ## 2026-09-03 게임 루프 ReferenceError 멈춤 수정
 
 | id/대상 | 증상 | 근본 원인 | 현재 계약 | 검증 |
@@ -11,7 +21,7 @@
 - 두 선언 누락을 각각 RED로 고정한 뒤 최소 복구했으며 게임플레이 수치·공식·입력 계약은 변경하지 않았다.
 - 최종 전체 자동 회귀 **470/470 PASS**, `tools/guard.js` PASS, docs sync PASS.
 
-## 2026-09-03 코드 전수조사 최종 정리·대왕치기 영웅 VFX 연결
+## 2026-09-03 코드 전수조사 최종 정리·지옥강타 1 영웅 VFX 연결
 
 | id/대상 | 확인된 문제 | 현재 계약 | 검증 |
 |---|---|---|---|
@@ -19,7 +29,7 @@
 | `pParryBlueBeanBase` | 무지개탄 반사 제거 뒤 호출 없는 레거시 함수 잔존 | 함수 삭제, 모든 유효 반사는 `pParryProjDmg` 단일 공식 | `test/blueBeanReflectDamageFloor.test.js` |
 | 보스 `parryBlueBean` | 10% cap이 후속 공격 배율보다 먼저 적용돼 최종 피해가 10%를 넘을 수 있음 | 모든 배율 뒤, 에너지쉴드 흡수 직전에 보스 MHP 정확히 10%로 확정 | `test/parryBlueBeanPenaltyBypass.test.js` |
 | CH1 void wall | `_GT_FILES`의 `gt_void_wall` 로더 계약 확인 | `assets/map/ch1/wall_black_void_tile.png`를 CH1 비스트림 벽 폴백에서 사용 | `test/mapVoidWallTile.test.js` |
-| 대왕치기/지옥강타 VFX | 생성된 2×2 시트가 런타임에 연결되지 않은 미완성 상태 | `giant`/`inferno`를 `_gSlamWave.kind`로 선택해 45f 동안 4프레임 재생, 기존 크레이터 폴백 유지 | 시트 알파·1024²·분기·프레임 `test/giantSlamHeroVfx.test.js` 4/4 |
+| 지옥강타 1/지옥강타 2 VFX | 생성된 2×2 시트가 런타임에 연결되지 않은 미완성 상태 | `giant`/`inferno`를 `_gSlamWave.kind`로 선택해 45f 동안 4프레임 재생, 기존 크레이터 폴백 유지 | 시트 알파·1024²·분기·프레임 `test/giantSlamHeroVfx.test.js` 4/4 |
 | 전체 회귀 | 조사 중 24개 구형 exact-contract 실패 잔존 | 현행 코드·문서 계약으로 테스트를 동기화하고 실제 결함은 구현 수정 | `test/*.test.js` **468/468 PASS**, `tools/guard.js` PASS, docs sync PASS |
 
 ## 2026-09-03 시작 화톳불 완전 안전결계 — 뱀 몸통 침범 수정
@@ -165,12 +175,12 @@
 
 | 대상 | 이전 계약 | 현재 계약 | 적용 위치 |
 |---|---|---|---|
-| 1~4 (`SKILL_SLOTS[0~3]`) | 일반 스킬과 대왕치기류 혼용 가능 | 일반 액티브만 허용; 영역·분노 폭발 불가 | `_canAssignSkillSlot()` |
+| 1~4 (`SKILL_SLOTS[0~3]`) | 일반 스킬과 지옥강타 1류 혼용 가능 | 일반 액티브만 허용; 영역·분노 폭발 불가 | `_canAssignSkillSlot()` |
 | Space (`SKILL_SLOTS[4]`) | 일반 선택스킬의 다섯 번째 슬롯 | **분노 폭발 전용**: `giantSlam`, `giantSlam2`만 허용 | 팝업·드래그·카드 버튼·자동배정·게임패드 Y·런타임 방어 |
-| `giantSlam2` 합체 | 슬롯 계약 미명시 | 기둥강타(`pillarSlam`)·지옥강타(`infernoSlam`)의 Space 호스트 | `giantSlam2` ID로 장착/발동 |
+| `giantSlam2` 합체 | 슬롯 계약 미명시 | 기둥강타(`pillarSlam`)·지옥강타 2(`infernoSlam`)의 Space 호스트 | `giantSlam2` ID로 장착/발동 |
 | F (`SKILL_SLOTS[5]`) | 영역 전용 | 유지: 영역 1개만 허용 | `_isAreaSkillId()` |
 | 가시덫 (`spikeTrap`) | `[고정: Space]`, `fixed:true` | `[선택: F]` 영역기; 회복의 영역과 F에서 교체 | `SKILL_LIST`, 안내·펫 대사 |
-| 구세이브 | 일반 스킬이 Space, 대왕치기류가 1~4에 남을 수 있음 | 일반=1~4, 분노 폭발=Space, 영역=F로 자동 복구 | `_repairAreaSkillSlot()` |
+| 구세이브 | 일반 스킬이 Space, 지옥강타 1류가 1~4에 남을 수 있음 | 일반=1~4, 분노 폭발=Space, 영역=F로 자동 복구 | `_repairAreaSkillSlot()` |
 
 - Space/F 전용 칸이 이미 사용 중이면 두 번째 후보는 습득/레벨을 유지한 채 미배정하며, L 패널에서 수동 교체한다.
 - UI 제목·조작 도움말·키 설정명을 `Space · 분노 폭발 전용`으로 동기화했다.
@@ -1780,7 +1790,7 @@ mpR = 0.05 + s.int×0.005                                        [NO P.lv×0.001
   - **chainSlash (기동칼날개)**: `*(12.0+Lv*0.60)` → `*(12+(Lv-1))`
   - **maliceSwipe 반사**: `*2.5*(1+Lv*0.15)` → `*(2.5+(Lv-1))`, `*1.5*(1+Lv*0.1)` → `*(1.5+(Lv-1))`
   - **shieldThrow (칼등날개)**: `*(1+Lv*0.12)` → `*(1+(Lv-1))`, 인라인: `*1.2*(0.5*(1+Lv*0.08))` → `*(0.6+(Lv-1))`
-  - **fireAura (지옥강타)**: `*6*(1+Lv*0.12)` → `*(6+(Lv-1))`
+  - **fireAura (지옥강타 2)**: `*6*(1+Lv*0.12)` → `*(6+(Lv-1))`
 - 미변경: 비용(MP/ST), 포이즈, 범위, 속도, chargeBoost(별도 공식), lavaSummon
 - docs: `스킬데미지공식표.md`, `2_1 스킬관리+합체시스템.md` 동기화
 

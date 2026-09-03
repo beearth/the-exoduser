@@ -1,8 +1,15 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import { readFileSync } from 'node:fs';
+import { existsSync, readFileSync } from 'node:fs';
 
 const gameHtml = readFileSync(new URL('../game.html', import.meta.url), 'utf8');
+
+test('registered chapter 1 void wall asset exists in the served project tree', () => {
+  assert.equal(
+    existsSync(new URL('../assets/map/ch1/wall_black_void_tile.png', import.meta.url)),
+    true
+  );
+});
 
 test('chapter 1 caches the void wall tile as the fallback wall texture', () => {
   assert.match(
