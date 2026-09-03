@@ -457,9 +457,9 @@ function showStageTransition(callback) {
 - `#qsRow .qs .qs-key { display:none }`로 잔여 키캡 노드가 있어도 메인바 위에 표시되지 않게 고정
 
 ### Space 분노 폭발 전용 슬롯 (skSlot1) 쿨다운 표시
-Space 슬롯(`SKILL_SLOTS[4]`)은 대왕치기류 분노 폭발 스킬만 표시한다.
+Space 슬롯(`SKILL_SLOTS[4]`)은 지옥강타 계열 분노 폭발 스킬만 표시한다.
 - `_spCdMap`: `giantSlam`, `giantSlam2`가 공유하는 `P._gslCd`만 참조
-- 기둥강타·지옥강타는 `giantSlam2` 호스트 아이콘/쿨다운으로 표시
+- 기둥강타·지옥강타 2는 `giantSlam2` 호스트 아이콘/쿨다운으로 표시
 - 쿨다운 중: 어두운 오버레이 + 초 단위 카운트다운 + 이모지 반투명
 
 ### 고정 슬롯 CD sweep 추가 (2026-04-16)
@@ -733,7 +733,7 @@ L키(`skillCycle`)로 여는 스킬 슬롯 배정 팝업(`#skSlotPop`, `openSkSl
 | 탭 행 | 13개 탭이 잘리지 않도록 고정 슬롯/선택 슬롯 두 줄 배치 | `flex-wrap:wrap`, 고정 최소 52px·선택 최소 38px |
 | F 팝업 목록 | 습득한 `cat:'tech'`, `act:true`, `fixed!==true` 영역 스킬만, 한 번에 1개 선택 | `_canAssignSkillSlot(id,5)` |
 | 일반 팝업 목록 | 전대 소환을 포함한 일반 액티브 선택스킬, **영역·분노 폭발 제외** | `_openSkillSlotPop(0~3)` + `_canAssignSkillSlot()` |
-| Space 팝업 목록 | `giantSlam`, `giantSlam2`만 표시 | 기둥강타·지옥강타는 `giantSlam2` 호스트로 표시 |
+| Space 팝업 목록 | `giantSlam`, `giantSlam2`만 표시 | 기둥강타·지옥강타 2는 `giantSlam2` 호스트로 표시 |
 | 선택 팝업 제목 | `슬롯 1~4 배정` / `Space · 분노 폭발 전용` / `F · 영역 스킬 전용` | `_slotHead` 리프 노드 |
 | F 교체 동작 | 새 영역 선택 시 기존 F 영역을 교체; 복수 영역 동시 장착 불가 | 지속 영역 중첩 OP 방지 |
 | 해제 설명 | 1~4=`포션 슬롯으로 복원`, Space/F=`슬롯 비우기` | `_unsetDesc` |

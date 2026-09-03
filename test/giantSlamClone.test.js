@@ -4,8 +4,8 @@ import { readFileSync } from 'node:fs';
 
 const gameHtml = readFileSync(new URL('../game.html', import.meta.url), 'utf8');
 
-test('defines giantSlam2 as a duplicate giant slam skill', () => {
-  assert.match(gameHtml, /id:'giantSlam2',name:'대왕치기 2',cat:'phys',act:true/);
+test('defines giantSlam2 as the Hell Slam II display skill', () => {
+  assert.match(gameHtml, /id:'giantSlam2',name:'지옥강타 2',cat:'phys',act:true/);
 });
 
 test('dispatches giantSlam2 through activateGiantSlam', () => {

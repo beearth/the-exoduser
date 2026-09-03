@@ -45,7 +45,7 @@ DPS_BAL = { bow: 0.77, magic: 0.475, beam: 0.0080 }
 | magicBlink | 사슬기동:화염 | MP | 10×1=10 → 10×10=100 (마법할인) | 없음 | INT × magicRef × pMagicMul | 경로 화염길 3초 DOT, 합체 시 착지폭발 |
 | bladeDash | 전격이동 | MP | 10+(Lv-1)×5 (1렙10, 10렙55) | 1렙10스택, 렙당+1. 쿨 300f→Lv당-18f(최소120f=2초). 1렙5초 | magicRef × INT × pMagicMul × **_skMul('bladeDash')** (b:10, g:6) 틱뎀 | 3tick/s → DPS 30(Lv1)→122(Lv20). 착지 전류장판 반경 캡200px (120+Lv×5). VFX: Power Lightning 스프라이트. (50% 너프 2026-06-11) |
 | chainAssault | 기동불꽃 | MP | mpCost('dimBreach') | 없음 (이동 중) | INT × _skMul('chainAssault') × **티어3단계(×30/×60/×100)** | 착지 화염폭발, 3티어=업화선 2.5초 차징급 |
-| chainSlam | 기동파괴 | ST + 악의20 | stCost('giantSlam') | 없음 (이동 중) | STR × _skMul('chainSlam') × **티어3단계(×2/×5/×8)** | 보스 체간 대량삭감, 대왕치기급 데미지 (2026-05-30 재조정) |
+| chainSlam | 기동파괴 | ST + 악의20 | stCost('giantSlam') | 없음 (이동 중) | STR × _skMul('chainSlam') × **티어3단계(×2/×5/×8)** | 보스 체간 대량삭감, 지옥강타 1급 데미지 (2026-05-30 재조정) |
 | chainSlash | 기동칼날개 | 없음 | 0 | 없음 (이동 중) | STR 물리 | 전방 광역 베기+출혈, 다단히트 (레벨제한 없음) |
 
 ---
@@ -56,8 +56,8 @@ DPS_BAL = { bow: 0.77, magic: 0.475, beam: 0.0080 }
 |---|---|---|---|---|---|---|
 | kiSlash | 기검참 | ST | 10+(Lv-1)×2 = **10→48** | 없음 | meleeRef × **7.0(균등)** × statStr × pAtkMul × **_skMul(b:2.0,g:1.68)** | **Lv1: 타당 14×. Lv10: 타당=~54×. Lv20: 타당=~126× (7/7/7 균등, g 2배 상향 2026-05-19)** |
 | whirlwind | 회전참 | ST(틱) | **30+(Lv-1)×5 ST/초** (Lv1=30, Lv10=75, Lv20=125) | 없음 (홀드) | meleeRef × statStr × pAtkMul × _skMul × _fuseMul | 360도 광역, Lv당 범위+5 뎀+5% |
-| giantSlam | 대왕치기 | ST + 악의20 | 250×DPS(+10%) (Lv1=250, Lv10=475) | max(60, 600-(Lv-1)×12)f = **10초→8초** | meleeRef × statStr × pAtkMul × **_skMul(b:16,g:12.8) × 4** | **Lv1=64×, Lv20=552×** (2026-05-29 밸런스 평균화). 보스: maxPoise×25% 고정 |
-| giantSlam2 | 대왕치기 2 | ST + 악의20 | giantSlam과 동일 | 동일 | 동일 | infernoSlam 합체용 복제 |
+| giantSlam | 지옥강타 1 | ST + 악의20 | 250×DPS(+10%) (Lv1=250, Lv10=475) | max(60, 600-(Lv-1)×12)f = **10초→8초** | meleeRef × statStr × pAtkMul × **_skMul(b:16,g:12.8) × 4** | **Lv1=64×, Lv20=552×** (2026-05-29 밸런스 평균화). 보스: maxPoise×25% 고정 |
+| giantSlam2 | 지옥강타 2 | ST + 악의20 | giantSlam과 동일 | 동일 | 동일 | infernoSlam 합체용 복제 |
 
 ---
 
@@ -150,7 +150,7 @@ DPS_BAL = { bow: 0.77, magic: 0.475, beam: 0.0080 }
 |---|---|---|---|---|
 | kiSlash 기검참 | 좌클릭 | 5 | ~0.45초 (공속) | **~11.1** |
 | whirlwind 회전참 | 홀드 | Lv스케일 | 매 프레임 | **10→100/초** (Lv1→10) |
-| giantSlam 대왕치기 | 액티브 | 10 + 악의20 | 10초 | **1.25 ST + 2.5악의** |
+| giantSlam 지옥강타 1 | 액티브 | 10 + 악의20 | 10초 | **1.25 ST + 2.5악의** |
 | bladeShot 붉은꽃 | T자동 | 10 | 0.5초 | **20** |
 | fanShot 만화방창 | T자동 | 10 | 자동간격 | **~10~20** |
 | needleShot 만화방창II | T자동 | 8 | 1.5초 | **5.3** |
@@ -179,7 +179,7 @@ DPS_BAL = { bow: 0.77, magic: 0.475, beam: 0.0080 }
 | boneWall 해골무덤 | 12 | 15초/스택 | **0.8** |
 | spikeTrap 가시덫 | 10 | 10초 | **1.0** |
 | blastShot 폭산탄 | 5 | 0.5초 | **10.0** (최다 소비) |
-| giantSlam 대왕치기 | 20 | 8~10초 | **2.5~20** |
+| giantSlam 지옥강타 1 | 20 | 8~10초 | **2.5~20** |
 
 ---
 
@@ -205,7 +205,7 @@ DPS_BAL = { bow: 0.77, magic: 0.475, beam: 0.0080 }
 
 | 패시브 | 효과 | 최소값 | 적용 대상 |
 |---|---|---|---|
-| pAtkCost | ST -4%/Lv (10Lv=-40%) | 0.60 | 무기·칼등·기동·회전참·대왕치기 |
+| pAtkCost | ST -4%/Lv (10Lv=-40%) | 0.60 | 무기·칼등·기동·회전참·지옥강타 1 |
 | pMeleeStCost | ST -5%/Lv (10Lv=-50%) | 0.50 | 위와 동일 (곱연산) |
 | pBowCost | ST -4%/Lv (10Lv=-40%) | 0.60 | 석궁·붉은꽃·만화방창 |
 | pMagicCost | MP -4%/Lv + 귀걸이어픽스 | 0.40 | 모든 마법 스킬 |

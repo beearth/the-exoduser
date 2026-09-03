@@ -11,7 +11,7 @@ test('removed earthSlam fusion cannot re-enter fusion data or runtime dispatch',
   assert.doesNotMatch(gameHtml, /function _triggerEarthSlamFusion\(/);
 });
 
-test('giant slam now focuses on heavy poise damage instead of guaranteed normal-enemy stun', () => {
+test('Hell Slam I now focuses on heavy poise damage instead of guaranteed normal-enemy stun', () => {
   assert.doesNotMatch(
     gameHtml,
     /\/\/ 일반몹: 100% 스턴[\s\S]*e\.poise=0[\s\S]*기절!/

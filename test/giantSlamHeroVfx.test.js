@@ -7,14 +7,14 @@ import sharp from 'sharp';
 const gameHtml = readFileSync(new URL('../game.html', import.meta.url), 'utf8');
 
 const sheets = [
-  ['giant', new URL('../assets/vfx/giant_slam_impact_sheet.png', import.meta.url)],
-  ['inferno', new URL('../assets/vfx/inferno_slam_impact_sheet.png', import.meta.url)],
+  ['Hell Slam I', new URL('../assets/vfx/giant_slam_impact_sheet.png', import.meta.url)],
+  ['Hell Slam II', new URL('../assets/vfx/inferno_slam_impact_sheet.png', import.meta.url)],
 ];
 
-for (const [kind, sheetUrl] of sheets) {
-  test(`${kind} slam hero VFX sheet is a transparent 2x2 production asset`, async () => {
+for (const [label, sheetUrl] of sheets) {
+  test(`${label} hero VFX sheet is a transparent 2x2 production asset`, async () => {
     const sheetPath = fileURLToPath(sheetUrl);
-    assert.equal(existsSync(sheetPath), true, `${kind} slam sheet must exist`);
+    assert.equal(existsSync(sheetPath), true, `${label} sheet must exist`);
     const meta = await sharp(sheetPath).metadata();
     assert.equal(meta.width, 1024);
     assert.equal(meta.height, 1024);
@@ -29,12 +29,12 @@ for (const [kind, sheetUrl] of sheets) {
       if (data[i] >= 160) visible++;
     }
     const pixels = info.width * info.height;
-    assert.ok(transparent > pixels * 0.2, `${kind} sheet needs genuine transparent space`);
-    assert.ok(visible > pixels * 0.015, `${kind} sheet needs enough visible impact art`);
+    assert.ok(transparent > pixels * 0.2, `${label} sheet needs genuine transparent space`);
+    assert.ok(visible > pixels * 0.015, `${label} sheet needs enough visible impact art`);
   });
 }
 
-test('giant slam and inferno slam select distinct impact identities', () => {
+test('Hell Slam I and Hell Slam II select distinct impact identities', () => {
   assert.match(gameHtml, /giant_slam_impact_sheet\.png/);
   assert.match(gameHtml, /inferno_slam_impact_sheet\.png/);
   assert.match(gameHtml, /const _slamKind=\(srcId==='giantSlam2'&&_isFused\('infernoSlam'\)\)\?'inferno':'giant';/);

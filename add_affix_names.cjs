@@ -205,7 +205,7 @@ const P84 = [
 ['지옥광선강화','地狱光线强化','地獄光線強化','Hellray Boost'],
 ['악의폭풍강화','恶意暴风强化','悪意嵐強化','Malice Storm Boost'],
 ['연쇄참강화','连锁斩强化','連鎖斬強化','Chain Slash Boost'],
-['거인강타강화','巨人重击强化','巨人強打強化','Giant Slam Boost'],
+['지옥강타 1 강화','巨人重击强化','巨人強打強化','Hell Slam I Boost'],
 ['유령보행강화','幽灵步行强化','幽霊歩き強化','Ghost Walk Boost'],
 ['악의박격강화','恶意迫击强化','悪意迫撃強化','Malice Mortar Boost'],
 ['화염오라강화','火焰光环强化','炎オーラ強化','Fire Aura Boost'],

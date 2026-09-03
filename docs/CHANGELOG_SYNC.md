@@ -1,5 +1,18 @@
 # Sync Changelog
 
+## 2026-09-04 지옥강타 표시명 1·2 통일
+
+| 내부 ID | 이전 표시명 | 현재 한글/영문 표시명 | 적용 위치 | 게임플레이 |
+|---|---|---|---|---|
+| `giantSlam` | 별도 1번 강타 명칭 | **지옥강타 1 / Hell Slam I** | 스킬 목록·Space 슬롯·도움말·펫 대사·그로기 문구·어픽스·합체 설명 | ID·저장 데이터·피해·범위·포이즈·비용·쿨다운 불변 |
+| `giantSlam2` | 별도 2번 강타 명칭 | **지옥강타 2 / Hell Slam II** | 스킬 목록·추천 빌드·기둥강타 호스트·합체 UI | ID·저장 데이터·발동 경로 불변 |
+| `infernoSlam` | 번호 없는 화염형 강타 명칭 | **지옥강타 2 / Hell Slam II** | `_FUSE_NAMES`, 합체 카드·툴팁·VFX 설명 | 내부 합체 ID와 `giantSlam2+fireAura` 조합, 지옥진 300f 자동 생성 불변 |
+| 번역/문서 | 세 명칭이 혼재 | `지옥강타 1/2` 소스 키와 `Hell Slam I/II` 영문 계약으로 동기화 | 루트·모듈 언어 카탈로그 26종, 번역 생성 스크립트, 관련 기획 문서 | 수치 변경 없음 |
+
+- 저장 호환성을 위해 `giantSlam`, `giantSlam2`, `infernoSlam` 내부 ID와 에셋 파일명은 바꾸지 않았다.
+- 수정 금지 문서 `docs/2_3 돌진+패링+방패시스템/2_3 돌진+패링+방패시스템.md`는 예외로 그대로 보존했다.
+- TDD: `test/hellSlamNaming.test.js`가 코드·번역·문서의 구 명칭을 4 RED로 검출한 뒤 새 1·2 계약으로 전환했다. 전체 회귀 **475/475 PASS**, `tools/guard.js` PASS, docs sync PASS.
+
 ## 2026-09-03 CH1 void wall 누락 자산·브라우저 404 해소
 
 | id/대상 | 발견 상태 | 현재 계약 | 생성/적용 위치 | 검증 |
@@ -175,12 +188,12 @@
 
 | 대상 | 이전 계약 | 현재 계약 | 적용 위치 |
 |---|---|---|---|
-| 1~4 (`SKILL_SLOTS[0~3]`) | 일반 스킬과 지옥강타 1류 혼용 가능 | 일반 액티브만 허용; 영역·분노 폭발 불가 | `_canAssignSkillSlot()` |
+| 1~4 (`SKILL_SLOTS[0~3]`) | 일반 스킬과 지옥강타 계열 혼용 가능 | 일반 액티브만 허용; 영역·분노 폭발 불가 | `_canAssignSkillSlot()` |
 | Space (`SKILL_SLOTS[4]`) | 일반 선택스킬의 다섯 번째 슬롯 | **분노 폭발 전용**: `giantSlam`, `giantSlam2`만 허용 | 팝업·드래그·카드 버튼·자동배정·게임패드 Y·런타임 방어 |
 | `giantSlam2` 합체 | 슬롯 계약 미명시 | 기둥강타(`pillarSlam`)·지옥강타 2(`infernoSlam`)의 Space 호스트 | `giantSlam2` ID로 장착/발동 |
 | F (`SKILL_SLOTS[5]`) | 영역 전용 | 유지: 영역 1개만 허용 | `_isAreaSkillId()` |
 | 가시덫 (`spikeTrap`) | `[고정: Space]`, `fixed:true` | `[선택: F]` 영역기; 회복의 영역과 F에서 교체 | `SKILL_LIST`, 안내·펫 대사 |
-| 구세이브 | 일반 스킬이 Space, 지옥강타 1류가 1~4에 남을 수 있음 | 일반=1~4, 분노 폭발=Space, 영역=F로 자동 복구 | `_repairAreaSkillSlot()` |
+| 구세이브 | 일반 스킬이 Space, 지옥강타 계열가 1~4에 남을 수 있음 | 일반=1~4, 분노 폭발=Space, 영역=F로 자동 복구 | `_repairAreaSkillSlot()` |
 
 - Space/F 전용 칸이 이미 사용 중이면 두 번째 후보는 습득/레벨을 유지한 채 미배정하며, L 패널에서 수동 교체한다.
 - UI 제목·조작 도움말·키 설정명을 `Space · 분노 폭발 전용`으로 동기화했다.

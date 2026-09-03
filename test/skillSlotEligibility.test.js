@@ -48,7 +48,7 @@ test('F is reserved for learned area skills while ancestor summon remains a norm
   assert.equal(rules._canAssignSkillSlot('giantSlam', 4), true);
   assert.equal(rules._canAssignSkillSlot('giantSlam', 5), false);
   assert.equal(rules._canAssignSkillSlot('giantSlam2', 0), false);
-  assert.equal(rules._canAssignSkillSlot('giantSlam2', 4), true, 'Inferno Slam and Pillar Slam use the giantSlam2 Space host');
+  assert.equal(rules._canAssignSkillSlot('giantSlam2', 4), true, 'Hell Slam II and Pillar Slam use the giantSlam2 Space host');
   assert.equal(rules._canAssignSkillSlot('holyDome', 0), false);
   assert.equal(rules._canAssignSkillSlot('holyDome', 4), false);
   assert.equal(rules._canAssignSkillSlot('holyDome', 5), true);
