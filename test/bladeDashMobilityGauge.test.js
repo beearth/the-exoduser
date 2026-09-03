@@ -13,7 +13,8 @@ test('double-tap Flash Step shares the five-cell Shift mobility gauge', async ()
   assert.match(game, /const _harpGaugeCells=_isFused\('dimRush'\)\?10:_isFused\('dimThunder'\)\?9:_dimB\?7:_hasChargeSk\?6:_HARP_GAUGE_BASE_CELLS;/);
   assert.match(game, /function _canBladeDash\(\)\{return !!\(P&&P\.skills&&P\.skills\.bladeDash>=1&&_harpGauge>=_HARP_GAUGE_COST\[1\]&&P\.mp>=\(10\+\(\(P\.skills\.bladeDash\|\|1\)-1\)\*5\)\)/);
   assert.match(game, /const _bdGaugeCost=_HARP_GAUGE_COST\[1\];[\s\S]*_harpGauge=Math\.max\(0,_harpGauge-_bdGaugeCost\);/);
-  assert.doesNotMatch(game, /addTxt\(P\.x,P\.y-45,'⚡\s*'\+_bdCells/);
+  assert.match(game, /const _bdCells=Math\.floor\(_harpGauge\/_bdGaugeCost\),_bdMaxCells=Math\.floor\(_HARP_GAUGE_MAX\/_bdGaugeCost\);/);
+  assert.match(game, /addTxt\(P\.x,P\.y-45,'⚡ '\+_bdCells\+'\/'\+_bdMaxCells,'#44ddff',30\);showPH\('⚡ '\+_bdCells\+'\/'\+_bdMaxCells,'#44ddff'\);/);
   assert.doesNotMatch(game, /P\._bdStk/);
   assert.doesNotMatch(game, /_bdMaxStk/);
 });

@@ -11,18 +11,18 @@ test('non-stream buildMapCache restores CH1 soil floor tiling before floor fallb
   );
   assert.match(
     gameHtml,
-    /const _soilImg2=_GROUND_TILES\['gt_soil'\];[\s\S]*const _hasSoil2=_soilImg2&&_soilImg2\.complete&&_soilImg2\.naturalWidth>1;[\s\S]*if\(_hasSoil2\)\{[\s\S]*if\(_v2===0\|\|_v2===4\|\|_v2===5\)c\.rect\(tx2\*T,ty2\*T,T,T\)[\s\S]*c\.drawImage\(_soilImg2,Math\.floor\(_stx\),Math\.floor\(_sty\),_tileSz2,_tileSz2\);/
+    /const _soilImg2=_gtFloorImg\(hell\);[\s\S]*const _hasSoil2=!!_soilImg2;[\s\S]*if\(_hasSoil2\)\{[\s\S]*if\(_useSoftFloorEdge\(\)\)\{[\s\S]*_blitSoftFloor\(c,_soilImg2,_tileSz2,map,mw,mh[\s\S]*if\(_v2===0\|\|_v2===2\|\|_v2===4\|\|_v2===5\|\|_v2===6\)c\.rect\(tx2\*T,ty2\*T,T,T\)[\s\S]*c\.drawImage\(_soilImg2,Math\.floor\(_stx\),Math\.floor\(_sty\),_tileSz2,_tileSz2\);/
   );
   assert.match(
     gameHtml,
-    /if\(!_hasSoil2\)\{[\s\S]*c\.fillStyle=th\.f;c\.fillRect\(px,py,T,T\);[\s\S]*\n  \}/
+    /if\(!_hasSoil2\)\{[\s\S]*const _tv1=map\[ty\]\[tx\];if\(_tv1!==0&&_tv1!==2&&_tv1!==6\)continue;[\s\S]*c\.fillStyle=th\.f;c\.fillRect\(px,py,T,T\);/
   );
 });
 
 test('non-stream buildMapCache restores CH1 wall edge overlay before boss gate pass', () => {
   assert.match(
     gameHtml,
-    /if\(hell===0&&_wallEdgeImg&&_wallEdgeImg\.complete&&_wallEdgeImg\.naturalWidth>0\)\{[\s\S]*const _weAR=_wallEdgeImg\.naturalHeight\/_wallEdgeImg\.naturalWidth,_weW=T\*3,_weH=~~\(_weW\*_weAR\);[\s\S]*c\.drawImage\(_wallEdgeImg,px\+T\/2-_weW\/2,py\+T\/2-_weH\/2,_weW,_weH\);[\s\S]*const _gateTiles3=\[\];/
+    /if\(!G\._pathImgTerrain&&hell===0&&!\(G\.stage===0&&_ch1StartOuterEnabled\(\)\)&&_wallEdgeImg&&_wallEdgeImg\.complete&&_wallEdgeImg\.naturalWidth>0\)\{[\s\S]*const _weAR=_wallEdgeImg\.naturalHeight\/_wallEdgeImg\.naturalWidth,_weW=T\*3,_weH=~~\(_weW\*_weAR\);[\s\S]*c\.drawImage\(_wallEdgeImg,px\+T\/2-_weW\/2,py\+T\/2-_weH\/2,_weW,_weH\);[\s\S]*const _gateTiles3=\[\];/
   );
 });
 

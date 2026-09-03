@@ -45,7 +45,7 @@ test('Silvertail replaces every shared player voice cue with her dedicated Engli
   assert.match(gameHtml, /if\(!key\)return;\s*if\(!P\)return;/);
   assert.match(gameHtml, /if\(key\.startsWith\('voice_'\)\|\|key==='male_grunt'\|\|key\.startsWith\('silvertail_'\)\)return _SFX_PRI\.VOICE;/);
   assert.match(gameHtml, /function playSample\(key,vol,rate,pri\)\{\s*key=_silvertailVoiceKey\(key\);/);
-  assert.match(gameHtml, /function playSampleAt\(key,vol,rate,x,y\)\{\s*key=_silvertailVoiceKey\(key\);/);
+  assert.match(gameHtml, /function playSampleAt\(key,vol,rate,x,y,priOverride\)\{\s*key=_silvertailVoiceKey\(key\);/);
   assert.match(gameHtml, /function playVoiceDirect\(key,vol,rate\)\{\s*key=_silvertailVoiceKey\(key\);\s*if\(!key\)return;/);
   for (const key of ['silvertail_grunt', 'silvertail_attack', 'silvertail_move', 'silvertail_parry', 'silvertail_magic', 'silvertail_wakeup', 'silvertail_dead1', 'silvertail_dead2', 'silvertail_dead3', 'silvertail_dead4']) {
     assert.match(gameHtml, new RegExp(`${key}:'sfx/voice/${key}\\.mp3'`));

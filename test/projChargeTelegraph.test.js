@@ -14,7 +14,7 @@ function sliceBetween(src, startToken, endToken) {
 
 test('committed telegraphed shots skip the 1/3 density drop', () => {
   const spawn = sliceBetween(gameHtml, 'function spawnProj(props){', 'function _recycleProj(p){');
-  assert.match(spawn, /if\(!p\._commit\)\{/);
+  assert.match(spawn, /if\(!p\._commit&&!p\._druidParryVolley\)\{/);
   assert.match(spawn, /_eProjDropCnt=\(_eProjDropCnt\+1\)%3;if\(_eProjDropCnt!==0\)\{_recycleProj\(p\);return null;\}/);
   assert.match(gameHtml, /p\._commit=false/);
 });

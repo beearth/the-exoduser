@@ -118,13 +118,23 @@
 | 입력 | 전용 플래그·에셋 | 프레임·색 | 판정 영향 |
 |---|---|---|---|
 | 좌클릭 기검참 | `_crescents[].silvArc`, `silvertail_violet_arc_anim_api_v2.png` (2152×731 RGBA, 폭 6등분) | `~~((ml-life)/2)%6`: 2틱(약 33ms)마다 보라 v2 6프레임 순환. 1·2타 폭 104px, 3타 폭 126px. `saturate(1.55) contrast(1.22) brightness(1.32)`, `min(1, max(.82, alpha)×1.28)` — 공용 수명 페이드가 0.15까지 내려가도 검기 본체는 0.82 미만으로 투명해지지 않음 | 기존 3단 콤보 피해·사거리·히트 범위 그대로 |
-| KeyE 칼등 처내기 | `_drawSilvertailEArc(ctx, pose)`, `silvertail_violet_arc_anim_api_v3.png` (2132×738 RGBA, 폭 6등분) | `pose.kind==='shield'`에서만 `floor(spinProgress×6)`으로 재생. `hue-rotate(-28deg) saturate(2.05) contrast(1.28) brightness(1.28)`, 폭 200→230px — 이전 286→328px 대비 30% 축소 | 기존 칼등 처내기 피해·반사·자원·입력 그대로. 좌클릭·우클릭 악의구에는 적용하지 않음 |
+| KeyE 칼등 처내기 | `_drawSilvertailEArc(ctx, pose, scale)`, `silvertail_violet_arc_anim_api_v3.png` (2132×738 RGBA, 폭 6등분) | `pose.kind==='shield'`에서만 `floor(spinProgress×6)`으로 재생. `hue-rotate(-28deg) saturate(2.05) contrast(1.28) brightness(1.28)`. 기본 폭 200→230px이며 차징 릴리즈는 `min(3,max(1,P._sBashChgMul||1))`을 곱해 최대 600→690px | 기본 E의 피해·반사·자원·입력은 그대로. 차징 검격 릴리즈만 현재 차징 배율로 아크를 확대하며 좌클릭·우클릭 악의구에는 적용하지 않음 |
 
 ### 스프라이트 시트 VFX
 1. **배경은 반드시 투명(alpha=0)** — JPEG 금지, PNG 사용
+
 2. **회색/검정 배경 제거**: 채도(saturation) 기반 제거가 정확 (luminance만으로는 부족)
 3. **원본 비율 유지** — `al.range`로 가로만 늘리면 찌그러짐 → `drawH × (FW/FH)` 비율 계산
 4. **프레임 애니메이션** — GIF에서 각 프레임 추출 → 세로 배열 스프라이트 시트
+
+### 대왕치기·지옥강타 영웅급 임팩트 (2026-09-03)
+
+| id/경로 | 시트 | 선택 조건 | 프레임·화면 크기 | 폴백·전투 영향 |
+|---|---|---|---|---|
+| `giant` / `assets/vfx/giant_slam_impact_sheet.png` | 1024×1024 RGBA, 2×2, 셀 512px | `giantSlam` 및 지옥강타가 아닌 `giantSlam2` | `_slamFrame=min(3,floor((t/maxT)×4))`; 크기=`maxR×0.9×(0.72→1.0)` | 로딩 실패 시 기존 `img/crater.png` 2×2 크레이터. 피해·범위·포이즈·자원·쿨다운 불변 |
+| `inferno` / `assets/vfx/inferno_slam_impact_sheet.png` | 1024×1024 RGBA, 2×2, 셀 512px | `srcId==='giantSlam2' && _isFused('infernoSlam')` | 같은 4프레임 진행; 크기=`maxR×0.98×(0.72→1.0)`. 진행률 62%까지 alpha 1, 이후 38% 동안 페이드 | 같은 크레이터 폴백. 지옥진 자동 발동 등 기존 합체 전투 로직 불변 |
+
+두 시트는 `_loadSlamVfx()`가 1024×1024와 실제 디코딩 가능 여부를 확인한다. `_gSlamWave`의 `kind`만 시각 재질을 선택하며, 기존 진동파 링과 충돌·피해 처리는 그대로 유지한다.
 
 ## 얼음송곳 (arcLaser) 구현 상세
 
@@ -230,7 +240,7 @@ path: '/v1/images/generations'
 | 프레임 | `p._sprFr`(pass-2 루프서 +0.12/frame) `%16` |
 | 렌더 분기 | pass-2 `if(p.fbEnergy){_fbDrawFly(p)}` (elemBall glow 앞). pass-1 글로우 언더레이 `p.fbEnergy` skip |
 | 로더 | `_fbFlyImg`(`_titanEyeImg` 옆) |
-| Q패링 출력 | 거대 시트 제거 후 동일 속성 **혜성형 일반 마법탄 5발**. `magic` 충돌 경로와 r8 규격은 유지하되 `_parryMagicShot` 전용 시각 분기로 기존 `img/balls/proj_bolt_comet.png` 8프레임 시트를 `_drawCometBullet` 길이 **44px**(일반 마법탄 20px×2.2와 동일)로 그린다. `arcMissile`·발사 잠금·튕김과 일반 `_projEmit` 먼지는 사용하지 않는다. 총 반사 피해를 5등분하며 `EL.F` 빨강, `EL.I` 파랑, 암/뇌는 `ELC` 속성색. HP/ST/MP·작살 게이지·분노·악의·parryBank 자원회수는 일반 Q의 ×10(각 자원 상한 적용) |
+| Q패링 출력 | 거대 시트 제거 후 동일 속성 **혜성형 일반 마법탄 5발**. `magic` 충돌 경로와 r8 규격은 유지하되 `_parryMagicShot` 전용 시각 분기로 기존 `img/balls/proj_bolt_comet.png` 8프레임 시트를 `_drawCometBullet` 길이 **246.4px**(일반 마법탄 최종 sz4 실크기 `20×2.8×2.2=123.2px`의 2배)로 그린다. 일반탄과 `_normalMagicCometLength`를 공유하되 대형탄 분열 연출에만 ×2를 적용한다. `arcMissile`·발사 잠금·튕김과 일반 `_projEmit` 먼지는 사용하지 않는다. 총 반사 피해를 5등분하며 `EL.F` 빨강, `EL.I` 파랑, 암/뇌는 `ELC` 속성색. HP/ST/MP·작살 게이지·분노·악의·parryBank 자원회수는 일반 Q의 ×10(각 자원 상한 적용) |
 | 충돌 VFX 보장 | 플레이어 상대 스윕 접촉, 중심+원주 8점 벽 스윕 접촉, 평화의보호 비패링 흡수 모두 `_fbEnergyBoom` r220을 호출하고 원본을 즉시 회수. 무적/돌진은 피해만 0 |
 | 패링 소유권 | 기본 Q/평화의보호 Q만 `_resolveBigEnergyParry`로 5분열. E·기동파괴·파워웨이브·일반 방패던지기는 대형탄을 `friendly`로 바꾸지 않음. friendly 대형탄 30관통 연출은 폐기 |
 
@@ -268,7 +278,7 @@ path: '/v1/images/generations'
 | 크기 | `dw=240`, `dh=dw×(ch/cw)=240` |
 | 합성 | 실제 RGBA 투명도를 유지하고 `lighter` 합성 |
 | 적용 | `p.fdEnergy` 탄. 일반 `elemBall` 분기보다 먼저 그림. 시트 미로드 시 `EL.F`의 `proj_elem_orb` 속성행 폴백 |
-| 판정 | 스폰 r18→23.4, 최종 sz96. 플레이어 상대 스윕 히트 `P.r+max(p.r,sz)`=`P.r+96`(보이는 핵). 벽은 이동 구간의 중심+원주 8점 스윕. Q패링 `P.r+sz+90`→기본 `magic` 판정 r8의 빨간 혜성형 마법탄 5발(`_parryMagicShot`, `_drawCometBullet` 44px, 일반 먼지 없음, 총 반사 피해 5등분)+HP/ST/MP·작살·분노·악의·parryBank 자원회수 ×10. 플레이어·벽 접촉은 항상 `_fbEnergyBoom` r220 후 소멸하며, 무적 프레임/돌진 중에는 폭발만 하고 피해는 0 |
+| 판정 | 스폰 r18→23.4, 최종 sz96. 플레이어 상대 스윕 히트 `P.r+max(p.r,sz)`=`P.r+96`(보이는 핵). 벽은 이동 구간의 중심+원주 8점 스윕. Q패링 `P.r+sz+90`→기본 `magic` 판정 r8의 빨간 혜성형 마법탄 5발(`_parryMagicShot`, `_drawCometBullet` 246.4px, 일반 먼지 없음, 총 반사 피해 5등분)+HP/ST/MP·작살·분노·악의·parryBank 자원회수 ×10. 플레이어·벽 접촉은 항상 `_fbEnergyBoom` r220 후 소멸하며, 무적 프레임/돌진 중에는 폭발만 하고 피해는 0 |
 | 비행 | raw 6×1.8=10.8, **직선(무유도)**. 공격 텀 180f(3초) |
 | 제외 | 올챙이 머리 원은 **전 탄** 폐기(2026-09-01). 화마귀는 패스1 글로우도 스킵 |
 | 원본 | 유저 제공 Downloads `ChatGPT Image 2026년 9월 2일 오후 03_47_47.png`를 픽셀 손실 없이 사용 |
@@ -383,7 +393,7 @@ path: '/v1/images/generations'
 | 부활 순간이동 (30082) | `_rvR*4, 18f` | `_rvR*5, 22f` | 보스 부활 후 재배치 |
 | 필드보스 심연의 앵글러 `_fbTick` TP (2026-08-23) | `kraken_vanish` 정방향 옛자리 | 도착지 `kraken_vanish` 역재생 꿈틀 상승 + `kraken_tp` 착지 | 빨간 장판만 나오던 문제 수정. 예고=상승 연출. 포탈/충전 색은 `_fbElCol`(물/화/암/뇌) |
 | 필드보스 심연의 앵글러 첫 출현 (2026-08-23) | 없음(옛자리 없음, `spawnIn`) | 도착지 `kraken_vanish` 역재생 54틱 + `kraken_tp` 착지 | 구 구현은 `hid:0` 본체 즉시 표시. 착지 강타 데미지 없음. 본체 원본 시트(source-atop 워시 폐기). 에스카 충전 180f → 거대 에너지탄 폭발 r220 |
-| 지상뱀장어 `_wmVanish/_wmAppear` (2026-08-23) | `r*3, 18f` + 흙 파티클 | `r*2.2, 16f` + `_addTpImpact(r*2.2)` | hide 54f 동안 도착지에 프레임0→1 엿보기. `!` 원 제거. 보이면 도망. |
+| 지상뱀장어 `_wmVanish/_wmAppear` (2026-08-23, 안전결계 2026-09-03) | `r*3, 18f` + 흙 파티클 | `r*2.2, 16f` + `_addTpImpact(r*2.2)` | hide 54f 동안 도착지에 프레임0→1 엿보기. `!` 원 제거. 보이면 도망. 시작 화톳불 결계 활성 중에는 150px 시트 반폭 75px를 포함해 중심거리 355px 밖에서만 표시. |
 
 ## 독립 필드몹 사망 VFX (`_fmDeathFx`, 2026-08-23)
 

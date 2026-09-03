@@ -15,7 +15,7 @@ test('Silvertail gives Ki Slash and E blade parry the same shared back-blade mot
   assert.match(game, /const _silvSpinFrame=Math\.min\(3,~~\(_silvElapsed\/_SILVERTAIL_ATTACK_SPIN_FRAME_MS\)\);/);
   assert.match(game, /const _silvBaseDir=_facingDir8\(P\.facing\),_silvBaseDirI=_DIR8\.indexOf\(_silvBaseDir\);/);
   assert.match(game, /const _silvSpinOffsets=\[-2,-1,1,2\];/);
-  assert.match(game, /spriteDir:_DIR8\[\(_silvBaseDirI\+_silvSpinOffsets\[_silvSpinFrame\]\+8\)%8\]/);
+  assert.match(game, /spriteDir:_silvHasAtk\?_silvBaseDir:_DIR8\[\(_silvBaseDirI\+_silvSpinOffsets\[_silvSpinFrame\]\+8\)%8\]/);
   assert.match(game, /const _silvNeckLift=11;/);
   assert.match(game, /ctx\.translate\(0,-_silvNeckLift\);/);
   assert.doesNotMatch(game, /const _silvBackA=P\.facing\+Math\.PI;/);
@@ -53,10 +53,10 @@ test('Silvertail keeps LMB clear of local Moon Arc VFX while preserving a compac
   assert.doesNotMatch(game, /function _drawSilvertailAnimatedArc\(/);
   assert.doesNotMatch(game, /_drawSilvertailAnimatedArc\(X,/);
   assert.match(game, /const _silvEArcImg=new Image\(\);let _silvEArcReady=false;/);
-  assert.match(game, /function _drawSilvertailEArc\(ctx,pose\)\{/);
+  assert.match(game, /function _drawSilvertailEArc\(ctx,pose,scale\)\{/);
   assert.match(game, /if\(pose\.kind!=='shield'\|\|!_silvEArcReady\)return;/);
-  assert.match(game, /const _silvEArcDrawW=200\+_silvEArcIn\*30;/);
-  assert.match(game, /const _silvEArcPose=_silvertailAttackPose\(\);if\(_silvEArcPose\)_drawSilvertailEArc\(X,_silvEArcPose\);/);
+  assert.match(game, /const _silvEArcDrawW=\(200\+_silvEArcIn\*30\)\*\(scale\|\|1\);/);
+  assert.match(game, /const _silvEArcPose=_silvertailAttackPose\(\);if\(_silvEArcPose\)_drawSilvertailEArc\(X,_silvEArcPose,Math\.min\(3,Math\.max\(1,P\._sBashChgMul\|\|1\)\)\);/);
   assert.match(game, /if\(P\.s==='wSwing'&&_charIdx!==1\)/);
   assert.doesNotMatch(game, /function _drawSilvertailSpinSlash\(/);
   assert.doesNotMatch(game, /function _drawSilvertailAttackImpact\(/);

@@ -739,6 +739,17 @@ L키(`skillCycle`)로 여는 스킬 슬롯 배정 팝업(`#skSlotPop`, `openSkSl
 | 해제 설명 | 1~4=`포션 슬롯으로 복원`, Space/F=`슬롯 비우기` | `_unsetDesc` |
 | 전대 소환 카드 | 기존 PNG 아이콘 표시 | `_SKILL_ICON_SET`에 `ancestorSummon` 등록 |
 
+### 2026-09-03 스킬 배정 팝업 아이콘 동기화
+
+| ID/대상 | 한글명 | 이전 표시 | 현재 표시·수치 | 적용 위치 |
+|---|---|---|---|---|
+| 일반 선택 스킬 | 각 `SKILL_LIST.name` | `sk.emoji` 시스템 이모지, 34px | 퀵슬롯과 같은 `_skIcon(sk.id)` PNG, `48×48px`, `object-fit:contain`; 이름은 `white-space:nowrap` | `_openSkillSlotPop()`, `.sk-opt-icon`, `.sk-opt-name` |
+| 합체 호스트 | 독혈해방·얼음소용돌이·참회 귀환·공성유령 등 | 합체 여부만 확인해 전부 `⚡` 강제 표시 | `_skFuseIcon()`이 결정한 합체 ID와 `SKILL_ICONS` 별칭을 거쳐 실제 보유 스킬 아이콘 표시 | `_skIcon(sk.id)` |
+| PNG 미등록 스킬 | 해당 스킬명 | `sk.emoji` | 기존 `sk.emoji` 또는 `🔮` 폴백 유지 | `_dispIcon` |
+
+- 스킬 배정창과 하단 퀵슬롯은 아이콘 선택 계약을 따로 구현하지 않고 반드시 `_skIcon()`을 공유한다.
+- 합체 스킬 이름은 기존처럼 `_fuseName()`을 사용하며, 이번 변경은 아이콘 표시만 동기화한다. 슬롯 자격·수치·공식·쿨다운은 변경하지 않는다.
+
 ### 2) 게임 일시정지 (퍼즈)
 
 - 전역 플래그 `_skPopOwnsPause` + 닫기 헬퍼 `_closeSkPop()` 추가.

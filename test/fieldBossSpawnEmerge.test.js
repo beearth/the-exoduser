@@ -125,7 +125,7 @@ test('kraken energy ball flies straight, a bit faster, on a 3s attack cadence', 
 test('large energy balls explode on visible-core contact but parry on the wider visible ball', () => {
   assert.match(gameHtml, /_bigBall=_isBigEnergy\(p\)/);
   assert.match(gameHtml, /_pCollR=P\.r\+\(_bigBall\?_bigEnergyContactRadius\(p\):\(p\.sz\|\|1\)\*3\)/);
-  assert.match(gameHtml, /_pParryR=_bigBall\?\(P\.r\+\(p\.sz\|\|48\)\+90\)/);
+  assert.match(gameHtml, /_pParryR=_bigBall\?Math\.max\(P\.r\+\(p\.sz\|\|48\)\+90,P\._sbReleaseR\|\|0\)/);
   assert.match(gameHtml, /_pDist=_bigBall\?_relativeSweepDistance\(/);
   assert.match(gameHtml, /_bigEnergyWallContact\(p,_oldPx,_oldPy,p\.x,p\.y\)/);
 });

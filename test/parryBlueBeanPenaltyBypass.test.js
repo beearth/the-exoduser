@@ -4,28 +4,29 @@ import { readFileSync } from 'node:fs';
 
 const gameHtml = readFileSync(new URL('../game.html', import.meta.url), 'utf8');
 
-test('parry blue beans bypass the default magic-to-HP penalty', () => {
+test('parry blue beans keep their damage flags and boss damage resolves to exactly 10% max HP', () => {
   assert.match(gameHtml, /parryBlueBean:false,/);
   assert.match(gameHtml, /p\.parryBlueBean=false;/);
-  const tagged =
-    gameHtml.match(
-      /p\.redBean=false;p\.blueBean=true;p\.col='#00e5ff';p\.homing=true;p\.magic=true;p\.parryBlueBean=true;/g
-    ) || [];
-  assert.equal(tagged.length, 3);
+  const tagged = gameHtml.match(/p\.parryBlueBean=true/g) || [];
+  assert.ok(tagged.length >= 12);
   assert.match(
     gameHtml,
-    /const _magicHpRate=\(opts&&opts\.parryBlueBean\)\?1:_mpRate;/
+    /if\(opts&&opts\.parryBlueBean&&e\.mhp>0\)\{dmg=Math\.max\(dmg,~~\(e\.mhp\*0\.10\)\)\}/
+  );
+  const hurtStart = gameHtml.indexOf('function hurtE(');
+  const hurtEnd = gameHtml.indexOf('// ─── [S16j]', hurtStart);
+  const hurtSource = gameHtml.slice(hurtStart, hurtEnd);
+  const finalBossClamp = hurtSource.indexOf('if(e.ib&&opts&&opts.parryBlueBean){dmg=~~(e.mhp*.10)}');
+  assert.ok(finalBossClamp > hurtSource.indexOf('if(e._frozen>0&&!isDot){dmg=~~(dmg*1.5)}'));
+  assert.ok(finalBossClamp < hurtSource.indexOf('// ═══ 에너지쉴드: 모든 배율 확정 후 흡수'));
+  assert.doesNotMatch(hurtSource, /parryBlueBean\)\{dmg=Math\.min/);
+  assert.match(
+    gameHtml,
+    /if\(dmg > 0\) \{[\s\S]*e\.hp-=dmg;/
   );
   assert.match(
     gameHtml,
-    /if\(_rawLeft>0\)e\.hp-=_isMagicDmg\?\(~~\(_rawLeft\*_magicHpRate\)\|\|1\):_rawLeft/
+    /hurtE\(_bbe,_bbeD,_bba,true,\{magic:true,blueBean:true,parryBlueBean:!!p\.parryBlueBean\},p\.el\);/
   );
-  assert.match(
-    gameHtml,
-    /else\{e\.hp-=_isMagicDmg\?\(~~\(dmg\*_magicHpRate\)\|\|1\):dmg\}/
-  );
-  assert.match(
-    gameHtml,
-    /hurtE\(_bbe,~~\(p\._aoeDmg\*_bbm\*_bbeStkMul\),_bba,true,\{magic:true,blueBean:true,parryBlueBean:!!p\.parryBlueBean\},p\.el\);/
-  );
+  assert.doesNotMatch(gameHtml, /_magicHpRate/);
 });

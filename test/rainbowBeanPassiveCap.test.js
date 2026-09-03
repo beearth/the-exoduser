@@ -14,6 +14,6 @@ test('parry passive caps rainbow bean damage reduction at 50 percent', () => {
 test('parry passive description states the 50 percent rainbow bean cap', () => {
   assert.match(
     gameHtml,
-    /desc:'카운터뎀 \+50%\/lv, 우클릭 공속 \+10%\/lv, 무지개탄 피해감소 \+10%\/lv \(최대50%\)'/
+    /desc:'카운터뎀 \+50%\/lv, E 공속 \+10%\/lv, 무지개탄 피해감소 \+10%\/lv \(최대50%\)'/
   );
 });

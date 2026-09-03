@@ -7,7 +7,7 @@ const gameHtml = readFileSync(new URL('../game.html', import.meta.url), 'utf8');
 test('friendly reflected projectile hit path forwards blue bean damage flags', () => {
   assert.match(
     gameHtml,
-    /hurtE\(be,~~\(_blD\*\(.5\+bf\*\.5\)\),ba,false,\{kbMult:2,magic:!!p\.magic,blueBean:!!p\.blueBean,parryBlueBean:!!p\.parryBlueBean\},p\.el\);/
+    /hurtE\(be,~~\(_blD\*\(.8\+bf\*\.2\)\),ba,false,\{kbMult:2,magic:!!p\.magic,blueBean:!!p\.blueBean,parryBlueBean:!!p\.parryBlueBean\},p\.el\);/
   );
   assert.match(
     gameHtml,

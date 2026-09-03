@@ -44,10 +44,17 @@ test('parried large energy ball splits into five plain elemental magic shots', (
 });
 
 test('large-energy fragments render with the existing full magic-comet projectile', () => {
+  const normalMagicLengthSrc = extractFunction('_normalMagicCometLength');
+  const normalMagicLength = Function(`${normalMagicLengthSrc};return _normalMagicCometLength`)();
+
+  assert.ok(Math.abs(normalMagicLength(4) - 123.2) < 1e-9,
+    'a standard post-scaling sz4 magic bullet renders at the live 20 x 2.8 x 2.2 comet length');
+  assert.match(gameHtml, /_drawCometBullet\(p\.x,p\.y,_normalMagicCometLength\(p\.sz\)/,
+    'ordinary hostile magic bullets must use the shared live-size helper');
   assert.match(gameHtml, /else if\(p\._parryMagicShot\)\{[\s\S]{0,500}_drawCometBullet\(p\.x,p\.y,/,
     'parry fragments must reuse the normal comet magic-bullet renderer');
-  assert.match(gameHtml, /const _pmLen=44;/,
-    'parry fragments must match the ordinary 20px magic bullet comet length (20 x 2.2), not the oversized 88px variant');
+  assert.match(gameHtml, /const _pmLen=_normalMagicCometLength\(4\)\*2;/,
+    'all five parry fragments must keep the approved two-times normal magic-bullet visual size');
   assert.match(gameHtml, /p\._parryMagicShot=false/,
     'pooled player projectiles must clear the parry magic visual flag');
   assert.match(gameHtml, /OPT\.parts>=60[^\n]+!p\.plagueBlade&&!p\._parryMagicShot\)_projEmit/,

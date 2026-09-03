@@ -286,7 +286,7 @@ EXIT GATE (100, 18)
 | m_cage_gate | 1 | (174,156) | col, 남동 림 |
 | m_sword_pile | 1 | (22,92) | col, WEST 밖 서 림 |
 | m_tree1/2/3 | 12 (각 4) | (28,172),(78,188),(142,188),(182,166),(24,146),(174,136),(24,116),(176,104),(24,72),(174,62),(48,28),(144,30) | 무충돌, 대형 사이 중거리 실루엣. (78,188)은 START 시야 가장자리 |
-| m_skull_altar / m_obelisk | 2 | (82,181),(118,182) | col, START 첫 화면 좌우 대형 프레임. `m_atree1`은 원본 시트의 세로 줄무늬·광역 부분알파 배경 때문에 1-1 손 배치에서 제외 |
+| m_cage_gate / m_fbones / corpse | 3 | (103,188) scale 1.2, (78,182), (124,179) | START 감염 성문과 좌우 진입 흔적. `m_cage_gate`는 col, 뼈·시체는 무충돌이며 중앙 스폰 코어와 북상축을 비운다. 구 `m_skull_altar`/`m_obelisk` 첫 화면 배치는 제거됐고 `m_atree1`도 원본 시트의 세로 줄무늬·광역 부분알파 배경 때문에 1-1 손 배치에서 제외 |
 | m_penta_circle / m_bone_arch | 2 | (66,148),(112,142) | col, LOWER 좌우 림 |
 | m_eye_tree / m_vine_pillar | 2 | (88,122),(142,112) | col, CENTRAL 좌우 림 |
 | m_rotten_tree / m_skull_totem | 2 | (68,52),(120,55) | col, UPPER 좌우 림 |
