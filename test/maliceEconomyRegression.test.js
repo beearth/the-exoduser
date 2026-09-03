@@ -4,14 +4,14 @@ import { readFileSync } from 'node:fs';
 
 const gameHtml = readFileSync(new URL('../game.html', import.meta.url), 'utf8');
 
-test('parry grants +10 malice instead of +100', () => {
+test('parry grants 1000 base malice and applies the optional resource multiplier', () => {
   assert.match(
     gameHtml,
-    /function doParry[\s\S]*?G\.mats\+=10;addTxt\(P\.x,P\.y-60,_T\('👿악의\+10'\),'#cc44ff',40\);/
+    /function doParry\(_inDmg,_px,_py,_forceQ,_parryEl,_resourceMul\)[\s\S]*?const _matsAdd=\(_isRedParry\?500:_isRainbowParry\?2000:1000\)\*_resourceBonus;[\s\S]*?G\.mats\+=_matsAdd;/
   );
-  assert.doesNotMatch(
+  assert.match(
     gameHtml,
-    /function doParry[\s\S]*?G\.mats\+=100;addTxt\(P\.x,P\.y-60,_T\('👿악의\+100'\),'#cc44ff',40\);/
+    /function _resolveBigEnergyParry[\s\S]*?const _bigResourceMul=10;[\s\S]*?doParry\(totalDmg,p\.x,p\.y,true,p\.el,_bigResourceMul\);/
   );
 });
 

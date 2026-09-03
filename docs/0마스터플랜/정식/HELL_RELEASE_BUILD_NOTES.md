@@ -37,7 +37,7 @@
 - [ ] Steam Steamworks SDK 연동
 - [ ] 리더보드 / 업적
 - [ ] 세이브 클라우드 동기화 (Steam Cloud)
-- [ ] 런치 트레일러 제작
+- [x] Steam 런치 트레일러 제작 — 2026-09-02 현행 보스 가시성 수정 마스터 60.8초 (`captures/trailer_steam_bossfix_20260902/EXODUSER_STEAM_TRAILER_BOSSFIX_20260902.mp4`). 16:9 1920×1080, 60fps H.264 High 17.301Mbps/AAC 48kHz, 첫 7.7초 gameplay-first. 신규 API v2 타이틀/CTA, 스킬·패링·전대·크라켄 피격 폭발/10분열·화마귀·CH3와 다크드루이드 560px/흑요염 파괴자 620px/벌레 여왕 500px 전신 보스전을 포함한다. 드루이드는 게임 실적용 `boss_dark_druid_walk.png` 4×8 시트의 방향별 유휴 프레임을 사용하고 구형 `boss_dark_druid_f0.png`는 제외한다. 신성폭발·검은별 입력 0, 보스 5컷 pageerror/404 0, blackdetect 이상 구간 0, 트레일러 테스트 19/19 및 접촉시트 육안 PASS. 보스 본체가 누락된 직전 리메이크·이전 64.1초본·V3 기반 가로본·세로본은 Steam 납품 제외. 배포 전 BGM 권리 확인 필요.
 - [ ] itch.io / Steam 페이지 완성
 
 ## 배포 명령 (예정)

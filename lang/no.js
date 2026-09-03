@@ -78,7 +78,7 @@ const _NO={
 '기검참':'Ki Hugg','악의구':'Ondskapsball','회전참':'Hvirvelvind','기폭팔':'Detonér',
 '칼등 처내기':'Klingeparering','만화방창':'Nålstorm','멸살광선':'Utryddelsesstråle',
 '원소추적탄':'Elementjeger','악의 보호자':'Ondskaps Vokter','악의 사냥':'Ondskaps Jakt',
-'폭풍소환':'Hvirvelvindskalling','해골무덤':'Bengrav','신성폭발':'Hellig Eksplosjon',
+'폭풍소환':'Hvirvelvindskalling','해골무덤':'Bengrav',
 '블랙':'Sort Stjerne','용암소환':'Lava Kalling','처형':'Henrettelse','악마화 부활':'Demon Oppstandelse',
 '붉은꽃':'Karmosinblomstring','얼음보주':'Iskule','뇌전걸음':'Åndevandring',
 '만화방창 II':'Nålstorm II','마력연사':'Magisk Beskytning','마력광선':'Magisk Laser','업화선':'Helvetesstråle',
@@ -233,7 +233,7 @@ const _NO={
 '지옥의 군단':'Helvedes Legion','사도의 마굴':'Apostelens Hule','지옥성':'Helvetesfestning',
 // --- Misc ---
 '엑소듀서 전사':'Exoduser Kriger','포이즈':'Holdning',
-'신성폭발':'Hellig Eksplosjon','뇌전걸음':'Åndevandring',
+'뇌전걸음':'Åndevandring',
 '지옥창고':'Helveteslager','선택분해':'Selektiv Demontering','쓰레기':'Søppel',
 '복구 불가!':'Kan ikke gjenopprette!','중요잠금':'Viktig-låst',
 // --- Phase 9 additions ---
@@ -645,7 +645,7 @@ const _NO={
 '💫 포이즈 파괴!':'💫 Holdningsødeleggelse!',
 '⚡ 뇌전걸음!':'⚡ Åndevandring!',
 '✟ 구속의 영역!':'✟ Bindende Domene!',
-'✟ 신성폭발!':'✟ Hellig Eksplosjon!',
+
 '⛧ 블랙!':'⛧ Sort Stjerne!',
 '🌋 용암소환!':'🌋 Lava Kalling!',
 '필살기 배정!':'Ultimat Tildelt!',

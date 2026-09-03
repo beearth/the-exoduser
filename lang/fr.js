@@ -109,7 +109,7 @@ const _FR={
 '악의 사냥':'Chasse de Malice',
 '폭풍소환':'Invocation Vortex',
 '해골무덤':'Tombe d\'Os',
-'신성폭발':'Explosion Sacrée',
+
 '블랙':'Étoile Noire',
 '용암소환':'Invocation Lave',
 '처형':'Exécution',
@@ -1073,7 +1073,7 @@ const _FR={
 '💫 포이즈 파괴!':'💫 Posture Détruite !',
 '⚡ 뇌전걸음!':'⚡ Marche Fantôme !',
 '✟ 구속의 영역!':'✟ Domaine Lien !',
-'✟ 신성폭발!':'✟ Explosion Sacrée !',
+
 '⛧ 블랙!':'⛧ Étoile Noire !',
 '🌋 용암소환!':'🌋 Invocation Lave !',
 '필살기 배정!':'Ultime assigné !',

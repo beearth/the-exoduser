@@ -166,6 +166,18 @@ visual layer는 모두 비충돌이다. 기존 `CH3_HELLWINTER_V1` collision wal
 
 매크로 톤은 바닥 흑색 overlay `.46→.49`, 프롭 `brightness .48→.46`, `contrast 1.28→1.34`, `saturate 0→.18`로 조정해 완전 무채색 대신 죽은 청회색을 남겼다. ritual은 위치·크기·구조를 유지하고 alpha만 `.78→.56`으로 낮춰 30-enemy/telegraph보다 먼저 튀지 않게 했다.
 
+### FINAL MACRO OUTER SILHOUETTE PASS 2 (2026-08-31)
+
+축소 full-map에서 외곽이 4면 동일 scale로 반복되는 대칭 ring으로 읽히던 문제를 outer silhouette·rampart repetition·color 세 축에서만 최종 리터치했다. collision·START/EXIT·중앙 64×64 core·남북 route·landmark 좌표/scale·개별 접합부·`edgeErase`·신규 에셋은 전부 고정이며, 비충돌 shell/crest layer의 배치·scale과 미고정 floor mark 색 1종만 조정했다.
+
+| 대상 | 이전 | PASS 2 | 목적 |
+|---|---|---|---|
+| `m_c3helltower_shell` scale (16개) | 4면 대칭 `.92~1.08` 교차 | 면별 rhythm: TOP `1.15/0.87/1.16/0.89` jagged / RIGHT `1.04~1.14` 높은 열주 / SOUTH `0.85~0.92` 붕괴 / LEFT `0.86~1.10` broken | 위치(=radius) 고정, scale로 상단선 높이만 면마다 다르게 깸 |
+| 실루엣 crest 16개 배치 | 균등 16-ring (radius ≈82) | 면별 3~5 비대칭 cluster + gap, radius `75~85` stagger, TOP 뾰족·RIGHT pillar 열주·SOUTH rubble·LEFT 끊긴 리듬 | 일정 간격·좌우 대칭 제거, 면별 silhouette family 차별화 |
+| floor ash mark 무채색 (`hell===2`) | `rgba(132,138,142,…)` (청회 편향) | `rgba(130,131,128,…)` | 잔여 blue 억제, 깨끗한 눈 대신 dirty snow |
+
+tower는 `renderLayer=-2`, crest는 `renderLayer=-1` 비충돌이라 collision ring 뒤 skyline만 바뀌고 벽·충돌·통로는 불변이다. crest scale은 `.90~1.10`, base size `430~500`, alpha `.58~.70` 제한을 유지하고 TOP/SOUTH family는 회전 대칭이 아니다. tone은 `brightness(.46) contrast(1.34) saturate(.18)`·바닥 overlay `rgba(6,8,10,.49)`·ritual alpha `.56` 3종 lock을 그대로 유지했다(테스트 고정값). 검증: TDD 28/28 PASS, runtime 실측 collision 101·중앙 blocker 0·route blocker 0·pageerror/404 0, START/EXIT gate passage·남북 종주 불변.
+
 ### CENTRAL DETAIL PASS
 
 외곽·랜드마크·ritual 위치/크기·collision은 고정하고, 중앙 카메라에서 의식진만 단독으로 반복 판독되던 부분에 기존 CH3 바닥 소스 3장으로 6개 저알파 detail ring을 추가했다. `gdark/gplates/gcrack`을 각각 2회씩 scale `.62~.78`, 서로 다른 회전으로 재사용하며 신규 PNG·crop·random scatter는 0이다. 모든 모듈은 `renderLayer=1`의 floor-only 비충돌이고 중앙에서 반경 `10~22` tile에만 놓인다. `x92..108` 남북 종주축은 배치 0, 64×64 중앙 코어의 authored collision/vertical prop도 0이다. central vein은 alpha `.11`, stain `.10`, plate `.055`로 제한해 player·적·탄막·AoE보다 먼저 튀지 않는다.
@@ -291,5 +303,6 @@ SW 사체와 NE 동면괴물은 원본에 포함된 밝은 동토 바닥판이 f
 | Final Macro canonical 비교 | `captures/ch3_final_macro_retouch/model_vs_runtime.png` |
 | Final Macro 4면/중앙 | `captures/ch3_final_macro_retouch/{outer_LEFT,outer_RIGHT,outer_TOP,central_arena}.png` |
 | Central Detail 전체맵/비교/플레이 카메라 | `captures/ch3_center_detail/{SI11_full,model_vs_runtime,central_arena}.png`; detail 6, collision 0, route intrusion 0, pageerror/404 0 |
+| Final Macro PASS 2 전체맵/비교/4면 | `captures/ch3_final_pass_after/{SI11_full,before_after_model,outer_LEFT,outer_RIGHT,outer_TOP,outer_SOUTH,central_arena}.png`; breakers 16·families 4/4/4/4·collision 101·중앙/route blocker 0·pageerror/404 0 |
 
-최종 판정: **WALL SYSTEM PASS / GAMEPLAY PASS / SILHOUETTE PASS / REPETITION PASS / DENSITY PASS / LIGHTING PASS / COLOR PASS / CANONICAL COMPARISON PASS / CENTRAL DETAIL PASS / CH3-1 VISUAL FINAL PASS**. 첫 인상은 일반 얼음맵이 아니라 검은 철·현무암 요새가 죽은 청회색 동토 전장을 둘러싼 “얼어붙은 지옥 요새와 전장”으로 판독된다. 중앙은 6개 floor-only 흔적으로 정보량만 높였고 collision·종주축·ritual hierarchy는 유지했다. 기존 4종/5 instance seam feather는 유지했으며 `edgeErase`를 추가하지 않았다.
+최종 판정: **WALL SYSTEM PASS / GAMEPLAY PASS / SILHOUETTE PASS / REPETITION PASS / DENSITY PASS / LIGHTING PASS / COLOR PASS / CANONICAL COMPARISON PASS / CENTRAL DETAIL PASS / CH3-1 VISUAL FINAL PASS**. 첫 인상은 일반 얼음맵이 아니라 검은 철·현무암 요새가 죽은 청회색 동토 전장을 둘러싼 “얼어붙은 지옥 요새와 전장”으로 판독된다. 중앙은 6개 floor-only 흔적으로 정보량만 높였고 collision·종주축·ritual hierarchy는 유지했다. 기존 4종/5 instance seam feather는 유지했으며 `edgeErase`를 추가하지 않았다. **Final Macro PASS 2**(2026-08-31)에서 4면 대칭 tower ring을 면별 skyline rhythm(TOP jagged/RIGHT 열주/SOUTH 붕괴/LEFT broken)으로 깨고 crest를 비대칭 cluster로 재배치해 rampart 반복 인식을 제거했으며, collision·gameplay·landmark·tone lock은 전부 불변이다.

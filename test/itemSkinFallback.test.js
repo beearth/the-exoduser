@@ -7,7 +7,7 @@ const gameHtml = readFileSync(new URL('../game.html', import.meta.url), 'utf8');
 test('known missing element variants resolve to the available physical item skin before creating an image request', () => {
   assert.match(
     gameHtml,
-    /const _ITEM_SKIN_MISSING_VARIANTS=new Set\(\['necklace_fire','cape_fire','earring_fire'\]\);/,
+    /const _ITEM_SKIN_MISSING_VARIANTS=new Set\(\['necklace_fire','cape_fire','earring_fire','ossuary_ice','ossuary_dark','ossuary_light','ossuary_holy','ossuary_earth'\]\);/,
   );
   assert.doesNotMatch(gameHtml, /const uniq=\(it\.rarity>=5\)\?'_uniq':'';/);
 });
@@ -19,7 +19,7 @@ test('every fire item skin resolves to its physical art before the browser can r
   );
   assert.match(
     gameHtml,
-    /function _itemSkinSrc\(base,el\)\{const variant=_ITEM_SKIN_MISSING_ELEMENTS\.has\(el\)\|\|_ITEM_SKIN_MISSING_VARIANTS\.has\(base\+'_'\+el\)\?'phys':el;/,
+    /function _itemSkinSrc\(base,el\)\{if\(base\.lastIndexOf\('bone_',0\)===0\)return 'output\/imagegen\/item-skins\/'\+base\+'\.png';const variant=_ITEM_SKIN_MISSING_ELEMENTS\.has\(el\)\|\|_ITEM_SKIN_MISSING_VARIANTS\.has\(base\+'_'\+el\)\?'phys':el;/,
   );
 });
 

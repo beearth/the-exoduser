@@ -1,5 +1,802 @@
 # Sync Changelog
 
+## 2026-09-03 보스 `cageTrap` 뼈감옥 스프라이트 교체
+
+| 항목 | 이전 상태 | 현재 계약 | 적용 위치 |
+|---|---|---|---|
+| 감옥 비주얼 | 이전 보라 뼈감옥 7프레임 시트 | 사용자 제공 3×2 투명 콜라주를 6프레임 WebP `1536×1024`·셀 `512px`로 정규화해 실제 로드 | `assets/vfx/boss/boss_cageTrap.webp`, 루트 동기본 |
+| 재생 | 7프레임 frame 0→6 성장 | 경고 `40f` 뒤 `36f` 동안 frame 0→5 성장, 완성 프레임 유지, 마지막 `30f` 페이드 | `game.html` 감옥 렌더 |
+| 합성/크기 | 갈색 stroke/fill | `source-over`, `r×3.35`(`r=110`이면 `368.5px`), Y 앵커 `y-size×0.54` | `registerVFX`, 감옥 렌더 |
+| 실패 안전 | 별도 로드 에셋 없음 | 이미지 미준비 시 기존 원+12가시 렌더로 폴백 | `_VFX_SHEETS.boss_cageTrap` 분기 |
+| 전투 판정 | 반경110, 경고40f, 수명210f, 피해 `floor(ATK×0.8)`, 테두리20px, 재타격20f, 패링 가능 | **불변** | 감옥 생성/업데이트, `_PARRYABLE_ATK` |
+| 후처리 | 7개 bbox 기반 불균등 콜라주 처리 | 3×2 고정 격자를 비율 유지 `488×488` 안에 축소하고 셀마다 12px 안전 여백 확보 | `tools/process-boss-cage-trap-sheet.mjs` |
+| 백업/검증 | 이전 7프레임 활성본 | 교체 전 파일은 기존 백업에 보존. 전용 테스트 **2/2 PASS**, 6프레임 인게임 캡처 및 page error 0건 | 테스트와 `captures/bone_cage_20260903/` |
+
+- 상세 SSOT: `docs/5.1임펙트디자인/BOSS_CAGE_TRAP_VFX.md`, 전투 계약: `docs/8.1보스디자인바이블/BOSS_BATTLE_SETTINGS.md`.
+
+## 2026-09-03 신성폭발 필살기 완전 삭제
+
+| 항목 | 이전 상태 | 현재 계약 | 적용 위치 |
+|---|---|---|---|
+| 스킬 정의/UI | `holyBlast`가 `hidden:true`로 `SKILL_LIST`·아이콘 집합·쿨다운 HUD에 잔존 | 정의·아이콘 매핑·추천/테스트 목록에서 완전 제거. 현행 필살기는 블랙/탄막블랙홀/처형 3종 | `game.html` |
+| 발동/전투 | Z 디스패치, `_hbCd/_hbCasting/_hbT/_hbX/_hbY`, `fireHolyBlast()`, `_hbPillar`가 구세이브에서 동작 | 발동 분기·상태 업데이트·피해/넉백·필살기 렌더 전부 삭제 | `_dispatchSkillSlot()`, 업데이트/렌더 루프 |
+| 구세이브 | 저장된 미등록 스킬 키를 그대로 `P.skills`에 복원 | `SKILL_LIST`에 존재하는 ID만 복원; 삭제 ID는 폐기되고 해당 `ULT_SLOT`은 미습득 검증에서 `null` 처리 | `dbRestore()` |
+| 전용 파일 | 숨김 스킬의 아이콘·홀리서클·9프레임 폭발 이미지가 배포에 잔존 | 아이콘 1개, 홀리서클 1개, 폭발 프레임 9개 삭제. 전용 SFX 경로도 제거(원본 음원은 이미 부재) | `img/skillskin_upscaled/`, `img/`, `sprites/holy_explosion/`, `SFX_ASSETS` |
+| 번역 | 본체/26개 루트 언어팩/26개 소스 언어팩/한국어 카탈로그/생성기 2개에 삭제 스킬 문자열 잔존 | 활성 번역 키와 생성 원문 전부 제거, 필살기 선택 문구는 현행 3종으로 갱신 | `lang_*.js`, `lang/*.js`, `i18n/ko.json`, 번역 생성기 |
+| 별개 시스템 | `holyFuse`, 전기 타격용 `vfx_holy_burst.png`가 이름 때문에 혼동 가능 | F 영역 합체 ‘결계의 영역’과 공용 전기 타격 VFX는 삭제 대상이 아니므로 유지 | 합체/VFX 시스템 |
+| 회귀검증 | 숨김 여부만 보장 | 실행 코드·번역·구세이브 필터·전용 파일 부재를 검증 | `test/holyBlastRemoval.test.js` **4/4 PASS** |
+
+## 2026-09-03 대형 에너지탄 패링 혜성형 5분열·자원회수 ×10
+
+| 항목 | 이전 | 현재 | 적용 위치/공식 |
+|---|---:|---:|---|
+| 분열 수 | 10발 | **5발** | `_splitParriedBigEnergy`, 원형 균등 각도 |
+| 분열 탄종/시각 | 원소추적탄 `arcMissile` 또는 작은 원형 fallback | **혜성형 일반 마법탄 `magic`+`_parryMagicShot`** | 충돌은 r8 기본 마법탄 경로. 시각은 기존 `img/balls/proj_bolt_comet.png` 8프레임을 `_drawCometBullet` 길이 **44px**(일반 마법탄 20px×2.2와 동일)로 렌더. 전용 미사일 플래그·발사 잠금·반사 튕김·일반 `_projEmit` 먼지 없음 |
+| 분열탄 피해 | 총 반사 피해 ÷10 | **총 반사 피해 ÷5** | 개별 `dmg=max(1,floor(totalDmg/5))`; 총 피해 배율 불변 |
+| HP/ST/MP 회복 | 일반 Q ×1 | **일반 Q ×10** | `doParry(...,_resourceMul=10)`, 각 최대치 캡 |
+| 작살/분노 | +10 / +10 | **+100 / +100** | 각 게이지 상한 적용; `_uShieldRage`는 배율 뒤 가산 |
+| 악의 | +1000 | **+10000** | `G.mats`, 일반 Q 기본값 ×10 |
+| `parryBank` | 반사 피해량 ×1 | **반사 피해량 ×10** | `_resolveBigEnergyParry`; 기폭용 |
+| 제외 대상 | — | 분열탄 총 피해, 포이즈 +1, 무적 25f, VFX/사운드 | 자원회수 배율과 분리 |
+
+- 적용 탄: 크라켄 `fbEnergy`, 화마귀 `fdEnergy`. 기본 Q와 평화의보호 Q 성공 경로가 같은 helper를 사용한다.
+- 분열체는 콩알형 fallback이나 원소추적탄이 아니라 기존 일반 마법탄의 혜성 시트 렌더를 사용한다. 판정·이동은 `magic`, r8, spd7.5, 사거리900이며 시각 길이는 일반 마법탄과 같은 44px다.
+- 관련 문서 감사에서 `pRegen` 패링회복 표기의 구값 +30%/lv를 현행 코드 `1+pRegen×0.20`(+20%/lv)로 바로잡았다.
+- TDD: `test/bigEnergyParrySplit.test.js`에서 작은 원형 fallback 재현 후 5발·5등분·자원회수 ×10·분열 피해 비증폭·혜성 시트 렌더 계약 **11/11 PASS**, 관련 탄막 회귀 묶음 **41/41 PASS**. Playwright 실게임 캡처에서 2032×137 8프레임 시트 로드, 5발의 `_parryMagicShot=true`, pageerror/로컬 요청 실패 0을 확인했다.
+
+## 2026-09-03 용암폭발 필살기 → 탄막블랙홀 개편
+
+| ID/상태 | 이전 | 현재 | 수치/공식 | 적용 위치 |
+|---|---|---|---|---|
+| `lavaSummon` 이름/역할 | 악의흡수(구 용암소환), 6초 시전 후 적 탄막 전 화면 즉시 삭제 | **탄막블랙홀**, 플레이어 위치에 즉시 설치되는 화면 탄막 과밀 대응 필살기 | MP 최대치 30%, 쿨 7200f(120초) 유지 | `SKILL_LIST`, `_dispatchSkillSlot()` |
+| 지속 흡수 | 종료 순간 일괄 삭제 | 300f(5초) 동안 매 프레임 범위 안의 살아 있는 적 탄막 제거·카운트·원피해 저장 | 흡수 반경=`1000+(Lv-1)×25px`(1000~1475) | `_absorbBulletBlackHoleProjectiles()` |
+| 흡수/제외 대상 | 아군탄만 제외 | 패링 불가 무지개탄(`blackBean`)·대형 에너지탄까지 흡수; 아군탄·지뢰·함정·거미줄·독장판 제외 | 제거 탄막은 `life=-999`로 기존 투사체 정리 파이프라인에 위임 | `game.html` 업데이트 루프 |
+| 붕괴 폭발 | 반경 2000~4000px | 반경 `900+(Lv-1)×30px`(900~1470) 화염 범위폭발 | `base=magicRef×INT×pMagicMul×8×(1+(Lv-1)×9/19)`; `base×(1+min(3,흡수수×0.03))+min(base,흡수탄 원피해합)`; 최저 거리감쇠 30%, 스턴 최대 90f | `fireLavaSummon()` |
+| VFX/UI | 대형 붉은 오망성(320→600px), 6초 진행 | API 생성 8프레임 블랙홀 시트+저알파 흡수장+5초/흡수수 UI→용암빛 붕괴 | 시트 2048×1024 RGBA, 4×2, 셀 512px; 80ms/프레임(640ms 루프); 화면 지름 238→272px. 기존 붉은 오망성은 반경 92px 로딩 폴백 | `assets/vfx/bullet_black_hole_sheet.png`, 필살기 렌더 블록 |
+| 에셋 후처리 | 없음 | API 출력의 구운 체크무늬를 제거하고 투명 RGBA 시트로 정규화 | 2048×1024 고정, 중성 배경 알파 제거, 재생성 가능 | `tools/process-bullet-black-hole-sheet.mjs` |
+| 회귀검증 | 전용 테스트 없음 | 이름·수치·대상 필터·지속 흡수·종료폭발+8프레임/투명 픽셀/오망성 폴백 계약 검증 | 6/6 PASS | `test/bulletBlackHoleUltimate.test.js`, `test/bulletBlackHoleVfx.test.js` |
+
+- `blackStar`는 몬스터 흡인 전용, `lavaSummon` 탄막블랙홀은 적 탄막 흡수+역폭발 전용으로 역할을 분리한다.
+- 구 대형 붉은 오망성/악의흡수 사양은 VFX 문서에 **폐기 이력**으로만 남기고 현재 계약과 분리했다. 기존 붉은 오망성 이미지 자체는 새 API 시트가 로드되지 않을 때의 작은 폴백으로만 재사용한다.
+
+## 2026-09-03 Space 분노 폭발 전용 슬롯 확정
+
+| 대상 | 이전 계약 | 현재 계약 | 적용 위치 |
+|---|---|---|---|
+| 1~4 (`SKILL_SLOTS[0~3]`) | 일반 스킬과 대왕치기류 혼용 가능 | 일반 액티브만 허용; 영역·분노 폭발 불가 | `_canAssignSkillSlot()` |
+| Space (`SKILL_SLOTS[4]`) | 일반 선택스킬의 다섯 번째 슬롯 | **분노 폭발 전용**: `giantSlam`, `giantSlam2`만 허용 | 팝업·드래그·카드 버튼·자동배정·게임패드 Y·런타임 방어 |
+| `giantSlam2` 합체 | 슬롯 계약 미명시 | 기둥강타(`pillarSlam`)·지옥강타(`infernoSlam`)의 Space 호스트 | `giantSlam2` ID로 장착/발동 |
+| F (`SKILL_SLOTS[5]`) | 영역 전용 | 유지: 영역 1개만 허용 | `_isAreaSkillId()` |
+| 가시덫 (`spikeTrap`) | `[고정: Space]`, `fixed:true` | `[선택: F]` 영역기; 회복의 영역과 F에서 교체 | `SKILL_LIST`, 안내·펫 대사 |
+| 구세이브 | 일반 스킬이 Space, 대왕치기류가 1~4에 남을 수 있음 | 일반=1~4, 분노 폭발=Space, 영역=F로 자동 복구 | `_repairAreaSkillSlot()` |
+
+- Space/F 전용 칸이 이미 사용 중이면 두 번째 후보는 습득/레벨을 유지한 채 미배정하며, L 패널에서 수동 교체한다.
+- UI 제목·조작 도움말·키 설정명을 `Space · 분노 폭발 전용`으로 동기화했다.
+
+## 2026-09-03 물리탄 차징 라운드 흰색 전 경로 통일
+
+| ID | 한글명 | 이전 문제 | 현재 값 | 적용 대상 | 보존 항목 |
+|---|---|---|---|---|---|
+| `_swChargeEl` | 특수 차징 발사 속성 메타 | `eShootWind`가 탄 속성 대신 몬스터 본체색 `e.col`을 사용해 물리탄도 주황/갈색 라운드 표시 | 물리 `EL.P`이면 **`#f4f4f4` 흰색** | etype 66 산호 파편, 68 기생충, 69 심연 대사도 삼지창 | 탄 본체·속도·유도·피해·충돌·패링 불변 |
+| `eShootWind` 정리 | 속성 메타 수명 | 별도 메타 없음 | `_swFire()` 실행 직후 `_swChargeEl=null` | 다음 차징으로 색 누출 방지 | 상태 시간 60f 불변 |
+| `projChargeTelegraph.test.js` | 색언어 회귀 | 일반 `_projChargeT` 물리만 검사 | 일반 물리/E빨콩 + 물리 특수 3종 흰색 검사 | 관련 탄막 테스트 **20/20 PASS** | 무지개·물·기타 원소색 불변 |
+
+- 디자인 계약: **차징 라운드 컬러는 곧 발사될 탄의 속성을 예고한다. 물리탄 라운드는 발사 경로와 무관하게 전부 흰색 `#f4f4f4`다.**
+
+## 2026-09-03 크라켄 대형탄 화면 크기 화마귀 규격 통일
+
+| ID | 한글명 | 이전 값 | 현재 값 | 적용 위치 | 불변 항목 |
+|---|---|---:|---:|---|---|
+| `fbEnergy` / `_fbDrawFly` | 크라켄 물 소용돌이 대형탄 | `dw=max(200,sz×3.5)` → 최종 sz96에서 **336px** | **`dw=240px`**, 화마귀 `fdEnergy`와 동일 | `game.html` 크라켄 비행 스프라이트 렌더 | 스폰 sz48→96, r20→26, 접촉 `P.r+96`, Q `P.r+sz+90`, 속도·피해·폭발 r220·10분열 불변 |
+| `fieldBossSpawnEmerge.test.js` | 크기 회귀 | 크라켄/화마귀 렌더 크기 비교 없음 | 두 `_DrawFly`가 모두 `dw=240`이며 크라켄의 `sz×3.5` 확대가 없음을 검증 | `test/` | 관련 크라켄·화마귀·대형탄 **40/40 PASS** |
+
+- 원인: 두 탄은 최종 `sz=96`으로 판정 크기가 이미 같았지만, 크라켄 전용 렌더만 `sz×3.5`를 적용해 336px로 그렸고 화마귀는 240px 고정이었다. 요청대로 시각 크기만 통일하고 전투 판정은 보존했다.
+
+## 2026-09-03 물리 입/뱀형 관통탄 Q 오패링 교정
+
+| ID/대상 | 이전 문제 | 현재 계약 | 적용 위치 | 보존 항목 |
+|---|---|---|---|---|
+| `_isPhysicalMouthProjectile` | `pierce:true` 물리탄은 일반 물리 자동 `redBean` 변환에서 제외되어, `EL.P` 이빨입으로 보이면서도 일반 Q 패링 분기에 진입 | 전용 타입을 제외한 적대 `EL.P` 일반·빠른·관통탄을 물리 입/뱀형으로 식별 | `game.html` 투사체 헬퍼 | 속도·유도·피해·충돌·수명·관통 불변 |
+| 물리 입/뱀형 E 패링 | 전용 반사 경로 없음 | E(sBash) 성공 시 `pParryProjDmg(p.dmg,false)×1.5`, 블루콩 유도반사, life 180 | 적 투사체 충돌 루프 | 기존 `pierce` 플래그 유지 |
+| 물리 입/뱀형 Q 입력 | 일반 색/원소탄 Q 반사로 잘못 성공 | Q 반사 차단, 탄뎀 100% 적용 후 "❌ E키로!" 표시 | `_wrongR=100`, 일반 Q 게이트 | 빨콩 화상은 추가하지 않음 |
+| 회귀 검증 | 해당 분류/입력 계약 테스트 없음 | `physicalProjectileParry.test.js` 2건 추가, 관련 투사체 32건 전체 통과 | `test/` | 빨콩·titanEye·무지개·웹·원소탄 분기 유지 |
+
+- 대표 재현은 etype 69 심연 대사도의 `EL.P + pierce:true` 삼지창이다. 렌더는 `_drawPhysMouth`를 사용하지만 `redBean`이 없어 Q 일반탄으로 취급되던 분류 불일치가 원인이었다.
+
+## 2026-09-03 F 영역 전용 슬롯·전대 소환 배정 복구
+
+| 항목 | 이전 문제 | 현재 계약 |
+|---|---|---|
+| F (`SKILL_SLOTS[5]`) | 모든 액티브가 자동/수동 배정 가능 | `cat:'tech' && act && !fixed` 영역 스킬만 **1개** 허용 |
+| 영역 스킬 일반 슬롯 | F가 차면 일반 슬롯으로 자동 진입 가능 | 1~4/Space 배정 금지. F 사용 중인 두 번째 영역은 미배정 후 F 팝업에서 수동 교체 |
+| 전대 소환 (`ancestorSummon`, `cat:'def'`) | 빈칸 순차 탐색 때문에 F에 진입 가능 | 1~4에만 배정, Space/F 불가 |
+| L키 배정 팝업 | 고정 슬롯 7개만 노출, 선택 슬롯 처리 코드는 있으나 탭 누락 | `1/2/3/4/SPACE/F` 탭 복구, Space=분노 폭발·F=영역 필터 |
+| 기존 저장 | 잘못된 F 값과 일반 슬롯의 복수 영역을 그대로 복원 | F 비영역은 일반 빈칸으로 이동; 영역은 하나만 F에 유지/이동하고 추가 영역은 슬롯만 해제 |
+| 입력 경로 | 자동습득·합체·드래그·버튼·게임패드별 규칙 불일치 | `_canAssignSkillSlot`, `_findAutoSkillSlot` 공통 적용 |
+| 전대 소환 카드 | PNG 존재하지만 이모지 폴백 | `_SKILL_ICON_SET` 등록으로 기존 PNG 표시 |
+
+- 조작 안내를 `Space=분노 폭발 스킬 전용`, `F=영역 스킬 전용`으로 동기화했다.
+- 설계 목적은 지속 장판·회복·약화 영역을 여러 키에 배정해 동시에 까는 OP 중첩을 차단하는 것이다. 영역 습득/레벨은 유지하고 장착만 F 한 칸으로 제한한다.
+- TDD: `test/skillSlotEligibility.test.js`가 양방향 슬롯 제한, 두 번째 영역 미배정, 구세이브 단일 영역 마이그레이션, L 탭, 아이콘을 검증한다.
+
+## 2026-09-03 화마귀 충전 중 느린 몸체 애니메이션
+
+| 상태 | 몸체 시트 | 프레임 간격 | 이동 여부 | 충전 구체 |
+|---|---|---:|---|---|
+| 추적 이동 | 현재 8방향 `fieldboss_firedevil_walk_*` | 6틱 = 10fps | `_FD_SPD=1.8` 유지 | 없음 |
+| 에너지 충전 | 매 틱 플레이어를 바라보는 현재 방향의 동일 이동 시트 | **18틱 ≈ 3.3fps** | **좌표 정지 유지** | 기존 12f `fieldboss_firedevil_charge.png`를 `_fdEye`에 중첩 |
+| 일반 정지 | 기존 `fieldboss_firedevil_dir.png` | 정지컷 | 정지 | 없음 |
+
+- `_fdAnimFrame(m,frames)`이 이동 `walkT/6`과 충전 `chargeWalkT/18`을 분리한다. 충전 시작 때 `chargeWalkT=0`, 충전 틱마다 `+1`하여 본체 촉수·불꽃만 천천히 움직인다.
+- 불변: 충전 180f, 발사/순간이동/피해/충돌/속도와 충전 구체의 0→11 재생.
+- TDD `test/fireDevilSpawn.test.js` **17/17 PASS**. Playwright 충전 4단계에서 몸체 프레임 `0→1→2→3`, pageerror/로컬 404 **0**, 육안 PASS. 검증 산출물 `captures/firedevil_charge_walk_20260903/`.
+
+## 2026-09-03 화마귀 8방향 이동 스프라이트 적용
+
+| 방향 id | 적용 에셋 | 시트 계약 | 런타임 처리 |
+|---:|---|---|---|
+| 1 북동 | `fieldboss_firedevil_walk_1.png` | 1448×1086, 4×2, 8f | 원본 재생 |
+| 3/5/6/7/9 | `fieldboss_firedevil_walk_{3,5,6,7,9}.png` | 각 1200×300, 4×1, 4f | 방향별 원본 재생 |
+| 11 북서 | `fieldboss_firedevil_walk_1.png` | 4×2, 8f | `flip:true` 수평 반전 재사용 |
+| 12 북 | `fieldboss_firedevil_walk_12.png` | 1536×1024, 4×3, 12f | 원본 재생 |
+
+- `_fdWalkClock`: 플레이어 상대 벡터를 45° 단위 시계방향 `12/1/3/5/6/7/9/11`로 변환한다. 제로 벡터는 남(6)이다.
+- `_fdTickOne`: 실제 좌표가 바뀐 틱만 `m._moving=true`, `walkT+1`. `_fdDrawOne`: 이동 시 **6틱/프레임(10fps)**으로 방향 시트를 재생한다. 일반 정지·로딩 전에는 기존 `_fdDirImg`를 사용하며, 충전 중 느린 재생은 위 후속 변경을 따른다. `_fmDrawSpriteTo`: 사망 캡처 전에 `_fdDirFrame(m.frame)`으로 시계방향 값을 기존 셀 번호로 역매핑한다.
+- 불변: `_FD_SPD=1.8`, HP/ATK, 충돌, 충전 180f, 순간이동, 탄막 수치, 사망 캡처.
+- TDD `test/fireDevilSpawn.test.js` 당시 **15/15 PASS**, 후속 충전 애니메이션 포함 현재 **17/17 PASS**. Playwright 1920×1080 실게임 8방향×4프레임 캡처에서 pageerror/로컬 404 **0**, 육안 PASS. 검증 산출물 `captures/firedevil_walk_20260903/`.
+
+## 2026-09-03 이빨형 물리 유도 5→15°/s 상향
+
+| 대상/id | 이전 | 현재 | 불변 항목 |
+|---|---:|---:|---|
+| `redBean` 이빨형 E패링탄 전체 | `.00145444`≈5°/s | **`.00436332`≈15°/s** | 속도 300px/s, 피해·속성·화상·E패링·충돌 |
+| `titanEye` 혈안탄 | `.00145444`≈5°/s | **`.00436332`≈15°/s** | 속도 300px/s, 전용 그림·드랍/배율 면제 |
+
+- 물리 유도가 사실상 보이지 않던 체감을 보완하되 마법탄 80~100°/s보다 훨씬 낮게 유지했다.
+- TDD: `test/magicBarrageHoming.test.js` 4/4 PASS; 속도/전조 포함 관련 테스트 21/21 PASS.
+
+## 2026-09-03 이빨형 E패링탄 300px/s·5°/s 이동 프로필 통일
+
+| id/대상 | 문제/이전 | 현재 값 | 적용 위치·불변 항목 |
+|---|---|---|---|
+| `redBean+EL.F` 화속성 이빨탄 | 물리탄처럼 보이지만 마법 분기로 정규화되어 500~600px/s, `.0218`≈75°/s | **300px/s**, **`.00145444`≈5°/s** | `_normalizeEnemyBulletSpeed`, `_enemyHomingTurnRate`; `EL.F`·화상·피해·E패링 유지 |
+| `redBean+EL.P` 일반 물리 이빨 | 245~315px/s 랜덤, `.00145444`≈5°/s | **300px/s 고정**, **`.00145444`≈5°/s** | `ENEMY_BULLET_SPEED_MIN/MAX=300/60`; 방향·피해·충돌 유지 |
+| `_closeBean` 근접 E빨콩 | `.0262`≈90°/s | **`.00145444`≈5°/s** | `redBean` 분기를 `_closeBean`보다 우선 |
+| `titanEye` 혈안탄 | 스폰 속도×`.49`(235.2~264.6px/s), `.00145444`≈5°/s | **300px/s 고정**, **`.00145444`≈5°/s** | `spawnProj`에서 물리 속도 정규화; 드랍·배율 면제 및 그림 유지 |
+
+- 원인: 흰 차징 링의 이빨형 E패링 빨콩이 내부적으로 `EL.F`라서 기존 물리탄 분기(`EL.P`/`titanEye`)를 타지 않고 마법탄 속도와 75°/s 선회를 적용받았다. 속성·화상 판정은 보존하고 이동 프로필 판정은 `redBean` 플래그로 통일했다.
+- TDD: `test/enemyProjectileSpeedBand.test.js` 10/10 PASS, `test/magicBarrageHoming.test.js` 4/4 PASS.
+
+## 2026-09-03 물리탄 유도 5°/s·차징 링 흰색 교정
+
+| 대상/id | 이전 | 현재 | 적용 위치/불변 항목 |
+|---|---|---|---|
+| 일반 물리 이빨 `redBean+EL.P` 유도 | `.0036375` ≈ 12.5°/s | **`.00145444` ≈ 5°/s** | `_enemyHomingTurnRate`; 탄속 245~315px/s·피해·충돌 불변 |
+| 혈안탄 `titanEye` 유도 | `.0036375` ≈ 12.5°/s | **`.00145444` ≈ 5°/s** | `_enemyHomingTurnRate`; 스폰 속도×`.49`·피해·충돌 불변 |
+| E패링 빨콩 차징 링 | `#ff2200` 강제 빨강 | **`#f4f4f4` 흰색** | `_pcPhysical` / `_pcCol`; 실제 발사체 색·속성 불변 |
+| 일반 물리탄 `normal+EL.P` 차징 링 | `ELC[EL.P]` (`#bbbbbb`) | **`#f4f4f4` 흰색** | `_pcPhysical` / `_pcCol`; 타 속성 링 색 불변 |
+
+- 원인은 공용 차징 렌더러 진입 전에 `_projChargeBean==='red'`를 `#ff2200`으로 강제하던 색상 분기였다. E패링 빨콩과 일반 물리탄만 흰색 텔레그래프 계약으로 묶고, 발사체 본체 및 black/water/fire/기타 링 색은 유지했다.
+- TDD: `test/magicBarrageHoming.test.js` 4/4 PASS, `test/projChargeTelegraph.test.js` 7/7 PASS.
+
+## 2026-09-02 물리탄 유도율 추가 50% 감소
+
+| 대상/id | 이전 turnRate | 현재 turnRate | 초당 회전(약) | 불변 항목 |
+|---|---:|---:|---:|---|
+| 일반 물리 이빨 `redBean+EL.P` | `.007275` | **`.0036375`** | 25→12.5°/s | 탄속 245~315px/s, E패링, 피해·크기·충돌 |
+| 혈안탄 `titanEye` | `.007275` | **`.0036375`** | 25→12.5°/s | 스폰 속도×`.49`, E패링, 피해·크기·충돌 |
+
+- 직전 물리탄 선회값에 `×0.50`을 한 번 더 적용했다. 마법·무지개·근거리·원소구·팬텀소드 유도율은 직전 값 그대로 유지한다.
+- TDD: `test/magicBarrageHoming.test.js` 4/4 PASS.
+
+## 2026-09-02 적 탄막 유도율 전 분기 50% 감소
+
+| 탄막 분류/id | 이전 turnRate | 현재 turnRate | 초당 회전(약) | 적용 위치 |
+|---|---:|---:|---:|---|
+| 기본 homing·물 파란콩·화성송·색탄 | `.0524` | **`.0262`** | 180→90°/s | `_enemyHomingTurnRate` 기본값 |
+| 화속성 빨콩 `redBean+EL.F` | `.0436` | **`.0218`** | 150→75°/s | 원거리 화속성 마법탄 |
+| 무지개탄 `blackBean` | `.0465` | **`.02325`** | 160→80°/s | 무지개 마법탄 |
+| 근접 빨콩 `_closeBean` | `.0524` | **`.0262`** | 180→90°/s | 150px 이내 화속성 탄 |
+| 원소구 `elemBall` | `.0582` | **`.0291`** | 200→100°/s | 일반 원소구; 직선 대형 에너지탄 제외 |
+| 팬텀소드 `phantomSword` | `.0524` | **`.0262`** | 180→90°/s | 발사 후 유도 |
+| 물리 이빨·혈안탄 | `.01455` | **`.007275`** | 50→25°/s | `redBean+EL.P` 또는 `titanEye` |
+| `fbEnergy` 예비값 | `.008` | **`.004`** | 미사용 | 실제 대형 에너지탄은 `homing` 없음 |
+
+- `spawnProj`의 마법탄 자동 `homing=true` 대상과 추적 종료 조건(`life>30`)은 유지하고, 각 프레임 최대 선회량만 일괄 절반으로 줄였다.
+- 플레이어 반사 블루콩의 아군 추적값 `0.08`은 적 탄막이 아니므로 변경하지 않았다. 탄속·피해·크기·패링·충돌판정도 불변이다.
+- TDD: `test/magicBarrageHoming.test.js` 4/4 PASS.
+
+## 2026-09-02 Steam 트레일러 보스 본체 가시성 수정
+
+| id/항목 | 문제/이전 | 현재 계약 | 적용 위치/검증 |
+|---|---|---|---|
+| Steam 납품 SSOT | 리메이크에서 보스 이름·HP HUD만 보이고 실제 본체가 결정론 캡처에서 누락 | **`EXODUSER_STEAM_TRAILER_BOSSFIX_20260902.mp4`**, 60.800초 | `captures/trailer_steam_bossfix_20260902/`, 133,066,276 bytes |
+| 원인 | HUD는 DOM z20~22, stage 0/9 본체는 Three.js `#boss3dCvs` z5000으로 분리되어 오프라인 프레임 클록에서 전진/합성되지 않음 | 촬영 전용 `#trailerBossOverlay` z10에 알파 보스 아트를 매 프레임 합성하고 3D 캔버스는 숨김 | 게임 런타임·보스 전투 수치 변경 없음 |
+| 보스 안전영역 | 카메라 근접·미니언/VFX 중첩으로 실루엣 판독 실패 | 앵커 `(0.50,0.39)`, 플레이어 우하단 측면, 미니언·펫·필드보스 제거 | `tmp/trailer_capture_bossfix.py` |
+| 다크드루이드(stage 3) | 첫 보스픽스가 구형 `boss_dark_druid_f0.png` 정지화를 사용해 실제 게임 적용 모습과 다르고 잘려 보임 | 전신 목표 높이 **560px**, 실적용 `boss_dark_druid_walk.png`의 4×8 시트에서 `_druidDir(b)` 방향 행·600ms 유휴 프레임 1칸 크롭 | `druid_runtime_sheet_contact.png` 머리·뿔·지팡이·발끝 무잘림 PASS |
+| 흑요염 파괴자(stage 0) | 이름만 판독 | 전신 목표 높이 **620px**, API 크로마 자산→런타임 알파 | `output/imagegen/trailer/boss_lava_warbringer_chroma_v1.png` |
+| 벌레 여왕(stage 9) | 이름만 판독 | 전신 목표 높이 **500px**, API 크로마 자산→런타임 알파 | `output/imagegen/trailer/boss_worm_queen_chroma_v1.png` |
+| 가림 스킬 | 직전 후반 컷의 검은별이 보스 실루엣을 가림 | 보스 5컷 `KeyZ`/`blackStar` 0, `holyDome=0` | 신성폭발·검은별 입력 0 |
+| QA | 직전 마스터는 보스 가시성 FAIL | 보스 원본 5컷 pageerror/404 0, blackdetect 이상 구간 0, A/V 60.800초, 테스트 **19/19 PASS** | `boss_visibility_contact_sheet.png` 육안 PASS |
+
+- 비보스 현행 런타임 컷과 API v2 타이틀/CTA는 유지하고, 32.4~56.3초의 보스 5컷만 `trailer/source_steam_bossfix_20260902/` 소스로 전량 교체했다.
+- 최종 비디오는 1920×1080 60fps H.264 High 17.301Mbps, 오디오는 AAC 48kHz stereo 195kbps(mean -22.2dB/max -0.5dB), 총 3,648프레임이다.
+- 보스 아트 생성 방식과 최종 프롬프트는 `captures/trailer_steam_bossfix_20260902/BOSS_ART_PROMPTS.md`에 기록했다.
+
+## 2026-09-02 Steam 트레일러 리메이크 — 대형탄 2컷·신규 API 타이포
+
+| id/항목 | 교체 전 | 현행 리메이크 | 적용 위치/검증 |
+|---|---|---|---|
+| Steam 납품 SSOT | `EXODUSER_STEAM_TRAILER_20260902.mp4`, 64.100초 | **`EXODUSER_STEAM_TRAILER_REMAKE_20260902.mp4`**, 60.800초 | `captures/trailer_steam_remake_20260902/` |
+| 소스 | `trailer/source_steam/` 신규 10종 | `trailer/source_steam_remake_20260902/` **현재 런타임 신규 12종** | 이전 캡처·V3·세로·프루프·완성본 EDL 0건 |
+| 비디오 | H.264 High 18.54Mbps, 3,846f | H.264 High **18.431Mbps**, 1920×1080, 60fps, **3,648f** | 141,658,466 bytes, ffprobe PASS |
+| 오디오 | AAC 48kHz, mean -22.6dB/max -0.1dB | AAC 48kHz stereo 195kbps, **mean -22.2dB/max -0.5dB** | A/V 각 60.800초, 차 0.000초 |
+| 오프닝 | gameplay-first 10.8초 + 타이틀 2.0초 | gameplay-first **7.7초** + API v2 타이틀 **1.6초** | 타이틀 7.7~9.3초 프레임 육안 PASS |
+| 크라켄 | Q패링 10분열 1컷 | 피격 폭발 3.8초 + Q패링 10분열 4.8초로 분리 | 실제 `_fbFireEnergy()`, 대형탄 원본 소멸 확인 |
+| 보스 | 드루이드+후반 보스 | 드루이드+흑요염+후반 보스, 검은별 클라이맥스 | 신성폭발 0컷 |
+| 타이포 | API 카드 v1 | 내장 이미지 생성 API v2: `EXODUSER`/`HELL LORD`, `WISHLIST NOW`/`ON STEAM` | `output/imagegen/trailer/*_api_v2.png` |
+| 포스터 | 3.0초 자동 후보 | 피격 플래시 없는 **2.5초** 마법 전투 프레임 | `steam_trailer_remake_poster_clean_1920x1080.jpg` |
+
+| 구간 | 위치 | 길이 | 내용 |
+|---|---|---:|---|
+| hook | 0.0~7.7초 | 7.7초 | 마법 전투 4.2초 + 일반 패링 3.5초 |
+| API title v2 | 7.7~9.3초 | 1.6초 | `EXODUSER` / `HELL LORD` |
+| ancestor | 9.3~14.8초 | 5.5초 | 실제 전대 소환 |
+| Kraken hit | 14.8~18.6초 | 3.8초 | 충전→접촉→청색 폭발→원본 소멸 |
+| Kraken parry | 18.6~23.4초 | 4.8초 | Q패링→동일 속성 소형 마법탄 10발→원본 소멸 |
+| Flame Devil+CH3 | 23.4~32.4초 | 9.0초 | 대형 화염탄 + 군중 스킬전 |
+| Druid | 32.4~40.5초 | 8.1초 | 보스 등장·교전 |
+| boss escalation | 40.5~56.3초 | 15.8초 | 흑요염→후반 보스→검은별 클라이맥스 |
+| API end v2 | 56.3~60.8초 | 4.5초 | `EXODUSER` / `WISHLIST NOW` / `ON STEAM` |
+
+- 촬영/빌드: `tmp/trailer_capture_remake.py`, `tmp/build_steam_trailer_remake.py`. 신규 스크립트는 기존 최종본과 소스 경로를 덮어쓰지 않는다.
+- API 프롬프트 방향: 검은 화산암·절제된 심홍 균열·은빛 강철/흑요석 고딕 장식·정확한 영문 타이포·16:9 넓은 안전영역·추가 문구/로고/워터마크 금지.
+- QA: 신규 원본 12개 pageerror/404 0, `test/trailerCapturePipeline.test.js`+`test/trailerRemakePipeline.test.js` **17/17 PASS**, blackdetect 의도치 않은 검은 구간 0, 타임라인·크라켄 접촉시트·API 카드·포스터 육안 PASS.
+- 상업 배포 전 `Bloodsteel Ascension.mp3`의 Steam/광고 사용 권리를 확인한다.
+
+## 2026-09-02 물리탄 속도 30%·유도 선회율 50% 감소
+
+| id/대상 | 이전 | 현재 | 공식/적용 위치 |
+|---|---:|---:|---|
+| `ENEMY_BULLET_SPEED_MIN` 일반 물리 이빨 최소속도 | 350px/s | **245px/s** | `350×0.70`, `245/60`; `_rollEnemyBulletSpeed` |
+| `ENEMY_BULLET_SPEED_MAX` 일반 물리 이빨 최대속도 | 450px/s | **315px/s** | `450×0.70`, `315/60`; `_rollEnemyBulletSpeed` |
+| 일반 물리 이빨 평균속도 | 400px/s | **280px/s** | `(245+315)/2` |
+| `titanEye` 혈안탄 속도 배율 | 스폰 속도×`.70` | **스폰 속도×`.49`** | 종전 실속도×`.70`; `spawnProj` |
+| 물리 이빨·혈안탄 `turnRate` | `.0291`≈100°/s | **`.01455`≈50°/s** | `.0291×0.50`; `_enemyHomingTurnRate` |
+
+- 적용 대상은 `redBean+EL.P` 일반 물리 이빨과 물리 빨콩 베이스인 `titanEye` 혈안탄이다. 마법탄·무지개탄·대형 에너지탄·다른 특수탄의 속도와 선회율은 변경하지 않았다.
+- 피해·크기·개수 1/3·패링 입력·충돌판정은 변경하지 않았다. TDD: `test/enemyProjectileSpeedBand.test.js` 10/10, `test/magicBarrageHoming.test.js` 4/4 PASS.
+
+## 2026-09-02 — 대형 에너지탄 전용 충돌·패링 파이프라인 재구축
+
+| id/항목 | 문제/이전 | 현재 계약 | 적용 위치/공식 |
+|---|---|---|---|
+| 타입 소유권 | 착지 패링·칼등치기·파워웨이브·방패던지기가 대형탄을 `friendly=true`로 바꿀 수 있어 일반 적탄 충돌을 우회하고 최대 30관통탄으로 남음 | `_isBigEnergy(p)`가 `fbEnergy`/`fdEnergy`를 식별. 대형탄은 일반/반사 투사체 분기에서 제외하고 전용 터미널만 처리 | `game.html` 적 투사체 루프 |
+| 플레이어 스윕 | 현재/이전 플레이어 점과 탄 선분을 따로 비교해 양쪽이 한 프레임에 교차하는 경우 누락 가능 | `_relativeSweepDistance(탄 old→new, 플레이어 prev→current)`로 상대 이동 선분의 최소거리 계산 | 접촉=`P.r+max(p.r\|\|16,p.sz\|\|48)`; 최종 sz96이면 `P.r+96` |
+| 벽 스윕 | 탄 중심 종점의 X/Y 벽 체크만 사용 | `_bigEnergyWallContact`가 이동 구간을 `max(4,min(12,coreRadius×0.25))px` 간격으로 나눠 중심+원주 8점을 검사. 최초 막힘 직전 유효 좌표에서 폭발 | `_fbEnergyBoom` r220 후 원본 회수 |
+| 무적/돌진 접촉 | 피해 가드가 폭발·회수까지 막아 관통처럼 보일 수 있음 | 접촉 시 폭발·회수는 항상 수행. 피해만 `P.iframes<=0 && P.s!=='charge'`일 때 적용 | 대형탄 전용 플레이어 터미널 |
+| 기본 Q 패링 | 일반탄 분기 안에서 대형탄을 예외 처리 | `_resolveBigEnergyParry`가 동일 속성 소형 마법탄 10발과 패링 보상을 만들고, 호출 분기가 원본 1발을 즉시 회수 | Q=`P.r+(p.sz\|\|48)+90`, 조각 r8/spd7.5/사거리900/총 반사뎀 10등분 |
+| 평화의보호 Q | 보호막 선처리에서 대형탄도 `friendly` 대형탄으로 바뀜 | 패링 윈도우에서 `_resolveBigEnergyParry`를 즉시 호출하고 원본 제거. 윈도우 밖 흡수는 대형 폭발 VFX 후 제거 | `case 'peaceShield'` |
+| 비Q 반사 | 기동파괴 착지·E 칼등치기·파워웨이브·일반 방패던지기가 대형탄 상태를 변환 | 네 경로 모두 대형탄 제외. 대형탄은 Q만 10분열되고 E/비Q에서는 전용 접촉 판정까지 계속 비행 | 각 `projs` 반사 루프 |
+| 방어 불변식 | 유출된 `friendly` 대형탄이 30관통 로직으로 진행 | 30관통 로직과 `_bigPierce` 제거. 예기치 않은 `friendly` 대형탄은 즉시 `_fbEnergyBoom` 후 회수 | 전용 파이프라인 선두 가드 |
+
+| 분열탄 속성 | `el` | 표시색 | 수량/규격 |
+|---|---|---|---|
+| 화 | `EL.F` | 빨강 `#ff5522` 계열 | 10발, r8, spd7.5, 사거리900 |
+| 물/빙 | `EL.I` | 파랑 `#3388ff` 계열 | 10발, r8, spd7.5, 사거리900 |
+| 기타 | 원본 `p.el` 유지 | `ELC[p.el]` | 10발, r8, spd7.5, 사거리900 |
+
+- 회귀 테스트: `test/bigEnergyParrySplit.test.js` 9개 PASS(상대 스윕, 전체 핵 벽 스윕, 무적 접촉 폭발, 단일 터미널, 기본 Q/평화의보호 Q 10분열, 비Q 변환 차단).
+- 실브라우저 검증: 무적 접촉=피해 0+폭발+원본 제거, 취약 접촉=피해+폭발+원본 제거, 기본 Q/평화의보호 Q=각각 동일 속성 소형 마법탄 10발+friendly 대형탄 0.
+- 이 항목은 아래 2026-09-01의 p.r-only “몸 접촉” 및 같은 날짜의 중심 종점 벽 판정 계약을 대체한다.
+
+## 2026-09-02 Steam 트레일러 16:9 재제작·신성폭발 제외·API 타이틀
+
+| id/항목 | 이전 | 현재 | 적용 위치/검증 |
+|---|---|---|---|
+| 당시 Steam 납품본 | 1080×1920 세로본을 최종으로 분류 | **`EXODUSER_STEAM_TRAILER_20260902.mp4`**, 1920×1080 16:9 | `captures/trailer_steam_final_20260902/`, 현행 리메이크로 대체 |
+| 소스 정책 | 세로 신규 캡처 또는 구형 V3 기반 가로본 | `trailer/source_steam/`의 **현재 런타임 신규 16:9 캡처 10종만 사용** | 구형 V3·프루프·기존 가로/세로 마스터 EDL 0건 |
+| Steam 규격 | 9:16, Steam 비권장 | 60fps, H.264 High **18.54Mbps**, AAC 48kHz stereo, MP4 | 공식 16:9·≤1920×1080·30/60fps·≥5Mbps·H.264/AAC 권장 충족 |
+| 길이 | 세로본 영상 65.100초/오디오 65.113초 | 영상·오디오 **64.100초**, 3,846f, A/V 차 0.000초 | ffprobe PASS, 150,198,060 bytes |
+| 첫 노출 | 타이틀 카드부터 시작 | **0.0~10.8초 게임플레이 우선**: 스킬 전투 5.8초 + 패링 5.0초 | Steam 첫 10초/무음 탐색 가독성 반영 |
+| 신성폭발 | 후반 보스 로드아웃 `B/holyBlast` | **`C/blackStar`**, 신성폭발 0컷 | `tmp/trailer_capture.py` `boss2_pattern/climax` |
+| 타이틀 | FFmpeg 기본 글꼴 카드 | 이미지 생성 API 금속 고딕 16:9 카드 2장 | `output/imagegen/trailer/steam_title_card_api.png`, `steam_end_card_api.png` |
+| 포스터 | 없음 | 실제 영상 3.0초 프레임 1920×1080 무텍스트 후보 | `steam_trailer_poster_1920x1080.jpg` |
+
+| 구간 | 위치 | 길이 | 내용 |
+|---|---|---:|---|
+| gameplay hook | 0.0~10.8초 | 10.8초 | 마법 전투·패링, HUD 유지 |
+| API title | 10.8~12.8초 | 2.0초 | `EXODUSER: HELL LORD` |
+| ancestor | 12.8~18.6초 | 5.8초 | 실제 `activateAncestorSummon()` |
+| Kraken | 18.6~24.4초 | 5.8초 | 대형 물탄→Q패링→동일 속성 소형 마법탄 10발 |
+| Flame Devil | 24.4~29.7초 | 5.3초 | 대형 화염탄 |
+| CH3 | 29.7~35.4초 | 5.7초 | 군중 전투 |
+| Druid | 35.4~47.0초 | 11.6초 | 보스 패턴·교전 |
+| late boss | 47.0~59.6초 | 12.6초 | 보스 패턴·검은별 클라이맥스, 신성폭발 없음 |
+| API end | 59.6~64.1초 | 4.5초 | `WISHLIST NOW` |
+
+- `tmp/trailer_capture.py`: `--steam` 플래그, `trailer/source_steam/` 격리, `--vertical` 동시 사용 가드. Steam/기본은 1920×1080 중심 `(960,540)`을 사용한다.
+- `tmp/build_steam_trailer.py`: gameplay-first EDL, API 카드 합성, 20Mbps 목표 인코딩, H.264/AAC/해상도/길이/최소 5Mbps 가드, 실제 영상 프레임 기반 포스터 생성.
+- QA: 신규 원본 10개 pageerror/404 0, 회귀 테스트 **15/15 PASS**, blackdetect 의도치 않은 검은 구간 0, 오디오 mean -22.6dB/max -0.1dB, 원본·검은별·타임라인·타이틀·엔드·포스터 육안 PASS.
+- 세로본 `EXODUSER_VERTICAL_TRAILER_20260902.mp4`는 SNS 파생본으로만 보존하며 Steam 납품본이 아니다. 구형 V3 기반 `EXODUSER_FINAL_TRAILER_20260902.mp4`도 납품 제외다.
+- API 생성 프롬프트 방향: 검은 흑요석/용암 균열 배경, 은빛 금속 고딕 타이포그래피, 절제된 심홍 광원, 정확한 `EXODUSER: HELL LORD` 및 `WISHLIST NOW`, 16:9 중앙 안전영역, 추가 문구/워터마크/신성광 금지.
+- BGM은 volume 0.20, 패링·전대·대형타격 SFX만 선택 배치, limiter 0.94. 상업 배포 전 `Bloodsteel Ascension.mp3`의 Steam/광고 사용 권리를 확인한다.
+
+## 2026-09-02 세로 9:16 신규 촬영본 (후속 Steam 16:9 마스터로 납품 대체)
+
+> 이 항목은 중간 산출 이력이다. 당시 Steam 납품본 `EXODUSER_STEAM_TRAILER_20260902.mp4`도 현재는 문서 최상단 리메이크로 대체됐으며, 아래 세로본은 SNS 파생본으로만 보존한다.
+
+| id/항목 | 이전 | 현재 | 적용 위치/검증 |
+|---|---|---|---|
+| 당시 중간 마스터 | `EXODUSER_FINAL_TRAILER_20260902.mp4`, 기존 V3 포함 가로본 | `EXODUSER_VERTICAL_TRAILER_20260902.mp4`, 현재 런타임 신규 세로 소스만 사용 | `captures/trailer_vertical_final_20260902/`, **현행 Steam 납품 제외** |
+| 비디오 | 1920×1080, 63.300초, 3,798f | **1080×1920(9:16), 60fps, H.264 High, 65.100초, 3,906f** | ffprobe PASS, 224,327,178 bytes |
+| 오디오 | AAC 63.320초, mean -22.0dB, max -2.8dB | **AAC 48kHz stereo 65.113초, mean -24.0dB, max -0.6dB** | A/V 차 0.013초, limiter 0.94 |
+| 세로 캡처 | 고정 1920×1080 | `--vertical` → `FRAME_W/H=1080/1920`, 중심 `(540,960)`, `trailer/source_vertical/` 격리 | `tmp/trailer_capture.py` |
+| 편집 소스 | 기존 V3 + 신규 3컷 | **신규 현재 런타임 세로 10컷**, 구형 V3/프루프/가로본 참조 0 | `tmp/build_vertical_trailer.py` EDL |
+| 타이틀/CTA | 기존 가로본 카드 재사용 | 9:16 카드 신규 생성, `CURRENT GAMEPLAY` / `WISHLIST NOW` | 시작 2.5초 / 종료 5.0초 |
+
+| 구간 id | 길이 | 위치 | 현재 런타임 내용 |
+|---|---:|---|---|
+| `skill_montage` + `parry` | 10.8초 | 2.5~13.3초 | 마법 스킬 전투 5.8초 + 일반 패링 5.0초 |
+| `ancestor_summon` | 5.8초 | 13.3~19.1초 | 실제 `activateAncestorSummon()` 전대 소환 |
+| `kraken_parry` | 5.8초 | 19.1~24.9초 | 실제 `_fbMk()` 크라켄 대형 물탄→Q패링→동일 속성 소형 마법탄 10발 |
+| `firedevil_skill` | 5.3초 | 24.9~30.2초 | 실제 `_fdMk()` 화마귀 대형 화염탄 |
+| `ch3_combat` | 5.7초 | 30.2~35.9초 | CH3 군중 전투 |
+| `druid_pattern` + `druid_combat` | 11.6초 | 35.9~47.5초 | 드루이드 보스 패턴·교전 |
+| `boss2_pattern` + `boss2_climax` | 12.6초 | 47.5~60.1초 | 후반 보스 패턴·클라이맥스 |
+
+- 신규 원본 10개 전부 pageerror/404 0. 원본 중간 프레임 시트 `tmp/vertical_qa_contact.jpg`, 최종 타임라인 시트 `captures/trailer_vertical_final_20260902/timeline_contact.jpg`, 타이틀 육안본 `title_card.jpg`를 확인했다.
+- blackdetect 의도치 않은 검은 구간 0, 타이틀·전투축·보스 가독성·엔드카드 육안 PASS. 회귀 테스트 `test/trailerCapturePipeline.test.js` **13/13 PASS**.
+- 저장소 BGM `Bloodsteel Ascension.mp3`는 volume 0.20 베드로 사용하고 패링·전대·대형타격 SFX만 선택 배치했다. 실제 상업 배포 권리는 업로드 전 별도 확인한다.
+
+## 2026-09-02 화마귀 대형탄 4×4 용암 회전구 교체
+
+| id/항목 | 이전 | 현재 | 적용 위치 |
+|---|---|---|---|
+| 비행 에셋 | `proj_firedevil_eye.png` 2172×724, 6×2 12f 눈-촉수 | `proj_firedevil_orb.png` 1254×1254 RGBA, 4×4 16f 용암 회전구 | `game.html` `_fdFlyImg` |
+| 프레임 공식 | `W/6`, `H/2`, `%12`, `fr%6`, `fr/6` | `W/4`, `H/4`, `%16`, `fr%4`, `fr/4` | `_fdDrawFly` |
+| 방향/앵커 | `atan2(vy,vx)+π/2`, 상단 눈 앵커 | 무회전, `-dw/2,-dh/2` 중심 정렬 | `_fdDrawFly` |
+| 화면 크기 | `dw=240` | `dw=240`, `dh=240` | 비행 렌더 |
+| 게임 계약 | raw 6×1.8, sz48→96, r18→23.4, life320, atk×2.8, Q 분열 10발 | **변경 없음** | `_fdFireEnergy`·충돌/패링 분기 |
+
+- 원본 `ChatGPT Image 2026년 9월 2일 오후 03_47_47.png`은 이미 alpha 0~255의 정상 RGBA라 배경 재가공 없이 픽셀 손실 없이 적용했다.
+- 검증: 신규 4×4/16f/중심정렬 계약 테스트 PASS, 인게임 4프레임 캡처 pageerror/404 0. 비교 캡처 `captures/firedevil_orb_4x4/firedevil_orb_ingame.png`.
+
+## 2026-09-02 최종 게임플레이 트레일러 — 전대 소환·크라켄·화마귀·보스전
+
+| id/항목 | 값 | 적용 위치 | 검증 |
+|---|---|---|---|
+| 최종 출력 | `EXODUSER_FINAL_TRAILER_20260902.mp4` | `captures/trailer_final_20260902/` | 114,165,944 bytes |
+| 비디오 | H.264 High, 1920×1080, 60fps, **63.300초**, 3,798프레임 | 전체 | ffprobe PASS |
+| 오디오 | AAC 48kHz stereo, **63.320초**, mean -22.0dB, max -2.8dB | 전체 | A/V 차 0.020초, clipping 0 |
+| `ancestor_summon` | 5.8초 사용 | 11.8~17.6초 | 실제 `activateAncestorSummon()`, pageerror/404 0 |
+| `kraken_parry` | 5.6초 사용 | 26.6~32.2초 | 실제 `_fbMk()`, 거대 물탄→Q패링→소형 동일 속성 마법탄 10발, pageerror/404 0 |
+| `firedevil_skill` | 4.7초 사용 | 32.2~36.9초 | 실제 `_fdMk()`, 대형 화염 충전탄, pageerror/404 0 |
+| 보스/엔드 | 26.4초 | 36.9~63.3초 | 아레나 보스전·필살기·로고·`WISHLIST NOW` CTA |
+
+- 편집 EDL: V3 훅 11.8초 → 전대 5.8초 → V3 크라켄 9.0초 → 크라켄 패링 5.6초 → 화마귀 4.7초 → 환경/보스/엔드 26.4초 = 63.3초.
+- `tmp/trailer_capture.py`: WinGet full FFmpeg 폴백, 전대/크라켄/화마귀 실제 런타임 촬영 프리셋 추가. 필드보스는 내부 stage index 0 계약을 사용한다.
+- `tmp/build_final_showcase_trailer.py`: V3 색 메타 변경 시 `-reinit_filter 0`으로 타임스탬프 재초기화 방지, H.264/AAC 마스터·EDL JSON·A/V 길이 가드 생성.
+- QA: `test/trailerCapturePipeline.test.js` **11/11 PASS**, blackdetect 의도치 않은 검은 프레임 0, 엔드카드 육안 PASS. 저장소 BGM의 상업 배포 권리는 업로드 전 별도 확인.
+
+## 2026-09-02 적 탄막 유도 성능 마법 150~200°/s·물리 100°/s
+
+| 분류/id | 이전 turnRate | 현재 turnRate | 현재 약 초당 회전 | 적용 |
+|---|---:|---:|---:|---|
+| 화속성 빨콩 `redBean+EL.F` | `0.00078` | **`0.0436`** | **150°/s** | 원거리 화속성 마법탄 |
+| 무지개탄 `blackBean` | `0.01235` | **`0.0465`** | **160°/s** | 무지개 마법탄 |
+| 일반 마법탄·물 파란콩·화성송·색탄 | `0.039` 또는 직선 | **`0.0524`** | **180°/s** | 일반 마법 속도 밴드 탄은 `homing=true` 자동 부여 |
+| 근접 화속성 빨콩 `_closeBean` | `0.0052` | **`0.0524`** | **180°/s** | 근접 화속성 마법탄 |
+| 팬텀소드 `phantomSword` | `0.052` | **`0.0524`** | **180°/s** | 발사 후 유도 |
+| 원소구 `elemBall` | `0.0585` | **`0.0582`** | **200°/s** | 일반 원소구. `fbEnergy`/`fdEnergy` 대형탄은 직선 유지 |
+| 물리 이빨·혈안탄 | `0.0006` | **`0.0291`** | **100°/s** | `redBean+EL.P` 또는 `titanEye` |
+
+- 대형 크라켄·화마귀 에너지탄은 `elemBall` 특수 제외 분기에 남아 `homing`이 부여되지 않으며 기존 직선 비행을 유지한다.
+- 속도 밴드(마법·무지개 500~600px/s, 물리 350~450px/s)와 패링 규칙은 변경하지 않는다.
+- TDD: `test/magicBarrageHoming.test.js`, `test/enemyProjectileSpeedBand.test.js`.
+
+## 2026-09-02 일반 적 탄막 속도 밴드 재조정
+
+| 분류 | 이전 최종 속도 | 현재 최종 속도 | 내부 속도(60fps) | 평균 | 적용 대상 |
+|---|---:|---:|---:|---:|---|
+| 일반 물리탄 | 300~450px/s | **350~450px/s** | 5.833~7.5px/f | 400px/s | `EL.P` 물리 이빨 |
+| 일반 마법탄 | 350~500px/s | **500~600px/s** | 8.333~10px/f | 550px/s | 화속성 빨콩·물 파란콩·화성송·비물리 원소·색탄 |
+| 무지개탄 | 400~550px/s | **500~600px/s** | 8.333~10px/f | 550px/s | `blackBean`; 일반 마법탄과 동일 밴드 |
+
+- 대형 에너지탄, 패링 10분열탄, `titanEye`, `elemBall`, `phantomSword` 등 별도 고정/가변 속도 특수탄은 정규화 대상에서 제외되어 기존 속도를 유지한다.
+- 유도 선회율은 변경하지 않는다. TDD: `test/enemyProjectileSpeedBand.test.js`.
+
+## 2026-09-02 거대 에너지탄 분열탄 소형 마법탄 규격 동기화
+
+| id | 이전 반경 | 현재 반경 | 렌더 기준 | 유지 수치 |
+|---|---:|---:|---|---|
+| `_splitParriedBigEnergy` 분열탄 | `r4` | **`r8`** | 일반 6원소 소형 마법탄(`elemMissile`, `arcMissile`)과 동일 | 10발, spd7.5, 사거리900, 총 반사 피해 10등분 |
+
+- 원인: 분열탄만 플레이어 투사체 풀 기본값 `r4`를 사용해 일반 소형 마법탄 `r8`보다 지름이 절반으로 렌더되었다.
+- TDD `test/bigEnergyParrySplit.test.js`: 분열탄 10발이 모두 일반 소형 마법탄 반경 `r8`을 사용하는지 검증.
+
+## 2026-09-02 — 거대 에너지탄 Q패링 10발 속성 분열
+
+| id/대상 | 기존 패링 결과 | 현재 패링 결과 | 조각 수치 | 색상 |
+|---|---|---|---|---|
+| `fbEnergy` 크라켄 거대탄 | 거대탄 1발 반사·최대 30마리 관통 | 원본 제거 후 동일 속성 소형 유도탄 **10발** | r8, spd7.5, 사거리900, 총 반사 피해를 10등분, 원형 발사 후 추적 | 화 `EL.F` 빨강, 물/빙 `EL.I` 파랑, 암/뇌는 각 `ELC` 속성색 |
+| `fdEnergy` 화마귀 거대탄 | 거대탄 1발 반사·최대 30마리 관통 | 빨간 소형 유도탄 **10발** | 위와 동일 | 화속성 빨강 |
+
+- 판정은 기존 계약 유지: 피격 `P.r+p.r`, Q패링 `P.r+(p.sz||48)+90`.
+- TDD `test/bigEnergyParrySplit.test.js` 3/3.
+
+## 2026-09-02 — 속성·특수 포함 마법탄막 유도력 30% 상향
+
+| id/분기 | 한글명 | 이전 | 현재 | 적용 위치 | 공식·예외 |
+|---|---|---:|---:|---|---|
+| 기본 `homing` | 일반 마법탄막 | `0.03` | **`0.039`** | `game.html` `_enemyHomingTurnRate(p)` | `0.03 × 1.3` |
+| `blackBean` | 무지개탄 | `0.0095` | **`0.01235`** | 적 탄막 선회 계산 | `0.0095 × 1.3` |
+| `redBean`, `EL.F`, `!titanEye` | 화속성 빨콩 | `0.0006` | **`0.00078`** | 적 탄막 선회 계산 | `0.0006 × 1.3`. `EL.P` 물리 이빨과 `titanEye` 혈안탄은 `0.0006` 유지 |
+| `_closeBean` | 근접 화속성 빨콩 | `0.004` | **`0.0052`** | 적 탄막 선회 계산 | `0.004 × 1.3` |
+| `elemBall` | 원소구 | `0.045` | **`0.0585`** | 적 탄막 선회 계산 | `0.045 × 1.3`. `fbEnergy`/`fdEnergy`는 `homing` 없는 직선탄이라 제외 |
+| `phantomSword` | 팬텀소드 | `0.04` | **`0.052`** | 적 탄막 선회 계산 | `0.04 × 1.3` |
+
+- 원인: 속도 분류는 화속성 빨콩·비물리 속성탄을 마법탄막으로 처리했으나, 최초 유도율 변경은 특수 플래그 분기를 예외로 남겨 분류가 불일치했다.
+- TDD `test/magicBarrageHoming.test.js` 3/3.
+
+## 2026-09-02 — 일반 몬스터 돌진 가이드 START/BODY/END 3파트로 교체
+
+| 항목 | 이전 | 현재 |
+|---|---|---|
+| START | 레인과 일체형/도착 화살촉과 형상 구분 없음 | `charge_start_rift.png`(550×512), 몬스터 중심, `clamp(e.r×2.1,35,50)px`, alpha 0.56 |
+| BODY | 밝고 불투명한 빨간/용암 직사각형 | `charge_body_mist.png`(1024×128), 길이 `_chgVisLen`, 폭 `e.r×1.7`, 면 alpha 0.27 + 중앙 0.11 |
+| BODY 외곽 | 면과 함께 밝게 노출 | `#a52b22` 1.25px 양쪽 균열선, alpha 0.62±3.5% 미세 pulse |
+| END | START/레인과 일체형 화살촉 | `charge_end_spear.png`(776×512), 도착점 `_chgVisLen`, `clamp(e.r×2.5,45,65)px`, alpha 0.70 |
+| 스케일/회전 | 전체 일괄 stretch | BODY만 X축 stretch. START/END 원본 비율 유지. `atan2(echDy,echDx)` 회전 |
+| 애니메이션 | 고정 alpha/삼지창 이동 | 30f(0.5초) fade-in, BODY 균열선만 미세 pulse, `eCharge` 발동 틱에 즉시 제거 |
+| 게임 수치 | 90f, 앞 24.5% 추적, 벽 클리핑, 속도 42px/f, 지속 19/17/15f, 피해 `atk×30`, sweep `P.r+e.r+18` | **변경 없음** |
+
+- 실게임 캡처: `captures/charge_telegraph_3part/before_single.png`, `before_overlap.png`, `after_single.png`, `after_overlap.png`.
+- 2026-09-02 가시성 소폭 상향: BODY `0.23→0.27`, 중앙 `0.08→0.11`, 외곽 `0.58→0.62`, START `0.50→0.56`, END `0.62→0.70`. 크기·범위·fade·AI·판정은 동일.
+- 가시성 조정 전/후 비교: `visibility_comparison_single.png`, `visibility_comparison_overlap.png`(동일 캡처 폴더).
+- TDD `test/chargeTelegraphWebgl.test.js` 5/5. START/BODY/END 분리, BODY 단독 stretch, opacity/크기, 8방향 WebGL 경로, AI·히트박스·피해 불변 계약 검증.
+
+## 2026-09-01 — 대형 에너지탄 직선·속도 소폭↑·공격 3초 텀
+
+| 항목 | 이전 | 현재 |
+|---|---|---|
+| 유도 | 크라켄 `.008` 약유도, 화마귀 `elemBall` `.045` | **직선** (`homing` 제거) |
+| 크라켄 속 | raw 8.4 ×1.8 = 15.12 | raw **10** ×1.8 = **18** |
+| 화마귀 속 | raw 4.2 ×1.8 = 7.56 | raw **6** ×1.8 = **10.8** |
+| 공격 텀 | `shotCd=1200`(20초) + 충전 180f. 혈안 버스트가 다음 충전을 막음 | **`shotCd=_FB_EN_CHG/_FD_EN_CHG`(180f=3초)**. 충전=텀. 버스트와 겹쳐도 다음 충전 시작 |
+| TP | 발사마다 `tpCd=600` 리셋 → 3초 텀이면 텔포 실종 | 이미 카운트 중이면 **덮어쓰지 않음**. 첫 발사 후 10초 TP 유지 |
+
+- TDD `test/fieldBossSpawnEmerge.test.js`, `test/fireDevilSpawn.test.js` 26/26.
+
+## 2026-09-01 — 대형 에너지탄, 몸 접촉 폭발 / 보이는 구에서 Q패링
+
+| 항목 | 이전 | 현재 |
+|---|---|---|
+| 대상 | `fbEnergy`(크라켄)만 몸 접촉. `fdEnergy`(화마귀)는 `P.r+sz×3`≈312에서 조기 폭발 | **둘 다** `_bigBall` |
+| 히트 `_pCollR` | 화마귀 `sz×3`. 크라켄 `P.r+p.r` | **`P.r+(p.r\|\|16)`** — 몸에 닿아야 터짐 |
+| Q패링 `_pParryR` | `_pCollR×3`이라 조기폭발 뒤엔 창이 없음 | **`P.r+(p.sz\|\|48)+90`** (sz96이면 ≈206). 보이는 구 근처에서 Q |
+| E(칼등) | `_pCollR×3`로 대형탄도 멀리서 피격 | 대형탄은 **몸 접촉 유지** (E로 조기폭발 금지) |
+| 화마귀 스폰 r | 56 → ×1.3 = 72.8 | **18** → ×1.3 = **23.4** (크라켄 r20과 같은 몸 판정) |
+| 유지 | 시각 sz48→96, 폭발 r220, Q패링 | |
+
+- TDD `test/fieldBossSpawnEmerge.test.js`, `test/fireDevilSpawn.test.js` 25/25.
+
+## 2026-09-01 — 크라켄 기모으기, 08_01_10에서 자른 8프레임
+
+| 항목 | 값 |
+|---|---|
+| 원본 | Downloads `ChatGPT Image 2026년 9월 1일 오후 08_01_10.png` 하단 크라켄 CHARGE 줄 |
+| 결과 | `img/fieldboss_angler_charge.png` 8프레임 1×8 (2048×256) |
+| 그리기 | `_fbDrawCharge` `%8`, `_fbEsca`, dsz=280 |
+| 화마귀 | 유지 `05_29_10` 12f 눈알 충전 |
+| 투사체 | 크라켄 비행 줄은 잘림이 심해서 미적용 |
+
+- TDD `test/fieldBossSpawnEmerge.test.js`.
+
+## 2026-09-01 — 기모으기 충전 시트 복구 (더듬이 빔 아님)
+
+| 대상 | 값 |
+|---|---|
+| 화마귀 | `_fdDrawCharge` `fieldboss_firedevil_charge.png` 12f 4×3, `_fdEye` |
+| 크라켄 | `_fbDrawCharge` `fieldboss_angler_charge.png` 12f 4×3, `_fbEsca` |
+| 아님 | 08_01_10 메테오 아틀라스. 더듬이 빔/절차 원 아님 |
+| 유지 | 비행 시트, 크라켄 탄 속/유도/판정 |
+
+- TDD `test/fieldBossSpawnEmerge.test.js`, `test/fireDevilSpawn.test.js`.
+
+## 2026-09-01 — 크라켄 에너지탄 속·유도·판정
+
+| 항목 | 이전 | 현재 |
+|---|---|---|
+| 스폰 속도 | raw 4.2 ×1.8 = 7.56 | raw **8.4** ×1.8 = **15.12** (2배) |
+| 유도 | `elemBall` 선회 `.045` | `fbEnergy` **`.008`** (약유도, elemBall보다 먼저) |
+| 판정 r | 스폰 56 → ×1.3 = 72.8. 충돌 `P.r+sz×3`≈312 | 스폰 **20** → ×1.3 = **26**. 충돌 **`P.r+p.r`** (몸 접촉) |
+| 시각 | sz 48→96 유지 | 유지. 폭발 r220 유지 |
+
+- TDD `test/fieldBossSpawnEmerge.test.js`.
+
+## 2026-09-01 — 크라켄 기모으기 시트
+
+| 항목 | 값 |
+|---|---|
+| 시트 | `img/fieldboss_angler_charge.png` 12프레임 4×3 (원본 1448×1086 → 1200×900) |
+| 원본 | Downloads `ChatGPT Image 2026년 9월 1일 오후 07_56_52.png` |
+| 위치 | `_fbEsca` 에스카. `_fbDrawCharge` 프레임 0 작은 소용돌이 → 11 대형구. dsz=280 |
+| 폐기 | 더듬이 빔·팁 원·절차 `_orb` 원. 틱 파티클 수렴은 유지 |
+| 색 | 시트 시안 그대로. 속성색은 발사 `elemBall`/HP바 |
+
+- TDD `test/fieldBossSpawnEmerge.test.js` 11/11.
+
+## 2026-09-01 — 텔포·탄막 절차 원 오버레이 전면 폐기
+
+| 항목 | 값 |
+|---|---|
+| 이유 | 화마귀 탄막·크라켄 텔포에 붙은 동그라미. 같은 식의 원을 게임에서 뺌 |
+| 크라켄 | `_fbDrawOne` 도착지 fill/stroke `arc` 제거. vanish 시트만 |
+| 일반 텔포 | `_tpWarn` 본체 충전원·도착지 점선원 **렌더만** 폐기. 2초 타이머·착지강타는 유지 |
+| 텔포 착지 | `_tpFlashT` 확장 원 렌더 폐기 |
+| 보스 텔포 | `bossTelePrep`/`bossTeleWarn` 목적지 원·십자 렌더 폐기 |
+| 탄막 | 올챙이 머리 원(전 탄) 폐기. 꼬리 스트로크는 유지 |
+| 유지 | 공격 전조 부채/장판, 지뢰·존, `elemBall` 본체, 스프라이트 VFX |
+
+- TDD `test/overlayCircleRemoval.test.js` 5/5.
+
+## 2026-09-01 — 화마귀 비행탄에서 올챙이 원 제거
+
+| 항목 | 값 |
+|---|---|
+| 버그 | `fdEnergy`가 일반 트레일 패스를 타서 sz96 기준 `_hr`≈211px 원(올챙이 머리)이 비행 시트에 붙음 |
+| 수정 | 패스0 트레일·패스1 글로우·트레일 기록에서 `!p.fdEnergy`. 시트만 그림 |
+
+- TDD `test/fireDevilSpawn.test.js` 12/12.
+
+## 2026-09-01 — 화마귀 순간이동, 작아진 뒤 작은 것부터 커짐
+
+| 항목 | 값 |
+|---|---|
+| 버그 | 텔포 때 좌표를 먼저 옮기고 도착지에서 emerge **7→0**을 재생. 큰 몸이 나타나 줄어듦 |
+| 출발 | 옛자리 유지. emerge 프레임 7→0 (완전체→연기) |
+| 도착 | `tpX,tpY`에서 emerge 0→7 (작은 연기→완전체). 54틱 후 `m.x=m.tpX` 스냅 |
+| 첫 출현 | 기존대로 홈에서 0→7만. 옛자리 소멸 없음 |
+| 폐기 | 화마귀 텔포의 `kraken_vanish` 호출 |
+
+- TDD `test/fireDevilSpawn.test.js` 11/11.
+
+## 2026-09-01 — 화마귀 비행 시트 교체 (05_49_17)
+
+| 항목 | 값 |
+|---|---|
+| 원본 | Downloads `ChatGPT Image 2026년 9월 1일 오후 05_49_17.png` 1672×941 |
+| 패킹 | 위아래 여백·중간 갭 제거. 두 줄 bbox → `img/fieldboss_firedevil_fly.png` 1672×604 8프레임 4×2 |
+| 그리기 | `_fdDrawFly` `%8`, `naturalHeight/2`. 핵 오프셋 `-dw×.82` (핵≈셀 83%) |
+| 이유 | 구 12프레임 4×3 시트 폐기. 새 장은 8장뿐이라 3행 슬라이스하면 빈 프레임·상하 점프 |
+
+- TDD `test/fireDevilSpawn.test.js` 10/10.
+
+## 2026-09-01 — 화마귀 불구체 비행 시트
+
+| 항목 | 값 |
+|---|---|
+| 시트 | `img/fieldboss_firedevil_fly.png` (당시 12프레임 4×3, 원본 1672×941). **05_49_17 8프레임으로 교체됨** |
+| 원본 | 당시 Downloads `ChatGPT Image 2026년 9월 1일 오후 05_34_43.png` |
+| 방향 | 핵=+x(오른쪽), 꼬리=왼쪽. `rotate(atan2(vy,vx))` |
+| 그리기 | `_fdDrawFly`. 당시 핵 오프셋 `-dw×.68`. `lighter` 합성. dw=240 |
+| 발사 | `fdEnergy` 탄이 일반 `elemBall` 구체보다 먼저 이 시트를 씀. 폴백은 기존 구체 |
+| 패링/폭발 | Q패링. 명중 `_fbEnergyBoom` 기존 거대 폭발 |
+
+- TDD `test/fireDevilSpawn.test.js` 10/10.
+
+## 2026-09-01 — 화마귀 불구체, 눈알에서 모임
+
+| 항목 | 값 |
+|---|---|
+| 시트 | `img/fieldboss_firedevil_charge.png` 12프레임 4×3 (원본 1448×1086) |
+| 위치 | `_fdEye` — 눈이 보는 쪽 좌표에 그림. 동/서/남 셀마다 눈 UV 다름 |
+| 충전 | 180f 동안 프레임 0→11. 작은 화구 → 레이더 대형구. 촉수 빔/절차 원 폐기 |
+| 비행 | `fieldboss_firedevil_fly.png` 구현됨 (`_fdDrawFly`) |
+
+- TDD `test/fireDevilSpawn.test.js` 당시 9/9. 비행 시트 후 10/10.
+
+## 2026-09-01 — 화마귀 정면 = 눈알이 바라보는 곳
+
+| 셀 | 눈이 보는 곳 | 플레이어 |
+|---|---|---|
+| 4 | 카메라 (남) | 바로 아래만 (±20°) |
+| 2 | 오른쪽 (동) | 오른쪽·남동·북동 |
+| 6 | 왼쪽 (서) | 왼쪽·남서·북서 |
+| 0 | 등 너머 (북) | 바로 위 |
+
+- 유저: 눈알이 바라보는 곳이 정면. 스크린샷은 왼쪽 아래인데 눈이 카메라를 보고 있었음. 정면 콘을 좁혀 옆이면 눈이 그쪽을 보게 함.
+- TDD `test/fireDevilSpawn.test.js` 8/8.
+
+## 2026-09-01 — 화마귀 바라봄: 대각을 측면으로
+
+| 항목 | 종전 | 현행 |
+|---|---|---|
+| `_FD_DIR` | `[6,5,4,3,2,1,0,7]` | `[2,2,4,6,6,7,0,1]` |
+| 동 / 서 | 셀6 / 셀2 (머리 반대) | **셀2 머리오른쪽 / 셀6 머리왼쪽** |
+| 남동 / 남서 | 셀5·3 (정면처럼 보임) | **셀2·6 측면**. 옆에 서도 안 돌아보던 원인 |
+
+- 스크린샷: 플레이어가 왼쪽 아래인데 정면 젤리피시. 남서 대각 셀이 남과 거의 같음.
+- TDD `test/fireDevilSpawn.test.js` 8/8.
+
+## 2026-09-01 — 화마귀 좌우 바라봄 반전
+
+| 항목 | 종전 | 현행 |
+|---|---|---|
+| `_FD_DIR` | `[2,3,4,5,6,7,0,1]` 동=2 | `[6,5,4,3,2,1,0,7]` **동=6, 서=2** |
+
+- 유저: 오른쪽에 있는데 왼쪽을 봄. 시트 셀2는 촉수가 왼쪽=서향.
+- TDD `test/fireDevilSpawn.test.js` 8/8.
+
+## 2026-09-01 — 화마귀 8방향 시트가 캐릭터를 따라봄
+
+| 항목 | 종전 | 현행 |
+|---|---|---|
+| 바라봄 | 4방향 데드존. 앞이면 idle(전부 정면) | `atan2` 8스냅 `_FD_DIR`. 항상 dir 시트 |
+| 좌우 | 오른쪽=셀6, 왼쪽=셀2 (좌우 반대) | 동=2, 서=6 |
+| 이동 | 홈에 고정 | `_FD_SPD=1.8` 추적. 충전 중 정지 |
+
+- 유저: 8방향 줬는데 캐릭터를 팔로우 못함. 원인=4방향+정면 idle 덮어쓰기.
+- TDD `test/fireDevilSpawn.test.js` 8/8.
+
+## 2026-09-01 — 화마귀 필드몹 (크라켄식 독립 구현)
+
+| 항목 | 값 |
+|---|---|
+| 시트 | `img/fieldboss_firedevil_emerge.png` 등장 0→7 / `_idle.png` 정면 유휴 / `_dir.png` 좌우앞뒤. 원본 1774×887 2×4 |
+| 맵 | CH1-1 **안쪽 4마리** `_FD_SITES` `(78,125)/(125,125)/(78,70)/(125,70)`. 크라켄 4각·곰치·남북축과 분리 |
+| 기상 | 홈 1000px. 본체 뿅 금지. `emT=54` 연기 시트 0→7 |
+| 바라봄 | 당시 4방향. **현행 `atan2` 8스냅 + dir 시트 추적** |
+| 탄 | 촉수→눈 충전 **180f(3초)** 후 거대 화염탄 `EL.F` sz48→96 **Q패링**. 이어서 화성송 3연사. 폭발 `_fbEnergyBoom` |
+| HP | `(1800+Lv×350)×10`. Lv1=21500. 지옥문 조건에는 안 넣음(앵글러 4마리 유지) |
+| 피격 | `_hurtFieldMobs` + `_fmKind:'fd'` 공용 사망 키트 |
+
+- 유저: 크라켄같이 구현, 등장/유휴/방향 시트 3장.
+- TDD `test/fireDevilSpawn.test.js` 6/6. 번역 3023–3024 `_L` 인라인.
+
+## 2026-09-01 — 크라켄이 캐릭터를 바라봄 (좌/우 시트)
+
+| 항목 | 종전 | 현행 |
+|---|---|---|
+| 프레임 | `round(atan2/(π/4))%8` 가짜 8방향 | `_fbFaceFrame(fb,P.x,P.y)` |
+| 시트 | 2×4. col0–2 좌향, **col3 우향** | 플레이어 x≥크라켄 → 셀 **3/7**, 아니면 좌향 0–2/4–6 |
+| 버그 | 플레이어가 오른쪽(ang≈0)이면 셀0=좌향. 우향 셀은 거의 안 씀 | 캐릭터가 있는 쪽으로 좌/우 전환 |
+
+- 유저: 좌우 이미지 있는데 맨날 왼쪽만 봄 → 캐릭터를 바라봐야 함.
+- TDD `test/fieldBossSpawnEmerge.test.js` 10/10.
+
+## 2026-09-01 — 크라켄 더듬이 3초 차징 + 거대 에너지탄/폭발, 본체 색오버레이 폐기
+
+| 항목 | 종전 | 현행 |
+|---|---|---|
+| 본체 색 | `source-atop` α0.55 `ELC[el]` 워시. 시안 스프라이트+노랑=초록 진흙 | **원본 시트**. 속성색은 더듬이 충전·에너지탄·HP바·폭발만 |
+| 충전 | `_FB_EN_CHG=90` (1.5초), 가짜 옆점→입 | **180f = 3초**. 촉수 3점 → 에스카(`_fbEsca`)로 수렴. 충전구 16→86px |
+| 발사 | 입, sz14→28, r16→20.8, spd raw 5.5×1.8 | 에스카, **sz48→96, r56→72.8**, spd raw 4.2×1.8 |
+| 폭발 | 일반 `_projHitFx` r60 | `_fbEnergyBoom` **r220** + blast light 280 + 파티클 28 + shake 20 |
+
+- 유저 스크린샷: 초록 워시가 속성 색교체가 아님. 더듬이에서 3초 모으고 탄/폭발이 커야 함.
+- TDD `test/fieldBossSpawnEmerge.test.js` 9/9. `docs/2_3` 미수정.
+
+## 2026-09-01 — 심연의 앵글러 4속성 색교체 + 4각 배치 + 전원 처치 게이트
+
+| 항목 | 값 |
+|---|---|
+| 수·맵 | CH1-1 전용 `_FB_COUNT=4`. 4각 authored 홈 |
+| 좌표(tile) | SW `(58,158)` 물 / SE `(148,150)` 화 / NW `(52,42)` 암 / NE `(148,42)` 뇌 |
+| 속성 `_FB_ELS` | `[2,1,3,4]` = `EL.I` / `EL.F` / `EL.D` / `EL.L` |
+| 색교체 | 당시 `source-atop` α0.55 본체 워시. **현행은 원본 시트** — 속성색은 충전/탄/HP바 |
+| ELC | 물 `#3388ff` / 화 `#ff5522` / 암 `#9933cc` / 뇌 `#ffee00` |
+| 에너지탄 | `el:fb.el` `col=_fbElCol(fb)` `fbEnergy`+`elemBall` **Q패링**. 혈안 `titanEye`는 전개체 `EL.F`+빨콩 **E패링** 유지 |
+| 게이트 | CH1-1 지옥문: 처치 80% **AND** 4마리 전멸(`G._fbDone`). 출구 봉인 `_L('심연의 앵글러를 모두 처치하라','Slay every Abyssal Angler')` (번역 3022) |
+| 구 좌표 | WEST(38,116)/EAST(166,90)/LOWER서(58,145)/UPPER동(130,48) 폐기. 남북축 x88..112·START(100,185)·곰치 `_WM_SITES`와 분리 |
+
+- 유저 지시: 색만 바꿔 물/화/암/뇌 4마리 4각 배치, 맵 클리어(지옥문)는 전원 처치.
+- `initStage`가 `_fbDone/_fbSpawned/_fieldBosses`를 리셋 → CH1-1 재진입 시 4마리 재스폰.
+- TDD `test/fieldBossSpawnEmerge.test.js` 8/8. `docs/2_3` 미수정.
+
+## 2026-09-01 — 크라켄 더듬이 에너지 모아 큰 에너지탄
+
+| 항목 | 값 |
+|---|---|
+| 전조 | 당시 `_FB_EN_CHG=90` (1.5초) 입 수렴. **현행 180f=3초, 에스카 수렴** |
+| 발사 | `elemBall` `fbEnergy`, 속성은 개체 `fb.el`(물/화/암/뇌). 당시 단일 `#66e5ff` `EL.L` → 후속 4속성 색교체 |
+
+| 패링 | **Q** (색탄). `redBean` 아님 |
+| 사이클 | 충전 → 큰 에너지탄 1발 → 혈안 3연사 → 10초 후 TP |
+
+- TDD `test/fieldBossSpawnEmerge.test.js` 5/5.
+
+## 2026-09-01 — 곰치(지상뱀장어)가 안 나오던 이유 수정
+
+| 항목 | 종전 | 현행 |
+|---|---|---|
+| 등장 | 진입점 **1500px** 후 플레이어 옆에 숨은 채 배치, `hideT=96+i×80` | CH1-1 **맵 4마리** 홈 배치. 1000px 접근 시 **즉시 솟음** |
+| 좌표(tile) | 없음(추적 스폰) | `(70,160)` LOWER서 / `(50,100)` 캠프 / `(155,70)` EAST / `(72,55)` UPPER서 |
+| 다른 장 | 동일 1500px 게이트 | 게이트 없음. 4마리, 첫 hideT=54(바로 엿보기) |
+
+- 원인: 1500px 게이트 + 긴 매복이라 맵을 돌아도 안 솟았다. 크라켄과 같이 홈에 심고 가까이 가면 나오게 맞춤.
+- TDD `test/groundEelSpawn.test.js` 2/2.
+
+## 2026-09-01 — 심연의 앵글러(크라켄) HP ×30, CH1-1 4마리 배치
+
+| 항목 | 종전 | 현행 |
+|---|---|---|
+| HP | `1800 + Lv×350` (Lv1=2150) | **`(1800+Lv×350)×30`** (Lv1=**64500**, Lv100=1,104,000) |
+| 수 | 1-1 단독, 2500px 이동 후 플레이어 옆 등장 | **맵 4마리** authored 타일 |
+| 좌표(tile) | 진행방향 ±440px | 당시 WEST/EAST/LOWER/UPPER. **현행 4각**: SW `(58,158)` 물 / SE `(148,150)` 화 / NW `(52,42)` 암 / NE `(148,42)` 뇌 |
+| 기상 | 즉시 꿈틀 상승 | 홈에서 `asleep`, 플레이어 **1000px** 접근 시 개별 상승. 남북축 x88..112 비움 |
+| 처치 | 1마리=`_fbDone` | 4마리 전부 쓰러져야 `_fbDone`. 재스폰 없음 |
+
+- 유저 지시: 크라켄 HP 30배, 맵에 약 4마리. 탄막/TP/E패링 혈안탄은 개체별로 기존과 동일.
+- TDD `test/fieldBossSpawnEmerge.test.js` 4/4 + `fieldMobDeathFx` 4/4.
+
+## 2026-09-01 — 흙-숲 더티 경계선 제거 (soft floor)
+
+| 항목 | 종전 | 현행 | 보존 |
+|---|---|---|---|
+| occupancy | scale 2, blur 3, **1타일 erode** | scale **4**, blur **5**, **1타일 dilate** | collision/`isW`/`forestBoundary` |
+| 접촉 벽 | 근거리 벽 칸 `#050507` 40px fillRect | 캐시 전체 `_SOFT_FLOOR_BACKDROP` 1회 fill | 타일 값·스폰·미니맵 |
+| rim overlay | `4*t*(1-t)*70` 검정 스트로크를 숲 위에 그림 | **삭제** | CH1-1 X hug 0.965 |
+
+- 스크린샷의 더티 경계선은 두 겹이었다. (1) 접촉 벽 칸을 40px 검정 사각형으로 찍어 타일 계단이 보임. (2) occupancy rim이 그 계단을 따라 검은 선으로 스트로크. erode는 흙을 1타일 당겨 숲과 흙 사이에 도랑을 만들었다.
+- 흙 occupancy를 벽 쪽으로 1타일 밀어 숲 PNG 아래로 넣고, 접촉 보이드는 통짜 다크 백드롭으로만 채운다. 보이는 가장자리는 baked forest 알파 + 부드러운 흙 페이드다.
+- TDD `test/softFloorEdgeFade.test.js` 8/8. `isW`, `MAP_ALL_FLOOR=false`, `forestBoundary:1` 불변.
+
+## 2026-09-01 — 빨콩=화속성, 옛 파란콩=물속성 탄막 변주
+
+| 탄 | 플래그 | 속성 | 패링 | 최종 탄속 | 렌더 | 피격 |
+|---|---|---|---|---|---|---|
+| 빨콩 | `redBean` | **`EL.F` 화** | **E** (이빨입, 2_3 동결) | **350~500px/s** (마법 band) | 이빨입 유지 | 🔥화상 |
+| 물 파란콩 | `waterBean` | **`EL.I` 물/빙** | **Q** (색탄) | **350~500px/s** | 옛 시안 구체 `_drawWaterBean` `#3ecbff` | ❄빙결 60f |
+| 물리 이빨 | `redBean`+`EL.P` | 물리 | E | 300~450px/s | 이빨입 | 화상(빨콩 베이스) |
+| 화성송 | `fireMagic` | `EL.F` | Q | 350~500px/s | 화염 혜성 | — |
+
+- `_beanRoll` 3-way: 무지개 / 화속성 빨콩 / 물속성 파란콩. 화성송은 무참조 랜덤 8% 잔존.
+- 적 물탄은 `blueBean`을 쓰지 않는다. `blueBean`은 패링 반사 전용(무지개 비주얼).
+- 차징 전조: 무지개 / 화빨콩 / 물파란콩 (`_projChargeBean='water'`).
+- TDD `test/enemyProjectileSpeedBand.test.js` 9/9. `docs/2_3` 미수정.
+
+## 2026-09-01 — 마법탄·화성송·빨콩 탄속 평균 +100
+
+| 구분 | 종전 | 현행 | 평균 변화 | 적용 |
+|---|---|---|---|---|
+| 일반 물리탄·물리 이빨 | 200~350px/s, 평균 275 | **300~450px/s, 평균 375** | **+100px/s** | `EL.P` 이빨 |
+| 일반 마법탄·화성송·화빨콩·물파란콩 | 250~400px/s, 평균 325 | **350~500px/s, 평균 425** | **+100px/s** | `fireMagic`·`waterBean`·`EL.F` 빨콩·원소·gb/blue |
+| 무지개탄 | 300~450px/s, 평균 375 | **400~550px/s, 평균 475** | **+100px/s** | `blackBean` T3 선두 +50 유지 |
+
+- 마법 탄막이 느리다는 체감에 맞춰 세 band 모두 평균 +100px/s. 화성송(`fireMagic`, `EL.F`, Q패링 혜성)과 화속성 빨콩·물 파란콩은 마법 band. 물리 이빨만 물리 band.
+- 차징 전조는 후속 작업에서 무지개/화빨콩/물파란콩으로 교체됨.
+- TDD `test/enemyProjectileSpeedBand.test.js`. 방향 보존·`titanEye` 제외·1/3 드랍은 불변.
+
+## 2026-09-01 — SOFT FLOOR EDGE FADE
+
+> 후속(같은 날): 위 「흙-숲 더티 경계선 제거」가 현행. 이 항목은 첫 occupancy blur 도입 기록이다.
+
+| 항목 | 종전 | 당시 | 보존 |
+|---|---|---|---|
+| walkable floor clip | 타일 `rect(T×T)` + `_soilEdgeA` 칸 알파 | occupancy 마스크 blur `3.2px` @ scale 2, `destination-in` | collision/`isW`/`forestBoundary` |
+| 적용 | 전 스테이지 공통 계단 컷 | CH1-1 포함 soil 맵 ON, CH2-1(stage4)·boss arena·vista/paint OFF | CH2 organic mask 4 call site |
+| fade 폭 | `_soilEdgeA` 10타일 칸 페이드(40px 계단) | 후속: dilate 1 + blur 5 @ scale 4, rim 삭제 | 타일 값·스폰·미니맵 불변 |
+| CH1-1 숲 밀착 | baked inner가 타일 벽보다 바깥 | `_CH1_OUTER_HUG_X=0.965` 좌우만 중앙으로 약 3타일 당김 | 남북 START/EXIT, collision |
+
+- 원인: 바닥 텍스처를 walkable 칸만 사각형 clip해서 1-1 forestBoundary가 도트 계단으로 읽혔다. `_soilEdgeA`는 칸마다 동일 알파라 계단을 더 강조했다.
+- 당시에는 fade를 1타일 erode + blur 3으로 두고 rim 그림자를 올렸다. 같은 날 후속에서 erode/rim이 더티 경계선을 만든다는 게 확인되어 dilate + backdrop fill로 교체했다.
+- TDD `test/softFloorEdgeFade.test.js` 6/6. `isW`, `MAP_ALL_FLOOR=false`, `forestBoundary:1`, CH2 `_soilEdgeA(stage4)=1`은 변경하지 않았다.
+
+## 2026-08-31 — CH3-1 TRAILER CAPTURE PROOF
+
+| 항목 | 결과 | 규격/증거 |
+|---|---|---|
+| 원본 테이크 | establishing / landmarks / combat 3개 | 1920×1080 WebM VP8, 합계 49.12초, 무음 |
+| 검토용 프루프 | **PASS** | `CH3_trailer_proof_cut.webm`, 20.16초, 환경→랜드마크→전투 |
+| 브라우저 QA | **PASS** | pageerror 0 / 404 0 / 전투 20체 / collision blocked false |
+| 자동화 | **PASS** | `test/trailerCapturePipeline.test.js` 6/6 |
+
+- 실제 `game.html?testchar=1&stage=10&classic=1` CH3-1 런타임을 Playwright로 촬영했다. 시네마틱 컷은 펫 대사·미니맵·스킬바·구슬 HUD와 캔버스 펫을 촬영 세션에서만 억제하며, 게임 코드/밸런스/맵/collision은 변경하지 않았다.
+- 전투 컷의 저체력 적색 화면은 잘못된 촬영용 필드 `P.inv`가 원인이었다. 실제 판정 필드 `P.iframes`를 촬영 세션에서 유지하도록 고치고 2/4/6/8초 프레임을 재검수했다.
+- 최종 Steam 트레일러 요구사항(1~2분, MP4 H.264, 1080p)은 아직 미완료다. 현재 결과는 무음 20.16초 WebM 촬영/편집 프루프이며 commit/push/deploy는 수행하지 않았다.
+
 ## 2026-08-30 — LOCAL QA WORKTREE HYGIENE
 
 | 항목 | 종전 | 현행 | 처리 원칙 |
@@ -44956,3 +45753,39 @@ mpR = 0.05 + s.int×0.005                                        [NO P.lv×0.001
 - GATE 6/OUTER contract test `10/10 PASS`, baked `64/64/0`, pageerror/404 `0/0`, max warm `14.3ms`, max draw `0.1ms`다. SOUTH와 tree combat은 적 5·투사체 3·parry/VFX 상태에서 `canMove=true`, `inWall=false`로 직접 확인했다.
 - 동일 8카메라와 full-map 비교는 `captures/ch1_landmark_center_20260830/COMPARISON/`, 전투는 `GATE6_COMBAT/`, 상세 SSOT는 `4.1맵디자인+설정/CH1_LANDMARK_CENTER_PASS.md`에 기록했다. GATE 7 SMALL DETAIL은 미착수다.
 - commit / push / deploy는 수행하지 않았다.
+## 2026-09-03 다크드루이드 화마귀 혜성 상시 패링탄막
+
+| id | 한글명 | 수치/공식 | 입력 | 적용 위치 |
+|---|---|---|---|---|
+| `druidParryRhythm` / `_druidParryVolley` | 화마귀 혜성 패링탄막 | 페이즈 0~4: `interval=90-phase×6`f, `count=5+phase`, 스폰 피해 `floor(atk×0.35)`, `life=240`, 입력 `sz=2/r=10` | 전 웨이브 `fireMagic`, `EL.F`, `#ff5522`, Q | `game.html` `_druidParryVolleySpec`, `[DRUID-PARRY-RHYTHM]` |
+
+- 32초 자연 전투에서 24종 무브 풀 때문에 `rapidMissile`이 한 번도 선택되지 않는 구간을 확인했다. AI 선택과 독립된 상시 웨이브로 1.10~1.50초마다 5~9발의 Q 패링 기회를 보장한다.
+- 전용 플래그 `_druidParryVolley:true`는 공용 이동탄 1/3 드랍만 면제한다. 투사체 풀의 `_mkProj`/`_resetProj`에 플래그 초기화를 추가해 재사용 상태 오염을 막았다.
+- 스크린샷에서 최초 교대안의 `redBean`이 300px/s 물리 프로필과 대형 이빨 렌더를 타는 문제를 확인했다. `redBean`/`waterBean`을 모두 제거하고 화마귀 후속탄과 같은 `fireMagic` 혜성 프로필로 교체했다. 공용 보정 후 `sz=4/r=13`, 최종 500~600px/s, 약 90°/s 유도, 피해 `floor(atk×0.35)×2`다.
+- `blackBean`은 생성하지 않으며 기존 패링 금지 규칙과 수정 금지 문서 `docs/2_3 돌진+패링+방패시스템`은 변경하지 않았다.
+- 검증: `test/druidParryBarrage.test.js` 4/4 PASS. 브라우저 phase 0 실측 5발 전부 `fireMagic=true`, 혜성 시트 준비 완료, 속도 8.60~9.38px/f(약 516~563px/s), `sz=4/r=13`; `redBean`/`waterBean`/`blackBean` 혼입 0, `pageerror` 0, 로컬 HTTP 4xx 0.
+
+## 2026-09-03 다크드루이드 독늪 중첩 해소
+
+| id | 한글명 | 이전 | 현재 수치/공식 | 적용 위치 |
+|---|---|---|---|---|
+| `druidPoisonLanes` / `_druidPoisonPoolTargets` | 중앙·좌·우 독늪 | 난수 각도, 거리 `index×70+random×40`, 반경 `160+random×40`인 3장이 같은 자리에 중첩 | 중앙=`P+unit(boss→P)×120px`, 좌/우=`중앙±perp×360px`; 3곳, `r=150`, 인접 가장자리 여백 60px | `game.html` `case 'lavaPools'`의 `G.stage===3` 분기 |
+| `warnT` | 위치별 전조 | 세 장판 모두 70f | 55/73/91f (`55+index×18`) | 같은 분기 |
+| `maxT` / `dmg` / `el` | 존속·피해·속성 | 300f / `floor(atk×0.9)` / `boss.el` | 변경 없음 | `G._lavaPools` 표준 갱신 경로 |
+
+- 변경 범위는 `si3` `lavaPools`뿐이다. 다른 스테이지의 용암장판과 대시 잔류형 `poisonTrail`은 수정하지 않았다.
+- 검증: `test/druidPoisonPoolSpread.test.js` 2/2 PASS. 브라우저 강제 패턴 실측 좌표 `(2560,2280)/(2200,2280)/(2920,2280)`, 반경 150, 가장자리 여백 60/60/420px, 전조 55/73/91f, `pageerror` 0, 로컬 HTTP 4xx 0.
+
+## 2026-09-03 다크드루이드 테스트의 회색 차지판·원형 탄막 API VFX 교체
+
+| id | 한글명 | 이전 | 현재 수치/공식 | 적용 위치 |
+|---|---|---|---|---|
+| `silvertailChargeRange` | E 홀드 처내기 범위 | radial-gradient 원 + ±1.8rad 부채꼴 채움 + 9/7 점선 아크 | `silvertail_charge_range_api_v1.png` 1254×1254 RGB 근검정 배경. 로드시 `_makeBlackAdditiveCutout(24,72)` 캐시 후 `lighter`; 화면 지름 `range×2.24×(1+sin(frame×.16)×.018)`, alpha `.12+tier×.035`/`.34+tier×.10`, `facing+π` | `_drawSilvertailChargeRange`, `sDraw/kiGather` |
+| `krakenShot` | 소형 크라켄 물회오리 탄두 | `waterBean` 시안 원 4겹+직선 꼬리; `elemBall` 원 4겹+파티클 | `proj_kraken_shot_api_v1.png` 1945×809 RGB 근검정 배경. 로드시 `maxRGB≤24 → alpha 0`, `24–72 → smoothstep`, `≥72 → 원본 alpha` 캐시 후 `lighter`; 우향 회전. `waterBean=96px`, `EL.P/I elemBall=170px` | `_drawKrakenShot`, `_drawWaterBean`, pass-2 `elemBall` |
+| `elemBallElementRows` | 비물리·비빙 대형 원소구 | 런타임 다중 원 구체 | `EL.F/D/L/H/E`는 `proj_elem_orb.png` 해당 행, 화면 크기 `max(96,sz×5.3)`; 시트 실패 시 혜성 폴백 | pass-2 `if(p.elemBall)` |
+| `krakenShotPassGate` | 전용 탄 렌더 게이트 | 공용 선 트레일과 원형 글로우가 본체에 중첩 | `waterBean`/`elemBall`을 pass-0 트레일과 pass-1 원형 글로우에서 제외 | 적 투사체 3-pass 렌더 |
+
+- 원인: 첫 스크린샷의 회색 원/판은 보스 공격이 아니라 플레이어 `sDraw/kiGather`의 흰색 저알파 채움이 배경 위에서 회색으로 보인 것이며, 둘째 스크린샷은 `elemBall`/`waterBean`의 다중 원 본체 위에 공용 선 트레일·원형 글로우가 다시 겹친 결과였다.
+- 생성 방식: 내장 이미지 생성 API. 크라켄 기존 물 소용돌이와 은꼬리 v3 아크를 각각 스타일 참조로 사용하고, 체크무늬가 포함된 1차 결과는 동일 API 배경 교체로 근검정 RGB 출력했다. 첫 브라우저 캡처에서 near-black 남색이 사각 판으로 드러나 `_makeBlackAdditiveCutout(24,72)` 로드 1회 캐시를 추가했으며 재캡처에서 사각 판 0을 확인했다.
+- 게임플레이 불변: `waterBean`의 최종 500~600px/s·Q패링·빙결 60f, `elemBall`의 10~16발·속도 6·sz16(스폰 후32)·수명400·피해×3·유도 `.0291`·패링불가, 차징 검격의 반경/배율/판정은 변경하지 않았다. `blackBean` 패링 금지 계약도 변경하지 않았다.
+- 테스트: `test/bossProjectileVfxUpgrade.test.js`는 에셋 존재, 암부 알파 캐시, 크라켄 라우팅, 원/직선 코드 제거, pass 게이트, 회색 부채꼴 제거를 고정한다. 관련 4개 파일 16/16 PASS, stage 3 브라우저 QA에서 두 에셋 `ready=true`, 크라켄 5발, `pageerror=0`, 로컬 HTTP 4xx=0이다.

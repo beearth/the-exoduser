@@ -54,6 +54,25 @@ test('shoot charge ring is a dark track plus round-cap progress arc', () => {
   assert.match(draw, /X\.arc\(x,y,R,0,Math\.PI\*2\)/);
   assert.match(draw, /X\.arc\(x,y,R,-Math\.PI\/2,-Math\.PI\/2\+Math\.PI\*2\*prog\)/);
   assert.doesNotMatch(draw, /X\.fill\(\)/);
-  assert.match(gameHtml, /if\(e\._projChargeT>0&&e\._projChargeCol\)\{[\s\S]{0,180}_drawShootCharge\(/);
+  assert.match(gameHtml, /if\(e\._projChargeT>0&&e\._projChargeCol\)\{[\s\S]{0,360}_drawShootCharge\(/);
   assert.match(gameHtml, /if\(_eDecor&&e\.s==='eShootWind'\)\{[\s\S]{0,180}_drawShootCharge\(/);
+});
+
+test('physical and E-parry red-bean charge rings are white instead of red', () => {
+  const chargeDraw = sliceBetween(gameHtml, '// ═══ 탄막 차징 전조', '// ═══ 피격 플래시');
+  assert.match(chargeDraw, /const _pcPhysical=e\._projChargeBean==='red'\|\|e\._projChargeBean==='normal'&&e\.el===EL\.P/);
+  assert.match(chargeDraw, /const _pcCol=_pcPhysical\?'#f4f4f4'/);
+  assert.doesNotMatch(chargeDraw, /e\._projChargeBean==='red'\?'#ff2200'/);
+});
+
+test('every physical eShootWind attack previews a white charge ring', () => {
+  const chargeDraw = sliceBetween(gameHtml, '// 탄막 준비동작 이펙트', '// 방패돌격 잔상');
+  assert.match(chargeDraw, /e\._swChargeEl===EL\.P\?'#f4f4f4'/);
+
+  const coral = sliceBetween(gameHtml, '// 산호 파편 투사체', '// ── 67:인어 사도');
+  const parasite = sliceBetween(gameHtml, '// 기생충 발사: 3방향 투사체', '// ── 69:심연의 대사도');
+  const trident = sliceBetween(gameHtml, '// 삼지창 관통: 직선 투사체', '// 소용돌이: 플레이어 흡입');
+  for (const physicalWindup of [coral, parasite, trident]) {
+    assert.match(physicalWindup, /e\.s='eShootWind';e\.st2=60;e\._swChargeEl=EL\.P/);
+  }
 });

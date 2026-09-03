@@ -109,7 +109,7 @@ const _RO={
 '악의 사냥':'Vânătoare de Malicie',
 '폭풍소환':'Invocare Vortex',
 '해골무덤':'Mormânt de Oase',
-'신성폭발':'Explozie Sacră',
+
 '블랙':'Stea Neagră',
 '용암소환':'Invocare Lavă',
 '처형':'Execuție',
@@ -1073,7 +1073,7 @@ const _RO={
 '💫 포이즈 파괴!':'💫 Postură Distrusă!',
 '⚡ 뇌전걸음!':'⚡ Pas Fantomă!',
 '✟ 구속의 영역!':'✟ Domeniu Legare!',
-'✟ 신성폭발!':'✟ Explozie Sacră!',
+
 '⛧ 블랙!':'⛧ Stea Neagră!',
 '🌋 용암소환!':'🌋 Invocare Lavă!',
 '필살기 배정!':'Ultim atribuit!',

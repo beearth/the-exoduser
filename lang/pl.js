@@ -78,7 +78,7 @@ const _PL={
 '기검참':'Cięcie Ki','악의구':'Kula Złości','회전참':'Wicher','기폭팔':'Detonacja',
 '칼등 처내기':'Parowanie Klingą','만화방창':'Salwa Igieł','멸살광선':'Promień Zagłady',
 '원소추적탄':'Szukający Pocisk Żywiołów','악의 보호자':'Strażnik Złości','악의 사냥':'Polowanie Złości',
-'폭풍소환':'Przywołanie Wichru','해골무덤':'Grobowiec Kości','신성폭발':'Wybuch Święty',
+'폭풍소환':'Przywołanie Wichru','해골무덤':'Grobowiec Kości',
 '블랙':'Czarna Gwiazda','용암소환':'Przywołanie Lawy','처형':'Egzekucja','악마화 부활':'Odrodzenie Demona',
 '붉은꽃':'Szkarłatny Kwiat','얼음보주':'Lodowa Sfera','뇌전걸음':'Krok Ducha',
 '만화방창 II':'Salwa Igieł II','마력연사':'Strzał Arkanowy','마력광선':'Laser Arkanowy','업화선':'Promień Piekielnego Ognia',
@@ -233,7 +233,7 @@ const _PL={
 '지옥의 군단':'Legion Piekieł','사도의 마굴':'Kryjówka Apostoła','지옥성':'Piekielna Cytadela',
 // --- Misc ---
 '엑소듀서 전사':'Wojownik Exoduser','포이즈':'Postawa',
-'신성폭발':'Wybuch Święty','뇌전걸음':'Krok Ducha',
+'뇌전걸음':'Krok Ducha',
 '지옥창고':'Piekielny Magazyn','선택분해':'Selektywne Rozkładanie','쓰레기':'Śmieci',
 '복구 불가!':'Nie można przywrócić!','중요잠금':'Ważne-zablokowane',
 // --- Phase 9 additions ---
@@ -644,7 +644,7 @@ const _PL={
 '💫 포이즈 파괴!':'💫 Zniszczenie Postawy!',
 '⚡ 뇌전걸음!':'⚡ Krok Ducha!',
 '✟ 구속의 영역!':'✟ Domena Więzienia!',
-'✟ 신성폭발!':'✟ Wybuch Święty!',
+
 '⛧ 블랙!':'⛧ Czarna Gwiazda!',
 '🌋 용암소환!':'🌋 Przywołanie Lawy!',
 '필살기 배정!':'Ostateczny Przypisany!',

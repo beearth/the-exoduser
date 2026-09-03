@@ -47,7 +47,7 @@ CH1-1 실제 시작맵의 LEFT / RIGHT / TOP / SOUTH 외곽에 기존 CH1 대형
 | TOP | SOUTH보다 밀도 높은 exit funnel | 중앙 EXIT gap만 보존하고 양 shoulder를 dark mass로 압축 |
 | SOUTH | 열린 START threshold | 중앙 START gap 보존, 좌우 낮은 root/corpse mass |
 
-제작 순서는 BACK → LARGE → MEDIUM → GROUND_CONNECTION이다. SMALL prop은 0이다. ground pass는 inner edge를 따라 blur shadow와 soil contamination을 합성한다. 2026-08-30 최종 retouch에서 연속 보라색 edge line을 저채도 dark-brown dash로 낮추고, LEFT/RIGHT 각 3개 inward blurred root spread를 추가해 구조물 하단의 sticker 경계를 제거했다.
+제작 순서는 BACK → LARGE → MEDIUM → GROUND_CONNECTION이다. SMALL prop은 0이다. ground pass는 inner edge를 따라 blur shadow와 soil contamination을 합성한다. 2026-08-30 최종 retouch에서 연속 보라색 edge line을 저채도 dark-brown dash로 낮추고, LEFT/RIGHT 각 3개 inward blurred root spread를 추가해 구조물 하단의 sticker 경계를 제거했다. 2026-09-01 walkable 흙은 occupancy dilate 1타일 + box-blur 5 @ scale 4로 숲 아래로 넣고, 접촉 벽 칸 40px 검정 계단과 rim 스트로크는 제거했다. baked forest는 `_CH1_OUTER_HUG_X=0.965`로 좌우만 중앙에 붙여 collision 가장자리에 겹친다. 남북 스케일 0. collision/`forestBoundary`는 불변이다.
 
 ## 보호 좌표
 

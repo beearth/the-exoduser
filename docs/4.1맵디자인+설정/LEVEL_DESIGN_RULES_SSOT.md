@@ -42,6 +42,7 @@
 절벽 · 바위 · 뿌리 · 뼈 · 폐허 · 성벽 · 용암 균열 · 독늪 · 난간 · 잔해.
 - **목적: 플레이어가 invisible wall에 막혔다고 느끼지 않게 한다.**
 - 현재 구현: CH1-1은 `_MAP_COMPOSE[0].forestBoundary=1`, `MAP_ALL_FLOOR=false`이며 `_buildCh1StartForestRLE(200,200)` canonical tile wall이 baked side/top/south forest와 같은 큰 경계를 만든다. 과거 structural boundary prop 59개는 제거했고 authored63/runtime64, structural0이다. START/중앙/north approach와 landmark pocket은 열어 두며 player/enemy/flow/spawn/minimap이 같은 tile 경계를 사용한다.
+- **시각 바닥 경계 (2026-09-01):** collision은 타일 그대로다. 흙은 `_useSoftFloorEdge` **1타일 dilate** + `_FLOOR_SOFT_SCALE=4` + `_FLOOR_SOFT_BLUR=5`로 숲 아래로 밀어 넣고, 접촉 보이드는 `_SOFT_FLOOR_BACKDROP` 통짜 fill이다. 근거리 벽 칸 40px `#050507` 계단과 검정 rim 스트로크는 제거했다. CH1-1 baked forest는 `_CH1_OUTER_HUG_X=0.965`로 좌우만 안쪽에 겹친다. 40px 칸 clip/`_soilEdgeA` 계단 페이드는 soil 맵에서 쓰지 않는다. CH2-1(stage4)은 기존 organic floor mask를 유지한다.
 - CH1-1 RIM: 8섹터(남/남서/남동/서/동/북서/북/북동), 대형 간격 ≥20타일.
 - CH1-1 고지대 실증: 우중 제단 `(147,98)`만 `rx18/ry9` 정상부 height 1로 만들고 서쪽 ramp `(x125→135,y98,반폭1.8→3)`만 개방한다. 절벽 band `.84≤d≤1.04`는 실제 `isW` collision이다. 메인 x100 남북축은 height 0/비충돌이며, side POI 고저차가 주 진행로를 강제하지 않는다.
 
@@ -105,7 +106,7 @@
 ## 9. 관문(GATE_ZONE)
 
 - 층/스테이지 경계 = 로딩 지점. 관문 은유로 시각화(동굴/성문/거대뿌리/지하통로/승강/봉인문/절벽통로/상층문).
-- 현재: 보스 게이트 스월(`_drawGateSwirl`, 봉인 red/개방 blue), 80% 처치 개방(`checkRooms`, `game.html:35591`).
+- 현재: 보스 게이트 스월(`_drawGateSwirl`, 봉인 red/개방 blue), 80% 처치 개방(`checkRooms`). CH1-1은 추가로 심연의 앵글러 4마리(물/화/암/뇌) 전멸(`G._fbDone`).
 
 ---
 

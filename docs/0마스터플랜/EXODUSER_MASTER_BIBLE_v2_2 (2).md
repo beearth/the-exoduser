@@ -540,7 +540,7 @@ cageTrap: 가두는 장판
 악의폭축, 칼날살, 산탄, 파편탄, 유탄
 
 ### 궁극기
-신성폭발, 블랙, 용암소환
+블랙, 탄막블랙홀, 처형 (신성폭발 제거)
 
 ## 6.3 합체 스킬 7종
 
@@ -561,7 +561,6 @@ cageTrap: 가두는 장판
 | 회전참 | 넓은 호 (범위+50%) | 빠른 회전 (공속+40%) | 원소 주입 |
 | 돌진 강화 | 관통 돌진 | 폭발 돌진 | 유령 돌진 (무적) |
 | 멸살광선 | 확산 (3갈래) | 집중 (단일 극딜) | 지속 (채널링) |
-| 신성폭발 | 정화 (디버프 제거) | 심판 (즉사 확률) | 축복 (아군 버프) |
 
 ---
 
@@ -856,7 +855,7 @@ public class BossAI : MonoBehaviour
 | 11 | meteor | 즉발 | 유성 |
 | 12 | multiDash | 상태 | 연속돌진 |
 | 13 | teleStrike | 상태 | 텔레포트 공격 |
-| 14 | elemBall | 즉발 | 속성탄 |
+| 14 | elemBall | 즉발 | 속성탄. `EL.P/I`는 API 크라켄 물회오리 탄두 170px(`_makeBlackAdditiveCutout(24,72)` 알파 캐시 후 `lighter`), 그 외 속성은 `proj_elem_orb` 시트. 판정·수치 불변 |
 
 ### 근접 강화 (idx 15-19)
 | idx | id | 설명 |
@@ -905,10 +904,28 @@ public class BossAI : MonoBehaviour
 | 47 | doppelganger | ✅ | 분신소환 (독립AI) |
 | 48 | itemSteal | ❌ | 무기봉인 10초 |
 
+### 9.3.1 si3 다크드루이드 화마귀 혜성 패링탄막 (2026-09-03)
+
+| id | 한글명 | 대상/슬롯 | 간격 공식 | 발사 수 공식 | 입력·탄종 | 피해/수명 | 적용 위치 |
+|---|---|---|---|---|---|---|---|
+| `druidParryRhythm` (`_druidParryVolley`) | 화마귀 혜성 패링탄막 | `si3` 보스 전용 상시 기전 / `BOSS_MOVES` 슬롯 없음 | `90-phase×6`f = 90/84/78/72/66f | `5+phase` = 5/6/7/8/9발 | 전 웨이브 `fireMagic`, `EL.F`, `#ff5522`, Q | 스폰 `floor(atk×0.35)`, `life=ml=240`, 입력 `sz=2/r=10` | `game.html` `_druidParryVolleySpec`, `[DRUID-PARRY-RHYTHM]` |
+
+- AI가 `rapidMissile`/`beanStorm`을 뽑지 않는 구간에도 1.10~1.50초마다 Q 패링 기회를 보장한다. 발사 20f 전 화염 전조와 발사 순간 `Q!`를 표시한다.
+- 화마귀 3연속 후속탄의 혜성형 `fireMagic` 프로필을 재사용한다. 전용 플래그는 공용 이동탄 1/3 드랍만 면제하며, 공용 보정 후 `sz=4/r=13`, 최종 속도 500~600px/s, 피해 `floor(atk×0.35)×2`가 된다.
+- 최초 교대안의 느린 `redBean`(300px/s)과 `waterBean`은 제거했다. `blackBean`은 생성하지 않고 기존 패링 금지 계약을 유지한다.
+
+### 9.3.2 si3 다크드루이드 독늪 3지점 분산 (2026-09-03)
+
+| id | 한글명 | 대상/슬롯 | 좌표 공식 | 반경/간격 | 전조/존속 | 피해/속성 | 적용 위치 |
+|---|---|---|---|---|---|---|---|
+| `druidPoisonLanes` (`_druidPoisonPoolTargets`) | 중앙·좌·우 독늪 | `si3`의 `lavaPools` 전용 오버라이드 | `a=atan2(P.y-B.y,P.x-B.x)`; 중앙=`P+unit(a)×120`; 좌/우=`중앙±perp(a)×360` | `r=150`; 인접 중심 360, 가장자리 여백 60px | `warnT=55/73/91f`; `maxT=300f` | `floor(atk×0.9)`, `el=boss.el` | `game.html` `_druidPoisonPoolTargets`, `case 'lavaPools'` |
+
+- 난수로 같은 위치에 겹치던 독장판 3개를 공간적으로 분리한다. `si3` 외 `lavaPools` 및 드루이드의 `poisonTrail`은 변경하지 않는다.
+
 ## 9.4 패링 컬러 코딩
 
 ```
-빨간색 (#ff2200): E(sBash)만 패링 → 와인드업 시 링+글로우+PARRY 텍스트
+빨간 탄 본체(#ff2200): E(sBash)만 패링 → 와인드업 차징 링은 흰색(#f4f4f4), 글로우+PARRY 텍스트. 라운드 컬러는 발사탄 속성 예고이므로 일반 물리탄뿐 아니라 특수 물리 `eShootWind`(산호 파편/기생충/삼지창)도 `_swChargeEl=EL.P`로 흰색을 사용한다.
 무지개색 (HSL 회전): Q(sBlock)만 패링 → 블루콩 유도반사(뎀×3, AoE 180). E(sBash)=데미지. 모든 패링=블루콩 변환
 잘못된 입력(빨강에 Q, 무지개에 E) → dmg×0.5 데미지 (리듬게임식)
 ```
@@ -1747,7 +1764,7 @@ public class ObjectPool<T> : MonoBehaviour where T : MonoBehaviour {
 - BOSS_MOVES[49] 데이터 구조 (섹션 9.3)
 - 유틸리티 AI 선택 (거리적합+반복패널티+카운터보너스)
 - BossPhase 5단계 전환 (섹션 9.2)
-- 패링 컬러 코딩 (빨강/#ff2200 vs 무지개/HSL회전)
+- 패링 컬러 코딩 (E=빨간 탄 본체/#ff2200+흰 차징 링/#f4f4f4 vs Q=무지개/HSL회전)
 - 보스 등장 시네마틱 (레터박스 + 네임카드)
 - 체간(Posture) 시스템 (섹션 9.5)
 - BGM 레이어 페이즈 연동

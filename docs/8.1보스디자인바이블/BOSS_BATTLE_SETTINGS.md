@@ -1,6 +1,6 @@
 # 보스 배틀 세팅 바이블
 
-> 최종 업데이트: 2026-08-18  
+> 최종 업데이트: 2026-09-03
 > 담당 코드: `game.html` — `genBossArena()`, `_enterBossArena()`, `_b3animate()`, `_poiseReset()`, 보스 테스트베드
 > 전투 정체성/전조/페이즈 연극 옵트인 기획: [`../4.0케릭터스프라이트 디자인/캐릭터_몬스터_보스_최적화디자인_v1.md`](../4.0케릭터스프라이트%20디자인/캐릭터_몬스터_보스_최적화디자인_v1.md) Track C. 본 파일의 HP×8·포이즈·아레나 수치는 유지. `2_3` 불변.
 
@@ -171,7 +171,7 @@ shake(14 + _bp*4)                              // 페이즈별 18~30
 | 0 | 1장 썩은 숲 | 흑요염 파괴자 | 기본 18종 (no summon), `lavaPools`, `charge`, `slam` 중심 |
 | 1 | 1장 | 독버섯 거인 | + `summon, mine` |
 | 2 | 1장 | 사냥꾼 | + `cageTrap` |
-| 3 | 1장 | 기생수 | + `seekerMines` |
+| 3 | 1장 | 기생수 | + `seekerMines`; `lavaPools`는 중앙=`P+진행축×120px`, 좌/우=`중앙±수직축×360px` 3지점(`r=150`, 여백 60px, 전조 55/73/91f, 300f, `floor(atk×0.9)`) |
 | 4~9 | 2장 벌레굴 | 벌레 수호자~여왕 구더기 | 점진 해금: `fanWave→wallPush→shieldBash2→spiralBullet` |
 | 10~13 | 3장 지옥의 겨울 | 얼음 망령~봉인 괴물 | + `laser, safeCorner, teleStrike, delaySlash, perilThrust, gravityWell` |
 | 14~20 | 4장 화염지대 | 화염 악마~화염 감옥지기 | + `meteor, radialLaser, swordWave, pillars, burstCounter, chainLightning` |
@@ -180,6 +180,25 @@ shake(14 + _bp*4)                              // 페이즈별 18~30
 | 32~34 | 7장 지옥성 | 전체 49종 해금 | `null` (필터 없음) |
 
 전체 기술 49종 목록은 `9적ai패턴디자인/` 참조.
+
+### `cageTrap` 뼈감옥 전투·VFX 계약 (2026-09-03)
+
+| ID | 한글명 | 생성 위치 | 반경 | 경고 | 총 수명 | 피해 | 타격 조건 |
+|---|---|---|---:|---:|---:|---:|---|
+| `cageTrap` | 뼈감옥(가시 감옥) | 발동 순간 플레이어 좌표 `P.x/P.y` | `110px` | `40f` | `210f` | `floor(보스 ATK × 0.8)` | 경고 종료 후 감옥 테두리와의 거리 `<20px`, 재타격 간격 `20f`, 플레이어 무적 프레임 적용 |
+
+| 항목 | 현재 값 | 적용 위치 |
+|---|---|---|
+| 판정 데이터 | `{t:0,warnT:40,maxT:210,r:110,dmg:floor(e.atk×.8),el:e.el,src:e,hitT:0}` | `_bossDoAction()`의 `case 'cageTrap'` |
+| 경고 표시 | `t<40f` 동안 빨간 점선 원, 진행도에 따라 alpha `0→0.4` | 감옥 렌더 블록 |
+| 스프라이트 | `assets/vfx/boss/boss_cageTrap.webp`, 투명 WebP `1536×1024`, `3×2`, 셀 `512×512`, `6f`, `source-over` | `registerVFX('boss_cageTrap',...)` |
+| 성장 타이밍 | 경고 종료 뒤 `36f` 동안 `frame 0→5`, 이후 마지막 프레임 유지 | `_ctRise=min(1,(t-warnT)/36)`, `_ctFr=min(5,floor(_ctRise×6))` |
+| 화면 배치 | 정사각 렌더 크기 `r×3.35=368.5px`, 좌상단 `(x-size/2, y-size×0.54)` | 감옥 렌더 블록 |
+| 퇴장 | 마지막 `30f` 동안 alpha `1→0` | `_ctF` |
+| 로드 실패 | 기존 갈색 원+12가시 절차식 표현 유지 | `_VFX_SHEETS.boss_cageTrap` 미준비 분기 |
+| 패링 | 패링 가능 목록 유지. 성공 시 소스 보스 poise `-15`, `doParry()` 호출 | `_PARRYABLE_ATK`, 감옥 업데이트 블록 |
+
+이번 변경은 시각 교체만이다. 반경·피해·속성·경고/수명·타격 주기·패링 판정은 변경하지 않는다. 에셋 제작·정규화 상세는 `../5.1임펙트디자인/BOSS_CAGE_TRAP_VFX.md`를 따른다.
 
 ### 보스 mine 액션 사거리 수정 (2026-05-09)
 - `mine` 액션 range: `[0, 999]` → `[0, 220]`

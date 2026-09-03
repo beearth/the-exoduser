@@ -13,7 +13,7 @@ game.html `SKILL_REC_PATH` 배열과 1:1 동기화.
 | 1 | 전격의창+아이스스톰 | thunderStake, bladeDash, iceStorm | thunderGhost | 전격의창 | Thunder Spear | bladeDash + thunderStake (iceStorm은 빙결존, 합체 비포함) |
 | 2 | 이동+사슬 | chargeBoost, magicBlink, chainAssault, chainSlam | dimBreach | 사슬기동 / 기동:전폭 | Chain Breach / Maneuver:Thunder | chargeBoost + magicBlink / +chainAssault + chainSlam |
 | 3 | 칼날+역병 | maliceHunt, guardian, plagueBurst | bladeFuse | 칼날 해방 / 독혈 해방 | Blade Liberation / Plague Liberation | maliceHunt + guardian / maliceHunt + guardian + plagueBurst |
-| 4 | 💀 필살기 선택 | holyBlast/blackStar/lavaSummon/execution (1택) | — | — | — | — |
+| 4 | 💀 필살기 선택 | blackStar/lavaSummon(탄막블랙홀)/execution (1택) | — | — | — | — |
 | 5 | 멸살+만화+원소 | omniBeam, fanShot, elemMissile | elemFuse | 추적암전 | Tracking Lightning | fanShot + omniBeam + elemMissile |
 | 6 | 허수아비 세트 | voidScarecrow, explodeScarecrow | dualScarecrow | 쌍허수아비 | Dual Scarecrow | voidScarecrow + explodeScarecrow |
 | 7 | 방패 합체 | maliceSwipe, shieldThrow | shieldFuse | 날개치기 | Wing Strike | maliceSwipe + shieldThrow |
@@ -36,6 +36,6 @@ game.html `SKILL_REC_PATH` 배열과 1:1 동기화.
 ## ⭐ 추천 자동 버튼 (`_skillRecAuto()`)
 - 전투스킬 패널 하단(`⭐ 추천 자동`, id `skRecAutoBtn`)에서 이 표 순서대로 **학습+합체 자동 진행**
 - 레벨업은 하지 않음 — `⏫ 일괄 레벨업` 버튼과 책임 분리
-- 필살기 4단계(`pick:true`): 이미 필살기 보유 시 스킵, 미보유 시 기본 **신성폭발(holyBlast)** 습득
+- 필살기 4단계(`pick:true`): 이미 필살기 보유 시 스킵, 미보유 시 기본 **블랙(blackStar)** 습득. 후보는 블랙/탄막블랙홀/처형 3종이며 삭제된 필살기는 코드·세이브 복원 대상에서 제외
 - 자원 부족·`reqLv` 미달(푸른비 300, 버스트루프 700)·DEMO 합체제한은 건너뜀(부분 진행)
 - 합체는 클릭 합체와 동일한 `_execFuse(key)` 공용 함수 호출 (상세는 `2_1 스킬관리+합체시스템.md`)

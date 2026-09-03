@@ -436,7 +436,22 @@ butler push "G:\hell-ea\out\HELL-EXODUSER-EA" beearth/exoduser:windows-ea --user
 - [ ] Library Capsule (600×900)
 - [ ] Library Hero (3840×1240)
 - [ ] 스크린샷 5장 이상 (1920×1080)
-- [ ] 트레일러 1-2분 (MP4, H.264, 1080p)
+- [x] Steam 트레일러 1-2분 (MP4, H.264, 16:9 1920×1080)
+  - 2026-08-31: CH3-1 실제 런타임 기반 1920×1080 WebM VP8 무음 프루프 20.16초 확보(`captures/trailer_test_20260831/CH3_trailer_proof_cut.webm`). 촬영 가능성 검증만 PASS이며 MP4/H.264·1~2분·BGM/SFX·타이틀/CTA 조건은 미충족이므로 체크 유지.
+  - 2026-09-02: Steam 최종 게임플레이 트레일러 `captures/trailer_steam_final_20260902/EXODUSER_STEAM_TRAILER_20260902.mp4` 완성. **영상/오디오 64.100초**, 1920×1080(16:9), 60fps, H.264 High 18.54Mbps, AAC 48kHz 스테레오, 150,198,060 bytes.
+  - 2026-09-02 보스 가시성 수정본: 현행 납품 SSOT를 `captures/trailer_steam_bossfix_20260902/EXODUSER_STEAM_TRAILER_BOSSFIX_20260902.mp4`로 교체. **영상/오디오 60.800초**, 1920×1080(16:9), 60fps, H.264 High 17.301Mbps, AAC 48kHz 스테레오 195kbps, 3,648프레임, 133,066,276 bytes.
+  - 2026-09-02 리메이크: `captures/trailer_steam_remake_20260902/EXODUSER_STEAM_TRAILER_REMAKE_20260902.mp4`, 60.800초. 보스 HUD만 보이고 3D 본체가 결정론 캡처에서 누락되어 납품 제외하며 위 보스 가시성 수정본으로 대체한다.
+  - 리메이크 소스: `trailer/source_steam_remake_20260902/`의 현재 런타임 신규 캡처 12종만 사용. 이전 `source_steam`·V3·프루프·기존 가로/세로 마스터는 납품 EDL에서 제외한다.
+  - 현행 구성: 마법전투→패링(첫 7.7초 gameplay-first)→API v2 타이틀 1.6초→전대 소환→크라켄 피격 폭발→크라켄 Q패링 10분열→화마귀→CH3→다크드루이드/흑요염 파괴자/벌레 여왕 전신 보스전→API v2 `WISHLIST NOW`.
+  - 보스 가시성 계약: 보스 5컷은 `trailer/source_steam_bossfix_20260902/`에서 전량 재촬영. z10 투명 오버레이, 화면 앵커 `(0.50,0.39)`, 목표 높이 다크드루이드 560px/흑요염 파괴자 620px/벌레 여왕 500px. 신성폭발·검은별 입력 0.
+  - 드루이드 자산 계약: 게임 실적용 `boss_dark_druid_walk.png` 4×8 시트에서 `_druidDir(b)` 방향 행·600ms 유휴 프레임 1칸만 크롭. 구형 `boss_dark_druid_f0.png`는 트레일러 입력에서 제외한다.
+  - 현행 QA: 보스 5컷 pageerror/404 0, A/V 차 0.000초, blackdetect 의도치 않은 검은 구간 0, 오디오 mean -22.2dB / max -0.5dB, 트레일러 테스트 19/19 PASS. `boss_visibility_contact_sheet.png` 전신 가시성 육안 PASS.
+  - 위 64.100초 마스터는 리메이크로 대체되어 Steam 납품 제외한다. 로컬 BGM의 실제 배포 권리는 출시 전 별도 확인한다.
+  - 교체 전 64.100초본 소스: `trailer/source_steam/`의 현재 런타임 신규 16:9 캡처 10종만 사용. 기존 V3·2026-08-31 프루프·이전 가로/세로 마스터는 당시 EDL에서 제외했다.
+  - 교체 전 64.100초본 구성: 스킬 전투→패링(첫 10.8초 gameplay-first)→API 금속 고딕 타이틀→전대 소환→크라켄/Q패링 10분열→화마귀→CH3→드루이드 보스→후반 보스 검은별→API `WISHLIST NOW`.
+  - 교체 전 64.100초본 신성폭발 제외: 후반 보스 로드아웃 `B/holyBlast` 대신 `C/blackStar`; 출력에 신성폭발 0컷.
+  - 교체 전 64.100초본 QA: 신규 10컷 pageerror/404 0, 영상 3,846프레임, A/V 길이 차 0.000초, blackdetect 의도치 않은 검은 구간 0, 오디오 mean -22.6dB / max -0.1dB, 회귀 테스트 15/15 PASS.
+  - 제외 이력: `EXODUSER_VERTICAL_TRAILER_20260902.mp4`는 세로 SNS 파생본으로만 보존하고 Steam에는 사용하지 않는다. 구형 V3 기반 `EXODUSER_FINAL_TRAILER_20260902.mp4`도 납품 제외한다.
 - [ ] 짧은 설명 한/영 + About This Game 한/영
 
 ### STEP 8B.3: Steamworks 빌드 업로드

@@ -109,7 +109,7 @@ const _ID={
 '악의 사냥':'Buru Kebencian',
 '폭풍소환':'Panggil Pusaran',
 '해골무덤':'Makam Tulang',
-'신성폭발':'Ledakan Suci',
+
 '블랙':'Bintang Hitam',
 '용암소환':'Panggil Lava',
 '처형':'Eksekusi',
@@ -1073,7 +1073,7 @@ const _ID={
 '💫 포이즈 파괴!':'💫 Keseimbangan Hancurkan!',
 '⚡ 뇌전걸음!':'⚡ Hantu Walk!',
 '✟ 구속의 영역!':'✟ Binding Domain!',
-'✟ 신성폭발!':'✟ Suci Ledakan!',
+
 '⛧ 블랙!':'⛧ Black Star!',
 '🌋 용암소환!':'🌋 Lava Panggil!',
 '필살기 배정!':'Jurus Pamungkas Diatur!',

@@ -109,7 +109,7 @@ const _FI={
 '악의 사냥':'Ilkeyden Metsästys',
 '폭풍소환':'Pyörrekutsuminen',
 '해골무덤':'Luuhauta',
-'신성폭발':'Pyhä Räjähdys',
+
 '블랙':'Musta Tähti',
 '용암소환':'Laavakutsuminen',
 '처형':'Teloitus',
@@ -1073,7 +1073,7 @@ const _FI={
 '💫 포이즈 파괴!':'💫 Asennon Tuho!',
 '⚡ 뇌전걸음!':'⚡ Haamukävely!',
 '✟ 구속의 영역!':'✟ Sitouttava Alue!',
-'✟ 신성폭발!':'✟ Pyhä Räjähdys!',
+
 '⛧ 블랙!':'⛧ Musta Tähti!',
 '🌋 용암소환!':'🌋 Laavakutsuminen!',
 '필살기 배정!':'Äärimmäinen Asetettu!',

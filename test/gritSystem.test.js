@@ -4,27 +4,28 @@ import { readFileSync } from 'node:fs';
 
 const gameHtml = readFileSync(new URL('../game.html', import.meta.url), 'utf8');
 
-test('grit is defined as an unbounded SP sink with flat +1 bonuses', () => {
+test('grit is an unbounded 1-SP sink whose total includes level, gear, and affix bonuses', () => {
   assert.match(gameHtml, /let _grit=0;/);
   assert.match(gameHtml, /function _gritCost\(\)\{return 1;\}/);
   assert.match(gameHtml, /function _gritBatchCost\(n\)\{return Math\.max\(0,n\);\}/);
-  assert.match(gameHtml, /function _gritHpFlat\(\)\{return _grit;\}/);
-  assert.match(gameHtml, /function _gritMpFlat\(\)\{return _grit;\}/);
-  assert.match(gameHtml, /function _gritStFlat\(\)\{return _grit;\}/);
+  assert.match(gameHtml, /function _gritTotal\(\)\{return _grit\+_lvB\(\)\+_eqStat\('Grit'\)\+_eqAffix\('gritFlatN'\)\+_eqAffix\('gritFlatR'\)\}/);
+  assert.match(gameHtml, /function _gritHpFlat\(\)\{return _gritTotal\(\);\}/);
+  assert.match(gameHtml, /function _gritMpFlat\(\)\{return _gritTotal\(\);\}/);
+  assert.match(gameHtml, /function _gritStFlat\(\)\{return _gritTotal\(\);\}/);
 });
 
 test('grit adds flat hp, mp, and stamina caps after bonus aggregation', () => {
   assert.match(
     gameHtml,
-    /P\.mst=~~\(base\+bonus\+~~\(P\._crystalStats\?P\._crystalStats\.st:0\)\)\+_gritStFlat\(\);P\.st=Math\.min\(P\.st,P\.mst\);/
+    /P\.mst=~~\(base\+bonus[\s\S]*\+_gritStFlat\(\);P\.st=Math\.min\(P\.st,P\.mst\);/
   );
   assert.match(
     gameHtml,
-    /P\.mhp=~~\(\(_stgHp\+P\.lv\*1\+s\.str\*1\+_totalBonusHp\+_afHpF\+_imHp\+_enhHp\)\*\(1\+_afHpP\+_imHpP\*\.01\+\(PASSIVES\.pMelee\|\|0\)\*\.03\)\);[\s\S]*P\.mhp=~~\(P\.mhp\+~~_cr\.hp\)\+_gritHpFlat\(\);P\.hp=Math\.min\(P\.hp,P\.mhp\);/
+    /P\.mhp=~~\(\(_stgHp\+s\.str\*5\+s\.vit\*3[\s\S]*P\.mhp=~~\(P\.mhp\+~~_cr\.hp\)\+\(PASSIVES\.pHuman\|\|0\)\*100\+_gritHpFlat\(\);P\.hp=Math\.min\(P\.hp,P\.mhp\);/
   );
   assert.match(
     gameHtml,
-    /P\.mmp=~~\(\(100\+P\.lv\*\.5\+s\.int\*1\)\*\(1\+_eqAffix\('maxMPPct'\)\)\);[\s\S]*P\.mmp=~~\(P\.mmp\+~~_cr\.mp\)\+_gritMpFlat\(\);P\.mp=Math\.min\(P\.mp,P\.mmp\);/
+    /P\.mmp=~~\(100\+s\.int\*2\+_totalBonusMp\+_eqAffix\('maxMPFlat'\)\+_enhMp\);[\s\S]*P\.mmp=~~\(P\.mmp\+~~_cr\.mp\)\+\(PASSIVES\.pHuman\|\|0\)\*100\+_gritMpFlat\(\);P\.mp=Math\.min\(P\.mp,P\.mmp\);/
   );
 });
 
@@ -43,7 +44,7 @@ test('grit is loaded from save data and persisted in all save payloads', () => {
 test('skill panel stays clean and removes the old grit button', () => {
   assert.match(
     gameHtml,
-    /\$\('skillInfo'\)\.textContent='LV\.'\+P\.lv\+' \| ⭐ SP: '\+P\.sp\+' \| 👿 악의: '\+G\.mats\+' \| 🔱 작살: '\+\~\~_harpGauge\+'\/'\+_HARP_GAUGE_MAX;/
+    /const _si=\$\('skillInfo'\);\s*_si\.innerHTML='LV\.'\+P\.lv\+' \| SP: '\+P\.sp\+_L\(' \| 악의: ',' \| Malice: '\)\+G\.mats\+_L\(' \| 사슬: ',' \| Chain: '\)\+~~_harpGauge\+'\/'\+_HARP_GAUGE_MAX;/
   );
   assert.match(
     gameHtml,
@@ -54,17 +55,17 @@ test('skill panel stays clean and removes the old grit button', () => {
 test('stat panel renders grit as a dedicated row below the base stats', () => {
   assert.match(
     gameHtml,
-    /\$\('spRemain'\)\.textContent='남은 SP: '\+P\.sp;/
+    /\$\('spRemain'\)\.textContent=_L\('남은 SP: ','SP Left: '\)\+P\.sp;/
   );
   assert.match(
     gameHtml,
-    /근성 \(GRIT\)[\s\S]*최대 HP\/MP\/ST 각각 \+1\/lv, 현재 HP\+MP\+ST \+\$\{_grit\}씩, SP 1당 근성 \+1[\s\S]*_gBtnsDiv\.appendChild\(_mkGritBtn\('-10','#cc7777',_grit>=10,[\s\S]*_gBtnsDiv\.appendChild\(_mkGritBtn\('-1','#cc7777',_grit>=1,[\s\S]*_gBtnsDiv\.appendChild\(_mkGritBtn\('\+1','#ccaa77',P\.sp>=_gCost1,[\s\S]*_gBtnsDiv\.appendChild\(_mkGritBtn\('\+10','#ccaa77',P\.sp>=_gCost10,/
+    /_L\('근성 \(GRIT\)','GRIT'\)[\s\S]*_L\('HP\/MP\/ST \+1, 방어력\/속성방어 \+0\.5','HP\/MP\/ST \+1, DEF\/eDEF \+0\.5'\)[\s\S]*_gBtnsDiv\.appendChild\(_mkGritBtn\('-10','#cc7777',_grit>=10,[\s\S]*_gBtnsDiv\.appendChild\(_mkGritBtn\('-1','#cc7777',_grit>=1,[\s\S]*_gBtnsDiv\.appendChild\(_mkGritBtn\('\+1','#ccaa77',P\.sp>=_gCost1,[\s\S]*_gBtnsDiv\.appendChild\(_mkGritBtn\('\+10','#ccaa77',P\.sp>=_gCost10,/
   );
 });
 
-test('grit summary explains the 1 SP to 1 grit rule', () => {
+test('grit summary separates spent SP grit from the level bonus', () => {
   assert.match(
     gameHtml,
-    /`<div style="\$\{_sLn\}">근성: <span style="color:#ffaa33">Lv\.\$\{_grit\}<\/span> <span style="color:#887766;font-size:1\.1rem">\(HP\/MP\/ST 각각 \+\$\{_grit\}, SP 1당 \+1\)<\/span><\/div>`/
+    /`<div style="\$\{_sLn\}">\$\{_L\('근성','Grit'\)\}: <span style="color:#ffaa33">Lv\.\$\{_grit\+_lb2\}<\/span> <span style="color:#887766;font-size:1\.1rem">\(SP\$\{_grit\}\+Lv\$\{_lb2\}\)<\/span><\/div>`/
   );
 });

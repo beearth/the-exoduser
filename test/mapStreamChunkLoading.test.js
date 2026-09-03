@@ -38,13 +38,17 @@ test('startup paths defer map cache build until after the loading UI can paint',
 });
 
 test('draw path queues missing chunks instead of building them inline', () => {
+  const drawStart = gameHtml.indexOf('function draw(){');
+  const drawEnd = gameHtml.indexOf('function drawP(){', drawStart);
+  const drawSource = gameHtml.slice(drawStart, drawEnd);
+  assert.ok(drawStart >= 0 && drawEnd > drawStart, 'draw function should exist');
   assert.match(
-    gameHtml,
-    /if\(_streamMap\)\{[\s\S]*_queueVisibleStreamChunks\(_stx0,_sty0,_stx1,_sty1,_camCx,_camCy\);/,
+    drawSource,
+    /_queueVisibleStreamChunks\(_stx0,_sty0,_stx1,_sty1,_camCx,_camCy\);/,
   );
   assert.doesNotMatch(
-    gameHtml,
-    /if\(_streamMap\)\{[\s\S]*if\(!_streamChunks\[_sk\]\)\{[\s\S]*_buildStreamChunk\(_scx,_scy\)/,
+    drawSource,
+    /if\(!_streamChunks\[_sk\]\)\{[\s\S]*_buildStreamChunk\(_scx,_scy\)/,
   );
 });
 
@@ -62,7 +66,7 @@ test('stream viewport cache is invalidated by viewport origin changes, not only 
   );
   assert.match(
     gameHtml,
-    /const _vpMoved=Math\.abs\(_streamVpWorldX-_drawX\)>T\*1\|\|Math\.abs\(_streamVpWorldY-_drawY\)>T\*1;/,
+    /const _vpMoved=Math\.abs\(_streamVpWorldX-_drawX\)>T\*3\|\|Math\.abs\(_streamVpWorldY-_drawY\)>T\*3;/,
   );
   assert.match(
     gameHtml,
@@ -74,14 +78,10 @@ test('stream viewport cache is invalidated by viewport origin changes, not only 
   );
 });
 
-test('only 1000x1000 class maps force stream loading; 300x300 maps stay on the legacy cache path', () => {
+test('stream loading also protects texture limits and the 64M-pixel cache ceiling', () => {
   assert.match(
     gameHtml,
-    /return \(mw\*mh\)>=1000\*1000;/,
-  );
-  assert.doesNotMatch(
-    gameHtml,
-    /return _pw>texLimit\|\|_ph>texLimit\|\|\(mw\*mh\)>=1000\*1000;/,
+    /if\(\(mw\*mh\)>=1000\*1000\) return true;[\s\S]*if\(mw\*T>texLimit \|\| mh\*T>texLimit\) return true;[\s\S]*if\(\(mw\*T\)\*\(mh\*T\) > 64000000\) return true;[\s\S]*return false;/,
   );
 });
 
@@ -117,11 +117,11 @@ test('map cache refreshes from late-loading assets are debounced through a singl
   );
   assert.match(
     gameHtml,
-    /_im\.onload=\(\)=>\{if\(G\.map&&G\.bossGate&&G\.bossGate\.length&&SI_TO_HELL\[G\.stage\]===_bgi&&!G\._bossArena\)_queueMapCacheRefresh\(\)\}/,
+    /_im\.onload=function\(\)\{_bossGateImgs\[_bgi\]=_removeWhiteBg\(_im\);if\(G\.map&&G\.bossGate&&G\.bossGate\.length&&SI_TO_HELL\[G\.stage\]===_bgi&&!G\._bossArena\)_queueMapCacheRefresh\(\)\}/,
   );
   assert.match(
     gameHtml,
-    /img\.onload=\(\)=>\{console\.log\('\[GT\] '\+id\+' loaded'\);if\(\(id==='gt_soil'\|\|id==='gt_void_wall'\)&&G\.map\)_queueMapCacheRefresh\(\)\}/,
+    /img\.onload=\(\)=>\{console\.log\('\[GT\] '\+id\+' loaded'\);if\(G&&G\.map\)_queueMapCacheRefresh\(\)\}/,
   );
 });
 
@@ -130,10 +130,12 @@ test('boot flow no longer does a duplicate full map rebuild immediately after wa
     gameHtml,
     /await _waitObjSprites\(8000\);\s*buildMapCache\(\);/,
   );
-  assert.match(
-    gameHtml,
-    /await _waitObjSprites\(8000\);\s*await new Promise\(r=>setTimeout\(r,0\)\);\s*if\(_bootMapBuildPromise\)\{\s*setBootLoading\(97,'[^']+'\);\s*await _bootMapBuildPromise;\s*\}\s*BGM\.play\(BGM\.stageKey\(G\.stage\)\);/,
-  );
+  const start = gameHtml.indexOf('await _waitObjSprites(8000);');
+  const end = gameHtml.indexOf('BGM.play(BGM.stageKey(G.stage));', start);
+  const bootSource = gameHtml.slice(start, end);
+  assert.ok(start >= 0 && end > start, 'boot map asset wait should precede BGM start');
+  assert.match(bootSource, /if\(_bootMapBuildPromise\)\{[\s\S]*await _bootMapBuildPromise;/);
+  assert.doesNotMatch(bootSource, /\bbuildMapCache\(\);/);
 });
 
 test('boot flow no longer force-completes background init or full stream chunk prebuild during loading', () => {

@@ -109,7 +109,7 @@ const _VI={
 '악의 사냥':'Săn Ác Ý',
 '폭풍소환':'Triệu Hồi Xoáy',
 '해골무덤':'Mộ Xương',
-'신성폭발':'Nổ Thánh',
+
 '블랙':'Hắc Tinh',
 '용암소환':'Triệu Hồi Dung Nham',
 '처형':'Hành Hình',
@@ -1073,7 +1073,7 @@ const _VI={
 '💫 포이즈 파괴!':'💫 Thăng Bằng Phá Hủy!',
 '⚡ 뇌전걸음!':'⚡ Ma Walk!',
 '✟ 구속의 영역!':'✟ Binding Domain!',
-'✟ 신성폭발!':'✟ Thánh Nổ!',
+
 '⛧ 블랙!':'⛧ Black Star!',
 '🌋 용암소환!':'🌋 Dung Nham Triệu Hồi!',
 '필살기 배정!':'Đã Gán Tuyệt Chiêu!',

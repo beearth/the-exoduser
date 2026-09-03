@@ -109,7 +109,7 @@ const _HU={
 '악의 사냥':'Rosszindulat Vadászat',
 '폭풍소환':'Örvény Idézés',
 '해골무덤':'Csont Sírbolt',
-'신성폭발':'Szent Robbanás',
+
 '블랙':'Fekete Csillag',
 '용암소환':'Láva Idézés',
 '처형':'Kivégzés',
@@ -1073,7 +1073,7 @@ const _HU={
 '💫 포이즈 파괴!':'💫 Tartás Megsemmisítve!',
 '⚡ 뇌전걸음!':'⚡ Szellemjárás!',
 '✟ 구속의 영역!':'✟ Kötés Terület!',
-'✟ 신성폭발!':'✟ Szent Robbanás!',
+
 '⛧ 블랙!':'⛧ Fekete Csillag!',
 '🌋 용암소환!':'🌋 Láva Idézés!',
 '필살기 배정!':'Elsöprő Kiosztva!',

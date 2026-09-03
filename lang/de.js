@@ -78,7 +78,7 @@ const _DE={
 '기검참':'Ki-Hieb','악의구':'Bosheitskugel','회전참':'Wirbelwind','기폭팔':'Detonation',
 '칼등 처내기':'Klingenparade','만화방창':'Nadelsalve','멸살광선':'Vernichtungsstrahl',
 '원소추적탄':'Elementarsucher','악의 보호자':'Bosheitswächter','악의 사냥':'Bosheitsjagd',
-'폭풍소환':'Wirbelsturm','해골무덤':'Knochengrab','신성폭발':'Heilige Explosion',
+'폭풍소환':'Wirbelsturm','해골무덤':'Knochengrab',
 '블랙':'Schwarzer Stern','용암소환':'Lavabeschwörung','처형':'Hinrichtung','악마화 부활':'Dämonische Auferstehung',
 '붉은꽃':'Purpurblüte','얼음보주':'Eiskugel','뇌전걸음':'Geisterschritt',
 '만화방창 II':'Nadelsalve II','마력연사':'Arkaner Beschuss','마력광선':'Arkaner Laser','업화선':'Höllenfeuerstrahl',
@@ -232,7 +232,7 @@ const _DE={
 '지옥의 군단':'Höllenlegion','사도의 마굴':'Apostelhöhle','지옥성':'Höllenzitadelle',
 // --- Misc ---
 '엑소듀서 전사':'Exoduser-Krieger','포이즈':'Haltung',
-'신성폭발':'Heilige Explosion','뇌전걸음':'Geisterschritt',
+'뇌전걸음':'Geisterschritt',
 '지옥창고':'Höllenlager','선택분해':'Selektives Zerlegen','쓰레기':'Müll',
 '복구 불가!':'Nicht wiederherstellbar!','중요잠금':'Wichtig-gesperrt',
 // --- Phase 9 additions ---
@@ -565,7 +565,7 @@ const _DE={
 '💫 포이즈 파괴!':'💫 Haltungszerstörung!',
 '⚡ 뇌전걸음!':'⚡ Geisterschritt!',
 '✟ 구속의 영역!':'✟ Bindende Domäne!',
-'✟ 신성폭발!':'✟ Heilige Explosion!',
+
 '⛧ 블랙!':'⛧ Schwarzer Stern!',
 '🌋 용암소환!':'🌋 Lavabeschwörung!',
 '필살기 배정!':'Ultimativ zugewiesen!',

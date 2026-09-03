@@ -78,7 +78,7 @@ const _NL={
 '기검참':'Ki Slash','악의구':'Kwaadbol','회전참':'Wervelwind','기폭팔':'Detoneer',
 '칼등 처내기':'Kling Pareer','만화방창':'Naaldbestorming','멸살광선':'Vernietigingsstraal',
 '원소추적탄':'Elementzoeker','악의 보호자':'Kwaadwachter','악의 사냥':'Kwaadjacht',
-'폭풍소환':'Wervelwindoproep','해골무덤':'Botgraf','신성폭발':'Heilige Explosie',
+'폭풍소환':'Wervelwindoproep','해골무덤':'Botgraf',
 '블랙':'Zwarte Ster','용암소환':'Lava Oproep','처형':'Executie','악마화 부활':'Demon Herrijzenis',
 '붉은꽃':'Karmijnbloei','얼음보주':'IJsbol','뇌전걸음':'Geestenstap',
 '만화방창 II':'Naaldbestorming II','마력연사':'Magische Beschieting','마력광선':'Magische Laser','업화선':'Helstraal',
@@ -233,7 +233,7 @@ const _NL={
 '지옥의 군단':'Hellegioen','사도의 마굴':'Apostelhol','지옥성':'Helburcht',
 // --- Misc ---
 '엑소듀서 전사':'Exoduser Krijger','포이즈':'Houding',
-'신성폭발':'Heilige Explosie','뇌전걸음':'Geestenstap',
+'뇌전걸음':'Geestenstap',
 '지옥창고':'Helopslag','선택분해':'Selectieve Ontmanteling','쓰레기':'Rommel',
 '복구 불가!':'Kan niet herstellen!','중요잠금':'Belangrijk-vergrendeld',
 // --- Phase 9 additions ---
@@ -645,7 +645,7 @@ const _NL={
 '💫 포이즈 파괴!':'💫 Houding Vernieling!',
 '⚡ 뇌전걸음!':'⚡ Geestenstap!',
 '✟ 구속의 영역!':'✟ Bindend Domein!',
-'✟ 신성폭발!':'✟ Heilige Explosie!',
+
 '⛧ 블랙!':'⛧ Zwarte Ster!',
 '🌋 용암소환!':'🌋 Lava Oproep!',
 '필살기 배정!':'Ultiem Toegewezen!',

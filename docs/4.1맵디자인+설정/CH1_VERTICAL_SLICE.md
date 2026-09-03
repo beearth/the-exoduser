@@ -38,7 +38,7 @@ COMBAT C = UPPER 분지
   ↓
 [EXIT APPROACH = 보스 게이트 12시] → (보스 아레나 로딩)
 ```
-- CH1-1은 **미니보스/거대보스 존이 분지 흐름 뒤 보스게이트로 연결**되는 구조(별도 아레나). 필드보스(심연의 앵글러)는 CH1-1 한정 2500px 진행 후 `kraken_vanish` 역재생 54틱으로 등장(본체 뿅 금지).
+- CH1-1은 **미니보스/거대보스 존이 분지 흐름 뒤 보스게이트로 연결**되는 구조(별도 아레나). 필드보스(심연의 앵글러)는 CH1-1 **맵 4마리 4각 색교체**(SW물/SE화/NW암/NE뇌), 홈 1000px 접근 시 `kraken_vanish` 역재생 54틱으로 등장(본체 뿅 금지). HP=`(1800+lv×350)×30`. 지옥문=4마리 전멸+처치 80%.
 - "남→북, 어긋난 흙 분지 3개. 가운데는 비고, 기억할 뼈는 1~2시." (COMPOSE INTENT, 초안) — **원형 아레나 아님, 직선 복도 아님.**
 
 ---
@@ -155,7 +155,7 @@ COMBAT C = UPPER 분지
 - **MISSING**: 전역 늪 전이 타일(auto-tile), 전경 occluder(planned only). CH1-1 local은 authored63 + baked 64-chunk + canonical forest tile boundary로 충족하며 신규 hand prop은 추가하지 않는다.
 
 ### Runtime event
-- 필드보스 `_fbTick`(51878) 2500px 게이트 유지. 보스 아레나 `_enterBossArena`(25111).
+- 필드보스 `_fbTick` CH1-1 맵 4마리 4각(물/화/암/뇌), 홈 1000px 기상. 지옥문=`G._fbDone`+80%. 보스 아레나 `_enterBossArena`.
 
 ### 미니맵
 - 현재 G.map+spawnHoles+player만. **보스게이트/포켓 마커 없음** → PHASE 6에서 추가.

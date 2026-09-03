@@ -109,7 +109,7 @@ const _IT={
 '악의 사냥':'Caccia Malizia',
 '폭풍소환':'Evocazione Vortice',
 '해골무덤':'Tomba d\'Ossa',
-'신성폭발':'Esplosione Sacra',
+
 '블랙':'Stella Nera',
 '용암소환':'Evocazione Lava',
 '처형':'Esecuzione',
@@ -1073,7 +1073,7 @@ const _IT={
 '💫 포이즈 파괴!':'💫 Postura Distrutta!',
 '⚡ 뇌전걸음!':'⚡ Passo Fantasma!',
 '✟ 구속의 영역!':'✟ Dominio Vincolante!',
-'✟ 신성폭발!':'✟ Esplosione Sacra!',
+
 '⛧ 블랙!':'⛧ Stella Nera!',
 '🌋 용암소환!':'🌋 Evocazione Lava!',
 '필살기 배정!':'Colpo finale assegnato!',

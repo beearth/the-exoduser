@@ -33,20 +33,21 @@ test('world drops keep a readable inventory skin in front of a subdued item-pill
 test('equipment drops alternate two centered item-pillar frames without lateral motion', async () => {
   const game = await readFile(path.join(rootDir, 'game.html'), 'utf8');
   await Promise.all([
-    'img/fx/world_item_drop_beams_source08_01.png',
-    'img/fx/world_item_drop_beams_source08_02.png',
+    'img/fx/world_item_drop_beams_v3_01.png',
+    'img/fx/world_item_drop_beams_v3_02.png',
   ].map((asset) => access(path.join(rootDir, asset))));
   const itemStart = game.indexOf("else if(it.type==='item'){");
   const itemEnd = game.indexOf("else if(it.type==='chest'){", itemStart);
   const itemDraw = game.slice(itemStart, itemEnd);
-  assert.match(game, /const _worldDropFx=\['img\/fx\/world_item_drop_beams_source08_01\.png','img\/fx\/world_item_drop_beams_source08_02\.png'\]\.map\(src=>\{const img=new Image\(\);img\.src=src;return img;\}\);/);
+  assert.match(game, /const _worldDropFx=\['img\/fx\/world_item_drop_beams_v3_01\.png','img\/fx\/world_item_drop_beams_v3_02\.png'\]\.map\(src=>\{const img=new Image\(\);img\.src=src;return img;\}\);/);
   assert.match(game, /const _worldDropFxTiles=\[\[\],\[\]\];/);
-  assert.match(game, /const _WORLD_DROP_FX_COLS=2,_WORLD_DROP_FX_ROWS=2;/);
-  assert.match(game, /const _srcW=Math\.floor\(img\.naturalWidth\/_WORLD_DROP_FX_COLS\),_srcH=Math\.floor\(img\.naturalHeight\/_WORLD_DROP_FX_ROWS\);/);
+  assert.match(game, /const _WORLD_DROP_FX_COLS=2;/);
+  assert.match(game, /const _srcW=Math\.floor\(img\.naturalWidth\/_WORLD_DROP_FX_COLS\),_srcH=_srcW;/);
+  assert.match(game, /const _rowsMax=Math\.floor\(img\.naturalHeight\/_srcH\);/);
   assert.match(game, /const _pillarFrame=~~\(\(_now\/180\+it\.x\)%2\);/);
-  assert.match(game, /const _fx=_worldDropFxTile\(_pillarFrame,_fxTile\);/);
+  assert.match(game, /const _beamTier=_getWorldDropBeamTier\(item\);[\s\S]*const _fx=_worldDropFxTile\(_pillarFrame,_beamTier-1\);/);
   assert.match(itemDraw, /const _fxDrawW=60,_fxDrawH=160;/);
   assert.match(itemDraw, /X\.globalAlpha=\.46\+Math\.sin\(_now\/400\+it\.x\)\*\.05;/);
-  assert.match(itemDraw, /const _fxTile=\[0,1,2,3,3,3\]\[item\.rarity\];/);
+  assert.match(game, /if\(item\.layerLv>=1\)return Math\.min\(10,~~item\.layerLv\);/);
   assert.match(itemDraw, /if\(_fx\)X\.drawImage\(_fx,it\.x-_fxDrawW\/2,it\.y\+b-_fxDrawH,_fxDrawW,_fxDrawH\);/);
 });

@@ -736,6 +736,7 @@ PASS 전 small prop 작업 금지.
 - structure가 바닥에 붙음
 - stain/root/shadow continuity
 - sticker feeling 제거
+- walkable 바닥이 40px 타일 계단으로 잘리지 않음. collision은 타일. 흙 occupancy는 1타일 dilate + blur 5 @ scale 4로 숲 아래로 넣고, 접촉 벽 칸 검정 fillRect/rim 스트로크는 금지. CH1-1 baked X hug 0.965. CH2는 organic mask.
 
 ---
 

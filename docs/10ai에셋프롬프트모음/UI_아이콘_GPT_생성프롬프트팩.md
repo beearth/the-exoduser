@@ -157,7 +157,7 @@ Secondary color: [보조색]
   - 빙결(I): 청/하늘 (iceStorm, iceOrb)
   - 암흑(D): 보라/흑 (darkPillar, maliceStorm)
   - 암전(L): 보라+초록 or 청백 번개 (venomBlade, thunderStake)
-  - 신성(H): 금/흰 (holyDome, holyBlast)
+  - 신성(H): 금/흰 (holyDome)
   - 대지(E): 갈색/황토
 - 단일 주제(피사체 1개), 배경 없음, 텍스트 없음
 

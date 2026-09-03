@@ -12,6 +12,7 @@
 | 로더 | `_physMouthImg` / `_drawPhysMouth` |
 | 회전 | 우향, `rotate(ang)` (머리=셀 중심) |
 | 적용 | redBean, fast/일반 `el===EL.P` |
+| 패링 | 적대 `EL.P` 입/뱀 외형은 `pierce:true` 포함 **E(sBash) 전용**. `_isPhysicalMouthProjectile`가 전용 VFX 탄을 제외하고 판별하며 Q는 반사하지 않고 "❌ E키로!"를 표시 |
 | 폴백 | `_drawEyeBullet` row4 → 바버폴 |
 | 원본 | 유저 제공 ChatGPT 시트 3장 (2026-08-23 12:02) |
 
@@ -26,12 +27,43 @@
 | 맵 | `_ELEM_ORB_ROW=[-1,0,2,1,3,5,4]` EL P,F,I,D,L,H,E |
 | 로더 | `_elemOrbImg` / `_drawElemOrb` |
 | 회전 | 우향, `rotate(ang)` (코어=셀 중심) |
-| 적용 | 일반·빠른탄 `el!==EL.P` |
+| 적용 | 일반·빠른탄 `el!==EL.P`; 대형 `elemBall` 중 화염·암흑·번개·신성·대지(`EL.F/D/L/H/E`) 폴백이 아닌 주 렌더 |
 | 원본 | 유저 제공 ChatGPT 2026-08-23 13:12 |
 
 ## 마법탄 (최초 무지개탄)
 
-마법탄은 `_drawClassicRainbow` — blackBean / blueBean / gbBean만. 이 원소 시트 미사용. **화이트볼(bwBean) 제거(2026-08-23)**. **물리탄 공통=빨콩 베이스**(homing, 선회 .005, E패링, 체감 ×0.7). 이빨=입 시트, **titanEye=혈안 눈깔** `proj_titan_eye.png` 시각 `21.7×_sSc`(성격은 빨콩, 그림만 눈깔).
+마법탄은 `_drawClassicRainbow` — blackBean / blueBean / gbBean만. **물 파란콩(`waterBean`)**은 `_drawWaterBean`이 API 생성 크라켄 물회오리 탄두를 `96px` 길이로 그린다. 구 시안 다중 원·직선 꼬리와 공용 pass-0 트레일/pass-1 원형 글로우는 사용하지 않는다. **화이트볼(bwBean) 제거(2026-08-23)**. **이빨형 E패링탄 공통=물리 이동 프로필**(최종 300px/s 고정, homing 선회 `.00436332`≈15°/s): `redBean+EL.P`, 화속성 `redBean+EL.F`, 근접 빨콩, `titanEye`가 모두 해당한다. 화속성 빨콩은 화상·속성 판정만 `EL.F`로 유지한다. 일반 마법탄·물 파란콩·화성송·색탄은 `.0262`≈90°/s, 무지개탄은 `.02325`≈80°/s로 유도한다. **titanEye=혈안 눈깔** `proj_titan_eye.png` 시각 `21.7×_sSc`(그림만 눈깔). **라운드 컬러는 발사탄 속성 예고**이며 모든 물리/E패링 차징 링은 경로와 무관하게 흰색 `#f4f4f4`다. 일반 `_pcPhysical`뿐 아니라 특수 산호 파편·기생충·삼지창의 `eShootWind`도 `_swChargeEl=EL.P`로 동일 처리한다.
+
+## API 생성 소형 크라켄 탄두 / 은꼬리 차지 범위 (2026-09-03)
+
+| id | 파일 | 원본 크기/형식 | 화면 크기·공식 | 합성 | 적용 위치 |
+|---|---|---|---|---|---|
+| `krakenShot` | `img/balls/proj_kraken_shot_api_v1.png` | 1945×809 RGB, 근검정 배경, 우향 단일 탄두 | `waterBean=96px`; 물리/빙 `elemBall=170px`; 높이는 원본 비율 `W×809/1945` | 로드시 `_makeBlackAdditiveCutout`: `max(R,G,B)≤24 → alpha 0`, `24–72 → smoothstep×원본 alpha`, `≥72 → 원본 alpha`; 이후 `lighter`, `rotate(atan2(vy,vx))`, 중심 보정 `x=-0.54W` | `_drawKrakenShot`; `_drawWaterBean`; pass-2 `elemBall` |
+| `silvertailChargeRange` | `img/vfx/silvertail_charge_range_api_v1.png` | 1254×1254 RGB, 근검정 배경, 개방형 은빛 룬 아크 | 지름 `range×2.24×(1+sin(frame×.16)×.018)`; 글로우 alpha `.12+tier×.035`, 본체 `.34+tier×.10` | 같은 `_makeBlackAdditiveCutout(24,72)` 캐시 후 `lighter`, `rotate(facing+π)` | `_drawSilvertailChargeRange`; `sDraw/kiGather` |
+
+- `elemBall`은 `EL.P/EL.I`일 때 크라켄 탄두를 쓰고, `EL.F/D/L/H/E`는 `proj_elem_orb.png`의 해당 속성 행을 쓴다. 양쪽 모두 실패할 때만 `proj_bolt_comet.png`로 폴백한다.
+- 크라켄 탄두가 몸체와 물결 꼬리를 한 실루엣에 포함하므로 `waterBean`/`elemBall`은 공용 선 트레일과 원형 글로우 패스에서 제외한다. 피해·속도·유도·히트박스·패링 계약은 변경하지 않는다.
+- 차지 범위는 기존 반경 공식 `~~((70+(maliceSwipe−1)+방패range×4)×현재mult)`을 그대로 사용한다. 구 radial-gradient 원, 전방 부채꼴 채움, 9/7 점선 아크는 제거하고 내부가 빈 API 룬 아크만 표시한다.
+
+## 일반 몬스터 돌진 장전 가이드 (`eChargeWind`) — 2026-09-02
+
+| VFX ID | 파일 | 원본/크기 | 화면 크기 | opacity/합성 | 적용 위치 |
+|---|---|---|---|---|---|
+| `chargeStartRift` | `assets/vfx/enemy/charge_start_rift.png` | 550×512 RGBA | 높이 `clamp(e.r×2.1, 35, 50)px`, 폭은 원본 비율 | `0.56×fade`, `source-over` | `_drawChargeTele`, 몬스터 중심 `x=0` |
+| `chargeBodyMist` | `assets/vfx/enemy/charge_body_mist.png` | 1024×128 RGBA | 길이 `_chgVisLen`, 폭 `e.r×1.7` | 면 `0.27×fade`, 중앙 에너지 `0.11×fade`, `source-over` | `_drawChargeTele`, START→END 위험구간 |
+| `chargeBodyEdge` | 프로시저럴 균열선 2개 | `#a52b22`, lineWidth `1.25` | BODY 양쪽 가장자리 | 기준 `0.62×fade`, ±3.5% pulse, `source-over` | `_drawChargeTele` |
+| `chargeEndSpear` | `assets/vfx/enemy/charge_end_spear.png` | 776×512 RGBA | 높이 `clamp(e.r×2.5, 45, 65)px`, 폭은 원본 비율 | `0.70×fade`, `source-over` | `_drawChargeTele`, 도착점 `x=_chgVisLen` |
+
+| 단계 | `st2`/진행률 | 렌더 동작 | 의미 |
+|---|---:|---|---|
+| 전조 시작 | `90`, elapsed `0` | START/BODY/END alpha `0` | 예고 시작 |
+| fade-in | elapsed `0→30f` | `fade=clamp(elapsed/30,0,1)` | 60fps 기준 0.5초에 완전 표시 |
+| 예고 유지 | `st2:60→0` | BODY 균열선만 `1+sin(elapsed×0.24)×0.035` 미세 pulse | 방향·위험 범위 표시 |
+| 돌진 발동 | `st2≤0` | `eCharge` 전환과 동시에 텔레그래프 즉시 제거 | 기존 돌진 발사 |
+
+- 렌더 좌표는 `A=(e.x,e.y)`, `B=A+(_chgVisLen×echDx, _chgVisLen×echDy)`, `angle=atan2(echDy,echDx)`를 사용한다. BODY만 X축으로 `_chgVisLen`까지 stretch하고 START/END는 원본 비율을 유지한다.
+- 이미지 로드 전에도 불투명 사각형을 사용하지 않고 균열·안개·창촉 path 폴백을 사용한다. 과한 bloom/네온 합성은 사용하지 않는다.
+- 시각 전용 교체다. 90f 예고, 앞 24.5% 조준 추적, 벽 클리핑, 속도 42px/f, 지속 19/17/15f, 피해 `atk×30`, sweep 히트박스 `P.r+e.r+18`은 변경하지 않는다.
 
 ## 폭발 임팩트 (`_addBoom`) 총정리
 
@@ -173,6 +205,74 @@ path: '/v1/images/generations'
 | 사용처 | `teleportE()` 도착지 + `activateTimeWarp()` 시간왜곡 발동. **필드보스 착지는 `kraken_tp`로 이관** |
 | 스케일 | 텔레포트: `isBig?r/8:r/12`, 시간왜곡: 고정 4 |
 
+## 크라켄 기모으기 (`fieldboss_angler_charge`)
+
+| 항목 | 값 |
+|---|---|
+| 파일 | `img/fieldboss_angler_charge.png` |
+| 시트 | 2048×256, 8프레임 가로. 원본 08_01_10 크라켄 CHARGE 줄 컷 |
+| 위치 | `_fbEsca`. dsz=280, `lighter` |
+| 타이밍 | `enChg` 180f, 프레임 0→7 |
+
+## 크라켄 에너지탄 비행 스프라이트 (`proj_kraken_water`) — 2026-09-01(2026-09-02 물 소용돌이 구체로 교체)
+
+크라켄 거대 에너지탄(`fbEnergy`)의 비행 그림. 구 절차적 파란 구체(`elemBall` glow) → **물 소용돌이 구체 스프라이트** 교체. 시각 전용, 데미지·판정·유도·속도 불변. (교체 이력: 물줄기 어뢰 2×4 → 드래곤 머리 4×2 → **현재=물 소용돌이 구체 4×4**)
+
+| 항목 | 값 |
+|---|---|
+| 파일 | `img/proj_kraken_water.png` (현재 원본 1254×1254, 파란 물 소용돌이 구체) |
+| 시트 | **4열×4행 16프레임** 정사각셀 (프레임 `cw=W/4`≈313, `ch=H/4`≈313). `col=fr%4`, `row=(fr/4)|0`, `%16` |
+| 함수 | `_fbDrawFly(p)` — `_fdDrawFly`(화마귀)와 동일 패턴, 단 회전 없음 |
+| 합성 | `lighter` (검정 배경 자동 투명) |
+| 회전 | **없음** — 방사형 대칭 구체라 방향성 무관. 중심 정렬만 |
+| 크기 | **`dw=240`**, `dh=dw×(ch/cw)=240` — 화마귀 `fdEnergy`와 동일 화면 크기 (구 336px에서 축소) |
+| 앵커 | `drawImage(...,-dw/2,-dh/2,...)` — 구체 중심을 탄 중심에 정렬. 접촉 판정은 작은 spawn r26이 아니라 보이는 핵 `max(r,sz)` 사용 |
+| 프레임 | `p._sprFr`(pass-2 루프서 +0.12/frame) `%16` |
+| 렌더 분기 | pass-2 `if(p.fbEnergy){_fbDrawFly(p)}` (elemBall glow 앞). pass-1 글로우 언더레이 `p.fbEnergy` skip |
+| 로더 | `_fbFlyImg`(`_titanEyeImg` 옆) |
+| Q패링 출력 | 거대 시트 제거 후 동일 속성 **혜성형 일반 마법탄 5발**. `magic` 충돌 경로와 r8 규격은 유지하되 `_parryMagicShot` 전용 시각 분기로 기존 `img/balls/proj_bolt_comet.png` 8프레임 시트를 `_drawCometBullet` 길이 **44px**(일반 마법탄 20px×2.2와 동일)로 그린다. `arcMissile`·발사 잠금·튕김과 일반 `_projEmit` 먼지는 사용하지 않는다. 총 반사 피해를 5등분하며 `EL.F` 빨강, `EL.I` 파랑, 암/뇌는 `ELC` 속성색. HP/ST/MP·작살 게이지·분노·악의·parryBank 자원회수는 일반 Q의 ×10(각 자원 상한 적용) |
+| 충돌 VFX 보장 | 플레이어 상대 스윕 접촉, 중심+원주 8점 벽 스윕 접촉, 평화의보호 비패링 흡수 모두 `_fbEnergyBoom` r220을 호출하고 원본을 즉시 회수. 무적/돌진은 피해만 0 |
+| 패링 소유권 | 기본 Q/평화의보호 Q만 `_resolveBigEnergyParry`로 5분열. E·기동파괴·파워웨이브·일반 방패던지기는 대형탄을 `friendly`로 바꾸지 않음. friendly 대형탄 30관통 연출은 폐기 |
+
+## 화마귀 기모으기 (`fieldboss_firedevil_charge`)
+
+| 항목 | 값 |
+|---|---|
+| 파일 | `img/fieldboss_firedevil_charge.png` |
+| 시트 | 1448×1086 → 1200×900, 4×3, 12프레임 |
+| 위치 | `_fdEye`. dsz=200, `lighter` |
+| 타이밍 | `enChg` 180f, 프레임 0→11 |
+| 몸체 동시 재생 | 매 틱 플레이어를 바라보는 현재 방향의 `fieldboss_firedevil_walk_*`를 `chargeWalkT` **18틱/프레임(약 3.3fps)**으로 느리게 재생. 좌표 이동 없음. `_fdAnimFrame`이 이동 6틱과 충전 18틱을 분기 |
+
+## 화마귀 순간이동 (emerge 시트 축소/확대)
+
+| 항목 | 값 |
+|---|---|
+| 시트 | `img/fieldboss_firedevil_emerge.png` 8프레임 2×4 |
+| 출발 | 옛자리 프레임 7→0 (완전체→작은 연기) |
+| 도착 | 목적지 프레임 0→7 (작은 연기→완전체) |
+| 타이밍 | 동시 54틱(`emT`). 끝난 뒤 좌표 스냅 |
+| 첫 출현 | 도착 0→7만 (`spawnIn`) |
+| 로더 | `_fdDrawEmerge` |
+
+## 화마귀 비행 불구체 (`proj_firedevil_orb`) — 2026-09-02 용암 회전구로 교체
+
+구 불용암 눈-촉수 발사체(`proj_firedevil_eye.png`, 6×2 12f, 방향성 있음) → **원형 용암 회전구**(`proj_firedevil_orb.png`)로 교체. 시각 전용이며 데미지·판정·유도·속도는 불변이다.
+
+| 항목 | 값 |
+|---|---|
+| 파일 | `img/proj_firedevil_orb.png` (1254×1254 RGBA, alpha 0~255, 원형 용암 구체) |
+| 시트 | **4열×4행 16프레임** 정사각셀(`cw=W/4=313.5`, `ch=H/4=313.5`). `col=fr%4`, `row=(fr/4)|0`, `%16` |
+| 로더 | `_fdFlyImg` / `_fdDrawFly` |
+| 회전/앵커 | 방사형 대칭이므로 속도 방향 회전 없음. `drawImage(...,-dw/2,-dh/2,...)`로 투사체·히트박스 중심에 정렬 |
+| 크기 | `dw=240`, `dh=dw×(ch/cw)=240` |
+| 합성 | 실제 RGBA 투명도를 유지하고 `lighter` 합성 |
+| 적용 | `p.fdEnergy` 탄. 일반 `elemBall` 분기보다 먼저 그림. 시트 미로드 시 `EL.F`의 `proj_elem_orb` 속성행 폴백 |
+| 판정 | 스폰 r18→23.4, 최종 sz96. 플레이어 상대 스윕 히트 `P.r+max(p.r,sz)`=`P.r+96`(보이는 핵). 벽은 이동 구간의 중심+원주 8점 스윕. Q패링 `P.r+sz+90`→기본 `magic` 판정 r8의 빨간 혜성형 마법탄 5발(`_parryMagicShot`, `_drawCometBullet` 44px, 일반 먼지 없음, 총 반사 피해 5등분)+HP/ST/MP·작살·분노·악의·parryBank 자원회수 ×10. 플레이어·벽 접촉은 항상 `_fbEnergyBoom` r220 후 소멸하며, 무적 프레임/돌진 중에는 폭발만 하고 피해는 0 |
+| 비행 | raw 6×1.8=10.8, **직선(무유도)**. 공격 텀 180f(3초) |
+| 제외 | 올챙이 머리 원은 **전 탄** 폐기(2026-09-01). 화마귀는 패스1 글로우도 스킵 |
+| 원본 | 유저 제공 Downloads `ChatGPT Image 2026년 9월 2일 오후 03_47_47.png`를 픽셀 손실 없이 사용 |
+
 ## 크라켄 순간이동 임펙트 (kraken_tp)
 
 | 항목 | 내용 |
@@ -197,7 +297,7 @@ path: '/v1/images/generations'
 
 ## 순간이동 전조 (텔레그래프) 시스템
 
-일반 몬스터 순간이동은 즉발이 아니라 **전조 원이 차오른 뒤 발동**한다. `_tpWarnT`(남은 프레임) / `_tpWarnMax`(총 프레임)로 충전 진행도를 계산하고, 본체에 채워지는 호 + 도착지 조준 에임을 그린다. 렌더: `draw()` 내 `if(e._tpWarnT>0)` 블록.
+일반 몬스터 순간이동은 즉발이 아니라 **전조 타이머가 끝난 뒤 발동**한다. `_tpWarnT`(남은 프레임) / `_tpWarnMax`(총 프레임)로 진행도를 계산한다. **원 오버레이 렌더는 2026-09-01 폐기**(본체 충전원·도착지 점선원·`_tpFlashT` 확장원·보스 텔포 경고원). 타이머·`teleportE()`·착지 강타는 유지.
 
 ### 전조 시간 (60틱=1초 기준, 전 텔포 몹 공용)
 | 몹 | 변수/위치 | 전조 시간 |
@@ -213,13 +313,10 @@ path: '/v1/images/generations'
 ### 전조 렌더 구성
 | 요소 | 값 |
 |---|---|
-| 본체 가이드 풀원 | `arc(e.x,e.y,e.r+7)` alpha 0.18 |
-| 본체 충전 호 | `-π/2` 시작, `2π×_twP` 만큼 시계방향 채움 |
-| 본체 글로우 펄스 | `e.r+2`, 충전될수록 밝게 (0.2→0.6) |
-| 완성 임박(70%↑) 백색 깜박임 | `sin(_now*.05)` |
-| **도착지 조준 에임** | 반경 `_tr=(e.r+10)*2` (2배 확대) + 점선 링 (십자 제거) |
+| 원 오버레이 | **폐기 (2026-09-01)**. 본체 충전원·도착지 점선원 그리지 않음 |
+| 타이머 | `_tpWarnT` 120f 유지. 끝나면 `teleportE()` |
 
-> 2026-06-29: 도착지 조준 에임 반경 `e.r+10` → `(e.r+10)*2`로 **2배 확대**. 십자(+)는 "짜친다" 피드백으로 **제거**, 점선 원만 유지.
+> 2026-06-29: 도착지 조준 에임 반경 `e.r+10` → `(e.r+10)*2`. 십자 제거, 점선 원만. **2026-09-01: 점선 원도 폐기.**
 
 ### 도착 충격범위 (2배 확대, 2026-06-29)
 | 요소 | 이전 | 현재 |
@@ -239,7 +336,7 @@ path: '/v1/images/generations'
 | 조건 | `!e.ib`(비보스) + `P.iframes<=0` + `P.s!=='charge'`(돌진 무적 회피 가능) |
 | 넉백 | 방사 방향 60 |
 | 표시 | `_T('충격파!')` (기존 번역어 재사용, 신규 번역 없음) |
-| 회피법 | 2초 전조 동안 조준 원 밖으로 이동 |
+| 회피법 | 2초 전조 동안 거리 벌리기. 조준 원은 그리지 않음 |
 > 보스/부활 텔포는 자체 패턴 유지 위해 `!e.ib` 가드로 착지 강타 제외.
 
 ## 순간이동 연기 (TP-SMOKE) VFX
@@ -284,8 +381,8 @@ path: '/v1/images/generations'
 | 시간왜곡 텔포 (28096) | `_r95*4, 18f` | `_r95*5, 22f` | 시간왜곡 몬스터 |
 | 보스 텔레포트 준비 (28765) | `_br*4, 18f` | `_br*5, 22f` | 보스 공중 텔포 |
 | 부활 순간이동 (30082) | `_rvR*4, 18f` | `_rvR*5, 22f` | 보스 부활 후 재배치 |
-| 필드보스 심연의 앵글러 `_fbTick` TP (2026-08-23) | `kraken_vanish` 정방향 옛자리 | 도착지 `kraken_vanish` 역재생 꿈틀 상승 + `kraken_tp` 착지 | 빨간 장판만 나오던 문제 수정. 예고=상승 연출 |
-| 필드보스 심연의 앵글러 첫 출현 (2026-08-23) | 없음(옛자리 없음, `spawnIn`) | 도착지 `kraken_vanish` 역재생 54틱 + `kraken_tp` 착지 | 구 구현은 `hid:0` 본체 즉시 표시. 착지 강타 데미지 없음 |
+| 필드보스 심연의 앵글러 `_fbTick` TP (2026-08-23) | `kraken_vanish` 정방향 옛자리 | 도착지 `kraken_vanish` 역재생 꿈틀 상승 + `kraken_tp` 착지 | 빨간 장판만 나오던 문제 수정. 예고=상승 연출. 포탈/충전 색은 `_fbElCol`(물/화/암/뇌) |
+| 필드보스 심연의 앵글러 첫 출현 (2026-08-23) | 없음(옛자리 없음, `spawnIn`) | 도착지 `kraken_vanish` 역재생 54틱 + `kraken_tp` 착지 | 구 구현은 `hid:0` 본체 즉시 표시. 착지 강타 데미지 없음. 본체 원본 시트(source-atop 워시 폐기). 에스카 충전 180f → 거대 에너지탄 폭발 r220 |
 | 지상뱀장어 `_wmVanish/_wmAppear` (2026-08-23) | `r*3, 18f` + 흙 파티클 | `r*2.2, 16f` + `_addTpImpact(r*2.2)` | hide 54f 동안 도착지에 프레임0→1 엿보기. `!` 원 제거. 보이면 도망. |
 
 ## 독립 필드몹 사망 VFX (`_fmDeathFx`, 2026-08-23)
@@ -423,3 +520,65 @@ Ori 수준 대기 깊이감. 광원 근처에서 존재감 나는 미세 입자.
 - **A1 이중틴트 완화**: 그레이드Hi .09→**.045**, Lo .10→**.05** (타세션 컬러조명과 색영역 중복 → 색은 조명 소유, ATMOS는 깊이 담당). 조명 합성지점: game.html 라이트패스 `X.globalAlpha=LIT_COL_MIX` lighter.
 - **A2 자동승격 차단**: `_atmUserSet`(사용자 atmos 수동변경 시 1). STEP5 복구조건 `else if(OPT.atmos===1&&!_atmUserSet)`. 자동강등(부스 안전장치)은 유지.
 - **튜닝 HUD**(디버그 전용): `_ATM_TUNE=false`(소스 마스터, false시 100% 무영향)·`_atmHudOn`(F9 가시성 토글)·`_atmSel`. 키(게임 keydown 분기, 새 리스너 없음): F9 토글 / ↑↓ 선택 / ←→ ±.005 / PgUp·Dn ±.05(0~1 클램프) / C 배열 console 출력(`.220` 붙여넣기형) / R 초기값. 전용 DOM 오버레이 캔버스(z100000, booth와 분리해 clearRect 충돌 방지). 영문 고정(번역 제외).
+
+---
+
+## 탄막블랙홀(lavaSummon) 지속 흡수 연출 (2026-09-03, 현재 사양)
+
+`lavaSummon`은 구 용암소환/악의흡수를 대체한 **화염 계열 탄막 정리 필살기**다. 플레이어 위치에 작은 특이점을 즉시 설치하고 5초 동안 적 탄막을 흡수한 뒤, 저장된 탄막 에너지를 용암빛 범위폭발로 방출한다. `blackStar`는 몬스터 흡인 전용이며 탄막블랙홀은 탄막 흡수 전용으로 역할을 분리한다.
+
+| 레이어/계약 | 현재 구현값 | 적용 위치 |
+|---|---|---|
+| 지속시간 | 300f(5초), 즉시 설치 | `_bulletBlackHoleDuration()`, `P._lvCasting` |
+| 애니메이션 에셋 | `assets/vfx/bullet_black_hole_sheet.png`; API 생성 후 투명 RGBA로 정규화한 2048×1024, 4열×2행, 셀 512×512, 총 8프레임 | `_bulletBlackHoleSheet` |
+| 코어/강착원반 | 화면 표시 지름 `(238+진행도×34)×(1+sin(now×.018)×.025)`px(기준 238→272px). 검은 특이점과 적·주황 용암 강착원반을 `source-over`, alpha .96으로 렌더 | `if(P._lvCasting)` 렌더 블록 |
+| 프레임 진행 | `floor(now/80)%8`; 80ms/프레임(12.5fps), 640ms 완전 루프. 소스 좌표=`(frame%4)×512`, `floor(frame/4)×512` | `if(P._lvCasting)` 렌더 블록 |
+| 로딩 폴백 | 시트 미로딩/폭 2048px 미만이면 기존 `img/vfx_pentagram_red.png`를 반경 92px로 작게 회전시키고 검은 코어+주황 테두리 합성 | `_pentaRed`, `if(P._lvCasting)` |
+| 생성 후처리 | 생성 API가 투명 배경 대신 체크무늬를 구워 반환하므로 `tools/process-bullet-black-hole-sheet.mjs`가 2048×1024로 리사이즈하고 밝은 중성 체크무늬를 알파 제거. 최종본은 RGBA이며 투명/가시 픽셀 회귀검증 | `tools/process-bullet-black-hole-sheet.mjs`, `test/bulletBlackHoleVfx.test.js` |
+| 흡수장 | `1000+(Lv-1)×25px`(Lv1 1000/Lv20 1475), 저알파 외곽선 2겹 | `_bulletBlackHoleAbsorbRadius()` |
+| 흡수 대상 | 범위 안의 살아 있는 적 `projs`; 패링 불가 무지개탄(`blackBean`)·대형 에너지탄 포함, 아군탄·지뢰·함정·거미줄·독장판 제외 | `_absorbBulletBlackHoleProjectiles()` |
+| 흡수 피드백 | 탄 위치에서 중심으로 향하는 입자, 상단 `ABSORB n` 누적 카운터 | 흡수 helper + 렌더 블록 |
+| 종료 폭발 | `900+(Lv-1)×30px`(Lv1 900/Lv20 1470), `ult_lava_c.png` 버스트 | `fireLavaSummon()` |
+| 폭발 색 | 검은 파편 + 적색/주황/황색 용암 파편 | `fireLavaSummon()` |
+| 진행 UI | 5초 카운트다운 + 진행 바 + 흡수 수 | `if(P._lvCasting)` 렌더 블록 |
+
+### 폐기 이력 — 용암소환 5망성 시전 애니메이션 (2026-09-01)
+
+궁극기 `lavaSummon`(빨간 오망성) 시전 VFX를 기존 단순 빨간 선 별 outline에서 **마그마 오망성**으로 교체. game.html 렌더 블록(`if(P._lvCasting)`, cx=`P._lvX`, cy=`P._lvY`, prog=`P._lvT/360`, r=`320+prog*280`, rot=`_now*0.0015`).
+
+| 레이어 | 구현 | 비고 |
+|---|---|---|
+| 바닥 scorch | 동심 **솔리드 원 4겹**(source-over, `rgba(60~200,...,0)` 붉은 계열) | **WebGL 프록시가 `createRadialGradient`를 색 무시하고 흰/회색으로 뭉갬 → 실기서 흰 disc 버그(2026-09-01). 그라디언트 전면 폐기, 솔리드 원만 사용.** 헤드리스는 Canvas2D 폴백이라 gradient 정상→오판 주의 |
+| 방사 균열 | 12가닥 `source-over` 스트로크 `#c22200`/`#ff6a10` | 중심에서 뻗는 용암 금 |
+| 마그마 별 | 5패스 `source-over` 굵기 점감: `#2a0700`(crust)→`#8f1900`→`#ff4400`→`#ffb43a`→`#fff2c8`(백열 코어) + `lighter` 저알파(0.1~0.16) bloom 1패스 | 굵은 검은 crust→얇은 백열 코어 = 용암 튜브. 진행형 draw(`_drawLen=prog*5`) |
+| 흐름 방울 | 현재 그려지는 선분 위 백열 방울(`#ff7a00`+`#fff2c8` 코어) `(_now*0.0013)%1` 이동 | molten flow |
+| 꼭짓점 노드 | `source-over` 솔리드 `#ff5200`+`#ffe28a` 코어, `_pulse` 맥동 | |
+| 룬 서클 | `r*1.16` 진행 아크 + 28눈금(`#ffaa33`/`#c23000`) 역회전 | |
+| 잉걸불 | `poolPart` 상승 ember 프레임당 최대 2 | |
+| 발동 섬광 | prog>0.92 마지막 8%, 중앙 작은 코어 `r*0.16*(0.6+_fb*0.8)` `source-over` | **전체 화이트아웃 금지** — 작은 중앙 플래시만 |
+| 진행 UI | 진행 바 + `🌋 Ns` 카운트다운(테마 재도색) | |
+
+- 6초 시전 동안 별이 점진적으로 그려지고(별→룬서클→노드), 발동 직전 중앙 섬광 후 `fireLavaSummon()` 폭발.
+- 기존 버그성 `+prog*35;` 잔여 표현식 제거. 판정/데미지/쿨다운 로직 불변(연출만).
+
+### 폐기 이력 — 용암소환 붉은 마법진 이미지화 (2026-09-01 재작업)
+
+절차적 선-별(오망성 5선분) → **정교한 화염 오망성 마법진 이미지 소환**으로 교체.
+- **에셋**: `img/vfx_pentagram_red.png` — 기존 `img/vfx_pentagram_gold.png`(793², RGBA 알파 정상)를 골드→진홍 재도색(PIL: G채널 `×(0.30+0.40·lum)`, B `×(0.18+0.30·lum)`, R `×1.03`). **알파 보존**. 당시 비교 대상이던 불투명 홀리서클은 2026-09-03 삭제됐다.
+- **로드**: `_pentaRed=new Image()` (`_pentaPurple`/`_pentaGold` 옆).
+- **소환 렌더**(`P._lvCasting` 블록): `_ez=smoothstep(prog)`, 크기 `2.15·r·(0.55+0.45·_ez)·_pulse`(작게→풀), alpha `min(1,prog·1.7)`, `rot` 회전. 2패스: `lighter` 외곽 글로우 크게 저알파 + `source-over` 본체.
+- 유지: 동심 솔리드 scorch + 방사 균열 + 회전 룬 눈금 + 잉걸불 ember + 발동 직전 중앙 솔리드 플래시. **그라디언트 0**(프록시 흰색 버그 회피).
+- 검증: 시전 30/55/85/100% 캡처 — 마법진 스케일인·회전·풀사이즈·중앙 플래시 정상, pageerror 0. (실기 WebGL은 alpha PNG라 정상; 헤드리스는 Canvas2D 폴백)
+
+### 폐기 이력 — 용암소환 붉은 마법진 AI 생성본 (2026-09-01)
+
+재도색본(골드→진홍)이 저퀄이라 **AI 신규 생성**으로 교체.
+- **생성**: higgsfield `nano_banana_pro` 2048² 3종 → V2 채택(굵고 선명한 중앙 오망성). 프롬프트=top-down 화염 룬 소환진, pure black bg.
+- **가공**(PIL): 검은 배경 → alpha=`max(R,G,B)×1.15` 추출(글로우 소프트 엣지), R×1.05, bbox crop, 1024² 저장 → `img/vfx_pentagram_red.png` 덮어씀. 알파 0~255 정상(홀리서클 검은박스 문제 없음).
+- **애니메이션**: 기존 소환 렌더(scale-in+rotate+fade+scorch+ember+climax)에 **화염 flicker** 추가 — glow 2겹 lighter × `_flk=0.72+0.20·sin(now·0.031)+0.12·sin(now·0.073)`(불꽃 맥동). AI 프레임 직접생성 대신 고퀄 1장+절차적 애니(과거 AI 영상/프레임 실패 회피, [[ai-video-gen-limits]]).
+- 검증: 시전 30/55/85/100% 인게임 캡처 정상, pageerror 0.
+
+### 폐기 이력 — 악의흡수(구 용암소환) 개편 (2026-09-02)
+- **당시 메커니즘**: 6초 붉은 마법진 시전 후 `projs`의 모든 적 탄막을 한 번에 제거하고 2000~4000px 화면범위 폭발. 2026-09-03 탄막블랙홀의 5초 지속 흡수 방식으로 대체되어 현재는 사용하지 않는다.
+- **현재 계약**: 위 `탄막블랙홀(lavaSummon) 지속 흡수 연출` 표가 SSOT다. 대형 붉은 오망성 주 연출은 제거됐으며, 기존 `img/vfx_pentagram_red.png`는 API 시트 미로딩 때만 반경 92px의 작은 안전 폴백으로 사용한다.
+- **신성폭발(`holyBlast`) 완전 삭제(2026-09-03)**: 숨김 정의와 구세이브 호환 동작까지 제거했다. 시전/빛기둥 렌더, 9프레임 로더, `img/vfx_holycircle_gold.png`, `sprites/holy_explosion/.../frame_000~008.png`, 전용 아이콘을 배포 파일에서 삭제했다. 전기 타격용 `assets/vfx/boss/vfx_holy_burst.png`와 F 영역 합체 `holyFuse`는 별도 시스템이므로 유지한다.

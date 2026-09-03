@@ -4,34 +4,10 @@ import { readFileSync } from 'node:fs';
 
 const gameHtml = readFileSync(new URL('../game.html', import.meta.url), 'utf8');
 
-test('defines earthBreaker as a separate physical active skill', () => {
-  assert.match(
-    gameHtml,
-    /id:'earthBreaker',name:'대지파괴'.*cat:'phys'.*act:true.*desc:'제자리에서 땅을 내려찍는 물리 스킬/
-  );
-});
-
-test('earthBreaker hit count scales at level 1, 5, and 10', () => {
-  assert.match(
-    gameHtml,
-    /function _earthBreakerHitCount\(slv\)\{\s*if\(slv>=10\)return 3;\s*if\(slv>=5\)return 2;\s*return 1;\s*\}/
-  );
-});
-
-test('earthBreaker total damage scales by 10 percent per level and splits across hits', () => {
-  assert.match(
-    gameHtml,
-    /function _earthBreakerSplitDamage\(baseDamage,slv\)\{[\s\S]*const hitCount=_earthBreakerHitCount\(slv\);[\s\S]*const totalDamage=~~\(baseDamage\*\(1\+\(slv-1\)\*0\.10\)\);[\s\S]*const perHit=~~\(totalDamage\/hitCount\);[\s\S]*const remainder=totalDamage-perHit\*hitCount;[\s\S]*damages\.push\(perHit\+\(i<remainder\?1:0\)\)/
-  );
-});
-
-test('earthBreaker dispatches through skill slots as a standalone cast', () => {
-  assert.match(
-    gameHtml,
-    /case 'earthBreaker':\s*if\(\(P\._earthBreakCd\|\|0\)>0\)\{showPH\('[^']+','#ff8844'\);break\}\s*if\(P\.st>=stCost\('earthBreaker'\)\)\{activateEarthBreaker\(\);_skOk=true\}/
-  );
-  assert.match(
-    gameHtml,
-    /function activateEarthBreaker\(\)\{[\s\S]*P\._earthBreakAnimT=18;[\s\S]*const _earthFused=_isFused\('earthSlam'\)&&P\.skills\.giantSlam2>=1;[\s\S]*if\(_earthFused\)\{[\s\S]*_triggerEarthSlamFusion\(P\.x,P\.y\);[\s\S]*return;?[\s\S]*\}[\s\S]*_startEarthBreaker\(P\.x,P\.y\);/
-  );
+test('removed earthBreaker skill cannot re-enter the registry or dispatch path', () => {
+  assert.doesNotMatch(gameHtml, /id:'earthBreaker'/);
+  assert.doesNotMatch(gameHtml, /case 'earthBreaker':/);
+  assert.doesNotMatch(gameHtml, /function activateEarthBreaker\(/);
+  assert.doesNotMatch(gameHtml, /function _earthBreakerHitCount\(/);
+  assert.doesNotMatch(gameHtml, /function _earthBreakerSplitDamage\(/);
 });

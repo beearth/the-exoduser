@@ -19,7 +19,7 @@
 - [ ] enemy spawn 정상 (COMBAT 존 내부, `canMv` 게이트 통과).
 - [ ] 적이 배경(RIM/OUTER)으로 탈출하지 않음 (스폰/AI = isW 경계 공유).
 - [ ] boss arena 정상 (`_enterBossArena` 진입/스왑/복귀).
-- [ ] combat clear 정상 (80% 게이트 개방 35591, 클리어=보스 후 출구 도달 35626).
+- [ ] combat clear 정상 (80% 게이트 개방 `checkRooms`, CH1-1은 앵글러 4마리 전멸 `G._fbDone` 추가, 클리어=보스 후 출구 도달).
 - [ ] 적 하드캡 700 유지 (`[ENS-CAP]` 28487), 밀도 봉인 미악화.
 
 ## 3. Navigation (동선)
