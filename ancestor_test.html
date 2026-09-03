@@ -1,0 +1,109 @@
+<!doctype html><html lang="ko"><head><meta charset="utf-8">
+<title>전대 소환 테스트 — ANCESTOR SUMMON TESTBED</title>
+<style>
+  html,body{margin:0;height:100%;background:#0a0608;font-family:'Noto Sans KR',system-ui,sans-serif;color:#e8d8c0;overflow:hidden}
+  #bar{position:fixed;top:0;left:0;right:0;height:auto;z-index:10;display:flex;flex-wrap:wrap;gap:6px;align-items:center;
+       padding:7px 10px;background:linear-gradient(#1a0f0a,#0c0705);border-bottom:1px solid #4a3320;box-shadow:0 2px 12px #000}
+  #bar b{color:#e9c88c;letter-spacing:.05em;margin-right:6px}
+  button{padding:6px 11px;border:1px solid #6a4a28;border-radius:5px;background:#241812;color:#e8d0a8;
+         font-family:inherit;font-size:13px;cursor:pointer;white-space:nowrap}
+  button:hover{background:#3a281a;border-color:#8a6030}
+  button:active{background:#4a3322}
+  .grp{display:flex;gap:4px;align-items:center;padding:0 6px;border-left:1px solid #3a2818}
+  #stat{margin-left:auto;font-size:12px;color:#b89868;font-family:ui-monospace,monospace;white-space:pre}
+  #gwrap{position:fixed;top:46px;left:0;right:0;bottom:0}
+  #gf{width:100%;height:100%;border:0;background:#000}
+  .hot{color:#ffcc66}
+</style></head><body>
+<div id="bar">
+  <b>💀 전대 소환 테스트</b>
+  <div class="grp">
+    <button onclick="setup()">🦴 유골함+도감 완성</button>
+    <button onclick="summon()" style="background:#3a1a1a;border-color:#a04040;color:#ffb0b0">💥 전대 소환(실제)</button>
+    <button onclick="forceSummon()" style="background:#2a1a3a;border-color:#8060a0;color:#d0b0ff">💀 강제소환(비주얼)</button>
+    <button onclick="cycle()">🎲 다음 전대</button>
+    <button onclick="clearAnc()">제거</button>
+  </div>
+  <div class="grp">
+    <button onclick="spawn(12)">👹 적 12</button>
+    <button onclick="spawn(40)">👹 적 40</button>
+    <button onclick="clearEn()">🧹 적 제거</button>
+  </div>
+  <div class="grp">
+    <button onclick="tier(-1)">등급 −</button>
+    <button onclick="tier(1)">등급 +</button>
+    <button onclick="god()">♾ 무적</button>
+    <button onclick="clean()">🧼 UI정리</button>
+    <button onclick="reboot()">↻ 리로드</button>
+  </div>
+  <div id="stat">booting…</div>
+</div>
+<div id="gwrap"><iframe id="gf" src="game.html?testchar=1&stage=5&classic=1"></iframe></div>
+<script>
+// 게임의 G/P/INV/ens는 let/const 최상위 바인딩이라 window에 안 붙음 → contentWindow.eval()로 게임 스코프 안에서 실행.
+const URL_="game.html?testchar=1&stage=5&classic=1";
+const W=()=>{try{return document.getElementById('gf').contentWindow}catch(e){return null}};
+function EV(code){const w=W();if(!w)return null;try{return w.eval(code)}catch(e){console.warn('EV',e);return null}}
+function ready(){return !!EV('typeof G!=="undefined" && typeof mkEn==="function" && typeof INV!=="undefined"')}
+function start(){EV('try{G.on=true;if(P)P.iframes=Math.max(P.iframes||0,120);}catch(e){}');document.getElementById('gf').focus();}
+
+// 유골함(유니크) 장착 + 전대 도감 완성 (heavy 콜렉션 API를 feature-detect; 없으면 등급기반 폴백)
+function setup(){if(!ready())return;start();
+  EV(`(()=>{
+    try{ if(!INV.equipped.ossuary){ try{INV.equipped.ossuary=mkItem('ossuary',4,(typeof EL!=='undefined'?EL.P:0),4);}catch(e){INV.equipped.ossuary={slot:'ossuary',tier:4,rarity:4,unique:1};} } }catch(e){}
+    var oss=INV.equipped.ossuary; if(oss&&!oss.tier)oss.tier=4;
+    // heavy 콜렉션 완성 헬퍼 있으면 호출
+    for(var k of ['_ancCollectComplete','_ancDexComplete','completeAncestorCollection','_fillAncestors','_ancUnlockAll']){ if(typeof window[k]==='function'){try{window[k]();}catch(e){}} }
+    // 콜렉션 상태 객체 직접 채우기(있을 경우) — 전대별 4부위/해금
+    try{ var C=(typeof G!=='undefined')&&(G._ancColl||G._ancDex||G._ancestorColl)|| (oss&&oss.sockets)||(oss&&oss.collection);
+      if(C){ var fill=function(v){ if(v&&typeof v==='object'){ v.skull=v.body=v.arms=v.legs=4; v.done=v.unlocked=v.complete=true; } };
+        if(Array.isArray(C))C.forEach(fill); else for(var key in C)fill(C[key]); } }catch(e){}
+    try{addTxt(P.x,P.y-60,'유골함/도감 완성','#e9c88c',60);}catch(e){}
+  })()`);
+}
+function summon(){if(!ready())return;start();
+  const err=EV(`(()=>{ try{ P._ancCd=0; if(typeof P.mp==='number')P.mp=P.mmp; if(typeof P.sp==='number')P.sp=P.msp;
+      if(!INV.equipped.ossuary){try{INV.equipped.ossuary=mkItem('ossuary',4,(typeof EL!=='undefined'?EL.P:0),4);}catch(e){}}
+      activateAncestorSummon(); return ''; }catch(e){return ''+e;} })()`);
+  if(err)EV(`try{addTxt(P.x,P.y-60,'소환실패: ${String(err).replace(/'/g,"")}','#ff6644',80)}catch(e){}`);
+}
+// 게이트 우회 — 거대 전대 1기 직접 생성(비주얼/전투 테스트). 도감 미완성이어도 소환체를 볼 수 있음.
+function forceSummon(){if(!ready())return;start();
+  EV(`(()=>{try{ if(!G._ancestors)G._ancestors=[]; G._ancestors.length=0;
+    var oss=INV.equipped.ossuary, tier=(oss&&oss.tier)||4, big=1+Math.min(0.7,tier*0.08+0.5);
+    G._ancestors.push({x:P.x+90,y:P.y,t:0,maxT:1800,dmg:200000,tier:tier,atkCd:22,face:1,hp:9000,mhp:9000,big:big});
+    addTxt(P.x,P.y-60,'강제소환(비주얼)','#d0b0ff',60);
+  }catch(e){try{addTxt(P.x,P.y-60,'err '+e,'#ff6644',60)}catch(_){}}})()`);
+}
+// 소환된 전대의 스프라이트 순환(로스터 미리보기): 거대워로드→4팔→손오공→여포→항우→치우→블라드
+function cycle(){EV(`(()=>{try{var a=G._ancestors&&G._ancestors[0]; if(!a)return;
+    var n=(typeof _ANC_SPRITE_POOL!=='undefined')?_ANC_SPRITE_POOL.length:7;
+    a._spr=((a._spr==null?-1:a._spr)+1)%n;
+    var nm=['거대워로드','4팔전쟁마신','손오공','여포','항우','치우','블라드'][a._spr]||('#'+a._spr);
+    addTxt(a.x,a.y-80,'전대: '+nm,'#e9c88c',60);
+  }catch(e){}})()`);
+}
+function clearAnc(){EV('try{if(G._ancestors)G._ancestors.length=0}catch(e){}');}
+function spawn(n){if(!ready())return;start();
+  EV(`(()=>{try{for(var i=0;i<${n};i++){var a=i*Math.PI*2/${n}+(i%3)*.1,r=(6+(i%6)*1.6)*T;
+    var t=rollEtype(G.stage),en=mkEn(P.x+Math.cos(a)*r,P.y+Math.sin(a)*r,G.stage,t,false,rollEl(G.stage),-1);
+    if(en){en.atkCd=30+i*3;ens.push(en);}}}catch(e){}})()`);
+}
+function clearEn(){EV('try{ens.length=0}catch(e){}');}
+function tier(d){EV(`(()=>{try{var o=INV.equipped.ossuary;if(o){o.tier=Math.max(0,Math.min(4,(o.tier||0)+(${d})));addTxt(P.x,P.y-60,'유골함 tier='+o.tier,'#e9c88c',60);}}catch(e){}})()`);}
+function god(){EV(`(()=>{try{ if(P._testGod){clearInterval(P._testGod);P._testGod=null;addTxt(P.x,P.y-60,'무적 OFF','#ffaa44',60);} else {P._testGod=setInterval(function(){P.hp=P.mhp;P._dead=false;P.iframes=99999},16);addTxt(P.x,P.y-60,'무적 ON','#66ffaa',60);} }catch(e){}})()`);}
+function clean(){const w=W();if(!w)return;try{const d=w.document;
+  for(const s of ['#mmLvl','#petSubtitle','#keyGuide','#areaTitle','#stageTitle'])for(const n of d.querySelectorAll(s))n.style.setProperty('display','none','important');}catch(e){}
+  EV('try{if(typeof _petBubble!=="undefined"){_petBubble.t=0;_petBubble.pair=null;}G.pets=null;}catch(e){}');}
+function reboot(){document.getElementById('gf').src=URL_;}
+
+setInterval(()=>{const s=document.getElementById('stat');
+  if(!ready()){s.textContent='게임 로딩중… (로드되면 화면 한번 클릭)';return;}
+  const j=EV('JSON.stringify({anc:(typeof G!=="undefined"&&G._ancestors?G._ancestors.length:0),oss:(INV.equipped&&INV.equipped.ossuary?(INV.equipped.ossuary.tier):-1),cd:(P._ancCd||0),en:(typeof ens!=="undefined"?ens.length:0),on:!!(typeof G!=="undefined"&&G.on)})');
+  try{const o=JSON.parse(j);const cd=Math.ceil(o.cd/60);
+    s.textContent=`${o.on?'▶':'⏸클릭'}  전대:${o.anc}  유골함:${o.oss>=0?('tier'+o.oss):'없음'}  쿨:${cd>0?cd+'s':'준비'}  적:${o.en}`;
+  }catch(e){s.textContent='…';}
+},400);
+// iframe 로드되면 자동 포커스
+document.getElementById('gf').addEventListener('load',()=>setTimeout(()=>{document.getElementById('gf').focus();},1500));
+</script></body></html>
