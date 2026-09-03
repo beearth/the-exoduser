@@ -66,3 +66,24 @@ test('cageTrap renders the six-frame bone prison and keeps the procedural cage a
   assert.match(cageDraw, /X\.drawImage\(_ctSh\.img,\(_ctFr%3\)\*512,~~\(_ctFr\/3\)\*512,512,512/);
   assert.match(cageDraw, /else\{\/\/ 스프라이트 로드 전 절차식 폴백/);
 });
+
+test('player bone wall and fused bone storm reuse the six-frame bone prison sheet', () => {
+  const start = gameHtml.indexOf('// ══ 활성 해골무덤 렌더 ══');
+  const end = gameHtml.indexOf('// ══ 불장판 렌더', start);
+  assert.ok(start >= 0 && end > start, 'missing player bone-wall render block');
+  const boneWallDraw = gameHtml.slice(start, end);
+
+  assert.match(boneWallDraw, /const _bwSh=_VFX_SHEETS\.boss_cageTrap/);
+  assert.match(boneWallDraw, /const _bwFr=bw\.phase==='rise'\?Math\.min\(5,~~\(prog\*6\)\):5/);
+  assert.match(boneWallDraw, /const _bwSz=bw\.ringR\*3\.35/);
+  assert.match(
+    boneWallDraw,
+    /X\.drawImage\(_bwSh\.img,\(_bwFr%3\)\*512,~~\(_bwFr\/3\)\*512,512,512/,
+  );
+  assert.match(boneWallDraw, /else\{\/\/ 스프라이트 로드 전 절차식 해골벽 폴백/);
+
+  const fusionStart = gameHtml.indexOf('// 합체: 해골번개 — boneWall 링 + 암흑 DOT');
+  const fusionEnd = gameHtml.indexOf("G._fireZones.push({x:_mswx", fusionStart);
+  assert.ok(fusionStart >= 0 && fusionEnd > fusionStart, 'missing fused bone-storm spawn path');
+  assert.match(gameHtml.slice(fusionStart, fusionEnd), /G\._boneWalls\.push\(/);
+});

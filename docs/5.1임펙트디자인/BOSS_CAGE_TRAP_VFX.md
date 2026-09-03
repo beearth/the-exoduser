@@ -1,7 +1,7 @@
-# 보스 뼈감옥(`cageTrap`) VFX SSOT
+# 공용 뼈감옥(`cageTrap`/`boneWall`/`boneStorm`) VFX SSOT
 
 > 최종 업데이트: 2026-09-03
-> 런타임: `game.html`의 `registerVFX('boss_cageTrap', ...)` 및 `// ══ 감옥 렌더 ══` 블록
+> 런타임: `game.html`의 `registerVFX('boss_cageTrap', ...)`, `// ══ 감옥 렌더 ══`, `// ══ 활성 해골무덤 렌더 ══` 블록
 
 ## 에셋 계약
 
@@ -15,6 +15,7 @@
 - 보관 원본은 `assets/vfx/boss/source/boss_cageTrap_source_20260903_193333.png`이다.
 - 활성 런타임 경로와 레거시 루트 경로 `boss_cageTrap.webp`는 같은 정규화 결과를 사용한다.
 - 교체 전 루트 초안은 `assets/vfx/boss_backup_20260903/boss_cageTrap.webp`에 보존한다.
+- 등록 ID는 기존 보스 로더 호환을 위해 `boss_cageTrap`을 유지하지만, 같은 시트를 보스 `cageTrap`, 플레이어 `boneWall`(해골무덤), 합체 `boneStorm`(해골번개)이 공용한다.
 
 ## 재생·배치 계약
 
@@ -32,12 +33,28 @@
 | 화면 X | `ct.x-size/2` | 중앙 정렬 |
 | 화면 Y | `ct.y-size×0.54` | 지면 링을 판정 중심에 맞추고 높은 뼈 가시는 위로 솟게 배치 |
 
+## 플레이어 해골무덤·해골번개 재생 계약
+
+| 대상 | 생성 배열 | 성장 | 유지 | 퇴장 | 시각 크기 | 추가 레이어 |
+|---|---|---|---|---|---:|---|
+| `boneWall` 해골무덤 | `G._boneWalls` | `riseT=60f`, `floor(min(t/riseT,1)×6)`, 상한 frame 5 | `phase='stand'`, frame 5 | 마지막 `60f`, frame 5 alpha `1→0` | `ringR×3.35` | 없음 |
+| `boneStorm` 해골번개 | `G._boneWalls` + `G._fireZones(type='boneStorm')` | 해골무덤과 동일 | 해골무덤과 동일 | 해골무덤과 동일 | `ringR×3.35` | 링 내부에 기존 녹색 이오닉 스톰·암흑 DOT 유지 |
+
+| 플레이어 배치 항목 | 값 | 근거 |
+|---|---:|---|
+| 월드 반경 | `ringR=floor((400+(Lv-1)×18)×0.7)` | 기존 충돌·차단 범위 불변; Lv1 `280px`, Lv20 `519px` |
+| 화면 X | `bw.x-size/2` | 보스 시트와 동일한 중앙 정렬 |
+| 화면 Y | `bw.y-size×0.54` | 지면 링과 판정 중심 정렬 |
+| 이미지 로드 실패 | 기존 `pilCnt=floor(2π×ringR/18)` 절차식 해골벽 | 기능·가시성 안전 폴백 |
+
+플레이어 경로는 시각만 교체한다. 스택, 악의/MP 비용, 지속시간, 생성 피해, 적·투사체 차단, 사슬기동 관통, 악의폭풍 DOT 및 합체 판정은 변경하지 않는다.
+
 ## 실패 안전·검증
 
 | 항목 | 계약 |
 |---|---|
 | 이미지 로드 전/실패 | 갈색 원과 회전하는 12개 가시로 된 기존 절차식 렌더를 사용한다. |
 | 판정 분리 | 스프라이트 프레임은 시각 전용이다. 피해는 `abs(distance(P,cage)-110)<20`인 테두리 밴드에서만 발생한다. |
-| 회귀 테스트 | `test/bossCageTrapSprite.test.js`가 파일 크기·알파·6개 셀의 비절단 여백·등록 규격·6프레임 성장·절차식 폴백을 검증한다. |
+| 회귀 테스트 | `test/bossCageTrapSprite.test.js`가 파일 크기·알파·6개 셀의 비절단 여백·등록 규격·보스/플레이어 6프레임 성장·절차식 폴백·해골번개 공용 경로를 검증한다. |
 | 인게임 캡처 | `captures/bone_cage_20260903/bone_cage_six_frames_ingame.png`에서 0→5 전 프레임을 실제 맵 위에 동시 배치해 검수한다. |
 | 변경 금지 | 반경 `110`, 경고 `40f`, 수명 `210f`, 피해 `ATK×0.8`, 재타격 `20f`, 패링 가능 계약은 시각 교체로 변경하지 않는다. |

@@ -40952,7 +40952,7 @@ function fireBoneWall(tx,ty){
   const slv=P.skills.boneWall||1;
   P._bwStk--;const _bwMx2=(P.skills.boneWall>=10)?3:2;if(P._bwStk<_bwMx2&&!P._bwRech)P._bwRech=1500;
   _addSkProf('boneWall');
-  const ringR=~~((400+(slv-1)*18)*.7); // 얼음소용돌이의 70% (lv1=280, lv10≈393, lv20≈512)
+  const ringR=~~((400+(slv-1)*18)*.7); // 얼음소용돌이의 70% (lv1=280, lv10≈393, lv20≈519)
   const duration=Math.min(1800,180+(slv-1)*12);
   const riseDmg=~~(meleeRef()*statStr()*pAtkMul()*_skMul('boneWall'));
   if(!G._boneWalls)G._boneWalls=[];
@@ -50170,46 +50170,57 @@ function drawP(){
     for(let bwi=0;bwi<G._boneWalls.length;bwi++){
       const bw=G._boneWalls[bwi];
       const prog=Math.min(bw.t/bw.riseT,1);
-      const pilCnt=~~(Math.PI*2*bw.ringR/18);// 뼈기둥 개수 (간격 ~18px)
-      if(bw.phase==='rise'){
-        // 솟아오르는 해골무덤
-        const h=22*prog;
-        for(let i=0;i<pilCnt;i++){
-          const a=Math.PI*2*i/pilCnt;
-          const px=bw.x+Math.cos(a)*bw.ringR,py=bw.y+Math.sin(a)*bw.ringR;
-          X.globalAlpha=.5+prog*.4;X.fillStyle=i%3===0?'#bbaa88':'#ccbb99';
-          X.fillRect(px-4,py+10-h,8,h);
-          if(i%4===0){X.fillStyle='#aa9977';X.fillRect(px-2,py+10-h,2,h)}
+      const _bwSh=_VFX_SHEETS.boss_cageTrap;
+      if(_bwSh&&_bwSh.img){
+        const _bwFr=bw.phase==='rise'?Math.min(5,~~(prog*6)):5;
+        const _bwSz=bw.ringR*3.35;
+        const _bwFade=bw.phase==='crumble'?Math.max(0,1-Math.min((bw.t-(bw.maxT-60))/60,1)):1;
+        X.globalAlpha=_bwFade;
+        X.drawImage(_bwSh.img,(_bwFr%3)*512,~~(_bwFr/3)*512,512,512,bw.x-_bwSz/2,bw.y-_bwSz*.54,_bwSz,_bwSz);
+      }else{// 스프라이트 로드 전 절차식 해골벽 폴백
+        const pilCnt=~~(Math.PI*2*bw.ringR/18);// 뼈기둥 개수 (간격 ~18px)
+        if(bw.phase==='rise'){
+          // 솟아오르는 해골무덤
+          const h=22*prog;
+          for(let i=0;i<pilCnt;i++){
+            const a=Math.PI*2*i/pilCnt;
+            const px=bw.x+Math.cos(a)*bw.ringR,py=bw.y+Math.sin(a)*bw.ringR;
+            X.globalAlpha=.5+prog*.4;X.fillStyle=i%3===0?'#bbaa88':'#ccbb99';
+            X.fillRect(px-4,py+10-h,8,h);
+            if(i%4===0){X.fillStyle='#aa9977';X.fillRect(px-2,py+10-h,2,h)}
+          }
+          // 바닥 균열
+          if(prog<.7&&Math.random()>.7){
+            const ra=Math.random()*Math.PI*2;
+            poolPart(bw.x+Math.cos(ra)*bw.ringR,bw.y+Math.sin(ra)*bw.ringR,0,-1.5,'#887766',2,8);
+          }
+        }else if(bw.phase==='stand'){
+          // 완전체 해골무덤
+          for(let i=0;i<pilCnt;i++){
+            const a=Math.PI*2*i/pilCnt;
+            const px=bw.x+Math.cos(a)*bw.ringR,py=bw.y+Math.sin(a)*bw.ringR;
+            X.globalAlpha=.85;X.fillStyle=i%3===0?'#bbaa88':'#ccbb99';
+            X.fillRect(px-4,py-12,8,24);
+            if(i%5===0){X.fillStyle='#aa9977';X.fillRect(px-2,py-12,2,24);X.fillRect(px+2,py-12,2,24)}
+            // 해골 장식 (일부 기둥)
+            if(i%8===0){X.globalAlpha=.6;X.fillStyle='#ddd';X.font='7px monospace';X.textAlign='center';X.fillText('\u2620',px,py+2)}
+          }
+        }else{
+          // 붕괴 페이드아웃
+          const crProg=Math.min((bw.t-(bw.maxT-60))/60,1);
+          for(let i=0;i<pilCnt;i++){
+            const a=Math.PI*2*i/pilCnt;
+            const px=bw.x+Math.cos(a)*bw.ringR,py=bw.y+Math.sin(a)*bw.ringR;
+            const shrink=crProg*10;
+            X.globalAlpha=.85*(1-crProg);X.fillStyle='#aa9977';
+            X.fillRect(px-4,py-12+shrink,8,24-shrink*2);
+          }
         }
-        // 바닥 균열
-        if(prog<.7&&Math.random()>.7){
-          const ra=Math.random()*Math.PI*2;
-          poolPart(bw.x+Math.cos(ra)*bw.ringR,bw.y+Math.sin(ra)*bw.ringR,0,-1.5,'#887766',2,8);
-        }
-      }else if(bw.phase==='stand'){
-        // 완전체 해골무덤
-        for(let i=0;i<pilCnt;i++){
-          const a=Math.PI*2*i/pilCnt;
-          const px=bw.x+Math.cos(a)*bw.ringR,py=bw.y+Math.sin(a)*bw.ringR;
-          X.globalAlpha=.85;X.fillStyle=i%3===0?'#bbaa88':'#ccbb99';
-          X.fillRect(px-4,py-12,8,24);
-          if(i%5===0){X.fillStyle='#aa9977';X.fillRect(px-2,py-12,2,24);X.fillRect(px+2,py-12,2,24)}
-          // 해골 장식 (일부 기둥)
-          if(i%8===0){X.globalAlpha=.6;X.fillStyle='#ddd';X.font='7px monospace';X.textAlign='center';X.fillText('\u2620',px,py+2)}
-        }
-        // 남은 시간
+      }
+      // 남은 시간
+      if(bw.phase==='stand'){
         const rem=(bw.maxT-bw.t)/60;
         if(rem<3){X.globalAlpha=.6;X.fillStyle='#ff8844';X.font='bold 9px monospace';X.textAlign='center';X.fillText(rem.toFixed(1)+'s',bw.x,bw.y-bw.ringR-8)}
-      }else{
-        // 붕괴 페이드아웃
-        const crProg=Math.min((bw.t-(bw.maxT-60))/60,1);
-        for(let i=0;i<pilCnt;i++){
-          const a=Math.PI*2*i/pilCnt;
-          const px=bw.x+Math.cos(a)*bw.ringR,py=bw.y+Math.sin(a)*bw.ringR;
-          const shrink=crProg*10;
-          X.globalAlpha=.85*(1-crProg);X.fillStyle='#aa9977';
-          X.fillRect(px-4,py-12+shrink,8,24-shrink*2);
-        }
       }
     }
     X.restore();
