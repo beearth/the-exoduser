@@ -1,5 +1,16 @@
 # Sync Changelog
 
+## 2026-09-03 게임 루프 ReferenceError 멈춤 수정
+
+| id/대상 | 증상 | 근본 원인 | 현재 계약 | 검증 |
+|---|---|---|---|---|
+| `_bfR2` | 화톳불 활성 상태에서 적 투사체를 갱신하면 `ReferenceError`가 매 프레임 반복되어 게임 루프 정지 | 장형 몬스터 결계 리팩터링에서 적 중심 밀어내기용 선언을 제거했지만 후반 투사체 차단이 같은 제곱 반경을 계속 참조 | `_bfR2=_bfActive?_bf.r*_bf.r:0`을 `update()` 공통 스코프에 유지. 결계 반경 `280px`, 지속 `300f`, 투사체 차단 판정은 불변 | `test/updateLoopRuntimeBindings.test.js` |
+| `_wwDetAbs` | 일반 투사체 갱신 시 `_wwAbsR` 계산에서 `ReferenceError`가 반복되어 게임 루프 정지 | `blackBean` 패링 분기 제거 때 인접 선언까지 함께 삭제했지만 회전기폭 일반탄 흡수 반경이 계속 참조 | 각 투사체의 일반탄 흡수 반경 계산 직전에 `P.s==='whirlwind'&&_isFused('whirlDet')`를 선언. 회전기폭 반경 `90px`와 기존 흡수 공식은 불변 | `test/updateLoopRuntimeBindings.test.js` |
+
+- 사용자 콘솔 캡처에서 `[LOOP CRASH] _wwDetAbs is not defined`와 `_bfR2 is not defined`가 반복되는 동일 재현을 확인했다.
+- 두 선언 누락을 각각 RED로 고정한 뒤 최소 복구했으며 게임플레이 수치·공식·입력 계약은 변경하지 않았다.
+- 최종 전체 자동 회귀 **470/470 PASS**, `tools/guard.js` PASS, docs sync PASS.
+
 ## 2026-09-03 코드 전수조사 최종 정리·대왕치기 영웅 VFX 연결
 
 | id/대상 | 확인된 문제 | 현재 계약 | 검증 |

@@ -30699,7 +30699,7 @@ function update(){
   // ── 화톳불 배리어 타이머 ──
   if(G._bonfire&&G._bonfire.t>0)G._bonfire.t-=sp;
   // 적 업데이트 (거리별 티어링 + 8ms 타임버짓)
-  const _bf=G._bonfire;const _bfActive=_bf&&_bf.t>0;
+  const _bf=G._bonfire;const _bfActive=_bf&&_bf.t>0;const _bfR2=_bfActive?_bf.r*_bf.r:0;
   if(!G._eTierFrame)G._eTierFrame=0;G._eTierFrame++;
   const _eUpdateStart=performance.now();
   const _eo=_gameFrame&1; // 짝홀 프레임 분산
@@ -31268,6 +31268,7 @@ function update(){
       _pHit=true;_recycleProj(p);continue;
     }
     // ══ 일반탄: 원래 좁은 범위로 판정 (회전기폭: 빨콩도 넓은 흡수 범위) ══
+    const _wwDetAbs=P.s==='whirlwind'&&_isFused('whirlDet');
     const _wwAbsR=_qPulseR>0?_qPulseR:_wwDetAbs?90:_normalR;
     if(!p.blackBean&&!_bigBall&&!p.noParry&&!p.poisonZone&&!_pHit&&_pDist<_wwAbsR&&P.iframes<=0&&!P._ioActive){
       if(_anyPW&&!p.redBean&&!p.titanEye&&!_physicalMouth){ // 일반 색/원소탄→Q 전용. 물리 입/뱀탄·titanEye=E만
