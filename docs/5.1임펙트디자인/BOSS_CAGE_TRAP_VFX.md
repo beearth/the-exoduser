@@ -24,7 +24,7 @@
 | 경고 | `0≤t<40f` | 빨간 점선 반경 `110px` | `0→0.4` | 스프라이트 미표시 |
 | 성장 | `40≤t<76f` | `floor(min(1,(t-40)/36)×6)`, 상한 `5` | `1` | `36f` 동안 0→5 전개 |
 | 유지 | `76≤t<180f` | frame `5` | `1` | 완성된 뼈감옥 유지 |
-| 퇴장 | `180≤t<210f` | frame `5` | `1→0` | 마지막 `30f` 페이드 |
+| 퇴장 | `180≤t<210f` | frame `5→0` 역재생 | `1→0` | 마지막 `30f` 수축 역재생+페이드 |
 
 | 배치 항목 | 값 | 근거 |
 |---|---:|---|
@@ -37,7 +37,7 @@
 
 | 대상 | 생성 배열 | 성장 | 유지 | 퇴장 | 시각 크기 | 추가 레이어 |
 |---|---|---|---|---|---:|---|
-| `boneWall` 해골무덤 | `G._boneWalls` | `riseT=60f`, `floor(min(t/riseT,1)×6)`, 상한 frame 5 | `phase='stand'`, frame 5 | 마지막 `60f`, frame 5 alpha `1→0` | `ringR×3.35` | 없음 |
+| `boneWall` 해골무덤 | `G._boneWalls` | `riseT=60f`, `floor(min(t/riseT,1)×6)`, 상한 frame 5 | `phase='stand'`, frame 5 | 마지막 `60f`, frame `5→0` 역재생+alpha `1→0` | `ringR×3.35` | 없음 |
 | `boneStorm` 해골번개 | `G._boneWalls` + `G._fireZones(type='boneStorm')` | 해골무덤과 동일 | 해골무덤과 동일 | 해골무덤과 동일 | `ringR×3.35` | 링 내부에 기존 녹색 이오닉 스톰·암흑 DOT 유지 |
 
 | 플레이어 배치 항목 | 값 | 근거 |
@@ -49,12 +49,23 @@
 
 플레이어 경로는 시각만 교체한다. 스택, 악의/MP 비용, 지속시간, 생성 피해, 적·투사체 차단, 사슬기동 관통, 악의폭풍 DOT 및 합체 판정은 변경하지 않는다.
 
+## 공용 생성 사운드 계약
+
+| 생성 대상 | 필수 공통음 | 추가음 | 호출 규칙 |
+|---|---|---|---|
+| 보스 `cageTrap` | `skull_summon`, vol `0.6`, pitch `0.9±0.15` | `SFX.magic(2)` | `G._cageTraps.push()` 직후 1회 |
+| `boneWall` 해골무덤 | `skull_summon`, vol `0.6`, pitch `0.9±0.15` | `SFX.magic(EL.D)` | `G._boneWalls.push()` 직후 1회 |
+| `boneStorm` 해골번개 | `skull_summon`, 동일 | `SFX.magic(EL.D)` | 합체 분기 전에 1회 |
+| `elecRepent` 참회 귀환 | `skull_summon`, 동일 | `SFX.magic(EL.L)` + `repentance` | 참회 분기 여부와 무관하게 뼈벽 생성 직후 1회 |
+
+`skull_summon`은 `sfx/skillsound/bone/skull_summon.mp3`(MP3, 44.1kHz stereo, 1.48초)를 사용한다. 참회 귀환에서 `repentance`가 뼈 생성음을 대체하지 않는다.
+
 ## 실패 안전·검증
 
 | 항목 | 계약 |
 |---|---|
 | 이미지 로드 전/실패 | 갈색 원과 회전하는 12개 가시로 된 기존 절차식 렌더를 사용한다. |
 | 판정 분리 | 스프라이트 프레임은 시각 전용이다. 피해는 `abs(distance(P,cage)-110)<20`인 테두리 밴드에서만 발생한다. |
-| 회귀 테스트 | `test/bossCageTrapSprite.test.js`가 파일 크기·알파·6개 셀의 비절단 여백·등록 규격·보스/플레이어 6프레임 성장·절차식 폴백·해골번개 공용 경로를 검증한다. |
+| 회귀 테스트 | `test/bossCageTrapSprite.test.js`가 파일 크기·알파·6개 셀의 비절단 여백·등록 규격·보스/플레이어 성장 및 퇴장 역재생·절차식 폴백·해골번개 공용 경로·모든 뼈감옥 생성 경로의 `skull_summon` 1회 호출을 검증한다. |
 | 인게임 캡처 | `captures/bone_cage_20260903/bone_cage_six_frames_ingame.png`에서 0→5 전 프레임을 실제 맵 위에 동시 배치해 검수한다. |
 | 변경 금지 | 반경 `110`, 경고 `40f`, 수명 `210f`, 피해 `ATK×0.8`, 재타격 `20f`, 패링 가능 계약은 시각 교체로 변경하지 않는다. |

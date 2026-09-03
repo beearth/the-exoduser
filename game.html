@@ -32572,6 +32572,7 @@ function update(){
               t:0,riseT:60,maxT:_syncDur,dmg:_bsRiseDmg,hitSet:new Set(),phase:'rise'});
             G._fireZones.push({x:_mswx,y:_mswy,r:_bsRingR,t:0,maxT:_syncDur,
               dmg:_msDmg,el:EL.D,lv:_msLv,type:'boneStorm'});
+            playSample('skull_summon',.6,_r(.9,.15));
             G.mats=Math.max(0,G.mats-12);
             // elecRepent: 참회(hellRay)도 같은 포인트에 동시 설치
             if(_erF&&P.skills.hellRay>=1){
@@ -32582,7 +32583,7 @@ function update(){
               addTxt(_mswx,_mswy-20,_T('⚡🦴 참회 귀환!'),'#ffee44',50);
               shake(10);_addSkProf('hellRay');
             }else{
-              SFX.magic(EL.D);playSample('skull_summon',.6,_r(.9,.15));
+              SFX.magic(EL.D);
               addTxt(_mswx,_mswy-20,_T('🦴⚡해골번개!'),'#55cc77',30);
               shake(6);
             }
@@ -34116,7 +34117,7 @@ function _bossStartPattern(e,mv,d,phase,extraDelay){
       if(!G._cageTraps)G._cageTraps=[];
       G._cageTraps.push({x:P.x,y:P.y,t:0,warnT:40,maxT:210,r:110,
         dmg:~~(e.atk*.8),el:e.el,src:e,hitT:0});
-      addTxt(e.x,e.y-30,_T('⛓ 감옥!'),'#886644',55);SFX.magic(2);
+      addTxt(e.x,e.y-30,_T('⛓ 감옥!'),'#886644',55);SFX.magic(2);playSample('skull_summon',.6,_r(.9,.15));
       e.s='recover';e.st2=25;break;
     }
     case'chainLightning':{
@@ -50172,9 +50173,10 @@ function drawP(){
       const prog=Math.min(bw.t/bw.riseT,1);
       const _bwSh=_VFX_SHEETS.boss_cageTrap;
       if(_bwSh&&_bwSh.img){
-        const _bwFr=bw.phase==='rise'?Math.min(5,~~(prog*6)):5;
+        const _bwExitProg=bw.phase==='crumble'?Math.min(1,Math.max(0,(bw.t-(bw.maxT-60))/60)):0;
+        const _bwFr=bw.phase==='rise'?Math.min(5,~~(prog*6)):bw.phase==='crumble'?Math.max(0,5-Math.min(5,~~(_bwExitProg*6))):5;
         const _bwSz=bw.ringR*3.35;
-        const _bwFade=bw.phase==='crumble'?Math.max(0,1-Math.min((bw.t-(bw.maxT-60))/60,1)):1;
+        const _bwFade=bw.phase==='crumble'?1-_bwExitProg:1;
         X.globalAlpha=_bwFade;
         X.drawImage(_bwSh.img,(_bwFr%3)*512,~~(_bwFr/3)*512,512,512,bw.x-_bwSz/2,bw.y-_bwSz*.54,_bwSz,_bwSz);
       }else{// 스프라이트 로드 전 절차식 해골벽 폴백
@@ -52098,7 +52100,8 @@ function drawP(){
         const _ctSh=_VFX_SHEETS.boss_cageTrap;
         if(_ctSh&&_ctSh.img){
           const _ctRise=Math.min(1,(ct.t-ct.warnT)/36);
-          const _ctFr=Math.min(5,~~(_ctRise*6));
+          const _ctExit=ct.t>ct.maxT-30?Math.min(1,(ct.t-(ct.maxT-30))/30):0;
+          const _ctFr=_ctExit>0?Math.max(0,5-Math.min(5,~~(_ctExit*6))):Math.min(5,~~(_ctRise*6));
           const _ctSz=ct.r*3.35;
           X.save();X.globalAlpha=_ctF;
           X.drawImage(_ctSh.img,(_ctFr%3)*512,~~(_ctFr/3)*512,512,512,ct.x-_ctSz/2,ct.y-_ctSz*.54,_ctSz,_ctSz);

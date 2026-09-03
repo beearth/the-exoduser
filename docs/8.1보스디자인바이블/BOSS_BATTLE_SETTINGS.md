@@ -192,9 +192,10 @@ shake(14 + _bp*4)                              // 페이즈별 18~30
 | 판정 데이터 | `{t:0,warnT:40,maxT:210,r:110,dmg:floor(e.atk×.8),el:e.el,src:e,hitT:0}` | `_bossDoAction()`의 `case 'cageTrap'` |
 | 경고 표시 | `t<40f` 동안 빨간 점선 원, 진행도에 따라 alpha `0→0.4` | 감옥 렌더 블록 |
 | 스프라이트 | `assets/vfx/boss/boss_cageTrap.webp`, 투명 WebP `1536×1024`, `3×2`, 셀 `512×512`, `6f`, `source-over` | `registerVFX('boss_cageTrap',...)` |
-| 성장 타이밍 | 경고 종료 뒤 `36f` 동안 `frame 0→5`, 이후 마지막 프레임 유지 | `_ctRise=min(1,(t-warnT)/36)`, `_ctFr=min(5,floor(_ctRise×6))` |
+| 성장 타이밍 | 경고 종료 뒤 `36f` 동안 `frame 0→5`, 이후 마지막 프레임 유지 | `_ctRise=min(1,(t-warnT)/36)` |
 | 화면 배치 | 정사각 렌더 크기 `r×3.35=368.5px`, 좌상단 `(x-size/2, y-size×0.54)` | 감옥 렌더 블록 |
-| 퇴장 | 마지막 `30f` 동안 alpha `1→0` | `_ctF` |
+| 퇴장 | 마지막 `30f` 동안 frame `5→0` 역재생+alpha `1→0` | `_ctExit`, `_ctFr`, `_ctF` |
+| 생성음 | `skull_summon` vol `0.6`, pitch `0.9±0.15` + `SFX.magic(2)` | `G._cageTraps.push()` 직후 각 1회 |
 | 로드 실패 | 기존 갈색 원+12가시 절차식 표현 유지 | `_VFX_SHEETS.boss_cageTrap` 미준비 분기 |
 | 패링 | 패링 가능 목록 유지. 성공 시 소스 보스 poise `-15`, `doParry()` 호출 | `_PARRYABLE_ATK`, 감옥 업데이트 블록 |
 

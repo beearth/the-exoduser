@@ -62,7 +62,8 @@ test('cageTrap renders the six-frame bone prison and keeps the procedural cage a
   const cageDraw = gameHtml.slice(start, end);
 
   assert.match(cageDraw, /const _ctRise=Math\.min\(1,\(ct\.t-ct\.warnT\)\/36\)/);
-  assert.match(cageDraw, /const _ctFr=Math\.min\(5,~~\(_ctRise\*6\)\)/);
+  assert.match(cageDraw, /const _ctExit=ct\.t>ct\.maxT-30/);
+  assert.match(cageDraw, /const _ctFr=_ctExit>0\?Math\.max\(0,5-Math\.min\(5,~~\(_ctExit\*6\)\)\):Math\.min\(5,~~\(_ctRise\*6\)\)/);
   assert.match(cageDraw, /X\.drawImage\(_ctSh\.img,\(_ctFr%3\)\*512,~~\(_ctFr\/3\)\*512,512,512/);
   assert.match(cageDraw, /else\{\/\/ 스프라이트 로드 전 절차식 폴백/);
 });
@@ -74,7 +75,11 @@ test('player bone wall and fused bone storm reuse the six-frame bone prison shee
   const boneWallDraw = gameHtml.slice(start, end);
 
   assert.match(boneWallDraw, /const _bwSh=_VFX_SHEETS\.boss_cageTrap/);
-  assert.match(boneWallDraw, /const _bwFr=bw\.phase==='rise'\?Math\.min\(5,~~\(prog\*6\)\):5/);
+  assert.match(boneWallDraw, /const _bwExitProg=bw\.phase==='crumble'/);
+  assert.match(
+    boneWallDraw,
+    /const _bwFr=bw\.phase==='rise'\?Math\.min\(5,~~\(prog\*6\)\):bw\.phase==='crumble'\?Math\.max\(0,5-Math\.min\(5,~~\(_bwExitProg\*6\)\)\):5/,
+  );
   assert.match(boneWallDraw, /const _bwSz=bw\.ringR\*3\.35/);
   assert.match(
     boneWallDraw,
@@ -86,4 +91,25 @@ test('player bone wall and fused bone storm reuse the six-frame bone prison shee
   const fusionEnd = gameHtml.indexOf("G._fireZones.push({x:_mswx", fusionStart);
   assert.ok(fusionStart >= 0 && fusionEnd > fusionStart, 'missing fused bone-storm spawn path');
   assert.match(gameHtml.slice(fusionStart, fusionEnd), /G\._boneWalls\.push\(/);
+});
+
+test('every bone-prison spawn plays the bone creation sound once', () => {
+  const bossStart = gameHtml.indexOf("case'cageTrap':");
+  const bossEnd = gameHtml.indexOf("case'chainLightning':", bossStart);
+  const boss = gameHtml.slice(bossStart, bossEnd);
+  assert.equal((boss.match(/playSample\('skull_summon'/g) || []).length, 1);
+
+  const standaloneStart = gameHtml.indexOf('function fireBoneWall(tx,ty)');
+  const standaloneEnd = gameHtml.indexOf('// ═══ 칼날살 발사', standaloneStart);
+  const standalone = gameHtml.slice(standaloneStart, standaloneEnd);
+  assert.equal((standalone.match(/playSample\('skull_summon'/g) || []).length, 1);
+
+  const fusionStart = gameHtml.indexOf('// 합체: 해골번개 — boneWall 링 + 암흑 DOT');
+  const fusionEnd = gameHtml.indexOf('_castSuccess=true;', fusionStart);
+  const fusion = gameHtml.slice(fusionStart, fusionEnd);
+  assert.equal((fusion.match(/playSample\('skull_summon'/g) || []).length, 1);
+  assert.ok(
+    fusion.indexOf("playSample('skull_summon'") < fusion.indexOf('if(_erF&&P.skills.hellRay>=1)'),
+    'bone creation sound must play before the elecRepent branch',
+  );
 });

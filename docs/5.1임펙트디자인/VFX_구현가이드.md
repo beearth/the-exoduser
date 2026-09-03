@@ -429,7 +429,7 @@ PixelLab에서 8프레임 애니메이션도 생성 완료했으나, MCP API로 
 | 에셋 | `assets/vfx/boss/boss_cageTrap.webp`, 1536×1024, 3×2, 셀 512, 6프레임, RGBA |
 | 적용 | `G._boneWalls` 공통 렌더이므로 단독 `boneWall`과 합체 `boneStorm` 모두 사용 |
 | 성장 | `riseT=60f` 동안 frame 0→5 |
-| 유지/붕괴 | stand=frame 5, 마지막 60f=frame 5 alpha 페이드 |
+| 유지/붕괴 | stand=frame 5, 마지막 60f=frame `5→0` 역재생+alpha 페이드 |
 | 크기/앵커 | `ringR×3.35`, `(bw.x-size/2, bw.y-size×0.54)` |
 | 폴백 | 이미지 미준비 시 기존 원주 뼈기둥·해골 문자·붕괴 축소 렌더 유지 |
 | 불변 | 반경·피해·지속·차단·스택·비용 및 해골번개의 내부 이오닉 스톰/DOT |
