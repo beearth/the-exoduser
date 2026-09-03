@@ -35,7 +35,8 @@
 15. `MAP_TEST_SERVER.md` — 35개 본편 맵 QA 서버/허브/URL/포트/검증 계약 + DPR 2에서 logical 1920×1080/HiDPI backing 3840×2160 분리
 16. `CH3_1_HELL_WINTER_IMPLEMENTATION.md` — CH3-1 핏빛 황폐지 200×200 지옥 동토 전장·source authored 346/runtime 343·21 object source(+base ground 1)·crop 13종/87 instance·Final Macro 4-family silhouette + central floor detail 6·카메라/전투/이동 QA
 17. `CH1_1_START_OUTER_MASS.md` — 실제 CH1-1 8192²/64-chunk outer mass와 대응 canonical forest tile boundary, BACK14/LARGE20/MEDIUM16/GROUND1/SMALL0
-18. `CH1_1_SMOOTHING_PASS.md` — 실제 CH1-1 기본 smoothing 완성 master, EDGE8/CORNER4/TREE4/SIDE10/OPEN5/SMALL0, structural module instance0, authored63/runtime64/collision23, baked master 불변
+18. `CH1_1_SMOOTHING_PASS.md` — 실제 CH1-1 기본 smoothing 완성 master, EDGE8/CORNER4/TREE4/SIDE10/OPEN5/SMALL0, structural module instance0, authored63/runtime64/collision23, 2026-09-04 crisp 재베이크 현행
+19. `CH1_1_CRISP_SMOOTHING_REMODEL_2026-09-04.md` — `fit:fill`/raster·SVG blur로 생긴 흐릿한 보라 띠 제거, `fit:contain`, blur0, 최대 확대1.3×, 64청크 재베이크와 카메라 QA
 
 ---
 

@@ -57,17 +57,19 @@
   "smallProps": 0,
   "newVerticalSilhouettes": 0,
   "visualContract": {
-    "treeBasinFootprintPx": [3100, 2200],
-    "treeBasinSoilOpacityRange": [0.28, 0.38],
-    "treeBasinAssetOpacity": [0.22, 0.32],
-    "macroOpacityRange": [0.16, 0.28],
-    "poiFootprintScaleRange": [1.5, 2.2],
-    "innerEdgeTonguesPerSideMin": 3,
+    "rasterBlurPx": 0,
+    "stretchFit": false,
+    "maxRasterUpscale": 1.3,
+    "purpleEdgeTint": false,
+    "treeBasinFootprintPx": [1700, 1500],
+    "treeBasinAssetOpacity": [0.3, 0.34],
+    "groundPatchOpacityRange": [0.16, 0.34],
+    "poiFootprintScaleRange": [0.82, 1.2],
+    "edgePatches": 8,
     "landmarkSpriteAlpha": 1,
     "toxicContinuousChain": false,
-    "toxicWetSoilMasses": 3,
-    "toxicShortFragments": 5,
-    "toxicSaturationMax": 0.5,
-    "toxicBase": "brown-black-wet-soil"
+    "toxicAssetPatches": 5,
+    "toxicSaturationMax": 0.34,
+    "toxicBase": "aspect-preserved-source-texture"
   }
 }

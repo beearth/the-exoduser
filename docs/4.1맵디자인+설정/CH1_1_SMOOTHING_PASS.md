@@ -1,6 +1,6 @@
 # CH1-1 SMOOTHING PASS — PRODUCTION SSOT
 
-> 적용일: 2026-08-30
+> 최초 적용일: 2026-08-30 / 선예도 리모델링: 2026-09-04
 > 적용 맵: **CH1-1 / si0 / `G.stage===0`**
 > 선행 SSOT: `CH1_1_START_OUTER_MASS.md` GATE 2~4 PASS
 > 제작 기준: `EXODUSER_MAP_PRODUCTION_GUIDELINE_v0.9.md` GATE 5~6 시각 연결 패스
@@ -29,6 +29,22 @@
 
 build 순서는 locked outer base → smoothing overlay → 완성 smoothing master다. runtime은 `_CH1_START_ROOT`가 선택한 한 64-chunk set을 기존 stage0 decode/GPU warm/draw 경로로 표시하며, boss arena에서는 탐험맵 전용 set을 그리지 않는다.
 
+### 2026-09-04 선예도 리모델링 현행 계약
+
+기존 builder의 `fit:'fill'` 강제 비율 변형, raster blur `2~3px`, SVG `feGaussianBlur` `48/72px`가 낮은 해상도의 보라색 띠와 흐릿한 대형 얼룩을 baked chunk에 만들었다. 현행 builder는 SVG 광역 얼룩을 제거하고 고해상도 ground source만 종횡비를 유지해 재합성한다. 상세 변경·검증·카메라 판정은 `CH1_1_CRISP_SMOOTHING_REMODEL_2026-09-04.md`가 SSOT다.
+
+| id | 한글명 | 현행 수치/공식 | 적용 위치 |
+|---|---|---|---|
+| `rasterBlurPx` | 래스터 블러 | `0px` | 모든 smoothing ground patch |
+| `stretchFit` | 강제 늘이기 | `false`; `fit:'contain'` | `assetLayer()` |
+| `maxRasterUpscale` | 최대 확대 | `1.3×`; 초과 시 build 실패 | `assetLayer()` |
+| `purpleEdgeTint` | 보라색 광역 띠 | `false` | smoothing overlay |
+| `treeBasinFootprintPx` | 중앙 분지 footprint | `1700×1500px` | TREE_BASIN 4 |
+| `treeBasinAssetOpacity` | 중앙 분지 알파 | `0.30~0.34` | TREE_BASIN 4 |
+| `groundPatchOpacityRange` | 전체 바닥 패치 알파 | `0.16~0.34` | EDGE/CORNER/TREE/SIDE/OPEN |
+| `poiFootprintScaleRange` | POI 연결 패치 scale | `0.82~1.20×` | SIDE_CONNECTION 10 |
+| `toxicAssetPatches` | 독지대 연결 패치 | `5`, saturation 최대 `0.34` | CORNER 1 + SIDE 4 |
+
 ## smoothing 규칙
 
 | 대상 | 현행 계약 |
@@ -53,7 +69,7 @@ draw filter는 기존 metadata filter와 CH1 tone 문자열을 공백으로 이�
 
 | 역할 | canonical 값 | smoothing 역할 |
 |---|---:|---|
-| corpse tree | `(102,90)`, meta `sz1450`, instance scale `1` | 3100×2200px 비대칭 basin, tree 좌표·collision 불변 |
+| corpse tree | `(102,90)`, meta `sz1450`, instance scale `1` | 1700×1500px 선예도 basin, tree 좌표·collision 불변 |
 | camp | `(45,100)` | 서쪽 low/wide ground connection |
 | altar | `(147,97)` | hill edge와 유기적으로 연결 |
 | altar hill | center `(147,98)`, `rx18/ry9`, west ramp `x125→135` | visual organic hill만 보강, height/collision math 불변 |
@@ -113,7 +129,7 @@ MEDIUM
 
 GROUND
 - shadow: EDGE_SMOOTH 8 + CORNER 4
-- contamination: toxic wet mass 3 + fragment 5 composition
+- contamination: 저채도 aspect-preserved toxic source patch 5개, 연속 chain 없음
 - structure integration: TREE_BASIN 4 + OPEN_FIELD 5
 
 PLAYABLE
@@ -124,7 +140,7 @@ PLAYABLE
 - combat readability: PASS, no new vertical clutter
 
 LANDMARK
-- primary: corpse tree (102,90), 3100×2200 basin footprint
+- primary: corpse tree (102,90), 1700×1500 선예도 basin footprint
 - secondary: camp (45,100), altar (147,97)
 - tertiary: cocoon (47,50), pool (167,43), poison pit (162,139)
 
@@ -149,7 +165,7 @@ TECH QA
 - contrast regression: smoothing 16/16 PASS, pageerror/404 0/0
 
 FILES
-- stage-owned: baked_start_smoothing master/chunks/manifest/builder/tests/captures and this SSOT; contrast retouch는 runtime draw와 문서/테스트/캡처만 변경하고 baked master는 불변
+- stage-owned: baked_start_smoothing master/chunks/manifest/builder/tests/captures and this SSOT; 2026-09-04 선예도 리모델링은 smoothing master/chunk를 재베이크했으며 locked outer master는 불변
 - concurrent touched: pre-existing shared work preserved
 - unrelated touched: none intentionally
 

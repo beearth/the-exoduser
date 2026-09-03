@@ -10,6 +10,7 @@ const CAPTURE=fs.readFileSync(path.join(ROOT,'tmp','capture_ch1_start_smoothing.
 const OUT=path.join(ROOT,'assets','map','ch1','baked_start_smoothing');
 const MANIFEST=path.join(OUT,'composition.json');
 const MASTER=path.join(OUT,'CH1_1_START_SMOOTHING_MASTER.png');
+const BUILDER=fs.readFileSync(path.join(ROOT,'tools','build_ch1_start_smoothing.mjs'),'utf8');
 const IDS=Array.from({length:64},(_,i)=>`${i%8},${Math.floor(i/8)}`);
 
 const readManifest=()=>JSON.parse(fs.readFileSync(MANIFEST,'utf8'));
@@ -44,6 +45,18 @@ test('CH1-1 smoothing protects exact routes, landmark anchors, and altar hill co
   assert.deepEqual(m.protected.TOXIC_POOL,[174,50]);
   assert.deepEqual(m.protected.LOWER_PIT,[162,139]);
   assert.deepEqual(m.protected.ALTAR_HILL,{center:[147,98],rx:18,ry:9,westRamp:[125,135]});
+});
+
+test('smoothing build keeps ground assets crisp without stretch blur or purple edge tint',()=>{
+  const v=readManifest().visualContract;
+  assert.equal(v.rasterBlurPx,0,'production ground art must not be softened before chunking');
+  assert.equal(v.stretchFit,false,'ground art must preserve its source aspect ratio');
+  assert.ok(v.maxRasterUpscale<=1.35,`raster upscale ${v.maxRasterUpscale} must stay within the crispness budget`);
+  assert.equal(v.purpleEdgeTint,false,'the smoothing pass must not bake a purple perimeter stripe');
+  assert.doesNotMatch(BUILDER,/fit:'fill'/,'builder must not distort square ground art into broad bands');
+  assert.doesNotMatch(BUILDER,/\.blur\s*\(/,'builder must not blur raster layers or masks');
+  assert.doesNotMatch(BUILDER,/feGaussianBlur/,'builder must not bake large SVG Gaussian smears');
+  assert.match(BUILDER,/fit:'contain'/,'builder must preserve source proportions');
 });
 
 test('CH1-1 smoothing master/chunks are complete and preserve exact 1px seam bleed',async()=>{
@@ -158,13 +171,13 @@ test('capture waits for first visible chunks and probes opt-out, boss, and stage
   assert.match(CAPTURE,/tile:\[nearest\.obj\.x,nearest\.obj\.y\]/);
 });
 
-test('manifest budgets a camera-readable basin, macro contrast, and enlarged POI footprints',()=>{
+test('manifest budgets a camera-readable crisp basin and source-scale ground patches',()=>{
   const m=readManifest(),v=m.visualContract;
-  assert.deepEqual(v.treeBasinFootprintPx,[3100,2200]);
-  assert.deepEqual(v.treeBasinSoilOpacityRange,[.28,.38]);
-  assert.deepEqual(v.macroOpacityRange,[.16,.28]);
-  assert.deepEqual(v.poiFootprintScaleRange,[1.5,2.2]);
-  assert.equal(v.innerEdgeTonguesPerSideMin,3);
+  assert.deepEqual(v.treeBasinFootprintPx,[1700,1500]);
+  assert.deepEqual(v.treeBasinAssetOpacity,[.3,.34]);
+  assert.deepEqual(v.groundPatchOpacityRange,[.16,.34]);
+  assert.deepEqual(v.poiFootprintScaleRange,[.82,1.2]);
+  assert.equal(v.edgePatches,8);
   assert.equal(v.landmarkSpriteAlpha,1);
 });
 
@@ -180,13 +193,13 @@ test('smoothing breaks repeated interior L rows into asymmetric visibility bands
   assert.match(GAME,/if\(tx<45\|\|tx>155\|\|ty<35\|\|ty>165\)return _CH1_START_PHASE==='smoothing'\?\.7:\.42/,'smoothing perimeter is 0.70 while locked outer stays 0.42');
 });
 
-test('toxic integration is broken into low-saturation wet masses and short fragments',()=>{
+test('toxic integration uses five low-saturation crisp source patches without a chain',()=>{
   const v=readManifest().visualContract;
   assert.equal(v.toxicContinuousChain,false);
-  assert.equal(v.toxicWetSoilMasses,3);
-  assert.equal(v.toxicShortFragments,5);
-  assert.equal(v.toxicSaturationMax,.5);
-  assert.equal(v.toxicBase,'brown-black-wet-soil');
+  assert.equal(v.toxicAssetPatches,5);
+  assert.equal(v.toxicSaturationMax,.34);
+  assert.equal(v.toxicBase,'aspect-preserved-source-texture');
+  assert.equal((BUILDER.match(/file:TOXIC/g)||[]).length,5);
 });
 
 test('smoothing structural sprites retain readable color separation from the dark ground',()=>{

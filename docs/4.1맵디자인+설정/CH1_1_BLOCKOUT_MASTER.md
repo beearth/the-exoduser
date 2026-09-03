@@ -25,7 +25,7 @@
 | 9 | EAST POCKET | SIDE(2입구) | ~166,90 (empty .83,.45) | r500px / box 142–188,58–122 | CENTRAL(x142–158 w16)+UPPER(x142–152 w10) | 초안 LOCK |
 | 10 | EXIT 접근 | GATE APPROACH | x88..112,y2..35 | 폭 25타일 funnel | #7↔#11 | `_applyCh1StartNorthGate` 보존 영역 |
 | 11 | boss 게이트/exit | GATE | bossCx100, gateY5 / exits 99..101,y7 | exit 3타일 | #10→[아레나] | forest RLE 뒤 재적용 |
-| L | m_c1tree | MAIN HERO | 102,90 | meta sz1450 / scale1 | 중앙 | 현행 reference focal point 1개, 3100×2200 smoothing basin |
+| L | m_c1tree | MAIN HERO | 102,90 | meta sz1450 / scale1 | 중앙 | 현행 reference focal point 1개, 1700×1500 crisp smoothing basin |
 | S1 | m_c1camp | SECONDARY | 45,100 | scale1.55 | 서쪽 | 좌표·collision 불변 |
 | S2 | m_c1altar | SECONDARY | 147,97 | scale1.45 | 우중 hill | hill 중심147,98·rx18/ry9·west ramp125→135 불변 |
 | T1~3 | cocoon / pool / poison pit | TERTIARY | 47,50 / 167,43 / 162,139 | 1.55 / 1.55 / 1 | side | pool은 forest-mask authored exact 위치 |
