@@ -45,7 +45,8 @@
 |---|---|
 | 전용 로더 | `_CH1_START_MEDIUM_SHEETS`, `_ch1StartMediumImgs`, `_ch1StartMediumReady` |
 | draw 함수 | `_drawCh1StartMediumEyeMass(X,e,now,alpha)` |
-| 표시 크기 | `max(118, r×4.1)`px; 실제 반경 범위에서는 약 `131.2~147.6px` |
+| 표시 크기 | 세로 `drawH=max(240, r×7)`px; 실제 반경 범위에서는 `240~252px` |
+| 종횡비/표시 폭 | 원본 셀 비율 보존: `drawW=drawH×(fw/fh)`; idle `fw/fh=0.5` → `120~126px`, action `fw/fh=2/3` → `160~168px` |
 | 배치 제외 | `_prepEnemyInstanced`는 `_ch1StartMedium`을 WebGL enemy batching에서 제외 |
 | 화면 draw | 일반 적 Canvas pass가 `_drawCh1StartMediumEyeMass`를 호출; generic 8dir atlas를 덮어쓰지 않음 |
 | 자산 실패 | action이 준비되지 않으면 idle sheet를 선택하고, idle도 실패하면 기존 generic sprite 경로로 fallback |

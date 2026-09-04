@@ -46164,4 +46164,13 @@ mpR = 0.05 + s.int×0.005                                        [NO P.lv×0.001
 
 - 이 두 개체만 WebGL enemy batching과 generic 8dir atlas를 건너뛰고 Canvas 직접 렌더를 쓴다. idle source가 로드되지 않은 경우에는 기존 generic atlas 경로로 fallback한다.
 - 지도 geometry, collision, route, 스폰 풀은 변경하지 않았다. 실제 시작점을 원점으로 하므로 200×200 canonical map에서는 `(87.5,167.5)`, `(113.5,164.5)`가 되고 map variant에서도 맵 밖 스폰이 없다.
-- 검증: `test/ch1StartMediumEyeMass.test.js` 2/2, `test/gameHtmlInlineSyntax.test.js` 1/1 PASS. 로컬 `server.cjs` 브라우저에서 `initStage(0)` 후 2마리 alive, idle/action sheet ready, `pageerror=[]`; 시각 캡처 `captures/ch1_start_medium_20260904.png`에 두 개체 표시.
+- 검증: `test/ch1StartMediumEyeMass.test.js` 3/3, `test/gameHtmlInlineSyntax.test.js` 1/1 PASS. 로컬 `server.cjs` 브라우저에서 `initStage(0)` 후 2마리 alive, idle/action sheet ready, `pageerror=[]`; 시각 캡처 `captures/ch1_start_medium_20260904.png`에 두 개체 표시.
+
+## 2026-09-04 CH1-1 START 다안 육괴 원본 비율 복구
+
+| id | 문제 | 수정 수치/공식 | 적용 위치 |
+|---|---|---|---|
+| `_drawCh1StartMediumEyeMass` | 세로형 셀을 `size×size`로 그려 육괴가 눌리고 잘린 것처럼 보임 | `drawH=max(240,r×7)`, `drawW=drawH×(fw/fh)`; idle 폭 `120~126px`, action 폭 `160~168px`, 세로 `240~252px` | `game.html` Canvas 직접 렌더러 |
+
+- 원본 논리 셀은 그대로 유지한다: idle `1254×1254 / 4×2`, action `1448×1086 / 8×4`. 별도의 알파 재단이나 프레임 경계 이동은 하지 않는다.
+- `test/ch1StartMediumEyeMass.test.js`가 정사각형 destination 제거와 원본 종횡비·크라켄급 세로 크기 계약을 고정한다. inline 문법 검사도 함께 통과했다.

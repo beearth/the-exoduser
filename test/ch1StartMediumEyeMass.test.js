@@ -31,6 +31,15 @@ test('CH1-1 owns both supplied eye-mass sheets with valid grid layouts', () => {
     'the runtime enemy pass must draw the supplied sheets instead of the generic atlas');
 });
 
+test('CH1-1 renderer preserves each supplied frame\'s tall aspect ratio', () => {
+  assert.match(gameHtml, /const drawH=Math\.max\(240,e\.r\*7\);\s*const drawW=drawH\*\(fw\/fh\);/,
+    'the supplied tall source frames must retain their natural aspect ratio at Kraken-scale height');
+  assert.match(gameHtml, /X\.drawImage\(img,sx,sy,fw,fh,-drawW\/2,-drawH\/2,drawW,drawH\);/,
+    'the renderer must use separate width and height values instead of a square crop');
+  assert.doesNotMatch(gameHtml, /X\.drawImage\(img,sx,sy,fw,fh,-size\/2,-size\/2,size,size\);/,
+    'a square destination squeezes the source and makes the monster appear cut off');
+});
+
 test('CH1-1 starts with a two-monster eye-mass encounter outside the bonfire sanctuary', () => {
   assert.match(gameHtml, /const _CH1_START_MEDIUM_SPAWNS=\[\{dx:-13,dy:-18\},\{dx:13,dy:-21\}\]/,
     'the encounter must have two authored start-relative positions');

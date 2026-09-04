@@ -17093,9 +17093,11 @@ function _drawCh1StartMediumEyeMass(X,e,_now,sa){
     :Math.round((((e.facing||0)%(Math.PI*2)+Math.PI*2)%(Math.PI*2))/(Math.PI/4))%8;
   const fw=img.naturalWidth/cols,fh=img.naturalHeight/rows;
   const sx=(frame%cols)*fw,sy=~~(frame/cols)*fh;
-  const size=Math.max(118,e.r*4.1);
+  // 원본 프레임은 세로형이다. 정사각형으로 강제하면 육괴가 눌려 잘린 것처럼 보인다.
+  const drawH=Math.max(240,e.r*7);
+  const drawW=drawH*(fw/fh);
   X.save();X.translate(e.x,e.y);X.globalAlpha=sa;
-  X.drawImage(img,sx,sy,fw,fh,-size/2,-size/2,size,size);
+  X.drawImage(img,sx,sy,fw,fh,-drawW/2,-drawH/2,drawW,drawH);
   X.restore();
   return true;
 }
