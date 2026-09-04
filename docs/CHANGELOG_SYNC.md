@@ -1,5 +1,15 @@
 # Sync Changelog
 
+## 2026-09-04 Q 홀드 기폭팔 반복 발동 수정
+
+| id | 이전 문제 | 수정 | 적용 위치 | 검증 |
+|---|---|---|---|---|
+| `detonate` / `_qDetonateFired` | Q 홀드 120f마다 `parryT=0`으로 되돌아가 한 번의 홀드에서 기폭팔이 무한 반복 발동 | Q 진입마다 `parryT=0`과 1회 잠금을 초기화하고, 120f 자동기폭 뒤 `_qDetonateFired=true`로 같은 홀드의 재충전·HP 드레인·재폭발을 차단 | `game.html` `case 'sBlock'` 및 표준 Q 진입 5경로 | `test/qHoldDetonateOnce.test.js`, `test/qHoldReleaseParry.test.js` |
+
+- 수치 계약: Q 홀드 자동기폭은 2초(120f), Q 한 번 홀드당 1회, Q를 놓고 다시 누르면 재무장한다.
+- 회전참 합체(`whirlDet`/`slamStorm`/`stormBeam`)의 별도 주기 자동기폭과 기폭 피해 공식은 변경하지 않았다.
+- 수정 금지 문서 `docs/2_3 돌진+패링+방패시스템`은 프로젝트 규칙에 따라 변경하지 않았다.
+
 ## 2026-09-04 — 게임 시작 멈춤(`Unexpected token 'else'`) 복구
 
 | ID/항목 | 증상·원인 | 수정 | 적용 위치 | 검증 |
