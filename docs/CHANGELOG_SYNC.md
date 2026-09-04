@@ -1,5 +1,13 @@
 # Sync Changelog
 
+## 2026-09-04 — 게임 시작 멈춤(`Unexpected token 'else'`) 복구
+
+| ID/항목 | 증상·원인 | 수정 | 적용 위치 | 검증 |
+|---|---|---|---|---|
+| 물리 빨콩 렌더 분기 | `_drawPhysMouth → _drawEyeBullet → fallback`의 `else` 앞에 `X.restore()`가 삽입되어 인라인 스크립트 전체가 구문 분석에 실패하고 로딩 화면에서 멈춤 | 두 이미지 helper를 단락 없는 `_rbDrawn` 단일 결과로 합친 뒤 `if / else`로 fallback을 선택해, helper 사이 상태 복구문이 고아 `else`를 만드는 구조를 제거 | `game.html` 물리 `redBean` 렌더 | `test/gameHtmlInlineSyntax.test.js`가 모든 실행형 인라인 스크립트를 `vm.Script`로 파싱; 관련 투사체·Q 패링 회귀 **21/21 PASS** |
+
+- 피해·탄속·패링 입력·외형 크기·색상·지속시간 등 게임 수치는 변경하지 않았다.
+
 ## 2026-09-04 실버테일 참회 전용 여성 보이스
 
 | 논리 키 | 증상/원인 | 실버테일 현재 계약 | 다른 캐릭터 | 적용 위치 |
