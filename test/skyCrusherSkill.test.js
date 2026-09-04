@@ -32,11 +32,11 @@ test('Sky Crusher level scaling controls radius, fall timing, and shard count', 
     impactT: 36,
     shardT: 51,
     shardCount: 6,
-    maxT: 636,
+    maxT: 216,
     mpCost: 80,
     maxCharges: 3,
     recharge: 900,
-    persistT: 600,
+    persistT: 180,
     dotEvery: 30,
     dotMul: 0.05,
     fireRadius: 169,
@@ -47,11 +47,11 @@ test('Sky Crusher level scaling controls radius, fall timing, and shard count', 
     impactT: 24,
     shardT: 39,
     shardCount: 12,
-    maxT: 624,
+    maxT: 204,
     mpCost: 80,
     maxCharges: 3,
     recharge: 900,
-    persistT: 600,
+    persistT: 180,
     dotEvery: 30,
     dotMul: 0.05,
     fireRadius: 317,
@@ -75,7 +75,6 @@ test('Sky Crusher appears in the Special tab Rage category and uses the Space sl
 });
 
 test('Sky Crusher has an MP gate and a three-charge cooldown HUD', () => {
-  assert.match(gameHtml, /skyCrusher:\{b:14,g:11\.2\}/);
   assert.match(gameHtml, /case 'skyCrusher':\s*if\(P\.mp>=80&&_skyCrusherChargeCount\(\)>0\)\{activateSkyCrusher\(\);_skOk=true\}/);
   assert.match(gameHtml, /skyCrusher:P\._scCd\|\|0/);
   assert.match(gameHtml, /const _spCdMap=\{giantSlam:P\._gslCd\|\|0,giantSlam2:P\._gslCd\|\|0,skyCrusher:P\._scCd\|\|0\}/);
@@ -97,6 +96,10 @@ test('Sky Crusher schedules a telegraphed impact and delayed shard burst', () =>
   assert.match(gameHtml, /hurtE\(e,sc\.dmg,a,false,\{magic:true,explode:true,poiseHit:true,poiseMult:2/);
   assert.match(gameHtml, /if\(!sc\.sharded&&sc\.t>=sc\.shardT\)/);
   assert.match(gameHtml, /hurtE\(e,~~\(sc\.dmg\*\.35\),a,true,\{magic:true,explode:true,noPoise:true\}/);
+});
+
+test('Sky Crusher uses a rage-tier impact multiplier', () => {
+  assert.match(gameHtml, /skyCrusher:\{b:42,g:33\.6\}/);
 });
 
 test('Sky Crusher loads a dedicated giant iron wedge sprite', () => {
@@ -139,7 +142,7 @@ test('Sky Crusher stores three charges and recharges one every 15 seconds', () =
   const spec = Function(`${source};return _skyCrusherSpec`)()(1);
   assert.equal(spec.maxCharges, 3);
   assert.equal(spec.recharge, 900);
-  assert.equal(spec.persistT, 600);
+  assert.equal(spec.persistT, 180);
   assert.match(gameHtml, /function _skyCrusherChargeCount\(\)/);
   assert.match(gameHtml, /P\._scCharges=Math\.max\(0,charges-1\)/);
   assert.match(gameHtml, /case 'skyCrusher':\s*if\(P\.mp>=80&&_skyCrusherChargeCount\(\)>0\)/);
@@ -152,7 +155,7 @@ test('parrying trims the next Sky Crusher charge by half a second once per frame
   assert.match(gameHtml, /_tickSkyCrusherRecharge\(_scParryCut\+_prRageCd\)/);
 });
 
-test('embedded Sky Crusher persists for ten seconds and deals periodic fire damage', () => {
+test('embedded Sky Crusher persists for three seconds and deals periodic fire damage', () => {
   assert.match(gameHtml, /maxT:impactT\+persistT/);
   assert.match(gameHtml, /dotEvery:30,dotMul:\.05/);
   assert.match(gameHtml, /sc\.nextDotT=sc\.impactT\+sc\.dotEvery/);
