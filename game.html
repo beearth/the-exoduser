@@ -7900,6 +7900,13 @@ const _BOOM_MAX=12;const _booms=[];for(let i=0;i<_BOOM_MAX;i++)_booms.push({x:0,
 function _projHitFx(px,py,el,isRed){_addBoom(px,py,60,48,isRed?'redbean':el===EL.I?'ice':el===EL.L?'lightning':el===EL.D?'dark':'fire'); // 탄막 피격 임팩트 크기 통일(r=60 → ~180px)
   if(isRed){addParts(px,py,'#ff2200',14);shake(6);SFX.detonate();doHitFlash('#ff2200',0.18);
   }else{addParts(px,py,ELC[el]||'#ff8844',12);shake(6);doHitFlash(ELC[el]||'#ff8844',0.15)}}
+function _waterBeanIceBurst(x,y,parried){
+  _addBoom(x,y,parried?96:72,parried?72:66,'ice');
+  const shardCount=parried?16:10;
+  for(let i=0;i<shardCount;i++){const a=Math.PI*2*i/shardCount+(Math.random()-.5)*.22;const sp=2.5+Math.random()*(parried?4.5:3);
+    poolPart(x,y,Math.cos(a)*sp,Math.sin(a)*sp,i%3===0?'#e9fbff':i%3===1?'#4ca8ff':'#173c98',2+Math.random()*2.5,10+Math.random()*8)}
+  shake(parried?8:6);doHitFlash('#8ed8ff',parried?.2:.15);
+}
 // ═══ Dark 02 임팩트 (패링 전용, boom 연속보간) ═══
 function _dark02Impact(x,y){_addBoom(x,y,80,72,'dark02')}
 // ═══ 무지개탄 블루콩 적중 임팩트 (Power Poison, boom 연속보간) ═══
@@ -20906,18 +20913,23 @@ function _drawKrakenShot(p,fa,len){
   X.restore();X.globalAlpha=1;return true;
 }
 function _drawWaterBean(p,fa,sSc){
-  // 물 파란콩은 대형 크라켄 어뢰가 아니라, 읽기 쉬운 작은 물빛 파란 핵이다.
-  // 둥근 그라데이션 대신 픽셀형 물결 꼬리를 써서 무지개·대형 에너지탄과 실루엣을 분리한다.
-  const coreR=4.4*sSc;
-  const pulse=.84+Math.sin(_now*.015+p.x*.06)*.16;
+  // 물 파란콩은 대형 어뢰가 아닌, 세 갈래 얼음 파편이 나란히 날아가는 작은 탄막이다.
+  // 파편 사이 간격과 꼬리를 고정해 무지개탄·반사 블루콩과 실루엣을 분리한다.
+  const shardCount=3;
+  const shardR=5.2*sSc;
+  const pulse=.86+Math.sin(_now*.015+p.x*.06)*.14;
   const ang=Math.atan2(p.vy,p.vx);
   X.save();X.translate(p.x,p.y);X.rotate(ang);X.globalCompositeOperation='lighter';
-  X.globalAlpha=fa*.13*pulse;X.fillStyle='#15338f';X.fillRect(-coreR*4.2,-coreR*.65,coreR*3.7,coreR*1.3);
-  X.globalAlpha=fa*.26*pulse;X.fillStyle='#2058c5';X.fillRect(-coreR*2.9,-coreR*.9,coreR*2.7,coreR*1.8);
-  X.globalAlpha=fa*.52;X.fillStyle='#317cec';X.fillRect(-coreR*1.25,-coreR*1.18,coreR*2.2,coreR*2.36);
-  X.globalAlpha=fa*.9;X.fillStyle='#73aeff';X.fillRect(-coreR*.72,-coreR*.72,coreR*1.45,coreR*1.45);
-  X.globalAlpha=fa;X.fillStyle='#d9edff';X.fillRect(-coreR*.27,-coreR*.4,coreR*.72,coreR*.72);
-  X.globalAlpha=fa*.72;X.fillStyle='#ffffff';X.fillRect(coreR*.1,-coreR*.45,coreR*.42,coreR*.42);
+  X.globalAlpha=fa*.14*pulse;X.fillStyle='#173c98';X.fillRect(-shardR*4.6,-shardR*1.45,shardR*4.2,shardR*2.9);
+  for(let i=0;i<shardCount;i++){
+    const lane=(i-(shardCount-1)*.5)*shardR*.86;
+    const tip=shardR*(1.12+(i===1?.18:0));
+    X.save();X.translate(0,lane);X.rotate((i-1)*.11);
+    X.globalAlpha=fa*.38*pulse;X.fillStyle='#2769dc';X.beginPath();X.moveTo(tip*1.35,0);X.lineTo(-tip*.7,-tip*.5);X.lineTo(-tip*1.08,0);X.lineTo(-tip*.7,tip*.5);X.closePath();X.fill();
+    X.globalAlpha=fa*.82;X.fillStyle='#4ca8ff';X.beginPath();X.moveTo(tip,0);X.lineTo(-tip*.5,-tip*.3);X.lineTo(-tip*.72,0);X.lineTo(-tip*.5,tip*.3);X.closePath();X.fill();
+    X.globalAlpha=fa*.95;X.fillStyle='#e9fbff';X.beginPath();X.moveTo(tip*.72,0);X.lineTo(-tip*.3,-tip*.13);X.lineTo(-tip*.3,tip*.13);X.closePath();X.fill();
+    X.restore();
+  }
   X.restore();X.globalAlpha=1;
 }
 function _drawClassicRainbow(p,fa,sSc){
@@ -31468,8 +31480,9 @@ function update(){
           let _npTgt=_parryHomingTarget(); // 프레임당 1회 캐싱 공유
           if(_npTgt){const _npA=Math.atan2(_npTgt.y-P.y,_npTgt.x-P.x);const _npSpd=Math.max(5,Math.sqrt(p.vx*p.vx+p.vy*p.vy));p.vx=Math.cos(_npA)*_npSpd;p.vy=Math.sin(_npA)*_npSpd}
           else{p.vx*=-2;p.vy*=-2}
-          {p.friendly=true;p.dmg=_npDmg;p.life=180;p.ml=180;p.blueBean=true;p.parryBlueBean=true;p.magic=true;p.homing=true;p._fromRainbow=!!p.blackBean;p.col='#00e5ff';p._aoeR=0;p._aoeDmg=0;}
+          {p.friendly=true;p.dmg=_npDmg;p.life=180;p.ml=180;p.waterBean=false;p.blueBean=true;p.parryBlueBean=true;p.magic=true;p.homing=true;p._fromRainbow=!!p.blackBean;p.col='#00e5ff';p._aoeR=0;p._aoeDmg=0;}
           P.parryBank=(P.parryBank||0)+(p.dmg||10);
+        const _waterBeanParry=!!p.waterBean;
           addTxt(P.x,P.y-28,_T('⚡💎 블루콩!'),'#00e5ff',35);doParry(p.dmg,p.x,p.y,false,p.blackBean?'rainbow':p.el);projs[pw++]=p;_pHit=true;continue}}
       else if(P.s==='whirlwind'&&_isFused('whirlDet')&&!p.friendly&&!p.bomb&&!p.iceZone&&!p.blizzard&&!p.web){
         // 회전기폭 합체: 회전 중 일반탄 흡수 → parryBank 축적 (기본20% + 기폭Lv 0.5%, 캡30%)
@@ -31478,6 +31491,7 @@ function update(){
         hurtP(_wdD,{dtype:'magic',wwAbsorbed:true});
         P.parryBank=(P.parryBank||0)+(p.dmg||10);
         if(p.redBean){_addBoom(p.x,p.y,80,72,'fire_medium');addParts(p.x,p.y,'#ff2200',8)}else{addParts(p.x,p.y,'#ff4400',4)}
+          if(_waterBeanParry)_waterBeanIceBurst(p.x,p.y,true);
         _pHit=true;
       }
       else if(P.s!=='charge'&&!p.friendly){
@@ -31497,10 +31511,10 @@ function update(){
           hurtP(~~((p.dmg||10)*elMul(p.el,ar().el)),{dtype:'magic'});
           if(P.s!=='charge'&&P.s!=='sBlock'&&P.s!=='kiGather'&&P.s!=='sDraw'){P.s='stagger';P.st2=30}
           addTxt(P.x,P.y-20,_T('⚠ 덫!'),'#ffcc00',30);addParts(P.x,P.y,'#ffaa00',8);_pHit=true}
-        else{const _pjD=~~((p.dmg||10)*elMul(p.el,ar().el));hurtP(_pjD,{dtype:p.redBean?'parry':'magic',redBean:!!p.redBean,projHit:true,knockback:_normalProjectilePlayerKnockback(p,P.x,P.y)});if(p.fbEnergy||p.fdEnergy)_fbEnergyBoom(p);else _projHitFx(p.x,p.y,p.el,!!p.redBean);if(p.el===EL.L)P._elecT=Math.max(P._elecT||0,30);
+        else{const _pjD=~~((p.dmg||10)*elMul(p.el,ar().el));hurtP(_pjD,{dtype:p.redBean?'parry':'magic',redBean:!!p.redBean,projHit:true,knockback:_normalProjectilePlayerKnockback(p,P.x,P.y)});if(p.fbEnergy||p.fdEnergy)_fbEnergyBoom(p);else if(!p.waterBean)_projHitFx(p.x,p.y,p.el,!!p.redBean);if(p.el===EL.L)P._elecT=Math.max(P._elecT||0,30);
           // 빨콩 피격 화상 (데미지×3, 10초, 최대10중첩)
           if(p.redBean){if(!P._rbBurn)P._rbBurn=[];if(P._rbBurn.length<10){P._rbBurn.push({total:_pjD*2,t:600,tick:0});addTxt(P.x,P.y-30,_T('🔥화상!')+'×'+P._rbBurn.length,'#ff4400',30)}}
-          if(p.waterBean){P._freezeSlow=Math.max(P._freezeSlow||0,60);addTxt(P.x,P.y-30,_T('❄빙결!'),'#317cec',30);addParts(P.x,P.y,'#317cec',4)}
+          if(p.waterBean){_waterBeanIceBurst(p.x,p.y,false);P._freezeSlow=Math.max(P._freezeSlow||0,60);addTxt(P.x,P.y-30,_T('❄빙결!'),'#317cec',30);addParts(P.x,P.y,'#317cec',4)}
           _pHit=true}}}
     if(!_pHit&&p.friendly&&!_bigBall){const _fHitR=Math.max(6,(p.r||4)+Math.min(18,Math.sqrt(p.vx*p.vx+p.vy*p.vy)*0.5));const _ne3=shQuery(p.x,p.y,_fHitR+20);for(let ni=0;ni<_ne3.length;ni++){const e=_ne3[ni];if(!e.alive)continue;if(e._bluHitCD>0)continue;if(dst(p.x,p.y,e.x,e.y)<e.r+_fHitR){if(p.friendly&&p.redBean)e._bluHitCD=3;
       if(p.bomb){

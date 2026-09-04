@@ -43,6 +43,17 @@
 
 | id | 이전 동작 | 현재 동작 | 수치 | 검증 |
 |---|---|---|---:|---|
+## 2026-09-04 물 파란콩 3갈래 얼음탄막·파열
+
+| 항목 | 이전 | 현재 계약 | 적용 위치 |
+|---|---|---|---|
+| 비행 외형 | 작은 픽셀 물핵+물결 꼬리 | 비행 방향으로 나란한 3갈래 얼음 파편 탄막. `#173c98` 외곽 → `#4ca8ff` 결정 → `#e9fbff` 코어, `shardR=5.2×_sSc` | `_drawWaterBean()` |
+| Q 패링 | 블루콩 반사 전환만 | 반사 전 `r=96`, `72f`, 얼음 파편 16개 시각 전용 파열 후 기존 블루콩 반사 | 일반 마법탄 Q 패링 분기, `_waterBeanIceBurst(...,true)` |
+| 플레이어 피격 | 일반 얼음 적중 + 빙결 60f | `r=72`, `66f`, 파편 10개 시각 전용 파열 + 기존 빙결 60f | 일반 적 투사체 피격 분기, `_waterBeanIceBurst(...,false)` |
+
+- 피해량, `EL.I`, 최종 500~600px/s, 유도, 히트박스, Q 패링 분류는 변경하지 않았다. 파열은 광역 피해를 추가하지 않는 시각 피드백이다.
+- TDD: `test/waterBeanIceBarrage.test.js`가 3파편 렌더·Q 패링 파열·피격 파열을 고정한다.
+
 | `_normalProjectilePlayerKnockback` | 일반탄 직격이 `hurtP()` 공통 넉백을 사용해 최소 세기 1의 방향이 무작위 | 탄 진행 벡터를 정규화한 명시 넉백을 일반탄 직접 피격에 전달 | **2** | `test/normalProjectilePlayerKnockback.test.js` |
 | `_bigEnergyPlayerKnockback` | 대형 에너지탄 전용 강제 슬라이드 | 변경 없음 | **100** | `test/bigEnergyParrySplit.test.js` |
 
