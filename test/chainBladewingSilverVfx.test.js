@@ -1,0 +1,30 @@
+import test from 'node:test';
+import assert from 'node:assert/strict';
+import { readFile } from 'node:fs/promises';
+import { fileURLToPath } from 'node:url';
+import sharp from 'sharp';
+
+const assetUrl = new URL('../img/vfx/chain_blade_silver.webp', import.meta.url);
+
+test('chain Bladewing loads the sharp silver transparent asset', async () => {
+  const game = await readFile(new URL('../game.html', import.meta.url), 'utf8');
+  assert.match(game, /_CHAIN_BLADE_IMG\.src='img\/vfx\/chain_blade_silver\.webp'/);
+
+  const metadata = await sharp(fileURLToPath(assetUrl)).metadata();
+  assert.equal(metadata.format, 'webp');
+  assert.equal(metadata.hasAlpha, true);
+  assert.equal(metadata.channels, 4);
+  assert.ok(metadata.width >= 800 && metadata.height >= 600);
+});
+
+test('chain Bladewing hit, spark, and fallback colors are cold silver', async () => {
+  const game = await readFile(new URL('../game.html', import.meta.url), 'utf8');
+  const combat = game.match(/\/\/ ── 기동칼날개: 이동 중 광역 베기[\s\S]*?\/\/ ── INT\(사슬기동:화염\)/)?.[0] || '';
+  const render = game.match(/\/\/ ══ 기동칼날개 — 스프라이트 날개 렌더 ══[\s\S]*?\/\/ ══ 유탄 — 렌더/)?.[0] || '';
+
+  assert.match(combat, /'#dcecff'/);
+  assert.match(combat, /'#a9bfd0'/);
+  assert.doesNotMatch(combat, /#ff4466/i);
+  assert.match(render, /fillStyle='#a9bfd0'/);
+  assert.doesNotMatch(render, /#ff2244/i);
+});

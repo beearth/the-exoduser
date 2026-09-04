@@ -14558,7 +14558,7 @@ const _projFree=[];
 let _projNext=0;
 // ═══ 초승달 검기 스프라이트 ═══
 const _CRES_IMG=new Image();_CRES_IMG.src='assets/vfx/crescent_slash.webp';
-const _CHAIN_BLADE_IMG=new Image();let _chainBladeReady=false;_CHAIN_BLADE_IMG.src='img/vfx/chain_blade.webp';_CHAIN_BLADE_IMG.onload=()=>{_chainBladeReady=true};
+const _CHAIN_BLADE_IMG=new Image();let _chainBladeReady=false;_CHAIN_BLADE_IMG.src='img/vfx/chain_blade_silver.webp';_CHAIN_BLADE_IMG.onload=()=>{_chainBladeReady=true};
 const _SBASH_BLADE_IMG=new Image();let _sbashBladeReady=false;_SBASH_BLADE_IMG.src='img/vfx/sbash_blade.webp';_SBASH_BLADE_IMG.onload=()=>{_sbashBladeReady=true};
 const _SBASH_BLADE_BLK=new Image();let _sbashBlkReady=false;_SBASH_BLADE_BLK.src='img/vfx/sbash_blade_black.webp';_SBASH_BLADE_BLK.onload=()=>{_sbashBlkReady=true};
 // ═══ 초승달 검기 풀 ═══
@@ -28555,9 +28555,9 @@ function update(){
         const _eA=Math.atan2(e.y-P.y,e.x-P.x);
         hurtE(e,_csDmg,_eA,true,{kbMult:0,poiseHit:true,poiseMult:1.2},wp().el||0);
         e.bleedT=Math.max(e.bleedT||0,300);e.bleedStk=Math.min(10,(e.bleedStk||0)+1);if((e.bleedStk||0)<10)e._bleedPool=(e._bleedPool||0)+pDotPool()*_csDmg*0.10;e.bleed=1;
-        addTxt(e.x,e.y-18,_T('⚔ 칼날!'),'#ff4466',25);
+        addTxt(e.x,e.y-18,_T('⚔ 칼날!'),'#dcecff',25);
         playVFXAng('ice_slash',e.x,e.y,1.0,3,_eA,true);
-        for(let j=0;j<4;j++){const a=_eA+Math.PI+(Math.random()-.5)*1.2;poolPart(e.x,e.y,Math.cos(a)*5,Math.sin(a)*5,'#ff4466',2+Math.random()*2,8+Math.random()*5)}
+        for(let j=0;j<4;j++){const a=_eA+Math.PI+(Math.random()-.5)*1.2;poolPart(e.x,e.y,Math.cos(a)*5,Math.sin(a)*5,'#a9bfd0',2+Math.random()*2,8+Math.random()*5)}
       }
       // 좌우 칼날 펼침 VFX — 양옆 150범위 날개형 칼날
       {const _blR=_csR;
@@ -28565,8 +28565,8 @@ function update(){
       for(let _bs=0;_bs<2;_bs++){
         const _ba=_bs===0?_perpL:_perpR;
         const _bx=P.x+Math.cos(_ba)*_blR,_by=P.y+Math.sin(_ba)*_blR;
-        poolPart(_bx,_by,Math.cos(_ba)*3+(Math.random()-.5)*2,Math.sin(_ba)*3+(Math.random()-.5)*2,'#ffffff',3+Math.random()*3,6+Math.random()*4);
-        poolPart(_bx+(Math.random()-.5)*15,_by+(Math.random()-.5)*15,(Math.random()-.5)*4,(Math.random()-.5)*4,'#ff4466',2+Math.random()*3,5+Math.random()*4);
+        poolPart(_bx,_by,Math.cos(_ba)*3+(Math.random()-.5)*2,Math.sin(_ba)*3+(Math.random()-.5)*2,'#f8fbff',3+Math.random()*3,6+Math.random()*4);
+        poolPart(_bx+(Math.random()-.5)*15,_by+(Math.random()-.5)*15,(Math.random()-.5)*4,(Math.random()-.5)*4,'#a9bfd0',2+Math.random()*3,5+Math.random()*4);
       }
       if(!G._chainBlades)G._chainBlades=[];
       G._chainBlades.push({x:P.x,y:P.y,ang:_csAng,r:_blR,t:0,maxT:16});
@@ -51187,12 +51187,12 @@ function drawP(){
         const _bw=b.r*2.2,_bh=b.r*1.6; // 날개 폭/높이
         X.drawImage(_CHAIN_BLADE_IMG,-_bw*.5,-_bh*.45,_bw,_bh);
       }else{
-        // 폴백: 프로시저럴 칼날
+        // 폴백: 날카로운 은빛 프로시저럴 칼날
         const len=b.r;
-        X.globalAlpha=.5*fade;X.fillStyle='#ff2244';
-        X.beginPath();X.moveTo(-len,0);X.lineTo(0,-15);X.lineTo(len,0);X.lineTo(0,10);X.closePath();X.fill();
-        X.globalAlpha=.8*fade;X.strokeStyle='#fff';X.lineWidth=2;
-        X.beginPath();X.moveTo(-len,0);X.lineTo(0,-10);X.lineTo(len,0);X.stroke();
+        X.globalAlpha=.42*fade;X.fillStyle='#a9bfd0';
+        X.beginPath();X.moveTo(-len,0);X.lineTo(-len*.24,-18);X.lineTo(0,-7);X.lineTo(len*.24,-18);X.lineTo(len,0);X.lineTo(len*.3,7);X.lineTo(0,2);X.lineTo(-len*.3,7);X.closePath();X.fill();
+        X.globalAlpha=.9*fade;X.strokeStyle='#f8fbff';X.lineWidth=2;
+        X.beginPath();X.moveTo(-len,0);X.lineTo(0,-7);X.lineTo(len,0);X.stroke();
       }
       X.restore();
     }
