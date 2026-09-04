@@ -102,8 +102,8 @@ test('Sky Crusher impact detonates every active Chain Blaze floor', () => {
   assert.match(gameHtml, /if\(!sc\.impacted&&sc\.t>=sc\.impactT\)\{sc\.impacted=true;[\s\S]{0,1800}_detonateAssaultFlames\(\)/);
 });
 
-test('Sky Crusher uses a rage-tier impact multiplier', () => {
-  assert.match(gameHtml, /skyCrusher:\{b:42,g:33\.6\}/);
+test('Sky Crusher uses a boosted rage-tier impact multiplier', () => {
+  assert.match(gameHtml, /skyCrusher:\{b:60,g:48\}/);
 });
 
 test('Sky Crusher loads a dedicated giant iron wedge sprite', () => {
