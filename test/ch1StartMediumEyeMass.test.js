@@ -37,37 +37,50 @@ function opaqueComponentCount(path, cols, rows) {
   return counts;
 }
 
-test('CH1-1 owns the verified cleaned eight-direction action sheet', () => {
-  const spritePath = new URL('../img/ch1_1_eye_slime_8dir_3row_clean.png', import.meta.url);
-  assert.ok(existsSync(spritePath), 'the verified cleaned runtime sheet must ship with the game');
-  assert.deepEqual(pngSize(spritePath), { width: 2048, height: 768 },
-    'the verified source retains its eight directions and three state rows');
+test('CH1-1 owns the regular 8-direction four-frame source and isolated runtime sheet', () => {
+  const sourcePath = new URL('../img/ch1_1_eye_slime_8dir_4frame_grid_source.png', import.meta.url);
+  const spritePath = new URL('../img/ch1_1_eye_slime_8dir_4frame_grid_clean.png', import.meta.url);
+  assert.ok(existsSync(sourcePath), 'the supplied regular source board must ship with the game');
+  assert.ok(existsSync(spritePath), 'the isolated runtime sheet must ship with the game');
+  assert.deepEqual(pngSize(sourcePath), { width: 1774, height: 887 },
+    'the supplied source board must remain intact for reproducible extraction');
+  assert.deepEqual(pngSize(spritePath), { width: 1024, height: 2048 },
+    'runtime must repack four frames across eight directions as uniform 256px cells');
 
-  assert.match(gameHtml, /const _CH1_START_MEDIUM_SHEETS=\{sheet:'img\/ch1_1_eye_slime_8dir_3row_clean\.png'\}/,
-    'runtime must use the verified clean sheet until a frame-exact 8 by 4 export is available');
+  assert.match(gameHtml, /const _CH1_START_MEDIUM_SHEETS=\{sheet:'img\/ch1_1_eye_slime_8dir_4frame_grid_clean\.png'\}/,
+    'runtime must use the isolated regular source instead of a non-uniform presentation board');
   assert.match(gameHtml, /function _drawCh1StartMediumEyeMass\(/,
     'the authored monster needs its own sheet renderer');
   assert.match(gameHtml, /if\(e\._ch1StartMedium&&_ch1StartMediumReady\.sheet\)\{\s*_eDrew=_drawCh1StartMediumEyeMass\(X,e,_now,sa\);/,
     'the runtime enemy pass must draw the supplied sheets instead of the generic atlas');
 });
 
-test('CH1-1 maps idle, movement, and attack to the verified clean state rows', () => {
-  assert.match(gameHtml, /const cols=8,rows=3;/,
-    'the verified production sheet must be sliced as eight directions by three state rows');
-  assert.match(gameHtml, /const row=!animated\?0:e\.s==='eAttack'\?2:1;/,
-    'idle, movement, and attack must use their verified state rows');
+test('CH1-1 maps target direction rows and four authored frame columns', () => {
+  assert.match(gameHtml, /const cols=4,rows=8;/,
+    'the isolated production sheet must be sliced as four frames across eight direction rows');
+  assert.match(gameHtml, /const frameCol=e\.s==='eAttack'\?1:animated\?2\+~~\(_now\/120\)%2:0;/,
+    'idle uses frame 1, attack uses frame 2, and movement cycles frames 3 and 4');
   assert.match(gameHtml, /const targetFacing=P&&P\.hp>0\?Math\.atan2\(P\.y-e\.y,P\.x-e\.x\):\(e\.facing\|\|0\);/,
     'the custom path must calculate the live player-facing direction before choosing a frame');
-  assert.match(gameHtml, /const _CH1_START_MEDIUM_DIRMAP=\[6,7,0,1,2,3,4,5\];/,
+  assert.match(gameHtml, /const _CH1_START_MEDIUM_DIRMAP=\[2,3,4,5,6,7,0,1\];/,
     'the source order down→down-left→left→up-left→up→up-right→right→down-right must map from canvas angles');
-  assert.match(gameHtml, /const frame=row\*cols\+_CH1_START_MEDIUM_DIRMAP\[direction\];/,
-    'every animation row must use the player-facing eight-direction frame');
+  assert.match(gameHtml, /const frame=_CH1_START_MEDIUM_DIRMAP\[direction\]\*cols\+frameCol;/,
+    'every direction row must select its own current animation frame');
 });
 
-test('CH1-1 verified runtime sheet keeps a single silhouette in every source cell', () => {
-  const spritePath = new URL('../img/ch1_1_eye_slime_8dir_3row_clean.png', import.meta.url);
-  assert.deepEqual(opaqueComponentCount(spritePath, 8, 3), Array(24).fill(1),
-    'no neighbour fragments, captions, or backdrop may enter the runtime frames');
+test('CH1-1 isolated runtime sheet keeps non-empty sprites inside transparent cell margins', () => {
+  const spritePath = new URL('../img/ch1_1_eye_slime_8dir_4frame_grid_clean.png', import.meta.url);
+  const png = PNG.sync.read(readFileSync(spritePath));
+  for (let row = 0; row < 8; row++) for (let col = 0; col < 4; col++) {
+    const ox = col * 256, oy = row * 256;
+    assert.equal(png.data[(oy * png.width + ox) * 4 + 3], 0,
+      'each repacked cell must retain a transparent top-left margin');
+    for (let y = 0; y < 20; y++) for (let x = 0; x < 256; x++) assert.equal(png.data[((oy + y) * png.width + ox + x) * 4 + 3], 0,
+      'the extraction safety margin must remove top-edge fragments from adjacent source rows');
+    let opaque = 0;
+    for (let y = 16; y < 240; y++) for (let x = 16; x < 240; x++) if (png.data[((oy + y) * png.width + ox + x) * 4 + 3] > 127) opaque++;
+    assert.ok(opaque > 800, 'each cell must retain its authored monster rather than a label or empty crop');
+  }
 });
 
 test('CH1-1 renderer preserves the supplied frame aspect ratio', () => {

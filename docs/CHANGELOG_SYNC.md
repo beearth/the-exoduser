@@ -1,5 +1,14 @@
 # Sync Changelog
 
+## 2026-09-04 Q 보호막 선택값 우선 복구
+
+| 조건 | 이전 동작 | 현재 동작 | 검증 |
+|---|---|---|---|
+| `stormBeam` 합체 + `activeQSk !== 'peaceShield'` | 합체 유무만으로 Q가 평화의보호로 강제 전환되어 100→200px/10초 경로로 진입 | 선택한 기본 Q(`sBlock`) 유지: 눌림 20f 패링, 홀드 100→500px/240f 성장, 해제 12f 저장 반경 패링 | `qHoldReleaseParry.test.js` + 브라우저 입력 재현 |
+| `activeQSk === 'peaceShield'` | 평화의보호 사용 | 변경 없음 — 평화의보호 사용 | 동일 |
+
+- 수정 지점: `_qIsPeaceShield()`. `stormBeam`은 평화의보호를 해금만 하며, Q 활성 선택값을 덮어쓰지 않는다.
+
 ## 2026-09-04 방어 탭 소환 열 신설
 
 | ID | 한글명 | 이전 분류 | 현재 분류 | 표시 위치 | 슬롯·전투 계약 |
@@ -232,10 +241,10 @@
 | `skyCrusher` | 공중에서 거대한 철제 쇄기를 소환해 커서 지점에 낙하시키는 중립 마법 | MP 80, 최대 3충전, 충전당 900f(15초), 사거리 1000px, 반경 `260+(Lv−1)×12` | `SKILL_LIST`, `_dispatchSkillSlot`, `activateSkyCrusher`, 업데이트/렌더 루프 |
 | 분노 카테고리 | 특수 탭에 영역과 필살기 사이 **분노(`rage`)** 섹션 추가 | `SKILL_HIER.spec.cats=['tech','rage','ult']`, 색 `#ff6633` | K 스킬 패널 |
 | Space 전용 | 기존 지옥강타 1·2와 `cat:'rage'` 액티브만 허용 | 천공쇄기는 1~4/F 불가, 게임패드 B는 facing 650px 조준 | `_isRageBurstSkillId`, `_canAssignSkillSlot`, 슬롯 팝업 |
-| 충돌 피해 | INT 마법 스냅샷, 높은 포이즈·넉백 | `_skMul(b:42,g:33.6)`, Lv1 42×/Lv20 361.2×, 포이즈×2, 넉백×1.6 | `hurtE(...,{magic:true,explode:true})` |
+| 충돌 피해 | INT 마법 스냅샷, 높은 포이즈·넉백 | `_skMul(b:60,g:48)`, Lv1 60×/Lv20 516×, 포이즈×2, 넉백×1.6 | `hurtE(...,{magic:true,explode:true})` |
 | 파편 2차타 | 충돌 15f 뒤 같은 범위에 한 번 더 타격 | 충돌 피해×0.35, 포이즈 없음 | `G._skyCrushers` 업데이트 |
 | 잔류 화염 | 쇄기가 충돌 후 180f 동안 박혀 타오름 | 30f마다 충돌 피해×0.05, 총 6틱/누적 30%, 화염 반경은 충돌 반경×0.65 반올림 | `G._skyCrushers` 업데이트 |
-| 명목 총피해 | 충돌+파편+화염 6틱 | 충돌 피해×1.65, Lv1 69.3×/Lv20 595.98× | 같은 적이 전체 지속시간 동안 범위 안에 있을 때 |
+| 명목 총피해 | 충돌+파편+화염 6틱 | 충돌 피해×1.65, Lv1 99.0×/Lv20 851.4× | 같은 적이 전체 지속시간 동안 범위 안에 있을 때 |
 | 45도 메테오 VFX | 점선 예고 타원→왼쪽 위 `(-720,-720)`에서 45도 철제 쇄기 낙하→지면 관통·화염·시트 내 균열·파편 | 예고 36→24f, 수명 `impactT+180f`, 파편 수 6→12, 충돌 후 별도 원형 장판 없음 | 낙하 4×3 시트 + 잔류 4×2 시트, `drawP()` |
 | 기동불꽃 기폭 | 천공쇄기 착탄이 활성 `assaultFlame`을 즉시 기폭 | `_detonateAssaultFlames()` 공용 경로, 장판별 남은 시간·스택·총피해·범위 유지, 추가 비용 없음 | 천공쇄기 충돌 업데이트 |
 | 패링 충전 회복 | 모든 성공 패링이 천공쇄기 다음 충전을 조금 회복 | 기본 30f + `_uParryRageCd` 30~60f, 프레임당 1회 | `doParry()` |
@@ -46220,7 +46229,7 @@ mpR = 0.05 + s.int×0.005                                        [NO P.lv×0.001
 | `chainSlam` | 기동파괴 (기동충격) | `chain_slam_impact` | `assets/vfx/chain_slam_impact_realistic.png` | `1254×1254`, 3×3, 9프레임, 셀 `418×418` | `playVFXAng(..., scale=_csR/256, speed=7)` |
 
 - 기존 범용 `lava_erupt`와 `earthquake`는 다른 시스템 호환성을 위해 유지하고, 두 기동 착지 호출만 전용 시트로 교체했다.
-- 불꽃 시트는 용암·재·연기, 충격 시트는 균열·석편·먼지 충격파를 순차 재생한다. 생성 원본의 구운 체크 배경은 외곽 연결 영역만 투명 알파로 정규화했으며, 기존 Shift 기동 VFX와 동일한 WebGL 가산 경로를 사용한다.
+- 불꽃 시트는 용암·재·연기, 충격 시트는 균열·석편·먼지 충격파를 순차 재생한다. OpenAI 이미지 생성 API 출력은 완전 불투명 순검정(`#000000`) 바탕의 RGB 시트로 확정해, 알파 정규화/Canvas 우회 없이 기존 Shift 기동 VFX와 동일한 WebGL 가산 경로를 사용한다.
 - 스킬 아이콘, 입력, 피해·반경·쿨다운, 화면 흔들림 및 판정은 변경하지 않았다.
 
 ## 2026-09-04 CH1-1 다안 육괴 플레이어 방향 추적 복구
@@ -46257,3 +46266,16 @@ mpR = 0.05 + s.int×0.005                                        [NO P.lv×0.001
 - 원인: 레이블 8×4 보드는 전시용 레이아웃이라 열 간 여백·스프라이트 footprint가 균일 grid가 아니었다. 균등 crop 또는 재패킹 시 인접 촉수 조각이 들어갈 수 있어 즉시 제거했다.
 - 브라우저 재검증: `initStage(0)`에서 2마리 alive, `sheet=true`, pageerror 0. `captures/ch1_start_medium_8dir_base_20260904.png`에서 잘린 옆 조각·라벨·사각 배경 없이 두 개체의 단일 실루엣을 확인했다.
 - 검증: `test/ch1StartMediumEyeMass.test.js` 5/5, `test/gameHtmlInlineSyntax.test.js` 1/1 PASS. 전투 수치·스폰·충돌·route는 변경하지 않았다.
+
+## 2026-09-04 CH1-1 다안 육괴 규칙형 8방향×4프레임 시트 적용
+
+| 항목 | 값 | 적용 위치 |
+|---|---|---|
+| source | `img/ch1_1_eye_slime_8dir_4frame_grid_source.png`, `1774×887`, 8행 방향×4열 frame | 사용자 제공 보존 원본 |
+| runtime | `img/ch1_1_eye_slime_8dir_4frame_grid_clean.png`, `1024×2048`, 4열×8행, 셀 `256×256` | `_CH1_START_MEDIUM_SHEETS.sheet` |
+| 방향 행 | `N,NE,E,SE,S,SW,W,NW`; canvas target angle → `[2,3,4,5,6,7,0,1]` | `_CH1_START_MEDIUM_DIRMAP` |
+| frame 열 | idle=0, `eAttack`=1, 이동/접근/차지=`2 + floor(now/120) mod 2` | `_drawCh1StartMediumEyeMass` |
+| crop 안전 | 32개 sprite를 독립 x/y 범위로 복사·확대, 숫자·방향명·이웃 영역을 제외; 각 결과 cell 상단 20px alpha 0 | extraction output + test |
+
+- 이유: 이 원본은 방향별 sprite와 보조 라벨이 일정하게 분리돼 있어, 이전 전시 보드와 달리 고정 독립 crop이 가능하다.
+- 검증: `test/ch1StartMediumEyeMass.test.js`는 source/runtime 크기, 4×8 layout, target direction mapper, frame 열, 모든 cell의 투명 안전마진과 본체 존재를 고정한다. 브라우저 `initStage(0)`에서 `sheet=true`, 2마리 alive, pageerror 0을 확인했다.
