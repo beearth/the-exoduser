@@ -1,13 +1,14 @@
 # Sync Changelog
 
-## 2026-09-04 실버테일 참회 남성 보이스 누출 수정
+## 2026-09-04 실버테일 참회 전용 여성 보이스
 
 | 논리 키 | 증상/원인 | 실버테일 현재 계약 | 다른 캐릭터 | 적용 위치 |
 |---|---|---|---|---|
-| `repentance` | `voice_*`가 아닌 스킬 SFX 키여서 `_SILVERTAIL_VOICE_MAP` 전수 치환에서 누락, 참회/참회 귀환 시 남성 음성 포함 MP3가 그대로 재생됨 | `repentance:'silvertail_holy'`로 치환하여 여성 `Stand down!` 재생, 기존 10초 전용 보이스 중복 방지 적용 | 전사 등 `_charIdx!==1`은 `sfx/skillsound/repentance/repentance.mp3` 유지 | `_silvertailVoiceKey()`, 참회 단독·`elecRepent` 호출부 |
+| `repentance` | `voice_*`가 아닌 스킬 SFX 키여서 `_SILVERTAIL_VOICE_MAP` 전수 치환에서 누락, 참회/참회 귀환 시 남성 음성 포함 MP3가 그대로 재생됨 | `repentance:'silvertail_repentance'`로 치환하여 전용 여성 `Repent!` 재생, 기존 10초 전용 보이스 중복 방지 적용 | 전사 등 `_charIdx!==1`은 `sfx/skillsound/repentance/repentance.mp3` 유지 | `_sampleFiles`, `_silvertailVoiceKey()`, 참회 단독·`elecRepent` 호출부 |
 
 - `SFX.magic()`와 `skull_summon`, 참회 판정·피해·범위·자원·VFX는 변경하지 않았다.
-- TDD: `test/silvertailFemaleVoice.test.js`에 누락 매핑을 먼저 추가해 **1 RED / 1 PASS**를 확인한 뒤 한 줄 매핑을 구현했고 최종 **2/2 PASS**다.
+- 전용 파일: `sfx/voice/silvertail_repentance.mp3`, 대사 `Repent!`, ElevenLabs `eleven_multilingual_v2`, Sarah (`EXAVITQu4vr4xnSDxMaL`), `mp3_44100_128`, stability `0.28`, similarity boost `0.80`, style `0.32`, speaker boost 활성. 결과물은 44.1kHz mono, 약 1.02초, 17,598바이트다.
+- TDD: `test/silvertailFemaleVoice.test.js`에서 전용 파일 등록과 전용 매핑을 먼저 요구해 **1 RED / 1 PASS**를 확인한 뒤 구현했고 최종 **2/2 PASS**다.
 - 수정 금지 문서 `docs/2_3 돌진+패링+방패시스템`은 변경하지 않았다.
 
 ## 2026-09-04 ESC·패널 부분 일시정지 탄막 누적 수정

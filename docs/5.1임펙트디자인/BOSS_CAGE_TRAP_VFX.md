@@ -56,9 +56,9 @@
 | 보스 `cageTrap` | `skull_summon`, vol `0.6`, pitch `0.9±0.15` | `SFX.magic(2)` | `G._cageTraps.push()` 직후 1회 |
 | `boneWall` 해골무덤 | `skull_summon`, vol `0.6`, pitch `0.9±0.15` | `SFX.magic(EL.D)` | `G._boneWalls.push()` 직후 1회 |
 | `boneStorm` 해골번개 | `skull_summon`, 동일 | `SFX.magic(EL.D)` | 합체 분기 전에 1회 |
-| `elecRepent` 참회 귀환 | `skull_summon`, 동일 | `SFX.magic(EL.L)` + 전사 `repentance` / 실버테일 `silvertail_holy` | 참회 분기 여부와 무관하게 뼈벽 생성 직후 1회 |
+| `elecRepent` 참회 귀환 | `skull_summon`, 동일 | `SFX.magic(EL.L)` + 전사 `repentance` / 실버테일 `silvertail_repentance` | 참회 분기 여부와 무관하게 뼈벽 생성 직후 1회 |
 
-`skull_summon`은 `sfx/skillsound/bone/skull_summon.mp3`(MP3, 44.1kHz stereo, 1.48초)를 사용한다. 참회 귀환에서 캐릭터별 참회 음성이 뼈 생성음을 대체하지 않는다. 실버테일은 남성 음성 포함 `repentance` 대신 `_SILVERTAIL_VOICE_MAP`의 `silvertail_holy`를 재생한다.
+`skull_summon`은 `sfx/skillsound/bone/skull_summon.mp3`(MP3, 44.1kHz stereo, 1.48초)를 사용한다. 참회 귀환에서 캐릭터별 참회 음성이 뼈 생성음을 대체하지 않는다. 실버테일은 남성 음성 포함 `repentance` 대신 `_SILVERTAIL_VOICE_MAP`의 전용 여성 `silvertail_repentance`(`Repent!`)를 재생한다.
 
 ## 실패 안전·검증
 
