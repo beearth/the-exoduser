@@ -46279,3 +46279,15 @@ mpR = 0.05 + s.int×0.005                                        [NO P.lv×0.001
 
 - 이유: 이 원본은 방향별 sprite와 보조 라벨이 일정하게 분리돼 있어, 이전 전시 보드와 달리 고정 독립 crop이 가능하다.
 - 검증: `test/ch1StartMediumEyeMass.test.js`는 source/runtime 크기, 4×8 layout, target direction mapper, frame 열, 모든 cell의 투명 안전마진과 본체 존재를 고정한다. 브라우저 `initStage(0)`에서 `sheet=true`, 2마리 alive, pageerror 0을 확인했다.
+
+## 2026-09-04 CH1-1 다안 육괴 저품질 8×4 시트 제거
+
+| 항목 | 제거·복구 결과 | 적용 위치 |
+|---|---|---|
+| 제거 자산 | `img/ch1_1_eye_slime_8dir_4frame_grid_source.png`, `img/ch1_1_eye_slime_8dir_4frame_grid_clean.png` | 저장소와 런타임 참조에서 제거 |
+| 복구 런타임 | `img/ch1_1_eye_slime_8dir_3row_clean.png`, `2048×768`, `8×3`, 셀 `256×256` | `_CH1_START_MEDIUM_SHEETS.sheet` |
+| 상태 행 | idle=0, walk/approach/charge=1, `eAttack`=2 | `_drawCh1StartMediumEyeMass` |
+| 방향 열 | source `S,SW,W,NW,N,NE,E,SE`, mapper `[6,7,0,1,2,3,4,5]` | `_CH1_START_MEDIUM_DIRMAP` |
+
+- 사용자 피드백에 따라 8×4 정리 결과는 품질 미달로 폐기했다. 기존 검증 완료 8×3 시트의 단일 실루엣만 사용한다.
+- 전투 수치·스폰·충돌·route는 변경하지 않았다.
