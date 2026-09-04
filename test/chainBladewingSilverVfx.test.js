@@ -4,17 +4,17 @@ import { readFile } from 'node:fs/promises';
 import { fileURLToPath } from 'node:url';
 import sharp from 'sharp';
 
-const assetUrl = new URL('../img/vfx/chain_blade_silver.webp', import.meta.url);
+const assetUrl = new URL('../img/vfx/chain_blade_silver_realistic.png', import.meta.url);
 
-test('chain Bladewing loads the sharp silver transparent asset', async () => {
+test('chain Bladewing loads the realistic forged silver asset through chroma-key alpha extraction', async () => {
   const game = await readFile(new URL('../game.html', import.meta.url), 'utf8');
-  assert.match(game, /_CHAIN_BLADE_IMG\.src='img\/vfx\/chain_blade_silver\.webp'/);
+  assert.match(game, /_CHAIN_BLADE_IMG\.src='img\/vfx\/chain_blade_silver_realistic\.png'/);
+  assert.match(game, /_chainBladeSurface=_makeGreenChromaCutout\(_CHAIN_BLADE_IMG\)/);
+  assert.match(game, /X\.drawImage\(_chainBladeSurface\|\|_CHAIN_BLADE_IMG,/);
 
   const metadata = await sharp(fileURLToPath(assetUrl)).metadata();
-  assert.equal(metadata.format, 'webp');
-  assert.equal(metadata.hasAlpha, true);
-  assert.equal(metadata.channels, 4);
-  assert.ok(metadata.width >= 800 && metadata.height >= 600);
+  assert.equal(metadata.format, 'png');
+  assert.ok(metadata.width >= 1200 && metadata.height >= 1000);
 });
 
 test('chain Bladewing hit, spark, and fallback colors are cold silver', async () => {

@@ -10715,9 +10715,9 @@ let _playerReady=false,_pS=null,_actReady=false,_aS=null;
 const _silvBladeTipImg=new Image();let _silvBladeTipReady=false;
 _silvBladeTipImg.onload=()=>{_silvBladeTipReady=true;};
 _silvBladeTipImg.src='img/exoduser_silvertail/blade_tip_api_v1_cropped.png';
-const _silvArcAnimImg=new Image();let _silvArcAnimReady=false;
-_silvArcAnimImg.onload=()=>{_silvArcAnimReady=true;};
-_silvArcAnimImg.src='img/vfx/silvertail_violet_arc_anim_api_v2.png?v=20260810-silvertail-arc-anim-v2';
+const _silvKiSlashImg=new Image();let _silvKiSlashReady=false,_silvKiSlashSurface=null;
+_silvKiSlashImg.onload=()=>{_silvKiSlashSurface=_makeGreenChromaCutout(_silvKiSlashImg);_silvKiSlashReady=true;};
+_silvKiSlashImg.src='img/vfx/silvertail_ki_slash_realistic.png';
 const _silvEArcImg=new Image();let _silvEArcReady=false;
 _silvEArcImg.onload=()=>{_silvEArcReady=true;};
 _silvEArcImg.src='img/vfx/silvertail_violet_arc_anim_api_v3.png?v=20260810-silvertail-arc-anim-v3';
@@ -14572,7 +14572,7 @@ const _projFree=[];
 let _projNext=0;
 // ═══ 초승달 검기 스프라이트 ═══
 const _CRES_IMG=new Image();_CRES_IMG.src='assets/vfx/crescent_slash.webp';
-const _CHAIN_BLADE_IMG=new Image();let _chainBladeReady=false;_CHAIN_BLADE_IMG.src='img/vfx/chain_blade_silver.webp';_CHAIN_BLADE_IMG.onload=()=>{_chainBladeReady=true};
+const _CHAIN_BLADE_IMG=new Image();let _chainBladeReady=false,_chainBladeSurface=null;_CHAIN_BLADE_IMG.src='img/vfx/chain_blade_silver_realistic.png';_CHAIN_BLADE_IMG.onload=()=>{_chainBladeSurface=_makeGreenChromaCutout(_CHAIN_BLADE_IMG);_chainBladeReady=true};
 const _SKY_CRUSHER_IMG=new Image();let _skyCrusherImgReady=false;_SKY_CRUSHER_IMG.src='img/vfx/sky_crusher_iron_wedge.png';_SKY_CRUSHER_IMG.onload=()=>{_skyCrusherImgReady=true};
 const _SKY_CRUSHER_BURN_IMG=new Image();let _skyCrusherBurnImgReady=false;_SKY_CRUSHER_BURN_IMG.src='img/vfx/sky_crusher_burning.png';_SKY_CRUSHER_BURN_IMG.onload=()=>{_skyCrusherBurnImgReady=true};
 const _scCols=4,_scRows=3;
@@ -16341,10 +16341,14 @@ const _AL_DRAW_H=178; // 시각 두께(px) — 빔 높이 (137→178, +30%)
 const _AL_FRAMES=16; // 총 프레임 수
 const _AL_FW=726; // 프레임 폭
 const _AL_FH=137; // 프레임 높이
-// ═══ 마법 오브 투사체 (vfx_magic_orb.png 6열×5행=30프레임) ═══
+// ═══ 공용 마법 오브 투사체 (vfx_magic_orb.png 7열×3행=20프레임) ═══
 const _MO_IMG=new Image();_MO_IMG.src='assets/vfx/vfx_magic_orb.png';
 let _moReady=false;_MO_IMG.onload=()=>{_moReady=true};
 const _MO_COLS=7,_MO_ROWS=3,_MO_FRAMES=20,_MO_CW=171,_MO_CH=171;
+// ═══ 실버테일 전용 악의구: 균열 난 흑요석 코어 + 자주색 궤도 칼날 ═══
+const _silvMaliceOrbImg=new Image();let _silvMaliceOrbReady=false,_silvMaliceOrbSurface=null;
+_silvMaliceOrbImg.onload=()=>{_silvMaliceOrbSurface=_makeGreenChromaCutout(_silvMaliceOrbImg);_silvMaliceOrbReady=true};
+_silvMaliceOrbImg.src='img/vfx/silvertail_malice_orb_realistic.png';
 // ═══ 어둠 폭발 임팩트 (vfx_dark_burst.png 5열×4행=20프레임) ═══
 // 파일 미존재 — src 미설정으로 404 제거. 에셋 준비 시 src 복원하면 시스템 재활성화됨.
 const _DB_IMG=new Image();
@@ -16523,20 +16527,16 @@ function renderCrescents(X){
     X.save();
     X.translate(c.x,c.y);
     X.rotate(c.ang);
-    if(c.silvArc&&_silvArcAnimReady){
-      const _silvCFw=_silvArcAnimImg.width/6,_silvCFh=_silvArcAnimImg.height;
-      const _silvCfi=~~((c.ml-c.life)/2)%6;
-      const _silvCw=_is3?126:104,_silvCh=_silvCw*(_silvCFh/_silvCFw);
+    if(c.silvArc&&_silvKiSlashReady){
       const _silvCAlpha=Math.max(.82,alpha);
-      const _silvCGlowW=_silvCw*1.12,_silvCGlowH=_silvCGlowW*(_silvCFh/_silvCFw);
-      const _silvCCoreW=_silvCw*.86,_silvCCoreH=_silvCCoreW*(_silvCFh/_silvCFw);
-      X.filter='saturate(1.55) contrast(1.22) brightness(1.32)';
-      X.globalCompositeOperation='lighter';X.globalAlpha=Math.min(1,_silvCAlpha*.24);
-      X.drawImage(_silvArcAnimImg,_silvCfi*_silvCFw,0,_silvCFw,_silvCFh,-_silvCGlowW/2,-_silvCGlowH/2,_silvCGlowW,_silvCGlowH);
-      X.globalCompositeOperation='source-over';X.globalAlpha=1;
-      X.drawImage(_silvArcAnimImg,_silvCfi*_silvCFw,0,_silvCFw,_silvCFh,-_silvCw/2,-_silvCh/2,_silvCw,_silvCh);
-      X.globalCompositeOperation='lighter';X.globalAlpha=Math.min(1,_silvCAlpha*.72);
-      X.drawImage(_silvArcAnimImg,_silvCfi*_silvCFw,0,_silvCFw,_silvCFh,-_silvCCoreW/2,-_silvCCoreH/2,_silvCCoreW,_silvCCoreH);
+      const _silvPulse=1+Math.sin((c.ml-c.life)*.72)*.045;
+      const _silvCw=(_is3?176:144)*_silvPulse;
+      const _silvCh=_silvCw*(_silvKiSlashImg.naturalHeight/_silvKiSlashImg.naturalWidth);
+      X.filter='saturate(1.12) contrast(1.08) brightness(1.06)';
+      X.globalCompositeOperation='lighter';X.globalAlpha=Math.min(1,_silvCAlpha*.28);
+      X.drawImage(_silvKiSlashSurface||_silvKiSlashImg,-_silvCw*.57,-_silvCh*.57,_silvCw*1.14,_silvCh*1.14);
+      X.globalCompositeOperation='source-over';X.globalAlpha=_silvCAlpha;
+      X.drawImage(_silvKiSlashSurface||_silvKiSlashImg,-_silvCw/2,-_silvCh/2,_silvCw,_silvCh);
       X.filter='none';X.globalCompositeOperation='source-over';
     }else if(_cReady){
       const cols=3,rows=3,totalF=9;
@@ -20803,6 +20803,24 @@ function _makeBlackAdditiveCutout(img,cutoff=24,solid=72){
       const v=Math.max(d[i],d[i+1],d[i+2]);
       let a=v<=cutoff?0:v>=solid?1:(v-cutoff)/_span;a*=a*(3-2*a);
       d[i+3]=~~(d[i+3]*a);
+    }
+    cx.clearRect(0,0,cv.width,cv.height);cx.putImageData(im,0,0);
+  }catch(_e){return img}
+  return cv;
+}
+// ── 생성형 VFX의 녹색 크로마 배경 제거: 금속·보라 발광색은 보존하고 녹색 스필만 감산한다. ──
+function _makeGreenChromaCutout(img){
+  const cv=document.createElement('canvas');cv.width=img.naturalWidth;cv.height=img.naturalHeight;
+  const cx=cv.getContext('2d',{willReadFrequently:true});cx.drawImage(img,0,0);
+  try{
+    const im=cx.getImageData(0,0,cv.width,cv.height),d=im.data;
+    for(let i=0;i<d.length;i+=4){
+      const r=d[i],g=d[i+1],b=d[i+2],excess=g-Math.max(r,b);
+      const gGate=Math.max(0,Math.min(1,(g-90)/130));
+      const eGate=Math.max(0,Math.min(1,(excess-18)/110));
+      let key=gGate*eGate;key=key*key*(3-2*key);
+      d[i+1]=Math.min(g,Math.max(r,b)+10);
+      d[i+3]=~~(d[i+3]*(1-key));
     }
     cx.clearRect(0,0,cv.width,cv.height);cx.putImageData(im,0,0);
   }catch(_e){return img}
@@ -51257,7 +51275,7 @@ function drawP(){
       X.globalAlpha=fade;
       if(_chainBladeReady){
         const _bw=b.r*2.2,_bh=b.r*1.6; // 날개 폭/높이
-        X.drawImage(_CHAIN_BLADE_IMG,-_bw*.5,-_bh*.45,_bw,_bh);
+        X.drawImage(_chainBladeSurface||_CHAIN_BLADE_IMG,-_bw*.5,-_bh*.45,_bw,_bh);
       }else{
         // 폴백: 날카로운 은빛 프로시저럴 칼날
         const len=b.r;
@@ -53387,7 +53405,15 @@ function drawP(){
       X.globalAlpha=1;continue;
     }else if(p.fireball){
       // ── 악의구: 마법 오브 스프라이트 ──
-      if(_moReady){
+      if(_charIdx===1&&_silvMaliceOrbReady){
+        const _smPulse=1+Math.sin(_now*.014+p.x*.025)*.035,_smSz=p.r*6.2*_smPulse;
+        X.save();X.translate(p.x,p.y);X.rotate(_now*.0012+p.x*.002);
+        X.globalAlpha=fa;
+        X.drawImage(_silvMaliceOrbSurface||_silvMaliceOrbImg,-_smSz/2,-_smSz/2,_smSz,_smSz);
+        X.globalCompositeOperation='lighter';X.globalAlpha=fa*.18;
+        X.drawImage(_silvMaliceOrbSurface||_silvMaliceOrbImg,-_smSz*.54,-_smSz*.54,_smSz*1.08,_smSz*1.08);
+        X.restore();X.globalAlpha=1;
+      }else if(_moReady){
         const _moFi=~~(_now*.12+p.x*.1)%_MO_FRAMES;
         const _moC=_moFi%_MO_COLS,_moR=~~(_moFi/_MO_COLS);
         const _moSz=p.r*5;

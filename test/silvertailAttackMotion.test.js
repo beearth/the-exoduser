@@ -63,27 +63,34 @@ test('Silvertail keeps LMB clear of local Moon Arc VFX while preserving a compac
   assert.doesNotMatch(game, /function _drawSilvertailAttackArc\(/);
 });
 
-test('Silvertail flies a generated six-frame violet slash with glow, body, and core passes', async () => {
+test('Silvertail flies a realistic single-sprite violet slash with keyed alpha and pulse', async () => {
   const game = await readFile(new URL('../game.html', import.meta.url), 'utf8');
 
-  assert.match(game, /const _silvArcAnimImg=new Image\(\);let _silvArcAnimReady=false;/);
-  assert.match(game, /_silvArcAnimImg\.src='img\/vfx\/silvertail_violet_arc_anim_api_v2\.png\?v=20260810-silvertail-arc-anim-v2';/);
-  assert.match(game, /const _silvCGlowW=_silvCw\*1\.12,_silvCGlowH=_silvCGlowW\*\(_silvCFh\/_silvCFw\);/);
-  assert.match(game, /const _silvCCoreW=_silvCw\*\.86,_silvCCoreH=_silvCCoreW\*\(_silvCFh\/_silvCFw\);/);
-  assert.match(game, /X\.globalCompositeOperation='lighter';X\.globalAlpha=Math\.min\(1,_silvCAlpha\*\.24\);/);
-  assert.match(game, /X\.globalCompositeOperation='source-over';X\.globalAlpha=1;/);
-  assert.match(game, /X\.globalCompositeOperation='lighter';X\.globalAlpha=Math\.min\(1,_silvCAlpha\*\.72\);/);
+  assert.match(game, /const _silvKiSlashImg=new Image\(\);let _silvKiSlashReady=false,_silvKiSlashSurface=null;/);
+  assert.match(game, /_silvKiSlashImg\.src='img\/vfx\/silvertail_ki_slash_realistic\.png'/);
+  assert.match(game, /_silvKiSlashSurface=_makeGreenChromaCutout\(_silvKiSlashImg\)/);
+  assert.match(game, /const _silvPulse=1\+Math\.sin\([^;]+\)\*\.045;/);
+  assert.match(game, /X\.drawImage\(_silvKiSlashSurface\|\|_silvKiSlashImg,/);
 });
 
-test('Silvertail routes v2 to LMB projectile and compact v3 only to KeyE', async () => {
+test('Silvertail routes the realistic slash only to LMB projectile and compact v3 only to KeyE', async () => {
   const game = await readFile(new URL('../game.html', import.meta.url), 'utf8');
 
   assert.match(game, /c\.silvArc=_charIdx===1;/);
-  assert.match(game, /if\(c\.silvArc&&_silvArcAnimReady\)\{/);
-  assert.match(game, /const _silvCfi=~~\(\(c\.ml-c\.life\)\/2\)%6;/);
+  assert.match(game, /if\(c\.silvArc&&_silvKiSlashReady\)\{/);
   assert.match(game, /const _silvCAlpha=Math\.max\(\.82,alpha\);/);
   assert.match(game, /_startSilvertailAttackMotion\('lmb'\);/);
   assert.match(game, /_silvEArcImg\.src='img\/vfx\/silvertail_violet_arc_anim_api_v3\.png\?v=20260810-silvertail-arc-anim-v3';/);
   assert.match(game, /_startSilvertailAttackMotion\('shield'\);/);
   assert.doesNotMatch(game, /\.silvEArc|_silvArcFrameT/);
+});
+
+test('Silvertail right-click Malice Orb uses a realistic keyed obsidian projectile', async () => {
+  const game = await readFile(new URL('../game.html', import.meta.url), 'utf8');
+
+  assert.match(game, /const _silvMaliceOrbImg=new Image\(\);let _silvMaliceOrbReady=false,_silvMaliceOrbSurface=null;/);
+  assert.match(game, /_silvMaliceOrbImg\.src='img\/vfx\/silvertail_malice_orb_realistic\.png'/);
+  assert.match(game, /_silvMaliceOrbSurface=_makeGreenChromaCutout\(_silvMaliceOrbImg\)/);
+  assert.match(game, /if\(_charIdx===1&&_silvMaliceOrbReady\)\{/);
+  assert.match(game, /X\.drawImage\(_silvMaliceOrbSurface\|\|_silvMaliceOrbImg,/);
 });

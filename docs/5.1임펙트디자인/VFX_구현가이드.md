@@ -4,13 +4,14 @@
 
 | ID/항목 | 현재 계약 | 수치·색 | 적용 위치 |
 |---|---|---|---|
-| `chainSlash` 본체 | 좌우 대칭의 긴 단검형 금속 깃, 중심 갑주, 바깥쪽으로 뻗는 날카로운 V 실루엣 | `img/vfx/chain_blade_silver.webp`, 1024×768 RGBA WebP | `_CHAIN_BLADE_IMG` |
+| `chainSlash` 본체 | 좌우 대칭의 관절식 단검형 금속 깃, 체인 힌지와 중심 갑주, 바깥쪽으로 뻗는 날카로운 V 실루엣 | `img/vfx/chain_blade_silver_realistic.png`, 1448×1086 RGB PNG, 녹색 크로마 | `_CHAIN_BLADE_IMG` → `_chainBladeSurface` |
+| 배경 제거 | 로드 시 녹색 우세 픽셀만 투명화하고 은색 채널·명암·날 마모는 보존 | `_makeGreenChromaCutout()`: `G−max(R,B)` 기반 smoothstep alpha, 가장자리 녹색 스필 `G≤max(R,B)+10` | 1회 Canvas 캐시 |
 | 런타임 배치 | 이동 방향을 위쪽 기준으로 회전하고 플레이어 중심에 펼침 | 폭 `b.r×2.2`, 높이 `b.r×1.6`, Y 오프셋 `-0.45×height`, 수명 16f 선형 페이드 | `G._chainBlades`, `drawP()` |
 | 타격/끝 파편 | 기존 적색·마젠타를 냉은색 금속광으로 통일 | 타격 문자 `#dcecff`, 칼날 파편 `#a9bfd0`, 끝 하이라이트 `#f8fbff` | 사슬기동 중 `P._chainSlashActive` 분기 |
 | 로드 실패 폴백 | 길고 뾰족한 다중 꼭짓점 은빛 칼날 | 본체 `#a9bfd0` alpha `0.42×fade`, 능선 `#f8fbff` alpha `0.9×fade` | `_chainBladeReady===false` |
 
 - 시각 교체만 수행했다. 반경 `160+(Lv-1)×5`, 4프레임 재히트, 피해·출혈·포이즈·자원 계약은 그대로다.
-- 원본 디자인은 내장 이미지 생성 도구로 제작하고 단색 크로마 배경을 알파로 정리했다. 빨강·마젠타는 기동칼날개 본체/파편에서 사용하지 않는다.
+- 원본 디자인은 내장 이미지 생성 도구로 제작하고 녹색 크로마를 로드 시 투명 알파로 변환한다. 빨강·마젠타는 기동칼날개 본체/파편에서 사용하지 않는다.
 
 ## 천공쇄기 45도 메테오 쇄기 VFX (2026-09-04)
 
@@ -38,7 +39,7 @@
 | 행2 | 6프레임 곡선 |
 | 로더 | `_physMouthImg` / `_drawPhysMouth` |
 | 회전 | 우향, `rotate(ang)` (머리=셀 중심) |
-| 적용 | redBean, fast/일반 `el===EL.P` |
+| 적용 | `redBean+EL.P`, fast/일반 `el===EL.P` (`redBean+EL.P`는 `grayscale(1) brightness(1.65) contrast(1.25)` + `#dce7f0` 글로우의 회백색 E 외형, `redBean+EL.F`는 붉은 화염 혜성 Q 외형) |
 | 패링 | 적대 `EL.P` 입/뱀 외형은 `pierce:true` 포함 **E(sBash) 전용**. `_isPhysicalMouthProjectile`가 전용 VFX 탄을 제외하고 판별하며 Q는 반사하지 않고 "❌ E키로!"를 표시 |
 | 폴백 | `_drawEyeBullet` row4 → 바버폴 |
 | 원본 | 유저 제공 ChatGPT 시트 3장 (2026-08-23 12:02) |
@@ -59,7 +60,7 @@
 
 ## 마법탄 (최초 무지개탄)
 
-마법탄은 `_drawClassicRainbow` — blackBean / blueBean / gbBean만. **물 파란콩(`waterBean`)**은 `_drawWaterBean`이 API 생성 크라켄 물회오리 탄두를 `96px` 길이로 그린다. 구 시안 다중 원·직선 꼬리와 공용 pass-0 트레일/pass-1 원형 글로우는 사용하지 않는다. **화이트볼(bwBean) 제거(2026-08-23)**. **이빨형 E패링탄 공통=물리 이동 프로필**(최종 300px/s 고정, homing 선회 `.00436332`≈15°/s): `redBean+EL.P`, 화속성 `redBean+EL.F`, 근접 빨콩, `titanEye`가 모두 해당한다. 화속성 빨콩은 화상·속성 판정만 `EL.F`로 유지한다. 일반 마법탄·물 파란콩·화성송·색탄은 `.0262`≈90°/s, 무지개탄은 `.02325`≈80°/s로 유도한다. **titanEye=혈안 눈깔** `proj_titan_eye.png` 시각 `21.7×_sSc`(그림만 눈깔). **라운드 컬러는 발사탄 속성 예고**이며 모든 물리/E패링 차징 링은 경로와 무관하게 흰색 `#f4f4f4`다. 일반 `_pcPhysical`뿐 아니라 특수 산호 파편·기생충·삼지창의 `eShootWind`도 `_swChargeEl=EL.P`로 동일 처리한다.
+마법탄은 `_drawClassicRainbow` — blackBean / blueBean / gbBean만. **화염 빨콩(`redBean+EL.F`)**은 `redBean` 레거시 피해/색 플래그를 공유하지만 이빨입이 아닌 화염 혜성 마법 외형·Q 패링·500~600px/s·`.0262`≈90°/s다. **물 파란콩(`waterBean`)**은 `_drawWaterBean`이 API 생성 크라켄 물회오리 탄두를 `96px` 길이로 그린다. 구 시안 다중 원·직선 꼬리와 공용 pass-0 트레일/pass-1 원형 글로우는 사용하지 않는다. **화이트볼(bwBean) 제거(2026-08-23)**. **이빨형 E패링탄 공통=실제 물리 `parryClass`**(최종 300px/s 고정, homing 선회 `.00436332`≈15°/s): `redBean+EL.P`, `titanEye`다. **titanEye=혈안 눈깔** `proj_titan_eye.png` 시각 `21.7×_sSc`(그림만 눈깔). **라운드 컬러는 발사탄 속성 예고**이며 `redBean+EL.P`·일반 물리/E패링 차징 링만 흰색 `#f4f4f4`다. 화염 빨콩 차징은 화염색을 유지한다. 특수 산호 파편·기생충·삼지창의 `eShootWind`도 `_swChargeEl=EL.P`일 때 흰색이다.
 
 ## API 생성 소형 크라켄 탄두 / 은꼬리 차지 범위 (2026-09-03)
 
@@ -126,25 +127,28 @@
 3. **두꺼운 lineWidth로 글로우 만들지 않기** — lineWidth 32+ 라인은 검은 막대로 보임
 4. **shadowBlur로 빛 번짐** — 라인은 얇게(2~3px), shadowBlur(20~40)로 글로우 표현
 
-## 실버테일 보라 비행 검기 6프레임 VFX
+## 실버테일 사실적 입력 VFX (2026-09-04)
 
-좌클릭 캐릭터 주변 검호는 제거했다. 주 연출은 좌클릭 기검참의 비행 경로에서만 쓰는 6프레임 보라 시트 `img/vfx/silvertail_violet_arc_anim_api_v2.png`와 KeyE 칼등 처내기의 소형 진홍 검호 v3다.
+좌클릭 캐릭터 주변 검호는 제거했다. 좌클릭 비행 검기는 백열 코어·난류 플라즈마·파편을 가진 단일 원화로 교체했고, 우클릭 악의구는 실버테일에 한해 균열 난 흑요석 코어와 궤도 칼날을 쓴다. KeyE 칼등 처내기의 소형 진홍 검호 v3는 유지한다.
 
 | 항목 | 코드값 | 적용 위치 | 설명 |
 |---|---:|---|---|
-| 좌클릭 원본 | 2152×731 RGBA PNG, 가로 6프레임(전체 폭 6등분) | `img/vfx/silvertail_violet_arc_anim_api_v2.png` | 발동선·이중 리본 호·백색 칼날 코어·선단 폭발·크리스털 파편·필라멘트 잔광이 같은 동선으로 이어지는 전용 시트 |
-| 로더 | `_silvArcAnimImg` | `game.html` | `?v=20260810-silvertail-arc-anim-v2` 캐시 버스팅 |
-| 프레임 | `~~((c.ml-c.life)/2)%6` | `_crescents[].silvArc` | 비행 중 2틱(약 33ms)마다 6프레임 순환 |
-| 크기 | 1·2타 104px, 3타 126px 폭 | 동일 | 패널 원본 비율 유지 |
-| 3패스 합성 | 1.12배 `lighter` 글로우 → 1.0배 `source-over` 본체 → 0.86배 `lighter` 코어 | 동일 | 스킬 VFX처럼 본체 경계가 먼저 읽히고 글로우는 보조로만 남김 |
-| 색·불투명도 | `saturate(1.55) contrast(1.22) brightness(1.32)`, `max(.82, alpha)` | 동일 | 수명 페이드 중에도 검기 본체는 최소 82% 불투명도 유지 |
+| 좌클릭 원본 | 1536×1024 RGB PNG, 녹색 크로마 단일 원화 | `img/vfx/silvertail_ki_slash_realistic.png` | 백열 곡선 코어, 자주색 플라즈마 난류, 청자색 날끝과 파편을 한 실루엣으로 구성 |
+| 좌클릭 로더 | `_silvKiSlashImg` → `_silvKiSlashSurface` | `game.html` | `_makeGreenChromaCutout()`으로 로드 시 1회 알파 추출 |
+| 좌클릭 동세 | `1+sin((ml−life)×0.72)×0.045` | `_crescents[].silvArc` | 프레임 시트 대신 비행 중 ±4.5% 미세 맥동 |
+| 좌클릭 크기 | 1·2타 144px, 3타 176px 폭 | 동일 | 원본 3:2 비율 유지, 글로우 패스는 1.14배 |
+| 좌클릭 2패스 | 1.14배 `lighter` 글로우 alpha `min(1,max(.82,alpha)×.28)` → 1.0배 `source-over` 본체 | 동일 | `saturate(1.12) contrast(1.08) brightness(1.06)`, 본체 최소 alpha `.82` |
+| 우클릭 원본 | 1254×1254 RGB PNG, 녹색 크로마 단일 원화 | `img/vfx/silvertail_malice_orb_realistic.png` | 균열 난 흑요석 구체, 자주색 내부광, 금속성 궤도 칼날과 연무 |
+| 우클릭 렌더 | `_silvMaliceOrbImg` → `_silvMaliceOrbSurface` | `p.fireball && _charIdx===1` | 지름 `p.r×6.2×(1+sin(now×.014+p.x×.025)×.035)`, 회전 `now×.0012+p.x×.002`, 1.08배 `lighter` 보조광 alpha `fa×.18` |
+| 다른 캐릭터 우클릭 | 171×171 셀, 7×3 중 20프레임 | `assets/vfx/vfx_magic_orb.png`, `_MO_IMG` | 기존 공용 악의구 시트 유지 |
 | 게임 수치 | 변경 없음 | 좌클릭 기검참 | 피해·범위·자원·히트스톱·키바인딩 불변 |
 
 ### 실버테일 비행 검기 분리
 
 | 입력 | 전용 플래그·에셋 | 프레임·색 | 판정 영향 |
 |---|---|---|---|
-| 좌클릭 기검참 | `_crescents[].silvArc`, `silvertail_violet_arc_anim_api_v2.png` (2152×731 RGBA, 폭 6등분) | `~~((ml-life)/2)%6`: 2틱(약 33ms)마다 보라 v2 6프레임 순환. 1·2타 폭 104px, 3타 폭 126px. `saturate(1.55) contrast(1.22) brightness(1.32)`, `min(1, max(.82, alpha)×1.28)` — 공용 수명 페이드가 0.15까지 내려가도 검기 본체는 0.82 미만으로 투명해지지 않음 | 기존 3단 콤보 피해·사거리·히트 범위 그대로 |
+| 좌클릭 기검참 | `_crescents[].silvArc`, `silvertail_ki_slash_realistic.png` (1536×1024 RGB, 녹색 크로마 단일 원화) | `_makeGreenChromaCutout()` 캐시 후 ±4.5% 맥동. 1·2타 폭 144px, 3타 폭 176px. `saturate(1.12) contrast(1.08) brightness(1.06)`, 본체 `max(.82,alpha)` | 기존 3단 콤보 피해·사거리·히트 범위 그대로 |
+| 우클릭 악의구 | `p.fireball`, `silvertail_malice_orb_realistic.png` (1254×1254 RGB, 녹색 크로마) | 실버테일(`_charIdx===1`)만 흑요석 균열 구체를 지름 `p.r×6.2`로 표시하고 ±3.5% 맥동·완만한 회전을 적용. 다른 캐릭터는 공용 7×3/20프레임 시트 유지 | 악의구 피해·폭발·중독·사거리·자원 그대로 |
 | KeyE 칼등 처내기 | `_drawSilvertailEArc(ctx, pose, scale)`, `silvertail_violet_arc_anim_api_v3.png` (2132×738 RGBA, 폭 6등분) | `pose.kind==='shield'`에서만 `floor(spinProgress×6)`으로 재생. `hue-rotate(-28deg) saturate(2.05) contrast(1.28) brightness(1.28)`. 기본 폭 200→230px이며 차징 릴리즈는 `min(3,max(1,P._sBashChgMul||1))`을 곱해 최대 600→690px | 기본 E의 피해·반사·자원·입력은 그대로. 차징 검격 릴리즈만 현재 차징 배율로 아크를 확대하며 좌클릭·우클릭 악의구에는 적용하지 않음 |
 
 ### 스프라이트 시트 VFX
