@@ -46174,3 +46174,17 @@ mpR = 0.05 + s.int×0.005                                        [NO P.lv×0.001
 
 - 원본 논리 셀은 그대로 유지한다: idle `1254×1254 / 4×2`, action `1448×1086 / 8×4`. 별도의 알파 재단이나 프레임 경계 이동은 하지 않는다.
 - `test/ch1StartMediumEyeMass.test.js`가 정사각형 destination 제거와 원본 종횡비·크라켄급 세로 크기 계약을 고정한다. inline 문법 검사도 함께 통과했다.
+
+## 2026-09-04 CH1-1 다안 육괴 Eye Slime 8×3 시트 교체·알파 정리
+
+| id | 이전 | 현재 계약 | 적용 위치 |
+|---|---|---|---|
+| 사용자 원본 | 두 장의 레이블 없는 이전 소스 | `img/ch1_1_eye_slime_labeled_source.png` 1536×1024 설계 시트. Idle/Walk/Attack Prepare의 8방향 명시 | 보존용 소스 |
+| runtime sheet | idle 4×2 + action 8×4, 프레임 순서 추측 | `img/ch1_1_eye_slime_8dir_3row_clean.png`, 2048×768 RGBA, `8×3`, 셀 256×256 | `_CH1_START_MEDIUM_SHEETS.sheet` |
+| row 상태 | idle/action 파일을 시간값으로 순환 | row 0=idle, row 1=walk/approach/charge, row 2=`eAttack`; 각 row는 facing 45°의 0~7 열 사용 | `_drawCh1StartMediumEyeMass` |
+| 투명·경계 | 생성 결과의 체크무늬와 이전 행 잔여 조각이 화면에 표시 | 외곽 연결 중성 체크무늬를 alpha 0으로 처리하고, 모든 셀에서 최대 연결 실루엣 1개만 보존 | 런타임 전 에셋 정리 |
+| 표시 | 세로형 이전 셀의 폭이 행마다 달랐음 | 정방형 셀 비율 보존: `drawH=max(240,r×7)`, `drawW=drawH×(fw/fh)` = 가로·세로 240~252px | Canvas 직접 렌더러 |
+
+- 전투 수치, `etype=4`, 2마리 시작 위치, collision, route, 스폰 풀은 변경하지 않았다.
+- TDD: 새 8×3 loader/state-row 계약과 24개 모든 셀의 단일 연결 실루엣 계약을 RED→GREEN으로 추가했다. `test/ch1StartMediumEyeMass.test.js` 5/5, `test/gameHtmlInlineSyntax.test.js` 1/1 PASS.
+- 브라우저 QA: `initStage(0)`에서 2마리 alive, `sheet=true`, pageerror 0. Walk/Attack Prepare 강제 행을 포함한 `captures/ch1_start_medium_8dir_3row_20260904.png`에서 배경판·행 경계 잔여 조각 0을 육안 확인했다.

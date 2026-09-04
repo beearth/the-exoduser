@@ -38,18 +38,19 @@
 
 | 용도 | 파일 | 원본 크기 | logical grid | 런타임 규칙 |
 |---|---|---:|---:|---|
-| idle / 8방향 | `img/ch1_1_medium_01_source.png` | `1254×1254` | `4×2`, 8 cells | facing을 45° 단위로 0~7 frame에 매핑 |
-| 이동·공격 | `img/ch1_1_medium_02_source.png` | `1448×1086` | `8×4`, 32 cells | `floor(now/78) mod 32` frame; 이동·공격·접근·돌진에서 선택 |
+| 사용자 제공 설계 원본 | `img/ch1_1_eye_slime_labeled_source.png` | `1536×1024` | 설계 참조 | IDLE / WALK / ATTACK PREPARE 각 8방향 레이블을 제공; 런타임에서 직접 로드하지 않음 |
+| runtime 8방향 3행 | `img/ch1_1_eye_slime_8dir_3row_clean.png` | `2048×768` | `8×3`, 셀 `256×256` | row 0=idle, row 1=walk, row 2=attack prepare; 각 행에서 facing을 45° 단위로 0~7 frame에 매핑 |
 
 | 항목 | 값 |
 |---|---|
 | 전용 로더 | `_CH1_START_MEDIUM_SHEETS`, `_ch1StartMediumImgs`, `_ch1StartMediumReady` |
 | draw 함수 | `_drawCh1StartMediumEyeMass(X,e,now,alpha)` |
 | 표시 크기 | 세로 `drawH=max(240, r×7)`px; 실제 반경 범위에서는 `240~252px` |
-| 종횡비/표시 폭 | 원본 셀 비율 보존: `drawW=drawH×(fw/fh)`; idle `fw/fh=0.5` → `120~126px`, action `fw/fh=2/3` → `160~168px` |
+| 종횡비/표시 폭 | 원본 셀 비율 보존: `drawW=drawH×(fw/fh)`; 현행 셀 `256×256`이므로 `drawW=240~252px` |
+| 알파 정리 | 외곽과 연결된 중성 체크무늬를 투명화하고, 24개 셀마다 가장 큰 연결 실루엣만 보존 | 행 경계/인접 셀 잔여 조각과 가짜 투명 배경을 런타임 전에 제거 |
 | 배치 제외 | `_prepEnemyInstanced`는 `_ch1StartMedium`을 WebGL enemy batching에서 제외 |
 | 화면 draw | 일반 적 Canvas pass가 `_drawCh1StartMediumEyeMass`를 호출; generic 8dir atlas를 덮어쓰지 않음 |
-| 자산 실패 | action이 준비되지 않으면 idle sheet를 선택하고, idle도 실패하면 기존 generic sprite 경로로 fallback |
+| 자산 실패 | 단일 `sheet`가 준비되지 않으면 기존 generic sprite 경로로 fallback |
 
 ## 검증
 
@@ -57,5 +58,5 @@
 |---|---|
 | 단위·소스 계약 | `node --test test/ch1StartMediumEyeMass.test.js` PASS |
 | inline JavaScript | `node --test test/gameHtmlInlineSyntax.test.js` PASS |
-| 브라우저 | `http://127.0.0.1:3333/game.html`, `initStage(0)` 후 2마리 alive, 두 시트 ready, pageerror 없음 |
-| 시각 확인 | `captures/ch1_start_medium_20260904.png`: 시작 화면 좌상단·우상단에 두 다안 육괴 표시 |
+| 브라우저 | `http://127.0.0.1:3333/game.html`, `initStage(0)` 후 2마리 alive, `sheet=true`, pageerror 없음 |
+| 시각 확인 | `captures/ch1_start_medium_8dir_3row_20260904.png`: Walk·Attack Prepare 행의 두 다안 육괴가 배경판·잔여 조각 없이 표시 |

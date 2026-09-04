@@ -17084,13 +17084,11 @@ function _tickProjCharge(e,sp){
 let _lavaGrdCache={};
 function _drawCh1StartMediumEyeMass(X,e,_now,sa){
   const animated=e._isMoving||e.s==='eAttack'||e.s==='eApproach'||e.s==='eCharge';
-  const key=animated&&_ch1StartMediumReady.action?'action':'idle';
-  const img=_ch1StartMediumImgs[key];
-  if(!_ch1StartMediumReady[key]||!_imgOk(img))return false;
-  const cols=key==='action'?8:4,rows=key==='action'?4:2;
-  const frame=key==='action'
-    ?~~(_now/78)%(cols*rows)
-    :Math.round((((e.facing||0)%(Math.PI*2)+Math.PI*2)%(Math.PI*2))/(Math.PI/4))%8;
+  const img=_ch1StartMediumImgs.sheet;
+  if(!_ch1StartMediumReady.sheet||!_imgOk(img))return false;
+  const cols=8,rows=3;
+  const row=!animated?0:e.s==='eAttack'?2:1;
+  const frame=row*cols+Math.round((((e.facing||0)%(Math.PI*2)+Math.PI*2)%(Math.PI*2))/(Math.PI/4))%8;
   const fw=img.naturalWidth/cols,fh=img.naturalHeight/rows;
   const sx=(frame%cols)*fw,sy=~~(frame/cols)*fh;
   // 원본 프레임은 세로형이다. 정사각형으로 강제하면 육괴가 눌려 잘린 것처럼 보인다.
@@ -20652,11 +20650,11 @@ function _drawProjPNG(x,y,pngType,pngEl,sprFr,sz,ang,alpha){
 // ═══ PNG 스프라이트시트 레지스트리 ═══
 const _ESPRITES={};
 
-// CH1-1 START 중형 몬스터 — 사용자 제공 다안 육괴 시트.
-// idle: 4×2(8방향), action: 8×4(32프레임). 원본의 비정수 셀 폭도 drawImage가 처리한다.
-const _CH1_START_MEDIUM_SHEETS={idle:'img/ch1_1_medium_01_source.png',action:'img/ch1_1_medium_02_source.png'};
-const _ch1StartMediumImgs={idle:new Image(),action:new Image()};
-const _ch1StartMediumReady={idle:false,action:false};
+// CH1-1 START 중형 몬스터 — 사용자 제공 Eye Slime의 투명 8방향 3행 시트.
+// row 0=idle, row 1=walk, row 2=attack prepare. 8×3 정방형 셀이라 안전하게 재단된다.
+const _CH1_START_MEDIUM_SHEETS={sheet:'img/ch1_1_eye_slime_8dir_3row_clean.png'};
+const _ch1StartMediumImgs={sheet:new Image()};
+const _ch1StartMediumReady={sheet:false};
 for(const _ch1MediumKey of Object.keys(_CH1_START_MEDIUM_SHEETS)){
   const _ch1MediumImg=_ch1StartMediumImgs[_ch1MediumKey];
   _ch1MediumImg.onload=()=>{_ch1StartMediumReady[_ch1MediumKey]=_safeDraw(_ch1MediumImg)};
@@ -48361,7 +48359,7 @@ function draw(){
     }else{
       // ── 일반 적 렌더링 (8dir 단일 경로) ──
       let _eDrew=!!_ensGLQueued;
-      if(e._ch1StartMedium&&_ch1StartMediumReady.idle){
+      if(e._ch1StartMedium&&_ch1StartMediumReady.sheet){
         _eDrew=_drawCh1StartMediumEyeMass(X,e,_now,sa);
       }else{
         // 스킨 미배정 → 즉시 확정
