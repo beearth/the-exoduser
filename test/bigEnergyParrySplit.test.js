@@ -81,7 +81,7 @@ test('large-energy parry grants ten times the normal recovery resources without 
   assert.match(resolveSrc, /const _bigResourceMul=10/);
   assert.match(resolveSrc, /P\.parryBank=\(P\.parryBank\|\|0\)\+totalDmg\*_bigResourceMul/);
   assert.match(resolveSrc, /doParry\(totalDmg,p\.x,p\.y,true,p\.el,_bigResourceMul\)/);
-  assert.match(parrySrc, /function doParry\(_inDmg,_px,_py,_forceQ,_parryEl,_resourceMul\)/);
+  assert.match(parrySrc, /function doParry\(_inDmg,_px,_py,_forceQ,_parryEl,_resourceMul,_impactKind\)/);
   assert.match(parrySrc, /const _resourceBonus=Math\.max\(1,_resourceMul\|\|1\)/);
   assert.match(parrySrc, /const _prBase=~~\([^;]+\*_resourceBonus\)/);
   assert.match(parrySrc, /const _harpAdd=\([^;]+\)\*_resourceBonus/);
@@ -106,6 +106,67 @@ test('large energy always detonates on player or wall contact even while damage 
     'large balls deal damage only when vulnerable but always explode and recycle');
   assert.match(gameHtml, /const _bigWallHit=_bigEnergyWallContact\(p,_oldPx,_oldPy,p\.x,p\.y\);[\s\S]{0,180}_fbEnergyBoom\(p\)/,
     'large balls must sweep their visible core and use their explosion VFX on wall contact');
+});
+
+test('large-energy detonation adds heavyweight impact feedback', () => {
+  const src = extractFunction('_fbEnergyBoom');
+  const calls = [];
+  const G = { _flashT: 0, _flashCol: '#ffffff', _chromaT: 0 };
+  const boom = Function(
+    '_fbElCol', '_addBoom', '_addBlastLight', 'addParts', 'shake', 'SFX',
+    'bigImpact', 'doHitFlash', 'G', 'EL',
+    `${src};return _fbEnergyBoom`,
+  )(
+    () => '#ff5522',
+    (...args) => calls.push(['boom', ...args]),
+    (...args) => calls.push(['light', ...args]),
+    (...args) => calls.push(['parts', ...args]),
+    (amount) => calls.push(['shake', amount]),
+    { detonate: () => calls.push(['sound']) },
+    (...args) => calls.push(['impact', ...args]),
+    (...args) => calls.push(['flash', ...args]),
+    G,
+    { I: 2, L: 3, D: 4 },
+  );
+
+  boom({ x: 100, y: 200, vx: 10, vy: 0, el: 1 });
+
+  assert.ok(calls.some((call) => call[0] === 'impact' && call[1] === 100 && call[2] === 200 && call[3] === 1),
+    'the large explosion must spawn the directional big-impact ring and sparks');
+  assert.ok(calls.some((call) => call[0] === 'flash' && call[1] === '#ff5522' && call[2] === 0.32),
+    'the large explosion must flash in its elemental color');
+  assert.ok(calls.some((call) => call[0] === 'shake' && call[1] === 32));
+  assert.equal(G._flashT, 8);
+  assert.equal(G._flashCol, '#ff5522');
+  assert.equal(G._chromaT, 8);
+});
+
+test('large-energy contact starts a forced slide along the projectile travel direction', () => {
+  const vectorSrc = extractFunction('_bigEnergyPlayerKnockback');
+  const slideSrc = extractFunction('_startBigEnergyPlayerSlide');
+  const P = { kb: { x: -7, y: 4 } };
+  const { knockback, startSlide } = Function(
+    'P',
+    `${vectorSrc};${slideSrc};return {knockback:_bigEnergyPlayerKnockback,startSlide:_startBigEnergyPlayerSlide}`,
+  )(P);
+
+  assert.deepEqual(knockback({ x: 10, y: 20, vx: 6, vy: 0 }, 100, 100), { x: 100, y: 0 });
+  const diagonal = knockback({ x: 10, y: 20, vx: 3, vy: 4 }, 100, 100);
+  assert.ok(Math.abs(diagonal.x - 60) < 1e-9);
+  assert.ok(Math.abs(diagonal.y - 80) < 1e-9);
+  const stationary = knockback({ x: 10, y: 20, vx: 0, vy: 0 }, 20, 20);
+  assert.deepEqual(stationary, { x: 100, y: 0 }, 'stationary fallback pushes away from the projectile center');
+  startSlide({ x: 10, y: 20, vx: 6, vy: 0 }, 100, 100);
+  assert.deepEqual(P.kb, { x: 100, y: 0 }, 'the giant collision overrides weaker momentum and starts the slide immediately');
+
+  assert.match(gameHtml, /if\(_bigVulnerable\)\{[^\n]*_startBigEnergyPlayerSlide\(p,P\.x,P\.y\);hurtP\(_pjD,\{dtype:'magic',projHit:true,knockback:\{x:0,y:0\}\}\)/,
+    'the collision must start sliding before hurtP can return early for a DEX dodge');
+  assert.match(gameHtml, /const _psBig=_isBigEnergy\(p\);if\(_psBig\)_startBigEnergyPlayerSlide\(p,P\.x,P\.y\)/,
+    'peace-shield non-parry absorption must use the same giant-projectile slide');
+  assert.match(gameHtml, /if\(!_psBig\)\{const _bAng=/,
+    'the peace-shield path must not replace the giant slide with its old weak knockback');
+  assert.match(gameHtml, /if\(opts&&opts\.knockback\)\{P\.kb\.x\+=opts\.knockback\.x;P\.kb\.y\+=opts\.knockback\.y\}else\{/,
+    'hurtP must use an explicit vector when supplied and retain its generic fallback otherwise');
 });
 
 test('large energy uses relative swept collision for crossing player movement', () => {
@@ -140,8 +201,8 @@ test('large energy owns one terminal pipeline and cannot become a friendly 30-pi
   );
   assert.match(projectileLoop, /if\(_bigBall&&!p\.friendly&&!_pHit&&!P\._ioActive\)/,
     'hostile large balls use a dedicated player contact branch');
-  assert.match(projectileLoop, /if\(!p\.blackBean&&!_bigBall&&!p\.noParry/,
-    'generic projectile contact must exclude large balls');
+  assert.match(projectileLoop, /if\(!_bigBall&&!p\.noParry/,
+    'generic projectile contact must exclude large balls while allowing Q-parryable rainbow shots');
 });
 
 test('Q shield splits large energy while non-Q reflection loops leave it to the dedicated pipeline', () => {

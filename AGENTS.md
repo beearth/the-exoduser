@@ -104,7 +104,7 @@ docs/ 폴더는 게임의 **모든 기획·수치·공식·시스템 설계**를
 
 - **python http.server 사용 금지** — node server.cjs만 사용
 - **어택 티켓(동시공격 제한) 구현 금지** — 이 게임은 핵슬래시
-- **무지개탄(blackBean)은 절대 패링 불가** — 패링 로직에서 제외
+- **무지개탄(blackBean)은 Q(sBlock/해제/peaceShield)로만 패링 가능** — E(sBash) 패링은 불가. `parryClass='magic'`으로 분류하며 Q 성공 시 블루콩 유도반사로 변환한다. (2026-09-04 사용자 최신 확정)
 - **git 롤백 금지** — 복구시점 없이 reset/checkout 하지 마라
 - **수정 전 백업** — 대규모 수정 전에 백업 파일 생성
 - **PixelLab 캐릭터 생성 금지** — 기존 에셋만 사용

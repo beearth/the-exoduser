@@ -214,6 +214,12 @@ const server = http.createServer(async (req, res) => {
       return sendJSON(res, 200, { ok: true });
     }
 
+    // 탄종을 한 발씩 실전 Q/E 판정으로 확인하는 독립 시험장.
+    if (pathname === '/projectile-lab') {
+      res.writeHead(302, { Location: '/game.html?test=1&testchar=1&projectilelab=1' });
+      return res.end();
+    }
+
     let filePath;
     if (pathname === '/') filePath = path.join(ROOT, 'index.html');
     else if (pathname === '/game' || pathname === '/game.html') filePath = path.join(ROOT, 'game.html');

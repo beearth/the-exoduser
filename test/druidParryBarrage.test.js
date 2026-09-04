@@ -53,3 +53,22 @@ test('druid parry volleys bypass the global one-in-three moving bullet drop', ()
   const spawnBlock = gameHtml.slice(start, end);
   assert.match(spawnBlock, /if\(!p\._commit&&!p\._druidParryVolley\)/);
 });
+
+test('enemy fire comets render thirty-five percent smaller without changing their hitbox', () => {
+  const start = gameHtml.indexOf('function _enemyMagicCometVisualScale(');
+  assert.ok(start >= 0, 'enemy magic comet visual scaling helper must exist');
+  const end = gameHtml.indexOf('\n}', start) + 2;
+  const scaleFor = Function('EL', `${gameHtml.slice(start, end)};return _enemyMagicCometVisualScale`)({ F: 1 });
+
+  assert.equal(scaleFor(1), 0.65, 'fire comets must render at 65% of their former size');
+  assert.equal(scaleFor(3), 1, 'non-fire comet visuals must keep their existing size');
+  assert.match(gameHtml, /_fSz\*2\.2\*_enemyMagicCometVisualScale\(_fEl\)/,
+    'fast fire comets must use the same visual-only reduction');
+  assert.match(gameHtml, /_normalMagicCometLength\(p\.sz\)\*_enemyMagicCometVisualScale\(_nEl\)/,
+    'normal fire comets, including the druid volley, must use the reduction');
+  const volleyStart = gameHtml.indexOf('// [DRUID-PARRY-RHYTHM]');
+  const volleyEnd = gameHtml.indexOf('// [?ㅽ겕?쒕（?대뱶] orb ?꾨쭑', volleyStart);
+  const volleyBlock = gameHtml.slice(volleyStart, volleyEnd);
+  assert.match(volleyBlock, /sz:2,r:10/,
+    'the druid input size and collision radius must remain unchanged');
+});

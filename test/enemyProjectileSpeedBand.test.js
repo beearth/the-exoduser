@@ -21,14 +21,14 @@ test('enemy physical teeth hold exactly 300 px/s', () => {
   near(_rollEnemyBulletSpeed(() => 1), 300 / 60);
 });
 
-test('E-parry red-bean uses physical 300 while water blue-bean stays magic 500-600', () => {
+test('fire red-bean and water blue-bean both use the magic 500-600 band', () => {
   const { _normalizeEnemyBulletSpeed, _isEnemyMagicBullet } = speedHelpers();
   assert.equal(_isEnemyMagicBullet({ el: 1, redBean: true }), true, '빨콩 is fire magic');
   assert.equal(_isEnemyMagicBullet({ el: 2, waterBean: true }), true, '파란콩 is water/ice magic');
 
   const red = { vx: 3, vy: 4, el: 1, redBean: true };
   _normalizeEnemyBulletSpeed(red, () => 0.5);
-  assert.ok(Math.abs(Math.hypot(red.vx, red.vy) - 300 / 60) < 1e-12);
+  assert.ok(Math.abs(Math.hypot(red.vx, red.vy) - 550 / 60) < 1e-12);
 
   const water = { vx: 3, vy: 4, el: 2, waterBean: true };
   _normalizeEnemyBulletSpeed(water, () => 0);
@@ -143,7 +143,7 @@ test('close-range and filler 빨콩 stay fire, not the monster element', () => {
   assert.equal(fillerRed.el, 1, 'filler 빨콩 is fire');
 });
 
-test('waterBean is wired through spawn, reset, charge, magic-speed, and old cyan draw', () => {
+test('waterBean is wired through spawn, reset, charge, magic-speed, and blue draw', () => {
   const { _isEnemyMagicBullet } = speedHelpers();
   assert.equal(_isEnemyMagicBullet({ waterBean: true }), true, 'waterBean counts as magic even if el omitted');
 
@@ -152,5 +152,17 @@ test('waterBean is wired through spawn, reset, charge, magic-speed, and old cyan
   assert.match(gameHtml, /_projChargeBean='water'/);
   assert.match(gameHtml, /waterBean:true/);
   assert.match(gameHtml, /if\(p\.waterBean\)/);
-  assert.match(gameHtml, /_drawWaterBean|_drawOldBlueBean|#3ecbff|#00ccff/);
+  assert.match(gameHtml, /_drawWaterBean|_drawOldBlueBean|#317cec|#00ccff/);
+});
+
+test('water-bean uses the same saturated blue for its spawn and charge telegraph', () => {
+  const beanStart = gameHtml.indexOf('function _beanRoll(');
+  const beanEnd = gameHtml.indexOf('function _eMouthXY(', beanStart);
+  assert.ok(beanStart >= 0 && beanEnd > beanStart, 'water-bean roll source must exist');
+  const beanRoll = gameHtml.slice(beanStart, beanEnd);
+
+  assert.match(beanRoll, /el:EL\.I,col:'#317cec'/,
+    'water-bean spawn color must match the saturated blue core palette');
+  assert.match(gameHtml, /e\._projChargeBean='water';e\._projChargeCol='#317cec'/,
+    'the charge telegraph must not retain the old cyan color');
 });

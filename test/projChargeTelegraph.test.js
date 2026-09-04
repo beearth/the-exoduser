@@ -58,11 +58,11 @@ test('shoot charge ring is a dark track plus round-cap progress arc', () => {
   assert.match(gameHtml, /if\(_eDecor&&e\.s==='eShootWind'\)\{[\s\S]{0,180}_drawShootCharge\(/);
 });
 
-test('physical and E-parry red-bean charge rings are white instead of red', () => {
+test('only physical charge rings are white; fire red-bean comets retain their Q-magic color', () => {
   const chargeDraw = sliceBetween(gameHtml, '// ═══ 탄막 차징 전조', '// ═══ 피격 플래시');
-  assert.match(chargeDraw, /const _pcPhysical=e\._projChargeBean==='red'\|\|e\._projChargeBean==='normal'&&e\.el===EL\.P/);
+  assert.match(chargeDraw, /const _pcPhysical=e\._projChargeBean==='normal'&&e\.el===EL\.P/);
   assert.match(chargeDraw, /const _pcCol=_pcPhysical\?'#f4f4f4'/);
-  assert.doesNotMatch(chargeDraw, /e\._projChargeBean==='red'\?'#ff2200'/);
+  assert.doesNotMatch(chargeDraw, /e\._projChargeBean==='red'\?'#f4f4f4'/);
 });
 
 test('every physical eShootWind attack previews a white charge ring', () => {

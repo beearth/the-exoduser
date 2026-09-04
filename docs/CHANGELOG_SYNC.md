@@ -1,5 +1,75 @@
 # Sync Changelog
 
+## 2026-09-04 물 파란콩 색상 정리
+
+| 대상 | 이전 | 현재 | 적용 위치 | 검증 |
+|---|---|---|---|---|
+| `waterBean` 본체 | 청록 `#0a7fc4 → #9ff6ff` | 물빛 파랑 `#15338f → #d9edff` | `game.html` `_drawWaterBean` | `bossProjectileVfxUpgrade.test.js` |
+| 스폰·차징·피격 파티클 | 시안 `#3ecbff` | 채도 있는 파랑 `#317cec` | `_beanRoll`, `_fireChargedProj`, 차징 전조, 탄막 시험장 | `enemyProjectileSpeedBand.test.js` |
+
+- 실루엣·Q 패링·빙결·속도·유도·히트박스는 변경하지 않았다.
+
+## 2026-09-04 일반탄 피격 소형 방향성 넉백
+
+| id | 이전 동작 | 현재 동작 | 수치 | 검증 |
+|---|---|---|---:|---|
+| `_normalProjectilePlayerKnockback` | 일반탄 직격이 `hurtP()` 공통 넉백을 사용해 최소 세기 1의 방향이 무작위 | 탄 진행 벡터를 정규화한 명시 넉백을 일반탄 직접 피격에 전달 | **2** | `test/normalProjectilePlayerKnockback.test.js` |
+| `_bigEnergyPlayerKnockback` | 대형 에너지탄 전용 강제 슬라이드 | 변경 없음 | **100** | `test/bigEnergyParrySplit.test.js` |
+
+- 일반탄 피해·원소배율·포이즈·경직·패링 계약은 변경하지 않았다. 대형탄은 기존 충돌 전용 파이프라인과 100 강도 슬라이드를 그대로 유지한다.
+
+## 2026-09-04 — 적 화염 혜성탄 시각 크기 35% 축소
+
+| id/대상 | 이전 | 현행 | 적용 위치 | 게임플레이 |
+|---|---:|---:|---|---|
+| `_enemyMagicCometVisualScale(EL.F)` | `1.0` | **`0.65`** | `game.html` 일반·빠른 적 마법탄 렌더 | 시각 전용 |
+| 일반 화염 혜성 | 최대 `123.2px` | **최대 `80.08px`** | 화성송·화염 빨콩·드루이드/화마귀 후속탄 | `sz/r`·충돌·속도·피해·Q패링 불변 |
+| 빠른 화염 혜성 | 최대 `110.88px` | **최대 `72.072px`** | `fast+EL.F` | `sz/r`·충돌 불변 |
+
+- 비화속성 혜성, 화마귀 거대 에너지탄 `fdEnergy` 240px, 거대 에너지탄 Q패링 5분열 `_parryMagicShot` 246.4px는 변경하지 않았다.
+- TDD: `test/druidParryBarrage.test.js`에서 화속성 `0.65`, 비화속성 `1`, 일반·빠른 렌더 적용, 드루이드 `sz=2/r=10` 보존을 검증한다.
+- 브라우저 실제 `spawnProj` 검증: 화염 길이 `80.08px`, 최종 `sz=4/r=13`, 비화속성 배율 `1`, `pageerror=0`. 관련 회귀 테스트 `53/53 PASS`.
+
+## 2026-09-04 물리탄 E 패링 임팩트 분리
+
+| 대상 | 이전 | 현재 | 적용 위치 | 검증 |
+|---|---|---|---|---|
+| 물리 E탄 (`redBean+EL.P`, 일반·관통 입탄, `titanEye`) | 모든 E 패링이 번개 콤보 | 기존 흰 기본 `parry_impact_sheet.png` 16프레임 (`1.2×`) | `game.html` `doParry` / 적 투사체 E 반사 3경로 | `physicalProjectileParry.test.js` |
+| 마법 Q·무지개·비투사체 E | 기존 경로 | 변경 없음: Q=`dark02`, 무지개=`rainbow_light`, 비투사체 E=Lightning | 같은 함수 | 같은 테스트 |
+
+- `titanEye`는 화염색/`EL.F`라도 `physicalProjectile` 표식으로 흰 물리 임팩트를 쓴다. 피해·반사·자원·속도·패링 판정은 변경하지 않았다.
+
+## 2026-09-04 물 파란콩 시각 재설계
+
+| ID | 이전 외관 | 현재 외관 | 적용 위치 | 검증 |
+|---|---|---|---|---|
+| `waterBean` | 소형 크라켄 어뢰 스프라이트 `96px` | 작은 청록 픽셀 물핵 `coreR=4.4×_sSc`, `#0a7fc4 → #9ff6ff`, 짧은 물결 꼬리 | `game.html` `_drawWaterBean` | `bossProjectileVfxUpgrade.test.js` |
+| 대형 `elemBall` (`EL.P/I`) | 크라켄 어뢰 스프라이트 | 변경 없음: 크라켄 아트 `170px` | `game.html` pass-2 `elemBall` | 같은 테스트 |
+
+- 물 파란콩의 Q 마법 패링, `EL.I`, 빙결·속도·유도·충돌 판정은 변경하지 않았다.
+- 아래의 `waterBean=96px` 크라켄 기록은 당시 변경 이력이며, 이 항목의 현재 계약으로 대체한다.
+
+## 2026-09-04 — 거대 에너지탄 피격 슬라이드 2배 강화
+
+| id | 이전 | 현행 | 적용 위치 | 검증 |
+|---|---:|---:|---|---|
+| `_bigEnergyPlayerKnockback` | 강도 `50`, 첫 프레임 `25px`, 열린 공간 누적 약 `71.4px` | **강도 `100`**, 첫 프레임 `50px`, 열린 공간 이론값 약 `142.9px` | `game.html` 거대탄 공통 helper | `bigEnergyParrySplit.test.js` `13/13 PASS` |
+| 실제 크라켄·화마귀 탄 | 최대 `P.kb=50`, 15회 감속 이동, `71.317px` | 최대 **`P.kb=100`**, 17회 감속 이동, **`142.763px`** | `fbEnergy`, `fdEnergy` 실제 `spawnProj→update→collision` | 각 폭발 1회, `pageerror=0` |
+
+- 민첩 회피 시 피해만 취소되고 충돌 슬라이드는 유지된다. 평화의보호 비패링 흡수도 같은 강도 100을 사용한다.
+- 감쇠 `0.65`, 이동 반영 `P.kb×0.5`, 벽 충돌 `canMv`, 일반탄 넉백 `1~12`, 폭발 임팩트 수치는 변경하지 않았다.
+
+## 2026-09-04 무지개 Q 패링·암흑 구체 시각 분리
+
+| ID | 최종 계약 | 적용 위치 | 검증 |
+|---|---|---|---|
+| `blackBean` | 무지개 전용 렌더·`parryClass=magic`·**Q만 패링**. Q 성공 시 무지개 임팩트와 `_fromRainbow` 블루콩 유도 반사, Q 미사용이면 기존 접촉 폭발 | `game.html` `_projectileParryClass`, 공통 Q 충돌, `peaceShield`, 탄막 시험장 | `test/blackBeanNeverParries.test.js`, `test/projectileParryClassification.test.js`, `test/projectileLab.test.js` |
+| `gbBean` | `EL.D`, 보라 `#a44cff`, `_drawDarkSphere` 전용. `_drawClassicRainbow` 사용 금지 | `game.html` `_beanRoll`, 탄막 렌더 | `test/projectileVisualTaxonomy.test.js` |
+| `elemBall` / 대형 에너지 | `elemBall`은 전속성 값이 아닌 단일 `el` 대형탄 형태 플래그. `fbEnergy=fb.el`, `fdEnergy=EL.F`; 둘만 Q 대형 에너지 예외 | `game.html` 보스 `elemBall`·에너지 발사 | `test/projectileVisualTaxonomy.test.js`, `test/bigEnergyParrySplit.test.js` |
+
+- 사용자 최신 지시에 따라 과거의 “무지개탄 절대 패링 불가” 기록은 현재 계약이 아니다. 아래 과거 항목은 당시 변경 이력으로만 보존한다.
+- 수정 금지 문서 `docs/2_3 돌진+패링+방패시스템`은 변경하지 않았다.
+
 ## 2026-09-04 Q 홀드 기폭팔 반복 발동 수정
 
 | id | 이전 문제 | 수정 | 적용 위치 | 검증 |
@@ -10,6 +80,38 @@
 - 회전참 합체(`whirlDet`/`slamStorm`/`stormBeam`)의 별도 주기 자동기폭과 기폭 피해 공식은 변경하지 않았다.
 - 수정 금지 문서 `docs/2_3 돌진+패링+방패시스템`은 프로젝트 규칙에 따라 변경하지 않았다.
 
+## 2026-09-04 평화의보호 붉은 혜성 Q 패링 수정
+
+| ID | 원인 | 수정 | 적용 위치 | 검증 |
+|---|---|---|---|---|
+| `peaceShield` magic Q | 시험 캐릭터의 `stormBeam` 합체는 Q를 `peaceShield`로 보내는데, 이 경로만 레거시 `!p.redBean`으로 화염 빨콩까지 차단 | `parryClass==='magic'`만 Q 반사하도록 통일 | `game.html` `case 'peaceShield'` | `test/projectileParryClassification.test.js` |
+
+- `redBean+EL.F` 붉은 혜성은 기본 Q·해제 Q·평화의보호 Q 모두에서 마법 패링 대상이다. `redBean+EL.P`·`titanEye`는 E 전용이며, `blackBean`은 최신 계약상 Q 마법 패링이다.
+
+## 2026-09-04 탄막 단발 시험장 추가
+
+| id | 변경 | 적용 위치 | 검증 |
+|---|---|---|---|
+| `projectile-lab` | 3333 로컬 서버의 `GET /projectile-lab`을 테스트 캐릭터·탄막 시험 URL로 302 연결 | `server.cjs` | HTTP 302 및 Location 확인 |
+| `_PROJECTILE_LAB` / `_projectileLabFire` | 실전 `spawnProj()`로 시험탄 하나만 발사하고 이전 탄·자동 조우를 정리 | `game.html` | `test/projectileLab.test.js` |
+| `_labProjectile` | 풀 객체에 시험탄 표식을 추가·리셋하여 반사 결과만 유지하고 비시험 잔탄을 제거 | `game.html` `_mkProj` / `_resetProj` | 단발 정리 계약 검사 |
+
+- 탄종별 Q/E/회피 입력, 외형과 원본 분류의 불일치 사례는 `docs/8.0몬스터디자인/탄막시스템_총정리.md` §14 표를 SSOT로 둔다.
+- `docs/2_3 돌진+패링+방패시스템`은 프로젝트 규칙에 따라 수정하지 않았다.
+
+## 2026-09-04 — Shift·좌클릭·우클릭 사실적 VFX 교체
+
+| 입력/ID | 이전 외형 | 현재 에셋·원본 | 런타임 렌더 | 게임플레이 |
+|---|---|---|---|---|
+| Shift `chainSlash` | 단순 은빛 날개 `chain_blade_silver.webp` | `img/vfx/chain_blade_silver_realistic.png`, 1448×1086 RGB 녹색 크로마, 관절식 강철 깃·체인 힌지·중심 갑주 | `_makeGreenChromaCutout()` 1회 캐시 후 `b.r×2.2 × b.r×1.6`, 16f 페이드 | 반경·피해·출혈·포이즈·자원 불변 |
+| 좌클릭 `kiSlash` | 2152×731/6프레임 네온 보라 시트 | `img/vfx/silvertail_ki_slash_realistic.png`, 1536×1024 RGB 녹색 크로마, 백열 코어·난류 플라즈마·파편 | 1·2타 144px/3타 176px, ±4.5% 맥동, 1.14배 약한 `lighter` 글로우 + 불투명 본체 | 3단 콤보 피해·사거리·판정·입력 불변 |
+| 우클릭 `fireball` | 전 캐릭터 공용 7×3/20프레임 보라 오브 | `img/vfx/silvertail_malice_orb_realistic.png`, 1254×1254 RGB 녹색 크로마, 흑요석 균열 코어·자주색 궤도 칼날 | 실버테일만 `p.r×6.2`, ±3.5% 맥동·완만한 회전·1.08배 보조광; 다른 캐릭터는 공용 시트 유지 | 피해·폭발·중독·사거리·MP 불변 |
+
+- 세 원화는 내장 이미지 생성 도구의 이미지 편집 모드로 기존 실루엣을 참조해 사실적 재질로 재설계했다. 생성 PNG의 녹색 크로마는 로드 시 녹색 우세도 기반 smoothstep alpha와 스필 감산으로 제거하며 변환 Canvas를 재사용한다.
+- TDD: 전용 경로·로더·크로마 캐시·입력별 라우팅·맥동 렌더를 먼저 요구한 뒤 구현했으며 `test/chainBladewingSilverVfx.test.js`, `test/silvertailAttackMotion.test.js` 최종 **7/7 PASS**다.
+- 브라우저 Canvas QA: 실제 `_makeGreenChromaCutout()` 결과의 투명 픽셀 비율은 Shift `80.43%`, 좌클릭 `84.87%`, 우클릭 `68.83%`, 남은 가시 픽셀의 강한 녹색 스필은 모두 `0%`다. 3파일 디코딩 크기 일치, `pageerror=0`, HTTP 4xx/5xx 0건을 확인했다.
+- 수정 금지 문서 `docs/2_3 돌진+패링+방패시스템`은 변경하지 않았다.
+
 ## 2026-09-04 — 게임 시작 멈춤(`Unexpected token 'else'`) 복구
 
 | ID/항목 | 증상·원인 | 수정 | 적용 위치 | 검증 |
@@ -17,6 +119,33 @@
 | 물리 빨콩 렌더 분기 | `_drawPhysMouth → _drawEyeBullet → fallback`의 `else` 앞에 `X.restore()`가 삽입되어 인라인 스크립트 전체가 구문 분석에 실패하고 로딩 화면에서 멈춤 | 두 이미지 helper를 단락 없는 `_rbDrawn` 단일 결과로 합친 뒤 `if / else`로 fallback을 선택해, helper 사이 상태 복구문이 고아 `else`를 만드는 구조를 제거 | `game.html` 물리 `redBean` 렌더 | `test/gameHtmlInlineSyntax.test.js`가 모든 실행형 인라인 스크립트를 `vm.Script`로 파싱; 관련 투사체·Q 패링 회귀 **21/21 PASS** |
 
 - 피해·탄속·패링 입력·외형 크기·색상·지속시간 등 게임 수치는 변경하지 않았다.
+
+## 2026-09-04 — 투사체 설정·외형·Q/E 패링 분류 정합
+
+| ID/항목 | 기존 불일치 | 현행 원본 분류 계약 | 적용 위치 |
+|---|---|---|---|
+| `parryClass` | `redBean` 스킨 플래그가 탄속·이빨 외형·E 입력까지 겸해 `EL.F` 화염 빨콩도 물리/E/300px/s로 오판 | `spawnProj()`에서 `physical` / `magic` / `forbidden`을 고정 저장하고, 탄속·렌더·충돌 Q/E가 공통으로 참조 | `game.html` `_projectileParryClass`, `spawnProj`, 적 투사체 충돌, 렌더 |
+| 화염 빨콩 | `redBean+EL.F`인데 이빨입·E·300px/s와 흰 E 차징 전조여서 원소 설정과 외관/입력이 충돌 | `magic`: **화염 혜성 외형, Q 패링, 500~600px/s, 화염색 차징 전조**. `_closeBean`도 동일 | `_normalizeEnemyBulletSpeed`, `redBean` 렌더·Q 분기, `_pcPhysical` 차징 전조 |
+| 물리 빨콩·혈안탄 | `redBean` 정리에 묶여 실제 예외가 불명확하고 화염 Q탄과 둘 다 빨강으로 보여 식별 불가 | `redBean+EL.P`는 `physical`: **회백색 이빨입·회백 글로우·E 패링·300px/s**. `titanEye`는 혈안 눈알/E를 유지하며 `EL.F` 색이어도 물리 우선 | `_projectileParryClass`, `_isPhysicalMouthProjectile`, 물리 빨콩 Canvas 필터/글로우, `titanEye` 전용 렌더 |
+| 정지 지뢰·덫 | 문서에는 패링 가능인데 공통 분류에서 위험물로 묶여 Q 분기로 배제될 수 있었음 | `magic`: **Q 패링** 후 friendly/blueBean 가드에서 즉시 회수·자원 지급 | `_projectileParryClass`, mine/trap 업데이트 가드 |
+| 금지 탄 | 외형/플래그별 예외가 산재 | `blackBean`·`noParry`·폭탄/웹/장판·일반 `elemBall`은 `forbidden`; 특히 **무지개탄은 절대 패링 불가**. `fbEnergy`/`fdEnergy`만 대형 에너지탄 Q 예외 | `_projectileParryClass`, 대형 에너지탄 전용 분기 |
+
+- 전수 기준은 `docs/8.0몬스터디자인/몬스터_공격시스템.md`와 `탄막시스템_총정리.md`의 `parryClass` 표로 통일했다. 따라서 색상이나 `redBean` 이름을 보고 입력을 추측하지 않는다.
+- 시각 식별: **붉은 혜성=화염 마법/Q**, **회백색 이빨=물리/E**, **혈안 눈알=물리/E**, 무지개=패링 불가. `p.col:'#cc1100'`은 레거시 피격 데이터만 유지하며 물리 빨콩의 본체·글로우에는 쓰지 않는다.
+- TDD: 화염/물리 빨콩, 화염색 혈안탄, 대형 에너지탄, 지뢰·덫, 무지개탄의 분류를 RED→GREEN으로 검증했다. `test/projectileParryClassification.test.js`를 포함한 패링·속도·대형탄·Q 홀드 회귀군 최종 **50/50 PASS**.
+- 수정 금지 문서 `docs/2_3 돌진+패링+방패시스템`은 변경하지 않았다.
+
+## 2026-09-04 — 거대 에너지탄 피격 넉백 50·충돌 임팩트 보강
+
+| ID/항목 | 이전 | 현행 | 적용 위치 |
+|---|---:|---:|---|
+| `_bigEnergyPlayerKnockback` | 강도 14, 첫 프레임 7px·누적 약 20px | **강도 50**, 첫 프레임 25px·장애물 없을 때 누적 약 71.4px. `_startBigEnergyPlayerSlide`가 피해 계산 전에 시작 | `game.html` 거대탄 전용 helper |
+| `_fbEnergyBoom` 파티클/흔들림 | 28 / 20 | **42 / 32** | 플레이어·벽·흡수 충돌 공통 |
+| 강타 시각 | r220 boom + blast light 280 | 기존 효과 + `bigImpact` 방향 링/스파크 + 속성 플래시 0.32/8f + 색수차 8f | `_fbEnergyBoom` |
+
+- 히트스톱과 슬로모는 게임 전역 비활성 정책을 유지한다. 무적·돌진·Q패링에는 전용 슬라이드가 없고, 민첩 회피는 피해만 취소하며 거대탄 충돌 관성은 유지한다. 평화의보호 비패링 흡수도 슬라이드50을 사용한다. 일반탄 넉백 `1~12`는 변경하지 않았다.
+- 브라우저 실제 탄 검증: `fbEnergy`와 `fdEnergy` 모두 최대 `P.kb.x=50`, 15회 감속 이동, 총 `71.317px`, 폭발 1회, `pageerror=0`.
+- TDD: 넉백 `(50,0)`/`(30,40)`/정지 fallback과 강타 링·플래시·색수차·흔들림 계약을 RED로 확인한 뒤 구현했으며 `test/bigEnergyParrySplit.test.js` **13/13 PASS**.
 
 ## 2026-09-04 실버테일 참회 전용 여성 보이스
 
@@ -61,15 +190,16 @@
 - 수치·피해·발사 간격·투사체 속도는 변경하지 않았다. 일시정지 상태에서만 게임플레이 시간이 흐르지 않도록 실행 순서를 교정했다.
 - 수정 금지 문서 `docs/2_3 돌진+패링+방패시스템`은 변경하지 않았다.
 
-## 2026-09-04 기동칼날개 은빛·날카로운 VFX 교체
+## 2026-09-04 기동칼날개 은빛·날카로운 VFX 1차 교체 (후속 사실적 교체로 대체됨)
 
-| ID/대상 | 이전 상태 | 현재 계약 | 적용 위치 | 게임플레이 |
+| ID/대상 | 이전 상태 | 당시 1차 계약 | 적용 위치 | 게임플레이 |
 |---|---|---|---|---|
 | `chainSlash` / 기동칼날개 | 둥근 붉은·분홍 계열 날개 `img/vfx/chain_blade.webp` | 좌우 대칭의 긴 단검형 금속 깃과 중심 갑주를 가진 냉은색 날개 `img/vfx/chain_blade_silver.webp` | `_CHAIN_BLADE_IMG`, `G._chainBlades`, `drawP()` | 반경·피해·출혈·포이즈·자원 불변 |
 | 런타임 에셋 | 889×658 투명 WebP | 1024×768 RGBA WebP, 투명 배경 | 폭 `b.r×2.2`, 높이 `b.r×1.6`, 수명 16f | 판정 불변 |
 | 팔레트 | 본체/파편에 `#ff2244`, `#ff4466` 사용 | 타격 문자 `#dcecff`, 금속 파편/폴백 `#a9bfd0`, 칼끝/능선 `#f8fbff` | 사슬기동 활성 분기와 로드 실패 폴백 | 시각만 변경 |
 
 - 내장 이미지 생성 도구로 날카로운 은빛 원화를 만든 뒤 단색 크로마 배경을 투명 알파로 분리했다. 구 `chain_blade.webp`는 다른 참조/비교를 위해 보존하고 런타임 로더만 새 파일로 전환했다.
+- 이 1차 런타임 경로는 같은 날짜의 `chain_blade_silver_realistic.png` 후속 계약으로 대체됐으며, 비교·이력 목적으로 보존한다.
 - TDD: `test/chainBladewingSilverVfx.test.js`에서 새 경로·RGBA 알파·최소 해상도·냉은색 팔레트·적색 제거 계약을 RED로 확인한 뒤 **2/2 PASS**로 전환했다.
 - 수정 금지 문서 `docs/2_3 돌진+패링+방패시스템`은 변경하지 않았다.
 
@@ -177,6 +307,21 @@
 - 원인: 퇴장 분기는 alpha만 낮추고 프레임을 5로 고정했다. 생성음은 `skull_summon` 호출이 `elecRepent`의 `else` 안에 있어 참회 분기에서 건너뛰었다.
 - TDD: 역재생 프레임 계약과 단독/합체 생성음 1회·참회 분기 전 호출 검증을 먼저 RED로 확인한 뒤 `test/bossCageTrapSprite.test.js` **4/4 PASS**.
 - 브라우저 QA: 플레이어 퇴장 시점 541/552/570/599f에서 frame `5/4/2/0`, alpha `0.983/0.8/0.5/0.017` 확인. `skull_summon` 버퍼 로드 및 단독+보스 생성 호출 각 1회(합계 2회), pageerror 0.
+
+## 2026-09-04 Q 보호막 20px 흡수 코어·500px 패링 띠
+
+| ID/항목 | 이전 | 현재 계약 | 수치/공식 | 적용 위치 |
+|---|---|---|---|---|
+| `_sBlockChargeRadius` | 110px 시작, 2초 후 200px 상한 | 탭부터 100px를 확보하고 매초 100px씩 성장 | `100 + 100 × clamp(holdFrames / 60, 0, 4)`px; 0f=100·60f=200·120f=300·180f=400·240f+=500 | `game.html` Q 보호막 상태·`drawP()` |
+| `_sBlockProjectileZone` | Q 홀드 초반/해제에 하나의 반경으로 패링 | 20px 흡수 코어와 외곽 패링 띠를 분리 | `≤20px` 흡수, `20px 초과~현재 충전 반경` 패링, 최대 500px | 적 투사체 충돌 루프 |
+| 흡수 코어 | 없음 | 적 탄을 반사·패링 보상 없이 소멸 | 20px 고정; `noParry` 탄 제외 | `_qZone==='absorb'` |
+| 외곽 패링 띠 | 최대 200px, 초기 20f 중심 | Q 홀드 내내 충전 반경으로 동작, 해제 후 12f도 저장 반경 유지 | 탭부터 20~100px, 이후 최대 20~500px; 일반 원소탄·다크볼·대형 에너지탄은 기존 Q 반사 경로 | `_qParryActive`, `_qPulseR` |
+| 홀드 시각 경계 | 오라 스프라이트만 표시되어 실제 성장량이 작게 보임 | 패링 판정과 같은 외곽선·흡수 코어선을 추가 | `_sbRangeR=_sBlockChargeRadius(P._sbHoldT)`=100→500px(4초), 외곽은 점선·중심 `20px`은 얇은 선 | `drawP()` Q 보호막 렌더 |
+| 해제 버블 시각 크기 | 확장 파동의 알파가 `r/maxR` 진행에 따라 0으로 사라져, 최대 반경에 닿기 전 버블이 작게 보임 | Q 해제만 `release:true`로 표식하고 저장 반경 버블을 별도 유지 | `_bReleaseR=_b.maxR`; 채움 alpha `max(.06,.18×fade)`, 외곽 alpha `max(.24,.6×fade)`; 최대 500px | `case 'sBlock'`, `drawP()` 버스트 렌더 |
+| 색상 규칙 | 기존 | 유지 | 빨콩·물리 입탄·화이트볼·`titanEye`는 E 전용. 무지개탄은 외곽 띠에서 절대 패링하지 않으며, 20px 흡수 코어에서는 반사 없이 소멸 | 타입별 투사체 분기 |
+
+- TDD: `test/qHoldReleaseParry.test.js`에 0/1/2/3/4초 반경과 흡수 코어·패링 띠 경계(20/21/100/101/200/201/500/501px)를 먼저 추가해 RED를 확인한 뒤 구현. 대형 에너지탄도 홀드 반경을 따르도록 `fieldBossSpawnEmerge`를 RED로 확인. `qHoldReleaseParry`, `fieldBossSpawnEmerge`, `bigEnergyParrySplit`, `rainbowBeanPassiveCap` **33/33 PASS**.
+- 기폭팔의 120f 자동기폭·HP 드레인·피해 공식, Q 해제 12f 윈도우는 변경하지 않았다.
 
 ## 2026-09-03 Q 홀드 성장 보호막·해제 원형 패링
 
@@ -891,7 +1036,7 @@
 | 본체 색 | `source-atop` α0.55 `ELC[el]` 워시. 시안 스프라이트+노랑=초록 진흙 | **원본 시트**. 속성색은 더듬이 충전·에너지탄·HP바·폭발만 |
 | 충전 | `_FB_EN_CHG=90` (1.5초), 가짜 옆점→입 | **180f = 3초**. 촉수 3점 → 에스카(`_fbEsca`)로 수렴. 충전구 16→86px |
 | 발사 | 입, sz14→28, r16→20.8, spd raw 5.5×1.8 | 에스카, **sz48→96, r56→72.8**, spd raw 4.2×1.8 |
-| 폭발 | 일반 `_projHitFx` r60 | `_fbEnergyBoom` **r220** + blast light 280 + 파티클 28 + shake 20 |
+| 폭발 | 일반 `_projHitFx` r60 | `_fbEnergyBoom` **r220** + blast light 280 + 당시 파티클 28 + shake 20. **현행은 파티클 42 + shake 32 + `bigImpact` + 속성 플래시/색수차** |
 
 - 유저 스크린샷: 초록 워시가 속성 색교체가 아님. 더듬이에서 3초 모으고 탄/폭발이 커야 함.
 - TDD `test/fieldBossSpawnEmerge.test.js` 9/9. `docs/2_3` 미수정.

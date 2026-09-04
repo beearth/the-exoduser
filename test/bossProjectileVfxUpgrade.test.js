@@ -31,9 +31,13 @@ test('near-black API image backgrounds are converted to alpha before additive re
   assert.match(gameHtml, /_silvChargeRangeSurface\|\|_silvChargeRangeImg/);
 });
 
-test('water-bean and large physical or ice element balls use directional Kraken art', () => {
+test('water-bean has a compact blue water-core identity while large physical or ice balls keep Kraken art', () => {
   const water = sliceBetween(gameHtml, 'function _drawWaterBean(', 'function _drawClassicRainbow(');
-  assert.match(water, /_drawKrakenShot\(p,fa,96\)/);
+  assert.match(water, /const coreR=4\.4\*sSc/);
+  assert.match(water, /#15338f/);
+  assert.match(water, /#d9edff/);
+  assert.doesNotMatch(water, /_drawKrakenShot/,
+    'the small water bean must not inherit the giant Kraken torpedo silhouette');
   assert.doesNotMatch(water, /X\.arc\(/);
   assert.doesNotMatch(water, /X\.lineTo\(/);
 
@@ -44,7 +48,7 @@ test('water-bean and large physical or ice element balls use directional Kraken 
   assert.doesNotMatch(elem, /X\.arc\(/);
 });
 
-test('sprite-owned Kraken shots do not receive generic line trails or circle glows', () => {
+test('water-bean and Kraken-owned large balls skip generic line trails and circle glows', () => {
   const trail = sliceBetween(gameHtml, '// 패스 0: 가시 인덱스', '// 패스 1:');
   assert.match(trail, /!p\.waterBean&&!p\.elemBall/);
 

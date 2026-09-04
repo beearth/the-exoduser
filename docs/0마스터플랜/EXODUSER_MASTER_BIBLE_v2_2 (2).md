@@ -911,7 +911,7 @@ public class BossAI : MonoBehaviour
 | `druidParryRhythm` (`_druidParryVolley`) | 화마귀 혜성 패링탄막 | `si3` 보스 전용 상시 기전 / `BOSS_MOVES` 슬롯 없음 | `90-phase×6`f = 90/84/78/72/66f | `5+phase` = 5/6/7/8/9발 | 전 웨이브 `fireMagic`, `EL.F`, `#ff5522`, Q | 스폰 `floor(atk×0.35)`, `life=ml=240`, 입력 `sz=2/r=10` | `game.html` `_druidParryVolleySpec`, `[DRUID-PARRY-RHYTHM]` |
 
 - AI가 `rapidMissile`/`beanStorm`을 뽑지 않는 구간에도 1.10~1.50초마다 Q 패링 기회를 보장한다. 발사 20f 전 화염 전조와 발사 순간 `Q!`를 표시한다.
-- 화마귀 3연속 후속탄의 혜성형 `fireMagic` 프로필을 재사용한다. 전용 플래그는 공용 이동탄 1/3 드랍만 면제하며, 공용 보정 후 `sz=4/r=13`, 최종 속도 500~600px/s, 피해 `floor(atk×0.35)×2`가 된다.
+- 화마귀 3연속 후속탄의 혜성형 `fireMagic` 프로필을 재사용한다. 전용 플래그는 공용 이동탄 1/3 드랍만 면제하며, 공용 보정 후 `sz=4/r=13`, 최종 속도 500~600px/s, 피해 `floor(atk×0.35)×2`가 된다. 적 화염 혜성은 시각 전용 배율 `0.65`로 최대 길이 `123.2→80.08px`이며 판정은 `r=13` 그대로다.
 - 최초 교대안의 느린 `redBean`(300px/s)과 `waterBean`은 제거했다. `blackBean`은 생성하지 않고 기존 패링 금지 계약을 유지한다.
 
 ### 9.3.2 si3 다크드루이드 독늪 3지점 분산 (2026-09-03)

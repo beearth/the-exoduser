@@ -21,14 +21,31 @@ function extractFunction(name) {
   assert.fail(`${name} must be complete`);
 }
 
-test('Q hold radius grows from 110px to a capped 200px over two seconds', () => {
+test('Q shield starts at 100px, grows 100px per second, and caps at 500px', () => {
   const source = extractFunction('_sBlockChargeRadius');
   const radius = Function(`${source};return _sBlockChargeRadius`)();
 
-  assert.equal(radius(0), 110);
-  assert.equal(radius(60), 155);
-  assert.equal(radius(120), 200);
-  assert.equal(radius(999), 200);
+  assert.equal(radius(0), 100);
+  assert.equal(radius(60), 200);
+  assert.equal(radius(120), 300);
+  assert.equal(radius(180), 400);
+  assert.equal(radius(240), 500);
+  assert.equal(radius(999), 500);
+});
+
+test('Q shield absorbs only its tight 20px core and parries from the first 100px ring', () => {
+  const source = `${extractFunction('_sBlockChargeRadius')}\n${extractFunction('_sBlockProjectileZone')}`;
+  const zone = Function(`${source};return _sBlockProjectileZone`)();
+
+  assert.equal(zone(20, 0), 'absorb');
+  assert.equal(zone(21, 0), 'parry');
+  assert.equal(zone(100, 0), 'parry');
+  assert.equal(zone(101, 0), 'none');
+  assert.equal(zone(101, 60), 'parry');
+  assert.equal(zone(200, 60), 'parry');
+  assert.equal(zone(201, 60), 'none');
+  assert.equal(zone(500, 240), 'parry');
+  assert.equal(zone(501, 240), 'none');
 });
 
 test('releasing Q bursts at the charged radius and carries that radius into the release parry window', () => {
@@ -53,13 +70,29 @@ test('releasing Q bursts at the charged radius and carries that radius into the 
     'release must reset the next hold cycle');
 
   assert.match(gameHtml, /const _releasePW=P\.s!=='sBlock'&&P\._sbParryT>0&&\(P\._sbReleaseR\|\|0\)>0/);
-  assert.match(gameHtml, /const _qPulseR=_sbPW\?_sBlockChargeRadius\(P\._sbHoldT\):_releasePW\?P\._sbReleaseR:0/);
+  assert.match(gameHtml, /const _qPulseR=P\.s==='sBlock'\?_sBlockChargeRadius\(P\._sbHoldT\):_releasePW\?P\._sbReleaseR:0/,
+    'the charged radius must remain active throughout the Q hold and the release window');
   assert.match(gameHtml, /const _wwAbsR=_qPulseR>0\?_qPulseR:/,
     'ordinary Q-parryable projectiles must use the charged pulse radius');
 });
 
-test('the rendered Q shield uses the same growth curve', () => {
-  assert.match(gameHtml, /_sbR=_sBlockChargeRadius\(P\._sbHoldT\)\*\.5/);
+test('the rendered Q shield draws the exact charged parry boundary', () => {
+  assert.match(gameHtml, /const _sbRangeR=_sBlockChargeRadius\(P\._sbHoldT\);/,
+    'the hold indicator must use the same 100→500px radius as the parry check');
+  assert.match(gameHtml, /X\.arc\(P\.x,P\.y,_sbRangeR,0,Math\.PI\*2\)/,
+    'the visible boundary must be drawn at that exact charged radius');
+});
+
+test('releasing Q keeps a visible bubble at the stored charged radius', () => {
+  const blockStart = gameHtml.indexOf("case 'sBlock':{");
+  const blockEnd = gameHtml.indexOf("case 'peaceShield':{", blockStart);
+  const block = gameHtml.slice(blockStart, blockEnd);
+  assert.match(block, /G\._sbBurst=\{[^}]*maxR:_sbReleaseR[^}]*release:true/,
+    'Q release must mark its burst so it can render the full stored bubble');
+  assert.match(gameHtml, /const _bReleaseR=_b\.release\?_b\.maxR:0;/,
+    'the renderer must use the stored charged radius for the release bubble');
+  assert.match(gameHtml, /X\.arc\(_b\.x,_b\.y,_bReleaseR,0,Math\.PI\*2\)/,
+    'the release bubble outline must reach the exact stored radius');
 });
 
 test('every standard Q shield entry starts a fresh charge cycle', () => {

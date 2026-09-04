@@ -60,17 +60,17 @@
 
 ## 마법탄 (최초 무지개탄)
 
-마법탄은 `_drawClassicRainbow` — blackBean / blueBean / gbBean만. **화염 빨콩(`redBean+EL.F`)**은 `redBean` 레거시 피해/색 플래그를 공유하지만 이빨입이 아닌 화염 혜성 마법 외형·Q 패링·500~600px/s·`.0262`≈90°/s다. **물 파란콩(`waterBean`)**은 `_drawWaterBean`이 API 생성 크라켄 물회오리 탄두를 `96px` 길이로 그린다. 구 시안 다중 원·직선 꼬리와 공용 pass-0 트레일/pass-1 원형 글로우는 사용하지 않는다. **화이트볼(bwBean) 제거(2026-08-23)**. **이빨형 E패링탄 공통=실제 물리 `parryClass`**(최종 300px/s 고정, homing 선회 `.00436332`≈15°/s): `redBean+EL.P`, `titanEye`다. **titanEye=혈안 눈깔** `proj_titan_eye.png` 시각 `21.7×_sSc`(그림만 눈깔). **라운드 컬러는 발사탄 속성 예고**이며 `redBean+EL.P`·일반 물리/E패링 차징 링만 흰색 `#f4f4f4`다. 화염 빨콩 차징은 화염색을 유지한다. 특수 산호 파편·기생충·삼지창의 `eShootWind`도 `_swChargeEl=EL.P`일 때 흰색이다.
+마법탄은 `_drawClassicRainbow` — blackBean / blueBean만. **화염 빨콩(`redBean+EL.F`)**은 `redBean` 레거시 피해/색 플래그를 공유하지만 이빨입이 아닌 화염 혜성 마법 외형·Q 패링·500~600px/s·`.0262`≈90°/s다. 적 화염 혜성은 `_enemyMagicCometVisualScale(EL.F)=0.65`를 적용해 일반 최대 길이 `123.2→80.08px`, 빠른탄 최대 `110.88→72.072px`로 그리며 `sz/r`와 충돌은 불변이다. **물 파란콩(`waterBean`)**은 `_drawWaterBean`의 작은 픽셀형 파란 물핵+짧은 물결 꼬리(`coreR=4.4×_sSc`, `#15338f`→`#d9edff`, 스폰/차징 `#317cec`)다. 대형 크라켄 어뢰 아트는 사용하지 않으며, 공용 pass-0 트레일/pass-1 원형 글로우도 사용하지 않는다. **화이트볼(bwBean) 제거(2026-08-23)**. **이빨형 E패링탄 공통=실제 물리 `parryClass`**(최종 300px/s 고정, homing 선회 `.00436332`≈15°/s): `redBean+EL.P`, `titanEye`다. **titanEye=혈안 눈깔** `proj_titan_eye.png` 시각 `21.7×_sSc`(그림만 눈깔). **라운드 컬러는 발사탄 속성 예고**이며 `redBean+EL.P`·일반 물리/E패링 차징 링만 흰색 `#f4f4f4`다. 화염 빨콩 차징은 화염색을 유지한다. 특수 산호 파편·기생충·삼지창의 `eShootWind`도 `_swChargeEl=EL.P`일 때 흰색이다.
 
 ## API 생성 소형 크라켄 탄두 / 은꼬리 차지 범위 (2026-09-03)
 
 | id | 파일 | 원본 크기/형식 | 화면 크기·공식 | 합성 | 적용 위치 |
 |---|---|---|---|---|---|
-| `krakenShot` | `img/balls/proj_kraken_shot_api_v1.png` | 1945×809 RGB, 근검정 배경, 우향 단일 탄두 | `waterBean=96px`; 물리/빙 `elemBall=170px`; 높이는 원본 비율 `W×809/1945` | 로드시 `_makeBlackAdditiveCutout`: `max(R,G,B)≤24 → alpha 0`, `24–72 → smoothstep×원본 alpha`, `≥72 → 원본 alpha`; 이후 `lighter`, `rotate(atan2(vy,vx))`, 중심 보정 `x=-0.54W` | `_drawKrakenShot`; `_drawWaterBean`; pass-2 `elemBall` |
+| `krakenShot` | `img/balls/proj_kraken_shot_api_v1.png` | 1945×809 RGB, 근검정 배경, 우향 단일 탄두 | 물리/빙 `elemBall=170px`; 높이는 원본 비율 `W×809/1945` | 로드시 `_makeBlackAdditiveCutout`: `max(R,G,B)≤24 → alpha 0`, `24–72 → smoothstep×원본 alpha`, `≥72 → 원본 alpha`; 이후 `lighter`, `rotate(atan2(vy,vx))`, 중심 보정 `x=-0.54W` | `_drawKrakenShot`; pass-2 `elemBall` |
 | `silvertailChargeRange` | `img/vfx/silvertail_charge_range_api_v1.png` | 1254×1254 RGB, 근검정 배경, 개방형 은빛 룬 아크 | 지름 `range×2.24×(1+sin(frame×.16)×.018)`; 글로우 alpha `.12+tier×.035`, 본체 `.34+tier×.10` | 같은 `_makeBlackAdditiveCutout(24,72)` 캐시 후 `lighter`, `rotate(facing+π)` | `_drawSilvertailChargeRange`; `sDraw/kiGather` |
 
 - `elemBall`은 `EL.P/EL.I`일 때 크라켄 탄두를 쓰고, `EL.F/D/L/H/E`는 `proj_elem_orb.png`의 해당 속성 행을 쓴다. 양쪽 모두 실패할 때만 `proj_bolt_comet.png`로 폴백한다.
-- 크라켄 탄두가 몸체와 물결 꼬리를 한 실루엣에 포함하므로 `waterBean`/`elemBall`은 공용 선 트레일과 원형 글로우 패스에서 제외한다. 피해·속도·유도·히트박스·패링 계약은 변경하지 않는다.
+- 크라켄 탄두는 대형 `elemBall` 전용이다. `waterBean`은 자체 픽셀 물결 꼬리, `elemBall`은 크라켄 실루엣을 쓰므로 둘 다 공용 선 트레일과 원형 글로우 패스에서 제외한다. 피해·속도·유도·히트박스·패링 계약은 변경하지 않는다.
 - 차지 범위는 기존 반경 공식 `~~((70+(maliceSwipe−1)+방패range×4)×현재mult)`을 그대로 사용한다. 구 radial-gradient 원, 전방 부채꼴 채움, 9/7 점선 아크는 제거하고 내부가 빈 API 룬 아크만 표시한다.
 
 ## 일반 몬스터 돌진 장전 가이드 (`eChargeWind`) — 2026-09-02
@@ -110,6 +110,7 @@
 | rainbow_light(무지개 적중) | 72 (1.2초) | 16×4 (4레이어) | Fire_FBF + Poison_Medium + Dark_DarkSmoke + Light_Impact (각 90° 회전+시차+lighter 합성, 알록달록) | 중간 (drawImage 4회/프레임) |
 | rainbow(무지개 소멸) | 72 (1.2초) | 16+36+9 (3레이어) | Dark_DarkSmoke_FBF + Dark_Smoke_6x6 + Dark_BasicImpact | 중간 |
 | dark02(패링) | 72 (1.2초) | 16 | Dark_MediumImpact | 낮음 |
+| physical_parry(물리탄 E패링) | 16프레임 | 16 | 기존 `parry_impact_sheet.png` 흰 기본 임팩트 | 낮음 — `redBean+EL.P`·일반/관통 입탄·`titanEye`만 `doParry(...,'physicalProjectile')`로 선택. `titanEye`는 `EL.F` 색이어도 흰 물리 임팩트 |
 | fire_medium | 66 (1.1초, min보정) | 16 (4×4) | Fire_MediumImpact | 낮음 — 빨콩 패링 적중, 보호막 흡수, **동물형 돌진(22/30/43) 적중 임팩트** (`_addBoom 80,48`, 2026-06-28) |
 | explosion | 66 (1.1초) | 프로시저럴 | arms 기반 렌더 | 낮음 |
 | ice/lightning/dark | 66 (1.1초) | 프로시저럴 | 원+링 렌더 | 낮음 |
@@ -309,7 +310,7 @@ path: '/v1/images/generations'
 | 크기 | `dw=240`, `dh=dw×(ch/cw)=240` |
 | 합성 | 실제 RGBA 투명도를 유지하고 `lighter` 합성 |
 | 적용 | `p.fdEnergy` 탄. 일반 `elemBall` 분기보다 먼저 그림. 시트 미로드 시 `EL.F`의 `proj_elem_orb` 속성행 폴백 |
-| 판정 | 스폰 r18→23.4, 최종 sz96. 플레이어 상대 스윕 히트 `P.r+max(p.r,sz)`=`P.r+96`(보이는 핵). 벽은 이동 구간의 중심+원주 8점 스윕. Q패링 `P.r+sz+90`→기본 `magic` 판정 r8의 빨간 혜성형 마법탄 5발(`_parryMagicShot`, `_drawCometBullet` 246.4px, 일반 먼지 없음, 총 반사 피해 5등분)+HP/ST/MP·작살·분노·악의·parryBank 자원회수 ×10. 플레이어·벽 접촉은 항상 `_fbEnergyBoom` r220+`bigImpact` 방향 링/스파크+속성 플래시/색수차+파티클42+흔들림32 후 소멸하며, 취약 피격은 진행 방향 넉백50. 무적 프레임/돌진 중에는 폭발만 하고 피해·넉백은 0 |
+| 판정 | 스폰 r18→23.4, 최종 sz96. 플레이어 상대 스윕 히트 `P.r+max(p.r,sz)`=`P.r+96`(보이는 핵). 벽은 이동 구간의 중심+원주 8점 스윕. Q패링 `P.r+sz+90`→기본 `magic` 판정 r8의 빨간 혜성형 마법탄 5발(`_parryMagicShot`, `_drawCometBullet` 246.4px, 일반 먼지 없음, 총 반사 피해 5등분)+HP/ST/MP·작살·분노·악의·parryBank 자원회수 ×10. 플레이어·벽 접촉은 항상 `_fbEnergyBoom` r220+`bigImpact` 방향 링/스파크+속성 플래시/색수차+파티클42+흔들림32 후 소멸한다. 비무적·비돌진 접촉은 피해 계산 전 진행 방향 슬라이드100을 시작하므로 민첩 회피에도 관성이 유지되고 평화의보호 비패링 흡수도 동일하다. 첫 프레임 50px, 열린 공간 감쇠 누적 약 142.9px다. 무적 프레임/돌진 중에는 폭발만 하고 피해·슬라이드는 0 |
 | 비행 | raw 6×1.8=10.8, **직선(무유도)**. 공격 텀 180f(3초) |
 | 제외 | 올챙이 머리 원은 **전 탄** 폐기(2026-09-01). 화마귀는 패스1 글로우도 스킵 |
 | 원본 | 유저 제공 Downloads `ChatGPT Image 2026년 9월 2일 오후 03_47_47.png`를 픽셀 손실 없이 사용 |
