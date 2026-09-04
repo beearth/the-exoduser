@@ -46313,3 +46313,16 @@ mpR = 0.05 + s.int×0.005                                        [NO P.lv×0.001
 
 - 사용자 피드백에 따라 8×4 정리 결과는 품질 미달로 폐기했다. 기존 검증 완료 8×3 시트의 단일 실루엣만 사용한다.
 - 전투 수치·스폰·충돌·route는 변경하지 않았다.
+
+## 2026-09-04 CH1-1 다안 육괴 숫자 없는 8×4 시트 재적용
+
+| 항목 | 최종 계약 | 적용 위치 |
+|---|---|---|
+| runtime | `img/ch1_1_eye_slime_8dir_4frame_clean.png`, `1024×2048`, `4열 frame×8행 방향`, 셀 `256×256` | `_CH1_START_MEDIUM_SHEETS.sheet` |
+| 원본 행 선택 | 사용자 1536×1024 보드의 맨 위 예시 행은 제외; `N,NE,E,SE,S,SW,W,NW` 8행만 사용 | 자산 정리 파이프라인 |
+| 상태 열 | idle=0, `eAttack`=1, 이동/접근/차지=`2 + floor(now/120) mod 2` | `_drawCh1StartMediumEyeMass` |
+| 방향 행 | canvas target angle → `[2,3,4,5,6,7,0,1]` | `_CH1_START_MEDIUM_DIRMAP` |
+| 투명·상하 crop | 숫자·방향명·체크무늬·보드 배경은 alpha 0; 각 셀의 최대 연결 본체만 남기고 실제 top/bottom alpha 경계 기준으로 상하 중심 정렬 | 32개 runtime cell |
+
+- 사용자 피드백에 따라 이전 Eye Slime 시트는 제거하고 이 숫자 없는 시트만 런타임에 남긴다.
+- 검증: `test/ch1StartMediumEyeMass.test.js`가 32개 cell의 단일 실루엣, 이진 alpha, 상하 중심 정렬을 고정한다. `initStage(0)` 브라우저에서 `sheet=true`, 2마리 alive, pageerror 0을 확인했다.

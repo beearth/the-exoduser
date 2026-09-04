@@ -38,8 +38,7 @@
 
 | 용도 | 파일 | 원본 크기 | logical grid | 런타임 규칙 |
 |---|---|---:|---:|---|
-| 사용자 제공 설계 원본 | `img/ch1_1_eye_slime_labeled_source.png` | `1536×1024` | 설계 참조 | IDLE / WALK / ATTACK PREPARE 각 8방향 레이블을 제공; 런타임에서 직접 로드하지 않음 |
-| runtime 정리 시트 | `img/ch1_1_eye_slime_8dir_3row_clean.png` | `2048×768` | `8열 방향×3행 상태`, 셀 `256×256` | row 0=idle, row 1=movement·approach·charge, row 2=attack prepare; source 순서 `S,SW,W,NW,N,NE,E,SE`를 `[6,7,0,1,2,3,4,5]` 열로 변환 |
+| runtime 정리 시트 | `img/ch1_1_eye_slime_8dir_4frame_clean.png` | `1024×2048` | `4열 frame×8행 방향`, 셀 `256×256` | 사용자 1536×1024 보드의 예시 첫 행은 제외하고, 실제 `N,NE,E,SE,S,SW,W,NW` 8행을 정확한 알파 경계로 crop; col 0=idle, col 1=attack, col 2~3=movement loop; canvas angle은 `[2,3,4,5,6,7,0,1]` 행으로 변환 |
 
 | 항목 | 값 |
 |---|---|
@@ -48,7 +47,7 @@
 | 방향 추적 | `targetFacing=atan2(P.y-e.y,P.x-e.x)` (`P.hp>0`) | 일반 적 렌더러의 facing 갱신보다 먼저 반환하는 전용 경로에서도 플레이어를 즉시 바라봄; 플레이어 부재/사망 시 `e.facing` fallback |
 | 표시 크기 | 세로 `drawH=max(240, r×7)`px; 실제 반경 범위에서는 `240~252px` |
 | 종횡비/표시 폭 | 원본 셀 비율 보존: `drawW=drawH×(fw/fh)`; 현행 정방형 셀은 가로·세로 `240~252px` |
-| 알파 정리 | 24개 cell마다 외곽 neutral checkerboard를 제거하고 가장 큰 연결 본체만 유지 | 인접 cell·행 경계·배경 잔여 조각 없음 |
+| 알파·crop 정리 | 32개 cell마다 체크무늬·숫자·방향명·보드 배경을 alpha 0으로 제거하고 가장 큰 연결 본체만 유지 | 각 본체의 실제 top/bottom 알파 경계를 기준으로 상하 중앙 정렬; 인접 cell·행 경계·배경 잔여 조각 없음 |
 | 배치 제외 | `_prepEnemyInstanced`는 `_ch1StartMedium`을 WebGL enemy batching에서 제외 |
 | 화면 draw | 일반 적 Canvas pass가 `_drawCh1StartMediumEyeMass`를 호출; generic 8dir atlas를 덮어쓰지 않음 |
 | 자산 실패 | 단일 `sheet`가 준비되지 않으면 기존 generic sprite 경로로 fallback |
@@ -57,7 +56,7 @@
 
 | 검증 | 결과 |
 |---|---|
-| 단위·소스 계약 | `node --test test/ch1StartMediumEyeMass.test.js` PASS — runtime `2048×768/8×3`, 24개 cell 각각에 단일 본체 고정 |
+| 단위·소스 계약 | `node --test test/ch1StartMediumEyeMass.test.js` PASS — runtime `1024×2048/4×8`, 32개 cell 각각의 단일 본체·이진 alpha·상하 중심 정렬 고정 |
 | inline JavaScript | `node --test test/gameHtmlInlineSyntax.test.js` PASS |
 | 브라우저 | `http://127.0.0.1:3333/game.html`, `initStage(0)` 후 2마리 alive, `sheet=true`, pageerror 없음; 플레이어 상대 방향에 따라 8방향 행 전환 |
 | 시각 확인 | `captures/ch1_start_medium_8dir_base_20260904.png`: 두 다안 육괴가 서로 다른 대각 방향에서 숫자·배경·이웃 프레임 조각 없이 표시 |

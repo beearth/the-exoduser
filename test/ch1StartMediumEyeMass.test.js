@@ -37,37 +37,57 @@ function opaqueComponentCount(path, cols, rows) {
   return counts;
 }
 
-test('CH1-1 uses the verified clean eight-direction action sheet', () => {
-  const spritePath = new URL('../img/ch1_1_eye_slime_8dir_3row_clean.png', import.meta.url);
-  assert.ok(existsSync(spritePath), 'the verified clean runtime sheet must ship with the game');
-  assert.deepEqual(pngSize(spritePath), { width: 2048, height: 768 },
-    'the stable source retains its eight directions and three state rows');
+test('CH1-1 uses the text-free regular eight-direction four-frame sheet', () => {
+  const spritePath = new URL('../img/ch1_1_eye_slime_8dir_4frame_clean.png', import.meta.url);
+  assert.ok(existsSync(spritePath), 'the text-free runtime sheet must ship with the game');
+  assert.deepEqual(pngSize(spritePath), { width: 1024, height: 2048 },
+    'the cleaned source must repack four frames across eight directions as uniform 256px cells');
 
-  assert.match(gameHtml, /const _CH1_START_MEDIUM_SHEETS=\{sheet:'img\/ch1_1_eye_slime_8dir_3row_clean\.png'\}/,
-    'runtime must remove the rejected four-frame source and restore the stable clean sheet');
+  assert.match(gameHtml, /const _CH1_START_MEDIUM_SHEETS=\{sheet:'img\/ch1_1_eye_slime_8dir_4frame_clean\.png'\}/,
+    'runtime must use the new text-free four-frame sheet');
   assert.match(gameHtml, /function _drawCh1StartMediumEyeMass\(/,
     'the authored monster needs its own sheet renderer');
   assert.match(gameHtml, /if\(e\._ch1StartMedium&&_ch1StartMediumReady\.sheet\)\{\s*_eDrew=_drawCh1StartMediumEyeMass\(X,e,_now,sa\);/,
     'the runtime enemy pass must draw the supplied sheets instead of the generic atlas');
 });
 
-test('CH1-1 maps idle, movement, and attack to stable clean state rows', () => {
-  assert.match(gameHtml, /const cols=8,rows=3;/,
-    'the stable production sheet must be sliced as eight directions by three state rows');
-  assert.match(gameHtml, /const row=!animated\?0:e\.s==='eAttack'\?2:1;/,
-    'idle, movement, and attack must use their stable state rows');
+test('CH1-1 maps target direction rows and four authored frame columns', () => {
+  assert.match(gameHtml, /const cols=4,rows=8;/,
+    'the cleaned production sheet must be sliced as four frames across eight direction rows');
+  assert.match(gameHtml, /const frameCol=e\.s==='eAttack'\?1:animated\?2\+~~\(_now\/120\)%2:0;/,
+    'idle uses frame 1, attack uses frame 2, and movement cycles frames 3 and 4');
   assert.match(gameHtml, /const targetFacing=P&&P\.hp>0\?Math\.atan2\(P\.y-e\.y,P\.x-e\.x\):\(e\.facing\|\|0\);/,
     'the custom path must calculate the live player-facing direction before choosing a frame');
-  assert.match(gameHtml, /const _CH1_START_MEDIUM_DIRMAP=\[6,7,0,1,2,3,4,5\];/,
-    'the source order down→down-left→left→up-left→up→up-right→right→down-right must map from canvas angles');
-  assert.match(gameHtml, /const frame=row\*cols\+_CH1_START_MEDIUM_DIRMAP\[direction\];/,
-    'every state row must select its player-facing direction frame');
+  assert.match(gameHtml, /const _CH1_START_MEDIUM_DIRMAP=\[2,3,4,5,6,7,0,1\];/,
+    'the source order north→north-east→east→south-east→south→south-west→west→north-west must map from canvas angles');
+  assert.match(gameHtml, /const frame=_CH1_START_MEDIUM_DIRMAP\[direction\]\*cols\+frameCol;/,
+    'every direction row must select its own current animation frame');
 });
 
-test('CH1-1 stable runtime sheet keeps one silhouette in every source cell', () => {
-  const spritePath = new URL('../img/ch1_1_eye_slime_8dir_3row_clean.png', import.meta.url);
-  assert.deepEqual(opaqueComponentCount(spritePath, 8, 3), Array(24).fill(1),
-    'no neighbour fragments, captions, or backdrop may enter the stable runtime frames');
+test('CH1-1 text-free runtime sheet keeps one silhouette in every source cell', () => {
+  const spritePath = new URL('../img/ch1_1_eye_slime_8dir_4frame_clean.png', import.meta.url);
+  assert.deepEqual(opaqueComponentCount(spritePath, 4, 8), Array(32).fill(1),
+    'no neighbour fragments, numbers, captions, or backdrop may enter the cleaned runtime frames');
+});
+
+test('CH1-1 text-free runtime sheet uses binary alpha for a bright body on transparent ground', () => {
+  const png = PNG.sync.read(readFileSync(new URL('../img/ch1_1_eye_slime_8dir_4frame_clean.png', import.meta.url)));
+  for (let i = 3; i < png.data.length; i += 4) assert.ok(
+    png.data[i] === 0 || png.data[i] === 255,
+    'the cleaned sheet must not retain a dim semi-transparent presentation-board backdrop',
+  );
+});
+
+test('CH1-1 centers every cleaned frame within its top and bottom alpha bounds', () => {
+  const png = PNG.sync.read(readFileSync(new URL('../img/ch1_1_eye_slime_8dir_4frame_clean.png', import.meta.url)));
+  for (let row = 0; row < 8; row++) for (let col = 0; col < 4; col++) {
+    let minY = 256, maxY = -1;
+    for (let y = 0; y < 256; y++) for (let x = 0; x < 256; x++) if (png.data[((row * 256 + y) * png.width + col * 256 + x) * 4 + 3]) {
+      minY = Math.min(minY, y); maxY = Math.max(maxY, y);
+    }
+    assert.ok(Math.abs(minY - (255 - maxY)) <= 1,
+      'each frame must be vertically centered after its precise top/bottom crop');
+  }
 });
 
 test('CH1-1 renderer preserves the supplied frame aspect ratio', () => {

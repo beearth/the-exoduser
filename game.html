@@ -17089,17 +17089,17 @@ function _tickProjCharge(e,sp){
 //  [S09] SPRITES — Enemy/Boss/Player Body Drawing
 // ═══════════════════════════════════════
 let _lavaGrdCache={};
-// Clean runtime source cell order: south, south-west, west, north-west, north, north-east, east, south-east.
-const _CH1_START_MEDIUM_DIRMAP=[6,7,0,1,2,3,4,5];
+// Text-free source rows: north, north-east, east, south-east, south, south-west, west, north-west.
+const _CH1_START_MEDIUM_DIRMAP=[2,3,4,5,6,7,0,1];
 function _drawCh1StartMediumEyeMass(X,e,_now,sa){
   const animated=e._isMoving||e.s==='eAttack'||e.s==='eApproach'||e.s==='eCharge';
   const img=_ch1StartMediumImgs.sheet;
   if(!_ch1StartMediumReady.sheet||!_imgOk(img))return false;
-  const cols=8,rows=3;
-  const row=!animated?0:e.s==='eAttack'?2:1;
+  const cols=4,rows=8;
+  const frameCol=e.s==='eAttack'?1:animated?2+~~(_now/120)%2:0;
   const targetFacing=P&&P.hp>0?Math.atan2(P.y-e.y,P.x-e.x):(e.facing||0);
   const direction=Math.round(((targetFacing%(Math.PI*2)+Math.PI*2)%(Math.PI*2))/(Math.PI/4))%8;
-  const frame=row*cols+_CH1_START_MEDIUM_DIRMAP[direction];
+  const frame=_CH1_START_MEDIUM_DIRMAP[direction]*cols+frameCol;
   const fw=img.naturalWidth/cols,fh=img.naturalHeight/rows;
   const sx=(frame%cols)*fw,sy=~~(frame/cols)*fh;
   // 원본 프레임은 세로형이다. 정사각형으로 강제하면 육괴가 눌려 잘린 것처럼 보인다.
@@ -20661,8 +20661,8 @@ function _drawProjPNG(x,y,pngType,pngEl,sprFr,sz,ang,alpha){
 // ═══ PNG 스프라이트시트 레지스트리 ═══
 const _ESPRITES={};
 
-// CH1-1 START 중형 몬스터 — 검증된 투명 8방향 3행 런타임 시트.
-const _CH1_START_MEDIUM_SHEETS={sheet:'img/ch1_1_eye_slime_8dir_3row_clean.png'};
+// CH1-1 START 중형 몬스터 — 숫자·방향 표기를 제거한 투명 8방향 × 4프레임 시트.
+const _CH1_START_MEDIUM_SHEETS={sheet:'img/ch1_1_eye_slime_8dir_4frame_clean.png'};
 const _ch1StartMediumImgs={sheet:new Image()};
 const _ch1StartMediumReady={sheet:false};
 for(const _ch1MediumKey of Object.keys(_CH1_START_MEDIUM_SHEETS)){
