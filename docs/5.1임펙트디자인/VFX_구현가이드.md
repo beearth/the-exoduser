@@ -60,7 +60,7 @@
 
 ## 마법탄 (최초 무지개탄)
 
-마법탄은 `_drawClassicRainbow` — blackBean / blueBean만. **화염 빨콩(`redBean+EL.F`)**은 `redBean` 레거시 피해/색 플래그를 공유하지만 이빨입이 아닌 화염 혜성 마법 외형·Q 패링·500~600px/s·`.0262`≈90°/s다. 적 화염 혜성은 `_enemyMagicCometVisualScale(EL.F)=0.65`를 적용해 일반 최대 길이 `123.2→80.08px`, 빠른탄 최대 `110.88→72.072px`로 그리며 `sz/r`와 충돌은 불변이다. **물 파란콩(`waterBean`)**은 `_drawWaterBean`의 **3갈래 얼음 파편 탄막**이다. 비행 방향으로 나란한 파편 3개와 짧은 푸른 꼬리(`shardR=5.2×_sSc`, `#173c98`→`#4ca8ff`→`#e9fbff`, 스폰/차징 `#317cec`)로 읽히며 대형 크라켄 어뢰 아트·공용 pass-0 트레일/pass-1 원형 글로우는 사용하지 않는다. Q 패링에는 `r=96`, `72f`, 얼음 파편 16개의 **시각 전용** 파열을, 플레이어 피격에는 `r=72`, `66f`, 파편 10개의 시각 전용 파열을 낸다. 직접 피해·속도·유도·히트박스·Q 패링·빙결 60f는 변하지 않는다. **화이트볼(bwBean) 제거(2026-08-23)**. **이빨형 E패링탄 공통=실제 물리 `parryClass`**(최종 300px/s 고정, homing 선회 `.00436332`≈15°/s): `redBean+EL.P`, `titanEye`다. **titanEye=혈안 눈깔** `proj_titan_eye.png` 시각 `21.7×_sSc`(그림만 눈깔). **라운드 컬러는 발사탄 속성 예고**이며 `redBean+EL.P`·일반 물리/E패링 차징 링만 흰색 `#f4f4f4`다. 화염 빨콩 차징은 화염색을 유지한다. 특수 산호 파편·기생충·삼지창의 `eShootWind`도 `_swChargeEl=EL.P`일 때 흰색이다.
+마법탄은 `_drawClassicRainbow` — blackBean / blueBean만. **화염 빨콩(`redBean+EL.F`)**은 `redBean` 레거시 피해/색 플래그를 공유하지만 이빨입이 아닌 화염 혜성 마법 외형·Q 패링·500~600px/s·`.0262`≈90°/s다. 적 화염 혜성은 `_enemyMagicCometVisualScale(EL.F)=0.65`를 적용해 일반 최대 길이 `123.2→80.08px`, 빠른탄 최대 `110.88→72.072px`로 그리며 `sz/r`와 충돌은 불변이다. **물 파란콩(`waterBean`)**은 `_drawWaterBean`의 전용 얼음 시트 `assets/vfx/water_ice_barrage_sheet.png`를 쓴다. 4×4 시트의 1~2행 8프레임은 비행 방향으로 재생하고, 3행 4프레임은 Q 패링 방사형 얼음 파열(`r=96`, `72f`), 4행 4프레임은 플레이어 피격 얼음기둥(`r=72`, `66f`)이다. 대형 크라켄 어뢰 아트·공용 pass-0 트레일/pass-1 원형 글로우는 사용하지 않으며, 암부는 `_makeBlackAdditiveCutout(18,70)` 후 `lighter` 합성한다. 직접 피해·속도·유도·히트박스·Q 패링·빙결 60f는 변하지 않는다. **화이트볼(bwBean) 제거(2026-08-23)**. **이빨형 E패링탄 공통=실제 물리 `parryClass`**(최종 300px/s 고정, homing 선회 `.00436332`≈15°/s): `redBean+EL.P`, `titanEye`다. **titanEye=혈안 눈깔** `proj_titan_eye.png` 시각 `21.7×_sSc`(그림만 눈깔). **라운드 컬러는 발사탄 속성 예고**이며 `redBean+EL.P`·일반 물리/E패링 차징 링만 흰색 `#f4f4f4`다. 화염 빨콩 차징은 화염색을 유지한다. 특수 산호 파편·기생충·삼지창의 `eShootWind`도 `_swChargeEl=EL.P`일 때 흰색이다.
 
 ## API 생성 소형 크라켄 탄두 / 은꼬리 차지 범위 (2026-09-03)
 
@@ -70,7 +70,7 @@
 | `silvertailChargeRange` | `img/vfx/silvertail_charge_range_api_v1.png` | 1254×1254 RGB, 근검정 배경, 개방형 은빛 룬 아크 | 지름 `range×2.24×(1+sin(frame×.16)×.018)`; 글로우 alpha `.12+tier×.035`, 본체 `.34+tier×.10` | 같은 `_makeBlackAdditiveCutout(24,72)` 캐시 후 `lighter`, `rotate(facing+π)` | `_drawSilvertailChargeRange`; `sDraw/kiGather` |
 
 - `elemBall`은 `EL.P/EL.I`일 때 크라켄 탄두를 쓰고, `EL.F/D/L/H/E`는 `proj_elem_orb.png`의 해당 속성 행을 쓴다. 양쪽 모두 실패할 때만 `proj_bolt_comet.png`로 폴백한다.
-- 크라켄 탄두는 대형 `elemBall` 전용이다. `waterBean`은 자체 3갈래 얼음 파편 탄막, `elemBall`은 크라켄 실루엣을 쓰므로 둘 다 공용 선 트레일과 원형 글로우 패스에서 제외한다. `waterBean`의 패링/피격 얼음 파열은 시각 전용이며 피해·속도·유도·히트박스·패링 계약은 변경하지 않는다.
+- 크라켄 탄두는 대형 `elemBall` 전용이다. `waterBean`은 전용 4×4 얼음 시트, `elemBall`은 크라켄 실루엣을 쓰므로 둘 다 공용 선 트레일과 원형 글로우 패스에서 제외한다. `waterBean`의 패링/피격 얼음 시트 파열은 시각 전용이며 피해·속도·유도·히트박스·패링 계약은 변경하지 않는다.
 - 차지 범위는 기존 반경 공식 `~~((70+(maliceSwipe−1)+방패range×4)×현재mult)`을 그대로 사용한다. 구 radial-gradient 원, 전방 부채꼴 채움, 9/7 점선 아크는 제거하고 내부가 빈 API 룬 아크만 표시한다.
 
 ## 일반 몬스터 돌진 장전 가이드 (`eChargeWind`) — 2026-09-02
