@@ -29,6 +29,7 @@ test('Silvertail replaces every shared player voice cue with her dedicated Engli
   assert.match(gameHtml, /voice_dark_skill:'silvertail_dark'/);
   assert.match(gameHtml, /voice_holyDome:'silvertail_holy'/);
   assert.match(gameHtml, /voice_holyPrison:'silvertail_holy'/);
+  assert.match(gameHtml, /repentance:'silvertail_holy'/);
   assert.match(gameHtml, /silvertail_grunt1:'sfx\/voice\/silvertail_grunt1\.mp3'/);
   assert.match(gameHtml, /silvertail_grunt2:'sfx\/voice\/silvertail_grunt2\.mp3'/);
   assert.match(gameHtml, /silvertail_grunt3:'sfx\/voice\/silvertail_grunt3\.mp3'/);
