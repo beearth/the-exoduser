@@ -20915,7 +20915,7 @@ function _drawKrakenShot(p,fa,len){
 // 물 파란콩 4×4 시트: 1~2행은 비행 8프레임, 3행은 패링 방사 임팩트, 4행은 피격 얼음기둥.
 const _WATER_ICE_SHEET_COLS=4,_WATER_ICE_SHEET_ROWS=4;
 const _waterIceSheet=new Image();let _waterIceSheetReady=false,_waterIceSheetSurface=null;
-_waterIceSheet.onload=function(){_waterIceSheetSurface=_makeBlackAdditiveCutout(_waterIceSheet,18,70);_waterIceSheetReady=true};
+_waterIceSheet.onload=function(){_waterIceSheetSurface=_makeBlackAdditiveCutout(_waterIceSheet,56,112);_waterIceSheetReady=true};
 _waterIceSheet.src='assets/vfx/water_ice_barrage_sheet.png';
 function _drawWaterIceSheet(p,fa,sSc,row,progress=0){
   if(!_waterIceSheetReady||!_waterIceSheet.naturalWidth)return false;

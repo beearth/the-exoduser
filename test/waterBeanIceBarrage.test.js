@@ -18,6 +18,11 @@ test('water blue-bean renders from the supplied 4x4 ice sheet', () => {
   assert.match(gameHtml, /function _drawWaterIceSheet\(p,fa,sSc,row,progress=0\)/);
 });
 
+test('water ice sheet removes its opaque navy background before rendering', () => {
+  const loader = between('const _WATER_ICE_SHEET_COLS=4', 'function _drawWaterIceSheet(');
+  assert.match(loader, /_makeBlackAdditiveCutout\(_waterIceSheet,56,112\)/);
+});
+
 test('water blue-bean bursts into ice on Q parry and on player impact', () => {
   assert.match(gameHtml, /function _waterBeanIceBurst\(x,y,parried\)/);
   const burst = between('function _waterBeanIceBurst(', '// ═══ Dark 02 임팩트');
