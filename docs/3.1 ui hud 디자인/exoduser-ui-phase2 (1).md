@@ -4,11 +4,11 @@
 
 | 최상위 탭 | 하위 섹션 순서 | ID | 카드 표시 | 선택 슬롯 | HUD 쿨다운 |
 |---|---|---|---|---|---|
-| 특수(`spec`) | 영역(`tech`) → **분노(`rage`)** → 필살기(`ult`) | `skyCrusher` | `🪨 천공쇄기 / Sky Crusher` | Space 전용 | `P._scCd`, 최대 720f(12초) |
+| 특수(`spec`) | 영역(`tech`) → **분노(`rage`)** → 필살기(`ult`) | `skyCrusher` | `🪨 천공쇄기 / Sky Crusher` | Space 전용 | `P._scCharges` 0~3, `P._scCd` 충전당 최대 900f(15초) |
 
 - `SKILL_CATS`에 `rage`를 주황-적색(`#ff6633`)으로 추가하고 `SKILL_HIER.spec.cats`를 `['tech','rage','ult']`로 고정한다.
 - Space 선택 팝업은 하드코딩 2종만이 아니라 기존 지옥강타 1·2와 모든 `cat:'rage'` 액티브를 표시한다. 천공쇄기는 1~4/F에 배정할 수 없다.
-- 전용 PNG 아이콘이 없는 동안 카드·팝업은 `SKILL_LIST.emoji='🪨'` 폴백을 사용한다. 발동 뒤 Space HUD는 `_skCdMap.skyCrusher=P._scCd`로 0.1초 단위 남은 시간을 표시한다.
+- 카드·팝업·Space HUD는 사용자 제공 원화를 정사각형으로 맞춘 `img/skillskin_upscaled/skyCrusher.png`(768×768 RGBA)를 `_skIcon('skyCrusher')`로 표시한다. 로드 실패 때만 `SKILL_LIST.emoji='🪨'` 폴백을 사용한다. 일반 슬롯/Space HUD 우상단에는 남은 충전 수(0~3)를 표시한다. `P._scCd`는 **다음 1충전**의 남은 시간을 0.1초 단위로 표시하고, 충전이 1개 이상 남아도 재충전 링은 계속 돈다. 충전 0일 때만 스킬을 사용 불가 처리한다.
 
 > **1차 정비 완료**: 키바인딩 불일치 수정, 스킬 디스패치 통합, HUD 그룹핑, 데드코드, Cinzel 폰트 제거
 > **2차 목표**: 다양한 해상도에서 깨지지 않는 UI, 일관된 디자인 시스템, 빠진 UX 흐름 보완
