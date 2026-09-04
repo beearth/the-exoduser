@@ -28376,6 +28376,25 @@ function _eWallStuck(px,py){const tx=~~(px/T),ty=~~(py/T);return tx<0||ty<0||tx>
 function update(){
   if(!G.on)return;
   if(_EDITOR_MODE){_editorUpdate();return}
+  // 패널 단축키는 퍼즈 중에도 처리하되, 모든 게임플레이 틱은 그 직후 완전히 정지한다.
+  if(isJust('settings'))togglePanel('settings');
+  if(isJust('inventory'))togglePanel('invPanel');
+  if(isJust('storage')&&G.on){_storageViewFloor=G.stage;togglePanel('invPanel')}
+  if(isJust('stats'))togglePanel('statPanel');
+  if(isJust('skill')){togglePanel('skillPanel')}
+  if(isJust('forge')){if(G.forgeOpen){closePanel('forge');G.forgeOpen=false}else openPanel('forge')}
+  if(isJust('skillCycle')&&G.on)openSkSlotPop();
+  if(isJust('irisToggle')&&G.on){
+    G._irisOff=!G._irisOff;
+    if(G._irisOff){addTxt(P.x,P.y-30,_T('유령불꽃 OFF'),'#6688aa',40)}
+    else{addTxt(P.x,P.y-30,_T('유령불꽃 ON'),'#44aaff',40)}
+  }
+  if(isJust('bladeToggle')&&G.on){
+    OPT.bladeAuto=!OPT.bladeAuto;
+    if(OPT.bladeAuto){addTxt(P.x,P.y-30,_T('기동칼날개 AUTO ON'),'#ff4466',40)}
+    else{addTxt(P.x,P.y-30,_T('기동칼날개 AUTO OFF'),'#886688',40)}
+  }
+  if(G.paused)return;
   // null 엔트리 정리 (mkEn 실패 등)
   for(let _ni=ens.length-1;_ni>=0;_ni--){if(!ens[_ni])ens.splice(_ni,1)}
   // 백그라운드 초기화는 update() 끝에서 버짓 기반 처리 (게임 로직 스킵 안 함)
@@ -28820,25 +28839,6 @@ function update(){
   if(P._chainAssaultReady&&!_dashActive&&!_harpActive)P._chainAssaultReady=false;
   if(P._chainBlastReady&&!_dashActive&&!_harpActive)P._chainBlastReady=false;
   if(_dashIframe>0){P.iframes=Math.max(P.iframes,1);_dashIframe--}
-  // ═══ 패널 토글 (paused 상태에서도 동작) ═══
-  if(isJust('settings'))togglePanel('settings');
-  if(isJust('inventory'))togglePanel('invPanel');
-  if(isJust('storage')&&G.on){_storageViewFloor=G.stage;togglePanel('invPanel')}
-  if(isJust('stats'))togglePanel('statPanel');
-  if(isJust('skill')){togglePanel('skillPanel')}
-  if(isJust('forge')){if(G.forgeOpen){closePanel('forge');G.forgeOpen=false}else openPanel('forge')}
-  if(isJust('skillCycle')&&G.on)openSkSlotPop();
-  if(isJust('irisToggle')&&G.on){
-    G._irisOff=!G._irisOff;
-    if(G._irisOff){addTxt(P.x,P.y-30,_T('유령불꽃 OFF'),'#6688aa',40)}
-    else{addTxt(P.x,P.y-30,_T('유령불꽃 ON'),'#44aaff',40)}
-  }
-  if(isJust('bladeToggle')&&G.on){
-    OPT.bladeAuto=!OPT.bladeAuto;
-    if(OPT.bladeAuto){addTxt(P.x,P.y-30,_T('기동칼날개 AUTO ON'),'#ff4466',40)}
-    else{addTxt(P.x,P.y-30,_T('기동칼날개 AUTO OFF'),'#886688',40)}
-  }
-  if(G.paused)return;
   if(G._noHitStopT>0){G.hitStop=0;G.slowMo=0;G._noHitStopT-=_dtSp;}
   G.hitStop=0; // 히트스톱 완전 비활성 (디아블로/POE 스타일)
   if(G.hitStop>12)G.hitStop=12;

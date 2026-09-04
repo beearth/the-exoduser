@@ -766,3 +766,13 @@ L키(`skillCycle`)로 여는 스킬 슬롯 배정 팝업(`#skSlotPop`, `openSkSl
 - 인게임에서 팝업을 열 때 `G.paused`가 false면 `G.paused=true` + `_skPopOwnsPause=true`.
 - 닫힐 때 `_skPopOwnsPause`일 때만 `G.paused=false`로 복원 → 스킬 패널 등 **이미 정지된 상태에서 연 경우엔 정지 유지**(중첩 안전).
 - 모든 닫기 경로를 `_closeSkPop()`로 통일: L 재토글, 옵션/합체 클릭 세팅, ESC, 외부 클릭, `_panelBack`, 게임패드 Back. `closeAllPanels()`는 `_skPopOwnsPause=false` 클리어 추가.
+
+### 3) 전역 퍼즈 실행 순서 (2026-09-04 보강)
+
+| 단계 | 실행 계약 | 퍼즈 중 결과 |
+|---|---|---|
+| 1. 패널 입력 | `update()` 초입에서 ESC/TAB/K/G 및 스킬 슬롯 팝업 단축키를 먼저 처리 | 열린 패널을 닫거나 다른 패널로 전환 가능 |
+| 2. 전역 가드 | 입력 직후, `_gameFrame++` 및 모든 게임플레이 틱보다 앞에서 `if(G.paused)return` | 플레이어·펫·적·독립 필드몹·투사체가 모두 정지 |
+| 3. 렌더 | 고정 틱이 반환되어도 `loop()`의 `draw()`는 계속 호출 | 패널과 정지된 게임 화면은 정상 표시 |
+
+독립 `ens` 경로 밖의 `_fbTick`(심연의 앵글러), `_wmTick`(지상뱀장어), `_fdTick`(화마귀)도 가드 뒤에서만 실행한다. 이 순서를 바꾸면 퍼즈 중 발사 타이머만 진행하고 투사체 이동은 멈춰, 해제 시 누적 탄막이 동시에 출발하는 부분 일시정지 버그가 재발한다.
