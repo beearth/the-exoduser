@@ -4665,7 +4665,7 @@ function _prepEnemyInstanced(_vl,_vr,_vt,_vb,_now,_E_RMAX){
     if(!e||!e.alive)continue;
     if(e.x<_vl||e.x>_vr||e.y<_vt||e.y>_vb)continue;
     _eRCnt2++;
-    if(e.ib||e._isGhoul||e._isSlime)continue;
+    if(e.ib||e._isGhoul||e._isSlime||e._ch1StartMedium)continue;
     const isStunned=e.stunned>0,isReviving=e.reviveIframes>0;
     const _isStealth=(e.modT&&e.modT.stealthT>0)||e._cloaked;
     const _spAlpha=e._spawnT>0?Math.max(0,1-e._spawnT/20):1;
@@ -17082,6 +17082,23 @@ function _tickProjCharge(e,sp){
 //  [S09] SPRITES — Enemy/Boss/Player Body Drawing
 // ═══════════════════════════════════════
 let _lavaGrdCache={};
+function _drawCh1StartMediumEyeMass(X,e,_now,sa){
+  const animated=e._isMoving||e.s==='eAttack'||e.s==='eApproach'||e.s==='eCharge';
+  const key=animated&&_ch1StartMediumReady.action?'action':'idle';
+  const img=_ch1StartMediumImgs[key];
+  if(!_ch1StartMediumReady[key]||!_imgOk(img))return false;
+  const cols=key==='action'?8:4,rows=key==='action'?4:2;
+  const frame=key==='action'
+    ?~~(_now/78)%(cols*rows)
+    :Math.round((((e.facing||0)%(Math.PI*2)+Math.PI*2)%(Math.PI*2))/(Math.PI/4))%8;
+  const fw=img.naturalWidth/cols,fh=img.naturalHeight/rows;
+  const sx=(frame%cols)*fw,sy=~~(frame/cols)*fh;
+  const size=Math.max(118,e.r*4.1);
+  X.save();X.translate(e.x,e.y);X.globalAlpha=sa;
+  X.drawImage(img,sx,sy,fw,fh,-size/2,-size/2,size,size);
+  X.restore();
+  return true;
+}
 // ── 탄막 광원 캐시 스탬프 (반지름별 1회 생성) ──
 let _projGlowCache={};
 function _getProjGlow(r,cr,cg,cb){
@@ -17097,6 +17114,7 @@ function _getProjGlow(r,cr,cg,cb){
   _projGlowCache[k]=c;return c;
 }
 function drawEnBody(X,e,_now,sa){
+  if(e._ch1StartMedium&&_drawCh1StartMediumEyeMass(X,e,_now,sa))return;
   // ── pending 스킨 재시도 (8방향 우선) ──
   if(e._bossSkinPending!==undefined){_assignBossSkin(e,e._bossSkinPending)}
   else if(e._mobSkinPending&&e._mobCh){
@@ -20631,6 +20649,18 @@ function _drawProjPNG(x,y,pngType,pngEl,sprFr,sz,ang,alpha){
 
 // ═══ PNG 스프라이트시트 레지스트리 ═══
 const _ESPRITES={};
+
+// CH1-1 START 중형 몬스터 — 사용자 제공 다안 육괴 시트.
+// idle: 4×2(8방향), action: 8×4(32프레임). 원본의 비정수 셀 폭도 drawImage가 처리한다.
+const _CH1_START_MEDIUM_SHEETS={idle:'img/ch1_1_medium_01_source.png',action:'img/ch1_1_medium_02_source.png'};
+const _ch1StartMediumImgs={idle:new Image(),action:new Image()};
+const _ch1StartMediumReady={idle:false,action:false};
+for(const _ch1MediumKey of Object.keys(_CH1_START_MEDIUM_SHEETS)){
+  const _ch1MediumImg=_ch1StartMediumImgs[_ch1MediumKey];
+  _ch1MediumImg.onload=()=>{_ch1StartMediumReady[_ch1MediumKey]=_safeDraw(_ch1MediumImg)};
+  _ch1MediumImg.onerror=()=>{_ch1StartMediumReady[_ch1MediumKey]=false;console.warn('[CH1-MEDIUM] '+_ch1MediumKey+' sheet load failed')};
+  _ch1MediumImg.src=_CH1_START_MEDIUM_SHEETS[_ch1MediumKey];
+}
 
 function _loadESprite(et,src,frames){
   // frames 미지정시 레이아웃에서 자동 결정
@@ -27937,6 +27967,22 @@ function spawnCorridorEns(si){
   }
 }
 
+// CH1-1 START: 화톳불 안전반경(500px) 바깥에서 첫 교전을 여는 중형 다안 육괴 2마리.
+const _CH1_START_MEDIUM_SPAWNS=[{dx:-13,dy:-18},{dx:13,dy:-21}];
+function _spawnCh1StartMediumEyeMasses(si){
+  if(si!==0)return;
+  const startX=P.x/T,startY=P.y/T;
+  for(const spawn of _CH1_START_MEDIUM_SPAWNS){
+    const eyeMass=mkEn((startX+spawn.dx)*T,(startY+spawn.dy)*T,si,4,false,EL.D,-1);
+    if(!eyeMass)continue;
+    eyeMass._ch1StartMedium=true;
+    eyeMass._ch1StartMediumName='다안 육괴';
+    eyeMass.elite=0;eyeMass.mods=[];eyeMass.aura=null;
+    eyeMass._firstShot=false;
+    ens.push(eyeMass);
+  }
+}
+
 function initStage(si){
   if(si>=TOTAL_STAGES)si=TOTAL_STAGES-1; // 35스테이지 초과 시 마지막 스테이지 폴백
   // ?bosstest=N: 필드/고정맵 생성 금지 — 원형 아레나 직행 (부트 initStage가 필드로 덮어쓰는 경합 방지)
@@ -28006,6 +28052,7 @@ function initStage(si){
     }
   }}
   if(!G._isTileRLE)for(let _hi=G.spawnHoles.length-1;_hi>=0;_hi--){const _h=G.spawnHoles[_hi];if((_h.x-P.x)*(_h.x-P.x)+(_h.y-P.y)*(_h.y-P.y)<_safeR2)G.spawnHoles.splice(_hi,1)}
+  if(si===0)_spawnCh1StartMediumEyeMasses(si);
   // ── 화톳불 배리어: 시작방 5초간 몹 진입 금지 ──
   G._bonfire={x:P.x,y:P.y,t:300,r:280}
   // ── 문지기(Gate Guardian) 스폰 — 보스방 앞 부보스 ──
@@ -48312,7 +48359,9 @@ function draw(){
     }else{
       // ── 일반 적 렌더링 (8dir 단일 경로) ──
       let _eDrew=!!_ensGLQueued;
-      {
+      if(e._ch1StartMedium&&_ch1StartMediumReady.idle){
+        _eDrew=_drawCh1StartMediumEyeMass(X,e,_now,sa);
+      }else{
         // 스킨 미배정 → 즉시 확정
         if(e._mob8Col===undefined||e._mob8Col===null){
           const _seed=((e.etype||0)*7+~~((e._homeX||e.x)*31))&0x7fffffff;

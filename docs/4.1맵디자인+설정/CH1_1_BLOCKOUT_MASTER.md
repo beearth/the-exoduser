@@ -100,5 +100,9 @@
 ## 9. 개활도
 - PLAY∪포켓 65~72%, RIM+swamp 28~33%. ASCII blockout 전문 = `CH1_1_COMPOSE_초안.md §ASCII`.
 
-## 10. CODE CHANGE
+## 10. START COMBAT — 다안 육괴 (2026-09-04)
+
+START의 negative space·collision·landmark를 바꾸지 않고, 초반 전투 읽기만 추가한다. `stage 0`에서 플레이어 실제 시작 타일을 원점으로 삼아 `(-13,-18)`과 `(+13,-21)`에 중형 다안 육괴를 각각 1마리씩 생성한다. 두 위치는 `T=40`에서 시작 안전반경 500px보다 각각 약 888px/988px 멀다. 따라서 200×200 canonical 좌표에서는 `(87.5,167.5)`와 `(113.5,164.5)`가 되며, 런타임 map variant에도 안전하게 따라간다. 전체 몬스터·렌더링 계약은 `docs/8.0몬스터디자인/CH1_1_START_다안육괴_중형몬스터.md`를 따른다.
+
+## 11. CODE CHANGE
 `MAP_ALL_FLOOR=false`와 `forestBoundary:1`로 stage0 geometry가 변경됐다. baked master/landmark 좌표는 유지하며 경계·수량은 `CH1_1_COMPOSE_초안.md`, 시각 runtime은 outer/smoothing SSOT를 따른다.

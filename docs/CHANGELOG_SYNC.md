@@ -46152,3 +46152,16 @@ mpR = 0.05 + s.int×0.005                                        [NO P.lv×0.001
 - 생성 방식: 내장 이미지 생성 API. 크라켄 기존 물 소용돌이와 은꼬리 v3 아크를 각각 스타일 참조로 사용하고, 체크무늬가 포함된 1차 결과는 동일 API 배경 교체로 근검정 RGB 출력했다. 첫 브라우저 캡처에서 near-black 남색이 사각 판으로 드러나 `_makeBlackAdditiveCutout(24,72)` 로드 1회 캐시를 추가했으며 재캡처에서 사각 판 0을 확인했다.
 - 게임플레이 불변: `waterBean`의 최종 500~600px/s·Q패링·빙결 60f, `elemBall`의 10~16발·속도 6·sz16(스폰 후32)·수명400·피해×3·유도 `.0291`·패링불가, 차징 검격의 반경/배율/판정은 변경하지 않았다. `blackBean` 패링 금지 계약도 변경하지 않았다.
 - 테스트: `test/bossProjectileVfxUpgrade.test.js`는 에셋 존재, 암부 알파 캐시, 크라켄 라우팅, 원/직선 코드 제거, pass 게이트, 회색 부채꼴 제거를 고정한다. 관련 4개 파일 16/16 PASS, stage 3 브라우저 QA에서 두 에셋 `ready=true`, 크라켄 5발, `pageerror=0`, 로컬 HTTP 4xx=0이다.
+
+## 2026-09-04 CH1-1 START 다안 육괴 중형 몬스터 추가
+
+| id | 한글명 | 수치/공식 | 적용 위치 |
+|---|---|---|---|
+| `_ch1StartMedium` | 다안 육괴 | stage `0` 전용 2마리; 시작점 기준 `(-13,-18)`, `(+13,-21)` tile; `T=40`에서 시작 안전반경 500px보다 약 888px/988px 밖 | `game.html` `_CH1_START_MEDIUM_SPAWNS`, `_spawnCh1StartMediumEyeMasses` |
+| combat body | 중형 Tank | `etype=4`, `EL.D`, `32≤r<36px`, 공용 비보스 Tank HP/ATK 공식, 정예/희귀 강제 없음, 첫 원거리탄 없음 | `mkEn(...,4,false,EL.D,-1)` 결과 |
+| `ch1_1_medium_01_source` | idle 8방향 | `img/ch1_1_medium_01_source.png`, `1254×1254`, logical `4×2`; 45° facing → 0~7 frame | `_drawCh1StartMediumEyeMass` |
+| `ch1_1_medium_02_source` | 이동·공격 32프레임 | `img/ch1_1_medium_02_source.png`, `1448×1086`, logical `8×4`; `floor(now/78) mod 32` | 동일 |
+
+- 이 두 개체만 WebGL enemy batching과 generic 8dir atlas를 건너뛰고 Canvas 직접 렌더를 쓴다. idle source가 로드되지 않은 경우에는 기존 generic atlas 경로로 fallback한다.
+- 지도 geometry, collision, route, 스폰 풀은 변경하지 않았다. 실제 시작점을 원점으로 하므로 200×200 canonical map에서는 `(87.5,167.5)`, `(113.5,164.5)`가 되고 map variant에서도 맵 밖 스폰이 없다.
+- 검증: `test/ch1StartMediumEyeMass.test.js` 2/2, `test/gameHtmlInlineSyntax.test.js` 1/1 PASS. 로컬 `server.cjs` 브라우저에서 `initStage(0)` 후 2마리 alive, idle/action sheet ready, `pageerror=[]`; 시각 캡처 `captures/ch1_start_medium_20260904.png`에 두 개체 표시.
