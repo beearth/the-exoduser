@@ -20,8 +20,10 @@ function markdownFiles(dir) {
 }
 
 test('the two rage-slam skill names are Hell Slam 1 and Hell Slam 2', () => {
-  assert.match(gameHtml, /id:'giantSlam',name:'지옥강타 1',cat:'phys',act:true/);
-  assert.match(gameHtml, /id:'giantSlam2',name:'지옥강타 2',cat:'phys',act:true/);
+  assert.match(gameHtml, /id:'giantSlam',name:'지옥강타 1',cat:'rage',act:true/);
+  assert.match(gameHtml, /id:'giantSlam2',name:'지옥강타 2',cat:'rage',act:true/);
+  assert.match(gameHtml, /\{id:'spec',name:'⚙ 특수'[^\n]+cats:\['tech','rage','ult'\]/,
+    'Hell Slam I/II must be listed only under the Special tab Rage category');
   assert.match(gameHtml, /infernoSlam:'지옥강타 2'/);
   assert.match(gameHtml, /infernoSlam:'Hell Slam II'/);
   assert.match(gameHtml, /pillarSlam:'지옥강타 2 \+ 악의기둥 합체\. 지옥강타 2 시 9개 악의기둥 자동 전개/);
