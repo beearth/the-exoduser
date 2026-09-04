@@ -808,3 +808,4 @@ const _DE_BASE={
 '허리띠':'Gürtel','벨트':'Gürtel','부적':'Talisman','목걸이':'Halskette','반지':'Ring',
 '망토':'Umhang','팔찌':'Armband','귀걸이':'Ohrring'
 };
+Object.assign(_DE,{"천공쇄기":"Himmelsbrecher","🪨 천공쇄기!":"🪨 Himmelsbrecher!"});

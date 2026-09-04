@@ -3810,3 +3810,4 @@ Object.assign(_BG,{
 });
 Object.assign(_BG_PFX,{"백골":"Костен"});
 Object.assign(_BG_BASE,{"유골함":"Костница"});
+Object.assign(_BG,{"천공쇄기":"Небесен трошач","🪨 천공쇄기!":"🪨 Небесен трошач!"});

@@ -3839,3 +3839,4 @@ Object.assign(_NL,{
 });
 Object.assign(_NL_PFX,{"백골":"Beender"});
 Object.assign(_NL_BASE,{"유골함":"Beenderurn"});
+Object.assign(_NL,{"천공쇄기":"Hemelbreker","🪨 천공쇄기!":"🪨 Hemelbreker!"});

@@ -1,5 +1,23 @@
 # Sync Changelog
 
+## 2026-09-04 특수→분노 신스킬 천공쇄기
+
+| ID/대상 | 현재 계약 | 수치·공식 | 적용 위치 |
+|---|---|---|---|
+| `skyCrusher` | 공중에서 거대한 돌쇄기를 소환해 커서 지점에 낙하시키는 중립 마법 | MP 80, 쿨 720f(12초), 사거리 1000px, 반경 `260+(Lv−1)×12` | `SKILL_LIST`, `_dispatchSkillSlot`, `activateSkyCrusher`, 업데이트/렌더 루프 |
+| 분노 카테고리 | 특수 탭에 영역과 필살기 사이 **분노(`rage`)** 섹션 추가 | `SKILL_HIER.spec.cats=['tech','rage','ult']`, 색 `#ff6633` | K 스킬 패널 |
+| Space 전용 | 기존 지옥강타 1·2와 `cat:'rage'` 액티브만 허용 | 천공쇄기는 1~4/F 불가, 게임패드 B는 facing 650px 조준 | `_isRageBurstSkillId`, `_canAssignSkillSlot`, 슬롯 팝업 |
+| 충돌 피해 | INT 마법 스냅샷, 높은 포이즈·넉백 | `_skMul(b:14,g:11.2)`, Lv1 14×/Lv20 120.4×, 포이즈×2, 넉백×1.6 | `hurtE(...,{magic:true,explode:true})` |
+| 파편 2차타 | 충돌 15f 뒤 같은 범위에 한 번 더 타격 | 충돌 피해×0.35, 포이즈 없음, 명목 합계 Lv1 18.9×/Lv20 162.54× | `G._skyCrushers` 업데이트 |
+| 절차형 VFX | 점선 예고 타원→600px 상공 회전 12치 돌쇄기→크레이터·균열·파편 | 예고 36→24f, 수명 `impactT+45f`, 파편 수 6→12 | `drawP()` |
+| 분노 쿨 회복 어픽스 | 패링 시 Space 분노스킬 쿨다운 회복이 천공쇄기에도 적용 | `_uParryRageCd`만큼 `P._gslCd`와 `P._scCd` 동시 차감, 프레임당 1회 | `doParry()` |
+| 번역 | 이름·시전 콜아웃 신규 키 | `Sky Crusher`, `🪨 Sky Crusher!` | `_EN`, 루트·모듈 26개 언어, `new_entries_for_langs.json` |
+
+- 대규모 수정 전 원본은 `tmp/sky_crusher_backup_20260904/game.html`에 백업했다.
+- TDD: `test/skyCrusherSkill.test.js`의 분류/Space 슬롯·레벨 스케일·조준 클램프·MP/쿨다운·분노 어픽스·충돌/파편·렌더 계약 **7개를 RED로 확인한 뒤 7/7 PASS**로 전환했다.
+- 브라우저 QA: `game.html?testchar=1&stage=1&classic=1`에서 특수 탭 열 순서 `영역→분노→필살기`, 분노 아래 천공쇄기 카드, Space만 배정 가능, Lv1 반경 260/예고 36f/MP 80/쿨 720f를 확인했다. `pageerror=0`, 로컬 요청 실패 0.
+- 수정 금지 문서 `docs/2_3 돌진+패링+방패시스템`은 변경하지 않았다.
+
 ## 2026-09-04 지옥강타 표시명 1·2 통일
 
 | 내부 ID | 이전 표시명 | 현재 한글/영문 표시명 | 적용 위치 | 게임플레이 |

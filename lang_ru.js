@@ -3299,3 +3299,4 @@ Object.assign(_RU,{
 });
 Object.assign(_RU_PFX,{"백골":"Костяной"});
 Object.assign(_RU_BASE,{"유골함":"Оссуарий"});
+Object.assign(_RU,{"천공쇄기":"Небесный сокрушитель","🪨 천공쇄기!":"🪨 Небесный сокрушитель!"});

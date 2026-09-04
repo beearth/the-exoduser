@@ -1253,3 +1253,4 @@ const _FR_PFX={
 const _FR_BASE={
 '대검':'Épée','석궁':'Arbalète','연사석궁':'Arbalète Répétition','마력석궁':'Arbalète Arcanique','견갑':'Bouclier','대견갑':'Grand Bouclier','전투화':'Bottes Combat','갑옷':'Armure','갑주':'Armure','왕관':'Couronne','장갑':'Gants','건틀릿':'Gantelets','바지':'Pantalon','각반':'Jambières','허리띠':'Ceinture','벨트':'Ceinture','부적':'Talisman','목걸이':'Collier','반지':'Anneau','망토':'Cape','팔찌':'Bracelet','귀걸이':'Boucle d\'Oreille'
 };
+Object.assign(_FR,{"천공쇄기":"Broyeur Céleste","🪨 천공쇄기!":"🪨 Broyeur Céleste!"});

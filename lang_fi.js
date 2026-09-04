@@ -2687,3 +2687,4 @@ Object.assign(_FI,{
 });
 Object.assign(_FI_PFX,{"백골":"Luinen"});
 Object.assign(_FI_BASE,{"유골함":"Luu-uurna"});
+Object.assign(_FI,{"천공쇄기":"Taivaanmurskaaja","🪨 천공쇄기!":"🪨 Taivaanmurskaaja!"});

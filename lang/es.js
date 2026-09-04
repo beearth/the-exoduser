@@ -1253,3 +1253,4 @@ const _ES_PFX={
 const _ES_BASE={
 '대검':'Mandoble','석궁':'Ballesta','연사석궁':'Repetidora','마력석궁':'Ballesta Arcana','견갑':'Escudo','대견갑':'Gran Escudo','전투화':'Botas Combate','갑옷':'Armadura','갑주':'Armadura','왕관':'Corona','장갑':'Guantes','건틀릿':'Manoplas','바지':'Pantalones','각반':'Grebas','허리띠':'Cinturón','벨트':'Cinturón','부적':'Talismán','목걸이':'Collar','반지':'Anillo','망토':'Capa','팔찌':'Pulsera','귀걸이':'Pendiente'
 };
+Object.assign(_ES,{"천공쇄기":"Triturador Celestial","🪨 천공쇄기!":"🪨 Triturador Celestial!"});

@@ -2687,3 +2687,4 @@ Object.assign(_TH,{
 });
 Object.assign(_TH_PFX,{"백골":"กระดูกขาว"});
 Object.assign(_TH_BASE,{"유골함":"โกศกระดูก"});
+Object.assign(_TH,{"천공쇄기":"พิฆาตเวหา","🪨 천공쇄기!":"🪨 พิฆาตเวหา!"});

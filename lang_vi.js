@@ -2688,3 +2688,4 @@ Object.assign(_VI,{
 });
 Object.assign(_VI_PFX,{"백골":"Xương Trắng"});
 Object.assign(_VI_BASE,{"유골함":"Bình Hài Cốt"});
+Object.assign(_VI,{"천공쇄기":"Nghiền Nát Thiên Không","🪨 천공쇄기!":"🪨 Nghiền Nát Thiên Không!"});

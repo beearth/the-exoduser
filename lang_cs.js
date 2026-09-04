@@ -3742,3 +3742,4 @@ Object.assign(_CS,{
 });
 Object.assign(_CS_PFX,{"백골":"Kostěná"});
 Object.assign(_CS_BASE,{"유골함":"Kostnice"});
+Object.assign(_CS,{"천공쇄기":"Nebeský drtič","🪨 천공쇄기!":"🪨 Nebeský drtič!"});

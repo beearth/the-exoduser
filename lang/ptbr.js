@@ -1253,3 +1253,4 @@ const _PTBR_PFX={
 const _PTBR_BASE={
 '대검':'Montante','석궁':'Besta','연사석궁':'Repetidora','마력석궁':'Besta Arcana','견갑':'Escudo','대견갑':'Grande Escudo','전투화':'Botas Combate','갑옷':'Armadura','갑주':'Armadura','왕관':'Coroa','장갑':'Luvas','건틀릿':'Manoplas','바지':'Calças','각반':'Grevas','허리띠':'Cinto','벨트':'Cinto','부적':'Talismã','목걸이':'Colar','반지':'Anel','망토':'Capa','팔찌':'Pulseira','귀걸이':'Brinco'
 };
+Object.assign(_PTBR,{"천공쇄기":"Esmagador Celestial","🪨 천공쇄기!":"🪨 Esmagador Celestial!"});

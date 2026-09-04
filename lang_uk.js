@@ -3312,3 +3312,4 @@ Object.assign(_UK,{
 });
 Object.assign(_UK_PFX,{"백골":"Кістяний"});
 Object.assign(_UK_BASE,{"유골함":"Осуарій"});
+Object.assign(_UK,{"천공쇄기":"Небесний трощитель","🪨 천공쇄기!":"🪨 Небесний трощитель!"});

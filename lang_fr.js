@@ -3325,3 +3325,4 @@ Object.assign(_FR,{
 });
 Object.assign(_FR_PFX,{"백골":"Osseux"});
 Object.assign(_FR_BASE,{"유골함":"Ossuaire"});
+Object.assign(_FR,{"천공쇄기":"Broyeur Céleste","🪨 천공쇄기!":"🪨 Broyeur Céleste!"});

@@ -1,5 +1,15 @@
 # THE EXODUSER — 인터페이스 2차 정비 (UI 폴리시 + 반응형)
 
+## 특수 탭 분노 섹션·천공쇄기 (2026-09-04)
+
+| 최상위 탭 | 하위 섹션 순서 | ID | 카드 표시 | 선택 슬롯 | HUD 쿨다운 |
+|---|---|---|---|---|---|
+| 특수(`spec`) | 영역(`tech`) → **분노(`rage`)** → 필살기(`ult`) | `skyCrusher` | `🪨 천공쇄기 / Sky Crusher` | Space 전용 | `P._scCd`, 최대 720f(12초) |
+
+- `SKILL_CATS`에 `rage`를 주황-적색(`#ff6633`)으로 추가하고 `SKILL_HIER.spec.cats`를 `['tech','rage','ult']`로 고정한다.
+- Space 선택 팝업은 하드코딩 2종만이 아니라 기존 지옥강타 1·2와 모든 `cat:'rage'` 액티브를 표시한다. 천공쇄기는 1~4/F에 배정할 수 없다.
+- 전용 PNG 아이콘이 없는 동안 카드·팝업은 `SKILL_LIST.emoji='🪨'` 폴백을 사용한다. 발동 뒤 Space HUD는 `_skCdMap.skyCrusher=P._scCd`로 0.1초 단위 남은 시간을 표시한다.
+
 > **1차 정비 완료**: 키바인딩 불일치 수정, 스킬 디스패치 통합, HUD 그룹핑, 데드코드, Cinzel 폰트 제거
 > **2차 목표**: 다양한 해상도에서 깨지지 않는 UI, 일관된 디자인 시스템, 빠진 UX 흐름 보완
 > **파일**: game.html (21,814줄)
@@ -456,9 +466,9 @@ function showStageTransition(callback) {
 - 키 표기는 스킬 이미지 위 오버레이 대신 바 하단 원본 아트 라벨 기준으로 유지
 - `#qsRow .qs .qs-key { display:none }`로 잔여 키캡 노드가 있어도 메인바 위에 표시되지 않게 고정
 
-### Space 분노 폭발 전용 슬롯 (skSlot1) 쿨다운 표시
-Space 슬롯(`SKILL_SLOTS[4]`)은 지옥강타 계열 분노 폭발 스킬만 표시한다.
-- `_spCdMap`: `giantSlam`, `giantSlam2`가 공유하는 `P._gslCd`만 참조
+### Space 분노 전용 슬롯 (skSlot1) 쿨다운 표시
+Space 슬롯(`SKILL_SLOTS[4]`)은 지옥강타 계열과 `cat:'rage'` 분노 스킬만 표시한다.
+- `_skCdMap`: `giantSlam`·`giantSlam2`는 `P._gslCd`, `skyCrusher`는 `P._scCd`를 참조
 - 기둥강타·지옥강타 2는 `giantSlam2` 호스트 아이콘/쿨다운으로 표시
 - 쿨다운 중: 어두운 오버레이 + 초 단위 카운트다운 + 이모지 반투명
 
@@ -733,7 +743,7 @@ L키(`skillCycle`)로 여는 스킬 슬롯 배정 팝업(`#skSlotPop`, `openSkSl
 | 탭 행 | 13개 탭이 잘리지 않도록 고정 슬롯/선택 슬롯 두 줄 배치 | `flex-wrap:wrap`, 고정 최소 52px·선택 최소 38px |
 | F 팝업 목록 | 습득한 `cat:'tech'`, `act:true`, `fixed!==true` 영역 스킬만, 한 번에 1개 선택 | `_canAssignSkillSlot(id,5)` |
 | 일반 팝업 목록 | 전대 소환을 포함한 일반 액티브 선택스킬, **영역·분노 폭발 제외** | `_openSkillSlotPop(0~3)` + `_canAssignSkillSlot()` |
-| Space 팝업 목록 | `giantSlam`, `giantSlam2`만 표시 | 기둥강타·지옥강타 2는 `giantSlam2` 호스트로 표시 |
+| Space 팝업 목록 | `giantSlam`, `giantSlam2`, `skyCrusher` 표시 | 기둥강타·지옥강타 2는 `giantSlam2` 호스트, 천공쇄기는 `cat:'rage'`로 표시 |
 | 선택 팝업 제목 | `슬롯 1~4 배정` / `Space · 분노 폭발 전용` / `F · 영역 스킬 전용` | `_slotHead` 리프 노드 |
 | F 교체 동작 | 새 영역 선택 시 기존 F 영역을 교체; 복수 영역 동시 장착 불가 | 지속 영역 중첩 OP 방지 |
 | 해제 설명 | 1~4=`포션 슬롯으로 복원`, Space/F=`슬롯 비우기` | `_unsetDesc` |

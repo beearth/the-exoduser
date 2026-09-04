@@ -889,3 +889,4 @@ const _SV_BASE={
 '허리띠':'Bälte','벨트':'Bälte','부적':'Talisman','목걸이':'Halsband','반지':'Ring',
 '망토':'Kappa','팔찌':'Armband','귀걸이':'Örhänge'
 };
+Object.assign(_SV,{"천공쇄기":"Himmelknusare","🪨 천공쇄기!":"🪨 Himmelknusare!"});

@@ -3834,3 +3834,4 @@ Object.assign(_DA,{
 });
 Object.assign(_DA_PFX,{"백골":"Knogle"});
 Object.assign(_DA_BASE,{"유골함":"Knogleurne"});
+Object.assign(_DA,{"천공쇄기":"Himmelknuser","🪨 천공쇄기!":"🪨 Himmelknuser!"});

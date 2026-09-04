@@ -2861,3 +2861,4 @@ Object.assign(_JA,{
 });
 Object.assign(_JA_PFX,{"백골":"白骨の"});
 Object.assign(_JA_BASE,{"유골함":"骨壺"});
+Object.assign(_JA,{"천공쇄기":"天空砕き","🪨 천공쇄기!":"🪨 天空砕き!"});

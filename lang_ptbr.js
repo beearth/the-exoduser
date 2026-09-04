@@ -3832,3 +3832,4 @@ Object.assign(_PTBR,{
 });
 Object.assign(_PTBR_PFX,{"백골":"Ósseo"});
 Object.assign(_PTBR_BASE,{"유골함":"Ossuário"});
+Object.assign(_PTBR,{"천공쇄기":"Esmagador Celestial","🪨 천공쇄기!":"🪨 Esmagador Celestial!"});

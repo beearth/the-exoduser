@@ -889,3 +889,4 @@ const _DA_BASE={
 '허리띠':'Bælte','벨트':'Bælte','부적':'Talisman','목걸이':'Halskæde','반지':'Ring',
 '망토':'Kappe','팔찌':'Armbånd','귀걸이':'Øreringe'
 };
+Object.assign(_DA,{"천공쇄기":"Himmelknuser","🪨 천공쇄기!":"🪨 Himmelknuser!"});

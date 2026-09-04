@@ -3327,3 +3327,4 @@ Object.assign(_SV,{
 });
 Object.assign(_SV_PFX,{"백골":"Ben"});
 Object.assign(_SV_BASE,{"유골함":"Benurna"});
+Object.assign(_SV,{"천공쇄기":"Himmelknusare","🪨 천공쇄기!":"🪨 Himmelknusare!"});

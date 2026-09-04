@@ -838,3 +838,4 @@ const _PL_BASE={
 '허리띠':'Pas','벨트':'Pas','부적':'Talizman','목걸이':'Naszyjnik','반지':'Pierścień',
 '망토':'Peleryna','팔찌':'Bransoletka','귀걸이':'Kolczyk'
 };
+Object.assign(_PL,{"천공쇄기":"Niebiański Miażdżyciel","🪨 천공쇄기!":"🪨 Niebiański Miażdżyciel!"});

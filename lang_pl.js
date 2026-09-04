@@ -3832,3 +3832,4 @@ Object.assign(_PL,{
 });
 Object.assign(_PL_PFX,{"백골":"Kościane"});
 Object.assign(_PL_BASE,{"유골함":"Ossuarium"});
+Object.assign(_PL,{"천공쇄기":"Niebiański Miażdżyciel","🪨 천공쇄기!":"🪨 Niebiański Miażdżyciel!"});

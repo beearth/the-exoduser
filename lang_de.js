@@ -3287,3 +3287,4 @@ Object.assign(_DE,{
 });
 Object.assign(_DE_PFX,{"백골":"Knochen"});
 Object.assign(_DE_BASE,{"유골함":"Knochenurne"});
+Object.assign(_DE,{"천공쇄기":"Himmelsbrecher","🪨 천공쇄기!":"🪨 Himmelsbrecher!"});

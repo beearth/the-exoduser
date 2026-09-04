@@ -2689,3 +2689,4 @@ Object.assign(_HU,{
 });
 Object.assign(_HU_PFX,{"백골":"Csont"});
 Object.assign(_HU_BASE,{"유골함":"Csonturna"});
+Object.assign(_HU,{"천공쇄기":"Égi Zúzó","🪨 천공쇄기!":"🪨 Égi Zúzó!"});

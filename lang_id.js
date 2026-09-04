@@ -2687,3 +2687,4 @@ Object.assign(_ID,{
 });
 Object.assign(_ID_PFX,{"백골":"Tulang Putih"});
 Object.assign(_ID_BASE,{"유골함":"Guci Tulang"});
+Object.assign(_ID,{"천공쇄기":"Penghancur Langit","🪨 천공쇄기!":"🪨 Penghancur Langit!"});

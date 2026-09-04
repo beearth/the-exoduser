@@ -889,3 +889,4 @@ const _NO_BASE={
 '허리띠':'Belte','벨트':'Belte','부적':'Talisman','목걸이':'Halskjede','반지':'Ring',
 '망토':'Kappe','팔찌':'Armbånd','귀걸이':'Øredobb'
 };
+Object.assign(_NO,{"천공쇄기":"Himmelknuser","🪨 천공쇄기!":"🪨 Himmelknuser!"});

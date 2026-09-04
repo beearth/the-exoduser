@@ -2688,3 +2688,4 @@ Object.assign(_AR,{
 });
 Object.assign(_AR_PFX,{"백골":"عظمي"});
 Object.assign(_AR_BASE,{"유골함":"جرة العظام"});
+Object.assign(_AR,{"천공쇄기":"محطم السماء","🪨 천공쇄기!":"🪨 محطم السماء!"});

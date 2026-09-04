@@ -2705,3 +2705,4 @@ Object.assign(_TR,{
 });
 Object.assign(_TR_PFX,{"백골":"Kemik"});
 Object.assign(_TR_BASE,{"유골함":"Kemiklik"});
+Object.assign(_TR,{"천공쇄기":"Gök Ezici","🪨 천공쇄기!":"🪨 Gök Ezici!"});

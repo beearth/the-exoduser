@@ -2860,3 +2860,4 @@ Object.assign(_ZHT,{
 });
 Object.assign(_ZHT_PFX,{"백골":"白骨"});
 Object.assign(_ZHT_BASE,{"유골함":"納骨甕"});
+Object.assign(_ZHT,{"천공쇄기":"天空粉碎","🪨 천공쇄기!":"🪨 天空粉碎!"});

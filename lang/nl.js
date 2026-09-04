@@ -890,3 +890,4 @@ const _NL_BASE={
 '허리띠':'Riem','벨트':'Riem','부적':'Talisman','목걸이':'Ketting','반지':'Ring',
 '망토':'Mantel','팔찌':'Armband','귀걸이':'Oorbel'
 };
+Object.assign(_NL,{"천공쇄기":"Hemelbreker","🪨 천공쇄기!":"🪨 Hemelbreker!"});

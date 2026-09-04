@@ -2710,3 +2710,4 @@ Object.assign(_IT,{
 });
 Object.assign(_IT_PFX,{"백골":"Osseo"});
 Object.assign(_IT_BASE,{"유골함":"Ossario"});
+Object.assign(_IT,{"천공쇄기":"Frantumatore Celeste","🪨 천공쇄기!":"🪨 Frantumatore Celeste!"});

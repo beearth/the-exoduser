@@ -2692,3 +2692,4 @@ Object.assign(_RO,{
 });
 Object.assign(_RO_PFX,{"백골":"Osos"});
 Object.assign(_RO_BASE,{"유골함":"Osuar"});
+Object.assign(_RO,{"천공쇄기":"Zdrobitorul Ceresc","🪨 천공쇄기!":"🪨 Zdrobitorul Ceresc!"});
