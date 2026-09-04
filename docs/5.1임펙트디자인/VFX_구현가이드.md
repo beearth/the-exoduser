@@ -26,7 +26,7 @@
 | 충돌 지면 표현 | 충돌~180f (3초) | 사용자 제공 박힘 시트 안의 지면 파편·균열만 사용. 절차식 암흑 크레이터·앞쪽 립·충격 링 제거 | `img/vfx/sky_crusher_burning.png` 셀 384×512 | 충돌 반경 `260+(Lv−1)×12`px 판정은 유지 |
 | 파편 폭발 | 충돌 +15f | 방사형 암석 파편 6→12개와 화면 흔들림 | `#d4bd8b`/`#6f5c49` | 같은 반경에 충돌 피해의 35%, 포이즈 없음 |
 
-`G._skyCrushers[]`가 예고·충돌·파편·다음 화염 틱을 보유하고 `drawP()`가 두 시트와 Canvas 보조 효과를 함께 그리며, 수명은 `impactT+180f`다. 시전 시 `SFX.skyCrusherFall()`과 `shake(3)`, 충돌 시 지옥강타보다 약한 `SFX.skyCrusherImpact()`, `shake(28)`, `hitStop≥8`을 사용한다. 낙하 시트 로드 실패 시에도 톱니가 아니라 뾰족한 철제 쇄기 실루엣을 폴백으로 그리고, 잔류 시트만 실패하면 낙하 시트의 11번 박힘 프레임을 유지한다.
+`G._skyCrushers[]`가 예고·충돌·파편·다음 화염 틱을 보유하고 `drawP()`가 두 시트와 Canvas 보조 효과를 함께 그리며, 수명은 `impactT+180f`다. 시전 시 `SFX.skyCrusherFall()`과 `shake(3)`, 충돌 시 지옥강타보다 약한 `SFX.skyCrusherImpact()`, `shake(28)`, `hitStop≥8`을 사용한다. **착탄은 활성 기동불꽃(`assaultFlame`) 전량도 공용 `_detonateAssaultFlames()`로 즉시 기폭**하며, 해당 장판의 기존 Power Fire VFX·사운드·폭발 수치를 그대로 사용한다. 낙하 시트 로드 실패 시에도 톱니가 아니라 뾰족한 철제 쇄기 실루엣을 폴백으로 그리고, 잔류 시트만 실패하면 낙하 시트의 11번 박힘 프레임을 유지한다.
 
 ## 물리탄 유기 이빨입 (`proj_phys_mouth`)
 

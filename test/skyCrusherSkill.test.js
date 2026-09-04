@@ -98,6 +98,10 @@ test('Sky Crusher schedules a telegraphed impact and delayed shard burst', () =>
   assert.match(gameHtml, /hurtE\(e,~~\(sc\.dmg\*\.35\),a,true,\{magic:true,explode:true,noPoise:true\}/);
 });
 
+test('Sky Crusher impact detonates every active Chain Blaze floor', () => {
+  assert.match(gameHtml, /if\(!sc\.impacted&&sc\.t>=sc\.impactT\)\{sc\.impacted=true;[\s\S]{0,1800}_detonateAssaultFlames\(\)/);
+});
+
 test('Sky Crusher uses a rage-tier impact multiplier', () => {
   assert.match(gameHtml, /skyCrusher:\{b:42,g:33\.6\}/);
 });
