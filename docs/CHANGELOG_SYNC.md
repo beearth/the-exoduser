@@ -1,5 +1,16 @@
 # Sync Changelog
 
+## 2026-09-04 방어 탭 소환 열 신설
+
+| ID | 한글명 | 이전 분류 | 현재 분류 | 표시 위치 | 슬롯·전투 계약 |
+|---|---|---|---|---|---|
+| `guardian` | 악의 보호자 | `def` | `summon` | 방어 탭 → 소환 | 자동 방어구체, 수치·발동 불변 |
+| `voidScarecrow` | 유령 허수아비 | `def` | `summon` | 방어 탭 → 소환 | 일반 선택스킬(1~4), Space/F 불가 |
+| `explodeScarecrow` | 폭발 허수아비 | `def` | `summon` | 방어 탭 → 소환 | 일반 선택스킬(1~4), Space/F 불가 |
+| `ancestorSummon` | 전대 소환 | `def` | `summon` | 방어 탭 → 소환 | 일반 선택스킬(1~4), Space/F 불가 |
+
+- `SKILL_HIER.def.cats`는 `['def','move','summon']`이다. 방어 탭의 빈 세 번째 열을 소환 전용으로 사용하며, 기존 방어·이동 열과 특수 탭 구성은 변경하지 않는다.
+
 ## 2026-09-04 지옥강타 계열 특수·분노 분류 통합
 
 | ID | 한글명 | 최상위 탭 | 하위 분류 | 선택 슬롯 | 적용 위치 | 전투 수치·공식 |
@@ -46200,3 +46211,49 @@ mpR = 0.05 + s.int×0.005                                        [NO P.lv×0.001
 - 전투 수치, `etype=4`, 2마리 시작 위치, collision, route, 스폰 풀은 변경하지 않았다.
 - TDD: 새 8×3 loader/state-row 계약과 24개 모든 셀의 단일 연결 실루엣 계약을 RED→GREEN으로 추가했다. `test/ch1StartMediumEyeMass.test.js` 5/5, `test/gameHtmlInlineSyntax.test.js` 1/1 PASS.
 - 브라우저 QA: `initStage(0)`에서 2마리 alive, `sheet=true`, pageerror 0. Walk/Attack Prepare 강제 행을 포함한 `captures/ch1_start_medium_8dir_3row_20260904.png`에서 배경판·행 경계 잔여 조각 0을 육안 확인했다.
+
+## 2026-09-04 기동불꽃 · 기동파괴 실사 착지 임팩트 시트
+
+| id | 정식명 | 전용 VFX 등록 | 시트 | 프레임 | 착지 호출 |
+|---|---|---|---|---|---|
+| `chainAssault` | 기동불꽃 (기동화염) | `chain_assault_impact` | `assets/vfx/chain_assault_impact_realistic.png` | `1254×1254`, 3×3, 9프레임, 셀 `418×418` | `playVFXAng(..., scale=_stR/384, speed=6.7)` |
+| `chainSlam` | 기동파괴 (기동충격) | `chain_slam_impact` | `assets/vfx/chain_slam_impact_realistic.png` | `1254×1254`, 3×3, 9프레임, 셀 `418×418` | `playVFXAng(..., scale=_csR/256, speed=7)` |
+
+- 기존 범용 `lava_erupt`와 `earthquake`는 다른 시스템 호환성을 위해 유지하고, 두 기동 착지 호출만 전용 시트로 교체했다.
+- 불꽃 시트는 용암·재·연기, 충격 시트는 균열·석편·먼지 충격파를 순차 재생한다. 생성 원본의 구운 체크 배경은 외곽 연결 영역만 투명 알파로 정규화했으며, 기존 Shift 기동 VFX와 동일한 WebGL 가산 경로를 사용한다.
+- 스킬 아이콘, 입력, 피해·반경·쿨다운, 화면 흔들림 및 판정은 변경하지 않았다.
+
+## 2026-09-04 CH1-1 다안 육괴 플레이어 방향 추적 복구
+
+| 문제 | 원인 | 현재 계약 | 적용 위치 |
+|---|---|---|---|
+| 정면/플레이어 방향 프레임이 선택되지 않음 | 전용 Canvas 렌더러가 일반 `drawEnBody()`의 `e.facing` 갱신보다 먼저 반환 | 매 프레임 `targetFacing=atan2(P.y-e.y,P.x-e.x)`를 계산하고 source `S,SW,W,NW,N,NE,E,SE` 순서를 `[6,7,0,1,2,3,4,5]`로 변환 | `_drawCh1StartMediumEyeMass` |
+
+- 상태 행 계약은 불변이다: idle=row 0, walk/approach/charge=row 1, `eAttack`=row 2.
+- 플레이어가 없거나 사망했을 때만 기존 `e.facing`을 fallback으로 쓴다. 전투 수치·스폰·충돌은 변경하지 않았다.
+- `test/ch1StartMediumEyeMass.test.js`가 live target angle과 8방향 source-order 변환을 고정한다.
+
+## 2026-09-04 CH1-1 다안 육괴 사용자 지정 기본 8방향 시트 적용
+
+| id | 상태 | 파일·grid | 프레임/표시 계약 | 적용 위치 |
+|---|---|---|---|---|
+| `base` | 대기 | `img/ch1_1_eye_slime_8dir_base_source.png`, `1448×1086`, `4×2`, 셀 `362×543` | user-selected 기본 8방향 `S,SW,W,NW,N,NE,E,SE`; `!animated`일 때 0~7 frame, 세로 `240~252px`, 폭 약 `160~168px` | `_CH1_START_MEDIUM_SHEETS`, `_drawCh1StartMediumEyeMass` |
+| `action` | 이동·접근·차지 / 공격 | `img/ch1_1_eye_slime_8dir_3row_clean.png`, `2048×768`, `8×3`, 셀 `256×256` | 이동 계열=row 1, `eAttack`=row 2; 세로·폭 `240~252px` | 동일 |
+| `_CH1_START_MEDIUM_DIRMAP` | 모든 상태 | source order `S,SW,W,NW,N,NE,E,SE` | live `atan2(P.y-e.y,P.x-e.x)`의 canvas angle을 `[6,7,0,1,2,3,4,5]` source frame으로 변환 | 동일 |
+
+- 새 기본 시트는 RGBA 투명도를 원본 그대로 사용한다. 체크무늬·행 경계 알파 정리는 action 시트에만 계속 적용한다.
+- 전투 수치, `etype=4`, 2마리 시작 위치, 충돌, route, 스폰 풀은 변경하지 않았다.
+- 검증: `test/ch1StartMediumEyeMass.test.js` 5/5와 `test/gameHtmlInlineSyntax.test.js` 1/1 PASS. 브라우저 `initStage(0)`에서 두 개체 alive, `base=true`, `action=true`, pageerror 0; `captures/ch1_start_medium_8dir_base_20260904.png`에서 서로 다른 대각 기본 방향으로 표시를 확인했다.
+
+## 2026-09-04 CH1-1 다안 육괴 불규칙 8×4 보드 안전 폴백
+
+| 항목 | 최종 계약 | 이유 |
+|---|---|---|
+| 런타임 시트 | `img/ch1_1_eye_slime_8dir_3row_clean.png`, `2048×768`, `8×3`, 셀 `256×256` | 모든 24개 셀의 단일 연결 실루엣이 검증돼 인접 프레임 조각이 섞이지 않음 |
+| 상태 행 | idle=0, walk/approach/charge=1, `eAttack`=2 | 기존 전용 renderer 상태 계약 복구 |
+| 방향 변환 | source `S,SW,W,NW,N,NE,E,SE`, mapper `[6,7,0,1,2,3,4,5]` | live `atan2(P.y-e.y,P.x-e.x)`의 8방향 추적을 유지 |
+| 참조 원본 | `img/ch1_1_eye_slime_8dir_4frame_labeled_source.png`, `1536×1024` | 방향 라벨 `N,NE,E,SE,S,SW,W,NW`를 보존하되, 프레임 간 여백이 불규칙하여 런타임 crop에는 사용하지 않음 |
+
+- 원인: 레이블 8×4 보드는 전시용 레이아웃이라 열 간 여백·스프라이트 footprint가 균일 grid가 아니었다. 균등 crop 또는 재패킹 시 인접 촉수 조각이 들어갈 수 있어 즉시 제거했다.
+- 브라우저 재검증: `initStage(0)`에서 2마리 alive, `sheet=true`, pageerror 0. `captures/ch1_start_medium_8dir_base_20260904.png`에서 잘린 옆 조각·라벨·사각 배경 없이 두 개체의 단일 실루엣을 확인했다.
+- 검증: `test/ch1StartMediumEyeMass.test.js` 5/5, `test/gameHtmlInlineSyntax.test.js` 1/1 PASS. 전투 수치·스폰·충돌·route는 변경하지 않았다.

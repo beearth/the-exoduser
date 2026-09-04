@@ -39,15 +39,17 @@
 | 용도 | 파일 | 원본 크기 | logical grid | 런타임 규칙 |
 |---|---|---:|---:|---|
 | 사용자 제공 설계 원본 | `img/ch1_1_eye_slime_labeled_source.png` | `1536×1024` | 설계 참조 | IDLE / WALK / ATTACK PREPARE 각 8방향 레이블을 제공; 런타임에서 직접 로드하지 않음 |
-| runtime 8방향 3행 | `img/ch1_1_eye_slime_8dir_3row_clean.png` | `2048×768` | `8×3`, 셀 `256×256` | row 0=idle, row 1=walk, row 2=attack prepare; 각 행에서 facing을 45° 단위로 0~7 frame에 매핑 |
+| 방향 레이블 참조 원본 | `img/ch1_1_eye_slime_8dir_4frame_labeled_source.png` | `1536×1024` | presentation board `8방향×4프레임` | 표기 순서 `N,NE,E,SE,S,SW,W,NW`를 확인하는 보존용 원본. 프레임 간 여백이 불규칙하므로 런타임에서 직접 자르지 않음 |
+| runtime 검증 시트 | `img/ch1_1_eye_slime_8dir_3row_clean.png` | `2048×768` | `8×3`, 셀 `256×256` | idle=row 0, 이동/접근/차지=row 1, 공격=row 2; 매 프레임 플레이어 상대 각도를 45°로 양자화하고 source 순서 `S,SW,W,NW,N,NE,E,SE`에 맞춰 `[6,7,0,1,2,3,4,5]` 열로 변환 |
 
 | 항목 | 값 |
 |---|---|
 | 전용 로더 | `_CH1_START_MEDIUM_SHEETS`, `_ch1StartMediumImgs`, `_ch1StartMediumReady` |
 | draw 함수 | `_drawCh1StartMediumEyeMass(X,e,now,alpha)` |
+| 방향 추적 | `targetFacing=atan2(P.y-e.y,P.x-e.x)` (`P.hp>0`) | 일반 적 렌더러의 facing 갱신보다 먼저 반환하는 전용 경로에서도 플레이어를 즉시 바라봄; 플레이어 부재/사망 시 `e.facing` fallback |
 | 표시 크기 | 세로 `drawH=max(240, r×7)`px; 실제 반경 범위에서는 `240~252px` |
-| 종횡비/표시 폭 | 원본 셀 비율 보존: `drawW=drawH×(fw/fh)`; 현행 셀 `256×256`이므로 `drawW=240~252px` |
-| 알파 정리 | 외곽과 연결된 중성 체크무늬를 투명화하고, 24개 셀마다 가장 큰 연결 실루엣만 보존 | 행 경계/인접 셀 잔여 조각과 가짜 투명 배경을 런타임 전에 제거 |
+| 종횡비/표시 폭 | 원본 셀 비율 보존: `drawW=drawH×(fw/fh)`; 현행 정방형 셀은 가로·세로 `240~252px` |
+| 알파 정리 | 외곽과 연결된 중성 체크무늬를 투명화하고, 24개 셀마다 가장 큰 연결 실루엣만 보존 | 행 경계/인접 셀 잔여 조각과 가짜 투명 배경은 런타임 전에 제거 |
 | 배치 제외 | `_prepEnemyInstanced`는 `_ch1StartMedium`을 WebGL enemy batching에서 제외 |
 | 화면 draw | 일반 적 Canvas pass가 `_drawCh1StartMediumEyeMass`를 호출; generic 8dir atlas를 덮어쓰지 않음 |
 | 자산 실패 | 단일 `sheet`가 준비되지 않으면 기존 generic sprite 경로로 fallback |
@@ -56,7 +58,7 @@
 
 | 검증 | 결과 |
 |---|---|
-| 단위·소스 계약 | `node --test test/ch1StartMediumEyeMass.test.js` PASS |
+| 단위·소스 계약 | `node --test test/ch1StartMediumEyeMass.test.js` PASS — runtime `2048×768/8×3`, 모든 셀 하나의 연결 실루엣 |
 | inline JavaScript | `node --test test/gameHtmlInlineSyntax.test.js` PASS |
-| 브라우저 | `http://127.0.0.1:3333/game.html`, `initStage(0)` 후 2마리 alive, `sheet=true`, pageerror 없음 |
-| 시각 확인 | `captures/ch1_start_medium_8dir_3row_20260904.png`: Walk·Attack Prepare 행의 두 다안 육괴가 배경판·잔여 조각 없이 표시 |
+| 브라우저 | `http://127.0.0.1:3333/game.html`, `initStage(0)` 후 2마리 alive, `sheet=true`, pageerror 없음; 플레이어 상대 방향에 따라 8방향 열 전환 |
+| 시각 확인 | `captures/ch1_start_medium_8dir_base_20260904.png`: 두 다안 육괴가 서로 다른 대각 방향에서 단일 실루엣으로 표시. `captures/ch1_start_medium_8dir_3row_20260904.png`: Walk·Attack Prepare 행이 배경판·잔여 조각 없이 표시 |

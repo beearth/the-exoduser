@@ -37,35 +37,37 @@ function opaqueComponentCount(path, cols, rows) {
   return counts;
 }
 
-test('CH1-1 owns the cleaned Eye Slime 8-direction three-row sheet', () => {
+test('CH1-1 owns the verified cleaned eight-direction action sheet', () => {
   const spritePath = new URL('../img/ch1_1_eye_slime_8dir_3row_clean.png', import.meta.url);
-  assert.ok(existsSync(spritePath), 'the cleaned Eye Slime sheet must ship with the game');
-
-  const sprite = pngSize(spritePath);
-  assert.equal(sprite.width, 2048, 'the production source retains its eight 256px columns');
-  assert.equal(sprite.height, 768, 'the production source retains its three authored 256px animation rows');
+  assert.ok(existsSync(spritePath), 'the verified cleaned runtime sheet must ship with the game');
+  assert.deepEqual(pngSize(spritePath), { width: 2048, height: 768 },
+    'the verified source retains its eight directions and three state rows');
 
   assert.match(gameHtml, /const _CH1_START_MEDIUM_SHEETS=\{sheet:'img\/ch1_1_eye_slime_8dir_3row_clean\.png'\}/,
-    'runtime must load the alpha-cleaned single production sheet');
+    'runtime must use the verified clean sheet until a frame-exact 8 by 4 export is available');
   assert.match(gameHtml, /function _drawCh1StartMediumEyeMass\(/,
     'the authored monster needs its own sheet renderer');
   assert.match(gameHtml, /if\(e\._ch1StartMedium&&_ch1StartMediumReady\.sheet\)\{\s*_eDrew=_drawCh1StartMediumEyeMass\(X,e,_now,sa\);/,
     'the runtime enemy pass must draw the supplied sheets instead of the generic atlas');
 });
 
-test('CH1-1 maps idle, walk, and attack states to the three cleaned rows', () => {
+test('CH1-1 maps idle, movement, and attack to the verified clean state rows', () => {
   assert.match(gameHtml, /const cols=8,rows=3;/,
-    'the cleaned production sheet must be sliced as eight columns by three rows');
+    'the verified production sheet must be sliced as eight directions by three state rows');
   assert.match(gameHtml, /const row=!animated\?0:e\.s==='eAttack'\?2:1;/,
-    'idle, walk, and attack must select their authored rows without time-based cross-row crops');
-  assert.match(gameHtml, /const frame=row\*cols\+Math\.round\(/,
-    'every row must use the entity facing to choose its eight-direction frame');
+    'idle, movement, and attack must use their verified state rows');
+  assert.match(gameHtml, /const targetFacing=P&&P\.hp>0\?Math\.atan2\(P\.y-e\.y,P\.x-e\.x\):\(e\.facing\|\|0\);/,
+    'the custom path must calculate the live player-facing direction before choosing a frame');
+  assert.match(gameHtml, /const _CH1_START_MEDIUM_DIRMAP=\[6,7,0,1,2,3,4,5\];/,
+    'the source order down→down-left→left→up-left→up→up-right→right→down-right must map from canvas angles');
+  assert.match(gameHtml, /const frame=row\*cols\+_CH1_START_MEDIUM_DIRMAP\[direction\];/,
+    'every animation row must use the player-facing eight-direction frame');
 });
 
-test('CH1-1 has exactly one connected monster silhouette in every 8-direction cell', () => {
+test('CH1-1 verified runtime sheet keeps a single silhouette in every source cell', () => {
   const spritePath = new URL('../img/ch1_1_eye_slime_8dir_3row_clean.png', import.meta.url);
   assert.deepEqual(opaqueComponentCount(spritePath, 8, 3), Array(24).fill(1),
-    'cross-row remnants and detached neighbor fragments must not survive in a runtime frame');
+    'no neighbour fragments, captions, or backdrop may enter the runtime frames');
 });
 
 test('CH1-1 renderer preserves the supplied frame aspect ratio', () => {
