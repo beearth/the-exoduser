@@ -51365,6 +51365,22 @@ function drawP(){
       const fade=Math.max(0,1-_wP);
       const _t2=_now;
       const _isGSlam=!w.col; // col 없으면 지옥강타 1, 있으면 칼등날개/기타
+      // 지옥강타 1(Shift+좌클릭): 지진 링과 구분되는 대지 압착 중심부.
+      // 먼저 지면 데칼을 깔아 영웅급 스프라이트 아래에서 묵직하게 눌리는 느낌을 만든다.
+      if(_isGSlam&&w.kind==='giant'){
+        const _earthImpactP=Math.min(1,_wP*5);
+        const _earthCraterR=w.maxR*(.12+.24*_earthImpactP);
+        X.save();
+        X.globalCompositeOperation='source-over';
+        X.globalAlpha=(.52-.22*_wP)*fade;
+        X.fillStyle='#160f0a';
+        X.beginPath();X.ellipse(w.x,w.y,_earthCraterR,_earthCraterR*.34,0,0,Math.PI*2);X.fill();
+        X.globalAlpha=(.5-.18*_wP)*fade;
+        X.strokeStyle='#7d5632';
+        X.lineWidth=4+8*(1-_earthImpactP);
+        X.beginPath();X.ellipse(w.x,w.y,_earthCraterR*1.08,_earthCraterR*.37,0,0,Math.PI*2);X.stroke();
+        X.restore();
+      }
       // 1) API 영웅급 임팩트 시트 (지옥강타 1/지옥강타 2 전용)
       if(_isGSlam){
         const _slamVfx=w.kind==='inferno'?_infernoSlamVfx:_giantSlamVfx;
@@ -51397,6 +51413,28 @@ function drawP(){
       if(_flashP>0){const _fR=w.maxR*.4*_flashP;
         X.globalAlpha=.82*_flashP*fade;X.fillStyle=w.kind==='inferno'?'#fff2a0':'#fff0c8';
         X.beginPath();X.arc(w.x,w.y,_fR,0,Math.PI*2);X.fill();}
+      }
+      // 지옥강타 1만의 방사 균열: 기존 원형 지진파 위에 실제 지면이 갈라지는 실루엣을 더한다.
+      if(_isGSlam&&w.kind==='giant'){
+        const _earthCrackR=w.maxR*(.16+.34*Math.min(1,_wP*5));
+        X.save();
+        X.globalCompositeOperation='lighter';
+        X.lineCap='round';
+        X.globalAlpha=(.86-.4*_wP)*fade;
+        X.strokeStyle='#f6d08a';
+        X.lineWidth=3.5*(1-_wP)+1.5;
+        for(let _crack=0;_crack<12;_crack++){
+          const _crackA=Math.PI*2*_crack/12+Math.sin(_crack*17.31)*.15;
+          const _inner=_earthCrackR*(.2+(_crack%3)*.025);
+          const _outer=_earthCrackR*(.72+(_crack%4)*.075);
+          const _bend=_crackA+Math.sin(_crack*5.7)*.16;
+          X.beginPath();
+          X.moveTo(w.x+Math.cos(_crackA)*_inner,w.y+Math.sin(_crackA)*_inner*.55);
+          X.lineTo(w.x+Math.cos(_bend)*(_outer*.58),w.y+Math.sin(_bend)*(_outer*.58)*.55);
+          X.lineTo(w.x+Math.cos(_crackA)*_outer,w.y+Math.sin(_crackA)*_outer*.55);
+          X.stroke();
+        }
+        X.restore();
       }
       // 3) 이중 충격파: 밝은 압축파 + 후행 재질파
       const _ringCol=w.col||(w.kind==='inferno'?'#ff4a12':'#e8c08a');

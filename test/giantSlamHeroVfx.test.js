@@ -47,3 +47,11 @@ test('slam renderer advances all four API frames on a 2x2 grid', () => {
   assert.match(gameHtml, /const _slamSx=\(_slamFrame%2\)\*512,_slamSy=~~\(_slamFrame\/2\)\*512/);
   assert.match(gameHtml, /drawImage\(_slamVfx\.img,_slamSx,_slamSy,512,512/);
 });
+
+test('Shift+left Hell Slam I layers a visible earth impact over the quake ring', () => {
+  const renderer = gameHtml.slice(gameHtml.indexOf('if(G._gSlamWave&&G._gSlamWave.length>0){'), gameHtml.indexOf('// ══ 기동칼날개', gameHtml.indexOf('if(G._gSlamWave&&G._gSlamWave.length>0){')));
+  assert.match(renderer, /if\(_isGSlam&&w\.kind==='giant'\)/);
+  assert.match(renderer, /const _earthImpactP=Math\.min\(1,_wP\*5\)/);
+  assert.match(renderer, /X\.ellipse\(w\.x,w\.y,_earthCraterR,_earthCraterR\*\.34,0,0,Math\.PI\*2\)/);
+  assert.match(renderer, /for\(let _crack=0;_crack<12;_crack\+\+\)/);
+});
