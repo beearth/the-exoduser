@@ -30975,7 +30975,7 @@ function update(){
             e._revPts=Math.max(0,(e._revPts||0)-10);
             e.alive=true;e.x=e._reviveX;e.y=e._reviveY;
             e.hp=~~(e.mhp*.5);e.eShield=0;e.eShieldMax=0;e.s='recover';e.st2=60;e.stunned=0;e.kb={x:0,y:0};
-            e.reviveIframes=180;e._bossRevJudged=false; // 리셋 → 다음 사망 시 3초 카운트다운 재발동
+            e.reviveIframes=90;e._bossRevJudged=false; // 리셋 → 다음 사망 시 1.5초 카운트다운 재발동
             G.bossAlive=true;G._bossRef=e;
             // 남은 부활력 비율로 크기 축소 (origR 기준, 최소 40%)
             if(!e._origR)e._origR=e.r;
@@ -34587,8 +34587,8 @@ function _bossPhaseCheck(e,sp){
   // 1) HP 회복: 해당 페이즈 상한까지
   const recoverTo=ph.hp[1]; // 0.80, 0.60, 0.40, 0.20
   e.hp=Math.max(e.hp,~~(e.mhp*recoverTo));
-  // 2) 부활 무적 3초
-  e.reviveIframes=180;
+  // 2) 부활 무적 1.5초
+  e.reviveIframes=90;
   // 3) 스탯 강화
   e.atk=~~(e.atk*1.3);
   e.speed=Math.min(e.speed*1.15,1.8+_bp*.1);
@@ -38256,8 +38256,8 @@ function hurtE(e,dmg,ang,noSound,opts,atkEl=0){
   try{
   _petOnAtk();
   const isDot=opts&&opts.dot;
-  // 부활 무적 (캡 180, 피격마다 감소)
-  if(e.reviveIframes>180)e.reviveIframes=180;
+  // 부활 무적 (캡 90, 피격마다 감소)
+  if(e.reviveIframes>90)e.reviveIframes=90;
   if(e.reviveIframes>0&&!isDot){e.reviveIframes=Math.max(0,e.reviveIframes-1);return}
   // 거울방어 중: 공격하면 카운터
   if(e.ib&&e._mgActive&&e.s==='bossMirrorGuard'){
@@ -38655,7 +38655,7 @@ function hurtE(e,dmg,ang,noSound,opts,atkEl=0){
         e._bossRevJudged=true; // 1차 성공 → 2차 폴백 중복 발동 차단
         e._comboSeq=null;e._comboIdx=0;e._feinting=false;e._delaying=0; // 부활 시 콤보/페인트 클리어
         e.maxPoise=~~(e.maxPoise*1.5); e.poise=~~(e.maxPoise*0.25); // 부활: maxPoise 강화, 현재 포이즈는 25%만
-        e.reviveIframes=180; // 부활 무적 3초
+        e.reviveIframes=90; // 부활 무적 1.5초
         e.atk=~~(e.atk*(_isH7?2:1.5));
         e.speed=Math.min(e.speed*1.25,_isH7?2.0:1.6);
         e.bossPatCd=Math.max(_isH7?20:60,e.bossPatCd-30);

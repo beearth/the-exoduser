@@ -136,7 +136,7 @@ if(e.stunned<=0 && e._maxStunned){
 | 순서 | 내용 |
 |---|---|
 | 1 | HP 회복 — 페이즈 상한까지 (`e.mhp × ph.hp[1]`) |
-| 2 | 무적 3초 (`reviveIframes = 180`) |
+| 2 | 무적 1.5초 (`reviveIframes = 90`) |
 | 3 | 스탯 강화 — atk×1.3, speed×1.15, maxPoise×1.2 / 현재 포이즈 그대로 유지 (회복 없음, 2026-05-13) |
 | 4 | 상태 초기화 — stunned=0, s='recover', 콤보/딜레이 리셋 |
 | 5 | 텔레포트 — 플레이어 등 뒤 (거리 `80+_bp*25`) + 파티클 VFX |

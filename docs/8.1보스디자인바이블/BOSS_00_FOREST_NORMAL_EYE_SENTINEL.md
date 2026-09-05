@@ -236,7 +236,7 @@ EXODUSER 보스는 HP 0 도달해도 부활력 포인트가 남아 있고 확률
   - HP 풀피 회복 (e.hp = e.mhp)
   - eShield 풀피 (e.eShield = e.mhp, eShieldMax = e.mhp)
   - 페이즈 리셋 (_bossPhase = 0)
-  - 무적 3초 (reviveIframes = 180)
+  - 무적 1.5초 (reviveIframes = 90)
   - 공격력 ×1.5 (7단 보스는 ×2) — 누적 적용!
   - 이속 ×1.25 (상한 1.6, 7단은 2.0)
   - 패턴 쿨다운 -30프레임 (하한 60, 7단은 20)

@@ -46387,3 +46387,11 @@ mpR = 0.05 + s.int×0.005                                        [NO P.lv×0.001
 | `bossRec` | 다크드루이드가 `fanWave`, `radialLaser`, `teleStrike` 종료 후 멈춤 | `updateE()` 상태 switch에 `bossRec` 분기 누락 | `st2<=0`에서 `idle`로 복귀하는 분기 추가 | `test/bossRecRecovery.test.js` PASS; `?bosstest=3` 브라우저에서 세 패턴 재진행 확인 |
 
 - 전투 수치와 패턴 계약은 변경하지 않고 상태 머신 연결만 복구했다.
+
+## 2026-09-05 보스 부활 무적시간 50% 단축
+
+| 항목 | 이전 | 변경 | 적용 위치 |
+|---|---:|---:|---|
+| 보스 페이즈 전환·부활 무적 | `180f` (3초) | `90f` (1.5초) | `game.html` `reviveIframes` 전체 보스 경로 |
+
+- 일반 몬스터와 플레이어의 다른 무적 타이머는 변경하지 않았다.
