@@ -28845,7 +28845,7 @@ function update(){
         shake(_csTier>=3?70:_csTier>=2?40:18);_gpVibrate(_csTier>=3?60:_csTier>=2?30:12,_csTier>=3?500:_csTier>=2?250:120);G.chromaT=_csTier>=3?18:_csTier>=2?12:6;
         playVFXAng('earthquake',P.x,P.y-_csR*0.255,_csR/256,7,0,true); // 대지충격 VFX (~1초)
         if(!G._gSlamWave)G._gSlamWave=[];
-        G._gSlamWave.push({x:P.x,y:P.y,r:30,maxR:_csR,t:0,maxT:24,col:'#ffcc00'});
+        G._gSlamWave.push({x:P.x,y:P.y,r:30,maxR:_csR,t:0,maxT:24,col:'#ffcc00',kind:'chainSlam'});
         for(let j=0;j<12;j++){const _a=Math.PI*2*j/12;const _d=20+Math.random()*(_csR*.35);
           poolPart(P.x+Math.cos(_a)*_d,P.y+Math.sin(_a)*_d,Math.cos(_a)*4,Math.sin(_a)*4,'#ffcc00',3+Math.random()*3,12)}
         addParts(P.x,P.y,'#ffee00',6);addParts(P.x,P.y,'#ffffff',4);
@@ -51365,6 +51365,48 @@ function drawP(){
       const fade=Math.max(0,1-_wP);
       const _t2=_now;
       const _isGSlam=!w.col; // col 없으면 지옥강타 1, 있으면 칼등날개/기타
+      // 기동강타: 공용 VFX의 가산 합성에서는 어두운 흙·균열이 묻히므로 지면층을 직접 남긴다.
+      if(w.kind==='chainSlam'){
+        const _csImpactP=Math.min(1,_wP*3.4);
+        const _csCraterR=w.maxR*(.22+.54*_csImpactP);
+        X.save();
+        X.globalCompositeOperation='source-over';
+        X.globalAlpha=(.64-.30*_wP)*fade;
+        X.fillStyle='#170f0a';
+        X.beginPath();X.ellipse(w.x,w.y,_csCraterR,_csCraterR*.30,0,0,Math.PI*2);X.fill();
+        X.globalAlpha=(.72-.36*_wP)*fade;
+        X.strokeStyle='#9a6734';
+        X.lineWidth=6-2*_csImpactP;
+        X.beginPath();X.ellipse(w.x,w.y,_csCraterR*1.04,_csCraterR*.33,0,0,Math.PI*2);X.stroke();
+        X.globalAlpha=(.96-.40*_wP)*fade;
+        X.strokeStyle='#ffd27a';
+        X.lineWidth=7-3*_csImpactP;
+        X.lineCap='round';
+        for(let _csCrack=0;_csCrack<16;_csCrack++){
+          const _csA=Math.PI*2*_csCrack/16+Math.sin(_csCrack*11.7)*.12;
+          const _csIn=_csCraterR*(.12+(_csCrack%3)*.024);
+          const _csOut=_csCraterR*(.58+(_csCrack%4)*.075);
+          const _csBend=_csA+Math.sin(_csCrack*4.9)*.14;
+          X.beginPath();
+          X.moveTo(w.x+Math.cos(_csA)*_csIn,w.y+Math.sin(_csA)*_csIn*.54);
+          X.lineTo(w.x+Math.cos(_csBend)*(_csOut*.54),w.y+Math.sin(_csBend)*(_csOut*.54)*.54);
+          X.lineTo(w.x+Math.cos(_csA)*_csOut,w.y+Math.sin(_csA)*_csOut*.54);
+          X.stroke();
+        }
+        X.globalAlpha=(.95-.48*_wP)*fade;
+        X.fillStyle='#ffd27a';
+        for(let _csShard=0;_csShard<18;_csShard++){
+          const _csShardA=Math.PI*2*_csShard/18+Math.sin(_csShard*8.3)*.18;
+          const _csShardD=_csCraterR*(.20+(_csShard%6)*.105);
+          const _csShardX=w.x+Math.cos(_csShardA)*_csShardD;
+          const _csShardY=w.y+Math.sin(_csShardA)*_csShardD*.54;
+          const _csShardS=5+(_csShard%4)*2.5;
+          X.save();X.translate(_csShardX,_csShardY);X.rotate(_csShardA+_csShard*.7);
+          X.beginPath();X.moveTo(0,-_csShardS);X.lineTo(_csShardS*.72,0);X.lineTo(0,_csShardS*.65);X.lineTo(-_csShardS*.72,0);X.closePath();X.fill();
+          X.restore();
+        }
+        X.restore();
+      }
       // 지옥강타 1(Shift+좌클릭): 지진 링과 구분되는 대지 압착 중심부.
       // 먼저 지면 데칼을 깔아 영웅급 스프라이트 아래에서 묵직하게 눌리는 느낌을 만든다.
       if(_isGSlam&&w.kind==='giant'){
