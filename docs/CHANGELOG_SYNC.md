@@ -19,6 +19,15 @@
 
 # Sync Changelog
 
+## 2026-09-06 ENTER 철제 버튼 실제 적용
+
+| 항목 | 적용 |
+|---|---|
+| 이미지 | `img/cin_enter_forged_green_v1.png`, 검붉은 철제 판·은색 ENTER |
+| 연결 | `index.html` → `cin-enter-art.js`, 녹색 배경 투명화 완료 후 교체, 기존 이미지 폴백 |
+| 검증 | 실제 페이지 렌더·클릭 전환 확인, pageerror 없음 |
+| 문서 | `cinematic/ENTER_FORGED_20260906.md`, `cinematic/PROLOGUE_STORYBOARD_v1.md` 동기화 |
+
 ## 2026-09-05 — HUD 좌·우클릭 인접 배치 및 설명 동기화
 
 | HUD 순서 | 슬롯 ID | 실제 입력 | x 좌표 | 기능 |

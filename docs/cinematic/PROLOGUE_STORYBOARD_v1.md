@@ -295,9 +295,9 @@ FDG / HELL: EXODUSER / (c) 2026 SIM DOJIN
 
 **배경/문은 절대 건드리지 않는다. 진입 화면엔 문 중앙 하단에 깔끔한 ENTER 버튼 하나뿐.** 버튼은 인트로 비디오(`video/intro.mp4`, 닫힌 문 첫 프레임) 위 `#cinClickPrompt > .cin-hell-frame > .cin-enter-btn`. 클릭 시 `.cin-hell-frame.dissolve`로 안개처럼 흩어진 뒤 `#cinClickPrompt` `display:none` → 문 열림 영상 재생.
 
-- **ENTER 버튼**: `.cin-enter-btn` — 얇은 골드 테두리(`1px rgba(206,166,86,.6)`) + 반투명 다크 필 + 골드 그라디언트 텍스트(`Cinzel`), `border-radius:5px`, `cinEnterPulse 2.8s`(테두리 글로우 은은한 맥동). 문틈 정렬 `left:51.7%`, `top:74%`(문 중앙 자물쇠 아래). 비율 무관 `.cin-hell-frame`(비디오 contain 박스 복제) 기준.
+- **ENTER 버튼 (2026-09-06 실제 적용)**: `.cin-enter-btn` — 검붉은 철제 판과 은색 ENTER 각인 이미지. `cin-enter-art.js`가 녹색 배경을 투명 처리한 뒤 교체한다. `left:53.5%`, `top:64%`, `width:min(50%,600px)`, `cinEnterPulse 2.8s`. 비율 무관 `.cin-hell-frame`(비디오 contain 박스 복제) 기준. [에셋·처리 계약 및 검증](ENTER_FORGED_20260906.md) 참조.
 - **라벨**: "들어가기/입장" = 타이틀 화면 문맥에선 **ENTER**가 표준 영어. (Enter키+입장 동시 의미)
-- **안개 디졸브**: `.dissolve` 시 `opacity 0`+`blur 18px`+`translateY(-66%) scale(1.06)` 1.1~1.2s.
+- **안개 디졸브**: `.dissolve` 시 `opacity 0`+`blur 18px`+`translate(-50%,-62%) scale(1.06)`. opacity 전이 1.1s, 클릭 1200ms 후 프롬프트 숨김.
 - **폐기된 시도**: ⓐ OPEN THE HELLGATE 골드 타이틀(`open_final.png`, 자산은 보존) — 유저가 엠블럼/엔터버튼으로 방향 전환. ⓑ EXODUSER 엠블럼(`emblem_cut.png`) 문 위 오버레이 — 복잡한 문 아트와 충돌+거의 안 보임, 레퍼 자체가 "ICON & LAUNCHER CONCEPT"(런처/앱아이콘용). ⓒ `.cin-gore` 고어 오버레이, `.cin-hell-atmo` 지옥 분위기 레이어 — "추잡/짜침"으로 거부. 모두 미사용(일부 CSS orphan, 렌더 영향 없음).
 
 ### (히스토리) 폐기된 OPEN THE HELLGATE 타이틀 아트 (`.cin-hell-title`)
