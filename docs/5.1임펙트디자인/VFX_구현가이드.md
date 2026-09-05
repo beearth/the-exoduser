@@ -163,10 +163,16 @@
 
 | id/경로 | 시트 | 선택 조건 | 프레임·화면 크기 | 폴백·전투 영향 |
 |---|---|---|---|---|
-| `giant` / `assets/vfx/giant_slam_impact_sheet.png` | 1024×1024 RGBA, 2×2, 셀 512px | `giantSlam` 및 지옥강타 2가 아닌 `giantSlam2` | `_slamFrame=min(3,floor((t/maxT)×4))`; 크기=`maxR×0.9×(0.72→1.0)` | 로딩 실패 시 기존 `img/crater.png` 2×2 크레이터. 피해·범위·포이즈·자원·쿨다운 불변 |
+| `giant` / `assets/vfx/giant_slam_impact_sheet.png` | 1024×1024 RGBA, 2×2, 셀 512px | `giantSlam`, 지옥강타 2가 아닌 `giantSlam2`, 및 `chainSlam` | `_slamFrame=min(3,floor((t/maxT)×4))`; 지옥강타 크기=`maxR×0.9×(0.72→1.0)`, 기동강타 공유 크기=`maxR×1.8×(0.72→1.0)` | 로딩 실패 시 기존 `img/crater.png` 2×2 크레이터. 피해·범위·포이즈·자원·쿨다운 불변 |
 | `inferno` / `assets/vfx/inferno_slam_impact_sheet.png` | 1024×1024 RGBA, 2×2, 셀 512px | `srcId==='giantSlam2' && _isFused('infernoSlam')` | 같은 4프레임 진행; 크기=`maxR×0.98×(0.72→1.0)`. 진행률 62%까지 alpha 1, 이후 38% 동안 페이드 | 같은 크레이터 폴백. 지옥진 자동 발동 등 기존 합체 전투 로직 불변 |
 
 두 시트는 `_loadSlamVfx()`가 1024×1024와 실제 디코딩 가능 여부를 확인한다. `_gSlamWave`의 `kind`만 시각 재질을 선택하며, 기존 진동파 링과 충돌·피해 처리는 그대로 유지한다.
+
+### 기동강타 지옥강타 1 영웅 시트 공유 (2026-09-05)
+
+| 대상 ID·입력 | 공유 시트·프레임 | 합성·크기 | 병행 레이어 | 전투 영향 |
+|---|---|---|---|---|
+| `chainSlam` / 사슬기동 중 좌클릭 또는 E 착지 | `giant_slam_impact_sheet.png`의 2×2·512px 셀 4프레임. `_slamFrame=min(3,floor((t/maxT)×4))` | 일반 `source-over`; `maxR×1.8×(0.72→1.0)` | 기존 기동강타 크레이터·16갈래 균열·18개 파편은 유지 | 없음 — 24f 파동, 피해·범위·포이즈·자원·쿨다운·기동불꽃 기폭은 불변 |
 
 
 ### Shift+좌클릭 지옥강타 1 대지 충격 보강 (2026-09-05)

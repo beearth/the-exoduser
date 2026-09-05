@@ -12,6 +12,13 @@
 
 # Sync Changelog
 
+## 2026-09-05 기동강타 지옥강타 1 영웅 임팩트 공유
+
+| 대상 | 이전 시각 계약 | 현재 시각 계약 | 적용 위치 | 전투 영향·검증 |
+|---|---|---|---|---|
+| `chainSlam` / 사슬기동 중 E·좌클릭 착지 | 기동강타 지면 균열·파편과 기존 충격파만 표시 | 지옥강타 1의 `giant_slam_impact_sheet.png` 2×2·512px 4프레임을 추가 공유. `source-over`, 프레임=`min(3,floor((t/maxT)×4))`, 크기=`maxR×1.8×(0.72→1.0)` | `_gSlamWave` 렌더러의 `kind==='chainSlam'` 영웅 시트 분기 | 피해·범위·포이즈·자원·쿨다운·기동불꽃 기폭 불변. `test/chainSlamEarthImpact.test.js`, `test/giantSlamHeroVfx.test.js`, 인라인 문법 검사 PASS |
+| `giantSlam` | 기존 영웅 시트·대지 충격 보강 | 변경 없음 | 기존 `kind==='giant'` 분기 | 변경 없음 |
+
 ## 2026-09-05 기동강타(`chainSlam`) 대지 충격 가시성 복구
 
 | 대상 | 원인 | 현재 연출 | 수치·적용 위치 | 전투 영향·검증 |
