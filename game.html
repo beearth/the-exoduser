@@ -37636,6 +37636,9 @@ function updateE(e,sp){
         hurtP(~~(e.atk*.5*elMul(e.el,ar().el)))}
       e.s='recover';e.st2=35;break}
     if(e.st2<=0){e.s='recover';e.st2=25}break}
+  // fanWave/radialLaser/teleStrike use bossRec for their authored recovery animation.
+  // Keep this state in the update machine; without a branch it never reaches idle.
+  case'bossRec':if(e.st2<=0){e.s='idle';e.st2=e.ib?3+Math.random()*5:15+Math.random()*15;}break;
   case'recover':atkTicketRelease(e);if(e.ib&&e.st2>20)e.st2=20;if(e.st2<=0){
     // 방랑기사(90) 3연 콤보: recover 후 다음 콤보로 연계
     if(e.etype===90&&e._rkCombo>0&&e._rkCombo<3&&d<60){

@@ -1,6 +1,6 @@
 # 보스 배틀 세팅 바이블
 
-> 최종 업데이트: 2026-09-03
+> 최종 업데이트: 2026-09-05
 > 담당 코드: `game.html` — `genBossArena()`, `_enterBossArena()`, `_b3animate()`, `_poiseReset()`, 보스 테스트베드
 > 전투 정체성/전조/페이즈 연극 옵트인 기획: [`../4.0케릭터스프라이트 디자인/캐릭터_몬스터_보스_최적화디자인_v1.md`](../4.0케릭터스프라이트%20디자인/캐릭터_몬스터_보스_최적화디자인_v1.md) Track C. 본 파일의 HP×8·포이즈·아레나 수치는 유지. `2_3` 불변.
 
@@ -488,3 +488,15 @@ X.translate(Math.round(C.width/2 - G.cam.x + sx), Math.round(C.height/2 - G.cam.
 | `e.bossPatT` | int | 패턴 타이머 (99999 = AI 동결) |
 | `e._spawnT` | int | 2D 드로우 타이머 (999 = 2D 숨김, Three.js만 표시) |
 | `e._btFrozen` | bool | 테스트베드 동결 플래그 |
+## 2026-09-05 `bossRec` 회복 상태 머신 보정
+
+| 상태 | 생성 경로 | 진입 타이머 | 종료 조건 | 종료 상태 | 적용 코드 |
+|---|---|---:|---|---|---|
+| `bossRec` | `fanWave` 충격파 발사 후 | `40f` | `st2<=0` | `idle` (보스는 `3~8f` 대기) | `updateE()` `case 'bossRec'` |
+| `bossRec` | `radialLaser` 2차 발사 종료 후 | `50f` | `st2<=0` | `idle` (보스는 `3~8f` 대기) | `updateE()` `case 'bossRec'` |
+| `bossRec` | `teleStrike` 착지 후 | `35f` | `st2<=0` | `idle` (보스는 `3~8f` 대기) | `updateE()` `case 'bossRec'` |
+
+- `updateE()`가 매 프레임 `st2`를 감소시키며, `bossRec`는 공격 후 회복 애니메이션을 유지한 뒤 반드시 `idle`로 복귀한다.
+- `bossRec` 처리 분기 누락으로 `fanWave`, `radialLaser`, `teleStrike` 종료 후 보스가 영구 정지하던 버그를 수정했다.
+- 공격 피해, 전조 시간, 패턴 쿨다운, 포이즈, 사거리 수치는 변경하지 않았다. 회복 상태의 정상 종료 연결만 보정했다.
+- 회귀 테스트: `test/bossRecRecovery.test.js`; 브라우저 검증: `?bosstest=3`에서 세 패턴 종료 후 `idle`/다음 패턴 진행 확인.
