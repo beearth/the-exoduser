@@ -34,12 +34,13 @@ for (const [label, sheetUrl] of sheets) {
   });
 }
 
-test('Hell Slam identities stay distinct while Chain Crush selects the inferno impact', () => {
+test('Hell Slam I selects inferno while Chain Crush keeps the giant earth impact', () => {
   assert.match(gameHtml, /giant_slam_impact_sheet\.png/);
   assert.match(gameHtml, /inferno_slam_impact_sheet\.png/);
   assert.match(gameHtml, /const _slamKind=\(srcId==='giantSlam2'&&_isFused\('infernoSlam'\)\)\?'inferno':'giant';/);
-  assert.match(gameHtml, /kind:_slamKind/);
-  assert.match(gameHtml, /\(_isChainSlamHero\|\|w\.kind==='inferno'\)\?_infernoSlamVfx:_giantSlamVfx/);
+  assert.match(gameHtml, /const _slamVfxKind=srcId==='giantSlam'\?'inferno':_slamKind;/);
+  assert.match(gameHtml, /kind:_slamKind,vfxKind:_slamVfxKind/);
+  assert.match(gameHtml, /\(w\.vfxKind==='inferno'\|\|w\.kind==='inferno'\)\?_infernoSlamVfx:_giantSlamVfx/);
 });
 
 test('slam renderer advances all four API frames on a 2x2 grid', () => {

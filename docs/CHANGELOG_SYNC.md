@@ -1,3 +1,10 @@
+## 2026-09-05 기동강타·지옥강타 1 영웅 임팩트 스왑
+
+| 대상 | 이전 시각 계약 | 현재 시각 계약 | 적용 위치 | 전투 영향·검증 |
+|---|---|---|---|---|
+| `chainSlam` / 사슬기동 중 E·좌클릭 착지 | 붉은 지옥진 `inferno_slam_impact_sheet.png` | 황토 대지 `giant_slam_impact_sheet.png` 2×2·512px 4프레임, `source-over`, 크기=`maxR×1.8×(0.72→1.0)` | `_gSlamWave` `kind==='chainSlam'` | 피해·범위·포이즈·자원·쿨다운·기동불꽃 기폭 불변 |
+| `giantSlam` / Shift+좌클릭 | 황토 대지 `giant_slam_impact_sheet.png` | 붉은 지옥진 `inferno_slam_impact_sheet.png` 2×2·512px 4프레임, `screen`, 크기=`maxR×0.9×(0.72→1.0)` | `vfxKind:'inferno'`; 기존 `kind:'giant'` 지면 충격 유지 | 피해·범위·포이즈·자원·쿨다운 불변. 회귀·브라우저 검사 PASS |
+
 ## 2026-09-04 물 파란콩 4×4 얼음 시트 탄막·파열
 
 | 항목 | 이전 | 현재 계약 | 적용 위치 |
