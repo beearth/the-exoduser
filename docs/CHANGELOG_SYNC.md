@@ -46349,3 +46349,13 @@ mpR = 0.05 + s.int×0.005                                        [NO P.lv×0.001
 
 - 사용자 피드백에 따라 이전 Eye Slime 시트는 제거하고 이 숫자 없는 시트만 런타임에 남긴다.
 - 검증: `test/ch1StartMediumEyeMass.test.js`가 32개 cell의 단일 실루엣, 이진 alpha, 상하 중심 정렬을 고정한다. `initStage(0)` 브라우저에서 `sheet=true`, 2마리 alive, pageerror 0을 확인했다.
+
+## 2026-09-05 CH1-1 다안 육괴 인게임 PNG 캐시 동기화
+
+| 항목 | 값 | 적용 위치 |
+|---|---|---|
+| sheet URL | `img/ch1_1_eye_slime_8dir_4frame_clean.png?v=20260905-crop-sync` | `_CH1_START_MEDIUM_SHEETS.sheet` |
+| 원인 | 서버 PNG 응답 `Cache-Control: public, max-age=3600`와 동일 파일명 | 열린 Electron/브라우저가 이전 크롭 PNG를 최대 1시간 유지 |
+| 해결 | 새 URL cache version | 열린 인게임도 새 8×4 crop PNG를 즉시 다시 요청 |
+
+- 검증: 단위·inline 8/8 PASS, `initStage(0)`에서 `sheet=true`, 2마리 alive, pageerror 0.

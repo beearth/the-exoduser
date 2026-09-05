@@ -43,8 +43,8 @@ test('CH1-1 uses the text-free regular eight-direction four-frame sheet', () => 
   assert.deepEqual(pngSize(spritePath), { width: 1024, height: 2048 },
     'the cleaned source must repack four frames across eight directions as uniform 256px cells');
 
-  assert.match(gameHtml, /const _CH1_START_MEDIUM_SHEETS=\{sheet:'img\/ch1_1_eye_slime_8dir_4frame_clean\.png'\}/,
-    'runtime must use the new text-free four-frame sheet');
+  assert.match(gameHtml, /const _CH1_START_MEDIUM_SHEETS=\{sheet:'img\/ch1_1_eye_slime_8dir_4frame_clean\.png\?v=20260905-crop-sync'\}/,
+    'runtime must use the new text-free four-frame sheet through a fresh cache version');
   assert.match(gameHtml, /function _drawCh1StartMediumEyeMass\(/,
     'the authored monster needs its own sheet renderer');
   assert.match(gameHtml, /if\(e\._ch1StartMedium&&_ch1StartMediumReady\.sheet\)\{\s*_eDrew=_drawCh1StartMediumEyeMass\(X,e,_now,sa\);/,

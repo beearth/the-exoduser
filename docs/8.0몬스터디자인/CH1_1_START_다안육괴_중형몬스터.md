@@ -42,7 +42,7 @@
 
 | 항목 | 값 |
 |---|---|
-| 전용 로더 | `_CH1_START_MEDIUM_SHEETS`, `_ch1StartMediumImgs`, `_ch1StartMediumReady` |
+| 전용 로더 | `_CH1_START_MEDIUM_SHEETS`, `_ch1StartMediumImgs`, `_ch1StartMediumReady`; sheet URL은 `?v=20260905-crop-sync` cache version을 포함해 열린 인게임이 1시간 PNG 캐시를 재사용하지 않음 |
 | draw 함수 | `_drawCh1StartMediumEyeMass(X,e,now,alpha)` |
 | 방향 추적 | `targetFacing=atan2(P.y-e.y,P.x-e.x)` (`P.hp>0`) | 일반 적 렌더러의 facing 갱신보다 먼저 반환하는 전용 경로에서도 플레이어를 즉시 바라봄; 플레이어 부재/사망 시 `e.facing` fallback |
 | 표시 크기 | 세로 `drawH=max(240, r×7)`px; 실제 반경 범위에서는 `240~252px` |
