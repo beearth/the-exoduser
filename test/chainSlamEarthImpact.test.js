@@ -18,4 +18,5 @@ test('Chain Crush landing marks its wave as a source-over earth impact', () => {
   assert.match(renderer, /const _isChainSlamHero=w\.kind==='chainSlam';/);
   assert.match(renderer, /const _isSlamHero=_isGSlam\|\|_isChainSlamHero;/);
   assert.match(renderer, /_isChainSlamHero\?1\.8:/);
+  assert.match(renderer, /const _slamVfx=\(_isChainSlamHero\|\|w\.kind==='inferno'\)\?_infernoSlamVfx:_giantSlamVfx;/);
 });

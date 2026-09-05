@@ -51428,7 +51428,7 @@ function drawP(){
       }
       // 1) API 영웅급 임팩트 시트 (지옥강타 1/지옥강타 2 + 기동강타)
       if(_isSlamHero){
-        const _slamVfx=w.kind==='inferno'?_infernoSlamVfx:_giantSlamVfx;
+        const _slamVfx=(_isChainSlamHero||w.kind==='inferno')?_infernoSlamVfx:_giantSlamVfx;
         const _slamFrame=Math.min(3,~~(_wP*4));
         const _slamSx=(_slamFrame%2)*512,_slamSy=~~(_slamFrame/2)*512;
         const _slamGrow=.72+.28*Math.min(1,_wP*3.5);
@@ -51436,7 +51436,7 @@ function drawP(){
         const _slamAlpha=_wP<.62?1:Math.max(0,(1-_wP)/.38);
         if(_slamVfx.ready){
           X.save();X.globalAlpha=_slamAlpha;
-          if(w.kind==='inferno')X.globalCompositeOperation='screen';
+          if(_isChainSlamHero||w.kind==='inferno')X.globalCompositeOperation='screen';
           X.drawImage(_slamVfx.img,_slamSx,_slamSy,512,512,w.x-_slamSize/2,w.y-_slamSize/2,_slamSize,_slamSize);
           X.restore();
         }else{
