@@ -461,6 +461,19 @@ function showStageTransition(callback) {
 - `qsT`는 메인바 DOM/호버 집합에서 제외해 13칸 바에 14번째 스킬 아이콘이 올라오지 않도록 복구
 - `qsQ`, `skSlotCT`, `skSlot1` 좌표를 한 칸씩 당겨 원본 실루엣으로 복귀
 
+### 좌·우클릭 인접 배치 계약 (2026-09-05)
+
+실제 HUD와 `#skKeyBar` 키캡 오버레이는 아래 좌표를 반드시 공유한다. 레거시 DOM id의 순서와 무관하게, 플레이 중 왼쪽에서 오른쪽으로 **좌클릭 → 우클릭 → E → Shift**가 연속되어야 한다.
+
+| x 좌표 | DOM id | 실제 입력 | 기능 | 키캡/패드 |
+|---:|---|---|---|---|
+| 392px | `skSlotLMB` | 좌클릭 (`mouse0`) | 기본 공격 스킬 | LMB / A |
+| 436px | `qsE` (레거시 id) | 우클릭 (`mouse2`) | 마법 스킬 | RMB / RS |
+| 479px | `skSlotRMB` (레거시 id) | E (`KeyE`) | 칼등 처내기 | E / X |
+| 522px | `skSlot0` | Shift (`ShiftLeft`) | 사슬기동 | Shift / LB |
+
+- CSS 슬롯 좌표와 `_SK_SLOTS[].l`은 위 값을 동시에 변경한다. 한쪽만 바꾸면 아이콘과 키캡 설명이 어긋난다.
+
 ### 메인바 키 텍스트 오버레이 제거 (2026-04-16)
 - `_initFixedSlotKeys()`는 visible 슬롯의 `.qs-key`를 제거만 수행
 - 키 표기는 스킬 이미지 위 오버레이 대신 바 하단 원본 아트 라벨 기준으로 유지
@@ -704,9 +717,9 @@ Space 슬롯(`SKILL_SLOTS[4]`)은 지옥강타 계열과 `cat:'rage'` 분노 스
 | qs5 | KeyF | LT |
 | ultSlot | KeyZ | RT |
 | skSlotLMB | mouse0 | A |
+| qsE (레거시 id) | mouse2 (2026-07-27 스왑, 구 KeyE) | RS |
 | skSlotRMB (레거시 id) | KeyE (2026-07-27 스왑, 구 mouse2) | X |
 | skSlot0 | ShiftLeft | LB |
-| qsE (레거시 id) | mouse2 (2026-07-27 스왑, 구 KeyE) | RS |
 | qsQ | KeyQ | Y |
 | skSlotCT | ControlLeft | RB |
 | skSlot1 | Space | B |
