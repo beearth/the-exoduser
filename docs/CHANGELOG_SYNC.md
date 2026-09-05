@@ -18,8 +18,8 @@
 |---|---|---|---:|---|
 | 1 | `skSlotLMB` | 좌클릭 (`mouse0`) | 392px | 기본 공격 스킬 |
 | 2 | `qsE` (레거시 id) | 우클릭 (`mouse2`) | 436px | 마법 스킬 |
-| 3 | `skSlotRMB` (레거시 id) | E (`KeyE`) | 479px | 칼등 처내기 |
-| 4 | `skSlot0` | Shift (`ShiftLeft`) | 522px | 사슬기동 |
+| 3 | `skSlot0` | Shift (`ShiftLeft`) | 479px | 사슬기동 |
+| 4 | `skSlotRMB` (레거시 id) | E (`KeyE`) | 522px | 칼등 처내기 |
 
 - CSS 슬롯 좌표와 `_SK_SLOTS` 키캡 좌표를 함께 재정렬하여 좌클릭과 우클릭이 항상 나란히 표시된다.
 - 입력 동작은 변경하지 않았다: `shield=KeyE`, `beam=mouse2`를 그대로 유지한다.
