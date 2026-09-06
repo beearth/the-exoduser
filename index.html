@@ -74,7 +74,7 @@ body{background:#000 center/cover no-repeat;color:#ccaa88;font-family:'Noto Sans
 /* 비디오 object-fit:contain 박스와 동일 크기·위치 프레임 → 화면 비율 무관하게 문을 추적 */
 .cin-hell-frame{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);
   width:min(100vw,calc(100vh*(1200/700)));height:min(100vh,calc(100vw*(700/1200)));pointer-events:none}
-/* ENTER 엠블럼 이미지 (2026-08-11) — 악마 문양 각인 플레이트로 교체. 검은 배경은 radial 마스크로 페이드, 호버 시 확대+발광+사운드 */
+/* 2026-09-07: 흑백 판화의 문을 중심에 두고 ENTER는 작은 안내로 유지. */
 .cin-enter-btn{position:absolute;left:53.5%;top:64%;transform:translate(-50%,-50%);
   width:min(50%,600px);height:auto;pointer-events:auto;cursor:pointer;display:block;
   animation:cinEnterPulse 2.8s ease-in-out infinite;
@@ -466,7 +466,7 @@ body{background:#000 center/cover no-repeat;color:#ccaa88;font-family:'Noto Sans
   </video>
   <!-- 클릭 안내 -->
   <div id="cinClickPrompt" style="position:absolute;inset:0;z-index:999;display:flex;align-items:center;justify-content:center;background:rgba(0,0,0,0.1)">
-    <div class="cin-hell-frame"><img class="cin-enter-btn" src="img/cin_enter_plate.png?v=2" alt="ENTER" draggable="false"></div>
+    <div class="cin-hell-frame"><button class="cin-enter-btn" type="button" aria-label="입장 / Enter"><span>ENTER</span></button></div>
   </div>
 
   <!-- 문 배경 (줌 인/아웃) -->
@@ -850,7 +850,7 @@ body{background:#000 center/cover no-repeat;color:#ccaa88;font-family:'Noto Sans
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
 <script src="lobby_i18n.js"></script>
 <script src="lobby-stage-info.js"></script>
-<script src="cin-enter-art.js?v=20260906-forged-v1"></script>
+<link rel="stylesheet" href="cin-enter-engraved.css?v=20260907-1">
 <script>
 // ═══ 글로벌 게임패드 매니저 (전 화면 공통) ═══
 const _GP = {
@@ -2219,7 +2219,7 @@ function playCinematic(){
   
   const keyHandler = (e) => {
     if(!_cinDone && (e.code==='Space'||e.code==='Enter')) {
-      e.preventDefault(); onSubSkip();
+      e.preventDefault(); if(!_vidStarted)onVidClick();else onSubSkip();
     }
   };
   document.addEventListener('keydown', keyHandler);
