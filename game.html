@@ -53143,7 +53143,8 @@ function drawP(){
       if(_dashPhase===1&&P._sa.done)_dashPhase=2;
     }else if(_apMv){
       const _dFr=SpriteAnimator._fr(P._sa,_apHasDir?_apDir:null);
-      if(_dFr&&_dFr.length)P._sa.f=~~((P._walkDist||0)/32)%_dFr.length;
+      // 전사 8프레임·실버테일 4프레임 모두 256px 이동마다 보행 한 주기.
+      if(_dFr&&_dFr.length)P._sa.f=~~((P._walkDist||0)*_dFr.length/256)%_dFr.length;
     }else{SpriteAnimator.update(P._sa,_dtSp,_apHasDir?_apDir:null);}
     // Ori 영혼 글로우 제거
     // 스프라이트 그리기 (죽음 시 쓰러짐 연출)
@@ -53151,6 +53152,8 @@ function drawP(){
     const _skillAnimLift=(_apAnim==='gSlam1'||_apAnim==='gSlam2'||_apAnim==='gSlamRecover'||_apAnim==='chain')?-18:0;
     const _silvAtk=_silvertailAttackPose();
     X.save();X.translate(_px,_py+_skillAnimLift);
+    // 정면 실루엣 높이: 전사 29px / 실버테일 45px → 본체 크기 정렬.
+    if(_charIdx===1)X.scale(.65,.65);
     if(_apDead){
       const _dieT=Math.min(1,P.s==='fallen'?(1-P.st2/300)*3:1); // 1초 만에 쓰러짐
       X.translate(0,_dieT*20*_pScale); // 바닥으로 내려감
