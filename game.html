@@ -57203,6 +57203,17 @@ function showTutorial(){
 }
 
 // ═══ 사망 처리 (PoE2식) ═══
+function _refillRespawnResources(){
+  P.hp=P.mhp;P.mp=P.mmp;P.st=P.mst;P.shield=P.mshield;
+  const chargeLv=P.skills.chargeBoost||0;
+  const hasCharge=chargeLv>=1||(P.skills.magicBlink||0)>=1;
+  const dim=isDimBreach();
+  P.maxChargeStocks=dim?5:Math.min(5,(hasCharge?3+~~(chargeLv/10):1)+(ar().bonusChargeStock||0)+(bt().bonusChargeStock||0));
+  P.chargeStocks=P.maxChargeStocks;P.chargeCd=0;
+  const cells=_isFused('dimRush')?10:_isFused('dimThunder')?9:dim?7:hasCharge?6:_HARP_GAUGE_BASE_CELLS;
+  _HARP_GAUGE_MAX=cells*_HARP_GAUGE_COST[1]+~~(_eqAffix('extraST')||0);
+  _harpGauge=_HARP_GAUGE_MAX;
+}
 $('retryBtn').onclick=async()=>{
   $('death').classList.remove('on');$('victory').classList.remove('on');_drReset();if(typeof _deathDlgStop==='function')_deathDlgStop();
   // 경험치 30% 손실
@@ -57254,6 +57265,7 @@ $('retryBtn').onclick=async()=>{
   G._bonfire={x:P.x,y:P.y,t:300,r:280};
   // 스탯 재적용
   applyStats();
+  _refillRespawnResources(); // 일반/보스방 리스폰 공통: 최종 최대치로 모든 전투자원 충전
   ['hud','hudTop','hudCorner','mmWrap','skBar','mmLvl','globeHP','globeMP'].forEach(id=>$(id).classList.add('on'));
   updateQS();G.on=true;
   // DB에 즉시 반영
