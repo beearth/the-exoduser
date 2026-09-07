@@ -11,7 +11,7 @@
 }
 #cinClickPrompt:has(.dissolve)::before{opacity:0}
 .cin-game-title{
-  position:absolute;left:51.7%;top:37%;transform:translate(-50%,-50%);
+  position:absolute;left:53.5%;top:37%;transform:translate(-50%,-50%);
   width:52%;margin:0;text-align:center;font-family:'Cinzel',Georgia,serif;
   pointer-events:none;
   transition:opacity 1.1s ease,filter 1.1s ease,transform 1.1s ease;
@@ -39,7 +39,7 @@
 .cin-game-subtitle::after{transform:rotate(180deg)}
 .cin-hell-frame.dissolve .cin-game-title{opacity:0;filter:blur(12px);transform:translate(-50%,-54%)}
 .cin-hell-frame .cin-enter-btn{
-  left:51.7%;top:74%;width:210px;max-width:70%;height:64px;
+  left:53.5%;top:74%;width:210px;max-width:70%;height:64px;
   padding:0 0 0 .3em;border:0;border-radius:0;
   color:#d5d0c4;background:radial-gradient(ellipse,rgba(6,7,7,.85),rgba(6,7,7,.4) 58%,transparent 74%);
   font-family:'Cinzel',Georgia,serif;font-size:clamp(15px,1.3vw,19px);font-weight:400;

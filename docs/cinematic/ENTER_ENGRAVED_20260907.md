@@ -6,7 +6,7 @@
 |---|---|
 | 연결 | `index.html` → `cin-enter-engraved.css?v=20260907-api-3` |
 | 버튼 | `.cin-enter-btn`, type=button, aria-label="입장 / Enter", 리프 span에 ENTER |
-| 배치 | 기존 contain 프레임 기준 left 51.7%, top 74%, translate(-50%,-50%) |
+| 배치 | 기존 contain 프레임 기준 left 53.5%, top 74%, translate(-50%,-50%) |
 | 크기 | 210×64px, max-width 70%, 글자 clamp(15px,1.3vw,19px), 자간 .3em, weight 400 |
 | 서체·색 | Cinzel / Georgia / serif, #d5d0c4, hover #fff4dc |
 | 장식 | 위·아래 1px 선, 좌우 15%, 상하 3px, 회백색 알파 .55에서 투명 그라데이션 |
@@ -30,7 +30,7 @@
 | 전체 프롬프트 | `output/imagegen/exoduser-hell-lord-logo-v1.prompt.txt` |
 | 프롬프트 요약 | 정확한 EXODUSER / HELL LORD, 커스텀 고딕 각인·마모된 은빛 금속·중앙 칼날 문양, 검정 배경, ENTER 제외 |
 | 구조 | `.cin-game-title` h1 → `.cin-title-art` img, alt="EXODUSER — HELL LORD" |
-| 배치 | contain 프레임 left 51.7%, top 37%, width 52%, translate(-50%,-50%) |
+| 배치 | contain 프레임 left 53.5%, top 37%, width 52%, translate(-50%,-50%). 사용자 스크린샷 중앙 정렬 요청으로 로고·ENTER를 함께 오른쪽 1.8%p 이동 |
 | 이미지 | display block, width 100%, height auto. 원본 비율 유지, 잘라내기 없음 |
 | 합성 | `cin-logo-art.js?v=20260907-api-1`이 원본 로드 후 canvas에서 검정 매트를 한 번 투명화. light=max(R,G,B), alpha=round(255*clamp((light-8)/24,0,1)). RGB 유지, PNG data URL 디코딩 후 src 교체 |
 | 준비 표시 | `.cin-title-art`는 visibility hidden, data-ready=true 후 visible. 검정 사각형이 로딩 중 노출되지 않음. 원본 PNG는 변경 없이 보존 |
