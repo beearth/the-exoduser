@@ -4,12 +4,15 @@
 
 | 항목 | 현재 계약 |
 |---|---|
-| 연결 | `index.html` → `cin-enter-engraved.css?v=20260907-api-3` |
-| 버튼 | `.cin-enter-btn`, type=button, aria-label="입장 / Enter", 리프 span에 ENTER |
-| 배치 | 기존 contain 프레임 기준 left 53.3%, top 74%, translate(-50%,-50%) |
-| 크기 | 210×64px, max-width 70%, 글자 clamp(15px,1.3vw,19px), 자간 .3em, weight 400 |
+| 연결 | `index.html` → `cin-enter-engraved.css?v=20260907-enter-4`, `cin-logo-art.js?v=20260907-enter-2` |
+| 버튼 | `.cin-enter-btn`, type=button, aria-label="입장 / Enter", `.cin-enter-art` 이미지. span ENTER는 로딩·실패 시 폴백 |
+| 배치 | 기존 contain 프레임 기준 left 53.3%, top 80%, translate(-50%,-50%). 문양과 타이틀이 겹치지 않도록 하단 공간 확보 |
+| 크기 | width clamp(180px,16vw,240px), max-width 70%, height auto, aspect-ratio 3/2. 폴백 글자 clamp(15px,1.3vw,19px), 자간 .3em, weight 400 |
 | 서체·색 | Cinzel / Georgia / serif, #d5d0c4, hover #fff4dc |
-| 장식 | 양옆 28×10px 날개형 이중선: top calc(50% - 5px), 1px #8a7860, 좌측 skewX(-35deg) / 우측 skewX(35deg). 상단 7×7px 마름모 top 1px / 하단 3×3px 마름모 bottom 3px, 중앙 정렬·45deg 회전·1px #b8a181·배경 #211c17. 상단 그림자 0 0 7px rgba(210,177,123,.25) |
+| 장식 | `output/imagegen/enter-gothic-api-v1.png`: 마모된 은빛 곡선 조각·청동빛 홈·고딕 테두리와 ENTER 각인. 기존 CSS 선·마름모 제거 |
+| 생성 | imagegen 스킬 CLI/API 모드, OpenAI Images API, gpt-image-2, high, 1536×1024, 1장. 전체 프롬프트 `output/imagegen/enter-gothic-api-v1.prompt.txt` |
+| 로드 | 공용 cin-logo-art.js에서 제목·ENTER 모두 검정 매트 투명화. light=max(R,G,B), alpha=round(255*clamp((light-8)/24,0,1)). 원본 파일 보존 |
+| 준비 | 이미지 data-ready=true 후 visible, 부모 data-art-ready=true 후 폴백 span 숨김. 폴백은 absolute left/top 50%, translate(-50%,-50%) |
 | 버튼 배경·점멸 | 타원형 검정 그라데이션 알파 .85 → .4(58%) → 0(74%). cinEnterBreathe 2.6s ease-in-out infinite, opacity .45 → 1 → .45. 확대 없음 |
 | 점멸 예외 | hover·focus-visible에서는 animation none, opacity 1. dissolve에서는 animation none, opacity 0. reduced-motion에서는 animation none |
 | 암부 | `#cinClickPrompt::before`, radial 중심 51.7% 43%, 알파 .30(0%) / .43(28%) / .77(63%) / .96(100%) |
@@ -33,7 +36,7 @@
 | 구조 | `.cin-game-title` h1 → `.cin-title-art` img, alt="EXODUSER — HELL LORD" |
 | 배치 | contain 프레임 left 53.3%, top 37%, width 52%, translate(-50%,-50%). 사용자 스크린샷 중앙 정렬 요청으로 로고·ENTER를 오른쪽 1.8%p 이동한 뒤, 추가 요청으로 왼쪽 0.2%p 미세 조정 |
 | 이미지 | display block, width 100%, height auto. 원본 비율 유지, 잘라내기 없음 |
-| 합성 | `cin-logo-art.js?v=20260907-api-1`이 원본 로드 후 canvas에서 검정 매트를 한 번 투명화. light=max(R,G,B), alpha=round(255*clamp((light-8)/24,0,1)). RGB 유지, PNG data URL 디코딩 후 src 교체 |
+| 합성 | `cin-logo-art.js?v=20260907-enter-2`가 제목·ENTER 각각 원본 로드 후 canvas에서 검정 매트를 한 번 투명화. light=max(R,G,B), alpha=round(255*clamp((light-8)/24,0,1)). RGB 유지, PNG data URL 디코딩 후 src 교체 |
 | 준비 표시 | `.cin-title-art`는 visibility hidden, data-ready=true 후 visible. 검정 사각형이 로딩 중 노출되지 않음. 원본 PNG는 변경 없이 보존 |
 | 가독성 | 제목 뒤 ::before, inset 0 -20%, 검정 타원 알파 .94 → .8(35%) → transparent(72%) |
 | 입력·퇴장 | pointer-events none, 기존 1.1s 디졸브·reduced-motion 유지, ENTER 별도 버튼 유지 |

@@ -14,7 +14,8 @@ with sync_playwright() as p:
         page.wait_for_timeout(2500)
         button=page.locator('.cin-enter-btn')
         assert button.evaluate("e=>getComputedStyle(e).animationName")=='cinEnterBreathe', 'ENTER needs a gentle blink'
-        assert button.evaluate("e=>getComputedStyle(e.querySelector('span'),'::before').content") not in ['none','normal'], 'ENTER ornament missing'
+        assert button.locator('.cin-enter-art').count()==1, 'ENTER must use API-crafted ornament'
+        page.wait_for_function("document.querySelector('.cin-enter-art').dataset.ready==='true'")
         title=page.locator('.cin-game-title')
         assert title.count()==1, 'Main EXODUSER / HELL LORD title is missing'
         logo=title.locator('img')

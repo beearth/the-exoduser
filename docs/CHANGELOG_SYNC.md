@@ -19,6 +19,17 @@
 
 # Sync Changelog
 
+## 2026-09-07 ENTER 고딕 곡선 문양 API 적용
+
+| 항목 | 변경 |
+|---|---|
+| 생성 | OpenAI Images API / gpt-image-2 / high / 1536×1024 / 1장 |
+| 에셋·프롬프트 | `output/imagegen/enter-gothic-api-v1.png`, `enter-gothic-api-v1.prompt.txt` |
+| 디자인 | CSS 선·마름모 제거, 은빛 곡선 조각의 고딕 테두리와 ENTER 각인 |
+| 배치·동작 | left 53.3%, top 80%, width clamp(180px,16vw,240px), aspect-ratio 3/2. 기존 점멸·클릭·포커스 유지 |
+| 로더 | cin-logo-art.js에서 제목·ENTER 각각 검정 매트 투명화, 로딩 중 ENTER 텍스트 폴백 |
+| 문서 | `cinematic/ENTER_ENGRAVED_20260907.md` 및 콘티 동기화 |
+
 ## 2026-09-07 ENTER 문양·점멸 및 위치 미세 조정
 
 | 항목 | 변경 |

@@ -1,7 +1,6 @@
 // Decode API artwork once; remove its black matte before showing it over the video.
 (() => {
-  const logo = document.querySelector('.cin-title-art');
-  if (!logo) return;
+  document.querySelectorAll('.cin-title-art, .cin-enter-art').forEach(logo => {
   const source = new Image();
   source.onload = () => {
     try {
@@ -18,9 +17,10 @@
       }
       ctx.putImageData(frame,0,0);
       const ready = new Image();
-      ready.onload=()=>{logo.src=ready.src;logo.dataset.ready='true';};
+      ready.onload=()=>{logo.src=ready.src;logo.dataset.ready='true';logo.parentElement.dataset.artReady='true';};
       ready.src=canvas.toDataURL('image/png');
     } catch(error) { console.warn('[Logo] Matte decode failed',error); }
   };
   source.src=logo.getAttribute('src');
+  });
 })();
