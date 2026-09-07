@@ -1,10 +1,10 @@
 # 흑백 판화형 진입 화면 — 2026-09-07
 
-사용자 최신 지시: EXODUSER / HELL LORD를 큰 타이틀로 만들고 아래 ENTER를 작게 배치한다. frontend-design 기준으로 제목 → 부제 → 입장 안내의 위계를 적용했다. 이미지 생성·원본 영상 편집은 하지 않았다.
+사용자 최신 지시: CSS 제목 대신 실제 이미지 생성 API를 사용한다. EXODUSER / HELL LORD를 로고 이미지로 만들고 아래 ENTER는 작은 버튼으로 유지한다. 원본 문 영상은 보존했다.
 
 | 항목 | 현재 계약 |
 |---|---|
-| 연결 | `index.html` → `cin-enter-engraved.css?v=20260907-title-2` |
+| 연결 | `index.html` → `cin-enter-engraved.css?v=20260907-api-3` |
 | 버튼 | `.cin-enter-btn`, type=button, aria-label="입장 / Enter", 리프 span에 ENTER |
 | 배치 | 기존 contain 프레임 기준 left 51.7%, top 74%, translate(-50%,-50%) |
 | 크기 | 210×64px, max-width 70%, 글자 clamp(15px,1.3vw,19px), 자간 .3em, weight 400 |
@@ -21,7 +21,24 @@
 
 기존 인라인 이미지용 스타일보다 이 스타일시트의 선택자 우선순위가 높다. 금속 에셋 로더는 연결하지 않아 이미지 디코딩 후 재교체되지 않는다.
 
-## EXODUSER / HELL LORD 타이틀
+## EXODUSER / HELL LORD API 타이틀 (현재)
+
+| 항목 | 값 |
+|---|---|
+| 생성 경로 | imagegen 스킬의 CLI/API 모드, OpenAI Images API, gpt-image-2, quality high, 1536×1024, 1장 |
+| 원본·실제 적용 파일 | `output/imagegen/exoduser-hell-lord-logo-api-v1.png` |
+| 전체 프롬프트 | `output/imagegen/exoduser-hell-lord-logo-v1.prompt.txt` |
+| 프롬프트 요약 | 정확한 EXODUSER / HELL LORD, 커스텀 고딕 각인·마모된 은빛 금속·중앙 칼날 문양, 검정 배경, ENTER 제외 |
+| 구조 | `.cin-game-title` h1 → `.cin-title-art` img, alt="EXODUSER — HELL LORD" |
+| 배치 | contain 프레임 left 51.7%, top 37%, width 52%, translate(-50%,-50%) |
+| 이미지 | display block, width 100%, height auto. 원본 비율 유지, 잘라내기 없음 |
+| 합성 | `cin-logo-art.js?v=20260907-api-1`이 원본 로드 후 canvas에서 검정 매트를 한 번 투명화. light=max(R,G,B), alpha=round(255*clamp((light-8)/24,0,1)). RGB 유지, PNG data URL 디코딩 후 src 교체 |
+| 준비 표시 | `.cin-title-art`는 visibility hidden, data-ready=true 후 visible. 검정 사각형이 로딩 중 노출되지 않음. 원본 PNG는 변경 없이 보존 |
+| 가독성 | 제목 뒤 ::before, inset 0 -20%, 검정 타원 알파 .94 → .8(35%) → transparent(72%) |
+| 입력·퇴장 | pointer-events none, 기존 1.1s 디졸브·reduced-motion 유지, ENTER 별도 버튼 유지 |
+| 검증 | 기존 3개 화면 크기 테스트에 API 이미지 존재·로드·alt 및 ENTER 위 배치 확인 |
+
+## CSS 타이틀 (과거 구현, 현재 미사용)
 
 | 항목 | 값 |
 |---|---|

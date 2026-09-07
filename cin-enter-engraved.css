@@ -11,15 +11,14 @@
 }
 #cinClickPrompt:has(.dissolve)::before{opacity:0}
 .cin-game-title{
-  position:absolute;left:51.7%;top:43%;transform:translate(-50%,-50%);
-  width:86%;margin:0;text-align:center;font-family:'Cinzel',Georgia,serif;
-  pointer-events:none;isolation:isolate;
+  position:absolute;left:51.7%;top:37%;transform:translate(-50%,-50%);
+  width:52%;margin:0;text-align:center;font-family:'Cinzel',Georgia,serif;
+  pointer-events:none;
   transition:opacity 1.1s ease,filter 1.1s ease,transform 1.1s ease;
 }
-.cin-game-title::before{
-  content:"";position:absolute;z-index:-1;inset:-85% -12%;
-  background:radial-gradient(ellipse,rgba(0,0,0,.94),rgba(0,0,0,.72) 34%,transparent 69%);
-}
+.cin-title-art{display:block;width:100%;height:auto;visibility:hidden}
+.cin-game-title::before{content:"";position:absolute;z-index:-1;inset:0 -20%;background:radial-gradient(ellipse,rgba(0,0,0,.94),rgba(0,0,0,.8) 35%,transparent 72%)}
+.cin-title-art[data-ready="true"]{visibility:visible}
 .cin-game-name{
   display:block;font-size:clamp(36px,min(7.6vw,13vh),126px);font-weight:700;
   letter-spacing:.055em;line-height:1.15;padding-left:.055em;

@@ -19,6 +19,15 @@
 
 # Sync Changelog
 
+## 2026-09-07 EXODUSER / HELL LORD 실제 API 로고
+
+| 항목 | 변경 |
+|---|---|
+| 생성 | OpenAI Images API, gpt-image-2, high, 1536×1024, 1장 |
+| 에셋 | `output/imagegen/exoduser-hell-lord-logo-api-v1.png`, 전체 프롬프트는 같은 폴더의 `exoduser-hell-lord-logo-v1.prompt.txt` |
+| 적용 | CSS 제목 대신 이미지 로고, contain 프레임 left 51.7% / top 37% / width 52%, `cin-logo-art.js`에서 검정 매트 투명화 |
+| 유지 | 작은 ENTER·문 영상·입력·디졸브 유지. `cinematic/ENTER_ENGRAVED_20260907.md` 및 콘티 동기화 |
+
 ## 2026-09-07 EXODUSER / HELL LORD 메인 타이틀
 
 | 항목 | 변경 |

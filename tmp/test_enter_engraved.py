@@ -15,8 +15,11 @@ with sync_playwright() as p:
         button=page.locator('.cin-enter-btn')
         title=page.locator('.cin-game-title')
         assert title.count()==1, 'Main EXODUSER / HELL LORD title is missing'
-        assert title.locator('.cin-game-name').inner_text()=='EXODUSER'
-        assert title.locator('.cin-game-subtitle').inner_text()=='HELL LORD'
+        logo=title.locator('img')
+        assert logo.count()==1, 'Title must use the API-generated logo asset'
+        assert logo.get_attribute('alt')=='EXODUSER — HELL LORD'
+        page.wait_for_function("document.querySelector('.cin-title-art').dataset.ready === 'true'")
+        assert logo.evaluate('e=>e.complete && e.naturalWidth>0'), 'Logo image failed to load'
         assert title.bounding_box()['y']+title.bounding_box()['height'] < button.bounding_box()['y'], 'Title must sit above ENTER'
         assert button.evaluate("e => e.tagName === 'BUTTON'"), 'ENTER must be a native text button, not a metal image'
         assert button.bounding_box()['width'] <= 240, 'ENTER must remain a secondary visual element'
