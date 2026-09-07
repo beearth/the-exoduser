@@ -19,6 +19,15 @@
 
 # Sync Changelog
 
+## 2026-09-07 EXODUSER / HELL LORD 메인 타이틀
+
+| 항목 | 변경 |
+|---|---|
+| 구성 | 큰 EXODUSER, 아래 HELL LORD 부제, 하단 작은 ENTER |
+| 표현 | 은빛 명암의 제목과 청동빛 부제·구분선, 제목 뒤 암부로 가독성 확보 |
+| 계약 | `cinematic/ENTER_ENGRAVED_20260907.md`, `cin-enter-engraved.css?v=20260907-title-2` |
+| 검증 | 3개 화면 크기에서 문구·상하 배치·클릭 및 키보드 진입 테스트 |
+
 ## 2026-09-07 흑백 판화형 ENTER
 
 | 항목 | 적용 |

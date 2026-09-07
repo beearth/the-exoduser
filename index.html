@@ -466,7 +466,10 @@ body{background:#000 center/cover no-repeat;color:#ccaa88;font-family:'Noto Sans
   </video>
   <!-- 클릭 안내 -->
   <div id="cinClickPrompt" style="position:absolute;inset:0;z-index:999;display:flex;align-items:center;justify-content:center;background:rgba(0,0,0,0.1)">
-    <div class="cin-hell-frame"><button class="cin-enter-btn" type="button" aria-label="입장 / Enter"><span>ENTER</span></button></div>
+    <div class="cin-hell-frame">
+      <h1 class="cin-game-title" aria-label="EXODUSER — HELL LORD"><span class="cin-game-name">EXODUSER</span><span class="cin-game-subtitle">HELL LORD</span></h1>
+      <button class="cin-enter-btn" type="button" aria-label="입장 / Enter"><span>ENTER</span></button>
+    </div>
   </div>
 
   <!-- 문 배경 (줌 인/아웃) -->
@@ -850,7 +853,7 @@ body{background:#000 center/cover no-repeat;color:#ccaa88;font-family:'Noto Sans
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
 <script src="lobby_i18n.js"></script>
 <script src="lobby-stage-info.js"></script>
-<link rel="stylesheet" href="cin-enter-engraved.css?v=20260907-1">
+<link rel="stylesheet" href="cin-enter-engraved.css?v=20260907-title-2">
 <script>
 // ═══ 글로벌 게임패드 매니저 (전 화면 공통) ═══
 const _GP = {
@@ -1839,7 +1842,6 @@ function _applyLobbyLang(){
   const tbl=_LOBBY_TABLES[lang]||_LOBBY_EN;
   // 정적 텍스트 교체
   const m={
-    'h1':['HELL','HELL'],
     '.loading p':['연결 중...','Connecting...'],
     '#loginSection h2':_LOBBY_BUILD==='demo'?['데모버전에 오신 것을 환영합니다','Welcome to the Demo']:['계정으로 입장하세요','Sign in to enter'],
     '#demoEnterBtn':null, // 특수 처리 (SVG 포함)

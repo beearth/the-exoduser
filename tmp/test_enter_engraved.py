@@ -13,6 +13,11 @@ with sync_playwright() as p:
         page.evaluate("() => {document.getElementById('fdgScreen').style.display='none'; _goCinematic();}")
         page.wait_for_timeout(2500)
         button=page.locator('.cin-enter-btn')
+        title=page.locator('.cin-game-title')
+        assert title.count()==1, 'Main EXODUSER / HELL LORD title is missing'
+        assert title.locator('.cin-game-name').inner_text()=='EXODUSER'
+        assert title.locator('.cin-game-subtitle').inner_text()=='HELL LORD'
+        assert title.bounding_box()['y']+title.bounding_box()['height'] < button.bounding_box()['y'], 'Title must sit above ENTER'
         assert button.evaluate("e => e.tagName === 'BUTTON'"), 'ENTER must be a native text button, not a metal image'
         assert button.bounding_box()['width'] <= 240, 'ENTER must remain a secondary visual element'
         page.screenshot(path=f'tmp/enter_engraved_{width}.png')

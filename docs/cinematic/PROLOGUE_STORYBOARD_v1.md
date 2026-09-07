@@ -293,7 +293,7 @@ FDG / HELL: EXODUSER / (c) 2026 SIM DOJIN
 
 ### 최종 결론 (중요)
 
-**원본 문 영상은 보존한다. 2026-09-07 사용자 승인으로 진입 화면에 주변부 암부 레이어와 작은 흑백 ENTER를 적용한다.** 버튼은 인트로 비디오(`video/intro.mp4`, 닫힌 문 첫 프레임) 위 `#cinClickPrompt > .cin-hell-frame > .cin-enter-btn`. 클릭 시 `.cin-hell-frame.dissolve`로 버튼과 암부 레이어가 걷히고 `#cinClickPrompt` `display:none`. 기존 문 열림 영상 재생 동작을 유지한다.
+**원본 문 영상은 보존한다. 2026-09-07 최신 사용자 지시로 큰 EXODUSER / HELL LORD 타이틀과 하단 작은 ENTER를 배치한다.** `.cin-game-title`은 contain 프레임 left 51.7%, top 43%, width 86%. 버튼은 인트로 비디오(`video/intro.mp4`, 닫힌 문 첫 프레임) 위 `#cinClickPrompt > .cin-hell-frame > .cin-enter-btn`. 클릭 시 제목·버튼·암부가 함께 사라지며 기존 문 열림 영상 재생 동작을 유지한다. 상세 수치는 [현재 계약](ENTER_ENGRAVED_20260907.md) 참조.
 
 - **ENTER 버튼 (2026-09-07 실제 적용)**: `.cin-enter-btn`은 네이티브 텍스트 button. `cin-enter-engraved.css` 적용, `left:51.7%`, `top:74%`, `width:210px`, `max-width:70%`, `height:64px`. 판화 문에 맞춘 뼛빛 글자·얇은 구분선이며 금속 이미지와 맥동은 사용하지 않는다. [현재 계약](ENTER_ENGRAVED_20260907.md) 참조.
 - **라벨**: "들어가기/입장" = 타이틀 화면 문맥에선 **ENTER**가 표준 영어. (Enter키+입장 동시 의미)
