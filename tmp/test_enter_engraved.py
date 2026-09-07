@@ -13,6 +13,8 @@ with sync_playwright() as p:
         page.evaluate("() => {document.getElementById('fdgScreen').style.display='none'; _goCinematic();}")
         page.wait_for_timeout(2500)
         button=page.locator('.cin-enter-btn')
+        assert button.evaluate("e=>getComputedStyle(e).animationName")=='cinEnterBreathe', 'ENTER needs a gentle blink'
+        assert button.evaluate("e=>getComputedStyle(e.querySelector('span'),'::before').content") not in ['none','normal'], 'ENTER ornament missing'
         title=page.locator('.cin-game-title')
         assert title.count()==1, 'Main EXODUSER / HELL LORD title is missing'
         logo=title.locator('img')

@@ -11,7 +11,7 @@
 }
 #cinClickPrompt:has(.dissolve)::before{opacity:0}
 .cin-game-title{
-  position:absolute;left:53.5%;top:37%;transform:translate(-50%,-50%);
+  position:absolute;left:53.3%;top:37%;transform:translate(-50%,-50%);
   width:52%;margin:0;text-align:center;font-family:'Cinzel',Georgia,serif;
   pointer-events:none;
   transition:opacity 1.1s ease,filter 1.1s ease,transform 1.1s ease;
@@ -39,31 +39,40 @@
 .cin-game-subtitle::after{transform:rotate(180deg)}
 .cin-hell-frame.dissolve .cin-game-title{opacity:0;filter:blur(12px);transform:translate(-50%,-54%)}
 .cin-hell-frame .cin-enter-btn{
-  left:53.5%;top:74%;width:210px;max-width:70%;height:64px;
+  left:53.3%;top:74%;width:210px;max-width:70%;height:64px;
   padding:0 0 0 .3em;border:0;border-radius:0;
   color:#d5d0c4;background:radial-gradient(ellipse,rgba(6,7,7,.85),rgba(6,7,7,.4) 58%,transparent 74%);
   font-family:'Cinzel',Georgia,serif;font-size:clamp(15px,1.3vw,19px);font-weight:400;
   letter-spacing:.3em;line-height:1;text-shadow:0 2px 3px #000,0 0 16px #000;
-  animation:none;filter:none;box-shadow:none;
+  animation:cinEnterBreathe 2.6s ease-in-out infinite;filter:none;box-shadow:none;
   transition:color .25s ease,opacity 1.1s ease,filter 1.1s ease,transform 1.1s ease;
 }
 .cin-enter-btn::before,.cin-enter-btn::after{
-  content:"";position:absolute;left:15%;right:15%;height:1px;
-  background:linear-gradient(90deg,transparent,rgba(196,190,174,.55),transparent);
+  content:"";position:absolute;top:calc(50% - 5px);width:28px;height:10px;
+  border-top:1px solid #8a7860;border-bottom:1px solid #8a7860;
+  background:none;
   pointer-events:none;
 }
-.cin-enter-btn::before{top:3px}
-.cin-enter-btn::after{bottom:3px}
+.cin-enter-btn::before{left:0;right:auto;transform:skewX(-35deg)}
+.cin-enter-btn::after{right:0;left:auto;transform:skewX(35deg)}
+.cin-enter-btn span::before,.cin-enter-btn span::after{
+  content:"";position:absolute;left:50%;pointer-events:none;
+  border:1px solid #b8a181;background:#211c17;transform:translateX(-50%) rotate(45deg);
+}
+.cin-enter-btn span::before{top:1px;width:7px;height:7px;box-shadow:0 0 7px rgba(210,177,123,.25)}
+.cin-enter-btn span::after{bottom:3px;width:3px;height:3px}
+@keyframes cinEnterBreathe{0%,100%{opacity:.45}50%{opacity:1}}
+.cin-hell-frame .cin-enter-btn:focus-visible{animation:none;opacity:1}
 .cin-hell-frame .cin-enter-btn:hover{
-  color:#fff4dc;filter:none;transform:translate(-50%,-50%);
+  animation:none;opacity:1;color:#fff4dc;filter:none;transform:translate(-50%,-50%);
 }
 .cin-enter-btn:focus-visible{outline:1px solid #d5d0c4;outline-offset:6px}
 .cin-hell-frame.dissolve .cin-enter-btn{
-  opacity:0;filter:blur(12px);transform:translate(-50%,-60%);pointer-events:none;
+  animation:none;opacity:0;filter:blur(12px);transform:translate(-50%,-60%);pointer-events:none;
 }
 @media(prefers-reduced-motion:reduce){
   .cin-game-title{transition:none}
   .cin-hell-frame.dissolve .cin-game-title{filter:none;transform:translate(-50%,-50%)}
-  #cinClickPrompt::before,.cin-hell-frame .cin-enter-btn{transition:none}
+  #cinClickPrompt::before,.cin-hell-frame .cin-enter-btn{transition:none;animation:none}
   .cin-hell-frame.dissolve .cin-enter-btn{filter:none;transform:translate(-50%,-50%)}
 }

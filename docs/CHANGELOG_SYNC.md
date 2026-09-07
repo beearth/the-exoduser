@@ -19,6 +19,15 @@
 
 # Sync Changelog
 
+## 2026-09-07 ENTER 문양·점멸 및 위치 미세 조정
+
+| 항목 | 변경 |
+|---|---|
+| 위치 | 로고·ENTER left 53.5% → 53.3%, 왼쪽 0.2%p |
+| 문양 | 위아래 작은 마름모, 양옆 절제된 날개형 이중선 |
+| 점멸 | cinEnterBreathe 2.6s, opacity .45~1. hover·focus에서는 밝게 정지, reduced-motion에서는 점멸 없음 |
+| 문서 | `cinematic/ENTER_ENGRAVED_20260907.md`, 콘티 동기화 |
+
 ## 2026-09-07 진입 로고 중앙 정렬 보정
 
 | 대상 | 이전 | 현재 |

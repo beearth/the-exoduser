@@ -6,11 +6,12 @@
 |---|---|
 | 연결 | `index.html` → `cin-enter-engraved.css?v=20260907-api-3` |
 | 버튼 | `.cin-enter-btn`, type=button, aria-label="입장 / Enter", 리프 span에 ENTER |
-| 배치 | 기존 contain 프레임 기준 left 53.5%, top 74%, translate(-50%,-50%) |
+| 배치 | 기존 contain 프레임 기준 left 53.3%, top 74%, translate(-50%,-50%) |
 | 크기 | 210×64px, max-width 70%, 글자 clamp(15px,1.3vw,19px), 자간 .3em, weight 400 |
 | 서체·색 | Cinzel / Georgia / serif, #d5d0c4, hover #fff4dc |
-| 장식 | 위·아래 1px 선, 좌우 15%, 상하 3px, 회백색 알파 .55에서 투명 그라데이션 |
-| 버튼 배경 | 타원형 검정 그라데이션 알파 .85 → .4(58%) → 0(74%), 맥동·확대 없음 |
+| 장식 | 양옆 28×10px 날개형 이중선: top calc(50% - 5px), 1px #8a7860, 좌측 skewX(-35deg) / 우측 skewX(35deg). 상단 7×7px 마름모 top 1px / 하단 3×3px 마름모 bottom 3px, 중앙 정렬·45deg 회전·1px #b8a181·배경 #211c17. 상단 그림자 0 0 7px rgba(210,177,123,.25) |
+| 버튼 배경·점멸 | 타원형 검정 그라데이션 알파 .85 → .4(58%) → 0(74%). cinEnterBreathe 2.6s ease-in-out infinite, opacity .45 → 1 → .45. 확대 없음 |
+| 점멸 예외 | hover·focus-visible에서는 animation none, opacity 1. dissolve에서는 animation none, opacity 0. reduced-motion에서는 animation none |
 | 암부 | `#cinClickPrompt::before`, radial 중심 51.7% 43%, 알파 .30(0%) / .43(28%) / .77(63%) / .96(100%) |
 | 상하 보정 | linear 0deg, 검정 .8 → transparent 35% → transparent 75% → 검정 .3 |
 | 전환 | 버튼과 암부 1.1s, 버튼 blur 12px·translate(-50%,-60%), 기존 1200ms 숨김 유지 |
@@ -30,7 +31,7 @@
 | 전체 프롬프트 | `output/imagegen/exoduser-hell-lord-logo-v1.prompt.txt` |
 | 프롬프트 요약 | 정확한 EXODUSER / HELL LORD, 커스텀 고딕 각인·마모된 은빛 금속·중앙 칼날 문양, 검정 배경, ENTER 제외 |
 | 구조 | `.cin-game-title` h1 → `.cin-title-art` img, alt="EXODUSER — HELL LORD" |
-| 배치 | contain 프레임 left 53.5%, top 37%, width 52%, translate(-50%,-50%). 사용자 스크린샷 중앙 정렬 요청으로 로고·ENTER를 함께 오른쪽 1.8%p 이동 |
+| 배치 | contain 프레임 left 53.3%, top 37%, width 52%, translate(-50%,-50%). 사용자 스크린샷 중앙 정렬 요청으로 로고·ENTER를 오른쪽 1.8%p 이동한 뒤, 추가 요청으로 왼쪽 0.2%p 미세 조정 |
 | 이미지 | display block, width 100%, height auto. 원본 비율 유지, 잘라내기 없음 |
 | 합성 | `cin-logo-art.js?v=20260907-api-1`이 원본 로드 후 canvas에서 검정 매트를 한 번 투명화. light=max(R,G,B), alpha=round(255*clamp((light-8)/24,0,1)). RGB 유지, PNG data URL 디코딩 후 src 교체 |
 | 준비 표시 | `.cin-title-art`는 visibility hidden, data-ready=true 후 visible. 검정 사각형이 로딩 중 노출되지 않음. 원본 PNG는 변경 없이 보존 |

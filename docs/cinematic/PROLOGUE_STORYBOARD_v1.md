@@ -293,9 +293,9 @@ FDG / HELL: EXODUSER / (c) 2026 SIM DOJIN
 
 ### 최종 결론 (중요)
 
-**원본 문 영상은 보존한다. 2026-09-07 최신 사용자 지시로 실제 이미지 API가 생성한 EXODUSER / HELL LORD 로고와 하단 작은 ENTER를 배치한다.** `.cin-game-title`은 contain 프레임 left 53.5%, top 37%, width 52%. `output/imagegen/exoduser-hell-lord-logo-api-v1.png`를 `cin-logo-art.js`에서 검정 매트 투명화 후 표시한다. 버튼은 `#cinClickPrompt > .cin-hell-frame > .cin-enter-btn`. 클릭 시 제목·버튼·암부가 함께 사라지며 기존 문 열림 영상 재생 동작을 유지한다. 상세 수치는 [현재 계약](ENTER_ENGRAVED_20260907.md) 참조.
+**원본 문 영상은 보존한다. 2026-09-07 최신 사용자 지시로 실제 이미지 API가 생성한 EXODUSER / HELL LORD 로고와 하단 작은 ENTER를 배치한다.** `.cin-game-title`은 contain 프레임 left 53.3%, top 37%, width 52%. `output/imagegen/exoduser-hell-lord-logo-api-v1.png`를 `cin-logo-art.js`에서 검정 매트 투명화 후 표시한다. 버튼은 `#cinClickPrompt > .cin-hell-frame > .cin-enter-btn`. 클릭 시 제목·버튼·암부가 함께 사라지며 기존 문 열림 영상 재생 동작을 유지한다. 상세 수치는 [현재 계약](ENTER_ENGRAVED_20260907.md) 참조.
 
-- **ENTER 버튼 (2026-09-07 실제 적용)**: `.cin-enter-btn`은 네이티브 텍스트 button. `cin-enter-engraved.css` 적용, `left:53.5%`, `top:74%`, `width:210px`, `max-width:70%`, `height:64px`. 판화 문에 맞춘 뼛빛 글자·얇은 구분선이며 금속 이미지와 맥동은 사용하지 않는다. [현재 계약](ENTER_ENGRAVED_20260907.md) 참조.
+- **ENTER 버튼 (2026-09-07 실제 적용)**: `.cin-enter-btn`은 네이티브 텍스트 button. `cin-enter-engraved.css` 적용, `left:53.3%`, `top:74%`, `width:210px`, `max-width:70%`, `height:64px`. 뼛빛 글자·양옆 날개형 이중선·상하 마름모 문양. cinEnterBreathe 2.6s로 opacity .45~1 점멸하며 hover·focus·reduced-motion에서 정지한다. [현재 계약](ENTER_ENGRAVED_20260907.md) 참조.
 - **라벨**: "들어가기/입장" = 타이틀 화면 문맥에선 **ENTER**가 표준 영어. (Enter키+입장 동시 의미)
 - **안개 디졸브**: `.dissolve` 시 `opacity 0`+`blur 12px`+`translate(-50%,-60%)`, 전이 1.1s. 암부도 1.1s 동안 투명화, 클릭 1200ms 후 프롬프트 숨김. 모션 감소 설정에서는 전이·블러·이동을 생략한다.
 - **폐기된 시도**: ⓐ OPEN THE HELLGATE 골드 타이틀(`open_final.png`, 자산은 보존) — 유저가 엠블럼/엔터버튼으로 방향 전환. ⓑ EXODUSER 엠블럼(`emblem_cut.png`) 문 위 오버레이 — 복잡한 문 아트와 충돌+거의 안 보임, 레퍼 자체가 "ICON & LAUNCHER CONCEPT"(런처/앱아이콘용). ⓒ `.cin-gore` 고어 오버레이, `.cin-hell-atmo` 지옥 분위기 레이어 — "추잡/짜침"으로 거부. 모두 미사용(일부 CSS orphan, 렌더 영향 없음).
