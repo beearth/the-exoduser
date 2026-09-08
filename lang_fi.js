@@ -2623,7 +2623,7 @@ Object.assign(_FI,{
 "계승의":"Perinnön",
 "전대 공격력+":"Esi-isien ATK+",
 "전대 수+":"Esi-isien määrä+",
-"전대 지속+":"Esi-isien kesto+",
+"전대 최대HP+":"Esi-isien enimmäis-HP+",
 "전대 위력 +X%":"Esi-isien voima +X%",
 "전대 소환 수 +1":"Esi-isien kutsumäärä +1",
 "전대 위력":"Esi-isien voima",

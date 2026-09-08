@@ -8,10 +8,10 @@ const __dirname = dirname(fileURLToPath(import.meta.url));
 const repoRoot = join(__dirname, '..');
 const gameHtml = readFileSync(join(repoRoot, 'game.html'), 'utf8');
 
-test('stage 1 boss is the Codex lava warbringer', () => {
-  assert.match(gameHtml, /const HELL_BOSSES=\[[\s\S]*\['흑요염 파괴자','독버섯 거인','지옥기형','다크드루이드'\]/);
+test('stage 1 boss is the dark druid; legacy lava asset remains available', () => {
+  assert.match(gameHtml, /const HELL_BOSSES=\[[\s\S]*\['다크드루이드','독버섯 거인','지옥기형','다크드루이드'\]/);
   assert.match(gameHtml, /'흑요염 파괴자':'Obsidian Flame Destroyer'/);
-  assert.match(gameHtml, /be:\(ch\.hell===0&&f===0\)\?EL\.F:th\.be,/);
+  assert.match(gameHtml, /be:th\.be,/);
 });
 
 test('stage 1 boss has a dedicated Codex concept skin path and renderer', () => {

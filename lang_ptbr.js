@@ -3768,7 +3768,7 @@ Object.assign(_PTBR,{
 "계승의":"da Herança",
 "전대 공격력+":"ATQ de ancestrais+",
 "전대 수+":"Nº de ancestrais+",
-"전대 지속+":"Duração de ancestrais+",
+"전대 최대HP+":"PV máximo ancestral+",
 "전대 위력 +X%":"Poder ancestral +X%",
 "전대 소환 수 +1":"Invocações de ancestrais +1",
 "전대 위력":"Poder ancestral",

@@ -1,5 +1,7 @@
 # VFX 구현 가이드
 
+> **2026-09-06 최종 확정 — 해골무덤 플레이어 전용:** 드루이드만이 아니라 **전체 보스(si0~34)의 cageTrap 사용을 금지**한다. 아래 보스 사용 계약은 이전 기록이다. 모든 무브셋에서 제외, 관련 콤보 2개 제거, AI 점수 -1, 강제 실행도 생성·피해·소리 없이 recover/25f 종료. idx41 정의는 배열 인덱스 호환용 예약으로 보존한다. 플레이어 boneWall/boneStorm과 공용 boss_cageTrap 이미지·음향은 유지한다. 기존 보스용 잔여 배열/렌더는 호환용이며 신규 생성 경로는 없다. 회귀 검사: 35개 stage 강제 호출 모두 생성 0, 플레이어 공용 시트·음향 포함 관련 테스트 7개 PASS.
+
 ## 기동칼날개 은빛 칼날 VFX (2026-09-04)
 
 | ID/항목 | 현재 계약 | 수치·색 | 적용 위치 |
@@ -60,17 +62,18 @@
 
 ## 마법탄 (최초 무지개탄)
 
-마법탄은 `_drawClassicRainbow` — blackBean / blueBean만. **화염 빨콩(`redBean+EL.F`)**은 `redBean` 레거시 피해/색 플래그를 공유하지만 이빨입이 아닌 화염 혜성 마법 외형·Q 패링·500~600px/s·`.0262`≈90°/s다. 적 화염 혜성은 `_enemyMagicCometVisualScale(EL.F)=0.65`를 적용해 일반 최대 길이 `123.2→80.08px`, 빠른탄 최대 `110.88→72.072px`로 그리며 `sz/r`와 충돌은 불변이다. **물 파란콩(`waterBean`)**은 `_drawWaterBean`의 전용 얼음 시트 `assets/vfx/water_ice_barrage_sheet.png`를 쓴다. 4×4 시트의 1~2행 8프레임은 비행 방향으로 재생하고, 3행 4프레임은 Q 패링 방사형 얼음 파열(`r=96`, `72f`), 4행 4프레임은 플레이어 피격 얼음기둥(`r=72`, `66f`)이다. 대형 크라켄 어뢰 아트·공용 pass-0 트레일/pass-1 원형 글로우는 사용하지 않으며, 원본의 불투명 남색 배경(`RGB 약 16,28,46`)은 `_makeBlackAdditiveCutout(56,112)` 후 `lighter` 합성해 완전히 제거한다. 직접 피해·속도·유도·히트박스·Q 패링·빙결 60f는 변하지 않는다. **화이트볼(bwBean) 제거(2026-08-23)**. **이빨형 E패링탄 공통=실제 물리 `parryClass`**(최종 300px/s 고정, homing 선회 `.00436332`≈15°/s): `redBean+EL.P`, `titanEye`다. **titanEye=혈안 눈깔** `proj_titan_eye.png` 시각 `21.7×_sSc`(그림만 눈깔). **라운드 컬러는 발사탄 속성 예고**이며 `redBean+EL.P`·일반 물리/E패링 차징 링만 흰색 `#f4f4f4`다. 화염 빨콩 차징은 화염색을 유지한다. 특수 산호 파편·기생충·삼지창의 `eShootWind`도 `_swChargeEl=EL.P`일 때 흰색이다.
+마법탄은 `_drawClassicRainbow` — blackBean / blueBean만. **화염 빨콩(`redBean+EL.F`)**은 `redBean` 레거시 피해/색 플래그를 공유하지만 이빨입이 아닌 화염 혜성 마법 외형·Q 패링·500~600px/s·`.0262`≈90°/s다. 적 화염 혜성은 `_enemyMagicCometVisualScale(EL.F)=0.65`를 적용해 일반 최대 길이 `123.2→80.08px`, 빠른탄 최대 `110.88→72.072px`로 그리며 `sz/r`와 충돌은 불변이다. **물 파란콩(`waterBean`)**은 기존 `assets/vfx/water_blue_projectile_sheet.png` 4×2 8프레임을 `_drawWaterBlueFlight`로 약12fps 재생한다. 크기 `30×16×_sSc`, 세로 크롭 `0.255×cellH`, 행 오프셋 `0.675/0.10`, 진행 방향 회전, `lighter` 합성이다. Q 패링·피격은 `Water_ImpactWater_Sheet.png` 전체 16프레임을 공용 boom `waterImpact`로 재생한다(패링 r96/72f·최대288px, 피격 r72/66f·최대216px). 이전 얼음 시트 로더와 렌더를 제거했다. 직접 피해·속도·유도·히트박스·Q 패링·빙결 60f는 변하지 않는다. **화이트볼(bwBean) 제거(2026-08-23)**. **이빨형 E패링탄 공통=실제 물리 `parryClass`**(최종 300px/s 고정, homing 선회 `.00436332`≈15°/s): `redBean+EL.P`, `titanEye`다. **titanEye=혈안 눈깔** `proj_titan_eye.png` 시각 `21.7×_sSc`(그림만 눈깔). **라운드 컬러는 발사탄 속성 예고**이며 `redBean+EL.P`·일반 물리/E패링 차징 링만 흰색 `#f4f4f4`다. 화염 빨콩 차징은 화염색을 유지한다. 특수 산호 파편·기생충·삼지창의 `eShootWind`도 `_swChargeEl=EL.P`일 때 흰색이다.
 
 ## API 생성 소형 크라켄 탄두 / 은꼬리 차지 범위 (2026-09-03)
 
 | id | 파일 | 원본 크기/형식 | 화면 크기·공식 | 합성 | 적용 위치 |
 |---|---|---|---|---|---|
-| `krakenShot` | `img/balls/proj_kraken_shot_api_v1.png` | 1945×809 RGB, 근검정 배경, 우향 단일 탄두 | 물리/빙 `elemBall=170px`; 높이는 원본 비율 `W×809/1945` | 로드시 `_makeBlackAdditiveCutout`: `max(R,G,B)≤24 → alpha 0`, `24–72 → smoothstep×원본 alpha`, `≥72 → 원본 alpha`; 이후 `lighter`, `rotate(atan2(vy,vx))`, 중심 보정 `x=-0.54W` | `_drawKrakenShot`; pass-2 `elemBall` |
+| `krakenShot` | `img/balls/proj_kraken_shot_api_v1.png` | 1945×809 단일 탄두 | 물리/빙 `elemBall=170px`, 높이 W×809/1945 | `_makeBlackAdditiveCutout(24,72)`, lighter, 방향 회전, x=-0.54W | `_drawKrakenShot` |
 | `silvertailChargeRange` | `img/vfx/silvertail_charge_range_api_v1.png` | 1254×1254 RGB, 근검정 배경, 개방형 은빛 룬 아크 | 지름 `range×2.24×(1+sin(frame×.16)×.018)`; 글로우 alpha `.12+tier×.035`, 본체 `.34+tier×.10` | 같은 `_makeBlackAdditiveCutout(24,72)` 캐시 후 `lighter`, `rotate(facing+π)` | `_drawSilvertailChargeRange`; `sDraw/kiGather` |
 
 - `elemBall`은 `EL.P/EL.I`일 때 크라켄 탄두를 쓰고, `EL.F/D/L/H/E`는 `proj_elem_orb.png`의 해당 속성 행을 쓴다. 양쪽 모두 실패할 때만 `proj_bolt_comet.png`로 폴백한다.
-- 크라켄 탄두는 대형 `elemBall` 전용이다. `waterBean`은 전용 4×4 얼음 시트, `elemBall`은 크라켄 실루엣을 쓰므로 둘 다 공용 선 트레일과 원형 글로우 패스에서 제외한다. `waterBean`의 패링/피격 얼음 시트 파열은 시각 전용이며 피해·속도·유도·히트박스·패링 계약은 변경하지 않는다.
+- 비행 외형은 기존 유지: waterBean=`water_blue_projectile_sheet.png` 4×2 8프레임, `30×16×_sSc`; 물리/빙 elemBall=`proj_kraken_shot_api_v1.png` 170px; fbEnergy=`proj_kraken_water.png` 4×4 16프레임 240px. 교체는 충돌 임팩트만 적용한다.
+- 물 파란콩 Q 패링은 `_waterBeanIceBurst(...,true)`만 Water Impact를 생성하고, `doParry(...,_impactKind='waterBean')`가 공통 `dark02` 임팩트를 건너뛰어 단발 패링에서 스프라이트가 중첩되지 않는다.
 - 차지 범위는 기존 반경 공식 `~~((70+(maliceSwipe−1)+방패range×4)×현재mult)`을 그대로 사용한다. 구 radial-gradient 원, 전방 부채꼴 채움, 9/7 점선 아크는 제거하고 내부가 빈 API 룬 아크만 표시한다.
 
 ## 일반 몬스터 돌진 장전 가이드 (`eChargeWind`) — 2026-09-02
@@ -110,7 +113,7 @@
 | rainbow_light(무지개 적중) | 72 (1.2초) | 16×4 (4레이어) | Fire_FBF + Poison_Medium + Dark_DarkSmoke + Light_Impact (각 90° 회전+시차+lighter 합성, 알록달록) | 중간 (drawImage 4회/프레임) |
 | rainbow(무지개 소멸) | 72 (1.2초) | 16+36+9 (3레이어) | Dark_DarkSmoke_FBF + Dark_Smoke_6x6 + Dark_BasicImpact | 중간 |
 | dark02(패링) | 72 (1.2초) | 16 | Dark_MediumImpact | 낮음 |
-| physical_parry(물리탄 E패링) | 16프레임 | 16 | 기존 `parry_impact_sheet.png` 흰 기본 임팩트 | 낮음 — `redBean+EL.P`·일반/관통 입탄·`titanEye`만 `doParry(...,'physicalProjectile')`로 선택. `titanEye`는 `EL.F` 색이어도 흰 물리 임팩트 |
+| physical_parry(물리탄 E패링) | 12f(0.2초) | 4 | `Fire_ImpactFire_Sheet.png` 첫 행 흰 틴트, `_addBoom(x,y,60,12,'physical')`, 최대180px | `redBean+EL.P`·일반/관통 입탄·`titanEye`의 physicalProjectile 분기. 파편12개·flash0.25도 #ffffff. Q·무지개·기타 E 효과 불변 |
 | fire_medium | 66 (1.1초, min보정) | 16 (4×4) | Fire_MediumImpact | 낮음 — 빨콩 패링 적중, 보호막 흡수, **동물형 돌진(22/30/43) 적중 임팩트** (`_addBoom 80,48`, 2026-06-28) |
 | explosion | 66 (1.1초) | 프로시저럴 | arms 기반 렌더 | 낮음 |
 | ice/lightning/dark | 66 (1.1초) | 프로시저럴 | 원+링 렌더 | 낮음 |
@@ -172,9 +175,8 @@
 
 | 대상 ID·입력 | 공유 시트·프레임 | 합성·크기 | 병행 레이어 | 전투 영향 |
 |---|---|---|---|---|
-| `chainSlam` / 사슬기동 중 좌클릭 또는 E 착지 | `giant_slam_impact_sheet.png`의 2×2·512px 셀 4프레임. `_slamFrame=min(3,floor((t/maxT)×4))` | 일반 `source-over`; `maxR×1.8×(0.72→1.0)` | 기존 기동강타 크레이터·16갈래 균열·18개 파편은 유지 | 없음 — 24f 파동, 피해·범위·포이즈·자원·쿨다운·기동불꽃 기폭은 불변 |
+| `chainSlam` / 사슬기동 중 좌클릭 또는 E 착지 | `giant_slam_impact_sheet.png`의 2×2·512px 셀 4프레임. `_slamFrame=min(3,floor((t/maxT)×4))` | 일반 `source-over`; `maxR×1.8×(0.72→1.0)` | 기존 `chain_slam_impact`와 기동강타 크레이터·16갈래 균열·18개 파편은 유지 | 없음 — 24f 파동, 피해·범위·포이즈·자원·쿨다운·기동불꽃 기폭은 불변 |
 | `giantSlam` / Shift+좌클릭 | `inferno_slam_impact_sheet.png`의 2×2·512px 셀 4프레임. 지면 재질 `kind:'giant'`은 유지하고 `vfxKind:'inferno'`만 별도 지정 | 붉은 발광 `screen`; `maxR×0.9×(0.72→1.0)` | 기존 대지 압착 데칼·12갈래 방사 균열·원형 충격파는 유지 | 없음 — VFX 시트만 교체 |
-
 
 ### Shift+좌클릭 지옥강타 1 대지 충격 보강 (2026-09-05)
 
@@ -190,7 +192,6 @@
 |---|---|---|---|---|
 | `chainSlam` / 사슬기동 중 좌클릭 또는 E | 전용 3×3 시트의 검은 흙·균열은 공용 WebGL 가산 합성에서 어두운 픽셀이 묻혀 원형 지진파만 먼저 보임 | 착지 파동에 `kind:'chainSlam'` 태그. `source-over`로 크레이터 타원(가로 `maxR×(0.22+0.54×min(1,(t/maxT)×3.4))`, 세로 `0.30`배), 외곽선(가로 `1.04`·세로 `0.33`배)을 직접 렌더 | `_gSlamWave`, 기존 `chain_slam_impact` 시트 위 | 없음 — 기존 24f 파동·피해·범위·포이즈·패링·기동불꽃 기폭 불변 |
 | `chainSlam` / 같은 착지 | 원형파가 지면 붕괴보다 우세 | 굵은 황토 균열 16갈래(지면 Y 원근 `0.54`배)와 밝은 암석 파편 18개를 크레이터 위에 렌더 | `drawP()`의 `kind==='chainSlam'` 분기 | 없음 — VFX 전용 |
-
 
 ## 얼음송곳 (arcLaser) 구현 상세
 
@@ -280,22 +281,22 @@ path: '/v1/images/generations'
 | 위치 | `_fbEsca`. dsz=280, `lighter` |
 | 타이밍 | `enChg` 180f, 프레임 0→7 |
 
-## 크라켄 에너지탄 비행 스프라이트 (`proj_kraken_water`) — 2026-09-01(2026-09-02 물 소용돌이 구체로 교체)
+## 크라켄 에너지탄 비행 스프라이트 — 기존 물 소용돌이 유지 (2026-09-07 정정)
 
-크라켄 거대 에너지탄(`fbEnergy`)의 비행 그림. 구 절차적 파란 구체(`elemBall` glow) → **물 소용돌이 구체 스프라이트** 교체. 시각 전용, 데미지·판정·유도·속도 불변. (교체 이력: 물줄기 어뢰 2×4 → 드래곤 머리 4×2 → **현재=물 소용돌이 구체 4×4**)
+크라켄 비행 외형은 기존 물 소용돌이 시트를 유지한다. Water 효과 교체는 충돌 임팩트만 대상이다.
 
 | 항목 | 값 |
 |---|---|
-| 파일 | `img/proj_kraken_water.png` (현재 원본 1254×1254, 파란 물 소용돌이 구체) |
-| 시트 | **4열×4행 16프레임** 정사각셀 (프레임 `cw=W/4`≈313, `ch=H/4`≈313). `col=fr%4`, `row=(fr/4)|0`, `%16` |
-| 함수 | `_fbDrawFly(p)` — `_fdDrawFly`(화마귀)와 동일 패턴, 단 회전 없음 |
+| 파일 | `img/proj_kraken_water.png`, 1254×1254, 4×4 |
+| 시트 | 4열×4행 전체16프레임, `fw=W/4`, `fh=H/4`, 셀 내부 크롭 없음 |
+| 함수 | `_fbDrawFly(p)`, 기존 무회전 중심 정렬 |
 | 합성 | `lighter` (검정 배경 자동 투명) |
 | 회전 | **없음** — 방사형 대칭 구체라 방향성 무관. 중심 정렬만 |
 | 크기 | **`dw=240`**, `dh=dw×(ch/cw)=240` — 화마귀 `fdEnergy`와 동일 화면 크기 (구 336px에서 축소) |
 | 앵커 | `drawImage(...,-dw/2,-dh/2,...)` — 구체 중심을 탄 중심에 정렬. 접촉 판정은 작은 spawn r26이 아니라 보이는 핵 `max(r,sz)` 사용 |
-| 프레임 | `p._sprFr`(pass-2 루프서 +0.12/frame) `%16` |
+| 프레임 | `((p._sprFr||0)|0)%16`, 기존 프레임 진행 유지 |
 | 렌더 분기 | pass-2 `if(p.fbEnergy){_fbDrawFly(p)}` (elemBall glow 앞). pass-1 글로우 언더레이 `p.fbEnergy` skip |
-| 로더 | `_fbFlyImg`(`_titanEyeImg` 옆) |
+| 로더 | `_fbFlyImg` |
 | Q패링 출력 | 거대 시트 제거 후 동일 속성 **혜성형 일반 마법탄 5발**. `magic` 충돌 경로와 r8 규격은 유지하되 `_parryMagicShot` 전용 시각 분기로 기존 `img/balls/proj_bolt_comet.png` 8프레임 시트를 `_drawCometBullet` 길이 **246.4px**(일반 마법탄 최종 sz4 실크기 `20×2.8×2.2=123.2px`의 2배)로 그린다. 일반탄과 `_normalMagicCometLength`를 공유하되 대형탄 분열 연출에만 ×2를 적용한다. `arcMissile`·발사 잠금·튕김과 일반 `_projEmit` 먼지는 사용하지 않는다. 총 반사 피해를 5등분하며 `EL.F` 빨강, `EL.I` 파랑, 암/뇌는 `ELC` 속성색. HP/ST/MP·작살 게이지·분노·악의·parryBank 자원회수는 일반 Q의 ×10(각 자원 상한 적용) |
 | 충돌 VFX 보장 | 플레이어 상대 스윕 접촉, 중심+원주 8점 벽 스윕 접촉, 평화의보호 비패링 흡수 모두 `_fbEnergyBoom` r220+blast light 280+`bigImpact` 방향 링/스파크+속성 `doHitFlash(col,0.32)`/`_flashT=8`+`_chromaT=8`+파티클 42+shake 32를 호출하고 원본을 즉시 회수. 히트스톱·슬로모 전역 비활성 정책 유지. 무적/돌진은 피해만 0 |
 | 패링 소유권 | 기본 Q/평화의보호 Q만 `_resolveBigEnergyParry`로 5분열. E·기동파괴·파워웨이브·일반 방패던지기는 대형탄을 `friendly`로 바꾸지 않음. friendly 대형탄 30관통 연출은 폐기 |
@@ -328,7 +329,7 @@ path: '/v1/images/generations'
 | 항목 | 값 |
 |---|---|
 | 파일 | `img/proj_firedevil_orb.png` (1254×1254 RGBA, alpha 0~255, 원형 용암 구체) |
-| 시트 | **4열×4행 16프레임** 정사각셀(`cw=W/4=313.5`, `ch=H/4=313.5`). `col=fr%4`, `row=(fr/4)|0`, `%16` |
+| 시트 | 4열×4행 전체16프레임, `fw=W/4`, `fh=H/4`, 셀 내부 크롭 없음 |
 | 로더 | `_fdFlyImg` / `_fdDrawFly` |
 | 회전/앵커 | 방사형 대칭이므로 속도 방향 회전 없음. `drawImage(...,-dw/2,-dh/2,...)`로 투사체·히트박스 중심에 정렬 |
 | 크기 | `dw=240`, `dh=dw×(ch/cw)=240` |
@@ -603,7 +604,7 @@ Ori 수준 대기 깊이감. 광원 근처에서 존재감 나는 미세 입자.
 
 ## 탄막블랙홀(lavaSummon) 지속 흡수 연출 (2026-09-03, 현재 사양)
 
-`lavaSummon`은 구 용암소환/악의흡수를 대체한 **화염 계열 탄막 정리 필살기**다. 플레이어 위치에 작은 특이점을 즉시 설치하고 5초 동안 적 탄막을 흡수한 뒤, 저장된 탄막 에너지를 용암빛 범위폭발로 방출한다. `blackStar`는 몬스터 흡인 전용이며 탄막블랙홀은 탄막 흡수 전용으로 역할을 분리한다.
+`lavaSummon`은 구 용암소환/악의흡수를 대체한 **탄막 반사 계열 필살기**다. 플레이어 위치에 작은 특이점을 즉시 설치하고 5초 동안 적 탄막을 코어로 끌어들여 흡수한 뒤, 각 탄의 원형(속성·색·크기·특수 외형·유도)을 보존한 360° 아군 반사탄으로 재분출하고 저장된 탄막 에너지를 용암빛 범위폭발로 방출한다. `blackStar`는 몬스터 흡인 전용이며 탄막블랙홀은 탄막 흡수 전용으로 역할을 분리한다.
 
 | 레이어/계약 | 현재 구현값 | 적용 위치 |
 |---|---|---|
@@ -614,9 +615,9 @@ Ori 수준 대기 깊이감. 광원 근처에서 존재감 나는 미세 입자.
 | 로딩 폴백 | 시트 미로딩/폭 2048px 미만이면 기존 `img/vfx_pentagram_red.png`를 반경 92px로 작게 회전시키고 검은 코어+주황 테두리 합성 | `_pentaRed`, `if(P._lvCasting)` |
 | 생성 후처리 | 생성 API가 투명 배경 대신 체크무늬를 구워 반환하므로 `tools/process-bullet-black-hole-sheet.mjs`가 2048×1024로 리사이즈하고 밝은 중성 체크무늬를 알파 제거. 최종본은 RGBA이며 투명/가시 픽셀 회귀검증 | `tools/process-bullet-black-hole-sheet.mjs`, `test/bulletBlackHoleVfx.test.js` |
 | 흡수장 | `1000+(Lv-1)×25px`(Lv1 1000/Lv20 1475), 저알파 외곽선 2겹 | `_bulletBlackHoleAbsorbRadius()` |
-| 흡수 대상 | 범위 안의 살아 있는 적 `projs`; 패링 불가 무지개탄(`blackBean`)·대형 에너지탄 포함, 아군탄·지뢰·함정·거미줄·독장판 제외 | `_absorbBulletBlackHoleProjectiles()` |
-| 흡수 피드백 | 탄 위치에서 중심으로 향하는 입자, 상단 `ABSORB n` 누적 카운터 | 흡수 helper + 렌더 블록 |
-| 종료 폭발 | `900+(Lv-1)×30px`(Lv1 900/Lv20 1470), `ult_lava_c.png` 버스트 | `fireLavaSummon()` |
+| 흡수 대상/이동 | 범위 안의 살아 있는 적 `projs`는 코어를 향해 `6~24px/f`로 끌려간다. 코어 반경 `24+min(24,sz×2)px` 도달 때만 흡수된다. 패링 불가 무지개탄(`blackBean`)·대형 에너지탄 포함, 아군탄·지뢰·함정·거미줄·독장판 제외 | `_absorbBulletBlackHoleProjectiles()` |
+| 포획 중 안전/피드백 | 포획탄은 지형·플레이어 충돌을 건너뛰며 코어까지 보이게 이동한다. 코어 도달 뒤에만 `ABSORB n` 누적 카운터가 오른다 | 투사체 update + 흡수 helper + 렌더 블록 |
+| 종료 폭발/재분출 | `900+(Lv-1)×30px`(Lv1 900/Lv20 1470) 피해·코어 붕괴 파편과 함께 흡수 완료 탄 1발당 2발을 360° 아군 **원형 보존 반사탄**으로 재분출한다. 발수=`흡수수×2`이며 상한은 없다. 탄마다 원래 속성·색·크기·특수 외형·유도 성질을 보존하고, 유도탄은 가장 가까운 적을 다시 추적한다. 명중 때 `fire_medium` 폭발+`magic_burst` 스프라이트 임팩트를 낸다. 대형 `ult_lava_c.png` 버스트 시트는 재분출을 가리므로 사용하지 않는다. 속도 `11px/f`, `life=120`, 폭발 반경 `80px`, 1발 피해=`floor(최종 종료폭발피해/발수)` | `fireLavaSummon()`, `_releaseBulletBlackHoleBarrage()` |
 | 폭발 색 | 검은 파편 + 적색/주황/황색 용암 파편 | `fireLavaSummon()` |
 | 진행 UI | 5초 카운트다운 + 진행 바 + 흡수 수 | `if(P._lvCasting)` 렌더 블록 |
 
@@ -660,3 +661,53 @@ Ori 수준 대기 깊이감. 광원 근처에서 존재감 나는 미세 입자.
 - **당시 메커니즘**: 6초 붉은 마법진 시전 후 `projs`의 모든 적 탄막을 한 번에 제거하고 2000~4000px 화면범위 폭발. 2026-09-03 탄막블랙홀의 5초 지속 흡수 방식으로 대체되어 현재는 사용하지 않는다.
 - **현재 계약**: 위 `탄막블랙홀(lavaSummon) 지속 흡수 연출` 표가 SSOT다. 대형 붉은 오망성 주 연출은 제거됐으며, 기존 `img/vfx_pentagram_red.png`는 API 시트 미로딩 때만 반경 92px의 작은 안전 폴백으로 사용한다.
 - **신성폭발(`holyBlast`) 완전 삭제(2026-09-03)**: 숨김 정의와 구세이브 호환 동작까지 제거했다. 시전/빛기둥 렌더, 9프레임 로더, `img/vfx_holycircle_gold.png`, `sprites/holy_explosion/.../frame_000~008.png`, 전용 아이콘을 배포 파일에서 삭제했다. 전기 타격용 `assets/vfx/boss/vfx_holy_burst.png`와 F 영역 합체 `holyFuse`는 별도 시스템이므로 유지한다.
+## 2026-09-05 무지개탄 Q 패링 중복 반사 방지
+
+| 항목 | 현재 계약 | 적용 위치 |
+|---|---|---|
+| 패링 대상 | `blackBean`은 `parryClass='magic'`으로 Q에서 1회만 반사 | 일반 투사체 Q 패링 분기 |
+| 반사 후 상태 | 원본을 `friendly=true`, `blueBean=true`로 변환하고 `_fromRainbow=true` 유지 | 같은 업데이트 루프의 후속 충돌 처리 |
+| 중복 방지 | 공통 Q 패링 게이트에 `!p.friendly`를 포함해 반사된 블루콩이 Q 무적 윈도우에서 재패링되지 않도록 함 | `game.html` 일반탄 패링 조건 |
+
+반사 직후 플레이어 무적/해제 패링 윈도우가 남아 있어도 이미 아군탄이 된 투사체는 패링 분기에 다시 들어가지 않는다. 따라서 한 번의 무지개탄 패링에서 임팩트·보상·반사 전환이 1회만 발생한다.
+
+### 2026-09-07 공격링 누락 보정
+
+| 경로/필드 | 현재 계약 |
+|---|---|
+| eShootWind 공격링 | 장식용 _eDecor(600px·히트스톱) 제한 없이 표시, alpha=1. 기존60f 대기 유지 |
+| eProjAt / radialProjs | _emitEnemyShot(e,props) 경유. eShootWind 완료(st2≤0), _swChargeEl===props.el, 비무지개가 모두 맞을 때만 즉시 발사. 불일치는 실제 탄색으로60f 추가 예고 |
+| _spawnBossProjectile | 일반/특수몹(!ib)의 적 이동탄(vx 또는 vy)은 같은 전조 경유. 보스 전용 패턴·정지 장판·friendly는 기존 경로 유지 |
+| G._shotWarnings / e._shotWarning | 소유자·world(ens)·_gameFrame·el·blackBean이 모두 같은 탄만 링1개에 묶음. props 복사 후 대기. 다른 속성은 별도 링: r=(e.r 또는12)+동일 소유자/월드 기존 대기 링 수×8 |
+| _tickEnemyShotWarnings(sp) | 투사체 업데이트 직전 감소. 60f 완료 시 shot._commit=true 후 원래 탄속·피해·탄종·방향으로 방출. 살아 있는 소유자 이동만큼 발사점 보정 |
+| 예고 완료 생성 보장 | _emitEnemyShot의 일치한 eShootWind 즉시 방출도 props._commit=true. 즉시/대기 완료 모두 밀도1/3 드랍 면제, 기존 spawnProj 속도/피해 배율 유지 |
+| 거리 이탈 | etype62 방전·86 폭발은 시작 d<100, 준비60f 유지. 완료 시 80+P.r 재검사 제거: 현재 플레이어 방향으로 각1발. 발사 전 스턴/빙결/사망 취소 규칙은 그대로 |
+| 취소 | 살아 있던 소유자 사망·stunned>0·_frozen>0 또는 ens 참조 변경(스테이지 변경) 시 예약 제거 |
+| 사망탄 | 요청 시 이미 죽은 소유자는 사망 위치에 링60f 후 방출. 원래 사망탄 효과 유지 |
+| _drawEnemyShotWarnings | 적 본체 렌더 뒤, 탄막 렌더 앞에 프레임당 1회. 살아 있는 적의 _projChargeT 및 eShootWind와 대기 발사 큐를 함께 표시. 구울/슬라임 전용 렌더의 continue 및 장식 거리 제한과 독립, 본체 은신 투명도와 무관하게 alpha=1 |
+| 일반 차징 색/진행 | normal+EL.P=#f4f4f4, black=_BEAN_RAINBOW[(_gameFrame>>2)%7], fire=#ff2e22, 그 외 _projChargeCol; 진행=1-_projChargeT/60 |
+| 특수/큐 색/진행 | eShootWind: _swChargeEl===EL.P이면 #f4f4f4, 그 외 ELC[_swChargeEl??e.el] 또는 #f4f4f4; 진행=1-st2/60. 큐: 물리 비무지개=#f4f4f4, 무지개=_BEAN_RAINBOW[(_gameFrame>>2)%7], 나머지 요청 탄색 또는 #ff6644; 진행=1-w.t/60 |
+| 특수 발사 속성 고정 | eShootWind의 eProjAt은 _beanRoll 재추첨 없이 요청 el/spd/sz/dmgMult를 사용하고 col=ELC[el] 또는 요청색. dmg=정수(e.atk×dmgMult), life=정수(요청 life×1.5), _commit=true. 글로벌 spawnProj 배율은 기존대로. 일반 발사 _beanRoll은 유지 |
+| 2차 누락 원인/회귀 | 본체 전용 렌더 조기 continue가 기존 인라인 차징 링을 건너뜀. 인라인 중복 코드를 제거하고 공통 패스로 이동. enemyWarningOverlay.test.js에서 전용 본체·은신·사망·단일 호출 4건 검증; 기존 전조 포함 총17건 |
+| 미변경 | 보스 전용 예고/연사 타이밍, 기존 idle60f, 패링, 탄막 외형, 피해, 속도, spawnProj 밀도 계약 |
+
+검증: enemyShotWarning.test.js(일제사격60f, 완료 전조 중복 지연 없음, 취소, 사망탄, 장식 제한 분리), tmp/verify_enemy_shot_warning.py(실제 eProjAt 경로). 이 보정은 모든 보스 패턴의 별도 시각 QA 완료를 의미하지 않는다.
+
+### 2026-09-07 진보라탄 속성·충돌 임팩트 정합
+
+| 대상 | 현재 계약 |
+|---|---|
+| gbBean 생성 | _prepareDarkSphere가 적대 gbBean의 el=EL.D(3), col=#a44cff를 확정하고 오래된 parryClass를 비운 뒤 공용 분류 재계산. 일반 gbBean=magic/Q, 기존 금지 플래그 예외 유지 |
+| 전조 | _emitEnemyShot에서 동일 정합 적용 후 공격링 색 결정 |
+| 비행 중 변조 | 타입 미지정 탄의25% gbBean 외형만 변환하던 경로 제거. _beanRoll의 정상 어둠탄 선택 확률은 그대로 |
+| 어둠탄 이동 | 기존 마법500~600px/s·유도 규칙. 피해·sz/r 원본값은 변경하지 않음 |
+| _projHitFx | r60, 물리12f/기타48f. 실제 el 우선. isRed는 EL.F일 때만 redbean 폭발·붉은 파티클14개·플래시0.18. 물리는 #ffffff, 나머지는 ELC[el] 파티클12개·플래시0.15, shake6 |
+| 물리 P | physical → Fire_ImpactFire_Sheet.png 첫 행 섬광·파편4프레임(index0~3) 흰색 틴트. 원본4×4 중 나머지12셀 제외, 최대180px, 12f(0.2초). _physicalImpactSheet는 이미지별 WeakMap 캐시, _tintHolyDome(img,255,255,255): RGB255/alpha=반올림(max(원본RGB)×원본alpha/255). 기존 Fire FBF 흰 연기 연결 제거. 원본/다른 속성/탄 비행/패링 효과 유지 |
+| 화염 F | fire 또는 redbean → Fire_FBF_4x4.png |
+| 얼음 I | ice → Ice_ImpactIce_Sheet.png + Ice_MistSmoke_FBF_4x4.png (물파란콩은 기존 별도 Water Impact 경로 유지) |
+| 어둠 D | dark → Dark_MediumImpact.png + Dark_DarkSmoke_FBF_4x4.png |
+| 번개 L | lightning → Lightning_ImpactLightning_Sheet.png + Lightning_Lightning_FBF_4x3.png |
+| 신성 H / 대지 E | holy → Light_ImpactLight_Sheet.png / earth → Earth_ImpactEarth_Sheet.png |
+| 다크볼 추가 피격 파편 | 기존 초록/파랑 대신 #a44cff 6개 + #6d21ad 6개 |
+
+검증: darkSphereIdentity.test.js의 물리 메타 제거·비행 중 변조 금지·7속성 임팩트 매핑, tmp/verify_dark_sphere_identity.py 실제 spawnProj 검사. RGB만으로 임의 속성을 추측하지 않고 탄종과 el을 일치시킨다.

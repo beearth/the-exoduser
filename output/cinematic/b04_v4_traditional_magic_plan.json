@@ -1,0 +1,29 @@
+{
+  "status": "rendered_and_ingame_verified",
+  "source_master": "video/world_intro_v9_demon_duels_en.mp4",
+  "target_master": "video/world_intro_v10_traditional_magic_en.mp4",
+  "keyframe": "output/cinematic/b04_v4_traditional_mage_keyframe.png",
+  "image_prompt": "Use case: stylized-concept. Asset: NEW 16:9 photoreal traditional dark fantasy film keyframe for a 3-second spell attack shot, not superhero sorcery. Reference image is ONLY environment/material/lighting reference; DO NOT copy its psychic, gesture, demon position or battle composition. A different elderly grey-bearded ARCHMAGE in tattered heavy wool robes and a weathered cloak, no tactical armor, stands on the RIGHT in three-quarter profile, grim focused face visible. He grips ONE plain ancient knotted wooden staff with BOTH hands, vertically in front of his body, staff base hovering 10 centimeters above the stone floor, poised to strike DOWN. BOTH hands visibly wrap the same wood, hands well away from demon, no outstretched palm. On LEFT midground, ONE looming horned charcoal demon approaches in a low threatening stride, whole body and both feet clearly visible. Keep at least 3 meters of open stone ground BETWEEN them, no touching bodies or hands. Low medium-wide side view: mage and demon occupy two-thirds of frame height with open ground and readable silhouette, not a distant landscape. Capture the instant BEFORE the staff strikes; one hairline natural jagged crack in the ordinary ground near demon feet, no glowing effect yet. The planned action is earth splitting beneath the demon and a SINGLE vertical pillar of real fire rising from below while mage remains grounded safely outside it. Dark ancient ruined stone terrace inside vast hell pit; concave Gothic ruins and faint remote industrial cables echo the same setting but mage clothing and spell are traditional fantasy. Ash gray fog, sooty stone, realistic wool and wood, dim cold ambient light; enough mids to see the action. High-end live-action movie texture and grounded weight. Strict negatives: NO magic circles, NO geometric glyphs, NO mandalas, NO glowing rings, NO portals, NO circular shields, NO hand shields, NO holograms, NO floating rune diagrams, NO hand-to-hand palm contact, NO energy beams, NO neon body outline, NO levitating wizard, NO extra characters, NO text/subtitles/watermark, NO gore, NO cartoon. Lower 15% subtitle safe. One coherent cinematic frame, no panel layout.",
+  "video_prompt": "Animate the supplied frame as ONE continuous 4-second traditional dark fantasy shot. Elderly wizard RIGHT, horned demon LEFT, wide empty ground separates them. FIXED camera, both bodies stay visible. 0.0-0.65s: wizard drives his already vertical wooden staff firmly DOWN with BOTH hands, its bottom visibly striking the stone ONCE. At 0.7s the existing jagged natural ground crack rapidly splits toward and underneath the demon, tossing small dark stones. At 1.15s ONE roaring pillar of REAL ORANGE FIRE erupts VERTICALLY FROM THE GROUND AT THE DEMON'S FEET; black smoke and earth spray rise with it. The demon violently recoils backward from the upward blast, torso arches, claws fling outward, then falls to one knee just beside the flame. By 2.6s the attack and unmistakable demon reaction are complete, fire subsides to low flames and smoke. Final second: wizard holds the staff planted, robes settle; demon remains damaged but a coherent living body. Wizard never approaches or touches demon. Physical earth and fire obey gravity, directional upward force, heavy cinematic power, clear cause -> eruption -> recoil. Keep wizard face, wood staff, both hands, separate silhouettes and location consistent. Exclude ANY magic circle, glowing ring, geometric diagram, rotating glyph, mandala, portal, glowing shield, hand-disc, energy beam, hand-to-hand pushing, superhero choreography, neon hologram. No new people, no floating wizard, no dissolving demon, no gore, no scene cuts, no slow motion, no camera orbit, no captions or audio. Flame MUST originate below demon, never from wizard hands or staff tip. Never obscure the wizard with the fire.",
+  "job_id": "10f15ba5-c91c-44e6-9367-21ee573c7a26",
+  "psychic_keep": {
+    "source": "output/cinematic/b04_v3_psychic_demon.mp4",
+    "from": 0,
+    "duration": 3
+  },
+  "mage": {
+    "at": 87.79166666666667,
+    "duration": 3
+  },
+  "voice_shift": {
+    "range": [
+      87.1,
+      89.5
+    ],
+    "delay": 0.4166666666666667
+  },
+  "subtitle26": [
+    87.889,
+    89.729
+  ]
+}

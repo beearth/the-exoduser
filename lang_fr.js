@@ -3261,7 +3261,7 @@ Object.assign(_FR,{
 "계승의":"d'Héritage",
 "전대 공격력+":"ATQ des ancêtres+",
 "전대 수+":"Nombre d'ancêtres+",
-"전대 지속+":"Durée des ancêtres+",
+"전대 최대HP+":"PV max. des ancêtres+",
 "전대 위력 +X%":"Puissance des ancêtres +X%",
 "전대 소환 수 +1":"Invocations d'ancêtres +1",
 "전대 위력":"Puissance des ancêtres",

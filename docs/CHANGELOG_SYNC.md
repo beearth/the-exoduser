@@ -1,23 +1,34 @@
-## 2026-09-05 기동강타·지옥강타 1 영웅 임팩트 스왑
-
-| 대상 | 이전 시각 계약 | 현재 시각 계약 | 적용 위치 | 전투 영향·검증 |
-|---|---|---|---|---|
-| `chainSlam` / 사슬기동 중 E·좌클릭 착지 | 붉은 지옥진 `inferno_slam_impact_sheet.png` | 황토 대지 `giant_slam_impact_sheet.png` 2×2·512px 4프레임, `source-over`, 크기=`maxR×1.8×(0.72→1.0)` | `_gSlamWave` `kind==='chainSlam'` | 피해·범위·포이즈·자원·쿨다운·기동불꽃 기폭 불변 |
-| `giantSlam` / Shift+좌클릭 | 황토 대지 `giant_slam_impact_sheet.png` | 붉은 지옥진 `inferno_slam_impact_sheet.png` 2×2·512px 4프레임, `screen`, 크기=`maxR×0.9×(0.72→1.0)` | `vfxKind:'inferno'`; 기존 `kind:'giant'` 지면 충격 유지 | 피해·범위·포이즈·자원·쿨다운 불변. 회귀·브라우저 검사 PASS |
-
-## 2026-09-04 물 파란콩 4×4 얼음 시트 탄막·파열
-
-| 항목 | 이전 | 현재 계약 | 적용 위치 |
-|---|---|---|---|
-| 비행 외형 | 작은 픽셀 물핵+물결 꼬리 | `assets/vfx/water_ice_barrage_sheet.png` 4×4 시트의 1~2행 8프레임 비행 애니메이션 | `_drawWaterBean()` / `_drawWaterIceSheet()` |
-| Q 패링 | 블루콩 반사 전환만 | 반사 전 3행 4프레임 방사형 얼음 파열(`r=96`, `72f`) 후 기존 블루콩 반사 | 일반 마법탄 Q 패링 분기, `_waterBeanIceBurst(...,true)` |
-| 플레이어 피격 | 일반 얼음 적중 + 빙결 60f | 4행 4프레임 얼음기둥(`r=72`, `66f`) + 기존 빙결 60f | 일반 적 투사체 피격 분기, `_waterBeanIceBurst(...,false)` |
-
-- 피해량, `EL.I`, 최종 500~600px/s, 유도, 히트박스, Q 패링 분류는 변경하지 않았다. 파열은 광역 피해를 추가하지 않는 시각 피드백이다.
-- TDD: `test/waterBeanIceBarrage.test.js`가 4×4 시트 비행·3행 Q 패링·4행 피격 파열을 고정한다.
-- 배경 보정: 원본의 불투명 남색 배경(`RGB 약 16,28,46`)이 남지 않도록 시트 전용 암부 마스크를 `_makeBlackAdditiveCutout(18,70)`에서 **`(56,112)`**로 높였다. 같은 테스트가 이 기준을 고정한다.
-
 # Sync Changelog
+
+## 2026-09-08 전체 변경 커밋·운영 배포 준비
+
+| 항목 | 적용 내용 |
+|---|---|
+| 커밋 범위 | 현재 작업 트리의 게임·로비·번역·시네마틱·VFX·테스트 및 관련 docs 변경 전체 |
+| 로컬 보존 ZIP | `output/cinematic/world_intro_auto_v1_project.zip` (111,286,729바이트), `output/cinematic/world_intro_auto_v2_review.zip` (134,864,807바이트): GitHub 100 MiB 파일 제한 초과로 `.gitignore`에 정확한 두 경로 추가. 원본 파일 삭제 없음 |
+| 무지개탄 회귀 검사 | `test/blackBeanNeverParries.test.js`: 현행 `_hurtProjectilePlayer(p,_bkD,{dtype:'magic',src:'무지개폭발'})` 경유 호출을 검사. Q 전용 패링과 피격 의미 유지 |
+| Q 거리 필터 회귀 검사 | `test/qHoldReleaseParry.test.js`: 현행 전대 충돌 예외 `(!_ancHit\|\|_ancDist2>_ancHitR*_ancHitR)`를 포함한 필터를 검사. Q 충전 반경 계약 유지 |
+| 런타임 변경 | 이번 배포 준비에서는 게임 로직 수정 없음. 기존 리팩터링을 반영하지 못한 테스트 정규식 2개 정합성 수정 |
+| 배포 경로 | `origin/main` 푸시 후 `.github/workflows/deploy.yml`의 Vercel production 배포 실행 및 결과 확인 |
+
+## 2026-09-08 Google 로그인 캐릭터 자동저장 경로 수정
+
+| 대상 | 변경 |
+|---|---|
+| 일반 게임 부팅 | localhost의 `?char=<UUID>`를 로컬 세이브로 오분류하던 조건 수정. 명시적 `test=1`은 로컬 유지 |
+| Supabase 준비 | 로컬 로그인도 CDN 로드, `_supabaseReady` 대기 후 클라이언트 초기화. SDK 실패/DB 조회 실패 시 부팅 중단, 빈 캐릭터 자동저장 방지 |
+| 저장 타이머 | 30초 주기 유지. 성공 전 `_lastSaveTime` 갱신 제거, 500ms 디바운스 완료 시 핸들 해제. DEMO/DEMO500도 저장 성공 후 시각 기록 |
+| 보존 범위 | 세이브 파일 삭제/이관 없음. 전투·스킬·자원 설정 변경 없음 |
+| 검증 | cloudAutoSave 10건 + gameHtmlInlineSyntax 1건. 실제 계정 저장/재접속 복원은 사용자 세션 확인 필요 |
+
+## 2026-09-07 물리탄 패링에도 흰 Fire Impact 적용
+
+| 대상 | 변경 |
+|---|---|
+| doParry physicalProjectile | 기존 parry_impact 시트 호출 → _addBoom(x,y,60,12,'physical'): Fire Impact 첫 행4프레임 흰 틴트, 최대180px |
+| 공통 파편/섬광 | 물리 투사체 표식이면 #ffffff, 파편12개/flash0.25 유지 |
+| 보존 | 물리 피격 효과, 다른 속성·Q·무지개 효과, 패링 판정·반사·보상·사운드, 기존 parry_impact 에셋 등록 |
+| 검증 | physicalProjectileParry + darkSphereIdentity 7건 |
 
 ## 2026-09-07 리스폰 전투자원 완충
 
@@ -27,6 +38,140 @@
 | 수정 | 일반·보스방 리스폰 공통 후처리에서 applyStats 이후 HP/MP/ST/쉴드/기동게이지/돌진 스톡 완충 |
 | 검증 | test/respawnResources.test.cjs, 기본·차지·차원·합체·장비 보너스 5개 케이스 통과 |
 | 문서 | 2_5/RESPAWN_RESOURCE_RESET.md 및 부활·자원·공용 기동게이지 문서 동기화 |
+
+## 2026-09-07 물리 흰 연기 제거 / Fire Impact 섬광으로 교체
+
+| 대상 | 변경 |
+|---|---|
+| physical 시트 | Fire_FBF_4x4 → Fire_ImpactFire_Sheet 첫 행4프레임(index0~3), 기존 흰 틴트 유지 |
+| 지속 | 물리 명중48f→12f(0.2초), r60/최대180px 유지 |
+| 제외/보존 | 나머지12셀 미사용. 다른 속성의 시트·48f 재생·탄 비행·패링 효과 불변 |
+| 검증 | darkSphereIdentity 4건 통과, 실제 렌더/흰색 픽셀 검사 tmp/verify_physical_white_impact.py |
+
+## 2026-09-07 링 완료 후 탄 미생성 수정
+
+| 대상 | 변경 |
+|---|---|
+| 원인 | 특수 직접탄·대기 큐 방출의 _commit 누락으로 실제 spawnProj 밀도 제한에서3번 중2번 삭제 |
+| 생성 보장 | _emitEnemyShot 즉시 완료 및 _tickEnemyShotWarnings 대기 완료에 _commit=true 지정 |
+| 거리 조건 | 해파리62 방전·천사86 폭발: 시작 d<100/준비60f 유지, 완료 시 거리80+P.r 재검사 제거, 현재 플레이어 방향으로1발 |
+| 보존 | 스턴·빙결·사망 취소, 속성 예고 검증, 피해·속도 배율, 일반 비예고탄 밀도 제한 |
+| 회귀 | 실제 밀도 코드 경유 즉시/대기 각각3회→3발, 두 콜백의500px 이탈 발사 포함 총28건 통과 |
+
+## 2026-09-07 추천 빌드 순위 조정
+
+| 항목 | 이전 | 현재 |
+|---|---|---|
+| 1번 | 전격의창+아이스스톰 | 2번으로 이동 |
+| 8번 | 해골무덤+악의폭풍 | 1번으로 승격 |
+| 2~7번 | 기존 순서 | 각각 3~8번으로 순연 |
+| 9~14번 | 기존 순서 | 번호 유지 |
+
+## 2026-09-07 물리탄 전용 흰 명중 임팩트
+
+| 대상 | 변경 |
+|---|---|
+| 시트 | 기존 Fire_FBF_4x4.png 재사용, physical 렌더에만 RGB255 흰색 틴트. 새 이미지 생성 없음 |
+| 알파/캐시 | _tintHolyDome로 밝기를 알파에 보존, _physicalImpactSheet의 WeakMap에 이미지별1회 캐시 |
+| 파편/섬광 | EL.P 명중 파편12개 및 flash0.15 색=#ffffff |
+| 보존 | r60/48f/16프레임/최대180px, shake6, 탄 본체·속성·피해·패링 효과·원본 화염 시트 |
+| 검증 | 속성/전조 회귀26건 통과. tmp/verify_physical_white_impact.py: 보이는39769픽셀 모두 RGB255, 캐시 재사용·원본 보존, 실제 draw에서 흰/화염 각각1회, 오류0. captures/physical_white_impact.png 좌측 흰색/우측 원본 화염 확인 |
+
+## 2026-09-07 전투 스킬 설명 보강 — 기동불꽃 불바닥 일괄 폭발
+
+| 항목 | 현재 설명 |
+|---|---|
+| 대상 | `chainAssault` / 기동불꽃 전투 스킬 |
+| 추가 안내 | 불바닥을 여러 개 쌓은 뒤 충돌 스킬(기동파괴) 또는 분노 스킬(지옥강타 1)로 한 번에 폭발 가능 |
+| 실제 동작 | 기존 `_detonateAssaultFlames()` 연계를 설명에 노출하며, 전투 로직은 변경하지 않음 |
+
+## 2026-09-07 빨간 공격링 뒤 물리탄 발사 불일치 수정
+
+| 대상 | 변경 |
+|---|---|
+| 원인 | 특수 링은 본체색 e.col 사용, 발사는 _beanRoll 재추첨으로 예고와 다른 속성 선택 |
+| 특수21곳 | _swChargeEl 명시, 물리=#f4f4f4 / 그 외 ELC[속성]. 상세 공격별 표는 몬스터_공격시스템 |
+| 특수 eProjAt | 재추첨 제거, 요청 el/spd/sz/dmgMult 유지. dmg=정수(e.atk×dmgMult), life=정수(life×1.5), col=ELC[el] 또는 요청색 |
+| 발사 검증 | eShootWind 완료+속성일치+비무지개일 때 즉시 발사. 불일치는 실제 탄의60f 예고 필요 |
+| 혼합탄 | 큐를 el/blackBean별 분리, 기존 동일 소유자/월드 링 수×8만큼 r 증가. 무지개 링은 팔레트 순환 |
+| 검증 | 전조/속성 회귀25건 통과. tmp/verify_special_shot_element.py에서 실제 흰링→EL.P/physical, 화염링→EL.F/magic, 보라링→EL.D/magic 확인, 브라우저 오류0 |
+
+## 2026-09-07 전용 몬스터 본체의 공격링 누락 추가 수정
+
+| 대상 | 변경 |
+|---|---|
+| 원인 | 구울/슬라임 전용 본체 렌더의 continue 뒤에 있던 차징 링이 실행되지 않음 |
+| 공통 표시 | _drawEnemyShotWarnings에 일반 _projChargeT·특수 eShootWind 표시 통합, 본체 뒤/탄막 앞 1회 |
+| 가독성 | 본체 은신/등장 투명도와 독립된 alpha=1, 장식 거리 제한 없음 |
+| 보존 | 기존60f 전조, 발사 타이밍·피해·속성 유지. 보스 개별 발사 경로 전체 QA 완료는 아님 |
+| 검증 | enemyWarningOverlay 4건 및 기존 전조 회귀 포함17건 통과. tmp/verify_enemy_warning_overlay.py: 로딩 완료 후 실제 draw에서 구울/슬라임의 일반·특수 링 각각2개, progress=0.5/alpha=1 확인, 브라우저 오류0. captures/enemy_warning_overlay.png에서 양쪽 링 확인 |
+
+## 2026-09-07 워킹 사운드 전투음 포화 누락 수정
+
+| 대상 | 변경 |
+|---|---|
+| footstep / footstep2 | HIT(2) → 전용 STEP(3), _isFootstepSfx로 식별 |
+| 전용 중첩 제한 | _MAX_STEP_NODES=2, 초과 시 가장 오래된 발소리 잔향만 회수 후 새 발걸음 재생 |
+| 재생 큐 | 발소리는 우선 큐로 처리하여 프레임/카테고리 제한에서 누락되지 않음 |
+| 보존 | 전체48/16 노드 상한, 스킬/보이스 우선순위, 음원·vol0.3·피치·이동128px 간격 |
+| 검증 | 전용 발소리3건 + 오디오 부팅/재개4건 통과 |
+
+## 2026-09-07 진보라 다크볼 속성 정합 및 속성별 임팩트 보정
+
+| 변경 | 현재 계약 |
+|---|---|
+| 원인 제거 | 발사 후25% 확률로 gbBean 외형만 바꾸던 변조 삭제. 정상 _beanRoll 어둠탄은 유지 |
+| 생성 정합 | _prepareDarkSphere: 적대 gbBean=EL.D/#a44cff, stale parryClass 초기화 후 재분류; 일반 어둠탄 Q/magic |
+| 충돌 효과 | _projHitFx는 실제 el 우선. redBean 플래그만으로 어둠/물리탄을 화염으로 처리하지 않음 |
+| 미지원 속성 보완 | physical=Air FBF, holy=Light Impact, earth=Earth Impact. dark는 Dark Medium+Dark Smoke 유지 |
+| 다크볼 파편 | #a44cff 6개 + #6d21ad 6개 |
+| 검증 | darkSphereIdentity 및 분류/시각/전조/물 임팩트 회귀18건, 실제 spawnProj→어둠 속성·마법 분류·보라색·dark 임팩트 확인 |
+
+## 2026-09-07 공격링 없는 특수 탄막 발사 보정
+
+| 항목 | 변경 |
+|---|---|
+| 원인1 | eShootWind 공격링이 _eDecor에 묶여 600px 밖에서 숨겨짐 → 장식 제한 제거, alpha1 |
+| 원인2 | 특수AI가 eProjAt 등으로 차징 없이 발사 → _emitEnemyShot의60f 링 후 방출 |
+| 적용 | eProjAt, radialProjs, _spawnBossProjectile의 비보스 적 이동탄 |
+| 예외 | 이미 완료된 eShootWind는 중복 대기 없음. 보스 전용 패턴·정지 위험물·friendly는 기존 경로 |
+| 안전 | 스턴/빙결/살아 있던 소유자 사망/스테이지 변경 시 취소; 사망탄은 사망 위치60f 예고 |
+| 수치 | 같은 프레임 일제사격은 링1개; 피해·속도·방향·탄종·밀도·패링 불변 |
+| 검증 | enemyShotWarning 및 기존 projChargeTelegraph, druidPoisonProjectiles, waterBeanIceBarrage 회귀 검사 |
+
+## 2026-09-07 가시덫 유틸리티 밸런스 조정
+
+| 항목 | 이전 | 현재 | 적용 위치 |
+|---|---|---|---|
+| 슬로우 | Lv1 70%, Lv당 +2%p, 최대90% | Lv1 91%(기존 대비 ×1.3), Lv당 +2%p, 최대95% | `_spikeTrapSlowPct`, 적 이동/넉백 |
+| 피해 | 기존 공식 100% | 기존 공식 ×0.5 (단독 설치 + pillarSpike) | `_spikeTrapDmg`, `activateSpikeTrap`, `activateDarkPillar` |
+| 역할 | 설치 장판인데 피해 비중이 큼 | 슬로우/출혈 중심, 피해 50% 하향 | `spikeTrap` |
+
+## 2026-09-07 물 계열 충돌 임팩트만 교체 — 비행 변경 취소
+
+사용자 정정: 탄막 비행 아트는 교체 대상이 아니다. 잘리는 얼음 충돌 임팩트만 Water Impact로 교체한다.
+
+| 대상 | 현재 계약 |
+|---|---|
+| waterBean 비행 | 기존 water_blue_projectile_sheet.png, 4×2 8프레임, 약12fps, 30×16×_sSc, 행별 세로 크롭·방향 회전 복구 |
+| 물리/빙 elemBall | 기존 proj_kraken_shot_api_v1.png, 단일 탄두170px, 원본비율·방향 회전 복구 |
+| 크라켄 fbEnergy 비행 | 기존 proj_kraken_water.png, 4×4 16프레임, 240px, p._sprFr 진행 복구 |
+| waterBean Q 패링 / 피격 | Water_ImpactWater_Sheet.png 전체16프레임, waterImpact, r96/72f / r72/66f, 최대288px /216px |
+| 크라켄 EL.I 접촉 | waterImpact r220/90f, 최대660px; 다른 속성 효과 유지 |
+| 제거 | 잘리던 얼음 임팩트 로더·_drawWaterIceSheet·waterIceParry/waterIceHit; 잘못 추가한 공용 비행 _drawWaterFlight 제거 |
+| 보존 | 피해·속도·판정·빙결60f·패링 규칙, 원본 에셋 파일 |
+| 검증 | 원본 비행 경로 및 충돌 연결 전용 테스트8건 통과. 이전 water_fbf_impact_check.png는 취소된 비행 시안으로 현재 외형이 아님 |
+
+## 2026-09-07 플레이어 부활 자원 100% 복원 + 가시덫 물리 탭 이동
+
+| 대상 | 이전 계약 | 현재 계약 | 적용 위치 |
+|---|---|---|---|
+| 일반 쓰러짐 부활 | pDemon 0레벨 기준 HP/MP/ST 50% 복원 | 부활 판정 성공 시 HP/MP/ST 각각 `mhp`/`mmp`/`mst`로 100% 복원 | `game.html:_fallenResolve()` |
+| 장비 `reviveOnce` | 어픽스 값 비율만큼 HP 복원 | 1회 즉시 부활 시 HP/MP/ST 각각 최대치 복원. 어픽스 값은 보유/발동 판정에만 사용 | `game.html:die()` |
+| `spikeTrap` / 가시덫 | `cat:'tech'`, F 영역 슬롯, `[선택: F]` | `cat:'phys'`, 물리 탭 일반 슬롯 1~4번, 새 캐릭터 1번 기본 배정 | `SKILL_LIST`, `SKILL_SLOTS`, `SKILL_SLOT_DEFS`, 새 게임/로컬 초기화 |
+| 기존 저장 데이터 | F에 남은 가시덫과 `activeTechSk=spikeTrap` 가능 | `_repairAreaSkillSlot()`이 일반 슬롯으로 복구하고 `activeTechSk`는 `giantSlam`으로 마이그레이션 | `dbRestore()` / 슬롯 복구 |
+
+부활 확률 공식 `min(100, max(0, 자연부활력 + 스킬Lv×2 + 장비보너스 - 인간성Lv×10))`과 부활 확률 자체는 변경하지 않는다. 가시덫은 탭/슬롯 분류를 물리로 이동했고, 현재 `INT×magicRef×pMagicMul×_skMul×0.5` 피해 공식과 슬로우 91%(Lv당 +2%p, 최대95%)를 적용한다.
 
 ## 2026-09-07 ENTER 고딕 곡선 문양 API 적용
 
@@ -86,6 +231,27 @@
 
 > **2026-09-06 최종 확정 — 해골무덤 플레이어 전용:** 드루이드만이 아니라 **전체 보스(si0~34)의 cageTrap 사용을 금지**한다. 아래 보스 사용 계약은 이전 기록이다. 모든 무브셋에서 제외, 관련 콤보 2개 제거, AI 점수 -1, 강제 실행도 생성·피해·소리 없이 recover/25f 종료. idx41 정의는 배열 인덱스 호환용 예약으로 보존한다. 플레이어 boneWall/boneStorm과 공용 boss_cageTrap 이미지·음향은 유지한다. 기존 보스용 잔여 배열/렌더는 호환용이며 신규 생성 경로는 없다. 회귀 검사: 35개 stage 강제 호출 모두 생성 0, 플레이어 공용 시트·음향 포함 관련 테스트 7개 PASS.
 
+## 2026-09-06 드루이드 1.5배 확대·해골무덤 차단
+
+| 변경 | 현행 |
+|---|---|
+| 드루이드 si0/si3 크기 | dw 6.2→9.3, dh 9.4→14.1. r44 기준 높이 413.6→620.4px. 충돌 반경/전투 수치 불변 |
+| 해골무덤 | cageTrap 무브셋 제외, 24→23종. 강제 실행도 recover/25f 종료, 생성·소리 없음 |
+| 보존 | 다른 보스 및 플레이어 boneWall/boneStorm 유지 |
+| 검증 | 관련 테스트 7개 통과 |
+
+## 2026-09-06 1-1 보스 다크드루이드 실적용
+
+| 항목 | 변경 |
+|---|---|
+| 원인 | 이전 교체 응답과 달리 si0 이름/외형/패턴에 흑요염 배정이 남아 있었음 |
+| 배정 | HELL_BOSSES[0][0]=다크드루이드, _CODEX_BOSS[0]=[3], _BOSS_MOVESET[0]=si3의 24종 복제 |
+| 전용 동작 | 드루이드 stage3 분기를 stage0 또는 stage3으로 확장. 혜성/ORB/잠행/독늪/전용 VFX 포함 |
+| 제거 | si0 강제 EL.F 및 _isLargeBoss=true 배정; 기존 자산은 보존 |
+| 유지 | si0 맵/스폰 좌표/성장·보상 공식, si3 보스, 구 si0 음성 |
+| 검증 | 관련 Node 10개 PASS, stage0 아레나 런타임 배정 PASS |
+| SSOT | docs/4.1맵디자인+설정/CH1_1_DRUID_BOSS_ASSIGNMENT.md; 관련 문서에 구 배정의 supersession 명시 |
+
 ## 2026-09-06 ENTER 철제 버튼 실제 적용
 
 | 항목 | 적용 |
@@ -94,6 +260,63 @@
 | 연결 | `index.html` → `cin-enter-art.js`, 녹색 배경 투명화 완료 후 교체, 기존 이미지 폴백 |
 | 검증 | 실제 페이지 렌더·클릭 전환 확인, pageerror 없음 |
 | 문서 | `cinematic/ENTER_FORGED_20260906.md`, `cinematic/PROLOGUE_STORYBOARD_v1.md` 동기화 |
+
+## 2026-09-06 — 전대 탄막 흡수 오라
+
+| 항목 | 적용 |
+|---|---|
+| 동작 | 검 설치 중 주변 빛줄기 12개가 외곽에서 검 접점으로 이동 |
+| 흡수 피드백 | 저장 탄수 비율에 따라 오라·접점 광도·흐름 속도 증가. 첫 24f 페이드 인 |
+| 구현 | `_drawAncestorAbsorbAura`, 본체 뒤 screen 합성, 렌더 전용 |
+| 검증 | 전대·문법 테스트 19개, `tmp/verify_ancestor_aura.py`, 비교 캡처 `captures/ancestor_absorb_aura.png` |
+
+## 2026-09-06 — 전대 검 휘두르기 잘림 원본 복구
+
+| 항목 | 변경 |
+|---|---|
+| 원인 | 불균일하게 배치된 원본을 8등분한 뒤 파편 제거하여 몸통·검·망토 일부 손실. 기존 잘림 없음 보고는 오류 |
+| 복구 | 전체 원본에서 온전한 연결 실루엣 8개 추출 후 512×800 셀에 패킹. v4 4096×800 RGBA |
+| 보존 | 모든 포즈 동일 .992 배율, 신장·발 보정 유지, 최소 셀 여백 32px. 기존 약 38f 스윙 리듬 유지 |
+| 파일 | `tools/repair_ancestor_swing.py`, `img/vfx_ancestor/ancestor_iron_warlord_swing_v4.png`. 기존 v3 보관·런타임 제외 |
+| 검증 | 원본 연결부 전체 추출 및 셀 경계 검사, 전대·문법 테스트 19개, 브라우저 8개 셀 재생 검사 |
+
+## 2026-09-05 — 전대 동작 전환 신장·발 앵커 통일
+
+| 항목 | 수정 내용 |
+|---|---|
+| 원인 | 정지 전신 240px와 투명 여백이 큰 동작 셀 360px를 출력해 특히 swing의 실제 몸이 축소됨 |
+| 크기 | `_ancestorDrawBox(kind,fw,fh,big)`: 기준 신장 230×big, 시트별 `body`로 전체 높이 보정. idle .958 / walk .46 / swing .31 / plant .55 / emerge .65 |
+| 접지 | 공통 발 위치 `a.y+56×big`; `foot` idle .973 / walk .726 / swing .738 / plant .87 / emerge .86 |
+| 스윙 | authored 포즈에 가산하던 `_lx/_ly` 이동 제거. 폴백 `_punch=1`, 추가 확대 제거 |
+| 검증 | 5상태×3 big 값의 신장·발 기준·종횡비 회귀 검사. 브라우저 비교 캡처 `captures/ancestor_scale_comparison.png`, 오류 0 |
+
+## 2026-09-05 — 철갑 전대 대검 스윙 8프레임 중량화
+
+| 항목 | 이전 | 최종 계약 | 적용 위치 |
+|---|---|---|---|
+| 스윙 에셋 | `swing_v2.png`, 2304×800 RGBA/6×1 | `ancestor_iron_warlord_swing_v3.png`, **3072×800 RGBA/8×1**, 셀 384×800 | `_ANC_SWING_SHEET`, `img/vfx_ancestor/` |
+| 동작 리듬 | `a._atkT-=sp×.09`, 약 11 시뮬레이션 프레임으로 6포즈를 통과 | `a._atkT-=sp×.026`, 약 38 시뮬레이션 프레임. 가드→싣기→깊은 윈드업 정지→인상→apex 정지→짧은 내려찍기→검로→낮은 회복 | `_updateAncestors()`, `_ancestorSwingFrame()` |
+| 셀 경계 QA | 6등분만 사용 | 8등분 `sx=0/384/768/1152/1536/1920/2304/2688`; 생성 원본의 인접 망토·검 파편은 셀별 주 실루엣 보존 정규화로 제거 | Canvas renderer, `tools/normalize_ancestor_sprite_sheets.py` |
+
+- 브라우저 런타임 검증: natural size `3072×800`, 8개 source x 전부 사용, 실제 화면상 18프레임(약 0.6초) 동안 스윙 유지, `pageerror=0`.
+- TDD: v3 경로, 8개 동작 위상 순서, `sp×.026` 감쇠, RGBA 런타임 파일을 `test/ancestorSwordSkill.test.js`에서 고정한다.
+
+## 2026-09-05 — 철갑 전대 정지컷 지면 고정
+
+| 항목 | 원인 | 최종 계약 | 적용 위치 |
+|---|---|---|---|
+| 정지 시 덜덜/부유 | AI 좌표와 `a._moving`은 고정이어도 Canvas 렌더가 무조건 `sin(t×2.6)×3px` 상하 이동과 `sin(t×2.2)×3%` 세로 scale을 적용 | 정지 본체의 `yOffset=0`, `breathScale=1`. 발이 지면에 고정되고, 움직임은 추적 보행·스윙의 authored 프레임에서만 발생 | 철갑 전대 Canvas renderer |
+
+- 브라우저 180프레임 계측에서 근접 적 130px 조건의 전대 좌표 `(4090,4020)` 및 `_moving=false`가 계속 유지됨을 확인했다. 따라서 AI가 아닌 렌더 전용 부유를 제거했다.
+- TDD: `test/ancestorSwordSkill.test.js`가 정지 렌더 경로의 상하 사인·scale 호흡 재도입을 차단한다.
+
+## 2026-09-05 — 철갑 전대 근접 추적 정지 반경 정렬
+
+| 항목 | 이전 불일치 | 최종 계약 | 적용 위치 |
+|---|---|---|---|
+| 추적 정지 거리 | `reach=78px`; 실제 대검 판정 `radius=142px`라 78~142px의 적에게 때릴 수 있어도 보행 재진입 | `reach=radius=142px`. 타겟 중심 142px 이내에서는 공격 쿨다운 중에도 `a._moving=0`, 그 밖에서만 추적 | `_ANC_KIT`, `_updateAncestors()` 기본 키트 |
+
+- 회귀 테스트는 142px 타격 반경 안에서 전대가 추적 상태가 되지 않으며, 레거시/폴백 키트도 `reach=142`를 유지하는지 검증한다.
 
 ## 2026-09-05 — HUD 좌·우클릭 인접 배치 및 설명 동기화
 
@@ -108,12 +331,35 @@
 - 입력 동작은 변경하지 않았다: `shield=KeyE`, `beam=mouse2`를 그대로 유지한다.
 - 스킬 문서의 구 `E슬롯 마법` 표기를 `우클릭 마법슬롯`으로, 게임패드 R3 안내를 `우클릭`으로 동기화했다.
 
-## 2026-09-05 기동강타 붉은 지옥진 영웅 임팩트 공유
+## 2026-09-05 — 철갑 전대 plant/walk/swing 3시트 런타임 연결
+
+| 항목 | 최종 계약 | 적용 위치 |
+|---|---|---|
+| 대검 설치 | `ancestor_iron_warlord_plant_v2.png`, 2304×800 RGBA/6×1/셀 384×800. 설치 시작 후 첫 72f에 0→5 재생, 이후 5초 흡수 동안 마지막 박힌 자세 고정 | `_ANC_PLANT_SHEET`, 전대 Canvas renderer |
+| 보행 | `ancestor_iron_warlord_walk_v2.png`, 2304×800 RGBA/6×1. `a._moving=1`에서 `floor(_walkT/8)%6`으로 관절·발·망토·저검 각이 실제로 변함 | `_ANC_WALK_SHEET`, 전대 Canvas renderer |
+| 근접 스윙 | **당시 계약:** `ancestor_iron_warlord_swing_v2.png`, 2304×800 RGBA/6×1. 이후 같은 날 상단의 v3 8×1 중량 스윙으로 교체되어 런타임 미사용 | `_ANC_SWING_SHEET`, 전대 Canvas renderer |
+| 대검 crop 방지 | 구 walk v1은 셀 경계 밖으로 대검이 넘어가 영구 격리. 당시 6프레임 시트는 좌우 29px·상하 40px 투명 여백과 `0/384/768/1152/1536/1920` 원점을 사용했다. 현재 v3 swing은 8개 원점에 `2304/2688`을 추가하고 셀별 주 실루엣만 보존 | `tools/normalize_ancestor_sprite_sheets.py`, `test/ancestorSwordSkill.test.js` |
+| API 원본 QA | 생성 API의 `rgb24` 체커보드 원본은 `*_raw_v2.png`으로 보존만 하고 런타임 미사용. 연결된 v2 파일만 `rgba`로 정규화 | `img/vfx_ancestor/`, `ffprobe` |
+
+- 브라우저 런타임: plant/walk/swing 각 소스가 실재 로드되고 6개 셀 원점만 사용하며 `pageerror=0`을 확인했다.
+
+## 2026-09-05 기동강타·지옥강타 1 영웅 임팩트 스왑
 
 | 대상 | 이전 시각 계약 | 현재 시각 계약 | 적용 위치 | 전투 영향·검증 |
 |---|---|---|---|---|
-| `chainSlam` / 사슬기동 중 E·좌클릭 착지 | 황토 지옥강타 1 `giant_slam_impact_sheet.png`와 같아 보임 | 붉은 지옥진 `inferno_slam_impact_sheet.png` 2×2·512px 4프레임을 공유. `screen`, 프레임=`min(3,floor((t/maxT)×4))`, 크기=`maxR×1.8×(0.72→1.0)` | `_gSlamWave` 렌더러의 `kind==='chainSlam'` 영웅 시트 분기 | 피해·범위·포이즈·자원·쿨다운·기동불꽃 기폭 불변. `test/chainSlamEarthImpact.test.js`, `test/giantSlamHeroVfx.test.js`, 인라인 문법 검사 PASS |
-| `giantSlam` | 기존 영웅 시트·대지 충격 보강 | 변경 없음 | 기존 `kind==='giant'` 분기 | 변경 없음 |
+| `chainSlam` / 사슬기동 중 E·좌클릭 착지 | 붉은 지옥진 `inferno_slam_impact_sheet.png` | 황토 대지 `giant_slam_impact_sheet.png` 2×2·512px 4프레임. `source-over`, 프레임=`min(3,floor((t/maxT)×4))`, 크기=`maxR×1.8×(0.72→1.0)` | `_gSlamWave` 렌더러의 `kind==='chainSlam'` 영웅 시트 분기 | 피해·범위·포이즈·자원·쿨다운·기동불꽃 기폭 불변. `test/chainSlamEarthImpact.test.js`, `test/giantSlamHeroVfx.test.js`, 인라인 문법 검사 PASS |
+| `giantSlam` / Shift+좌클릭 | 황토 대지 `giant_slam_impact_sheet.png` | 붉은 지옥진 `inferno_slam_impact_sheet.png` 2×2·512px 4프레임. `screen`, 크기=`maxR×0.9×(0.72→1.0)` | 공격 파동의 `vfxKind:'inferno'`; `kind:'giant'` 지면 충격 레이어는 유지 | 피해·범위·포이즈·자원·쿨다운 불변 |
+
+## 2026-09-05 — 철갑 전대 대검 실폭발·보행 시트 격리
+
+| 항목 | 이전 문제 | 현재 계약 | 적용 위치 |
+|---|---|---|---|
+| 대검 종료 연출 | 적 피해 판정과 짧은 28f 고리만 남아, 5초 뒤 그냥 사라지는 것처럼 보임 | 피해 판정과 동시에 반경 `R=min(480,240+흡수발수×10)`의 `dark` 월드 폭발을 **96f** 남기고, R의 20→100%로 커지는 지면 충격파를 **72f(1.2초)** 표시. 파티클 44~68개 | `_detonateAncestorSword()`, 전대 Canvas renderer, `_addBoom()` |
+| 이동 중 대검 crop | `ancestor_iron_warlord_walk_v1.png`의 6등분 셀 경계를 대검이 넘어, 걷는 중 칼끝이 잘림 | **후속 최신 계약:** v1은 계속 격리하고, `ancestor_iron_warlord_walk_v2.png` 2304×800 RGBA 6×1을 안전한 셀 여백과 함께 실제 이동에 연결 | 전대 Canvas renderer, `_ANC_WALK_SHEET` |
+| 생성 이미지 후보 | 미리보기는 정상처럼 보여도 `rgb24` 체커보드가 픽셀로 구워질 수 있음 | 새 생성 3시트의 raw는 보존하고 정규화된 RGBA v2만 런타임에 연결. 알파·프레임 경계 검증을 모두 통과 | 에셋 QA |
+
+- TDD: `test/ancestorSwordSkill.test.js`가 `_addBoom(x,y,R,96,'dark')`, 72f 충격파 상태, 구 보행 시트 배제와 v2 plant/walk/swing 슬라이스 렌더를 고정한다.
+- 브라우저 런타임 검증: 대검 종료 직후 `R=240`, 충격파 `72/72f`, 월드 폭발 `r=240`, `mt=96`, `col='dark'`, `pageerror=0`을 확인했다.
 
 ## 2026-09-05 기동강타(`chainSlam`) 대지 충격 가시성 복구
 
@@ -121,6 +367,26 @@
 |---|---|---|---|---|
 | 기동강타 / 사슬기동 중 좌클릭·E | `chain_slam_impact` 3×3 시트는 검은 흙·균열을 담지만 공용 가산 합성에서 어두운 픽셀이 사라져 지진 원형파만 남음 | `kind:'chainSlam'` 파동에 일반 합성 크레이터·외곽선·16갈래 균열·18개 밝은 암석 파편을 추가 | 크레이터 가로=`maxR×(0.22+0.54×min(1,(t/maxT)×3.4))`, 세로 `0.30`배; 균열 Y=`0.54`배; 기존 파동 `24f` 유지 | 피해·범위·포이즈·착지 패링·기동불꽃 기폭 불변. `test/chainSlamEarthImpact.test.js` 및 인라인 문법 PASS, 브라우저 캡처 확인 |
 
+## 2026-09-05 철갑 전대 무한 유지·HP 전사 전환
+
+| 항목 | 이전 | 현재 계약 | 적용 위치 |
+|---|---|---|---|
+| 유지 조건 | `720f+18f/Lv+ancDur×60f` 뒤 자동 소멸 | **시간 제한 없음**. `a.hp<=0` 또는 `_dead=true`일 때만 전사; 스테이지 전환·플레이어 사망은 기존 일괄 정리 유지 | `_calcAncestorStats()`, `activateAncestorSummon()`, `_updateAncestors()` |
+| 적 피격 | `hp/mhp`는 계산만 하고 전대가 비대상 | 적 일반 탄막은 가까운 전대를 표적으로 삼고, 유효 일반 탄막·30f 근접 접촉마다 원본 `p.dmg`·`atk`와 무관하게 **1타**를 소모한다. **100번째 피격 전사**. `blackBean`은 Q 전용이라 전대 표적/피격 제외 | `_ancestorTargetForEnemy()`, `_hurtAncestor()`, `_ancestorMeleePressure()`, 적 탄막 루프 |
+| 대검 방어 | 설치 중 흡수·폭발만 | 대검 흡수장 105→190px 안에서는 일반 탄막 피격보다 흡수가 우선 | 적 탄막 충돌, `_ancestorSwordAbsorbProjectiles()` |
+| 하단 게이지 | 잔여시간 청색 바 | `hp/mhp` 금장 바, 30% 이하 적색 바 | 전대 Canvas 렌더 |
+| 유골함 생존 어픽스 | `ancDur` 1~5초, 자동 지급 +3초 | 신규 `ancHP` T1~T5 `+30/+60/+90/+120/+150%`, 자동 지급 T3 `+90%`. 구세이브 `ancDur`은 값 1당 +30% HP로 호환 | `AFFIX_POOL`, `_calcAncestorStats()`, `_grantOssuaryIfNeeded()` |
+
+- TDD: `test/ancestorSwordSkill.test.js`가 타이머/maxT 제거, HP 0 전사, 적 탄막 피격 경로 및 구 `ancDur`→최대HP 호환을 RED→GREEN으로 고정한다.
+
+### 2026-09-05 후속 조정 — 전대 100타 내구·대검 5초 발광
+
+| 항목 | 이전 | 현재 계약 | 적용 위치 |
+|---|---|---|---|
+| 전대 피격 | 원본 `p.dmg`·근접 `atk×.5`만큼 `hp` 차감 | 유효 일반 탄막 또는 30f 근접 접촉마다 **정확히 1타**. 적 공격력과 무관하게 100번째 피격에서 전사 | `_hurtAncestor()`, `_ancestorMeleePressure()` |
+| 대검 강림 | 96f(1.6초) 흡수 후 폭발 | **300f(5초)** 지면 고정·청백색 고리/광점 맥동·탄막 흡수 후 시간 완료 폭발 | `_beginAncestorSword()`, 전대 Canvas 렌더 |
+
+- TDD: `test/ancestorSwordSkill.test.js`에서 99타 생존/100타 전사와 300f 대검 발광을 RED→GREEN으로 검증한다.
 
 ## 2026-09-05 Shift+좌클릭 지옥강타 1 대지 충격 보강
 
@@ -129,6 +395,39 @@
 | `giantSlam` / Shift+좌클릭 | 2×2 영웅급 지진 시트와 원형 이중 충격파가 중심이라 지면 타격감이 약함 | 시트 아래 대지 압착 타원, 시트 뒤의 12갈래 방사 균열을 추가해 지진파와 구분되는 지면 붕괴를 표시 | 압착 진행=`min(1,(t/maxT)×5)`, 가로 반경=`maxR×(0.12+0.24×진행)`, 세로=`0.34`배. 균열 반경=`maxR×(0.16+0.34×진행)`, Y 원근=`0.55`배 | 피해·범위·포이즈·자원·쿨다운 불변. `test/giantSlamHeroVfx.test.js` 5/5 PASS |
 | `giantSlam2`·`infernoSlam` | 기존 강타 시트·플래시·이중파동 | 변경 없음 | `kind==='giant'`에만 보강 레이어 한정 | 합체·지옥진 계약 불변 |
 
+## 2026-09-04 철갑 전대 단일화·대검 탄막흡수 폭발
+
+| 항목 | 이전 | 현재 계약 | 적용 위치 |
+|---|---|---|---|
+| 전대 로스터 | 역사 인물 모티브 7종 중 해금 전대 랜덤 1기 | `iron_warlord` 철갑 전대 **1기 고정** | `ANC_ROSTER`, `_ANC_SPRITE_POOL` |
+| 대표 에셋 | 구 전대 7종 PNG·windup/strike 프레임 | `img/vfx_ancestor/ancestor_iron_warlord_v2.png` 실제 RGBA 본체. `iron_warlord_crypt_stage_v2.png`는 통째 배경 콜라주라 런타임 제외 후보 보관. 구 PNG 22개 삭제 | `img/vfx_ancestor/` |
+| 다수 소환 성장 | `ancCount` 어픽스·전설 `_lOssCount`·표시/비교 잔존 | 고정 1기와 충돌하는 코드·어픽스·전설 특수·UI 비교 제거 | `AFFIX_POOL`, `LEGENDARY_SPECIAL`, 인벤 비교 |
+| 고유식 | 근접 자동공격만 | 최초 180f 뒤/이후 480f마다 **300f(5초)** 대검 설치·청백 발광. 적 일반 탄막 최대 24발을 105→190px에서 흡수한 뒤 시간 완료 폭발 | `_beginAncestorSword()`, `_ancestorSwordAbsorbProjectiles()`, `_detonateAncestorSword()` |
+| 폭발 공식 | 없음 | 반경 `min(480,240+흡수발수×10)`, 적당 `floor(dmg×(1.7+발수×.18)+저장탄피해×.65)`, 넉백 ×1.7, `EL.D` 마법 | `_detonateAncestorSword()` |
+| 예외 | 없음 | `blackBean`은 Q 전용 규칙을 보존해 흡수 제외. 아군탄·mine/trap/web/poisonZone도 제외 | `_ancestorSwordAbsorbProjectiles()` |
+| 연출 | 부유 스프라이트·잔여 게이지 | 원근 타원 그림자·문양 고리·흡입 광점·확장 타원 충격파로 대검 설치의 지면 깊이 추가 | 전대 캔버스 렌더 |
+| 전대 체형·소환 깊이 | 세로 원본을 256²/180²로 압축해 짜리몽땅하게 보이고, 바닥 고리만 존재 | `_ancestorPortraitBox()`이 원본 종횡비를 보존(캐시 높이 320px, 실전 높이 240px×big). 통째 묘지 일러스트 합성은 맵 원근을 망치므로 제거하고, 후속은 분리된 월드 구조물 레이어로 재제작 | 전대 캔버스 렌더, `img/vfx_ancestor/` |
+| 전대 강림 애니메이션 | 단일 정지 전신 컷아웃을 통째로 부유/회전해 관절·무게감 없음 | API 생성·크로마키 정규화한 2172×724 RGBA 6×1 시트를 96f 동안 0→5 재생. 강림 중 AI 정지, 검·무릎·골반·팔꿈치·망토 위치가 프레임별로 변함 | `_ANC_EMERGE_SHEET`, `_emergeT/_emergeMaxT`, `_updateAncestors()` |
+| 전대 보행·원색 | 이동 중 정지 전신을 통째로 흔들고 캐시에 `rgba(120,160,255,.13)` 청색 틴트를 가산 | 당시 `ancestor_iron_warlord_walk_v1.png` 2172×724 RGBA 6×1 재생을 도입했으나, 후속 QA에서 대검 셀 경계 침범 crop이 확인되어 **2026-09-05 최신 계약에서 렌더 경로를 격리**했다. 청색 틴트 제거·검은 철갑·마모 금장·적색 망토 원색 유지 | `_ANC_WALK_SHEET`, `_walkT`, 전대 Canvas 렌더 |
+
+- TDD: `test/ancestorSwordSkill.test.js`에서 탄막 선별/24발 용량 경로, 설치→흡수→폭발 상태, 단일 로스터 및 `ancCount` 제거, 세로 비율 캐시, **통째 묘지 그림의 런타임 합성 금지**, 강제 청색 틴트 금지, 초기 보행 crop 탐지를 고정했다. 해당 결함 시트의 실제 슬라이스 렌더는 2026-09-05 최신 계약에서 배제한다.
+
+- 에셋 알파 QA: 생성 API의 체커보드 미리보기는 투명을 의미하지 않는다. raw 원본은 `rgb24`로 판명되어 런타임 경로에서 제거했고, 본체·강림·보행 세 PNG는 크로마키 정규화 후 `rgba`와 alpha=0 모서리 픽셀을 확인했다. `test/ancestorSwordSkill.test.js`가 이후 RGB 재유입을 막는다.
+
+- 소환 무대 QA: RGBA여도 통째 묘지 그림을 전대 주변에 합성하면 월드 오브젝트의 원근·충돌·유닛 전후관계가 성립하지 않아 콜라주로 보인다. `_ANC_STAGE_SRC`와 전/후경 crop 렌더는 제거했다. 소환 무대는 바닥 구조물·후방 석주·전방 occluder를 분리해 월드 좌표에서 만들기 전까지 미연결이다.
+
+- 애니메이션 QA: `test/ancestorSwordSkill.test.js`는 6×1 강림 시트 경로, `96f` 상태, 강림 중 AI 보류, 시트 crop draw 호출과 RGBA 포맷을 고정한다. 단일 전신의 상하 부유만으로 강림을 흉내 내는 경로는 금지한다.
+
+## 2026-09-04 탄막블랙홀 흡인·360도 재분출
+
+| 항목 | 이전 | 현재 계약 | 적용 위치 |
+|---|---|---|---|
+| 범위 탄막 처리 | 흡수장 반경에 들어온 적 탄막을 즉시 `life=-999`로 삭제 | 반경 안의 적 탄은 코어 반경 `24+min(24,sz×2)px`까지 `6~24px/f`로 끌려가며, 코어 도달 때만 흡수 카운트·원피해 풀에 저장 | `_absorbBulletBlackHoleProjectiles()` |
+| 포획 안전 | 즉시 삭제라 이동 연출 없음 | `_lvPull` 포획 상태는 지형·플레이어 충돌을 건너뛰어 코어까지 보이게 비행하고, 수명은 최소 180으로 보장 | 투사체 update, `_resetProj()` |
+| 붕괴 후속 | 저장 수를 종료 범위폭발의 보정에만 사용 | 흡수 완료 탄 1발당 2발, 총 `흡수수×2`발(상한 없음)을 균등 360° 아군 **원형 보존 반사탄**으로 재분출. 속도 `11px/f`, `life=120`, 폭발 반경 `80px`, 1발 피해=`floor(최종 종료폭발피해/발수)`. 각 탄은 원래 속성·색·크기·특수 외형·유도를 보존하고 가장 가까운 적을 재추적하며, 명중 때 `fire_medium`+`magic_burst` 임팩트를 낸다 — 적 탄 원피해만 나누지 않는다 | `_absorbBulletBlackHoleProjectiles()`, `_releaseBulletBlackHoleBarrage()`, `fireLavaSummon()` |
+| 종료 폭발 | 기존 화염 범위폭발 | 기존 반경 `900+(Lv-1)×30px`, 기본 폭발 공식·흡수 보너스·90f 스턴을 유지하고 재분출을 추가. 대형 `G._ultBurst={kind:'lava'}` 시트는 360° 탄을 가려 제거하고 코어 붕괴 파편만 유지 | `fireLavaSummon()` |
+
+- TDD: `test/bulletBlackHoleUltimate.test.js`에서 즉시 삭제가 아닌 코어 이동·코어 도달 흡수, 흡수 원형 보존 반사, 흡수 1발당 2발 균등 360° 재분출과 종료 폭발 최종 피해 분배, 명중 버스트 임팩트, 반사탄 유도 복구, 용암 버스트 시트 부재를 RED로 고정한 뒤 구현했다. `test/gameHtmlInlineSyntax.test.js`를 포함해 최종 10/10 PASS다.
 
 ## 2026-09-04 Q 보호막 선택값 우선 복구
 
@@ -136,6 +435,8 @@
 |---|---|---|---|
 | `stormBeam` 합체 + `activeQSk !== 'peaceShield'` | 합체 유무만으로 Q가 평화의보호로 강제 전환되어 100→200px/10초 경로로 진입 | 선택한 기본 Q(`sBlock`) 유지: 눌림 20f 패링, 홀드 100→500px/240f 성장, 해제 12f 저장 반경 패링 | `qHoldReleaseParry.test.js` + 브라우저 입력 재현 |
 | `activeQSk === 'peaceShield'` | 평화의보호 사용 | 변경 없음 — 평화의보호 사용 | 동일 |
+| 400~500px 일반 마법탄 | 400px 거리 선행 필터에서 충돌·패링 분기 전에 제외 | 현재/저장 Q 반경까지 충돌 검사를 유지해 해제 12f 저장 반경 패링에 포함 | 500px 저장 반경, 450px 탄의 브라우저 반사 재현 |
+| Q 홀드/해제 개념 정리 | 성장 반경을 홀드 흡수/지속 패링으로 해석해 동작이 섞임 | 홀드 흡수는 20px 고정, 눌림 20f 패링은 100px 고정. 차지 성장은 해제 충격파 반경만 키우며, 해제 12f에는 저장 반경으로 패링 | 평화의보호: 홀드 중 50px 마법탄 미반사, 해제 시 50px 반사 재현 |
 
 - 수정 지점: `_qIsPeaceShield()`. `stormBeam`은 평화의보호를 해금만 하며, Q 활성 선택값을 덮어쓰지 않는다.
 
@@ -160,6 +461,30 @@
 
 - 지옥강타 1·2는 더 이상 물리/근접 일반 목록에 표시되지 않는다. `cat:'rage'`로 분류되어 특수 탭의 분노 목록에만 표시되며, 기둥강타는 `giantSlam2`를 호스트로 계속 사용한다.
 
+## 2026-09-05 물 파란콩 유저 제공 비행 스프라이트 교체
+
+| 항목 | 이전 | 현재 계약 | 적용 위치 | 검증 |
+|---|---|---|---|---|
+| 비행 시트 | 4×4 얼음 시트 1~2행을 비행에도 사용 | `assets/vfx/water_blue_projectile_sheet.png` 유저 제공 1254×1254 투명 RGBA, 4×2 8프레임. 약 12fps(`frame 계수 .012`), 표시 `30×16×_sSc`로 일반 탄막 크기에 맞춤, 셀별 세로 여백을 크롭해 중심 정렬 후 방향 회전·`lighter` 합성 | `_drawWaterBlueFlight()` → `_drawWaterBean()` | `test/waterBeanIceBarrage.test.js` |
+| 임팩트 시트 | 비행·임팩트가 한 4×4 시트에 혼재 | `assets/vfx/water_ice_impact_sheet.png` 유저 제공 1254×1254 RGBA 4×4 시트의 아래 2행만 사용(3행 Q 패링 파열 `r=96/72f`, 4행 피격 얼음기둥 `r=72/66f`). 표시 `150×150×_sSc`로 확대하고, 위 2행 비행 프레임은 무시 | `_drawWaterIceSheet()` / `_waterBeanIceBurst()` | 물리·빙결 회귀 테스트 |
+| 투명도 | 구 시트 불투명 남색 배경 제거 필요 | 신규 비행 시트 모서리 alpha=0 확인; 구 4×4 임팩트 시트만 `_makeBlackAdditiveCutout(56,112)` 적용 | 에셋 로더 | RGBA 알파 샘플 검사 |
+
+- 피해량, `EL.I`, 최종 500~600px/s, 유도, 히트박스, Q 패링 분류, 빙결 60f는 변경하지 않았다. 이번 변경은 비행 스프라이트와 렌더 중심 보정만 다룬다.
+- TDD: `test/waterBeanIceBarrage.test.js`와 `test/bossProjectileVfxUpgrade.test.js`가 4×2 비행 시트 경로와 기존 4×4 임팩트 경로를 함께 고정한다.
+- 중복 임팩트 수정: 물 파란콩 Q 패링에서 전용 얼음 파열과 공통 `dark02`가 동시에 생성되던 경로를 `_impactKind='waterBean'` 게이트로 분리했다. 한 번의 패링에는 전용 얼음 임팩트 1개만 생성한다.
+
+## 2026-09-04 물 파란콩 4×4 얼음 시트 탄막·파열 (이전 계약)
+
+| 항목 | 이전 | 현재 계약 | 적용 위치 |
+|---|---|---|---|
+| 비행 외형 | 작은 픽셀 물핵+물결 꼬리 | 당시 계약: `assets/vfx/water_ice_barrage_sheet.png` 4×4 시트의 1~2행 8프레임 비행 애니메이션. 2026-09-05부터는 별도 4×2 비행 시트로 교체 | `_drawWaterBean()` / `_drawWaterIceSheet()` |
+| Q 패링 | 블루콩 반사 전환만 | 반사 전 3행 4프레임 방사형 얼음 파열(`r=96`, `72f`) 후 기존 블루콩 반사 | 일반 마법탄 Q 패링 분기, `_waterBeanIceBurst(...,true)` |
+| 플레이어 피격 | 일반 얼음 적중 + 빙결 60f | 4행 4프레임 얼음기둥(`r=72`, `66f`) + 기존 빙결 60f | 일반 적 투사체 피격 분기, `_waterBeanIceBurst(...,false)` |
+
+- 피해량, `EL.I`, 최종 500~600px/s, 유도, 히트박스, Q 패링 분류는 변경하지 않았다. 파열은 광역 피해를 추가하지 않는 시각 피드백이다.
+- TDD: `test/waterBeanIceBarrage.test.js`가 당시 4×4 시트 비행·3행 Q 패링·4행 피격 파열을 고정했다. 현재 비행 경로는 상단의 4×2 시트 계약을 따른다.
+- 배경 보정: 당시 4×4 임팩트 시트의 불투명 남색 배경(`RGB 약 16,28,46`)이 남지 않도록 시트 전용 암부 마스크를 `_makeBlackAdditiveCutout(18,70)`에서 **`(56,112)`**로 높였다. 신규 4×2 비행 시트는 모서리 alpha=0인 RGBA라 이 보정 대상이 아니다.
+
 ## 2026-09-04 물 파란콩 색상 정리
 
 | 대상 | 이전 | 현재 | 적용 위치 | 검증 |
@@ -173,17 +498,6 @@
 
 | id | 이전 동작 | 현재 동작 | 수치 | 검증 |
 |---|---|---|---:|---|
-## 2026-09-04 물 파란콩 3갈래 얼음탄막·파열
-
-| 항목 | 이전 | 현재 계약 | 적용 위치 |
-|---|---|---|---|
-| 비행 외형 | 작은 픽셀 물핵+물결 꼬리 | 비행 방향으로 나란한 3갈래 얼음 파편 탄막. `#173c98` 외곽 → `#4ca8ff` 결정 → `#e9fbff` 코어, `shardR=5.2×_sSc` | `_drawWaterBean()` |
-| Q 패링 | 블루콩 반사 전환만 | 반사 전 `r=96`, `72f`, 얼음 파편 16개 시각 전용 파열 후 기존 블루콩 반사 | 일반 마법탄 Q 패링 분기, `_waterBeanIceBurst(...,true)` |
-| 플레이어 피격 | 일반 얼음 적중 + 빙결 60f | `r=72`, `66f`, 파편 10개 시각 전용 파열 + 기존 빙결 60f | 일반 적 투사체 피격 분기, `_waterBeanIceBurst(...,false)` |
-
-- 피해량, `EL.I`, 최종 500~600px/s, 유도, 히트박스, Q 패링 분류는 변경하지 않았다. 파열은 광역 피해를 추가하지 않는 시각 피드백이다.
-- TDD: `test/waterBeanIceBarrage.test.js`가 3파편 렌더·Q 패링 파열·피격 파열을 고정한다.
-
 | `_normalProjectilePlayerKnockback` | 일반탄 직격이 `hurtP()` 공통 넉백을 사용해 최소 세기 1의 방향이 무작위 | 탄 진행 벡터를 정규화한 명시 넉백을 일반탄 직접 피격에 전달 | **2** | `test/normalProjectilePlayerKnockback.test.js` |
 | `_bigEnergyPlayerKnockback` | 대형 에너지탄 전용 강제 슬라이드 | 변경 없음 | **100** | `test/bigEnergyParrySplit.test.js` |
 
@@ -210,15 +524,15 @@
 
 - `titanEye`는 화염색/`EL.F`라도 `physicalProjectile` 표식으로 흰 물리 임팩트를 쓴다. 피해·반사·자원·속도·패링 판정은 변경하지 않았다.
 
-## 2026-09-04 물 파란콩 시각 재설계
+## 2026-09-04 물 파란콩 시각 재설계 (이전 계약)
 
 | ID | 이전 외관 | 현재 외관 | 적용 위치 | 검증 |
 |---|---|---|---|---|
-| `waterBean` | 소형 크라켄 어뢰 스프라이트 `96px` | 작은 청록 픽셀 물핵 `coreR=4.4×_sSc`, `#0a7fc4 → #9ff6ff`, 짧은 물결 꼬리 | `game.html` `_drawWaterBean` | `bossProjectileVfxUpgrade.test.js` |
+| `waterBean` | 소형 크라켄 어뢰 스프라이트 `96px` | 당시 작은 청록 픽셀 물핵 `coreR=4.4×_sSc`, `#0a7fc4 → #9ff6ff`, 짧은 물결 꼬리. 2026-09-05부터 유저 제공 4×2 비행 시트로 대체 | `game.html` `_drawWaterBean` | `bossProjectileVfxUpgrade.test.js` |
 | 대형 `elemBall` (`EL.P/I`) | 크라켄 어뢰 스프라이트 | 변경 없음: 크라켄 아트 `170px` | `game.html` pass-2 `elemBall` | 같은 테스트 |
 
 - 물 파란콩의 Q 마법 패링, `EL.I`, 빙결·속도·유도·충돌 판정은 변경하지 않았다.
-- 아래의 `waterBean=96px` 크라켄 기록은 당시 변경 이력이며, 이 항목의 현재 계약으로 대체한다.
+- 아래의 `waterBean=96px` 크라켄 기록과 픽셀 물핵 외형은 당시 변경 이력이다. 현재 계약은 위의 2026-09-05 4×2 비행 시트 항목이다.
 
 ## 2026-09-04 — 거대 에너지탄 피격 슬라이드 2배 강화
 
@@ -645,7 +959,7 @@
 |---|---|---|
 | F (`SKILL_SLOTS[5]`) | 모든 액티브가 자동/수동 배정 가능 | `cat:'tech' && act && !fixed` 영역 스킬만 **1개** 허용 |
 | 영역 스킬 일반 슬롯 | F가 차면 일반 슬롯으로 자동 진입 가능 | 1~4/Space 배정 금지. F 사용 중인 두 번째 영역은 미배정 후 F 팝업에서 수동 교체 |
-| 전대 소환 (`ancestorSummon`, `cat:'def'`) | 빈칸 순차 탐색 때문에 F에 진입 가능 | 1~4에만 배정, Space/F 불가 |
+| 전대 소환 (`ancestorSummon`, `cat:'summon'`) | 빈칸 순차 탐색 때문에 F에 진입 가능 | 1~4에만 배정, Space/F 불가 |
 | L키 배정 팝업 | 고정 슬롯 7개만 노출, 선택 슬롯 처리 코드는 있으나 탭 누락 | `1/2/3/4/SPACE/F` 탭 복구, Space=분노 폭발·F=영역 필터 |
 | 기존 저장 | 잘못된 F 값과 일반 슬롯의 복수 영역을 그대로 복원 | F 비영역은 일반 빈칸으로 이동; 영역은 하나만 F에 유지/이동하고 추가 영역은 슬롯만 해제 |
 | 입력 경로 | 자동습득·합체·드래그·버튼·게임패드별 규칙 불일치 | `_canAssignSkillSlot`, `_findAutoSkillSlot` 공통 적용 |
@@ -46366,8 +46680,8 @@ mpR = 0.05 + s.int×0.005                                        [NO P.lv×0.001
 
 | id | 정식명 | 전용 VFX 등록 | 시트 | 프레임 | 착지 호출 |
 |---|---|---|---|---|---|
-| `chainAssault` | 기동불꽃 (기동화염) | `chain_assault_impact` | `assets/vfx/chain_assault_impact_realistic.png` | `1254×1254`, 3×3, 9프레임, 셀 `418×418` | `playVFXAng(..., scale=_stR/384, speed=6.7)` |
-| `chainSlam` | 기동파괴 (기동충격) | `chain_slam_impact` | `assets/vfx/chain_slam_impact_realistic.png` | `1254×1254`, 3×3, 9프레임, 셀 `418×418` | `playVFXAng(..., scale=_csR/256, speed=7)` |
+| `chainAssault` | 기동불꽃 (기동화염, 우클릭) | `chain_assault_impact` | `assets/vfx/chain_assault_impact_realistic.png` | `1254×1254`, 3×3, 9프레임, 셀 `418×418` | `playVFXAng(..., y=P.y-_stR×.19, scale=_stR/384, speed=12, 약 1.8초)` |
+| `chainSlam` | 기동파괴 (기동충격, 좌클릭) | `chain_slam_impact` | `assets/vfx/chain_slam_impact_realistic.png` | `1254×1254`, 3×3, 9프레임, 셀 `418×418` | `playVFXAng(..., y=P.y-_csR×.28, scale=_csR/256, speed=12, 약 1.8초)` |
 
 - 기존 범용 `lava_erupt`와 `earthquake`는 다른 시스템 호환성을 위해 유지하고, 두 기동 착지 호출만 전용 시트로 교체했다.
 - 불꽃 시트는 용암·재·연기, 충격 시트는 균열·석편·먼지 충격파를 순차 재생한다. OpenAI 이미지 생성 API 출력은 완전 불투명 순검정(`#000000`) 바탕의 RGB 시트로 확정해, 알파 정규화/Canvas 우회 없이 기존 Shift 기동 VFX와 동일한 WebGL 가산 경로를 사용한다.
@@ -46455,7 +46769,11 @@ mpR = 0.05 + s.int×0.005                                        [NO P.lv×0.001
 | 해결 | 새 URL cache version | 열린 인게임도 새 8×4 crop PNG를 즉시 다시 요청 |
 
 - 검증: 단위·inline 8/8 PASS, `initStage(0)`에서 `sheet=true`, 2마리 alive, pageerror 0.
+## 2026-09-05 무지개탄 Q 패링 중복 반사 수정
 
+| 증상 | 원인 | 현재 구현 | 검증 |
+|---|---|---|---|
+| 무지개탄 1발을 패링했는데 임팩트/반사가 여러 번 겹쳐 보임 | Q 패링 직후 `friendly` 블루콩으로 바뀐 탄이 남은 Q 패링 윈도우에서 공통 패링 분기에 재진입 | 공통 Q 패링 조건에 `!p.friendly` 추가. 원본은 1회만 `blueBean`으로 변환하고 `_fromRainbow` 유도·무지개 임팩트 정체성은 유지 | `test/blackBeanNeverParries.test.js`에 재패링 방지 가드 고정 |
 ## 2026-09-05 보스 `bossRec` 영구 정지 수정
 
 | id | 증상 | 원인 | 수정 | 검증 |

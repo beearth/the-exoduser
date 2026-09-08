@@ -2623,7 +2623,7 @@ Object.assign(_ID,{
 "계승의":"Warisan",
 "전대 공격력+":"ATK Leluhur+",
 "전대 수+":"Jumlah Leluhur+",
-"전대 지속+":"Durasi Leluhur+",
+"전대 최대HP+":"HP Maksimum Leluhur+",
 "전대 위력 +X%":"Kekuatan Leluhur +X%",
 "전대 소환 수 +1":"Jumlah Panggilan Leluhur +1",
 "전대 위력":"Kekuatan Leluhur",

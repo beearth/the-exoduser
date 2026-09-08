@@ -1,0 +1,194 @@
+{
+  "frames": 2719,
+  "duration": 113.29166666666667,
+  "psychic_seconds": 3,
+  "mage_seconds": 3,
+  "mage_start": 87.79166666666667,
+  "voice_shift_samples": 20000,
+  "sample_rate": 48000,
+  "unmodified_pcm_outside_range": [
+    87.1,
+    90.0
+  ],
+  "peak": 0.5594401359558105,
+  "audio_correlation": {
+    "before": 0.9999726277866325,
+    "after": 0.999980902793241,
+    "shifted_mage": 0.9998294872157019
+  },
+  "probe": {
+    "streams": [
+      {
+        "index": 0,
+        "codec_name": "h264",
+        "codec_long_name": "H.264 / AVC / MPEG-4 AVC / MPEG-4 part 10",
+        "profile": "High",
+        "codec_type": "video",
+        "codec_tag_string": "avc1",
+        "codec_tag": "0x31637661",
+        "width": 1280,
+        "height": 720,
+        "coded_width": 1280,
+        "coded_height": 720,
+        "closed_captions": 0,
+        "film_grain": 0,
+        "has_b_frames": 2,
+        "pix_fmt": "yuv420p",
+        "level": 31,
+        "chroma_location": "left",
+        "field_order": "progressive",
+        "refs": 1,
+        "is_avc": "true",
+        "nal_length_size": "4",
+        "id": "0x1",
+        "r_frame_rate": "24/1",
+        "avg_frame_rate": "24/1",
+        "time_base": "1/12288",
+        "start_pts": 0,
+        "start_time": "0.000000",
+        "duration_ts": 1392128,
+        "duration": "113.291667",
+        "bit_rate": "2127125",
+        "bits_per_raw_sample": "8",
+        "nb_frames": "2719",
+        "extradata_size": 44,
+        "disposition": {
+          "default": 1,
+          "dub": 0,
+          "original": 0,
+          "comment": 0,
+          "lyrics": 0,
+          "karaoke": 0,
+          "forced": 0,
+          "hearing_impaired": 0,
+          "visual_impaired": 0,
+          "clean_effects": 0,
+          "attached_pic": 0,
+          "timed_thumbnails": 0,
+          "captions": 0,
+          "descriptions": 0,
+          "metadata": 0,
+          "dependent": 0,
+          "still_image": 0
+        },
+        "tags": {
+          "language": "und",
+          "handler_name": "VideoHandler",
+          "vendor_id": "[0][0][0][0]",
+          "encoder": "Lavc59.37.100 libx264"
+        }
+      },
+      {
+        "index": 1,
+        "codec_name": "aac",
+        "codec_long_name": "AAC (Advanced Audio Coding)",
+        "profile": "LC",
+        "codec_type": "audio",
+        "codec_tag_string": "mp4a",
+        "codec_tag": "0x6134706d",
+        "sample_fmt": "fltp",
+        "sample_rate": "48000",
+        "channels": 2,
+        "channel_layout": "stereo",
+        "bits_per_sample": 0,
+        "id": "0x2",
+        "r_frame_rate": "0/0",
+        "avg_frame_rate": "0/0",
+        "time_base": "1/48000",
+        "start_pts": 0,
+        "start_time": "0.000000",
+        "duration_ts": 5437968,
+        "duration": "113.291000",
+        "bit_rate": "149623",
+        "nb_frames": "5312",
+        "extradata_size": 5,
+        "disposition": {
+          "default": 1,
+          "dub": 0,
+          "original": 0,
+          "comment": 0,
+          "lyrics": 0,
+          "karaoke": 0,
+          "forced": 0,
+          "hearing_impaired": 0,
+          "visual_impaired": 0,
+          "clean_effects": 0,
+          "attached_pic": 0,
+          "timed_thumbnails": 0,
+          "captions": 0,
+          "descriptions": 0,
+          "metadata": 0,
+          "dependent": 0,
+          "still_image": 0
+        },
+        "tags": {
+          "language": "und",
+          "handler_name": "SoundHandler",
+          "vendor_id": "[0][0][0][0]"
+        }
+      }
+    ],
+    "format": {
+      "filename": "final.mp4",
+      "nb_streams": 2,
+      "nb_programs": 0,
+      "format_name": "mov,mp4,m4a,3gp,3g2,mj2",
+      "format_long_name": "QuickTime / MOV",
+      "start_time": "0.000000",
+      "duration": "113.292000",
+      "size": "32322295",
+      "bit_rate": "2282406",
+      "probe_score": 100,
+      "tags": {
+        "major_brand": "isom",
+        "minor_version": "512",
+        "compatible_brands": "isomiso2avc1mp41",
+        "encoder": "Lavf59.27.100"
+      }
+    }
+  },
+  "bytes": 32322295,
+  "visual_mad": {
+    "4": 1.039832175925926,
+    "14": 0.9783680555555555,
+    "111": 0.16381365740740741
+  },
+  "psychic_source_frame_matches": [
+    {
+      "output_relative_frame": 0,
+      "source_frame": 1,
+      "mad": 1.2081712962962963
+    },
+    {
+      "output_relative_frame": 12,
+      "source_frame": 13,
+      "mad": 0.9821064814814815
+    },
+    {
+      "output_relative_frame": 24,
+      "source_frame": 25,
+      "mad": 1.0257407407407408
+    },
+    {
+      "output_relative_frame": 36,
+      "source_frame": 37,
+      "mad": 1.0240509259259258
+    },
+    {
+      "output_relative_frame": 48,
+      "source_frame": 49,
+      "mad": 1.0344907407407407
+    },
+    {
+      "output_relative_frame": 60,
+      "source_frame": 61,
+      "mad": 0.9992361111111111
+    },
+    {
+      "output_relative_frame": 71,
+      "source_frame": 71,
+      "mad": 1.070138888888889
+    }
+  ],
+  "sampling_note": "Higgsedit native media sampling selects source +1 frame at fractional global clip start; 72 output frames at speed 1, no regenerated psychic image."
+}

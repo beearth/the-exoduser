@@ -1,0 +1,46 @@
+{
+  "status": "v9_rendered_and_wired",
+  "source_master": "video/world_intro_v8_we_call_en.mp4",
+  "current_master": "video/world_intro_v9_demon_duels_en.mp4",
+  "replace": {
+    "from": 84.79166666666667,
+    "to": 90.79166666666667,
+    "split": 87.375,
+    "frames": [
+      62,
+      82
+    ]
+  },
+  "preserve": [
+    "full v8 AAC audio",
+    "28-language subtitles and times",
+    "BGM controller",
+    "EXODUSER title",
+    "all other shots"
+  ],
+  "shots": [
+    {
+      "id": "b04a_psychic_demon",
+      "keyframe": "output/cinematic/b04_v3_psychic_demon_keyframe.png",
+      "media_id": "7cd33829-b861-4f94-9d98-b606a3bd15ca",
+      "url": "https://d2ol7oe51mr4n9.cloudfront.net/user_3G1zto9sz11Uf3iEOhJefE9HdGG/7cd33829-b861-4f94-9d98-b606a3bd15ca.png",
+      "image_prompt": "Use case: stylized-concept. Asset type: NEW 16:9 photoreal dark fantasy cinematic keyframe for EXODUSER world intro, for subsequent image-to-video action. The reference image is ONLY a style/material/location reference, NOT an edit target; change characters and composition to the requested scene. Same immense hell pit, concave black Gothic cathedral megastructures fused with ruined cyberpunk infrastructure, distant dim cyan windows, ash and cold gray volumetric haze, weathered stone and metal terrace. Somber high-end live action film still, credible mass, textured cloth, readable midtone faces and silhouettes, strong depth, restrained magic light, dark ground reserved below for external subtitles. No text or watermark, no split-screen, no cartoon, no blue sky, no generic wasteland, no gore. ONE battered futuristic psychic on the left fights ONE massive horned demon on the right, no mage anywhere. Tight medium-wide low three-quarter camera, characters fill two-thirds of frame height, both readable with clear gap. The short-haired human wears worn black tactical armor, two feet braced on floor; one EMPTY open hand thrust toward the demon. The looming charcoal-skinned muscular demon is mid-lunge with claws extended, body beginning to recoil from an invisible force at its chest, feet still near the floor, menacing grounded anatomy with two arms/two legs/two short curved horns. Dust and small stone fragments between them are driven away from the human toward the demon, subtle refractive pressure distortion, faint cyan rim ONLY, no magic circle, no staff, no beam, no levitating hero. Depict the first instant of a forceful telekinetic repulsion, tense cinematic physical struggle rather than a posed character roster. No other foreground people, no weapons or arbitrary props in the psychic hand.",
+      "video_prompt": "Animate this exact frame as ONE 3-second heavy cinematic combat beat. Keep the same human psychic left and horned demon right, fixed camera with only a tiny push-in. The psychic's EMPTY hand makes one sharp forward push in the FIRST SECOND. A subtle invisible pressure wave drives the demon bodily backward ONE body length toward the right; the demon's torso reels first, legs scramble and scrape the stone floor, dust and small debris follow the same left-to-right direction. By second 2 the demon lands its footing and recoils, still alive and threatening; final second holds the aftermath with falling debris and whipping cloth. Human remains firmly planted, no staff, no circle, no laser. The visible action is force pushing a resisting heavy body, not the demon crumbling or disintegrating, not floating slowly. Maintain two bodies, anatomy, faces, horns, full scene geography and moody exposure. No extra characters, no gore, no camera orbit, no cut, no text or subtitles, no audio.",
+      "duration": 3
+    },
+    {
+      "id": "b04b_mage_demon",
+      "keyframe": "output/cinematic/b04_v3_mage_demon_keyframe.png",
+      "media_id": "a08d705c-df9c-4c64-a72d-006cd22db733",
+      "url": "https://d2ol7oe51mr4n9.cloudfront.net/user_3G1zto9sz11Uf3iEOhJefE9HdGG/a08d705c-df9c-4c64-a72d-006cd22db733.png",
+      "image_prompt": "Use case: stylized-concept. Asset type: NEW 16:9 photoreal dark fantasy cinematic keyframe for EXODUSER world intro, for subsequent image-to-video action. The reference image is ONLY a style/material/location reference, NOT an edit target; change characters and composition to the requested scene. Same immense hell pit, concave black Gothic cathedral megastructures fused with ruined cyberpunk infrastructure, distant dim cyan windows, ash and cold gray volumetric haze, weathered stone and metal terrace. Somber high-end live action film still, credible mass, textured cloth, readable midtone faces and silhouettes, strong depth, restrained magic light, dark ground reserved below for external subtitles. No text or watermark, no split-screen, no cartoon, no blue sky, no generic wasteland, no gore. ONE elderly formidable archmage on the right fights ONE lean horned demon on the left, no psychic anywhere. Different camera from reference: close-medium low over-demon-shoulder three-quarter angle with demon side profile and whole mage readable. Gray-haired mage in worn dark layered robes firmly grips ONE carved staff with his right hand, plants feet on floor, left palm raises ONE intricate restrained amber circular ward directly between his chest and the demon. Demon claw is at the outer face of ward, a small concentrated impact ripple and stone dust, no giant flash, believable distance and contact, two distinct bodies, no limb overlap. The mage's face shows grim concentration and defiance; demon dark sinewy skin, claws and swept horns silhouette, clearly a monster not an armored human. Show the moment of blocking a claw strike, with the amber ward ready to pulse back and force the demon away. Strong readable circular arcane geometry distinguishes sorcery from psychic force; no laser, no blue electricity, no floating stones, no additional humans, no victory pose. Film action composition and worn material detail, not glossy game character art.",
+      "video_prompt": "Animate this exact frame as ONE 4-second close readable cinematic fight. Same demon on left and archmage on right. At start demon claw presses against the EXISTING amber magic ward, a brief localized ripple shows solid contact. By second 1.2 the mage firmly extends his free palm and the same ward gives ONE short amber pulse outward, physically driving the demon's upper body and arm back toward the left, no laser projectile, no huge bloom. The demon recoils half a step and drops its attacking arm; the mage remains planted, staff continuously gripped in other hand. Last second settles into tense defense; ward remains legible, no new spell objects. Keep faces, anatomy, two distinct characters, believable impact direction, fixed dark Gothic/cyberpunk setting. Slight restrained camera drift, no orbit, no shot changes. Clear block then counterpush within first 3 seconds. No telekinesis debris, no cyan lightning, no extra limbs, no gore, no text, no subtitles, no generated audio.",
+      "duration": 4
+    }
+  ],
+  "preset_choice": {
+    "id": "24bae836-2c4a-48e0-89b6-49fcc0b21612",
+    "name": "IN THE DARK",
+    "status": "user_approved_literal"
+  }
+}

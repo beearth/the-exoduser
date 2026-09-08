@@ -3223,7 +3223,7 @@ Object.assign(_DE,{
 "계승의":"Vermächtnis",
 "전대 공격력+":"Ahnen-ATK+",
 "전대 수+":"Ahnenzahl+",
-"전대 지속+":"Ahnen-Dauer+",
+"전대 최대HP+":"Max. LP der Ahnen+",
 "전대 위력 +X%":"Ahnen-Macht +X%",
 "전대 소환 수 +1":"Ahnen-Beschwörungen +1",
 "전대 위력":"Ahnen-Macht",

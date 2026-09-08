@@ -1,5 +1,7 @@
 # CH1-1 BLOCKOUT MASTER — 실 blockout 규격표 (Section F)
 
+> **2026-09-06 현행 보스 배정 우선:** 1-1(si0)은 **다크드루이드**다. 이 문서의 흑요염 파괴자 si0 배정·화염 전용 지정·`_isLargeBoss=true`는 이전 구현 기록이며 현행 배정에서 제외한다. 드루이드의 si3 전용 기술/VFX는 이제 **si0·si3 공통**이다. 원본 흑요염 에셋/음성 카탈로그는 삭제하지 않는다. 정확한 현행 계약은 `docs/4.1맵디자인+설정/CH1_1_DRUID_BOSS_ASSIGNMENT.md`를 따른다.
+
 > **역할**: CH1-1(si0, 썩은 숲 입구)을 START→EXIT 단일 좌표/규격표로 완성. 현행은 `_MAP_COMPOSE[0].forestBoundary=1`, `handProps` 63개이며 좌표·경계는 `CH1_1_COMPOSE_초안.md` CURRENT SSOT가 우선한다.
 
 > **2026-08-29 고지대 보충**: 우중 제단 앵커와 hill 수학은 유지한다. 이후 forest boundary에서 structural module 59개와 dead prop 1개를 제거했으므로 현행 `handProps`는 63개다.

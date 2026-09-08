@@ -75,8 +75,8 @@ test('peace-shield Q routing accepts magic red comets by parry class', () => {
   assert.ok(start >= 0 && end > start, 'peace-shield update block must exist');
   const peaceShield = gameHtml.slice(start, end);
 
-  assert.match(peaceShield, /if\(P\._sbParryT>0&&_projectileParryClass\(p\)==='magic'\)/,
-    'peaceShield must parry every magic projectile, including redBean + EL.F');
+  assert.match(peaceShield, /if\(_psQZone==='parry'&&_projectileParryClass\(p\)==='magic'\)/,
+    'peaceShield must parry every magic projectile, including redBean + EL.F, during its fixed press ring');
   assert.doesNotMatch(peaceShield, /p\.friendly\|\|p\.noParry\|\|p\.blackBean/,
     'peaceShield must not discard rainbow magic before the Q class check');
   assert.doesNotMatch(peaceShield, /P\._sbParryT>0&&!p\.redBean/,

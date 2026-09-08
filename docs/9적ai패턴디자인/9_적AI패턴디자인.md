@@ -274,3 +274,25 @@ atkTicketRelease(e) → 티켓 반환
 3. 난이도 = 동시 위협 수 × 개별 위협 명확도. 혼란이 아닌 중첩으로 어렵게
 4. 거리별 행동: 원거리→접근, 중거리→공전, 근거리→공격
 5. 엘리트는 같은 FSM + 파라미터 변경으로 차별화
+
+### 2026-09-07 공격링 누락 보정
+
+| 경로/필드 | 현재 계약 |
+|---|---|
+| eShootWind 공격링 | 장식용 _eDecor(600px·히트스톱) 제한 없이 표시, alpha=1. 기존60f 대기 유지 |
+| eProjAt / radialProjs | _emitEnemyShot(e,props) 경유. eShootWind 완료(st2≤0), _swChargeEl===props.el, 비무지개가 모두 맞을 때만 즉시 발사. 불일치는 실제 탄색으로60f 추가 예고 |
+| _spawnBossProjectile | 일반/특수몹(!ib)의 적 이동탄(vx 또는 vy)은 같은 전조 경유. 보스 전용 패턴·정지 장판·friendly는 기존 경로 유지 |
+| G._shotWarnings / e._shotWarning | 소유자·world(ens)·_gameFrame·el·blackBean이 모두 같은 탄만 링1개에 묶음. props 복사 후 대기. 다른 속성은 별도 링: r=(e.r 또는12)+동일 소유자/월드 기존 대기 링 수×8 |
+| _tickEnemyShotWarnings(sp) | 투사체 업데이트 직전 감소. 60f 완료 시 shot._commit=true 후 원래 탄속·피해·탄종·방향으로 방출. 살아 있는 소유자 이동만큼 발사점 보정 |
+| 예고 완료 생성 보장 | _emitEnemyShot의 일치한 eShootWind 즉시 방출도 props._commit=true. 즉시/대기 완료 모두 밀도1/3 드랍 면제, 기존 spawnProj 속도/피해 배율 유지 |
+| 거리 이탈 | etype62 방전·86 폭발은 시작 d<100, 준비60f 유지. 완료 시 80+P.r 재검사 제거: 현재 플레이어 방향으로 각1발. 발사 전 스턴/빙결/사망 취소 규칙은 그대로 |
+| 취소 | 살아 있던 소유자 사망·stunned>0·_frozen>0 또는 ens 참조 변경(스테이지 변경) 시 예약 제거 |
+| 사망탄 | 요청 시 이미 죽은 소유자는 사망 위치에 링60f 후 방출. 원래 사망탄 효과 유지 |
+| _drawEnemyShotWarnings | 적 본체 렌더 뒤, 탄막 렌더 앞에 프레임당 1회. 살아 있는 적의 _projChargeT 및 eShootWind와 대기 발사 큐를 함께 표시. 구울/슬라임 전용 렌더의 continue 및 장식 거리 제한과 독립, 본체 은신 투명도와 무관하게 alpha=1 |
+| 일반 차징 색/진행 | normal+EL.P=#f4f4f4, black=_BEAN_RAINBOW[(_gameFrame>>2)%7], fire=#ff2e22, 그 외 _projChargeCol; 진행=1-_projChargeT/60 |
+| 특수/큐 색/진행 | eShootWind: _swChargeEl===EL.P이면 #f4f4f4, 그 외 ELC[_swChargeEl??e.el] 또는 #f4f4f4; 진행=1-st2/60. 큐: 물리 비무지개=#f4f4f4, 무지개=_BEAN_RAINBOW[(_gameFrame>>2)%7], 나머지 요청 탄색 또는 #ff6644; 진행=1-w.t/60 |
+| 특수 발사 속성 고정 | eShootWind의 eProjAt은 _beanRoll 재추첨 없이 요청 el/spd/sz/dmgMult를 사용하고 col=ELC[el] 또는 요청색. dmg=정수(e.atk×dmgMult), life=정수(요청 life×1.5), _commit=true. 글로벌 spawnProj 배율은 기존대로. 일반 발사 _beanRoll은 유지 |
+| 2차 누락 원인/회귀 | 본체 전용 렌더 조기 continue가 기존 인라인 차징 링을 건너뜀. 인라인 중복 코드를 제거하고 공통 패스로 이동. enemyWarningOverlay.test.js에서 전용 본체·은신·사망·단일 호출 4건 검증; 기존 전조 포함 총17건 |
+| 미변경 | 보스 전용 예고/연사 타이밍, 기존 idle60f, 패링, 탄막 외형, 피해, 속도, spawnProj 밀도 계약 |
+
+검증: enemyShotWarning.test.js(일제사격60f, 완료 전조 중복 지연 없음, 취소, 사망탄, 장식 제한 분리), tmp/verify_enemy_shot_warning.py(실제 eProjAt 경로). 이 보정은 모든 보스 패턴의 별도 시각 QA 완료를 의미하지 않는다.

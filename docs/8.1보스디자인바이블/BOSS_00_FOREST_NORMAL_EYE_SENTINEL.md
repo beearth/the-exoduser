@@ -1,5 +1,7 @@
 # BOSS_00_FOREST_NORMAL_EYE_SENTINEL - 보관 문서 v1.2
 
+> **2026-09-06 현행 보스 배정 우선:** 1-1(si0)은 **다크드루이드**다. 이 문서의 흑요염 파괴자 si0 배정·화염 전용 지정·`_isLargeBoss=true`는 이전 구현 기록이며 현행 배정에서 제외한다. 드루이드의 si3 전용 기술/VFX는 이제 **si0·si3 공통**이다. 원본 흑요염 에셋/음성 카탈로그는 삭제하지 않는다. 정확한 현행 계약은 `docs/4.1맵디자인+설정/CH1_1_DRUID_BOSS_ASSIGNMENT.md`를 따른다.
+
 > 2026-05-09 기준 이 문서는 **보관용 레거시 문서**다.
 > 실제 1-1(si0) 런타임 보스는 `흑요염 파괴자 / Obsidian Flame Destroyer`이며, source of truth는 `BOSS_00_FOREST_NORMAL_OBSIDIAN_FLAME_DESTROYER.md`다.
 > 기존 `눈나무의 파수꾼 / 숲의 감시자` 컨셉은 사용 보류 상태이며, 현재 코드값과 수치 동기화 대상이 아니다.

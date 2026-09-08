@@ -6,7 +6,7 @@
 |---|---|---|---|---|---|
 | 특수(`spec`) | 영역(`tech`) → **분노(`rage`)** → 필살기(`ult`) | `skyCrusher` | `🪨 천공쇄기 / Sky Crusher` | Space 전용 | `P._scCharges` 0~3, `P._scCd` 충전당 최대 900f(15초) |
 
-- `SKILL_CATS`에 `rage`를 주황-적색(`#ff6633`)으로 추가하고 `SKILL_HIER.spec.cats`를 `['tech','rage','ult']`로 고정한다.
+- `SKILL_CATS`에 `rage`를 주황-적색(`#ff6633`)으로 추가하고 `SKILL_HIER.spec.cats`를 `['tech','rage','ult']`로 고정한다. 방어 탭의 남은 세 번째 열은 `summon`(보라색 `#9b72d8`)으로 사용하며 `SKILL_HIER.def.cats=['def','move','summon']`이다. 전대 소환·유령/폭발 허수아비·악의 보호자는 이 소환 열에만 표시한다.
 - Space 선택 팝업은 하드코딩 2종만이 아니라 기존 지옥강타 1·2와 모든 `cat:'rage'` 액티브를 표시한다. 천공쇄기는 1~4/F에 배정할 수 없다.
 - 카드·팝업·Space HUD는 사용자 제공 원화를 정사각형으로 맞춘 `img/skillskin_upscaled/skyCrusher.png`(768×768 RGBA)를 `_skIcon('skyCrusher')`로 표시한다. 로드 실패 때만 `SKILL_LIST.emoji='🪨'` 폴백을 사용한다. 카드 설명은 **분노급 착탄 피해**와 충돌 뒤 **3초(180f) 화염 잔류**를 표시한다. 일반 슬롯/Space HUD 우상단에는 남은 충전 수(0~3)를 표시한다. `P._scCd`는 **다음 1충전**의 남은 시간을 0.1초 단위로 표시하고, 충전이 1개 이상 남아도 재충전 링은 계속 돈다. 충전 0일 때만 스킬을 사용 불가 처리한다.
 

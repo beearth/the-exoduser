@@ -2628,7 +2628,7 @@ Object.assign(_RO,{
 "계승의":"Al moștenirii",
 "전대 공격력+":"ATK strămoși+",
 "전대 수+":"Număr strămoși+",
-"전대 지속+":"Durată strămoși+",
+"전대 최대HP+":"HP maxim strămoși+",
 "전대 위력 +X%":"Puterea strămoșilor +X%",
 "전대 소환 수 +1":"Număr invocări strămoși +1",
 "전대 위력":"Puterea strămoșilor",

@@ -2625,7 +2625,7 @@ Object.assign(_HU,{
 "계승의":"Örökség",
 "전대 공격력+":"Ős-ATK+",
 "전대 수+":"Ősök száma+",
-"전대 지속+":"Ős-időtartam+",
+"전대 최대HP+":"Ősök max. HP+",
 "전대 위력 +X%":"Ősök ereje +X%",
 "전대 소환 수 +1":"Ősidézések száma +1",
 "전대 위력":"Ősök ereje",

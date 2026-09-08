@@ -3775,7 +3775,7 @@ Object.assign(_NL,{
 "계승의":"van Erfenis",
 "전대 공격력+":"Voorouder-ATK+",
 "전대 수+":"Vooroudertal+",
-"전대 지속+":"Voorouder-duur+",
+"전대 최대HP+":"Max. HP voorouders+",
 "전대 위력 +X%":"Vooroudermacht +X%",
 "전대 소환 수 +1":"Voorouder-oproepen +1",
 "전대 위력":"Vooroudermacht",

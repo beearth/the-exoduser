@@ -1,5 +1,7 @@
 # BOSS CANONICAL MAPPING — Lore Identity ↔ Runtime ID
 
+> **2026-09-06 현행 보스 배정 우선:** 1-1(si0)은 **다크드루이드**다. 이 문서의 흑요염 파괴자 si0 배정·화염 전용 지정·`_isLargeBoss=true`는 이전 구현 기록이며 현행 배정에서 제외한다. 드루이드의 si3 전용 기술/VFX는 이제 **si0·si3 공통**이다. 원본 흑요염 에셋/음성 카탈로그는 삭제하지 않는다. 정확한 현행 계약은 `docs/4.1맵디자인+설정/CH1_1_DRUID_BOSS_ASSIGNMENT.md`를 따른다.
+
 > **역할**: UD-MAP-02 해소. 보스의 **Design/Lore Identity**(바이블 서사)와 **Runtime ID**(HELL_BOSSES 구현체)를 **분리·매핑**한다. **어느 쪽도 삭제/덮어쓰지 않는다.**
 > **결정(LOCKED)**: 서사 identity = design canonical. 구현체 = runtime canonical. 둘은 아래 매핑 테이블로 연결. 불일치는 "MAPPING NOTE"로 보존(충돌 아님).
 > **상태**: 2026-08-23. 코드 변경 없음. 근거: `game.html` HELL_BOSSES(13733–13741)/`_BOSS_MOVESET`(8717–8761), `8.1보스디자인바이블/`, MAP/MASTER BIBLE.

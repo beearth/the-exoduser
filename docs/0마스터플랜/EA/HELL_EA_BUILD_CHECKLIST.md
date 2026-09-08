@@ -218,6 +218,13 @@ OAuth 참조 패턴: G:\pentafall\ (DIROI 완성 빌드)
 - **전격이동(shockField)**: 데미지 `(1+(lv-1)×0.20)` → `(0.3+(lv-1)×0.06)` (70% 감소)
 - **악의폭풍(maliceStorm)**: `_skMul('maliceStorm')` (b:12 과다) → `(5+(lv-1))` flat (Lv1 2.4배 감소)
 - **가시덫(spikeTrap)**: `(3+(lv-1))` → `(2+(lv-1)×0.5)` (약 50% 감소)
+
+### 2026-09-07 가시덫 유틸리티 밸런스 조정
+
+| 항목 | 현재 값 | 구현 계약 |
+|---|---|---|
+| 슬로우 | Lv1 91%(기존 70% 대비 ×1.3), Lv당 +2%p, 최대95% | `_spikeTrapSlowPct(lv)`를 이동/넉백에 공통 적용 |
+| 피해 | 기존 공식 ×0.5 | 단독 설치와 `pillarSpike` 합체 장판 모두 `_spikeTrapDmg` 사용 |
 - **shockField eShield**: `{dot:true}` 에 `shieldHit:true` 추가 → 마법 기반 장판이 적 에너지쉴드 정상 차감
 - **shockField VFX**: 중심 방사 아크(반짝이 느낌) → 장판 내 랜덤 위치 간 지그재그 번개선 8개 (4프레임 갱신)
 
@@ -246,7 +253,7 @@ OAuth 참조 패턴: G:\pentafall\ (DIROI 완성 빌드)
 ### STEP 3.4: 세션 확인 로직 ✅
 - [x] L1788: `sb.auth.getSession()` → `currentUser` 설정
 - [x] 세션 있으면 → `showLobby()` (캐릭터 선택 화면)
-- [x] 세션 없으면 → 시네마틱 → `finishCin()` → `#loginSection` 표시
+- [x] 세션 없으면 → 시네마틱 → `finishCin()` → `_goLogin({fromCinematic:true})` → `#loginSection` 표시. 영화 끝 로고와 겹치지 않도록 이 전환에서만 `.login-brand` 숨김. 일반 `_goLogin()`의 로고는 유지 (2026-09-07)
 - [x] `sb.auth.onAuthStateChange()` 핸들러 등록 (SIGNED_IN/SIGNED_OUT 처리)
 
 ### STEP 3.5: 게스트 모드 처리 ✅
@@ -313,6 +320,8 @@ OAuth 참조 패턴: G:\pentafall\ (DIROI 완성 빌드)
 - [ ] 로그인 시 로컬→클라우드 마이그레이션 옵션
 
 ### STEP 5.5: 자동 저장
+- [x] 2026-09-08 코드/회귀검사: 일반 게임 `?char=<UUID>`는 localhost에서도 클라우드 저장, SDK 준비 대기, 조회 실패 시 부팅 중단, 저장 성공 시각/디바운스 보정. 상세 계약은 `docs/15 세이브+데이터구조/15 세이브+데이터구조.md` 참조
+- [ ] 위 수정 후 실제 Google 계정으로 30초 자동저장 → 재접속 복원 E2E 확인 (테스트 대역 검사와 구분)
 - [ ] 스테이지 클리어 / 메뉴 열 때 / 게임 종료 시 자동 저장
 - [ ] **게임루프 내 호출 절대 금지**
 

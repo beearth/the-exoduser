@@ -1,0 +1,44 @@
+{
+  "version": "v12",
+  "source": "world_intro_v10_traditional_magic_en.mp4",
+  "video_frames": 2719,
+  "video_duration": 113.291667,
+  "format_duration": 113.292,
+  "video_sha256_source": "SHA256=ca1a74ed610b092e8c230af28c9ce7e616b50dfd475ae4503395a371a2b648c9",
+  "video_sha256_final": "SHA256=ca1a74ed610b092e8c230af28c9ce7e616b50dfd475ae4503395a371a2b648c9",
+  "video_bitstream_identical": true,
+  "last_scene": [
+    102.791667,
+    109.291667
+  ],
+  "logo": [
+    109.291667,
+    113.291667
+  ],
+  "voice_start": 105.927,
+  "voice_decoded_duration": 4.644,
+  "voice_gain": 0.954011146236429,
+  "voice_insertion": "one continuous take; no internal splice or stretch",
+  "new_voice_correlation_after_aac": 0.9998203690786608,
+  "previous_pcm_preserved_until": 105.0,
+  "native_pause": [
+    0.756009,
+    3.67288
+  ],
+  "name_signal_onset": 109.59988000000001,
+  "subtitle_final_two": [
+    [
+      106.02,
+      109.292
+    ],
+    [
+      109.6,
+      111.1
+    ]
+  ],
+  "voice_id": "WS6naCm8T4gbyzsLnOjK",
+  "model": "eleven_multilingual_v2",
+  "text": "We call them <break time=\"2.8s\" /> Exoduser.",
+  "auditory_review": "Not personally auditioned; inspect final preview by ear.",
+  "bytes": 32385701
+}

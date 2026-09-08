@@ -24,9 +24,9 @@ test('druid cadence reuses the fire-devil comet profile and removes slow bean sh
   const end = gameHtml.indexOf('// [다크드루이드] orb 탄막', start);
   assert.ok(start >= 0 && end > start, 'druid parry rhythm integration block must exist');
   const block = gameHtml.slice(start, end);
-  assert.match(block, /spawnProj\(/);
+  assert.match(block, /_spawnBossProjectile\(_dpvB,/);
   assert.match(block, /el:EL\.F/);
-  assert.match(block, /col:'#ff5522'/);
+  assert.match(block, /col:'#66dd22'/);
   assert.match(block, /sz:2,r:10/);
   assert.match(block, /fireMagic:true,_typed:true/);
   assert.match(block, /'Q!'/);

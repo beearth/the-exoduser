@@ -1,0 +1,69 @@
+{
+  "final": {
+    "programs": [],
+    "streams": [
+      {
+        "codec_name": "h264",
+        "codec_type": "video",
+        "width": 1280,
+        "height": 720,
+        "r_frame_rate": "24/1",
+        "duration": "113.291667",
+        "nb_frames": "2719"
+      },
+      {
+        "codec_name": "aac",
+        "codec_type": "audio",
+        "r_frame_rate": "0/0",
+        "duration": "113.291000",
+        "nb_frames": "5312"
+      }
+    ],
+    "format": {
+      "duration": "113.292000"
+    }
+  },
+  "clean": {
+    "programs": [],
+    "streams": [
+      {
+        "codec_name": "h264",
+        "codec_type": "video",
+        "width": 1280,
+        "height": 720,
+        "r_frame_rate": "24/1",
+        "duration": "113.291667",
+        "nb_frames": "2719"
+      },
+      {
+        "codec_name": "aac",
+        "codec_type": "audio",
+        "r_frame_rate": "0/0",
+        "duration": "113.291000",
+        "nb_frames": "5312"
+      }
+    ],
+    "format": {
+      "duration": "113.292000"
+    }
+  },
+  "decode": "PASS",
+  "frame_count": 2719,
+  "bridge_start": 76.29166666666667,
+  "picture_cut": 78.04166666666667,
+  "next_cut": 80.29166666666667,
+  "relics_voice_rms": 0.0847496874098216,
+  "voice_correlation_vs_v1": 0.9999704122053097,
+  "probe_seconds": [
+    76.39166666666667,
+    77.29166666666667,
+    77.99999966666667,
+    78.09166666666667,
+    78.54166666666667,
+    79.04166666666667,
+    80.24999966666667,
+    81.04166666666667,
+    110.8
+  ],
+  "removed_silence": 4
+}

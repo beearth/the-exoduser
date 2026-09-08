@@ -14,13 +14,15 @@ test('blackBean remains hostile until the magic Q window routes it into the comm
     'the rainbow collision must yield to an active magic-Q parry before its contact explosion');
   assert.match(block, /if\(p\.blackBean&&!_pHit&&!_bkQParry&&_pDist<_bkHitR/,
     'only non-Q-parried rainbow contact may reach the explosion path');
-  assert.match(block, /hurtP\(_bkD,\{dtype:'magic',src:'무지개폭발'\}\)/);
+  assert.match(block, /_hurtProjectilePlayer\(p,_bkD,\{dtype:'magic',src:'무지개폭발'\}\)/);
 
   const commonStart = gameHtml.indexOf('// ══ 일반탄:');
   const commonEnd = gameHtml.indexOf("else if(P.s==='whirlwind'", commonStart);
   const commonParry = gameHtml.slice(commonStart, commonEnd);
   assert.match(commonParry, /if\(!_bigBall&&!p\.noParry/, 'the Q common parry route must not exclude blackBean');
-  assert.match(commonParry, /doParry\(p\.dmg,p\.x,p\.y,false,p\.blackBean\?'rainbow':p\.el\)/,
+  assert.match(commonParry, /if\(!_bigBall&&!p\.noParry&&!p\.poisonZone&&!_pHit&&!p\.friendly&&_pDist/,
+    'a reflected friendly blue bean must not be re-parried during the same Q iframe window');
+  assert.match(commonParry, /doParry\(p\.dmg,p\.x,p\.y,false,p\.blackBean\?'rainbow':p\.el(?:,undefined,_waterBeanParry\?'waterBean':undefined)?\)/,
     'a Q-parried rainbow projectile must use the rainbow parry impact');
 });
 
@@ -33,6 +35,13 @@ test('Q parry loops do not discard blackBean before class routing', () => {
   assert.match(peaceShield, /_projectileParryClass\(p\)==='magic'/);
   assert.match(peaceShield, /p\._fromRainbow=!!p\.blackBean/,
     'peaceShield must preserve the rainbow impact identity on its reflected blue bean');
+});
+
+test('a reflected rainbow shot cannot re-enter the Q parry branch while friendly', () => {
+  const commonStart = gameHtml.indexOf('// ?먥븧 ?쇰컲??');
+  const commonEnd = gameHtml.indexOf("else if(P.s==='whirlwind'", commonStart);
+  const commonParry = gameHtml.slice(commonStart, commonEnd);
+  assert.match(gameHtml, /!_pHit&&!p\.friendly&&_pDist/);
 });
 
 test('pet combat guidance teaches Q for rainbow shots', () => {

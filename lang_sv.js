@@ -3263,7 +3263,7 @@ Object.assign(_SV,{
 "계승의":"Arvets",
 "전대 공격력+":"Förfader-ATK+",
 "전대 수+":"Förfader-antal+",
-"전대 지속+":"Förfader-varaktighet+",
+"전대 최대HP+":"Förfäders max-HP+",
 "전대 위력 +X%":"Förfader-styrka +X%",
 "전대 소환 수 +1":"Förfader-antal +1",
 "전대 위력":"Förfader-styrka",

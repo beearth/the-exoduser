@@ -2641,7 +2641,7 @@ Object.assign(_TR,{
 "계승의":"Mirasın",
 "전대 공격력+":"Ata ATK+",
 "전대 수+":"Ata sayısı+",
-"전대 지속+":"Ata süresi+",
+"전대 최대HP+":"Ataların maks. CP+",
 "전대 위력 +X%":"Ata gücü +X%",
 "전대 소환 수 +1":"Ata çağırma sayısı +1",
 "전대 위력":"Ata gücü",

@@ -235,7 +235,7 @@ Object.freeze(AFFIX_POOL);
 | elemConvert | 원소전환의 | SUFFIX | 20%/35%/55% | prob | wpn,nck | 물리 → 무기 속성 전환 확률 |
 | statusClean | 정화의 | SUFFIX | 1/1/2 | val | hlm,pnt | 10초마다 상태이상 해제 (값=횟수/틱) |
 | lastStand | 불굴의 | SUFFIX | 0/0/1 | val | arm | 1회 사망 방지(HP=1, 무적2초), 스테이지 리셋 |
-| reviveOnce | 부활의 | SUFFIX | 0/0/30% | pct | arm | 1회 즉시 부활(HP=값×mhp), 스테이지 리셋 |
+| reviveOnce | 부활의 | SUFFIX | 0/0/30% | pct | arm | 1회 즉시 부활(HP/MP/ST=각 최대치), 스테이지 리셋 |
 | expBonus | 경험의 | SUFFIX | 10%/18%/28% | pct | hlm,nck | 경험치 ×(1+배율) |
 | goldBonus | 골드의 | SUFFIX | 15%/25%/40% | pct | bts,rng | 악의 획득 ×(1+배율) |
 | potionPower | 포션강화의 | SUFFIX | 20%/35%/55% | pct | pnt | HP 물약 회복량 ×(1+배율) |

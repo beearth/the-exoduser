@@ -55,18 +55,18 @@ test('shoot charge ring is a dark track plus round-cap progress arc', () => {
   assert.match(draw, /X\.arc\(x,y,R,-Math\.PI\/2,-Math\.PI\/2\+Math\.PI\*2\*prog\)/);
   assert.doesNotMatch(draw, /X\.fill\(\)/);
   assert.match(gameHtml, /if\(e\._projChargeT>0&&e\._projChargeCol\)\{[\s\S]{0,360}_drawShootCharge\(/);
-  assert.match(gameHtml, /if\(_eDecor&&e\.s==='eShootWind'\)\{[\s\S]{0,180}_drawShootCharge\(/);
+  assert.match(gameHtml, /if\(e\.s==='eShootWind'\)\{[\s\S]{0,180}_drawShootCharge\(/);
 });
 
 test('only physical charge rings are white; fire red-bean comets retain their Q-magic color', () => {
-  const chargeDraw = sliceBetween(gameHtml, '// ═══ 탄막 차징 전조', '// ═══ 피격 플래시');
+  const chargeDraw = sliceBetween(gameHtml, 'function _drawEnemyShotWarnings(', 'function radialProjs(');
   assert.match(chargeDraw, /const _pcPhysical=e\._projChargeBean==='normal'&&e\.el===EL\.P/);
   assert.match(chargeDraw, /const _pcCol=_pcPhysical\?'#f4f4f4'/);
   assert.doesNotMatch(chargeDraw, /e\._projChargeBean==='red'\?'#f4f4f4'/);
 });
 
 test('every physical eShootWind attack previews a white charge ring', () => {
-  const chargeDraw = sliceBetween(gameHtml, '// 탄막 준비동작 이펙트', '// 방패돌격 잔상');
+  const chargeDraw = sliceBetween(gameHtml, 'function _drawEnemyShotWarnings(', 'function radialProjs(');
   assert.match(chargeDraw, /e\._swChargeEl===EL\.P\?'#f4f4f4'/);
 
   const coral = sliceBetween(gameHtml, '// 산호 파편 투사체', '// ── 67:인어 사도');

@@ -1,42 +1,29 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import { existsSync, readFileSync } from 'node:fs';
-
-const gameHtml = readFileSync(new URL('../game.html', import.meta.url), 'utf8');
-
-function between(startMarker, endMarker) {
-  const start = gameHtml.indexOf(startMarker);
-  const end = gameHtml.indexOf(endMarker, start);
-  assert.ok(start >= 0 && end > start, `${startMarker} block must exist`);
-  return gameHtml.slice(start, end);
-}
-
-test('water blue-bean renders from the supplied 4x4 ice sheet', () => {
-  const draw = between('function _drawWaterBean(', 'function _drawClassicRainbow(');
-  assert.match(draw, /_drawWaterIceSheet\(p,fa,sSc,0\)/);
-  assert.match(gameHtml, /const _WATER_ICE_SHEET_COLS=4,_WATER_ICE_SHEET_ROWS=4/);
-  assert.match(gameHtml, /function _drawWaterIceSheet\(p,fa,sSc,row,progress=0\)/);
+import vm from 'node:vm';
+const html=readFileSync(new URL('../game.html',import.meta.url),'utf8');
+function between(a,b){const i=html.indexOf(a),j=html.indexOf(b,i);assert.ok(i>=0&&j>i);return html.slice(i,j);}
+test('Water Impact replaces clipped ice on both parry and hit',()=>{
+ const calls=[],ctx=vm.createContext({_addBoom:(...a)=>calls.push(a),poolPart(){},shake(){},doHitFlash(){},Math});
+ vm.runInContext(between('function _waterBeanIceBurst(','// ═══ Dark 02 임팩트'),ctx);
+ ctx._waterBeanIceBurst(10,20,true);ctx._waterBeanIceBurst(10,20,false);
+ assert.deepEqual(calls,[[10,20,96,72,'waterImpact'],[10,20,72,66,'waterImpact']]);
+ assert.ok(html.includes("waterImpact:['Water_ImpactWater_Sheet.png']"));
+ assert.ok(existsSync(new URL('../assets/vfx/Water_ImpactWater_Sheet.png',import.meta.url)));
+ assert.equal(/water_ice_impact_sheet|_drawWaterIceSheet|waterIceParry|waterIceHit/.test(html),false);
 });
-
-test('water ice sheet removes its opaque navy background before rendering', () => {
-  const loader = between('const _WATER_ICE_SHEET_COLS=4', 'function _drawWaterIceSheet(');
-  assert.match(loader, /_makeBlackAdditiveCutout\(_waterIceSheet,56,112\)/);
+test('flight art stays original while only impacts are replaced',()=>{
+ assert.ok(html.includes("_waterBlueFlightImg.src='assets/vfx/water_blue_projectile_sheet.png?v=20260905'"));
+ assert.ok(html.includes("_krakenShotImg.src='img/balls/proj_kraken_shot_api_v1.png?v=20260903'"));
+ assert.ok(html.includes("_fbFlyImg.src='img/proj_kraken_water.png'"));
+ assert.ok(between('function _drawWaterBlueFlight(','function _drawWaterBean(').includes('const _dw=30*sSc,_dh=16*sSc'));
+ assert.equal(html.includes('function _drawWaterFlight('),false);
 });
-
-test('water blue-bean bursts into ice on Q parry and on player impact', () => {
-  assert.match(gameHtml, /function _waterBeanIceBurst\(x,y,parried\)/);
-  const burst = between('function _waterBeanIceBurst(', '// ═══ Dark 02 임팩트');
-  assert.match(burst, /_addBoom\(x,y,parried\?96:72,parried\?72:66,parried\?'waterIceParry':'waterIceHit'\)/);
-
-  const genericParry = between('// ══ 일반탄: 원래 좁은 범위로 판정', 'if(!_pHit&&p.friendly&&!_bigBall)');
-  assert.match(genericParry, /const _waterBeanParry=!!p\.waterBean/);
-  assert.match(genericParry, /if\(_waterBeanParry\)_waterBeanIceBurst\(p\.x,p\.y,true\)/);
-
-  assert.match(gameHtml, /if\(p\.waterBean\)\{_waterBeanIceBurst\(p\.x,p\.y,false\);P\._freezeSlow=/);
-});
-
-test('water blue-bean uses row 3 for parry and row 4 for player-hit impacts', () => {
-  assert.ok(existsSync(new URL('../assets/vfx/water_ice_barrage_sheet.png', import.meta.url)));
-  assert.match(gameHtml, /if\(_bv\.col==='waterIceParry'\|\|_bv\.col==='waterIceHit'\)/);
-  assert.match(gameHtml, /_drawWaterIceSheet\(\{x:bx,y:by\},_waterIceAlpha,_waterIceScale,_bv\.col==='waterIceParry'\?2:3,_ep\)/);
+test('Q routing and player-hit freeze preserved',()=>{
+ assert.ok(between('function _fbEnergyBoom(', 'function _fbFireEnergy(').includes("el===EL.I?'waterImpact'"));
+ assert.ok(html.includes('if(_waterBeanParry)_waterBeanIceBurst(p.x,p.y,true)'));
+ assert.ok(html.includes("_waterBeanParry?'waterBean':undefined"));
+ assert.ok(between('function doParry(','// ═══ 어택 티켓 시스템').includes("_impactKind==='waterBean'"));
+ assert.ok(html.includes('if(p.waterBean){_waterBeanIceBurst(p.x,p.y,false);P._freezeSlow='));
 });

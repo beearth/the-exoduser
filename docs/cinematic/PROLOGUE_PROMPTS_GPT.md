@@ -131,6 +131,8 @@ Berserk manga ink texture, heavy crosshatching and etching linework, FromSoftwar
 ```
 
 ## p15 — 낙하 궤적의 수렴 (B04)
+
+> 2026-09-07: 아래는 기존 정지 원화·B04 v1 제작 이력이다. 사용자가 낙하 영상의 메시지 불일치를 지적하여 새 11컷은 [B04 v2 초능력자·대마법사 교전](B04_V2_HIGGSFIELD_VIDEO_REVIEW.md)으로 변경한다. 신규 영상 생성에 아래 낙하 프롬프트를 사용하지 않는다.
 ```
 Berserk manga ink texture, heavy crosshatching and etching linework, FromSoftware art direction, dark fantasy concept art, chiaroscuro lighting, deep black base, ember red and dull gold accents, volumetric fog, ash particles, oppressive scale, cinematic composition, countless small falling figures descending from a distant sky, all trajectories converging into one crimson fissure below, silhouettes only, varied shapes, single direction, figures too small to identify, full bleed image edge to edge, no anime, no cartoon, no cute, no bright pastel, no text, no watermark, no logo, no winged dragon, no horned demon, no armored skeleton soldier, no clean surfaces, no neon, no hologram, no glitch effect, no letterbox, no black bars
 ```

@@ -21,6 +21,23 @@ function extractFunction(name) {
   assert.fail(`${name} must be complete`);
 }
 
+test('stormBeam unlocks peace shield without silently replacing the selected basic Q parry', () => {
+  const source = extractFunction('_qIsPeaceShield');
+  const isPeaceShield = Function('P', '_isFused', `${source};return _qIsPeaceShield()`);
+  const fused = (id) => id === 'stormBeam';
+
+  assert.equal(
+    isPeaceShield({ skills: { peaceShield: 5 }, activeQSk: 'detonate' }, fused),
+    false,
+    'stormBeam must not override a non-peace Q selection',
+  );
+  assert.equal(
+    isPeaceShield({ skills: { peaceShield: 5 }, activeQSk: 'peaceShield' }, fused),
+    true,
+    'peace shield must still activate when explicitly selected',
+  );
+});
+
 test('Q shield starts at 100px, grows 100px per second, and caps at 500px', () => {
   const source = extractFunction('_sBlockChargeRadius');
   const radius = Function(`${source};return _sBlockChargeRadius`)();
@@ -33,19 +50,17 @@ test('Q shield starts at 100px, grows 100px per second, and caps at 500px', () =
   assert.equal(radius(999), 500);
 });
 
-test('Q shield absorbs only its tight 20px core and parries from the first 100px ring', () => {
-  const source = `${extractFunction('_sBlockChargeRadius')}\n${extractFunction('_sBlockProjectileZone')}`;
+test('Q hold keeps absorption fixed and reserves the growing radius for the release shockwave', () => {
+  const source = extractFunction('_sBlockProjectileZone');
   const zone = Function(`${source};return _sBlockProjectileZone`)();
 
   assert.equal(zone(20, 0), 'absorb');
-  assert.equal(zone(21, 0), 'parry');
-  assert.equal(zone(100, 0), 'parry');
-  assert.equal(zone(101, 0), 'none');
-  assert.equal(zone(101, 60), 'parry');
-  assert.equal(zone(200, 60), 'parry');
-  assert.equal(zone(201, 60), 'none');
-  assert.equal(zone(500, 240), 'parry');
-  assert.equal(zone(501, 240), 'none');
+  assert.equal(zone(21, 0), 'none');
+  assert.equal(zone(20, 20), 'absorb');
+  assert.equal(zone(21, 20), 'parry');
+  assert.equal(zone(100, 20), 'parry');
+  assert.equal(zone(101, 20), 'none');
+  assert.equal(zone(500, 0), 'none');
 });
 
 test('releasing Q bursts at the charged radius and carries that radius into the release parry window', () => {
@@ -70,10 +85,42 @@ test('releasing Q bursts at the charged radius and carries that radius into the 
     'release must reset the next hold cycle');
 
   assert.match(gameHtml, /const _releasePW=P\.s!=='sBlock'&&P\._sbParryT>0&&\(P\._sbReleaseR\|\|0\)>0/);
-  assert.match(gameHtml, /const _qPulseR=P\.s==='sBlock'\?_sBlockChargeRadius\(P\._sbHoldT\):_releasePW\?P\._sbReleaseR:0/,
-    'the charged radius must remain active throughout the Q hold and the release window');
+  assert.match(gameHtml, /const _qPulseR=P\.s==='sBlock'&&P\._sbParryT>0\?100:_releasePW\?P\._sbReleaseR:0/,
+    'only the fixed press ring is active while holding; the charged radius activates on release');
   assert.match(gameHtml, /const _wwAbsR=_qPulseR>0\?_qPulseR:/,
     'ordinary Q-parryable projectiles must use the charged pulse radius');
+});
+
+test('Q parry scans the charged radius only after Q is released', () => {
+  assert.match(gameHtml, /const _qCollisionScanR=P\.s==='sBlock'&&P\._sbParryT>0\?100:P\._sbParryT>0\?\(P\._sbReleaseR\|\|0\):0/,
+    'the broad-phase must not turn the growing hold charge into a live parry range');
+  assert.match(gameHtml, /const _qCollisionScanR2=Math\.max\(160000,_qCollisionScanR\*_qCollisionScanR\)/,
+    'normal collision scanning must expand past 400px for a charged Q');
+  assert.match(gameHtml, /if\(_pDist2>_qCollisionScanR2&&_pDistP2>_qCollisionScanR2&&\(!_ancHit\|\|_ancDist2>_ancHitR\*_ancHitR\)&&!p\.friendly&&!_bigBall\)/,
+    'charged release targets may not be skipped before their Q parry check');
+});
+
+test('peaceShield absorbs while held after its press window, then stores the grown radius for Q release parry', () => {
+  const start = gameHtml.indexOf("case 'peaceShield':{");
+  const end = gameHtml.indexOf("case 'ghostWalk':{", start);
+  assert.ok(start >= 0 && end > start, 'peaceShield state must exist');
+  const block = gameHtml.slice(start, end);
+
+  assert.match(block, /if\(!isHeld\('parry'\)\|\|P\.mp<=_psMpCost\)/,
+    'peaceShield must use the physical held-key state');
+  assert.match(block, /const _psReleaseR=P\._psShieldR\|\|100/,
+    'peaceShield release must snapshot its grown shield radius');
+  assert.match(block, /P\._sbReleaseR=_psReleaseR/,
+    'the common Q release parry window must receive the snapshot');
+  assert.match(block, /if\(_psQZone==='parry'&&_projectileParryClass\(p\)==='magic'\)/,
+    'only the fixed initial press ring may parry while Q is still held');
+  assert.match(block, /const _psQZone=_psDist<=20\?'absorb':P\._sbParryT>0&&_psDist<=100\?'parry':'none'/,
+    'peaceShield must keep its hold absorption at 20px and use a fixed press ring');
+});
+
+test('a successful press parry cannot let its iframe block the following Q-release parry', () => {
+  assert.match(gameHtml, /_pDist<_wwAbsR&&\(_qParryActive\|\|P\.iframes<=0\)&&!P\._ioActive/,
+    'active Q parry windows must remain eligible while their own success iframe is active');
 });
 
 test('the rendered Q shield draws the exact charged parry boundary', () => {

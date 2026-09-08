@@ -3768,7 +3768,7 @@ Object.assign(_PL,{
 "계승의":"Dziedzictwa",
 "전대 공격력+":"ATK przodków+",
 "전대 수+":"Liczba przodków+",
-"전대 지속+":"Czas przodków+",
+"전대 최대HP+":"Maks. PŻ przodków+",
 "전대 위력 +X%":"Moc przodków +X%",
 "전대 소환 수 +1":"Liczba przyzwań przodków +1",
 "전대 위력":"Moc przodków",

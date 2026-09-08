@@ -80,7 +80,7 @@ HELL: EXODUSER
 
 - [x] 전곡 192kbps mp3 변환, DEMO/EA 동기화 완료
 - [x] 게임 연결 (2026-07-27 인트로 스왑 후 최종):
-  - **index.html 세계관 프롤로그**: `_CIN_BGM_TRACKS` 4곡 랜덤 재생 (startCinBgm/stopCinBgm, 제스처 시점 시작·종료/스킵 시 페이드아웃)
+  - **index.html 세계관 프롤로그 (2026-09-07 후속 정정)**: `_CIN_BGM_TRACKS` 4곡 랜덤 유지. 문 열림 제스처에서 gain 0.6 시작, v6 영화로 넘어갈 때 같은 곡·Audio·재생 위치 유지, 첫 playing 때 1000ms/50ms 간격으로 gain 0.22까지 선형 감소. loop=true, 영상 음성 gain 1.0. 본편 시작/버퍼링/컷 넘김에 음악 정지·되감기 없음. 명시적 일시정지는 함께 pause/이어 재생, 영화 종료/전체 스킵 시 즉시 pause. [인게임 믹스 계약](../cinematic/WORLD_INTRO_INGAME_20260907.md).
   - **game.html 전쟁 복수 서사**: 전용 BGM `cutscene_warintro`(=`bgm/1장_썩은숲/h0_explore.mp3`, 원래 이 서사용 곡) + 나레이션 보이스(intro_voice.mp3).
     ※ 이에 따라 1장 스테이지 BGM(hell1)은 h0_explore → `Ashes of the Fallen Gate.mp3`로 교체 (2026-07-27, 컷신 곡과 게임 시작 곡 중복 제거)
   - **game.html 네메시아(여신) 컷신**: `cutscene_prologue` 키 4곡 랜덤 (_pickRandom)

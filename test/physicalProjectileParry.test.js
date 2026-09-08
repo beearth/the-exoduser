@@ -48,7 +48,7 @@ test('physical-mouth shots have an E reflection path and the generic Q path admi
     'generic Q parry must admit only the independently classified magic shots');
 });
 
-test('physical projectile parries use the legacy white basic impact regardless of element color', () => {
+test('physical projectile parries use white Fire Impact regardless of element color', () => {
   const doParry = extractFunction('doParry');
   const projectileUpdate = gameHtml.slice(gameHtml.indexOf('// ══ 빨간콩탄:'), gameHtml.indexOf('// ══ 무지개콩탄:'));
 
@@ -56,8 +56,9 @@ test('physical projectile parries use the legacy white basic impact regardless o
     'the legacy white basic parry sheet must remain registered');
   assert.match(doParry, /_impactKind==='physicalProjectile'/,
     'the shared parry feedback must have a projectile-physical branch instead of inferring from element color');
-  assert.match(doParry, /playVFXAng\('parry_impact',_px,_py,1\.2,3,0,false\)/,
-    'physical projectile parries must select the legacy white basic impact');
+  assert.match(doParry, /_addBoom\(_px,_py,60,12,'physical'\)/,
+    'physical projectile parries must use the same four-frame white impact as physical hits');
+  assert.ok(doParry.includes("const _parEC=_impactKind==='physicalProjectile'?'#ffffff':"));
   assert.match(projectileUpdate, /doParry\(p\.dmg,p\.x,p\.y,false,'red',undefined,'physicalProjectile'\)/,
     'physical red-bean E parries must carry the physical-impact identity');
   assert.match(projectileUpdate, /doParry\(p\.dmg,p\.x,p\.y,false,p\.el,undefined,'physicalProjectile'\)/,

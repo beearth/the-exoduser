@@ -97,7 +97,8 @@ test('every bone-prison spawn plays the bone creation sound once', () => {
   const bossStart = gameHtml.indexOf("case'cageTrap':");
   const bossEnd = gameHtml.indexOf("case'chainLightning':", bossStart);
   const boss = gameHtml.slice(bossStart, bossEnd);
-  assert.equal((boss.match(/playSample\('skull_summon'/g) || []).length, 1);
+  assert.equal((boss.match(/playSample\('skull_summon'/g) || []).length, 0);
+  assert.doesNotMatch(boss,/G\._cageTraps\.push/);
 
   const standaloneStart = gameHtml.indexOf('function fireBoneWall(tx,ty)');
   const standaloneEnd = gameHtml.indexOf('// ═══ 칼날살 발사', standaloneStart);

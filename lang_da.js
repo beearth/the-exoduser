@@ -3770,7 +3770,7 @@ Object.assign(_DA,{
 "계승의":"Arvens",
 "전대 공격력+":"Forfader-ATK+",
 "전대 수+":"Forfader-antal+",
-"전대 지속+":"Forfader-varighed+",
+"전대 최대HP+":"Forfædres maks. HP+",
 "전대 위력 +X%":"Forfader-styrke +X%",
 "전대 소환 수 +1":"Forfader-antal +1",
 "전대 위력":"Forfader-styrke",

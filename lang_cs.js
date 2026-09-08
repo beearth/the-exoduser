@@ -3678,7 +3678,7 @@ Object.assign(_CS,{
 "계승의":"Dědictví",
 "전대 공격력+":"ATK předků+",
 "전대 수+":"Počet předků+",
-"전대 지속+":"Trvání předků+",
+"전대 최대HP+":"Max. HP předků+",
 "전대 위력 +X%":"Moc předků +X%",
 "전대 소환 수 +1":"Počet vyvolaných předků +1",
 "전대 위력":"Moc předků",

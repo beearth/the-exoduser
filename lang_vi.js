@@ -2624,7 +2624,7 @@ Object.assign(_VI,{
 "계승의":"Của Kế Thừa",
 "전대 공격력+":"ATK tổ tiên+",
 "전대 수+":"Số tổ tiên+",
-"전대 지속+":"Thời gian tổ tiên+",
+"전대 최대HP+":"HP tối đa tổ tiên+",
 "전대 위력 +X%":"Sức mạnh tổ tiên +X%",
 "전대 소환 수 +1":"Số lần triệu hồi tổ tiên +1",
 "전대 위력":"Sức mạnh tổ tiên",

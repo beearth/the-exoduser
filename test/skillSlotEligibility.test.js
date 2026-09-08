@@ -36,7 +36,7 @@ test('F is reserved for learned area skills while ancestor summon remains a norm
     holyDome: { id: 'holyDome', cat: 'tech', act: true },
     giantSlam: { id: 'giantSlam', cat: 'phys', act: true },
     giantSlam2: { id: 'giantSlam2', cat: 'phys', act: true },
-    spikeTrap: { id: 'spikeTrap', cat: 'tech', act: true },
+    spikeTrap: { id: 'spikeTrap', cat: 'phys', act: true },
     passiveTech: { id: 'passiveTech', cat: 'tech', act: false },
   };
   const rules = slotRules(skills);
@@ -52,9 +52,9 @@ test('F is reserved for learned area skills while ancestor summon remains a norm
   assert.equal(rules._canAssignSkillSlot('holyDome', 0), false);
   assert.equal(rules._canAssignSkillSlot('holyDome', 4), false);
   assert.equal(rules._canAssignSkillSlot('holyDome', 5), true);
-  assert.equal(rules._canAssignSkillSlot('spikeTrap', 0), false);
+  assert.equal(rules._canAssignSkillSlot('spikeTrap', 0), true);
   assert.equal(rules._canAssignSkillSlot('spikeTrap', 4), false);
-  assert.equal(rules._canAssignSkillSlot('spikeTrap', 5), true, 'Spike Trap is selected through the F area slot');
+  assert.equal(rules._canAssignSkillSlot('spikeTrap', 5), false, 'Spike Trap uses a normal numeric slot');
   assert.equal(rules._isAreaSkillId('passiveTech'), false, 'passive tech skills are not area-slot candidates');
 });
 
@@ -89,6 +89,15 @@ test('legacy non-area F assignment is migrated to the first free normal slot', (
   const rules = slotRules(skills, ['a', null, null, null, null, 'ancestorSummon']);
   rules._repairAreaSkillSlot();
   assert.deepEqual(rules.slots, ['a', 'ancestorSummon', null, null, null, null]);
+});
+
+test('legacy Spike Trap F assignment is migrated to the first free normal slot', () => {
+  const skills = {
+    spikeTrap: { id: 'spikeTrap', cat: 'phys', act: true },
+  };
+  const rules = slotRules(skills, [null, null, null, null, null, 'spikeTrap']);
+  rules._repairAreaSkillSlot();
+  assert.deepEqual(rules.slots, ['spikeTrap', null, null, null, null, null]);
 });
 
 test('legacy area assignments outside F collapse to one equipped area', () => {
@@ -127,11 +136,12 @@ test('ancestor summon uses its existing PNG icon in the skill panel', () => {
   assert.match(iconSet[1], /'ancestorSummon'/);
 });
 
-test('Spike Trap is an F-selectable area skill instead of a legacy fixed Space skill', () => {
+test('Spike Trap is a physical-tab selectable skill in numeric slots', () => {
   const def = gameHtml.match(/\{id:'spikeTrap'[^\n]+/);
   assert.ok(def, 'spikeTrap skill definition must exist');
   assert.doesNotMatch(def[0], /fixed:true/);
-  assert.match(def[0], /\[선택: F\]/);
-  assert.doesNotMatch(gameHtml, /SKILL_SLOTS\[0\]='spikeTrap'/, 'new-game and test presets must not bypass the F-only contract');
-  assert.doesNotMatch(gameHtml, /스페이스[^'\n]*가시덫|가시덫[^'\n]*스페이스/, 'Spike Trap guidance must point to F, not Space');
+  assert.match(def[0], /\[선택: 1~4번\]/);
+  assert.match(gameHtml, /_fs\(0,'spikeTrap'\)/, 'new-game presets place Spike Trap in the first numeric slot');
+  assert.doesNotMatch(def[0], /\[선택: F\]/);
+  assert.doesNotMatch(gameHtml, /F키[^'\n]*가시덫|가시덫[^'\n]*F키/, 'Spike Trap guidance must point to a numeric slot');
 });

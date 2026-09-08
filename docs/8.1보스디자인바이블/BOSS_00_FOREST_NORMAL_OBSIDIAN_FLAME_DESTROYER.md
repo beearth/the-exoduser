@@ -1,5 +1,7 @@
 # BOSS_00_FOREST_NORMAL_OBSIDIAN_FLAME_DESTROYER - 통합 기획서 v1.0
 
+> **2026-09-06 현행 보스 배정 우선:** 1-1(si0)은 **다크드루이드**다. 이 문서의 흑요염 파괴자 si0 배정·화염 전용 지정·`_isLargeBoss=true`는 이전 구현 기록이며 현행 배정에서 제외한다. 드루이드의 si3 전용 기술/VFX는 이제 **si0·si3 공통**이다. 원본 흑요염 에셋/음성 카탈로그는 삭제하지 않는다. 정확한 현행 계약은 `docs/4.1맵디자인+설정/CH1_1_DRUID_BOSS_ASSIGNMENT.md`를 따른다.
+
 작성일: 2026-05-09
 런타임 대상: `si 0`, 1장 썩은 숲 1구역 보스
 코드 위치: `game.html`
@@ -89,4 +91,3 @@
 | P1 | PixelLab 또는 스켈레탈 파이프라인으로 8방향 idle/walk/attack/hit/death 생성 |
 | P2 | `atlas_bosses.png/json`에 `boss_0` 정식 편입 |
 | P3 | 전용 SFX: 용암 갑주 발소리, 검 마찰, 내려찍기 충격음 추가 |
-

@@ -3775,7 +3775,7 @@ Object.assign(_NO,{
 "계승의":"Arvens",
 "전대 공격력+":"Forfader-ATK+",
 "전대 수+":"Forfader-antall+",
-"전대 지속+":"Forfader-varighet+",
+"전대 최대HP+":"Forfedres maks. HP+",
 "전대 위력 +X%":"Forfader-styrke +X%",
 "전대 소환 수 +1":"Forfader-antall +1",
 "전대 위력":"Forfader-styrke",

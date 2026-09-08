@@ -19,27 +19,21 @@ function sliceBetween(src, startToken, endToken) {
 test('generated Kraken shot and Silvertail charge-range assets are served by the game', () => {
   assert.equal(existsSync(join(repoRoot, 'img/balls/proj_kraken_shot_api_v1.png')), true);
   assert.equal(existsSync(join(repoRoot, 'img/vfx/silvertail_charge_range_api_v1.png')), true);
-  assert.match(gameHtml, /_krakenShotImg\.src='img\/balls\/proj_kraken_shot_api_v1\.png\?v=20260903';/);
+  assert.ok(gameHtml.includes("_krakenShotImg.src='img/balls/proj_kraken_shot_api_v1.png?v=20260903'"));
   assert.match(gameHtml, /_silvChargeRangeImg\.src='img\/vfx\/silvertail_charge_range_api_v1\.png\?v=20260903';/);
 });
 
 test('near-black API image backgrounds are converted to alpha before additive rendering', () => {
   assert.match(gameHtml, /function _makeBlackAdditiveCutout\(/);
-  assert.match(gameHtml, /_krakenShotSurface=_makeBlackAdditiveCutout\(_krakenShotImg/);
   assert.match(gameHtml, /_silvChargeRangeSurface=_makeBlackAdditiveCutout\(_silvChargeRangeImg/);
-  assert.match(gameHtml, /_krakenShotSurface\|\|_krakenShotImg/);
   assert.match(gameHtml, /_silvChargeRangeSurface\|\|_silvChargeRangeImg/);
 });
 
 test('water-bean has a compact blue water-core identity while large physical or ice balls keep Kraken art', () => {
   const water = sliceBetween(gameHtml, 'function _drawWaterBean(', 'function _drawClassicRainbow(');
-  assert.match(water, /const coreR=4\.4\*sSc/);
-  assert.match(water, /#15338f/);
-  assert.match(water, /#d9edff/);
+  assert.match(water, /_drawWaterBlueFlight\(p,fa,sSc\)/);
   assert.doesNotMatch(water, /_drawKrakenShot/,
     'the small water bean must not inherit the giant Kraken torpedo silhouette');
-  assert.doesNotMatch(water, /X\.arc\(/);
-  assert.doesNotMatch(water, /X\.lineTo\(/);
 
   const elem = sliceBetween(gameHtml, 'if(p.elemBall){', 'if(p.poisonZone){');
   assert.match(elem, /p\.el===EL\.P\|\|p\.el===EL\.I/);

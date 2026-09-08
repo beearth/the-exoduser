@@ -1,0 +1,27 @@
+{
+  "version": "v13",
+  "source": "world_intro_v12_fullscene_newvoice_en.mp4",
+  "video_frames": 2719,
+  "video_duration": 113.291667,
+  "format_duration": 113.292,
+  "video_bitstream_identical": true,
+  "video_sha256": "SHA256=ca1a74ed610b092e8c230af28c9ce7e616b50dfd475ae4503395a371a2b648c9",
+  "bytes": 32381760,
+  "replaced_audio": [
+    100.25,
+    102.0
+  ],
+  "voice_start": 100.8,
+  "voice_decoded_duration": 0.9288125,
+  "gain": 1.1827717877535022,
+  "word": "Exodus.",
+  "voice_id": "WS6naCm8T4gbyzsLnOjK",
+  "model": "eleven_multilingual_v2",
+  "word_aac_correlation": 0.9999603362395778,
+  "unchanged_ending_correlation": 0.9997673422811322,
+  "subtitle_cue29": [
+    100.322,
+    101.682
+  ],
+  "note": "one complete word take; no speed/pitch change; all other source PCM untouched before AAC encode; not personally auditioned"
+}
