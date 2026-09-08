@@ -1,0 +1,37 @@
+{
+  "state": {
+    "duration": 3.75,
+    "src": "http://localhost:3333/video/title_motion.mp4?v=20260908-loop2",
+    "muted": true,
+    "loop": true
+  },
+  "probe": {
+    "videoDraws": 675,
+    "fallbackAfterVideo": 0,
+    "wraps": [
+      {
+        "from": 3.739006,
+        "to": 0.013684,
+        "gapMs": 33.69999999925494,
+        "readyState": 4
+      },
+      {
+        "from": 3.746262,
+        "to": 0.012186,
+        "gapMs": 33,
+        "readyState": 4
+      },
+      {
+        "from": 3.744517,
+        "to": 0.010288,
+        "gapMs": 33.90000000037253,
+        "readyState": 4
+      }
+    ],
+    "lastTime": 0.010288,
+    "lastAt": 15129.400000000373,
+    "maxFrameGap": 0
+  },
+  "pageErrors": [],
+  "exit": "PASS"
+}

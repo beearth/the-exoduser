@@ -1,0 +1,16 @@
+{
+  "video": {
+    "src": "http://localhost:3333/video/title_motion.mp4?v=20260908",
+    "muted": true,
+    "loop": true,
+    "duration": 5,
+    "width": 1920,
+    "height": 768,
+    "time": 2.008921
+  },
+  "loop": "PASS",
+  "keyboardExit": "PASS",
+  "clickFallbackExit": "PASS",
+  "lobbyReturnSkip": "PASS",
+  "pageErrors": []
+}

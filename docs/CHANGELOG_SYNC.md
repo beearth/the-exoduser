@@ -1,5 +1,20 @@
 # Sync Changelog
 
+## 2026-09-08 시작 화면 키아트 영상 연결
+
+| 항목 | 구현 / 검증 |
+|---|---|
+| 배포 | `video/title_motion.mp4?v=20260908-loop2`, H.264 1920×768, 24fps, 3.75초, 90프레임, 무음, 2,241,229바이트. 최초 5초 버전은 output에 보관 |
+| 시작 화면 | `index.html` phase 2의 `splashTitleVideo`를 `splashCanvas`에 contain-fit. 최초 로딩/오류 시 `img/title_art_1.png`, 이미지도 없으면 EXODUSER 텍스트. 재생 후 seek/buffering 중에는 직전 캔버스 프레임 유지 |
+| 재생 수명 | phase 2에서만 소스 할당·무음 반복. 탭 비활성 시 정지, 복귀 시 재생. 종료 시 pause·src 제거·load 및 visibility 리스너 해제 |
+| 기존 흐름 | FDG 3.2초, 타이틀 1초 페이드·1.2초 후 안내, 입력 대기·클릭/키/패드 진행·로비 복귀 스킵 유지 |
+| 검증 | 실제 Chromium: 영상 재생/루프/Enter 종료/로딩 실패 시 이미지와 클릭 종료/로비 복귀 PASS, pageerror 0. 1920×1080·1280×720 캡처 확인. 관련 Node 테스트 8개 PASS |
+| 관련 문서 | `docs/3.1 ui hud 디자인/스플래시_인트로_시퀀스.md`, `docs/cinematic/EXODUSER_TITLE_MOTION_20260908.md` |
+| 반복 끊김 수정 | 끝/시작 1.25초를 smoothstep으로 사전 혼합. `tools/build_title_motion_loop.py`로 재현. 경계 픽셀 차이 7.6641→1.0830(약 85.9% 감소), 원본 프레임 29→30으로 순환 |
+| 루프 깜빡임 수정 | `readyState<2`에서 정지 원본을 다시 그리던 현상 재현(3회 루프에서 3프레임). `titleHasVideoFrame` 이후 무오류 readyState<2 동안 기존 캔버스 프레임을 유지하도록 변경 |
+| 보정 후 검증 | Chromium 3회 연속 루프에서 원본 이미지 삽입 0회, 경계 draw 간격 33.7/33.0/33.9ms, pageerror 0, Enter 종료 PASS. 관련 테스트 8개 PASS. `output/cinematic/title_smooth_loop_runtime_20260908.json` |
+| 검수 한계 | 사전 크로스페이드 중 옷/머리카락이 잠시 겹칠 수 있음. 실물 게임패드 및 탭 숨김 이벤트는 별도 수동 검수 대상 |
+
 ## 2026-09-08 남전사 캐릭터 선택 / 로비 역동감 모션
 
 | 항목 | 구현 / 검증 |
