@@ -1,0 +1,23 @@
+{
+  "status": "completed",
+  "result_url": "https://d8j0ntlcm91z4.cloudfront.net/user_3G1zto9sz11Uf3iEOhJefE9HdGG/hf_20260908_142853_88756648-e041-43b7-b645-e697e6e4a57e.mp4",
+  "output": "assets/charselect/idle_warrior_higgsfield.mp4",
+  "output_frames": 133,
+  "output_fps": 24,
+  "overlap_frames": 12,
+  "output_bytes": 2286721,
+  "prompt": "Create a seamless continuous 6-second looping character-selection animation from this exact dark fantasy male warrior artwork. Locked-off tripod camera, exactly fixed framing and background architecture throughout, full existing composition. Preserve this man's face, short black hair, black heavy plate armor, red torn cloak and one massive straight sword. Real anatomically articulated animation with grounded weight and rigid armor, not a warping picture. One confident battle-ready idle cycle: he pushes up slightly from the crouch through his knees and hips, rolls his armored shoulder, briefly raises his chin and looks forward, tightens his sword grip and subtly angles the rigid sword, then smoothly settles back into the original exact low stance. Feet remain planted. His sword stays the same shape and connected to the same hand. Strong continuous wind animates the separate torn cloak strips with believable cloth folds and flowing inertia; loose hair, drifting embers and brazier flames move naturally. All body and cloth motion must form a closed periodic cycle. The final frame must match the supplied identical end frame AND motion direction and speed at the start, with continuous motion through the loop boundary. No ending pause, no freeze, no fade, no cuts, no camera zoom/pan/shake. No liquefying armor, rubber body, breathing whole image, elastic sword, duplicate limbs, face change, new objects, UI or text. Clearly visible natural action while maintaining the original illustration's identity, framing and mood.",
+  "job_id": "88756648-e041-43b7-b645-e697e6e4a57e",
+  "media_id": "905e5113-b3fa-4f8c-9517-16853377856b",
+  "source": "assets/charselect/poster_idle_warrior.jpg",
+  "model": "seedance_2_5",
+  "mode": "omni_reference",
+  "duration": 6,
+  "resolution": "1080p",
+  "aspect_ratio": "16:9",
+  "generate_audio": false,
+  "bitrate_mode": "high",
+  "start_and_end_use_same_media": true,
+  "quoted_credits": 54,
+  "intent": "Real articulated battle-ready idle, fixed camera, matching loop pose and velocity; replace rejected mesh-warp clip after validation."
+}

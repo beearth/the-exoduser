@@ -1,0 +1,55 @@
+{
+  "errors": [],
+  "views": [
+    {
+      "fit": "cover",
+      "transform": "none",
+      "width": 1920,
+      "height": 1080
+    },
+    {
+      "fit": "contain",
+      "transform": "matrix(1.265, 0, 0, 1.15, 0, 0)",
+      "width": 3440,
+      "height": 1440
+    }
+  ],
+  "video": {
+    "src": "http://localhost:3333/assets/charselect/idle_warrior_higgsfield.mp4?v=1",
+    "duration": 5.541667,
+    "paused": false,
+    "muted": true,
+    "loop": true,
+    "error": null,
+    "width": 1920,
+    "height": 1080
+  },
+  "loops": {
+    "frames": 397,
+    "wraps": [
+      {
+        "gapMs": 50,
+        "from": 5.5,
+        "to": 0
+      },
+      {
+        "gapMs": 50,
+        "from": 5.5,
+        "to": 0
+      },
+      {
+        "gapMs": 50,
+        "from": 5.5,
+        "to": 0
+      }
+    ],
+    "lastTime": 0,
+    "lastWall": 40049.2,
+    "running": false
+  },
+  "lobby": {
+    "src": "http://localhost:3333/assets/charselect/idle_warrior_higgsfield.mp4?v=1",
+    "paused": false,
+    "duration": 5.541667
+  }
+}

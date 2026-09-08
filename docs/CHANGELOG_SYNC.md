@@ -1,5 +1,17 @@
 # Sync Changelog
 
+## 2026-09-08 남전사 Higgsfield 실제 동작 영상 / 연속 루프 교체
+
+| 항목 | 구현 / 검증 |
+|---|---|
+| 생성 | 기존 `poster_idle_warrior.jpg` 직접 업로드, Seedance 2.5, 시작/끝 동일 이미지, 6초 요청, 1080p, 무음. job `88756648-e041-43b7-b645-e697e6e4a57e` |
+| 적용 | `CHAR_VISUALS[0]` → `idle_warrior_higgsfield.mp4?v=1` 및 전용 포스터. 기존 울렁임 메시 영상은 현재 재생에서 제외 |
+| 출력 | H.264 1920×1080, 24fps, 133프레임/5.541667초, 2,286,721 bytes, faststart. 원본 HEVC 145프레임은 output에 보관 |
+| 연속 재생 | 앞뒤 12프레임 smoothstep 혼합, 전체 정방향. 첫/끝 grayscale MAD 1.59087→0.74675 |
+| 검증 | 실제 Chromium 3회 루프 경계 모두 프레임 표시 간격 50ms, pageerror 0. 전사↔실버테일 전환·로비 재생/해제 통과. 1920×1080/3440×1440 표시 확인 |
+| 기록 | `output/warrior_higgsfield_qa/verification.json`, 생성 요청 JSON/원본/컨택트, `tools/build_warrior_higgsfield_loop.py` |
+| 문서 | 남전사 모션 SSOT/캐릭터 선택/캐릭터 최적화 문서 동기화. 이전 메시 변형 수치는 폐기 이력으로 명시 |
+
 ## 2026-09-08 시작 화면 키아트 영상 연결
 
 | 항목 | 구현 / 검증 |
@@ -15,7 +27,9 @@
 | 보정 후 검증 | Chromium 3회 연속 루프에서 원본 이미지 삽입 0회, 경계 draw 간격 33.7/33.0/33.9ms, pageerror 0, Enter 종료 PASS. 관련 테스트 8개 PASS. `output/cinematic/title_smooth_loop_runtime_20260908.json` |
 | 검수 한계 | 사전 크로스페이드 중 옷/머리카락이 잠시 겹칠 수 있음. 실물 게임패드 및 탭 숨김 이벤트는 별도 수동 검수 대상 |
 
-## 2026-09-08 남전사 캐릭터 선택 / 로비 역동감 모션
+## 2026-09-08 남전사 캐릭터 선택 / 로비 역동감 모션 — 1차 시도 폐기 이력
+
+사용자가 울렁임을 지적하여 이 메시 변형안은 폐기했다. 현재 재생 파일은 Higgsfield 생성본 `idle_warrior_higgsfield.mp4`이며, 아래 값은 이전 구현 이력이다.
 
 | 항목 | 구현 / 검증 |
 |---|---|
