@@ -27,7 +27,7 @@ test('demo finale phase crossing never teleports onto or damages the player',()=
   assert.equal(hits.length,0);assert.equal(shots.length,0);
   assert.equal(e.x,100);assert.equal(e.y,100);assert.equal(e._bossPhase,2);
   assert.equal(e.hp,600,'existing threshold HP correction is preserved');
-  assert.equal(e.atk,130,'existing phase stat scaling is preserved');
+  assert.equal(e.atk,125,'demo phase scaling uses the base attack, without compound spikes');
 });
 test('regular stage 3 retains its existing phase transition',()=>{
   const {ctx,hits}=setup(false);ctx._bossPhaseCheck(boss(),1);assert.ok(hits.length>0);

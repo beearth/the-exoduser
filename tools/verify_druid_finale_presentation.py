@@ -56,6 +56,7 @@ with sync_playwright() as p:
       return {hp:P.hp,x:P.x,y:P.y,bossHp:e.hp,bossShield:e.eShield};
     }''')
     page.keyboard.press('d');page.wait_for_timeout(70);page.keyboard.down('d');page.wait_for_timeout(500);page.keyboard.up('d');page.wait_for_timeout(650)
+    page.wait_for_function("!_qaUnderBoss.alive||_qaUnderBoss.s==='bossDruidRest'",timeout=6000)
     dodge=page.evaluate('''before=>{G.paused=true;hurtP=_qaHurtP;return {hpLost:before.hp-P.hp,moved:Math.hypot(P.x-before.x,P.y-before.y),state:_qaUnderBoss.s,gauge:_harpGauge,hits:_qaHits,before,bossHp:_qaUnderBoss.hp,bossAlive:_qaUnderBoss.alive};}''',dodge_before)
     print('SLOWED DODGE',dodge,flush=True)
     assert dodge['hpLost']==0 and dodge['moved']>164 and dodge['bossAlive'] and dodge['state']=='bossDruidRest',dodge

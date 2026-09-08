@@ -2,7 +2,7 @@
 import json
 from pathlib import Path
 from playwright.sync_api import sync_playwright
-out=Path('captures/druid_finale_20260909');out.mkdir(parents=True,exist_ok=True)
+out=Path('captures/druid_finale_v04');out.mkdir(parents=True,exist_ok=True)
 with sync_playwright() as p:
     browser=p.chromium.launch(headless=True)
     page=browser.new_page(viewport={'width':1280,'height':720})
@@ -41,22 +41,8 @@ with sync_playwright() as p:
         result['first_life_output_seconds']=(initial['bossHp']+initial['bossShield'])/max(.01,result['dps'])
         profiles.append({'profile':initial,'result':result})
         print('PROFILE',lv,rarity,result,flush=True)
-    # Same production formulas, seeded Monte Carlo; no changes to the game balance.
-    source=Path('game.html').read_text(encoding='utf8')
-    def expression(var):
-        marker='const '+var+'=';a=source.index(marker)+len(marker);return source[a:source.index(';',a)]
-    expressions={k:expression(k) for k in ['_revBase','_revCh','_rv2Base']}
-    revival=page.evaluate('''expr=>{
-      const immediate=new Function('e','_bSuppress','const G={stage:3};const _revBase='+expr._revBase+';return '+expr._revCh);
-      const fallback=new Function('e','_rv2Sup','const G={stage:3};const _rv2Base='+expr._rv2Base+';return Math.max(0,_rv2Base-(e.deaths||0)*0.25-_rv2Sup);');
-      let seed=909;const rand=()=>{seed=(Math.imul(seed,1664525)+1013904223)>>>0;return seed/4294967296;};
-      return [0,.3,.6,1].map(suppress=>{const counts=[];
-        for(let n=0;n<10000;n++){let pts=218,deaths=0,revives=0;while(pts>0&&deaths<30){deaths++;pts=Math.max(0,pts-10-(suppress>0?Math.floor(Math.min(5,suppress*10+2)):0));
-          if(pts>0&&rand()<immediate({deaths},suppress)){revives++;continue;}
-          if(pts>0&&rand()<fallback({deaths},suppress)){pts=Math.max(0,pts-10);revives++;continue;}break;}
-          counts.push(revives);}
-        counts.sort((a,b)=>a-b);return {suppress,mean:counts.reduce((a,b)=>a+b,0)/counts.length,p10:counts[1000],median:counts[5000],p90:counts[9000]};});
-    }''',expressions)
+    # Current demo revival chance, executed from the live production helper.
+    revival=page.evaluate('()=>[0,.3,.6,1].map(suppress=>({suppress,firstChance:_druidFinaleReviveChance({deaths:1,_revPts:10},suppress),secondChance:_druidFinaleReviveChance({deaths:2,_revPts:10},suppress)}))')
     report={'method':'12s real LMB input; fixed passive boss, no player stat boost or resource refill; seeded T0 gear, auto level stats only; first-life output extrapolation is NOT encounter TTK. Revival model excludes full-HP and holyPrison cost bonuses.','profiles':profiles,'revival':revival,'errors':errors}
     (out/'balance.json').write_text(json.dumps(report,ensure_ascii=False,indent=2),encoding='utf8')
     assert not errors,errors

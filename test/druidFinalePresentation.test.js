@@ -54,6 +54,8 @@ test('finale suppresses inventory chatter while preserving urgent survival dialo
   Object.assign(ctx,{_petBubble:{t:0},_petDlgCD:{},_petTierOf:()=>1,_PET_SURV_W:{hp_critical:100},_T:s=>s,_petBubbleShow(){},_petSfx(){}});
   const a=html.indexOf('function _petSay('),b=html.indexOf('\n}',a)+2;vm.runInContext(html.slice(a,b),ctx);
   assert.equal(ctx._petSay('tut_keyK','crow','inventory hint',5),false);
+  ctx.G._bossRef=null;
+  assert.equal(ctx._petSay('sp_hint','cat','skill points ready',4),false,'the first retry frame is guarded before the HUD finds the boss');
   assert.equal(ctx._petSay('hp_critical','crow','danger',3),true);
 });
 test('room completion still finds the defeated boss after the HUD clears its live reference',()=>{
