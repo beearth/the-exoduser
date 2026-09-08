@@ -1,5 +1,16 @@
 # Sync Changelog
 
+## 2026-09-08 물리 탄막 사거리 종료 시 흰 임팩트로 소멸
+
+| 항목 | 적용 내용 |
+|---|---|
+| 원인 | 공통 수명 만료 분기가 redBean 플래그를 공유하는 물리탄까지 r40/72f 화염 boom으로 처리 |
+| 물리 소멸 | `p.redBean && _projectileParryClass(p)==='physical'` → `_addBoom(x,y,60,12,'physical')`, 기존 흰 Fire_ImpactFire_Sheet 첫 행4프레임·최대180px·0.2초 |
+| 부가 효과 | 흰 파편 #ffffff 12개·shake3. 물리 만료의 화염 boom·추가 explosion 임팩트 제거, 피격 플래시 추가 없음 |
+| 적용 대상 | 물리 이빨탄 redBean+EL.P, titanEye(EL.F여도 physical 정체성), 저장된 parryClass=physical |
+| 보존 | 수명 감소 sp×0.667, 만료 조건·회수 시점·피해·패링 불변. 비물리 redBean은 r40/72f 화염·붉은 파편12·explosion·shake3 유지. life≤−900 강제 제거 및 일반 비redBean 수명 연장 경로 유지 |
+| 검증 | physicalProjectileExpiry 4개, darkSphereIdentity 4개, physicalProjectileParry 3개, projectileParryClassification 4개=15개 통과. 새 회귀 검사는 수정 전 실제 화염 소멸을 재현하고 수정 후 흰 임팩트를 확인 |
+
 ## 2026-09-08 실버테일 악의구 흔들림 → 시계방향 연속 회전
 
 | 항목 | 적용 내용 |

@@ -31292,7 +31292,7 @@ function update(){
       if(!_bQuiet){_addBoom(p.x,p.y,br,22,'fire');shake(4);}
       _dead=true;
     }
-    if(!_dead&&p.life<=0){if(p.life<=-900||p.mine||p.bomb)_dead=true;else if(p.redBean){_addBoom(p.x,p.y,40,72,'redbean');_addImpact(p.x,p.y,p.el,Math.atan2(p.vy,p.vx),'explosion');addParts(p.x,p.y,'#ff2200',12);shake(3);_dead=true}else{const _cdx=p.x-G.cam.x,_cdy=p.y-G.cam.y;if(_cdx*_cdx+_cdy*_cdy>6250000)_dead=true;else p.life=1}}
+    if(!_dead&&p.life<=0){if(p.life<=-900||p.mine||p.bomb)_dead=true;else if(p.redBean){if(_projectileParryClass(p)==='physical'){_addBoom(p.x,p.y,60,12,'physical');addParts(p.x,p.y,'#ffffff',12)}else{_addBoom(p.x,p.y,40,72,'redbean');_addImpact(p.x,p.y,p.el,Math.atan2(p.vy,p.vx),'explosion');addParts(p.x,p.y,'#ff2200',12)}shake(3);_dead=true}else{const _cdx=p.x-G.cam.x,_cdy=p.y-G.cam.y;if(_cdx*_cdx+_cdy*_cdy>6250000)_dead=true;else p.life=1}}
     // 히트 임팩트 이펙트 (투사체 소멸 시)
     if(_dead&&OPT.deathFx&&!p.mine&&!p.trap&&!p.dimRift&&!p.web&&!p.poisonZone&&!p.maliceHunt&&!p.bladeShard&&!p.iceBlade&&!p._fromRainbow&&!p.redBean&&!p.blackBean){
       _addImpact(p.x,p.y,p.el,Math.atan2(p.vy,p.vx));
