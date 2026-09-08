@@ -8330,6 +8330,7 @@ function _petBubbleShow(who,txt){
   _ps.style.opacity=_PET_OP_MAX;
 }
 function _petSay(id,who,txt,durSec,pairWho,pairTxt,pairDur,_noSfx){
+  if(_isDruidFinale(G._bossRef)&&G.bossAlive&&!_PET_SURV_W[id]&&_petTierOf(id)<=2)return false;
   if(_petBubble.t>0)return false; // 이미 말풍선 표시 중
   if(_petDlgCD[id]>0)return false; // 쿨다운 중
   _petBubble.who=who;_petBubble.txt=_T(txt);_petBubble.mt=~~(durSec*60);_petBubble.t=_petBubble.mt;
@@ -11486,8 +11487,9 @@ const MBjust={}; // just-pressed mouse buttons
 let mouse={x:0,y:0},_mouseFacing=0,_mouseFacingReady=false;
 function _setMousePosition(e){
   const rect=C.getBoundingClientRect();
-  mouse.x=(e.clientX-rect.left)*(VW/rect.width);
-  mouse.y=(e.clientY-rect.top)*(VH/rect.height);
+  mouse._screenX=mouse.x=(e.clientX-rect.left)*(VW/rect.width);
+  mouse._screenY=mouse.y=(e.clientY-rect.top)*(VH/rect.height);
+  _syncDruidFinaleMouse();
 }
 function _setMouseFacing(){
   if(!P||!G||!G.cam||_gpActive)return;
@@ -14805,6 +14807,45 @@ const _DRUID_FINALE_ROUNDS=[
 ];
 function _isDruidFinale(e){
   return !!(_DEMO_MODE&&G.stage===_DEMO_LAST_STAGE&&G.stage===3&&e&&e.ib);
+}
+function _druidFinaleFrame(e,px,py,vw,vh,out){
+  if(!_isDruidFinale(e)||Math.hypot(px-e.x,py-e.y)>1100)return null;
+  const spec=_CODEX_BOSS[3],dh=e.r*spec.dh;
+  const halfW=Math.max(e.r*spec.dw*.5,dh*.56),base=e.y+(window._btOffsetY||0)-6*(window._btScaleMul||1);
+  let left=Math.min(e.x-halfW,px-100),right=Math.max(e.x+halfW,px+100);
+  let top=Math.min(base-dh*.86-24,py-100),bottom=Math.max(base+dh*.14,e.y+e.r+120,py+100);
+  if(e._druidTargetLocked&&(e.s==='bossDruidUnder'||e.s==='bossDruidErupt')){
+    const r=e.r+140;left=Math.min(left,e._diveTx-r);right=Math.max(right,e._diveTx+r);
+    top=Math.min(top,e._diveTy-r);bottom=Math.max(bottom,e._diveTy+r);
+  }
+  const padTop=Math.min(100,vh*.14),padBottom=Math.min(155,vh*.22),padX=Math.min(100,vw*.08);
+  out.zoom=Math.max(.3,Math.min(.8,(vw-padX*2)/(right-left),(vh-padTop-padBottom)/(bottom-top)));
+  out.x=(left+right)*.5;out.y=(top+bottom)*.5+(padBottom-padTop)/(2*out.zoom);
+  return out;
+}
+function _syncDruidFinaleMouse(){
+  if(_gpActive||!Number.isFinite(mouse._screenX)||!Number.isFinite(mouse._screenY))return;
+  const zoom=(!_EDITOR_MODE&&_DEMO_MODE&&G.stage===3&&G.stage===_DEMO_LAST_STAGE&&G._bossArena)?Math.max(.3,G._camZoom||1):1;
+  mouse.x=VW/2+(mouse._screenX-VW/2)/zoom;mouse.y=VH/2+(mouse._screenY-VH/2)/zoom;
+}
+function _finishDruidFinale(e){
+  if(!_isDruidFinale(e)||e.alive||e._reviveTimer>0||e._druidDefeated)return false;
+  e._druidDefeated=true;G._druidVictory={boss:e,t:0};_bossCine.active=false;
+  for(let i=projs.length-1;i>=0;i--){const p=projs[i];if(p._druidPoison&&!p.friendly){_recycleProj(p);projs.splice(i,1);}}
+  if(G._lavaPools)G._lavaPools.length=0;if(G._druidOrbs)G._druidOrbs.length=0;
+  playVFXAng('druid_shockring',e.x,e.y,Math.max(.5,e.r*4/256),6,0,false);
+  _addBlastLight(e.x,e.y,320,45,170,210,110);shake(8);BGM.play('victory');
+  return true;
+}
+function _drawDruidFinaleVictory(ctx){
+  const v=G._druidVictory;if(!v||!_isDruidFinale(v.boss)||v.t>=210)return;
+  const a=Math.max(0,Math.min(1,v.t/30,(210-v.t)/45)),y=VH*.3;
+  ctx.save();ctx.setTransform(_ssaa,0,0,_ssaa,0,0);ctx.globalAlpha=a*.78;ctx.fillStyle='#0b100d';ctx.fillRect(0,y-52,VW,122);
+  ctx.globalAlpha=a;ctx.textAlign='center';ctx.textBaseline='middle';ctx.fillStyle='#d4dda0';
+  ctx.font='13px "Noto Sans KR"';ctx.fillText(_L('다크드루이드 격파','DARK DRUID DEFEATED'),VW/2,y-26);
+  ctx.font=Math.min(34,VW*.027)+'px "Noto Sans KR"';ctx.fillStyle='#f1e8c8';ctx.fillText(_L('썩은 숲 해방','THE FOREST IS FREE'),VW/2,y+7);
+  ctx.fillStyle='#849565';ctx.fillRect(VW/2-150,y+35,300,1);
+  ctx.font='12px "Noto Sans KR"';ctx.fillStyle='#bbc8b0';ctx.fillText(_L('보상을 회수하고 출구로 향하세요','Claim your reward and head for the exit'),VW/2,y+53);ctx.restore();
 }
 function _druidFinaleAct(e){
   return e._bossPhase>=4?2:e._bossPhase>=2?1:0;
@@ -27462,6 +27503,7 @@ function genBossArena(si){
 }
 let _preArenaBackup=null; // 보스 진입 전 맵 백업
 function _enterBossArena(){
+  G._druidVictory=null;G._druidFinaleBoss=null;
   // 보스 진입 전 맵 백업 (사망 시 게이트 입구 리스폰용)
   _preArenaBackup={map:G.map.map(r=>[...r]),mw:G.mw,mh:G.mh,rooms:G.rooms.slice(),exits:G.exits.slice(),
     bossGate:G.bossGate,bossGateOpen:G.bossGateOpen,bossSealed:G.bossSealed,
@@ -28208,6 +28250,7 @@ function _spawnCh1StartMediumEyeMasses(si){
 }
 
 function initStage(si){
+  G._druidVictory=null;G._druidFinaleBoss=null;
   if(si>=TOTAL_STAGES)si=TOTAL_STAGES-1; // 35스테이지 초과 시 마지막 스테이지 폴백
   // ?bosstest=N: 필드/고정맵 생성 금지 — 원형 아레나 직행 (부트 initStage가 필드로 덮어쓰는 경합 방지)
   if(_bossTestReq>=0){
@@ -32334,15 +32377,23 @@ function update(){
   G._camLkX+=((_lkX-G._camLkX)*_lkSmooth);G._camLkY+=((_lkY-G._camLkY)*_lkSmooth);
   let targetX=P.x+G._camLkX,targetY=P.y+G._camLkY;
   if(!window._btActive&&G._bossRef&&G._bossRef.alive){targetX=(P.x+G._bossRef.x)*.5+G._camLkX*.3;targetY=(P.y+G._bossRef.y)*.5+G._camLkY*.3}
+  if(_isDruidFinale(G._bossRef))G._druidFinaleBoss=G._bossRef;
+  const _dfBoss=G._bossRef||G._druidFinaleBoss,_dfHold=G._druidVictory&&G._druidVictory.t<90;
+  const _dfFrame=(_dfBoss&&(_dfBoss.alive||_dfBoss._reviveTimer>0||_dfHold))?_druidFinaleFrame(_dfBoss,P.x,P.y,VW,VH,G._druidFrame||(G._druidFrame={})):null;
+  if(_dfFrame){targetX=_dfFrame.x;targetY=_dfFrame.y;}
+  else if(_isDruidFinale(_dfBoss)){targetX=P.x+G._camLkX;targetY=P.y+G._camLkY;}
   G.cam.x+=(targetX-G.cam.x)*camSpd;G.cam.y+=(targetY-G.cam.y)*camSpd;
   G.cam.x=~~G.cam.x;G.cam.y=~~G.cam.y;
-  const _czTgt=(G._bossRef&&G._bossRef.alive)?0.80:1.0;
+  const _czTgt=_dfFrame?_dfFrame.zoom:(G._bossRef&&G._bossRef.alive)?0.80:1.0;
   if(!G._camZoom)G._camZoom=1.0;
-  G._camZoom+=(_czTgt-G._camZoom)*(1-Math.pow(0.94,_dtSp));}
+  G._camZoom+=(_czTgt-G._camZoom)*(1-Math.pow(_dfFrame?(_czTgt<G._camZoom?.88:.98):.94,_dtSp));}
   // [CAM-CLAMP] 카메라를 맵 bounds로 클램프 — 코너(예: 좌하단)에서 맵 밖 void 노출 차단. 줌아웃(보스전) 반영해 가시 반경 확장.
   if(!_EDITOR_MODE&&G.map){const _mwPx=G.mw*T,_mhPx=G.mh*T,_cz2=Math.max(0.3,G._camZoom||1),_hvw=VW/(2*_cz2),_hvh=VH/(2*_cz2);
     G.cam.x=(_mwPx<=_hvw*2)?_mwPx/2:Math.max(_hvw,Math.min(_mwPx-_hvw,G.cam.x));
     G.cam.y=(_mhPx<=_hvh*2)?_mhPx/2:Math.max(_hvh,Math.min(_mhPx-_hvh,G.cam.y));}
+  _syncDruidFinaleMouse();
+  if(G._druidVictory)G._druidVictory.t=Math.min(210,G._druidVictory.t+_dtSp);
+  if(_isDruidFinale(G._bossRef)&&_mouseFacingReady&&Number.isFinite(mouse._screenX))_setMouseFacing();
   if(G.shake>0){G.shake*=.86**(_hsActive?_hsDtOrig:sp);if(G.shake<.3)G.shake=0}
   // [TORCH] 반경 업데이트
   if(OPT.torch){let _tTarget=_TORCH.baseRadius;
@@ -38333,7 +38384,8 @@ function checkRooms(){
       G.bossAlive=false;G._bfxT=0;G._bfxBolt=null;_mmDirty=1;
       // 처치 보스 기록 (동반부활용)
       if(!G._killedBosses)G._killedBosses=[];
-      const _dBoss=G._bossRef||findBoss();if(_dBoss&&!G._killedBosses.includes(_dBoss.etype))G._killedBosses.push(_dBoss.etype);
+      const _dBoss=G._bossRef||findBoss()||G._druidFinaleBoss;if(_dBoss&&!G._killedBosses.includes(_dBoss.etype))G._killedBosses.push(_dBoss.etype);
+      _finishDruidFinale(_dBoss);
       addTxt(P.x,P.y-40,_T('출구가 열렸다!'),'#44ff88',80);
       SFX.victory();G.shake=10*OPT.shake/100;
       const cx=(bossRoom.cx+.5)*T,cy=(bossRoom.cy+.5)*T;
@@ -38871,6 +38923,7 @@ function hurtE(e,dmg,ang,noSound,opts,atkEl=0){
     // 포인트 고갈 OR 확률 실패 → 최종 사망
     if(e.ib){
       e.deaths=(e.deaths||0)+1;
+      if(_isDruidFinale(e))G._druidFinaleBoss=e;
       const _bHell=STG[G.stage]?STG[G.stage].hell:0;
       const _maxGuar=_bHell+1; // 보장 부활 횟수 (1~7)
       const _isH7=_bHell===6; // 7단 올라운드
@@ -50640,6 +50693,7 @@ function draw(){
       X.fillStyle='rgba(200,170,120,.8)';X.fillText(_bossCine.name,C.width/2,C.height-barH+barH/2)}
     if(t>=_bossCine.maxT){_bossCine.active=false;_bossCine._introFill=null}
     X.globalAlpha=1;X.restore()}
+  _drawDruidFinaleVictory(X);
   _pC5=performance.now(); // bossCine end
   if(_DCP.on){_DCP._entry.post++;_DCP._setSource(_DCP_SRC.POST_DEBUG);}
   drawMM();
