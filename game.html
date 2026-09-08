@@ -56595,7 +56595,7 @@ async function _startDemoTest(){
   PASSIVE_DEF.forEach(pd=>PASSIVES[pd.key]=0);
   BAG_MAX=300;invFilter={slot:null,rarity:null,el:null};
   G.on=false;G.stage=0;/* 데모 캐릭도 1장 처음부터 (2026-07-27 유저 지시, 구: _BIC?0:_DEMO_LAST_STAGE) */G.kills=0;G.mats=999999;G.exits=[];_cacheExitCenter();G.bossAlive=true;G._bossRef=null;G._crT=0;G.atkTickets=0;_hudT=0;_hudAlive=0;G.rifts=[];G.spawnHoles=[];G._chainCnt=0;G._chainT=0;G._bossArena=false;G._bossLoadPhase=0;G._bossLoadFade=0;G._bfxBolt=null;G.hellCleared=[];STORAGE={};STORAGE._synced=false;_getStore();
-  _charName='DEMO TEST';_charIdx=0;
+  _charName='DEMO TEST'; // 이미 로드한 선택 캐릭터의 스프라이트/보이스 번호 유지
   G._cutsceneDone=false; // 데모도 전쟁 서사+네메시아 인트로 재생 (2026-07-27 유저 지시, 구: true)
   // Lv500
   P.lv=_DEMO_LV_CAP;P.exp=0;P.maxExp=_calcMaxExp(_DEMO_LV_CAP);P.sp=200;P.ap=100;P.isDemoTest=true;G.mats=10000000000;
@@ -56868,7 +56868,7 @@ async function _startTestChar(){
   PASSIVE_DEF.forEach(pd=>PASSIVES[pd.key]=0);
   BAG_MAX=300;invFilter={slot:null,rarity:null,el:null};
   G.on=false;G.stage=_stageTestReq>=0?_stageTestReq:0;G.kills=0;G.mats=999999;G.exits=[];_cacheExitCenter();G.bossAlive=true;G._bossRef=null;G._crT=0;G.atkTickets=0;_hudT=0;_hudAlive=0;G.rifts=[];G.spawnHoles=[];G._chainCnt=0;G._chainT=0;G._bossArena=false;G._bossLoadPhase=0;G._bossLoadFade=0;G._bfxBolt=null;G.hellCleared=[];STORAGE={};STORAGE._synced=false;_getStore();
-  _charName='TEST';_charIdx=0;
+  _charName='TEST'; // 이미 로드한 선택 캐릭터의 스프라이트/보이스 번호 유지
   G._cutsceneDone=true;
   // Lv500
   P.lv=500;P.exp=0;P.maxExp=_calcMaxExp(500);P.sp=0;P.ap=200;
