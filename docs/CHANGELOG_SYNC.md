@@ -1,5 +1,15 @@
 # Sync Changelog
 
+## 2026-09-08 세계관 인트로 종료 로고 1회 표시
+
+| 항목 | 적용 내용 |
+|---|---|
+| 원인 | 온라인 로비의 showLobby → showLoading이 영상 끝 로고 뒤에 전체 화면 로고를 다시 표시 |
+| 수정 | finishCin·skipToGate에서 _goLobby({fromCinematic:true}) → showLobby({fromCinematic}) 전달. true일 때 showLoading 생략, 기존 캐릭터 목록의 로딩 문구 사용. 기본값 false |
+| 스킵 로그인 | skipToGate도 _goLogin({fromCinematic:true})를 호출해 로그인 브랜드 재등장 방지 |
+| 보존 | 영상·음성·자막·BGM, 일반 로그인·로딩 로고, 로비 헤더 브랜드 |
+| 검증 | test/worldIntroSingleLogo.browser.py: 실제 영화 자연 종료 + 가상 계정/지연 응답으로 중복 재현 후 회귀 검증. 기존 세계관/캐릭터 자막 테스트 26개 PASS |
+
 ## 2026-09-08 실버테일 악의구 은빛 초승달 디자인
 
 | 항목 | 적용 내용 |

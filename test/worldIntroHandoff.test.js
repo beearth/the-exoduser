@@ -12,6 +12,6 @@ test('only the post-cinematic login hides the redundant brand, preserving normal
 test('movie completion marks the login handoff while replay clears it',()=>{
  const finish=html.slice(html.indexOf('function finishCin(){'),html.indexOf('// 인트로 비디오:'));
  assert.equal((finish.match(/_goLogin\(\{fromCinematic:true\}\)/g)||[]).length,2);
- const replay=html.slice(html.indexOf('function _goCinematic(){'),html.indexOf('async function _goLobby(){'));
+ const replay=html.slice(html.indexOf('function _goCinematic(){'),html.indexOf('async function _goLobby('));
  assert.ok(replay.includes("$('mainWrap').classList.remove('show','cinematic-handoff')"));
 });

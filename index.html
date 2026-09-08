@@ -2163,7 +2163,7 @@ function playCinematic(){
     $('skipBtn').classList.remove('show');
     _cinSeenSet();
     if(_LOBBY_BUILD==='demo'&&_testMode){_goLogin({fromCinematic:true});}
-    else if(currentUser||_testMode){_goLobby();}else{_goLogin({fromCinematic:true});}
+    else if(currentUser||_testMode){_goLobby({fromCinematic:true});}else{_goLogin({fromCinematic:true});}
   }
 
   // 인트로 비디오: 첫 프레임(문 닫힘)에서 멈춤, 클릭 시 재생
@@ -2408,8 +2408,8 @@ function skipToGate(){
   $('skipBtn').classList.remove('show');
   $('cinVideo').style.opacity='0';
   _cinSeenSet();
-  if(_LOBBY_BUILD==='demo'&&_testMode){_goLogin();}
-  else if(currentUser||_testMode){_goLobby();}else{_goLogin();}
+  if(_LOBBY_BUILD==='demo'&&_testMode){_goLogin({fromCinematic:true});}
+  else if(currentUser||_testMode){_goLobby({fromCinematic:true});}else{_goLogin({fromCinematic:true});}
 }
 // skipBtn 비활성 — 홀드 게이지로 대체
 // $('skipBtn').onclick=skipToGate;
@@ -2535,7 +2535,7 @@ function _goCinematic(){
   hideLoading();
   playCinematic();
 }
-async function _goLobby(){
+async function _goLobby({fromCinematic=false}={}){
   stopWorldIntro();stopCinBgm();stopMediaVideo($('cinVideo'));
   // 로비만 표시
   _cinDone=true;startBGM();
@@ -2557,7 +2557,7 @@ async function _goLobby(){
     if($('lobbyMode'))$('lobbyMode').textContent='OFFLINE';
     await loadLocalCharacters();
   }else{
-    await showLobby();
+    await showLobby({fromCinematic});
   }
   hideLoading();
   _preloadLoadingImgs(); // 로딩 이미지 16장 백그라운드 캐시
@@ -2654,8 +2654,9 @@ $('googleBtn').onclick=async()=>{
 };
 if($('logoutBtn'))$('logoutBtn').onclick=async()=>{await sb.auth.signOut();currentUser=null;$('lobby').style.display='none';$('loginSection').style.display='flex';document.querySelector('.container').style.display=''};
 
-async function showLobby(){
-  showLoading(_TL('캐릭터 불러오는 중...'));
+async function showLobby({fromCinematic=false}={}){
+  // The movie already ends on the logo; load characters in the visible lobby.
+  if(!fromCinematic)showLoading(_TL('캐릭터 불러오는 중...'));
   $('loginSection').style.display='none';$('lobby').style.display='flex';document.querySelector('.container').style.display='none';var _cl=$('cinLang');if(_cl)_cl.style.display='none';
   if($('userEmail'))$('userEmail').textContent=currentUser.email||'';
   const _lm=$('lobbyMode');if(_lm){_lm.innerHTML='<span style="font-size:.7rem;color:#aa8855">'+((currentUser&&currentUser.email)||'')+'</span> <span style="cursor:pointer;color:#886644;font-size:.65rem" id="lobbyLogout">LOGOUT</span>';const _lo=$('lobbyLogout');if(_lo)_lo.onclick=()=>{sb.auth.signOut()}}

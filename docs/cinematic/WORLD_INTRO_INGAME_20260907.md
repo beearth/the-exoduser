@@ -78,20 +78,32 @@
 | 항목 | 확인 결과 |
 |---|---|
 | 첫 로고 | MP4 마지막 109.291667~113.291667초 EXODUSER 타이틀 |
-| 종료 경로 | WorldIntroPlayer ended → finishCin → 비로그인 및 demo/test 로그인 분기는 _goLogin({fromCinematic:true}) → loginSection 표시 |
+| 종료 경로 | WorldIntroPlayer ended → finishCin 또는 홀드 스킵 skipToGate → 비로그인 및 demo/test 로그인 분기는 _goLogin({fromCinematic:true}) → loginSection 표시. 계정/오프라인 로비 분기는 _goLobby({fromCinematic:true}) |
 | 원인 이력 | index.html loginSection 내부 img/logo_exoduser.png가 다시 나타났음. 영화 재재생이 아니라 로그인 UI의 같은 로고 |
 | 수정 | _goLogin({fromCinematic=false}={})가 mainWrap의 cinematic-handoff 클래스를 toggle. true일 때만 #mainWrap.cinematic-handoff #loginSection .login-brand {display:none} 적용. 로고 부모에 login-brand 클래스만 추가하며 DOM 제거 없음 |
-| 일반 진입 | 인수 없는 _goLogin은 false로 복원해 기존 로그인 로고 표시. _goCinematic은 show/cinematic-handoff 클래스를 함께 제거. 홀드 스킵의 기존 로그인 분기·계정 로그인/로비 경로 유지 |
+| 일반 진입 | 인수 없는 _goLogin은 false로 복원해 기존 로그인 로고 표시. _goCinematic은 show/cinematic-handoff 클래스를 함께 제거. 홀드 스킵도 자연 종료와 동일하게 fromCinematic:true 전달 (2026-09-08) |
 | 재현 이력 | 수정 전 tmp/probe_world_intro_logo_handoff.py: ended 1회, 이후 movieHidden=true / chapterGate display=none / loginSection display=flex / 보이는 로고 이미지 1개 |
 | 증빙 | output/cinematic/diag_logo_movie.png / diag_logo_after_movie.png. 이전 검수는 종료·미디어 정리까지만 검사해 로그인 로고와의 시각적 반복을 놓침 |
 | 유지 | 영상 마지막 장면·4초 로고·로그인 프레임·Google/오프라인 입장 버튼·언어 선택·계정 처리 유지. 원본 영상·BGM 파일 수정 없음 |
 | 회귀 | test/worldIntroHandoff.test.js의 2개 RED 확인 후 GREEN. tmp/probe_world_intro_logo_handoff.py PASS: ended 1회, 영화 숨김, 로그인 표시, chapterGate 없음, 노출 로고 0개. 일반 _goLogin() 로고 복원·Google/오프라인 버튼 표시 확인 |
 | 수정 증빙 | output/cinematic/verified_logo_movie.png / verified_login_after_movie.png. 후자는 로그인 프레임과 입장 버튼만 표시하며 로고 없음, 직접 화면 확인 |
 
+### 온라인 로비 로딩 로고 중복 수정 (2026-09-08)
+
+| 항목 | 현행 동작 |
+|---|---|
+| 추가 원인 | 로그인 상태의 finishCin → _goLobby → showLobby → showLoading에서 #chapterGate의 전체 화면 img/logo_exoduser.png를 다시 표시. 기존 로그인 화면 로고 숨김만으로는 이 경로를 해결하지 못했음 |
+| 전환 인수 | _goLobby({fromCinematic=false}={}) → showLobby({fromCinematic=false}={})로 fromCinematic 전달. finishCin·skipToGate의 로비 분기는 true |
+| 인트로 직후 | showLobby의 fromCinematic=true이면 showLoading 호출 생략. 로비를 즉시 표시하고 loadCharacters의 기존 목록 내 불러오는 중 문구로 대기. 영상 마지막 4초 로고 이후 전체 화면 로고 재등장 없음 |
+| 일반 로딩 | fromCinematic 기본값 false. 일반 로그인·로비 진입·게임 입장의 showLoading 로고 유지. 로비 헤더의 작은 브랜드 이미지는 유지 |
+| 홀드 스킵 | skipToGate의 로그인 분기에도 fromCinematic:true를 전달해 .login-brand 재등장 방지 |
+| 브라우저 회귀 | test/worldIntroSingleLogo.browser.py PASS. 별도 Chromium·가상 계정·지연된 캐릭터 응답으로 자연 종료 중 로고 중복 RED 확인 후 수정 GREEN. 온라인/로그인 스킵, 일반 로그인·로딩 로고 보존 PASS, pageerror 0. 실제 계정/저장 데이터 접근 없음 |
+| 증빙 | output/cinematic/single_logo_lobby_handoff_20260908.png |
+
 | 검사 | 결과 |
 |---|---|
 | 단위 테스트 | 플레이어12 + 자막10 + 캐릭터자막2 + 로그인전환2 = 26 PASS. BGM 연속·종료·믹스, v13 영상·컷 경계, 자막 스타일·언어·시각, 중복 로고 제어 검사 |
-| 구문 | index.html 인라인 스크립트 9개 파싱 PASS |
+| 구문 | 2026-09-08 index.html 비어 있지 않은 인라인 스크립트 4개 파싱 PASS |
 | 로컬 서비스 | Node `server.cjs` 3333, MP4 `video/world_intro_v13_exodus_en.mp4`, 32,381,760바이트 |
 | 실제 브라우저 | `tmp/verify_world_intro_ingame.py`: 별도 headless Chromium의 실제 영상/음악 디코딩·재생, 기본 믹스, 정지/재개, 슬라이더, B01/B02 넘기기, 로고, 자연 종료, 재진입, ESC 스킵, 미리보기 시청 플래그 미기록 PASS. pageerror 0 |
 | 연속 BGM 회귀 검증 | v12 동일 스크립트 재검증 PASS. 문 열림부터 본편 1.3초까지 같은 Audio 유지, BGM pause 0회 / seeking 0회 / 음악 시각 역행 0회, 0.6~0.22 중간 볼륨 표본 확인. 본편 1.327481초에서 음악 9.427483초로 문 열림분을 유지. B01/B02·B04 컷 넘김에도 BGM pause/seeking 0회. pageerror 0 |

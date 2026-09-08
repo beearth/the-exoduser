@@ -253,7 +253,7 @@ OAuth 참조 패턴: G:\pentafall\ (DIROI 완성 빌드)
 ### STEP 3.4: 세션 확인 로직 ✅
 - [x] L1788: `sb.auth.getSession()` → `currentUser` 설정
 - [x] 세션 있으면 → `showLobby()` (캐릭터 선택 화면)
-- [x] 세션 없으면 → 시네마틱 → `finishCin()` → `_goLogin({fromCinematic:true})` → `#loginSection` 표시. 영화 끝 로고와 겹치지 않도록 이 전환에서만 `.login-brand` 숨김. 일반 `_goLogin()`의 로고는 유지 (2026-09-07)
+- [x] 시네마틱 종료/홀드 스킵 → `finishCin()` / `skipToGate()` → 로그인 분기는 `_goLogin({fromCinematic:true})`로 `.login-brand` 숨김. 로비 분기는 `_goLobby({fromCinematic:true})` → `showLobby({fromCinematic:true})`로 전체 화면 로딩 로고 생략, 캐릭터 목록 안에서 로딩 표시. 일반 로그인·로딩 로고 유지 (2026-09-08)
 - [x] `sb.auth.onAuthStateChange()` 핸들러 등록 (SIGNED_IN/SIGNED_OUT 처리)
 
 ### STEP 3.5: 게스트 모드 처리 ✅
