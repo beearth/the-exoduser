@@ -15,6 +15,7 @@ mkdirSync(DIST, { recursive: true });
 // ── 2. 단일 파일 복사 ────────────────────────────────────────────────────────
 const FILES = [
   'index.html', 'game.html', 'credits.html',
+  'stat-panel-ui.js', 'stat-panel-ui.css',
   'GLTFLoader.js', 'three.min.js',
   'maps_data.js', 'lobby_i18n.js',
   'favicon.ico',

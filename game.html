@@ -2267,6 +2267,8 @@ canvas{display:block;position:fixed;inset:0}
   .room-lbl{font-size:.8rem}
 }
 </style>
+<link rel="stylesheet" href="stat-panel-ui.css?v=20260909">
+<script src="stat-panel-ui.js?v=20260909"></script>
 </head>
 <body>
 <div id="gcModal"><div class="gc-box"><div class="gc-msg" id="gcMsg"></div><div class="gc-btns"><button class="gc-btn gc-ok" id="gcOk"></button><button class="gc-btn gc-cancel" id="gcCancel"></button></div></div></div>
@@ -2725,33 +2727,48 @@ canvas{display:block;position:fixed;inset:0}
 </div>
 
 <!-- STAT/PASSIVE PANEL -->
-<div class="panel" id="statPanel">
-  <div class="pbox" style="width:90vw !important; height:auto !important; max-height:90vh !important; overflow-y:auto; padding:25px 35px !important; display:flex; flex-direction:column;">
-    <div class="ptitle" style="font-size:2.2rem !important; margin-bottom:15px !important;">능력치</div>
-    <div class="frame-inner-panel frame-inner-panel-split" style="display:flex;gap:30px; flex:1; min-height:0;">
-      <div id="statLeft" style="flex:1;min-width:400px; display:flex; flex-direction:column;">
-        <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:15px;position:relative;z-index:50;">
-          <div style="display:flex;align-items:center;gap:15px;">
-            <div style="color:#ffcc44;font-size:1.8rem !important;font-weight:700;letter-spacing:.1em">스탯 포인트</div>
-            <div id="smToggleBtn" style="padding:6px 14px;background:rgba(255,170,0,.15);border:2px solid #aa8833;color:#ffcc44;font-size:1.2rem;font-weight:700;cursor:pointer;border-radius:6px;user-select:none;transition:all 0.2s;" onmouseover="this.style.background='rgba(255,170,0,.25)'" onmouseout="this.style.background='rgba(255,170,0,.15)'">능력치 요약 ▼</div>
-          </div>
-          <div id="spRemain" style="color:#ffaa00;font-size:2rem !important;font-weight:900"></div>
-          <div id="statSummary" style="position:absolute;top:100%;left:0;margin-top:10px;padding:20px;background:rgba(20,10,5,.98);border:2px solid #885522;font-size:1.4rem !important;color:#ddbb99;line-height:2.0;border-radius:8px;box-shadow:0 10px 40px rgba(0,0,0,.9);min-width:350px;display:none;"></div>
-        </div>
-        <div id="statGrid" style="flex:1; overflow-y:auto; padding-right:10px;"></div>
+<div class="panel" id="statPanel" role="dialog" aria-modal="true" aria-labelledby="growthTitle">
+  <div class="pbox growth-shell">
+    <header class="growth-header">
+      <div><p id="growthKicker" class="growth-kicker"></p><h1 id="growthTitle" class="ptitle growth-title">능력치와 패시브</h1><p id="growthSubtitle" class="growth-subtitle"></p></div>
+      <div class="growth-wallets">
+        <div class="growth-wallet"><span id="growthSPLabel"></span><strong id="spRemain" aria-live="polite"></strong></div>
+        <div class="growth-wallet"><span id="growthAPLabel"></span><strong id="apRemain" aria-live="polite"></strong></div>
       </div>
-      <div id="statRight" style="flex:1;min-width:400px; display:flex; flex-direction:column;">
-        <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:15px">
-          <div style="color:#cc77ff;font-size:1.8rem !important;font-weight:700;letter-spacing:.1em">패시브 스킬</div>
-          <div id="apRemain" style="color:#bb66ff;font-size:2rem !important;font-weight:900"></div>
+    </header>
+    <div class="growth-body">
+      <section id="statLeft" class="growth-column growth-attributes" aria-labelledby="growthAttributesTitle">
+        <div class="growth-section-heading"><h2 id="growthAttributesTitle"></h2><div id="growthAmount"></div></div>
+        <p id="growthAttributesNote" class="growth-small-note"></p>
+        <div id="statGrid"></div>
+        <div id="growthMetrics" class="growth-metrics"></div>
+        <button type="button" id="smToggleBtn" class="growth-text-button" aria-expanded="false" aria-controls="growthSummaryDrawer"></button>
+      </section>
+      <section id="statRight" class="growth-column growth-library" aria-labelledby="growthPassivesTitle">
+        <div class="growth-section-heading"><h2 id="growthPassivesTitle"></h2><span id="growthCount" aria-live="polite"></span></div>
+        <input type="search" id="growthSearch" class="growth-search" autocomplete="off" spellcheck="false">
+        <div id="growthFilters" class="growth-filters"></div>
+        <div id="passiveGrid"></div>
+      </section>
+      <section class="growth-column growth-inspector" aria-labelledby="growthDetailLabel">
+        <p id="growthDetailLabel" class="growth-inspector-label"></p>
+        <div id="growthDetail"></div>
+        <div class="growth-actions">
+          <button type="button" id="growthUpgrade" class="growth-upgrade"></button>
+          <p id="growthUpgradeNote" aria-live="polite"></p>
+          <button type="button" id="growthRefund" class="growth-refund"></button>
         </div>
-        <div id="passiveGrid" style="flex:1; overflow-y:auto; padding-right:10px;"></div>
-      </div>
+      </section>
     </div>
-    <div style="display:flex;gap:20px;justify-content:center;margin-top:20px">
-      <button class="pclose" id="statResetBtn" style="color:#ff6666;border-color:#663333;font-size:1.5rem !important;padding:12px 40px !important;margin:0;">올 리셋</button>
-      <button class="pclose" id="statClose" style="font-size:1.5rem !important;padding:12px 40px !important;margin:0;">닫기 [J]</button>
-    </div>
+    <footer class="growth-footer">
+      <p id="growthFooterNote" class="growth-footer-note"></p>
+      <button type="button" id="statResetBtn" class="growth-reset">전체 초기화</button>
+      <button type="button" id="statClose" class="growth-close">닫기 [J]</button>
+    </footer>
+    <aside id="growthSummaryDrawer" class="growth-summary-drawer" hidden>
+      <header class="growth-summary-header"><h2 id="growthSummaryTitle"></h2><button type="button" id="growthSummaryClose" class="growth-text-button"></button></header>
+      <div id="statSummary" style="display:none"></div>
+    </aside>
   </div>
 </div>
 
@@ -12140,6 +12157,9 @@ const _gpSectType=el=>{
   if(el.closest('.fg-i'))return'fgi';
   if(el.closest('.set-key'))return'setkey';
   if(el.closest('[data-sk-id]'))return'sknode';
+  if(el.closest('.growth-attributes'))return'growthstat';
+  if(el.closest('.growth-library'))return'growthpassive';
+  if(el.closest('.growth-inspector'))return'growthdetail';
   if(el.closest('#invFilters'))return'invfilter';
   if(el.closest('#invEqGrid'))return'inveq';
   if(el.closest('#invCrystalRow'))return'invcr';
@@ -40413,6 +40433,8 @@ function _panelBack(){
   if(_skExpandedId){_skExpandedId=null;renderSkillPanel();return true}
   // 5. 합체 선택 중 → 취소
   if(_fuseSelId){_fuseSelId=null;renderSkillPanel();return true}
+  // Character growth summary is a nested view: Back closes it first.
+  const gs=$('growthSummaryDrawer');if($('statPanel').classList.contains('on')&&gs&&!gs.hidden){toggleStatSummary();return true}
   // 6. 열린 패널 닫기
   const op=['invPanel','forge','storagePanel','statPanel','skillPanel'].find(id=>$(id)&&$(id).classList.contains('on'));
   if(op){closeAllPanels();return true}
@@ -44665,15 +44687,8 @@ function _applyLang(){try{
     const _pt3=_stpP.querySelector('.ptitle');if(_pt3)_pt3.textContent=_T('창고');
     const _sc=$('storageClose');if(_sc)_sc.textContent=_T('닫기 [V]');
   }
-  // Stat panel
-  const _spP=$('statPanel');if(_spP){
-    const _pt4=_spP.querySelector('.ptitle');if(_pt4)_pt4.textContent=_T('능력치');
-    const _spLbl=_spP.querySelector('#statLeft div[style*="ffcc44"]');if(_spLbl)_spLbl.textContent=_T('스탯 포인트');
-    const _smBtn=$('smToggleBtn');if(_smBtn){const _ar=_smBtn.textContent.includes('▲')?'▲':'▼';_smBtn.textContent=_T('능력치 요약')+' '+_ar}
-    const _psLbl=_spP.querySelector('#statRight div[style*="cc77ff"]');if(_psLbl)_psLbl.textContent=_T('패시브 스킬');
-    const _srb=$('statResetBtn');if(_srb)_srb.textContent=_T('올 리셋');
-    const _scc=$('statClose');if(_scc)_scc.textContent=_T('닫기 [C]');
-  }
+  // Character growth labels use explicit leaf nodes; the module localizes its view.
+  if(typeof _statPanelUI!=='undefined'&&_statPanelUI)_statPanelUI.render();
   // Skill panel
   const _skP=$('skillPanel');if(_skP){
     const _pt5=_skP.querySelector('.ptitle');if(_pt5)_pt5.textContent=_T('전투 스킬');
@@ -46611,126 +46626,51 @@ $('fgClose').onclick=()=>closePanel('forge');
 $('storageClose').onclick=()=>closePanel('storagePanel');
 $('statClose').onclick=()=>closePanel('statPanel');
 $('statResetBtn').onclick=async()=>{
-  const totalSP=Object.values(STATS).reduce((a,b)=>a+b,0);
-  const totalAP=Object.values(PASSIVES).reduce((a,b)=>a+b,0);
+  const {sp:totalSP,ap:totalAP}=ExoduserStatsPanel.refundTotals(STATS,PASSIVES,_grit);
   if(totalSP===0&&totalAP===0){notify(_T('리셋할 포인트가 없습니다'));return}
-  if(!await gameConfirm(_L(`스탯 ${totalSP} SP + 패시브 ${totalAP} AP 전부 환불합니다.\n계속?`,`Refund all stats ${totalSP} SP + passives ${totalAP} AP.\nContinue?`)))return;
-  P.sp+=totalSP;P.ap+=totalAP;
+  if(!await gameConfirm(_L(`능력치·근성 ${totalSP} SP + 패시브 ${totalAP} AP를 전부 환불합니다.\n계속할까요?`,`Refund all attributes and grit: ${totalSP} SP + passives: ${totalAP} AP.\nContinue?`)))return;
+  // Read live allocations after the confirmation resolves.
+  const refund=ExoduserStatsPanel.refundTotals(STATS,PASSIVES,_grit);
+  P.sp+=refund.sp;P.ap=(P.ap||0)+refund.ap;
   for(const k in STATS)STATS[k]=0;
   for(const k in PASSIVES)PASSIVES[k]=0;
-  applyStats();SFX.pickup();renderStatPanel();
+  _grit=0;
+  applyStats();SFX.pickup();renderStatPanel();dbSaveNow();
 };
-// ═══ STAT PANEL RENDER ═══
+// ═══ CHARACTER GROWTH PANEL ═══
+var _statPanelUI=null;
 function renderStatPanel(){
-  const _spBox=$('statPanel').querySelector('.pbox');
-  const _spScr=_spBox?_spBox.scrollTop:0;
-  const sg=$('statGrid');const _sgScr=sg?sg.scrollTop:0;
-  const pg=$('passiveGrid');const _pgScr=pg?pg.scrollTop:0;
-  sg.innerHTML='';
-  $('spRemain').textContent=_L('남은 SP: ','SP Left: ')+P.sp;
-  STAT_DEF.forEach(sd=>{
-    const v=STATS[sd.key];const _sMax=STAT_MAX[sd.key]||150;const isMax=v>=_sMax;
-    const row=document.createElement('div');
-    row.className='stat-row';
-    row.style.cssText = 'display:flex;align-items:center;gap:12px;padding:12px 16px;margin-bottom:10px;background:rgba(0,0,0,.3);border:2px solid #2a2211;border-radius:6px';
-    const pct=(v/_sMax*100).toFixed(0);
-    row.innerHTML=`<div class="stat-icon" style="width:50px">${_glyph(STAT_SVG[sd.key],sd.col)||sd.icon}</div>
-      <div class="stat-info" style="flex:1">
-        <div class="stat-name" style="color:${sd.col};font-size:1.6rem;font-weight:700;letter-spacing:.05em">${_stripIco(_L(sd.name,sd.nameEn))}</div>
-        <div class="stat-desc" style="font-size:1.1rem;color:#665544;margin-top:4px">${_L(sd.desc,sd.descEn||sd.desc)}</div>
-        <div class="stat-bar" style="height:8px;background:rgba(255,255,255,.05);margin-top:8px;border-radius:4px;overflow:hidden"><div class="stat-bar-fill" style="width:${pct}%;background:${sd.col};height:100%"></div></div>
-      </div>
-      <div class="stat-val" style="color:${sd.col};font-size:2rem;font-weight:900;min-width:60px;text-align:right">${v}</div>`;
-    
-    const btnsDiv=document.createElement('div');btnsDiv.className='stat-btns';btnsDiv.style.cssText='display:flex;gap:6px;margin-left:12px';
-    const mkBtn=(n,txt,col)=>{
-      const can=n>0?(P.sp>=n&&v+n<=_sMax):(v+Math.abs(n)>=0 && v+n>=0);
-      const b=document.createElement('div');
-      b.className=can?'stat-btn':'stat-btn dis';
-      b.style.cssText=`width:48px;height:48px;background:rgba(0,0,0,.4);border:2px solid ${col};color:${col};font-size:1.4rem;cursor:${can?'pointer':'not-allowed'};display:flex;align-items:center;justify-content:center;opacity:${can?1:.3};border-radius:4px`;
-      b.textContent=txt;
-      if(can)b.onclick=()=>{ STATS[sd.key]+=n; if(n>0)P.sp-=n; else P.sp+=Math.abs(n); SFX.pickup(); applyStats(); renderStatPanel(); dbSaveNow(); };
-      return b;
-    };
-    btnsDiv.appendChild(mkBtn(-10,'-10','#cc7777'));
-    btnsDiv.appendChild(mkBtn(-1,'-1','#cc7777'));
-    btnsDiv.appendChild(mkBtn(1,'+1','#ccaa77'));
-    btnsDiv.appendChild(mkBtn(10,'+10','#ccaa77'));
-    row.appendChild(btnsDiv);sg.appendChild(row);
+  if(!_statPanelUI)_statPanelUI=ExoduserStatsPanel.mount({
+    root:$('statPanel'),text:(ko,en)=>OPT.lang==='en'?en:_L(ko,en),strip:_stripIco,
+    statDefs:STAT_DEF,caps:STAT_MAX,passiveDefs:PASSIVE_DEF,
+    icon:(key,color,size)=>_glyph(key==='grit'?'anvil':STAT_SVG[key]||PASSIVE_SVG[key]||'star',color,size),
+    state:()=>({stats:STATS,passives:PASSIVES,grit:_grit,sp:P.sp,ap:P.ap||0,hp:P.mhp,st:P.mst,mp:P.mmp}),
+    changeStat:(key,amount)=>{
+      const value=key==='grit'?_grit:STATS[key];
+      const next=ExoduserStatsPanel.statChange(value,key==='grit'?Infinity:STAT_MAX[key],P.sp,amount);
+      if(!next)return;
+      if(key==='grit')_grit=next.value;else STATS[key]=next.value;
+      P.sp=next.points;applyStats();SFX.pickup();renderStatPanel();dbSaveNow();
+    },
+    changePassive:(key,amount)=>{
+      const def=PASSIVE_DEF.find(pd=>pd.key===key);if(!def)return;
+      const next=ExoduserStatsPanel.passiveChange(PASSIVES[key]||0,def.max,P.ap||0,amount);
+      if(!next)return;
+      PASSIVES[key]=next.value;P.ap=next.points;applyStats();SFX.levelup();renderStatPanel();dbSaveNow();
+    }
   });
-  {
-    const _gRow=document.createElement('div');
-    _gRow.className='stat-row';
-    _gRow.style.cssText='display:flex;align-items:center;gap:12px;padding:12px 16px;margin-bottom:10px;background:rgba(0,0,0,.3);border:2px solid #2a2211;border-radius:6px';
-    const _gPct=_grit>0?Math.min(100,(_grit%100)||100):0;
-    _gRow.innerHTML=`<div class="stat-icon" style="width:50px">${_glyph('anvil','#ffaa33')}</div>
-      <div class="stat-info" style="flex:1">
-        <div class="stat-name" style="color:#ffaa33;font-size:1.6rem;font-weight:700;letter-spacing:.05em">${_L('근성 (GRIT)','GRIT')}</div>
-        <div class="stat-desc" style="font-size:1.1rem;color:#665544;margin-top:4px">${_L('HP/MP/ST +1, 방어력/속성방어 +0.5','HP/MP/ST +1, DEF/eDEF +0.5')}</div>
-        <div class="stat-bar" style="height:8px;background:rgba(255,255,255,.05);margin-top:8px;border-radius:4px;overflow:hidden"><div class="stat-bar-fill" style="width:${_gPct}%;background:#ffaa33;height:100%"></div></div>
-      </div>
-      <div class="stat-val" style="color:#ffaa33;font-size:2rem;font-weight:900;min-width:60px;text-align:right">${_grit}</div>`;
-    const _gBtnsDiv=document.createElement('div');_gBtnsDiv.className='stat-btns';_gBtnsDiv.style.cssText='display:flex;gap:6px;margin-left:12px';
-    const _mkGritBtn=(txt,col,enabled,fn)=>{
-      const b=document.createElement('div');
-      b.className=enabled?'stat-btn':'stat-btn dis';
-      b.style.cssText=`width:48px;height:48px;background:rgba(0,0,0,.4);border:2px solid ${col};color:${col};font-size:1.4rem;cursor:${enabled?'pointer':'not-allowed'};display:flex;align-items:center;justify-content:center;opacity:${enabled?1:.3};border-radius:4px`;
-      b.textContent=txt;
-      if(enabled)b.onclick=fn;
-      return b;
-    };
-    const _gCost1=_gritBatchCost(1),_gCost10=_gritBatchCost(10);
-    _gBtnsDiv.appendChild(_mkGritBtn('-10','#cc7777',_grit>=10,()=>{P.sp+=10;_grit-=10;SFX.pickup();applyStats();renderStatPanel();dbSaveNow()}));
-    _gBtnsDiv.appendChild(_mkGritBtn('-1','#cc7777',_grit>=1,()=>{P.sp+=1;_grit-=1;SFX.pickup();applyStats();renderStatPanel();dbSaveNow()}));
-    _gBtnsDiv.appendChild(_mkGritBtn('+1','#ccaa77',P.sp>=_gCost1,()=>{P.sp-=_gCost1;_grit+=1;SFX.pickup();applyStats();renderStatPanel();dbSaveNow()}));
-    _gBtnsDiv.appendChild(_mkGritBtn('+10','#ccaa77',P.sp>=_gCost10,()=>{P.sp-=_gCost10;_grit+=10;SFX.pickup();applyStats();renderStatPanel();dbSaveNow()}));
-    _gRow.appendChild(_gBtnsDiv);sg.appendChild(_gRow);
-  }
-  // 패널 다시 그릴 때마다 요약창 상태 업데이트
+  _statPanelUI.render();
   $('smToggleBtn').onclick=toggleStatSummary;
-  if($('statSummary').style.display==='block') renderStatSummary();
-  // 패시브
-  pg.innerHTML='';
-  $('apRemain').textContent=_L('남은 AP: ','AP Left: ')+(P.ap||0);
-  var _atkPassives=['pAtk','pCharge','pParry','pMagic','pBow','pCrit','pPierce','pMelee','pCombo','pPhysPen','pMagPen','pAbund','pPred','pDot','pXbow','pHunter','pRage'];
-  // 공격 먼저, 서브 나중 정렬
-  var _sortedPD=[];
-  for(var _pi2=0;_pi2<PASSIVE_DEF.length;_pi2++){if(_atkPassives.indexOf(PASSIVE_DEF[_pi2].key)!==-1)_sortedPD.push(PASSIVE_DEF[_pi2])}
-  for(var _pi3=0;_pi3<PASSIVE_DEF.length;_pi3++){if(_atkPassives.indexOf(PASSIVE_DEF[_pi3].key)===-1)_sortedPD.push(PASSIVE_DEF[_pi3])}
-  var _pSec=0;
-  {var _hdr=document.createElement('div');_hdr.style.cssText='color:#ff6644;font-weight:700;font-size:1.1rem;margin-bottom:8px;padding:6px 0;border-bottom:1px solid #442211;display:flex;align-items:center;gap:6px';_hdr.innerHTML=_glyph('swords','#ff6644',16)+'<span>'+_L('공격 패시브','OFFENSE')+'</span>';pg.appendChild(_hdr)}
-  _sortedPD.forEach(pd=>{
-    var _isAtk=_atkPassives.indexOf(pd.key)!==-1;
-    if(!_isAtk&&_pSec===0){_pSec=1;var _hdr2=document.createElement('div');_hdr2.style.cssText='color:#44aaff;font-weight:700;font-size:1.1rem;margin:16px 0 8px;padding:6px 0;border-bottom:1px solid #223344;display:flex;align-items:center;gap:6px';_hdr2.innerHTML=_glyph('shield','#44aaff',16)+'<span>'+_L('서브 패시브','SUPPORT')+'</span>';pg.appendChild(_hdr2)}
-    const v=PASSIVES[pd.key];const isMax=v>=pd.max;
-    const _PCV=[1,1,1,2,2,2,3,3,3,5];
-    const nextCost=_PCV[v]||5; // 111 222 333 5
-    const canBuy=!isMax&&(P.ap||0)>=nextCost;
-    const row=document.createElement('div');
-    row.className='passive-row'+(isMax?' maxed':canBuy?'':' dis');
-    row.style.cssText = 'display:flex;align-items:center;gap:12px;padding:12px 16px;margin-bottom:10px;background:rgba(0,0,0,.3);border:2px solid #2a2211;cursor:pointer;border-radius:6px';
-    let pips='<div class="passive-pips" style="display:flex;gap:4px;margin-left:12px">';for(let i=0;i<pd.max;i++)pips+=`<div class="passive-pip${i<v?' filled':''}" style="width:16px;height:16px;border:2px solid #443322;border-radius:3px;${i<v?'background:#bb66ff;border-color:#bb66ff;box-shadow:0 0 6px rgba(180,80,255,.5)':''}"></div>`;pips+='</div>';
-    const costTxt=isMax?'MAX':_L(`다음: ${nextCost} AP`,`Next: ${nextCost} AP`);
-    row.innerHTML=`<div class="passive-icon" style="width:50px">${PASSIVE_SVG[pd.key]?_glyph(PASSIVE_SVG[pd.key],pd.col):pd.icon}</div><div class="passive-info" style="flex:1"><div class="passive-name" style="color:${pd.col};font-size:1.6rem;font-weight:700">${_stripIco(_L(pd.name,pd.nameEn||pd.name))}</div><div class="passive-desc" style="font-size:1.2rem;color:#665544;margin-top:4px">${_L(pd.desc,pd.descEn||pd.desc)} (${v}/${pd.max}) <span style="color:#aa8866;font-size:1.1rem;margin-left:8px;font-weight:700">[${costTxt}]</span></div></div><div class="psv-btn${v<1?' dis':''}" data-pk="${pd.key}" style="width:48px;height:48px;background:rgba(0,0,0,.4);border:2px solid #3a2222;color:#cc7777;font-size:1.4rem;cursor:pointer;display:flex;align-items:center;justify-content:center;margin-left:8px;flex-shrink:0">-1</div>${pips}`;
-    if(canBuy){row.onclick=e=>{if(e.target.closest('.psv-btn'))return;P.ap-=nextCost;PASSIVES[pd.key]++;SFX.levelup();renderStatPanel();dbSaveNow()}}
-    pg.appendChild(row);
-  });
-  pg.onclick=function(ev){
-    const btn=ev.target.closest('.psv-btn');if(!btn||btn.classList.contains('dis'))return;
-    ev.stopPropagation();
-    const k=btn.dataset.pk;const cur=PASSIVES[k];if(cur<1)return;
-    const _PCV=[1,1,1,2,2,2,3,3,3,5];
-    P.ap=(P.ap||0)+(_PCV[cur-1]||5);PASSIVES[k]--;SFX.levelup();renderStatPanel();dbSaveNow();
-  };
-  if(_spBox)requestAnimationFrame(()=>{_spBox.scrollTop=_spScr;if(sg)sg.scrollTop=_sgScr;if(pg)pg.scrollTop=_pgScr});
+  $('growthSummaryClose').onclick=toggleStatSummary;
+  if($('statSummary').style.display==='block')renderStatSummary();
 }
-// 스탯 요약 토글 버튼
 function toggleStatSummary(){
-  const sm=$('statSummary');
-  const isExp = sm.style.display==='block';
-  sm.style.display=isExp?'none':'block';
-  $('smToggleBtn').innerHTML=isExp?_L('능력치 요약 ▼','Stat Summary ▼'):_L('요약 닫기 ▲','Close Summary ▲');
-  if(!isExp) renderStatSummary();
+  const sm=$('statSummary'),drawer=$('growthSummaryDrawer');
+  const opening=drawer.hidden;
+  drawer.hidden=!opening;sm.style.display=opening?'block':'none';
+  $('smToggleBtn').setAttribute('aria-expanded',String(opening));
+  if(opening){renderStatSummary();$('growthSummaryClose').focus();}
+  else $('smToggleBtn').focus();
 }
 function renderStatSummary(){
   const sm=$('statSummary');

@@ -52,15 +52,10 @@ test('skill panel stays clean and removes the old grit button', () => {
   );
 });
 
-test('stat panel renders grit as a dedicated row below the base stats', () => {
-  assert.match(
-    gameHtml,
-    /\$\('spRemain'\)\.textContent=_L\('남은 SP: ','SP Left: '\)\+P\.sp;/
-  );
-  assert.match(
-    gameHtml,
-    /_L\('근성 \(GRIT\)','GRIT'\)[\s\S]*_L\('HP\/MP\/ST \+1, 방어력\/속성방어 \+0\.5','HP\/MP\/ST \+1, DEF\/eDEF \+0\.5'\)[\s\S]*_gBtnsDiv\.appendChild\(_mkGritBtn\('-10','#cc7777',_grit>=10,[\s\S]*_gBtnsDiv\.appendChild\(_mkGritBtn\('-1','#cc7777',_grit>=1,[\s\S]*_gBtnsDiv\.appendChild\(_mkGritBtn\('\+1','#ccaa77',P\.sp>=_gCost1,[\s\S]*_gBtnsDiv\.appendChild\(_mkGritBtn\('\+10','#ccaa77',P\.sp>=_gCost10,/
-  );
+test('growth panel connects grit to the shared capped-stat transaction with no grit cap', () => {
+  assert.match(gameHtml, /state:\(\)=>\(\{stats:STATS,passives:PASSIVES,grit:_grit/);
+  assert.match(gameHtml, /statChange\(value,key==='grit'\?Infinity:STAT_MAX\[key\],P.sp,amount\)/);
+  assert.match(gameHtml, /if\(key==='grit'\)_grit=next.value;else STATS\[key\]=next.value;/);
 });
 
 test('grit summary separates spent SP grit from the level bonus', () => {
