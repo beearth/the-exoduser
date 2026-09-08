@@ -16430,6 +16430,7 @@ const _MO_COLS=7,_MO_ROWS=3,_MO_FRAMES=20,_MO_CW=171,_MO_CH=171;
 const _silvMaliceOrbImg=new Image();let _silvMaliceOrbReady=false,_silvMaliceOrbSurface=null;
 const _SILV_MALICE_ORB_RECTS=[[78,67],[539,68],[1005,66],[65,536],[526,534],[997,536]];
 const _SILV_MALICE_ORB_FRAME_SIZE=432,_SILV_MALICE_ORB_FRAME_MS=80;
+const _SILV_MALICE_ORB_SPIN_MS=600,_SILV_MALICE_ORB_POSE_DEG=[0,9,13,27,31,38];
 _silvMaliceOrbImg.onload=()=>{if(_silvMaliceOrbImg.naturalWidth!==1536||_silvMaliceOrbImg.naturalHeight!==1024)return;_silvMaliceOrbSurface=_makeGreenChromaCutout(_silvMaliceOrbImg);_silvMaliceOrbReady=true};
 _silvMaliceOrbImg.src='img/vfx/silvertail_malice_orb_sheet_v3.png';
 // ═══ 어둠 폭발 임팩트 (vfx_dark_burst.png 5열×4행=20프레임) ═══
@@ -54129,10 +54130,10 @@ function drawP(){
     }else if(p.fireball){
       // ── 악의구: 마법 오브 스프라이트 ──
       if(_charIdx===1&&_silvMaliceOrbReady){
-        const _smPulse=1+Math.sin(_now*.014+p.x*.025)*.035,_smSz=p.r*6.2*_smPulse;
-        const _smStep=Math.floor(_now/_SILV_MALICE_ORB_FRAME_MS)%10,_smFrame=_smStep<6?_smStep:10-_smStep;
+        const _smSz=p.r*6.2;
+        const _smFrame=Math.floor(_now/_SILV_MALICE_ORB_FRAME_MS)%6;
         const _smRect=_SILV_MALICE_ORB_RECTS[_smFrame],_smFS=_SILV_MALICE_ORB_FRAME_SIZE;
-        X.save();X.translate(p.x,p.y);X.rotate(_now*.0012+p.x*.002);
+        X.save();X.translate(p.x,p.y);X.rotate(_now*Math.PI*2/_SILV_MALICE_ORB_SPIN_MS-_SILV_MALICE_ORB_POSE_DEG[_smFrame]*Math.PI/180);
         X.globalAlpha=fa;
         X.drawImage(_silvMaliceOrbSurface||_silvMaliceOrbImg,_smRect[0],_smRect[1],_smFS,_smFS,-_smSz/2,-_smSz/2,_smSz,_smSz);
         X.globalCompositeOperation='lighter';X.globalAlpha=fa*.18;
