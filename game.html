@@ -16426,10 +16426,12 @@ const _AL_FH=137; // 프레임 높이
 const _MO_IMG=new Image();_MO_IMG.src='assets/vfx/vfx_magic_orb.png';
 let _moReady=false;_MO_IMG.onload=()=>{_moReady=true};
 const _MO_COLS=7,_MO_ROWS=3,_MO_FRAMES=20,_MO_CW=171,_MO_CH=171;
-// ═══ 실버테일 전용 악의구: 검은 공허 핵 + 은빛 초승달 칼날 3장 + 청보라 잔광 ═══
+// ═══ 실버테일 전용 악의구: 은빛 초승달 6프레임 시트, 공허 핵 중심 정렬 ═══
 const _silvMaliceOrbImg=new Image();let _silvMaliceOrbReady=false,_silvMaliceOrbSurface=null;
-_silvMaliceOrbImg.onload=()=>{_silvMaliceOrbSurface=_makeGreenChromaCutout(_silvMaliceOrbImg);_silvMaliceOrbReady=true};
-_silvMaliceOrbImg.src='img/vfx/silvertail_malice_orb_moonblade_v2.png';
+const _SILV_MALICE_ORB_RECTS=[[78,67],[539,68],[1005,66],[65,536],[526,534],[997,536]];
+const _SILV_MALICE_ORB_FRAME_SIZE=432,_SILV_MALICE_ORB_FRAME_MS=80;
+_silvMaliceOrbImg.onload=()=>{if(_silvMaliceOrbImg.naturalWidth!==1536||_silvMaliceOrbImg.naturalHeight!==1024)return;_silvMaliceOrbSurface=_makeGreenChromaCutout(_silvMaliceOrbImg);_silvMaliceOrbReady=true};
+_silvMaliceOrbImg.src='img/vfx/silvertail_malice_orb_sheet_v3.png';
 // ═══ 어둠 폭발 임팩트 (vfx_dark_burst.png 5열×4행=20프레임) ═══
 // 파일 미존재 — src 미설정으로 404 제거. 에셋 준비 시 src 복원하면 시스템 재활성화됨.
 const _DB_IMG=new Image();
@@ -54128,11 +54130,13 @@ function drawP(){
       // ── 악의구: 마법 오브 스프라이트 ──
       if(_charIdx===1&&_silvMaliceOrbReady){
         const _smPulse=1+Math.sin(_now*.014+p.x*.025)*.035,_smSz=p.r*6.2*_smPulse;
+        const _smStep=Math.floor(_now/_SILV_MALICE_ORB_FRAME_MS)%10,_smFrame=_smStep<6?_smStep:10-_smStep;
+        const _smRect=_SILV_MALICE_ORB_RECTS[_smFrame],_smFS=_SILV_MALICE_ORB_FRAME_SIZE;
         X.save();X.translate(p.x,p.y);X.rotate(_now*.0012+p.x*.002);
         X.globalAlpha=fa;
-        X.drawImage(_silvMaliceOrbSurface||_silvMaliceOrbImg,-_smSz/2,-_smSz/2,_smSz,_smSz);
+        X.drawImage(_silvMaliceOrbSurface||_silvMaliceOrbImg,_smRect[0],_smRect[1],_smFS,_smFS,-_smSz/2,-_smSz/2,_smSz,_smSz);
         X.globalCompositeOperation='lighter';X.globalAlpha=fa*.18;
-        X.drawImage(_silvMaliceOrbSurface||_silvMaliceOrbImg,-_smSz*.54,-_smSz*.54,_smSz*1.08,_smSz*1.08);
+        X.drawImage(_silvMaliceOrbSurface||_silvMaliceOrbImg,_smRect[0],_smRect[1],_smFS,_smFS,-_smSz*.54,-_smSz*.54,_smSz*1.08,_smSz*1.08);
         X.restore();X.globalAlpha=1;
       }else if(_moReady){
         const _moFi=~~(_now*.12+p.x*.1)%_MO_FRAMES;

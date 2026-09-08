@@ -85,11 +85,11 @@ test('Silvertail routes the realistic slash only to LMB projectile and compact v
   assert.doesNotMatch(game, /\.silvEArc|_silvArcFrameT/);
 });
 
-test('Silvertail right-click Malice Orb uses a keyed silver moonblade projectile', async () => {
+test('Silvertail right-click Malice Orb uses a keyed silver moonblade sprite sheet', async () => {
   const game = await readFile(new URL('../game.html', import.meta.url), 'utf8');
 
   assert.match(game, /const _silvMaliceOrbImg=new Image\(\);let _silvMaliceOrbReady=false,_silvMaliceOrbSurface=null;/);
-  assert.match(game, /_silvMaliceOrbImg\.src='img\/vfx\/silvertail_malice_orb_moonblade_v2\.png'/);
+  assert.match(game, /_silvMaliceOrbImg\.src='img\/vfx\/silvertail_malice_orb_sheet_v3\.png'/);
   assert.match(game, /_silvMaliceOrbSurface=_makeGreenChromaCutout\(_silvMaliceOrbImg\)/);
   assert.match(game, /if\(_charIdx===1&&_silvMaliceOrbReady\)\{/);
   assert.match(game, /X\.drawImage\(_silvMaliceOrbSurface\|\|_silvMaliceOrbImg,/);
