@@ -1,5 +1,7 @@
 # THE EXODUSER — 인터페이스 2차 정비 (UI 폴리시 + 반응형)
 
+> **2026-09-08 데모 피날레 종료 UI:** 데모 마지막 si3/hell0 클리어의 `clearSub`는 `썩은 숲을 정복했습니다. / You conquered the Rotten Forest.`, `nextBtn`은 `_T(데모 종료)`다. 클릭 시 다음 난이도 선택창을 생략하고 기존 `nextStage()`→`demoEnd`로 연결한다. 일반 구역/정식 모드는 기존 난이도 선택 유지. [현행 구현·검증](../8.1보스디자인바이블/DARK_DRUID_DEMO_FINALE_DESIGN.md) §0 참조.
+
 ## 특수 탭 분노 섹션·천공쇄기 (2026-09-04)
 
 | 최상위 탭 | 하위 섹션 순서 | ID | 카드 표시 | 선택 슬롯 | HUD 쿨다운 |

@@ -9693,6 +9693,7 @@ function _druidDir(e){
   return _DRUID_DIRMAP[d];
 }
 function _drawDruidBoss(X,e,sa,tdY,spec){
+  _drawDruidFinaleTell(X,e);
   const key=_stage1CodexBossMotionKey(e);
   let sheet,cols,rows,frame,dir=_druidDir(e),dirless=false;
   const _nw=performance.now(); // 시간기반 프레임(프레임레이트 독립 — 고FPS서 빨라짐 방지)
@@ -9723,7 +9724,7 @@ function _drawDruidBoss(X,e,sa,tdY,spec){
   }
   else if(_isChgWind&&_druidSheets.transform&&_druidSheets.transform.ready){const _tp=Math.max(0,Math.min(1,1-e.st2/45));frame=Math.min(7,~~(_tp*8));sheet='transform';cols=8;rows=1;dirless=true;} // 돌진 와인드업=변신 시퀀스 0→7(서있는→야수)
   else if(_isCharge&&_druidSheets.beast&&_druidSheets.beast.ready){sheet='beast';cols=4;rows=2;dirless=true;frame=dir;} // 돌진=야수 변신형(8방향 4x2, 셀=방향)
-  else if(key==='slash'||key==='slam'||key==='windup'){sheet='attack';cols=4;rows=8;frame=(~~(_nw/150))%4;} // 공격 150ms/frame (~6.7fps, 1사이클 0.6s)
+  else if(key==='slash'||key==='slam'||key==='windup'||e.s==='bossDruidVolleyWind'||e.s==='bossDruidVolley'){sheet='attack';cols=4;rows=8;frame=(~~(_nw/150))%4;} // 공격 150ms/frame (~6.7fps, 1사이클 0.6s)
   else if(key==='walk'){sheet='walk';cols=4;rows=8;frame=(~~(_nw/150))%4;} // 걷기 150ms/frame
   else{sheet='walk';cols=4;rows=8;frame=(~~(_nw/600))%2;} // idle 600ms sway (walk시트 같은아트, 캐릭터 통일)
   const S=_druidSheets[sheet];if(!S||!S.ready)return false;
@@ -14796,6 +14797,120 @@ function _druidParryVolleySpec(phase,volley){
   const ph=Math.max(0,Math.min(4,~~phase));
   return{interval:90-ph*6,count:5+ph};
 }
+// [DRUID-FINALE] Demo ACT1 finale only; shared parry/revive formulas stay authoritative.
+const _DRUID_FINALE_ROUNDS=[
+  ['druidVolley','charge','slashCombo','lavaPools'],
+  ['lavaPools','charge','burrowStrike','druidVolley','slashCombo'],
+  ['druidVolley','charge','burrowStrike','lavaPools','slashCombo']
+];
+function _isDruidFinale(e){
+  return !!(_DEMO_MODE&&G.stage===_DEMO_LAST_STAGE&&G.stage===3&&e&&e.ib);
+}
+function _druidFinaleAct(e){
+  return e._bossPhase>=4?2:e._bossPhase>=2?1:0;
+}
+function _druidFinaleNextMove(e,d){
+  const act=_druidFinaleAct(e);
+  if(e._druidAct!==act){e._druidAct=act;e._druidStep=0;}
+  const round=_DRUID_FINALE_ROUNDS[act];
+  const id=round[(e._druidStep||0)%round.length];e._druidStep=(e._druidStep||0)+1;
+  return id==='slashCombo'&&d>180?'druidVolley':id;
+}
+function _druidFinaleVolley(e){
+  const count=_druidParryVolleySpec(e._bossPhase||0,0).count;
+  const aim=Math.atan2(P.y-e.y,P.x-e.x),spread=Math.PI*.48;
+  for(let i=0;i<count;i++){
+    const a=aim-spread/2+spread*i/(count-1);
+    _spawnBossProjectile(e,{x:e.x+Math.cos(a)*e.r,y:e.y-36+Math.sin(a)*e.r,
+      vx:Math.cos(a)*6,vy:Math.sin(a)*6,dmg:~~(e.atk*.35),el:EL.F,
+      friendly:false,life:90,ml:90,col:'#66dd22',sz:2,r:10,
+      fireMagic:true,_typed:true,_druidParryVolley:true});
+  }
+  addTxt(e.x,e.y-60,'Q!','#66dd22',32);SFX.magic(1);
+}
+function _druidFinaleTrackBurrow(e,sp){
+  if(e._druidTargetLocked)return;
+  if(e.st2<=22+sp){
+    if(!canMv(e._diveTx,e._diveTy,e.r)){const pt=safePt(e._diveTx,e._diveTy,e.r);e._diveTx=pt?pt.x:e.x;e._diveTy=pt?pt.y:e.y;}
+    e._druidTargetLocked=true;
+  }else{e._diveTx+=(P.x-e._diveTx)*.06*sp;e._diveTy+=(P.y-e._diveTy)*.06*sp;}
+}
+function _druidFinaleAI(e,sp,d){
+  if(e.stunned>0||e.s!=='idle'||e.reviveIframes>0||e._spawnT>0)return;
+  e.bossPatT-=sp;if(e.bossPatT>0||d>650)return;
+  const id=_druidFinaleNextMove(e,d);
+  e._comboSeq=null;e._comboIdx=0;e._feinting=false;e._delaying=0;e.bossPatT=12;
+  if(e._lastMoves){e._lastMoves.push(id);if(e._lastMoves.length>5)e._lastMoves.shift();}
+  if(id==='druidVolley'){
+    e.s='bossDruidVolleyWind';e.st2=48;e._druidWaves=1+_druidFinaleAct(e);e._druidRest=48;
+    addTxt(e.x,e.y-40,_L('부패의 맥동','Rotten pulse'),'#a8ef65',48);SFX.charge();
+  }else{
+    const mv=BOSS_MOVES.find(m=>m.id===id);if(mv)_bossStartPattern(e,mv,d,e._bossPhase,0);
+  }
+}
+function _druidFinaleUpdate(e,sp){
+  if(!_isDruidFinale(e))return false;
+  if(e.s==='recover'||e.s==='bossRec'){
+    e.s='bossDruidRest';e.st2=Math.max(e.st2||0,e._druidRest||48,e.reviveIframes||0);e._druidRest=0;
+  }
+  if(e.s==='bossDruidRest'){
+    if(e.st2<=0){e.s='idle';e.st2=0;e.bossPatT=12;}
+    return true;
+  }
+  if(e.s==='bossDruidVolleyWind'||e.s==='bossDruidVolley'){
+    e.facing=Math.atan2(P.y-e.y,P.x-e.x);
+    if(G.frame%4===0)poolPart(e.x,e.y-36,(Math.random()-.5)*2,-1,'#a8ef65',3,10);
+    if(e.st2<=0){
+      _druidFinaleVolley(e);e._druidWaves--;
+      if(e._druidWaves>0){e.s='bossDruidVolley';e.st2=30;}
+      else{e.s='bossDruidRest';e.st2=48;e._druidRest=0;}
+    }
+    return true;
+  }
+  return false;
+}
+function _drawDruidFinaleRing(ctx,x,y,r,progress=1){
+  ctx.beginPath();
+  const end=Math.max(0,Math.min(1,progress))*Math.PI*2;
+  for(let i=0;i<=48;i++){
+    const a=-Math.PI/2+end*i/48,px=x+Math.cos(a)*r,py=y+Math.sin(a)*r;
+    if(i===0)ctx.moveTo(px,py);else ctx.lineTo(px,py);
+  }
+  ctx.stroke();
+}
+function _drawDruidFinaleTell(ctx,e){
+  if(!_isDruidFinale(e))return;
+  const burrow=e._druidTargetLocked&&(e.s==='bossDruidUnder'||(e.s==='bossDruidErupt'&&!e._eruptHit));
+  if(!burrow&&e.s!=='bossChargeWind')return;
+  ctx.save();ctx.translate(e.x,e.y);ctx.scale(1/(window._btScaleMul||1),1/(window._btScaleMul||1));
+  ctx.globalAlpha=.9;ctx.strokeStyle='#c8f889';ctx.lineWidth=3;
+  if(burrow){
+    const x=e._diveTx-e.x,y=e._diveTy-e.y,r=e.r+120;
+    const remain=e.s==='bossDruidUnder'?e.st2+8:Math.max(0,e.st2-(e._eruptMax-8));
+    ctx.globalAlpha=.13;ctx.fillStyle='#66dd22';ctx.beginPath();ctx.arc(x,y,r,0,Math.PI*2);ctx.fill();
+    ctx.globalAlpha=.9;_drawDruidFinaleRing(ctx,x,y,r);
+    ctx.globalAlpha=1;ctx.lineWidth=6;_drawDruidFinaleRing(ctx,x,y,r,1-remain/30);
+  }else{
+    const len=e._druidChargeLeft||300,w=e.r+80;ctx.rotate(e.facing);ctx.beginPath();
+    ctx.moveTo(0,-w);ctx.lineTo(len,-w);ctx.lineTo(len+28,0);ctx.lineTo(len,w);ctx.lineTo(0,w);ctx.stroke();
+  }
+  ctx.restore();
+}
+function _drawDruidFinalePool(ctx,lp,sheet){
+  const armed=lp.t>=lp.warnT,fade=Math.min(1,(lp.maxT-lp.t)/60);
+  ctx.save();ctx.beginPath();ctx.arc(lp.x,lp.y,lp.r,0,Math.PI*2);
+  ctx.globalAlpha=(armed?.16:.06)*fade;ctx.fillStyle='#66dd22';ctx.fill();
+  if(sheet){
+    const im=sheet.img,cw=im.naturalWidth/4,ch=im.naturalHeight/2,fr=Math.min(7,~~(lp.t/lp.maxT*8)),artR=lp.r*Math.SQRT1_2;
+    ctx.globalAlpha=(armed?.32:.14)*fade;
+    ctx.drawImage(im,(fr%4)*cw,~~(fr/4)*ch,cw,ch,lp.x-artR,lp.y-artR,artR*2,artR*2);
+  }
+  ctx.restore();ctx.save();ctx.globalAlpha=.85*fade;ctx.strokeStyle=armed?'#8bdd45':'#d4f7a8';ctx.lineWidth=3;
+  _drawDruidFinaleRing(ctx,lp.x,lp.y,lp.r);
+  if(!armed){ctx.lineWidth=5;_drawDruidFinaleRing(ctx,lp.x,lp.y,lp.r,lp.t/lp.warnT);}
+  ctx.restore();
+}
+// [/DRUID-FINALE]
 function _druidPoisonPoolTargets(px,py,bx,by){
   const a=Math.atan2(py-by,px-bx),ux=Math.cos(a),uy=Math.sin(a);
   const cx=px+ux*120,cy=py+uy*120,nx=-uy,ny=ux;
@@ -31062,6 +31177,7 @@ function update(){
             e.alive=true;e.x=e._reviveX;e.y=e._reviveY;
             e.hp=~~(e.mhp*.5);e.eShield=0;e.eShieldMax=0;e.s='recover';e.st2=60;e.stunned=0;e.kb={x:0,y:0};
             e.reviveIframes=90;e._bossRevJudged=false; // 리셋 → 다음 사망 시 1.5초 카운트다운 재발동
+            if(_isDruidFinale(e)){e._druidAct=-1;e._druidStep=0;e._druidRest=0;e._druidTargetLocked=false;}
             G.bossAlive=true;G._bossRef=e;
             // 남은 부활력 비율로 크기 축소 (origR 기준, 최소 40%)
             if(!e._origR)e._origR=e.r;
@@ -33542,7 +33658,7 @@ function update(){
   // [DRUID-PARRY-RHYTHM] AI 추첨과 독립된 화마귀 혜성형 Q 탄막 — 전투 내내 패링 기회를 보장
   if((G.stage===0||G.stage===3)&&G.bossAlive){
     const _dpvB=G._bossRef;
-    if(_dpvB&&_dpvB.alive){
+    if(_dpvB&&_dpvB.alive&&!_isDruidFinale(_dpvB)){
       const _dpvSpec=_druidParryVolleySpec(_dpvB._bossPhase||0,G._druidParryVolley||0);
       G._druidParryT=(G._druidParryT||0)+sp;
       if(G._druidParryT>=_dpvSpec.interval-20&&G._druidParryT<_dpvSpec.interval&&G.frame%4===0){
@@ -33569,8 +33685,8 @@ function update(){
   if((G.stage===0||G.stage===3)&&G.bossAlive){
     if(!G._druidOrbs)G._druidOrbs=[];
     const _db=G._bossRef;G._druidOrbT=(G._druidOrbT||0)+sp;
-    if(_db&&_db.alive&&G._druidOrbT>=90&&G._druidOrbT<110){const _gr=60*(1-(G._druidOrbT-90)/20);for(let _g=0;_g<2;_g++){const _ga=G._druidOrbT*0.5+_g*3.14159;poolPart(_db.x+Math.cos(_ga)*_gr,_db.y-40+Math.sin(_ga)*_gr,-Math.cos(_ga)*1.5,-Math.sin(_ga)*1.5,'#66dd22',2,10);}} // [텔레그래프] 발사 20f전 집광(기존 파티클풀 재사용)
-    if(_db&&_db.alive&&(_db._bossPhase||0)>=0&&G._druidOrbT>=110){G._druidOrbT=0;const _oa=Math.atan2(P.y-_db.y,P.x-_db.x);
+    if(_db&&_db.alive&&!_isDruidFinale(_db)&&G._druidOrbT>=90&&G._druidOrbT<110){const _gr=60*(1-(G._druidOrbT-90)/20);for(let _g=0;_g<2;_g++){const _ga=G._druidOrbT*0.5+_g*3.14159;poolPart(_db.x+Math.cos(_ga)*_gr,_db.y-40+Math.sin(_ga)*_gr,-Math.cos(_ga)*1.5,-Math.sin(_ga)*1.5,'#66dd22',2,10);}} // [텔레그래프] 발사 20f전 집광(기존 파티클풀 재사용)
+    if(_db&&_db.alive&&!_isDruidFinale(_db)&&(_db._bossPhase||0)>=0&&G._druidOrbT>=110){G._druidOrbT=0;const _oa=Math.atan2(P.y-_db.y,P.x-_db.x);
       for(let _k=-1;_k<=1;_k++){const _a=_oa+_k*0.14;G._druidOrbs.push({x:_db.x,y:_db.y-40,vx:Math.cos(_a)*6.8,vy:Math.sin(_a)*6.8,t:0,r:26,dmg:~~((_db.atk||100)*.6)});}}
     let _ow=0;for(let oi=0;oi<G._druidOrbs.length;oi++){const o=G._druidOrbs[oi];o.t+=sp;o.x+=o.vx*sp;o.y+=o.vy*sp;let _del=false;
       if(dst(P.x,P.y,o.x,o.y)<o.r+P.r){
@@ -34162,6 +34278,12 @@ function _bossStartPattern(e,mv,d,phase,extraDelay){
   e._atkParryable=_PARRYABLE_ATK.has(mv.id);
   let tele=~~(mv.tele*BOSS_PHASES[phase].teleM)+(extraDelay||0);
   if(G.stage===2)tele=~~(tele*1.4);
+  if(_isDruidFinale(e)){
+    tele=Math.max(tele,mv.id==='slashCombo'?36:48);
+    e._druidRest=mv.id==='charge'||mv.id==='burrowStrike'?96:48;
+    e._druidTargetLocked=false;e._druidChargeLeft=Math.max(180,Math.min(500,d+100));
+    e._feinting=false;
+  }
   switch(mv.id){
     case'burst':e.s='bossBurstWind';e.st2=tele||55;addTxt(e.x,e.y-30,_T('⚠ 광역 발사!'),'#ff6600',50);SFX.charge();break;
     case'fan':e.s='bossFanWind';e.st2=tele||30;addTxt(e.x,e.y-30,_T('🔥 확산!'),'#ff4444',35);SFX.charge();break;
@@ -34704,6 +34826,16 @@ function _bossPhaseCheck(e,sp){
   e.stunned=0;e.s='recover';e.st2=45;e.bossPatT=10;
   e._comboSeq=null;e._comboIdx=0;e._feinting=false;e._delaying=0;
   if(e._moveCDs)for(let i=0;i<BOSS_MOVES.length;i++)e._moveCDs[i]=0;
+  if(_isDruidFinale(e)){
+    e._druidTargetLocked=false;e._druidRest=0;e.s='bossDruidRest';e.st2=90;
+    const act=_druidFinaleAct(e),oldAct=oldPhase>=4?2:oldPhase>=2?1:0;
+    if(act!==oldAct){
+      e._druidAct=act;e._druidStep=0;
+      addTxt(e.x,e.y-60,act===2?_L('숲의 단말마','Death throes'):_L('숲의 포식자','Forest predator'),'#c8f889',90);
+      playVFXAng('druid_shockring',e.x,e.y,e.r*3/256,5,0,false);SFX.groggy();shake(8);
+    }
+    return;
+  }
   // 5) 텔레포트: 플레이어 뒤로 + 블링크 VFX
   const _tpCol5=_BOSS_PHASE_AURA[_bp]||'#ff4400',_phOx=e.x,_phOy=e.y,_phR=e.r||20;
   for(let i=0;i<14;i++){const a=Math.PI*2*i/14,sp=4+Math.random()*5;poolPart(_phOx+Math.cos(a)*_phR*.6,_phOy+Math.sin(a)*_phR*.6,Math.cos(a)*sp,Math.sin(a)*sp,_tpCol5,3+Math.random()*2,12)}
@@ -34791,6 +34923,7 @@ function _bossIdleMove(e,d,sp){
     }
   }
   // ── 보스 idle 중 빨간콩 자동 발사 (30~50프레임마다) ──
+  if(_isDruidFinale(e))return;
   e._idleRBT=(e._idleRBT||0)+sp;
   const _rbInterval=Math.max(18,40-e._bossPhase*5);
   if(e._idleRBT>=_rbInterval&&d<1200){
@@ -34806,6 +34939,7 @@ function _bossIdleMove(e,d,sp){
   }
 }
 function _bossAI(e,sp,d){
+  if(_isDruidFinale(e)){_druidFinaleAI(e,sp,d);return;}
   const ph=BOSS_PHASES[e._bossPhase];
   // ── per-move CD 감소 ──
   if(e._moveCDs)for(let i=0;i<BOSS_MOVES.length;i++){if(e._moveCDs[i]>0)e._moveCDs[i]-=sp}
@@ -35069,7 +35203,8 @@ function updateE(e,sp){
   // 시야 어그로: 거리 800 이내 + LOS 확보 시에만 알림 (벽 뒤는 무시)
   if(!e._alerted&&d<800&&(e.s==='idle'||e.s==='recover')&&hasLOS(e.x,e.y,P.x,P.y))e._alerted=true;
   // ── 방향 추적: 어그로 상태일 때만 플레이어를 바라봄 ──
-  if(d<800&&e._alerted){e.facing=Math.atan2(P.y-e.y,P.x-e.x)}
+  const _druidAimLocked=_isDruidFinale(e)&&(e.s==='bossCharge'||(e.s==='bossChargeWind'&&e.st2<=18+sp));
+  if(d<800&&e._alerted&&!_druidAimLocked){e.facing=Math.atan2(P.y-e.y,P.x-e.x)}
   // 어그로 추적: 사거리별 AI (초근접/단거리=밀착, 중거리+=사거리 유지)
   if(e._alerted&&(e.s==='idle'||e.s==='recover')){
     const _eRng=ETYPE_RANGE[e.etype]||600;
@@ -36823,6 +36958,7 @@ function updateE(e,sp){
   if(e.ib&&e._btFrozen&&e.s==='idle'){e.vx=0;e.vy=0;e.kb={x:0,y:0};return}
   // ── Boss Phase Check (매 프레임, 상태 무관) ──
   if(e.ib&&e.alive)_bossPhaseCheck(e,sp);
+  if(_druidFinaleUpdate(e,sp))return;
   // ── Boss AI (HFSM + Combo + Utility) ──
   if(e.ib&&e.s==='idle'&&!e._btFrozen){_bossIdleMove(e,d,sp);_bossAI(e,sp,d)}
   // ── 페인트 인터셉트: Wind 상태 끝에 공격 취소 ──
@@ -37040,17 +37176,19 @@ function updateE(e,sp){
       e.s='recover';e.st2=45}break;
   // ── 보스 돌진: 빠른 대쉬 ──
   case'bossChargeWind':
-    e.facing=Math.atan2(P.y-e.y,P.x-e.x); // 와인드업 중 플레이어 추적
+    if(!_isDruidFinale(e)||e.st2>18)e.facing=Math.atan2(P.y-e.y,P.x-e.x); // 피날레는 타격 전 18f 방향 고정
     if(e.st2<=0){e.s='bossCharge';e.st2=50;e.echDx=Math.cos(e.facing);e.echDy=Math.sin(e.facing);
       SFX.charge();addParts(e.x,e.y,e.col,8)}break;
   case'bossCharge':{
     if((G.stage===0||G.stage===3)&&G.frame%6===0&&typeof playVFXAng==='function')playVFXAng('druid_trail',e.x,e.y,e.r*2/256,3,e.facing||0,false); // 야수 돌진 잔상(6f 간격, si3 게이트)
-    const spd=35*sp;const nx=e.x+e.echDx*spd,ny=e.y+e.echDy*spd;
+    const spd=(_isDruidFinale(e)?18:35)*sp;const nx=e.x+e.echDx*spd,ny=e.y+e.echDy*spd;
+    if(_isDruidFinale(e)){e._druidChargeLeft-=spd;if(e._druidChargeLeft<=0){e.s='recover';e.st2=96;break;}}
     if(canMv(nx,ny,e.r)){e.x=nx;e.y=ny}
     else if(canMv(e.x+e.echDx*spd,e.y,e.r)){e.x+=e.echDx*spd}
     else if(canMv(e.x,e.y+e.echDy*spd,e.r)){e.y+=e.echDy*spd}
     else{
       // 양축 모두 막힘 → Wall slam shockwave
+      if(_isDruidFinale(e)){e.s='recover';e.st2=96;SFX.groggy();break;}
       e.shockR=0;e.shockMax=800;e.s='bossShock';e.st2=20;
       G.shake=25*OPT.shake/100;SFX.groggy();break}
     if(dst(P.x,P.y,e.x,e.y)<P.r+e.r+80&&P.iframes<=0){
@@ -37426,7 +37564,8 @@ function updateE(e,sp){
     if(Math.random()<.5){const _da=Math.random()*Math.PI*2,_dd=e.r*1.2;poolPart(e.x+Math.cos(_da)*_dd,e.y+Math.sin(_da)*_dd,-Math.cos(_da)*1.5,-Math.sin(_da)*1.5,'#66dd22',2+Math.random()*2,10);}
     if(e.st2<=0){if(typeof playVFXAng==='function')playVFXAng('druid_dust',e.x,e.y,e.r*2/256,7,0,false);e._diveTx=P.x;e._diveTy=P.y;e.s='bossDruidUnder';e.st2=45;e._underMax=45;e.iframes=Math.max(e.iframes||0,50);SFX.groggy();}break} // 굴파기 진입 dust
   case'bossDruidUnder':{
-    e._diveTx+=(P.x-e._diveTx)*.06*sp;e._diveTy+=(P.y-e._diveTy)*.06*sp;
+    if(_isDruidFinale(e))_druidFinaleTrackBurrow(e,sp);
+    else{e._diveTx+=(P.x-e._diveTx)*.06*sp;e._diveTy+=(P.y-e._diveTy)*.06*sp;}
     const _up=1-e.st2/(e._underMax||45);
     e.x=e._teleOx+(e._diveTx-e._teleOx)*_up;e.y=e._teleOy+(e._diveTy-e._teleOy)*_up;
     e.iframes=Math.max(e.iframes||0,5);
@@ -37436,12 +37575,13 @@ function updateE(e,sp){
     if(!e._eruptHit&&e.st2<=(e._eruptMax-8)){
       e._eruptHit=true;
       const _erR=e.r+120,_erDmg=~~(e.atk*2.2);
-      _addBlastLight(e.x,e.y,_erR*1.2,14,120,220,90); // [DEDUP] erupt 초록 poolPart×20 제거 — druid_roots가 같은 자리 분출 렌더(완전중복)
-      if(typeof playVFXAng==='function')playVFXAng('druid_hit',e.x,e.y,0.72,7,0,false); // 녹색 가시 분출 임팩트
-      if(typeof playVFXAng==='function')playVFXAng('druid_roots',e.x,e.y,_erR*2/256,7,0,false); // 뿌리 분출(burrowStrike 전용 상태·게이트 불필요)
-      if(dst(P.x,P.y,e.x,e.y)<_erR&&P.iframes<=0&&P.s!=='charge'){
+      const _erX=_isDruidFinale(e)?e._diveTx:e.x,_erY=_isDruidFinale(e)?e._diveTy:e.y;
+      _addBlastLight(_erX,_erY,_erR*1.2,14,120,220,90); // [DEDUP] erupt 초록 poolPart×20 제거 — druid_roots가 같은 자리 분출 렌더(완전중복)
+      if(typeof playVFXAng==='function')playVFXAng('druid_hit',_erX,_erY,0.72,7,0,false); // 녹색 가시 분출 임팩트
+      if(typeof playVFXAng==='function')playVFXAng('druid_roots',_erX,_erY,_erR*2/256,7,0,false); // 뿌리 분출(burrowStrike 전용 상태·게이트 불필요)
+      if(dst(P.x,P.y,_erX,_erY)<_erR&&P.iframes<=0&&P.s!=='charge'){
         if(isPWin()){const _pd=~~(((P.baseAtk+(wp().atk||0)+enhMulAtk(wp().enh||0)))*4*pParryDmg());e.stunned=60;hurtE(e,_pd,e.facing+Math.PI);P.parryBank=(P.parryBank||0)+_pd;doParry(e.atk,e.x,e.y,false,e.el);_poiseHit(e,20);}
-        else{hurtP(~~(_erDmg*elMul(e.el,ar().el)));P.poison=(P.poison||0)+4;P._webSlow=Math.max(P._webSlow||0,90);addTxt(P.x,P.y-16,_T('☠속박!'),'#66dd22',24);const _ka=Math.atan2(P.y-e.y,P.x-e.x);P.kb.x+=Math.cos(_ka)*14;P.kb.y+=Math.sin(_ka)*14;}
+        else{hurtP(~~(_erDmg*elMul(e.el,ar().el)));P.poison=(P.poison||0)+4;P._webSlow=Math.max(P._webSlow||0,90);addTxt(P.x,P.y-16,_T('☠속박!'),'#66dd22',24);const _ka=Math.atan2(P.y-_erY,P.x-_erX);P.kb.x+=Math.cos(_ka)*14;P.kb.y+=Math.sin(_ka)*14;}
       }
     }
     if(e.st2<=0){e.s='recover';e.st2=30;}break}
@@ -38348,6 +38488,10 @@ function checkRooms(){
             $('nextBtn').textContent=_L('다음 구역으로 ▶','Next Area ▶');
             $('stageClear').style.opacity='1';$('stageClear').style.pointerEvents='all';$('nextBtn').disabled=false;$('nextBtn').style.opacity='1';
           }
+          if(_DEMO_MODE&&G.stage===_DEMO_LAST_STAGE&&SI_TO_HELL[G.stage]===0){
+            $('clearSub').textContent=_L('썩은 숲을 정복했습니다.','You conquered the Rotten Forest.');
+            $('nextBtn').textContent=_T('데모 종료');
+          }
           break;
         }
       }
@@ -38759,6 +38903,7 @@ function hurtE(e,dmg,ang,noSound,opts,atkEl=0){
         // 풀피 부활 (HP 변동 없음)
         e.hp=e.mhp;e.eShield=0;e.eShieldMax=0;
         e._bossPhase=0; // 풀피 부활 → 페이즈 리셋
+        if(_isDruidFinale(e)){e._druidAct=-1;e._druidStep=0;e._druidRest=0;e._druidTargetLocked=false;}
         e.alive=true;e.s='recover';e.st2=90;e.stunned=0;
         e._bossRevJudged=true; // 1차 성공 → 2차 폴백 중복 발동 차단
         e._comboSeq=null;e._comboIdx=0;e._feinting=false;e._delaying=0; // 부활 시 콤보/페인트 클리어
@@ -52612,6 +52757,7 @@ function drawP(){
       const lp=G._lavaPools[li];
       // [다크드루이드] stage3 lavaPools = 커스텀 녹색 가시 장판 아트(빨간원 대체)
       const _dzl=((G.stage===0||G.stage===3)&&typeof _druidSheets!=='undefined'&&_druidSheets.aoe&&_druidSheets.aoe.ready)?_druidSheets.aoe:null;
+      if(_isDruidFinale(G._bossRef)){_drawDruidFinalePool(X,lp,_dzl);continue;}
       if(_dzl){const im=_dzl.img,cw=im.naturalWidth/4,ch=im.naturalHeight/2,fr=Math.min(7,~~(lp.t/lp.maxT*8)),sx=(fr%4)*cw,sy=(~~(fr/4))*ch,R=lp.r*1.4;
         const _la=lp.t<lp.warnT?(lp.t/lp.warnT*.7):(lp.t>lp.maxT*.8?(1-(lp.t-lp.maxT*.8)/(lp.maxT*.2)):1);
         X.globalAlpha=_la;X.drawImage(im,sx,sy,cw,ch,lp.x-R,lp.y-R,R*2,R*2);X.globalAlpha=1;continue;}
@@ -57903,6 +58049,7 @@ async function _proceedNextStage(){
 // ═══ 스테이지 클리어 시 난이도 선택 ═══
 $('nextBtn').onclick=()=>{
   $('nextBtn').disabled=true;$('nextBtn').style.opacity='.3';
+  if(_DEMO_MODE&&G.stage===_DEMO_LAST_STAGE&&SI_TO_HELL[G.stage]===0){nextStage();return;}
   _showNextDiffPop();
 };
 

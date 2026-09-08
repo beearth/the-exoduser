@@ -27,7 +27,7 @@ test('druid poison pools target three separated lanes around the player', () => 
 
 test('druid lavaPools uses fixed non-overlapping radius and staggered warnings', () => {
   const lavaPools = gameHtml.indexOf("case'lavaPools':");
-  const start = gameHtml.indexOf('if(G.stage===3){', lavaPools);
+  const start = gameHtml.indexOf('if((G.stage===0||G.stage===3)){', lavaPools);
   const end = gameHtml.indexOf("addTxt(e.x,e.y-30,_T('☠ 독 늪!')", start);
   assert.ok(start >= 0 && end > start, 'druid lavaPools branch must exist');
   const block = gameHtml.slice(start, end);
