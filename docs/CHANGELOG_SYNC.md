@@ -1,5 +1,16 @@
 # Sync Changelog
 
+## 2026-09-08 실버테일 악의구 은빛 초승달 디자인
+
+| 항목 | 적용 내용 |
+|---|---|
+| 대상 | 실버테일 `_charIdx===1`의 우클릭 `fireball` 악의구 |
+| 에셋 | `img/vfx/silvertail_malice_orb_moonblade_v2.png`, 1254×1254 RGB PNG, 녹색 크로마 |
+| 외형 | 검은 공허 핵 + 은빛 초승달 칼날 3장 + 청보라 잔광. 기존 원화는 보존 |
+| 렌더 | 기존 `_makeGreenChromaCutout` 1회 캐시, 지름 `p.r×6.2`, 맥동 ±3.5%, 회전 `now×.0012+p.x×.002`, 1.08배 보조광·alpha `fa×.18` 유지 |
+| 전투 | 피해·속도·사거리·폭발·중독·MP 및 타 캐릭터 렌더 변경 없음 |
+| 검증 | 관련 테스트 5개 통과, 인라인 JS 6개 문법 파싱 통과. 실제 게임 렌더 분기를 별도 Canvas에서 실행해 밝고 어두운 배경·반경 12/24/36 확인. 브라우저 연결 불가로 인게임 조작 검증은 미실시 |
+| 생성 이력 | `docs/5.1임펙트디자인/SILVERTAIL_MALICE_ORB_MOONBLADE_V2.md` |
 ## 2026-09-08 전체 변경 커밋·운영 배포 준비
 
 | 항목 | 적용 내용 |
@@ -590,7 +601,7 @@
 |---|---|---|---|---|
 | Shift `chainSlash` | 단순 은빛 날개 `chain_blade_silver.webp` | `img/vfx/chain_blade_silver_realistic.png`, 1448×1086 RGB 녹색 크로마, 관절식 강철 깃·체인 힌지·중심 갑주 | `_makeGreenChromaCutout()` 1회 캐시 후 `b.r×2.2 × b.r×1.6`, 16f 페이드 | 반경·피해·출혈·포이즈·자원 불변 |
 | 좌클릭 `kiSlash` | 2152×731/6프레임 네온 보라 시트 | `img/vfx/silvertail_ki_slash_realistic.png`, 1536×1024 RGB 녹색 크로마, 백열 코어·난류 플라즈마·파편 | 1·2타 144px/3타 176px, ±4.5% 맥동, 1.14배 약한 `lighter` 글로우 + 불투명 본체 | 3단 콤보 피해·사거리·판정·입력 불변 |
-| 우클릭 `fireball` | 전 캐릭터 공용 7×3/20프레임 보라 오브 | `img/vfx/silvertail_malice_orb_realistic.png`, 1254×1254 RGB 녹색 크로마, 흑요석 균열 코어·자주색 궤도 칼날 | 실버테일만 `p.r×6.2`, ±3.5% 맥동·완만한 회전·1.08배 보조광; 다른 캐릭터는 공용 시트 유지 | 피해·폭발·중독·사거리·MP 불변 |
+| 우클릭 `fireball` | 전 캐릭터 공용 7×3/20프레임 보라 오브 | `img/vfx/silvertail_malice_orb_moonblade_v2.png`, 1254×1254 RGB 녹색 크로마, 검은 공허 핵·은빛 초승달 칼날 3장·청보라 잔광 | 실버테일만 `p.r×6.2`, ±3.5% 맥동·완만한 회전·1.08배 보조광; 다른 캐릭터는 공용 시트 유지 | 피해·폭발·중독·사거리·MP 불변 |
 
 - 세 원화는 내장 이미지 생성 도구의 이미지 편집 모드로 기존 실루엣을 참조해 사실적 재질로 재설계했다. 생성 PNG의 녹색 크로마는 로드 시 녹색 우세도 기반 smoothstep alpha와 스필 감산으로 제거하며 변환 Canvas를 재사용한다.
 - TDD: 전용 경로·로더·크로마 캐시·입력별 라우팅·맥동 렌더를 먼저 요구한 뒤 구현했으며 `test/chainBladewingSilverVfx.test.js`, `test/silvertailAttackMotion.test.js` 최종 **7/7 PASS**다.
