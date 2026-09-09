@@ -1,0 +1,19 @@
+{
+  "verdict": "PASS_FOR_REVIEW",
+  "inspected": [
+    "nemesia_identity.png",
+    "escape_clean.png",
+    "ending_contact.jpg (12 frames)",
+    "contact.jpg (15 frames)"
+  ],
+  "findings": [
+    "Canonical black hair, crimson cape and black iron armor maintained within ending",
+    "Single readable staircase with foreground connection",
+    "Removed brief W16-C flash; three continuous shot intervals",
+    "Question/command captions and final fade verified"
+  ],
+  "limitations": [
+    "Still sample review, not realtime full-film viewing",
+    "Camera motion only; no independent character animation"
+  ]
+}

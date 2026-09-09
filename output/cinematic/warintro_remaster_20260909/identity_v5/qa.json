@@ -1,0 +1,37 @@
+{
+  "receipts": {
+    "replacement.mp4": {
+      "duration_s": 14,
+      "frames": 840,
+      "bytes": 10258804
+    },
+    "final.mp4": {
+      "duration_s": 101,
+      "frames": 6060,
+      "bytes": 89135391
+    },
+    "identity_review.mp4": {
+      "duration_s": 18,
+      "frames": 1080,
+      "bytes": 13205151
+    }
+  },
+  "full_decode_pass": true,
+  "narration_pcm_sample_identical_v4": true,
+  "captions_byte_identical_v4": true,
+  "caption_count": 21,
+  "edited_cues": 4,
+  "replaced_range_s": [
+    46,
+    60
+  ],
+  "preserved_ending_range_s": [
+    89.5,
+    101
+  ],
+  "question_pause_s": 3.7,
+  "visual_review_pending": false,
+  "realtime_audio_approval": false,
+  "visual_review_file": "visual_review.json",
+  "verdict": "PASS_FOR_REVIEW"
+}

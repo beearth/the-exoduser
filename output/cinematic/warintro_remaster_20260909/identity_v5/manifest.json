@@ -1,0 +1,865 @@
+{
+  "version": 5,
+  "date": "2026-09-09",
+  "size": "1920x1080",
+  "fps": 60,
+  "duration_s": 101,
+  "scene_count": 16,
+  "caption_count": 21,
+  "voice_id": "WS6naCm8T4gbyzsLnOjK",
+  "captions": [
+    {
+      "id": "wa02",
+      "scene": 1,
+      "start_s": 1,
+      "end_s": 3.21,
+      "ko": "전쟁에서 살아 돌아온 한 남자.",
+      "en": "A man who returned alive from war."
+    },
+    {
+      "id": "wa04",
+      "scene": 2,
+      "start_s": 5.5,
+      "end_s": 7.51,
+      "ko": "하지만 집은 모두 불타 사라졌다.",
+      "en": "But his home had burned to nothing."
+    },
+    {
+      "id": "wa06",
+      "scene": 3,
+      "start_s": 10,
+      "end_s": 14.030000000000001,
+      "ko": "이웃이자 친구였던 킬루가 그의 가문을 짓밟았다.",
+      "en": "Killu, once a neighbor and friend, had crushed his family."
+    },
+    {
+      "id": "wa08",
+      "scene": 4,
+      "start_s": 16,
+      "end_s": 20.43,
+      "ko": "아내는 몸종으로 끌려가 온갖 몹쓸 짓을 당했고,",
+      "en": "His wife was taken as a servant and suffered unspeakable horrors,"
+    },
+    {
+      "id": "wa09",
+      "scene": 5,
+      "start_s": 22.5,
+      "end_s": 25.33,
+      "ko": "끝내 못 이겨 스스로 목숨을 끊었다.",
+      "en": "until she could bear no more and took her own life."
+    },
+    {
+      "id": "wa11",
+      "scene": 6,
+      "start_s": 28,
+      "end_s": 32.05,
+      "ko": "아이들은 노예로 팔려가 어디에 있는지조차 알 수 없다.",
+      "en": "His children were sold into slavery — their fate unknown."
+    },
+    {
+      "id": "wa12",
+      "scene": 7,
+      "start_s": 33.5,
+      "end_s": 36.85,
+      "ko": "늙은 부모는 감옥에 갇혀 굶어 죽었다.",
+      "en": "His elderly parents were imprisoned and starved to death."
+    },
+    {
+      "id": "wa14",
+      "scene": 8,
+      "start_s": 39,
+      "end_s": 41.51,
+      "ko": "킬루 가문의 모두가 알고 있었다.",
+      "en": "Everyone in the Killu household knew."
+    },
+    {
+      "id": "wa15",
+      "scene": 8,
+      "start_s": 42.24,
+      "end_s": 45.15,
+      "ko": "31명이 보고도 못 본 척했다.",
+      "en": "Thirty-one of them saw everything and looked away."
+    },
+    {
+      "id": "wa17",
+      "scene": 9,
+      "start_s": 46.5,
+      "end_s": 49.05,
+      "ko": "그날 밤, 킬루 가문을 모두 죽였다.",
+      "en": "That night, he killed every last one of them."
+    },
+    {
+      "id": "wa19",
+      "scene": 10,
+      "start_s": 51,
+      "end_s": 53.41,
+      "ko": "칼로 킬루의 팔다리를 자르고",
+      "en": "He cut off Killu's limbs with a blade,"
+    },
+    {
+      "id": "wa20",
+      "scene": 10,
+      "start_s": 53.48,
+      "end_s": 55.69,
+      "ko": "불로 지혈까지 해주며",
+      "en": "cauterized the wounds with fire,"
+    },
+    {
+      "id": "wa21",
+      "scene": 10,
+      "start_s": 56.019999999999996,
+      "end_s": 59.03,
+      "ko": "오래오래 살려두었다.",
+      "en": "and kept him alive for a long, long time."
+    },
+    {
+      "id": "wa22",
+      "scene": 11,
+      "start_s": 60.5,
+      "end_s": 60.98,
+      "ko": "\"기억하라.\"",
+      "en": "\"Remember.\""
+    },
+    {
+      "id": "wa23",
+      "scene": 11,
+      "start_s": 60.98,
+      "end_s": 63.43,
+      "ko": "\"그리고 지옥에서도 후회하라.\"",
+      "en": "\"And regret it even in hell.\""
+    },
+    {
+      "id": "wa24",
+      "scene": 12,
+      "start_s": 66,
+      "end_s": 67.51,
+      "ko": "그리고 지옥에 떨어진다.",
+      "en": "And so he fell into hell."
+    },
+    {
+      "id": "wa26",
+      "scene": 13,
+      "start_s": 71.67,
+      "end_s": 74.86,
+      "ko": "\"...이것은 셀 수 없는 복수자 중 하나의 이야기일 뿐.\"",
+      "en": "\"...This is but one tale among countless avengers.\""
+    },
+    {
+      "id": "wa28",
+      "scene": 14,
+      "start_s": 77,
+      "end_s": 80.45,
+      "ko": "\"지옥의 미로에는 매일 새로운 영혼이 떨어진다.\"",
+      "en": "\"Every day, new souls fall into hell's labyrinth.\""
+    },
+    {
+      "id": "wa29",
+      "scene": 15,
+      "start_s": 82.5,
+      "end_s": 88.41,
+      "ko": "\"분노로 가득 찬 자, 억울함에 미친 자, 사랑을 잃은 자...\"",
+      "en": "\"Those consumed by rage, driven mad by injustice, those who lost love...\""
+    },
+    {
+      "id": "wa31",
+      "scene": 16,
+      "start_s": 90,
+      "end_s": 94.25,
+      "ko": "\"너는 왜 지옥에 왔느냐?\"",
+      "en": "\"Why have you come to hell?\""
+    },
+    {
+      "id": "wa33",
+      "scene": 16,
+      "start_s": 95.04,
+      "end_s": 96.63,
+      "ko": "\"지옥을 탈출하라, 죄인이여.\"",
+      "en": "\"Escape from hell, sinner.\""
+    }
+  ],
+  "revision": "Canonical game warrior identity for W09 and W10",
+  "editorial_cut_count": 28,
+  "editorial_shots": [
+    {
+      "id": "W01",
+      "start_s": 0,
+      "end_s": 5,
+      "start_frame": 0,
+      "end_frame": 300,
+      "label": "Unchanged v3 head shot"
+    },
+    {
+      "id": "W02",
+      "start_s": 5,
+      "end_s": 9.5,
+      "start_frame": 300,
+      "end_frame": 570,
+      "label": "Unchanged v3 head shot"
+    },
+    {
+      "id": "W03",
+      "start_s": 9.5,
+      "end_s": 15.0,
+      "start_frame": 570,
+      "end_frame": 900,
+      "label": "Unchanged v3 head shot"
+    },
+    {
+      "id": "W04",
+      "start_s": 15,
+      "end_s": 22,
+      "start_frame": 900,
+      "end_frame": 1320,
+      "label": "Unchanged v3 head shot"
+    },
+    {
+      "id": "W05",
+      "start_s": 22,
+      "end_s": 27.5,
+      "start_frame": 1320,
+      "end_frame": 1650,
+      "label": "Unchanged v3 head shot"
+    },
+    {
+      "id": "W06",
+      "start_s": 27.5,
+      "end_s": 33.0,
+      "start_frame": 1650,
+      "end_frame": 1980,
+      "label": "Unchanged v3 head shot"
+    },
+    {
+      "id": "W07",
+      "start_s": 33,
+      "end_s": 38.5,
+      "start_frame": 1980,
+      "end_frame": 2310,
+      "label": "Unchanged v3 head shot"
+    },
+    {
+      "id": "W08",
+      "start_s": 38.5,
+      "end_s": 46.0,
+      "start_frame": 2310,
+      "end_frame": 2760,
+      "label": "Unchanged v3 head shot"
+    },
+    {
+      "id": "W09",
+      "start_s": 46,
+      "end_s": 50.5,
+      "start_frame": 2760,
+      "end_frame": 3030,
+      "label": "Unchanged v3 head shot"
+    },
+    {
+      "id": "W10-A",
+      "start_frame": 3030,
+      "end_frame": 3210,
+      "source_start_s": 50.5,
+      "crop": [
+        0,
+        0,
+        1280,
+        720
+      ],
+      "label": "Situation",
+      "start_s": 50.5,
+      "end_s": 53.5
+    },
+    {
+      "id": "W10-B",
+      "start_frame": 3210,
+      "end_frame": 3360,
+      "source_start_s": 53.5,
+      "crop": [
+        100,
+        120,
+        768,
+        432
+      ],
+      "label": "Killu expression",
+      "start_s": 53.5,
+      "end_s": 56.0
+    },
+    {
+      "id": "W10-C",
+      "start_frame": 3360,
+      "end_frame": 3600,
+      "source_start_s": 56,
+      "crop": [
+        400,
+        0,
+        864,
+        486
+      ],
+      "label": "Avenger expression",
+      "start_s": 56.0,
+      "end_s": 60.0
+    },
+    {
+      "id": "W11-A",
+      "start_frame": 3600,
+      "end_frame": 3750,
+      "source_start_s": 60,
+      "crop": [
+        280,
+        288,
+        768,
+        432
+      ],
+      "label": "Bereaved man",
+      "start_s": 60.0,
+      "end_s": 62.5
+    },
+    {
+      "id": "W11-B",
+      "start_frame": 3750,
+      "end_frame": 3930,
+      "source_start_s": 62.5,
+      "crop": [
+        0,
+        0,
+        1280,
+        720
+      ],
+      "label": "Family memory",
+      "start_s": 62.5,
+      "end_s": 65.5
+    },
+    {
+      "id": "W12-A",
+      "start_frame": 3930,
+      "end_frame": 4065,
+      "source_start_s": 65.5,
+      "crop": [
+        240,
+        80,
+        960,
+        540
+      ],
+      "label": "Entering hell",
+      "start_s": 65.5,
+      "end_s": 67.75
+    },
+    {
+      "id": "W12-B",
+      "start_frame": 4065,
+      "end_frame": 4200,
+      "source_start_s": 67.75,
+      "crop": [
+        0,
+        0,
+        1280,
+        720
+      ],
+      "label": "Infernal road",
+      "start_s": 67.75,
+      "end_s": 70.0
+    },
+    {
+      "id": "W13-A",
+      "start_frame": 4200,
+      "end_frame": 4350,
+      "source_start_s": 70,
+      "crop": [
+        220,
+        0,
+        800,
+        450
+      ],
+      "label": "One avenger",
+      "start_s": 70.0,
+      "end_s": 72.5
+    },
+    {
+      "id": "W13-B",
+      "start_frame": 4350,
+      "end_frame": 4470,
+      "source_start_s": 72.5,
+      "crop": [
+        480,
+        270,
+        800,
+        450
+      ],
+      "label": "Other fighters",
+      "start_s": 72.5,
+      "end_s": 74.5
+    },
+    {
+      "id": "W13-C",
+      "start_frame": 4470,
+      "end_frame": 4590,
+      "source_start_s": 74.5,
+      "crop": [
+        0,
+        0,
+        1280,
+        720
+      ],
+      "label": "Battlefield",
+      "start_s": 74.5,
+      "end_s": 76.5
+    },
+    {
+      "id": "W14-A",
+      "start_frame": 4590,
+      "end_frame": 4755,
+      "source_start_s": 76.5,
+      "crop": [
+        0,
+        0,
+        1280,
+        720
+      ],
+      "label": "Duel",
+      "start_s": 76.5,
+      "end_s": 79.25
+    },
+    {
+      "id": "W14-B",
+      "start_frame": 4755,
+      "end_frame": 4920,
+      "source_start_s": 79.25,
+      "crop": [
+        500,
+        50,
+        736,
+        414
+      ],
+      "label": "Human face",
+      "start_s": 79.25,
+      "end_s": 82.0
+    },
+    {
+      "id": "W15-A",
+      "start_frame": 4920,
+      "end_frame": 5070,
+      "source_start_s": 82,
+      "crop": [
+        420,
+        0,
+        800,
+        450
+      ],
+      "label": "Rage",
+      "start_s": 82.0,
+      "end_s": 84.5
+    },
+    {
+      "id": "W15-B",
+      "start_frame": 5070,
+      "end_frame": 5200,
+      "source_start_s": 84.5,
+      "crop": [
+        0,
+        0,
+        1280,
+        720
+      ],
+      "label": "Encircled",
+      "start_s": 84.5,
+      "end_s": 86.66666666666667
+    },
+    {
+      "id": "W15-C",
+      "start_frame": 5200,
+      "end_frame": 5370,
+      "source_start_s": 62,
+      "crop": [
+        0,
+        0,
+        1280,
+        720
+      ],
+      "label": "Lost love",
+      "start_s": 86.66666666666667,
+      "end_s": 89.5
+    },
+    {
+      "id": "W16-A",
+      "start_frame": 5370,
+      "end_frame": 5490,
+      "source_start_s": 89.5,
+      "crop": [
+        160,
+        0,
+        960,
+        540
+      ],
+      "label": "Question",
+      "start_s": 89.5,
+      "end_s": 91.5
+    },
+    {
+      "id": "W16-B",
+      "start_frame": 5490,
+      "end_frame": 5703,
+      "source_start_s": 91.5,
+      "crop": [
+        320,
+        360,
+        640,
+        360
+      ],
+      "label": "Response silence",
+      "start_s": 91.5,
+      "end_s": 95.05
+    },
+    {
+      "id": "W16-C",
+      "start_frame": 5703,
+      "end_frame": 5760,
+      "source_start_s": 95.04166666666667,
+      "crop": [
+        160,
+        0,
+        960,
+        540
+      ],
+      "label": "Final command",
+      "start_s": 95.05,
+      "end_s": 96
+    },
+    {
+      "id": "W16-D",
+      "start_frame": 5760,
+      "end_frame": 6060,
+      "start_s": 96,
+      "end_s": 101,
+      "label": "Escape path; rear-facing warrior"
+    }
+  ],
+  "enhanced_range_s": [
+    89.5,
+    101
+  ],
+  "fade_s": [
+    100.2,
+    101
+  ],
+  "renderer": "FFmpeg Windows recovery; original Higgsedit script preserved",
+  "source_segments_v3": [
+    {
+      "scene": 1,
+      "folder": "",
+      "clean_url": "https://d2ol7oe51mr4n9.cloudfront.net/user_3G1zto9sz11Uf3iEOhJefE9HdGG/d6063c30-9338-4300-995a-73e9fe7b61a3.mp4",
+      "source_duration_s": 5,
+      "trim_start_s": 0,
+      "duration_s": 5,
+      "at_s": 0,
+      "voice_start_s": 1,
+      "voice_duration_s": 2.403265,
+      "caption_ids": [
+        "wa02"
+      ]
+    },
+    {
+      "scene": 2,
+      "folder": "w02_v2",
+      "clean_url": "https://d2ol7oe51mr4n9.cloudfront.net/user_3G1zto9sz11Uf3iEOhJefE9HdGG/a903c1a7-d08f-4d24-99d6-b9b2f37407f2.mp4",
+      "source_duration_s": 5,
+      "trim_start_s": 0.5,
+      "duration_s": 4.5,
+      "at_s": 5,
+      "voice_start_s": 1,
+      "voice_duration_s": 2.324898,
+      "caption_ids": [
+        "wa04"
+      ]
+    },
+    {
+      "scene": 3,
+      "folder": "w03",
+      "clean_url": "https://d2ol7oe51mr4n9.cloudfront.net/user_3G1zto9sz11Uf3iEOhJefE9HdGG/2f90a608-89f5-4c3b-b286-7aa423d6fe5d.mp4",
+      "source_duration_s": 6,
+      "trim_start_s": 0.5,
+      "duration_s": 5.5,
+      "at_s": 9.5,
+      "voice_start_s": 1,
+      "voice_duration_s": 4.257959,
+      "caption_ids": [
+        "wa06"
+      ]
+    },
+    {
+      "scene": 4,
+      "folder": "w04_v3",
+      "clean_url": "https://d2ol7oe51mr4n9.cloudfront.net/user_3G1zto9sz11Uf3iEOhJefE9HdGG/df510745-de71-4d70-9504-8c55b3fda6de.mp4",
+      "source_duration_s": 7,
+      "trim_start_s": 0,
+      "duration_s": 7,
+      "at_s": 15,
+      "voice_start_s": 1,
+      "voice_duration_s": 4.623673,
+      "caption_ids": [
+        "wa08"
+      ]
+    },
+    {
+      "scene": 5,
+      "folder": "w05",
+      "clean_url": "https://d2ol7oe51mr4n9.cloudfront.net/user_3G1zto9sz11Uf3iEOhJefE9HdGG/5bbe4b9a-0e40-4834-8cb6-b3c8c1985d4c.mp4",
+      "source_duration_s": 6,
+      "trim_start_s": 0.5,
+      "duration_s": 5.5,
+      "at_s": 22,
+      "voice_start_s": 1,
+      "voice_duration_s": 3.108571,
+      "caption_ids": [
+        "wa09"
+      ]
+    },
+    {
+      "scene": 6,
+      "folder": "w06",
+      "clean_url": "https://d2ol7oe51mr4n9.cloudfront.net/user_3G1zto9sz11Uf3iEOhJefE9HdGG/a495be54-0748-481b-aa7c-42c06cc62853.mp4",
+      "source_duration_s": 6,
+      "trim_start_s": 0.5,
+      "duration_s": 5.5,
+      "at_s": 27.5,
+      "voice_start_s": 1,
+      "voice_duration_s": 4.493061,
+      "caption_ids": [
+        "wa11"
+      ]
+    },
+    {
+      "scene": 7,
+      "folder": "batch/w07",
+      "clean_url": "https://d2ol7oe51mr4n9.cloudfront.net/user_3G1zto9sz11Uf3iEOhJefE9HdGG/14476ca4-ebe0-48b3-b621-7b1ff2ea146e.mp4",
+      "source_duration_s": 6,
+      "trim_start_s": 0.5,
+      "duration_s": 5.5,
+      "at_s": 33,
+      "voice_start_s": 1,
+      "voice_duration_s": 3.657143,
+      "caption_ids": [
+        "wa12"
+      ]
+    },
+    {
+      "scene": 8,
+      "folder": "batch/w08",
+      "clean_url": "https://d2ol7oe51mr4n9.cloudfront.net/user_3G1zto9sz11Uf3iEOhJefE9HdGG/a953230d-3398-4582-981c-1b9a5ee3f6dc.mp4",
+      "source_duration_s": 8,
+      "trim_start_s": 0.5,
+      "duration_s": 7.5,
+      "at_s": 38.5,
+      "voice_start_s": 1,
+      "voice_duration_s": 6.269388,
+      "caption_ids": [
+        "wa14",
+        "wa15"
+      ]
+    },
+    {
+      "scene": 9,
+      "folder": "batch/w09",
+      "clean_url": "https://d2ol7oe51mr4n9.cloudfront.net/user_3G1zto9sz11Uf3iEOhJefE9HdGG/e5c7199b-f874-4f4a-a8d4-ab23e625f5f1.mp4",
+      "source_duration_s": 5,
+      "trim_start_s": 0.5,
+      "duration_s": 4.5,
+      "at_s": 46,
+      "voice_start_s": 1,
+      "voice_duration_s": 2.742857,
+      "caption_ids": [
+        "wa17"
+      ]
+    },
+    {
+      "scene": 10,
+      "folder": "batch/w10",
+      "clean_url": "https://d2ol7oe51mr4n9.cloudfront.net/user_3G1zto9sz11Uf3iEOhJefE9HdGG/3c7d0f92-5655-419b-88fc-3b2267df233b.mp4",
+      "source_duration_s": 10,
+      "trim_start_s": 0.5,
+      "duration_s": 9.5,
+      "at_s": 50.5,
+      "voice_start_s": 1,
+      "voice_duration_s": 8.385306,
+      "caption_ids": [
+        "wa19",
+        "wa20",
+        "wa21"
+      ]
+    },
+    {
+      "scene": 11,
+      "folder": "batch/w11",
+      "clean_url": "https://d2ol7oe51mr4n9.cloudfront.net/user_3G1zto9sz11Uf3iEOhJefE9HdGG/76fcc7d8-126e-4827-b95e-25d2b43d5033.mp4",
+      "source_duration_s": 6,
+      "trim_start_s": 0.5,
+      "duration_s": 5.5,
+      "at_s": 60,
+      "voice_start_s": 1,
+      "voice_duration_s": 3.239184,
+      "caption_ids": [
+        "wa22",
+        "wa23"
+      ]
+    },
+    {
+      "scene": 12,
+      "folder": "batch/w12",
+      "clean_url": "https://d2ol7oe51mr4n9.cloudfront.net/user_3G1zto9sz11Uf3iEOhJefE9HdGG/4b41822a-229a-4598-8b13-fd7af896e158.mp4",
+      "source_duration_s": 5,
+      "trim_start_s": 0.5,
+      "duration_s": 4.5,
+      "at_s": 65.5,
+      "voice_start_s": 1,
+      "voice_duration_s": 1.750204,
+      "caption_ids": [
+        "wa24"
+      ]
+    },
+    {
+      "scene": 13,
+      "folder": "batch/w13",
+      "clean_url": "https://d2ol7oe51mr4n9.cloudfront.net/user_3G1zto9sz11Uf3iEOhJefE9HdGG/9afeba9e-8859-4e48-a407-55a135fd6ce2.mp4",
+      "source_duration_s": 7,
+      "trim_start_s": 0.5,
+      "duration_s": 6.5,
+      "at_s": 70,
+      "voice_start_s": 1,
+      "voice_duration_s": 4.728163,
+      "caption_ids": [
+        "wa26"
+      ]
+    },
+    {
+      "scene": 14,
+      "folder": "batch/w14",
+      "clean_url": "https://d2ol7oe51mr4n9.cloudfront.net/user_3G1zto9sz11Uf3iEOhJefE9HdGG/cc77f5f1-55b6-4f1a-94e7-6e1f0de3a1e5.mp4",
+      "source_duration_s": 6,
+      "trim_start_s": 0.5,
+      "duration_s": 5.5,
+      "at_s": 76.5,
+      "voice_start_s": 1,
+      "voice_duration_s": 3.422041,
+      "caption_ids": [
+        "wa28"
+      ]
+    },
+    {
+      "scene": 15,
+      "folder": "batch/w15",
+      "clean_url": "https://d2ol7oe51mr4n9.cloudfront.net/user_3G1zto9sz11Uf3iEOhJefE9HdGG/46365a11-bc48-440d-b541-a7e717bd5139.mp4",
+      "source_duration_s": 8,
+      "trim_start_s": 0.5,
+      "duration_s": 7.5,
+      "at_s": 82,
+      "voice_start_s": 1,
+      "voice_duration_s": 6.217143,
+      "caption_ids": [
+        "wa29"
+      ]
+    },
+    {
+      "scene": 16,
+      "folder": "full_review_v2",
+      "clean_url": "https://d2ol7oe51mr4n9.cloudfront.net/user_3G1zto9sz11Uf3iEOhJefE9HdGG/af8fcf75-68bf-4132-94c5-e8b8f5a4b8d1.mp4",
+      "source_duration_s": 10,
+      "trim_start_s": 0.5,
+      "duration_s": 9.5,
+      "at_s": 89.5,
+      "voice_start_s": 1,
+      "voice_duration_s": 6.9009583333333335,
+      "caption_ids": [
+        "wa31",
+        "wa33"
+      ],
+      "audio_pause_added_s": 3,
+      "audio_split_source_s": 1.65,
+      "ending_fade_local_s": [
+        9.2,
+        10
+      ]
+    }
+  ],
+  "segments": [
+    {
+      "source": "source_v3.mp4",
+      "at_s": 0,
+      "duration_s": 89.5
+    },
+    {
+      "source": "smooth_hq.mp4",
+      "at_s": 89.5,
+      "duration_s": 6.5
+    },
+    {
+      "source": "escape_hq.mp4",
+      "at_s": 96,
+      "duration_s": 5
+    }
+  ],
+  "replacement_range_s": [
+    46,
+    60
+  ],
+  "identity_reference": [
+    "assets/charselect/warrior_cut.png",
+    "assets/charselect/poster_idle_warrior_higgsfield.jpg"
+  ],
+  "motion": "New identity-corrected stills, restrained camera zoom, original four cuts; no newly generated body animation",
+  "identity_shots": [
+    {
+      "id": "W09",
+      "image": "w09_identity.png",
+      "frames": 270,
+      "crop": [
+        0,
+        0,
+        1920,
+        1080
+      ],
+      "zoom": 0.025,
+      "start_s": 46,
+      "end_s": 50.5
+    },
+    {
+      "id": "W10-A",
+      "image": "w10_identity.png",
+      "frames": 180,
+      "crop": [
+        0,
+        0,
+        1920,
+        1080
+      ],
+      "zoom": 0.015,
+      "start_s": 50.5,
+      "end_s": 53.5
+    },
+    {
+      "id": "W10-B",
+      "image": "w10_identity.png",
+      "frames": 150,
+      "crop": [
+        150,
+        180,
+        1152,
+        648
+      ],
+      "zoom": 0.015,
+      "start_s": 53.5,
+      "end_s": 56
+    },
+    {
+      "id": "W10-C",
+      "image": "w10_identity.png",
+      "frames": 240,
+      "crop": [
+        600,
+        0,
+        1296,
+        729
+      ],
+      "zoom": 0.02,
+      "start_s": 56,
+      "end_s": 60
+    }
+  ],
+  "audio": "v4 AAC stream copied unchanged"
+}

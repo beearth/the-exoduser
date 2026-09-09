@@ -1,0 +1,16 @@
+{
+  "verdict": "PASS_FOR_REVIEW",
+  "samples": 15,
+  "method": "direct still-frame inspection",
+  "findings": [
+    "Both corrected scenes retain short black hair, matching black iron plates and crimson cape",
+    "W10 face reads closer to canonical full-body selection art",
+    "Four editorial cuts and subtitles remain correctly timed",
+    "No conspicuous new geometry damage in inspected samples"
+  ],
+  "limitations": [
+    "No new generated character animation; camera motion over corrected stills",
+    "Other story shots were retained",
+    "No realtime full-film viewing or speaker approval"
+  ]
+}

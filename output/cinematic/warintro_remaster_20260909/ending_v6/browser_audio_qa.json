@@ -1,0 +1,30 @@
+{
+  "browser": "Chrome headless",
+  "physical_speaker_output_verified": false,
+  "results": [
+    {
+      "file": "대검전사_엔딩.mp4",
+      "currentTime": 2.001333,
+      "muted": false,
+      "volume": 1,
+      "paused": false,
+      "readyState": 4,
+      "audioPeak": 0.3960787057876587,
+      "mediaError": null,
+      "audioContext": "running",
+      "decodedAudioBytes": 41697
+    },
+    {
+      "file": "대검전사_엔딩_소리포함.webm",
+      "currentTime": 2,
+      "muted": false,
+      "volume": 1,
+      "paused": false,
+      "readyState": 4,
+      "audioPeak": 0.39728859066963196,
+      "mediaError": null,
+      "audioContext": "running",
+      "decodedAudioBytes": 32356
+    }
+  ]
+}

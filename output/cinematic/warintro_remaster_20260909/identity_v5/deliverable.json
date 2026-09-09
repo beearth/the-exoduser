@@ -1,0 +1,26 @@
+{
+  "mode": "built-in image_gen",
+  "references": [
+    "assets/charselect/warrior_cut.png",
+    "assets/charselect/poster_idle_warrior_higgsfield.jpg"
+  ],
+  "files": {
+    "w09_identity.png": {
+      "bytes": 2620289,
+      "sha256": "24fc48e4c7f966b8f09d5f74b3047f7d1dbf0f50b0288447a11b7cc5b7b02f3a"
+    },
+    "w10_identity.png": {
+      "bytes": 2465363,
+      "sha256": "2466bc3f0f2e071e7cfed8ba8df06c5002622da6ad2586b9add85c22a5231cff"
+    },
+    "final.mp4": {
+      "bytes": 89135391,
+      "sha256": "a2f5a7b3e298866601c0c31c258f283df20727515e2e960000b5b41ae409c9b9"
+    },
+    "identity_review.mp4": {
+      "bytes": 13205151,
+      "sha256": "95472480593c7d7a875f58dd89088368c8ce9603a2a6b1f1f8d54d8ae5c8f9c1"
+    }
+  },
+  "prompt_file": "prompts.md"
+}

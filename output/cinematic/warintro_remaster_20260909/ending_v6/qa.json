@@ -1,0 +1,33 @@
+{
+  "receipts": {
+    "ending.mp4": {
+      "bytes": 8325070,
+      "duration_s": 11.5,
+      "audio": "aac"
+    },
+    "final.mp4": {
+      "bytes": 82948427,
+      "duration_s": 101,
+      "audio": "aac"
+    },
+    "ending_with_opus.webm": {
+      "bytes": 9196248,
+      "duration_s": 11.5,
+      "audio": "opus"
+    }
+  },
+  "full_decode_pass": true,
+  "frame_count": 6060,
+  "editorial_cuts": 27,
+  "audio_sample_identical_v5": true,
+  "captions_byte_identical_v5": true,
+  "question_pause_s": 3.7,
+  "fade_s": [
+    100.2,
+    101
+  ],
+  "visual_review_pending": false,
+  "realtime_audio_approval": false,
+  "webm_decoder": "FFmpeg 7.1 clean decode; 8.0.1 EOF parser warning with 0 audio/video decode errors",
+  "verdict": "PASS_FOR_REVIEW"
+}
