@@ -1,0 +1,21 @@
+{
+  "source": "game.html PROLOGUE_LINES wa11",
+  "line": {
+    "id": "wa11",
+    "original_start_s": 28.6,
+    "original_duration_s": 4.4,
+    "image": "warintro/cin_throne.jpg",
+    "ko": "아이들은 노예로 팔려가 어디에 있는지조차 알 수 없다.",
+    "en": "His children were sold into slavery — their fate unknown."
+  },
+  "new_image": {
+    "path": "output/cinematic/warintro_remaster_20260909/w06/cin_children_wagon.png",
+    "sha256": "177ba23dcfe647c56d45f1bed68989cc5b0bbfd3f381ecd7c1592d6b8188c4bb",
+    "bytes": 2748453,
+    "generator": "built-in image_gen"
+  },
+  "voice_id": "WS6naCm8T4gbyzsLnOjK",
+  "duration_s": 6,
+  "voice_start_s": 1,
+  "visual_scope": "closed covered wagon, no visible passengers"
+}

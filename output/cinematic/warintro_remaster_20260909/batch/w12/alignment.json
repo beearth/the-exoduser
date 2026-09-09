@@ -1,0 +1,40 @@
+{
+  "captions": [
+    {
+      "text": "And",
+      "start": 0.0,
+      "end": 0.14
+    },
+    {
+      "text": "so",
+      "start": 0.14,
+      "end": 0.42
+    },
+    {
+      "text": "he",
+      "start": 0.42,
+      "end": 0.54
+    },
+    {
+      "text": "fell",
+      "start": 0.54,
+      "end": 0.8
+    },
+    {
+      "text": "into",
+      "start": 0.8,
+      "end": 0.98
+    },
+    {
+      "text": "hell.",
+      "start": 0.98,
+      "end": 1.26
+    }
+  ],
+  "script_aligned": true,
+  "similarity": 1.0,
+  "timed_words": 6,
+  "caption_words": 6,
+  "words_per_second": 4.76,
+  "provider": "faster-whisper"
+}

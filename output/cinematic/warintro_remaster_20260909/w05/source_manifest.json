@@ -1,0 +1,20 @@
+{
+  "source": "game.html PROLOGUE_LINES wa09",
+  "line": {
+    "id": "wa09",
+    "original_start_s": 23.9,
+    "original_duration_s": 3.1,
+    "image": "warintro/cin_throne.jpg",
+    "ko": "끝내 못 이겨 스스로 목숨을 끊었다.",
+    "en": "until she could bear no more and took her own life."
+  },
+  "new_image": {
+    "path": "output/cinematic/warintro_remaster_20260909/w05/cin_wife_empty_room.png",
+    "sha256": "f8ef4b52f54436653eb94f6fa2301caebee203b89cadb09fbd53f853f2ece880",
+    "bytes": 2455918,
+    "generator": "built-in image_gen"
+  },
+  "voice_id": "WS6naCm8T4gbyzsLnOjK",
+  "duration_s": 6,
+  "voice_start_s": 1
+}

@@ -1,0 +1,21 @@
+{
+  "model": "cinematic_studio_video_v2",
+  "aspect_ratio": "16:9",
+  "mode": "std",
+  "sound": "off",
+  "genre": "suspense",
+  "speedramp": "linear",
+  "multi_shots": false,
+  "multi_shot_mode": "custom",
+  "cfg_scale": 0.5,
+  "count": 1,
+  "declined_preset_id": "24bae836-2c4a-48e0-89b6-49fcc0b21612",
+  "duration": 6,
+  "medias": [
+    {
+      "role": "image",
+      "value": "6cdbd2c8-b5ba-481b-8c0c-58d43b3f405d"
+    }
+  ],
+  "prompt": "Animate this existing cold prison-cell illustration as a restrained six-second cinematic shot. The elderly adult couple remain seated side by side at the back wall, their lowered heads, hands in laps, clothing and bodies remain entirely still. Preserve their identities and exact pose. Two empty wooden bowls remain motionless in the foreground. Camera slowly retreats a few inches outside the bars, emphasizing the unreachable people and empty bowls, with physically correct parallax and straight fixed bars. Fine dust moves through the pale window light; the cold light slowly softens. A solemn, quiet aftermath and loss. Preserve all stone walls, window, bars, bowls, architecture, proportions and painterly textures. No change to faces or hands. No standing, gestures, speaking, breathing emphasis, eating, violence, injuries, blood, death action, new objects or people. One continuous silent shot, no text or captions."
+}

@@ -1,0 +1,21 @@
+{
+  "model": "cinematic_studio_video_v2",
+  "aspect_ratio": "16:9",
+  "mode": "std",
+  "sound": "off",
+  "genre": "suspense",
+  "speedramp": "linear",
+  "multi_shots": false,
+  "multi_shot_mode": "custom",
+  "cfg_scale": 0.5,
+  "count": 1,
+  "declined_preset_id": "24bae836-2c4a-48e0-89b6-49fcc0b21612",
+  "duration": 7,
+  "medias": [
+    {
+      "role": "start_image",
+      "value": "6ec31734-7440-4d41-99e9-f9c754cb377b"
+    }
+  ],
+  "prompt": "Animate the supplied painterly fantasy battle illustration as a seven-second ominous overhead tableau of countless avengers in hell. Keep the exact warriors, monsters, positions, weapons, anatomy and composition. Very slow smooth camera pullback reveals the scale of the existing battlefield. Only small environmental animation: magical energy shimmers along the existing blue lightning beams and colored glows; fire flickers, smoke drifts, embers rise, capes move slightly. Existing combat figures maintain their illustrated poses with subtle breathing only; no new attacks, impacts, wounds, blood, monsters or weapons. Preserve faces and hand grips. One continuous silent shot, no speaking and no text or logos."
+}

@@ -1,0 +1,31 @@
+{
+  "scene": "w08",
+  "duration_s": 8,
+  "voice_start_s": 1,
+  "voice_duration_s": 6.269388,
+  "voice_end_s": 7.269388,
+  "caption_cues": [
+    {
+      "start": 1,
+      "end": 3.51,
+      "text": "킬루 가문의 모두가 알고 있었다."
+    },
+    {
+      "start": 4.24,
+      "end": 7.15,
+      "text": "31명이 보고도 못 본 척했다."
+    }
+  ],
+  "clean_url": "https://d2ol7oe51mr4n9.cloudfront.net/user_3G1zto9sz11Uf3iEOhJefE9HdGG/a953230d-3398-4582-981c-1b9a5ee3f6dc.mp4",
+  "final_url": "https://d2ol7oe51mr4n9.cloudfront.net/user_3G1zto9sz11Uf3iEOhJefE9HdGG/d3ce5386-0c59-4004-94e3-162dc62dff94.mp4",
+  "contact_url": "https://d2ol7oe51mr4n9.cloudfront.net/user_3G1zto9sz11Uf3iEOhJefE9HdGG/2a3ab15e-9d81-4362-b7ba-5d43d09ea83a.jpg",
+  "package_url": "https://d2ol7oe51mr4n9.cloudfront.net/user_3G1zto9sz11Uf3iEOhJefE9HdGG/0d0a892a-2eba-49a3-a22d-e907d5471fc2.zip",
+  "source_url": "https://d8j0ntlcm91z4.cloudfront.net/user_3G1zto9sz11Uf3iEOhJefE9HdGG/hf_20260909_065254_6bdec6e7-5829-4c10-86c7-d0a317458502.mp4",
+  "local_dir": "G:/exoduser/output/cinematic/warintro_remaster_20260909/batch/w08/",
+  "caps_path": "G:/exoduser/output/cinematic/warintro_remaster_20260909/batch/w08/caps.srt",
+  "qa_path": "G:/exoduser/output/cinematic/warintro_remaster_20260909/batch/w08/qa.json",
+  "voice_path": "G:/exoduser/output/cinematic/warintro_remaster_20260909/batch/w08/voice.mp3",
+  "visual_review": "PASS sampled five frames; rigid silent masks and readable two Korean cues; camera moves farther than prompt, avoiding static repetition.",
+  "audio_review": "Medium STT raw similarity .8571429 because Kilu/Killu and 31/Thirty-one. Verified every raw token against authored text with these two explicit spelling aliases, exact 14-token match. PCM correlation .9999722; human listening not performed.",
+  "status": "complete"
+}

@@ -1,0 +1,29 @@
+{
+  "id": 15,
+  "line": "wa29",
+  "duration": 8,
+  "prompt": "Animate this existing dark fantasy battle illustration as an eight-second continuous shot. Preserve the exact central black-haired armored warrior, his long sword, both hands and their grip, his stance, the surrounding creatures and the original composition. The warrior holds the sword in the original ready pose, with a small determined shoulder movement and visible breathing. His long ragged cape ripples strongly in the heat, embers fly and existing infernal flames flicker. Surrounding creatures shift minimally while maintaining their silhouettes and spacing; no creature touches or attacks anyone. Slow controlled camera push toward the warrior's face, still keeping his hands and sword in frame. Preserve the painted detail and fiery color palette. No new strikes, injuries or gore, no change of weapon, no additional people, objects or limbs. No text, captions, dialogue or generated audio.",
+  "params": {
+    "model": "cinematic_studio_video_v2",
+    "duration": 8,
+    "aspect_ratio": "16:9",
+    "mode": "std",
+    "sound": "off",
+    "genre": "suspense",
+    "speedramp": "linear",
+    "multi_shots": false,
+    "multi_shot_mode": "custom",
+    "cfg_scale": 0.5,
+    "count": 1,
+    "medias": [
+      {
+        "role": "image",
+        "value": "f17133d7-c0eb-4f46-b99b-f617d02ea2e5"
+      }
+    ],
+    "prompt": "Animate this existing dark fantasy battle illustration as an eight-second continuous shot. Preserve the exact central black-haired armored warrior, his long sword, both hands and their grip, his stance, the surrounding creatures and the original composition. The warrior holds the sword in the original ready pose, with a small determined shoulder movement and visible breathing. His long ragged cape ripples strongly in the heat, embers fly and existing infernal flames flicker. Surrounding creatures shift minimally while maintaining their silhouettes and spacing; no creature touches or attacks anyone. Slow controlled camera push toward the warrior's face, still keeping his hands and sword in frame. Preserve the painted detail and fiery color palette. No new strikes, injuries or gore, no change of weapon, no additional people, objects or limbs. No text, captions, dialogue or generated audio.",
+    "declined_preset_id": "24bae836-2c4a-48e0-89b6-49fcc0b21612"
+  },
+  "job_id": "a8d85c0f-8675-4a2a-81aa-ffa79e09d9a9",
+  "source_url": "https://d8j0ntlcm91z4.cloudfront.net/user_3G1zto9sz11Uf3iEOhJefE9HdGG/hf_20260909_064733_a8d85c0f-8675-4a2a-81aa-ffa79e09d9a9.mp4"
+}

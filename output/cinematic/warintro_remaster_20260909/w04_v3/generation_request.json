@@ -1,0 +1,21 @@
+{
+  "model": "cinematic_studio_video_v2",
+  "duration": 7,
+  "aspect_ratio": "16:9",
+  "mode": "std",
+  "sound": "off",
+  "genre": "suspense",
+  "speedramp": "linear",
+  "multi_shots": false,
+  "multi_shot_mode": "custom",
+  "cfg_scale": 0.5,
+  "count": 1,
+  "medias": [
+    {
+      "role": "image",
+      "value": "47016f8e-b0b5-4790-b4ea-1c45e6ca92b7"
+    }
+  ],
+  "prompt": "Seven-second emotionally expressive cinematic animation of the supplied gothic corridor painting, one continuous shot. The adult woman is the emotional subject. MUST SHOW THIS CLEAR ACTION SEQUENCE: During seconds 0-2.5 the two matching wooden door leaves swing together on their OUTER hinges, moving with physically correct equal mirrored rotation until BOTH doors fully close and meet at a single straight central seam exactly below the arch apex. Keep the door leaves rigid, equal-sized, correctly fitted to the arch, no bending, no shrinking, no sliding, no remaining gap once closed. The armored guard remains motionless well to the right of the door, completely outside the swing path. As the doors finish closing at about 2.5 seconds, the woman's shoulders visibly sag. During seconds 2.5-5 she slowly and naturally loses strength in both knees, lowers her body onto BOTH KNEES, then settles back onto her heels, bowing her head deeply. Her long dress folds and pools naturally on the floor. Her arms stay close to her body; her empty hands come to rest low in her lap, mostly covered by her sleeves. This is grief and despair, not fainting: she remains upright but hunched while kneeling. Hold that defeated kneeling pose through seconds 5-7, with a small trembling exhale through her shoulders. No turning toward camera. Keep the camera nearly locked with a very gentle push toward the woman; her full standing body and final kneeling silhouette must remain visible throughout. Preserve her face concealment, hair, clothing, anatomy, the guard and all corridor architecture. Gentle torch flicker and haze. Somber dark fantasy painterly style matching the input. Closed doors stay completely still after closing. Exactly two people. No extra limbs, duplicated hands, changes of clothing, morphing, sudden cuts, text, captions, dialogue or sound.",
+  "declined_preset_id": "24bae836-2c4a-48e0-89b6-49fcc0b21612"
+}

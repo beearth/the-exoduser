@@ -1,0 +1,24 @@
+{
+  "source": "game.html PROLOGUE_LINES wa08",
+  "line": {
+    "id": "wa08",
+    "original_start_s": 19.7,
+    "original_duration_s": 4.2,
+    "image": "warintro/cin_throne.jpg",
+    "ko": "아내는 몸종으로 끌려가 온갖 몹쓸 짓을 당했고,",
+    "en": "His wife was taken as a servant and suffered unspeakable horrors,"
+  },
+  "new_image": {
+    "path": "output/cinematic/warintro_remaster_20260909/w04_v3/cin_wife_despair_start.png",
+    "sha256": "e5d8679217b1425dc4e3a79f40ec239eaf7ec7807864f9105a66ac46466563f1",
+    "bytes": 2102279,
+    "generator": "built-in image_gen edit"
+  },
+  "voice": {
+    "path": "output/cinematic/warintro_remaster_20260909/w04/voice.mp3",
+    "sha256": "c8e9a03fbdf80720445bafa787f609b6ca54a5306872f6f22af181e18995e84b",
+    "reuse": true
+  },
+  "duration_s": 7,
+  "voice_start_s": 1
+}

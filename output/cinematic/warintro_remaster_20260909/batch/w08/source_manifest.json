@@ -1,0 +1,26 @@
+{
+  "scene": "w08",
+  "source": "game.html PROLOGUE_LINES",
+  "lines": [
+    {
+      "id": "wa14",
+      "original_start_s": 38.8,
+      "original_duration_s": 4.5,
+      "image": "warintro/cin_bystanders.jpg",
+      "ko": "킬루 가문의 모두가 알고 있었다.",
+      "en": "Everyone in the Killu household knew."
+    },
+    {
+      "id": "wa15",
+      "original_start_s": 43.3,
+      "original_duration_s": 2.7,
+      "image": "warintro/cin_bystanders.jpg",
+      "ko": "31명이 보고도 못 본 척했다.",
+      "en": "Thirty-one of them saw everything and looked away."
+    }
+  ],
+  "image": "assets/cutscene/warintro/cin_bystanders.jpg",
+  "image_sha256": "79afede1d19710126d9aaafa571504f61330d912e2f3c1a10e57661a939f74b6",
+  "voice_id": "WS6naCm8T4gbyzsLnOjK",
+  "voice_sha256": "de5c816717ab1fa767a5494a7e96a043a5ba5e601db209de4cf3487e5d74f2d6"
+}

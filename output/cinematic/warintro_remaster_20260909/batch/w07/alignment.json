@@ -1,0 +1,55 @@
+{
+  "captions": [
+    {
+      "text": "His",
+      "start": 0.0,
+      "end": 0.18
+    },
+    {
+      "text": "elderly",
+      "start": 0.18,
+      "end": 0.58
+    },
+    {
+      "text": "parents",
+      "start": 0.58,
+      "end": 1.18
+    },
+    {
+      "text": "were",
+      "start": 1.18,
+      "end": 1.46
+    },
+    {
+      "text": "imprisoned",
+      "start": 1.46,
+      "end": 1.9
+    },
+    {
+      "text": "and",
+      "start": 1.9,
+      "end": 2.24
+    },
+    {
+      "text": "starved",
+      "start": 2.24,
+      "end": 2.72
+    },
+    {
+      "text": "to",
+      "start": 2.72,
+      "end": 2.84
+    },
+    {
+      "text": "death.",
+      "start": 2.84,
+      "end": 3.1
+    }
+  ],
+  "script_aligned": true,
+  "similarity": 1.0,
+  "timed_words": 9,
+  "caption_words": 9,
+  "words_per_second": 2.9,
+  "provider": "faster-whisper"
+}

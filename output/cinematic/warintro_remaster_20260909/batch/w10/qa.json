@@ -1,0 +1,122 @@
+{
+  "duration_s": 10.0,
+  "voice_start_s": 1.0,
+  "voice_duration_s": 8.385306,
+  "captions": [
+    {
+      "id": "wa19",
+      "start": 1.0,
+      "end": 3.41,
+      "text": "칼로 킬루의 팔다리를 자르고",
+      "english": "He cut off Killu's limbs with a blade,"
+    },
+    {
+      "id": "wa20",
+      "start": 3.48,
+      "end": 5.69,
+      "text": "불로 지혈까지 해주며",
+      "english": "cauterized the wounds with fire,"
+    },
+    {
+      "id": "wa21",
+      "start": 6.02,
+      "end": 9.030000000000001,
+      "text": "오래오래 살려두었다.",
+      "english": "and kept him alive for a long, long time."
+    }
+  ],
+  "voice_end_s": 9.385306,
+  "caption_start_s": 1.0,
+  "caption_end_s": 9.030000000000001,
+  "english": "He cut off Killu's limbs with a blade, cauterized the wounds with fire, and kept him alive for a long, long time.",
+  "korean": "칼로 킬루의 팔다리를 자르고 불로 지혈까지 해주며 오래오래 살려두었다.",
+  "transcript_exact_match": true,
+  "voice_pcm_correlation": 0.9999674082817174,
+  "font": "NotoSerifCJKkr-Medium.otf: \"Noto Serif CJK KR\" \"Medium\"",
+  "font_size_ass": 13,
+  "margin_v_ass": 32,
+  "outline_ass": 0.6,
+  "shadow_ass": 0.4,
+  "receipts": {
+    "source.mp4": {
+      "bytes": 10971828,
+      "duration": 10.042,
+      "streams": [
+        {
+          "codec_type": "video",
+          "codec_name": "h264",
+          "width": 1280,
+          "height": 720,
+          "duration": "10.041667",
+          "sample_rate": null,
+          "r_frame_rate": "24/1"
+        }
+      ]
+    },
+    "voice.mp3": {
+      "bytes": 134626,
+      "duration": 8.385306,
+      "streams": [
+        {
+          "codec_type": "audio",
+          "codec_name": "mp3",
+          "width": null,
+          "height": null,
+          "duration": "8.385306",
+          "sample_rate": "44100",
+          "r_frame_rate": "0/0"
+        }
+      ]
+    },
+    "clean.mp4": {
+      "bytes": 10153019,
+      "duration": 10.0,
+      "streams": [
+        {
+          "codec_type": "video",
+          "codec_name": "h264",
+          "width": 1280,
+          "height": 720,
+          "duration": "10.000000",
+          "sample_rate": null,
+          "r_frame_rate": "24/1"
+        },
+        {
+          "codec_type": "audio",
+          "codec_name": "aac",
+          "width": null,
+          "height": null,
+          "duration": "10.000000",
+          "sample_rate": "48000",
+          "r_frame_rate": "0/0"
+        }
+      ]
+    },
+    "final.mp4": {
+      "bytes": 2876825,
+      "duration": 10.0,
+      "streams": [
+        {
+          "codec_type": "video",
+          "codec_name": "h264",
+          "width": 1280,
+          "height": 720,
+          "duration": "10.000000",
+          "sample_rate": null,
+          "r_frame_rate": "24/1"
+        },
+        {
+          "codec_type": "audio",
+          "codec_name": "aac",
+          "width": null,
+          "height": null,
+          "duration": "10.000000",
+          "sample_rate": "48000",
+          "r_frame_rate": "0/0"
+        }
+      ]
+    }
+  },
+  "human_audio_approval": false,
+  "visual_review_pending": true
+}

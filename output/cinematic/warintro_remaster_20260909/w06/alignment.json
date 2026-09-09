@@ -1,0 +1,25 @@
+{
+  "captions": [
+    {
+      "text": "His children were sold into",
+      "start": 0.0,
+      "end": 1.48
+    },
+    {
+      "text": "slavery",
+      "start": 1.48,
+      "end": 2.08
+    },
+    {
+      "text": "their fate unknown.",
+      "start": 2.86,
+      "end": 3.8
+    }
+  ],
+  "script_aligned": true,
+  "similarity": 1.0,
+  "timed_words": 9,
+  "caption_words": 9,
+  "words_per_second": 2.37,
+  "provider": "faster-whisper"
+}

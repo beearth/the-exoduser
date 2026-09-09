@@ -1,0 +1,21 @@
+{
+  "model": "cinematic_studio_video_v2",
+  "aspect_ratio": "16:9",
+  "mode": "std",
+  "sound": "off",
+  "genre": "suspense",
+  "speedramp": "linear",
+  "multi_shots": false,
+  "multi_shot_mode": "custom",
+  "cfg_scale": 0.5,
+  "count": 1,
+  "declined_preset_id": "24bae836-2c4a-48e0-89b6-49fcc0b21612",
+  "duration": 5,
+  "medias": [
+    {
+      "role": "start_image",
+      "value": "80811be7-dbd4-40b4-87a5-92d9caea9b34"
+    }
+  ],
+  "prompt": "Animate this existing painterly dark fantasy illustration in one continuous five-second shot. The lone armored warrior enters hell. Preserve his exact anatomy, armor, sword grip and red cape. The camera slowly descends and pushes forward along the downward sloping infernal path, keeping the warrior steady in the center. He makes one slow measured step into hell without falling or changing pose dramatically. Cape edges trail gently in the hot wind. Animate lava glow, embers and smoke, with a slow pulse of light in the distant flaming skull. Stable architectural perspective and sword. No new characters, objects, injuries or blood. No sudden moves, no cuts, no text, no speech."
+}

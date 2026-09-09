@@ -1,0 +1,44 @@
+{
+  "shot": "w10",
+  "status": "completed_for_combined_review",
+  "duration_s": 10,
+  "voice_start_s": 1,
+  "voice_duration_s": 8.385306,
+  "voice_end_s": 9.385306,
+  "captions": [
+    {
+      "id": "wa19",
+      "start": 1,
+      "end": 3.41,
+      "text": "칼로 킬루의 팔다리를 자르고",
+      "english": "He cut off Killu's limbs with a blade,"
+    },
+    {
+      "id": "wa20",
+      "start": 3.48,
+      "end": 5.69,
+      "text": "불로 지혈까지 해주며",
+      "english": "cauterized the wounds with fire,"
+    },
+    {
+      "id": "wa21",
+      "start": 6.02,
+      "end": 9.030000000000001,
+      "text": "오래오래 살려두었다.",
+      "english": "and kept him alive for a long, long time."
+    }
+  ],
+  "source_url": "https://d8j0ntlcm91z4.cloudfront.net/user_3G1zto9sz11Uf3iEOhJefE9HdGG/hf_20260909_065003_3e701d46-6291-4180-a7c2-f98d84d5d2d4.mp4",
+  "voice_url": "https://d2ol7oe51mr4n9.cloudfront.net/user_3G1zto9sz11Uf3iEOhJefE9HdGG/4bb64b16-b267-4e2d-87c1-bce7728de5dc.mp3",
+  "final_url": "https://d2ol7oe51mr4n9.cloudfront.net/user_3G1zto9sz11Uf3iEOhJefE9HdGG/6f549969-3471-4e47-9365-82e2f097b841.mp4",
+  "clean_url": "https://d2ol7oe51mr4n9.cloudfront.net/user_3G1zto9sz11Uf3iEOhJefE9HdGG/3c7d0f92-5655-419b-88fc-3b2267df233b.mp4",
+  "contact_url": "https://d2ol7oe51mr4n9.cloudfront.net/user_3G1zto9sz11Uf3iEOhJefE9HdGG/9dfbe293-1d08-419d-ac29-81c81ac6d3e7.jpg",
+  "package_url": "https://d2ol7oe51mr4n9.cloudfront.net/user_3G1zto9sz11Uf3iEOhJefE9HdGG/ebdbb134-3745-4627-8d81-93802fcea39f.zip",
+  "visual_qa": {
+    "sampled_frames": 7,
+    "verdict": "PASS_FOR_REVIEW",
+    "notes": "Three caption cues readable. Character tableau mostly maintained with small pose drift; no new injury in sampled frames. Existing graphic source preserved.",
+    "limitations": "Sampled stills and full decoder/PCM checks only; no real-time audio audition or every-frame manual review."
+  },
+  "voice_pcm_correlation": 0.9999674082817174
+}

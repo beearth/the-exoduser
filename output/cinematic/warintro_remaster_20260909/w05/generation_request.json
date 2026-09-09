@@ -1,0 +1,21 @@
+{
+  "model": "cinematic_studio_video_v2",
+  "duration": 6,
+  "aspect_ratio": "16:9",
+  "mode": "std",
+  "sound": "off",
+  "genre": "suspense",
+  "speedramp": "linear",
+  "multi_shots": false,
+  "multi_shot_mode": "custom",
+  "cfg_scale": 0.5,
+  "count": 1,
+  "medias": [
+    {
+      "role": "image",
+      "value": "11dbd011-dc70-49da-99cf-98d0785e83c8"
+    }
+  ],
+  "prompt": "Animate this empty gothic servant's chamber painting as a six-second quiet cinematic aftermath shot. The chamber remains completely empty throughout. Preserve the empty bed, folded charcoal clothing and brown shawl on the stool, the candle, furniture, walls, window and composition exactly. A slender curl of smoke rises from the extinguished candle and gradually thins and disperses, leaving the black wick completely dark. No flame returns. Faint dust drifts through the cold window light. The hanging curtain makes one barely perceptible movement and settles. Very slow gentle camera push toward the abandoned clothing and empty bed, keeping the candle in the foreground. Mood of final absence and loss, restrained and somber. Maintain all object shapes, the painterly texture, dark grey palette and stable architectural perspective. Bed linen and clothes remain entirely still. No people, bodies, ghosts, silhouettes, reflections of people, new objects, letters, text, subtitles or logos. No supernatural events, no abrupt changes, no cuts, no sound.",
+  "declined_preset_id": "24bae836-2c4a-48e0-89b6-49fcc0b21612"
+}

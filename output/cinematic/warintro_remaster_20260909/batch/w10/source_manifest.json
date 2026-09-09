@@ -1,0 +1,41 @@
+{
+  "shot": "w10",
+  "lines": [
+    {
+      "id": "wa19",
+      "original_start_s": 53.6,
+      "original_duration_s": 3,
+      "image": "warintro/cin_torture.jpg",
+      "ko": "칼로 킬루의 팔다리를 자르고",
+      "en": "He cut off Killu's limbs with a blade,"
+    },
+    {
+      "id": "wa20",
+      "original_start_s": 56.6,
+      "original_duration_s": 2.6,
+      "image": "warintro/cin_torture.jpg",
+      "ko": "불로 지혈까지 해주며",
+      "en": "cauterized the wounds with fire,"
+    },
+    {
+      "id": "wa21",
+      "original_start_s": 59.2,
+      "original_duration_s": 6,
+      "image": "warintro/cin_torture.jpg",
+      "ko": "오래오래 살려두었다.",
+      "en": "and kept him alive for a long, long time."
+    }
+  ],
+  "voice_id": "WS6naCm8T4gbyzsLnOjK",
+  "source": "warintro/cin_torture.jpg",
+  "source_sha256": "0f70c4bf29df113eae1c6a5c994064515469cb0e479c75a1a5a46926578b655a",
+  "voice_sha256": "12cd47de674f7f9830b9b04ca574dad295d18b7ca27f2d8a51ca98ff9cb853d0",
+  "voice_settings": {
+    "model_id": "eleven_multilingual_v2",
+    "stability": 0.65,
+    "similarity_boost": 0.8,
+    "style": 0.15,
+    "use_speaker_boost": true
+  },
+  "job_id": "3e701d46-6291-4180-a7c2-f98d84d5d2d4"
+}

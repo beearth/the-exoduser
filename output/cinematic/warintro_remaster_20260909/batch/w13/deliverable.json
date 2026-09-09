@@ -1,0 +1,35 @@
+{
+  "scene_id": "W13",
+  "source_ids": [
+    "wa26"
+  ],
+  "duration_s": 7,
+  "clean_url": "https://d2ol7oe51mr4n9.cloudfront.net/user_3G1zto9sz11Uf3iEOhJefE9HdGG/9afeba9e-8859-4e48-a407-55a135fd6ce2.mp4",
+  "final_url": "https://d2ol7oe51mr4n9.cloudfront.net/user_3G1zto9sz11Uf3iEOhJefE9HdGG/1a7c96ae-0601-43b2-af37-b163f80bdce4.mp4",
+  "contact_url": "https://d2ol7oe51mr4n9.cloudfront.net/user_3G1zto9sz11Uf3iEOhJefE9HdGG/226f0a2d-58c4-40a3-b529-9a8db3853f2a.jpg",
+  "package_url": "https://d2ol7oe51mr4n9.cloudfront.net/user_3G1zto9sz11Uf3iEOhJefE9HdGG/18dd3dac-0aa1-4d59-8cb0-867206f01de5.zip",
+  "voice_url": "https://d2ol7oe51mr4n9.cloudfront.net/user_3G1zto9sz11Uf3iEOhJefE9HdGG/64eee4eb-9e8e-4a2e-869c-4562284ce3f5.mp3",
+  "voice_start_s": 1,
+  "voice_duration_s": 4.728163,
+  "voice_end_s": 5.728163,
+  "caption_cues": [
+    {
+      "source_id": "wa26",
+      "start": 2.17,
+      "end": 5.36,
+      "text": "\"...이것은 셀 수 없는 복수자 중 하나의 이야기일 뿐.\""
+    }
+  ],
+  "qa": {
+    "transcript_exact_match": true,
+    "voice_pcm_correlation": 0.9999557121806782,
+    "streams_duration_match": true,
+    "decode_pass": true,
+    "sampled_visual_review": "PASS",
+    "visual_note": "Existing battle tableau, slow pullback, glowing magic and smoke. Korean subtitle readable.",
+    "limitations": [
+      "Sampled frames inspected; no human real-time audio approval.",
+      "Generation source is 3:2; native fit-cover master is 1280x720."
+    ]
+  }
+}

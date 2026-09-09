@@ -1,0 +1,30 @@
+{
+  "shot": "w09",
+  "status": "completed_for_combined_review",
+  "duration_s": 5,
+  "voice_start_s": 1,
+  "voice_duration_s": 2.742857,
+  "voice_end_s": 3.742857,
+  "captions": [
+    {
+      "id": "wa17",
+      "start": 1,
+      "end": 3.55,
+      "text": "그날 밤, 킬루 가문을 모두 죽였다.",
+      "english": "That night, he killed every last one of them."
+    }
+  ],
+  "source_url": "https://d8j0ntlcm91z4.cloudfront.net/user_3G1zto9sz11Uf3iEOhJefE9HdGG/hf_20260909_065003_16e8a7bc-5a4a-46b4-b8cf-7ac564379f98.mp4",
+  "voice_url": "https://d2ol7oe51mr4n9.cloudfront.net/user_3G1zto9sz11Uf3iEOhJefE9HdGG/a8eacf10-5fcc-4889-8bbf-e882ee2ad70a.mp3",
+  "final_url": "https://d2ol7oe51mr4n9.cloudfront.net/user_3G1zto9sz11Uf3iEOhJefE9HdGG/fcdbf540-8174-4cf3-9774-4136cfc87fe5.mp4",
+  "clean_url": "https://d2ol7oe51mr4n9.cloudfront.net/user_3G1zto9sz11Uf3iEOhJefE9HdGG/e5c7199b-f874-4f4a-a8d4-ab23e625f5f1.mp4",
+  "contact_url": "https://d2ol7oe51mr4n9.cloudfront.net/user_3G1zto9sz11Uf3iEOhJefE9HdGG/be79974f-c50a-443e-a141-a2b63de32b36.jpg",
+  "package_url": "https://d2ol7oe51mr4n9.cloudfront.net/user_3G1zto9sz11Uf3iEOhJefE9HdGG/9fab0cfe-e9bb-47c1-bb4a-15d45e8c8885.zip",
+  "visual_qa": {
+    "sampled_frames": 5,
+    "verdict": "PASS_FOR_REVIEW",
+    "notes": "Central grip and downward sword stable; cape and camera move, captions readable. Push is stronger than prompt and crops lower legs near end.",
+    "limitations": "Sampled stills and full decoder/PCM checks only; no real-time audio audition or every-frame manual review."
+  },
+  "voice_pcm_correlation": 0.9999728813607265
+}

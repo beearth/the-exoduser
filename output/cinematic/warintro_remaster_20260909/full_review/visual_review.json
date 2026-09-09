@@ -1,0 +1,24 @@
+{
+  "status": "PASS_FOR_REVIEW",
+  "date": "2026-09-09",
+  "duration_s": 95,
+  "scene_count": 16,
+  "caption_count": 21,
+  "checked_frames": {
+    "representative": 16,
+    "captions": 21,
+    "boundaries": 32
+  },
+  "observations": [
+    "W02 empty hands preserved",
+    "W04 paired doors close and wife kneels before transition",
+    "W05 empty room, W06 covered wagon, W07 prison visually distinct",
+    "W16 v2 skeletal grin preserved through ending",
+    "Korean subtitles legible without clipping at checked times",
+    "No blank frames at checked boundaries"
+  ],
+  "full_realtime_viewing": false,
+  "human_audio_approval": false,
+  "independent_script_timeline_audit": "PASS",
+  "original_artwork_hashes_unchanged": 12
+}

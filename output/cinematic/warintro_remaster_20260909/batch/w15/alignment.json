@@ -1,0 +1,25 @@
+{
+  "captions": [
+    {
+      "text": "Those consumed by rage, driven",
+      "start": 0.0,
+      "end": 2.32
+    },
+    {
+      "text": "mad by injustice,",
+      "start": 2.32,
+      "end": 3.56
+    },
+    {
+      "text": "those who lost love.",
+      "start": 4.18,
+      "end": 5.66
+    }
+  ],
+  "script_aligned": true,
+  "similarity": 1.0,
+  "timed_words": 12,
+  "caption_words": 12,
+  "words_per_second": 2.12,
+  "provider": "faster-whisper"
+}

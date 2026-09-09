@@ -1,0 +1,35 @@
+{
+  "scene_id": "W12",
+  "source_ids": [
+    "wa24"
+  ],
+  "duration_s": 5,
+  "clean_url": "https://d2ol7oe51mr4n9.cloudfront.net/user_3G1zto9sz11Uf3iEOhJefE9HdGG/4b41822a-229a-4598-8b13-fd7af896e158.mp4",
+  "final_url": "https://d2ol7oe51mr4n9.cloudfront.net/user_3G1zto9sz11Uf3iEOhJefE9HdGG/f6efd056-c05e-4ca2-9dc9-c900b8faeb31.mp4",
+  "contact_url": "https://d2ol7oe51mr4n9.cloudfront.net/user_3G1zto9sz11Uf3iEOhJefE9HdGG/32d8d675-59fb-4a5b-8df4-c26c5bf5abe8.jpg",
+  "package_url": "https://d2ol7oe51mr4n9.cloudfront.net/user_3G1zto9sz11Uf3iEOhJefE9HdGG/e9ec729e-4505-45cd-bb9f-abdc9e8aedeb.zip",
+  "voice_url": "https://d2ol7oe51mr4n9.cloudfront.net/user_3G1zto9sz11Uf3iEOhJefE9HdGG/7b504c47-f7f9-4238-93f0-45c8f2275008.mp3",
+  "voice_start_s": 1,
+  "voice_duration_s": 1.750204,
+  "voice_end_s": 2.750204,
+  "caption_cues": [
+    {
+      "source_id": "wa24",
+      "start": 1,
+      "end": 2.51,
+      "text": "그리고 지옥에 떨어진다."
+    }
+  ],
+  "qa": {
+    "transcript_exact_match": true,
+    "voice_pcm_correlation": 0.9999667011021801,
+    "streams_duration_match": true,
+    "decode_pass": true,
+    "sampled_visual_review": "PASS",
+    "visual_note": "Stable warrior walking deeper into hell, sword grip and silhouette consistent. Uses descent into hell as narrative arrival, not literal falling.",
+    "limitations": [
+      "Sampled frames inspected; no human real-time audio approval.",
+      "Generation source is 3:2; native fit-cover master is 1280x720."
+    ]
+  }
+}

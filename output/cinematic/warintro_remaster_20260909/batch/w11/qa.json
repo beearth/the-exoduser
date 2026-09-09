@@ -1,0 +1,115 @@
+{
+  "duration_s": 6.0,
+  "voice_start_s": 1.0,
+  "voice_duration_s": 3.239184,
+  "captions": [
+    {
+      "id": "wa22",
+      "start": 1.0,
+      "end": 1.48,
+      "text": "\"기억하라.\"",
+      "english": "\"Remember.\""
+    },
+    {
+      "id": "wa23",
+      "start": 1.48,
+      "end": 3.93,
+      "text": "\"그리고 지옥에서도 후회하라.\"",
+      "english": "\"And regret it even in hell.\""
+    }
+  ],
+  "voice_end_s": 4.239184,
+  "caption_start_s": 1.0,
+  "caption_end_s": 3.93,
+  "english": "\"Remember.\" \"And regret it even in hell.\"",
+  "korean": "\"기억하라.\" \"그리고 지옥에서도 후회하라.\"",
+  "transcript_exact_match": true,
+  "voice_pcm_correlation": 0.9999871132796512,
+  "font": "NotoSerifCJKkr-Medium.otf: \"Noto Serif CJK KR\" \"Medium\"",
+  "font_size_ass": 13,
+  "margin_v_ass": 32,
+  "outline_ass": 0.6,
+  "shadow_ass": 0.4,
+  "receipts": {
+    "source.mp4": {
+      "bytes": 7004119,
+      "duration": 6.042,
+      "streams": [
+        {
+          "codec_type": "video",
+          "codec_name": "h264",
+          "width": 1280,
+          "height": 720,
+          "duration": "6.041667",
+          "sample_rate": null,
+          "r_frame_rate": "24/1"
+        }
+      ]
+    },
+    "voice.mp3": {
+      "bytes": 52288,
+      "duration": 3.239184,
+      "streams": [
+        {
+          "codec_type": "audio",
+          "codec_name": "mp3",
+          "width": null,
+          "height": null,
+          "duration": "3.239184",
+          "sample_rate": "44100",
+          "r_frame_rate": "0/0"
+        }
+      ]
+    },
+    "clean.mp4": {
+      "bytes": 5816303,
+      "duration": 6.0,
+      "streams": [
+        {
+          "codec_type": "video",
+          "codec_name": "h264",
+          "width": 1280,
+          "height": 720,
+          "duration": "6.000000",
+          "sample_rate": null,
+          "r_frame_rate": "24/1"
+        },
+        {
+          "codec_type": "audio",
+          "codec_name": "aac",
+          "width": null,
+          "height": null,
+          "duration": "6.000000",
+          "sample_rate": "48000",
+          "r_frame_rate": "0/0"
+        }
+      ]
+    },
+    "final.mp4": {
+      "bytes": 1503654,
+      "duration": 6.0,
+      "streams": [
+        {
+          "codec_type": "video",
+          "codec_name": "h264",
+          "width": 1280,
+          "height": 720,
+          "duration": "6.000000",
+          "sample_rate": null,
+          "r_frame_rate": "24/1"
+        },
+        {
+          "codec_type": "audio",
+          "codec_name": "aac",
+          "width": null,
+          "height": null,
+          "duration": "6.000000",
+          "sample_rate": "48000",
+          "r_frame_rate": "0/0"
+        }
+      ]
+    }
+  },
+  "human_audio_approval": false,
+  "visual_review_pending": true
+}

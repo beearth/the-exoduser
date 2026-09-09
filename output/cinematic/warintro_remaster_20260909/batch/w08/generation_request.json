@@ -1,0 +1,21 @@
+{
+  "model": "cinematic_studio_video_v2",
+  "aspect_ratio": "16:9",
+  "mode": "std",
+  "sound": "off",
+  "genre": "suspense",
+  "speedramp": "linear",
+  "multi_shots": false,
+  "multi_shot_mode": "custom",
+  "cfg_scale": 0.5,
+  "count": 1,
+  "declined_preset_id": "24bae836-2c4a-48e0-89b6-49fcc0b21612",
+  "duration": 8,
+  "medias": [
+    {
+      "role": "image",
+      "value": "ae5f7181-a2a7-4e15-afa6-fea6443a308e"
+    }
+  ],
+  "prompt": "Animate the supplied dark fantasy illustration into one continuous eight-second symbolic shot of collective silence. Preserve the exact many ceramic masks with stitched mouths on the ruined street. These are inanimate hollow masks, never heads or living faces. All masks, seams and stones stay fixed and rigid. Very slow smooth forward camera glide over the masks toward the distant empty burning street, ending with a foreground stitched mouth and the many silent masks still visible. Flames flicker softly in the background, smoke drifts and fine embers float. Preserve the original painterly style, composition, palette and existing scene details. No new damage, blood or violence. No people, bodies or new objects. No mouth movement, no eyes appearing, no morphing or facial animation, no masks turning. Single continuous shot without transitions, dialogue, captions or logos."
+}

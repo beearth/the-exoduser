@@ -1,0 +1,21 @@
+{
+  "model": "cinematic_studio_video_v2",
+  "duration": 6,
+  "aspect_ratio": "16:9",
+  "mode": "std",
+  "sound": "off",
+  "genre": "suspense",
+  "speedramp": "linear",
+  "multi_shots": false,
+  "multi_shot_mode": "custom",
+  "cfg_scale": 0.5,
+  "count": 1,
+  "medias": [
+    {
+      "role": "image",
+      "value": "69319112-f596-44d6-9384-4f4110a9efd0"
+    }
+  ],
+  "prompt": "Animate the supplied covered wagon painting as one continuous six-second departure shot. The camera is COMPLETELY LOCKED inside the stone gateway, all gate walls and horizon stationary. The horse walks slowly FORWARD AWAY FROM CAMERA along the existing muddy road, pulling the wagon through its real connected harness. The four wagon wheels rotate naturally while maintaining axle spacing, correct rigid geometry and contact with the road. The wagon rolls visibly farther away, gradually occupying less of the fixed frame because of actual forward travel, not a zoom, fade or morph. Preserve the exact closed canvas rear, wood chassis, horse, harness and wheel count. The rear covering remains firmly closed throughout, no passengers or interior visible, no people appear. Slight gentle suspension bounce and faint canvas movement, low mist drifting across the distant road. The horse remains mostly occluded ahead of the wagon as in the input. Existing torches flicker subtly. By the end, the wagon is farther down the road amid light mist, still visible. Somber sense of separation and irreversible distance. Maintain original painterly fantasy style, desaturated dawn palette and all architectural shapes. No extra animals, people, wheels, doors, text, captions, logos, sudden movements, cuts, dialogue or sound.",
+  "declined_preset_id": "24bae836-2c4a-48e0-89b6-49fcc0b21612"
+}

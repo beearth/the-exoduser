@@ -1,0 +1,120 @@
+{
+  "captions": [
+    {
+      "text": "He",
+      "start": 0.0,
+      "end": 0.16
+    },
+    {
+      "text": "cut",
+      "start": 0.16,
+      "end": 0.44
+    },
+    {
+      "text": "off",
+      "start": 0.44,
+      "end": 0.62
+    },
+    {
+      "text": "Killu's",
+      "start": 0.62,
+      "end": 1.2
+    },
+    {
+      "text": "limbs",
+      "start": 1.2,
+      "end": 1.46
+    },
+    {
+      "text": "with",
+      "start": 1.46,
+      "end": 1.72
+    },
+    {
+      "text": "a",
+      "start": 1.72,
+      "end": 1.82
+    },
+    {
+      "text": "blade,",
+      "start": 1.82,
+      "end": 2.16
+    },
+    {
+      "text": "cauterized",
+      "start": 2.48,
+      "end": 3.34
+    },
+    {
+      "text": "the",
+      "start": 3.34,
+      "end": 3.54
+    },
+    {
+      "text": "wounds",
+      "start": 3.54,
+      "end": 3.84
+    },
+    {
+      "text": "with",
+      "start": 3.84,
+      "end": 4.06
+    },
+    {
+      "text": "fire,",
+      "start": 4.06,
+      "end": 4.44
+    },
+    {
+      "text": "and",
+      "start": 5.02,
+      "end": 5.08
+    },
+    {
+      "text": "kept",
+      "start": 5.08,
+      "end": 5.4
+    },
+    {
+      "text": "him",
+      "start": 5.4,
+      "end": 5.58
+    },
+    {
+      "text": "alive",
+      "start": 5.58,
+      "end": 5.94
+    },
+    {
+      "text": "for",
+      "start": 5.94,
+      "end": 6.24
+    },
+    {
+      "text": "a",
+      "start": 6.24,
+      "end": 6.4
+    },
+    {
+      "text": "long,",
+      "start": 6.4,
+      "end": 6.68
+    },
+    {
+      "text": "long",
+      "start": 7.0,
+      "end": 7.3
+    },
+    {
+      "text": "time.",
+      "start": 7.3,
+      "end": 7.78
+    }
+  ],
+  "script_aligned": true,
+  "similarity": 0.9130434782608695,
+  "timed_words": 22,
+  "caption_words": 22,
+  "words_per_second": 2.83,
+  "provider": "faster-whisper"
+}

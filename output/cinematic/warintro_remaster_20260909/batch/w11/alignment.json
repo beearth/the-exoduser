@@ -1,0 +1,45 @@
+{
+  "captions": [
+    {
+      "text": "Remember.",
+      "start": 0.0,
+      "end": 0.48
+    },
+    {
+      "text": "And",
+      "start": 0.48,
+      "end": 1.42
+    },
+    {
+      "text": "regret",
+      "start": 1.42,
+      "end": 1.7
+    },
+    {
+      "text": "it",
+      "start": 1.7,
+      "end": 1.98
+    },
+    {
+      "text": "even",
+      "start": 1.98,
+      "end": 2.24
+    },
+    {
+      "text": "in",
+      "start": 2.24,
+      "end": 2.44
+    },
+    {
+      "text": "hell.",
+      "start": 2.44,
+      "end": 2.68
+    }
+  ],
+  "script_aligned": true,
+  "similarity": 1.0,
+  "timed_words": 7,
+  "caption_words": 7,
+  "words_per_second": 2.61,
+  "provider": "faster-whisper"
+}

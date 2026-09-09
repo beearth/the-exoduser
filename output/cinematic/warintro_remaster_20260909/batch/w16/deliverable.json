@@ -1,0 +1,42 @@
+{
+  "scene_id": "W16",
+  "source_ids": [
+    "wa31",
+    "wa33"
+  ],
+  "duration_s": 8,
+  "clean_url": "https://d2ol7oe51mr4n9.cloudfront.net/user_3G1zto9sz11Uf3iEOhJefE9HdGG/3ea586f9-9e72-476c-b5b2-2c3cf970da3b.mp4",
+  "final_url": "https://d2ol7oe51mr4n9.cloudfront.net/user_3G1zto9sz11Uf3iEOhJefE9HdGG/b1123f56-b50b-4ebf-b95d-4be430b835f6.mp4",
+  "contact_url": "https://d2ol7oe51mr4n9.cloudfront.net/user_3G1zto9sz11Uf3iEOhJefE9HdGG/8d879972-4bd5-4b58-bf25-a41578fe3380.jpg",
+  "package_url": "https://d2ol7oe51mr4n9.cloudfront.net/user_3G1zto9sz11Uf3iEOhJefE9HdGG/1c08c293-570e-46fc-9d5c-e823233953e8.zip",
+  "voice_url": "https://d2ol7oe51mr4n9.cloudfront.net/user_3G1zto9sz11Uf3iEOhJefE9HdGG/eceb96b4-bc22-433d-9357-9a81481c790b.mp3",
+  "voice_start_s": 1,
+  "voice_duration_s": 3.94449,
+  "voice_end_s": 4.94449,
+  "caption_cues": [
+    {
+      "source_id": "wa31",
+      "start": 1,
+      "end": 2.59,
+      "text": "\"너는 왜 지옥에 왔느냐?\""
+    },
+    {
+      "source_id": "wa33",
+      "start": 3.04,
+      "end": 4.63,
+      "text": "\"지옥을 탈출하라, 죄인이여.\""
+    }
+  ],
+  "qa": {
+    "transcript_exact_match": true,
+    "voice_pcm_correlation": 0.9999533823422468,
+    "streams_duration_match": true,
+    "decode_pass": true,
+    "sampled_visual_review": "RETOUCH",
+    "visual_note": "Text removed successfully; hands and eyes stable, but skeletal grin gradually changes to a closed stern mouth. Review facial identity continuity in the full sequence.",
+    "limitations": [
+      "Sampled frames inspected; no human real-time audio approval.",
+      "Generation source is 3:2; native fit-cover master is 1280x720."
+    ]
+  }
+}

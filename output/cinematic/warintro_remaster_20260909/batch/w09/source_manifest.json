@@ -1,0 +1,25 @@
+{
+  "shot": "w09",
+  "lines": [
+    {
+      "id": "wa17",
+      "original_start_s": 47.9,
+      "original_duration_s": 3.1,
+      "image": "warintro/cin_bloodbath.jpg",
+      "ko": "그날 밤, 킬루 가문을 모두 죽였다.",
+      "en": "That night, he killed every last one of them."
+    }
+  ],
+  "voice_id": "WS6naCm8T4gbyzsLnOjK",
+  "source": "warintro/cin_bloodbath.jpg",
+  "source_sha256": "36dba530beabbd60f37b20d1bd132bd793025c98e4497921872c887e06b6eaa3",
+  "voice_sha256": "05023d25fe20310e13de9b8e06ddbbbe6c061b2223969fe8047ed67cfcdd0096",
+  "voice_settings": {
+    "model_id": "eleven_multilingual_v2",
+    "stability": 0.65,
+    "similarity_boost": 0.8,
+    "style": 0.15,
+    "use_speaker_boost": true
+  },
+  "job_id": "16e8a7bc-5a4a-46b4-b8cf-7ac564379f98"
+}

@@ -1,0 +1,29 @@
+{
+  "id": 14,
+  "line": "wa28",
+  "duration": 6,
+  "prompt": "Animate the supplied dark fantasy illustration as a tense six-second shot. Preserve the exact human warrior and horned demon in their existing locked struggle and the existing hands, grip, armor, faces, chains and composition. The warrior braces and strains subtly through his shoulders, his face holding the original fierce expression; the demon makes a small breathing motion without changing its pose. Keep contact between hands and bodies consistent. His cloak flutters in the heat, existing flames flicker vigorously and sparks rise around both figures. A slow camera pullback reveals a little more of the infernal surroundings. Retain the original detailed painterly style. The action is a sustained struggle in the existing pose, no new attacks, wounds or injuries, no dismemberment, no extra characters or objects, no dialogue or lip-synced talking, no text or captions. Single continuous silent shot.",
+  "params": {
+    "model": "cinematic_studio_video_v2",
+    "duration": 6,
+    "aspect_ratio": "16:9",
+    "mode": "std",
+    "sound": "off",
+    "genre": "suspense",
+    "speedramp": "linear",
+    "multi_shots": false,
+    "multi_shot_mode": "custom",
+    "cfg_scale": 0.5,
+    "count": 1,
+    "medias": [
+      {
+        "role": "image",
+        "value": "5fd26982-62ab-4c90-bd18-9f90eb7a4bfd"
+      }
+    ],
+    "prompt": "Animate the supplied dark fantasy illustration as a tense six-second shot. Preserve the exact human warrior and horned demon in their existing locked struggle and the existing hands, grip, armor, faces, chains and composition. The warrior braces and strains subtly through his shoulders, his face holding the original fierce expression; the demon makes a small breathing motion without changing its pose. Keep contact between hands and bodies consistent. His cloak flutters in the heat, existing flames flicker vigorously and sparks rise around both figures. A slow camera pullback reveals a little more of the infernal surroundings. Retain the original detailed painterly style. The action is a sustained struggle in the existing pose, no new attacks, wounds or injuries, no dismemberment, no extra characters or objects, no dialogue or lip-synced talking, no text or captions. Single continuous silent shot.",
+    "declined_preset_id": "24bae836-2c4a-48e0-89b6-49fcc0b21612"
+  },
+  "job_id": "1e1bad13-140b-4e7d-a7b1-31ea63f16387",
+  "source_url": "https://d8j0ntlcm91z4.cloudfront.net/user_3G1zto9sz11Uf3iEOhJefE9HdGG/hf_20260909_064733_1e1bad13-140b-4e7d-a7b1-31ea63f16387.mp4"
+}

@@ -1,0 +1,15 @@
+{
+  "scene": "w12",
+  "lines": [
+    {
+      "id": "wa24",
+      "original_start_s": 73.6,
+      "original_duration_s": 2.4,
+      "image": "warintro/cin_fallhell_custom.jpg",
+      "ko": "그리고 지옥에 떨어진다.",
+      "en": "And so he fell into hell."
+    }
+  ],
+  "voice_id": "WS6naCm8T4gbyzsLnOjK",
+  "duration_s": 5
+}

@@ -1,0 +1,21 @@
+{
+  "model": "cinematic_studio_video_v2",
+  "duration": 10,
+  "aspect_ratio": "16:9",
+  "mode": "std",
+  "sound": "off",
+  "genre": "suspense",
+  "speedramp": "linear",
+  "multi_shots": false,
+  "multi_shot_mode": "custom",
+  "cfg_scale": 0.5,
+  "count": 1,
+  "medias": [
+    {
+      "role": "image",
+      "value": "8e34968a-ba23-435d-be87-bfceb913ac2f"
+    }
+  ],
+  "prompt": "Transform only the supplied existing fictional painted illustration into a ten-second subtly animated painting, preserving its exact composition and all existing depicted details. Keep both adult figures, their faces, hands, chains and the held object completely stationary throughout. There is no continuation of an action: the original tableau stays frozen. Animate only the background smoke drifting upward and a gentle shimmer of the existing ambient orange firelight. A barely perceptible slow camera drift outward maintains the full original frame. Preserve the original painterly surface, clothing and proportions. Do not add new contact, injuries, bleeding, cutting, burning of a person, struggling, gestures, facial movements, or any other new event or graphic detail. No dialogue, sound, text, captions, letters, logos, cuts or new objects.",
+  "declined_preset_id": "24bae836-2c4a-48e0-89b6-49fcc0b21612"
+}

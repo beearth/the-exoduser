@@ -1,0 +1,33 @@
+{
+  "shot": "w11",
+  "lines": [
+    {
+      "id": "wa22",
+      "original_start_s": 65.2,
+      "original_duration_s": 3,
+      "image": "warintro/cin_remember.jpg",
+      "ko": "\"기억하라.\"",
+      "en": "\"Remember.\""
+    },
+    {
+      "id": "wa23",
+      "original_start_s": 68.2,
+      "original_duration_s": 5.4,
+      "image": "warintro/cin_remember.jpg",
+      "ko": "\"그리고 지옥에서도 후회하라.\"",
+      "en": "\"And regret it even in hell.\""
+    }
+  ],
+  "voice_id": "WS6naCm8T4gbyzsLnOjK",
+  "source": "warintro/cin_remember.jpg",
+  "source_sha256": "96121575a9c77ed7884fe59347c78ecdd67d518a463da88808b8d8ddeedde073",
+  "voice_sha256": "c220f1c061f0e4f650f36e11a069b3ae22777ed4fecb6584ed308e51261e7dc7",
+  "voice_settings": {
+    "model_id": "eleven_multilingual_v2",
+    "stability": 0.65,
+    "similarity_boost": 0.8,
+    "style": 0.15,
+    "use_speaker_boost": true
+  },
+  "job_id": "96137e99-d138-4661-b006-f43e1a2ae1a1"
+}

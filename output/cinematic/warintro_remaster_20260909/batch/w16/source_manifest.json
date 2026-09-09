@@ -1,0 +1,23 @@
+{
+  "scene": "w16",
+  "lines": [
+    {
+      "id": "wa31",
+      "original_start_s": 94.8,
+      "original_duration_s": 2.2,
+      "image": "warintro/cin_nemesia_hd.jpg",
+      "ko": "\"너는 왜 지옥에 왔느냐?\"",
+      "en": "\"Why have you come to hell?\""
+    },
+    {
+      "id": "wa33",
+      "original_start_s": 99,
+      "original_duration_s": 4,
+      "image": "warintro/cin_nemesia_hd.jpg",
+      "ko": "\"지옥을 탈출하라, 죄인이여.\"",
+      "en": "\"Escape from hell, sinner.\""
+    }
+  ],
+  "voice_id": "WS6naCm8T4gbyzsLnOjK",
+  "duration_s": 8
+}

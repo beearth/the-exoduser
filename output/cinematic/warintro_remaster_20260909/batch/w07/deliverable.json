@@ -1,0 +1,26 @@
+{
+  "scene": "w07",
+  "duration_s": 6,
+  "voice_start_s": 1,
+  "voice_duration_s": 3.657143,
+  "voice_end_s": 4.657143,
+  "caption_cues": [
+    {
+      "start": 1,
+      "end": 4.35,
+      "text": "늙은 부모는 감옥에 갇혀 굶어 죽었다."
+    }
+  ],
+  "clean_url": "https://d2ol7oe51mr4n9.cloudfront.net/user_3G1zto9sz11Uf3iEOhJefE9HdGG/14476ca4-ebe0-48b3-b621-7b1ff2ea146e.mp4",
+  "final_url": "https://d2ol7oe51mr4n9.cloudfront.net/user_3G1zto9sz11Uf3iEOhJefE9HdGG/c5f6e000-0bcb-41d4-b8a4-6b87c8b6d4aa.mp4",
+  "contact_url": "https://d2ol7oe51mr4n9.cloudfront.net/user_3G1zto9sz11Uf3iEOhJefE9HdGG/3bfa59d6-0c7e-4ac6-8b45-22b05b170a20.jpg",
+  "package_url": "https://d2ol7oe51mr4n9.cloudfront.net/user_3G1zto9sz11Uf3iEOhJefE9HdGG/2a6bd6e3-4e20-4a56-8163-58d05becd5d1.zip",
+  "source_url": "https://d8j0ntlcm91z4.cloudfront.net/user_3G1zto9sz11Uf3iEOhJefE9HdGG/hf_20260909_065154_fc4429f3-5391-4b9d-bb65-73fa1b7a9230.mp4",
+  "local_dir": "G:/exoduser/output/cinematic/warintro_remaster_20260909/batch/w07/",
+  "caps_path": "G:/exoduser/output/cinematic/warintro_remaster_20260909/batch/w07/caps.srt",
+  "qa_path": "G:/exoduser/output/cinematic/warintro_remaster_20260909/batch/w07/qa.json",
+  "voice_path": "G:/exoduser/output/cinematic/warintro_remaster_20260909/batch/w07/voice.mp3",
+  "visual_review": "PASS sampled five frames; stable couple, two bowls, straight bars; camera retreat stronger than prompt but readable.",
+  "audio_review": "STT exact match; PCM correlation .9999604; human listening not performed.",
+  "status": "complete"
+}

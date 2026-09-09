@@ -1,0 +1,37 @@
+{
+  "shot": "w11",
+  "status": "completed_for_combined_review",
+  "duration_s": 6,
+  "voice_start_s": 1,
+  "voice_duration_s": 3.239184,
+  "voice_end_s": 4.239184,
+  "captions": [
+    {
+      "id": "wa22",
+      "start": 1,
+      "end": 1.48,
+      "text": "\"기억하라.\"",
+      "english": "\"Remember.\""
+    },
+    {
+      "id": "wa23",
+      "start": 1.48,
+      "end": 3.93,
+      "text": "\"그리고 지옥에서도 후회하라.\"",
+      "english": "\"And regret it even in hell.\""
+    }
+  ],
+  "source_url": "https://d8j0ntlcm91z4.cloudfront.net/user_3G1zto9sz11Uf3iEOhJefE9HdGG/hf_20260909_065125_96137e99-d138-4661-b006-f43e1a2ae1a1.mp4",
+  "voice_url": "https://d2ol7oe51mr4n9.cloudfront.net/user_3G1zto9sz11Uf3iEOhJefE9HdGG/2fb5df4f-b5a5-413f-a476-6c39c3f91388.mp3",
+  "final_url": "https://d2ol7oe51mr4n9.cloudfront.net/user_3G1zto9sz11Uf3iEOhJefE9HdGG/da0af7b2-10b3-4ff5-bfb2-8a4c8d0b9663.mp4",
+  "clean_url": "https://d2ol7oe51mr4n9.cloudfront.net/user_3G1zto9sz11Uf3iEOhJefE9HdGG/76fcc7d8-126e-4827-b95e-25d2b43d5033.mp4",
+  "contact_url": "https://d2ol7oe51mr4n9.cloudfront.net/user_3G1zto9sz11Uf3iEOhJefE9HdGG/da9383c9-9fed-4293-9d30-b546c6c32bbc.jpg",
+  "package_url": "https://d2ol7oe51mr4n9.cloudfront.net/user_3G1zto9sz11Uf3iEOhJefE9HdGG/e2adaee3-51d8-43bb-9516-b0cd40d763fc.zip",
+  "visual_qa": {
+    "sampled_frames": 6,
+    "verdict": "PASS_FOR_REVIEW",
+    "notes": "Family silhouettes, cage bars and kneeling figure stable; two caption cues readable. Remember cue 0.48s; second cue 2.45s.",
+    "limitations": "Sampled stills and full decoder/PCM checks only; no real-time audio audition or every-frame manual review."
+  },
+  "voice_pcm_correlation": 0.9999871132796512
+}

@@ -1,0 +1,37 @@
+{
+  "final_url": "https://d2ol7oe51mr4n9.cloudfront.net/user_3G1zto9sz11Uf3iEOhJefE9HdGG/72f01bec-29b4-4847-8b8c-32ec31e09e7e.mp4",
+  "clean_url": "https://d2ol7oe51mr4n9.cloudfront.net/user_3G1zto9sz11Uf3iEOhJefE9HdGG/a831c4fb-4f28-413a-975c-03a361decfe2.mp4",
+  "package_url": "https://d2ol7oe51mr4n9.cloudfront.net/user_3G1zto9sz11Uf3iEOhJefE9HdGG/5b14c568-5520-4f58-aa87-a66e17dfcecf.zip",
+  "scenes_url": "https://d2ol7oe51mr4n9.cloudfront.net/user_3G1zto9sz11Uf3iEOhJefE9HdGG/8c957f9e-beb8-4917-b6d7-61f7a880df26.jpg",
+  "captions_url": "https://d2ol7oe51mr4n9.cloudfront.net/user_3G1zto9sz11Uf3iEOhJefE9HdGG/86754dd0-13f9-4b30-a227-b30aafd84419.jpg",
+  "boundaries_url": "https://d2ol7oe51mr4n9.cloudfront.net/user_3G1zto9sz11Uf3iEOhJefE9HdGG/88f2f85e-8959-430d-bfdc-a4ca84934f20.jpg",
+  "duration_s": 95,
+  "scenes": 16,
+  "captions": 21,
+  "voice": "WS6naCm8T4gbyzsLnOjK",
+  "local_file": "output/cinematic/warintro_remaster_20260909/full_review/final.mp4",
+  "qa": {
+    "status": "PASS_FOR_REVIEW",
+    "date": "2026-09-09",
+    "duration_s": 95,
+    "scene_count": 16,
+    "caption_count": 21,
+    "checked_frames": {
+      "representative": 16,
+      "captions": 21,
+      "boundaries": 32
+    },
+    "observations": [
+      "W02 empty hands preserved",
+      "W04 paired doors close and wife kneels before transition",
+      "W05 empty room, W06 covered wagon, W07 prison visually distinct",
+      "W16 v2 skeletal grin preserved through ending",
+      "Korean subtitles legible without clipping at checked times",
+      "No blank frames at checked boundaries"
+    ],
+    "full_realtime_viewing": false,
+    "human_audio_approval": false,
+    "independent_script_timeline_audit": "PASS",
+    "original_artwork_hashes_unchanged": 12
+  }
+}

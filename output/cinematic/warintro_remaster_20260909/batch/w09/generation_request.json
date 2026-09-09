@@ -1,0 +1,21 @@
+{
+  "model": "cinematic_studio_video_v2",
+  "duration": 5,
+  "aspect_ratio": "16:9",
+  "mode": "std",
+  "sound": "off",
+  "genre": "suspense",
+  "speedramp": "linear",
+  "multi_shots": false,
+  "multi_shot_mode": "custom",
+  "cfg_scale": 0.5,
+  "count": 1,
+  "medias": [
+    {
+      "role": "image",
+      "value": "eff4dcd8-517d-43a2-9eeb-fe0613eb1475"
+    }
+  ],
+  "prompt": "Transform the supplied existing dark fantasy illustration into a restrained five-second animated painting. Preserve the exact armored adult man's rear-facing stance, sword resting downward, hand grip, cape, architecture and original composition. Preserve all existing foreground figures entirely still. Do not depict any new action or event. Only the two distant flames flicker gently, smoke drifts upwards and the torn cape edge stirs faintly. Camera makes a very slow steady push toward the central man's shoulders, without changing perspective or revealing new details. Maintain all objects, anatomy, original painterly texture and lighting palette. No attack, sword swing, new wounds, new blood, new figures, mouth movement, text or logos. Single silent continuous shot.",
+  "declined_preset_id": "24bae836-2c4a-48e0-89b6-49fcc0b21612"
+}

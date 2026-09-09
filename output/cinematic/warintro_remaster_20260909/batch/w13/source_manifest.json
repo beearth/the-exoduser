@@ -1,0 +1,15 @@
+{
+  "scene": "w13",
+  "lines": [
+    {
+      "id": "wa26",
+      "original_start_s": 78.9,
+      "original_duration_s": 3.6,
+      "image": "warintro/emg1.jpg",
+      "ko": "\"...이것은 셀 수 없는 복수자 중 하나의 이야기일 뿐.\"",
+      "en": "\"...This is but one tale among countless avengers.\""
+    }
+  ],
+  "voice_id": "WS6naCm8T4gbyzsLnOjK",
+  "duration_s": 7
+}

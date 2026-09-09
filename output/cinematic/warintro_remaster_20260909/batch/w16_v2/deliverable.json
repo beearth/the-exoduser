@@ -1,0 +1,44 @@
+{
+  "scene_id": "W16",
+  "source_ids": [
+    "wa31",
+    "wa33"
+  ],
+  "duration_s": 6,
+  "clean_url": "https://d2ol7oe51mr4n9.cloudfront.net/user_3G1zto9sz11Uf3iEOhJefE9HdGG/1e581a14-a2df-421c-967f-fcd592df7074.mp4",
+  "final_url": "https://d2ol7oe51mr4n9.cloudfront.net/user_3G1zto9sz11Uf3iEOhJefE9HdGG/13069b6d-28e3-4288-bfe4-e6fcdfae5c60.mp4",
+  "contact_url": "https://d2ol7oe51mr4n9.cloudfront.net/user_3G1zto9sz11Uf3iEOhJefE9HdGG/d69672d3-6549-4463-9689-d6c993bf3d7d.jpg",
+  "package_url": "https://d2ol7oe51mr4n9.cloudfront.net/user_3G1zto9sz11Uf3iEOhJefE9HdGG/4fb4a039-7c3b-4b0a-91ee-f80880c6eed5.zip",
+  "voice_url": "https://d2ol7oe51mr4n9.cloudfront.net/user_3G1zto9sz11Uf3iEOhJefE9HdGG/eceb96b4-bc22-433d-9357-9a81481c790b.mp3",
+  "voice_start_s": 1,
+  "voice_duration_s": 3.94449,
+  "voice_end_s": 4.94449,
+  "caption_cues": [
+    {
+      "source_id": "wa31",
+      "start": 1,
+      "end": 2.59,
+      "text": "\"너는 왜 지옥에 왔느냐?\""
+    },
+    {
+      "source_id": "wa33",
+      "start": 3.04,
+      "end": 4.63,
+      "text": "\"지옥을 탈출하라, 죄인이여.\""
+    }
+  ],
+  "qa": {
+    "transcript_exact_match": true,
+    "voice_pcm_correlation": 0.9999533823422468,
+    "streams_duration_match": true,
+    "decode_pass": true,
+    "sampled_visual_review": "PASS",
+    "visual_note": "First 1.8 seconds of W16 source slowed 3.333333x into six seconds. Skeletal grin retained through final sample, no later humanizing closed-mouth transition. Same voice and two Korean cues.",
+    "limitations": [
+      "Sampled frames inspected; no human real-time audio approval.",
+      "Generation source is 3:2; native fit-cover master is 1280x720.",
+      "Video slowed with duplicated frames at 24fps; full-motion approval remains pending."
+    ]
+  },
+  "version": 2
+}

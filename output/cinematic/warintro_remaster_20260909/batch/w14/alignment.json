@@ -1,0 +1,20 @@
+{
+  "captions": [
+    {
+      "text": "Every day, new souls fall",
+      "start": 0.0,
+      "end": 1.76
+    },
+    {
+      "text": "into hell's labyrinth.",
+      "start": 1.76,
+      "end": 3.2
+    }
+  ],
+  "script_aligned": true,
+  "similarity": 1.0,
+  "timed_words": 8,
+  "caption_words": 8,
+  "words_per_second": 2.5,
+  "provider": "faster-whisper"
+}

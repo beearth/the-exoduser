@@ -1,0 +1,12 @@
+{
+  "scene": "W15",
+  "local_dir": "G:/exoduser/output/cinematic/warintro_remaster_20260909/batch/w15",
+  "clean_url": "https://d2ol7oe51mr4n9.cloudfront.net/user_3G1zto9sz11Uf3iEOhJefE9HdGG/46365a11-bc48-440d-b541-a7e717bd5139.mp4",
+  "final_url": "https://d2ol7oe51mr4n9.cloudfront.net/user_3G1zto9sz11Uf3iEOhJefE9HdGG/ebbce65d-fb68-4dd0-9a8a-b319d696134f.mp4",
+  "package_url": "https://d2ol7oe51mr4n9.cloudfront.net/user_3G1zto9sz11Uf3iEOhJefE9HdGG/6d36be71-b76a-4e55-a3e3-cdf5ed9998b9.zip",
+  "voice_url": "https://d2ol7oe51mr4n9.cloudfront.net/user_3G1zto9sz11Uf3iEOhJefE9HdGG/bf9138fe-d443-4755-80e0-269fc56c4d9f.mp3",
+  "qa": "qa.json",
+  "captions": "caps.srt",
+  "visual_sample_review": "PASS",
+  "human_audio_approval": false
+}

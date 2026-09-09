@@ -1,0 +1,50 @@
+{
+  "captions": [
+    {
+      "text": "This",
+      "start": 1.17,
+      "end": 1.69
+    },
+    {
+      "text": "is",
+      "start": 1.69,
+      "end": 1.83
+    },
+    {
+      "text": "but",
+      "start": 1.83,
+      "end": 2.05
+    },
+    {
+      "text": "one",
+      "start": 2.05,
+      "end": 2.33
+    },
+    {
+      "text": "tale",
+      "start": 2.33,
+      "end": 2.69
+    },
+    {
+      "text": "among",
+      "start": 2.69,
+      "end": 3.07
+    },
+    {
+      "text": "countless",
+      "start": 3.07,
+      "end": 3.65
+    },
+    {
+      "text": "avengers.",
+      "start": 3.65,
+      "end": 4.11
+    }
+  ],
+  "script_aligned": true,
+  "similarity": 1.0,
+  "timed_words": 8,
+  "caption_words": 8,
+  "words_per_second": 2.72,
+  "provider": "faster-whisper"
+}

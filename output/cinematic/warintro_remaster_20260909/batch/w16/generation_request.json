@@ -1,0 +1,21 @@
+{
+  "model": "cinematic_studio_video_v2",
+  "aspect_ratio": "16:9",
+  "mode": "std",
+  "sound": "off",
+  "genre": "suspense",
+  "speedramp": "linear",
+  "multi_shots": false,
+  "multi_shot_mode": "custom",
+  "cfg_scale": 0.5,
+  "count": 1,
+  "declined_preset_id": "24bae836-2c4a-48e0-89b6-49fcc0b21612",
+  "duration": 8,
+  "medias": [
+    {
+      "role": "start_image",
+      "value": "ecb420b9-80f3-4e02-a9b8-97c3c68be91f"
+    }
+  ],
+  "prompt": "Animate this exact dark fantasy illustration in a continuous eight-second final confrontation. Nemesia, the immense spectral queen, looks down at the armored sinner before her and silently judges him. A very slow camera push toward her eyes and outstretched hand, while preserving the smaller warrior's back and her full face in the frame. Her expression becomes subtly more commanding through a tiny lowering of the chin and a slow brightening of violet eyes, then holds with finality. Preserve her existing skeletal facial features and precise hand and finger shape without changing her grin or making speech movements. Her palm remains still, purple energy curls around it and hair drifts gently. Chains and skull columns remain solid and unchanged. Restrained purple mist and electric glows; no explosive flash. No new injuries or blood, characters or objects. No text, symbols, captions or logos. Silent single shot without cuts."
+}

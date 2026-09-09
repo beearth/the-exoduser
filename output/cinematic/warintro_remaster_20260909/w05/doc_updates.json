@@ -1,0 +1,59 @@
+[
+  {
+    "path": "docs/cinematic/WARINTRO_REMASTER_20260909.md",
+    "pairs": [
+      [
+        "W05~W07 신규 장면은 미제작.",
+        "[W05 빈 방 6초](WARINTRO_W05_EMPTY_ROOM_20260909.md) 제작·검수 완료, W06~W07 신규 장면은 미제작."
+      ],
+      [
+        "W05 이후·전체 합본·게임 적용은 미완료.",
+        "W05 빈 방 6초 제작·검수 완료, 사용자 검수 대기. W06 이후·전체 합본·게임 적용은 미완료."
+      ]
+    ]
+  },
+  {
+    "path": "docs/cinematic/WARINTRO_FAMILY_INSERT_REVIEW_20260909.md",
+    "pairs": [
+      [
+        "W05~W07은 미제작.",
+        "후속 [W05 빈 방 6초](WARINTRO_W05_EMPTY_ROOM_20260909.md) 제작·검수 완료, W06~W07은 미제작."
+      ],
+      [
+        "| 인물 없이 소지품에 느린 접근. 행위·방법 대신 부재로 상실 전달 | 신규 원화 1장 제안 |",
+        "| 인물 없이 소지품에 느린 접근. 행위·방법 대신 부재로 상실 전달 | 신규 원화 1장·6초 영상 완료, 사용자 검수 대기 |"
+      ]
+    ]
+  },
+  {
+    "path": "docs/cinematic/PROLOGUE_STORYBOARD_v1.md",
+    "pairs": [
+      [
+        "[W04 v3 양문 폐쇄·절망 7초](WARINTRO_W04_V3_DESPAIR_20260909.md) 완료, 사용자 검수 대기.",
+        "[W04 v3 양문 폐쇄·절망 7초](WARINTRO_W04_V3_DESPAIR_20260909.md) 완료 후 사용자 다음 요청으로 [W05 빈 방 6초](WARINTRO_W05_EMPTY_ROOM_20260909.md) 완료, 사용자 검수 대기."
+      ]
+    ]
+  },
+  {
+    "path": "docs/11내러티브·로어디자인/11내러티브·로어디자인.md",
+    "pairs": [
+      [
+        "W05 이후·전체 합본·런타임 교체 미완료.",
+        "후속 [W05 빈 방](../cinematic/WARINTRO_W05_EMPTY_ROOM_20260909.md) 6초 제작·기술 검사·표본 확인 완료, 사용자 검수 대기. W06 이후·전체 합본·런타임 교체 미완료."
+      ]
+    ]
+  },
+  {
+    "path": "docs/6사운드디자인/6사운드디자인.md",
+    "pairs": [
+      [
+        "wa02·wa04·wa06·wa08 영어",
+        "wa02·wa04·wa06·wa08·wa09 영어"
+      ],
+      [
+        "속도·피치 유지. `intro_voice.mp3`",
+        "[W05 빈 방](../cinematic/WARINTRO_W05_EMPTY_ROOM_20260909.md)은 wa09 더빙 3.108571초를 6초 영상의 1초부터 배치한다. 속도·피치 유지. `intro_voice.mp3`"
+      ]
+    ]
+  }
+]

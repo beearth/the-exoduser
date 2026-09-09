@@ -1,0 +1,64 @@
+[
+  {
+    "path": "docs/cinematic/WARINTRO_REMASTER_20260909.md",
+    "pairs": [
+      [
+        "[W04 v2 복도 7초](WARINTRO_W04_V2_CORRIDOR_20260909.md) 제작·기술 검사·표본 시각 확인 완료, 사용자 검수 대기.",
+        "W04 v2 복도를 제작했으나 문 구조·감정 표현 지적으로 교체한다. [W04 v3 양문 폐쇄·절망 7초](WARINTRO_W04_V3_DESPAIR_20260909.md) 제작·기술 검사·9개 표본 확인 완료, 사용자 검수 대기."
+      ]
+    ]
+  },
+  {
+    "path": "docs/cinematic/WARINTRO_FAMILY_INSERT_REVIEW_20260909.md",
+    "pairs": [
+      [
+        "[W04 v2 복도 원화·7초 영상](WARINTRO_W04_V2_CORRIDOR_20260909.md) 제작·기술 검사·표본 시각 확인 완료.",
+        "W04 v2 복도를 제작한 뒤 사용자 문 구조·감정 표현 지적에 따라 [W04 v3 양문 폐쇄·아내가 주저앉는 7초 영상](WARINTRO_W04_V3_DESPAIR_20260909.md)으로 수정·검수 완료."
+      ],
+      [
+        "천천히 후퇴하는 카메라, 문과 횃불 위주 움직임. 기존 W04 더빙 4.623673초·자막 원고 재사용",
+        "최신 W04 v3는 양문 완전 폐쇄 후 아내가 주저앉아 고개를 숙임, 약한 전진 카메라. 기존 W04 더빙 4.623673초·자막 원고 재사용"
+      ],
+      [
+        "| W04 v2 / wa08 |",
+        "| W04 v3 / wa08 |"
+      ]
+    ]
+  },
+  {
+    "path": "docs/cinematic/WARINTRO_W04_REMASTER_20260909.md",
+    "pairs": [
+      [
+        "[W04 v2 복도 7초](WARINTRO_W04_V2_CORRIDOR_20260909.md)를 제작했다.",
+        "W04 v2 복도를 거쳐 [W04 v3 양문 폐쇄·절망 7초](WARINTRO_W04_V3_DESPAIR_20260909.md)를 제작했다."
+      ]
+    ]
+  },
+  {
+    "path": "docs/cinematic/PROLOGUE_STORYBOARD_v1.md",
+    "pairs": [
+      [
+        "[W04 v2 복도 7초](WARINTRO_W04_V2_CORRIDOR_20260909.md) 완료, 사용자 검수 대기.",
+        "W04 v2 복도를 제작한 뒤 문 구조·감정 표현 지적을 반영한 [W04 v3 양문 폐쇄·절망 7초](WARINTRO_W04_V3_DESPAIR_20260909.md) 완료, 사용자 검수 대기."
+      ]
+    ]
+  },
+  {
+    "path": "docs/11내러티브·로어디자인/11내러티브·로어디자인.md",
+    "pairs": [
+      [
+        "[W04 v2 복도](../cinematic/WARINTRO_W04_V2_CORRIDOR_20260909.md) 신규 원화·7초 영상 제작·기술 검사·표본 시각 확인 완료, 사용자 검수 대기.",
+        "W04 v2 복도를 제작했다. 이후 문 구조·감정 표현 지적을 반영한 [W04 v3 양문 폐쇄·절망](../cinematic/WARINTRO_W04_V3_DESPAIR_20260909.md) 7초 제작·기술 검사·9개 표본 확인 완료, 사용자 검수 대기."
+      ]
+    ]
+  },
+  {
+    "path": "docs/6사운드디자인/6사운드디자인.md",
+    "pairs": [
+      [
+        "[W04 v2 복도](../cinematic/WARINTRO_W04_V2_CORRIDOR_20260909.md)는 기존 W04 음성·자막·정렬 파일을",
+        "[W04 v3 양문 폐쇄·절망](../cinematic/WARINTRO_W04_V3_DESPAIR_20260909.md)은 기존 W04 음성·자막·정렬 파일을"
+      ]
+    ]
+  }
+]

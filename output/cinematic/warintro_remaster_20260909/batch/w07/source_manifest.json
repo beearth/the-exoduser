@@ -1,0 +1,18 @@
+{
+  "scene": "w07",
+  "source": "game.html PROLOGUE_LINES",
+  "lines": [
+    {
+      "id": "wa12",
+      "original_start_s": 33,
+      "original_duration_s": 4,
+      "image": "warintro/cin_throne.jpg",
+      "ko": "늙은 부모는 감옥에 갇혀 굶어 죽었다.",
+      "en": "His elderly parents were imprisoned and starved to death."
+    }
+  ],
+  "image": "output/cinematic/warintro_remaster_20260909/batch/w07/cin_parents_cell.png",
+  "image_sha256": "e52084f483ea2e76e733b98dd4a166b77a65d90cf27983f89f5374286f1101d6",
+  "voice_id": "WS6naCm8T4gbyzsLnOjK",
+  "voice_sha256": "b6dadfb6ac65937023f07bbffd40906d33a841d77012f0555e8acc7179a41afa"
+}

@@ -1,0 +1,21 @@
+{
+  "model": "cinematic_studio_video_v2",
+  "duration": 6,
+  "aspect_ratio": "16:9",
+  "mode": "std",
+  "sound": "off",
+  "genre": "suspense",
+  "speedramp": "linear",
+  "multi_shots": false,
+  "multi_shot_mode": "custom",
+  "cfg_scale": 0.5,
+  "count": 1,
+  "medias": [
+    {
+      "role": "image",
+      "value": "0afe1cca-54ca-4119-8af7-0a8bebbe7e46"
+    }
+  ],
+  "prompt": "Animate the supplied existing fantasy memory illustration as a restrained six-second emotional tableau. Preserve the kneeling armored adult man at the bottom, the existing distant family silhouettes, the central moonlit female apparition and the two seated figures behind the fixed cage bars. All figures remain still and unchanged in their exact original positions; keep all hands and anatomy stable. The man holds his bowed head in grief, no new gesture. Thin smoke drifts slowly, fine embers rise, distant orange firelight flickers softly and the existing moonlight subtly shimmers. The camera slowly rises a very small amount to draw attention from his bowed shoulders toward the existing moonlit apparition, preserving the full arrangement and original painterly style. No new people, injury, distress actions, body movement, fire contact with a person, graphic detail, text or speech. Single continuous silent shot.",
+  "declined_preset_id": "24bae836-2c4a-48e0-89b6-49fcc0b21612"
+}
