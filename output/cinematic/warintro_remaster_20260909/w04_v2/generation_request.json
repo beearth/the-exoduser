@@ -1,0 +1,21 @@
+{
+  "model": "cinematic_studio_video_v2",
+  "duration": 7,
+  "aspect_ratio": "16:9",
+  "mode": "std",
+  "sound": "off",
+  "genre": "suspense",
+  "speedramp": "linear",
+  "multi_shots": false,
+  "multi_shot_mode": "custom",
+  "cfg_scale": 0.5,
+  "count": 1,
+  "medias": [
+    {
+      "role": "image",
+      "value": "bba27755-95b9-48c8-9c45-8c3638a7da50"
+    }
+  ],
+  "prompt": "Animate this supplied gothic corridor painting as a restrained seven-second cinematic shot. Preserve the adult woman seen from behind in her fully covering charcoal dress and brown shawl, her tied dark hair, the armored guard by the doorway, stone architecture, banners and torch fixtures. The woman remains standing where she is, facing the doorway, only subtle breathing and a faint movement of the shawl. The guard stays still in his original location to the right of the door, maintaining a clear stable silhouette, hands and polearm stationary. The heavy partly open door slowly swings a small distance toward closing, narrowing the pale strip of light without touching or intersecting the guard; do not fully close the door if this would collide with him. Slow smooth camera pullback through the corridor. Subtle flickering torch flames, wisps of smoke and floating dust. Somber restrained atmosphere. Maintain the original painterly visual style, anatomy and clothing. No walking, no interaction between characters, no sudden motion, no new characters or objects, no text or captions. Silent continuous shot.",
+  "declined_preset_id": "24bae836-2c4a-48e0-89b6-49fcc0b21612"
+}
