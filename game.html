@@ -2267,8 +2267,8 @@ canvas{display:block;position:fixed;inset:0}
   .room-lbl{font-size:.8rem}
 }
 </style>
-<link rel="stylesheet" href="stat-panel-ui.css?v=20260909">
-<script src="stat-panel-ui.js?v=20260909"></script>
+<link rel="stylesheet" href="stat-panel-ui.css?v=20260909-remaster">
+<script src="stat-panel-ui.js?v=20260909-remaster"></script>
 </head>
 <body>
 <div id="gcModal"><div class="gc-box"><div class="gc-msg" id="gcMsg"></div><div class="gc-btns"><button class="gc-btn gc-ok" id="gcOk"></button><button class="gc-btn gc-cancel" id="gcCancel"></button></div></div></div>
@@ -14429,7 +14429,7 @@ function recalcSt(){
   let bonus=0,_enhSt2=0;
   const _stEnhSet=new Set(['ring1','ring2','belt']); // ST 강화 3종
   for(const slot of SLOT_NAMES){const it=INV.equipped[slot];if(it){if(it.bonusSt)bonus+=it.bonusSt;if(it.enh>0&&_stEnhSet.has(slot))_enhSt2+=it.enh*0.2}}
-  P.mst=~~(base+bonus+_eqAffix('maxSTFlat')+~~(P._crystalStats?P._crystalStats.st:0)+_enhSt2)+(PASSIVES.pHuman||0)*100+_gritStFlat();P.st=Math.min(P.st,P.mst); // 악세ST강화: ring1/ring2/belt 1강당 +0.2 ST + 인간성: ST+100/Lv
+  P.mst=~~(base+bonus+_eqAffix('maxSTFlat')+~~(P._crystalStats?P._crystalStats.st:0)+_enhSt2)+(PASSIVES.pHuman||0)*100+(PASSIVES.pStamina||0)*50+_gritStFlat();P.st=Math.min(P.st,P.mst); // 악세ST강화: ring1/ring2/belt 1강당 +0.2 ST + 인간성: ST+100/Lv
 }
 
 function itemPower(it){
@@ -24611,14 +24611,14 @@ let STATS={str:0,dex:0,int:0,vit:0,lck:0};
 const STAT_MAX={str:500,dex:500,int:500,vit:500,lck:500};
 // ═══ 패시브 스킬 (5레벨마다 AP 1개) ═══
 const PASSIVE_DEF=[
-  {key:'pAtk',   name:'⚔️ 맹공',nameEn:'⚔️ Onslaught',desc:'근접뎀 +10%, ST비용 -4%/lv (최대-40%)',descEn:'Melee DMG +10%, ST cost -4%/lv (max -40%)',max:10,icon:'⚔️',col:'#ff6644'},
+  {key:'pAtk',   name:'⚔️ 맹공',nameEn:'⚔️ Onslaught',desc:'공통 피해 +10%/lv (합연산), ST비용 -4%/lv (최대-40%)',descEn:'Shared DMG +10%/lv (additive), ST cost -4%/lv (max -40%)',max:10,icon:'⚔️',col:'#ff6644'},
   {key:'pCharge',name:'🔱 돌파',nameEn:'🔱 Breakthrough',    desc:'사슬 사거리 +2%/lv, 기동게이지 회복 +3%/lv',descEn:'Chain range +2%/lv, Mobility gauge recovery +3%/lv',max:10, icon:'🔱',col:'#ff8800'},
   {key:'pParry', name:'⚡ 반격',nameEn:'⚡ Retaliation',desc:'카운터뎀 +50%/lv, E 공속 +10%/lv, 무지개탄 피해감소 +10%/lv (최대50%)',descEn:'Counter DMG +50%/lv, E ATK speed +10%/lv, Rainbow shot DMG reduction +10%/lv (max 50%)',max:10,icon:'⚡',col:'#ffdd00'},
   {key:'pMagic', name:'🔮 마력폭주',nameEn:'🔮 Mana Surge',desc:'마법뎀 +10%, MP비용 -4%, 시전속도 +8%/lv',descEn:'Magic DMG +10%, MP cost -4%, Cast speed +8%/lv',max:10, icon:'🔮',col:'#8844ff'},
   {key:'pBow',   name:'🎯 정밀사격',nameEn:'🎯 Precision',desc:'투사체뎀 +15%, 공속 +10%, 사거리 +8%, ST비용 -4%/lv',descEn:'Projectile DMG +15%, ATK speed +10%, Range +8%, ST cost -4%/lv',max:10, icon:'🎯',col:'#44ddaa'},
   {key:'pGuard', name:'🛡 수호신',nameEn:'🛡 Aegis',  desc:'보호막 흡수 +2%/lv (기본30→최대50%)',descEn:'Shield absorb +2%/lv (base 30 to max 50%)',max:10, icon:'🛡',col:'#55bbff'},
-  {key:'pRegen', name:'💚 회복력',nameEn:'💚 Recovery',  desc:'HP/ST리젠 +3%/lv, 물약쿨 -3%/lv, 패링회복 +30%/lv',descEn:'HP/ST regen +3%/lv, Potion cooldown -3%/lv, Parry recovery +30%/lv',max:10, icon:'💚',col:'#33cc66'},
-  {key:'pCrit',  name:'💥 급소',nameEn:'💥 Vital Strike',    desc:'크리률 +2%, 크리뎀 +8%/lv',descEn:'Crit rate +2%, Crit DMG +8%/lv',max:10,icon:'💥',col:'#ff2266'},
+  {key:'pRegen', name:'💚 회복력',nameEn:'💚 Recovery',  desc:'HP/ST리젠 +3%/lv, 물약쿨 -3%/lv (최대30%), 패링회복 +20%/lv',descEn:'HP/ST regen +3%/lv, Potion cooldown -3%/lv (max 30%), Parry recovery +20%/lv',max:10, icon:'💚',col:'#33cc66'},
+  {key:'pCrit',  name:'💥 급소',nameEn:'💥 Vital Strike',    desc:'크리률 +1.5%, 크리뎀 +8%/lv',descEn:'Crit rate +1.5%, Crit DMG +8%/lv',max:10,icon:'💥',col:'#ff2266'},
   {key:'pDrop',  name:'🎁 약탈',nameEn:'🎁 Plunder',    desc:'아이템 드롭률 +8%/lv',descEn:'Item drop rate +8%/lv',    max:10, icon:'🎁',col:'#ffcc44'},
   {key:'pPierce',name:'🔱 관통',nameEn:'🔱 Pierce',desc:'투사체 관통률 +5%/lv, 관통횟수 +1/lv, 관통뎀감소 완화',descEn:'Projectile pierce rate +5%/lv, Pierce count +1/lv, Pierce DMG falloff reduced',max:10, icon:'🔱',col:'#44ffcc'},
   {key:'pMRegen',name:'💠 마력회복',nameEn:'💠 Mana Recovery',desc:'MP리젠 +3%/lv, 쉴드리젠 +3%/lv, 쉴드쿨 -3%/lv',descEn:'MP regen +3%/lv, Shield regen +3%/lv, Shield cooldown -3%/lv',max:10, icon:'💠',col:'#6688ff'},
@@ -24626,7 +24626,7 @@ const PASSIVE_DEF=[
   {key:'pMelee', name:'⚔ 광전사',nameEn:'⚔ Berserker',desc:'물리뎀 +15%/lv, HP +3%/lv, ST소모 -5%/lv',descEn:'Phys DMG +15%/lv, HP +3%/lv, ST cost -5%/lv',max:10, icon:'⚔',col:'#ff8844'},
   {key:'pCombo', name:'🎯 추적자',nameEn:'🎯 Tracker',desc:'적에게 약점노출 디버프. 직접 공격 시 스택+1, 스택당 피격뎀 +3%. 최대 Lv×5 중첩 (1렙5, 10렙50). 초당 20% 감소, 5초 미피격 시 리셋. DOT/장판 제외',descEn:'Weakness debuff on enemies. +1 stack per direct hit, +3% DMG/stack. Max Lv×5 (Lv1=5, Lv10=50). -20%/s decay, reset after 5s. DOT excluded',max:10, icon:'🎯',col:'#ff66aa'},
   // pPhysPen/pMagPen 삭제 (이원방어 제거)
-  {key:'pAbund',  name:'🌿 풍요',nameEn:'🌿 Abundance',desc:'적 HP 70%↑: 뎀+20%/lv, 회복력+5%/lv (합연산)',descEn:'Enemy HP≥70%: DMG+20%/lv, Recovery+5%/lv (additive)',max:10, icon:'🌿',col:'#66cc44'},
+  {key:'pAbund',  name:'🌿 풍요',nameEn:'🌿 Abundance',desc:'적 HP 70%↑: 뎀+20%/lv. 회복력+5%/lv (항상 적용)',descEn:'Enemy HP≥70%: DMG+20%/lv. Recovery+5%/lv (always active)',max:10, icon:'🌿',col:'#66cc44'},
   {key:'pPred',   name:'🐺 약자포식',nameEn:'🐺 Predator',desc:'적HP 30%↓: 뎀+20%/lv. 내HP 30%↓: 회복력+10%/lv, 이속+5%/lv (합연산)',descEn:'Enemy HP≤30%: DMG+20%/lv. My HP≤30%: Recovery+10%/lv, Move SPD+5%/lv (additive)',max:10, icon:'🐺',col:'#cc4444'},
   {key:'pDot',    name:'☠ 침식',nameEn:'☠ Corrosion',desc:'DOT 틱뎀 +15%/lv, DOT 지속시간 +10%/lv, DOT 축적률 +5%/lv',descEn:'DOT tick DMG +15%/lv, DOT duration +10%/lv, DOT pool rate +5%/lv',max:10, icon:'☠',col:'#88cc22'},
   {key:'pVital',  name:'💎 마력그릇',nameEn:'💎 Mana Vessel',desc:'MP +50/lv, MP회복 +1%/lv',descEn:'MP +50/lv, MP regen +1%/lv',max:10, icon:'💎',col:'#4488ff'},
@@ -24636,7 +24636,7 @@ const PASSIVE_DEF=[
   {key:'pArmor',  name:'🛡 철벽',nameEn:'🛡 Iron Wall',desc:'DEF +20/lv',descEn:'DEF +20/lv',max:10, icon:'🛡',col:'#8899aa'},
   {key:'pHunter', name:'🎯 사냥꾼',nameEn:'🎯 Hunter',desc:'엘리트/보스 추가뎀 +10%/lv',descEn:'Elite/Boss bonus DMG +10%/lv',max:10, icon:'🎯',col:'#ff6600'},
   {key:'pHuman',  name:'✦ 인간성',nameEn:'✦ Humanity',desc:'부활력 -10/lv, 전체 데미지 +5%/lv, HP/MP/ST +100/lv',descEn:'Revive power -10/lv, All DMG +5%/lv, HP/MP/ST +100/lv',max:10, icon:'✦',col:'#cccc88'},
-  {key:'pDemon',  name:'☠ 악마성',nameEn:'☠ Demon',desc:'부활확률 +2%/lv, 부활HP +5%/lv, 부활쿨 -30초/lv',descEn:'Revive chance +2%/lv, Revive HP +5%/lv, Revive CD -30s/lv',max:10, icon:'☠',col:'#cc44ff'},
+  {key:'pDemon',  name:'☠ 악마성',nameEn:'☠ Demon',desc:'부활확률 +2%/lv, 부활쿨 -30초/lv (최저100초). 부활 성공 시 HP/MP/ST 전부 회복',descEn:'Revive chance +2%/lv, Revive CD -30s/lv (minimum 100s). Successful revival restores all HP/MP/ST',max:10, icon:'☠',col:'#cc44ff'},
   {key:'pRage',   name:'🔥 분노폭주',nameEn:'🔥 Rage Overflow',desc:'분노 최대치 +10%/lv, 분노 데미지 +10%/lv',descEn:'Max Rage +10%/lv, Rage DMG +10%/lv',max:10, icon:'🔥',col:'#ff3322'},
 ];
 let PASSIVES={};PASSIVE_DEF.forEach(p=>PASSIVES[p.key]=0);
@@ -24857,7 +24857,7 @@ function applyStats(){
   if(_vLv>0){P.mmp+=_vLv*50;P.mp=Math.min(P.mp,P.mmp);P.mpR*=(1+_vLv*0.01)}
   // ═══ 힘의그릇: ST +50/lv, ST회복 +1%/lv ═══
   const _sLv=PASSIVES.pStamina||0;
-  if(_sLv>0){P.mst+=_sLv*50;P.st=Math.min(P.st,P.mst);P.stR*=(1+_sLv*0.01)}
+  if(_sLv>0){P.stR*=(1+_sLv*0.01)}
   // ═══ 강인: HP +300/lv ═══
   const _fLv=PASSIVES.pFortify||0;
   if(_fLv>0){P.mhp+=_fLv*300;P.hp=Math.min(P.hp,P.mhp)}
@@ -46706,6 +46706,14 @@ function renderStatPanel(){
     statDefs:STAT_DEF,caps:STAT_MAX,passiveDefs:PASSIVE_DEF,
     icon:(key,color,size)=>_glyph(key==='grit'?'anvil':STAT_SVG[key]||PASSIVE_SVG[key]||'star',color,size),
     state:()=>({stats:STATS,passives:PASSIVES,grit:_grit,sp:P.sp,ap:P.ap||0,hp:P.mhp,st:P.mst,mp:P.mmp}),
+    applyPlan:plan=>{
+      const live={stats:STATS,passives:PASSIVES,grit:_grit,sp:P.sp,ap:P.ap||0};
+      const next=ExoduserStatsPanel.evaluatePlan(plan,live,STAT_MAX,PASSIVE_DEF);
+      if(!next||!next.changes)return false;
+      Object.assign(STATS,next.stats);Object.assign(PASSIVES,next.passives);
+      _grit=next.grit;P.sp=next.sp;P.ap=next.ap;
+      applyStats();SFX.levelup();renderStatPanel();dbSaveNow();return true;
+    },
     changeStat:(key,amount)=>{
       const value=key==='grit'?_grit:STATS[key];
       const next=ExoduserStatsPanel.statChange(value,key==='grit'?Infinity:STAT_MAX[key],P.sp,amount);
