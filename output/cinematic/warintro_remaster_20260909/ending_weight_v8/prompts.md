@@ -1,0 +1,15 @@
+# W12 v8 corrected sword
+
+## Accepted image edit (attempt 5)
+
+References: realism_v7/w12_start.png (scene/character), realism_v7/w10a_straight_start.png (grip construction).
+
+Create a corrected full film frame using IMAGE1 as the scene and character identity lock. IMAGE2 is a reference ONLY for how a physically correct hand grips a straight vertical sword. The malformed old sword and right-hand pose in IMAGE1 must be REPLACED COMPLETELY, including every old handle and pommel fragment. Repose the warrior's RIGHT ARM: bend his right elbow a little and extend the right gauntleted forearm outward toward screen right, so the closed gripping fist is CLEARLY SEPARATED FROM HIS HIP AND CAPE against the empty bridge background. His right fist is about 90 pixels farther to screen right than in IMAGE1. He holds ONE greatsword upright with the BLADE POINTING VERTICALLY DOWN. Show the ENTIRE straight leather HANDLE distinctly, with a small pommel directly ABOVE the fist, a visible straight grip segment below the fist, a simple horizontal CROSSGUARD below that, and the broad steel BLADE vertically beneath. All centers on ONE unbroken VERTICAL LINE, like the good sword construction in IMAGE2. The sword is rigid and physically correct, and the wrist is neutral. No angled old handle left near the hip; erase the old weapon entirely before placing this new corrected grip. Keep the exact head, black hair, black iron armor, burgundy cape, rear-view body, legs and feet, bridge and distant gate, architecture, mist, realistic lighting and full-frame 16:9 composition of IMAGE1. Change only right elbow/forearm/hand and sword placement. The sword is a large practical greatsword, not a thin rapier. No extra weapons, no text, no labels.
+
+Generated image: exec-2de3342e-474d-4db1-9a34-1142e498e453.png, copied as w12_straight_start.png. First four edits rejected: diagonal axis mismatch (1,2), residual old angled handle (3,4). Rejected drafts are not final deliverables.
+
+## Higgsfield video request
+
+W12-STRAIGHT-v8. Five seconds, one continuous photorealistic dark fantasy shot. This exact armored warrior pauses on the bridge facing the distant gate. Keep the new right forearm position and his closed gauntlet holding the single straight VERTICAL sword exactly as in this reference. The pommel, grip center, guard center, blade ridge and tip stay on ONE straight vertical axis for every frame. The hand never regrips and the sword never bends or swings. He takes a quiet breath, his heavy burgundy cape moves lightly, mist drifts between the stones. Feet stay planted, no walking, no sword lift, no turning. Locked camera. Preserve the exact black hair, head, closed black iron armor, natural proportions, hand anatomy, entire bridge and distant architecture. No extra handles or swords, no twisting grip, no offset blade, no disappearing armor, no morphs, no cuts, no text, no voice or music. Natural motion at normal speed.
+
+Settings: Cinema Studio 2.5, 5 seconds, 1080p, 16:9, single shot, audio off, one output, displayed cost 8 credits. Submission and result evidence recorded separately in w12_generation.json.

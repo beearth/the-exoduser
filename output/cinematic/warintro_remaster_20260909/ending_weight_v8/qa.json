@@ -1,0 +1,43 @@
+{
+  "receipts": [
+    {
+      "file": "final.mp4",
+      "duration": 103.5,
+      "frames": 6210,
+      "bytes": 93542509,
+      "sha256": "2c52993b121b5828e5ae3911565ae94218383cd8bf223ea2c3ea1f88ba056291",
+      "audio_codec": "aac",
+      "audio_channels": 2,
+      "decode": "PASS"
+    },
+    {
+      "file": "ending.mp4",
+      "duration": 14.0,
+      "frames": 840,
+      "bytes": 11831496,
+      "sha256": "532c7b5e2ec339d616bf0cccfc41e1626f8bfc7e079e6eee75067e40518c42dd",
+      "audio_codec": "aac",
+      "audio_channels": 2,
+      "decode": "PASS"
+    }
+  ],
+  "audio_correlation": 0.9999756223725811,
+  "digital_gap_rms": 0.0,
+  "contact_times": [
+    66,
+    67.5,
+    69.8,
+    95.5,
+    96.7,
+    97.5,
+    98.7,
+    99.7,
+    100.2,
+    101.5,
+    102.7,
+    103.45
+  ],
+  "visual_review": "Final contact samples inspected; W12 grip source contact inspected. Full realtime review and listening approval pending.",
+  "realtime_review": false,
+  "listening_review": false
+}

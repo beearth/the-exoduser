@@ -1,0 +1,31 @@
+{
+  "asset_id": "88809160-9274-4066-acb3-c6060bbb49a4",
+  "upload_id": "1ce01cea-55ed-4968-911d-69fbf1e965c2",
+  "image_attempts": 5,
+  "rejected_image_attempts": [
+    1,
+    2,
+    3,
+    4
+  ],
+  "selected_image": "w12_straight_start.png",
+  "model": "Cinema Studio 2.5",
+  "requested_seconds": 5,
+  "requested_resolution": "1080p",
+  "aspect_ratio": "16:9",
+  "audio": false,
+  "outputs": 1,
+  "displayed_credits": 8,
+  "video_submissions": 1,
+  "status": "completed",
+  "upload_note": "Two backslash-path uploads failed at image orientation; forward-slash absolute path upload succeeded.",
+  "duration": 5.041667,
+  "frames": 121,
+  "fps": "24/1",
+  "width": 1916,
+  "height": 1080,
+  "bytes": 6802868,
+  "sha256": "ea9d65988e81a88ff16a49a24f205b65d6d5986507184546d01ad8b4afe31ae3",
+  "decode": "PASS",
+  "visual_review": "9 enlarged grip samples inspected; hilt and blade axis aligned; full realtime review pending"
+}

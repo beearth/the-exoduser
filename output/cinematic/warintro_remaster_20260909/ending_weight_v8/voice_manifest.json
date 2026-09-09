@@ -1,0 +1,34 @@
+{
+  "text": "You... who bear the weight of sin.",
+  "ko": "죄의 무게를 짊어진 자여.",
+  "voice_id": "WS6naCm8T4gbyzsLnOjK",
+  "model": "eleven_multilingual_v2",
+  "settings": {
+    "stability": 0.65,
+    "similarity_boost": 0.85,
+    "style": 0.35,
+    "use_speaker_boost": true
+  },
+  "raw_duration": 2.6470833333333332,
+  "trim_range": [
+    0.0,
+    2.52
+  ],
+  "duration": 2.52,
+  "gain": 0.9399691605966086,
+  "global_range": [
+    97.24,
+    99.75999999999999
+  ],
+  "digital_gap": [
+    96.095,
+    97.24
+  ],
+  "preserved_pcm_until": 96.095,
+  "speed": 1,
+  "pitch_change": false,
+  "total": 103.5,
+  "ending_duration": 14.0,
+  "captions": 22,
+  "listening_review": false
+}
