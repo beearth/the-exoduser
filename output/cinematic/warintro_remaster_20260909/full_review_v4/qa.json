@@ -1,0 +1,66 @@
+{
+  "receipts": {
+    "clean.mp4": {
+      "bytes": 106026255,
+      "duration_s": 101.0,
+      "frames": 6060,
+      "audio_duration_s": 101.0
+    },
+    "final.mp4": {
+      "bytes": 103379884,
+      "duration_s": 101.0,
+      "frames": 6060,
+      "audio_duration_s": 101.0
+    },
+    "ending_final.mp4": {
+      "bytes": 12829558,
+      "duration_s": 11.5,
+      "frames": 690,
+      "audio_duration_s": 11.5
+    }
+  },
+  "narration_pcm_correlation": 0.999982115121556,
+  "pause_rms": 0.0001722932793200016,
+  "tail_rms": 0.0,
+  "source_pause_rms": 0.0001722982997307554,
+  "pause_difference_rms": 4.168392422343459e-07,
+  "caption_count": 21,
+  "caps_byte_identical_v3": true,
+  "full_decode_pass": true,
+  "question_pause_s": 3.7,
+  "final_ending_motion": [
+    {
+      "shot": "A",
+      "frames": 120,
+      "transitions": 119,
+      "near_duplicate_ratio": 0.0,
+      "changed_frames_hz": 59.5,
+      "mean_mad": 0.5485935807228088
+    },
+    {
+      "shot": "B",
+      "frames": 213,
+      "transitions": 212,
+      "near_duplicate_ratio": 0.0047169811320754715,
+      "changed_frames_hz": 59.43661971830986,
+      "mean_mad": 0.555245041847229
+    },
+    {
+      "shot": "C",
+      "frames": 57,
+      "transitions": 56,
+      "near_duplicate_ratio": 0.017857142857142856,
+      "changed_frames_hz": 57.89473684210527,
+      "mean_mad": 0.40909814834594727
+    }
+  ],
+  "true_interpolation_range_s": [
+    89.5,
+    101
+  ],
+  "earlier_cadence": "24fps retained in 60fps export",
+  "visual_review_pending": false,
+  "realtime_listen_review": false,
+  "visual_review_file": "visual_review.json",
+  "verdict": "PASS_FOR_REVIEW"
+}

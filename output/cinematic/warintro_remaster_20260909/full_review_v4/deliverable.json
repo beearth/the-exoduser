@@ -1,0 +1,22 @@
+{
+  "status": "PASS_FOR_REVIEW",
+  "hosted": false,
+  "game_runtime_applied": false,
+  "files": {
+    "final.mp4": {
+      "path": "G:\\exoduser\\output\\cinematic\\warintro_remaster_20260909\\full_review_v4\\final.mp4",
+      "bytes": 103379884,
+      "sha256": "44ed310e2bd71b91a03c84c373cf6cbb0f4b68776e7903e5660fa15c765307bc"
+    },
+    "ending_final.mp4": {
+      "path": "G:\\exoduser\\output\\cinematic\\warintro_remaster_20260909\\full_review_v4\\ending_final.mp4",
+      "bytes": 12829558,
+      "sha256": "08263494c6a54c4912b54e05c54278aa09daa59bb10311c52b71fc375e8071ce"
+    },
+    "before_after.mp4": {
+      "path": "G:\\exoduser\\output\\cinematic\\warintro_remaster_20260909\\full_review_v4\\before_after.mp4",
+      "bytes": 2787932,
+      "sha256": "7ce139d76c9e76c25c4b40041acf0f8c6690967225397e6f0c546ea816f1a8e8"
+    }
+  }
+}

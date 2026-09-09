@@ -1,0 +1,20 @@
+{
+  "verdict": "PASS_FOR_REVIEW",
+  "method": "Direct inspection of extracted still frames; no realtime full-film viewing or speaker listening",
+  "enhanced_ending_samples": 9,
+  "escape_samples": 6,
+  "final_samples": 15,
+  "comparison_label_sample": 1,
+  "findings": [
+    "No conspicuous face or hand collapse in inspected samples",
+    "Rear-facing warrior and stairway remain coherent",
+    "Editorial cuts remain distinct",
+    "Question caption persists through pause; final command crosses escape transition",
+    "Final fade reaches black"
+  ],
+  "limitations": [
+    "Temporal artifacts between inspected samples are not fully excluded",
+    "Enlarged B shot retains limited source detail"
+  ],
+  "game_runtime_applied": false
+}

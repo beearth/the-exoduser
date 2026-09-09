@@ -1,0 +1,107 @@
+{
+  "enhanced": [
+    {
+      "shot": "A",
+      "frames": 120,
+      "transitions": 119,
+      "near_duplicate_ratio": 0.03361344537815126,
+      "changed_frames_hz": 57.5,
+      "mean_mad": 0.555355966091156
+    },
+    {
+      "shot": "B",
+      "frames": 213,
+      "transitions": 212,
+      "near_duplicate_ratio": 0.009433962264150943,
+      "changed_frames_hz": 59.15492957746479,
+      "mean_mad": 0.5608698129653931
+    },
+    {
+      "shot": "C",
+      "frames": 57,
+      "transitions": 56,
+      "near_duplicate_ratio": 0.017857142857142856,
+      "changed_frames_hz": 57.89473684210527,
+      "mean_mad": 0.4127197861671448
+    }
+  ],
+  "intermediate": [
+    {
+      "shot": "A",
+      "frames": 120,
+      "transitions": 119,
+      "near_duplicate_ratio": 0.10084033613445378,
+      "changed_frames_hz": 53.5,
+      "mean_mad": 0.5120351910591125
+    },
+    {
+      "shot": "B",
+      "frames": 213,
+      "transitions": 212,
+      "near_duplicate_ratio": 0.04245283018867924,
+      "changed_frames_hz": 57.183098591549296,
+      "mean_mad": 0.5311351418495178
+    },
+    {
+      "shot": "C",
+      "frames": 57,
+      "transitions": 56,
+      "near_duplicate_ratio": 0.125,
+      "changed_frames_hz": 51.578947368421055,
+      "mean_mad": 0.38595300912857056
+    }
+  ],
+  "previous": [
+    {
+      "shot": "A",
+      "frames": 48,
+      "transitions": 47,
+      "near_duplicate_ratio": 0.8297872340425532,
+      "changed_frames_hz": 4.0,
+      "mean_mad": 0.8891729116439819
+    },
+    {
+      "shot": "B",
+      "frames": 85,
+      "transitions": 84,
+      "near_duplicate_ratio": 0.8214285714285714,
+      "changed_frames_hz": 4.235294117647059,
+      "mean_mad": 0.9231888651847839
+    },
+    {
+      "shot": "C",
+      "frames": 23,
+      "transitions": 22,
+      "near_duplicate_ratio": 0.8181818181818182,
+      "changed_frames_hz": 4.173913043478261,
+      "mean_mad": 0.6784074306488037
+    }
+  ],
+  "escape": [
+    {
+      "shot": "D",
+      "frames": 300,
+      "transitions": 299,
+      "near_duplicate_ratio": 0.20066889632107024,
+      "changed_frames_hz": 47.8,
+      "mean_mad": 1.2936283349990845
+    }
+  ],
+  "receipts": {
+    "smooth_hq.mp4": {
+      "bytes": 7265934,
+      "duration": "6.500000",
+      "frames": "390",
+      "sha256": "b50b280fcb1c90d060f2d4bda990af21f45d35d77b676a72d6189fa5744cbaf3"
+    },
+    "escape_hq.mp4": {
+      "bytes": 7187291,
+      "duration": "5.000000",
+      "frames": "300",
+      "sha256": "db7bf382dc9a32393b5186a12f249586d97a24b091c6995b1f008fc6df7d1b9f"
+    }
+  },
+  "metric": "320x180 gray adjacent-frame mean absolute difference; near-duplicate <0.25; excludes cut boundaries",
+  "visual_review_pending": false,
+  "visual_review_file": "visual_review.json"
+}
