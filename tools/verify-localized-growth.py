@@ -50,7 +50,7 @@ with sync_playwright() as p:
           const search=root.querySelector('#growthSearch');search.value='';search.dispatchEvent(new Event('input'));
           for(const key of PASSIVE_DEF.map(d=>d.key)){click('[data-passive="'+key+'"]');check();}
           for(const id of ['str','dex','int','lck','grit']){click('[data-focus="inspect-'+id+'"]');check();}
-          click('[data-focus="str-1"]');check();assert(STATS.str===0&&P.sp===100,'draft spends live SP');
+          click('[data-focus="inspect-str"]');click('#growthUpgrade');check();assert(STATS.str===0&&P.sp===100,'draft spends live SP');
           click('#growthApply');check();assert(STATS.str===1&&P.sp===99,'SP apply');
           click('[data-passive="pAtk"]');click('#growthUpgrade');check();
           assert(PASSIVES.pAtk===0&&P.ap===100,'draft spends live AP');
@@ -61,7 +61,7 @@ with sync_playwright() as p:
           assert(PASSIVES.pAtk===0&&P.ap===100,'AP refund');
           click('[data-passive="pHuman"]');click('#growthUpgrade');click('[data-passive="pDemon"]');click('#growthUpgrade');check();
           assert(root.querySelector('.growth-tradeoff'),'Humanity/Demon warning');click('#growthCancel');check();
-          click('[data-focus="str-1"]');click('#statClose');await Promise.resolve();openPanel('statPanel');G.paused=true;check();
+          click('[data-focus="inspect-str"]');click('#growthUpgrade');click('#statClose');await Promise.resolve();openPanel('statPanel');G.paused=true;check();
           assert(STATS.str===1&&P.sp===99&&root.querySelector('#growthApply').disabled,'close discards plan');
           click('#statResetBtn');check();assert(STATS.str===1&&P.sp===99,'full refund must stay draft');
           click('#growthApply');check();assert(STATS.str===0&&P.sp===100,'full refund apply');

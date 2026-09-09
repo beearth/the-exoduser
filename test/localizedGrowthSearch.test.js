@@ -23,6 +23,7 @@ beforeEach(async()=>{
     document.body.append(document.importNode(doc.getElementById('statPanel'),true));
     document.getElementById('statPanel').classList.add('on');
   },html);
+  await page.addStyleTag({path:fileURLToPath(new URL('../stat-panel-ui.css',import.meta.url))});
   await page.addScriptTag({path:fileURLToPath(new URL('../lang_de.js',import.meta.url))});
   await page.addScriptTag({path:fileURLToPath(new URL('../stat-panel-ui.js',import.meta.url))});
   await page.evaluate(({passiveDefs,translations})=>{

@@ -30,6 +30,102 @@
     {id:'fate',ko:'인간과 악마',en:'Fate',icon:'pHuman',color:'#b3a2c0',keys:['pHuman','pDemon','pDrop','pMalice'],hint:['생존의 대가 · 부활 · 전리품','Survival tradeoffs · revival · rewards']}
   ];
   const pathFor = key => paths.find(path=>path.keys.includes(key));
+  // Connections describe anatomy and navigation; they do not impose purchase prerequisites.
+  const bodyJoints={origin:{x:500,y:470},spine:{x:500,y:320,parent:'origin'},neck:{x:500,y:180,parent:'spine'},leftShoulder:{x:405,y:235,parent:'spine'},rightShoulder:{x:595,y:235,parent:'spine'}};
+  const bodyNodes=[
+    ['int',430,115,'neck'],['lck',570,115,'neck'],['pMagic',500,40,'int',1],['pCrit',590,195,'lck'],['pCombo',410,195,'int'],
+    ['str',355,265,'leftShoulder'],['pAtk',290,315,'str'],['pMelee',210,375,'pAtk',1],['pRage',145,445,'pMelee'],['pDot',225,475,'pMelee'],['pHunter',315,425,'pAtk'],
+    ['dex',645,265,'rightShoulder'],['pBow',710,315,'dex'],['pXbow',790,375,'pBow'],['pPierce',855,445,'pXbow',1],['pParry',775,475,'pXbow'],
+    ['grit',500,365,'origin'],['pArmor',435,290,'grit'],['pGuard',565,290,'grit'],['pFortify',500,235,'grit',1],['pHuman',435,420,'origin'],['pDemon',565,420,'origin'],
+    ['pCharge',420,510,'origin'],['pPred',370,585,'pCharge'],['pAbund',320,680,'pPred',1],['pDrop',435,680,'pPred'],
+    ['pVital',580,510,'origin'],['pMRegen',630,585,'pVital'],['pStamina',680,680,'pMRegen',1],['pRegen',565,680,'pMRegen'],['pMalice',640,755,'pStamina']
+  ].map(([key,x,y,parent,major])=>({key,x,y,parent,major:!!major,stat:!key.startsWith('p')}));
+  const bodyPoints=Object.fromEntries([...Object.entries(bodyJoints),...bodyNodes.map(n=>[n.key,n])]);
+  function bodyRoute(key){
+    const route=[];
+    for(let point=key;bodyPoints[point];point=bodyPoints[point].parent)route.unshift(point);
+    return route;
+  }
+  function mountBodyTree(root,t){
+    const doc=root.ownerDocument,$=id=>root.querySelector('#'+id);
+    const make=(tag,cls)=>{const n=doc.createElement(tag);n.className=cls;return n;};
+    const svg=(tag,attrs={})=>{const n=doc.createElementNS('http://www.w3.org/2000/svg',tag);for(const [k,v] of Object.entries(attrs))n.setAttribute(k,v);return n;};
+    root.classList.add('growth-body-tree');
+    const viewport=make('div','growth-tree-viewport');viewport.id='growthTreeViewport';
+    const scene=make('div','growth-tree-scene');scene.id='growthTreeScene';
+    const art=svg('svg',{viewBox:'0 0 1000 800','aria-hidden':'true',class:'growth-body-engraving'});
+    const ornament=svg('g',{class:'growth-body-ornament',fill:'none'});
+    for(const r of [275,305,365])ornament.append(svg('circle',{cx:500,cy:395,r}));
+    for(let i=0;i<48;i++){const a=i*Math.PI/24;ornament.append(svg('line',{x1:500+Math.sin(a)*365,y1:395+Math.cos(a)*365,x2:500+Math.sin(a)*(i%4?369:377),y2:395+Math.cos(a)*(i%4?369:377)}));}
+    ornament.append(svg('path',{d:'M500 10V790 M100 395H900 M270 115L730 675 M730 115L270 675'}));art.append(ornament);
+    const anatomy=svg('g',{class:'growth-body-anatomy',fill:'none'});
+    anatomy.append(svg('path',{class:'growth-body-outline',d:'M474 168 C455 153 459 112 463 87 C469 48 531 48 537 87 C541 112 545 153 526 168 L532 195 C551 213 597 205 621 227 C650 254 670 287 703 316 L801 395 L842 424 Q866 452 850 463 L821 445 Q846 479 829 483 L797 451 Q816 488 800 490 L773 449 Q789 481 775 484 L754 444 C721 419 690 395 660 374 L602 319 C609 358 589 415 575 454 L584 485 C604 526 610 554 625 590 L671 690 L698 731 Q704 747 680 751 L627 739 L602 700 C580 664 567 632 553 600 L510 536 Q500 524 490 536 L447 600 C433 632 420 664 398 700 L373 739 L320 751 Q296 747 302 731 L329 690 L375 590 C390 554 396 526 416 485 L425 454 C411 415 391 358 398 319 L340 374 C310 395 279 419 246 444 L225 484 Q211 481 227 449 L200 490 Q184 488 203 451 L171 483 Q154 479 179 445 L150 463 Q134 452 158 424 L199 395 L297 316 C330 287 350 254 379 227 C403 205 449 213 468 195 Z'}));
+    anatomy.append(svg('path',{d:'M500 174V466 M466 204Q500 219 534 204 M415 245Q447 230 484 251 M585 245Q553 230 516 251 M421 310Q445 356 463 390 M579 310Q555 356 537 390 M458 406Q480 443 482 470 M542 406Q520 443 518 470 M444 488Q500 461 556 488 M433 514L397 611L354 714 M567 514L603 611L646 714 M394 262L308 341L211 425 M606 262L692 341L789 425 M480 104Q500 93 520 104 M477 128L489 124 M523 128L511 124 M485 151Q500 158 515 151'}));
+    for(let i=0;i<5;i++){const y=267+i*20;anatomy.append(svg('path',{d:`M490 ${y}Q451 ${y-22} ${429+i*3} ${y-4}Q444 ${y+17} 486 ${y+17} M510 ${y}Q549 ${y-22} ${571-i*3} ${y-4}Q556 ${y+17} 514 ${y+17}`}));}
+    art.append(anatomy);
+    const links=svg('g',{class:'growth-tree-links',fill:'none'}),linkNodes=new Map();
+    for(const [key,p] of Object.entries(bodyPoints))if(p.parent){const from=bodyPoints[p.parent];const line=svg('path',{d:`M${from.x} ${from.y}L${p.x} ${p.y}`,'data-connection':key});links.append(line);linkNodes.set(key,line);}
+    art.append(links);scene.append(art);
+    const origin=make('span','growth-tree-origin');origin.textContent='✦';origin.setAttribute('aria-hidden','true');scene.append(origin);
+    scene.append($('statGrid'),$('passiveGrid'));viewport.append(scene);
+    const toolbar=make('div','growth-tree-toolbar');
+    toolbar.append($('statLeft').querySelector('.growth-section-heading'));
+    const controls=make('div','growth-tree-zoom');controls.setAttribute('dir','ltr');
+    let zoom=1,panX=0,panY=0,scale=1,width=0,height=0,drag=null,moved=false;
+    const zoomButtons=[];
+    const draw=()=>{
+      const w=viewport.clientWidth,h=viewport.clientHeight;if(!w||!h)return;
+      if(w!==width||h!==height){width=w;height=h;panX=panY=0;}
+      scale=Math.min((w-12)/1000,(h-12)/800)*zoom;
+      panX=Math.max(-500*scale,Math.min(500*scale,panX));panY=Math.max(-400*scale,Math.min(400*scale,panY));
+      scene.style.transform=`translate(-50%,-50%) translate(${panX}px,${panY}px) scale(${scale})`;
+      scene.style.setProperty('--tree-inverse',Math.min(2,1/scale));
+      scene.style.setProperty('--node-scale',Math.max(1,Math.min(1.8,32/(48*scale))));
+      viewport.classList.toggle('zoomed',zoom>1.05);zoomButtons[1].textContent=Math.round(zoom*100)+'%';
+      zoomButtons[0].disabled=zoom<=1;zoomButtons[2].disabled=zoom>=2.5;
+    };
+    const setZoom=n=>{zoom=Math.max(1,Math.min(2.5,n));if(zoom===1)panX=panY=0;draw();};
+    viewport.addEventListener('focusin',e=>{
+      const control=e.target.closest('[data-body-node]');if(!control)return;
+      const p=bodyPoints[control.dataset.bodyNode],x=width/2+panX+(p.x-500)*scale,y=height/2+panY+(p.y-400)*scale;
+      panX+=Math.max(30,Math.min(width-30,x))-x;panY+=Math.max(30,Math.min(height-30,y))-y;draw();
+    });
+    for(const [label,action] of [['−',()=>setZoom(zoom-.25)],['100%',()=>setZoom(1)],['+',()=>setZoom(zoom+.25)]]){const b=make('button','growth-zoom-button');b.type='button';b.textContent=label;b.onclick=action;controls.append(b);zoomButtons.push(b);}
+    toolbar.append(controls);$('statRight').append(toolbar,viewport);
+    const resize=new ResizeObserver(draw);resize.observe(viewport);
+    viewport.addEventListener('wheel',e=>{if(e.ctrlKey||e.metaKey)return;e.preventDefault();setZoom(zoom+(e.deltaY<0?.15:-.15));},{passive:false});
+    viewport.addEventListener('pointerdown',e=>{if(e.button!==0||e.target.closest('button'))return;drag={id:e.pointerId,x:e.clientX,y:e.clientY,px:panX,py:panY};moved=false;viewport.setPointerCapture(e.pointerId);});
+    viewport.addEventListener('pointermove',e=>{if(!drag||drag.id!==e.pointerId)return;const dx=e.clientX-drag.x,dy=e.clientY-drag.y;moved ||= Math.abs(dx)+Math.abs(dy)>4;panX=drag.px+dx;panY=drag.py+dy;draw();});
+    const end=e=>{if(drag?.id===e.pointerId){drag=null;if(viewport.hasPointerCapture(e.pointerId))viewport.releasePointerCapture(e.pointerId);}};
+    viewport.addEventListener('pointerup',end);viewport.addEventListener('pointercancel',end);
+    viewport.addEventListener('click',e=>{if(moved){e.stopPropagation();moved=false;}},true);
+    viewport.addEventListener('keydown',e=>{
+      if(!['ArrowLeft','ArrowRight','ArrowUp','ArrowDown'].includes(e.key))return;
+      const current=e.target.closest('[data-body-node]');if(!current)return;
+      const p=bodyPoints[current.dataset.bodyNode],dx=e.key==='ArrowLeft'?-1:e.key==='ArrowRight'?1:0,dy=e.key==='ArrowUp'?-1:e.key==='ArrowDown'?1:0;
+      const candidates=[...scene.querySelectorAll('[data-body-node]')].filter(n=>n!==current&&!n.hidden);
+      const next=candidates.map(n=>{const q=bodyPoints[n.dataset.bodyNode],x=q.x-p.x,y=q.y-p.y,along=x*dx+y*dy;return {n,score:along>0?Math.hypot(x,y)+Math.abs(x*dy-y*dx)*2:Infinity};}).sort((a,b)=>a.score-b.score)[0];
+      e.preventDefault();e.stopPropagation();if(next&&Number.isFinite(next.score)){next.n.click();const target=scene.querySelector(`[data-body-node="${next.n.dataset.bodyNode}"]`);target?.focus({preventScroll:true});}
+    });
+    return {update(selected,state,live){
+      const route=new Set(bodyRoute(selected));
+      for(const node of bodyNodes){
+        const element=node.stat?$(`statGrid`).querySelector(`[data-stat="${node.key}"]`):$('passiveGrid').querySelector(`[data-passive="${node.key}"]`);
+        if(!element)continue;
+        element.style.left=node.x/10+'%';element.style.top=node.y/8+'%';element.classList.add('growth-body-node');element.classList.toggle('major',node.major);
+        const control=node.stat?element.querySelector('.growth-stat-select'):element;control.dataset.bodyNode=node.key;
+        if(node.stat)control.dataset.statLabel=node.key.toUpperCase();
+        const value=node.stat?(node.key==='grit'?state.grit:state.stats[node.key]||0):state.passives[node.key]||0;
+        const before=node.stat?(node.key==='grit'?live.grit:live.stats[node.key]||0):live.passives[node.key]||0;
+        if(!node.stat)element.querySelector('.growth-card-rank').dataset.level=value;
+        element.classList.toggle('learned',value>0);element.classList.toggle('selected',selected===node.key);element.classList.toggle('pending',value!==before);
+        const label=node.stat?control.textContent:element.querySelector('.growth-card-name').textContent;
+        control.title=label+' · '+value+(node.stat?' SP':' Lv.');control.setAttribute('aria-label',control.title);
+      }
+      for(const [key,line] of linkNodes){const n=bodyPoints[key],value=n.stat?(key==='grit'?state.grit:state.stats[key]||0):state.passives[key]||0;line.classList.toggle('route',route.has(key));line.classList.toggle('allocated',value>0);}
+      zoomButtons[1].title=t('전체','All');draw();
+    }};
+  }
   const row=(ko,en,per,unit='%',base=0,cap=Infinity)=>({ko,en,per,unit,base,cap});
   const effects = {
     pAtk:[row('공통 피해 기여','Shared damage contribution',10),row('ST 비용 감소','ST cost reduction',4,'%',0,40)],
@@ -123,6 +219,7 @@
     const liveLabel=el('p','growth-live-label'),resources=el('div','growth-resources');
     resources.append(liveLabel,$('growthMetrics'));root.querySelector('.growth-header').append(resources);
     root.classList.add('growth-remaster');
+    const bodyTree=mountBodyTree(root,t);
     new MutationObserver(()=>{if(!root.classList.contains('on'))plan=null;}).observe(root,{attributes:true,attributeFilter:['class']});
     search.addEventListener('input',render);
     for(const event of ['keydown','keyup'])root.addEventListener(event,e=>{
@@ -177,10 +274,14 @@
       $('growthMetrics').replaceChildren(metrics);
       $('growthAmount').replaceChildren(...[1,10].map(n=>{const b=button('×'+n,'growth-amount-btn',()=>{amount=n;render();},'amount-'+n);b.setAttribute('aria-pressed',String(amount===n));return b;}));
       const stats=doc.createDocumentFragment();
+      const query=search.value.trim().toLocaleLowerCase();
       const defs=[...api.statDefs,{key:'grit',name:'근성 (GRIT)',nameEn:'GRIT',desc:'HP / MP / ST 각각 +1 · 물리/속성 방어 +0.5',descEn:'HP / MP / ST +1 each · DEF / eDEF +0.5'}];
       for(const def of defs){
         const value=def.key==='grit'?state.grit:state.stats[def.key]||0;
         const current=def.key==='grit'?live.grit:live.stats[def.key]||0;
+        const statPath={str:'assault',dex:'precision',int:'arcane',lck:'fate',grit:'survival'}[def.key];
+        if(!statPath||(path!=='all'&&path!==statPath)||(filter==='learned'&&value===0)||(filter==='planned'&&value===current))continue;
+        if(query&&![name(def),def.name,def.nameEn,t(def.desc,def.descEn),def.desc,def.descEn,def.key,...statEffects(def.key,1).flatMap(r=>[t(r.ko,r.en),r.ko,r.en])].join(' ').toLocaleLowerCase().includes(query))continue;
         const max=def.key==='grit'?Infinity:api.caps[def.key];
         const item=el('article','growth-stat');item.dataset.stat=def.key;
         const head=el('div','growth-stat-head');
@@ -207,9 +308,8 @@
       pathHint.textContent=activePath?t(...activePath.hint):t('6개의 길 · 서로 조합 가능한 26개 패시브','6 paths · 26 freely combinable passives');
       const filters=[['all','전체','All'],['learned','습득','Learned'],['planned','변경 중','Pending']];
       $('growthFilters').replaceChildren(...filters.map(([key,ko,en])=>{const b=button(t(ko,en),'growth-filter',()=>{filter=key;render();},'filter-'+key);b.setAttribute('aria-pressed',String(filter===key));return b;}));
-      const query=search.value.trim().toLocaleLowerCase();
       const visible=api.passiveDefs.filter(d=>(!activePath||activePath.keys.includes(d.key))&&(filter==='all'||filter==='learned'&&state.passives[d.key]>0||filter==='planned'&&state.passives[d.key]!==live.passives[d.key])&&(!query||[name(d),d.name,d.nameEn,t(d.desc,d.descEn),d.desc,d.descEn,d.key,...passiveEffects(d.key,0).flatMap(r=>[t(r.ko,r.en),r.ko,r.en])].join(' ').toLocaleLowerCase().includes(query)));
-      set('growthCount',`${visible.length} / ${api.passiveDefs.length}`);
+      set('growthCount',`${visible.length+$('statGrid').children.length} / ${api.passiveDefs.length+defs.filter(d=>['str','dex','int','lck','grit'].includes(d.key)).length}`);
       const cards=doc.createDocumentFragment();
       for(const def of visible){
         const value=state.passives[def.key]||0,current=live.passives[def.key]||0,school=pathFor(def.key);
@@ -223,7 +323,7 @@
         card.append(top,el('span','growth-card-type',school?t(school.ko,school.en):''),el('span','growth-card-desc',main?t(main.ko,main.en)+' '+format(main):t(def.desc,def.descEn)),bottom,bar);
         cards.append(card);
       }
-      if(!visible.length)cards.append(el('p','growth-empty',t('일치하는 패시브가 없습니다. 검색 또는 필터를 바꿔보세요.','No matching passives. Try another search or filter.')));
+      if(!visible.length&&!$('statGrid').children.length)cards.append(el('p','growth-empty',t('일치하는 패시브가 없습니다. 검색 또는 필터를 바꿔보세요.','No matching passives. Try another search or filter.')));
       $('passiveGrid').replaceChildren(cards);
       const def=api.passiveDefs.find(d=>d.key===selected)||api.passiveDefs[0],value=state.passives[def.key]||0,current=live.passives[def.key]||0,school=pathFor(def.key);
       const detail=doc.createDocumentFragment(),hero=el('div','growth-detail-hero');
@@ -267,11 +367,12 @@
         refund.disabled=value<amount;refund.textContent=t('{n}포인트 환불 계획','Plan {n}-point refund',{n:amount});refund.onclick=()=>change('stat',key,-amount);
         set('growthUpgradeNote',upgrade.disabled?t('SP 또는 투자 상한을 확인하세요.','Check SP and the allocation cap.'):t('추가 후 계획 잔여 SP {n}','{n} SP left after adding',{n:state.sp-amount}));
       }
+      bodyTree.update(selectedStat||selected,state,live);
       if(focus){const target=Array.from(root.querySelectorAll('[data-focus]')).find(n=>n.dataset.focus===focus);if(target&&!target.disabled)target.focus({preventScroll:true});}
       $('statGrid').scrollTop=scroll[0];$('passiveGrid').scrollTop=scroll[1];$('growthDetail').scrollTop=scroll[2];
     }
     return {render};
   }
 
-  global.ExoduserStatsPanel = {mount, statChange, passiveChange, refundTotals, rankCost,createPlan,evaluatePlan,passiveEffects,statEffects,paths,pathFor};
+  global.ExoduserStatsPanel = {mount, statChange, passiveChange, refundTotals, rankCost,createPlan,evaluatePlan,passiveEffects,statEffects,paths,pathFor,bodyNodes,bodyRoute};
 })(globalThis);
