@@ -111,7 +111,7 @@ http.createServer(async (req, res) => {
 
   // ── 세이브 API ──
   if (pathname === '/api/slots' && req.method === 'GET') {
-    const files = fs.readdirSync(SAVE_DIR).filter(f => f.endsWith('.json'));
+    const files = fs.readdirSync(SAVE_DIR).filter(f => f.endsWith('.json') && !f.startsWith('_'));
     const slots = files.map(f => {
       try {
         const d = JSON.parse(fs.readFileSync(path.join(SAVE_DIR, f), 'utf8'));
@@ -144,14 +144,59 @@ http.createServer(async (req, res) => {
   }
 
   // ── 정적 파일 서빙 ──
+  // 개발 서버와 동일한 공유 악의 저장 계약. 캐릭터 슬롯과 분리한다.
+  const MATS_FILE = path.join(SAVE_DIR, '_sharedMats.json');
+  if (pathname === '/api/mats' && req.method === 'GET') {
+    try {
+      if (fs.existsSync(MATS_FILE)) {
+        const d = JSON.parse(fs.readFileSync(MATS_FILE, 'utf8'));
+        return sendJSON(res, 200, { ok: true, mats: d.mats || 0 });
+      }
+    } catch (e) {}
+    return sendJSON(res, 200, { ok: true, mats: 0 });
+  }
+  if (pathname === '/api/mats' && req.method === 'POST') {
+    const body = await readBody(req);
+    const n = Math.max(0, Math.min(Math.floor(+body.mats || 0), Number.MAX_SAFE_INTEGER));
+    fs.writeFileSync(MATS_FILE, JSON.stringify({ mats: n, ts: Date.now() }), 'utf8');
+    return sendJSON(res, 200, { ok: true, mats: n });
+  }
+
   if (pathname === '/' || pathname === '') pathname = '/index.html';
   const filePath = path.join(APP_DIR, decodeURIComponent(pathname).replace(/\.\./g, ''));
+
+  if (req.headers?.range) {
+    fs.stat(filePath, (err, stat) => {
+      if (err || !stat.isFile()) { res.writeHead(404); return res.end(); }
+      const match = /^bytes=(\d*)-(\d*)$/.exec(req.headers.range);
+      let start = match?.[1] ? Number(match[1]) : 0;
+      let end = match?.[2] ? Math.min(Number(match[2]), stat.size - 1) : stat.size - 1;
+      if (match && !match[1] && match[2]) { start = Math.max(0, stat.size - Number(match[2])); end = stat.size - 1; }
+      if (!match || (!match[1] && !match[2]) || !Number.isSafeInteger(start) || !Number.isSafeInteger(end) || start >= stat.size || start > end) {
+        res.writeHead(416, { 'Content-Range': `bytes */${stat.size}`, 'Access-Control-Allow-Origin': '*' });
+        return res.end();
+      }
+      res.writeHead(206, {
+        'Content-Range': `bytes ${start}-${end}/${stat.size}`, 'Accept-Ranges': 'bytes',
+        'Content-Length': end-start+1, 'Content-Type': MIME[path.extname(filePath).toLowerCase()] || 'application/octet-stream',
+        'Access-Control-Allow-Origin': '*',
+      });
+      if (req.method === 'HEAD') return res.end();
+      const stream = fs.createReadStream(filePath, { start, end });
+      stream.on('error', () => res.destroy());
+      res.on('close', () => stream.destroy());
+      stream.pipe(res);
+    });
+    return;
+  }
 
   fs.readFile(filePath, (err, data) => {
     if (err) { res.writeHead(404); res.end('Not found: ' + pathname); return; }
     const ext = path.extname(filePath).toLowerCase();
-    res.writeHead(200, { 'Content-Type': MIME[ext] || 'application/octet-stream', 'Access-Control-Allow-Origin': '*' });
-    res.end(data);
+    const headers = { 'Content-Type': MIME[ext] || 'application/octet-stream', 'Content-Length': data.length, 'Accept-Ranges': 'bytes', 'Access-Control-Allow-Origin': '*' };
+    if (ext === '.html') headers['Cache-Control'] = 'no-cache, no-store, must-revalidate';
+    res.writeHead(200, headers);
+    res.end(req.method === 'HEAD' ? undefined : data);
   });
 }).listen(PORT, '127.0.0.1', () => {
   dlog('HTTP server listening on port ' + PORT);

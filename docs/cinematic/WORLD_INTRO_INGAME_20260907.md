@@ -23,6 +23,7 @@
 | 이전 구현 | `CIN_LINES`, 정지 이미지 DOM·원본은 보존. 문 이후 `showLine(0)` 호출 및 사용하지 않는 18장 지연 프리로드는 중지 |
 | 번역 범위 | 이 영상은 EN 보이스 고정 / 28언어 선택형 자막. 기존 28언어 CIN_LINES는 보존 자료이며 영상의 실시간 번역/자막으로 사용하지 않음. 로비·게임 번역은 유지 |
 | 플레이어 | `world-intro-player.js`, `WorldIntroPlayer.create`, `start/stop/next/toggle/setVolumes` |
+| Steam 음성 디코딩 (2026-09-09) | 기본 NW.js 0.111.2에서 AAC 무음 재현. 같은 버전 `vendor/nwjs-ffmpeg/0.111.2/ffmpeg.dll`을 빌드에 포함하여 복구, 영상/보이스 원본 변경 없음. 실제 AAC 디코딩·WebAudio 신호 검증과 배포 상태는 [Steam 기록](../13출시·마케팅/STEAM_LATEST_DEPLOY_20260909.md) 참조 |
 | 백업 | `output/cinematic/index_before_world_intro_v3_20260907.html` |
 
 ## BGM / 조작

@@ -1,3 +1,14 @@
+## 2026-09-09 Steam 최신 패키지·AAC 음성 복구
+
+| 항목 | 결과 |
+|---|---|
+| 패키지 | 인트로 JS/CSS·로고/대장간/아이템 아트·투사체 아틀라스·프리팹 목록 누락 보완. 후속 localization 의존 파일도 builder 등록 |
+| 실제 무음 원인 | NW.js 0.111.2 기본 FFmpeg가 AAC를 디코딩하지 않음. 동일 버전 코덱으로 교체 후 decoded audio 65,491 bytes·peak 0.340915 확인 |
+| 패키지 서버 | GET/POST /api/mats와 공유 파일 슬롯 제외, 영상 Range 206/416·HEAD·HTML 캐시 제어 동기화 |
+| 검증 | 패키지 게임 진입 pageerror/console error/404 0, 세이브 API 정상. 세계관 v13·28언어 자막·BGM 연속·컷 탐색·종료 회귀 PASS |
+| 배포 | SteamCMD cached login Access Denied로 업로드 전 중단. default 24922778 유지, 새 BuildID 없음. 사용자 재로그인 필요 |
+| 기록 | docs/13출시·마케팅/STEAM_LATEST_DEPLOY_20260909.md, output/steam_20260909/package_manifest.json |
+
 > **2026-09-09 여성 캐릭터 음성:** 테스트/데모 부팅의 캐릭터 번호 0 덮어쓰기를 제거해 선택 아틀라스와 여성 보이스 매핑을 일치시켰다. [원인·회귀 검사·트레일러 수정](6사운드디자인/TRAILER_CHARACTER_VOICE_FIX_20260909.md).
 
 # Sync Changelog
