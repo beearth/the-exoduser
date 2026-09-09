@@ -1,0 +1,50 @@
+{
+  "prologue": {
+    "wa02": "A man who returned alive from war.",
+    "wa04": "But his home had burned to nothing.",
+    "wa06": "Killu, once a neighbor and friend, had crushed his family.",
+    "wa08": "His wife was taken as a servant and suffered unspeakable horrors,",
+    "wa09": "until she could bear no more and took her own life.",
+    "wa11": "His children were sold into slavery. No one knows where they are.",
+    "wa12": "His elderly parents were imprisoned and starved to death.",
+    "wa14": "Everyone in the Killu household knew.",
+    "wa15": "Thirty-one of them saw everything and looked away.",
+    "wa17": "That night, he killed the entire Killu family.",
+    "wa19": "He cut off Killu's limbs with a blade,",
+    "wa20": "even cauterized the wounds with fire to stop the bleeding,",
+    "wa21": "and kept him alive for a long, long time.",
+    "wa22": "\"Remember.\"",
+    "wa23": "\"And regret it even in hell.\"",
+    "wa24": "And so he fell into hell.",
+    "wa26": "\"...This is but one tale among countless avengers.\"",
+    "wa28": "\"Every day, new souls fall into hell's labyrinth.\"",
+    "wa29": "\"Those consumed by rage, driven mad by injustice, those who lost love...\"",
+    "wa31": "\"Why have you come to hell?\"",
+    "wa33": "\"Escape from hell, sinner.\""
+  },
+  "intro": {
+    "3": "I was quite taken with that thrilling revenge of yours. A masterpiece.",
+    "5": "I see a pitiful trace of goodness in you. Surely you still have someone to save.\nThey seem to be waiting for you still. None of you has much time left...",
+    "8": "So the sight of that child's rocking horse brings even a dead man to his senses.",
+    "10": "Very well. Escape this place. I will personally help you.\nDiroy and Hector will guide you.",
+    "11": "Don't be alarmed. Let's introduce ourselves. I'm Diroy.",
+    "12": "I'm Hector. Think of us as a blessing from the goddess.\nWe need to get out of here too.",
+    "13": "Demons are beings made of malice.\nThey instinctively attack goodness.",
+    "14": "But you're different. Your goodness is strong.\nYour malice has only erupted for a while. That outburst will fade soon.",
+    "15": "So demons will catch your scent and come swarming toward you.",
+    "16": "The goddess has granted you armaments. Take them.",
+    "17": "A projection sent by the goddess. A soul from the battlefield.\nIt will dwell in the crossbow and fight alongside you.",
+    "21": "This human passed out again. How long has he gone without sleep?",
+    "22": "Looks like he spent days without food or sleep, thinking of nothing but revenge.",
+    "23": "We need to wake him, even if we have to feed him malice.",
+    "24": "...",
+    "10c": "Until we meet again, dead one.",
+    "18b": "Put on that malice band too. It will steady your mind\nbefore the unleashed malice drives you mad.",
+    "22b": "Leave him like this and he'll be eaten."
+  },
+  "speakers": {
+    "GODDESS": "Nemesia",
+    "DIROY": "DIROY",
+    "HECTOR": "HECTOR"
+  }
+}

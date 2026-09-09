@@ -1,0 +1,50 @@
+{
+  "prologue": {
+    "wa02": "Ein Mann kehrte lebend aus dem Krieg zurück.",
+    "wa04": "Doch sein Zuhause war bis auf die Grundmauern niedergebrannt.",
+    "wa06": "Killu, sein Nachbar und Freund, hatte seine Familie vernichtet.",
+    "wa08": "Seine Frau wurde als Dienerin verschleppt und grausam misshandelt,",
+    "wa09": "bis sie es nicht mehr ertrug und sich das Leben nahm.",
+    "wa11": "Seine Kinder wurden als Sklaven verkauft. Niemand weiß, wo sie sind.",
+    "wa12": "Seine alten Eltern verhungerten im Kerker.",
+    "wa14": "Alle im Hause Killu wussten davon.",
+    "wa15": "31 Menschen sahen es und taten, als hätten sie nichts gesehen.",
+    "wa17": "In jener Nacht tötete er Killus gesamte Familie.",
+    "wa19": "Mit seiner Klinge trennte er Killu Arme und Beine ab,",
+    "wa20": "stillte sogar die Blutung mit Feuer",
+    "wa21": "und hielt ihn lange, sehr lange am Leben.",
+    "wa22": "„Erinnere dich.“",
+    "wa23": "„Und bereue es noch in der Hölle.“",
+    "wa24": "Dann stürzte er in die Hölle.",
+    "wa26": "„…Dies ist nur die Geschichte eines von unzähligen Rächern.“",
+    "wa28": "„Jeden Tag fallen neue Seelen in das Labyrinth der Hölle.“",
+    "wa29": "„Von Zorn erfüllt, von Unrecht in den Wahnsinn getrieben, ihrer Liebe beraubt …“",
+    "wa31": "„Warum bist du in die Hölle gekommen?“",
+    "wa33": "„Entkomme der Hölle, Sünder.“"
+  },
+  "intro": {
+    "3": "Dein mitreißendes Rachespiel hat mich beeindruckt. Ein Meisterwerk.",
+    "5": "Ich sehe einen armseligen Rest Güte in dir. Du hast doch noch jemanden zu retten.\nMan scheint noch auf dich zu warten, nicht wahr? Euch bleibt nicht viel Zeit …",
+    "8": "Das Schaukelpferd dieses Kindes bringt also selbst einen Toten wieder zu sich.",
+    "10": "Gut. Entkomme diesem Ort. Ich werde dir persönlich helfen.\nDiroy und Hector werden dich führen.",
+    "11": "Keine Angst. Stellen wir uns erst mal vor. Ich bin Diroy.",
+    "12": "Ich bin Hector. Betrachte uns als Segen der Göttin.\nWir müssen nämlich auch hier raus.",
+    "13": "Dämonen bestehen aus Bosheit.\nInstinktiv greifen sie alles Gute an.",
+    "14": "Aber du bist anders. Deine Güte ist stark.\nDeine Bosheit ist nur vorübergehend ausgebrochen. Das lässt bald wieder nach.",
+    "15": "Deshalb werden die Dämonen deine Witterung aufnehmen und herbeiströmen.",
+    "16": "Die Göttin hat dir Waffen geschenkt. Nimm sie.",
+    "17": "Eine Projektion der Göttin. Eine Seele vom Schlachtfeld.\nSie wird in der Armbrust wohnen und an deiner Seite kämpfen.",
+    "21": "Der Mensch ist schon wieder umgekippt. Wie lange hat der nicht geschlafen?",
+    "22": "Vor lauter Rachegedanken hat er wohl tagelang weder gegessen noch geschlafen.",
+    "23": "Wir müssen ihn wecken, und wenn wir ihm Bosheit einflößen müssen.",
+    "24": "...",
+    "10c": "Wir sehen uns wieder, toter Mann.",
+    "18b": "Leg auch das Band der Bosheit an. Es bewahrt deinen Verstand,\nbevor dich die entfesselte Bosheit wahnsinnig macht.",
+    "22b": "Wenn wir ihn liegen lassen, wird er gefressen."
+  },
+  "speakers": {
+    "GODDESS": "Nemesia",
+    "DIROY": "DIROY",
+    "HECTOR": "HECTOR"
+  }
+}

@@ -1,0 +1,50 @@
+{
+  "prologue": {
+    "wa02": "Een man keerde levend terug uit de oorlog.",
+    "wa04": "Maar zijn huis was volledig afgebrand.",
+    "wa06": "Killu, zijn buurman en vriend, had zijn familie vernietigd.",
+    "wa08": "Zijn vrouw werd meegenomen als dienstmeid en gruwelijk mishandeld,",
+    "wa09": "tot ze het niet langer verdroeg en zichzelf van het leven beroofde.",
+    "wa11": "Zijn kinderen werden als slaven verkocht. Niemand weet waar ze zijn.",
+    "wa12": "Zijn bejaarde ouders verhongerden in de gevangenis.",
+    "wa14": "Iedereen in Killu's familie wist ervan.",
+    "wa15": "31 mensen zagen het en deden alsof ze niets hadden gezien.",
+    "wa17": "Die nacht doodde hij Killu's hele familie.",
+    "wa19": "Met zijn zwaard hakte hij Killu's armen en benen af,",
+    "wa20": "en schroeide zelfs de wonden dicht om het bloeden te stoppen,",
+    "wa21": "zodat hij hem lang, heel lang in leven kon houden.",
+    "wa22": "‘Onthoud dit.’",
+    "wa23": "‘En heb er zelfs in de hel spijt van.’",
+    "wa24": "Daarna viel hij in de hel.",
+    "wa26": "‘…Dit is slechts het verhaal van één van ontelbare wrekers.’",
+    "wa28": "‘Elke dag vallen nieuwe zielen in het labyrint van de hel.’",
+    "wa29": "‘Vol woede, gek geworden van onrecht, beroofd van hun geliefden…’",
+    "wa31": "‘Waarom ben jij naar de hel gekomen?’",
+    "wa33": "‘Ontsnap uit de hel, zondaar.’"
+  },
+  "intro": {
+    "3": "Ik heb je meeslepende wraakspel bewonderd. Een meesterwerk.",
+    "5": "Ik zie een armzalig sprankje goedheid in je. Er zal nog wel iemand zijn die je moet redden.\nZe lijken nog op je te wachten, nietwaar? Jullie hebben allemaal weinig tijd…",
+    "8": "Dat hobbelpaard van het kind brengt blijkbaar zelfs een dode weer bij zinnen.",
+    "10": "Goed. Ontsnap uit deze plek. Ik zal je persoonlijk helpen.\nDiroy en Hector zullen je de weg wijzen.",
+    "11": "Niet schrikken. Laten we kennismaken. Ik ben Diroy.",
+    "12": "Ik ben Hector. Zie ons als een zegen van de godin.\nWij moeten hier ook weg.",
+    "13": "Demonen zijn wezens die uit kwaad bestaan.\nInstinctief vallen ze goedheid aan.",
+    "14": "Maar jij bent anders. Je goedheid is sterk.\nHet kwaad in je is maar tijdelijk uitgebarsten. Die uitbarsting dooft snel weer.",
+    "15": "Dus zullen de demonen je geur oppikken en massaal op je afkomen.",
+    "16": "De godin heeft je wapens geschonken. Pak ze.",
+    "17": "Een projectie die de godin heeft gestuurd. Een ziel van het slagveld.\nDie zal in de kruisboog wonen en aan je zijde vechten.",
+    "21": "Die mens is alweer flauwgevallen. Hoelang heeft hij niet geslapen?",
+    "22": "Hij heeft vast dagen niet gegeten of geslapen, helemaal bezeten van wraak.",
+    "23": "We moeten hem wakker maken, desnoods door hem kwaad te voeren.",
+    "24": "...",
+    "10c": "Tot ons volgende weerzien, dode ziel.",
+    "18b": "Doe die band van het kwaad ook om. Hij houdt je bij zinnen\nvoordat het losgebarsten kwaad je gek maakt.",
+    "22b": "Als we hem zo laten liggen, wordt hij opgegeten."
+  },
+  "speakers": {
+    "GODDESS": "Nemesia",
+    "DIROY": "DIROY",
+    "HECTOR": "HECTOR"
+  }
+}

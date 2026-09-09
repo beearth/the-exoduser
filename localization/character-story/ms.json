@@ -1,0 +1,50 @@
+{
+  "prologue": {
+    "wa02": "Seorang lelaki pulang dari perang dengan selamat.",
+    "wa04": "Namun rumahnya telah hangus menjadi abu.",
+    "wa06": "Killu, jiran dan sahabatnya, telah menghancurkan keluarganya.",
+    "wa08": "Isterinya dibawa pergi sebagai hamba suruhan dan mengalami pelbagai penderaan,",
+    "wa09": "hingga tidak tertanggung lagi, lalu menamatkan nyawanya sendiri.",
+    "wa11": "Anak-anaknya dijual sebagai hamba. Tiada siapa tahu di mana mereka berada.",
+    "wa12": "Ibu bapanya yang tua mati kelaparan di dalam penjara.",
+    "wa14": "Seluruh keluarga Killu mengetahuinya.",
+    "wa15": "31 orang melihat segalanya, tetapi berpura-pura tidak nampak.",
+    "wa17": "Malam itu, dia membunuh seluruh keluarga Killu.",
+    "wa19": "Dengan pedangnya, dia memotong tangan dan kaki Killu,",
+    "wa20": "malah membakar luka-lukanya untuk menghentikan pendarahan,",
+    "wa21": "agar Killu terus hidup untuk masa yang amat lama.",
+    "wa22": "“Ingatlah.”",
+    "wa23": "“Dan menyesallah walaupun di neraka.”",
+    "wa24": "Kemudian dia jatuh ke neraka.",
+    "wa26": "“…Ini hanyalah kisah seorang daripada para penuntut bela yang tidak terhitung.”",
+    "wa28": "“Setiap hari, roh baharu jatuh ke dalam labirin neraka.”",
+    "wa29": "“Yang penuh amarah, yang gila kerana ketidakadilan, yang kehilangan insan tercinta…”",
+    "wa31": "“Mengapa kau datang ke neraka?”",
+    "wa33": "“Larikan diri dari neraka, wahai pendosa.”"
+  },
+  "intro": {
+    "3": "Aku kagum menyaksikan pembalasanmu yang mendebarkan itu. Sebuah karya agung.",
+    "5": "Kulihat secebis kebaikan yang menyedihkan dalam dirimu. Pasti masih ada insan yang perlu kau selamatkan.\nNampaknya mereka masih menunggumu? Masa kamu semua sudah hampir habis…",
+    "8": "Melihat kuda goyang milik anak itu rupanya menyedarkan orang mati sekalipun.",
+    "10": "Baiklah. Larikan diri dari tempat ini. Aku sendiri akan membantumu.\nDiroy dan Hector akan membimbingmu.",
+    "11": "Jangan takut. Kita berkenalan dahulu. Aku Diroy.",
+    "12": "Aku Hector. Anggap kami sebagai berkat daripada dewi.\nKami juga perlu keluar dari sini.",
+    "13": "Iblis ialah makhluk yang terbentuk daripada niat jahat.\nSecara naluri, mereka menyerang kebaikan.",
+    "14": "Tetapi kau agak berbeza. Kebaikanmu kuat.\nNiat jahatmu hanya meledak buat sementara. Ledakan itu akan reda tidak lama lagi.",
+    "15": "Jadi iblis akan menghidu baumu dan datang berduyun-duyun.",
+    "16": "Dewi telah mengurniakan senjata kepadamu. Ambillah.",
+    "17": "Itu unjuran yang dihantar dewi, roh dari medan perang.\nIa akan bersemayam di dalam busur silang dan bertempur bersamamu.",
+    "21": "Manusia ini pengsan lagi. Sudah berapa lama dia tidak tidur?",
+    "22": "Nampaknya berhari-hari dia tidak makan dan tidur, asyik memikirkan pembalasan.",
+    "23": "Kita mesti mengejutkannya, walaupun perlu memberinya niat jahat untuk dimakan.",
+    "24": "...",
+    "10c": "Kita akan bertemu lagi, wahai roh yang mati.",
+    "18b": "Pakailah juga ikat niat jahat itu. Ia akan menjaga kewarasanmu\nsebelum ledakan niat jahat membuatmu gila.",
+    "22b": "Jika kita biarkan, dia akan dibaham."
+  },
+  "speakers": {
+    "GODDESS": "Nemesia",
+    "DIROY": "DIROY",
+    "HECTOR": "HECTOR"
+  }
+}

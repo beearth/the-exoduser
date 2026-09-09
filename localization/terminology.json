@@ -1,0 +1,141 @@
+{
+    "en":  {
+               "뇌전창":  "Thunder Stake"
+           },
+    "zh":  {
+               "뇌전창":  "雷电桩"
+           },
+    "zht":  {
+                "뇌전창":  "雷電樁"
+            },
+    "ja":  {
+               "뇌전창":  "雷の杭"
+           },
+    "es":  {
+               "뇌전창":  "Estaca de Trueno"
+           },
+    "fr":  {
+               "뇌전창":  "Pieu de foudre"
+           },
+    "de":  {
+               "뇌전창":  "Blitzpfahl"
+           },
+    "ru":  {
+               "뇌전창":  "Громовой штырь"
+           },
+    "ptbr":  {
+                 "뇌전창":  "Estaca do Trovão"
+             },
+    "it":  {
+               "뇌전창":  "Paletto del fulmine"
+           },
+    "vi":  {
+               "뇌전창":  "Cọc Sét",
+               "근성":  "Bền Chí"
+           },
+    "th":  {
+               "뇌전창":  "เสาสายฟ้า"
+           },
+    "id":  {
+               "뇌전창":  "Pasak Petir"
+           },
+    "ms":  {
+               "뇌전창":  "Pancang Petir",
+               "참회":  "Taubat"
+           },
+    "tr":  {
+               "뇌전창":  "Yıldırım Kazığı",
+               "지옥강타 1": "Dev Vuruş 1",
+               "유령 허수아비": "Hayalet Yem",
+               "칼등날개": "Kalkan Kanadı",
+               "추적암전": "İzleyen Yıldırım",
+               "얼음보주": "Buz Küresi",
+               "아이스스톰": "Buz Fırtınası"
+           },
+    "pl":  {
+               "뇌전창":  "Pal piorunów",
+               "폭독칼날":  "Ostrze Zarazy"
+           },
+    "cs":  {
+               "뇌전창":  "Bleskový kůl"
+           },
+    "hu":  {
+               "뇌전창":  "Villámcövek"
+           },
+    "bg":  {
+               "뇌전창":  "Мълниеносен кол",
+               "원소추적탄": "Стихиен търсач",
+               "사슬기동:충돌": "Верижен устрем: Удар",
+               "사슬기동:화염": "Верижен устрем: Пламък"
+           },
+    "el":  {
+               "뇌전창":  "Πάσσαλος αστραπής",
+               "지옥강타 1": "Γιγάντιο Χτύπημα 1",
+               "유령 허수아비": "Φασματικό Ομοίωμα",
+               "칼등날개": "Φτερό Ασπίδας",
+               "추적암전": "Κεραυνός Καταδίωξης",
+               "얼음보주": "Σφαίρα Πάγου",
+               "아이스스톰": "Παγοθύελλα",
+               "가시덫": "Παγίδα Ακίδων"
+           },
+    "fi":  {
+               "뇌전창":  "Salamapaalu",
+               "지옥강타 1": "Jätti-isku",
+               "칼등날개": "Kilpisiipi",
+               "유령 허수아비": "Aavehoukutin",
+               "가시덫": "Piikkiansa",
+               "얼음보주": "Jääpallo",
+               "아이스스톰": "Jäämyrsky",
+               "추적암전": "Hakeutuva salama"
+           },
+    "sv":  {
+               "뇌전창":  "Blixtpåle",
+               "만화방창": "Nålspärr",
+               "회전기폭": "Virveldetonation",
+               "회복의 영역": "Helig domän",
+               "유령 허수아비": "Fantomlockbete",
+               "관통의 영역": "Genomborrningsdomän"
+           },
+    "da":  {
+               "뇌전창":  "Lynpæl",
+               "만화방창": "Nålesalve",
+               "회전기폭": "Hvirveldetonation",
+               "뇌전걸음": "Åndevandring",
+               "기동칼날개": "Kædeklingevinge",
+               "칼등날개": "Skjoldvinge",
+               "유령 허수아비": "Fantomlokkemad",
+               "폭발 허수아비": "Eksplosiv lokkemad",
+               "가시덫": "Tornfælde"
+           },
+    "no":  {
+               "뇌전창":  "Lynpåle",
+               "만화방창": "Nålesalve",
+               "회전기폭": "Virveldetonasjon",
+               "기동파괴": "Kjedeknusing",
+               "기동칼날개": "Kjedeklingevinge",
+               "악의폭풍": "Ondskapsstorm",
+               "유령 허수아비": "Fantomlokkemat",
+               "폭발 허수아비": "Eksplosiv lokkemat"
+           },
+    "nl":  {
+               "뇌전창":  "Bliksempaal",
+               "만화방창": "Naaldsalvo",
+               "기동파괴": "Kettingverwoesting",
+               "기동불꽃": "Kettingvlam",
+               "사슬기동:충돌": "Kettingdash: Inslag",
+               "사슬기동:화염": "Kettingdash: Vlam",
+               "기동칼날개": "Kettingbladsvleugel",
+               "칼등날개": "Schildvleugel",
+               "악의폭풍": "Kwaadstorm",
+               "유령 허수아비": "Fantoomlokvogel"
+           },
+    "ro":  {
+               "뇌전창":  "Țăruș fulger"
+           },
+    "uk":  {
+               "뇌전창":  "Громовий штир"
+           },
+    "ar":  {
+               "뇌전창":  "وتد البرق"
+           }
+}

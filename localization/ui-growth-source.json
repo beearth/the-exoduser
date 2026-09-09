@@ -1,0 +1,550 @@
+[
+  {
+    "key": "맹공과 반격",
+    "en": "Assault"
+  },
+  {
+    "key": "근접 압박 · 기동 · 패링 · 분노",
+    "en": "Melee pressure · mobility · parry · rage"
+  },
+  {
+    "key": "비전과 마력",
+    "en": "Arcana"
+  },
+  {
+    "key": "마법 연사 · 마나 유지 · 에너지 쉴드",
+    "en": "Spell casting · mana sustain · energy shield"
+  },
+  {
+    "key": "탄도와 약점",
+    "en": "Precision"
+  },
+  {
+    "key": "투사체 · 관통 · 치명타 · 연속 명중",
+    "en": "Projectiles · pierce · critical hits · sustained hits"
+  },
+  {
+    "key": "침식과 사냥",
+    "en": "Hunt"
+  },
+  {
+    "key": "지속 피해 · 선제 공격 · 마무리",
+    "en": "Damage over time · opening strikes · execution"
+  },
+  {
+    "key": "생존과 회복",
+    "en": "Survival"
+  },
+  {
+    "key": "피해 흡수 · 자원 순환 · 방어",
+    "en": "Damage absorption · resource recovery · defense"
+  },
+  {
+    "key": "인간과 악마",
+    "en": "Fate"
+  },
+  {
+    "key": "생존의 대가 · 부활 · 전리품",
+    "en": "Survival tradeoffs · revival · rewards"
+  },
+  {
+    "key": "공통 피해 기여",
+    "en": "Shared damage contribution"
+  },
+  {
+    "key": "ST 비용 감소",
+    "en": "ST cost reduction"
+  },
+  {
+    "key": "사슬 사거리",
+    "en": "Chain range"
+  },
+  {
+    "key": "기동게이지 회복",
+    "en": "Mobility gauge recovery"
+  },
+  {
+    "key": "카운터 피해",
+    "en": "Counter damage"
+  },
+  {
+    "key": "E 공격속도",
+    "en": "E attack speed"
+  },
+  {
+    "key": "무지개탄 피해 감소",
+    "en": "Rainbow damage reduction"
+  },
+  {
+    "key": "마법 피해",
+    "en": "Magic damage"
+  },
+  {
+    "key": "MP 비용 감소",
+    "en": "MP cost reduction"
+  },
+  {
+    "key": "시전속도 배율",
+    "en": "Cast speed multiplier"
+  },
+  {
+    "key": "투사체 피해",
+    "en": "Projectile damage"
+  },
+  {
+    "key": "석궁 공격속도",
+    "en": "Crossbow attack speed"
+  },
+  {
+    "key": "석궁 사거리",
+    "en": "Crossbow range"
+  },
+  {
+    "key": "석궁 ST 비용 감소",
+    "en": "Crossbow ST cost reduction"
+  },
+  {
+    "key": "보호막 흡수율",
+    "en": "Shield absorption"
+  },
+  {
+    "key": "HP / ST 재생",
+    "en": "HP / ST regeneration"
+  },
+  {
+    "key": "물약 쿨다운 감소",
+    "en": "Potion cooldown reduction"
+  },
+  {
+    "key": "패링 회복량",
+    "en": "Parry recovery"
+  },
+  {
+    "key": "치명타 확률",
+    "en": "Critical chance"
+  },
+  {
+    "key": "치명타 피해",
+    "en": "Critical damage"
+  },
+  {
+    "key": "아이템 드롭률",
+    "en": "Item drop rate"
+  },
+  {
+    "key": "기본 관통 확률",
+    "en": "Base pierce chance"
+  },
+  {
+    "key": "기본 관통 횟수",
+    "en": "Base pierce count"
+  },
+  {
+    "key": "관통 후 피해 유지",
+    "en": "Damage retained after piercing"
+  },
+  {
+    "key": "MP / 쉴드 재생",
+    "en": "MP / shield regeneration"
+  },
+  {
+    "key": "쉴드 쿨다운 감소",
+    "en": "Shield cooldown reduction"
+  },
+  {
+    "key": "자동쇠뇌 피해",
+    "en": "Auto crossbow damage"
+  },
+  {
+    "key": "자동쇠뇌 공격속도",
+    "en": "Auto crossbow attack speed"
+  },
+  {
+    "key": "근접 피해",
+    "en": "Melee damage"
+  },
+  {
+    "key": "기본 HP 배율 기여",
+    "en": "Base HP contribution"
+  },
+  {
+    "key": "물리 ST 비용 감소",
+    "en": "Physical ST cost reduction"
+  },
+  {
+    "key": "약점노출 최대 중첩",
+    "en": "Maximum weakness stacks"
+  },
+  {
+    "key": "중첩당 받는 피해 증가",
+    "en": "Damage taken per stack"
+  },
+  {
+    "key": "적 HP 70% 이상 피해",
+    "en": "Damage vs enemies at 70%+ HP"
+  },
+  {
+    "key": "상시 회복력",
+    "en": "Unconditional recovery"
+  },
+  {
+    "key": "적 HP 30% 이하 피해",
+    "en": "Damage vs enemies at 30%- HP"
+  },
+  {
+    "key": "내 HP 30% 이하 회복",
+    "en": "Recovery at 30%- HP"
+  },
+  {
+    "key": "내 HP 30% 이하 이동속도",
+    "en": "Move speed at 30%- HP"
+  },
+  {
+    "key": "지속 피해",
+    "en": "Damage over time"
+  },
+  {
+    "key": "지속 시간",
+    "en": "Duration"
+  },
+  {
+    "key": "축적률",
+    "en": "Buildup"
+  },
+  {
+    "key": "최대 MP",
+    "en": "Maximum MP"
+  },
+  {
+    "key": "MP 재생",
+    "en": "MP regeneration"
+  },
+  {
+    "key": "최대 ST",
+    "en": "Maximum ST"
+  },
+  {
+    "key": "ST 재생",
+    "en": "ST regeneration"
+  },
+  {
+    "key": "악의 획득량",
+    "en": "Malice gained"
+  },
+  {
+    "key": "최대 HP",
+    "en": "Maximum HP"
+  },
+  {
+    "key": "물리 방어",
+    "en": "Physical defense"
+  },
+  {
+    "key": "정예 / 보스 추가 피해",
+    "en": "Elite / boss bonus damage"
+  },
+  {
+    "key": "부활 확률 감소",
+    "en": "Revival chance reduction"
+  },
+  {
+    "key": "최대 HP / MP / ST 각각",
+    "en": "Maximum HP / MP / ST each"
+  },
+  {
+    "key": "부활 확률",
+    "en": "Revival chance"
+  },
+  {
+    "key": "기본 부활 쿨다운",
+    "en": "Base revival cooldown"
+  },
+  {
+    "key": "분노 최대치",
+    "en": "Maximum rage"
+  },
+  {
+    "key": "분노 피해 계수",
+    "en": "Rage damage scaling"
+  },
+  {
+    "key": "공통 합연산 피해 묶음에 더해집니다. 최종 피해 배율은 다른 패시브·장비와 함께 계산됩니다.",
+    "en": "Added to the shared additive damage pool; final damage also depends on other passives and gear."
+  },
+  {
+    "key": "무지개탄 감소는 Lv5에서 상한에 도달합니다. 무지개탄 패링은 Q만 가능합니다.",
+    "en": "Rainbow damage reduction caps at rank 5. Only Q can parry rainbow shots."
+  },
+  {
+    "key": "시전속도 기본 배율은 ×2입니다. MP 비용 감소는 장비를 포함해 최대 60%입니다.",
+    "en": "Base cast speed is ×2. MP cost reduction caps at 60% including gear."
+  },
+  {
+    "key": "지속 피해에는 흡수율의 절반이 적용됩니다.",
+    "en": "Damage over time uses half the absorption rate."
+  },
+  {
+    "key": "기본 투사체 기준입니다. 일부 스킬은 자체 관통 공식을 사용합니다. 장비 포함 기본 관통 확률 상한 95%.",
+    "en": "Base projectile values. Some skills use their own pierce rules. Base chance caps at 95% including gear."
+  },
+  {
+    "key": "직접 명중마다 중첩. 빔은 4틱마다 1중첩. 초당 20% 감소, 5초 미명중 시 초기화. DOT·장판 제외.",
+    "en": "Stacks on direct hits; beams add one per four ticks. Decays 20% per second, resets after five seconds without hits. Excludes DoT and ground effects."
+  },
+  {
+    "key": "추가 피해는 적의 HP 조건입니다. 회복력 증가는 항상 적용됩니다.",
+    "en": "Damage bonus checks enemy HP. Recovery is always active."
+  },
+  {
+    "key": "성장과 자원을 얻는 대신 부활 확률을 잃습니다. 악마성과 함께 투자하면 부활 효과가 상쇄될 수 있습니다.",
+    "en": "Gain damage and resources at the cost of revival chance. Humanity can offset Demon investment."
+  },
+  {
+    "key": "부활 성공 시 HP·MP·ST를 전부 회복합니다. 실제 확률은 레벨·장비·인간성을 함께 계산하며 0~100%입니다. 기본 쿨다운 최저 100초.",
+    "en": "Successful revival restores all HP, MP and ST. Actual chance includes level, gear and Humanity, clamped to 0–100%. Base cooldown has a 100-second floor."
+  },
+  {
+    "key": "물리 공격력",
+    "en": "Physical attack"
+  },
+  {
+    "key": "기본 최대 HP",
+    "en": "Base maximum HP"
+  },
+  {
+    "key": "HP 재생",
+    "en": "HP regeneration"
+  },
+  {
+    "key": "석궁 공격력",
+    "en": "Crossbow attack"
+  },
+  {
+    "key": "공격속도",
+    "en": "Attack speed"
+  },
+  {
+    "key": "마법 공격력",
+    "en": "Magic attack"
+  },
+  {
+    "key": "최대 에너지 쉴드",
+    "en": "Maximum energy shield"
+  },
+  {
+    "key": "물리 / 속성 방어 기여",
+    "en": "DEF / eDEF contribution"
+  },
+  {
+    "key": "초",
+    "en": "s"
+  },
+  {
+    "key": "EXODUSER · 캐릭터 성장",
+    "en": "EXODUSER / CHARACTER"
+  },
+  {
+    "key": "성장의 각인",
+    "en": "Sigils of Ascension"
+  },
+  {
+    "key": "힘을 벼리고, 당신의 길을 새기세요.",
+    "en": "Temper your strength. Inscribe your path."
+  },
+  {
+    "key": "계획 후 SP",
+    "en": "SP AFTER PLAN"
+  },
+  {
+    "key": "계획 후 AP",
+    "en": "AP AFTER PLAN"
+  },
+  {
+    "key": "투자량 · 1포인트 = 1 SP",
+    "en": "Allocated points · 1 point = 1 SP"
+  },
+  {
+    "key": "전투의 길",
+    "en": "COMBAT PATHS"
+  },
+  {
+    "key": "패시브 분석",
+    "en": "PASSIVE INSIGHT"
+  },
+  {
+    "key": "{n}개 변경 대기 · 적용 전에는 저장되지 않습니다.",
+    "en": "{n} pending changes · Not saved until applied."
+  },
+  {
+    "key": "자유롭게 배분하고, 적용하세요. 창을 닫으면 미적용 계획은 취소됩니다.",
+    "en": "Plan freely, then apply. Closing discards unapplied changes."
+  },
+  {
+    "key": "전체 환불 계획",
+    "en": "Plan full refund"
+  },
+  {
+    "key": "닫기 [J]",
+    "en": "Close [J]"
+  },
+  {
+    "key": "현재 전투 능력치 ↗",
+    "en": "Current combat stats ↗"
+  },
+  {
+    "key": "닫기",
+    "en": "Close"
+  },
+  {
+    "key": "현재 전투 능력치",
+    "en": "Current combat stats"
+  },
+  {
+    "key": "변경 적용",
+    "en": "Apply changes"
+  },
+  {
+    "key": "계획 취소",
+    "en": "Discard plan"
+  },
+  {
+    "key": "현재 적용된 자원",
+    "en": "LIVE RESOURCES"
+  },
+  {
+    "key": "이름 · 효과 · 영문명 검색",
+    "en": "Search name or effect"
+  },
+  {
+    "key": "HP / MP / ST 각각 +1 · 물리/속성 방어 +0.5",
+    "en": "HP / MP / ST +1 each · DEF / eDEF +0.5"
+  },
+  {
+    "key": "계획에 추가",
+    "en": "Add to plan"
+  },
+  {
+    "key": "환불 계획",
+    "en": "Plan refund"
+  },
+  {
+    "key": "투자 상한",
+    "en": "Allocation cap"
+  },
+  {
+    "key": "무제한",
+    "en": "Uncapped"
+  },
+  {
+    "key": "전체",
+    "en": "All"
+  },
+  {
+    "key": "6개의 길 · 서로 조합 가능한 26개 패시브",
+    "en": "6 paths · 26 freely combinable passives"
+  },
+  {
+    "key": "일치하는 패시브가 없습니다. 검색 또는 필터를 바꿔보세요.",
+    "en": "No matching passives. Try another search or filter."
+  },
+  {
+    "key": "투자 레벨",
+    "en": "ALLOCATED RANK"
+  },
+  {
+    "key": "패시브 기여",
+    "en": "PASSIVE CONTRIBUTION"
+  },
+  {
+    "key": "현재",
+    "en": "NOW"
+  },
+  {
+    "key": "계획",
+    "en": "PLAN"
+  },
+  {
+    "key": "다음",
+    "en": "NEXT"
+  },
+  {
+    "key": "다른 패시브와 함께 투자할 수 있습니다. 표는 이 패시브의 기여이며, 최종 전투 능력치는 장비·조건에 따라 달라집니다.",
+    "en": "Combine with other passives. These are this passive’s contributions; final combat stats depend on gear and conditions."
+  },
+  {
+    "key": "인간성과 악마성에 함께 투자 중입니다. 부활 확률을 확인하세요.",
+    "en": "Humanity and Demon are both allocated. Check your revival chance."
+  },
+  {
+    "key": "최대 레벨",
+    "en": "Maximum rank"
+  },
+  {
+    "key": "계획에 추가 · {n} AP",
+    "en": "Add to plan · {n} AP"
+  },
+  {
+    "key": "1레벨 환불 계획",
+    "en": "Plan rank refund"
+  },
+  {
+    "key": "레벨 상한에 도달했습니다.",
+    "en": "Rank cap reached."
+  },
+  {
+    "key": "AP {n} 부족",
+    "en": "Need {n} more AP"
+  },
+  {
+    "key": "추가 후 계획 잔여 AP {n}",
+    "en": "{n} AP left after adding"
+  },
+  {
+    "key": "변경 {n}개 · 하단에서 적용",
+    "en": "{n} changes · Apply below"
+  },
+  {
+    "key": "탐색과 계획은 포인트를 소모하지 않습니다.",
+    "en": "Browsing and planning do not spend points."
+  },
+  {
+    "key": "능력치 분석",
+    "en": "ATTRIBUTE INSIGHT"
+  },
+  {
+    "key": "직접 투자량",
+    "en": "ALLOCATED POINTS"
+  },
+  {
+    "key": "투자분의 기본 기여",
+    "en": "BASE CONTRIBUTION"
+  },
+  {
+    "key": "직접 투자한 능력치의 기본 기여입니다. 레벨·장비·패시브 배율은 전투 능력치에 합산됩니다. 재생은 초당 기준이며, 근성 방어는 전체 근성을 합산한 뒤 내림합니다.",
+    "en": "Base contribution from allocated points. Level, gear and passive multipliers are included in combat stats. Regeneration is per second; GRIT defense rounds down after total GRIT is summed."
+  },
+  {
+    "key": "계획에 추가 · {n} SP",
+    "en": "Add to plan · {n} SP"
+  },
+  {
+    "key": "{n}포인트 환불 계획",
+    "en": "Plan {n}-point refund"
+  },
+  {
+    "key": "SP 또는 투자 상한을 확인하세요.",
+    "en": "Check SP and the allocation cap."
+  },
+  {
+    "key": "추가 후 계획 잔여 SP {n}",
+    "en": "{n} SP left after adding"
+  },
+  {
+    "key": "습득",
+    "en": "Learned"
+  },
+  {
+    "key": "변경 중",
+    "en": "Pending"
+  }
+]

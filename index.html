@@ -2,6 +2,8 @@
 <html lang="ko">
 <head>
 <meta charset="UTF-8">
+<script src="localization-runtime.js"></script>
+<script src="localization-data.js"></script>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>HELL: EXODUSER</title>
 <link rel="icon" type="image/x-icon" href="/favicon.ico?v=20260414-iconfix">
@@ -444,6 +446,7 @@ body{background:#000 center/cover no-repeat;color:#ccaa88;font-family:'Noto Sans
 #cinScene:not(.world-intro-preview):not(.world-intro-attention) #worldIntroMix{display:none}
 #worldIntroStatus{font-size:11px;color:#c6b89f}
 </style>
+<link rel="stylesheet" href="localization.css?v=20260909">
 </head>
 <body>
 
@@ -537,7 +540,7 @@ body{background:#000 center/cover no-repeat;color:#ccaa88;font-family:'Noto Sans
   <button class="skip-btn" id="skipBtn" style="display:none">SKIP ></button>
   <canvas id="cinHoldGauge" style="position:absolute;bottom:30px;right:30px;width:120px;height:100px;z-index:300;pointer-events:none"></canvas>
   <select id="cinLang" style="position:absolute;top:3vh;right:4vw;z-index:300;background:rgba(0,0,0,.7);border:1px solid rgba(255,255,255,.2);color:rgba(255,255,255,.7);font-family:'Noto Sans KR';font-size:.85rem;padding:4px 12px;border-radius:4px;cursor:pointer">
-    <option value="ko">한국어</option><option value="en">English</option><option value="zh">中文简体</option><option value="zht">繁體中文</option><option value="ja">日本語</option><option value="vi">Tiếng Việt</option><option value="th">ไทย</option><option value="id">Bahasa Indonesia</option><option value="es">Español</option><option value="fr">Français</option><option value="it">Italiano</option><option value="ptbr">Português</option><option value="ro">Română</option><option value="de">Deutsch</option><option value="nl">Nederlands</option><option value="sv">Svenska</option><option value="da">Dansk</option><option value="no">Norsk</option><option value="ru">Русский</option><option value="uk">Українська</option><option value="pl">Polski</option><option value="cs">Čeština</option><option value="hu">Magyar</option><option value="bg">Български</option><option value="el">Ελληνικά</option><option value="fi">Suomi</option><option value="tr">Türkçe</option><option value="ar">العربية</option>
+    <option value="ko">한국어</option><option value="en">English</option><option value="zh">中文简体</option><option value="zht">繁體中文</option><option value="ja">日本語</option><option value="vi">Tiếng Việt</option><option value="th">ไทย</option><option value="id">Bahasa Indonesia</option><option value="ms">Bahasa Melayu</option><option value="es">Español</option><option value="fr">Français</option><option value="it">Italiano</option><option value="ptbr">Português</option><option value="ro">Română</option><option value="de">Deutsch</option><option value="nl">Nederlands</option><option value="sv">Svenska</option><option value="da">Dansk</option><option value="no">Norsk</option><option value="ru">Русский</option><option value="uk">Українська</option><option value="pl">Polski</option><option value="cs">Čeština</option><option value="hu">Magyar</option><option value="bg">Български</option><option value="el">Ελληνικά</option><option value="fi">Suomi</option><option value="tr">Türkçe</option><option value="ar">العربية</option>
   </select>
 </div>
 
@@ -555,7 +558,7 @@ body{background:#000 center/cover no-repeat;color:#ccaa88;font-family:'Noto Sans
     <div class="title"><img src="img/logo_exoduser.png" alt="EXODUSER" style="max-width:700px;width:90%;height:auto;display:block;margin:0 auto"></div>
     <div style="text-align:center;margin:-10px 0 10px">
       <select id="langSelect" style="background:#1a1008;border:1px solid #443322;color:#ccaa88;font-family:'Noto Sans KR';font-size:.85rem;padding:4px 12px;border-radius:4px;cursor:pointer">
-        <option value="ko">한국어</option><option value="en">English</option><option value="zh">中文简体</option><option value="zht">繁體中文</option><option value="ja">日本語</option><option value="vi">Tiếng Việt</option><option value="th">ไทย</option><option value="id">Bahasa Indonesia</option><option value="es">Español</option><option value="fr">Français</option><option value="it">Italiano</option><option value="ptbr">Português</option><option value="ro">Română</option><option value="de">Deutsch</option><option value="nl">Nederlands</option><option value="sv">Svenska</option><option value="da">Dansk</option><option value="no">Norsk</option><option value="ru">Русский</option><option value="uk">Українська</option><option value="pl">Polski</option><option value="cs">Čeština</option><option value="hu">Magyar</option><option value="bg">Български</option><option value="el">Ελληνικά</option><option value="fi">Suomi</option><option value="tr">Türkçe</option><option value="ar">العربية</option>
+        <option value="ko">한국어</option><option value="en">English</option><option value="zh">中文简体</option><option value="zht">繁體中文</option><option value="ja">日本語</option><option value="vi">Tiếng Việt</option><option value="th">ไทย</option><option value="id">Bahasa Indonesia</option><option value="ms">Bahasa Melayu</option><option value="es">Español</option><option value="fr">Français</option><option value="it">Italiano</option><option value="ptbr">Português</option><option value="ro">Română</option><option value="de">Deutsch</option><option value="nl">Nederlands</option><option value="sv">Svenska</option><option value="da">Dansk</option><option value="no">Norsk</option><option value="ru">Русский</option><option value="uk">Українська</option><option value="pl">Polski</option><option value="cs">Čeština</option><option value="hu">Magyar</option><option value="bg">Български</option><option value="el">Ελληνικά</option><option value="fi">Suomi</option><option value="tr">Türkçe</option><option value="ar">العربية</option>
       </select>
     </div>
     <div class="card">
@@ -566,7 +569,7 @@ body{background:#000 center/cover no-repeat;color:#ccaa88;font-family:'Noto Sans
         </div>
         <div class="login-lang">
           <select id="loginLangSelect" style="background:rgba(10,6,2,.8);border:1px solid rgba(120,80,40,.4);color:#ccaa88;font-family:'Noto Sans KR';font-size:.8rem;padding:5px 14px;border-radius:3px;cursor:pointer">
-            <option value="ko">한국어</option><option value="en">English</option><option value="zh">中文简体</option><option value="zht">繁體中文</option><option value="ja">日本語</option><option value="vi">Tiếng Việt</option><option value="th">ไทย</option><option value="id">Bahasa Indonesia</option><option value="es">Español</option><option value="fr">Français</option><option value="it">Italiano</option><option value="ptbr">Português</option><option value="ro">Română</option><option value="de">Deutsch</option><option value="nl">Nederlands</option><option value="sv">Svenska</option><option value="da">Dansk</option><option value="no">Norsk</option><option value="ru">Русский</option><option value="uk">Українська</option><option value="pl">Polski</option><option value="cs">Čeština</option><option value="hu">Magyar</option><option value="bg">Български</option><option value="el">Ελληνικά</option><option value="fi">Suomi</option><option value="tr">Türkçe</option><option value="ar">العربية</option>
+            <option value="ko">한국어</option><option value="en">English</option><option value="zh">中文简体</option><option value="zht">繁體中文</option><option value="ja">日本語</option><option value="vi">Tiếng Việt</option><option value="th">ไทย</option><option value="id">Bahasa Indonesia</option><option value="ms">Bahasa Melayu</option><option value="es">Español</option><option value="fr">Français</option><option value="it">Italiano</option><option value="ptbr">Português</option><option value="ro">Română</option><option value="de">Deutsch</option><option value="nl">Nederlands</option><option value="sv">Svenska</option><option value="da">Dansk</option><option value="no">Norsk</option><option value="ru">Русский</option><option value="uk">Українська</option><option value="pl">Polski</option><option value="cs">Čeština</option><option value="hu">Magyar</option><option value="bg">Български</option><option value="el">Ελληνικά</option><option value="fi">Suomi</option><option value="tr">Türkçe</option><option value="ar">العربية</option>
           </select>
         </div>
         <h2>계정으로 입장하세요</h2>
@@ -609,7 +612,7 @@ body{background:#000 center/cover no-repeat;color:#ccaa88;font-family:'Noto Sans
       </div>
       <div style="display:flex;align-items:center;gap:8px">
         <select id="lobbyLangSelect" style="background:rgba(10,6,2,.8);border:1px solid rgba(120,80,40,.4);color:#ccaa88;font-family:'Noto Sans KR';font-size:.75rem;padding:3px 10px;border-radius:3px;cursor:pointer">
-          <option value="ko">한국어</option><option value="en">English</option><option value="zh">中文简体</option><option value="zht">繁體中文</option><option value="ja">日本語</option><option value="vi">Tiếng Việt</option><option value="th">ไทย</option><option value="id">Bahasa Indonesia</option><option value="es">Español</option><option value="fr">Français</option><option value="it">Italiano</option><option value="ptbr">Português</option><option value="ro">Română</option><option value="de">Deutsch</option><option value="nl">Nederlands</option><option value="sv">Svenska</option><option value="da">Dansk</option><option value="no">Norsk</option><option value="ru">Русский</option><option value="uk">Українська</option><option value="pl">Polski</option><option value="cs">Čeština</option><option value="hu">Magyar</option><option value="bg">Български</option><option value="el">Ελληνικά</option><option value="fi">Suomi</option><option value="tr">Türkçe</option><option value="ar">العربية</option>
+          <option value="ko">한국어</option><option value="en">English</option><option value="zh">中文简体</option><option value="zht">繁體中文</option><option value="ja">日本語</option><option value="vi">Tiếng Việt</option><option value="th">ไทย</option><option value="id">Bahasa Indonesia</option><option value="ms">Bahasa Melayu</option><option value="es">Español</option><option value="fr">Français</option><option value="it">Italiano</option><option value="ptbr">Português</option><option value="ro">Română</option><option value="de">Deutsch</option><option value="nl">Nederlands</option><option value="sv">Svenska</option><option value="da">Dansk</option><option value="no">Norsk</option><option value="ru">Русский</option><option value="uk">Українська</option><option value="pl">Polski</option><option value="cs">Čeština</option><option value="hu">Magyar</option><option value="bg">Български</option><option value="el">Ελληνικά</option><option value="fi">Suomi</option><option value="tr">Türkçe</option><option value="ar">العربية</option>
         </select>
         <div class="lobby-mode" id="lobbyMode"></div>
       </div>
@@ -1851,12 +1854,15 @@ const _LOBBY_ZHT={
 };
 const _LOBBY_SK={'친애하는 게이머 여러분께 바칩니다':'Venované vám všetkým, drahí hráči'};
 const _LOBBY_HR={'친애하는 게이머 여러분께 바칩니다':'Posvećeno svima vama, dragi igrači'};
-const _LOBBY_TABLES=Object.assign({en:_LOBBY_EN,zh:_LOBBY_ZH,ja:_LOBBY_JA,es:_LOBBY_ES,fr:_LOBBY_FR,it:_LOBBY_IT,pt:_LOBBY_PTBR,ro:_LOBBY_RO,de:_LOBBY_DE,nl:_LOBBY_NL,sv:_LOBBY_SV,da:_LOBBY_DA,no:_LOBBY_NO,ru:_LOBBY_RU,uk:_LOBBY_UK,pl:_LOBBY_PL,cs:_LOBBY_CS,hu:_LOBBY_HU,bg:_LOBBY_BG,el:_LOBBY_EL,fi:_LOBBY_FI,tr:_LOBBY_TR,ar:_LOBBY_AR,vi:_LOBBY_VI,th:_LOBBY_TH,id:_LOBBY_ID,zht:_LOBBY_ZHT,sk:_LOBBY_SK,hr:_LOBBY_HR},typeof _LOBBY_I18N!=='undefined'?_LOBBY_I18N:{});
+const _LOBBY_TABLES={en:_LOBBY_EN,zh:_LOBBY_ZH,ja:_LOBBY_JA,es:_LOBBY_ES,fr:_LOBBY_FR,it:_LOBBY_IT,pt:_LOBBY_PTBR,ro:_LOBBY_RO,de:_LOBBY_DE,nl:_LOBBY_NL,sv:_LOBBY_SV,da:_LOBBY_DA,no:_LOBBY_NO,ru:_LOBBY_RU,uk:_LOBBY_UK,pl:_LOBBY_PL,cs:_LOBBY_CS,hu:_LOBBY_HU,bg:_LOBBY_BG,el:_LOBBY_EL,fi:_LOBBY_FI,tr:_LOBBY_TR,ar:_LOBBY_AR,vi:_LOBBY_VI,th:_LOBBY_TH,id:_LOBBY_ID,zht:_LOBBY_ZHT,sk:_LOBBY_SK,hr:_LOBBY_HR};
+for(const [code,entries]of Object.entries(typeof _LOBBY_I18N!=='undefined'?_LOBBY_I18N:{})){_LOBBY_TABLES[code]=Object.assign({},_LOBBY_TABLES[code]||(code==='ptbr'?_LOBBY_PTBR:{}),entries);}
+_LOBBY_TABLES.ms=ExoduserLocalizationData.lobbyMs;
+for(const [code,entries]of Object.entries(ExoduserLocalizationData.ui)){_LOBBY_TABLES[code]=Object.assign({},_LOBBY_TABLES[code],entries);}
 // pt(유럽 포르투갈어): 인라인 _LOBBY_PTBR(45키)만 있어 나머지가 영어로 폴백되던 문제 보강 — 더 완전한 브라질 포르투갈어(_LOBBY_I18N.ptbr, 66키)를 베이스로 깔고 pt 고유 인라인 값을 위에 얹음
 if(typeof _LOBBY_I18N!=='undefined'&&_LOBBY_I18N.ptbr){_LOBBY_TABLES.pt=Object.assign({},_LOBBY_I18N.ptbr,_LOBBY_TABLES.pt);}
 // ═══ 다국어 4단계 폴백 체인 ═══
-const _I18N_SUPPORTED=['ko','en','zh','ja','es','fr','de','ru','ptbr','it','vi','th','id','tr','pl','cs','hu','bg','el','fi','sv','da','no','nl','ro','uk','ar','zht'];
-const _STEAM_LANG_MAP={koreana:'ko',english:'en',schinese:'zh',tchinese:'zht',japanese:'ja',spanish:'es',latam:'es',french:'fr',german:'de',russian:'ru',portuguese:'ptbr',brazilianportuguese:'ptbr',italian:'it',vietnamese:'vi',thai:'th',indonesian:'id',turkish:'tr',polish:'pl',czech:'cs',hungarian:'hu',bulgarian:'bg',greek:'el',finnish:'fi',swedish:'sv',danish:'da',norwegian:'no',dutch:'nl',romanian:'ro',ukrainian:'uk',arabic:'ar'};
+const _I18N_SUPPORTED=ExoduserI18n.languages;
+const _STEAM_LANG_MAP={koreana:'ko',english:'en',schinese:'zh',tchinese:'zht',japanese:'ja',spanish:'es',latam:'es',french:'fr',german:'de',russian:'ru',portuguese:'ptbr',brazilianportuguese:'ptbr',brazilian:'ptbr',italian:'it',vietnamese:'vi',thai:'th',indonesian:'id',malay:'ms',turkish:'tr',polish:'pl',czech:'cs',hungarian:'hu',bulgarian:'bg',greek:'el',finnish:'fi',swedish:'sv',danish:'da',norwegian:'no',dutch:'nl',romanian:'ro',ukrainian:'uk',arabic:'ar'};
 function getUserSelectedLanguage(){return WorldIntroSubtitles.resolveLanguage(localStorage.getItem('hellLang'))}
 function detectSteamLanguage(){try{if(typeof window!=='undefined'&&window.steamworks){const sl=window.steamworks.localplayer.getCurrentGameLanguage();const m=_STEAM_LANG_MAP[sl];if(m){console.log('[I18N] Steam: '+sl+' -> '+m);return m}}if(typeof process!=='undefined'&&process.env&&process.env.STEAM_LANGUAGE){const m=_STEAM_LANG_MAP[process.env.STEAM_LANGUAGE];if(m)return m}}catch(e){/* 브라우저 silent */}return null}
 function detectBrowserLanguage(){const ls=navigator.languages||[navigator.language]||['en'];for(const l of ls){const c=WorldIntroSubtitles.resolveLanguage(l);if(c&&_I18N_SUPPORTED.includes(c))return c}return null}
@@ -1868,7 +1874,7 @@ function _TL(s){const lang=_lobbyLang();if(lang==='ko')return s;const tbl=_LOBBY
 const _HTML_LANG_MAP={ko:'ko',ja:'ja',zh:'zh-Hans',zht:'zh-Hant',ar:'ar',th:'th',vi:'vi',id:'id',tr:'tr',el:'el',ru:'ru',uk:'uk',bg:'bg',pl:'pl',cs:'cs',hu:'hu',ro:'ro',de:'de',nl:'nl',sv:'sv',da:'da',no:'no',fi:'fi',fr:'fr',it:'it',es:'es',ptbr:'pt',sk:'sk',en:'en'};
 function _applyLobbyLang(){
   const lang=_lobbyLang();
-  document.documentElement.lang=_HTML_LANG_MAP[lang]||lang;
+  ExoduserI18n.applyDocumentLanguage(document,lang);
   document.getElementById('langSelect').value=lang;
   const tbl=_LOBBY_TABLES[lang]||_LOBBY_EN;
   // 정적 텍스트 교체

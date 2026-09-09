@@ -1,6 +1,8 @@
 # 세계관 인트로 v13 — 인게임 적용 / BGM 확인
 
-> 최신 자막·언어 계약: [v6 전체 28언어 자막](WORLD_INTRO_V6_SUBTITLES_20260907.md). 무자막 영어 마스터 + 언어당 32큐, 영화 중 언어 변경 지원. 아래 v3/v4/v5 시점 검수 기록은 보존 이력이다.
+> **2026-09-09 현행 언어 계약:** Steam 31개 항목은 지역 공통 번역을 포함한 내부 29개 언어(말레이어 ms 추가)로 처리한다. 세계관 29×32=928큐·SRT/VTT 총58개, 캐릭터 서사 28개 번역 언어에 KO 기준 21+18문장을 적용한다. UI779키 등록, MAIN13,300개·EXTRA1,782개·성장화면3,699개 번역 보완 및 29언어 화면 검증을 완료했다. [구현 상태·검증 기록](../16번역·로컬라이제이션/STEAM_LANGUAGE_SCOPE_20260909.md)이 과거 완료 기록보다 우선한다.
+
+> 최신 자막·언어 계약: [v6 전체 29언어 자막](WORLD_INTRO_V6_SUBTITLES_20260907.md). 무자막 영어 마스터 + 언어당 32큐, 영화 중 언어 변경 지원. 아래 v3/v4/v5 시점 검수 기록은 보존 이력이다.
 
 > 최신 타이틀: [v7 EXODUSER 단독](WORLD_INTRO_V7_EXODUSER_ONLY_20260907.md). HELL ROAD 부제를 제거하고 기존 원본 로고만 마지막 4초 중앙에 표시. 지옥문·대사·자막·BGM 연속성 유지.
 
@@ -17,11 +19,11 @@
 | 게임 에셋 | `video/world_intro_v13_exodus_en.mp4`, 32,381,760바이트 |
 | 보존 원본 | `output/cinematic/world_intro_auto_v3_en_ko.mp4` 및 `video/world_intro_v3_en_ko.mp4` 유지. v4·v5는 별도 파일 |
 | 규격 | H.264 + AAC, 1280×720, 24fps, 2719프레임, 컨테이너 113.292초 / 브라우저 비디오 duration 113.291667초 |
-| 음성·자막 | ElevenLabs 영어 음성 193단어, 28언어 × 32큐 네이티브 선택형 자막. 기존 `introVoice` 별도 재생 금지 |
+| 음성·자막 | ElevenLabs 영어 음성 193단어, 29언어 × 32큐 네이티브 선택형 자막. 기존 `introVoice` 별도 재생 금지 |
 | 타이틀 | 109.291667~113.291667초, 기존 img/logo_exoduser.png 단독 중앙 배치, HELL ROAD 없음. 109.6~111.1초는 마지막 자막과 동시 표시, 이후 자막 없이 로고만 유지. 0.75초 등장·3.6초부터 0.4초 소멸 |
 | 화면 | `#worldIntroVideo`, contain, z-index 21, preload none. 기존 정지 이미지 자막·레터박스·불씨는 숨김. cinLang은 표시, 네이티브 TextTrack으로 선택 언어만 표시 |
 | 이전 구현 | `CIN_LINES`, 정지 이미지 DOM·원본은 보존. 문 이후 `showLine(0)` 호출 및 사용하지 않는 18장 지연 프리로드는 중지 |
-| 번역 범위 | 이 영상은 EN 보이스 고정 / 28언어 선택형 자막. 기존 28언어 CIN_LINES는 보존 자료이며 영상의 실시간 번역/자막으로 사용하지 않음. 로비·게임 번역은 유지 |
+| 번역 범위 | 이 영상은 EN 보이스 고정 / 29언어 선택형 자막. 기존 28언어 CIN_LINES는 보존 자료이며 영상의 실시간 번역/자막으로 사용하지 않음. 로비·게임 번역은 유지 |
 | 플레이어 | `world-intro-player.js`, `WorldIntroPlayer.create`, `start/stop/next/toggle/setVolumes` |
 | Steam 음성 디코딩 (2026-09-09) | 기본 NW.js 0.111.2에서 AAC 무음 재현. 같은 버전 `vendor/nwjs-ffmpeg/0.111.2/ffmpeg.dll`을 빌드에 포함하여 복구, 영상/보이스 원본 변경 없음. 실제 AAC 디코딩·WebAudio 신호 검증과 배포 상태는 [Steam 기록](../13출시·마케팅/STEAM_LATEST_DEPLOY_20260909.md) 참조 |
 | 백업 | `output/cinematic/index_before_world_intro_v3_20260907.html` |

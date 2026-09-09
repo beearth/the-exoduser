@@ -1,0 +1,50 @@
+{
+  "prologue": {
+    "wa02": "Seorang pria pulang dari perang dalam keadaan hidup.",
+    "wa04": "Namun, rumahnya telah terbakar menjadi abu.",
+    "wa06": "Killu, tetangga sekaligus sahabatnya, telah menghancurkan keluarganya.",
+    "wa08": "Istrinya dibawa pergi sebagai pelayan dan mengalami segala macam penyiksaan,",
+    "wa09": "hingga tak tahan lagi dan mengakhiri hidupnya sendiri.",
+    "wa11": "Anak-anaknya dijual sebagai budak. Tak ada yang tahu di mana mereka berada.",
+    "wa12": "Orang tuanya yang renta mati kelaparan di penjara.",
+    "wa14": "Seluruh keluarga Killu mengetahuinya.",
+    "wa15": "31 orang menyaksikan, lalu berpura-pura tidak melihat.",
+    "wa17": "Malam itu, ia membunuh seluruh keluarga Killu.",
+    "wa19": "Dengan pedangnya, ia memotong tangan dan kaki Killu,",
+    "wa20": "bahkan membakar lukanya untuk menghentikan pendarahan,",
+    "wa21": "agar Killu tetap hidup untuk waktu yang amat lama.",
+    "wa22": "“Ingatlah.”",
+    "wa23": "“Dan menyesallah, bahkan di neraka.”",
+    "wa24": "Lalu ia pun jatuh ke neraka.",
+    "wa26": "“…Ini hanyalah kisah satu dari tak terhitung banyaknya penuntut balas.”",
+    "wa28": "“Setiap hari, jiwa-jiwa baru jatuh ke labirin neraka.”",
+    "wa29": "“Yang penuh amarah, yang gila karena ketidakadilan, yang kehilangan orang tercinta…”",
+    "wa31": "“Mengapa kau datang ke neraka?”",
+    "wa33": "“Loloslah dari neraka, pendosa.”"
+  },
+  "intro": {
+    "3": "Pembalasanmu yang mendebarkan sungguh mengesankan. Sebuah mahakarya.",
+    "5": "Kulihat secuil kebajikan yang menyedihkan dalam dirimu. Masih ada yang harus kau selamatkan.\nTampaknya mereka masih menunggumu? Waktu kalian semua sudah menipis…",
+    "8": "Rupanya kuda goyang milik anak itu menyadarkan orang mati sekalipun.",
+    "10": "Baiklah. Loloslah dari tempat ini. Aku sendiri akan membantumu.\nDiroy dan Hector akan menuntunmu.",
+    "11": "Jangan panik. Kenalan dulu. Aku Diroy.",
+    "12": "Aku Hector. Anggap kami berkah dari sang dewi.\nKami juga harus keluar dari sini.",
+    "13": "Iblis adalah makhluk yang terbentuk dari niat jahat.\nSecara naluriah, mereka menyerang kebajikan.",
+    "14": "Tapi kau agak berbeda. Kebajikanmu kuat.\nNiat jahatmu hanya meledak sesaat. Ledakan itu akan segera mereda.",
+    "15": "Jadi iblis akan mencium baumu dan berbondong-bondong mendatangimu.",
+    "16": "Sang dewi telah menganugerahkan persenjataan kepadamu. Ambil.",
+    "17": "Itu proyeksi kiriman sang dewi, jiwa dari medan perang.\nIa akan bersemayam di busur silang dan bertarung bersamamu.",
+    "21": "Manusia ini pingsan lagi. Sudah berapa lama dia tidak tidur?",
+    "22": "Sepertinya dia berhari-hari tidak makan atau tidur, hanya memikirkan balas dendam.",
+    "23": "Kita harus membangunkannya, meski harus memberinya niat jahat untuk dimakan.",
+    "24": "...",
+    "10c": "Sampai jumpa lagi, wahai arwah.",
+    "18b": "Kenakan juga ikat niat jahat itu. Ia akan menjaga kewarasanmu\nsebelum luapan niat jahat membuatmu gila.",
+    "22b": "Kalau dibiarkan, dia akan dimakan."
+  },
+  "speakers": {
+    "GODDESS": "Nemesia",
+    "DIROY": "DIROY",
+    "HECTOR": "HECTOR"
+  }
+}

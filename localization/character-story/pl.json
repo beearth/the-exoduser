@@ -1,0 +1,50 @@
+{
+  "prologue": {
+    "wa02": "Pewien człowiek wrócił żywy z wojny.",
+    "wa04": "Lecz jego dom spłonął doszczętnie.",
+    "wa06": "Killu, jego sąsiad i przyjaciel, zniszczył jego rodzinę.",
+    "wa08": "Żonę uprowadzono na służbę i poddano wszelkim okrucieństwom,",
+    "wa09": "aż w końcu nie wytrzymała i odebrała sobie życie.",
+    "wa11": "Dzieci sprzedano w niewolę. Nikt nie wie, gdzie są.",
+    "wa12": "Sędziwi rodzice zmarli z głodu w lochu.",
+    "wa14": "Wszyscy w rodzie Killu o tym wiedzieli.",
+    "wa15": "31 osób widziało wszystko i udawało, że nic nie widzi.",
+    "wa17": "Tej nocy zabił całą rodzinę Killu.",
+    "wa19": "Ostrzem odciął Killu ręce i nogi,",
+    "wa20": "a nawet przypalił rany ogniem, by zatamować krew,",
+    "wa21": "i utrzymywał go przy życiu długo, bardzo długo.",
+    "wa22": "„Pamiętaj.”",
+    "wa23": "„I żałuj nawet w piekle.”",
+    "wa24": "Potem sam runął do piekła.",
+    "wa26": "„…To tylko historia jednego z niezliczonych mścicieli.”",
+    "wa28": "„Każdego dnia nowe dusze wpadają do piekielnego labiryntu.”",
+    "wa29": "„Pełne gniewu, oszalałe od krzywdy, pozbawione ukochanych…”",
+    "wa31": "„A ty dlaczego trafiłeś do piekła?”",
+    "wa33": "„Ucieknij z piekła, grzeszniku.”"
+  },
+  "intro": {
+    "3": "Z podziwem oglądałam tę twoją pasjonującą zemstę. Arcydzieło.",
+    "5": "Widzę w tobie żałosną resztkę dobroci. Masz jeszcze kogoś do uratowania.\nZdaje się, że wciąż na ciebie czekają? Żadnemu z was nie zostało wiele czasu…",
+    "8": "Widok konika tego dziecka przywraca zmysły nawet umarłemu.",
+    "10": "Dobrze. Ucieknij stąd. Osobiście ci pomogę.\nDiroy i Hector cię poprowadzą.",
+    "11": "Spokojnie. Najpierw się poznajmy. Jestem Diroy.",
+    "12": "A ja Hector. Uznaj nas za błogosławieństwo bogini.\nMy też musimy się stąd wydostać.",
+    "13": "Demony to istoty stworzone ze złości.\nInstynktownie atakują dobroć.",
+    "14": "Ale ty jesteś inny. Twoja dobroć jest silna.\nZłość tylko na chwilę wybuchła. Ten wybuch wkrótce przygaśnie.",
+    "15": "Dlatego demony wyczują twój zapach i zbiegną się tłumnie.",
+    "16": "Bogini obdarowała cię orężem. Bierz.",
+    "17": "To projekcja wysłana przez boginię. Dusza z pola bitwy.\nZamieszka w kuszy i będzie walczyć u twego boku.",
+    "21": "Ten człowiek znowu zemdlał. Jak długo on nie spał?",
+    "22": "Pewnie przez całe dni nie jadł i nie spał, myśląc tylko o zemście.",
+    "23": "Trzeba go obudzić, choćby karmiąc go złością.",
+    "24": "...",
+    "10c": "Jeszcze się spotkamy, umarły.",
+    "18b": "Załóż też tę opaskę złości. Pomoże ci zachować rozum,\nzanim wybuch złości wpędzi cię w obłęd.",
+    "22b": "Jeśli go zostawimy, zostanie pożarty."
+  },
+  "speakers": {
+    "GODDESS": "Nemesia",
+    "DIROY": "DIROY",
+    "HECTOR": "HECTOR"
+  }
+}

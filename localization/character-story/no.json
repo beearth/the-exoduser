@@ -1,0 +1,50 @@
+{
+  "prologue": {
+    "wa02": "En mann vendte levende hjem fra krigen.",
+    "wa04": "Men hjemmet hans hadde brent ned til grunnen.",
+    "wa06": "Killu, naboen og vennen hans, hadde knust familien hans.",
+    "wa08": "Kona ble ført bort som tjenestejente og utsatt for alle slags overgrep,",
+    "wa09": "helt til hun ikke orket mer og tok sitt eget liv.",
+    "wa11": "Barna ble solgt som slaver. Ingen vet engang hvor de er.",
+    "wa12": "De gamle foreldrene hans sultet i hjel i fengselet.",
+    "wa14": "Alle i Killus slekt visste om det.",
+    "wa15": "31 mennesker så det og lot som de ikke hadde sett noe.",
+    "wa17": "Den natten drepte han hele Killus familie.",
+    "wa19": "Med klingen hogg han av Killus armer og bein,",
+    "wa20": "og brente til og med sårene for å stanse blødningen,",
+    "wa21": "slik at han kunne holde ham i live lenge, svært lenge.",
+    "wa22": "«Husk.»",
+    "wa23": "«Og angre, selv i helvete.»",
+    "wa24": "Så falt han ned i helvete.",
+    "wa26": "«…Dette er bare historien om én av utallige hevnere.»",
+    "wa28": "«Hver dag faller nye sjeler ned i helvetes labyrint.»",
+    "wa29": "«Fylt av raseri, drevet til vanvidd av urett, frarøvet sin kjærlighet…»",
+    "wa31": "«Hvorfor kom du til helvete?»",
+    "wa33": "«Flykt fra helvete, synder.»"
+  },
+  "intro": {
+    "3": "Jeg så det fengslende hevndramaet ditt med beundring. Et mesterverk.",
+    "5": "Jeg ser en ynkelig rest av godhet i deg. Du har vel fortsatt noen å redde.\nDet virker som de fortsatt venter på deg? Ingen av dere har mye tid igjen…",
+    "8": "Synet av det barnets gyngehest får visst selv en død til å komme til sans og samling.",
+    "10": "Vel. Flykt herfra. Jeg skal personlig hjelpe deg.\nDiroy og Hector vil vise deg veien.",
+    "11": "Ikke bli redd. La oss hilse først. Jeg er Diroy.",
+    "12": "Jeg er Hector. Se på oss som en velsignelse fra gudinnen.\nVi må også komme oss ut herfra.",
+    "13": "Demoner er vesener skapt av ondskap.\nDe angriper godhet av instinkt.",
+    "14": "Men du er annerledes. Godheten din er sterk.\nOndskapen din har bare blusset opp midlertidig. Det utbruddet vil snart gi seg.",
+    "15": "Derfor vil demonene få ferten av deg og strømme hit.",
+    "16": "Gudinnen har skjenket deg våpen. Ta dem.",
+    "17": "En projeksjon sendt av gudinnen. En sjel fra slagmarken.\nDen vil bo i armbrøsten og kjempe ved din side.",
+    "21": "Dette mennesket besvimte igjen. Hvor lenge har han vært våken?",
+    "22": "Han har nok verken spist eller sovet på flere dager, bare tenkt på hevn.",
+    "23": "Vi må vekke ham, om vi så må mate ham med ondskap.",
+    "24": "...",
+    "10c": "Vi sees igjen, døde sjel.",
+    "18b": "Ta på deg det ondskapsbåndet også. Det holder forstanden din samlet\nfør ondskapen som har brutt løs gjør deg gal.",
+    "22b": "Lar vi ham ligge slik, blir han spist."
+  },
+  "speakers": {
+    "GODDESS": "Nemesia",
+    "DIROY": "DIROY",
+    "HECTOR": "HECTOR"
+  }
+}

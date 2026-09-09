@@ -1,0 +1,50 @@
+{
+  "prologue": {
+    "wa02": "En mand vendte levende hjem fra krigen.",
+    "wa04": "Men hans hjem var brændt ned til grunden.",
+    "wa06": "Killu, hans nabo og ven, havde knust hans familie.",
+    "wa08": "Hans kone blev ført bort som tjenestepige og udsat for alle tænkelige overgreb,",
+    "wa09": "indtil hun ikke kunne holde det ud længere og tog sit eget liv.",
+    "wa11": "Børnene blev solgt som slaver. Ingen ved, hvor de er.",
+    "wa12": "Hans gamle forældre sultede ihjel i fængslet.",
+    "wa14": "Alle i Killus slægt vidste det.",
+    "wa15": "31 mennesker så det og lod, som om de intet havde set.",
+    "wa17": "Den nat dræbte han hele Killus familie.",
+    "wa19": "Med sin klinge huggede han Killus arme og ben af,",
+    "wa20": "brændte endda sårene for at standse blødningen,",
+    "wa21": "og holdt ham i live længe, meget længe.",
+    "wa22": "“Husk det.”",
+    "wa23": "“Og fortryd det selv i helvede.”",
+    "wa24": "Så faldt han ned i helvede.",
+    "wa26": "“…Dette er blot historien om én af utallige hævnere.”",
+    "wa28": "“Hver dag falder nye sjæle ned i helvedes labyrint.”",
+    "wa29": "“Fyldt af vrede, vanvittige af uretfærdighed, berøvet deres kærlighed…”",
+    "wa31": "“Hvorfor kom du til helvede?”",
+    "wa33": "“Flygt fra helvede, synder.”"
+  },
+  "intro": {
+    "3": "Jeg så dit medrivende hævndrama med stor beundring. Et mesterværk.",
+    "5": "Jeg ser en ynkelig rest af godhed i dig. Du har vel stadig nogen at redde.\nDe venter vist stadig på dig? Ingen af jer har megen tid tilbage…",
+    "8": "Synet af det barns gyngehest bringer åbenbart selv en død til fornuft.",
+    "10": "Godt. Flygt herfra. Jeg vil personligt hjælpe dig.\nDiroy og Hector vil vise dig vej.",
+    "11": "Bliv ikke bange. Lad os hilse på hinanden. Jeg er Diroy.",
+    "12": "Jeg er Hector. Betragt os som gudindens velsignelse.\nVi skal nemlig også ud herfra.",
+    "13": "Dæmoner er væsner skabt af ondskab.\nDe angriber instinktivt godhed.",
+    "14": "Men du er anderledes. Din godhed er stærk.\nDin ondskab er kun blusset op for en tid. Det udbrud fortager sig snart.",
+    "15": "Derfor vil dæmonerne få færten af dig og strømme hertil.",
+    "16": "Gudinden har skænket dig våben. Tag dem.",
+    "17": "En projektion sendt af gudinden. En sjæl fra slagmarken.\nDen vil bo i armbrøsten og kæmpe ved din side.",
+    "21": "Det menneske besvimede igen. Hvor længe har han ikke sovet?",
+    "22": "Han har nok hverken spist eller sovet i dagevis, kun tænkt på hævn.",
+    "23": "Vi må vække ham, om så vi skal fodre ham med ondskab.",
+    "24": "...",
+    "10c": "Vi ses igen, døde sjæl.",
+    "18b": "Tag også det ondskabsbånd på. Det holder sammen på din forstand,\ninden den opblussende ondskab gør dig vanvittig.",
+    "22b": "Lader vi ham ligge, bliver han ædt."
+  },
+  "speakers": {
+    "GODDESS": "Nemesia",
+    "DIROY": "DIROY",
+    "HECTOR": "HECTOR"
+  }
+}

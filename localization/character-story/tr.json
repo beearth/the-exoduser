@@ -1,0 +1,50 @@
+{
+  "prologue": {
+    "wa02": "Bir adam savaştan sağ döndü.",
+    "wa04": "Ama evi yanıp kül olmuştu.",
+    "wa06": "Komşusu ve dostu Killu, ailesini ezip geçmişti.",
+    "wa08": "Karısı hizmetçi olarak götürülmüş, türlü eziyetlere uğramıştı;",
+    "wa09": "sonunda dayanamayarak canına kıymıştı.",
+    "wa11": "Çocukları köle diye satılmıştı. Nerede oldukları bile bilinmiyordu.",
+    "wa12": "Yaşlı anne babası zindanda açlıktan ölmüştü.",
+    "wa14": "Killu hanesindeki herkes biliyordu.",
+    "wa15": "31 kişi görmüş, görmemiş gibi yapmıştı.",
+    "wa17": "O gece Killu'nun tüm ailesini öldürdü.",
+    "wa19": "Kılıcıyla Killu'nun kollarını ve bacaklarını kesti,",
+    "wa20": "hatta kanamayı durdurmak için yaralarını ateşle dağladı,",
+    "wa21": "onu çok, çok uzun süre hayatta tuttu.",
+    "wa22": "“Unutma.”",
+    "wa23": "“Ve cehennemde bile pişman ol.”",
+    "wa24": "Sonra cehenneme düştü.",
+    "wa26": "“…Bu, sayısız intikamcıdan yalnızca birinin hikâyesi.”",
+    "wa28": "“Cehennemin labirentine her gün yeni ruhlar düşer.”",
+    "wa29": "“Öfkeyle dolanlar, haksızlıktan delirenler, sevdiklerini kaybedenler…”",
+    "wa31": "“Sen neden cehenneme geldin?”",
+    "wa33": "“Cehennemden kaç, günahkâr.”"
+  },
+  "intro": {
+    "3": "O heyecan verici intikamını hayranlıkla izledim. Bir başyapıttı.",
+    "5": "İçinde acınası bir iyilik kırıntısı görüyorum. Hâlâ kurtarman gereken biri olmalı.\nGörünüşe göre seni hâlâ bekliyorlar? Hiçbirinizin fazla zamanı kalmadı…",
+    "8": "O çocuğun sallanan atını görmek ölüyü bile kendine getiriyormuş demek.",
+    "10": "Peki. Buradan kaç. Sana bizzat yardım edeceğim.\nDiroy ve Hector sana yol gösterecek.",
+    "11": "Korkma. Önce tanışalım. Ben Diroy.",
+    "12": "Ben Hector. Bizi tanrıçanın lütfu say.\nBizim de buradan çıkmamız gerek.",
+    "13": "İblisler kötülükten oluşmuş varlıklardır.\nİçgüdüleriyle iyiliğe saldırırlar.",
+    "14": "Ama sen biraz farklısın. İyiliğin güçlü.\nKötülüğünse geçici olarak patladı. O patlama da yakında dinecek.",
+    "15": "Bu yüzden iblisler kokunu alıp sürüler hâlinde gelecek.",
+    "16": "Tanrıça sana silahlar bahşetti. Al onları.",
+    "17": "Tanrıçanın gönderdiği bir yansıma. Savaş alanından bir ruh.\nArbaletin içine yerleşip seninle birlikte savaşacak.",
+    "21": "Bu insan yine bayıldı. Ne zamandır uyumuyor bu?",
+    "22": "Sırf intikamı düşünmekten günlerdir yemek yememiş, uyumamış olmalı.",
+    "23": "Gerekirse kötülük yedirip uyandırmalıyız.",
+    "24": "...",
+    "10c": "Yine görüşürüz, ölü ruh.",
+    "18b": "O kötülük bandını da tak. Patlayan kötülük seni delirtmeden\naklını korumana yardım edecek.",
+    "22b": "Böyle bırakırsak onu yerler."
+  },
+  "speakers": {
+    "GODDESS": "Nemesia",
+    "DIROY": "DIROY",
+    "HECTOR": "HECTOR"
+  }
+}

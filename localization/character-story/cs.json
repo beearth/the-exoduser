@@ -1,0 +1,50 @@
+{
+  "prologue": {
+    "wa02": "Jeden muž se vrátil živý z války.",
+    "wa04": "Jeho domov však lehl popelem.",
+    "wa06": "Killu, jeho soused a přítel, zničil jeho rodinu.",
+    "wa08": "Jeho ženu odvlekli jako služku a vystavili nejrůznějším krutostem,",
+    "wa09": "až to nedokázala snášet dál a vzala si život.",
+    "wa11": "Děti prodali do otroctví. Nikdo neví, kde jsou.",
+    "wa12": "Jeho staří rodiče zemřeli hlady ve vězení.",
+    "wa14": "Všichni v Killuově rodě o tom věděli.",
+    "wa15": "31 lidí to vidělo a dělalo, že nevidí.",
+    "wa17": "Té noci zabil celou Killuovu rodinu.",
+    "wa19": "Čepelí usekl Killuovi ruce i nohy,",
+    "wa20": "dokonce mu ohněm vypálil rány, aby zastavil krvácení,",
+    "wa21": "a držel ho naživu dlouho, velmi dlouho.",
+    "wa22": "„Pamatuj.“",
+    "wa23": "„A lituj i v pekle.“",
+    "wa24": "A pak sám padl do pekla.",
+    "wa26": "„…Tohle je jen příběh jednoho z nesčetných mstitelů.“",
+    "wa28": "„Každý den padají do pekelného labyrintu nové duše.“",
+    "wa29": "„Plné hněvu, šílené z bezpráví, zbavené svých milovaných…“",
+    "wa31": "„Proč jsi do pekla přišel ty?“",
+    "wa33": "„Unikni z pekla, hříšníku.“"
+  },
+  "intro": {
+    "3": "Tvé strhující představení pomsty na mě zapůsobilo. Mistrovské dílo.",
+    "5": "Vidím v tobě ubohý zbytek dobra. Ještě máš koho zachránit.\nZdá se, že na tebe stále čekají? Nikomu z vás už moc času nezbývá…",
+    "8": "Pohled na houpacího koníka toho dítěte probere i mrtvého, jak vidím.",
+    "10": "Dobrá. Unikni odsud. Osobně ti pomohu.\nDiroy a Hector tě povedou.",
+    "11": "Žádný strach. Nejdřív se představíme. Já jsem Diroy.",
+    "12": "Já jsem Hector. Ber nás jako požehnání bohyně.\nMy se odsud taky musíme dostat.",
+    "13": "Démoni jsou bytosti stvořené ze zloby.\nInstinktivně útočí na dobro.",
+    "14": "Ale ty jsi jiný. Dobro v tobě je silné.\nTvá zloba jen dočasně vybuchla. Ten výbuch brzy opadne.",
+    "15": "Proto tě démoni vycítí a pohrnou se k tobě.",
+    "16": "Bohyně ti darovala zbraně. Vezmi si je.",
+    "17": "Je to projekce seslaná bohyní. Duše z bojiště.\nUsídlí se v kuši a bude bojovat po tvém boku.",
+    "21": "Ten člověk zase omdlel. Jak dlouho nespal?",
+    "22": "Asi celé dny nejedl ani nespal a myslel jen na pomstu.",
+    "23": "Musíme ho probudit, třeba mu dát sníst trochu zloby.",
+    "24": "...",
+    "10c": "Ještě se uvidíme, mrtvý.",
+    "18b": "Nasaď si i tu pásku zloby. Pomůže ti zachovat rozum,\nnež tě rozpoutaná zloba připraví o příčetnost.",
+    "22b": "Když ho tak necháme, něco ho sežere."
+  },
+  "speakers": {
+    "GODDESS": "Nemesia",
+    "DIROY": "DIROY",
+    "HECTOR": "HECTOR"
+  }
+}

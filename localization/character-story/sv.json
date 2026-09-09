@@ -1,0 +1,50 @@
+{
+  "prologue": {
+    "wa02": "En man återvände levande från kriget.",
+    "wa04": "Men hans hem hade brunnit till grunden.",
+    "wa06": "Killu, hans granne och vän, hade krossat hans familj.",
+    "wa08": "Hans hustru fördes bort som tjänarinna och utsattes för alla slags övergrepp,",
+    "wa09": "tills hon inte stod ut längre och tog sitt liv.",
+    "wa11": "Barnen såldes som slavar. Ingen vet ens var de finns.",
+    "wa12": "Hans gamla föräldrar svalt ihjäl i fängelset.",
+    "wa14": "Alla i Killus släkt visste.",
+    "wa15": "31 personer såg och låtsades att de inte sett något.",
+    "wa17": "Den natten dödade han hela Killus familj.",
+    "wa19": "Med sin klinga högg han av Killus armar och ben,",
+    "wa20": "brände till och med såren för att stoppa blodet,",
+    "wa21": "och höll honom vid liv länge, mycket länge.",
+    "wa22": "”Minns.”",
+    "wa23": "”Och ångra dig även i helvetet.”",
+    "wa24": "Sedan föll han ner i helvetet.",
+    "wa26": "”…Detta är bara berättelsen om en av otaliga hämnare.”",
+    "wa28": "”Varje dag faller nya själar ner i helvetets labyrint.”",
+    "wa29": "”Fyllda av vrede, galna av orättvisa, berövade sin kärlek…”",
+    "wa31": "”Varför kom du till helvetet?”",
+    "wa33": "”Fly från helvetet, syndare.”"
+  },
+  "intro": {
+    "3": "Jag såg ditt rafflande hämndspel med stor beundran. Ett mästerverk.",
+    "5": "Jag ser en ynklig smula godhet i dig. Du har väl fortfarande någon att rädda.\nDe verkar fortfarande vänta på dig? Ingen av er har mycket tid kvar…",
+    "8": "Synen av det barnets gunghäst får tydligen även en död att komma till sans.",
+    "10": "Nåväl. Fly härifrån. Jag ska personligen hjälpa dig.\nDiroy och Hector visar dig vägen.",
+    "11": "Bli inte rädd. Vi börjar med att hälsa. Jag är Diroy.",
+    "12": "Jag är Hector. Se oss som en välsignelse från gudinnan.\nVi måste också ta oss ut härifrån.",
+    "13": "Demoner är varelser skapade av illvilja.\nInstinktivt angriper de godhet.",
+    "14": "Men du är annorlunda. Din godhet är stark.\nDin illvilja har bara blossat upp tillfälligt. Det utbrottet lägger sig snart.",
+    "15": "Därför kommer demonerna att känna din lukt och strömma hit.",
+    "16": "Gudinnan har skänkt dig vapen. Ta dem.",
+    "17": "En projektion som gudinnan har sänt. En själ från slagfältet.\nDen ska bo i armborstet och kämpa vid din sida.",
+    "21": "Den här människan svimmade igen. Hur länge har han varit vaken?",
+    "22": "Han har nog varken ätit eller sovit på flera dagar, helt uppslukad av hämnden.",
+    "23": "Vi måste väcka honom, om så genom att mata honom med illvilja.",
+    "24": "...",
+    "10c": "Vi ses igen, döde man.",
+    "18b": "Ta på dig det där illviljebandet också. Det håller ditt förstånd samman\ninnan den uppblossande illviljan driver dig till vansinne.",
+    "22b": "Lämnar vi honom så här blir han uppäten."
+  },
+  "speakers": {
+    "GODDESS": "Nemesia",
+    "DIROY": "DIROY",
+    "HECTOR": "HECTOR"
+  }
+}

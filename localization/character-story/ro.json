@@ -1,0 +1,50 @@
+{
+  "prologue": {
+    "wa02": "Un om s-a întors viu din război.",
+    "wa04": "Dar casa lui arsese din temelii.",
+    "wa06": "Killu, vecinul și prietenul său, îi zdrobise familia.",
+    "wa08": "Soția lui fusese luată ca slujnică și supusă tuturor cruzimilor,",
+    "wa09": "până când, nemaiputând îndura, și-a luat viața.",
+    "wa11": "Copiii fuseseră vânduți ca sclavi. Nimeni nu știe unde sunt.",
+    "wa12": "Părinții săi bătrâni au murit de foame în temniță.",
+    "wa14": "Toți din neamul lui Killu știau.",
+    "wa15": "31 de oameni au văzut și s-au prefăcut că nu văd.",
+    "wa17": "În acea noapte, a ucis întreaga familie a lui Killu.",
+    "wa19": "Cu lama i-a tăiat brațele și picioarele lui Killu,",
+    "wa20": "ba chiar i-a cauterizat rănile ca să oprească sângele,",
+    "wa21": "și l-a ținut în viață mult, foarte mult timp.",
+    "wa22": "„Ține minte.”",
+    "wa23": "„Și căiește-te chiar și în iad.”",
+    "wa24": "Apoi a căzut în iad.",
+    "wa26": "„…Aceasta e doar povestea unuia dintre nenumărații răzbunători.”",
+    "wa28": "„În fiecare zi, alte suflete cad în labirintul iadului.”",
+    "wa29": "„Pline de furie, înnebunite de nedreptate, lipsite de cei iubiți…”",
+    "wa31": "„Tu de ce ai venit în iad?”",
+    "wa33": "„Scapă din iad, păcătosule.”"
+  },
+  "intro": {
+    "3": "Ți-am urmărit cu admirație răzbunarea aceea palpitantă. O capodoperă.",
+    "5": "Văd în tine o fărâmă jalnică de bunătate. Mai trebuie să ai pe cineva de salvat.\nSe pare că încă te așteaptă, nu-i așa? Niciunuia dintre voi nu-i rămâne mult timp…",
+    "8": "Văd că acel căluț-balansoar al copilului trezește până și un mort.",
+    "10": "Bine. Scapă de aici. Te voi ajuta chiar eu.\nDiroy și Hector te vor călăuzi.",
+    "11": "Nu te speria. Să ne prezentăm. Eu sunt Diroy.",
+    "12": "Eu sunt Hector. Privește-ne ca pe o binecuvântare a zeiței.\nȘi noi trebuie să ieșim de aici.",
+    "13": "Demonii sunt făpturi alcătuite din răutate.\nAtacă bunătatea din instinct.",
+    "14": "Dar tu ești aparte. Bunătatea ta e puternică.\nRăutatea ta a izbucnit doar pentru o vreme. Izbucnirea se va stinge curând.",
+    "15": "Așa că demonii îți vor simți mirosul și vor năvăli spre tine.",
+    "16": "Zeița ți-a dăruit arme. Ia-le.",
+    "17": "E o proiecție trimisă de zeiță. Un suflet de pe câmpul de luptă.\nVa sălășlui în arbaletă și va lupta alături de tine.",
+    "21": "Omul ăsta a leșinat iar. De când n-a mai dormit?",
+    "22": "Probabil n-a mâncat și n-a dormit de zile întregi, gândindu-se doar la răzbunare.",
+    "23": "Trebuie să-l trezim, chiar dacă-i dăm să mănânce răutate.",
+    "24": "...",
+    "10c": "Ne vom revedea, suflet mort.",
+    "18b": "Pune-ți și acea bandă a răutății. Îți va păstra mintea limpede\nînainte ca răutatea dezlănțuită să te înnebunească.",
+    "22b": "Dacă-l lăsăm așa, va fi devorat."
+  },
+  "speakers": {
+    "GODDESS": "Nemesia",
+    "DIROY": "DIROY",
+    "HECTOR": "HECTOR"
+  }
+}

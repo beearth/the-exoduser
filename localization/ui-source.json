@@ -1,0 +1,2306 @@
+[
+  {
+    "key": "로그인 필요",
+    "en": "Login Required"
+  },
+  {
+    "key": "▶ 시네마틱",
+    "en": "▶ Cinematic"
+  },
+  {
+    "key": "지옥의 길",
+    "en": "HELL: EXODUSER"
+  },
+  {
+    "key": "연결 중...",
+    "en": "Connecting..."
+  },
+  {
+    "key": "캐릭터를 선택하세요",
+    "en": "Select your character"
+  },
+  {
+    "key": "당신은 누구인가",
+    "en": "WHO ART THOU"
+  },
+  {
+    "key": "Google로 입장",
+    "en": "Enter with Google"
+  },
+  {
+    "key": "로그아웃",
+    "en": "Logout"
+  },
+  {
+    "key": "캐릭터가 없습니다. 새로 생성하세요.",
+    "en": "No characters. Create a new one."
+  },
+  {
+    "key": "새 캐릭터 생성",
+    "en": "Create New Character"
+  },
+  {
+    "key": "캐릭터 이름 (2~8자)",
+    "en": "Character Name (2-8 chars)"
+  },
+  {
+    "key": "생성",
+    "en": "Create"
+  },
+  {
+    "key": "외형 선택",
+    "en": "Appearance"
+  },
+  {
+    "key": "캐릭터의 외형을 선택하세요",
+    "en": "Choose your appearance"
+  },
+  {
+    "key": "시작점",
+    "en": "Start"
+  },
+  {
+    "key": "층",
+    "en": "F"
+  },
+  {
+    "key": "장",
+    "en": "CH"
+  },
+  {
+    "key": "삭제",
+    "en": "Delete"
+  },
+  {
+    "key": "이름은 2~8자여야 합니다.",
+    "en": "Name must be 2-8 characters."
+  },
+  {
+    "key": "특수문자는 사용할 수 없습니다.",
+    "en": "Special characters cannot be used."
+  },
+  {
+    "key": "생성 중...",
+    "en": "Creating..."
+  },
+  {
+    "key": "이미 같은 이름의 캐릭터가 있습니다.",
+    "en": "A character with that name already exists."
+  },
+  {
+    "key": "생성 실패: ",
+    "en": "Creation failed: "
+  },
+  {
+    "key": "로그인 실패: ",
+    "en": "Login failed: "
+  },
+  {
+    "key": "캐릭터 불러오는 중...",
+    "en": "Loading characters..."
+  },
+  {
+    "key": "오류: ",
+    "en": "Error: "
+  },
+  {
+    "key": "삭제 실패: ",
+    "en": "Deletion failed: "
+  },
+  {
+    "key": "알 수 없는 오류",
+    "en": "Unknown error"
+  },
+  {
+    "key": "서버 연결 실패: ",
+    "en": "Server connection failed: "
+  },
+  {
+    "key": "데이터를 불러오는 중...",
+    "en": "Loading data..."
+  },
+  {
+    "key": " 캐릭터를 정말 삭제하시겠습니까?",
+    "en": " — Really delete this character?"
+  },
+  {
+    "key": "새 캐릭터",
+    "en": "New Character"
+  },
+  {
+    "key": "데모버전에 오신 것을 환영합니다",
+    "en": "Welcome to the Demo"
+  },
+  {
+    "key": "데모버전 입장하기",
+    "en": "Enter Demo"
+  },
+  {
+    "key": "지옥으로 입장하는 중...",
+    "en": "Entering hell..."
+  },
+  {
+    "key": "친애하는 게이머 여러분께 바칩니다",
+    "en": "Dedicated to all you dear gamers"
+  },
+  {
+    "key": "건너뛰기",
+    "en": "SKIP"
+  },
+  {
+    "key": "광과민성 발작 경고",
+    "en": "PHOTOSENSITIVE SEIZURE WARNING"
+  },
+  {
+    "key": "본 게임은 18세 이상 이용가입니다.<br>폭력적이고 잔혹한 묘사가 포함되어 있습니다.<br>강한 명암 대비와 점멸 효과로 인해 광과민성 발작이<br>유발될 수 있으니 주의하시기 바랍니다.",
+    "en": "This game contains intense violence and disturbing imagery.<br>Rated 18+. May trigger photosensitive seizures.<br>Player discretion advised."
+  },
+  {
+    "key": "아무 키나 눌러 계속",
+    "en": "Press any key to continue"
+  },
+  {
+    "key": "입장",
+    "en": "Enter"
+  },
+  {
+    "key": "여러분의 Steam 찜 하나가\nEXODUSER: HELL LORD의\n다음 여정을 만듭니다",
+    "en": "Your Steam wishlist support\nshapes the next chapter of\nEXODUSER: HELL LORD"
+  },
+  {
+    "key": "공식 출시 소식을 가장 먼저 받아보세요",
+    "en": "Be the first to know when we launch"
+  },
+  {
+    "key": "STEAM 위시리스트 추가",
+    "en": "ADD TO STEAM WISHLIST"
+  },
+  {
+    "key": "슬롯 가득참",
+    "en": "Slots Full"
+  },
+  {
+    "key": "최대",
+    "en": "MAX"
+  },
+  {
+    "key": "개",
+    "en": "slots"
+  },
+  {
+    "key": "오프라인 모드",
+    "en": "Offline Mode"
+  },
+  {
+    "key": "지옥에 보낼 캐릭터의 이름을 지어주세요",
+    "en": "Name the character you will send to hell"
+  },
+  {
+    "key": "또 살아 돌아왔군",
+    "en": "Back from the dead again"
+  },
+  {
+    "key": "이번엔 얼마나 가나",
+    "en": "How far this time"
+  },
+  {
+    "key": "끝이 보이지 않는다",
+    "en": "No end in sight"
+  },
+  {
+    "key": "탈출은 환상이다",
+    "en": "Escape is an illusion"
+  },
+  {
+    "key": "누구를 부를 텐가",
+    "en": "Who will you call"
+  },
+  {
+    "key": "다시 떨어졌군",
+    "en": "Fell again"
+  },
+  {
+    "key": "...일어났나",
+    "en": "...Awake?"
+  },
+  {
+    "key": "또 너냐",
+    "en": "You again?"
+  },
+  {
+    "key": "지치지도 않는군",
+    "en": "Never tire, do you"
+  },
+  {
+    "key": "문은 늘 그 자리에 있다",
+    "en": "The door is always there"
+  },
+  {
+    "key": "이 자에게 또 기회를",
+    "en": "Another chance for this one"
+  },
+  {
+    "key": "지옥 학살자",
+    "en": "Hell Slayer"
+  },
+  {
+    "key": "대검 영웅",
+    "en": "Greatsword Hero"
+  },
+  {
+    "key": "거대검 기사",
+    "en": "Colossal Knight"
+  },
+  {
+    "key": "대검 기사",
+    "en": "Greatsword Knight"
+  },
+  {
+    "key": "거츠 스타일. 특대검+석궁+망토",
+    "en": "Guts style. Greatsword+Crossbow+Cape"
+  },
+  {
+    "key": "풀갑옷 기사. 특대검+빨간 망토",
+    "en": "Full armor knight. Greatsword+Red cape"
+  },
+  {
+    "key": "검은 갑옷. 초대형 특대검",
+    "en": "Black armor. Colossal greatsword"
+  },
+  {
+    "key": "표준 기사. 대검+갑옷",
+    "en": "Standard knight. Greatsword+Armor"
+  },
+  {
+    "key": "슬롯이 가득 찼습니다.",
+    "en": "All slots are full."
+  },
+  {
+    "key": "얼음지옥",
+    "en": "Ice Hell"
+  },
+  {
+    "key": "독충지옥",
+    "en": "Venom Hell"
+  },
+  {
+    "key": "화염지옥",
+    "en": "Fire Hell"
+  },
+  {
+    "key": "심연지옥",
+    "en": "Abyss Hell"
+  },
+  {
+    "key": "뇌전지옥",
+    "en": "Thunder Hell"
+  },
+  {
+    "key": "백골지옥",
+    "en": "Bone Hell"
+  },
+  {
+    "key": "혼돈지옥",
+    "en": "Chaos Hell"
+  },
+  {
+    "key": "지옥기형",
+    "en": "Hell Aberrant"
+  },
+  {
+    "key": "3장 — 지옥의 겨울",
+    "en": "CH3 — Hell Winter"
+  },
+  {
+    "key": "무지개탄도 Q로 받아쳐! E는 안 통해.",
+    "en": "Parry rainbow shots with Q too! E will not work."
+  },
+  {
+    "key": "F키는 영역 스킬 전용이야! L로 배정해봐~",
+    "en": "F is for area skills only! Press L to assign one~"
+  },
+  {
+    "key": "탄막블랙홀",
+    "en": "Bullet Black Hole"
+  },
+  {
+    "key": "격노의",
+    "en": "Enraged"
+  },
+  {
+    "key": "광분의",
+    "en": "Frenzied"
+  },
+  {
+    "key": "지옥의 겨울",
+    "en": "Hell Winter"
+  },
+  {
+    "key": "Space 슬롯",
+    "en": "Space Slot"
+  },
+  {
+    "key": "🕳 탄막블랙홀!",
+    "en": "🕳 Bullet Black Hole!"
+  },
+  {
+    "key": "🕳 탄막블랙홀 붕괴!",
+    "en": "🕳 Bullet Black Hole Collapse!"
+  },
+  {
+    "key": "...따라오는 거 아니야. 같은 방향일 뿐이지.",
+    "en": "...I'm not following you. Just going the same way."
+  },
+  {
+    "key": "여기부터는 악마 영역이야. ...맘대로 해.",
+    "en": "Demon territory from here. ...Do as you wish."
+  },
+  {
+    "key": "여기 오래 있으면 미쳐. 나도, 너도.",
+    "en": "Stay too long and you'll go mad. Me too."
+  },
+  {
+    "key": "이 길의 끝에 뭐가 있을까. ...알고 싶지도 않어.",
+    "en": "What's at the end of this road? ...I don't want to know."
+  },
+  {
+    "key": "...여기가 끝이야. 돌아갈 길은 없어.",
+    "en": "...This is the end. No turning back."
+  },
+  {
+    "key": "탄막 기준: 물리탄은 E, 보라·무지개 마법탄은 Q.",
+    "en": "Projectile rule: physical shots use E; violet and rainbow magic shots use Q."
+  },
+  {
+    "key": "색깔 잘 봐! 물리는 E, 보라·무지개는 Q!",
+    "en": "Watch the colors! Physical is E; violet and rainbow are Q!"
+  },
+  {
+    "key": "적이 근접하면 1번이야! 가시덫을 활용해!",
+    "en": "When enemies get close, use 1! Use Spike Trap!"
+  },
+  {
+    "key": "1번! 가시덫으로 적 묶어버려!",
+    "en": "1! Pin them with Spike Trap!"
+  },
+  {
+    "key": "분노최대치+",
+    "en": "Max Rage+"
+  },
+  {
+    "key": "분노뎀%+",
+    "en": "Rage DMG%+"
+  },
+  {
+    "key": "Space 분노폭발 스킬 (클릭 배정)",
+    "en": "Space Rage Burst Skill (click to assign)"
+  },
+  {
+    "key": "F 영역스킬 (우클릭 배정)",
+    "en": "F Area Skill (right-click to assign)"
+  },
+  {
+    "key": "영역 스킬 전용",
+    "en": "Area Skills Only"
+  },
+  {
+    "key": "분노 폭발 스킬 전용",
+    "en": "Rage Burst Skills Only"
+  },
+  {
+    "key": "Space 분노 폭발",
+    "en": "Space Rage Burst"
+  },
+  {
+    "key": "필살기 / CT스킬",
+    "en": "Ultimate / CT Skill"
+  },
+  {
+    "key": "구역을 클리어하면 잠긴 지옥문이 열릴 거야.",
+    "en": "Clear the area and the sealed Hell Gate will open."
+  },
+  {
+    "key": "F키는 영역 스킬 전용이야!",
+    "en": "F is for area skills only!"
+  },
+  {
+    "key": "1번! 가시덫으로 적 묶어!",
+    "en": "1! Trap enemies with Spike Trap!"
+  },
+  {
+    "key": "좌클릭",
+    "en": "LMB"
+  },
+  {
+    "key": "휠클릭",
+    "en": "MMB"
+  },
+  {
+    "key": "우클릭",
+    "en": "RMB"
+  },
+  {
+    "key": "마우스4",
+    "en": "Mouse4"
+  },
+  {
+    "key": "마우스5",
+    "en": "Mouse5"
+  },
+  {
+    "key": "MP 부족! (80)",
+    "en": "Not enough MP! (80)"
+  },
+  {
+    "key": "안개 ON",
+    "en": "Fog ON"
+  },
+  {
+    "key": "안개 OFF",
+    "en": "Fog OFF"
+  },
+  {
+    "key": "석궁 자동발사 ON",
+    "en": "Auto Crossbow ON"
+  },
+  {
+    "key": "석궁 자동발사 OFF",
+    "en": "Auto Crossbow OFF"
+  },
+  {
+    "key": "성",
+    "en": "★"
+  },
+  {
+    "key": "장착 가능: ",
+    "en": "Can only equip on: "
+  },
+  {
+    "key": "강화 이전 완료",
+    "en": "Enhancement transferred"
+  },
+  {
+    "key": "악의)",
+    "en": " Malice)"
+  },
+  {
+    "key": "악의 부족! 강화 이전 비용 ",
+    "en": "Not enough Malice! Transfer cost "
+  },
+  {
+    "key": "악의 (보유: ",
+    "en": " (Have: "
+  },
+  {
+    "key": "💎 결정 주머니로: ",
+    "en": "💎 Crystal to bag: "
+  },
+  {
+    "key": "💎 결정 자동 전승 완료",
+    "en": "💎 Crystals transferred"
+  },
+  {
+    "key": "마지막 저항",
+    "en": "LAST STAND"
+  },
+  {
+    "key": "III · 숲의 단말마",
+    "en": "III · DEATH THROES"
+  },
+  {
+    "key": "II · 숲의 포식자",
+    "en": "II · FOREST PREDATOR"
+  },
+  {
+    "key": "다크드루이드 격파",
+    "en": "DARK DRUID DEFEATED"
+  },
+  {
+    "key": "썩은 숲 해방",
+    "en": "THE FOREST IS FREE"
+  },
+  {
+    "key": "보상을 회수하고 출구로 향하세요",
+    "en": "Claim your reward and head for the exit"
+  },
+  {
+    "key": "부패의 맥동",
+    "en": "Rotten pulse"
+  },
+  {
+    "key": "화마귀 처치!",
+    "en": "Flame Devil Slain!"
+  },
+  {
+    "key": "물리 ATK +1, MAX HP +5, HP리젠 +0.002",
+    "en": "Phys ATK +1, MAX HP +5, HP regen +0.002"
+  },
+  {
+    "key": "석궁 ATK +1, 공격속도 +0.05%, MAX ST +2, ST리젠 +0.005, 회피 +0.05%",
+    "en": "Bow ATK +1, ATK speed +0.05%, MAX ST +2, ST regen +0.005, Dodge +0.05%"
+  },
+  {
+    "key": "마법 ATK +1, MAX MP +2, MP리젠 +0.005, MAX 쉴드 +5",
+    "en": "Magic ATK +1, MAX MP +2, MP regen +0.005, MAX Shield +5"
+  },
+  {
+    "key": "크리확률 +0.025%, 크리뎀 +0.2%, 드롭률 +0.15%",
+    "en": "Crit rate +0.025%, Crit DMG +0.2%, Drop rate +0.15%"
+  },
+  {
+    "key": "근접뎀 +10%, ST비용 -4%/lv (최대-40%)",
+    "en": "Melee DMG +10%, ST cost -4%/lv (max -40%)"
+  },
+  {
+    "key": "사슬 사거리 +2%/lv, 기동게이지 회복 +3%/lv",
+    "en": "Chain range +2%/lv, Mobility gauge recovery +3%/lv"
+  },
+  {
+    "key": "카운터뎀 +50%/lv, E 공속 +10%/lv, 무지개탄 피해감소 +10%/lv (최대50%)",
+    "en": "Counter DMG +50%/lv, E ATK speed +10%/lv, Rainbow shot DMG reduction +10%/lv (max 50%)"
+  },
+  {
+    "key": "마법뎀 +10%, MP비용 -4%, 시전속도 +8%/lv",
+    "en": "Magic DMG +10%, MP cost -4%, Cast speed +8%/lv"
+  },
+  {
+    "key": "투사체뎀 +15%, 공속 +10%, 사거리 +8%, ST비용 -4%/lv",
+    "en": "Projectile DMG +15%, ATK speed +10%, Range +8%, ST cost -4%/lv"
+  },
+  {
+    "key": "보호막 흡수 +2%/lv (기본30→최대50%)",
+    "en": "Shield absorb +2%/lv (base 30 to max 50%)"
+  },
+  {
+    "key": "HP/ST리젠 +3%/lv, 물약쿨 -3%/lv, 패링회복 +30%/lv",
+    "en": "HP/ST regen +3%/lv, Potion cooldown -3%/lv, Parry recovery +30%/lv"
+  },
+  {
+    "key": "크리률 +2%, 크리뎀 +8%/lv",
+    "en": "Crit rate +2%, Crit DMG +8%/lv"
+  },
+  {
+    "key": "아이템 드롭률 +8%/lv",
+    "en": "Item drop rate +8%/lv"
+  },
+  {
+    "key": "투사체 관통률 +5%/lv, 관통횟수 +1/lv, 관통뎀감소 완화",
+    "en": "Projectile pierce rate +5%/lv, Pierce count +1/lv, Pierce DMG falloff reduced"
+  },
+  {
+    "key": "MP리젠 +3%/lv, 쉴드리젠 +3%/lv, 쉴드쿨 -3%/lv",
+    "en": "MP regen +3%/lv, Shield regen +3%/lv, Shield cooldown -3%/lv"
+  },
+  {
+    "key": "자동쇠뇌 뎀 +5%/lv, 공속 +5%/lv",
+    "en": "Auto crossbow DMG +5%/lv, ATK speed +5%/lv"
+  },
+  {
+    "key": "물리뎀 +15%/lv, HP +3%/lv, ST소모 -5%/lv",
+    "en": "Phys DMG +15%/lv, HP +3%/lv, ST cost -5%/lv"
+  },
+  {
+    "key": "적에게 약점노출 디버프. 직접 공격 시 스택+1, 스택당 피격뎀 +3%. 최대 Lv×5 중첩 (1렙5, 10렙50). 초당 20% 감소, 5초 미피격 시 리셋. DOT/장판 제외",
+    "en": "Weakness debuff on enemies. +1 stack per direct hit, +3% DMG/stack. Max Lv×5 (Lv1=5, Lv10=50). -20%/s decay, reset after 5s. DOT excluded"
+  },
+  {
+    "key": "적 HP 70%↑: 뎀+20%/lv, 회복력+5%/lv (합연산)",
+    "en": "Enemy HP≥70%: DMG+20%/lv, Recovery+5%/lv (additive)"
+  },
+  {
+    "key": "적HP 30%↓: 뎀+20%/lv. 내HP 30%↓: 회복력+10%/lv, 이속+5%/lv (합연산)",
+    "en": "Enemy HP≤30%: DMG+20%/lv. My HP≤30%: Recovery+10%/lv, Move SPD+5%/lv (additive)"
+  },
+  {
+    "key": "DOT 틱뎀 +15%/lv, DOT 지속시간 +10%/lv, DOT 축적률 +5%/lv",
+    "en": "DOT tick DMG +15%/lv, DOT duration +10%/lv, DOT pool rate +5%/lv"
+  },
+  {
+    "key": "MP +50/lv, MP회복 +1%/lv",
+    "en": "MP +50/lv, MP regen +1%/lv"
+  },
+  {
+    "key": "ST +50/lv, ST회복 +1%/lv",
+    "en": "ST +50/lv, ST regen +1%/lv"
+  },
+  {
+    "key": "악의 드롭 +8%/lv",
+    "en": "Malice drop +8%/lv"
+  },
+  {
+    "key": "엘리트/보스 추가뎀 +10%/lv",
+    "en": "Elite/Boss bonus DMG +10%/lv"
+  },
+  {
+    "key": "부활력 -10/lv, 전체 데미지 +5%/lv, HP/MP/ST +100/lv",
+    "en": "Revive power -10/lv, All DMG +5%/lv, HP/MP/ST +100/lv"
+  },
+  {
+    "key": "부활확률 +2%/lv, 부활HP +5%/lv, 부활쿨 -30초/lv",
+    "en": "Revive chance +2%/lv, Revive HP +5%/lv, Revive CD -30s/lv"
+  },
+  {
+    "key": "🔥 분노폭주",
+    "en": "🔥 Rage Overflow"
+  },
+  {
+    "key": "분노 최대치 +10%/lv, 분노 데미지 +10%/lv",
+    "en": "Max Rage +10%/lv, Rage DMG +10%/lv"
+  },
+  {
+    "key": "🕊️빨콩 흡수 -",
+    "en": "🕊️Red absorb -"
+  },
+  {
+    "key": "🕊️흡수 -",
+    "en": "🕊️Absorb -"
+  },
+  {
+    "key": "부활 성공! 부활력 ",
+    "en": "Revive! Power "
+  },
+  {
+    "key": "흡수",
+    "en": "Absorb"
+  },
+  {
+    "key": " 차 부활",
+    "en": " Revive"
+  },
+  {
+    "key": " · 마지막 저항",
+    "en": " · LAST STAND"
+  },
+  {
+    "key": "그로기! ",
+    "en": "Groggy! "
+  },
+  {
+    "key": "충전 중 ",
+    "en": "Charging "
+  },
+  {
+    "key": "☠속박!",
+    "en": "☠Rooted!"
+  },
+  {
+    "key": "🦅 도약 준비!",
+    "en": "🦅 Leap ready!"
+  },
+  {
+    "key": "🦴 꼬리치기!",
+    "en": "🦴 Tail swipe!"
+  },
+  {
+    "key": "☠ 독 늪!",
+    "en": "☠ Poison pool!"
+  },
+  {
+    "key": "위→아래",
+    "en": "Top→Bottom"
+  },
+  {
+    "key": "오른→왼",
+    "en": "Right→Left"
+  },
+  {
+    "key": "아래→위",
+    "en": "Bottom→Top"
+  },
+  {
+    "key": "왼→오른",
+    "en": "Left→Right"
+  },
+  {
+    "key": "숲의 단말마",
+    "en": "Death throes"
+  },
+  {
+    "key": "숲의 포식자",
+    "en": "Forest predator"
+  },
+  {
+    "key": " 악의!",
+    "en": " Malice!"
+  },
+  {
+    "key": "🔥 지옥문이 열렸습니다",
+    "en": "🔥 The Hell Gate has opened"
+  },
+  {
+    "key": "심연의 앵글러를 모두 처치하라",
+    "en": "Slay every Abyssal Angler"
+  },
+  {
+    "key": "지옥문이 봉인됨 — 처치 ",
+    "en": "Gate sealed — kills "
+  },
+  {
+    "key": "% (80% 필요)",
+    "en": "% (80% needed)"
+  },
+  {
+    "key": "신기록! ",
+    "en": "New Record! "
+  },
+  {
+    "key": "클리어! ",
+    "en": "Clear! "
+  },
+  {
+    "key": "% (90% 필요)",
+    "en": "% (90% needed)"
+  },
+  {
+    "key": "다음 소지옥이 기다리고 있다...",
+    "en": "The next sub-hell awaits..."
+  },
+  {
+    "key": "다음 소지옥으로 ▶",
+    "en": "Next Sub-hell ▶"
+  },
+  {
+    "key": "구역 클리어!",
+    "en": "Area Clear!"
+  },
+  {
+    "key": "정비 후 다음으로 이동하세요",
+    "en": "Prepare and move on"
+  },
+  {
+    "key": "다음 구역으로 ▶",
+    "en": "Next Area ▶"
+  },
+  {
+    "key": "썩은 숲을 정복했습니다.",
+    "en": "You conquered the Rotten Forest."
+  },
+  {
+    "key": "차 부활! ",
+    "en": " Revive! "
+  },
+  {
+    "key": "부활력 -",
+    "en": "Revive Power -"
+  },
+  {
+    "key": "마지막 저항 판정 ",
+    "en": "Last stand chance "
+  },
+  {
+    "key": "%보상",
+    "en": "% Bonus"
+  },
+  {
+    "key": "개 토해냄!",
+    "en": " gear spat out!"
+  },
+  {
+    "key": "몬스터(",
+    "en": "Monster("
+  },
+  {
+    "key": "(클릭: 건너뛰기)",
+    "en": "(Click: Skip)"
+  },
+  {
+    "key": "보스 재도전",
+    "en": "Retry Boss"
+  },
+  {
+    "key": "⚔️ 물리/근접",
+    "en": "⚔️ Physical/Melee"
+  },
+  {
+    "key": "🔥 분노",
+    "en": "🔥 Rage"
+  },
+  {
+    "key": "🕯 소환",
+    "en": "🕯 Summon"
+  },
+  {
+    "key": "해골무덤 + 악의폭풍 → 합체: 해골번개",
+    "en": "Bone Wall + Malice Storm → Fuse: Bone Lightning"
+  },
+  {
+    "key": "뇌전창+전격이동 → 전격의창. 아이스스톰으로 빙결존 설치 — 물과 전류가 만나면 강화되어 몬스터를 당겨온다. 나중에 물의 영역으로 확장",
+    "en": "Thunder Stake+Blade Dash → Thunder Spear. Ice Storm creates freeze zones — water meets lightning, empowered pull draws monsters in. Upgrade to Water Domain later"
+  },
+  {
+    "key": "충돌+화염+사슬 확장 → 합체: 사슬기동 / 기동:전폭",
+    "en": "Impact+Flame+Chain Expand → Fuse: Chain Breach / Maneuver:Thunder"
+  },
+  {
+    "key": "악의 사냥 + 보호자 + 폭독칼날 → 합체: 칼날 해방 / 독혈 해방",
+    "en": "Malice Hunt + Guardian + Plague Burst → Fuse: Blade Liberation / Plague Liberation"
+  },
+  {
+    "key": "필살기 1개 선택! 블랙(몬스터 흡인) / 탄막블랙홀(탄막흡수+폭발) / 처형(보스킬)",
+    "en": "Pick 1 ultimate! Black Star(monster pull) / Bullet Black Hole(bullet absorb+blast) / Execution(boss kill)"
+  },
+  {
+    "key": "멸살광선+만화방창+원소추적탄 → 합체: 추적빔",
+    "en": "Omni Beam+Barrage+Elem Missile → Fuse: Tracking Beam"
+  },
+  {
+    "key": "유령 허수아비 + 폭발 허수아비 → 합체: 쌍허수아비 (어그로+폭발)",
+    "en": "Void Scarecrow + Explode Scarecrow → Fuse: Dual Scarecrow (aggro+explosion)"
+  },
+  {
+    "key": "칼등치기 + 칼등날개 → 합체: 처내기 강화",
+    "en": "Blade Parry + Shield Wing → Fuse: Parry Enhanced"
+  },
+  {
+    "key": "폭풍소환 + 얼음보주 + 뇌전걸음 → 합체: 얼음폭풍",
+    "en": "Malice Mortar + Ice Orb + Ghost Walk → Fuse: Ice Mortar"
+  },
+  {
+    "key": "회복 + 구속 → 합체: 결계의 영역",
+    "en": "Recovery + Prison → Fuse: Ward Domain"
+  },
+  {
+    "key": "지진폭풍+추적암전 → 6단합체: 폭풍빔",
+    "en": "Slam Storm → 6-Fuse: Storm Beam"
+  },
+  {
+    "key": "아이스스톰 추가 → 합체: 신성빙결",
+    "en": "Ice Storm → Fuse: Holy Ice"
+  },
+  {
+    "key": "암흑기둥 + 가시덫 → 합체: 기둥가시. 지옥강타 2는 기둥강타/용암형 강화용",
+    "en": "Dark Pillar + Spike Trap → Fuse: Pillar Spike. Hell Slam II is the host for Pillar Slam and its lava upgrade"
+  },
+  {
+    "key": "기동칼날개 추가 → 5단합체: 기동:칼날개",
+    "en": "Chain Bladewing → 5-Fuse: Maneuver:Bladewing"
+  },
+  {
+    "key": "STR 스케일. 3회 충전 + Lv3마다 사거리 1단계↑(최대4단). 이동 중 무적, 통과 적에 데미지+그로기 (쿨 5초)",
+    "en": "STR scale. 3 stocks + range tier up every Lv3 (max 4). Invincible while moving, DMG+groggy on pass-through (CD 5s)"
+  },
+  {
+    "key": "INT 스케일. 이동 경로에 화염길 생성(3초 DOT). 통과 적 화상. MP 소모. 합체 시 착지 폭발",
+    "en": "INT scale. Fire trail on dash path (3s DOT). Burns passed enemies. MP cost. Fuse: landing explosion"
+  },
+  {
+    "key": "5초간 유령화 — 무적+이동. 통과한 적/탄막 수만큼 종료 시 암전 폭발(+10%/회) + 전기줄기 방사(3회 체인). 카운트 캡=Lv×5(최대50). 쿨 20초. Lv당 뎀+15% 범위+10",
+    "en": "5s ghost form — invincible+move. Blackout explosion on end (+10%/enemy passed) + lightning arc (3 chains). Count cap=Lv×5 (max 50). CD 20s. Per Lv DMG+15% range+10"
+  },
+  {
+    "key": "[이동기] 방향키 더블탭으로 발동. 경직/기절 중에도 탈출 가능. 500유닛 순간이동, 무적(15프레임). MP(10+Lv×5) + 공용 기동게이지 1칸(최소 Shift 탭 1회분)을 소모한다. 기본 기동게이지 5칸, Shift 사슬과 공유. 착지 시 전류장판(10초+Lv×0.5초): INT 틱뎀 + 방어력↓(1렙10%, 렙당+5%, 캡50%)",
+    "en": "[Mobility] Double-tap to activate. Escapes stagger/stun. 500-unit blink, invincible 15f. Costs MP(10+Lv×5) plus one shared mobility-gauge cell (one minimum Shift tap). Base gauge has 5 cells and is shared with Shift chain. Landing shock field(10s+Lv×0.5s): INT tick DMG + DEF↓(Lv1=10%, +5%/Lv, cap 50%)"
+  },
+  {
+    "key": "좌클 스킬: 기본공격에 3단 콤보 초승달 검기 추가. ST 10+Lv당2. Lv당 뎀+10% 거리+15px",
+    "en": "LMB skill: adds 3-hit crescent ki blade combo to basic attack. ST 10+2/Lv. Per Lv DMG+10% range+15px"
+  },
+  {
+    "key": "[기본: E] 어둠 마법 오브 발사. 범위폭발. 넉백 0.5%. Lv당 크기+50% (뎀은 _skMul 계수 적용)",
+    "en": "[Default: E] Dark magic orb fired. AoE explosion. Knockback 0.5%. Per Lv size+50% (DMG uses _skMul)"
+  },
+  {
+    "key": "무기 홀드 → 전진 회전 공격. 360도 광역, ST 지속소모. Lv당 범위+5 뎀+5%",
+    "en": "Hold weapon → forward spin attack. 360° AoE, continuous ST drain. Per Lv range+5 DMG+5%"
+  },
+  {
+    "key": "패링 3초 홀드 → 흡수 데미지 광역 폭발. Lv당 범위+15 (1렙150, 10렙285)",
+    "en": "Parry 3s hold → absorbed DMG AoE explosion. Per Lv range+15 (Lv1: 150, Lv10: 285)"
+  },
+  {
+    "key": "우클 처내기 강화. Lv당 반사 데미지 +10%. 홀드 시 연사",
+    "en": "RMB swipe enhanced. Per Lv reflect DMG +10%. Hold for rapid fire"
+  },
+  {
+    "key": "[고정: T 자동] 물리 바늘 3방향 3발 발사. 관통 없음",
+    "en": "[Fixed: T auto] 3 physical needles 3-way spread. No pierce"
+  },
+  {
+    "key": "[고정: E] 1발 직선 레이저. +만화방창 → 만화광선(3발 꽈배기). +원소추적탄 → 추적암전(6발 유도)",
+    "en": "[Fixed: E] 1 straight laser. +Barrage → Omni Beam (3 spiral). +Elem Seeker → Homing Dark (6 homing)"
+  },
+  {
+    "key": "우클릭 탭 마법을 6원소 유도 미사일로 변경. 곡선 궤적으로 적을 추적. 레벨당 사거리+20 (뎀은 _skMul 계수 적용)",
+    "en": "Changes RMB-tap magic to 6-element homing missiles. Curved trajectory tracking enemies. Per Lv range+20 (DMG uses _skMul)"
+  },
+  {
+    "key": "3초마다 악의 구체 생성(1렙 2개). 몸에 밀착하여 적 투사체를 자동 방어(파괴). 레벨당 구체+1",
+    "en": "Spawns malice orbs every 3s (Lv1: 2 orbs). Orbits body, auto-blocks (destroys) enemy projectiles. Per Lv orb+1"
+  },
+  {
+    "key": "유도 물리 칼날 1발 (악의30+ST50). 관통률 800+Lv×20+장비. 지속뎀 5초. 쿨 15초",
+    "en": "1 homing physical blade (malice 30 + ST 50). Pierce 800+Lv×20+gear. DOT 5s. CD 15s"
+  },
+  {
+    "key": "유도 독사 1+Lv발 (ST40). DEX+석궁 기반. 직타 최소, 독 DOT 위주. 관통 800+Lv×20+장비(91보장+9확률). 독 10초·스택당+50%·50스택캡. 쿨 15초",
+    "en": "Homing venom snake 1+Lv shots (ST40). DEX+bow base. Minimal direct DMG, Poison DOT. Pierce 800+Lv×20+gear (91gtd+9rng). Poison 10s, +50%/stk, 50stk cap. CD 15s"
+  },
+  {
+    "key": "전기 칼날 1+Lv발 발사 (ST40). DEX 기반. 유도+관통. 관통 시 체인라이트닝 발생. 쿨 12초. Lv당 뎀+12% 칼날+1 체인+1",
+    "en": "Lightning blade 1+Lv shots (ST40). DEX base. Homing+pierce. Chain lightning on pierce. CD 12s. Per Lv DMG+12% blade+1 chain+1"
+  },
+  {
+    "key": "어둠 소용돌이 소환 (마우스 조준 설치, MP 소모, 쿨 11초, INT 스케일링, 1렙 400범위 +18/렙, 6.5초 지속, 적 흡인)",
+    "en": "Summon dark vortex (mouse-aim placement, MP cost, CD 11s, INT scale, Lv1 range 400 +18/Lv, 6.5s duration, pulls enemies)"
+  },
+  {
+    "key": "포격식 조준 → 원형 해골무덤 소환. 2스택 (15초/1충전, Lv10→3스택). 둘레에서 뼈가 솟아 공간을 감쌈. 솟을 때 데미지. 적/투사체 차단. 악의 12. Lv당 범위+5% 지속+0.3초",
+    "en": "Artillery-aim → circular bone tomb. 2 stocks (15s/charge, Lv10→3 stocks). Bones rise around perimeter. DMG on rise. Blocks enemies/projectiles. Malice 12. Per Lv range+5% duration+0.3s"
+  },
+  {
+    "key": "검은 오망성 소환. 7초(+Lv당0.5초) 강력 흡인 (데미지 없음, 순수 유틸). 범위 1500+Lv×100px. 흡인력 기본5+Lv당0.5. (MP 30%, 쿨 120초)",
+    "en": "Summon black pentagram. 7s (+0.5s/Lv) strong pull (no DMG, pure utility). Range 1500+Lv×100px. Pull force base 5+0.5/Lv. (MP 30%, CD 120s)"
+  },
+  {
+    "key": "작은 탄막블랙홀을 즉시 설치해 5초 동안 넓은 흡수장(1000~1475px) 안의 적 탄막을 제거한 뒤 흡수량 비례 범위폭발(900~1470px). 기본 ATK×8(Lv당×10 성장), 탄막 1발당 뎀+3%(최대+300%)+흡수 탄막 피해 저장(기본 피해의 최대 100%), 스턴, 거리감쇠 30%. (MP 30%, 쿨 120초)",
+    "en": "Instantly deploy a small Bullet Black Hole. For 5s it clears hostile bullets in a wide 1000-1475px field, then detonates in a 900-1470px area based on absorbed bullets. Base ATK×8(×10 by Lv), +3% DMG per bullet(max +300%) plus stored bullet damage capped at 100% base damage, stun, 30% falloff. (MP 30%, CD 120s)"
+  },
+  {
+    "key": "X키: 그로기 보스 전용. 보스 현재HP 20%(+2%/Lv) + 무기뎀×30(+21%/Lv, 20Lv=150배) + 보스HP 30% 순수뎀. 섬광 돌진 연출. HP/MP/ST 10% 소모. 쿨 5초",
+    "en": "X key: Groggy boss only. Boss current HP 20%(+2%/Lv) + weapon DMG×30(+21%/Lv, Lv20=150×) + boss HP 30% pure DMG. Flash dash. HP/MP/ST 10% cost. CD 5s"
+  },
+  {
+    "key": "얼음 속에 들어가 무적 상태. 다시 누르면 파쇄 → 얼음칼날 8발 부채꼴 방사 (MP 40, 쿨 20초). Lv당 칼날+4 뎀+15%",
+    "en": "Enter ice — invincible. Re-press to shatter → 8 ice blades fan spread (MP 40, CD 20s). Per Lv blades+4 DMG+15%"
+  },
+  {
+    "key": "[고정: T 자동] 초고속 바늘 연발. 1렙 2발, 5렙마다 +1발. 관통 없음. ST 8. 쿨 1.5초. Lv당 뎀+100%",
+    "en": "[Fixed: T auto] Ultra-fast needles burst. Lv1 2 shots, +1 per 5 levels. No pierce. ST 8. CD 1.5s"
+  },
+  {
+    "key": "E홀드: 직선 관통 냉기빔 채널링. MP 8+Lv/초 지속소모. 폭160+(Lv×10)px, 사거리1200+Lv×80. 관통+감속. Lv당 뎀+21%",
+    "en": "E hold: Straight piercing ice beam channeling. MP 8+Lv/s drain. Width 160+(Lv×10)px, range 1200+Lv×80. Pierce+slow. Per Lv DMG+21%"
+  },
+  {
+    "key": "우클릭: 최대 5초 차징, 재입력 시 발사. 직선 관통+폭발+화상. MP ⌊50×(1+(Lv-1)×0.12)⌋. CD = 1 / (시전속도 배율) 초.",
+    "en": "RMB: charge up to 5s; press again to fire. Straight piercing shot + explosion + burn. MP ⌊50×(1+(Lv-1)×0.12)⌋. CD = 1 / (cast speed multiplier) s."
+  },
+  {
+    "key": "현재 위치에 신성 보호돔 설치 (8초+Lv당0.5초). 돔 안: 적 접근 불가+탄막 무효화. 보스 무시. MP 60. 쿨 25초. Lv당 범위+15",
+    "en": "Place divine dome at current pos (8s+0.5s/Lv). Inside: block enemy entry + nullify projectiles. Boss ignores. MP 60. CD 25s. Per Lv range+15"
+  },
+  {
+    "key": "우클릭: 10초간 대지 진동. 범위 내 용암 기둥이 순차적으로 솟아올라 화상+틱 데미지. MP 100. 쿨 12초. Lv당 범위+10% 뎀+12%",
+    "en": "RMB: 10s ground tremor. Lava pillars rise sequentially in range — burn+tick DMG. MP 100. CD 12s. Per Lv range+10% DMG+12%"
+  },
+  {
+    "key": "독혈 칼날 1발 발사: 관통률 기본 800+Lv×20 + 장비 bowPierce×300/패시브 pPierce×30 반영, +100 보정. 전염+마지막 적 처형. 감염 사망 시 폭발+연쇄 전염. 악의 15. 사거리 4000. 쿨 15초(Lv당-0.5초)",
+    "en": "Fire 1 poison-blood blade: base pierce rate 800+Lv×20 with bowPierce×300 and pPierce×30 scaling, plus +100 bonus. Plague+execute last enemy. Infected death → explosion+chain plague. Malice 15. Range 4000. CD 15s (-0.5s/Lv)"
+  },
+  {
+    "key": "마우스 조준 설치. 쿨 20초. 화면 내 클릭 위치에 암전나선 (10초 지속, 18f마다 틱뎀, INT/_skMul 스케일). Lv당 범위+22. 같은 지역 중복 불가",
+    "en": "Mouse-aim placement. CD 20s. Dark spiral at click pos (10s duration, tick every 18f, INT/_skMul scale). Per Lv range+22. No stacking same area"
+  },
+  {
+    "key": "현재 위치에 9개 기둥 순차 발동. 5초간 악의 기둥을 소환하여 반경 내 적에게 지속 암전 데미지+감속. 범위 250+(Lv-1)×22. 지옥강타 2와 합체→기둥강타. 쿨 15초",
+    "en": "9 pillars activate sequentially at current pos. 5s dark pillars deal sustained dark DMG+slow to enemies in radius. Range 250+(Lv-1)×22. Fuses with Hell Slam II → Pillar Strike. CD 15s"
+  },
+  {
+    "key": "현재 위치에 회복의 영역 설치 (12초 지속). 땅 위: HP/MP/ST 초당+10 리젠 + 회복력 2배 + 쿨다운 속도 2배. 쿨 30초. Lv당 범위+20 지속+0.5초",
+    "en": "Place holy domain at current pos (12s duration). On ground: HP/MP/ST +10/s regen + 2x recovery + 2x CD speed. CD 30s. Per Lv range+20 duration+0.5s"
+  },
+  {
+    "key": "범위 내 몬스터 부활력 -15%~30%(Lv1=15%, Lv10=30%). Lv1 범위400, Lv10 범위697. Lv당 범위+33. 쿨 30초. 지속 10초",
+    "en": "Monsters in range: revive power -15%~30%(Lv1=15%, Lv10=30%). Lv1 range 400, Lv10 range 697. Per Lv range+33. CD 30s. Duration 10s"
+  },
+  {
+    "key": "마우스 조준 설치. 2스택 (15초/1충전, Lv10→3스택). 범위 내 빙결 저항 -50%, 빙결 게이지 급속 축적. 10초 지속. MP 40. Lv당 범위+22 축적+10%",
+    "en": "Mouse-aim placement. 2 stocks (15s/charge, Lv10→3 stocks). Freeze resist -50% in range, rapid freeze gauge buildup. 10s duration. MP 40. Per Lv range+22 buildup+10%"
+  },
+  {
+    "key": "[선택: Space] 땅을 내리쳐 원형 진동파 발생(범위400). 일반몹에게 큰 포이즈 피해, 보스 체간 파괴에 강함. 회전기폭과 합체→지진폭풍!",
+    "en": "[Select: Space] Slam ground → circular shockwave (range 400). High poise DMG to mobs, strong posture break vs bosses. Fuses with Whirlwind Detonate → Earthquake Storm!"
+  },
+  {
+    "key": "[선택: Space] 땅을 내리쳐 원형 진동파 발생(범위400). 일반몹에게 큰 포이즈 피해, 보스 체간 파괴에 강함. 악의기둥과 합체→기둥강타!",
+    "en": "[Select: Space] Slam ground → circular shockwave (range 400). High poise DMG to mobs, strong posture break vs bosses. Fuses with Dark Pillar → Pillar Slam!"
+  },
+  {
+    "key": "[선택: Space] 커서 위치에 거대한 철제 쇄기를 낙하시킨다. 분노급 착탄 피해 후 3초간 남아 주변에 화염 지속 피해. MP 80, 최대 3충전, 충전당 15초. 패링 시 다음 충전 0.5초 감소. Lv당 범위+12·낙하속도·파편 수 증가",
+    "en": "[Select: Space] Drop a colossal iron crusher at the cursor. Its rage-tier impact remains for 3s after impact and burns nearby enemies. MP 80, up to 3 charges, 15s per charge. Parries trim the next charge by 0.5s. Per Lv: +12 radius, faster fall, more shards"
+  },
+  {
+    "key": "사슬기동 중 우클릭 → 즉시 착지하며 화염폭발. 범위200~350 INT 스케일 화염 마법데미지+넉백. 이동거리에 비례해 데미지↑(최대 x4.0). 불바닥을 여러 개 쌓은 뒤 충돌 스킬(기동파괴) 또는 분노 스킬(지옥강타 1)로 한 번에 폭발시킬 수 있다. MP 소모. Lv당 범위+16 뎀+12%",
+    "en": "During chain dash RMB → instant land with fire explosion. Range 200~350 INT scale fire magic DMG+knockback. DMG scales with travel distance (max x4.0). Stack multiple flame zones, then detonate them all at once with the collision skill (Chain Crush) or rage skill (Hell Slam I). MP cost. Per Lv range+16 DMG+12%"
+  },
+  {
+    "key": "사슬기동 중 E → 땅 내려찍기. 범위200~350 데미지x8 그로기x6. 이동거리 비례 최대x6. 일반몹 즉시 기절(5초), 보스 체간 대량 삭감. Lv당 범위+16 데미지+15% 그로기+15%",
+    "en": "During chain dash E → ground slam. Range 200~350 DMG x8 groggy x6. Distance scale max x6. Instant stun mobs (5s), massive boss posture break. Per Lv range+16 DMG+15% groggy+15%"
+  },
+  {
+    "key": "[히든: 5성 dimRush 합체] 사슬기동 중 좌클릭 → 이동 중 전방 광역 베기+출혈. STR 스케일 물리데미지. 다단히트. Lv당 뎀+12% 범위+15",
+    "en": "[Hidden: 5-star dimRush fuse] During chain dash LMB → forward AoE slash+bleed while moving. STR scale physical DMG. Multi-hit. Per Lv DMG+12% range+15"
+  },
+  {
+    "key": "Q 홀드 시 보호막이 점점 커지며 HP 초당 5% 회복. 보호막 크기에 비례해 데미지 감소. MP 소모",
+    "en": "Q hold: shield grows over time + HP 5%/s regen. DMG reduction scales with shield size. MP cost"
+  },
+  {
+    "key": "[히든: 암전나선 합체] E로 조준, 클릭 설치. 에너지 쐐기를 지상에 꽂아 회전+데미지. MP100. 1차지 쿨10초. 5초+Lv당0.5초 지속. 범위 200+(Lv-1)×22",
+    "en": "[Hidden: Dark Spiral fuse] E to aim, click to place. Energy wedge planted on ground — rotates+DMG. MP 100. 1 charge CD 10s. 5s+0.5s/Lv duration. Range 200+(Lv-1)×22"
+  },
+  {
+    "key": "[고정: 칼등치기 합체] 보유 시 칼등치기에 전방 충격파 자동 발동. 제자리 처내기. 쿨 12초. Lv당 뎀+12% 범위+20",
+    "en": "[Fixed: Blade Parry fuse] When owned, swipe auto-triggers forward shockwave. Stationary swipe. CD 12s. Per Lv DMG+12% range+20"
+  },
+  {
+    "key": "현재 위치에 파쇄 영역 설치 (10초). 범위 내 적 물리방어력 -10%. 쿨 25초. Lv당 범위+22 효과+1% 지속+0.3초",
+    "en": "Place shatter domain at current pos (10s). Enemy phys DEF -10% in range. CD 25s. Per Lv range+22 effect+1% duration+0.3s"
+  },
+  {
+    "key": "현재 위치에 침식 영역 설치 (10초). 범위 내 적 마법저항력 -10%. 쿨 25초. Lv당 범위+22 효과+1% 지속+0.3초",
+    "en": "Place corrosion domain at current pos (10s). Enemy magic resist -10% in range. CD 25s. Per Lv range+22 effect+1% duration+0.3s"
+  },
+  {
+    "key": "현재 위치에 관통 영역 설치 (10초). 범위 내 적 투사체저항력 -10%. 쿨 25초. Lv당 범위+22 효과+1% 지속+0.3초",
+    "en": "Place pierce domain at current pos (10s). Enemy projectile resist -10% in range. CD 25s. Per Lv range+22 effect+1% duration+0.3s"
+  },
+  {
+    "key": "현재 위치에 부활 영역 설치 (10초). 영역 안에서 부활력 +10%. 쿨 25초. Lv당 범위+22 효과+1% 지속+0.3초",
+    "en": "Place revival domain at current pos (10s). Revive power +10% inside zone. CD 25s. Per Lv range+22 effect+1% duration+0.3s"
+  },
+  {
+    "key": "[선택: 1~4번] 현재 위치에 가시덫 설치 (1렙 반경300, 10렙435). 슬로우 91%(+2%/Lv, 최대95%)+출혈. INT×magicRef×3(+10%/Lv)×0.5. 악의 10, 쿨 10초. Lv당 범위+15",
+    "en": "[Select: 1-4] Place spike trap at current pos (Lv1 radius 300, Lv10 435). Slow 91%(+2%/Lv, max 95%)+bleed. INT×magicRef×3(+10%/Lv)×0.5. Malice 10, CD 10s. Per Lv range+15"
+  },
+  {
+    "key": "[고정: E, Lv300 해금] 유도 파란콩 50발 순차 발사 (5초간). MP 100(+1.5/Lv) 소모. 적 추적. 쿨 5초. Lv당 사거리+30 (뎀은 _skMul 계수 적용)",
+    "en": "[Fixed: E, unlock Lv300] 50 homing blue shots fired sequentially (over 5s). MP 100(+1.5/Lv) cost. Tracks enemies. CD 5s. Per Lv range+30 (DMG uses _skMul)"
+  },
+  {
+    "key": "[히든: 우클릭, Lv700 해금] 홀드 시 3단계 차지 범위폭발 (0.5/1.0/1.5초). 범위 600/1000/1400px. 3단 만충 자동폭발. INT 스케일, 무속성",
+    "en": "[Hidden: RMB, unlock Lv700] Hold for 3-stage charge AoE explosion (0.5/1.0/1.5s). Range 600/1000/1400px. Stage 3 full charge auto-detonates. INT scale, no element"
+  },
+  {
+    "key": "유령 허수아비를 소환하여 유도탄막 어그로를 끈다. 탄막을 흡수해 자원 축적 (기본 20개, Lv당+3). 1개당 HP/MP/ST 각 100. R키로 회수. 쿨 20초",
+    "en": "Summon phantom scarecrow to draw homing projectile aggro. Absorbs projectiles for resource buildup (base 20, +3/Lv). Per absorbed: HP/MP/ST +100 each. R key to retrieve. CD 20s"
+  },
+  {
+    "key": "폭발 허수아비 설치. 탄막을 흡수하고 재입력 시 폭발! 폭발뎀 (INT마법뎀+흡수탄막뎀)×배율(흡수10당+50, 최대200). 10스택당 연쇄폭발(+30%). 범위 500+흡수10당500 (최대2000). 최대흡수 1렙10~20렙31. 쿨 20초",
+    "en": "Place explosive scarecrow. Absorbs projectiles, re-press to detonate! Boom DMG (INT magic DMG + absorbed proj DMG)×mult(+50 per 10 absorbed, max 200). Chain boom per 10 stacks (+30%). Range 500+absorbed/10×500 (max 2000). Max absorb Lv1=10~Lv20=31. CD 20s"
+  },
+  {
+    "key": "[유골함 도감] 철갑 전대 4부위(두개골·몸통·팔·다리)를 모아 거대 1기를 소환해 자율 전투(추적+근접 광역). 부위 역할: 팔=공격, 두개골=치명, 몸통=HP, 다리=크기·속도. 일반 탄막 최대 24발 흡수. 재입력: 칼 꽂기·붉은 충전 후 폭발 회수. 흡수 1발당 HP/MP/ST 각 100 반환. 재입력 무료·쿨 무관. MP 30%. 쿨 25초",
+    "en": "[Ossuary Codex] Collect the 4 Iron Warlord parts (skull/torso/arms/legs) to summon one giant autonomous fighter (chase+melee AoE). Parts: arms=ATK, skull=crit, torso=HP, legs=size/speed. Absorbs up to 24 ordinary shots. Recast: plant sword, charge red, explode and recall. Each shot returns 100 HP/MP/ST. Recast ignores cost and cooldown. MP 30%. CD 25s"
+  },
+  {
+    "key": "[선택: 1~4번, Lv500 해금] 현재 위치에 공성쇠뇌 터렛 설치. 재입력 시 철거. 설치 중 플레이어 석궁 사용 불가 (터렛만 발사). 데미지+50%, 공속+50%, 사거리+50%. ST 100. 설치 쿨 20초. Lv당 뎀+5% 공속+5% 사거리+5%",
+    "en": "[Select: 1~4, unlock Lv500] Deploy siege crossbow turret at current pos. Re-press to dismantle. While deployed: player crossbow disabled (turret fires only). DMG+50%, ATK SPD+50%, range+50%. ST 100. Placement CD 20s. Per Lv DMG+5% ATK SPD+5% range+5%"
+  },
+  {
+    "key": "[Ctrl, Lv500 해금] 발동 시 3초 전 상태로 되돌린다. 위치/HP/MP/ST 완전 복원. Lv당 되감기+0.105초 (1렙 3초, 20렙 5초). MP 50(+5/Lv, 20렙150). 쿨 45초",
+    "en": "[Ctrl, unlock Lv500] Rewind to state from 3s ago. Restores position/HP/MP/ST. Per Lv rewind+0.105s (Lv1=3s, Lv20=5s). MP 50(+5/Lv, Lv20=150). CD 45s"
+  },
+  {
+    "key": "[선택: 1~4번] 마우스 조준 → 전기창을 땅에 꽂는다. 5스택(12초/1충전, Lv10→6스택). 창끼리 600px 이내면 전류 아크 발생, 경로 위 적에게 감전 틱 데미지. MP 50. 지속 10초(+0.5초/Lv). Lv당 아크뎀+10%",
+    "en": "[Select: 1~4] Mouse aim → plant electric spear on ground. 5 stocks (12s/charge, Lv10→6). Spears within 600px create lightning arcs dealing shock tick DMG to enemies on path. MP 50. Duration 10s (+0.5s/Lv). Per Lv arc DMG+10%"
+  },
+  {
+    "key": "이동스킬",
+    "en": "Movement Skill"
+  },
+  {
+    "key": "마법스킬",
+    "en": "Magic Skill"
+  },
+  {
+    "key": "우클릭: 어둠 오브 (크기+50%/Lv, 데미지 _skMul)",
+    "en": "RMB: Dark orb (size+50%/Lv, DMG via _skMul)"
+  },
+  {
+    "key": "우클릭: 1발 직선 레이저",
+    "en": "RMB: Single straight laser"
+  },
+  {
+    "key": "우클릭: 6원소 유도 미사일",
+    "en": "RMB: 6-element homing missiles"
+  },
+  {
+    "key": "우클릭: 신성한 선 설치 (시계방향 회전)",
+    "en": "RMB: Place holy line (clockwise rotation)"
+  },
+  {
+    "key": "우클릭: 5초간 50발 파란콩 순차 발사 (MP100+1.5/Lv, 추적, 쿨5초)",
+    "en": "RMB: 50 blue shots over 5s (MP100+1.5/Lv, homing, cd 5s)"
+  },
+  {
+    "key": "우클릭 홀드: 3단계 차지 범위폭발 (Lv700 히든)",
+    "en": "RMB Hold: 3-stage charge AoE (Lv700 hidden)"
+  },
+  {
+    "key": "우클릭: 10초 대지진동 (용암기둥+화상+틱뎀, MP100, 쿨12초)",
+    "en": "RMB: 10s ground quake (lava+burn+tick, MP100, cd 12s)"
+  },
+  {
+    "key": "우클릭: 최대 5초 차징, 재입력 시 발사. 직선 관통+폭발+화상.",
+    "en": "RMB: charge up to 5s; press again to fire. Straight piercing shot + explosion + burn."
+  },
+  {
+    "key": "E홀드: 직선 관통 냉기빔 채널링 (MP 8+Lv/초, 감속)",
+    "en": "E hold: straight piercing ice beam channel (MP 8+Lv/s, slow)"
+  },
+  {
+    "key": "석궁 자동(T)",
+    "en": "Crossbow Auto(T)"
+  },
+  {
+    "key": "일반사격",
+    "en": "Normal Shot"
+  },
+  {
+    "key": "T자동: 기본 화살",
+    "en": "T auto: Basic arrow"
+  },
+  {
+    "key": "T자동: 붉은 꽃잎 칼날 (ST50)",
+    "en": "T auto: Red petal blade (ST50)"
+  },
+  {
+    "key": "T자동: 폭탄 (악의5, 쿨0.5초)",
+    "en": "T auto: Bomb (malice 5, cd 0.5s)"
+  },
+  {
+    "key": "T자동: 물리 바늘 3방향 3발 (관통X)",
+    "en": "T auto: 3 physical needles 3-way (no pierce)"
+  },
+  {
+    "key": "T자동: 초고속 바늘 2발+5렙당1 (ST8, 쿨1.5초)",
+    "en": "T auto: Ultra-fast 2 needles +1/5lv (ST8, cd 1.5s)"
+  },
+  {
+    "key": "뇌전추격자",
+    "en": "Lightning Chaser"
+  },
+  {
+    "key": "전기 유도칼날 (ST40, 쿨12초). 관통+체인라이트닝",
+    "en": "Lightning homing blades (ST40, CD 12s). Pierce+chain lightning"
+  },
+  {
+    "key": "선택스킬: 터렛 설치/철거 (Lv500, ST100, 설치 쿨20초)",
+    "en": "Select skill: Deploy/remove turret (Lv500, ST100, placement CD 20s)"
+  },
+  {
+    "key": "Space: 원형 진동파 (ST+악의20, 포이즈 특화, 쿨30초)",
+    "en": "Space: AoE shockwave (ST+malice20, poise focus, cd 30s)"
+  },
+  {
+    "key": "좌클 스킬",
+    "en": "LMB Skill"
+  },
+  {
+    "key": "좌클: 3단 콤보 검기 (ST 10+Lv당2)",
+    "en": "LMB: 3-hit combo ki blade (ST 10+2/Lv)"
+  },
+  {
+    "key": "좌클 홀드: 회전 베기",
+    "en": "LMB Hold: Spin attack"
+  },
+  {
+    "key": "E 스킬",
+    "en": "E Skill"
+  },
+  {
+    "key": "E: 칼등 처내기 (홀드 연사, Lv당 반사뎀+10%)",
+    "en": "E: Blade parry (hold rapid, reflect dmg+10%/Lv)"
+  },
+  {
+    "key": "보호막 스킬",
+    "en": "Shield Skill"
+  },
+  {
+    "key": "Q: 피보호막 (데미지 30% 흡수, 수호신 패시브로 최대 50%)",
+    "en": "Q: Damage shield (absorb 30%, up to 50% with Guardian passive)"
+  },
+  {
+    "key": "Q 홀드: 흡수 데미지 축적 → 해제 시 광역 폭발",
+    "en": "Q Hold: Accumulate absorbed dmg → AoE explosion on release"
+  },
+  {
+    "key": "Q 홀드: 버블 보호막+힐+반사. 해제 시 충격파",
+    "en": "Q Hold: Bubble shield+heal+reflect. Shockwave on release"
+  },
+  {
+    "key": "CT 스킬",
+    "en": "CT Skill"
+  },
+  {
+    "key": "CT: 3~5초 전 상태로 되돌림 (Lv500)",
+    "en": "CT: Rewind to 3~5s ago (Lv500)"
+  },
+  {
+    "key": "범위",
+    "en": "Range"
+  },
+  {
+    "key": "투사체 관통 보정",
+    "en": "Projectile Pierce Bonus"
+  },
+  {
+    "key": "사거리",
+    "en": "Range"
+  },
+  {
+    "key": "낙하 예고",
+    "en": "Fall Warning"
+  },
+  {
+    "key": "파편 수",
+    "en": "Shards"
+  },
+  {
+    "key": "최대 충전",
+    "en": "Max Charges"
+  },
+  {
+    "key": "화염 지속",
+    "en": "Burn Duration"
+  },
+  {
+    "key": "화염 반경",
+    "en": "Burn Radius"
+  },
+  {
+    "key": " 배정",
+    "en": " Assign"
+  },
+  {
+    "key": "Space · 분노 폭발 전용",
+    "en": "Space · Rage Burst Only"
+  },
+  {
+    "key": "F · 영역 스킬 전용",
+    "en": "F · Area Skills Only"
+  },
+  {
+    "key": "포션 슬롯으로 복원",
+    "en": "Restore to potion slot"
+  },
+  {
+    "key": "슬롯 비우기",
+    "en": "Clear slot"
+  },
+  {
+    "key": "대검 강림",
+    "en": "Greatsword Descent"
+  },
+  {
+    "key": "흡수 폭발!",
+    "en": "Absorption burst!"
+  },
+  {
+    "key": "대검 폭발!",
+    "en": "Greatsword burst!"
+  },
+  {
+    "key": "클릭: 세팅",
+    "en": "Click: Set"
+  },
+  {
+    "key": "일괄 레벨업",
+    "en": "Batch Level Up"
+  },
+  {
+    "key": "레벨업 가능한 스킬 없음",
+    "en": "No skills to level up"
+  },
+  {
+    "key": " 완성!",
+    "en": " Complete!"
+  },
+  {
+    "key": " 악의+",
+    "en": " Malice+"
+  },
+  {
+    "key": " 슬롯 배정!",
+    "en": " Slot Assigned!"
+  },
+  {
+    "key": "추천 자동",
+    "en": "Auto Build"
+  },
+  {
+    "key": "합체",
+    "en": "Fuse"
+  },
+  {
+    "key": "추천 진행할 항목 없음",
+    "en": "Nothing to auto-build"
+  },
+  {
+    "key": "← 뒤로",
+    "en": "← Back"
+  },
+  {
+    "key": " | 악의: ",
+    "en": " | Malice: "
+  },
+  {
+    "key": " | 사슬: ",
+    "en": " | Chain: "
+  },
+  {
+    "key": "펼치기 [K]",
+    "en": "Expand [K]"
+  },
+  {
+    "key": "접기 [K]",
+    "en": "Collapse [K]"
+  },
+  {
+    "key": "🎉 추천 빌드 완료! 나머지 스킬 자유롭게 선택하세요.",
+    "en": "🎉 All recommended builds complete! Try other skills freely."
+  },
+  {
+    "key": "파트너",
+    "en": "Partner"
+  },
+  {
+    "key": "선택",
+    "en": "Selected"
+  },
+  {
+    "key": "👻 허수아비 필요",
+    "en": "👻 Scarecrow needed"
+  },
+  {
+    "key": "습득 가능",
+    "en": "Can Learn"
+  },
+  {
+    "key": "6단합체 Lv.{p0} | 회전+빔뎀+20% 진동파뎀+{p1}% 빔추적+{p2}%",
+    "en": "6-Fuse Lv.{p0} | Spin+BeamDMG+20% ShockwaveDMG+{p1}% BeamTrack+{p2}%"
+  },
+  {
+    "key": "6단합체 Lv.{p0} | 전폭뎀+{p1}% 칼날개뎀+{p2}% 파괴뎀+{p1}%",
+    "en": "6-Fuse Lv.{p0} | BurstDMG+{p1}% BladeDMG+{p2}% DestroyDMG+{p1}%"
+  },
+  {
+    "key": "5단합체 Lv.{p0} | 칼날개뎀+{p1}% 범위+{p2} 출혈+{p3}%",
+    "en": "5-Fuse Lv.{p0} | BladeDMG+{p1}% Range+{p2} Bleed+{p3}%"
+  },
+  {
+    "key": "4단합체 Lv.{p0} | 파괴뎀+{p1}% 암전포이즈+{p2}% 범위+{p3}",
+    "en": "4-Fuse Lv.{p0} | DestroyDMG+{p1}% DarkPoise+{p2}% Range+{p3}"
+  },
+  {
+    "key": "3단합체 Lv.{p0} | 돌진뎀×{p1} 착지뎀+{p2}% 범위{p3}",
+    "en": "3-Fuse Lv.{p0} | RushDMG×{p1} LandDMG+{p2}% Range{p3}"
+  },
+  {
+    "key": "합체 Lv.{p0} | 쿨{p1}초 돌진뎀×{p2} 블링크×{p3}",
+    "en": "Fuse Lv.{p0} | CD{p1}s RushDMG×{p2} Blink×{p3}"
+  },
+  {
+    "key": "합체 Lv.{p0} | 칼날{p1}개 리젠{p2}초 보호구체+{p3}",
+    "en": "Fuse Lv.{p0} | Blade{p1} Regen{p2}s GuardOrb+{p3}"
+  },
+  {
+    "key": "합체 Lv.{p0} | 포격범위+{p1}% 얼음칼날{p2}발 쿨10초",
+    "en": "Fuse Lv.{p0} | BombRange+{p1}% IceBlade{p2}shots CD10s"
+  },
+  {
+    "key": "합체 Lv.{p0} | 추적빔뎀+{p1}% 유도력+{p2}% 사거리{p3}",
+    "en": "3-Fuse Lv.{p0} | TrackBeamDMG+{p1}% Homing+{p2}% Range{p3}"
+  },
+  {
+    "key": "합체 Lv.{p0} | 방창뎀+{p1}% 연사+{p2} 광선뎀+{p1}% 사거리{p3}",
+    "en": "Fuse Lv.{p0} | BarrageDMG+{p1}% Rapid+{p2} BeamDMG+{p1}% Range{p3}"
+  },
+  {
+    "key": "합체 Lv.{p0} | 진동파뎀+{p1}% 기절+{p2}초 회전뎀+{p3}% 쿨{p4}초",
+    "en": "3-Fuse Lv.{p0} | ShockwaveDMG+{p1}% Stun+{p2}s SpinDMG+{p3}% CD{p4}s"
+  },
+  {
+    "key": "합체 Lv.{p0} | 회전범위+{p1} 뎀+{p2}% 흡수{p3}% 범위{p4}",
+    "en": "Fuse Lv.{p0} | SpinRange+{p1} DMG+{p2}% Absorb{p3}% Range{p4}"
+  },
+  {
+    "key": "합체 Lv.{p0} | 폭풍뎀+{p1}% 무덤범위+{p2}% 지속+{p3}초",
+    "en": "Fuse Lv.{p0} | StormDMG+{p1}% TombRange+{p2}% Duration+{p3}s"
+  },
+  {
+    "key": "합체 Lv.{p0} | 처내기뎀+{p1}% 칼등날개뎀+{p1}% 쿨감{p2}%",
+    "en": "Fuse Lv.{p0} | SwipeDMG+{p1}% WingDMG+{p1}% CDReduce{p2}%"
+  },
+  {
+    "key": "합체 Lv.{p0} | 칼날뎀+{p1}% 독혈관통+{p2} 발사 시 독혈 자동발사",
+    "en": "Fuse Lv.{p0} | BladeDMG+{p1}% PlaguePierce+{p2} Auto plague on fire"
+  },
+  {
+    "key": "합체 Lv.{p0} | 권능의 영역: 땅+감옥+빙결+파쇄+침식+관통+역전",
+    "en": "Fuse Lv.{p0} | Sovereign Domain: Ground+Prison+Freeze+Shatter+Corrode+Pierce+Reversal"
+  },
+  {
+    "key": "합체 Lv.{p0} | 관통의 영역: 땅+감옥+빙결+파쇄+침식+관통",
+    "en": "Fuse Lv.{p0} | Pierce Domain: Ground+Prison+Freeze+Shatter+Corrode+Pierce"
+  },
+  {
+    "key": "합체 Lv.{p0} | 침식의 영역: 땅+감옥+빙결+파쇄+침식",
+    "en": "Fuse Lv.{p0} | Corrode Domain: Ground+Prison+Freeze+Shatter+Corrode"
+  },
+  {
+    "key": "합체 Lv.{p0} | 파쇄의 영역: 땅+감옥+빙결+파쇄",
+    "en": "Fuse Lv.{p0} | Shatter Domain: Ground+Prison+Freeze+Shatter"
+  },
+  {
+    "key": "합체 Lv.{p0} | 땅+{p1} 감옥+{p2} 빙결+{p3} 지속+{p4}초",
+    "en": "Fuse Lv.{p0} | Ground+{p1} Prison+{p2} Freeze+{p3} Duration+{p4}s"
+  },
+  {
+    "key": "합체 Lv.{p0} | 땅 범위+{p1} 감옥범위+{p2} 지속+{p3}초",
+    "en": "Fuse Lv.{p0} | GroundRange+{p1} PrisonRange+{p2} Duration+{p3}s"
+  },
+  {
+    "key": "합체 Lv.{p0} | 폭발뎀+{p1}% 흡수+{p2} 범위+{p1}",
+    "en": "Fuse Lv.{p0} | BoomDMG+{p1}% Absorb+{p2} Range+{p1}"
+  },
+  {
+    "key": "합체 Lv.{p0} | 창뎀+{p1}% 아크뎀+{p1}% 지속+{p2}초",
+    "en": "Fuse Lv.{p0} | StakeDMG+{p1}% ArcDMG+{p1}% Duration+{p2}s"
+  },
+  {
+    "key": "3충전 거리×{p0} 뎀×{p1} 속도+{p2} 폭+{p3}",
+    "en": "3Charge Range×{p0} DMG×{p1} Speed+{p2} Blast+{p3}"
+  },
+  {
+    "key": "비율 {p0}% 범위 {p1}",
+    "en": "Ratio {p0}% Range {p1}"
+  },
+  {
+    "key": "폭발뎀 ×{p0} 범위 {p1} (INT)",
+    "en": "BlastDMG ×{p0} Range {p1} (INT)"
+  },
+  {
+    "key": "뎀+{p0}% 범위{p1} 쿨{p2}초",
+    "en": "DMG+{p0}% Range{p1} CD{p2}s"
+  },
+  {
+    "key": "뎀 +{p0}% 연사+1",
+    "en": "DMG +{p0}% Rapid+1"
+  },
+  {
+    "key": "뎀 +{p0}%",
+    "en": "DMG +{p0}%"
+  },
+  {
+    "key": "강화 가능: ",
+    "en": "Upgrade: "
+  },
+  {
+    "key": "SP 부족: ",
+    "en": "SP needed: "
+  },
+  {
+    "key": "✅ 습득 완료",
+    "en": "✅ Learned"
+  },
+  {
+    "key": "숙련",
+    "en": "Mastery"
+  },
+  {
+    "key": "숙련 MAX ✦",
+    "en": "Mastery MAX ✦"
+  },
+  {
+    "key": "필요: ⭐",
+    "en": "Need: ⭐"
+  },
+  {
+    "key": "리셋/합체해제는 리셋 버튼 사용",
+    "en": "Use Reset button for reset/unfuse"
+  },
+  {
+    "key": "− 레벨",
+    "en": "− Lv"
+  },
+  {
+    "key": "− 취소",
+    "en": "− Cancel"
+  },
+  {
+    "key": "SP 환불",
+    "en": "Refund SP"
+  },
+  {
+    "key": "전액 환불",
+    "en": "Refund all"
+  },
+  {
+    "key": "선행: ",
+    "en": "Req: "
+  },
+  {
+    "key": "선행: 참회 스킬 필요",
+    "en": "Req: Repentance skill needed"
+  },
+  {
+    "key": "숙련 ",
+    "en": "Mastery "
+  },
+  {
+    "key": "은 기본 스킬입니다 (리셋 불가)",
+    "en": " is a base skill (no reset)"
+  },
+  {
+    "key": " 강화분 리셋",
+    "en": " reset upgrades"
+  },
+  {
+    "key": " 환불 (👿 악의는 반납되지 않습니다)",
+    "en": " refund (Malice not returned)"
+  },
+  {
+    "key": " 배정!",
+    "en": " Assigned!"
+  },
+  {
+    "key": " 도달 시 해금!",
+    "en": " to unlock!"
+  },
+  {
+    "key": "레벨다운 / 취소",
+    "en": "Level down / cancel"
+  },
+  {
+    "key": "% 이하",
+    "en": "% or below"
+  },
+  {
+    "key": "성 이하",
+    "en": "★ and below"
+  },
+  {
+    "key": "성 이상",
+    "en": "★ and above"
+  },
+  {
+    "key": "제한없음",
+    "en": "Unlimited"
+  },
+  {
+    "key": "최저",
+    "en": "Lowest"
+  },
+  {
+    "key": "낮음",
+    "en": "Low"
+  },
+  {
+    "key": "중간",
+    "en": "Medium"
+  },
+  {
+    "key": "울트라",
+    "en": "Ultra"
+  },
+  {
+    "key": "다크 레드",
+    "en": "Dark Red"
+  },
+  {
+    "key": "다크 퍼플",
+    "en": "Dark Purple"
+  },
+  {
+    "key": "(120프레임 평균)",
+    "en": "(120-frame avg)"
+  },
+  {
+    "key": "최고 품질",
+    "en": "Ultra"
+  },
+  {
+    "key": "고품질",
+    "en": "High"
+  },
+  {
+    "key": "중간 품질",
+    "en": "Medium"
+  },
+  {
+    "key": "저사양 모드",
+    "en": "Low"
+  },
+  {
+    "key": "좌클릭: 선택 | 우클릭: 장착 | Space: 쓰레기 | F: 잠금",
+    "en": "LMB: Select | RMB: Equip | Space: Junk | F: Lock"
+  },
+  {
+    "key": "결정 슬롯",
+    "en": "Crystal Slot"
+  },
+  {
+    "key": "클릭하여 장착/탈착",
+    "en": "click to equip/detach"
+  },
+  {
+    "key": "도감 등록",
+    "en": "Added to codex"
+  },
+  {
+    "key": "등급",
+    "en": "Rarity"
+  },
+  {
+    "key": "티어",
+    "en": "Tier"
+  },
+  {
+    "key": "아이템 Lv.",
+    "en": "Item Lv."
+  },
+  {
+    "key": "에너지DEF",
+    "en": "Energy DEF"
+  },
+  {
+    "key": "ST소모",
+    "en": "ST Cost"
+  },
+  {
+    "key": "무기사거리",
+    "en": "Weapon Range"
+  },
+  {
+    "key": "공격범위",
+    "en": "Attack Arc"
+  },
+  {
+    "key": "경직력",
+    "en": "Stagger"
+  },
+  {
+    "key": "발사속도",
+    "en": "Fire Rate"
+  },
+  {
+    "key": "발/초",
+    "en": "shots/s"
+  },
+  {
+    "key": "관통확률",
+    "en": "Pierce Chance"
+  },
+  {
+    "key": "돌진력",
+    "en": "Charge Power"
+  },
+  {
+    "key": "돌진거리",
+    "en": "Charge Dist"
+  },
+  {
+    "key": "돌진폭",
+    "en": "Charge Width"
+  },
+  {
+    "key": "광역범위",
+    "en": "AoE Range"
+  },
+  {
+    "key": "돌진충전",
+    "en": "Charge Cooldown"
+  },
+  {
+    "key": "무게",
+    "en": "Weight"
+  },
+  {
+    "key": "ST총량",
+    "en": "ST Total"
+  },
+  {
+    "key": "ST회복",
+    "en": "ST Regen"
+  },
+  {
+    "key": "MP회복",
+    "en": "MP Regen"
+  },
+  {
+    "key": "마법DP",
+    "en": "Magic DP"
+  },
+  {
+    "key": "빔",
+    "en": "Beam"
+  },
+  {
+    "key": "5초 풀빔",
+    "en": "5s full beam"
+  },
+  {
+    "key": "스플래시 범위",
+    "en": "Splash Range"
+  },
+  {
+    "key": "스플래시 배율",
+    "en": "Splash Mult"
+  },
+  {
+    "key": "마법 관통",
+    "en": "Magic Pen"
+  },
+  {
+    "key": "사거리+",
+    "en": "Range+"
+  },
+  {
+    "key": "물약속도",
+    "en": "Potion Speed"
+  },
+  {
+    "key": "추가HP",
+    "en": "Bonus HP"
+  },
+  {
+    "key": "추가쉴드",
+    "en": "Bonus Shield"
+  },
+  {
+    "key": "추가MP",
+    "en": "Bonus MP"
+  },
+  {
+    "key": "데미지 보너스",
+    "en": "DMG Bonus"
+  },
+  {
+    "key": "치명뎀",
+    "en": "Crit DMG"
+  },
+  {
+    "key": "베이스 스탯 비교 (강화 수치 제외)",
+    "en": "Base stat comparison (excluding enhancement)"
+  },
+  {
+    "key": "⚔ 스탯 변화",
+    "en": "⚔ Stat Changes"
+  },
+  {
+    "key": "위력",
+    "en": "DMG"
+  },
+  {
+    "key": "크기",
+    "en": "Size"
+  },
+  {
+    "key": "치명",
+    "en": "Crit"
+  },
+  {
+    "key": "이속",
+    "en": "Speed"
+  },
+  {
+    "key": "가루: ",
+    "en": "Dust: "
+  },
+  {
+    "key": "악의: ",
+    "en": "Malice: "
+  },
+  {
+    "key": "결정 없음",
+    "en": "No crystals"
+  },
+  {
+    "key": " 강화 Lv.",
+    "en": " Enhance Lv."
+  },
+  {
+    "key": "개 ->",
+    "en": "  ->"
+  },
+  {
+    "key": "악의 획득 예상",
+    "en": "Malice expected"
+  },
+  {
+    "key": "어픽스 리롤",
+    "en": "Affix Reroll"
+  },
+  {
+    "key": "보유: ",
+    "en": "Owned: "
+  },
+  {
+    "key": "비용",
+    "en": "Cost"
+  },
+  {
+    "key": "(재료 결정 없음)",
+    "en": "(no feed crystal)"
+  },
+  {
+    "key": "(악의 부족)",
+    "en": "(insufficient)"
+  },
+  {
+    "key": "결정 ×1",
+    "en": "Crystal ×1"
+  },
+  {
+    "key": "제작 비용: 가루 ",
+    "en": "Cost: Dust "
+  },
+  {
+    "key": "(부족)",
+    "en": "(insufficient)"
+  },
+  {
+    "key": "벨트",
+    "en": "Belt"
+  },
+  {
+    "key": "반지",
+    "en": "Ring"
+  },
+  {
+    "key": "망토",
+    "en": "Cape"
+  },
+  {
+    "key": "팔찌",
+    "en": "Bracelet"
+  },
+  {
+    "key": "귀걸이",
+    "en": "Earring"
+  },
+  {
+    "key": "🔨 장비 제작",
+    "en": "🔨 Equipment Crafting"
+  },
+  {
+    "key": "비용: ",
+    "en": "Cost: "
+  },
+  {
+    "key": "악의 &nbsp;|&nbsp; 보유: ",
+    "en": "Malice per craft &nbsp;|&nbsp; Malice: "
+  },
+  {
+    "key": "슬롯을 클릭하면 제작, 좌측에서 개별 선택도 가능",
+    "en": "Click a slot to craft, or expand ▶ to pick from sidebar"
+  },
+  {
+    "key": "보유 악의: ",
+    "en": "Malice: "
+  },
+  {
+    "key": "제작 비용: ",
+    "en": "Cost: "
+  },
+  {
+    "key": "개 제작 완료!",
+    "en": " items crafted!"
+  },
+  {
+    "key": "지옥문 봉인 (80% 처치)",
+    "en": "Gate Sealed (80% kills)"
+  },
+  {
+    "key": "화마귀",
+    "en": "Flame Devil"
+  },
+  {
+    "key": "클라우드 연결 실패. 인터넷 연결을 확인한 뒤 다시 접속해 주세요.",
+    "en": "Cloud connection failed. Check your internet connection and reconnect."
+  },
+  {
+    "key": "저장 데이터를 불러오지 못했습니다. 다시 접속해 주세요.",
+    "en": "Could not load saved data. Please reconnect."
+  },
+  {
+    "key": "저장 데이터 복원 중...",
+    "en": "Restoring saved data..."
+  },
+  {
+    "key": "플레이할 캐릭터를 고르세요",
+    "en": "Choose a character to play"
+  },
+  {
+    "key": "시작",
+    "en": "Start"
+  },
+  {
+    "key": "다음 난관 난이도",
+    "en": "Next Stage Difficulty"
+  },
+  {
+    "key": "몬스터 레벨 오프셋",
+    "en": "Monster Level Offset"
+  },
+  {
+    "key": "에셋 로딩 중...",
+    "en": "Loading assets..."
+  },
+  {
+    "key": "렌더러 초기화...",
+    "en": "Initializing renderer..."
+  },
+  {
+    "key": "아틀라스 빌드...",
+    "en": "Building atlas..."
+  },
+  {
+    "key": "오디오 준비...",
+    "en": "Preparing audio..."
+  },
+  {
+    "key": "게임 시작!",
+    "en": "Starting game!"
+  },
+  {
+    "key": "암전나선 [6단합체]",
+    "en": "Lightning Helix [6-Fuse]"
+  },
+  {
+    "key": "기동:강화전폭 [6단합체]",
+    "en": "Chain: Full Burst [6-Fuse]"
+  },
+  {
+    "key": "기동:칼날개 [5단합체]",
+    "en": "Chain: Bladewing [5-Fuse]"
+  },
+  {
+    "key": "기동:강화습격 [4단합체]",
+    "en": "Chain: Thunder [4-Fuse]"
+  },
+  {
+    "key": "사슬이동:강화 [3단합체]",
+    "en": "Chain: Enhanced [3-Fuse]"
+  },
+  {
+    "key": "사슬이동:강화 [합체]",
+    "en": "Chain: Enhanced [Fuse]"
+  },
+  {
+    "key": "얼음소용돌이 [합체]",
+    "en": "Ice Vortex [Fuse]"
+  },
+  {
+    "key": "추적암전 [3단합체]",
+    "en": "Tracking Lightning [3-Fuse]"
+  },
+  {
+    "key": "지진폭풍 [3단합체]",
+    "en": "Quake Storm [3-Fuse]"
+  },
+  {
+    "key": "암전 [합체]",
+    "en": "Lightning [Fuse]"
+  },
+  {
+    "key": "악의 해방 [합체]",
+    "en": "Malice Liberation [Fuse]"
+  },
+  {
+    "key": "회전기폭 [합성]",
+    "en": "Whirl-Det [Synth]"
+  },
+  {
+    "key": "해골번개 [합체]",
+    "en": "Bone Lightning [Fuse]"
+  },
+  {
+    "key": "참회 귀환 [합체]",
+    "en": "Repentance Return [Fuse]"
+  },
+  {
+    "key": "날개치기 [합체]",
+    "en": "Wing Strike [Fuse]"
+  },
+  {
+    "key": "독혈해방 [합체]",
+    "en": "Plague Liberation [Fuse]"
+  },
+  {
+    "key": "독사해방 [4성합체]",
+    "en": "Venom Liberation [4★-Fuse]"
+  },
+  {
+    "key": "기둥강타 [합체]",
+    "en": "Pillar Strike [Fuse]"
+  },
+  {
+    "key": "기둥가시 [합체]",
+    "en": "Pillar Thorn [Fuse]"
+  },
+  {
+    "key": "물의 영역 [3단합체]",
+    "en": "Water Domain [3-Fuse]"
+  },
+  {
+    "key": "결계의 영역 [합체]",
+    "en": "Ward Domain [Fuse]"
+  },
+  {
+    "key": "파쇄의 영역 [4단합체]",
+    "en": "Shatter Domain [4-Fuse]"
+  },
+  {
+    "key": "침식의 영역 [5단합체]",
+    "en": "Corrode Domain [5-Fuse]"
+  },
+  {
+    "key": "관통의 영역 [6단합체]",
+    "en": "Pierce Domain [6-Fuse]"
+  },
+  {
+    "key": "권능의 영역 [7단합체]",
+    "en": "Sovereign Domain [7-Fuse]"
+  },
+  {
+    "key": "쌍둥이허수아비 [합체]",
+    "en": "Twin Scarecrow [Fuse]"
+  },
+  {
+    "key": "전격의창 [합체]",
+    "en": "Thunder Spear [Fuse]"
+  },
+  {
+    "key": "시간걸음 [합체]",
+    "en": "Time Step [Fuse]"
+  },
+  {
+    "key": "지진폭풍 + 추적암전 6단합체. 회전참 중 6원소 추적 빔 동시 발사! 전체 데미지 20% 강화. 종료 시 지진폭풍+빔 동시 폭발",
+    "en": "Quake Storm + Tracking Lightning 6-fuse. Fire 6-element tracking beams while spinning! +20% total DMG. Quake+Beam explosion on end."
+  },
+  {
+    "key": "6단합체. 칼날개+전폭+파괴+불꽃 전부 강화. Shift+좌클릭 → 전방 파워웨이브",
+    "en": "6-fuse. Bladewing+Burst+Destroy+Flame all enhanced. Shift+LMB → forward power wave."
+  },
+  {
+    "key": "5단합체. 기동칼날개 해금! 이동 중 좌우 칼날 광역 베기+출혈. 파괴+불꽃도 강화",
+    "en": "5-fuse. Chain Bladewing unlocked! Slash left/right blades while moving+bleed. Destroy+Flame enhanced."
+  },
+  {
+    "key": "4단합체. 기동파괴+불꽃 강화. 파괴 데미지↑ 포이즈↑ 범위↑",
+    "en": "4-fuse. Chain Destroy+Flame enhanced. Destroy DMG↑ Poise↑ Range↑"
+  },
+  {
+    "key": "3단합체. 기동불꽃 흡수. 착지 범위↑ 데미지↑",
+    "en": "3-fuse. Chain Flame absorbed. Land range↑ DMG↑"
+  },
+  {
+    "key": "사슬기동:충돌 + 사슬기동:화염 합체. Shift → 관통돌진 후 INT 기반 착지 대폭발! 스톡5, 쿨7초",
+    "en": "Chain Rush: Impact + Chain Rush: Flame fuse. Shift → piercing rush then INT-based landing explosion! 5 stocks, 7s CD."
+  },
+  {
+    "key": "폭풍소환 + 얼음보주 합체. 마우스 조준 → 얼음 소용돌이 소환! 적을 중심으로 끌어당기며 빙결. 쿨 10초",
+    "en": "Storm Summon + Ice Orb fuse. Mouse aim → summon ice vortex! Pulls enemies in and freezes. 10s CD."
+  },
+  {
+    "key": "만화방창 + 멸살광선 + 원소추적탄 3단합체. 우클릭 홀드 → 6원소 유도 추적 레이저! 각 빔이 가장 가까운 적을 자동 추적",
+    "en": "Barrage + Annihilation Beam + Elemental Tracker 3-fuse. Hold RMB → 6-element homing lasers! Each beam auto-tracks nearest enemy."
+  },
+  {
+    "key": "회전기폭 + 지옥강타 1 3단합체. 회전 종료 시 기폭+지옥강타 1 진동파 동시 발동! 지옥강타 1 쿨타임 소멸, 범위↑",
+    "en": "Whirl-Det + Hell Slam I 3-fuse. On spin end, detonate+Hell Slam I shockwave! Hell Slam I CD removed, range↑"
+  },
+  {
+    "key": "만화방창 + 멸살광선 합체. 우클릭 홀드 → 6원소 꽈배기 레이저! 원소추적탄 추가 합체 시 추적암전",
+    "en": "Barrage + Annihilation Beam fuse. Hold RMB → 6-element helix laser! Add Elemental Tracker for Tracking Lightning."
+  },
+  {
+    "key": "악의사냥 + 악의보호자 합체. 암흑칼날이 몸 주위를 돌며 투사체 방어. 슬롯 키로 모인 칼날 전부 발사! (만렙 시 +2칼날)",
+    "en": "Malice Hunt + Malice Guardian fuse. Dark blades orbit you, blocking projectiles. Press slot key to fire all blades! (+2 blades at max lv)"
+  },
+  {
+    "key": "회전참 + 기폭팔 합성. 회전 중 패링 쉴드 자동 발동 → 적 공격 흡수 → 종료 시 자동 광역 폭발. 지옥강타 1 추가 합체 시 지진폭풍!",
+    "en": "Whirlwind + Detonate synth. Auto parry shield during spin → absorb attacks → auto AOE blast on end. Add Hell Slam I for Quake Storm!"
+  },
+  {
+    "key": "악의폭풍 + 해골무덤 합체. 마우스 조준 클릭 → 해골무덤 링 + 내부 암흑 DOT! 3스택 충전제, 벽 차단+지속 데미지",
+    "en": "Malice Storm + Bone Tomb fuse. Mouse aim click → bone tomb ring + inner dark DOT! 3 stock charges, wall block+sustained DMG."
+  },
+  {
+    "key": "해골번개 + 참회 합체. 참회 설치 시 전기 소용돌이 동시 생성! 데미지 20%↑, 1/5/10렙 차지 1/2/3",
+    "en": "Bone Lightning + Repentance fuse. Repentance placement spawns electric vortex! DMG+20%, charge 1/2/3 at Lv1/5/10."
+  },
+  {
+    "key": "처내기 + 칼등날개 합체. 처내기 시 전방 돌진+내려찍기 충격파 자동 발동! 범위 내 적 히트+스턴+포이즈 삭감",
+    "en": "Swipe + Wing Blade fuse. On swipe, auto forward rush+slam shockwave! Hits+stun+poise reduction in range."
+  },
+  {
+    "key": "악의사냥 + 폭독혈 합체. 칼날 발사 시 독혈 칼날 자동 발사! 칼날 적중 시 전염 폭발",
+    "en": "Malice Hunt + Plague Burst fuse. Auto plague blades on blade fire! Plague explosion on hit."
+  },
+  {
+    "key": "독혈해방 + 독사검 4성합체. 독혈 칼날에 독사 강화! 적중 시 독사 DOT+전염 확산",
+    "en": "Plague Liberation + Venom Blade 4-star fuse. Enhanced plague blades with venom! Venom DOT+spread on hit."
+  },
+  {
+    "key": "지옥강타 2 + 악의기둥 합체. 지옥강타 2 시 9개 악의기둥 자동 전개 (+기둥가시 합체 시 가시덫 포함)! Lv300+ 히든",
+    "en": "Hell Slam II + Dark Pillar fuse. Hell Slam II auto-deploys 9 dark pillars (+spike traps if Pillar Thorn fused)! Lv300+ hidden."
+  },
+  {
+    "key": "악의기둥 + 가시덫 합체. 각 기둥 위치에 가시덫 자동 설치! 슬로우+출혈",
+    "en": "Dark Pillar + Spike Trap fuse. Each pillar auto-places spike trap! Slow+bleed at every pillar position."
+  },
+  {
+    "key": "결계의 영역 + 아이스 스톰 3단합체. 회복의 영역 설치 시 감옥+빙결 폭풍 동시 설치! 범위 내 리젠+부활차단+빙결",
+    "en": "Ward Domain + Ice Storm 3-fuse. Holy zone places prison+freeze storm! Regen+revive block+freeze in range."
+  },
+  {
+    "key": "회복의 영역 + 구속의 영역 합체. 회복의 영역 설치 시 감옥 동시 설치! 범위 내 리젠+부활차단",
+    "en": "Holy Domain + Binding Domain fuse. Holy zone auto-places prison! Regen+revive block in range."
+  },
+  {
+    "key": "결계의 영역 + 약화:물리 4단합체. 범위 내 땅+감옥+빙결+파쇄",
+    "en": "Ward Domain + Weakness: Physical 4-fuse. Ground+Prison+Freeze+Shatter in range."
+  },
+  {
+    "key": "파쇄의 영역 + 약화:마법 5단합체. 범위 내 땅+감옥+빙결+파쇄+침식",
+    "en": "Shatter Domain + Weakness: Magic 5-fuse. Ground+Prison+Freeze+Shatter+Corrode in range."
+  },
+  {
+    "key": "침식의 영역 + 약화:투사체 6단합체. 범위 내 땅+감옥+빙결+파쇄+침식+관통",
+    "en": "Corrode Domain + Weakness: Projectile 6-fuse. Ground+Prison+Freeze+Shatter+Corrode+Pierce in range."
+  },
+  {
+    "key": "관통의 영역 + 약화:역전 7단합체. 범위 내 땅+감옥+빙결+파쇄+침식+관통+역전",
+    "en": "Pierce Domain + Weakness: Reversal 7-fuse. Ground+Prison+Freeze+Shatter+Corrode+Pierce+Reversal in range."
+  },
+  {
+    "key": "유령허수아비 + 폭발허수아비 합체. 허수아비가 탄막 흡수+데미지 축적. 회수 시 자동 폭발! 흡수량에 따라 크기 증가",
+    "en": "Void Scarecrow + Explode Scarecrow fuse. Scarecrow absorbs projectiles and accumulates damage. On retrieve, auto-detonates for massive AoE! Grows bigger with absorption."
+  },
+  {
+    "key": "전격이동 + 뇌전창 합체. 2번째 전격이동 착지 시 뇌전창 자동 설치! MP/스택 소모 없음",
+    "en": "Blade Dash + Thunder Stake fuse. 2nd dash auto-plants thunder stake at landing! No MP/stock cost."
+  },
+  {
+    "key": "시간왜곡 + 뇌전걸음 합체. 시간왜곡 발동 시 뇌전걸음 자동 연계! 되감기 + 무적이동 한 키로 탈출",
+    "en": "Time Warp + Ghost Walk fuse. On Time Warp activation, Ghost Walk auto-triggers! Rewind to past + instant invincible dash escape."
+  },
+  {
+    "key": "💡 R키로 아이템을 수거합니다",
+    "en": "💡 Press R to collect items"
+  },
+  {
+    "key": "지옥의 길 · 캐릭터 성장",
+    "en": "HELL ROAD / CHARACTER GROWTH"
+  },
+  {
+    "key": "능력치와 패시브",
+    "en": "Attributes & Passives"
+  },
+  {
+    "key": "살아남는 방식은, 당신이 정한다.",
+    "en": "Choose how you survive."
+  },
+  {
+    "key": "투자 가능 SP",
+    "en": "AVAILABLE SP"
+  },
+  {
+    "key": "투자 가능 AP",
+    "en": "AVAILABLE AP"
+  },
+  {
+    "key": "기본 능력치",
+    "en": "Attributes"
+  },
+  {
+    "key": "1포인트당 1 SP · 투자량 기준",
+    "en": "1 SP per point · Allocated values"
+  },
+  {
+    "key": "선택한 패시브",
+    "en": "SELECTED PASSIVE"
+  },
+  {
+    "key": "투자는 즉시 적용됩니다. 사용한 포인트는 언제든 환불할 수 있습니다.",
+    "en": "Changes apply immediately. Spent points can be refunded at any time."
+  },
+  {
+    "key": "패시브 이름·효과 검색",
+    "en": "Search name or effect"
+  },
+  {
+    "key": "한 번에 {n}포인트 투자 또는 환불",
+    "en": "Allocate or refund {n} points at a time"
+  },
+  {
+    "key": "근성 (GRIT)",
+    "en": "GRIT"
+  },
+  {
+    "key": "MAX HP / MP / ST 각각 +1, 물리·속성 방어 +0.5",
+    "en": "MAX HP / MP / ST +1 each, DEF / eDEF +0.5"
+  },
+  {
+    "key": "상한 없음",
+    "en": "No cap"
+  },
+  {
+    "key": "투자 상한 {n}",
+    "en": "Allocation cap {n}"
+  },
+  {
+    "key": "제한 없음",
+    "en": "Uncapped"
+  },
+  {
+    "key": "{n} 투자",
+    "en": "add {n}"
+  },
+  {
+    "key": "{n} 환불",
+    "en": "refund {n}"
+  },
+  {
+    "key": "조건에 맞는 패시브가 없습니다.",
+    "en": "No passives match your search."
+  },
+  {
+    "key": "공격 패시브",
+    "en": "OFFENSE PASSIVE"
+  },
+  {
+    "key": "보조 패시브",
+    "en": "SUPPORT PASSIVE"
+  },
+  {
+    "key": "현재 레벨",
+    "en": "Current rank"
+  },
+  {
+    "key": "레벨당 효과",
+    "en": "EFFECT PER RANK"
+  },
+  {
+    "key": "효과 설명의 상한과 발동 조건이 적용됩니다.",
+    "en": "Effect caps and activation conditions in the description apply."
+  },
+  {
+    "key": "최대 레벨 달성",
+    "en": "Maximum rank"
+  },
+  {
+    "key": "강화하기 · {n} AP",
+    "en": "Upgrade · {n} AP"
+  },
+  {
+    "key": "1레벨 환불",
+    "en": "Refund 1 rank"
+  },
+  {
+    "key": "모든 레벨을 습득했습니다.",
+    "en": "All ranks learned."
+  },
+  {
+    "key": "강화 후 남은 AP {n}",
+    "en": "{n} AP remaining after upgrade"
+  },
+  {
+    "key": "AP {n}이 더 필요합니다.",
+    "en": "{n} more AP needed."
+  }
+]

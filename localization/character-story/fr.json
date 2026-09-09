@@ -1,0 +1,50 @@
+{
+  "prologue": {
+    "wa02": "Un homme revint vivant de la guerre.",
+    "wa04": "Mais son foyer avait été réduit en cendres.",
+    "wa06": "Killu, son voisin et ami, avait anéanti sa famille.",
+    "wa08": "Sa femme fut emmenée comme servante et subit les pires sévices,",
+    "wa09": "jusqu'à ce que, n'en pouvant plus, elle mette fin à ses jours.",
+    "wa11": "Ses enfants furent vendus comme esclaves. Nul ne sait où ils sont.",
+    "wa12": "Ses vieux parents moururent de faim en prison.",
+    "wa14": "Toute la maison de Killu savait.",
+    "wa15": "31 personnes avaient vu et feint de ne rien voir.",
+    "wa17": "Cette nuit-là, il tua toute la famille de Killu.",
+    "wa19": "De sa lame, il trancha les bras et les jambes de Killu,",
+    "wa20": "allant jusqu'à cautériser ses plaies au feu",
+    "wa21": "pour le garder en vie longtemps, très longtemps.",
+    "wa22": "« Souviens-toi. »",
+    "wa23": "« Et regrette, jusque dans les enfers. »",
+    "wa24": "Puis il tomba en enfer.",
+    "wa26": "« …Ce n'est que l'histoire d'un vengeur parmi tant d'autres. »",
+    "wa28": "« Chaque jour, de nouvelles âmes tombent dans le labyrinthe infernal. »",
+    "wa29": "« Rongées par la colère, rendues folles par l'injustice, privées de l'être aimé… »",
+    "wa31": "« Et toi, pourquoi es-tu venu en enfer ? »",
+    "wa33": "« Échappe-toi des enfers, pécheur. »"
+  },
+  "intro": {
+    "3": "J'ai beaucoup apprécié ton exaltante vengeance. Un véritable chef-d'œuvre.",
+    "5": "Je vois en toi une misérable bonté. Il te reste bien quelqu'un à sauver.\nOn dirait qu'on t'attend encore, non ? Le temps vous est compté à tous…",
+    "8": "Le cheval de bois de cet enfant réveille donc même les morts.",
+    "10": "Bien. Échappe-toi d'ici. Je t'aiderai en personne.\nDiroy et Hector te guideront.",
+    "11": "Pas de panique. Faisons connaissance. Moi, c'est Diroy.",
+    "12": "Et moi, Hector. Vois en nous une bénédiction de la déesse.\nNous aussi, on doit sortir d'ici.",
+    "13": "Les démons sont des êtres faits de malice.\nLeur instinct les pousse à attaquer la bonté.",
+    "14": "Mais toi, tu es spécial. Ta bonté est puissante.\nTa malice a explosé pour un temps. Cette flambée retombera bientôt.",
+    "15": "Alors les démons vont flairer ton odeur et affluer vers toi.",
+    "16": "La déesse t'a accordé des armes. Prends-les.",
+    "17": "C'est une projection envoyée par la déesse, une âme du champ de bataille.\nElle habitera l'arbalète et se battra à tes côtés.",
+    "21": "Cet humain s'est encore évanoui. Ça fait combien de temps qu'il n'a pas dormi ?",
+    "22": "Il a dû passer des jours sans manger ni dormir, obsédé par sa vengeance.",
+    "23": "Il faut le réveiller, quitte à lui faire avaler de la malice.",
+    "24": "...",
+    "10c": "À notre prochaine rencontre, âme défunte.",
+    "18b": "Mets aussi ce bandeau de malice. Il t'aidera à garder la raison\navant que ce déchaînement de malice te rende fou.",
+    "22b": "Si on le laisse comme ça, il se fera dévorer."
+  },
+  "speakers": {
+    "GODDESS": "Nemesia",
+    "DIROY": "DIROY",
+    "HECTOR": "HECTOR"
+  }
+}

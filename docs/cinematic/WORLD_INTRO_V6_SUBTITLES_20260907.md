@@ -1,4 +1,6 @@
-# 세계관 인트로 v6 — 전체 28언어 선택형 자막
+# 세계관 인트로 v6 — 전체 29언어 선택형 자막
+
+> **2026-09-09 현행 언어 계약:** Steam 31개 항목은 지역 공통 번역을 포함한 내부 29개 언어(말레이어 ms 추가)로 처리한다. 세계관 29×32=928큐·SRT/VTT 총58개, 캐릭터 서사 28개 번역 언어에 KO 기준 21+18문장을 적용한다. UI779키 등록, MAIN13,300개·EXTRA1,782개·성장화면3,699개 번역 보완 및 29언어 화면 검증을 완료했다. [구현 상태·검증 기록](../16번역·로컬라이제이션/STEAM_LANGUAGE_SCOPE_20260909.md)이 과거 완료 기록보다 우선한다.
 
 사용자 요청: “자막 국가별 올 번역작업들어가자”. 범위는 현재 index.html 세계관 인트로 전체 대사이며 영어 보이스·영상 연출·금속 타이틀·BGM은 유지한다. 국가 자동 추측이 아니라 사용자가 선택한 게임 언어를 따른다. 1차 번역·런타임 적용 완료, 출시용 원어민 감수는 미완료다.
 
@@ -16,15 +18,15 @@
 | 자막 제어 | `world-intro-subtitles.js` → `WorldIntroSubtitles.attach/resolveLanguage/normalizeLanguage`. index.html `_worldIntroSubtitles`가 setLanguage/disable 호출, video.dataset.subtitleLanguage에 선택 코드 기록 |
 | 표시 | 브라우저 네이티브 TextTrack + VTTCue. 선택 언어만 showing, 나머지는 disabled. 최초 선택 때 해당 트랙 생성, WeakMap으로 비디오별 재사용 |
 | 타이밍 | 원문 38개를 32개 표시 큐로 구성. 원문38만 큐31(우리는 그들을…)과 큐32(엑소듀서라 부른다.)로 분할, 마지막 sourceGroups [38] 두 번 유지. v12는 마지막 두 큐 시각만 재녹음에 맞춤, 큐1~30 내용·시각 보존 |
-| 자막 수 | 28언어 × 32큐 = 896개. 한국어 원문·영어 승인 녹음 원고 포함, 나머지 26언어 번역 |
+| 자막 수 | 29언어 × 32큐 = 928개. 한국어 원문·영어 승인 녹음 원고 포함, 나머지 27언어 번역 |
 | 스타일 | Noto Serif / Noto Serif KR / serif, weight 500, clamp(32px,5.4vh,50px), 아이보리 #eee5d5, background transparent. 4방향 1px 검정 윤곽 + 2중 부드러운 그림자. align center / size 84 / snapToLines true / line -3 / position 50 / positionAlign center 유지. 언어별 서체·그림자 수치는 아래 표 |
 | RTL | 아랍어 트랙 언어 ar, 네이티브 WebVTT의 BiDi/글자 결합 사용. 게임 HUD·로비 전체 RTL 개편은 범위 밖 |
 | 선택 UI | 영화 중 cinLang 표시. 마우스 및 기존 패드 좌우 언어 팝업으로 변경. 자막 변경은 영상·BGM의 play/pause/currentTime을 건드리지 않음 |
 | 언어 코드 | pt 및 pt-* → ptbr; zh-TW/HK/MO/Hant → zht; zh-CN → zh; nb/nn → no; 지원 안 되는 코드 resolve=null, 자막 fallback=en |
-| 선택 우선순위 | URL lang → 저장 hellLang → Steam → 브라우저 → en. 기존 pt 저장도 ptbr로 해석. Steam portuguese/brazilianportuguese 모두 ptbr |
+| 선택 우선순위 | URL lang → 저장 hellLang → Steam → 브라우저 → en. 기존 pt 저장도 ptbr로 해석. Steam portuguese/brazilian/brazilianportuguese 모두 ptbr, malay는 ms |
 | 코드 보정 | _I18N_SUPPORTED의 pt를 실제 드롭다운 코드 ptbr로 일치. setUserLanguage가 재생 중 자막만 변경 |
 | 종료 | stopWorldIntro에서 모든 자막 트랙 disabled. 재진입 시 같은 트랙 재사용. 로고 위 큐32는 109.600~111.100초 표시하고 이후 끝까지 활성 큐 없음 |
-| 별도 납본 | `video/subtitles/world_intro_v6_<code>.srt` 및 .vtt, 28개씩 총 56개. 런타임 JS와 내용·시각 동일 |
+| 별도 납본 | `video/subtitles/world_intro_v6_<code>.srt` 및 .vtt, 29개씩 총 58개. 런타임 JS와 내용·시각 동일 |
 | 편집 소스 | output/cinematic/world_intro_v12_audio_recipe.py; v10 source.mp4 영상 스트림 복사 + 연속 신규 음성 합성. 기존 v11 편집 파일은 폐기 이력 |
 | 백업 | `output/cinematic/index_before_world_intro_v6_subtitles_20260907.html`, v3/v4/v5 MP4 보존 |
 | 캐시 | player: 20260907-v12-fullscene-newvoice, subtitle data: 20260907-v13-exodus-ko-escape, subtitle controller: 20260907-v6-cinema-size |
@@ -91,6 +93,7 @@
 | vi | 베트남어 | 32 | 1차 번역, 원어민 감수 전 / 런타임 확인 |
 | th | 태국어 | 32 | 1차 번역, 원어민 감수 전 / 런타임 확인 |
 | id | 인도네시아어 | 32 | 1차 번역, 원어민 감수 전 / 런타임 확인 |
+| ms | 말레이어 | 32 | 2026-09-09 1차 번역·추가, 원어민 감수 전 |
 | ar | 아랍어 | 32 | 1차 번역, 원어민 감수 전 / 런타임 확인 |
 | sv | 스웨덴어 | 32 | 1차 번역, 원어민 감수 전 / 런타임 확인 |
 | da | 덴마크어 | 32 | 1차 번역, 원어민 감수 전 / 런타임 확인 |

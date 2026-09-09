@@ -59,7 +59,7 @@ for (const f of FILES) {
   console.log('[build] package.json 정리 완료 (type:module 제거)');
 }
 
-// ── 3. lang 파일 복사 (lang_*.js 26개) ──────────────────────────────────────
+// ── 3. lang 파일 복사 (lang_*.js 27개, 말레이어 포함) ────────────────────────
 for (const f of readdirSync('.').filter(f => f.startsWith('lang_') && f.endsWith('.js'))) {
   cpSync(f, `${DIST}/${f}`);
 }

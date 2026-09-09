@@ -1,0 +1,50 @@
+{
+  "prologue": {
+    "wa02": "Egy férfi élve tért haza a háborúból.",
+    "wa04": "De otthona porig égett.",
+    "wa06": "Killu, a szomszédja és barátja, eltiporta a családját.",
+    "wa08": "Feleségét szolgálónak hurcolták el, és válogatott kegyetlenségeket szenvedett el,",
+    "wa09": "míg végül nem bírta tovább, és véget vetett az életének.",
+    "wa11": "Gyermekeit rabszolgának adták el. Senki sem tudja, hol vannak.",
+    "wa12": "Idős szülei éhen haltak a börtönben.",
+    "wa14": "Killu családjában mindenki tudott róla.",
+    "wa15": "31 ember látta, mégis úgy tett, mintha semmit sem látott volna.",
+    "wa17": "Azon az éjjelen megölte Killu egész családját.",
+    "wa19": "Pengével levágta Killu karjait és lábait,",
+    "wa20": "még a sebeit is kiégette, hogy elállítsa a vérzést,",
+    "wa21": "és sokáig, nagyon sokáig életben tartotta.",
+    "wa22": "„Emlékezz.”",
+    "wa23": "„És bánd meg még a pokolban is.”",
+    "wa24": "Azután a pokolba zuhant.",
+    "wa26": "„…Ez csak egy a megszámlálhatatlan bosszúálló története közül.”",
+    "wa28": "„Nap mint nap új lelkek hullanak a pokol labirintusába.”",
+    "wa29": "„Haragtól izzók, igazságtalanságba beleőrültek, szerelmüket elveszítők…”",
+    "wa31": "„Te miért kerültél a pokolba?”",
+    "wa33": "„Menekülj a pokolból, bűnös.”"
+  },
+  "intro": {
+    "3": "Lenyűgözött az az izgalmas bosszújátékod. Remekmű volt.",
+    "5": "Látok benned egy szánalmas szikrányi jóságot. Még van, akit meg kell mentened.\nÚgy tűnik, még mindig rád várnak, nem? Egyikőtöknek sincs sok ideje…",
+    "8": "Annak a gyermeknek a hintalova még egy holtat is észhez térít, úgy látom.",
+    "10": "Jól van. Menekülj innen. Személyesen segítelek.\nDiroy és Hector vezet majd.",
+    "11": "Ne ijedj meg. Előbb mutatkozzunk be. Diroy vagyok.",
+    "12": "Én Hector. Tekints minket az istennő áldásának.\nNekünk is ki kell jutnunk innen.",
+    "13": "A démonok rosszindulatból született lények.\nÖsztönösen a jóságra támadnak.",
+    "14": "De te más vagy. Erős benned a jóság.\nA rosszindulatod csak átmenetileg tört ki. Ez a kitörés hamar elcsitul.",
+    "15": "Ezért a démonok megérzik a szagodat, és seregestül özönlenek ide.",
+    "16": "Az istennő fegyvereket adott neked. Vedd el őket.",
+    "17": "Az istennő küldte kivetülés. Egy lélek a csatatérről.\nA számszeríjban fog lakozni, és melletted harcol majd.",
+    "21": "Ez az ember megint elájult. Mióta nem aludt?",
+    "22": "Biztos napok óta nem evett és nem aludt, csak a bosszún járt az esze.",
+    "23": "Fel kell ébresztenünk, akár rosszindulattal is megetethetjük.",
+    "24": "...",
+    "10c": "Még találkozunk, holt lélek.",
+    "18b": "Vedd fel azt a rosszindulatpántot is. Segít megőrizni a józan eszed,\nmielőtt a kitört rosszindulat az őrületbe kerget.",
+    "22b": "Ha így hagyjuk, felfalják."
+  },
+  "speakers": {
+    "GODDESS": "Nemesia",
+    "DIROY": "DIROY",
+    "HECTOR": "HECTOR"
+  }
+}

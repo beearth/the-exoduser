@@ -1,0 +1,137 @@
+[
+  {
+    "key": "슬롯: ",
+    "en": "Slots: ",
+    "alias": "슬롯:"
+  },
+  {
+    "key": " 이전",
+    "en": " Transfer",
+    "alias": "이전"
+  },
+  {
+    "key": " 달성!",
+    "en": " Achieved!",
+    "alias": "달성!"
+  },
+  {
+    "key": " 부족!",
+    "en": " needed!",
+    "alias": "부족!"
+  },
+  {
+    "key": " 개봉!",
+    "en": " Opened!",
+    "alias": "개봉!"
+  },
+  {
+    "key": "포이즈 ",
+    "en": "Poise ",
+    "alias": "포이즈"
+  },
+  {
+    "key": " 탈출!",
+    "en": " Escaped!",
+    "alias": "탈출!"
+  },
+  {
+    "key": " 처치!",
+    "en": " Defeated!",
+    "alias": "처치!"
+  },
+  {
+    "key": "슬롯 ",
+    "en": "Slot ",
+    "alias": "슬롯"
+  },
+  {
+    "key": " 세팅!",
+    "en": " Set!",
+    "alias": "세팅!"
+  },
+  {
+    "key": " 악의",
+    "en": " Malice",
+    "alias": "악의"
+  },
+  {
+    "key": " 필요",
+    "en": " needed",
+    "alias": "필요"
+  },
+  {
+    "key": " 조건 미달!",
+    "en": " not met!",
+    "alias": "조건 미달!"
+  },
+  {
+    "key": " 해제!",
+    "en": " Unfused!",
+    "alias": "해제!"
+  },
+  {
+    "key": " 리셋",
+    "en": " reset",
+    "alias": "리셋"
+  },
+  {
+    "key": " 리셋!",
+    "en": " Reset!",
+    "alias": "리셋!"
+  },
+  {
+    "key": " 습득!",
+    "en": " Learned!",
+    "alias": "습득!"
+  },
+  {
+    "key": "요구 Lv.",
+    "en": "Req. Lv.",
+    "alias": "요구 레벨"
+  },
+  {
+    "key": "물리DEF",
+    "en": "Phys DEF",
+    "alias": "물리방어"
+  },
+  {
+    "key": "치명률",
+    "en": "Crit Rate",
+    "alias": "치명타율"
+  },
+  {
+    "key": " 강화!",
+    "en": " Enhanced!",
+    "alias": "강화!"
+  },
+  {
+    "key": "악의 ",
+    "en": "Malice ",
+    "alias": "악의"
+  },
+  {
+    "key": " 제작",
+    "en": " Craft",
+    "alias": "제작"
+  },
+  {
+    "key": " 레벨",
+    "en": " Lv",
+    "alias": "레벨"
+  },
+  {
+    "key": "전체 초기화",
+    "en": "Reset all",
+    "alias": "올 리셋"
+  },
+  {
+    "key": "전투 능력치 보기",
+    "en": "Combat stats",
+    "alias": "전투 통계"
+  },
+  {
+    "key": "전투 능력치",
+    "en": "Combat stats",
+    "alias": "전투 통계"
+  }
+]

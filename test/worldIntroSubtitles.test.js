@@ -2,13 +2,13 @@ import test from 'node:test';
 import assert from 'node:assert/strict';
 import {readFileSync,existsSync} from 'node:fs';
 import vm from 'node:vm';
-const languages='ko en zh zht ja es fr de ru ptbr it vi th id tr pl cs hu bg el fi sv da no nl ro uk ar'.split(' ');
+const languages='ko en zh zht ja es fr de ru ptbr it vi th id tr pl cs hu bg el fi sv da no nl ro uk ar ms'.split(' ');
 function readData(){
  const file=new URL('../world-intro-subtitles-data.js',import.meta.url);
  assert.ok(existsSync(file),'all-language subtitle data must exist');
  const ctx={};vm.createContext(ctx);vm.runInContext(readFileSync(file,'utf8'),ctx);return ctx.WorldIntroSubtitleData;
 }
-test('all 28 languages contain all 32 semantic subtitle groups without placeholders',()=>{
+test('all 29 languages contain all 32 semantic subtitle groups without placeholders',()=>{
  const d=readData();assert.deepEqual(Object.keys(d.languages).sort(),languages.sort());
  assert.equal(d.timings.length,32);
  assert.deepEqual(Array.from(new Set(d.sourceGroups.flat())),Array.from({length:38},(_,i)=>i+1));

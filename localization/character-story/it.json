@@ -1,0 +1,50 @@
+{
+  "prologue": {
+    "wa02": "Un uomo tornò vivo dalla guerra.",
+    "wa04": "Ma la sua casa era stata ridotta in cenere.",
+    "wa06": "Killu, suo vicino e amico, aveva annientato la sua famiglia.",
+    "wa08": "Sua moglie fu trascinata via come serva e subì ogni genere di abusi,",
+    "wa09": "finché, non potendo più sopportarli, si tolse la vita.",
+    "wa11": "I suoi figli furono venduti come schiavi. Nessuno sa dove siano.",
+    "wa12": "I suoi anziani genitori morirono di fame in prigione.",
+    "wa14": "Tutti nella casata di Killu sapevano.",
+    "wa15": "31 persone videro e finsero di non vedere.",
+    "wa17": "Quella notte uccise tutta la famiglia di Killu.",
+    "wa19": "Con la lama mozzò a Killu braccia e gambe,",
+    "wa20": "cauterizzando persino le ferite con il fuoco",
+    "wa21": "per tenerlo in vita a lungo, molto a lungo.",
+    "wa22": "«Ricorda.»",
+    "wa23": "«E pentiti anche all'inferno.»",
+    "wa24": "Poi precipitò all'inferno.",
+    "wa26": "«…Questa è soltanto la storia di uno fra innumerevoli vendicatori.»",
+    "wa28": "«Ogni giorno nuove anime precipitano nel labirinto infernale.»",
+    "wa29": "«Colme d'ira, impazzite per l'ingiustizia, private del loro amore…»",
+    "wa31": "«Tu perché sei venuto all'inferno?»",
+    "wa33": "«Fuggi dall'inferno, peccatore.»"
+  },
+  "intro": {
+    "3": "La tua esaltante vendetta mi ha colpita. Un capolavoro.",
+    "5": "Vedo in te una misera bontà. Avrai ancora qualcuno da salvare.\nSembra che ti aspettino ancora, vero? A nessuno di voi resta molto tempo…",
+    "8": "Il cavallino di quel bambino fa rinsavire persino un morto, a quanto pare.",
+    "10": "Ebbene, fuggi da questo luogo. Ti aiuterò di persona.\nDiroy e Hector ti guideranno.",
+    "11": "Non allarmarti. Presentiamoci. Io sono Diroy.",
+    "12": "Io sono Hector. Consideraci una benedizione della dea.\nAnche noi dobbiamo uscire di qui.",
+    "13": "I demoni sono esseri fatti di malizia.\nPer istinto cercano di attaccare la bontà.",
+    "14": "Ma tu sei particolare. La tua bontà è forte.\nLa tua malizia è esplosa solo per un po'. Presto quell'esplosione si esaurirà.",
+    "15": "Perciò i demoni sentiranno il tuo odore e accorreranno in massa.",
+    "16": "La dea ti ha concesso delle armi. Prendile.",
+    "17": "È una proiezione inviata dalla dea, un'anima del campo di battaglia.\nDimorerà nella balestra e combatterà al tuo fianco.",
+    "21": "Quest'umano è svenuto di nuovo. Da quanto non dorme?",
+    "22": "Avrà passato giorni senza mangiare né dormire, pensando solo alla vendetta.",
+    "23": "Dobbiamo svegliarlo, anche a costo di fargli mangiare della malizia.",
+    "24": "...",
+    "10c": "Ci rivedremo, anima morta.",
+    "18b": "Indossa anche quella fascia della malizia. Ti aiuterà a restare lucido\nprima che la malizia scatenata ti faccia impazzire.",
+    "22b": "Se lo lasciamo così, lo divoreranno."
+  },
+  "speakers": {
+    "GODDESS": "Nemesia",
+    "DIROY": "DIROY",
+    "HECTOR": "HECTOR"
+  }
+}

@@ -1,0 +1,50 @@
+{
+  "prologue": {
+    "wa02": "Mies palasi sodasta hengissä.",
+    "wa04": "Mutta hänen kotinsa oli palanut tuhkaksi.",
+    "wa06": "Killu, hänen naapurinsa ja ystävänsä, oli tuhonnut hänen perheensä.",
+    "wa08": "Hänen vaimonsa vietiin palvelijaksi ja joutui kärsimään julmaa kaltoinkohtelua,",
+    "wa09": "kunnes ei enää kestänyt ja riisti oman henkensä.",
+    "wa11": "Lapset myytiin orjiksi. Kukaan ei tiedä, missä he ovat.",
+    "wa12": "Hänen vanhat vanhempansa kuolivat nälkään vankilassa.",
+    "wa14": "Kaikki Killun suvussa tiesivät.",
+    "wa15": "31 ihmistä näki kaiken ja teeskenteli, ettei nähnyt mitään.",
+    "wa17": "Sinä yönä hän tappoi koko Killun suvun.",
+    "wa19": "Terällään hän katkaisi Killun kädet ja jalat,",
+    "wa20": "jopa poltti haavat umpeen verenvuodon tyrehdyttämiseksi,",
+    "wa21": "ja piti hänet elossa pitkään, hyvin pitkään.",
+    "wa22": "”Muista.”",
+    "wa23": "”Ja kadu vielä helvetissäkin.”",
+    "wa24": "Sitten hän syöksyi helvettiin.",
+    "wa26": "”…Tämä on vain yhden lukemattomista kostajista tarina.”",
+    "wa28": "”Joka päivä uusia sieluja putoaa helvetin labyrinttiin.”",
+    "wa29": "”Raivon täyttämiä, vääryydestä järkensä menettäneitä, rakkaansa menettäneitä…”",
+    "wa31": "”Miksi sinä tulit helvettiin?”",
+    "wa33": "”Pakene helvetistä, syntinen.”"
+  },
+  "intro": {
+    "3": "Seurasin vaikuttuneena tuota huumaavaa kostonäytelmääsi. Mestariteos.",
+    "5": "Näen sinussa säälittävän rippeen hyvyyttä. Sinulla lienee yhä joku pelastettavana.\nSinua taidetaan yhä odottaa? Kenelläkään teistä ei ole paljon aikaa…",
+    "8": "Tuon lapsen keinuhevonen palauttaa näköjään kuolleenkin järkiinsä.",
+    "10": "Hyvä on. Pakene täältä. Autan sinua henkilökohtaisesti.\nDiroy ja Hector opastavat sinua.",
+    "11": "Älä säikähdä. Esittäydytään ensin. Olen Diroy.",
+    "12": "Minä olen Hector. Pidä meitä jumalattaren siunauksena.\nMeidänkin täytyy päästä täältä pois.",
+    "13": "Demonit ovat ilkeydestä syntyneitä olentoja.\nNe hyökkäävät vaistomaisesti hyvyyden kimppuun.",
+    "14": "Mutta sinä olet erilainen. Hyvyytesi on vahvaa.\nIlkeytesi on vain hetkellisesti purkautunut. Se purkaus laantuu pian.",
+    "15": "Siksi demonit haistavat sinut ja ryntäävät luoksesi joukoittain.",
+    "16": "Jumalatar on antanut sinulle aseita. Ota ne.",
+    "17": "Se on jumalattaren lähettämä heijastuma. Taistelukentän sielu.\nSe asettuu varsijouseen ja taistelee rinnallasi.",
+    "21": "Tämä ihminen pyörtyi taas. Kuinka kauan hän on valvonut?",
+    "22": "Taisi olla päiväkausia syömättä ja nukkumatta, pelkkä kosto mielessään.",
+    "23": "Hänet täytyy herättää, vaikka syöttämällä hänelle ilkeyttä.",
+    "24": "...",
+    "10c": "Tapaamme vielä, vainaja.",
+    "18b": "Pue myös tuo ilkeyden nauha. Se pitää järkesi koossa\nennen kuin purkautunut ilkeys ajaa sinut hulluksi.",
+    "22b": "Jos jätämme hänet näin, hänet syödään."
+  },
+  "speakers": {
+    "GODDESS": "Nemesia",
+    "DIROY": "DIROY",
+    "HECTOR": "HECTOR"
+  }
+}

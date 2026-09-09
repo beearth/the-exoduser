@@ -1,0 +1,50 @@
+{
+  "prologue": {
+    "wa02": "Um homem voltou vivo da guerra.",
+    "wa04": "Mas seu lar havia sido reduzido a cinzas.",
+    "wa06": "Killu, seu vizinho e amigo, havia destruído sua família.",
+    "wa08": "Sua esposa foi levada como criada e sofreu todo tipo de abuso,",
+    "wa09": "até que, sem suportar mais, tirou a própria vida.",
+    "wa11": "Seus filhos foram vendidos como escravos. Ninguém sabe onde estão.",
+    "wa12": "Seus pais idosos morreram de fome numa prisão.",
+    "wa14": "Todos na casa de Killu sabiam.",
+    "wa15": "31 pessoas viram tudo e fingiram não ver nada.",
+    "wa17": "Naquela noite, ele matou toda a família de Killu.",
+    "wa19": "Com sua lâmina, cortou os braços e as pernas de Killu,",
+    "wa20": "e até cauterizou as feridas com fogo",
+    "wa21": "para mantê-lo vivo por muito, muito tempo.",
+    "wa22": "“Lembre-se.”",
+    "wa23": "“E se arrependa até no inferno.”",
+    "wa24": "Então ele caiu no inferno.",
+    "wa26": "“…Esta é apenas a história de um entre incontáveis vingadores.”",
+    "wa28": "“Todos os dias, novas almas caem no labirinto do inferno.”",
+    "wa29": "“Cheias de ira, enlouquecidas pela injustiça, privadas de quem amavam…”",
+    "wa31": "“Por que você veio ao inferno?”",
+    "wa33": "“Fuja do inferno, pecador.”"
+  },
+  "intro": {
+    "3": "Sua vingança eletrizante me impressionou. Uma obra-prima.",
+    "5": "Vejo uma bondade miserável em você. Ainda deve haver alguém a salvar.\nParece que ainda esperam por você, não é? O tempo de todos está acabando…",
+    "8": "Ver o cavalinho daquela criança desperta até um morto, pelo visto.",
+    "10": "Pois bem. Fuja deste lugar. Eu mesma ajudarei você.\nDiroy e Hector serão seus guias.",
+    "11": "Sem sustos. Vamos nos apresentar. Eu sou Diroy.",
+    "12": "Eu sou Hector. Pense na gente como uma bênção da deusa.\nTambém precisamos sair daqui.",
+    "13": "Demônios são seres feitos de malícia.\nPor instinto, atacam a bondade.",
+    "14": "Mas você é diferente. Sua bondade é forte.\nSua malícia explodiu por um tempo. Essa explosão logo vai passar.",
+    "15": "Por isso os demônios vão sentir seu cheiro e vir em bando.",
+    "16": "A deusa concedeu armas a você. Pegue.",
+    "17": "É uma projeção enviada pela deusa, uma alma do campo de batalha.\nEla vai habitar a besta e lutar ao seu lado.",
+    "21": "Esse humano desmaiou de novo. Faz quanto tempo que ele não dorme?",
+    "22": "Parece que passou dias sem comer nem dormir, pensando só em vingança.",
+    "23": "Precisamos acordá-lo, nem que seja dando malícia para ele comer.",
+    "24": "...",
+    "10c": "Até nosso próximo encontro, alma morta.",
+    "18b": "Ponha também essa faixa de malícia. Ela vai preservar sua sanidade\nantes que a malícia descontrolada deixe você louco.",
+    "22b": "Se deixarmos ele assim, vai ser devorado."
+  },
+  "speakers": {
+    "GODDESS": "Nemesia",
+    "DIROY": "DIROY",
+    "HECTOR": "HECTOR"
+  }
+}

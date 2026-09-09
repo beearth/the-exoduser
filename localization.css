@@ -1,0 +1,20 @@
+/* Keep spatial game controls stable while Arabic text follows reading order. */
+@import url('https://fonts.googleapis.com/css2?family=Noto+Sans+Arabic:wght@400;500;700&display=swap');
+canvas { direction:ltr; }
+#statPanel .growth-detail-name { min-width:0; overflow-wrap:anywhere; }
+html:lang(ar) {
+  --font:'Noto Sans Arabic',sans-serif;
+  --font-hell:'Noto Naskh Arabic','Noto Sans Arabic',serif;
+  --font-hell-title:'Noto Naskh Arabic','Noto Sans Arabic',serif;
+}
+html:lang(ar) body { font-family:'Noto Sans Arabic',sans-serif; }
+html:lang(ar) :is(button,input,select,textarea) { font-family:'Noto Sans Arabic',sans-serif; }
+html:lang(ar) :is(.set-name,.set-label,.growth-stat-desc,.growth-effect,.growth-detail-note,.growth-card-desc,.char-desc,.char-text,#statSummary,#petSubtitle) {
+  direction:rtl;
+  unicode-bidi:plaintext;
+  text-align:right;
+  letter-spacing:normal;
+}
+html:lang(ar) :is(.growth-amount,.growth-rank-transition,.growth-card-bottom,.growth-stat-controls,.growth-metric,.globe-val,.tkey) { direction:ltr; }
+html:lang(ar) :is(.growth-kicker,.growth-title,.growth-subtitle,.growth-detail-name,.growth-effect-label) { letter-spacing:normal; }
+html:lang(ar) :is(.pbox,.char-text,.login-section) { overflow-wrap:anywhere; }

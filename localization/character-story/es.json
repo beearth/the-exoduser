@@ -1,0 +1,50 @@
+{
+  "prologue": {
+    "wa02": "Un hombre regresó vivo de la guerra.",
+    "wa04": "Pero su hogar había quedado reducido a cenizas.",
+    "wa06": "Killu, su vecino y amigo, había arrasado con su familia.",
+    "wa08": "Su esposa fue llevada como sirvienta y sufrió toda clase de abusos,",
+    "wa09": "hasta que, incapaz de soportarlo, se quitó la vida.",
+    "wa11": "Sus hijos fueron vendidos como esclavos. Nadie sabe dónde están.",
+    "wa12": "Sus ancianos padres murieron de hambre en una prisión.",
+    "wa14": "Todos en la casa de Killu lo sabían.",
+    "wa15": "31 personas lo vieron y fingieron no ver nada.",
+    "wa17": "Aquella noche mató a toda la familia de Killu.",
+    "wa19": "Le cortó los brazos y las piernas con una espada,",
+    "wa20": "y hasta cauterizó sus heridas con fuego",
+    "wa21": "para mantenerlo vivo durante mucho, mucho tiempo.",
+    "wa22": "«Recuerda».",
+    "wa23": "«Y arrepiéntete incluso en el infierno».",
+    "wa24": "Y entonces cayó al infierno.",
+    "wa26": "«…Esta es solo la historia de uno entre incontables vengadores».",
+    "wa28": "«Cada día caen nuevas almas en el laberinto del infierno».",
+    "wa29": "«Almas llenas de ira, enloquecidas por la injusticia, privadas de su amor…».",
+    "wa31": "«¿Por qué has venido tú al infierno?».",
+    "wa33": "«Escapa del infierno, pecador»."
+  },
+  "intro": {
+    "3": "Disfruté mucho de tu emocionante venganza. Una obra maestra.",
+    "5": "Veo en ti una mísera bondad. Aún debe quedar alguien a quien salvar.\nParece que sigue esperándote, ¿no? A ninguno le queda mucho tiempo…",
+    "8": "Veo que el caballito de ese niño despierta hasta a un muerto.",
+    "10": "Bien, escapa de este lugar. Te ayudaré personalmente.\nDiroy y Hector te guiarán.",
+    "11": "Tranquilo. Empecemos por presentarnos. Soy Diroy.",
+    "12": "Yo soy Hector. Considéranos una bendición de la diosa.\nTambién nosotros tenemos que salir de aquí.",
+    "13": "Los demonios son seres hechos de malicia.\nSu instinto los lleva a atacar la bondad.",
+    "14": "Pero tú eres especial. Tu bondad es fuerte.\nTu malicia ha estallado por un tiempo. Ese estallido pronto se apagará.",
+    "15": "Por eso los demonios seguirán tu olor y vendrán en tropel.",
+    "16": "La diosa te ha otorgado armamento. Recógelo.",
+    "17": "Es una proyección enviada por la diosa, un alma del campo de batalla.\nHabitará en la ballesta y luchará contigo.",
+    "21": "Este humano se ha desmayado otra vez. ¿Cuánto lleva sin dormir?",
+    "22": "Parece que pasó días sin comer ni dormir, pensando solo en vengarse.",
+    "23": "Habrá que darle malicia para despertarlo.",
+    "24": "...",
+    "10c": "Volveremos a vernos, alma difunta.",
+    "18b": "Ponte también esa banda de malicia. Te ayudará a mantener la cordura\nantes de que el estallido de malicia te vuelva loco.",
+    "22b": "Si lo dejamos así, se lo comerán."
+  },
+  "speakers": {
+    "GODDESS": "Nemesia",
+    "DIROY": "DIROY",
+    "HECTOR": "HECTOR"
+  }
+}

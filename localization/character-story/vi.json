@@ -1,0 +1,50 @@
+{
+  "prologue": {
+    "wa02": "Một người đàn ông sống sót trở về từ chiến tranh.",
+    "wa04": "Nhưng mái nhà của anh đã cháy thành tro.",
+    "wa06": "Killu, người từng là hàng xóm và bạn bè, đã chà đạp cả gia đình anh.",
+    "wa08": "Vợ anh bị bắt làm hầu gái, chịu đủ mọi sự ngược đãi,",
+    "wa09": "đến khi không thể chịu đựng nữa, cô đã tự kết liễu đời mình.",
+    "wa11": "Các con bị bán làm nô lệ, chẳng ai biết chúng đang ở đâu.",
+    "wa12": "Cha mẹ già bị giam trong ngục và chết đói.",
+    "wa14": "Cả gia tộc Killu đều biết chuyện.",
+    "wa15": "31 người tận mắt chứng kiến nhưng vờ như không thấy.",
+    "wa17": "Đêm ấy, anh giết sạch gia tộc Killu.",
+    "wa19": "Anh dùng kiếm chặt tay chân Killu,",
+    "wa20": "thậm chí còn dùng lửa cầm máu",
+    "wa21": "để giữ hắn sống thật lâu, thật lâu.",
+    "wa22": "“Hãy nhớ lấy.”",
+    "wa23": "“Và xuống địa ngục cũng phải hối hận.”",
+    "wa24": "Rồi anh rơi xuống địa ngục.",
+    "wa26": "“…Đây chỉ là câu chuyện của một trong vô vàn kẻ báo thù.”",
+    "wa28": "“Mỗi ngày, những linh hồn mới lại rơi vào mê cung địa ngục.”",
+    "wa29": "“Kẻ ngập tràn phẫn nộ, kẻ phát điên vì oan khuất, kẻ mất đi người mình yêu…”",
+    "wa31": "“Còn ngươi, vì sao lại đến địa ngục?”",
+    "wa33": "“Hãy thoát khỏi địa ngục, hỡi kẻ có tội.”"
+  },
+  "intro": {
+    "3": "Màn báo thù đầy kích thích của ngươi khiến ta rất ấn tượng. Đúng là kiệt tác.",
+    "5": "Ta thấy chút thiện ý nhỏ nhoi trong ngươi. Hẳn vẫn còn người cần ngươi cứu.\nHình như họ vẫn đang đợi ngươi? Cả hai phía đều chẳng còn nhiều thời gian…",
+    "8": "Thấy con ngựa gỗ của đứa trẻ ấy, đến người chết cũng tỉnh ra nhỉ.",
+    "10": "Được, hãy thoát khỏi nơi này. Đích thân ta sẽ giúp ngươi.\nDiroy và Hector sẽ dẫn đường.",
+    "11": "Đừng hoảng. Chào hỏi chút đã. Tôi là Diroy.",
+    "12": "Tôi là Hector. Cứ xem chúng tôi là sự che chở của nữ thần.\nChúng tôi cũng phải ra khỏi đây.",
+    "13": "Ác quỷ là những sinh vật được tạo từ ác ý.\nTheo bản năng, chúng luôn tấn công thiện ý.",
+    "14": "Nhưng anh hơi đặc biệt. Thiện ý của anh rất mạnh.\nÁc ý chỉ đang bùng phát tạm thời. Cơn bùng phát ấy sẽ sớm tan đi.",
+    "15": "Vì vậy ác quỷ sẽ đánh hơi thấy anh rồi ùn ùn kéo đến.",
+    "16": "Nữ thần đã ban vũ khí cho anh. Cầm lấy.",
+    "17": "Đó là hình chiếu nữ thần gửi đến, một linh hồn từ chiến trường.\nNó sẽ trú trong cây nỏ và chiến đấu cùng anh.",
+    "21": "Gã người này lại ngất rồi. Anh ta nhịn ngủ bao lâu vậy?",
+    "22": "Chắc mải nghĩ đến báo thù, mấy ngày liền chẳng ăn chẳng ngủ.",
+    "23": "Phải cho anh ta ăn chút ác ý để đánh thức thôi.",
+    "24": "...",
+    "10c": "Hẹn gặp lại, hỡi kẻ đã chết.",
+    "18b": "Đeo cả dải ác ý kia nữa. Nó sẽ giữ anh tỉnh táo\ntrước khi ác ý bùng phát khiến anh phát điên.",
+    "22b": "Bỏ mặc thì anh ta sẽ bị ăn thịt."
+  },
+  "speakers": {
+    "GODDESS": "Nemesia",
+    "DIROY": "DIROY",
+    "HECTOR": "HECTOR"
+  }
+}
