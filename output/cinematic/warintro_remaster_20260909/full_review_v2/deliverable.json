@@ -1,0 +1,13 @@
+{
+  "version": 2,
+  "final_url": "https://d2ol7oe51mr4n9.cloudfront.net/user_3G1zto9sz11Uf3iEOhJefE9HdGG/bb7f945a-e153-4978-b91e-9574ba8976c0.mp4",
+  "clean_url": "https://d2ol7oe51mr4n9.cloudfront.net/user_3G1zto9sz11Uf3iEOhJefE9HdGG/0624986e-e236-48c0-89c9-66aee2ad06c3.mp4",
+  "ending_url": "https://d2ol7oe51mr4n9.cloudfront.net/user_3G1zto9sz11Uf3iEOhJefE9HdGG/aa04f7b8-9ce0-4afd-87a6-1813aeb74675.mp4",
+  "package_url": "https://d2ol7oe51mr4n9.cloudfront.net/user_3G1zto9sz11Uf3iEOhJefE9HdGG/3854e3b9-a7ad-4af1-8707-b17aaf0807a5.zip",
+  "duration_s": 99,
+  "question_pause_s": 3.7,
+  "visual_review": "PASS_FOR_REVIEW",
+  "sample_frames": 9,
+  "human_audio_approval": false,
+  "superseded_by": "../full_review_v3"
+}

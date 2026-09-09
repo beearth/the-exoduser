@@ -1,0 +1,31 @@
+{
+  "version": 3,
+  "final_url": "https://d2ol7oe51mr4n9.cloudfront.net/user_3G1zto9sz11Uf3iEOhJefE9HdGG/2e87afdf-ffab-47f2-837e-7f1ddf60f037.mp4",
+  "clean_url": "https://d2ol7oe51mr4n9.cloudfront.net/user_3G1zto9sz11Uf3iEOhJefE9HdGG/15d92f8b-6339-4840-8676-f9f50a29db6d.mp4",
+  "tail_url": "https://d2ol7oe51mr4n9.cloudfront.net/user_3G1zto9sz11Uf3iEOhJefE9HdGG/83f57c1c-543a-4630-9690-b39ea29434e2.mp4",
+  "package_url": "https://d2ol7oe51mr4n9.cloudfront.net/user_3G1zto9sz11Uf3iEOhJefE9HdGG/48e6e3f3-c904-4e81-9dd9-8ee44a4132de.zip",
+  "duration_s": 99,
+  "tail_duration_s": 48.5,
+  "editorial_cut_count": 27,
+  "original_scene_count": 16,
+  "caption_count": 21,
+  "review": {
+    "status": "PASS_FOR_REVIEW",
+    "duration_s": 99,
+    "editorial_cut_count": 27,
+    "checked_mid_frames": 18,
+    "automated_boundary_frames": 36,
+    "caption_count": 21,
+    "caption_timing_unchanged": true,
+    "audio_correlation": 0.9999843979159942,
+    "question_pause_s": 3.7,
+    "full_realtime_viewing": false,
+    "human_audio_approval": false,
+    "notes": [
+      "W10 situation, Killu expression, avenger expression use three cuts",
+      "W15 lost love returns to the family memory",
+      "W16 question, silent reaction, command preserve the pause and final fade",
+      "No subtitle clipping in inspected frames"
+    ]
+  }
+}

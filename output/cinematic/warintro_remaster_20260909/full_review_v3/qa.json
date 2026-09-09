@@ -1,0 +1,213 @@
+{
+  "duration_s": 99,
+  "original_scene_count": 16,
+  "editorial_cut_count": 27,
+  "new_tail_shots": 18,
+  "caption_count": 21,
+  "narration_pcm_correlation": 0.9999843979159942,
+  "captions_byte_identical_to_v2": true,
+  "full_decode_pass": true,
+  "frame_boundary_checks": [
+    {
+      "shot": "W10-A",
+      "frame": 1212,
+      "mean": 31.594999638310185
+    },
+    {
+      "shot": "W10-A",
+      "frame": 1283,
+      "mean": 32.3379517505787
+    },
+    {
+      "shot": "W10-B",
+      "frame": 1284,
+      "mean": 43.22771014178241
+    },
+    {
+      "shot": "W10-B",
+      "frame": 1343,
+      "mean": 45.551716579861115
+    },
+    {
+      "shot": "W10-C",
+      "frame": 1344,
+      "mean": 32.42830005787037
+    },
+    {
+      "shot": "W10-C",
+      "frame": 1439,
+      "mean": 34.31188982928241
+    },
+    {
+      "shot": "W11-A",
+      "frame": 1440,
+      "mean": 49.306412037037035
+    },
+    {
+      "shot": "W11-A",
+      "frame": 1499,
+      "mean": 55.066873914930554
+    },
+    {
+      "shot": "W11-B",
+      "frame": 1500,
+      "mean": 43.509453486689814
+    },
+    {
+      "shot": "W11-B",
+      "frame": 1571,
+      "mean": 41.32493995949074
+    },
+    {
+      "shot": "W12-A",
+      "frame": 1572,
+      "mean": 62.749034288194444
+    },
+    {
+      "shot": "W12-A",
+      "frame": 1625,
+      "mean": 64.68362521701388
+    },
+    {
+      "shot": "W12-B",
+      "frame": 1626,
+      "mean": 51.31014322916667
+    },
+    {
+      "shot": "W12-B",
+      "frame": 1679,
+      "mean": 53.97883029513889
+    },
+    {
+      "shot": "W13-A",
+      "frame": 1680,
+      "mean": 67.66092556423611
+    },
+    {
+      "shot": "W13-A",
+      "frame": 1739,
+      "mean": 69.78710720486112
+    },
+    {
+      "shot": "W13-B",
+      "frame": 1740,
+      "mean": 72.78753002025464
+    },
+    {
+      "shot": "W13-B",
+      "frame": 1787,
+      "mean": 72.07879050925926
+    },
+    {
+      "shot": "W13-C",
+      "frame": 1788,
+      "mean": 62.33475405092592
+    },
+    {
+      "shot": "W13-C",
+      "frame": 1835,
+      "mean": 63.10749312789352
+    },
+    {
+      "shot": "W14-A",
+      "frame": 1836,
+      "mean": 42.11652416087963
+    },
+    {
+      "shot": "W14-A",
+      "frame": 1901,
+      "mean": 36.507318070023146
+    },
+    {
+      "shot": "W14-B",
+      "frame": 1902,
+      "mean": 37.78523148148148
+    },
+    {
+      "shot": "W14-B",
+      "frame": 1967,
+      "mean": 43.4126197193287
+    },
+    {
+      "shot": "W15-A",
+      "frame": 1968,
+      "mean": 51.155129484953704
+    },
+    {
+      "shot": "W15-A",
+      "frame": 2027,
+      "mean": 54.4223828125
+    },
+    {
+      "shot": "W15-B",
+      "frame": 2028,
+      "mean": 57.34034613715278
+    },
+    {
+      "shot": "W15-B",
+      "frame": 2079,
+      "mean": 61.53307978877315
+    },
+    {
+      "shot": "W15-C",
+      "frame": 2080,
+      "mean": 44.32718532986111
+    },
+    {
+      "shot": "W15-C",
+      "frame": 2147,
+      "mean": 41.81517975983796
+    },
+    {
+      "shot": "W16-A",
+      "frame": 2148,
+      "mean": 44.49216507523148
+    },
+    {
+      "shot": "W16-A",
+      "frame": 2195,
+      "mean": 46.26599537037037
+    },
+    {
+      "shot": "W16-B",
+      "frame": 2196,
+      "mean": 42.59529947916667
+    },
+    {
+      "shot": "W16-B",
+      "frame": 2280,
+      "mean": 43.21292462384259
+    },
+    {
+      "shot": "W16-C",
+      "frame": 2281,
+      "mean": 47.26625904224537
+    },
+    {
+      "shot": "W16-C",
+      "frame": 2375,
+      "mean": 1.413638599537037
+    }
+  ],
+  "receipts": {
+    "final.mp4": {
+      "bytes": 30730681,
+      "duration_s": 99.0
+    },
+    "clean.mp4": {
+      "bytes": 97141635,
+      "duration_s": 99.0
+    },
+    "review_tail.mp4": {
+      "bytes": 18544162,
+      "duration_s": 48.5
+    }
+  },
+  "question_pause_s": 3.7,
+  "fade_s": [
+    98.2,
+    99
+  ],
+  "visual_review_pending": true,
+  "human_audio_approval": false
+}

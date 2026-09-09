@@ -1,0 +1,48 @@
+{
+  "duration_s": 99,
+  "scene_count": 16,
+  "caption_count": 21,
+  "ending_duration_s": 10,
+  "question_spoken_end_s": 91.34,
+  "command_spoken_start_s": 95.04,
+  "question_to_command_gap_s": 3.7,
+  "silence_added_s": 3,
+  "question_caption_s": [
+    90,
+    94.25
+  ],
+  "command_caption_s": [
+    95.04,
+    96.63
+  ],
+  "end_hold_after_caption_s": 2.37,
+  "fade_s": [
+    98.2,
+    99
+  ],
+  "unchanged_head_pcm_correlation": 0.9999834864946654,
+  "question_pcm_correlation": 0.9999758226277722,
+  "command_pcm_correlation": 0.9999239687625636,
+  "pause_rms": 0.0,
+  "full_decode_pass": true,
+  "receipts": {
+    "final.mp4": {
+      "bytes": 31549663,
+      "duration_s": 99.0
+    },
+    "clean.mp4": {
+      "bytes": 97911190,
+      "duration_s": 99.0
+    },
+    "ending_final.mp4": {
+      "bytes": 1369318,
+      "duration_s": 10.0
+    },
+    "ending_clean.mp4": {
+      "bytes": 2985411,
+      "duration_s": 10.0
+    }
+  },
+  "human_audio_approval": false,
+  "visual_review_pending": true
+}

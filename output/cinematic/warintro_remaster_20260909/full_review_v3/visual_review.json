@@ -1,0 +1,19 @@
+{
+  "status": "PASS_FOR_REVIEW",
+  "duration_s": 99,
+  "editorial_cut_count": 27,
+  "checked_mid_frames": 18,
+  "automated_boundary_frames": 36,
+  "caption_count": 21,
+  "caption_timing_unchanged": true,
+  "audio_correlation": 0.9999843979159942,
+  "question_pause_s": 3.7,
+  "full_realtime_viewing": false,
+  "human_audio_approval": false,
+  "notes": [
+    "W10 situation, Killu expression, avenger expression use three cuts",
+    "W15 lost love returns to the family memory",
+    "W16 question, silent reaction, command preserve the pause and final fade",
+    "No subtitle clipping in inspected frames"
+  ]
+}
