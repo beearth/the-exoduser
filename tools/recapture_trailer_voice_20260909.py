@@ -51,7 +51,7 @@ def record(page,name,seconds,events=(),**options):
       recorder.onerror=e=>window.__rtResult={error:String(e.error)};
       recorder.onstop=async()=>{r.active=false;video.getTracks().forEach(t=>t.stop());
         const blob=new Blob(chunks,{type:recorder.mimeType});window.__rtBlob=new Uint8Array(await blob.arrayBuffer());
-        window.__rtResult={bytes:blob.size,samples:r.samples,audio:r.voiceAudit,charIdx:_charIdx,seconds:(performance.now()-r.start)/1000};};
+        window.__rtResult={bytes:blob.size,samples:r.samples,audio:r.voiceAudit,combat:r.combatAudit||[],skills:r.skillAudit||[],charIdx:_charIdx,seconds:(performance.now()-r.start)/1000};};
       r.start=performance.now();r.active=true;recorder.start();setTimeout(()=>recorder.stop(),config.seconds*1000);
     }""",config)
     page.wait_for_function('window.__rtResult!==null',timeout=(seconds+30)*1000)

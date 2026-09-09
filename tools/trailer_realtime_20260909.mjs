@@ -1,4 +1,4 @@
-// Use only through the supported Browser skill tab/CDP capability.
+// Shared capture runtime for the CDP client and Python Playwright recorder.
 import fs from 'node:fs/promises';
 import path from 'node:path';
 export function createRealtimeTrailer({cdp,root}){
@@ -9,18 +9,20 @@ export function createRealtimeTrailer({cdp,root}){
   const canvas=document.createElement('canvas');canvas.width=1920;canvas.height=1080;
   const ctx=canvas.getContext('2d',{alpha:false});
   const a=actx();mbus();const audio=a.createMediaStreamDestination();_comp.connect(audio);
-  const original=_drawBurst,originalDraw=draw;
+  const original=_drawBurst,originalDraw=draw,originalDrawP=drawP;
   window.__rt={canvas,ctx,audio,original,originalDraw,active:false,events:[],samples:[]};
-  draw=function(){const r=window.__rt;if(r.active&&r.framing==='boss'){const b=ens.find(e=>e.ib&&e.alive);if(b){G.cam.x=(P.x+b.x)*.5;G.cam.y=(P.y+b.y)*.5-60;}}return originalDraw.apply(this,arguments);};
+  // Suppress only the visual hit flicker. Collision/update always sees real iframes.
+  drawP=function(){if(!window.__rt.active)return originalDrawP.apply(this,arguments);const saved=P.iframes;try{P.iframes=0;return originalDrawP.apply(this,arguments);}finally{P.iframes=saved;}};
+  draw=function(){const r=window.__rt;if(r.active&&r.framing==='boss'){const b=ens.find(e=>e.ib&&e.alive);if(b){G.cam.x=(P.x+b.x)*.5;G.cam.y=(P.y+b.y)*.5-60;}}if(!r.active)return originalDraw.apply(this,arguments);const texts=G.txts;try{G.txts=[];return originalDraw.apply(this,arguments);}finally{G.txts=texts;}};
   _drawBurst=function(){original.apply(this,arguments);const r=window.__rt;if(!r.active)return;
    const now=performance.now(),t=(now-r.start)/1000;
-   if(r.protect){P.hp=P.mhp;P.mp=P.mmp;P.st=P.mst;P._dead=false;P.iframes=999999;}
+   if(r.protect){P.mp=P.mmp;P.st=P.mst;}
    while(r.events.length&&r.events[0].at<=t){const e=r.events.shift();(0,eval)(e.code);}
    if(r.pan){const f=Math.min(1,t/r.seconds);G.cam.x=r.pan[0]+(r.pan[2]-r.pan[0])*f;G.cam.y=r.pan[1]+(r.pan[3]-r.pan[1])*f;G.shake=0;}
    ctx.fillStyle='#000';ctx.fillRect(0,0,1920,1080);
    for(const id of ['c','fogGL','burstCvs','ct','vfx3dCvs','boss3dCvs']){const c=document.getElementById(id);if(c&&c.width>0&&c.height>0&&getComputedStyle(c).display!=='none')ctx.drawImage(c,0,0,1920,1080);}
    if(r.rageHud){ctx.fillStyle='rgba(12,8,8,.8)';ctx.fillRect(790,944,340,42);ctx.fillStyle='#ed582f';ctx.fillRect(806,970,308*Math.min(1,P.rage/_rageMax()),4);ctx.fillStyle='#f2e7d5';ctx.font='bold 16px Malgun Gothic';ctx.textAlign='left';ctx.fillText('RAGE  '+Math.round(P.rage),806,963);}
-   r.samples.push({t,gameTime:_gameTime,rage:P.rage,alive:ens.reduce((n,e)=>n+(e.alive?1:0),0),kills:G.kills||0,flames:(G._fireZones||[]).filter(z=>z.type==='assaultFlame').map(z=>z._afStk||0)});
+   r.samples.push({t,gameTime:_gameTime,hp:P.hp,state:P.s,iframes:P.iframes,dead:!!P._dead,rage:P.rage,alive:ens.reduce((n,e)=>n+(e.alive?1:0),0),kills:G.kills||0,flames:(G._fireZones||[]).filter(z=>z.type==='assaultFlame').map(z=>z._afStk||0)});
   };
   return {audio:a.state,mime:MediaRecorder.isTypeSupported('video/webm;codecs=vp9,opus')};
  })()`);}

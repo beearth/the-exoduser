@@ -100,6 +100,7 @@ def segment(entry):
  return target
 
 def main(captions_enabled=True):
+ duration=round(sum(cut[2] for cut in EDL),3)
  EDIT.mkdir(parents=True,exist_ok=True);FINAL.parent.mkdir(parents=True,exist_ok=True)
  if captions_enabled:prepare_font();captions()
  # Dark falloff behind the caption, without an opaque information box.
@@ -115,15 +116,15 @@ def main(captions_enabled=True):
  music=ROOT/'bgm/1장_썩은숲/Bloodsteel Ascension.mp3'
  # Retain synchronized recorded audio; the score continues across every cut.
  run(['-i',EDIT/'picture.mp4','-ss',18,'-i',music,'-filter_complex',
-      '[0:a]volume=1.8,highpass=f=35[sfx];[1:a]atrim=duration=70,asetpts=PTS-STARTPTS,volume=.48,afade=t=in:d=0.35,afade=t=out:st=68:d=2[bgm];[sfx][bgm]amix=inputs=2:duration=longest:normalize=0,loudnorm=I=-16:TP=-1.5:LRA=9,aformat=sample_rates=48000:channel_layouts=stereo[mix]',
-      '-map','[mix]','-t',70,'-c:a','pcm_s24le',EDIT/'mix.wav'])
+      f'[0:a]volume=1.8,highpass=f=35[sfx];[1:a]atrim=duration={duration},asetpts=PTS-STARTPTS,volume=.48,afade=t=in:d=0.35,afade=t=out:st={duration-2}:d=2[bgm];[sfx][bgm]amix=inputs=2:duration=longest:normalize=0,loudnorm=I=-16:TP=-1.5:LRA=9,aformat=sample_rates=48000:channel_layouts=stereo[mix]',
+      '-map','[mix]','-t',duration,'-c:a','pcm_s24le',EDIT/'mix.wav'])
  ass=str((EDIT/'captions.ass').relative_to(ROOT)).replace('\\','/')
  frame_filter='drawbox=x=0:y=0:w=iw:h=38:color=black:t=fill,drawbox=x=0:y=1042:w=iw:h=38:color=black:t=fill'
  video_filter=(f"[0:v][2:v]overlay=0:0:enable='lt(t,66)',{frame_filter},ass='{ass}':fontsdir='tmp/trailer_v2/fonts'[v]"
                if captions_enabled else f'[0:v]{frame_filter}[v]')
  run(['-i',EDIT/'picture.mp4','-i',EDIT/'mix.wav','-loop',1,'-i',EDIT/'shade.png',
       '-filter_complex',video_filter,
-      '-map','[v]','-map','1:a','-t',70,'-r',60,'-c:v','libx264','-threads',8,'-preset','slow','-crf',18,
+      '-map','[v]','-map','1:a','-t',duration,'-r',60,'-c:v','libx264','-threads',8,'-preset','slow','-crf',18,
       '-pix_fmt','yuv420p','-color_range','tv','-colorspace','bt709','-color_primaries','bt709','-color_trc','bt709',
       '-c:a','aac','-b:a','320k','-movflags','+faststart',FINAL])
  (EDIT/'edl.json').write_text(json.dumps(EDL,ensure_ascii=False,indent=2),encoding='utf-8')
