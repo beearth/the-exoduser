@@ -1,8 +1,8 @@
 {
   "version": 7,
-  "status": "prepared_not_submitted",
+  "status": "submitted_processing",
   "browser_page": "https://higgsfield.ai/ko/generate",
-  "browser_tab_id": "110160717",
+  "browser_tab_id": "110160727",
   "model_ui": "Cinema Studio 2.5",
   "duration_s": 5,
   "resolution_ui": "1080p",
@@ -11,10 +11,18 @@
   "shots_ui": "단일 샷",
   "count": 1,
   "displayed_credit_cost": 8,
-  "credits_spent": 0,
+  "credits_spent": null,
   "source": "w09_start.png",
-  "upload_confirmed": false,
-  "latest_retry": {"date": "2026-09-09", "trigger": "사용자 뉴버전 진행", "result": "fileChooser.setFiles failed: Not allowed (-32000)", "submitted": false},
-  "blocking_error": "fileChooser.setFiles failed: Not allowed (-32000). Chrome extension file URL access requested from user.",
-  "prompt": "W09 - one continuous five-second shot. Use the supplied start frame as the exact actor, costume and set reference. Live-action dark fantasy, natural skin and physical cloth/iron/stone; muted torchlight and cold window light. The exhausted warrior slowly exhales, lets his shoulders settle slightly, and lowers his gaze. His sword stays in the same hand, pointed down, with unchanged shape and length. The heavy burgundy cape shifts lightly at its hem; smoke drifts and torch flames flicker naturally. Gentle stable camera creep only. One restrained emotional action: the emptiness after revenge. Preserve face, hair, armor plates, hand anatomy, hall geometry and screen direction throughout. No combat, no new people, no blood or injuries, no face redesign, no talking, no cuts, no speed ramp, no freeze frame, no morphing, no dramatic wind. Keep the whole clip continuously alive with subtle real motion. No generated dialogue, subtitles, logos or music."
+  "upload_confirmed": true,
+  "latest_retry": {
+    "date": "2026-09-09",
+    "result": "File upload accepted; thumbnail verified; generation started toast and processing card observed",
+    "submitted": true
+  },
+  "blocking_error": null,
+  "prompt": "W09 - one continuous five-second shot. Use the supplied start frame as the exact actor, costume and set reference. Live-action dark fantasy, natural skin and physical cloth/iron/stone; muted torchlight and cold window light. The exhausted warrior slowly exhales, lets his shoulders settle slightly, and lowers his gaze. His sword stays in the same hand, pointed down, with unchanged shape and length. The heavy burgundy cape shifts lightly at its hem; smoke drifts and torch flames flicker naturally. Gentle stable camera creep only. One restrained emotional action: the emptiness after revenge. Preserve face, hair, armor plates, hand anatomy, hall geometry and screen direction throughout. No combat, no new people, no blood or injuries, no face redesign, no talking, no cuts, no speed ramp, no freeze frame, no morphing, no dramatic wind. Keep the whole clip continuously alive with subtle real motion. No generated dialogue, subtitles, logos or music.",
+  "submitted_credit_cost": 8,
+  "credit_accounting_note": "UI cost 8; request accepted; actual balance difference not inspected",
+  "uploaded_asset_label": "029406bc-3612-43dc-b659-413376616038",
+  "project_url": "https://higgsfield.ai/ko/generate/@byzantinecrab1644/project/folders/9880dbbf-555f-4b92-9991-09bab8be564e"
 }
