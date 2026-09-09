@@ -14,7 +14,7 @@
 | 추가 누락 에셋 | `proj_atlas.png`, `prefabs/registry.json`을 FILES에 포함. 패키지 단독 시작 시 발생한 404 수정 |
 | API 차이 보완 | `node-main.js`에 GET/POST `/api/mats` 추가. 개발 서버와 같은 정수 clamp로 `%APPDATA%/EXODUSER-HELL/saves/_sharedMats.json`에 보관. `/api/slots`는 `_` 접두 JSON을 제외 |
 | 검증 격리 | 실제 배포 node-main.js의 포트 상수만 QA 로더에서 3349로 치환. APPDATA도 임시 테스트 폴더로 분리하여 개발 서버·사용자 세이브 접근 방지. 핸들러·미디어·페이지는 배포 패키지 그대로 |
-| 배포 상태 | Steam 업로드 완료, 새 BuildID `25202408`. Windows Depot `4749591` manifest `5604079566035910679`. 브라우저 제어 도구의 confirm 승인에서 Emulation.setFocusEmulationEnabled timeout이 반복되어 기본 브랜치 적용 대기. Steamworks 재조회 default `24922778` 유지. 사용자에게 최종 공개 버튼/확인 팝업 처리를 인계함 |
+| 배포 상태 | Steam 업로드 및 default 적용 완료. BuildID `25202408`, Windows Depot `4749591` manifest `5604079566035910679`. 사용자가 최종 확인창을 처리한 뒤 Steamworks 기본 브랜치와 공개 기록에서 확인. 이전 default `24922778`. Steamworks 표시 2026-09-08 23:52, 한국 시각 2026-09-09 15:52 |
 | NW.js 음성 원인 | 기본 NW.js 0.111.2에서 v13 영상은 4초 이상 재생·error=null이나 AAC 디코딩 바이트=0·WebAudio peak=0. Chrome 검증만으로는 놓치는 실제 엔진 차이 |
 | 코덱 수정 | 공식 NW.js 문서가 안내하는 nwjs-ffmpeg-prebuilt 0.111.2 Windows x64. `vendor/nwjs-ffmpeg/0.111.2/ffmpeg.dll`, SHA-256 `be2504fbca75c5e3282a79481b5188167b43292cb378ec093ae8ca203ef30500`. builder 시작 시 체크섬 검사, 패키징 마지막에 OUT/ffmpeg.dll 복사 |
 | 음성 실측 | 동일 NW.js/Chromium 엔진 DLL 바이트 일치 확인. 교체 후 4.009842초 재생, AAC 65,491바이트 디코딩, WebAudio peak 0.34091514348983765, error=null. `output/steam_20260909/nw_media_probe.json` |
