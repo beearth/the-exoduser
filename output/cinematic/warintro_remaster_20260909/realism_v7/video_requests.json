@@ -1,6 +1,6 @@
 {
   "version": 7,
-  "status": "submitted_processing",
+  "status": "completed_downloaded",
   "browser_page": "https://higgsfield.ai/ko/generate",
   "browser_tab_id": "110160727",
   "model_ui": "Cinema Studio 2.5",
@@ -24,5 +24,9 @@
   "submitted_credit_cost": 8,
   "credit_accounting_note": "UI cost 8; request accepted; actual balance difference not inspected",
   "uploaded_asset_label": "029406bc-3612-43dc-b659-413376616038",
-  "project_url": "https://higgsfield.ai/ko/generate/@byzantinecrab1644/project/folders/9880dbbf-555f-4b92-9991-09bab8be564e"
+  "project_url": "https://higgsfield.ai/ko/generate/@byzantinecrab1644/project/folders/9880dbbf-555f-4b92-9991-09bab8be564e",
+  "batch_manifest": "batch_manifest.json",
+  "batch_count": 16,
+  "batch_status": "all_16_generated_downloaded",
+  "batch_displayed_credit_cost_total": 132
 }
