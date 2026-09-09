@@ -58,5 +58,6 @@ W16 최초 생성본은 후반 해골 얼굴이 인간 얼굴처럼 변해 채�
 | 판정 범위 | PASS_FOR_REVIEW. 표본 화면·데이터·디코딩 검사이며 실시간 전체 재생·사람의 청취 승인으로 표시하지 않음 |
 | 로컬 | output/cinematic/warintro_remaster_20260909/full_review/final.mp4; clean.mp4·caps.srt·manifest.json·qa.json·visual_review.json·deliverable.json 보관 |
 | 전송 | final/clean/ZIP/검수 시트3종 HTTP200 후 media_confirm 완료 |
+| 저장 | 합본·제작 기록 8c25b27a 커밋. 이번 컷들의 원본 voice.mp3도 재현을 위해 보관하며, 공용 storyboard는 이번 서사 안내 문단만 선택 반영하여 다른 번역 작업을 보존한다 |
 
 [영어 더빙·한글 자막 전체95초](https://d2ol7oe51mr4n9.cloudfront.net/user_3G1zto9sz11Uf3iEOhJefE9HdGG/72f01bec-29b4-4847-8b8c-32ec31e09e7e.mp4) · [무자막 마스터](https://d2ol7oe51mr4n9.cloudfront.net/user_3G1zto9sz11Uf3iEOhJefE9HdGG/a831c4fb-4f28-413a-975c-03a361decfe2.mp4) · [편집·검수 자료 ZIP](https://d2ol7oe51mr4n9.cloudfront.net/user_3G1zto9sz11Uf3iEOhJefE9HdGG/5b14c568-5520-4f58-aa87-a66e17dfcecf.zip)
