@@ -70,3 +70,50 @@ test('localized search still respects path filters and recovers after no match',
   assert.equal(await page.locator('.growth-empty').count(),1);
   assert.deepEqual((await search('')).sort(),['pMRegen','pMagic','pVital']);
 });
+
+test('hover previews effects without changing selection or spending points',async()=>{
+  const detail=await page.locator('#growthDetail').innerText();
+  await page.locator('[data-passive="pMagic"]').hover();
+  const preview=page.locator('#growthNodePreview');
+  await preview.waitFor({state:'visible'});
+  assert.match(await preview.innerText(),/MP-Kostensenkung/);
+  assert.equal(await page.locator('#growthDetail').innerText(),detail);
+  assert.equal(await page.locator('#growthApply').isDisabled(),true);
+  const box=await preview.boundingBox(),viewport=await page.locator('#growthTreeViewport').boundingBox();
+  assert.ok(box.x>=viewport.x&&box.y>=viewport.y&&box.x+box.width<=viewport.x+viewport.width+1&&box.y+box.height<=viewport.y+viewport.height+1);
+});
+
+test('pending ledger follows allocations and restores a filtered selection',async()=>{
+  await page.locator('[data-passive="pMagic"]').click();
+  await page.locator('#growthUpgrade').click();
+  await page.locator('[data-path="assault"]').click();
+  const entry=page.locator('#growthDraftList [data-draft-key="pMagic"]');
+  await entry.waitFor({state:'visible'});
+  assert.match(await entry.innerText(),/0 → 1/);
+  await entry.click();
+  assert.equal(await page.locator('[data-passive="pMagic"]').getAttribute('aria-pressed'),'true');
+  await page.locator('#growthCancel').click();
+  assert.equal(await page.locator('#growthDraftList').isHidden(),true);
+  assert.equal(await page.locator('#growthApply').isDisabled(),true);
+});
+
+test('previews stay inside a narrow tree and clear when focus leaves',async()=>{
+  await page.setViewportSize({width:960,height:720});
+  for(const key of ['pMagic','pRage','pPierce','pMalice']){
+    const node=page.locator(`[data-passive="${key}"]`);
+    await node.hover();
+    const tooltip=page.locator('#growthNodePreview');
+    assert.equal(await tooltip.isVisible(),true);
+    const b=await tooltip.boundingBox(),v=await page.locator('#growthTreeViewport').boundingBox(),n=await node.boundingBox();
+    assert.ok(b.x>=v.x&&b.y>=v.y&&b.x+b.width<=v.x+v.width+1&&b.y+b.height<=v.y+v.height+1,key);
+    assert.ok(b.x+b.width<=n.x||b.x>=n.x+n.width||b.y+b.height<=n.y||b.y>=n.y+n.height,key+' covered by preview');
+    assert.equal(await node.getAttribute('aria-describedby'),'growthNodePreview');
+  }
+  await page.locator('#growthSearch').focus();
+  await page.keyboard.press('Tab');
+  await page.locator('[data-passive="pMagic"]').focus();
+  assert.equal(await page.locator('#growthNodePreview').isVisible(),true);
+  await page.locator('#growthSearch').focus();
+  assert.equal(await page.locator('#growthNodePreview').isHidden(),true);
+  assert.equal(await page.locator('#growthApply').isDisabled(),true);
+});

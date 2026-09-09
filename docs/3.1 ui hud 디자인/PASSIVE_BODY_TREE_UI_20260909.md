@@ -73,4 +73,4 @@
 | 선행투자·전환 예산 |미확정. 현재 독립 투자 유지|
 | 전투 고정계약 |무지개탄 Q 전용, E 패링 불가. 보호된2_3문서 수정 없음|
 
-검증 결과·이미지: `captures/passive_body_tree_20260909/report.json`, `body_<width>_<lang>.png`. 실제1280×720과1920×1080,960×720,600×900 화면 및KO/EN/AR/MS 조합을 검토한다.
+최신 금서 시안의 검증 결과·이미지: `captures/passive_codex_20260909/report.json`, `codex_<width>_<lang>.png`. 실제1280×720과1920×1080,960×720,600×900 화면 및KO/EN/AR/MS 조합을 검토했다. 기존 좌표·부모는 유지하며31개 옅은 빈 인장,비파괴 효과 미리보기,변경 목록을 추가했다. 상세 표시 계약과 공식 자료는 [디자인 기획](PASSIVE_CODEX_DESIGN_RESEARCH_20260909.md). 이전 시안 산출물은 `captures/passive_body_tree_20260909/`에 보존한다.

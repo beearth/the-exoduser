@@ -3,7 +3,7 @@ import json
 from pathlib import Path
 from playwright.sync_api import sync_playwright
 
-OUT=Path('captures/passive_body_tree_20260909')
+OUT=Path('captures/passive_codex_20260909')
 OUT.mkdir(parents=True,exist_ok=True)
 with sync_playwright() as p:
     browser=p.chromium.launch(headless=True)
@@ -20,6 +20,13 @@ with sync_playwright() as p:
     page.locator('#growthTreeViewport').wait_for(state='visible')
     assert page.locator('[data-body-node]').count()==31
     assert page.locator('#statLeft').is_hidden()
+    detail=page.locator('#growthDetail').inner_text()
+    page.locator('[data-body-node="pMagic"]').hover()
+    assert page.locator('#growthNodePreview').is_visible()
+    assert 'MP' in page.locator('#growthNodePreview').inner_text()
+    assert page.locator('#growthDetail').inner_text()==detail
+    assert page.evaluate('P.sp===20&&P.ap===10&&_saves===0')
+    page.screenshot(path=str(OUT/'codex_preview_1920_ko.png'))
     page.locator('[data-body-node="int"]').click()
     page.locator('[data-focus="amount-10"]').click()
     page.locator('#growthUpgrade').click()
@@ -27,6 +34,12 @@ with sync_playwright() as p:
     page.locator('[data-body-node="pMagic"]').click()
     page.locator('#growthUpgrade').click()
     assert page.locator('[data-connection="pMagic"].route').count()==1
+    assert page.locator('#growthDraftList [data-draft-key]').count()==2
+    page.locator('[data-path="assault"]').click()
+    page.locator('[data-draft-key="pMagic"]').click()
+    assert page.locator('[data-body-node="pMagic"]').get_attribute('aria-pressed')=='true'
+    page.mouse.move(1,1)
+    page.screenshot(path=str(OUT/'codex_plan_1920_ko.png'))
     assert page.evaluate('PASSIVES.pMagic===0&&P.ap===10&&_saves===0')
     page.locator('#growthApply').click()
     assert page.evaluate('STATS.int===10&&P.sp===10&&PASSIVES.pMagic===1&&P.ap===9&&STATS.vit===2&&_grit===3&&_saves===1')
@@ -91,9 +104,15 @@ with sync_playwright() as p:
         for n in geo['nodes']:
             v=geo['view']
             assert n['x']>=v['left']-1 and n['y']>=v['top']-1 and n['x']+n['w']<=v['right']+1 and n['y']+n['h']<=v['bottom']+1,(w,lang,n,v)
-        page.screenshot(path=str(OUT/f'body_{w}_{lang}.png'))
+        page.mouse.move(1,1)
+        page.screenshot(path=str(OUT/f'codex_{w}_{lang}.png'))
+        if w==600:
+            page.locator('#growthUpgrade').scroll_into_view_if_needed()
+            assert page.locator('#growthUpgrade').is_visible()
+            page.screenshot(path=str(OUT/'codex_600_ko_detail.png'))
+            page.locator('#statPanel .pbox').evaluate('(n)=>n.scrollTop=0')
         cases.append({'width':w,'height':h,'lang':lang,**geo})
     assert not errors,errors
-    (OUT/'report.json').write_text(json.dumps({'cases':cases,'errors':errors,'transactions':'PASS'},ensure_ascii=False,indent=2),encoding='utf8')
+    (OUT/'report.json').write_text(json.dumps({'cases':cases,'errors':errors,'transactions':'PASS','previewWithoutMutation':'PASS','draftNavigation':'PASS','mobileDetailScroll':'PASS'},ensure_ascii=False,indent=2),encoding='utf8')
     print(json.dumps({'cases':len(cases),'transactions':'PASS','errors':errors}))
     browser.close()

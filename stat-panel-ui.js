@@ -46,7 +46,7 @@
     for(let point=key;bodyPoints[point];point=bodyPoints[point].parent)route.unshift(point);
     return route;
   }
-  function mountBodyTree(root,t){
+  function mountBodyTree(root,t,format){
     const doc=root.ownerDocument,$=id=>root.querySelector('#'+id);
     const make=(tag,cls)=>{const n=doc.createElement(tag);n.className=cls;return n;};
     const svg=(tag,attrs={})=>{const n=doc.createElementNS('http://www.w3.org/2000/svg',tag);for(const [k,v] of Object.entries(attrs))n.setAttribute(k,v);return n;};
@@ -65,15 +65,40 @@
     art.append(anatomy);
     const links=svg('g',{class:'growth-tree-links',fill:'none'}),linkNodes=new Map();
     for(const [key,p] of Object.entries(bodyPoints))if(p.parent){const from=bodyPoints[p.parent];const line=svg('path',{d:`M${from.x} ${from.y}L${p.x} ${p.y}`,'data-connection':key});links.append(line);linkNodes.set(key,line);}
-    art.append(links);scene.append(art);
+    const anchors=svg('g',{class:'growth-tree-anchors',fill:'none'});
+    for(const node of bodyNodes)anchors.append(svg('circle',{cx:node.x,cy:node.y,r:node.major?29:21}));
+    art.append(links,anchors);scene.append(art);
     const origin=make('span','growth-tree-origin');origin.textContent='✦';origin.setAttribute('aria-hidden','true');scene.append(origin);
     scene.append($('statGrid'),$('passiveGrid'));viewport.append(scene);
+    const preview=make('aside','growth-node-preview');preview.id='growthNodePreview';preview.hidden=true;preview.setAttribute('role','tooltip');viewport.append(preview);
+    const previewData=new Map();let previewControl=null;
+    const hidePreview=()=>{preview.hidden=true;previewControl?.removeAttribute('aria-describedby');previewControl=null;for(const line of linkNodes.values())line.classList.remove('preview');};
+    const showPreview=control=>{
+      const key=control?.dataset.bodyNode,data=previewData.get(key);if(!data)return;
+      previewControl?.removeAttribute('aria-describedby');previewControl=control;control.setAttribute('aria-describedby',preview.id);
+      const route=new Set(bodyRoute(key));
+      for(const [id,line] of linkNodes)line.classList.toggle('preview',route.has(id));
+      const heading=make('strong','growth-preview-name');heading.textContent=data.label;
+      const rank=make('span','growth-preview-rank');rank.textContent=data.value+(data.stat?' SP':' / '+data.max);
+      const headingRow=make('div','growth-preview-heading');headingRow.append(heading,rank);
+      const columns=make('div','growth-preview-columns');columns.textContent=t('현재','NOW')+' → '+t('다음','NEXT');
+      const rows=data.rows.slice(0,2).map((r,i)=>{const row=make('div','growth-preview-row'),label=make('span',''),values=make('strong','');label.textContent=t(r.ko,r.en);values.textContent=format(r)+' → '+format(data.next[i]);row.append(label,values);return row;});
+      preview.replaceChildren(headingRow,columns,...rows);preview.hidden=false;
+      const v=viewport.getBoundingClientRect(),n=control.getBoundingClientRect(),w=preview.offsetWidth,h=preview.offsetHeight;
+      let x=n.right-v.left+16;if(x+w>v.width-12)x=n.left-v.left-w-16;
+      let y=n.top-v.top+n.height/2-h/2;
+      x=Math.max(12,Math.min(v.width-w-12,x));y=Math.max(12,Math.min(v.height-h-12,y));
+      // On narrow views place the preview above/below the target when neither side fits.
+      if(x<n.right-v.left+6&&x+w>n.left-v.left-6){y=n.bottom-v.top+14;if(y+h>v.height-12)y=n.top-v.top-h-14;y=Math.max(12,Math.min(v.height-h-12,y));}
+      preview.style.left=x+'px';preview.style.top=y+'px';
+    };
     const toolbar=make('div','growth-tree-toolbar');
     toolbar.append($('statLeft').querySelector('.growth-section-heading'));
     const controls=make('div','growth-tree-zoom');controls.setAttribute('dir','ltr');
     let zoom=1,panX=0,panY=0,scale=1,width=0,height=0,drag=null,moved=false;
     const zoomButtons=[];
     const draw=()=>{
+      hidePreview();
       const w=viewport.clientWidth,h=viewport.clientHeight;if(!w||!h)return;
       if(w!==width||h!==height){width=w;height=h;panX=panY=0;}
       scale=Math.min((w-12)/1000,(h-12)/800)*zoom;
@@ -89,7 +114,12 @@
       const control=e.target.closest('[data-body-node]');if(!control)return;
       const p=bodyPoints[control.dataset.bodyNode],x=width/2+panX+(p.x-500)*scale,y=height/2+panY+(p.y-400)*scale;
       panX+=Math.max(30,Math.min(width-30,x))-x;panY+=Math.max(30,Math.min(height-30,y))-y;draw();
+      if(control.matches(':focus-visible'))showPreview(control);
     });
+    viewport.addEventListener('pointerover',e=>{if(!drag)showPreview(e.target.closest('[data-body-node]'));});
+    viewport.addEventListener('pointerout',e=>{if(e.target.closest('[data-body-node]')&&!e.relatedTarget?.closest?.('[data-body-node]'))hidePreview();});
+    viewport.addEventListener('pointerleave',hidePreview);
+    viewport.addEventListener('focusout',hidePreview);
     for(const [label,action] of [['−',()=>setZoom(zoom-.25)],['100%',()=>setZoom(1)],['+',()=>setZoom(zoom+.25)]]){const b=make('button','growth-zoom-button');b.type='button';b.textContent=label;b.onclick=action;controls.append(b);zoomButtons.push(b);}
     toolbar.append(controls);$('statRight').append(toolbar,viewport);
     const resize=new ResizeObserver(draw);resize.observe(viewport);
@@ -108,6 +138,7 @@
       e.preventDefault();e.stopPropagation();if(next&&Number.isFinite(next.score)){next.n.click();const target=scene.querySelector(`[data-body-node="${next.n.dataset.bodyNode}"]`);target?.focus({preventScroll:true});}
     });
     return {update(selected,state,live){
+      previewData.clear();
       const route=new Set(bodyRoute(selected));
       for(const node of bodyNodes){
         const element=node.stat?$(`statGrid`).querySelector(`[data-stat="${node.key}"]`):$('passiveGrid').querySelector(`[data-passive="${node.key}"]`);
@@ -120,6 +151,9 @@
         if(!node.stat)element.querySelector('.growth-card-rank').dataset.level=value;
         element.classList.toggle('learned',value>0);element.classList.toggle('selected',selected===node.key);element.classList.toggle('pending',value!==before);
         const label=node.stat?control.textContent:element.querySelector('.growth-card-name').textContent;
+        element.dataset.level=value;
+        const max=Number(element.dataset.max),rows=(node.stat?statEffects:passiveEffects)(node.key,value),next=(node.stat?statEffects:passiveEffects)(node.key,Math.min(max,value+1));
+        previewData.set(node.key,{label,value,max,stat:node.stat,rows,next});
         control.title=label+' · '+value+(node.stat?' SP':' Lv.');control.setAttribute('aria-label',control.title);
       }
       for(const [key,line] of linkNodes){const n=bodyPoints[key],value=n.stat?(key==='grit'?state.grit:state.stats[key]||0):state.passives[key]||0;line.classList.toggle('route',route.has(key));line.classList.toggle('allocated',value>0);}
@@ -219,7 +253,9 @@
     const liveLabel=el('p','growth-live-label'),resources=el('div','growth-resources');
     resources.append(liveLabel,$('growthMetrics'));root.querySelector('.growth-header').append(resources);
     root.classList.add('growth-remaster');
-    const bodyTree=mountBodyTree(root,t);
+    const bodyTree=mountBodyTree(root,t,format);
+    const draftList=el('section','growth-draft-list');draftList.id='growthDraftList';draftList.hidden=true;
+    root.querySelector('.growth-actions').before(draftList);
     new MutationObserver(()=>{if(!root.classList.contains('on'))plan=null;}).observe(root,{attributes:true,attributeFilter:['class']});
     search.addEventListener('input',render);
     for(const event of ['keydown','keyup'])root.addEventListener(event,e=>{
@@ -283,7 +319,7 @@
         if(!statPath||(path!=='all'&&path!==statPath)||(filter==='learned'&&value===0)||(filter==='planned'&&value===current))continue;
         if(query&&![name(def),def.name,def.nameEn,t(def.desc,def.descEn),def.desc,def.descEn,def.key,...statEffects(def.key,1).flatMap(r=>[t(r.ko,r.en),r.ko,r.en])].join(' ').toLocaleLowerCase().includes(query))continue;
         const max=def.key==='grit'?Infinity:api.caps[def.key];
-        const item=el('article','growth-stat');item.dataset.stat=def.key;
+        const item=el('article','growth-stat');item.dataset.stat=def.key;item.dataset.max=max;
         const head=el('div','growth-stat-head');
         const selectStat=button(name(def),'growth-stat-select',()=>{selectedStat=def.key;$('growthDetail').scrollTop=0;render();},'inspect-'+def.key);
         selectStat.setAttribute('aria-pressed',String(selectedStat===def.key));
@@ -303,7 +339,9 @@
         if(p.icon)b.append(icon(p.icon,28));
         else {const star=el('span','growth-path-star','✦');star.setAttribute('aria-hidden','true');b.append(star);}
         const numeral=el('span','growth-path-numeral',['','I','II','III','IV','V','VI'][i]);numeral.setAttribute('aria-hidden','true');b.append(numeral);
-        b.append(el('span','',t(p.ko,p.en)));return b;
+        const keys=p.keys?[...p.keys,...Object.entries({str:'assault',dex:'precision',int:'arcane',lck:'fate',grit:'survival'}).filter(([,id])=>id===p.id).map(([key])=>key)]:bodyNodes.map(n=>n.key);
+        const learned=keys.filter(key=>(key==='grit'?state.grit:key.startsWith('p')?state.passives[key]:state.stats[key])>0).length;
+        b.append(el('span','growth-path-label',t(p.ko,p.en)),el('span','growth-path-count',learned+' / '+keys.length));return b;
       }));
       pathHint.textContent=activePath?t(...activePath.hint):t('6개의 길 · 서로 조합 가능한 26개 패시브','6 paths · 26 freely combinable passives');
       const filters=[['all','전체','All'],['learned','습득','Learned'],['planned','변경 중','Pending']];
@@ -314,7 +352,7 @@
       for(const def of visible){
         const value=state.passives[def.key]||0,current=live.passives[def.key]||0,school=pathFor(def.key);
         const card=button(undefined,'growth-passive',()=>{selected=def.key;selectedStat=null;$('growthDetail').scrollTop=0;render();},'passive-'+def.key);
-        card.dataset.passive=def.key;card.setAttribute('aria-pressed',String(!selectedStat&&selected===def.key));card.style.setProperty('--school-color',school?.color||'#c5b27c');
+        card.dataset.passive=def.key;card.dataset.max=def.max;card.setAttribute('aria-pressed',String(!selectedStat&&selected===def.key));card.style.setProperty('--school-color',school?.color||'#c5b27c');
         card.classList.toggle('pending',value!==current);card.classList.toggle('learned',value>0);card.classList.toggle('maxed',value>=def.max);
         const top=el('span','growth-card-top');top.append(icon(def.key,26),el('strong','growth-card-name',name(def)));
         const main=passiveEffects(def.key,value)[0];
@@ -367,6 +405,15 @@
         refund.disabled=value<amount;refund.textContent=t('{n}포인트 환불 계획','Plan {n}-point refund',{n:amount});refund.onclick=()=>change('stat',key,-amount);
         set('growthUpgradeNote',upgrade.disabled?t('SP 또는 투자 상한을 확인하세요.','Check SP and the allocation cap.'):t('추가 후 계획 잔여 SP {n}','{n} SP left after adding',{n:state.sp-amount}));
       }
+      const entries=[];
+      for(const d of [...defs.filter(d=>['str','dex','int','lck','grit'].includes(d.key)),...api.passiveDefs]){
+        const stat=!d.key.startsWith('p'),before=d.key==='grit'?live.grit:stat?live.stats[d.key]||0:live.passives[d.key]||0,after=d.key==='grit'?state.grit:stat?state.stats[d.key]||0:state.passives[d.key]||0;
+        if(before===after)continue;
+        const b=button(undefined,'growth-draft-entry',()=>{path='all';filter='all';search.value='';selectedStat=stat?d.key:null;if(!stat)selected=d.key;render();},'draft-'+d.key);
+        b.dataset.draftKey=d.key;b.append(el('span','',name(d)),el('strong','',before+' → '+after));entries.push(b);
+      }
+      const ledgerHeading=el('h3','growth-draft-heading',t('변경 중','Pending')+' · '+entries.length),ledgerBody=el('div','growth-draft-entries');ledgerBody.append(...entries);
+      draftList.replaceChildren(ledgerHeading,ledgerBody);draftList.hidden=!entries.length;
       bodyTree.update(selectedStat||selected,state,live);
       if(focus){const target=Array.from(root.querySelectorAll('[data-focus]')).find(n=>n.dataset.focus===focus);if(target&&!target.disabled)target.focus({preventScroll:true});}
       $('statGrid').scrollTop=scroll[0];$('passiveGrid').scrollTop=scroll[1];$('growthDetail').scrollTop=scroll[2];

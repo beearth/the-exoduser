@@ -14,6 +14,7 @@
   "credits_spent": 0,
   "source": "w09_start.png",
   "upload_confirmed": false,
+  "latest_retry": {"date": "2026-09-09", "trigger": "사용자 뉴버전 진행", "result": "fileChooser.setFiles failed: Not allowed (-32000)", "submitted": false},
   "blocking_error": "fileChooser.setFiles failed: Not allowed (-32000). Chrome extension file URL access requested from user.",
   "prompt": "W09 - one continuous five-second shot. Use the supplied start frame as the exact actor, costume and set reference. Live-action dark fantasy, natural skin and physical cloth/iron/stone; muted torchlight and cold window light. The exhausted warrior slowly exhales, lets his shoulders settle slightly, and lowers his gaze. His sword stays in the same hand, pointed down, with unchanged shape and length. The heavy burgundy cape shifts lightly at its hem; smoke drifts and torch flames flicker naturally. Gentle stable camera creep only. One restrained emotional action: the emptiness after revenge. Preserve face, hair, armor plates, hand anatomy, hall geometry and screen direction throughout. No combat, no new people, no blood or injuries, no face redesign, no talking, no cuts, no speed ramp, no freeze frame, no morphing, no dramatic wind. Keep the whole clip continuously alive with subtle real motion. No generated dialogue, subtitles, logos or music."
 }
