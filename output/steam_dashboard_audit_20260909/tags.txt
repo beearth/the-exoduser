@@ -1,0 +1,481 @@
+- banner:
+  - link "Link to the Steam Homepage":
+    - /url: https://store.steampowered.com/?snr=1_5_9__global-header
+    - img "Link to the Steam Homepage"
+  - navigation "Global Menu":
+    - link "STORE":
+      - /url: https://store.steampowered.com/?snr=1_5_9__global-header
+    - link "COMMUNITY":
+      - /url: https://steamcommunity.com/
+    - link "GOAL":
+      - /url: https://steamcommunity.com/my/
+    - link "Chat":
+      - /url: https://steamcommunity.com/chat/
+    - link "SUPPORT":
+      - /url: https://help.steampowered.com/en/
+  - navigation "Account Menu":
+    - link "Install Steam":
+      - /url: https://store.steampowered.com/about/?snr=1_5_9__global-header
+      - generic: Install Steam
+    - button "Notifications":
+      - img "Notifications"
+    - button "GOAL"
+    - link "₩ 0.69":
+      - /url: https://store.steampowered.com/account/store_transactions/
+  - link "View your profile":
+    - /url: https://steamcommunity.com/profiles/76561197980448401/
+    - img "GOAL"
+  - generic: Viewing store in BETA mode | admin
+- navigation "Store menu":
+  - button "Browse":
+    - generic: Browse
+  - button "Recommendations":
+    - generic: Recommendations
+  - button "Categories":
+    - generic: Categories
+  - button "Hardware":
+    - generic: Hardware
+  - button "Ways to Play":
+    - generic: Ways to Play
+  - button "More":
+    - generic: More
+  - search:
+    - combobox "Search the store"
+    - button "Search":
+      - img "Search"
+  - generic: No items match your query.
+  - link "Advanced Search":
+    - /url: https://store.steampowered.com/search/?term=&snr=1_7_15__advancedsearch
+  - link "Wishlist 7":
+    - /url: https://store.steampowered.com/wishlist/?snr=1_12_4_
+    - text: Wishlist
+    - generic: "7"
+  - link "Cart 1":
+    - /url: https://store.steampowered.com/cart/?snr=1_12_4_
+    - generic: Cart
+    - generic: "1"
+- main:
+  - link "All Games":
+    - /url: https://store.steampowered.com/search/?term=&snr=1_5_9__205
+  - text: ">"
+  - link "Action Games":
+    - /url: https://store.steampowered.com/genre/Action/?snr=1_5_9__205
+  - text: ">"
+  - 'link "EXODUSER: HELL LORD"':
+    - /url: https://store.steampowered.com/app/4749590/?snr=1_5_9__205
+  - link "Community Hub":
+    - /url: https://steamcommunity.com/app/4749590
+    - generic: Community Hub
+  - 'heading "EXODUSER: HELL LORD" [level=1]'
+  - generic: Fight through hordes of demons in a dark fantasy action RPG. Parry color-coded bullet patterns, chain across the battlefield, fuse skills into devastating attacks, and build your own loadout as you climb through seven layers of hell.
+  - 'link "All Reviews: No user reviews"':
+    - /url: "#app_reviews_hash"
+    - generic: "All Reviews:"
+    - generic: No user reviews
+  - generic: "Developer:"
+  - link "FOR DEAR GAMERS":
+    - /url: https://store.steampowered.com/search/?developer=FOR%20DEAR%20GAMERS&snr=1_5_9__2000
+  - text: ","
+  - link "https://www.fordeargamers.com/":
+    - /url: https://store.steampowered.com/search/?developer=https%3A%2F%2Fwww.fordeargamers.com%2F&snr=1_5_9__2000
+  - generic: +
+  - generic: "Publisher:"
+  - link "FOR DEAR GAMERS":
+    - /url: https://store.steampowered.com/search/?publisher=FOR%20DEAR%20GAMERS&snr=1_5_9__422
+  - text: ","
+  - link "https://www.fordeargamers.com/":
+    - /url: https://store.steampowered.com/search/?publisher=https%3A%2F%2Fwww.fordeargamers.com%2F&snr=1_5_9__422
+  - generic: +
+  - generic: "Popular user-defined tags for this product:"
+  - link "Souls-like":
+    - /url: https://store.steampowered.com/tags/en/Souls-like/?snr=1_5_9__409
+  - link "Multiple Endings":
+    - /url: https://store.steampowered.com/tags/en/Multiple%20Endings/?snr=1_5_9__409
+  - link "Drama":
+    - /url: https://store.steampowered.com/tags/en/Drama/?snr=1_5_9__409
+  - link "2D Platformer":
+    - /url: https://store.steampowered.com/tags/en/2D%20Platformer/?snr=1_5_9__409
+  - link "Magic":
+    - /url: https://store.steampowered.com/tags/en/Magic/?snr=1_5_9__409
+  - button "+"
+  - 'generic "EXODUSER: HELL LORD —Story Trailer"'
+  - generic: 0:15
+  - generic: /
+  - generic: 1:53
+  - generic: General / Cinematic
+  - generic: "EXODUSER: HELL LORD —Story Trailer"
+  - button "Follow":
+    - generic: Follow
+  - button "Ignore":
+    - generic: Ignore
+  - button "Ignore options":
+    - img "Ignore options"
+  - link:
+    - /url: javascript:void(0)
+  - link "View Your Queue":
+    - /url: https://store.steampowered.com/explore/?snr=1_5_9_
+    - generic: View Your Queue
+  - generic: IN LIBRARY
+  - generic: "EXODUSER: HELL LORD is already in your Steam library"
+  - link "Install Steam":
+    - /url: https://store.steampowered.com/about/?snr=1_5_9__owned-game
+    - generic: Install Steam
+  - link "Play Now":
+    - /url: steam://launch/4749590/Dialog
+    - generic: Play Now
+  - generic: 0.1 hrs last two weeks / 0.2 hrs on record
+  - generic: Is this game relevant to you?
+  - paragraph: 0.2 hours played
+  - link "Single-player":
+    - /url: https://store.steampowered.com/search/?category2=2&snr=1_5_9__423
+    - generic: Single-player
+  - link "Captions available":
+    - /url: https://store.steampowered.com/search/?category2=13&snr=1_5_9__423
+    - generic: Captions available
+  - link "Remote Play Together":
+    - /url: https://store.steampowered.com/search/?category2=44&snr=1_5_9__423
+    - generic: Remote Play Together
+  - link "Family Sharing":
+    - /url: https://store.steampowered.com/search/?category2=62&snr=1_5_9__423
+    - generic: Family Sharing
+  - generic: Profile Features Limited
+  - generic "Accessibility Features (5) ?":
+    - generic: Accessibility Features (5)
+    - link "?":
+      - /url: https://help.steampowered.com/faqs/view/02F5-ACB2-6038-0F36
+  - generic: Full Controller Support
+  - link "Your Xbox Controller":
+    - /url: https://store.steampowered.com/search/?controllersupport=18
+    - generic: Your Xbox Controller
+  - generic: "Languages:"
+  - table:
+    - rowgroup:
+      - row "Interface Full Audio Subtitles":
+        - columnheader
+        - columnheader "Interface"
+        - columnheader "Full Audio"
+        - columnheader "Subtitles"
+      - row "English ✔ ✔":
+        - cell "English"
+        - cell "✔"
+        - cell
+        - cell "✔"
+      - row "French ✔ ✔":
+        - cell "French"
+        - cell "✔"
+        - cell
+        - cell "✔"
+      - row "Italian ✔ ✔":
+        - cell "Italian"
+        - cell "✔"
+        - cell
+        - cell "✔"
+      - row "German ✔ ✔":
+        - cell "German"
+        - cell "✔"
+        - cell
+        - cell "✔"
+      - row "Spanish - Spain ✔ ✔":
+        - cell "Spanish - Spain"
+        - cell "✔"
+        - cell
+        - cell "✔"
+  - generic: See all 31 supported languages
+  - group "Steam Deck Compatibility":
+    - generic: Steam Deck Compatibility
+    - generic: Unknown
+    - button "Learn more"
+  - text: "Title: EXODUSER: HELL LORD"
+  - text: "Genre:"
+  - link "Action":
+    - /url: https://store.steampowered.com/genre/Action/?snr=1_5_9__408
+  - text: ","
+  - link "Adventure":
+    - /url: https://store.steampowered.com/genre/Adventure/?snr=1_5_9__408
+  - text: ","
+  - link "Indie":
+    - /url: https://store.steampowered.com/genre/Indie/?snr=1_5_9__408
+  - text: ","
+  - link "RPG":
+    - /url: https://store.steampowered.com/genre/RPG/?snr=1_5_9__408
+  - text: "Developer:"
+  - link "FOR DEAR GAMERS":
+    - /url: https://store.steampowered.com/search/?developer=FOR%20DEAR%20GAMERS&snr=1_5_9__408
+  - text: ","
+  - link "https://www.fordeargamers.com/":
+    - /url: https://store.steampowered.com/search/?developer=https%3A%2F%2Fwww.fordeargamers.com%2F&snr=1_5_9__408
+  - text: "Publisher:"
+  - link "FOR DEAR GAMERS":
+    - /url: https://store.steampowered.com/search/?publisher=FOR%20DEAR%20GAMERS&snr=1_5_9__422
+  - text: ","
+  - link "https://www.fordeargamers.com/":
+    - /url: https://store.steampowered.com/search/?publisher=https%3A%2F%2Fwww.fordeargamers.com%2F&snr=1_5_9__422
+  - text: "Franchise:"
+  - link "EXODUSER":
+    - /url: https://store.steampowered.com/search/?franchise=EXODUSER&snr=1_5_9__408
+  - link "Visit the website External":
+    - /url: https://steamcommunity.com/linkfilter/?u=https%3A%2F%2Fwww.fordeargamers.com%2F
+    - text: Visit the website
+    - img "External"
+  - link "YouTube External":
+    - /url: https://www.youtube.com/@fordeargamers
+    - generic: YouTube
+    - img "External"
+  - link "View update history":
+    - /url: https://store.steampowered.com/newshub/?appids=4749590&snr=1_5_9__408
+  - link "Read related news":
+    - /url: https://store.steampowered.com/newshub/app/4749590?snr=1_5_9__408
+  - link "View discussions":
+    - /url: https://steamcommunity.com/app/4749590/discussions/
+  - link "Find Community Groups":
+    - /url: https://steamcommunity.com/actions/Search?T=ClanAccount&K=EXODUSER%3A%20HELL%20LORD
+  - link "Embed":
+    - /url: "#"
+    - generic: Embed
+  - link "Report this Product":
+    - /url: javascript:void(0)
+    - generic "Report this Product"
+  - generic: Content
+  - generic: Includes Interactive Elements
+  - paragraph: In-game purchases, In-game chat, Online interactivity
+  - heading "About This Game" [level=2]
+  - paragraph: "EXODUSER: HELL LORD is a dark fantasy hack-and-slash ARPG about climbing out of the seven layers of hell."
+  - paragraph: "The moment a brutal revenge ended in its final execution, a blade pierced him from behind. He woke at the bottom of hell. He does not remember how he fell, but one thing is certain: his children are alive above the surface, waiting. Seven layers of damnation and thirty-five stages stand between him and them."
+  - paragraph: The goddess of vengeance Nemesia walks at his side, claiming to guide him. Whether her help is real or another trap, no one can say. Pick up your blade and survive for now. Survive long enough, and even hell ends somewhere.
+  - paragraph: Wield a colossal greatsword to carve through hundreds of demons in real time. Master Bullet Language, a color-keyed parry system that turns enemy projectiles back into weapons. Use Chain Drive grappling to close gaps or escape danger. A black cat named Diroy, a raven called Hector, and a ghost-bound crossbow accompany the climb.
+  - paragraph: KEY FEATURES
+  - paragraph: Real-time mass combat. No attack-ticket systems or artificial slowdowns.
+  - paragraph: Bullet Language. A color-keyed parry system for deflecting deadly bullet patterns.
+  - paragraph: Chain Drive. Hold-charge chain mobility for closing or breaking distance.
+  - paragraph: Seven chapters, thirty-five-plus stages, thirty-five-plus bosses. Each carries their own tragedy.
+  - paragraph: Skill fusion. Six archetypes, five rarity tiers, and over twenty-one fusion combinations.
+  - paragraph: Live service. The door to player feedback stays open, and the fusion and build space keep growing.
+  - paragraph: A love letter to dark fantasy, hand-crafted by a solo developer at FDG (FOR DEAR GAMERS).
+  - heading "AI Generated Content Disclosure" [level=2]
+  - paragraph: "The developers describe how their game uses AI Generated Content like this:"
+  - paragraph: This game uses generative AI tools to assist in the creation of pre-rendered visual assets (concept art, textures, background illustrations, key visuals), sound effects, and background music. All AI-generated content is reviewed, edited, and curated by the developer before being included in the final build. No AI generation occurs during gameplay, and no external AI services are connected at runtime.
+  - heading "System Requirements" [level=2]
+  - list:
+    - strong: "Minimum:"
+    - list:
+      - listitem: Requires a 64-bit processor and operating system
+      - strong: "OS:"
+      - text: Windows 10 64-bit
+      - strong: "Processor:"
+      - text: Intel Core i3-4000 / AMD FX-6300 or equivalent
+      - strong: "Memory:"
+      - text: 4096 MB RAM
+      - strong: "Graphics:"
+      - text: Integrated GPU with WebGL2 support (Intel HD Graphics 4000+) or NVIDIA GeForce GT 730 / AMD Radeon HD 7770
+      - strong: "DirectX:"
+      - text: Version 11
+      - strong: "Storage:"
+      - text: 2048 MB available space
+      - strong: "Sound Card:"
+      - text: DirectX compatible
+      - strong: "Additional Notes:"
+      - text: nline activation required via Steam.
+  - list:
+    - strong: "Recommended:"
+    - list:
+      - listitem: Requires a 64-bit processor and operating system
+      - strong: "OS:"
+      - text: Windows 10/11 64-bit
+      - strong: "Processor:"
+      - text: Intel Core i5-6500 / AMD Ryzen 3 1300X or better
+      - strong: "Memory:"
+      - text: 8192 MB RAM
+      - strong: "Graphics:"
+      - text: NVIDIA GeForce GTX 1050 / AMD Radeon RX 560 or better
+      - strong: "DirectX:"
+      - text: Version 11
+      - strong: "Storage:"
+      - text: 4096 MB available space
+      - strong: "Sound Card:"
+      - text: DirectX compatible
+      - strong: "Additional Notes:"
+      - text: nline activation required via Steam.
+  - generic: More like this
+  - link "See All":
+    - /url: https://store.steampowered.com/recommended/morelike/app/4749590/?snr=1_5_9__300
+    - generic: See All
+  - button "Previous"
+  - list "slider":
+    - 'button "Black Myth: Wukong ₩ 64,800"':
+      - 'link "Black Myth: Wukong ₩ 64,800"':
+        - /url: https://store.steampowered.com/app/2358720/Black_Myth_Wukong?snr=1_5_9__300
+        - 'img "Black Myth: Wukong"'
+        - generic: ₩ 64,800
+    - 'button "DragonSword : Awakening ₩ 33,000"':
+      - 'link "DragonSword : Awakening ₩ 33,000"':
+        - /url: https://store.steampowered.com/app/4570720/DragonSword_Awakening?snr=1_5_9__300
+        - 'img "DragonSword : Awakening"'
+        - generic: ₩ 33,000
+    - 'button "Torchlight: Infinite Free To Play"':
+      - 'link "Torchlight: Infinite Free To Play"':
+        - /url: https://store.steampowered.com/app/1974050/Torchlight_Infinite?snr=1_5_9__300
+        - 'img "Torchlight: Infinite"'
+        - generic: Free To Play
+    - 'button "The First Berserker: Khazan ₩ 64,800"':
+      - 'link "The First Berserker: Khazan ₩ 64,800"':
+        - /url: https://store.steampowered.com/app/2680010/The_First_Berserker_Khazan?snr=1_5_9__300
+        - 'img "The First Berserker: Khazan"'
+        - generic: ₩ 64,800
+  - button "Next"
+  - button "previous"
+  - button "next"
+  - generic: There are no reviews for this product
+  - paragraph: You can write your own review for this product to share your experience with the community. Use the area above the purchase buttons on this page to write your review.
+- contentinfo:
+  - link:
+    - /url: https://store.steampowered.com/?snr=1_44_44_
+  - link:
+    - /url: https://valvesoftware.com
+  - paragraph:
+    - text: © 2026 Valve Corporation. All rights reserved. All trademarks are property of their respective owners in the US and other countries.
+    - text: VAT included in all prices where applicable.
+  - link:
+    - /url: https://www.youtube.com/@Steam
+  - link:
+    - /url: https://bsky.app/profile/steampowered.com
+  - link:
+    - /url: https://facebook.com/steam
+  - link:
+    - /url: https://twitter.com/steam
+  - heading "STEAM" [level=3]
+  - link "About Steam":
+    - /url: https://store.steampowered.com/about/?snr=1_44_44_
+  - link "Steam SSA":
+    - /url: https://store.steampowered.com/subscriber_agreement/?snr=1_44_44_
+  - link "Steamworks":
+    - /url: https://partner.steamgames.com/
+  - link "Steam Distribution":
+    - /url: https://partner.steamgames.com/steamdirect
+  - link "Gift Cards":
+    - /url: https://store.steampowered.com/digitalgiftcards/?snr=1_44_44_
+  - heading "VALVE" [level=3]
+  - link "About Valve":
+    - /url: https://valvesoftware.com/about
+  - link "Jobs":
+    - /url: https://valvesoftware.com/
+  - link "Hardware":
+    - /url: https://store.steampowered.com/hardware/?snr=1_44_44_
+  - link "Recycling":
+    - /url: https://store.steampowered.com/hardware_recycling/?snr=1_44_44_
+  - heading "LEGAL" [level=3]
+  - link "Privacy":
+    - /url: https://store.steampowered.com/privacy_agreement/?snr=1_44_44_
+  - link "Accessibility":
+    - /url: https://help.steampowered.com/faqs/view/10BB-D27A-6378-4436
+  - link "Notices & Policies":
+    - /url: https://store.steampowered.com/legal/?snr=1_44_44_
+  - link "Cookies":
+    - /url: https://store.steampowered.com/account/cookiepreferences/?snr=1_44_44_
+  - link "Refunds":
+    - /url: https://store.steampowered.com/steam_refunds/?snr=1_44_44_
+  - heading "MORE" [level=3]
+  - link "Get Steam":
+    - /url: https://store.steampowered.com/about/?snr=1_44_44_
+  - link "Get Mobile Apps":
+    - /url: https://store.steampowered.com/mobile/?snr=1_44_44_
+  - link "Get Support":
+    - /url: https://help.steampowered.com/
+  - link "My Account":
+    - /url: https://store.steampowered.com/account/?snr=1_44_44_
+- dialog:
+  - generic: View and edit tags for this product
+  - heading "Popular user-defined tags for this product:(?)" [level=2]
+  - link "Hack and Slash":
+    - /url: https://store.steampowered.com/tags/en/Hack%20and%20Slash/?snr=1_5_9__410
+  - link "Action RPG":
+    - /url: https://store.steampowered.com/tags/en/Action%20RPG/?snr=1_5_9__410
+  - link "Action":
+    - /url: https://store.steampowered.com/tags/en/Action/?snr=1_5_9__410
+  - link "Multiple Endings":
+    - /url: https://store.steampowered.com/tags/en/Multiple%20Endings/?snr=1_5_9__410
+  - link "Story Rich":
+    - /url: https://store.steampowered.com/tags/en/Story%20Rich/?snr=1_5_9__410
+  - link "Top-Down Shooter":
+    - /url: https://store.steampowered.com/tags/en/Top-Down%20Shooter/?snr=1_5_9__410
+  - link "RPG":
+    - /url: https://store.steampowered.com/tags/en/RPG/?snr=1_5_9__410
+  - link "Singleplayer":
+    - /url: https://store.steampowered.com/tags/en/Singleplayer/?snr=1_5_9__410
+  - link "Adventure":
+    - /url: https://store.steampowered.com/tags/en/Adventure/?snr=1_5_9__410
+  - link "2D Platformer":
+    - /url: https://store.steampowered.com/tags/en/2D%20Platformer/?snr=1_5_9__410
+  - link "Cinematic":
+    - /url: https://store.steampowered.com/tags/en/Cinematic/?snr=1_5_9__410
+  - link "Anime":
+    - /url: https://store.steampowered.com/tags/en/Anime/?snr=1_5_9__410
+  - link "Top-Down":
+    - /url: https://store.steampowered.com/tags/en/Top-Down/?snr=1_5_9__410
+  - link "Gothic":
+    - /url: https://store.steampowered.com/tags/en/Gothic/?snr=1_5_9__410
+  - link "Lore-Rich":
+    - /url: https://store.steampowered.com/tags/en/Lore-Rich/?snr=1_5_9__410
+  - link "Dark Fantasy":
+    - /url: https://store.steampowered.com/tags/en/Dark%20Fantasy/?snr=1_5_9__410
+  - link "Magic":
+    - /url: https://store.steampowered.com/tags/en/Magic/?snr=1_5_9__410
+  - link "Combat":
+    - /url: https://store.steampowered.com/tags/en/Combat/?snr=1_5_9__410
+  - link "Atmospheric":
+    - /url: https://store.steampowered.com/tags/en/Atmospheric/?snr=1_5_9__410
+  - link "Fast-Paced":
+    - /url: https://store.steampowered.com/tags/en/Fast-Paced/?snr=1_5_9__410
+  - heading "Tags you've applied to this product:(?)" [level=2]
+  - link "Souls-like":
+    - /url: https://store.steampowered.com/tags/en/Souls-like/?snr=1_5_9__410
+  - link "Multiple Endings":
+    - /url: https://store.steampowered.com/tags/en/Multiple%20Endings/?snr=1_5_9__410
+  - generic: Drama
+  - link "2D Platformer":
+    - /url: https://store.steampowered.com/tags/en/2D%20Platformer/?snr=1_5_9__410
+  - link "Bullet Hell":
+    - /url: https://store.steampowered.com/tags/en/Bullet%20Hell/?snr=1_5_9__410
+  - link "Top-Down":
+    - /url: https://store.steampowered.com/tags/en/Top-Down/?snr=1_5_9__410
+  - link "Top-Down Shooter":
+    - /url: https://store.steampowered.com/tags/en/Top-Down%20Shooter/?snr=1_5_9__410
+  - link "Dark Fantasy":
+    - /url: https://store.steampowered.com/tags/en/Dark%20Fantasy/?snr=1_5_9__410
+  - link "Action RPG":
+    - /url: https://store.steampowered.com/tags/en/Action%20RPG/?snr=1_5_9__410
+  - link "Singleplayer":
+    - /url: https://store.steampowered.com/tags/en/Singleplayer/?snr=1_5_9__410
+  - link "Atmospheric":
+    - /url: https://store.steampowered.com/tags/en/Atmospheric/?snr=1_5_9__410
+  - link "Cinematic":
+    - /url: https://store.steampowered.com/tags/en/Cinematic/?snr=1_5_9__410
+  - link "Anime":
+    - /url: https://store.steampowered.com/tags/en/Anime/?snr=1_5_9__410
+  - link "Magic":
+    - /url: https://store.steampowered.com/tags/en/Magic/?snr=1_5_9__410
+  - link "Combat":
+    - /url: https://store.steampowered.com/tags/en/Combat/?snr=1_5_9__410
+  - link "Gothic":
+    - /url: https://store.steampowered.com/tags/en/Gothic/?snr=1_5_9__410
+  - link "Lore-Rich":
+    - /url: https://store.steampowered.com/tags/en/Lore-Rich/?snr=1_5_9__410
+  - link "Story Rich":
+    - /url: https://store.steampowered.com/tags/en/Story%20Rich/?snr=1_5_9__410
+  - link "Fast-Paced":
+    - /url: https://store.steampowered.com/tags/en/Fast-Paced/?snr=1_5_9__410
+  - link "Hack and Slash":
+    - /url: https://store.steampowered.com/tags/en/Hack%20and%20Slash/?snr=1_5_9__410
+  - link "Indie":
+    - /url: https://store.steampowered.com/tags/en/Indie/?snr=1_5_9__410
+  - link "RPG":
+    - /url: https://store.steampowered.com/tags/en/RPG/?snr=1_5_9__410
+  - link "Adventure":
+    - /url: https://store.steampowered.com/tags/en/Adventure/?snr=1_5_9__410
+  - link "Action":
+    - /url: https://store.steampowered.com/tags/en/Action/?snr=1_5_9__410
+  - paragraph: "Enter a new tag in English:"
+  - paragraph: Suitable tags should be terms that other users would find useful to browse by.
+  - button "Add":
+    - generic: Add
+  - textbox "Enter a tag" [active]
+  - generic: Close

@@ -1,0 +1,181 @@
+- navigation:
+  - link "Steamworks":
+    - /url: https://partner.steamgames.com/
+    - img "Steamworks"
+  - list:
+    - button "문서"
+    - button "리소스"
+    - button "뉴스 및 업데이트"
+    - link "지원":
+      - /url: https://help.steampowered.com/wizard/HelpWithPublishing
+  - generic: SIM DOJIN
+  - button "shsia":
+    - generic: shsia
+  - link:
+    - /url: https://steamcommunity.com/profiles/76561197980448401
+- navigation:
+  - list:
+    - link "대시보드":
+      - /url: https://partner.steamgames.com/dashboard
+    - button "앱 및 패키지"
+    - button "도구"
+    - button "사용자 및 사용 권한"
+    - link "재무 정보":
+      - /url: https://partner.steampowered.com/
+  - textbox "앱 이름 또는 ID로 찾기"
+- dialog:
+  - generic: SIM DOJIN
+  - link "GOAL":
+    - /url: https://steamcommunity.com/profiles/76561197980448401
+  - generic "문서": 문서
+  - generic "리소스": 리소스
+  - generic "뉴스 및 업데이트": 뉴스 및 업데이트
+  - link "지원":
+    - /url: https://help.steampowered.com/wizard/HelpWithPublishing
+  - button "언어 변경"
+  - button "로그아웃"
+- link "Steamworks":
+  - /url: https://partner.steamgames.com
+- text: ">"
+- link "앱 관리":
+  - /url: https://partner.steamgames.com/apps/
+- text: ">"
+- 'link "EXODUSER: HELL LORD"':
+  - /url: "https://partner.steamgames.com/apps/landing/4749590 "
+- generic: "앱 데이터 관리:"
+- text: "EXODUSER: HELL LORD (4749590)"
+- combobox:
+  - option [selected]
+  - option "상점 페이지 변경"
+  - option "Steamworks 설정 변경"
+- generic: 애플리케이션
+- generic: SteamPipe
+- generic: 설치
+- generic: 보안
+- generic: 통계 및 도전 과제
+- generic: 커뮤니티
+- generic: 창작마당
+- link "키 관리":
+  - /url: https://partner.steamgames.com/apps/packages/4749590
+- generic: 기타
+- link "게시":
+  - /url: https://partner.steamgames.com/apps/publishing/4749590
+- generic: 도전 과제 설정
+- link "도전 과제 문서 보기":
+  - /url: https://partner.steamgames.com/doc/features/achievements
+- strong: "개요:"
+- paragraph:
+  - text: 게임의 도전 과제를 정의하고 업데이트하세요. 도전 과제 제작에 관한 자세한 정보는 Steamworks
+  - link "API 개요":
+    - /url: https://partner.steamgames.com/doc/sdk
+  - text: 를 참고하세요.
+- strong: "디자인:"
+- paragraph: 최상의 결과를 얻으려면, 도전 과제 아이콘이 256x256픽셀의 JPG 이미지여야 합니다. 64x64만큼 작아도 되지만, 더 큰 크기를 사용하는 것이 좋습니다. 이미 달성한 도전 과제의 아이콘은 색상을 입히고, 아직 달성하지 않은 도전 과제의 아이콘은 회색으로 처리하는 것이 좋습니다.
+- strong: "요구 사항:"
+- paragraph:
+  - text: 도전 과제는 Steam 커뮤니티 내 여러 곳에 표시되므로 모든 연령과 사용자에게 적합한 이름과 아이콘을 사용해야 합니다. Valve는
+  - link "커뮤니티 콘텐츠 가이드라인":
+    - /url: https://help.steampowered.com/faqs/view/6862-8119-C23E-EA7B
+  - text: 을 위반하거나 그 외 다른 사람에게 불쾌함을 주는 도전 과제가 있는 게임을 상점에서 완전히 삭제할 수 있습니다.
+- strong: "출시:"
+- paragraph:
+  - text: 도전 과제를 완전히 활성화하고 출시 체크리스트를 완료하려면 상점 페이지 기본 정보 탭의
+  - link "'지원 기능'":
+    - /url: https://partner.steamgames.com/admin/game/editbyappid/4749590?activetab=tab_basic#feature_section
+  - text: 섹션에서 해당 기능에 체크 표시를 해야 합니다.
+- generic: "도전 과제 수: 0"
+- table:
+  - rowgroup:
+    - row "새로운 도전 과제":
+      - cell "새로운 도전 과제":
+        - button "새로운 도전 과제"
+    - row "API 이름 진행률 통계 표시 이름 설명 설정자 비공개 달성 아이콘 미달성 과제 아이콘":
+      - columnheader "API 이름 진행률 통계":
+        - text: API 이름
+        - text: 진행률 통계
+      - columnheader "표시 이름 설명":
+        - text: 표시 이름
+        - text: 설명
+      - columnheader "설정자"
+      - columnheader "비공개"
+      - columnheader "달성 아이콘":
+        - text: 달성
+        - text: 아이콘
+      - columnheader "미달성 과제 아이콘":
+        - text: 미달성 과제
+        - text: 아이콘
+      - columnheader
+  - rowgroup
+  - rowgroup:
+    - row "새로운 도전 과제":
+      - cell "새로운 도전 과제":
+        - button "새로운 도전 과제"
+- heading "Valve 대외비" [level=2]
+- paragraph: 이 사이트는 접속이 제한되어 있으며 여기에 포함된 내용은 모두 Valve 기밀 정보입니다. 이 사이트에 접속하거나 해당 정보를 사용하려면 기밀 정보에 관해 Valve와 비밀 유지 계약 및 라이선스 계약을 체결해야 합니다.
+- text: Steamworks는
+- link "Steam":
+  - /url: https://store.steampowered.com/
+- text: 에서 귀사의 게임을 구성하고 관리하며 운영하는 데 도움을 드리기 위해
+- link "Valve":
+  - /url: https://www.valvesoftware.com
+- text: 가 구축한 일련의 도구 및 서비스입니다.
+- link:
+  - /url: http://www.valvesoftware.com
+- link:
+  - /url: https://store.steampowered.com/
+- list:
+  - emphasis: 문서
+  - link "홈":
+    - /url: https://partner.steamgames.com/doc/
+  - link "시작하기":
+    - /url: https://partner.steamgames.com/doc/gettingstarted
+  - link "상점 페이지":
+    - /url: https://partner.steamgames.com/doc/store
+  - link "기능":
+    - /url: https://partner.steamgames.com/doc/features
+  - link "재정":
+    - /url: https://partner.steamgames.com/doc/finance
+  - link "판매 및 마케팅":
+    - /url: https://partner.steamgames.com/doc/marketing
+  - link "Steamworks SDK":
+    - /url: https://partner.steamgames.com/doc/sdk
+  - link "PC방 라이선스":
+    - /url: https://partner.steamgames.com/pccafe
+  - link "Steam VR":
+    - /url: https://partner.steamgames.com/doc/features/steamvr/info
+- list:
+  - emphasis: 리소스
+  - link "Steam VR":
+    - /url: https://partner.steamgames.com/vrlicensing
+  - link "Steam PC방 프로그램":
+    - /url: https://partner.steamgames.com/pccafe
+  - link "Steamworks 토론":
+    - /url: https://steamcommunity.com/groups/steamworks/discussions
+    - text: Steamworks 토론
+  - link "Steamworks 동영상 튜토리얼":
+    - /url: https://www.youtube.com/user/SteamworksDev
+    - text: Steamworks 동영상 튜토리얼
+  - 'link "X: @Steamworks"':
+    - /url: http://twitter.com/Steamworks
+    - 'img "X: @Steamworks"'
+  - generic: "|"
+  - 'link "Bluesky: Steamworks"':
+    - /url: https://bsky.app/profile/partner.steamgames.com
+    - 'img "Bluesky: Steamworks"'
+  - link "고객지원 문의":
+    - /url: https://help.steampowered.com/ko/wizard/HelpWithPublishing
+    - generic: 고객지원 문의
+- list:
+  - emphasis: 뉴스 및 업데이트
+  - link "Steamworks 블로그":
+    - /url: https://store.steampowered.com/news/group/4145017
+    - text: Steamworks 블로그
+  - link "Steam 블로그":
+    - /url: https://store.steampowered.com/news/app/593110
+    - text: Steam 블로그
+  - link "Steam VR 블로그":
+    - /url: https://store.steampowered.com/news/app/250820
+    - text: Steam VR 블로그
+  - link "Steam Deck 블로그":
+    - /url: https://store.steampowered.com/news/app/1675200
+    - text: Steam Deck 블로그

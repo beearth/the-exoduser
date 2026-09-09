@@ -1,0 +1,272 @@
+- navigation:
+  - link "Steamworks":
+    - /url: https://partner.steamgames.com/
+    - img "Steamworks"
+  - list:
+    - button "문서"
+    - button "리소스"
+    - button "뉴스 및 업데이트"
+    - link "지원":
+      - /url: https://help.steampowered.com/wizard/HelpWithPublishing
+  - generic: SIM DOJIN
+  - button "shsia":
+    - generic: shsia
+  - link:
+    - /url: https://steamcommunity.com/profiles/76561197980448401
+- navigation:
+  - list:
+    - link "대시보드":
+      - /url: https://partner.steamgames.com/dashboard
+    - button "앱 및 패키지"
+    - button "도구"
+    - button "사용자 및 사용 권한"
+    - link "재무 정보":
+      - /url: https://partner.steampowered.com/
+  - textbox "앱 이름 또는 ID로 찾기"
+- dialog:
+  - generic: SIM DOJIN
+  - link "GOAL":
+    - /url: https://steamcommunity.com/profiles/76561197980448401
+  - generic "문서": 문서
+  - generic "리소스": 리소스
+  - generic "뉴스 및 업데이트": 뉴스 및 업데이트
+  - link "지원":
+    - /url: https://help.steampowered.com/wizard/HelpWithPublishing
+  - button "언어 변경"
+  - button "로그아웃"
+- link "Steamworks":
+  - /url: https://partner.steamgames.com
+- text: ">"
+- link "앱 관리":
+  - /url: https://partner.steamgames.com/apps/
+- text: ">"
+- 'link "EXODUSER: HELL LORD"':
+  - /url: "https://partner.steamgames.com/apps/landing/4749590 "
+- generic: "앱 데이터 관리:"
+- text: "EXODUSER: HELL LORD (4749590)"
+- combobox:
+  - option [selected]
+  - option "상점 페이지 변경"
+  - option "Steamworks 설정 변경"
+- generic: 애플리케이션
+- generic: SteamPipe
+- generic: 설치
+- generic: 보안
+- generic: 통계 및 도전 과제
+- generic: 커뮤니티
+- generic: 창작마당
+- link "키 관리":
+  - /url: https://partner.steamgames.com/apps/packages/4749590
+- generic: 기타
+- link "게시":
+  - /url: https://partner.steamgames.com/apps/publishing/4749590
+- link "Steam Cloud 문서 보기":
+  - /url: https://partner.steamgames.com/doc/features/cloud
+- heading "출시" [level=3]
+- paragraph:
+  - text: Steam Cloud를 완전히 활성화하고 출시 체크리스트를 완료하려면 상점 페이지 기본 정보 탭의
+  - link "'지원 기능'":
+    - /url: https://partner.steamgames.com/admin/game/editbyappid/4749590?activetab=tab_basic#feature_section
+  - text: 섹션에서 해당 기능에 체크 표시를 해야 합니다.
+- heading "Steam Cloud 설정" [level=2]
+- paragraph: "* Steam Cloud 통합(API 또는 자동 클라우드 사용 포함)이 제대로 작동하려면 이 두 가지 설정이 필수적입니다."
+- paragraph: 여기에서 작업한 변경 사항은 게시 시점에 적용되며 Steamworks Cloud API와 자동 클라우드에 모두 영향을 미칩니다.
+- paragraph:
+  - spinbutton: "100000000"
+  - text: (100MB)
+- paragraph:
+  - text: 사용자당 바이트 할당량 *
+  - text: 바이트 단위로 최대 10,000,000,000(10GB)까지 입력할 수 있습니다.
+- text: 필요한 용량은 저장 파일의 크기와 플레이어 한 명이 게임을 플레이하는 동안 일반적으로 생성하는 저장 파일의 개수에 따라 달라집니다. 저장 파일의 크기가 약 10MB이고 플레이어가 게임을 플레이하는 동안 보통 20개의 저장 파일을 생성한다면, 그 두 배인 '400000000'을 입력하는 것이 좋습니다.
+- paragraph:
+  - spinbutton: "1000"
+- paragraph:
+  - text: 사용자당 허용된 파일 개수 *
+  - text: 최대 10,000개
+- text: 플레이어가 게임을 플레이하는 동안 일반적으로 20번 정도 게임을 저장한다면, 여기에는 그 두 배인 40을 입력하는 것이 좋습니다.
+- heading "베타 테스팅" [level=2]
+- paragraph: 구성 및 게시가 완료되면 게임을 소유한 모든 사용자의 Steam 클라이언트에 클라우드 아이콘이 표시됩니다. 그리고 아래에서 설정한 자동 클라우드 구성이 모두 적용됩니다. 게임이 공개 출시된 후 클라우드 기능을 테스트하려면 여기에서 베타 테스트를 활성화해야 합니다. 베타 테스트를 활성화하면 클라이언트에서 클라우드 아이콘이 사라지고 자동 클라우드 동기화가 비활성화됩니다.
+- paragraph:
+  - text: 이 상태에서 자동-클라우드 동기화를 테스트하려면 Steam 콘솔 명령을 사용해야 합니다.
+  - code: testappcloudpaths [appID]
+  - text: .
+- paragraph:
+  - checkbox "개발자만을 위한 클라우드 지원 활성화"
+  - generic: 개발자만을 위한 클라우드 지원 활성화
+- paragraph: 귀하의 게임의 Steam Cloud를 일반 고객에게 공개하려면 위 항목을 선택 해제하세요.
+- heading "동적 클라우드 동기화" [level=2]
+- paragraph: Steam Deck과 같은 지원되는 플랫폼에서, Steam은 시스템이 중지되면 게임 파일을 Steam Cloud에 동기화하고 시스템이 재개되면 새로운 변경 사항을 동기화합니다.
+- paragraph:
+  - text: 이 기능을 지원하려면 게임이 게임 세션 중에 변경되는 클라우드 파일을 처리할 수 있어야 합니다. 또한 게임은 파일 변경에 대해 Steam에 힌트를 제공할 수 있어야 합니다. 이제 이러한 기능이 Steamworks SDK에 포함된 새로운 Steam Cloud API를 통해 지원됩니다. 자세한 내용은
+  - link "Steam Cloud 문서":
+    - /url: https://partner.steamgames.com/doc/features/cloud
+  - text: 의 동적 클라우드 동기화 섹션을 참고하세요.
+- paragraph:
+  - checkbox "시스템 중지 및 재개 시 Steam Cloud 동기화 활성화" [checked]
+  - generic: 시스템 중지 및 재개 시 Steam Cloud 동기화 활성화
+- paragraph: "경고: 부분적 파일 작성을 방지하고 업데이트된 로컬 파일에 대한 알림을 받기 위한 Steam Cloud API를 활용하지 않으면, 파일이 손상되거나 사용자 진행 상황이 손실될 수 있습니다."
+- heading "공유된 클라우드 저장소" [level=2]
+- paragraph: 다른 게임의 앱 ID를 사용해 이 게임의 Steam Cloud 데이터를 저장할 수 있습니다. 이를 통해 체험판과 정식 게임 간 저장된 게임을 공유할 수 있습니다. 공유 클라우드 데이터를 사용하려면 여기에 앱 ID를 입력하세요. 앱 ID는 하나의 앱 페이지에만 입력해야 하며 기본 게임의 앱 ID를 체험판에 설정하는 것이 좋습니다. 양쪽에 모두 입력하지 마세요.
+- table:
+  - rowgroup:
+    - 'row "공유된 클라우드 앱 ID: 0"':
+      - cell "공유된 클라우드 앱 ID:"
+      - cell "0":
+        - textbox: "0"
+- heading "Steam 자동 클라우드 환경 설정" [level=2]
+- paragraph: 자동 클라우드는 Steamworks Cloud API의 대안으로, 이를 사용하면 코드를 작성하거나 게임 바이너리를 수정하지 않고도 앱에서 Steam Could를 사용할 수 있습니다. Steam은 애플리케이션이 시작되고 종료될 때 다음 파일 그룹을 자동으로 동기화합니다.
+- heading "가장 좋은 방법" [level=3]
+- paragraph
+- list:
+  - listitem: "- 동기화할 각 파일 그룹에 대해 새로운 경로를 사용합니다."
+  - listitem: "- Windows에서는 사선 또는 백사선를 사용할 수 있으나, macOS 및 Linux에서는 반드시 사선를 사용해야 합니다."
+  - listitem: "- 동영상 품질과 같은 특정 컴퓨터 구성은 피합니다."
+- paragraph
+- heading "교차 플랫폼 구성" [level=3]
+- paragraph: Steam Auto-Cloud에 교차 플랫폼 동기화를 활용하려면 각 루트의 운영 체제를 기본 설정인 '[모든 OS]'로 설정해야 합니다. 또한 모든 플랫폼에서 유효한 유일한 루트 값은 'App Install Directory'입니다. 다른 루트 값을 선택하는 경우, 반드시 '루트 재정의'를 정의하여 서로 다른 지원 플랫폼에 해당하는 루트를 나타내야 합니다.
+- paragraph:
+  - text: 서로 다른 플랫폼에서 이루어지는 설치 간의 콘텐츠 동기화를 더 세밀하게 제어해야 하는 경우,
+  - link "Steam Cloud문서":
+    - /url: https://partner.steamgames.com/doc/features/cloud
+  - text: 에서 Steam Cloud API를 사용하는 방법에 대한 정보를 참조하세요.
+- heading "루트 경로" [level=3]
+- table:
+  - rowgroup:
+    - row "루트 하위 디렉터리 (?) 패턴 (?) OS (?) 반복적 (?) 교차 플랫폼 (?)":
+      - columnheader
+      - columnheader "루트"
+      - columnheader "하위 디렉터리 (?)"
+      - columnheader "패턴 (?)"
+      - columnheader "OS (?)"
+      - columnheader "반복적 (?)"
+      - columnheader "교차 플랫폼 (?)"
+      - columnheader
+      - columnheader
+    - row "0 WinAppDataRoaming EXODUSER-HELL/saves *.json [모든 OS] 아니요 (?) 수정 삭제":
+      - cell "0"
+      - cell "WinAppDataRoaming":
+        - combobox [disabled]:
+          - option "앱 설치 디렉터리"
+          - option "SteamCloudDocuments"
+          - option "WinMyDocuments"
+          - option "WinAppDataLocal"
+          - option "WinAppDataLocalLow"
+          - option "WinAppDataRoaming" [selected]
+          - option "WinSavedGames"
+          - option "WindowsHome"
+          - option "MacHome"
+          - option "MacAppSupport"
+          - option "MacDocuments"
+          - option "LinuxHome"
+          - option "LinuxXdgDataHome"
+          - option "LinuxXdgConfigHome"
+          - option "AndroidExternalData"
+          - option "AndroidInternalData"
+      - cell "EXODUSER-HELL/saves":
+        - textbox [disabled]: EXODUSER-HELL/saves
+      - cell "*.json":
+        - textbox [disabled]: "*.json"
+      - cell "[모든 OS]":
+        - combobox [disabled]:
+          - option "[모든 OS]" [selected]
+          - option "Windows"
+          - option "macOS"
+          - option "Linux와 SteamOS"
+          - option "Android"
+      - cell:
+        - checkbox [disabled]
+      - cell "아니요 (?)"
+      - cell "수정":
+        - button "수정"
+      - cell "삭제":
+        - button "삭제"
+    - 'row "미리 보기: %USERPROFILE%/AppData/Roaming/ EXODUSER-HELL/saves"':
+      - 'cell "미리 보기: %USERPROFILE%/AppData/Roaming/ EXODUSER-HELL/saves"':
+        - strong: "미리 보기:"
+        - text: "%USERPROFILE%/AppData/Roaming/ EXODUSER-HELL/saves"
+- button "새로운 자동 클라우드 경로 추가"
+- heading "루트 재정의" [level=3]
+- paragraph: 플랫폼 간 앱에서 자동 클라우드를 사용하도록 허용하기 위해 상단의 루트 값을 재정의합니다. 상단에 지정된 루트 경로는 다른 OS의 경로에 대응하기 위해 재정의할 수 있습니다. 루트 재정의를 사용하면 상단의 루트 OS 드롭다운에서 [모든 OS]를 지정해야 합니다.
+- paragraph: 경로 추가/대체 필드는 새로운 루트 이후에 경로(새로운 루트와 기존 하위 디렉터리 사이의 중간 경로)를 추가하거나 경우에 따라 적절하게 루트 하위 디렉터리를 대체합니다(Unity's Application.persistentDataPath).
+- table:
+  - rowgroup:
+    - row "기본 루트 OS [?] 새로운 루트 경로 추가 또는 바꾸기 [?] 경로 바꾸기 [?]":
+      - columnheader
+      - columnheader "기본 루트"
+      - columnheader "OS [?]"
+      - columnheader "새로운 루트"
+      - columnheader "경로 추가 또는 바꾸기 [?]"
+      - columnheader "경로 바꾸기 [?]"
+      - columnheader
+      - columnheader
+- button "새로운 루트 재정의 추가"
+- button "저장"
+- heading "Valve 대외비" [level=2]
+- paragraph: 이 사이트는 접속이 제한되어 있으며 여기에 포함된 내용은 모두 Valve 기밀 정보입니다. 이 사이트에 접속하거나 해당 정보를 사용하려면 기밀 정보에 관해 Valve와 비밀 유지 계약 및 라이선스 계약을 체결해야 합니다.
+- text: Steamworks는
+- link "Steam":
+  - /url: https://store.steampowered.com/
+- text: 에서 귀사의 게임을 구성하고 관리하며 운영하는 데 도움을 드리기 위해
+- link "Valve":
+  - /url: https://www.valvesoftware.com
+- text: 가 구축한 일련의 도구 및 서비스입니다.
+- link:
+  - /url: http://www.valvesoftware.com
+- link:
+  - /url: https://store.steampowered.com/
+- list:
+  - emphasis: 문서
+  - link "홈":
+    - /url: https://partner.steamgames.com/doc/
+  - link "시작하기":
+    - /url: https://partner.steamgames.com/doc/gettingstarted
+  - link "상점 페이지":
+    - /url: https://partner.steamgames.com/doc/store
+  - link "기능":
+    - /url: https://partner.steamgames.com/doc/features
+  - link "재정":
+    - /url: https://partner.steamgames.com/doc/finance
+  - link "판매 및 마케팅":
+    - /url: https://partner.steamgames.com/doc/marketing
+  - link "Steamworks SDK":
+    - /url: https://partner.steamgames.com/doc/sdk
+  - link "PC방 라이선스":
+    - /url: https://partner.steamgames.com/pccafe
+  - link "Steam VR":
+    - /url: https://partner.steamgames.com/doc/features/steamvr/info
+- list:
+  - emphasis: 리소스
+  - link "Steam VR":
+    - /url: https://partner.steamgames.com/vrlicensing
+  - link "Steam PC방 프로그램":
+    - /url: https://partner.steamgames.com/pccafe
+  - link "Steamworks 토론":
+    - /url: https://steamcommunity.com/groups/steamworks/discussions
+    - text: Steamworks 토론
+  - link "Steamworks 동영상 튜토리얼":
+    - /url: https://www.youtube.com/user/SteamworksDev
+    - text: Steamworks 동영상 튜토리얼
+  - 'link "X: @Steamworks"':
+    - /url: http://twitter.com/Steamworks
+    - 'img "X: @Steamworks"'
+  - generic: "|"
+  - 'link "Bluesky: Steamworks"':
+    - /url: https://bsky.app/profile/partner.steamgames.com
+    - 'img "Bluesky: Steamworks"'
+  - link "고객지원 문의":
+    - /url: https://help.steampowered.com/ko/wizard/HelpWithPublishing
+    - generic: 고객지원 문의
+- list:
+  - emphasis: 뉴스 및 업데이트
+  - link "Steamworks 블로그":
+    - /url: https://store.steampowered.com/news/group/4145017
+    - text: Steamworks 블로그
+  - link "Steam 블로그":
+    - /url: https://store.steampowered.com/news/app/593110
+    - text: Steam 블로그
+  - link "Steam VR 블로그":
+    - /url: https://store.steampowered.com/news/app/250820
+    - text: Steam VR 블로그
+  - link "Steam Deck 블로그":
+    - /url: https://store.steampowered.com/news/app/1675200
+    - text: Steam Deck 블로그

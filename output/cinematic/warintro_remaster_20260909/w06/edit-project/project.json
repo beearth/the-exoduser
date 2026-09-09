@@ -1,0 +1,145 @@
+{
+  "id": "b695ba82-bb36-4bc9-9bfa-a39f96b996ab",
+  "name": "edit-project",
+  "schemaVersion": 2,
+  "scenes": [
+    {
+      "id": "92938b2e-ef58-41d4-b33c-5a880b1301e4",
+      "name": "New Scene",
+      "x": 0,
+      "y": 0,
+      "width": 1280,
+      "height": 720,
+      "background": { "type": "solid", "color": "#000000" },
+      "fps": 24,
+      "duration": 6,
+      "tracks": [
+        {
+          "id": "905a375d-2744-445c-aaed-b724106b1be2",
+          "name": "Track 1",
+          "mode": "default",
+          "clips": [
+            {
+              "id": "9327914a-70b6-4fd0-9ad8-5984d26b6c4c",
+              "kind": "media",
+              "name": "source.mp4",
+              "assetId": "c1845715-daa4-9cea-b4f0-0bde7fd9b43f",
+              "timeRange": { "start": 0, "duration": 6 },
+              "trim": { "start": 0, "end": 6 },
+              "speed": 1,
+              "transform": {
+                "x": 640,
+                "y": 360,
+                "scaleX": 1,
+                "scaleY": 1,
+                "rotation": 0,
+                "anchorX": 0.5,
+                "anchorY": 0.5,
+                "flipX": false,
+                "flipY": false,
+                "skewX": 0,
+                "skewY": 0
+              },
+              "size": { "width": 1280, "height": 720 },
+              "opacity": 1,
+              "blendMode": "normal",
+              "volume": 1,
+              "muted": false,
+              "cornerRadius": { "bl": 0, "br": 0, "mixed": false, "tl": 0, "tr": 0, "uniform": 0 },
+              "effects": [],
+              "animations": [],
+              "presetAnimations": [],
+              "mask": null,
+              "locked": false,
+              "hidden": false,
+              "origin": { "column": 5, "file": "edit.jsx", "line": 6 },
+              "preservePitch": true,
+              "transitionIn": null
+            }
+          ],
+          "locked": false,
+          "hidden": false,
+          "muted": false,
+          "solo": false,
+          "volume": 1
+        },
+        {
+          "id": "143107fa-e2e2-4658-a8c5-7e0afaf182eb",
+          "name": "Track 2",
+          "mode": "default",
+          "clips": [
+            {
+              "id": "439a9898-287c-4ee4-9fcd-f9a4f24491b7",
+              "kind": "audio",
+              "name": "voice.mp3",
+              "assetId": "b49097a8-d598-d28f-9a84-4e7abf5ca896",
+              "timeRange": { "start": 1, "duration": 4.493061 },
+              "trim": { "start": 0, "end": 4.493061 },
+              "speed": 1,
+              "transform": {
+                "x": 640,
+                "y": 360,
+                "scaleX": 1,
+                "scaleY": 1,
+                "rotation": 0,
+                "anchorX": 0.5,
+                "anchorY": 0.5,
+                "flipX": false,
+                "flipY": false,
+                "skewX": 0,
+                "skewY": 0
+              },
+              "size": { "width": 0, "height": 0 },
+              "opacity": 1,
+              "blendMode": "normal",
+              "volume": 1,
+              "muted": false,
+              "effects": [],
+              "animations": [],
+              "presetAnimations": [],
+              "mask": null,
+              "locked": false,
+              "hidden": false,
+              "preservePitch": true
+            }
+          ],
+          "locked": false,
+          "hidden": false,
+          "muted": false,
+          "solo": false,
+          "volume": 1
+        }
+      ],
+      "markers": []
+    }
+  ],
+  "activeSceneId": "92938b2e-ef58-41d4-b33c-5a880b1301e4",
+  "assets": [
+    {
+      "id": "c1845715-daa4-9cea-b4f0-0bde7fd9b43f",
+      "name": "source.mp4",
+      "kind": "video",
+      "mimeType": "video/mp4",
+      "byteSize": 4093640,
+      "duration": 6.042,
+      "width": 1280,
+      "height": 720,
+      "uri": "fs:media/c1845715daa49ceab4f00bde7fd9b43fbeaac22f84365a33c829f1e4e025f9b3.mp4",
+      "hash": "c1845715daa49ceab4f00bde7fd9b43fbeaac22f84365a33c829f1e4e025f9b3"
+    },
+    {
+      "id": "b49097a8-d598-d28f-9a84-4e7abf5ca896",
+      "name": "voice.mp3",
+      "kind": "audio",
+      "mimeType": "audio/mpeg",
+      "byteSize": 72351,
+      "duration": 4.493061,
+      "width": null,
+      "height": null,
+      "uri": "fs:media/b49097a8d598d28f9a844e7abf5ca896f99f8949c05f261ca373a3988224f61c.mp3",
+      "hash": "b49097a8d598d28f9a844e7abf5ca896f99f8949c05f261ca373a3988224f61c"
+    }
+  ],
+  "createdAt": 1788936493735,
+  "modifiedAt": 1788936494094
+}

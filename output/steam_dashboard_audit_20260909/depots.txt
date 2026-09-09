@@ -1,0 +1,245 @@
+- navigation:
+  - link "Steamworks":
+    - /url: https://partner.steamgames.com/
+    - img "Steamworks"
+  - list:
+    - button "문서"
+    - button "리소스"
+    - button "뉴스 및 업데이트"
+    - link "지원":
+      - /url: https://help.steampowered.com/wizard/HelpWithPublishing
+  - generic: SIM DOJIN
+  - button "shsia":
+    - generic: shsia
+  - link:
+    - /url: https://steamcommunity.com/profiles/76561197980448401
+- navigation:
+  - list:
+    - link "대시보드":
+      - /url: https://partner.steamgames.com/dashboard
+    - button "앱 및 패키지"
+    - button "도구"
+    - button "사용자 및 사용 권한"
+    - link "재무 정보":
+      - /url: https://partner.steampowered.com/
+  - textbox "앱 이름 또는 ID로 찾기"
+- dialog:
+  - generic: SIM DOJIN
+  - link "GOAL":
+    - /url: https://steamcommunity.com/profiles/76561197980448401
+  - generic "문서": 문서
+  - generic "리소스": 리소스
+  - generic "뉴스 및 업데이트": 뉴스 및 업데이트
+  - link "지원":
+    - /url: https://help.steampowered.com/wizard/HelpWithPublishing
+  - button "언어 변경"
+  - button "로그아웃"
+- link "Steamworks":
+  - /url: https://partner.steamgames.com
+- text: ">"
+- link "앱 관리":
+  - /url: https://partner.steamgames.com/apps/
+- text: ">"
+- 'link "EXODUSER: HELL LORD"':
+  - /url: "https://partner.steamgames.com/apps/landing/4749590 "
+- generic: "앱 데이터 관리:"
+- text: "EXODUSER: HELL LORD (4749590)"
+- combobox:
+  - option [selected]
+  - option "상점 페이지 변경"
+  - option "Steamworks 설정 변경"
+- generic: 애플리케이션
+- generic: SteamPipe
+- generic: 설치
+- generic: 보안
+- generic: 통계 및 도전 과제
+- generic: 커뮤니티
+- generic: 창작마당
+- link "키 관리":
+  - /url: https://partner.steamgames.com/apps/packages/4749590
+- generic: 기타
+- link "게시":
+  - /url: https://partner.steamgames.com/apps/publishing/4749590
+- heading "디포 관리" [level=2]
+- paragraph: 두 개의 디포가 같은 위치에 있는 사용자 파일 시스템에 콘텐츠를 만들고 충돌이 생길 경우 (목록 하부에 있음) 후자의 디포가 전자의 디포를 '이기고' 사용자는 전자의 디포가 아닌 후자의 디포에서 콘텐츠를 얻게 됩니다.
+- paragraph:
+  - strong: "언어:"
+  - text: 디포에 언어를 지정하는 것은 해당 언어로 Steam을 실행하는 사용자만 디포 콘텐츠를 다운로드하게 됩니다. 다른 언어로 실행하는 사용자가 귀하의 콘텐츠를 사용하게 하려면 [모든 언어] 선택 기본 설정을 사용하세요.
+- paragraph:
+  - strong: "시스템 아키텍처:"
+  - text: 각각 별도의 디포가 있다면, 32/64비트 아키텍처만 지정하면 됩니다. 디포가 한 개밖에 없다면, [모든 아키텍처]로 설정을 그대로 두세요.
+- paragraph:
+  - strong: "DLC:"
+  - text: DLC 디포와 콘텐츠는 기본적으로 기본 게임 AppID로 관리됩니다. 해당 제품에 대해 대량의 DLC 디포를 제공하고자 하는 경우 'DLC 디포 따로 관리' 기능을 사용해 주세요. 이 기능을 사용하면 DLC 디포에 DLC AppID가 따로 부여되며, DLC 디포를 따로 관리하고 업로드할 수 있습니다. 따라서, 기본 게임에 대한 디포 목록을 줄이고 클라이언트에서 다운로드하는 앱 메타 데이터를 줄일 수 있습니다.
+- checkbox "DLC 디포 따로 관리"
+- text: DLC 디포 따로 관리
+- heading "디포 구성 중" [level=4]
+- paragraph: 수정하려면 디포 이름을 클릭하세요. 다시 정렬하려면 디포를 끌어오세요.
+- list:
+  - text: "4749591 \"EXODUSER: HELL LORD Content\""
+  - text: (3개의 패키지에서 참조)
+  - button "편집"
+  - button "제거"
+  - generic: "운영 체제 : Windows"
+- heading "디포 생성 및 추가" [level=4]
+- paragraph:
+  - text: 여기에서 새로운 디포를 생성한 다음, 디포에 포함하고 싶은 패키지를 추가해야 합니다. 테스트로 개발자 패키지를 추가할 수도 있습니다. 출시하려면 CD키나 게임 구매로 잠금 해제된 상점 패키지 및 다른 패키지가 추가되어 있는지 확인하세요.
+  - text: 이 애플리케이션에 관련된 모든 패키지를 보려면
+  - link "여기를":
+    - /url: https://partner.steamgames.com/apps/associated/4749590
+  - text: 클릭하세요.
+- link "새로운 디포 추가":
+  - /url: javascript:void(0);
+  - generic: 새로운 디포 추가
+- link "DLC 추가 (DLC의 메인 디포 연결하기)":
+  - /url: javascript:void(0);
+  - generic: DLC 추가 (DLC의 메인 디포 연결하기)
+- link "공유 디포 추가":
+  - /url: javascript:void(0);
+  - generic: 공유 디포 추가
+- heading "디포 변경 사항 저장" [level=4]
+- paragraph: 디포를 생성, 추가 또는 수정한 내용은 계속하기 전에 여기에서 저장되어야 합니다.
+- button "저장"
+- heading "기본 언어 관리하기*" [level=2]
+- paragraph:
+  - text: 기본 콘텐츠 디포가 언어별이 아니고(위에 [모든 언어]로 표시되어있는 경우) 한 개 이상의 언어를 포함하면, 귀하의 앱은 사용자가 어떤 언어를 Steam에서 사용하고 있는지를 감지하기 위해
+  - code: GetCurrentGameLanguage()
+  - text: 를 호출할 수 있습니다. 또한, 해당 호출을 사용한다면 고객이 수동으로 제품에 포함되어있는 아래의 언어로 전환하도록 지정할 수 있습니다. 이는 고객이 설정 창의 드롭다운에서 언어를 보고 사용 가능한 언어를 선택할 수 있도록 허용합니다.
+- paragraph: 귀사의 게임이 아래 나열된 언어 이외의 다른 언어를 지원하는 경우, 해당 콘텐츠를 [모든 언어] 디포에 포함하고 게임 내에 언어 변경 설정을 추가해야 합니다.
+- paragraph:
+  - text: 더 자세한 내용은
+  - link "현지화 및 언어 문서":
+    - /url: https://partner.steamgames.com/doc/store/localization
+  - text: 를 확인하세요.
+- checkbox "아랍어"
+- text: 아랍어
+- checkbox "포르투갈어 - 브라질"
+- text: 포르투갈어 - 브라질
+- checkbox "불가리아어"
+- text: 불가리아어
+- checkbox "체코어"
+- text: 체코어
+- checkbox "덴마크어"
+- text: 덴마크어
+- checkbox "네덜란드어"
+- text: 네덜란드어
+- checkbox "영어" [checked]
+- text: 영어
+- checkbox "핀란드어"
+- text: 핀란드어
+- checkbox "프랑스어"
+- text: 프랑스어
+- checkbox "독일어"
+- text: 독일어
+- checkbox "그리스어"
+- text: 그리스어
+- checkbox "헝가리어"
+- text: 헝가리어
+- checkbox "인도네시아어"
+- text: 인도네시아어
+- checkbox "이탈리아어"
+- text: 이탈리아어
+- checkbox "일본어"
+- text: 일본어
+- checkbox "한국어" [checked]
+- text: 한국어
+- checkbox "스페인어 - 중남미"
+- text: 스페인어 - 중남미
+- checkbox "말레이어"
+- text: 말레이어
+- checkbox "노르웨이어"
+- text: 노르웨이어
+- checkbox "폴란드어"
+- text: 폴란드어
+- checkbox "포르투갈어 - 포르투갈"
+- text: 포르투갈어 - 포르투갈
+- checkbox "루마니아어"
+- text: 루마니아어
+- checkbox "러시아어"
+- text: 러시아어
+- checkbox "중국어 간체"
+- text: 중국어 간체
+- checkbox "스페인어 - 스페인"
+- text: 스페인어 - 스페인
+- checkbox "스웨덴어"
+- text: 스웨덴어
+- checkbox "중국어 번체"
+- text: 중국어 번체
+- checkbox "태국어"
+- text: 태국어
+- checkbox "튀르키예어"
+- text: 튀르키예어
+- checkbox "우크라이나어"
+- text: 우크라이나어
+- checkbox "베트남어"
+- text: 베트남어
+- button "저장"
+- heading "Valve 대외비" [level=2]
+- paragraph: 이 사이트는 접속이 제한되어 있으며 여기에 포함된 내용은 모두 Valve 기밀 정보입니다. 이 사이트에 접속하거나 해당 정보를 사용하려면 기밀 정보에 관해 Valve와 비밀 유지 계약 및 라이선스 계약을 체결해야 합니다.
+- text: Steamworks는
+- link "Steam":
+  - /url: https://store.steampowered.com/
+- text: 에서 귀사의 게임을 구성하고 관리하며 운영하는 데 도움을 드리기 위해
+- link "Valve":
+  - /url: https://www.valvesoftware.com
+- text: 가 구축한 일련의 도구 및 서비스입니다.
+- link:
+  - /url: http://www.valvesoftware.com
+- link:
+  - /url: https://store.steampowered.com/
+- list:
+  - emphasis: 문서
+  - link "홈":
+    - /url: https://partner.steamgames.com/doc/
+  - link "시작하기":
+    - /url: https://partner.steamgames.com/doc/gettingstarted
+  - link "상점 페이지":
+    - /url: https://partner.steamgames.com/doc/store
+  - link "기능":
+    - /url: https://partner.steamgames.com/doc/features
+  - link "재정":
+    - /url: https://partner.steamgames.com/doc/finance
+  - link "판매 및 마케팅":
+    - /url: https://partner.steamgames.com/doc/marketing
+  - link "Steamworks SDK":
+    - /url: https://partner.steamgames.com/doc/sdk
+  - link "PC방 라이선스":
+    - /url: https://partner.steamgames.com/pccafe
+  - link "Steam VR":
+    - /url: https://partner.steamgames.com/doc/features/steamvr/info
+- list:
+  - emphasis: 리소스
+  - link "Steam VR":
+    - /url: https://partner.steamgames.com/vrlicensing
+  - link "Steam PC방 프로그램":
+    - /url: https://partner.steamgames.com/pccafe
+  - link "Steamworks 토론":
+    - /url: https://steamcommunity.com/groups/steamworks/discussions
+    - text: Steamworks 토론
+  - link "Steamworks 동영상 튜토리얼":
+    - /url: https://www.youtube.com/user/SteamworksDev
+    - text: Steamworks 동영상 튜토리얼
+  - 'link "X: @Steamworks"':
+    - /url: http://twitter.com/Steamworks
+    - 'img "X: @Steamworks"'
+  - generic: "|"
+  - 'link "Bluesky: Steamworks"':
+    - /url: https://bsky.app/profile/partner.steamgames.com
+    - 'img "Bluesky: Steamworks"'
+  - link "고객지원 문의":
+    - /url: https://help.steampowered.com/ko/wizard/HelpWithPublishing
+    - generic: 고객지원 문의
+- list:
+  - emphasis: 뉴스 및 업데이트
+  - link "Steamworks 블로그":
+    - /url: https://store.steampowered.com/news/group/4145017
+    - text: Steamworks 블로그
+  - link "Steam 블로그":
+    - /url: https://store.steampowered.com/news/app/593110
+    - text: Steam 블로그
+  - link "Steam VR 블로그":
+    - /url: https://store.steampowered.com/news/app/250820
+    - text: Steam VR 블로그
+  - link "Steam Deck 블로그":
+    - /url: https://store.steampowered.com/news/app/1675200
+    - text: Steam Deck 블로그

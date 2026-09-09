@@ -1,0 +1,151 @@
+Warning: You are sending unauthenticated requests to the HF Hub. Please set a HF_TOKEN to enable higher rate limits and faster downloads.
+provider=faster-whisper words=11 captions=3 caption_words=11 density=4.26/s script_aligned=True similarity=1.0
+{
+  "captions": [
+    {
+      "text": "until she could bear no",
+      "start": 0.0,
+      "end": 1.1
+    },
+    {
+      "text": "more and took her own",
+      "start": 1.1,
+      "end": 2.26
+    },
+    {
+      "text": "life.",
+      "start": 2.26,
+      "end": 2.58
+    }
+  ],
+  "script_aligned": true,
+  "similarity": 1.0,
+  "timed_words": 11,
+  "caption_words": 11,
+  "words_per_second": 4.26,
+  "provider": "faster-whisper"
+}
+{
+  "verb": "fable.agent-ops.place",
+  "revision": 1,
+  "envelopes": 1,
+  "ops": 1
+}
+[node plan] 1 window(s), 1 worker(s) x 8 threads, 144 frames -> renders/clean.mp4
+[node audio] whole timeline mixed
+[node shard done] 1/1 0.00-6.00s 144 frames (23.6 ms/frame) — 1/1 complete
+{
+  "ok": true,
+  "path": "renders/clean.mp4",
+  "frames": 144,
+  "durationSeconds": 6,
+  "diagnostics": [],
+  "fallbacks": [],
+  "backend": "cpu"
+}
+fonts dir: /home/user/.higgsfield/workflows/subtitles/scripts/fonts
+  ok      TikTokSans-Bold.ttf (upstream, pinned wght=700,opsz=36,wdth=100,slnt=0)
+  ok      Montserrat-ExtraBold.ttf (upstream, pinned wght=800)
+  ok      Anton-Regular.ttf (upstream)
+  ok      PatrickHand-Regular.ttf (upstream)
+  ok      PermanentMarker-Regular.ttf (upstream)
+  ok      Caveat-Regular.ttf (upstream)
+DONE -> final.mp4  (clean natural case, no plate, small bottom captions)
+{
+  "duration_s": 6.0,
+  "voice_start_s": 1.0,
+  "voice_duration_s": 3.108571,
+  "caption_start_s": 1.0,
+  "caption_end_s": 3.83,
+  "english": "until she could bear no more and took her own life.",
+  "korean": "끝내 못 이겨 스스로 목숨을 끊었다.",
+  "transcript_exact_match": true,
+  "voice_pcm_correlation": 0.999981097374555,
+  "font": "NotoSerifCJKkr-Medium.otf: \"Noto Serif CJK KR\" \"Medium\"",
+  "font_size_ass": 13,
+  "margin_v_ass": 32,
+  "outline_ass": 0.6,
+  "shadow_ass": 0.4,
+  "receipts": {
+    "source.mp4": {
+      "bytes": 6901900,
+      "duration": 6.042,
+      "streams": [
+        {
+          "codec_type": "video",
+          "codec_name": "h264",
+          "width": 1280,
+          "height": 720,
+          "duration": "6.041667",
+          "sample_rate": null,
+          "r_frame_rate": "24/1"
+        }
+      ]
+    },
+    "voice.mp3": {
+      "bytes": 50199,
+      "duration": 3.108571,
+      "streams": [
+        {
+          "codec_type": "audio",
+          "codec_name": "mp3",
+          "width": null,
+          "height": null,
+          "duration": "3.108571",
+          "sample_rate": "44100",
+          "r_frame_rate": "0/0"
+        }
+      ]
+    },
+    "clean.mp4": {
+      "bytes": 5966188,
+      "duration": 6.0,
+      "streams": [
+        {
+          "codec_type": "video",
+          "codec_name": "h264",
+          "width": 1280,
+          "height": 720,
+          "duration": "6.000000",
+          "sample_rate": null,
+          "r_frame_rate": "24/1"
+        },
+        {
+          "codec_type": "audio",
+          "codec_name": "aac",
+          "width": null,
+          "height": null,
+          "duration": "6.000000",
+          "sample_rate": "48000",
+          "r_frame_rate": "0/0"
+        }
+      ]
+    },
+    "final.mp4": {
+      "bytes": 1049405,
+      "duration": 6.0,
+      "streams": [
+        {
+          "codec_type": "video",
+          "codec_name": "h264",
+          "width": 1280,
+          "height": 720,
+          "duration": "6.000000",
+          "sample_rate": null,
+          "r_frame_rate": "24/1"
+        },
+        {
+          "codec_type": "audio",
+          "codec_name": "aac",
+          "width": null,
+          "height": null,
+          "duration": "6.000000",
+          "sample_rate": "48000",
+          "r_frame_rate": "0/0"
+        }
+      ]
+    }
+  },
+  "human_audio_approval": false,
+  "visual_review_pending": true
+}

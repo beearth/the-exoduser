@@ -1,0 +1,41 @@
+{
+  "version": 4,
+  "artifact": "smooth_ending",
+  "url": "https://d2ol7oe51mr4n9.cloudfront.net/user_3G1zto9sz11Uf3iEOhJefE9HdGG/d72cec60-3c60-4c5c-b68f-203f610ae35f.mp4",
+  "clean_url": "https://d2ol7oe51mr4n9.cloudfront.net/user_3G1zto9sz11Uf3iEOhJefE9HdGG/d72cec60-3c60-4c5c-b68f-203f610ae35f.mp4",
+  "package_url": "https://d2ol7oe51mr4n9.cloudfront.net/user_3G1zto9sz11Uf3iEOhJefE9HdGG/8285dc2d-dde8-44e0-8502-086146df0955.zip",
+  "contact_url": "https://d2ol7oe51mr4n9.cloudfront.net/user_3G1zto9sz11Uf3iEOhJefE9HdGG/728f434c-1cc2-44c3-ae11-d730abf4b496.jpg",
+  "duration_s": 6.5,
+  "width": 1280,
+  "height": 720,
+  "fps": 60,
+  "frames": 390,
+  "silent": true,
+  "absolute_timeline_s": [
+    89.5,
+    96
+  ],
+  "absolute_cuts_s": [
+    91.5,
+    95.05
+  ],
+  "source_original_trim_s": [
+    0,
+    1.8
+  ],
+  "source_time_stretch": 5.555555555556,
+  "review": {
+    "status": "PASS_FOR_REVIEW",
+    "sampled_frames": 8,
+    "skeletal_face_preserved": true,
+    "hand_shape_preserved": true,
+    "full_decode_pass": true,
+    "no_cross_cut_interpolation": true,
+    "full_realtime_viewing": false,
+    "notes": [
+      "Source sparse timestamps retimed then minterpolate MCI; no late facial morph source used.",
+      "True generated intermediate frames; threshold-based change frequency 51.6–56.9 Hz.",
+      "Crop B still inherits limited source spatial detail."
+    ]
+  }
+}

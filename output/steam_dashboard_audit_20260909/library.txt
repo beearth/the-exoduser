@@ -1,0 +1,255 @@
+- navigation:
+  - link "Steamworks":
+    - /url: https://partner.steamgames.com/
+    - img "Steamworks"
+  - list:
+    - button "문서"
+    - button "리소스"
+    - button "뉴스 및 업데이트"
+    - link "지원":
+      - /url: https://help.steampowered.com/wizard/HelpWithPublishing
+  - generic: SIM DOJIN
+  - button "shsia":
+    - generic: shsia
+  - link:
+    - /url: https://steamcommunity.com/profiles/76561197980448401
+- navigation:
+  - list:
+    - link "대시보드":
+      - /url: https://partner.steamgames.com/dashboard
+    - button "앱 및 패키지"
+    - button "도구"
+    - button "사용자 및 사용 권한"
+    - link "재무 정보":
+      - /url: https://partner.steampowered.com/
+  - textbox "앱 이름 또는 ID로 찾기"
+- dialog:
+  - generic: SIM DOJIN
+  - link "GOAL":
+    - /url: https://steamcommunity.com/profiles/76561197980448401
+  - generic "문서": 문서
+  - generic "리소스": 리소스
+  - generic "뉴스 및 업데이트": 뉴스 및 업데이트
+  - link "지원":
+    - /url: https://help.steampowered.com/wizard/HelpWithPublishing
+  - button "언어 변경"
+  - button "로그아웃"
+- link "Steamworks":
+  - /url: https://partner.steamgames.com
+- text: ">"
+- link "앱 관리":
+  - /url: https://partner.steamgames.com/apps/
+- text: ">"
+- 'link "EXODUSER: HELL LORD"':
+  - /url: "https://partner.steamgames.com/apps/landing/4749590 "
+- generic: "상점 관리 페이지:"
+- text: "EXODUSER: HELL LORD (4749590)"
+- text: 해당 앱에는 게시되지 않은 변경 사항이 있습니다. 변경 사항은 상점 베타 모드 에서 볼 수 있습니다. 상점 페이지를 처음으로 게시하기 전에 Valve에서 페이지를 검토하고 승인해야 합니다. 더 자세한 정보는
+- link "출시를 위한 준비":
+  - /url: https://partner.steamgames.com/doc/gettingstarted
+- text: 를 참고해 주세요.
+- combobox:
+  - option [selected]
+  - option "상점 페이지 변경"
+  - option "Steamworks 설정 변경"
+- generic: 상점 내 변경 사항 미리 보기
+- generic: 기본 정보
+- generic: 설명
+- generic: 등급
+- generic: 앞서 해보기
+- generic: 그래픽 자산
+- generic: 예고편
+- generic: 특수 설정
+- generic: 현지화
+- generic: 게시
+- text: 상점 자산
+- generic: ✔
+- text: 스크린샷 자산
+- generic: ✔
+- text: 라이브러리 자산
+- generic: ✔
+- generic: 방송 자산 추천
+- text: 여기에 이미지를 드롭해서 업로드하세요.
+- generic: 이미지의 크기와 모양을 기준으로 아래의 올바른 범주에 배치되게 할 것입니다.
+- generic: 라이브러리 자산 가이드라인
+- strong: "개요:"
+- paragraph: 이 섹션에서 Steam 상점과 클라이언트 내 여러 곳에 표시될 앱의 대표 이미지를 관리할 수 있습니다. 최상의 결과를 얻으려면 각 유형에 따라 정해진 크기의 .png 파일을 업로드해주세요. 필요할 경우 JPEG 파일도 업로드할 수 있습니다.
+- strong: "템플릿:"
+- paragraph:
+  - text: "특정 크기 이미지용 포토샵 템플릿 다운로드:"
+  - link "Dropbox에 업로드된 Steam 템플릿":
+    - /url: https://www.dropbox.com/scl/fo/cvkwbosmrimklcl9h0qko/AF5IPErKP-mQM_3YO1Dw2lA?rlkey=b3ad0izykq367g4luasrinw9z&dl=0
+- strong: "문서:"
+- paragraph:
+  - link "예시 및 자세한 내용":
+    - /url: https://partner.steamgames.com/doc/store/assets/libraryassets
+- strong: "현지화:"
+- paragraph: "파일 이름 끝에 적절한 언어 이름을 넣으면 자동으로 해당 언어에 할당됩니다. (예: 'capsule_sm_koreana.png'는 자동으로 한국어로, 'capsule_sm_schinese.png'는 자동으로 중국어 간체로 할당)"
+- paragraph:
+  - text: 지원되는 언어 이름의 전체 목록은
+  - link "현지화 및 언어 문서":
+    - /url: https://partner.steamgames.com/doc/store/localization#supported_languages
+  - text: 의 'API 언어 코드'열을 확인하세요.
+- strong: "요구 사항:"
+- paragraph:
+  - emphasis:
+    - text: 라이브러리 자산의 콘텐츠는 게임 아트워크 및 로고로 제한됩니다. 더 자세한 정보는
+    - link "그래픽 자산 규칙":
+      - /url: https://partner.steamgames.com/doc/store/assets/rules
+    - text: 을 참고해 주세요. 다음은 각 자산의 사양입니다.
+- paragraph: "*는 필수 항목입니다."
+- generic: 라이브러리 캡슐 *
+- generic: 가로 600px x 세로 900px
+- generic: "디자인:"
+- text: 캡슐 이미지는 그래픽 위주로, 사용자가 어느 정도 게임 플레이를 이해할 수 있는 이미지를 업로드해야 합니다. 제품 상자와 마케팅 또는 게임명에 사용되고 있는 주요 아트를 사용하세요. 제품 또는 마케팅에 사용되는 동일한 로고 및 제목을 사용하는 것이 가장 좋습니다.
+- emphasis: 애플리케이션 타이틀 이외의 인용문, 마케팅 문구, 또는 기타 텍스트는 포함하지 마세요.
+- text: 아트는 고객에게 제품의 요점을 묘사해야 하고, 로고는 배경에 묻히지 않고 쉽게 알아볼 수 있어야 합니다.
+- generic: "용도:"
+- generic: 이 이미지는 주로 라이브러리 개요 및 모음집 보기에 사용됩니다.
+- generic: "크기:"
+- generic: 600px x 900px(절반 크기인 300px x 450px의 PNG 파일이 더 큰 파일에서 추가적으로 자동 생성됩니다.)
+- img "라이브러리 캡슐"
+- link "영어":
+  - /url: "#"
+- generic: 600 x 900 최신 자산
+- generic: (기본 영어 자산은 삭제할 수 없지만 필요에 따라 업데이트할 수 있습니다.)
+- generic: 라이브러리 헤더 *
+- generic: 가로 920px x 세로 430px
+- generic: "디자인:"
+- generic: 이 이미지는 제품 브랜딩에 초점을 맞춰야 합니다. 최상의 결과를 위해서는 비슷한 라이브러리 캡슐과 아트워크를 사용하고 로고가 선명하게 표시되는지 확인하세요.
+- generic: "용도:"
+- generic: "'최근 게임'을 포함하여 Steam 클라이언트 라이브러리의 다양한 공간에 표시됩니다. 설정하지 않으면 헤더 캡슐이 표시됩니다."
+- generic: "크기:"
+- generic: 920px x 430px
+- img "라이브러리 헤더"
+- link "영어":
+  - /url: "#"
+- generic: 920 x 430 최신 자산
+- generic: (기본 영어 자산은 삭제할 수 없지만 필요에 따라 업데이트할 수 있습니다.)
+- generic: 라이브러리 히어로 *
+- generic: 가로 3840px x 세로 1240px
+- generic: 히어로 그래픽과 로고는 겹쳐져 있고 페이지를 스크롤하면 각기 따로 움직이며 미묘한 시차 효과를 만듭니다. 제품 로고를 히어로 이미지 위(왼쪽 하단 또는 중앙)에 어떻게 배치할지 잘 고려하세요. 로고는 배경으로부터 눈에 띄고 쉽게 알아볼 수 있어야 합니다.
+- generic: "디자인:"
+- text: 히어로 이미지는 시각적으로 풍부하고 쉽게 알아볼 수 있는 이미지여야 합니다. 최상의 결과를 위해, 제품 상자와 마케팅에 사용되는 주요 아트를 사용하고, 인용문이나 다른 문자열은 포함하지 마세요.
+- text: 템플릿의 중앙에는 860px x 380px 크기의 '안전 영역'이 있습니다. 이 영역은 Steam 클라이언트 창의 확장 및 크기 조절에서 잘리지 않은 상태로 유지됩니다. 아트워크는 템플릿 전체로 확장되어야 하지만 중요한 콘텐츠는 안전 영역 내에 있어야 합니다. 예를 들면, 주인공의 전체 얼굴은 반드시 안전 영역 내에 있어야 하며, 그렇지 않을 경우 얼굴 이미지가 잘릴 가능성이 있습니다.
+- emphasis: 라이브러리 히어로 이미지에는 텍스트 또는 로고가 포함되어서는 안 됩니다. 라이브러리 상세 페이지 상단에 표시할 로고는 라이브러리 로고 파일에 별도로 업로드되어야 합니다(자세한 정보는 아래에서 확인).
+- emphasis
+- emphasis:
+  - generic: "용도:"
+  - generic: 사용자의 라이브러리에서 이 제품의 정보 페이지 위에 나타납니다.
+  - generic: "크기:"
+  - generic: 3840px x 1240px(절반 크기인 1920px x 620px의 PNG 파일이 더 큰 파일에서 추가적으로 자동 생성됩니다.)
+- emphasis:
+  - img "라이브러리 히어로"
+  - link "영어":
+    - /url: "#"
+  - generic: 3840 x 1240 최신 자산
+  - generic: (기본 영어 자산은 삭제할 수 없지만 필요에 따라 업데이트할 수 있습니다.)
+- emphasis:
+  - generic: 라이브러리 로고 *
+  - generic: 가로 1280px 또는 세로 720px
+  - text: 이미지를 업로드한 후에 미리 보기 도구를 사용하여 로고의 위치를 왼쪽 하단 모서리, 중앙 상단, 정중앙, 중앙 하단에서 선택할 수 있습니다.
+  - strong: "참고:"
+  - text: 히어로 그래픽과 로고를 업로드하지 않는 경우, 히어로 영역에 상점의 스크린샷이 표시되며, 왼쪽 하단 모서리에 텍스트로 된 애플리케이션 이름이 겹쳐 표시됩니다.
+  - generic: "디자인:"
+  - generic: 제품 상자나 마케팅에 사용하는 로고를 사용하는 것이 좋습니다. 로고는 히어로 그래픽 배경과 대비되어 선명하게 두드러져 보여야 합니다. PNG 이미지의 배경은 투명해야 합니다. 아트에 가장 적합한 비율을 사용해야 하지만, 로고는 반드시 가로 1280px 또는 세로 720px이어야 합니다.
+  - generic: "용도:"
+  - generic: 사용자의 라이브러리에서 이 제품의 정보 페이지 위에 나타나며, 히어로 그래픽 위에 배치됩니다.
+  - generic: "크기:"
+  - generic: 가로 1280px 또는 세로 720px이어야 합니다.(로고 비율에 기반하여 절반 크기로 추가 PNG 이미지가 자동으로 생성됩니다.)
+  - img "라이브러리 로고"
+  - link "영어":
+    - /url: "#"
+  - generic: 1280 x 720 최신 자산
+  - generic: (기본 영어 자산은 삭제할 수 없지만 필요에 따라 업데이트할 수 있습니다.)
+  - generic: 배치 도구 *
+  - paragraph: 네 개의 초록색 고정 지점은 왼쪽 하단, 상단 중앙, 정중앙, 중앙 하단과 같이 로고를 고정할 수 있는 네 가지 위치를 나타냅니다.
+  - paragraph: 대부분의 경우 왼쪽 하단 위치를 사용해야 합니다.
+  - paragraph: "로고를 중앙에 배치하면 좋은 경우:"
+  - list:
+    - listitem: 대칭이거나 대칭에 가까운 로고 또는 원 안에 들어가 있는 로고인 경우.
+    - listitem: 배경 헤더 이미지의 바깥 가장자리에 흥미로운 부분이 있고 중심부에 나머지 부분이 있는 경우.
+    - listitem: 배경 헤더 이미지가 대칭적으로 균형을 이루고, 왼쪽 하단에 로고를 배치하면 균형이 깨지는 경우.
+  - paragraph
+  - paragraph: 로고 위치를 결정했으면 파란색 로고 상자를 사용하여 로고 크기를 적절하게 조정하세요. 파란색 상자는 로고의 경계 상자 역할을 하며 이 상자 밖에서는 크기가 조정되지 않습니다. 파란색 상자의 오른쪽 가장자리는 배경 히어로 그래픽과 비교했을 때 로고의 배율을 조정할 최대 비율을 결정하며, 이는 로고가 겹치지 않게 하려는 배경 아트가 있는 경우 유용합니다. 파란색 상자의 위쪽 가장자리는 로고가 확장될 수 있는 최대 크기를 결정하며, 창이 확장되었을 때 로고가 너무 큰 경우 유용합니다.
+  - paragraph: 일반적으로 위쪽 가장자리를 로고의 경계보다 더 높게 둘 수 있습니다. 창을 다양한 크기로 변경하여 창의 크기에 따라 로고가 어떻게 조정되는지 알아보세요.
+  - paragraph: 로고 위치, 비율 및 크기에 만족하면 저장 버튼을 눌러 변경 사항을 적용하세요.
+  - button "배치 도구 열기":
+    - generic: 배치 도구 열기
+  - generic: "예시:"
+- emphasis
+- emphasis
+- emphasis
+- emphasis
+- emphasis
+- emphasis:
+  - heading "Valve 대외비" [level=2]
+  - paragraph: 이 사이트는 접속이 제한되어 있으며 여기에 포함된 내용은 모두 Valve 기밀 정보입니다. 이 사이트에 접속하거나 해당 정보를 사용하려면 기밀 정보에 관해 Valve와 비밀 유지 계약 및 라이선스 계약을 체결해야 합니다.
+  - text: Steamworks는
+  - link "Steam":
+    - /url: https://store.steampowered.com/
+  - text: 에서 귀사의 게임을 구성하고 관리하며 운영하는 데 도움을 드리기 위해
+  - link "Valve":
+    - /url: https://www.valvesoftware.com
+  - text: 가 구축한 일련의 도구 및 서비스입니다.
+  - link:
+    - /url: http://www.valvesoftware.com
+  - link:
+    - /url: https://store.steampowered.com/
+  - list:
+    - emphasis: 문서
+    - link "홈":
+      - /url: https://partner.steamgames.com/doc/
+    - link "시작하기":
+      - /url: https://partner.steamgames.com/doc/gettingstarted
+    - link "상점 페이지":
+      - /url: https://partner.steamgames.com/doc/store
+    - link "기능":
+      - /url: https://partner.steamgames.com/doc/features
+    - link "재정":
+      - /url: https://partner.steamgames.com/doc/finance
+    - link "판매 및 마케팅":
+      - /url: https://partner.steamgames.com/doc/marketing
+    - link "Steamworks SDK":
+      - /url: https://partner.steamgames.com/doc/sdk
+    - link "PC방 라이선스":
+      - /url: https://partner.steamgames.com/pccafe
+    - link "Steam VR":
+      - /url: https://partner.steamgames.com/doc/features/steamvr/info
+  - list:
+    - emphasis: 리소스
+    - link "Steam VR":
+      - /url: https://partner.steamgames.com/vrlicensing
+    - link "Steam PC방 프로그램":
+      - /url: https://partner.steamgames.com/pccafe
+    - link "Steamworks 토론":
+      - /url: https://steamcommunity.com/groups/steamworks/discussions
+      - text: Steamworks 토론
+    - link "Steamworks 동영상 튜토리얼":
+      - /url: https://www.youtube.com/user/SteamworksDev
+      - text: Steamworks 동영상 튜토리얼
+    - 'link "X: @Steamworks"':
+      - /url: http://twitter.com/Steamworks
+      - 'img "X: @Steamworks"'
+    - generic: "|"
+    - 'link "Bluesky: Steamworks"':
+      - /url: https://bsky.app/profile/partner.steamgames.com
+      - 'img "Bluesky: Steamworks"'
+    - link "고객지원 문의":
+      - /url: https://help.steampowered.com/ko/wizard/HelpWithPublishing
+      - generic: 고객지원 문의
+  - list:
+    - emphasis: 뉴스 및 업데이트
+    - link "Steamworks 블로그":
+      - /url: https://store.steampowered.com/news/group/4145017
+      - text: Steamworks 블로그
+    - link "Steam 블로그":
+      - /url: https://store.steampowered.com/news/app/593110
+      - text: Steam 블로그
+    - link "Steam VR 블로그":
+      - /url: https://store.steampowered.com/news/app/250820
+      - text: Steam VR 블로그
+    - link "Steam Deck 블로그":
+      - /url: https://store.steampowered.com/news/app/1675200
+      - text: Steam Deck 블로그
+- emphasis

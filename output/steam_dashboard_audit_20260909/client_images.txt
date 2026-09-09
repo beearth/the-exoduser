@@ -1,0 +1,176 @@
+- navigation:
+  - link "Steamworks":
+    - /url: https://partner.steamgames.com/
+    - img "Steamworks"
+  - list:
+    - button "문서"
+    - button "리소스"
+    - button "뉴스 및 업데이트"
+    - link "지원":
+      - /url: https://help.steampowered.com/wizard/HelpWithPublishing
+  - generic: SIM DOJIN
+  - button "shsia":
+    - generic: shsia
+  - link:
+    - /url: https://steamcommunity.com/profiles/76561197980448401
+- navigation:
+  - list:
+    - link "대시보드":
+      - /url: https://partner.steamgames.com/dashboard
+    - button "앱 및 패키지"
+    - button "도구"
+    - button "사용자 및 사용 권한"
+    - link "재무 정보":
+      - /url: https://partner.steampowered.com/
+  - textbox "앱 이름 또는 ID로 찾기"
+- dialog:
+  - generic: SIM DOJIN
+  - link "GOAL":
+    - /url: https://steamcommunity.com/profiles/76561197980448401
+  - generic "문서": 문서
+  - generic "리소스": 리소스
+  - generic "뉴스 및 업데이트": 뉴스 및 업데이트
+  - link "지원":
+    - /url: https://help.steampowered.com/wizard/HelpWithPublishing
+  - button "언어 변경"
+  - button "로그아웃"
+- link "Steamworks":
+  - /url: https://partner.steamgames.com
+- text: ">"
+- link "앱 관리":
+  - /url: https://partner.steamgames.com/apps/
+- text: ">"
+- 'link "EXODUSER: HELL LORD"':
+  - /url: "https://partner.steamgames.com/apps/landing/4749590 "
+- generic: "앱 데이터 관리:"
+- text: "EXODUSER: HELL LORD (4749590)"
+- combobox:
+  - option [selected]
+  - option "상점 페이지 변경"
+  - option "Steamworks 설정 변경"
+- generic: 애플리케이션
+- generic: SteamPipe
+- generic: 설치
+- generic: 보안
+- generic: 통계 및 도전 과제
+- generic: 커뮤니티
+- generic: 창작마당
+- link "키 관리":
+  - /url: https://partner.steamgames.com/apps/packages/4749590
+- generic: 기타
+- link "게시":
+  - /url: https://partner.steamgames.com/apps/publishing/4749590
+- heading "클라이언트 이미지, 아이콘 및 기타 자산" [level=2]
+- paragraph:
+  - text: Steam 전반의 여러 공간에는 다양한 제품 이미지가 표시됩니다. 아래 옵션을 통해 이러한 공간에 표시되는 이미지와 이미지가 표시되는 위치에 대한 설명을 업로드할 수 있습니다. 자세한 정보와 템플릿은
+  - link "커뮤니티 및 클라이언트 아이콘 문서":
+    - /url: https://partner.steamgames.com/doc/store/assets/community
+  - text: 를 참고해 주세요.
+- generic: 바로 가기 아이콘 *
+- strong: "용도:"
+- paragraph: 이 아이콘은 애플리케이션을 실행하기 위한 바탕 화면 바로 가기를 만들 때 사용됩니다. 업로드 시 이 자산을 사용하여 앱 아이콘을 생성할 수도 있습니다. 이 파일을 사용하여 생성된 앱 아이콘은 알파 채널을 지원하지 않으므로 투명한 영역은 모두 검은색으로 표시됩니다.
+- strong: "형식:"
+- paragraph: ICO 또는 PNG 파일 형식을 지원합니다. ICO 파일 내에 다른 크기의 이미지가 포함되지 않은 경우, Steam에서 ICO 파일 내에 여러 작은 크기(16x16, 32x32, 64x64, 128x128)의 이미지를 만듭니다.
+- paragraph:
+  - strong: "ICO 파일:"
+  - text: ICO 파일을 제출하는 경우, 반드시 크기가 최소 256x256px인 이미지를 포함해야 하며, 다른 크기의 이미지를 포함할 수도 있습니다. 다른 크기의 이미지가 포함되지 않은 경우, Steam에서 ICO 파일 내에 여러 작은 크기의 이미지를 만듭니다. PNG 파일을 제출하는 경우, 크기가 반드시 256x256px 또는 512x512px이어야 합니다.
+- paragraph:
+  - text: 최신 자산
+  - strong: "PNG 파일:"
+  - text: PNG 파일을 제출하는 경우, 크기가 반드시 256x256px 또는 512x512px이어야 합니다.
+- link "전체 .ico 파일 다운로드":
+  - /url: https://partner.steamgames.com/gfxproxy/appgfx/apps/4749590/bfed4e6ed309aba004c1e3a9bcdbb1ded0b2e9bf.ico?original=1
+- checkbox "업로드 시 바로 가기 아이콘을 앱 아이콘으로 변환" [checked]
+- text: 업로드 시 바로 가기 아이콘을 앱 아이콘으로 변환
+- text: "새로운 바로 가기 아이콘:"
+- button "Choose File"
+- button "업로드"
+- generic: 앱 아이콘 *
+- strong: "용도:"
+- paragraph: 이 이미지는 큰 캡슐 이미지를 사용하기에 공간이 부족한 작은 크기의 레이아웃에서 애플리케이션을 표시할 때 사용됩니다. 사용되는 공간의 예로는 라이브러리 목록 보기, 채팅의 '즐겨찾기' 및 Steam 클라이언트, 모바일 클라이언트와 Deck의 알림 등이 있습니다. 또한 앱의 커뮤니티 그룹 아이콘으로도 사용됩니다. 이미지는 일반적으로 작은 크기로 표시되지만 고해상도 화면에 표시되는 경우도 있습니다.
+- strong: "형식:"
+- paragraph: 가로 184px x 세로 184px JPG
+- link "원본 다운로드하기":
+  - /url: https://avatars.fastly.steamstatic.com/78cc3ecd064c5d11815bbbbbfbafa8f042b1fb26_full.jpg?original=1
+- text: "새로운 앱 아이콘:"
+- button "Choose File"
+- button "업로드"
+- text: "Mac 아이콘: (ICNS)"
+- text: (이 웹 사이트는 ICNS 파일을 표시하지 않습니다.)
+- text: "새로운 ICNS:"
+- button "Choose File"
+- button "업로드"
+- text: "Linux 아이콘: (16x16, 24x24, 32x32, 64x64, 96x96 등, PNG 형식, .zip 파일 내)"
+- text: (이 웹 사이트는 ZIP 파일의 내용을 표시하지 않습니다.)
+- text: "새로운 ZIP:"
+- button "Choose File"
+- button "업로드"
+- heading "Valve 대외비" [level=2]
+- paragraph: 이 사이트는 접속이 제한되어 있으며 여기에 포함된 내용은 모두 Valve 기밀 정보입니다. 이 사이트에 접속하거나 해당 정보를 사용하려면 기밀 정보에 관해 Valve와 비밀 유지 계약 및 라이선스 계약을 체결해야 합니다.
+- text: Steamworks는
+- link "Steam":
+  - /url: https://store.steampowered.com/
+- text: 에서 귀사의 게임을 구성하고 관리하며 운영하는 데 도움을 드리기 위해
+- link "Valve":
+  - /url: https://www.valvesoftware.com
+- text: 가 구축한 일련의 도구 및 서비스입니다.
+- link:
+  - /url: http://www.valvesoftware.com
+- link:
+  - /url: https://store.steampowered.com/
+- list:
+  - emphasis: 문서
+  - link "홈":
+    - /url: https://partner.steamgames.com/doc/
+  - link "시작하기":
+    - /url: https://partner.steamgames.com/doc/gettingstarted
+  - link "상점 페이지":
+    - /url: https://partner.steamgames.com/doc/store
+  - link "기능":
+    - /url: https://partner.steamgames.com/doc/features
+  - link "재정":
+    - /url: https://partner.steamgames.com/doc/finance
+  - link "판매 및 마케팅":
+    - /url: https://partner.steamgames.com/doc/marketing
+  - link "Steamworks SDK":
+    - /url: https://partner.steamgames.com/doc/sdk
+  - link "PC방 라이선스":
+    - /url: https://partner.steamgames.com/pccafe
+  - link "Steam VR":
+    - /url: https://partner.steamgames.com/doc/features/steamvr/info
+- list:
+  - emphasis: 리소스
+  - link "Steam VR":
+    - /url: https://partner.steamgames.com/vrlicensing
+  - link "Steam PC방 프로그램":
+    - /url: https://partner.steamgames.com/pccafe
+  - link "Steamworks 토론":
+    - /url: https://steamcommunity.com/groups/steamworks/discussions
+    - text: Steamworks 토론
+  - link "Steamworks 동영상 튜토리얼":
+    - /url: https://www.youtube.com/user/SteamworksDev
+    - text: Steamworks 동영상 튜토리얼
+  - 'link "X: @Steamworks"':
+    - /url: http://twitter.com/Steamworks
+    - 'img "X: @Steamworks"'
+  - generic: "|"
+  - 'link "Bluesky: Steamworks"':
+    - /url: https://bsky.app/profile/partner.steamgames.com
+    - 'img "Bluesky: Steamworks"'
+  - link "고객지원 문의":
+    - /url: https://help.steampowered.com/ko/wizard/HelpWithPublishing
+    - generic: 고객지원 문의
+- list:
+  - emphasis: 뉴스 및 업데이트
+  - link "Steamworks 블로그":
+    - /url: https://store.steampowered.com/news/group/4145017
+    - text: Steamworks 블로그
+  - link "Steam 블로그":
+    - /url: https://store.steampowered.com/news/app/593110
+    - text: Steam 블로그
+  - link "Steam VR 블로그":
+    - /url: https://store.steampowered.com/news/app/250820
+    - text: Steam VR 블로그
+  - link "Steam Deck 블로그":
+    - /url: https://store.steampowered.com/news/app/1675200
+    - text: Steam Deck 블로그

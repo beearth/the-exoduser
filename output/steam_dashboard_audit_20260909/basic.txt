@@ -1,0 +1,1201 @@
+- navigation:
+  - link "Steamworks":
+    - /url: https://partner.steamgames.com/
+    - img "Steamworks"
+  - list:
+    - button "문서"
+    - button "리소스"
+    - button "뉴스 및 업데이트"
+    - link "지원":
+      - /url: https://help.steampowered.com/wizard/HelpWithPublishing
+  - generic: SIM DOJIN
+  - button "shsia":
+    - generic: shsia
+  - link:
+    - /url: https://steamcommunity.com/profiles/76561197980448401
+- navigation:
+  - list:
+    - link "대시보드":
+      - /url: https://partner.steamgames.com/dashboard
+    - button "앱 및 패키지"
+    - button "도구"
+    - button "사용자 및 사용 권한"
+    - link "재무 정보":
+      - /url: https://partner.steampowered.com/
+  - textbox "앱 이름 또는 ID로 찾기"
+- dialog:
+  - generic: SIM DOJIN
+  - link "GOAL":
+    - /url: https://steamcommunity.com/profiles/76561197980448401
+  - generic "문서": 문서
+  - generic "리소스": 리소스
+  - generic "뉴스 및 업데이트": 뉴스 및 업데이트
+  - link "지원":
+    - /url: https://help.steampowered.com/wizard/HelpWithPublishing
+  - button "언어 변경"
+  - button "로그아웃"
+- link "Steamworks":
+  - /url: https://partner.steamgames.com
+- text: ">"
+- link "앱 관리":
+  - /url: https://partner.steamgames.com/apps/
+- text: ">"
+- 'link "EXODUSER: HELL LORD"':
+  - /url: "https://partner.steamgames.com/apps/landing/4749590 "
+- generic: "상점 관리 페이지:"
+- text: "EXODUSER: HELL LORD (4749590)"
+- text: 해당 앱에는 게시되지 않은 변경 사항이 있습니다. 변경 사항은 상점 베타 모드 에서 볼 수 있습니다. 상점 페이지를 처음으로 게시하기 전에 Valve에서 페이지를 검토하고 승인해야 합니다. 더 자세한 정보는
+- link "출시를 위한 준비":
+  - /url: https://partner.steamgames.com/doc/gettingstarted
+- text: 를 참고해 주세요.
+- combobox:
+  - option [selected]
+  - option "상점 페이지 변경"
+  - option "Steamworks 설정 변경"
+- generic: 상점 내 변경 사항 미리 보기
+- generic: 기본 정보
+- generic: 설명
+- generic: 등급
+- generic: 앞서 해보기
+- generic: 그래픽 자산
+- generic: 예고편
+- generic: 특수 설정
+- generic: 현지화
+- generic: 게시
+- paragraph:
+  - text: 이 부분은 Steam 상점에 귀하의 제품 페이지를 설정하는 것입니다. * 으(로) 표시된 모든 필드를 완료하세요.
+  - text: 도움이 필요하시면
+  - link "상점 페이지 모범 사례":
+    - /url: https://partner.steamgames.com/doc/store
+  - text: 문서로 가셔서 귀하의 상점 페이지를 설정하는데 도움되는 동영상을 확인해 주세요.
+- generic: 앱 종류:*
+- combobox:
+  - option "게임" [selected]
+  - option "애플리케이션"
+- generic: 게임 이름:*
+- textbox: "EXODUSER: HELL LORD"
+- heading "개발사, 배급사 및 프랜차이즈" [level=2]
+- text: 게임이 속한 개발사, 배급사, 프랜차이즈의 이름을 하나 이상 입력하세요. 저장한 후에 이러한 이름을 해당 개발사 또는 배급사 홈페이지에 연결하면 플레이어가 모든 게임을 찾아볼 수 있습니다. 홈페이지 설정에 대한 자세한 정보는
+- link "제작자 홈 설정":
+  - /url: https://partner.steamgames.com/creatorhome/
+- text: 을 참고하거나 위의 '앱 및 패키지' 드롭다운 메뉴에서 확인할 수 있습니다.
+- generic: 개발사:*
+- textbox: FOR DEAR GAMERS
+- button "연결"
+- textbox: https://www.fordeargamers.com/
+- button "연결"
+- textbox
+- button "저장 후 다른 항목 추가"
+- link "제작자 홈페이지 문서":
+  - /url: https://partner.steamgames.com/doc/store/creator_homepage
+- generic: 배급사:*
+- textbox: FOR DEAR GAMERS
+- button "연결"
+- textbox: https://www.fordeargamers.com/
+- button "연결"
+- textbox
+- button "저장 후 다른 항목 추가"
+- link "제작자 홈페이지 문서":
+  - /url: https://partner.steamgames.com/doc/store/creator_homepage
+- generic: "프랜차이즈: (?)"
+- textbox: EXODUSER
+- button "연결"
+- textbox
+- button "저장 후 다른 항목 추가"
+- link "프랜차이즈 홈페이지 문서":
+  - /url: https://partner.steamgames.com/doc/store/franchise_pages
+- heading "외부 링크" [level=2]
+- generic: 귀하의 제품의 웹사이트, 포럼, 또는 온라인 가이드를 위한 링크를 적어 주세요. 사이트 주소는 http:// 또는 https://로 시작되어야 합니다.
+- generic: "게임 웹사이트 URL:"
+- textbox: https://www.fordeargamers.com/
+- generic: "포럼 URL:"
+- textbox
+- generic: "통계 URL:"
+- textbox
+- generic: "온라인 설명서 URL:"
+- textbox
+- generic: "건강 관련 경고 URL:"
+- textbox
+- generic: "개인정보 처리방침 URL:"
+- textbox
+- generic: "Metacritic 항목: (?)"
+- textbox
+- heading "소셜 미디어 링크" [level=2]
+- generic: 드롭다운 메뉴에서 이 게임에 대한 소식을 알리는 데 사용할 소셜미디어 플랫폼을 선택하세요. 선택하고 나면 각 플랫폼에 대한 URL을 입력할 수 있습니다.
+- combobox:
+  - generic: 추가할 소셜 미디어 선택
+- textbox: "1"
+- generic: YouTube
+- textbox "링크 입력": https://www.youtube.com/@fordeargamers
+- generic: (?)
+- heading "Steam Deck 호환성 정보" [level=2]
+- text: 고객에게 게임의 Steam Deck 호환성에 관한 추가 세부 정보를 제공하거나 계획을 공유할 수 있습니다. 이러한 정보를 공유하는 한 가지 방법은 게임의 Steam Deck 호환성에 관한 정보를 담은 Steam 이벤트를 게시하고 해당 게시물의 링크를 게임의 Steam Deck 호환성 세부 정보 표시에 포함하는 것입니다.
+- link "자세히 알아보려면 여기를 클릭하세요":
+  - /url: https://partner.steamgames.com/doc/steamdeck/compat#AddingSteamEvent
+- text: .
+- generic: Steam Deck 호환성 정보 (?)
+- textbox
+- heading "지원 플랫폼*" [level=2]
+- generic: 플랫폼:*
+- link "x Windows":
+  - /url: javascript:ToggleCheckbox('checkbox_app_platforms_win_');
+  - img "x"
+  - generic: Windows
+- link "macOS":
+  - /url: javascript:ToggleCheckbox('checkbox_app_platforms_mac_');
+  - generic: macOS
+- link "Linux와 SteamOS":
+  - /url: javascript:ToggleCheckbox('checkbox_app_platforms_linux_');
+  - generic: Linux와 SteamOS
+- link "Android (Steam Frame 독립형 환경에 최적화된 VR 게임에 한해 지원됩니다.)":
+  - /url: javascript:ToggleCheckbox('checkbox_app_platforms_android_');
+  - generic: Android (Steam Frame 독립형 환경에 최적화된 VR 게임에 한해 지원됩니다.)
+- text: 최소 시스템 요구 사항
+- combobox:
+  - option "영어" [selected]
+  - option "프랑스어"
+  - option "이탈리아어"
+  - option "독일어"
+  - option "스페인어 - 스페인"
+  - option "그리스어"
+  - option "네덜란드어"
+  - option "노르웨이어"
+  - option "덴마크어"
+  - option "러시아어"
+  - option "루마니아어"
+  - option "말레이어"
+  - option "베트남어"
+  - option "불가리아어"
+  - option "스웨덴어"
+  - option "스페인어 - 중남미"
+  - option "우크라이나어"
+  - option "인도네시아어"
+  - option "일본어"
+  - option "중국어 간체"
+  - option "중국어 번체"
+  - option "체코어"
+  - option "태국어"
+  - option "튀르키예어"
+  - option "포르투갈어 - 브라질"
+  - option "포르투갈어 - 포르투갈"
+  - option "폴란드어"
+  - option "핀란드어"
+  - option "한국어"
+  - option "헝가리어"
+- text: 권장 시스템 요구 사항 (선택 사항)
+- combobox:
+  - option "영어" [selected]
+  - option "프랑스어"
+  - option "이탈리아어"
+  - option "독일어"
+  - option "스페인어 - 스페인"
+  - option "그리스어"
+  - option "네덜란드어"
+  - option "노르웨이어"
+  - option "덴마크어"
+  - option "러시아어"
+  - option "루마니아어"
+  - option "말레이어"
+  - option "베트남어"
+  - option "불가리아어"
+  - option "스웨덴어"
+  - option "스페인어 - 중남미"
+  - option "우크라이나어"
+  - option "인도네시아어"
+  - option "일본어"
+  - option "중국어 간체"
+  - option "중국어 번체"
+  - option "체코어"
+  - option "태국어"
+  - option "튀르키예어"
+  - option "포르투갈어 - 브라질"
+  - option "포르투갈어 - 포르투갈"
+  - option "폴란드어"
+  - option "핀란드어"
+  - option "한국어"
+  - option "헝가리어"
+- text: "Windows:"
+- generic: "운영 체제 버전:"
+- textbox: Windows 10 64-bit
+- generic: "프로세서:"
+- textbox: Intel Core i3-4000 / AMD FX-6300 or equivalent
+- generic: "메모리:"
+- textbox: "4096"
+- combobox:
+  - option "MB" [selected]
+  - option "GB"
+- generic: "그래픽:"
+- textbox: Integrated GPU with WebGL2 support (Intel HD Graphics 4000+) or NVIDIA GeForce GT 730 / AMD Radeon HD 7770
+- generic: "네트워크:"
+- link "광대역 인터넷 연결":
+  - /url: javascript:ToggleCheckbox('checkbox_app_content_sysreqs_windows_min_broadband_');
+  - generic: 광대역 인터넷 연결
+- generic: "DirectX 버전:"
+- combobox:
+  - option "N/A"
+  - option "5.2"
+  - option "6.0"
+  - option "6.1"
+  - option "6.1a"
+  - option "7.0"
+  - option "7.0a"
+  - option "7.1"
+  - option "8.0"
+  - option "8.0a"
+  - option "8.1"
+  - option "8.1a"
+  - option "8.1b"
+  - option "8.2"
+  - option "9.0"
+  - option "9.0a"
+  - option "9.0b"
+  - option "9.0c"
+  - option "10"
+  - option "11" [selected]
+  - option "12"
+- generic: "디스크 공간:"
+- textbox: "2048"
+- combobox:
+  - option "MB" [selected]
+  - option "GB"
+- generic: "사운드 카드:"
+- textbox: DirectX compatible
+- text: "VR 기기 및 지원:"
+- generic: (?)
+- link "문서 보기":
+  - /url: https://partner.steamgames.com/doc/features/steamvr/settings
+- textbox
+- text: "추가 알림:"
+- generic: (?)
+- textbox: nline activation required via Steam.
+- generic: "운영 체제 버전:"
+- textbox: Windows 10/11 64-bit
+- generic: "프로세서:"
+- textbox: Intel Core i5-6500 / AMD Ryzen 3 1300X or better
+- generic: "메모리:"
+- textbox: "8192"
+- combobox:
+  - option "MB" [selected]
+  - option "GB"
+- generic: "그래픽:"
+- textbox: NVIDIA GeForce GTX 1050 / AMD Radeon RX 560 or better
+- generic: "네트워크:"
+- link "광대역 인터넷 연결":
+  - /url: javascript:ToggleCheckbox('checkbox_app_content_sysreqs_windows_rec_broadband_');
+  - generic: 광대역 인터넷 연결
+- generic: "DirectX 버전:"
+- combobox:
+  - option "N/A"
+  - option "5.2"
+  - option "6.0"
+  - option "6.1"
+  - option "6.1a"
+  - option "7.0"
+  - option "7.0a"
+  - option "7.1"
+  - option "8.0"
+  - option "8.0a"
+  - option "8.1"
+  - option "8.1a"
+  - option "8.1b"
+  - option "8.2"
+  - option "9.0"
+  - option "9.0a"
+  - option "9.0b"
+  - option "9.0c"
+  - option "10"
+  - option "11" [selected]
+  - option "12"
+- generic: "디스크 공간:"
+- textbox: "4096"
+- combobox:
+  - option "MB" [selected]
+  - option "GB"
+- generic: "사운드 카드:"
+- textbox: DirectX compatible
+- text: "VR 기기 및 지원:"
+- generic: (?)
+- link "문서 보기":
+  - /url: https://partner.steamgames.com/doc/features/steamvr/settings
+- textbox
+- text: "추가 알림:"
+- generic: (?)
+- textbox: nline activation required via Steam.
+- heading "출시일" [level=2]
+- paragraph: 아래의 편집 옵션을 사용하여 출시일을 지정하세요. 출시 예정 게임의 경우, 상점 페이지에 출시일을 표시할 방식도 선택할 수 있습니다.
+- paragraph:
+  - text: 더 자세한 내용은
+  - link "'출시 예정' 문서":
+    - /url: https://partner.steamgames.com/doc/store/coming_soon
+  - text: 를 확인하세요.
+- generic: "출시 예정일:"
+- generic: "지정한 출시일:"
+- generic: 2026년 12월 1일
+- generic: 오전 10:00 GMT+9
+- generic: "고객에게 표시되는 출시일:"
+- generic: 출시 예정
+- heading "성인 콘텐츠" [level=2]
+- text: 연령이 낮은 고객에게 적합하지 않은 내용이 제품에 포함되어 있는 경우, 제품의
+- link "콘텐츠 설문 조사":
+  - /url: https://partner.steamgames.com/contentdescriptors/editsurvey/4749590
+- text: 를 작성해 주세요.
+- text: "참고: ESRB 또는 다른 등급 위원회에서 등급을 받았다면, 등급 탭으로 가서 필요한 등급 설명도 확인하세요."
+- heading "지원 언어*" [level=2]
+- paragraph: 귀하의 제품에서 지원하는 모든 언어와 각 언어가 지원하는 범위를 선택해주세요.
+- list:
+  - listitem: 인터페이스 - 해당 언어로 (메뉴, UI 등의) 모든 게임 문구가 표시됨
+  - listitem: 완벽 오디오 - 해당 언어로 모든 음성 대화를 지원한다는 것을 표시합니다. 성우가 해당 언어로 녹음한 것입니다.
+  - listitem: 자막 - 해당 언어로 구사되는 모든 대화가 자막으로 나옴.
+- paragraph:
+  - text: 모든 언어 - 게임에 텍스트가 없고 모든 언어로 플레이 가능한 경우, 여기를 클릭하여 아래의 모든 옵션을 선택하세요.
+  - generic: 모든 언어 설정
+  - text: 잘못하신 부분이 있나요?
+  - link "전체 선택 취소":
+    - /url: "#"
+- generic: 영어
+- link "x 인터페이스":
+  - /url: javascript:ToggleCheckbox('checkbox_app_content_supported_languages_english_supported_');
+  - img "x"
+  - generic: 인터페이스
+- link "완벽 오디오":
+  - /url: javascript:ToggleCheckbox('checkbox_app_content_supported_languages_english_full_audio_');
+  - generic: 완벽 오디오
+- link "x 자막":
+  - /url: javascript:ToggleCheckbox('checkbox_app_content_supported_languages_english_subtitles_');
+  - img "x"
+  - generic: 자막
+- generic: 프랑스어
+- link "x 인터페이스":
+  - /url: javascript:ToggleCheckbox('checkbox_app_content_supported_languages_french_supported_');
+  - img "x"
+  - generic: 인터페이스
+- link "완벽 오디오":
+  - /url: javascript:ToggleCheckbox('checkbox_app_content_supported_languages_french_full_audio_');
+  - generic: 완벽 오디오
+- link "x 자막":
+  - /url: javascript:ToggleCheckbox('checkbox_app_content_supported_languages_french_subtitles_');
+  - img "x"
+  - generic: 자막
+- generic: 이탈리아어
+- link "x 인터페이스":
+  - /url: javascript:ToggleCheckbox('checkbox_app_content_supported_languages_italian_supported_');
+  - img "x"
+  - generic: 인터페이스
+- link "완벽 오디오":
+  - /url: javascript:ToggleCheckbox('checkbox_app_content_supported_languages_italian_full_audio_');
+  - generic: 완벽 오디오
+- link "x 자막":
+  - /url: javascript:ToggleCheckbox('checkbox_app_content_supported_languages_italian_subtitles_');
+  - img "x"
+  - generic: 자막
+- generic: 독일어
+- link "x 인터페이스":
+  - /url: javascript:ToggleCheckbox('checkbox_app_content_supported_languages_german_supported_');
+  - img "x"
+  - generic: 인터페이스
+- link "완벽 오디오":
+  - /url: javascript:ToggleCheckbox('checkbox_app_content_supported_languages_german_full_audio_');
+  - generic: 완벽 오디오
+- link "x 자막":
+  - /url: javascript:ToggleCheckbox('checkbox_app_content_supported_languages_german_subtitles_');
+  - img "x"
+  - generic: 자막
+- generic: 스페인어 - 스페인
+- link "x 인터페이스":
+  - /url: javascript:ToggleCheckbox('checkbox_app_content_supported_languages_spanish_supported_');
+  - img "x"
+  - generic: 인터페이스
+- link "완벽 오디오":
+  - /url: javascript:ToggleCheckbox('checkbox_app_content_supported_languages_spanish_full_audio_');
+  - generic: 완벽 오디오
+- link "x 자막":
+  - /url: javascript:ToggleCheckbox('checkbox_app_content_supported_languages_spanish_subtitles_');
+  - img "x"
+  - generic: 자막
+- generic: 그리스어
+- link "x 인터페이스":
+  - /url: javascript:ToggleCheckbox('checkbox_app_content_supported_languages_greek_supported_');
+  - img "x"
+  - generic: 인터페이스
+- link "완벽 오디오":
+  - /url: javascript:ToggleCheckbox('checkbox_app_content_supported_languages_greek_full_audio_');
+  - generic: 완벽 오디오
+- link "x 자막":
+  - /url: javascript:ToggleCheckbox('checkbox_app_content_supported_languages_greek_subtitles_');
+  - img "x"
+  - generic: 자막
+- generic: 네덜란드어
+- link "x 인터페이스":
+  - /url: javascript:ToggleCheckbox('checkbox_app_content_supported_languages_dutch_supported_');
+  - img "x"
+  - generic: 인터페이스
+- link "완벽 오디오":
+  - /url: javascript:ToggleCheckbox('checkbox_app_content_supported_languages_dutch_full_audio_');
+  - generic: 완벽 오디오
+- link "x 자막":
+  - /url: javascript:ToggleCheckbox('checkbox_app_content_supported_languages_dutch_subtitles_');
+  - img "x"
+  - generic: 자막
+- generic: 노르웨이어
+- link "x 인터페이스":
+  - /url: javascript:ToggleCheckbox('checkbox_app_content_supported_languages_norwegian_supported_');
+  - img "x"
+  - generic: 인터페이스
+- link "완벽 오디오":
+  - /url: javascript:ToggleCheckbox('checkbox_app_content_supported_languages_norwegian_full_audio_');
+  - generic: 완벽 오디오
+- link "x 자막":
+  - /url: javascript:ToggleCheckbox('checkbox_app_content_supported_languages_norwegian_subtitles_');
+  - img "x"
+  - generic: 자막
+- generic: 덴마크어
+- link "x 인터페이스":
+  - /url: javascript:ToggleCheckbox('checkbox_app_content_supported_languages_danish_supported_');
+  - img "x"
+  - generic: 인터페이스
+- link "완벽 오디오":
+  - /url: javascript:ToggleCheckbox('checkbox_app_content_supported_languages_danish_full_audio_');
+  - generic: 완벽 오디오
+- link "x 자막":
+  - /url: javascript:ToggleCheckbox('checkbox_app_content_supported_languages_danish_subtitles_');
+  - img "x"
+  - generic: 자막
+- generic: 러시아어
+- link "x 인터페이스":
+  - /url: javascript:ToggleCheckbox('checkbox_app_content_supported_languages_russian_supported_');
+  - img "x"
+  - generic: 인터페이스
+- link "완벽 오디오":
+  - /url: javascript:ToggleCheckbox('checkbox_app_content_supported_languages_russian_full_audio_');
+  - generic: 완벽 오디오
+- link "x 자막":
+  - /url: javascript:ToggleCheckbox('checkbox_app_content_supported_languages_russian_subtitles_');
+  - img "x"
+  - generic: 자막
+- generic: 루마니아어
+- link "x 인터페이스":
+  - /url: javascript:ToggleCheckbox('checkbox_app_content_supported_languages_romanian_supported_');
+  - img "x"
+  - generic: 인터페이스
+- link "완벽 오디오":
+  - /url: javascript:ToggleCheckbox('checkbox_app_content_supported_languages_romanian_full_audio_');
+  - generic: 완벽 오디오
+- link "x 자막":
+  - /url: javascript:ToggleCheckbox('checkbox_app_content_supported_languages_romanian_subtitles_');
+  - img "x"
+  - generic: 자막
+- generic: 말레이어
+- link "x 인터페이스":
+  - /url: javascript:ToggleCheckbox('checkbox_app_content_supported_languages_malay_supported_');
+  - img "x"
+  - generic: 인터페이스
+- link "완벽 오디오":
+  - /url: javascript:ToggleCheckbox('checkbox_app_content_supported_languages_malay_full_audio_');
+  - generic: 완벽 오디오
+- link "x 자막":
+  - /url: javascript:ToggleCheckbox('checkbox_app_content_supported_languages_malay_subtitles_');
+  - img "x"
+  - generic: 자막
+- generic: 베트남어
+- link "x 인터페이스":
+  - /url: javascript:ToggleCheckbox('checkbox_app_content_supported_languages_vietnamese_supported_');
+  - img "x"
+  - generic: 인터페이스
+- link "완벽 오디오":
+  - /url: javascript:ToggleCheckbox('checkbox_app_content_supported_languages_vietnamese_full_audio_');
+  - generic: 완벽 오디오
+- link "x 자막":
+  - /url: javascript:ToggleCheckbox('checkbox_app_content_supported_languages_vietnamese_subtitles_');
+  - img "x"
+  - generic: 자막
+- generic: 불가리아어
+- link "x 인터페이스":
+  - /url: javascript:ToggleCheckbox('checkbox_app_content_supported_languages_bulgarian_supported_');
+  - img "x"
+  - generic: 인터페이스
+- link "완벽 오디오":
+  - /url: javascript:ToggleCheckbox('checkbox_app_content_supported_languages_bulgarian_full_audio_');
+  - generic: 완벽 오디오
+- link "x 자막":
+  - /url: javascript:ToggleCheckbox('checkbox_app_content_supported_languages_bulgarian_subtitles_');
+  - img "x"
+  - generic: 자막
+- generic: 스웨덴어
+- link "x 인터페이스":
+  - /url: javascript:ToggleCheckbox('checkbox_app_content_supported_languages_swedish_supported_');
+  - img "x"
+  - generic: 인터페이스
+- link "완벽 오디오":
+  - /url: javascript:ToggleCheckbox('checkbox_app_content_supported_languages_swedish_full_audio_');
+  - generic: 완벽 오디오
+- link "x 자막":
+  - /url: javascript:ToggleCheckbox('checkbox_app_content_supported_languages_swedish_subtitles_');
+  - img "x"
+  - generic: 자막
+- generic: 스페인어 - 중남미
+- link "x 인터페이스":
+  - /url: javascript:ToggleCheckbox('checkbox_app_content_supported_languages_latam_supported_');
+  - img "x"
+  - generic: 인터페이스
+- link "완벽 오디오":
+  - /url: javascript:ToggleCheckbox('checkbox_app_content_supported_languages_latam_full_audio_');
+  - generic: 완벽 오디오
+- link "x 자막":
+  - /url: javascript:ToggleCheckbox('checkbox_app_content_supported_languages_latam_subtitles_');
+  - img "x"
+  - generic: 자막
+- generic: 아랍어
+- link "x 인터페이스":
+  - /url: javascript:ToggleCheckbox('checkbox_app_content_supported_languages_arabic_supported_');
+  - img "x"
+  - generic: 인터페이스
+- link "완벽 오디오":
+  - /url: javascript:ToggleCheckbox('checkbox_app_content_supported_languages_arabic_full_audio_');
+  - generic: 완벽 오디오
+- link "x 자막":
+  - /url: javascript:ToggleCheckbox('checkbox_app_content_supported_languages_arabic_subtitles_');
+  - img "x"
+  - generic: 자막
+- generic: 우크라이나어
+- link "x 인터페이스":
+  - /url: javascript:ToggleCheckbox('checkbox_app_content_supported_languages_ukrainian_supported_');
+  - img "x"
+  - generic: 인터페이스
+- link "완벽 오디오":
+  - /url: javascript:ToggleCheckbox('checkbox_app_content_supported_languages_ukrainian_full_audio_');
+  - generic: 완벽 오디오
+- link "x 자막":
+  - /url: javascript:ToggleCheckbox('checkbox_app_content_supported_languages_ukrainian_subtitles_');
+  - img "x"
+  - generic: 자막
+- generic: 인도네시아어
+- link "x 인터페이스":
+  - /url: javascript:ToggleCheckbox('checkbox_app_content_supported_languages_indonesian_supported_');
+  - img "x"
+  - generic: 인터페이스
+- link "완벽 오디오":
+  - /url: javascript:ToggleCheckbox('checkbox_app_content_supported_languages_indonesian_full_audio_');
+  - generic: 완벽 오디오
+- link "x 자막":
+  - /url: javascript:ToggleCheckbox('checkbox_app_content_supported_languages_indonesian_subtitles_');
+  - img "x"
+  - generic: 자막
+- generic: 일본어
+- link "x 인터페이스":
+  - /url: javascript:ToggleCheckbox('checkbox_app_content_supported_languages_japanese_supported_');
+  - img "x"
+  - generic: 인터페이스
+- link "완벽 오디오":
+  - /url: javascript:ToggleCheckbox('checkbox_app_content_supported_languages_japanese_full_audio_');
+  - generic: 완벽 오디오
+- link "x 자막":
+  - /url: javascript:ToggleCheckbox('checkbox_app_content_supported_languages_japanese_subtitles_');
+  - img "x"
+  - generic: 자막
+- generic: 중국어 간체
+- link "x 인터페이스":
+  - /url: javascript:ToggleCheckbox('checkbox_app_content_supported_languages_schinese_supported_');
+  - img "x"
+  - generic: 인터페이스
+- link "완벽 오디오":
+  - /url: javascript:ToggleCheckbox('checkbox_app_content_supported_languages_schinese_full_audio_');
+  - generic: 완벽 오디오
+- link "x 자막":
+  - /url: javascript:ToggleCheckbox('checkbox_app_content_supported_languages_schinese_subtitles_');
+  - img "x"
+  - generic: 자막
+- generic: 중국어 번체
+- link "x 인터페이스":
+  - /url: javascript:ToggleCheckbox('checkbox_app_content_supported_languages_tchinese_supported_');
+  - img "x"
+  - generic: 인터페이스
+- link "완벽 오디오":
+  - /url: javascript:ToggleCheckbox('checkbox_app_content_supported_languages_tchinese_full_audio_');
+  - generic: 완벽 오디오
+- link "x 자막":
+  - /url: javascript:ToggleCheckbox('checkbox_app_content_supported_languages_tchinese_subtitles_');
+  - img "x"
+  - generic: 자막
+- generic: 체코어
+- link "x 인터페이스":
+  - /url: javascript:ToggleCheckbox('checkbox_app_content_supported_languages_czech_supported_');
+  - img "x"
+  - generic: 인터페이스
+- link "완벽 오디오":
+  - /url: javascript:ToggleCheckbox('checkbox_app_content_supported_languages_czech_full_audio_');
+  - generic: 완벽 오디오
+- link "x 자막":
+  - /url: javascript:ToggleCheckbox('checkbox_app_content_supported_languages_czech_subtitles_');
+  - img "x"
+  - generic: 자막
+- generic: 태국어
+- link "x 인터페이스":
+  - /url: javascript:ToggleCheckbox('checkbox_app_content_supported_languages_thai_supported_');
+  - img "x"
+  - generic: 인터페이스
+- link "완벽 오디오":
+  - /url: javascript:ToggleCheckbox('checkbox_app_content_supported_languages_thai_full_audio_');
+  - generic: 완벽 오디오
+- link "x 자막":
+  - /url: javascript:ToggleCheckbox('checkbox_app_content_supported_languages_thai_subtitles_');
+  - img "x"
+  - generic: 자막
+- generic: 튀르키예어
+- link "x 인터페이스":
+  - /url: javascript:ToggleCheckbox('checkbox_app_content_supported_languages_turkish_supported_');
+  - img "x"
+  - generic: 인터페이스
+- link "완벽 오디오":
+  - /url: javascript:ToggleCheckbox('checkbox_app_content_supported_languages_turkish_full_audio_');
+  - generic: 완벽 오디오
+- link "x 자막":
+  - /url: javascript:ToggleCheckbox('checkbox_app_content_supported_languages_turkish_subtitles_');
+  - img "x"
+  - generic: 자막
+- generic: 포르투갈어 - 브라질
+- link "x 인터페이스":
+  - /url: javascript:ToggleCheckbox('checkbox_app_content_supported_languages_brazilian_supported_');
+  - img "x"
+  - generic: 인터페이스
+- link "완벽 오디오":
+  - /url: javascript:ToggleCheckbox('checkbox_app_content_supported_languages_brazilian_full_audio_');
+  - generic: 완벽 오디오
+- link "x 자막":
+  - /url: javascript:ToggleCheckbox('checkbox_app_content_supported_languages_brazilian_subtitles_');
+  - img "x"
+  - generic: 자막
+- generic: 포르투갈어 - 포르투갈
+- link "x 인터페이스":
+  - /url: javascript:ToggleCheckbox('checkbox_app_content_supported_languages_portuguese_supported_');
+  - img "x"
+  - generic: 인터페이스
+- link "완벽 오디오":
+  - /url: javascript:ToggleCheckbox('checkbox_app_content_supported_languages_portuguese_full_audio_');
+  - generic: 완벽 오디오
+- link "x 자막":
+  - /url: javascript:ToggleCheckbox('checkbox_app_content_supported_languages_portuguese_subtitles_');
+  - img "x"
+  - generic: 자막
+- generic: 폴란드어
+- link "x 인터페이스":
+  - /url: javascript:ToggleCheckbox('checkbox_app_content_supported_languages_polish_supported_');
+  - img "x"
+  - generic: 인터페이스
+- link "완벽 오디오":
+  - /url: javascript:ToggleCheckbox('checkbox_app_content_supported_languages_polish_full_audio_');
+  - generic: 완벽 오디오
+- link "x 자막":
+  - /url: javascript:ToggleCheckbox('checkbox_app_content_supported_languages_polish_subtitles_');
+  - img "x"
+  - generic: 자막
+- generic: 핀란드어
+- link "x 인터페이스":
+  - /url: javascript:ToggleCheckbox('checkbox_app_content_supported_languages_finnish_supported_');
+  - img "x"
+  - generic: 인터페이스
+- link "완벽 오디오":
+  - /url: javascript:ToggleCheckbox('checkbox_app_content_supported_languages_finnish_full_audio_');
+  - generic: 완벽 오디오
+- link "x 자막":
+  - /url: javascript:ToggleCheckbox('checkbox_app_content_supported_languages_finnish_subtitles_');
+  - img "x"
+  - generic: 자막
+- generic: 한국어
+- link "x 인터페이스":
+  - /url: javascript:ToggleCheckbox('checkbox_app_content_supported_languages_koreana_supported_');
+  - img "x"
+  - generic: 인터페이스
+- link "완벽 오디오":
+  - /url: javascript:ToggleCheckbox('checkbox_app_content_supported_languages_koreana_full_audio_');
+  - generic: 완벽 오디오
+- link "x 자막":
+  - /url: javascript:ToggleCheckbox('checkbox_app_content_supported_languages_koreana_subtitles_');
+  - img "x"
+  - generic: 자막
+- generic: 헝가리어
+- link "x 인터페이스":
+  - /url: javascript:ToggleCheckbox('checkbox_app_content_supported_languages_hungarian_supported_');
+  - img "x"
+  - generic: 인터페이스
+- link "완벽 오디오":
+  - /url: javascript:ToggleCheckbox('checkbox_app_content_supported_languages_hungarian_full_audio_');
+  - generic: 완벽 오디오
+- link "x 자막":
+  - /url: javascript:ToggleCheckbox('checkbox_app_content_supported_languages_hungarian_subtitles_');
+  - img "x"
+  - generic: 자막
+- heading "추가 지원 언어" [level=3]
+- paragraph:
+  - text: 이러한 언어는 Steam에서 완벽하게 지원되지 않지만 귀사의 게임에서 지원하는 경우, 해당 언어를 표시할 수 있습니다. 지원하는 언어는 상점 페이지에 표시되며 플레이어는 지원하는 언어로 상점을 검색할 수 있습니다.
+  - link "지원하는 언어에 대해 더 알아보세요.":
+    - /url: https://partner.steamgames.com/doc/store/localization/languages
+- combobox:
+  - option "<추가할 언어 선택>" [selected]
+  - option "갈리시아어"
+  - option "구자라트어"
+  - option "끼체어"
+  - option "네팔어"
+  - option "다리어"
+  - option "라트비아어"
+  - option "룩셈부르크어"
+  - option "리투아니아어"
+  - option "마라티어"
+  - option "마오리어"
+  - option "마케도니아어"
+  - option "말라얄람어"
+  - option "몰타어"
+  - option "몽골어"
+  - option "바스크어"
+  - option "발렌시아어"
+  - option "뱅골어"
+  - option "벨라루스어"
+  - option "보스니아어"
+  - option "세르비아어"
+  - option "소라니어"
+  - option "소토어"
+  - option "스와힐리어"
+  - option "스코트어"
+  - option "슬로바키아어"
+  - option "슬로베니아어"
+  - option "신드어"
+  - option "싱할라어"
+  - option "아르메니아어"
+  - option "아삼어"
+  - option "아이슬란드어"
+  - option "아일랜드어"
+  - option "아제르바이잔어"
+  - option "아프리칸스어"
+  - option "알바니아어"
+  - option "암하라어"
+  - option "에스토니아어"
+  - option "오디아어"
+  - option "요루바어"
+  - option "우르두어"
+  - option "우즈베크어"
+  - option "웨일스어"
+  - option "위구르어"
+  - option "윌로프어"
+  - option "이보어"
+  - option "조지아어"
+  - option "줄루어"
+  - option "체로키어"
+  - option "츠와나어"
+  - option "카자흐어"
+  - option "카탈로니아어"
+  - option "칸나다어"
+  - option "케추아어"
+  - option "코사어"
+  - option "콘칸어"
+  - option "크로아티아어"
+  - option "크메르어"
+  - option "키냐르완다어"
+  - option "키르기스어"
+  - option "타밀어"
+  - option "타지크어"
+  - option "타타르어"
+  - option "텔루구어"
+  - option "투르크멘어"
+  - option "티그리냐어"
+  - option "펀자브어(구르무키 문자)"
+  - option "펀자브어(샤흐무키 문자)"
+  - option "페르시아어"
+  - option "필리핀어"
+  - option "하우사어"
+  - option "히브리어"
+  - option "힌디어"
+- generic: 전체 보기
+- heading "플레이어*" [level=2]
+- text: (하나 이상의 항목을 선택하세요)
+- link "x 싱글 플레이어 (?)":
+  - /url: javascript:ToggleCheckbox('checkbox_app_classification_category_category_2_');
+  - img "x"
+  - generic: 싱글 플레이어 (?)
+- link "멀티플레이어 (?)":
+  - /url: javascript:ToggleCheckbox('checkbox_app_classification_category_category_1_');
+  - generic: 멀티플레이어 (?)
+- link "MMO (?)":
+  - /url: javascript:ToggleCheckbox('checkbox_app_classification_category_category_20_');
+  - generic: MMO (?)
+- generic: "멀티플레이어 모드:"
+- link "PvP (?)":
+  - /url: javascript:ToggleCheckbox('checkbox_app_classification_category_category_49_');
+  - generic: PvP (?)
+- link "온라인 (?)":
+  - /url: javascript:ToggleCheckbox('checkbox_app_classification_category_category_36_');
+  - generic: 온라인 (?)
+- link "LAN (?)":
+  - /url: javascript:ToggleCheckbox('checkbox_app_classification_category_category_47_');
+  - generic: LAN (?)
+- link "로컬 (?)":
+  - /url: javascript:ToggleCheckbox('checkbox_app_classification_category_category_37_');
+  - generic: 로컬 (?)
+- link "협동 (?)":
+  - /url: javascript:ToggleCheckbox('checkbox_app_classification_category_category_9_');
+  - generic: 협동 (?)
+- link "온라인 (?)":
+  - /url: javascript:ToggleCheckbox('checkbox_app_classification_category_category_38_');
+  - generic: 온라인 (?)
+- link "LAN (?)":
+  - /url: javascript:ToggleCheckbox('checkbox_app_classification_category_category_48_');
+  - generic: LAN (?)
+- link "로컬 (?)":
+  - /url: javascript:ToggleCheckbox('checkbox_app_classification_category_category_39_');
+  - generic: 로컬 (?)
+- link "교차 플랫폼 멀티플레이어 (?)":
+  - /url: javascript:ToggleCheckbox('checkbox_app_classification_category_category_27_');
+  - generic: 교차 플랫폼 멀티플레이어 (?)
+- generic: Single-player
+- heading "지원 기능" [level=2]
+- paragraph: 제품에서 사용 가능한 특정 기능을 선택하세요. 앞으로 기능을 추가할 계획이라면 구현되고 출시될 때까지 여기에서 선택하지 마세요.
+- link "Steam 도전 과제":
+  - /url: javascript:ToggleCheckbox('checkbox_app_classification_category_category_22_');
+  - generic: Steam 도전 과제
+- text: 먼저 Steam 도전 과제를 구현하고 출시해야 합니다.
+- link "도전 과제 구성으로 이동":
+  - /url: https://partner.steamgames.com/apps/achievements/4749590
+- link "Steam Cloud":
+  - /url: javascript:ToggleCheckbox('checkbox_app_classification_category_category_23_');
+  - generic: Steam Cloud
+- text: 먼저 Steam Cloud를 사용하도록 설정하고 테스트해야 합니다.
+- link "Cloud 구성으로 이동":
+  - /url: https://partner.steamgames.com/apps/cloud/4749590
+- link "통계":
+  - /url: javascript:ToggleCheckbox('checkbox_app_classification_category_category_15_');
+  - generic: 통계
+- text: Steamworks의 통계 보고를 활용하는 게임을 설명하기 위한 기능입니다. 반드시 Steam 통계 보고를 구성해야 합니다.
+- link "통계 구성으로 이동":
+  - /url: https://partner.steamgames.com/apps/stats/4749590
+- link "Steam 순위표":
+  - /url: javascript:ToggleCheckbox('checkbox_app_classification_category_category_25_');
+  - generic: Steam 순위표
+- text: 게임에서 Steam 점수판 API를 사용하는 경우에만 이 카테고리를 선택하세요.
+- link "점수판 구성으로 이동":
+  - /url: https://partner.steamgames.com/apps/leaderboards/4749590
+- link "앱 내 구매":
+  - /url: javascript:ToggleCheckbox('checkbox_app_classification_category_category_35_');
+  - generic: 앱 내 구매
+- text: 게임 내에서 구매할 수 있지만 Steam 상점에는 표시되지 않는 추가 콘텐츠가 있는 경우 이 옵션을 선택해야 합니다.
+- link "소액 결제 문서":
+  - /url: https://partner.steamgames.com/doc/features/microtransactions
+- text: 를 확인하세요.
+- link "x 캡션 이용 가능":
+  - /url: javascript:ToggleCheckbox('checkbox_app_classification_category_category_13_');
+  - img "x"
+  - generic: 캡션 이용 가능
+- generic: 캡션은 청각 장애인을 위한 기능으로, 화면에 표시되는 텍스트에는 소음, 음악, 음향 효과 등에 대한 설명이 포함되어야 합니다. 게임에 자막이 있는 경우, 아래에서 '지원 언어'를 표시해 주세요.
+- link "Steam 타임라인":
+  - /url: javascript:ToggleCheckbox('checkbox_app_classification_category_category_63_');
+  - generic: Steam 타임라인
+- text: 게임에서 Steam 타임라인 마커 API를 사용하는 경우 이 기능을 선택하세요.
+- link "타임라인 문서 보기":
+  - /url: https://partner.steamgames.com/doc/features/timeline
+- link "Steam 창작마당":
+  - /url: javascript:ToggleCheckbox('checkbox_app_classification_category_category_30_');
+  - generic: Steam 창작마당
+- text: 먼저 게임에 대한 Steam 창작마당을 구성하고 Steam 창작마당 API를 사용하여 사용자 생성 콘텐츠를 공유해야 합니다.
+- link "창작마당 구성으로 이동":
+  - /url: https://partner.steamgames.com/apps/workshop/4749590
+- link "Steam 창작마당(Steam China 전용)":
+  - /url: javascript:ToggleCheckbox('checkbox_app_classification_category_category_51_');
+  - generic: Steam 창작마당(Steam China 전용)
+- text: Steam China를 통해 배포되고 해당 버전의 Steam 창작마당을 활용하는 게임만 해당됩니다.
+- link "창작마당 구성으로 이동":
+  - /url: https://partner.steamgames.com/apps/workshop/4749590
+- link "레벨 에디터 포함":
+  - /url: javascript:ToggleCheckbox('checkbox_app_classification_category_category_17_');
+  - generic: 레벨 에디터 포함
+- generic: 플레이어가 게임 레벨을 만들거나 수정할 수 있는 레벨 편집기가 게임에 포함된 경우 이 카테고리를 선택할 수 있습니다. 레벨 편집기는 게임의 일부 또는 별도로 설치해야 하는 '도구' 앱으로 제공될 수도 있습니다.
+- link "Remote Play 휴대전화":
+  - /url: javascript:ToggleCheckbox('checkbox_app_classification_category_category_41_');
+  - generic: Remote Play 휴대전화
+- text: 이 기능을 설정하면 게임의 휴대전화 스트리밍을 테스트하고 Steam Input을 위한 터치 컨트롤러 구성을 설정했으며 작은 화면에 적합한 큰 글꼴과 UI 요소를 사용한다는 의미입니다.
+- link "문서 보기":
+  - /url: https://partner.steamgames.com/doc/features/remoteplay
+- link "Remote Play 태블릿":
+  - /url: javascript:ToggleCheckbox('checkbox_app_classification_category_category_42_');
+  - generic: Remote Play 태블릿
+- text: 이 기능을 설정하면 게임의 태블릿 스트리밍을 테스트하고 Steam Input을 위한 터치 컨트롤러 구성을 설정했다는 의미입니다.
+- link "문서 보기":
+  - /url: https://partner.steamgames.com/doc/features/remoteplay
+- link "Remote Play TV":
+  - /url: javascript:ToggleCheckbox('checkbox_app_classification_category_category_43_');
+  - generic: Remote Play TV
+- text: 이 기능을 설정하면 게임의 TV 스트리밍을 테스트했으며 애플리케이션이 컨트롤러를 완벽하게 지원하고 멀리서 TV를 보았을 때 적합하도록 큰 글꼴과 UI 요소를 사용한다는 의미입니다.
+- link "문서 보기":
+  - /url: https://partner.steamgames.com/doc/features/remoteplay
+- link "x Remote Play Together":
+  - /url: javascript:ToggleCheckbox('checkbox_app_classification_category_category_44_');
+  - img "x"
+  - generic: Remote Play Together
+- text: 이 기능을 설정하면 게임에서 플레이어가 스트리밍을 통해 Steam 친구를 초대할 수 있다는 의미입니다. 게임은 플레이 세션을 진행하는 사용자의 컴퓨터에서 실행되고, 다른 친구들은 컨트롤러를 연결하여 인터넷을 통해 게임 화면을 볼 수 있습니다.
+- link "문서 보기":
+  - /url: https://partner.steamgames.com/doc/features/remoteplay
+- link "HDR 사용 가능":
+  - /url: javascript:ToggleCheckbox('checkbox_app_classification_category_category_61_');
+  - generic: HDR 사용 가능
+- generic: 이 기능을 설정하면 게임에서 지원되는 HDR 디스플레이에 대한 HDR 출력(HDR10(PQ)/scRGB)을 지원한다는 의미입니다. 내부적으로 HDR로 렌더링하고 SDR로 톤 매핑하는 게임에서는 이를 설정해서는 안 됩니다.
+- link "Steam 턴 알림":
+  - /url: javascript:ToggleCheckbox('checkbox_app_classification_category_category_32_');
+  - generic: Steam 턴 알림
+- text: 게임에서 Steam 턴 알림 API를 사용하는 경우에만 이 카테고리를 선택하세요.
+- link "알림 문서 보기":
+  - /url: https://partner.steamgames.com/doc/features/game_notifications
+- link "코멘터리 제공":
+  - /url: javascript:ToggleCheckbox('checkbox_app_classification_category_category_14_');
+  - generic: 코멘터리 제공
+- generic: 게임 내에서 플레이어가 개발자 코멘터리를 찾아볼 수 있는 특별한 모드를 제공하는 경우 해당 정보를 알리기 위한 기능입니다.
+- link "Source SDK 포함":
+  - /url: javascript:ToggleCheckbox('checkbox_app_classification_category_category_16_');
+  - generic: Source SDK 포함
+- generic: 이 카테고리는 Valve의 Source Engine을 기반으로 제작된 게임에만 적용됩니다.
+- paragraph
+- heading "장르*" [level=2]
+- generic: "주요 장르:"
+- combobox:
+  - option
+  - option "액션" [selected]
+  - option "어드벤처"
+  - option "인디"
+  - option "롤 플레잉"
+- text: (주요 장르는 이동 경로 탐색을 표시할 때 사용됩니다. 상점 페이지 상단의 제품 타이틀 바로 위에 있습니다.)
+- link "x 액션":
+  - /url: javascript:ToggleCheckbox('checkbox_rgGenres_1_');
+  - img "x"
+  - generic: 액션
+- link "x 어드벤처":
+  - /url: javascript:ToggleCheckbox('checkbox_rgGenres_25_');
+  - img "x"
+  - generic: 어드벤처
+- link "캐주얼":
+  - /url: javascript:ToggleCheckbox('checkbox_rgGenres_4_');
+  - generic: 캐주얼
+- link "x 인디":
+  - /url: javascript:ToggleCheckbox('checkbox_rgGenres_23_');
+  - img "x"
+  - generic: 인디
+- link "대규모 멀티플레이어":
+  - /url: javascript:ToggleCheckbox('checkbox_rgGenres_29_');
+  - generic: 대규모 멀티플레이어
+- link "레이싱":
+  - /url: javascript:ToggleCheckbox('checkbox_rgGenres_9_');
+  - generic: 레이싱
+- link "x 롤 플레잉":
+  - /url: javascript:ToggleCheckbox('checkbox_rgGenres_3_');
+  - img "x"
+  - generic: 롤 플레잉
+- link "시뮬레이션":
+  - /url: javascript:ToggleCheckbox('checkbox_rgGenres_28_');
+  - generic: 시뮬레이션
+- link "스포츠":
+  - /url: javascript:ToggleCheckbox('checkbox_rgGenres_18_');
+  - generic: 스포츠
+- link "전략":
+  - /url: javascript:ToggleCheckbox('checkbox_rgGenres_2_');
+  - generic: 전략
+- heading "태그*" [level=2]
+- paragraph:
+  - text: 게임에 대한 태그를 최소
+  - strong: 5개
+  - text: 이상 반드시 추가해야 합니다.
+  - text: (
+  - strong: 태그 20개
+  - text: 를 적용했습니다)
+- generic: 태그 마법사를 사용해 애플리케이션에 태그를 지정해 주세요. 태그는 Steam이 플랫폼 전반에 귀사의 타이틀을 노출하는 공간을 결정하는 데 필요한 중요한 정보를 제공합니다.
+- generic: 내 타이틀에 태그 달기
+- paragraph
+- heading "컨트롤러 지원" [level=2]
+- generic: 플레이어에게 게임의 컨트롤러 지원 수준에 대한 구체적인 정보를 제공하기 위해 몇 가지 간단한 질문이 포함된 컨트롤러 지원 마법사를 준비했습니다. 플레이어가 사용하는 컨트롤러를 원활하게 지원하는 게임을 Steam에서 소개할 수 있도록 질문에 답변을 제공하여 마법사를 완료해 주세요.
+- generic: 컨트롤러 지원에 관해 제공해 주신 내용에 따라 Steam은 플레이어에게 다음의 세부 정보를 제공합니다.
+- generic: 컨트롤러 완벽 지원
+- link "Xbox 컨트롤러":
+  - /url: https://store.steampowered.com/search/?controllersupport=18
+  - generic: Xbox 컨트롤러
+- generic: "참고: 상점 페이지가 게시될 때까지 컨트롤러 지원이 Steam 라이브러리에 제대로 표시되지 않습니다."
+- text: "컨트롤러 플레이 시간 통계: 출시된 게임의 경우, 판매 및 활성화 보고서에서 컨트롤러 플레이 시간을 확인할 수 있습니다."
+- link "컨트롤러 플레이 시간 통계 보기":
+  - /url: https://partner.steampowered.com/app/controllerstats/4749590/
+- heading "접근성" [level=2]
+- generic: 접근성 지원에 대해 알려주신 정보를 바탕으로 Steam에는 다음과 같은 확장 가능한 목록이 표시됩니다.
+- generic "접근성 기능 ?":
+  - generic: 접근성 기능
+  - link "?":
+    - /url: https://help.steampowered.com/faqs/view/02F5-ACB2-6038-0F36
+- list "접근성 기능 ?":
+  - generic: 게임플레이
+  - list "게임플레이":
+    - link "난이도 조정":
+      - /url: https://store.steampowered.com/category/adjustable_difficulty
+      - generic: 난이도 조정
+    - link "수시 저장":
+      - /url: https://store.steampowered.com/category/save_anytime
+      - generic: 수시 저장
+  - generic: 청각
+  - list "청각":
+    - link "음량 개별 조절":
+      - /url: https://store.steampowered.com/category/custom_volume_controls
+      - generic: 음량 개별 조절
+    - link "스테레오 사운드":
+      - /url: https://store.steampowered.com/category/stereo_sound
+      - generic: 스테레오 사운드
+  - generic: 입력
+  - list "입력":
+    - link "퀵타임 이벤트 없이 플레이 가능":
+      - /url: https://store.steampowered.com/category/playable_without_timed_input
+      - generic: 퀵타임 이벤트 없이 플레이 가능
+- button "마법사 시작"
+- heading "타사 DRM" [level=2]
+- paragraph: 귀하의 앱이 Steam이 아닌 DRM을 사용하는 경우, 아래에 세부 정보를 입력하세요.
+- generic: "DRM 제공자:"
+- textbox
+- generic: "기기 활성화 제한:"
+- textbox
+- heading "타사 계정" [level=2]
+- paragraph: 귀하의 앱을 사용하는 데 Steam이 아닌 사용자 계정이 필요한 경우, 아래에 세부 정보를 입력하세요.
+- generic: "서비스명:"
+- textbox
+- link "Steam 계정으로 연결 지원":
+  - /url: javascript:ToggleCheckbox('checkbox_app_game_3pacc_canlinktosteam_');
+  - generic: Steam 계정으로 연결 지원
+- link "계정 연결에 관한 문서":
+  - /url: https://partner.steamgames.com/doc/features/auth#account_linking
+- heading "부정행위 방지" [level=2]
+- paragraph: 귀사의 게임이 클라이언트 측 커널 모드 부정행위 방지 소프트웨어를 설치하는 경우, 여기에서 사용자에게 관련 정보를 공개해야 합니다. 자체 부정행위 방지 소프트웨어가 있거나 해당 소프트웨어가 아래 목록에 없는 경우 '기타'를 선택하여 소프트웨어에 대한 정보를 입력해 주세요.
+- paragraph: 귀사의 게임이 커널 모드 기반이 아닌 클라이언트 또는 서버 기반 부정행위 방지 소프트웨어를 포함하는 경우, 해당 필드에 정보를 입력하는 것은 선택 사항이지만 일반적으로 부정행위 방지 기술을 사용하는 게임은 해당 내용을 플레이어에게 공개하는 것이 좋습니다.
+- generic: "부정행위 방지 서비스:"
+- combobox
+- heading "법적 고지" [level=2]
+- text: 이 필드는 필요한 저작권과 상표 정보를 설명하는 용도로만 사용할 수 있습니다.
+- text: Steam에서 고객에게 최종 사용자 라이선스 계약(EULA)에 대한 정보를 제공해야 하는 경우, 여기
+- link "에 해당 내용을 입력해야 합니다.":
+  - /url: https://partner.steamgames.com/apps/eula/4749590
+- link "영어":
+  - /url: https://partner.steamgames.com/apps/eula/4749590
+  - combobox:
+    - option "영어" [selected]
+    - option "프랑스어"
+    - option "이탈리아어"
+    - option "독일어"
+    - option "스페인어 - 스페인"
+    - option "그리스어"
+    - option "네덜란드어"
+    - option "노르웨이어"
+    - option "덴마크어"
+    - option "러시아어"
+    - option "루마니아어"
+    - option "말레이어"
+    - option "베트남어"
+    - option "불가리아어"
+    - option "스웨덴어"
+    - option "스페인어 - 중남미"
+    - option "우크라이나어"
+    - option "인도네시아어"
+    - option "일본어"
+    - option "중국어 간체"
+    - option "중국어 번체"
+    - option "체코어"
+    - option "태국어"
+    - option "튀르키예어"
+    - option "포르투갈어 - 브라질"
+    - option "포르투갈어 - 포르투갈"
+    - option "폴란드어"
+    - option "핀란드어"
+    - option "한국어"
+    - option "헝가리어"
+  - textbox
+- link:
+  - /url: https://partner.steamgames.com/apps/eula/4749590
+- link:
+  - /url: https://partner.steamgames.com/apps/eula/4749590
+- heading "고객지원 연락 정보*" [level=2]
+- text: 이 제품에 문제가 있는 경우 고객이 귀하의 고객지원 부서에 연락하는 방법을 한 가지 이상 제공해주세요. 귀하의 제품을
+- link "Steam 고객지원 사이트":
+  - /url: https://support.steampowered.com/
+- text: 에서 검색한 고객에게 이 정보가 보이게 됩니다. 반드시 모든 웹사이트 URL이 "http://" 또는 "https://"로 시작하도록 입력해야 합니다.
+- table:
+  - rowgroup:
+    - row "고객지원 웹사이트 URL:":
+      - cell "고객지원 웹사이트 URL:"
+      - cell:
+        - textbox
+    - 'row "고객지원 이메일: contact@fordeargamers.com"':
+      - cell "고객지원 이메일:"
+      - cell "contact@fordeargamers.com":
+        - textbox
+    - row "고객지원 전화번호:":
+      - cell "고객지원 전화번호:"
+      - cell:
+        - textbox
+- button "저장"
+- emphasis
+- emphasis
+- emphasis:
+  - heading "Valve 대외비" [level=2]
+  - paragraph: 이 사이트는 접속이 제한되어 있으며 여기에 포함된 내용은 모두 Valve 기밀 정보입니다. 이 사이트에 접속하거나 해당 정보를 사용하려면 기밀 정보에 관해 Valve와 비밀 유지 계약 및 라이선스 계약을 체결해야 합니다.
+  - text: Steamworks는
+  - link "Steam":
+    - /url: https://store.steampowered.com/
+  - text: 에서 귀사의 게임을 구성하고 관리하며 운영하는 데 도움을 드리기 위해
+  - link "Valve":
+    - /url: https://www.valvesoftware.com
+  - text: 가 구축한 일련의 도구 및 서비스입니다.
+  - link:
+    - /url: http://www.valvesoftware.com
+  - link:
+    - /url: https://store.steampowered.com/
+  - list:
+    - emphasis: 문서
+    - link "홈":
+      - /url: https://partner.steamgames.com/doc/
+    - link "시작하기":
+      - /url: https://partner.steamgames.com/doc/gettingstarted
+    - link "상점 페이지":
+      - /url: https://partner.steamgames.com/doc/store
+    - link "기능":
+      - /url: https://partner.steamgames.com/doc/features
+    - link "재정":
+      - /url: https://partner.steamgames.com/doc/finance
+    - link "판매 및 마케팅":
+      - /url: https://partner.steamgames.com/doc/marketing
+    - link "Steamworks SDK":
+      - /url: https://partner.steamgames.com/doc/sdk
+    - link "PC방 라이선스":
+      - /url: https://partner.steamgames.com/pccafe
+    - link "Steam VR":
+      - /url: https://partner.steamgames.com/doc/features/steamvr/info
+  - list:
+    - emphasis: 리소스
+    - link "Steam VR":
+      - /url: https://partner.steamgames.com/vrlicensing
+    - link "Steam PC방 프로그램":
+      - /url: https://partner.steamgames.com/pccafe
+    - link "Steamworks 토론":
+      - /url: https://steamcommunity.com/groups/steamworks/discussions
+      - text: Steamworks 토론
+    - link "Steamworks 동영상 튜토리얼":
+      - /url: https://www.youtube.com/user/SteamworksDev
+      - text: Steamworks 동영상 튜토리얼
+    - 'link "X: @Steamworks"':
+      - /url: http://twitter.com/Steamworks
+      - 'img "X: @Steamworks"'
+    - generic: "|"
+    - 'link "Bluesky: Steamworks"':
+      - /url: https://bsky.app/profile/partner.steamgames.com
+      - 'img "Bluesky: Steamworks"'
+    - link "고객지원 문의":
+      - /url: https://help.steampowered.com/ko/wizard/HelpWithPublishing
+      - generic: 고객지원 문의
+  - list:
+    - emphasis: 뉴스 및 업데이트
+    - link "Steamworks 블로그":
+      - /url: https://store.steampowered.com/news/group/4145017
+      - text: Steamworks 블로그
+    - link "Steam 블로그":
+      - /url: https://store.steampowered.com/news/app/593110
+      - text: Steam 블로그
+    - link "Steam VR 블로그":
+      - /url: https://store.steampowered.com/news/app/250820
+      - text: Steam VR 블로그
+    - link "Steam Deck 블로그":
+      - /url: https://store.steampowered.com/news/app/1675200
+      - text: Steam Deck 블로그
+- emphasis

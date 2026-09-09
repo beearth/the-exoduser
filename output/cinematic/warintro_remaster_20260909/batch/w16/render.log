@@ -1,0 +1,203 @@
+provider=faster-whisper words=10 captions=10 caption_words=10 density=2.96/s script_aligned=True similarity=1.0
+{
+  "captions": [
+    {
+      "text": "Why",
+      "start": 0.0,
+      "end": 0.24
+    },
+    {
+      "text": "have",
+      "start": 0.24,
+      "end": 0.46
+    },
+    {
+      "text": "you",
+      "start": 0.46,
+      "end": 0.6
+    },
+    {
+      "text": "come",
+      "start": 0.6,
+      "end": 0.86
+    },
+    {
+      "text": "to",
+      "start": 0.86,
+      "end": 1.04
+    },
+    {
+      "text": "hell?",
+      "start": 1.04,
+      "end": 1.34
+    },
+    {
+      "text": "Escape",
+      "start": 2.04,
+      "end": 2.42
+    },
+    {
+      "text": "from",
+      "start": 2.42,
+      "end": 2.74
+    },
+    {
+      "text": "hell,",
+      "start": 2.74,
+      "end": 3.04
+    },
+    {
+      "text": "sinner.",
+      "start": 3.2,
+      "end": 3.38
+    }
+  ],
+  "script_aligned": true,
+  "similarity": 1.0,
+  "timed_words": 10,
+  "caption_words": 10,
+  "words_per_second": 2.96,
+  "provider": "faster-whisper"
+}
+{
+  "verb": "fable.agent-ops.place",
+  "revision": 1,
+  "envelopes": 1,
+  "ops": 1
+}
+[node plan] 1 window(s), 1 worker(s) x 8 threads, 192 frames -> renders/clean.mp4
+[node audio] whole timeline mixed
+[node shard done] 1/1 0.00-8.00s 192 frames (31.5 ms/frame) — 1/1 complete
+{
+  "ok": true,
+  "path": "renders/clean.mp4",
+  "frames": 192,
+  "durationSeconds": 8,
+  "diagnostics": [],
+  "fallbacks": [],
+  "backend": "cpu"
+}
+fonts dir: /home/user/.higgsfield/workflows/subtitles/scripts/fonts
+  ok      TikTokSans-Bold.ttf (cached)
+  ok      Montserrat-ExtraBold.ttf (cached)
+  ok      Anton-Regular.ttf (cached)
+  ok      PatrickHand-Regular.ttf (cached)
+  ok      PermanentMarker-Regular.ttf (cached)
+  ok      Caveat-Regular.ttf (cached)
+DONE -> final.mp4  (clean natural case, no plate, small bottom captions)
+{
+  "duration_s": 8,
+  "voice_start_s": 1.0,
+  "voice_duration_s": 3.94449,
+  "caption_start_s": 1.0,
+  "caption_end_s": 4.63,
+  "english": "Why have you come to hell? Escape from hell, sinner.",
+  "korean": "\"너는 왜 지옥에 왔느냐?\" \"지옥을 탈출하라, 죄인이여.\"",
+  "transcript_exact_match": true,
+  "voice_pcm_correlation": 0.9999533823422468,
+  "font": "NotoSerifCJKkr-Medium.otf: \"Noto Serif CJK KR\" \"Medium\"",
+  "font_size_ass": 13,
+  "margin_v_ass": 32,
+  "outline_ass": 0.6,
+  "shadow_ass": 0.4,
+  "receipts": {
+    "source.mp4": {
+      "bytes": 13286026,
+      "duration": 8.042,
+      "streams": [
+        {
+          "codec_type": "video",
+          "codec_name": "h264",
+          "width": 1176,
+          "height": 784,
+          "duration": "8.041667",
+          "sample_rate": null,
+          "r_frame_rate": "24/1"
+        }
+      ]
+    },
+    "voice.mp3": {
+      "bytes": 63573,
+      "duration": 3.94449,
+      "streams": [
+        {
+          "codec_type": "audio",
+          "codec_name": "mp3",
+          "width": null,
+          "height": null,
+          "duration": "3.944490",
+          "sample_rate": "44100",
+          "r_frame_rate": "0/0"
+        }
+      ]
+    },
+    "clean.mp4": {
+      "bytes": 7818990,
+      "duration": 8.0,
+      "streams": [
+        {
+          "codec_type": "video",
+          "codec_name": "h264",
+          "width": 1280,
+          "height": 720,
+          "duration": "8.000000",
+          "sample_rate": null,
+          "r_frame_rate": "24/1"
+        },
+        {
+          "codec_type": "audio",
+          "codec_name": "aac",
+          "width": null,
+          "height": null,
+          "duration": "8.000000",
+          "sample_rate": "48000",
+          "r_frame_rate": "0/0"
+        }
+      ]
+    },
+    "final.mp4": {
+      "bytes": 2854029,
+      "duration": 8.0,
+      "streams": [
+        {
+          "codec_type": "video",
+          "codec_name": "h264",
+          "width": 1280,
+          "height": 720,
+          "duration": "8.000000",
+          "sample_rate": null,
+          "r_frame_rate": "24/1"
+        },
+        {
+          "codec_type": "audio",
+          "codec_name": "aac",
+          "width": null,
+          "height": null,
+          "duration": "8.000000",
+          "sample_rate": "48000",
+          "r_frame_rate": "0/0"
+        }
+      ]
+    }
+  },
+  "human_audio_approval": false,
+  "visual_review_pending": true,
+  "caption_cues": [
+    {
+      "source_id": "wa31",
+      "start": 1.0,
+      "end": 2.59,
+      "text": "\"너는 왜 지옥에 왔느냐?\""
+    },
+    {
+      "source_id": "wa33",
+      "start": 3.04,
+      "end": 4.63,
+      "text": "\"지옥을 탈출하라, 죄인이여.\""
+    }
+  ],
+  "source_ids": [
+    "wa31",
+    "wa33"
+  ]
+}

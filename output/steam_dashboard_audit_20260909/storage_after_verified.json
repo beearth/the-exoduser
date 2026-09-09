@@ -1,0 +1,167 @@
+{
+  "appId": 4749590,
+  "verifiedAfterReload": true,
+  "fields": [
+    {
+      "id": "app_content_sysreqs_windows_min_osversion__textarea",
+      "name": "",
+      "value": "Windows 10 64-bit"
+    },
+    {
+      "id": "app_content_sysreqs_windows_min_processor__textarea",
+      "name": "",
+      "value": "Intel Core i3-4000 / AMD FX-6300 or equivalent"
+    },
+    {
+      "id": "",
+      "name": "app[content][sysreqs][windows][min][memory][amount]",
+      "value": "4096 "
+    },
+    {
+      "id": "",
+      "name": "app[content][sysreqs][windows][min][memory][units]",
+      "value": "MB"
+    },
+    {
+      "id": "app_content_sysreqs_windows_min_graphics__textarea",
+      "name": "",
+      "value": "Integrated GPU with WebGL2 support (Intel HD Graphics 4000+) or NVIDIA GeForce GT 730 / AMD Radeon HD 7770"
+    },
+    {
+      "id": "",
+      "name": "app[content][sysreqs][windows][min][directx]",
+      "value": "11"
+    },
+    {
+      "id": "",
+      "name": "app[content][sysreqs][windows][min][diskspace][amount]",
+      "value": "10"
+    },
+    {
+      "id": "",
+      "name": "app[content][sysreqs][windows][min][diskspace][units]",
+      "value": "GB"
+    },
+    {
+      "id": "app_content_sysreqs_windows_min_soundcard__textarea",
+      "name": "",
+      "value": "DirectX compatible"
+    },
+    {
+      "id": "app_content_sysreqs_windows_min_vrsupport__textarea",
+      "name": "",
+      "value": ""
+    },
+    {
+      "id": "app_content_sysreqs_windows_min_notes__textarea",
+      "name": "",
+      "value": "nline activation required via Steam."
+    },
+    {
+      "id": "app_content_sysreqs_windows_rec_osversion__textarea",
+      "name": "",
+      "value": "Windows 10/11 64-bit"
+    },
+    {
+      "id": "app_content_sysreqs_windows_rec_processor__textarea",
+      "name": "",
+      "value": "Intel Core i5-6500 / AMD Ryzen 3 1300X or better"
+    },
+    {
+      "id": "",
+      "name": "app[content][sysreqs][windows][rec][memory][amount]",
+      "value": "8192"
+    },
+    {
+      "id": "",
+      "name": "app[content][sysreqs][windows][rec][memory][units]",
+      "value": "MB"
+    },
+    {
+      "id": "app_content_sysreqs_windows_rec_graphics__textarea",
+      "name": "",
+      "value": "NVIDIA GeForce GTX 1050 / AMD Radeon RX 560 or better"
+    },
+    {
+      "id": "",
+      "name": "app[content][sysreqs][windows][rec][directx]",
+      "value": "11"
+    },
+    {
+      "id": "",
+      "name": "app[content][sysreqs][windows][rec][diskspace][amount]",
+      "value": "10"
+    },
+    {
+      "id": "",
+      "name": "app[content][sysreqs][windows][rec][diskspace][units]",
+      "value": "GB"
+    },
+    {
+      "id": "app_content_sysreqs_windows_rec_soundcard__textarea",
+      "name": "",
+      "value": "DirectX compatible"
+    },
+    {
+      "id": "app_content_sysreqs_windows_rec_vrsupport__textarea",
+      "name": "",
+      "value": ""
+    },
+    {
+      "id": "app_content_sysreqs_windows_rec_notes__textarea",
+      "name": "",
+      "value": "nline activation required via Steam."
+    }
+  ],
+  "changes": [
+    {
+      "before": {
+        "id": "",
+        "name": "app[content][sysreqs][windows][min][diskspace][amount]",
+        "value": "2048"
+      },
+      "after": {
+        "id": "",
+        "name": "app[content][sysreqs][windows][min][diskspace][amount]",
+        "value": "10"
+      }
+    },
+    {
+      "before": {
+        "id": "",
+        "name": "app[content][sysreqs][windows][min][diskspace][units]",
+        "value": "MB"
+      },
+      "after": {
+        "id": "",
+        "name": "app[content][sysreqs][windows][min][diskspace][units]",
+        "value": "GB"
+      }
+    },
+    {
+      "before": {
+        "id": "",
+        "name": "app[content][sysreqs][windows][rec][diskspace][amount]",
+        "value": "4096"
+      },
+      "after": {
+        "id": "",
+        "name": "app[content][sysreqs][windows][rec][diskspace][amount]",
+        "value": "10"
+      }
+    },
+    {
+      "before": {
+        "id": "",
+        "name": "app[content][sysreqs][windows][rec][diskspace][units]",
+        "value": "MB"
+      },
+      "after": {
+        "id": "",
+        "name": "app[content][sysreqs][windows][rec][diskspace][units]",
+        "value": "GB"
+      }
+    }
+  ],
+  "published": false
+}

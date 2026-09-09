@@ -1,0 +1,52 @@
+{
+  "source_url": "https://d8j0ntlcm91z4.cloudfront.net/user_3G1zto9sz11Uf3iEOhJefE9HdGG/hf_20260909_065115_217a7c0f-1bde-4a85-816c-56eda29961e0.mp4",
+  "source_original_trim_s": [
+    0,
+    1.8
+  ],
+  "source_time_stretch": 5.555555555556,
+  "source_reference_offset_s": 0.5,
+  "target_interval_s": [
+    89.5,
+    96
+  ],
+  "shots": [
+    {
+      "name": "A",
+      "duration_s": 2,
+      "crop": [
+        160,
+        0,
+        960,
+        540
+      ]
+    },
+    {
+      "name": "B",
+      "duration_s": 3.55,
+      "crop": [
+        320,
+        360,
+        640,
+        360
+      ]
+    },
+    {
+      "name": "C",
+      "duration_s": 0.95,
+      "crop": [
+        160,
+        0,
+        960,
+        540
+      ]
+    }
+  ],
+  "native_fps": 24,
+  "output_fps": 60,
+  "output_size": [
+    1280,
+    720
+  ],
+  "audio": false
+}

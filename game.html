@@ -21929,6 +21929,44 @@ function _captureEtypeSprite(ctx,e,sz){
   if(!_uv)return false;
   ctx.drawImage(_atlasE,_uv.sx,_uv.sy,_uv.sw,_uv.sh,0,0,sz,sz);return true;
 }
+// 32 prebuilt 128px gore overlays: 16 normal + 16 field-monster variants.
+function _buildCorpseGoreOverlay(noEyes){
+  const canvas=document.createElement('canvas');canvas.width=128;canvas.height=128;
+  const ctx=canvas.getContext('2d');
+  // 내장 오버레이 (선홍색 얼룩 + 짙은 핏줄)
+  ctx.globalAlpha=0.45;
+  var _goreColors=['#ff2233','#ee1122','#dd0033','#cc0044','#ff4455'];
+  for(let _gi=0;_gi<6;_gi++){
+    const _gx=20+Math.random()*88,_gy=20+Math.random()*88;
+    const _gr=6+Math.random()*18;
+    ctx.fillStyle=_goreColors[~~(Math.random()*5)];
+    ctx.beginPath();ctx.ellipse(_gx,_gy,_gr,_gr*.5,Math.random()*Math.PI,0,Math.PI*2);ctx.fill();
+  }
+  // 핏줄 (선홍색 라인 3~4개)
+  ctx.globalAlpha=0.3;ctx.strokeStyle='#ff1133';ctx.lineWidth=1.5;
+  for(let _vi=0;_vi<3+~~(Math.random()*2);_vi++){
+    ctx.beginPath();ctx.moveTo(20+Math.random()*88,20+Math.random()*88);
+    ctx.quadraticCurveTo(20+Math.random()*88,20+Math.random()*88,20+Math.random()*88,20+Math.random()*88);ctx.stroke();
+  }
+  // 눈알 — 필드 대형몹 시체에 그리면 거대 핏덩이처럼 보임
+  if(!noEyes){
+    ctx.globalAlpha=0.85;
+    const _eyeN=2+~~(Math.random()*2);
+    for(let _ei=0;_ei<_eyeN;_ei++){
+      const _ex=24+Math.random()*80,_ey=24+Math.random()*80;
+      ctx.fillStyle='#ddddcc';ctx.beginPath();ctx.arc(_ex,_ey,4+Math.random()*3,0,Math.PI*2);ctx.fill();
+      ctx.fillStyle='#110000';ctx.beginPath();ctx.arc(_ex,_ey,2,0,Math.PI*2);ctx.fill();
+      ctx.fillStyle='rgba(200,0,0,0.4)';ctx.beginPath();ctx.arc(_ex,_ey,5+Math.random()*3,0,Math.PI*2);ctx.stroke();
+    }
+  }
+  // 피 웅덩이 (시체 아래, 선홍색)
+  ctx.globalAlpha=0.3;
+  ctx.fillStyle='#cc1122';
+  ctx.beginPath();ctx.ellipse(64,90,40+Math.random()*20,12+Math.random()*8,0,0,Math.PI*2);ctx.fill();
+  ctx.globalAlpha=1.0;
+  return canvas;
+}
+const _corpseGoreOverlays=Array.from({length:32},(_,i)=>_buildCorpseGoreOverlay(i>=16));
 function _addCorpse(e,killAng,power){
   if(!OPT.deathFx)return;
   e._corpseSpawned=true;
@@ -21997,37 +22035,8 @@ function _addCorpse(e,killAng,power){
   if(!_cDrawn&&_captureEtypeSprite(c.ctx,e,128))_cDrawn=true; // 일반 몹 실제 스프라이트 (적고구마 방지)
   if(!_cDrawn){c.ctx.fillStyle=e.col||'#cc0000';c.ctx.beginPath();c.ctx.arc(64,64,54,0,Math.PI*2);c.ctx.fill();}
   }
-  // 내장 오버레이 (선홍색 얼룩 + 짙은 핏줄)
-  c.ctx.globalAlpha=0.45;
-  var _goreColors=['#ff2233','#ee1122','#dd0033','#cc0044','#ff4455'];
-  for(let _gi=0;_gi<6;_gi++){
-    const _gx=20+Math.random()*88,_gy=20+Math.random()*88;
-    const _gr=6+Math.random()*18;
-    c.ctx.fillStyle=_goreColors[~~(Math.random()*5)];
-    c.ctx.beginPath();c.ctx.ellipse(_gx,_gy,_gr,_gr*.5,Math.random()*Math.PI,0,Math.PI*2);c.ctx.fill();
-  }
-  // 핏줄 (선홍색 라인 3~4개)
-  c.ctx.globalAlpha=0.3;c.ctx.strokeStyle='#ff1133';c.ctx.lineWidth=1.5;
-  for(let _vi=0;_vi<3+~~(Math.random()*2);_vi++){
-    c.ctx.beginPath();c.ctx.moveTo(20+Math.random()*88,20+Math.random()*88);
-    c.ctx.quadraticCurveTo(20+Math.random()*88,20+Math.random()*88,20+Math.random()*88,20+Math.random()*88);c.ctx.stroke();
-  }
-  // 눈알 — 필드 대형몹 시체에 그리면 거대 핏덩이처럼 보임
-  if(!e._fmKind){
-    c.ctx.globalAlpha=0.85;
-    const _eyeN=2+~~(Math.random()*2);
-    for(let _ei=0;_ei<_eyeN;_ei++){
-      const _ex=24+Math.random()*80,_ey=24+Math.random()*80;
-      c.ctx.fillStyle='#ddddcc';c.ctx.beginPath();c.ctx.arc(_ex,_ey,4+Math.random()*3,0,Math.PI*2);c.ctx.fill();
-      c.ctx.fillStyle='#110000';c.ctx.beginPath();c.ctx.arc(_ex,_ey,2,0,Math.PI*2);c.ctx.fill();
-      c.ctx.fillStyle='rgba(200,0,0,0.4)';c.ctx.beginPath();c.ctx.arc(_ex,_ey,5+Math.random()*3,0,Math.PI*2);c.ctx.stroke();
-    }
-  }
-  // 피 웅덩이 (시체 아래, 선홍색)
-  c.ctx.globalAlpha=0.3;
-  c.ctx.fillStyle='#cc1122';
-  c.ctx.beginPath();c.ctx.ellipse(64,90,40+Math.random()*20,12+Math.random()*8,0,0,Math.PI*2);c.ctx.fill();
-  c.ctx.globalAlpha=1.0;
+  // Reuse gore textures; preserve the actual monster body, head and floor trace.
+  c.ctx.drawImage(_corpseGoreOverlays[(e._fmKind?16:0)+((Math.random()*16)|0)],0,0);
   // 중형+/보스: 대가리 한 조각이 처치방향으로 날아감 (통짜 시체와 병행, _isLarge 게이트는 _addHeadGib 내부)
   _addHeadGib(e,a,power);
 }
@@ -25134,6 +25143,12 @@ function useQuickslot(idx){
   const el=$('qs'+idx);if(el){el.classList.remove('qs-flash');void el.offsetWidth;el.classList.add('qs-flash')}
   updateQS();
 }
+let _qsRefreshPending=false;
+function _requestQSRefresh(){
+  if(_qsRefreshPending)return;
+  _qsRefreshPending=true;
+  requestAnimationFrame(()=>{_qsRefreshPending=false;updateQS()});
+}
 function addPotion(type,count){
   count=count||1;
   // HP 물약은 즉시 '악의' 자원으로 전환
@@ -25144,9 +25159,9 @@ function addPotion(type,count){
     return true;
   }
   // Try to stack onto existing slot of same type
-  for(let i=0;i<4;i++){if(QSLOTS[i].type===type){QSLOTS[i].count+=count;SFX.pickup();updateQS();return true}}
+  for(let i=0;i<4;i++){if(QSLOTS[i].type===type){QSLOTS[i].count+=count;SFX.pickup();_requestQSRefresh();return true}}
   // Try to put in empty slot
-  for(let i=0;i<4;i++){if(!QSLOTS[i].type){QSLOTS[i].type=type;QSLOTS[i].count=count;SFX.pickup();updateQS();return true}}
+  for(let i=0;i<4;i++){if(!QSLOTS[i].type){QSLOTS[i].type=type;QSLOTS[i].count=count;SFX.pickup();_requestQSRefresh();return true}}
   // Full
   notify(_T('퀵슬롯이 가득 찼습니다!'));return false;
 }
@@ -33397,12 +33412,12 @@ function update(){
   if(P._ioCd>0)P._ioCd-=sp+_hdCdBonus;
   // ═══ 시간왜곡 — 쿨다운 ═══
   if(P._twCd>0)P._twCd-=sp+_hdCdBonus;
-  // ═══ 얼음보주 — 자동 파쇄 (3초) / Shift 즉시 탈출 ═══
+  // ═══ 얼음보주 — 자동 파쇄 (120틱 / 2초) / Shift 즉시 탈출 ═══
   if(P._ioActive){
     P._ioT+=sp;
     // 얼음 파티클
     if(Math.random()>.6){const a=Math.random()*Math.PI*2;poolPart(P.x+Math.cos(a)*25,P.y+Math.sin(a)*25,(Math.random()-.5)*1.5,-1-Math.random(),'#88ddff',2+Math.random()*2,12+Math.random()*8)}
-    if(P._ioT>=120){activateIceShatter()} // 3초 자동 파쇄
+    if(P._ioT>=120){activateIceShatter()} // 2초 자동 파쇄
     else if(isJust('charge')){ // Shift: 블링크 탈출 + 파쇄
       const _ox=P.x,_oy=P.y,_blinkD=180;
       const _bx=P.x+Math.cos(P.facing)*_blinkD,_by=P.y+Math.sin(P.facing)*_blinkD;
@@ -42699,6 +42714,15 @@ function activateHolyPrison(){
   _addSkProf('holyPrison');
 }
 // ═══ 얼음보주 — 발동 (얼음 속으로) ═══
+function _iceOrbFormationFrame(ticks){return 8*(1-Math.min(1,Math.max(0,ticks)/60))}
+function _drawTimedVfxFrame(v,sh,frame,alpha,dw,dh){
+  if(alpha<=0)return;
+  const sx=(frame%sh.cols)*sh.fw,sy=Math.floor(frame/sh.cols)*sh.fh;
+  if(_vfxGLMode&&_queueVfxGL(sh.img,sx,sy,sh.fw,sh.fh,VW*.5+(v.x-G.cam.x),VH*.5+(v.y-G.cam.y),dw,dh,v.ang||0,alpha))return;
+  X.save();X.globalCompositeOperation=sh.blend||'lighter';X.globalAlpha=alpha;
+  X.translate(v.x,v.y);if(v.ang)X.rotate(v.ang);
+  X.drawImage(sh.img,sx,sy,sh.fw,sh.fh,-dw/2,-dh/2,dw,dh);X.restore();
+}
 function activateIceOrb(){
   P._ioBon=useMp('iceOrb')*2; // 보너스 데미지 저장 (파쇄 시 적용)
   P._ioActive=true;P._ioT=0;P._ioFormT=0;P._ioX=P.x;P._ioY=P.y;
@@ -42753,7 +42777,7 @@ function activateIceShatter(){
   }
   // 파쇄 VFX — 정순 0→8 빠르게
   {const _ioSh=_VFX_SHEETS['ice_orb'];
-  if(_ioSh){const _ioDrawR=((P.r||18)+32)*_ioLvScale*6.6;_vfxAnims.push({id:'ice_orb',x:cx,y:cy,frame:0,maxFrames:_ioSh.frames,t:0,frameTime:13,scale:_ioDrawR/768,ang:0})}}
+  if(_ioSh){const _ioDrawR=((P.r||18)+32)*_ioLvScale*6.6;_vfxAnims.push({id:'ice_orb',x:cx,y:cy,frame:0,maxFrames:_ioSh.frames,t:0,frameTime:13,scale:_ioDrawR/768,ang:0,isSkill:true,bornGameTime:_gameTime})}}
   void 0;
   addTxt(cx,cy-30,_T('❄ 파쇄!'),'#aaeeff',50);
   shake(10);
@@ -49884,13 +49908,21 @@ function draw(){
     for(let vi=0;vi<_vfxAnims.length;vi++){
       const v=_vfxAnims[vi];const sh=_VFX_SHEETS[v.id];
       if(!sh||!sh.img){if(_vw!==vi)_vfxAnims[_vw]=v;_vw++;continue}
-      v.t+=_dtSp;if(v.t>=v.frameTime){v.t=0;v.frame++}
+      let _vfMix=0;
+      if(v.bornGameTime!==undefined){const vf=Math.max(0,(_gameTime-v.bornGameTime)/PHYS_STEP/v.frameTime);v.frame=Math.floor(vf);_vfMix=vf-v.frame}
+      else{v.t+=_dtSp;if(v.t>=v.frameTime){v.t=0;v.frame++}}
       if(v.frame>=v.maxFrames)continue;
       const dw=sh.fw*v.scale,dh=sh.fh*v.scale;
       const _vAlpha=(v.baseAlpha>0?v.baseAlpha:1)*(1-(v.frame/v.maxFrames)*0.3);
       if(_vAlpha<0.05&&!v.isSkill)continue;
       if(v.x<_vl-dw||v.x>_vr+dw||v.y<_vt-dh||v.y>_vb+dh){if(_vw!==vi)_vfxAnims[_vw]=v;_vw++;continue}
       if(++_vDrw>_vfxBudgetCap&&!v.isSkill){if(_vw!==vi)_vfxAnims[_vw]=v;_vw++;continue}
+      if(v.bornGameTime!==undefined){
+        const _vf1=Math.min(v.maxFrames-1,v.frame+1);
+        _drawTimedVfxFrame(v,sh,v.frame,_vAlpha*(1-_vfMix),dw,dh);
+        _drawTimedVfxFrame(v,sh,_vf1,_vAlpha*_vfMix,dw,dh);
+        if(_vw!==vi)_vfxAnims[_vw]=v;_vw++;continue;
+      }
       const col=v.frame%sh.cols,row=~~(v.frame/sh.cols);
       const _sx=col*sh.fw,_sy=row*sh.fh;
       // GL instancing (additive blend 자체 처리)
@@ -53502,25 +53534,26 @@ function drawP(){
     const _ioSh=_VFX_SHEETS['ice_orb'];
     X.save();
     if(_ioSh&&_ioSh.img){
-      // 생성: 역순 8→0 (~0.75초), 완료 후 프레임0 유지
-      P._ioFormT=(P._ioFormT||0)+_dtSp;
-      const _ioFD=60;
-      const _ioFrm=P._ioFormT<_ioFD?8-Math.min(8,~~(P._ioFormT/_ioFD*9)):0;
-      const _ioCol=_ioFrm%_ioSh.cols,_ioRow=~~(_ioFrm/_ioSh.cols);
+      // 생성: 물리 60틱(1초), 인접 프레임 보간. draw는 상태를 진행시키지 않는다.
+      const _ioFloat=_iceOrbFormationFrame(P._ioT||0);
+      const _ioFrm=Math.floor(_ioFloat),_ioMix=_ioFloat-_ioFrm;
       const _ioDraw=_ioR*6.6;
-      X.globalAlpha=.85+.1*Math.sin(_ioP*6);
-      X.drawImage(_ioSh.img,_ioCol*_ioSh.fw,_ioRow*_ioSh.fh,_ioSh.fw,_ioSh.fh,P.x-_ioDraw/2,P.y-_ioDraw/2,_ioDraw,_ioDraw);
-      X.globalCompositeOperation='lighter';
-      X.globalAlpha=.2+.12*Math.sin(_ioP*8);
-      X.drawImage(_ioSh.img,_ioCol*_ioSh.fw,_ioRow*_ioSh.fh,_ioSh.fw,_ioSh.fh,P.x-_ioDraw/2,P.y-_ioDraw/2,_ioDraw,_ioDraw);
+      for(let layer=0;layer<2;layer++){
+        X.globalCompositeOperation=layer?'lighter':'source-over';
+        const alpha=layer?.2+.12*Math.sin(_ioP*8):.85+.1*Math.sin(_ioP*6);
+        for(let blend=0;blend<2;blend++){
+          const weight=blend?_ioMix:1-_ioMix;if(weight<=0)continue;
+          const frame=Math.min(8,_ioFrm+blend);
+          X.globalAlpha=alpha*weight;
+          X.drawImage(_ioSh.img,(frame%_ioSh.cols)*_ioSh.fw,Math.floor(frame/_ioSh.cols)*_ioSh.fh,_ioSh.fw,_ioSh.fh,P.x-_ioDraw/2,P.y-_ioDraw/2,_ioDraw,_ioDraw);
+        }
+      }
       X.globalCompositeOperation='source-over';
     } else {
       X.globalAlpha=.75;
       X.fillStyle='#66aacc';X.beginPath();X.arc(P.x,P.y,_ioR,0,Math.PI*2);X.fill();
     }
-    if(Math.random()>.6){const pa=Math.random()*Math.PI*2;
-      poolPart(P.x+Math.cos(pa)*_ioR,P.y+Math.sin(pa)*_ioR,Math.cos(pa)*1.5+(Math.random()-.5),-1-Math.random()*2,Math.random()>.5?'#aaeeff':'#ddf4ff',1.5+Math.random()*2.5,12+Math.random()*8);}
-    const _ioSec=((180-(P._ioT||0))/60).toFixed(1);
+    const _ioSec=(Math.max(0,120-(P._ioT||0))/60).toFixed(1);
     X.globalAlpha=.9;X.fillStyle='#88ddff';X.font='bold 13px monospace';X.textAlign='center';
     X.fillText(_ioSec+'s',P.x,P.y-_ioR-10);
     X.restore();X.globalAlpha=1;

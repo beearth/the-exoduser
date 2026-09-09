@@ -1,0 +1,102 @@
+- banner:
+  - link "Steam 홈페이지 링크":
+    - /url: https://store.steampowered.com/
+    - img "Steam 홈페이지 링크"
+  - navigation "공통 메뉴":
+    - link "상점":
+      - /url: https://store.steampowered.com/
+    - link "커뮤니티":
+      - /url: https://steamcommunity.com/
+    - link "GOAL":
+      - /url: https://steamcommunity.com/my/
+    - link "채팅":
+      - /url: https://steamcommunity.com/chat/
+    - link "지원":
+      - /url: https://help.steampowered.com/ko/
+  - navigation "계정 메뉴":
+    - link "Steam 설치":
+      - /url: https://store.steampowered.com/about/
+      - generic: Steam 설치
+    - button "알림":
+      - img "알림"
+    - button "GOAL"
+    - link "₩ 0.69":
+      - /url: https://store.steampowered.com/account/store_transactions/
+  - link "프로필 보기":
+    - /url: https://steamcommunity.com/profiles/76561197980448401/
+    - img "GOAL"
+- main:
+  - link "Steamworks 고객지원":
+    - /url: https://help.steampowered.com/ko/
+  - link "홈":
+    - /url: https://help.steampowered.com/ko/
+  - text: ">"
+  - link "나의 최근 지원 요청":
+    - /url: https://help.steampowered.com/ko/wizard/HelpRequests
+  - text: "> HT-35NF-FPTG-H9X3"
+  - text: "계정:"
+  - link "shsia":
+    - /url: https://store.steampowered.com/account/
+  - generic: "이메일: simsia1987@gmail.com"
+  - generic: "티켓: HT-35NF-FPTG-H9X3"
+  - generic: "지원 요청: Steam 출시를 위한 제품 검토 관련 지원"
+  - generic: "지원이 필요한 분야: EXODUSER: HELL LORD"
+  - 'link "EXODUSER: HELL LORD"':
+    - /url: https://help.steampowered.com/ko/wizard/HelpWithGame/?appid=4749590
+  - generic: "계정: shsia"
+  - link "상점에서 보기":
+    - /url: https://store.steampowered.com/app/4749590/
+  - img "GOAL"
+  - generic: 2026년 9월 2일 오후 8시 39분 으로 귀하가 보낸 메시지 | 6일 전
+  - generic: "Store Page Review Request for \"EXODUSER: HELL LORD\" [4749590]"
+  - img "GOAL"
+  - generic: 2026년 9월 7일 오후 12시 40분 으로 귀하가 보낸 메시지 | 2일 전
+  - text: Hello Steamworks Support,
+  - text: "I submitted the store page for EXODUSER: HELL LORD (App ID: 4749590) for review on September 2, 2026, and Steamworks currently shows that it is still in the review queue."
+  - text: We will be exhibiting the game at GXG 2026 x INDIECRAFT on September 11–12, 2026, in South Korea. We are also preparing to participate in the associated Steam event, and the organizers have requested confirmation of when our store page will become publicly available.
+  - text: Our goal is to publish the store page as Coming Soon before September 11, so exhibition visitors can view the game and add it to their wishlists. We are not requesting the release of the game itself.
+  - text: Could you please check the status of our store page review and let us know whether any additional information or changes are needed from us? If possible, we would greatly appreciate completing the review before the exhibition begins.
+  - text: We understand that review times can vary and will respond promptly to any feedback or required changes.
+  - text: Thank you for your time and assistance.
+  - text: Best regards,
+  - text: FDG (FOR DEAR GAMERS)
+  - text: "EXODUSER: HELL LORD"
+  - text: "App ID: 4749590"
+  - generic: Steam 팀으로부터 메시지가 도착했습니다(2026년 9월 9일 오전 6시 16분). | 9시간 전
+  - text: "'EXODUSER: HELL LORD'의 출시 요청 상태"
+  - text: "'EXODUSER: HELL LORD' 게임을 검토한 결과, Steam 상점에 출시하기 전에 해결해야 할 몇 가지 문제를 발견했습니다."
+  - text: "검수를 위해 다시 제출하시기 전에 아래의 지시사항을 읽고 따르시기 바랍니다:"
+  - list:
+    - text: "Failure:"
+    - text: "Your store page has failed review because library assets contain some additional text or logos. The Library Capsule, Header, and Logo should only include the game's title, and the Library Hero shouldn't have any extra text or logo overlays. Please update the following asset:"
+    - text: "- Library Header"
+    - text: "To find more information about library assets, check our documentation:"
+    - link "https://partner.steamgames.com/doc/store/assets/rules#2":
+      - /url: https://partner.steamgames.com/doc/store/assets/rules#2
+    - text: "Failure:"
+    - text: Your store page has failed our review because some library assets need improvements.
+    - text: Your artwork doesn't fill the available space of the asset. Borders and other minimal treatments are fine around the edges if it's consistent with the game's artistic style.
+    - text: "Please update the following asset:"
+    - text: "- Library Header"
+    - text: "To find more information about library assets, check our documentation:"
+    - link "https://partner.steamgames.com/doc/store/assets/libraryassets":
+      - /url: https://partner.steamgames.com/doc/store/assets/libraryassets
+  - text: Steam Support
+  - text: Ozzy
+  - img "GOAL"
+  - generic: 2026년 9월 9일 오전 9시 06분 으로 귀하가 보낸 메시지 | 6시간 전
+  - text: Hello Steam Review Team,
+  - text: "We have replaced the Library Header for EXODUSER: HELL LORD (App ID: 4749590) to address both issues identified in the previous review."
+  - text: "The updated image:"
+  - text: "- Is exactly 920 × 430 pixels."
+  - text: "- Fills the entire canvas edge to edge, with no blank margins or added borders."
+  - text: "- Contains only the game title, “EXODUSER” and “HELL LORD.”"
+  - text: "- Has no promotional tagline, studio name, or company logo."
+  - text: “HELL LORD” is part of the game's title, not additional promotional text.
+  - text: Please review the updated Library Header and store page again.
+  - text: Thank you.
+  - button "지원 요청 업데이트하기":
+    - generic: 지원 요청 업데이트하기
+  - text: 이 문제가 해결되었습니까?
+  - button "추가 지원이 필요 없다면 여기를 클릭하세요.":
+    - generic: 추가 지원이 필요 없다면 여기를 클릭하세요.

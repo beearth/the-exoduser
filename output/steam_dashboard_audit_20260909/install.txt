@@ -1,0 +1,282 @@
+- navigation:
+  - link "Steamworks":
+    - /url: https://partner.steamgames.com/
+    - img "Steamworks"
+  - list:
+    - button "문서"
+    - button "리소스"
+    - button "뉴스 및 업데이트"
+    - link "지원":
+      - /url: https://help.steampowered.com/wizard/HelpWithPublishing
+  - generic: SIM DOJIN
+  - button "shsia":
+    - generic: shsia
+  - link:
+    - /url: https://steamcommunity.com/profiles/76561197980448401
+- navigation:
+  - list:
+    - link "대시보드":
+      - /url: https://partner.steamgames.com/dashboard
+    - button "앱 및 패키지"
+    - button "도구"
+    - button "사용자 및 사용 권한"
+    - link "재무 정보":
+      - /url: https://partner.steampowered.com/
+  - textbox "앱 이름 또는 ID로 찾기"
+- dialog:
+  - generic: SIM DOJIN
+  - link "GOAL":
+    - /url: https://steamcommunity.com/profiles/76561197980448401
+  - generic "문서": 문서
+  - generic "리소스": 리소스
+  - generic "뉴스 및 업데이트": 뉴스 및 업데이트
+  - link "지원":
+    - /url: https://help.steampowered.com/wizard/HelpWithPublishing
+  - button "언어 변경"
+  - button "로그아웃"
+- link "Steamworks":
+  - /url: https://partner.steamgames.com
+- text: ">"
+- link "앱 관리":
+  - /url: https://partner.steamgames.com/apps/
+- text: ">"
+- 'link "EXODUSER: HELL LORD"':
+  - /url: "https://partner.steamgames.com/apps/landing/4749590 "
+- generic: "앱 데이터 관리:"
+- text: "EXODUSER: HELL LORD (4749590)"
+- combobox:
+  - option [selected]
+  - option "상점 페이지 변경"
+  - option "Steamworks 설정 변경"
+- generic: 애플리케이션
+- generic: SteamPipe
+- generic: 설치
+- generic: 보안
+- generic: 통계 및 도전 과제
+- generic: 커뮤니티
+- generic: 창작마당
+- link "키 관리":
+  - /url: https://partner.steamgames.com/apps/packages/4749590
+- generic: 기타
+- link "게시":
+  - /url: https://partner.steamgames.com/apps/publishing/4749590
+- heading "일반 설치 설정" [level=2]
+- paragraph: 게임의 기본 구성을 편집합니다.
+- heading "설치 폴더" [level=2]
+- paragraph:
+  - text: "현재 설치 폴더:"
+  - textbox: EXODUSER HELL LORD
+  - text: (?)
+- button "설치 폴더 업데이트"
+- heading "실행 옵션*" [level=2]
+- paragraph: 고객이 귀하의 애플리케이션을 실행하려할 때 Steam이 올바르게 수행될 수 있도록 최소한 하나의 실행 옵션을 설정해 놓아야 합니다.
+- paragraph: "*는 필수 항목입니다."
+- table:
+  - rowgroup:
+    - 'row "실행 옵션 0: 수정 삭제"':
+      - 'cell "실행 옵션 0: 수정 삭제"':
+        - heading "실행 옵션 0:" [level=3]
+        - button "수정"
+        - button "삭제"
+    - row "실행 파일 * EXODUSER.exe 고객이 귀하의 애플리케이션 실행을 시도하려고 할 때 실행될 파일을 입력하세요. 귀하의 exe가 하위 디렉터리에 존재하면 반드시 관련 경로와 더불어 exe를 포함하세요.":
+      - cell "실행 파일 *"
+      - cell "EXODUSER.exe":
+        - textbox [disabled]: EXODUSER.exe
+      - cell "고객이 귀하의 애플리케이션 실행을 시도하려고 할 때 실행될 파일을 입력하세요. 귀하의 exe가 하위 디렉터리에 존재하면 반드시 관련 경로와 더불어 exe를 포함하세요."
+    - row "시작 유형 실행(기본 설정) 이 실행 옵션으로 실행할 애플리케이션의 구성 요소나 버전을 선택해 주세요.":
+      - cell "시작 유형"
+      - cell "실행(기본 설정)":
+        - combobox [disabled]:
+          - option "미지정"
+          - option "실행(기본 설정)" [selected]
+          - option "앱 구성"
+          - option "SteamVR 앱 실행"
+          - option "SteamVR 오버레이 실행"
+          - option "OpenXR 앱 실행"
+          - option "Oculus SDK 앱 실행"
+          - option "게임 서버 실행"
+          - option "편집기 실행"
+          - option "앱 메뉴얼 표시"
+          - option "벤치마크 시작"
+          - option "벤치마크 시작하기"
+          - option "%%description%% 플레이(옵션 1)"
+          - option "%%description%% 플레이(옵션 2)"
+          - option "%%description%% 플레이(옵션 3)"
+      - cell "이 실행 옵션으로 실행할 애플리케이션의 구성 요소나 버전을 선택해 주세요."
+    - row "설명 영어 이 설명은 고객이 귀사의 애플리케이션을 실행하려고 할 때 사용자의 운영 체제의 실행 옵션이 하나 이상일 경우에 한하여 표시됩니다.":
+      - cell "설명"
+      - cell "영어":
+        - textbox [disabled]
+        - combobox:
+          - option "영어" [selected]
+          - option "프랑스어"
+          - option "이탈리아어"
+          - option "독일어"
+          - option "스페인어 - 스페인"
+          - option "그리스어"
+          - option "네덜란드어"
+          - option "노르웨이어"
+          - option "덴마크어"
+          - option "러시아어"
+          - option "루마니아어"
+          - option "말레이어"
+          - option "베트남어"
+          - option "불가리아어"
+          - option "스웨덴어"
+          - option "스페인어 - 중남미"
+          - option "우크라이나어"
+          - option "인도네시아어"
+          - option "일본어"
+          - option "중국어 간체"
+          - option "중국어 번체"
+          - option "체코어"
+          - option "태국어"
+          - option "튀르키예어"
+          - option "포르투갈어 - 브라질"
+          - option "포르투갈어 - 포르투갈"
+          - option "폴란드어"
+          - option "핀란드어"
+          - option "한국어"
+          - option "헝가리어"
+      - cell "이 설명은 고객이 귀사의 애플리케이션을 실행하려고 할 때 사용자의 운영 체제의 실행 옵션이 하나 이상일 경우에 한하여 표시됩니다."
+    - row "운영 체제 Windows 이 실행 옵션이 기능할 수 있는 운영 체제를 선택하세요.":
+      - cell "운영 체제"
+      - cell "Windows":
+        - combobox [disabled]:
+          - option "아무거나"
+          - option "Windows" [selected]
+          - option "macOS"
+          - option "Linux와 SteamOS"
+          - option "Android"
+      - cell "이 실행 옵션이 기능할 수 있는 운영 체제를 선택하세요."
+    - row "CPU 아키텍처 64비트 전용 본 실행 옵션이 작동 가능한 CPU 아키텍처를 선택하세요. 64비트 전용 실행 옵션을 제공하는 경우, 32비트 전용 옵션은 숨겨지게 됩니다.":
+      - cell "CPU 아키텍처"
+      - cell "64비트 전용":
+        - combobox [disabled]:
+          - option "아무거나"
+          - option "32비트 전용"
+          - option "64비트 전용" [selected]
+      - cell "본 실행 옵션이 작동 가능한 CPU 아키텍처를 선택하세요. 64비트 전용 실행 옵션을 제공하는 경우, 32비트 전용 옵션은 숨겨지게 됩니다."
+- button "새로운 실행 옵션 추가"
+- heading "고급 설정" [level=2]
+- paragraph:
+  - text: 이 고급 옵션을 부디 신중히 사용해 주세요. 이 옵션들이 이미 익숙한 분들을 제외한 모든 분들은 이 옵션을 사용하기 전에
+  - link "Steamworks 개발자 그룹 토론":
+    - /url: https://steamcommunity.com//groups/steamworks
+  - text: 에서 꼭 알려주세요.
+- paragraph:
+  - checkbox "ISteamApps::GetLaunchCommandLine() 사용을 활성화하세요. 앱이 명령줄과 함께 실행될 때 Steam에서 팝업 경고가 표시되는 것을 막아줍니다."
+  - link "ISteamApps::GetLaunchCommandLine()":
+    - /url: https://partner.steamgames.com/doc/api/ISteamApps?#GetLaunchCommandLine
+  - text: 사용을 활성화하세요. 앱이 명령줄과 함께 실행될 때 Steam에서 팝업 경고가 표시되는 것을 막아줍니다.
+- paragraph:
+  - checkbox "Steam Deck 외부 디스플레이에 대한 화면 해상도 재정의"
+  - text: Steam Deck 외부 디스플레이에 대한 화면 해상도 재정의 (?)
+  - option "Default" [selected]
+  - option "Native"
+  - option "3840x2160"
+  - option "2560x1600"
+  - option "2560x1440"
+  - option "2040x1080"
+  - option "1920x1200"
+  - option "1920x1080"
+  - option "1600x1000"
+  - option "1600x900"
+  - option "1280x800"
+  - option "1280x720"
+  - option "1024x768"
+  - option "1024x640"
+  - option "800x600"
+  - option "800x500"
+  - option "640x480"
+  - option "640x400"
+- paragraph:
+  - checkbox "Steam Machine 디스플레이에 대한 화면 해상도 재정의"
+  - text: Steam Machine 디스플레이에 대한 화면 해상도 재정의 (?)
+  - option "Default" [selected]
+  - option "Native"
+  - option "3840x2160"
+  - option "2560x1600"
+  - option "2560x1440"
+  - option "2040x1080"
+  - option "1920x1200"
+  - option "1920x1080"
+  - option "1600x1000"
+  - option "1600x900"
+  - option "1280x800"
+  - option "1280x720"
+  - option "1024x768"
+  - option "1024x640"
+  - option "800x600"
+  - option "800x500"
+  - option "640x480"
+  - option "640x400"
+- heading "Valve 대외비" [level=2]
+- paragraph: 이 사이트는 접속이 제한되어 있으며 여기에 포함된 내용은 모두 Valve 기밀 정보입니다. 이 사이트에 접속하거나 해당 정보를 사용하려면 기밀 정보에 관해 Valve와 비밀 유지 계약 및 라이선스 계약을 체결해야 합니다.
+- text: Steamworks는
+- link "Steam":
+  - /url: https://store.steampowered.com/
+- text: 에서 귀사의 게임을 구성하고 관리하며 운영하는 데 도움을 드리기 위해
+- link "Valve":
+  - /url: https://www.valvesoftware.com
+- text: 가 구축한 일련의 도구 및 서비스입니다.
+- link:
+  - /url: http://www.valvesoftware.com
+- link:
+  - /url: https://store.steampowered.com/
+- list:
+  - emphasis: 문서
+  - link "홈":
+    - /url: https://partner.steamgames.com/doc/
+  - link "시작하기":
+    - /url: https://partner.steamgames.com/doc/gettingstarted
+  - link "상점 페이지":
+    - /url: https://partner.steamgames.com/doc/store
+  - link "기능":
+    - /url: https://partner.steamgames.com/doc/features
+  - link "재정":
+    - /url: https://partner.steamgames.com/doc/finance
+  - link "판매 및 마케팅":
+    - /url: https://partner.steamgames.com/doc/marketing
+  - link "Steamworks SDK":
+    - /url: https://partner.steamgames.com/doc/sdk
+  - link "PC방 라이선스":
+    - /url: https://partner.steamgames.com/pccafe
+  - link "Steam VR":
+    - /url: https://partner.steamgames.com/doc/features/steamvr/info
+- list:
+  - emphasis: 리소스
+  - link "Steam VR":
+    - /url: https://partner.steamgames.com/vrlicensing
+  - link "Steam PC방 프로그램":
+    - /url: https://partner.steamgames.com/pccafe
+  - link "Steamworks 토론":
+    - /url: https://steamcommunity.com/groups/steamworks/discussions
+    - text: Steamworks 토론
+  - link "Steamworks 동영상 튜토리얼":
+    - /url: https://www.youtube.com/user/SteamworksDev
+    - text: Steamworks 동영상 튜토리얼
+  - 'link "X: @Steamworks"':
+    - /url: http://twitter.com/Steamworks
+    - 'img "X: @Steamworks"'
+  - generic: "|"
+  - 'link "Bluesky: Steamworks"':
+    - /url: https://bsky.app/profile/partner.steamgames.com
+    - 'img "Bluesky: Steamworks"'
+  - link "고객지원 문의":
+    - /url: https://help.steampowered.com/ko/wizard/HelpWithPublishing
+    - generic: 고객지원 문의
+- list:
+  - emphasis: 뉴스 및 업데이트
+  - link "Steamworks 블로그":
+    - /url: https://store.steampowered.com/news/group/4145017
+    - text: Steamworks 블로그
+  - link "Steam 블로그":
+    - /url: https://store.steampowered.com/news/app/593110
+    - text: Steam 블로그
+  - link "Steam VR 블로그":
+    - /url: https://store.steampowered.com/news/app/250820
+    - text: Steam VR 블로그
+  - link "Steam Deck 블로그":
+    - /url: https://store.steampowered.com/news/app/1675200
+    - text: Steam Deck 블로그

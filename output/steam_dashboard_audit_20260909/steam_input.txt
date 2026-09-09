@@ -1,0 +1,178 @@
+- navigation:
+  - link "Steamworks":
+    - /url: https://partner.steamgames.com/
+    - img "Steamworks"
+  - list:
+    - button "문서"
+    - button "리소스"
+    - button "뉴스 및 업데이트"
+    - link "지원":
+      - /url: https://help.steampowered.com/wizard/HelpWithPublishing
+  - generic: SIM DOJIN
+  - button "shsia":
+    - generic: shsia
+  - link:
+    - /url: https://steamcommunity.com/profiles/76561197980448401
+- navigation:
+  - list:
+    - link "대시보드":
+      - /url: https://partner.steamgames.com/dashboard
+    - button "앱 및 패키지"
+    - button "도구"
+    - button "사용자 및 사용 권한"
+    - link "재무 정보":
+      - /url: https://partner.steampowered.com/
+  - textbox "앱 이름 또는 ID로 찾기"
+- dialog:
+  - generic: SIM DOJIN
+  - link "GOAL":
+    - /url: https://steamcommunity.com/profiles/76561197980448401
+  - generic "문서": 문서
+  - generic "리소스": 리소스
+  - generic "뉴스 및 업데이트": 뉴스 및 업데이트
+  - link "지원":
+    - /url: https://help.steampowered.com/wizard/HelpWithPublishing
+  - button "언어 변경"
+  - button "로그아웃"
+- link "Steamworks":
+  - /url: https://partner.steamgames.com
+- text: ">"
+- link "앱 관리":
+  - /url: https://partner.steamgames.com/apps/
+- text: ">"
+- 'link "EXODUSER: HELL LORD"':
+  - /url: "https://partner.steamgames.com/apps/landing/4749590 "
+- generic: "앱 데이터 관리:"
+- text: "EXODUSER: HELL LORD (4749590)"
+- combobox:
+  - option [selected]
+  - option "상점 페이지 변경"
+  - option "Steamworks 설정 변경"
+- generic: 애플리케이션
+- generic: SteamPipe
+- generic: 설치
+- generic: 보안
+- generic: 통계 및 도전 과제
+- generic: 커뮤니티
+- generic: 창작마당
+- link "키 관리":
+  - /url: https://partner.steamgames.com/apps/packages/4749590
+- generic: 기타
+- link "게시":
+  - /url: https://partner.steamgames.com/apps/publishing/4749590
+- generic: Steam Input 설정
+- link "Steam Input 개요":
+  - /url: https://partner.steamgames.com/doc/features/steam_controller
+- paragraph: Steam Input은 게임패드 입력을 제공하는 플레이어용 기능입니다. 대부분의 게임은 Steam 클라이언트에서 자동으로 선택한 설정으로 작동하므로 설정을 여기에서 조정할 필요가 없습니다. 하지만 게임에서 Steam Input API를 사용하거나, 게임에서 지원하지 않는 기기를 Steam Input에 추가하려는 경우에는 여기에서 설정을 조정하는 것이 좋습니다.
+- paragraph: "참고: 플레이어는 여러 가지 방법으로 Steam Input을 활성화할 수 있습니다. 모든 게임에 대해 전체적으로 또는 PlayStation 컨트롤러를 지원하지 않는 게임에서 활성화하거나 Steam Deck, Steam Controller 또는 Steam Remote Play를 사용할 때 자동으로 활성화할 수 있습니다. 개발자는 Steam Input에 컨트롤러 유형을 추가할 수 있지만, 플레이어가 활성화한 경우 이 기능을 비활성화할 수 없습니다."
+- heading "컨트롤러에 Steam Input 사용하기" [level=2]
+- paragraph: 플레이어의 로컬 설정에 따라 Steam Input에 사용하도록 설정된 컨트롤러는 기본적으로 아래에서 설정한 구성을 사용합니다. 여기에서 특정 컨트롤러를 Steam Input에 사용하도록 설정하여 일관적인 기본 환경을 보장할 수 있습니다. 게임에서 Xbox 컨트롤러만 지원하는 경우, 게임에서 기본적으로 지원하지 않는 컨트롤러 유형 옆에 있는 확인란을 선택하면 Steam에서 해당 장치의 입력을 올바르게 읽을 수 있습니다. 게임이 Steam Input API에만 의존하는 경우, 모든 확인란을 선택해야 합니다.
+- checkbox "Xbox"
+- text: Xbox
+- checkbox "PlayStation"
+- text: PlayStation
+- checkbox "Nintendo Switch"
+- text: Nintendo Switch
+- checkbox "일반(DirectInput)"
+- text: 일반(DirectInput)
+- checkbox "미래의 모든 기기"
+- text: 미래의 모든 기기
+- generic: Steam Input 기본 컨트롤러 구성
+- paragraph: 게임 시작 시 플레이어에게 제공할 기본 컨트롤러의 템플릿을 설정합니다. 플레이어는 이 템플릿 설정을 재정의할 수 있지만, 처음 게임을 시작할 때 메시지가 표시되지는 않습니다.
+- combobox:
+  - option "선택된 항목 없음" [selected]
+  - option "맞춤 구성"
+  - option "카메라 컨트롤 기능이 있는 게임 패드"
+  - option "고정밀 카메라 또는 조준 기능이 있는 게임 패드"
+  - option "일반 게임 패드"
+  - option "키보드 및 마우스 에뮬레이션(WASD)"
+  - option "Steam 창작마당을 통한 맞춤 구성(사용 중단)"
+- generic: Steam Input 기본 터치 환경 설정
+- link "Steam 터치 컨트롤러 개요":
+  - /url: https://partner.steamgames.com/doc/features/steam_controller
+- paragraph: 모바일 기기로 스트리밍된 게임을 시작할 때, 사용자가 지정한 기본 컨트롤러 템플릿 및 레이아웃이 설정됩니다.
+- combobox:
+  - option "선택된 항목 없음" [selected]
+  - option "맞춤 구성"
+  - option "마우스 포인트 및 클릭"
+  - option "마우스 트랙패드"
+  - option "Steam 창작마당을 통한 맞춤 구성(사용 중단)"
+- generic: Steam Deck 터치스크린 모드
+- paragraph: Steam Deck의 기본 터치스크린 모드를 설정합니다. 해당 설정은 구성에서 재정의할 수 있습니다.
+- combobox:
+  - option "없음"
+  - option "마우스 왼쪽 클릭 에뮬레이션" [selected]
+  - option "마우스 오른쪽 클릭 에뮬레이션"
+  - option "마우스 중간 버튼 에뮬레이션"
+  - option "마우스 올리기"
+  - option "터치 API 패스스루"
+- button "저장"
+- heading "Valve 대외비" [level=2]
+- paragraph: 이 사이트는 접속이 제한되어 있으며 여기에 포함된 내용은 모두 Valve 기밀 정보입니다. 이 사이트에 접속하거나 해당 정보를 사용하려면 기밀 정보에 관해 Valve와 비밀 유지 계약 및 라이선스 계약을 체결해야 합니다.
+- text: Steamworks는
+- link "Steam":
+  - /url: https://store.steampowered.com/
+- text: 에서 귀사의 게임을 구성하고 관리하며 운영하는 데 도움을 드리기 위해
+- link "Valve":
+  - /url: https://www.valvesoftware.com
+- text: 가 구축한 일련의 도구 및 서비스입니다.
+- link:
+  - /url: http://www.valvesoftware.com
+- link:
+  - /url: https://store.steampowered.com/
+- list:
+  - emphasis: 문서
+  - link "홈":
+    - /url: https://partner.steamgames.com/doc/
+  - link "시작하기":
+    - /url: https://partner.steamgames.com/doc/gettingstarted
+  - link "상점 페이지":
+    - /url: https://partner.steamgames.com/doc/store
+  - link "기능":
+    - /url: https://partner.steamgames.com/doc/features
+  - link "재정":
+    - /url: https://partner.steamgames.com/doc/finance
+  - link "판매 및 마케팅":
+    - /url: https://partner.steamgames.com/doc/marketing
+  - link "Steamworks SDK":
+    - /url: https://partner.steamgames.com/doc/sdk
+  - link "PC방 라이선스":
+    - /url: https://partner.steamgames.com/pccafe
+  - link "Steam VR":
+    - /url: https://partner.steamgames.com/doc/features/steamvr/info
+- list:
+  - emphasis: 리소스
+  - link "Steam VR":
+    - /url: https://partner.steamgames.com/vrlicensing
+  - link "Steam PC방 프로그램":
+    - /url: https://partner.steamgames.com/pccafe
+  - link "Steamworks 토론":
+    - /url: https://steamcommunity.com/groups/steamworks/discussions
+    - text: Steamworks 토론
+  - link "Steamworks 동영상 튜토리얼":
+    - /url: https://www.youtube.com/user/SteamworksDev
+    - text: Steamworks 동영상 튜토리얼
+  - 'link "X: @Steamworks"':
+    - /url: http://twitter.com/Steamworks
+    - 'img "X: @Steamworks"'
+  - generic: "|"
+  - 'link "Bluesky: Steamworks"':
+    - /url: https://bsky.app/profile/partner.steamgames.com
+    - 'img "Bluesky: Steamworks"'
+  - link "고객지원 문의":
+    - /url: https://help.steampowered.com/ko/wizard/HelpWithPublishing
+    - generic: 고객지원 문의
+- list:
+  - emphasis: 뉴스 및 업데이트
+  - link "Steamworks 블로그":
+    - /url: https://store.steampowered.com/news/group/4145017
+    - text: Steamworks 블로그
+  - link "Steam 블로그":
+    - /url: https://store.steampowered.com/news/app/593110
+    - text: Steam 블로그
+  - link "Steam VR 블로그":
+    - /url: https://store.steampowered.com/news/app/250820
+    - text: Steam VR 블로그
+  - link "Steam Deck 블로그":
+    - /url: https://store.steampowered.com/news/app/1675200
+    - text: Steam Deck 블로그

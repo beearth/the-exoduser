@@ -1,0 +1,218 @@
+WARN: the STT only matched 85.71% of the authored script — wording is correct (taken from the manifest) but some timings are interpolated. Prefer --per-block on clean voice files, or a larger --model, before shipping.
+provider=faster-whisper words=14 captions=14 caption_words=14 density=2.37/s script_aligned=True similarity=0.8571428571428571
+{
+  "captions": [
+    {
+      "text": "Everyone",
+      "start": 0.0,
+      "end": 0.54
+    },
+    {
+      "text": "in",
+      "start": 0.54,
+      "end": 0.76
+    },
+    {
+      "text": "the",
+      "start": 0.76,
+      "end": 0.96
+    },
+    {
+      "text": "Killu",
+      "start": 0.96,
+      "end": 1.24
+    },
+    {
+      "text": "household",
+      "start": 1.24,
+      "end": 1.8
+    },
+    {
+      "text": "knew.",
+      "start": 1.8,
+      "end": 2.36
+    },
+    {
+      "text": "Thirty-one",
+      "start": 3.24,
+      "end": 3.52
+    },
+    {
+      "text": "of",
+      "start": 3.52,
+      "end": 3.8
+    },
+    {
+      "text": "them",
+      "start": 3.8,
+      "end": 3.98
+    },
+    {
+      "text": "saw",
+      "start": 3.98,
+      "end": 4.32
+    },
+    {
+      "text": "everything",
+      "start": 4.32,
+      "end": 4.86
+    },
+    {
+      "text": "and",
+      "start": 4.86,
+      "end": 5.32
+    },
+    {
+      "text": "looked",
+      "start": 5.32,
+      "end": 5.52
+    },
+    {
+      "text": "away.",
+      "start": 5.52,
+      "end": 5.9
+    }
+  ],
+  "script_aligned": true,
+  "similarity": 0.8571428571428571,
+  "timed_words": 14,
+  "caption_words": 14,
+  "words_per_second": 2.37,
+  "provider": "faster-whisper"
+}
+{
+  "verb": "fable.agent-ops.place",
+  "revision": 1,
+  "envelopes": 1,
+  "ops": 1
+}
+[node plan] 1 window(s), 1 worker(s) x 8 threads, 192 frames -> renders/clean.mp4
+[node audio] whole timeline mixed
+[node shard done] 1/1 0.00-8.00s 192 frames (23.7 ms/frame) — 1/1 complete
+{
+  "ok": true,
+  "path": "renders/clean.mp4",
+  "frames": 192,
+  "durationSeconds": 8,
+  "diagnostics": [],
+  "fallbacks": [],
+  "backend": "cpu"
+}
+fonts dir: /home/user/.higgsfield/workflows/subtitles/scripts/fonts
+  ok      TikTokSans-Bold.ttf (cached)
+  ok      Montserrat-ExtraBold.ttf (cached)
+  ok      Anton-Regular.ttf (cached)
+  ok      PatrickHand-Regular.ttf (cached)
+  ok      PermanentMarker-Regular.ttf (cached)
+  ok      Caveat-Regular.ttf (cached)
+DONE -> final.mp4  (clean natural case, no plate, small bottom captions)
+{
+  "duration_s": 8.0,
+  "voice_start_s": 1.0,
+  "voice_duration_s": 6.269388,
+  "caption_start_s": 1.0,
+  "caption_end_s": 7.15,
+  "caption_cues": [
+    {
+      "start": 1.0,
+      "end": 3.51,
+      "text": "킬루 가문의 모두가 알고 있었다."
+    },
+    {
+      "start": 4.24,
+      "end": 7.15,
+      "text": "31명이 보고도 못 본 척했다."
+    }
+  ],
+  "english": "Everyone in the Killu household knew. Thirty-one of them saw everything and looked away.",
+  "korean": "킬루 가문의 모두가 알고 있었다. / 31명이 보고도 못 본 척했다.",
+  "transcript_exact_match": true,
+  "voice_pcm_correlation": 0.9999722345038989,
+  "font": "NotoSerifCJKkr-Medium.otf: \"Noto Serif CJK KR\" \"Medium\"",
+  "font_size_ass": 13,
+  "margin_v_ass": 32,
+  "outline_ass": 0.6,
+  "shadow_ass": 0.4,
+  "receipts": {
+    "source.mp4": {
+      "bytes": 14197198,
+      "duration": 8.042,
+      "streams": [
+        {
+          "codec_type": "video",
+          "codec_name": "h264",
+          "width": 1280,
+          "height": 720,
+          "duration": "8.041667",
+          "sample_rate": null,
+          "r_frame_rate": "24/1"
+        }
+      ]
+    },
+    "voice.mp3": {
+      "bytes": 100772,
+      "duration": 6.269388,
+      "streams": [
+        {
+          "codec_type": "audio",
+          "codec_name": "mp3",
+          "width": null,
+          "height": null,
+          "duration": "6.269388",
+          "sample_rate": "44100",
+          "r_frame_rate": "0/0"
+        }
+      ]
+    },
+    "clean.mp4": {
+      "bytes": 7977843,
+      "duration": 8.0,
+      "streams": [
+        {
+          "codec_type": "video",
+          "codec_name": "h264",
+          "width": 1280,
+          "height": 720,
+          "duration": "8.000000",
+          "sample_rate": null,
+          "r_frame_rate": "24/1"
+        },
+        {
+          "codec_type": "audio",
+          "codec_name": "aac",
+          "width": null,
+          "height": null,
+          "duration": "8.000000",
+          "sample_rate": "48000",
+          "r_frame_rate": "0/0"
+        }
+      ]
+    },
+    "final.mp4": {
+      "bytes": 3738297,
+      "duration": 8.0,
+      "streams": [
+        {
+          "codec_type": "video",
+          "codec_name": "h264",
+          "width": 1280,
+          "height": 720,
+          "duration": "8.000000",
+          "sample_rate": null,
+          "r_frame_rate": "24/1"
+        },
+        {
+          "codec_type": "audio",
+          "codec_name": "aac",
+          "width": null,
+          "height": null,
+          "duration": "8.000000",
+          "sample_rate": "48000",
+          "r_frame_rate": "0/0"
+        }
+      ]
+    }
+  },
+  "human_audio_approval": false,
+  "visual_review_pending": true
+}

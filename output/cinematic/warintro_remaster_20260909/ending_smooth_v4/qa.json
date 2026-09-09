@@ -1,0 +1,68 @@
+{
+  "duration_s": 6.5,
+  "fps": 60,
+  "frames": 390,
+  "width": 1280,
+  "height": 720,
+  "silent": true,
+  "full_decode_pass": true,
+  "source_original_trim_s": [
+    0,
+    1.8
+  ],
+  "source_time_stretch": 5.555555555556,
+  "source_reference_offset_s": 0.5,
+  "absolute_timeline_s": [
+    89.5,
+    96
+  ],
+  "absolute_cuts_s": [
+    91.5,
+    95.05
+  ],
+  "interpolation": "ffmpeg minterpolate MCI AOBMC bidirectional EPZS VSBMC",
+  "segments": [
+    {
+      "shot": "A",
+      "frame_start": 0,
+      "frame_end": 120,
+      "duration_s": 2.0,
+      "mean_luma_mad": 0.5120581388473511,
+      "median_luma_mad": 0.4232291579246521,
+      "near_duplicate_lt_0_1": 0,
+      "near_duplicate_lt_0_25": 12,
+      "transitions": 119,
+      "change_gt_0_25_hz": 53.5
+    },
+    {
+      "shot": "B",
+      "frame_start": 120,
+      "frame_end": 333,
+      "duration_s": 3.55,
+      "mean_luma_mad": 0.5311442017555237,
+      "median_luma_mad": 0.4327430725097656,
+      "near_duplicate_lt_0_1": 1,
+      "near_duplicate_lt_0_25": 10,
+      "transitions": 212,
+      "change_gt_0_25_hz": 56.90140845070423
+    },
+    {
+      "shot": "C",
+      "frame_start": 333,
+      "frame_end": 390,
+      "duration_s": 0.95,
+      "mean_luma_mad": 0.3858819901943207,
+      "median_luma_mad": 0.3649131953716278,
+      "near_duplicate_lt_0_1": 0,
+      "near_duplicate_lt_0_25": 7,
+      "transitions": 56,
+      "change_gt_0_25_hz": 51.578947368421055
+    }
+  ],
+  "bytes": 3449980,
+  "visual_review_pending": true,
+  "limitations": [
+    "Synthetic intermediate frames; not native high-frame-rate capture.",
+    "Upscaling cropped regions cannot restore lost original detail."
+  ]
+}

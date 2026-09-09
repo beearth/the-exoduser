@@ -1,0 +1,78 @@
+[
+  {
+    "viewport": [
+      5120,
+      1440
+    ],
+    "draw": {
+      "source": "splashTitleVideo",
+      "args": [
+        760,
+        0,
+        3600,
+        1440
+      ]
+    },
+    "dpr": 1,
+    "canvas": [
+      5120,
+      1440
+    ],
+    "video": [
+      1920,
+      768
+    ]
+  },
+  {
+    "viewport": [
+      3440,
+      1440
+    ],
+    "draw": {
+      "source": "splashTitleVideo",
+      "args": [
+        0,
+        32,
+        3440,
+        1376
+      ]
+    },
+    "dpr": 1,
+    "canvas": [
+      3440,
+      1440
+    ],
+    "video": [
+      1920,
+      768
+    ]
+  },
+  {
+    "viewport": [
+      1920,
+      1080
+    ],
+    "draw": {
+      "source": "splashTitleVideo",
+      "args": [
+        0,
+        156,
+        1920,
+        768
+      ]
+    },
+    "dpr": 1,
+    "canvas": [
+      1920,
+      1080
+    ],
+    "video": [
+      1920,
+      768
+    ]
+  },
+  {
+    "errors": [],
+    "exit": "PASS"
+  }
+]

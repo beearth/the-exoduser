@@ -1,0 +1,465 @@
+- navigation:
+  - link "Steamworks":
+    - /url: https://partner.steamgames.com/
+    - img "Steamworks"
+  - list:
+    - button "문서"
+    - button "리소스"
+    - button "뉴스 및 업데이트"
+    - link "지원":
+      - /url: https://help.steampowered.com/wizard/HelpWithPublishing
+  - generic: SIM DOJIN
+  - button "shsia":
+    - generic: shsia
+  - link:
+    - /url: https://steamcommunity.com/profiles/76561197980448401
+- navigation:
+  - list:
+    - link "대시보드":
+      - /url: https://partner.steamgames.com/dashboard
+    - button "앱 및 패키지"
+    - button "도구"
+    - button "사용자 및 사용 권한"
+    - link "재무 정보":
+      - /url: https://partner.steampowered.com/
+  - textbox "앱 이름 또는 ID로 찾기"
+- dialog:
+  - generic: SIM DOJIN
+  - link "GOAL":
+    - /url: https://steamcommunity.com/profiles/76561197980448401
+  - generic "문서": 문서
+  - generic "리소스": 리소스
+  - generic "뉴스 및 업데이트": 뉴스 및 업데이트
+  - link "지원":
+    - /url: https://help.steampowered.com/wizard/HelpWithPublishing
+  - button "언어 변경"
+  - button "로그아웃"
+- link "Steamworks":
+  - /url: https://partner.steamgames.com
+- text: ">"
+- link "앱 관리":
+  - /url: https://partner.steamgames.com/apps/
+- text: ">"
+- 'link "EXODUSER: HELL LORD"':
+  - /url: "https://partner.steamgames.com/apps/landing/4749590 "
+- generic: "상점 관리 페이지:"
+- text: "EXODUSER: HELL LORD (4749590)"
+- text: 해당 앱에는 게시되지 않은 변경 사항이 있습니다. 변경 사항은 상점 베타 모드 에서 볼 수 있습니다. 상점 페이지를 처음으로 게시하기 전에 Valve에서 페이지를 검토하고 승인해야 합니다. 더 자세한 정보는
+- link "출시를 위한 준비":
+  - /url: https://partner.steamgames.com/doc/gettingstarted
+- text: 를 참고해 주세요.
+- combobox:
+  - option [selected]
+  - option "상점 페이지 변경"
+  - option "Steamworks 설정 변경"
+- generic: 상점 내 변경 사항 미리 보기
+- generic: 기본 정보
+- generic: 설명
+- generic: 등급
+- generic: 앞서 해보기
+- generic: 그래픽 자산
+- generic: 예고편
+- generic: 특수 설정
+- generic: 현지화
+- generic: 게시
+- heading "앞서 해보기" [level=2]
+- paragraph: 저희는 개발자 여러분이 제품을 보다 일찍 출시하고 고객과 소통하며 지속적인 관계를 유지하여 결과적으로 모두가 더 좋은 게임들을 만들어 낼 수 있도록 지원하며 또한 권장합니다.
+- paragraph: ‘앞서 해보기’는 귀하의 게임을 출시하고 커뮤니티로부터 피드백을 받으면서 게임을 진화시킬 수 있는 기회를 줍니다. 게임을 ‘앞서 해보기’로 출시하려면 반드시 고객이 플레이할 수 있는 무언가를 제공해야 합니다. 귀하의 제품을 궁극적으로 어떤 게임으로 완성하는 것이 목표인지 설명하는 것과 더불어 지금 현재 게임의 상태를 정확하게 묘사하는 것이 매우 중요합니다. 왜냐하면 예비 고객들은 게임의 현재 상태에 따라서 자신이 참여하기에 알맞은 시기 인지 아닌지 결정을 내리기 때문입니다. 아래 질문들은 ‘앞서 해보기’의 상점 페이지에서 귀하의 답변과 함께 보여지게 됩니다. 아래 모든 필드를 기입해야 합니다.
+- paragraph:
+  - text: "'앞서 해보기'에 대해 더 알고싶다면"
+  - link "앞서 해보기 자주 하는 질문":
+    - /url: https://partner.steamgames.com/doc/store/earlyaccess
+  - text: 공식 페이지를 확인해 주세요.
+- link "앞서 해보기":
+  - /url: javascript:ToggleCheckbox('checkbox_');
+  - generic: 앞서 해보기
+- text: — 제품에 대한 검토가 진행 중일 때는 앞서 해보기 상태를 변경할 수 없습니다.
+- generic: 왜 앞서 해보기를 진행하나요?
+- combobox:
+  - option "영어" [selected]
+  - option "프랑스어"
+  - option "이탈리아어"
+  - option "독일어"
+  - option "스페인어 - 스페인"
+  - option "그리스어"
+  - option "네덜란드어"
+  - option "노르웨이어"
+  - option "덴마크어"
+  - option "러시아어"
+  - option "루마니아어"
+  - option "말레이어"
+  - option "베트남어"
+  - option "불가리아어"
+  - option "스웨덴어"
+  - option "스페인어 - 중남미"
+  - option "우크라이나어"
+  - option "인도네시아어"
+  - option "일본어"
+  - option "중국어 간체"
+  - option "중국어 번체"
+  - option "체코어"
+  - option "태국어"
+  - option "튀르키예어"
+  - option "포르투갈어 - 브라질"
+  - option "포르투갈어 - 포르투갈"
+  - option "폴란드어"
+  - option "핀란드어"
+  - option "한국어"
+  - option "헝가리어"
+- textbox: "EXODUSER: HELL LORD는 전투 조작, 탄막 패링, 사슬 기동, 스킬 조합과 장비 빌드가 서로 긴밀하게 연결된 액션 RPG입니다. 다양한 플레이 스타일과 전투 상황에서 얻는 실제 플레이어 피드백을 바탕으로 전투 밸런스와 빌드 다양성, 보스 패턴, 사용자 경험을 개선하기 위해 앞서 해보기를 진행하고자 합니다."
+- generic: 얼마나 오래 앞서 해보기를 진행할 계획인가요?
+- combobox:
+  - option "영어" [selected]
+  - option "프랑스어"
+  - option "이탈리아어"
+  - option "독일어"
+  - option "스페인어 - 스페인"
+  - option "그리스어"
+  - option "네덜란드어"
+  - option "노르웨이어"
+  - option "덴마크어"
+  - option "러시아어"
+  - option "루마니아어"
+  - option "말레이어"
+  - option "베트남어"
+  - option "불가리아어"
+  - option "스웨덴어"
+  - option "스페인어 - 중남미"
+  - option "우크라이나어"
+  - option "인도네시아어"
+  - option "일본어"
+  - option "중국어 간체"
+  - option "중국어 번체"
+  - option "체코어"
+  - option "태국어"
+  - option "튀르키예어"
+  - option "포르투갈어 - 브라질"
+  - option "포르투갈어 - 포르투갈"
+  - option "폴란드어"
+  - option "핀란드어"
+  - option "한국어"
+  - option "헝가리어"
+- textbox: 게임의 핵심 콘텐츠와 시스템이 충분히 완성되고, 전투 밸런스와 안정성이 정식 출시 수준에 도달할 때까지 앞서 해보기를 진행할 계획입니다. 개발 진행 상황과 플레이어 피드백에 따라 기간은 달라질 수 있습니다.
+- generic: 정식 버전은 앞서 해보기 버전과 어떻게 달라지나요?
+- text: 추가 콘텐츠, 기능 및 달성하려는 목표에 대한 전반적인 정보를 알리는 것이 가장 좋지만, 앞으로의 일정에 대해
+- strong: 구체적인 약속은 하지 마세요
+- text: ".(예: 게임 개발 완료 시기, 게임 개발 완료 여부, 또는 향후 콘텐츠 추가 계획 등) '계획 중'과 같은 문구를 사용하여 앞으로 진행하고자 하는 작업 의도를 설명하는 것이 좋습니다."
+- combobox:
+  - option "영어" [selected]
+  - option "프랑스어"
+  - option "이탈리아어"
+  - option "독일어"
+  - option "스페인어 - 스페인"
+  - option "그리스어"
+  - option "네덜란드어"
+  - option "노르웨이어"
+  - option "덴마크어"
+  - option "러시아어"
+  - option "루마니아어"
+  - option "말레이어"
+  - option "베트남어"
+  - option "불가리아어"
+  - option "스웨덴어"
+  - option "스페인어 - 중남미"
+  - option "우크라이나어"
+  - option "인도네시아어"
+  - option "일본어"
+  - option "중국어 간체"
+  - option "중국어 번체"
+  - option "체코어"
+  - option "태국어"
+  - option "튀르키예어"
+  - option "포르투갈어 - 브라질"
+  - option "포르투갈어 - 포르투갈"
+  - option "폴란드어"
+  - option "핀란드어"
+  - option "한국어"
+  - option "헝가리어"
+- textbox: 정식 버전에서는 더 많은 지역과 스테이지, 보스, 적, 스킬 및 장비 옵션을 추가하고, 현재 시스템을 확장하는 것을 계획하고 있습니다. 또한 전투 밸런스, 빌드 다양성, 인터페이스, 성능 및 전반적인 완성도를 지속적으로 개선할 계획입니다. 이러한 내용은 개발 과정과 플레이어 피드백에 따라 조정될 수 있습니다.
+- generic: 앞서 해보기 버전은 현재 어떤 상태인가요?
+- combobox:
+  - option "영어" [selected]
+  - option "프랑스어"
+  - option "이탈리아어"
+  - option "독일어"
+  - option "스페인어 - 스페인"
+  - option "그리스어"
+  - option "네덜란드어"
+  - option "노르웨이어"
+  - option "덴마크어"
+  - option "러시아어"
+  - option "루마니아어"
+  - option "말레이어"
+  - option "베트남어"
+  - option "불가리아어"
+  - option "스웨덴어"
+  - option "스페인어 - 중남미"
+  - option "우크라이나어"
+  - option "인도네시아어"
+  - option "일본어"
+  - option "중국어 간체"
+  - option "중국어 번체"
+  - option "체코어"
+  - option "태국어"
+  - option "튀르키예어"
+  - option "포르투갈어 - 브라질"
+  - option "포르투갈어 - 포르투갈"
+  - option "폴란드어"
+  - option "핀란드어"
+  - option "한국어"
+  - option "헝가리어"
+- textbox: 현재 버전에서는 실시간 핵앤슬래시 전투, 색과 패턴에 대응하는 탄막 패링, 사슬을 이용한 고속 이동, 액티브 스킬과 스킬 조합, 장비 파밍과 캐릭터 빌드 구성 등 게임의 핵심 전투 시스템을 플레이할 수 있습니다. 여러 전투 지역과 적, 보스 콘텐츠가 구현되어 있으며, 개발 과정에서 콘텐츠와 밸런스, 연출 및 편의 기능을 지속적으로 개선하고 있습니다.
+- generic: 앞서 해보기 기간 전후로 게임 가격이 달라지나요?
+- strong: 참고
+- text: ": 각 지역의 사용자에게는 해당 지역의 통화로 가격이 표시됩니다. 특정 통화에 대한 가격을 기준으로 정보를 전달하는 대신에, 고객에게 가격 변동과 관련한 전반적인 계획을 알리세요.(예: '앞서 해보기 종료 시 가격이 변동되지 않습니다.' 또는 '새로운 콘텐츠와 기능 추가 시 가격이 인상됩니다.')"
+- combobox:
+  - option "영어" [selected]
+  - option "프랑스어"
+  - option "이탈리아어"
+  - option "독일어"
+  - option "스페인어 - 스페인"
+  - option "그리스어"
+  - option "네덜란드어"
+  - option "노르웨이어"
+  - option "덴마크어"
+  - option "러시아어"
+  - option "루마니아어"
+  - option "말레이어"
+  - option "베트남어"
+  - option "불가리아어"
+  - option "스웨덴어"
+  - option "스페인어 - 중남미"
+  - option "우크라이나어"
+  - option "인도네시아어"
+  - option "일본어"
+  - option "중국어 간체"
+  - option "중국어 번체"
+  - option "체코어"
+  - option "태국어"
+  - option "튀르키예어"
+  - option "포르투갈어 - 브라질"
+  - option "포르투갈어 - 포르투갈"
+  - option "폴란드어"
+  - option "핀란드어"
+  - option "한국어"
+  - option "헝가리어"
+- textbox: 앞서 해보기 기간 동안의 가격 정책은 개발 진행 상황과 추가되는 콘텐츠의 규모를 고려하여 결정할 계획입니다. 정식 출시 시 가격이 변경될 가능성이 있으며, 변경 사항이 결정되면 사전에 안내하겠습니다.
+- generic: 개발 과정에 어떻게 커뮤니티를 참여시킬 계획이신가요?
+- combobox:
+  - option "영어" [selected]
+  - option "프랑스어"
+  - option "이탈리아어"
+  - option "독일어"
+  - option "스페인어 - 스페인"
+  - option "그리스어"
+  - option "네덜란드어"
+  - option "노르웨이어"
+  - option "덴마크어"
+  - option "러시아어"
+  - option "루마니아어"
+  - option "말레이어"
+  - option "베트남어"
+  - option "불가리아어"
+  - option "스웨덴어"
+  - option "스페인어 - 중남미"
+  - option "우크라이나어"
+  - option "인도네시아어"
+  - option "일본어"
+  - option "중국어 간체"
+  - option "중국어 번체"
+  - option "체코어"
+  - option "태국어"
+  - option "튀르키예어"
+  - option "포르투갈어 - 브라질"
+  - option "포르투갈어 - 포르투갈"
+  - option "폴란드어"
+  - option "핀란드어"
+  - option "한국어"
+  - option "헝가리어"
+- textbox: Steam 커뮤니티와 플레이어 피드백을 통해 전투 밸런스, 난이도, 스킬과 장비 빌드, 보스 패턴, 성능 및 편의성에 대한 의견을 수집할 계획입니다. 버그 제보와 플레이 경험을 검토하고, 개발 방향에 도움이 되는 피드백을 지속적으로 반영하겠습니다.
+- button "저장"
+- emphasis:
+  - heading "고정된 꾸러미" [level=2]
+  - paragraph: 꾸러미는 제품의 상점 페이지에 최대 3개까지 표시됩니다. 기본적으로 꾸러미는 페이지를 보고 있는 사용자에게 낮은 가격순으로 정렬됩니다. 원하는 꾸러미를 목록의 상단에 고정하려면 여기에서 선택하세요.
+  - log
+  - generic: 고정할 꾸러미 선택
+  - combobox
+  - generic: 고정된 꾸러미가 없습니다.
+  - heading "다운로드 가능한 콘텐츠" [level=2]
+  - paragraph:
+    - text: 이 애플리케이션에 다운로드 가능한 콘텐츠가 있다면 애플리케이션 상점 페이지에 구매 가능한 옵션으로 표시하기 위해 여기에 추가해야 합니다. 이것은
+    - link "DLC 둘러보기 페이지":
+      - /url: https://store.steampowered.com/dlc/4749590
+    - text: 에서 DLC 기본 주문에 사용됩니다 . DLC 둘러보기 페이지는 맞춤 설정할 수 있습니다.
+    - link "더 알아보려면 여기를 클릭하세요":
+      - /url: https://partner.steamgames.com//doc/store/application/dlc/browse
+    - text: .
+  - paragraph: 이 목록의 맨 위에 있는 아이템을 강조하여 캡슐을 포함하는 더 큰 형식으로 표시하세요. 신규!
+  - button "DLC 추가..."
+  - heading "관련 체험판" [level=2]
+  - generic: 이 애플리케이션에 대한 체험판이 있다면 애플리케이션 상점 페이지에 표시하기 위해 여기에서 추가해야 합니다. 필드에 체험판 타이틀 또는 appID를 입력하여 선택을 위한 드롭다운 목록에서 원하는 애플리케이션을 선택하세요.
+  - textbox
+  - button "체험판 추가"
+  - text: 선택된 체험판을 애플리케이션에 연결하기
+  - heading "Steam Playtest" [level=2]
+  - link "(더 보기...)":
+    - /url: https://partner.steamgames.com/doc/features/playtest
+  - generic: 게임의 테스트에 참가하는 테스터들에게 제한적인 접근을 제공할 수 있습니다.
+  - link "관련 앱 페이지":
+    - /url: https://partner.steamgames.com/apps/associated/4749590
+  - text: 에서 게임의 Playtest를 생성하거나 구성하세요.
+  - text: 이 상점 페이지에서 Playtest를 제공할 준비가 되면,
+  - link "공개 여부 설정":
+    - /url: ""
+  - text: 을 클릭해 공개 여부를 설정하세요. 참고로 공개 여부를 설정하려면 Playtest 상점 페이지를 게시하도록 승인을 받아야 하며, 공개할 경우 Playtest가 상점에 표시되어 있지 않더라도 관련 정보는 공개 상태로 유지됩니다.
+  - heading "Steam 방송 (베타)" [level=2]
+  - link "(더 보기...)":
+    - /url: https://partner.steamgames.com/doc/store/broadcast
+  - paragraph: 상점 방송 기능을 사용하면 이 게임 제품 페이지에서 실시간으로 방송을 호스팅할 수 있습니다. 그리고 방송 창 주변에 표시되는 아트워크는 '그래픽 자산' 탭에서 직접 설정할 수 있습니다.
+  - heading "스트리머 허용 목록" [level=4]
+  - paragraph: 제품 페이지에서 Steam 상점 전체로 스트리밍할 수 있는 스트리머를 추가하세요. 스트리머의 라이브 콘텐츠는 스트리머가 RTMP 설정 중에 명시적으로 선택하거나, 게임을 하는 동안 Steam 클라이언트 기본 제공 스트리밍 기능을 사용하도록 선택하면 자동으로 나타납니다. 원하는 스트리머를 마우스로 끌어서 허용 목록 내 순서를 조정할 수 있습니다. 이 순서는 둘 이상의 방송이 동시에 스트리밍되는 경우, 어떤 스트리머를 우선 표시할지에 대한 기준을 Steam에 제공합니다. 허용 목록에는 최대 100명의 스트리머를 추가할 수 있습니다.
+  - generic: 순위
+  - generic: 아바타
+  - generic: 스트리머 페르소나
+  - generic: 작업
+  - button "본인을 방송 진행자로 추가"
+  - button "목록 지우기"
+  - button "Steam 친구 목록에서 방송 진행자 선택"
+  - heading "제품 페이지에서 방송 채팅 공개 여부(베타):" [level=4]
+  - paragraph: 제품 페이지에서 실시간 방송 옆에 방송 채팅 표시 여부를 설정합니다. 채팅 표시를 기본으로 설정하면 시청자들이 스트리머와 교류할 수 있습니다. 채팅을 숨기고 시청자가 채팅 표시 여부를 직접 결정할 수 있게 할 수도 있습니다. 아니면, 제품 페이지에서 채팅을 모두 삭제할 수도 있습니다. 참고로 채팅은 커뮤니티 페이지의 실시간 방송에서는 항상 사용할 수 있습니다.
+  - radio
+  - generic: 기본값으로 대화 표시하기
+  - radio [checked]
+  - generic: 기본값으로 대화 숨기기
+  - radio
+  - generic: 제품 페이지에서 채팅 삭제
+  - heading "방송 제목(베타):" [level=4]
+  - paragraph: 제목은 제품 페이지의 실시간 방송 위에 표시됩니다. 최대 100자까지 직접 작성하거나 기본 제목 목록에서 선택하세요. 기본 제목에는 현지화된 텍스트가 있습니다.
+  - combobox:
+    - 'option "지금 방송 중: 개발자 플레이 보기" [selected]'
+    - 'option "지금 방송 중: 커뮤니티 플레이 보기"'
+    - 'option "지금 방송 중: 이 경쟁 매치 보기"'
+    - 'option "지금 방송 중: 이 스피드 런 보기"'
+    - option "지금 방송 중"
+    - 'option "지금 방송 중: 개발자와의 채팅"'
+    - 'option "지금 방송 중: 질의응답 세션 참여"'
+    - option "맞춤 제목 사용하기"
+  - paragraph: "방송 제목 직접 입력:"
+  - textbox "방송 제목 직접 입력"
+  - combobox:
+    - option "영어" [selected]
+    - option "프랑스어"
+    - option "이탈리아어"
+    - option "독일어"
+    - option "스페인어 - 스페인"
+    - option "그리스어"
+    - option "네덜란드어"
+    - option "노르웨이어"
+    - option "덴마크어"
+    - option "러시아어"
+    - option "루마니아어"
+    - option "말레이어"
+    - option "베트남어"
+    - option "불가리아어"
+    - option "스웨덴어"
+    - option "스페인어 - 중남미"
+    - option "우크라이나어"
+    - option "인도네시아어"
+    - option "일본어"
+    - option "중국어 간체"
+    - option "중국어 번체"
+    - option "체코어"
+    - option "태국어"
+    - option "튀르키예어"
+    - option "포르투갈어 - 브라질"
+    - option "포르투갈어 - 포르투갈"
+    - option "폴란드어"
+    - option "핀란드어"
+    - option "한국어"
+    - option "헝가리어"
+  - paragraph
+  - heading "프랜차이즈/개발사/배급사 관련 제품 문서 보기" [level=2]:
+    - text: 프랜차이즈/개발사/배급사 관련 제품
+    - link "문서 보기":
+      - /url: https://store.steampowered.com/news/group/4145017/view/4578559379959234050
+  - separator
+  - text: 앱 설정을 위한 제작자 홈이 없습니다.
+  - link "개발자 페이지, 배급사 페이지":
+    - /url: https://partner.steamgames.com/doc/store/creator_homepage
+  - text: 또는
+  - link "프랜차이즈 페이지":
+    - /url: https://partner.steamgames.com/doc/store/franchise_pages
+  - text: 의 제작자 홈 문서를 확인하고 앱에 맞게 설정하세요.
+  - button "저장"
+- emphasis
+- emphasis:
+  - heading "Valve 대외비" [level=2]
+  - paragraph: 이 사이트는 접속이 제한되어 있으며 여기에 포함된 내용은 모두 Valve 기밀 정보입니다. 이 사이트에 접속하거나 해당 정보를 사용하려면 기밀 정보에 관해 Valve와 비밀 유지 계약 및 라이선스 계약을 체결해야 합니다.
+  - text: Steamworks는
+  - link "Steam":
+    - /url: https://store.steampowered.com/
+  - text: 에서 귀사의 게임을 구성하고 관리하며 운영하는 데 도움을 드리기 위해
+  - link "Valve":
+    - /url: https://www.valvesoftware.com
+  - text: 가 구축한 일련의 도구 및 서비스입니다.
+  - link:
+    - /url: http://www.valvesoftware.com
+  - link:
+    - /url: https://store.steampowered.com/
+  - list:
+    - emphasis: 문서
+    - link "홈":
+      - /url: https://partner.steamgames.com/doc/
+    - link "시작하기":
+      - /url: https://partner.steamgames.com/doc/gettingstarted
+    - link "상점 페이지":
+      - /url: https://partner.steamgames.com/doc/store
+    - link "기능":
+      - /url: https://partner.steamgames.com/doc/features
+    - link "재정":
+      - /url: https://partner.steamgames.com/doc/finance
+    - link "판매 및 마케팅":
+      - /url: https://partner.steamgames.com/doc/marketing
+    - link "Steamworks SDK":
+      - /url: https://partner.steamgames.com/doc/sdk
+    - link "PC방 라이선스":
+      - /url: https://partner.steamgames.com/pccafe
+    - link "Steam VR":
+      - /url: https://partner.steamgames.com/doc/features/steamvr/info
+  - list:
+    - emphasis: 리소스
+    - link "Steam VR":
+      - /url: https://partner.steamgames.com/vrlicensing
+    - link "Steam PC방 프로그램":
+      - /url: https://partner.steamgames.com/pccafe
+    - link "Steamworks 토론":
+      - /url: https://steamcommunity.com/groups/steamworks/discussions
+      - text: Steamworks 토론
+    - link "Steamworks 동영상 튜토리얼":
+      - /url: https://www.youtube.com/user/SteamworksDev
+      - text: Steamworks 동영상 튜토리얼
+    - 'link "X: @Steamworks"':
+      - /url: http://twitter.com/Steamworks
+      - 'img "X: @Steamworks"'
+    - generic: "|"
+    - 'link "Bluesky: Steamworks"':
+      - /url: https://bsky.app/profile/partner.steamgames.com
+      - 'img "Bluesky: Steamworks"'
+    - link "고객지원 문의":
+      - /url: https://help.steampowered.com/ko/wizard/HelpWithPublishing
+      - generic: 고객지원 문의
+  - list:
+    - emphasis: 뉴스 및 업데이트
+    - link "Steamworks 블로그":
+      - /url: https://store.steampowered.com/news/group/4145017
+      - text: Steamworks 블로그
+    - link "Steam 블로그":
+      - /url: https://store.steampowered.com/news/app/593110
+      - text: Steam 블로그
+    - link "Steam VR 블로그":
+      - /url: https://store.steampowered.com/news/app/250820
+      - text: Steam VR 블로그
+    - link "Steam Deck 블로그":
+      - /url: https://store.steampowered.com/news/app/1675200
+      - text: Steam Deck 블로그
+- emphasis

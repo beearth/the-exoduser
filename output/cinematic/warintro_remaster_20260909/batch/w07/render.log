@@ -1,0 +1,187 @@
+provider=faster-whisper words=9 captions=9 caption_words=9 density=2.90/s script_aligned=True similarity=1.0
+{
+  "captions": [
+    {
+      "text": "His",
+      "start": 0.0,
+      "end": 0.18
+    },
+    {
+      "text": "elderly",
+      "start": 0.18,
+      "end": 0.58
+    },
+    {
+      "text": "parents",
+      "start": 0.58,
+      "end": 1.18
+    },
+    {
+      "text": "were",
+      "start": 1.18,
+      "end": 1.46
+    },
+    {
+      "text": "imprisoned",
+      "start": 1.46,
+      "end": 1.9
+    },
+    {
+      "text": "and",
+      "start": 1.9,
+      "end": 2.24
+    },
+    {
+      "text": "starved",
+      "start": 2.24,
+      "end": 2.72
+    },
+    {
+      "text": "to",
+      "start": 2.72,
+      "end": 2.84
+    },
+    {
+      "text": "death.",
+      "start": 2.84,
+      "end": 3.1
+    }
+  ],
+  "script_aligned": true,
+  "similarity": 1.0,
+  "timed_words": 9,
+  "caption_words": 9,
+  "words_per_second": 2.9,
+  "provider": "faster-whisper"
+}
+{
+  "verb": "fable.agent-ops.place",
+  "revision": 1,
+  "envelopes": 1,
+  "ops": 1
+}
+[node plan] 1 window(s), 1 worker(s) x 8 threads, 144 frames -> renders/clean.mp4
+[node audio] whole timeline mixed
+[node shard done] 1/1 0.00-6.00s 144 frames (31.2 ms/frame) — 1/1 complete
+{
+  "ok": true,
+  "path": "renders/clean.mp4",
+  "frames": 144,
+  "durationSeconds": 6,
+  "diagnostics": [],
+  "fallbacks": [],
+  "backend": "cpu"
+}
+fonts dir: /home/user/.higgsfield/workflows/subtitles/scripts/fonts
+  ok      TikTokSans-Bold.ttf (cached)
+  ok      Montserrat-ExtraBold.ttf (cached)
+  ok      Anton-Regular.ttf (cached)
+  ok      PatrickHand-Regular.ttf (cached)
+  ok      PermanentMarker-Regular.ttf (cached)
+  ok      Caveat-Regular.ttf (cached)
+DONE -> final.mp4  (clean natural case, no plate, small bottom captions)
+{
+  "duration_s": 6.0,
+  "voice_start_s": 1.0,
+  "voice_duration_s": 3.657143,
+  "caption_start_s": 1.0,
+  "caption_end_s": 4.35,
+  "caption_cues": [
+    {
+      "start": 1.0,
+      "end": 4.35,
+      "text": "늙은 부모는 감옥에 갇혀 굶어 죽었다."
+    }
+  ],
+  "english": "His elderly parents were imprisoned and starved to death.",
+  "korean": "늙은 부모는 감옥에 갇혀 굶어 죽었다.",
+  "transcript_exact_match": true,
+  "voice_pcm_correlation": 0.9999604259214597,
+  "font": "NotoSerifCJKkr-Medium.otf: \"Noto Serif CJK KR\" \"Medium\"",
+  "font_size_ass": 13,
+  "margin_v_ass": 32,
+  "outline_ass": 0.6,
+  "shadow_ass": 0.4,
+  "receipts": {
+    "source.mp4": {
+      "bytes": 7797393,
+      "duration": 6.042,
+      "streams": [
+        {
+          "codec_type": "video",
+          "codec_name": "h264",
+          "width": 1280,
+          "height": 720,
+          "duration": "6.041667",
+          "sample_rate": null,
+          "r_frame_rate": "24/1"
+        }
+      ]
+    },
+    "voice.mp3": {
+      "bytes": 58976,
+      "duration": 3.657143,
+      "streams": [
+        {
+          "codec_type": "audio",
+          "codec_name": "mp3",
+          "width": null,
+          "height": null,
+          "duration": "3.657143",
+          "sample_rate": "44100",
+          "r_frame_rate": "0/0"
+        }
+      ]
+    },
+    "clean.mp4": {
+      "bytes": 5989045,
+      "duration": 6.0,
+      "streams": [
+        {
+          "codec_type": "video",
+          "codec_name": "h264",
+          "width": 1280,
+          "height": 720,
+          "duration": "6.000000",
+          "sample_rate": null,
+          "r_frame_rate": "24/1"
+        },
+        {
+          "codec_type": "audio",
+          "codec_name": "aac",
+          "width": null,
+          "height": null,
+          "duration": "6.000000",
+          "sample_rate": "48000",
+          "r_frame_rate": "0/0"
+        }
+      ]
+    },
+    "final.mp4": {
+      "bytes": 1544276,
+      "duration": 6.0,
+      "streams": [
+        {
+          "codec_type": "video",
+          "codec_name": "h264",
+          "width": 1280,
+          "height": 720,
+          "duration": "6.000000",
+          "sample_rate": null,
+          "r_frame_rate": "24/1"
+        },
+        {
+          "codec_type": "audio",
+          "codec_name": "aac",
+          "width": null,
+          "height": null,
+          "duration": "6.000000",
+          "sample_rate": "48000",
+          "r_frame_rate": "0/0"
+        }
+      ]
+    }
+  },
+  "human_audio_approval": false,
+  "visual_review_pending": true
+}

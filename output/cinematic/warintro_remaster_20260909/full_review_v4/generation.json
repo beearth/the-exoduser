@@ -1,0 +1,73 @@
+{
+  "version": 4,
+  "image_prompt": "Use case: illustration-story. Create ONE new final cinematic storyboard frame for existing dark-fantasy Hell Road story, landscape 16:9, high detail 2560x1440 or higher. Input image is reference ONLY for painterly style and the same adult black-haired male warrior identity, battered black iron armor and tattered crimson cape. New scene: camera just behind his right shoulder, warrior occupying lower right third, back to viewer, looking across a vast infernal abyss toward a narrow ancient stone stairway climbing diagonally up to a distant towering black gothic arch with a small cold pale opening far beyond. The path ahead feels nearly impossible yet traversable. This illustrates the final command 'Escape from hell, sinner.' Mood of grim resolve and beginning the escape, not victory. Deep charcoal stone, restrained ember red fissures below, wisps of ash and desaturated cold light far ahead. Strong readable silhouette and monumental scale, detailed hand-painted dark fantasy key art matching reference, no plastic CGI. Upper environment fills two thirds, bottom center clear enough for later subtitles. Warrior stays fully rear facing, hands naturally concealed by cape and body, no visible weapons, no added people, no giant face in sky, no door leaves or hinges, no text, letters, logo, watermark. Distinct composition from reference, atmospheric depth, crisp stone and armor contours.",
+  "image_mode": "built-in image_gen",
+  "image_reference": "assets/cutscene/warintro/cin_fallhell_custom.jpg",
+  "image_media_id": "a0a8e64b-7498-4ead-a65e-b3c4d3dcf658",
+  "video_params": {
+    "model": "cinematic_studio_video_v2",
+    "duration": 5,
+    "aspect_ratio": "16:9",
+    "mode": "pro",
+    "sound": "off",
+    "genre": "suspense",
+    "speedramp": "linear",
+    "multi_shots": false,
+    "multi_shot_mode": "custom",
+    "cfg_scale": 0.5,
+    "count": 1,
+    "medias": [
+      {
+        "role": "image",
+        "value": "a0a8e64b-7498-4ead-a65e-b3c4d3dcf658"
+      }
+    ],
+    "declined_preset_id": "24bae836-2c4a-48e0-89b6-49fcc0b21612",
+    "prompt": "One continuous five-second closing shot. Preserve the supplied hand-painted dark fantasy image exactly in style, architecture and warrior identity. Slow smooth forward camera drift toward the distant pale arch across the infernal stairway. Warrior remains rear-facing and steady, only his tattered crimson cape lightly moves in the wind. Thin ash drifts naturally, tiny flames flicker, faint mist passes below. Grim resolve, the beginning of an impossible escape. Very restrained, continuously smooth motion, no speed ramp, no freeze frames, no sudden acceleration, no camera shake. No face turn, no new weapons, no hand gestures, no walking gait, no talking, no architecture morphing, no new characters, no text, no captions, no watermark. Maintain crisp armor and stone edges. End while the path remains visible; do not fade or cut."
+  },
+  "video_job_id": "29a5c4a0-0837-4bc6-a405-b0a1125701b8",
+  "source_video": {
+    "width": 1920,
+    "height": 1080,
+    "fps": 24,
+    "duration_s": 5.042,
+    "adopted_duration_s": 5,
+    "sampled_frames_reviewed": 6
+  },
+  "quality_jobs": {
+    "escape": "ec397c08-9c24-4565-8b44-0b83fd943b2a",
+    "nemesia": "b8c0fb3e-6d93-4e9c-ad29-198da4188a28",
+    "provider": "bytedance",
+    "preset": "aigc",
+    "resolution": "1080p",
+    "fps": 60,
+    "new_shot_native_resolution_preserved": true
+  },
+  "generation_preflight": {
+    "credits": 7,
+    "exact": 7.5
+  },
+  "plan": {
+    "duration_s": 101,
+    "fps": 60,
+    "size": "1920x1080",
+    "editorial_cut_count": 28,
+    "original_narrative_scene_count": 16,
+    "caption_count": 21,
+    "enhanced_range_s": [
+      89.5,
+      101
+    ],
+    "new_cut_s": [
+      96,
+      101
+    ],
+    "fade_s": [
+      100.2,
+      101
+    ],
+    "earlier_picture": "V3 original 24fps cadence, resized for uniform export",
+    "voice": "V3 unchanged; pad silence to 101s",
+    "question_spoken_gap_s": 3.7
+  }
+}

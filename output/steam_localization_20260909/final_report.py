@@ -1,0 +1,92 @@
+import json,re,hashlib
+from pathlib import Path
+P=Path(__file__).resolve().parent
+def read(name): return json.loads((P/name).read_text(encoding='utf-8'))
+original=read('original_storepage_1189321_all.json')
+final=read('final_verified_all.json')
+expected=read('remaining_upload.json')['languages']
+expected.update(read('pilot_japanese_upload.json')['languages'])
+labels=read('language_labels.json')
+previews={v['language']:v for v in read('preview_verification.json')}
+A='app[content][about]'
+S='app[content][short_description]'
+tags=lambda s:re.findall(r'\[[^\]]+\]',s)
+rows=[]
+for lang,values in final['languages'].items():
+    base=expected.get(lang,original['languages'][lang])
+    pv=previews[lang]
+    row={'language':lang,'name':labels[lang],'action':'신규 등록' if lang in expected else '기존 유지',
+         'short_exact':values[S]==base[S],'about_exact':values[A]==base[A],
+         'short_chars':len(values[S]),'about_chars':len(values[A]),
+         'markup_exact':tags(values[A])==tags(base[A]),
+         'preview_pass':pv['textExact'] and pv['shortExact'] and pv['markupRendered'] and all(i['loaded'] for i in pv['images'])}
+    assert all(row[k] for k in ['short_exact','about_exact','markup_exact','preview_pass']),row
+    assert 0<row['short_chars']<=300
+    rows.append(row)
+unexpected=[(l,k) for l in original['languages'] for k,v in original['languages'][l].items()
+            if v!=final['languages'][l][k] and not(l in expected and k in [A,S])]
+assert not unexpected,unexpected
+assert final['languages']['english']==original['languages']['english']
+assert final['languages']['koreana']==original['languages']['koreana']
+hashes={name:hashlib.sha256((P/name).read_bytes()).hexdigest() for name in ['original_storepage_1189321_all.json','pilot_japanese_upload.json','remaining_upload.json','final_verified_all.json']}
+report={'app_id':4749590,'store_item_id':original['itemid'],'target':30,'new':28,'preserved':2,'failed':0,
+        'short_and_about_exact':True,'unexpected_export_field_changes':unexpected,'published':False,'rows':rows,'sha256':hashes}
+(P/'verification.json').write_text(json.dumps(report,ensure_ascii=False,indent=2),encoding='utf-8')
+lines=['# Steam 상점 설명 다국어 등록 완료 — 2026-09-09','',
+'EXODUSER: HELL LORD / App ID 4749590 / Store Item ID 1189321. 연결된 Chrome의 로그인된 Steamworks에서 실제 입력·저장·재내보내기·미리보기 검증을 완료했다. **게시하지 않음.**','',
+'| 대상 언어 | 신규 등록 | 기존 유지 | 실패 |', '|---:|---:|---:|---:|','| 30 | 28 | 2 | 0 |','',
+'대상은 실제 설명 드롭다운과 JSON 내보내기에 존재하는 30개 언어다. 현지화 다운로드 메뉴에는 별도 Steam China 항목도 있었지만 전체 JSON에는 독립 언어 키가 없었다. 아랍어는 이 상점 설명 화면/내보내기에 없었다. 게임 내 지원 언어 31항목·29내부코드 문서와는 별개이며 해당 체크박스나 코드는 변경하지 않았다.','',
+'## 언어별 저장·재조회 결과','',
+'짧은 설명은 모두 실제 300자 상한 이내다. 신규 상세 설명의 BBCode 태그 전체 시퀀스와 이미지 참조는 한국어 원문과 일치한다. 최종 재내보내기의 56개 신규 필드가 입력본과 정확히 일치한다.','',
+'| 언어 | 코드 | 처리 | 짧은 설명 저장·재조회 | 상세 설명 저장·재조회 | 미리보기 | 짧은 설명 글자 수 |',
+'|---|---|---|---|---|---|---:|']
+for r in rows: lines.append(f"| {r['name']} | {r['language']} | {r['action']} | PASS | PASS | PASS | {r['short_chars']} |")
+lines+=['','## 원본·작업 파일','',
+'작업 폴더: `G:/exoduser/output/steam_localization_20260909/`','',
+'| 파일 | 용도 |','|---|---|',
+'| `original_storepage_1189321_all.json` | 수정하지 않은 Steam 전체 원본 JSON 백업(한국어·영어 원문 포함) |',
+'| `pilot_japanese_upload.json` | 일본어 두 설명만 담은 파일 업로드용 사본 |',
+'| `remaining_upload.json` | 나머지 27언어의 두 설명만 담은 파일 업로드용 사본 |',
+'| `<Steam언어코드>.json` | 언어별 짧은 설명 및 상세 설명의 27개 번역 구간. 게임명은 템플릿에서 그대로 보존 |',
+'| `pilot_verified_all.json` | 일본어 두 설명 서버 저장 및 타 필드 보존 확인 |',
+'| `french_verified_all.json` | 짧은 설명 실제 문자 입력 방식의 저장 확인 |',
+'| `final_verified_all.json` | 루마니아어 교정까지 반영한 최종 전체 재내보내기 |',
+'| `verification.json` | 언어별 정확 일치·원문 보존·변경 범위 및 SHA256 |',
+'| `preview_verification.json`, `previews/*.png` | 30언어 비주얼 편집기 미리보기 결과와 화면 증거 |',
+'| `build_upload.py`, `final_report.py` | 이 작업 폴더 안의 파일 생성·검증 도구. 게임 코드는 변경하지 않음 |','',
+'원본 다운로드 파일 `C:/Users/심도진/Downloads/storepage_1189321_all.json`도 그대로 남겨 두었다. 후속 내보내기는 같은 파일명의 (1)~(6) 사본이며 마지막 (6)이 최종 검증본이다. 업로드 사본은 실제 JSON의 `itemid`, `languages`, Steam 언어 코드와 필드 키 및 UTF-8 형식을 따르며, 대상이 아닌 빈 필드를 전송하지 않도록 변경할 두 키만 포함했다.','',
+'## 실제 입력 경로와 문제 해결','',
+'1. 현지화 탭에서 JSON/CSV 제공을 직접 확인하고 JSON 전체 내보내기를 선택했다. 최초 다운로드는 ERR_BLOCKED_BY_CLIENT였으나 지원되는 다운로드 이벤트 대기를 사용한 재시도로 정상 다운로드했다. 브라우저 보안 설정을 해제하지 않았다.',
+'2. 실제 파일 선택 흐름으로 일본어 JSON 업로드를 시도했으나 Chrome 확장의 로컬 파일 접근 권한 부족으로 `Not allowed`가 반환됐다. 사용자에게 해당 확장의 파일 URL 접근 설정 경로를 알리고, 허용 상태를 임의 변경하지 않은 채 요청에 명시된 언어별 입력 폴백으로 진행했다. 업로드 사본은 준비됐지만 파일 업로드로 반영된 것은 아니다.',
+'3. 일본어 한 언어의 두 설명 저장 및 재내보내기 정확 일치를 먼저 확인한 후 나머지 언어를 진행했다. 상세 설명은 BBCode 원문 모드로 입력해 이미지와 서식을 유지했다. 편집기에서는 JSON의 `&quot;`를 따옴표로 표시하며, 재내보내기는 원본과 동일한 인코딩으로 되돌아감을 확인했다.',
+'4. 짧은 설명의 일괄 값 설정/붙여넣기는 화면에 보여도 일부 저장되지 않았다. 프랑스어 실제 문자 입력→다른 언어 전환→복귀→저장→재내보내기로 검증한 뒤 나머지도 실제 문자 입력 방식으로 완료했다. 중간 누락을 최종 성공으로 계산하지 않았다.',
+'5. 최종 재내보내기에서 신규 28언어의 두 필드를 입력 사본과 비교하고, 모든 비대상 내보내기 필드가 원본과 일치함을 확인했다.','',
+'## 원문 차이와 번역 기준','',
+'현재 한국어 설명을 기준으로 번역했고, 영어의 공통 의미만 참고했다. 다음 영어 전용 내용을 새 번역에 임의 추가하거나 양 원문을 수정하지 않았다.','',
+'| 항목 | 한국어 원문 | 영어 원문 | 처리 |','|---|---|---|---|',
+'| 지역·콘텐츠 수 | 지옥을 올라가며 지역·적·보스를 만남. 구체 수 없음 | 7개 층/챕터, 35개 스테이지(서사), 35개 이상 스테이지·보스(특징) | 새 번역에는 구체 수를 넣지 않음. 영어 내부 35/35+ 차이도 그대로 보존 |',
+'| 스킬 수 | 스킬 해금·강화·특정 조합의 합성 | 6개 archetype, 5개 희귀도, 21개 이상 합성 | 한국어 범위만 번역 |',
+'| 이동 | 벽에 사슬을 박아 이동 | Chain Drive, hold-charge | 한국어 동작을 번역. 충전 조작 추가 안 함 |',
+'| 서사·동료 | 지옥 밑바닥에서 지상으로 탈출 | 복수·배신·아이들·Nemesia·Diroy·Hector·석궁 서사 | 영어 전용 내용을 추가하지 않음 |',
+'| 운영 약속 | 없음 | Live service, 피드백과 빌드 공간의 지속 성장 | 신규 운영·출시 약속 추가 안 함 |',
+'| 전투 표현 | 실시간 대규모 전투 | 공격 티켓/인위적 둔화 없음 | 내부 구현 용어를 새 번역에 추가하지 않음 |',
+'| 이미지/서식 | library_hero 이미지 1개, 제목 6개, 목록 6개 | 이미지 없음, 단락 중심 서식 | 각 기존 원문 보존. 신규 번역은 한국어 구조 사용 |',
+'| 상세 설명 도입 | 본문 안에 ‘짧은 설명’ 제목과 별도 요약 존재 | 다른 구성 | 기존 한국어 구조를 유지해 해당 도입도 번역 |','',
+'원문끼리 직접 모순되는 수치를 추정해 고치지 않았다. 게시 전 영어에만 있는 콘텐츠 수·운영 표현을 한국어와 통일할지 사용자가 확인할 수 있도록 기록한다. 신규 번역에 영어 본문을 그대로 복사해 채운 언어는 없다. 중국어 간체/번체, 스페인/중남미 스페인어, 포르투갈/브라질 포르투갈어는 별도 번역이다.','',
+'프로젝트의 steam/output/tmp/docs와 기존 `G:/exoduser-steam` 상점 감사 자료를 찾아 비교했다. 기존 감사 문서는 과거 준비·검수 기록이며 현재 한국어 원문과 대조해 바로 재사용할 언어별 상점 번역은 찾지 못했다. 별도 세션의 게임 내 번역 자료/작업 파일은 수정하지 않았다.','',
+'## 보존·미리보기 검증','',
+'- 30언어의 실제 비주얼 편집기 미리보기 본문 및 짧은 설명을 최종 저장본과 대조했다. 본문은 공백 정규화 후 일치, raw BBCode 노출 없음.',
+'- 한국어 및 신규 28언어에서 이미지 1개가 정상 로딩됨(naturalWidth 1560), 제목 6개와 목록 항목 6개 유지. 영어는 원래 이미지·h2·목록이 없는 단락 구성을 유지했다.',
+'- 한국어·영어 전체 내보내기 항목 원본과 일치. 그 외 비대상 내보내기 필드 변경 0건.',
+'- 최종 남은 실패 언어 0. 초기에 누락된 짧은 설명은 모두 보완하고 재내보내기로 확인했다.',
+'- 게임 지원 언어 체크박스, 그래픽 자산, 가격, 출시일, 패키지, 빌드, 디포, 검수 취소/재제출, Publish 조작 없음.',
+'- 브라우저는 한국어 원문 미리보기 화면에 유지. 최종 게시 버튼은 누르지 않았다.','',
+'## 문서와 파일 소유 범위','',
+'이 작업은 상점 설명과 작업 전용 산출물만 변경했다. `grep` 실행 파일이 없어 `rg -l "Steam|상점|현지화" docs -g "*.md"`로 docs 전체 검색을 수행했다. 게임 내 언어 지원 범위와 상점 설명 언어 수를 분리해 기록하며, 기존 다른 세션 문서를 수정하지 않고 본 작업의 독립 보고서를 추가했다.','',
+'## 파일 무결성','', '| 파일 | SHA256 |','|---|---|']
+lines += [f'| `{n}` | `{h}` |' for n,h in hashes.items()]
+text='\n'.join(lines)+'\n'
+(P/'REPORT.md').write_text(text,encoding='utf-8')
+doc=P.parents[1]/'docs'/'13출시·마케팅'/'STEAM_STORE_LOCALIZATION_20260909.md'
+doc.write_text(text,encoding='utf-8')
+print(json.dumps({'target':30,'new':28,'preserved':2,'failed':0,'exact_fields':56,'unexpected_changes':0,'preview_pass':30,'report':str(P/'REPORT.md')},ensure_ascii=False))

@@ -1,0 +1,176 @@
+provider=faster-whisper words=6 captions=6 caption_words=6 density=4.76/s script_aligned=True similarity=1.0
+{
+  "captions": [
+    {
+      "text": "And",
+      "start": 0.0,
+      "end": 0.14
+    },
+    {
+      "text": "so",
+      "start": 0.14,
+      "end": 0.42
+    },
+    {
+      "text": "he",
+      "start": 0.42,
+      "end": 0.54
+    },
+    {
+      "text": "fell",
+      "start": 0.54,
+      "end": 0.8
+    },
+    {
+      "text": "into",
+      "start": 0.8,
+      "end": 0.98
+    },
+    {
+      "text": "hell.",
+      "start": 0.98,
+      "end": 1.26
+    }
+  ],
+  "script_aligned": true,
+  "similarity": 1.0,
+  "timed_words": 6,
+  "caption_words": 6,
+  "words_per_second": 4.76,
+  "provider": "faster-whisper"
+}
+{
+  "verb": "fable.agent-ops.place",
+  "revision": 1,
+  "envelopes": 1,
+  "ops": 1
+}
+[node plan] 1 window(s), 1 worker(s) x 8 threads, 120 frames -> renders/clean.mp4
+[node audio] whole timeline mixed
+[node shard done] 1/1 0.00-5.00s 120 frames (37.9 ms/frame) — 1/1 complete
+{
+  "ok": true,
+  "path": "renders/clean.mp4",
+  "frames": 120,
+  "durationSeconds": 5,
+  "diagnostics": [],
+  "fallbacks": [],
+  "backend": "cpu"
+}
+fonts dir: /home/user/.higgsfield/workflows/subtitles/scripts/fonts
+  ok      TikTokSans-Bold.ttf (cached)
+  ok      Montserrat-ExtraBold.ttf (cached)
+  ok      Anton-Regular.ttf (cached)
+  ok      PatrickHand-Regular.ttf (cached)
+  ok      PermanentMarker-Regular.ttf (cached)
+  ok      Caveat-Regular.ttf (cached)
+DONE -> final.mp4  (clean natural case, no plate, small bottom captions)
+{
+  "duration_s": 5,
+  "voice_start_s": 1.0,
+  "voice_duration_s": 1.750204,
+  "caption_start_s": 1.0,
+  "caption_end_s": 2.51,
+  "english": "And so he fell into hell.",
+  "korean": "그리고 지옥에 떨어진다.",
+  "transcript_exact_match": true,
+  "voice_pcm_correlation": 0.9999667011021801,
+  "font": "NotoSerifCJKkr-Medium.otf: \"Noto Serif CJK KR\" \"Medium\"",
+  "font_size_ass": 13,
+  "margin_v_ass": 32,
+  "outline_ass": 0.6,
+  "shadow_ass": 0.4,
+  "receipts": {
+    "source.mp4": {
+      "bytes": 9717398,
+      "duration": 5.042,
+      "streams": [
+        {
+          "codec_type": "video",
+          "codec_name": "h264",
+          "width": 1176,
+          "height": 784,
+          "duration": "5.041667",
+          "sample_rate": null,
+          "r_frame_rate": "24/1"
+        }
+      ]
+    },
+    "voice.mp3": {
+      "bytes": 28465,
+      "duration": 1.750204,
+      "streams": [
+        {
+          "codec_type": "audio",
+          "codec_name": "mp3",
+          "width": null,
+          "height": null,
+          "duration": "1.750204",
+          "sample_rate": "44100",
+          "r_frame_rate": "0/0"
+        }
+      ]
+    },
+    "clean.mp4": {
+      "bytes": 4800272,
+      "duration": 5.0,
+      "streams": [
+        {
+          "codec_type": "video",
+          "codec_name": "h264",
+          "width": 1280,
+          "height": 720,
+          "duration": "5.000000",
+          "sample_rate": null,
+          "r_frame_rate": "24/1"
+        },
+        {
+          "codec_type": "audio",
+          "codec_name": "aac",
+          "width": null,
+          "height": null,
+          "duration": "5.000000",
+          "sample_rate": "48000",
+          "r_frame_rate": "0/0"
+        }
+      ]
+    },
+    "final.mp4": {
+      "bytes": 1813886,
+      "duration": 5.0,
+      "streams": [
+        {
+          "codec_type": "video",
+          "codec_name": "h264",
+          "width": 1280,
+          "height": 720,
+          "duration": "5.000000",
+          "sample_rate": null,
+          "r_frame_rate": "24/1"
+        },
+        {
+          "codec_type": "audio",
+          "codec_name": "aac",
+          "width": null,
+          "height": null,
+          "duration": "5.000000",
+          "sample_rate": "48000",
+          "r_frame_rate": "0/0"
+        }
+      ]
+    }
+  },
+  "human_audio_approval": false,
+  "visual_review_pending": true,
+  "caption_cues": [
+    {
+      "source_id": "wa24",
+      "start": 1.0,
+      "end": 2.51,
+      "text": "그리고 지옥에 떨어진다."
+    }
+  ],
+  "source_ids": [
+    "wa24"
+  ]
+}

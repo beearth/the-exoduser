@@ -1,0 +1,792 @@
+- navigation:
+  - link "Steamworks":
+    - /url: https://partner.steamgames.com/
+    - img "Steamworks"
+  - list:
+    - button "문서"
+    - button "리소스"
+    - button "뉴스 및 업데이트"
+    - link "지원":
+      - /url: https://help.steampowered.com/wizard/HelpWithPublishing
+  - generic: SIM DOJIN
+  - button "shsia":
+    - generic: shsia
+  - link:
+    - /url: https://steamcommunity.com/profiles/76561197980448401
+- navigation:
+  - list:
+    - link "대시보드":
+      - /url: https://partner.steamgames.com/dashboard
+    - button "앱 및 패키지"
+    - button "도구"
+    - button "사용자 및 사용 권한"
+    - link "재무 정보":
+      - /url: https://partner.steampowered.com/
+  - textbox "앱 이름 또는 ID로 찾기"
+- dialog:
+  - generic: SIM DOJIN
+  - link "GOAL":
+    - /url: https://steamcommunity.com/profiles/76561197980448401
+  - generic "문서": 문서
+  - generic "리소스": 리소스
+  - generic "뉴스 및 업데이트": 뉴스 및 업데이트
+  - link "지원":
+    - /url: https://help.steampowered.com/wizard/HelpWithPublishing
+  - button "언어 변경"
+  - button "로그아웃"
+- text: 안녕하세요 shsia 님!
+- generic: SIM DOJIN(파트너 ID 398693)
+- generic: 최근 앱
+- link "모든 앱 보기":
+  - /url: https://partner.steamgames.com/apps/
+- 'link "EXODUSER: HELL LORD"':
+  - /url: https://partner.steamgames.com/apps/landing/4749590
+- generic: 게임
+- generic: 상점 페이지가 게시되지 않음
+- text: 이벤트 및 마감일
+- generic: 베타
+- generic: 전체
+- generic: 이벤트
+- generic: 출시
+- generic: 숨겨진 이벤트
+- textbox "검색"
+- button "✖"
+- generic: 🔍
+- generic: 2026년 9월
+- generic: 일
+- generic: 월
+- generic: 화
+- generic: 수
+- generic: 목
+- generic: 금
+- generic: 토
+- generic: "30"
+- generic: "31"
+- generic: "1"
+- generic: "2"
+- generic: "3"
+- generic: "4"
+- generic: "5"
+- generic: "6"
+- generic: "7"
+- generic: "8"
+- generic: "9"
+- generic: "10"
+- generic: "11"
+- generic: "12"
+- generic: "13"
+- generic: "14"
+- generic: "15"
+- generic: "16"
+- generic: "17"
+- generic: "18"
+- generic: "19"
+- generic: "20"
+- generic: "21"
+- generic: "22"
+- generic: "23"
+- generic: "24"
+- generic: "25"
+- generic: "26"
+- generic: "27"
+- generic: "28"
+- generic: "29"
+- generic: "30"
+- generic: "1"
+- generic: "2"
+- generic: "3"
+- generic: "11"
+- generic: 테마 할인
+- text: 숨기기
+- link "2026년 Steam 프로그래밍 게임 축제":
+  - /url: https://partner.steamgames.com/optin/sale/programming_2026
+- generic: 9월 11일~9월 15일
+- button "더 보기..."
+- generic: "15"
+- generic: 테마 할인
+- text: 숨기기
+- link "2026년 Steam 파티 기반 RPG 게임 축제":
+  - /url: https://partner.steamgames.com/optin/sale/party_rpg_2026
+- generic: 9월 15일~9월 22일
+- button "더 보기..."
+- generic: 2026년 10월
+- generic: 일
+- generic: 월
+- generic: 화
+- generic: 수
+- generic: 목
+- generic: 금
+- generic: 토
+- generic: "27"
+- generic: "28"
+- generic: "29"
+- generic: "30"
+- generic: "1"
+- generic: "2"
+- generic: "3"
+- generic: "4"
+- generic: "5"
+- generic: "6"
+- generic: "7"
+- generic: "8"
+- generic: "9"
+- generic: "10"
+- generic: "11"
+- generic: "12"
+- generic: "13"
+- generic: "14"
+- generic: "15"
+- generic: "16"
+- generic: "17"
+- generic: "18"
+- generic: "19"
+- generic: "20"
+- generic: "21"
+- generic: "22"
+- generic: "23"
+- generic: "24"
+- generic: "25"
+- generic: "26"
+- generic: "27"
+- generic: "28"
+- generic: "29"
+- generic: "30"
+- generic: "31"
+- generic: "2"
+- generic: 계절 할인
+- text: 숨기기
+- link "2026년 가을 할인":
+  - /url: https://partner.steamgames.com/doc/marketing/discounts/seasonalsales
+- generic: 10월 2일~10월 9일
+- button "할인 입력..."
+- button "더 보기..."
+- generic: "13"
+- generic: 테마 할인
+- text: 숨기기
+- link "2026년 Steam 요리 게임 축제":
+  - /url: https://partner.steamgames.com/optin/sale/cooking_2026
+- generic: 10월 13일~10월 20일
+- button "더 보기..."
+- generic: "20"
+- generic: Next Fest
+- text: 숨기기
+- 'link "Steam Next Fest: 2026년 10월 에디션"':
+  - /url: https://partner.steamgames.com/optin/sale/nextfest_october_2026
+- generic: 10월 20일~10월 27일
+- generic: "참가 등록 마감:"
+- generic: 9월 1일
+- button "더 보기..."
+- generic: "27"
+- generic: 테마 할인
+- text: 숨기기
+- link "Steam 스크림 축제 5":
+  - /url: https://partner.steamgames.com/optin/sale/horror_2026
+- generic: 10월 27일~11월 3일
+- button "더 보기..."
+- generic: 2026년 11월
+- generic: 일
+- generic: 월
+- generic: 화
+- generic: 수
+- generic: 목
+- generic: 금
+- generic: 토
+- generic: "1"
+- generic: "2"
+- generic: "3"
+- generic: "4"
+- generic: "5"
+- generic: "6"
+- generic: "7"
+- generic: "8"
+- generic: "9"
+- generic: "10"
+- generic: "11"
+- generic: "12"
+- generic: "13"
+- generic: "14"
+- generic: "15"
+- generic: "16"
+- generic: "17"
+- generic: "18"
+- generic: "19"
+- generic: "20"
+- generic: "21"
+- generic: "22"
+- generic: "23"
+- generic: "24"
+- generic: "25"
+- generic: "26"
+- generic: "27"
+- generic: "28"
+- generic: "29"
+- generic: "30"
+- generic: "1"
+- generic: "2"
+- generic: "3"
+- generic: "4"
+- generic: "5"
+- generic: "17"
+- generic: 테마 할인
+- text: 숨기기
+- link "2026년 Steam 오토 배틀러 RPG 게임 축제":
+  - /url: https://partner.steamgames.com/optin/sale/auto_battler_2026
+- generic: 11월 17일~11월 24일
+- button "더 보기..."
+- generic: 2026년 12월
+- generic: 일
+- generic: 월
+- generic: 화
+- generic: 수
+- generic: 목
+- generic: 금
+- generic: 토
+- generic: "29"
+- generic: "30"
+- generic: "1"
+- generic: "2"
+- generic: "3"
+- generic: "4"
+- generic: "5"
+- generic: "6"
+- generic: "7"
+- generic: "8"
+- generic: "9"
+- generic: "10"
+- generic: "11"
+- generic: "12"
+- generic: "13"
+- generic: "14"
+- generic: "15"
+- generic: "16"
+- generic: "17"
+- generic: "18"
+- generic: "19"
+- generic: "20"
+- generic: "21"
+- generic: "22"
+- generic: "23"
+- generic: "24"
+- generic: "25"
+- generic: "26"
+- generic: "27"
+- generic: "28"
+- generic: "29"
+- generic: "30"
+- generic: "31"
+- generic: "1"
+- generic: "2"
+- generic: "1"
+- generic: 게임 출시
+- text: 숨기기
+- 'link "EXODUSER: HELL LORD"':
+  - /url: https://partner.steamgames.com/apps/landing/4749590
+- generic: "지정한 출시일:"
+- generic: 2026년 12월 1일 오전 10:00 GMT+9
+- generic: "상태:"
+- generic: 상점 페이지가 게시되지 않음
+- generic: "18"
+- generic: 계절 할인
+- text: 숨기기
+- link "2026년 겨울 할인":
+  - /url: https://partner.steamgames.com/doc/marketing/discounts/seasonalsales
+- generic: 12월 18일~1월 5일
+- button "할인 입력..."
+- button "더 보기..."
+- generic: 2027년 1월
+- generic: 일
+- generic: 월
+- generic: 화
+- generic: 수
+- generic: 목
+- generic: 금
+- generic: 토
+- generic: "27"
+- generic: "28"
+- generic: "29"
+- generic: "30"
+- generic: "31"
+- generic: "1"
+- generic: "2"
+- generic: "3"
+- generic: "4"
+- generic: "5"
+- generic: "6"
+- generic: "7"
+- generic: "8"
+- generic: "9"
+- generic: "10"
+- generic: "11"
+- generic: "12"
+- generic: "13"
+- generic: "14"
+- generic: "15"
+- generic: "16"
+- generic: "17"
+- generic: "18"
+- generic: "19"
+- generic: "20"
+- generic: "21"
+- generic: "22"
+- generic: "23"
+- generic: "24"
+- generic: "25"
+- generic: "26"
+- generic: "27"
+- generic: "28"
+- generic: "29"
+- generic: "30"
+- generic: "31"
+- generic: "1"
+- generic: "2"
+- generic: "3"
+- generic: "4"
+- generic: "5"
+- generic: "6"
+- generic: "15"
+- generic: 테마 할인
+- text: 숨기기
+- link "2027년 Steam 데스크톱 컴패니언 게임 축제":
+  - /url: https://partner.steamgames.com/optin/sale/desktop_companion_2027
+- generic: 1월 15일~1월 19일
+- button "더 보기..."
+- generic: "26"
+- generic: 테마 할인
+- text: 숨기기
+- link "2027년 Steam 가게 운영 게임 축제":
+  - /url: https://partner.steamgames.com/optin/sale/shop_keep_2027
+- generic: 1월 26일~2월 2일
+- button "더 보기..."
+- generic: 2027년 2월
+- generic: 일
+- generic: 월
+- generic: 화
+- generic: 수
+- generic: 목
+- generic: 금
+- generic: 토
+- generic: "31"
+- generic: "1"
+- generic: "2"
+- generic: "3"
+- generic: "4"
+- generic: "5"
+- generic: "6"
+- generic: "7"
+- generic: "8"
+- generic: "9"
+- generic: "10"
+- generic: "11"
+- generic: "12"
+- generic: "13"
+- generic: "14"
+- generic: "15"
+- generic: "16"
+- generic: "17"
+- generic: "18"
+- generic: "19"
+- generic: "20"
+- generic: "21"
+- generic: "22"
+- generic: "23"
+- generic: "24"
+- generic: "25"
+- generic: "26"
+- generic: "27"
+- generic: "28"
+- generic: "1"
+- generic: "2"
+- generic: "3"
+- generic: "4"
+- generic: "5"
+- generic: "6"
+- generic: "5"
+- generic: 테마 할인
+- text: 숨기기
+- link "2027년 Steam 양 게임 축제":
+  - /url: https://partner.steamgames.com/optin/sale/sheep_2027
+- generic: 2월 5일~2월 9일
+- button "더 보기..."
+- generic: "9"
+- generic: 테마 할인
+- text: 숨기기
+- link "Steam 협동 게임 축제":
+  - /url: https://partner.steamgames.com/optin/sale/couch_coop_2027
+- generic: 2월 9일~2월 16일
+- button "더 보기..."
+- generic: "23"
+- generic: Next Fest
+- text: 숨기기
+- 'link "Steam Next Fest: 2027년 2월 에디션"':
+  - /url: https://partner.steamgames.com/optin/sale/nextfest_feb_2027
+- generic: 2월 23일~3월 2일
+- generic: "참가 등록 마감:"
+- generic: 1월 11일
+- button "더 보기..."
+- generic: 2027년 3월
+- generic: 일
+- generic: 월
+- generic: 화
+- generic: 수
+- generic: 목
+- generic: 금
+- generic: 토
+- generic: "28"
+- generic: "1"
+- generic: "2"
+- generic: "3"
+- generic: "4"
+- generic: "5"
+- generic: "6"
+- generic: "7"
+- generic: "8"
+- generic: "9"
+- generic: "10"
+- generic: "11"
+- generic: "12"
+- generic: "13"
+- generic: "14"
+- generic: "15"
+- generic: "16"
+- generic: "17"
+- generic: "18"
+- generic: "19"
+- generic: "20"
+- generic: "21"
+- generic: "22"
+- generic: "23"
+- generic: "24"
+- generic: "25"
+- generic: "26"
+- generic: "27"
+- generic: "28"
+- generic: "29"
+- generic: "30"
+- generic: "31"
+- generic: "1"
+- generic: "2"
+- generic: "3"
+- generic: "9"
+- generic: 테마 할인
+- text: 숨기기
+- link "2027년 Steam 리듬 게임 축제":
+  - /url: https://partner.steamgames.com/optin/sale/rhythm_2027
+- generic: 3월 9일~3월 16일
+- button "더 보기..."
+- generic: "19"
+- generic: 계절 할인
+- text: 숨기기
+- link "2027년 봄 할인":
+  - /url: https://partner.steamgames.com/doc/marketing/discounts/seasonalsales
+- generic: 3월 19일~3월 26일
+- button "할인 입력..."
+- button "더 보기..."
+- generic: "30"
+- generic: 테마 할인
+- text: 숨기기
+- link "2027년 Steam 공룡 대 로봇 게임 축제":
+  - /url: https://partner.steamgames.com/optin/sale/dinos_robots_2027
+- generic: 3월 30일~4월 6일
+- button "더 보기..."
+- generic: 2027년 4월
+- generic: 일
+- generic: 월
+- generic: 화
+- generic: 수
+- generic: 목
+- generic: 금
+- generic: 토
+- generic: "28"
+- generic: "29"
+- generic: "30"
+- generic: "31"
+- generic: "1"
+- generic: "2"
+- generic: "3"
+- generic: "4"
+- generic: "5"
+- generic: "6"
+- generic: "7"
+- generic: "8"
+- generic: "9"
+- generic: "10"
+- generic: "11"
+- generic: "12"
+- generic: "13"
+- generic: "14"
+- generic: "15"
+- generic: "16"
+- generic: "17"
+- generic: "18"
+- generic: "19"
+- generic: "20"
+- generic: "21"
+- generic: "22"
+- generic: "23"
+- generic: "24"
+- generic: "25"
+- generic: "26"
+- generic: "27"
+- generic: "28"
+- generic: "29"
+- generic: "30"
+- generic: "1"
+- generic: "13"
+- generic: 테마 할인
+- text: 숨기기
+- link "2027년 Steam 레이싱 게임 축제":
+  - /url: https://partner.steamgames.com/optin/sale/racing_2027
+- generic: 4월 13일~4월 20일
+- button "더 보기..."
+- generic: "23"
+- generic: 테마 할인
+- text: 숨기기
+- link "2027년 Steam 마녀 게임 축제":
+  - /url: https://partner.steamgames.com/optin/sale/witch_2027
+- generic: 4월 23일~4월 27일
+- button "더 보기..."
+- generic: "27"
+- generic: 테마 할인
+- text: 숨기기
+- link "2027년 Steam 격투 게임 축제":
+  - /url: https://partner.steamgames.com/optin/sale/fighting_2027
+- generic: 4월 27일~5월 4일
+- button "더 보기..."
+- generic: 2027년 5월
+- generic: 일
+- generic: 월
+- generic: 화
+- generic: 수
+- generic: 목
+- generic: 금
+- generic: 토
+- generic: "25"
+- generic: "26"
+- generic: "27"
+- generic: "28"
+- generic: "29"
+- generic: "30"
+- generic: "1"
+- generic: "2"
+- generic: "3"
+- generic: "4"
+- generic: "5"
+- generic: "6"
+- generic: "7"
+- generic: "8"
+- generic: "9"
+- generic: "10"
+- generic: "11"
+- generic: "12"
+- generic: "13"
+- generic: "14"
+- generic: "15"
+- generic: "16"
+- generic: "17"
+- generic: "18"
+- generic: "19"
+- generic: "20"
+- generic: "21"
+- generic: "22"
+- generic: "23"
+- generic: "24"
+- generic: "25"
+- generic: "26"
+- generic: "27"
+- generic: "28"
+- generic: "29"
+- generic: "30"
+- generic: "31"
+- generic: "1"
+- generic: "2"
+- generic: "3"
+- generic: "4"
+- generic: "5"
+- generic: "11"
+- generic: 테마 할인
+- text: 숨기기
+- link "2027년 Steam 실시간 전략 게임 축제":
+  - /url: https://partner.steamgames.com/optin/sale/rts_2027
+- generic: 5월 11일~5월 18일
+- button "더 보기..."
+- generic: 2027년 6월
+- generic: 일
+- generic: 월
+- generic: 화
+- generic: 수
+- generic: 목
+- generic: 금
+- generic: 토
+- generic: "30"
+- generic: "31"
+- generic: "1"
+- generic: "2"
+- generic: "3"
+- generic: "4"
+- generic: "5"
+- generic: "6"
+- generic: "7"
+- generic: "8"
+- generic: "9"
+- generic: "10"
+- generic: "11"
+- generic: "12"
+- generic: "13"
+- generic: "14"
+- generic: "15"
+- generic: "16"
+- generic: "17"
+- generic: "18"
+- generic: "19"
+- generic: "20"
+- generic: "21"
+- generic: "22"
+- generic: "23"
+- generic: "24"
+- generic: "25"
+- generic: "26"
+- generic: "27"
+- generic: "28"
+- generic: "29"
+- generic: "30"
+- generic: "1"
+- generic: "2"
+- generic: "3"
+- generic: "1"
+- generic: 테마 할인
+- text: 숨기기
+- link "2027년 Steam 등산 게임 축제":
+  - /url: https://partner.steamgames.com/optin/sale/mountaineering_2027
+- generic: 6월 1일~6월 4일
+- button "더 보기..."
+- generic: "15"
+- generic: Next Fest
+- text: 숨기기
+- 'link "Steam Next Fest: 2027년 6월 에디션"':
+  - /url: https://partner.steamgames.com/optin/sale/nextfest_june_2027
+- generic: 6월 15일~6월 22일
+- generic: "참가 등록 마감:"
+- generic: 4월 26일
+- button "더 보기..."
+- generic: "25"
+- generic: 계절 할인
+- text: 숨기기
+- link "2027년 여름 할인":
+  - /url: https://partner.steamgames.com/doc/marketing/discounts/seasonalsales
+- generic: 6월 25일~7월 9일
+- button "할인 입력..."
+- button "더 보기..."
+- button "펼치기"
+- heading "Steamworks 공지사항" [level=1]
+- heading "재무 정보 사이트 개선" [level=1]
+- generic: 2026년 9월 1일
+- generic: 게임의 트렌드와 성과를 더 쉽게 시각화할 수 있도록 재무 정보 사이트에 몇 가지 개선 사항을 적용했습니다. 이제 선택한 기간의 판매 차트를 확인할 때, 판매량과 수익은 물론 구매 지역 및 구매 국가별 데이터도 간편하게 전환하며 확인할 수 있습니다. 또한 파트너 사이트의 게임 랜딩 페이지에 새로운 차트를 추가했습니다. 판매량, 수익, 구매 지역 및 국가를 빠르게 전환하는 기능이 포함된 게임 내 판매 차트 활성화 지역 및 국가를 전환하는 기능이 있는 Steam 키 활성화 차트 게임 내 아이템을 판매하는 경우, 국가 및 지역별 판매 현황도 확인할 수 있습니다. 파트너 사이트에서 새로운 차트를 사용할 때 문제가 발생하거나 재무 정보 사이트를 개선하는 방법에 대한 제안이 있는 경우 언제든지 문의해 주세요!
+- text: 더 보기
+- heading "Steam Next Fest 개발자 질의응답 세션" [level=1]
+- generic: 2026년 4월 28일
+- generic: 2026년 8월 18일 오전 10시(태평양 표준시)에 시작되는 Steam Next Fest 개발자 질의응답 세션에 참석하세요. 이번 Steam Next Fest 에디션이나 향후 에디션에 무료 체험판으로 참가하는 것을 고려하고 계신가요? Steam 팀과 함께하는 실시간 온라인 질의응답 세션에 참석하여 Steam Next Fest와 관련한 개발자 여러분의 질문과 그에 대한 답변을 확인하세요. 세션은 1시간 동안 진행되며, Steam Next Fest 참가 등록 및 참가 방법과 체험판을 최대한 활용하는 방법 등과 같은 개발자 여러분의 질문에 답변해 드릴 예정입니다. 2026년 8월 18일 Zoom을 통해 진행되는 세션에 참석하세요. 지난 실시간 질의응답 세션은 Steamworks YouTube 채널에서 확인할 수 있습니다.
+- text: 더 보기
+- heading "Steamworks SDK 1.65 출시" [level=1]
+- generic: 2026년 7월 23일
+- generic: "Steamworks SDK v1.65가 출시되었으며 에서 다운로드할 수 있습니다. 다른 Steamworks SDK 출시와 마찬가지로, 업데이트는 권장 사항이며 필수는 아닙니다. 이전 버전도 계속해서 문제없이 사용하실 수 있습니다. 참고: 이 SDK 버전은 Win32 steam_api 바이너리를 다시 빌드하여 7월 27일에 재출시되었습니다. 이 SDK 버전은 ISteamApps::GetBetaInfo가 punLastUpdated 출력 매개변수를 설정하지 않던 문제를 해결하여 7월 31일에 재출시되었습니다. 업데이트 내용 Steam Machine, Steam Frame 및 Steam Deck ISteamUtils::IsRunningOnSteamDeck() 메서드를 제거했습니다. 아래의 기능별 메서드를 대신 사용하세요. ESteamHardwareType을 반환하는 ISteamUtils::IsRunningOnSteamHardware() 메서드를 추가했습니다. 이 호출은 분석, 지원 또는 진단 목적으로 사용하세요. 기능 관련 결정을 내릴 때는 다른 SDK 호출을 참고하세요. 특정 Steam 하드웨어에 맞게 조정한 기본 게임 설정(비디오 및 기타 설정)을 선택하는 데 도움이 되는 ISteamUtils::GetSteamHardwareDefaultConfig() 메서드를 추가했습니다. 또한 게임을 다시 컴파일하지 않고도 향후 출시되는 Steam 하드웨어에서 기본 게임 설정을 변경할 수 있습니다. Linux에서 게임이 Proton 호환성 계층을 통해 실행되고 있는지 확인할 수 있는 ISteamUtils::IsRunningUnderProton() 메서드를 추가했습니다. ISteamUtils에는 IsRunningOnSteamDeck() 메서드를 대체할 때 유용할 수 있는 ISteamUtils::IsSteamInBigPictureMode() 및 ISteamUtils::IsSteamRunningInVR() 등의 기존 메서드도 포함되어 있습니다. ISteamApps 특정 사용자에 대해 설정된 성능 설정 수준 및 게임 해상도를 게임이 Steam 서버에 보고할 수 있도록 SetGamePerformanceSetting() 및 SetGameRenderResolution() 메서드를 추가했습니다. 사용자가 데이터 공유에 동의한 경우 이 데이터가 익명의 프레임 속도 데이터와 함께 제공됩니다. ISteamUGC - 사용자 생성 콘텐츠를 쿼리하는 옵션 추가(내림차순 정렬) k_EUGCQuery_RankedByNumParentItems - 해당 콘텐츠에 종속된 콘텐츠의 수(모음집이 아닌 경우) k_EUGCRankedByNumParentCollections - 해당 콘텐츠를 포함하는 모음집의 수 Steam Input Nintendo Switch 2, Steam Controller 및 Steam Frame 컨트롤러의 동작 출처 열거형 값을 추가했습니다. ISteamMatchmakingServers 특정 서버에서 최근 플레이한 친구 목록을 가져오는 ISteamMatchmakingServers::ServerFriends() 메서드를 추가했습니다. 사용자의 친구들이 주로 플레이하는 서버를 검색할 수 있는 'popularamongfriends' 필터 옵션을 추가했습니다."
+- text: 더 보기
+- heading "새로운 애플리케이션 만들기" [level=1]
+- paragraph:
+  - text: 현재 앱 크레딧이 없습니다. 제품 제출비('Steam Direct 수수료')를 지급하고 Steam을 통해 배포할 신제품을 설정할 수 있습니다. 이 절차에 대한 자세한 정보는
+  - link "여기":
+    - /url: https://partner.steamgames.com/doc/gettingstarted/appfee
+  - text: 를 참고해 주세요.
+- paragraph: "참고: Steam 지갑 자금은 Steam Direct 수수료를 지급하는 데 사용할 수 없습니다."
+- paragraph:
+  - text: Steam에 등록할 수 있는 콘텐츠와 관련하여
+  - link "규정 및 가이드라인":
+    - /url: https://partner.steamgames.com/doc/gettingstarted/onboarding
+  - text: 을 확인해 주세요. 콘텐츠 유통을 결정하기 전에 이 가이드라인을 참고하세요.
+- generic: Steam Direct 수수료 지급
+- heading "Steamworks SDK v1.65" [level=1]
+- link "최신 SDK 다운로드":
+  - /url: https://partner.steamgames.com/downloads/steamworks_sdk_165.zip
+  - generic: 최신 SDK 다운로드
+- link "SDK 변경 사항 보기":
+  - /url: https://partner.steamgames.com/downloads/list
+- link "Steamworks 문서 보기":
+  - /url: https://partner.steamgames.com/doc/home
+- text: Steamworks 도움 받기
+- text: Steamworks 개발자 그룹에 참여하기
+- heading "도구 + 링크" [level=1]
+- link "금융 자료 보기":
+  - /url: http://partner.steampowered.com/
+- link "사용자 및 권한 관리":
+  - /url: https://partner.steamgames.com/pub/home/398693
+- link "회사 정보 보기 및 수정 실제 결정권자 권한이 있는 사용자만 사용 가능":
+  - /url: https://partner.steamgames.com/pub/view/398693
+- link "우편 주소":
+  - /url: https://partner.steamgames.com/pub/mailingaddresses/398693
+- heading "기능 추가" [level=1]
+- paragraph:
+  - text: Steamworks 파트너 프로그램에서 사용할 수 있는 다른 옵션을 찾고 계신가요?
+  - text: 아래 버튼을 클릭해 파트너 계정에 추가할 수 있는 다른 옵션들을 알아보세요.
+- link "계속":
+  - /url: https://partner.steamgames.com/newpartner/onboardingoptions
+  - generic: 계속
+- heading "베타 하드웨어 요청" [level=1]
+- link "하드웨어 요청 제출":
+  - /url: https://partner.steamgames.com/hardware
+- heading "Steam 키 요청" [level=2]
+- text: 검토 중인 키 요청이 없습니다. Steam 키에 관한 자세한 내용은
+- link "여기":
+  - /url: https://partner.steamgames.com/doc/features/keys
+- text: 에서 확인하세요.
+- heading "진행 중인 Steamworks 지원 요청" [level=2]
+- generic: 메시지
+- generic: 앱
+- generic: 지원 요청
+- generic: 제작자
+- generic: 상태
+- generic: 생성한 시간
+- generic: "Store Page Review Request for \"EXODUSER: HELL LORD\" [4749590]"
+- generic: "EXODUSER: HELL LORD (4749590)"
+- link "HT-35NF-FPTG-H9X3":
+  - /url: https://help.steampowered.com/ko/wizard/HelpRequest/HT-35NF-FPTG-H9X3
+- generic: shsia
+- generic: 지원 요청 처리 대기 중
+- generic: 2026년 9월 2일 오전 4시 39분
+- heading "Steam 커뮤니티 및 포인트 상점 아이템 출시 요청" [level=2]
+- generic: 이 아이템들은 작업이 필요하거나 검토 대기 중인 상태입니다. '출시 승인 완료' 상태인 아이템들은 출시 전까지 여기에 계속해서 표시됩니다.
+- heading "Steam Deck 호환성" [level=2]
+- paragraph:
+  - link "앱의 Steam Deck 호환성 정보를 확인":
+    - /url: https://partner.steamgames.com/deckcompat/398693
+  - text: 하거나
+  - link "이 데이터를 CSV 파일로 다운로드":
+    - /url: https://partner.steamgames.com/deckcompat/398693
+  - text: 하세요.
+- paragraph:
+  - text: Steam Deck 호환성 프로그램에 대한 자세한 정보는
+  - link "Steamworks 문서":
+    - /url: https://partner.steamgames.com/doc/steamdeck/compat
+  - text: 를 참고하세요.
+- heading "최근 앱" [level=2]
+- text: 최근에 본 앱 목록입니다.
+- link "모든 애플리케이션을 확인하세요.":
+  - /url: https://partner.steamgames.com/apps/
+- heading "미출시 앱" [level=2]
+- generic: 앱 이름
+- generic: 유형
+- generic: 상점 페이지
+- generic: 빌드 상태
+- generic: 출시일
+- link "DIROI (4757210) 게임 미완료 미완료 체크리스트 보기":
+  - /url: https://partner.steamgames.com/apps/landing/4757210
+  - generic: DIROI (4757210)
+  - generic: 게임
+  - generic: 미완료
+  - generic: 미완료
+  - generic: 체크리스트 보기
+- 'link "EXODUSER: HELL LORD (4749590) 게임 검토 요망 미완료 체크리스트 보기"':
+  - /url: https://partner.steamgames.com/apps/landing/4749590
+  - generic: "EXODUSER: HELL LORD (4749590)"
+  - generic: 게임
+  - generic: 검토 요망
+  - generic: 미완료
+  - generic: 체크리스트 보기

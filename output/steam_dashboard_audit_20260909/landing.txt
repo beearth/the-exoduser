@@ -1,0 +1,486 @@
+- navigation:
+  - link "Steamworks":
+    - /url: https://partner.steamgames.com/
+    - img "Steamworks"
+  - list:
+    - button "문서"
+    - button "리소스"
+    - button "뉴스 및 업데이트"
+    - link "지원":
+      - /url: https://help.steampowered.com/wizard/HelpWithPublishing
+  - generic: SIM DOJIN
+  - button "shsia":
+    - generic: shsia
+  - link:
+    - /url: https://steamcommunity.com/profiles/76561197980448401
+- navigation:
+  - list:
+    - link "대시보드":
+      - /url: https://partner.steamgames.com/dashboard
+    - button "앱 및 패키지"
+    - button "도구"
+    - button "사용자 및 사용 권한"
+    - link "재무 정보":
+      - /url: https://partner.steampowered.com/
+  - textbox "앱 이름 또는 ID로 찾기"
+- dialog:
+  - generic: SIM DOJIN
+  - link "GOAL":
+    - /url: https://steamcommunity.com/profiles/76561197980448401
+  - generic "문서": 문서
+  - generic "리소스": 리소스
+  - generic "뉴스 및 업데이트": 뉴스 및 업데이트
+  - link "지원":
+    - /url: https://help.steampowered.com/wizard/HelpWithPublishing
+  - button "언어 변경"
+  - button "로그아웃"
+- link "Steamworks":
+  - /url: https://partner.steamgames.com
+- text: ">"
+- link "앱 관리":
+  - /url: https://partner.steamgames.com/apps/
+- text: "EXODUSER: HELL LORD(4749590)"
+- generic: 게임
+- generic: "출시 진행 상황:"
+- paragraph: 출시를 준비하려면 아래 지침 및 체크리스트를 따르세요. 상점 페이지와 게임 빌드는 원하는 순서대로 작업할 수 있습니다.
+- link "문서 보기":
+  - /url: https://partner.steamgames.com/doc/store/releasing
+  - generic: 문서 보기
+- generic: 체크리스트 완료
+- generic: 상점 페이지
+- paragraph: 앱이 검토 대기열에 있습니다. 검토 과정은 보통 영업일 기준 3~5일 정도 소요되며 이메일로 피드백을 공유해 드리거나 출시 승인을 알려드립니다. 검토가 완료될 때까지 추가 조치는 필요하지 않습니다.
+- paragraph:
+  - link "여기":
+    - /url: https://help.steampowered.com/ko/wizard/HelpRequest/HT35NFFPTGH9X3
+  - text: 에 있는 Steamworks 고객지원 사이트에서 피드백 열람 및 응답을 할 수 있습니다.
+- paragraph: 2026년 9월 8일 검토를 위해 제출
+- generic: 체크리스트 완료
+- generic: 게임 빌드
+- paragraph: 거의 개발이 완료된 게임 빌드를 업로드한 경우, 아래를 선택하여 검토 준비 완료로 표시하세요.(검토용 빌드는 상점 페이지에 설명된 기능을 모두 포함하고 있어야 합니다. 버그가 있어도 괜찮습니다. 검토 도중이나 이후에 언제든지 빌드를 업데이트할 수 있습니다.)
+- paragraph: 검토를 위해 빌드를 제출하세요. 검토당 영업일 기준 3~5일이 소요될 수 있습니다.(검토 중 수정이 필요한 문제가 발견되면 추가 검토가 필요합니다.)
+- link "검토 가능으로 표시...":
+  - /url: "#"
+  - generic: 검토 가능으로 표시...
+- generic: 출시
+- paragraph: 다음 절차를 완료하면 게임을 출시할 수 있습니다.
+- list:
+  - listitem: 상점 페이지와 게임 빌드에 대한 검토 및 승인 완료
+  - listitem: 상점 페이지를 최소 2주 동안 '출시 예정'으로 공개
+  - listitem: 앱 크레딧을 처음 구매한 날로부터 최소 21일 경과
+- generic: 가능한 가장 빠른 출시일은 상점 페이지가 '출시 예정'으로 표시되고 2주가 지나야 합니다. 이에 맞게 계획을 세워주세요.
+- generic: "지정한 출시일:"
+- generic: 2026년 12월 1일
+- generic: 오전 10:00 GMT+9
+- generic: "고객에게 표시되는 출시일:"
+- generic: 출시 예정
+- generic: "앱 출시 상태:"
+- heading "알 수 없음 (?)" [level=2]
+- generic: "출시 할인: (?)"
+- heading "없음 변경" [level=2]:
+  - text: 없음
+  - link "변경":
+    - /url: "#"
+- heading "상점 페이지" [level=1]
+- text: 체크리스트 완료
+- paragraph: "'출시 예정' 및 '정식 출시'로서 목록에 올리기 위해 요구되는 아이템"
+- link "상점":
+  - /url: https://partner.steamgames.com/admin/game/edit/1189321
+- text: (?)
+- table:
+  - rowgroup:
+    - row "✔ 기본 정보 ?":
+      - cell "✔":
+        - generic: ✔
+      - cell "기본 정보 ?":
+        - link "기본 정보":
+          - /url: https://partner.steamgames.com/admin/game/editbyappid/4749590?activetab=tab_basic
+        - generic: "?"
+    - row "✔ 설명 ?":
+      - cell "✔":
+        - generic: ✔
+      - cell "설명 ?":
+        - link "설명":
+          - /url: https://partner.steamgames.com/admin/game/editbyappid/4749590?activetab=tab_description
+        - generic: "?"
+    - row "✔ 콘텐츠 설문 조사 ?":
+      - cell "✔":
+        - generic: ✔
+      - cell "콘텐츠 설문 조사 ?":
+        - link "콘텐츠 설문 조사":
+          - /url: https://partner.steamgames.com/contentdescriptors/editsurvey/4749590
+        - generic: "?"
+    - row "✔ 계획된 출시 날짜 ?":
+      - cell "✔":
+        - generic: ✔
+      - cell "계획된 출시 날짜 ?":
+        - text: 계획된 출시 날짜
+        - generic: "?"
+    - row "✔ 시스템 요구 사항 ?":
+      - cell "✔":
+        - generic: ✔
+      - cell "시스템 요구 사항 ?":
+        - link "시스템 요구 사항":
+          - /url: https://partner.steamgames.com/admin/game/editbyappid/4749590?activetab=tab_basic#SysReqs
+        - generic: "?"
+    - row "✔ 컨트롤러 지원 설명 ?":
+      - cell "✔":
+        - generic: ✔
+      - cell "컨트롤러 지원 설명 ?":
+        - link "컨트롤러 지원 설명":
+          - /url: https://partner.steamgames.com/admin/game/editbyappid/4749590?activetab=tab_basic#controller
+        - generic: "?"
+    - row "✔ 스크린샷 5개 이상 ?":
+      - cell "✔":
+        - generic: ✔
+      - cell "스크린샷 5개 이상 ?":
+        - link "스크린샷 5개 이상":
+          - /url: https://partner.steamgames.com/admin/game/editbyappid/4749590?activetab=tab_graphicalassets&subtab=screenshots
+        - generic: "?"
+    - row "✔ 캡슐 이미지 ?":
+      - cell "✔":
+        - generic: ✔
+      - cell "캡슐 이미지 ?":
+        - link "캡슐 이미지":
+          - /url: https://partner.steamgames.com/admin/game/editbyappid/4749590?activetab=tab_graphicalassets&subtab=store
+        - generic: "?"
+    - row "✔ 라이브러리 자산 ?":
+      - cell "✔":
+        - generic: ✔
+      - cell "라이브러리 자산 ?":
+        - link "라이브러리 자산":
+          - /url: https://partner.steamgames.com/admin/game/editbyappid/4749590?activetab=tab_graphicalassets&subtab=library
+        - generic: "?"
+    - row "✔ 고객지원 정보 ?":
+      - cell "✔":
+        - generic: ✔
+      - cell "고객지원 정보 ?":
+        - link "고객지원 정보":
+          - /url: https://partner.steamgames.com/admin/game/editbyappid/4749590?activetab=tab_basic#supportInfo
+        - generic: "?"
+    - row "✔ 개발사 및 배급사 이름 ?":
+      - cell "✔":
+        - generic: ✔
+      - cell "개발사 및 배급사 이름 ?":
+        - link "개발사 및 배급사 이름":
+          - /url: https://partner.steamgames.com/admin/game/editbyappid/4749590?activetab=tab_basic
+        - generic: "?"
+    - row "✔ 상점 페이지 설명 태그 ?":
+      - cell "✔":
+        - generic: ✔
+      - cell "상점 페이지 설명 태그 ?":
+        - link "상점 페이지 설명 태그":
+          - /url: https://partner.steamgames.com/admin/game/editbyappid/4749590?activetab=tab_basic#genre_form
+        - generic: "?"
+- link "커뮤니티":
+  - /url: https://partner.steamgames.com/apps/view/4749590
+- text: (?)
+- table:
+  - rowgroup:
+    - row "✔ 앱 아이콘 ?":
+      - cell "✔":
+        - generic: ✔
+      - cell "앱 아이콘 ?":
+        - link "앱 아이콘":
+          - /url: https://partner.steamgames.com/apps/clientimages/4749590
+        - generic: "?"
+    - row "✔ 바로 가기 아이콘 ?":
+      - cell "✔":
+        - generic: ✔
+      - cell "바로 가기 아이콘 ?":
+        - link "바로 가기 아이콘":
+          - /url: https://partner.steamgames.com/apps/clientimages/4749590
+        - generic: "?"
+- paragraph: 이러한 항목은 강력히 권장되지만 필수는 아닙니다. 이러한 기능 중 하나를 통합한 경우 상점 페이지 기본 정보 탭의 '지원 기능' 섹션에서 해당 기능에 체크 표시를 해야 합니다.
+- generic: 추천 항목
+- table:
+  - rowgroup:
+    - row "클라우드 저장 항목 ?":
+      - cell
+      - cell "클라우드 저장 항목 ?":
+        - link "클라우드 저장 항목":
+          - /url: https://partner.steamgames.com/apps/cloud/4749590
+        - generic: "?"
+    - row "Steam 도전 과제 ?":
+      - cell
+      - cell "Steam 도전 과제 ?":
+        - link "Steam 도전 과제":
+          - /url: https://partner.steamgames.com/apps/achievements/4749590
+        - generic: "?"
+- heading "게임 빌드" [level=1]
+- text: 체크리스트 완료
+- paragraph:
+  - text: 이 체크리스트와 상단의 체크리스트는 애플리케이션을 Steam에 출시하기 위해 필요한 최소한의 작업 항목입니다. Steam에 앱을 출시하기 위해 필요한 준비 과정에 대한 자세한 정보는
+  - link "단계별 지침 가이드":
+    - /url: https://partner.steamgames.com/doc/gettingstarted
+  - text: 를 참고해 주세요.
+- link "상점":
+  - /url: https://partner.steamgames.com/admin/game/edit/1189321
+- text: (?)
+- table:
+  - rowgroup:
+    - row "✔ 플랫폼 지원 일치 ?":
+      - cell "✔":
+        - generic: ✔
+      - cell "플랫폼 지원 일치 ?":
+        - text: 플랫폼 지원 일치
+        - generic: "?"
+    - row "✔ 1개 이상의 패키지에 대한 가격 책정 ?":
+      - cell "✔":
+        - generic: ✔
+      - cell "1개 이상의 패키지에 대한 가격 책정 ?":
+        - text: 1개 이상의 패키지에 대한 가격 책정
+        - generic: "?"
+    - row "✔ 1개 이상의 패키지에 대한 가격 게시 ?":
+      - cell "✔":
+        - generic: ✔
+      - cell "1개 이상의 패키지에 대한 가격 게시 ?":
+        - text: 1개 이상의 패키지에 대한 가격 게시
+        - generic: "?"
+    - row "✔ 예고편 업로드 ?":
+      - cell "✔":
+        - generic: ✔
+      - cell "예고편 업로드 ?":
+        - link "예고편 업로드":
+          - /url: https://partner.steamgames.com/admin/game/editbyappid/4749590?activetab=tab_movies
+        - generic: "?"
+    - row "✔ 앱 구성 ?":
+      - cell "✔":
+        - generic: ✔
+      - cell "앱 구성 ?":
+        - text: 앱 구성
+        - generic: "?"
+- link "디포":
+  - /url: https://partner.steamgames.com/apps/depots/4749590
+- text: (?)
+- table:
+  - rowgroup:
+    - row "✔ 디포 구성 1개 이상 ?":
+      - cell "✔":
+        - generic: ✔
+      - cell "디포 구성 1개 이상 ?":
+        - link "디포 구성 1개 이상":
+          - /url: https://partner.steamgames.com/apps/depots/4749590
+        - generic: "?"
+    - row "✔ 빌드 구성 1개 이상 ?":
+      - cell "✔":
+        - generic: ✔
+      - cell "빌드 구성 1개 이상 ?":
+        - link "빌드 구성 1개 이상":
+          - /url: https://partner.steamgames.com/apps/builds/4749590
+        - generic: "?"
+    - row "✔ 실행 옵션 정의 ?":
+      - cell "✔":
+        - generic: ✔
+      - cell "실행 옵션 정의 ?":
+        - link "실행 옵션 정의":
+          - /url: https://partner.steamgames.com/apps/config/4749590
+        - generic: "?"
+    - row "✔ 설치 디렉터리 설정 ?":
+      - cell "✔":
+        - generic: ✔
+      - cell "설치 디렉터리 설정 ?":
+        - link "설치 디렉터리 설정":
+          - /url: https://partner.steamgames.com/apps/config/4749590
+        - generic: "?"
+    - row "✔ 디포 언어 구성 ?":
+      - cell "✔":
+        - generic: ✔
+      - cell "디포 언어 구성 ?":
+        - link "디포 언어 구성":
+          - /url: https://partner.steamgames.com/apps/depots/4749590#language_form
+        - generic: "?"
+    - row "✔ 상점 및 Devcomp 패키지 일치 ?":
+      - cell "✔":
+        - generic: ✔
+      - cell "상점 및 Devcomp 패키지 일치 ?":
+        - text: 상점 및 Devcomp 패키지 일치
+        - generic: "?"
+    - row "✔ 패키지에 Windows 디포 포함 ?":
+      - cell "✔":
+        - generic: ✔
+      - cell "패키지에 Windows 디포 포함 ?":
+        - text: 패키지에 Windows 디포 포함
+        - generic: "?"
+    - row "✔ 모든 디포 연결 ?":
+      - cell "✔":
+        - generic: ✔
+      - cell "모든 디포 연결 ?":
+        - link "모든 디포 연결":
+          - /url: https://partner.steamgames.com/apps/depots/4749590
+        - generic: "?"
+- heading "지역 제한" [level=1]
+- text: 앱의 지역 제한을 변경해야 하나요? 변경을 요청하려면
+- link "저희에게 문의해 주세요":
+  - /url: https://help.steampowered.com/wizard/HelpWithPublishing?issueid=901&contact=1
+- text: .
+- heading "운영 체제 지원" [level=1]
+- generic: Steamworks 백엔드에 지정되어 있는 지원 운영 시스템과 상점 페이지에 지정되어 있는 지원 운영 시스템은 서로 동일해야 합니다.
+- generic: "Steamworks:"
+- link "(수정)":
+  - /url: https://partner.steamgames.com/apps/view/4749590
+- generic: "상점 관리:"
+- link "(수정)":
+  - /url: https://partner.steamgames.com/admin/game/edit/1189321
+- heading "Steamworks 사용자 접속" [level=1]
+- link "사용자 및 권한 관리":
+  - /url: https://partner.steamgames.com/pub/home/398693
+- paragraph: 이 애플리케이션을 보기 및 변경할 수 있는 사용자를 추가 또는 제거할 수 있습니다.
+- generic: 상점 패키지, 가격 책정 및 출시 일정
+- link "패키지 문서 보기":
+  - /url: https://partner.steamgames.com/doc/store/application/packages
+- generic: 이것은 사용자로 하여금 이 애플리케이션을 구매하거나 설치하도록 해줄 수 있는 '현재의' 또는 '진행 중인' 또는 '미래의' 패키지입니다.
+- generic: 패키지 타이틀
+- generic: 출시일 (?)
+- generic: 상태 (?)
+- generic: 가격 (?)
+- generic: 진행 중인 할인
+- 'link "EXODUSER: HELL LORD - 1651979"':
+  - /url: https://partner.steamgames.com/store/packagelanding/1651979
+- generic: 비공개
+- generic: $19.99 USD
+- link:
+  - /url: https://partner.steamgames.com/packages/pricing/1651979
+- link:
+  - /url: https://partner.steamgames.com/packages/discounts/1651979
+- heading "관련 항목 보기" [level=2]
+- link "관련 패키지와 DLC, 체험판, 도구 모두 보기 상점과 제품 키 및 프로모션용 패키지를 관리할 수 있습니다. DLC와 데모 및 도구를 추가하세요.":
+  - /url: https://partner.steamgames.com/apps/associated/4749590
+  - text: 관련 패키지와 DLC, 체험판, 도구 모두 보기
+  - text: 상점과 제품 키 및 프로모션용 패키지를 관리할 수 있습니다. DLC와 데모 및 도구를 추가하세요.
+- heading "상점 페이지" [level=2]
+- link "상점 페이지 변경 제품에 대한 설명을 변경하고 스크린샷, 예고편, 아트 자산 등을 추가하세요.":
+  - /url: https://partner.steamgames.com/admin/game/edit/1189321
+  - text: 상점 페이지 변경
+  - text: 제품에 대한 설명을 변경하고 스크린샷, 예고편, 아트 자산 등을 추가하세요.
+- link "상점 페이지 보기 Steam 상점에서 보이는 애플리케이션의 현재 상태를 확인하세요. ( 베타 모드에서 보기 )" [active]:
+  - /url: https://store.steampowered.com/app/4749590?beta=0
+  - text: 상점 페이지 보기
+  - text: Steam 상점에서 보이는 애플리케이션의 현재 상태를 확인하세요. (
+  - generic: 베타 모드에서 보기
+  - text: )
+- link "콘텐츠 설문 조사 제품을 설명하는 설문 조사를 작성하세요. 출시 전 필수 사항입니다.":
+  - /url: https://partner.steamgames.com/contentdescriptors/editsurvey/4749590/
+  - text: 콘텐츠 설문 조사
+  - text: 제품을 설명하는 설문 조사를 작성하세요. 출시 전 필수 사항입니다.
+- heading "기술적 도구" [level=2]
+- link "Steamworks 설정 변경 도전 과제 정의, 창작마당 관리, 트레이딩 카드 자산 업로드 등.":
+  - /url: https://partner.steamgames.com/apps/view/4749590
+  - text: Steamworks 설정 변경
+  - text: 도전 과제 정의, 창작마당 관리, 트레이딩 카드 자산 업로드 등.
+- link "Steam 제품 키 요청 어디서나 원하는 곳에서 귀하의 애플리케이션을 배포하려면 키를 요청하세요.":
+  - /url: https://partner.steamgames.com/apps/packages/4749590/
+  - text: Steam 제품 키 요청
+  - text: 어디서나 원하는 곳에서 귀하의 애플리케이션을 배포하려면 키를 요청하세요.
+- link "오류 보기 Steam에 기록된 이 애플리케이션의 오류 기록 보기":
+  - /url: https://partner.steamgames.com/errors/viewbuild/4749590/0/
+  - text: 오류 보기
+  - text: Steam에 기록된 이 애플리케이션의 오류 기록 보기
+- heading "마케팅 도구 및 데이터" [level=2]
+- link "마케팅 및 노출 귀하의 앱 마케팅과 공개 상태 추적 및 관리":
+  - /url: https://partner.steamgames.com/apps/navtrafficstats/4749590
+  - text: 마케팅 및 노출
+  - text: 귀하의 앱 마케팅과 공개 상태 추적 및 관리
+- link "큐레이터 커넥트 Game 사본을 언론사, 스트리머, 리뷰어 및 인플루언서에게 직접 보냅니다.":
+  - /url: https://partner.steamgames.com/curators/manage/4749590
+  - text: 큐레이터 커넥트
+  - text: Game 사본을 언론사, 스트리머, 리뷰어 및 인플루언서에게 직접 보냅니다.
+- heading "커뮤니티" [level=2]
+- link "Steam 커뮤니티 아이템 배지, 트레이딩 카드, 배경, 이모티콘 설정하기":
+  - /url: https://partner.steamgames.com/apps/communityitems/4749590
+  - text: Steam 커뮤니티 아이템
+  - text: 배지, 트레이딩 카드, 배경, 이모티콘 설정하기
+- link "도전 과제 게임에 도전 과제 정의하기":
+  - /url: https://partner.steamgames.com/apps/achievements/4749590
+  - text: 도전 과제
+  - text: 게임에 도전 과제 정의하기
+- link "클라우드 저장 항목 설정 Steam이 백업을 하고 사용자의 저장 파일을 동기화하도록 설정":
+  - /url: https://partner.steamgames.com/apps/cloud/4749590
+  - text: 클라우드 저장 항목 설정
+  - text: Steam이 백업을 하고 사용자의 저장 파일을 동기화하도록 설정
+- heading "재무정보 접근 (?)" [level=2]
+- link "판매 및 활성화 보고서 보기 이 애플리케이션의 판매, 키 활성화 및 사용자 데이터 보기":
+  - /url: https://partner.steampowered.com/app/details/4749590/
+  - text: 판매 및 활성화 보고서 보기
+  - text: 이 애플리케이션의 판매, 키 활성화 및 사용자 데이터 보기
+- heading "커뮤니티 및 조정" [level=2]
+- link "커뮤니티 허브 보기 Steam 커뮤니티에서 스크린샷, 동영상, 창작마당 등을 확인하세요.":
+  - /url: https://steamcommunity.com/app/4749590/
+  - text: 커뮤니티 허브 보기
+  - text: Steam 커뮤니티에서 스크린샷, 동영상, 창작마당 등을 확인하세요.
+- link "커뮤니티 허브 관리자 사용자 권한 추가, 포럼 구성, 채팅 차단 관리 등 허브 관리를 위한 도구가 포함되어 있습니다.":
+  - /url: https://steamcommunity.com/app/4749590/admin/
+  - text: 커뮤니티 허브 관리자
+  - text: 사용자 권한 추가, 포럼 구성, 채팅 차단 관리 등 허브 관리를 위한 도구가 포함되어 있습니다.
+- link "이벤트 및 공지 게시/관리 Steam을 통해 이벤트 및 공지를 관리하고 플레이어와 팬들에게 알리세요.":
+  - /url: https://steamcommunity.com/ogg/4749590/announcements/hidden/
+  - text: 이벤트 및 공지 게시/관리
+  - text: Steam을 통해 이벤트 및 공지를 관리하고 플레이어와 팬들에게 알리세요.
+- heading "Valve 대외비" [level=2]
+- paragraph: 이 사이트는 접속이 제한되어 있으며 여기에 포함된 내용은 모두 Valve 기밀 정보입니다. 이 사이트에 접속하거나 해당 정보를 사용하려면 기밀 정보에 관해 Valve와 비밀 유지 계약 및 라이선스 계약을 체결해야 합니다.
+- text: Steamworks는
+- link "Steam":
+  - /url: https://store.steampowered.com/
+- text: 에서 귀사의 게임을 구성하고 관리하며 운영하는 데 도움을 드리기 위해
+- link "Valve":
+  - /url: https://www.valvesoftware.com
+- text: 가 구축한 일련의 도구 및 서비스입니다.
+- link:
+  - /url: http://www.valvesoftware.com
+- link:
+  - /url: https://store.steampowered.com/
+- list:
+  - emphasis: 문서
+  - link "홈":
+    - /url: https://partner.steamgames.com/doc/
+  - link "시작하기":
+    - /url: https://partner.steamgames.com/doc/gettingstarted
+  - link "상점 페이지":
+    - /url: https://partner.steamgames.com/doc/store
+  - link "기능":
+    - /url: https://partner.steamgames.com/doc/features
+  - link "재정":
+    - /url: https://partner.steamgames.com/doc/finance
+  - link "판매 및 마케팅":
+    - /url: https://partner.steamgames.com/doc/marketing
+  - link "Steamworks SDK":
+    - /url: https://partner.steamgames.com/doc/sdk
+  - link "PC방 라이선스":
+    - /url: https://partner.steamgames.com/pccafe
+  - link "Steam VR":
+    - /url: https://partner.steamgames.com/doc/features/steamvr/info
+- list:
+  - emphasis: 리소스
+  - link "Steam VR":
+    - /url: https://partner.steamgames.com/vrlicensing
+  - link "Steam PC방 프로그램":
+    - /url: https://partner.steamgames.com/pccafe
+  - link "Steamworks 토론":
+    - /url: https://steamcommunity.com/groups/steamworks/discussions
+    - text: Steamworks 토론
+  - link "Steamworks 동영상 튜토리얼":
+    - /url: https://www.youtube.com/user/SteamworksDev
+    - text: Steamworks 동영상 튜토리얼
+  - 'link "X: @Steamworks"':
+    - /url: http://twitter.com/Steamworks
+    - 'img "X: @Steamworks"'
+  - generic: "|"
+  - 'link "Bluesky: Steamworks"':
+    - /url: https://bsky.app/profile/partner.steamgames.com
+    - 'img "Bluesky: Steamworks"'
+  - link "고객지원 문의":
+    - /url: https://help.steampowered.com/ko/wizard/HelpWithPublishing
+    - generic: 고객지원 문의
+- list:
+  - emphasis: 뉴스 및 업데이트
+  - link "Steamworks 블로그":
+    - /url: https://store.steampowered.com/news/group/4145017
+    - text: Steamworks 블로그
+  - link "Steam 블로그":
+    - /url: https://store.steampowered.com/news/app/593110
+    - text: Steam 블로그
+  - link "Steam VR 블로그":
+    - /url: https://store.steampowered.com/news/app/250820
+    - text: Steam VR 블로그
+  - link "Steam Deck 블로그":
+    - /url: https://store.steampowered.com/news/app/1675200
+    - text: Steam Deck 블로그

@@ -1,0 +1,63 @@
+{
+  "state": {
+    "buildid": "25202408",
+    "TargetBuildID": "25202408",
+    "StateFlags": "4",
+    "BytesToDownload": "1179490336",
+    "BytesDownloaded": "1179490336",
+    "manifest": "5604079566035910679"
+  },
+  "files": [
+    {
+      "file": "ffmpeg.dll",
+      "sha256": "be2504fbca75c5e3282a79481b5188167b43292cb378ec093ae8ca203ef30500",
+      "pass": true
+    },
+    {
+      "file": "package.nw/index.html",
+      "sha256": "3e6d343dc04a35abfbd5e6e4253cec611023ed041655ff5ec4b6458dc1535a6c",
+      "pass": true
+    },
+    {
+      "file": "package.nw/game.html",
+      "sha256": "410ee5d292ab00d2221c3f0f9dc8c24837d5a7e80d10f01b9263cc44391030b0",
+      "pass": true
+    },
+    {
+      "file": "package.nw/node-main.js",
+      "sha256": "6f0d94e51c23bf726fc9dd2e55578efb01921f2281b307fd3af994ab58963f89",
+      "pass": true
+    },
+    {
+      "file": "package.nw/world-intro-player.js",
+      "sha256": "77eddd9269172ab9c27ae7a3a5f717cdcb2fb901cd9c9a09d7a0216e36f57b50",
+      "pass": true
+    },
+    {
+      "file": "package.nw/world-intro-subtitles.js",
+      "sha256": "9e3ac2207ece4cf5591ef7eee5d3296f4024c0e5ecfdfcaeda19bd2918dbc92b",
+      "pass": true
+    },
+    {
+      "file": "package.nw/world-intro-subtitles-data.js",
+      "sha256": "a4fe40559bcde731b72a4c34c9ac6cd35c39879b682e3b45ae58837925c8a49e",
+      "pass": true
+    },
+    {
+      "file": "package.nw/cin-enter-engraved.css",
+      "sha256": "97274db5db6d3f01d8905b3d7f985694d96338836c8c4f756958c5a83041a5d0",
+      "pass": true
+    },
+    {
+      "file": "package.nw/cin-logo-art.js",
+      "sha256": "102752b72f885f43606ee70ec5525adc5ae416e1756390ba63fe41dd9a76727f",
+      "pass": true
+    },
+    {
+      "file": "package.nw/video/world_intro_v13_exodus_en.mp4",
+      "sha256": "19706b005ea6137e820dfe0bdb69244b782e693904f62795837453eed6608865",
+      "pass": true
+    }
+  ],
+  "pass": true
+}

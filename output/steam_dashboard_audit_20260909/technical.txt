@@ -1,0 +1,241 @@
+- navigation:
+  - link "Steamworks":
+    - /url: https://partner.steamgames.com/
+    - img "Steamworks"
+  - list:
+    - button "문서"
+    - button "리소스"
+    - button "뉴스 및 업데이트"
+    - link "지원":
+      - /url: https://help.steampowered.com/wizard/HelpWithPublishing
+  - generic: SIM DOJIN
+  - button "shsia":
+    - generic: shsia
+  - link:
+    - /url: https://steamcommunity.com/profiles/76561197980448401
+- navigation:
+  - list:
+    - link "대시보드":
+      - /url: https://partner.steamgames.com/dashboard
+    - button "앱 및 패키지"
+    - button "도구"
+    - button "사용자 및 사용 권한"
+    - link "재무 정보":
+      - /url: https://partner.steampowered.com/
+  - textbox "앱 이름 또는 ID로 찾기"
+- dialog:
+  - generic: SIM DOJIN
+  - link "GOAL":
+    - /url: https://steamcommunity.com/profiles/76561197980448401
+  - generic "문서": 문서
+  - generic "리소스": 리소스
+  - generic "뉴스 및 업데이트": 뉴스 및 업데이트
+  - link "지원":
+    - /url: https://help.steampowered.com/wizard/HelpWithPublishing
+  - button "언어 변경"
+  - button "로그아웃"
+- link "Steamworks":
+  - /url: https://partner.steamgames.com
+- text: ">"
+- link "앱 관리":
+  - /url: https://partner.steamgames.com/apps/
+- text: ">"
+- 'link "EXODUSER: HELL LORD"':
+  - /url: "https://partner.steamgames.com/apps/landing/4749590 "
+- generic: "앱 데이터 관리:"
+- text: "EXODUSER: HELL LORD (4749590)"
+- combobox:
+  - option [selected]
+  - option "상점 페이지 변경"
+  - option "Steamworks 설정 변경"
+- generic: 애플리케이션
+- generic: SteamPipe
+- generic: 설치
+- generic: 보안
+- generic: 통계 및 도전 과제
+- generic: 커뮤니티
+- generic: 창작마당
+- link "키 관리":
+  - /url: https://partner.steamgames.com/apps/packages/4749590
+- generic: 기타
+- link "게시":
+  - /url: https://partner.steamgames.com/apps/publishing/4749590
+- heading "일반 애플리케이션 설정" [level=2]
+- paragraph: 이 페이지에서 형식, 지원되는 운영 체제 및 출시 상태 보기 등의 일반 애플리케이션 설정을 관리할 수 있습니다.
+- heading "애플리케이션 이름 및 종류" [level=2]
+- text: "참고: 상점 페이지 검토가 완료되고 나면 제품 이름 변경이 제한됩니다."
+- link "게임 이름 변경 문서":
+  - /url: https://partner.steamgames.com/doc/store/editing/name
+- text: 를 참고하세요.
+- text: "이름:"
+- textbox: "EXODUSER: HELL LORD"
+- button "저장"
+- button "현지화된 이름 추가..."
+- link "자세히 알아보기":
+  - /url: https://partner.steamgames.com/doc/store/localization#localized_app_names
+- heading "일괄 편집" [level=2]
+- combobox:
+  - option "모든 언어(ZIP 파일)" [selected]
+  - option "English(영어)"
+  - option "Deutsch(독일어)"
+  - option "Français(프랑스어)"
+  - option "Italiano(이탈리아어)"
+  - option "한국어"
+  - option "Español - España(스페인어 - 스페인)"
+  - option "简体中文(중국어 간체)"
+  - option "繁體中文(중국어 번체)"
+  - option "Русский(러시아어)"
+  - option "ไทย(태국어)"
+  - option "日本語(일본어)"
+  - option "Português(포르투갈어 - 포르투갈)"
+  - option "Polski(폴란드어)"
+  - option "Dansk(덴마크어)"
+  - option "Nederlands(네덜란드어)"
+  - option "Suomi(핀란드어)"
+  - option "Norsk(노르웨이어)"
+  - option "Svenska(스웨덴어)"
+  - option "Magyar(헝가리어)"
+  - option "Čeština(체코어)"
+  - option "Română(루마니아어)"
+  - option "Türkçe(튀르키예어)"
+  - option "Português - Brasil(포르투갈어 - 브라질)"
+  - option "Български(불가리아어)"
+  - option "Ελληνικά(그리스어)"
+  - option "Українська(우크라이나어)"
+  - option "Español - Latinoamérica(스페인어 - 중남미)"
+  - option "Tiếng Việt(베트남어)"
+  - option "Steam China - 简体中文(중국어 간체)"
+  - option "Bahasa Indonesia(인도네시아어)"
+  - option "Bahasa Melayu(말레이어)"
+- button "현지화 다운로드"
+- button "Choose File"
+- button "현지화 업로드"
+- text: "형식:"
+- combobox:
+  - option "게임" [selected]
+  - option "애플리캐이션"
+- button "저장"
+- text: "앱 ID 용:"
+- textbox
+- button "저장"
+- generic: 지원되는 운영 체제
+- paragraph:
+  - text: 현재 해당 제품에서 네이티브로 지원하여 고객이 사용할 수 있는 운영 체제만 선택해 주세요. Windows 외에 다른 운영 체제를 추가적으로 지원하고자 하는 경우, 새로운 지원 사항이 포함된 빌드를 게시하기 전까지는 해당 운영 체제를 선택하지 않도록 주의해 주세요. 각 운영 체제의 디포가 적절한 패키지에 포함되어 있는지 확인해야 합니다. 추가 운영 체제 버전 출시에 대한 더 자세한 정보는
+  - link "추가 운영 체제 버전 출시":
+    - /url: https://partner.steamgames.com/doc/store/application/platforms
+  - text: Steamworks 문서를 참고해 주세요.
+- paragraph: 선택한 운영 체제에 대한 네이티브 지원을 제공하는 경우에만 확인란을 선택해 주세요. 제품 실행 시 Proton이 필요한 경우 운영 체제를 선택하지 마세요.
+- checkbox "Windows" [checked]
+- text: Windows
+- checkbox "64비트 전용" [checked]
+- text: 64비트 전용
+- checkbox "macOS"
+- text: macOS
+- checkbox "64비트(Intel) 바이너리 포함"
+- text: 64비트(Intel) 바이너리 포함
+- checkbox "Apple Silicon 바이너리 포함"
+- text: Apple Silicon 바이너리 포함
+- checkbox "앱 번들 공증 완료"
+- text: 앱 번들 공증 완료
+- checkbox "Linux와 SteamOS"
+- text: Linux와 SteamOS
+- checkbox "Android"
+- text: AndroidSteam Frame VR 콘텐츠 전용입니다.
+- paragraph:
+  - button "저장"
+- heading "출시 상태" [level=2]
+- paragraph: "앱 출시 상태: unavailable (?)"
+- paragraph:
+  - text: 앱을 출시하려면
+  - link "애플리케이션 랜딩 페이지":
+    - /url: https://partner.steamgames.com/apps/landing/4749590
+  - text: 에 있는 체크리스트를 따라 주세요.
+- heading "Steam 커뮤니티 공개 여부" [level=2]
+- paragraph:
+  - strong: 커뮤니티 공개
+  - text: "- 일반적으로 Steam의 게임, 체험판, 또는 기타 앱에 공개 상점 페이지가 있으면, 해당 앱은 플레이어의 프로필, 친구 목록, 및 활동 피드와 같은 Steam 커뮤니티에 나타납니다."
+- paragraph:
+  - strong: 커뮤니티 허브
+  - text: "- 게임 및 비게임 소프트웨어는 커뮤니티 공개가 활성화되면 전용 커뮤니티 허브를 갖게 됩니다. 모든 다른 제품 유형의 경우 하단의 '직접 공개'를 선택하지 않는 이상 전용 커뮤니티 허브를 갖지 않습니다."
+- paragraph:
+  - text: 이 앱은
+  - strong: 미출시
+  - text: 로 표시되어 있습니다. 따라서 앱 이름과 아이콘이 Steam 커뮤니티에 공개되어 나타나지 않을 것입니다.
+  - text: 이 앱을 출시하려면 Steamworks 문서에서
+  - link "'출시를 위한 준비'":
+    - /url: https://partner.steamgames.com/doc/store/releasing
+  - text: 를 참고해 주세요.
+- heading "일반 커뮤니티 상태:" [level=4]
+- radio "기본 - 이 앱은 상점 페이지가 '출시 예정'으로 설정되면 커뮤니티에 공개됩니다. (상단의 출시 상태는 '시험판'으로 표시됩니다)" [checked]
+- text: 기본 - 이 앱은 상점 페이지가 '출시 예정'으로 설정되면 커뮤니티에 공개됩니다. (상단의 출시 상태는 '시험판'으로 표시됩니다)
+- radio "직접 공개 - 커뮤니티 허브가 공개되며 앱은 소유자의 커뮤니티 프로필에 표시됩니다."
+- text: 직접 공개 - 커뮤니티 허브가 공개되며 앱은 소유자의 커뮤니티 프로필에 표시됩니다.
+- heading "Valve 대외비" [level=2]
+- paragraph: 이 사이트는 접속이 제한되어 있으며 여기에 포함된 내용은 모두 Valve 기밀 정보입니다. 이 사이트에 접속하거나 해당 정보를 사용하려면 기밀 정보에 관해 Valve와 비밀 유지 계약 및 라이선스 계약을 체결해야 합니다.
+- text: Steamworks는
+- link "Steam":
+  - /url: https://store.steampowered.com/
+- text: 에서 귀사의 게임을 구성하고 관리하며 운영하는 데 도움을 드리기 위해
+- link "Valve":
+  - /url: https://www.valvesoftware.com
+- text: 가 구축한 일련의 도구 및 서비스입니다.
+- link:
+  - /url: http://www.valvesoftware.com
+- link:
+  - /url: https://store.steampowered.com/
+- list:
+  - emphasis: 문서
+  - link "홈":
+    - /url: https://partner.steamgames.com/doc/
+  - link "시작하기":
+    - /url: https://partner.steamgames.com/doc/gettingstarted
+  - link "상점 페이지":
+    - /url: https://partner.steamgames.com/doc/store
+  - link "기능":
+    - /url: https://partner.steamgames.com/doc/features
+  - link "재정":
+    - /url: https://partner.steamgames.com/doc/finance
+  - link "판매 및 마케팅":
+    - /url: https://partner.steamgames.com/doc/marketing
+  - link "Steamworks SDK":
+    - /url: https://partner.steamgames.com/doc/sdk
+  - link "PC방 라이선스":
+    - /url: https://partner.steamgames.com/pccafe
+  - link "Steam VR":
+    - /url: https://partner.steamgames.com/doc/features/steamvr/info
+- list:
+  - emphasis: 리소스
+  - link "Steam VR":
+    - /url: https://partner.steamgames.com/vrlicensing
+  - link "Steam PC방 프로그램":
+    - /url: https://partner.steamgames.com/pccafe
+  - link "Steamworks 토론":
+    - /url: https://steamcommunity.com/groups/steamworks/discussions
+    - text: Steamworks 토론
+  - link "Steamworks 동영상 튜토리얼":
+    - /url: https://www.youtube.com/user/SteamworksDev
+    - text: Steamworks 동영상 튜토리얼
+  - 'link "X: @Steamworks"':
+    - /url: http://twitter.com/Steamworks
+    - 'img "X: @Steamworks"'
+  - generic: "|"
+  - 'link "Bluesky: Steamworks"':
+    - /url: https://bsky.app/profile/partner.steamgames.com
+    - 'img "Bluesky: Steamworks"'
+  - link "고객지원 문의":
+    - /url: https://help.steampowered.com/ko/wizard/HelpWithPublishing
+    - generic: 고객지원 문의
+- list:
+  - emphasis: 뉴스 및 업데이트
+  - link "Steamworks 블로그":
+    - /url: https://store.steampowered.com/news/group/4145017
+    - text: Steamworks 블로그
+  - link "Steam 블로그":
+    - /url: https://store.steampowered.com/news/app/593110
+    - text: Steam 블로그
+  - link "Steam VR 블로그":
+    - /url: https://store.steampowered.com/news/app/250820
+    - text: Steam VR 블로그
+  - link "Steam Deck 블로그":
+    - /url: https://store.steampowered.com/news/app/1675200
+    - text: Steam Deck 블로그

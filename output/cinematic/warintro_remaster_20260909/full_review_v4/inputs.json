@@ -1,0 +1,16 @@
+{
+  "v3_clean_url": "https://d2ol7oe51mr4n9.cloudfront.net/user_3G1zto9sz11Uf3iEOhJefE9HdGG/15d92f8b-6339-4840-8676-f9f50a29db6d.mp4",
+  "v3_package_url": "https://d2ol7oe51mr4n9.cloudfront.net/user_3G1zto9sz11Uf3iEOhJefE9HdGG/48e6e3f3-c904-4e81-9dd9-8ee44a4132de.zip",
+  "smooth_hq_url": "https://d8j0ntlcm91z4.cloudfront.net/user_3G1zto9sz11Uf3iEOhJefE9HdGG/hf_20260909_073831_b8c0fb3e-6d93-4e9c-ad29-198da4188a28.mp4",
+  "escape_hq_url": "https://d8j0ntlcm91z4.cloudfront.net/user_3G1zto9sz11Uf3iEOhJefE9HdGG/hf_20260909_073805_ec397c08-9c24-4565-8b44-0b83fd943b2a.mp4",
+  "upscale_settings": {
+    "provider": "bytedance",
+    "preset": "aigc",
+    "fps": 60,
+    "resolution": "1080p"
+  },
+  "upscale_jobs": [
+    "ec397c08-9c24-4565-8b44-0b83fd943b2a",
+    "b8c0fb3e-6d93-4e9c-ad29-198da4188a28"
+  ]
+}

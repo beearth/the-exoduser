@@ -1,0 +1,194 @@
+- navigation:
+  - link "Steamworks":
+    - /url: https://partner.steamgames.com/
+    - img "Steamworks"
+  - list:
+    - button "문서"
+    - button "리소스"
+    - button "뉴스 및 업데이트"
+    - link "지원":
+      - /url: https://help.steampowered.com/wizard/HelpWithPublishing
+  - generic: SIM DOJIN
+  - button "shsia":
+    - generic: shsia
+  - link:
+    - /url: https://steamcommunity.com/profiles/76561197980448401
+- navigation:
+  - list:
+    - link "대시보드":
+      - /url: https://partner.steamgames.com/dashboard
+    - button "앱 및 패키지"
+    - button "도구"
+    - button "사용자 및 사용 권한"
+    - link "재무 정보":
+      - /url: https://partner.steampowered.com/
+  - textbox "앱 이름 또는 ID로 찾기"
+- dialog:
+  - generic: SIM DOJIN
+  - link "GOAL":
+    - /url: https://steamcommunity.com/profiles/76561197980448401
+  - generic "문서": 문서
+  - generic "리소스": 리소스
+  - generic "뉴스 및 업데이트": 뉴스 및 업데이트
+  - link "지원":
+    - /url: https://help.steampowered.com/wizard/HelpWithPublishing
+  - button "언어 변경"
+  - button "로그아웃"
+- link "Steamworks":
+  - /url: https://partner.steamgames.com
+- text: ">"
+- link "앱 관리":
+  - /url: https://partner.steamgames.com/apps/
+- text: ">"
+- 'link "EXODUSER: HELL LORD"':
+  - /url: "https://partner.steamgames.com/apps/landing/4749590 "
+- generic: "상점 관리 페이지:"
+- text: "EXODUSER: HELL LORD (4749590)"
+- text: 해당 앱에는 게시되지 않은 변경 사항이 있습니다. 변경 사항은 상점 베타 모드 에서 볼 수 있습니다. 상점 페이지를 처음으로 게시하기 전에 Valve에서 페이지를 검토하고 승인해야 합니다. 더 자세한 정보는
+- link "출시를 위한 준비":
+  - /url: https://partner.steamgames.com/doc/gettingstarted
+- text: 를 참고해 주세요.
+- combobox:
+  - option [selected]
+  - option "상점 페이지 변경"
+  - option "Steamworks 설정 변경"
+- generic: 상점 내 변경 사항 미리 보기
+- generic: 기본 정보
+- generic: 설명
+- generic: 등급
+- generic: 앞서 해보기
+- generic: 그래픽 자산
+- generic: 예고편
+- generic: 특수 설정
+- generic: 현지화
+- generic: 게시
+- heading "공식 등급 평가 기관에서 받은 등급" [level=2]
+- paragraph:
+  - text: 공식 등급 평가 기관에서 직접 부여받은 등급이 있는 경우, 아래에서 해당 기관을 선택하여 등급 정보를 입력하세요. 직접 입력한 등급은 관련 국가의 플레이어를 위해
+  - link "콘텐츠 설문 조사":
+    - /url: https://partner.steamgames.com/contentdescriptors/editsurvey/4749590/
+  - text: 로 생성된 등급보다 우선합니다.
+- text: ESRB, USK 등과 같은 관련 기관으로부터 공식 등급을 받은 경우에만 여기에 등급을 입력하세요. 이 등급은 일반적으로 등급 평가 기관에서 발부한 공식 서류와 등급 ID가 함께 있어야 함니다.
+- text: 타 플랫폼에서 등급 생성 절차를 거쳐도 반드시 여기에서 사용할 수 있는 등급을 받을 수 있는 것은 아닙니다. 여기에 등급을 입력하기 전에 각 기관에서 발부한 서류를 주의 깊게 확인하세요.
+- checkbox
+- heading "ESRB" [level=2]
+- text: North America
+- checkbox
+- heading "PEGI" [level=2]
+- text: Europe
+- checkbox
+- heading "BBFC" [level=2]
+- text: United Kingdom
+- checkbox
+- heading "USK" [level=2]
+- text: Germany
+- checkbox
+- heading "OFLC AU" [level=2]
+- text: Australia
+- checkbox
+- heading "OFLC NZ" [level=2]
+- text: New Zealand
+- checkbox
+- heading "CERO" [level=2]
+- text: Japan
+- checkbox
+- heading "KGRB Game Rating Board" [level=2]
+- text: Korea
+- checkbox
+- heading "GMEDIA Game Rating Board" [level=2]
+- text: Saudi Arabia
+- checkbox
+- heading "DEJUS Department of Justice, Rating, Titles and Qualification" [level=2]
+- text: Brazil
+- checkbox
+- heading "Media Development Authority" [level=2]
+- text: Singapore
+- checkbox
+- heading "Film and Publication Board" [level=2]
+- text: South Africa
+- checkbox
+- heading "Computer Software Rating Regulation" [level=2]
+- text: Taiwan
+- checkbox
+- heading "Content Rating Law" [level=2]
+- text: Russia
+- checkbox
+- heading "AGCOM" [level=2]
+- text: Italy
+- checkbox
+- heading "IGRS" [level=2]
+- text: Indonesia
+- button "Save"
+- emphasis
+- emphasis
+- emphasis:
+  - heading "Valve 대외비" [level=2]
+  - paragraph: 이 사이트는 접속이 제한되어 있으며 여기에 포함된 내용은 모두 Valve 기밀 정보입니다. 이 사이트에 접속하거나 해당 정보를 사용하려면 기밀 정보에 관해 Valve와 비밀 유지 계약 및 라이선스 계약을 체결해야 합니다.
+  - text: Steamworks는
+  - link "Steam":
+    - /url: https://store.steampowered.com/
+  - text: 에서 귀사의 게임을 구성하고 관리하며 운영하는 데 도움을 드리기 위해
+  - link "Valve":
+    - /url: https://www.valvesoftware.com
+  - text: 가 구축한 일련의 도구 및 서비스입니다.
+  - link:
+    - /url: http://www.valvesoftware.com
+  - link:
+    - /url: https://store.steampowered.com/
+  - list:
+    - emphasis: 문서
+    - link "홈":
+      - /url: https://partner.steamgames.com/doc/
+    - link "시작하기":
+      - /url: https://partner.steamgames.com/doc/gettingstarted
+    - link "상점 페이지":
+      - /url: https://partner.steamgames.com/doc/store
+    - link "기능":
+      - /url: https://partner.steamgames.com/doc/features
+    - link "재정":
+      - /url: https://partner.steamgames.com/doc/finance
+    - link "판매 및 마케팅":
+      - /url: https://partner.steamgames.com/doc/marketing
+    - link "Steamworks SDK":
+      - /url: https://partner.steamgames.com/doc/sdk
+    - link "PC방 라이선스":
+      - /url: https://partner.steamgames.com/pccafe
+    - link "Steam VR":
+      - /url: https://partner.steamgames.com/doc/features/steamvr/info
+  - list:
+    - emphasis: 리소스
+    - link "Steam VR":
+      - /url: https://partner.steamgames.com/vrlicensing
+    - link "Steam PC방 프로그램":
+      - /url: https://partner.steamgames.com/pccafe
+    - link "Steamworks 토론":
+      - /url: https://steamcommunity.com/groups/steamworks/discussions
+      - text: Steamworks 토론
+    - link "Steamworks 동영상 튜토리얼":
+      - /url: https://www.youtube.com/user/SteamworksDev
+      - text: Steamworks 동영상 튜토리얼
+    - 'link "X: @Steamworks"':
+      - /url: http://twitter.com/Steamworks
+      - 'img "X: @Steamworks"'
+    - generic: "|"
+    - 'link "Bluesky: Steamworks"':
+      - /url: https://bsky.app/profile/partner.steamgames.com
+      - 'img "Bluesky: Steamworks"'
+    - link "고객지원 문의":
+      - /url: https://help.steampowered.com/ko/wizard/HelpWithPublishing
+      - generic: 고객지원 문의
+  - list:
+    - emphasis: 뉴스 및 업데이트
+    - link "Steamworks 블로그":
+      - /url: https://store.steampowered.com/news/group/4145017
+      - text: Steamworks 블로그
+    - link "Steam 블로그":
+      - /url: https://store.steampowered.com/news/app/593110
+      - text: Steam 블로그
+    - link "Steam VR 블로그":
+      - /url: https://store.steampowered.com/news/app/250820
+      - text: Steam VR 블로그
+    - link "Steam Deck 블로그":
+      - /url: https://store.steampowered.com/news/app/1675200
+      - text: Steam Deck 블로그
+- emphasis

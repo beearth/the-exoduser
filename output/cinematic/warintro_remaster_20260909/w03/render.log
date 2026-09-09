@@ -1,0 +1,150 @@
+provider=faster-whisper words=10 captions=3 caption_words=10 density=2.65/s script_aligned=True similarity=1.0
+{
+  "captions": [
+    {
+      "text": "Killu, once a neighbor and",
+      "start": 0.0,
+      "end": 1.76
+    },
+    {
+      "text": "friend,",
+      "start": 1.76,
+      "end": 2.2
+    },
+    {
+      "text": "had crushed his family.",
+      "start": 2.64,
+      "end": 3.78
+    }
+  ],
+  "script_aligned": true,
+  "similarity": 1.0,
+  "timed_words": 10,
+  "caption_words": 10,
+  "words_per_second": 2.65,
+  "provider": "faster-whisper"
+}
+{
+  "verb": "fable.agent-ops.place",
+  "revision": 1,
+  "envelopes": 1,
+  "ops": 1
+}
+[node plan] 1 window(s), 1 worker(s) x 8 threads, 144 frames -> renders/clean.mp4
+[node audio] whole timeline mixed
+[node shard done] 1/1 0.00-6.00s 144 frames (21.2 ms/frame) — 1/1 complete
+{
+  "ok": true,
+  "path": "renders/clean.mp4",
+  "frames": 144,
+  "durationSeconds": 6,
+  "diagnostics": [],
+  "fallbacks": [],
+  "backend": "cpu"
+}
+fonts dir: /home/user/.higgsfield/workflows/subtitles/scripts/fonts
+  ok      TikTokSans-Bold.ttf (cached)
+  ok      Montserrat-ExtraBold.ttf (cached)
+  ok      Anton-Regular.ttf (cached)
+  ok      PatrickHand-Regular.ttf (cached)
+  ok      PermanentMarker-Regular.ttf (cached)
+  ok      Caveat-Regular.ttf (cached)
+DONE -> final.mp4  (clean natural case, no plate, small bottom captions)
+{
+  "duration_s": 6.0,
+  "voice_start_s": 1.0,
+  "voice_duration_s": 4.257959,
+  "caption_start_s": 1.0,
+  "caption_end_s": 5.03,
+  "english": "Killu, once a neighbor and friend, had crushed his family.",
+  "korean": "이웃이자 친구였던 킬루가 그의 가문을 짓밟았다.",
+  "transcript_exact_match": true,
+  "voice_pcm_correlation": 0.9999747246428208,
+  "font": "NotoSerifCJKkr-Medium.otf: \"Noto Serif CJK KR\" \"Medium\"",
+  "font_size_ass": 13,
+  "margin_v_ass": 32,
+  "outline_ass": 0.6,
+  "shadow_ass": 0.4,
+  "receipts": {
+    "source.mp4": {
+      "bytes": 9254743,
+      "duration": 6.042,
+      "streams": [
+        {
+          "codec_type": "video",
+          "codec_name": "h264",
+          "width": 1280,
+          "height": 720,
+          "duration": "6.041667",
+          "sample_rate": null,
+          "r_frame_rate": "24/1"
+        }
+      ]
+    },
+    "voice.mp3": {
+      "bytes": 68589,
+      "duration": 4.257959,
+      "streams": [
+        {
+          "codec_type": "audio",
+          "codec_name": "mp3",
+          "width": null,
+          "height": null,
+          "duration": "4.257959",
+          "sample_rate": "44100",
+          "r_frame_rate": "0/0"
+        }
+      ]
+    },
+    "clean.mp4": {
+      "bytes": 5946642,
+      "duration": 6.0,
+      "streams": [
+        {
+          "codec_type": "video",
+          "codec_name": "h264",
+          "width": 1280,
+          "height": 720,
+          "duration": "6.000000",
+          "sample_rate": null,
+          "r_frame_rate": "24/1"
+        },
+        {
+          "codec_type": "audio",
+          "codec_name": "aac",
+          "width": null,
+          "height": null,
+          "duration": "6.000000",
+          "sample_rate": "48000",
+          "r_frame_rate": "0/0"
+        }
+      ]
+    },
+    "final.mp4": {
+      "bytes": 1657138,
+      "duration": 6.0,
+      "streams": [
+        {
+          "codec_type": "video",
+          "codec_name": "h264",
+          "width": 1280,
+          "height": 720,
+          "duration": "6.000000",
+          "sample_rate": null,
+          "r_frame_rate": "24/1"
+        },
+        {
+          "codec_type": "audio",
+          "codec_name": "aac",
+          "width": null,
+          "height": null,
+          "duration": "6.000000",
+          "sample_rate": "48000",
+          "r_frame_rate": "0/0"
+        }
+      ]
+    }
+  },
+  "human_audio_approval": false,
+  "visual_review_pending": true
+}
