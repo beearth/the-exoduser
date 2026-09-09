@@ -10,15 +10,15 @@
 | 계획 안내 | 변경은 적용 버튼을 눌러야 저장됨. 닫기는 미적용 계획 취소. 탐색·계획은 실제 포인트를 쓰지 않음 |
 | 경계 조건 | 적 HP≥70%, 적 HP≤30%, 자신 HP≤30%를 서로 구별 |
 | 효과 안내 | 피해 가산 묶음, 흡수율의 DOT 절반 적용, 관통95% 상한, MP비용 감소60% 상한을 원문대로 보존 |
-| UI 방향 | 아랍어 RTL, 숫자·조작 그룹 LTR. 금서 시안의 계열 습득수/전체수와 변경 목록 현재→계획도 LTR isolate. 긴 상세 이름 `overflow-wrap:anywhere` |
+| UI 방향 | 아랍어 RTL, 숫자·조작 그룹 LTR. 별자리 시안의 계열 습득수/전체수와 변경 목록 현재→계획도 LTR isolate. 긴 상세 이름 `overflow-wrap:anywhere` |
 | 투자 안내 배치 | 인체형 트리에5능력치와26패시브를 통합. 별도 상단 배분판은 표시하지 않으며 선택한 능력치의 상세에서 SP 투자/환불한다. 도구 모음은 데스크톱 트리 아래/780px 이하 트리 위의 전투 능력치 버튼·×1/×10·확대/축소/100%복귀. 효과 미리보기와 변경 목록도 기존 번역 키를 재사용한다. [현행 UI 계약](../3.1%20ui%20hud%20디자인/능력치_패시브_개편_20260909.md) |
-| 인체형 UI 조작 검증 | `tools/verify-localized-growth.py`: 금서 시안1280×720 및1920×1080 각각29언어×55상태=1,595상태,총3,190상태 PASS. 실제 SP/AP 계획·적용·환불·닫기 취소·잔고 부족·상한·필터 검사. 제목/안내 및 경로 제목/전체 버튼 겹침, 번역 누락, 가로 넘침, 페이지 오류0. 결과 `tmp/localization_qa/growth-interactions-final-1280.json`. 슬롯 API 대체·저장 stub으로 사용자 저장 데이터 격리. |
-| 패시브 검색 | 5능력치와26패시브를 함께 검색하며 기본 결과 수는31/31. 현재 언어의 이름·설명·전체 효과 라벨과 한국어·영문 이름/설명/효과 및 내부 ID를 검색한다. 패시브 설명은 `t(d.desc,d.descEn)`, 능력치 설명은 `t(def.desc,def.descEn)`, 효과는 `t(r.ko,r.en)`을 검색 대상에 포함하며 앞뒤 공백과 대소문자는 무시한다. 선택한 경로와 전체/습득/변경 중 필터를 함께 적용한다. |
-| 검색 회귀 | `test/localizedGrowthSearch.test.js`: 실제 패널 DOM·렌더러와 독일어 카탈로그로 효과 `MP-Kostensenkung`, 설명 `Zaubertempo`, 한국어/영문 이름·ID, 경로 필터·검색 없음·검색 해제를 확인한다. 게임과 저장 API는 실행하지 않는다. 기본 Playwright Chromium 또는 `GROWTH_TEST_BROWSER_CHANNEL=chrome`으로 실행한다. 검색4건에 미리보기 무변경·변경목록 복귀·960px 경계/대상 비가림/키보드3건을 더해7건 통과. 별도 기존 `test/growthRemaster.test.js` 8건도 통과. |
+| 인체형 UI 조작 검증 | `tools/verify-localized-growth.py`: 이전 금서시안1280×720 및1920×1080 총3,190상태PASS.별자리시안최종검사는현행계약참조. 실제 SP/AP 계획·적용·환불·닫기 취소·잔고 부족·상한·필터 검사. 제목/안내 및 경로 제목/전체 버튼 겹침, 번역 누락, 가로 넘침, 페이지 오류0. 결과 `tmp/localization_qa/growth-interactions-final-1280.json`. 슬롯 API 대체·저장 stub으로 사용자 저장 데이터 격리. |
+| 패시브 검색 | 5능력치와26패시브를 함께 검색하며 기본 투자노드 결과 수는265/265. 현재 언어의 이름·설명·전체 효과 라벨과 한국어·영문 이름/설명/효과 및 내부 ID를 검색한다. 패시브 설명은 `t(d.desc,d.descEn)`, 능력치 설명은 `t(def.desc,def.descEn)`, 효과는 `t(r.ko,r.en)`을 검색 대상에 포함하며 앞뒤 공백과 대소문자는 무시한다. 선택한 경로와 전체/습득/변경 중 필터를 함께 적용한다. |
+| 검색 회귀 | `test/localizedGrowthSearch.test.js`: 실제 패널 DOM·렌더러와 독일어 카탈로그로 효과 `MP-Kostensenkung`, 설명 `Zaubertempo`, 한국어/영문 이름·ID, 경로 필터·검색 없음·검색 해제를 확인한다. 게임과 저장 API는 실행하지 않는다. 기본 Playwright Chromium 또는 `GROWTH_TEST_BROWSER_CHANNEL=chrome`으로 실행한다. 검색4건에 미리보기 무변경·변경목록 복귀·960px 경계/대상 비가림/키보드·단계일괄투자/환불4건을 더해8건 통과. 별도 기존 `test/growthRemaster.test.js` 8건도 통과. |
 | 자동 검증 | 29언어×43상태=1,247, 한국어 잔류0·가로 넘침0·페이지 오류0. 접근성용1px 숨김 레이블은 넘침 제외 |
 | 검토 수준 | 통합 담당의 원문·토큰·수치 대조. 독립 검토·출시용 원어민 감수 완료로 표기하지 않음 |
 | 후속 검수 도구 | `tools/verify-localized-growth.py`: `server.cjs:3333` 사용. `--width` 기본1280, `--height` 기본720. 언어별 적용·환불·닫기취소·잔고부족·레벨상한·경로/습득/변경 중 필터·검색 없음·문구/넘침/겹침 검사. 슬롯 API를 대체하고 저장 함수를 stub 처리한다. 결과 `tmp/localization_qa/growth-interactions-final-<width>.json`, ms/el/ar 화면 `growth-reviewed-<code>-<width>.png` |
-| 이전 카드 UI 검증 이력 | 인체형 전환 전에 검색/성장12건과 번역13건 PASS,1280×720/1920×1080에서29언어×55상태씩 검사했다. 최신 금서 시안 재검증은 위3,190상태 행과 `captures/passive_codex_20260909/report.json`의7개 화면 조합을 따른다. 같은 이름의1280/1920결과파일은 최신 검사로 갱신됐다. 종료 전 `growth-interactions-final.json` 및 기존43상태 검사는 과거 증거다. |
+| 이전 카드 UI 검증 이력 | 인체형 전환 전에 검색/성장12건과 번역13건 PASS,1280×720/1920×1080에서29언어×55상태씩 검사했다. 이전 금서 시안 재검증은 위3,190상태 행과 `captures/passive_codex_20260909/report.json`의7개 화면 조합을 따른다. 같은 이름의1280/1920결과파일은 최신 검사로 갱신됐다. 종료 전 `growth-interactions-final.json` 및 기존43상태 검사는 과거 증거다. |
 
 화면 검사는26패시브의 상세,5기본 속성,6경로,계획 추가/취소·전체환불·검색없음을 포함한다. `tmp/localization_qa/growth-final.json` 및 `growth_final_<code>.png`에 로컬 검사 산출물을 남겼다. 사용자 저장 API는 검사에서 대체하고 페이지 메모리만 사용했다.
 

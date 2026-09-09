@@ -525,3 +525,37 @@ body:has(#statPanel.on) #petSubtitle{visibility:hidden!important}
  #statPanel.growth-body-tree .growth-tree-viewport{grid-column:1/-1;grid-row:4}
  #statPanel.growth-body-tree .growth-inspector{border-inline-start:0;border-top:1px solid #81643e66;margin-top:0}
 }
+
+/* A constellation is a sequence of real paid ranks, not decorative filler. */
+#statPanel.growth-constellation .growth-tree-scene{--node-scale:1!important}
+#statPanel.growth-constellation .growth-body-node{width:28px;height:28px}
+#statPanel.growth-constellation .growth-body-node.major{width:38px;height:38px}
+#statPanel.growth-constellation .growth-stat-select::after{font-size:10px}
+#statPanel.growth-constellation .growth-card-rank,#statPanel.growth-constellation .growth-stat-value{font-size:10px;bottom:-6px;right:-5px;min-width:14px;padding:1px 3px}
+#statPanel.growth-constellation .growth-card-rank{font-size:0}
+#statPanel.growth-constellation .growth-card-rank::after{font-size:10px}
+#statPanel.growth-constellation .growth-card-name{top:calc(100% + 41px);font-size:10px;width:115px}
+#statPanel.growth-constellation [data-passive=pMagic] .growth-card-name{left:calc(100% + 40px);top:10%;width:110px}
+#statPanel.growth-constellation .growth-body-node.major .growth-glyph::after{inset:-5px}
+#statPanel.growth-constellation .growth-body-ornament{opacity:.09}
+#statPanel.growth-constellation .growth-body-ornament circle:first-child{display:none}
+#statPanel.growth-constellation .growth-body-anatomy{opacity:.38;stroke:#a39779;stroke-width:1.2}
+#statPanel.growth-constellation .growth-body-outline{fill:none;stroke-width:1.65}
+#statPanel.growth-constellation .growth-tree-anchors{display:none}
+#statPanel.growth-constellation .growth-tree-links path{stroke:#8b8064;stroke-width:1;opacity:.6;stroke-dasharray:none}
+#statPanel.growth-constellation .growth-tree-links path.route{stroke:#f1cc88;stroke-width:1.9;opacity:1}
+#statPanel.growth-constellation .growth-tree-links path.allocated{stroke:#c7ac71;opacity:.9}
+#statPanel.growth-constellation .growth-tree-links path.filtered{opacity:.09}
+#statPanel.growth-constellation .growth-tree-origin{top:50%;width:22px;height:22px;font-size:17px;box-shadow:0 0 0 4px #b3984b15,0 0 25px #dcba4b55}
+#statPanel.growth-constellation .growth-rank-grid{position:absolute;inset:0;pointer-events:none}
+#statPanel.growth-constellation .growth-star{position:absolute;width:20px;height:20px;transform:translate(-50%,-50%);display:grid;place-items:center;border:0;padding:0;background:none;box-shadow:none;pointer-events:auto;z-index:3;border-radius:50%}
+#statPanel.growth-constellation .growth-star[hidden]{display:none}
+#statPanel.growth-constellation .growth-star-mark{display:block;width:9px;height:9px;border:1px solid #b2a078;border-radius:50%;background:#18201b;box-shadow:0 0 0 2px #090e0cd9;pointer-events:none}
+#statPanel.growth-constellation .growth-star.terminal .growth-star-mark{width:12px;height:12px;transform:rotate(45deg);border-radius:2px;border-color:#c6af78}
+#statPanel.growth-constellation .growth-star.learned .growth-star-mark{background:var(--school-color);border-color:#f2dfad;box-shadow:0 0 0 2px #161b17,0 0 12px var(--school-color)}
+#statPanel.growth-constellation .growth-star.pending .growth-star-mark{outline:1px dashed #efaf7b;outline-offset:3px}
+#statPanel.growth-constellation .growth-star:is(:hover,:focus-visible,.selected){z-index:7}
+#statPanel.growth-constellation .growth-star:is(:hover,:focus-visible,.selected) .growth-star-mark{background:#f9dea3;border-color:#fff1cf;box-shadow:0 0 0 3px #9e774666,0 0 18px #e5b869}
+#statPanel.growth-constellation .growth-star:focus-visible{outline-offset:0!important}
+#statPanel.growth-constellation .growth-rank-target{font:12px Georgia,serif;color:#e4c184;text-align:start;margin:0 0 12px}
+#statPanel.growth-constellation .growth-tree-viewport{background:radial-gradient(ellipse at 50% 45%,#4a554116,transparent 65%),#0b100f}

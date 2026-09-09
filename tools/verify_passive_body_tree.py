@@ -3,7 +3,7 @@ import json
 from pathlib import Path
 from playwright.sync_api import sync_playwright
 
-OUT=Path('captures/passive_codex_20260909')
+OUT=Path('captures/passive_constellation_20260909')
 OUT.mkdir(parents=True,exist_ok=True)
 with sync_playwright() as p:
     browser=p.chromium.launch(headless=True)
@@ -16,10 +16,12 @@ with sync_playwright() as p:
     page.add_style_tag(content='#_btPanel{display:none!important}')
     page.evaluate('''()=>{G.paused=true;_bossCine.active=false;window._saves=0;dbSaveNow=()=>_saves++;
       for(const k in STATS)STATS[k]=0;for(const k in PASSIVES)PASSIVES[k]=0;
-      STATS.vit=2;_grit=3;P.sp=20;P.ap=10;OPT.lang='ko';applyStats();openPanel('statPanel');}''')
+      for(const d of PASSIVE_DEF)d.max=10;STATS.vit=2;_grit=3;P.sp=20;P.ap=10;OPT.lang='ko';applyStats();openPanel('statPanel');}''')
     page.locator('#growthTreeViewport').wait_for(state='visible')
-    assert page.locator('[data-body-node]').count()==31
+    assert page.locator('[data-body-node]:not([data-rank])').count()==31
     assert page.locator('#statLeft').is_hidden()
+    assert page.locator('[data-rank-key]').count()==260
+    assert page.locator('[data-rank-link]').count()==260
     detail=page.locator('#growthDetail').inner_text()
     page.locator('[data-body-node="pMagic"]').hover()
     assert page.locator('#growthNodePreview').is_visible()
@@ -54,11 +56,11 @@ with sync_playwright() as p:
     page.locator('#growthSearch').fill('int')
     assert page.locator('[data-body-node="int"]').count()==1
     page.locator('#growthSearch').fill('no_such_node_123')
-    assert page.locator('[data-body-node]').count()==0
+    assert page.locator('[data-body-node]:not([data-rank])').count()==0
     assert page.locator('.growth-empty').count()==1
     page.locator('#growthSearch').fill('')
     page.locator('[data-focus="filter-learned"]').click()
-    assert page.locator('[data-body-node]').count()==3 # INT, GRIT, Mana Surge
+    assert page.locator('[data-body-node]:not([data-rank])').count()==3 # INT, GRIT, Mana Surge
     page.locator('[data-focus="filter-all"]').click()
     page.locator('[data-body-node="pMagic"]').focus()
     page.keyboard.press('ArrowDown')
@@ -88,7 +90,7 @@ with sync_playwright() as p:
     assert page.evaluate('STATS.int===10&&_grit===3')
     page.locator('#growthApply').click()
     assert page.evaluate('STATS.int===0&&STATS.vit===0&&_grit===0&&P.sp===25&&P.ap===10')
-    page.evaluate('STATS.str=12;STATS.int=8;PASSIVES.pAtk=3;PASSIVES.pMelee=2;PASSIVES.pMagic=2;P.sp=20;P.ap=10;applyStats();renderStatPanel()')
+    page.evaluate('STATS.str=12;STATS.int=8;PASSIVES.pAtk=7;PASSIVES.pMelee=5;PASSIVES.pMagic=6;PASSIVES.pArmor=3;PASSIVES.pCrit=4;P.sp=20;P.ap=50;applyStats();renderStatPanel()')
     cases=[]
     for w,h,lang in [(1920,1080,'ko'),(1280,720,'ko'),(960,720,'ko'),(600,900,'ko'),(1280,720,'en'),(1280,720,'ar'),(1920,1080,'ms')]:
         page.set_viewport_size({'width':w,'height':h})
@@ -106,6 +108,13 @@ with sync_playwright() as p:
             assert n['x']>=v['left']-1 and n['y']>=v['top']-1 and n['x']+n['w']<=v['right']+1 and n['y']+n['h']<=v['bottom']+1,(w,lang,n,v)
         page.mouse.move(1,1)
         page.screenshot(path=str(OUT/f'codex_{w}_{lang}.png'))
+        if w==1920 and lang=='ko':
+            page.locator('.growth-zoom-button').nth(2).click()
+            page.locator('.growth-zoom-button').nth(2).click()
+            page.locator('[data-rank-key=\"pMelee\"][data-rank=\"7\"]').click()
+            page.mouse.move(1,1)
+            page.screenshot(path=str(OUT/'constellation_zoom_1920_ko.png'))
+            page.locator('.growth-zoom-button').nth(1).click()
         if w==600:
             page.locator('#growthUpgrade').scroll_into_view_if_needed()
             assert page.locator('#growthUpgrade').is_visible()

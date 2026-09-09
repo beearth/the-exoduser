@@ -117,3 +117,20 @@ test('previews stay inside a narrow tree and clear when focus leaves',async()=>{
   assert.equal(await page.locator('#growthNodePreview').isHidden(),true);
   assert.equal(await page.locator('#growthApply').isDisabled(),true);
 });
+
+test('rank stars stage exact cumulative costs and refund their downstream ranks',async()=>{
+  const star=page.locator('[data-rank-key="pMagic"][data-rank="4"]');
+  assert.equal(await page.locator('[data-rank-key]').count(),260);
+  await star.click();
+  await page.locator('#growthUpgrade').click();
+  assert.equal(await page.locator('#apRemain').innerText(),'5');
+  assert.match(await page.locator('[data-draft-key="pMagic"]').innerText(),/0 → 4/);
+  assert.equal(await page.locator('[data-rank-key="pMagic"].learned').count(),4);
+  await page.locator('[data-rank-key="pMagic"][data-rank="2"]').click();
+  await page.locator('#growthRefund').click();
+  assert.equal(await page.locator('#apRemain').innerText(),'9');
+  assert.equal(await page.locator('[data-rank-key="pMagic"].learned').count(),1);
+  await page.locator('#growthCancel').click();
+  assert.equal(await page.locator('[data-rank-key="pMagic"].learned').count(),0);
+  assert.equal(await page.locator('#growthApply').isDisabled(),true);
+});

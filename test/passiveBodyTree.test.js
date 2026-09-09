@@ -4,6 +4,23 @@ import fs from 'node:fs';
 import '../stat-panel-ui.js';
 const ui=globalThis.ExoduserStatsPanel;
 
+test('constellations expose every paid rank once with a connected route and exact bulk cost',()=>{
+  assert.equal(typeof ui.constellationLayout,'function');
+  const defs=ui.bodyNodes.filter(n=>!n.stat).map(n=>({key:n.key,max:10}));
+  const graph=ui.constellationLayout(defs);
+  assert.equal(graph.nodes.length,260);
+  assert.equal(graph.links.length,260);
+  assert.equal(new Set(graph.nodes.map(n=>n.id)).size,260);
+  for(const n of graph.nodes){
+    assert.ok(n.x>0&&n.x<1000&&n.y>0&&n.y<800);
+    assert.ok(n.rank>=1&&n.rank<=10);
+    assert.equal(graph.links.find(e=>e.to===n.id).from,n.rank===1?n.key:n.key+'@'+(n.rank-1));
+  }
+  const live={stats:{},grit:0,passives:{pAtk:0},sp:0,ap:23},plan=ui.createPlan(live);
+  plan.passives.pAtk=10;
+  assert.equal(ui.evaluatePlan(plan,live,{},[{key:'pAtk',max:10}]).ap,0);
+});
+
 test('body layout includes each existing passive and all five investable attributes once',()=>{
   assert.ok(Array.isArray(ui.bodyNodes),'Body tree layout must be available');
   const html=fs.readFileSync('game.html','utf8');

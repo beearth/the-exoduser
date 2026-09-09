@@ -31,14 +31,14 @@
   ];
   const pathFor = key => paths.find(path=>path.keys.includes(key));
   // Connections describe anatomy and navigation; they do not impose purchase prerequisites.
-  const bodyJoints={origin:{x:500,y:470},spine:{x:500,y:320,parent:'origin'},neck:{x:500,y:180,parent:'spine'},leftShoulder:{x:405,y:235,parent:'spine'},rightShoulder:{x:595,y:235,parent:'spine'}};
+  const bodyJoints={origin:{x:500,y:400},spine:{x:500,y:320,parent:'origin'},neck:{x:500,y:160,parent:'spine'},leftShoulder:{x:385,y:245,parent:'spine'},rightShoulder:{x:615,y:245,parent:'spine'}};
   const bodyNodes=[
-    ['int',430,115,'neck'],['lck',570,115,'neck'],['pMagic',500,40,'int',1],['pCrit',590,195,'lck'],['pCombo',410,195,'int'],
-    ['str',355,265,'leftShoulder'],['pAtk',290,315,'str'],['pMelee',210,375,'pAtk',1],['pRage',145,445,'pMelee'],['pDot',225,475,'pMelee'],['pHunter',315,425,'pAtk'],
-    ['dex',645,265,'rightShoulder'],['pBow',710,315,'dex'],['pXbow',790,375,'pBow'],['pPierce',855,445,'pXbow',1],['pParry',775,475,'pXbow'],
-    ['grit',500,365,'origin'],['pArmor',435,290,'grit'],['pGuard',565,290,'grit'],['pFortify',500,235,'grit',1],['pHuman',435,420,'origin'],['pDemon',565,420,'origin'],
-    ['pCharge',420,510,'origin'],['pPred',370,585,'pCharge'],['pAbund',320,680,'pPred',1],['pDrop',435,680,'pPred'],
-    ['pVital',580,510,'origin'],['pMRegen',630,585,'pVital'],['pStamina',680,680,'pMRegen',1],['pRegen',565,680,'pMRegen'],['pMalice',640,755,'pStamina']
+    ['int',400,95,'neck'],['lck',600,95,'neck'],['pMagic',500,75,'int',1],['pCrit',620,205,'lck'],['pCombo',380,205,'int'],
+    ['str',275,255,'leftShoulder'],['pAtk',205,325,'str'],['pMelee',135,425,'pAtk',1],['pRage',95,535,'pMelee'],['pDot',240,515,'pMelee'],['pHunter',335,400,'pAtk'],
+    ['dex',725,255,'rightShoulder'],['pBow',795,325,'dex'],['pXbow',865,425,'pBow'],['pPierce',905,535,'pXbow',1],['pParry',760,515,'pXbow'],
+    ['grit',500,360,'origin'],['pArmor',410,315,'grit'],['pGuard',590,315,'grit'],['pFortify',500,220,'grit',1],['pHuman',415,440,'origin'],['pDemon',585,440,'origin'],
+    ['pCharge',345,540,'origin'],['pPred',355,640,'pCharge'],['pAbund',255,725,'pPred',1],['pDrop',445,710,'pPred'],
+    ['pVital',655,540,'origin'],['pMRegen',645,640,'pVital'],['pStamina',745,725,'pMRegen',1],['pRegen',555,710,'pMRegen'],['pMalice',820,650,'pStamina']
   ].map(([key,x,y,parent,major])=>({key,x,y,parent,major:!!major,stat:!key.startsWith('p')}));
   const bodyPoints=Object.fromEntries([...Object.entries(bodyJoints),...bodyNodes.map(n=>[n.key,n])]);
   function bodyRoute(key){
@@ -46,11 +46,26 @@
     for(let point=key;bodyPoints[point];point=bodyPoints[point].parent)route.unshift(point);
     return route;
   }
-  function mountBodyTree(root,t,format){
+  function constellationLayout(defs){
+    const nodes=[],links=[];
+    for(const def of defs){
+      const center=bodyPoints[def.key];if(!center)continue;
+      const start=Math.atan2(bodyJoints.origin.y-center.y,bodyJoints.origin.x-center.x),shape=bodyNodes.indexOf(center)%3;
+      for(let rank=1;rank<=def.max;rank++){
+        const ring=Math.floor((rank-1)/10),count=Math.min(10,def.max-ring*10),step=(rank-1)%10,angle=start+step*Math.PI*2/count+(shape===1?Math.sin(step*1.7)*.12:0),radius=37+ring*17+(shape===2?Math.cos(step*2.3)*6:0);
+        const id=def.key+'@'+rank;
+        nodes.push({id,key:def.key,rank,x:center.x+Math.cos(angle)*radius,y:center.y+Math.sin(angle)*radius*(shape===1?.82:1)});
+        links.push({from:rank===1?def.key:def.key+'@'+(rank-1),to:id});
+      }
+    }
+    return {nodes,links};
+  }
+  function mountBodyTree(root,t,format,defs,selectRank){
     const doc=root.ownerDocument,$=id=>root.querySelector('#'+id);
     const make=(tag,cls)=>{const n=doc.createElement(tag);n.className=cls;return n;};
     const svg=(tag,attrs={})=>{const n=doc.createElementNS('http://www.w3.org/2000/svg',tag);for(const [k,v] of Object.entries(attrs))n.setAttribute(k,v);return n;};
-    root.classList.add('growth-body-tree');
+    root.classList.add('growth-body-tree','growth-constellation');
+    const constellation=constellationLayout(defs),points={...bodyPoints,...Object.fromEntries(constellation.nodes.map(n=>[n.id,n]))};
     const viewport=make('div','growth-tree-viewport');viewport.id='growthTreeViewport';
     const scene=make('div','growth-tree-scene');scene.id='growthTreeScene';
     const art=svg('svg',{viewBox:'0 0 1000 800','aria-hidden':'true',class:'growth-body-engraving'});
@@ -59,9 +74,15 @@
     for(let i=0;i<48;i++){const a=i*Math.PI/24;ornament.append(svg('line',{x1:500+Math.sin(a)*365,y1:395+Math.cos(a)*365,x2:500+Math.sin(a)*(i%4?369:377),y2:395+Math.cos(a)*(i%4?369:377)}));}
     ornament.append(svg('path',{d:'M500 10V790 M100 395H900 M270 115L730 675 M730 115L270 675'}));art.append(ornament);
     const anatomy=svg('g',{class:'growth-body-anatomy',fill:'none'});
-    anatomy.append(svg('path',{class:'growth-body-outline',d:'M474 168 C455 153 459 112 463 87 C469 48 531 48 537 87 C541 112 545 153 526 168 L532 195 C551 213 597 205 621 227 C650 254 670 287 703 316 L801 395 L842 424 Q866 452 850 463 L821 445 Q846 479 829 483 L797 451 Q816 488 800 490 L773 449 Q789 481 775 484 L754 444 C721 419 690 395 660 374 L602 319 C609 358 589 415 575 454 L584 485 C604 526 610 554 625 590 L671 690 L698 731 Q704 747 680 751 L627 739 L602 700 C580 664 567 632 553 600 L510 536 Q500 524 490 536 L447 600 C433 632 420 664 398 700 L373 739 L320 751 Q296 747 302 731 L329 690 L375 590 C390 554 396 526 416 485 L425 454 C411 415 391 358 398 319 L340 374 C310 395 279 419 246 444 L225 484 Q211 481 227 449 L200 490 Q184 488 203 451 L171 483 Q154 479 179 445 L150 463 Q134 452 158 424 L199 395 L297 316 C330 287 350 254 379 227 C403 205 449 213 468 195 Z'}));
-    anatomy.append(svg('path',{d:'M500 174V466 M466 204Q500 219 534 204 M415 245Q447 230 484 251 M585 245Q553 230 516 251 M421 310Q445 356 463 390 M579 310Q555 356 537 390 M458 406Q480 443 482 470 M542 406Q520 443 518 470 M444 488Q500 461 556 488 M433 514L397 611L354 714 M567 514L603 611L646 714 M394 262L308 341L211 425 M606 262L692 341L789 425 M480 104Q500 93 520 104 M477 128L489 124 M523 128L511 124 M485 151Q500 158 515 151'}));
-    for(let i=0;i<5;i++){const y=267+i*20;anatomy.append(svg('path',{d:`M490 ${y}Q451 ${y-22} ${429+i*3} ${y-4}Q444 ${y+17} 486 ${y+17} M510 ${y}Q549 ${y-22} ${571-i*3} ${y-4}Q556 ${y+17} 514 ${y+17}`}));}
+    // Bilateral standing study: crown 80, chin 168, crotch 462, soles 750.
+    const half='M500 80 C481 80 469 94 469 113 L472 139 Q475 157 486 168 L481 184 Q467 194 441 198 L413 202 Q394 208 387 231 L365 285 L351 320 Q337 354 316 391 L294 435 L282 450 L269 478 Q269 484 274 482 L289 459 L281 487 Q282 494 287 488 L301 460 L294 489 Q297 495 301 487 L312 460 L306 482 Q310 487 313 478 L323 447 L322 432 Q341 398 359 367 L378 331 Q389 309 402 283 C410 304 423 320 429 343 Q438 368 426 402 L423 426 C421 453 427 485 430 509 L428 572 Q427 588 432 601 C430 640 428 679 427 716 L414 735 Q408 748 420 750 L447 750 Q458 748 456 738 L449 717 L463 629 Q469 606 466 585 L481 518 L494 467 Q497 460 500 462';
+    for(const mirror of [false,true]){
+      const side=svg('g',mirror?{transform:'translate(1000 0) scale(-1 1)'}:{});
+      side.append(svg('path',{class:'growth-body-outline',d:half}));
+      side.append(svg('path',{d:'M484 184L470 213L500 225 M415 218Q455 208 490 238 L488 267Q453 281 414 252 M408 243Q393 267 390 291 M382 288Q359 322 356 345 M350 350L315 427 M429 290Q453 303 490 292 M439 320Q464 330 490 319 M443 348Q467 358 490 347 M441 377Q465 388 488 374 M432 412Q465 419 487 444 M440 443Q455 461 460 495 L449 563 M478 497L459 576 M439 588Q450 579 460 590L455 607 M439 620Q446 639 442 677L437 713 M430 736L447 738 M478 118Q486 113 495 118 M477 128L488 127 M485 151L497 153'}));
+      anatomy.append(side);
+    }
+    anatomy.append(svg('path',{d:'M500 107L496 138L503 139 M493 160Q500 163 507 160 M500 211V283 M500 302V391 M496 399Q500 405 504 399'}));
     art.append(anatomy);
     const links=svg('g',{class:'growth-tree-links',fill:'none'}),linkNodes=new Map();
     for(const [key,p] of Object.entries(bodyPoints))if(p.parent){const from=bodyPoints[p.parent];const line=svg('path',{d:`M${from.x} ${from.y}L${p.x} ${p.y}`,'data-connection':key});links.append(line);linkNodes.set(key,line);}
@@ -69,15 +90,26 @@
     for(const node of bodyNodes)anchors.append(svg('circle',{cx:node.x,cy:node.y,r:node.major?29:21}));
     art.append(links,anchors);scene.append(art);
     const origin=make('span','growth-tree-origin');origin.textContent='✦';origin.setAttribute('aria-hidden','true');scene.append(origin);
+    const rankLayer=make('div','growth-rank-grid');rankLayer.id='growthRankGrid';
+    const rankControls=new Map(),rankLinks=new Map();
+    for(const n of constellation.nodes){
+      const b=make('button','growth-star');b.type='button';b.dataset.bodyNode=n.id;b.dataset.rankKey=n.key;b.dataset.rank=n.rank;b.dataset.focus='rank-'+n.id;
+      b.style.left=n.x/10+'%';b.style.top=n.y/8+'%';b.style.setProperty('--school-color',pathFor(n.key)?.color||'#c9b17b');
+      const mark=make('span','growth-star-mark');mark.setAttribute('aria-hidden','true');b.append(mark);b.classList.toggle('terminal',n.rank%10===0);
+      b.onclick=()=>selectRank(n.key,n.rank);rankControls.set(n.id,b);rankLayer.append(b);
+    }
+    for(const edge of constellation.links){const a=points[edge.from],b=points[edge.to],line=svg('path',{d:`M${a.x} ${a.y}L${b.x} ${b.y}`,'data-rank-link':edge.to});links.append(line);rankLinks.set(edge.to,line);}
+    scene.append(rankLayer);
     scene.append($('statGrid'),$('passiveGrid'));viewport.append(scene);
     const preview=make('aside','growth-node-preview');preview.id='growthNodePreview';preview.hidden=true;preview.setAttribute('role','tooltip');viewport.append(preview);
     const previewData=new Map();let previewControl=null;
-    const hidePreview=()=>{preview.hidden=true;previewControl?.removeAttribute('aria-describedby');previewControl=null;for(const line of linkNodes.values())line.classList.remove('preview');};
+    const hidePreview=()=>{preview.hidden=true;previewControl?.removeAttribute('aria-describedby');previewControl=null;for(const line of [...linkNodes.values(),...rankLinks.values()])line.classList.remove('preview');};
     const showPreview=control=>{
       const key=control?.dataset.bodyNode,data=previewData.get(key);if(!data)return;
       previewControl?.removeAttribute('aria-describedby');previewControl=control;control.setAttribute('aria-describedby',preview.id);
-      const route=new Set(bodyRoute(key));
+      const [cluster,step]=key.split('@'),route=new Set(bodyRoute(cluster));
       for(const [id,line] of linkNodes)line.classList.toggle('preview',route.has(id));
+      for(const [id,line] of rankLinks){const [group,rank]=id.split('@');line.classList.toggle('preview',group===cluster&&Number(rank)<=Number(step));}
       const heading=make('strong','growth-preview-name');heading.textContent=data.label;
       const rank=make('span','growth-preview-rank');rank.textContent=data.value+(data.stat?' SP':' / '+data.max);
       const headingRow=make('div','growth-preview-heading');headingRow.append(heading,rank);
@@ -112,7 +144,7 @@
     const setZoom=n=>{zoom=Math.max(1,Math.min(2.5,n));if(zoom===1)panX=panY=0;draw();};
     viewport.addEventListener('focusin',e=>{
       const control=e.target.closest('[data-body-node]');if(!control)return;
-      const p=bodyPoints[control.dataset.bodyNode],x=width/2+panX+(p.x-500)*scale,y=height/2+panY+(p.y-400)*scale;
+      const p=points[control.dataset.bodyNode],x=width/2+panX+(p.x-500)*scale,y=height/2+panY+(p.y-400)*scale;
       panX+=Math.max(30,Math.min(width-30,x))-x;panY+=Math.max(30,Math.min(height-30,y))-y;draw();
       if(control.matches(':focus-visible'))showPreview(control);
     });
@@ -132,12 +164,12 @@
     viewport.addEventListener('keydown',e=>{
       if(!['ArrowLeft','ArrowRight','ArrowUp','ArrowDown'].includes(e.key))return;
       const current=e.target.closest('[data-body-node]');if(!current)return;
-      const p=bodyPoints[current.dataset.bodyNode],dx=e.key==='ArrowLeft'?-1:e.key==='ArrowRight'?1:0,dy=e.key==='ArrowUp'?-1:e.key==='ArrowDown'?1:0;
+      const p=points[current.dataset.bodyNode],dx=e.key==='ArrowLeft'?-1:e.key==='ArrowRight'?1:0,dy=e.key==='ArrowUp'?-1:e.key==='ArrowDown'?1:0;
       const candidates=[...scene.querySelectorAll('[data-body-node]')].filter(n=>n!==current&&!n.hidden);
-      const next=candidates.map(n=>{const q=bodyPoints[n.dataset.bodyNode],x=q.x-p.x,y=q.y-p.y,along=x*dx+y*dy;return {n,score:along>0?Math.hypot(x,y)+Math.abs(x*dy-y*dx)*2:Infinity};}).sort((a,b)=>a.score-b.score)[0];
+      const next=candidates.map(n=>{const q=points[n.dataset.bodyNode],x=q.x-p.x,y=q.y-p.y,along=x*dx+y*dy;return {n,score:along>0?Math.hypot(x,y)+Math.abs(x*dy-y*dx)*2:Infinity};}).sort((a,b)=>a.score-b.score)[0];
       e.preventDefault();e.stopPropagation();if(next&&Number.isFinite(next.score)){next.n.click();const target=scene.querySelector(`[data-body-node="${next.n.dataset.bodyNode}"]`);target?.focus({preventScroll:true});}
     });
-    return {update(selected,state,live){
+    return {update(selected,state,live,selectedRank=0,filter='all'){
       previewData.clear();
       const route=new Set(bodyRoute(selected));
       for(const node of bodyNodes){
@@ -157,6 +189,14 @@
         control.title=label+' · '+value+(node.stat?' SP':' Lv.');control.setAttribute('aria-label',control.title);
       }
       for(const [key,line] of linkNodes){const n=bodyPoints[key],value=n.stat?(key==='grit'?state.grit:state.stats[key]||0):state.passives[key]||0;line.classList.toggle('route',route.has(key));line.classList.toggle('allocated',value>0);}
+      for(const n of constellation.nodes){
+        const b=rankControls.get(n.id),hub=previewData.get(n.key),value=state.passives[n.key]||0,before=live.passives[n.key]||0,line=rankLinks.get(n.id);
+        b.hidden=!hub||(filter==='learned'&&value<n.rank)||(filter==='planned'&&(value>=n.rank)===(before>=n.rank));line.classList.toggle('filtered',b.hidden);if(!hub)continue;
+        b.classList.toggle('learned',value>=n.rank);b.classList.toggle('pending',(value>=n.rank)!==(before>=n.rank));b.classList.toggle('selected',selected===n.key&&selectedRank===n.rank);
+        b.setAttribute('aria-pressed',String(selected===n.key&&selectedRank===n.rank));b.setAttribute('aria-label',hub.label+' · Lv. '+n.rank+' · '+rankCost(n.rank-1)+' AP');
+        line.classList.toggle('allocated',value>=n.rank);line.classList.toggle('route',selected===n.key&&n.rank<=(selectedRank||Math.max(1,value)));
+        previewData.set(n.id,{...hub,label:hub.label+' · Lv. '+n.rank,value:n.rank,rows:passiveEffects(n.key,n.rank-1),next:passiveEffects(n.key,n.rank)});
+      }
       zoomButtons[1].title=t('전체','All');draw();
     }};
   }
@@ -241,7 +281,7 @@
     const icon=(key,size=24)=>{const n=el('span','growth-glyph');n.innerHTML=api.icon(key,'currentColor',size);n.setAttribute('aria-hidden','true');return n;};
     const button=(label,cls,action,focus)=>{const n=el('button',cls,label);n.type='button';n.onclick=action;if(focus)n.dataset.focus=focus;return n;};
     const format=r=>r.unit==='×'?'×'+r.value.toFixed(2):r.value.toLocaleString(undefined,{maximumFractionDigits:4})+(r.unit==='s'?t('초','s'):r.unit);
-    let selected=api.passiveDefs[0].key,selectedStat=null,path='all',filter='all',amount=1,plan=null;
+    let selected=api.passiveDefs[0].key,selectedStat=null,selectedRank=0,path='all',filter='all',amount=1,plan=null;
     const search=$('growthSearch');
     const pathNav=el('div','growth-paths');pathNav.id='growthPaths';
     search.before(pathNav);
@@ -253,7 +293,7 @@
     const liveLabel=el('p','growth-live-label'),resources=el('div','growth-resources');
     resources.append(liveLabel,$('growthMetrics'));root.querySelector('.growth-header').append(resources);
     root.classList.add('growth-remaster');
-    const bodyTree=mountBodyTree(root,t,format);
+    const bodyTree=mountBodyTree(root,t,format,api.passiveDefs,(key,rank)=>{selected=key;selectedStat=null;selectedRank=rank;$('growthDetail').scrollTop=0;render();});
     const draftList=el('section','growth-draft-list');draftList.id='growthDraftList';draftList.hidden=true;
     root.querySelector('.growth-actions').before(draftList);
     new MutationObserver(()=>{if(!root.classList.contains('on'))plan=null;}).observe(root,{attributes:true,attributeFilter:['class']});
@@ -269,6 +309,7 @@
       plan.grit=0;render();
     };
     function change(type,key,n){
+      selectedRank=0;
       selectedStat=type==='stat'?key:null;
       const live=api.state(),current=evaluatePlan(plan,live,api.caps,api.passiveDefs);
       if(!current){plan=createPlan(live);render();return;}
@@ -333,25 +374,26 @@
       }
       $('statGrid').replaceChildren(stats);
       pathNav.replaceChildren(...[{id:'all',ko:'전체',en:'All',icon:null},...paths].map((p,i)=>{
-        const b=button(undefined,'growth-path',()=>{path=p.id;selectedStat=null;if(p.keys&&!p.keys.includes(selected))selected=p.keys[0];$('passiveGrid').scrollTop=0;render();},'path-'+p.id);
+        const b=button(undefined,'growth-path',()=>{path=p.id;selectedStat=null;selectedRank=0;if(p.keys&&!p.keys.includes(selected))selected=p.keys[0];$('passiveGrid').scrollTop=0;render();},'path-'+p.id);
         b.dataset.path=p.id;b.setAttribute('aria-pressed',String(path===p.id));
         if(p.color)b.style.setProperty('--school-color',p.color);
         if(p.icon)b.append(icon(p.icon,28));
         else {const star=el('span','growth-path-star','✦');star.setAttribute('aria-hidden','true');b.append(star);}
         const numeral=el('span','growth-path-numeral',['','I','II','III','IV','V','VI'][i]);numeral.setAttribute('aria-hidden','true');b.append(numeral);
         const keys=p.keys?[...p.keys,...Object.entries({str:'assault',dex:'precision',int:'arcane',lck:'fate',grit:'survival'}).filter(([,id])=>id===p.id).map(([key])=>key)]:bodyNodes.map(n=>n.key);
-        const learned=keys.filter(key=>(key==='grit'?state.grit:key.startsWith('p')?state.passives[key]:state.stats[key])>0).length;
-        b.append(el('span','growth-path-label',t(p.ko,p.en)),el('span','growth-path-count',learned+' / '+keys.length));return b;
+        const learned=keys.reduce((sum,key)=>sum+(key.startsWith('p')?(state.passives[key]||0):Number((key==='grit'?state.grit:state.stats[key])>0)),0);
+        const total=keys.reduce((sum,key)=>sum+(key.startsWith('p')?(api.passiveDefs.find(d=>d.key===key)?.max||0):1),0);
+        b.append(el('span','growth-path-label',t(p.ko,p.en)),el('span','growth-path-count',learned+' / '+total));return b;
       }));
       pathHint.textContent=activePath?t(...activePath.hint):t('6개의 길 · 서로 조합 가능한 26개 패시브','6 paths · 26 freely combinable passives');
       const filters=[['all','전체','All'],['learned','습득','Learned'],['planned','변경 중','Pending']];
       $('growthFilters').replaceChildren(...filters.map(([key,ko,en])=>{const b=button(t(ko,en),'growth-filter',()=>{filter=key;render();},'filter-'+key);b.setAttribute('aria-pressed',String(filter===key));return b;}));
       const visible=api.passiveDefs.filter(d=>(!activePath||activePath.keys.includes(d.key))&&(filter==='all'||filter==='learned'&&state.passives[d.key]>0||filter==='planned'&&state.passives[d.key]!==live.passives[d.key])&&(!query||[name(d),d.name,d.nameEn,t(d.desc,d.descEn),d.desc,d.descEn,d.key,...passiveEffects(d.key,0).flatMap(r=>[t(r.ko,r.en),r.ko,r.en])].join(' ').toLocaleLowerCase().includes(query)));
-      set('growthCount',`${visible.length+$('statGrid').children.length} / ${api.passiveDefs.length+defs.filter(d=>['str','dex','int','lck','grit'].includes(d.key)).length}`);
+      set('growthCount',`${visible.reduce((sum,d)=>sum+(filter==='learned'?state.passives[d.key]||0:filter==='planned'?Math.abs((state.passives[d.key]||0)-(live.passives[d.key]||0)):d.max),0)+$('statGrid').children.length} / ${api.passiveDefs.reduce((sum,d)=>sum+d.max,0)+defs.filter(d=>['str','dex','int','lck','grit'].includes(d.key)).length}`);
       const cards=doc.createDocumentFragment();
       for(const def of visible){
         const value=state.passives[def.key]||0,current=live.passives[def.key]||0,school=pathFor(def.key);
-        const card=button(undefined,'growth-passive',()=>{selected=def.key;selectedStat=null;$('growthDetail').scrollTop=0;render();},'passive-'+def.key);
+        const card=button(undefined,'growth-passive',()=>{selected=def.key;selectedStat=null;selectedRank=0;$('growthDetail').scrollTop=0;render();},'passive-'+def.key);
         card.dataset.passive=def.key;card.dataset.max=def.max;card.setAttribute('aria-pressed',String(!selectedStat&&selected===def.key));card.style.setProperty('--school-color',school?.color||'#c5b27c');
         card.classList.toggle('pending',value!==current);card.classList.toggle('learned',value>0);card.classList.toggle('maxed',value>=def.max);
         const top=el('span','growth-card-top');top.append(icon(def.key,26),el('strong','growth-card-name',name(def)));
@@ -369,9 +411,10 @@
       detail.append(hero,el('h2','growth-detail-name',name(def)));
       const ranks=el('div','growth-rank-transition');ranks.append(el('span','',t('투자 레벨','ALLOCATED RANK')),el('strong','',String(value)),el('span','growth-rank-arrow','/ '+def.max));detail.append(ranks);
       const pips=el('div','growth-rank-pips');for(let i=0;i<def.max;i++)pips.append(el('span',i<value?'filled':''));pips.setAttribute('aria-label',`${value} / ${def.max}`);detail.append(pips);
-      const pending=value!==current,target=pending?value:Math.min(value+1,def.max),from=pending?current:value;
+      const pending=value!==current,target=selectedRank?(selectedRank>value?selectedRank:selectedRank-1):pending?value:Math.min(value+1,def.max),from=pending?current:value;
+      if(selectedRank)detail.append(el('p','growth-rank-target','Lv. '+selectedRank+' · '+rankCost(selectedRank-1)+' AP'));
       const table=el('div','growth-effects-table'),labels=el('div','growth-effect-row growth-effect-columns');
-      labels.append(el('span','',t('패시브 기여','PASSIVE CONTRIBUTION')),el('span','',t('현재','NOW')),el('span','',pending?t('계획','PLAN'):t('다음','NEXT')));table.append(labels);
+      labels.append(el('span','',t('패시브 기여','PASSIVE CONTRIBUTION')),el('span','',t('현재','NOW')),el('span','',pending||selectedRank?t('계획','PLAN'):t('다음','NEXT')));table.append(labels);
       const rows=passiveEffects(def.key,from),next=passiveEffects(def.key,target);
       rows.forEach((r,i)=>{const line=el('div','growth-effect-row');line.append(el('span','',t(r.ko,r.en)),el('span','growth-effect-before',format(r)),el('strong',r.value===next[i].value?'growth-effect-capped':'growth-effect-after',format(next[i])));table.append(line);});
       detail.append(table);
@@ -379,9 +422,10 @@
       detail.append(el('p','growth-effect',t(...note)));
       if(def.key==='pHuman'&&(state.passives.pDemon||0)>0||def.key==='pDemon'&&(state.passives.pHuman||0)>0)detail.append(el('p','growth-tradeoff',t('인간성과 악마성에 함께 투자 중입니다. 부활 확률을 확인하세요.','Humanity and Demon are both allocated. Check your revival chance.')));
       $('growthDetail').replaceChildren(detail);
-      const maxed=value>=def.max,cost=rankCost(value),upgrade=$('growthUpgrade'),refund=$('growthRefund');
-      upgrade.disabled=maxed||state.ap<cost;upgrade.textContent=maxed?t('최대 레벨','Maximum rank'):t('계획에 추가 · {n} AP','Add to plan · {n} AP',{n:cost});upgrade.onclick=()=>change('passive',def.key,1);
-      refund.disabled=value<1;refund.textContent=t('1레벨 환불 계획','Plan rank refund')+(value?' · +'+rankCost(value-1)+' AP':'');refund.onclick=()=>change('passive',def.key,-1);
+      const maxed=value>=def.max,addRanks=Math.max(1,selectedRank-value),cost=Array.from({length:addRanks},(_,i)=>rankCost(value+i)).reduce((a,b)=>a+b,0),upgrade=$('growthUpgrade'),refund=$('growthRefund');
+      const removeRanks=selectedRank>0&&selectedRank<=value?value-selectedRank+1:1,refundCost=Array.from({length:removeRanks},(_,i)=>rankCost(value-i-1)).reduce((a,b)=>a+b,0);
+      upgrade.disabled=maxed||state.ap<cost;upgrade.textContent=maxed?t('최대 레벨','Maximum rank'):t('계획에 추가 · {n} AP','Add to plan · {n} AP',{n:cost});upgrade.onclick=()=>change('passive',def.key,addRanks);
+      refund.disabled=value<1;refund.textContent=(removeRanks===1?t('1레벨 환불 계획','Plan rank refund'):t('환불 계획','Plan refund')+' · Lv. '+value+' → '+(value-removeRanks))+(value?' · +'+refundCost+' AP':'');refund.onclick=()=>change('passive',def.key,-removeRanks);
       set('growthUpgradeNote',maxed?t('레벨 상한에 도달했습니다.','Rank cap reached.'):state.ap<cost?t('AP {n} 부족','Need {n} more AP',{n:cost-state.ap}):t('추가 후 계획 잔여 AP {n}','{n} AP left after adding',{n:state.ap-cost}));
       planNotice.textContent=changed?t('변경 {n}개 · 하단에서 적용','{n} changes · Apply below',{n:changed}):t('탐색과 계획은 포인트를 소모하지 않습니다.','Browsing and planning do not spend points.');
       planNotice.classList.toggle('pending',!!changed);
@@ -409,17 +453,17 @@
       for(const d of [...defs.filter(d=>['str','dex','int','lck','grit'].includes(d.key)),...api.passiveDefs]){
         const stat=!d.key.startsWith('p'),before=d.key==='grit'?live.grit:stat?live.stats[d.key]||0:live.passives[d.key]||0,after=d.key==='grit'?state.grit:stat?state.stats[d.key]||0:state.passives[d.key]||0;
         if(before===after)continue;
-        const b=button(undefined,'growth-draft-entry',()=>{path='all';filter='all';search.value='';selectedStat=stat?d.key:null;if(!stat)selected=d.key;render();},'draft-'+d.key);
+        const b=button(undefined,'growth-draft-entry',()=>{path='all';filter='all';search.value='';selectedRank=0;selectedStat=stat?d.key:null;if(!stat)selected=d.key;render();},'draft-'+d.key);
         b.dataset.draftKey=d.key;b.append(el('span','',name(d)),el('strong','',before+' → '+after));entries.push(b);
       }
       const ledgerHeading=el('h3','growth-draft-heading',t('변경 중','Pending')+' · '+entries.length),ledgerBody=el('div','growth-draft-entries');ledgerBody.append(...entries);
       draftList.replaceChildren(ledgerHeading,ledgerBody);draftList.hidden=!entries.length;
-      bodyTree.update(selectedStat||selected,state,live);
+      bodyTree.update(selectedStat||selected,state,live,selectedStat?0:selectedRank,filter);
       if(focus){const target=Array.from(root.querySelectorAll('[data-focus]')).find(n=>n.dataset.focus===focus);if(target&&!target.disabled)target.focus({preventScroll:true});}
       $('statGrid').scrollTop=scroll[0];$('passiveGrid').scrollTop=scroll[1];$('growthDetail').scrollTop=scroll[2];
     }
     return {render};
   }
 
-  global.ExoduserStatsPanel = {mount, statChange, passiveChange, refundTotals, rankCost,createPlan,evaluatePlan,passiveEffects,statEffects,paths,pathFor,bodyNodes,bodyRoute};
+  global.ExoduserStatsPanel = {mount, statChange, passiveChange, refundTotals, rankCost,createPlan,evaluatePlan,passiveEffects,statEffects,paths,pathFor,bodyNodes,bodyRoute,constellationLayout};
 })(globalThis);
