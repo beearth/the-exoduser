@@ -1,0 +1,15 @@
+{
+  "source": "game.html PROLOGUE_LINES",
+  "line": {
+    "id": "wa06",
+    "original_start_s": 13,
+    "original_duration_s": 4.5,
+    "image": "warintro/cin_throne.jpg",
+    "ko": "이웃이자 친구였던 킬루가 그의 가문을 짓밟았다.",
+    "en": "Killu, once a neighbor and friend, had crushed his family."
+  },
+  "image": {
+    "path": "assets/cutscene/warintro/cin_throne.jpg",
+    "sha256": "24384a385c5e5401a7e5840bc4c69e5f8399fcc74a7ac5ab74ba7f779a842901"
+  }
+}

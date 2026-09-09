@@ -1,0 +1,20 @@
+{
+  "model": "cinematic_studio_video_v2",
+  "duration": 6,
+  "aspect_ratio": "16:9",
+  "mode": "std",
+  "sound": "off",
+  "genre": "suspense",
+  "speedramp": "linear",
+  "multi_shots": false,
+  "multi_shot_mode": "custom",
+  "cfg_scale": 0.5,
+  "count": 1,
+  "medias": [
+    {
+      "role": "image",
+      "value": "99972f3a-fc6f-45e9-8922-3609ed4b63c6"
+    }
+  ],
+  "prompt": "Animate the supplied existing fantasy illustration as a restrained six-second character-introduction shot. Preserve the exact seated dark-haired man on the ornate throne, his fur collar, armor, red goblet, and the two attendants at either side. He is Killu, a former friend turned betrayer. He holds his existing pose with a cold, quietly self-satisfied expression, subtle shoulder breathing and a nearly imperceptible shift of his eyes. Keep both hands, the goblet and the attendants' existing hand grips stationary and anatomically consistent. Animate only gentle fire flickering, drifting smoke, fine embers and shifting firelight. A very slow smooth camera push toward the throne while keeping both attendants and the throne visible. Preserve the detailed painterly illustration style, composition and palette. Existing foreground remains unchanged and still. No new actions, attacks, injuries, blood, weapons, objects or characters. No dialogue or mouth movement, no gestures, no cup raising, no drinking. Single continuous silent shot with no text, captions or logos."
+}
