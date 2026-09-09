@@ -1,0 +1,21 @@
+{
+  "model": "cinematic_studio_video_v2",
+  "duration": 7,
+  "aspect_ratio": "16:9",
+  "mode": "std",
+  "sound": "off",
+  "genre": "suspense",
+  "speedramp": "linear",
+  "multi_shots": false,
+  "multi_shot_mode": "custom",
+  "cfg_scale": 0.5,
+  "count": 1,
+  "medias": [
+    {
+      "role": "image",
+      "value": "99972f3a-fc6f-45e9-8922-3609ed4b63c6"
+    }
+  ],
+  "prompt": "Animate this existing fantasy throne illustration as a restrained seven-second continuation shot. Preserve the seated dark-haired ruler, fur collar, armor, goblet, throne and both attendants exactly as illustrated. All characters maintain their original poses, with only barely perceptible breathing. Keep hands, fingers and goblet fixed and consistent. Slowly drift the camera a small distance to the right with a subtle push in, maintaining the seated ruler and both attendants in the frame. Flickering torchlight, gently drifting smoke and fine embers create a somber oppressive atmosphere. Maintain the painterly texture and original color palette. Keep all existing foreground elements unchanged and still. No additional characters or objects, no new action or injuries, no gestures or cup movement, no mouth movement. No text or subtitles. Silent single continuous shot.",
+  "declined_preset_id": "24bae836-2c4a-48e0-89b6-49fcc0b21612"
+}
