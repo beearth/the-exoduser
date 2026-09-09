@@ -1,0 +1,226 @@
+{
+  "status": "source_reference_only",
+  "source": "game.html PROLOGUE_LINES",
+  "original_duration_s": 104.5,
+  "voice_id": "WS6naCm8T4gbyzsLnOjK",
+  "lines": [
+    {
+      "id": "wa02",
+      "original_start_s": 2.5,
+      "original_duration_s": 2.5,
+      "image": "warintro/cin_war.jpg",
+      "ko": "전쟁에서 살아 돌아온 한 남자.",
+      "en": "A man who returned alive from war."
+    },
+    {
+      "id": "wa04",
+      "original_start_s": 5.5,
+      "original_duration_s": 5,
+      "image": "warintro/cin_ruins.jpg",
+      "ko": "하지만 집은 모두 불타 사라졌다.",
+      "en": "But his home had burned to nothing."
+    },
+    {
+      "id": "wa06",
+      "original_start_s": 13,
+      "original_duration_s": 4.5,
+      "image": "warintro/cin_throne.jpg",
+      "ko": "이웃이자 친구였던 킬루가 그의 가문을 짓밟았다.",
+      "en": "Killu, once a neighbor and friend, had crushed his family."
+    },
+    {
+      "id": "wa08",
+      "original_start_s": 19.7,
+      "original_duration_s": 4.2,
+      "image": "warintro/cin_throne.jpg",
+      "ko": "아내는 몸종으로 끌려가 온갖 몹쓸 짓을 당했고,",
+      "en": "His wife was taken as a servant and suffered unspeakable horrors,"
+    },
+    {
+      "id": "wa09",
+      "original_start_s": 23.9,
+      "original_duration_s": 3.1,
+      "image": "warintro/cin_throne.jpg",
+      "ko": "끝내 못 이겨 스스로 목숨을 끊었다.",
+      "en": "until she could bear no more and took her own life."
+    },
+    {
+      "id": "wa11",
+      "original_start_s": 28.6,
+      "original_duration_s": 4.4,
+      "image": "warintro/cin_throne.jpg",
+      "ko": "아이들은 노예로 팔려가 어디에 있는지조차 알 수 없다.",
+      "en": "His children were sold into slavery — their fate unknown."
+    },
+    {
+      "id": "wa12",
+      "original_start_s": 33,
+      "original_duration_s": 4,
+      "image": "warintro/cin_throne.jpg",
+      "ko": "늙은 부모는 감옥에 갇혀 굶어 죽었다.",
+      "en": "His elderly parents were imprisoned and starved to death."
+    },
+    {
+      "id": "wa14",
+      "original_start_s": 38.8,
+      "original_duration_s": 4.5,
+      "image": "warintro/cin_bystanders.jpg",
+      "ko": "킬루 가문의 모두가 알고 있었다.",
+      "en": "Everyone in the Killu household knew."
+    },
+    {
+      "id": "wa15",
+      "original_start_s": 43.3,
+      "original_duration_s": 2.7,
+      "image": "warintro/cin_bystanders.jpg",
+      "ko": "31명이 보고도 못 본 척했다.",
+      "en": "Thirty-one of them saw everything and looked away."
+    },
+    {
+      "id": "wa17",
+      "original_start_s": 47.9,
+      "original_duration_s": 3.1,
+      "image": "warintro/cin_bloodbath.jpg",
+      "ko": "그날 밤, 킬루 가문을 모두 죽였다.",
+      "en": "That night, he killed every last one of them."
+    },
+    {
+      "id": "wa19",
+      "original_start_s": 53.6,
+      "original_duration_s": 3,
+      "image": "warintro/cin_torture.jpg",
+      "ko": "칼로 킬루의 팔다리를 자르고",
+      "en": "He cut off Killu's limbs with a blade,"
+    },
+    {
+      "id": "wa20",
+      "original_start_s": 56.6,
+      "original_duration_s": 2.6,
+      "image": "warintro/cin_torture.jpg",
+      "ko": "불로 지혈까지 해주며",
+      "en": "cauterized the wounds with fire,"
+    },
+    {
+      "id": "wa21",
+      "original_start_s": 59.2,
+      "original_duration_s": 6,
+      "image": "warintro/cin_torture.jpg",
+      "ko": "오래오래 살려두었다.",
+      "en": "and kept him alive for a long, long time."
+    },
+    {
+      "id": "wa22",
+      "original_start_s": 65.2,
+      "original_duration_s": 3,
+      "image": "warintro/cin_remember.jpg",
+      "ko": "\"기억하라.\"",
+      "en": "\"Remember.\""
+    },
+    {
+      "id": "wa23",
+      "original_start_s": 68.2,
+      "original_duration_s": 5.4,
+      "image": "warintro/cin_remember.jpg",
+      "ko": "\"그리고 지옥에서도 후회하라.\"",
+      "en": "\"And regret it even in hell.\""
+    },
+    {
+      "id": "wa24",
+      "original_start_s": 73.6,
+      "original_duration_s": 2.4,
+      "image": "warintro/cin_fallhell_custom.jpg",
+      "ko": "그리고 지옥에 떨어진다.",
+      "en": "And so he fell into hell."
+    },
+    {
+      "id": "wa26",
+      "original_start_s": 78.9,
+      "original_duration_s": 3.6,
+      "image": "warintro/emg1.jpg",
+      "ko": "\"...이것은 셀 수 없는 복수자 중 하나의 이야기일 뿐.\"",
+      "en": "\"...This is but one tale among countless avengers.\""
+    },
+    {
+      "id": "wa28",
+      "original_start_s": 84.8,
+      "original_duration_s": 4.1,
+      "image": "warintro/cin_demonbattle.jpg",
+      "ko": "\"지옥의 미로에는 매일 새로운 영혼이 떨어진다.\"",
+      "en": "\"Every day, new souls fall into hell's labyrinth.\""
+    },
+    {
+      "id": "wa29",
+      "original_start_s": 88.9,
+      "original_duration_s": 5.1,
+      "image": "warintro/cin_demonfight.jpg",
+      "ko": "\"분노로 가득 찬 자, 억울함에 미친 자, 사랑을 잃은 자...\"",
+      "en": "\"Those consumed by rage, driven mad by injustice, those who lost love...\""
+    },
+    {
+      "id": "wa31",
+      "original_start_s": 94.8,
+      "original_duration_s": 2.2,
+      "image": "warintro/cin_nemesia_hd.jpg",
+      "ko": "\"너는 왜 지옥에 왔느냐?\"",
+      "en": "\"Why have you come to hell?\""
+    },
+    {
+      "id": "wa33",
+      "original_start_s": 99,
+      "original_duration_s": 4,
+      "image": "warintro/cin_nemesia_hd.jpg",
+      "ko": "\"지옥을 탈출하라, 죄인이여.\"",
+      "en": "\"Escape from hell, sinner.\""
+    }
+  ],
+  "images": [
+    {
+      "path": "assets/cutscene/warintro/cin_war.jpg",
+      "sha256": "6b4033deca5e064a7a339cd6cc67a2c36113c27e2999ccc63a8a1849aaacaf6e"
+    },
+    {
+      "path": "assets/cutscene/warintro/cin_ruins.jpg",
+      "sha256": "2d04a81505c754dec9be6e8b3ace24ab6547173518f61c8cdf9b17f9a26c007f"
+    },
+    {
+      "path": "assets/cutscene/warintro/cin_throne.jpg",
+      "sha256": "24384a385c5e5401a7e5840bc4c69e5f8399fcc74a7ac5ab74ba7f779a842901"
+    },
+    {
+      "path": "assets/cutscene/warintro/cin_bystanders.jpg",
+      "sha256": "79afede1d19710126d9aaafa571504f61330d912e2f3c1a10e57661a939f74b6"
+    },
+    {
+      "path": "assets/cutscene/warintro/cin_bloodbath.jpg",
+      "sha256": "36dba530beabbd60f37b20d1bd132bd793025c98e4497921872c887e06b6eaa3"
+    },
+    {
+      "path": "assets/cutscene/warintro/cin_torture.jpg",
+      "sha256": "0f70c4bf29df113eae1c6a5c994064515469cb0e479c75a1a5a46926578b655a"
+    },
+    {
+      "path": "assets/cutscene/warintro/cin_remember.jpg",
+      "sha256": "96121575a9c77ed7884fe59347c78ecdd67d518a463da88808b8d8ddeedde073"
+    },
+    {
+      "path": "assets/cutscene/warintro/cin_fallhell_custom.jpg",
+      "sha256": "d591de0457a299fe7c430e75091bf88ae7c8ed9c75d69c0ed6e505e6564ac61d"
+    },
+    {
+      "path": "assets/cutscene/warintro/emg1.jpg",
+      "sha256": "96e5e41900c60292488bb4cd3a2becf2e98297e522143177143f0be3b31fabf1"
+    },
+    {
+      "path": "assets/cutscene/warintro/cin_demonbattle.jpg",
+      "sha256": "387e01162fe48bfdbdd69f212470ffbe3ac81a713f6183a1977d0cdc10437600"
+    },
+    {
+      "path": "assets/cutscene/warintro/cin_demonfight.jpg",
+      "sha256": "3b225bdf0341b62849ce45de4b8255e6504255ff0fe48db049a95620b6170563"
+    },
+    {
+      "path": "assets/cutscene/warintro/cin_nemesia_hd.jpg",
+      "sha256": "d27f545d9fcdceb067ddf5db9ce15ffcbb5d794469232acf477ad218b2b9b04f"
+    }
+  ]
+}
