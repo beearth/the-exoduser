@@ -21,6 +21,9 @@
 | 게임 smoke | 독립 QA 세이브에서 `?test=1&testchar=1` 신규 테스트 캐릭터 진입, stage asset requests 248, save API 정상, pageerror/console error/404/requestfailed 모두 0 |
 | 후속 번역 작업 | 향후 의존성 누락 방지를 위해 `localization-runtime.js`, `localization-data.js`, `localization.css`, `localization/`를 builder에 등록. 별도 번역 작업의 미완료 변경은 이번 검증 패키지에서 제외. 재인증 대기 중 작업본 회귀는 40개 중 39개 PASS, 번역 커버리지 13,534개 누락으로 해당 후속 변경의 배포를 보류 |
 | 업로드 차이 | SteamPipe 기준 파일 797개 추가(1.18 GB), 34개 변경(16.21 MB), 10개 제거(3.01 MB). 업로드 직전 기존 검증 패키지 5,850개 SHA-256 재대조 불일치 0 |
+| 클라이언트 업데이트 지연 원인 | 일반 Steam의 connection_log.txt: 2026-09-09 14:51:45 `RecvMsgClientLoggedOff(Session Replaced)`, 자동 재연결 중단. SteamCMD 비밀번호/모바일 재인증 시각과 일치. cloud_log.txt도 16:03~16:05 `login=false`, `offlineMode=false`; 배포 후 새 앱 정보/업데이트를 받지 못한 상태 |
+| 클라이언트 복구 | 실행 중인 Steam 게임 없음 확인 → `E:/steam/steam.exe -shutdown` 정상 종료(16:18:32) → 재실행. 16:18:52 서버 연결 복구, 계정은 U:1:0으로 로그인 대기. 사용자에게 일반 Steam 앱 로그인 요청. 이 시점 설치 BuildID/TargetBuildID는 모두 24922778 |
+| 추가 Cloud 점검 항목 | 16:05 로그의 AutoCloud 실제 탐색 경로가 `%APPDATA%/ EXODUSER-HELL/saves`로 폴더명 앞에 공백 포함, 파일 0개. 현행 코드 저장 경로 `%APPDATA%/EXODUSER-HELL/saves`와 다름. 이번에는 경로/원격 세이브를 변경하지 않았으며 정상 로그인 복구 후 Cloud 설정 별도 점검 필요 |
 | 인증 유지 | `G:/exoduser-steam/builder/config/config.vdf`를 보존하고 다음 실행도 `+login shsia`만 사용. 암호·인증코드를 배포 명령에 넣지 않음. 계정 비밀번호 변경/세션 철회 등에 의한 서버 측 인증 만료까지 보장할 수는 없음 |
 | 패키지 목록 | SteamPipe 제외 규칙 적용 후 5,850개 파일·5,944,762,551바이트. 파일별 SHA-256은 `output/steam_20260909/package_manifest.json`에 기록 |
 | 단위 회귀 | 패키징·공유 악의·Range·인트로 player/subtitles/handoff 28개 PASS. 단위 테스트는 작업본의 후속 29언어도 포함하며 위 실제 패키지 브라우저 검증은 빌드 시점의 28언어 기준 |
