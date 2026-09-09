@@ -1,0 +1,15 @@
+{
+  "source": "game.html PROLOGUE_LINES",
+  "line": {
+    "id": "wa04",
+    "original_start_s": 5.5,
+    "original_duration_s": 5,
+    "image": "warintro/cin_ruins.jpg",
+    "ko": "하지만 집은 모두 불타 사라졌다.",
+    "en": "But his home had burned to nothing."
+  },
+  "image": {
+    "path": "assets/cutscene/warintro/cin_ruins.jpg",
+    "sha256": "2d04a81505c754dec9be6e8b3ace24ab6547173518f61c8cdf9b17f9a26c007f"
+  }
+}
