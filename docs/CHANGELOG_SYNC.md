@@ -9,6 +9,7 @@
 | 검수 도구 | `tools/verify-localized-growth.py`: server.cjs:3333에서 언어별 성장 거래·필터·상한·문구·넘침 검사. 슬롯 API 대체와 저장 stub 사용. `--width` 기본1280, `--height` 기본720 |
 | 배치 수정 | 1280×720 러시아어 제목/투자 안내 겹침 재현. `game.html`에서 제목·안내·요약 버튼·투자 단위를 동일 flex 행으로 묶고 `stat-panel-ui.css`의 고정 위치를 제거. 상세 화면 높이를 보존하며 긴 번역은 필요 시 줄바꿈. 안내 width≤1050 숨김 유지 |
 | 거래·검색 회귀 | Chrome 검색4건·성장8건·거래4건·근성6건, 총22건 PASS |
+| 커밋 가드 | 전체 PASS. 헤더 DOM 통합으로 `tools/guard.baseline.json`의 game.html 줄 수를60024→60022로 동기화 |
 | 최종 화면 검증 | 1280×720의 29언어×55상태=1,595 PASS, 번역 누락/가로 넘침/검사 대상 겹침/페이지 오류0 (`tmp/localization_qa/growth-interactions-final-1280.json`). `tools/verify_growth_remaster.py`의 KO1920×1080/1280×720/960×720/600×900 및 EN1280×720 총5조합도 PASS. 상세 효과와7경로 가시 영역, 요약 열기/닫기·거래 확인 |
 | 문서 | 성장 UI·번역 검색 계약 동기화. 체코/헝가리·터키어 문서의 업화선 시전속도 교정을 완료 상태로 정정 |
 
