@@ -110,7 +110,7 @@
     const name=d=>api.strip(t(d.name,d.nameEn||d.name));
     const icon=(key,size=24)=>{const n=el('span','growth-glyph');n.innerHTML=api.icon(key,'currentColor',size);n.setAttribute('aria-hidden','true');return n;};
     const button=(label,cls,action,focus)=>{const n=el('button',cls,label);n.type='button';n.onclick=action;if(focus)n.dataset.focus=focus;return n;};
-    const format=r=>r.unit==='×'?'×'+r.value.toFixed(2):r.value.toLocaleString(undefined,{maximumFractionDigits:2})+(r.unit==='s'?t('초','s'):r.unit);
+    const format=r=>r.unit==='×'?'×'+r.value.toFixed(2):r.value.toLocaleString(undefined,{maximumFractionDigits:4})+(r.unit==='s'?t('초','s'):r.unit);
     let selected=api.passiveDefs[0].key,selectedStat=null,path='all',filter='all',amount=1,plan=null;
     const search=$('growthSearch');
     const pathNav=el('div','growth-paths');pathNav.id='growthPaths';

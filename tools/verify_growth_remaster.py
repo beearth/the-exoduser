@@ -14,6 +14,7 @@ with sync_playwright() as p:
     page.evaluate('''()=>{G.paused=true;_bossCine.active=false;dbSaveNow=()=>window._saves++;window._saves=0;PASSIVE_DEF.forEach(d=>d.max=10);for(const k in STATS)STATS[k]=0;for(const k in PASSIVES)PASSIVES[k]=0;_grit=0;P.sp=10;P.ap=5;OPT.lang='ko';applyStats();openPanel('statPanel');}''')
     assert page.locator('#growthApply').count()==1,'Pending allocation Apply control is missing'
     assert page.locator('.growth-stat-select').count()==5,'Attribute contribution inspector is missing'
+    assert '0.025%' in page.locator('#statPanel').inner_text(),'LCK per-point critical chance must retain its precision'
     page.locator('[data-focus="inspect-str"]').click()
     assert 'HP' in page.locator('.growth-effects-table').inner_text()
     assert '/s' in page.locator('.growth-effects-table').inner_text()
