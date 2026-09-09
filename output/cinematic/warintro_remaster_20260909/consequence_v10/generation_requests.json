@@ -1,0 +1,33 @@
+{
+  "w09": {
+    "status": "blocked",
+    "attempts": [
+      {
+        "prompt": "Use case: identity-preserve. Create one 16:9 live-action dark fantasy film frame, W09: 'That night, he killed every last one of the Killu household.' Image 1 locks the exact warrior and hall. Image 2 locks realistic film materials and lighting. Image 3 locks his face. Replace the empty hall with the unmistakable immediate aftermath of a massacre. The SAME adult black-haired warrior stands exhausted at screen left in his SAME battered overlapping black iron armor and heavy torn dark burgundy cape. His lowered broad greatsword is held in his RIGHT gauntlet; pommel, grip, guard center and blade ridge form one rigid straight axis. Blood smears and spatter on the blade, gauntlet, breastplate and a small dark splash on his cheek. Six clearly adult dead household members in period clothing lie motionless at different depths across the hall, with anatomically believable fallen postures, one foreground body face down beside a blood-soaked sleeve, another against the stair base, others near overturned dining benches. Dark red fresh blood pools visibly around the bodies and tracks across wet flagstones, readable as blood rather than rain. Torn household banners, broken crockery and extinguished candles convey a once inhabited house violently destroyed. Do not reduce them to distant ambiguous cloth shapes. Show the terrible human cost, not a triumphant hero. Keep realistic body scale and lifeless weight. No minors. No exposed organs or severing action. 35mm medium-wide camera, muted torchlight and cold night window illumination, photographic skin/cloth/steel, physically grounded film realism matching the family scenes. Whole warrior head visible, gaze lowered toward the dead. Clear lower center for later subtitles but no text, watermark, collage or painted illustration.",
+        "result": "moderation_blocked: violence",
+        "request_id": "4669727a-23e2-45ef-acb9-e4e7ddf3accc"
+      },
+      {
+        "prompt": "Create one landscape 16:9 cinematic frame of a NON-GRAPHIC fictional dark fantasy aftermath, matching the grounded live-action family-film reference lighting and materials. Reference 1 locks the warrior's exact black hair, adult face, black iron layered armor, burgundy cape and stone hall. Reference 2 locks the photographic film look. The warrior stands at the left in exhausted silence after the conflict. Three clearly adult household members in intact medieval clothing lie still, face down or turned away, at believable distances across the hall. Their faces and any wounds are concealed by natural poses and clothing; no exposed injuries, no mutilation, no gore. The composition clearly communicates a fatal tragedy through lifeless body weight, overturned dining furniture and abandoned belongings. Modest dark red blood stains on floor stones beside a fallen adult, a stained sleeve, and dried blood on the warrior's straight greatsword and gauntlet are visible environmental evidence, not the focal subject. No blood pools, flowing blood, spatter spectacle, exposed flesh injuries, children, or violence in progress. Preserve the exact same weary warrior from reference 1, not a triumphant action pose. His one greatsword hangs lowered in his RIGHT hand with its handle and blade forming one rigid straight axis. Low warm torchlight, cool night window light, photographic stone, cloth, steel, realistic proportions. Medium wide 35mm camera at eye level. No captions, text, borders or collage.",
+        "result": "moderation_blocked: violence",
+        "request_id": "c81fed9a-6338-4c05-b393-c82f75bf2990"
+      }
+    ]
+  },
+  "w12": {
+    "prompt": "Use case: identity-preserve. One 16:9 LIVE-ACTION DARK FANTASY film start frame W12, arrival in Hell. Image 1 locks the EXACT adult warrior, black short hair, weathered black iron armor, heavy burgundy cape, pose and physically correct RIGHT-hand straight vertical greatsword. Image 2 locks the photoreal family-scene material/lighting style. KEEP the whole warrior and hand/sword construction from image 1, including one straight pommel-grip-guard-blade axis. REPLACE THE ORDINARY CASTLE BACKGROUND COMPLETELY. He stands on a fractured ledge inside an immense subterranean prison of souls. Behind and above him a sealed stone gate is bound by massive corroded chains. A black river far below carries dim face-like reflections toward one deep crimson fissure. Walls lean inward toward this abyss; architecture is asymmetrical, eroded and fused with fossil-like adult faces and grasping stone hands. Several distant faint human-shaped souls are suspended in the inward stream of ash. Make spatial layers clearly readable: exhausted warrior on foreground ledge, imprisoned figures fused into middle-distance rock, sealed entrance and inward-collapsing labyrinth in background, bottomless dark gulf below. No blue daylight, ordinary standing castle towers, regular straight stairs, clean city or modern lights. Dark charcoal and dirty bone palette, one controlled crimson light source deep in the fissure, ash drawn inward; his burgundy cape moves toward the same pull. Frightening and oppressive but non-graphic: no wounds, no gore, no naked people. Real physical set textures, cinematic lens depth, photographic skin and metal, no painted illustration or poster. No text or labels. His sword remains perfectly straight even though the ENVIRONMENT is warped.",
+    "status": "prototype_video_downloaded_reviewed_not_final",
+    "image": "w12_hell_start.png",
+    "image_generated_file": "exec-1b12d8bd-062f-4c24-ad64-5baeb9018027.png",
+    "image_review": "Same warrior and straight sword; sealed chains, imprisoned souls, fossil faces and crimson abyss visible. Still-image review only.",
+    "video_asset_id": "96b5fd3b-8e7b-4f7b-8df6-a577f8924920",
+    "upload_id": "acca6189-29b5-4f93-85bd-7937e866c8d9",
+    "model": "Cinema Studio 2.5",
+    "requested_seconds": 5,
+    "displayed_credits": 8,
+    "qa": "hell_qa.json",
+    "source_file": "w12_hell.mp4",
+    "preview_file": "hell_direction_preview.mp4",
+    "submission_note": "UI retained prior W12-STRAIGHT-v8 text before appended W12-HELL-v10 prompt. Actual start image is new acca6189 upload; full submitted text preserved."
+  }
+}

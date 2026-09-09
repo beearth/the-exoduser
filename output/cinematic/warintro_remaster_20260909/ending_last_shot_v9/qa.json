@@ -1,0 +1,43 @@
+{
+  "receipts": [
+    {
+      "file": "final.mp4",
+      "duration": 103.5,
+      "frames": 6210,
+      "bytes": 93525635,
+      "sha256": "d035d91169609ab3f4263f0cb5d68ecdda3758f468175868c2f895cdedec1000",
+      "audio_codec": "aac",
+      "audio_channels": 2,
+      "decode": "PASS"
+    },
+    {
+      "file": "ending.mp4",
+      "duration": 14.0,
+      "frames": 840,
+      "bytes": 11819620,
+      "sha256": "0be4fa5cdb73a06b558a59b02e5f78fdc63ec7fd7c85ab0d503c5270096dea6d",
+      "audio_codec": "aac",
+      "audio_channels": 2,
+      "decode": "PASS"
+    }
+  ],
+  "audio_correlation": 0.9999747335230069,
+  "digital_gap_rms": 0.0,
+  "contact_times": [
+    66,
+    67.5,
+    69.8,
+    95.5,
+    96.7,
+    97.5,
+    98.7,
+    99.7,
+    100.2,
+    101.5,
+    102.7,
+    103.45
+  ],
+  "visual_review": "Contact samples reviewed: no final vocative on Nemesia; vocative subtitle visible on final escape shot. Full realtime listening not reviewed.",
+  "realtime_review": false,
+  "listening_review": false
+}

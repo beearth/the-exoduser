@@ -1,0 +1,17 @@
+{
+  "source_duration": 5.041667,
+  "source_frames": 121,
+  "source_fps": "24/1",
+  "width": 1916,
+  "height": 1080,
+  "source_bytes": 13933153,
+  "source_sha256": "9c64b43b1b750c550927ef9021f3184ec02f2e809b948f2b9e3fb4fcf31bed50",
+  "preview_seconds": 5,
+  "preview_frames": 300,
+  "source_decode": "PASS",
+  "preview_decode": "PASS",
+  "visual_review": "Nine sampled frames inspected. Same warrior/straight sword preserved; cage prison, fossil faces, chains and abyss visible. Motion in cape and camera. Fall/landing action not depicted; prototype only, requires retouch for final W12 narrative.",
+  "realtime_review": false,
+  "listening_review": false,
+  "not_full_v10": true
+}
