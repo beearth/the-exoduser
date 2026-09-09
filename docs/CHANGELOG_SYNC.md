@@ -29,7 +29,7 @@
 | 패키지 서버 | GET/POST /api/mats와 공유 파일 슬롯 제외, 영상 Range 206/416·HEAD·HTML 캐시 제어 동기화 |
 | 검증 | 패키지 게임 진입 pageerror/console error/404 0, 세이브 API 정상. 세계관 v13·28언어 자막·BGM 연속·컷 탐색·종료 회귀 PASS |
 | 배포 | 사용자 재인증 후 cached login·preview·upload PASS. default 24922778 → 25202408 적용 및 Steamworks 공개 기록 확인(한국 시각 2026-09-09 15:52). Windows depot 4749591 / manifest 5604079566035910679. 검증 패키지 5,850개 해시 일치; 이후 미완료 번역 WIP 제외 |
-| 클라이언트 업데이트 지연 | SteamCMD 재인증 시 일반 Steam이 Session Replaced로 로그오프, 자동 재연결 중단. 정상 재시작 후 서버 연결 복구·사용자 계정 로그인 대기. 설치본 24922778, 공개 default 25202408 |
+| 클라이언트 업데이트 지연 해결 | SteamCMD 재인증 시 일반 Steam이 Session Replaced로 로그오프된 것이 원인. Steam 정상 재시작/사용자 로그인 후 2026-09-09 16:22:04 설치 BuildID 25202408 도달. 영상·코덱·런타임 10개 파일 해시가 배포본과 일치 |
 | 기록 | docs/13출시·마케팅/STEAM_LATEST_DEPLOY_20260909.md, output/steam_20260909/package_manifest.json |
 
 > **2026-09-09 여성 캐릭터 음성:** 테스트/데모 부팅의 캐릭터 번호 0 덮어쓰기를 제거해 선택 아틀라스와 여성 보이스 매핑을 일치시켰다. [원인·회귀 검사·트레일러 수정](6사운드디자인/TRAILER_CHARACTER_VOICE_FIX_20260909.md).

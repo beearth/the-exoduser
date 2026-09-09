@@ -5,7 +5,7 @@
 | 항목 | 확인 / 상태 |
 |---|---|
 | 소스 | `G:\exoduser`, 타이틀 상하 채움 커밋 `c7b54a3f` 포함 |
-| 설치본 | `E:\steam\steamapps\common\EXODUSER HELL LORD`, 설치 manifest BuildID `24922778`, 2026-08-25 index.html |
+| 설치본 | `E:/steam/steamapps/common/EXODUSER HELL LORD`, 설치 BuildID `25202408`, depot manifest `5604079566035910679`. 일반 Steam 클라이언트의 실제 다운로드/설치 완료 `2026-09-09 16:22:04`. 이전 설치본은 `24922778` |
 | 배포 작업공간 | `G:\exoduser-steam`, App `4749590`, Windows Depot `4749591`, `content/windows` |
 | 진단 한계 | 디스크 설치본이 구형이라는 사실만으로 사용자가 본 실행 화면까지 구형이라고 판단할 수 없음. 개발 서버와 패키지 서버가 모두 3333을 사용하므로 실제 실행 서버를 분리해 검증해야 함 |
 | 빌드 누락 재현 | `test/runtimePackaging.test.js`: index.html이 참조하는 루트 JS/CSS 6개가 `build-nwjs.mjs`의 FILES에서 누락됨 |
@@ -22,7 +22,7 @@
 | 후속 번역 작업 | 향후 의존성 누락 방지를 위해 `localization-runtime.js`, `localization-data.js`, `localization.css`, `localization/`를 builder에 등록. 별도 번역 작업의 미완료 변경은 이번 검증 패키지에서 제외. 재인증 대기 중 작업본 회귀는 40개 중 39개 PASS, 번역 커버리지 13,534개 누락으로 해당 후속 변경의 배포를 보류 |
 | 업로드 차이 | SteamPipe 기준 파일 797개 추가(1.18 GB), 34개 변경(16.21 MB), 10개 제거(3.01 MB). 업로드 직전 기존 검증 패키지 5,850개 SHA-256 재대조 불일치 0 |
 | 클라이언트 업데이트 지연 원인 | 일반 Steam의 connection_log.txt: 2026-09-09 14:51:45 `RecvMsgClientLoggedOff(Session Replaced)`, 자동 재연결 중단. SteamCMD 비밀번호/모바일 재인증 시각과 일치. cloud_log.txt도 16:03~16:05 `login=false`, `offlineMode=false`; 배포 후 새 앱 정보/업데이트를 받지 못한 상태 |
-| 클라이언트 복구 | 실행 중인 Steam 게임 없음 확인 → `E:/steam/steam.exe -shutdown` 정상 종료(16:18:32) → 재실행. 16:18:52 서버 연결 복구, 계정은 U:1:0으로 로그인 대기. 사용자에게 일반 Steam 앱 로그인 요청. 이 시점 설치 BuildID/TargetBuildID는 모두 24922778 |
+| 클라이언트 복구 | 실행 중인 게임 없음 확인 후 Steam 정상 종료/재실행. 16:19:26 일반 Steam 로그인 OK, 16:19:34 새 빌드 다운로드 시작. 2026-09-09 16:22:04 설치 완료, manifest BuildID 25202408 확인. 영상·index/game/node-main·자막/player·스타일/로고·ffmpeg.dll 등 10개 SHA-256이 검증 배포본과 일치. 증거 `output/steam_20260909/installed_client_verified.json` |
 | 추가 Cloud 점검 항목 | 16:05 로그의 AutoCloud 실제 탐색 경로가 `%APPDATA%/ EXODUSER-HELL/saves`로 폴더명 앞에 공백 포함, 파일 0개. 현행 코드 저장 경로 `%APPDATA%/EXODUSER-HELL/saves`와 다름. 이번에는 경로/원격 세이브를 변경하지 않았으며 정상 로그인 복구 후 Cloud 설정 별도 점검 필요 |
 | 인증 유지 | `G:/exoduser-steam/builder/config/config.vdf`를 보존하고 다음 실행도 `+login shsia`만 사용. 암호·인증코드를 배포 명령에 넣지 않음. 계정 비밀번호 변경/세션 철회 등에 의한 서버 측 인증 만료까지 보장할 수는 없음 |
 | 패키지 목록 | SteamPipe 제외 규칙 적용 후 5,850개 파일·5,944,762,551바이트. 파일별 SHA-256은 `output/steam_20260909/package_manifest.json`에 기록 |
