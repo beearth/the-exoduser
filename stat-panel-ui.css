@@ -35,7 +35,7 @@
 #statPanel .growth-attributes{grid-column:1/-1;grid-row:1;display:grid;grid-template-columns:1fr auto;position:relative;padding:8px 10px 18px;border-block:1px solid #554134;background:linear-gradient(90deg,#2e252055,transparent 55%,#2e252022);margin-bottom:20px}
 #statPanel .growth-section-heading{display:flex;align-items:center;justify-content:space-between;gap:10px}
 #statPanel .growth-section-heading h2{font:600 15px/1.4 'Noto Serif KR',serif;letter-spacing:.05em;color:#dbc7aa;margin:0}
-#statPanel .growth-attributes>.growth-section-heading{grid-column:1/-1;margin-bottom:9px}
+#statPanel .growth-attributes>.growth-section-heading{grid-column:1/-1;margin-bottom:9px;flex-wrap:wrap}
 #statPanel .growth-small-note{position:absolute;right:112px;top:9px;margin:0;font-size:10px;color:#978d81}
 #statPanel #growthAmount{display:flex;gap:3px}
 #statPanel .growth-amount-btn{border:1px solid #4d4034;background:#161617;color:#978a7c;font-size:10px;padding:3px 8px}
@@ -60,8 +60,8 @@
 #statPanel .growth-stat-delta{grid-column:1;grid-row:3;align-self:center;font-size:11px;color:#edb486;font-variant-numeric:tabular-nums}
 #statPanel .growth-stat.pending::after{content:'◆';position:absolute;top:-5px;right:12px;font-size:7px;color:#efb486}
 #statPanel .growth-glyph{display:inline-flex;align-items:center;justify-content:center;flex-shrink:0;line-height:1}
-#statPanel #smToggleBtn{position:absolute;right:110px;top:8px;border:0!important;background:none!important;box-shadow:none!important;color:#cfaf87!important;font-size:10px;padding:2px 0}
-#statPanel .growth-attributes>.growth-small-note{left:150px;right:auto}
+#statPanel #smToggleBtn{position:static;margin-inline-start:auto;border:0!important;background:none!important;box-shadow:none!important;color:#cfaf87!important;font-size:10px;padding:2px 0}
+#statPanel .growth-attributes .growth-small-note{position:static;flex:1;min-width:0;margin:0}
 #statPanel .growth-text-button{border:0;background:none;padding:10px 0;color:#dab78d;text-align:left;font-size:11px}
 #statPanel .growth-library{display:grid;grid-template-columns:148px minmax(0,1fr);grid-template-rows:34px 33px minmax(0,1fr) auto;column-gap:22px;row-gap:8px;padding:0 0 0 10px}
 #statPanel .growth-library>.growth-section-heading{grid-column:1;grid-row:1;align-items:center;flex-wrap:wrap;gap:0}
@@ -219,7 +219,7 @@ body:has(#statPanel.on) #petSubtitle{visibility:hidden!important}
  #statPanel .growth-stat-value{font-size:22px}
  #statPanel .growth-stat{padding:8px;gap:3px}
  #statPanel .growth-stat-desc{font-size:9px}
- #statPanel .growth-attributes>.growth-small-note{display:none}
+ #statPanel .growth-attributes .growth-small-note{display:none}
  #statPanel .growth-passive{min-height:138px;padding:10px}
  #statPanel .growth-card-top{gap:7px}
  #statPanel .growth-card-top .growth-glyph{width:28px;height:28px}

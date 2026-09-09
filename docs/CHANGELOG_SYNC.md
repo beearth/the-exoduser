@@ -1,5 +1,17 @@
 > **2026-09-09 Steam 언어 목표 구현:** 31개 상점 항목→29개 내부 언어. 말레이어 추가, 세계관29×32큐·캐릭터28언어×39문장, UI779키 등록 및18,781개 번역 보완. 로비4선택창·게임29언어·성장1,247상태·관련45검사 PASS. 더빙 추가 없음. [현행 계약](16번역·로컬라이제이션/STEAM_LANGUAGE_SCOPE_20260909.md).
 
+## 2026-09-09 재시작 후 현지화 검색 후속 검수 마무리
+
+| 항목 | 변경 / 검증 |
+|---|---|
+| 검색 | `stat-panel-ui.js`: 현재 언어의 패시브 설명·효과 라벨과 한국어 이름을 검색 대상에 추가. 기존 이름·영문·ID 및 경로/습득/변경 중 필터 유지 |
+| 재실행 | `GROWTH_TEST_BROWSER_CHANNEL=chrome`으로 `test/localizedGrowthSearch.test.js` 4건 + `test/growthRemaster.test.js` 8건, 총12건 PASS. 기본 Playwright headless shell 미설치로 Chrome 사용 |
+| 검수 도구 | `tools/verify-localized-growth.py`: server.cjs:3333에서 언어별 성장 거래·필터·상한·문구·넘침 검사. 슬롯 API 대체와 저장 stub 사용. `--width` 기본1280, `--height` 기본720 |
+| 배치 수정 | 1280×720 러시아어 제목/투자 안내 겹침 재현. `game.html`에서 제목·안내·요약 버튼·투자 단위를 동일 flex 행으로 묶고 `stat-panel-ui.css`의 고정 위치를 제거. 상세 화면 높이를 보존하며 긴 번역은 필요 시 줄바꿈. 안내 width≤1050 숨김 유지 |
+| 거래·검색 회귀 | Chrome 검색4건·성장8건·거래4건·근성6건, 총22건 PASS |
+| 최종 화면 검증 | 1280×720의 29언어×55상태=1,595 PASS, 번역 누락/가로 넘침/검사 대상 겹침/페이지 오류0 (`tmp/localization_qa/growth-interactions-final-1280.json`). `tools/verify_growth_remaster.py`의 KO1920×1080/1280×720/960×720/600×900 및 EN1280×720 총5조합도 PASS. 상세 효과와7경로 가시 영역, 요약 열기/닫기·거래 확인 |
+| 문서 | 성장 UI·번역 검색 계약 동기화. 체코/헝가리·터키어 문서의 업화선 시전속도 교정을 완료 상태로 정정 |
+
 ## 2026-09-09 본섭 전체 소스 커밋 우선
 
 | 항목 | 내용 |

@@ -208,7 +208,7 @@
       const filters=[['all','전체','All'],['learned','습득','Learned'],['planned','변경 중','Pending']];
       $('growthFilters').replaceChildren(...filters.map(([key,ko,en])=>{const b=button(t(ko,en),'growth-filter',()=>{filter=key;render();},'filter-'+key);b.setAttribute('aria-pressed',String(filter===key));return b;}));
       const query=search.value.trim().toLocaleLowerCase();
-      const visible=api.passiveDefs.filter(d=>(!activePath||activePath.keys.includes(d.key))&&(filter==='all'||filter==='learned'&&state.passives[d.key]>0||filter==='planned'&&state.passives[d.key]!==live.passives[d.key])&&(!query||[name(d),d.nameEn,d.desc,d.descEn,d.key,...passiveEffects(d.key,0).flatMap(r=>[r.ko,r.en])].join(' ').toLocaleLowerCase().includes(query)));
+      const visible=api.passiveDefs.filter(d=>(!activePath||activePath.keys.includes(d.key))&&(filter==='all'||filter==='learned'&&state.passives[d.key]>0||filter==='planned'&&state.passives[d.key]!==live.passives[d.key])&&(!query||[name(d),d.name,d.nameEn,t(d.desc,d.descEn),d.desc,d.descEn,d.key,...passiveEffects(d.key,0).flatMap(r=>[t(r.ko,r.en),r.ko,r.en])].join(' ').toLocaleLowerCase().includes(query)));
       set('growthCount',`${visible.length} / ${api.passiveDefs.length}`);
       const cards=doc.createDocumentFragment();
       for(const def of visible){
