@@ -77,7 +77,7 @@
 | 항목 | 구현 / 검증 |
 |---|---|
 | 배포 | `video/title_motion.mp4?v=20260908-loop2`, H.264 1920×768, 24fps, 3.75초, 90프레임, 무음, 2,241,229바이트. 최초 5초 버전은 output에 보관 |
-| 시작 화면 | `index.html` phase 2의 `splashTitleVideo`를 `splashCanvas`에 contain-fit. 최초 로딩/오류 시 `img/title_art_1.png`, 이미지도 없으면 EXODUSER 텍스트. 재생 후 seek/buffering 중에는 직전 캔버스 프레임 유지 |
+| 시작 화면 | `index.html` phase 2의 `splashTitleVideo`를 `splashCanvas`에 표시. 2026-09-09 상하 채움: 영상 y=78·높이616px / 이미지 y=80·높이636px의 실제 그림만 소스 크롭, `dh=h,dw=h*titleWidth/sh,dx=Math.max((w-dw)/2,-dw*0.1)`, 가로 중앙·왼쪽 크롭 최대 10%로 로고 보호. 비율 유지·좌우 여백 허용·좁은 화면 좌우 크롭. 최초 로딩/오류 시 `img/title_art_1.png`, 이미지도 없으면 EXODUSER 텍스트. 재생 후 seek/buffering 중에는 직전 캔버스 프레임 유지 |
 | 재생 수명 | phase 2에서만 소스 할당·무음 반복. 탭 비활성 시 정지, 복귀 시 재생. 종료 시 pause·src 제거·load 및 visibility 리스너 해제 |
 | 기존 흐름 | FDG 3.2초, 타이틀 1초 페이드·1.2초 후 안내, 입력 대기·클릭/키/패드 진행·로비 복귀 스킵 유지 |
 | 검증 | 실제 Chromium: 영상 재생/루프/Enter 종료/로딩 실패 시 이미지와 클릭 종료/로비 복귀 PASS, pageerror 0. 1920×1080·1280×720 캡처 확인. 관련 Node 테스트 8개 PASS |

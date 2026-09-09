@@ -19,7 +19,7 @@
 | 기술 검증 | ffprobe로 크기·길이·프레임 수·무음 확인, FFmpeg 전체 디코딩 오류 없음, 로컬 저장 크기 일치 |
 | 생성 비용 | 성공 요청 10크레딧. 앞선 Seedance 2.5의 45크레딧 및 Kling 3.0의 8.75크레딧은 거래 내역에서 각각 전액 환불 확인 |
 | 실패 원인 | 앞선 두 요청은 상세 오류 없이 실패. 정규화와 단일 시작 프레임 및 Turbo 모델로 변경 후 성공했으나 정확한 원인은 확정하지 않음 |
-| 적용 상태 | `video/title_motion.mp4?v=20260908-loop2`로 배포. `index.html` phase 2에서 무음 native loop → `splashCanvas` contain-fit. 최초 로딩/오류 시 기존 이미지, 재생 후 seek/buffering 동안 직전 프레임 유지, 시작 화면 종료 시 미디어 해제. 원본 끝/시작 30프레임을 smoothstep으로 사전 혼합 |
+| 적용 상태 | `video/title_motion.mp4?v=20260908-loop2`로 배포. `index.html` phase 2에서 무음 native loop → `splashCanvas`. 2026-09-09: 영상 내부 검은 띠를 제외한 y=78·높이616px를 화면 높이에 맞춰 비율 유지·가로 중앙 표시(왼쪽 크롭 최대 10%로 좁은 화면 로고 보호). 넓은 화면 좌우 여백 허용, 좁은 화면 좌우 크롭. 이미지 폴백은 y=80·높이636px. 상세 공식은 스플래시 문서 참조. 최초 로딩/오류 시 기존 이미지, 재생 후 seek/buffering 동안 직전 프레임 유지, 시작 화면 종료 시 미디어 해제. 원본 끝/시작 30프레임을 smoothstep으로 사전 혼합 |
 | 루프 보정 | `tools/build_title_motion_loop.py`: 원본 30~89번 + smoothstep 혼합(90~119번, 0~29번). 마지막 29번에서 첫 30번으로 정상 인접 연결. 상세 공식·측정값은 스플래시 문서 참조 |
 | 런타임 계약 | `docs/3.1 ui hud 디자인/스플래시_인트로_시퀀스.md`의 타이틀 영상 연결 계약 참조 |
 | 최초 연결 검수 | 초기 5초 버전에서 1920×1080·1280×720 Chromium 캡처, 무음 재생/Enter 종료/실패 폴백 클릭 종료/로비 복귀 스킵 PASS. `output/cinematic/title_motion_ingame_20260908.json`, 관련 테스트 8개 PASS |

@@ -3790,11 +3790,13 @@ function showCharGate(charId){
         const titleWidth=titleSource.videoWidth||titleSource.naturalWidth;
         const titleHeight=titleSource.videoHeight||titleSource.naturalHeight;
         if(titleWidth&&titleHeight){
-          // contain fit — 로고와 원본 구도를 크롭 없이 유지.
-          const ir=titleWidth/titleHeight;
-          let dw,dh;
-          if(w/h>ir){dh=h;dw=h*ir}else{dw=w;dh=w/ir}
-          cx.drawImage(titleSource,(w-dw)/2,(h-dh)/2,dw,dh);
+          // 에셋에 구워진 검은 띠를 제외한 그림을 화면 높이에 맞춘다.
+          const isTitleVideo=titleSource===_titleVideo;
+          const sy=titleHeight*(isTitleVideo?78/768:80/793);
+          const sh=titleHeight*(isTitleVideo?616/768:636/793);
+          const dh=h,dw=dh*titleWidth/sh;
+          const dx=Math.max((w-dw)/2,-dw*0.1); // 좁은 화면에서도 왼쪽 로고 보존.
+          cx.drawImage(titleSource,0,sy,titleWidth,sh,dx,0,dw,dh);
         }else{
           cx.textAlign='center';cx.textBaseline='middle';
           cx.font="700 72px 'Cinzel Decorative','Cinzel',Georgia,serif";
