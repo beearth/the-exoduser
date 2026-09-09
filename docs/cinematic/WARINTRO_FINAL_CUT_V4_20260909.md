@@ -89,3 +89,18 @@ v4에서는 원생성 첫1.8초로 돌아가 A2초·B3.55초·C.95초를 직접6
 | 재현 | `resume_windows.py inspect`, `render`, `verify`; 원래 `render_final.py` 보존. FFmpeg8.0.1/libx264 fast CRF18, AAC192k, faststart |
 | 샷 매니페스트 | v3는 후반18컷만 editorial_shots에 기록했으므로 앞9컷을 기존 segments에서 복원하고 신규W16-D까지 총28컷을 명시. 0~6060프레임 연속·누락/겹침 없음 검사 |
 | Git 보관 | 회수한 향상본·완성본·검수·스크립트 보존. 재현 가능한 중복 `source_v3.mp4`, 100MiB 초과 `clean.mp4`, `fonts/`는 해당 폴더 `.gitignore`로 제외하고 로컬 유지. 원격 입력 URL은 `inputs.json` |
+
+## 간단한 재생 경로·음성 확인
+
+사용자가 긴 경로와 무음 재생을 보고하여 파일·브라우저의 음성을 확인하고 루트에 간단한 검수 복사본을 만들었다. 사용자가 실제 사용한 플레이어와 음소거 상태는 아직 확인되지 않았으므로 원인을 코덱 또는 음소거로 단정하지 않는다. 전후 비교본 `before_after.mp4`는 의도적으로 무음이다.
+
+| 파일 / 검사 | 결과 |
+|---|---|
+| 바로 재생할 엔딩 | `G:\exoduser\대검전사_엔딩.mp4`, 기존 `ending_final.mp4`의 동일 복사본. H.264/AAC48kHz·2채널,11.5초 |
+| 전체 | `G:\exoduser\대검전사_전체.mp4`, 기존101초 `final.mp4`의 동일 복사본 |
+| 호환 검수본 | `G:\exoduser\대검전사_엔딩_소리포함.webm`, 보관본 `full_review_v4/ending_with_opus.webm`. VP9/Opus160k·2채널, 16,163,746 bytes. 영상 길이·대사 시계 유지 |
+| WebM 재현 | FFmpeg 입력 ending_final.mp4, libvpx-vp9 CRF27/b:v0/deadline realtime/cpu-used6/row-mt1/threads4, libopus160k |
+| 원본 음성 | 엔딩 MP4 PCM peak0.59650/RMS0.05531. 상대 약0.5초 질문,5.54초 명령. 중간 질문 뒤3.7초 정적·발화 후 여운 유지 |
+| Chrome 검증 | headless Chrome에서 MP4·WebM 모두 currentTime≥2, muted=false, volume=1, readyState4, mediaError=null. Web Audio peak 각0.39608/0.39729, 오디오 디코딩 bytes 각41,697/32,356 |
+| 증거·범위 | `browser_audio_qa.json`. 실제 사용자 플레이어와 물리 스피커 출력은 검증하지 않음. 검수 브라우저의 native video DOM과 Web Audio를 확인 |
+| 로컬 복사본 | 루트3개 파일은 `.gitignore`로 중복 커밋 제외. canonical 영상·WebM 및 QA는 full_review_v4에 보관 |
