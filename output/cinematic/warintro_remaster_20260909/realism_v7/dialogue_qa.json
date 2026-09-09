@@ -1,0 +1,31 @@
+{
+  "duration_s": 101,
+  "ending_duration_s": 11.5,
+  "rate": 48000,
+  "channels": 2,
+  "split_s": 96.095,
+  "inserted_digital_silence_s": 1.04,
+  "seam_fade_s": 0.003,
+  "question_voice_s": [
+    90,
+    91.34
+  ],
+  "command_first_words_s": [
+    95.04,
+    96.04
+  ],
+  "sinner_alignment_s": [
+    97.24,
+    97.42
+  ],
+  "nominal_word_gap_s": 1.2,
+  "timing_basis": "Existing word alignment; phonetic boundary and delivery require listening review",
+  "caption_count": 22,
+  "unchanged_semantic_lines": 21,
+  "original_samples_identical_outside_seam": true,
+  "discarded_tail_was_silent": true,
+  "pause_peak": 0.0,
+  "voice_generation": false,
+  "realtime_listening_approved": false,
+  "video_generated": false
+}
