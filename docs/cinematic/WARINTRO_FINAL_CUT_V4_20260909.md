@@ -97,7 +97,7 @@ v4에서는 원생성 첫1.8초로 돌아가 A2초·B3.55초·C.95초를 직접6
 | 파일 / 검사 | 결과 |
 |---|---|
 | 바로 재생할 엔딩 | `G:\exoduser\대검전사_엔딩.mp4`, 기존 `ending_final.mp4`의 동일 복사본. H.264/AAC48kHz·2채널,11.5초 |
-| 전체 | `G:\exoduser\대검전사_전체.mp4`, 기존101초 `final.mp4`의 동일 복사본 |
+| 총합본 | `G:\exoduser\대검전사_스토리_총합본.mp4`, 기존101초 `final.mp4`의 동일 복사본. 사용자 요청으로 ‘대검전사_전체.mp4’에서 알아보기 쉬운 이름으로 변경 |
 | 호환 검수본 | `G:\exoduser\대검전사_엔딩_소리포함.webm`, 보관본 `full_review_v4/ending_with_opus.webm`. VP9/Opus160k·2채널, 16,163,746 bytes. 영상 길이·대사 시계 유지 |
 | WebM 재현 | FFmpeg 입력 ending_final.mp4, libvpx-vp9 CRF27/b:v0/deadline realtime/cpu-used6/row-mt1/threads4, libopus160k |
 | 원본 음성 | 엔딩 MP4 PCM peak0.59650/RMS0.05531. 상대 약0.5초 질문,5.54초 명령. 중간 질문 뒤3.7초 정적·발화 후 여운 유지 |

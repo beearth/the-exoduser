@@ -2,7 +2,7 @@
 
 | 항목 | 변경 / 검증 |
 |---|---|
-| 경로 | 프로젝트 루트에 대검전사_엔딩.mp4·대검전사_전체.mp4·대검전사_엔딩_소리포함.webm 제공. 중복 복사본은 Git 제외 |
+| 경로 | 프로젝트 루트에 대검전사_엔딩.mp4·대검전사_스토리_총합본.mp4·대검전사_엔딩_소리포함.webm 제공. 사용자 요청에 따라 전체 영상을 ‘대검전사_스토리_총합본.mp4’로 명확히 이름 변경. 중복 복사본은 Git 제외 |
 | 호환본 | 기존11.5초 엔딩을 VP9/Opus WebM으로 변환, 원본 MP4·대사·정적 시계 유지. full_review_v4/ending_with_opus.webm 보관 |
 | 음성 | MP4·WebM 모두 Chrome에서 음소거 해제 재생·오디오 디코딩·Web Audio 신호 확인. 사용자 실제 플레이어·스피커 출력 원인은 미확정. before_after.mp4는 무음 비교본 |
 | 기록 | [간단한 재생 경로·실측](cinematic/WARINTRO_FINAL_CUT_V4_20260909.md), browser_audio_qa.json |
