@@ -18,7 +18,7 @@
 | 자동 검증 | 29언어×43상태=1,247, 한국어 잔류0·가로 넘침0·페이지 오류0. 접근성용1px 숨김 레이블은 넘침 제외 |
 | 검토 수준 | 통합 담당의 원문·토큰·수치 대조. 독립 검토·출시용 원어민 감수 완료로 표기하지 않음 |
 | 후속 검수 도구 | `tools/verify-localized-growth.py`: `server.cjs:3333` 사용. `--width` 기본1280, `--height` 기본720. 언어별 적용·환불·닫기취소·잔고부족·레벨상한·경로/습득/변경 중 필터·검색 없음·문구/넘침/겹침 검사. 슬롯 API를 대체하고 저장 함수를 stub 처리한다. 결과 `tmp/localization_qa/growth-interactions-final-<width>.json`, ms/el/ar 화면 `growth-reviewed-<code>-<width>.png` |
-| 재시작 후 확인 | 검색 및 성장 회귀 총12건을 Chrome 채널로 재실행해 PASS. 종료 전 후속 산출물 `tmp/localization_qa/growth-interactions-final.json`은 29언어×55상태=1,595, 누락/넘침/페이지 오류0. 기존43상태 검사와 별도이며 전체 언어 검사를 이번에 재실행한 것은 아니다. |
+| 재시작 후 확인 | 검색 및 성장 회귀 총12건을 Chrome 채널로 재실행해 PASS. 번역 커버리지·런타임·언어 인계13건도 PASS. 전체 언어 조작 검사를 1280×720과1920×1080에서 각각29언어×55상태=1,595, 합계3,190상태 재실행해 누락/넘침/검사 대상 겹침/페이지 오류0을 확인했다. 결과 `tmp/localization_qa/growth-interactions-final-1280.json`, `growth-interactions-final-1920.json`. 종료 전 `growth-interactions-final.json` 및 기존43상태 검사는 별도 과거 증거다. |
 
 화면 검사는26패시브의 상세,5기본 속성,6경로,계획 추가/취소·전체환불·검색없음을 포함한다. `tmp/localization_qa/growth-final.json` 및 `growth_final_<code>.png`에 로컬 검사 산출물을 남겼다. 사용자 저장 API는 검사에서 대체하고 페이지 메모리만 사용했다.
 
