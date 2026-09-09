@@ -1,0 +1,15 @@
+{
+  "source_image": {
+    "path": "assets/cutscene/warintro/cin_ruins.jpg",
+    "sha256": "2d04a81505c754dec9be6e8b3ace24ab6547173518f61c8cdf9b17f9a26c007f"
+  },
+  "edited_image": {
+    "path": "output/cinematic/warintro_remaster_20260909/w02_v2/cin_ruins_empty_hands.png",
+    "sha256": "8696c7c4b3db0a1d147266f72c2b1354ca21235c1a2c68018015278adfa2b07c"
+  },
+  "reused_voice": {
+    "path": "output/cinematic/warintro_remaster_20260909/w02/voice.mp3",
+    "sha256": "ec7c1f2520f3de4ba9d4bca246649ee16a36a25ba1746d0d32a4de66def0414b"
+  },
+  "base_line": "wa04"
+}

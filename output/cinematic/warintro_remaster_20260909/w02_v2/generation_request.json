@@ -1,0 +1,31 @@
+{
+  "image_edit": {
+    "tool": "image_gen.imagegen",
+    "input": "assets/cutscene/warintro/cin_ruins.jpg",
+    "instruction": "Remove the entire sword/knife including blade, hilt and guard; reconstruct armor, cloth and rubble. Correct both empty armored hands into separate relaxed palm-down positions on their respective knees/thighs with natural wrists and fingers. Preserve bowed head, seated posture, identity, armor, cape, ruins, lighting, palette and framing."
+  },
+  "video": {
+    "model": "cinematic_studio_video_v2",
+    "duration": 5,
+    "aspect_ratio": "16:9",
+    "mode": "std",
+    "sound": "off",
+    "genre": "suspense",
+    "speedramp": "linear",
+    "multi_shots": false,
+    "multi_shot_mode": "custom",
+    "cfg_scale": 0.5,
+    "count": 1,
+    "medias": [
+      {
+        "role": "image",
+        "value": "68e55a77-6104-4ab2-8b2a-6d9865f707af"
+      }
+    ],
+    "prompt": "Animate this corrected illustration of an exhausted seated armored man in a burning ruined city. His hands are EMPTY and remain still, separately resting palm-down on their respective knees exactly as the input image. Preserve both gauntleted hands, all fingers, wrist alignment and forearm positions throughout the shot. No hand gestures, no gripping, no crossing hands, no weapons anywhere near the hands or between his legs. Keep the same bowed head, seated pose, face, armor, cape and wide ruined city composition. Only the surrounding flames flicker, smoke drifts slowly and ash floats through the scene. Extremely subtle shoulder breathing, hands and arms remain stationary. Very slow smooth camera drift forward, remaining a wide shot. Preserve detailed painterly illustration style and the existing fire-lit palette. Single uninterrupted silent shot. No new objects, characters, blades, daggers, swords, rods, handles, text, or subtitles."
+  },
+  "voice": {
+    "reuse": "../w02/voice.mp3",
+    "new_generation": false
+  }
+}
