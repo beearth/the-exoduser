@@ -1,0 +1,176 @@
+{
+  "status": "assembled_decode_verified",
+  "file": "final.mp4",
+  "easy_path": "G:\\exoduser\\대검전사_스토리_총합본.mp4",
+  "duration": 101,
+  "width": 1920,
+  "height": 1080,
+  "output_fps": 60,
+  "output_frames": 6060,
+  "source_motion_fps": 24,
+  "frame_conversion": "24fps footage at normal speed, duplicated frames to 60fps container; no optical flow or freeze padding",
+  "audio_codec": "aac",
+  "audio_channels": 2,
+  "audio_sample_rate": 48000,
+  "captions": 22,
+  "opening_source": "../full_review_v4/clean.mp4",
+  "opening_range": [
+    0,
+    46
+  ],
+  "shots": [
+    {
+      "shot": "w09",
+      "source": "w09.mp4",
+      "source_start": 0,
+      "start": 46.0,
+      "end": 50.5,
+      "frames": 270,
+      "speed": 1
+    },
+    {
+      "shot": "w10a",
+      "source": "w10a.mp4",
+      "source_start": 0,
+      "start": 50.5,
+      "end": 53.5,
+      "frames": 180,
+      "speed": 1
+    },
+    {
+      "shot": "w10b",
+      "source": "w10b.mp4",
+      "source_start": 0,
+      "start": 53.5,
+      "end": 56.0,
+      "frames": 150,
+      "speed": 1
+    },
+    {
+      "shot": "w10c",
+      "source": "w10c.mp4",
+      "source_start": 0,
+      "start": 56.0,
+      "end": 60.0,
+      "frames": 240,
+      "speed": 1
+    },
+    {
+      "shot": "w11a",
+      "source": "w11a.mp4",
+      "source_start": 0,
+      "start": 60.0,
+      "end": 62.5,
+      "frames": 150,
+      "speed": 1
+    },
+    {
+      "shot": "w11b",
+      "source": "w11b.mp4",
+      "source_start": 0,
+      "start": 62.5,
+      "end": 65.5,
+      "frames": 180,
+      "speed": 1
+    },
+    {
+      "shot": "w12",
+      "source": "w12.mp4",
+      "source_start": 0,
+      "start": 65.5,
+      "end": 70.0,
+      "frames": 270,
+      "speed": 1
+    },
+    {
+      "shot": "w13",
+      "source": "w13.mp4",
+      "source_start": 0,
+      "start": 70.0,
+      "end": 76.5,
+      "frames": 390,
+      "speed": 1
+    },
+    {
+      "shot": "w14",
+      "source": "w14.mp4",
+      "source_start": 0,
+      "start": 76.5,
+      "end": 82.0,
+      "frames": 330,
+      "speed": 1
+    },
+    {
+      "shot": "w15a",
+      "source": "w15a.mp4",
+      "source_start": 0,
+      "start": 82.0,
+      "end": 84.5,
+      "frames": 150,
+      "speed": 1
+    },
+    {
+      "shot": "w15b",
+      "source": "w15b.mp4",
+      "source_start": 0,
+      "start": 84.5,
+      "end": 87.0,
+      "frames": 150,
+      "speed": 1
+    },
+    {
+      "shot": "w15c",
+      "source": "w15c.mp4",
+      "source_start": 0,
+      "start": 87.0,
+      "end": 89.5,
+      "frames": 150,
+      "speed": 1
+    },
+    {
+      "shot": "w16a",
+      "source": "w16a.mp4",
+      "source_start": 0,
+      "start": 89.5,
+      "end": 91.5,
+      "frames": 120,
+      "speed": 1
+    },
+    {
+      "shot": "w16b",
+      "source": "w16b.mp4",
+      "source_start": 0,
+      "start": 91.5,
+      "end": 95.05,
+      "frames": 213,
+      "speed": 1
+    },
+    {
+      "shot": "w16c",
+      "source": "w16c.mp4",
+      "source_start": 0,
+      "start": 95.05,
+      "end": 97.8,
+      "frames": 165,
+      "speed": 1
+    },
+    {
+      "shot": "w16d",
+      "source": "w16d.mp4",
+      "source_start": 0,
+      "start": 97.8,
+      "end": 101.0,
+      "frames": 192,
+      "speed": 1
+    }
+  ],
+  "fade": [
+    100.2,
+    101
+  ],
+  "decode": "PASS",
+  "bytes": 94262447,
+  "sha256": "cc98d705edbf533cec1b5d41cfa6bd0b1cab2f65cd9a9f35e47c4caec1da1ccb",
+  "visual_review": "pending",
+  "listening_review": "pending"
+}

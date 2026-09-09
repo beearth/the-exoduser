@@ -1,0 +1,54 @@
+{
+  "status": "downloaded_selected_in_final",
+  "displayed_cost_total": 16,
+  "actual_balance_change_verified": false,
+  "prompts": "correction_prompts.md",
+  "clips": [
+    {
+      "file": "w10a_straight.mp4",
+      "asset_id": "02060b65-d4f3-4189-9482-404c44cd17a9",
+      "start_frame": "w10a_straight_start.png",
+      "duration": 5.041667,
+      "frames": 121,
+      "width": 1916,
+      "height": 1080,
+      "fps": 24,
+      "audio_streams": 0,
+      "displayed_cost": 8,
+      "bytes": 6589078,
+      "sha256": "1132179ce94e6451603de93124b13da1da6392960ca5192bf5dda9a4f333d97a",
+      "decode": "PASS",
+      "reviewed_contact_samples": 9,
+      "reviewed_range": [
+        0,
+        2.95
+      ],
+      "mean_adjacent_frame_difference": 0.73002028465271,
+      "near_duplicate_ratio": 0.014084507042253521,
+      "realtime_review": false
+    },
+    {
+      "file": "w16b_armor.mp4",
+      "asset_id": "6cee61a3-25e0-46da-a354-5b6906ba2620",
+      "start_frame": "w16b_start.png",
+      "duration": 5.041667,
+      "frames": 121,
+      "width": 1916,
+      "height": 1080,
+      "fps": 24,
+      "audio_streams": 0,
+      "displayed_cost": 8,
+      "bytes": 7930635,
+      "sha256": "eaf524a7d989af1f1e3fb92b54a45840063ff5858e61bf28aba1271e45c9078a",
+      "decode": "PASS",
+      "reviewed_contact_samples": 9,
+      "reviewed_range": [
+        0,
+        3.5
+      ],
+      "mean_adjacent_frame_difference": 1.055876612663269,
+      "near_duplicate_ratio": 0.0,
+      "realtime_review": false
+    }
+  ]
+}

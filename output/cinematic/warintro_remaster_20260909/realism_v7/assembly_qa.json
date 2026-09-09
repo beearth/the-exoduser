@@ -1,0 +1,27 @@
+{
+  "narration_correlation": 0.9999859212552877,
+  "internal_pause_rms": 0.0,
+  "captions": 22,
+  "contact_samples": [
+    47,
+    52,
+    54.5,
+    57,
+    61.5,
+    63.8,
+    66.5,
+    73,
+    79,
+    83.2,
+    85.4,
+    87.5,
+    90.5,
+    93,
+    95.5,
+    96.7,
+    97.4,
+    99
+  ],
+  "realtime_listening": false,
+  "realtime_motion_review": false
+}
