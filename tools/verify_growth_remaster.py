@@ -2,7 +2,7 @@
 import json
 from pathlib import Path
 from playwright.sync_api import sync_playwright
-OUT=Path('captures/growth_remaster_20260909');OUT.mkdir(parents=True,exist_ok=True)
+OUT=Path('captures/growth_visual_20260909');OUT.mkdir(parents=True,exist_ok=True)
 with sync_playwright() as p:
     browser=p.chromium.launch(headless=True)
     page=browser.new_page(viewport={'width':1920,'height':1080})
@@ -78,6 +78,16 @@ with sync_playwright() as p:
         geometry=page.locator('#statPanel .pbox').evaluate('(e)=>({width:e.clientWidth,scroll:e.scrollWidth,left:e.getBoundingClientRect().left,right:e.getBoundingClientRect().right})')
         assert geometry['scroll']<=geometry['width']+2,geometry
         assert geometry['left']>=0 and geometry['right']<=w+1,geometry
+        if w>=960:
+            visible=page.evaluate('''()=>{
+                const detail=document.getElementById('growthDetail'),box=detail.getBoundingClientRect();
+                const rows=[...detail.querySelectorAll('.growth-effect-row')];
+                const paths=document.getElementById('growthPaths');
+                return {lastEffectBottom:rows.at(-1).getBoundingClientRect().bottom,detailBottom:box.bottom,
+                    pathHeight:paths.clientHeight,pathScroll:paths.scrollHeight};
+            }''')
+            assert visible['lastEffectBottom']<=visible['detailBottom']+1,(w,h,lang,visible)
+            assert visible['pathScroll']<=visible['pathHeight']+2,(w,h,lang,visible)
         page.screenshot(path=str(OUT/f'growth_{w}_{lang}.png'))
         cases.append({'w':w,'h':h,'lang':lang,**geometry})
     page.set_viewport_size({'width':1920,'height':1080})

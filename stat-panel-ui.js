@@ -120,7 +120,8 @@
     const cancel=button('', 'growth-cancel',()=>{plan=createPlan(api.state());render();},'cancel');cancel.id='growthCancel';
     const footer=$('statClose').parentElement;footer.insertBefore(cancel,$('statClose'));footer.insertBefore(apply,$('statClose'));
     const planNotice=el('div','growth-plan-notice');planNotice.setAttribute('aria-live','polite');$('growthUpgradeNote').after(planNotice);
-    const liveLabel=el('p','growth-live-label');$('growthMetrics').before(liveLabel);
+    const liveLabel=el('p','growth-live-label'),resources=el('div','growth-resources');
+    resources.append(liveLabel,$('growthMetrics'));root.querySelector('.growth-header').append(resources);
     root.classList.add('growth-remaster');
     new MutationObserver(()=>{if(!root.classList.contains('on'))plan=null;}).observe(root,{attributes:true,attributeFilter:['class']});
     search.addEventListener('input',render);
@@ -153,9 +154,9 @@
       const changed=state.changes||0;
       const activePath=paths.find(p=>p.id===path);
       root.style.setProperty('--path-accent',activePath?.color||'#d99172');
-      set('growthKicker',t('EXODUSER · 성장의 각인','EXODUSER / CHARACTER FORGE'));
-      set('growthTitle',t('당신의 전투를 설계하라','Forge your fighting style'));
-      set('growthSubtitle',t('능력치로 기반을, 패시브로 전투의 방식을.','Attributes lay the foundation. Passives shape your combat.'));
+      set('growthKicker',t('EXODUSER · 캐릭터 성장','EXODUSER / CHARACTER'));
+      set('growthTitle',t('성장의 각인','Sigils of Ascension'));
+      set('growthSubtitle',t('힘을 벼리고, 당신의 길을 새기세요.','Temper your strength. Inscribe your path.'));
       set('growthSPLabel',t('계획 후 SP','SP AFTER PLAN'));set('spRemain',state.sp);
       set('growthAPLabel',t('계획 후 AP','AP AFTER PLAN'));set('apRemain',state.ap);
       set('growthAttributesTitle',t('기본 능력치','ATTRIBUTES'));
@@ -189,16 +190,18 @@
         const controls=el('div','growth-stat-controls');
         for(const direction of [-1,1]){const n=direction*amount,b=button((n>0?'+':'−')+amount,'growth-step',()=>change('stat',def.key,n),def.key+'-'+direction);b.disabled=!statChange(value,Math.max(max,current),state.sp,n);b.setAttribute('aria-label',name(def)+' '+(n>0?t('계획에 추가','Add to plan'):t('환불 계획','Plan refund'))+' '+amount);controls.append(b);}
         const delta=el('span','growth-stat-delta',value===current?'':`${current} → ${value}`);
-        item.append(head,el('p','growth-stat-desc',statEffects(def.key,1).map(r=>t(r.ko,r.en)+' +'+format(r)).join(' · ')),controls,delta);
+        item.append(head,el('p','growth-stat-desc',statEffects(def.key,1).slice(0,2).map(r=>t(r.ko,r.en)+' +'+format(r)).join(' · ')),controls,delta);
         item.title=t('투자 상한','Allocation cap')+': '+(max===Infinity?t('무제한','Uncapped'):max);
         item.classList.toggle('pending',value!==current);stats.append(item);
       }
       $('statGrid').replaceChildren(stats);
-      pathNav.replaceChildren(...[{id:'all',ko:'전체',en:'All',icon:null},...paths].map(p=>{
+      pathNav.replaceChildren(...[{id:'all',ko:'전체',en:'All',icon:null},...paths].map((p,i)=>{
         const b=button(undefined,'growth-path',()=>{path=p.id;selectedStat=null;if(p.keys&&!p.keys.includes(selected))selected=p.keys[0];$('passiveGrid').scrollTop=0;render();},'path-'+p.id);
         b.dataset.path=p.id;b.setAttribute('aria-pressed',String(path===p.id));
         if(p.color)b.style.setProperty('--school-color',p.color);
-        if(p.icon)b.append(icon(p.icon,20));
+        if(p.icon)b.append(icon(p.icon,28));
+        else {const star=el('span','growth-path-star','✦');star.setAttribute('aria-hidden','true');b.append(star);}
+        const numeral=el('span','growth-path-numeral',['','I','II','III','IV','V','VI'][i]);numeral.setAttribute('aria-hidden','true');b.append(numeral);
         b.append(el('span','',t(p.ko,p.en)));return b;
       }));
       pathHint.textContent=activePath?t(...activePath.hint):t('6개의 길 · 서로 조합 가능한 26개 패시브','6 paths · 26 freely combinable passives');
@@ -212,7 +215,7 @@
         const value=state.passives[def.key]||0,current=live.passives[def.key]||0,school=pathFor(def.key);
         const card=button(undefined,'growth-passive',()=>{selected=def.key;selectedStat=null;$('growthDetail').scrollTop=0;render();},'passive-'+def.key);
         card.dataset.passive=def.key;card.setAttribute('aria-pressed',String(!selectedStat&&selected===def.key));card.style.setProperty('--school-color',school?.color||'#c5b27c');
-        card.classList.toggle('pending',value!==current);
+        card.classList.toggle('pending',value!==current);card.classList.toggle('learned',value>0);card.classList.toggle('maxed',value>=def.max);
         const top=el('span','growth-card-top');top.append(icon(def.key,26),el('strong','growth-card-name',name(def)));
         const main=passiveEffects(def.key,value)[0];
         const bottom=el('span','growth-card-bottom');bottom.append(el('span','growth-card-rank',value===current?`Lv. ${value} / ${def.max}`:`${current} → ${value} / ${def.max}`),el('span','growth-card-cost',value>=def.max?'MAX':`${rankCost(value)} AP`));
