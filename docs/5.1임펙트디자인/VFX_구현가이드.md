@@ -739,6 +739,6 @@ Ori 수준 대기 깊이감. 광원 근처에서 존재감 나는 미세 입자.
 |---|---|
 | 렌더 | `_drawDarkPillar(ctx,fz,fade,now)`; 단독/합체 동일 `(.68+.08×sin(now×.004))×fade` (60~76%). 단독9~15%로 거의 투명했던 분기 제거 |
 | 합성 | `source-over`, save/restore로 알파·합성 모드 복원. 9기둥 `lighter` 누적 발광 제거. 범위 링·조명 추가 없음 |
-| 에셋 | 기존 `_MM_EXP_IMGS` 9장, 이미지 complete+naturalWidth 검사. 크기 `384×fz.r/120`, 중심 아래쪽75% 접지 |
-| 애니메이션 | `floor(fz.t/12)%9`, 게임 수명 기반 12f 간격. `_vfxFrame`/`_vfxTimer` 렌더 누적 제거 |
-| 확인 | 실제 브라우저 Canvas에서 동일 프레임의 이전12%·수정68%를 비교해 가시성 확인. 임시 비교 DOM은 제거. 실행 중 drawP에도 동일 함수 연결 |
+| 에셋 | `_VFX_SHEETS.lava_erupt`의 `assets/vfx/boss/vfx_lava_erupt.png`(2304×2304,3×3/768셀/9프레임). complete+naturalWidth 검사. 로딩 전 `_MM_EXP_IMGS` 폴백. 크기 `384×fz.r/120`, 중심 아래쪽75% 접지 |
+| 애니메이션 | 불기둥 `step=floor(fz.t/6)`, 최초0~8 분출 후3~8 유지 반복(10fps). 로딩 폴백만 기존 `floor(fz.t/12)%9`. 게임 수명 기반 |
+| 확인 | 실제 브라우저 Canvas에서 불기둥 분출/유지 프레임 확인. 주황 불티 `#ff9933/#dd4411/#ffcc66`. 임시 비교 DOM 제거. 현재 탭에도 적용. 이름·EL.D·기둥 수·범위·지속·소리 유지. 관련8개 PASS |

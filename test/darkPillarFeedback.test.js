@@ -23,12 +23,27 @@ test('standalone pillars stay visible without additive light stacking', () => {
       restore() { [this.globalAlpha, this.globalCompositeOperation] = stack.pop(); },
       drawImage(...args) { draws.push({ alpha: this.globalAlpha, blend: this.globalCompositeOperation, args }); } };
     const ctx = vm.createContext({ X, fz: { x: 0, y: 0, r: 125, t: 40, _pillarSpike: fused },
-      _now: 0, _dtSp: 1, _fzFade: 1, _MM_EXP_FRAMES: 9,
+      _now: 0, _dtSp: 1, _fzFade: 1, _VFX_SHEETS: {}, _MM_EXP_FRAMES: 9,
       _MM_EXP_IMGS: Array.from({ length: 9 }, () => ({ complete: true, naturalWidth: 768 })) });
     vm.runInContext(fn('_drawDarkPillar') + body, ctx);
     assert.equal(draws.length, 1);
     assert.ok(draws[0].alpha >= .6, 'standalone pillar must not be almost transparent');
     assert.equal(draws[0].blend, 'source-over');
+  }
+});
+
+test('pillars use the fire eruption sheet and sustain its flame frames', () => {
+  const draws = [], img = { complete: true, naturalWidth: 2304, naturalHeight: 2304 };
+  const ctx = vm.createContext({ _VFX_SHEETS: { lava_erupt: { img, fw: 768, fh: 768, frames: 9, cols: 3 } },
+    _MM_EXP_FRAMES: 9, _MM_EXP_IMGS: Array.from({length:9}, () => ({complete:true,naturalWidth:768})) });
+  vm.runInContext(fn('_drawDarkPillar'), ctx);
+  const canvas = { save() {}, restore() {}, drawImage(...args) { draws.push(args); } };
+  for (const t of [0, 12, 48, 54, 90]) ctx._drawDarkPillar(canvas, {x:0,y:0,r:125,t}, 1, 0);
+  for (const [i, frame] of [0, 2, 8, 3, 3].entries()) {
+    assert.equal(draws[i][0], img);
+    assert.deepEqual(draws[i].slice(1, 5), [(frame % 3) * 768, Math.floor(frame / 3) * 768, 768, 768]);
+    assert.equal(draws[i][7], 400);
+    assert.equal(draws[i][8], 400);
   }
 });
 test('standalone cast creates one pillar and eight delayed pillars with one summon sound', () => {

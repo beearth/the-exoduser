@@ -34282,14 +34282,14 @@ function update(){
               '#aaeeff',1+Math.random()*2,4+Math.random()*6);
           }
         }else if(fz.type==='darkPillar'){
-          // 악의기둥 파티클 — 보라 상승 + 암흑 파편
+          // 불기둥 외형 — 주황 불티 상승 (피해 속성은 기존 EL.D)
           poolPart(fz.x+Math.cos(_fza)*_fzd*.4,fz.y+Math.sin(_fza)*_fzd*.4,
             (Math.random()-.5)*2,-3-Math.random()*5,
-            Math.random()>.5?'#9944cc':'#6622aa',2+Math.random()*3,8+Math.random()*10);
+            Math.random()>.5?'#ff9933':'#dd4411',2+Math.random()*3,8+Math.random()*10);
           if(Math.random()>.4){
             poolPart(fz.x+(Math.random()-.5)*fz.r*.3,fz.y+(Math.random()-.5)*fz.r*.3,
               (Math.random()-.5)*1,-4-Math.random()*6,
-              '#cc88ff',1+Math.random()*2,5+Math.random()*7);
+              '#ffcc66',1+Math.random()*2,5+Math.random()*7);
           }
         }else if(fz.type==='boneStorm'){
           // 해골번개 파티클 — 뼈 파편 + 암흑 스파크
@@ -42462,10 +42462,23 @@ function _playDarkPillarCastSound(){
   playNoise(.28,500,.07,120,.02,'lowpass');
 }
 function _drawDarkPillar(ctx,fz,fade,now){
+  const fire=_VFX_SHEETS.lava_erupt;
+  const size=384*fz.r/120;
+  if(fire&&fire.img.complete&&fire.img.naturalWidth){
+    const step=Math.floor((fz.t||0)/6);
+    const frame=step<9?step:3+(step-9)%6; // 분출 후 불기둥 유지 프레임 반복
+    ctx.save();
+    ctx.globalAlpha=(.68+.08*Math.sin(now*.004))*fade;
+    ctx.globalCompositeOperation='source-over';
+    ctx.drawImage(fire.img,(frame%3)*fire.fw,Math.floor(frame/3)*fire.fh,fire.fw,fire.fh,
+      fz.x-size/2,fz.y-size*.75,size,size);
+    ctx.restore();
+    return;
+  }
+  // 화염 시트 로딩 전에는 기존 기둥을 폴백으로 표시
   const frame=Math.floor((fz.t||0)/12)%_MM_EXP_FRAMES;
   const img=_MM_EXP_IMGS[frame];
   if(!img||!img.complete||!img.naturalWidth)return;
-  const size=384*fz.r/120;
   ctx.save();
   ctx.globalAlpha=(.68+.08*Math.sin(now*.004))*fade;
   ctx.globalCompositeOperation='source-over';
