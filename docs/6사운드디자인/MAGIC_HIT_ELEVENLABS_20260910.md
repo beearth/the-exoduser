@@ -1,6 +1,6 @@
 # ElevenLabs 마법 피격음 후보 — 2026-09-10
 
-사용자 지시: 이전 Python 합성 후보 4종은 채택하지 않는다. 처음 만든 `sfx/hit/player_projectile_impact.wav`를 현재 게임에 유지하고, 새 후보는 ElevenLabs로 생성한다. 코드의 샘플 매핑·유효 충돌 연결과 파일 SHA256 보존을 확인했다. 새 마법 후보는 선택 전이며 런타임 교체는 하지 않았다.
+이 후보 제작 당시 사용자 지시: 이전 Python 합성 후보 4종은 채택하지 않는다. 처음 만든 `sfx/hit/player_projectile_impact.wav`를 당시 게임에 유지하고, 새 후보는 ElevenLabs로 생성한다. 코드의 샘플 매핑·유효 충돌 연결과 파일 SHA256 보존을 확인했다. 새 마법 후보는 선택 전이며 런타임 교체는 하지 않았다.
 
 | 항목 | 값 |
 |---|---|
@@ -52,3 +52,8 @@ SHA256: `fe0771d9ffa8c179a03ac261edc805c45a0bf59655107a4e5cba44fcc60e09c7`
 요청·해시는 제작_기록.json, 측정값은 검증.json, 브라우저 결과는 재생_검증.json에 기록한다. 재실행 시 존재하는 MP3는 다시 생성하지 않는다. 기존 파일이 모두 완료되었을 때만 manifest status를 generated로 기록한다.
 
 [공식 API 문서](https://elevenlabs.io/docs/api-reference/text-to-sound-effects/convert).
+
+
+## 후속 적용 상태
+
+현재 게임에는 사용자 선택③ [Freesound Bisqo855371 편집본](BISQO_MAGIC_HIT_20260910.md)을 연결했다. 이 문서의 후보·현재음 비교 파일은 제작 당시 소리를 보존한 이력이다.

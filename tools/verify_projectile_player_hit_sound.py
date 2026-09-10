@@ -1,7 +1,10 @@
-import json
+import json,wave
 from pathlib import Path
 from playwright.sync_api import sync_playwright
-OUT=Path(__file__).resolve().parents[1]/'output/audio/projectile_player_hit_20260910'
+ROOT=Path(__file__).resolve().parents[1]
+OUT=ROOT/'output/audio/bisqo_magic_hit_20260910'
+with wave.open(str(ROOT/'sfx/hit/player_projectile_impact.wav'),'rb') as w:
+    expected_duration=w.getnframes()/w.getframerate()
 with sync_playwright() as p:
     browser=p.chromium.launch(headless=True)
     page=browser.new_page()
@@ -37,7 +40,7 @@ with sync_playwright() as p:
     }''')
     assert result['after']<result['before'] and result['accepted']==1 and result['immune']==1,result
     assert result['denseBurstSounds']==1 and all(h['started'] and h['priority']==8 for h in result['played']),result
-    assert abs(result['bufferDuration']-.18)<=1/result['sampleRate'] and result['audioState']=='running' and not errors,result
+    assert abs(result['bufferDuration']-expected_duration)<=1/result['sampleRate'] and result['audioState']=='running' and not errors,result
     report={'status':'PASS','runtime':result,'page_errors':errors,'real_save_writes':False,'scope':'isolated real damage and Web Audio pipeline; combat modifiers neutralized for deterministic QA'}
     (OUT/'browser_qa.json').write_bytes((json.dumps(report,ensure_ascii=False,indent=2)+'\n').encode('utf-8'))
     print(json.dumps(report),flush=True)

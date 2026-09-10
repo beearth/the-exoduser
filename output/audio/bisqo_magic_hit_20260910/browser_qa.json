@@ -1,0 +1,30 @@
+{
+  "status": "PASS",
+  "runtime": {
+    "before": 1000,
+    "after": 991,
+    "accepted": 1,
+    "immune": 1,
+    "denseBurstSounds": 1,
+    "played": [
+      {
+        "started": true,
+        "volume": 0.55,
+        "rate": 1.0373587890393086,
+        "priority": 8
+      },
+      {
+        "started": true,
+        "volume": 0.55,
+        "rate": 0.95403733260574,
+        "priority": 8
+      }
+    ],
+    "bufferDuration": 0.42,
+    "sampleRate": 44100,
+    "audioState": "running"
+  },
+  "page_errors": [],
+  "real_save_writes": false,
+  "scope": "isolated real damage and Web Audio pipeline; combat modifiers neutralized for deterministic QA"
+}

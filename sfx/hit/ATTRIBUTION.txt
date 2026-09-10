@@ -1,0 +1,10 @@
+DSGNSrce_Deep Dark Magic Impact Short Kick 016_GMcM_FS1DM
+Creator: Bisqo
+Source: https://freesound.org/people/Bisqo/sounds/855371/
+License: Creative Commons Attribution 4.0 International
+https://creativecommons.org/licenses/by/4.0/
+Source file used: Freesound public HQ MP3 preview (not the original 24-bit WAV).
+https://cdn.freesound.org/previews/855/855371_6779432-hq.mp3
+Modified for Hell Road: 70 Hz high-pass, stereo to mono, crop 0.060-0.480 s,
+2 ms fade-in, final 120 ms squared fade-out, gain normalization, 48 kHz PCM16 WAV.
+Used in: sfx/hit/player_projectile_impact.wav

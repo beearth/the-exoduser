@@ -1,3 +1,14 @@
+## 2026-09-10 사용자 선택 Bisqo 마법 피격음 적용
+
+| 항목 | 내용 |
+|---|---|
+| 교체 | 최초180ms 합성음→Freesound Bisqo855371의420ms 편집본 |
+| 편집 | 70Hz high-pass,0.060~0.480초 크롭,2ms 어택,120ms 제곱 페이드,RMS0.135 |
+| 연결 | 동일 샘플키·volume0.55·100ms 간격 유지, URL bisqo-855371-v1로 캐시 갱신 |
+| 출처 | Bisqo, CC BY4.0, sfx/hit/ATTRIBUTION.txt, 공개 HQ MP3에서 편집 |
+| 검증 | 기존10개 테스트·실제 피해/샘플 큐/Web Audio0.42초 재생 PASS |
+| 문서 | docs/6사운드디자인/BISQO_MAGIC_HIT_20260910.md |
+
 ## 2026-09-10 ElevenLabs 마법 피격음 3종
 
 | 항목 | 내용 |
