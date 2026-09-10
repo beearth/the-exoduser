@@ -1,0 +1,30 @@
+{
+  "source": "procedural, no voice or music",
+  "sample_rate": 48000,
+  "duration_s": 0.18,
+  "channels": 1,
+  "bits": 16,
+  "samples": 8640,
+  "seed": 20260910,
+  "peak": 0.75,
+  "rms": 0.13535475695863486,
+  "body_pitch_hz": [
+    180,
+    65
+  ],
+  "body_decay_s": 0.042,
+  "crack_band_hz": [
+    700,
+    5800
+  ],
+  "crack_decay_s": 0.011,
+  "grit_band_hz": [
+    180,
+    2300
+  ],
+  "grit_decay_s": 0.045,
+  "tick_hz": 1370,
+  "attack_s": 0.001,
+  "end_fade_s": 0.012,
+  "bytes": 17324
+}
