@@ -4,7 +4,7 @@ import vm from 'node:vm';
 import { createRealtimeTrailer } from '../tools/trailer_realtime_20260909.mjs';
 import { resetScene } from '../tools/trailer_scenes_20260909.mjs';
 
-async function installed(){
+async function installed(render='draw=function(){return G.txts}'){
   const ctx={fillRect(){},drawImage(){}};
   const c=vm.createContext({document:{createElement:()=>({getContext:()=>ctx}),getElementById:()=>null},
     actx:()=>({state:'running',createMediaStreamDestination:()=>({})}),mbus(){},_comp:{connect(){}},
@@ -12,12 +12,25 @@ async function installed(){
     P:{hp:850,mhp:1000,mp:1,mmp:10,st:2,mst:20,iframes:12,_dead:false,rage:0},
     G:{kills:0},ens:[],performance:{now:()=>1000},_gameTime:0});
   // This fake renderer reads the same VM state as the real renderer.
-  vm.runInContext('window=globalThis;drawP=function(){return P.iframes>0?.3:1}',c);
+  vm.runInContext('window=globalThis;drawP=function(){return P.iframes>0?.3:1};'+render,c);
   const recording=createRealtimeTrailer({root:'.',cdp:{send:async(_method,{expression})=>({result:{value:vm.runInContext(expression,c)}})}});
   await recording.install();
   vm.runInContext('__rt.active=true;__rt.protect=true;__rt.start=1000',c);
   return c;
 }
+test('damage-text capture passes original floating numbers to the game renderer',async()=>{
+  const c=await installed();
+  const texts=[{t:'12345',_numStr:'12345',life:30}];c.G.txts=texts;
+  c.__rt.damageText=true;
+  assert.equal(vm.runInContext('draw()',c),texts);
+  assert.equal(c.G.txts,texts);
+});
+test('default clean capture hides text and restores the original pool even if drawing fails',async()=>{
+  const c=await installed('draw=function(){if(G.txts.length)throw Error("visible");throw Error("render failed")}');
+  const texts=[{t:'12345',_numStr:'12345',life:30}];c.G.txts=texts;
+  assert.throws(()=>vm.runInContext('draw()',c),/render failed/);
+  assert.equal(c.G.txts,texts);
+});
 test('capture resource refill cannot heal damage or overwrite gameplay iframes',async()=>{
   const c=await installed();vm.runInContext('_drawBurst()',c);
   assert.equal(c.P.hp,850);assert.equal(c.P.iframes,12);

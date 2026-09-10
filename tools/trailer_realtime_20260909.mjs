@@ -13,7 +13,7 @@ export function createRealtimeTrailer({cdp,root}){
   window.__rt={canvas,ctx,audio,original,originalDraw,active:false,events:[],samples:[]};
   // Suppress only the visual hit flicker. Collision/update always sees real iframes.
   drawP=function(){if(!window.__rt.active)return originalDrawP.apply(this,arguments);const saved=P.iframes;try{P.iframes=0;return originalDrawP.apply(this,arguments);}finally{P.iframes=saved;}};
-  draw=function(){const r=window.__rt;if(r.active&&r.framing==='boss'){const b=ens.find(e=>e.ib&&e.alive);if(b){G.cam.x=(P.x+b.x)*.5;G.cam.y=(P.y+b.y)*.5-60;}}if(!r.active)return originalDraw.apply(this,arguments);const texts=G.txts;try{G.txts=[];return originalDraw.apply(this,arguments);}finally{G.txts=texts;}};
+  draw=function(){const r=window.__rt;if(r.active&&r.framing==='boss'){const b=ens.find(e=>e.ib&&e.alive);if(b){G.cam.x=(P.x+b.x)*.5;G.cam.y=(P.y+b.y)*.5-60;}}if(!r.active||r.damageText)return originalDraw.apply(this,arguments);const texts=G.txts;try{G.txts=[];return originalDraw.apply(this,arguments);}finally{G.txts=texts;}};
   _drawBurst=function(){original.apply(this,arguments);const r=window.__rt;if(!r.active)return;
    const now=performance.now(),t=(now-r.start)/1000;
    if(r.protect){P.mp=P.mmp;P.st=P.mst;}
