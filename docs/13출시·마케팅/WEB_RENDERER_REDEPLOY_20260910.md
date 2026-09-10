@@ -1,5 +1,7 @@
 # 렌더러 비교 버전 웹 재배포 — 2026-09-10
 
+> **대상 정정:** hell-smoky는 다른 프로젝트였다. 실제 사용자 서비스는 **the-exoduser.vercel.app**. 아래 검증은 hell의 이력으로 보존하며 [대상 정정](PRODUCTION_TARGET_CORRECTION_20260910.md)을 우선한다.
+
 사용자 지시: 렌더러 비교 수정 후 “배포다시해봐”. 대상은 기존 `.vercel/project.json`의 hell 프로젝트, 실제 Production 도메인 `hell-smoky.vercel.app`.
 
 | 항목 | 내용 |

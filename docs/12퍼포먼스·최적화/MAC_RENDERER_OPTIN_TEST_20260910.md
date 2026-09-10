@@ -1,5 +1,7 @@
 # Mac 금색 세로 띠 — 렌더러 선택 비교 테스트
 
+> **실제 서비스 정정:** 사용자 주소는 **the-exoduser.vercel.app**. 아래 hell-smoky 검증은 다른 프로젝트의 결과이며 사용자 Mac이 해당 수정본을 실행했다는 증거가 아니다. [정정 기록](../13출시·마케팅/PRODUCTION_TARGET_CORRECTION_20260910.md).
+
 **상태: 테스트 버전 구현·Production 재배포·배포 원문 대조·Windows 시작 로그 검증 완료. 사용자는 Mac에서 동일 증상과 화면 고정 띠를 다시 보고했다. 실제 Mac 백엔드 로그·FPS 비교는 PENDING이며 해결되지 않았다. [광선 단독 비교](MAC_FIXED_RAY_ISOLATION_20260910.md).**
 
 | 항목 | 근거·현행 값 |
