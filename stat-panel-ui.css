@@ -559,3 +559,80 @@ body:has(#statPanel.on) #petSubtitle{visibility:hidden!important}
 #statPanel.growth-constellation .growth-star:focus-visible{outline-offset:0!important}
 #statPanel.growth-constellation .growth-rank-target{font:12px Georgia,serif;color:#e4c184;text-align:start;margin:0 0 12px}
 #statPanel.growth-constellation .growth-tree-viewport{background:radial-gradient(ellipse at 50% 45%,#4a554116,transparent 65%),#0b100f}
+
+/* 2026-09-10: use the viewport and keep the growth ledger readable. */
+#statPanel.growth-body-tree{font-size:18px;--growth-muted:#c4b7a6}
+#statPanel.growth-body-tree .pbox.growth-shell{width:calc(100vw - 16px)!important;height:calc(100dvh - 16px)!important;max-width:none!important;max-height:calc(100dvh - 16px)!important;border-width:8px!important;padding:0 14px!important;transform:none!important}
+#statPanel.growth-body-tree .panel-nav-tab{font-size:16px!important;padding:10px 14px!important;letter-spacing:0}
+#statPanel.growth-body-tree .growth-header{padding:12px 6px;margin-bottom:12px;gap:24px}
+#statPanel.growth-body-tree .ptitle.growth-title{font-size:38px!important}
+#statPanel.growth-body-tree .growth-kicker,#statPanel.growth-body-tree .growth-live-label,#statPanel.growth-body-tree .growth-metric span,#statPanel.growth-body-tree .growth-wallet span{font-size:14px;color:#c4b7a6}
+#statPanel.growth-body-tree .growth-subtitle{font-size:16px;color:#c4b7a6}
+#statPanel.growth-body-tree .growth-metric strong{font-size:28px}
+#statPanel.growth-body-tree .growth-wallet strong{font-size:36px}
+#statPanel.growth-body-tree .growth-body{grid-template-columns:minmax(0,1fr) 420px;gap:20px}
+#statPanel.growth-body-tree .growth-library{grid-template-columns:220px minmax(0,1fr);grid-template-rows:32px 44px minmax(0,1fr) auto auto 42px;gap:10px 16px}
+#statPanel.growth-body-tree .growth-library>.growth-section-heading h2{font-size:18px}
+#statPanel.growth-body-tree #growthCount,#statPanel.growth-body-tree .growth-path>span.growth-path-count{font-size:14px!important;color:#c4b7a6}
+#statPanel.growth-body-tree .growth-search,#statPanel.growth-body-tree .growth-path,#statPanel.growth-body-tree .growth-filter{font-size:16px}
+#statPanel.growth-body-tree .growth-path{min-height:52px;max-height:none;padding:10px 6px;color:#e0d4c1}
+#statPanel.growth-body-tree .growth-path-hint{font-size:14px;line-height:1.6;color:#c4b7a6}
+#statPanel.growth-body-tree #smToggleBtn{font-size:15px;max-width:none;white-space:normal}
+#statPanel.growth-body-tree .growth-amount-btn,#statPanel.growth-body-tree .growth-zoom-button{font-size:16px;min-width:36px;min-height:34px;height:auto}
+#statPanel.growth-body-tree .growth-inspector{padding:16px 18px;overflow:auto}
+#statPanel.growth-body-tree .growth-inspector-label,#statPanel.growth-body-tree .growth-detail-category,#statPanel.growth-body-tree .growth-rank-transition>span:first-child,#statPanel.growth-body-tree .growth-rank-target{font-size:16px;color:#d5c2a2}
+#statPanel.growth-body-tree .growth-detail-name{font-size:36px;margin-bottom:18px}
+#statPanel.growth-body-tree .growth-effect-row{font-size:18px;line-height:1.55;gap:12px;padding:12px 0}
+#statPanel.growth-body-tree .growth-effect-row:nth-child(2){font-size:18px}
+#statPanel.growth-body-tree .growth-effect-before{font-size:18px}
+#statPanel.growth-body-tree .growth-effect-row strong,#statPanel.growth-body-tree .growth-effect-row:nth-child(2)>:last-child{font-size:24px}
+#statPanel.growth-body-tree .growth-effect-columns{font-size:14px;color:#c4b7a6}
+#statPanel.growth-body-tree .growth-effect,#statPanel.growth-body-tree .growth-tradeoff{font-size:18px;line-height:1.7;color:#d5c8b6}
+#statPanel.growth-body-tree .growth-upgrade,#statPanel.growth-body-tree .growth-refund{font-size:18px;min-height:44px}
+#statPanel.growth-body-tree #growthUpgradeNote,#statPanel.growth-body-tree .growth-plan-notice,#statPanel.growth-body-tree .growth-footer-note{font-size:14px;line-height:1.6;color:#c4b7a6}
+#statPanel.growth-body-tree .growth-reset,#statPanel.growth-body-tree .growth-cancel,#statPanel.growth-body-tree .growth-close,#statPanel.growth-body-tree .growth-apply{font-size:16px;min-height:44px}
+#statPanel.growth-body-tree .growth-footer{padding:10px 4px 2px;gap:14px}
+#statPanel.growth-body-tree .growth-draft-heading,#statPanel.growth-body-tree .growth-draft-entry{font-size:16px}
+#statPanel.growth-body-tree .growth-draft-entry strong{font-size:18px}
+#statPanel.growth-body-tree .growth-node-preview{width:380px}
+#statPanel.growth-body-tree .growth-preview-name{font-size:20px}
+#statPanel.growth-body-tree .growth-preview-rank,#statPanel.growth-body-tree .growth-preview-columns{font-size:14px}
+#statPanel.growth-body-tree .growth-preview-row{font-size:16px}
+#statPanel.growth-body-tree .growth-preview-row>strong{font-size:18px}
+#statPanel.growth-constellation .growth-body-node{width:36px;height:36px}
+#statPanel.growth-constellation .growth-body-node.major{width:44px;height:44px}
+#statPanel.growth-constellation .growth-card-name{font-size:16px;width:150px;color:#f0dfbd}
+#statPanel.growth-constellation :is([data-passive=pAbund],[data-passive=pStamina]) .growth-card-name{top:auto;bottom:calc(100% + 36px);transform-origin:bottom center}
+#statPanel.growth-constellation .growth-stat-select::after{font-size:14px}
+#statPanel.growth-constellation .growth-card-rank::after,#statPanel.growth-constellation .growth-stat-value{font-size:14px}
+#statPanel.growth-constellation .growth-star-mark{width:11px;height:11px}
+#statPanel.growth-constellation .growth-star.terminal .growth-star-mark{width:14px;height:14px}
+@media(min-width:781px) and (max-width:1600px){
+ #statPanel.growth-body-tree .growth-body{grid-template-columns:minmax(0,1fr) 350px;gap:14px}
+ #statPanel.growth-body-tree .growth-library{grid-template-columns:180px minmax(0,1fr);column-gap:12px}
+ #statPanel.growth-body-tree .growth-inspector{padding:12px}
+ #statPanel.growth-body-tree .growth-path{gap:6px}
+}
+@media(min-width:781px) and (max-width:1100px){
+ #statPanel.growth-body-tree .growth-body{grid-template-columns:minmax(0,1fr) 320px;gap:10px}
+ #statPanel.growth-body-tree .growth-library{grid-template-columns:160px minmax(0,1fr);column-gap:10px}
+ #statPanel.growth-body-tree .growth-footer-note{display:none}
+ #statPanel.growth-body-tree .growth-footer{justify-content:flex-end}
+}
+@media(max-height:800px) and (min-width:781px){
+ #statPanel.growth-body-tree .growth-header{padding:6px 4px;margin-bottom:8px}
+ #statPanel.growth-body-tree .ptitle.growth-title{font-size:30px!important}
+ #statPanel.growth-body-tree .growth-kicker,#statPanel.growth-body-tree .growth-subtitle{display:none}
+}
+@media(max-width:780px){
+ #statPanel.growth-body-tree .pbox.growth-shell{width:calc(100vw - 8px)!important;height:calc(100dvh - 8px)!important;max-height:calc(100dvh - 8px)!important;border-width:4px!important;padding:0 8px!important;overflow-y:auto!important}
+ #statPanel.growth-body-tree .panel-nav{overflow-x:auto;flex-wrap:nowrap}
+ #statPanel.growth-body-tree .panel-nav-tab{flex:none!important;white-space:nowrap}
+ #statPanel.growth-body-tree .growth-body{display:flex;flex-direction:column}
+ #statPanel.growth-body-tree .growth-library{grid-template-columns:minmax(0,1fr) auto;grid-template-rows:38px auto 44px max(510px,65dvh)}
+ #statPanel.growth-body-tree .growth-path{font-size:16px;min-width:110px;min-height:50px}
+ #statPanel.growth-body-tree .growth-search{width:180px}
+ #statPanel.growth-body-tree .growth-inspector{min-height:560px;overflow:visible}
+ #statPanel.growth-body-tree .growth-footer{flex-wrap:wrap;gap:8px}
+ #statPanel.growth-body-tree .growth-footer-note{display:none}
+}
