@@ -8,3 +8,4 @@ https://cdn.freesound.org/previews/855/855371_6779432-hq.mp3
 Modified for Hell Road: 70 Hz high-pass, stereo to mono, crop 0.060-0.480 s,
 2 ms fade-in, final 120 ms squared fade-out, gain normalization, 48 kHz PCM16 WAV.
 Used in: sfx/hit/player_projectile_impact.wav
+Runtime aliases: player_projectile_impact, bullet_hit, bean_hit.

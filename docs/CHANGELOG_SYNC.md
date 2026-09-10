@@ -1,3 +1,12 @@
+## 2026-09-10 탄막의 적 명중음도 Bisqo 편집본으로 통일
+
+| 항목 | 내용 |
+|---|---|
+| 매핑 | bullet_hit·bean_hit→player_projectile_impact.wav?v=bisqo-855371-v1 |
+| 기존 계약 | volume0.15/0.1,PROJ1,동시5/모바일2,거리감쇄·블루콩4프레임 소리 쿨 유지 |
+| 검증 | 기존12개 테스트 PASS, 두 키 동일PCM·0.42초·PROJ1·Web Audio 재생 확인 |
+| 문서 | docs/6사운드디자인/BISQO_MAGIC_HIT_20260910.md |
+
 ## 2026-09-10 사용자 선택 Bisqo 마법 피격음 적용
 
 | 항목 | 내용 |

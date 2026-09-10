@@ -1,0 +1,38 @@
+{
+  "status": "PASS",
+  "runtime": {
+    "buffers": [
+      {
+        "key": "bullet_hit",
+        "url": "sfx/hit/player_projectile_impact.wav?v=bisqo-855371-v1",
+        "duration": 0.42,
+        "sameAsPlayerImpact": true,
+        "priority": 1
+      },
+      {
+        "key": "bean_hit",
+        "url": "sfx/hit/player_projectile_impact.wav?v=bisqo-855371-v1",
+        "duration": 0.42,
+        "sameAsPlayerImpact": true,
+        "priority": 1
+      }
+    ],
+    "played": [
+      {
+        "key": "bullet_hit",
+        "started": true,
+        "priority": 1,
+        "volume": 0.15
+      },
+      {
+        "key": "bean_hit",
+        "started": true,
+        "priority": 1,
+        "volume": 0.1
+      }
+    ],
+    "audioState": "running"
+  },
+  "page_errors": [],
+  "real_save_writes": false
+}

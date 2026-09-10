@@ -38,3 +38,18 @@
 | peak | 0.5953515736739069 |
 | rms | 0.135 |
 | sha256 | c2df7e4edc05978a47b2579545dd4a3c87eeb10fe9dc2d6dbeaaeff0097f31a8 |
+
+
+## 2026-09-10 탄막 → 적 타격음 공용 적용
+
+사용자 지시로 적에게 명중하는 일반 탄막·마법탄·블루콩도 동일 Bisqo855371 편집본을 사용한다. 음원 매핑만 변경하고 기존 명중 이벤트·데미지·관통·피격 신음·우선순위·음량은 유지한다.
+
+| 키 | 현재 파일 URL | 기존 재생 계약 |
+|---|---|---|
+| bullet_hit | sfx/hit/player_projectile_impact.wav?v=bisqo-855371-v1 | 일반/마법 탄막→적. playSampleAt,volume0.15×터렛거리계수,위치=e.x/e.y,rate=_r(1,.15) |
+| bean_hit | sfx/hit/player_projectile_impact.wav?v=bisqo-855371-v1 | 블루콩→적. playSample,volume0.1×터렛거리계수,rate=_r(1,.15),기존 P._bbHitCd=4 유지 |
+| player_projectile_impact | 같은 URL | 적 탄막→플레이어. volume0.55,100ms 간격,PLAYER_HIT8 유지 |
+
+bullet_hit·bean_hit은 PROJ1,동시재생 데스크톱5/모바일2 제한을 유지한다. 터렛거리계수는 `max(0,1-dst(P,터렛)/2000)`,0.01 이하이면 기존처럼 명중음을 생략한다. 공통 playSample 피치 변동도 기존대로다. 칼날류 chain_fly,일반 활 bow_hit,arcMissile의 별도 분기와 반사 폭발음은 기존대로다. 신규 세이브 필드·음원 복제 없음.
+
+검증: 기존 projectilePlayerHitSound/audioBootLoading 12개 PASS. tools/verify_outgoing_magic_hit.py에서 두 키의 0.42초 디코드 PCM이 플레이어 피격음과 완전히 같은지,PROJ1 분류와 실제 Web Audio 노드 시작을 확인한다. 증거: output/audio/bisqo_magic_hit_20260910/outgoing_qa.json. 단독 검증 슬롯 사용,실제 저장 쓰기 없음.
