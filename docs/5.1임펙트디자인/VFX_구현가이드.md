@@ -78,7 +78,7 @@
 - `elemBall`은 `EL.P/EL.I`일 때 크라켄 탄두를 쓰고, `EL.F/D/L/H/E`는 `proj_elem_orb.png`의 해당 속성 행을 쓴다. 양쪽 모두 실패할 때만 `proj_bolt_comet.png`로 폴백한다.
 - 비행 외형은 기존 유지: waterBean=`water_blue_projectile_sheet.png` 4×2 8프레임, `30×16×_sSc`; 물리/빙 elemBall=`proj_kraken_shot_api_v1.png` 170px; fbEnergy=`proj_kraken_water.png` 4×4 16프레임 240px. 교체는 충돌 임팩트만 적용한다.
 - 물 파란콩 Q 패링은 `_waterBeanIceBurst(...,true)`만 Water Impact를 생성하고, `doParry(...,_impactKind='waterBean')`가 공통 `dark02` 임팩트를 건너뛰어 단발 패링에서 스프라이트가 중첩되지 않는다.
-- 차지 범위는 기존 반경 공식 `~~((70+(maliceSwipe−1)+방패range×4)×현재mult)`을 그대로 사용한다. 구 radial-gradient 원, 전방 부채꼴 채움, 9/7 점선 아크는 제거하고 내부가 빈 API 룬 아크만 표시한다.
+- 차지 범위는 2026-09-10 반경 공식 `_eSwingRadius(C)=floor((70+방패range×4)×(1+(E스킬Lv−1)×0.05)×C)`을 사용한다. 실제0.5/1/1.5초에 충전 C=1.5/2/3이며 자동릴리즈는1.55초다. 구 radial-gradient 원, 전방 부채꼴 채움, 9/7 점선 아크는 제거하고 내부가 빈 API 룬 아크만 표시한다.
 
 ## 일반 몬스터 돌진 장전 가이드 (`eChargeWind`) — 2026-09-02
 
@@ -157,7 +157,7 @@
 |---|---|---|---|
 | 좌클릭 기검참 | `_crescents[].silvArc`, `silvertail_ki_slash_realistic.png` (1536×1024 RGB, 녹색 크로마 단일 원화) | `_makeGreenChromaCutout()` 캐시 후 ±4.5% 맥동. 1·2타 폭 144px, 3타 폭 176px. `saturate(1.12) contrast(1.08) brightness(1.06)`, 본체 `max(.82,alpha)` | 기존 3단 콤보 피해·사거리·히트 범위 그대로 |
 | 우클릭 악의구 | `p.fireball`, `silvertail_malice_orb_sheet_v3.png` (1536×1024 RGB, 녹색 크로마, 3×2 배열·6프레임) | 실버테일(`_charIdx===1`)만 검은 공허 핵·은빛 초승달 칼날 3장으로 구성한 구체를 지름 `p.r×6.2`로 표시하고 크기 맥동 없이 시계방향 600ms/회전을 적용. 핵 중심 정렬 432×432 소스, 80ms 간격·정방향 480ms 반복. 다른 캐릭터는 공용 7×3/20프레임 시트 유지 | 악의구 피해·폭발·중독·사거리·자원 그대로 |
-| KeyE 칼등 처내기 | `_drawSilvertailEArc(ctx, pose, scale)`, `silvertail_violet_arc_anim_api_v3.png` (2132×738 RGBA, 폭 6등분) | `pose.kind==='shield'`에서만 `floor(spinProgress×6)`으로 재생. `hue-rotate(-28deg) saturate(2.05) contrast(1.28) brightness(1.28)`. 기본 폭 200→230px이며 차징 릴리즈는 `min(3,max(1,P._sBashChgMul||1))`을 곱해 최대 600→690px | 기본 E의 피해·반사·자원·입력은 그대로. 차징 검격 릴리즈만 현재 차징 배율로 아크를 확대하며 좌클릭·우클릭 악의구에는 적용하지 않음 |
+| KeyE 칼등 처내기 | `_drawSilvertailEArc(ctx, pose, scale)`, `silvertail_violet_arc_anim_api_v3.png` (2132×738 RGBA, 폭 6등분) | `pose.kind==='shield'`에서만 `floor(spinProgress×6)`으로 재생. `hue-rotate(-28deg) saturate(2.05) contrast(1.28) brightness(1.28)`. 기본 폭 200→230px이며 차징 릴리즈는 `min(3,max(1,P._sBashChgMul||1))×(1+(E스킬Lv−1)×0.05)`을 곱한다. Lv1 풀차지600→690px, Lv10 풀차지870→1000.5px | 기본 E의 피해·반사·자원·입력은 그대로. E 아크는 충전 C와 스킬 레벨 범위 M을 함께 곱하며 좌클릭·우클릭 악의구에는 적용하지 않음 |
 
 ### 스프라이트 시트 VFX
 1. **배경은 반드시 투명(alpha=0)** — JPEG 금지, PNG 사용

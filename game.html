@@ -3167,6 +3167,25 @@ function _kitPlateIsFieldOne(){return _kitPlateReq==='fieldone'||_kitPlateReq===
 const _DROP_PREVIEW=new URLSearchParams(window.location.search).get('dropPreview')==='1';
 
 // 저장/표시 전 핵심 상태 정규화 (입력값 -> 출력값 동기화)
+// E 날개치기: 모든 캐릭터의 무료 기본 합체, 기존 세이브 레벨 보존.
+function _ensureBaseWingStrike(p){
+  if(!p)return;
+  if(!p.skills)p.skills={};
+  p.skills.maliceSwipe=Math.max(1,Number(p.skills.maliceSwipe)||1);
+  p.skills.shieldThrow=Math.max(1,Number(p.skills.shieldThrow)||1);
+  if(!p._fused)p._fused={};p._fused.shieldFuse=true;
+  p.activeRMBSk='maliceSwipe';
+}
+function _wingStrikeLevel(){return Math.max(1,Math.min(P.skills.maliceSwipe||1,P.skills.shieldThrow||1))}
+function _eSkillRangeMul(){return 1+(_wingStrikeLevel()-1)*.05}
+function _eSwingRadius(chargeMul){return Math.floor((70+(sh().bonusRange||0)*4)*_eSkillRangeMul()*(chargeMul||1))}
+function _resetWingStrikeUpgrades(){
+  const lv=_wingStrikeLevel();let refund=0;
+  for(let i=1;i<lv;i++)refund+=_fuseUpSpCost(i,2);
+  P.skills.maliceSwipe-=lv-1;P.skills.shieldThrow-=lv-1;
+  P.sp+=refund;return refund;
+}
+
 function _sanitizeCoreState(){
   if(!P||!G)return;
   const _toInt=(v,d=0)=>{const n=Number(v);return Number.isFinite(n)?Math.floor(n):d};
@@ -3179,6 +3198,7 @@ function _sanitizeCoreState(){
       P.skills[k]=lv;
     }
   }
+  _ensureBaseWingStrike(P);
   if(P._fused&&typeof P._fused==='object'){
     // 합체 구성 스킬 존재 보장만 (min-level 강제 제거 — 하위 합체가 상위 스킬을 끌어내리는 버그 방지)
     for(const fk of Object.keys(P._fused)){
@@ -25928,10 +25948,10 @@ function mkP(){
     activeTechSk:'giantSlam',
     activeMagicSk:'fireball',
     activeLMBSk:'kiSlash',
-    activeRMBSk:'shieldBlock',
+    activeRMBSk:'maliceSwipe',
     activeQSk:'parry',
     activeCtSk:'ghostWalk',
-    skills:{kiSlash:1,fireball:1,bladeDash:1},_fused:{},maskOn:true};
+    skills:{kiSlash:1,fireball:1,bladeDash:1,maliceSwipe:1,shieldThrow:1},_fused:{shieldFuse:true},maskOn:true};
 }
 
 // ═══════════════════════════════════════
@@ -30154,7 +30174,7 @@ function update(){
       // ═══ 실버테일 차징 릴리즈: 전진 돌진 패링 (lunging parry) — 대검/타캐릭·기본 E탭(mult=1)은 제자리 무변경 ═══
       if(_charIdx===1&&(P._sBashChgMul||1)>1){
         const _slpM=Math.min(3,Math.max(1,P._sBashChgMul||1));
-        const _slpR=~~((70+((P.skills.maliceSwipe||0)>=1?((P.skills.maliceSwipe||0)-1)*1:0)+(sh().bonusRange||0)*4)*_slpM); // 확장 처내기 반경 (_gsRange2 동일식)
+        const _slpR=_eSwingRadius(_slpM); // 확장 처내기 반경 (_gsRange2 동일식)
         // 자동 전진: 전격이동(bladeDash, 500px/12f) 기준 이동거리 — mult1≈150px→mult3=500px (패링 판정반경 _slpR과는 별개, 이동거리만 튜닝하려면 이 두 상수)
         const _slpDist=150+175*(_slpM-1);
         const _slpSpd=_slpDist/20;
@@ -30198,7 +30218,7 @@ function update(){
         // ═══ 칼등날개: 전방 반원 충격파 히트 ═══
         const _sdLv=P.skills.maliceSwipe||0;
         const _chgM=Math.min(3,Math.max(1,P._sBashChgMul||1)); // 차징 검격 릴리즈 배율 1~3 (기본 E탭=1 → 기존과 완전 동일)
-        const _gsRange2=~~((70+(_sdLv>=1?(_sdLv-1)*1:0)+(sh().bonusRange||0)*4)*_chgM); // ×배율: 타격/반사/_sdRange/진동파/파편 전부 파생 확장
+        const _gsRange2=_eSwingRadius(_chgM); // ×배율: 타격/반사/_sdRange/진동파/파편 전부 파생 확장
         // 우클릭(칼등 처내기): meleeRef × 2.0 (200%), Lv20=1000% (5배 성장, +21%/Lv 곱연산)
         const _gsDmg2=~~(meleeRef()*2.0*(1+(_sdLv>=1?(_sdLv-1)*0.21:0))*statStr()*pShieldMul()*_chgM)+(P._atkBon||0);P._atkBon=0;
         // ═══ 칼등날개 충격파 히트 (_gSlamHit 방식) ═══
@@ -30446,7 +30466,7 @@ function update(){
     const _SD_GRACE=10; // 0.17초 — 탭 패링 반응성 보존 튜닝값
     if(P._sdHold>_SD_GRACE){
       // 홀드 확정 → 차징 진입 (칼등처내기 미발동, ST 진입 1회. draw 시간은 차징에 이어서 누적)
-      if(useStPct('shield')){P.s='kiGather';P._kgChg=P._sdHold;P._kgTier=0;playSample('scarecrow_charge',.45,.7)}
+      if(useStPct('shield')){P.s='kiGather';P._kgChg=P._sdHold*2;P._kgTier=0;playSample('scarecrow_charge',.45,.7)}
       else P.s='idle'; // ST 부족: 무발동 (기존 press 시 무발동과 동일)
       break}
     if(!isHeld('shield')){
@@ -30463,7 +30483,7 @@ function update(){
     break;}
 
   case 'kiGather':{
-    // ═══ 차징 검격 — 기 응축 스탠스 (MH대검+발도술): E 홀드, 단계형 차징 Lv1=20f/Lv2=50f/Lv3=90f ═══
+    // ═══ 차징 검격 — 기 응축 스탠스 (MH대검+발도술): E 홀드, 2배속 차징 단계1=30f/단계2=60f/단계3=90f ═══
     // 거의 정지(×0.18), 공격/연사 없음. 릴리즈=풀차지 자동 or 놓기(단계≥1), Shift=순수 캔슬.
     // 돌진 캔슬 (Shift): 스윙 없이 차징 리셋 → 사슬 대시 탈출
     if(isAct('charge')&&P.chargeStocks>0&&!_harpActive&&(P.activeChargeSk==='magicBlink'?P.mp>=mpCost('blink'):useStPct('charge'))){
@@ -30486,8 +30506,8 @@ function update(){
      const _kgms=P.speed*.18*sp;
      const _kgnx=P.x+_kgmx*_kgms,_kgny=P.y+_kgmy*_kgms;
      if(canMv(_kgnx,P.y,P.r))P.x=_kgnx;if(canMv(P.x,_kgny,P.r))P.y=_kgny}
-    // 단계형 차징 누적 (burstLoop tier 모델) — 풀차지 3초(180f), 체크포인트 1초/2초/3초
-    P._kgChg=(P._kgChg||0)+sp;
+    // 단계형 차징 누적 (burstLoop tier 모델) — 2배속: 가상180f=실제1.5초, 체크포인트 실제0.5초/1초/1.5초
+    P._kgChg=(P._kgChg||0)+sp*2;
     const _kgPrev=P._kgTier||0;
     P._kgTier=P._kgChg>=180?3:P._kgChg>=120?2:P._kgChg>=60?1:0;
     // 단계 전환: 글로우 팝 + shake + 상승 사운드 + 텍스트
@@ -30505,10 +30525,10 @@ function update(){
       const _kgv=2+P._kgTier*.9;
       const _kgc=['#dddddd','#ffaa22','#ffdd44','#ff5544'][P._kgTier];
       poolPart(P.x+Math.cos(_kga)*_kgd,P.y+Math.sin(_kga)*_kgd,-Math.cos(_kga)*_kgv,-Math.sin(_kga)*_kgv,_kgc,1.5+P._kgTier*.7,10+Math.random()*6)}
-    // 풀차지(3초=180f) 도달 → 짧은 유예(6f) 후 자동 릴리즈 (mult=3 캡)
+    // 풀차지(실제1.5초=가상180f) 도달 → 짧은 유예(실제3f) 후 자동 릴리즈 (mult=3 캡)
     if(P._kgChg>=186){_kgRelease(3,3);break}
-    // 홀드 놓기 → 0.3초(18f) 이상이면 현재 연속 배율로 릴리즈, 미만이면 헛뽑기 캔슬
-    // 연속 배율: mult=1+0.5×min(t,2)+1.0×max(0,t-2) (t=홀드초, cap 3) → 1초=1.5 / 2초=2 / 3초=3
+    // 홀드 놓기 → 가상18f(실제0.15초, sDraw 10f 게이트 별도) 이상이면 현재 연속 배율로 릴리즈, 미만이면 헛뽑기 캔슬
+    // 연속 배율: mult=1+0.5×min(t,2)+1.0×max(0,t-2) (t=2배속 누적초, cap 3) → 실제0.5초=1.5 / 1초=2 / 1.5초=3
     if(!isHeld('shield')){
       if(P._kgChg>=18){const _kgTsec=Math.min(3,P._kgChg/60);_kgRelease(P._kgTier,Math.min(3,1+0.5*Math.min(_kgTsec,2)+Math.max(0,_kgTsec-2)))}
       else{addTxt(P.x,P.y-30,_T('불발...'),'#bbbbbb',30);P._kgChg=0;P._kgTier=0;P.s='idle'}
@@ -31672,11 +31692,11 @@ function update(){
     const _sbPWDet=_sbPW&&P.skills.detonate>=1;
     const _anyPW=_sbPW||(P._sbParryT>0&&P.s!=='whirlwind'&&P.s!=='beam'&&P.s!=='elecRepent');
     const _sbActive=P.s==='sBash'&&P.st2>(20-_PARRY_WIN); // 칼등치기 앞 _PARRY_WIN틱만 패링, 뒤 후딜(무방비→피격 시 포이즈 소모)
-    const _normalR=_sbActive?(_bigBall?_pCollR+4:_pCollR*3+12):_sbPWDet?(_bigBall?_pParryR:_pCollR*3+12):_anyPW?(_bigBall?_pParryR:_pCollR*3+8):_pCollR+4;
+    const _normalR=_sbActive?(_bigBall?_pCollR+4:_pCollR*3+12)*_eSkillRangeMul():_sbPWDet?(_bigBall?_pParryR:_pCollR*3+12):_anyPW?(_bigBall?_pParryR:_pCollR*3+8):_pCollR+4;
     // redBean 전용: 방패스킬 공격범위와 동일한 넓은 판정
     const _sdLvD=P.skills.maliceSwipe||0;
     const _isAtkState=P.s==='wSwing'||P.s==='wWindup'||P.s==='wRecover'||P.s==='whirlwind'||P.s==='charge'||P.s==='charging';
-    const _chgMP=P.s==='sBash'?Math.min(3,Math.max(1,P._sBashChgMul||1)):1; // 차징 검격 릴리즈 sBash만 배율 (Q/기타 무영향, 기본 E탭=1 → 기존 동일)
+    const _chgMP=P.s==='sBash'?Math.min(3,Math.max(1,P._sBashChgMul||1))*_eSkillRangeMul():1; // 차징 검격 릴리즈 sBash만 배율 (Q/기타 무영향, 기본 E탭=1 → 기존 동일)
     const _parryR=Math.min(140,110+(sh().bonusRange||0)*4+(PASSIVES.pParry||0)*2+~~(_eqAffix('parryBonus')*20))*_chgMP; // 판정 반경 70→110(cap 100→140) 완화(빡빡 해소)
     const _parryRDet=Math.min(200,140+(sh().bonusRange||0)*6+(PASSIVES.pParry||0)*3+~~(_eqAffix('parryBonus')*30))*_chgMP; // Q기폭 120→140(cap 180→200)
     const _releasePW=P.s!=='sBlock'&&P._sbParryT>0&&(P._sbReleaseR||0)>0;
@@ -40637,7 +40657,7 @@ const SKILL_LIST=[
   {id:'fireball',name:'악의구',cat:'magic',desc:'[기본: E] 어둠 마법 오브 발사. 범위폭발. 넉백 0.5%. Lv당 크기+50% (뎀은 _skMul 계수 적용)',descEn:'[Default: E] Dark magic orb fired. AoE explosion. Knockback 0.5%. Per Lv size+50% (DMG uses _skMul)',spCost:10,matCost:0,up:true,upSp:5,upMat:0,default:true},
   {id:'whirlwind',name:'회전참',cat:'phys',desc:'무기 홀드 → 전진 회전 공격. 360도 광역, ST 지속소모. Lv당 범위+5 뎀+5%',descEn:'Hold weapon → forward spin attack. 360° AoE, continuous ST drain. Per Lv range+5 DMG+5%',spCost:10,matCost:100,up:true,upSp:5,upMat:0},
   {id:'detonate',name:'기폭팔',cat:'def',desc:'패링 3초 홀드 → 흡수 데미지 광역 폭발. Lv당 범위+15 (1렙150, 10렙285)',descEn:'Parry 3s hold → absorbed DMG AoE explosion. Per Lv range+15 (Lv1: 150, Lv10: 285)',spCost:10,matCost:100,up:true,upSp:5,upMat:0},
-  {id:'maliceSwipe',name:'칼등 처내기',cat:'def',desc:'우클 처내기 강화. Lv당 반사 데미지 +10%. 홀드 시 연사',descEn:'RMB swipe enhanced. Per Lv reflect DMG +10%. Hold for rapid fire',spCost:10,matCost:80,up:true,upSp:5,upMat:0},
+  {id:'maliceSwipe',name:'칼등 처내기',cat:'def',desc:'기본 E 날개치기. E 홀드 충전: 풀차지 1.5초. 스킬 Lv당 범위 +5%.',descEn:'Base E Wing Strike. Hold E to charge fully in 1.5s. +5% range per skill level.',spCost:10,matCost:80,up:true,upSp:5,upMat:0},
   {id:'fanShot',name:'만화방창',cat:'bow',desc:'[고정: T 자동] 물리 바늘 3방향 3발 발사. 관통 없음',descEn:'[Fixed: T auto] 3 physical needles 3-way spread. No pierce',spCost:10,matCost:100,up:true,upSp:5,upMat:0},
   {id:'omniBeam',name:'멸살광선',cat:'magic',desc:'[고정: E] 1발 직선 레이저. +만화방창 → 만화광선(3발 꽈배기). +원소추적탄 → 추적암전(6발 유도)',descEn:'[Fixed: E] 1 straight laser. +Barrage → Omni Beam (3 spiral). +Elem Seeker → Homing Dark (6 homing)',spCost:10,matCost:100,up:true,upSp:5,upMat:0},
   {id:'elemMissile',name:'원소추적탄',cat:'bow',desc:'우클릭 탭 마법을 6원소 유도 미사일로 변경. 곡선 궤적으로 적을 추적. 레벨당 사거리+20 (뎀은 _skMul 계수 적용)',descEn:'Changes RMB-tap magic to 6-element homing missiles. Curved trajectory tracking enemies. Per Lv range+20 (DMG uses _skMul)',spCost:10,matCost:80,up:true,upSp:5,upMat:0},
@@ -40775,7 +40795,7 @@ const SKILL_SLOT_DEFS={
     info:{kiSlash:{name:'기검참',nameEn:'Ki Slash',emoji:'⚔',desc:'좌클: 3단 콤보 검기 (ST 10+Lv당2)',descEn:'LMB: 3-hit combo ki blade (ST 10+2/Lv)'},
           whirlwind:{name:'회전참',nameEn:'Whirlwind',emoji:'🌀',desc:'좌클 홀드: 회전 베기',descEn:'LMB Hold: Spin attack'}}},
   rmb:{name:'E 스킬',nameEn:'E Skill',key:'rmb',skills:['maliceSwipe'],
-    info:{maliceSwipe:{name:'칼등 처내기',nameEn:'Blade Parry',emoji:'💀',desc:'E: 칼등 처내기 (홀드 연사, Lv당 반사뎀+10%)',descEn:'E: Blade parry (hold rapid, reflect dmg+10%/Lv)'}}},
+    info:{maliceSwipe:{name:'날개치기',nameEn:'Wing Strike',emoji:'💀',desc:'E: 기본 날개치기. 홀드 풀차지 1.5초, 스킬 Lv당 범위 +5%.',descEn:'E: Base Wing Strike. Hold for 1.5s full charge. +5% range per skill level.'}}},
   q:{name:'보호막 스킬',nameEn:'Shield Skill',key:'q',skills:['parry','detonate','peaceShield'],
     info:{parry:{name:'보호막',nameEn:'Shield',emoji:'💠',desc:'Q: 피보호막 (데미지 30% 흡수, 수호신 패시브로 최대 50%)',descEn:'Q: Damage shield (absorb 30%, up to 50% with Guardian passive)'},
           detonate:{name:'기폭팔',nameEn:'Detonate',emoji:'💥',desc:'Q 홀드: 흡수 데미지 축적 → 해제 시 광역 폭발',descEn:'Q Hold: Accumulate absorbed dmg → AoE explosion on release'},
@@ -40807,7 +40827,7 @@ const _FUSE_GEM_GROUPS={
   iceMortar: {color:'#2299ff',color2:'#00ffaa',tier:'clear',minLv:10, skills:['maliceMortar','iceOrb']}, // 하늘+민트
   boneStorm: {color:'#44ee44',color2:'#886622',tier:'clear',minLv:5, skills:['maliceStorm','boneWall']}, // 연두+갈색
   elecRepent:{color:'#44ee44',color2:'#ffd700',tier:'clear',minLv:10,skills:['maliceStorm','hellRay']}, // 연두+금 (참회 귀환)
-  shieldFuse:{color:'#8888cc',color2:'#cc8844',tier:'clear',minLv:5, skills:['maliceSwipe','shieldThrow']}, // 청보라+동색
+  shieldFuse:{color:'#8888cc',color2:'#cc8844',tier:'clear',minLv:1, skills:['maliceSwipe','shieldThrow']}, // 청보라+동색
   plagueFuse:{color:'#ffffff',color2:'#ccbbaa',tier:'clear',minLv:10,skills:['maliceHunt','guardian','plagueBurst']}, // 흰+베이지 (bladeFuse 상위)
   plagueVenom:{color:'#44dd44',color2:'#ccbbaa',tier:'clear',minLv:15,star:4,skills:['maliceHunt','guardian','plagueBurst','venomBlade']},
   holyFuse:  {color:'#ff88aa',color2:'#ffccdd',tier:'clear',minLv:5, skills:['holyDome','holyPrison']}, // 2성
@@ -42376,7 +42396,7 @@ function _autoShieldThrow(){
   if((P._stCd||0)>0)return; // ST 추가소모 없음 — 우클릭(useStPct('shield'))에서 이미 차감됨
   _addSkProf('shieldThrow');
   const _sfFused=P.skills.maliceSwipe>=1&&P.skills.shieldThrow>=1&&_isFused('shieldFuse');
-  const _sfLv=_sfFused?Math.min(P.skills.maliceSwipe||1,P.skills.shieldThrow||1):0;
+  const _sfLv=_sfFused?_wingStrikeLevel():0;
   P._stCd=_sfFused?Math.max(120,720-_sfLv*15):720;
   const slv=P.skills.shieldThrow||1;
   const a=P.facing;
@@ -42386,11 +42406,12 @@ function _autoShieldThrow(){
     // ═══ 날개치기: 파워웨이브 (지면 충격파) ═══
     const _wvDmgMul=1.5+(_sfLv-1)*0.12; // 합체 레벨당 12% 증가, 기본 1.5배
     const baseDmg=~~(((sh().atk||3)+P.baseAtk*0.3+10)*pShieldMul()*(1+(slv-1)*0.12)*10*statStr()*_wvDmgMul*_fuseMul('shieldThrow'));
-    const maxDist=200+(_sfLv-1)*15+slv*10; // 짧은 근거리 충격파
+    const _wvRangeMul=_eSkillRangeMul();
+    const maxDist=210*_wvRangeMul; // 날개치기 Lv당 기본 사거리의 +5%
     G._stProjs.push({
       x:P.x+Math.cos(a)*25,y:P.y+Math.sin(a)*25,
       vx:Math.cos(a)*12,vy:Math.sin(a)*12,
-      ang:a,dist:0,maxDist:maxDist,r:50,w:90+_sfLv*5, // w=파동 폭
+      ang:a,dist:0,maxDist:maxDist,r:50*_wvRangeMul,w:95*_wvRangeMul, // w=파동 폭
       dmg:baseDmg,slv:slv,_hitSet:new Set(),
       wave:true,_wvT:0 // 파워웨이브 플래그
     });
@@ -43792,8 +43813,8 @@ function _renderSkillRow(sk,grid){
     const _fuseNameKey=_isStormBeam?'stormBeam':_isDimBlast?'dimBlast':_isDimRush?'dimRush':_isDimThunder?'dimThunder':_isDimSlam?'dimSlam':_isDimFuse?'dimBreach':_isIceFuse?'iceMortar':_isElemFuse?'elemFuse':_isSlamStorm?'slamStorm':_isSixFuse?'sixFuse':_isBladeFuse?'bladeFuse':_isSynth?'whirlDet':_isBoneStorm?'boneStorm':_isElecRepent?'elecRepent':_isShieldFuse?'shieldFuse':_isPlagueVenom?'plagueVenom':_isPlagueFuse?'plagueFuse':_isPillarSlam?'pillarSlam':_isPillarSpike?'pillarSpike':_isHolyW4?'holyWeak4':_isHolyW3?'holyWeak3':_isHolyW2?'holyWeak2':_isHolyW1?'holyWeak1':_isHolyIce?'holyIce':_isHolyFuse?'holyFuse':_isDualScarecrow?'dualScarecrow':_isThunderGhost?'thunderGhost':_isTimeStep?'timeStep':null;
     const _FUSE_NAME_KO={stormBeam:'암전나선 [6단합체]',dimBlast:'기동:강화전폭 [6단합체]',dimRush:'기동:칼날개 [5단합체]',dimThunder:'기동:강화습격 [4단합체]',dimSlam:'사슬이동:강화 [3단합체]',dimBreach:'사슬이동:강화 [합체]',iceMortar:'얼음소용돌이 [합체]',elemFuse:'추적암전 [3단합체]',slamStorm:'지진폭풍 [3단합체]',sixFuse:'암전 [합체]',bladeFuse:'악의 해방 [합체]',whirlDet:'회전기폭 [합성]',boneStorm:'해골번개 [합체]',elecRepent:'참회 귀환 [합체]',shieldFuse:'날개치기 [합체]',plagueFuse:'독혈해방 [합체]',plagueVenom:'독사해방 [4성합체]',pillarSlam:'기둥강타 [합체]',pillarSpike:'기둥가시 [합체]',holyIce:'물의 영역 [3단합체]',holyFuse:'결계의 영역 [합체]',holyWeak1:'파쇄의 영역 [4단합체]',holyWeak2:'침식의 영역 [5단합체]',holyWeak3:'관통의 영역 [6단합체]',holyWeak4:'권능의 영역 [7단합체]',dualScarecrow:'쌍둥이허수아비 [합체]',thunderGhost:'전격의창 [합체]',timeStep:'시간걸음 [합체]'};
     const _dispName=_starTxt+(_fuseNameKey?_L(_FUSE_NAME_KO[_fuseNameKey],_FUSE_NAME_EN[_fuseNameKey]):_T(sk.name));
-    const _FUSE_DESC_EN={stormBeam:'Quake Storm + Tracking Lightning 6-fuse. Fire 6-element tracking beams while spinning! +20% total DMG. Quake+Beam explosion on end.',dimBlast:'6-fuse. Bladewing+Burst+Destroy+Flame all enhanced. Shift+LMB \u2192 forward power wave.',dimRush:'5-fuse. Chain Bladewing unlocked! Slash left/right blades while moving+bleed. Destroy+Flame enhanced.',dimThunder:'4-fuse. Chain Destroy+Flame enhanced. Destroy DMG\u2191 Poise\u2191 Range\u2191',dimSlam:'3-fuse. Chain Flame absorbed. Land range\u2191 DMG\u2191',dimBreach:'Chain Rush: Impact + Chain Rush: Flame fuse. Shift \u2192 piercing rush then INT-based landing explosion! 5 stocks, 7s CD.',iceMortar:'Storm Summon + Ice Orb fuse. Mouse aim \u2192 summon ice vortex! Pulls enemies in and freezes. 10s CD.',elemFuse:'Barrage + Annihilation Beam + Elemental Tracker 3-fuse. Hold RMB \u2192 6-element homing lasers! Each beam auto-tracks nearest enemy.',slamStorm:'Whirl-Det + Hell Slam I 3-fuse. On spin end, detonate+Hell Slam I shockwave! Hell Slam I CD removed, range\u2191',sixFuse:'Barrage + Annihilation Beam fuse. Hold RMB \u2192 6-element helix laser! Add Elemental Tracker for Tracking Lightning.',bladeFuse:'Malice Hunt + Malice Guardian fuse. Dark blades orbit you, blocking projectiles. Press slot key to fire all blades! (+2 blades at max lv)',whirlDet:'Whirlwind + Detonate synth. Auto parry shield during spin \u2192 absorb attacks \u2192 auto AOE blast on end. Add Hell Slam I for Quake Storm!',boneStorm:'Malice Storm + Bone Tomb fuse. Mouse aim click \u2192 bone tomb ring + inner dark DOT! 3 stock charges, wall block+sustained DMG.',elecRepent:'Bone Lightning + Repentance fuse. Repentance placement spawns electric vortex! DMG+20%, charge 1/2/3 at Lv1/5/10.',shieldFuse:'Swipe + Wing Blade fuse. On swipe, auto forward rush+slam shockwave! Hits+stun+poise reduction in range.',plagueFuse:'Malice Hunt + Plague Burst fuse. Auto plague blades on blade fire! Plague explosion on hit.',plagueVenom:'Plague Liberation + Venom Blade 4-star fuse. Enhanced plague blades with venom! Venom DOT+spread on hit.',pillarSlam:'Hell Slam II + Dark Pillar fuse. Hell Slam II auto-deploys 9 dark pillars (+spike traps if Pillar Thorn fused)! Lv300+ hidden.',pillarSpike:'Dark Pillar + Spike Trap fuse. Each pillar auto-places spike trap! Slow+bleed at every pillar position.',holyIce:'Ward Domain + Ice Storm 3-fuse. Holy zone places prison+freeze storm! Regen+revive block+freeze in range.',holyFuse:'Holy Domain + Binding Domain fuse. Holy zone auto-places prison! Regen+revive block in range.',holyWeak1:'Ward Domain + Weakness: Physical 4-fuse. Ground+Prison+Freeze+Shatter in range.',holyWeak2:'Shatter Domain + Weakness: Magic 5-fuse. Ground+Prison+Freeze+Shatter+Corrode in range.',holyWeak3:'Corrode Domain + Weakness: Projectile 6-fuse. Ground+Prison+Freeze+Shatter+Corrode+Pierce in range.',holyWeak4:'Pierce Domain + Weakness: Reversal 7-fuse. Ground+Prison+Freeze+Shatter+Corrode+Pierce+Reversal in range.',dualScarecrow:'Void Scarecrow + Explode Scarecrow fuse. Scarecrow absorbs projectiles and accumulates damage. On retrieve, auto-detonates for massive AoE! Grows bigger with absorption.',thunderGhost:'Blade Dash + Thunder Stake fuse. 2nd dash auto-plants thunder stake at landing! No MP/stock cost.',timeStep:'Time Warp + Ghost Walk fuse. On Time Warp activation, Ghost Walk auto-triggers! Rewind to past + instant invincible dash escape.'};
-    const _FUSE_DESC_KO={stormBeam:'지진폭풍 + 추적암전 6단합체. 회전참 중 6원소 추적 빔 동시 발사! 전체 데미지 20% 강화. 종료 시 지진폭풍+빔 동시 폭발',dimBlast:'6단합체. 칼날개+전폭+파괴+불꽃 전부 강화. Shift+좌클릭 → 전방 파워웨이브',dimRush:'5단합체. 기동칼날개 해금! 이동 중 좌우 칼날 광역 베기+출혈. 파괴+불꽃도 강화',dimThunder:'4단합체. 기동파괴+불꽃 강화. 파괴 데미지↑ 포이즈↑ 범위↑',dimSlam:'3단합체. 기동불꽃 흡수. 착지 범위↑ 데미지↑',dimBreach:'사슬기동:충돌 + 사슬기동:화염 합체. Shift → 관통돌진 후 INT 기반 착지 대폭발! 스톡5, 쿨7초',iceMortar:'폭풍소환 + 얼음보주 합체. 마우스 조준 → 얼음 소용돌이 소환! 적을 중심으로 끌어당기며 빙결. 쿨 10초',elemFuse:'만화방창 + 멸살광선 + 원소추적탄 3단합체. 우클릭 홀드 → 6원소 유도 추적 레이저! 각 빔이 가장 가까운 적을 자동 추적',slamStorm:'회전기폭 + 지옥강타 1 3단합체. 회전 종료 시 기폭+지옥강타 1 진동파 동시 발동! 지옥강타 1 쿨타임 소멸, 범위↑',sixFuse:'만화방창 + 멸살광선 합체. 우클릭 홀드 → 6원소 꽈배기 레이저! 원소추적탄 추가 합체 시 추적암전',bladeFuse:'악의사냥 + 악의보호자 합체. 암흑칼날이 몸 주위를 돌며 투사체 방어. 슬롯 키로 모인 칼날 전부 발사! (만렙 시 +2칼날)',whirlDet:'회전참 + 기폭팔 합성. 회전 중 패링 쉴드 자동 발동 → 적 공격 흡수 → 종료 시 자동 광역 폭발. 지옥강타 1 추가 합체 시 지진폭풍!',boneStorm:'악의폭풍 + 해골무덤 합체. 마우스 조준 클릭 → 해골무덤 링 + 내부 암흑 DOT! 3스택 충전제, 벽 차단+지속 데미지',elecRepent:'해골번개 + 참회 합체. 참회 설치 시 전기 소용돌이 동시 생성! 데미지 20%↑, 1/5/10렙 차지 1/2/3',shieldFuse:'처내기 + 칼등날개 합체. 처내기 시 전방 돌진+내려찍기 충격파 자동 발동! 범위 내 적 히트+스턴+포이즈 삭감',plagueFuse:'악의사냥 + 폭독혈 합체. 칼날 발사 시 독혈 칼날 자동 발사! 칼날 적중 시 전염 폭발',plagueVenom:'독혈해방 + 독사검 4성합체. 독혈 칼날에 독사 강화! 적중 시 독사 DOT+전염 확산',pillarSlam:'지옥강타 2 + 악의기둥 합체. 지옥강타 2 시 9개 악의기둥 자동 전개 (+기둥가시 합체 시 가시덫 포함)! Lv300+ 히든',pillarSpike:'악의기둥 + 가시덫 합체. 각 기둥 위치에 가시덫 자동 설치! 슬로우+출혈',holyIce:'결계의 영역 + 아이스 스톰 3단합체. 회복의 영역 설치 시 감옥+빙결 폭풍 동시 설치! 범위 내 리젠+부활차단+빙결',holyFuse:'회복의 영역 + 구속의 영역 합체. 회복의 영역 설치 시 감옥 동시 설치! 범위 내 리젠+부활차단',holyWeak1:'결계의 영역 + 약화:물리 4단합체. 범위 내 땅+감옥+빙결+파쇄',holyWeak2:'파쇄의 영역 + 약화:마법 5단합체. 범위 내 땅+감옥+빙결+파쇄+침식',holyWeak3:'침식의 영역 + 약화:투사체 6단합체. 범위 내 땅+감옥+빙결+파쇄+침식+관통',holyWeak4:'관통의 영역 + 약화:역전 7단합체. 범위 내 땅+감옥+빙결+파쇄+침식+관통+역전',dualScarecrow:'유령허수아비 + 폭발허수아비 합체. 허수아비가 탄막 흡수+데미지 축적. 회수 시 자동 폭발! 흡수량에 따라 크기 증가',thunderGhost:'전격이동 + 뇌전창 합체. 2번째 전격이동 착지 시 뇌전창 자동 설치! MP/스택 소모 없음',timeStep:'시간왜곡 + 뇌전걸음 합체. 시간왜곡 발동 시 뇌전걸음 자동 연계! 되감기 + 무적이동 한 키로 탈출'};
+    const _FUSE_DESC_EN={stormBeam:'Quake Storm + Tracking Lightning 6-fuse. Fire 6-element tracking beams while spinning! +20% total DMG. Quake+Beam explosion on end.',dimBlast:'6-fuse. Bladewing+Burst+Destroy+Flame all enhanced. Shift+LMB \u2192 forward power wave.',dimRush:'5-fuse. Chain Bladewing unlocked! Slash left/right blades while moving+bleed. Destroy+Flame enhanced.',dimThunder:'4-fuse. Chain Destroy+Flame enhanced. Destroy DMG\u2191 Poise\u2191 Range\u2191',dimSlam:'3-fuse. Chain Flame absorbed. Land range\u2191 DMG\u2191',dimBreach:'Chain Rush: Impact + Chain Rush: Flame fuse. Shift \u2192 piercing rush then INT-based landing explosion! 5 stocks, 7s CD.',iceMortar:'Storm Summon + Ice Orb fuse. Mouse aim \u2192 summon ice vortex! Pulls enemies in and freezes. 10s CD.',elemFuse:'Barrage + Annihilation Beam + Elemental Tracker 3-fuse. Hold RMB \u2192 6-element homing lasers! Each beam auto-tracks nearest enemy.',slamStorm:'Whirl-Det + Hell Slam I 3-fuse. On spin end, detonate+Hell Slam I shockwave! Hell Slam I CD removed, range\u2191',sixFuse:'Barrage + Annihilation Beam fuse. Hold RMB \u2192 6-element helix laser! Add Elemental Tracker for Tracking Lightning.',bladeFuse:'Malice Hunt + Malice Guardian fuse. Dark blades orbit you, blocking projectiles. Press slot key to fire all blades! (+2 blades at max lv)',whirlDet:'Whirlwind + Detonate synth. Auto parry shield during spin \u2192 absorb attacks \u2192 auto AOE blast on end. Add Hell Slam I for Quake Storm!',boneStorm:'Malice Storm + Bone Tomb fuse. Mouse aim click \u2192 bone tomb ring + inner dark DOT! 3 stock charges, wall block+sustained DMG.',elecRepent:'Bone Lightning + Repentance fuse. Repentance placement spawns electric vortex! DMG+20%, charge 1/2/3 at Lv1/5/10.',shieldFuse:'Base E Wing Strike, available from level 1. Hold E for a 1.5s full charge. +5% range per skill level. Forward power wave, projectile reflection and stagger.',plagueFuse:'Malice Hunt + Plague Burst fuse. Auto plague blades on blade fire! Plague explosion on hit.',plagueVenom:'Plague Liberation + Venom Blade 4-star fuse. Enhanced plague blades with venom! Venom DOT+spread on hit.',pillarSlam:'Hell Slam II + Dark Pillar fuse. Hell Slam II auto-deploys 9 dark pillars (+spike traps if Pillar Thorn fused)! Lv300+ hidden.',pillarSpike:'Dark Pillar + Spike Trap fuse. Each pillar auto-places spike trap! Slow+bleed at every pillar position.',holyIce:'Ward Domain + Ice Storm 3-fuse. Holy zone places prison+freeze storm! Regen+revive block+freeze in range.',holyFuse:'Holy Domain + Binding Domain fuse. Holy zone auto-places prison! Regen+revive block in range.',holyWeak1:'Ward Domain + Weakness: Physical 4-fuse. Ground+Prison+Freeze+Shatter in range.',holyWeak2:'Shatter Domain + Weakness: Magic 5-fuse. Ground+Prison+Freeze+Shatter+Corrode in range.',holyWeak3:'Corrode Domain + Weakness: Projectile 6-fuse. Ground+Prison+Freeze+Shatter+Corrode+Pierce in range.',holyWeak4:'Pierce Domain + Weakness: Reversal 7-fuse. Ground+Prison+Freeze+Shatter+Corrode+Pierce+Reversal in range.',dualScarecrow:'Void Scarecrow + Explode Scarecrow fuse. Scarecrow absorbs projectiles and accumulates damage. On retrieve, auto-detonates for massive AoE! Grows bigger with absorption.',thunderGhost:'Blade Dash + Thunder Stake fuse. 2nd dash auto-plants thunder stake at landing! No MP/stock cost.',timeStep:'Time Warp + Ghost Walk fuse. On Time Warp activation, Ghost Walk auto-triggers! Rewind to past + instant invincible dash escape.'};
+    const _FUSE_DESC_KO={stormBeam:'지진폭풍 + 추적암전 6단합체. 회전참 중 6원소 추적 빔 동시 발사! 전체 데미지 20% 강화. 종료 시 지진폭풍+빔 동시 폭발',dimBlast:'6단합체. 칼날개+전폭+파괴+불꽃 전부 강화. Shift+좌클릭 → 전방 파워웨이브',dimRush:'5단합체. 기동칼날개 해금! 이동 중 좌우 칼날 광역 베기+출혈. 파괴+불꽃도 강화',dimThunder:'4단합체. 기동파괴+불꽃 강화. 파괴 데미지↑ 포이즈↑ 범위↑',dimSlam:'3단합체. 기동불꽃 흡수. 착지 범위↑ 데미지↑',dimBreach:'사슬기동:충돌 + 사슬기동:화염 합체. Shift → 관통돌진 후 INT 기반 착지 대폭발! 스톡5, 쿨7초',iceMortar:'폭풍소환 + 얼음보주 합체. 마우스 조준 → 얼음 소용돌이 소환! 적을 중심으로 끌어당기며 빙결. 쿨 10초',elemFuse:'만화방창 + 멸살광선 + 원소추적탄 3단합체. 우클릭 홀드 → 6원소 유도 추적 레이저! 각 빔이 가장 가까운 적을 자동 추적',slamStorm:'회전기폭 + 지옥강타 1 3단합체. 회전 종료 시 기폭+지옥강타 1 진동파 동시 발동! 지옥강타 1 쿨타임 소멸, 범위↑',sixFuse:'만화방창 + 멸살광선 합체. 우클릭 홀드 → 6원소 꽈배기 레이저! 원소추적탄 추가 합체 시 추적암전',bladeFuse:'악의사냥 + 악의보호자 합체. 암흑칼날이 몸 주위를 돌며 투사체 방어. 슬롯 키로 모인 칼날 전부 발사! (만렙 시 +2칼날)',whirlDet:'회전참 + 기폭팔 합성. 회전 중 패링 쉴드 자동 발동 → 적 공격 흡수 → 종료 시 자동 광역 폭발. 지옥강타 1 추가 합체 시 지진폭풍!',boneStorm:'악의폭풍 + 해골무덤 합체. 마우스 조준 클릭 → 해골무덤 링 + 내부 암흑 DOT! 3스택 충전제, 벽 차단+지속 데미지',elecRepent:'해골번개 + 참회 합체. 참회 설치 시 전기 소용돌이 동시 생성! 데미지 20%↑, 1/5/10렙 차지 1/2/3',shieldFuse:'1레벨부터 기본 보유하는 E 날개치기. E 홀드 풀차지 1.5초. 스킬 레벨마다 범위 +5%. 전방 파워웨이브·투사체 반사·그로기.',plagueFuse:'악의사냥 + 폭독혈 합체. 칼날 발사 시 독혈 칼날 자동 발사! 칼날 적중 시 전염 폭발',plagueVenom:'독혈해방 + 독사검 4성합체. 독혈 칼날에 독사 강화! 적중 시 독사 DOT+전염 확산',pillarSlam:'지옥강타 2 + 악의기둥 합체. 지옥강타 2 시 9개 악의기둥 자동 전개 (+기둥가시 합체 시 가시덫 포함)! Lv300+ 히든',pillarSpike:'악의기둥 + 가시덫 합체. 각 기둥 위치에 가시덫 자동 설치! 슬로우+출혈',holyIce:'결계의 영역 + 아이스 스톰 3단합체. 회복의 영역 설치 시 감옥+빙결 폭풍 동시 설치! 범위 내 리젠+부활차단+빙결',holyFuse:'회복의 영역 + 구속의 영역 합체. 회복의 영역 설치 시 감옥 동시 설치! 범위 내 리젠+부활차단',holyWeak1:'결계의 영역 + 약화:물리 4단합체. 범위 내 땅+감옥+빙결+파쇄',holyWeak2:'파쇄의 영역 + 약화:마법 5단합체. 범위 내 땅+감옥+빙결+파쇄+침식',holyWeak3:'침식의 영역 + 약화:투사체 6단합체. 범위 내 땅+감옥+빙결+파쇄+침식+관통',holyWeak4:'관통의 영역 + 약화:역전 7단합체. 범위 내 땅+감옥+빙결+파쇄+침식+관통+역전',dualScarecrow:'유령허수아비 + 폭발허수아비 합체. 허수아비가 탄막 흡수+데미지 축적. 회수 시 자동 폭발! 흡수량에 따라 크기 증가',thunderGhost:'전격이동 + 뇌전창 합체. 2번째 전격이동 착지 시 뇌전창 자동 설치! MP/스택 소모 없음',timeStep:'시간왜곡 + 뇌전걸음 합체. 시간왜곡 발동 시 뇌전걸음 자동 연계! 되감기 + 무적이동 한 키로 탈출'};
     let _dispDesc=_fuseNameKey?_L(_FUSE_DESC_KO[_fuseNameKey],_FUSE_DESC_EN[_fuseNameKey]):_L(sk.desc,sk.descEn||sk.desc);
     // [고정: X] / [Fixed: X] → 컬러 배지로 치환
     _dispDesc=_dispDesc.replace(/\[(고정|Fixed):\s*([^\]]+)\]/g,'<span style="background:#1a3355;border:1px solid #4488cc;border-radius:3px;padding:1px 6px;color:#66ddff;font-size:.82rem;font-weight:700">$2</span>');
@@ -44104,7 +44125,12 @@ function _renderSkillRow(sk,grid){
             if(_isFused(k)){if(!_rstGrp||g.skills.length>_rstGrp.skills.length){_rstGrp=g;_rstKey=k}}
           }
           // 합체된 그룹이 있으면 → 그룹 전체 리셋
-          if(_rstGrp){
+          if(_rstKey==='shieldFuse'){
+            const _wingLv=_wingStrikeLevel();
+            if(_wingLv<=1){notify(_L('날개치기는 기본 스킬입니다 (1레벨 유지)','Wing Strike is a base skill (level 1 retained)'));return}
+            if(!await gameConfirm(_L('날개치기 강화분을 초기화하고 1레벨을 유지합니다.','Reset Wing Strike upgrades and retain level 1.')))return;
+            _resetWingStrikeUpgrades();
+          }else if(_rstGrp){
             const _rstSkills=_rstGrp.skills;
             let _totalSp=0;
             const _names=[];
@@ -53591,7 +53617,7 @@ function drawP(){
     // 현재 연속 배율 (릴리즈와 동일 공식): 미리보기 반경에 사용
     const _kgTs=P.s==='sDraw'?0:Math.min(3,(P._kgChg||0)/60);
     const _kgMulNow=Math.min(3,1+0.5*Math.min(_kgTs,2)+Math.max(0,_kgTs-2));
-    const _kgPvR=~~((70+((P.skills.maliceSwipe||0)>=1?(P.skills.maliceSwipe-1)*1:0)+(sh().bonusRange||0)*4)*_kgMulNow);
+    const _kgPvR=_eSwingRadius(_kgMulNow);
     _drawSilvertailChargeRange(X,P.x,P.y,_kgPvR,P.facing,_kgT2,_kgFrm);
   }
 
@@ -54189,7 +54215,7 @@ function drawP(){
     X.globalAlpha=1;
   }
 
-  const _silvEArcPose=_silvertailAttackPose();if(_silvEArcPose)_drawSilvertailEArc(X,_silvEArcPose,Math.min(3,Math.max(1,P._sBashChgMul||1))); // 차징 검격 릴리즈=아크 배율 확대, 기본 E탭=_sBashChgMul 1
+  const _silvEArcPose=_silvertailAttackPose();if(_silvEArcPose)_drawSilvertailEArc(X,_silvEArcPose,Math.min(3,Math.max(1,P._sBashChgMul||1))*_eSkillRangeMul()); // 차징 검격 릴리즈=아크 배율 확대, 기본 E탭=_sBashChgMul 1
   // ══ WEAPON SWING — 검 끝 포물선 궤적 ══
   if(P.s==='wSwing'&&_charIdx!==1){
     const we=wp().el,wc=ELC[we],wg=ELG2[we];
@@ -54257,7 +54283,7 @@ function drawP(){
     const totalF=P.s==='sBash'?24:16;
     const prog=P.s==='sBash'?(1-P.st2/24):(.85+.15*(1-P.st2/16));
     const fadeA=P.s==='sRecover'?P.st2/16:1;
-    const sweepRange=~~(((_hasSD?90:60)+(sh().bonusRange||0)*4)*Math.min(3,Math.max(1,P._sBashChgMul||1))); // 차징 검격 릴리즈 배율 (기본 E탭=1 → 기존 동일) — 대검(비실버테일) 캐릭도 범위 확장 가시화
+    const sweepRange=~~(((_hasSD?90:60)+(sh().bonusRange||0)*4)*Math.min(3,Math.max(1,P._sBashChgMul||1))*_eSkillRangeMul()); // 차징 검격 릴리즈 배율 (기본 E탭=1 → 기존 동일) — 대검(비실버테일) 캐릭도 범위 확장 가시화
     const arcHalf=_hasSD?1.8:1.4;
     const startA=P.facing-arcHalf;
     const endA=P.facing+arcHalf;
@@ -57041,6 +57067,7 @@ async function startGameFromDB(){
   }
 
   // 3.5) 기본 스킬 강제 장착 (어떤 경로든 무조건 실행)
+  _ensureBaseWingStrike(P);
   if(!P.skills.kiSlash)P.skills.kiSlash=1;
   if(!P.skills.spikeTrap)P.skills.spikeTrap=1;
   if(!P.skills.holyDome)P.skills.holyDome=1;
@@ -58501,6 +58528,7 @@ if((_isLocal&&!_charId)||new URLSearchParams(window.location.search).get('test')
       }
     }catch(e){if(!IS_ELECTRON)console.error('[LOCAL] Load failed:',e)}
     // 기본 스킬 강제 장착 (로컬 테스트 경로)
+    _ensureBaseWingStrike(P);
     if(!P.skills.kiSlash)P.skills.kiSlash=1;
     if(!P.skills.spikeTrap)P.skills.spikeTrap=1;
     if(!P.skills.holyDome)P.skills.holyDome=1;

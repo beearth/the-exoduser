@@ -56,7 +56,7 @@ test('Silvertail keeps LMB clear of local Moon Arc VFX while preserving a compac
   assert.match(game, /function _drawSilvertailEArc\(ctx,pose,scale\)\{/);
   assert.match(game, /if\(pose\.kind!=='shield'\|\|!_silvEArcReady\)return;/);
   assert.match(game, /const _silvEArcDrawW=\(200\+_silvEArcIn\*30\)\*\(scale\|\|1\);/);
-  assert.match(game, /const _silvEArcPose=_silvertailAttackPose\(\);if\(_silvEArcPose\)_drawSilvertailEArc\(X,_silvEArcPose,Math\.min\(3,Math\.max\(1,P\._sBashChgMul\|\|1\)\)\);/);
+  assert.match(game, /const _silvEArcPose=_silvertailAttackPose\(\);if\(_silvEArcPose\)_drawSilvertailEArc\(X,_silvEArcPose,Math\.min\(3,Math\.max\(1,P\._sBashChgMul\|\|1\)\)\*_eSkillRangeMul\(\)\);/);
   assert.match(game, /if\(P\.s==='wSwing'&&_charIdx!==1\)/);
   assert.doesNotMatch(game, /function _drawSilvertailSpinSlash\(/);
   assert.doesNotMatch(game, /function _drawSilvertailAttackImpact\(/);
