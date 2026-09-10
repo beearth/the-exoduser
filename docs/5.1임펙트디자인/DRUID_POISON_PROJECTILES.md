@@ -13,7 +13,7 @@
 | 독 속성 | 독 전용 EL 번호는 만들지 않는다. 기존 독의 EL.P=0 기반 피해와 P.poison 상태이상을 사용. col=#66dd22 |
 | 패링 | 변환 전 `_projectileParryClass` 값을 p.parryClass에 보존. Q/E/패링금지 구분 유지, blackBean은 Q 전용 유지. 반사 후에는 기존 아군 탄 외형 사용 |
 | 비행 아트 | 화마귀 `img/proj_firedevil_orb.png` 4×4/16f를 1회 grayscale→multiply #66dd22→원본 alpha 마스크로 베이크. 픽셀 질감 유지. 프레임70ms, source-over |
-| 비행 크기 | 일반 max(96,min(180,(sz\|\|4)×24))px. elemBall 및 추적지뢰240px. 판정 반경은 시각 크기로 변경하지 않음 |
+| 비행 크기 | 기본 일반 max(96,min(180,(sz\|\|4)×24))px, elemBall 및 추적지뢰240px. 2026-09-10부터 적대 원본 physical만 `_physicalProjectileMultiplier=3`을 곱해 일반288~540px; 원본 magic/forbidden·추적지뢰는×1. 피해 EL.P만으로 물리 배율을 정하지 않음. 판정 반경은 시각 크기로 변경하지 않음 |
 | 리듬탄 | 기존 발사 속도/주기/발수 입력 유지. 화염 입력 프로필을 owner wrapper에서 독으로 정규화. 집광/Q 텍스트 녹색 |
 | 피격 | `_hurtProjectilePlayer`가 druidPoison 옵션 전달. hurtP에서 최종 HP 피해 a>0일 때 P.poison+=3. 무적/회피/무피해에는 신규 독 부여 없음. 기존 중독 감소/틱 공식 재사용 |
 | 화상 | 드루이드 빨콩의 기존 _rbBurn 추가는 금지. 중독으로 대체 |

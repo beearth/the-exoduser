@@ -14761,6 +14761,10 @@ function _projectileParryClass(p){
   if(p.titanEye||p.bwBean)return'physical';
   return (p.el??EL.P)===EL.P?'physical':'magic';
 }
+// 적대 물리탄: 시각 크기와 패링 자원 보상 각각 3배. 반사 전에 보상 배율을 보관한다.
+function _physicalProjectileMultiplier(p){
+  return p&&!p.friendly&&_projectileParryClass(p)==='physical'?3:1;
+}
 function _isEnemyMagicBullet(p){return _projectileParryClass(p)==='magic'}
 function _normalizeEnemyBulletSpeed(p,rand=Math.random){const _spd=Math.hypot(p.vx,p.vy);if(_spd<=0)return;const _next=p.blackBean?_rollEnemyRainbowBulletSpeed(rand):_projectileParryClass(p)==='physical'?_rollEnemyBulletSpeed(rand):_rollEnemyMagicBulletSpeed(rand);p.vx=p.vx/_spd*_next;p.vy=p.vy/_spd*_next}
 function _prepareDarkSphere(p){
@@ -30164,6 +30168,7 @@ function update(){
            const _pa=Math.atan2(p.y-P.y,p.x-P.x);
            let _pDf=_pa-P.facing;while(_pDf>Math.PI)_pDf-=Math.PI*2;while(_pDf<-Math.PI)_pDf+=Math.PI*2;
            if(Math.abs(_pDf)>=1.8)continue;
+           const _physicalResourceMul=_physicalProjectileMultiplier(p);
            if(p.redBean){
              // 빨콩 → 유도 블루콩 (sBash 무스킬 변환 로직과 동일)
              let _rb=null,_rm=360000;
@@ -30174,14 +30179,14 @@ function update(){
              p.dmg=~~(pParryProjDmg(p.dmg,false)*1.8);p._aoeDmg=p.dmg*1.5;
              p.redBean=false;p.blueBean=true;p.col='#00e5ff';p.homing=true;p.magic=true;p.parryBlueBean=true;
              addTxt(p.x,p.y-10,_T('💎 블루콩!'),'#00e5ff',35);
-             doParry(0,p.x,p.y,false,'red');
+             doParry(0,p.x,p.y,false,'red',_physicalResourceMul);
            }else{
              // 일반탄 → 블루콩 반사 (maliceSwipe 레벨 보정, 단발 루프와 동일 계수)
              p.vx*=-2;p.vy*=-2;p.friendly=true;
              p.dmg=~~(pParryProjDmg(p.dmg,false)*(1.5+(_sdLvL>=1?(_sdLvL-1):0)));p.life=80;p.ml=80;
              p.blueBean=true;p.parryBlueBean=true;p.magic=true;p.homing=true;p.col='#00e5ff';p._aoeR=0;p._aoeDmg=0;
              addTxt(p.x,p.y-10,_T('⚡💎 블루콩!'),'#00e5ff',30);
-             doParry(p.dmg,p.x,p.y,false,p.el);
+             doParry(p.dmg,p.x,p.y,false,p.el,_physicalResourceMul);
            }
          }}
         // 돌진 잔상 파티클 (경량)
@@ -30217,6 +30222,7 @@ function update(){
           let diff=ang-P.facing;while(diff>Math.PI)diff-=Math.PI*2;while(diff<-Math.PI)diff+=Math.PI*2;
           if(Math.abs(diff)<1.8){
             _bashParried++;
+            const _physicalResourceMul=_physicalProjectileMultiplier(p);
             if(p.blackBean){
               // 무지개탄: 칼등치기 → 폭발 + 피격 + 넉백 (30% 관통, 흡수 없음)
               // 날개치기/칼등날개 무적 중이면 데미지 없이 폭발만
@@ -30247,7 +30253,7 @@ function update(){
                 p.redBean=false;p.blueBean=true;p.col='#00e5ff';p.homing=true;p.magic=true;p.parryBlueBean=true;
                 addTxt(p.x,p.y-10,_T('🛡️💎 유도반사!'),'#00e5ff',60);
                 _addBoom(p.x,p.y,80,72,'fire_medium'); // 빨콩 패링 임팩트
-                doParry(0,p.x,p.y,false,'red'); // 빨간콩 반사: 관통뎀 없음
+                doParry(0,p.x,p.y,false,'red',_physicalResourceMul); // 빨간콩 반사: 관통뎀 없음
               }else{
               // 칼등 처내기: 일반 투사체 반사 → 블루콩 변환 + 패링 사운드
               p.vx*=-2;p.vy*=-2;p.friendly=true;
@@ -30256,7 +30262,7 @@ function update(){
               p.life=80;p.ml=80;p.blueBean=true;p.parryBlueBean=true;p.magic=true;p.homing=true;p.col='#00e5ff';p._aoeR=0;p._aoeDmg=0;
               if(_uEq('_uDaggerPierce')>0){p.pierce=1;p.pierceMax=99}
               addTxt(p.x,p.y-10,_T('⚡💎 블루콩!'),'#00e5ff',35);
-              doParry(p.dmg,p.x,p.y,false,p.el);}
+              doParry(p.dmg,p.x,p.y,false,p.el,_physicalResourceMul);}
             }else if(p.redBean){
               // 빨콩 → 블루콩 유탄 (스킬 없이도 변환)
               let _rb2=null,_rm2=360000;
@@ -30268,7 +30274,7 @@ function update(){
               p.redBean=false;p.blueBean=true;p.col='#00e5ff';p.homing=true;p.magic=true;p.parryBlueBean=true;
               addTxt(p.x,p.y-10,_T('💎 블루콩!'),'#00e5ff',45);
               _addBoom(p.x,p.y,80,72,'fire_medium'); // 빨콩 패링 임팩트
-              doParry(p.dmg,p.x,p.y,false,'red');
+              doParry(p.dmg,p.x,p.y,false,'red',_physicalResourceMul);
             }else{
               // 기본 패링 반사: 스킬 없이도 투사체 반사
               p.vx*=-1.5;p.vy*=-1.5;p.friendly=true;
@@ -31712,6 +31718,7 @@ function update(){
       if(_pHit){_recycleProj(p);continue}
     }
     // ══ 빨간콩탄: 우클릭(sBash)만 패링 가능, Q(sBlock) 시 데미지 ══
+    const _physicalResourceMul=_physicalProjectileMultiplier(p);
     const _wrongR=100; // 반대 패링 패널티: 고정 100px
     const _physicalMouth=_isPhysicalMouthProjectile(p); // 뱀/입 외형 EL.P(관통형 포함): E 전용
     if(_physicalMouth&&_pDist<_wrongR&&_sbPW&&!p.noParry&&!P._ioActive&&P.iframes<=0){
@@ -31742,7 +31749,7 @@ function update(){
       {p.friendly=true;p.life=240;p.ml=240;p.dmg=~~(pParryProjDmg(p.dmg,false)*1.5);p._aoeR=160;p._aoeDmg=p.dmg*2;}
       p.redBean=false;p.titanEye=false;p.blueBean=true;p.col='#00e5ff';p.homing=true;p.magic=true;p.parryBlueBean=true;
       _addBoom(p.x,p.y,80,72,'fire_medium'); // 빨콩 패링 Fire Medium 임팩트
-      doParry(p.dmg,p.x,p.y,false,'red',undefined,'physicalProjectile');
+      doParry(p.dmg,p.x,p.y,false,'red',_physicalResourceMul,'physicalProjectile');
       projs[pw++]=p;continue;
     }
     if(_physicalMouth&&!_pHit&&_pDist<_rbDeflR&&_sbActive&&!p.noParry&&P.iframes<=0&&!P._ioActive){
@@ -31751,7 +31758,7 @@ function update(){
       else{p.vx*=-2;p.vy*=-2}
       {p.friendly=true;p.dmg=~~(pParryProjDmg(p.dmg,false)*1.5);p.life=180;p.ml=180;p.blueBean=true;p.parryBlueBean=true;p.magic=true;p.homing=true;p.col='#00e5ff';p._aoeR=0;p._aoeDmg=0;}
       addTxt(P.x,P.y-28,_T('🛡️💎 블루콩!'),'#00e5ff',50);
-      doParry(p.dmg,p.x,p.y,false,p.el,undefined,'physicalProjectile');projs[pw++]=p;_pHit=true;continue;
+      doParry(p.dmg,p.x,p.y,false,p.el,_physicalResourceMul,'physicalProjectile');projs[pw++]=p;_pHit=true;continue;
     }
     // titanEye(크라켄/앵글러/지상뱀장어 대형 물리 눈알탄): E(sBash)만 패링. Q는 일반 피격. 데미지/배율은 흰 물리탄(bwBean)과 동일.
     if(p.titanEye&&!_pHit&&_pDist<_rbDeflR&&_sbActive&&P.iframes<=0&&!P._ioActive){
@@ -31760,7 +31767,7 @@ function update(){
       else{p.vx*=-2;p.vy*=-2}
       {p.friendly=true;p.dmg=~~(pParryProjDmg(p.dmg,false)*1.5);p.life=180;p.ml=180;p.titanEye=false;p.blueBean=true;p.parryBlueBean=true;p.magic=true;p.homing=true;p.col='#00e5ff';p._aoeR=0;p._aoeDmg=0;}
       addTxt(P.x,P.y-28,_T('🛡️💎 블루콩!'),'#00e5ff',50);
-      doParry(p.dmg,p.x,p.y,false,p.el,undefined,'physicalProjectile');projs[pw++]=p;_pHit=true;continue;
+      doParry(p.dmg,p.x,p.y,false,p.el,_physicalResourceMul,'physicalProjectile');projs[pw++]=p;_pHit=true;continue;
     }
     // ══ 무지개콩탄: Q 마법 패링 가능. 접촉 폭발은 Q 패링이 아닐 때만 처리 ══
     const _bkHitR=_pCollR+16;
@@ -31808,7 +31815,7 @@ function update(){
         else{p.vx*=-2;p.vy*=-2}
         {p.friendly=true;p.dmg=~~(pParryProjDmg(p.dmg,_sbPW)*1.5);p.life=180;p.ml=180;p.bwBean=false;p.blueBean=true;p.parryBlueBean=true;p.magic=true;p.homing=true;p.col='#00e5ff';p._aoeR=0;p._aoeDmg=0;}
         addTxt(P.x,P.y-28,_T('🛡️💎 블루콩!'),'#00e5ff',50);
-        doParry(p.dmg,p.x,p.y,false,p.el);projs[pw++]=p;_pHit=true;continue;
+        doParry(p.dmg,p.x,p.y,false,p.el,_physicalResourceMul);projs[pw++]=p;_pHit=true;continue;
       }else{
         _hurtProjectilePlayer(p,~~(p.dmg*1.3),{dtype:'magic',projHit:true});_projHitFx(p.x,p.y,p.el,false);
         addTxt(P.x,P.y-20,_T('⬜화이트볼!'),'#ffffff',30);
@@ -33010,6 +33017,7 @@ function update(){
           const along=dx*Math.cos(st.ang)+dy*Math.sin(st.ang);
           const perp=dx*Math.cos(_wvPerp)+dy*Math.sin(_wvPerp);
           if(along>-st.r&&along<st.r+20&&Math.abs(perp)<_wvHW){
+            const _physicalResourceMul=_physicalProjectileMultiplier(p);
             // 유도 타겟 탐색
             let _wvTgt=null,_wvMin=600;
             {const _wvNe=shQuery(p.x,p.y,600);for(let _ri=0;_ri<_wvNe.length;_ri++){const e=_wvNe[_ri];if(!e.alive)continue;const dd=dst(p.x,p.y,e.x,e.y);if(dd<_wvMin){_wvMin=dd;_wvTgt=e}}}
@@ -33018,7 +33026,7 @@ function update(){
             p.friendly=true;p.dmg=~~(pParryProjDmg(p.dmg,true)*1.5);
             p.life=120;p.ml=120;p.blueBean=true;p.parryBlueBean=true;p.magic=true;p.homing=true;p.col='#00e5ff';p._aoeR=0;p._aoeDmg=0;
             addTxt(p.x,p.y-10,_T('⚡💎 블루콩!'),'#00e5ff',35);
-            doParry(p.dmg,p.x,p.y,false,p.el);
+            doParry(p.dmg,p.x,p.y,false,p.el,_physicalResourceMul);
           }
         }
         // 파워웨이브 파티클: 좌우로 먼지 + 땅 갈라짐
@@ -35210,7 +35218,7 @@ function doParry(_inDmg,_px,_py,_forceQ,_parryEl,_resourceMul,_impactKind){if(_p
   const _pbMul=1+_eqAffix('parryBonus');
   const _parryRegenMul=1+(PASSIVES.pRegen||0)*.20; // 회복력 패시브: 패링회복 +20%/lv
   const _prRaw=(_isQParry?50:30)*_pbMul*_parryRegenMul;
-  const _prBase=~~((_isRedParry?_prRaw*0.5:_isRainbowParry?_prRaw*1.5:_prRaw)*_resourceBonus); // 빨콩 ×0.5, 무지개 ×1.5, 대형탄 ×10
+  const _prBase=~~((_isRedParry?_prRaw*0.5:_isRainbowParry?_prRaw*1.5:_prRaw)*_resourceBonus); // 빨콩 ×0.5, 무지개 ×1.5; 자원 배율: 물리탄 ×3, 대형탄 ×10
   P.iframes=25;
   P.hp=Math.min(P.mhp,P.hp+_prBase);
   P.st=Math.min(P.mst,P.st+_prBase);
@@ -49419,7 +49427,7 @@ function draw(){
       const _tc=p.friendly?'#ffdd00':ELC[p.el]||p.col||'#ff4444';
       const _tN=p._trLen,_tLen2=p._trail.length,_tHd=p._trH;
       const _flk=.72+Math.sin(_now*.05+p.x*.3)*.28; // 도깨비불 일렁임
-      const _hr=Math.max(2.5,(p.sz||1)*2.2)*_flk;    // 머리 굵기(탄 크기 비례)
+      const _hr=Math.max(2.5,(p.sz||1)*2.2)*_flk*_physicalProjectileMultiplier(p);    // 머리 굵기(탄 크기 비례)
       X.globalCompositeOperation='lighter';X.lineCap='round';X.strokeStyle=_tc;
       for(let ti=0;ti<_tN-1;ti++){ // 머리→끝: 세그먼트별 폭·알파 테이퍼
         const _a=p._trail[(_tHd-1-ti+_tLen2)%_tLen2];
@@ -49552,7 +49560,7 @@ function draw(){
     // ── 회전 애니메이션 (크기 고정) ──
     const _spin=p.redBean?.005:p.blackBean?.005:p.blueBean?.004:.002;
     const _sRa=ra+_now*_spin+p.x*.1;
-    const _sSc=_ps;
+    const _sSc=_ps*_physicalProjectileMultiplier(p);
     // ── 검기파: 심플 원 ──
     if(p.swordWave){
       const _swC=ELC[p.el]||'#ff2200';
@@ -56306,7 +56314,7 @@ function _drawDruidPoisonShot(p,alpha){
     cx.globalCompositeOperation='destination-in';cx.drawImage(_fdFlyImg,0,0);_druidPoisonFly=c;
   }
   const cw=_druidPoisonFly.width/4,ch=_druidPoisonFly.height/4,fr=Math.floor(performance.now()/70)%16;
-  const dw=p._druidMine||p.elemBall?240:Math.max(96,Math.min(180,(p.sz||4)*24)),dh=dw*ch/cw;
+  const dw=(p._druidMine||p.elemBall?240:Math.max(96,Math.min(180,(p.sz||4)*24)))*_physicalProjectileMultiplier(p),dh=dw*ch/cw;
   X.save();X.globalAlpha=alpha==null?1:alpha;X.drawImage(_druidPoisonFly,(fr%4)*cw,Math.floor(fr/4)*ch,cw,ch,p.x-dw/2,p.y-dh/2,dw,dh);X.restore();return true;
 }
 function _fdDrawFly(p){

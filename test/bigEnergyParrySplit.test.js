@@ -159,7 +159,7 @@ test('large-energy contact starts a forced slide along the projectile travel dir
   startSlide({ x: 10, y: 20, vx: 6, vy: 0 }, 100, 100);
   assert.deepEqual(P.kb, { x: 100, y: 0 }, 'the giant collision overrides weaker momentum and starts the slide immediately');
 
-  assert.match(gameHtml, /if\(_bigVulnerable\)\{[^\n]*_startBigEnergyPlayerSlide\(p,P\.x,P\.y\);hurtP\(_pjD,\{dtype:'magic',projHit:true,knockback:\{x:0,y:0\}\}\)/,
+  assert.match(gameHtml, /if\(_bigVulnerable\)\{[^\n]*_startBigEnergyPlayerSlide\(p,P\.x,P\.y\);_hurtProjectilePlayer\(p,_pjD,\{dtype:'magic',projHit:true,knockback:\{x:0,y:0\}\}\)/,
     'the collision must start sliding before hurtP can return early for a DEX dodge');
   assert.match(gameHtml, /const _psBig=_isBigEnergy\(p\);if\(_psBig\)_startBigEnergyPlayerSlide\(p,P\.x,P\.y\)/,
     'peace-shield non-parry absorption must use the same giant-projectile slide');

@@ -59,8 +59,8 @@ test('physical projectile parries use white Fire Impact regardless of element co
   assert.match(doParry, /_addBoom\(_px,_py,60,12,'physical'\)/,
     'physical projectile parries must use the same four-frame white impact as physical hits');
   assert.ok(doParry.includes("const _parEC=_impactKind==='physicalProjectile'?'#ffffff':"));
-  assert.match(projectileUpdate, /doParry\(p\.dmg,p\.x,p\.y,false,'red',undefined,'physicalProjectile'\)/,
+  assert.match(projectileUpdate, /doParry\(p\.dmg,p\.x,p\.y,false,'red',_physicalResourceMul,'physicalProjectile'\)/,
     'physical red-bean E parries must carry the physical-impact identity');
-  assert.match(projectileUpdate, /doParry\(p\.dmg,p\.x,p\.y,false,p\.el,undefined,'physicalProjectile'\)/,
+  assert.match(projectileUpdate, /doParry\(p\.dmg,p\.x,p\.y,false,p\.el,_physicalResourceMul,'physicalProjectile'\)/,
     'ordinary physical-mouth and fire-colored titan-eye E parries must carry the physical-impact identity');
 });
