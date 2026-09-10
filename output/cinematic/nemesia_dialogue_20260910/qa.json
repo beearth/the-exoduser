@@ -1,0 +1,247 @@
+{
+  "status": "PASS",
+  "result": {
+    "text": "그토록 피를 묻히고도, 네놈 안의 선의는 아직 남아 있구나.\n네가 구해야 할 이가 누구인지… 잊지는 않았겠지?\n아직도 너를 기다리고 있다.\n서둘러라. 너무 늦기 전에.",
+    "id": 5,
+    "image": "03.png",
+    "nextImage": "04.png",
+    "waitForInput": true,
+    "translations": {
+      "en": "Even after all the blood you have spilled, goodness still lingers within you.\nYou have not forgotten whom you must save… have you?\nThey are still waiting for you.\nMake haste. Before it is too late.",
+      "zh": "沾染了那么多鲜血，你心中竟还留有善意。\n你该救的人是谁……你没有忘记吧？\n他们仍在等你。\n快去吧。趁一切还来得及。",
+      "zht": "沾染了那麼多鮮血，你心中竟還留有善意。\n你該救的人是誰……你沒有忘記吧？\n他們仍在等你。\n快去吧。趁一切還來得及。",
+      "ja": "それほど血にまみれても、貴様の内にはまだ善意が残っているのだな。\n救うべき者が誰なのか…忘れてはいまい？\n今も貴様を待っている。\n急ぐがよい。手遅れになる前に。",
+      "es": "Aun después de tanta sangre derramada, queda bondad en ti.\nNo has olvidado a quién debes salvar… ¿verdad?\nTodavía te esperan.\nDate prisa. Antes de que sea demasiado tarde.",
+      "fr": "Même après tout ce sang versé, il reste de la bonté en toi.\nTu n’as pas oublié qui tu dois sauver… n’est-ce pas ?\nOn t’attend encore.\nHâte-toi. Avant qu’il ne soit trop tard.",
+      "de": "Nach all dem Blut, das du vergossen hast, steckt noch immer Güte in dir.\nDu hast nicht vergessen, wen du retten musst… oder?\nMan wartet noch immer auf dich.\nBeeil dich. Bevor es zu spät ist.",
+      "ru": "Даже после всей пролитой тобой крови в тебе ещё осталась доброта.\nТы ведь не забыл, кого должен спасти… не так ли?\nТебя всё ещё ждут.\nПоспеши. Пока не стало слишком поздно.",
+      "ptbr": "Mesmo depois de todo o sangue que derramaste, ainda resta bondade em ti.\nNão esqueceste quem deves salvar… esqueceste?\nAinda esperam por ti.\nApressa-te. Antes que seja tarde demais.",
+      "it": "Anche dopo tutto il sangue che hai versato, in te rimane ancora della bontà.\nNon hai dimenticato chi devi salvare… vero?\nTi stanno ancora aspettando.\nAffrettati. Prima che sia troppo tardi.",
+      "vi": "Dẫu đã nhuốm bao máu tanh, trong ngươi vẫn còn thiện ý.\nNgươi chưa quên mình phải cứu ai… phải không?\nHọ vẫn đang chờ ngươi.\nMau lên. Trước khi quá muộn.",
+      "th": "แม้จะเปื้อนเลือดมากมายถึงเพียงนั้น ในตัวเจ้าก็ยังมีความดีหลงเหลืออยู่\nเจ้าคงยังไม่ลืมว่าต้องช่วยใคร…ใช่หรือไม่?\nพวกเขายังคงรอเจ้าอยู่\nจงรีบไป ก่อนจะสายเกินไป",
+      "id": "Meski telah menumpahkan begitu banyak darah, masih ada kebaikan dalam dirimu.\nKau belum lupa siapa yang harus kauselamatkan… bukan?\nMereka masih menunggumu.\nBergegaslah. Sebelum terlambat.",
+      "tr": "Bunca kan dökmene rağmen içinde hâlâ iyilik kalmış.\nKimi kurtarman gerektiğini unutmadın… değil mi?\nHâlâ seni bekliyorlar.\nAcele et. Çok geç olmadan.",
+      "pl": "Nawet po przelaniu tak wielkiej ilości krwi wciąż zostało w tobie dobro.\nNie zapomniałeś, kogo musisz ocalić… prawda?\nWciąż na ciebie czekają.\nPospiesz się. Zanim będzie za późno.",
+      "cs": "I po vší té prolité krvi v tobě stále zůstává dobro.\nNezapomněl jsi, koho musíš zachránit… že ne?\nStále na tebe čekají.\nPospěš si. Než bude příliš pozdě.",
+      "hu": "Ennyi kiontott vér után is maradt még benned jóság.\nNem felejtetted el, kit kell megmentened… ugye?\nMég mindig várnak rád.\nSiess. Mielőtt túl késő lenne.",
+      "bg": "Дори след всичката кръв, която проля, в теб още е останала доброта.\nНе си забравил кого трябва да спасиш… нали?\nОще те чакат.\nПобързай. Преди да е станало твърде късно.",
+      "el": "Ακόμα και μετά από τόσο αίμα που έχυσες, υπάρχει ακόμα καλοσύνη μέσα σου.\nΔεν ξέχασες ποιον πρέπει να σώσεις… έτσι δεν είναι;\nΑκόμα σε περιμένουν.\nΒιάσου. Πριν να είναι πολύ αργά.",
+      "fi": "Kaiken vuodattamasi veren jälkeenkin sinussa on yhä hyvyyttä.\nEt kai ole unohtanut, kenet sinun täytyy pelastaa…?\nSinua odotetaan yhä.\nKiirehdi. Ennen kuin on liian myöhäistä.",
+      "sv": "Trots allt blod du har spillt finns det ännu godhet kvar inom dig.\nDu har inte glömt vem du måste rädda… eller hur?\nDe väntar fortfarande på dig.\nSkynda dig. Innan det är för sent.",
+      "da": "Selv efter alt det blod, du har udgydt, er der stadig godhed i dig.\nDu har ikke glemt, hvem du skal redde… vel?\nDe venter stadig på dig.\nSkynd dig. Før det er for sent.",
+      "no": "Selv etter alt blodet du har spilt, finnes det fortsatt godhet i deg.\nDu har ikke glemt hvem du må redde… har du vel?\nDe venter fortsatt på deg.\nSkynd deg. Før det er for sent.",
+      "nl": "Zelfs na al het bloed dat je hebt vergoten, schuilt er nog goedheid in je.\nJe bent toch niet vergeten wie je moet redden…?\nZe wachten nog steeds op je.\nHaast je. Voor het te laat is.",
+      "ro": "Chiar și după tot sângele pe care l-ai vărsat, în tine mai există bunătate.\nNu ai uitat pe cine trebuie să salvezi… nu-i așa?\nÎncă te așteaptă.\nGrăbește-te. Înainte să fie prea târziu.",
+      "uk": "Навіть після всієї пролитої тобою крові в тобі ще залишилася доброта.\nТи ж не забув, кого маєш урятувати… чи не так?\nНа тебе досі чекають.\nПоквапся. Поки не стало надто пізно.",
+      "ar": "حتى بعد كل الدماء التي سفكتها، ما زال فيك شيء من الخير.\nلم تنسَ من يجب عليك إنقاذه… أليس كذلك؟\nما زالوا ينتظرونك.\nأسرع. قبل فوات الأوان.",
+      "ms": "Walaupun begitu banyak darah telah kau tumpahkan, masih ada kebaikan dalam dirimu.\nKau belum lupa siapa yang harus kau selamatkan… bukan?\nMereka masih menunggumu.\nBergegaslah. Sebelum terlambat."
+    },
+    "layout": [
+      {
+        "lang": "ko",
+        "rows": 4,
+        "bottom": 693.3800000000001,
+        "height": 720,
+        "allText": true
+      },
+      {
+        "lang": "en",
+        "rows": 4,
+        "bottom": 693.3800000000001,
+        "height": 720,
+        "allText": true
+      },
+      {
+        "lang": "zh",
+        "rows": 4,
+        "bottom": 693.3800000000001,
+        "height": 720,
+        "allText": true
+      },
+      {
+        "lang": "zht",
+        "rows": 4,
+        "bottom": 693.3800000000001,
+        "height": 720,
+        "allText": true
+      },
+      {
+        "lang": "ja",
+        "rows": 4,
+        "bottom": 693.3800000000001,
+        "height": 720,
+        "allText": true
+      },
+      {
+        "lang": "es",
+        "rows": 4,
+        "bottom": 693.3800000000001,
+        "height": 720,
+        "allText": true
+      },
+      {
+        "lang": "fr",
+        "rows": 4,
+        "bottom": 693.3800000000001,
+        "height": 720,
+        "allText": true
+      },
+      {
+        "lang": "de",
+        "rows": 4,
+        "bottom": 693.3800000000001,
+        "height": 720,
+        "allText": true
+      },
+      {
+        "lang": "ru",
+        "rows": 4,
+        "bottom": 693.3800000000001,
+        "height": 720,
+        "allText": true
+      },
+      {
+        "lang": "ptbr",
+        "rows": 4,
+        "bottom": 693.3800000000001,
+        "height": 720,
+        "allText": true
+      },
+      {
+        "lang": "it",
+        "rows": 4,
+        "bottom": 693.3800000000001,
+        "height": 720,
+        "allText": true
+      },
+      {
+        "lang": "vi",
+        "rows": 4,
+        "bottom": 693.3800000000001,
+        "height": 720,
+        "allText": true
+      },
+      {
+        "lang": "th",
+        "rows": 4,
+        "bottom": 693.3800000000001,
+        "height": 720,
+        "allText": true
+      },
+      {
+        "lang": "id",
+        "rows": 4,
+        "bottom": 693.3800000000001,
+        "height": 720,
+        "allText": true
+      },
+      {
+        "lang": "tr",
+        "rows": 4,
+        "bottom": 693.3800000000001,
+        "height": 720,
+        "allText": true
+      },
+      {
+        "lang": "pl",
+        "rows": 4,
+        "bottom": 693.3800000000001,
+        "height": 720,
+        "allText": true
+      },
+      {
+        "lang": "cs",
+        "rows": 4,
+        "bottom": 693.3800000000001,
+        "height": 720,
+        "allText": true
+      },
+      {
+        "lang": "hu",
+        "rows": 4,
+        "bottom": 693.3800000000001,
+        "height": 720,
+        "allText": true
+      },
+      {
+        "lang": "bg",
+        "rows": 4,
+        "bottom": 693.3800000000001,
+        "height": 720,
+        "allText": true
+      },
+      {
+        "lang": "el",
+        "rows": 4,
+        "bottom": 693.3800000000001,
+        "height": 720,
+        "allText": true
+      },
+      {
+        "lang": "fi",
+        "rows": 4,
+        "bottom": 693.3800000000001,
+        "height": 720,
+        "allText": true
+      },
+      {
+        "lang": "sv",
+        "rows": 4,
+        "bottom": 693.3800000000001,
+        "height": 720,
+        "allText": true
+      },
+      {
+        "lang": "da",
+        "rows": 4,
+        "bottom": 693.3800000000001,
+        "height": 720,
+        "allText": true
+      },
+      {
+        "lang": "no",
+        "rows": 4,
+        "bottom": 693.3800000000001,
+        "height": 720,
+        "allText": true
+      },
+      {
+        "lang": "nl",
+        "rows": 4,
+        "bottom": 693.3800000000001,
+        "height": 720,
+        "allText": true
+      },
+      {
+        "lang": "ro",
+        "rows": 4,
+        "bottom": 693.3800000000001,
+        "height": 720,
+        "allText": true
+      },
+      {
+        "lang": "uk",
+        "rows": 4,
+        "bottom": 693.3800000000001,
+        "height": 720,
+        "allText": true
+      },
+      {
+        "lang": "ar",
+        "rows": 4,
+        "bottom": 693.3800000000001,
+        "height": 720,
+        "allText": true
+      },
+      {
+        "lang": "ms",
+        "rows": 4,
+        "bottom": 693.3800000000001,
+        "height": 720,
+        "allText": true
+      }
+    ]
+  },
+  "page_errors": [],
+  "real_save_writes": false
+}
