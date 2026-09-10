@@ -600,6 +600,8 @@ Ori 수준 대기 깊이감. 광원 근처에서 존재감 나는 미세 입자.
 
 ### 조명·블룸 GPU 잔상 (2026-09-10)
 
+**장판 분류 추가 수정:** 공용 `G._fireZones`의 `iceStorm`은 기존 얼음빛, 그 외에는 `el===EL.F`인 원소만 프리셋 7 화염빛을 생성한다. 가시덫·치유/약화 영역·암흑/전기 장판에 잘못 붙던 넓은 주황 광원은 제거한다. [대상·수치·시각 검증](ZONE_LIGHT_CLASSIFICATION_20260910.md).
+
 `_lightCvs`·`_litColCvs`는 `_renderLighting`에서, `_bloomCvs`는 `_renderBloom`에서 픽셀 재작성 직후 각각 `_glVer=(_glVer||0)+1`로 갱신한다. 효과 소멸로 빈 컬러 캔버스가 된 경우도 버전을 올려 이전 GPU 광원을 지운다. 계산 주기(3프레임), 프리셋 7 falloff, `LIT_COL_MIX=.62`, 같은 크기 GPU 텍스처 재사용은 유지한다. [수치·원인·실제 GPU 회귀 검증](../12퍼포먼스·최적화/LIGHTING_TEXTURE_FRESHNESS_20260910.md).
 
 ### ATMOS 알파 상수화 + 튜닝 HUD + 자동승격 차단 (2026-08-22)

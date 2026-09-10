@@ -4279,7 +4279,7 @@ function _collectLights(){
    for(var _fzL=0;_fzL<G._fireZones.length;_fzL++){
     var _fz=G._fireZones[_fzL];if(!_fz)continue;
     if(_fz.type==='iceStorm')_pushLight(_fz.x,_fz.y,_fz.r*2.4,.55,68,200,255);
-    else _pushLight(_fz.x,_fz.y,_fz.r*2.6,.68+Math.sin(_gameFrame*.13+_fzL)*.10,255,140,50,7); // 프리셋7(날카로운 falloff)로 전투 haze 축소
+    else if(_fz.el===EL.F)_pushLight(_fz.x,_fz.y,_fz.r*2.6,.68+Math.sin(_gameFrame*.13+_fzL)*.10,255,140,50,7); // 공유 장판 배열 중 실제 화염 속성만 프리셋7 광원 생성
    }
   }
   if(_slStage!==G.stage||_slDirty)_buildStaticLights();

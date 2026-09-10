@@ -18,7 +18,7 @@
 |---|---|
 | 컬러 합성 | `LIT_COL_MIX=.62`, 광원별 `cl.a*.85` |
 | 플레이어 등불 | `LIT_PLAYER_R=470`, `LIT_PLAYER_A=.86`, `_CENTER_GLOW=false` |
-| fireZone | 프리셋 7; 반경 `_fz.r*2.6`, 세기 `.68+sin(_gameFrame*.13+_fzL)*.10` |
+| 실제 화염 장판 (`el===EL.F`, `iceStorm` 제외) | 프리셋 7; 반경 `_fz.r*2.6`, 세기 `.68+sin(_gameFrame*.13+_fzL)*.10`. 이후 비화염 오분류 수정은 [현행 라우팅](../5.1임펙트디자인/ZONE_LIGHT_CLASSIFICATION_20260910.md) 참조 |
 | 블룸 | multiply `rgb(60,60,60)`, 대각 자기복사 `(-2,-2)`·`(2,2)` 각 alpha `.18`, 합성 일반 `.08` / 보스 `.15` |
 
 ## 검증
