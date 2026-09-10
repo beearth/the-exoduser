@@ -1,5 +1,8 @@
 # 스킬별 DPS + 자원 소비 총정리
 
+> **2026-09-10 현행 교정:** 악의구는 `_skMul=13.2+(Lv−1)×10.56×0.5`; Lv1=13.2, Lv10=60.72, Lv20=113.52; magicRef×statInt×pMagicMul×_fuseMul, 직격100%+폭발60%. Space 지옥강타는 `floor(floor(meleeRef×statStr×(20+(Lv−1)×19×0.5)×_rageMul)×pAtkMul)+_atkBon`; pAtkMul은 _gSlamHit에서1회. 분노100 기본20배. 쿨다운 `floor(max(60,1800−(slv−1)×12)×(1+_cdRed()))`f (Lv1=30초), 합체 giantSlam2 특정 경로는420f 기반. 과거 비교/순위는 당시 이력이며 [최신 기준](EARLY_COMBAT_5_7_1_20260910.md)을 우선한다.
+
+
 > **2026-09-10 마법 공격 2배:** `pMagicMul(forAttack=true)=_passDmgSum('magic')×(1+_uHelmMagic)×2`. 아래 공식의 `pMagicMul()`에 이미2배가 포함되므로 스킬 계수·후속 폭발·DOT에 다시 곱하지 않는다. `pMagicMul(false)`는 Q패링 장비스케일 전용으로 기존 값을 유지한다. 계수 표의 숫자는 이 공통 배율을 곱하기 전 값이다. [상세 계약](../14밸런스+수치테이블/MAGIC_ATTACK_DAMAGE_20260910.md).
 
 
@@ -36,7 +39,7 @@ stCost(key) = COST_BASE[key] × (1 + (skLv-1) × DPS스케일) × 할인계수
 mpCost(key) = COST_BASE[key] × (1 + (skLv-1) × DPS스케일) × pMagicCost() → 최소 0.40
 
 COST_BASE: (단발성 기본 250, 기본공격 10)
-  weapon:10, finisher:250, shield:10, giantSlam:250
+  weapon:10, finisher:250, shield:10, giantSlam:50
   charge:250, bladeDash:250
   bow:250, bladeShot:250, blastShot:250, shieldThrow:250, fanShot:250
   magic:250, blink:250, iceOrb:250, dimBreach:250, exBolt:250, mortar:250
@@ -77,7 +80,7 @@ DPS_BAL = { bow: 0.77, magic: 0.475, beam: 0.0080 }
 |---|---|---|---|---|---|---|
 | kiSlash | 기검참 | ST | 10+(Lv-1)×2 = **10→48** | 없음 | meleeRef×7×statStr×pAtkMul×_skMul(b:12,g:10.08) | Lv1=84×/타, Lv10=401.52×/타, Lv20=754.32×/타. 공속·비용 유지, 기존 코드 대비3배 |
 | whirlwind | 회전참 | ST(틱) | **30+(Lv-1)×5 ST/초** (Lv1=30, Lv10=75, Lv20=125) | 없음 (홀드) | meleeRef × statStr × pAtkMul × _skMul × _fuseMul | 360도 광역, Lv당 범위+5 뎀+5% |
-| giantSlam | 지옥강타 1 | ST + 악의20 | 250×DPS(+10%) (Lv1=250, Lv10=475) | max(60, 600-(Lv-1)×12)f = **10초→8초** | meleeRef × statStr × pAtkMul × **_skMul(b:16,g:12.8) × 4** | **Lv1=64×, Lv20=552×** (2026-05-29 밸런스 평균화). 보스: maxPoise×25% 고정 |
+| giantSlam | 지옥강타 1 | ST + 악의20 | stCost(giantSlam), 기준장비 Lv1=50 | max(60,1800-(Lv-1)×12)f × (1+_cdRed()) | `floor(floor(meleeRef×statStr×(20+(Lv−1)×19×0.5)×_rageMul)×pAtkMul)+_atkBon`; pAtkMul은 _gSlamHit에서1회. 분노100 기본20배 | 일반몹 분노100 1방 목표, 보스 포이즈25% |
 | giantSlam2 | 지옥강타 2 | ST + 악의20 | giantSlam과 동일 | 동일 | 동일 | infernoSlam 합체용 복제 |
 
 ---
@@ -117,7 +120,7 @@ DPS_BAL = { bow: 0.77, magic: 0.475, beam: 0.0080 }
 
 | ID | 이름 | 자원 | 비용 | 쿨다운 | 데미지 공식 | DPS 비고 |
 |---|---|---|---|---|---|---|
-| fireball | 악의구 | MP | 50×DPS (마법할인) | 없음 | INT × magicRef × pMagicMul × _skMul('fireball') (b=5.0, g=4.0) | 기본 E, 범위폭발+넉백, Lv당 크기+50%. **Lv1=5×, Lv10=23×, Lv20=43× (g 2배 상향 2026-05-19)** |
+| fireball | 악의구 | MP | mpCost(magic) | 없음 | `_skMul=13.2+(Lv−1)×10.56×0.5`; Lv1=13.2, Lv10=60.72, Lv20=113.52; magicRef×statInt×pMagicMul×_fuseMul, 직격100%+폭발60% | 10레벨 기준7발, 중독 별도 |
 | omniBeam | 멸살광선 | MP(틱) | 멸살:**10**(1+(Lv-1)×0.18)/초, 만화광선:**15**, 추적암전:**30** | 과부하 **300f (5초)** | INT × magicRef × pBeamMul × _skMul × drainBonus | tickMul=4(전체×2), 단독 멸살 ×3 집중보너스, 합체는 줄기별 풀뎀. 1적 DPS: 멸살 최강 (2026-04-21) |
 | elemMissile | 원소추적탄 | MP | ~250×DPS (마법할인) | 없음 | INT × magicRef × pMagicMul × _skMul('elemMissile') (b=1.5, g=1.2) | 6원소 유도, 곡선궤적, 사거리+20/Lv. **Lv1=1.5×, Lv10=6.9×, Lv20=12.9× (b 1.0→1.5, g 2배 상향 2026-05-19)** |
 | ~~energyShot~~ | ~~마력연사~~ | — | — | — | — | **삭제됨 (2026-05-01)** |
@@ -171,7 +174,7 @@ DPS_BAL = { bow: 0.77, magic: 0.475, beam: 0.0080 }
 |---|---|---|---|---|
 | kiSlash 기검참 | 좌클릭 | 5 | ~0.45초 (공속) | **~11.1** |
 | whirlwind 회전참 | 홀드 | Lv스케일 | 매 프레임 | **10→100/초** (Lv1→10) |
-| giantSlam 지옥강타 1 | 액티브 | 10 + 악의20 | 10초 | **1.25 ST + 2.5악의** |
+| giantSlam 지옥강타 1 | `floor(floor(meleeRef×statStr×(20+(Lv−1)×19×0.5)×_rageMul)×pAtkMul)+_atkBon`; pAtkMul은 _gSlamHit에서1회. 분노100 기본20배 | ST=stCost(giantSlam), 악의=_malCost(20) | 기본30초, 레벨당12f 감소·최소60f | 단위시간 효율은 실제 쿨/할인/명중 조건으로 측정 |
 | bladeShot 붉은꽃 | T자동 | 10 | 0.5초 | **20** |
 | fanShot 만화방창 | T자동 | 10 | 자동간격 | **~10~20** |
 | needleShot 만화방창II | T자동 | 8 | 1.5초 | **5.3** |
@@ -200,7 +203,7 @@ DPS_BAL = { bow: 0.77, magic: 0.475, beam: 0.0080 }
 | boneWall 해골무덤 | 12 | 25초/스택 | **0.48** |
 | spikeTrap 가시덫 | 10 | 10초 | **1.0** |
 | blastShot 폭산탄 | 5 | 0.5초 | **10.0** (최다 소비) |
-| giantSlam 지옥강타 1 | 20 | 8~10초 | **2.5~20** |
+| giantSlam 지옥강타 1 | `floor(floor(meleeRef×statStr×(20+(Lv−1)×19×0.5)×_rageMul)×pAtkMul)+_atkBon`; pAtkMul은 _gSlamHit에서1회. 분노100 기본20배 | ST=stCost(giantSlam), 악의=_malCost(20) | 기본30초, 레벨당12f 감소·최소60f | 단위시간 효율은 실제 쿨/할인/명중 조건으로 측정 |
 
 ---
 

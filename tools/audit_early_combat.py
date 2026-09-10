@@ -55,22 +55,32 @@ with sync_playwright() as pw:
               anglerHp:_fbHp(lv),fireDevilHp:_fdHp(lv),player:{hp:P.mhp,mp:P.mmp,st:P.mst}});
             if(lv===10&&skillLv===1){
               Math.random=()=>.999; // no criticals or random item drops during isolated kills
-              for(const attack of ['ki','fire']){
-                const victim=mkEn(P.x,P.y,0,0,false,0,-1);
+              for(const attack of ['ki','melee','fire','rage']){
+                P.s='idle';P._atkBon=0;P.st=P.mst;P.rage=100;P.skills.giantSlam=1;G.mats=100;
+                const victim=mkEn(P.x+20,P.y,0,0,false,0,-1);
+                victim.x=P.x+20;victim.y=P.y; // fixed contact range; no map or AI edits
                 ens=[victim];_shDirty=true;shRebuild();
                 G._fieldBosses=[];G._fieldBoss=null;G._fireDevils=[];G._worms=[];
-                const trace=[];
+                const trace=[];let contactDamage=0;
                 for(let n=0;n<30&&victim.hp>0;n++){
-                  if(attack==='ki'){
+                  if(attack==='ki'||attack==='melee'){
+                    if(attack==='melee'){
+                      useStPct('weapon');P._atkBon=~~(_lastCost*1.5);
+                      const beforeContact=victim.hp+victim.eShield;
+                      hitArc(0,wp().wRange||47,wp().wArcW||.95,~~((P.baseAtk+wp().atk+enhMulAtk(wp().enh||0)+15)*6),0,'weapon');
+                      contactDamage+=beforeContact-victim.hp-victim.eShield;
+                    }
                     for(const c of _crescents)c.active=false;
                     spawnCrescent(victim.x-14,victim.y,0,ki,0,1,0);updateCrescents(1);
+                  }else if(attack==='rage'){
+                    activateGiantSlam('giantSlam');
                   }else{
                     hurtE(victim,fire,undefined,true,{magic:true,proj:true},EL.D);
                     _fireballExplode({x:victim.x,y:victim.y,dmg:fire,explDmg:~~(fire*.6),explR:100,el:EL.D,fireball:true});
                   }
                   trace.push({hp:victim.hp,shield:victim.eShield,alive:victim.alive});
                 }
-                kills.push({attack,casts:trace.length,dead:victim.hp<=0,trace});
+                kills.push({attack,casts:trace.length,dead:victim.hp<=0,contactDamage,remainingSt:P.st,remainingRage:P.rage,trace});
               }
               ens=[];_shDirty=true;shRebuild();Math.random=()=>.5;
             }
@@ -81,8 +91,10 @@ with sync_playwright() as pw:
     }''')
     report['errors']=errors
     assert not errors, errors
-    assert [(k['attack'],k['casts'],k['dead']) for k in report['kills']]==[('ki',2,True),('fire',3,True)],report['kills']
-    out=ROOT/'output/qa/early_combat_20260910.json'
+    print(json.dumps(report['kills'],ensure_ascii=False),flush=True)
+    assert [(k['attack'],k['casts'],k['dead']) for k in report['kills']]==[('ki',5,True),('melee',5,True),('fire',7,True),('rage',1,True)],report['kills']
+    assert next(k for k in report['kills'] if k['attack']=='melee')['contactDamage']>0
+    out=ROOT/'output/qa/early_combat_571_20260910.json'
     out.parent.mkdir(parents=True,exist_ok=True)
     out.write_text(json.dumps(report,ensure_ascii=False,indent=2),encoding='utf-8')
     print(json.dumps(report,ensure_ascii=False))

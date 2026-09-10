@@ -27977,8 +27977,8 @@ function eModHitP(e){
   if(e._lavaBurn&&Math.random()<e._lavaBurn){P.burnT=Math.max(P.burnT||0,180);addTxt(P.x,P.y-20,_T('🔥화상!'),'#ff4400',25);addParts(P.x,P.y,'#ff4400',6)}
 }
 
-// HP pacing: preserve Lv1; smoothly reach one quarter of legacy HP at Lv10.
-function _enemyHpPacing(lv){return 1/(1+Math.min(9,Math.max(0,lv-1))/3)}
+// HP pacing: preserve Lv1; Lv10+ uses two thirds of legacy HP (5 melee / 7 orb target).
+function _enemyHpPacing(lv){return 1/(1+Math.min(9,Math.max(0,lv-1))/18)}
 function mkEn(x,y,si,etype,ib,el,room){
   if(!isFinite(x)||!isFinite(y))return null; // NaN 좌표 스폰 차단
   // 스폰 좌표가 벽/오브젝트 안이면 가장 가까운 빈 곳으로 이동
@@ -28001,8 +28001,8 @@ function mkEn(x,y,si,etype,ib,el,room){
   const po=ib?105:_rare?_rd.poise:ETYPE_POISE[etype];
   // 레벨 보정: 플레이어 레벨이 맵보다 높으면 HP/ATK 비례 증가
   const _bossLvMul=_plvMul;
-  // ═══ HP 공식 v13: v12 × _enemyHpPacing(monLv), 2026-09-10 처치 타수 조정 ═══
-  // Lv≤500 삼차 / Lv>500 5000만 복리 커브 ×2.925 ×pacing (Lv1=1, Lv10+=0.25)
+  // ═══ HP 공식 v14: v12 × _enemyHpPacing(monLv), 2026-09-10 처치 타수 조정 ═══
+  // Lv≤500 삼차 / Lv>500 5000만 복리 커브 ×2.925 ×pacing (Lv1=1, Lv10+=2/3)
   const _baseHpCurve=(monLv<=500?0.4*monLv*monLv*monLv+199*monLv+100:50000000*Math.pow(1.0014,monLv-500))*2.925;
   const _bossMul=ib?24:1; // 보스 24배
   const _lvHp=Math.floor(_baseHpCurve*_enemyHpPacing(monLv)*_bossMul*dm*et.hpMul);let _hp=Math.floor(_lvHp*(1+si*0.02)); // 스테이지당+2%
@@ -40959,7 +40959,7 @@ function _fuseStar(skId){
 // 단발 목표: Lv20 60~140 | 장판 DPS 목표: 150~250 | 채널링 DPS 목표: 150~300
 const _SK_MUL={
   // ── 단발 폭딜 (장쿨=높은 1회뎀, 단쿨=낮은 1회뎀) ──
-  giantSlam:{b:20,g:19},        // Lv20=200. ×4 흡수됨. 한방컷 아님, 3~4타 설계
+  giantSlam:{b:20,g:19},        // Lv20=200.5; full rage100 targets one normal-enemy kill; pAtkMul once at impact
   maliceMortar:{b:10,g:8.0},   // Lv20=86. 11초쿨
   iceOrb:{b:8,g:6.4},          // Lv20=69. +빙결 유틸
   boneWall:{b:9,g:7.2},        // Lv20=77. 벽+DOT
@@ -40985,7 +40985,7 @@ const _SK_MUL={
   ltnChaser:{b:4.0,g:3.2},     // 뇌전추격자 (체인라이트닝 보너스 포함)
   // ── 연발 발사형 ──
   blueShot:{b:1.8,g:1.44},     // 20t/s → Lv20 DPS=310
-  fireball:{b:12,g:9.6},       // ~2t/s → Lv20 DPS=206 (2배)
+  fireball:{b:13.2,g:10.56},   // 2026-09-10: orb 7-hit target, base/growth +10%
   fireBeam:{b:3,g:2.4},        // ~1t/s → DPS 3 (유도탄 보조)
   needleShot:{b:4,g:3.2},      // 1.3t/s → Lv20 DPS=45
   blastShot:{b:4,g:3.2},       // ~2t/s → Lv20 DPS=69
@@ -42568,7 +42568,7 @@ function activateGiantSlam(srcId){
   // 분노게이지: 풀100%=20× (테스트값, 기존 11×에서 상향) + 분노폭주 패시브: 분노 데미지 +10%/lv + 어픽스 rageDmg
   const _rageDmgAf=1+(_eqAffix('rageDmg')||0);
   const _rageMul=1+(P.rage*0.19*(1+(PASSIVES.pRage||0)*0.10)*_rageDmgAf);
-  const _gs1Dmg=~~(meleeRef()*statStr()*pAtkMul()*_skMul('giantSlam')*_rageMul); // _skMul에 ×4 흡수됨
+  const _gs1Dmg=~~(meleeRef()*statStr()*_skMul('giantSlam')*_rageMul); // pAtkMul is applied once by _gSlamHit
   if(P.rage>0){
     const _rageP=P.rage;
     addTxt(P.x,P.y-50,_T('🔥분노 ')+_rageP+'% → +'+~~(_rageP*19*(1+(PASSIVES.pRage||0)*0.10)*_rageDmgAf)+'%!','#ff2200',45);

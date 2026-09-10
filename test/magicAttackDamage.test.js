@@ -18,7 +18,7 @@ test('direct spell and DOT snapshots inherit the boost once; physical kiSlash st
  const c=context();c.P.skills.fireball=1;c.P.skills.spikeTrap=1;
  const line=html.split('\n').find(l=>l.includes("const mdmg=~~(magicRef()*statInt()*pMagicMul()*_skMul('fireball')"));
  c._fuseMul=()=>1;vm.runInContext(line.replace('const mdmg=','globalThis.direct='),c);
- assert.equal(c.direct,1680);assert.equal(c._spikeTrapDmg(),980);assert.equal(c._skMul('kiSlash'),12);
+ assert.equal(c.direct,1848);assert.equal(c._spikeTrapDmg(),980);assert.equal(c._skMul('kiSlash'),12);
 });
 test('Q and E projectile reflection retain their pre-buff equipment scaling',()=>{
  const c=context();assert.equal(c.pParryProjDmg(1000,true),616);assert.equal(c.pParryProjDmg(1000,false),501);
