@@ -1,0 +1,44 @@
+{
+  "receipts": [
+    {
+      "file": "final.mp4",
+      "duration": 103.5,
+      "frames": 6210,
+      "bytes": 93679365,
+      "sha256": "778d45e3fb8e85c60ebc4508393cd5b221b2e3e79a9fd1830f384aff65534180",
+      "audio_codec": "aac",
+      "audio_channels": 2,
+      "decode": "PASS"
+    },
+    {
+      "file": "ending.mp4",
+      "duration": 14.0,
+      "frames": 840,
+      "bytes": 11835028,
+      "sha256": "830d987601c9bf05465568187805d78dcf7ddcd4bd8484489961a8404591ab8b",
+      "audio_codec": "aac",
+      "audio_channels": 2,
+      "decode": "PASS"
+    }
+  ],
+  "audio_correlation": 0.9999747335230069,
+  "digital_gap_rms": 0.0,
+  "contact_times": [
+    60.6,
+    61.6,
+    62.6,
+    82.1,
+    83.5,
+    84.95,
+    85.05,
+    86,
+    87,
+    88.5,
+    89.51,
+    100.5
+  ],
+  "visual_review": "합본12표본에서 앞 가족 회상 유지,82초 대치 시작,85초 전투 전환,89.5초 네메시스 복귀,100.5초 마지막 호명 자막 확인. 전투 원본12표본에서 준비·검격·충돌 불꽃·후속 자세 확인. 실시간 전체 시청 및 청취 아님.",
+  "realtime_review": false,
+  "listening_review": false,
+  "status": "TWO_SHOT_COMBAT_EDIT_FOR_REVIEW"
+}

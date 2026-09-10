@@ -1,0 +1,12 @@
+{
+  "file": "w15_faceoff.mp4",
+  "source": "batch\\w14\\source.mp4",
+  "range": [
+    0,
+    3
+  ],
+  "frames": 180,
+  "source_sha256": "ad0d1aabfd8915a2f2c3af1c703574c8569bb23385c5917c7d31020d833fe2dd",
+  "sha256": "d199607cabad44808a26183d313b16e3f3547d9aca102d6dd0a6c5a97592225d",
+  "speed": 1
+}

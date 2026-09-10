@@ -1,0 +1,33 @@
+{
+  "receipts": [
+    {
+      "file": "w15_faceoff.mp4",
+      "duration": 3.0,
+      "frames": 180,
+      "fps": "60/1",
+      "width": 1916,
+      "height": 1080,
+      "decode": "PASS"
+    },
+    {
+      "file": "w15_fight.mp4",
+      "duration": 4.5,
+      "frames": 270,
+      "fps": "60/1",
+      "width": 1916,
+      "height": 1080,
+      "decode": "PASS"
+    },
+    {
+      "file": "fight_source.mp4",
+      "duration": 5.041667,
+      "frames": 121,
+      "fps": "24/1",
+      "width": 1920,
+      "height": 1080,
+      "decode": "PASS"
+    }
+  ],
+  "visual_review": "대치6표본·전투12표본 확인. 전투0.8초 준비,1.2초 검격,1.6초 충돌 불꽃,2초 후속 자세,3.2~4초 다음 검격이 보인다. 선명한 표본에서 손잡이의 뚜렷한 꺾임은 보이지 않으며 빠른 동작에는 모션 블러가 있다. 전체 실시간 시청 아님.",
+  "realtime_review": false
+}

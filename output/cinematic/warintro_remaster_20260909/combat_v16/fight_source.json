@@ -1,0 +1,12 @@
+{
+  "file": "w15_fight.mp4",
+  "source": "combat_v16\\fight_source.mp4",
+  "range": [
+    0,
+    4.5
+  ],
+  "frames": 270,
+  "source_sha256": "1718630034c10d8ac1a572ffb1ac83c3e8b13f26cf19c69bc9ec297dfc807109",
+  "sha256": "fcbcae8f6d761d12e4140abca151bb01c4d906ac4471170ab4c746ab3bf703e3",
+  "speed": 1
+}

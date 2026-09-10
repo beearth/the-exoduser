@@ -1,0 +1,29 @@
+{
+  "version": 16,
+  "intent": "Replace W15 family-memory restoration with exactly two shots: demon confrontation, then active sword combat.",
+  "generation": {
+    "provider": "Higgsfield",
+    "ui_model": "Cinema Studio 2.5",
+    "duration_setting": 5,
+    "resolution_setting": "1080p",
+    "single_shot": true,
+    "audio_setting": "off",
+    "count": 1,
+    "displayed_credits": 8,
+    "start_frame": "../batch/w15/frame0.png",
+    "uploaded_image_id": "b9f2fc54-0651-4f43-b931-b806974a6830",
+    "asset_id": "1d2e038b-d10b-4959-b772-3fab1d9f0fb4",
+    "preview_id": "783223c2-aa1a-4066-a25c-7340aeaa6907",
+    "source_url": "https://d8j0ntlcm91z4.cloudfront.net/user_3G1zto9sz11Uf3iEOhJefE9HdGG/hf_20260910_033921_1d2e038b-d10b-4959-b772-3fab1d9f0fb4.mp4",
+    "source_duration": 5.041667,
+    "source_frames": 121,
+    "source_fps": 24,
+    "prompt": "W15-FIGHT-v16. Five seconds of active, continuous dark-fantasy sword combat. Preserve the supplied black-haired adult warrior, worn black armor, ragged cape, surrounding horned demons, fiery infernal cavern, and detailed painterly style. The central warrior immediately steps forward and executes a powerful two-handed horizontal greatsword swing. A nearby demon raises its armored forearm and blocks the blade with a shower of sparks, recoiling one step. The warrior follows through, pivots his hips and raises the same sword to parry the demon counterstrike. Clearly show the full attack, contact, recoil and recovery, all at normal speed. Keep a medium-wide view with both hands and the entire straight sword visible, camera tracking laterally slightly with the action. Both hands remain wrapped correctly around a single rigid straight hilt; blade, guard, hilt and pommel stay aligned as one solid weapon. No bending or duplicate sword, extra fingers or limbs. Background demons stay in their positions. No cuts, slow motion, still-image zoom, gore, dismemberment, text, speech or music."
+  },
+  "shots": [
+    {"id": "w15_faceoff", "global_range": [82,85], "source": "../batch/w14/source.mp4", "source_range": [0,3], "frames":180, "speed":1},
+    {"id": "w15_fight", "global_range": [85,89.5], "source": "fight_source.mp4", "source_range": [0,4.5], "frames":270, "speed":1}
+  ],
+  "preserved": ["memory_v14 W11 montage 60.5-63.5", "v14 narration and all 22 captions", "v11 witness/fall/countless/arrival", "straight sword and ending armor fixes", "final vocative 100-102.52"],
+  "limits": ["Source motion sampled at 24fps, output repeats frames at 60fps; no optical interpolation", "Painterly W15 differs from surrounding realism", "No new combat audio or SFX; existing narration retained", "W09/W10 and broader story audit remain outside this edit"]
+}
