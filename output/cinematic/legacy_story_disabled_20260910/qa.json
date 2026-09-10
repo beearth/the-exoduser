@@ -1,0 +1,37 @@
+{
+  "status": "PASS",
+  "creation_writes": 1,
+  "playback": {
+    "src": "http://127.0.0.1:3333/video/warrior_story_v21.mp4",
+    "time": 1.014271,
+    "duration": 96.4,
+    "width": 1920,
+    "height": 1080,
+    "muted": false,
+    "volume": 1,
+    "paused": false,
+    "lobbyPaused": true,
+    "idlePaused": true,
+    "audioTracks": 8440,
+    "active": true
+  },
+  "skip_destination": "http://127.0.0.1:3333/game.html?test=1&slot=%EA%B2%80%EC%A6%9D%EC%A0%84%EC%82%AC&story=warrior-v21",
+  "page_errors": [],
+  "save_isolation": "API responses mocked only in isolated browser; real media served by project server",
+  "game_handoff": {
+    "cutscene": null,
+    "oldVoicePaused": true,
+    "charIdx": 0,
+    "stage": 0,
+    "gameRunning": true,
+    "wakeupIntro": false
+  },
+  "ordinary_warrior_entry_no_legacy_intro": true,
+  "silvertail_entry": {
+    "charIdx": 1,
+    "cutscene": null,
+    "gameRunning": true,
+    "legacyVoicePlayCalls": 0,
+    "voicePaused": true
+  }
+}

@@ -57445,8 +57445,8 @@ const _forceCutscene=new URLSearchParams(location.search).get('cutscene')==='1';
 function _startIntroCutscene(){
   if(_bossTestReq>=0){G._cutsceneDone=true;G.on=true;if(P)P.iframes=300;return}
   if(_wantPlateTest()){G._cutsceneDone=true;G.on=true;if(P)P.iframes=300;return}
-  // 대검전사 스토리는 캐릭터 생성 때 재생한다. 게임 진입은 즉시 플레이.
-  if(_charIdx===0&&!_forceCutscene){
+  // 구 한글 더빙 스토리는 모든 캐릭터의 일반 입장에서 재생하지 않는다.
+  if(!_forceCutscene){
     G._cutsceneDone=true;G.on=true;P.iframes=300;
     if(G._bonfire)G._bonfire.t=300;
     ['hud','hudTop','hudCorner','mmWrap','skBar','mmLvl','globeHP','globeMP'].forEach(id=>{const el=$(id);if(el)el.classList.add('on')});

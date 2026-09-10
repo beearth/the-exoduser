@@ -1,10 +1,11 @@
 import json
 from pathlib import Path
 from playwright.sync_api import sync_playwright
-O=Path('G:/exoduser/output/cinematic/character_story_direct_play_20260910');O.mkdir(exist_ok=True)
+O=Path('G:/exoduser/output/cinematic/legacy_story_disabled_20260910');O.mkdir(exist_ok=True)
 with sync_playwright() as p:
     browser=p.chromium.launch(headless=True)
     page=browser.new_page(viewport={'width':1280,'height':720})
+    page.add_init_script("""window.__legacyStoryPlays=[];const mediaPlay=HTMLMediaElement.prototype.play;HTMLMediaElement.prototype.play=function(...args){if((this.currentSrc||this.src||'').includes('intro_voice.mp3'))window.__legacyStoryPlays.push(this.currentSrc||this.src);return mediaPlay.apply(this,args);};""")
     errors=[];writes=[]
     page.on('pageerror',lambda e:errors.append(str(e)))
     def api(route):
@@ -39,6 +40,13 @@ with sync_playwright() as p:
     page.goto(result['skip_destination'].replace('&story=warrior-v21',''),wait_until='domcontentloaded',timeout=60000)
     page.wait_for_function("typeof G!=='undefined' && G.on && G._cutsceneDone && _cutsceneState===null",timeout=60000)
     result['ordinary_warrior_entry_no_legacy_intro']=True
+    assert page.evaluate('window.__legacyStoryPlays.length')==0
+    page.evaluate("localStorage.setItem('_charIdx','1')")
+    page.goto(result['skip_destination'].replace('&story=warrior-v21',''),wait_until='domcontentloaded',timeout=60000)
+    page.wait_for_function("typeof G!=='undefined' && G.on && G._cutsceneDone && _cutsceneState===null && _charIdx===1",timeout=60000)
+    result['silvertail_entry']=page.evaluate("({charIdx:_charIdx,cutscene:_cutsceneState,gameRunning:G.on,legacyVoicePlayCalls:window.__legacyStoryPlays.length,voicePaused:_proVoice.paused})")
+    assert result['silvertail_entry']['legacyVoicePlayCalls']==0 and result['silvertail_entry']['voicePaused'],result
+    page.screenshot(path=str(O/'silvertail_no_legacy_story.png'))
     assert not errors,errors
     (O/'qa.json').write_bytes(json.dumps(result,ensure_ascii=False,indent=2).encode('utf-8'))
     print(json.dumps(result,ensure_ascii=False),flush=True)

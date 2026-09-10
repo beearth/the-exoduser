@@ -15,25 +15,36 @@
 | 자동재생 차단 |NotAllowedError이면 네이티브 재생 버튼으로 소리 있게 시작 가능 |
 | 종료/스킵 |미디어 pause·src 제거·load·overlay 제거,Promise true. `showCharGate(charId,true)` |
 | 진입 |기존 로딩1200ms 후 `game.html?...&story=warrior-v21`,생성한 슬롯/온라인id 유지 |
-| 게임 후속 |charIdx0의 일반 게임 입장은 구 PRO·INTRO와 눈을 떠 대사·커튼·키안내를 시작하지 않고 즉시 플레이. story URL 유무와 무관 |
+| 게임 후속 |모든 캐릭터의 일반 게임 입장은 구 PRO·INTRO와 눈을 떠 대사·커튼·키안내를 시작하지 않고 즉시 플레이. story URL 유무와 무관 |
 | 미디어 오류 |Promise false,story 매개변수 없이 게임으로 직접 진입. 예전 스토리로 폴백하지 않음 |
 | 저장 계약 |시청 플래그를 세이브·계정·localStorage에 추가하지 않음. 현재 진입URL만 사용 |
-| 기존 입장 |목록의 기존 대검전사도 직접 플레이. 다른 캐릭터의 기존 컷씬 경로 유지 |
+| 기존 입장 |목록의 기존 대검전사·실버테일 모두 직접 플레이. 구 한글 더빙 자동재생 제거 |
 | 배포 패키지 |build-nwjs.mjs FILES에 player 추가,video 폴더 기존 복사로 MP4 포함. 배포/실행파일 재빌드는 이 작업 범위 아님 |
 
-검증: test/characterStoryCreation.test.js는 저장 성공/실패,오프라인 버튼 override,ended/skip/error cleanup,game 직접 플레이를 검사한다. tools/verify_character_story_creation.py는 격리 Chromium에서 생성 UI를 클릭하고 실제 MP4 재생·오디오 디코드·로비 음악 정지·게임 연결을 검사한다. 저장 API만 브라우저 내부에서 대체하여 실제 사용자 슬롯을 쓰지 않는다. 브라우저 결과는 output/cinematic/character_story_direct_play_20260910/qa.json과 스크린샷 참조.
+검증: test/characterStoryCreation.test.js는 저장 성공/실패,오프라인 버튼 override,ended/skip/error cleanup,game 직접 플레이를 검사한다. tools/verify_character_story_creation.py는 격리 Chromium에서 생성 UI를 클릭하고 실제 MP4 재생·오디오 디코드·로비 음악 정지·게임 연결을 검사한다. 저장 API만 브라우저 내부에서 대체하여 실제 사용자 슬롯을 쓰지 않는다. 브라우저 결과는 output/cinematic/legacy_story_disabled_20260910/qa.json과 스크린샷 참조.
 
-언어 제한: 이번 요청은 승인된 합본 그대로 연결한 것으로 영상 속 한글 자막은 언어 선택에 따라 바뀌지 않는다. 기존 PROLOGUE_LINES·여신 INTRO 번역 데이터는 다른 캐릭터와 명시적 cutscene=1 미리보기에서 유지한다.
+언어 제한: 이번 요청은 승인된 합본 그대로 연결한 것으로 영상 속 한글 자막은 언어 선택에 따라 바뀌지 않는다. 기존 PROLOGUE_LINES·여신 INTRO 번역 데이터는 명시적 cutscene=1 미리보기에서 유지한다.
 
 ## 사용자 정정 — 기존 게임 시작 연출 미재생
 
 | 항목 | 확정 동작 |
 |---|---|
-| 일반 대검전사0 진입 |G._cutsceneDone=true,G.on=true,P.iframes=300 |
+| 모든 캐릭터 일반 진입 |G._cutsceneDone=true,G.on=true,P.iframes=300 |
 | 기존 모닥불 |존재하면 t=300 유지 |
 | HUD |hud,hudTop,hudCorner,mmWrap,skBar,mmLvl,globeHP,globeMP에 on 추가 |
 | 음악 |BGM.play(BGM.stageKey(G.stage),true) |
 | 미호출 |PRO/INTRO 컷씬,구 내레이션,_startIntro()의 기상 대사·커튼·키안내 |
-| 다른 캐릭터 |기존 동작 유지 |
+| 실버테일1 포함 |구 PRO/INTRO 자동재생 없이 직접 플레이 |
 | 진단용 예외 |?cutscene=1 명시적 미리보기만 기존 컷씬 허용 |
-| 검증 |신규 생성 영상/스킵 뒤 직접 플레이,story 쿼리 없는 기존 대검전사 직접 플레이. 회귀 테스트19개 PASS |
+| 검증 |신규 생성 영상/스킵 뒤 직접 플레이,story 쿼리 없는 기존 대검전사 직접 플레이. 회귀 테스트21개 PASS |
+
+### 구 한글 더빙 경로 전체 차단 (2026-09-10 후속 수정)
+
+직전 수정은 `_charIdx===0` 조건 때문에 실버테일1에서 구버전이 계속 재생됐다. 현재 `_startIntroCutscene()`는 `!_forceCutscene`이면 캐릭터 종류에 관계없이 즉시 플레이로 반환한다. 구 `_proVoice`(`bgm/공통/intro_voice.mp3`)의 play 호출에 도달하지 않는다. 새 v21 영화는 남전사 생성 때만 재생한다. 다른 캐릭터의 선택·공격·피격·게임 중 대화 음성은 변경하지 않는다.
+
+| 검증 | 결과 |
+|---|---|
+| 남전사0·실버테일1 × story 쿼리 유/무 |구 컷씬 상태 null,게임 on,true,구 내레이션 호출0 |
+| 브라우저 실버테일 입장 |charIdx1,구 intro_voice.mp3 play 호출0,구 음성 paused |
+| 회귀 테스트 |21개 PASS |
+| 증거 |output/cinematic/legacy_story_disabled_20260910/qa.json |

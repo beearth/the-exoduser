@@ -39,9 +39,9 @@ test('offline button override also starts the new story after save',async()=>{
 test('rejected save does not start the story',async()=>{
   const {ctx,calls}=creationContext({rejected:true});await ctx.doCreateChar('테스트전사',0);assert.equal(calls.length,0);
 });
-for(const search of ['?test=1&slot=test&story=warrior-v21','?test=1&slot=test'])test('warrior enters gameplay without any legacy intro: '+search,()=>{
+for(const charIdx of [0,1])for(const search of ['?test=1&slot=test&story=warrior-v21','?test=1&slot=test'])test('character '+charIdx+' enters gameplay without any legacy intro: '+search,()=>{
   let voicePlays=0;
-  const ctx=vm.createContext({console,_bossTestReq:-1,_wantPlateTest:()=>false,_forceCutscene:false,G:{stage:0},P:{},_charIdx:0,
+  const ctx=vm.createContext({console,_bossTestReq:-1,_wantPlateTest:()=>false,_forceCutscene:false,G:{stage:0},P:{},_charIdx:charIdx,
     location:{search},URLSearchParams,
     _startIntro(){throw Error('Old curtain/wakeup intro must not start');},_cutSeq:'PRO',_cutsceneState:null,PROLOGUE_LINES:{ko:[]},_getCutsceneImg(){},setInterval:()=>0,clearInterval(){},setTimeout:fn=>fn(),
     performance:{now:()=>0},$:()=>null,BGM:{fadeOut(){},play(){},stageKey:()=> 'hell1'},_proVoice:{play(){voicePlays++;return Promise.resolve();}},_PRO_VOICE_OFS:0.3
