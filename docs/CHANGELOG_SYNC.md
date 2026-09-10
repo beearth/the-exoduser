@@ -47610,3 +47610,16 @@ mpR = 0.05 + s.int×0.005                                        [NO P.lv×0.001
 | 추천2단계 | boneWall+maliceStorm → boneStorm(해골번개) |
 | 후반 습득 | giantSlam2는14단계로 유지, fuse=null. 최종 사슬은15단계. 나머지 상대 순서 유지 |
 | 적용 | 추천 화면·추천 자동이 공유하는 SKILL_REC_PATH, KO/EN 번호, 관련 문서 동기화 |
+
+## 2026-09-10 해골무덤 마우스 위치 키 즉발
+
+| 항목 | 현재 계약 |
+|---|---|
+| 입력 / 적용 위치 | `boneWall`, `_dispatchSkillSlot`: KBM은 스킬 키 입력 즉시 `fireBoneWall(tx,ty)` 호출. 추가 클릭 없음 |
+| 좌표 / 사거리 | `mouse.x-VW/2+G.cam.x`, `mouse.y-VH/2+G.cam.y`; 플레이어 기준1000px 밖은 같은 방향으로 클램프 |
+| 기존 제한 | 스택0·악의부족·일시정지·사망·얼음보주 안에서는 생성/소모 없음. 패드 조준 확정 유지 |
+| 자원 / 충전 | `_malCost(12)` 악의, 스택1. 최대2개(Lv10부터3), 충전1500f=25초 |
+| 기존 실제 수치 문서 정정 | 반경 `floor((400+(Lv-1)×18)×0.7)`; 지속 `min(1800,180+(Lv-1)×12)`f. 게임의 수치는 변경하지 않음 |
+| 검증 | `boneWallQuickCast.test.js` 4개 + `bossCageTrapSprite.test.js` 4개 통과. 즉발 좌표·사거리·차단 조건·패드·공용 시트/음향 확인 |
+
+게임 내 한영 설명과 스킬/밸런스 문서를 실제 코드에 동기화했다. 합체 `boneStorm`/`elecRepent` 발동 경로는 기존 계약을 유지한다.

@@ -11576,9 +11576,18 @@ function _dispatchSkillSlot(slotIdx,keyCode){
       if(P.mp>=mpCost('mortar')&&(P._mmCd||0)<=0){if(_gpActive){mouse.x=P.x-G.cam.x+VW/2;mouse.y=P.y-G.cam.y+VH/2}P._mmAiming=true;P._mmAimKey=keyCode;P._mmDist=150;P._mmCharging=false;_skOk=true}
       else if(P.mp<mpCost('mortar'))showPH(_T('MP 부족!'),'#4488ff');break;
     case 'boneWall':
-      if(P._bwAiming){P._bwAiming=false;showPH(_T('취소'),'#888');break}
+      if(_gpActive&&P._bwAiming){P._bwAiming=false;showPH(_T('취소'),'#888');break}
       if((P._bwStk||0)<=0){showPH(_T('충전 중...'),'#ff8844');break}
-      if(G.mats>=_malCost(12)){if(_gpActive){mouse.x=P.x-G.cam.x+VW/2;mouse.y=P.y-G.cam.y+VH/2}P._bwAiming=true;_skOk=true}
+      if(G.mats>=_malCost(12)){
+        if(_gpActive){mouse.x=P.x-G.cam.x+VW/2;mouse.y=P.y-G.cam.y+VH/2;P._bwAiming=true}
+        else{
+          let tx=mouse.x-VW/2+G.cam.x,ty=mouse.y-VH/2+G.cam.y;
+          const d=dst(P.x,P.y,tx,ty);
+          if(d>1000){const a=Math.atan2(ty-P.y,tx-P.x);tx=P.x+Math.cos(a)*1000;ty=P.y+Math.sin(a)*1000}
+          fireBoneWall(tx,ty);
+        }
+        _skOk=true;
+      }
       else showPH(_T('악의 부족! (')+_malCost(12)+')','#ff4444');break;
     case 'maliceHunt':
       if((P._mhCd||0)>0){break}
@@ -32974,7 +32983,7 @@ function update(){
   if(P._ndCd>0)P._ndCd-=sp*_xbCdSpd+_hdCdBonus;
   // ═══ 폭풍소환 — 쿨다운 ═══
   if(P._mmCd>0)P._mmCd-=sp+_hdCdBonus;
-  // ═══ 해골무덤 — 2스택 충전 (15초/1충전, Lv10→3스택) ═══
+  // ═══ 해골무덤 — 2스택 충전 (25초/1충전, Lv10→3스택) ═══
   if(P.skills.boneWall>=1){
     const _bwMax=(P.skills.boneWall>=10)?3:2;
     if(P._bwStk==null)P._bwStk=_bwMax;
@@ -33335,7 +33344,7 @@ function update(){
       P._mmCharging=false;
     }
   }
-  // ═══ 벽소환 — 조준 모드 (마우스 클릭 설치, 사거리 1000px 클램프) ═══
+  // ═══ 벽소환 — 패드 조준 확정 (KBM은 스킬 키 즉발, 사거리 1000px 클램프) ═══
   if(P._bwAiming){
     if(MBjust[2]||K['Escape']){P._bwAiming=false;MBjust[2]=false;K['Escape']=false}
     else if(MBjust[0]){
@@ -40668,7 +40677,7 @@ const SKILL_LIST=[
   {id:'venomBlade',name:'독사',cat:'bow',act:true,emoji:'🐍',desc:'유도 독사 1+Lv발 (ST40). DEX+석궁 기반. 직타 최소, 독 DOT 위주. 관통 800+Lv×20+장비(91보장+9확률). 독 10초·스택당+50%·50스택캡. 쿨 15초',descEn:'Homing venom snake 1+Lv shots (ST40). DEX+bow base. Minimal direct DMG, Poison DOT. Pierce 800+Lv×20+gear (91gtd+9rng). Poison 10s, +50%/stk, 50stk cap. CD 15s',spCost:10,matCost:0,cd:900,up:true,upSp:5,upMat:0},
   {id:'ltnChaser',name:'뇌전추격자',cat:'bow',act:true,emoji:'⚡',desc:'전기 칼날 1+Lv발 발사 (ST40). DEX 기반. 유도+관통. 관통 시 체인라이트닝 발생. 쿨 12초. Lv당 뎀+12% 칼날+1 체인+1',descEn:'Lightning blade 1+Lv shots (ST40). DEX base. Homing+pierce. Chain lightning on pierce. CD 12s. Per Lv DMG+12% blade+1 chain+1',spCost:10,matCost:80,cd:720,up:true,upSp:5,upMat:0},
   {id:'maliceMortar',name:'폭풍소환',cat:'magic',act:true,emoji:'🌪️',desc:'어둠 소용돌이 소환 (마우스 조준 설치, MP 소모, 쿨 11초, INT 스케일링, 1렙 400범위 +18/렙, 6.5초 지속, 적 흡인)',descEn:'Summon dark vortex (mouse-aim placement, MP cost, CD 11s, INT scale, Lv1 range 400 +18/Lv, 6.5s duration, pulls enemies)',spCost:10,matCost:100,up:true,upSp:5,upMat:0},
-  {id:'boneWall',name:'해골무덤',cat:'magic',act:true,emoji:'🦴',desc:'포격식 조준 → 원형 해골무덤 소환. 2스택 (15초/1충전, Lv10→3스택). 둘레에서 뼈가 솟아 공간을 감쌈. 솟을 때 데미지. 적/투사체 차단. 악의 12. Lv당 범위+5% 지속+0.3초',descEn:'Artillery-aim → circular bone tomb. 2 stocks (15s/charge, Lv10→3 stocks). Bones rise around perimeter. DMG on rise. Blocks enemies/projectiles. Malice 12. Per Lv range+5% duration+0.3s',spCost:10,matCost:100,up:true,upSp:5,upMat:0},
+  {id:'boneWall',name:'해골무덤',cat:'magic',act:true,emoji:'🦴',desc:'스킬 키로 마우스 위치에 즉시 소환 (최대 1000px, 패드: 조준 후 확정). 2스택 (25초/1충전, Lv10→3스택). 원형 해골벽이 적/투사체 차단. 솟을 때 데미지. 악의 12. 반경 280px+12.6px/Lv, 지속 3초+0.2초/Lv (최대 30초)',descEn:'Press skill key to summon at cursor (max 1000px; gamepad: aim and confirm). 2 stocks (25s/charge, Lv10: 3). Circular bone wall blocks enemies/projectiles. DMG on rise. Malice 12. Radius 280px +12.6px/level; duration 3s +0.2s/level (max 30s).',spCost:10,matCost:100,up:true,upSp:5,upMat:0},
   {id:'blackStar',name:'블랙',cat:'ult',act:true,ult:true,noDmg:true,emoji:'⛧',desc:'검은 오망성 소환. 7초(+Lv당0.5초) 강력 흡인 (데미지 없음, 순수 유틸). 범위 1500+Lv×100px. 흡인력 기본5+Lv당0.5. (MP 30%, 쿨 120초)',descEn:'Summon black pentagram. 7s (+0.5s/Lv) strong pull (no DMG, pure utility). Range 1500+Lv×100px. Pull force base 5+0.5/Lv. (MP 30%, CD 120s)',spCost:10,matCost:100,cd:7200,up:true,upSp:5,upMat:0},
   {id:'lavaSummon',name:'탄막블랙홀',cat:'ult',act:true,ult:true,emoji:'🕳',desc:'작은 탄막블랙홀을 즉시 설치해 5초 동안 넓은 흡수장(1000~1475px) 안의 적 탄막을 제거한 뒤 흡수량 비례 범위폭발(900~1470px). 기본 ATK×8(Lv당×10 성장), 탄막 1발당 뎀+3%(최대+300%)+흡수 탄막 피해 저장(기본 피해의 최대 100%), 스턴, 거리감쇠 30%. (MP 30%, 쿨 120초)',descEn:'Instantly deploy a small Bullet Black Hole. For 5s it clears hostile bullets in a wide 1000-1475px field, then detonates in a 900-1470px area based on absorbed bullets. Base ATK×8(×10 by Lv), +3% DMG per bullet(max +300%) plus stored bullet damage capped at 100% base damage, stun, 30% falloff. (MP 30%, CD 120s)',spCost:10,matCost:100,cd:7200,up:true,upSp:5,upMat:0},
   {id:'execution',name:'처형',cat:'ult',act:true,ult:true,emoji:'⚔',desc:'X키: 그로기 보스 전용. 보스 현재HP 20%(+2%/Lv) + 무기뎀×30(+21%/Lv, 20Lv=150배) + 보스HP 30% 순수뎀. 섬광 돌진 연출. HP/MP/ST 10% 소모. 쿨 5초',descEn:'X key: Groggy boss only. Boss current HP 20%(+2%/Lv) + weapon DMG×30(+21%/Lv, Lv20=150×) + boss HP 30% pure DMG. Flash dash. HP/MP/ST 10% cost. CD 5s',spCost:10,matCost:100,cd:300,up:true,upSp:5,upMat:0},
