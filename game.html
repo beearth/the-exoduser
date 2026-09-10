@@ -40615,7 +40615,7 @@ const SKILL_LIST=[
   {id:'chargeBoost',name:'사슬기동:충돌',cat:'move',desc:'STR 스케일. 3회 충전 + Lv3마다 사거리 1단계↑(최대4단). 이동 중 무적, 통과 적에 데미지+그로기 (쿨 5초)',descEn:'STR scale. 3 stocks + range tier up every Lv3 (max 4). Invincible while moving, DMG+groggy on pass-through (CD 5s)',spCost:10,matCost:100,up:true,upSp:5,upMat:0},
   {id:'magicBlink',name:'사슬기동:화염',cat:'move',desc:'INT 스케일. 이동 경로에 화염길 생성(3초 DOT). 통과 적 화상. MP 소모. 합체 시 착지 폭발',descEn:'INT scale. Fire trail on dash path (3s DOT). Burns passed enemies. MP cost. Fuse: landing explosion',spCost:10,matCost:100,up:true,upSp:5,upMat:0},
   {id:'ghostWalk',name:'뇌전걸음',cat:'def',act:true,emoji:'⚡',desc:'5초간 유령화 — 무적+이동. 통과한 적/탄막 수만큼 종료 시 암전 폭발(+10%/회) + 전기줄기 방사(3회 체인). 카운트 캡=Lv×5(최대50). 쿨 20초. Lv당 뎀+15% 범위+10',descEn:'5s ghost form — invincible+move. Blackout explosion on end (+10%/enemy passed) + lightning arc (3 chains). Count cap=Lv×5 (max 50). CD 20s. Per Lv DMG+15% range+10',spCost:10,matCost:100,cd:1200,up:true,upSp:5,upMat:0},
-  {id:'bladeDash',name:'전격이동',cat:'move',desc:'[이동기] 방향키 더블탭으로 발동. 경직/기절 중에도 탈출 가능. 500유닛 순간이동, 무적(15프레임). MP[(10+(Lv-1)×5)×0.7] + 공용 기동게이지 0.7칸(31.5)을 소모한다. 기본 기동게이지 5칸, Shift 사슬과 공유. 착지 시 전류장판(10초+Lv×0.5초): INT 틱뎀 + 방어력↓(1렙10%, 렙당+5%, 캡50%)',descEn:'[Mobility] Double-tap to activate. Escapes stagger/stun. 500-unit blink, invincible 15f. Costs MP[(10+(Lv-1)×5)×0.7] plus 0.7 shared mobility-gauge cells (31.5). Base gauge has 5 cells and is shared with Shift chain. Landing shock field(10s+Lv×0.5s): INT tick DMG + DEF↓(Lv1=10%, +5%/Lv, cap 50%)',spCost:10,matCost:60,up:true,upSp:6,upMat:0},
+  {id:'bladeDash',name:'전격이동',cat:'move',desc:'[이동기] 방향키 더블탭으로 발동. 경직/기절 중에도 탈출 가능. 250유닛 순간이동, 무적(15프레임). MP[(10+(Lv-1)×5)×0.7] + 공용 기동게이지 0.7칸(31.5)을 소모한다. 기본 기동게이지 5칸, Shift 사슬과 공유. 착지 시 전류장판(10초+Lv×0.5초): INT 틱뎀 + 방어력↓(1렙10%, 렙당+5%, 캡50%)',descEn:'[Mobility] Double-tap to activate. Escapes stagger/stun. 250-unit blink, invincible 15f. Costs MP[(10+(Lv-1)×5)×0.7] plus 0.7 shared mobility-gauge cells (31.5). Base gauge has 5 cells and is shared with Shift chain. Landing shock field(10s+Lv×0.5s): INT tick DMG + DEF↓(Lv1=10%, +5%/Lv, cap 50%)',spCost:10,matCost:60,up:true,upSp:6,upMat:0},
   {id:'kiSlash',name:'기검참',cat:'phys',desc:'좌클 스킬: 기본공격에 3단 콤보 초승달 검기 추가. ST 10+Lv당2. Lv당 뎀+10% 거리+15px',descEn:'LMB skill: adds 3-hit crescent ki blade combo to basic attack. ST 10+2/Lv. Per Lv DMG+10% range+15px',spCost:10,matCost:0,up:true,upSp:5,upMat:0,default:true},
   {id:'fireball',name:'악의구',cat:'magic',desc:'[기본: E] 어둠 마법 오브 발사. 범위폭발. 넉백 0.5%. Lv당 크기+50% (뎀은 _skMul 계수 적용)',descEn:'[Default: E] Dark magic orb fired. AoE explosion. Knockback 0.5%. Per Lv size+50% (DMG uses _skMul)',spCost:10,matCost:0,up:true,upSp:5,upMat:0,default:true},
   {id:'whirlwind',name:'회전참',cat:'phys',desc:'무기 홀드 → 전진 회전 공격. 360도 광역, ST 지속소모. Lv당 범위+5 뎀+5%',descEn:'Hold weapon → forward spin attack. 360° AoE, continuous ST drain. Per Lv range+5 DMG+5%',spCost:10,matCost:100,up:true,upSp:5,upMat:0},
@@ -41696,12 +41696,14 @@ function activateNeedleShot(){
   playSample('crossbow_shot',.8,_r(1.4,.1));
   addTxt(P.x,P.y-30,_T('🪡 바늘출!'),'#ccddff',35);shake(2);
 }
-// ═══ 전격이동 — Shift 사슬과 공용 기동게이지 1칸을 소비 ═══
+// ═══ 전격이동 — Shift 사슬과 공용 기동게이지 0.7칸 소비 ═══
 function _canBladeDash(){return !!(P&&P.skills&&P.skills.bladeDash>=1&&_harpGauge>=_HARP_GAUGE_COST[1]*7/10&&P.mp>=(10+((P.skills.bladeDash||1)-1)*5)*7/10)}
 function _tickBladeDash(sp){
-    // 칼날이동: 직선 대시 (12프레임, 무적)
+    // 이전 실제 이동감 복구: 250유닛/6f, E 차징과 독립 진행.
+    if(!(P._bdMoveT>0)||!(sp>0))return;
+    const _bdStep=Math.min(sp,P._bdMoveT);
     P.iframes=Math.max(P.iframes,3);
-    const _bdSpd=500/12*sp;
+    const _bdSpd=250/6*_bdStep;
     const _bdNx=P.x+Math.cos(P._bdAng)*_bdSpd,_bdNy=P.y+Math.sin(P._bdAng)*_bdSpd;
     if(canMvBlink(_bdNx,P.y,P.r))P.x=_bdNx;else if(!canMv(_bdNx,P.y,P.r)){P._bdMoveT=0} // 실제 벽만 정지, 해골무덤 통과
     if(canMvBlink(P.x,_bdNy,P.r))P.y=_bdNy;else if(!canMv(P.x,_bdNy,P.r)){P._bdMoveT=0}
@@ -41709,7 +41711,7 @@ function _tickBladeDash(sp){
     if(Math.random()>.3){const _pa=Math.random()*Math.PI*2;
       poolPart(P.x+Math.cos(_pa)*P.r,P.y+Math.sin(_pa)*P.r,(Math.random()-.5)*3,(Math.random()-.5)*3,
         Math.random()>.5?'#44ddff':'#ffee44',2+Math.random()*2,8+Math.random()*4)}
-    P._bdMoveT-=sp;
+    P._bdMoveT-=_bdStep;
     if(P.s==='bladeDash')P.st2=P._bdMoveT;
     if(P._bdMoveT<=0){
       // 착지 사운드
@@ -41779,8 +41781,8 @@ function activateBladeDash(dir){
   // 홀딩스킬 보존: 회전참/보호막 등 대시 후 복귀
   const _holdStates={'whirlwind':1,'sBlock':1,'beam':1};
   P._preBdState=_holdStates[P.s]?P.s:null;
-  P._bdMoveT=12;
-  if(P.s!=='sDraw'&&P.s!=='kiGather'){P.s='bladeDash';P.st2=12}
+  P._bdMoveT=6;
+  if(P.s!=='sDraw'&&P.s!=='kiGather'){P.s='bladeDash';P.st2=6}
   P.facing=_bdAng;
   P.iframes=Math.max(P.iframes,15);
   SFX.charge();{const _cd=['chain_dash','chain_dash2','chain_dash3','chain_dash4'];playSample(_cd[~~(Math.random()*4)],.6,_r(1,.1))}

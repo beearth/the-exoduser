@@ -51,7 +51,7 @@ test('blade movement preserves E charge and continues through release to its lan
   }
   assert.equal(ctx.P.s,'sBash','landing must not replace the E parry state');
   assert.equal(ctx.P.st2,20,'movement timer must not consume the E parry window');
-  assert.ok(Math.abs(ctx.P.x-500)<1e-6);
+  assert.ok(Math.abs(ctx.P.x-250)<1e-6,'preserve the pre-charge-refactor travel distance');
   assert.equal(ctx.G._fireZones.length,1);
   assert.equal(ctx.P.mp,93);
 });
@@ -77,6 +77,18 @@ test('ordinary blade dash still lands and restores a held skill', () => {
   for(let i=0;i<12;i++)ctx._tickBladeDash(1);
   assert.equal(ctx.P.s,'sBlock');assert.equal(ctx.P._bdMoveT,0);
   assert.equal(ctx.G._fireZones.length,1);
+});
+
+test('Flash Step travels its original 250 units once, including fractional final updates',()=>{
+  for(const sp of [1,.35,2]){
+    const ctx=chargeContext();ctx.P.s='idle';ctx.charge=false;ctx.isAct=()=>false;
+    vm.runInContext(fn('activateBladeDash')+fn('_tickBladeDash'),ctx);ctx.activateBladeDash(3);
+    let ticks=0;while(ctx.P._bdMoveT>0&&ticks++<100)ctx._tickBladeDash(sp);
+    assert.ok(Math.abs(ctx.P.x-250)<1e-6,'distance at step '+sp);
+    assert.equal(ctx.G._fireZones.length,1);assert.equal(ctx.P.mp,93);
+    ctx._tickBladeDash(sp);assert.ok(Math.abs(ctx.P.x-250)<1e-6,'completed dash cannot move again');
+    assert.equal(ctx.G._fireZones.length,1);
+  }
 });
 function fn(name) {
   const start = html.indexOf(`function ${name}(`);
