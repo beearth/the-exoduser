@@ -147,3 +147,32 @@ test('level-one Wing Strike fires without shoulder equipment and respects cooldo
   ctx._autoShieldThrow();
   assert.equal(ctx.G._stProjs.length, 1, 'cooldown must still prevent repeated waves');
 });
+
+test('charged E release enlarges the actual fused wave hit area, including skill growth', () => {
+  const noop = () => {};
+  const ctx = vm.createContext({
+    G: {}, INV: { equipped: { shield: null } }, _charIdx: 0,
+    pShieldMul: () => 1, statStr: () => 1, _fuseMul: () => 1,
+    _addSkProf: noop, shake: noop, poolPart: noop,
+    _startSilvertailAttackMotion: noop, _playSwordBack: noop, playSample: noop, _r: () => 1,
+  });
+  vm.runInContext(['mkP', 'sh', '_isFused', '_wingStrikeLevel', '_eSkillRangeMul', '_autoShieldThrow', '_kgRelease'].map(fn).join('\n'), ctx);
+  for (const lv of [1, 5]) {
+    const sizes = [];
+    for (const charge of [1, 1.5, 2, 3]) {
+      ctx.P = ctx.mkP(); ctx.P.skills.maliceSwipe = ctx.P.skills.shieldThrow = lv;
+      ctx.G = {};
+      ctx._kgRelease(3, charge);
+      const wave = ctx.G._stProjs[0], scale = (1 + (lv - 1) * .05) * charge;
+      assert.equal(wave.maxDist, 210 * scale);
+      assert.equal(wave.r, 50 * scale);
+      assert.equal(wave.w, 95 * scale);
+      sizes.push(wave);
+    }
+    // Run the game's enemy collision predicate against an enemy outside tap width.
+    const hit = html.match(/if\((along>-st\.r&&along<st\.r\+20&&Math\.abs\(perp\)<_wvHW\+e\.r)\)/)[1];
+    const target = { along: 0, perp: 100, e: { r: 10 } };
+    assert.equal(vm.runInNewContext(hit, { ...target, st: sizes[0], _wvHW: sizes[0].w / 2 }), false);
+    assert.equal(vm.runInNewContext(hit, { ...target, st: sizes[3], _wvHW: sizes[3].w / 2 }), true);
+  }
+});

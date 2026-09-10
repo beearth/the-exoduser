@@ -42406,8 +42406,8 @@ function _autoShieldThrow(){
     // ═══ 날개치기: 파워웨이브 (지면 충격파) ═══
     const _wvDmgMul=1.5+(_sfLv-1)*0.12; // 합체 레벨당 12% 증가, 기본 1.5배
     const baseDmg=~~(((sh().atk||3)+P.baseAtk*0.3+10)*pShieldMul()*(1+(slv-1)*0.12)*10*statStr()*_wvDmgMul*_fuseMul('shieldThrow'));
-    const _wvRangeMul=_eSkillRangeMul();
-    const maxDist=210*_wvRangeMul; // 날개치기 Lv당 기본 사거리의 +5%
+    const _wvRangeMul=_eSkillRangeMul()*Math.min(3,Math.max(1,P._sBashChgMul||1));
+    const maxDist=210*_wvRangeMul; // 날개치기 레벨 성장 × 충전 배율, 판정·먼지 폭에도 공통 적용
     G._stProjs.push({
       x:P.x+Math.cos(a)*25,y:P.y+Math.sin(a)*25,
       vx:Math.cos(a)*12,vy:Math.sin(a)*12,
