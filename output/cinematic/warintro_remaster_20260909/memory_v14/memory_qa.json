@@ -1,0 +1,30 @@
+{
+  "frame_count": 210,
+  "detected_local_cut_frames": [
+    30,
+    90,
+    150
+  ],
+  "global_cut_frames": [
+    3630,
+    3690,
+    3750
+  ],
+  "frames_per_memory": 60,
+  "total_memory_frames": 180,
+  "narration_identical_to_v11": true,
+  "excerpt": {
+    "duration": 6,
+    "frames": 360,
+    "source_range": [
+      59.5,
+      65.5
+    ],
+    "sha256": "eb566290d68d28624744660fca069f4083615c61117ce8543faac3d5ced04383",
+    "decode": "PASS",
+    "audio": "aac"
+  },
+  "visual_review": "12 final samples reviewed: wife60.6/61.4, parents61.6/62.4, wagon62.6/63.3/63.48, present warrior63.53. Both subtitle phrases remain over the family sequence; return occurs after the second phrase. Final vocative retained. Full realtime viewing/listening not performed.",
+  "realtime_review": false,
+  "listening_review": false
+}

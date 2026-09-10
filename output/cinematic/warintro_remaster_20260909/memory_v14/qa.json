@@ -1,0 +1,44 @@
+{
+  "receipts": [
+    {
+      "file": "final.mp4",
+      "duration": 103.5,
+      "frames": 6210,
+      "bytes": 87004001,
+      "sha256": "c32203dfed96740188a020de7040b1766ea74c0b2fe03350bbb22d42489c90a1",
+      "audio_codec": "aac",
+      "audio_channels": 2,
+      "decode": "PASS"
+    },
+    {
+      "file": "ending.mp4",
+      "duration": 14.0,
+      "frames": 840,
+      "bytes": 11819620,
+      "sha256": "0be4fa5cdb73a06b558a59b02e5f78fdc63ec7fd7c85ab0d503c5270096dea6d",
+      "audio_codec": "aac",
+      "audio_channels": 2,
+      "decode": "PASS"
+    }
+  ],
+  "audio_correlation": 0.9999747335230069,
+  "digital_gap_rms": 0.0,
+  "contact_times": [
+    60.4,
+    60.6,
+    61.4,
+    61.6,
+    62.4,
+    62.6,
+    63.3,
+    63.48,
+    63.53,
+    65.2,
+    66,
+    100.5
+  ],
+  "visual_review": "12 final samples reviewed: wife60.6/61.4, parents61.6/62.4, wagon62.6/63.3/63.48, present warrior63.53. Both subtitle phrases remain over the family sequence; return occurs after the second phrase. Final vocative retained. Full realtime viewing/listening not performed.",
+  "realtime_review": false,
+  "listening_review": false,
+  "status": "WHOLE_PHRASE_FAMILY_EDIT_FOR_REVIEW"
+}

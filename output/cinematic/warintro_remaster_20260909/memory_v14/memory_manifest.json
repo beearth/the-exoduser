@@ -1,0 +1,64 @@
+{
+  "order": [
+    "wife",
+    "parents",
+    "children_wagon"
+  ],
+  "global_range": [
+    60.5,
+    63.5
+  ],
+  "frames_per_memory": 60,
+  "duration_per_memory": 1,
+  "total_frames": 180,
+  "total_duration": 3,
+  "memory_ranges": [
+    [
+      60.5,
+      61.5
+    ],
+    [
+      61.5,
+      62.5
+    ],
+    [
+      62.5,
+      63.5
+    ]
+  ],
+  "sources": [
+    {
+      "file": "w04_v3\\source.mp4",
+      "start": 4.5,
+      "duration": 1
+    },
+    {
+      "file": "batch\\w07\\source.mp4",
+      "start": 0.5,
+      "duration": 1
+    },
+    {
+      "file": "w06\\source.mp4",
+      "start": 0.25,
+      "duration": 1
+    }
+  ],
+  "return_at": 63.5,
+  "covered_caption_ranges": [
+    [
+      60.5,
+      60.98
+    ],
+    [
+      60.98,
+      63.43
+    ]
+  ],
+  "hard_cuts": true,
+  "freeze": false,
+  "source_speed": 1,
+  "voice_changed": false,
+  "children_visible": false,
+  "children_scene": "previous closed transport wagon",
+  "shadow_v12_rejected": true
+}
