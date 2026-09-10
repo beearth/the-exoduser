@@ -23,7 +23,8 @@ function creationContext({offline=true,fallback=false,rejected=false}={}){
     fetch:async url=>{if(fallback)throw Error('offline');return {ok:!url.startsWith('/api/load'),json:async()=>({ok:!rejected})};},
     sb:{from:()=>({insert:async()=>({error:rejected?{code:'23505'}:null})})}
   });
-  vm.runInContext(declaration('index.html','doCreateChar')+'\n'+declaration('index.html','_enterOffline'),ctx);
+  const lobby=readFileSync(new URL('../index.html',import.meta.url),'utf8');
+  vm.runInContext(lobby.slice(lobby.indexOf('const CHAR_VISUALS=['),lobby.indexOf('let _pendingVisualIdx=0;'))+'\n'+declaration('index.html','doCreateChar')+'\n'+declaration('index.html','_enterOffline'),ctx);
   return {ctx,calls,nodes};
 }
 for(const mode of [{offline:true},{offline:true,fallback:true},{offline:false}]){
@@ -38,6 +39,26 @@ test('offline button override also starts the new story after save',async()=>{
 });
 test('rejected save does not start the story',async()=>{
   const {ctx,calls}=creationContext({rejected:true});await ctx.doCreateChar('테스트전사',0);assert.equal(calls.length,0);
+});
+for(const offline of [false,true])test('Silvertail creation is blocked before any save request: '+offline,async()=>{
+  const {ctx,calls}=creationContext({offline});let writes=0;
+  ctx.fetch=async()=>{writes++;throw Error('must not save');};
+  ctx.sb={from(){writes++;throw Error('must not save');}};
+  ctx.localStorage.setItem=()=>writes++;
+  await ctx.doCreateChar('실버테일',1);
+  assert.equal(writes,0);assert.equal(calls.length,0);
+});
+test('offline create override rejects a previously selected Silvertail',async()=>{
+  const {ctx,calls,nodes}=creationContext();let writes=0;
+  ctx._pendingVisualIdx=1;ctx._enterOffline();
+  ctx.fetch=async()=>{writes++;throw Error('must not save');};
+  ctx.localStorage.setItem=()=>writes++;
+  await nodes.get('createBtn').onclick();assert.equal(writes,0);assert.equal(calls.length,0);
+});
+test('direct confirmation cannot open the name dialog for Silvertail',()=>{
+  const {ctx,nodes}=creationContext();ctx._pendingVisualIdx=1;ctx.setTimeout=()=>{};
+  vm.runInContext(declaration('index.html','_visualConfirm'),ctx);ctx._visualConfirm();
+  assert.equal(nodes.has('createModal'),false);
 });
 for(const charIdx of [0,1])for(const search of ['?test=1&slot=test&story=warrior-v21','?test=1&slot=test'])test('character '+charIdx+' starts Nemesis without legacy war narration: '+search,()=>{
   let voicePlays=0;

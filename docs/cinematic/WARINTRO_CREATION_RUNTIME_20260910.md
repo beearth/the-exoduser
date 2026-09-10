@@ -3,7 +3,7 @@
 | 항목 | 현재 구현 |
 |---|---|
 | 시작 | index.html 이름 입력 후 생성 저장 성공 → `_afterCharacterCreated(name,visualIdx)` |
-| 대상 | `visualIdx===0`, CHAR_VISUALS의 exoduser_warrior. 다른 캐릭터는 기존 목록 갱신 |
+| 대상 | `visualIdx===0`, CHAR_VISUALS의 exoduser_warrior. 2026-09-10 실버테일1은 `comingSoon:true`로 신규 생성 단계에서 차단. 기존 다른 캐릭터의 목록·입장은 유지 |
 | 저장 경로 | 오프라인 `/api/save`, 서버 없는 localStorage 폴백, 온라인 Supabase 성공 모두 연결 |
 | 저장 실패 | 중복 이름·실패 응답에서는 영상 시작 안 함 |
 | 재생기 | `character-story-player.js`, `ExoduserCharacterStory.play()` Promise, 중복 호출 시 동일 Promise |

@@ -791,6 +791,15 @@ body{background:#000 center/cover no-repeat;color:#ccaa88;font-family:'Noto Sans
         0 0 18px 3px rgba(205,45,32,.6),inset 0 2px 7px rgba(0,0,0,.75)}
     .cs-ico.sel .cs-ico-ring svg{color:#f0d492;filter:drop-shadow(0 0 5px rgba(230,80,50,.65))}
     .cs-ico.sel .lbl{color:#e8c87a}
+    .cs-ico.locked .cs-ico-ring::after{content:'';position:absolute;inset:0;background:url('assets/charselect/coming_soon_chains.svg') center/100% 100% no-repeat;pointer-events:none}
+    .cs-ico.locked .cs-ico-ring img{filter:grayscale(1) brightness(.35)}
+    .cs-ico .cs-soon{color:#b59e7d;font-size:min(.85vw,.72rem);letter-spacing:.04em}
+    #csReleaseLock{display:none;position:absolute;inset:0;z-index:4;align-items:center;justify-content:center;flex-direction:column;pointer-events:none}
+    #csReleaseLock img{width:min(34vw,440px);max-height:65vh;object-fit:contain;filter:drop-shadow(0 8px 18px #000)}
+    #csReleaseLabel{margin-top:8px;padding:12px 30px;border:1px solid #80705a;background:rgba(12,10,10,.94);color:#d5c0a0;font-size:clamp(14px,1.6vw,24px);letter-spacing:.16em;box-shadow:0 8px 30px #000}
+    #charVisualPop.release-locked #csReleaseLock{display:flex}
+    #charVisualPop.release-locked .cs-idle-vid{filter:grayscale(.8) brightness(.45)}
+    #visualCreateBtn:disabled{cursor:not-allowed;filter:grayscale(1);opacity:.6;box-shadow:none}
     /* 하단 액션 바 */
     .cs-actions{display:flex;align-items:center;justify-content:space-between;max-width:min(56vw,760px);margin:0 auto}
     #visualCancelBtn{padding:10px 34px;background:transparent;border:1px solid rgba(150,100,60,.5);color:#a88a64;
@@ -883,7 +892,7 @@ body{background:#000 center/cover no-repeat;color:#ccaa88;font-family:'Noto Sans
           <div id="csThumb"></div>
         </div>
       </div>
-      <div class="cs-stage"><img id="csPortrait" alt=""></div>
+      <div class="cs-stage"><img id="csPortrait" alt=""><div id="csReleaseLock"><img src="assets/charselect/coming_soon_chains.svg" alt="" aria-hidden="true"><span id="csReleaseLabel" role="status"></span></div></div>
       <div class="cs-side right" id="csRight">
         <div class="cs-frame-box">
           <span class="cnr tl"></span><span class="cnr tr"></span><span class="cnr bl"></span><span class="cnr br"></span>
@@ -1029,6 +1038,7 @@ const sb=typeof supabase!=='undefined'?supabase.createClient(SUPABASE_URL,SUPABA
 
 // ═══ [LANG] 로비 다국어 ═══
 const _LOBBY_EN={
+  '출시 준비 중':'Coming Soon',
   '로그인 필요':'Login Required','▶ 시네마틱':'▶ Cinematic','확인':'Confirm',
   '지옥의 길':'HELL: EXODUSER','연결 중...':'Connecting...','캐릭터를 선택하세요':'Select your character','당신은 누구인가':'WHO ART THOU',
   'Google로 입장':'Enter with Google','캐릭터 선택':'Character Select','로그아웃':'Logout',
@@ -2600,6 +2610,7 @@ async function _goLobby({fromCinematic=false}={}){
 function _enterOffline(){
   _testMode=true;
   $('createBtn').onclick=async()=>{
+    if(CHAR_VISUALS[_pendingVisualIdx]?.comingSoon){setStatus(_TL('출시 준비 중'),true);return}
     const name=$('charName').value.trim();
     if(name.length<2||name.length>8){setStatus(_TL('이름은 2~8자여야 합니다.'),true);return}
     if(/[<>"'&\/\\]/.test(name)){setStatus(_TL('특수문자는 사용할 수 없습니다.'),true);return}
@@ -2803,6 +2814,7 @@ const CHAR_VISUALS=[
       ['💥','파멸의 일격','느리지만 치명적인 광역 참격을 내리꽂습니다.'],
     ]},
   {id:'exoduser_silvertail',name:'실버테일',cls:'BLADE DANCER',desc:'회전하는 단 하나의 검, 그녀의 춤은 파멸',folder:'img/exoduser_silvertail',fw:48,fh:48,portrait:'assets/charselect/silvertail_cut.png?v=3',bust:'assets/charselect/portrait_silvertail.png?v=1',emblemImg:'assets/charselect/emblem_silvertail.png?v=1',aura:'rgba(120,165,215,.5)',scene:'assets/charselect/bg_scene2.png?v=1',sceneVid:'assets/charselect/bg_scene2_loop.mp4?v=1',idleVid:'assets/charselect/idle_silvertail.mp4?v=1',poster:'assets/charselect/poster_idle_silvertail.jpg?v=1',tab:'실버테일',job:'블레이드 댄서',
+    comingSoon:true,
     emblem:'<svg viewBox="0 0 100 100" fill="none" stroke="currentColor" stroke-width="7" stroke-linecap="round" stroke-linejoin="round"><path d="M24 24 L72 72"/><path d="M76 24 L28 72"/><circle cx="50" cy="50" r="3.5" fill="currentColor" stroke="none"/></svg>',
     traits:[
       ['🌀','검무의 화신','회전대검으로 사방의 적을 동시에 베어냅니다.'],
@@ -2816,6 +2828,11 @@ let _pendingVisualIdx=0;
 function selectVisual(ci){
   const ch=CHAR_VISUALS[ci];if(!ch)return;
   _pendingVisualIdx=ci;
+  const locked=!!ch.comingSoon;
+  $('charVisualPop').classList.toggle('release-locked',locked);
+  $('visualCreateBtn').disabled=locked;
+  $('visualCreateBtn').textContent=_TL(locked?'출시 준비 중':'생성');
+  $('csReleaseLabel').textContent=locked?_TL('출시 준비 중'):'';
   // 중앙: 아이들 영상 있으면 우선 재생(실패·지연 시 정적 누끼로 폴백), 없으면 정적 누끼
   const idle=$('csIdleVid'), port=$('csPortrait');
   const _showStatic=()=>{
@@ -2879,13 +2896,15 @@ function _spawnEmbers(){
 function openVisualSelect(){
   const pop=$('charVisualPop');pop.style.display='flex';
   _spawnEmbers();
-  const grid=$('visualGrid');grid.innerHTML='';
+  const grid=$('visualGrid');grid.replaceChildren();
   CHAR_VISUALS.forEach((ch,ci)=>{
     const ico=document.createElement('div');ico.className='cs-ico';ico.setAttribute('data-vi',ci);
     ico.title=_TL(ch.name);
-    const _inner=ch.emblemImg?('<img src="'+ch.emblemImg+'" alt="">'):(ch.emblem||'');
-    ico.innerHTML='<div class="cs-ico-ring">'+_inner+'</div>'
-      +'<div class="lbl">'+escHtml(_TL(ch.tab||ch.name))+'</div>';
+    const ring=document.createElement('div');ring.className='cs-ico-ring';
+    if(ch.emblemImg){const img=document.createElement('img');img.src=ch.emblemImg;img.alt='';ring.appendChild(img)}
+    const label=document.createElement('div');label.className='lbl';label.textContent=_TL(ch.tab||ch.name);
+    ico.replaceChildren(ring,label);
+    if(ch.comingSoon){ico.classList.add('locked');const badge=document.createElement('span');badge.className='cs-soon';badge.textContent=_TL('출시 준비 중');ico.appendChild(badge);ico.title+=' — '+_TL('출시 준비 중')}
     ico.onclick=()=>selectVisual(ci);
     grid.appendChild(ico);
   });
@@ -2893,6 +2912,7 @@ function openVisualSelect(){
 }
 // 생성 확정 → 이름 입력 모달
 function _visualConfirm(){
+  if(CHAR_VISUALS[_pendingVisualIdx]?.comingSoon)return;
   const pop=$('charVisualPop');pop.style.display='none';
   $('createModal').classList.add('show');$('charName').value='';
   setTimeout(()=>$('charName').focus(),50);
@@ -2920,6 +2940,7 @@ async function _afterCharacterCreated(name,visualIdx){
 }
 
 async function doCreateChar(name,visualIdx){
+  if(CHAR_VISUALS[visualIdx]?.comingSoon){setStatus(_TL('출시 준비 중'),true);return}
   $('createBtn').disabled=true;setStatus(_TL('생성 중...'));
   if(_testMode){
     try{

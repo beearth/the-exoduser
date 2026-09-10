@@ -1,0 +1,21 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 320" fill="none">
+  <defs>
+    <linearGradient id="steel" x1="0" y1="4" x2="0" y2="22" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#dfd8c5"/><stop offset=".3" stop-color="#777568"/><stop offset=".6" stop-color="#292c2d"/><stop offset="1" stop-color="#b5ac94"/>
+    </linearGradient>
+    <pattern id="links" width="32" height="26" patternUnits="userSpaceOnUse">
+      <rect x="2" y="6" width="27" height="14" rx="7" stroke="#080909" stroke-width="9"/>
+      <rect x="2" y="5" width="27" height="14" rx="7" stroke="url(#steel)" stroke-width="6"/>
+      <path d="M25 12h13" stroke="#171b1d" stroke-width="7"/>
+      <path d="M25 10h13" stroke="#a09b89" stroke-width="3"/>
+    </pattern>
+    <filter id="shadow" x="-30%" y="-30%" width="160%" height="160%"><feDropShadow dx="0" dy="5" stdDeviation="4" flood-opacity=".9"/></filter>
+  </defs>
+  <g filter="url(#shadow)">
+    <g transform="translate(160 160) rotate(45)"><rect x="-212" y="-13" width="424" height="26" fill="url(#links)"/></g>
+    <g transform="translate(160 160) rotate(-45)"><rect x="-212" y="-13" width="424" height="26" fill="url(#links)"/></g>
+    <path d="M144 153v-10a16 16 0 0 1 32 0v10" stroke="#a49c87" stroke-width="7"/>
+    <rect x="137" y="151" width="46" height="39" rx="5" fill="#242322" stroke="#95866b" stroke-width="2"/>
+    <circle cx="160" cy="165" r="5" fill="#090a0b"/><path d="M160 168v9" stroke="#090a0b" stroke-width="4"/>
+  </g>
+</svg>
