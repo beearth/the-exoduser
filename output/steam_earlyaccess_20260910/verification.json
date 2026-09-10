@@ -1,0 +1,222 @@
+{
+  "itemid": "1189321",
+  "languages": 30,
+  "fields": 180,
+  "mismatches": [],
+  "unrelated_changes": [],
+  "korean_preserved": true,
+  "rows": [
+    {
+      "language": "english",
+      "earlyaccess_fields": 6,
+      "exact_match": true,
+      "about_present": true,
+      "short_description_chars": 233
+    },
+    {
+      "language": "french",
+      "earlyaccess_fields": 6,
+      "exact_match": true,
+      "about_present": true,
+      "short_description_chars": 270
+    },
+    {
+      "language": "italian",
+      "earlyaccess_fields": 6,
+      "exact_match": true,
+      "about_present": true,
+      "short_description_chars": 267
+    },
+    {
+      "language": "german",
+      "earlyaccess_fields": 6,
+      "exact_match": true,
+      "about_present": true,
+      "short_description_chars": 279
+    },
+    {
+      "language": "spanish",
+      "earlyaccess_fields": 6,
+      "exact_match": true,
+      "about_present": true,
+      "short_description_chars": 279
+    },
+    {
+      "language": "greek",
+      "earlyaccess_fields": 6,
+      "exact_match": true,
+      "about_present": true,
+      "short_description_chars": 266
+    },
+    {
+      "language": "dutch",
+      "earlyaccess_fields": 6,
+      "exact_match": true,
+      "about_present": true,
+      "short_description_chars": 269
+    },
+    {
+      "language": "norwegian",
+      "earlyaccess_fields": 6,
+      "exact_match": true,
+      "about_present": true,
+      "short_description_chars": 259
+    },
+    {
+      "language": "danish",
+      "earlyaccess_fields": 6,
+      "exact_match": true,
+      "about_present": true,
+      "short_description_chars": 260
+    },
+    {
+      "language": "russian",
+      "earlyaccess_fields": 6,
+      "exact_match": true,
+      "about_present": true,
+      "short_description_chars": 252
+    },
+    {
+      "language": "romanian",
+      "earlyaccess_fields": 6,
+      "exact_match": true,
+      "about_present": true,
+      "short_description_chars": 276
+    },
+    {
+      "language": "malay",
+      "earlyaccess_fields": 6,
+      "exact_match": true,
+      "about_present": true,
+      "short_description_chars": 269
+    },
+    {
+      "language": "vietnamese",
+      "earlyaccess_fields": 6,
+      "exact_match": true,
+      "about_present": true,
+      "short_description_chars": 256
+    },
+    {
+      "language": "bulgarian",
+      "earlyaccess_fields": 6,
+      "exact_match": true,
+      "about_present": true,
+      "short_description_chars": 264
+    },
+    {
+      "language": "swedish",
+      "earlyaccess_fields": 6,
+      "exact_match": true,
+      "about_present": true,
+      "short_description_chars": 262
+    },
+    {
+      "language": "latam",
+      "earlyaccess_fields": 6,
+      "exact_match": true,
+      "about_present": true,
+      "short_description_chars": 275
+    },
+    {
+      "language": "ukrainian",
+      "earlyaccess_fields": 6,
+      "exact_match": true,
+      "about_present": true,
+      "short_description_chars": 264
+    },
+    {
+      "language": "indonesian",
+      "earlyaccess_fields": 6,
+      "exact_match": true,
+      "about_present": true,
+      "short_description_chars": 268
+    },
+    {
+      "language": "japanese",
+      "earlyaccess_fields": 6,
+      "exact_match": true,
+      "about_present": true,
+      "short_description_chars": 139
+    },
+    {
+      "language": "schinese",
+      "earlyaccess_fields": 6,
+      "exact_match": true,
+      "about_present": true,
+      "short_description_chars": 111
+    },
+    {
+      "language": "tchinese",
+      "earlyaccess_fields": 6,
+      "exact_match": true,
+      "about_present": true,
+      "short_description_chars": 113
+    },
+    {
+      "language": "czech",
+      "earlyaccess_fields": 6,
+      "exact_match": true,
+      "about_present": true,
+      "short_description_chars": 257
+    },
+    {
+      "language": "thai",
+      "earlyaccess_fields": 6,
+      "exact_match": true,
+      "about_present": true,
+      "short_description_chars": 211
+    },
+    {
+      "language": "turkish",
+      "earlyaccess_fields": 6,
+      "exact_match": true,
+      "about_present": true,
+      "short_description_chars": 276
+    },
+    {
+      "language": "brazilian",
+      "earlyaccess_fields": 6,
+      "exact_match": true,
+      "about_present": true,
+      "short_description_chars": 263
+    },
+    {
+      "language": "portuguese",
+      "earlyaccess_fields": 6,
+      "exact_match": true,
+      "about_present": true,
+      "short_description_chars": 266
+    },
+    {
+      "language": "polish",
+      "earlyaccess_fields": 6,
+      "exact_match": true,
+      "about_present": true,
+      "short_description_chars": 269
+    },
+    {
+      "language": "finnish",
+      "earlyaccess_fields": 6,
+      "exact_match": true,
+      "about_present": true,
+      "short_description_chars": 267
+    },
+    {
+      "language": "koreana",
+      "earlyaccess_fields": 6,
+      "exact_match": true,
+      "about_present": true,
+      "short_description_chars": 214
+    },
+    {
+      "language": "hungarian",
+      "earlyaccess_fields": 6,
+      "exact_match": true,
+      "about_present": true,
+      "short_description_chars": 274
+    }
+  ],
+  "upload_sha256": "a93464daf188b5f419bc8aa647ad61df8f8a69534b98b154ae24a1402376f60f",
+  "final_sha256": "d00a844f4035e2b3f2f598342a31c137be3bccb7856853b5d1042d32ac2d792c"
+}

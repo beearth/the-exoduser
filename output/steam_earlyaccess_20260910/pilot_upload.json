@@ -1,0 +1,21 @@
+{
+  "itemid": "1189321",
+  "languages": {
+    "english": {
+      "app[content][earlyaccess][why]": "EXODUSER: HELL LORD is an action RPG in which combat controls, bullet parrying, chain traversal, skill combinations and equipment builds are closely connected. We want to use Early Access to improve combat balance, build variety, boss patterns and the user experience based on real player feedback across different play styles and combat situations.",
+      "app[content][earlyaccess][how_long]": "We plan to remain in Early Access until the game's core content and systems are sufficiently complete and combat balance and stability are ready for a full release. The duration may vary depending on development progress and player feedback.",
+      "app[content][earlyaccess][full_version]": "For the full version, we plan to add more areas, stages, bosses, enemies, skills and equipment options, and expand the existing systems. We also plan to keep improving combat balance, build variety, the interface, performance and overall polish. These plans may change as development progresses and in response to player feedback.",
+      "app[content][earlyaccess][current_state]": "The current version includes the game's core combat systems: real-time hack-and-slash combat, parrying bullet patterns according to their colors and patterns, high-speed chain traversal, active skills and skill combinations, equipment farming and character builds. Multiple combat areas, enemies and bosses are already implemented. We are continuing to improve content, balance, presentation and quality-of-life features during development.",
+      "app[content][earlyaccess][pricing]": "We plan to determine pricing during Early Access based on development progress and the scale of added content. The price may change at full release, and we will announce any decisions in advance.",
+      "app[content][earlyaccess][community]": "We plan to gather feedback through the Steam Community and from players on combat balance, difficulty, skill and equipment builds, boss patterns, performance and usability. We will review bug reports and play experiences and continue incorporating feedback that helps guide development."
+    },
+    "koreana": {
+      "app[content][earlyaccess][why]": "EXODUSER: HELL LORD는 전투 조작, 탄막 패링, 사슬 기동, 스킬 조합과 장비 빌드가 서로 긴밀하게 연결된 액션 RPG입니다. 다양한 플레이 스타일과 전투 상황에서 얻는 실제 플레이어 피드백을 바탕으로 전투 밸런스와 빌드 다양성, 보스 패턴, 사용자 경험을 개선하기 위해 앞서 해보기를 진행하고자 합니다.",
+      "app[content][earlyaccess][how_long]": "게임의 핵심 콘텐츠와 시스템이 충분히 완성되고, 전투 밸런스와 안정성이 정식 출시 수준에 도달할 때까지 앞서 해보기를 진행할 계획입니다. 개발 진행 상황과 플레이어 피드백에 따라 기간은 달라질 수 있습니다.",
+      "app[content][earlyaccess][full_version]": "정식 버전에서는 더 많은 지역과 스테이지, 보스, 적, 스킬 및 장비 옵션을 추가하고, 현재 시스템을 확장하는 것을 계획하고 있습니다. 또한 전투 밸런스, 빌드 다양성, 인터페이스, 성능 및 전반적인 완성도를 지속적으로 개선할 계획입니다. 이러한 내용은 개발 과정과 플레이어 피드백에 따라 조정될 수 있습니다.",
+      "app[content][earlyaccess][current_state]": "현재 버전에서는 실시간 핵앤슬래시 전투, 색과 패턴에 대응하는 탄막 패링, 사슬을 이용한 고속 이동, 액티브 스킬과 스킬 조합, 장비 파밍과 캐릭터 빌드 구성 등 게임의 핵심 전투 시스템을 플레이할 수 있습니다. 여러 전투 지역과 적, 보스 콘텐츠가 구현되어 있으며, 개발 과정에서 콘텐츠와 밸런스, 연출 및 편의 기능을 지속적으로 개선하고 있습니다.",
+      "app[content][earlyaccess][pricing]": "앞서 해보기 기간 동안의 가격 정책은 개발 진행 상황과 추가되는 콘텐츠의 규모를 고려하여 결정할 계획입니다. 정식 출시 시 가격이 변경될 가능성이 있으며, 변경 사항이 결정되면 사전에 안내하겠습니다.",
+      "app[content][earlyaccess][community]": "Steam 커뮤니티와 플레이어 피드백을 통해 전투 밸런스, 난이도, 스킬과 장비 빌드, 보스 패턴, 성능 및 편의성에 대한 의견을 수집할 계획입니다. 버그 제보와 플레이 경험을 검토하고, 개발 방향에 도움이 되는 피드백을 지속적으로 반영하겠습니다."
+    }
+  }
+}

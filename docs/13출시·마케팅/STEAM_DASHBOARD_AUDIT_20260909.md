@@ -21,7 +21,7 @@
 | A09 | 대조 | Captions available 체크 | 이 항목은 대사 자막만이 아니라 소음·음악·효과음 등의 설명 자막을 뜻함. 관련 접근성 기능 실구현 확인 필요. docs 전체 키워드 검색으로 해당 구현 근거를 확보하지 못했으며, 부재를 확정한 것은 아님 | basic.txt |
 | A10 | 권장 수정 | 5번째 스크린샷 원본 1960×1183, 16:9 아님. 상점 표시본 1790×1080으로 좌우 검은 여백 | 16:9 실제 촬영본 사용 권장. 원본의 최소 픽셀 수 부족으로 판정한 것은 아님 | screenshot5_original.txt, screenshot_loading.json |
 | A11 | 대조 | 태그20개에 2D Platformer 포함. 상단에는 Souls-like, Multiple Endings, Drama 등이 먼저 노출 | 현재 탑다운 핵앤슬래시의 핵심 플레이와 태그/노출 순서 대조. 2D Platformer는 특히 적합성 검토 필요. Multiple Endings는 최종 구현 여부 확인 | tags.txt, store_preview.txt |
-| A12 | 조건부 | 앞서 해보기는 미선택. 영어 답변 6개가 한국어로 저장됨 | 현재 EA 노출은 비활성이라 공개 화면 문제는 아님. EA로 출시할 계획이면 상태·기간 답변·영문 현지화를 별도 정리. 검토 중 상태 변경 제한 문구 존재 | early_access.txt |
+| A12 | 번역 해결·상태 별도 | 2026-09-10 영어6답변 교정 및30언어180답변 저장·재내보내기 검증 완료. 한국어 원문 보존 | EA 상태·검토 요청은 변경하지 않음. 게임의 EA 출시 여부는 별도. [후속 현지화 기록](STEAM_EARLYACCESS_LOCALIZATION_20260910.md) | early_access.txt; output/steam_earlyaccess_20260910/verification.json |
 | A13 | 출시 전 확인 | 상점 게임 지원31항목(UI·자막), 디포 기본 언어 목록에는 영어·한국어만 체크 | 상점 번역30개와 별도 설정. Steam 게임 속성의 언어 선택/초기 GetCurrentGameLanguage 경로 확인. 게임 내 선택기가 있으면 수동 전환은 가능할 수 있음 | depots.txt, basic.txt |
 | A14 | 출시 전 확인 | 언어 SSOT에 29내부언어 목표 및 추가 UI 번역 일부 진행 중 기록 | 31항목의 완전한 인터페이스·자막 지원을 출시 빌드에서 검증해야 함. 현재 저장된 상점 설명 번역 완료가 게임 내부 번역 완료를 뜻하지 않음. 다른 세션 작업은 수정하지 않음 | docs/16번역·로컬라이제이션/STEAM_LANGUAGE_SCOPE_20260909.md |
 | A15 | 기술 확인 | Cloud 100MB/1000파일, Auto-Cloud 경로 WinAppDataRoaming/EXODUSER-HELL/saves/*.json. 동적 Cloud 동기화 체크. 상점 Cloud 기능은 미체크 | 기본 세이브 경로는 docs·node-main.js와 일치. 동적 변경 처리/API 및 실제 동기화 검증은 별도 필요. 체크만으로 기능 검증 완료 처리 불가 | cloud.txt; node-main.js SAVE_DIR |
