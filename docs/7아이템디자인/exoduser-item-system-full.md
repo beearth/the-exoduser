@@ -1,4 +1,7 @@
 # EXODUSER — 아이템 시스템 완전 구현 프롬프트
+
+> **2026-09-10 마법 공격 2배:** `pMagicMul(forAttack=true)=_passDmgSum('magic')×(1+_uHelmMagic)×2`. 아래 공식의 `pMagicMul()`에 이미2배가 포함되므로 스킬 계수·후속 폭발·DOT에 다시 곱하지 않는다. `pMagicMul(false)`는 Q패링 장비스케일 전용으로 기존 값을 유지한다. 계수 표의 숫자는 이 공통 배율을 곱하기 전 값이다. [상세 계약](../14밸런스+수치테이블/MAGIC_ATTACK_DAMAGE_20260910.md).
+
 ## game.html 직접 패치 / 클코(Claude Code) 투입용
 > 기존 코드 분석 완료 기반 — 호환성 유지하며 전면 업그레이드
 

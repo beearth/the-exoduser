@@ -7,7 +7,7 @@ const gameHtml = readFileSync(new URL('../game.html', import.meta.url), 'utf8');
 test('parried projectiles use the unified reflect formula and per-projectile multipliers', () => {
   assert.match(
     gameHtml,
-    /function pParryProjDmg\(bulletDmg,isQ\)\{const scale=isQ\?magicRef\(\)\*statInt\(\)\*pMagicMul\(\):meleeRef\(\)\*statStr\(\)\*pAtkMul\(\);[\s\S]*return Math\.max\(_calc,_kiFloor\);\}/
+    /function pParryProjDmg\(bulletDmg,isQ\)\{const scale=isQ\?magicRef\(\)\*statInt\(\)\*pMagicMul\(false\):meleeRef\(\)\*statStr\(\)\*pAtkMul\(\);[\s\S]*return Math\.max\(_calc,_kiFloor\);\}/
   );
   assert.match(gameHtml, /p\.dmg=~~\(pParryProjDmg\(p\.dmg,false\)\*1\.8\);p\._aoeDmg=p\.dmg\*1\.5;/);
   assert.match(gameHtml, /p\.dmg=~~\(pParryProjDmg\(p\.dmg,false\)\*0\.8\*_msReflect\);p\.life=60;p\.ml=60;/);

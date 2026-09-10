@@ -24988,10 +24988,10 @@ function pDefAdd(){return (P._altDef||0)*30}   // 철벽 패시브 제거: 제�
 function pChargeRange(){return 1+PASSIVES.pCharge*.02}               // 사슬사거리 +2%/lv (10lv=+20%)
 function pChargeGauge(){return 1+PASSIVES.pCharge*.03}               // 사슬기동 게이지회복 +3%/lv (10lv=+30%)
 function pParryDmg(){return 1+PASSIVES.pParry*.50}     // 카운터뎀 +50%/lv (10lv=×6)
-function pParryProjDmg(bulletDmg,isQ){const scale=isQ?magicRef()*statInt()*pMagicMul():meleeRef()*statStr()*pAtkMul();const _gearBonus=Math.min(1,scale/300);const _base=bulletDmg*(1+_gearBonus)*0.5;const _afxPB=1+_eqAffix('parryBonus');const _legSP=(sh()._lShieldParry||0)>0?sh()._lShieldParry:1;const _calc=~~(_base*pParryDmg()*_afxPB*_legSP);const _kiFloor=~~(meleeRef()*14*statStr()*pAtkMul());return Math.max(_calc,_kiFloor);} // 탄뎀×0.5 베이스 + 장비보너스, 최소 기검참1방(14×) 보장
+function pParryProjDmg(bulletDmg,isQ){const scale=isQ?magicRef()*statInt()*pMagicMul(false):meleeRef()*statStr()*pAtkMul();const _gearBonus=Math.min(1,scale/300);const _base=bulletDmg*(1+_gearBonus)*0.5;const _afxPB=1+_eqAffix('parryBonus');const _legSP=(sh()._lShieldParry||0)>0?sh()._lShieldParry:1;const _calc=~~(_base*pParryDmg()*_afxPB*_legSP);const _kiFloor=~~(meleeRef()*14*statStr()*pAtkMul());return Math.max(_calc,_kiFloor);} // 탄뎀×0.5 베이스 + 장비보너스, 최소 기검참1방(14×) 보장
 function pParryRmbSpd(){return 1+PASSIVES.pParry*.10}  // E(칼등) 공속 +10%/lv (10lv=+100%)
 function pParryRainbowDR(){return Math.min(.50,PASSIVES.pParry*.10)} // 무지개탄 피해감소 +10%/lv (최대50%)
-function pMagicMul(){return _passDmgSum('magic')*(1+(_uEq('_uHelmMagic')||0))}     // 마법 통합배율 (합연산) + 유니크
+function pMagicMul(forAttack=true){return _passDmgSum('magic')*(1+(_uEq('_uHelmMagic')||0))*(forAttack?2:1)} // 마법 공격 2배 (2026-09-10), 패링 장비스케일은 제외
 function pBeamMul(){return 1+Math.max(0,(hm().beamDmg||0))*0.08} // 투구 beamDmg를 실제 레이저 전용 배율로 환산
 function pMagicCost(){return Math.max(.40,1-PASSIVES.pMagic*.04-_eqAffix('mpCostRed')-(_uEq('_uHelmMagic')||0))} // MP비용 -4%/lv + 귀걸이 어픽스 + 유니크
 function pBowMul(){return _passDmgSum('bow')}         // 석궁/관통 통합배율 (합연산)
@@ -30595,7 +30595,7 @@ function update(){
       const _psReleaseR=P._psShieldR||100;
       G._sbBurst={x:P.x,y:P.y,r:P.r+5,maxR:_psReleaseR,spd:8,det:false,peace:true,release:true};
       const _psBoomR=_psEndR*1.2;
-      const _psBoomDmg=~~(magicRef()*statInt()*(_psLv*.15+.85)*(_psEndR/200+.5));
+      const _psBoomDmg=~~(magicRef()*statInt()*(_psLv*.15+.85)*(_psEndR/200+.5))*2; // 독립 마법 충격파도 2배
       if(_psBoomDmg>0){
         const _psNe=shQuery(P.x,P.y,_psBoomR);
         for(let _pi2=0;_pi2<_psNe.length;_pi2++){
