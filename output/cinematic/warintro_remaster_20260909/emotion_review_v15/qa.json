@@ -1,0 +1,34 @@
+{
+  "receipts": [
+    {
+      "file": "previous.mp4",
+      "frames": 450,
+      "duration": 7.5,
+      "sha256": "b94b5acc309221799ea441dc4d8a7726f750280da3b199fa08c0ce8614708b17",
+      "decode": "PASS"
+    },
+    {
+      "file": "current.mp4",
+      "frames": 450,
+      "duration": 7.5,
+      "sha256": "58ee7138e714e0ca7ea61842a40e0516d942f666957dcd842fcc9bf9d46e9bce",
+      "decode": "PASS"
+    },
+    {
+      "file": "comparison.mp4",
+      "frames": 450,
+      "duration": 7.5,
+      "sha256": "6fcdc4cc9b2c4c25d0c7d87ec7e54c9d7830a86a2dde3425714c33325a357e17",
+      "decode": "PASS"
+    }
+  ],
+  "source_range": [
+    82,
+    89.5
+  ],
+  "voice": "v14 narration unchanged",
+  "current_main": "memory_v14/final.mp4",
+  "visual_review": "Previous frames85.5/88 and comparison at5.5s reviewed: left shows family memories, right a solitary woman; labels and shared subtitle readable. Earlier injustice shot depicts encirclement, not explicit injustice. Reference identity question remains pending.",
+  "realtime_review": false,
+  "listening_review": false
+}
