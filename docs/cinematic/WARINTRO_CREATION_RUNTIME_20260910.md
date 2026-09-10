@@ -10,7 +10,7 @@
 | 영상 | `video/warrior_story_v22_bgm.mp4`, v21 영상+BGM, SHA256 ebc651acb31763cc1b9a216a378e953b8f43ba3ea8379736bf748d6fbf914164 |
 | 규격 |96.4초5784f,1920×1080/60fps,H.264/AAC스테레오,87,255,213 bytes |
 | 소리·자막 |영상 내 영어 음성·주제가 BGM·한글 고정 자막22cue,muted=false/volume=1. 로비 BGM·호버음·선택 영상 정지 |
-| 화면 |검정 전체 뷰포트,object-fit:contain,네이티브 재생바 제거·우측 하단 컷씬 조작 안내 |
+| 화면 |검정 전체 뷰포트,object-fit:contain,네이티브 재생바 제거·우측 하단 조작 안내는 재생 시각3초부터0.4초 페이드 후 숨김 |
 | 건너뛰기 |클릭·확인 입력으로 다음 대사,Esc·게임패드B/Start·하단 버튼1200ms 홀드로 전체 종료. 재생 중 로비 입력 차단 |
 | 자동재생 차단 |NotAllowedError이면 클릭하여 계속 표시,첫 확인 입력은 대사 이동 없이 소리 있게 재생 재시도 |
 | 종료/스킵 |미디어 pause·src 제거·load·overlay 제거,Promise true. `showCharGate(charId,true)` |
@@ -64,12 +64,14 @@
 | 홀드 취소 |키·버튼 해제, 포인터 이탈/취소, 창 blur/visibilitychange. keyboard/pointer/gamepad 소스별 Set 관리 |
 | 로비 입력 |컷씬 중 패드 로비 조작 차단. 키보드 반복 입력 무시, Tab은 다음 대사 버튼 포커스 |
 | 화면 |검정 전체 뷰포트 contain, z-index2147483647, video pointer-events:none/tabIndex=-1, 네이티브 controls=false/PiP·원격재생 비활성 |
-| 조작 표시 |오른쪽·아래 3%, 버튼 간격22px, serif13px/자간.06em, 버튼 세로패딩10px, 게이지2px |
+| 조작 표시 |`characterStoryHints`: 오른쪽·아래3%, 버튼 간격22px, serif13px/자간.06em, 버튼 세로패딩10px, 게이지2px. video.currentTime≥3인 첫 timeupdate에서 opacity0으로0.4초 페이드, 이후 visibility:hidden. 숨김 시작부터 pointer-events:none, 해당 재생 중 다시 나타나지 않음 |
+| 숨김 후 입력 |화면 클릭·키보드·패드의 부분/전체 스킵 유지. 숨긴 안내 버튼은 포커스 대상에서 제외하고 Tab은 overlay에 유지. 자동재생 차단 시 영상이 진행하지 않으므로 클릭하여 계속 안내 유지 |
 | 언어 |play에 getCurrentLanguage 전달. ko: 다음 대사·클릭하여 계속·Esc / B 길게, 그 외 영어. 건너뛰기 명칭은 기존 _TL 사용 |
 | 자동재생 차단 |NotAllowedError 시 클릭하여 계속 표시. 첫 확인 입력은 시간을 넘기지 않고 유음 재생 재시도 |
 | API |next(), setSkipHeld(held,source='gamepad'), CUES, HOLD_MS 공개. skip()은 내부 즉시 종료 API로 유지 |
 | 정리 |종료 시 홀드 타이머·리스너·미디어·overlay 제거, 기존 포커스 복원. 중복 완료 방지 |
-| 캐시 |index.html의 character-story-player.js?v=20260910-bgm-v22 |
+| 캐시 |index.html의 character-story-player.js?v=20260910-hints-fade |
+| 안내 숨김 검증 (2026-09-10) |기존 controls/creation 테스트22개 PASS. 실제 v22 브라우저 재생0.156초에서 opacity1/visible, 이후 opacity0/hidden/pointer-events:none 확인. 숨김 상태 Enter로29.39초→33.63초 대사 탐색, 안내 숨김 유지. `tmp/story_hint_preview_20260910.html`에서 세이브 없이 검증 |
 | 자동 검사 |관련 Node 테스트24개 PASS. CUES 원본 일치·짧은 홀드 취소·입력 소스 분리·cleanup 검사 |
 | 브라우저 검사 |클릭→5.5초, Enter→10초, Space→16초. Esc350ms 해제 후 유지, 1200ms 홀드 후 game.html 진입. 실제 저장 대신 격리 API 사용 |
 | 증거 |output/cinematic/character_story_controls_20260910/qa.json 및 cinematic_partial_skip.png. page_errors=[] |

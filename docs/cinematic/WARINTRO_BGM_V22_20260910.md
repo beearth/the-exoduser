@@ -20,7 +20,7 @@
 | 보존 |v21 원본·기존 video/warrior_story_v21.mp4 보존. 교체 직전 루트 합본은 tmp/warrior_story_bgm/total_before_bgm.mp4 |
 | 부분 스킵 |같은 MP4에 영상·영어 음성·BGM·한글 자막 포함. 기존22개 CUES로 함께 탐색, 전체 스킵 시 함께 정지 |
 | 로비·후속 |로비 BGM은 정지, v22 자체 BGM만 재생. 이후 네메시스 INTRO의 기존 음악·조작 유지 |
-| 로더 |index.html: character-story-player.js?v=20260910-bgm-v22 |
+| 로더 |index.html: character-story-player.js?v=20260910-hints-fade (조작 안내3초 후0.4초 페이드, v22 미디어 유지) |
 | URL 계약 |story=warrior-v21은 기존 진입 경로 표시로 유지, 재생 파일 버전 판정에 사용하지 않음 |
 | 빌드 |tools/build_warrior_story_bgm.py, float 임시 믹스 tmp/warrior_story_bgm/mix.wav |
 | 미디어 검사 |전체 디코드 PASS, 영상 패킷 동일, 오디오 길이96.4초, 믹스 상관 0.9999598384461792 |

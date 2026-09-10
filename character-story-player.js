@@ -19,7 +19,7 @@
       video.src='video/warrior_story_v22_bgm.mp4';video.preload='auto';video.playsInline=true;video.controls=false;
       video.disablePictureInPicture=true;video.disableRemotePlayback=true;video.tabIndex=-1;
       video.muted=false;video.volume=1;video.style.cssText='width:100%;height:100%;object-fit:contain;pointer-events:none';
-      const ui=document.createElement('div');ui.style.cssText='position:absolute;right:3%;bottom:3%;display:flex;gap:22px;align-items:center;color:#c9b795;font:13px serif;letter-spacing:.06em';
+      const ui=document.createElement('div');ui.id='characterStoryHints';ui.style.cssText='position:absolute;right:3%;bottom:3%;display:flex;gap:22px;align-items:center;color:#c9b795;font:13px serif;letter-spacing:.06em;transition:opacity .4s ease,visibility 0s linear .4s';
       const buttonStyle='position:relative;color:inherit;background:transparent;border:0;padding:10px 0;font:inherit;cursor:pointer;touch-action:none;text-shadow:0 2px 5px #000';
       const next=document.createElement('button');next.id='characterStoryNext';next.textContent=(language==='ko'?'다음 대사':'Next line')+' · A / Enter';next.style.cssText=buttonStyle;
       const skip=document.createElement('button');skip.id='characterStorySkip';skip.style.cssText=buttonStyle;
@@ -27,7 +27,7 @@
       const progress=document.createElement('span');progress.style.cssText='position:absolute;left:0;bottom:0;height:2px;width:0;background:#ccb789';
       skip.append(label,progress);ui.append(next,skip);overlay.append(video,ui);document.body.append(overlay);
       overlay.tabIndex=-1;
-      let resolve,done=false,needsGesture=false,holdTimer=null,holdStart=0;
+      let resolve,done=false,needsGesture=false,hintsHidden=false,holdTimer=null,holdStart=0;
       const heldSources=new Set();
       activePromise=new Promise(r=>{resolve=r;});const result=activePromise;
       function finish(seen){
@@ -74,7 +74,7 @@
         e.stopPropagation();
         if(e.key==='Escape'){e.preventDefault();if(!e.repeat)setHeld(true,'keyboard');}
         else if(['Enter',' ','ArrowRight'].includes(e.key)){e.preventDefault();if(!e.repeat)advance();}
-        else if(e.key==='Tab'){e.preventDefault();next.focus();}
+        else if(e.key==='Tab'){e.preventDefault();(hintsHidden?overlay:next).focus();}
       }
       function keyUp(e){if(e.key==='Escape'){e.preventDefault();e.stopPropagation();setHeld(false,'keyboard');}}
       function pointerUp(){setHeld(false,'pointer');}
@@ -90,6 +90,11 @@
       skip.addEventListener('click',e=>e.stopPropagation());
       skip.addEventListener('pointerdown',e=>{e.preventDefault();setHeld(true,'pointer');});
       skip.addEventListener('pointerleave',pointerUp);skip.addEventListener('pointercancel',pointerUp);
+      video.addEventListener('timeupdate',()=>{
+        if(hintsHidden||video.currentTime<3)return;
+        hintsHidden=true;ui.style.opacity='0';ui.style.visibility='hidden';ui.style.pointerEvents='none';
+        if(document.activeElement===next||document.activeElement===skip)overlay.focus();
+      });
       video.addEventListener('ended',()=>finish(true));
       video.addEventListener('error',()=>finish(false));
       overlay.focus();resume();
