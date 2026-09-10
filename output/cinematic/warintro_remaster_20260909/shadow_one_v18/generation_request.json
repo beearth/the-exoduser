@@ -1,0 +1,23 @@
+{
+  "provider": "Higgsfield",
+  "model": "Cinema Studio 2.5",
+  "duration_setting": 5,
+  "resolution": "1080p",
+  "displayed_credits": 8,
+  "count": 1,
+  "audio": "off",
+  "input_image": "5e462b99-2a90-4ded-9adb-3cd5f8bd1c94",
+  "asset_id": "af6c8559-55ae-4cd0-9cc8-7a1b6fe2ed6c",
+  "preview_id": "12fba876-1ac2-4714-ae37-de3b7497d519",
+  "source_url": "https://d8j0ntlcm91z4.cloudfront.net/user_3G1zto9sz11Uf3iEOhJefE9HdGG/hf_20260910_041933_af6c8559-55ae-4cd0-9cc8-7a1b6fe2ed6c.mp4",
+  "prompt": "W09-ONE-SHADOW-v18. Five seconds, one continuous locked-camera live-action shot of this stone wall, household banner and torch, showing only the four existing cast shadows. The actual people remain entirely outside the frame. There is one caped warrior shadow on the left and exactly three adult household-member shadows on the right. At 0.7 seconds the warrior makes exactly ONE short decisive downward sword sweep toward the nearest household-member shadow, the leftmost of the three. Only this nearest shadow recoils and drops below the bottom edge by 1.4 seconds. The other TWO household-member shadows stay upright at their original positions with raised hands, motionless in fear, for the entire shot. By 1.6 seconds the warrior lowers the single straight sword beside his leg and completely stops attacking. Hold this composition from 1.6 through 5 seconds: warrior still, two remaining shadows standing, torch flickering gently. No second swing. Do not make the other two fall, flee, bend or disappear. All silhouettes remain anatomically intact. Keep natural soft-edged physically cast shadows, original stone texture, banner, light direction and fixed camera. No visible people, wounds, blood, dismemberment, body details, extra silhouettes, duplicated weapon, zoom, captions, speech or music.\n",
+  "global_range": [
+    46,
+    50.5
+  ],
+  "source_range": [
+    0,
+    4.5
+  ],
+  "source_sha256": "46f30ad860a1b58f29624aa241766ff86ced9d9ce7d4c709b0978a3b2404352f"
+}

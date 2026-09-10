@@ -1,0 +1,44 @@
+{
+  "receipts": [
+    {
+      "file": "final.mp4",
+      "duration": 102.5,
+      "frames": 6150,
+      "bytes": 90490339,
+      "sha256": "6a4e7cc5070bb1cab3b19be2ee02c1079e1522d8817e1efb322d33dd9b75882e",
+      "audio_codec": "aac",
+      "audio_channels": 2,
+      "decode": "PASS"
+    },
+    {
+      "file": "ending.mp4",
+      "duration": 14.0,
+      "frames": 840,
+      "bytes": 11835068,
+      "sha256": "94212da66da2f36610978b922e47b08e927bb70622e588eaa6956f731a4b0870",
+      "audio_codec": "aac",
+      "audio_channels": 2,
+      "decode": "PASS"
+    }
+  ],
+  "audio_correlation": 0.9999749677541441,
+  "digital_gap_rms": 0.0,
+  "contact_times": [
+    46.1,
+    46.7,
+    47.1,
+    47.6,
+    48.2,
+    49,
+    50.3,
+    50.51,
+    60.6,
+    87.8,
+    88.51,
+    99.5
+  ],
+  "visual_review": "합본12표본에서46.7초 단일 검격·48.2초 한 명만 하강·49~50.3초 두 명 기립과 전사 정지·50.5초 다음 컷 전환 확인.60.6초 가족 회상·88.5초 네메시스 전환·99.5초 마지막 호명 유지 확인",
+  "realtime_review": false,
+  "listening_review": false,
+  "status": "ONE_SHADOW_EDIT_FOR_REVIEW"
+}
