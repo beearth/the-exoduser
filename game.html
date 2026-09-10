@@ -4864,7 +4864,10 @@ const _txtUV=new Map();
 function _getAtlasTxt(font,text,color){
   const k=font+'\t'+text+'\t'+color;let uv=_txtUV.get(k);if(uv){uv.age=_txtTick;return uv}
   _txtAtlasCtx.font=font;const met=_txtAtlasCtx.measureText(text);
-  const fs=parseFloat(font)||14;const w=Math.ceil(met.width)+8,h=Math.ceil(fs*1.6)+8;
+  // Read the px size, not a numeric weight ("900 22px" previously became 900px
+  // and cleared the 512px atlas on every combat label, forcing full GPU uploads).
+  const px=font.match(/(?:^|\s)(\d*\.?\d+)px(?=[\s/]|$)/i);
+  const fs=px?parseFloat(px[1]):14;const w=Math.ceil(met.width)+8,h=Math.ceil(fs*1.6)+8;
   if(w<2||h<2)return null;
   if(_txtAtlasX+w>2048){_txtAtlasX=0;_txtAtlasY+=_txtAtlasRH;_txtAtlasRH=0}
   if(_txtAtlasY+h>512){_txtAtlasCtx.clearRect(0,0,2048,512);_txtAtlasX=0;_txtAtlasY=0;_txtAtlasRH=0;_txtUV.clear()}
@@ -5473,13 +5476,15 @@ async function _bootRenderer(){
   let ok=false;
   const _cl=IS_ELECTRON?function(){}:console.log.bind(console);
   const _ce=IS_ELECTRON?function(){}:console.error.bind(console);
-  // All platforms default to WebGL2; WebGPU is explicit URL opt-in only.
-  const _useWebGPU=(!IS_ELECTRON)&&new URLSearchParams(location.search).get('webgpu')==='1';
+  // Mac's normal lobby entry must use the measured fast path too. Explicit
+  // URL overrides take priority: webgpu=0 (or any value other than 1) keeps GL.
+  const _webgpuParam=new URLSearchParams(location.search).get('webgpu');
+  const _useWebGPU=(!IS_ELECTRON)&&(_webgpuParam==='1'||(_webgpuParam===null&&IS_MAC&&!!navigator.gpu));
   if(_useWebGPU){
     try{ok=await _initWebGPU()}catch(e){_ce('[GPU] WebGPU 초기화 에러:',e);ok=false}
   }else{
     ok=false;
-    _cl('[GPU] WebGPU skipped (browser default). Add ?webgpu=1 to test WebGPU.');
+    _cl('[GPU] WebGPU skipped by platform/URL policy. Add ?webgpu=1 to test WebGPU.');
   }
   if(!ok){try{ok=_initWebGL()}catch(e){_ce('[GPU] WebGL2 초기화 에러:',e);ok=false}}
   if(!ok){X=C.getContext('2d')}
@@ -5487,7 +5492,7 @@ async function _bootRenderer(){
   if(!X&&!_useGPU&&!_useGL){X=C.getContext('2d')}
   if(!X){X=C.getContext('2d')}
   // 한 줄 요약
-  console.log('[GPU] '+(_useGPU?'WebGPU':_useGL?'WebGL2':'Canvas2D')+' | '+_hwGPU+(IS_ELECTRON?' | Electron':'')+' | policy=url-opt-in-20260910 | webgpu='+new URLSearchParams(location.search).get('webgpu'));
+  console.log('[GPU] '+(_useGPU?'WebGPU':_useGL?'WebGL2':'Canvas2D')+' | '+_hwGPU+(IS_ELECTRON?' | Electron':'')+' | policy=mac-webgpu-default-20260910 | webgpu='+_webgpuParam);
   _initBurstSystem();
   // ── Canvas2D shadowBlur 인터셉트 (고FPS 시 비활성화) ──
   if(!_useGPU&&!_useGL&&X&&typeof CanvasRenderingContext2D!=='undefined'){

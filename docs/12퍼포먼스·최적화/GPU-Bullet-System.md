@@ -117,8 +117,8 @@ function drawBullets() {
 | 항목 | 값 | 비고 |
 |------|-----|------|
 | 메인 캔버스 | `C` | id="c" |
-| WebGPU context | `GPU` (device), `_gpuCtx` | 비 Electron에서 명시적 `?webgpu=1`만 시도 (2026-09-10) |
-| WebGL2 context | `GL` | 기본 백엔드 및 명시적 WebGPU 실패 시 폴백 |
+| WebGPU context | `GPU` (device), `_gpuCtx` | 비 Electron의 명시적 `?webgpu=1`, 또는 쿼리 미지정 Mac+navigator.gpu에서 시도. 실패 시 WebGL2 ([2026-09-10 로컬 정책](MAC_DEFAULT_WEBGPU_FPS_20260910.md)) |
+| WebGL2 context | `GL` | Windows/Electron/미지원 Mac/명시적 webgpu=0의 기본 백엔드 및 WebGPU 초기화 실패 폴백 |
 | Canvas2D | `X` | 최종 폴백 |
 | 렌더 백엔드 플래그 | `_useGPU`, `_useGL` | |
 | 카메라 | `G.cam.x`, `G.cam.y` | |

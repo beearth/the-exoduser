@@ -18,20 +18,28 @@ async function boot({search='',mac=true,electron=false,gpu=true,gpuOK=true,glOK=
   return {calls,logs};
 }
 for(const [name,options,expected] of [
-  ['Mac with navigator.gpu defaults to WebGL2',{},['WebGL2']],
+  ['Mac with navigator.gpu defaults to WebGPU',{},['WebGPU']],
   ['Mac webgpu=0 bypasses WebGPU',{search:'?webgpu=0'},['WebGL2']],
   ['Mac webgpu=1 opts in',{search:'?webgpu=1'},['WebGPU']],
   ['Mac webgpu=true does not opt in',{search:'?webgpu=true'},['WebGL2']],
+  ['Mac empty override retains WebGL2',{search:'?webgpu='},['WebGL2']],
+  ['Mac without WebGPU defaults to WebGL2',{gpu:false},['WebGL2']],
+  ['Mac automatic WebGPU init failure falls back',{gpuOK:false},['WebGPU','WebGL2']],
   ['Windows defaults to WebGL2',{mac:false},['WebGL2']],
   ['Windows explicit opt in',{mac:false,search:'?webgpu=1'},['WebGPU']],
   ['Unavailable WebGPU falls back',{search:'?webgpu=1',gpu:false},['WebGPU','WebGL2']],
   ['Failed WebGPU init falls back',{search:'?webgpu=1',gpuOK:false},['WebGPU','WebGL2']],
   ['Electron retains WebGL2',{electron:true,search:'?webgpu=1'},['WebGL2']],
+  ['Electron default retains WebGL2',{electron:true},['WebGL2']],
 ])test(name,async()=>assert.deepEqual((await boot(options)).calls,expected));
 test('summary reports actual fallback renderer',async()=>{
   const {logs}=await boot({search:'?webgpu=1',gpuOK:false});
   assert.ok(logs.some(v=>v.startsWith('[GPU] WebGL2 |')));
   assert.ok(!logs.some(v=>v.startsWith('[GPU] WebGPU |')));
+});
+test('automatic Mac selection is reported with the actual WebGPU backend',async()=>{
+  const {logs}=await boot();
+  assert.ok(logs.some(v=>v.startsWith('[GPU] WebGPU |')&&v.includes('policy=mac-webgpu-default-20260910')&&v.endsWith('webgpu=null')));
 });
 test('summary reports Canvas2D if GL is unavailable',async()=>{
   const {logs}=await boot({gpu:false,glOK:false});

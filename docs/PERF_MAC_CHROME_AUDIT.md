@@ -1,6 +1,8 @@
-> **2026-09-10 사용자 지정 비교 테스트:** Mac 자동 WebGPU 선택을 제거했다. 비 Electron에서 URL `webgpu=1`일 때만 WebGPU 시도, 기본/`webgpu=0`은 WebGL2 우선이다. 과거 Mac 측정은 이력으로 보존하며 현재 세로 띠 해결 근거로 쓰지 않는다. **Mac Chrome/Safari 실기 PENDING.** [현재 계약](12퍼포먼스·최적화/MAC_RENDERER_OPTIN_TEST_20260910.md).
+> **2026-09-10 로컬 FPS 후속 수정:** Mac+navigator.gpu는 URL webgpu 미지정 시 WebGPU 우선, 실패 시 WebGL2→Canvas2D. 명시적0/1 및 Windows/Electron 정책 유지. M5 Pro Chrome 일반 스테이지 실측과 한계는 [현행 계약](12퍼포먼스·최적화/MAC_DEFAULT_WEBGPU_FPS_20260910.md) 참조. 아래 과거 비교·배포 기록은 당시 결과이며 현재 로컬 기본값과 구분한다.
 
 # Mac Chrome 프레임 드롭 진단 리포트
+
+> **2026-09-10 새 Mac 실기 증거:** 공용 텍스트 아틀라스에서 `900 22px`를 900px로 해석하여 셀 높이1448px > atlas512px, 매 호출 clear와 반복 전체 업로드를 재현했다. px 토큰 파싱으로 수정. 기존 Track A/B/D 판정과 map texture lifetime은 변경하지 않는다. [별도 원인과 측정](12퍼포먼스·최적화/MAC_TEXT_ATLAS_FPS_20260910.md).
 
 > **감사일**: 2026-06-09
 > **대상**: `G:\hell\game.html`

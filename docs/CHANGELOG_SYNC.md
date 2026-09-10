@@ -1,3 +1,9 @@
+## 2026-09-10 Mac 로컬 20FPS 후속: 기본 WebGPU 선택
+
+- 글자 캐시 수정만으로 일반 진입의 WebGL2 경로가 바뀌지 않아 사용자 FPS 저하가 지속됨.
+- URL webgpu 미지정 Mac+navigator.gpu는 WebGPU 우선. 명시적0 및 다른 값은 WebGL2, 명시적1은 WebGPU 시도. 실패 시 기존 폴백. Windows/Electron 유지.
+- [현행 정책·Mac 실측·검증 한계](12퍼포먼스·최적화/MAC_DEFAULT_WEBGPU_FPS_20260910.md). 로컬 수정이며 push/배포 없음.
+
 ## 2026-09-10 빠른 이동 조명 마스크 경계 수정
 
 | 항목 | 변경 / 검증 |
