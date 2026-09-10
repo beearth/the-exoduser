@@ -1,0 +1,14 @@
+{
+  "duration": 4.5,
+  "frames": 270,
+  "bytes": 4881449,
+  "sha256": "b14d242294361df13b122c0090c66a6c86f0eea51a6523d2172ad2f2146bbc99",
+  "decode": "PASS",
+  "audio": "aac",
+  "source_range": [
+    46,
+    50.5
+  ],
+  "realtime_review": false,
+  "listening_review": false
+}

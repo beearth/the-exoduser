@@ -1,0 +1,161 @@
+{
+  "version": 12,
+  "total": 103.5,
+  "frames": 6210,
+  "fps": 60,
+  "source_fps": 24,
+  "width": 1920,
+  "height": 1080,
+  "shots": [
+    {
+      "source": "dialogue_audit_v11\\w08_witness.mp4",
+      "start_frame": 2310,
+      "end_frame": 2760,
+      "start": 38.5,
+      "end": 46.0,
+      "speed": 1
+    },
+    {
+      "source": "shadow_v12\\w09_shadow.mp4",
+      "start_frame": 2760,
+      "end_frame": 3030,
+      "start": 46.0,
+      "end": 50.5,
+      "speed": 1
+    },
+    {
+      "source": "realism_v7\\w10a_straight.mp4",
+      "start_frame": 3030,
+      "end_frame": 3210,
+      "start": 50.5,
+      "end": 53.5,
+      "speed": 1
+    },
+    {
+      "source": "realism_v7\\w10b.mp4",
+      "start_frame": 3210,
+      "end_frame": 3360,
+      "start": 53.5,
+      "end": 56.0,
+      "speed": 1
+    },
+    {
+      "source": "realism_v7\\w10c.mp4",
+      "start_frame": 3360,
+      "end_frame": 3600,
+      "start": 56.0,
+      "end": 60.0,
+      "speed": 1
+    },
+    {
+      "source": "realism_v7\\w11a.mp4",
+      "start_frame": 3600,
+      "end_frame": 3810,
+      "start": 60.0,
+      "end": 63.5,
+      "speed": 1
+    },
+    {
+      "source": "realism_v7\\w11b.mp4",
+      "start_frame": 3810,
+      "end_frame": 3930,
+      "start": 63.5,
+      "end": 65.5,
+      "speed": 1
+    },
+    {
+      "source": "dialogue_audit_v11\\w12_fall.mp4",
+      "start_frame": 3930,
+      "end_frame": 4200,
+      "start": 65.5,
+      "end": 70.0,
+      "speed": 1
+    },
+    {
+      "source": "dialogue_audit_v11\\w13_countless.mp4",
+      "start_frame": 4200,
+      "end_frame": 4590,
+      "start": 70.0,
+      "end": 76.5,
+      "speed": 1
+    },
+    {
+      "source": "dialogue_audit_v11\\w14_arrival.mp4",
+      "start_frame": 4590,
+      "end_frame": 4920,
+      "start": 76.5,
+      "end": 82.0,
+      "speed": 1
+    },
+    {
+      "source": "realism_v7\\w15a.mp4",
+      "start_frame": 4920,
+      "end_frame": 5070,
+      "start": 82.0,
+      "end": 84.5,
+      "speed": 1
+    },
+    {
+      "source": "realism_v7\\w15b.mp4",
+      "start_frame": 5070,
+      "end_frame": 5200,
+      "start": 84.5,
+      "end": 86.66666666666667,
+      "speed": 1
+    },
+    {
+      "source": "realism_v7\\w15c.mp4",
+      "start_frame": 5200,
+      "end_frame": 5370,
+      "start": 86.66666666666667,
+      "end": 89.5,
+      "speed": 1
+    },
+    {
+      "source": "realism_v7\\w16a.mp4",
+      "start_frame": 5370,
+      "end_frame": 5490,
+      "start": 89.5,
+      "end": 91.5,
+      "speed": 1
+    },
+    {
+      "source": "realism_v7\\w16b_armor.mp4",
+      "start_frame": 5490,
+      "end_frame": 5703,
+      "start": 91.5,
+      "end": 95.05,
+      "speed": 1
+    },
+    {
+      "source": "realism_v7\\w16c.mp4",
+      "start_frame": 5703,
+      "end_frame": 6000,
+      "start": 95.05,
+      "end": 100.0,
+      "speed": 1
+    },
+    {
+      "source": "realism_v7\\w16d.mp4",
+      "start_frame": 6000,
+      "end_frame": 6210,
+      "start": 100.0,
+      "end": 103.5,
+      "speed": 1
+    }
+  ],
+  "captions": 22,
+  "fade": [
+    102.7,
+    103.5
+  ],
+  "source_speed": 1,
+  "interpolation": false,
+  "freeze_padding": false,
+  "opening": [
+    0,
+    38.5
+  ],
+  "audio": "narration.wav",
+  "source_v7_preserved": true
+}

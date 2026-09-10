@@ -1,0 +1,51 @@
+{
+  "image": {
+    "tool": "built-in image_gen",
+    "mode": "reference-based non-graphic new insert",
+    "generated_file": "exec-c4e656d9-78bb-45a5-bc02-f69e60c5f38d.png",
+    "prompt": "image_prompt.txt",
+    "references": [
+      "../dialogue_audit_v11/w08_witness_start.png",
+      "../realism_v7/w09_start.png"
+    ],
+    "status": "accepted"
+  },
+  "video": {
+    "provider": "Higgsfield",
+    "model": "Cinema Studio 2.5",
+    "requested_seconds": 5,
+    "resolution": "1080p",
+    "audio": false,
+    "count": 1,
+    "displayed_credits": 8,
+    "actual_billing_verified": false,
+    "upload_id": "5e462b99-2a90-4ded-9adb-3cd5f8bd1c94",
+    "asset_id": "e398ff82-f520-408f-8403-9d3748e93325",
+    "prompt": "video_prompt.txt",
+    "editor_cleared_and_text_exact": true,
+    "status": "downloaded_and_sample_reviewed",
+    "qa": {
+      "duration": 5.041667,
+      "frames": 121,
+      "fps": "24/1",
+      "width": 1916,
+      "height": 1080,
+      "bytes": 15884713,
+      "sha256": "9dd27eea25b4403e446d89ec8817308dc370bd61bcc9d0fe344b2271d30daadd",
+      "decode": "PASS",
+      "sample_times": [
+        0,
+        0.4,
+        0.8,
+        1.2,
+        1.6,
+        2,
+        2.6,
+        3.4,
+        4.45
+      ],
+      "visual_review": "9시점 표본에서 검 그림자가 두 번 이동하고 첫 사람 그림자는0.8초까지 하강, 나머지 사람 그림자는3.4초까지 차례로 사라져 전사만 남는 흐름을 확인했다. 실제 사람이나 신체 손상은 보이지 않는다. 횃불은 끝까지 켜져 있어 요청한 소등 동작은 미구현이다. 사건을 암시하는 그림자 컷으로 채택하며 직접 시신·혈흔을 구현했다고 주장하지 않는다.",
+      "realtime_review": false
+    }
+  }
+}
