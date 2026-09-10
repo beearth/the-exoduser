@@ -50509,12 +50509,12 @@ function draw(){
     X.save();X.setTransform(1,0,0,1,0,0);X.globalCompositeOperation='lighter';X.globalAlpha=.04;
     X.drawImage(_cq,-_csh,0,C.width,C.height);X.drawImage(_cq,_csh,0,C.width,C.height);
     X.globalCompositeOperation='source-over';X.globalAlpha=1;X.restore();G._chromaT-=_dtSp}}
-  // ═══ 동적 조명 패스 (3프레임마다 계산) ═══
+  // ═══ 동적 조명 패스 (정지 시 3프레임, 카메라 이동/리사이즈 시 즉시 갱신) ═══
   if(!G._litFrame)G._litFrame=0;G._litFrame++;
-  {const _l0=performance.now();if(_gameFrame%3===0){if(_useGPU||_useGL)_glFlush();_collectLights();_renderLighting();_litCamX=G.cam.x;_litCamY=G.cam.y}if(_lightCvs){X.save();X.setTransform(1,0,0,1,0,0);X.drawImage(_lightCvs,_litCamX-G.cam.x,_litCamY-G.cam.y,C.width,C.height);if(_litColCvs&&OPT.quality!=='low'){X.globalCompositeOperation='lighter';X.globalAlpha=LIT_COL_MIX;X.drawImage(_litColCvs,_litCamX-G.cam.x,_litCamY-G.cam.y,C.width,C.height);X.globalCompositeOperation='source-over';X.globalAlpha=1}X.restore()}if(_DEBUG_PERF){_dbgLight=performance.now()-_l0;_dbgDLit=_dbgLight}}
+  {const _l0=performance.now();if(_gameFrame%3===0||!_lightCvs||_lightW!==~~(C.width/2)||_lightH!==~~(C.height/2)||_litCamX!==G.cam.x||_litCamY!==G.cam.y){if(_useGPU||_useGL)_glFlush();_collectLights();_renderLighting();_litCamX=G.cam.x;_litCamY=G.cam.y}if(_lightCvs){X.save();X.setTransform(1,0,0,1,0,0);X.drawImage(_lightCvs,_litCamX-G.cam.x,_litCamY-G.cam.y,C.width,C.height);if(_litColCvs&&OPT.quality!=='low'){X.globalCompositeOperation='lighter';X.globalAlpha=LIT_COL_MIX;X.drawImage(_litColCvs,_litCamX-G.cam.x,_litCamY-G.cam.y,C.width,C.height);X.globalCompositeOperation='source-over';X.globalAlpha=1}X.restore()}if(_DEBUG_PERF){_dbgLight=performance.now()-_l0;_dbgDLit=_dbgLight}}
   // ═══ 블룸 패스 (3프레임마다 계산 — 라이팅과 1프레임 오프셋) ═══
   {const _bl0=performance.now();const _hasGlow=G.bossAlive||_blCnt>0||(G.pets&&G.pets.iris&&!G._irisOff);if(_hasGlow){if(_gameFrame%3===1){if(_useGPU||_useGL)_glFlush();_renderBloom()}else if(_bloomCvs&&OPT.bloom&&OPT.quality!=='low'&&OPT.quality!=='mid'){X.save();X.setTransform(1,0,0,1,0,0);X.globalCompositeOperation='lighter';X.globalAlpha=G.bossAlive?.15:.08;X.drawImage(_bloomCvs,0,0,C.width,C.height);X.globalCompositeOperation='source-over';X.globalAlpha=1;X.restore()}}if(_DEBUG_PERF)_dbgDBloom=performance.now()-_bl0}
-  // [TORCH] 횃불 조명 어둠 오버레이 (_gameFrame%3===0 만 재계산)
+  // [TORCH] 횃불 조명 어둠 오버레이 (정지 시 frame%3===2, 카메라 이동 시 즉시 갱신)
   if(G._fieldBosses||G._fieldBoss)_fbDraw(); // 필드보스 렌더 (엔티티 위, 안개/토치 아래)
   if(G._worms)_wmDraw(); // 지상뱀장어 렌더
   if(G._fireDevils)_fdDraw(); // 화마귀 렌더
@@ -50544,9 +50544,9 @@ function draw(){
     X.restore();
   }
   const _tc0=performance.now();
-  if(OPT.torch&&OPT.postfx&&OPT.quality!=='low'){X.save();X.setTransform(1,0,0,1,0,0);
+  if(OPT.torch&&OPT.postfx&&OPT.quality!=='low'&&_TORCH.darkAlpha>0){X.save();X.setTransform(1,0,0,1,0,0);
   const _torchStale=!_torchCache||_torchW!==C.width||_torchH!==C.height;
-  const _torchRedraw=_torchStale||(_gameFrame%3===2);
+  const _torchRedraw=_torchStale||(_gameFrame%3===2)||_torchCamX!==G.cam.x||_torchCamY!==G.cam.y;
   if(!_torchRedraw){X.drawImage(_torchCache,_torchCamX-G.cam.x,_torchCamY-G.cam.y);X.restore()}else{
     const _psx=C.width/2+(P.x-G.cam.x),_psy=C.height/2+(P.y-G.cam.y),_tR=Math.max(80,_torchR),_ahell2=SI_TO_HELL[G.stage];
     if(!_torchCache||_torchW!==C.width||_torchH!==C.height){_torchCache=document.createElement('canvas');_torchCache.width=C.width;_torchCache.height=C.height;_torchW=C.width;_torchH=C.height;_torchCache._ctx=_torchCache.getContext('2d')}
@@ -50583,6 +50583,7 @@ function draw(){
     if(G._gateY!=null&&G._bossCx!=null){const _gdx=(G._bossCx+.5)*T-G.cam.x,_gdy=(G._gateY+3.5)*T-G.cam.y;
       if(Math.abs(_gdx)<_thw&&Math.abs(_gdy)<_thh){const _gsx=C.width/2+_gdx,_gsy=C.height/2+_gdy;_tc.globalAlpha=.6;_tc.drawImage(_getTorchSmall(100),_gsx-100,_gsy-100);_tc.globalAlpha=1}}
     _tc.globalCompositeOperation='source-over';
+    _torchCache._glVer=(_torchCache._glVer||0)+1; // 재작성한 마스크를 GPU에도 갱신
     _torchCamX=G.cam.x;_torchCamY=G.cam.y;
     X.drawImage(_torchCache,0,0);X.restore()}}
   // ═══ ATMOS 3-3 VIGNETTE + GRADE (A군 레거시 그레이딩 — ATMO_LEGACY_GRADE 게이트, 기본 OFF) ═══

@@ -735,7 +735,7 @@ else { OPT.torch=false; OPT.ambPart=false; OPT.fog=false; OPT.grain=false; }
 // ═══ [TORCH] ═══
 const _TORCH = {
   baseRadius: 550, flickerSpeed: 0.003, flickerAmp: 10,
-  darkAlpha: 0.18, combatBoost: 100, lowHpShrink: 0.6, bossBoost: 150,
+  darkAlpha: 0, combatBoost: 100, lowHpShrink: 0.6, bossBoost: 150,
 };
 let _torchR = _TORCH.baseRadius;
 let _torchCache = null, _torchW = 0, _torchH = 0;
@@ -759,6 +759,8 @@ if(OPT.torch) {
 ```
 
 **draw()에서 어둠 오버레이 (색수차 후 / 비네팅 전)**
+
+2026-09-10 현행: 토치 불투명도는 0이며 `OPT.torch&&OPT.postfx&&OPT.quality!=='low'&&_TORCH.darkAlpha>0`일 때만 렌더한다. 활성 토치는 정지 시 frame%3===2, 카메라/크기 변경 시 즉시 갱신하고 재작성 후 `_glVer`를 증가시킨다. 아래는 초기 설계 예시이며 현재 캐시·스탬프 구현은 [카메라 필터 SSOT](../12퍼포먼스·최적화/CAMERA_MASK_COVERAGE_20260910.md)를 따른다.
 
 ```javascript
 // [TORCH]

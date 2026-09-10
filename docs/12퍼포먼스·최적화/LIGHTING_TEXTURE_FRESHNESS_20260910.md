@@ -8,11 +8,11 @@
 
 | 캔버스 | 용도 / 해상도 | 현재 갱신 계약 | 호출 주기 |
 |---|---|---|---|
-| `_lightCvs` | 어둠과 광원 홀 / `~~(C.width/2)` × `~~(C.height/2)` | `_renderLighting`의 어둠 재작성 후 `_glVer=(_glVer||0)+1` | `_gameFrame%3===0`, lighting 활성 및 quality가 low가 아닐 때 |
+| `_lightCvs` | 어둠과 광원 홀 / `~~(C.width/2)` × `~~(C.height/2)` | `_renderLighting`의 어둠 재작성 후 `_glVer=(_glVer||0)+1` | 정지 시 `_gameFrame%3===0`, 카메라 변경·최초 생성·크기 변경 시 즉시. lighting 활성 및 quality가 low가 아닐 때 |
 | `_litColCvs` | 컬러 광원 / `_lightW` × `_lightH` | 컬러 재작성 후 `_glVer=(_glVer||0)+1`; 광원 0개여도 clear 결과 업로드 | 위와 동일 |
 | `_bloomCvs` | 블룸 / `~~(C.width/6)` × `~~(C.height/6)` | `_renderBloom` 재작성 후, `X.drawImage` 이전에 `_glVer=(_glVer||0)+1` | `_hasGlow`가 참이고 `_gameFrame%3===1`, bloom 활성 및 quality가 low/mid가 아닐 때 |
 
-`_hasGlow=G.bossAlive||_blCnt>0||(G.pets&&G.pets.iris&&!G._irisOff)`. 재작성 사이에는 기존 텍스처를 재사용하고 추가 업로드하지 않는다. 같은 크기 재작성 시 GPU 텍스처 할당을 재사용한다. 기존 map 텍스처 수명 관리와 ATMOS 픽셀키 정책은 유지한다.
+`_hasGlow=G.bossAlive||_blCnt>0||(G.pets&&G.pets.iris&&!G._irisOff)`. 재작성 사이에는 기존 텍스처를 재사용하고 추가 업로드하지 않는다. 같은 크기 재작성 시 GPU 텍스처 할당을 재사용한다. 기존 map 텍스처 수명 관리와 ATMOS 픽셀키 정책은 유지한다. 카메라 이동 시 조명 즉시 갱신 및 토치 후속 수정은 [현행 필터 계약](CAMERA_MASK_COVERAGE_20260910.md)을 따른다.
 
 | 유지하는 시각 수치 | 값 |
 |---|---|
