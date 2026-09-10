@@ -27977,6 +27977,8 @@ function eModHitP(e){
   if(e._lavaBurn&&Math.random()<e._lavaBurn){P.burnT=Math.max(P.burnT||0,180);addTxt(P.x,P.y-20,_T('🔥화상!'),'#ff4400',25);addParts(P.x,P.y,'#ff4400',6)}
 }
 
+// HP pacing: preserve Lv1; smoothly reach one quarter of legacy HP at Lv10.
+function _enemyHpPacing(lv){return 1/(1+Math.min(9,Math.max(0,lv-1))/3)}
 function mkEn(x,y,si,etype,ib,el,room){
   if(!isFinite(x)||!isFinite(y))return null; // NaN 좌표 스폰 차단
   // 스폰 좌표가 벽/오브젝트 안이면 가장 가까운 빈 곳으로 이동
@@ -27999,11 +28001,11 @@ function mkEn(x,y,si,etype,ib,el,room){
   const po=ib?105:_rare?_rd.poise:ETYPE_POISE[etype];
   // 레벨 보정: 플레이어 레벨이 맵보다 높으면 HP/ATK 비례 증가
   const _bossLvMul=_plvMul;
-  // ═══ HP 공식 v12: v11 ×1.5 (2026-06-03 전체 몬스터 HP 50% 상향) ═══
-  // Lv≤500: (0.4×Lv³+199×Lv+100)×2.925, Lv>500: 6500만×1.0014^(Lv-500)×2.925
+  // ═══ HP 공식 v13: v12 × _enemyHpPacing(monLv), 2026-09-10 처치 타수 조정 ═══
+  // Lv≤500 삼차 / Lv>500 5000만 복리 커브 ×2.925 ×pacing (Lv1=1, Lv10+=0.25)
   const _baseHpCurve=(monLv<=500?0.4*monLv*monLv*monLv+199*monLv+100:50000000*Math.pow(1.0014,monLv-500))*2.925;
   const _bossMul=ib?24:1; // 보스 24배
-  const _lvHp=Math.floor(_baseHpCurve*_bossMul*dm*et.hpMul);let _hp=Math.floor(_lvHp*(1+si*0.02)); // 스테이지당+2%
+  const _lvHp=Math.floor(_baseHpCurve*_enemyHpPacing(monLv)*_bossMul*dm*et.hpMul);let _hp=Math.floor(_lvHp*(1+si*0.02)); // 스테이지당+2%
   const _dfSpawn=si===3&&_isDruidFinale({ib});
   if(_dfSpawn)_hp=_druidFinaleHp(monLv,dm);
   // ═══ ATK 공식: 선형 반감 (2026-05-03 전면 50% 하향) ═══
@@ -30374,7 +30376,7 @@ function update(){
           _cresStep=(_cresStep%3)+1;_cresComboT=120;_cresCd=_cresStep===3?20:12;
           _playKiSlashComboSfx(_cresStep);
           const _ksLv=P.skills.kiSlash||1,_ksDistMul=(_ksLv-1)*15;
-          spawnCrescent(P.x,P.y,P.facing,~~(meleeRef()*(_cresStep===3?2:1.2)*statStr()*pAtkMul()*_skMul('kiSlash')),0,_cresStep,_ksDistMul);
+          spawnCrescent(P.x,P.y,P.facing,~~(meleeRef()*7.0*statStr()*pAtkMul()*_skMul('kiSlash')),0,_cresStep,_ksDistMul);
           addTxt(P.x,P.y-40,_cresStep+_L('타',' Hit'),'#ffcc00',20);
         }else SFX.slash();}
       else if(isAct('charge')&&P.chargeStocks>0&&!_harpActive&&(P.activeChargeSk==='magicBlink'?P.mp>=mpCost('blink'):useStPct('charge'))){
@@ -55934,7 +55936,7 @@ function _boothDraw(){
 const _fbImg=new Image();_fbImg.src='img/fieldboss_angler.png'; // 1774x887, 8프레임 2x4 (셀 443.5)
 const _fbChargeImg=new Image();_fbChargeImg.src='img/fieldboss_angler_charge.png?v=080110';
 var _fbSheet=null,_fbChargeSheet=null; // 표시크기 프리스케일. 본체는 원본 시트(색오버레이 폐기)
-const _FB_HP_MUL=30;
+const _FB_HP_MUL=7.5;
 const _FB_COUNT=4;
 const _FB_WAKE=1000;
 const _FB_SITES=[[58,158],[148,150],[52,42],[148,42]]; // SW물 / SE화 / NW암 / NE뇌. 4각, 남북축·곰치와 분리
@@ -56313,7 +56315,7 @@ const _FD_COUNT=4;
 const _FD_WAKE=1000;
 const _FD_SITES=[[78,125],[125,125],[78,70],[125,70]]; // CH1-1 안쪽 4각. 크라켄·곰치·남북축과 분리
 const _FD_EN_CHG=180;
-const _FD_HP_MUL=10;
+const _FD_HP_MUL=2.5;
 const _FD_SPD=1.8;
 function _fdEnsureSheet(img,cacheKey){
   if(!img||!img.complete||!img.naturalWidth)return null;

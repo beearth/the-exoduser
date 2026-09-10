@@ -19,13 +19,13 @@ function sliceBetween(src, startToken, endToken) {
 const tick = sliceBetween(gameHtml, 'function _fbTick(){', 'function _fbDraw(){');
 const draw = sliceBetween(gameHtml, 'function _fbDraw(){', 'function _wmLockDest(w){');
 
-test('kraken field-boss HP is 30x the old 1800+lv*350 curve', () => {
-  assert.match(gameHtml, /const _FB_HP_MUL=30/);
+test('kraken field-boss HP uses the tuned 7.5x curve', () => {
+  assert.match(gameHtml, /const _FB_HP_MUL=7\.5/);
   const hpFn = gameHtml.match(/function _fbHp\(lv\)\{[^}]+\}/);
   assert.ok(hpFn, '_fbHp helper must exist');
-  const hp = Function(`const _FB_HP_MUL=30;${hpFn[0]};return _fbHp`)();
-  assert.equal(hp(1), (1800 + 350) * 30);
-  assert.equal(hp(100), (1800 + 100 * 350) * 30);
+  const hp = Function(`${gameHtml.match(/const _FB_HP_MUL=[^;]+;/)[0]}${hpFn[0]};return _fbHp`)();
+  assert.equal(hp(1), (1800 + 350) * 7.5);
+  assert.equal(hp(100), (1800 + 100 * 350) * 7.5);
 });
 
 test('CH1-1 places 4 krakens on authored map sites, not a single 2500px chase spawn', () => {
