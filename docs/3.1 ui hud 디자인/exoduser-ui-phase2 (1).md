@@ -730,7 +730,9 @@ Space 슬롯(`SKILL_SLOTS[4]`)은 지옥강타 계열과 `cat:'rage'` 분노 스
 | skSlotCT | ControlLeft | RB |
 | skSlot1 | Space | B |
 
-- 라벨 위치: `slotEl.getBoundingClientRect()` 기준 실제 좌표 → `m.left` 폴백
+- 라벨 위치: `_SK_SLOTS[].l`의 스킬바 내부 x좌표, 패드/KBM 모두 y=121px. 행/키캡 높이18px, 키캡 폭37px. 패드 글자 .5rem, KBM .55rem. 불투명 #29231f→#17130f 그라데이션으로 배경 이미지의 키보드 글자를 덮는다.
+- 2026-09-10: 패드만 구 y=56px에 표시하던 오류 수정. `createDocumentFragment`·리프 `textContent`·`replaceChildren`로 안전하게 재구성하고, 행이 실제 존재하고 갱신 완료된 뒤에만 `_skBarKeyMode`를 저장한다.
+- 회귀: `test/skillBarGamepadDisplay.test.js` 실제 HTML/CSS/Chrome에서 하단 위치·13개 키캡·KBM 복귀·리바인딩·캐시·행 지연 생성 검사. [재현·수정 기록](../3.3%20키바인딩+설정/GAMEPAD_HUD_LABEL_FIX_20260910.md).
 
 ---
 

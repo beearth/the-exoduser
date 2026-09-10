@@ -25,5 +25,5 @@ test('skill bar keeps LMB and RMB adjacent before the Shift movement slot and E'
   assert.doesNotMatch(updater[0], /if\(!isPad\)\{row\.style\.display='none';return;\}/);
   assert.match(updater[0], /const code=BINDS\[s\.bind\]\|\|s\.kc/);
   assert.match(updater[0], /code==='mouse2'\?'RMB':code==='mouse0'\?'LMB':keyName\(code\)/);
-  assert.match(updater[0], /row\.style\.top=isPad\?'56px':'121px'/);
+  assert.match(updater[0], /row\.style\.top='121px'/);
 });

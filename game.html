@@ -2295,7 +2295,7 @@ canvas{display:block;position:fixed;inset:0}
 <div id="petSubtitle" style="position:fixed;bottom:120px;z-index:999;pointer-events:none;opacity:0;transition:opacity .25s;font-family:'Malgun Gothic',sans-serif"><img id="petPortrait" src="" style="display:block;width:480px;height:auto;filter:drop-shadow(0 2px 8px rgba(0,0,0,.7))"><div id="petBubbleTxt" style="position:absolute;display:flex;align-items:center;color:#fff;font-weight:700;line-height:1.25;text-shadow:0 1px 4px rgba(0,0,0,.95),0 0 8px rgba(0,0,0,.85)"></div></div>
 <div id="skBarTip"></div>
 <div id="skBar">
-  <div id="skKeyBar" style="position:absolute;top:56px;left:0;width:100%;height:14px;pointer-events:none;z-index:6;display:none"></div>
+  <div id="skKeyBar" style="position:absolute;top:121px;left:0;width:100%;height:18px;pointer-events:none;z-index:6;display:none"></div>
   <div id="poiseBarWrap" style="display:none"><div id="poiseBarFill"></div></div>
   <div class="qs-row" id="qsRow">
     <div class="qs" id="qs0"><span class="qs-cnt"></span></div>
@@ -25460,19 +25460,20 @@ function _updateSkBarKeyLabels(){
   const isPad=typeof _gpActive!=='undefined'&&_gpActive;
   const mode=(isPad?'pad':'kbm')+'|'+(BINDS.shield||'')+'|'+(BINDS.beam||'');
   if(mode===_skBarKeyMode)return;
-  _skBarKeyMode=mode;
   const row=$('skKeyBar');if(!row)return;
-  row.style.top=isPad?'56px':'121px';
-  let html='';
+  row.style.top='121px';
+  const caps=document.createDocumentFragment();
   for(const s of _SK_SLOTS){
     if(!isPad&&!s.bind)continue;
     const code=BINDS[s.bind]||s.kc;
     const lbl=isPad?s.pd:(code==='mouse2'?'RMB':code==='mouse0'?'LMB':keyName(code));
-    const fixStyle=isPad?'':'height:18px;line-height:18px;background:linear-gradient(180deg,#29231f,#17130f);border-radius:2px;box-shadow:inset 0 0 0 1px rgba(103,87,72,.58);';
-    html+=`<div style="position:absolute;left:${s.l}px;width:37px;text-align:center;font-size:${isPad?'.42rem':'.55rem'};color:#c8aa80;font-weight:700;pointer-events:none;text-shadow:0 1px 2px #000,0 0 4px #000;line-height:${isPad?'14px':'18px'};${fixStyle}">${lbl}</div>`;
+    const cap=document.createElement('div');
+    cap.style.cssText=`position:absolute;left:${s.l}px;width:37px;height:18px;line-height:18px;text-align:center;font-size:${isPad?'.5rem':'.55rem'};color:#c8aa80;font-weight:700;pointer-events:none;text-shadow:0 1px 2px #000,0 0 4px #000;background:linear-gradient(180deg,#29231f,#17130f);border-radius:2px;box-shadow:inset 0 0 0 1px rgba(103,87,72,.58);`;
+    cap.textContent=lbl;caps.appendChild(cap);
   }
-  row.innerHTML=html;
+  row.replaceChildren(caps);
   row.style.display='block';
+  _skBarKeyMode=mode;
 }
 // 퀵슬롯 클릭 이벤트: 좌클릭=자동 토글, 우클릭=스왑
 for(let i=0;i<4;i++){
