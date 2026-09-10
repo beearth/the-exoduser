@@ -1,0 +1,15 @@
+{
+  "status": "PASS",
+  "total": 96.4,
+  "removed_v20_range": [
+    59.5,
+    60.5
+  ],
+  "removed_samples": 48000,
+  "all_retained_pcm_identical": true,
+  "pause_seconds": [
+    1,
+    1.5
+  ],
+  "caption_count": 22
+}

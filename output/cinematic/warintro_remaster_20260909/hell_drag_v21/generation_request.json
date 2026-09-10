@@ -1,0 +1,17 @@
+{
+  "provider": "Higgsfield",
+  "model": "Cinema Studio 2.5",
+  "requested_seconds": 5,
+  "resolution": "1080p",
+  "audio": false,
+  "count": 1,
+  "displayed_credits": 8,
+  "actual_billing_verified": false,
+  "input_image": "w12_drag_start.png",
+  "input_media_id": "4d1ed98b-4db1-41b5-8b42-667ba881e992",
+  "asset_id": "03253658-67ac-409b-830a-804f8d431755",
+  "preview_id": "80d7c3e2-c169-40f5-87f9-79f354ad4a6b",
+  "source_url": "https://d8j0ntlcm91z4.cloudfront.net/user_3G1zto9sz11Uf3iEOhJefE9HdGG/hf_20260910_053325_03253658-67ac-409b-830a-804f8d431755.mp4",
+  "image_generation": "Built-in imagegen edited realism_v7/w12_start.png preserving adult warrior identity",
+  "image_generation_output": "01a08548-0490-7fa2-87a8-00ccb3c7c0b2/exec-c832f059-0ffa-40d8-94da-ce0eaefa9240.png"
+}

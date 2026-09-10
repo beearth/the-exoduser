@@ -1,0 +1,67 @@
+{
+  "version": 21,
+  "total": 96.4,
+  "frames": 5784,
+  "question_speech": [
+    88,
+    89.34
+  ],
+  "question_pause": [
+    89.34,
+    90.34
+  ],
+  "question_pause_duration": 1,
+  "command_speech": [
+    90.34,
+    91.395
+  ],
+  "command_pause": [
+    91.395,
+    92.895
+  ],
+  "command_pause_duration": 1.5,
+  "final_speech": [
+    92.895,
+    95.415
+  ],
+  "picture_cuts": [
+    87.5,
+    90.33333333333333,
+    92.9,
+    96.4
+  ],
+  "picture_frames": [
+    170,
+    154,
+    210
+  ],
+  "command_picture_speed": 1.25,
+  "audio_speed": 1,
+  "rounding": "Video cuts nearest60fps frame; speech pauses exact PCM sample boundaries",
+  "shadow": "v19 first1sec original v12, no freeze",
+  "removed_picture": "w16b_armor separate long pause shot",
+  "new_generation": true,
+  "speed_source": "realism_v7/w16c.mp4",
+  "source_range": [
+    0,
+    3.2083333333333335
+  ],
+  "removed_v20_range": [
+    59.5,
+    60.5
+  ],
+  "family_cuts": [
+    59.5,
+    60.5,
+    61.5,
+    62.5
+  ],
+  "hell_drag": [
+    64.5,
+    69
+  ],
+  "previous_version": "ending_timing_v20",
+  "audio_edit": "Remove only 48000 silent samples at old 59.5-60.5s; remaining PCM unchanged",
+  "w12_source": "source.mp4",
+  "w12_speed": 1
+}

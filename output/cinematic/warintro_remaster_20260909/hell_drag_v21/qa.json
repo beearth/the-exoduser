@@ -1,0 +1,43 @@
+{
+  "receipts": [
+    {
+      "file": "final.mp4",
+      "duration": 96.4,
+      "frames": 5784,
+      "bytes": 85860266,
+      "sha256": "a4d43f3990b941d11d2ae9a7f61254133c486d6c47e8e496f4a27fb5b763a82d",
+      "audio_codec": "aac",
+      "audio_channels": 2,
+      "decode": "PASS"
+    },
+    {
+      "file": "ending.mp4",
+      "duration": 8.900000000000006,
+      "frames": 534,
+      "bytes": 8314679,
+      "sha256": "8a1ae836d76020487f975ed40b48734b0b4d3ac7615d00e9b3be59fa75f33e42",
+      "audio_codec": "aac",
+      "audio_channels": 2,
+      "decode": "PASS"
+    }
+  ],
+  "audio_correlation": 0.9999661221403459,
+  "digital_gap_rms": 0.0,
+  "contact_times": [
+    59.45,
+    59.5,
+    60.5,
+    61.5,
+    64.49,
+    64.5,
+    65,
+    66,
+    67,
+    68,
+    68.98,
+    69
+  ],
+  "visual_review": "합본12표본 확인:59.5초 아내·기억하라 동시 전환,60.5초 부모,61.5초 마차.65~66초 지옥 대사 중 손에 붙잡힌 전사가 아래로 끌려감.68.98초 빈 구덩이,69초 다음 지옥 전경. 검토 구간에 검은 연결 프레임·정지화면 삽입 없음",
+  "realtime_review": false,
+  "listening_review": false
+}
