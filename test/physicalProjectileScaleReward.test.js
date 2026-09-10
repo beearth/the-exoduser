@@ -35,13 +35,13 @@ function runtime() {
   return ctx;
 }
 
-test('hostile physical bodies are 3x, including piercing and element-colored titan eyes', () => {
+test('hostile physical bodies are 2x, including piercing and element-colored titan eyes', () => {
   const ctx = runtime();
   const expression = source.match(/const _sSc=([^;]+);/)[1];
   for (const p of [{ el: 0 }, { el: 0, redBean: true }, { el: 0, pierce: true },
     { el: 1, titanEye: true }, { bwBean: true }, { el: 1, parryClass: 'physical' }]) {
     ctx.p = p; ctx._ps = 2;
-    assert.equal(vm.runInContext(expression, ctx), 6);
+    assert.equal(vm.runInContext(expression, ctx), 4);
     assert.equal(p.sz, undefined, 'rendering must not change the collision size');
   }
   for (const p of [{ el: 1, redBean: true }, { el: 0, blackBean: true },
@@ -86,7 +86,7 @@ test('melee, magic Q and large energy rewards retain their existing values', () 
   }
 });
 
-test('druid skin triples only the original physical projectile, not magic or mines', () => {
+test('druid skin doubles only the original physical projectile, not magic or mines', () => {
   const ctx = runtime();
   const sizes = [];
   ctx._fdFlyImg = { complete: true, naturalWidth: 400 };
@@ -98,10 +98,10 @@ test('druid skin triples only the original physical projectile, not magic or min
     ctx._drawDruidPoisonShot({ x: 0, y: 0, sz: 4, _druidPoison: true, parryClass }, 1);
   }
   ctx._drawDruidPoisonShot({ x: 0, y: 0, sz: 4, _druidMine: true, mine: true }, 1);
-  assert.deepEqual(sizes, [[288, 288], [96, 96], [240, 240]]);
+  assert.deepEqual(sizes, [[192, 192], [96, 96], [240, 240]]);
 });
 
-test('actual mouth and titan sprite draw calls grow both dimensions by exactly 3', async () => {
+test('actual mouth and titan sprite draw calls grow both dimensions by exactly 2', async () => {
   const ctx = runtime();
   ctx._physMouthImg = await loadImage(fileURLToPath(new URL('../img/proj_phys_mouth.png', import.meta.url)));
   ctx._titanEyeImg = await loadImage(fileURLToPath(new URL('../img/proj_titan_eye.png', import.meta.url)));
@@ -124,7 +124,7 @@ test('actual mouth and titan sprite draw calls grow both dimensions by exactly 3
     ctx._physicalProjectileMultiplier = multiplier;
     vm.runInContext(render, ctx);
     const [before, after] = sizes.splice(0);
-    after.forEach((value, i) => assert.ok(Math.abs(value / before[i] - 3) < 1e-12));
+    after.forEach((value, i) => assert.ok(Math.abs(value / before[i] - 2) < 1e-12));
     assert.deepEqual([p.sz, p.r, p.dmg, p.vx], [2, 4, 10, 5]);
   }
 });

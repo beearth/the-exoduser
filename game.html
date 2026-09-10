@@ -14761,9 +14761,9 @@ function _projectileParryClass(p){
   if(p.titanEye||p.bwBean)return'physical';
   return (p.el??EL.P)===EL.P?'physical':'magic';
 }
-// 적대 물리탄: 시각 크기와 패링 자원 보상 각각 3배. 반사 전에 보상 배율을 보관한다.
-function _physicalProjectileMultiplier(p){
-  return p&&!p.friendly&&_projectileParryClass(p)==='physical'?3:1;
+// 적대 물리탄: 시각 2배(physicalScale=2), 패링 자원 3배. 반사 전에 보상 배율을 보관한다.
+function _physicalProjectileMultiplier(p,physicalScale=3){
+  return p&&!p.friendly&&_projectileParryClass(p)==='physical'?physicalScale:1;
 }
 function _isEnemyMagicBullet(p){return _projectileParryClass(p)==='magic'}
 function _normalizeEnemyBulletSpeed(p,rand=Math.random){const _spd=Math.hypot(p.vx,p.vy);if(_spd<=0)return;const _next=p.blackBean?_rollEnemyRainbowBulletSpeed(rand):_projectileParryClass(p)==='physical'?_rollEnemyBulletSpeed(rand):_rollEnemyMagicBulletSpeed(rand);p.vx=p.vx/_spd*_next;p.vy=p.vy/_spd*_next}
@@ -49427,7 +49427,7 @@ function draw(){
       const _tc=p.friendly?'#ffdd00':ELC[p.el]||p.col||'#ff4444';
       const _tN=p._trLen,_tLen2=p._trail.length,_tHd=p._trH;
       const _flk=.72+Math.sin(_now*.05+p.x*.3)*.28; // 도깨비불 일렁임
-      const _hr=Math.max(2.5,(p.sz||1)*2.2)*_flk*_physicalProjectileMultiplier(p);    // 머리 굵기(탄 크기 비례)
+      const _hr=Math.max(2.5,(p.sz||1)*2.2)*_flk*_physicalProjectileMultiplier(p,2);    // 머리 굵기(탄 크기 비례)
       X.globalCompositeOperation='lighter';X.lineCap='round';X.strokeStyle=_tc;
       for(let ti=0;ti<_tN-1;ti++){ // 머리→끝: 세그먼트별 폭·알파 테이퍼
         const _a=p._trail[(_tHd-1-ti+_tLen2)%_tLen2];
@@ -49560,7 +49560,7 @@ function draw(){
     // ── 회전 애니메이션 (크기 고정) ──
     const _spin=p.redBean?.005:p.blackBean?.005:p.blueBean?.004:.002;
     const _sRa=ra+_now*_spin+p.x*.1;
-    const _sSc=_ps*_physicalProjectileMultiplier(p);
+    const _sSc=_ps*_physicalProjectileMultiplier(p,2);
     // ── 검기파: 심플 원 ──
     if(p.swordWave){
       const _swC=ELC[p.el]||'#ff2200';
@@ -56314,7 +56314,7 @@ function _drawDruidPoisonShot(p,alpha){
     cx.globalCompositeOperation='destination-in';cx.drawImage(_fdFlyImg,0,0);_druidPoisonFly=c;
   }
   const cw=_druidPoisonFly.width/4,ch=_druidPoisonFly.height/4,fr=Math.floor(performance.now()/70)%16;
-  const dw=(p._druidMine||p.elemBall?240:Math.max(96,Math.min(180,(p.sz||4)*24)))*_physicalProjectileMultiplier(p),dh=dw*ch/cw;
+  const dw=(p._druidMine||p.elemBall?240:Math.max(96,Math.min(180,(p.sz||4)*24)))*_physicalProjectileMultiplier(p,2),dh=dw*ch/cw;
   X.save();X.globalAlpha=alpha==null?1:alpha;X.drawImage(_druidPoisonFly,(fr%4)*cw,Math.floor(fr/4)*ch,cw,ch,p.x-dw/2,p.y-dh/2,dw,dh);X.restore();return true;
 }
 function _fdDrawFly(p){
