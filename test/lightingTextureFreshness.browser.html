@@ -1,0 +1,56 @@
+<!doctype html>
+<meta charset="utf-8">
+<title>Lighting texture regression</title>
+<style>body{background:#17202b;color:#eef3fa;font:16px monospace;padding:32px}pre{white-space:pre-wrap}</style>
+<h1>Lighting texture regression</h1>
+<pre id="result">Running real WebGL2 pixel checks…</pre>
+<script src="../node_modules/acorn/dist/acorn.js"></script>
+<script type="module">
+const {parseExpressionAt}=acorn;
+const out=document.getElementById('result'),lines=[];
+const check=(v,m)=>{if(!v)throw Error(m);};
+const same=(a,b)=>a.length===b.length&&a.every((v,i)=>v===b[i]);
+try{
+ const html=await (await fetch('../game.html',{cache:'no-store'})).text();
+ const extract=marker=>{const at=html.indexOf(marker);check(at>=0,marker);const from=html.indexOf('function',at);return html.slice(from,parseExpressionAt(html,from,{ecmaVersion:'latest'}).end);};
+ const lighting=html.slice(html.indexOf('let _bloomCvs='),html.indexOf('// ═══ 동적 품질/텍스트 캐시 전역'));
+ const glCanvas=document.createElement('canvas'),gl=glCanvas.getContext('webgl2');
+ check(gl,'WebGL2 unavailable');
+ const info=gl.getExtension('WEBGL_debug_renderer_info');
+ lines.push(info?gl.getParameter(info.UNMASKED_RENDERER_WEBGL):gl.getParameter(gl.RENDERER));
+ const fb=gl.createFramebuffer();
+ const read=(tex,src)=>{gl.bindFramebuffer(gl.FRAMEBUFFER,fb);gl.framebufferTexture2D(gl.FRAMEBUFFER,gl.COLOR_ATTACHMENT0,gl.TEXTURE_2D,tex,0);check(gl.checkFramebufferStatus(gl.FRAMEBUFFER)===gl.FRAMEBUFFER_COMPLETE,'Framebuffer incomplete');const bytes=new Uint8Array(src.width*src.height*4);gl.readPixels(0,0,src.width,src.height,gl.RGBA,gl.UNSIGNED_BYTE,bytes);check(gl.getError()===gl.NO_ERROR,'WebGL error');gl.bindFramebuffer(gl.FRAMEBUFFER,null);return bytes;};
+ const reference=src=>{const tex=gl.createTexture();gl.bindTexture(gl.TEXTURE_2D,tex);gl.texImage2D(gl.TEXTURE_2D,0,gl.RGBA,gl.RGBA,gl.UNSIGNED_BYTE,src);const bytes=read(tex,src);gl.deleteTexture(tex);return bytes;};
+ for(const fixed of [false,true]){
+  // Remove only the three version increments to reproduce the original defect.
+  const code=fixed?lighting:lighting.replace(/^\s*_(?:bloom|light|litCol)Cvs\._glVer=.*$/gm,'');
+  const make=new Function('GL',`
+   const C=document.createElement('canvas');C.width=640;C.height=360;
+   const IS_MOBILE=false,OPT={lighting:true,bloom:true,quality:'high'},G={on:true,stage:0,cam:{x:0,y:0}},SI_TO_HELL=[0];
+   const _useGPU=false,_useGL=true,_glMaxTex=GL.getParameter(GL.MAX_TEXTURE_SIZE),_texCache=new WeakMap(),_texUploaded=new WeakMap(),_texGCQueue=[];
+   let _curTex=null;const _flush=()=>{},_setTex=t=>{_curTex=t;};
+   const _getTex=${extract('_getTex=function(src,_nearestHint){')};
+   const _uploadCanvasTex=${extract('function _uploadCanvasTex(src){')};
+   const X={save(){},restore(){},setTransform(){},drawImage(src){_uploadCanvasTex(src);}};
+   ${code}
+   return {C,light(x){_lightCnt=0;if(x!==null)_pushLight(x,0,100,.8,255,140,50,7);_renderLighting();},layer(n){return n==='dark'?_lightCvs:n==='color'?_litColCvs:_bloomCvs;},bloom:_renderBloom,upload(src){_uploadCanvasTex(src);return _curTex;}};
+  `);
+  const r=make(gl);
+  for(const layer of ['dark','color','bloom']){
+   const cx=r.C.getContext('2d');
+   if(layer==='bloom'){cx.fillStyle='#ffbb22';cx.fillRect(40,40,120,100);r.bloom();}else r.light(-100);
+   const src=r.layer(layer),tex=r.upload(src),initial=read(tex,src);
+   check(same(initial,reference(src)),layer+' initial upload');
+   if(layer==='bloom'){cx.clearRect(0,0,640,360);r.bloom();}else r.light(100);
+   check(r.upload(src)===tex,'Same-size texture allocation changed');
+   const updated=read(tex,src),expected=reference(src);
+   check(!same(initial,expected),'Source pixels must change');
+   check(same(updated,expected)===fixed,layer+' movement/bright-frame replacement');
+   if(layer!=='bloom'){r.light(null);r.upload(src);check(same(read(tex,src),reference(src))===fixed,layer+' expiration');}
+   lines.push((fixed?'PASS':'REPRODUCED stale pixels')+' — '+layer);
+  }
+ }
+ lines.push('RESULT: PASS — original defect reproduced; fixed GPU pixels match fresh uploads.');
+}catch(e){lines.push('RESULT: FAIL — '+e.stack);}
+out.textContent=lines.join('\n');
+</script>

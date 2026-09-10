@@ -4105,6 +4105,7 @@ function _renderBloom(){
   bx.globalAlpha=.18;bx.drawImage(_bloomCvs,-2,-2);
   bx.globalAlpha=.18;bx.drawImage(_bloomCvs,2,2);
   bx.globalAlpha=1;
+  _bloomCvs._glVer=(_bloomCvs._glVer||0)+1; // 갱신된 픽셀을 GPU 캐시에 전달
   X.save();X.setTransform(1,0,0,1,0,0);
   X.globalCompositeOperation='lighter';
   X.globalAlpha=G.bossAlive?.15:.08;X.drawImage(_bloomCvs,0,0,C.width,C.height);
@@ -4315,6 +4316,7 @@ function _renderLighting(){
   }
   // CH1 amber glow tint — 제거됨 (중앙글로우 원인)
   lx.globalCompositeOperation='source-over';lx.globalAlpha=1;
+  _lightCvs._glVer=(_lightCvs._glVer||0)+1;
   if(OPT.quality!=='low'){
    _initColStamps();
    if(!_litColCvs){_litColCvs=document.createElement('canvas');_litColCtx=_litColCvs.getContext('2d')}
@@ -4327,6 +4329,7 @@ function _renderLighting(){
     cx2.drawImage(cst,cl.sx-cl.r,cl.sy-cl.r,cd,cd);
    }
    cx2.globalCompositeOperation='source-over';cx2.globalAlpha=1;
+   _litColCvs._glVer=(_litColCvs._glVer||0)+1;
   }
   // 메인 합성은 draw()에서 통일 — 여기서 직접 그리지 않음 (깜빡임 방지)
 }
