@@ -42459,9 +42459,8 @@ function _autoShieldThrow(){
 // ═══ 지옥강타 1 — 땅 찍기 → 원형 진동파 + 포이즈 파괴 ═══
 // ═══ 악의기둥 — 즉시 발동 (현재 위치, 9개 순차) ═══
 function _playDarkPillarCastSound(){
-  playSample('heavy_hit',.45,.8);
-  playSub(70,.3,.12,35);
-  playNoise(.28,500,.07,120,.02,'lowpass');
+  playSample('fire_magic1',.75,1);
+  playNoise(.45,1800,.10,650,.025,'bandpass');
 }
 function _drawDarkPillar(ctx,fz,fade,now){
   const fire=_VFX_SHEETS.lava_erupt;

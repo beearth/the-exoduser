@@ -63,7 +63,8 @@ test('standalone cast creates one pillar and eight delayed pillars with one summ
   assert.equal(ctx.G._fireZones[0].r, 125);
   assert.deepEqual(Array.from(ctx.G._dpQueue, q => q.delay), [10,20,30,40,50,60,70,80]);
   assert.equal(calls.filter(c => c[0] === 'genericMagic').length, 0);
-  assert.equal(calls.filter(c => c[0] === 'sample' && c[1] === 'heavy_hit').length, 1);
-  assert.equal(calls.filter(c => c[0] === 'sub').length, 1);
+  assert.equal(calls.filter(c => c[0] === 'sample' && c[1] === 'heavy_hit').length, 0);
+  assert.deepEqual(calls.find(c => c[0] === 'sample' && c[1] === 'fire_magic1'), ['sample', 'fire_magic1', .75, 1]);
+  assert.equal(calls.filter(c => c[0] === 'sub').length, 0);
   assert.equal(calls.filter(c => c[0] === 'noise').length, 1);
 });
