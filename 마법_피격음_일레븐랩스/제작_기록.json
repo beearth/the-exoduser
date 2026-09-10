@@ -1,0 +1,32 @@
+{
+  "provider": "ElevenLabs",
+  "model_id": "eleven_text_to_sound_v2",
+  "output_format": "mp3_44100_128",
+  "duration_seconds": 0.5,
+  "prompt_influence": 0.85,
+  "status": "generated",
+  "game_sound_sha256": "972c91ae3dfb3433fd7fe0e589ccf1a15aff0865383d61d0a55bcff54237d8b1",
+  "candidates": [
+    {
+      "id": 1,
+      "name": "마력 파열",
+      "file": "01_마력_파열.mp3",
+      "text": "A compact magical energy orb bursting on contact: a dense arcane pop, layered with a brief shimmering granular energy shatter and a soft low-mid pressure pulse. Clearly supernatural spell damage. Single spell hit, dark fantasy RPG. Immediate onset, dry 200-300 ms decay. No launch whoosh, metal clang, wooden knock, gunshot, voice, music, drone, long reverb or harsh highs.",
+      "sha256": "7333d10a347f1199674130780314f3a6ec24e9f9ce080638bd9b0510f95823e7"
+    },
+    {
+      "id": 2,
+      "name": "암흑 마법 충돌",
+      "file": "02_암흑_마법_충돌.mp3",
+      "text": "A cursed shadow bolt striking a warrior: a forceful hollow arcane whump with a gritty supernatural energy rupture, a very short inward suction and smoky magical fizz fading quickly. Weighty dark sorcery impact. Single spell hit, dark fantasy RPG. Immediate onset, dry 200-300 ms decay. No launch whoosh, metal clang, wooden knock, gunshot, voice, music, drone, long reverb or harsh highs.",
+      "sha256": "55e8e7b1d68d5321b4de41a90e6b8f15e2bd921b128ec714d7d9b186f8477103"
+    },
+    {
+      "id": 3,
+      "name": "전격 피격",
+      "file": "03_전격_피격.mp3",
+      "text": "A magical lightning projectile hitting a character: a punchy electrical zap with a dense energy snap and tiny sizzling arc fragments, a compact midrange impact underneath. Fantasy lightning damage, controlled and not shrill. Single spell hit, dark fantasy RPG. Immediate onset, dry 200-300 ms decay. No launch whoosh, metal clang, wooden knock, gunshot, voice, music, drone, long reverb or harsh highs.",
+      "sha256": "fe0771d9ffa8c179a03ac261edc805c45a0bf59655107a4e5cba44fcc60e09c7"
+    }
+  ]
+}

@@ -1,0 +1,30 @@
+{
+  "status": "PASS",
+  "playback": [
+    {
+      "src": "http://127.0.0.1:3333/마법_피격음_일레븐랩스/00_처음_만든_소리.wav",
+      "duration": 4,
+      "paused": false,
+      "readyState": 4
+    },
+    {
+      "src": "http://127.0.0.1:3333/마법_피격음_일레븐랩스/01_비교듣기.wav",
+      "duration": 4,
+      "paused": false,
+      "readyState": 4
+    },
+    {
+      "src": "http://127.0.0.1:3333/마법_피격음_일레븐랩스/02_비교듣기.wav",
+      "duration": 4,
+      "paused": false,
+      "readyState": 4
+    },
+    {
+      "src": "http://127.0.0.1:3333/마법_피격음_일레븐랩스/03_비교듣기.wav",
+      "duration": 4,
+      "paused": false,
+      "readyState": 4
+    }
+  ],
+  "page_errors": []
+}

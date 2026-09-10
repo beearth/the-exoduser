@@ -1,0 +1,37 @@
+{
+  "status": "PASS",
+  "sample_rate": 48000,
+  "channels": 1,
+  "bits": 16,
+  "preview_gain": 0.55,
+  "preview_duration_s": 4,
+  "comparison_duration_s": 18,
+  "metrics": [
+    {
+      "id": 1,
+      "duration_s": 0.48,
+      "source_peak": 0.8592116236686707,
+      "source_rms": 0.16967273888739778,
+      "preview_normalization_gain": 0.8728932190158721,
+      "preview_peak": 0.4481206892078938
+    },
+    {
+      "id": 2,
+      "duration_s": 0.48,
+      "source_peak": 1.3715119361877441,
+      "source_rms": 0.14308279126997436,
+      "preview_normalization_gain": 0.546841759237401,
+      "preview_peak": 0.41527709436903354
+    },
+    {
+      "id": 3,
+      "duration_s": 0.48,
+      "source_peak": 1.4359207153320312,
+      "source_rms": 0.23720972349754152,
+      "preview_normalization_gain": 0.5223129605916826,
+      "preview_peak": 0.5009297149642941
+    }
+  ],
+  "game_sound_unchanged": true,
+  "listening_review": false
+}
