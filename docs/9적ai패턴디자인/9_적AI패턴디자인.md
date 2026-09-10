@@ -1,3 +1,5 @@
+> 2026-09-10 비보스 공통 탄막: projCd=240f, 초기 projT=180+Math.random()*120f, 차징60f 유지, 첫 교전 추가탄 제거. [필드 탄막 SSOT](../8.0몬스터디자인/FIELD_PROJECTILE_CADENCE_20260910.md). 전용 AI 패턴은 유지한다.
+
 # 적 AI 패턴 디자인 — 구현 기준 문서
 
 > 레퍼런스: compass_artifact 문서 (FromSoftware/HollowKnight/Diablo 참고)

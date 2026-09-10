@@ -37171,7 +37171,7 @@ function updateE(e,sp){
       hurtP(~~(e.atk*0.8));addParts(P.x,P.y,e.col,4);
       e.st2=40+~~(Math.random()*20); // 공격 후 쿨다운 40~60f
     }
-    // 근접 전용 몬스터: projCd 없으면 기본 탄막 부여
+    // 비보스 공통 탄막 복구: 제외 etype 외에는 240f 쿨다운과 첫 발사 분산 적용
     if(e.projCd>=9000&&!e.ib&&!_noProjEtypes[e.etype]){e.projCd=240;e.projT=180+Math.random()*120}
     // Ranged: 모든 몬스터 탄막 발사 (1초 차징 텔레그래프)
     if(e.projCd<9000){
