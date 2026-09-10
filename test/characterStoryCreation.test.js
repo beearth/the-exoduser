@@ -64,7 +64,7 @@ for(const visualIdx of [0,1])test('creation routing only plays the warrior movie
   const movies=[],gates=[],refresh=[];
   const ctx=vm.createContext({_testMode:true,_selectedSlot:null,_selectedSlotName:null,console,
     loadLocalCharacters:async()=>refresh.push('local'),loadCharacters:async()=>{},stopLobbyBgm(){},_stopHover(){},$:()=>null,
-    _TL:s=>s,ExoduserCharacterStory:{play:async()=>{movies.push(1);return true;}},showCharGate:(...a)=>gates.push(a),startBGM(){}});
+    _TL:s=>s,getCurrentLanguage:()=> 'ko',ExoduserCharacterStory:{play:async()=>{movies.push(1);return true;}},showCharGate:(...a)=>gates.push(a),startBGM(){}});
   vm.runInContext(declaration('index.html','_afterCharacterCreated'),ctx);await ctx._afterCharacterCreated('새전사',visualIdx);
   assert.equal(movies.length,visualIdx===0?1:0);assert.equal(refresh.length,visualIdx===0?0:1);
   if(visualIdx===0)assert.deepEqual(Array.from(gates[0]),['새전사',true]);else assert.equal(gates.length,0);

@@ -10,9 +10,9 @@
 | 영상 | `video/warrior_story_v21.mp4`, v21 합본과 SHA256 동일 a4d43f3990b941d11d2ae9a7f61254133c486d6c47e8e496f4a27fb5b763a82d |
 | 규격 |96.4초5784f,1920×1080/60fps,H.264/AAC스테레오,85,860,266 bytes |
 | 소리·자막 |영상 내 영어 음성·한글 고정 자막22cue,muted=false/volume=1. 로비 BGM·호버음·선택 영상 정지 |
-| 화면 |검정 전체 뷰포트,object-fit:contain,네이티브 재생·일시정지·탐색·볼륨 컨트롤 |
-| 건너뛰기 |상단 버튼,Escape,게임패드B/Start. 재생 중 로비 패드 입력 차단 |
-| 자동재생 차단 |NotAllowedError이면 네이티브 재생 버튼으로 소리 있게 시작 가능 |
+| 화면 |검정 전체 뷰포트,object-fit:contain,네이티브 재생바 제거·우측 하단 컷씬 조작 안내 |
+| 건너뛰기 |클릭·확인 입력으로 다음 대사,Esc·게임패드B/Start·하단 버튼1200ms 홀드로 전체 종료. 재생 중 로비 입력 차단 |
+| 자동재생 차단 |NotAllowedError이면 클릭하여 계속 표시,첫 확인 입력은 대사 이동 없이 소리 있게 재생 재시도 |
 | 종료/스킵 |미디어 pause·src 제거·load·overlay 제거,Promise true. `showCharGate(charId,true)` |
 | 진입 |기존 로딩1200ms 후 `game.html?...&story=warrior-v21`,생성한 슬롯/온라인id 유지 |
 | 게임 후속 |모든 캐릭터의 일반 게임 입장은 구 PRO·INTRO와 눈을 떠 대사·커튼·키안내를 시작하지 않고 즉시 플레이. story URL 유무와 무관 |
@@ -21,7 +21,7 @@
 | 기존 입장 |목록의 기존 대검전사·실버테일 모두 직접 플레이. 구 한글 더빙 자동재생 제거 |
 | 배포 패키지 |build-nwjs.mjs FILES에 player 추가,video 폴더 기존 복사로 MP4 포함. 배포/실행파일 재빌드는 이 작업 범위 아님 |
 
-검증: test/characterStoryCreation.test.js는 저장 성공/실패,오프라인 버튼 override,ended/skip/error cleanup,game 직접 플레이를 검사한다. tools/verify_character_story_creation.py는 격리 Chromium에서 생성 UI를 클릭하고 실제 MP4 재생·오디오 디코드·로비 음악 정지·게임 연결을 검사한다. 저장 API만 브라우저 내부에서 대체하여 실제 사용자 슬롯을 쓰지 않는다. 브라우저 결과는 output/cinematic/legacy_story_disabled_20260910/qa.json과 스크린샷 참조.
+검증: test/characterStoryCreation.test.js는 저장 성공/실패,오프라인 버튼 override,ended/skip/error cleanup,game 직접 플레이를 검사한다. tools/verify_character_story_creation.py는 격리 Chromium에서 생성 UI를 클릭하고 실제 MP4 재생·오디오 디코드·로비 음악 정지·게임 연결을 검사한다. 저장 API만 브라우저 내부에서 대체하여 실제 사용자 슬롯을 쓰지 않는다. 현재 브라우저 결과는 output/cinematic/character_story_controls_20260910/qa.json과 스크린샷 참조.
 
 언어 제한: 이번 요청은 승인된 합본 그대로 연결한 것으로 영상 속 한글 자막은 언어 선택에 따라 바뀌지 않는다. 기존 PROLOGUE_LINES·여신 INTRO 번역 데이터는 명시적 cutscene=1 미리보기에서 유지한다.
 
@@ -48,3 +48,55 @@
 | 브라우저 실버테일 입장 |charIdx1,구 intro_voice.mp3 play 호출0,구 음성 paused |
 | 회귀 테스트 |21개 PASS |
 | 증거 |output/cinematic/legacy_story_disabled_20260910/qa.json |
+
+
+## 2026-09-10 대사 단위 부분 스킵
+
+승인된 v21 MP4를 게임 내 전체 화면 컷씬으로 표시하며 브라우저 재생바를 제거했다. 실시간 게임 캐릭터 렌더로 재제작한 것은 아니다. 입력하지 않으면 기존 편집·음성·쉼을 유지한다.
+
+| 항목 | 현재 구현 |
+|---|---|
+| 부분 스킵 |화면 클릭, 다음 대사 버튼, Enter, Space, ArrowRight, 패드 A(0)/X(2)/Y(3) → 다음 대사 시작 |
+| 탐색 기준 |`CUES.find(t=>t>video.currentTime+.05)`, 22개 시작점. 마지막 대사에서 다시 넘기면 종료 |
+| 동기화 |하나의 video.currentTime을 이동하여 영상·내장 음성·고정 자막 함께 탐색 |
+| 전체 스킵 |Esc, 패드 B(1)/Start(9), 건너뛰기 버튼을 1200ms 연속 홀드 |
+| 홀드 게이지 |HOLD_MS=1200, 16ms 간격으로 Date.now 경과시간 / HOLD_MS, 폭 0~100% |
+| 홀드 취소 |키·버튼 해제, 포인터 이탈/취소, 창 blur/visibilitychange. keyboard/pointer/gamepad 소스별 Set 관리 |
+| 로비 입력 |컷씬 중 패드 로비 조작 차단. 키보드 반복 입력 무시, Tab은 다음 대사 버튼 포커스 |
+| 화면 |검정 전체 뷰포트 contain, z-index2147483647, video pointer-events:none/tabIndex=-1, 네이티브 controls=false/PiP·원격재생 비활성 |
+| 조작 표시 |오른쪽·아래 3%, 버튼 간격22px, serif13px/자간.06em, 버튼 세로패딩10px, 게이지2px |
+| 언어 |play에 getCurrentLanguage 전달. ko: 다음 대사·클릭하여 계속·Esc / B 길게, 그 외 영어. 건너뛰기 명칭은 기존 _TL 사용 |
+| 자동재생 차단 |NotAllowedError 시 클릭하여 계속 표시. 첫 확인 입력은 시간을 넘기지 않고 유음 재생 재시도 |
+| API |next(), setSkipHeld(held,source='gamepad'), CUES, HOLD_MS 공개. skip()은 내부 즉시 종료 API로 유지 |
+| 정리 |종료 시 홀드 타이머·리스너·미디어·overlay 제거, 기존 포커스 복원. 중복 완료 방지 |
+| 캐시 |index.html의 character-story-player.js?v=20260910-cinematic-controls |
+| 자동 검사 |관련 Node 테스트24개 PASS. CUES 원본 일치·짧은 홀드 취소·입력 소스 분리·cleanup 검사 |
+| 브라우저 검사 |클릭→5.5초, Enter→10초, Space→16초. Esc350ms 해제 후 유지, 1200ms 홀드 후 game.html 진입. 실제 저장 대신 격리 API 사용 |
+| 증거 |output/cinematic/character_story_controls_20260910/qa.json 및 cinematic_partial_skip.png. page_errors=[] |
+
+### 부분 스킵 시작점 — 초
+
+| ID | 시작 | 대사 |
+|---|---:|---|
+| wa02 |1|전쟁에서 살아 돌아온 한 남자. |
+| wa04 |5.5|하지만 집은 모두 불타 사라졌다. |
+| wa06 |10|이웃이자 친구였던 킬루가 그의 가문을 짓밟았다. |
+| wa08 |16|아내는 몸종으로 끌려가 온갖 몹쓸 짓을 당했고, |
+| wa09 |22.5|끝내 못 이겨 스스로 목숨을 끊었다. |
+| wa11 |28|아이들은 노예로 팔려가 어디에 있는지조차 알 수 없다. |
+| wa12 |33.5|늙은 부모는 감옥에 갇혀 굶어 죽었다. |
+| wa14 |39|킬루 가문의 모두가 알고 있었다. |
+| wa15 |42.24|31명이 보고도 못 본 척했다. |
+| wa17 |46.5|그날 밤, 킬루 가문을 모두 죽였다. |
+| wa19 |51|칼로 킬루의 팔다리를 자르고 |
+| wa20 |53.48|불로 지혈까지 해주며 |
+| wa21 |56.019999999999996|오래오래 살려두었다. |
+| wa22 |59.5|"기억하라." |
+| wa23 |59.98|"그리고 지옥에서도 후회하라." |
+| wa24 |65|그리고 지옥에 떨어진다. |
+| wa26 |70.67|"...이것은 셀 수 없는 복수자 중 하나의 이야기일 뿐." |
+| wa28 |76|"지옥의 미로에는 매일 새로운 영혼이 떨어진다." |
+| wa29 |81.5|"분노로 가득 찬 자, 억울함에 미친 자, 사랑을 잃은 자..." |
+| wa31 |88|"너는 왜 지옥에 왔느냐?" |
+| wa33a |90.33333333333333|"지옥을 탈출하라." |
+| wa33b |92.9|"죄의 무게를 짊어진 자여." |

@@ -905,7 +905,7 @@ body{background:#000 center/cover no-repeat;color:#ccaa88;font-family:'Noto Sans
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
 <script src="lobby_i18n.js"></script>
 <script src="lobby-stage-info.js"></script>
-<script src="character-story-player.js?v=20260910-v21"></script>
+<script src="character-story-player.js?v=20260910-cinematic-controls"></script>
 <script src="world-intro-player.js?v=20260907-v12-fullscene-newvoice"></script>
 <script src="world-intro-subtitles-data.js?v=20260907-v13-exodus-ko-escape"></script>
 <script src="world-intro-subtitles.js?v=20260907-v6-cinema-size"></script>
@@ -2898,7 +2898,7 @@ async function _afterCharacterCreated(name,visualIdx){
     _selectedSlot=charId;_selectedSlotName=name;
     stopLobbyBgm();_stopHover();
     ['lobbyCharPreview','csIdleVid','csSceneVid'].forEach(id=>{const v=$(id);if(v&&v.pause)v.pause();});
-    const seen=await ExoduserCharacterStory.play({skipLabel:_TL('건너뛰기')});
+    const seen=await ExoduserCharacterStory.play({skipLabel:_TL('건너뛰기'),language:getCurrentLanguage()});
     showCharGate(charId,seen);
   }catch(error){console.error('[CHARACTER STORY]',error);startBGM();}
 }
@@ -3440,7 +3440,11 @@ _GP.on('loginNav', (gp, just) => {
 // ── 로비 게임패드 네비게이션 ──
 let _lobbyGpIdx = 0;
 _GP.on('lobbyNav', (gp, just) => {
-  if(ExoduserCharacterStory.active){if(just[1]||just[9])ExoduserCharacterStory.skip();return true;}
+  if(ExoduserCharacterStory.active){
+    ExoduserCharacterStory.setSkipHeld(!!(gp.buttons[1]?.pressed||gp.buttons[9]?.pressed),'gamepad');
+    if(just[0]||just[2]||just[3])ExoduserCharacterStory.next();
+    return true;
+  }
   const lobby = $('lobby');
   if(!lobby || lobby.style.display !== 'flex') return false;
 

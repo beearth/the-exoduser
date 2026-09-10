@@ -1,7 +1,7 @@
 import json
 from pathlib import Path
 from playwright.sync_api import sync_playwright
-O=Path('G:/exoduser/output/cinematic/legacy_story_disabled_20260910');O.mkdir(exist_ok=True)
+O=Path('G:/exoduser/output/cinematic/character_story_controls_20260910');O.mkdir(exist_ok=True)
 with sync_playwright() as p:
     browser=p.chromium.launch(headless=True)
     page=browser.new_page(viewport={'width':1280,'height':720})
@@ -23,14 +23,28 @@ with sync_playwright() as p:
     page.locator('#charName').fill('검증전사')
     page.locator('#createBtn').click()
     page.wait_for_function("document.getElementById('characterStoryVideo')?.currentTime>1",timeout=30000)
-    state=page.evaluate("""() => {const v=document.getElementById('characterStoryVideo');return {src:v.currentSrc,time:v.currentTime,duration:v.duration,width:v.videoWidth,height:v.videoHeight,muted:v.muted,volume:v.volume,paused:v.paused,lobbyPaused:lobbyBGM.paused,idlePaused:csIdleVid.paused,audioTracks:v.webkitAudioDecodedByteCount||0,active:ExoduserCharacterStory.active}}""")
+    state=page.evaluate("""() => {const v=document.getElementById('characterStoryVideo');return {src:v.currentSrc,time:v.currentTime,duration:v.duration,width:v.videoWidth,height:v.videoHeight,muted:v.muted,volume:v.volume,paused:v.paused,controls:v.controls,pictureInPictureDisabled:v.disablePictureInPicture,lobbyPaused:lobbyBGM.paused,idlePaused:csIdleVid.paused,audioTracks:v.webkitAudioDecodedByteCount||0,active:ExoduserCharacterStory.active}}""")
     assert state['duration']==96.4 and state['width']==1920 and state['height']==1080,state
     assert not state['muted'] and state['volume']==1 and not state['paused'] and state['lobbyPaused'] and state['idlePaused'],state
     assert len(writes)==1 and writes[0]['data']['charIdx']==0,writes
+    assert state['controls'] is False and state['pictureInPictureDisabled'],state
     page.screenshot(path=str(O/'creation_movie_playing.png'))
-    page.locator('#characterStorySkip').click()
+    skips=[]
+    for key,target in [('click',5.5),('Enter',10),('Space',16)]:
+        if key=='click':page.locator('#characterStoryOverlay').click(position={'x':640,'y':300})
+        else:page.keyboard.press(key)
+        page.wait_for_function(f"characterStoryVideo.currentTime>={target} && !characterStoryVideo.seeking")
+        clock=page.evaluate('characterStoryVideo.currentTime');assert clock<target+1,clock
+        skips.append({'input':key,'target':target,'actual':clock})
+    page.keyboard.down('Escape');page.wait_for_timeout(350);page.keyboard.up('Escape')
+    assert page.evaluate('ExoduserCharacterStory.active')
+    page.wait_for_timeout(1000)
+    assert page.evaluate('ExoduserCharacterStory.active')
+    page.screenshot(path=str(O/'cinematic_partial_skip.png'))
+    page.keyboard.down('Escape')
     page.wait_for_url('**/game.html?**story=warrior-v21',timeout=10000)
-    result=dict(status='PASS',creation_writes=len(writes),playback=state,skip_destination=page.url,page_errors=errors,save_isolation='API responses mocked only in isolated browser; real media served by project server')
+    page.keyboard.up('Escape')
+    result=dict(status='PASS',creation_writes=len(writes),playback=state,partial_skips=skips,short_hold_cancelled=True,full_hold_ms=1200,skip_destination=page.url,page_errors=errors,save_isolation='API responses mocked only in isolated browser; real media served by project server')
     page.unroute('**/game.html?*')
     page.goto(result['skip_destination'],wait_until='domcontentloaded',timeout=60000)
     page.wait_for_function("typeof G!=='undefined' && G.on && G._cutsceneDone && _cutsceneState===null",timeout=60000)

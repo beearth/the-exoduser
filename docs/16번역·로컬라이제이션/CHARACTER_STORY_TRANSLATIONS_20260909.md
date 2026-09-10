@@ -155,3 +155,8 @@
 ## 2026-09-10 신규 대검전사 영상 경로
 
 신규 대검전사0 생성 직후는 v21 MP4의 영어 음성·한글 고정 자막22cue를 사용한다. 이 문서의21개 prologue와18개 INTRO 다국어 자막은 명시적 컷씬 미리보기에 유지된다. 모든 캐릭터 일반 입장은 영상 완료·스킵·오류와 기존 슬롯 모두 즉시 플레이하여 구 컷씬을 표시하지 않는다. 영상의 언어별 자막 전환은 이번 연결에 포함하지 않는다. [런타임 계약](../cinematic/WARINTRO_CREATION_RUNTIME_20260910.md).
+
+
+### 2026-09-10 컷씬 부분 스킵 적용
+
+대검전사 생성 컷씬 조작 문구는 play({language:getCurrentLanguage(),skipLabel:_TL(건너뛰기)})로 전달한다. ko에서는 다음 대사·클릭하여 계속·Esc / B 길게, 나머지는 Next line·Click to continue·hold Esc / B를 표시한다. 영상 속 한글22cue는 고정이며 부분 스킵 시 음성과 함께 이동한다. [전체 계약](../cinematic/WARINTRO_CREATION_RUNTIME_20260910.md).
