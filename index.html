@@ -446,6 +446,10 @@ body{background:#000 center/cover no-repeat;color:#ccaa88;font-family:'Noto Sans
 #cinScene:not(.world-intro-preview):not(.world-intro-attention) #worldIntroMix{display:none}
 #worldIntroStatus{font-size:11px;color:#c6b89f}
 </style>
+<style>
+#splashTitleBrand{position:absolute;display:none;pointer-events:none;overflow:visible;z-index:1}
+#splashTitlePrompt{position:absolute;left:50%;top:92%;transform:translate(-50%,-50%);display:none;z-index:2;pointer-events:none;margin:0;color:#f1e9dc;font:500 clamp(17px,1.2vw,26px)/1.4 'Noto Sans KR',sans-serif;letter-spacing:.06em;white-space:nowrap;text-shadow:0 1px 2px #000,0 2px 5px #000;direction:inherit}
+</style>
 <link rel="stylesheet" href="localization.css?v=20260909">
 </head>
 <body>
@@ -454,6 +458,24 @@ body{background:#000 center/cover no-repeat;color:#ccaa88;font-family:'Noto Sans
 <div id="splashOverlay" style="position:fixed;inset:0;z-index:9999;background:#000;display:flex;align-items:center;justify-content:center;flex-direction:column;cursor:pointer;opacity:1;transition:opacity 0.5s">
   <canvas id="splashCanvas" style="position:absolute;inset:0;width:100%;height:100%"></canvas>
   <video id="splashTitleVideo" muted playsinline loop preload="none" aria-hidden="true" style="display:none"></video>
+  <svg id="splashTitleBrand" viewBox="0 0 1983 793" role="img" aria-label="EXODUSER · HELL LORD · THE WORLD WILL FALL. THE EXODUS WILL RISE.">
+    <defs>
+      <filter id="titlePlateFeather" x="-20%" y="-30%" width="140%" height="160%"><feGaussianBlur stdDeviation="12"/></filter>
+      <mask id="titlePlateMask" maskUnits="userSpaceOnUse" x="140" y="290" width="610" height="300"><rect x="178" y="332" width="535" height="203" fill="white" filter="url(#titlePlateFeather)"/></mask>
+      <linearGradient id="titleRule" gradientUnits="userSpaceOnUse" x1="207" x2="693"><stop stop-color="#862c21" stop-opacity="0"/><stop offset=".2" stop-color="#b23b2a"/><stop offset=".8" stop-color="#b23b2a"/><stop offset="1" stop-color="#862c21" stop-opacity="0"/></linearGradient>
+    </defs>
+    <image href="img/title_clean_plate_20260910.png" width="1983" height="793" mask="url(#titlePlateMask)"/>
+    <g font-family="Georgia, 'Times New Roman', serif" fill="#f1eee6">
+      <text x="224" y="404" font-size="46" font-weight="600" textLength="89" lengthAdjust="spacing">EX</text>
+      <text x="407" y="404" font-size="46" font-weight="600" textLength="270" lengthAdjust="spacing">DUSER</text>
+      <g transform="translate(365 388)" fill="none" stroke="#b52e25"><circle r="17" stroke-width="3"/><path d="M0-31V-14M0 14V31M-29 0H-14M14 0H29" stroke-width="1.6"/><path d="M0-10L3-3L10 0L3 3L0 10L-3 3L-10 0L-3-3Z" fill="#b52e25" stroke="none"/></g>
+      <path d="M207 422H693" stroke="url(#titleRule)" stroke-width="1.4"/>
+      <text x="450" y="447" text-anchor="middle" font-size="18" letter-spacing="8" fill="#c44232">HELL LORD</text>
+      <text x="450" y="474" text-anchor="middle" font-size="11.5" textLength="375" lengthAdjust="spacing" letter-spacing="2">THE WORLD WILL FALL. THE EXODUS WILL RISE.</text>
+      <path d="M450 486L454 496L468 501L454 505L450 516L446 505L432 501L446 496ZM450 491V511M440 501H460" fill="none" stroke="#af392d" stroke-width="1.2"/>
+    </g>
+  </svg>
+  <p id="splashTitlePrompt"></p>
   <div id="splashContent" style="text-align:center;opacity:0;transition:opacity 0.5s;position:relative;z-index:2"></div>
 </div>
 <!-- 입력 모드: 선택 화면 제거, 자동 감지+실시간 전환 -->
@@ -3696,7 +3718,7 @@ function showCharGate(charId){
   if(!overlay||!content||!cv)return;
   if(_cinPreview){overlay.style.display='none';return;}
   const cx=cv.getContext('2d');
-  function resizeCanvas(){cv.width=cv.offsetWidth*devicePixelRatio;cv.height=cv.offsetHeight*devicePixelRatio;cx.setTransform(devicePixelRatio,0,0,devicePixelRatio,0,0)}
+  function resizeCanvas(){cv.width=cv.offsetWidth*devicePixelRatio;cv.height=cv.offsetHeight*devicePixelRatio;cx.setTransform(devicePixelRatio,0,0,devicePixelRatio,0,0);cx.imageSmoothingEnabled=true;cx.imageSmoothingQuality='high'}
   resizeCanvas();window.addEventListener('resize',resizeCanvas);
 
   // ── 상태 ──
@@ -3716,6 +3738,12 @@ function showCharGate(charId){
   const _titleArt=new Image();
   _titleArt.src='img/title_art_1.png';
   const _titleVideo=document.getElementById('splashTitleVideo');
+  const _titleBrand=document.getElementById('splashTitleBrand'),_titlePrompt=document.getElementById('splashTitlePrompt');
+  const _titlePlate=new Image();_titlePlate.src='img/title_clean_plate_20260910.png';
+  _titleVideo.addEventListener('error',()=>{
+    if(done||phase!==2||_titleVideo.dataset.sdFallback)return;
+    _titleVideo.dataset.sdFallback='1';_titleVideo.src='video/title_motion.mp4?v=20260908-loop2';syncTitlePlayback();
+  });
   function syncTitlePlayback(){
     if(done||phase!==2||document.hidden){_titleVideo.pause();return;}
     _titleVideo.play().catch(()=>{});
@@ -3774,12 +3802,13 @@ function showCharGate(charId){
       return;
     } else if(phase===2){
       // 무음 타이틀 영상 반복, 로딩/실패 시 기존 키아트. 입력 전까지 유지.
-      _titleVideo.src='video/title_motion.mp4?v=20260908-loop2';
+      _titleVideo.src='video/title_motion_hd.mp4?v=20260910-clarity1';
       _titleVideo.muted=true;
+      _titlePrompt.textContent=_TL('아무 키나 눌러 계속');
       syncTitlePlayback();
       t0=performance.now();
       console.log('[SPLASH] TITLE screen shown (art: '+_titleArt.src.split('/').pop()+')');
-      let titleHasVideoFrame=false;
+      let titleHasVideoFrame=false,lastTitleFrame=-1,lastTitleW=0,lastTitleH=0;
       function titleLoop(){
         if(done||phase!==2)return;
         if(!_titleVideo.error&&_titleVideo.readyState>=2)titleHasVideoFrame=true;
@@ -3789,8 +3818,17 @@ function showCharGate(charId){
         }
         const elapsed=performance.now()-t0;
         const w=cv.offsetWidth,h=cv.offsetHeight;
-        cx.clearRect(0,0,w,h);cx.fillStyle='#000';cx.fillRect(0,0,w,h);
         const fadeIn=Math.min(1,elapsed/1000);
+        _titlePrompt.style.display=elapsed>1200?'block':'none';
+        _titlePrompt.style.opacity=String(fadeIn*(.8+Math.sin(elapsed*.0018)*.15));
+        // Keep UI text native and avoid redrawing an identical 24fps video frame at monitor refresh rate.
+        const frame=_titleVideo.readyState>=2?Math.floor(_titleVideo.currentTime*24):-1;
+        const plateReady=_titlePlate.complete&&_titlePlate.naturalWidth>0;
+        const brandReady=plateReady&&(_titleVideo.readyState>=2||_titleArt.complete&&_titleArt.naturalWidth>0);
+        _titleBrand.style.display=brandReady?'block':'none';_titleBrand.style.opacity=String(fadeIn);
+        if(elapsed>1000&&frame>=0&&frame===lastTitleFrame&&w===lastTitleW&&h===lastTitleH){rafId=requestAnimationFrame(titleLoop);return;}
+        lastTitleFrame=frame;lastTitleW=w;lastTitleH=h;
+        cx.clearRect(0,0,w,h);cx.fillStyle='#000';cx.fillRect(0,0,w,h);
         cx.save();cx.globalAlpha=fadeIn;
         const titleSource=!_titleVideo.error&&_titleVideo.readyState>=2?_titleVideo:_titleArt;
         const titleWidth=titleSource.videoWidth||titleSource.naturalWidth;
@@ -3803,17 +3841,12 @@ function showCharGate(charId){
           const dh=h,dw=dh*titleWidth/sh;
           const dx=Math.max((w-dw)/2,-dw*0.1); // 좁은 화면에서도 왼쪽 로고 보존.
           cx.drawImage(titleSource,0,sy,titleWidth,sh,dx,0,dw,dh);
+          _titleBrand.style.left=dx+'px';_titleBrand.style.top=(-80/636*h)+'px';
+          _titleBrand.style.width=dw+'px';_titleBrand.style.height=(dw*793/1983)+'px';
         }else{
           cx.textAlign='center';cx.textBaseline='middle';
           cx.font="700 72px 'Cinzel Decorative','Cinzel',Georgia,serif";
           cx.fillStyle='#cc4400';cx.fillText('EXODUSER',w/2,h*0.42);
-        }
-        if(elapsed>1200){
-          cx.globalAlpha=fadeIn*(Math.sin(elapsed*0.004)*0.35+0.55);
-          cx.textAlign='center';cx.textBaseline='middle';
-          cx.font="15px 'Noto Sans KR',sans-serif";cx.fillStyle='#ccc';
-          cx.shadowColor='#000';cx.shadowBlur=8;
-          cx.fillText(_TL('아무 키나 눌러 계속'),w/2,h*0.92);
         }
         cx.restore();
         rafId=requestAnimationFrame(titleLoop);
@@ -3826,6 +3859,7 @@ function showCharGate(charId){
 
   function nextPhase(){
     clearInterval(blinkId);cancelAnimationFrame(rafId);
+    _titleBrand.style.display='none';_titlePrompt.style.display='none';
     _titleVideo.pause();
     hideFDGScreen();
     content.style.opacity='0';

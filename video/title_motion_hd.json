@@ -1,0 +1,16 @@
+{
+  "source": "video\\title_motion.mp4",
+  "output": "video\\title_motion_hd.mp4",
+  "width": 3840,
+  "height": 1536,
+  "fps": 24,
+  "frames": 90,
+  "seconds": 3.75,
+  "audio": false,
+  "crf": 16,
+  "resample": "Lanczos 2x",
+  "sharpen": "luma 5x5 amount 0.4; chroma 0",
+  "native4K": false,
+  "bytes": 7612715,
+  "decode": "PASS"
+}
