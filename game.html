@@ -25634,7 +25634,7 @@ function fireBow(){
     if(G.mats>=1){
       G.mats--;
       const _brd=BOWTYPES[b.btype||'crossbow']||BOWTYPES.crossbow;const range=(Math.max(b.bowRange||0,_brd.range)+(b.bonusRange||0)*12)*pBowRange(),bspd=b.bowProjSpd||8;
-      const dmg=~~(bowRef()*pBowMul()*10)+(P._bowBon||0);P._bowBon=0; // 단일뎀 ×10 강화
+      const dmg=(~~(bowRef()*pBowMul()*10)+(P._bowBon||0))*3;P._bowBon=0; // 기본 석궁 데미지 3배
       const bdx=Math.cos(P.atkArc),bdy=Math.sin(P.atkArc);
       {const _pp=_getPProj();_pp.x=P.x+bdx*12;_pp.y=P.y+bdy*12;_pp.vx=bdx*bspd;_pp.vy=bdy*bspd;_pp.dmg=dmg;_pp.el=ael;_pp.maxDist=range;_pp.dist=0;_pp.r=3;_pp.stagger=0;_pp.kb=0;_pp.pierce=0;_pp.pierceMax=0;_pp.normalBow=true;pProjs[pProjs.length]=_pp;} // 관통 0
       if((bw().btype||'')==='crossbow'){playSample('crossbow_shot',.7,_r(1,.1))}else SFX.bow();
@@ -25653,7 +25653,7 @@ function _fireXbow(tx,ty){
   const b=bw(),ael=b.el||0;
   const _spec=_autoBowSpec();
   const _xbAtkMul=(BOWTYPES[b.btype||'crossbow']||BOWTYPES.crossbow).atkMul||1;
-  const dmg=~~((bowRef()*pBowMul()*pXbowMul()*_xbAtkMul+XBOW_DMG)*(_gxFiring||1));
+  const dmg=~~((bowRef()*pBowMul()*pXbowMul()*_xbAtkMul+XBOW_DMG)*(_gxFiring||1))*3; // 기본 자동 석궁 3배
   {const _pp=_getPProj();_pp.x=ox+cdx*10;_pp.y=oy+cdy*10;_pp.vx=cdx*_spec.spd;_pp.vy=cdy*_spec.spd;_pp.dmg=dmg;_pp.el=ael;_pp.maxDist=_spec.range;_pp.dist=0;_pp.r=3;_pp.stagger=0;_pp.kb=0;_pp.pierce=XBOW_PIERCE?0.5:0;_pp.pierceMax=XBOW_PIERCE?2:0;_pp.normalBow=true;_pp.ghostXbow=true;pProjs[pProjs.length]=_pp;}
   if(xb)xb._ang=ang;
   if(_gxFiring)playSampleAt('crossbow_shot',.15,_r(1.2,.12),_gxTurret.x,_gxTurret.y);
@@ -30179,7 +30179,7 @@ function update(){
       if(P.st2<=3&&P.st2+sp>3){
         const _wRange=(wp().wRange||50)+(wp().bonusRange||0)*4;
         const _wArc=(wp().wArcW||.95);
-        hitArc(P.atkArc,_wRange,_wArc,~~(((P.baseAtk+(wp().atk||0)+enhMulAtk(wp().enh||0))+15)*2),wp().el,'weapon');
+        hitArc(P.atkArc,_wRange,_wArc,~~(((P.baseAtk+(wp().atk||0)+enhMulAtk(wp().enh||0))+15)*6),wp().el,'weapon');
       }
       if(P.st2<=0){P.s='wRecover';P.st2=~~(16/((wp().spd||.3)*statDex()*(1+_eqAffix('meleeAtkSpd')+_eqAffix('glovesAtkSpd'))))}}
     else if(P.s==='wRecover'){if(P.st2<=0){if(isAct('parry')&&_qIsIceOrb()){_qDispatchIceOrb()}else if(isAct('parry')&&_qIsPeaceShield()&&P.mp>0&&(P._sbCd||0)<=0){_enterPeaceShield()}else if(isAct('parry')&&!_qIsIceOrb()&&!_qIsPeaceShield()&&(P._sbCd||0)<=0&&P.mp>=10){P.mp-=10;P.s='sBlock';P.st2=999;P._sbParryT=20;P._sbHoldT=0;P._sbReleaseR=0;P.parryT=0;P._qDetonateFired=false;P._sbCd=~~(30*(1+_eqAffix('shieldCdRed')));G._sbBurst={x:P.x,y:P.y,r:P.r+5,maxR:P.skills.detonate>=1?150+((P.skills.detonate||1)-1)*15:90,spd:8,det:P.skills.detonate>=1};playSample('shield_activate',.8,_r(1,.08));_startShieldLoop()}else P.s='idle'}}
@@ -40991,7 +40991,7 @@ const _SK_MUL={
   hellRay:{b:5,g:4.0},         // 6t/s → Lv20 DPS=258
   burstLoop:{b:5,g:4.0},       // 차징형
   // ── 기본공격 ──
-  kiSlash:{b:4.0,g:3.36},      // 3단콤보×7, ~2t/s → Lv20 DPS=502 (2026-07-30 2배 상향: 리치 짧고 공속 느린 근접 리스크 보상)
+  kiSlash:{b:12.0,g:10.08},    // 기본공격 3배 (2026-09-10): 7배 검기, Lv1=84×/타, Lv20=754.32×/타
   // ── 이동콤보 ──
   chargeBoost:{b:8,g:6.4},     // 기동충돌. ×3(거리배율) → Lv20=207
   chainAssault:{b:3,g:2.4},    // 기동불꽃
@@ -41196,10 +41196,10 @@ function _skSpecificDetails(sk,slv){
   if(id==='kiSlash'){
     const _ksDist=250+(lv-1)*15;
     return [
-      [_L('1타 배율','1-Hit Mult'),'×1.2','#88cc88'],
-      [_L('2타 배율','2-Hit Mult'),'×1.2','#88cc88'],
-      [_L('3타 배율','3-Hit Mult'),'×2.0 (Combo)','#ffcc44'],
-      [_L('레벨당 뎀','Per Lv DMG'),'+100% per Lv','#88aaff'],
+      [_L('1타 배율','1-Hit Mult'),'×'+(7*(_SK_MUL.kiSlash.b+(lv-1)*_SK_MUL.kiSlash.g*.5)).toFixed(2),'#88cc88'],
+      [_L('2타 배율','2-Hit Mult'),'×'+(7*(_SK_MUL.kiSlash.b+(lv-1)*_SK_MUL.kiSlash.g*.5)).toFixed(2),'#88cc88'],
+      [_L('3타 배율','3-Hit Mult'),'×'+(7*(_SK_MUL.kiSlash.b+(lv-1)*_SK_MUL.kiSlash.g*.5)).toFixed(2),'#ffcc44'],
+      [_L('레벨당 뎀','Per Lv DMG'),'+'+(7*_SK_MUL.kiSlash.g*.5).toFixed(2)+'× / Lv','#88aaff'],
       [_L('검기 거리','Crescent Range'),_ksDist+'px','#ddaa66'],
       [_L('레벨당 거리','Lv Range Bonus'),'+15px','#88aaff'],
     ];

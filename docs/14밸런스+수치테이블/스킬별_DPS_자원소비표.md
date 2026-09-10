@@ -72,7 +72,7 @@ DPS_BAL = { bow: 0.77, magic: 0.475, beam: 0.0080 }
 
 | ID | 이름 | 자원 | 비용 (Lv1→Lv10) | 쿨다운 | 데미지 공식 | DPS 비고 |
 |---|---|---|---|---|---|---|
-| kiSlash | 기검참 | ST | 10+(Lv-1)×2 = **10→48** | 없음 | meleeRef × **7.0(균등)** × statStr × pAtkMul × **_skMul(b:2.0,g:1.68)** | **Lv1: 타당 14×. Lv10: 타당=~54×. Lv20: 타당=~126× (7/7/7 균등, g 2배 상향 2026-05-19)** |
+| kiSlash | 기검참 | ST | 10+(Lv-1)×2 = **10→48** | 없음 | meleeRef×7×statStr×pAtkMul×_skMul(b:12,g:10.08) | Lv1=84×/타, Lv10=401.52×/타, Lv20=754.32×/타. 공속·비용 유지, 기존 코드 대비3배 |
 | whirlwind | 회전참 | ST(틱) | **30+(Lv-1)×5 ST/초** (Lv1=30, Lv10=75, Lv20=125) | 없음 (홀드) | meleeRef × statStr × pAtkMul × _skMul × _fuseMul | 360도 광역, Lv당 범위+5 뎀+5% |
 | giantSlam | 지옥강타 1 | ST + 악의20 | 250×DPS(+10%) (Lv1=250, Lv10=475) | max(60, 600-(Lv-1)×12)f = **10초→8초** | meleeRef × statStr × pAtkMul × **_skMul(b:16,g:12.8) × 4** | **Lv1=64×, Lv20=552×** (2026-05-29 밸런스 평균화). 보스: maxPoise×25% 고정 |
 | giantSlam2 | 지옥강타 2 | ST + 악의20 | giantSlam과 동일 | 동일 | 동일 | infernoSlam 합체용 복제 |
@@ -104,7 +104,7 @@ DPS_BAL = { bow: 0.77, magic: 0.475, beam: 0.0080 }
 | ~~bladeShot~~ | ~~붉은꽃~~ | — | — | — | — | **삭제됨 (2026-04-10 석궁개편)** |
 | needleShot | 만화방창 II | ST | 8 고정 | **90f (1.5초)** | DEX × bowRef × pBowMul × **_skMul('needleShot')** (b:4, g:3.2) | 1.3hit/s → DPS 5.2(Lv1)→45(Lv20). 2발+5렙당1발 (2026-05-29 밸런스 평균화) |
 | ~~blastShot~~ | ~~폭산탄~~ | — | — | — | — | **삭제됨 (2026-04-10 석궁개편)** |
-| 석궁 기본 (fireBow) | 악의 1/발 | — | 없음 | bowRef × pBowMul × **10** | **단일뎀 ×10 (관통 0)** — 2026-04-10 단일타겟 극단 강화 |
+| 석궁 기본 (fireBow) | 악의1/발 | — | 없음 | (floor(bowRef×pBowMul×10)+_bowBon)×3 | 단일탄·관통0, 기존 데미지3배 |
 | shieldThrow | 칼등날개 | ST | 0 (E키 칼등에서 이미 차감) | **300f (5초)** | STR 스케일 | 합체 전용, 제자리 처내기+충격파, Lv당 뎀+12%, **넉백 1.5** |
 | ghostXbowTurret | 공성쇠뇌 | ST | 설치 100 고정, 철거 무료 | 설치 20초(1200f), 철거 무관 | DEX × (뎀+50%, 공속+50%, 사거리+50%) | Lv500 해금, 터렛이 설치 전 세팅된 석궁 스킬(bladeShot/fanShot 등)을 사용하여 발사 |
 
