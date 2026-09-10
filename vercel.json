@@ -1,4 +1,8 @@
 {
+  "framework": null,
+  "buildCommand": "node tools/build-web.mjs",
+  "installCommand": "echo Static web build uses Node built-ins only",
+  "outputDirectory": "web-dist",
   "rewrites": [
     { "source": "/(.*)", "destination": "/$1" }
   ],

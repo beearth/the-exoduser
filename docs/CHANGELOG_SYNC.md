@@ -1,3 +1,13 @@
+## 2026-09-10 웹 재배포 ENOSPC 대응
+
+| 항목 | 변경 / 검증 |
+|---|---|
+| 요청 | 렌더러 비교 커밋 fc623f6을 production 재배포. main 푸시 완료 |
+| 첫 실패 | Vercel 루트 정적 빌드 출력9310MB·Git pack7280MB·node_modules651MB로 ENOSPC. 게임 코드 오류와 구분 |
+| 보정 | Node 내장 모듈로 NW 런타임 목록만 web-dist에 스테이징, 같은 볼륨 hard link. Vercel outputDirectory 지정·불필요 의존성 설치 생략. 제작 영상/백업/도구 제외, 실제 BGM·동적 이미지 유지 |
+| 검증 | 추적 에셋5566개·약5.40GB 스테이징, 배포 커밋의 기존 직접 참조84개 누락0, 패키징 테스트2 PASS |
+| 상태 | [배포 기록](13출시·마케팅/WEB_RENDERER_REDEPLOY_20260910.md). Mac 실기 세로 띠·이동·전투·FPS 검증은 별도 PENDING |
+
 ## 2026-09-10 대검전사 — 가족 연결1초 단축·지옥 끌림 v21
 
 | 항목 | 결과 |
