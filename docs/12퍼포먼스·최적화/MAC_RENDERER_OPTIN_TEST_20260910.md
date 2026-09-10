@@ -1,3 +1,5 @@
+> **후속 로컬 변경:** 사용자 20FPS 재제보와 M5 Pro 실측에 따라 Mac의 쿼리 미지정 진입은 WebGPU 우선으로 수정했다. 명시적 webgpu=0은 계속 WebGL2를 강제한다. 아래는 이전 선택 비교의 이력이다. [현재 정책·검증](MAC_DEFAULT_WEBGPU_FPS_20260910.md).
+
 # Mac 금색 세로 띠 — 렌더러 선택 비교 테스트
 
 > **실제 서비스 정정:** 사용자 주소는 **the-exoduser.vercel.app**. 아래 hell-smoky 검증은 다른 프로젝트의 결과이며 사용자 Mac이 해당 수정본을 실행했다는 증거가 아니다. [정정 기록](../13출시·마케팅/PRODUCTION_TARGET_CORRECTION_20260910.md).
