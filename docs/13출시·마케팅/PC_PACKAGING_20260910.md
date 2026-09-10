@@ -13,6 +13,7 @@
 | 스테이징 | `G:\exoduser\dist\` | `build-nwjs.mjs` |
 | 출력 | `G:\exoduser\out\EXODUSER-win64\` | `build-nwjs.mjs` |
 | 미디어 코덱 | `vendor/nwjs-ffmpeg/0.111.2/ffmpeg.dll`을 출력에 복사 | `build-nwjs.mjs` |
+| 레벨업 연출 | `level-up-vfx.js`를 FILES에 포함 | `game.html`, `build-nwjs.mjs` |
 
 구형 패키징 경로·전용 설정·프록시 안내는 작업 지침, 기획 문서 및 과거 문서 사본에서 제거했다. 게임 코드와 빌드 결과물은 이번 문서 정리에서 변경하지 않았다.
 GPU Compute 예제는 향후 설계이며 현재 패키지에서 구현·실측된 성능으로 해석하지 않는다.

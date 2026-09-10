@@ -24,7 +24,7 @@ const FILES = [
   'index.html', 'game.html', 'credits.html',
   'stat-panel-ui.js', 'stat-panel-ui.css',
   'localization-runtime.js', 'localization-data.js', 'localization.css',
-  'lobby-stage-info.js', 'character-story-player.js',
+  'lobby-stage-info.js', 'character-story-player.js', 'level-up-vfx.js',
   'world-intro-player.js', 'world-intro-subtitles-data.js', 'world-intro-subtitles.js',
   'cin-enter-engraved.css', 'cin-logo-art.js',
   'GLTFLoader.js', 'three.min.js',

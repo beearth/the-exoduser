@@ -1,0 +1,15 @@
+{
+  "status": "PASS",
+  "paused": {
+    "age": 0,
+    "active": true
+  },
+  "live_expiry": {
+    "age": 1.4666666666666663,
+    "active": false,
+    "hp": 528
+  },
+  "page_errors": [],
+  "sound": "existing SFX.levelup, unchanged",
+  "real_save_writes": false
+}

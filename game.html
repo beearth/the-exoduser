@@ -78,6 +78,7 @@ window._supabaseReady=new Promise(resolve=>{
 <script src="lang_ms.js"></script>
 <script src="localization-runtime.js"></script>
 <script src="localization-data.js?v=20260910-nemesia-dialogue"></script>
+<script src="level-up-vfx.js?v=20260910-gold-v1"></script>
 <style>
 @import url('https://fonts.googleapis.com/css2?family=Black+Han+Sans&family=Noto+Sans+KR:wght@400;500;700;900&display=swap');
 @import url('https://fonts.googleapis.com/css2?family=Cinzel:wght@700;900&family=Cinzel+Decorative:wght@700;900&family=Grenze+Gotisch:wght@700;900&family=Pirata+One&family=Nanum+Myeongjo:wght@400;700;800&family=Gowun+Batang:wght@400;700&family=Noto+Serif+KR:wght@400;600;700;900&display=swap');
@@ -14654,6 +14655,7 @@ let G={on:false,paused:false,stage:0,kills:0,mats:0,cam:{x:0,y:0},shake:0,parts:
   combo:0,comboTimer:0,comboMax:0,stageTime:0,
   _zones:null,_curZone:0,_zoneState:{},_portals:null}; // 존 분할 시스템
 let P=null,ens=[],projs=[],pProjs=[],worldItems=[];// worldItems = items on ground, pProjs = player arrows
+const _levelUpVfx=window.LevelUpVfx.create();
 function _wiPush(wi){worldItems.push(wi);if(wi.type==='item'&&wi.item&&!wi._dropPreview)playItemDropSfx(wi.item.rarity||0,wi.x,wi.y);while(worldItems.length>20){let mi=0,mr=Infinity;for(let i=0;i<worldItems.length;i++){const r=worldItems[i].type==='item'?(worldItems[i].item?worldItems[i].item.rarity||0:0):-1;if(r<mr){mr=r;mi=i}}worldItems[mi]=worldItems[worldItems.length-1];worldItems.length--}}
 function _spawnWorldDropPreview(){
   if(!_DROP_PREVIEW||!P)return;
@@ -31406,6 +31408,7 @@ function update(){
   if(!_hsActive)poolUpdate(sp);
   updateCrescents(_dtSp);
   _updateBloodSplats(_dtSp);
+  _levelUpVfx.update(_dtSp/60,P,G.stage);
   if(_cresCd>0)_cresCd-=_dtSp;
   if(_cresComboT>0){_cresComboT-=_dtSp;if(_cresComboT<=0)_cresStep=0;}
   if(P._execCd>0)P._execCd-=_dtSp; // 처형 쿨다운
@@ -39681,8 +39684,7 @@ function addExp(v,trans){
     let lvTxt=(_isTrans?'⚡ T.':'LV. ')+P.lv+(lvd>1?' (+'+lvd+')':'')+' SP +'+(lvd*3);
     if(apGain>0)lvTxt+=' AP +'+apGain;
     addTxt(P.x,P.y-40,lvTxt,_isTrans?'#ff66ff':'#ffcc00',60);
-    const _pCol=_isTrans?'#ff44ff':'#ffaa00';
-    for(let i=0;i<12;i++){const a=Math.PI*2*i/12;poolPart(P.x,P.y,Math.cos(a)*5,Math.sin(a)*5,_pCol,4,20)}
+    _levelUpVfx.trigger(P,G.stage,lvd);
     if(P.lv>=300&&!P.skills.blueShot){P.skills.blueShot=1;showPH(_T('💎 푸른비 해금!'),'#00e5ff');addTxt(P.x,P.y-60,_T('💎 푸른비 해금!'),'#00e5ff',80)}
     if(P.lv>=700&&!P.skills.burstLoop){P.skills.burstLoop=1;showPH(_T('💫 버스트루프 해금!'),'#dd88ff');addTxt(P.x,P.y-80,_T('💫 버스트루프 해금!'),'#dd88ff',80)}
     if(P.lv>=700&&!P.skills.voidScarecrow){P.skills.voidScarecrow=1;showPH(_T('👻 유령 허수아비 해금!'),'#aa66dd');addTxt(P.x,P.y-100,_T('👻 유령 허수아비 해금!'),'#aa66dd',80)}
@@ -49907,7 +49909,9 @@ function draw(){
   if(_DCP.on){_DCP._mark('projectiles');_DCP._setSource(_DCP_SRC.PARTICLE_VFX)} // [DCPROF] 투사체 구간 종료
   if(_fc2d){var _dProj=_PERF_PROF._delta(_snapProj);_PERF_PROF._proj_di=_dProj.di;_PERF_PROF._proj_st=_dProj.st;_PERF_PROF._proj_fr=_dProj.fr;_PERF_PROF._proj_ga=_dProj.ga;var _snapPart=_PERF_PROF._snap()}
   const _tDP0=performance.now();
+  _levelUpVfx.draw(X,P,G.stage,false,IS_MOBILE||OPT.quality==='low');
   drawP();
+  _levelUpVfx.draw(X,P,G.stage,true,IS_MOBILE||OPT.quality==='low');
   const _tDP1=performance.now();
   // G.parts 레거시 렌더 제거됨 — poolRender()로 통합
   // 오브젝트 풀 파티클 렌더 (additive로 밝은 폭발 대비)
