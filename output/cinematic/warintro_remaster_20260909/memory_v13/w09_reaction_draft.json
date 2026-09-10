@@ -1,0 +1,11 @@
+{
+  "tool": "built-in image_gen",
+  "generated_file": "exec-ec004554-b63c-471d-b245-c785c974b3a8.png",
+  "saved_file": "w09_reaction_draft.png",
+  "prompt": "w09_reaction_draft_prompt.txt",
+  "references": ["../dialogue_audit_v11/w08_witness_start.png", "../realism_v7/w09_start.png"],
+  "status": "DRAFT_ONLY_DEFERRED_WHILE_APPLYING_USER_REMEMBER_EDIT",
+  "video_requests": 0,
+  "included_in_movie": false,
+  "review": "실제 인물 두 명의 대면 구도 원화 확인. 연출·동작 완성본이 아니며 영상화하지 않았다."
+}

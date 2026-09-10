@@ -1,0 +1,32 @@
+{
+  "frame_count": 210,
+  "detected_local_cut_frames": [
+    30,
+    39,
+    48,
+    57
+  ],
+  "global_cut_frames": [
+    3630,
+    3639,
+    3648,
+    3657
+  ],
+  "frames_per_memory": 9,
+  "total_memory_frames": 27,
+  "narration_identical_to_v11": true,
+  "excerpt": {
+    "duration": 6,
+    "frames": 360,
+    "source_range": [
+      59.5,
+      65.5
+    ],
+    "sha256": "a9712b60fb092fe19f3a7a483df7d8042224c78962a66641b9f65ed748243b33",
+    "decode": "PASS",
+    "audio": "aac"
+  },
+  "visual_review": "12 final samples: no rejected shadow at46.8; wife60.53, parents60.68, wagon60.83, warrior60.97. Warrior remains at63.6/65.2 instead of long parent insert. Final vocative retained. Full realtime review not performed.",
+  "realtime_review": false,
+  "listening_review": false
+}

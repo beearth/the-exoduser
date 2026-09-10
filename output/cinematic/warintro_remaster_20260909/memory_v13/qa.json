@@ -1,0 +1,44 @@
+{
+  "receipts": [
+    {
+      "file": "final.mp4",
+      "duration": 103.5,
+      "frames": 6210,
+      "bytes": 86889270,
+      "sha256": "b67743c1af95cbe798f9317a2e7d2d97e1535f40d80a4594bed1c9eae1ef91ae",
+      "audio_codec": "aac",
+      "audio_channels": 2,
+      "decode": "PASS"
+    },
+    {
+      "file": "ending.mp4",
+      "duration": 14.0,
+      "frames": 840,
+      "bytes": 11819620,
+      "sha256": "0be4fa5cdb73a06b558a59b02e5f78fdc63ec7fd7c85ab0d503c5270096dea6d",
+      "audio_codec": "aac",
+      "audio_channels": 2,
+      "decode": "PASS"
+    }
+  ],
+  "audio_correlation": 0.9999747335230069,
+  "digital_gap_rms": 0.0,
+  "contact_times": [
+    46.8,
+    60.4,
+    60.53,
+    60.68,
+    60.83,
+    60.97,
+    61.2,
+    63.4,
+    63.6,
+    65.2,
+    66,
+    100.5
+  ],
+  "visual_review": "12 final samples: no rejected shadow at46.8; wife60.53, parents60.68, wagon60.83, warrior60.97. Warrior remains at63.6/65.2 instead of long parent insert. Final vocative retained. Full realtime review not performed.",
+  "realtime_review": false,
+  "listening_review": false,
+  "status": "REMEMBER_EDIT_FOR_REVIEW; W09/W10 and other narrative audit issues remain"
+}
