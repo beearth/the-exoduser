@@ -49,7 +49,6 @@ XAI_API_KEY=xai-xxx
 **용도**: 몬스터/보스 스프라이트 자동 생성 (8방향, 걷기 애니메이션)
 
 **연결 방식**:
-- Electron: `Electron/main.js`에서 `/api/pixellab/proxy` 프록시 엔드포인트
 - CLI: `tools/pixellab_request.mjs` 스크립트
 - MCP: Claude Code에서 블렌더 MCP 또는 직접 호출
 
@@ -247,11 +246,6 @@ const sb = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
 | POST | `/api/mats` | 악의 공유 풀 업데이트 `{mats}` |
 | POST | `/api/gpt-image` | OpenAI 이미지 생성 프록시 |
 
-**Electron 추가 엔드포인트**:
-| 메서드 | 엔드포인트 | 기능 |
-|--------|-----------|------|
-| POST | `/api/pixellab/proxy` | PixelLab API 프록시 |
-| GET | `/api/pixellab/status` | PixelLab 설정 확인 |
 
 ---
 
@@ -260,7 +254,7 @@ const sb = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
 ### 몬스터 스프라이트 (PixelLab)
 ```
 1. docs/10ai에셋프롬프트모음/pixellab_monster_prompts.md에서 프롬프트 선택
-2. tools/pixellab_request.mjs 또는 Electron 프록시로 호출
+2. tools/pixellab_request.mjs로 호출
 3. img/all_assets/pixellab_all/에 저장
 4. tools/sync_ch1_monster_atlas_sources.mjs로 아틀라스 통합
 ```

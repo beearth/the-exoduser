@@ -5,7 +5,7 @@
 ### 변경 요약
 - 공용 적 사망 처리 루틴에 `큰 몬스터 전용 사망 VFX`를 추가.
 - 대상은 `보스` 또는 `큰 몬스터(반지름/체력 기준)`이며, 기존 `deathFX`/`시체`/`gib` 처리와 병행됨.
-- 적용 파일: `game.html`, `game_current.html`, `Electron/game.html` (동일 로직).
+- 적용 파일: `game.html`, `game_current.html` (동일 로직).
 
 ### 수치/공식 테이블
 

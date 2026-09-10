@@ -84,7 +84,7 @@
 
 | 라인 | 코드 | 설명 |
 |------|------|------|
-| 4780 | `const _useWebGPU=(!IS_ELECTRON)&&...get('webgpu')==='1'` | **WebGPU는 ?webgpu=1 파라미터 필요 — 기본 비활성** |
+| 4780 | 브라우저·NW.js의 URL 선택 조건 | **WebGPU는 ?webgpu=1 파라미터 필요 — 기본 비활성** |
 | 4781-4786 | `if(_useWebGPU)...else ok=false` | **Mac에서도 기본 WebGL2 경로** |
 | 4313 | `navigator.gpu.getPreferredCanvasFormat()` | Mac에서 `bgra8unorm` 반환 — 그러나 WebGPU 비활성이므로 도달 안 함 |
 | 4298 | `device.createTexture({format:'rgba8unorm'})` | WebGPU 텍스처는 rgba8unorm 고정 |

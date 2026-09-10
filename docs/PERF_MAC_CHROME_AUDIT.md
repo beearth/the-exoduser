@@ -1,4 +1,4 @@
-> **2026-09-10 사용자 지정 비교 테스트:** Mac 자동 WebGPU 선택을 제거했다. 비 Electron에서 URL `webgpu=1`일 때만 WebGPU 시도, 기본/`webgpu=0`은 WebGL2 우선이다. 과거 Mac 측정은 이력으로 보존하며 현재 세로 띠 해결 근거로 쓰지 않는다. **Mac Chrome/Safari 실기 PENDING.** [현재 계약](12퍼포먼스·최적화/MAC_RENDERER_OPTIN_TEST_20260910.md).
+> **2026-09-10 사용자 지정 비교 테스트:** Mac 자동 WebGPU 선택을 제거했다. 브라우저·NW.js에서 URL `webgpu=1`일 때만 WebGPU 시도, 기본/`webgpu=0`은 WebGL2 우선이다. 과거 Mac 측정은 이력으로 보존하며 현재 세로 띠 해결 근거로 쓰지 않는다. **Mac Chrome/Safari 실기 PENDING.** [현재 계약](12퍼포먼스·최적화/MAC_RENDERER_OPTIN_TEST_20260910.md).
 
 # Mac Chrome 프레임 드롭 진단 리포트
 

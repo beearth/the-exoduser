@@ -1236,7 +1236,7 @@ glowing accents, atmospheric darkness, melancholic mood"
     ↓
 [Phase B] itch.io 무료 데모 출시
     ↓
-[Phase C] Steam Electron 래핑 얼리억세스
+[Phase C] Steam NW.js 패키징 얼리억세스
     ↓
 [Phase D] Unity 이식 정식 출시 (2~3개월)
 ```
@@ -1385,7 +1385,7 @@ Week 3: 스프라이트 에셋 + 캐릭터
 
 Week 4: 출시 준비
   Day 16-17: QA 매트릭스 8조합 검증
-  Day 18-19: itch.io 빌드 + Steam Electron 테스트
+  Day 18-19: itch.io 빌드 + Steam NW.js 테스트
   Day 20:    itch.io 무료 데모 배포
 ```
 

@@ -1,4 +1,4 @@
-> **2026-09-10 사용자 지정 비교 테스트:** Mac 자동 WebGPU 선택을 제거했다. 비 Electron에서 URL `webgpu=1`일 때만 WebGPU 시도, 기본/`webgpu=0`은 WebGL2 우선이다. 과거 Mac 측정은 이력으로 보존하며 현재 세로 띠 해결 근거로 쓰지 않는다. **Mac Chrome/Safari 실기 PENDING.** [현재 계약](12퍼포먼스·최적화/MAC_RENDERER_OPTIN_TEST_20260910.md).
+> **2026-09-10 사용자 지정 비교 테스트:** Mac 자동 WebGPU 선택을 제거했다. 브라우저·NW.js에서 URL `webgpu=1`일 때만 WebGPU 시도, 기본/`webgpu=0`은 WebGL2 우선이다. 과거 Mac 측정은 이력으로 보존하며 현재 세로 띠 해결 근거로 쓰지 않는다. **Mac Chrome/Safari 실기 PENDING.** [현재 계약](12퍼포먼스·최적화/MAC_RENDERER_OPTIN_TEST_20260910.md).
 
 # MAC_SWIZZLE_AUDIT — Mac Chrome Skia Graphite BGRA8 Swizzle 진단
 
@@ -86,7 +86,7 @@
 
 | 라인 | 코드 | 설명 |
 |------|------|------|
-| 4780 | `const _useWebGPU=(!IS_ELECTRON)&&...get('webgpu')==='1'` | **WebGPU는 ?webgpu=1 파라미터 필요 — 기본 비활성** |
+| 4780 | 브라우저·NW.js의 URL 선택 조건 | **WebGPU는 ?webgpu=1 파라미터 필요 — 기본 비활성** |
 | 4781-4786 | `if(_useWebGPU)...else ok=false` | **Mac에서도 기본 WebGL2 경로** |
 | 4313 | `navigator.gpu.getPreferredCanvasFormat()` | Mac에서 `bgra8unorm` 반환 — 그러나 WebGPU 비활성이므로 도달 안 함 |
 | 4298 | `device.createTexture({format:'rgba8unorm'})` | WebGPU 텍스처는 rgba8unorm 고정 |

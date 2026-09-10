@@ -9,7 +9,7 @@
 ## 1. 절대 규칙 및 실행 환경
 
 1. `AGENTS.md`가 최우선이다. 코드 한 줄을 바꾸면 반드시 `rg/grep`으로 관련 `docs/`를 전수 검색하고, 코드·문서의 이름/수치/구현 상태를 동기화한다.
-2. 메인 게임은 `game.html` 단일 파일이다. 서버는 `server.cjs`, 로비는 `index.html`, 데스크톱 진입점은 `Electron/main.js`다.
+2. 메인 게임은 `game.html` 단일 파일이다. 서버는 `server.cjs`, 로비는 `index.html`, 데스크톱 진입점은 `node-main.js`다.
 3. 개발 서버는 반드시 다음 명령을 쓴다. `python http.server`는 금지다.
 
    ```powershell

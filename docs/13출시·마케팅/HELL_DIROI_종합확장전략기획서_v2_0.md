@@ -42,7 +42,7 @@ DIROI는 30개국 번역 자산 + PC/모바일 듀얼 BM(Vampire Survivors 모�
 1. HELL EXODUSER 메인 IP, DIROI 동반작 포지션. 두 게임 별도 출시 일정 운영.
 2. HELL Steam 얼리액세스: $14.99 (EA) → $19.99 (1.0). 다크판타지 ARPG 표준 가격.
 3. DIROI Steam 얼리액세스: $7.99 (EA) → $9.99 (1.0). 캐주얼 가격.
-4. 두 게임 모두 NW.js 통일 (Electron 폐기). 빌드 도구 단일화.
+4. 두 게임 모두 NW.js 통일. 빌드 도구 단일화.
 5. 멀티스토어: Steam (메인) + 스토브 (한국 인디) + Epic + GOG + Itch.io.
 6. 가챠 · 시즌패스 · 시간 게이트 · P2W 일절 도입하지 않음.
 7. HELL은 PC/콘솔 중심 (모바일 우선순위 낮음, 출시 1년 후 검토). DIROI는 PC/모바일 동시.
@@ -421,7 +421,7 @@ Supabase 백엔드 3차 (모든 플랫폼 통합 리더보드, 출시 후 검토
 
 # 8. 기술 아키텍처 - NW.js 통일
 ## 8.1 빌드 구조
-HELL과 DIROI 모두 NW.js로 통일. Electron 빌드는 보관 후 폐기.
+HELL과 DIROI 모두 NW.js로 통일.
 게임
 현재 빌드
 정식 빌드 (예정)
@@ -431,8 +431,8 @@ G:\hell-build\ (NW.js, 로그인 없음)
 유지 (BIC/Next Fest용)
 —
 HELL 정식
-G:\hell\Electron\ (폐기)
-NW.js 신규 구축
+G:\exoduser\out\EXODUSER-win64\
+NW.js 0.111.2 / Windows x64
 Supabase
 DIROI
 G:\pentafall\out\DIROI-win64\ (NW.js, OAuth 완성)
@@ -1020,7 +1020,7 @@ Self-Imposed Rules
 10. AI 생성 자산 표기 의무 위반 - Steam/플랫폼 정책 준수
 ## 13.3 백업 계획
 git AutoGit 시간별 커밋 (현재 운영 중)
-Electron 폴더 보관 (NW.js 이주 실패 시 rollback)
+NW.js 패키지 갱신 전 기존 출력물 백업
 Steam 빌드와 별도로 itch.io DRM-free 빌드 유지 (Steam 차단 시 대안)
 Supabase/Firebase 데이터 주 1회 백업
 두 게임 동시 개발 - 한 작품 일정 지연 시 다른 작품으로 마케팅 유지
@@ -1141,13 +1141,13 @@ G:\hell-build\
 활성
 BIC/Next Fest 데모
 HELL 정식 (NW.js)
-TBD (신규 구축 예정)
-계획
+G:\exoduser\out\EXODUSER-win64\
+구현
 Steam 출시용
-HELL Electron (구)
-G:\hell\Electron\
-폐기 예정
-백업 후 보관
+NW.js 빌드 설정
+G:\exoduser\build-nwjs.mjs
+사용 중
+Windows x64 패키징
 DIROI (NW.js)
 G:\pentafall\out\DIROI-win64\
 활성
@@ -1169,7 +1169,7 @@ Google OAuth Client ID (DIROI): 481724501638-s0ttgrhhpa9vlilm8fm0o58jllpkirq7
 BIC 2026 심사 결과 확인 (5/16 이후)
 Steam KYC 회신 모니터링 (Thelma)
 Steam Next Fest 6월 vs 10월 결정
-HELL Electron 폴더 백업 (G:\hell\Electron-archived-20260515\)
+HELL NW.js 패키지 갱신 전 기존 출력물 백업
 Steam Direct 추가 결제 검토 (DIROI용 $100)
 KOCCA 2026 공고 정독, 일반형 PC와 데브캠프 둘 다 신청 준비 (3월 마감 대비)
 광주 GICON 홈페이지 인디스타즈 모집 공고 확인

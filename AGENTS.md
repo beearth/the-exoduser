@@ -19,8 +19,9 @@ cd G:\exoduser
 |------|------|
 | `game.html` | 현재 게임 코드 (메인, 단일 파일) |
 | `index.html` | 로비/시네마틱/캐릭터 선택 |
-| `Electron/main.js` | Electron 메인 프로세스 |
-| `Electron/preload.js` | Electron preload (IPC 브릿지) |
+| `package.json` | NW.js 실행 설정 및 빌드 명령 |
+| `build-nwjs.mjs` | NW.js 0.111.2 Windows x64 패키징 |
+| `node-main.js` | NW.js 내장 서버 (포트 3333) |
 
 ### 기획 문서 (docs/ 폴더 30개)
 

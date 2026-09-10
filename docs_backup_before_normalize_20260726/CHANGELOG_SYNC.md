@@ -12655,7 +12655,6 @@ mpR = 0.05 + s.int×0.005                                        [NO P.lv×0.001
 
 
 ## 2026-04-06 00:00 (auto)
-- Electron/game.html
 - docs/16?�문??i18n)/?�문??진행?�황.md
 - docs/2_3 ?�진+?�링+방패?�스??2_3 ?�진+?�링+방패?�스??md
 - docs/8.0몬스?�디?�인/몬스??총�?�?md
@@ -12664,14 +12663,12 @@ mpR = 0.05 + s.int×0.005                                        [NO P.lv×0.001
 
 
 ## 2026-04-06 00:30 (auto)
-- Electron/game.html
 - docs/2_3 ?�진+?�링+방패?�스??2_3 ?�진+?�링+방패?�스??md
 - game.html
 - index.html
 
 
 ## 2026-04-06 01:19 (auto)
-- Electron/game.html
 - docs/2_3 ?�진+?�링+방패?�스??2_3 ?�진+?�링+방패?�스??md
 - docs/8.0몬스?�디?�인/몬스??총�?�?md
 - game.html
@@ -12684,13 +12681,11 @@ mpR = 0.05 + s.int×0.005                                        [NO P.lv×0.001
 
 ## 2026-04-06 02:30 (auto)
 - CLAUDE.md
-- Electron/game.html
 - docs/14밸런???�치?�이�?14밸런???�치?�이�?md
 - game.html
 
 
 ## 2026-04-06 13:19 (auto)
-- Electron/game.html
 
 
 ## 2026-04-06 13:30 (auto)
@@ -12698,13 +12693,11 @@ mpR = 0.05 + s.int×0.005                                        [NO P.lv×0.001
 
 
 ## 2026-04-06 14:30 (auto)
-- Electron/game.html
 - docs/14밸런???�치?�이�?14밸런???�치?�이�?md
 - game.html
 
 
 ## 2026-04-06 15:00 (auto)
-- Electron/game.html
 - docs/16?�문??i18n)/?�문??진행?�황.md
 - docs/8.0몬스?�디?�인/몬스??총�?�?md
 - game.html
@@ -12721,7 +12714,6 @@ mpR = 0.05 + s.int×0.005                                        [NO P.lv×0.001
 
 
 ## 2026-04-06 16:19 (auto)
-- Electron/game.html
 - docs/16?�문??i18n)/?�문??진행?�황.md
 - docs/2_3 ?�진+?�링+방패?�스??2_3 ?�진+?�링+방패?�스??md
 - docs/8.0몬스?�디?�인/몬스??공격?�스??md
@@ -13994,7 +13986,6 @@ mpR = 0.05 + s.int×0.005                                        [NO P.lv×0.001
 
 
 ## 2026-04-07 17:30 (auto)
-- Electron/game.html
 - build_boss_stag_atlas.py
 - docs/10ai?�셋?�롬?�트모음/boss_reference_corrupted_knight.png
 - docs/10ai?�셋?�롬?�트모음/monster_reference_nightmare.png
@@ -19590,7 +19581,6 @@ mpR = 0.05 + s.int×0.005                                        [NO P.lv×0.001
 
 
 ## 2026-04-12 05:30 (auto)
-- Electron/game.html
 - game.html
 - game_1630.html
 - game_current.html
@@ -19609,7 +19599,6 @@ mpR = 0.05 + s.int×0.005                                        [NO P.lv×0.001
 
 
 ## 2026-04-12 16:30 (auto)
-- Electron/game.html
 - docs/15 ?�이�??�이?�구�?15 ?�이�??�이?�구�?md
 - docs/2_3 ?�진+?�링+방패?�스??2_3 ?�진+?�링+방패?�스??md
 - docs/8.0몬스?�디?�인/몬스??공격?�스??md
@@ -19797,7 +19786,6 @@ mpR = 0.05 + s.int×0.005                                        [NO P.lv×0.001
 
 
 ## 2026-04-14 04:30 (auto)
-- Electron/main.js
 - docs/14밸런???�치?�이�?14밸런???�치?�이�?md
 - docs/14밸런???�치?�이�??�킬?��?지공식??md
 - docs/3.1 ui hud ?�자??exoduser-ui-phase2 (1).md
@@ -19818,8 +19806,6 @@ mpR = 0.05 + s.int×0.005                                        [NO P.lv×0.001
 
 ## 2026-04-14 09:00 (auto)
 - AutoGit.vbs
-- Electron/icon.ico
-- Electron/main.js
 - docs/13출시·마�???13출시·마�???md
 - docs/8.0몬스?�디?�인/몬스??공격?�스??md
 - docs/9?�ai?�턴?�자??9_?�AI?�턴?�자??md
@@ -19882,14 +19868,12 @@ mpR = 0.05 + s.int×0.005                                        [NO P.lv×0.001
 
 
 ## 2026-04-15 00:30 (auto)
-- Electron/main.js
 - docs/13출시·마�???13출시·마�???md
 - game.html
 - index.html
 
 
 ## 2026-04-15 15:30 (auto)
-- Electron/icon.ico
 - docs/13출시·마�???13출시·마�???md
 - docs/14밸런???�치?�이�?14밸런???�치?�이�?md
 - docs/14밸런???�치?�이�??�시브효과표.md
@@ -22562,7 +22546,6 @@ mpR = 0.05 + s.int×0.005                                        [NO P.lv×0.001
 
 
 ## 2026-05-06 08:30 (auto)
-- Electron/game.html
 - _autosave/game_20260506_081014.html
 - _autosave/game_20260506_081023.html
 - _autosave/game_20260506_081026.html
@@ -22582,7 +22565,6 @@ mpR = 0.05 + s.int×0.005                                        [NO P.lv×0.001
 
 
 ## 2026-05-06 10:30 (auto)
-- Electron/game.html
 - _autosave/game_20260506_101600.html
 - _autosave/game_20260506_101759.html
 - _autosave/game_20260506_101804.html
@@ -23349,17 +23331,12 @@ mpR = 0.05 + s.int×0.005                                        [NO P.lv×0.001
 
 
 ## 2026-05-09 22:30 (auto)
-- Electron/main.js
-- Electron/package.json
 - _autosave/game_20260509_220840.html
 - _autosave/game_20260509_220846.html
 - _autosave/game_20260509_221117.html
 
 
 ## 2026-05-09 23:30 (auto)
-- Electron/main.js
-- Electron/package-lock.json
-- Electron/package.json
 - _autosave/game_20260509_225943.html
 - _autosave/game_20260509_232453.html
 - _autosave/game_before_stage1_codex_boss_20260509_231808.html
@@ -23855,8 +23832,6 @@ mpR = 0.05 + s.int×0.005                                        [NO P.lv×0.001
 
 
 ## 2026-05-13 09:30 (auto)
-- Electron/main.js
-- Electron/preload.js
 - _autosave/game_20260513_091542.html
 - _autosave/game_20260513_092817.html
 - _autosave/game_20260513_092837.html

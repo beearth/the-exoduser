@@ -3,7 +3,7 @@
 작성일: 2026.05.16 | 최종수정: 2026.05.17
 대상 폴더: G:\hell-ea\ (생성 완료 — PHASE 1 완료)
 참조 소스: G:\hell-DEMO\ (데모, 현재 v0.1.0-demo)
-런타임: NW.js (Electron 폐기 완료)
+런타임: NW.js
 OAuth 참조 패턴: G:\pentafall\ (DIROI 완성 빌드)
 전략 문서: docs/13출시·마케팅/HELL_DIROI_종합확장전략기획서_v2_0.md
 

@@ -9,10 +9,9 @@
 | 사용자 제보 | MacBook Chrome·Safari 모두 게임 배경에 굵은 금색 세로 띠 반복. HUD 정상 |
 | 배포본 비교 | 기존 hell-smoky.vercel.app/game.html 다운로드에서 Mac 자동 OR 조건 확인. 재배포 후 공개 game/index SHA256이 bb67f07 고정 배포물과 정확히 일치. [배포 기록](../13출시·마케팅/WEB_RENDERER_REDEPLOY_20260910.md) |
 | 확인한 결함 | `URL webgpu=1 OR Mac+gpu존재` 때문에 Mac에서 webgpu=0·파라미터 없음·webgpu=true도 WebGPU 초기화. 이는 선택 조건의 결함이며 세로 띠 원인 확정과 구분 |
-| 단일 실험 | Mac 자동 선택 OR 조건 제거. `const _useWebGPU=(!IS_ELECTRON)&&new URLSearchParams(location.search).get('webgpu')==='1';` |
+| 단일 실험 | Mac 자동 선택 OR 조건 제거. 브라우저·NW.js에서 URL `webgpu=1`일 때만 WebGPU 초기화 시도. |
 | 기본·webgpu=0 | WebGL2 먼저 초기화, WebGL2 불가 시 기존 Canvas2D 폴백. WebGL2 시작 여부는 실제 컨텍스트·로그로 확인 |
-| webgpu=1 | 비 Electron에서만 WebGPU 시도. 미지원·초기화 실패 시 기존 WebGL2 → Canvas2D 폴백. 명시적 선택도 실제 성공을 보장하지 않음 |
-| Electron | 기존 WebGPU 제외 조건 유지 |
+| webgpu=1 | 브라우저·NW.js에서만 WebGPU 시도. 미지원·초기화 실패 시 기존 WebGL2 → Canvas2D 폴백. 명시적 선택도 실제 성공을 보장하지 않음 |
 | 시작 로그 | 기존 실제 백엔드·어댑터 로그에 `policy=url-opt-in-20260910` 및 URL `webgpu` 값 추가. 파라미터 없음은 null, 0이면 0. `[GPU] WebGL2 ready`와 `[GPU] WebGL2 \| … \| policy=url-opt-in-20260910` 확인. skipped 로그만으로 WebGL2 성공 판정 금지 |
 | 변경 범위 | `_bootRenderer()` 선택식·주석·요약 로그. DPR·해상도·텍스처 업로드·셰이더·블룸·금색 색상·맵·전투 수치 변경 없음 |
 | 안개 제어 | 기존 `_fogGLInit` 진입의 Mac+navigator.gpu 차단은 그대로다. 실제 백엔드 플래그와 무관하게 해당 조건이면 양쪽 비교에서 차단됨. 이 별도 조건을 함께 수정하면 실험 변수가 늘어나므로 유지 |
@@ -25,7 +24,7 @@
 | 검증 | 결과 |
 |---|---|
 | 변경 전 재현 | `test/rendererOptIn.test.js`: Mac 기본·0·true 3개가 예상 WebGL2 대신 WebGPU로 실패. 초기 테스트의 ESM import 문제를 고친 뒤 선택 결함 실패를 확인 |
-| 변경 후 | 선택·실패 폴백·Electron 유지·실제 백엔드 요약 11개 PASS |
+| 변경 후 | 렌더러 선택·실패 폴백·실제 백엔드 요약을 포함한 기존 검증 11개 PASS |
 | 인접 회귀 | lightingTextureFreshness 6개 + textureWarmupActualGpu 3개 PASS. 합계20 PASS |
 | 실제 Windows Chrome | `python tools/verify_renderer_optin.py`: 기본·webgpu=0 두 경우 `_useGL=true`, `_useGPU=false`, GL.VERSION=`WebGL 2.0 (OpenGL ES 3.0 Chromium)`, 수정 정책 로그 확인, pageerror0 |
 | 실제 어댑터 | Windows/HeadlessChrome153, ANGLE AMD Radeon RX9070XT D3D11. navigator.gpu 존재. Mac 장치·Metal·Safari 증거가 아님 |

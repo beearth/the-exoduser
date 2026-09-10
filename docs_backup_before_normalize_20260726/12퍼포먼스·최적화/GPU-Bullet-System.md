@@ -10,7 +10,7 @@
 | **Instanced Rendering** | drawCall 1번, 10만발도 동일 비용 | 설계 완료 |
 | **MRT (Multiple Render Targets)** | 색상+발광+속도 한 번에 렌더, bloom 패스 분리 불필요 | 미구현 |
 
-### Tier 2: WebGPU Compute (Electron)
+### Tier 2: WebGPU Compute (향후 설계)
 
 | 기술 | 효과 |
 |------|------|
@@ -36,7 +36,7 @@
 
 ```
 지금      → Transform Feedback + Instanced (WebGL2, 브라우저 1만발)
-Electron  → WebGPU Compute (GPU 완전 장악, 10만발)
+향후 설계 → WebGPU Compute (성능 목표이며 현재 배포 동작 아님)
 극한      → WASM + WebGPU (RX 9070 XT 완전히 쓸 수 있음)
 ```
 
@@ -48,7 +48,7 @@ Electron  → WebGPU Compute (GPU 완전 장악, 10만발)
 
 ```
 게임 시작
-  ├─ IS_ELECTRON && GPU → WebGPU Compute 풀가동
+  ├─ 향후 설계: WebGPU 초기화 성공 → Compute 경로 구현 검토
   │   ├─ Compute Shader: 탄 10만개 워크그룹 병렬 처리
   │   ├─ Storage Buffer: GPU 메모리 상주, CPU 전송 0
   │   ├─ 충돌판정: atomicAdd (GPU에서 완결)
@@ -95,7 +95,7 @@ function drawBullets() {
 
 | 환경 | 백엔드 | 탄 수 | CPU 부하 | GPU 부하 | drawCall |
 |------|--------|-------|---------|---------|---------|
-| **Electron** | WebGPU Compute | 10만 | 0ms | ~2ms | 1 (Indirect) |
+| **향후 WebGPU 설계 목표** | WebGPU Compute | 10만 | 0ms | ~2ms | 1 (Indirect) |
 | **Chrome/Edge** | WebGL2 TF | 1만 | 0ms | ~1ms | 1 (Instanced) |
 | **Safari/폴백** | Canvas2D | 1000 | ~3ms | 0 | N/A |
 
@@ -117,7 +117,7 @@ function drawBullets() {
 | 항목 | 값 | 비고 |
 |------|-----|------|
 | 메인 캔버스 | `C` | id="c" |
-| WebGPU context | `GPU` (device), `_gpuCtx` | Electron 우선, `?webgpu=1` |
+| WebGPU context | `GPU` (device), `_gpuCtx` | 브라우저·NW.js에서 명시적 `?webgpu=1`로 초기화 시도 |
 | WebGL2 context | `GL` | WebGPU 실패 시 폴백 |
 | Canvas2D | `X` | 최종 폴백 |
 | 렌더 백엔드 플래그 | `_useGPU`, `_useGL` | |
@@ -625,7 +625,7 @@ function updateAndDrawTF(sp) {
 
 ---
 
-## Phase 3: Compute Shader (WebGPU, Electron 전용)
+## Phase 3: Compute Shader (WebGPU, 향후 설계)
 
 ### 성능 비교
 
@@ -791,13 +791,13 @@ async function updateComputeBullets(sp) {
 
 | 방법 | 구현 | 정확도 | 지연 | 적합 |
 |------|------|--------|------|------|
-| **Compute atomicAdd** | WGSL atomic | 완벽 | 1프레임 | Electron (WebGPU) |
+| **Compute atomicAdd** | WGSL atomic | 완벽 | 1프레임 | 향후 WebGPU 설계 |
 | **Occlusion Query** | GL Query | 히트 여부만 (1bit) | 1~2프레임 | WebGL2 |
 | **CPU Grid 샘플링** | 1/10 탄만 체크 | 근사 | 0 | 범용 폴백 |
 | **readPixels (금지)** | GPU→CPU 전체읽기 | - | stall | 사용 금지 |
 
 ### 추천 조합
-- **Electron**: Compute Shader (충돌판정 포함, 완전 GPU)
+- **향후 WebGPU 설계**: Compute Shader (충돌판정 포함, 구현·실측 필요)
 - **브라우저 WebGL2**: Transform Feedback + CPU Grid 샘플링
 - **Canvas2D 폴백**: Phase 1 Instanced의 2D 폴백
 
@@ -811,7 +811,7 @@ async function updateComputeBullets(sp) {
 | **Step 2** | Canvas2D 폴백 추가 | Step 1 |
 | **Step 3** | 스킬 1개에 연결 (테스트) | Step 1 |
 | **Step 4** | Phase 2 Transform Feedback | Step 1 검증 후 |
-| **Step 5** | Phase 3 Compute (Electron) | GPU 변수 |
+| **Step 5** | Phase 3 Compute (향후 설계) | GPU 변수 |
 | **Step 6** | 충돌판정 통합 | Step 4 or 5 |
 | **Step 7** | 기존 projs[] 마이그레이션 | 전체 검증 후 |
 

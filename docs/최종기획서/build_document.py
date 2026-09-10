@@ -488,7 +488,7 @@ add_table_simple(
         ['RENDERING', 'WebGL2 (ANGLE -> D3D11) + Canvas 2D 혼합\nProxyX 배칭 시스템\n파티클 풀링 1000개 + VFX 소프트캡 150\n오프스크린 프리렌더 (10,648 -> 1 drawCall)'],
         ['SIMULATION', '결정론적 맵 생성 (StageSeeder)\n청크 파티셔닝 + 공간 해시 (shQuery)\n플로우필드 패스파인딩 (Web Worker)\n오브젝트 풀링 — 게임루프 내 new/splice 금지'],
         ['SYSTEMS', '사운드 우선순위 시스템 (동시 40+ 재생)\n보스 콤보 idx 48 패턴 / 58 콤보\n6 원소 x 6 반응 조합 매트릭스\nSupabase — 리더보드, 아이템 검증'],
-        ['SHIPPING', 'Electron 번들 (Steam 타겟)\nNode.exe 번들 ZIP (오프라인 배포)\nHTML5 데모 (Steam 위시리스트 연동)\ngit 자동 커밋 (Windows 작업 스케줄러)'],
+        ['SHIPPING', 'NW.js 번들 (Steam 타겟)\nNode.exe 번들 ZIP (오프라인 배포)\nHTML5 데모 (Steam 위시리스트 연동)\ngit 자동 커밋 (Windows 작업 스케줄러)'],
     ]
 )
 doc.add_page_break()
