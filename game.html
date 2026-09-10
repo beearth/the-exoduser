@@ -28013,7 +28013,7 @@ function mkEn(x,y,si,etype,ib,el,room){
   if(!window._noProjEtypes)window._noProjEtypes={5:1,9:1,11:1,20:1,24:1,50:1,51:1,52:1,53:1,54:1,55:1,56:1,57:1,58:1,59:1}; // 자폭/소환/괴물길(전용AI)
   let _projCd=ib?50 // 보스: 50f 원래값 유지
     :_noProjEtypes[etype]?9999
-    :120; // 일반몹: 120f(2초), +차징60f = 3초/발
+    :240; // 필드몹: 240f(4초), +차징60f ≈ 5초/발
   if(mods.includes('M02'))_projCd=~~(_projCd*.85); // M02 공격속도+15%
   if(elite>0)_projCd=~~(_projCd*(elite>=3?.6:elite>=2?.7:.8)); // 정예: 약간 빠르게
   // GPU 텍스처 프리핀 (첫 drawImage 스파이크 방지)
@@ -28024,7 +28024,7 @@ function mkEn(x,y,si,etype,ib,el,room){
     ib,etype,room,lv:monLv,s:'idle',st2:30+Math.random()*50,facing:Math.random()*Math.PI*2,
     elite,mods,aura:elite>=2?rollAura(elite,si):null,
     modT:{regen:0,summon:0,tp:0,chaos:0,vortex:0,lightning:0,twarp:0,cloned:false,revived:false,split:false,sentry:0,sentryAng:0,sentryOn:false,illusioned:false,stealthT:0},
-    projCd:_projCd,projT:70+Math.random()*50,
+    projCd:_projCd,projT:ib?70+Math.random()*50:180+Math.random()*120,
     chargeT:0,chargeCd:(etype===2||etype===22)?(100+Math.random()*60):9999,
     dropTier:ib?Math.min(SI_TO_HELL[si]+1,4):_rare?Math.min(SI_TO_HELL[si]+2,4):Math.min(SI_TO_HELL[si],4),
     bossPatCd:ib?35:9999,bossPatT:30+Math.random()*20,
@@ -28042,7 +28042,7 @@ function mkEn(x,y,si,etype,ib,el,room){
     shieldAng:etype===6?Math.random()*Math.PI*2:0,
     eShield:_hp,eShieldMax:_hp,eShieldRegenT:0, // 레벨스케일 HP와 동일 (기존 base hp 버그 수정)
     eRes:ETYPE_ERES[etype]||[0,0,0,0,0,0,0],
-    _firstShot:!ib, // 보스 제외, 첫 교전 시 빨간콩 1발
+    _firstShot:false, // 레거시 필드 유지, 첫 교전 추가탄은 사용하지 않음
     bleed:0,bleedT:0,bleedStk:0,_bleedPool:0,poison:0,poisonT:0,poisonStk:0,_poisonPool:0,burnT:0,burnStk:0,_burnPool:0, // D4식 DOT: 히트뎀% 풀 축적
     shieldBashCd:etype===6?(120+Math.random()*60):9999,
     shieldBashT:etype===6?(60+Math.random()*40):9999,
@@ -29801,6 +29801,8 @@ function update(){
   if(P.s!=='sBlock'&&(P._sbCd||0)>0)P._sbCd-=sp; // 보호막 쿨다운 (해제 후 1.5초)
   // ── HP≤0 안전장치: idle 상태에서 죽은 캐릭터가 움직이는 버그 방지 ──
   if(P.hp<=0&&P.s!=='fallen'&&P.s!=='dead'){die()}
+  // E 충전/릴리즈와 칼날이동은 독립 진행. 사망·기절 시 남은 이동 폐기.
+  if(P.s!=='bladeDash'&&P._bdMoveT>0){if(P.hp<=0||P.s==='fallen'||P.s==='dead'||P.s==='pStun'){P._bdMoveT=0;P._preBdState=null}else _tickBladeDash(sp)}
   switch(P.s){
   case 'fallen':{
     P.st2-=sp;
@@ -30485,7 +30487,7 @@ function update(){
       if(!_sBashFire())P.s='idle';
       break}
     // 이동 절반 (10f 이내 미세 구간)
-    {let _sdmx=0,_sdmy=0;
+    if(!_dashActive&&!(P._bdMoveT>0)){let _sdmx=0,_sdmy=0;
      if(isAct('up'))_sdmy=-1;if(isAct('down'))_sdmy=1;if(isAct('left'))_sdmx=-1;if(isAct('right'))_sdmx=1;
      const _sdml=Math.sqrt(_sdmx*_sdmx+_sdmy*_sdmy);if(_sdml>0){_sdmx/=_sdml;_sdmy/=_sdml}
      const _sdms=P.speed*.5*sp;
@@ -30495,10 +30497,9 @@ function update(){
 
   case 'kiGather':{
     // ═══ 차징 검격 — 기 응축 스탠스 (MH대검+발도술): E 홀드, 2배속 차징 단계1=30f/단계2=60f/단계3=90f ═══
-    // 거의 정지(×0.18), 공격/연사 없음. 릴리즈=풀차지 자동 or 놓기(단계≥1), Shift=순수 캔슬.
-    // 돌진 캔슬 (Shift): 스윙 없이 차징 리셋 → 사슬 대시 탈출
-    if(isAct('charge')&&P.chargeStocks>0&&!_harpActive&&(P.activeChargeSk==='magicBlink'?P.mp>=mpCost('blink'):useStPct('charge'))){
-      P._kgChg=0;P._kgTier=0; // 차징 먼저 소거 (순수 캔슬)
+    // 거의 정지(×0.18), 공격/연사 없음. 릴리즈=풀차지 자동 or 놓기(단계≥1), Shift 이동 중에도 충전·릴리즈 유지.
+    // Shift 사슬 이동: E 상태·충전량을 보존하고 같은 프레임의 충전을 계속 처리
+    if(isAct('charge')&&P.chargeStocks>0&&!_harpActive&&!_dashActive&&!(P._bdMoveT>0)&&(P.activeChargeSk==='magicBlink'?P.mp>=mpCost('blink'):useStPct('charge'))){
       _dashHold=false;_dashHoldF=0;_dashTier=0;
       P.chargeStocks--;if(G._sStats)G._sStats.dashCount++;if(P.chargeStocks<P.maxChargeStocks&&P.chargeCd<=0)P.chargeCd=~~(300*1);
       if(P.activeChargeSk==='magicBlink')useMp('blink');
@@ -30509,9 +30510,9 @@ function update(){
       _harpX=P.x;_harpY=P.y;_harpVX=Math.cos(_hDir)*_HARP_SPD;_harpVY=Math.sin(_hDir)*_HARP_SPD;
       _harpDist=0;_harpMaxDist=_harpDistTier(_harpTier);
       SFX.slash();{const _cd=['chain_dash','chain_dash2','chain_dash3','chain_dash4'];playSample(_cd[~~(Math.random()*4)],.6,_r(1,.1))};addTxt(P.x,P.y-25,_T('⛓️ 사슬!'),'#ffaa00',35);_addSkProf(P.activeChargeSk==='magicBlink'?'magicBlink':'chargeBoost');
-      P.s='idle';break}
+      }
     // 감속 이동 (18%)
-    {let _kgmx=0,_kgmy=0;
+    if(!_dashActive&&!(P._bdMoveT>0)){let _kgmx=0,_kgmy=0;
      if(isAct('up'))_kgmy=-1;if(isAct('down'))_kgmy=1;if(isAct('left'))_kgmx=-1;if(isAct('right'))_kgmx=1;
      const _kgml=Math.sqrt(_kgmx*_kgmx+_kgmy*_kgmy);if(_kgml>0){_kgmx/=_kgml;_kgmy/=_kgml}
      const _kgms=P.speed*.18*sp;
@@ -30752,62 +30753,7 @@ function update(){
     _addSkProfTick('iceOrb');
     // 얼음보주: 이동/행동 불가 (자동파쇄는 update 루프에서 처리)
     break;}
-  case 'bladeDash':{
-    // 칼날이동: 직선 대시 (12프레임, 무적)
-    P.iframes=Math.max(P.iframes,3);
-    const _bdSpd=500/12*sp;
-    const _bdNx=P.x+Math.cos(P._bdAng)*_bdSpd,_bdNy=P.y+Math.sin(P._bdAng)*_bdSpd;
-    if(canMvBlink(_bdNx,P.y,P.r))P.x=_bdNx;else if(!canMv(_bdNx,P.y,P.r)){P.st2=0} // 실제 벽만 정지, 해골무덤 통과
-    if(canMvBlink(P.x,_bdNy,P.r))P.y=_bdNy;else if(!canMv(P.x,_bdNy,P.r)){P.st2=0}
-    // 전기 잔상 파티클
-    if(Math.random()>.3){const _pa=Math.random()*Math.PI*2;
-      poolPart(P.x+Math.cos(_pa)*P.r,P.y+Math.sin(_pa)*P.r,(Math.random()-.5)*3,(Math.random()-.5)*3,
-        Math.random()>.5?'#44ddff':'#ffee44',2+Math.random()*2,8+Math.random()*4)}
-    P.st2-=sp;
-    if(P.st2<=0){
-      // 착지 사운드
-      playSample('chain_land',.7,_r(1,.1));
-      addParts(P.x,P.y,'#44ddff',5);
-      // ═══ 전격이동 착지 — 전류장판 생성 ═══
-      {const _sfLv=P.skills.bladeDash||1;
-      const _sfR=Math.min(200,120+(_sfLv-1)*5); // 캡 200px
-      const _sfDmg=~~(magicRef()*statInt()*pMagicMul()*_skMul('bladeDash'));
-      const _sfDR=Math.min(.50,.10+(_sfLv-1)*.05); // 1렙10%, 렙당+5%, 캡50%
-      if(!G._fireZones)G._fireZones=[];
-      // 착지 번개 기둥 생성 (1회) — 화면 상단→착지점, 큰 지그재그+다분기
-      const _thPts=[];const _thTopY=G.cam.y-VH/2-50;
-      const _thSegs=8+~~(Math.random()*5);const _thBW=14+Math.random()*10; // 두꺼운 기둥
-      for(let s=0;s<=_thSegs;s++){const t=s/_thSegs;
-        _thPts.push({x:P.x+(Math.random()-.5)*80*(1-t*.4),y:_thTopY+(P.y-_thTopY)*t,w:_thBW*(.2+t*.8+Math.random()*.3)})} // 큰 wobble
-      const _thBr=[];for(let b=0;b<3+~~(Math.random()*3);b++){ // 분기 3~5개
-        const si=1+~~(Math.random()*(_thPts.length-2));const sp=_thPts[si];const bPts=[{x:sp.x,y:sp.y}];
-        const bAng=(Math.random()>.5?1:-1)*(.4+Math.random()*1.4);const bLen=60+Math.random()*120;
-        for(let bs=1;bs<=3;bs++){const bt=bs/3;bPts.push({x:sp.x+Math.cos(-Math.PI/2+bAng)*bLen*bt+(Math.random()-.5)*25,y:sp.y+Math.sin(-Math.PI/2+bAng)*bLen*bt+(Math.random()-.5)*15})}
-        _thBr.push(bPts)}
-      G._fireZones.push({x:P.x,y:P.y,r:_sfR,t:0,maxT:600+(_sfLv-1)*30,dmg:_sfDmg,el:EL.L,lv:_sfLv,type:'shockField',defRed:_sfDR,
-        _thunder:[{pts:_thPts,br:_thBr,life:18,maxLife:18,baseW:_thBW}]});
-      addTxt(P.x,P.y-30,'⚡'+~~(_sfDR*100)+'% '+_L('방어↓','DEF↓'),'#44ddff',28)}
-      // ── 전격의창 합체: 2번째 전격이동 착지 시 뇌전창 자동 설치 ──
-      if(_isFused('thunderGhost')&&P.skills.thunderStake>=1){
-        P._tgCnt=(P._tgCnt||0)+1;
-        if(P._tgCnt>=2){
-          P._tgCnt=0;
-          const _tgLv=P.skills.thunderStake||1;
-          const _tgDmg=~~(magicRef()*statInt()*pMagicMul()*_skMul('thunderStake')*_fuseMul('thunderStake'));
-          const _tgMaxT=900+(_tgLv-1)*30;
-          if(!G._thunderStakes)G._thunderStakes=[];
-          G._thunderStakes.push({x:P.x,y:P.y,t:0,maxT:_tgMaxT,dmg:_tgDmg,lv:_tgLv,el:EL.L});
-          SFX.magic(EL.L);
-          shake(3);
-        }
-      }
-      // 홀딩스킬 복귀: 키 아직 눌려있으면 원래 상태로
-      if(P._preBdState==='whirlwind'&&isHeld('weapon')&&P.st>=2){P.s='whirlwind';P._preBdState=null}
-      else if(P._preBdState==='sBlock'&&isAct('parry')&&P.mp>0){P.s='sBlock';P._preBdState=null}
-      else if(P._preBdState==='beam'&&isAct('beam')&&P.mp>0&&!_isFused('stormBeam')){P.s='beam';P._preBdState=null}
-      else{P.s='idle';P._preBdState=null}
-      P.iframes=Math.max(P.iframes,15)}
-    break;}
+  case 'bladeDash':{_tickBladeDash(sp);break;}
 
   // ═══ 지옥강타 1: 즉시 발동 (상태머신 미사용, 세이브 호환용 즉시 복구) ═══
   case 'gSlamWindup':case 'gSlam1':case 'gSlamRecoil':case 'gSlam2':case 'gSlamRecover':{
@@ -31784,7 +31730,7 @@ function update(){
       doParry(p.dmg,p.x,p.y,false,'red',_physicalResourceMul,'physicalProjectile');
       projs[pw++]=p;continue;
     }
-    if(_physicalMouth&&!_pHit&&_pDist<_rbDeflR&&_sbActive&&!p.noParry&&P.iframes<=0&&!P._ioActive){
+    if(_physicalMouth&&!_pHit&&_pDist<_rbDeflR&&_sbActive&&!p.noParry&&!P._ioActive){
       let _pmTgt=_parryHomingTarget();
       if(_pmTgt){const _pmA=Math.atan2(_pmTgt.y-P.y,_pmTgt.x-P.x);const _pmSpd=Math.max(5,Math.sqrt(p.vx*p.vx+p.vy*p.vy));p.vx=Math.cos(_pmA)*_pmSpd;p.vy=Math.sin(_pmA)*_pmSpd}
       else{p.vx*=-2;p.vy*=-2}
@@ -31793,7 +31739,7 @@ function update(){
       doParry(p.dmg,p.x,p.y,false,p.el,_physicalResourceMul,'physicalProjectile');projs[pw++]=p;_pHit=true;continue;
     }
     // titanEye(크라켄/앵글러/지상뱀장어 대형 물리 눈알탄): E(sBash)만 패링. Q는 일반 피격. 데미지/배율은 흰 물리탄(bwBean)과 동일.
-    if(p.titanEye&&!_pHit&&_pDist<_rbDeflR&&_sbActive&&P.iframes<=0&&!P._ioActive){
+    if(p.titanEye&&!_pHit&&_pDist<_rbDeflR&&_sbActive&&!P._ioActive){
       let _teTgt=_parryHomingTarget();
       if(_teTgt){const _teA=Math.atan2(_teTgt.y-P.y,_teTgt.x-P.x);const _teSpd=Math.max(5,Math.sqrt(p.vx*p.vx+p.vy*p.vy));p.vx=Math.cos(_teA)*_teSpd;p.vy=Math.sin(_teA)*_teSpd}
       else{p.vx*=-2;p.vy*=-2}
@@ -31840,7 +31786,7 @@ function update(){
         _pHit=true;
     }
     // ══ 화이트볼: isPWin()으로 패링 (빨콩과 동일 로직) ══
-    if(p.bwBean&&!_pHit&&_pDist<_normalR&&P.iframes<=0&&!P._ioActive){
+    if(p.bwBean&&!_pHit&&_pDist<_normalR&&(P.iframes<=0||(_sbActive&&_pDist<_rbDeflR))&&!P._ioActive){
       if(_sbActive&&_pDist<_rbDeflR){ // 흰색볼=물리→E 전용 패링
         let _bwTgt=_parryHomingTarget(); // 프레임당 1회 캐싱 공유
         if(_bwTgt){const _bwA=Math.atan2(_bwTgt.y-P.y,_bwTgt.x-P.x);const _bwSpd=Math.max(5,Math.sqrt(p.vx*p.vx+p.vy*p.vy));p.vx=Math.cos(_bwA)*_bwSpd;p.vy=Math.sin(_bwA)*_bwSpd}
@@ -37219,11 +37165,6 @@ function updateE(e,sp){
       if(sx!==0||sy!==0){const nx=e.x+sx*sp,ny=e.y+sy*sp;if(canMv(nx,ny,e.r)){e.x=nx;e.y=ny}}
       e._sepCd=3;
     }else if((e._sepCd||0)>0)e._sepCd-=sp;
-    // ═══ 첫 교전 빨간콩 (보스 제외, 1회만) ═══
-    if(e._firstShot&&d<1200&&e.st2<=0){
-      e._firstShot=false;const _fAng=Math.atan2(P.y-e.y,P.x-e.x);
-      _spawnBossProjectile(e,{x:e.x,y:e.y,vx:Math.cos(_fAng)*3,vy:Math.sin(_fAng)*3,dmg:~~(e.atk*.8),el:EL.F,friendly:false,life:250,ml:250,col:'#cc1100',sz:1.5,redBean:true,homing:true});
-      addParts(e.x,e.y,'#cc1100',3)}
     // ── 근접 접촉 공격: 근접형 etype이 플레이어에 밀착 시 타격 ──
     const _meleeET=e.etype===0||e.etype===2||e.etype===4||e.etype===5||e.etype===6||e.etype===10||e.etype===12||e.etype===18||e.etype===19;
     if(_meleeET&&d<e.r+P.r+8&&P.iframes<=0&&e.st2<=0){
@@ -37231,7 +37172,7 @@ function updateE(e,sp){
       e.st2=40+~~(Math.random()*20); // 공격 후 쿨다운 40~60f
     }
     // 근접 전용 몬스터: projCd 없으면 기본 탄막 부여
-    if(e.projCd>=9000&&!e.ib&&!_noProjEtypes[e.etype]){e.projCd=~~(100+Math.random()*60);e.projT=e.projCd}
+    if(e.projCd>=9000&&!e.ib&&!_noProjEtypes[e.etype]){e.projCd=240;e.projT=180+Math.random()*120}
     // Ranged: 모든 몬스터 탄막 발사 (1초 차징 텔레그래프)
     if(e.projCd<9000){
       if(!(e._projChargeT>0)){
@@ -41757,6 +41698,67 @@ function activateNeedleShot(){
 }
 // ═══ 전격이동 — Shift 사슬과 공용 기동게이지 1칸을 소비 ═══
 function _canBladeDash(){return !!(P&&P.skills&&P.skills.bladeDash>=1&&_harpGauge>=_HARP_GAUGE_COST[1]&&P.mp>=(10+((P.skills.bladeDash||1)-1)*5))}
+function _tickBladeDash(sp){
+    // 칼날이동: 직선 대시 (12프레임, 무적)
+    P.iframes=Math.max(P.iframes,3);
+    const _bdSpd=500/12*sp;
+    const _bdNx=P.x+Math.cos(P._bdAng)*_bdSpd,_bdNy=P.y+Math.sin(P._bdAng)*_bdSpd;
+    if(canMvBlink(_bdNx,P.y,P.r))P.x=_bdNx;else if(!canMv(_bdNx,P.y,P.r)){P._bdMoveT=0} // 실제 벽만 정지, 해골무덤 통과
+    if(canMvBlink(P.x,_bdNy,P.r))P.y=_bdNy;else if(!canMv(P.x,_bdNy,P.r)){P._bdMoveT=0}
+    // 전기 잔상 파티클
+    if(Math.random()>.3){const _pa=Math.random()*Math.PI*2;
+      poolPart(P.x+Math.cos(_pa)*P.r,P.y+Math.sin(_pa)*P.r,(Math.random()-.5)*3,(Math.random()-.5)*3,
+        Math.random()>.5?'#44ddff':'#ffee44',2+Math.random()*2,8+Math.random()*4)}
+    P._bdMoveT-=sp;
+    if(P.s==='bladeDash')P.st2=P._bdMoveT;
+    if(P._bdMoveT<=0){
+      // 착지 사운드
+      playSample('chain_land',.7,_r(1,.1));
+      addParts(P.x,P.y,'#44ddff',5);
+      // ═══ 전격이동 착지 — 전류장판 생성 ═══
+      {const _sfLv=P.skills.bladeDash||1;
+      const _sfR=Math.min(200,120+(_sfLv-1)*5); // 캡 200px
+      const _sfDmg=~~(magicRef()*statInt()*pMagicMul()*_skMul('bladeDash'));
+      const _sfDR=Math.min(.50,.10+(_sfLv-1)*.05); // 1렙10%, 렙당+5%, 캡50%
+      if(!G._fireZones)G._fireZones=[];
+      // 착지 번개 기둥 생성 (1회) — 화면 상단→착지점, 큰 지그재그+다분기
+      const _thPts=[];const _thTopY=G.cam.y-VH/2-50;
+      const _thSegs=8+~~(Math.random()*5);const _thBW=14+Math.random()*10; // 두꺼운 기둥
+      for(let s=0;s<=_thSegs;s++){const t=s/_thSegs;
+        _thPts.push({x:P.x+(Math.random()-.5)*80*(1-t*.4),y:_thTopY+(P.y-_thTopY)*t,w:_thBW*(.2+t*.8+Math.random()*.3)})} // 큰 wobble
+      const _thBr=[];for(let b=0;b<3+~~(Math.random()*3);b++){ // 분기 3~5개
+        const si=1+~~(Math.random()*(_thPts.length-2));const sp=_thPts[si];const bPts=[{x:sp.x,y:sp.y}];
+        const bAng=(Math.random()>.5?1:-1)*(.4+Math.random()*1.4);const bLen=60+Math.random()*120;
+        for(let bs=1;bs<=3;bs++){const bt=bs/3;bPts.push({x:sp.x+Math.cos(-Math.PI/2+bAng)*bLen*bt+(Math.random()-.5)*25,y:sp.y+Math.sin(-Math.PI/2+bAng)*bLen*bt+(Math.random()-.5)*15})}
+        _thBr.push(bPts)}
+      G._fireZones.push({x:P.x,y:P.y,r:_sfR,t:0,maxT:600+(_sfLv-1)*30,dmg:_sfDmg,el:EL.L,lv:_sfLv,type:'shockField',defRed:_sfDR,
+        _thunder:[{pts:_thPts,br:_thBr,life:18,maxLife:18,baseW:_thBW}]});
+      addTxt(P.x,P.y-30,'⚡'+~~(_sfDR*100)+'% '+_L('방어↓','DEF↓'),'#44ddff',28)}
+      // ── 전격의창 합체: 2번째 전격이동 착지 시 뇌전창 자동 설치 ──
+      if(_isFused('thunderGhost')&&P.skills.thunderStake>=1){
+        P._tgCnt=(P._tgCnt||0)+1;
+        if(P._tgCnt>=2){
+          P._tgCnt=0;
+          const _tgLv=P.skills.thunderStake||1;
+          const _tgDmg=~~(magicRef()*statInt()*pMagicMul()*_skMul('thunderStake')*_fuseMul('thunderStake'));
+          const _tgMaxT=900+(_tgLv-1)*30;
+          if(!G._thunderStakes)G._thunderStakes=[];
+          G._thunderStakes.push({x:P.x,y:P.y,t:0,maxT:_tgMaxT,dmg:_tgDmg,lv:_tgLv,el:EL.L});
+          SFX.magic(EL.L);
+          shake(3);
+        }
+      }
+      // 홀딩스킬 복귀: 키 아직 눌려있으면 원래 상태로
+      if(P.s==='bladeDash'){
+      if(P._preBdState==='whirlwind'&&isHeld('weapon')&&P.st>=2){P.s='whirlwind';P._preBdState=null}
+      else if(P._preBdState==='sBlock'&&isAct('parry')&&P.mp>0){P.s='sBlock';P._preBdState=null}
+      else if(P._preBdState==='beam'&&isAct('beam')&&P.mp>0&&!_isFused('stormBeam')){P.s='beam';P._preBdState=null}
+      else{P.s='idle';P._preBdState=null}
+      }
+      P._bdMoveT=0;P._preBdState=null;
+      P.iframes=Math.max(P.iframes,15)}
+}
+
 function activateBladeDash(dir){
   _addSkProf('bladeDash');
   // dir: 0=상,1=하,2=좌,3=우 → 8방향 지원 (다른 방향키 홀드 시 대각선)
@@ -41777,7 +41779,9 @@ function activateBladeDash(dir){
   // 홀딩스킬 보존: 회전참/보호막 등 대시 후 복귀
   const _holdStates={'whirlwind':1,'sBlock':1,'beam':1};
   P._preBdState=_holdStates[P.s]?P.s:null;
-  P.s='bladeDash';P.st2=12;P.facing=_bdAng;
+  P._bdMoveT=12;
+  if(P.s!=='sDraw'&&P.s!=='kiGather'){P.s='bladeDash';P.st2=12}
+  P.facing=_bdAng;
   P.iframes=Math.max(P.iframes,15);
   SFX.charge();{const _cd=['chain_dash','chain_dash2','chain_dash3','chain_dash4'];playSample(_cd[~~(Math.random()*4)],.6,_r(1,.1))}
   

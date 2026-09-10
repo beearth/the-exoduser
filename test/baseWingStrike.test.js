@@ -4,6 +4,80 @@ import { readFileSync } from 'node:fs';
 import vm from 'node:vm';
 
 const html = readFileSync(new URL('../game.html', import.meta.url), 'utf8');
+const chargeCode = `switch(P.s){${html.slice(html.indexOf("case 'sDraw':{"), html.indexOf("case 'sBlock':{", html.indexOf("case 'sDraw':{")))}}`;
+function chargeContext() {
+  const noop = () => {};
+  const ctx = vm.createContext({
+    P: {s:'kiGather',_kgChg:80,_kgTier:1,chargeStocks:2,maxChargeStocks:3,chargeCd:0,
+      skills:{chargeBoost:1,bladeDash:1},x:0,y:0,r:15,speed:4,facing:0,mp:100,iframes:0}, G:{cam:{y:0}},
+    sp:1, held:true, charge:true, _harpActive:false,_dashActive:false,_HARP_SPD:20,
+    _harpGauge:100,_HARP_GAUGE_COST:[0,10],_HARP_GAUGE_MAX:100,VH:720,EL:{L:4},
+    isHeld:()=>ctx.held,isAct:k=>k==='charge'?ctx.charge:k==='right', useStPct:()=>true,
+    canMv:()=>true,canMvBlink:()=>true,_harpDistTier:()=>300,
+    SFX:{slash:noop,charge:noop},playSample:noop,_r:()=>1,addTxt:noop,_T:x=>x,_L:x=>x,
+    _addSkProf:noop,shake:noop,doHitFlash:noop,poolPart:noop,addParts:noop,showPH:noop,
+    magicRef:()=>1,statInt:()=>1,pMagicMul:()=>1,_skMul:()=>1,_isFused:()=>false,
+    _kgRelease:(tier,mul)=>{ctx.released={tier,mul};ctx.P.s='sBash';ctx.P.st2=20;},
+  });
+  return ctx;
+}
+
+test('Shift starts movement without erasing E charge, and E releases during travel', () => {
+  const ctx=chargeContext();
+  vm.runInContext(chargeCode,ctx);
+  assert.equal(ctx.P.s,'kiGather');
+  assert.equal(ctx.P._kgChg,82);
+  assert.equal(ctx._harpActive,true);
+  assert.equal(ctx.P.chargeStocks,1);
+  ctx._dashActive=true;ctx.held=false;
+  vm.runInContext(chargeCode,ctx);
+  assert.equal(ctx.P.s,'sBash');
+  assert.equal(ctx._dashActive,true);
+  assert.ok(ctx.released.mul>1.5);
+  assert.equal(ctx.P.chargeStocks,1,'no repeated movement cost while in flight');
+});
+
+test('blade movement preserves E charge and continues through release to its landing', () => {
+  const ctx=chargeContext();ctx.charge=false;
+  vm.runInContext(fn('activateBladeDash'),ctx);
+  ctx.activateBladeDash(3);
+  assert.equal(ctx.P.s,'kiGather');
+  assert.equal(ctx.P._kgChg,80);
+  vm.runInContext(fn('_tickBladeDash'),ctx);
+  for(let frame=0;frame<12;frame++){
+    ctx._tickBladeDash(1);
+    if(frame<3)vm.runInContext(chargeCode,ctx);
+    if(frame===3){ctx.held=false;vm.runInContext(chargeCode,ctx);assert.equal(ctx.P.s,'sBash');}
+  }
+  assert.equal(ctx.P.s,'sBash','landing must not replace the E parry state');
+  assert.equal(ctx.P.st2,20,'movement timer must not consume the E parry window');
+  assert.ok(Math.abs(ctx.P.x-500)<1e-6);
+  assert.equal(ctx.G._fireZones.length,1);
+  assert.equal(ctx.P.mp,90);
+});
+
+test('E physical projectile parries remain active during movement invulnerability', () => {
+  for(const prefix of ['if(_physicalMouth&&!_pHit', 'if(p.titanEye&&!_pHit', 'if(p.bwBean&&!_pHit']){
+    const start=html.indexOf(prefix),end=html.indexOf('){',start);
+    const condition=html.slice(start+3,end);
+    const ctx={P:{iframes:40,_ioActive:false},p:{titanEye:true,bwBean:true,noParry:false},
+      _physicalMouth:true,_pHit:false,_pDist:10,_rbDeflR:110,_normalR:100,_sbActive:true};
+    assert.equal(vm.runInNewContext(condition,ctx),true,prefix);
+    ctx._sbActive=false;
+    assert.equal(vm.runInNewContext(condition,ctx),false,'invulnerability must not create a parry outside E release');
+  }
+});
+
+test('ordinary blade dash still lands and restores a held skill', () => {
+  const ctx=chargeContext();ctx.P.s='sBlock';ctx.charge=false;
+  ctx.isAct=k=>k==='parry';
+  vm.runInContext(fn('activateBladeDash')+fn('_tickBladeDash'),ctx);
+  ctx.activateBladeDash(3);
+  assert.equal(ctx.P.s,'bladeDash');
+  for(let i=0;i<12;i++)ctx._tickBladeDash(1);
+  assert.equal(ctx.P.s,'sBlock');assert.equal(ctx.P._bdMoveT,0);
+  assert.equal(ctx.G._fireZones.length,1);
+});
 function fn(name) {
   const start = html.indexOf(`function ${name}(`);
   assert.ok(start >= 0, `${name} exists`);
@@ -79,6 +153,7 @@ test('E hold reaches charge stages at 0.5/1/1.5 seconds and releases at 1.55', (
   const noop = () => {};
   const ctx = vm.createContext({
     P: { s: 'sDraw', skills: {}, speed: 0, x: 0, y: 0, r: 15 }, sp: 1,
+    _harpActive: false, _dashActive: false,
     isHeld: () => true, isAct: () => false, useStPct: () => true, canMv: () => true,
     playSample: noop, addTxt: noop, _T: x => x, shake: noop, doHitFlash: noop,
     poolPart: noop, _kgRelease: (tier, mul) => { ctx.released = { tier, mul }; ctx.P.s = 'sBash'; },
