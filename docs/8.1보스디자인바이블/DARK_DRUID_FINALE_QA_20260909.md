@@ -24,7 +24,7 @@
 | 승리 상태 | `G._druidVictory={boss:e,t:0}`. update에서 dt 기준 t=min(210,t+dt), 일시정지 시 진행 정지. 기존 등장 `_bossCine.active=false`. stage/arena 생성 때 상태 초기화 |
 | `_drawDruidFinaleVictory` | t<210f, alpha=clamp(min(t/30,(210−t)/45),0,1). y=VH×.3, 전체폭 배경(y−52,높이122), 배경 alpha×.78. 입력을 막지 않으며 보상 회수 가능 |
 | 승리 문구 | `다크드루이드 격파 / DARK DRUID DEFEATED` 13px, `썩은 숲 해방 / THE FOREST IS FREE` min(34,VW×.027)px, `보상을 회수하고 출구로 향하세요 / Claim your reward and head for the exit` 12px. `_L` 사용. 색상 순서 #d4dda0/#f1e8c8/#bbc8b0, 선 #849565·300×1px, 배경 #0b100d |
-| 텍스트 렌더 계약 | 공용 WebGL 아틀라스는 `parseFloat(font)`를 크기로 읽으므로 새 배너의 폰트는 px 크기로 시작한다. 숫자 font-weight(600/700)를 앞에 두면 atlas512px를 넘겨 텍스트가 사라짐을 재현·해결. 공용 아틀라스 자체 수정 없음 |
+| 텍스트 렌더 계약 | 배너의 px 크기로 시작하는 폰트는 유지. 2026-09-10 공용 WebGL2/WebGPU 아틀라스도 CSS의 px 크기 토큰을 읽도록 수정했다. `900 22px`의 크기는 22이며 셀 높이는 44px이다. 숫자 굵기를 크기로 오독해 512px 아틀라스를 매번 비우던 결함을 수정했다. [Mac 실기 조사](../12퍼포먼스·최적화/MAC_TEXT_ATLAS_FPS_20260910.md) |
 | 종료 경로 | 부활 최종 판정→승리 배너/음악→보물상자·출구→클리어의 `데모 종료` 버튼→demoEnd. 기존 3초 부활 대기·부활 확률·포인트·HP/ATK·쉴드·보상 수치 변경 없음 |
 
 ## 검증과 재현
