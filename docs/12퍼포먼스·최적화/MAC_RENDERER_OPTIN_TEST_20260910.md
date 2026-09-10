@@ -1,11 +1,11 @@
 # Mac 금색 세로 띠 — 렌더러 선택 비교 테스트
 
-**상태: 테스트 버전 구현·Windows 시작 로그 검증 완료 / 배포 원문·Mac Chrome·Safari 실기 비교 PENDING. 금색 세로 띠 해결로 판정하지 않는다.**
+**상태: 테스트 버전 구현·Production 재배포·배포 원문 대조·Windows 시작 로그 검증 완료 / Mac Chrome·Safari 실기 비교 PENDING. 금색 세로 띠 해결로 판정하지 않는다.**
 
 | 항목 | 근거·현행 값 |
 |---|---|
 | 사용자 제보 | MacBook Chrome·Safari 모두 게임 배경에 굵은 금색 세로 띠 반복. HUD 정상 |
-| 배포본 비교 | 사용자가 제시한 `_bootRenderer()`의 `(IS_MAC && typeof navigator.gpu !== 'undefined')` 조건이 수정 전 로컬에도 존재. 배포 URL 미제공 상태로 전체 배포 파일 동일성·현재 배포 해시는 직접 검증하지 못함 |
+| 배포본 비교 | 기존 hell-smoky.vercel.app/game.html 다운로드에서 Mac 자동 OR 조건 확인. 재배포 후 공개 game/index SHA256이 bb67f07 고정 배포물과 정확히 일치. [배포 기록](../13출시·마케팅/WEB_RENDERER_REDEPLOY_20260910.md) |
 | 확인한 결함 | `URL webgpu=1 OR Mac+gpu존재` 때문에 Mac에서 webgpu=0·파라미터 없음·webgpu=true도 WebGPU 초기화. 이는 선택 조건의 결함이며 세로 띠 원인 확정과 구분 |
 | 단일 실험 | Mac 자동 선택 OR 조건 제거. `const _useWebGPU=(!IS_ELECTRON)&&new URLSearchParams(location.search).get('webgpu')==='1';` |
 | 기본·webgpu=0 | WebGL2 먼저 초기화, WebGL2 불가 시 기존 Canvas2D 폴백. WebGL2 시작 여부는 실제 컨텍스트·로그로 확인 |
@@ -28,6 +28,7 @@
 | 실제 Windows Chrome | `python tools/verify_renderer_optin.py`: 기본·webgpu=0 두 경우 `_useGL=true`, `_useGPU=false`, GL.VERSION=`WebGL 2.0 (OpenGL ES 3.0 Chromium)`, 수정 정책 로그 확인, pageerror0 |
 | 실제 어댑터 | Windows/HeadlessChrome153, ANGLE AMD Radeon RX9070XT D3D11. navigator.gpu 존재. Mac 장치·Metal·Safari 증거가 아님 |
 | 증거 파일 | `captures/renderer_optin_20260910/boot-report.json` |
+| Production 검증 | https://hell-smoky.vercel.app/game.html 기본·webgpu=0에서 Windows Chrome153 실제 WebGL2 컨텍스트, _useGL=true/_useGPU=false, policy=url-opt-in-20260910 로그 확인, pageerror0. `captures/renderer_optin_20260910/production-boot-report.json`. Mac 실기 증거 아님 |
 | 실기 결과 | Mac Chrome/Safari 미수행. 세로 띠 소멸·실전 이동·전투·FPS 개선을 주장하지 않음 |
 
 ## Mac 실기 비교 절차

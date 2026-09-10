@@ -1,3 +1,12 @@
+## 2026-09-10 WebGL2 비교 버전 Production 재배포 확인
+
+| 항목 | 변경 / 검증 |
+|---|---|
+| 빌드 수정 | Vercel ignore로 제거됐지만 Git 목록에 남은 파일은 existsSync로 제외. 필수5파일 검증 유지. 실제 누락 추적 파일 fixture PASS |
+| 배포 | hell-smoky.vercel.app, dpl_95FTUns7y3nzYwFFCnxX2767e4yr READY. bb67f07 고정 파일5519개 전수 Git blob 대조 후 prebuilt 업로드 |
+| 검증 | 공개 game/index SHA256 일치. Windows Chrome 기본·webgpu=0 실제 WebGL2 컨텍스트와 url-opt-in 시작 로그 확인, pageerror0. 타이틀 HD 영상 HTTP200 |
+| 한계 | Mac Chrome/Safari 세로 띠·이동·전투·FPS 실기 비교 PENDING. [배포 기록](13출시·마케팅/WEB_RENDERER_REDEPLOY_20260910.md) |
+
 ## 2026-09-10 대검전사 컷씬 대사별 부분 스킵
 
 | 항목 | 적용 |

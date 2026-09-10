@@ -12,7 +12,7 @@ const extract=name=>[...nw.match(new RegExp('const '+name+' = \\[([\\s\\S]*?)\\]
 const files=new Set(extract('FILES')),dirs=extract('DIRS');
 const tracked=execFileSync('git',['ls-files','-z'],{maxBuffer:16*1024*1024}).toString().split('\0').filter(Boolean);
 const selected=tracked.filter(p=>(files.has(p)||/^(lang_[^/]+\.js|atlas_[^/]+)$/.test(p)||dirs.some(d=>p.startsWith(d+'/')))
-  &&!p.includes('/_unity_preview/')&&!p.includes('/_p11_candidates/')&&!/\.(zip|blend|psd|kra)$/i.test(p));
+  &&!p.includes('/_unity_preview/')&&!p.includes('/_p11_candidates/')&&!/\.(zip|blend|psd|kra)$/i.test(p)&&existsSync(resolve(root,p)));
 for(const p of ['index.html','game.html','stat-panel-ui.js','localization-runtime.js','video/title_motion_hd.mp4']){
   if(!selected.includes(p))throw new Error('Missing required runtime file: '+p);
 }
