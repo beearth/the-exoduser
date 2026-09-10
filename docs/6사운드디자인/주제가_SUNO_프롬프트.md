@@ -83,7 +83,7 @@ HELL: EXODUSER
   - **index.html 세계관 프롤로그 (2026-09-07 후속 정정)**: `_CIN_BGM_TRACKS` 4곡 랜덤 유지. 문 열림 제스처에서 gain 0.6 시작, v6 영화로 넘어갈 때 같은 곡·Audio·재생 위치 유지, 첫 playing 때 1000ms/50ms 간격으로 gain 0.22까지 선형 감소. loop=true, 영상 음성 gain 1.0. 본편 시작/버퍼링/컷 넘김에 음악 정지·되감기 없음. 명시적 일시정지는 함께 pause/이어 재생, 영화 종료/전체 스킵 시 즉시 pause. [인게임 믹스 계약](../cinematic/WORLD_INTRO_INGAME_20260907.md).
   - **game.html 전쟁 복수 서사**: 전용 BGM `cutscene_warintro`(=`bgm/1장_썩은숲/h0_explore.mp3`, 원래 이 서사용 곡) + 나레이션 보이스(intro_voice.mp3).
     ※ 이에 따라 1장 스테이지 BGM(hell1)은 h0_explore → `Ashes of the Fallen Gate.mp3`로 교체 (2026-07-27, 컷신 곡과 게임 시작 곡 중복 제거)
-  - **game.html 네메시아(여신) 컷신**: `cutscene_prologue` 키 4곡 랜덤 (_pickRandom)
+  - **game.html 네메시아(여신) 컷신**: `cutscene_nemesis` → 사용자 지정 `bgm/공통/네메시아의 강림 V3.mp3` 1곡 고정 (2026-09-10)
   언어 무관(가사 없음).
 - **구 `cutscene_goddess`/`cutscene_goddess_en` 트랙은 미사용 전환** (2026-07-27, 사용자 지시) —
   키·파일은 보존, 복원하려면 `_cutsceneEnd` PRO 분기에서 `BGM.play('cutscene_goddess')` 호출 추가
@@ -91,6 +91,6 @@ HELL: EXODUSER
 
 ### 2026-09-10 대검전사 생성 재생 예외
 
-신규 대검전사 생성 직후 v22는 MP4에 합성한 영어 음성+심연의 탈주 BGM을 재생하고 로비 BGM을 멈춘다. 완료·스킵·미디어 오류 후 신규 캐릭터는 네메시스 INTRO로 이어진다. BGM.fadeOut(300),400ms 후 cutscene_prologue를 재생하며 구 전쟁 _proVoice는 정지한다. INTRO 종료 후 기상 연출과 스테이지 음악을 복구한다. 완료 저장은 바로 플레이하며 구 전쟁 PRO는 명시적 cutscene=1에서만 재생한다. [현재 계약](../cinematic/WARINTRO_CREATION_RUNTIME_20260910.md).
+신규 대검전사 생성 직후 v22는 MP4에 합성한 영어 음성+심연의 탈주 BGM을 재생하고 로비 BGM을 멈춘다. 완료·스킵·미디어 오류 후 신규 캐릭터는 네메시스 INTRO로 이어진다. BGM.fadeOut(300),400ms 후 cutscene_nemesis를 재생하며 구 전쟁 _proVoice는 정지한다. INTRO 종료 후 기상 연출과 스테이지 음악을 복구한다. 완료 저장은 바로 플레이하며 구 전쟁 PRO는 명시적 cutscene=1에서만 재생한다. [현재 계약](../cinematic/WARINTRO_CREATION_RUNTIME_20260910.md).
 
 전사 영상의 음악은 prologue_theme.mp3 처음96.4초를 사용한다. 대사 중 음악을 절반으로 낮추고 부분 스킵에서도 함께 이동한다. [v22 믹스](../cinematic/WARINTRO_BGM_V22_20260910.md).

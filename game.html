@@ -3630,6 +3630,7 @@ const BGM={
       'bgm/cutscene/prologue_theme_abyssal_fracture.mp3', // Abyssal Fracture: The Unbroken Cycle
       'bgm/cutscene/prologue_theme_rebirth_gate_1.mp3', // Broken Rebirth Gate
       'bgm/cutscene/prologue_theme_rebirth_gate_2.mp3'], // Broken Rebirth Gate 2
+    cutscene_nemesis:['bgm/공통/네메시아의 강림 V3.mp3'], // 사용자 확정 네메시스 인트로곡
     cutscene_goddess:['bgm/cutscene/cutscene_goddess_1.mp3','bgm/cutscene/cutscene_goddess_2.mp3'],
     cutscene_goddess_en:['bgm/cutscene/cutscene_goddess_en_1.mp3','bgm/cutscene/cutscene_goddess_en_2.mp3'],
     boss:['bgm/공통/boss.mp3'], finalboss:['bgm/공통/finalboss.mp3'],
@@ -57471,7 +57472,7 @@ function _startIntroCutscene(){
   // 오디오 (2026-07-27 v2): PRO(전쟁 서사) = 주제가 웅장버전 풀(cutscene_prologue) + 나레이션 보이스.
   // (h0_explore(cutscene_warintro)는 1장 느낌이라 제외 — 유저 지시. 키는 보존)
   BGM.fadeOut(300);
-  setTimeout(()=>BGM.play('cutscene_prologue',true),400);
+  setTimeout(()=>{if(_cutsceneState==='INTRO_CUTSCENE')BGM.play(_cutSeq==='INTRO'?'cutscene_nemesis':'cutscene_prologue',true)},400);
   if(_cutSeq==='PRO'){
     try{_proVoice.currentTime=_PRO_VOICE_OFS}catch(e){}
     _proVoice.play().catch(()=>{});
@@ -57506,10 +57507,9 @@ function _cutsceneEnd(){
     _cutLineIdx=0;_cutLineStartMs=performance.now();
     _cutWaitInput=false;_cutsceneIdx=-1;_cutVibDone=false;
     _cutSkipHold=0;_cutSkipHolding=false;
-    // 전쟁 서사 보이스 종료 → 여신 컷신은 주제가 풀 이어감 (재시작 없이 연속 재생, 2026-07-27 v2)
-    // (구 cutscene_goddess/_en 트랙은 미사용 전환. 복원하려면 여기서 BGM.play('cutscene_goddess')로 교체)
+    // 전쟁 서사 보이스 종료 → 사용자 확정 네메시스 주제가 V3로 전환.
     _proVoiceStop();
-    if(BGM._curKey!=='cutscene_prologue')BGM.play('cutscene_prologue',true);
+    if(BGM._curKey!=='cutscene_nemesis')BGM.play('cutscene_nemesis',true);
     return;
   }
   G._cutsceneDone=true;

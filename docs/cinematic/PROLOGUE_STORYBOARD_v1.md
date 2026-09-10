@@ -60,7 +60,7 @@
 - 시청 게이트(`cin_seen`, Supabase 계정 귀속)는 index쪽에 그대로 — 이제 **세계관 프롤로그**를 게이트함
 - warintro 이미지: img/cin_*.png 11장 + emg1.png → assets/cutscene/warintro/ 복사본 (DEMO/EA 동기화 포함)
 - BGM도 맞교환 (2026-07-27): **index 세계관 프롤로그 = 주제가 웅장버전 4곡 랜덤**(_CIN_BGM_TRACKS, bgm/cutscene/prologue_theme*),
-  **game 전쟁 서사 = BGM 무음 + 보이스만**(구 index 방식 그대로), 네메시아 컷신부터 주제가 풀(cutscene_prologue)
+  **game 전쟁 서사 = BGM 무음 + 보이스만**(구 index 방식 그대로), 네메시아 컷신부터 사용자 지정 네메시아의 강림 V3(cutscene_nemesis,2026-09-10)
 
 ## 0. 설계 원칙
 

@@ -31,15 +31,22 @@ test('late previous-character atlas cannot replace the selected character',()=>{
 });
 for(const mode of [{stage:0,done:false,force:false,seq:'INTRO'},{stage:0,done:true,force:false,seq:null},{stage:2,done:false,force:false,seq:null},{stage:0,done:true,force:true,seq:'PRO'}]){
   test('Nemesis entry preserves completed saves and explicit previews '+JSON.stringify(mode),()=>{
-    let voicePlays=0;
+    let voicePlays=0;const music=[];
     const ctx=vm.createContext({console,_bossTestReq:-1,_wantPlateTest:()=>false,_forceCutscene:mode.force,G:{stage:mode.stage,_cutsceneDone:mode.done},P:{},
       _cutSeq:null,_cutsceneState:null,PROLOGUE_LINES:{ko:[]},INTRO_CUTSCENE_LINES:{ko:[]},_getCutsceneImg(){},_proVoiceStop(){},
       setInterval:()=>0,clearInterval(){},setTimeout:fn=>fn(),performance:{now:()=>0},$:()=>null,
-      BGM:{fadeOut(){},play(){},stageKey:()=> 'hell1'},_proVoice:{play(){voicePlays++;return Promise.resolve();}},_PRO_VOICE_OFS:.3});
+      BGM:{fadeOut(){},play:key=>music.push(key),stageKey:()=> 'hell1'},_proVoice:{play(){voicePlays++;return Promise.resolve();}},_PRO_VOICE_OFS:.3});
     vm.runInContext(functions.get('_startIntroCutscene'),ctx);ctx._startIntroCutscene();
     assert.equal(ctx._cutSeq,mode.seq);
     assert.equal(ctx._cutsceneState,mode.seq?'INTRO_CUTSCENE':null);
     assert.equal(voicePlays,mode.force?1:0,'only explicit legacy preview plays old Korean story');
     assert.equal(ctx.G.on,!mode.seq);
+    assert.equal(music.at(-1),mode.seq==='INTRO'?'cutscene_nemesis':mode.seq==='PRO'?'cutscene_prologue':'hell1');
   });
 }
+test('legacy preview switches from war score to Nemesis theme at INTRO',()=>{
+  const music=[];
+  const ctx=vm.createContext({_cutSeq:'PRO',performance:{now:()=>0},_proVoiceStop(){},BGM:{_curKey:'cutscene_prologue',play:key=>music.push(key)}});
+  vm.runInContext(functions.get('_cutsceneEnd'),ctx);ctx._cutsceneEnd();
+  assert.equal(ctx._cutSeq,'INTRO');assert.deepEqual(music,['cutscene_nemesis']);
+});

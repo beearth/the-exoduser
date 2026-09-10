@@ -1,0 +1,17 @@
+{
+  "status": "PASS",
+  "playback": {
+    "sequence": "INTRO",
+    "key": "cutscene_nemesis",
+    "src": "http://127.0.0.1:3333/bgm/공통/네메시아의 강림 V3.mp3",
+    "time": 0.206965,
+    "volume": 0.3,
+    "paused": false,
+    "readyState": 4,
+    "legacyVoicePaused": true
+  },
+  "partial_skip_keeps_music": true,
+  "end_releases_theme": true,
+  "page_errors": [],
+  "real_save_writes": false
+}
