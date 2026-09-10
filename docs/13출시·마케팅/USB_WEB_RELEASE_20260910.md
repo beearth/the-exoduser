@@ -2,6 +2,18 @@
 
 사용자 요청: 전체 커밋·푸시·배포 후 EXODUSER USB에서 바로 실행 가능한 게임 패키지를 전달한다.
 
+## 2026-09-11 FDG 로고 후속 수정
+
+| 항목 | 결과 |
+|---|---|
+| 변경 파일 | index.html: 시작 즉시 3200ms 타이머 → 영상 재생 3.2초/ended 기준 진행, 원본 poster·오류 폴백 3200ms·정체 제한12000ms |
+| USB 갱신 | I:/EXODUSER/package.nw/index.html만 교체. SHA256 f9c4b1ae25126285a93635bda10b862b7c86a45ba643f1c44db4e4e35b96d2fe |
+| USB 직접 검증 | EXODUSER.exe에서 로고 영상1920px·1.413774초·visible=true·fallback=false, 다음 타이틀 재생 PASS. manifest 원복 확인 |
+| 검증 기록 | output/fdg_startup_20260911/usb-copy.json, usb-executable.json, usb-fdg.png. 이하 전체 패키지 크기·해시는 최초 전달 시점 기록 |
+| 웹 산출 | 기존 검증된 prebuilt의 index.html만 동일 파일로 갱신, 한국어 URL용 overrides 유지 |
+
+## 최초 통합 전달
+
 | 항목 | 계약 / 진행 |
 |---|---|
 | 소스 | 로컬 전체 체크포인트0afdbccd5 + 원격 main 통합e4121eab2. 이후 이 문서와 검증 기록 포함 |

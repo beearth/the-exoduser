@@ -368,6 +368,8 @@ body{background:#000 center/cover no-repeat;color:#ccaa88;font-family:'Noto Sans
 .fdg-screen.video-intro{background:#000}
 .fdg-screen.video-intro>*:not(.fdg-video-intro){display:none}
 .fdg-screen.video-intro .fdg-video-intro{display:block}
+.fdg-screen.fdg-fallback{background:#000 url('img/fdg_intro/fdg_reference.png') center/contain no-repeat}
+.fdg-screen.fdg-fallback .fdg-video-intro{visibility:hidden}
 /* 늑대 + 눈 glow */
 .fdg-wolf-wrap{position:relative;width:clamp(80px,min(22vw,18vh),290px);flex-shrink:0}
 .fdg-wolf-emblem{width:100%;height:auto;opacity:0;transition:opacity 1.4s ease-out;display:block}
@@ -482,7 +484,7 @@ body{background:#000 center/cover no-repeat;color:#ccaa88;font-family:'Noto Sans
 
 <!-- FDG SCREEN 2: 늑대 엠블럼 -->
 <div id="fdgScreen" class="fdg-screen" style="display:none">
-  <video id="fdgIntroVideo" class="fdg-video-intro" muted playsinline preload="auto">
+  <video id="fdgIntroVideo" class="fdg-video-intro" muted playsinline preload="auto" poster="img/fdg_intro/fdg_reference.png">
     <source src="video/fdg_intro.mp4" type="video/mp4">
   </video>
   <div class="fdg-wolf-wrap">
@@ -3824,27 +3826,53 @@ function showCharGate(charId,storySeen=false){
 
   // ── SCREEN 2: FDG 영상 인트로 (3.2초) ──
   const FDG_DUR=3200;
+  const FDG_LOAD_TIMEOUT=12000;
   const fdgEl=document.getElementById('fdgScreen');
   const fdgVideo=document.getElementById('fdgIntroVideo');
   const fdgSub=document.getElementById('fdgSubtitle');
   const fdgTitle=document.getElementById('fdgTitle');
   let fdgSteps=[];
+  let fdgTimerId=null,fdgFallback=false,fdgActive=false;
+  function finishFDG(){
+    if(fdgActive&&!done&&phase===1){fdgActive=false;nextPhase()}
+  }
+  function showFDGFallback(){
+    if(!fdgActive||done||phase!==1||fdgFallback)return;
+    fdgFallback=true;
+    clearTimeout(fdgTimerId);
+    fdgVideo.pause();
+    fdgEl.classList.add('fdg-fallback');
+    fdgTimerId=setTimeout(finishFDG,FDG_DUR);
+  }
+  function watchFDGLoading(){
+    if(!fdgActive||fdgFallback)return;
+    clearTimeout(fdgTimerId);
+    fdgTimerId=setTimeout(showFDGFallback,FDG_LOAD_TIMEOUT);
+  }
+  fdgVideo.addEventListener('timeupdate',()=>{
+    if(!fdgActive||fdgFallback)return;
+    if(fdgVideo.currentTime>=FDG_DUR/1000)finishFDG();
+    else watchFDGLoading();
+  });
+  fdgVideo.addEventListener('ended',()=>{if(!fdgFallback)finishFDG()});
+  fdgVideo.addEventListener('error',showFDGFallback);
   function showFDGScreen(){
+    fdgActive=true;fdgFallback=false;
     fdgEl.style.display='';
     fdgEl.classList.add('video-intro');
-    requestAnimationFrame(()=>requestAnimationFrame(()=>{fdgEl.classList.add('active')}));
+    requestAnimationFrame(()=>requestAnimationFrame(()=>{if(fdgActive)fdgEl.classList.add('active')}));
     fdgVideo.currentTime=0;
-    fdgVideo.play().catch(()=>{});
-    console.log('[SPLASH] FDG video intro loaded');
-    fdgTimerId=setTimeout(()=>{if(!done&&phase===1)nextPhase()},FDG_DUR);
+    watchFDGLoading();
+    fdgVideo.play().catch(showFDGFallback);
+    console.log('[SPLASH] FDG video intro requested');
   }
-  let fdgTimerId=null;
   function hideFDGScreen(){
+    fdgActive=false;
     clearTimeout(fdgTimerId);
     fdgSteps.forEach(clearTimeout);fdgSteps=[];
     fdgVideo.pause();
     fdgVideo.currentTime=0;
-    fdgEl.classList.remove('active','fadeout','video-intro');
+    fdgEl.classList.remove('active','fadeout','video-intro','fdg-fallback');
     fdgEl.style.display='none';
     // v2 리셋
     ['fdgAF','fdgAD','fdgAG','fdgXOR','fdgXEAR','fdgXAMERS'].forEach(id=>{const el=document.getElementById(id);if(el)el.classList.remove('on')});

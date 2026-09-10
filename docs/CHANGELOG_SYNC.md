@@ -1,3 +1,13 @@
+## 2026-09-11 FDG 시작 로고 로딩 누락 수정
+
+| 항목 | 결과 |
+|---|---|
+| 원인 | 로딩 시작부터 3200ms 타이머가 흘러 느린 저장장치에서 재생 전 다음 화면으로 진행 |
+| 수정 | 실제 media currentTime 3.2초 또는 ended로 진행. 로딩 poster·실패 시 원본 로고 3200ms 표시, 정체 watchdog 12000ms |
+| 회귀 | FDG·로비 12개 PASS, Chromium 정상/6초 지연/오류/스킵 PASS·pageerror 0 |
+| USB | index.html 교체·SHA256 일치. 실제 EXODUSER.exe에서 FDG 1920px 영상 1.41초 재생 중 가시성·타이틀 전환 확인, 임시 manifest 원복 |
+| 기록 | output/fdg_startup_20260911/local.json, usb-copy.json, usb-executable.json, usb-fdg.png |
+
 ## 2026-09-11 전체 통합본 커밋·푸시·웹 배포·USB 실행본 전달
 
 | 항목 | 결과 |
