@@ -58,7 +58,7 @@ test('standalone cast creates one pillar and eight delayed pillars with one summ
   ctx.activateDarkPillar();
   assert.equal(ctx.G._fireZones.length, 1);
   assert.equal(ctx.G._dpQueue.length, 8);
-  assert.equal(ctx.G._fireZones[0].maxT, 300);
+  assert.equal(ctx.G._fireZones[0].maxT, 600);
   assert.equal(ctx.G._fireZones[0].dmg, 80);
   assert.equal(ctx.G._fireZones[0].r, 125);
   assert.deepEqual(Array.from(ctx.G._dpQueue, q => q.delay), [10,20,30,40,50,60,70,80]);
@@ -67,4 +67,11 @@ test('standalone cast creates one pillar and eight delayed pillars with one summ
   assert.deepEqual(calls.find(c => c[0] === 'sample' && c[1] === 'fire_magic1'), ['sample', 'fire_magic1', .75, 1]);
   assert.equal(calls.filter(c => c[0] === 'sub').length, 0);
   assert.equal(calls.filter(c => c[0] === 'noise').length, 1);
+  const start = html.indexOf('if(G._dpQueue&&G._dpQueue.length>0){');
+  const end = html.indexOf('// ═══ 아이스스톰', start);
+  ctx.sp = 1;
+  for (let frame = 1; frame <= 80; frame++) vm.runInContext(html.slice(start, end), ctx);
+  assert.equal(ctx.G._fireZones.length, 9);
+  assert.equal(ctx.G._dpQueue.length, 0);
+  assert.ok(ctx.G._fireZones.every(zone => zone.maxT === 600 && zone.t === 0), 'every delayed pillar starts its own 10-second lifetime');
 });

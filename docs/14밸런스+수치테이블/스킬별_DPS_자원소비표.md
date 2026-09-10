@@ -124,7 +124,7 @@ DPS_BAL = { bow: 0.77, magic: 0.475, beam: 0.0080 }
 | maliceMortar | 폭풍소환 | MP | 250×DPS (마법할인, key=mortar) | **660f (11초)** | INT 스케일 | 6.5초간 소용돌이, 범위 400+(Lv-1)×18 (1렙400, 20렙742), **흡인력 2.0+Lv×0.1** — lv1=2.1, lv20=4.0, 랩당 +0.1 선형 (2026-05-13 수정), 마우스 조준 클릭 설치 (사거리 1000px) (2026-04-21 범위×2) |
 | plagueBurst | 폭독칼날 | 악의 | **15** 고정 | **900f (15초, 최소10초)** | STR 스케일 | 관통률 **800+(Lv-1)×20 + bowPierce×300 + pPierce×30 +100**, **적중뎀 10% 출혈(무한중첩)**, 전염+처형, 사거리 **2000+(Lv-1)×100** |
 | maliceStorm | 악의폭풍 | MP | 90 추정 | **1200f (20초)** | magicRef × INT × pMagicMul × **_skMul('maliceStorm')** (b:7, g:5.6) × _fuseMul | 3.3tick/s → DPS 23(Lv1)→198(Lv20). 10초 암전나선, 범위 200+(Lv-1)×22 (2026-05-29 밸런스 평균화) |
-| darkPillar | 악의기둥 | MP | mpCost 기반 | **900f (15초)** | INT × (4+(Lv-1)) | 9기둥 5초, 범위 250+(Lv-1)×22, Lv당 뎀+1 |
+| darkPillar | 악의기둥 | MP | mpCost 기반 | **900f (15초)** | INT × (4+(Lv-1)) | 9기둥 각각10초, 범위 250+(Lv-1)×22, Lv당 뎀+1 |
 | blueShot | 푸른비 | MP | **100+1.5×Lv** (110~115) | **300f (5초)** | INT × magicRef × pMagicMul × _skMul('blueShot') (b=4.0, g=3.2) | 50발 순차유도, Lv300 해금. **Lv1=4×, Lv10=18.4×, Lv20=34.4× (g 2배 상향 2026-05-19)** |
 | burstLoop | 버스트루프 | 없음 | 0 | 없음 | INT × (mul+(Lv-1)) mul=1/3/5 | 홀드 차지, 범위 500/700/900px (합체600/800/1000), Lv700, Lv당 뎀+1 |
 | hellRay | 참회 | MP | **100/충전** | **600f (10초)/충전** | magicRef × INT × pMagicMul × pBeamMul × _skMul('hellRay') | 에너지 쐐기, 회전+뎀. ~~증표 시스템 삭제(2026-05-29)~~ |
