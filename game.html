@@ -29849,8 +29849,8 @@ function update(){
     if(P._bdTrigger!=null){
       if(_canBladeDash()&&!(P._seaParalyzed>0)){
         activateBladeDash(P._bdTrigger);
-      }else if(_harpGauge<_HARP_GAUGE_COST[1]){showPH(_T('충전 중...'),'#ff8844')}
-      else if(P.mp<(10+((P.skills.bladeDash||1)-1)*5)){showPH(_T('MP 부족!'),'#4444ff')}
+      }else if(_harpGauge<_HARP_GAUGE_COST[1]*7/10){showPH(_T('충전 중...'),'#ff8844')}
+      else if(P.mp<(10+((P.skills.bladeDash||1)-1)*5)*7/10){showPH(_T('MP 부족!'),'#4444ff')}
       P._bdTrigger=null;
     }
     if(P._ioActive){P.s='iceOrb'} // 얼음보주 안: 모든 행동/이동 차단, 상태 강제 복구
@@ -29949,8 +29949,8 @@ function update(){
     if(P._bdTrigger!=null){
       if(_canBladeDash()&&!(P._seaParalyzed>0)){
         activateBladeDash(P._bdTrigger);
-      }else if(_harpGauge<_HARP_GAUGE_COST[1]){showPH(_T('충전 중...'),'#ff8844')}
-      else if(P.mp<(10+((P.skills.bladeDash||1)-1)*5)){showPH(_T('MP 부족!'),'#4444ff')}
+      }else if(_harpGauge<_HARP_GAUGE_COST[1]*7/10){showPH(_T('충전 중...'),'#ff8844')}
+      else if(P.mp<(10+((P.skills.bladeDash||1)-1)*5)*7/10){showPH(_T('MP 부족!'),'#4444ff')}
       P._bdTrigger=null;
     }
     // 회전참: 이동 80%, ST 지속소모, 15f마다 360도 히트
@@ -30562,8 +30562,8 @@ function update(){
     if(P._bdTrigger!=null){
       if(_canBladeDash()&&!(P._seaParalyzed>0)){
         activateBladeDash(P._bdTrigger);
-      }else if(_harpGauge<_HARP_GAUGE_COST[1]){showPH(_T('충전 중...'),'#ff8844')}
-      else if(P.mp<(10+((P.skills.bladeDash||1)-1)*5)){showPH(_T('MP 부족!'),'#4444ff')}
+      }else if(_harpGauge<_HARP_GAUGE_COST[1]*7/10){showPH(_T('충전 중...'),'#ff8844')}
+      else if(P.mp<(10+((P.skills.bladeDash||1)-1)*5)*7/10){showPH(_T('MP 부족!'),'#4444ff')}
       P._bdTrigger=null;
     }
     if(!isHeld('parry')||P.mp<=0){
@@ -30925,8 +30925,8 @@ function update(){
     if(P._bdTrigger!=null){
       if(_canBladeDash()&&!(P._seaParalyzed>0)){
         activateBladeDash(P._bdTrigger);
-      }else if(_harpGauge<_HARP_GAUGE_COST[1]){showPH(_T('충전 중...'),'#ff8844')}
-      else if(P.mp<(10+((P.skills.bladeDash||1)-1)*5)){showPH(_T('MP 부족!'),'#4444ff')}
+      }else if(_harpGauge<_HARP_GAUGE_COST[1]*7/10){showPH(_T('충전 중...'),'#ff8844')}
+      else if(P.mp<(10+((P.skills.bladeDash||1)-1)*5)*7/10){showPH(_T('MP 부족!'),'#4444ff')}
       P._bdTrigger=null;
     }
     const _isOmni=!!(P.skills.omniBeam&&P.skills.fanShot&&_isFused('sixFuse'));
@@ -40615,7 +40615,7 @@ const SKILL_LIST=[
   {id:'chargeBoost',name:'사슬기동:충돌',cat:'move',desc:'STR 스케일. 3회 충전 + Lv3마다 사거리 1단계↑(최대4단). 이동 중 무적, 통과 적에 데미지+그로기 (쿨 5초)',descEn:'STR scale. 3 stocks + range tier up every Lv3 (max 4). Invincible while moving, DMG+groggy on pass-through (CD 5s)',spCost:10,matCost:100,up:true,upSp:5,upMat:0},
   {id:'magicBlink',name:'사슬기동:화염',cat:'move',desc:'INT 스케일. 이동 경로에 화염길 생성(3초 DOT). 통과 적 화상. MP 소모. 합체 시 착지 폭발',descEn:'INT scale. Fire trail on dash path (3s DOT). Burns passed enemies. MP cost. Fuse: landing explosion',spCost:10,matCost:100,up:true,upSp:5,upMat:0},
   {id:'ghostWalk',name:'뇌전걸음',cat:'def',act:true,emoji:'⚡',desc:'5초간 유령화 — 무적+이동. 통과한 적/탄막 수만큼 종료 시 암전 폭발(+10%/회) + 전기줄기 방사(3회 체인). 카운트 캡=Lv×5(최대50). 쿨 20초. Lv당 뎀+15% 범위+10',descEn:'5s ghost form — invincible+move. Blackout explosion on end (+10%/enemy passed) + lightning arc (3 chains). Count cap=Lv×5 (max 50). CD 20s. Per Lv DMG+15% range+10',spCost:10,matCost:100,cd:1200,up:true,upSp:5,upMat:0},
-  {id:'bladeDash',name:'전격이동',cat:'move',desc:'[이동기] 방향키 더블탭으로 발동. 경직/기절 중에도 탈출 가능. 500유닛 순간이동, 무적(15프레임). MP(10+Lv×5) + 공용 기동게이지 1칸(최소 Shift 탭 1회분)을 소모한다. 기본 기동게이지 5칸, Shift 사슬과 공유. 착지 시 전류장판(10초+Lv×0.5초): INT 틱뎀 + 방어력↓(1렙10%, 렙당+5%, 캡50%)',descEn:'[Mobility] Double-tap to activate. Escapes stagger/stun. 500-unit blink, invincible 15f. Costs MP(10+Lv×5) plus one shared mobility-gauge cell (one minimum Shift tap). Base gauge has 5 cells and is shared with Shift chain. Landing shock field(10s+Lv×0.5s): INT tick DMG + DEF↓(Lv1=10%, +5%/Lv, cap 50%)',spCost:10,matCost:60,up:true,upSp:6,upMat:0},
+  {id:'bladeDash',name:'전격이동',cat:'move',desc:'[이동기] 방향키 더블탭으로 발동. 경직/기절 중에도 탈출 가능. 500유닛 순간이동, 무적(15프레임). MP[(10+(Lv-1)×5)×0.7] + 공용 기동게이지 0.7칸(31.5)을 소모한다. 기본 기동게이지 5칸, Shift 사슬과 공유. 착지 시 전류장판(10초+Lv×0.5초): INT 틱뎀 + 방어력↓(1렙10%, 렙당+5%, 캡50%)',descEn:'[Mobility] Double-tap to activate. Escapes stagger/stun. 500-unit blink, invincible 15f. Costs MP[(10+(Lv-1)×5)×0.7] plus 0.7 shared mobility-gauge cells (31.5). Base gauge has 5 cells and is shared with Shift chain. Landing shock field(10s+Lv×0.5s): INT tick DMG + DEF↓(Lv1=10%, +5%/Lv, cap 50%)',spCost:10,matCost:60,up:true,upSp:6,upMat:0},
   {id:'kiSlash',name:'기검참',cat:'phys',desc:'좌클 스킬: 기본공격에 3단 콤보 초승달 검기 추가. ST 10+Lv당2. Lv당 뎀+10% 거리+15px',descEn:'LMB skill: adds 3-hit crescent ki blade combo to basic attack. ST 10+2/Lv. Per Lv DMG+10% range+15px',spCost:10,matCost:0,up:true,upSp:5,upMat:0,default:true},
   {id:'fireball',name:'악의구',cat:'magic',desc:'[기본: E] 어둠 마법 오브 발사. 범위폭발. 넉백 0.5%. Lv당 크기+50% (뎀은 _skMul 계수 적용)',descEn:'[Default: E] Dark magic orb fired. AoE explosion. Knockback 0.5%. Per Lv size+50% (DMG uses _skMul)',spCost:10,matCost:0,up:true,upSp:5,upMat:0,default:true},
   {id:'whirlwind',name:'회전참',cat:'phys',desc:'무기 홀드 → 전진 회전 공격. 360도 광역, ST 지속소모. Lv당 범위+5 뎀+5%',descEn:'Hold weapon → forward spin attack. 360° AoE, continuous ST drain. Per Lv range+5 DMG+5%',spCost:10,matCost:100,up:true,upSp:5,upMat:0},
@@ -41697,7 +41697,7 @@ function activateNeedleShot(){
   addTxt(P.x,P.y-30,_T('🪡 바늘출!'),'#ccddff',35);shake(2);
 }
 // ═══ 전격이동 — Shift 사슬과 공용 기동게이지 1칸을 소비 ═══
-function _canBladeDash(){return !!(P&&P.skills&&P.skills.bladeDash>=1&&_harpGauge>=_HARP_GAUGE_COST[1]&&P.mp>=(10+((P.skills.bladeDash||1)-1)*5))}
+function _canBladeDash(){return !!(P&&P.skills&&P.skills.bladeDash>=1&&_harpGauge>=_HARP_GAUGE_COST[1]*7/10&&P.mp>=(10+((P.skills.bladeDash||1)-1)*5)*7/10)}
 function _tickBladeDash(sp){
     // 칼날이동: 직선 대시 (12프레임, 무적)
     P.iframes=Math.max(P.iframes,3);
@@ -41768,9 +41768,9 @@ function activateBladeDash(dir){
   if(dir===0||dir===1){if(isAct('left'))_bdDx=-1;else if(isAct('right'))_bdDx=1}
   if(dir===2||dir===3){if(isAct('up'))_bdDy=-1;else if(isAct('down'))_bdDy=1}
   const _bdAng=Math.atan2(_bdDy,_bdDx);
-  const _bdCost=10+((P.skills.bladeDash||1)-1)*5; // 1렙10, 10렙55
-  const _bdGaugeCost=_HARP_GAUGE_COST[1];
-  if(_harpGauge<_bdGaugeCost)return;
+  const _bdCost=(10+((P.skills.bladeDash||1)-1)*5)*7/10; // 30% 감소: 1렙7, 10렙38.5
+  const _bdGaugeCost=_HARP_GAUGE_COST[1]*7/10; // Shift 1칸의70%=31.5
+  if(P.mp<_bdCost||_harpGauge<_bdGaugeCost)return;
   P.mp-=_bdCost;if(P.mp<0)P.mp=0;
   _harpGauge=Math.max(0,_harpGauge-_bdGaugeCost);
   const _bdCells=Math.floor(_harpGauge/_bdGaugeCost),_bdMaxCells=Math.floor(_HARP_GAUGE_MAX/_bdGaugeCost);

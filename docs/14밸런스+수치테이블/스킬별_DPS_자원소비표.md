@@ -64,7 +64,7 @@ DPS_BAL = { bow: 0.77, magic: 0.475, beam: 0.0080 }
 |---|---|---|---|---|---|---|
 | chargeBoost | 사슬기동:충돌 | ST | 10×1=10 → 10×10=100 (물리할인) | 3회 충전식 | STR × meleeRef × pAtkMul | 충전 3회, 이동중 무적, 관통뎀+그로기 |
 | magicBlink | 사슬기동:화염 | MP | 10×1=10 → 10×10=100 (마법할인) | 없음 | INT × magicRef × pMagicMul | 경로 화염길 3초 DOT, 합체 시 착지폭발 |
-| bladeDash | 전격이동 | MP | 10+(Lv-1)×5 (1렙10, 10렙55) | 1렙10스택, 렙당+1. 쿨 300f→Lv당-18f(최소120f=2초). 1렙5초 | magicRef × INT × pMagicMul × **_skMul('bladeDash')** (b:10, g:6) 틱뎀 | 3tick/s → DPS 30(Lv1)→122(Lv20). 착지 전류장판 반경 캡200px (120+Lv×5). VFX: Power Lightning 스프라이트. (50% 너프 2026-06-11) |
+| bladeDash | 전격이동 | MP + 기동게이지 | MP (10+(Lv−1)×5)×7/10 (1렙7, 10렙38.5), 기동게이지31.5 | 공용게이지 회복, 전용 스톡/재충전 없음 | magicRef × INT × pMagicMul × **_skMul('bladeDash')** (b:10, g:6) 틱뎀 | 3tick/s → DPS 30(Lv1)→122(Lv20). 착지 전류장판 반경 캡200px (120+Lv×5). VFX: Power Lightning 스프라이트. (50% 너프 2026-06-11) |
 | chainAssault | 기동불꽃 | MP | mpCost('dimBreach') | 없음 (이동 중) | INT × _skMul('chainAssault') × **티어3단계(×30/×60/×100)** | 착지 화염폭발, 3티어=업화선 2.5초 차징급. 불바닥을 여러 개 쌓은 뒤 충돌 스킬(기동파괴) 또는 분노 스킬(지옥강타 1)로 일괄 기폭 가능. 천공쇄기 착탄은 활성 `assaultFlame` 전량을 기존 총피해 공식 그대로 즉시 기폭(추가 비용 없음) |
 | chainSlam | 기동파괴 | ST + 악의20 | stCost('giantSlam') | 없음 (이동 중) | STR × _skMul('chainSlam') × **티어3단계(×2/×5/×8)** | 보스 체간 대량삭감, 지옥강타 1급 데미지 (2026-05-30 재조정) |
 | chainSlash | 기동칼날개 | 없음 | 0 | 없음 (이동 중) | STR 물리 | 전방 광역 베기+출혈, 다단히트 (레벨제한 없음) |

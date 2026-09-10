@@ -53,7 +53,7 @@ test('blade movement preserves E charge and continues through release to its lan
   assert.equal(ctx.P.st2,20,'movement timer must not consume the E parry window');
   assert.ok(Math.abs(ctx.P.x-500)<1e-6);
   assert.equal(ctx.G._fireZones.length,1);
-  assert.equal(ctx.P.mp,90);
+  assert.equal(ctx.P.mp,93);
 });
 
 test('E physical projectile parries remain active during movement invulnerability', () => {

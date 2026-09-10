@@ -799,7 +799,7 @@ const HUD_ICON = {
 | id / DOM | 한글명 | 위치·색상 | 갱신 원본·공식 | 표시 규칙 | 적용 위치 |
 |---|---|---|---|---|---|
 | `shieldRing` | 에너지 쉴드 링 | 좌측 HP 오브 외곽, 파랑 `#3399ff` | `shPct = clamp(P.shield / P.mshield × 100)` | `P.mshield > 0`일 때만 `conic-gradient`로 잔량을 표시. 0이면 링을 숨긴다. | `#globeHP > .globe-ring-wrap`, `updateHUD()` |
-| `mobilityRing` + `mobilityRingTicks` | 공용 기동게이지 링 | 우측 MP/SP 오브 외곽, 노랑 `#ffcc33` / `rgba(255,204,51,.95)` | 채움: `mobilityPct = clamp(_harpGauge / _HARP_GAUGE_MAX, 0, 1) × 100`; 구분선: `shiftCellDeg = 360 × _HARP_GAUGE_COST[1] / _HARP_GAUGE_MAX` | Shift 사슬기동과 방향키 더블탭 전격이동이 같은 게이지를 소비한다. `mobilityRingTicks`가 1단 탭 코스트(45)마다 간격을 내며, **한 칸은 최소 사슬 이동거리 또는 전격이동 1회**를 뜻한다. 기본 5칸(225)이며, 게이지가 0이면 채움 링을 숨기고 빈 트랙과 구분선은 유지한다. | `#globeMP > .globe-ring-wrap`, `updateHUD()` |
+| `mobilityRing` + `mobilityRingTicks` | 공용 기동게이지 링 | 우측 MP/SP 오브 외곽, 노랑 `#ffcc33` / `rgba(255,204,51,.95)` | 채움: `mobilityPct = clamp(_harpGauge / _HARP_GAUGE_MAX, 0, 1) × 100`; 구분선: `shiftCellDeg = 360 × _HARP_GAUGE_COST[1] / _HARP_GAUGE_MAX` | Shift 사슬기동과 방향키 더블탭 전격이동이 같은 게이지를 소비한다. `mobilityRingTicks`가 1단 탭 코스트(45)마다 간격을 내며, **한 칸은 최소 사슬 이동거리 1회(45), 전격이동은 0.7칸(31.5)**를 뜻한다. 기본 5칸(225)이며, 게이지가 0이면 채움 링을 숨기고 빈 트랙과 구분선은 유지한다. | `#globeMP > .globe-ring-wrap`, `updateHUD()` |
 | `stFill`, `stCur`, `stMax` | SP 수치·수위 | 우측 오브의 오른쪽 반, 초록 | `P.st / P.mst` | 기존 수위·숫자 표기는 유지한다. 노란 사슬기동 링은 ST와 독립된 기존 `_harpGauge` 보조표시다. | `#globeMP`, `updateHUD()` |
 
 - 공통 링은 오브의 붉은 프레임 가장자리 안쪽(`inset: 11px`)에 두고, 글라스 레이어 위(`z-index: 33`)에 렌더한다.
