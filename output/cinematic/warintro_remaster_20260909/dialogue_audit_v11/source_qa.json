@@ -1,0 +1,94 @@
+{
+  "w08_witness": {
+    "duration": 8.041667,
+    "frames": 193,
+    "fps": "24/1",
+    "width": 1916,
+    "height": 1080,
+    "bytes": 10845179,
+    "sha256": "a3c9d734bed714e9cd73e317be5fcaecd4346d8fe6de4501eceaa7f25d2bfb4d",
+    "decode": "PASS",
+    "sample_times": [
+      0,
+      0.5,
+      1,
+      2,
+      3,
+      4,
+      5,
+      6,
+      7.3
+    ],
+    "visual_review": "9 samples reviewed: servant notices door then lowers gaze by 6s; adult household remains inactive. Woman looks away then back, so all three prescribed aversion timings were not achieved. No claim of exactly 31 visible people.",
+    "realtime_review": false
+  },
+  "w13_countless": {
+    "duration": 7.041667,
+    "frames": 169,
+    "fps": "24/1",
+    "width": 1916,
+    "height": 1080,
+    "bytes": 22170388,
+    "sha256": "f1614bd4e0ae2708e3bc6d1d6c321b46ea5db93cfd1deab7ebb4d2c914e0796f",
+    "decode": "PASS",
+    "sample_times": [
+      0,
+      0.8,
+      1.6,
+      2.4,
+      3.2,
+      4,
+      4.8,
+      5.6,
+      6.45
+    ],
+    "visual_review": "9 samples reviewed: chained prison, cages, abyss and a widening view. Captive silhouettes remain small relative to architecture. Space is improved; countless avengers meaning remains RETOUCH.",
+    "realtime_review": false
+  },
+  "w12_fall": {
+    "duration": 5.041667,
+    "frames": 121,
+    "fps": "24/1",
+    "width": 1916,
+    "height": 1080,
+    "bytes": 13072305,
+    "sha256": "0b9f6157c5dd547a8853134ffa06882486ac29ffd13e6f9d99215b202641c272",
+    "decode": "PASS",
+    "sample_times": [
+      0,
+      0.4,
+      0.8,
+      1.2,
+      1.6,
+      2.2,
+      3,
+      3.6,
+      4.45
+    ],
+    "visual_review": "9 samples reviewed: airborne at 0/0.4s, feet contact by 0.8s, crouch then rises by 3s. Downward arrival is visible; sword appears rigid in samples, not a frame-by-frame anatomy guarantee.",
+    "realtime_review": false
+  },
+  "w14_arrival": {
+    "duration": 6.041667,
+    "frames": 145,
+    "fps": "24/1",
+    "width": 1916,
+    "height": 1080,
+    "bytes": 10228368,
+    "sha256": "cfd6528df73753fafb96ac4724c6f2195765cd2498d50d4123b805e01f1b22ec",
+    "decode": "PASS",
+    "sample_times": [
+      0,
+      0.5,
+      1,
+      1.5,
+      2,
+      2.5,
+      3.5,
+      4.5,
+      5.4
+    ],
+    "visual_review": "9 samples reviewed: airborne initially, feet on floor by 1.5s, kneels by 2s, looks around. Two seated adults observe. Landing later than requested 1.4s but inside corresponding narration.",
+    "realtime_review": false
+  }
+}

@@ -1,0 +1,44 @@
+{
+  "receipts": [
+    {
+      "file": "final.mp4",
+      "duration": 103.5,
+      "frames": 6210,
+      "bytes": 85571852,
+      "sha256": "3aa747b902f133e6ec3f2460db7a70d4263cd7edf51bd8276aac70bea5566f0b",
+      "audio_codec": "aac",
+      "audio_channels": 2,
+      "decode": "PASS"
+    },
+    {
+      "file": "ending.mp4",
+      "duration": 14.0,
+      "frames": 840,
+      "bytes": 11819620,
+      "sha256": "0be4fa5cdb73a06b558a59b02e5f78fdc63ec7fd7c85ab0d503c5270096dea6d",
+      "audio_codec": "aac",
+      "audio_channels": 2,
+      "decode": "PASS"
+    }
+  ],
+  "audio_correlation": 0.9999747335230069,
+  "digital_gap_rms": 0.0,
+  "contact_times": [
+    39,
+    41,
+    43,
+    45,
+    66,
+    68,
+    71.8,
+    74,
+    77.3,
+    79.5,
+    100.2,
+    101.5
+  ],
+  "visual_review": "12 final contact frames reviewed. W08 living witnesses, W12 descent/landing, W14 new soul arrival and final vocative are present. W13 captive silhouettes remain small. Not full realtime playback or listening approval.",
+  "realtime_review": false,
+  "listening_review": false,
+  "status": "FIRST_REVISION_FOR_REVIEW; W09/W10 unresolved, W13 scale needs retouch"
+}

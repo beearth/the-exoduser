@@ -1,0 +1,141 @@
+{
+  "provider": "Higgsfield",
+  "model": "Cinema Studio 2.5",
+  "resolution": "1080p",
+  "audio": false,
+  "output_count_per_request": 1,
+  "prompt_file": "video_prompts.md",
+  "editor_cleared_and_exact_text_checked": true,
+  "displayed_credits_total": 40,
+  "actual_billing_verified": false,
+  "requests": [
+    {
+      "name": "w08_witness",
+      "requested_seconds": 8,
+      "displayed_credits": 12,
+      "upload_id": "890cc231-8fd6-4cd5-b1c3-e35c7fbf30c9",
+      "asset_id": "54539183-8fb2-4085-a8a9-da9b21888433",
+      "file": "w08_witness.mp4",
+      "status": "downloaded_and_sample_reviewed",
+      "qa": {
+        "duration": 8.041667,
+        "frames": 193,
+        "fps": "24/1",
+        "width": 1916,
+        "height": 1080,
+        "bytes": 10845179,
+        "sha256": "a3c9d734bed714e9cd73e317be5fcaecd4346d8fe6de4501eceaa7f25d2bfb4d",
+        "decode": "PASS",
+        "sample_times": [
+          0,
+          0.5,
+          1,
+          2,
+          3,
+          4,
+          5,
+          6,
+          7.3
+        ],
+        "visual_review": "9 samples reviewed: servant notices door then lowers gaze by 6s; adult household remains inactive. Woman looks away then back, so all three prescribed aversion timings were not achieved. No claim of exactly 31 visible people.",
+        "realtime_review": false
+      }
+    },
+    {
+      "name": "w12_fall",
+      "requested_seconds": 5,
+      "displayed_credits": 8,
+      "upload_id": "09c49914-93fe-4082-b491-1a156dbb327f",
+      "asset_id": "6617060f-e5af-4a92-913c-c1a753bf6ef3",
+      "file": "w12_fall.mp4",
+      "status": "downloaded_and_sample_reviewed",
+      "qa": {
+        "duration": 5.041667,
+        "frames": 121,
+        "fps": "24/1",
+        "width": 1916,
+        "height": 1080,
+        "bytes": 13072305,
+        "sha256": "0b9f6157c5dd547a8853134ffa06882486ac29ffd13e6f9d99215b202641c272",
+        "decode": "PASS",
+        "sample_times": [
+          0,
+          0.4,
+          0.8,
+          1.2,
+          1.6,
+          2.2,
+          3,
+          3.6,
+          4.45
+        ],
+        "visual_review": "9 samples reviewed: airborne at 0/0.4s, feet contact by 0.8s, crouch then rises by 3s. Downward arrival is visible; sword appears rigid in samples, not a frame-by-frame anatomy guarantee.",
+        "realtime_review": false
+      }
+    },
+    {
+      "name": "w13_countless",
+      "requested_seconds": 7,
+      "displayed_credits": 11,
+      "upload_id": "acca6189-29b5-4f93-85bd-7937e866c8d9",
+      "asset_id": "1b437c6e-1a49-4124-8ed3-4235e408a674",
+      "file": "w13_countless.mp4",
+      "status": "downloaded_and_sample_reviewed",
+      "qa": {
+        "duration": 7.041667,
+        "frames": 169,
+        "fps": "24/1",
+        "width": 1916,
+        "height": 1080,
+        "bytes": 22170388,
+        "sha256": "f1614bd4e0ae2708e3bc6d1d6c321b46ea5db93cfd1deab7ebb4d2c914e0796f",
+        "decode": "PASS",
+        "sample_times": [
+          0,
+          0.8,
+          1.6,
+          2.4,
+          3.2,
+          4,
+          4.8,
+          5.6,
+          6.45
+        ],
+        "visual_review": "9 samples reviewed: chained prison, cages, abyss and a widening view. Captive silhouettes remain small relative to architecture. Space is improved; countless avengers meaning remains RETOUCH.",
+        "realtime_review": false
+      }
+    },
+    {
+      "name": "w14_arrival",
+      "requested_seconds": 6,
+      "displayed_credits": 9,
+      "upload_id": "15fdf437-213a-44f8-9bb7-8473b607e2f1",
+      "asset_id": "6ab06864-8783-419b-858d-5a4c31540782",
+      "file": "w14_arrival.mp4",
+      "status": "downloaded_and_sample_reviewed",
+      "qa": {
+        "duration": 6.041667,
+        "frames": 145,
+        "fps": "24/1",
+        "width": 1916,
+        "height": 1080,
+        "bytes": 10228368,
+        "sha256": "cfd6528df73753fafb96ac4724c6f2195765cd2498d50d4123b805e01f1b22ec",
+        "decode": "PASS",
+        "sample_times": [
+          0,
+          0.5,
+          1,
+          1.5,
+          2,
+          2.5,
+          3.5,
+          4.5,
+          5.4
+        ],
+        "visual_review": "9 samples reviewed: airborne initially, feet on floor by 1.5s, kneels by 2s, looks around. Two seated adults observe. Landing later than requested 1.4s but inside corresponding narration.",
+        "realtime_review": false
+      }
+    }
+  ]
+}
