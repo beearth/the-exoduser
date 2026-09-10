@@ -1,0 +1,25 @@
+{
+  "source": "shadow_v12/w09_shadow.mp4",
+  "source_sha256": "9dd27eea25b4403e446d89ec8817308dc370bd61bcc9d0fe344b2271d30daadd",
+  "source_frames": [
+    0,
+    24
+  ],
+  "source_range": [
+    0,
+    1
+  ],
+  "normal_motion": [
+    46,
+    47
+  ],
+  "held_frame_index_24fps": 23,
+  "hold_range": [
+    47,
+    50.5
+  ],
+  "hold_duration": 3.5,
+  "output_frames": 270,
+  "rejected": "shadow_one_v18/source.mp4",
+  "new_generation": false
+}

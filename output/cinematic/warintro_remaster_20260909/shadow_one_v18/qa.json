@@ -40,5 +40,6 @@
   "visual_review": "합본12표본에서46.7초 단일 검격·48.2초 한 명만 하강·49~50.3초 두 명 기립과 전사 정지·50.5초 다음 컷 전환 확인.60.6초 가족 회상·88.5초 네메시스 전환·99.5초 마지막 호명 유지 확인",
   "realtime_review": false,
   "listening_review": false,
-  "status": "ONE_SHADOW_EDIT_FOR_REVIEW"
+  "status": "REJECTED_BY_USER",
+  "rejection": "User required trimming old v12 footage; v18 newly generated hit looked like blunt club impact."
 }

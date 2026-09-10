@@ -1,0 +1,18 @@
+{
+  "receipts": [
+    {
+      "file": "w09_flash.mp4",
+      "frames": 60,
+      "decode": "PASS",
+      "sha256": "426024cc59a9b9e2880b53099eba9a7f9250119a49227227cf1d77eadbec8eca"
+    },
+    {
+      "file": "w09_return.mp4",
+      "frames": 210,
+      "decode": "PASS",
+      "sha256": "bf2df5926a002a977a13ada83464af248458f1eb8f0ad31bf01f48738c647cdc"
+    }
+  ],
+  "freeze_padding": false,
+  "visual_review": "원래 v12 첫 타격3표본과 기존 전사3표본 확인. 한 명 하강 뒤 두 명 남은 원본0.8초 구도,47초부터 움직이는 전사로 전환. 정지 연장 없음."
+}

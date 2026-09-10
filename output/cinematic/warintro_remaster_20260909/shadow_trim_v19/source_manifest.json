@@ -1,0 +1,27 @@
+{
+  "source": "shadow_v12/w09_shadow.mp4",
+  "source_range": [
+    0,
+    1
+  ],
+  "shadow_range": [
+    46,
+    47
+  ],
+  "shadow_frames": 60,
+  "following_source": "realism_v7/w10c.mp4",
+  "following_source_range": [
+    0,
+    3.5
+  ],
+  "following_range": [
+    47,
+    50.5
+  ],
+  "following_frames": 210,
+  "freeze_padding": false,
+  "new_generation": false,
+  "rejected": "shadow_one_v18/source.mp4",
+  "abandoned_hold": "w09_one.mp4 retained as unused draft",
+  "audio": "v17 unchanged; narration continues over existing warrior"
+}

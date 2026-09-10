@@ -1,0 +1,43 @@
+{
+  "receipts": [
+    {
+      "file": "final.mp4",
+      "duration": 102.5,
+      "frames": 6150,
+      "bytes": 91078780,
+      "sha256": "9040b74420528e141c74bf8931791d4334f625a8969c94b8d632a8fd73f02dc1",
+      "audio_codec": "aac",
+      "audio_channels": 2,
+      "decode": "PASS"
+    },
+    {
+      "file": "ending.mp4",
+      "duration": 14.0,
+      "frames": 840,
+      "bytes": 11835068,
+      "sha256": "94212da66da2f36610978b922e47b08e927bb70622e588eaa6956f731a4b0870",
+      "audio_codec": "aac",
+      "audio_channels": 2,
+      "decode": "PASS"
+    }
+  ],
+  "audio_correlation": 0.9999749677541441,
+  "digital_gap_rms": 0.0,
+  "contact_times": [
+    46.1,
+    46.4,
+    46.8,
+    46.98,
+    47.02,
+    47.5,
+    49,
+    50.3,
+    50.51,
+    60.6,
+    88.51,
+    99.5
+  ],
+  "visual_review": "12표본에서46~47초 원래 그림자 첫 타격 뒤47.02초 움직이는 전사로 즉시 전환,정지 없음,대사 이어짐 확인. 앞 회상·후반 전투 단축·마지막 호명 유지",
+  "realtime_review": false,
+  "listening_review": false
+}
