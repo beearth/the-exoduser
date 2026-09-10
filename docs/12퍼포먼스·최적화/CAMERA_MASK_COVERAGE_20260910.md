@@ -21,6 +21,7 @@
 | GPU 캐시 검사 | WebGL2/WebGPU 업로드 함수를 실제 소스에서 추출. GPU 저장만 Canvas 픽셀 스냅샷으로 대체해 픽셀 동일성·정지 시 재업로드 억제 검사 |
 | 기존 회귀 | lightingTextureFreshness 6 + webglDynamicTexReuse 3 + rendererOptIn 11 + atmosRayIsolation 2, 신규 포함 총 33건 PASS |
 | 실제 Windows Chrome 게임 | RX 9070 XT / WebGL2 / 1440×900 / 동일 초기 seed, 대각선 이동 6초. 전후 pageerror 0, ray 0, 토치 할당 true→false |
+| 실제 공개 서비스 | 배포 game SHA256 일치, WebGL2 실제 실행·WebGPU false·ray0·토치 미할당·이동 중 pageerror0. `captures/renderer_optin_20260910/camera-mask-live.json`, `camera-mask-game-live.png`. Mac 실기 테스트 아님 |
 | Windows 참고 시간 | 평균 draw 약 .854→.837ms, 조명 .028→.051ms, 토치 .018→.0005ms. headless rAF 약237Hz. 단일 초기 장면 참고치로 Mac FPS나 전투 전체 성능 보장 아님 |
 | 증거 | `captures/renderer_optin_20260910/camera-mask-game.json`, `camera-mask-game-before.png`, `camera-mask-game-after.png`, `camera-mask-benchmark.json` |
 | 비용 | 이동 중 조명 갱신은 최대 매 렌더 프레임. 불투명도 0 토치는 생략. Mac에서 비용 상쇄·FPS 개선 여부는 추가 측정 필요 |
@@ -38,6 +39,6 @@
 | CAMERA QA | 빠른 이동 필터 검사. START 외 맵 camera board는 범위 밖 |
 | TECH QA | 캐시 픽셀·갱신 주기·GPU 전달, 로컬 pageerror 0. route/collision/loading 제작 변경 없음, Mac FPS 미확인 |
 | FILES | game.html, lightingCameraCoverage.test.js, 관련 그래픽·최적화 문서. 타 작업 CHANGELOG/guard 수정은 보존 |
-| GIT | 배포 검증 후 기록 |
+| GIT | 수정 `254ef6f7d754acf34c1355705ca6b83b7deda21e` 커밋, main/작업 브랜치 push. `dpl_4TmCKo2h7UzEyE9hbMrH5UEXTr2B` READY, the-exoduser.vercel.app alias. 배포 game SHA256 `da4dc9418562c79e20657925f186180967e0f423edc55570a558952f043ead2e` |
 | VISUAL VERDICT | RETOUCH — Mac 실기 재확인 필요 |
 | NEXT PASS | 동일 Mac에서 빠른 이동·전투 시 필터 경계와 FPS 비교 |
