@@ -1,7 +1,7 @@
 import json
 from pathlib import Path
 from playwright.sync_api import sync_playwright
-O=Path('G:/exoduser/output/cinematic/character_story_runtime_20260910');O.mkdir(exist_ok=True)
+O=Path('G:/exoduser/output/cinematic/character_story_direct_play_20260910');O.mkdir(exist_ok=True)
 with sync_playwright() as p:
     browser=p.chromium.launch(headless=True)
     page=browser.new_page(viewport={'width':1280,'height':720})
@@ -32,10 +32,13 @@ with sync_playwright() as p:
     result=dict(status='PASS',creation_writes=len(writes),playback=state,skip_destination=page.url,page_errors=errors,save_isolation='API responses mocked only in isolated browser; real media served by project server')
     page.unroute('**/game.html?*')
     page.goto(result['skip_destination'],wait_until='domcontentloaded',timeout=60000)
-    page.wait_for_function("typeof _cutSeq!=='undefined' && _cutSeq==='INTRO' && _cutsceneState==='INTRO_CUTSCENE'",timeout=60000)
-    result['game_handoff']=page.evaluate("({sequence:_cutSeq,oldVoicePaused:_proVoice.paused,charIdx:_charIdx,stage:G.stage,gameRunning:G.on})")
-    assert result['game_handoff']['oldVoicePaused'] and result['game_handoff']['charIdx']==0,result
-    page.screenshot(path=str(O/'game_goddess_handoff.png'))
+    page.wait_for_function("typeof G!=='undefined' && G.on && G._cutsceneDone && _cutsceneState===null",timeout=60000)
+    result['game_handoff']=page.evaluate("({cutscene:_cutsceneState,oldVoicePaused:_proVoice.paused,charIdx:_charIdx,stage:G.stage,gameRunning:G.on,wakeupIntro:!!G._intro})")
+    assert result['game_handoff']['oldVoicePaused'] and result['game_handoff']['charIdx']==0 and not result['game_handoff']['wakeupIntro'],result
+    page.screenshot(path=str(O/'game_direct_play.png'))
+    page.goto(result['skip_destination'].replace('&story=warrior-v21',''),wait_until='domcontentloaded',timeout=60000)
+    page.wait_for_function("typeof G!=='undefined' && G.on && G._cutsceneDone && _cutsceneState===null",timeout=60000)
+    result['ordinary_warrior_entry_no_legacy_intro']=True
     assert not errors,errors
     (O/'qa.json').write_bytes(json.dumps(result,ensure_ascii=False,indent=2).encode('utf-8'))
     print(json.dumps(result,ensure_ascii=False),flush=True)

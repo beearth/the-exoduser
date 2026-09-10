@@ -57445,12 +57445,19 @@ const _forceCutscene=new URLSearchParams(location.search).get('cutscene')==='1';
 function _startIntroCutscene(){
   if(_bossTestReq>=0){G._cutsceneDone=true;G.on=true;if(P)P.iframes=300;return}
   if(_wantPlateTest()){G._cutsceneDone=true;G.on=true;if(P)P.iframes=300;return}
+  // 대검전사 스토리는 캐릭터 생성 때 재생한다. 게임 진입은 즉시 플레이.
+  if(_charIdx===0&&!_forceCutscene){
+    G._cutsceneDone=true;G.on=true;P.iframes=300;
+    if(G._bonfire)G._bonfire.t=300;
+    ['hud','hudTop','hudCorner','mmWrap','skBar','mmLvl','globeHP','globeMP'].forEach(id=>{const el=$(id);if(el)el.classList.add('on')});
+    BGM.play(BGM.stageKey(G.stage),true);
+    return;
+  }
   if(!_forceCutscene&&G.stage!==0){_startIntro();return}
   if(!_forceCutscene&&G._cutsceneDone){_startIntro();return}
   _cutsceneState='INTRO_CUTSCENE';
-  const _movieSeen=_charIdx===0&&new URLSearchParams(location.search).get('story')==='warrior-v21';
-  _cutSeq=_movieSeen?'INTRO':'PRO'; // 생성 직후 영상 완료/스킵은 여신 컷신부터 연결
-  if(!_movieSeen){const _pl=PROLOGUE_LINES.ko;const _seen={};const _list=[];for(let _pi=0;_pi<_pl.length;_pi++){const _im=_pl[_pi].img;if(_im&&!_seen[_im]){_seen[_im]=1;_list.push(_im)}}
+  _cutSeq='PRO'; // 다른 캐릭터 및 명시적 컷씬 미리보기 경로
+  {const _pl=PROLOGUE_LINES.ko;const _seen={};const _list=[];for(let _pi=0;_pi<_pl.length;_pi++){const _im=_pl[_pi].img;if(_im&&!_seen[_im]){_seen[_im]=1;_list.push(_im)}}
    _list.slice(0,2).forEach(_im=>_getCutsceneImg(_im)); // 첫 2장 즉시
    let _pli=2;const _plIv=setInterval(()=>{if(_pli>=_list.length){clearInterval(_plIv);return}_getCutsceneImg(_list[_pli++])},400)} // 나머지 순차 (보이스 끊김 방지, 2026-07-27)
   _cutsceneStartMs=performance.now();
@@ -57465,10 +57472,8 @@ function _startIntroCutscene(){
   // (h0_explore(cutscene_warintro)는 1장 느낌이라 제외 — 유저 지시. 키는 보존)
   BGM.fadeOut(300);
   setTimeout(()=>BGM.play('cutscene_prologue',true),400);
-  if(!_movieSeen){
-    try{_proVoice.currentTime=_PRO_VOICE_OFS}catch(e){}
-    _proVoice.play().catch(()=>{});
-  }
+  try{_proVoice.currentTime=_PRO_VOICE_OFS}catch(e){}
+  _proVoice.play().catch(()=>{});
   console.log('[CUTSCENE] Intro cutscene started');
 }
 
