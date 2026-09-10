@@ -28,3 +28,14 @@
 | 구역 | `제{n}구역 · {name}` 템플릿 |
 
 번역 데이터는 `localization/ui-extra/<code>.json`, 번들 생성은 `tools/build-localization.mjs`다. 원어민 감수나 미완료 MAIN 문구까지 검토했다는 주장은 포함하지 않는다.
+
+## 2026-09-10 우측 상태 HUD 라벨
+
+| 리프 ID | 한국어 | 영어 폴백 |
+|---|---|---|
+| hudLevelLabel | 레벨 | Level |
+| hudExpLabel | 경험치 | Experience |
+| hudKillLabel | 지역 처치 | Area kills |
+| hudMaliceLabel | 악의 | Malice |
+
+`_L`로 기존 번역을 재사용하며 없는 언어는 영어로 표시한다. 새 27개 언어 번역을 추가했다는 의미는 아니다. 숫자는 언어 공통 천단위 쉼표 정수로 표시한다.

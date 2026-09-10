@@ -797,3 +797,19 @@ L키(`skillCycle`)로 여는 스킬 슬롯 배정 팝업(`#skSlotPop`, `openSkSl
 | 3. 렌더 | 고정 틱이 반환되어도 `loop()`의 `draw()`는 계속 호출 | 패널과 정지된 게임 화면은 정상 표시 |
 
 독립 `ens` 경로 밖의 `_fbTick`(심연의 앵글러), `_wmTick`(지상뱀장어), `_fdTick`(화마귀)도 가드 뒤에서만 실행한다. 이 순서를 바꾸면 퍼즈 중 발사 타이머만 진행하고 투사체 이동은 멈춰, 해제 시 누적 탄막이 동시에 출발하는 부분 일시정지 버그가 재발한다.
+
+## 2026-09-10 우측 상단 숫자 의미와 가독성 개선
+
+| 항목 | 현행 표시 / 구현 |
+|---|---|
+| 레벨 | `hudLevelLabel` + `lvLbl`: 레벨10 (기존 X). 로마숫자 함수 제거 |
+| 경험치 | `hudExpLabel` + `expTxt`: 경험치7 / 45. 현재/다음 레벨 필요 경험치 |
+| 지역 처치 | `hudKillLabel` + `killCnt`: 지역 처치0 / 1,100. `_stageKills / _totalSpawned` 유지 |
+| 악의 | `hudMaliceLabel` + `matCnt`: 악의6,600,000. K/M/B 대신 전체 정수 |
+| 포맷 | `_hudNumberFormatter`: 재사용 `Intl.NumberFormat('en-US',{maximumFractionDigits:0})`. `_hudReadableNumber`: `max(0,floor(Number(n)||0))`에 천단위 쉼표 |
+| 외형 | 최소200px, padding10px 12px, on opacity1, 바깥1px 브론즈 선. 레벨 .94rem/700, 라벨·행 .75rem, 행최소21px, 행간3px, 수치 tabular-nums |
+| 색상 | 수치 #eee4d4, 라벨 #cbbd9f, 레벨 #f2e6cb, 경험치 #dfcfaa(Lv1000+ #d6aaff). 배경 rgba(12,13,15,.88)→rgba(9,10,12,.76) |
+| DOM / 언어 | 기존 값 ID와 갱신·펄스·이벤트 유지. 새 라벨 span 리프에만 `_hset` 적용. `_L` 기존 번역 재사용·미등록 언어 영어 폴백. 정보 패널의 aria-hidden 제거 |
+| 확인 | 실제 game.html CSS·DOM으로 만든 별도 Chrome 미리보기에서 네 행의 한글 라벨/수치 가독성 확인. HUD 테스트5개 및 인라인 JS 문법 검사 통과. 실제 진행 중 게임 상태는 변경하지 않음 |
+
+이전 시네마틱 HUD 문서의 우측 무라벨·로마숫자·저대비 규격은 이 계약으로 대체한다. 중앙 타이머·SP/CP·맵·진행 수치 로직은 유지한다.

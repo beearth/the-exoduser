@@ -17,14 +17,14 @@ test('gameplay HUD reserves the center and only presents compact edge informatio
   assert.doesNotMatch(game, /id="stageTimerHud"[^\n]*>[^<]*TIME/);
 });
 
-test('compact resources and objective values omit developer labels and abbreviate large malice totals', async () => {
+test('centered resources stay compact while malice uses readable full numbers', async () => {
   const game = await readFile(path.join(rootDir, 'game.html'), 'utf8');
 
   assert.match(game, /id="spCnt"[^>]*>✦ 0<\/div>/);
   assert.match(game, /id="cpHud"[^>]*>◇ 0<\/div>/);
   assert.match(game, /id="killCnt"[^>]*>0 \/ 0<\/div>/);
   assert.match(game, /function _hudCompactNumber\(n\)[\s\S]*1e6[\s\S]*\.toFixed\(2\)\+'M'/);
-  assert.match(game, /_hudCompactNumber\(G\.mats\)/);
+  assert.match(game, /_hudReadableNumber\(G\.mats\)/);
   assert.doesNotMatch(game, /<div[^>]*>KILL<\/div>/);
 });
 
@@ -45,13 +45,19 @@ test('centered resource readout has no panel frame or ornamental separators', as
   assert.match(game, /\.hud-resource::before\s*\{\s*content:\s*none\s*\}/);
 });
 
-test('right objective readout keeps level and experience above framed kill and malice rows', async () => {
+test('right HUD labels every value and spells out large numbers', async () => {
   const game = await readFile(path.join(rootDir, 'game.html'), 'utf8');
 
-  assert.match(game, /<div id="mmLvl"[^>]*>[\s\S]*<div class="objective-rank"><span id="lvLbl">I<\/span><\/div>[\s\S]*<div id="expTxt" class="objective-exp-text">0 \/ 0<\/div>[\s\S]*<div class="objective-frame"[^>]*aria-hidden="true"/);
-  assert.match(game, /\.objective-frame\s*\{\s*display:\s*block[\s\S]*border:\s*1px solid rgba\(88,72,54,\.42\)/);
-  assert.match(game, /<div class="objective-row"><span aria-hidden="true">☠<\/span><div id="killCnt">0 \/ 0<\/div><\/div>/);
-  assert.match(game, /<div class="objective-row"><span aria-hidden="true">◆<\/span><div id="matCnt">0<\/div><\/div>/);
-  assert.match(game, /\.objective-exp-text\s*\{[\s\S]*font-family:\s*'Cinzel',var\(--font-hell\)[\s\S]*background:\s*none[\s\S]*border:\s*none/);
-  assert.match(game, /_hset\(_et,'text',_fmt\(P\.exp\)\+' \/ '\+_fmt\(P\.maxExp\)\)/);
+  for (const [id,label] of [['hudLevelLabel','레벨'],['hudExpLabel','경험치'],['hudKillLabel','지역 처치'],['hudMaliceLabel','악의']]) {
+    assert.match(game,new RegExp(`id="${id}"[^>]*>${label}</span>`));
+    assert.ok(game.includes(`_hset($('${id}'),'text',_L(`),'labels use localization');
+  }
+  assert.doesNotMatch(game, /class="objective-frame"[^>]*aria-hidden="true"/);
+  assert.match(game, /<span id="lvLbl">1<\/span>/);
+  assert.match(game, /_hset\(_et,'text',_hudReadableNumber\(P\.exp\)\+' \/ '\+_hudReadableNumber\(P\.maxExp\)\)/);
+  const formatter=game.match(/function _hudReadableNumber\(n\)\{[^\n]+\}/)[0];
+  const format=Function('_hudNumberFormatter',`${formatter};return _hudReadableNumber`)(new Intl.NumberFormat('en-US',{maximumFractionDigits:0}));
+  assert.equal(format(6600000),'6,600,000');
+  assert.equal(format(1100),'1,100');
+  assert.equal(format(4000),'4,000');
 });

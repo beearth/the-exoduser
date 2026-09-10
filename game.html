@@ -321,14 +321,14 @@ canvas{display:block;position:fixed;inset:0}
 .st-b{color:var(--c-text);font-size:.56rem;font-weight:700}
 
 /* Minimap */
-#mmLvl{position:fixed;top:calc(var(--ui-inset-top) + env(safe-area-inset-top, 0px) + 6px);right:calc(var(--ui-inset-right) + env(safe-area-inset-right, 0px) + 10px);z-index:21;width:auto;pointer-events:none;opacity:0;transition:opacity .5s;transform:scale(var(--ui-scale));transform-origin:top right;display:flex;flex-direction:column;align-items:center;font-family:var(--font-hell);text-shadow:0 1px 3px rgba(0,0,0,.95)}
-#mmLvl.on{opacity:.68!important}
-.objective-rank{color:rgba(194,184,164,.72);font-family:'Cinzel',var(--font-hell);font-size:.78rem;letter-spacing:.2em;line-height:1}
-.objective-frame{display:block;margin-top:6px;padding:5px 9px 6px;border:1px solid rgba(88,72,54,.42);background:linear-gradient(180deg,rgba(9,7,6,.38),rgba(5,4,4,.26));box-shadow:inset 0 0 0 1px rgba(0,0,0,.3),0 2px 8px rgba(0,0,0,.35)}
+#mmLvl{position:fixed;top:calc(var(--ui-inset-top) + env(safe-area-inset-top, 0px) + 6px);right:calc(var(--ui-inset-right) + env(safe-area-inset-right, 0px) + 10px);z-index:21;width:auto;pointer-events:none;opacity:0;transition:opacity .5s;transform:scale(var(--ui-scale));transform-origin:top right;display:flex;flex-direction:column;align-items:stretch;min-width:200px;padding:10px 12px;border:1px solid rgba(145,119,76,.45);background:linear-gradient(180deg,rgba(12,13,15,.88),rgba(9,10,12,.76));font-family:var(--font-hell);font-variant-numeric:tabular-nums;text-shadow:0 1px 3px rgba(0,0,0,.95)}
+#mmLvl.on{opacity:1!important}
+.objective-rank{display:flex;align-items:center;justify-content:space-between;gap:20px;color:#f2e6cb;font-size:.94rem;font-weight:700;line-height:1.4}.objective-rank .objective-label{font-size:.75rem;font-weight:400;color:#cbbd9f}
+.objective-frame{display:block;margin-top:7px;padding-top:7px;border-top:1px solid rgba(145,119,76,.3)}
 .objective-exp{height:2px;margin:0 0 5px;overflow:hidden;background:rgba(0,0,0,.5);box-shadow:inset 0 0 1px rgba(255,255,255,.08)}
 .objective-exp #expF{height:100%}
-.objective-exp-text{display:block;margin-top:6px;color:rgba(174,151,111,.78);font-family:'Cinzel',var(--font-hell);font-size:.66rem;letter-spacing:.1em;line-height:1;background:none;border:none}
-.objective-row{display:flex;align-items:center;justify-content:center;gap:6px;min-height:16px;color:rgba(214,205,187,.75);font-size:.67rem;letter-spacing:.08em}.objective-row+.objective-row{margin-top:2px;color:rgba(163,143,119,.75)}
+.objective-exp-text{display:block;color:#dfcfaa;font-size:.75rem;line-height:1.4;background:none;border:none}
+.objective-row{display:flex;align-items:center;justify-content:space-between;gap:18px;min-height:21px;color:#eee4d4;font-size:.75rem;line-height:1.4;white-space:nowrap}.objective-row+.objective-row{margin-top:3px}.objective-row>span{color:#cbbd9f}.objective-row>div{text-align:right}
 #killCnt.hud-pulse,#matCnt.hud-pulse,#lvLbl.hud-pulse{animation:hudCountPulse .34s ease-out}
 @keyframes hudCountPulse{0%{transform:translateY(1px);opacity:.5}45%{transform:translateY(-1px);color:#d8c49d}100%{transform:translateY(0)}}
 #mmWrap{position:fixed;top:8px;left:8px;z-index:20;pointer-events:none;opacity:0;transition:opacity .5s;transform:scale(calc(var(--ui-scale) * .85));transform-origin:top left;width:166px;height:166px}
@@ -2281,14 +2281,14 @@ canvas{display:block;position:fixed;inset:0}
 <canvas id="fogGL" style="position:fixed;inset:0;pointer-events:none;z-index:0"></canvas>
 <canvas id="burstCvs" style="position:fixed;inset:0;pointer-events:none;z-index:1"></canvas>
 <canvas id="ct" style="position:fixed;inset:0;pointer-events:none;z-index:2"></canvas>
-<div id="mmLvl" aria-label="현재 목표">
+<div id="mmLvl" aria-label="플레이어 상태">
   <span id="charNameHud" style="display:none"></span>
-  <div class="objective-rank"><span id="lvLbl">I</span></div>
-  <div id="expTxt" class="objective-exp-text">0 / 0</div>
-  <div class="objective-frame" aria-hidden="true">
+  <div class="objective-rank"><span id="hudLevelLabel" class="objective-label">레벨</span><span id="lvLbl">1</span></div>
+  <div class="objective-row"><span id="hudExpLabel">경험치</span><div id="expTxt" class="objective-exp-text">0 / 0</div></div>
+  <div class="objective-frame">
     <div id="expBar" class="objective-exp"><div id="expF" style="width:0%"></div></div>
-    <div class="objective-row"><span aria-hidden="true">☠</span><div id="killCnt">0 / 0</div></div>
-    <div class="objective-row"><span aria-hidden="true">◆</span><div id="matCnt">0</div></div>
+    <div class="objective-row"><span id="hudKillLabel">지역 처치</span><div id="killCnt">0 / 0</div></div>
+    <div class="objective-row"><span id="hudMaliceLabel">악의</span><div id="matCnt">0</div></div>
   </div>
 </div>
 <div id="mmWrap"><canvas id="mm" width="130" height="130" style="z-index:2"></canvas><img id="mmFrame" src="img/mm_frame.png" alt=""></div>
@@ -55495,7 +55495,8 @@ function drawMM(){if(!G.on||!G.map)return;
 
 let _hudAlive=0,_hudT=0,_mpMatT=0,_hudAreaStage=-1;
 function _hudCompactNumber(n){n=Number(n)||0;return n>=1e9?(n/1e9).toFixed(2)+'B':n>=1e6?(n/1e6).toFixed(2)+'M':n>=1e3?(n/1e3).toFixed(1)+'K':String(~~n)}
-function _hudRoman(n){const map=[[1000,'M'],[900,'CM'],[500,'D'],[400,'CD'],[100,'C'],[90,'XC'],[50,'L'],[40,'XL'],[10,'X'],[9,'IX'],[5,'V'],[4,'IV'],[1,'I']];n=Math.max(1,Math.min(3999,~~n));let out='';for(const [v,g] of map){while(n>=v){out+=g;n-=v}}return out}
+const _hudNumberFormatter=new Intl.NumberFormat('en-US',{maximumFractionDigits:0});
+function _hudReadableNumber(n){return _hudNumberFormatter.format(Math.max(0,Math.floor(Number(n)||0)))}
 function _hudPulse(id,value){const el=$(id);if(!el)return;if(el._hudValue!==undefined&&el._hudValue!==value){el.classList.remove('hud-pulse');void el.offsetWidth;el.classList.add('hud-pulse')}el._hudValue=value}
 function _showHudAreaTitle(stage,st){if(_hudAreaStage===stage)return;_hudAreaStage=stage;const title=$('areaTitle');const kr=$('areaTitleKr');const en=$('areaTitleEn');if(!title||!kr||!en)return;kr.textContent=_L('제{n}구역 · {name}','AREA {n} · {name}',{n:stage+1,name:_L(st.kr,st.n)});en.textContent=`THE ${String(st.n||st.kr).toUpperCase()}`;title.classList.remove('show');void title.offsetWidth;title.classList.add('show')}
 // ── HUD 요소 캐시 + 변경분만 기록 (20Hz 호출 대비 스타일 재계산/문자열 churn 절감) ──
@@ -55568,16 +55569,18 @@ function updateHUD(slow){
   _hset(E.hpPotCd,'text',_hpPotCdTxt);
   _hset(E.expF,'width',(P.exp/P.maxExp*100)+'%');
   _hset(E.expF,'background',P.lv>=1000?'linear-gradient(90deg,rgba(140,80,180,.7),rgba(190,110,220,.85))':'linear-gradient(90deg,rgba(122,101,72,.55),rgba(196,171,124,.85))');
-  {const _et=E.expTxt;if(_et){const _fmt=n=>n>=1e6?(n/1e6).toFixed(1)+'M':n>=1e3?(n/1e3).toFixed(1)+'K':String(n);_hset(_et,'text',_fmt(P.exp)+' / '+_fmt(P.maxExp));_hset(_et,'color',P.lv>=1000?'#cc88ff':'#aa9966')}}
+  {const _et=E.expTxt;if(_et){_hset(_et,'text',_hudReadableNumber(P.exp)+' / '+_hudReadableNumber(P.maxExp));_hset(_et,'color',P.lv>=1000?'#d6aaff':'#dfcfaa')}}
   // ── 사슬기동 게이지 바 (skSlot0) ──
   {const _sg=E.skSlot0;if(_sg){const _gp=Math.min(1,_harpGauge/_HARP_GAUGE_MAX);const _gc=_gp>=1?'#44ffaa':_gp>=.5?'#88ccff':'#ff8844';let _gb=_sg._hgBar;if(!_gb||!_gb.isConnected){_gb=_sg.querySelector('.hg-bar');if(!_gb){_gb=document.createElement('div');_gb.className='hg-bar';_gb.style.cssText='position:absolute;bottom:0;left:0;right:0;height:3px;border-radius:0 0 4px 4px;pointer-events:none;z-index:5;transition:width .1s';_sg.style.position='relative';_sg.appendChild(_gb)}_sg._hgBar=_gb}_hset(_gb,'width',(_gp*100)+'%');_hset(_gb,'background',_gc)}}
   if(!slow)return;
   // ── 느린 경로: 시네마틱 HUD + 장비 innerHTML (매 30프레임 = ~2회/초) ──
   const _s=STG[G.stage];_showHudAreaTitle(G.stage,_s);
-  const _killTotal=G._totalSpawned||0;const _stageK=G._stageKills||0;_hudPulse('killCnt',_stageK);$('killCnt').textContent=`${_stageK} / ${_killTotal}`;
-  _hudPulse('matCnt',G.mats);$('matCnt').textContent=_hudCompactNumber(G.mats);
+  _hset($('hudLevelLabel'),'text',_L('레벨','Level'));_hset($('hudExpLabel'),'text',_L('경험치','Experience'));
+  _hset($('hudKillLabel'),'text',_L('지역 처치','Area kills'));_hset($('hudMaliceLabel'),'text',_L('악의','Malice'));
+  const _killTotal=G._totalSpawned||0;const _stageK=G._stageKills||0;_hudPulse('killCnt',_stageK);$('killCnt').textContent=`${_hudReadableNumber(_stageK)} / ${_hudReadableNumber(_killTotal)}`;
+  _hudPulse('matCnt',G.mats);$('matCnt').textContent=_hudReadableNumber(G.mats);
   {const _cr=$('comboRecord');if(_cr){if(G.comboMax>0&&G.combo>=2){_cr.style.display='';_cr.textContent='MAX COMBO '+G.comboMax;_cr.style.color=G.comboMax>=100?'rgba(196,80,52,.9)':G.comboMax>=50?'rgba(200,120,64,.88)':'rgba(186,140,88,.85)'}else{_cr.style.display='none'}}}
-  _hudPulse('lvLbl',P.lv);$('lvLbl').textContent=_hudRoman(P.lv);$('spCnt').textContent=`✦ ${P.sp}${P.ap?` +${P.ap}`:''}`;{const _cpV=calcCP().total;$('cpHud').textContent=`◇ ${_cpV>=1e5?_hudCompactNumber(_cpV):_cpV.toLocaleString('en-US')}`;}
+  _hudPulse('lvLbl',P.lv);$('lvLbl').textContent=_hudReadableNumber(P.lv);$('spCnt').textContent=`✦ ${P.sp}${P.ap?` +${P.ap}`:''}`;{const _cpV=calcCP().total;$('cpHud').textContent=`◇ ${_cpV>=1e5?_hudCompactNumber(_cpV):_cpV.toLocaleString('en-US')}`;}
   const _charHud=$('charNameHud');if(_charName&&_charHud)_charHud.textContent=_charName;
   // 콤보 HUD
   const _cH=$('comboHud');if(_cH){if(G.combo>=2){_cH.style.display='';_cH.textContent='COMBO '+G.combo+(G.comboMax>G.combo?' (MAX:'+G.comboMax+')':'');_cH.style.color=G.combo>=50?'rgba(196,74,48,.92)':G.combo>=20?'rgba(202,118,58,.9)':G.combo>=10?'rgba(203,152,88,.88)':'rgba(201,168,110,.85)';_cH.style.fontSize=Math.min(1.1,0.82+G.combo*0.004)+'rem'}else{_cH.style.display='none'}}

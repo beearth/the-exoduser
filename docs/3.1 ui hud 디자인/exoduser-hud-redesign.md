@@ -747,10 +747,10 @@ const HUD_ICON = {
 | 상단 중앙 2행 | `#cpHud` → `◇ {CP}` | 지옥/층 접두어 및 `CP` 라벨 제거. SP·콤보와 동일한 **텍스트 전용** 보조 정보 묶음 | `calcCP().total` | `updateHUD(true)` |
 | 상단 중앙 | `#stageTimerHud` → `MM:SS` | `TIME`, `CLEAR`, `TOTAL`, BEST 표기를 플레이 중 숨김 | `G.stageTime / 60` | `updateHUD(true)` |
 | 상단 중앙 | `#stageProgressFill` | 숫자 없이 2px 진행선만 표시 | `G._stageKills / G._totalSpawned × 100` | `updateHUD(true)`, width `.6s ease-out` |
-| 우측 상단 | `#lvLbl` → Roman numeral | 현대식 `LV` 라벨/대형 숫자 대신 I~MMMCMXCIX. 프레임 없이 단독 표기 | `P.lv` | `updateHUD(true)`, `_hudRoman()` |
-| 우측 상단 | `#expTxt` → `{현재 EXP} / {필요 EXP}` | 경험치 바 없이 텍스트만 표시 | `P.exp`, `P.maxExp` | `updateHUD()` |
-| 우측 상단(목표 패널 `#mmLvl`) | `#killCnt` → `{처치} / {총스폰}` | 미니맵 옆 목표 패널에 **표시됨**(구 "숨김" 기술은 stale). 현재 스테이지 진행도(`#stageProgressFill`과 동일 분모) | `G._stageKills / G._totalSpawned` | `updateHUD(true)`, `_hudPulse('killCnt',_stageK)` |
-| 우측 상단 | `#matCnt`, `#expBar` | 처치·악의·게이지 UI 노출 축소 방향 | `G.mats`, `P.exp` | 기존 갱신/DOM은 호환을 위해 보존 |
+| 우측 상단 | `#hudLevelLabel` + `#lvLbl` | **레벨 10**처럼 이름+아라비아 숫자. `_hudRoman` 제거, 3999 표시 상한 제거 | `P.lv` | `updateHUD(true)`, `_hudReadableNumber()` |
+| 우측 상단 | `#hudExpLabel` + `#expTxt` → `경험치 {현재 EXP} / {필요 EXP}` | 천단위 쉼표, K/M 축약 없이 정확한 정수. 기존 경험치 라인 유지 | `P.exp`, `P.maxExp` | `updateHUD()` |
+| 우측 상단(목표 패널 `#mmLvl`) | `#hudKillLabel` + `#killCnt` → `지역 처치 {처치} / {총스폰}` | 아이콘 대신 뜻이 명확한 라벨과 천단위 쉼표를 표시. 현재 스테이지 진행도(`#stageProgressFill`과 동일 분모) | `G._stageKills / G._totalSpawned` | `updateHUD(true)`, `_hudPulse('killCnt',_stageK)` |
+| 우측 상단 | `#hudMaliceLabel` + `#matCnt` | `악의 6,600,000`처럼 정수 전체와 천단위 쉼표 표시. 기존 K/M/B 축약 제거 | `G.mats` | `updateHUD(true)`, `_hudReadableNumber()` |
 
 > **[2026-08-18 correctness fix] 처치 카운터 분자 stale (game.html:50934)**
 > - **버그**: `#killCnt`가 `G.kills`(런 전체 누적) / `G._totalSpawned`(스테이지별 스폰) 조합이라, 2번째 지역부터 분자>분모(예: `150 / 92`)로 100% 초과 표시. 바로 아래 진행바(`#stageProgressFill`)는 `G._stageKills/_totalSpawned`로 정상 → 카운터만 어긋남.
@@ -771,7 +771,7 @@ const HUD_ICON = {
 
 | 항목 | 규격 | 의도 |
 |---|---|---|
-| 프레임 | 상단 중앙 자원과 우측 레벨/경험치는 프레임·배경·구분선 없이 텍스트만 사용 | 플레이 화면을 완전히 비우고 정보는 필요한 수치만 읽게 함 |
+| 프레임 | 상단 중앙 자원은 텍스트만 유지. 우측 상태는 최소200px 패널, padding10px 12px, 외곽1px 선과 어두운 배경 | 우측 숫자별 의미와 대비를 확보 |
 | 타이포그래피 | 지역명 `--font-hell-title`, 영문/수치 `Cinzel`/`--font-hell` | 현대식 sans HUD 인상을 축소 |
 | 색상 | dirty ivory, aged silver, muted bronze만 사용 | 밝은 cyan/네온/gold 패널을 추가하지 않음 |
 | 결과 화면 | 기존 `stageClear` 및 종료 결과의 TIME/TOTAL/CLEAR/KILL 상세 통계는 보존 | 상세 분석은 플레이 중이 아닌 결과 시점에만 노출 |
@@ -861,11 +861,11 @@ grep "hud.*::before" game.html  # 2개
 | 요소 | 변경 전 | 변경 후 |
 |---|---|---|
 | ✦SP/◇CP 자원 | `#hudTop` 상단 중앙 (시계 아래 나열) | 신설 `#hudCorner` 좌측 상단(미니맵 아래 y≈178px), Cinzel .62rem, opacity **.48** |
-| 우측 목표 프레임 `.objective-frame` | `display:none` (킬/악의 숨김) | **활성화** — 얇은 철제 프레임(1px rgba(88,72,54,.42), 반투명 흑철 배경) 안에 ☠ 킬 / ◆ 악의 |
-| `#killCnt` | JS가 `☠ 0 / 0` 기록 (아이콘 span과 중복) | 숫자만 `0 / 0` (아이콘은 row의 span이 담당) |
+| 우측 목표 프레임 `.objective-frame` | `display:none` (킬/악의 숨김) | 2026-09-10: `#mmLvl` 전체를 하나의 패널로 묶고 `.objective-frame`은 상단 구분선만 표시. 지역 처치/악의 라벨 추가 |
+| `#killCnt` | JS가 `☠ 0 / 0` 기록 (아이콘 span과 중복) | 2026-09-10: `지역 처치` 라벨 + 천단위 쉼표 숫자 `0 / 1,100` |
 | `#expF` 경험치 라인 | 밝은 골드 그라디언트 | 뮤트 브론즈 rgba(122,101,72,.55)→rgba(196,171,124,.85), 2px 룬 라인 |
 | CP 숫자 | 원시값 그대로 | `1,584` 천단위 구분, 10만 이상은 `1.06M` 압축 |
-| LV 로마숫자 | 정적 | 레벨업 순간 `hud-pulse` 반응 추가 |
+| LV 표기 | 로마숫자 | 2026-09-10: 레벨 라벨+아라비아 숫자, 레벨업 `hud-pulse` 유지 |
 | COMBO HUD | 네온 오렌지 #ff6600 + 글로우, 최대 1.2rem | 뮤트 엠버 rgba(201,168,110)→고콤보 rgba(196,74,48), 글로우 축소, 최대 1.1rem |
 | MAX COMBO 기록 | 콤보 발생 후 **상시 표시** | 콤보 진행 중(combo≥2)에만 표시 (결과 화면에서 상세) |
 | DPS HUD | 네온 레드 #ff4466, 1.4~1.8rem 900weight | 뮤트 브론즈/엠버, 0.92~1.05rem 600weight |
@@ -876,9 +876,25 @@ grep "hud.*::before" game.html  # 2개
 - `#areaTitle` 지역 진입 타이틀: `제N구역 · 이름` + `THE ~` 영문 각인체, 3.1s fade in/out ✓
 - `#stageClock` 상단 중앙 `02:19` (TIME 텍스트 없음) + 2px 진행 룬 라인 (숫자 % 없음), opacity .57 ✓
 - TIME/CLEAR/TOTAL 나열 HUD는 1차 정비에서 이미 제거 — 구버전(_deployed_game.html 6/16)에만 존재. **배포 동기화 필요.**
-- 우측 상단 `#mmLvl` opacity .68, 로마숫자 LV ✓
+- 우측 상단은 2026-09-10 가독성 개선으로 `#mmLvl.on` opacity1, 레벨·경험치·지역 처치·악의 라벨+정수 표기 적용.
 
 ### 색상 규칙 (준수)
 dirty ivory `rgba(214,205,187)` / aged silver `rgba(196,187,168)` / dark iron `rgba(88,72,54)` / muted bronze `rgba(196,171,124)` — 순백·네온·시안 금지, 적색은 위험/최상위 티어 한정.
 
 ### 신규 표시 텍스트: 없음 (아이콘+숫자만) → 번역대상_전체목록.md 변경 불필요.
+
+## 2026-09-10 우측 상단 숫자 의미와 가독성 개선
+
+| 항목 | 현행 표시 / 구현 |
+|---|---|
+| 레벨 | `hudLevelLabel` + `lvLbl`: 레벨10 (기존 X). 로마숫자 함수 제거 |
+| 경험치 | `hudExpLabel` + `expTxt`: 경험치7 / 45. 현재/다음 레벨 필요 경험치 |
+| 지역 처치 | `hudKillLabel` + `killCnt`: 지역 처치0 / 1,100. `_stageKills / _totalSpawned` 유지 |
+| 악의 | `hudMaliceLabel` + `matCnt`: 악의6,600,000. K/M/B 대신 전체 정수 |
+| 포맷 | `_hudNumberFormatter`: 재사용 `Intl.NumberFormat('en-US',{maximumFractionDigits:0})`. `_hudReadableNumber`: `max(0,floor(Number(n)||0))`에 천단위 쉼표 |
+| 외형 | 최소200px, padding10px 12px, on opacity1, 바깥1px 브론즈 선. 레벨 .94rem/700, 라벨·행 .75rem, 행최소21px, 행간3px, 수치 tabular-nums |
+| 색상 | 수치 #eee4d4, 라벨 #cbbd9f, 레벨 #f2e6cb, 경험치 #dfcfaa(Lv1000+ #d6aaff). 배경 rgba(12,13,15,.88)→rgba(9,10,12,.76) |
+| DOM / 언어 | 기존 값 ID와 갱신·펄스·이벤트 유지. 새 라벨 span 리프에만 `_hset` 적용. `_L` 기존 번역 재사용·미등록 언어 영어 폴백. 정보 패널의 aria-hidden 제거 |
+| 확인 | 실제 game.html CSS·DOM으로 만든 별도 Chrome 미리보기에서 네 행의 한글 라벨/수치 가독성 확인. HUD 테스트5개 및 인라인 JS 문법 검사 통과. 실제 진행 중 게임 상태는 변경하지 않음 |
+
+이전 시네마틱 HUD 문서의 우측 무라벨·로마숫자·저대비 규격은 이 계약으로 대체한다. 중앙 타이머·SP/CP·맵·진행 수치 로직은 유지한다.
