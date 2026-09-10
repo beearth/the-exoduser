@@ -22,9 +22,9 @@ function runtime() {
     EL: { P: 0 }, ELC: [],
     P: { x: 0, y: 0, s: 'sBash', skills: {}, iframes: 0,
       hp: 0, mp: 0, st: 0, mhp: 10000, mmp: 10000, mst: 10000, rage: 0, poise: 0 },
-    G: { mats: 0 }, OPT: { shake: 100, hitStop: 100 }, _HS: { parry: 1 }, PASSIVES: {},
+    G: { mats: 0, frame: 1 }, OPT: { shake: 100, hitStop: 100 }, _HS: { parry: 1 }, PASSIVES: {},
     _harpGauge: 0, _HARP_GAUGE_MAX: 1000, _rageMax: () => 1000,
-    _eqAffix: () => 0, _uEq: () => 0, _skyCrusherChargeCount: () => 3,
+    _eqAffix: () => 0, _uEq: () => 0, _cdRed: () => 0,
     _petOnParry: noop, playSample: noop, _r: () => 1, _gpVibrate: noop,
     _petSayCD: noop, addTxt: noop, _T: x => x, window: {},
     _TVFX2_COMBOS: [null, null, { layers: [] }], _tvfx2Imgs: {},
@@ -32,8 +32,51 @@ function runtime() {
     SFX: { deflect: noop }, doHitFlash: noop, poolPart: noop, showPH: noop,
   });
   vm.runInContext(fn('_projectileParryClass') + fn('_physicalProjectileMultiplier') + fn('doParry'), ctx);
+  vm.runInContext(fn('_skyCrusherChargeCount') + fn('_skyCrusherRechargeFrames') + fn('_tickSkyCrusherRecharge'), ctx);
   return ctx;
 }
+
+function physicalParry(ctx, p={el:0}){
+  const mul=ctx._physicalProjectileMultiplier(p);
+  p.friendly=true;p.el=1;
+  ctx.doParry(10,0,0,false,'red',mul);
+}
+test('each physical projectile cuts both rage cooldowns by 30 frames, including same-frame parries',()=>{
+  const c=runtime();c.P._gslCd=600;c.P._scCharges=0;c.P._scCd=900;
+  for(let i=0;i<3;i++)physicalParry(c);
+  assert.equal(c.P._gslCd,510);assert.equal(c.P._scCd,810);
+});
+test('physical parry completes a charge and carries excess recovery into the next charge',()=>{
+  for(const charges of [0,2]){
+    const c=runtime();c.P._gslCd=10;c.P._scCharges=charges;c.P._scCd=10;
+    physicalParry(c);
+    assert.equal(c.P._gslCd,0);assert.equal(c.P._scCharges,charges+1);
+    assert.equal(c.P._scCd,charges===2?0:880);
+  }
+});
+test('cape cooldown bonus remains once per frame while physical base recovery stacks',()=>{
+  const c=runtime();c.P._gslCd=600;c.P._scCharges=0;c.P._scCd=900;
+  c._uEq=id=>id==='_uParryRageCd'?60:0;
+  physicalParry(c);physicalParry(c);
+  assert.equal(c.P._gslCd,480);assert.equal(c.P._scCd,780);
+  c.G.frame++;physicalParry(c);
+  assert.equal(c.P._gslCd,390);assert.equal(c.P._scCd,690);
+});
+test('magic and melee preserve their prior once-per-frame Sky Crusher recovery',()=>{
+  for(const args of [[true,1,1],[false,0,1],[true,1,10]]){
+    const c=runtime();c.P._gslCd=600;c.P._scCharges=0;c.P._scCd=900;
+    for(let i=0;i<3;i++)c.doParry(10,0,0,...args);
+    assert.equal(c.P._gslCd,600);assert.equal(c.P._scCd,870);
+  }
+});
+test('physical classification captured before reflection includes titan eyes and excludes magic druid shots',()=>{
+  for(const [p,expected] of [[{el:1,titanEye:true},570],
+    [{el:0,_druidPoison:true,parryClass:'physical'},570],
+    [{el:0,_druidPoison:true,parryClass:'magic'},600]]){
+    const c=runtime();c.P._gslCd=600;physicalParry(c,p);
+    assert.equal(c.P._gslCd,expected);
+  }
+});
 
 test('hostile physical bodies are 2x, including piercing and element-colored titan eyes', () => {
   const ctx = runtime();

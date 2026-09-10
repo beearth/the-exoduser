@@ -153,8 +153,8 @@ test('Sky Crusher stores three charges and recharges one every 15 seconds', () =
   assert.match(gameHtml, /_tickSkyCrusherRecharge\(sp\+_hdCdBonus\)/);
 });
 
-test('parrying trims the next Sky Crusher charge by half a second once per frame', () => {
-  assert.match(gameHtml, /const _scParryCut=_skyCrusherChargeCount\(\)<3&&P\._scCd>0\?30:0/);
+test('parrying trims the next Sky Crusher charge per physical projectile or once per frame otherwise', () => {
+  assert.match(gameHtml, /const _scParryCut=_skyCrusherChargeCount\(\)<3&&P\._scCd>0&&\(_physicalParryCut\|\|_parryFrameReady\)\?30:0/);
   assert.match(gameHtml, /P\._parryCdFrame!==G\.frame/);
   assert.match(gameHtml, /_tickSkyCrusherRecharge\(_scParryCut\+_prRageCd\)/);
 });

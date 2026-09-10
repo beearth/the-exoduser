@@ -35265,10 +35265,18 @@ function doParry(_inDmg,_px,_py,_forceQ,_parryEl,_resourceMul,_impactKind){if(_p
   const _rageAdd=((_isRedParry?5:_isRainbowParry?15:10)*_resourceBonus+_uSR);
   P.rage=Math.min(_rageMax(),P.rage+_rageAdd);
   addTxt(P.x,P.y-90,_T('🔥분노+')+P.rage+'%','#ff4400',35);
-  // 유니크(망토): 패링 성공 시 Space 분노스킬 쿨다운 회복 — 프레임당 1회 게이트(탄막 다발 패링 남용 방지)
-  const _prRageCd=_uEq('_uParryRageCd');
-  const _scParryCut=_skyCrusherChargeCount()<3&&P._scCd>0?30:0;
-  if((_prRageCd||_scParryCut)&&(P._gslCd>0||P._scCd>0)&&P._parryCdFrame!==G.frame){P._parryCdFrame=G.frame;P._gslCd=Math.max(0,(P._gslCd||0)-_prRageCd);if(P._scCd>0)_tickSkyCrusherRecharge(_scParryCut+_prRageCd);addTxt(P.x,P.y-120,_T('🔥분노스킬 쿨↓'),'#ffaa00',30)}
+  // 물리탄은 반사 전에 저장한 자원 배율3으로 식별: 한 발마다 분노 쿨30f 회복 (자원 배율은 곱하지 않음).
+  // 망토 추가 회복과 비물리 패링의 천공쇄기 기본 회복은 기존 프레임당1회 유지.
+  const _physicalParryCut=_resourceMul===3?30:0;
+  const _parryFrameReady=P._parryCdFrame!==G.frame;
+  const _prRageCd=_parryFrameReady?(_uEq('_uParryRageCd')||0):0;
+  const _scParryCut=_skyCrusherChargeCount()<3&&P._scCd>0&&(_physicalParryCut||_parryFrameReady)?30:0;
+  if((_physicalParryCut||_prRageCd||_scParryCut)&&(P._gslCd>0||P._scCd>0)){
+    P._parryCdFrame=G.frame;
+    P._gslCd=Math.max(0,(P._gslCd||0)-_physicalParryCut-_prRageCd);
+    if(P._scCd>0)_tickSkyCrusherRecharge(_scParryCut+_prRageCd);
+    addTxt(P.x,P.y-120,_T('🔥분노스킬 쿨↓'),'#ffaa00',30);
+  }
   // 분노 대사 (적립 후 체크)
   if(P.rage>=100)_petSayCD('rage_full','crow','…분노가 끓어넘친다. 스페이스로 적들에게 폭발시켜!',4,300,'cat','분노는 스페이스키 분노스킬로 폭발시킬 수 있어! 지금이야!!!',4);
   else if(P.rage>=50)_petSayCD('rage_half','crow','분노가 차오른다…',3,300,'cat','분노 '+P.rage+'%! 패링으로 분노 더 쌓아!',3);
