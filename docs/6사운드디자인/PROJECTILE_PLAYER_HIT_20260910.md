@@ -30,3 +30,8 @@
 | 브라우저 |실제 _hurtProjectilePlayer→hurtP→샘플 큐→Web Audio 노드 시작 확인. 무적 무음,8연타 충돌음1회. 엔진 리샘플링 길이는1샘플 오차 허용 |
 | 증거 |output/audio/projectile_player_hit_20260910/asset_qa.json 및 browser_qa.json. 실제 사용자 저장 쓰기 없음 |
 | 검수 한계 |합성·기술·실제 노드 재생 검사. 전체 전투 청취감은 사용자 확인 가능 |
+
+
+## 2026-09-10 피격음 대안 청취
+
+4가지 합성 후보와 현재 소리의 비교 파일을 만들었다. 아직 게임 적용 전이다. [후보·전체 합성 수치·재생 검증](PROJECTILE_HIT_CANDIDATES_20260910.md).

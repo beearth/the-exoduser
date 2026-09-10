@@ -1,0 +1,36 @@
+{
+  "status": "PASS",
+  "playback": [
+    {
+      "src": "http://127.0.0.1:3333/탄막_피격음_후보/00_현재_피격음.wav",
+      "duration": 4,
+      "paused": false,
+      "readyState": 4
+    },
+    {
+      "src": "http://127.0.0.1:3333/탄막_피격음_후보/01_묵직한_관통음.wav",
+      "duration": 4,
+      "paused": false,
+      "readyState": 4
+    },
+    {
+      "src": "http://127.0.0.1:3333/탄막_피격음_후보/02_날카로운_파열음.wav",
+      "duration": 4,
+      "paused": false,
+      "readyState": 4
+    },
+    {
+      "src": "http://127.0.0.1:3333/탄막_피격음_후보/03_마력_붕괴음.wav",
+      "duration": 4,
+      "paused": false,
+      "readyState": 4
+    },
+    {
+      "src": "http://127.0.0.1:3333/탄막_피격음_후보/04_갑옷_충돌음.wav",
+      "duration": 4,
+      "paused": false,
+      "readyState": 4
+    }
+  ],
+  "page_errors": []
+}
