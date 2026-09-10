@@ -18,3 +18,15 @@
 | 맥 확인 | 같은 장면에서 ?webgpu=0&ray=0 / ?webgpu=0&ray=1 비교. 전자에서만 사라지는지 확인 필요. 이동·전투·FPS는 별도 미측정 |
 
 최초 비교 배포는 기본 ON이어서 일반 링크·로비에서 재진입하면 여전히 광선이 보였다. 스크린샷 확인 후 기본 OFF로 변경했다. 새 회귀는 파라미터 없음/0/false/true에서 path0개, 명시적1에서5개 및 카메라 비결합·입자 유지·상태 복원을 확인한다. Mac 실기에서 띠 소멸·이동·전투·FPS 확인은 PENDING이다.
+
+## 기본 OFF 배포 검증
+
+| 항목 | 결과 |
+|---|---|
+| 코드 / 배포 | b591e9983 main 푸시, dpl_7YDNrYP1kSQD4eV9bYdnjXJYvhTp READY, the-exoduser.vercel.app alias |
+| 실제 공개 game SHA256 | 5d0f9ba2fb57dce3f520d40ed60fae41c7b7c9a05e57dc254e297d28a3a9b73f, 고정 배포물과 일치 |
+| Windows Chrome | ray 쿼리 없는 일반 초기화에서 _ATMDBG.ray=0, ray-default-off-20260910 로그, WebGL2 실제 컨텍스트, pageerror0 |
+| 화면 검수 한계 | 초기 인트로를 넘긴 테스트 게임 캡처에 대사 오버레이가 남아 있음. Windows의 ON 캡처에서도 Mac 사진의 굵은 금색 띠는 재현되지 않았으므로 사진만으로 Mac 해결 판정하지 않음 |
+| 증거 | captures/renderer_optin_20260910/ray-default-off-live.json, ray-default-off-live.png, ray-diagnostic-on-live.png |
+| 저장 | 브라우저 내부 API fixture만 사용, 실제 사용자 슬롯 쓰기 없음 |
+| 실기 | Mac에서 일반 주소 재접속 후 세로 띠 소멸·이동·전투·FPS 비교 대기 |
