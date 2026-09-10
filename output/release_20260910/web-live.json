@@ -1,0 +1,58 @@
+{
+  "url": "https://the-exoduser.vercel.app",
+  "sourceCommit": "e55f37cd0",
+  "files": [
+    {
+      "path": "game.html",
+      "sha256": "15ae092bb41e836bab48e043638838fdeb036e7dad00e67e465981dd248017e3",
+      "bytes": 3787446
+    },
+    {
+      "path": "index.html",
+      "sha256": "2bc2869364ed089ad1ad4e40282aab3acb9cb980479666c644550dd3fbea0c21",
+      "bytes": 302536
+    },
+    {
+      "path": "level-up-vfx.js",
+      "sha256": "184ebc2114aca1688bb9be07d41d9c115ed0e8a6f86db563898d5ead4c5c8259",
+      "bytes": 7952
+    },
+    {
+      "path": "character-story-player.js",
+      "sha256": "3313cc9cbbd8773d584f2964c75e0fade60c201bd9b092e26ae36513229d1911",
+      "bytes": 6770
+    },
+    {
+      "path": "video/warrior_story_v22_bgm.mp4",
+      "sha256": "ebc651acb31763cc1b9a216a378e953b8f43ba3ea8379736bf748d6fbf914164",
+      "bytes": 87255213
+    },
+    {
+      "path": "bgm/공통/lobby.mp3",
+      "sha256": "7f2d38d88a2d5862313fee9088036e3a361b79b38591cafcda197b48204af3fd",
+      "bytes": 5234854
+    },
+    {
+      "path": "bgm/공통/intro_voice.mp3",
+      "sha256": "fddeef539388033a9785a7e84941b8853a9dbfeef31599873f7978aa15a52b0d",
+      "bytes": 1676920
+    },
+    {
+      "path": "bgm/공통/네메시아의 강림 V3.mp3",
+      "sha256": "d983380924b029a5f19c98f0bcded51c6607be06235346c10520dfcc7716d910",
+      "bytes": 3557632
+    }
+  ],
+  "lobbyTitle": "HELL: EXODUSER",
+  "game": {
+    "level": 1,
+    "stage": 0,
+    "renderer": "WebGL2",
+    "canvas": true,
+    "levelVfx": "function"
+  },
+  "pageErrors": [],
+  "missingRuntimeFiles": [],
+  "realSaveWrites": false,
+  "status": "PASS"
+}

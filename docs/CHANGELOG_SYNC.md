@@ -1,3 +1,15 @@
+## 2026-09-11 전체 통합본 커밋·푸시·웹 배포·USB 실행본 전달
+
+| 항목 | 결과 |
+|---|---|
+| 소스 통합 | 최신 로컬 전체 작업과 원격 Mac 성능 수정 병합, e55f37cd0 main 푸시 |
+| 검증 | 통합44개 + 서버/스토리17개 PASS, guard PASS |
+| USB | I:/EXODUSER/EXODUSER.exe, 최상단 실행 바로가기·상대경로CMD. 7775파일/6433876898바이트, 핵심10파일 SHA256 일치 |
+| 실제 실행 | USB NW.js0.111.2, WebGL2 게임 진입·네메시아 INTRO, 전사 영상1920×1080/96.4초·오디오 신호 확인 |
+| 웹 | the-exoduser.vercel.app READY, 핵심8파일 해시·브라우저 진입·누락에셋0 PASS |
+| 업로드 보완 | Windows prebuilt에서 빠진 비ASCII83파일을 ASCII 업로드명+overrides 공개URL로 보완. normalize-web-paths.py와 계약 기록 |
+| 상세 | docs/13출시·마케팅/USB_WEB_RELEASE_20260910.md |
+
 ## 2026-09-10 레벨업 표시·이펙트 지속시간 보강
 
 | 항목 | 현재 구현 |

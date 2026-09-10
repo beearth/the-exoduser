@@ -1,0 +1,27 @@
+{
+  "executable": "I:\\EXODUSER\\EXODUSER.exe",
+  "saveIsolation": "G:\\exoduser\\tmp\\usb-exe-qa-appdata",
+  "probe": "Temporary inject_js_end; original manifest restored after QA",
+  "runtime": {
+    "nw": "0.111.2",
+    "node": "26.0.0"
+  },
+  "lobbyTitle": "HELL: EXODUSER",
+  "movie": {
+    "width": 1920,
+    "height": 1080,
+    "currentTime": 2.981333,
+    "duration": 96.4,
+    "paused": false,
+    "audioPeak": 6
+  },
+  "game": {
+    "level": 1,
+    "stage": 0,
+    "renderer": "WebGL2",
+    "canvas": true,
+    "levelVfx": "function"
+  },
+  "status": "PASS",
+  "originalManifestRestored": true
+}
