@@ -905,6 +905,7 @@ body{background:#000 center/cover no-repeat;color:#ccaa88;font-family:'Noto Sans
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
 <script src="lobby_i18n.js"></script>
 <script src="lobby-stage-info.js"></script>
+<script src="character-story-player.js?v=20260910-v21"></script>
 <script src="world-intro-player.js?v=20260907-v12-fullscene-newvoice"></script>
 <script src="world-intro-subtitles-data.js?v=20260907-v13-exodus-ko-escape"></script>
 <script src="world-intro-subtitles.js?v=20260907-v6-cinema-size"></script>
@@ -1980,6 +1981,7 @@ function stopLobbyBgm(){ // 시네마틱 진입 시 로비BGM 페이드 정지 (
 function stopCinBgm(){if(!_cinBgm)return;const _a=_cinBgm;_cinBgm=null;const _fd=setInterval(()=>{if(_a.volume>0.06){_a.volume=Math.max(0,_a.volume-0.06)}else{clearInterval(_fd);try{_a.pause()}catch(e){}}},50)}
 let bgmStarted=false;
 function _tryBGM(){
+  if(ExoduserCharacterStory.active)return;
   if(bgmStarted)return;
   // 게이트 (2026-07-27): FDG 스플래시/시네마틱 중엔 로비BGM 시작 금지 (마우스무브 지연재생이 스플래시 밑에 깔리던 문제)
   {const _sp=document.getElementById('splashOverlay');if(_sp&&_sp.style.display!=='none'&&_sp.style.opacity!=='0')return;
@@ -2608,7 +2610,7 @@ function _enterOffline(){
       const j=await res.json();
       $('createBtn').disabled=false;
       if(!j.ok){$('createModal').classList.add('show');setStatus(_TL('생성 실패: ')+(j.error||'unknown'),true);return}
-      $('charName').value='';setStatus('');await loadLocalCharacters();
+      $('charName').value='';setStatus('');await _afterCharacterCreated(name,_pendingVisualIdx);
     }catch(e){
       // 서버 없음 — localStorage 폴백 (DEMO)
       const _LS_PREFIX='hellsave_demo_';
@@ -2617,7 +2619,7 @@ function _enterOffline(){
       if(_slot<0){$('createBtn').disabled=false;setStatus(_TL('슬롯이 가득 찼습니다.'),true);return}
       localStorage.setItem(_LS_PREFIX+_slot,JSON.stringify({name:name,ts:Date.now(),charIdx:_pendingVisualIdx}));
       $('createBtn').disabled=false;
-      $('charName').value='';setStatus('');await loadLocalCharacters();
+      $('charName').value='';setStatus('');await _afterCharacterCreated(name,_pendingVisualIdx);
     }
   };
   if($('logoutBtn'))$('logoutBtn').style.display='none';
@@ -2882,6 +2884,25 @@ function _visualConfirm(){
 $('visualCreateBtn').onclick=_visualConfirm;
 $('visualCancelBtn').onclick=()=>{$('charVisualPop').style.display='none'};
 
+async function _afterCharacterCreated(name,visualIdx){
+  // Save is already complete; a playback/list failure must never create another slot.
+  try{
+    if(visualIdx!==0){if(_testMode)await loadLocalCharacters();else await loadCharacters();return;}
+    let charId=name;
+    if(!_testMode){
+      await loadCharacters();
+      const created=_onlineChars.find(ch=>ch.name===name);
+      if(!created)return;
+      charId=created.id;
+    }
+    _selectedSlot=charId;_selectedSlotName=name;
+    stopLobbyBgm();_stopHover();
+    ['lobbyCharPreview','csIdleVid','csSceneVid'].forEach(id=>{const v=$(id);if(v&&v.pause)v.pause();});
+    const seen=await ExoduserCharacterStory.play({skipLabel:_TL('건너뛰기')});
+    showCharGate(charId,seen);
+  }catch(error){console.error('[CHARACTER STORY]',error);startBGM();}
+}
+
 async function doCreateChar(name,visualIdx){
   $('createBtn').disabled=true;setStatus(_TL('생성 중...'));
   if(_testMode){
@@ -2891,21 +2912,21 @@ async function doCreateChar(name,visualIdx){
       const j=await res.json();
       $('createBtn').disabled=false;
       if(!j.ok){setStatus(_TL('생성 실패: ')+(j.error||_TL('알 수 없는 오류')),true);return}
-      $('charName').value='';setStatus('');await loadLocalCharacters();
+      $('charName').value='';setStatus('');await _afterCharacterCreated(name,visualIdx);
     }catch(e){
       const _LS_PREFIX='hellsave_demo_';const MAX_LS=5;
       for(let i=0;i<MAX_LS;i++){const raw=localStorage.getItem(_LS_PREFIX+i);if(raw){try{const d=JSON.parse(raw);if(d.name===name){$('createBtn').disabled=false;setStatus(_TL('이미 같은 이름의 캐릭터가 있습니다.'),true);return}}catch(pe){}}}
       let _slot=-1;for(let i=0;i<MAX_LS;i++){if(!localStorage.getItem(_LS_PREFIX+i)){_slot=i;break}}
       if(_slot<0){$('createBtn').disabled=false;setStatus(_TL('슬롯이 가득 찼습니다.'),true);return}
       localStorage.setItem(_LS_PREFIX+_slot,JSON.stringify({name:name,ts:Date.now(),charIdx:visualIdx}));
-      $('createBtn').disabled=false;$('charName').value='';setStatus('');await loadLocalCharacters();
+      $('createBtn').disabled=false;$('charName').value='';setStatus('');await _afterCharacterCreated(name,visualIdx);
     }
     return;
   }
   const{error}=await sb.from('characters').insert({user_id:currentUser.id,name:name,data:{charIdx:visualIdx}});
   $('createBtn').disabled=false;
   if(error){if(error.code==='23505')setStatus(_TL('이미 같은 이름의 캐릭터가 있습니다.'),true);else setStatus(_TL('생성 실패: ')+error.message,true);return}
-  $('charName').value='';setStatus('');await loadCharacters();
+  $('charName').value='';setStatus('');await _afterCharacterCreated(name,visualIdx);
 }
 
 $('createBtn').onclick=()=>{
@@ -3419,6 +3440,7 @@ _GP.on('loginNav', (gp, just) => {
 // ── 로비 게임패드 네비게이션 ──
 let _lobbyGpIdx = 0;
 _GP.on('lobbyNav', (gp, just) => {
+  if(ExoduserCharacterStory.active){if(just[1]||just[9])ExoduserCharacterStory.skip();return true;}
   const lobby = $('lobby');
   if(!lobby || lobby.style.display !== 'flex') return false;
 
@@ -3566,13 +3588,13 @@ _GP.on('lobbyNav', (gp, just) => {
 }, () => {});
 
 // ═══ 캐릭터 선택 → 입장 ═══
-function showCharGate(charId){
+function showCharGate(charId,storySeen=false){
   showLoading(_TL('지옥으로 입장하는 중...'));
   // 로고 프리로드
   const _preImg=new Image();_preImg.src='img/logo_exoduser.png';
   const _slotName=_testMode?charId:(_selectedSlotName||charId);
   const _tp=_testMode?'game.html?test=1&slot='+encodeURIComponent(charId):'game.html?char='+charId+'&slot='+encodeURIComponent(_slotName);
-  setTimeout(()=>{window.location.href=_tp},1200);
+  setTimeout(()=>{window.location.href=_tp+(storySeen?'&story=warrior-v21':'')},1200);
 }
 
 // ═══ 펫 말풍선 시스템 ═══

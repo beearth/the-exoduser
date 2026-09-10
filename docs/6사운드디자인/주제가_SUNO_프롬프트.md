@@ -88,3 +88,7 @@ HELL: EXODUSER
 - **구 `cutscene_goddess`/`cutscene_goddess_en` 트랙은 미사용 전환** (2026-07-27, 사용자 지시) —
   키·파일은 보존, 복원하려면 `_cutsceneEnd` PRO 분기에서 `BGM.play('cutscene_goddess')` 호출 추가
 - 추후 타이틀/로비/트레일러용으로도 이 풀 재사용 가능
+
+### 2026-09-10 대검전사 생성 재생 예외
+
+신규 대검전사 생성 직후 v21 스토리는 MP4 내장 음성만 재생하고 로비 BGM을 멈춘다. 완료/스킵 후 game.html INTRO에서 기존 cutscene_prologue 주제가 풀을 시작하며 구 PRO 내레이션은 생략한다. 다른 캐릭터·오류 폴백은 기존 경로다. [상세](../cinematic/WARINTRO_CREATION_RUNTIME_20260910.md).
