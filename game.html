@@ -78,7 +78,7 @@ window._supabaseReady=new Promise(resolve=>{
 <script src="lang_ms.js"></script>
 <script src="localization-runtime.js"></script>
 <script src="localization-data.js?v=20260910-nemesia-dialogue"></script>
-<script src="level-up-vfx.js?v=20260910-gold-v2-level"></script>
+<script src="level-up-vfx.js?v=20260910-readable-v3"></script>
 <style>
 @import url('https://fonts.googleapis.com/css2?family=Black+Han+Sans&family=Noto+Sans+KR:wght@400;500;700;900&display=swap');
 @import url('https://fonts.googleapis.com/css2?family=Cinzel:wght@700;900&family=Cinzel+Decorative:wght@700;900&family=Grenze+Gotisch:wght@700;900&family=Pirata+One&family=Nanum+Myeongjo:wght@400;700;800&family=Gowun+Batang:wght@400;700&family=Noto+Serif+KR:wght@400;600;700;900&display=swap');
@@ -39633,7 +39633,7 @@ function addExp(v,trans){
     const _isTrans=P.lv>1000;
     const _demonic=(PASSIVES.pDemon||0)>(PASSIVES.pHuman||0);
     const _lvCol=_demonic?'#d38aff':'#ffdd00';
-    SFX.levelup();showPH(_isTrans?'TRANSCEND!':'LEVEL UP!',_lvCol);
+    SFX.levelup();showPH(_isTrans?'TRANSCEND!':'LEVEL UP!',_lvCol,2500);
     let lvTxt='SP +'+(lvd*3);
     if(apGain>0)lvTxt+=' AP +'+apGain;
     addTxt(P.x,P.y-40,lvTxt,_lvCol,60);
@@ -40068,7 +40068,7 @@ function hurtP(dmg,opts){
   if(P.hp<=0&&_eqAffix('lastStand')>=1&&!P._lastStandUsed){P.hp=1;P._lastStandUsed=true;P.iframes=120;addTxt(P.x,P.y-25,_T('💀 불굴!'),'#ffdd44',60);return}
   if(P.hp<=0)die()}
 let scrFlash=null,scrFlashA=0;
-function showPH(t,c){if(_charIdx===1&&t==='쿨다운 중...')playSample('voice_cooldown',1,1);if(_charIdx===1&&/^(MP|ST|HP) 부족!|^악의 부족!/.test(t))playSample('voice_resource_fail',1,1);const el=$('ph');el.textContent=_T(t);el.style.color=c;el.classList.add('on');setTimeout(()=>el.classList.remove('on'),500)}
+function showPH(t,c,duration=500){if(_charIdx===1&&t==='쿨다운 중...')playSample('voice_cooldown',1,1);if(_charIdx===1&&/^(MP|ST|HP) 부족!|^악의 부족!/.test(t))playSample('voice_resource_fail',1,1);const el=$('ph');el.textContent=_T(t);el.style.color=c;el.classList.add('on');clearTimeout(showPH._timer);showPH._timer=setTimeout(()=>el.classList.remove('on'),duration)}
 function notify(msg){const el=$('notif');el.textContent=_T(msg);el.classList.add('on');el.style.bottom='260px';setTimeout(()=>{el.style.bottom='270px';el.classList.remove('on')},1500)}
 
 // ═══════════════════════════════════════
