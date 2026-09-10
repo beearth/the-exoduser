@@ -91,4 +91,6 @@ HELL: EXODUSER
 
 ### 2026-09-10 대검전사 생성 재생 예외
 
-신규 대검전사 생성 직후 v21은 MP4 내장 음성을 재생하고 로비 BGM을 멈춘다. 완료·스킵·미디어 오류 후 신규 캐릭터는 네메시스 INTRO로 이어진다. BGM.fadeOut(300),400ms 후 cutscene_prologue를 재생하며 구 전쟁 _proVoice는 정지한다. INTRO 종료 후 기상 연출과 스테이지 음악을 복구한다. 완료 저장은 바로 플레이하며 구 전쟁 PRO는 명시적 cutscene=1에서만 재생한다. [현재 계약](../cinematic/WARINTRO_CREATION_RUNTIME_20260910.md).
+신규 대검전사 생성 직후 v22는 MP4에 합성한 영어 음성+심연의 탈주 BGM을 재생하고 로비 BGM을 멈춘다. 완료·스킵·미디어 오류 후 신규 캐릭터는 네메시스 INTRO로 이어진다. BGM.fadeOut(300),400ms 후 cutscene_prologue를 재생하며 구 전쟁 _proVoice는 정지한다. INTRO 종료 후 기상 연출과 스테이지 음악을 복구한다. 완료 저장은 바로 플레이하며 구 전쟁 PRO는 명시적 cutscene=1에서만 재생한다. [현재 계약](../cinematic/WARINTRO_CREATION_RUNTIME_20260910.md).
+
+전사 영상의 음악은 prologue_theme.mp3 처음96.4초를 사용한다. 대사 중 음악을 절반으로 낮추고 부분 스킵에서도 함께 이동한다. [v22 믹스](../cinematic/WARINTRO_BGM_V22_20260910.md).

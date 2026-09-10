@@ -1,0 +1,15 @@
+{
+  "status": "PASS",
+  "playback": {
+    "src": "http://127.0.0.1:3333/video/warrior_story_v22_bgm.mp4",
+    "duration": 96.4,
+    "muted": false,
+    "volume": 1,
+    "audioBytes": 10709,
+    "controls": false
+  },
+  "partial_skip_clock": 90.343876,
+  "full_skip_released_media": true,
+  "page_errors": [],
+  "save_access": false
+}

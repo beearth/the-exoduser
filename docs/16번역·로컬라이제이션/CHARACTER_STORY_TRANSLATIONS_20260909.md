@@ -160,3 +160,6 @@
 ### 2026-09-10 컷씬 부분 스킵 적용
 
 대검전사 생성 컷씬 조작 문구는 play({language:getCurrentLanguage(),skipLabel:_TL(건너뛰기)})로 전달한다. ko에서는 다음 대사·클릭하여 계속·Esc / B 길게, 나머지는 Next line·Click to continue·hold Esc / B를 표시한다. 영상 속 한글22cue는 고정이며 부분 스킵 시 음성과 함께 이동한다. [전체 계약](../cinematic/WARINTRO_CREATION_RUNTIME_20260910.md).
+
+
+> **2026-09-10 현재 재생은 v22 BGM 버전:** v21 영상·22개 대사·쉼은 동일하며 무가사 주제가를 추가했다. 생성 직후 v22 → 네메시스 INTRO → 플레이. 영상·음성·BGM·자막이 부분 스킵 시 함께 이동한다. [믹스 계약](../cinematic/WARINTRO_BGM_V22_20260910.md).

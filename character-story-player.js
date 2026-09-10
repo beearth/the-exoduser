@@ -1,4 +1,4 @@
-/* New-character warrior story. The movie contains its own narration and subtitles. */
+/* New-character warrior story. The movie contains narration, score and subtitles. */
 (function(root){
   const CUES=Object.freeze([1,5.5,10,16,22.5,28,33.5,39,42.24,46.5,51,53.48,56.019999999999996,59.5,59.98,65,70.67,76,81.5,88,90.33333333333333,92.9]);
   const HOLD_MS=1200;
@@ -16,7 +16,7 @@
       overlay.setAttribute('role','dialog');overlay.setAttribute('aria-modal','true');overlay.setAttribute('aria-label','Warrior story');
       overlay.style.cssText='position:fixed;inset:0;z-index:2147483647;background:#000;display:flex;align-items:center;justify-content:center';
       const video=document.createElement('video');video.id='characterStoryVideo';
-      video.src='video/warrior_story_v21.mp4';video.preload='auto';video.playsInline=true;video.controls=false;
+      video.src='video/warrior_story_v22_bgm.mp4';video.preload='auto';video.playsInline=true;video.controls=false;
       video.disablePictureInPicture=true;video.disableRemotePlayback=true;video.tabIndex=-1;
       video.muted=false;video.volume=1;video.style.cssText='width:100%;height:100%;object-fit:contain;pointer-events:none';
       const ui=document.createElement('div');ui.style.cssText='position:absolute;right:3%;bottom:3%;display:flex;gap:22px;align-items:center;color:#c9b795;font:13px serif;letter-spacing:.06em';
