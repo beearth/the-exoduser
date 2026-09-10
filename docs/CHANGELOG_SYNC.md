@@ -47273,3 +47273,11 @@ mpR = 0.05 + s.int×0.005                                        [NO P.lv×0.001
 - 수정: 각 재작성 완료 후 버전 1 증가. 기존 3프레임 계산 주기·프리셋 수치·동일 크기 GPU 할당 재사용 유지.
 - 검증: 수정 전 신규 6개 테스트 실패 → 수정 후 6개 및 기존 텍스처 회귀 3개 PASS. 실제 Chrome RX 9070 XT WebGL2에서도 이전 코드 3레이어 잔상 재현, 수정 코드 3레이어 GPU 픽셀 비교 PASS.
 - 문서: `docs/12퍼포먼스·최적화/LIGHTING_TEXTURE_FRESHNESS_20260910.md`, 퍼포먼스 본문, VFX 구현가이드, 맵 화면효과 전수조사 동기화. 전체 지옥강타 전투 시퀀스는 별도 미검증.
+
+
+## 2026-09-10 — content.js Untrusted event 원인 진단
+
+- 실제 게임 콘솔에서 전체 오류 URL 확인: Monica 확장 `ofpnmcalabcbjgholdjcjblkibolbppb`의 `ensureTrustedEvent` → `handleKeyDown`.
+- 게임·세이브 없는 독립 페이지에서 일반 KeyW는 오류 없음, 패드식 합성 KeyW(`isTrusted=false`, `_fromGp=true`)는 동일 스택 재현. document/window 입력 수신과 dispatch 이후 실행은 정상.
+- 게임 렌더/VFX 결함과 별개인 확장 호환 문제로 확인. 게임 코드 및 확장 설정 변경 없음.
+- `docs/3.3 키바인딩+설정/MONICA_UNTRUSTED_EVENT_20260910.md`와 게임패드 트러블슈팅 문서에 원인·재현·범위 기록.
