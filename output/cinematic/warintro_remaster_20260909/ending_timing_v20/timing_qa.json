@@ -1,0 +1,40 @@
+{
+  "checks": [
+    {
+      "original": [
+        94.04,
+        95.095
+      ],
+      "new": [
+        91.34,
+        92.39500000000001
+      ],
+      "pcm_identical": true
+    },
+    {
+      "original": [
+        99,
+        101.52
+      ],
+      "new": [
+        93.895,
+        96.41499999999999
+      ],
+      "pcm_identical": true
+    },
+    {
+      "pause_samples": [
+        48000,
+        72000
+      ],
+      "pause_seconds": [
+        1,
+        1.5
+      ],
+      "digital_silence": true
+    }
+  ],
+  "audio_speed": 1,
+  "total": 97.4,
+  "status": "PASS"
+}

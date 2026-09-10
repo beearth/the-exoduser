@@ -1,0 +1,156 @@
+{
+  "version": 20,
+  "total": 97.4,
+  "frames": 5844,
+  "fps": 60,
+  "source_fps": "mixed; see source_manifest.json",
+  "width": 1920,
+  "height": 1080,
+  "shots": [
+    {
+      "source": "dialogue_audit_v11\\w08_witness.mp4",
+      "start_frame": 2310,
+      "end_frame": 2760,
+      "start": 38.5,
+      "end": 46.0,
+      "speed": 1
+    },
+    {
+      "source": "shadow_trim_v19\\w09_flash.mp4",
+      "start_frame": 2760,
+      "end_frame": 2820,
+      "start": 46.0,
+      "end": 47.0,
+      "speed": 1
+    },
+    {
+      "source": "shadow_trim_v19\\w09_return.mp4",
+      "start_frame": 2820,
+      "end_frame": 3030,
+      "start": 47.0,
+      "end": 50.5,
+      "speed": 1
+    },
+    {
+      "source": "realism_v7\\w10a_straight.mp4",
+      "start_frame": 3030,
+      "end_frame": 3210,
+      "start": 50.5,
+      "end": 53.5,
+      "speed": 1
+    },
+    {
+      "source": "realism_v7\\w10b.mp4",
+      "start_frame": 3210,
+      "end_frame": 3360,
+      "start": 53.5,
+      "end": 56.0,
+      "speed": 1
+    },
+    {
+      "source": "realism_v7\\w10c.mp4",
+      "start_frame": 3360,
+      "end_frame": 3600,
+      "start": 56.0,
+      "end": 60.0,
+      "speed": 1
+    },
+    {
+      "source": "memory_v14\\w11a_memory.mp4",
+      "start_frame": 3600,
+      "end_frame": 3810,
+      "start": 60.0,
+      "end": 63.5,
+      "speed": 1
+    },
+    {
+      "source": "memory_v14\\w11b_present.mp4",
+      "start_frame": 3810,
+      "end_frame": 3930,
+      "start": 63.5,
+      "end": 65.5,
+      "speed": 1
+    },
+    {
+      "source": "dialogue_audit_v11\\w12_fall.mp4",
+      "start_frame": 3930,
+      "end_frame": 4200,
+      "start": 65.5,
+      "end": 70.0,
+      "speed": 1
+    },
+    {
+      "source": "dialogue_audit_v11\\w13_countless.mp4",
+      "start_frame": 4200,
+      "end_frame": 4590,
+      "start": 70.0,
+      "end": 76.5,
+      "speed": 1
+    },
+    {
+      "source": "dialogue_audit_v11\\w14_arrival.mp4",
+      "start_frame": 4590,
+      "end_frame": 4920,
+      "start": 76.5,
+      "end": 82.0,
+      "speed": 1
+    },
+    {
+      "source": "combat_v16\\w15_faceoff.mp4",
+      "start_frame": 4920,
+      "end_frame": 5100,
+      "start": 82.0,
+      "end": 85.0,
+      "speed": 1
+    },
+    {
+      "source": "combat_v16\\w15_fight.mp4",
+      "start_frame": 5100,
+      "end_frame": 5310,
+      "start": 85.0,
+      "end": 88.5,
+      "speed": 1
+    },
+    {
+      "source": "realism_v7\\w16a.mp4",
+      "start_frame": 5310,
+      "end_frame": 5480,
+      "start": 88.5,
+      "end": 91.33333333333333,
+      "speed": 1
+    },
+    {
+      "source": "ending_timing_v20\\w16c_fast.mp4",
+      "start_frame": 5480,
+      "end_frame": 5634,
+      "start": 91.33333333333333,
+      "end": 93.9,
+      "speed": 1.25
+    },
+    {
+      "source": "realism_v7\\w16d.mp4",
+      "start_frame": 5634,
+      "end_frame": 5844,
+      "start": 93.9,
+      "end": 97.4,
+      "speed": 1
+    }
+  ],
+  "captions": 22,
+  "fade": [
+    96.60000000000001,
+    97.4
+  ],
+  "interpolation": false,
+  "freeze_padding": false,
+  "opening": [
+    0,
+    38.5
+  ],
+  "audio": "narration.wav",
+  "source_v7_preserved": true,
+  "default_source_speed": 1,
+  "speed_override": {
+    "w16c_fast": 1.25
+  }
+}

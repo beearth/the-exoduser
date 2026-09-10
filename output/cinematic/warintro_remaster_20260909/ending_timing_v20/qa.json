@@ -1,0 +1,43 @@
+{
+  "receipts": [
+    {
+      "file": "final.mp4",
+      "duration": 97.4,
+      "frames": 5844,
+      "bytes": 87584050,
+      "sha256": "498f734eb7021c83e55fc99788b4b521eabfbbc05dd683df7abeac5443d1f579",
+      "audio_codec": "aac",
+      "audio_channels": 2,
+      "decode": "PASS"
+    },
+    {
+      "file": "ending.mp4",
+      "duration": 8.900000000000006,
+      "frames": 534,
+      "bytes": 8313788,
+      "sha256": "dc3f980606d366b3ab5cd22ddd24621dcd36e88c872618414f578209023f7481",
+      "audio_codec": "aac",
+      "audio_channels": 2,
+      "decode": "PASS"
+    }
+  ],
+  "audio_correlation": 0.9999732163937345,
+  "digital_gap_rms": 0.0,
+  "contact_times": [
+    46.8,
+    47.02,
+    89.1,
+    90.5,
+    91.32,
+    91.35,
+    92,
+    92.5,
+    93.88,
+    93.92,
+    94.6,
+    96.5
+  ],
+  "visual_review": "12표본에서기존 그림자46.8초→전사47.02초,질문 뒤탈출 컷91.333333초,마지막 컷93.9초와호명 자막 확인.탈출 영상 움직임1.25배속 설정·원속도 음성·1초/1.5초 PCM 쉼 별도 검증",
+  "realtime_review": false,
+  "listening_review": false
+}

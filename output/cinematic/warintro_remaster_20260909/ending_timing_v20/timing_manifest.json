@@ -1,0 +1,44 @@
+{
+  "version": 20,
+  "total": 97.4,
+  "frames": 5844,
+  "question_speech": [
+    89,
+    90.34
+  ],
+  "question_pause": [
+    90.34,
+    91.34
+  ],
+  "question_pause_duration": 1,
+  "command_speech": [
+    91.34,
+    92.395
+  ],
+  "command_pause": [
+    92.395,
+    93.895
+  ],
+  "command_pause_duration": 1.5,
+  "final_speech": [
+    93.895,
+    96.415
+  ],
+  "picture_cuts": [
+    88.5,
+    91.33333333333333,
+    93.9,
+    97.4
+  ],
+  "picture_frames": [
+    170,
+    154,
+    210
+  ],
+  "command_picture_speed": 1.25,
+  "audio_speed": 1,
+  "rounding": "Video cuts nearest60fps frame; speech pauses exact PCM sample boundaries",
+  "shadow": "v19 first1sec original v12, no freeze",
+  "removed_picture": "w16b_armor separate long pause shot",
+  "new_generation": false
+}
