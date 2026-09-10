@@ -46960,8 +46960,8 @@ const ATMO_FG=[
 var _atmCut=null,_atmCutX=null,_atmCutW=0,_atmCutH=0; // ATMOS 안개 합성 캔버스(순수 2D, 부팅/리사이즈 1회 생성). 중앙은 그라데이션 50% 감쇠, 홀펀치 없음
 var _atmUserSet=0;      // A2: 사용자가 atmos 수동변경 시 1 → 자동승격 차단
 var _ATM_TUNE=false,_atmSel=0,_atmHudOn=false; // 튜닝 HUD (디버그 전용, _ATM_TUNE=false시 기존동작 100% 동일). F9=HUD가시성 토글
-var _ATMDBG={grade:0,lift:0,vig:0,farfog:0,nearfog:0,veil:0,ray:new URLSearchParams(location.search).get('ray')==='0'?0:1,mote:1,sidefog:1},_atmDbgStep=0,_atmDbgOffName='ALL ON',_atmDbgTouched=false; // ray=0: 화면 고정 광선만 제외하는 Mac 세로 띠 비교. 기본/1은 기존 유지.
-if(new URLSearchParams(location.search).has('ray'))console.log('[ATMOS] ray='+_ATMDBG.ray+' | policy=ray-isolation-20260910');
+var _ATMDBG={grade:0,lift:0,vig:0,farfog:0,nearfog:0,veil:0,ray:new URLSearchParams(location.search).get('ray')==='1'?1:0,mote:1,sidefog:1},_atmDbgStep=0,_atmDbgOffName='ALL ON',_atmDbgTouched=false; // 화면 고정 금색 광선은 기본 OFF. ray=1에서만 진단용으로 재현.
+console.log('[ATMOS] ray='+_ATMDBG.ray+' | policy=ray-default-off-20260910');
 const _oriFireflies=[];for(let _fi=0;_fi<20;_fi++)_oriFireflies[_fi]={x:0,y:0,vx:0,vy:0,phase:_fi*0.31,bright:0,r:1.5+(_fi%3)*0.5};
 // 연기 풀 (10개)
 const _oriSmoke=[];for(let _si=0;_si<10;_si++)_oriSmoke[_si]={x:0,y:0,vx:0,vy:0,alpha:0,r:30+(_si%4)*15,phase:_si*0.63};

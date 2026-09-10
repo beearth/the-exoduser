@@ -19,7 +19,8 @@ test('ray=0 removes only the five screen-fixed ray paths',()=>{
   assert.deepEqual(off.particles,on.particles);assert.equal(off.particles.length,192);
   assert.equal(off.alpha,1);assert.equal(off.blend,'source-over');
 });
-test('default ray geometry is unchanged by camera movement',()=>{
-  assert.deepEqual(render('').paths,render('?ray=1',500).paths);
-  assert.equal(render('?ray=false').paths.length,5);
+test('normal entry never draws full-height ray bands; explicit diagnostic opt-in retains geometry',()=>{
+  for(const query of ['', '?ray=0', '?ray=false', '?ray=true'])assert.equal(render(query).paths.length,0,query||'default');
+  assert.deepEqual(render('?ray=1').paths,render('?ray=1',500).paths);
+  assert.equal(render('?ray=1').paths.length,5);
 });

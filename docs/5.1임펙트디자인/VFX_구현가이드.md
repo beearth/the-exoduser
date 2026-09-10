@@ -539,7 +539,7 @@ PixelLab에서 8프레임 애니메이션도 생성 완료했으나, MCP API로 
 ### 3패스 (draw 내, screen-space)
 - **3-1 DEPTH HAZE** (맵/데코 후·엔티티 전, atmos≥2): #121a2a .22 + FogA lighter **.05** 파랄럭스(cam×.15) 커버타일 (2026-08-23 반감, 구 .10). 중앙은 토치 홀펀치 대신 방사 그라데이션으로 50%만 걷음.
 - **3-2 현행** (엔티티 후·토치 전, atmos≥2): 사이드 안개 렌더. 기존 `_atmRay` 2패스·`_atmMote`82개 호출은 제거됐으며 데이터/생성 코드는 남아 있다. FogB는3-1로 이동하고 현재 farfog/nearfog/veil 게이트는0이다.
-- **PP 광선·입자 현행**: world 합성 후 HUD 전 `_atmoDraw`, PP_ON=true. ATMO_P192개(LOW96개), GOD_RAY5개(LOW3개). 광선은 카메라 비결합 화면 고정 단색 사다리꼴, CH1 #ffd98a/기준알파.30. `ray=0`은 광선만 끄고 기본/1은 유지. [정확한 수치·비교 계약](../12퍼포먼스·최적화/MAC_FIXED_RAY_ISOLATION_20260910.md).
+- **PP 광선·입자 현행**: world 합성 후 HUD 전 `_atmoDraw`, PP_ON=true. ATMO_P192개(LOW96개) 유지, GOD_RAY는 기본 OFF. 진단 URL `ray=1`에서만5개(LOW3개) 재현. 광선은 카메라 비결합 화면 고정 단색 사다리꼴, CH1 #ffd98a/기준알파.30. [정확한 수치·비교 계약](../12퍼포먼스·최적화/MAC_FIXED_RAY_ISOLATION_20260910.md).
 
 #### ATMOS 재설계 — 흐림필터 폐기 → 사이드 입자 안개 (2026-08-23)
 화면 전체 반투명 회색 덮기(farFog/nearFog/veil/`_atmCut`)=검정 들어올림·저대비 원인 → `_ATMDBG` 플래그로 **전부 영구 OFF**(코드 삭제 아님, F9로 개별 재활성 가능). 대체: **사이드 입자 안개**(`_sideFog=Float32Array(44×8)`, `_ATMDBG.sidefog=1`).
