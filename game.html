@@ -5469,11 +5469,8 @@ async function _bootRenderer(){
   let ok=false;
   const _cl=IS_ELECTRON?function(){}:console.log.bind(console);
   const _ce=IS_ELECTRON?function(){}:console.error.bind(console);
-  // Browser dev mode defaults to WebGL first for stability; opt-in with ?webgpu=1
-  const _useWebGPU=(!IS_ELECTRON)&&(
-    new URLSearchParams(location.search).get('webgpu')==='1' ||
-    (IS_MAC && typeof navigator.gpu!=='undefined')
-  );
+  // All platforms default to WebGL2; WebGPU is explicit URL opt-in only.
+  const _useWebGPU=(!IS_ELECTRON)&&new URLSearchParams(location.search).get('webgpu')==='1';
   if(_useWebGPU){
     try{ok=await _initWebGPU()}catch(e){_ce('[GPU] WebGPU 초기화 에러:',e);ok=false}
   }else{
@@ -5486,7 +5483,7 @@ async function _bootRenderer(){
   if(!X&&!_useGPU&&!_useGL){X=C.getContext('2d')}
   if(!X){X=C.getContext('2d')}
   // 한 줄 요약
-  console.log('[GPU] '+(_useGPU?'WebGPU':_useGL?'WebGL2':'Canvas2D')+' | '+_hwGPU+(IS_ELECTRON?' | Electron':''));
+  console.log('[GPU] '+(_useGPU?'WebGPU':_useGL?'WebGL2':'Canvas2D')+' | '+_hwGPU+(IS_ELECTRON?' | Electron':'')+' | policy=url-opt-in-20260910 | webgpu='+new URLSearchParams(location.search).get('webgpu'));
   _initBurstSystem();
   // ── Canvas2D shadowBlur 인터셉트 (고FPS 시 비활성화) ──
   if(!_useGPU&&!_useGL&&X&&typeof CanvasRenderingContext2D!=='undefined'){

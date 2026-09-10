@@ -1,3 +1,14 @@
+## 2026-09-10 Mac 금색 세로 띠 — 렌더러 선택 비교 테스트 (실기 PENDING)
+
+| 항목 | 변경 / 검증 |
+|---|---|
+| 제보·로컬 비교 | Mac Chrome/Safari 배경의 금색 세로 띠, HUD 정상. 사용자 제시 배포 조건과 동일한 Mac 자동 WebGPU OR 조건을 로컬에서 확인. 배포 URL 원문 비교는 대기 |
+| 선택식 | Mac 자동 선택 제거. 비 Electron에서 webgpu=1만 WebGPU 시도. 기본/0은 WebGL2 우선, 실패 시 기존 Canvas2D. Electron 제외 유지 |
+| 로그 | 실제 백엔드·어댑터 요약에 policy=url-opt-in-20260910 및 URL webgpu 값 추가 |
+| 검증 | 변경 전 Mac 기본/0/true 3건 실패 → 선택·폴백11 PASS, 텍스처 회귀9 PASS. Windows Chrome RX9070XT에서 기본/0 실제 WebGL2 컨텍스트·시작 로그·pageerror0 확인 |
+| 상태 | 테스트 버전만 준비. Mac Chrome/Safari 같은 장면의 세로 띠·이동·전투·FPS 미확인, 해결 완료 아님. 과거 swizzle 성능 기록 보존 |
+| 문서 | [비교 절차·결과표](12퍼포먼스·최적화/MAC_RENDERER_OPTIN_TEST_20260910.md), 렌더러·Mac 감사·성능 문서 동기화 |
+
 ## 2026-09-10 시작 타이틀 영상·문자 선명도 개선
 
 | 항목 | 변경 / 검증 |

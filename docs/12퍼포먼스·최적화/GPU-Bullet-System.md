@@ -117,8 +117,8 @@ function drawBullets() {
 | 항목 | 값 | 비고 |
 |------|-----|------|
 | 메인 캔버스 | `C` | id="c" |
-| WebGPU context | `GPU` (device), `_gpuCtx` | Electron 우선, `?webgpu=1` |
-| WebGL2 context | `GL` | WebGPU 실패 시 폴백 |
+| WebGPU context | `GPU` (device), `_gpuCtx` | 비 Electron에서 명시적 `?webgpu=1`만 시도 (2026-09-10) |
+| WebGL2 context | `GL` | 기본 백엔드 및 명시적 WebGPU 실패 시 폴백 |
 | Canvas2D | `X` | 최종 폴백 |
 | 렌더 백엔드 플래그 | `_useGPU`, `_useGL` | |
 | 카메라 | `G.cam.x`, `G.cam.y` | |
