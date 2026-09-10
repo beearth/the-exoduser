@@ -1,0 +1,52 @@
+{
+  "version": 17,
+  "source": "combat_v16/final.mp4",
+  "removed_original_range": [
+    88.5,
+    89.5
+  ],
+  "removed_frames": 60,
+  "removed_pcm_rms": 2.133612724719569e-05,
+  "total": 102.5,
+  "frames": 6150,
+  "fps": 60,
+  "faceoff": [
+    82,
+    85
+  ],
+  "fight": [
+    85,
+    88.5
+  ],
+  "ending": [
+    88.5,
+    102.5
+  ],
+  "question_caption": [
+    89,
+    93.25
+  ],
+  "command": [
+    94.04,
+    95.095
+  ],
+  "vocative": [
+    99,
+    101.52
+  ],
+  "vocative_caption": [
+    99,
+    101.7
+  ],
+  "digital_gap": [
+    95.095,
+    99
+  ],
+  "fade": [
+    101.7,
+    102.5
+  ],
+  "captions": 22,
+  "source_speed": 1,
+  "new_generation": false
+}

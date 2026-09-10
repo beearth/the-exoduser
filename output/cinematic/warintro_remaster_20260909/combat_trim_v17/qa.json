@@ -1,0 +1,30 @@
+{
+  "receipts": [
+    {
+      "file": "final.mp4",
+      "duration": 102.5,
+      "frames": 6150,
+      "decode": "PASS",
+      "sha256": "91e5b051c907a6973b1505a262836b094c0667ee755079f09fb5e1103001905a"
+    },
+    {
+      "file": "trim_excerpt.mp4",
+      "duration": 8,
+      "frames": 480,
+      "decode": "PASS",
+      "sha256": "562d187ff627db636ebe20e1e8a79e76e51fd24953a344f66bac9e4b748cd4de"
+    },
+    {
+      "file": "ending.mp4",
+      "duration": 14,
+      "frames": 840,
+      "decode": "PASS",
+      "sha256": "830d987601c9bf05465568187805d78dcf7ddcd4bd8484489961a8404591ab8b"
+    }
+  ],
+  "audio_correlation": 0.9999749677541441,
+  "digital_gap_rms": 0.0,
+  "visual_review": "9표본에서88.483초 마지막 준비 자세 뒤88.5초 네메시스로 전환,사랑을 잃은 자 자막 종료 및89.1초 질문·99.5초 마지막 호명 확인",
+  "realtime_review": false,
+  "listening_review": false
+}
