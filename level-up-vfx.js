@@ -1,10 +1,10 @@
-/* Golden level-up presentation. Static transparent atlas; no combat or save state. */
+/* Humanity/demon level-up presentation. Static transparent atlases; no save state. */
 (function (root) {
   'use strict';
   const DURATION=1.45, TAU=Math.PI*2;
   const CELLS={beam:[0,0,128,256],glow:[128,0,128,128],ring:[0,256,256,128],spark:[256,0,32,32],flare:[256,64,128,128]};
-  let atlas=null;
-  function prepare(){
+  let atlas=null,purpleAtlas=null;
+  function prepareGold(){
     if(atlas||typeof document==='undefined')return atlas;
     const c=document.createElement('canvas');c.width=c.height=512;
     const x=c.getContext('2d');
@@ -44,20 +44,34 @@
     }
     x.restore();atlas=c;return atlas;
   }
-  function stamp(ctx,cell,cx,cy,w,h,alpha){
+  function prepare(demonic){
+    const gold=prepareGold();
+    if(!demonic||!gold)return gold;
+    if(!purpleAtlas){
+      const c=document.createElement('canvas');c.width=c.height=512;
+      const x=c.getContext('2d');if(!x)return gold;
+      x.drawImage(gold,0,0);const image=x.getImageData(0,0,512,512),data=image.data;
+      for(let i=0;i<data.length;i+=4){const r=data[i];data[i]=data[i+1];data[i+1]=data[i+2];data[i+2]=r;}
+      x.putImageData(image,0,0);purpleAtlas=c;
+    }
+    return purpleAtlas;
+  }
+  function stamp(ctx,texture,cell,cx,cy,w,h,alpha){
     if(alpha<=.002||w<=0||h<=0)return;
     ctx.globalAlpha=Math.min(1,alpha);
-    ctx.drawImage(atlas,cell[0],cell[1],cell[2],cell[3],cx-w/2,cy-h/2,w,h);
+    ctx.drawImage(texture,cell[0],cell[1],cell[2],cell[3],cx-w/2,cy-h/2,w,h);
   }
   function create(){
     prepare();
-    let active=false,age=0,owner=null,stage=-1,strength=1;
+    let active=false,age=0,owner=null,stage=-1,strength=1,label='',demonic=false;
     return {
       get active(){return active;},get age(){return age;},
-      trigger(player,currentStage,levels){
+      trigger(player,currentStage,levels,isDemonic=false){
         if(!player||player.hp<=0)return;
         const merge=active&&owner===player&&stage===currentStage&&age<.24;
         owner=player;stage=currentStage;strength=Math.min(1.12,1+Math.max(0,(levels||1)-1)*.03);
+        label='Lv. '+Math.floor(player.lv||1);
+        demonic=!!isDemonic;prepare(demonic);
         if(!merge)age=0;
         active=true;
       },
@@ -67,27 +81,41 @@
         if(Number.isFinite(seconds)&&seconds>0)age+=seconds;
         if(age>=DURATION){active=false;owner=null;}
       },
+      drawLabel(ctx,player,currentStage){
+        if(!active||owner!==player||stage!==currentStage||player.hp<=0||player.s==='fallen')return;
+        const y=player.y-70-18*Math.min(1,age/DURATION);
+        ctx.save();ctx.globalCompositeOperation='source-over';
+        ctx.globalAlpha=Math.min(1,age/.08)*Math.min(1,Math.max(0,(DURATION-age)/.4));
+        // The game text atlas reads the leading number as font size.
+        ctx.font='24px "Cinzel", Georgia, serif';ctx.textAlign='center';ctx.textBaseline='middle';
+        ctx.fillStyle=demonic?'#1d092b':'#241707';
+        ctx.fillText(label,player.x-1,y-1);ctx.fillText(label,player.x+1,y-1);
+        ctx.fillText(label,player.x-1,y+1);ctx.fillText(label,player.x+1,y+1);
+        ctx.fillStyle=demonic?'#e5b4ff':'#ffe6a3';ctx.fillText(label,player.x,y);
+        ctx.restore();
+      },
       draw(ctx,player,currentStage,front,reduced){
-        if(!active||owner!==player||stage!==currentStage||player.hp<=0||player.s==='fallen'||!prepare())return;
+        if(!active||owner!==player||stage!==currentStage||player.hp<=0||player.s==='fallen')return;
+        const texture=prepare(demonic);if(!texture)return;
         const t=age,px=player.x,foot=player.y+18;
         const rise=Math.min(1,t/.065),tail=Math.max(0,1-t/DURATION);
         ctx.save();ctx.globalCompositeOperation='lighter';
         if(!front){
           const p=Math.min(1,t/.65),r=65+170*(1-Math.pow(1-p,3));
-          stamp(ctx,CELLS.ring,px,foot,r*strength,r*.5*strength,rise*Math.pow(1-p,1.15)*.95);
+          stamp(ctx,texture,CELLS.ring,px,foot,r*strength,r*.5*strength,rise*Math.pow(1-p,1.15)*.95);
           const p2=Math.max(0,Math.min(1,(t-.1)/.7));
-          if(t>.1&&!reduced)stamp(ctx,CELLS.ring,px,foot,60+145*p2,(60+145*p2)*.5,(1-p2)*.38*Math.min(1,(t-.1)/.06));
-          stamp(ctx,CELLS.glow,px,player.y-12,150,210,rise*Math.exp(-t*3.8)*.7);
+          if(t>.1&&!reduced)stamp(ctx,texture,CELLS.ring,px,foot,60+145*p2,(60+145*p2)*.5,(1-p2)*.38*Math.min(1,(t-.1)/.06));
+          stamp(ctx,texture,CELLS.glow,px,player.y-12,150,210,rise*Math.exp(-t*3.8)*.7);
           const beam=rise*Math.exp(-Math.max(0,t-.09)*5);
-          stamp(ctx,CELLS.beam,px,foot-128,118*strength,280,beam*.9);
+          stamp(ctx,texture,CELLS.beam,px,foot-128,118*strength,280,beam*.9);
           if(!reduced){
-            stamp(ctx,CELLS.beam,px-26,foot-82,29,192,beam*.5);
-            stamp(ctx,CELLS.beam,px+26,foot-82,29,192,beam*.5);
+            stamp(ctx,texture,CELLS.beam,px-26,foot-82,29,192,beam*.5);
+            stamp(ctx,texture,CELLS.beam,px+26,foot-82,29,192,beam*.5);
           }
         }else{
           const flash=rise*Math.exp(-Math.max(0,t-.065)*13);
-          stamp(ctx,CELLS.flare,px,player.y-15,108,108,flash*.65);
-          stamp(ctx,CELLS.glow,px,player.y-14,66,98,flash*.34);
+          stamp(ctx,texture,CELLS.flare,px,player.y-15,108,108,flash*.65);
+          stamp(ctx,texture,CELLS.glow,px,player.y-14,66,98,flash*.34);
           const count=reduced?10:18;
           for(let i=0;i<count;i++){
             const delay=(i%5)*.025,pt=t-delay;if(pt<=0||pt>1.18)continue;
@@ -97,9 +125,9 @@
             const sy=foot-10-Math.sin(seed*Math.PI)*10-pt*(48+seed*60);
             const a=Math.min(1,pt/.08)*Math.pow(Math.max(0,1-pt/1.18),1.2)*.88;
             const size=8+seed*7;
-            stamp(ctx,CELLS.spark,sx,sy,size,size*(1.1+seed*.7),a);
+            stamp(ctx,texture,CELLS.spark,sx,sy,size,size*(1.1+seed*.7),a);
           }
-          stamp(ctx,CELLS.glow,px,foot,110,36,rise*tail*tail*.25);
+          stamp(ctx,texture,CELLS.glow,px,foot,110,36,rise*tail*tail*.25);
         }
         ctx.globalCompositeOperation='source-over';ctx.restore();
       }

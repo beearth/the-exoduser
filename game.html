@@ -78,7 +78,7 @@ window._supabaseReady=new Promise(resolve=>{
 <script src="lang_ms.js"></script>
 <script src="localization-runtime.js"></script>
 <script src="localization-data.js?v=20260910-nemesia-dialogue"></script>
-<script src="level-up-vfx.js?v=20260910-gold-v1"></script>
+<script src="level-up-vfx.js?v=20260910-gold-v2-level"></script>
 <style>
 @import url('https://fonts.googleapis.com/css2?family=Black+Han+Sans&family=Noto+Sans+KR:wght@400;500;700;900&display=swap');
 @import url('https://fonts.googleapis.com/css2?family=Cinzel:wght@700;900&family=Cinzel+Decorative:wght@700;900&family=Grenze+Gotisch:wght@700;900&family=Pirata+One&family=Nanum+Myeongjo:wght@400;700;800&family=Gowun+Batang:wght@400;700&family=Noto+Serif+KR:wght@400;600;700;900&display=swap');
@@ -39680,11 +39680,13 @@ function addExp(v,trans){
   if(lvd>0){
     P.hp=Math.min(P.mhp,P.hp+~~(P.mhp*.2));P.st=Math.min(P.mst,P.st+~~(P.mst*.2));P.mp=Math.min(P.mmp,P.mp+~~(P.mmp*.2));
     const _isTrans=P.lv>1000;
-    SFX.levelup();showPH(_isTrans?'TRANSCEND!':'LEVEL UP!',_isTrans?'#ff44ff':'#ffdd00');
-    let lvTxt=(_isTrans?'⚡ T.':'LV. ')+P.lv+(lvd>1?' (+'+lvd+')':'')+' SP +'+(lvd*3);
+    const _demonic=(PASSIVES.pDemon||0)>(PASSIVES.pHuman||0);
+    const _lvCol=_demonic?'#d38aff':'#ffdd00';
+    SFX.levelup();showPH(_isTrans?'TRANSCEND!':'LEVEL UP!',_lvCol);
+    let lvTxt='SP +'+(lvd*3);
     if(apGain>0)lvTxt+=' AP +'+apGain;
-    addTxt(P.x,P.y-40,lvTxt,_isTrans?'#ff66ff':'#ffcc00',60);
-    _levelUpVfx.trigger(P,G.stage,lvd);
+    addTxt(P.x,P.y-40,lvTxt,_lvCol,60);
+    _levelUpVfx.trigger(P,G.stage,lvd,_demonic);
     if(P.lv>=300&&!P.skills.blueShot){P.skills.blueShot=1;showPH(_T('💎 푸른비 해금!'),'#00e5ff');addTxt(P.x,P.y-60,_T('💎 푸른비 해금!'),'#00e5ff',80)}
     if(P.lv>=700&&!P.skills.burstLoop){P.skills.burstLoop=1;showPH(_T('💫 버스트루프 해금!'),'#dd88ff');addTxt(P.x,P.y-80,_T('💫 버스트루프 해금!'),'#dd88ff',80)}
     if(P.lv>=700&&!P.skills.voidScarecrow){P.skills.voidScarecrow=1;showPH(_T('👻 유령 허수아비 해금!'),'#aa66dd');addTxt(P.x,P.y-100,_T('👻 유령 허수아비 해금!'),'#aa66dd',80)}
@@ -49911,6 +49913,7 @@ function draw(){
   _levelUpVfx.draw(X,P,G.stage,false,IS_MOBILE||OPT.quality==='low');
   drawP();
   _levelUpVfx.draw(X,P,G.stage,true,IS_MOBILE||OPT.quality==='low');
+  _levelUpVfx.drawLabel(X,P,G.stage);
   const _tDP1=performance.now();
   // G.parts 레거시 렌더 제거됨 — poolRender()로 통합
   // 오브젝트 풀 파티클 렌더 (additive로 밝은 폭발 대비)

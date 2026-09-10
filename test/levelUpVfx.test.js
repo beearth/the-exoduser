@@ -11,7 +11,7 @@ function fn(name){const n=ast.body.find(n=>n.type==='FunctionDeclaration'&&n.id.
 function fixture(){
   const events=[];
   const P={x:100,y:200,lv:1,exp:0,maxExp:10,sp:0,ap:0,hp:40,mhp:100,st:20,mst:100,mp:10,mmp:100,shield:7,skills:{}};
-  const ctx=vm.createContext({P,G:{stage:0},_DEMO_MODE:false,_DEMO_LV_CAP:100,
+  const ctx=vm.createContext({P,G:{stage:0},PASSIVES:{},_DEMO_MODE:false,_DEMO_LV_CAP:100,
     nc:()=>({}),_eqAffix:()=>0,_canTransLv:()=>true,_calcMaxExp:()=>10,
     SFX:{levelup(){}},showPH(){},addTxt(){},poolPart(){},_T:s=>s,
     _levelUpVfx:{trigger:(...args)=>events.push(args)},dbSaveForce:()=>events.push('save')});
@@ -52,4 +52,29 @@ test('death, stage changes and replacing the character discard the effect',()=>{
 test('zero elapsed time keeps a paused effect stationary',()=>{
   const fx=effect(),p={x:1,y:2,hp:100};fx.trigger(p,0,1);fx.update(.2,p,0);const age=fx.age;
   fx.update(0,p,0);assert.equal(fx.age,age);
+});
+
+test('overhead label follows the character and updates to the latest earned level',()=>{
+  const fx=effect(),p={x:100,y:200,hp:100,lv:12},drawn=[];
+  const ctx={save(){},restore(){},fillText:(text,x,y)=>drawn.push({text,x,y})};
+  assert.equal(typeof fx.drawLabel,'function','Level-up must expose its overhead label renderer');
+  fx.trigger(p,0,1);fx.update(.2,p,0);fx.drawLabel(ctx,p,0);
+  assert.equal(drawn.at(-1).text,'Lv. 12');assert.equal(drawn.at(-1).x,100);assert.ok(drawn.at(-1).y<140);
+  const y=drawn.at(-1).y;p.x+=30;p.lv=15;fx.trigger(p,0,3);fx.drawLabel(ctx,p,0);
+  assert.equal(drawn.at(-1).text,'Lv. 15');assert.equal(drawn.at(-1).x,130);assert.equal(drawn.at(-1).y,y);
+  fx.update(2,p,0);const n=drawn.length;fx.drawLabel(ctx,p,0);assert.equal(drawn.length,n);
+});
+
+test('human and demonic level labels use gold and violet respectively',()=>{
+  const fx=effect(),p={x:100,y:200,hp:100,lv:20},drawn=[];
+  const ctx={save(){},restore(){},fillText(text){drawn.push({text,color:this.fillStyle});}};
+  fx.trigger(p,0,1,false);fx.update(.2,p,0);fx.drawLabel(ctx,p,0);assert.equal(drawn.at(-1).color,'#ffe6a3');
+  fx.trigger(p,0,1,true);fx.drawLabel(ctx,p,0);assert.equal(drawn.at(-1).color,'#e5b4ff');
+});
+
+test('actual level-ups select violet only when Demon investment exceeds Humanity',()=>{
+  for(const [human,demon,expected] of [[0,0,false],[1,3,true],[3,1,false],[3,3,false]]){
+    const {ctx,events}=fixture();ctx.PASSIVES.pHuman=human;ctx.PASSIVES.pDemon=demon;
+    ctx.addExp(10,true);assert.equal(events[0][3],expected);
+  }
 });

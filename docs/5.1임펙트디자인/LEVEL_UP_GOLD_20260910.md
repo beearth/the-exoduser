@@ -1,11 +1,19 @@
-# 금빛 레벨업 이펙트 (2026-09-10)
+# 인간성·악마성 레벨업 이펙트 (2026-09-10)
 
-사용자 확정: 정석적인 금빛 레벨업 연출. 발밑의 얇은 파동 → 백금빛 수직 기둥·짧은 섬광 → 상승하는 작은 금빛 입자 순서다.
+사용자 확정: 인간성은 정석적인 금빛, 악마성이 깊어지면 보라빛. 발밑 파동 → 수직 기둥·짧은 섬광 → 상승 입자의 기존 모양·타이밍은 유지하고, 머리 위에 도달한 레벨을 표시한다. 별도 모드 상태가 없어 현재 전환 기준은 악마성 투자 레벨과 인간성 투자 레벨의 비교로 설정했다.
 
 | 항목 | 현재 계약 | 적용 위치 |
 |---|---|---|
 | 모듈 | `level-up-vfx.js`, `window.LevelUpVfx.create()` | `game.html`의 `_levelUpVfx` 단일 인스턴스 |
-| 발동 | `addExp()`에서 실제 증가한 레벨 수 `lvd>0`, 루프 종료 후 1회 | `trigger(P,G.stage,lvd)` |
+| 발동 | `addExp()`에서 실제 증가한 레벨 수 `lvd>0`, 루프 종료 후 1회 | `trigger(P,G.stage,lvd,_demonic)` |
+| 색상 기준 | `(PASSIVES.pDemon||0)>(PASSIVES.pHuman||0)`이면 보라빛, 나머지는 금빛 | 미투자·동률은 인간성 색; 레벨·장비 부활 확률과 독립 |
+| 레벨 숫자 | `Lv. ` + `floor(P.lv||1)`, 발동 시 갱신 | 동일 효과에 연속 레벨업이 병합되어도 최종 레벨로 교체 |
+| 숫자 위치 | `(P.x, P.y−70−18×min(1,age/1.45))`, 플레이어 이동 추종 | `drawP()`·앞쪽 VFX 후 `drawLabel()` |
+| 숫자 서체·색 | `24px "Cinzel", Georgia, serif`; 금빛 `#ffe6a3` / 보라빛 `#e5b4ff` | 가운데 정렬, middle 기준선; 기존 GPU 글자 아틀라스가 선두 숫자를 크기로 읽으므로 숫자 굵기 접두어 미사용 |
+| 숫자 외곽 | 금빛 `#241707` / 보라빛 `#1d092b`, X/Y±1px 4회 + 본문1회 | 캐시되는 fillText, strokeText 미사용 |
+| 숫자 페이드 | alpha=`min(1,age/.08)×min(1,max(0,(1.45−age)/.4))` | 80ms 페이드인, 마지막400ms 페이드아웃, 18px 상승 |
+| 기존 플로팅 문구 | `SP +N`, AP획득 시 ` AP +N`; 중복 레벨·증가 횟수 표기 제거 | 기존 `(P.x,P.y−40)`,60f 유지; 레벨은 머리 위 숫자로 분리 |
+| 배너·보상 색 | 금빛 `#ffdd00` / 보라빛 `#d38aff` | 기존 LEVEL UP!/TRANSCEND! 문구·소리 유지 |
 | 기존 효과 교체 | 12개 방사형 파편(속도5, 크기4, 수명20f) 생성 제거 | 전용 연출로 대체 |
 | 총 수명 | `DURATION=1.45`초, `update(_dtSp/60,P,G.stage)` | 일시정지 시 update 진입 전에 반환 |
 | 빠른 중복 | 동일 플레이어·stage, 시작 후 `.24`초 미만이면 재시작하지 않음 | 단일 효과만 유지 |
@@ -27,14 +35,15 @@
 | 입자 크기 | 폭 `8+seed×7`, 높이=폭×`(1.1+seed×.7)` | 금빛 별 모양 |
 | 발밑 잔광 | 110×36px, alpha `.25×rise×max(0,1−t/1.45)²` | 마지막 감쇠 |
 | 경량화 | 모바일 또는 `OPT.quality==='low'`: 두 번째 링·보조 기둥 생략, 입자10개 | 중앙 기둥·섬광·첫 링 유지 |
-| 정적 아틀라스 | 512×512 RGBA Canvas 1장, 약1MiB 원시 픽셀 | 초기 생성 1회, 프레임별 재작성·업로드 없음 |
+| 정적 아틀라스 | 512×512 RGBA Canvas 색상당1장, 두 색 최대2장/약2MiB 원시 픽셀 | 금빛 초기 생성, 보라빛 첫 발동 때1회 생성; 프레임별 재작성 없음 |
+| 보라빛 변환 | 금빛 아틀라스의 `(R,G,B,A)→(G,B,R,A)` | 빛의 강도·알파·실루엣 보존, 각 draw에서 해당 색 텍스처 선택 |
 | 셀 | beam `(0,0,128,256)` / glow `(128,0,128,128)` / ring `(0,256,256,128)` / spark `(256,0,32,32)` / flare `(256,64,128,128)` | 같은 텍스처를 크기·alpha만 바꾸어 재사용 |
 | 색 | 백금 코어 `(255,255,245)`, 밝은 금 `(255,246,211)`, 금빛 `(255,211,123)`, 가장자리 `(255,166,35)` | 투명 배경, 검은 사각형 없음 |
 | 합성 | Canvas2D는 lighter, WebGL/WebGPU 프록시는 기존 drawImage alpha 경로 | 필터·shadowBlur·동적 그래디언트 생성 없음 |
-| 배포 | `game.html`이 `level-up-vfx.js?v=20260910-gold-v1` 로드, `build-nwjs.mjs` FILES에 포함 | 브라우저 및 다음 NW.js 빌드 |
+| 배포 | `game.html`이 `level-up-vfx.js?v=20260910-gold-v2-level` 로드, `build-nwjs.mjs` FILES에 포함 | 브라우저 및 다음 NW.js 빌드 |
 
-경험치 공식, SP+3/레벨, 짝수 레벨 AP+1, 레벨 상승 이벤트의 HP/ST/MP 최대치20% 회복, 쉴드 회복 없음, 스킬 해금 및 `dbSaveForce()`는 그대로다. 기존 레벨업 효과음과 텍스트도 유지한다. 초월 레벨의 VFX도 금빛이며 기존 초월 텍스트는 유지한다. 전투 일시정지·슬로모션·피해·넉백은 추가하지 않는다.
+경험치 공식, SP+3/레벨, 짝수 레벨 AP+1, 레벨 상승 이벤트의 HP/ST/MP 최대치20% 회복, 쉴드 회복 없음, 스킬 해금 및 `dbSaveForce()`는 그대로다. 초월 레벨도 같은 인간성·악마성 색상 기준을 사용한다. 전투 일시정지·슬로모션·피해·넉백은 추가하지 않는다.
 
-검증: `test/levelUpVfx.test.js`의 보상·미달/캡·연속 발동·시간·종료·정지 검사와 `test/runtimePackaging.test.js` 8개 PASS. `tools/verify_level_up_vfx.py`로 실제 WebGL2의 `addExp()`·`draw()` 연결, 80/200/450/850/1300ms 렌더와 1500ms 종료, Canvas2D 폴백을 확인했다. 최대27회 drawImage, 종료 후0회, pageerror0. 테스트 장면은 기존 모닥불 보호막과 몬스터를 비워 연출을 분리했으며 실제 세이브 쓰기는 차단했다.
+검증: `test/levelUpVfx.test.js`와 `test/runtimePackaging.test.js` 11개 PASS. 보상·미달/캡·연속 발동·시간·종료·정지에 더해 레벨 숫자 갱신·이동 추종·색상 및 패시브 비교 조건을 검사한다. 기존 금빛 v1은 `tools/verify_level_up_vfx.py`로 WebGL2·Canvas2D·수명을 확인했다(최대27회 drawImage, 종료 후0회). 숫자·두 색의 실제 `addExp()`→`draw()` 검증과 스크린샷은 `tools/verify_level_up_label.py`, `output/vfx/level_up_identity_20260910/`에 기록한다. 실제 세이브 쓰기는 차단한다.
 
-`tools/verify_level_up_live.py`는 실제 게임 update 루프에서 일시정지 중 정지·해제 후 수명 종료를 검사하고, 기존 `SFX.levelup()`을 미리보기용으로 녹음한다. 결과는 `output/vfx/level_up_gold_20260910/{qa,live_qa}.json`, 미리보기는 루트 `레벨업_금빛_미리보기.mp4`다. 실행파일 재빌드·배포는 이 작업에 포함하지 않았다.
+`tools/verify_level_up_live.py`는 실제 게임 update 루프에서 일시정지 중 정지·해제 후 수명 종료를 검사하고, 기존 `SFX.levelup()`을 미리보기용으로 녹음한다. v1 결과는 `output/vfx/level_up_gold_20260910/{qa,live_qa}.json`, v1 영상은 루트 `레벨업_금빛_미리보기.mp4`다. 이 영상은 숫자·보라빛 추가 전 자료다. 실행파일 재빌드·배포는 이 작업에 포함하지 않았다.

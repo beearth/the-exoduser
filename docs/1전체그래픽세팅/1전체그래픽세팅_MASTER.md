@@ -1148,7 +1148,7 @@ function drawEnemy(e, frame){
 | 피격 넉백 | 색상 플래시 3f (tint: #ff0000) |
 | 콤보 피니셔 | scale: 1.15, slowMo: 30 |
 | 패링 성공 | flash: #ffffff, hitStop: 12 |
-| 레벨업 | 금빛 파동·백금빛 기둥·몸체 주변 광·상승 입자, 1.45초. [구현 수치](../5.1임펙트디자인/LEVEL_UP_GOLD_20260910.md) |
+| 레벨업 | 인간성 금빛 / `pDemon>pHuman` 보라빛 파동·기둥·상승 입자·머리 위 Lv.숫자, 1.45초. [구현 수치](../5.1임펙트디자인/LEVEL_UP_GOLD_20260910.md) |
 
 **무기별 스윙 궤적**
 

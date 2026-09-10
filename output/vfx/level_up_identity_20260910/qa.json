@@ -1,0 +1,133 @@
+{
+  "status": "PASS",
+  "cases": [
+    {
+      "mode": "human_gold",
+      "level": 12,
+      "player": {
+        "x": 4020,
+        "y": 7420
+      },
+      "labels": [
+        {
+          "text": "Lv. 12",
+          "x": 4019,
+          "y": 7346.517241379311,
+          "color": "#241707",
+          "alpha": 1
+        },
+        {
+          "text": "Lv. 12",
+          "x": 4021,
+          "y": 7346.517241379311,
+          "color": "#241707",
+          "alpha": 1
+        },
+        {
+          "text": "Lv. 12",
+          "x": 4019,
+          "y": 7348.517241379311,
+          "color": "#241707",
+          "alpha": 1
+        },
+        {
+          "text": "Lv. 12",
+          "x": 4021,
+          "y": 7348.517241379311,
+          "color": "#241707",
+          "alpha": 1
+        },
+        {
+          "text": "Lv. 12",
+          "x": 4020,
+          "y": 7347.517241379311,
+          "color": "#ffe6a3",
+          "alpha": 1
+        }
+      ],
+      "glyphs": [
+        {
+          "key": "24px \"Cinzel\", Georgia, serif\tLv. 12\t#241707",
+          "h": 47,
+          "v1": 0.091796875
+        },
+        {
+          "key": "24px \"Cinzel\", Georgia, serif\tLv. 12\t#ffe6a3",
+          "h": 47,
+          "v1": 0.091796875
+        }
+      ],
+      "backend": "WebGL2"
+    },
+    {
+      "mode": "demon_violet",
+      "level": 12,
+      "player": {
+        "x": 4020,
+        "y": 7420
+      },
+      "labels": [
+        {
+          "text": "Lv. 12",
+          "x": 4019,
+          "y": 7346.517241379311,
+          "color": "#1d092b",
+          "alpha": 1
+        },
+        {
+          "text": "Lv. 12",
+          "x": 4021,
+          "y": 7346.517241379311,
+          "color": "#1d092b",
+          "alpha": 1
+        },
+        {
+          "text": "Lv. 12",
+          "x": 4019,
+          "y": 7348.517241379311,
+          "color": "#1d092b",
+          "alpha": 1
+        },
+        {
+          "text": "Lv. 12",
+          "x": 4021,
+          "y": 7348.517241379311,
+          "color": "#1d092b",
+          "alpha": 1
+        },
+        {
+          "text": "Lv. 12",
+          "x": 4020,
+          "y": 7347.517241379311,
+          "color": "#e5b4ff",
+          "alpha": 1
+        }
+      ],
+      "glyphs": [
+        {
+          "key": "24px \"Cinzel\", Georgia, serif\tLv. 12\t#241707",
+          "h": 47,
+          "v1": 0.091796875
+        },
+        {
+          "key": "24px \"Cinzel\", Georgia, serif\tLv. 12\t#ffe6a3",
+          "h": 47,
+          "v1": 0.091796875
+        },
+        {
+          "key": "24px \"Cinzel\", Georgia, serif\tLv. 12\t#1d092b",
+          "h": 47,
+          "v1": 0.091796875
+        },
+        {
+          "key": "24px \"Cinzel\", Georgia, serif\tLv. 12\t#e5b4ff",
+          "h": 47,
+          "v1": 0.091796875
+        }
+      ],
+      "backend": "WebGL2"
+    }
+  ],
+  "page_errors": [],
+  "real_save_writes": false
+}
