@@ -3239,12 +3239,13 @@ async function dbSave(){
       ultSlot:ULT_SLOT,
       charIdx:_charIdx
     };
-    const{error}=await sb.from('characters').update({
+    const{data:updated,error}=await sb.from('characters').update({
       data:saveData,
       updated_at:new Date().toISOString()
-    }).eq('id',_charId);
+    }).eq('id',_charId).select('id');
     if(error){if(!IS_ELECTRON)console.error('[DB] Save error:',error.message)}
-    else _lastSaveTime=Date.now();
+    else if(updated&&updated.length===1&&updated[0].id===_charId)_lastSaveTime=Date.now();
+    else if(!IS_ELECTRON)console.error('[DB] Save failed: character missing or update denied');
   }catch(e){if(!IS_ELECTRON)console.error('[DB] Save exception:',e)}
   _saving=false;if(_pendingForce){_pendingForce=false;if(Date.now()-_lastSaveTime>=5000)dbSave()}
 }
@@ -3260,7 +3261,11 @@ async function dbLoad(){
 
 // ═══ Restore state from saved data ═══
 function dbRestore(d){
-  if(!d||!d.player)return false;
+  if(!d)return false;
+  // 생성 직후에는 player 없이 charIdx만 저장된다. 이전 캐릭터 캐시보다 슬롯이 우선이다.
+  const savedCharIdx=Number.isInteger(d.charIdx)&&d.charIdx>=0&&d.charIdx<CHAR_LIST.length?d.charIdx:0;
+  if(savedCharIdx!==_charIdx)_loadCharAtlas(savedCharIdx);
+  if(!d.player)return false;
   // Player
   const pd=d.player;
   P.lv=pd.lv||1; P.exp=pd.exp||0; P.maxExp=pd.maxExp||15;
@@ -3549,8 +3554,6 @@ function dbRestore(d){
     if(!SKILL_SLOTS.includes(id)){const _ei=_findAutoSkillSlot(id);if(_ei>=0)SKILL_SLOTS[_ei]=id}
   });
   _sanitizeCoreState();
-  // 캐릭터 외형 복원
-  if(d.charIdx!=null&&d.charIdx!==_charIdx&&d.charIdx>=0&&d.charIdx<CHAR_LIST.length)_loadCharAtlas(d.charIdx);
   return true;
 }
 
@@ -9430,6 +9433,7 @@ function _loadCharAtlas(idx){
   const _animInfo=ch.idleN?{idleN:ch.idleN,walkN:ch.walkN||0,atkN:ch.atkN||0,whirlN:ch.whirlN||0,throwN:ch.throwN||0,chainN:ch.chainN||0,dashN:ch.dashN||0}:null;
   // mask 버전 (folder) 로드
   _load8Dir(ch.folder,ch.fw,ch.fh,function(c,fm){
+    if(_charIdx!==idx)return; // 이전 캐릭터의 늦은 로딩 결과는 적용하지 않는다.
     _atlasMask=c;_atlasMaskFm=fm;
     _applyMaskAtlas();
   },_animInfo);
@@ -46945,7 +46949,8 @@ const ATMO_FG=[
 var _atmCut=null,_atmCutX=null,_atmCutW=0,_atmCutH=0; // ATMOS 안개 합성 캔버스(순수 2D, 부팅/리사이즈 1회 생성). 중앙은 그라데이션 50% 감쇠, 홀펀치 없음
 var _atmUserSet=0;      // A2: 사용자가 atmos 수동변경 시 1 → 자동승격 차단
 var _ATM_TUNE=false,_atmSel=0,_atmHudOn=false; // 튜닝 HUD (디버그 전용, _ATM_TUNE=false시 기존동작 100% 동일). F9=HUD가시성 토글
-var _ATMDBG={grade:0,lift:0,vig:0,farfog:0,nearfog:0,veil:0,ray:1,mote:1,sidefog:1},_atmDbgStep=0,_atmDbgOffName='ALL ON',_atmDbgTouched=false; // [롤백] 흐림계 레이어(grade~mote) 전부 OFF. sidefog=신규 사이드 입자안개 ON(흐림필터 대체). 삭제 아님·플래그만
+var _ATMDBG={grade:0,lift:0,vig:0,farfog:0,nearfog:0,veil:0,ray:new URLSearchParams(location.search).get('ray')==='0'?0:1,mote:1,sidefog:1},_atmDbgStep=0,_atmDbgOffName='ALL ON',_atmDbgTouched=false; // ray=0: 화면 고정 광선만 제외하는 Mac 세로 띠 비교. 기본/1은 기존 유지.
+if(new URLSearchParams(location.search).has('ray'))console.log('[ATMOS] ray='+_ATMDBG.ray+' | policy=ray-isolation-20260910');
 const _oriFireflies=[];for(let _fi=0;_fi<20;_fi++)_oriFireflies[_fi]={x:0,y:0,vx:0,vy:0,phase:_fi*0.31,bright:0,r:1.5+(_fi%3)*0.5};
 // 연기 풀 (10개)
 const _oriSmoke=[];for(let _si=0;_si<10;_si++)_oriSmoke[_si]={x:0,y:0,vx:0,vy:0,alpha:0,r:30+(_si%4)*15,phase:_si*0.63};
@@ -56829,8 +56834,7 @@ async function _startDemoNew(){
     const _raw=localStorage.getItem(_DEMO_LS_KEY);
     if(_raw){
       const _d=JSON.parse(_raw);
-      if(_d&&_d.player){
-        dbRestore(_d);
+      if(dbRestore(_d)){
         G.stage=_d.game?.stage||0;
         G.mats=_d.game?.mats||1000;
         G._cutsceneDone=_d.game?.cutsceneDone||false;
@@ -57005,9 +57009,7 @@ async function startGameFromDB(){
 
   // 3) 조회에 성공한 캐릭터 데이터 복원
   setBootLoading(55,_T('저장 데이터 복원 중...'));
-  if(saved&&saved.player){
-    dbRestore(saved);
-  }else{
+  if(!dbRestore(saved)){
     // 새 캐릭 → 컷신 플래그 리셋
     G._cutsceneDone=false;
     // 새 캐릭: 난이도별 시작 스킬 (부호 난이도 기준: 일반 이하 전부, +1/+2/+3에서 하나씩 제거)
@@ -57445,19 +57447,17 @@ const _forceCutscene=new URLSearchParams(location.search).get('cutscene')==='1';
 function _startIntroCutscene(){
   if(_bossTestReq>=0){G._cutsceneDone=true;G.on=true;if(P)P.iframes=300;return}
   if(_wantPlateTest()){G._cutsceneDone=true;G.on=true;if(P)P.iframes=300;return}
-  // 구 한글 더빙 스토리는 모든 캐릭터의 일반 입장에서 재생하지 않는다.
-  if(!_forceCutscene){
+  // 일반 신규 입장은 네메시스 INTRO부터. 구 전쟁 PRO는 명시적 미리보기에서만 재생한다.
+  if(!_forceCutscene&&(G.stage!==0||G._cutsceneDone)){
     G._cutsceneDone=true;G.on=true;P.iframes=300;
     if(G._bonfire)G._bonfire.t=300;
     ['hud','hudTop','hudCorner','mmWrap','skBar','mmLvl','globeHP','globeMP'].forEach(id=>{const el=$(id);if(el)el.classList.add('on')});
     BGM.play(BGM.stageKey(G.stage),true);
     return;
   }
-  if(!_forceCutscene&&G.stage!==0){_startIntro();return}
-  if(!_forceCutscene&&G._cutsceneDone){_startIntro();return}
   _cutsceneState='INTRO_CUTSCENE';
-  _cutSeq='PRO'; // 다른 캐릭터 및 명시적 컷씬 미리보기 경로
-  {const _pl=PROLOGUE_LINES.ko;const _seen={};const _list=[];for(let _pi=0;_pi<_pl.length;_pi++){const _im=_pl[_pi].img;if(_im&&!_seen[_im]){_seen[_im]=1;_list.push(_im)}}
+  _cutSeq=_forceCutscene?'PRO':'INTRO';
+  {const _pl=(_cutSeq==='PRO'?PROLOGUE_LINES:INTRO_CUTSCENE_LINES).ko;const _seen={};const _list=[];for(let _pi=0;_pi<_pl.length;_pi++){const _im=_pl[_pi].img;if(_im&&!_seen[_im]){_seen[_im]=1;_list.push(_im)}}
    _list.slice(0,2).forEach(_im=>_getCutsceneImg(_im)); // 첫 2장 즉시
    let _pli=2;const _plIv=setInterval(()=>{if(_pli>=_list.length){clearInterval(_plIv);return}_getCutsceneImg(_list[_pli++])},400)} // 나머지 순차 (보이스 끊김 방지, 2026-07-27)
   _cutsceneStartMs=performance.now();
@@ -57472,8 +57472,10 @@ function _startIntroCutscene(){
   // (h0_explore(cutscene_warintro)는 1장 느낌이라 제외 — 유저 지시. 키는 보존)
   BGM.fadeOut(300);
   setTimeout(()=>BGM.play('cutscene_prologue',true),400);
-  try{_proVoice.currentTime=_PRO_VOICE_OFS}catch(e){}
-  _proVoice.play().catch(()=>{});
+  if(_cutSeq==='PRO'){
+    try{_proVoice.currentTime=_PRO_VOICE_OFS}catch(e){}
+    _proVoice.play().catch(()=>{});
+  }else _proVoiceStop();
   console.log('[CUTSCENE] Intro cutscene started');
 }
 
@@ -58438,16 +58440,17 @@ if((_isLocal&&!_charId)||new URLSearchParams(window.location.search).get('test')
   G.on=false;G.stage=_stageTestReq>=0?_stageTestReq:0;G.kills=0;G.mats=_loadSharedMats()||1000;G.exits=[];_cacheExitCenter();G.bossAlive=true;G._bossRef=null;G._crT=0;G.atkTickets=0;_hudT=0;_hudAlive=0;G.rifts=[];G.spawnHoles=[];G._chainCnt=0;G._chainT=0;G._bossArena=false;G._bossLoadPhase=0;G._bossLoadFade=0;G._bfxBolt=null;G.hellCleared=[];STORAGE={};STORAGE._synced=false;_getStore();
   (async()=>{
     if(new URLSearchParams(window.location.search).get('testchar')==='1'){await _startTestChar();return;}
-    let _loaded=false;
+    let _loaded=false,_foundSave=false;
     try{
+      try{
       if(_serverOk===false)throw new Error('no server');
       const res=await fetch('/api/load/'+encodeURIComponent(_SLOT));
       if(!res.ok){_serverOk=false;throw new Error('no server')}
       _serverOk=true;
       if(res.ok){
         const j=await res.json();
-        if(j.ok&&j.data&&j.data.player){
-          dbRestore(j.data);_loaded=true;
+        if(j.ok&&j.data){_foundSave=true;_loaded=dbRestore(j.data);}
+        if(_loaded){
           // 서버에서 악의 동기화 (localStorage 덮어쓰기)
           try{G.mats=await _loadSharedMatsFromServer()}catch(e){}
           if(!IS_ELECTRON)console.log('[LOCAL] 로드 완료 ← saves/'+_SLOT+'.json — Lv.'+P.lv+' Stage '+G.stage+' Mats '+G.mats);
@@ -58457,8 +58460,9 @@ if((_isLocal&&!_charId)||new URLSearchParams(window.location.search).get('test')
           recalcSt();
         }
       }
-      // localStorage 폴백 로드
-      if(!_loaded){try{const ls=localStorage.getItem('hellsave_'+_SLOT);if(ls){const ld=JSON.parse(ls);if(ld&&ld.player){dbRestore(ld);_loaded=true;console.log('[LOCAL] localStorage 폴백 로드 완료')}}}catch(le){}}
+      }catch(e){if(!IS_ELECTRON)console.warn('[LOCAL] 서버 로드 실패, 로컬 저장 확인:',e)}
+      // 서버의 신규 캐릭터 메타데이터도 유효한 슬롯이다. 오래된 로컬 사본으로 덮어쓰지 않는다.
+      if(!_foundSave){try{const ls=localStorage.getItem('hellsave_'+_SLOT);if(ls){_loaded=dbRestore(JSON.parse(ls));if(_loaded)console.log('[LOCAL] localStorage 폴백 로드 완료')}}catch(le){}}
       if(!_loaded){
         if(!IS_ELECTRON)console.log('[LOCAL] 세이브 없음, 새 게임 시작');
         G._cutsceneDone=false;
@@ -58585,7 +58589,7 @@ if((_isLocal&&!_charId)||new URLSearchParams(window.location.search).get('test')
       let _loaded=false;
       if(_raw){
         const _d=JSON.parse(_raw);
-        if(_d&&_d.player){dbRestore(_d);_loaded=true;console.log('[WEB] 로드 완료 — Lv.'+P.lv+' Stage '+G.stage);
+        if(dbRestore(_d)){_loaded=true;console.log('[WEB] 로드 완료 — Lv.'+P.lv+' Stage '+G.stage);
           // 빈 장비 슬롯 자동 보충: 흰장비 기본 장착
           const _diW=defaultItems();
           for(const it of _diW){if(!INV.equipped[it.slot])INV.equipped[it.slot]=it}

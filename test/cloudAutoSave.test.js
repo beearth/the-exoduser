@@ -150,9 +150,10 @@ test('30-second autosave sends live progress to the selected cloud character and
     _sanitizeCoreState() {}, _saveSharedMats() {}, _flushSharedStorage() {},
     console: { error() {} },
     setInterval(fn, ms) { tick = fn; delay = ms; return 1; }, clearInterval() {},
-    sb: { from(table) { return { update(payload) { return { async eq(column, id) {
+    sb: { from(table) { return { update(payload) { return { eq(column, id) {
       writes.push({ table, payload, column, id });
-      return { error: fail ? { message: 'temporary network failure' } : null };
+      const response = { data: fail ? [] : [{ id }], error: fail === true ? { message: 'temporary network failure' } : null };
+      return { select: async () => response, then: (resolve, reject) => Promise.resolve(response).then(resolve, reject) };
     } }; } }; } },
   });
   const saveCode = html.slice(html.indexOf('async function dbSave(){'), html.indexOf('// ═══ Load game state from DB'));
@@ -162,11 +163,14 @@ test('30-second autosave sends live progress to the selected cloud character and
   tick(); await new Promise(setImmediate);
   assert.equal(ctx._saving, false);
   assert.equal(ctx._lastSaveTime, 0, 'network failure is not a successful save');
+  fail = 'missing';
+  tick(); await new Promise(setImmediate);
+  assert.equal(ctx._lastSaveTime, 0, 'zero updated rows must not count as a saved character');
   fail = false;
   ctx.P.lv = 13;
   tick(); await new Promise(setImmediate);
-  assert.equal(writes.length, 2);
-  const { table, payload, column, id } = writes[1];
+  assert.equal(writes.length, 3);
+  const { table, payload, column, id } = writes[2];
   assert.equal(table, 'characters');
   assert.equal(column, 'id');
   assert.equal(id, 'account-character');

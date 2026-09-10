@@ -15,17 +15,17 @@
 | 자동재생 차단 |NotAllowedError이면 클릭하여 계속 표시,첫 확인 입력은 대사 이동 없이 소리 있게 재생 재시도 |
 | 종료/스킵 |미디어 pause·src 제거·load·overlay 제거,Promise true. `showCharGate(charId,true)` |
 | 진입 |기존 로딩1200ms 후 `game.html?...&story=warrior-v21`,생성한 슬롯/온라인id 유지 |
-| 게임 후속 |모든 캐릭터의 일반 게임 입장은 구 PRO·INTRO와 눈을 떠 대사·커튼·키안내를 시작하지 않고 즉시 플레이. story URL 유무와 무관 |
-| 미디어 오류 |Promise false,story 매개변수 없이 게임으로 직접 진입. 예전 스토리로 폴백하지 않음 |
+| 게임 후속 |신규 stage0·cutsceneDone=false이면 네메시스 INTRO부터 재생. 완료 저장은 직접 플레이. 구 한글 전쟁 PRO는 일반 입장에서 생략 |
+| 미디어 오류 |Promise false,story 매개변수 없이 게임 진입 후 네메시스 INTRO. 구 전쟁 PRO로 폴백하지 않음 |
 | 저장 계약 |시청 플래그를 세이브·계정·localStorage에 추가하지 않음. 현재 진입URL만 사용 |
-| 기존 입장 |목록의 기존 대검전사·실버테일 모두 직접 플레이. 구 한글 더빙 자동재생 제거 |
+| 기존 입장 |목록의 기존 캐릭터는 stage·game.cutsceneDone에 따라 네메시스 INTRO 또는 직접 플레이. 구 전쟁 더빙은 생략 |
 | 배포 패키지 |build-nwjs.mjs FILES에 player 추가,video 폴더 기존 복사로 MP4 포함. 배포/실행파일 재빌드는 이 작업 범위 아님 |
 
-검증: test/characterStoryCreation.test.js는 저장 성공/실패,오프라인 버튼 override,ended/skip/error cleanup,game 직접 플레이를 검사한다. tools/verify_character_story_creation.py는 격리 Chromium에서 생성 UI를 클릭하고 실제 MP4 재생·오디오 디코드·로비 음악 정지·게임 연결을 검사한다. 저장 API만 브라우저 내부에서 대체하여 실제 사용자 슬롯을 쓰지 않는다. 현재 브라우저 결과는 output/cinematic/character_story_controls_20260910/qa.json과 스크린샷 참조.
+검증: test/characterStoryCreation.test.js는 저장 성공/실패,오프라인 버튼 override,ended/skip/error cleanup,game 직접 플레이를 검사한다. tools/verify_character_story_creation.py는 격리 Chromium에서 생성 UI를 클릭하고 실제 MP4 재생·오디오 디코드·로비 음악 정지·게임 연결을 검사한다. 저장 API만 브라우저 내부에서 대체하여 실제 사용자 슬롯을 쓰지 않는다. 부분 스킵 당시 브라우저 결과는 output/cinematic/character_story_controls_20260910/qa.json과 스크린샷 참조.
 
-언어 제한: 이번 요청은 승인된 합본 그대로 연결한 것으로 영상 속 한글 자막은 언어 선택에 따라 바뀌지 않는다. 기존 PROLOGUE_LINES·여신 INTRO 번역 데이터는 명시적 cutscene=1 미리보기에서 유지한다.
+언어 제한: 이번 요청은 승인된 합본 그대로 연결한 것으로 영상 속 한글 자막은 언어 선택에 따라 바뀌지 않는다. PROLOGUE_LINES 번역은 명시적 cutscene=1 미리보기, 네메시스 INTRO 번역은 일반 신규 입장에서도 사용한다.
 
-## 사용자 정정 — 기존 게임 시작 연출 미재생
+## 이전 수정 이력 — 전체 차단은 아래 네메시스 복구로 대체
 
 | 항목 | 확정 동작 |
 |---|---|
@@ -38,7 +38,7 @@
 | 진단용 예외 |?cutscene=1 명시적 미리보기만 기존 컷씬 허용 |
 | 검증 |신규 생성 영상/스킵 뒤 직접 플레이,story 쿼리 없는 기존 대검전사 직접 플레이. 회귀 테스트21개 PASS |
 
-### 구 한글 더빙 경로 전체 차단 (2026-09-10 후속 수정)
+### 이전 구현 이력 — 구 한글 더빙 경로 전체 차단 (현재는 INTRO 복구)
 
 직전 수정은 `_charIdx===0` 조건 때문에 실버테일1에서 구버전이 계속 재생됐다. 현재 `_startIntroCutscene()`는 `!_forceCutscene`이면 캐릭터 종류에 관계없이 즉시 플레이로 반환한다. 구 `_proVoice`(`bgm/공통/intro_voice.mp3`)의 play 호출에 도달하지 않는다. 새 v21 영화는 남전사 생성 때만 재생한다. 다른 캐릭터의 선택·공격·피격·게임 중 대화 음성은 변경하지 않는다.
 
@@ -100,3 +100,29 @@
 | wa31 |88|"너는 왜 지옥에 왔느냐?" |
 | wa33a |90.33333333333333|"지옥을 탈출하라." |
 | wa33b |92.9|"죄의 무게를 짊어진 자여." |
+
+
+## 2026-09-10 사용자 정정 — 전사 외형·네메시스 인트로 복구
+
+직전의 PRO/INTRO 전체 차단은 잘못된 범위였다. 신규 캐릭터는 구 한글 전쟁 PRO만 생략하고 네메시스·디로이·핵터 INTRO를 재생한다. 이전의 모든 일반 입장 즉시 플레이 기록은 이 수정으로 대체한다.
+
+| 항목 | 현재 계약 |
+|---|---|
+| 대검전사 생성 |charIdx0 메타데이터 저장 → v21 부분/전체 스킵 가능한 스토리 → game.html에서 네메시스 INTRO → 기상 연출·플레이 |
+| 신규 인트로 조건 |!_forceCutscene, G.stage===0, !G._cutsceneDone → _cutSeq='INTRO', _cutsceneState='INTRO_CUTSCENE', G.on=false |
+| 기존 진행 |G.stage!==0 또는 G._cutsceneDone이면 직접 플레이. 기존 완료 저장값을 초기화하지 않음 |
+| 구 전쟁 더빙 |일반 입장에서 _proVoiceStop(). cutscene=1 명시적 미리보기에서만 _cutSeq='PRO', 구 intro_voice.mp3 재생 |
+| 네메시스 음악 |BGM.fadeOut(300), 400ms 후 cutscene_prologue. 기존 INTRO 효과음·번역·카메라·부분 스킵 유지 |
+| INTRO 종료 |G._cutsceneDone=true, 컷씬 해제 → _startIntro(). BGM fade500ms, 600ms 후 스테이지 음악 |
+| 외형 원인 |신규 저장에는 charIdx만 있고 player가 없어 복원을 생략, localStorage의 이전 _charIdx가 남았음 |
+| dbRestore(d) |d 없으면 false. player 검사 전에 슬롯 charIdx 적용. 정수이며 0 이상 CHAR_LIST.length 미만이면 그대로, 누락·무효이면0 |
+| 메타데이터 반환 |외형은 적용하되 player가 없으면 false를 반환하여 신규 스탯·장비·인트로 초기화 유지 |
+| 호출 경로 |클라우드 startGameFromDB, 로컬 서버, 로컬 폴백, 웹 localStorage, DEMO 신규 부팅 모두 player 유무와 무관하게 dbRestore 호출 |
+| 서버 우선 |로컬 _foundSave는 유효한 서버 슬롯 발견 여부, _loaded는 전체 player 복원 여부. 서버 메타데이터를 오래된 로컬 사본으로 덮지 않음 |
+| 서버 실패 |조회 예외·HTTP 실패 후에도 해당 hellsave_<slot> 메타데이터를 읽어 외형 적용 |
+| 비동기 외형 |로드 콜백의 idx와 현재 _charIdx가 다르면 이전 atlas 결과 무시 |
+| 저장 형식 |기존 charIdx/game.cutsceneDone 사용, 추가 필드 없음. 기존에 잘못 저장된 외형·완료 플래그 일괄 변경 없음 |
+| 회귀 검사 |test/characterIdentityIntro.test.js 9개: 메타데이터4종·늦은 atlas·인트로 분기4종. 관련 검사 합계43개 PASS |
+| 브라우저 |tools/verify_character_story_creation.py, output/cinematic/character_identity_nemesis_20260910/qa.json |
+
+직전 구버전 차단으로 이미 game.cutsceneDone=true가 기록된 캐릭터는 완료 여부를 구별할 정보가 없어 자동 재시청시키지 않는다. 새로 생성하는 캐릭터에는 네메시스 인트로가 정상 연결된다.

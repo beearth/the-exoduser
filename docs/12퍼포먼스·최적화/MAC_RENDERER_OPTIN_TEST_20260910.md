@@ -1,6 +1,6 @@
 # Mac 금색 세로 띠 — 렌더러 선택 비교 테스트
 
-**상태: 테스트 버전 구현·Production 재배포·배포 원문 대조·Windows 시작 로그 검증 완료 / Mac Chrome·Safari 실기 비교 PENDING. 금색 세로 띠 해결로 판정하지 않는다.**
+**상태: 테스트 버전 구현·Production 재배포·배포 원문 대조·Windows 시작 로그 검증 완료. 사용자는 Mac에서 동일 증상과 화면 고정 띠를 다시 보고했다. 실제 Mac 백엔드 로그·FPS 비교는 PENDING이며 해결되지 않았다. [광선 단독 비교](MAC_FIXED_RAY_ISOLATION_20260910.md).**
 
 | 항목 | 근거·현행 값 |
 |---|---|
@@ -29,7 +29,7 @@
 | 실제 어댑터 | Windows/HeadlessChrome153, ANGLE AMD Radeon RX9070XT D3D11. navigator.gpu 존재. Mac 장치·Metal·Safari 증거가 아님 |
 | 증거 파일 | `captures/renderer_optin_20260910/boot-report.json` |
 | Production 검증 | https://hell-smoky.vercel.app/game.html 기본·webgpu=0에서 Windows Chrome153 실제 WebGL2 컨텍스트, _useGL=true/_useGPU=false, policy=url-opt-in-20260910 로그 확인, pageerror0. `captures/renderer_optin_20260910/production-boot-report.json`. Mac 실기 증거 아님 |
-| 실기 결과 | Mac Chrome/Safari 미수행. 세로 띠 소멸·실전 이동·전투·FPS 개선을 주장하지 않음 |
+| 실기 결과 | 사용자 Mac 재확인: 증상 동일, 띠는 화면에 고정. 해당 실행의 백엔드 로그·브라우저별 FPS는 미수신. 세로 띠 소멸·이동·전투·FPS 개선을 주장하지 않음 |
 
 ## Mac 실기 비교 절차
 

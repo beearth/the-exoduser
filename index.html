@@ -644,6 +644,7 @@ body{background:#000 center/cover no-repeat;color:#ccaa88;font-family:'Noto Sans
       <div class="no-chars">불러오는 중...</div>
     </div>
     <!-- 슬롯 아래 공백 -->
+    <div class="status" id="lobbyStatus" role="status" aria-live="polite" style="font-size:.75rem;min-height:0;flex-shrink:0"></div>
     <div style="height:8px;flex-shrink:0"></div>
     <!-- 3슬롯 아래 배너 영역 -->
     <div class="lobby-mid-area" id="lobbyMidArea">
@@ -1045,6 +1046,7 @@ const _LOBBY_EN={
   '불러오는 중...':'Loading...',
   '오류: ':'Error: ',
   '삭제 실패: ':'Deletion failed: ',
+  '서버에서 삭제를 확인하지 못했습니다. 목록을 확인한 뒤 다시 시도하세요.':'Could not confirm deletion on the server. Check the list and try again.',
   '알 수 없는 오류':'Unknown error',
   '서버 연결 실패: ':'Server connection failed: ',
   '데이터를 불러오는 중...':'Loading data...',
@@ -2695,27 +2697,38 @@ async function showLobby({fromCinematic=false}={}){
   hideLoading();
 }
 async function loadCharacters(){
-  const cl=$('charList');if(!cl)return;_selectedSlot=null;_selectedSlotName=null;_updateCharDisplay();cl.innerHTML='<div class="no-chars">'+_TL('불러오는 중...')+'</div>';
-  if(!currentUser||!currentUser.id){cl.innerHTML='<div class="no-chars">'+_TL('로그인 필요')+'</div>';return}
-  const{data,error}=await sb.from('characters').select('*').eq('user_id',currentUser.id).order('created_at',{ascending:true});
-  if(error){cl.innerHTML='<div class="no-chars" style="color:#cc4433">'+_TL('오류: ')+error.message+'</div>';return}
-  cl.innerHTML='';
-  if(!data||data.length===0){
-    cl.innerHTML='<div class="no-chars">'+_TL('캐릭터가 없습니다. 새로 생성하세요.')+'</div>';
+  const cl=$('charList');if(!cl)return;
+  const request=++_onlineLoadSeq,userId=currentUser&&currentUser.id;
+  _onlineChars=[];_selectedSlot=null;_selectedSlotName=null;_updateCharDisplay();
+  const btn=$('enterGameBtn');if(btn)btn.disabled=true;
+  const message=(text,error=false)=>{const node=document.createElement('div');node.className='no-chars';node.textContent=text;if(error)node.style.color='#cc4433';cl.replaceChildren(node)};
+  message(_TL('불러오는 중...'));
+  if(!userId){message(_TL('로그인 필요'));return}
+  let result;
+  try{result=await sb.from('characters').select('*').eq('user_id',userId).order('created_at',{ascending:true})}
+  catch(error){result={error}}
+  if(request!==_onlineLoadSeq||!currentUser||currentUser.id!==userId)return;
+  const{data,error}=result;
+  if(error){message(_TL('오류: ')+error.message,true);return}
+  _onlineChars=data||[];
+  _onlineScrollIdx=Math.max(0,Math.min(_onlineScrollIdx||0,Math.max(0,_onlineChars.length-2)));
+  cl.replaceChildren();
+  if(_onlineChars.length===0){
+    message(_TL('캐릭터가 없습니다. 새로 생성하세요.'));
     const newBtn=document.createElement('div');newBtn.className='char-item-new';newBtn.style.marginTop='10px';newBtn.style.cursor='pointer';
-    newBtn.innerHTML='<div class="char-thumb"><span class="char-thumb-empty">+</span></div><div class="char-text"><div class="char-name" style="color:#886644">'+_TL('새 캐릭터')+'</div></div>';
+    const thumb=document.createElement('div');thumb.className='char-thumb';
+    const plus=document.createElement('span');plus.className='char-thumb-empty';plus.textContent='+';thumb.appendChild(plus);
+    const label=document.createElement('div');label.className='char-name';label.style.color='#886644';label.textContent=_TL('새 캐릭터');
+    const text=document.createElement('div');text.className='char-text';text.appendChild(label);newBtn.replaceChildren(thumb,text);
     newBtn.addEventListener('click',()=>openVisualSelect());
     cl.appendChild(newBtn);
   }
   else{
-    _onlineChars=data;
-    _onlineScrollIdx=Math.max(0,Math.min(_onlineScrollIdx||0,Math.max(0,data.length-2)));
     _renderOnlineSlots();
   }
   if(data&&data.length>0){const _d0=data[0].data||{};_swapLobbyBg(_d0.game?_d0.game.stage||0:0)}else{_swapLobbyBg(0);}
-  const btn=$('enterGameBtn');if(btn)btn.disabled=true;
 }
-let _onlineChars=[],_onlineScrollIdx=0;
+let _onlineChars=[],_onlineScrollIdx=0,_onlineLoadSeq=0;
 function _renderOnlineSlots(){
   const cl=$('charList');if(!cl)return;cl.innerHTML='';
   const data=_onlineChars,VIEW=2,total=data.length,canScroll=total>VIEW;
@@ -2749,8 +2762,11 @@ function _renderOnlineSlots(){
       div.querySelector('.char-del').addEventListener('click',e=>{
         e.stopPropagation();
         _showDelConfirm(ch.name,async()=>{
-          const{error:de}=await sb.from('characters').delete().eq('id',ch.id);
-          if(de){setStatus(_TL('삭제 실패: ')+de.message,true);return}await loadCharacters();
+          if(!currentUser||!currentUser.id)throw new Error(_TL('로그인 필요'));
+          const{data:deleted,error:de}=await sb.from('characters').delete().eq('id',ch.id).eq('user_id',currentUser.id).select('id');
+          if(de)throw de;
+          await loadCharacters();
+          if(!deleted||deleted.length!==1||deleted[0].id!==ch.id)throw new Error(_TL('서버에서 삭제를 확인하지 못했습니다. 목록을 확인한 뒤 다시 시도하세요.'));
         });
       });
       track.appendChild(div);
@@ -2936,7 +2952,7 @@ $('createBtn').onclick=()=>{
   setStatus('');$('createModal').classList.remove('show');doCreateChar(name,_pendingVisualIdx);
 };
 $('charName').addEventListener('keydown',e=>{if(e.key==='Enter')$('createBtn').click()});
-function setStatus(m,err){$('status').textContent=m;$('status').className=err?'status error':'status'}
+function setStatus(m,err){for(const id of ['status','lobbyStatus']){const el=$(id);if(el&&el.children.length===0){el.textContent=m;el.className=err?'status error':'status'}}}
 function escHtml(s){const d=document.createElement('div');d.textContent=s;return d.innerHTML}
 
 // ═══ 로컬 캐릭터 목록 (서버 saves/ 폴더) — 3분할 UI ═══
@@ -3194,20 +3210,29 @@ $('createCancelBtn').addEventListener('click',()=>{$('createModal').classList.re
 
 // ── 커스텀 삭제 확인 모달 ──
 let _delConfirmCb=null;
+let _delConfirmBusy=false;
 let _delConfirmIdx=0; // 0=확인, 1=취소
 function _showDelConfirm(name,onYes){
+  if(_delConfirmBusy)return;
+  setStatus('');
   const m=$('delConfirmModal');if(!m)return;
   $('delConfirmMsg').textContent=name+_TL(' 캐릭터를 정말 삭제하시겠습니까?');
   m.style.display='flex';_delConfirmCb=onYes;_delConfirmIdx=1; // 기본 취소에 포커스
   _delHighlight();
 }
-function _hideDelConfirm(){const m=$('delConfirmModal');if(m)m.style.display='none';_delConfirmCb=null;}
+function _hideDelConfirm(){if(_delConfirmBusy)return;const m=$('delConfirmModal');if(m)m.style.display='none';_delConfirmCb=null;}
 function _delHighlight(){
   const y=$('delConfirmYes'),n=$('delConfirmNo');if(!y||!n)return;
   y.style.outline=_delConfirmIdx===0?'2px solid #C9A961':'';
   n.style.outline=_delConfirmIdx===1?'2px solid #C9A961':'';
 }
-$('delConfirmYes').onclick=()=>{if(_delConfirmCb)_delConfirmCb();_hideDelConfirm()};
+$('delConfirmYes').onclick=async()=>{
+  if(_delConfirmBusy||!_delConfirmCb)return;
+  _delConfirmBusy=true;$('delConfirmYes').disabled=true;$('delConfirmNo').disabled=true;
+  try{await _delConfirmCb()}
+  catch(error){setStatus(_TL('삭제 실패: ')+(error.message||_TL('알 수 없는 오류')),true)}
+  finally{_delConfirmBusy=false;$('delConfirmYes').disabled=false;$('delConfirmNo').disabled=false;_hideDelConfirm()}
+};
 $('delConfirmNo').onclick=()=>{_hideDelConfirm()};
 
 // ── 가상 키보드 (게임패드용) + 한글 자동 조합 ──
