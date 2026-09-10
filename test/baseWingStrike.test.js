@@ -128,3 +128,22 @@ test('base Wing Strike reset refunds only upgrades and keeps its free level', ()
   assert.equal(ctx._resetWingStrikeUpgrades(), 0);
   assert.equal(ctx.P.sp, 4, 'repeated resets cannot create SP from the free starter skill');
 });
+
+test('level-one Wing Strike fires without shoulder equipment and respects cooldown', () => {
+  const noop = () => {};
+  const ctx = vm.createContext({
+    G: {}, INV: { equipped: { shield: null } },
+    pShieldMul: () => 1, statStr: () => 1, _fuseMul: () => 1,
+    _addSkProf: noop, shake: noop, poolPart: noop,
+  });
+  vm.runInContext(['mkP', 'sh', '_isFused', '_wingStrikeLevel', '_eSkillRangeMul', '_autoShieldThrow'].map(fn).join('\n'), ctx);
+  ctx.P = ctx.mkP();
+  ctx._autoShieldThrow();
+  assert.equal(ctx.G._stProjs?.length, 1, 'base fusion must fire with an empty equipment slot');
+  assert.equal(ctx.G._stProjs[0].wave, true);
+  assert.ok(ctx.G._stProjs[0].dmg > 0);
+  assert.equal(ctx.P._stWingT, 40);
+  assert.equal(ctx.P._stCd, 705);
+  ctx._autoShieldThrow();
+  assert.equal(ctx.G._stProjs.length, 1, 'cooldown must still prevent repeated waves');
+});

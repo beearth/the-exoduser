@@ -240,6 +240,7 @@ DPS_BAL = { bow: 0.77, magic: 0.475, beam: 0.0080 }
 | 항목 | 현재 구현 |
 |---|---|
 | 기본 보유 | 캐릭터1레벨부터 `maliceSwipe=1`, `shieldThrow=1`, `_fused.shieldFuse=true`, `activeRMBSk='maliceSwipe'`. 습득·합체 비용 없이 지급 |
+| 장비 조건 | 합체 날개치기는 견갑 없이 발동, 미장착 ATK 기본값3. 미합체 칼등날개만 견갑 필요; 미발동 시 숙련도/쿨다운 부여 없음 |
 | 기존 세이브 | `_ensureBaseWingStrike`가 누락/0레벨만 최소1로 보충, 기존 높은 레벨·다른 합체·자원 유지. `_sanitizeCoreState` 및 일반/로컬 시작 경로 적용 |
 | 범위 성장 기준 | **E 스킬 레벨** `L=max(1,min(maliceSwipe,shieldThrow))`. `M=1+(L−1)×0.05` (가산), 캐릭터 레벨과 별개 |
 | 충전 | `_sdHold` 실제프레임을×2로 승계, `kiGather`에서 `sp×2` 누적. 기존 가상60/120/180 임계는 실제30/60/90f = **0.5/1/1.5초** |

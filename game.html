@@ -42394,13 +42394,13 @@ function activatePlagueBurst(){
 // 칼등치기(우클릭) 시 shieldThrow 스킬이 있으면 자동 발사
 function _autoShieldThrow(){
   if((P._stCd||0)>0)return; // ST 추가소모 없음 — 우클릭(useStPct('shield'))에서 이미 차감됨
-  _addSkProf('shieldThrow');
   const _sfFused=P.skills.maliceSwipe>=1&&P.skills.shieldThrow>=1&&_isFused('shieldFuse');
+  if(!_sfFused&&!INV.equipped.shield)return; // 기본 날개치기는 견갑 없이도 발동
+  _addSkProf('shieldThrow');
   const _sfLv=_sfFused?_wingStrikeLevel():0;
   P._stCd=_sfFused?Math.max(120,720-_sfLv*15):720;
   const slv=P.skills.shieldThrow||1;
   const a=P.facing;
-  if(!INV.equipped.shield)return;
   if(!G._stProjs)G._stProjs=[];
   if(_sfFused){
     // ═══ 날개치기: 파워웨이브 (지면 충격파) ═══
