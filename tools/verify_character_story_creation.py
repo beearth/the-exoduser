@@ -6,12 +6,14 @@ with sync_playwright() as p:
     browser=p.chromium.launch(headless=True)
     page=browser.new_page(viewport={'width':1280,'height':720})
     page.add_init_script("""window.__legacyStoryPlays=[];const mediaPlay=HTMLMediaElement.prototype.play;HTMLMediaElement.prototype.play=function(...args){if((this.currentSrc||this.src||'').includes('intro_voice.mp3'))window.__legacyStoryPlays.push(this.currentSrc||this.src);return mediaPlay.apply(this,args);};""")
-    errors=[];writes=[];saved={};load_mode="server"
+    errors=[];writes=[];saved={};load_mode="server";accept_writes=True
     page.on('pageerror',lambda e:errors.append(str(e)))
     def api(route):
         url=route.request.url
         if '/api/save' in url:
-            writes.append(route.request.post_data_json);saved.update(writes[-1]['data']);route.fulfill(json={'ok':True,'slot':'검증전사'})
+            writes.append(route.request.post_data_json)
+            if accept_writes:saved.update(writes[-1]['data'])
+            route.fulfill(json={'ok':True,'slot':'검증전사'})
         elif '/api/slots' in url:route.fulfill(json={'ok':True,'slots':[]})
         elif '/api/load/' in url:
             if load_mode=='failure':route.fulfill(status=503,json={'ok':False})
@@ -72,7 +74,9 @@ with sync_playwright() as p:
     page.goto(result['skip_destination'].replace('&story=warrior-v21',''),wait_until='domcontentloaded',timeout=60000)
     page.wait_for_function("typeof G!=='undefined' && G.on && G._cutsceneDone && _cutsceneState===null",timeout=60000)
     result['completed_character_does_not_repeat_nemesis']=True
+    print('PASS warrior creation, Nemesis, save and completed-character re-entry',flush=True)
     # New server metadata must win over both the previous global selection and a stale local slot.
+    accept_writes=False
     saved.clear();saved.update({'charIdx':1})
     page.evaluate("localStorage.setItem('_charIdx','0');localStorage.setItem('hellsave_검증전사',JSON.stringify({charIdx:0}))")
     page.goto(result['skip_destination'].replace('&story=warrior-v21',''),wait_until='domcontentloaded',timeout=60000)

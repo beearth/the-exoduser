@@ -21,7 +21,7 @@
 | 기존 입장 |목록의 기존 캐릭터는 stage·game.cutsceneDone에 따라 네메시스 INTRO 또는 직접 플레이. 구 전쟁 더빙은 생략 |
 | 배포 패키지 |build-nwjs.mjs FILES에 player 추가,video 폴더 기존 복사로 MP4 포함. 배포/실행파일 재빌드는 이 작업 범위 아님 |
 
-검증: test/characterStoryCreation.test.js는 저장 성공/실패,오프라인 버튼 override,ended/skip/error cleanup,game 직접 플레이를 검사한다. tools/verify_character_story_creation.py는 격리 Chromium에서 생성 UI를 클릭하고 실제 MP4 재생·오디오 디코드·로비 음악 정지·게임 연결을 검사한다. 저장 API만 브라우저 내부에서 대체하여 실제 사용자 슬롯을 쓰지 않는다. 부분 스킵 당시 브라우저 결과는 output/cinematic/character_story_controls_20260910/qa.json과 스크린샷 참조.
+검증: test/characterStoryCreation.test.js는 저장 성공/실패,오프라인 버튼 override,ended/skip/error cleanup,네메시스 INTRO 진입·구 전쟁 더빙 미재생을 검사한다. tools/verify_character_story_creation.py는 격리 Chromium에서 생성 UI를 클릭하고 실제 MP4 재생·오디오 디코드·로비 음악 정지·게임 연결을 검사한다. 저장 API만 브라우저 내부에서 대체하여 실제 사용자 슬롯을 쓰지 않는다. 부분 스킵 당시 브라우저 결과는 output/cinematic/character_story_controls_20260910/qa.json과 스크린샷 참조.
 
 언어 제한: 이번 요청은 승인된 합본 그대로 연결한 것으로 영상 속 한글 자막은 언어 선택에 따라 바뀌지 않는다. PROLOGUE_LINES 번역은 명시적 cutscene=1 미리보기, 네메시스 INTRO 번역은 일반 신규 입장에서도 사용한다.
 
@@ -126,3 +126,16 @@
 | 브라우저 |tools/verify_character_story_creation.py, output/cinematic/character_identity_nemesis_20260910/qa.json |
 
 직전 구버전 차단으로 이미 game.cutsceneDone=true가 기록된 캐릭터는 완료 여부를 구별할 정보가 없어 자동 재시청시키지 않는다. 새로 생성하는 캐릭터에는 네메시스 인트로가 정상 연결된다.
+
+### 브라우저 최종 검증 — PASS
+
+| 시나리오 | 실제 결과 |
+|---|---|
+| 이전 실버테일1 → 생성 전사0 |charIdx0, INTRO, 구 전쟁 음성 play0 |
+| 전사 저장·재접속 |charIdx0 저장, cutsceneDone=true 유지, 네메시스 반복 없음 |
+| 이전 전사0 → 새 실버테일1 |charIdx1, INTRO, 오래된 로컬 슬롯0보다 서버 메타데이터1 우선 |
+| 서버503 → 로컬 신규 슬롯0 |전역 캐시1보다 슬롯0 우선, INTRO 진입 |
+| 스킵 |v21 클릭/Enter/Space 대사 탐색·1200ms 전체 홀드, 네메시스 _cutsceneAdvance 부분 진행 PASS |
+| 오류 |page_errors=[], 실제 사용자 저장 쓰기 없음 |
+| 테스트 데이터 격리 |캐릭터 전환 사례에서는 이전 페이지의 unload 저장이 다음 사례의 고정 서버 응답을 덮지 않도록 accept_writes=false |
+| 산출물 |output/cinematic/character_identity_nemesis_20260910/qa.json, nemesis_restored.png |
