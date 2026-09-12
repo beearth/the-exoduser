@@ -58,3 +58,5 @@ Vercel 설정 근거: [Build 설정](https://vercel.com/docs/builds/configure-a-
 | 실제 시작 로그 | 공개 주소에서 Windows Chrome153, 기본·webgpu=0 모두 _useGL=true/_useGPU=false, GL.VERSION=WebGL 2.0 (OpenGL ES 3.0 Chromium), policy=url-opt-in-20260910, pageerror0. AMD RX9070XT D3D11. `captures/renderer_optin_20260910/production-boot-report.json` |
 | 중복 작업 | GitHub workflow34442083088 취소. 34443175618은 이미 종료됨. 대기 Vercel hell-build/FMeU1zZbb 및 the-exoduser/9saHApU4A 취소. 이전 the-exoduser/AowsyR49S는 자체 완료되어 추가 취소하지 않음 |
 | Mac 상태 | Chrome/Safari 실기 비교 PENDING. 배포 성공을 세로 띠 해결로 판정하지 않음 |
+
+2026-09-12 macOS 빌드 보완: NFC/NFD 한글 파일명이 동일 파일로 해석되어 hard link EEXIST가 발생할 때 source/destination의 dev·ino가 모두 같은 경우만 기존 링크를 인정한다. 서로 다른 파일 충돌은 계속 실패한다. Linux의 별개 경로는 모두 스테이징한다.

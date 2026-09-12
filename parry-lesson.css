@@ -1,0 +1,73 @@
+#parryLessonBackdrop{position:fixed;inset:0;z-index:100001;background:linear-gradient(90deg,transparent 45%,#08070ba6);opacity:.5;}
+#parryLesson{
+  --lesson-accent:#c5a4f2;--lesson-glow:rgba(148,89,217,.15);
+  position:fixed;right:clamp(18px,3vw,56px);top:50%;transform:translateY(-50%);
+  width:clamp(300px,26vw,400px);max-height:calc(100vh - 32px);max-height:calc(100dvh - 32px);overflow:hidden;box-sizing:border-box;display:flex;flex-direction:column;
+  z-index:100002;padding:26px;color:#e6ddcc;opacity:.5;
+  background:linear-gradient(180deg,#0c0b1020,#0c0b1033),url('assets/ui/tutorial/parry-plaque-v1.png') center/100% 100% no-repeat,#100f13;
+  border:1px solid #655445;box-shadow:0 20px 80px #000b,inset 0 0 0 5px #111014,inset 0 0 0 6px #67524040;
+  font:15px/1.65 var(--font-hell,sans-serif);isolation:isolate;
+}
+#parryLesson .lesson-content{min-height:0;overflow-y:auto;overflow-x:hidden;overscroll-behavior:contain;scrollbar-width:thin;scrollbar-color:#806341 #100f13;padding:0 4px 0 0;}
+#parryLesson .lesson-footer{flex-shrink:0;padding-top:12px;}
+#parryLesson .lesson-footer button{box-sizing:border-box;}
+#parryLesson[data-kind="physical"]{--lesson-accent:#e0c18b;--lesson-glow:rgba(190,148,81,.15);}
+#parryLesson[data-phase="success"],#parryLesson[data-phase="done"]{--lesson-accent:#b2d6ac;--lesson-glow:rgba(140,190,119,.15);}
+#parryLesson::before{content:"";position:absolute;inset:9px;border-top:1px solid #b79a6540;pointer-events:none;}
+#parryLesson .lesson-eyebrow{display:flex;justify-content:space-between;gap:12px;font-size:10px;letter-spacing:.2em;color:#b29c7b;text-transform:uppercase;}
+#parryLesson .lesson-state{color:var(--lesson-accent);letter-spacing:.06em;}
+#parryLesson .lesson-art{position:relative;display:grid;place-items:end;height:130px;margin:14px 0 20px;overflow:hidden;}
+#parryLesson .lesson-key{display:grid;place-items:center;min-width:62px;height:62px;padding:0 8px;box-sizing:border-box;border:1px solid var(--lesson-accent);border-radius:4px;color:var(--lesson-accent);background:linear-gradient(#34313a,#121115);box-shadow:0 5px 0 #08070a,0 0 40px var(--lesson-glow);font:32px/1 'Cinzel',serif;z-index:1;}
+#parryLesson h2{margin:0 0 7px;color:#eee4d1;font-size:clamp(22px,2vw,29px);font-weight:700;letter-spacing:.03em;line-height:1.3;}
+#parryLesson .lesson-subtitle{margin:0 0 20px;color:#a79d91;font-size:12px;}
+#parryLesson .lesson-checklist{display:grid;gap:7px;padding:16px 0;border-top:1px solid #65544566;border-bottom:1px solid #65544566;}
+#parryLesson .lesson-row{display:flex;align-items:center;gap:10px;color:#938b81;font-size:13px;}
+#parryLesson .lesson-row[data-current="true"]{color:var(--lesson-accent);}
+#parryLesson .lesson-row[data-complete="true"]{color:#b2d6ac;}
+#parryLesson .lesson-row input{appearance:none;width:16px;height:16px;flex-shrink:0;margin:0;border:1px solid #6b6052;background:#0d0d10;border-radius:2px;opacity:1;}
+#parryLesson .lesson-row input:checked{background:#b2d6ac;border-color:#b2d6ac;}
+#parryLesson .lesson-row input:checked::after{content:"";display:block;width:7px;height:4px;margin:3px 0 0 3px;border-left:2px solid #172117;border-bottom:2px solid #172117;transform:rotate(-45deg);}
+#parryLesson .lesson-hint{margin:18px 0 12px;min-height:72px;font-size:14px;line-height:1.85;color:#d4cbbc;}
+#parryLesson .lesson-safety{display:block;font-size:11px;color:#a99c89;margin-bottom:20px;}
+#parryLesson .lesson-primary{display:block;width:100%;padding:12px;border:1px solid #a78957;border-radius:2px;background:linear-gradient(#b39462,#806341);color:#130f0b;font:700 15px/1.4 var(--font-hell,sans-serif);cursor:pointer;box-shadow:inset 0 1px #e1c59966;}
+#parryLesson .lesson-primary:hover{filter:brightness(1.13);}
+#parryLesson .lesson-primary:focus-visible,#parryLesson .lesson-skip:focus-visible{outline:2px solid #e6c894;outline-offset:4px;}
+#parryLesson .lesson-primary[hidden]{display:none;}
+#parryLesson .lesson-skip{display:block;margin:13px auto 0;padding:4px 12px;border:0;background:none;color:#a89a84;font:12px var(--font-hell,sans-serif);cursor:pointer;}
+#parryLesson .lesson-progress{height:2px;background:#39312a;margin-top:22px;overflow:hidden;}
+#parryLesson .lesson-progress-fill{height:100%;width:0;background:var(--lesson-accent);transition:width .3s ease;}
+#parryLesson[data-phase="practice"] .lesson-art{height:80px;margin:8px 0 18px;}
+#parryLesson[data-phase="practice"] .lesson-art::before{width:65px;height:65px;}
+#parryLesson[data-phase="practice"] .lesson-art::after{width:53px;height:53px;}
+#parryLesson[data-phase="practice"] .lesson-key{height:48px;min-width:48px;font-size:26px;}
+@media(max-height:700px){#parryLesson{padding:19px;max-height:90vh;}#parryLesson .lesson-art{height:75px;margin:4px 0 12px;}#parryLesson .lesson-hint{min-height:0;margin:12px 0;}#parryLesson .lesson-subtitle{margin-bottom:10px;}#parryLesson .lesson-safety{margin-bottom:12px;}}
+@media(max-width:760px){#parryLesson{top:auto;bottom:12px;left:12px;right:12px;transform:none;width:auto;max-height:45vh;padding:17px;}#parryLesson .lesson-art{display:none;}#parryLesson h2{font-size:20px;}#parryLesson .lesson-checklist{display:flex;gap:18px;padding:8px 0;}#parryLesson .lesson-hint{min-height:0;margin:10px 0;}#parryLesson .lesson-subtitle,#parryLesson .lesson-safety{display:none;}#parryLesson .lesson-progress{margin-top:10px;}}
+@media(prefers-reduced-motion:reduce){#parryLesson .lesson-progress-fill{transition:none;}}
+#parryLesson .lesson-hold{margin:0 0 16px;color:var(--lesson-accent);font-size:12px;}
+#parryLesson .lesson-resource-readout{white-space:pre-line;color:#e4c67b;font-size:13px;line-height:1.8;}
+#globeHP.lesson-eye-focus,#globeMP.lesson-eye-focus{z-index:100004!important;opacity:1!important;}
+#lessonEyePointers{position:fixed;inset:0;z-index:100005;pointer-events:none;}
+#lessonEyePointers[hidden],#lessonEyePointers [hidden]{display:none!important;}
+#lessonEyePointers .lesson-eye-pointer{position:fixed;width:18px;height:18px;box-sizing:border-box;border:2px solid #ffe49c;border-radius:50%;transform:translate(-50%,-50%);box-shadow:0 0 10px #ffc344;}
+#lessonEyePointers .lesson-eye-pointer::before{content:"";position:absolute;left:5px;bottom:31px;width:4px;height:72px;background:#ffe49c;box-shadow:0 0 8px #000;}
+#lessonEyePointers .lesson-eye-pointer::after{content:"";position:absolute;left:-2px;bottom:17px;border-left:9px solid transparent;border-right:9px solid transparent;border-top:16px solid #ffe49c;}
+#lessonEyePointers .lesson-eye-caption{position:absolute;left:8px;bottom:112px;transform:translateX(-40%);width:max-content;max-width:190px;padding:8px 10px;border:1px solid #ffe49c;border-radius:4px;background:#160f0b;color:#ffe49c;font:700 16px/1.5 var(--font-hell,sans-serif);text-shadow:0 1px 3px #000;}
+#parryLesson .lesson-hold[hidden]{display:none;}
+#parryLesson .lesson-hold progress{display:block;width:100%;height:8px;margin-top:7px;accent-color:var(--lesson-accent);}
+@media(max-width:760px){#parryLesson .lesson-checklist{display:grid;grid-template-columns:1fr 1fr;gap:6px 12px;}}
+@media(max-width:760px){#parryLesson{max-height:45vh;max-height:45dvh;}#parryLesson[data-phase="intro"]{max-height:calc(100vh - 24px);max-height:calc(100dvh - 24px);}}
+#parryLesson .lesson-key{font-size:clamp(15px,1.7vw,28px);white-space:nowrap;}
+#parryLesson .lesson-rage{margin:0 0 16px;font-size:12px;color:#ffb98e;}
+#parryLesson .lesson-rage[hidden]{display:none;}
+#parryLesson .lesson-rage progress{display:block;width:100%;height:12px;margin-top:8px;accent-color:#f15c36;}
+#lessonRageZoom{position:fixed;left:calc(50% - 140px);bottom:220px;width:280px;padding:0;box-sizing:border-box;z-index:100005;background:transparent;border:0;box-shadow:none;color:#ffe4c7;text-align:center;text-shadow:0 2px 4px #000,0 0 8px #000;font:14px/1.5 var(--font-hell,sans-serif);pointer-events:none;}
+#lessonRageZoom[hidden]{display:none;}
+#parryLesson[data-rage-focus="true"]{visibility:hidden;}
+#parryLesson[data-rage-focus="true"] .lesson-skip{visibility:visible;}
+#skBar.lesson-rage-focus{z-index:100004!important;filter:none!important;}
+#skBar.lesson-rage-focus #skSlot1{transform:scale(3);transform-origin:center;z-index:10;outline:2px solid #ff684a;box-shadow:0 0 24px #ff3300!important;transition:transform .3s ease;}
+@media(prefers-reduced-motion:reduce){#skBar.lesson-rage-focus #skSlot1{transition:none;}}
+#lessonRageZoom>span:not(.lesson-rage-arrow){font-size:12px;color:#ebaa7e;}
+#lessonRageZoom h2{font-size:24px;margin:4px 0;color:#ffc28d;}
+#lessonRageZoom p{font-size:13px;margin:4px 0 0;}
+#lessonRageZoom .lesson-rage-arrow{position:absolute;left:50%;bottom:-34px;transform:translateX(-50%);font:32px/1 sans-serif;color:#ffc28d;}

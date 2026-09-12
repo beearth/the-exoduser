@@ -1,3 +1,5 @@
+> **2026-09-12 최신 변경:** 사용자 요청으로 CH1-1 시작 철창문 `m_cage_gate(103,188,scale1.2)` 배치를 제거했다. 해당 문 렌더·충돌 모두 제거, authored62/runtime63, hand collision21/total22. 아래의 START 성문·63/64·22/23 수치는 제거 이전 기록이다. 북쪽 보스 게이트와 다른 스테이지 문은 유지한다.
+
 # CH1-1 SMOOTHING PASS — PRODUCTION SSOT
 
 > 최초 적용일: 2026-08-30 / 선예도 리모델링: 2026-09-04

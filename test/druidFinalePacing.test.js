@@ -54,7 +54,7 @@ test('the per-frame attack reset preserves finale phase strength',()=>{
   ctx._DEMO_MODE=false;vm.runInContext(reset,ctx);assert.equal(ctx.e.atk,80);
 });
 test('independent field worms cannot spawn or persist inside the finale arena',()=>{
-  const {ctx}=setup();ctx.G.on=true;ctx.G.map=[[]];ctx.G._wmStage=3;ctx.G._worms=[{asleep:true,x:0,y:0}];
+  const {ctx}=setup();ctx.window={};ctx.G.on=true;ctx.G.map=[[]];ctx.G._wmStage=3;ctx.G._worms=[{asleep:true,x:0,y:0}];
   ctx.dst=()=>10000;ctx._WM_WAKE=1000;ctx._pushOutsideBonfire=()=>{};
   const a=html.indexOf('function _wmTick('),b=html.indexOf('\n}',a)+2;
   vm.runInContext(html.slice(a,b),ctx);ctx._wmTick();assert.equal(ctx.G._worms.length,0);

@@ -22,6 +22,10 @@ mkdirSync(DIST, { recursive: true });
 // ── 2. 단일 파일 복사 ────────────────────────────────────────────────────────
 const FILES = [
   'index.html', 'game.html', 'credits.html',
+  'game-easy-test.html', 'game-guide.html',
+  'parry-lesson.js', 'parry-lesson.css', 'resource-practice.js',
+  'system-lesson.js', 'system-lesson.css',
+  'tutorial-badges.js', 'tutorial-badges.css',
   'stat-panel-ui.js', 'stat-panel-ui.css',
   'localization-runtime.js', 'localization-data.js', 'localization.css',
   'lobby-stage-info.js', 'character-story-player.js', 'level-up-vfx.js',

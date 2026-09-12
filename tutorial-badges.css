@@ -1,0 +1,15 @@
+#tutorialBadgeButton{position:fixed;right:20px;top:110px;z-index:100006;padding:5px 10px;border:1px solid #af93664d;border-radius:3px;background:#15130ed9;color:#d8c6a6;font:12px/1.5 var(--font-hell,sans-serif);cursor:pointer}
+#tutorialBadgeCollection{position:fixed;right:20px;top:148px;width:min(360px,calc(100vw - 40px));max-height:calc(100dvh - 168px);overflow:auto;box-sizing:border-box;z-index:100007;padding:20px;border:1px solid #756347;background:linear-gradient(145deg,#211d17f5,#0c0d0cf5);box-shadow:0 12px 35px #0008;color:#e6ddca;font:14px/1.6 var(--font-hell,sans-serif)}
+#tutorialBadgeCollection[hidden],#tutorialBadgeToast[hidden]{display:none!important}
+#tutorialBadgeCollection header{display:flex;align-items:center;justify-content:space-between;gap:12px;color:#b19b78;font-size:9px;letter-spacing:.1em}
+#tutorialBadgeCollection button{border:0;background:none;color:#d8c6a6;cursor:pointer;padding:5px;font:12px var(--font-hell,sans-serif)}
+#tutorialBadgeCollection h2{font-size:23px;margin:16px 0 4px}#tutorialBadgeCollection>p{font-size:12px;color:#a79e8c;margin:0 0 18px}
+#tutorialBadgeCollection article{display:flex;align-items:center;gap:16px;padding:16px 0;border-top:1px solid #9e865c30}
+#tutorialBadgeCollection h3{font-size:16px;margin:0;color:var(--medal-color)}#tutorialBadgeCollection article p{font-size:11px;margin:4px 0;color:#c2b7a4}
+#tutorialBadgeCollection .tutorial-medal{flex:0 0 54px;height:64px;display:grid;place-items:center;color:var(--medal-color);background:linear-gradient(140deg,#9a84552b,#131512);clip-path:polygon(50% 0,95% 20%,90% 78%,50% 100%,10% 78%,5% 20%)}
+#tutorialBadgeCollection svg{width:32px;height:44px;filter:drop-shadow(0 2px 2px #000)}
+#tutorialBadgeCollection article[data-earned="false"]{filter:grayscale(1);opacity:.45}
+#tutorialBadgeCollection .tutorial-medal-status{color:var(--medal-color);font-size:10px;letter-spacing:.08em}
+#tutorialBadgeButton:focus-visible,#tutorialBadgeCollection button:focus-visible{outline:2px solid #efd192;outline-offset:3px}
+#tutorialBadgeToast{position:fixed;top:65px;left:50%;transform:translateX(-50%);z-index:100008;pointer-events:none;background:#17140eeb;border-bottom:1px solid #c1a06a;padding:10px 24px;text-align:center;color:#efdab5;font:16px/1.5 var(--font-hell,sans-serif);box-shadow:0 5px 24px #0006}
+#tutorialBadgeToast small{display:block;color:#ae9878;font-size:10px;letter-spacing:.2em}

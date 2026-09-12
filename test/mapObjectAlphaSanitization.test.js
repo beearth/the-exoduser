@@ -23,7 +23,7 @@ test('generated tree sheet with partial-alpha backdrop is sanitized before map r
 test('CH1-1 start view excludes the visibly striped animated tree sheet', () => {
   const compose = game.slice(game.indexOf('0:{hand:1,dense:1'), game.indexOf('// CH1-1 HAND PROPS END'));
   assert.doesNotMatch(compose, /id:'m_atree1'/);
-  assert.match(compose, /id:'m_cage_gate',x:103,y:188,scale:1\.2/);
+  assert.doesNotMatch(compose, /id:'m_cage_gate'/);
 });
 
 test('dragon skeleton black plate is luminance-keyed before map rendering', () => {
