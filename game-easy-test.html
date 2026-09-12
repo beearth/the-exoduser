@@ -7,7 +7,7 @@
 <script src="system-lesson.js?v=20260912-skip-density1"></script>
 <link rel="stylesheet" href="parry-lesson.css?v=20260912-opacity23">
 <script src="resource-practice.js?v=20260912-guard3"></script>
-<script src="parry-lesson.js?v=20260912-replay1"></script>
+<script src="parry-lesson.js?v=20260912-character1"></script>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>HELL: EXODUSER</title>
@@ -56998,6 +56998,7 @@ async function _startDemoNew(){
     }
   }catch(e){console.warn('[DEMO] Load failed:',e)}
   if(!_demoLoaded){
+    window._parryLesson?.resetForNewCharacter();
     G._cutsceneDone=false;
     const _dnDI=defaultItems();for(const it of _dnDI)INV.equipped[it.slot]=it;
     const _dnSe=[EL.F,EL.I,EL.D,EL.L],_dnSw=['dagger','hammer','axe','spear'];
@@ -58618,6 +58619,7 @@ if((_isLocal&&!_charId)||new URLSearchParams(window.location.search).get('test')
       if(!_foundSave){try{const ls=localStorage.getItem('hellsave_'+_SLOT);if(ls){_loaded=dbRestore(JSON.parse(ls));if(_loaded)console.log('[LOCAL] localStorage 폴백 로드 완료')}}catch(le){}}
       if(!_loaded){
         if(!IS_ELECTRON)console.log('[LOCAL] 세이브 없음, 새 게임 시작');
+        window._parryLesson?.resetForNewCharacter();
         G._cutsceneDone=false;
         const _di=defaultItems();for(const it of _di)INV.equipped[it.slot]=it;
         const _se=[EL.F,EL.I,EL.D,EL.L],_sw=['dagger','hammer','axe','spear'];

@@ -3,15 +3,25 @@ window._parryLesson = {
   active: false, seen: false, phase: 'intro', step: 0, checks: Array(8).fill(false), shot: null,
   labels: ['마법탄 패링', '물리탄 패링', 'Q 홀딩 · 다수 마법탄 패링', 'E 홀딩 · 다수 물리탄 패링', 'Shift · 사슬 이동', '방향키 + Space · 전격이동', '패링 · 분노 축적', 'Space · 분노 발동'],
   heldDirections: new Set(),
+  skipKey() {
+    const params=new URLSearchParams(location.search);
+    const char=params.get('test')==='1'?null:params.get('char');
+    return 'exoduser:tutorial-skipped:v2:'+(char?'char:'+encodeURIComponent(char):'slot:'+encodeURIComponent(params.get('slot')||'t1'));
+  },
+  resetForNewCharacter() {
+    this.skippedKey=null;this.newCharacterKey=this.skipKey();this.seen=false;
+    try{localStorage.removeItem(this.newCharacterKey);}catch{}
+  },
   dismissed() {
-    if(this.skipRemembered)return true;
-    // Explicit replay bypasses the stored opt-out for this visit only.
-    if(new URLSearchParams(location.search).get('tutorial')==='1')return false;
-    try{return localStorage.getItem('exoduser:tutorial-skipped:v1')==='1';}catch{return false;}
+    const key=this.skipKey();
+    if(this.skippedKey===key)return true;
+    // A new character and explicit replay bypass older opt-outs for this visit.
+    if(this.newCharacterKey===key||new URLSearchParams(location.search).get('tutorial')==='1')return false;
+    try{return localStorage.getItem(key)==='1';}catch{return false;}
   },
   skipAll() {
-    this.skipRemembered=true;this.seen=true;
-    try{localStorage.setItem('exoduser:tutorial-skipped:v1','1');}catch{}
+    this.skippedKey=this.skipKey();this.seen=true;
+    try{localStorage.setItem(this.skippedKey,'1');}catch{}
     this.finish();
     const system=window._systemLesson;
     if(system){system.closed=true;system.active=false;system.panel?.remove();}

@@ -1,6 +1,6 @@
 const assert=require('node:assert/strict'),fs=require('node:fs'),vm=require('node:vm');
 const {fixture}=require('./test-parry-lesson.cjs');
-const saved=new Map();const storage={getItem:k=>saved.get(k),setItem:(k,v)=>saved.set(k,v)};
+const saved=new Map();const storage={getItem:k=>saved.get(k),setItem:(k,v)=>saved.set(k,v),removeItem:k=>saved.delete(k)};
 const c=fixture();c.localStorage=storage;const l=c.window._parryLesson;l.tick();l.skipAll();
 assert.equal(l.active,false);assert.equal(l.checks.some(Boolean),false);
 l.seen=false;assert.equal(l.tick(),false);assert.equal(l.active,false);
@@ -18,7 +18,30 @@ console.log('PASS: persistent tutorial skip, system suppression, unavailable sto
 
 const replay=fixture(0,'?tutorial=1');replay.localStorage=storage;
 assert.equal(replay.window._parryLesson.tick(),true);assert.equal(replay.window._parryLesson.active,true);
-assert.equal(storage.getItem('exoduser:tutorial-skipped:v1'),'1');
+assert.equal(storage.getItem(replay.window._parryLesson.skipKey()),'1');
 replay.window._parryLesson.skipAll();replay.window._parryLesson.seen=false;
 assert.equal(replay.window._parryLesson.tick(),false);assert.equal(replay.window._parryLesson.active,false);
 console.log('PASS: explicit tutorial replay ignores saved skip for one visit, preserves preference, and still allows skipping.');
+
+// A skip belongs to one character, including after a reload; legacy global opt-out is ignored.
+saved.set('exoduser:tutorial-skipped:v1','1');
+for(const [first,second] of [['?char=uuid-a&slot=same','?char=uuid-b&slot=same'],['?test=1&slot=첫캐릭','?test=1&slot=새캐릭']]){
+ const a=fixture(0,first);a.localStorage=storage;assert.equal(a.window._parryLesson.tick(),true);a.window._parryLesson.skipAll();
+ const again=fixture(0,first);again.localStorage=storage;assert.equal(again.window._parryLesson.tick(),false);
+ const b=fixture(0,second);b.localStorage=storage;assert.equal(b.window._parryLesson.tick(),true);
+}
+const recreated=fixture(0,'?test=1&slot=첫캐릭');recreated.localStorage=storage;
+recreated.window._parryLesson.resetForNewCharacter();assert.equal(recreated.window._parryLesson.tick(),true);
+recreated.window._parryLesson.skipAll();assert.equal(recreated.window._parryLesson.dismissed(),true);
+const blockedNew=fixture();blockedNew.localStorage=blocked.localStorage;
+blockedNew.window._parryLesson.skipAll();blockedNew.window._parryLesson.resetForNewCharacter();assert.equal(blockedNew.window._parryLesson.tick(),true);
+// Exercise the successful lobby creation hook for same-name recreation before navigation.
+const lobby=fs.readFileSync('index.html','utf8');
+const hook=lobby.slice(lobby.indexOf('async function _afterCharacterCreated('),lobby.indexOf('async function doCreateChar('));
+const lobbyContext=vm.createContext({_testMode:true,localStorage:storage,loadLocalCharacters:async()=>{},console});
+vm.runInContext(hook,lobbyContext);
+saved.set('exoduser:tutorial-skipped:v2:slot:'+encodeURIComponent('첫캐릭'),'1');
+lobbyContext._afterCharacterCreated('첫캐릭',1);
+assert.equal(storage.getItem('exoduser:tutorial-skipped:v2:slot:'+encodeURIComponent('첫캐릭')),undefined);
+for(const file of ['game.html','game-easy-test.html'])assert.ok(fs.readFileSync(file,'utf8').includes('window._parryLesson?.resetForNewCharacter();'));
+console.log('PASS: character-scoped skip, legacy skip ignored, new character and same-name recreation show practice, creation hook and blocked storage.');
