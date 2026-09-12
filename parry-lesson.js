@@ -49,7 +49,8 @@ window._parryLesson = {
   },
   build() {
     this.backdrop = this.node('div'); this.backdrop.id = 'parryLessonBackdrop';
-    for (const event of ['mousedown', 'mouseup', 'click', 'pointerdown', 'pointerup', 'contextmenu']) this.backdrop.addEventListener(event, e => { e.preventDefault(); e.stopPropagation(); });
+    // Decorative layer must never swallow game mouse input.
+    this.backdrop.style.pointerEvents = 'none';
     document.body.append(this.backdrop);
     this.panel = this.node('section'); this.panel.id = 'parryLesson';
     this.panel.setAttribute('aria-label', '1-1 패링 튜토리얼');

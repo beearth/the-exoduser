@@ -1,4 +1,4 @@
-#parryLessonBackdrop{position:fixed;inset:0;z-index:100001;background:linear-gradient(90deg,transparent 45%,#08070ba6);opacity:.5;}
+#parryLessonBackdrop{pointer-events:none;position:fixed;inset:0;z-index:100001;background:linear-gradient(90deg,transparent 45%,#08070ba6);opacity:.5;}
 #parryLesson{
   --lesson-accent:#c5a4f2;--lesson-glow:rgba(148,89,217,.15);
   position:fixed;right:clamp(18px,3vw,56px);top:50%;transform:translateY(-50%);
