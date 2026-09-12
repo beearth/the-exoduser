@@ -109,7 +109,7 @@ for(const name of ['game.html','game-easy-test.html']){
  for(const shot of lesson.volley){
   assert.equal(shot.parryClass,undefined,'physical classification must come from the engine, not a forced lesson override');
   assert.equal(c._projectileParryClass(shot),'physical',shot._lessonKind);
-  assert.equal(shot.homing,false);
+  assert.equal(shot.homing,true);
   assert.ok(Math.abs(Math.hypot(shot.vx,shot.vy)-6.4)<1e-10);
  }
 }
@@ -138,7 +138,7 @@ for(let i=0;i<90;i++)lesson.tick();assert.equal(lesson.step,6);
 for(let i=0;i<45;i++)lesson.tick();assert.equal(lesson.volley.length,10);
 assert.equal(c.P.rage,0); // Spawning must never grant rage.
 const rageVolley=lesson.volley.slice();
-assert.ok(rageVolley.every(p=>p.parryClass==='magic'&&!p.homing));
+assert.ok(rageVolley.every(p=>p.parryClass==='magic'&&p.homing));
 assert.equal(new Set(rageVolley.map(p=>p._lessonKind)).size,5);
 lesson.hit({},'magic');assert.equal(lesson.rageParried,false);
 for(const shot of rageVolley.slice(0,3)){shot.friendly=true;lesson.hit(shot,'magic');c.P.rage+=10;}
@@ -254,3 +254,18 @@ assert.deepEqual(focusChanges.at(-1),['lesson-rage-focus',false]);
 }
 console.log('PASS: HTML syntax; eleven stages; left/right attack states; charged volleys; movement; rage zoom/cast; 24 practice enemies and slam kills; miss explosion, HP loss, duplicate protection, recovery; retry/skip and restoration; live parry gates.');
 module.exports={fixture};
+
+for(const file of ['game.html','game-easy-test.html']){
+ const html=fs.readFileSync(path.join(root,file),'utf8');
+ const turn=html.slice(html.indexOf('function _enemyHomingTurnRate('),html.indexOf('function _isBigEnergy('));
+ const context=vm.createContext({_projectileParryClass:p=>p.parryClass||'magic'});vm.runInContext(turn,context);
+ for(const flags of [{},{blackBean:true},{phantomSword:true},{parryClass:'physical'},{titanEye:true},{waterBean:true},{pierce:true}]){
+  assert.equal(context._enemyHomingTurnRate({...flags,_lessonShot:true}),100*Math.PI/180/60);
+ }
+ assert.equal(context._enemyHomingTurnRate({parryClass:'physical'}),.00436332);
+ assert.equal(context._enemyHomingTurnRate({blackBean:true}),.02325);
+ assert.equal(context._enemyHomingTurnRate({_lessonShot:true,friendly:true,blackBean:true}),.02325);
+ assert.ok(html.includes('const _vsT=!p._lessonShot&&'));
+ assert.ok(html.includes('const _ancT=!p._lessonShot&&!p.blackBean?'));
+}
+console.log('PASS: all hostile tutorial projectile types turn at 100 degrees/second; normal and reflected profiles are preserved; practice targets player.');

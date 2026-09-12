@@ -310,7 +310,7 @@ window._parryLesson = {
     if (!this.shot && (this.cooldown -= _dtSp) <= 0) {
       const q = this.step % 2 === 0;
       this.shot = spawnProj({ x: P.x, y: P.y - 800, vx: 0, vy: 3, dmg: 0, el: q ? EL.D : EL.P, col: q ? '#b26dff' : '#f4f4f4', life: 360, ml: 360, friendly: false, _commit: true, _lessonShot: true });
-      if (this.shot) { this.shot._lessonExploded=false;this.shot.vx = 0; this.shot.vy = 3; this.shot.homing = false; }
+      if (this.shot) { this.shot._lessonExploded=false;this.shot.vx = 0; this.shot.vy = 3; this.shot.homing = true; }
       else this.cooldown = 60;
     }
     return false;
@@ -338,7 +338,7 @@ window._parryLesson = {
     for(let i=0;i<count;i++){
       const a=base+(i/(count-1)-.5)*.64;
       const p=spawnProj({x:P.x+Math.cos(a)*800,y:P.y+Math.sin(a)*800,vx:-Math.cos(a)*speed,vy:-Math.sin(a)*speed,dmg:0,el:EL.P,col:'#f4f4f4',...(q?{...magicTypes[i%magicTypes.length],parryClass:'magic'}:physicalTypes[i]),life:420,ml:420,friendly:false,_commit:true,_lessonShot:true});
-      if(p){p._lessonExploded=false;p.vx=-Math.cos(a)*speed;p.vy=-Math.sin(a)*speed;p.homing=false;this.volley.push(p);}
+      if(p){p._lessonExploded=false;p.vx=-Math.cos(a)*speed;p.vy=-Math.sin(a)*speed;p.homing=true;this.volley.push(p);}
     }
     if(this.volley.length<3)this.volleyFailed=true;
   },

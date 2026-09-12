@@ -6,8 +6,8 @@
 <link rel="stylesheet" href="system-lesson.css?v=20260912-restored4">
 <script src="system-lesson.js?v=20260912-skip-density1"></script>
 <link rel="stylesheet" href="parry-lesson.css?v=20260912-mouse1">
-<script src="resource-practice.js?v=20260912-guard3"></script>
-<script src="parry-lesson.js?v=20260912-mouse1"></script>
+<script src="resource-practice.js?v=20260912-homing100"></script>
+<script src="parry-lesson.js?v=20260912-homing100"></script>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>HELL: EXODUSER</title>
@@ -15094,6 +15094,7 @@ function _druidPoisonPoolTargets(px,py,bx,by){
   return[{x:cx,y:cy},{x:cx+nx*360,y:cy+ny*360},{x:cx-nx*360,y:cy-ny*360}];
 }
 function _enemyHomingTurnRate(p){
+  if(p._lessonShot&&!p.friendly)return 100*Math.PI/180/60; // 튜토리얼 전 탄종 100°/s
   if(p.blackBean)return .02325;
   if(p.fbEnergy||p.fdEnergy)return .004; // 직선 에너지탄: 현재 homing 미설정, 예비값만 유지
   if(p.elemBall)return .0291;
@@ -31608,8 +31609,8 @@ function update(){
     } else {
       // 빨콩/무지개콩 유도: 가까운 플레이어/소환체 방향으로 선회 (무지개콩은 Q 전용이라 전대를 추적하지 않음)
       if((p.homing||p.blackBean)&&!p.friendly&&p.life>30){
-        const _vsT=G._voidScarecrow&&G._voidScarecrow.aggroOn&&!p.blackBean;
-        const _ancT=!p.blackBean?_ancestorTargetForEnemy(p.x,p.y):null;
+        const _vsT=!p._lessonShot&&G._voidScarecrow&&G._voidScarecrow.aggroOn&&!p.blackBean;
+        const _ancT=!p._lessonShot&&!p.blackBean?_ancestorTargetForEnemy(p.x,p.y):null;
         const _hTx=_vsT?G._voidScarecrow.x:_ancT?_ancT.x:P.x;
         const _hTy=_vsT?G._voidScarecrow.y:_ancT?_ancT.y:P.y;
         const _hAng=Math.atan2(_hTy-p.y,_hTx-p.x);

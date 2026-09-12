@@ -139,7 +139,7 @@ window._resourcePractice = {
   },
   fire(l) {
     l.shot=spawnProj({x:P.x,y:P.y-800,vx:0,vy:4,dmg:0,el:EL.D,col:'#a44cff',parryClass:'magic',life:420,ml:420,friendly:false,_commit:true,_lessonShot:true});
-    if(l.shot){l.shot.vx=0;l.shot.vy=4;l.shot.homing=false;l.shot._lessonExploded=false;if(l.step===2){this.burstShots.push(l.shot);this.burstSpawned++;}}
+    if(l.shot){l.shot.vx=0;l.shot.vy=4;l.shot.homing=true;l.shot._lessonExploded=false;if(l.step===2){this.burstShots.push(l.shot);this.burstSpawned++;}}
   },
   fireGuardBurst(l) {
     this.guardFired=true;
@@ -147,7 +147,7 @@ window._resourcePractice = {
     for(let i=0;i<3;i++){
       const p=spawnProj({x:P.x,y:P.y-800-i*24,vx:0,vy:4,dmg:0,el:EL.D,col:'#a44cff',parryClass:'magic',life:600,ml:600,friendly:false,_commit:true,_lessonShot:true});
       if(!p){this.retryGuard();return;}
-      p.vx=0;p.vy=4;p.homing=false;p._lessonExploded=false;
+      p.vx=0;p.vy=4;p.homing=true;p._lessonExploded=false;
       this.burstShots.push(p);this.burstSpawned++;
     }
     this.feedback='연속 흡수 0/3 · Q를 계속 누르세요';
