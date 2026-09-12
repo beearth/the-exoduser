@@ -17390,7 +17390,14 @@ function _beanRoll(el,col,sz,spd,dmgMult,e){
 // 몬스터 입 오프셋: facing 방향으로 반지름×0.7 앞에서 발사
 function _eMouthXY(e,ang){const off=(e.r||12)*.7;return{x:e.x+Math.cos(ang||e.facing||0)*off,y:e.y+Math.sin(ang||e.facing||0)*off}}
 // 전조 없는 일반/특수 발사는 60f 공격링 후 방출. 사망탄도 사망 위치에서 예고한다.
+// Field minibosses may launch only when their center is clearly inside the viewport.
+function _fieldEnemyCanShoot(e){
+  if(!e||!G.cam)return false;
+  const zoom=e._ch1StartMedium?(G._camZoom||1):1;
+  return Math.abs(e.x-G.cam.x)*zoom<=Math.max(0,VW/2-64)&&Math.abs(e.y-G.cam.y)*zoom<=Math.max(0,VH/2-64);
+}
 function _emitEnemyShot(e,props){
+  if(e._ch1StartMedium&&!_fieldEnemyCanShoot(e))return null;
   _prepareDarkSphere(props);
   if(e.s==='eShootWind'&&e.st2<=0&&e._swChargeEl===props.el&&!props.blackBean){props._commit=true;return spawnProj(props)}
   const list=G._shotWarnings||(G._shotWarnings=[]);
@@ -17407,7 +17414,7 @@ function _tickEnemyShotWarnings(sp){
   let n=0;
   for(const w of list){
     const e=w.owner;
-    const cancelled=w.world!==ens||(!w.dead&&(!e.alive||e.stunned>0||e._frozen>0));
+    const cancelled=(e._ch1StartMedium&&!_fieldEnemyCanShoot(e))||w.world!==ens||(!w.dead&&(!e.alive||e.stunned>0||e._frozen>0));
     if(!cancelled){
       w.t-=sp;
       if(w.t>0){list[n++]=w;continue;}
@@ -56044,6 +56051,7 @@ function _fbEnergyBoom(p){
   if(typeof SFX!=='undefined'&&SFX.detonate)SFX.detonate();
 }
 function _fbFireEnergy(fb){
+  if(!_fieldEnemyCanShoot(fb))return;
   var a=Math.atan2(P.y-fb.y,P.x-fb.x),m=_fbEsca(fb),col=_fbElCol(fb);
   spawnProj({x:m.x,y:m.y,vx:Math.cos(a)*10,vy:Math.sin(a)*10,dmg:~~(fb.atk*2.8),el:fb.el,friendly:false,life:320,ml:320,col:col,sz:48,r:20,elemBall:true,_typed:true,_commit:true,fbEnergy:true});
   if(typeof SFX!=='undefined'&&SFX.magic)SFX.magic(1);
@@ -56105,7 +56113,9 @@ function _fbTickOne(fb){
     if(_d<fb.r+P.r+8&&P.iframes<=0&&P.s!=='charge')hurtP(fb.atk);
   }
   // 더듬이 에너지 모음 → 큰 에너지탄 → 혈안 3연사 → 10초 후 TP
-  if(fb.shotCd<=0&&!fb.hid&&!(fb.tpT>0)&&!(fb.enChg>0)){fb.shotCd=_FB_EN_CHG;fb.enChg=_FB_EN_CHG}
+  const _canShoot=_fieldEnemyCanShoot(fb);
+  if(!_canShoot){fb.enChg=0;fb.burst=0;fb.burstGap=0;}
+  if(_canShoot&&fb.shotCd<=0&&!fb.hid&&!(fb.tpT>0)&&!(fb.enChg>0)){fb.shotCd=_FB_EN_CHG;fb.enChg=_FB_EN_CHG}
   if(fb.enChg>0&&!fb.hid&&!(fb.tpT>0)){
     fb.enChg--;
     var _mouth=_fbEsca(fb),_prog=1-fb.enChg/_FB_EN_CHG;
@@ -56229,6 +56239,7 @@ function _wmLockDest(w){
   w.tpX=w.x;w.tpY=w.y;
 }
 function _wmFire(w){
+  if(!_fieldEnemyCanShoot(w))return;
   var a=Math.atan2(P.y-w.y,P.x-w.x);
   spawnProj({x:w.x+Math.cos(a)*w.r*.6,y:w.y+Math.sin(a)*w.r*.6,vx:Math.cos(a)*8,vy:Math.sin(a)*8,dmg:~~(w.atk*1.5),el:EL.F,friendly:false,life:240,ml:240,col:'#ff2233',sz:6.4,r:12,titanEye:true,_typed:true});
   if(typeof SFX!=='undefined'&&SFX.magic)SFX.magic(1);
@@ -56431,6 +56442,7 @@ function _fdTips(m){
   ];
 }
 function _fdFireEnergy(m){
+  if(!_fieldEnemyCanShoot(m))return;
   var a=Math.atan2(P.y-m.y,P.x-m.x),e=_fdEye(m);
   spawnProj({x:e.x,y:e.y,vx:Math.cos(a)*6,vy:Math.sin(a)*6,dmg:~~(m.atk*2.8),el:EL.F,friendly:false,life:320,ml:320,col:'#ff5522',sz:48,r:18,elemBall:true,_typed:true,_commit:true,fdEnergy:true});
   if(typeof SFX!=='undefined'&&SFX.magic)SFX.magic(1);
@@ -56528,7 +56540,9 @@ function _fdTickOne(m){
   }
   if(_d<m.r+P.r){var pa=Math.atan2(P.y-m.y,P.x-m.x);P.x=m.x+Math.cos(pa)*(m.r+P.r);P.y=m.y+Math.sin(pa)*(m.r+P.r);_d=m.r+P.r}
   if(_d<m.r+P.r+8&&P.iframes<=0&&P.s!=='charge')hurtP(m.atk,{dtype:'magic'});
-  if(m.shotCd<=0&&!(m.enChg>0)){m.shotCd=_FD_EN_CHG;m.enChg=_FD_EN_CHG;m.chargeWalkT=0}
+  const _canShoot=_fieldEnemyCanShoot(m);
+  if(!_canShoot){m.enChg=0;m.burst=0;m.burstGap=0;}
+  if(_canShoot&&m.shotCd<=0&&!(m.enChg>0)){m.shotCd=_FD_EN_CHG;m.enChg=_FD_EN_CHG;m.chargeWalkT=0}
   if(m.enChg>0){
     m.enChg--;
     m.chargeWalkT=(m.chargeWalkT||0)+1;
