@@ -35255,19 +35255,19 @@ function doParry(_inDmg,_px,_py,_forceQ,_parryEl,_resourceMul,_impactKind){const
   const _pbMul=1+_eqAffix('parryBonus');
   const _parryRegenMul=1+(PASSIVES.pRegen||0)*.20; // 회복력 패시브: 패링회복 +20%/lv
   const _prRaw=(_isQParry?50:30)*_pbMul*_parryRegenMul;
-  const _prBase=~~((_isRedParry?_prRaw*0.5:_isRainbowParry?_prRaw*1.5:_prRaw)*_resourceBonus); // 빨콩 ×0.5, 무지개 ×1.5; 자원 배율: 물리탄 ×3, 대형탄 ×10
+  const _prBase=~~((_isRedParry?_prRaw*0.5:_isRainbowParry?_prRaw*1.5:_prRaw)*_resourceBonus)*2; // 회복량 2배; 빨콩 ×0.5, 무지개 ×1.5; 자원 배율: 물리탄 ×3, 대형탄 ×10
   P.iframes=25;
   P.hp=Math.min(P.mhp,P.hp+_prBase);
   P.st=Math.min(P.mst,P.st+_prBase);
   P.mp=Math.min(P.mmp,P.mp+_prBase);
   // 패링 성공: 포이즈(기절포인트) 1칸 회복 — 피격 -1과 대칭 (2026-07-27)
   P.poise=Math.min(P.maxPoise||4,(P.poise||0)+1);
-  const _harpAdd=(_isRedParry?5:_isRainbowParry?15:10)*_resourceBonus; // 빨콩 5, 무지개 15, 일반 10, 대형탄 ×10
+  const _harpAdd=(_isRedParry?5:_isRainbowParry?15:10)*_resourceBonus*2; // 충전량 2배; 빨콩 5, 무지개 15, 일반 10, 대형탄 ×10
   _harpGauge=Math.min(_HARP_GAUGE_MAX,_harpGauge+_harpAdd);
   
   // 분노게이지: 빨콩 5%, 무지개 15%, 일반 10%
   const _uSR=_isQParry?(_uEq('_uShieldRage')||0):0; // 유니크: 보호막 흡수 시 분노 추가
-  const _rageAdd=((_isRedParry?5:_isRainbowParry?15:10)*_resourceBonus+_uSR);
+  const _rageAdd=((_isRedParry?5:_isRainbowParry?15:10)*_resourceBonus+_uSR)*2;
   P.rage=Math.min(_rageMax(),P.rage+_rageAdd);
   addTxt(P.x,P.y-90,_T('🔥분노+')+P.rage+'%','#ff4400',35);
   // 물리탄은 반사 전에 저장한 자원 배율3으로 식별: 한 발마다 분노 쿨30f 회복 (자원 배율은 곱하지 않음).
@@ -35285,7 +35285,7 @@ function doParry(_inDmg,_px,_py,_forceQ,_parryEl,_resourceMul,_impactKind){const
   // 분노 대사 (적립 후 체크)
   if(P.rage>=100)_petSayCD('rage_full','crow','…분노가 끓어넘친다. 스페이스로 적들에게 폭발시켜!',4,300,'cat','분노는 스페이스키 분노스킬로 폭발시킬 수 있어! 지금이야!!!',4);
   else if(P.rage>=50)_petSayCD('rage_half','crow','분노가 차오른다…',3,300,'cat','분노 '+P.rage+'%! 패링으로 분노 더 쌓아!',3);
-  const _matsAdd=(_isRedParry?500:_isRainbowParry?2000:1000)*_resourceBonus; // 빨콩 500, 무지개 2000, 일반 1000, 대형탄 ×10
+  const _matsAdd=(_isRedParry?500:_isRainbowParry?2000:1000)*_resourceBonus*2; // 획득량 2배; 빨콩 500, 무지개 2000, 일반 1000, 대형탄 ×10
   G.mats+=_matsAdd;addTxt(P.x,P.y-60,_T('👿악의+')+_matsAdd,'#cc44ff',40);
   // ═══ 어픽스: parryExplosion (패링폭발) — 패링 성공 시 주변 AoE ═══
   if(_eqAffix('parryExplosion')>0){const _peD=~~(meleeRef()*statStr()*_eqAffix('parryExplosion'));const _peQ=shQuery(P.x,P.y,100);for(let _pi=0;_pi<_peQ.length;_pi++){if(_peQ[_pi].alive)hurtE(_peQ[_pi],_peD,0,true,{dot:true,shieldHit:true})}addTxt(P.x,P.y-40,_T('💥패링폭발!'),'#ff6644',35)}
