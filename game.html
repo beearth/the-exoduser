@@ -27935,7 +27935,7 @@ _buildAtlasB(); // 신규 보스 아틀라스 (27프레임 × 7팔레트)
 
 // ═══ 소환굴 등급 ═══
 const SPAWN_HOLE={name:'소환굴',col:'#aa4444',cnt:{S:50,M:100,L:100}};
-function _spawnHoleCount(size,si){const type=size<=.3?'S':size<=.5?'M':'L';const base=SPAWN_HOLE.cnt[type]||50;return si===0?Math.ceil(base*.5):base;}
+function _spawnHoleCount(size,si){const type=size<=.3?'S':size<=.5?'M':'L';const base=SPAWN_HOLE.cnt[type]||50;return si===0?Math.ceil(Math.ceil(base*.5)*.3):base;}
 
 // ═══ 엘리트/모디파이어 시스템 ═══
 const ELITE_TIERS=[

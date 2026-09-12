@@ -10,11 +10,11 @@ const blocked=fixture();blocked.localStorage={getItem(){throw Error('blocked')},
 for(const file of ['game.html','game-easy-test.html']){
  const s=fs.readFileSync(file,'utf8');const code=s.match(/function _spawnHoleCount\(size,si\)\{[^\n]+\}/)[0];
  const ctx=vm.createContext({SPAWN_HOLE:{cnt:{S:50,M:100,L:100}}});vm.runInContext(code,ctx);
- for(const [size,n] of [[.3,25],[.5,50],[.8,50]]){assert.equal(ctx._spawnHoleCount(size,0),n);assert.equal(ctx._spawnHoleCount(size,1),n*2);assert.equal(ctx._spawnHoleCount(size,6),n*2);}
+ for(const [size,n,other] of [[.3,8,50],[.5,15,100],[.8,15,100]]){assert.equal(ctx._spawnHoleCount(size,0),n);assert.equal(ctx._spawnHoleCount(size,1),other);assert.equal(ctx._spawnHoleCount(size,6),other);}
  assert.ok(s.includes('_ts+=_spawnHoleCount(spawnHoles[_hi].size,si)'));
  assert.ok(s.includes('h._spawnTotal=_spawnHoleCount(h.size,_hSi)'));
 }
-console.log('PASS: persistent tutorial skip, system suppression, unavailable storage, first-stage half spawn counts and matching kill denominator.');
+console.log('PASS: persistent tutorial skip, system suppression, unavailable storage, first-stage 70% reduction from prior counts and matching kill denominator.');
 
 const replay=fixture(0,'?tutorial=1');replay.localStorage=storage;
 assert.equal(replay.window._parryLesson.tick(),true);assert.equal(replay.window._parryLesson.active,true);
