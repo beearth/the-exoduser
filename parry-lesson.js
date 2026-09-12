@@ -5,6 +5,8 @@ window._parryLesson = {
   heldDirections: new Set(),
   dismissed() {
     if(this.skipRemembered)return true;
+    // Explicit replay bypasses the stored opt-out for this visit only.
+    if(new URLSearchParams(location.search).get('tutorial')==='1')return false;
     try{return localStorage.getItem('exoduser:tutorial-skipped:v1')==='1';}catch{return false;}
   },
   skipAll() {

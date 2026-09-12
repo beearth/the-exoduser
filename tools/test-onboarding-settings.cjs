@@ -15,3 +15,10 @@ for(const file of ['game.html','game-easy-test.html']){
  assert.ok(s.includes('h._spawnTotal=_spawnHoleCount(h.size,_hSi)'));
 }
 console.log('PASS: persistent tutorial skip, system suppression, unavailable storage, first-stage half spawn counts and matching kill denominator.');
+
+const replay=fixture(0,'?tutorial=1');replay.localStorage=storage;
+assert.equal(replay.window._parryLesson.tick(),true);assert.equal(replay.window._parryLesson.active,true);
+assert.equal(storage.getItem('exoduser:tutorial-skipped:v1'),'1');
+replay.window._parryLesson.skipAll();replay.window._parryLesson.seen=false;
+assert.equal(replay.window._parryLesson.tick(),false);assert.equal(replay.window._parryLesson.active,false);
+console.log('PASS: explicit tutorial replay ignores saved skip for one visit, preserves preference, and still allows skipping.');
