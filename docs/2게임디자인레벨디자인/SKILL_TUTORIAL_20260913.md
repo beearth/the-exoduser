@@ -10,7 +10,7 @@
 | 신규 캐릭터 | 저장 상태가 없는 Lv1 캐릭터는 첫 이용 가능한 틱에서 기본 보유 스킬까지 등록. 기초 연습 중 임시 지급은 제외하고 연습이 끝난 실제 보유 목록으로 등록 |
 | 기존 저장 | `dbRestore`에서 신규 필드 없는 기존 세이브는 빈 큐/완료 목록으로 복원. 보유 스킬을 소급 자동 팝업하지 않으며 우측 `스킬 연습`에서 복습 가능 |
 | 순서 | `P._skillTutorial={queue:[],done:[]}`. 전투 스킬은 `SKILL_LIST` 순서, 패시브는 `PASSIVE_DEF` 순서로 한 습득 트랜잭션의 신규 항목을 추가. 기존 대기열 뒤에 연결. ID 중복 없음 |
-| 별도 안내 | 각 스킬의 이름·효과 설명은 현행 `SKILL_LIST`, 패시브는 `PASSIVE_DEF` 참조. 고정/선택 슬롯과 현재 무기·마법·날개치기·보호막 키 바인딩을 표시. Shift/숫자/Space/F/Ctrl/T/X/Z는 실제 고정 입력 경로를 안내 |
+| 별도 안내 | 각 스킬의 이름·효과 설명은 현행 `SKILL_LIST`, 패시브는 `PASSIVE_DEF` 참조. 고정/선택 슬롯과 현재 무기·마법·불꽃칼날·보호막 키 바인딩을 표시. Shift/숫자/Space/F/Ctrl/T/X/Z는 실제 고정 입력 경로를 안내 |
 | 실습 | 실제 전투 화면에서 수행하는 안내 과제. `read→practice→success`, WASD 중 아무 키 또는 `연습 시작`으로 진입. 안내를 읽기만 하거나 다른 스킬을 써서는 완료되지 않음 |
 | 효과형 | `passive:` 접두사26종 및 자동 방어 구체 `guardian`은 `explain` 모드. 별도 시전 키 없이 설명을 읽고 `효과 확인`으로 완료 |
 | 성공 이벤트 | 기존 `_addSkProf/_addSkProfTick`의 성공 경로 관찰. 연습 중(`_parryLesson.active`) 이벤트는 제외. 지속형은 실제 활성 틱을 인정 |
@@ -76,7 +76,7 @@
 | `chainSlash` | 기동칼날개 | 실제 발동 | ShiftLeft → mouse0 |
 | `peaceShield` | 평화의보호 | 실제 발동 | KeyQ |
 | `hellRay` | 참회 | 실제 발동 | mouse2 |
-| `shieldThrow` | 칼등날개 | 실제 발동 | KeyE |
+| `shieldThrow` | 불꽃칼날 | 실제 발동 | KeyE |
 | `weakPhys` | 파쇄의 영역 | 실제 발동 | KeyF |
 | `weakMag` | 침식의 영역 | 실제 발동 | KeyF |
 | `weakPj` | 관통의 영역 | 실제 발동 | KeyF |

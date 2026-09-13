@@ -18,7 +18,7 @@ game.html `SKILL_REC_PATH` 배열과 1:1 동기화.
 | 6 | 💀 필살기 선택 | blackStar/lavaSummon(탄막블랙홀)/execution (1택) | — | — | — | — |
 | 7 | 멸살+만화+원소 | omniBeam, fanShot, elemMissile | elemFuse | 추적암전 | Tracking Lightning | fanShot + omniBeam + elemMissile |
 | 8 | 허수아비 세트 | voidScarecrow, explodeScarecrow | dualScarecrow | 쌍허수아비 | Dual Scarecrow | voidScarecrow + explodeScarecrow |
-| 9 | 방패 합체 | maliceSwipe, shieldThrow | shieldFuse | 날개치기 | Wing Strike | maliceSwipe + shieldThrow |
+| 9 | 방패 합체 | maliceSwipe, shieldThrow | shieldFuse | 불꽃칼날 | Flame Blade | maliceSwipe + shieldThrow |
 | 10 | 폭풍소환+얼음보주+뇌전걸음 | maliceMortar, iceOrb, ghostWalk | iceMortar | 얼음소용돌이 | Ice Vortex | maliceMortar + iceOrb |
 | 11 | 신성 영역 | holyDome, holyPrison | holyFuse | 결계의 영역 | Ward Domain | holyDome + holyPrison |
 | 12 | 6단합체: 폭풍빔 | whirlwind, detonate, giantSlam, fanShot, omniBeam, elemMissile | stormBeam | 암전나선 | Lightning Helix | whirlwind + detonate + giantSlam + fanShot + omniBeam + elemMissile |
@@ -41,7 +41,7 @@ game.html `SKILL_REC_PATH` 배열과 1:1 동기화.
 - 자원 부족·`reqLv` 미달(푸른비 300, 버스트루프 700)·DEMO 합체제한은 건너뜀(부분 진행)
 - 합체는 클릭 합체와 동일한 `_execFuse(key)` 공용 함수 호출 (상세는 `2_1 스킬관리+합체시스템.md`)
 
-> 2026-09-10: 날개치기(shieldFuse)는 모든 캐릭터1레벨부터 기본 보유한다. 위9단계의 구성 스킬/합체 목록은 강화 추천 대상으로 남으며 별도 습득·합체가 필요하지 않다. E 스킬 레벨마다 기본 범위+5%, 풀차지1.5초. [계약](E_BASE_WING_STRIKE_20260910.md).
+> 2026-09-10: 불꽃칼날(shieldFuse)는 모든 캐릭터1레벨부터 기본 보유한다. 위9단계의 구성 스킬/합체 목록은 강화 추천 대상으로 남으며 별도 습득·합체가 필요하지 않다. E 스킬 레벨마다 기본 범위+5%, 풀차지1.5초. [계약](E_BASE_WING_STRIKE_20260910.md).
 
 | 추천 선행 순서 (2026-09-10) | 적용 |
 |---|---|

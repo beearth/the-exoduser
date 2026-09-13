@@ -1,3 +1,5 @@
+> 2026-09-13: E 현행 표시명은 불꽃칼날 / Flame Blade다. 아래 기존 각국어 날개 명칭·문장은 과거 번역 기록이며 새 키에 적용되지 않는다. 새 이름은 미번역 언어에서 Flame Blade를 표시한다.
+
 # 북유럽·네덜란드 UI 보완 — 2026-09-09
 
 Steam 인터페이스·자막 목표 중 핀란드어·스웨덴어·덴마크어·노르웨이어·네덜란드어 MAIN 누락 문구를 보완했다. 전체 적용·검증 상태는 [언어 범위](STEAM_LANGUAGE_SCOPE_20260909.md), 공통 수치와 원문 계약은 [유럽권 통합 기록](UI_EUROPE_TRANSLATIONS_20260909.md) 및 [2차 보완 기록](UI_EUROPE_BATCH2_20260909.md)을 따른다. 더빙은 이번 작업에 포함하지 않는다.
@@ -25,11 +27,11 @@ Steam 인터페이스·자막 목표 중 핀란드어·스웨덴어·덴마크�
 | 합체 전격의창 | Salamakeihäs | Blixtspjut | Lynspyd | Lynspyd | Bliksemspeer |
 | 근성 | Sitkeys | Uthållighet | Udholdenhed | Utholdenhet | Taaiheid |
 | 만화방창 | Neulasuihku | Nålspärr | Nålesalve | Nålesalve | Naaldsalvo |
-| 칼등날개 | Kilpisiipi | Sköldvinge | Skjoldvinge | Skjoldvinge | Schildvleugel |
+| 불꽃칼날 | Kilpisiipi | Sköldvinge | Skjoldvinge | Skjoldvinge | Schildvleugel |
 | 기동칼날개 | Ketjumiekansiipi | Kedjebladsvinge | Kædeklingevinge | Kjedeklingevinge | Kettingbladsvleugel |
 | 선택 공용 라벨 | Valinta | Val | Valg | Valg | Keuze |
 
-기본 설치형 창과 합체 창, 칼등날개와 기동칼날개를 구별한다. 영웅 등급은 기존 MAIN의 Heroic 계열 명칭과 연결한다. 추가 합체 제목과 참조는 `ui-extra`와 맞췄다. 스킬명은 문장 안에서 해당 언어의 격변화나 합성어 형태로 사용한다.
+기본 설치형 창과 합체 창, 불꽃칼날과 기동칼날개를 구별한다. 영웅 등급은 기존 MAIN의 Heroic 계열 명칭과 연결한다. 추가 합체 제목과 참조는 `ui-extra`와 맞췄다. 스킬명은 문장 안에서 해당 언어의 격변화나 합성어 형태로 사용한다.
 
 | 언어 | 기존 문제 | 본문 및 공통 명칭에 적용한 교정 |
 |---|---|---|

@@ -34,9 +34,9 @@ window._skillTutorial={
       bladeDash:['W / A / S / D',this.text('같은 이동 방향을 빠르게 두 번 눌러 전격이동하세요. MP와 기동게이지가 필요합니다.','Double-tap a movement direction to blink. Requires MP and mobility gauge.')],
       chargeBoost:[keyName('ShiftLeft',true),this.text('사슬을 발사해 이동하세요. 이동은 공용 기동게이지를 소비합니다.','Fire the chain and move. Movement consumes the shared mobility gauge.')],
       chainAssault:[keyName('ShiftLeft',true)+' → '+this.key('beam','mouse2'),this.text('사슬 이동 중 마법 공격을 눌러 화염폭발로 착지하세요.','During chain movement, press magic attack to land with a fire blast.')],
-      chainSlam:[keyName('ShiftLeft',true)+' → '+this.key('shield','KeyE'),this.text('사슬 이동 중 날개치기를 눌러 내려찍으세요.','During chain movement, press Wing Strike to slam down.')],
+      chainSlam:[keyName('ShiftLeft',true)+' → '+this.key('shield','KeyE'),this.text('사슬 이동 중 불꽃칼날을 눌러 내려찍으세요.','During chain movement, press Flame Blade to slam down.')],
       chainSlash:[keyName('ShiftLeft',true)+' → '+this.key('weapon','mouse0'),this.text('사슬 이동 중 무기 공격을 눌러 전방을 베세요.','During chain movement, press weapon attack to slash forward.')],
-      shieldThrow:[this.key('shield','KeyE'),this.text('날개치기를 사용해 전방 충격파를 발동하세요.','Use Wing Strike to release its forward shockwave.')],
+      shieldThrow:[this.key('shield','KeyE'),this.text('불꽃칼날을 사용해 전방 충격파를 발동하세요.','Use Flame Blade to release its forward shockwave.')],
       execution:[keyName('KeyX',true),this.text('그로기 상태인 보스 가까이에서 처형하세요. 조건을 만족하지 못하면 발동하지 않습니다.','Execute a nearby groggy boss. It only activates when its conditions are met.')]
     };
     if(special[id]){[control,task]=special[id]}

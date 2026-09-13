@@ -101,7 +101,7 @@ function fn(name) {
   assert.fail(name);
 }
 
-test('level-one characters start with Wing Strike equipped and fused for free', () => {
+test('level-one characters start with Flame Blade equipped and fused for free', () => {
   const p = vm.runInNewContext(`${fn('mkP')};mkP()`);
   assert.equal(p.lv, 1);
   assert.equal(p.skills.maliceSwipe, 1);
@@ -203,7 +203,7 @@ test('a fresh character casts a wave; level growth enlarges its distance and wid
   }
 });
 
-test('base Wing Strike reset refunds only upgrades and keeps its free level', () => {
+test('base Flame Blade reset refunds only upgrades and keeps its free level', () => {
   const ctx = vm.createContext({ P: {}, _skillUpSpCost: () => 1 });
   vm.runInContext(fn('_fuseUpSpCost') + fn('_wingStrikeLevel') + fn('_resetWingStrikeUpgrades'), ctx);
   ctx.P = { skills: { maliceSwipe: 3, shieldThrow: 3 }, _fused: { shieldFuse: true }, sp: 0 };
@@ -216,7 +216,7 @@ test('base Wing Strike reset refunds only upgrades and keeps its free level', ()
   assert.equal(ctx.P.sp, 4, 'repeated resets cannot create SP from the free starter skill');
 });
 
-test('level-one Wing Strike fires without shoulder equipment and respects cooldown', () => {
+test('level-one Flame Blade fires without shoulder equipment and respects cooldown', () => {
   const noop = () => {};
   const ctx = vm.createContext({
     G: {}, INV: { equipped: { shield: null } },
@@ -238,7 +238,7 @@ test('level-one Wing Strike fires without shoulder equipment and respects cooldo
 test('charged E release enlarges the actual fused wave hit area, including skill growth', () => {
   const noop = () => {};
   const ctx = vm.createContext({
-    G: {}, INV: { equipped: { shield: null } }, _charIdx: 0,
+    G: {}, INV: { equipped: { shield: null } }, _charIdx: 0, window: {},
     pShieldMul: () => 1, statStr: () => 1, _fuseMul: () => 1,
     _addSkProf: noop, shake: noop, poolPart: noop,
     _startSilvertailAttackMotion: noop, _playSwordBack: noop, playSample: noop, _r: () => 1,

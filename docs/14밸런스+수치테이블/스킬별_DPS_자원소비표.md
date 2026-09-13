@@ -111,7 +111,7 @@ DPS_BAL = { bow: 0.77, magic: 0.475, beam: 0.0080 }
 | needleShot | 만화방창 II | ST | 8 고정 | **90f (1.5초)** | DEX × bowRef × pBowMul × **_skMul('needleShot')** (b:4, g:3.2) | 1.3hit/s → DPS 5.2(Lv1)→45(Lv20). 2발+5렙당1발 (2026-05-29 밸런스 평균화) |
 | ~~blastShot~~ | ~~폭산탄~~ | — | — | — | — | **삭제됨 (2026-04-10 석궁개편)** |
 | 석궁 기본 (fireBow) | 악의1/발 | — | 없음 | (floor(bowRef×pBowMul×10)+_bowBon)×3 | 단일탄·관통0, 기존 데미지3배 |
-| shieldThrow | 칼등날개 | ST | 0 (E키 칼등에서 이미 차감) | **300f (5초)** | STR 스케일 | 합체 전용, 제자리 처내기+충격파, Lv당 뎀+12%, **넉백 1.5** |
+| shieldThrow | 불꽃칼날 | ST | 0 (E키 칼등에서 이미 차감) | **단독720f (12초), 기본 합체 Lv1 705f (11.75초)** | STR 스케일 | 합체 전용, 제자리 처내기+충격파, Lv당 뎀+12%, **넉백 1.5** |
 | ghostXbowTurret | 공성쇠뇌 | ST | 설치 100 고정, 철거 무료 | 설치 20초(1200f), 철거 무관 | DEX × (뎀+50%, 공속+50%, 사거리+50%) | Lv500 해금, 터렛이 설치 전 세팅된 석궁 스킬(bladeShot/fanShot 등)을 사용하여 발사 |
 
 ---
@@ -241,12 +241,12 @@ DPS_BAL = { bow: 0.77, magic: 0.475, beam: 0.0080 }
 ---
 
 
-## E 기본 날개치기 — 2026-09-10 최신 계약
+## E 기본 불꽃칼날 — 2026-09-10 최신 계약
 
 | 항목 | 현재 구현 |
 |---|---|
 | 기본 보유 | 캐릭터1레벨부터 `maliceSwipe=1`, `shieldThrow=1`, `_fused.shieldFuse=true`, `activeRMBSk='maliceSwipe'`. 습득·합체 비용 없이 지급 |
-| 장비 조건 | 합체 날개치기는 견갑 없이 발동, 미장착 ATK 기본값3. 미합체 칼등날개만 견갑 필요; 미발동 시 숙련도/쿨다운 부여 없음 |
+| 장비 조건 | 합체 불꽃칼날은 견갑 없이 발동, 미장착 ATK 기본값3. 미합체 불꽃칼날만 견갑 필요; 미발동 시 숙련도/쿨다운 부여 없음 |
 | 기존 세이브 | `_ensureBaseWingStrike`가 누락/0레벨만 최소1로 보충, 기존 높은 레벨·다른 합체·자원 유지. `_sanitizeCoreState` 및 일반/로컬 시작 경로 적용 |
 | 범위 성장 기준 | **E 스킬 레벨** `L=max(1,min(maliceSwipe,shieldThrow))`. `M=1+(L−1)×0.05` (가산), 캐릭터 레벨과 별개 |
 | 충전 | `_sdHold` 실제프레임을×2로 승계, `kiGather`에서 `sp×2` 누적. 기존 가상60/120/180 임계는 실제30/60/90f = **0.5/1/1.5초** |
@@ -255,7 +255,7 @@ DPS_BAL = { bow: 0.77, magic: 0.475, beam: 0.0080 }
 | 연속 충전 배율 C | `min(3,1+0.5×min(t,2)+max(0,t−2))`, t=2배속 누적초. 실제0.5초=1.5, 1초=2, 1.5초=3 |
 | E 타격/전진 패링/충전 미리보기 | `_eSwingRadius(C)=floor((70+견갑bonusRange×4)×M×C)` |
 | 투사체 패링 | sBash 한정 기존 반경×M×C. `_normalR`의 sBash 분기도×M. Q는×1 유지 |
-| 날개치기 추가 반사 | `_sdRange=floor(_gsRange2×1.5)` (기존 합체 보너스 유지) |
+| 불꽃칼날 추가 반사 | `_sdRange=floor(_gsRange2×1.5)` (기존 합체 보너스 유지) |
 | 파워웨이브 | `_wvRangeMul=M×C`; 사거리210×M×C, 진행 판정 r=50×M×C, 폭95×M×C. C는 발사 시 충전 배율1~3 스냅샷. 적/탄막 충돌과 먼지 분포가 같은 r/w 사용. Lv1 풀차지 사거리630·r150·폭285 |
 | 시각 | 실버테일 아크 scale=C×M; 다른 캐릭터 sweepRange=floor((90+견갑bonusRange×4)×C×M). 룬 미리보기는 실제 `_eSwingRadius(C)` 사용 |
 | 초기화 | 1레벨 합체 유지. `_resetWingStrikeUpgrades`는 공통 합체 강화분(L−1)을 두 구성 스킬에서 차감하고 `sum(_fuseUpSpCost(i,2), i=1..L−1)`만 SP 환불. 무료 습득/합체 비용 환불 없음. 레벨 차이가 있는 기존 세이브의 초과 레벨은 보존 |

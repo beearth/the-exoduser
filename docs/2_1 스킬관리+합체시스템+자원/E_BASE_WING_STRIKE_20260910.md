@@ -1,11 +1,27 @@
-# 기본 E 날개치기·충전 속도·레벨별 범위
+## 2026-09-13 불꽃칼날 이름·불꽃 스윙
 
-## E 기본 날개치기 — 2026-09-10 최신 계약
+| 항목 | 현행 계약 |
+|---|---|
+| 이름 | `shieldThrow`와 기본 E 합체 `shieldFuse`: 불꽃칼날 / Flame Blade. `maliceSwipe` 기본 구성명 칼등 처내기, 합체 표시명 불꽃칼날 |
+| 호환 | 스킬/합체 ID, `_ensureBaseWingStrike`, `_wingStrikeLevel`, `_stWingT`, `_stCd` 및 세이브 구조 유지 |
+| 스프라이트 | `assets/vfx/flame_blade_swing_8f.png`, 1774×887 RGBA, 4열×2행 총8프레임. 실제 투명 알파, 원본 그대로 사용 |
+| 재생 | `_drawFlameBladeSwing`: `_stWingT>0`이며 `sBash/sRecover`일 때만. 실버테일 shield pose의 `spinProgress`(240ms), 나머지 캐릭터는 sBash24f+sRecover16f 진행률. 종료 시 숨김 |
+| 배치 | 캐릭터 중심 피벗, `P.facing` 회전. 크기 `(200+견갑bonusRange×8)×C×M`, C=충전1~3, M=1+(L−1)×0.05. 프레임별 위치/크기 정규화 없이 동일 스케일 |
+| 샘플링 | 셀 폭/높이 각각443.5px, 셀당 가장자리1px 인셋. source-over 합성, alpha=1, filter=none, save/restore. 픽셀 재색칠·배경 제거 없음 |
+| 기존 연출 | 불꽃 스프라이트를 그린 프레임에는 실버테일 보라 아크/다른 캐릭터 검정 스윕 생략. 로딩 전 및 쿨다운 중에는 기존 E 연출. 발동 파티클/미합체 충격파 링 주황색 `#ff7a24` |
+| 전투 | 피해 속성·수치, 전방 웨이브, 충전1.5초, 합체 쿨 `max(120,720−L×15)`f, 무적40f, 추가ST0, 기존 반사 규칙 유지. 불꽃 연출 자체에 별도 화상/DOT 없음 |
+| 번역 | KO/EN 스킬·합체·HUD·초기화·연습 안내를 갱신. 새 한국어 키의 미번역 언어는 공통 영문 Flame Blade 폴백. 과거 번역 기록의 기존 날개 용어는 현행 표시명이 아님 |
+| 생성 | built-in image_gen, 프롬프트: `assets/vfx/flame_blade_swing_prompt.txt`. 생성 원본을 복사하고 실제 알파 보존 |
+| 검증 | 스프라이트·기본 E·대형탄·기동칼날개 회귀36개 PASS, 양쪽 HTML 인라인 스크립트6개씩 구문 검사 PASS. 브라우저에서 Lv1 쿨705f·강화40f·웨이브1개, JS 오류0. 두 캐릭터 탭/풀차지·방향·8프레임 알파 확인 (`output/flame_blade_20260913/`) |
+
+# 기본 E 불꽃칼날·충전 속도·레벨별 범위
+
+## E 기본 불꽃칼날 — 2026-09-10 최신 계약
 
 | 항목 | 현재 구현 |
 |---|---|
 | 기본 보유 | 캐릭터1레벨부터 `maliceSwipe=1`, `shieldThrow=1`, `_fused.shieldFuse=true`, `activeRMBSk='maliceSwipe'`. 습득·합체 비용 없이 지급 |
-| 장비 조건 | 기본 합체 날개치기는 견갑 없이 발동. `_autoShieldThrow`의 장비 검사는 미합체에만 적용하며 숙련도/쿨다운 부여 전에 판별. 미장착 견갑 ATK 기본값3, 실제 발동 시 기존 쿨다운 유지 |
+| 장비 조건 | 기본 합체 불꽃칼날은 견갑 없이 발동. `_autoShieldThrow`의 장비 검사는 미합체에만 적용하며 숙련도/쿨다운 부여 전에 판별. 미장착 견갑 ATK 기본값3, 실제 발동 시 기존 쿨다운 유지 |
 | 기존 세이브 | `_ensureBaseWingStrike`가 누락/0레벨만 최소1로 보충, 기존 높은 레벨·다른 합체·자원 유지. `_sanitizeCoreState` 및 일반/로컬 시작 경로 적용 |
 | 범위 성장 기준 | **E 스킬 레벨** `L=max(1,min(maliceSwipe,shieldThrow))`. `M=1+(L−1)×0.05` (가산), 캐릭터 레벨과 별개 |
 | 충전 | `_sdHold` 실제프레임을×2로 승계, `kiGather`에서 `sp×2` 누적. 기존 가상60/120/180 임계는 실제30/60/90f = **0.5/1/1.5초** |
@@ -14,10 +30,10 @@
 | 연속 충전 배율 C | `min(3,1+0.5×min(t,2)+max(0,t−2))`, t=2배속 누적초. 실제0.5초=1.5, 1초=2, 1.5초=3 |
 | E 타격/전진 패링/충전 미리보기 | `_eSwingRadius(C)=floor((70+견갑bonusRange×4)×M×C)` |
 | 투사체 패링 | sBash 한정 기존 반경×M×C. `_normalR`의 sBash 분기도×M. Q는×1 유지 |
-| 날개치기 추가 반사 | `_sdRange=floor(_gsRange2×1.5)` (기존 합체 보너스 유지) |
-| 마력 부여 검격 (2026-09-12) | 쿨다운 완료로 날개치기가 발동한 sBash에서 `_stWingT>0`·shieldFuse 합체일 때 일반 마법탄도 반사. `_eCanReflectProjectile`을 E 단발·전진 반사에 공통 적용. 쿨다운 중 일반 E는 물리만 반사. 무지개·대형 에너지·반사 금지는 기존 제외 유지 |
+| 불꽃칼날 추가 반사 | `_sdRange=floor(_gsRange2×1.5)` (기존 합체 보너스 유지) |
+| 마력 부여 검격 (2026-09-12) | 쿨다운 완료로 불꽃칼날이 발동한 sBash에서 `_stWingT>0`·shieldFuse 합체일 때 일반 마법탄도 반사. `_eCanReflectProjectile`을 E 단발·전진 반사에 공통 적용. 쿨다운 중 일반 E는 물리만 반사. 무지개·대형 에너지·반사 금지는 기존 제외 유지 |
 | 파워웨이브 | `_wvRangeMul=M×C`; 사거리210×M×C, 진행 판정 r=50×M×C, 폭95×M×C. C는 발사 시 충전 배율1~3 스냅샷. 적/탄막 충돌과 먼지 분포가 같은 r/w 사용. Lv1 풀차지 사거리630·r150·폭285 |
-| 시각 | 실버테일 아크 scale=C×M; 다른 캐릭터 sweepRange=floor((90+견갑bonusRange×4)×C×M). 룬 미리보기는 실제 `_eSwingRadius(C)` 사용 |
+| 시각 | 강화 E는 위 불꽃 스프라이트 계약 우선. 일반 E/로딩 폴백: 실버테일 아크 scale=C×M; 다른 캐릭터 sweepRange=floor((90+견갑bonusRange×4)×C×M). 룬 미리보기는 실제 `_eSwingRadius(C)` 사용 |
 | 초기화 | 1레벨 합체 유지. `_resetWingStrikeUpgrades`는 공통 합체 강화분(L−1)을 두 구성 스킬에서 차감하고 `sum(_fuseUpSpCost(i,2), i=1..L−1)`만 SP 환불. 무료 습득/합체 비용 환불 없음. 레벨 차이가 있는 기존 세이브의 초과 레벨은 보존 |
 | 유지 | 기존 피해량 성장, 소모 ST, 패링 입력, 실버테일 전진 거리, 순간무적40f. 이동기 충전 취소는 폐기. Q/다른 스킬 범위 성장 변경 없음 |
 

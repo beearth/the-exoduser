@@ -1,3 +1,5 @@
+> 2026-09-13: E 현행 표시명은 불꽃칼날 / Flame Blade다. 아래 기존 각국어 날개 명칭·문장은 과거 번역 기록이며 새 키에 적용되지 않는다. 새 이름은 미번역 언어에서 Flame Blade를 표시한다.
+
 # 유럽권 UI 번역 보완 2차 — 2026-09-09
 
 Steam 인터페이스·자막 지원 목표의 독일어·브라질 포르투갈어·이탈리아어·러시아어·우크라이나어 MAIN 누락 문구를 보완했다. 전체 언어 적용 및 화면 검증 상태는 [언어 범위](STEAM_LANGUAGE_SCOPE_20260909.md), 런타임 사실 확인은 [유럽권 통합 기록](UI_EUROPE_TRANSLATIONS_20260909.md)을 따른다. 이 묶음은 번역 데이터 작업이며 음성 더빙 작업을 포함하지 않는다.
@@ -25,11 +27,11 @@ EXTRA 5개 파일은 별도 통합 작업에서 이미 각 66개를 번역했다
 | 합체 전격의창 | Donnerspeer | Lança do trovão | Lancia del tuono | Громовое копьё | Громовий спис |
 | 근성 | Zähigkeit | Resistência | Tenacia | Стойкость | Стійкість |
 | 만화광선 | Leuchtstrahl | Raio Luminescente | Raggio Luminescente | Луч Сияния | Промінь сяйва |
-| 칼등날개 | Schildflügel | Asa Escudo | Ala Scudo | Щитовое Крыло | Крило-щит |
+| 불꽃칼날 | Schildflügel | Asa Escudo | Ala Scudo | Щитовое Крыло | Крило-щит |
 | 회복의 영역 | Heilige Domäne | Domínio Sagrado | Dominio Sacro | Священная Область | Священна область |
 | 구속의 영역 | Fesselnde Domäne | Domínio Restritivo | Dominio Vincolante | Область Оков | Область ув'язнення |
 
-설치형 뇌전창은 `terminology.json` 확정값을 따라 합체 전격의창과 구별했다. 러시아어·우크라이나어 문장 안에서는 명칭을 문법에 따라 격변화하되 제목과 같은 개념으로 유지했다. 칼등날개와 기동칼날개를 구별하고, 합체명은 별도 EXTRA 파일에 맞췄다. 영웅 등급은 기본 MAIN의 Heroic 계열 명칭과 연결한다.
+설치형 뇌전창은 `terminology.json` 확정값을 따라 합체 전격의창과 구별했다. 러시아어·우크라이나어 문장 안에서는 명칭을 문법에 따라 격변화하되 제목과 같은 개념으로 유지했다. 불꽃칼날과 기동칼날개를 구별하고, 합체명은 별도 EXTRA 파일에 맞췄다. 영웅 등급은 기본 MAIN의 Heroic 계열 명칭과 연결한다.
 
 선택은 선택 동작, 도감 등록은 등록 동작, SP 부족은 보유량과 필요량이 뒤따르는 경고로 썼다. 저사양 모드는 낮은 성능을 유발하는 옵션이 아니라 저사양 PC용 옵션임을 명확히 했다. 어픽스 리롤은 재배정이 아닌 재생성으로 표현했다. 키 바인딩 Shift/Space/Ctrl/CT/Q/E/F/L/R/T/K는 그대로 유지했다. 물리탄은 E, 보라·무지개 마법탄은 Q라는 설명을 보존했다.
 

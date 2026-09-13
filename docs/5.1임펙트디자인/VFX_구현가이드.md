@@ -1,3 +1,19 @@
+## 2026-09-13 불꽃칼날 이름·불꽃 스윙
+
+| 항목 | 현행 계약 |
+|---|---|
+| 이름 | `shieldThrow`와 기본 E 합체 `shieldFuse`: 불꽃칼날 / Flame Blade. `maliceSwipe` 기본 구성명 칼등 처내기, 합체 표시명 불꽃칼날 |
+| 호환 | 스킬/합체 ID, `_ensureBaseWingStrike`, `_wingStrikeLevel`, `_stWingT`, `_stCd` 및 세이브 구조 유지 |
+| 스프라이트 | `assets/vfx/flame_blade_swing_8f.png`, 1774×887 RGBA, 4열×2행 총8프레임. 실제 투명 알파, 원본 그대로 사용 |
+| 재생 | `_drawFlameBladeSwing`: `_stWingT>0`이며 `sBash/sRecover`일 때만. 실버테일 shield pose의 `spinProgress`(240ms), 나머지 캐릭터는 sBash24f+sRecover16f 진행률. 종료 시 숨김 |
+| 배치 | 캐릭터 중심 피벗, `P.facing` 회전. 크기 `(200+견갑bonusRange×8)×C×M`, C=충전1~3, M=1+(L−1)×0.05. 프레임별 위치/크기 정규화 없이 동일 스케일 |
+| 샘플링 | 셀 폭/높이 각각443.5px, 셀당 가장자리1px 인셋. source-over 합성, alpha=1, filter=none, save/restore. 픽셀 재색칠·배경 제거 없음 |
+| 기존 연출 | 불꽃 스프라이트를 그린 프레임에는 실버테일 보라 아크/다른 캐릭터 검정 스윕 생략. 로딩 전 및 쿨다운 중에는 기존 E 연출. 발동 파티클/미합체 충격파 링 주황색 `#ff7a24` |
+| 전투 | 피해 속성·수치, 전방 웨이브, 충전1.5초, 합체 쿨 `max(120,720−L×15)`f, 무적40f, 추가ST0, 기존 반사 규칙 유지. 불꽃 연출 자체에 별도 화상/DOT 없음 |
+| 번역 | KO/EN 스킬·합체·HUD·초기화·연습 안내를 갱신. 새 한국어 키의 미번역 언어는 공통 영문 Flame Blade 폴백. 과거 번역 기록의 기존 날개 용어는 현행 표시명이 아님 |
+| 생성 | built-in image_gen, 프롬프트: `assets/vfx/flame_blade_swing_prompt.txt`. 생성 원본을 복사하고 실제 알파 보존 |
+| 검증 | 스프라이트·기본 E·대형탄·기동칼날개 회귀36개 PASS, 양쪽 HTML 인라인 스크립트6개씩 구문 검사 PASS. 브라우저에서 Lv1 쿨705f·강화40f·웨이브1개, JS 오류0. 두 캐릭터 탭/풀차지·방향·8프레임 알파 확인 (`output/flame_blade_20260913/`) |
+
 > **2026-09-09 전투 프레임 개선:** 물약 퀵슬롯 갱신 rAF 병합, 얼음보주 60틱 생성/120틱 자동 파쇄/117틱 파쇄 VFX 물리 시간 및 셀 보간, 시체 32장×128px 고어 오버레이 캐시. 수치·검증은 [현행 계약](../12퍼포먼스·최적화/COMBAT_PRESENTATION_20260909.md) 참조.
 
 # VFX 구현 가이드
@@ -726,7 +742,7 @@ Ori 수준 대기 깊이감. 광원 근처에서 존재감 나는 미세 입자.
 
 검증: darkSphereIdentity.test.js의 물리 메타 제거·비행 중 변조 금지·7속성 임팩트 매핑, tmp/verify_dark_sphere_identity.py 실제 spawnProj 검사. RGB만으로 임의 속성을 추측하지 않고 탄종과 el을 일치시킨다.
 
-### 날개치기 웨이브 충전 범위 동기화 (2026-09-10)
+### 불꽃칼날 웨이브 충전 범위 동기화 (2026-09-10)
 
 | 항목 | 현행 |
 |---|---|
