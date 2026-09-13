@@ -1,0 +1,14 @@
+#skillTutorial{position:fixed;right:18px;top:160px;width:min(360px,calc(100vw - 36px));max-height:calc(100vh - 180px);overflow:auto;z-index:100005;box-sizing:border-box;padding:20px;color:#eee4d1;background:rgba(19,16,22,.96);border:1px solid #887047;border-top:3px solid #dba75e;box-shadow:0 8px 32px #0009;font:14px/1.6 "Noto Sans KR",sans-serif}
+#skillTutorial[hidden],#skillTutorialLauncher[hidden]{display:none}
+#skillTutorial h2{margin:0 0 12px;font-size:19px;color:#ffce84}
+#skillTutorial p{margin:0 0 12px;white-space:pre-line}
+#skillTutorial p:nth-of-type(2){padding:10px;background:#ffffff08;border-left:2px solid #ab8958}
+#skillTutorial p:nth-of-type(3){color:#a7ddbf;font-size:12px}
+#skillTutorial button,#skillTutorialLauncher{padding:8px 13px;background:#312820;color:#ffdb9c;border:1px solid #8e724f;border-radius:3px;cursor:pointer;font:inherit}
+#skillTutorial button{margin:3px 8px 3px 0}
+#skillTutorial button:focus-visible,#skillTutorialLauncher:focus-visible{outline:2px solid #ffe2b4;outline-offset:3px}
+#skillTutorialLauncher{position:fixed;right:18px;top:48px;z-index:100006;font:12px "Noto Sans KR",sans-serif}
+body:has(#skillTutorial:not([hidden])) #systemLesson{display:none}
+.skill-tutorial-list{display:grid;gap:5px}.skill-tutorial-list[hidden]{display:none}
+.skill-tutorial-list button{text-align:left}
+@media(max-height:600px){#skillTutorial{padding:12px}#skillTutorialLauncher{top:12px}}
