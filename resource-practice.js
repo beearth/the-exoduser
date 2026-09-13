@@ -1,6 +1,6 @@
 /* Chapter 2 shares the combat lesson's isolated world and restores its original snapshot. */
 window._resourcePractice = {
-  stepOrder: [0,1,2,3,7,8,9], // Temporarily omit the three standalone movement/resource exercises.
+  stepOrder: [0,1,2,3,10,7,8,9], // Temporarily omit the three standalone movement/resource exercises.
   completionChecks(l) { return this.stepOrder.map(step=>l.checks[step]); },
   escapeLabels: ['Space · 지옥강타','Shift · 사슬 탈출','방향키 + Space · 전격이동','왼쪽 Ctrl · 유령걸음'],
   resourceSets: [
@@ -8,7 +8,7 @@ window._resourcePractice = {
     {key:'E',action:'shield',label:'E 검격 · 스태미나(ST)',tip:'E를 짧게 눌렀다 떼어 검격을 사용하세요. 스태미나는 E 검격 같은 신체 기술에 쓰입니다.'},
     {key:'SHIFT',action:'charge',label:'Shift 사슬 · 노란 기동력 + ST',tip:'마우스로 열린 바닥을 가리키고 왼쪽 Shift를 눌렀다 떼세요. 사슬 발사로 노란 기동력과 스태미나가 함께 줄어듭니다.'}
   ],
-  labels: ['자원 소개 · 해골눈','Q 패링 · 정신력 회복','4회 피격 · 그로기','그로기 탈출 · 4가지 방법','Shift · 사슬 1·2·3단','자원 실습 · Q·E·Shift','방향키 + Space · 마력·기동력 소모','Q 홀딩 · 흡수와 그로기 저항','왼쪽 Ctrl · 스킬 발동','Q 패링 · 자원 회복'],
+  labels: ['자원 소개 · 해골눈','Q 패링 · 정신력 회복','4회 피격 · 그로기','그로기 탈출 · 4가지 방법','Shift · 사슬 1·2·3단','자원 실습 · Q·E·Shift','방향키 + Space · 마력·기동력 소모','Q 홀딩 · 흡수와 그로기 저항','왼쪽 Ctrl · 스킬 발동','Q 패링 · 자원 회복','F · 회복의 영역'],
   tips: [
     '해골눈 4개는 정신력입니다. 피격 −1, 패링 +1, 0이면 그로기입니다. Q·E·Shift와 자원 짝을 살펴본 뒤, 탄을 한 번 맞아보세요.',
     '다가오는 마법탄을 Q로 패링하세요. 실제 패링에 성공하면 꺼진 해골눈 1개가 다시 켜집니다.',
@@ -19,16 +19,19 @@ window._resourcePractice = {
     '방향키 또는 WASD를 누른 채 Space로 전격이동을 5번 사용하세요. 매번 노란 기동력과 파란 마력이 함께 줄어드는 것을 확인하세요. 이동이 끝나면 Space를 떼고 다시 누르세요.',
     '보호막의 기본 피해 흡수율은 30%입니다. 수호신 패시브는 레벨당 +2%p, 견갑의 블록흡수 옵션은 +4~22%p를 더하며 합산 최대 50%입니다. 이번 실습처럼 패링 타이밍 이후 계속 홀딩하면 흡수율은 절반(기본 15%, 최대 25%), 남은 피해는 1.3배가 됩니다. 홀딩 중에는 마지막 해골눈을 지켜 그로기를 막지만 HP 피해는 받습니다. Q를 떼지 말고 3발 모두 받아내세요.',
     '왼쪽 Ctrl을 눌러 유령걸음을 발동하세요. 이번 실습에서는 유령걸음을 제공하며, 발동 후 Ctrl 슬롯의 쿨타임도 확인하세요.',
-    '줄어든 체력(HP)·스태미나·마력·기동력을 확인하고 Q로 탄을 패링하세요. 실제 패링 보상으로 네 자원이 모두 회복되면 성공입니다.'
+    '줄어든 체력(HP)·스태미나·마력·기동력을 확인하고 Q로 탄을 패링하세요. 실제 패링 보상으로 네 자원이 모두 회복되면 성공입니다.',
+    '영역스킬은 영역 안에서 각종 버프를 주거나 적에게 너프(약화 효과)를 부여하는 기술입니다. 기본인 회복의 영역부터 사용해보세요. F를 눌러 현재 위치에 설치한 뒤, 영역 안에 머물며 HP·MP·ST가 회복되는 것을 확인하세요. 회복의 영역은 자원 회복과 다른 스킬의 쿨다운 회복을 돕습니다.'
   ],
   save() {
-    const names=['poise','maxPoise','poiseR','s','st2','activeCtSk','_stCd','_stWingT','_gwActive','_gwCd','_gwT','_gwMax','_gwCount','_gwHitSet','_gwPath','_gwMarkedEns','_gwPrevS'];
+    this.savedFSlot=SKILL_SLOTS[5];this.savedSlotLength=SKILL_SLOTS.length;
+    const names=['_hdCd','poise','maxPoise','poiseR','s','st2','activeCtSk','_stCd','_stWingT','_gwActive','_gwCd','_gwT','_gwMax','_gwCount','_gwHitSet','_gwPath','_gwMarkedEns','_gwPrevS'];
     this.saved=names.map(key=>({key,had:Object.prototype.hasOwnProperty.call(P,key),value:P[key]}));
     this.savedMats={had:Object.prototype.hasOwnProperty.call(G,'mats'),value:G.mats};
   },
   restore() {
     this.clearEyeFocus();
     if(!this.saved)return;
+    this.clearArea();SKILL_SLOTS[5]=this.savedFSlot;SKILL_SLOTS.length=this.savedSlotLength;
     for(const {key,had,value} of this.saved){if(had)P[key]=value;else delete P[key];}
     if(this.savedMats.had)G.mats=this.savedMats.value;else delete G.mats;
     this.saved=null;
@@ -44,6 +47,7 @@ window._resourcePractice = {
     P.poise=4;P.maxPoise=4;P.poiseR=0;
     l.build();
     l.rowLabels.forEach((row,step)=>{if(!this.stepOrder.includes(step))row.remove();});
+    l.rowLabels[3].after(l.rowLabels[10]);
     this.enter(l);l.render();
   },
   actions(l) {
@@ -52,6 +56,11 @@ window._resourcePractice = {
     return [[],['parry'],[],['charge','up','down','left','right','bow'],['charge'],['shield'],['up','down','left','right','bow'],['parry'],[],['parry']][l.step]||[];
   },
   allowKey(l,code) {
+    if(l.step===10){
+      if(code!=='KeyF')return false;
+      if(!this.areaPressed){this.areaPressed=true;this.areaBaseline={hp:P.hp,mp:P.mp,st:P.st};}
+      return true;
+    }
     if(l.step===3&&this.escapeWait>0)return false;
     const ok=(l.step===8||l.step===3)&&code==='ControlLeft'||this.actions(l).some(a=>code===BINDS[a]||code===BINDS2[a]||a==='charge'&&code==='ShiftLeft');
     if(ok&&l.step===5&&!this.resourcePressed){this.resourcePressed=true;this.resourceBaseline={mp:P.mp,st:P.st,gauge:_harpGauge};}
@@ -63,6 +72,7 @@ window._resourcePractice = {
     return ok;
   },
   enter(l) {
+    this.clearArea();
     l.chainPractice=null;
     l.clearShot();l.resetPose();P._gwActive=false;P._gwCd=0;P._stWingT=0;P._stCd=9999;
     P.hp=P.mhp;P.mp=P.mmp;P.st=P.mst;P.shield=l.saved.shield;
@@ -73,9 +83,28 @@ window._resourcePractice = {
     P.poise=l.step===1?3:l.step===3?0:l.step===7?1:4;
     if(l.step===3){this.escapeChecks=Array(4).fill(false);this.escapeWait=0;this.prepareEscape(l);}
     if(l.step===5){this.resourceIndex=0;this.resourceChecks=Array(3).fill(false);this.prepareResource(l);}
+    if(l.step===10){
+      P.skills={...P.skills,holyDome:1};SKILL_SLOTS[5]='holyDome';P._hdCd=0;
+      P.hp=Math.max(1,P.mhp*.5);P.mp=P.mmp*.5;P.st=P.mst*.5;
+      this.areaBeforeZones=new Set(G._fireZones||[]);this.areaPressed=false;
+    }
     if(l.step===9){P.hp=Math.max(1,P.mhp*.4);P.st=P.mst*.4;P.mp=P.mmp*.4;_harpGauge=_HARP_GAUGE_MAX*.4;}
     this.baseline={hp:P.hp,st:P.st,mp:P.mp,gauge:_harpGauge,poise:P.poise};
     if(l.step===4)l.tickChainPractice();
+  },
+  clearArea() {
+    if(this.areaZone&&G._fireZones?.includes(this.areaZone))G._fireZones=G._fireZones.filter(zone=>zone!==this.areaZone);
+    this.areaZone=null;this.areaBeforeZones=null;this.areaPressed=false;
+  },
+  tickArea(l) {
+    if(!this.areaPressed)return;
+    const zone=(G._fireZones||[]).find(z=>z.type==='holyDome'&&!this.areaBeforeZones.has(z)&&z.t<z.maxT);
+    if(!zone){if(P._hdCd>0){this.enter(l);this.feedback='영역이 사라졌습니다. F로 다시 설치하고 안에 머무르세요.';l.render();}return;}
+    this.areaZone=zone;
+    const inside=Math.hypot(P.x-zone.x,P.y-zone.y)<zone.r,b=this.areaBaseline;
+    if(P._hdCd>0&&inside&&P.hp>b.hp&&P.mp>b.mp&&P.st>b.st){
+      this.feedback='회복의 영역 안에서 HP·MP·ST 회복 확인!';l.completeStep();this.readout(l);
+    }
   },
   prepareEscape(l) {
     l.resetPose();l.heldDirections.clear();
@@ -115,7 +144,7 @@ window._resourcePractice = {
     l.panel.setAttribute('data-kind','physical');l.panel.setAttribute('data-phase',l.phase);
     l.rows.forEach((box,i)=>{box.checked=l.checks[i];l.rowTexts[i].textContent=l.labels[i];l.rowLabels[i].setAttribute('data-current',String(i===l.step));l.rowLabels[i].setAttribute('data-complete',String(l.checks[i]));});
     l.status.textContent=l.phase==='intro'?'2단계 · 준비':l.phase==='practice'?'직접 실습':l.phase==='done'?'2단계 완료':'성공';
-    l.keycap.textContent=['피격','Q','피격','탈출기','SHIFT','E','↔ + SPACE','Q 홀딩','CTRL','Q'][l.step];
+    l.keycap.textContent=['피격','Q','피격','탈출기','SHIFT','E','↔ + SPACE','Q 홀딩','CTRL','Q','F'][l.step];
     if(l.step===3)l.keycap.textContent='자유 순서';
     l.title.textContent=l.phase==='done'?'자원 실습 완료':l.labels[l.step];
     l.subtitle.textContent=`2단계 · ${this.stepOrder.indexOf(l.step)+1} / ${this.stepOrder.length}`;
@@ -262,6 +291,7 @@ window._resourcePractice = {
         this.readout(l);
       }
     }
+    if(l.step===10)this.tickArea(l);
     if(l.step===4){l.tickChainPractice();this.readout(l);}
     if(l.step===5)this.tickResource(l);
     if(l.step===6){l.tickDashPractice(true);this.readout(l);}

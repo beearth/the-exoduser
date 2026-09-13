@@ -8,7 +8,7 @@ function setup(){
   c._HARP_TIER_F=[0,1,6,12];c._HARP_GAUGE_COST=[0,45,98,150];c._harpDistTier=t=>[0,300,500,700][t];c._harpTier=1;
   vm.runInContext(fs.readFileSync(path.join(__dirname,'../resource-practice.js'),'utf8'),c);
   const l=c.window._parryLesson;l.tick();l.phase='done';l.transitionTicks=1;l.tick();
-  assert.equal(l.chapter,2);assert.equal(l.phase,'practice');assert.equal(l.button.hidden,true);assert.equal(l.labels.length,10);
+  assert.equal(l.chapter,2);assert.equal(l.phase,'practice');assert.equal(l.button.hidden,true);assert.equal(l.labels.length,11);
   assert.equal(l.active,true,'chapter handoff must keep other tutorial popups blocked');
   return {c,l,r:c.window._resourcePractice};
 }
@@ -49,7 +49,10 @@ for(const [i,code,state] of [[0,'Space','gSlamWindup'],[1,'ShiftLeft','idle'],[2
     assert.equal(c.P._gslCd,0);assert.equal(c.P._gwCd,0);
   }
 }
-next();assert.equal(l.step,7);c.P.s='sBlock';c.P._sbHoldT=50;
+next();assert.equal(l.step,10);assert.equal(l.allowKey('KeyF'),true);
+const area={type:'holyDome',x:c.P.x,y:c.P.y,r:520,t:1,maxT:750};c.G._fireZones.push(area);c.P._hdCd=1800;
+c.P.hp+=1;c.P.mp+=1;c.P.st+=1;l.tick();assert.equal(l.checks[10],true);
+next();assert.equal(l.step,7);assert.equal(c.G._fireZones.includes(area),false);c.P.s='sBlock';c.P._sbHoldT=50;
 for(let i=0;i<60;i++)l.tick();
 assert.equal(r.burstSpawned,3);assert.equal(r.burstShots.length,3);
 assert.equal(new Set(r.burstShots).size,3);
@@ -71,7 +74,7 @@ next();assert.equal(l.active,false);assert.equal(c.P.hp,81);assert.equal(c.P.poi
 // Skipping restores the same original state, including fields absent on entry.
 const skip=setup();skip.c.P._gwActive=true;skip.c.P._gwPath=[{}];skip.l.finish();
 assert.equal(skip.c.P._gwActive,undefined);assert.equal(skip.c.P._gwPath,undefined);assert.equal(skip.c.P.activeCtSk,'iceOrb');
-console.log('PASS: chapter handoff, seven ordered live-state exercises, damage/poise, groggy escape, real resource consumption and parry rewards, guard resistance, Ctrl activation, no per-frame refill, complete/skip restoration.');
+console.log('PASS: chapter handoff, eight ordered live-state exercises, damage/poise, groggy escape, real resource consumption and parry rewards, guard resistance, Ctrl activation, no per-frame refill, complete/skip restoration.');
 const direct=fixture(0,'?practice=2');
 vm.runInContext(fs.readFileSync(path.join(__dirname,'../resource-practice.js'),'utf8'),direct);
 assert.equal(direct.window._parryLesson.tick(),false);assert.equal(direct.window._parryLesson.chapter,2);direct.window._parryLesson.finish();

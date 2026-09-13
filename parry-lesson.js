@@ -407,7 +407,7 @@ window._parryLesson = {
     if(this.chapter!==2&&this.step<0){const key=['movementDone','leftClickDone','rightClickDone'][this.step+3];if(!this[key]){this[key]=true;this.pending='success';}return;}
     if(this.pending || this.checks[this.step])return;
     this.checks[this.step] = true;
-    this.pending = this.step < this.labels.length-1 ? 'success' : 'done';
+    this.pending = this.chapter===2 ? (this.step===window._resourcePractice.stepOrder.at(-1)?'done':'success') : this.step < this.labels.length-1 ? 'success' : 'done';
     if(this.pending==='done')window._tutorialBadges?.complete(this.chapter===2?'resources':'combat',this.chapter===2?window._resourcePractice.completionChecks(this):[this.movementDone,this.leftClickDone,this.rightClickDone,this.spikeTrapDone,...this.checks]);
   },
   explode(p) {

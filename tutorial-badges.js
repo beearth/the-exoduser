@@ -2,7 +2,7 @@
 window._tutorialBadges={
   definitions:[
     {id:'combat',name:'지옥의 첫걸음',detail:'이동·전투 실습 1단 · 12개 항목 완료',count:12,color:'#d9a875',paths:['M12 3 21 7v9c0 7-9 12-9 12S3 23 3 16V7Z','m7 10 10 12M17 10 7 22m-1-3 4 4m4-4 4 4']},
-    {id:'resources',name:'불굴의 생존자',detail:'자원·정신력 실습 2단 · 7개 항목 완료',count:7,color:'#92c9c2',paths:['M12 2 22 15 12 30 2 15Z','M12 7v17M6 15h12m-9-5 6 10m0-10L9 20']},
+    {id:'resources',name:'불굴의 생존자',detail:'자원·정신력 실습 2단 · 8개 항목 완료',count:8,color:'#92c9c2',paths:['M12 2 22 15 12 30 2 15Z','M12 7v17M6 15h12m-9-5 6 10m0-10L9 20']},
     {id:'systems',name:'지옥의 개척자',detail:'장비·성장 시스템 · 7개 항목 완료',count:7,color:'#e9d18b',paths:['M4 27V9l8-6 8 6v18M2 27h20M8 27V15h8v12','m8 10 3 3 6-7']}
   ],
   node(tag,text){const el=document.createElement(tag);if(text!==undefined)el.textContent=text;return el;},
