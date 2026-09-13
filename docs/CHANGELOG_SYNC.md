@@ -1,3 +1,14 @@
+## 2026-09-13 인게임 이미지 점무늬·컷신 그레인 정리
+
+| 항목 | 결과 |
+|---|---|
+| 검색 | 이미지4576개 목록화, 정상4575개 연락판 선별·심한 후보 개별 검수 |
+| 이미지 | GPT 원본 참조 편집22개, 로딩 사본4개, PNG26개 적용 |
+| 코드 | PRO/INTRO grain148개·`_cutGrain` 제거, 컷신·게임/로비 로딩 이미지 버전 갱신 |
+| 검증 | 이미지26개·실제 컷신22개 로드, 컷신4화면·로딩1화면 직접 확인, 입력 진행·로비 URL PASS. pageerror0, 회귀29개·구문11블록 PASS |
+| 백업·기록 | output/image_texture_cleanup_20260913/originals/, qa.json, generation_manifest.json |
+| 상세 | [질감 정리 계약](1전체그래픽세팅/IMAGE_TEXTURE_CLEANUP_20260913.md), [GPT 프롬프트](1전체그래픽세팅/IMAGE_TEXTURE_CLEANUP_PROMPTS_20260913.json) |
+
 ## 2026-09-11 FDG 시작 로고 로딩 누락 수정
 
 | 항목 | 결과 |

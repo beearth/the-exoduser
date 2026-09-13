@@ -844,33 +844,18 @@ const _AMB_THEMES = [
 
 ### STEP 10: 필름 그레인 + 스캔라인
 
-```javascript
-// [GRAIN] 128px 타일, 3프레임마다 갱신
-let _grainCvs=null, _grainCtx=null, _grainT=0;
+현행 구현 확인(2026-09-13): 이전128px 랜덤 타일·3프레임 갱신·스캔라인 예시는 폐기된 방식이다. 현재 게임 캔버스는 CSS 대비·밝기만 사용하며 픽셀 점을 생성하지 않는다.
 
-// draw() 끝
-if(OPT.grain && OPT.postfx) {
-  _grainT++;
-  if(!_grainCvs || _grainT%3===0){
-    if(!_grainCvs){ _grainCvs=document.createElement('canvas'); _grainCvs.width=128; _grainCvs.height=128; _grainCtx=_grainCvs.getContext('2d'); }
-    const gd=_grainCtx.createImageData(128,128); const d=gd.data;
-    for(let i=0;i<d.length;i+=4){ const v=~~(Math.random()*255); d[i]=d[i+1]=d[i+2]=v; d[i+3]=12; }
-    _grainCtx.putImageData(gd,0,0);
-  }
-  X.save(); X.setTransform(1,0,0,1,0,0); X.globalAlpha=.08;
-  const pat=X.createPattern(_grainCvs,'repeat');
-  if(pat){X.fillStyle=pat; X.fillRect(0,0,C.width,C.height);}
-  X.globalAlpha=1; X.restore();
-}
+| 조건 | 현재 CSS |
+|---|---|
+| `_wantFx` | `OPT.postfx && OPT.quality !== 'low'` |
+| `_wantGrain` | `_wantFx && OPT.grain` |
+| `_brVal` | `(OPT.brightness || 100) / 100` |
+| `_wantGrain` 참 | `contrast(1.05) brightness(0.97 * _brVal)` |
+| `_wantFx`만 참 | `contrast(1.02) brightness(_brVal)` |
+| 그 외 | `brightness(_brVal)` |
 
-// [SCANLINE]
-if(OPT.postfx) {
-  X.save(); X.setTransform(1,0,0,1,0,0);
-  X.globalAlpha=.025; X.fillStyle='#000';
-  for(let y=0;y<C.height;y+=3) X.fillRect(0,y,C.width,1);
-  X.globalAlpha=1; X.restore();
-}
-```
+별도 컷신의 `_cutGrain` 및 PRO/INTRO grain148개 설정도 제거했다. 이미지 원본의 심한 점묘는 GPT로 정리했다. [파일26개·런타임·검증 계약](IMAGE_TEXTURE_CLEANUP_20260913.md).
 
 ---
 

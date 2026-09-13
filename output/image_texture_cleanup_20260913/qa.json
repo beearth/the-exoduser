@@ -1,0 +1,335 @@
+{
+  "status": "PASS",
+  "assets": [
+    {
+      "path": "assets/cutscene/images/00.png",
+      "width": 1672,
+      "height": 941,
+      "bytes": 2213950,
+      "sha256": "7aff112d6613d2cae6c55552bfb06139713467d2203089180658f42d0b25ca77"
+    },
+    {
+      "path": "assets/cutscene/images/01.png",
+      "width": 1672,
+      "height": 941,
+      "bytes": 2376818,
+      "sha256": "9efe5127f8ae72a2c1cc0eeb6c8bd20784e89e2fe9f9c4a5c1dfe5c551d7fba4"
+    },
+    {
+      "path": "assets/cutscene/images/02.png",
+      "width": 1672,
+      "height": 941,
+      "bytes": 2194049,
+      "sha256": "f3537b8cc4872fe8228121ee8795ac90a69a9c8fd774467c27d5145334134d59"
+    },
+    {
+      "path": "assets/cutscene/images/03.png",
+      "width": 1672,
+      "height": 941,
+      "bytes": 2385076,
+      "sha256": "8eedeb110e51fbc3efaadfa83ddb730851e2060a9c39840c258c9a02027d770d"
+    },
+    {
+      "path": "assets/cutscene/images/04.png",
+      "width": 1672,
+      "height": 941,
+      "bytes": 1686368,
+      "sha256": "09febf34e6cec3858d512bea3736ef008695a013415dfc9bab8612f39045107f"
+    },
+    {
+      "path": "assets/cutscene/images/05.png",
+      "width": 1672,
+      "height": 941,
+      "bytes": 2098480,
+      "sha256": "fff7b4638ab1731dad3079566e4bffc2f3ee418e750a822190b888f38e2b64b3"
+    },
+    {
+      "path": "assets/cutscene/images/06.png",
+      "width": 1672,
+      "height": 941,
+      "bytes": 2197161,
+      "sha256": "2455ba6df2a03329df84d11a30cf1b7c7bccc2f7bd2c3d3f173bed799bd9e668"
+    },
+    {
+      "path": "assets/cutscene/images/07.png",
+      "width": 1672,
+      "height": 941,
+      "bytes": 2157860,
+      "sha256": "4512d8e74993f8f16c7779b1b59dfdad4e7336ba4299570ce8aff272de927853"
+    },
+    {
+      "path": "assets/cutscene/images/08.png",
+      "width": 1672,
+      "height": 941,
+      "bytes": 2390220,
+      "sha256": "b625f2fd6e5cc88fd6d2ad84eaea6c61c71c57a3939b6ad8fe317c657a2a931a"
+    },
+    {
+      "path": "assets/cutscene/images/09.png",
+      "width": 1672,
+      "height": 941,
+      "bytes": 2157040,
+      "sha256": "edce043c8c24f945afc45e1bd2d2b6269819e6ed15904de153abe00ee498d6c4"
+    },
+    {
+      "path": "assets/cutscene/images/10.png",
+      "width": 1672,
+      "height": 941,
+      "bytes": 1911007,
+      "sha256": "f0bb790eedf0bbeeaf9213b5112c106c6f7f361c12a93d8341db99735f344d26"
+    },
+    {
+      "path": "assets/cutscene/images/11.png",
+      "width": 1672,
+      "height": 941,
+      "bytes": 1838070,
+      "sha256": "fe45c6b1a0429a615206b1e444267492b68c327d4c673ae1c1eb26bd02423815"
+    },
+    {
+      "path": "assets/cutscene/images/12.png",
+      "width": 1671,
+      "height": 941,
+      "bytes": 1998700,
+      "sha256": "ff206a09d7dc6d42d00cc392d231e04c3c1f2ca2efebd83f66bd236dff4b5597"
+    },
+    {
+      "path": "assets/cutscene/images/13.png",
+      "width": 1672,
+      "height": 941,
+      "bytes": 1854427,
+      "sha256": "73548769c4ab5d4601df3202b2c87f64babdbdce7a03488ee5390bc3e20d4780"
+    },
+    {
+      "path": "assets/cutscene/images/14.png",
+      "width": 1672,
+      "height": 941,
+      "bytes": 1863256,
+      "sha256": "5a88a33a77ca107138d6c4a66a9515db3ee9a0871b7703ba32043310c96638b3"
+    },
+    {
+      "path": "assets/cutscene/images/15.png",
+      "width": 1672,
+      "height": 941,
+      "bytes": 2145229,
+      "sha256": "bb02cac7c6b0839278a2d4cac71787611cc245e404a706cb78a8d79fd0aa4b02"
+    },
+    {
+      "path": "assets/cutscene/images/16.png",
+      "width": 1672,
+      "height": 941,
+      "bytes": 2283121,
+      "sha256": "25073ef7f6edc3b072c2639b415bbcf8c8d47f6017ffedca2b8b344ab153f059"
+    },
+    {
+      "path": "assets/cutscene/images/17.png",
+      "width": 1672,
+      "height": 941,
+      "bytes": 2064743,
+      "sha256": "bc1326ea9957d6f530acbdde6e0adc1a1b1b16e170a9bf9abaaa667ad3dd8f61"
+    },
+    {
+      "path": "assets/cutscene/images/18.png",
+      "width": 1671,
+      "height": 941,
+      "bytes": 2043264,
+      "sha256": "face3e773422c3b06b68934e22f668ef1ca74ed26ac653dfb7c161658c0964a6"
+    },
+    {
+      "path": "assets/cutscene/images/19.png",
+      "width": 1672,
+      "height": 941,
+      "bytes": 2070969,
+      "sha256": "d42e7d767fe0c53cbd3ab04c76f8c9af2d61061b4376021ff30fdb50393f403c"
+    },
+    {
+      "path": "assets/cutscene/images/20.png",
+      "width": 1672,
+      "height": 941,
+      "bytes": 2142558,
+      "sha256": "125c664097936059ec6dbdc6117d3b4e8e1857ca63402a3ca9006dc4088a7ddb"
+    },
+    {
+      "path": "assets/cutscene/images/cin_nemesia_appear1.png",
+      "width": 1672,
+      "height": 941,
+      "bytes": 2121394,
+      "sha256": "6fe5f24b5135f8a02921d54402f29dca1fe13f4543eb5ef642e93bc02e97b2b7"
+    },
+    {
+      "path": "img/lording/1.png",
+      "width": 1672,
+      "height": 941,
+      "bytes": 2390220,
+      "sha256": "b625f2fd6e5cc88fd6d2ad84eaea6c61c71c57a3939b6ad8fe317c657a2a931a"
+    },
+    {
+      "path": "img/lording/2.png",
+      "width": 1672,
+      "height": 941,
+      "bytes": 1838070,
+      "sha256": "fe45c6b1a0429a615206b1e444267492b68c327d4c673ae1c1eb26bd02423815"
+    },
+    {
+      "path": "img/lording/3.png",
+      "width": 1672,
+      "height": 941,
+      "bytes": 1911007,
+      "sha256": "f0bb790eedf0bbeeaf9213b5112c106c6f7f361c12a93d8341db99735f344d26"
+    },
+    {
+      "path": "img/lording/rd4.png",
+      "width": 1672,
+      "height": 941,
+      "bytes": 2121394,
+      "sha256": "6fe5f24b5135f8a02921d54402f29dca1fe13f4543eb5ef642e93bc02e97b2b7"
+    }
+  ],
+  "decoded": [
+    {
+      "name": "00.png",
+      "w": 1672,
+      "h": 941,
+      "src": "http://127.0.0.1:3333/assets/cutscene/images/00.png?v=20260913-clean-shading"
+    },
+    {
+      "name": "01.png",
+      "w": 1672,
+      "h": 941,
+      "src": "http://127.0.0.1:3333/assets/cutscene/images/01.png?v=20260913-clean-shading"
+    },
+    {
+      "name": "02.png",
+      "w": 1672,
+      "h": 941,
+      "src": "http://127.0.0.1:3333/assets/cutscene/images/02.png?v=20260913-clean-shading"
+    },
+    {
+      "name": "03.png",
+      "w": 1672,
+      "h": 941,
+      "src": "http://127.0.0.1:3333/assets/cutscene/images/03.png?v=20260913-clean-shading"
+    },
+    {
+      "name": "04.png",
+      "w": 1672,
+      "h": 941,
+      "src": "http://127.0.0.1:3333/assets/cutscene/images/04.png?v=20260913-clean-shading"
+    },
+    {
+      "name": "05.png",
+      "w": 1672,
+      "h": 941,
+      "src": "http://127.0.0.1:3333/assets/cutscene/images/05.png?v=20260913-clean-shading"
+    },
+    {
+      "name": "06.png",
+      "w": 1672,
+      "h": 941,
+      "src": "http://127.0.0.1:3333/assets/cutscene/images/06.png?v=20260913-clean-shading"
+    },
+    {
+      "name": "07.png",
+      "w": 1672,
+      "h": 941,
+      "src": "http://127.0.0.1:3333/assets/cutscene/images/07.png?v=20260913-clean-shading"
+    },
+    {
+      "name": "08.png",
+      "w": 1672,
+      "h": 941,
+      "src": "http://127.0.0.1:3333/assets/cutscene/images/08.png?v=20260913-clean-shading"
+    },
+    {
+      "name": "09.png",
+      "w": 1672,
+      "h": 941,
+      "src": "http://127.0.0.1:3333/assets/cutscene/images/09.png?v=20260913-clean-shading"
+    },
+    {
+      "name": "10.png",
+      "w": 1672,
+      "h": 941,
+      "src": "http://127.0.0.1:3333/assets/cutscene/images/10.png?v=20260913-clean-shading"
+    },
+    {
+      "name": "11.png",
+      "w": 1672,
+      "h": 941,
+      "src": "http://127.0.0.1:3333/assets/cutscene/images/11.png?v=20260913-clean-shading"
+    },
+    {
+      "name": "12.png",
+      "w": 1671,
+      "h": 941,
+      "src": "http://127.0.0.1:3333/assets/cutscene/images/12.png?v=20260913-clean-shading"
+    },
+    {
+      "name": "13.png",
+      "w": 1672,
+      "h": 941,
+      "src": "http://127.0.0.1:3333/assets/cutscene/images/13.png?v=20260913-clean-shading"
+    },
+    {
+      "name": "14.png",
+      "w": 1672,
+      "h": 941,
+      "src": "http://127.0.0.1:3333/assets/cutscene/images/14.png?v=20260913-clean-shading"
+    },
+    {
+      "name": "15.png",
+      "w": 1672,
+      "h": 941,
+      "src": "http://127.0.0.1:3333/assets/cutscene/images/15.png?v=20260913-clean-shading"
+    },
+    {
+      "name": "16.png",
+      "w": 1672,
+      "h": 941,
+      "src": "http://127.0.0.1:3333/assets/cutscene/images/16.png?v=20260913-clean-shading"
+    },
+    {
+      "name": "17.png",
+      "w": 1672,
+      "h": 941,
+      "src": "http://127.0.0.1:3333/assets/cutscene/images/17.png?v=20260913-clean-shading"
+    },
+    {
+      "name": "18.png",
+      "w": 1671,
+      "h": 941,
+      "src": "http://127.0.0.1:3333/assets/cutscene/images/18.png?v=20260913-clean-shading"
+    },
+    {
+      "name": "19.png",
+      "w": 1672,
+      "h": 941,
+      "src": "http://127.0.0.1:3333/assets/cutscene/images/19.png?v=20260913-clean-shading"
+    },
+    {
+      "name": "20.png",
+      "w": 1672,
+      "h": 941,
+      "src": "http://127.0.0.1:3333/assets/cutscene/images/20.png?v=20260913-clean-shading"
+    },
+    {
+      "name": "cin_nemesia_appear1.png",
+      "w": 1672,
+      "h": 941,
+      "src": "http://127.0.0.1:3333/assets/cutscene/images/cin_nemesia_appear1.png?v=20260913-clean-shading"
+    }
+  ],
+  "captures": [
+    "05.png",
+    "03.png",
+    "10.png",
+    "19.png"
+  ],
+  "page_errors": [],
+  "real_save_writes": false,
+  "next_cut_id": 6,
+  "loading_urls": [
+    "http://127.0.0.1:3333/img/lording/1.png?v=20260913-clean-shading",
+    "http://127.0.0.1:3333/img/lording/2.png?v=20260913-clean-shading",
+    "http://127.0.0.1:3333/img/lording/3.png?v=20260913-clean-shading"
+  ]
+}
