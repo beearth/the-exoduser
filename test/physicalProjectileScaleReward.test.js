@@ -95,7 +95,7 @@ test('hostile physical bodies are 2x, including piercing and element-colored tit
 });
 
 for (const [label, el, expected, gauge, mats] of [
-  ['red physical', 'red', 90, 30, 3000], ['ordinary physical', 0, 180, 60, 6000],
+  ['red physical', 'red', 75, 30, 3000], ['ordinary physical', 0, 150, 60, 6000],
 ]) test(`${label} parry triples HP/MP/ST, harp, rage and malice`, () => {
   const ctx = runtime();
   ctx.doParry(10, 0, 0, false, el, ctx._physicalProjectileMultiplier({ el: 0 }));
@@ -111,7 +111,7 @@ test('resource caps and existing gear/passive multiplication still apply', () =>
   ctx.PASSIVES.pRegen = 2;
   ctx._eqAffix = key => key === 'parryBonus' ? 0.5 : 0;
   ctx.doParry(10, 0, 0, false, 0, 3);
-  assert.equal(ctx.P.hp, Math.trunc(30 * 1.5 * 1.4 * 3) * 2);
+  assert.equal(ctx.P.hp, Math.trunc(50 * 1.5 * 1.4 * 3));
   ctx.P.hp = ctx.P.mhp - 1; ctx.P.mp = ctx.P.mmp - 1; ctx.P.st = ctx.P.mst - 1;
   ctx.P.rage = 999; ctx._harpGauge = 999;
   ctx.doParry(10, 0, 0, false, 'red', 3);
@@ -119,24 +119,24 @@ test('resource caps and existing gear/passive multiplication still apply', () =>
   assert.equal(ctx.P.rage, 1000); assert.equal(ctx._harpGauge, 1000);
 });
 
-test('melee, magic Q and large energy rewards double their previous values', () => {
-  for (const [isQ, el, mul, expected] of [[false, 0, undefined, 60],
-    [true, 1, undefined, 100], [true, 'rainbow', undefined, 150], [true, 1, 10, 1000]]) {
+test('Q and E recover a base 50 with existing projectile bonuses', () => {
+  for (const [isQ, el, mul, expected] of [[false, 0, undefined, 50],
+    [true, 1, undefined, 50], [true, 'rainbow', undefined, 75], [true, 1, 10, 500]]) {
     const ctx = runtime();
     ctx.doParry(10, 0, 0, isQ, el, mul);
-    assert.equal(ctx.P.hp, expected);
+    assert.deepEqual([ctx.P.hp,ctx.P.mp,ctx.P.st],[expected,expected,expected]);
   }
 });
 
-test('doubled rewards include unique rage bonus, keep integer recovery and preserve poise', () => {
+test('base-50 recovery keeps integer rounding while doubled unique rage and poise stay unchanged', () => {
   const c=runtime();c._uEq=id=>id==='_uShieldRage'?7:0;
   c._eqAffix=id=>id==='parryBonus'?.013:0;
   c.doParry(10,0,0,true,'rainbow',1);
-  assert.equal(c.P.hp,Math.trunc(50*1.013*1.5)*2);
+  assert.equal(c.P.hp,Math.trunc(50*1.013*1.5));
   assert.equal(c.P.mp,c.P.hp);assert.equal(c.P.st,c.P.hp);
   assert.equal(c.P.rage,44);assert.equal(c._harpGauge,30);assert.equal(c.G.mats,4000);assert.equal(c.P.poise,1);
 });
-test('both game variants use identical doubled parry rewards', () => {
+test('both game variants use identical base-50 parry recovery', () => {
   const easy=readFileSync(new URL('../game-easy-test.html',import.meta.url),'utf8');
   assert.ok(easy.replace(/\s+/g,' ').includes(fn('doParry').replace(/\s+/g,' ')));
 });

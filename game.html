@@ -35268,8 +35268,8 @@ function doParry(_inDmg,_px,_py,_forceQ,_parryEl,_resourceMul,_impactKind){const
   const _isRainbowParry=_parryEl==='rainbow';
   const _pbMul=1+_eqAffix('parryBonus');
   const _parryRegenMul=1+(PASSIVES.pRegen||0)*.20; // 회복력 패시브: 패링회복 +20%/lv
-  const _prRaw=(_isQParry?50:30)*_pbMul*_parryRegenMul;
-  const _prBase=~~((_isRedParry?_prRaw*0.5:_isRainbowParry?_prRaw*1.5:_prRaw)*_resourceBonus)*2; // 회복량 2배; 빨콩 ×0.5, 무지개 ×1.5; 자원 배율: 물리탄 ×3, 대형탄 ×10
+  const _prRaw=50*_pbMul*_parryRegenMul;
+  const _prBase=~~((_isRedParry?_prRaw*0.5:_isRainbowParry?_prRaw*1.5:_prRaw)*_resourceBonus); // Q/E 기본 회복 50; 빨콩 ×0.5, 무지개 ×1.5; 자원 배율: 물리탄 ×3, 대형탄 ×10
   P.iframes=25;
   P.hp=Math.min(P.mhp,P.hp+_prBase);
   P.st=Math.min(P.mst,P.st+_prBase);
