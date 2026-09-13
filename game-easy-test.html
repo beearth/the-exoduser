@@ -49671,18 +49671,19 @@ function draw(){
       X.globalAlpha=1;continue;
     }
     if(p.trap){
-      // 덫: 작은 빨강 중앙점 표식 (빨강=패링가능). 큰 글로우·링 제거, 중앙 점만
+      // 영구 덫: 실제 접촉 반경28px를 항상 표시. 수명·파티클 옵션과 독립.
       const _trP=.5+Math.sin(_now/200)*.5;
-      // 작은 위험 글로우 (가산, 축소)
-      X.save();X.globalCompositeOperation='lighter';
-      X.globalAlpha=.4+_trP*.2;X.fillStyle='#ff2200';X.beginPath();X.arc(p.x,p.y,7,0,Math.PI*2);X.fill();
-      X.restore();
-      // 솔리드 본체 (작게) + 검은 테두리
-      X.globalAlpha=1;
-      X.fillStyle='#ff2000';X.beginPath();X.arc(p.x,p.y,4,0,Math.PI*2);X.fill();
-      X.lineWidth=1.5;X.strokeStyle='#000000';X.stroke();
-      X.fillStyle='#ffffff';X.beginPath();X.arc(p.x,p.y,1.6,0,Math.PI*2);X.fill();
-      X.globalAlpha=1;X.lineWidth=1;continue;
+      X.save();X.globalCompositeOperation='source-over';
+      X.globalAlpha=.24;X.fillStyle='#ff2000';
+      X.beginPath();X.arc(p.x,p.y,28,0,Math.PI*2);X.fill();
+      // 어두운 바닥/밝은 이펙트 양쪽에서 읽히는 고정 경계.
+      X.globalAlpha=1;X.lineWidth=5;X.strokeStyle='#160c10';X.stroke();
+      X.globalAlpha=.85+_trP*.15;X.lineWidth=2.5;X.strokeStyle='#ff633d';X.stroke();
+      X.globalAlpha=1;X.fillStyle='#ff2000';
+      X.beginPath();X.arc(p.x,p.y,8,0,Math.PI*2);X.fill();
+      X.lineWidth=2;X.strokeStyle='#160c10';X.stroke();
+      X.fillStyle='#fff4dd';X.beginPath();X.arc(p.x,p.y,3,0,Math.PI*2);X.fill();
+      X.restore();X.globalAlpha=1;X.lineWidth=1;continue;
     }
     if(p.web){
       // 거미줄: 반투명 흰색 실

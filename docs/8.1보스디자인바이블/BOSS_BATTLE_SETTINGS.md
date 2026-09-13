@@ -511,3 +511,12 @@ X.translate(Math.round(C.width/2 - G.cam.x + sx), Math.round(C.height/2 - G.cam.
 - `bossRec` 처리 분기 누락으로 `fanWave`, `radialLaser`, `teleStrike` 종료 후 보스가 영구 정지하던 버그를 수정했다.
 - 공격 피해, 전조 시간, 패턴 쿨다운, 포이즈, 사거리 수치는 변경하지 않았다. 회복 상태의 정상 종료 연결만 보정했다.
 - 회귀 테스트: `test/bossRecRecovery.test.js`; 브라우저 검증: `?bosstest=3`에서 세 패턴 종료 후 `idle`/다음 패턴 진행 확인.
+
+## 2026-09-13 정지 덫 가시성 수정
+
+| 대상 | 변경 |
+|---|---|
+| trap | 중앙점4px→8px, 코어1.6→3px. 실제 접촉 반경28px에 고정 경계·반투명 채움 추가. 수명 음수인 영구 덫도 계속 표시 |
+| 렌더 | source-over, 빨강 채움 .24, 어두운 외곽5px, 밝은 경계2.5px·alpha .85~1. 기존 작은 가산 글로우7px 대체 |
+| 유지 | 피해·접촉·감속·Q 패링·영구 지속·누적50개 상한. 일반 지뢰/추적지뢰 변경 없음 |
+| 기준 | `docs/5.1임펙트디자인/GROUND_TRAP_VISIBILITY_20260913.md`. 이전 중앙점만 남기는 크기 축소 설명보다 이 계약이 우선 |
