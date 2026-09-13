@@ -1,0 +1,21 @@
+{
+  "status": "PASS",
+  "cuts": [
+    "1 / 4\n눈을 떠\nOPEN YOUR EYES\n이동과 공격\nW / S / A / D\n이동\n좌클릭\n무기 공격\n우클릭\n마법 (탭=투사체, 홀드=빔)\n클릭 / Enter / Space · 다음 ESC · 건너뛰기\n건너뛰기\n다음",
+    "2 / 4\n정신 차려\nGET A GRIP\n패링과 이동\nQ\n마법 패링 · 보호막\nE\n칼등 처내기\nL-SHIFT\n사슬 이동\n방향키 더블탭 / Space+방향키\n전격이동\n클릭 / Enter / Space · 다음 ESC · 건너뛰기\n건너뛰기\n다음",
+    "3 / 4\n이제 진짜 지옥이야\nTHIS IS REAL HELL\n스킬\nSPACE\n지옥강타 · 분노 폭발\n1\n가시덫\nF\n회복의 영역\nCTRL\nCT 스킬 (뇌전걸음 / 얼음보주)\nT\n석궁 자동발사\n클릭 / Enter / Space · 다음 ESC · 건너뛰기\n건너뛰기\n다음",
+    "4 / 4\n야! 몬스터다!!!\nHEY! MONSTERS!!!\n살아남아\nR\n아이템 줍기\nTAB\n인벤토리\nESC\n설정\n물약은 설정한 HP% 이하 시 자동 사용\n클릭 / Enter / Space · 다음 ESC · 건너뛰기\n건너뛰기\n시작"
+  ],
+  "start_calls": 5,
+  "skip": [
+    "Escape",
+    "button",
+    "Tab+Enter"
+  ],
+  "viewports": [
+    "1440x900",
+    "1280x720"
+  ],
+  "errors": [],
+  "real_save_writes": false
+}

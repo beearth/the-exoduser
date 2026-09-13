@@ -573,6 +573,21 @@ canvas{display:block;position:fixed;inset:0}
 #ikBody{font-family:var(--font-hell);font-size:clamp(1.45rem,1.8vw,1.8rem);color:rgba(198,184,158,.82);line-height:1.8;letter-spacing:.04em;text-shadow:0 1px 3px #000}
 #ikBody span{color:rgba(202,169,108,.86)!important;font-family:'Cinzel',var(--font-hell);font-size:.86em;letter-spacing:.08em}
 #ikHint{margin-top:22px;font-family:var(--font-hell);font-size:1rem;color:rgba(157,142,116,.67);letter-spacing:.15em;animation:guideBreath 1.4s ease-in-out infinite}
+/* Four-cut wake-up + controls */
+#introKeys{cursor:default}
+#introKeys .intro-key-panel{width:min(720px,calc(100vw - 96px));max-height:calc(100vh - 48px);overflow-y:auto;padding:20px 12px}
+#introKeys #introTextPanel{width:100%;min-width:0;padding:12px 0 24px;margin-bottom:22px}
+#introKeys #introTextKr{font-size:clamp(1.8rem,2.6vw,2.6rem)}
+#introKeys #introTextEn{font-size:.85rem}
+#ikProgress{font:12px 'Cinzel',serif;letter-spacing:.25em;color:#9d8e74}
+#introKeys #ikTitle{font-size:clamp(1.3rem,1.8vw,1.75rem);margin-bottom:14px}
+#introKeys #ikBody{font-size:clamp(1rem,1.35vw,1.3rem);line-height:1.65}
+.intro-key-row{display:grid;grid-template-columns:minmax(160px,38%) 1fr;gap:20px;margin:9px 0}
+#ikNote{font-size:.95rem;color:#9d8e74;margin-top:16px}
+#introKeys #ikHint{font-size:.85rem;margin-top:20px;animation:none;color:#9d8e74;letter-spacing:.04em}
+.intro-key-actions{display:flex;justify-content:space-between;gap:24px;margin-top:22px}
+.intro-key-actions button{min-width:120px;padding:10px 20px;border:1px solid #645644;background:#15110d;color:#daceb8;font:inherit;cursor:pointer}
+.intro-key-actions button:hover,.intro-key-actions button:focus-visible{outline:1px solid #c5ab7c;background:#292014}
 @keyframes guideBreath{0%,100%{opacity:.38}50%{opacity:.82}}
 #introDiff{justify-content:center;padding-left:0;background:rgba(0,0,0,.88)}
 #introDiff>div{width:min(31vw,420px);min-width:310px;padding:18px 0 20px 22px;border-left:1px solid rgba(155,132,96,.58);background:linear-gradient(90deg,rgba(12,9,7,.3),transparent 82%);text-align:left}
@@ -2861,13 +2876,7 @@ canvas{display:block;position:fixed;inset:0}
   </div>
 </div>
 
-<!-- 인트로 대사 오버레이 -->
-<div id="introText">
-  <div id="introTextPanel">
-    <div id="introTextKr"></div>
-    <div id="introTextEn"></div>
-  </div>
-</div>
+<!-- 시작 대사는 아래 4컷 키 안내에 통합 -->
 
 <!-- 인트로 상하 커튼 -->
 <div id="introCurtainTop"></div>
@@ -2882,12 +2891,22 @@ canvas{display:block;position:fixed;inset:0}
   </div>
 </div>
 
-<!-- 키 안내 (3단계) -->
-<div id="introKeys">
+<!-- 시작 대사 + 키 안내 (4컷) -->
+<div id="introKeys" role="dialog" aria-modal="true" aria-labelledby="introTextKr">
   <div class="intro-key-panel">
+    <div id="ikProgress"></div>
+    <div id="introTextPanel">
+      <div id="introTextKr"></div>
+      <div id="introTextEn"></div>
+    </div>
     <div id="ikTitle"></div>
     <div id="ikBody"></div>
+    <div id="ikNote"></div>
     <div id="ikHint"></div>
+    <div class="intro-key-actions">
+      <button id="ikSkip" type="button"></button>
+      <button id="ikNext" type="button"></button>
+    </div>
   </div>
 </div>
 
@@ -12542,6 +12561,9 @@ function _pollGamepad(){
     _gpBtnsPrev['_cutA']=_cA;_gpBtnsPrev['_cutB']=_cB;_gpBtnsPrev['_cutSt']=_cSt;
     return;
   }
+
+  // 통합 인트로는 자체 A/Start 입력을 사용한다. 설정창/전투 입력 누출 차단.
+  if(G&&G._intro){_gpClearAll();_gpBtnsPrev['_noUI9']=!!_gpBtns[9];return;}
 
   // ── D-pad 패널 토글 (패널 닫혀있을 때만 — 열려있으면 네비게이션 전용) ──
   {const _DP=[[12,'skillPanel','toggle'],[13,'forge','forge'],[14,'statPanel','toggle'],[15,'invPanel','storage']];
@@ -57941,7 +57963,7 @@ function _renderIntroCutscene(){
 }
 
 // ═══ 1랩 시작 인트로 연출 (HTML 오버레이 기반) ═══
-// 순서: 대사 4개 → 난이도 선택 → 키 안내 3개 → 커튼 상하 열림 + 몬스터 스폰
+// 순서: 대사+키 안내 통합 4컷 (언제든 스킵) → 커튼 상하 열림 + 몬스터 스폰
 var _introRendering=false;
 const _INTRO_LINES=[{ko:'눈을 떠',en:'Open your eyes'},{ko:'정신 차려',en:'Get a grip'},{ko:'이제 진짜 지옥이야',en:'This is real hell'},{ko:'야! 몬스터다!!!',en:'Hey! Monsters!!!'}];
 // ═══ 화신(캐릭터) 선택 — 세계관 컷신 종료 후 1회 표시 ═══
@@ -58024,85 +58046,108 @@ function _startIntro(){
   // 커튼 보이기 + 닫힌 상태
   $('introCurtainTop').style.display='';$('introCurtainTop').style.transform='translateY(0)';
   $('introCurtainBot').style.display='';$('introCurtainBot').style.transform='translateY(0)';
-  // 1단계: 대사 순차 표시
-  _showIntroLine(0);
+  // 대사와 키 안내를 같은 4컷에 표시
+  _startIntroGuide();
 }
-function _showIntroLine(idx){
-  const el=$('introText');const msgKr=$('introTextKr'),msgEn=$('introTextEn');
-  if(idx>=_INTRO_LINES.length){
-    // 대사 끝 → 난이도 선택
-    el.style.opacity='0';el.style.pointerEvents='none';
-    setTimeout(()=>_showIntroDiff(),300);
-    return;
-  }
-  const ln=_INTRO_LINES[idx];
-  msgKr.textContent=ln.ko;msgEn.textContent=ln.en;
-  if(idx===0){
-    // voice_wakeup 버퍼 미로드 시 즉시 로드 후 재생
-    if(!_audioBuffers['voice_wakeup']&&_sampleFiles['voice_wakeup']){
-      const _c=actx();fetch(_sampleFiles['voice_wakeup']).then(r=>r.arrayBuffer()).then(ab=>_c.decodeAudioData(ab)).then(b=>{_audioBuffers['voice_wakeup']=b;playSample('voice_wakeup',1,1)}).catch(()=>{});
-    }else playSample('voice_wakeup',1,1);
-  }
-  el.style.opacity='1';el.style.pointerEvents='all';
-  setTimeout(()=>{
-    el.style.opacity='0';
-    setTimeout(()=>_showIntroLine(idx+1),300);
-  },1500);
-}
-// ── 난이도 선택 ──
-function _showIntroDiff(){
-  const el=$('introDiff'),wrap=$('introDiffBtns');
-  // 기본 여정(일반=인덱스5)으로 고정 — 난이도 선택 UI 스킵
-  OPT.diff=5;G._stageDiffOff=0;saveSettings();
-  setTimeout(()=>_showIntroKeys(0),100);
-}
-// ── 키 안내 3단계 ──
-function _ikB(keys,descs){return keys.map((k,i)=>'<span style="color:#ffcc44">'+k+'</span> — '+_T(descs[i])).join('<br>')}
-const _isPad=()=>{const gps=navigator.getGamepads();for(let i=0;i<gps.length;i++){if(gps[i]&&gps[i].connected)return true}return false};
+const _isPad=()=>!!_introGuidePad();
 const _INTRO_KEY_STEPS=[
-  {title:'공격',body:()=>_isPad()?
-    _ikB(['A','X','Y','LB'],['무기 공격','우클릭 스킬','패링·보호막','돌진 (적을 관통, 무적)']):
-    _ikB(['좌클릭','E / Q','SHIFT'],['무기 공격','패링·보호막','돌진 (적을 관통, 무적)']),hint:_isPad()?'A 버튼으로 계속':'클릭하여 계속'},
-  {title:'스킬',body:()=>_isPad()?
-    _ikB(['B','RB','R3','LT+A','LT+B','LT+X'],['지옥강타 1 (분노폭발, 광역 기절)','Ctrl 스킬','마법 (탭=투사체, 홀드=빔)','회복의 영역 (리젠 장판)','얼음보주 (무적+빙결)','석궁 자동발사']):
-    _ikB(['SPACE','1','우클릭','F','CTRL','T'],['지옥강타 1 (분노폭발, 광역 기절)','가시덫 (물리 탭, 슬로우+출혈)','마법 (탭=투사체, 홀드=빔)','회복의 영역 (리젠 장판)','얼음보주 (무적+빙결)','석궁 자동발사']),hint:_isPad()?'A 버튼으로 계속':'클릭하여 계속'},
-  {title:'생존',body:()=>(_isPad()?
-    _ikB(['L3','Select','Start'],['아이템 줍기','인벤토리','설정']):
-    _ikB(['R','TAB','ESC'],['아이템 줍기','인벤토리','설정']))+'<br><span style="font-size:.85em;color:#887766">'+_T('물약은 설정한 HP% 이하 시 자동 사용')+'</span>',hint:_isPad()?'A 버튼으로 시작':'클릭하여 시작'}
+  {title:['이동과 공격','Move & attack'],rows:[['up/down/left/right','L 스틱','이동','Move'],['weapon','A','무기 공격','Weapon attack'],['beam','R3','마법 (탭=투사체, 홀드=빔)','Magic (tap: projectile, hold: beam)']]},
+  {title:['패링과 이동','Parry & movement'],rows:[['parry','Y','마법 패링 · 보호막','Magic parry / shield'],['shield','X','칼등 처내기','Weapon parry'],['charge','LB','사슬 이동','Chain movement'],['방향키 더블탭 / Space+방향키','LS 더블탭 / B+LS','전격이동','Flash Step']]},
+  {title:['스킬','Skills'],rows:[['bow','B','지옥강타 · 분노 폭발','Hell Slam / rage burst'],['1','LT+A','가시덫','Spike Trap'],['F','LT','회복의 영역','Healing Domain'],['CTRL','RB','CT 스킬 (뇌전걸음 / 얼음보주)','CT skill (Ghost Walk / Ice Orb)'],['T',null,'석궁 자동발사','Automatic crossbow']]},
+  {title:['살아남아','Stay alive'],rows:[['interact','L3','아이템 줍기','Pick up items'],['inventory','D-pad →','인벤토리','Inventory'],['settings','Start','설정','Settings']],note:['물약은 설정한 HP% 이하 시 자동 사용','Potions activate automatically below your configured HP%.']}
 ];
-function _showIntroKeys(step){
-  const el=$('introKeys'),t=$('ikTitle'),b=$('ikBody'),h=$('ikHint');
-  const s=_INTRO_KEY_STEPS[step];
-  t.textContent=_T(s.title);b.innerHTML=s.body();h.textContent=_T(s.hint);
-  el.style.opacity='1';el.style.pointerEvents='all';
-  function next(){
-    el.removeEventListener('click',next);
-    document.removeEventListener('keydown',next);
-    el.style.opacity='0';el.style.pointerEvents='none';
-    if(step<_INTRO_KEY_STEPS.length-1){
-      setTimeout(()=>_showIntroKeys(step+1),350);
-    }else{
-      // 키안내 끝 → 커튼 열림 + 몬스터 스폰
-      setTimeout(()=>_openIntroCurtain(),400);
-    }
+let _introGuide=null;
+function _introGuideText(pair){return pair[OPT.lang==='en'?1:0]}
+function _introGuidePad(){
+  const gps=navigator.getGamepads();
+  for(const gp of gps)if(gp&&gp.connected)return gp;
+  return null;
+}
+function _introGuideKeys(key){
+  return key.split('/').map(k=>BINDS[k]?keyName(BINDS[k],true):_T(k)).join(' / ');
+}
+function _renderIntroGuide(){
+  const state=_introGuide;if(!state||state.done)return;
+  const step=_INTRO_KEY_STEPS[state.step],line=_INTRO_LINES[state.step];
+  $('introTextKr').textContent=line.ko;$('introTextEn').textContent=line.en;
+  $('ikProgress').textContent=(state.step+1)+' / '+_INTRO_KEY_STEPS.length;
+  $('ikTitle').textContent=_introGuideText(step.title);
+  const body=$('ikBody');body.replaceChildren();
+  for(const row of step.rows){
+    if(state.pad&&!row[1])continue;
+    const item=document.createElement('div');item.className='intro-key-row';
+    const key=document.createElement('span');key.textContent=state.pad?row[1]:_introGuideKeys(row[0]);
+    const desc=document.createElement('div');desc.textContent=row[OPT.lang==='en'?3:2];
+    item.appendChild(key);item.appendChild(desc);body.appendChild(item);
   }
-  setTimeout(()=>{
-    el.addEventListener('click',next,{once:true});
-    document.addEventListener('keydown',next,{once:true});
-    // 게임패드: A/B/X/Y 아무거나 → 다음
-    let _ikGpDone=false,_ikGpPrev=false;
-    function _ikGpPoll(){
-      if(_ikGpDone)return;
-      const gps=navigator.getGamepads();let gp=null;
-      for(let i=0;i<gps.length;i++){if(gps[i]&&gps[i].connected){gp=gps[i];break}}
-      if(!gp){requestAnimationFrame(_ikGpPoll);return}
-      const a=(gp.buttons[0]&&gp.buttons[0].pressed)||(gp.buttons[1]&&gp.buttons[1].pressed)||(gp.buttons[2]&&gp.buttons[2].pressed)||(gp.buttons[3]&&gp.buttons[3].pressed);
-      if(a&&!_ikGpPrev){_ikGpDone=true;next();return}
-      _ikGpPrev=a;
-      requestAnimationFrame(_ikGpPoll);
+  $('ikNote').textContent=step.note?_introGuideText(step.note):'';
+  $('ikHint').textContent=state.pad?'A · '+_introGuideText(['다음','Next'])+' / Start · '+_introGuideText(['건너뛰기','Skip']):_introGuideText(['클릭 / Enter / Space · 다음    ESC · 건너뛰기','Click / Enter / Space · Next    ESC · Skip']);
+  $('ikNext').textContent=_introGuideText(state.step===3?['시작','Start']:['다음','Next']);
+  $('ikSkip').textContent=_introGuideText(['건너뛰기','Skip']);
+}
+function _disposeIntroGuide(state){
+  if(!state)return;
+  cancelAnimationFrame(state.raf);clearTimeout(state.closeTimer);
+  window.removeEventListener('keydown',state.key,true);
+  if(_introGuide===state){
+    $('introKeys').onclick=null;$('ikNext').onclick=null;$('ikSkip').onclick=null;
+    _introGuide=null;
+  }
+}
+function _finishIntroGuide(){
+  const state=_introGuide;if(!state||state.done)return;
+  state.done=true;cancelAnimationFrame(state.raf);
+  const el=$('introKeys');el.style.opacity='0';el.style.pointerEvents='none';
+  if(document.activeElement===$('ikNext')||document.activeElement===$('ikSkip'))document.activeElement.blur();
+  _openIntroCurtain();
+  // 커튼이 열리는 동안 재입력도 흡수한다. 완료는 한 번만 실행한다.
+  state.closeTimer=setTimeout(()=>_disposeIntroGuide(state),900);
+}
+function _advanceIntroGuide(){
+  const state=_introGuide;if(!state||state.done||performance.now()<state.readyAt)return;
+  state.readyAt=performance.now()+250;
+  if(++state.step===_INTRO_KEY_STEPS.length){_finishIntroGuide();return}
+  _renderIntroGuide();
+}
+function _startIntroGuide(){
+  _disposeIntroGuide(_introGuide);
+  OPT.diff=5;G._stageDiffOff=0;saveSettings();
+  const gp=_introGuidePad();
+  const state=_introGuide={step:0,done:false,pad:!!gp,readyAt:performance.now()+250,raf:0,
+    prevA:!!gp?.buttons[0]?.pressed,prevSkip:!!gp?.buttons[9]?.pressed};
+  state.key=e=>{
+    e.preventDefault();e.stopImmediatePropagation();
+    if(state.done||e.repeat)return;
+    if(e.code==='Tab'){
+      (document.activeElement===$('ikNext')?$('ikSkip'):$('ikNext')).focus({preventScroll:true});return;
     }
-    _ikGpPoll();
-  },400);
+    if(e.code==='Escape')_finishIntroGuide();
+    else if(e.code==='Enter'||e.code==='Space'){
+      if(document.activeElement===$('ikSkip'))_finishIntroGuide();else _advanceIntroGuide();
+    }
+  };
+  window.addEventListener('keydown',state.key,true);
+  $('introKeys').onclick=()=>_advanceIntroGuide();
+  $('ikNext').onclick=e=>{e.stopPropagation();_advanceIntroGuide()};
+  $('ikSkip').onclick=e=>{e.stopPropagation();_finishIntroGuide()};
+  _renderIntroGuide();
+  const el=$('introKeys');el.style.opacity='1';el.style.pointerEvents='all';
+  $('ikNext').focus({preventScroll:true});
+  function poll(){
+    if(_introGuide!==state||state.done)return;
+    const pad=_introGuidePad(),a=!!pad?.buttons[0]?.pressed,skip=!!pad?.buttons[9]?.pressed;
+    if(state.pad!==!!pad){state.pad=!!pad;state.prevA=a;state.prevSkip=skip;_renderIntroGuide()}
+    if(skip&&!state.prevSkip)_finishIntroGuide();
+    else if(a&&!state.prevA)_advanceIntroGuide();
+    state.prevA=a;state.prevSkip=skip;
+    if(!state.done)state.raf=requestAnimationFrame(poll);
+  }
+  state.raf=requestAnimationFrame(poll);
+  const play=()=>{if(_introGuide===state&&!state.done)playSample('voice_wakeup',1,1)};
+  if(!_audioBuffers['voice_wakeup']&&_sampleFiles['voice_wakeup']){
+    const c=actx();fetch(_sampleFiles['voice_wakeup']).then(r=>r.arrayBuffer()).then(ab=>c.decodeAudioData(ab))
+      .then(b=>{_audioBuffers['voice_wakeup']=b;play()}).catch(()=>{});
+  }else play();
 }
 // ── 커튼 상하 열림 + 5마리 스폰 ──
 function _openIntroCurtain(){
