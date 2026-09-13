@@ -1,0 +1,477 @@
+{
+  "tool": "built-in image_gen.imagegen",
+  "jobs": [
+    {
+      "id": "11",
+      "path": "G:\\exoduser\\img\\lording\\11.png",
+      "scene": "ultrawide 3.56:1 ice-blue giant black armored warrior with enormous sword across the shoulders on left, black cat at lower left, raven on tall ice pillar near center. Preserve the close crop and large empty blue space on right. Remove the snow dots completely while retaining cold cloudy atmosphere.",
+      "reference": "G:\\exoduser\\img\\lording\\11.png",
+      "prompt": "Use case: identity-preserve. Edit only the supplied dark fantasy game background to remove the pervasive stippling, dithering, film grain and speckled microtexture. Preserve the exact original composition, subject placement, proportions, silhouettes, identities, camera crop, palette and dark mood. Repaint materials as clean continuous painterly tonal surfaces with broad coherent shading, crisp structural edges and smooth atmospheric depth. Keep the large armor plates, sword edges, cloth folds, recognizable architecture, main lighting and coherent magic shapes. Remove the tiny scattered dots on all surfaces and the floating flecks/embers/snow; use clean haze instead. This must NOT be a blur filter and must not make a cartoon. Do not add objects, people, text, border or watermark. Output exactly the same aspect ratio as the reference, edge-to-edge. Specific scene: ultrawide 3.56:1 ice-blue giant black armored warrior with enormous sword across the shoulders on left, black cat at lower left, raven on tall ice pillar near center. Preserve the close crop and large empty blue space on right. Remove the snow dots completely while retaining cold cloudy atmosphere.",
+      "output": "C:\\Users\\심도진\\.codex\\generated_images\\01a099a6-7b26-7e72-8d6c-f7d0d6215f28\\exec-322fd054-ee8f-4691-8781-d3822c547d74.png",
+      "retouch": null
+    },
+    {
+      "id": "rd17",
+      "path": "G:\\exoduser\\img\\lording\\rd17.png",
+      "scene": "wide 2.334:1 full-body black armored warrior in ice landscape with huge sword across shoulder, black cat at left and raven on pillar. Preserve full-body framing, and the original empty space at right. Remove ALL falling snow dots and stippled texture; ice and steel have smooth continuous shaded planes.",
+      "reference": "G:\\exoduser\\img\\lording\\rd17.png",
+      "prompt": "Use case: identity-preserve. Edit only the supplied dark fantasy game background to remove the pervasive stippling, dithering, film grain and speckled microtexture. Preserve the exact original composition, subject placement, proportions, silhouettes, identities, camera crop, palette and dark mood. Repaint materials as clean continuous painterly tonal surfaces with broad coherent shading, crisp structural edges and smooth atmospheric depth. Keep the large armor plates, sword edges, cloth folds, recognizable architecture, main lighting and coherent magic shapes. Remove the tiny scattered dots on all surfaces and the floating flecks/embers/snow; use clean haze instead. This must NOT be a blur filter and must not make a cartoon. Do not add objects, people, text, border or watermark. Output exactly the same aspect ratio as the reference, edge-to-edge. Specific scene: wide 2.334:1 full-body black armored warrior in ice landscape with huge sword across shoulder, black cat at left and raven on pillar. Preserve full-body framing, and the original empty space at right. Remove ALL falling snow dots and stippled texture; ice and steel have smooth continuous shaded planes.",
+      "output": "C:\\Users\\심도진\\.codex\\generated_images\\01a099a6-7b26-7e72-8d6c-f7d0d6215f28\\exec-25d6ff13-8ce0-4722-bb8f-5ad2f241919e.png",
+      "retouch": null
+    },
+    {
+      "id": "rd15",
+      "path": "G:\\exoduser\\img\\lording\\rd15.png",
+      "scene": "ultrawide 3.56:1 black armored colossal warrior left of center, raven on his raised hand and purple-eyed cat at lower left, orange ring and gothic towers in background, dark open atmosphere at right. Remove every tiny ember and surface grain, retain orange glow and large cloudy shapes.",
+      "reference": "G:\\exoduser\\output\\lobby_image_review_20260913\\inspect\\img\\lording\\rd15.jpg",
+      "prompt": "Use case: identity-preserve. Edit only the supplied dark fantasy game background to remove the pervasive stippling, dithering, film grain and speckled microtexture. Preserve the exact original composition, subject placement, proportions, silhouettes, identities, camera crop, palette and dark mood. Repaint materials as clean continuous painterly tonal surfaces with broad coherent shading, crisp structural edges and smooth atmospheric depth. Keep the large armor plates, sword edges, cloth folds, recognizable architecture, main lighting and coherent magic shapes. Remove the tiny scattered dots on all surfaces and the floating flecks/embers/snow; use clean haze instead. This must NOT be a blur filter and must not make a cartoon. Do not add objects, people, text, border or watermark. Output exactly the same aspect ratio as the reference, edge-to-edge. Specific scene: ultrawide 3.56:1 black armored colossal warrior left of center, raven on his raised hand and purple-eyed cat at lower left, orange ring and gothic towers in background, dark open atmosphere at right. Remove every tiny ember and surface grain, retain orange glow and large cloudy shapes. Fill the ENTIRE output canvas to all four edges. If aspect constraints require 3:1 instead of 3.56:1, extend the existing scene vertically without shrinking the subject or adding letterboxing. No black bands.",
+      "output": "C:\\Users\\심도진\\.codex\\generated_images\\01a099a6-7b26-7e72-8d6c-f7d0d6215f28\\exec-32560dec-f555-4764-bccb-48743e929618.png",
+      "retouch": null
+    },
+    {
+      "id": "lobby_bg",
+      "path": "G:\\exoduser\\assets\\lobby\\lobby_bg_new.png",
+      "scene": "3:2 purple gothic castle and symmetrical pillars with a purple rune circle in the foreground. Preserve architecture, precise circle arrangement and violet beam at top. Remove scattered glowing particles, embers and stippled dots across stone and sky; continuous rich dark violet shading.",
+      "reference": "G:\\exoduser\\assets\\lobby\\lobby_bg_new.png",
+      "prompt": "Use case: identity-preserve. Edit only the supplied dark fantasy game background to remove the pervasive stippling, dithering, film grain and speckled microtexture. Preserve the exact original composition, subject placement, proportions, silhouettes, identities, camera crop, palette and dark mood. Repaint materials as clean continuous painterly tonal surfaces with broad coherent shading, crisp structural edges and smooth atmospheric depth. Keep the large armor plates, sword edges, cloth folds, recognizable architecture, main lighting and coherent magic shapes. Remove the tiny scattered dots on all surfaces and the floating flecks/embers/snow; use clean haze instead. This must NOT be a blur filter and must not make a cartoon. Do not add objects, people, text, border or watermark. Output exactly the same aspect ratio as the reference, edge-to-edge. Specific scene: 3:2 purple gothic castle and symmetrical pillars with a purple rune circle in the foreground. Preserve architecture, precise circle arrangement and violet beam at top. Remove scattered glowing particles, embers and stippled dots across stone and sky; continuous rich dark violet shading.",
+      "output": "C:\\Users\\심도진\\.codex\\generated_images\\01a099a6-7b26-7e72-8d6c-f7d0d6215f28\\exec-0a9c97eb-66b9-43b2-9bca-44dfa8c4e887.png",
+      "retouch": null
+    },
+    {
+      "id": "4",
+      "path": "G:\\exoduser\\img\\lording\\4.png",
+      "scene": "ultrawide 3.56:1 orange infernal city, a small back-facing warrior and his pets at bottom center, winding lava river, vertical beam above distant palace, purple tower left and lava waterfall right. Remove widespread floating orange dots while preserving building windows and flames as coherent shapes.",
+      "reference": "G:\\exoduser\\output\\lobby_image_review_20260913\\inspect\\img\\lording\\4.jpg",
+      "prompt": "Use case: identity-preserve. Edit only the supplied dark fantasy game background to remove the pervasive stippling, dithering, film grain and speckled microtexture. Preserve the exact original composition, subject placement, proportions, silhouettes, identities, camera crop, palette and dark mood. Repaint materials as clean continuous painterly tonal surfaces with broad coherent shading, crisp structural edges and smooth atmospheric depth. Keep the large armor plates, sword edges, cloth folds, recognizable architecture, main lighting and coherent magic shapes. Remove the tiny scattered dots on all surfaces and the floating flecks/embers/snow; use clean haze instead. This must NOT be a blur filter and must not make a cartoon. Do not add objects, people, text, border or watermark. Output exactly the same aspect ratio as the reference, edge-to-edge. Specific scene: ultrawide 3.56:1 orange infernal city, a small back-facing warrior and his pets at bottom center, winding lava river, vertical beam above distant palace, purple tower left and lava waterfall right. Remove widespread floating orange dots while preserving building windows and flames as coherent shapes. Fill the ENTIRE output canvas to all four edges. If aspect constraints require 3:1 instead of 3.56:1, extend the existing scene vertically without shrinking the subject or adding letterboxing. No black bands.",
+      "output": "C:\\Users\\심도진\\.codex\\generated_images\\01a099a6-7b26-7e72-8d6c-f7d0d6215f28\\exec-fffd78e9-7736-4fed-91cd-0691ac4be4b5.png",
+      "retouch": null
+    },
+    {
+      "id": "10",
+      "path": "G:\\exoduser\\img\\lording\\10.png",
+      "scene": "ultrawide 3.56:1 back-facing giant black armored warrior occupying left third with huge sword on shoulder and raven, small cat bottom edge, purple floating crossbow in center, red gothic fortress at right. Smooth armor and cape, remove the orange speckles across sky and architecture.",
+      "reference": "G:\\exoduser\\output\\lobby_image_review_20260913\\inspect\\img\\lording\\10.jpg",
+      "prompt": "Use case: identity-preserve. Edit only the supplied dark fantasy game background to remove the pervasive stippling, dithering, film grain and speckled microtexture. Preserve the exact original composition, subject placement, proportions, silhouettes, identities, camera crop, palette and dark mood. Repaint materials as clean continuous painterly tonal surfaces with broad coherent shading, crisp structural edges and smooth atmospheric depth. Keep the large armor plates, sword edges, cloth folds, recognizable architecture, main lighting and coherent magic shapes. Remove the tiny scattered dots on all surfaces and the floating flecks/embers/snow; use clean haze instead. This must NOT be a blur filter and must not make a cartoon. Do not add objects, people, text, border or watermark. Output exactly the same aspect ratio as the reference, edge-to-edge. Specific scene: ultrawide 3.56:1 back-facing giant black armored warrior occupying left third with huge sword on shoulder and raven, small cat bottom edge, purple floating crossbow in center, red gothic fortress at right. Smooth armor and cape, remove the orange speckles across sky and architecture. Fill the ENTIRE output canvas to all four edges. If aspect constraints require 3:1 instead of 3.56:1, extend the existing scene vertically without shrinking the subject or adding letterboxing. No black bands.",
+      "output": "C:\\Users\\심도진\\.codex\\generated_images\\01a099a6-7b26-7e72-8d6c-f7d0d6215f28\\exec-633d4720-064a-4430-8871-e8052546ba18.png",
+      "retouch": null
+    },
+    {
+      "id": "13",
+      "path": "G:\\exoduser\\img\\lording\\13.png",
+      "scene": "ultrawide 3.56:1 red enormous gothic gate, warrior and cat at lower left, bronze title EXODUSER and red subtitle HELL LORD at bottom center, tiny THE DEAR GAMES lower right. Preserve ALL original lettering exactly, same size, font style and placement. Remove dots and grain while keeping architectural ribs.",
+      "reference": "G:\\exoduser\\output\\lobby_image_review_20260913\\inspect\\img\\lording\\13.jpg",
+      "prompt": "Use case: identity-preserve. Edit only the supplied dark fantasy game background to remove the pervasive stippling, dithering, film grain and speckled microtexture. Preserve the exact original composition, subject placement, proportions, silhouettes, identities, camera crop, palette and dark mood. Repaint materials as clean continuous painterly tonal surfaces with broad coherent shading, crisp structural edges and smooth atmospheric depth. Keep the large armor plates, sword edges, cloth folds, recognizable architecture, main lighting and coherent magic shapes. Remove the tiny scattered dots on all surfaces and the floating flecks/embers/snow; use clean haze instead. This must NOT be a blur filter and must not make a cartoon. Do not add objects, people, text, border or watermark. Output exactly the same aspect ratio as the reference, edge-to-edge. Specific scene: ultrawide 3.56:1 red enormous gothic gate, warrior and cat at lower left, bronze title EXODUSER and red subtitle HELL LORD at bottom center, tiny THE DEAR GAMES lower right. Preserve ALL original lettering exactly, same size, font style and placement. Remove dots and grain while keeping architectural ribs. Fill the ENTIRE output canvas to all four edges. If aspect constraints require 3:1 instead of 3.56:1, extend the existing scene vertically without shrinking the subject or adding letterboxing. No black bands.",
+      "output": "C:\\Users\\심도진\\.codex\\generated_images\\01a099a6-7b26-7e72-8d6c-f7d0d6215f28\\exec-2552343d-0278-4d25-890e-64cca6306f0e.png",
+      "retouch": null
+    },
+    {
+      "id": "14",
+      "path": "G:\\exoduser\\img\\lording\\14.png",
+      "scene": "ultrawide 3.56:1 enormous gothic facade seen from below, bronze EXODUSER title in center, red HELL LORD subtitle, warrior with shoulder sword at bottom left. Preserve existing lettering exactly without any new text. Clean broad stone and metal shading.",
+      "reference": "G:\\exoduser\\img\\lording\\14.png",
+      "prompt": "Use case: identity-preserve. Edit only the supplied dark fantasy game background to remove the pervasive stippling, dithering, film grain and speckled microtexture. Preserve the exact original composition, subject placement, proportions, silhouettes, identities, camera crop, palette and dark mood. Repaint materials as clean continuous painterly tonal surfaces with broad coherent shading, crisp structural edges and smooth atmospheric depth. Keep the large armor plates, sword edges, cloth folds, recognizable architecture, main lighting and coherent magic shapes. Remove the tiny scattered dots on all surfaces and the floating flecks/embers/snow; use clean haze instead. This must NOT be a blur filter and must not make a cartoon. Do not add objects, people, text, border or watermark. Output exactly the same aspect ratio as the reference, edge-to-edge. Specific scene: ultrawide 3.56:1 enormous gothic facade seen from below, bronze EXODUSER title in center, red HELL LORD subtitle, warrior with shoulder sword at bottom left. Preserve existing lettering exactly without any new text. Clean broad stone and metal shading.",
+      "output": "C:\\Users\\심도진\\.codex\\generated_images\\01a099a6-7b26-7e72-8d6c-f7d0d6215f28\\exec-e3dc69fb-7ff3-4464-b6a3-1c7a8c933aac.png",
+      "retouch": {
+        "ref": "C:\\Users\\심도진\\.codex\\generated_images\\01a099a6-7b26-7e72-8d6c-f7d0d6215f28\\exec-3215f4ba-668c-4595-8fe4-b41c5025214d.png",
+        "prompt": "Edit this image only to remove the flat black horizontal band along the bottom. Extend the existing gothic architecture and warrior silhouette naturally down to the bottom edge, so the artwork fills the entire canvas with no border or letterboxing. Keep exactly the current clean smooth painted texture, all existing colors, shapes, armor and camera composition elsewhere unchanged. Preserve the exact words EXODUSER and HELL LORD with the current typography and placement. Do not add any dots, grain, speckles or extra text."
+      }
+    },
+    {
+      "id": "15",
+      "path": "G:\\exoduser\\img\\lording\\15.png",
+      "scene": "ultrawide 3.56:1 enormous gothic entrance with warm orange light, back-facing warrior with shoulder sword lower left and rows of armored silhouettes below. Preserve architecture, crowd, scale. Clean large structural planes and remove tiny particle speckling.",
+      "reference": "G:\\exoduser\\output\\lobby_image_review_20260913\\inspect\\img\\lording\\15.jpg",
+      "prompt": "Use case: identity-preserve. Edit only the supplied dark fantasy game background to remove the pervasive stippling, dithering, film grain and speckled microtexture. Preserve the exact original composition, subject placement, proportions, silhouettes, identities, camera crop, palette and dark mood. Repaint materials as clean continuous painterly tonal surfaces with broad coherent shading, crisp structural edges and smooth atmospheric depth. Keep the large armor plates, sword edges, cloth folds, recognizable architecture, main lighting and coherent magic shapes. Remove the tiny scattered dots on all surfaces and the floating flecks/embers/snow; use clean haze instead. This must NOT be a blur filter and must not make a cartoon. Do not add objects, people, text, border or watermark. Output exactly the same aspect ratio as the reference, edge-to-edge. Specific scene: ultrawide 3.56:1 enormous gothic entrance with warm orange light, back-facing warrior with shoulder sword lower left and rows of armored silhouettes below. Preserve architecture, crowd, scale. Clean large structural planes and remove tiny particle speckling. Fill the ENTIRE output canvas to all four edges. If aspect constraints require 3:1 instead of 3.56:1, extend the existing scene vertically without shrinking the subject or adding letterboxing. No black bands.",
+      "output": "C:\\Users\\심도진\\.codex\\generated_images\\01a099a6-7b26-7e72-8d6c-f7d0d6215f28\\exec-4ea40195-b9a6-4dd7-b27c-408df850ab1a.png",
+      "retouch": null
+    },
+    {
+      "id": "16",
+      "path": "G:\\exoduser\\img\\lording\\16.png",
+      "scene": "wide 3:1 infernal city vista, warrior with sword plus cat and raven on lower-left ledge, central winding lava river, distant castle and vertical beam, giant eyes within cloud at top and dragon silhouettes. Preserve all silhouettes and main lights but remove tiny scattered orange dots.",
+      "reference": "G:\\exoduser\\img\\lording\\16.png",
+      "prompt": "Use case: identity-preserve. Edit only the supplied dark fantasy game background to remove the pervasive stippling, dithering, film grain and speckled microtexture. Preserve the exact original composition, subject placement, proportions, silhouettes, identities, camera crop, palette and dark mood. Repaint materials as clean continuous painterly tonal surfaces with broad coherent shading, crisp structural edges and smooth atmospheric depth. Keep the large armor plates, sword edges, cloth folds, recognizable architecture, main lighting and coherent magic shapes. Remove the tiny scattered dots on all surfaces and the floating flecks/embers/snow; use clean haze instead. This must NOT be a blur filter and must not make a cartoon. Do not add objects, people, text, border or watermark. Output exactly the same aspect ratio as the reference, edge-to-edge. Specific scene: wide 3:1 infernal city vista, warrior with sword plus cat and raven on lower-left ledge, central winding lava river, distant castle and vertical beam, giant eyes within cloud at top and dragon silhouettes. Preserve all silhouettes and main lights but remove tiny scattered orange dots.",
+      "output": "C:\\Users\\심도진\\.codex\\generated_images\\01a099a6-7b26-7e72-8d6c-f7d0d6215f28\\exec-deeb5a52-a1bb-433e-aca6-05d355c9bb0c.png",
+      "retouch": null
+    },
+    {
+      "id": "17",
+      "path": "G:\\exoduser\\img\\lording\\17.png",
+      "scene": "ultrawide 3.56:1 gothic infernal facade with huge red carved EXODUSER logo and smaller HELL LORD below. Preserve EVERY letter exactly, logo shape, red stone material and decorative symbols. Clean grain from lettering surfaces and background; keep large stone cracks and pointed edges.",
+      "reference": "G:\\exoduser\\output\\lobby_image_review_20260913\\inspect\\img\\lording\\17.jpg",
+      "prompt": "Use case: identity-preserve. Edit only the supplied dark fantasy game background to remove the pervasive stippling, dithering, film grain and speckled microtexture. Preserve the exact original composition, subject placement, proportions, silhouettes, identities, camera crop, palette and dark mood. Repaint materials as clean continuous painterly tonal surfaces with broad coherent shading, crisp structural edges and smooth atmospheric depth. Keep the large armor plates, sword edges, cloth folds, recognizable architecture, main lighting and coherent magic shapes. Remove the tiny scattered dots on all surfaces and the floating flecks/embers/snow; use clean haze instead. This must NOT be a blur filter and must not make a cartoon. Do not add objects, people, text, border or watermark. Output exactly the same aspect ratio as the reference, edge-to-edge. Specific scene: ultrawide 3.56:1 gothic infernal facade with huge red carved EXODUSER logo and smaller HELL LORD below. Preserve EVERY letter exactly, logo shape, red stone material and decorative symbols. Clean grain from lettering surfaces and background; keep large stone cracks and pointed edges. Fill the ENTIRE output canvas to all four edges. If aspect constraints require 3:1 instead of 3.56:1, extend the existing scene vertically without shrinking the subject or adding letterboxing. No black bands.",
+      "output": "C:\\Users\\심도진\\.codex\\generated_images\\01a099a6-7b26-7e72-8d6c-f7d0d6215f28\\exec-d13a6d36-5600-47b4-9ad1-2176123ff1ef.png",
+      "retouch": null
+    },
+    {
+      "id": "18",
+      "path": "G:\\exoduser\\img\\lording\\18.png",
+      "scene": "ultrawide 3.56:1 infernal city panorama, warrior on lower left ledge, cat and raven, winding lava river into central beam, giant eyes above in sky, purple tower left and lava waterfall right. Keep layout; replace peppered embers with smooth orange atmosphere.",
+      "reference": "G:\\exoduser\\output\\lobby_image_review_20260913\\inspect\\img\\lording\\18.jpg",
+      "prompt": "Use case: identity-preserve. Edit only the supplied dark fantasy game background to remove the pervasive stippling, dithering, film grain and speckled microtexture. Preserve the exact original composition, subject placement, proportions, silhouettes, identities, camera crop, palette and dark mood. Repaint materials as clean continuous painterly tonal surfaces with broad coherent shading, crisp structural edges and smooth atmospheric depth. Keep the large armor plates, sword edges, cloth folds, recognizable architecture, main lighting and coherent magic shapes. Remove the tiny scattered dots on all surfaces and the floating flecks/embers/snow; use clean haze instead. This must NOT be a blur filter and must not make a cartoon. Do not add objects, people, text, border or watermark. Output exactly the same aspect ratio as the reference, edge-to-edge. Specific scene: ultrawide 3.56:1 infernal city panorama, warrior on lower left ledge, cat and raven, winding lava river into central beam, giant eyes above in sky, purple tower left and lava waterfall right. Keep layout; replace peppered embers with smooth orange atmosphere. Fill the ENTIRE output canvas to all four edges. If aspect constraints require 3:1 instead of 3.56:1, extend the existing scene vertically without shrinking the subject or adding letterboxing. No black bands.",
+      "output": "C:\\Users\\심도진\\.codex\\generated_images\\01a099a6-7b26-7e72-8d6c-f7d0d6215f28\\exec-3d1bb8c1-9def-4c9b-9ea0-12d900b76f58.png",
+      "retouch": null
+    },
+    {
+      "id": "19",
+      "path": "G:\\exoduser\\img\\lording\\19.png",
+      "scene": "ultrawide 3.56:1 rear view of dark-haired adult warrior at bottom center facing a road bordered by demonic soldiers in a fiery rocky environment. Preserve armored figures, road composition and framing, but clean the heavy granular soil, armor and cloth texture. Smooth coherent flames, no new gore.",
+      "reference": "G:\\exoduser\\output\\lobby_image_review_20260913\\inspect\\img\\lording\\19.jpg",
+      "prompt": "Use case: identity-preserve. Edit only the supplied dark fantasy game background to remove the pervasive stippling, dithering, film grain and speckled microtexture. Preserve the exact original composition, subject placement, proportions, silhouettes, identities, camera crop, palette and dark mood. Repaint materials as clean continuous painterly tonal surfaces with broad coherent shading, crisp structural edges and smooth atmospheric depth. Keep the large armor plates, sword edges, cloth folds, recognizable architecture, main lighting and coherent magic shapes. Remove the tiny scattered dots on all surfaces and the floating flecks/embers/snow; use clean haze instead. This must NOT be a blur filter and must not make a cartoon. Do not add objects, people, text, border or watermark. Output exactly the same aspect ratio as the reference, edge-to-edge. Specific scene: ultrawide 3.56:1 rear view of dark-haired adult warrior at bottom center facing a road bordered by demonic soldiers in a fiery rocky environment. Preserve armored figures, road composition and framing, but clean the heavy granular soil, armor and cloth texture. Smooth coherent flames, no new gore. Fill the ENTIRE output canvas to all four edges. If aspect constraints require 3:1 instead of 3.56:1, extend the existing scene vertically without shrinking the subject or adding letterboxing. No black bands.",
+      "output": "C:\\Users\\심도진\\.codex\\generated_images\\01a099a6-7b26-7e72-8d6c-f7d0d6215f28\\exec-3392706e-1071-49b1-91e1-135c0e9ccc56.png",
+      "retouch": null
+    },
+    {
+      "id": "rd1",
+      "path": "G:\\exoduser\\img\\lording\\rd1.png",
+      "scene": "wide 2.334:1 kneeling helmeted giant warrior on left leaning on vertical enormous sword, raven on shoulder and violet-eyed cat beside him, giant demonic silhouette in red sky and stairs on right. Preserve identity, pose, pets and framing; remove fine red airborne dots and armor micro-scratches.",
+      "reference": "G:\\exoduser\\img\\lording\\rd1.png",
+      "prompt": "Use case: identity-preserve. Edit only the supplied dark fantasy game background to remove the pervasive stippling, dithering, film grain and speckled microtexture. Preserve the exact original composition, subject placement, proportions, silhouettes, identities, camera crop, palette and dark mood. Repaint materials as clean continuous painterly tonal surfaces with broad coherent shading, crisp structural edges and smooth atmospheric depth. Keep the large armor plates, sword edges, cloth folds, recognizable architecture, main lighting and coherent magic shapes. Remove the tiny scattered dots on all surfaces and the floating flecks/embers/snow; use clean haze instead. This must NOT be a blur filter and must not make a cartoon. Do not add objects, people, text, border or watermark. Output exactly the same aspect ratio as the reference, edge-to-edge. Specific scene: wide 2.334:1 kneeling helmeted giant warrior on left leaning on vertical enormous sword, raven on shoulder and violet-eyed cat beside him, giant demonic silhouette in red sky and stairs on right. Preserve identity, pose, pets and framing; remove fine red airborne dots and armor micro-scratches.",
+      "output": "C:\\Users\\심도진\\.codex\\generated_images\\01a099a6-7b26-7e72-8d6c-f7d0d6215f28\\exec-f215a95f-c49b-423d-b5a5-b14527388ed0.png",
+      "retouch": null
+    },
+    {
+      "id": "rd2",
+      "path": "G:\\exoduser\\img\\lording\\rd2.png",
+      "scene": "3:2 rear-facing armored adult warrior in center of a burning road, demonic soldiers lining sides, distant fiery gate. Preserve every main figure and pose; remove the speckled granular surface treatment on road, armor, cape and distant sky. Keep broad flame shapes.",
+      "reference": "G:\\exoduser\\img\\lording\\rd2.png",
+      "prompt": "Use case: identity-preserve. Edit only the supplied dark fantasy game background to remove the pervasive stippling, dithering, film grain and speckled microtexture. Preserve the exact original composition, subject placement, proportions, silhouettes, identities, camera crop, palette and dark mood. Repaint materials as clean continuous painterly tonal surfaces with broad coherent shading, crisp structural edges and smooth atmospheric depth. Keep the large armor plates, sword edges, cloth folds, recognizable architecture, main lighting and coherent magic shapes. Remove the tiny scattered dots on all surfaces and the floating flecks/embers/snow; use clean haze instead. This must NOT be a blur filter and must not make a cartoon. Do not add objects, people, text, border or watermark. Output exactly the same aspect ratio as the reference, edge-to-edge. Specific scene: 3:2 rear-facing armored adult warrior in center of a burning road, demonic soldiers lining sides, distant fiery gate. Preserve every main figure and pose; remove the speckled granular surface treatment on road, armor, cape and distant sky. Keep broad flame shapes.",
+      "output": "C:\\Users\\심도진\\.codex\\generated_images\\01a099a6-7b26-7e72-8d6c-f7d0d6215f28\\exec-2751799d-3c14-48f0-805e-1f4a19acfb69.png",
+      "retouch": null
+    },
+    {
+      "id": "rd5",
+      "path": "G:\\exoduser\\img\\lording\\rd5.png",
+      "scene": "3:2 high-angle view of a small cloaked warrior with large sword on a pale diagonal road, surrounded by dark fantasy demons. This particular image has extremely severe monochrome stippling covering every surface: REPAINT ALL stippled surfaces into clean continuous shaded planes. Preserve layout and creatures; keep horror atmosphere without adding or intensifying wounds, blood or gore.",
+      "reference": "G:\\exoduser\\img\\lording\\rd5.png",
+      "prompt": "Use case: identity-preserve. Edit only the supplied dark fantasy game background to remove the pervasive stippling, dithering, film grain and speckled microtexture. Preserve the exact original composition, subject placement, proportions, silhouettes, identities, camera crop, palette and dark mood. Repaint materials as clean continuous painterly tonal surfaces with broad coherent shading, crisp structural edges and smooth atmospheric depth. Keep the large armor plates, sword edges, cloth folds, recognizable architecture, main lighting and coherent magic shapes. Remove the tiny scattered dots on all surfaces and the floating flecks/embers/snow; use clean haze instead. This must NOT be a blur filter and must not make a cartoon. Do not add objects, people, text, border or watermark. Output exactly the same aspect ratio as the reference, edge-to-edge. Specific scene: 3:2 high-angle view of a small cloaked warrior with large sword on a pale diagonal road, surrounded by dark fantasy demons. This particular image has extremely severe monochrome stippling covering every surface: REPAINT ALL stippled surfaces into clean continuous shaded planes. Preserve layout and creatures; keep horror atmosphere without adding or intensifying wounds, blood or gore.",
+      "output": "C:\\Users\\심도진\\.codex\\generated_images\\01a099a6-7b26-7e72-8d6c-f7d0d6215f28\\exec-a5b0e9e9-76e4-487a-9b7d-cd17b28a49a9.png",
+      "retouch": null
+    },
+    {
+      "id": "rd6",
+      "path": "G:\\exoduser\\img\\lording\\rd6.webp",
+      "scene": "wide 2.334:1 full-body giant black armored knight left of center holding large sword downward, raven perched on his hand, black cat at his feet, orange ring behind, open smoky background on right. Remove tiny embers and speckled metal. Preserve full-body composition and armor silhouette.",
+      "reference": "G:\\exoduser\\img\\lording\\rd6.webp",
+      "prompt": "Use case: identity-preserve. Edit only the supplied dark fantasy game background to remove the pervasive stippling, dithering, film grain and speckled microtexture. Preserve the exact original composition, subject placement, proportions, silhouettes, identities, camera crop, palette and dark mood. Repaint materials as clean continuous painterly tonal surfaces with broad coherent shading, crisp structural edges and smooth atmospheric depth. Keep the large armor plates, sword edges, cloth folds, recognizable architecture, main lighting and coherent magic shapes. Remove the tiny scattered dots on all surfaces and the floating flecks/embers/snow; use clean haze instead. This must NOT be a blur filter and must not make a cartoon. Do not add objects, people, text, border or watermark. Output exactly the same aspect ratio as the reference, edge-to-edge. Specific scene: wide 2.334:1 full-body giant black armored knight left of center holding large sword downward, raven perched on his hand, black cat at his feet, orange ring behind, open smoky background on right. Remove tiny embers and speckled metal. Preserve full-body composition and armor silhouette.",
+      "output": "C:\\Users\\심도진\\.codex\\generated_images\\01a099a6-7b26-7e72-8d6c-f7d0d6215f28\\exec-33c3c3dc-37d3-4d5b-8ef1-1b4dea821645.png",
+      "retouch": null
+    },
+    {
+      "id": "rd8",
+      "path": "G:\\exoduser\\img\\lording\\rd8.png",
+      "scene": "3:2 close-up of the same dark-haired adult warrior on right grappling a horned lava demon on left in an orange infernal environment. Keep expressions and exact hands/pose; simplify busy fractured surface texture into coherent metal and skin, retaining only major lava cracks. Remove the cloud of tiny debris and flecks; no new gore.",
+      "reference": "G:\\exoduser\\img\\lording\\rd8.png",
+      "prompt": "Use case: identity-preserve. Edit only the supplied dark fantasy game background to remove the pervasive stippling, dithering, film grain and speckled microtexture. Preserve the exact original composition, subject placement, proportions, silhouettes, identities, camera crop, palette and dark mood. Repaint materials as clean continuous painterly tonal surfaces with broad coherent shading, crisp structural edges and smooth atmospheric depth. Keep the large armor plates, sword edges, cloth folds, recognizable architecture, main lighting and coherent magic shapes. Remove the tiny scattered dots on all surfaces and the floating flecks/embers/snow; use clean haze instead. This must NOT be a blur filter and must not make a cartoon. Do not add objects, people, text, border or watermark. Output exactly the same aspect ratio as the reference, edge-to-edge. Specific scene: 3:2 close-up of the same dark-haired adult warrior on right grappling a horned lava demon on left in an orange infernal environment. Keep expressions and exact hands/pose; simplify busy fractured surface texture into coherent metal and skin, retaining only major lava cracks. Remove the cloud of tiny debris and flecks; no new gore.",
+      "output": "C:\\Users\\심도진\\.codex\\generated_images\\01a099a6-7b26-7e72-8d6c-f7d0d6215f28\\exec-d76d123a-812c-4c0a-a54a-482234a84d73.png",
+      "retouch": null
+    },
+    {
+      "id": "rd12",
+      "path": "G:\\exoduser\\img\\lording\\rd12.png",
+      "scene": "3:2 back-facing armored warrior carrying a sword and red cape, ascending stone steps toward a giant flaming demonic face in orange clouds, pillars and chains at sides. Preserve the face, architecture, major lightning and lava rivers. Remove granular texture and floating specks.",
+      "reference": "G:\\exoduser\\img\\lording\\rd12.png",
+      "prompt": "Use case: identity-preserve. Edit only the supplied dark fantasy game background to remove the pervasive stippling, dithering, film grain and speckled microtexture. Preserve the exact original composition, subject placement, proportions, silhouettes, identities, camera crop, palette and dark mood. Repaint materials as clean continuous painterly tonal surfaces with broad coherent shading, crisp structural edges and smooth atmospheric depth. Keep the large armor plates, sword edges, cloth folds, recognizable architecture, main lighting and coherent magic shapes. Remove the tiny scattered dots on all surfaces and the floating flecks/embers/snow; use clean haze instead. This must NOT be a blur filter and must not make a cartoon. Do not add objects, people, text, border or watermark. Output exactly the same aspect ratio as the reference, edge-to-edge. Specific scene: 3:2 back-facing armored warrior carrying a sword and red cape, ascending stone steps toward a giant flaming demonic face in orange clouds, pillars and chains at sides. Preserve the face, architecture, major lightning and lava rivers. Remove granular texture and floating specks.",
+      "output": "C:\\Users\\심도진\\.codex\\generated_images\\01a099a6-7b26-7e72-8d6c-f7d0d6215f28\\exec-e1e7a776-5fda-4c1a-94b6-eb99610aa850.png",
+      "retouch": null
+    },
+    {
+      "id": "rd13",
+      "path": "G:\\exoduser\\img\\lording\\rd13.png",
+      "scene": "3:2 SAME adult dark-haired warrior in close frontal crouching pose with lowered sword on left and red cape flowing right, fiery backdrop. Identity and pose must match. Repaint armor and skin as clean continuous surfaces, eliminate tiny speckles/mottling, preserve major wear shapes and large cloth folds; do not add or intensify injuries.",
+      "reference": "G:\\exoduser\\img\\lording\\rd13.png",
+      "prompt": "Use case: identity-preserve. Edit only the supplied dark fantasy game background to remove the pervasive stippling, dithering, film grain and speckled microtexture. Preserve the exact original composition, subject placement, proportions, silhouettes, identities, camera crop, palette and dark mood. Repaint materials as clean continuous painterly tonal surfaces with broad coherent shading, crisp structural edges and smooth atmospheric depth. Keep the large armor plates, sword edges, cloth folds, recognizable architecture, main lighting and coherent magic shapes. Remove the tiny scattered dots on all surfaces and the floating flecks/embers/snow; use clean haze instead. This must NOT be a blur filter and must not make a cartoon. Do not add objects, people, text, border or watermark. Output exactly the same aspect ratio as the reference, edge-to-edge. Specific scene: 3:2 SAME adult dark-haired warrior in close frontal crouching pose with lowered sword on left and red cape flowing right, fiery backdrop. Identity and pose must match. Repaint armor and skin as clean continuous surfaces, eliminate tiny speckles/mottling, preserve major wear shapes and large cloth folds; do not add or intensify injuries.",
+      "output": "C:\\Users\\심도진\\.codex\\generated_images\\01a099a6-7b26-7e72-8d6c-f7d0d6215f28\\exec-07d0a146-05c0-41e2-8a47-f5eef2fc6947.png",
+      "retouch": null
+    },
+    {
+      "id": "rd14",
+      "path": "G:\\exoduser\\img\\lording\\rd14.png",
+      "scene": "3:2 same adult dark-haired warrior sitting on ornate throne with raised goblet, flanked by two armored monster guards, piles of gold, chains and torchlight. Preserve all faces, expressions, pose, goblet and structure. Eliminate tiny flecks and grain, give metal continuous controlled reflections, soft coherent smoke. Do not add gore.",
+      "reference": "G:\\exoduser\\img\\lording\\rd14.png",
+      "prompt": "Use case: identity-preserve. Edit only the supplied dark fantasy game background to remove the pervasive stippling, dithering, film grain and speckled microtexture. Preserve the exact original composition, subject placement, proportions, silhouettes, identities, camera crop, palette and dark mood. Repaint materials as clean continuous painterly tonal surfaces with broad coherent shading, crisp structural edges and smooth atmospheric depth. Keep the large armor plates, sword edges, cloth folds, recognizable architecture, main lighting and coherent magic shapes. Remove the tiny scattered dots on all surfaces and the floating flecks/embers/snow; use clean haze instead. This must NOT be a blur filter and must not make a cartoon. Do not add objects, people, text, border or watermark. Output exactly the same aspect ratio as the reference, edge-to-edge. Specific scene: 3:2 same adult dark-haired warrior sitting on ornate throne with raised goblet, flanked by two armored monster guards, piles of gold, chains and torchlight. Preserve all faces, expressions, pose, goblet and structure. Eliminate tiny flecks and grain, give metal continuous controlled reflections, soft coherent smoke. Do not add gore.",
+      "output": "C:\\Users\\심도진\\.codex\\generated_images\\01a099a6-7b26-7e72-8d6c-f7d0d6215f28\\exec-e157b822-762f-426a-8b3f-a68a3efb3e6e.png",
+      "retouch": null
+    },
+    {
+      "id": "rd16",
+      "path": "G:\\exoduser\\img\\lording\\rd16.png",
+      "scene": "ultrawide 3.56:1 back-facing warrior on rocky mound with red cape flowing left and vertical sword in his hand, fiery city on both sides and bright orange cloud overhead. Preserve pose/crop and silhouettes. Remove the dense shower of tiny black/orange particles and grain, keep clean connected cloud shapes. Remove the tiny Windows activation notice at the bottom right as UI contamination; no text anywhere.",
+      "reference": "G:\\exoduser\\output\\lobby_image_review_20260913\\inspect\\img\\lording\\rd16.jpg",
+      "prompt": "Use case: identity-preserve. Edit only the supplied dark fantasy game background to remove the pervasive stippling, dithering, film grain and speckled microtexture. Preserve the exact original composition, subject placement, proportions, silhouettes, identities, camera crop, palette and dark mood. Repaint materials as clean continuous painterly tonal surfaces with broad coherent shading, crisp structural edges and smooth atmospheric depth. Keep the large armor plates, sword edges, cloth folds, recognizable architecture, main lighting and coherent magic shapes. Remove the tiny scattered dots on all surfaces and the floating flecks/embers/snow; use clean haze instead. This must NOT be a blur filter and must not make a cartoon. Do not add objects, people, text, border or watermark. Output exactly the same aspect ratio as the reference, edge-to-edge. Specific scene: ultrawide 3.56:1 back-facing warrior on rocky mound with red cape flowing left and vertical sword in his hand, fiery city on both sides and bright orange cloud overhead. Preserve pose/crop and silhouettes. Remove the dense shower of tiny black/orange particles and grain, keep clean connected cloud shapes. Remove the tiny Windows activation notice at the bottom right as UI contamination; no text anywhere. Fill the entire canvas edge to edge. No black bands. Remove any incidental Windows activation overlay text.",
+      "output": "C:\\Users\\심도진\\.codex\\generated_images\\01a099a6-7b26-7e72-8d6c-f7d0d6215f28\\exec-7ba37c90-6dc9-48ec-a386-506923fd0176.png",
+      "retouch": null
+    },
+    {
+      "id": "lobby_portrait",
+      "path": "G:\\exoduser\\assets\\lobby\\lobby_portrait.png",
+      "scene": "portrait 2:3 masked hooded black-armored warrior holding a large purple runic sword upright at left, purple glowing eyes, original gray-brown backdrop. Preserve exact hood/mask/armor silhouette, hands and blade. Replace the very coarse sandpaper/granular texture on every armor plate and sword surface with continuous dark metal planes and restrained smooth highlights, preserving the large sculpted ridges. Clean atmospheric halo and no speckles. Fill canvas edge to edge.",
+      "reference": "G:\\exoduser\\assets\\lobby\\lobby_portrait.png",
+      "prompt": "Use case: identity-preserve. Edit only the supplied dark fantasy game background to remove the pervasive stippling, dithering, film grain and speckled microtexture. Preserve the exact original composition, subject placement, proportions, silhouettes, identities, camera crop, palette and dark mood. Repaint materials as clean continuous painterly tonal surfaces with broad coherent shading, crisp structural edges and smooth atmospheric depth. Keep the large armor plates, sword edges, cloth folds, recognizable architecture, main lighting and coherent magic shapes. Remove the tiny scattered dots on all surfaces and the floating flecks/embers/snow; use clean haze instead. This must NOT be a blur filter and must not make a cartoon. Do not add objects, people, text, border or watermark. Output exactly the same aspect ratio as the reference, edge-to-edge. Specific scene: portrait 2:3 masked hooded black-armored warrior holding a large purple runic sword upright at left, purple glowing eyes, original gray-brown backdrop. Preserve exact hood/mask/armor silhouette, hands and blade. Replace the very coarse sandpaper/granular texture on every armor plate and sword surface with continuous dark metal planes and restrained smooth highlights, preserving the large sculpted ridges. Clean atmospheric halo and no speckles. Fill canvas edge to edge.",
+      "output": "C:\\Users\\심도진\\.codex\\generated_images\\01a099a6-7b26-7e72-8d6c-f7d0d6215f28\\exec-808cde41-307f-4150-b599-fce4f0237fea.png",
+      "retouch": null
+    }
+  ],
+  "applied": [
+    {
+      "id": "11",
+      "path": "img/lording/11.png",
+      "size": [
+        2172,
+        724
+      ],
+      "bytes": 1955440,
+      "sha256": "ebcc9bb2c36420310a2b36d48aa1b674fa4bd1272c70ed4bbd606332f0c8a182"
+    },
+    {
+      "id": "rd17",
+      "path": "img/lording/rd17.png",
+      "size": [
+        1915,
+        821
+      ],
+      "bytes": 2272936,
+      "sha256": "5bf3db7f006922b7166788e1a568d9964df48a7174870928369bb2dc748709c1"
+    },
+    {
+      "id": "rd17",
+      "path": "assets/lobby/lobby_bg_frost.png",
+      "size": [
+        1915,
+        821
+      ],
+      "bytes": 2272936,
+      "sha256": "5bf3db7f006922b7166788e1a568d9964df48a7174870928369bb2dc748709c1"
+    },
+    {
+      "id": "rd15",
+      "path": "img/lording/rd15.png",
+      "size": [
+        2170,
+        725
+      ],
+      "bytes": 1887904,
+      "sha256": "3d182a95a6ea9c89f9bbe92d3bc2a488985a935b7ee7d20a8d178110031b1bbd"
+    },
+    {
+      "id": "lobby_bg",
+      "path": "assets/lobby/lobby_bg_new.png",
+      "size": [
+        1536,
+        1024
+      ],
+      "bytes": 2374442,
+      "sha256": "7c89d0fed951da6d21cfd328a44c4da58b1feba7f7c3748a7d5e218cff98fb5f"
+    },
+    {
+      "id": "4",
+      "path": "img/lording/4.png",
+      "size": [
+        2170,
+        725
+      ],
+      "bytes": 2028309,
+      "sha256": "0e1e2f4657c83667b365214bc50802254ef1cbf7089862226b6d024ac5082e21"
+    },
+    {
+      "id": "10",
+      "path": "img/lording/10.png",
+      "size": [
+        2170,
+        725
+      ],
+      "bytes": 2040647,
+      "sha256": "d601fd8c522307b9db890334b971f77d9ce199ed9cc2986ac0df31a3328cf727"
+    },
+    {
+      "id": "13",
+      "path": "img/lording/13.png",
+      "size": [
+        2170,
+        725
+      ],
+      "bytes": 1939473,
+      "sha256": "2dae6de6db0d013af86e7031cf3e3e3fd3ff650e10a41967acffb25e619b41ea"
+    },
+    {
+      "id": "14",
+      "path": "img/lording/14.png",
+      "size": [
+        2171,
+        724
+      ],
+      "bytes": 2164864,
+      "sha256": "e59dfa85945bb019dc5421efe6ddf938cb6a08b32578dc43ff45bb8a4e758103"
+    },
+    {
+      "id": "15",
+      "path": "img/lording/15.png",
+      "size": [
+        2170,
+        725
+      ],
+      "bytes": 2035450,
+      "sha256": "ee9a79eaea57926bc65ca153a799cc604ffbcfd31bebc30ca4800aec18513602"
+    },
+    {
+      "id": "16",
+      "path": "img/lording/16.png",
+      "size": [
+        2172,
+        724
+      ],
+      "bytes": 1978737,
+      "sha256": "99474b62a691b618928fc43860bece471fdce52d1dc1af4c420c43f0d21bd567"
+    },
+    {
+      "id": "17",
+      "path": "img/lording/17.png",
+      "size": [
+        2170,
+        725
+      ],
+      "bytes": 2112356,
+      "sha256": "49390b06531e5a796376a83e3440c34438cd54286204cfde2df8e31dad7ded1b"
+    },
+    {
+      "id": "18",
+      "path": "img/lording/18.png",
+      "size": [
+        2170,
+        725
+      ],
+      "bytes": 1939611,
+      "sha256": "78a974aa7a1b02e7ed99b96b9b2b75629377f94fd3a8f8ebe10c64543e2a8b8a"
+    },
+    {
+      "id": "19",
+      "path": "img/lording/19.png",
+      "size": [
+        2170,
+        725
+      ],
+      "bytes": 2625166,
+      "sha256": "d8d1dd609c99d23b50cde10d203af2cd8d3334803f5198e713565861701f60fb"
+    },
+    {
+      "id": "rd1",
+      "path": "img/lording/rd1.png",
+      "size": [
+        1915,
+        821
+      ],
+      "bytes": 1925551,
+      "sha256": "cf435a679e8c3f2b42ae0e2d1dae78b8e1b588e3786e34e528e728726cabbb32"
+    },
+    {
+      "id": "rd1",
+      "path": "assets/lobby/lobby_bg_flame.png",
+      "size": [
+        1915,
+        821
+      ],
+      "bytes": 1925551,
+      "sha256": "cf435a679e8c3f2b42ae0e2d1dae78b8e1b588e3786e34e528e728726cabbb32"
+    },
+    {
+      "id": "rd2",
+      "path": "img/lording/rd2.png",
+      "size": [
+        1536,
+        1024
+      ],
+      "bytes": 2763244,
+      "sha256": "61cdf1e1594a338d20973f68cfd64f25db555d778db12418aa0436b1e2d6f8bd"
+    },
+    {
+      "id": "rd5",
+      "path": "img/lording/rd5.png",
+      "size": [
+        1536,
+        1024
+      ],
+      "bytes": 3184394,
+      "sha256": "83b864df73f33c8b57774a10c20c8a8e675edef529291d0765c654db99d77e4b"
+    },
+    {
+      "id": "rd6",
+      "path": "img/lording/rd6.png",
+      "size": [
+        1915,
+        821
+      ],
+      "bytes": 2043725,
+      "sha256": "7ef39c84c2ec11b2b5b72191e20312d3d106e2844f5dd46d16498a7f975a3c46"
+    },
+    {
+      "id": "rd6",
+      "path": "assets/lobby/lobby_bg_abyss.png",
+      "size": [
+        1915,
+        821
+      ],
+      "bytes": 2043725,
+      "sha256": "7ef39c84c2ec11b2b5b72191e20312d3d106e2844f5dd46d16498a7f975a3c46"
+    },
+    {
+      "id": "rd8",
+      "path": "img/lording/rd8.png",
+      "size": [
+        1536,
+        1024
+      ],
+      "bytes": 2489997,
+      "sha256": "9957be10eee884aff7c472307bc161a507471dbc21735a802116573859e1fe30"
+    },
+    {
+      "id": "rd12",
+      "path": "img/lording/rd12.png",
+      "size": [
+        1536,
+        1024
+      ],
+      "bytes": 2600974,
+      "sha256": "c7e4a745ff44aa30c2a6516882f0df41752db27a1926a099c07a5a771b7681b0"
+    },
+    {
+      "id": "rd13",
+      "path": "img/lording/rd13.png",
+      "size": [
+        1536,
+        1024
+      ],
+      "bytes": 2369735,
+      "sha256": "e7e21e1d03e3d5b420c80f986f38259851bb50a02e2e2ddb5b3f34c5bcc63987"
+    },
+    {
+      "id": "rd14",
+      "path": "img/lording/rd14.png",
+      "size": [
+        1536,
+        1024
+      ],
+      "bytes": 2418122,
+      "sha256": "3a02f1cd2a24de86f88d702b697d84c56caa254ae1ffcd5efb9931bc2c75e265"
+    },
+    {
+      "id": "rd16",
+      "path": "img/lording/rd16.png",
+      "size": [
+        2170,
+        725
+      ],
+      "bytes": 2306368,
+      "sha256": "e743f1212dc254c276893835f096b92cd5a381f6125c71abcdc7b3a398801573"
+    },
+    {
+      "id": "lobby_portrait",
+      "path": "assets/lobby/lobby_portrait.png",
+      "size": [
+        1024,
+        1536
+      ],
+      "bytes": 2005596,
+      "sha256": "bb0cd6d6b5e91a676eb82171f035d8ef1b2ac92be799d32e9c045c0c54cf4cba"
+    }
+  ]
+}

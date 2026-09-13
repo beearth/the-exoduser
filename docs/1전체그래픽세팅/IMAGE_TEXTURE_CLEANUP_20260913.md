@@ -23,7 +23,7 @@
 | 나머지 | 정상 디코드3403개를35개 연락판으로 전체 선별 검토. 전투 스프라이트·프레임·아이콘·원본 작업 파일 포함 |
 | 별도 컷신 | 숫자00~20의21개, 기타5개를 별도 검토. 실제 교체 대상은 개별 원본·생성 결과도 확인 |
 | 검토 수준 | 전체 목록의 썸네일 선별 + 심한 후보 개별 검토. 모든 프레임의 원본 확대 검사나 모든 전투 장면 실행 검사는 아님 |
-| 발견된 별개 파일 | `img/cat_pet_anim/animations/idle/south-west/frame_001.png`는 기존 디코드 실패1개. 점무늬와 무관하여 수정하지 않음 |
+| 발견된 별개 파일 | `img/cat_pet_anim/animations/idle/south-west/frame_001.png`는 기존 디코드 실패1개. 후속 로비 검수에서 같은 방향 frame_000.png를 복사해 정상 PNG로 보완(동일 포즈 반복). [로비 추가 검수](LOBBY_IMAGE_REVIEW_20260913.md) |
 | 이미지 외 범위 | 동영상에 이미 구워진 질감은 이번 PNG 편집 대상이 아님. 맵 geometry·collision·baked 환경과 전투 수치 변경 없음 |
 | 증거 | `output/image_texture_cleanup_20260913/inventory.json`, large_00~47.jpg, remaining_00~34.jpg, intro_00.jpg, extra_refs.jpg |
 
@@ -69,8 +69,8 @@
 | `_cutGrain` | 함수·호출 삭제. 이전200개의1×1px 흑백 점/overlay 합성은 더 이상 실행되지 않음 |
 | 컷신 유지 | 대사·시간·화자·카메라·비네트·색보정·스킵·음성·BGM 값 그대로. 데이터 차이는 grain 제거뿐 |
 | `_getCutsceneImg` | 기본 images/ 파일에 `?v=20260913-clean-shading`. `/`를 포함한 warintro 등 경로 분기는 기존 그대로 |
-| 게임 로딩 | `_STAGE_TRANSITION_RD`의1~19.png URL에 같은 버전 토큰 |
-| 로비 | 랜덤 배경 preload와 실제 CSS 모두 같은 버전 URL 사용. `pickRandomLoadingImage`의16개 rd 이미지와 로딩 preload도 같은 버전 |
+| 게임 로딩 | `_STAGE_TRANSITION_RD`의1~19.png URL은 일반·쉬운 게임 모두 `?v=20260913-lobby-smooth1` (후속 검수 갱신) |
+| 로비 | 랜덤 배경·로딩 preload·실제 CSS·`pickRandomLoadingImage`의16개 rd 이미지 모두 `?v=20260913-lobby-smooth1`. rd6은 PNG로 변경. 메인 배경3종·우측 배경·대체 초상화도 같은 토큰. [로비 추가 검수](LOBBY_IMAGE_REVIEW_20260913.md) |
 | `OPT.grain` | 맵 설정 별도 유지. 현행 CSS 대비·밝기 처리이며 점 노이즈를 생성하지 않음 |
 | 맵 CSS | `_wantFx=OPT.postfx&&OPT.quality!=='low'`, `_wantGrain=_wantFx&&OPT.grain`, `_brVal=(OPT.brightness||100)/100`. grain일 때 contrast1.05·brightness0.97×brVal, postfx만일 때 contrast1.02·brightness brVal, 그 외 brightness brVal |
 | DOM | 부모 내용 교체 없음. 기존 img.src·CSS 배경 URL만 갱신 |

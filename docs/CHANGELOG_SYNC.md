@@ -1,3 +1,14 @@
+## 2026-09-13 로비 거대전사 이미지 추가 검수
+
+| 항목 | 변경 |
+|---|---|
+| 검수 | 로비·로딩 후보51개,23개 장면 GPT 편집+메인 배경 사본3개=26개 PNG 반영 |
+| 실제 누락 원인 | 메인 frost/flame/abyss 별도 사본이 과거 점무늬 상태로 남아 있었음 |
+| 런타임 | index.html·game.html·game-easy-test.html의 로비/로딩 캐시20260913-lobby-smooth1, abyss/rd6 PNG 전환 |
+| 별개 오류 | 고양이 idle/south-west/frame_001.png 0바이트를 기존 frame_000.png 복사로 보완 |
+| 기록 | docs/1전체그래픽세팅/LOBBY_IMAGE_REVIEW_20260913.md 및 PROMPTS JSON |
+
+
 ## 2026-09-13 가시덫 실습 실드 처리 수정
 
 | 항목 | 변경 |

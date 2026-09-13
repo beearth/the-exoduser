@@ -40,7 +40,7 @@ with sync_playwright() as p:
     page.evaluate("_cutLineIdx=INTRO_CUTSCENE_LINES.ko.findIndex(l=>l.id===5);_cutLineStartMs=performance.now()-20000;_cutWaitInput=true;_cutsceneAdvance()")
     assert page.evaluate('_cutsceneGetLines()[_cutLineIdx].id')==6
     loads=page.evaluate('''async ()=>{const result=[];for(const n of [1,2,3]){const im=new Image();im.src=_STAGE_TRANSITION_RD[n-1];await im.decode();result.push(im.src);}return result;}''')
-    assert all('20260913-clean-shading' in u for u in loads)
+    assert all('20260913-lobby-smooth1' in u for u in loads)
     page.evaluate("_cutsceneState='QA_PAUSED';_cutC.style.display='none';const el=document.getElementById('stageTransition');el.style.opacity='1';document.getElementById('stRndImg').src=_STAGE_TRANSITION_RD[2]")
     page.wait_for_function("document.getElementById('stRndImg').complete")
     page.wait_for_function("Number(getComputedStyle(document.getElementById('stageTransition')).opacity)>=.99")
@@ -51,11 +51,11 @@ with sync_playwright() as p:
     source=(R/'index.html').read_text(encoding='utf-8')
     bg=next(line for line in source.splitlines() if line.startswith('(function(){const n=~~(Math.random()*19)'))
     lobby.evaluate(bg)
-    lobby.wait_for_function("document.body.style.backgroundImage.includes('20260913-clean-shading')")
+    lobby.wait_for_function("document.body.style.backgroundImage.includes('20260913-lobby-smooth1')")
     picker=source[source.index('const _RD_IMGS='):source.index('function showLoading(')]
     lobby_url=lobby.evaluate(picker+'\npickRandomLoadingImage();')
-    assert '?v=20260913-clean-shading' in lobby_url
-    assert lobby.request.get('http://127.0.0.1:3333/img/lording/rd4.png?v=20260913-clean-shading').ok
+    assert '?v=20260913-lobby-smooth1' in lobby_url
+    assert lobby.request.get('http://127.0.0.1:3333/img/lording/rd4.png?v=20260913-lobby-smooth1').ok
     assert not errors,errors
     browser.close()
 (O/'qa.json').write_text(json.dumps({'status':'PASS','assets':asset_info,'decoded':decoded,'captures':captures,'page_errors':errors,'real_save_writes':False,'next_cut_id':6,'loading_urls':loads},ensure_ascii=False,indent=2),encoding='utf-8')

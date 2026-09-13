@@ -179,7 +179,7 @@ body{background:#000 center/cover no-repeat;color:#ccaa88;font-family:'Noto Sans
 .char-disp-empty.hidden{opacity:0}
 
 /* 우측 영역 */
-.lobby-right{position:relative;flex:0 0 35%;height:100%;background:linear-gradient(180deg,rgba(8,3,18,0.42) 0%,rgba(4,2,12,0.48) 100%),url('assets/lobby/lobby_bg_new.png') center/cover no-repeat;padding:20px 24px 16px 24px;display:flex;flex-direction:column;border-left:2px solid;border-image:linear-gradient(180deg,#3a1a55 0%,#c44444 50%,#3a1a55 100%) 1}
+.lobby-right{position:relative;flex:0 0 35%;height:100%;background:linear-gradient(180deg,rgba(8,3,18,0.42) 0%,rgba(4,2,12,0.48) 100%),url('assets/lobby/lobby_bg_new.png?v=20260913-lobby-smooth1') center/cover no-repeat;padding:20px 24px 16px 24px;display:flex;flex-direction:column;border-left:2px solid;border-image:linear-gradient(180deg,#3a1a55 0%,#c44444 50%,#3a1a55 100%) 1}
 
 /* 우측 헤더 */
 .lobby-header{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:18px}
@@ -1004,7 +1004,7 @@ function _gpDot(on){
 </script>
 <script>
 // ═══ 로비 배경: 트랜지션 이미지 중 랜덤 1장 ═══
-(function(){const n=~~(Math.random()*19)+1;const _base='img/lording/';const img=new Image();img.onload=function(){document.body.style.backgroundImage='linear-gradient(rgba(0,0,0,.55),rgba(0,0,0,.55)),url('+img.src+')'};img.src=_base+n+'.png?v=20260913-clean-shading'})();
+(function(){const n=~~(Math.random()*19)+1;const _base='img/lording/';const img=new Image();img.onload=function(){document.body.style.backgroundImage='linear-gradient(rgba(0,0,0,.55),rgba(0,0,0,.55)),url('+img.src+')'};img.src=_base+n+'.png?v=20260913-lobby-smooth1'})();
 // 브라우저 줌 차단
 addEventListener('wheel',e=>{if(e.ctrlKey||e.metaKey)e.preventDefault()},{passive:false});
 // ── 빌드 버전 (demo.html → 'demo', ea.html → 'ea') ──
@@ -2478,22 +2478,22 @@ let _emberIv=setInterval(()=>{
 },150);
 
 // ═══ 로딩 화면 시스템 (전체 화면 이미지) ═══
-// 실제 존재하는 rd 파일 목록 (rd3 없음, rd6=webp, rd11=jpg)
+// 실제 존재하는 rd 파일 목록 (rd3 없음, rd6=png, rd11=jpg)
 const _RD_IMGS=[
-  'rd1.png','rd2.png','rd4.png','rd5.png','rd6.webp',
+  'rd1.png','rd2.png','rd4.png','rd5.png','rd6.png',
   'rd7.png','rd8.png','rd9.png','rd10.png','rd11.jpg',
   'rd12.png','rd13.png','rd14.png','rd15.png','rd16.png','rd17.png'
 ];
 function pickRandomLoadingImage(){
-  return 'img/lording/'+_RD_IMGS[~~(Math.random()*_RD_IMGS.length)]+'?v=20260913-clean-shading';
+  return 'img/lording/'+_RD_IMGS[~~(Math.random()*_RD_IMGS.length)]+'?v=20260913-lobby-smooth1';
 }
 
 // 로비 진입 시 로딩 이미지 프리로드
-// - rd*.png 16장 (index.html 게이트 오버레이)
+// - rd 계열 16장: rd3 제외, rd11.jpg 외 PNG (로딩 후보 preload)
 // - 1~19.png 19장 (game.html 부트 로딩 배경)
 function _preloadLoadingImgs(){
-  _RD_IMGS.forEach(f=>{const i=new Image();i.src='img/lording/'+f+'?v=20260913-clean-shading';});
-  for(let n=1;n<=19;n++){const i=new Image();i.src='img/lording/'+n+'.png?v=20260913-clean-shading';}
+  _RD_IMGS.forEach(f=>{const i=new Image();i.src='img/lording/'+f+'?v=20260913-lobby-smooth1';});
+  for(let n=1;n<=19;n++){const i=new Image();i.src='img/lording/'+n+'.png?v=20260913-lobby-smooth1';}
 }
 
 function showLoading(msg){
@@ -2763,7 +2763,7 @@ function _renderOnlineSlots(){
       const st=_formatLobbyStageProgress(stage,_TL);
       const _pci=(ch.charIdx!=null?ch.charIdx:(ch.data&&ch.data.charIdx)||0);const _vi=CHAR_VISUALS[_pci]||CHAR_VISUALS[0];
       const div=document.createElement('div');div.className='char-item'+(_selectedSlot===ch.id?' active':'');
-      div.innerHTML=`<div class="char-thumb"><img src="${(_vi&&(_vi.bust||_vi.portrait))||'assets/lobby/lobby_portrait.png?v=2'}" style="width:100%;height:100%;object-fit:cover;object-position:center 12%;border-radius:2px"></div><div class="char-text"><div class="char-name">${escHtml(ch.name)}<span class="char-cls">${escHtml(_TL((_vi&&(_vi.job||_vi.cls))||''))}</span></div><div class="char-info">Lv.${lv} | ${st}</div></div><button class="char-del" title="${_TL('삭제')}">✕</button>`;
+      div.innerHTML=`<div class="char-thumb"><img src="${(_vi&&(_vi.bust||_vi.portrait))||'assets/lobby/lobby_portrait.png?v=20260913-lobby-smooth1'}" style="width:100%;height:100%;object-fit:cover;object-position:center 12%;border-radius:2px"></div><div class="char-text"><div class="char-name">${escHtml(ch.name)}<span class="char-cls">${escHtml(_TL((_vi&&(_vi.job||_vi.cls))||''))}</span></div><div class="char-info">Lv.${lv} | ${st}</div></div><button class="char-del" title="${_TL('삭제')}">✕</button>`;
       div.addEventListener('click',e=>{
         if(e.target.classList.contains('char-del'))return;
         _selectedSlot=ch.id;_selectedSlotName=ch.name;
@@ -3013,7 +3013,7 @@ function _renderSlotList(){
   // ── DEMO: 슬롯 1개 고정, 생성 버튼 없음 ──
   if(_LOBBY_BUILD==='demo'){
     const div=document.createElement('div');div.className='char-item active';
-    div.innerHTML='<div class="char-thumb"><img src="assets/lobby/lobby_portrait.png?v=2" style="width:100%;height:100%;object-fit:cover;object-position:center 20%;border-radius:2px"></div><div class="char-text"><div class="char-name">DEMO CHARACTER</div><div class="char-info" style="color:rgba(200,150,100,.6)">Lv.1 START · Stage 1-1</div></div>';
+    div.innerHTML='<div class="char-thumb"><img src="assets/lobby/lobby_portrait.png?v=20260913-lobby-smooth1" style="width:100%;height:100%;object-fit:cover;object-position:center 20%;border-radius:2px"></div><div class="char-text"><div class="char-name">DEMO CHARACTER</div><div class="char-info" style="color:rgba(200,150,100,.6)">Lv.1 START · Stage 1-1</div></div>';
     const demoSlot={name:'DEMO CHARACTER',charIdx:0,stage:0};
     div.addEventListener('click',()=>{_selectedSlot='demo';_selectedSlotName='demo';_updateCharDisplay(demoSlot);});
     cl.appendChild(div);
@@ -3050,7 +3050,7 @@ function _renderSlotList(){
       const st=_formatLobbyStageProgress(stage,_TL);
       const _vi=CHAR_VISUALS[s.charIdx||0]||CHAR_VISUALS[0];
       const div=document.createElement('div');div.className='char-item'+(_selectedSlot===s.name?' active':'');
-      div.innerHTML=`<div class="char-thumb"><img src="${(_vi&&(_vi.bust||_vi.portrait))||'assets/lobby/lobby_portrait.png?v=2'}" style="width:100%;height:100%;object-fit:cover;object-position:center 12%;border-radius:2px"></div><div class="char-text"><div class="char-name">${escHtml(s.name)}<span class="char-cls">${escHtml(_TL((_vi&&(_vi.job||_vi.cls))||''))}</span></div><div class="char-info">Lv.${s.lv||1} · ${st}</div></div><button class="char-del" title="${_TL('삭제')}">✕</button>`;
+      div.innerHTML=`<div class="char-thumb"><img src="${(_vi&&(_vi.bust||_vi.portrait))||'assets/lobby/lobby_portrait.png?v=20260913-lobby-smooth1'}" style="width:100%;height:100%;object-fit:cover;object-position:center 12%;border-radius:2px"></div><div class="char-text"><div class="char-name">${escHtml(s.name)}<span class="char-cls">${escHtml(_TL((_vi&&(_vi.job||_vi.cls))||''))}</span></div><div class="char-info">Lv.${s.lv||1} · ${st}</div></div><button class="char-del" title="${_TL('삭제')}">✕</button>`;
       div.addEventListener('click',e=>{if(e.target.classList.contains('char-del'))return;_selectSlot(s)});
       div.querySelector('.char-del').addEventListener('click',e=>{
         e.stopPropagation();
@@ -3149,18 +3149,18 @@ function _updateCharDisplay(s){
 
 // 로비 배경 preload (페이지 로드 시 미리 캐시)
 (function _preloadLobbyBgs(){
-  ['frost.png','flame.png','abyss.webp'].forEach(f=>{
-    const i=new Image();i.src='assets/lobby/lobby_bg_'+f;
+  ['frost.png','flame.png','abyss.png'].forEach(f=>{
+    const i=new Image();i.src='assets/lobby/lobby_bg_'+f+'?v=20260913-lobby-smooth1';
   });
 })();
 
 function _swapLobbyBg(stage){
   const bg=$('lobbyBgImg');if(!bg)return;
-  const _bgs=[{k:'frost',e:'.png'},{k:'flame',e:'.png'},{k:'abyss',e:'.webp'}];
+  const _bgs=[{k:'frost',e:'.png'},{k:'flame',e:'.png'},{k:'abyss',e:'.png'}];
   const pick=_bgs[~~(Math.random()*_bgs.length)];
   if(_curBg===pick.k)return;
   _curBg=pick.k;
-  const url='assets/lobby/lobby_bg_'+pick.k+pick.e;
+  const url='assets/lobby/lobby_bg_'+pick.k+pick.e+'?v=20260913-lobby-smooth1';
   bg.style.opacity='0';
   const tmp=new Image();
   tmp.onload=()=>{

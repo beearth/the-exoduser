@@ -1,6 +1,6 @@
 # 로비 풀 코드 (index.html 패치)
 
-세 군데에 넣으면 끝. 다른 거 손대지 말 것.
+과거 로비 패치 기록. 현재 정적 이미지 계약은 아래 2026-09-13 절을 우선한다. 기존 CSS를 통째로 재적용하지 않는다.
 
 ================================================================
 [1] CSS 추가
@@ -138,16 +138,19 @@ function _updateCharDisplay(s){
 let _curBg=null;
 function _swapLobbyBg(stage){
   const bg=$('lobbyBgImg');if(!bg)return;
-  const hell=Math.min(6,~~((stage||0)/10));
-  const key=hell===0?'frost':(hell===1?'flame':'abyss');
-  if(_curBg===key)return;
-  _curBg=key;
-  const url='assets/lobby/lobby_bg_'+key+'.webp';
+  const _bgs=[{k:'frost',e:'.png'},{k:'flame',e:'.png'},{k:'abyss',e:'.png'}];
+  const pick=_bgs[~~(Math.random()*_bgs.length)];
+  if(_curBg===pick.k)return;
+  _curBg=pick.k;
+  const url='assets/lobby/lobby_bg_'+pick.k+pick.e+'?v=20260913-lobby-smooth1';
   bg.style.opacity='0';
-  setTimeout(()=>{
+  const tmp=new Image();
+  tmp.onload=()=>{
     bg.style.backgroundImage="url('"+url+"')";
-    bg.style.opacity='1';
-  },200);
+    setTimeout(()=>{ bg.style.opacity='1'; },50);
+  };
+  tmp.onerror=()=>{ bg.style.backgroundImage="url('"+url+"')"; bg.style.opacity='1'; };
+  tmp.src=url;
 }
 ```
 
@@ -179,3 +182,17 @@ function _swapLobbyBg(stage){
 `.lobby{display:none}` 한 줄을 찾아서 삭제. (위 [1]의 새 CSS에서 다시 정의했음)
 
 또한 [1]의 `.lobby.show{display:flex}` 가 새로 추가됐으므로, 기존 코드에서 `$('lobby').style.display='flex'` 로 직접 설정하는 부분은 그대로 두면 됨 (display:flex가 inline style로 들어가서 정상 동작).
+
+## 2026-09-13 로비 정적 이미지 현행 계약
+
+미선택 메인 배경은 스테이지와 무관하게3종을 무작위 선택한다. 캐릭터 선택 시 기존 아이들 영상 레이어를 사용한다.
+
+| 적용 위치 | 파일 | 공유 원본 | 캐시 |
+|---|---|---|---|
+| 메인 frost | assets/lobby/lobby_bg_frost.png | img/lording/rd17.png | 20260913-lobby-smooth1 |
+| 메인 flame | assets/lobby/lobby_bg_flame.png | img/lording/rd1.png | 20260913-lobby-smooth1 |
+| 메인 abyss | assets/lobby/lobby_bg_abyss.png | img/lording/rd6.png | 20260913-lobby-smooth1 |
+| 우측 패널 | assets/lobby/lobby_bg_new.png | 별도 편집 | 20260913-lobby-smooth1 |
+| 대체 초상화 | assets/lobby/lobby_portrait.png | 별도 편집 | 20260913-lobby-smooth1 |
+
+`_preloadLobbyBgs`와 `_swapLobbyBg`는 동일한 PNG3개와 버전 URL을 사용한다. `_curBg`가 같은 경우 재전환하지 않는다. 로딩 picker는 rd3을 제외한 rd1~rd17의16개(rd11.jpg 외 PNG)이며, 일반/쉬운 게임 전환 배경은 숫자1~19의19개다. 이미지의 전면 점무늬를 GPT로 정리했으며 [개별 판정·해상도](../1전체그래픽세팅/LOBBY_IMAGE_REVIEW_20260913.md)를 따른다.
