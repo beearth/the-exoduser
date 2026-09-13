@@ -1,5 +1,7 @@
 # 인게임 이미지 점무늬 정리 — 2026-09-13
 
+> 후속 사용자 검수에서 재질 단순화와 펫 목걸이 누락이 확인됐다. 아래1차의 시각 PASS를 현재 디자인 승인으로 취급하지 않는다. [현행 인트로 품질·연속성](INTRO_QUALITY_CONTINUITY_20260913.md)을 우선한다.
+
 ## 요청·판정 기준
 
 사용자가 제시한 `스크린샷 2026-09-13 141403.png`의 장면은 `assets/cutscene/images/05.png`다. 이미지 자체의 피부·갑옷·나무·바닥에 박힌 고대비 잔점(점묘/디더링에 가까운 미세 질감)이 주원인이고, 컷신 전용 `_cutGrain`도 별도로 점을 추가했다. GPT 이미지 편집으로 연속적인 명암을 다시 그렸다. 일괄 블러나 코드 필터로 원본을 흐리게 만들지 않았다.
@@ -27,7 +29,7 @@
 | 이미지 외 범위 | 동영상에 이미 구워진 질감은 이번 PNG 편집 대상이 아님. 맵 geometry·collision·baked 환경과 전투 수치 변경 없음 |
 | 증거 | `output/image_texture_cleanup_20260913/inventory.json`, large_00~47.jpg, remaining_00~34.jpg, intro_00.jpg, extra_refs.jpg |
 
-## 적용 파일
+## 1차 적용 파일 (당시 기록, 현행은 후속 문서 우선)
 
 | 파일 | 장면·출처 | 이전 → 현재 해상도 | 처리 |
 |---|---|---|---|
@@ -68,9 +70,9 @@
 | `INTRO_CUTSCENE_LINES` | ko/en/ja/zh의16개 grain 속성 제거. 해당 이미지는00/02/05/07 |
 | `_cutGrain` | 함수·호출 삭제. 이전200개의1×1px 흑백 점/overlay 합성은 더 이상 실행되지 않음 |
 | 컷신 유지 | 대사·시간·화자·카메라·비네트·색보정·스킵·음성·BGM 값 그대로. 데이터 차이는 grain 제거뿐 |
-| `_getCutsceneImg` | 기본 images/ 파일에 `?v=20260913-clean-shading`. `/`를 포함한 warintro 등 경로 분기는 기존 그대로 |
-| 게임 로딩 | `_STAGE_TRANSITION_RD`의1~19.png URL은 일반·쉬운 게임 모두 `?v=20260913-lobby-smooth1` (후속 검수 갱신) |
-| 로비 | 메인 배경3종과 `pickRandomLoadingImage`/rd preload16개는 `?v=20260913-lobby-detail2`. 숫자1~19 랜덤 배경/preload·우측 배경·대체 초상화는 `?v=20260913-lobby-smooth1`. rd6은 PNG. [로비 추가 검수](LOBBY_IMAGE_REVIEW_20260913.md) |
+| `_getCutsceneImg` | 일반·쉬운 게임의 기본 images/에 `?v=20260913-intro-detail2`. `/`를 포함한 warintro 등 경로 분기는 기존 그대로 |
+| 게임 로딩 | `_STAGE_TRANSITION_RD`의1~19.png URL은 일반·쉬운 게임 모두 `?v=20260913-intro-detail2` |
+| 로비 | images/ 컷신(일반·쉬운 게임), 숫자1~19 로딩/로비 배경/preload, rd16개 picker/preload는 `20260913-intro-detail2`. 메인 로비3종 preload/swap는 `20260913-lobby-detail2`. 우측 배경·대체 초상화는 `20260913-lobby-smooth1` |
 | `OPT.grain` | 맵 설정 별도 유지. 현행 CSS 대비·밝기 처리이며 점 노이즈를 생성하지 않음 |
 | 맵 CSS | `_wantFx=OPT.postfx&&OPT.quality!=='low'`, `_wantGrain=_wantFx&&OPT.grain`, `_brVal=(OPT.brightness||100)/100`. grain일 때 contrast1.05·brightness0.97×brVal, postfx만일 때 contrast1.02·brightness brVal, 그 외 brightness brVal |
 | DOM | 부모 내용 교체 없음. 기존 img.src·CSS 배경 URL만 갱신 |

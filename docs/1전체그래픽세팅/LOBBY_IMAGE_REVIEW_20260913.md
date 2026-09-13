@@ -11,8 +11,8 @@
 | 계약 | 현재 값 |
 |---|---|
 | 메인 로비 배경 | frost/flame/abyss 모두 PNG, 무작위3종 |
-| 캐시 | 메인 로비3종과 rd 계열 picker/preload는20260913-lobby-detail2; 우측/대체 초상화/숫자1~19는20260913-lobby-smooth1 |
-| 컷신 캐시 | 기존20260913-clean-shading 유지 |
+| 캐시 | images/ 컷신(일반·쉬운 게임), 숫자1~19 로딩/로비 배경/preload, rd16개 picker/preload는 `20260913-intro-detail2`. 메인 로비3종 preload/swap는 `20260913-lobby-detail2`. 우측 배경·대체 초상화는 `20260913-lobby-smooth1` |
+| 컷신 캐시 | 일반·쉬운 게임 images/는20260913-intro-detail2 |
 | 출력 형식 | 내장 image_gen.imagegen의 PNG. rd6.webp와 lobby_bg_abyss.webp는 기존 파일 보존, 런타임은 새 PNG 참조 |
 | 편집 방식 | 입자·디더링·점묘를 연속적인 명암으로 재도색. Python/Pillow는 원본 미리보기·검수·메타데이터에만 사용 |
 | 보존과 차이 | 인물·검·큰 건축물·색 분위기 보존. 생성 편집이므로 세부 장식/질감/프레이밍 차이 있음. 일부5119×1439 파노라마는 약3:1 출력으로 바뀜. CSS cover로 표시하며 강제 늘림 없음 |

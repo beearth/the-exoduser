@@ -15,7 +15,7 @@
 | 구도 |3:2, 왼쪽 약70%에 주체3개를 배치해 로비 cover 크롭 대응 |
 | 해상도 한계 |3072×2048을 프롬프트로 요청했으나 실제 도구 출력은1536×1024. 네이티브4K나 단순 업스케일로 표기하지 않음. 1296px 높이에서는 여전히 확대되므로 실제 화면으로 확인 |
 | 추가 확대 | lobbyKenburns 시작1/끝1.02, translate 시작0,0/끝-.3%,-.2%. 기존1.04~1.08 확대를 축소.46초·원점50%45% 유지 |
-| 캐시 | 메인3종 preload/swap와 rd16개 picker/preload는20260913-lobby-detail2. 그 외 숫자1~19·우측 배경·대체 초상화는20260913-lobby-smooth1 |
+| 캐시 | images/ 컷신(일반·쉬운 게임), 숫자1~19 로딩/로비 배경/preload, rd16개 picker/preload는 `20260913-intro-detail2`. 메인 로비3종 preload/swap는 `20260913-lobby-detail2`. 우측 배경·대체 초상화는 `20260913-lobby-smooth1` |
 | 도구 | 내장 image_gen.imagegen, [정확한 프롬프트·출력·해시](LOBBY_WARRIOR_REDESIGN_PROMPTS_20260913.json) |
 
 ## 반영 파일

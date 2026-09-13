@@ -57632,7 +57632,7 @@ function _getCutsceneImg(filename){
   if(!filename)return null;
   if(_cutsceneImgCache[filename])return _cutsceneImgCache[filename];
   const img=new Image();
-  img.src=filename.indexOf('/')>=0?'assets/cutscene/'+filename:'assets/cutscene/images/'+filename+'?v=20260913-clean-shading';
+  img.src=filename.indexOf('/')>=0?'assets/cutscene/'+filename:'assets/cutscene/images/'+filename+'?v=20260913-intro-detail2';
   if(img.decode)img.decode().catch(()=>{}); // 첫 drawImage 디코딩 스파이크 제거 (2026-07-27)
   _cutsceneImgCache[filename]=img;
   return img;
@@ -58243,7 +58243,7 @@ function _pickTransitionRd(){
   return n;
 }
 // 1~19.png 랜덤 로딩 이미지
-for(let i=1;i<=19;i++)_STAGE_TRANSITION_RD.push('img/lording/'+i+'.png?v=20260913-lobby-smooth1');
+for(let i=1;i<=19;i++)_STAGE_TRANSITION_RD.push('img/lording/'+i+'.png?v=20260913-intro-detail2');
 // 프리로드 제거 — 스테이지 전환 시 lazy load (배포 초기 로딩 최적화)
 function showStageTransition(callback){
   const el=$('stageTransition'),bar=$('stLoadBar'),name=$('stNextName'),img=$('stRndImg'),info=$('stFloorInfo');
