@@ -62,7 +62,9 @@ function fixture(stage = 0, search = '') {
     addParts() {}, doHitFlash() {}, shake() {}, playSample() {}, addTxt() {},
     _addBoom() {}, _spawnSmoke() {},
     playVFXAng() {}, _addBloodSplat() {},
-    mkEn(x,y) { return {x,y,hp:100,mhp:100,alive:true,kb:{x:0,y:0}}; },
+    deaths:[],corpses:[],deathImpacts:[],gore:[],
+    deathFX(...args){c.deaths.push(args);},_addCorpse(...args){c.corpses.push(args);},_addDeathImpact(...args){c.deathImpacts.push(args);},_addGorePiece(...args){c.gore.push(args);},
+    mkEn(x,y) { return {x,y,r:12,etype:0,col:'#ff0000',hp:100,mhp:100,alive:true,kb:{x:0,y:0}}; },
   });
   c.spawnProj = props => { const shot = { ...props }; c.projs.push(shot); return shot; };
   vm.runInContext(fs.readFileSync(path.join(root, 'parry-lesson.js'), 'utf8'), c);
@@ -70,6 +72,8 @@ function fixture(stage = 0, search = '') {
 }
 function walk(c) {
   const l=c.window._parryLesson;
+  assert.equal(c.P.activeLMBSk,'kiSlash','the tutorial must use Ki Slash as its basic attack');
+  assert.ok(c.P.skills.kiSlash>=1);
   assert.equal(l.step,-3);assert.equal(l.allowKey('KeyQ'),false);
   assert.equal(l.allowKey('KeyW'),true);assert.equal(l.allows('up'),true);
   for(let i=0;i<30;i++)l.tick();assert.equal(l.movementDone,false);assert.equal(l.shot,null);
@@ -78,11 +82,29 @@ function walk(c) {
   for(let i=0;i<90;i++)l.tick();assert.equal(l.step,-2);
   assert.equal(l.allows('weapon'),true);assert.equal(l.allows('beam'),false);
   c.MB[0]=true;l.tick();assert.equal(l.leftClickDone,false);
-  c.P.s='wSwing';l.tick();assert.equal(l.leftClickDone,true);
+  c.P.s='wSwing';l.tick();assert.equal(l.leftClickDone,false,'swinging in the air is not a kill');
+  assert.equal(l.attackEnemies.length,3);
+  l.hurtEnemy(l.attackEnemies[0],10,0,{magic:true,fireball:true});assert.equal(l.leftKills,0);
+  for(const [i,e] of l.attackEnemies.entries()){
+    // A travelling Ki Slash can land after the swing animation has finished.
+    c.P.s=i===0?'wSwing':'idle';
+    const opts={_lessonAttack:i===0?'weapon':'kiSlash'};
+    l.hurtEnemy(e,10,0,opts);l.hurtEnemy(e,10,0,opts);
+    assert.equal(l.leftKills,i+1);assert.equal(l.leftClickDone,i===2);
+  }
+  assert.equal(c.deaths.length,3);assert.equal(c.corpses.length,3);
   for(let i=0;i<90;i++)l.tick();assert.equal(l.step,-1);
   assert.equal(l.allows('beam'),true);assert.equal(l.allows('weapon'),false);
   c.MB[2]=true;l.tick();assert.equal(l.rightClickDone,false);
-  c.P.s='magicCast';l.tick();assert.equal(l.rightClickDone,true);
+  c.P.s='magicCast';l.tick();assert.equal(l.rightClickDone,false,'casting in the air is not a kill');
+  assert.equal(l.attackEnemies.length,3);
+  l.hurtEnemy(l.attackEnemies[0],10,0,{magic:true,fireball:true,_fromTurret:true});assert.equal(l.rightKills,0);
+  c.P.s='idle'; // A launched projectile may hit after the casting state ends.
+  for(const [i,e] of l.attackEnemies.entries()){
+    l.hurtEnemy(e,10,0,{magic:true,fireball:true});l.hurtEnemy(e,10,0,{magic:true,fireball:true});
+    assert.equal(l.rightKills,i+1);assert.equal(l.rightClickDone,i===2);
+  }
+  assert.equal(c.deaths.length,6);assert.equal(c.corpses.length,6);assert.equal(c.deathImpacts.length,6);
   for(let i=0;i<90;i++)l.tick();assert.equal(l.step,0);
   assert.equal(l.allows('left'),true);
   c.P.x+=20;const x=c.P.x;l.tick();assert.equal(c.P.x,x);
@@ -248,6 +270,10 @@ cl.setRageFocus(true);assert.equal(cl.rageZoom.hidden,false);assert.deepEqual(fo
 assert.ok(crowd.ens.every(e=>Math.hypot(e.x-crowd.P.x,e.y-crowd.P.y)<=281));
 cl.hurtEnemy(crowd.ens[0],100);assert.equal(crowd.ens[0].alive,true);
 crowd.P.s='gSlamWindup';for(const e of crowd.ens)cl.hurtEnemy(e,100);
+assert.equal(crowd.deaths.length,24,'rage kills play the common death sound/VFX');
+assert.equal(crowd.corpses.length,24,'rage kills create corpses immediately');
+assert.ok(crowd.deaths.every(args=>args[5]===false),'death sounds are not muted');
+assert.equal(crowd.deathImpacts.length,24);assert.equal(crowd.gore.length,24);
 assert.ok(crowd.ens.every(e=>!e.alive));cl.finish();assert.equal(crowd.ens.length,1);
 assert.deepEqual(focusChanges.at(-1),['lesson-rage-focus',false]);
 // The arrow stays aligned to the live HUD slot, including narrow viewports.
@@ -284,6 +310,36 @@ assert.deepEqual(focusChanges.at(-1),['lesson-rage-focus',false]);
   l.finish();assert.equal(c.P.rage,17);
 }
 console.log('PASS: HTML syntax; eleven stages; left/right attack states; charged volleys; movement; rage zoom/cast; 24 practice enemies and slam kills; miss explosion, HP loss, duplicate protection, recovery; retry/skip and restoration; live parry gates.');
+for(const code of ['KeyW','KeyA','KeyS','KeyD']){
+  const c=fixture(),l=c.window._parryLesson;l.tick();
+  assert.equal(l.phase,'intro');assert.equal(l.allowKey('KeyQ'),false);
+  assert.equal(l.phase,'intro','unrelated keys do not start practice');
+  assert.equal(l.allowKey(code),true);
+  assert.equal(l.phase,'practice','any WASD key starts the lesson');
+  assert.equal(l.button.hidden,true);assert.equal(l.directionHeld(),true);
+  c.K[code]=true;c.KH[code]=true;
+  l.allowKey(code);assert.equal(c.KH[code],true,'repeated keydown must not reset held input');
+  assert.equal(l.step,-3);assert.equal(l.movementDone,false,'starting is not completing the movement exercise');
+  l.releaseKey(code);c.KH[code]=false;assert.equal(l.directionHeld(),false);
+}
+console.log('PASS: every WASD key starts the intro once, preserves movement input and does not auto-complete the exercise.');
+// Run the actual travelling-crescent collision code from both game entrypoints.
+for(const name of ['game.html','game-easy-test.html']){
+  const c=fixture(),l=c.window._parryLesson;
+  c.P.activeLMBSk='whirlwind';c.P.skills.kiSlash=7;const originalSkills=c.P.skills;
+  l.tick();assert.equal(c.P.activeLMBSk,'kiSlash');assert.equal(c.P.skills.kiSlash,7);
+  l.step=-2;l.phase='practice';l.spawnAttackEnemies();
+  const e=l.attackEnemies[0];c.P.s='idle';
+  const crescent={active:true,life:20,x:e.x-14,y:e.y,vx:14,vy:0,_th:0,trail:Array.from({length:5},()=>({})),r:55,_hitSet:new Set(),dmg:10,el:0,step:1,ang:0};
+  Object.assign(c,{_CRES_MAX:1,_crescents:[crescent],isW:()=>false,shQuery:()=>[e],dst:(x,y,a,b)=>Math.hypot(x-a,y-b),hasLOS:()=>true,_hurtFieldMobs:()=>false,
+    hurtE:(enemy,dmg,ang,quiet,opts)=>l.hurtEnemy(enemy,dmg,ang,opts)});
+  const html=fs.readFileSync(path.join(root,name),'utf8');
+  vm.runInContext(html.slice(html.indexOf('function updateCrescents(sp){'),html.indexOf('function poolUpdate(sp){')),c);
+  c.updateCrescents(1);assert.equal(l.leftKills,1,'Ki Slash projectile kills count after wSwing ends');
+  c.updateCrescents(1);assert.equal(l.leftKills,1,'duplicate hits cannot add kills');
+  l.finish();assert.equal(c.P.activeLMBSk,'whirlwind');assert.equal(c.P.skills,originalSkills);
+}
+console.log('PASS: Ki Slash is the tutorial basic attack; live crescent collisions count once and original skill selection/levels restore.');
 module.exports={fixture,exerciseChainTiers};
 
 for(const file of ['game.html','game-easy-test.html']){

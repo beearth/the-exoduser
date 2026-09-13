@@ -33,6 +33,7 @@ window._parryLesson = {
   releaseKey(code) { this.heldDirections.delete(code); },
   allowKey(code) {
     if(!this.active)return true;
+    if(this.phase==='intro'&&['KeyW','KeyA','KeyS','KeyD'].includes(code))this.beginPractice();
     if(['up','down','left','right'].some(a=>code===BINDS[a]||code===BINDS2[a])){this.heldDirections.add(code);return this.phase!=='intro';}
     if(this.phase !== 'practice' || this.focusTicks > 0)return false;
     // The live chain handler uses physical Left Shift, including with saved custom binds.
@@ -69,7 +70,7 @@ window._parryLesson = {
     const checklist = this.node('div'); checklist.className = 'lesson-checklist';
     this.rowLabels = []; this.rowTexts = [];
     if(this.chapter!==2){
-      this.basicRows=['WASD / 방향키 · 이동','좌클릭 · 무기 공격','우클릭 · 마법 공격'].map(label=>{
+      this.basicRows=['WASD / 방향키 · 이동','좌클릭 · 적 3마리 처치','우클릭 · 적 3마리 처치'].map(label=>{
         const row=this.node('label');row.className='lesson-row';
         const box=this.node('input');box.type='checkbox';box.disabled=true;
         row.append(box,this.node('span',label));checklist.append(row);return {row,box};
@@ -95,12 +96,7 @@ window._parryLesson = {
     this.rageZoom.append(this.node('span','아래 SPACE 슬롯을 확인하세요'),this.zoomText,this.node('p','잠시 후 방향키를 떼고 SPACE만 누르세요.'),this.rageArrow);document.body.append(this.rageZoom);
     const safety = this.node('span', '패링 실패 시 폭발 피해를 받습니다. 재시도하면 체력이 회복됩니다.'); safety.className = 'lesson-safety';
     this.button = this.node('button'); this.button.className = 'lesson-primary';
-    this.button.onclick = () => {
-      if (this.phase === 'intro') {
-        this.phase = 'practice'; this.cooldown = 45;
-        this.resetPose(); this.button.blur(); this.render();
-      }
-    };
+    this.button.onclick = () => this.beginPractice();
     const skip = this.node('button', '연습 건너뛰기'); skip.className = 'lesson-skip'; skip.onclick = () => this.skipAll();
     const progress = this.node('div'); progress.className = 'lesson-progress';
     this.progressFill = this.node('div'); this.progressFill.className = 'lesson-progress-fill'; progress.append(this.progressFill);
@@ -135,11 +131,11 @@ window._parryLesson = {
     this.holdMeter.value = 0; this.holdLabel.textContent = '키를 길게 눌러보세요';
     this.rageBox.hidden = this.step !== 6 || complete; this.updateRage();
     this.button.hidden = this.phase !== 'intro';
-    this.button.textContent = '연습 시작  →';
+    this.button.textContent = 'W / A / S / D 또는 클릭하여 시작';
     this.progressFill.style.width = `${this.checks.filter(Boolean).length / this.labels.length * 100}%`;
     const basicChecks=[this.movementDone,this.leftClickDone,this.rightClickDone];
     this.basicRows.forEach(({row,box},i)=>{box.checked=!!basicChecks[i];row.setAttribute('data-current',String(this.step===i-3));row.setAttribute('data-complete',String(!!basicChecks[i]));});
-    const basicLabels=['WASD / 방향키 · 이동','좌클릭 · 무기 공격','우클릭 · 마법 공격'];
+    const basicLabels=['WASD / 방향키 · 이동','좌클릭 · 적 3마리 처치','우클릭 · 적 3마리 처치'];
     this.subtitle.textContent=`${this.step+4} / ${this.labels.length+3} · ${this.step<0?basicLabels[this.step+3]:this.label(this.step)}`;
     this.progressFill.style.width=`${(this.checks.filter(Boolean).length+basicChecks.filter(Boolean).length)/(this.labels.length+3)*100}%`;
     if(this.step<0){
@@ -148,11 +144,35 @@ window._parryLesson = {
       this.title.textContent=['먼저 움직여보세요','무기를 휘둘러보세요','마법을 발사해보세요'][i];
       this.hint.textContent=[
         'W 위 · A 왼쪽 · S 아래 · D 오른쪽. WASD 또는 방향키로 조금 걸어보세요. 이후 모든 실습에서도 이동할 수 있습니다.',
-        '마우스로 공격할 방향을 가리키고 왼쪽 버튼을 누르세요. 무기 공격은 녹색 스태미나를 사용합니다. 실제로 무기를 휘두르면 성공입니다.',
-        '마우스로 발사할 방향을 가리키고 오른쪽 버튼을 누르세요. 기본 마법 공격은 마력을 사용합니다. 실제 마법 시전이 시작되면 성공입니다.'
+        '마우스로 조준하고 좌클릭 기본공격 기검참으로 적 3마리를 처치하세요.',
+        '마우스로 조준하고 우클릭 마법탄으로 적 3마리를 처치하세요.'
       ][i];
+      if(this.step===-2||this.step===-1)this.updateAttackPractice();
     }
     if(this.step===4)this.updateChainPractice();
+  },
+  beginPractice() {
+    if(!this.active||this.phase!=='intro')return;
+    this.phase='practice';this.cooldown=45;
+    this.resetPose();this.button.blur();this.render();
+  },
+  spawnAttackEnemies() {
+    this.attackEnemies=[];
+    const radius=this.step===-2?120:220;
+    for(let i=0;i<24&&this.attackEnemies.length<3;i++){
+      const a=-Math.PI/2+(i%3-1)*.65+Math.floor(i/3)*Math.PI/4;
+      const e=mkEn(P.x+Math.cos(a)*radius,P.y+Math.sin(a)*radius,G.stage,0,false,EL.P,-1);
+      if(!e||Math.hypot(e.x-P.x,e.y-P.y)>450||this.attackEnemies.some(other=>Math.hypot(e.x-other.x,e.y-other.y)<40))continue;
+      e._lessonEnemy=true;e._lessonStage=this.step;e.hp=1;e.mhp=1;e.atk=0;e.elite=0;e.mods=[];e.spd=0;
+      e.facing=Math.atan2(P.y-e.y,P.x-e.x);
+      ens.push(e);this.attackEnemies.push(e);addParts(e.x,e.y,'#b26dff',12);
+    }
+    _shDirty=true;
+  },
+  updateAttackPractice() {
+    const left=this.step===-2,count=left?this.leftKills:this.rightKills;
+    this.title.textContent=left?'기검참으로 적 3마리를 처치하세요':'마법으로 적 3마리를 처치하세요';
+    this.hint.textContent=`${left?'기검참은 기본공격입니다. 적을 마우스로 조준하고 좌클릭으로 검기를 날리세요.':'적을 마우스로 조준하고 우클릭으로 마법탄을 발사하세요.'}\n처치 ${count||0}/3 · 실제로 처치해야 완료됩니다.`;
   },
   resetPose() {
     P.s = 'idle'; P.st2 = 0; P._sbParryT = 0; P._sbHoldT = 0; P._sbReleaseR = 0; P._sbCd = 0;
@@ -207,18 +227,19 @@ window._parryLesson = {
   },
   start() {
     this.chainPractice=null;
+    this.attackEnemies=[];this.leftKills=0;this.rightKills=0;
     this.combatLabels??=this.labels.slice();this.labels=this.combatLabels.slice();this.chapter=1;this.resourceReadout=null;
     window._resourcePractice?.save();
     this.seen = true; this.active = true; this.phase = 'intro'; this.step = -3; this.checks = Array(this.labels.length).fill(false);
     this.movementDone=false;this.leftClickDone=false;this.rightClickDone=false;this.moveDistance=0;this.moveLast={x:P.x,y:P.y};
     this.basicSkillSnapshot={};for(const key of ['activeLMBSk','activeMagicSk'])this.basicSkillSnapshot[key]={had:Object.prototype.hasOwnProperty.call(P,key),value:P[key]};
-    P.activeLMBSk=null;P.activeMagicSk='fireball';
+    P.activeLMBSk='kiSlash';P.activeMagicSk='fireball';
     this.saved = { ens, projs, pProjs, worldItems, fields: {}, hp: P.hp, mp: P.mp, st: P.st, shield: P.shield, iframes: P.iframes, x: P.x, y: P.y, q: P.activeQSk, bank: P.parryBank, rage: P.rage, harp: _harpGauge, skills: P.skills, fused: P._fused, slot: SKILL_SLOTS[4], binds2: BINDS2, charge: P.activeChargeSk, slamCd: P._gslCd, io: P._ioActive };
     ens = []; projs = []; pProjs = []; worldItems = [];
     _shDirty = true;
     for (const key of ['spawnHoles', 'rifts', '_fieldBosses', '_fireDevils', '_fireZones']) { this.saved.fields[key] = G[key]; G[key] = []; }
     for (const key of ['_bonfire', '_fieldBoss', '_gateGuard', '_bossRef']) { this.saved.fields[key] = G[key]; G[key] = null; }
-    P.skills={...P.skills,bladeDash:Math.max(1,P.skills.bladeDash||0),giantSlam:1};P._fused={};P._ioActive=false;
+    P.skills={...P.skills,kiSlash:Math.max(1,P.skills.kiSlash||0),bladeDash:Math.max(1,P.skills.bladeDash||0),giantSlam:1};P._fused={};P._ioActive=false;
     SKILL_SLOTS[4]='giantSlam';P.activeChargeSk='charge';P._gslCd=0;P.rage=0;
     BINDS2={...BINDS2,up:BINDS2.up||'ArrowUp',down:BINDS2.down||'ArrowDown',left:BINDS2.left||'ArrowLeft',right:BINDS2.right||'ArrowRight'};
     this.focusTicks=0;this.rageParried=false;this.rageClearTicks=0;this.failTicks=0;
@@ -308,6 +329,7 @@ window._parryLesson = {
       }
       this.clearShot(); this.step++; this.phase = 'practice'; this.cooldown = 45;
       this.resetPose();
+      if(this.step===-2||this.step===-1)this.spawnAttackEnemies();
       if(this.step===7){this.spawnRageEnemies();this.focusTicks=150;this.setRageFocus(true);}
       this.render();
     }
@@ -320,7 +342,7 @@ window._parryLesson = {
       return false;
     }
     if(this.step===-2||this.step===-1){
-      if(this.step===-2&&P.s==='wSwing'||this.step===-1&&P.s==='magicCast')this.completeStep();
+      this.updateAttackPractice();
       return false;
     }
     if (this.step === 2 || this.step === 3) { this.watchHold(); return false; }
@@ -458,11 +480,24 @@ window._parryLesson = {
     }
     _shDirty=true;
   },
-  hurtEnemy(e,dmg) {
-    if(!e?._lessonEnemy||!e.alive||this.step!==7||P.s!=='gSlamWindup'||!(dmg>0))return;
+  hurtEnemy(e,dmg,ang,opts) {
+    if(!e?._lessonEnemy||!e.alive||!(dmg>0))return;
+    const rage=this.chapter===1&&this.step===7&&P.s==='gSlamWindup';
+    const attack=this.chapter===1&&this.phase==='practice'&&!this.pending&&e._lessonStage===this.step&&this.attackEnemies.includes(e);
+    const left=attack&&this.step===-2&&(opts?._lessonAttack==='kiSlash'||P.s==='wSwing'&&opts?._lessonAttack==='weapon');
+    const right=attack&&this.step===-1&&opts?.magic&&opts?.fireball&&!opts._fromTurret&&!opts.dot;
+    if(!rage&&!left&&!right)return;
     e.hp=0;e.alive=false;
-    _addBoom(e.x,e.y,100,72,'fire');
-    addParts(e.x,e.y,'#ff6633',24);
+    const killAng=Number.isFinite(ang)?ang:Math.atan2(e.y-P.y,e.x-P.x);
+    deathFX(e.x,e.y,e.r,e.col,false,false,e.etype);
+    _addCorpse(e,killAng,Math.min(8,dmg/Math.max(1,e.mhp)*20));
+    _addGorePiece(e.x,e.y,'flesh');_addDeathImpact(e.x,e.y,e.r);
+    if(rage){_addBoom(e.x,e.y,100,72,'fire');addParts(e.x,e.y,'#ff6633',24);}
+    if(left||right){
+      if(left)this.leftKills++;else this.rightKills++;
+      this.updateAttackPractice();
+      if((left?this.leftKills:this.rightKills)>=3)this.completeStep();
+    }
     _shDirty=true;
   },
   rageCast(amount) {
@@ -480,6 +515,6 @@ window._parryLesson = {
     window._resourcePractice?.restore();
     for(const [key,entry] of Object.entries(this.basicSkillSnapshot||{})){if(entry.had)P[key]=entry.value;else delete P[key];}
     this.basicSkillSnapshot=null;
-    this.active = false; this.pending = null; this.chainPractice=null; this.panel.remove(); this.backdrop.remove(); this.saved = null;
+    this.active = false; this.pending = null; this.chainPractice=null; this.attackEnemies=[]; this.panel.remove(); this.backdrop.remove(); this.saved = null;
   }
 };

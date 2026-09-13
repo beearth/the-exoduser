@@ -7,7 +7,7 @@
 <script src="system-lesson.js?v=20260912-skip-density1"></script>
 <link rel="stylesheet" href="parry-lesson.css?v=20260913-chain-tiers1">
 <script src="resource-practice.js?v=20260913-escape-all4"></script>
-<script src="parry-lesson.js?v=20260913-chain-tiers1"></script>
+<script src="parry-lesson.js?v=20260913-kislash-basic1"></script>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>HELL: EXODUSER</title>
@@ -17155,7 +17155,7 @@ function updateCrescents(sp){
       if(!e.alive||!isFinite(e.x)||!isFinite(e.y))continue;
       if(dst(c.x,c.y,e.x,e.y)<c.r+e.r&&!c._hitSet.has(e)&&hasLOS(c.x,c.y,e.x,e.y)){
         c._hitSet.add(e);
-        hurtE(e,c.dmg,Math.atan2(e.y-c.y,e.x-c.x),true,{poiseHit:true,kbMult:0.5,noImpact:true},c.el);
+        hurtE(e,c.dmg,Math.atan2(e.y-c.y,e.x-c.x),true,{poiseHit:true,kbMult:0.5,noImpact:true,_lessonAttack:'kiSlash'},c.el);
         if(c.step===3){G.hitStop=Math.max(G.hitStop,6);shake(8);}
         else G.hitStop=Math.max(G.hitStop,3);
         addParts(c.x,c.y,c.step===3?'#ff4444':'#aaddff',c.step===3?14:6);
@@ -34399,7 +34399,7 @@ function hitArc(angle,range,arcW,baseDmg,el,type){
     {const mult=elMul(el,e.el);let dmg=~~(baseDmg*mult);
     // 회전참 피격 스택 카운트만 유지 (데미지 보너스 제거됨)
     if(_isWW){e._wwStk=Math.min(20,(e._wwStk||0)+1);e._wwStkT=60;}
-    hurtE(e,dmg,ang,true,{kbMult:(_isWW||type==='shield')?0:1,poiseMult:_isWW?0:1.5,noPoise:_isWW,poiseHit:type==='shield',poiseSkill:type==='shield'},el);_hitCount++;
+    hurtE(e,dmg,ang,true,{kbMult:(_isWW||type==='shield')?0:1,poiseMult:_isWW?0:1.5,noPoise:_isWW,poiseHit:type==='shield',poiseSkill:type==='shield',_lessonAttack:type},el);_hitCount++;
     if(_isWW&&_hitCount<=9&&e.alive){_impacts.push({x:e.x,y:e.y,el:el,ang:ang,t:0,ml:16,sz:0.8,type:'slash'});} // 회전참: 생존 대상에만 물리 임팩트 (최대9)
       // parryBank는 적 공격 흡수로만 축적 (hitArc 공격 축적 삭제)
       if(!_isWW){
@@ -38722,7 +38722,7 @@ function checkRooms(){
 
 // ─── [S16i] HURT_E — 적 피격 (방어/속성/사망) ───
 function hurtE(e,dmg,ang,noSound,opts,atkEl=0){
-  if(window._parryLesson?.active){window._parryLesson.hurtEnemy(e,dmg);return;}
+  if(window._parryLesson?.active){window._parryLesson.hurtEnemy(e,dmg,ang,opts);return;}
   if(!e||!e.alive)return;
   if(e.hp<=0)return; // 2026-04-17 이미 죽은 적 이중 처리 방지 (alive 플래그 지연 케이스)
   if(window._btDmgLog)window._btDmgLog.push({t:_now,src:'player',dmg:dmg});
