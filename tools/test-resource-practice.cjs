@@ -49,25 +49,6 @@ for(const [i,code,state] of [[0,'Space','gSlamWindup'],[1,'ShiftLeft','idle'],[2
     assert.equal(c.P._gslCd,0);assert.equal(c.P._gwCd,0);
   }
 }
-next();assert.equal(l.step,4);
-assert.match(l.resourceReadout.textContent,/0.1초 홀딩/);assert.match(l.resourceReadout.textContent,/0.2초 홀딩 → 자동 발사/);
-assert.match(l.resourceReadout.textContent,/기동력 98\(2.18칸\) · ST 2%/);
-c._harpDistTier=t=>[0,400,600,900][t];r.readout(l);assert.match(l.resourceReadout.textContent,/최대 거리 900/);
-exerciseChainTiers(c,l);
-const spent=c._harpGauge;l.tick();assert.equal(c._harpGauge,spent);
-next();assert.equal(l.step,5);
-assert.equal(l.allowKey('KeyE'),false,'resource sets start with Q, not an E-only task');
-for(const [i,code,state] of [[0,'KeyQ','sBlock'],[1,'KeyE','sBash'],[2,'ShiftLeft','idle']]){
-  assert.equal(l.allowKey(code),true);l.tick();assert.equal(l.checks[5],false,'keypress alone is insufficient');
-  c.P.s=state;l.tick();assert.equal(l.checks[5],false,'skill state without resource cost is insufficient');
-  if(i===0)c.P.mp-=10;
-  if(i===1)c.P.st-=12;
-  if(i===2){c._harpActive=true;c._harpGauge-=45;l.tick();assert.equal(l.checks[5],false,'Shift requires its ST cost too');c.P.st-=1;}
-  l.tick();assert.equal(l.checks[5],i===2,'all Q/E/Shift resource sets are required');
-  assert.equal(r.resourceChecks.filter(Boolean).length,i+1);
-  if(i<2){for(let t=0;t<90;t++)l.tick();assert.equal(r.resourceIndex,i+1);}
-}
-next();assert.equal(l.step,6);exerciseDashFive(c,l,true);
 next();assert.equal(l.step,7);c.P.s='sBlock';c.P._sbHoldT=50;
 for(let i=0;i<60;i++)l.tick();
 assert.equal(r.burstSpawned,3);assert.equal(r.burstShots.length,3);
@@ -90,7 +71,7 @@ next();assert.equal(l.active,false);assert.equal(c.P.hp,81);assert.equal(c.P.poi
 // Skipping restores the same original state, including fields absent on entry.
 const skip=setup();skip.c.P._gwActive=true;skip.c.P._gwPath=[{}];skip.l.finish();
 assert.equal(skip.c.P._gwActive,undefined);assert.equal(skip.c.P._gwPath,undefined);assert.equal(skip.c.P.activeCtSk,'iceOrb');
-console.log('PASS: chapter handoff, ten ordered live-state exercises, damage/poise, groggy escape, real resource consumption and parry rewards, guard resistance, Ctrl activation, no per-frame refill, complete/skip restoration.');
+console.log('PASS: chapter handoff, seven ordered live-state exercises, damage/poise, groggy escape, real resource consumption and parry rewards, guard resistance, Ctrl activation, no per-frame refill, complete/skip restoration.');
 const direct=fixture(0,'?practice=2');
 vm.runInContext(fs.readFileSync(path.join(__dirname,'../resource-practice.js'),'utf8'),direct);
 assert.equal(direct.window._parryLesson.tick(),false);assert.equal(direct.window._parryLesson.chapter,2);direct.window._parryLesson.finish();

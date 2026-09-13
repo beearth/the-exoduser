@@ -10,7 +10,7 @@
 |---|---|---|
 | 마법/물리 패링 | `parry-lesson.js`: `labels`, `hit` | Q 마법, E 물리; 실제 반사로 성공 |
 | 홀딩 | `watchHold` | Q 충전 후 해제, E 3단계 검격; 프레임/시간 대신 게이지 기준 안내 |
-| 사슬/전격이동 | `tick`, `allowKey` | Shift 발사/이동, 방향+Space 전격이동은 각 장의 단독 과제에서 5회; 방향키는 연습에서 임시 추가 |
+| 사슬/전격이동 | `tick`, `allowKey` | Shift 발사/이동, 방향+Space 전격이동은 1단 단독 과제에서 5회(2단 사슬·자원소모·전격이동 단독 과제는 잠정 제외); 방향키는 연습에서 임시 추가 |
 | 분노 | `hit`, `tick`, `rageCast` | 패링 축적 100%, 확대 안내 후 이동 키 없이 Space |
 | 아이템 줍기 | `game.html`: `BINDS.interact`, 월드 아이템 키 안내 | 기본 R |
 | 장비 | `BINDS.inventory`, `equipItem`, `renderInv` 장착 버튼 | 기본 Tab, 조건 확인 후 장착 |

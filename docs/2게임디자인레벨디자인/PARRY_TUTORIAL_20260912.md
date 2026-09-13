@@ -132,4 +132,4 @@
 
 자원 실습의 최신 Q/E/Shift 묶음 안내와 관련 캐시는 [RESOURCE_SKILL_SETS_20260913.md](RESOURCE_SKILL_SETS_20260913.md)를 따른다.
 
-전격이동 단독 실습은 각 장에서 5회 성공해야 완료한다. [반복·중복 방지·자원·검증 계약](DASH_FIVE_PRACTICE_20260913.md).
+전격이동 단독 실습은 1단에서 5회 성공해야 완료한다. [반복·중복 방지·자원·검증 계약](DASH_FIVE_PRACTICE_20260913.md).

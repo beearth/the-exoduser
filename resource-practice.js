@@ -1,5 +1,7 @@
 /* Chapter 2 shares the combat lesson's isolated world and restores its original snapshot. */
 window._resourcePractice = {
+  stepOrder: [0,1,2,3,7,8,9], // Temporarily omit the three standalone movement/resource exercises.
+  completionChecks(l) { return this.stepOrder.map(step=>l.checks[step]); },
   escapeLabels: ['Space · 지옥강타','Shift · 사슬 탈출','방향키 + Space · 전격이동','왼쪽 Ctrl · 유령걸음'],
   resourceSets: [
     {key:'Q',action:'parry',label:'Q 보호막 · 파란 마력(MP)',tip:'Q로 보호막을 펼쳐 파란 마력(MP) 소모를 확인하세요. 홀딩 중에도 소모되며, 마법탄 패링에 성공하면 자원이 회복됩니다.'},
@@ -40,7 +42,9 @@ window._resourcePractice = {
     P.skills={...P.skills,ghostWalk:Math.max(1,P.skills.ghostWalk||0)};
     P.activeCtSk='ghostWalk';P._gwActive=false;P._gwCd=0;
     P.poise=4;P.maxPoise=4;P.poiseR=0;
-    l.build();this.enter(l);l.render();
+    l.build();
+    l.rowLabels.forEach((row,step)=>{if(!this.stepOrder.includes(step))row.remove();});
+    this.enter(l);l.render();
   },
   actions(l) {
     if(l.step===3)return this.escapeWait>0?[]:['bow','charge','up','down','left','right'];
@@ -114,7 +118,7 @@ window._resourcePractice = {
     l.keycap.textContent=['피격','Q','피격','탈출기','SHIFT','E','↔ + SPACE','Q 홀딩','CTRL','Q'][l.step];
     if(l.step===3)l.keycap.textContent='자유 순서';
     l.title.textContent=l.phase==='done'?'자원 실습 완료':l.labels[l.step];
-    l.subtitle.textContent=`2단계 · ${l.step+1} / ${l.labels.length}`;
+    l.subtitle.textContent=`2단계 · ${this.stepOrder.indexOf(l.step)+1} / ${this.stepOrder.length}`;
     const guideVisible=[0,1,2,5].includes(l.step)&&l.phase!=='done';
     l.panel.setAttribute('data-resource-guide',String(guideVisible));
     if(!l.resourceGuide){
@@ -131,7 +135,7 @@ window._resourcePractice = {
       l.hint.textContent=this.resourceWait>0?this.feedback:this.resourceSets[this.resourceIndex].tip+' 이번 연습에서는 해당 자원을 최대치의 최소 50% 소모합니다.';
     }
     l.holdBox.hidden=true;l.rageBox.hidden=true;l.button.hidden=l.phase!=='intro';l.button.textContent='2단계 실습 시작 →';
-    l.progressFill.style.width=`${l.checks.filter(Boolean).length/l.labels.length*100}%`;
+    l.progressFill.style.width=`${this.completionChecks(l).filter(Boolean).length/this.stepOrder.length*100}%`;
     if(!l.resourceReadout){l.resourceReadout=l.node('p');l.resourceReadout.className='lesson-resource-readout';l.hint.after(l.resourceReadout);}
     this.readout(l);
     this.eyeFocus(l);
@@ -232,7 +236,7 @@ window._resourcePractice = {
     if(l.phase==='success'||l.phase==='done'){
       if((l.transitionTicks-=_dtSp)>0)return false;
       if(l.phase==='done'){l.finish();return false;}
-      l.step++;l.phase='practice';this.enter(l);l.render();return false;
+      l.step=this.stepOrder[this.stepOrder.indexOf(l.step)+1];l.phase='practice';this.enter(l);l.render();return false;
     }
     if(this.retryTicks>0){l.clearShot(true);if((this.retryTicks-=_dtSp)<=0){this.enter(l);l.render();}return false;}
     if(l.step===3&&this.escapeWait>0){
