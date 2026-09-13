@@ -124,4 +124,6 @@
 | 유도 | homing=true, 적대 _lessonShot이면 초당100°, 틱당100×π/180/60 rad |
 | 추적 | 연습 중에는 소환체 대신 플레이어 추적. 기존 속도·수명 및 잔여 수명30틱 이하 유도 종료 규칙 유지 |
 | 반사 후 | friendly 탄은 기존 반사 이동 규칙 적용 |
-| 캐시 | 유도 변경 당시 버전 `20260912-homing100`. 현재 resource-practice.js는 `20260913-escape-all4` |
+| 캐시 | 유도 변경 당시 버전 `20260912-homing100`. 현재 resource-practice.js는 `20260913-resource-sets1` |
+
+자원 실습의 최신 Q/E/Shift 묶음 안내와 관련 캐시는 [RESOURCE_SKILL_SETS_20260913.md](RESOURCE_SKILL_SETS_20260913.md)를 따른다.

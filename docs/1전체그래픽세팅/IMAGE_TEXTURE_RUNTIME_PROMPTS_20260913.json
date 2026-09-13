@@ -1,0 +1,38 @@
+[
+  {
+    "path": "img/ui_refs/window_frames/panel-settings-chains-v2.png",
+    "generated": "C:\\Users\\심도진\\.codex\\generated_images\\01a098f5-92c0-7541-ac3e-106c545c813f\\exec-09d2ba92-2846-4c5f-8596-e062c3410295.png",
+    "prompt": "Edit this exact game UI background. Preserve the full edge-to-edge composition, border locations, central vertical divider, top title strip, two large empty content panes, bottom centered empty button shape, chains, circular sigils, skulls, candles, dark burgundy and black palette. Remove ALL stippled/speckled/dithered/grainy surface texture and tiny scattered dots everywhere. Repaint the empty stone panels as calm continuous dark gradients with a few broad subtle veins only. Metal and bone should have smooth continuous shading and clean coherent highlights, not pointillist noise. No text, no UI controls added, no new objects. Keep original aspect ratio and full frame without crop, no external margins. This is an actual UI asset behind text so empty areas must be exceptionally quiet, clean and dark. Not blurry: crisp large decorative edges with smooth surfaces.",
+    "tool": "image_gen.imagegen"
+  },
+  {
+    "path": "img/ui_refs/window_frames/panel-inventory-chains-v2.png",
+    "generated": "C:\\Users\\심도진\\.codex\\generated_images\\01a098f5-92c0-7541-ac3e-106c545c813f\\exec-9519c507-9b6f-4e9f-88aa-2a35ad75d3e6.png",
+    "prompt": "Edit this exact game UI background. Preserve the full edge-to-edge composition, border locations, central vertical divider, top title strip, two large empty content panes, bottom centered empty button shape, chains, circular sigils, skulls, candles, dark burgundy and black palette. Remove ALL stippled/speckled/dithered/grainy surface texture and tiny scattered dots everywhere. Repaint the empty stone panels as calm continuous dark gradients with a few broad subtle veins only. Metal and bone should have smooth continuous shading and clean coherent highlights, not pointillist noise. No text, no UI controls added, no new objects. Keep original aspect ratio and full frame without crop, no external margins. This is an actual UI asset behind text so empty areas must be exceptionally quiet, clean and dark. Not blurry: crisp large decorative edges with smooth surfaces. Keep this image's specific inventory frame and corner ornamentation; do not add sigils from other designs.",
+    "tool": "image_gen.imagegen"
+  },
+  {
+    "path": "img/ui_refs/window_frames/panel-forge-skulls-v2.png",
+    "generated": "C:\\Users\\심도진\\.codex\\generated_images\\01a098f5-92c0-7541-ac3e-106c545c813f\\exec-1cd8b3fe-d35c-484f-8275-4f68e13e4f84.png",
+    "prompt": "Edit this exact game UI background. Preserve the full edge-to-edge composition, border locations, central vertical divider, top title strip, two large empty content panes, bottom centered empty button shape, chains, circular sigils, skulls, candles, dark burgundy and black palette. Remove ALL stippled/speckled/dithered/grainy surface texture and tiny scattered dots everywhere. Repaint the empty stone panels as calm continuous dark gradients with a few broad subtle veins only. Metal and bone should have smooth continuous shading and clean coherent highlights, not pointillist noise. No text, no UI controls added, no new objects. Keep original aspect ratio and full frame without crop, no external margins. This is an actual UI asset behind text so empty areas must be exceptionally quiet, clean and dark. Not blurry: crisp large decorative edges with smooth surfaces. This is the forge frame: retain cold blue-black panels, red jewel at upper center, skull piles, and large red handprint silhouettes. Do not introduce circular sigils or candles that are absent. Keep all large shapes and their positions.",
+    "tool": "image_gen.imagegen"
+  },
+  {
+    "path": "img/ui_refs/window_frames/panel-stats-thorns.png",
+    "generated": "C:\\Users\\심도진\\.codex\\generated_images\\01a098f5-92c0-7541-ac3e-106c545c813f\\exec-5d650907-21d7-4544-9844-7c3a36bdb652.png",
+    "prompt": "Edit this exact game UI background. Preserve the full edge-to-edge composition, border locations, central vertical divider, top title strip, two large empty content panes, bottom centered empty button shape, chains, circular sigils, skulls, candles, dark burgundy and black palette. Remove ALL stippled/speckled/dithered/grainy surface texture and tiny scattered dots everywhere. Repaint the empty stone panels as calm continuous dark gradients with a few broad subtle veins only. Metal and bone should have smooth continuous shading and clean coherent highlights, not pointillist noise. No text, no UI controls added, no new objects. Keep original aspect ratio and full frame without crop, no external margins. This is an actual UI asset behind text so empty areas must be exceptionally quiet, clean and dark. Not blurry: crisp large decorative edges with smooth surfaces. Use only this stats frame's ornamentation. Retain thorn branches and candles, but do not add circular sigils. Keep original 3:2 aspect ratio.",
+    "tool": "image_gen.imagegen"
+  },
+  {
+    "path": "img/ui_refs/window_frames/panel-skills-runes.png",
+    "generated": "C:\\Users\\심도진\\.codex\\generated_images\\01a098f5-92c0-7541-ac3e-106c545c813f\\exec-837c51fb-e016-419f-bf65-2ebe20e2041e.png",
+    "prompt": "Edit this exact game UI background. Preserve the full edge-to-edge composition, border locations, central vertical divider, top title strip, two large empty content panes, bottom centered empty button shape, chains, circular sigils, skulls, candles, dark burgundy and black palette. Remove ALL stippled/speckled/dithered/grainy surface texture and tiny scattered dots everywhere. Repaint the empty stone panels as calm continuous dark gradients with a few broad subtle veins only. Metal and bone should have smooth continuous shading and clean coherent highlights, not pointillist noise. No text, no UI controls added, no new objects. Keep original aspect ratio and full frame without crop, no external margins. This is an actual UI asset behind text so empty areas must be exceptionally quiet, clean and dark. Not blurry: crisp large decorative edges with smooth surfaces. This is the skills frame. Match its exact existing rune circles and branching ornament. Keep original 3:2 aspect ratio.",
+    "tool": "image_gen.imagegen"
+  },
+  {
+    "path": "img/ui_refs/window_frames/panel-storage-bones.png",
+    "generated": "C:\\Users\\심도진\\.codex\\generated_images\\01a098f5-92c0-7541-ac3e-106c545c813f\\exec-8395dc87-5c54-4109-a811-6313e177438d.png",
+    "prompt": "Edit this exact game UI background. Preserve the full edge-to-edge composition, border locations, central vertical divider, top title strip, two large empty content panes, bottom centered empty button shape, chains, circular sigils, skulls, candles, dark burgundy and black palette. Remove ALL stippled/speckled/dithered/grainy surface texture and tiny scattered dots everywhere. Repaint the empty stone panels as calm continuous dark gradients with a few broad subtle veins only. Metal and bone should have smooth continuous shading and clean coherent highlights, not pointillist noise. No text, no UI controls added, no new objects. Keep original aspect ratio and full frame without crop, no external margins. This is an actual UI asset behind text so empty areas must be exceptionally quiet, clean and dark. Not blurry: crisp large decorative edges with smooth surfaces. This is the storage frame. Preserve existing skulls and chain ornament, no additional circular sigils. Keep original 3:2 aspect ratio.",
+    "tool": "image_gen.imagegen"
+  }
+]

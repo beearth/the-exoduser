@@ -5,9 +5,9 @@
 <script src="tutorial-badges.js?v=20260912-clicks1"></script>
 <link rel="stylesheet" href="system-lesson.css?v=20260912-restored4">
 <script src="system-lesson.js?v=20260912-skip-density1"></script>
-<link rel="stylesheet" href="parry-lesson.css?v=20260913-chain-tiers1">
-<script src="resource-practice.js?v=20260913-escape-all4"></script>
-<script src="parry-lesson.js?v=20260913-kislash-basic1"></script>
+<link rel="stylesheet" href="parry-lesson.css?v=20260913-resource-sets1">
+<script src="resource-practice.js?v=20260913-resource-sets1"></script>
+<script src="parry-lesson.js?v=20260913-resource-sets1"></script>
 <link rel="stylesheet" href="skill-tutorial.css?v=20260913-3">
 <script src="skill-tutorial.js?v=20260913-2"></script>
 <meta charset="UTF-8">
@@ -1778,27 +1778,27 @@ canvas{display:block;position:fixed;inset:0}
   display:none;
 }
 #settings .pbox{
-  background:#080707 url('img/ui_refs/window_frames/panel-settings-chains-v2.png?v=20260417a') no-repeat center/100% 100% !important;
+  background:#080707 url('img/ui_refs/window_frames/panel-settings-chains-v2.png?v=20260913-smooth-ui') no-repeat center/100% 100% !important;
   border-color:rgba(108,95,90,.22) !important;
 }
 #invPanel .pbox{
-  background:#090505 url('img/ui_refs/window_frames/panel-inventory-chains-v2.png?v=20260417a') no-repeat center/100% 100% !important;
+  background:#090505 url('img/ui_refs/window_frames/panel-inventory-chains-v2.png?v=20260913-smooth-ui') no-repeat center/100% 100% !important;
   border-color:rgba(136,46,38,.24) !important;
 }
 #forge .pbox{
-  background:#090606 url('img/ui_refs/window_frames/panel-forge-skulls-v2.png?v=20260417a') no-repeat center/100% 100% !important;
+  background:#090606 url('img/ui_refs/window_frames/panel-forge-skulls-v2.png?v=20260913-smooth-ui') no-repeat center/100% 100% !important;
   border-color:rgba(150,96,58,.24) !important;
 }
 #storagePanel .pbox{
-  background:#090606 url('img/ui_refs/window_frames/panel-storage-bones.png') no-repeat center/100% 100% !important;
+  background:#090606 url('img/ui_refs/window_frames/panel-storage-bones.png?v=20260913-smooth-ui') no-repeat center/100% 100% !important;
   border-color:rgba(124,66,52,.24) !important;
 }
 #statPanel .pbox{
-  background:#090505 url('img/ui_refs/window_frames/panel-stats-thorns.png') no-repeat center/100% 100% !important;
+  background:#090505 url('img/ui_refs/window_frames/panel-stats-thorns.png?v=20260913-smooth-ui') no-repeat center/100% 100% !important;
   border-color:rgba(140,52,40,.24) !important;
 }
 #skillPanel .skill-pbox{
-  background:#090505 url('img/ui_refs/window_frames/panel-skills-runes.png') no-repeat center/100% 100% !important;
+  background:#090505 url('img/ui_refs/window_frames/panel-skills-runes.png?v=20260913-smooth-ui') no-repeat center/100% 100% !important;
   border-color:rgba(130,70,46,.24) !important;
 }
 .frame-inner-panel{
@@ -1920,7 +1920,7 @@ canvas{display:block;position:fixed;inset:0}
   image-rendering:auto;
 }
 #settings .window-frame-bg{
-  --frame-art:url('img/ui_refs/window_frames/panel-settings-chains-v2.png?v=20260417a');
+  --frame-art:url('img/ui_refs/window_frames/panel-settings-chains-v2.png?v=20260913-smooth-ui');
   background:#080707 !important;
 }
 #settings .window-frame-bg::before{
@@ -2280,7 +2280,7 @@ canvas{display:block;position:fixed;inset:0}
   .room-lbl{font-size:.8rem}
 }
 </style>
-<link rel="stylesheet" href="stat-panel-ui.css?v=20260910-fullscreen-readable-v1">
+<link rel="stylesheet" href="stat-panel-ui.css?v=20260913-smooth-ui">
 <link rel="stylesheet" href="localization.css?v=20260909">
 <script src="stat-panel-ui.js?v=20260909-constellation-v3"></script>
 </head>
@@ -58414,10 +58414,10 @@ function _preloadAssets(){
   return new Promise(resolve=>{
     const imgs=[
       'atlas_player.png','proj_atlas.png',
-      'img/ui_refs/window_frames/panel-settings-chains-v2.png',
-      'img/ui_refs/window_frames/panel-inventory-chains-v2.png',
-      'img/ui_refs/window_frames/panel-forge-skulls-v2.png',
-      'img/ui_refs/window_frames/panel-skills-runes.png',
+      'img/ui_refs/window_frames/panel-settings-chains-v2.png?v=20260913-smooth-ui',
+      'img/ui_refs/window_frames/panel-inventory-chains-v2.png?v=20260913-smooth-ui',
+      'img/ui_refs/window_frames/panel-forge-skulls-v2.png?v=20260913-smooth-ui',
+      'img/ui_refs/window_frames/panel-skills-runes.png?v=20260913-smooth-ui',
       'img/crow/south.png','img/cat_pet/south.png',
       // VFX
       'assets/vfx/chain_shuriken_2.webp','assets/vfx/crescent_slash.webp',

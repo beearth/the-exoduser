@@ -1,0 +1,16 @@
+{
+  "status": "PASS",
+  "real_keyboard": [
+    "Q",
+    "E",
+    "ShiftLeft"
+  ],
+  "checks": [
+    true,
+    true,
+    true
+  ],
+  "page_errors": [],
+  "real_save_writes": false,
+  "skip_removes_ui": true
+}

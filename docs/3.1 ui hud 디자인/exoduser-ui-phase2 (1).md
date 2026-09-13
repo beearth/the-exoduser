@@ -563,9 +563,18 @@ Space 슬롯(`SKILL_SLOTS[4]`)은 지옥강타 계열과 `cat:'rage'` 분노 스
 | 능력치 | `img/ui_refs/window_frames/panel-stats-thorns.png` | `ChatGPT Image 2026년 4월 16일 오후 11_05_52.png` 우상 | 뿔/가시 프레임 |
 | 스킬 | `img/ui_refs/window_frames/panel-skills-runes.png` | `ChatGPT Image 2026년 4월 16일 오후 11_05_52.png` 우하 | 룬/촛불 프레임 |
 
-> **v2 히스토리 (2026-04-17)**: 설정/인벤토리/대장간 3개 창을 공통 디자인의 신규 프레임(`*-v2.png`)으로 전면 교체. 기존 `panel-settings-chains.png` / `panel-inventory-bloodhands.png` / `panel-forge-relic.png`는 레거시 아카이브로 남겨둠(코드에서는 더 이상 참조하지 않음).
+> **v2 히스토리 (2026-04-17)**: 설정/인벤토리/대장간 3개 창을 공통 디자인의 신규 프레임(`*-v2.png`)으로 전면 교체. 기존 `panel-settings-chains.png` / `panel-inventory-bloodhands.png` / `panel-forge-relic.png`는 코드 참조 해제 후 보존했으며, 2026-09-13 사용자 허용으로 원본 백업 후 삭제했다.
 
-> **v2 업스케일 (2026-04-17 추가)**: 원본이 ~770×510이라 95vw에서 흐림 발생 → PIL LANCZOS 3배 + UnsharpMask(radius=1.2, 60%, threshold=2)로 재저장. 현재 해상도 `2307×1581 / 2223×1452 / 2313×1545`. 다음 재생성 시에는 1600~2048 원본으로 뽑을 것. CSS URL에는 `?v=20260417a` 캐시 버전 쿼리가 붙어 있음.
+> **현행 이미지 (2026-09-13)**: 아래6개 창 배경을 GPT로 재생성해 잔점 질감을 제거했다. 이전3배 업스케일 파일은 백업으로 보존한다. 모든 현재 URL 버전은 `20260913-smooth-ui`다. 능력치 border-image는 원본 비율을 유지하는 백분율 slice를 사용한다. [적용·검증 기록](../1전체그래픽세팅/IMAGE_TEXTURE_RUNTIME_20260913.md).
+
+| 창 | 파일 | 해상도 변경 | 처리 |
+|---|---|---|---|
+| 설정 | `panel-settings-chains-v2.png` | 2307×1581 → 1515×1038 | GPT 원본 참조 편집 |
+| 인벤토리 | `panel-inventory-chains-v2.png` | 2313×1545 → 1534×1025 | GPT 원본 참조 편집 |
+| 대장간 | `panel-forge-skulls-v2.png` | 2223×1452 → 1551×1014 | GPT 원본 참조 편집 |
+| 능력치 | `panel-stats-thorns.png` | 768×512 → 1536×1024 | GPT 원본 참조 편집 |
+| 스킬 | `panel-skills-runes.png` | 768×512 → 1536×1024 | GPT 원본 참조 편집 |
+| 창고 | `panel-storage-bones.png` | 768×512 → 1536×1024 | GPT 원본 참조 편집 |
 
 #### HELLISH PANEL RESET (2026-04-17)
 
@@ -692,7 +701,7 @@ Space 슬롯(`SKILL_SLOTS[4]`)은 지옥강타 계열과 `cat:'rage'` 분노 스
 
 #### 설정 프레임 선예도 보정 (2026-04-16)
 
-- 현재 설정 프레임 자산 `panel-settings-chains.png`는 `768x512` 원본이라, 넓은 설정창에 업스케일되며 체인/상단 바 선예도가 약해질 수 있음
+- 당시 설정 프레임 `panel-settings-chains.png`는768×512였다. 현재는1515×1038의 `panel-settings-chains-v2.png`를 사용하며, 아래 보정 기록은 초기 설계 이력이다.
 - 임시 보정은 CSS에서 수행:
 
 | 항목 | 적용 |

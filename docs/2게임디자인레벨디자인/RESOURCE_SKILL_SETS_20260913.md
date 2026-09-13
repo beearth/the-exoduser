@@ -1,0 +1,40 @@
+# 해골눈·자원·기술 세트 안내 — 2026-09-13
+
+사용자 지시: E에만 연결된 녹색 스태미나 소모 단계를 없애고, 해골눈 설명 때 Q/E/Shift를 각각의 자원과 묶어서 소개한다.
+
+| 자원 | 기술·키 | 안내·실습 |
+|---|---|---|
+| 정신력 | 해골눈4개, 패링 | 피격−1 / 패링+1 / 0이면 그로기. 기존 P.poise와 피격·회복 판정 유지 |
+| 마력(MP) | Q 보호막, action=parry | 발동·홀딩에 사용, 마법탄 패링으로 자원 회복. 세트 실습은 실제 sBlock 상태와 입력 직전보다 MP 감소 필수 |
+| 스태미나(ST) | E 검격, action=shield | 실제 sBash와 입력 직전보다 ST 감소 필수 |
+| 기동력+ST | 왼쪽 Shift 사슬, action=charge | 실제 _harpActive 또는 _dashActive와 기동력·ST 모두 감소 필수 |
+
+## 진행·표시
+
+| 항목 | 구현 |
+|---|---|
+| 2단 총 항목 | 기존10개 유지. 1번 제목은 자원 소개 · 해골눈, 5번은 Shift · 사슬 1·2·3단, 6번은 자원 실습 · Q·E·Shift |
+| 기존 E 단독6번 | Q→E→Shift3개 기술·자원 세트로 대체. resourceIndex=0/1/2, resourceChecks3개가 모두 true여야 상위 항목 완료 |
+| 첫 설명 | step0/1/2의 해골눈 안내 때 정신력 설명과 Q/MP·E/ST·Shift/기동력+ST3개 짝을 함께 표시 |
+| 세트 안내 | step5에서 현재 목표 강조·개별 체크·완료 수0/3~3/3 표시. Q/E는 BINDS/BINDS2에 연결된 입력, ShiftLeft는 실제 사슬 입력 경로도 허용 |
+| 허위 완료 방지 | 허용된 목표 입력 resourcePressed + 실제 기술 상태 + 입력 직전 resourceBaseline 대비 자원 감소를 모두 확인. 키 입력만/자원 감소만/잘못된 기술은 미완료 |
+| 다음 기술 | Q/E 성공 후90틱 동안 다음 기술 입력 제한. 이후 resetPose·방향 입력 초기화, MP/ST/기동력 최대치 복원 후 다음 목표. 매 프레임 자원 보충 없음 |
+| 재시작·복원 | step5 재진입은3개 체크와 입력 상태 초기화. 종료/건너뛰기는 기존 스냅샷으로 플레이어 자원·스킬·월드 복원 |
+| DOM | .lesson-resource-guide를 새로 만들어 제목 아래 삽입. 각 p는 리프 노드로 갱신. 해당 안내 중 기존 전체 체크리스트를 숨겨 핵심 설명을 위쪽에 표시. 다른 단계는 기존 체크리스트 표시 |
+| CSS | data-resource-guide=true에서 체크리스트 숨김, 아트 높이48px·margin2px 0 10px·부제 margin-bottom8px. 안내 행13px/1.6, 좌측 테두리2px, 현재 목표 강조 |
+| 색 | 안내 행 #e4d8c6 / 배경 #17141be6 / 테두리 #867057. 현재 목표 #ffe49c / 배경 #332819. 기존 튜토리얼 전체 투명도 유지 |
+| 캐시 | 일반/쉬운 게임의 resource-practice.js와 parry-lesson.css에 20260913-resource-sets1. parry-lesson.js는 해당 전투 실습의 최신 캐시 버전 유지 |
+| 물리 Shift | charge를 mouse0로 바꿔도 왼쪽 Shift 입력을 사슬 실습 및 그로기 탈출 입력으로 기록. 커스텀 바인딩 회귀 검사 PASS |
+| 전투 규칙 | Q/E/Shift의 실제 비용·피해·패링 분류·그로기 탈출4방법·사슬3단 실습은 변경 없음 |
+
+## 검증
+
+| 검사 | 결과 |
+|---|---|
+| 테스트 우선 | 기존 E 단독 허용 때문에 새 순서 검사가 실패하는 것을 확인한 뒤 구현 |
+| 회귀 | tools/test-resource-practice.cjs: 세 키 실제 상태·소모 필요, 입력만/소모만 미완료, 중복 방지,90틱 전환, 재진입 초기화, 건너뛰기 복원 및 기존 자원/전투 실습 검사 PASS |
+| 실제 브라우저 | node server.cjs3333에서 커튼을 열고 실제2단 시작. 실제 키보드 Q→E→ShiftLeft로3/3 성공, pageerror0·세이브 쓰기0 |
+| 시각 | 해골눈 안내1440×900/1280×720, Q/E/Shift 목표별 화면과 완료 화면 캡처. resource_intro_1280/resource_Q_1280/resource_complete_1280 직접 확인 |
+| 기록 | output/tutorial_resource_sets_20260913/qa.json 및 화면6개, originals/ 백업 |
+
+기존 실습 상세는 RESOURCE_PRACTICE_20260912.md를 따른다. 이번 변경은 자원 소개와 연결 실습에 한정한다.

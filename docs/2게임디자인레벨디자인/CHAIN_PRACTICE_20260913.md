@@ -17,7 +17,9 @@
 | 자원 | 사슬 실습 시작과 다음 시도 준비에서만 `_harpGauge=_HARP_GAUGE_MAX`, `P.st=P.mst`. 진행 중 강제 보충하지 않음. 1장 기본 자연 회복은 유지, 2장 기존 자연 회복 중단은 유지. 실제 소모량은 `flight.spent` 및 피드백으로 보존 |
 | 화면 | 기존 `hint` 리프 노드에 3단 체크·현재 목표·피드백 표시, `.lesson-hint`는 `white-space:pre-line`. 기존 `holdBox/holdLabel/holdMeter` 재사용, 게이지는 `min(100,_dashHoldF/_HARP_TIER_F[3]*100)` |
 | 수명 | 연습 시작, 2장 각 과제 진입, 종료/건너뛰기에서 `chainPractice=null`. 저장 객체에 포함하지 않으며 기존 HP/ST/기동력/위치 복원 유지 |
-| 캐시 | 사슬 변경 당시 버전 `20260913-chain-tiers1`. 현재 일반·쉬운 게임 HTML의 `resource-practice.js`는 그로기 4방법 필수 변경 버전 `20260913-escape-all4` |
+| 캐시 | 사슬 변경 당시 버전 `20260913-chain-tiers1`. 현재 일반·쉬운 게임 HTML의 `resource-practice.js`는 자원·기술 세트 안내 버전 `20260913-resource-sets1` |
 | 자동 검증 | `tools/test-parry-lesson.cjs`의 `exerciseChainTiers()`를 기초/자원 연습 양쪽에 적용. 잘못된 단계·무소모·취소 제외, 비행 중 전환/보충 금지, Shift 해제 대기, 1/2/3 모두 완료, 커스텀 바인드에서 왼쪽 Shift 허용을 검사 |
 | 브라우저 검증 | 로컬 Chrome의 별도 테스트 탭에서 저장된 `BINDS.charge=mouse0` 상태로 실제 `keydown`/`keyup` 핸들러와 `update()` 실행. 1/8/12틱 홀딩 시 1/2/3단 순차 이동 및 실제 기동력 45/98/150 소모, 완료 배열 `[1]`→`[1,2]`→`[1,2,3]`, 후속 E 과제 전환 확인. 콘솔 오류 없음. 테스트 탭 종료로 임시 런타임 조정 폐기 |
 | 회귀 검증 | `test-resource-practice.cjs`(기초 연습 테스트 포함), `test-onboarding-settings.cjs`, `test-tutorial-mouse.cjs` 통과. 일반/쉬운 HTML 문법 및 관련 입력·저장 상태 복원 검사 포함 |
+
+자원 실습의 최신 Q/E/Shift 묶음 안내와 관련 캐시는 [RESOURCE_SKILL_SETS_20260913.md](RESOURCE_SKILL_SETS_20260913.md)를 따른다.

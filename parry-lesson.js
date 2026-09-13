@@ -38,7 +38,7 @@ window._parryLesson = {
     if(this.phase !== 'practice' || this.focusTicks > 0)return false;
     // The live chain handler uses physical Left Shift, including with saved custom binds.
     if(code==='ShiftLeft'&&this.actions().includes('charge')){
-      if(this.chapter===2&&this.step===3)window._resourcePractice.escapePressed=true;
+      if(this.chapter===2)return window._resourcePractice.allowKey(this,code);
       return true;
     }
     if(this.chapter===2)return window._resourcePractice.allowKey(this,code);

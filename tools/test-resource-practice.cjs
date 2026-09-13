@@ -12,6 +12,9 @@ function setup(){
   return {c,l,r:c.window._resourcePractice};
 }
 const {c,l,r}=setup();
+assert.equal(l.resourceGuide.hidden,false);
+for(const [i,key]of ['Q','E','Shift'].entries())assert.ok(l.resourceGuideRows[i].textContent.includes(key),'skull-eye introduction pairs every resource with a skill');
+assert.ok(!r.labels.some(label=>label.includes('녹색 스태미나 소모')));
 function shot(){r.fire(l);return l.shot;}
 function collide(){const p=shot();l.miss(p);c.projs.splice(c.projs.indexOf(p),1);}
 function next(){for(let i=0;i<91;i++)l.tick();}
@@ -28,6 +31,7 @@ for(let i=0;i<500;i++)l.tick();assert.equal(l.checks[3],false);
 assert.equal(l.allowKey('ShiftLeft'),false,'start with the requested Space escape');
 assert.match(l.resourceReadout.textContent,/0\/4/);
 for(const [i,code,state] of [[0,'Space','gSlamWindup'],[1,'ShiftLeft','idle'],[2,'Space','bladeDash'],[3,'ControlLeft','ghostWalk']]){
+  if(i===1)c.BINDS.charge='mouse0';
   if(i===2)l.allowKey('KeyW');
   assert.equal(l.allowKey(code),true);
   l.tick();assert.equal(l.checks[3],false,'input without an escape cannot complete the task');
@@ -50,7 +54,18 @@ assert.match(l.resourceReadout.textContent,/기동력 98\(2.18칸\) · ST 2%/);
 c._harpDistTier=t=>[0,400,600,900][t];r.readout(l);assert.match(l.resourceReadout.textContent,/최대 거리 900/);
 exerciseChainTiers(c,l);
 const spent=c._harpGauge;l.tick();assert.equal(c._harpGauge,spent);
-next();assert.equal(l.step,5);c.P.s='sBash';l.tick();assert.equal(l.checks[5],false);c.P.st-=12;l.tick();assert.equal(l.checks[5],true);
+next();assert.equal(l.step,5);
+assert.equal(l.allowKey('KeyE'),false,'resource sets start with Q, not an E-only task');
+for(const [i,code,state] of [[0,'KeyQ','sBlock'],[1,'KeyE','sBash'],[2,'ShiftLeft','idle']]){
+  assert.equal(l.allowKey(code),true);l.tick();assert.equal(l.checks[5],false,'keypress alone is insufficient');
+  c.P.s=state;l.tick();assert.equal(l.checks[5],false,'skill state without resource cost is insufficient');
+  if(i===0)c.P.mp-=10;
+  if(i===1)c.P.st-=12;
+  if(i===2){c._harpActive=true;c._harpGauge-=45;l.tick();assert.equal(l.checks[5],false,'Shift requires its ST cost too');c.P.st-=1;}
+  l.tick();assert.equal(l.checks[5],i===2,'all Q/E/Shift resource sets are required');
+  assert.equal(r.resourceChecks.filter(Boolean).length,i+1);
+  if(i<2){for(let t=0;t<90;t++)l.tick();assert.equal(r.resourceIndex,i+1);}
+}
 next();assert.equal(l.step,6);l.allowKey('KeyW');assert.equal(l.allowKey('Space'),true);
 c.P._bdMoveT=6;c.P.mp-=7;c._harpGauge-=31.5;l.tick();assert.equal(l.checks[6],true);
 next();assert.equal(l.step,7);c.P.s='sBlock';c.P._sbHoldT=50;
@@ -167,5 +182,16 @@ console.log('PASS: live base/passive/item absorption, 50% cap, 25% hold cap, ite
   c.P.x+=10;const x=c.P.x;l.tick();assert.equal(c.P.x,x);
  }
  l.step=2;r.enter(l);for(let i=0;i<4;i++)r.fire(l);c.projs=[];l.tick();assert.equal(r.retryTicks,75);
- console.log('PASS: resource steps allow movement, preserve position, and retry a dodged four-shot lesson.');
+console.log('PASS: resource steps allow movement, preserve position, and retry a dodged four-shot lesson.');
+}
+{
+ const {c,l,r}=setup();l.step=5;r.enter(l);
+ c.P.s='sBlock';c.P.mp-=10;l.tick();assert.equal(r.resourceChecks.some(Boolean),false,'resource loss without input is not a completed skill');
+ r.enter(l);l.allowKey('KeyQ');c.P.s='sBlock';c.P.mp-=10;l.tick();
+ assert.equal(r.resourceChecks.filter(Boolean).length,1);assert.equal(l.allowKey('KeyE'),false,'transition cannot start the next skill early');
+ for(let i=0;i<89;i++)l.tick();assert.equal(r.resourceChecks.filter(Boolean).length,1,'one activation never counts more than once');
+ l.tick();assert.equal(r.resourceIndex,1);assert.equal(c.P.mp,c.P.mmp);
+ r.enter(l);assert.equal(r.resourceChecks.some(Boolean),false,'restarting clears the complete set');
+ l.finish();assert.equal(c.P.mp,42);assert.equal(c.P.st,51);
+ console.log('PASS: skull-eye introduction includes Q/E/Shift resource pairs; all three live activations required, no input-only or cost-only completion, no duplicate credit, retry resets, skip restores.');
 }

@@ -1,0 +1,106 @@
+{
+  "status": "PASS",
+  "decoded": [
+    {
+      "path": "img/ui_refs/window_frames/panel-settings-chains-v2.png",
+      "w": 1515,
+      "h": 1038
+    },
+    {
+      "path": "img/ui_refs/window_frames/panel-inventory-chains-v2.png",
+      "w": 1534,
+      "h": 1025
+    },
+    {
+      "path": "img/ui_refs/window_frames/panel-forge-skulls-v2.png",
+      "w": 1551,
+      "h": 1014
+    },
+    {
+      "path": "img/ui_refs/window_frames/panel-stats-thorns.png",
+      "w": 1536,
+      "h": 1024
+    },
+    {
+      "path": "img/ui_refs/window_frames/panel-skills-runes.png",
+      "w": 1536,
+      "h": 1024
+    },
+    {
+      "path": "img/ui_refs/window_frames/panel-storage-bones.png",
+      "w": 1536,
+      "h": 1024
+    }
+  ],
+  "panels": [
+    {
+      "id": "settings",
+      "background": "none url(\"http://127.0.0.1:3333/img/ui_refs/window_frames/panel-settings-chains-v2.png?v=20260913-smooth-ui\")",
+      "border": "none",
+      "slice": "100%",
+      "rect": {
+        "width": 1366,
+        "height": 808
+      },
+      "childCount": 5
+    },
+    {
+      "id": "invPanel",
+      "background": "url(\"http://127.0.0.1:3333/img/ui_refs/window_frames/panel-inventory-chains-v2.png?v=20260913-smooth-ui\") radial-gradient(18px 18px at 6% 6%, rgba(255, 124, 62, 0.18), rgba(0, 0, 0, 0) 60%), radial-gradient(20px 20px at 94% 6%, rgba(255, 118, 56, 0.14), rgba(0, 0, 0, 0) 62%), radial-gradient(26px 26px at 50% 100%, rgba(255, 132, 64, 0.12), rgba(0, 0, 0, 0) 60%), linear-gradient(135deg, rgba(255, 210, 162, 0.04), rgba(0, 0, 0, 0) 16%, rgba(0, 0, 0, 0) 84%, rgba(143, 73, 39, 0.04)), repeating-linear-gradient(120deg, rgba(255, 219, 194, 0.016) 0px, rgba(255, 219, 194, 0.016) 1px, rgba(0, 0, 0, 0) 1px, rgba(0, 0, 0, 0) 9px)",
+      "border": "none",
+      "slice": "100%",
+      "rect": {
+        "width": 1366,
+        "height": 808
+      },
+      "childCount": 4
+    },
+    {
+      "id": "forge",
+      "background": "url(\"http://127.0.0.1:3333/img/ui_refs/window_frames/panel-forge-skulls-v2.png?v=20260913-smooth-ui\") radial-gradient(18px 18px at 6% 6%, rgba(255, 124, 62, 0.18), rgba(0, 0, 0, 0) 60%), radial-gradient(20px 20px at 94% 6%, rgba(255, 118, 56, 0.14), rgba(0, 0, 0, 0) 62%), radial-gradient(26px 26px at 50% 100%, rgba(255, 132, 64, 0.12), rgba(0, 0, 0, 0) 60%), linear-gradient(135deg, rgba(255, 210, 162, 0.04), rgba(0, 0, 0, 0) 16%, rgba(0, 0, 0, 0) 84%, rgba(143, 73, 39, 0.04)), repeating-linear-gradient(120deg, rgba(255, 219, 194, 0.016) 0px, rgba(255, 219, 194, 0.016) 1px, rgba(0, 0, 0, 0) 1px, rgba(0, 0, 0, 0) 9px)",
+      "border": "none",
+      "slice": "100%",
+      "rect": {
+        "width": 1366,
+        "height": 808
+      },
+      "childCount": 4
+    },
+    {
+      "id": "storagePanel",
+      "background": "url(\"http://127.0.0.1:3333/img/ui_refs/window_frames/panel-storage-bones.png?v=20260913-smooth-ui\") radial-gradient(18px 18px at 6% 6%, rgba(255, 124, 62, 0.18), rgba(0, 0, 0, 0) 60%), radial-gradient(20px 20px at 94% 6%, rgba(255, 118, 56, 0.14), rgba(0, 0, 0, 0) 62%), radial-gradient(26px 26px at 50% 100%, rgba(255, 132, 64, 0.12), rgba(0, 0, 0, 0) 60%), linear-gradient(135deg, rgba(255, 210, 162, 0.04), rgba(0, 0, 0, 0) 16%, rgba(0, 0, 0, 0) 84%, rgba(143, 73, 39, 0.04)), repeating-linear-gradient(120deg, rgba(255, 219, 194, 0.016) 0px, rgba(255, 219, 194, 0.016) 1px, rgba(0, 0, 0, 0) 1px, rgba(0, 0, 0, 0) 9px)",
+      "border": "none",
+      "slice": "100%",
+      "rect": {
+        "width": 778,
+        "height": 806
+      },
+      "childCount": 4
+    },
+    {
+      "id": "statPanel",
+      "background": "radial-gradient(at 45% 45%, rgba(37, 35, 29, 0.4), rgba(0, 0, 0, 0) 62%), none radial-gradient(18px 18px at 6% 6%, rgba(255, 124, 62, 0.18), rgba(0, 0, 0, 0) 60%), radial-gradient(20px 20px at 94% 6%, rgba(255, 118, 56, 0.14), rgba(0, 0, 0, 0) 62%), radial-gradient(26px 26px at 50% 100%, rgba(255, 132, 64, 0.12), rgba(0, 0, 0, 0) 60%), linear-gradient(135deg, rgba(255, 210, 162, 0.04), rgba(0, 0, 0, 0) 16%, rgba(0, 0, 0, 0) 84%, rgba(143, 73, 39, 0.04)), repeating-linear-gradient(120deg, rgba(255, 219, 194, 0.016) 0px, rgba(255, 219, 194, 0.016) 1px, rgba(0, 0, 0, 0) 1px, rgba(0, 0, 0, 0) 9px)",
+      "border": "url(\"http://127.0.0.1:3333/img/ui_refs/window_frames/panel-stats-thorns.png?v=20260913-smooth-ui\")",
+      "slice": "19.5312% 13.6719% 18.5547%",
+      "rect": {
+        "width": 1408,
+        "height": 868
+      },
+      "childCount": 5
+    },
+    {
+      "id": "skillPanel",
+      "background": "url(\"http://127.0.0.1:3333/img/ui_refs/window_frames/panel-skills-runes.png?v=20260913-smooth-ui\") radial-gradient(18px 18px at 6% 6%, rgba(255, 124, 62, 0.18), rgba(0, 0, 0, 0) 60%), radial-gradient(20px 20px at 94% 6%, rgba(255, 118, 56, 0.14), rgba(0, 0, 0, 0) 62%), radial-gradient(26px 26px at 50% 100%, rgba(255, 132, 64, 0.12), rgba(0, 0, 0, 0) 60%), linear-gradient(135deg, rgba(255, 210, 162, 0.04), rgba(0, 0, 0, 0) 16%, rgba(0, 0, 0, 0) 84%, rgba(143, 73, 39, 0.04)), repeating-linear-gradient(120deg, rgba(255, 219, 194, 0.016) 0px, rgba(255, 219, 194, 0.016) 1px, rgba(0, 0, 0, 0) 1px, rgba(0, 0, 0, 0) 9px)",
+      "border": "none",
+      "slice": "100%",
+      "rect": {
+        "width": 1118,
+        "height": 826
+      },
+      "childCount": 4
+    }
+  ],
+  "errors": [],
+  "real_save_writes": false,
+  "escape_closes_stat_panel": true
+}
