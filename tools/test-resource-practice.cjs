@@ -28,7 +28,7 @@ for(let i=0;i<4;i++){collide();assert.equal(c.P.poise,3-i);}
 assert.equal(c.P.s,'pStun');assert.equal(l.checks[2],true);
 next();assert.equal(l.step,3);assert.equal(c.P.s,'pStun');
 for(let i=0;i<500;i++)l.tick();assert.equal(l.checks[3],false);
-assert.equal(l.allowKey('ShiftLeft'),false,'start with the requested Space escape');
+assert.equal(l.allowKey('ShiftLeft'),true,'all escape methods are available from the start');
 assert.match(l.resourceReadout.textContent,/0\/4/);
 for(const [i,code,state] of [[0,'Space','gSlamWindup'],[1,'ShiftLeft','idle'],[2,'Space','bladeDash'],[3,'ControlLeft','ghostWalk']]){
   if(i===1)c.BINDS.charge='mouse0';
@@ -101,12 +101,12 @@ for(const p of burst.c.projs.slice()){burst.l.miss(p);burst.l.miss(p);}
 assert.equal(burst.r.hits,4);assert.equal(burst.c.P.poise,0);assert.equal(burst.l.checks[2],true);burst.l.finish();
 const pointers=setup();
 const escape=setup();escape.l.step=3;escape.r.enter(escape.l);escape.r.render(escape.l);
-escape.l.allowKey('KeyW');assert.equal(escape.l.allowKey('Space'),false,'slam requires releasing directions');
+escape.l.allowKey('KeyW');assert.equal(escape.l.allowKey('Space'),true,'direction plus Space is an available escape');
 escape.l.releaseKey('KeyW');assert.equal(escape.l.allowKey('Space'),true);
 escape.c.P.s='bladeDash';escape.c.P._bdMoveT=6;escape.l.tick();
 assert.equal(escape.r.escapeChecks.some(Boolean),false,'a different escape cannot satisfy the requested method');
 for(let i=0;i<90;i++)escape.l.tick();
-assert.equal(escape.r.escapeIndex,0);assert.equal(escape.c.P.s,'pStun','wrong-method escape retries without getting stuck');
+assert.equal(escape.r.escapeChecks.some(Boolean),false);assert.equal(escape.c.P.s,'pStun','wrong-method escape retries without getting stuck');
 escape.r.enter(escape.l);escape.c.P.s='gSlamWindup';escape.l.tick();
 assert.equal(escape.r.escapeChecks.some(Boolean),false,'state without user input is not success');
 for(let i=0;i<90;i++)escape.l.tick();
@@ -114,7 +114,7 @@ escape.c.P.s='pStun';escape.l.allowKey('Space');escape.c.P.s='gSlamWindup';escap
 for(let i=0;i<89;i++)escape.l.tick();
 assert.equal(escape.r.escapeChecks.filter(Boolean).length,1,'one escape cannot count repeatedly');
 assert.equal(escape.l.allowKey('Space'),false,'transition blocks escape inputs');
-escape.l.tick();assert.equal(escape.r.escapeIndex,1);
+escape.l.tick();assert.equal(escape.r.escapeAttempt,-1);assert.equal(escape.l.allowKey('ControlLeft'),true);
 escape.r.enter(escape.l);assert.equal(escape.r.escapeChecks.some(Boolean),false,'a new practice starts from zero');
 escape.l.finish();
 const positions={};const classes=new Set();

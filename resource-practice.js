@@ -11,7 +11,7 @@ window._resourcePractice = {
     '해골눈 4개는 정신력입니다. 피격 −1, 패링 +1, 0이면 그로기입니다. Q·E·Shift와 자원 짝을 살펴본 뒤, 탄을 한 번 맞아보세요.',
     '다가오는 마법탄을 Q로 패링하세요. 실제 패링에 성공하면 꺼진 해골눈 1개가 다시 켜집니다.',
     '4발이 연속으로 날아옵니다. 화살표가 가리키는 해골눈이 피격마다 4 → 3 → 2 → 1 → 0으로 줄어들고 그로기에 걸리는 것을 확인하세요.',
-    'Space 지옥강타 → Shift → 방향키 + Space 전격이동 → 왼쪽 Ctrl 유령걸음 순서로 네 방법 모두 직접 탈출하세요. 성공할 때마다 그로기와 자원·쿨타임을 다시 준비합니다. Space 지옥강타는 방향키를 떼고 누르세요.',
+    'Space 지옥강타 · Shift 사슬 · 방향키 + Space 전격이동 · 왼쪽 Ctrl 유령걸음으로 순서와 상관없이 각각 한 번씩 탈출하세요. 이미 성공한 방법은 중복 집계하지 않습니다. 탈출 후 그로기와 자원·쿨타임을 다시 준비합니다. Space 지옥강타는 방향키를 떼고 누르세요.',
     '마우스로 이동할 곳을 가리키고 Shift를 누르세요. 오래 누를수록 더 멀리 이동하며 기동력과 스태미나 소모가 커집니다. 1·2단은 키를 떼면 발사하고, 3단 충전이 끝나면 자동 발사합니다. 아래 단계별 수치를 확인하세요.',
     'Q 보호막 → E 검격 → Shift 사슬 순서로 기술을 사용하며, 각 기술이 쓰는 자원을 확인하세요. 세 짝을 모두 직접 실습해야 완료됩니다.',
     '방향키 또는 WASD를 누른 채 Space로 전격이동을 5번 사용하세요. 매번 노란 기동력과 파란 마력이 함께 줄어드는 것을 확인하세요. 이동이 끝나면 Space를 떼고 다시 누르세요.',
@@ -43,20 +43,18 @@ window._resourcePractice = {
     l.build();this.enter(l);l.render();
   },
   actions(l) {
-    if(l.step===3)return this.escapeWait>0?[]:[['bow'],['charge'],['up','down','left','right','bow'],[]][this.escapeIndex]||[];
+    if(l.step===3)return this.escapeWait>0?[]:['bow','charge','up','down','left','right'];
     if(l.step===5)return this.resourceWait>0?[]:[this.resourceSets[this.resourceIndex].action];
     return [[],['parry'],[],['charge','up','down','left','right','bow'],['charge'],['shield'],['up','down','left','right','bow'],['parry'],[],['parry']][l.step]||[];
   },
   allowKey(l,code) {
-    if(l.step===3){
-      if(this.escapeWait>0)return false;
-      if(code===BINDS.bow||code===BINDS2.bow){
-        if(this.escapeIndex===0&&l.directionHeld()||this.escapeIndex===2&&!l.directionHeld())return false;
-      }
-    }
-    const ok=(l.step===8||l.step===3&&this.escapeIndex===3)&&code==='ControlLeft'||this.actions(l).some(a=>code===BINDS[a]||code===BINDS2[a]||a==='charge'&&code==='ShiftLeft');
+    if(l.step===3&&this.escapeWait>0)return false;
+    const ok=(l.step===8||l.step===3)&&code==='ControlLeft'||this.actions(l).some(a=>code===BINDS[a]||code===BINDS2[a]||a==='charge'&&code==='ShiftLeft');
     if(ok&&l.step===5&&!this.resourcePressed){this.resourcePressed=true;this.resourceBaseline={mp:P.mp,st:P.st,gauge:_harpGauge};}
-    if(ok&&l.step===3&&P.s==='pStun'&&(code==='ControlLeft'||code==='ShiftLeft'||code===BINDS.bow||code===BINDS2.bow||code===BINDS.charge||code===BINDS2.charge))this.escapePressed=true;
+    if(ok&&l.step===3&&P.s==='pStun'){
+      const attempt=code==='ControlLeft'?3:code==='ShiftLeft'?1:code===BINDS.bow||code===BINDS2.bow?(l.directionHeld()?2:0):code===BINDS.charge||code===BINDS2.charge?1:-1;
+      if(attempt>=0){this.escapeAttempt=attempt;this.escapePressed=true;}
+    }
     if(ok&&l.step===6&&(code===BINDS.bow||code===BINDS2.bow)&&l.directionHeld())l.armDashPractice(code);
     return ok;
   },
@@ -69,7 +67,7 @@ window._resourcePractice = {
     this.burstShots=[];this.hitShots=new Set();this.burstSpawned=0;
     this.retryTicks=0;this.feedback='';
     P.poise=l.step===1?3:l.step===3?0:l.step===7?1:4;
-    if(l.step===3){this.escapeIndex=0;this.escapeChecks=Array(4).fill(false);this.escapeWait=0;this.prepareEscape(l);}
+    if(l.step===3){this.escapeChecks=Array(4).fill(false);this.escapeWait=0;this.prepareEscape(l);}
     if(l.step===5){this.resourceIndex=0;this.resourceChecks=Array(3).fill(false);this.prepareResource(l);}
     if(l.step===9){P.hp=Math.max(1,P.mhp*.4);P.st=P.mst*.4;P.mp=P.mmp*.4;_harpGauge=_HARP_GAUGE_MAX*.4;}
     this.baseline={hp:P.hp,st:P.st,mp:P.mp,gauge:_harpGauge,poise:P.poise};
@@ -80,8 +78,8 @@ window._resourcePractice = {
     P._gwActive=false;P._gwCd=0;P._gslCd=0;
     P.hp=P.mhp;P.mp=P.mmp;P.st=P.mst;_harpGauge=_HARP_GAUGE_MAX;
     P.poise=0;P.poiseR=0;P.s='pStun';P.st2=480;P.iframes=0;
-    this.escapePressed=false;this.escapeWait=0;
-    this.feedback='현재 목표: '+this.escapeLabels[this.escapeIndex];
+    this.escapePressed=false;this.escapeAttempt=-1;this.escapeWait=0;
+    this.feedback='자유 순서 · 체크되지 않은 탈출기를 사용하세요.';
   },
   prepareResource(l) {
     l.resetPose();l.heldDirections.clear();
@@ -114,7 +112,7 @@ window._resourcePractice = {
     l.rows.forEach((box,i)=>{box.checked=l.checks[i];l.rowTexts[i].textContent=l.labels[i];l.rowLabels[i].setAttribute('data-current',String(i===l.step));l.rowLabels[i].setAttribute('data-complete',String(l.checks[i]));});
     l.status.textContent=l.phase==='intro'?'2단계 · 준비':l.phase==='practice'?'직접 실습':l.phase==='done'?'2단계 완료':'성공';
     l.keycap.textContent=['피격','Q','피격','탈출기','SHIFT','E','↔ + SPACE','Q 홀딩','CTRL','Q'][l.step];
-    if(l.step===3)l.keycap.textContent=['SPACE','SHIFT','↔ + SPACE','CTRL'][this.escapeIndex];
+    if(l.step===3)l.keycap.textContent='자유 순서';
     l.title.textContent=l.phase==='done'?'자원 실습 완료':l.labels[l.step];
     l.subtitle.textContent=`2단계 · ${l.step+1} / ${l.labels.length}`;
     const guideVisible=[0,1,2,5].includes(l.step)&&l.phase!=='done';
@@ -238,23 +236,25 @@ window._resourcePractice = {
     }
     if(this.retryTicks>0){l.clearShot(true);if((this.retryTicks-=_dtSp)<=0){this.enter(l);l.render();}return false;}
     if(l.step===3&&this.escapeWait>0){
-      if((this.escapeWait-=_dtSp)<=0){if(this.escapeChecks[this.escapeIndex])this.escapeIndex++;this.prepareEscape(l);l.render();}
+      if((this.escapeWait-=_dtSp)<=0){this.prepareEscape(l);l.render();}
       return false;
     }
     if([0,1,2,7,9].includes(l.step)){P.kb.x=0;P.kb.y=0;}
     // Keep an earned groggy state until the user performs the escape, not a timeout.
     if(l.step===3&&P.s==='pStun')P.st2=480;
     if(l.step===3&&P.s!=='pStun'){
-      const escaped=[P.s==='gSlamWindup',P.poise===4,P._bdMoveT>0,P._gwActive&&P._gwCd>0][this.escapeIndex];
+      const attempt=this.escapeAttempt;
+      const escaped=[P.s==='gSlamWindup',P.s==='idle'&&P.poise===4,P._bdMoveT>0,P._gwActive&&P._gwCd>0][attempt];
       if(this.escapePressed&&escaped){
-        this.escapeChecks[this.escapeIndex]=true;this.escapePressed=false;
-        this.feedback=this.escapeLabels[this.escapeIndex]+' 성공!';
+        const repeated=this.escapeChecks[attempt];
+        this.escapeChecks[attempt]=true;this.escapePressed=false;
+        this.feedback=this.escapeLabels[attempt]+(repeated?' · 이미 성공한 탈출기입니다.':' 성공!');
         if(this.escapeChecks.every(Boolean))l.completeStep();
-        else{this.escapeWait=90;this.feedback+=' 잠시 후 다음 탈출을 연습합니다.';}
+        else{this.escapeWait=90;this.feedback+=' 잠시 후 남은 탈출기를 자유롭게 연습하세요.';}
         this.readout(l);
       }else{
         this.escapePressed=false;this.escapeWait=90;
-        this.feedback='현재 안내된 방법으로 탈출하세요. 같은 방법을 다시 준비합니다.';
+        this.feedback='탈출 발동이 확인되지 않았습니다. 잠시 후 원하는 방법으로 다시 시도하세요.';
         this.readout(l);
       }
     }

@@ -11,7 +11,7 @@
 | 표시 | 1장은 현재 미션 hint, 2장은 resourceReadout 리프에 전격이동 성공 0/5~5/5. 5회째에만 completeStep, 기존 90틱 뒤 다음 과제 |
 | 상태 | dashPractice: count/armed/flight/pressed/code/mp/gauge. resetPose에서 초기화, 영구 저장하지 않으며 기존 종료·건너뛰기 자원 복구 유지 |
 | 구현 | parry-lesson.js의 initDashPractice/armDashPractice/tickDashPractice/updateDashPractice를 두 장에서 공유. resource-practice.js는 tickDashPractice(true)로 소모 확인 |
-| 캐시 | 일반·쉬운 게임 HTML의 parry-lesson.js/resource-practice.js는 20260913-dash-five1 |
+| 캐시 | 일반·쉬운 게임 HTML의 parry-lesson.js는 20260913-dash-five1, resource-practice.js는 20260913-resource-cost50 |
 | 자동 검증 | 기존 1회 통과에서 실패하는 테스트를 먼저 확인. 양쪽 1~4회 미완료·5회 완료, 한 이동 중 중복/키 반복 차단, 이동 종료·키 해제 조건, MP/기동력 각각 소모 및 이동 중 보충 금지 PASS |
 | 실제 브라우저 | 서버3333 일반 게임에서 양쪽 장을 시작해 A/D+Space 실입력 5회씩. 각 1~4회 미완료·5회 완료, 오류0. 화면의 5/5를 직접 확인 |
 | 기록 | output/tutorial_dash_five_20260913/qa.json 및 장별 시작/완료 화면4개. tmp/dash_five_originals에 수정 전 파일 보존 |
