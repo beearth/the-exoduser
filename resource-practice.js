@@ -14,7 +14,7 @@ window._resourcePractice = {
     'Space 지옥강타 → Shift → 방향키 + Space 전격이동 → 왼쪽 Ctrl 유령걸음 순서로 네 방법 모두 직접 탈출하세요. 성공할 때마다 그로기와 자원·쿨타임을 다시 준비합니다. Space 지옥강타는 방향키를 떼고 누르세요.',
     '마우스로 이동할 곳을 가리키고 Shift를 누르세요. 오래 누를수록 더 멀리 이동하며 기동력과 스태미나 소모가 커집니다. 1·2단은 키를 떼면 발사하고, 3단 충전이 끝나면 자동 발사합니다. 아래 단계별 수치를 확인하세요.',
     'Q 보호막 → E 검격 → Shift 사슬 순서로 기술을 사용하며, 각 기술이 쓰는 자원을 확인하세요. 세 짝을 모두 직접 실습해야 완료됩니다.',
-    '방향키 또는 WASD를 누른 채 Space를 누르세요. 전격이동이 발동하면서 노란 기동력과 파란 마력이 함께 줄어듭니다.',
+    '방향키 또는 WASD를 누른 채 Space로 전격이동을 5번 사용하세요. 매번 노란 기동력과 파란 마력이 함께 줄어드는 것을 확인하세요. 이동이 끝나면 Space를 떼고 다시 누르세요.',
     '보호막의 기본 피해 흡수율은 30%입니다. 수호신 패시브는 레벨당 +2%p, 견갑의 블록흡수 옵션은 +4~22%p를 더하며 합산 최대 50%입니다. 이번 실습처럼 패링 타이밍 이후 계속 홀딩하면 흡수율은 절반(기본 15%, 최대 25%), 남은 피해는 1.3배가 됩니다. 홀딩 중에는 마지막 해골눈을 지켜 그로기를 막지만 HP 피해는 받습니다. Q를 떼지 말고 3발 모두 받아내세요.',
     '왼쪽 Ctrl을 눌러 유령걸음을 발동하세요. 이번 실습에서는 유령걸음을 제공하며, 발동 후 Ctrl 슬롯의 쿨타임도 확인하세요.',
     '줄어든 체력(HP)·스태미나·마력·기동력을 확인하고 Q로 탄을 패링하세요. 실제 패링 보상으로 네 자원이 모두 회복되면 성공입니다.'
@@ -57,7 +57,7 @@ window._resourcePractice = {
     const ok=(l.step===8||l.step===3&&this.escapeIndex===3)&&code==='ControlLeft'||this.actions(l).some(a=>code===BINDS[a]||code===BINDS2[a]||a==='charge'&&code==='ShiftLeft');
     if(ok&&l.step===5&&!this.resourcePressed){this.resourcePressed=true;this.resourceBaseline={mp:P.mp,st:P.st,gauge:_harpGauge};}
     if(ok&&l.step===3&&P.s==='pStun'&&(code==='ControlLeft'||code==='ShiftLeft'||code===BINDS.bow||code===BINDS2.bow||code===BINDS.charge||code===BINDS2.charge))this.escapePressed=true;
-    if(ok&&l.step===6&&code===BINDS.bow&&l.directionHeld())l.directionSpace=true;
+    if(ok&&l.step===6&&(code===BINDS.bow||code===BINDS2.bow)&&l.directionHeld())l.armDashPractice(code);
     return ok;
   },
   enter(l) {
@@ -165,6 +165,7 @@ window._resourcePractice = {
     const eye=P.s==='pStun'?0:Math.max(0,Math.min(4,P.poise||0));
     l.resourceReadout.textContent=`정신력 ${eye}/4 · HP ${Math.ceil(P.hp)}/${P.mhp}\n기동력 ${Math.floor(_harpGauge)}/${_HARP_GAUGE_MAX}\nST ${Math.floor(P.st)}/${P.mst} · MP ${Math.floor(P.mp)}/${P.mmp}${this.feedback?'\n'+this.feedback:''}`;
     if(l.step===5)l.resourceReadout.textContent+='\n자원·기술 확인 '+this.resourceChecks.filter(Boolean).length+'/3';
+    if(l.step===6)l.resourceReadout.textContent+='\n전격이동 성공 '+(l.dashPractice?.count||0)+'/5';
     if(l.step===3)l.resourceReadout.textContent+='\n탈출 성공 '+this.escapeChecks.filter(Boolean).length+'/4\n'+this.escapeLabels.map((name,i)=>(this.escapeChecks[i]?'✓ ':'□ ')+name).join('\n');
     if(l.step===7)l.resourceReadout.textContent+=`\n현재 보호막 흡수율 ${Math.round(pGuardAbsorb()*100)}% · 이번 홀딩 적용 ${Math.round(Math.min(.25,pGuardAbsorb()*.5)*100)}%`;
     if(l.step===4){
@@ -255,7 +256,7 @@ window._resourcePractice = {
     }
     if(l.step===4){l.tickChainPractice();this.readout(l);}
     if(l.step===5)this.tickResource(l);
-    if(l.step===6&&l.directionSpace&&P._bdMoveT>0&&P.mp<this.baseline.mp&&_harpGauge<this.baseline.gauge)l.completeStep();
+    if(l.step===6){l.tickDashPractice(true);this.readout(l);}
     if(l.step===8&&P._gwActive&&P._gwCd>0)l.completeStep();
     if(this.parried){
       const b=this.beforeParry;

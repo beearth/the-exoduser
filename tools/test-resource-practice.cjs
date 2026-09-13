@@ -2,7 +2,7 @@ const assert=require('node:assert/strict');
 const fs=require('node:fs');
 const vm=require('node:vm');
 const path=require('node:path');
-const {fixture,exerciseChainTiers}=require('./test-parry-lesson.cjs');
+const {fixture,exerciseChainTiers,exerciseDashFive}=require('./test-parry-lesson.cjs');
 function setup(){
   const c=fixture();c.P.poise=2;c.P.maxPoise=4;c.P.poiseR=17;c.P.activeCtSk='iceOrb';c.G.mats=123;c.pGuardAbsorb=()=>.3;
   c._HARP_TIER_F=[0,1,6,12];c._HARP_GAUGE_COST=[0,45,98,150];c._harpDistTier=t=>[0,300,500,700][t];c._harpTier=1;
@@ -66,8 +66,7 @@ for(const [i,code,state] of [[0,'KeyQ','sBlock'],[1,'KeyE','sBash'],[2,'ShiftLef
   assert.equal(r.resourceChecks.filter(Boolean).length,i+1);
   if(i<2){for(let t=0;t<90;t++)l.tick();assert.equal(r.resourceIndex,i+1);}
 }
-next();assert.equal(l.step,6);l.allowKey('KeyW');assert.equal(l.allowKey('Space'),true);
-c.P._bdMoveT=6;c.P.mp-=7;c._harpGauge-=31.5;l.tick();assert.equal(l.checks[6],true);
+next();assert.equal(l.step,6);exerciseDashFive(c,l,true);
 next();assert.equal(l.step,7);c.P.s='sBlock';c.P._sbHoldT=50;
 for(let i=0;i<60;i++)l.tick();
 assert.equal(r.burstSpawned,3);assert.equal(r.burstShots.length,3);

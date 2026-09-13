@@ -30,7 +30,7 @@ window._parryLesson = {
   isDirection(action) { return ['up','down','left','right'].includes(action); },
   allows(action) { return !this.active || (this.phase !== 'intro' && this.isDirection(action)) || (this.phase === 'practice' && !this.focusTicks && this.actions().includes(action)); },
   directionHeld() { return this.heldDirections.size > 0 || ['up','down','left','right'].some(a => KH[BINDS[a]] || (BINDS2[a] && KH[BINDS2[a]])); },
-  releaseKey(code) { this.heldDirections.delete(code); },
+  releaseKey(code) { this.heldDirections.delete(code);const d=this.dashPractice;if(d&&code===d.code){d.pressed=false;if(!(P._bdMoveT>0))d.armed=false;} },
   allowKey(code) {
     if(!this.active)return true;
     if(this.phase==='intro'&&['KeyW','KeyA','KeyS','KeyD'].includes(code))this.beginPractice();
@@ -44,7 +44,7 @@ window._parryLesson = {
     if(this.chapter===2)return window._resourcePractice.allowKey(this,code);
     const allowed=this.actions().some(a => code === BINDS[a] || code === BINDS2[a]);
     if(this.step === 7 && code === 'Space' && this.directionHeld())return false;
-    if(this.step === 5 && code === 'Space' && this.directionHeld())this.directionSpace=true;
+    if(allowed&&this.step===5&&(code===BINDS.bow||code===BINDS2.bow)&&this.directionHeld())this.armDashPractice(code);
     return allowed;
   },
   node(tag, text, css) {
@@ -127,7 +127,7 @@ window._parryLesson = {
     this.keycap.textContent = complete ? '✓' : this.key();
     this.title.textContent = complete ? '전투 준비 완료' : ['마법을 되돌려라', '물리탄을 쳐내라', '보호막을 펼쳐라', '힘을 모아 쳐내라', '사슬로 이동하라', '방향을 정해 이동하라', '패링으로 분노를 채워라', '분노를 폭발시켜라'][this.step];
     this.subtitle.textContent = complete ? '전투 기본 조작을 모두 익혔습니다.' : `${this.step + 1} / ${this.labels.length} · ${this.label(this.step)}`;
-    const tips = this.step === 4 ? '이동할 곳에 마우스를 향하고 Shift를 눌렀다 떼세요. 사슬이 실제 발사되면 성공입니다.' : this.step === 5 ? 'WASD 또는 방향키를 누른 채 Space를 누르세요. 방향 입력과 함께 전격이동이 발동하면 성공입니다.' : this.step === 6 ? 'Q를 2초 동안 누른 뒤, 함께 날아오는 마법탄 10발이 가까워지면 떼세요. 한 번에 여러 발을 패링해 분노 100%를 채워보세요.' : this.step === 7 ? '몬스터들이 주변을 둘러쌌습니다. 방향키에서 손을 떼고 Space만 눌러 분노 폭발로 한 번에 쓸어버리세요.' : this.step === 2 ? `[${this.key()}]를 2초 동안 누르세요. 화염·물·암흑·번개·무지개탄을 보고 키를 떼어 한 번에 3발 이상 패링하세요. 홀딩 중 보호막은 피해를 일부 흡수하고 그로기를 막습니다. 피해를 완전히 막는 무적은 아닙니다.` : this.step === 3 ? `[${this.key()}]를 누른 채 탄 쪽을 바라보세요. 이빨입탄·혈안탄·관통탄·물리 검기파·물리 환영검이 함께 날아옵니다. 3단계 충전 후 키를 떼어 5종 중 3발 이상 한 번에 쳐내세요. 풀차지 자동 발동도 인정합니다.` : q ? `보라색 탄이 가까워지는 순간 [${this.key()}]를 누르세요. 너무 일찍 눌렀다면 떼고 다시 시도하세요.` : `탄을 바라보고 [${this.key()}]를 짧게 눌렀다 떼세요. 길게 누르면 차징이 됩니다.`;
+    const tips = this.step === 4 ? '이동할 곳에 마우스를 향하고 Shift를 눌렀다 떼세요. 사슬이 실제 발사되면 성공입니다.' : this.step === 5 ? 'WASD 또는 방향키를 누른 채 Space를 누르세요. 전격이동을 5번 발동하면 성공입니다.' : this.step === 6 ? 'Q를 2초 동안 누른 뒤, 함께 날아오는 마법탄 10발이 가까워지면 떼세요. 한 번에 여러 발을 패링해 분노 100%를 채워보세요.' : this.step === 7 ? '몬스터들이 주변을 둘러쌌습니다. 방향키에서 손을 떼고 Space만 눌러 분노 폭발로 한 번에 쓸어버리세요.' : this.step === 2 ? `[${this.key()}]를 2초 동안 누르세요. 화염·물·암흑·번개·무지개탄을 보고 키를 떼어 한 번에 3발 이상 패링하세요. 홀딩 중 보호막은 피해를 일부 흡수하고 그로기를 막습니다. 피해를 완전히 막는 무적은 아닙니다.` : this.step === 3 ? `[${this.key()}]를 누른 채 탄 쪽을 바라보세요. 이빨입탄·혈안탄·관통탄·물리 검기파·물리 환영검이 함께 날아옵니다. 3단계 충전 후 키를 떼어 5종 중 3발 이상 한 번에 쳐내세요. 풀차지 자동 발동도 인정합니다.` : q ? `보라색 탄이 가까워지는 순간 [${this.key()}]를 누르세요. 너무 일찍 눌렀다면 떼고 다시 시도하세요.` : `탄을 바라보고 [${this.key()}]를 짧게 눌렀다 떼세요. 길게 누르면 차징이 됩니다.`;
     this.hint.textContent = complete ? '모든 연습 성공! 잠시 후 1-1 전투로 이어집니다.' : tips;
     if(this.step===0||this.step===1)this.updateParryPractice();
     this.holdBox.hidden = (this.step !== 2 && this.step !== 3) || complete;
@@ -153,6 +153,7 @@ window._parryLesson = {
       if(this.step===-2||this.step===-1)this.updateAttackPractice();
     }
     if(this.step===4)this.updateChainPractice();
+    if(this.step===5)this.updateDashPractice();
     this.placeDetails();
   },
   placeDetails() {
@@ -240,12 +241,34 @@ window._parryLesson = {
     this.volleyReleased=false;this.volleyHits=new Set();this.volleyRetryTicks=0;this.volleyFailed=false;this.releaseTicks=0;
     P._kgChg = 0; P._kgTier = 0; P._sBashChgMul = 1;
     _harpActive=false;_dashActive=false;_dashHold=false;_dashHoldF=0;_dashTier=0;_dashLeft=0;_dashPhase=0;
-    P._bdMoveT=0; P._preBdState=null;this.directionSpace=false;
+    P._bdMoveT=0; P._preBdState=null;this.directionSpace=false;this.dashPractice=null;
     P._sdHold = 0; P._bdTrigger = null; P.kb.x = 0; P.kb.y = 0;
     for (const key of Object.keys(K)) K[key] = false;
     for (const key of Object.keys(KH)) KH[key] = false;
     for (const key of Object.keys(MB)) MB[key] = false;
     _stopShieldLoop();
+  },
+  initDashPractice() {
+    if(!this.dashPractice){P.mp=P.mmp;_harpGauge=_HARP_GAUGE_MAX;this.dashPractice={count:0,armed:false,flight:false,pressed:false,code:null};}
+    return this.dashPractice;
+  },
+  armDashPractice(code) {
+    const d=this.initDashPractice();d.pressed=true;d.code=code;
+    if(d.flight||P._bdMoveT>0||d.armed)return;
+    d.armed=true;d.mp=P.mp;d.gauge=_harpGauge;
+  },
+  tickDashPractice(requireCost=false) {
+    const d=this.initDashPractice();
+    if(d.flight){
+      if(!(P._bdMoveT>0)&&!d.pressed){d.flight=false;P.mp=P.mmp;_harpGauge=_HARP_GAUGE_MAX;}
+    }else if(d.armed&&P._bdMoveT>0&&(!requireCost||P.mp<d.mp&&_harpGauge<d.gauge)){
+      d.count++;d.armed=false;d.flight=true;
+      if(d.count===5)this.completeStep();
+    }
+    if(this.chapter===1)this.updateDashPractice();
+  },
+  updateDashPractice() {
+    this.hint.textContent='WASD 또는 방향키를 누른 채 Space로 전격이동을 5번 사용하세요. 이동이 끝나면 Space를 떼고 다시 누르세요.\n전격이동 성공 '+(this.dashPractice?.count||0)+'/5';
   },
   tickChainPractice() {
     if(!this.chainPractice){
@@ -411,8 +434,7 @@ window._parryLesson = {
     if (this.step === 2 || this.step === 3) { this.watchHold(); return false; }
     if (this.step === 4 || this.step === 5) {
       if(this.step===4)this.tickChainPractice();
-      else _harpGauge=_HARP_GAUGE_MAX;
-      if(this.step===5&&this.directionSpace&&P._bdMoveT>0)this.completeStep();
+      else this.tickDashPractice();
       return false;
     }
     if(this.step>=6)this.updateRage();

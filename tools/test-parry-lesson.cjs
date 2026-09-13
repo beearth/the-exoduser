@@ -196,8 +196,7 @@ for(let i=0;i<90;i++)lesson.tick();assert.equal(lesson.step,4);
 assert.equal(lesson.allowKey('Space'),false);assert.equal(lesson.allowKey('ShiftLeft'),true);
 exerciseChainTiers(c,lesson);
 for(let i=0;i<90;i++)lesson.tick();assert.equal(lesson.step,5);
-c.P._bdMoveT=6;lesson.tick();assert.equal(lesson.checks[5],false); // dash alone is not the requested combination
-c.KH.ArrowUp=true;assert.equal(lesson.allowKey('Space'),true);lesson.tick();assert.equal(lesson.checks[5],true);
+exerciseDashFive(c,lesson);
 for(let i=0;i<90;i++)lesson.tick();assert.equal(lesson.step,6);
 for(let i=0;i<45;i++)lesson.tick();assert.equal(lesson.volley.length,10);
 assert.equal(c.P.rage,0); // Spawning must never grant rage.
@@ -351,7 +350,27 @@ for(const name of ['game.html','game-easy-test.html']){
   l.finish();assert.equal(c.P.activeLMBSk,'whirlwind');assert.equal(c.P.skills,originalSkills);
 }
 console.log('PASS: Ki Slash is the tutorial basic attack; live crescent collisions count once and original skill selection/levels restore.');
-module.exports={fixture,exerciseChainTiers};
+function exerciseDashFive(c,l,resource=false){
+  const step=l.step;
+  c.P._bdMoveT=6;l.tick();assert.equal(l.checks[step],false,'movement without a fresh directional Space input does not count');
+  c.P._bdMoveT=0;l.tick();l.allowKey('KeyW');
+  for(let i=1;i<=5;i++){
+    assert.equal(l.allowKey('Space'),true);l.tick();assert.equal(l.checks[step],false,'input alone never completes');
+    c.P._bdMoveT=6;
+    if(resource){l.tick();assert.equal(l.dashPractice.count,i-1,'each resource dash needs MP and mobility cost');c.P.mp-=7;l.tick();assert.equal(l.dashPractice.count,i-1);c._harpGauge-=31.5;}
+    l.tick();assert.equal(l.checks[step],i===5,'five distinct activations are required');assert.equal(l.dashPractice.count,i);
+    assert.match(resource?l.resourceReadout.textContent:l.hint.textContent,new RegExp(`${i}/5`));
+    if(i===5)break;
+    const mp=c.P.mp,gauge=c._harpGauge;
+    for(let t=0;t<12;t++)l.tick();assert.equal(l.dashPractice.count,i,'one active dash cannot count more than once');
+    l.allowKey('Space');l.tick();assert.equal(l.dashPractice.count,i,'key repeat during a dash cannot count again');
+    if(resource){assert.equal(c.P.mp,mp);assert.equal(c._harpGauge,gauge,'no refill during movement');}
+    c.P._bdMoveT=0;l.tick();assert.equal(l.dashPractice.flight,true,'wait for Space release');
+    l.releaseKey('Space');l.tick();assert.equal(l.dashPractice.flight,false);
+    assert.equal(c.P.mp,c.P.mmp);assert.equal(c._harpGauge,c._HARP_GAUGE_MAX);
+  }
+}
+module.exports={fixture,exerciseChainTiers,exerciseDashFive};
 
 // Native warning rendering and reflection attribution for both single-shot lessons.
 for(const name of ['game.html','game-easy-test.html'])for(const step of [0,1]){
