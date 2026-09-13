@@ -99,8 +99,12 @@ window._resourcePractice = {
     const b=this.resourceBaseline;
     const used=[P.s==='sBlock'&&P.mp<b.mp,P.s==='sBash'&&P.st<b.st,(_harpActive||_dashActive)&&_harpGauge<b.gauge&&P.st<b.st][this.resourceIndex];
     if(!used)return;
+    // Make the real HUD loss obvious in this resource exercise, once per activation.
+    if(this.resourceIndex===0)P.mp=Math.max(0,Math.min(P.mp,b.mp-P.mmp*.5));
+    if(this.resourceIndex>0)P.st=Math.max(0,Math.min(P.st,b.st-P.mst*.5));
+    if(this.resourceIndex===2)_harpGauge=Math.max(0,Math.min(_harpGauge,b.gauge-_HARP_GAUGE_MAX*.5));
     this.resourceChecks[this.resourceIndex]=true;this.resourcePressed=false;
-    this.feedback=this.resourceSets[this.resourceIndex].label+' 확인!';
+    this.feedback=this.resourceSets[this.resourceIndex].label+' 확인! 연습용 소모: 최대치의 최소 50%';
     if(this.resourceChecks.every(Boolean))l.completeStep();
     else{this.resourceWait=90;this.feedback+=' 키를 놓으세요. 잠시 후 다음 기술을 준비합니다.';}
     l.render();
@@ -126,7 +130,7 @@ window._resourcePractice = {
     l.hint.textContent=l.phase==='done'?'모든 실습 성공! 잠시 후 1-1 전투로 이어집니다.':this.tips[l.step];
     if(l.step===5&&l.phase!=='done'){
       l.keycap.textContent=this.resourceSets[this.resourceIndex].key;
-      l.hint.textContent=this.resourceWait>0?this.feedback:this.resourceSets[this.resourceIndex].tip;
+      l.hint.textContent=this.resourceWait>0?this.feedback:this.resourceSets[this.resourceIndex].tip+' 이번 연습에서는 해당 자원을 최대치의 최소 50% 소모합니다.';
     }
     l.holdBox.hidden=true;l.rageBox.hidden=true;l.button.hidden=l.phase!=='intro';l.button.textContent='2단계 실습 시작 →';
     l.progressFill.style.width=`${l.checks.filter(Boolean).length/l.labels.length*100}%`;
