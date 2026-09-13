@@ -80,7 +80,7 @@ test('large-energy parry grants ten times the normal recovery resources without 
 
   assert.match(resolveSrc, /const _bigResourceMul=10/);
   assert.match(resolveSrc, /P\.parryBank=\(P\.parryBank\|\|0\)\+totalDmg\*_bigResourceMul/);
-  assert.match(resolveSrc, /doParry\(totalDmg,p\.x,p\.y,true,p\.el,_bigResourceMul\)/);
+  assert.match(resolveSrc, /doParry\(totalDmg,p\.x,p\.y,true,p\.el,_bigResourceMul,p\.fbEnergy&&p\.el===EL\.I\?'waterEnergy':undefined\)/);
   assert.match(parrySrc, /function doParry\(_inDmg,_px,_py,_forceQ,_parryEl,_resourceMul,_impactKind\)/);
   assert.match(parrySrc, /const _resourceBonus=Math\.max\(1,_resourceMul\|\|1\)/);
   assert.match(parrySrc, /const _prBase=~~\([^;]+\*_resourceBonus\);/);

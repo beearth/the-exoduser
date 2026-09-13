@@ -15225,7 +15225,7 @@ function _resolveBigEnergyParry(p,totalDmg){
   _splitParriedBigEnergy(p,totalDmg);
   P.parryBank=(P.parryBank||0)+totalDmg*_bigResourceMul;
   addParts(p.x,p.y,ELC[p.el]||'#ffffff',20);
-  doParry(totalDmg,p.x,p.y,true,p.el,_bigResourceMul);
+  doParry(totalDmg,p.x,p.y,true,p.el,_bigResourceMul,p.fbEnergy&&p.el===EL.I?'waterEnergy':undefined);
 }
 for(var _i2=0;_i2<_PPROJ_POOL;_i2++)_pprojFree.push(_mkPProj());
 // ── 성능 디버그 ──
@@ -35307,6 +35307,8 @@ function doParry(_inDmg,_px,_py,_forceQ,_parryEl,_resourceMul,_impactKind){const
   if(!window._tvfx2)window._tvfx2=[];
   if(_impactKind==='waterBean'){
     // 물 파란콩은 위 Q 분기에서 얼음 파열을 이미 생성했으므로 공통 Q 임팩트를 중복 생성하지 않는다.
+  }else if(_impactKind==='waterEnergy'){
+    _addBoom(_px,_py,96,72,'waterImpact');
   }else if(_parryEl==='rainbow'){
     _rainbowImpact(_px,_py);
   }else if(_isQParry){
@@ -56083,8 +56085,8 @@ function _fbEnergyBoom(p){
 }
 function _fbFireEnergy(fb){
   if(!_fieldEnemyCanShoot(fb))return;
-  var a=Math.atan2(P.y-fb.y,P.x-fb.x),m=_fbEsca(fb),col=_fbElCol(fb);
-  spawnProj({x:m.x,y:m.y,vx:Math.cos(a)*10,vy:Math.sin(a)*10,dmg:~~(fb.atk*2.8),el:fb.el,friendly:false,life:320,ml:320,col:col,sz:48,r:20,elemBall:true,_typed:true,_commit:true,fbEnergy:true});
+  var a=Math.atan2(P.y-fb.y,P.x-fb.x),m=_fbEsca(fb),col=ELC[EL.I];
+  spawnProj({x:m.x,y:m.y,vx:Math.cos(a)*10,vy:Math.sin(a)*10,dmg:~~(fb.atk*2.8),el:EL.I,friendly:false,life:320,ml:320,col:col,sz:48,r:20,elemBall:true,_typed:true,_commit:true,fbEnergy:true});
   if(typeof SFX!=='undefined'&&SFX.magic)SFX.magic(1);
   shake(16);
 }
@@ -56150,7 +56152,7 @@ function _fbTickOne(fb){
   if(fb.enChg>0&&!fb.hid&&!(fb.tpT>0)){
     fb.enChg--;
     var _mouth=_fbEsca(fb),_prog=1-fb.enChg/_FB_EN_CHG;
-    if((fb.t&1)===0)poolPart(_mouth.x+(Math.random()-.5)*10,_mouth.y+(Math.random()-.5)*10,(Math.random()-.5)*.4,(Math.random()-.5)*.4,_fbElCol(fb),2+~~(_prog*2),8);
+    if((fb.t&1)===0)poolPart(_mouth.x+(Math.random()-.5)*10,_mouth.y+(Math.random()-.5)*10,(Math.random()-.5)*.4,(Math.random()-.5)*.4,ELC[EL.I],2+~~(_prog*2),8);
     if(fb.enChg===0){_fbFireEnergy(fb);fb.burst=3;fb.burstGap=18;if(!(fb.tpCd>0))fb.tpCd=600}
   }
   if(fb.burst>0&&!fb.hid&&!(fb.tpT>0)&&!(fb.enChg>0)){

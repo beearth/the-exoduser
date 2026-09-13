@@ -35,14 +35,14 @@ test('CH1-1 places 4 krakens on authored map sites, not a single 2500px chase sp
   assert.doesNotMatch(tick, /dst\(P\.x,P\.y,G\._fbSpawnX,G\._fbSpawnY\)>2500/);
 });
 
-test('four krakens keep the original sprite; element is lure/energy color not a body wash', () => {
+test('four krakens keep their bodies while the water-shaped energy uses water', () => {
   assert.match(gameHtml, /const _FB_ELS=\[2,1,3,4\]/);
   assert.match(gameHtml, /function _fbEnsureSheet\(/);
   const sheet = sliceBetween(gameHtml, 'function _fbEnsureSheet(', 'function _fbHp(');
   assert.doesNotMatch(sheet, /source-atop/);
   assert.match(gameHtml, /_fbMk\(_FB_SITES\[_si\]\[0\],_FB_SITES\[_si\]\[1\],_FB_ELS\[_si\]\)/);
   assert.match(gameHtml, /el:el/);
-  assert.match(gameHtml, /spawnProj\(\{x:m\.x,y:m\.y[\s\S]*?el:fb\.el/);
+  assert.match(sliceBetween(gameHtml,'function _fbFireEnergy(fb){','function _fbClear(){'), /el:EL\.I/);
 });
 
 test('CH1-1 hell gate stays sealed until all four elemental krakens are dead', () => {

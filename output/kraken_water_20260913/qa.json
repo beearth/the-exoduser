@@ -1,0 +1,55 @@
+{
+  "shots": [
+    {
+      "el": 2,
+      "col": "#3388ff",
+      "fbEnergy": true
+    },
+    {
+      "el": 2,
+      "col": "#3388ff",
+      "fbEnergy": true
+    },
+    {
+      "el": 2,
+      "col": "#3388ff",
+      "fbEnergy": true
+    },
+    {
+      "el": 2,
+      "col": "#3388ff",
+      "fbEnergy": true
+    }
+  ],
+  "fragments": [
+    {
+      "el": 2,
+      "dmg": 200,
+      "magic": true
+    },
+    {
+      "el": 2,
+      "dmg": 200,
+      "magic": true
+    },
+    {
+      "el": 2,
+      "dmg": 200,
+      "magic": true
+    },
+    {
+      "el": 2,
+      "dmg": 200,
+      "magic": true
+    },
+    {
+      "el": 2,
+      "dmg": 200,
+      "magic": true
+    }
+  ],
+  "flash": "#3388ff",
+  "status": "PASS",
+  "errors": [],
+  "real_save_writes": false
+}
