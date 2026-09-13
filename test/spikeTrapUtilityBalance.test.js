@@ -22,10 +22,10 @@ test('Spike Trap slow is increased by about 30 percent while staying a slow, not
   assert.equal(slow(10), 0.95);
 });
 
-test('Spike Trap damage is reduced to half of its current formula', () => {
+test('Spike Trap damage halves the previous 1.5 multiplier', () => {
   const damage = Function(
     'magicRef', 'statInt', 'pMagicMul', '_skMul',
     `${extractFunction('_spikeTrapDmg')};return _spikeTrapDmg`
   )(() => 2, () => 100, () => 1, () => 10);
-  assert.equal(damage(1), 1000);
+  assert.equal(damage(1), 1500);
 });

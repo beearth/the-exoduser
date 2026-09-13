@@ -1136,7 +1136,7 @@
 | `spikeTrap` / 가시덫 | `cat:'tech'`, F 영역 슬롯, `[선택: F]` | `cat:'phys'`, 물리 탭 일반 슬롯 1~4번, 새 캐릭터 1번 기본 배정 | `SKILL_LIST`, `SKILL_SLOTS`, `SKILL_SLOT_DEFS`, 새 게임/로컬 초기화 |
 | 기존 저장 데이터 | F에 남은 가시덫과 `activeTechSk=spikeTrap` 가능 | `_repairAreaSkillSlot()`이 일반 슬롯으로 복구하고 `activeTechSk`는 `giantSlam`으로 마이그레이션 | `dbRestore()` / 슬롯 복구 |
 
-부활 확률 공식 `min(100, max(0, 자연부활력 + 스킬Lv×2 + 장비보너스 - 인간성Lv×10))`과 부활 확률 자체는 변경하지 않는다. 가시덫은 탭/슬롯 분류를 물리로 이동했고, 현재 `INT×magicRef×pMagicMul×_skMul×0.5` 피해 공식과 슬로우 91%(Lv당 +2%p, 최대95%)를 적용한다.
+부활 확률 공식 `min(100, max(0, 자연부활력 + 스킬Lv×2 + 장비보너스 - 인간성Lv×10))`과 부활 확률 자체는 변경하지 않는다. 가시덫은 탭/슬롯 분류를 물리로 이동했고, 당시 `INT×magicRef×pMagicMul×_skMul×0.5` 피해 공식(2026-09-13 현재는 ×0.75)과 슬로우 91%(Lv당 +2%p, 최대95%)를 적용한다.
 
 ## 2026-09-07 ENTER 고딕 곡선 문양 API 적용
 
