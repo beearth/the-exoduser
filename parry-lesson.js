@@ -127,6 +127,7 @@ window._parryLesson = {
     this.subtitle.textContent = complete ? '전투 기본 조작을 모두 익혔습니다.' : `${this.step + 1} / ${this.labels.length} · ${this.label(this.step)}`;
     const tips = this.step === 4 ? '이동할 곳에 마우스를 향하고 Shift를 눌렀다 떼세요. 사슬이 실제 발사되면 성공입니다.' : this.step === 5 ? 'WASD 또는 방향키를 누른 채 Space를 누르세요. 방향 입력과 함께 전격이동이 발동하면 성공입니다.' : this.step === 6 ? 'Q를 2초 동안 누른 뒤, 함께 날아오는 마법탄 10발이 가까워지면 떼세요. 한 번에 여러 발을 패링해 분노 100%를 채워보세요.' : this.step === 7 ? '몬스터들이 주변을 둘러쌌습니다. 방향키에서 손을 떼고 Space만 눌러 분노 폭발로 한 번에 쓸어버리세요.' : this.step === 2 ? `[${this.key()}]를 2초 동안 누르세요. 화염·물·암흑·번개·무지개탄을 보고 키를 떼어 한 번에 3발 이상 패링하세요. 홀딩 중 보호막은 피해를 일부 흡수하고 그로기를 막습니다. 피해를 완전히 막는 무적은 아닙니다.` : this.step === 3 ? `[${this.key()}]를 누른 채 탄 쪽을 바라보세요. 이빨입탄·혈안탄·관통탄·물리 검기파·물리 환영검이 함께 날아옵니다. 3단계 충전 후 키를 떼어 5종 중 3발 이상 한 번에 쳐내세요. 풀차지 자동 발동도 인정합니다.` : q ? `보라색 탄이 가까워지는 순간 [${this.key()}]를 누르세요. 너무 일찍 눌렀다면 떼고 다시 시도하세요.` : `탄을 바라보고 [${this.key()}]를 짧게 눌렀다 떼세요. 길게 누르면 차징이 됩니다.`;
     this.hint.textContent = complete ? '모든 연습 성공! 잠시 후 1-1 전투로 이어집니다.' : tips;
+    if(this.step===0||this.step===1)this.updateParryPractice();
     this.holdBox.hidden = (this.step !== 2 && this.step !== 3) || complete;
     this.holdMeter.value = 0; this.holdLabel.textContent = '키를 길게 눌러보세요';
     this.rageBox.hidden = this.step !== 6 || complete; this.updateRage();
@@ -155,6 +156,56 @@ window._parryLesson = {
     if(!this.active||this.phase!=='intro')return;
     this.phase='practice';this.cooldown=45;
     this.resetPose();this.button.blur();this.render();
+  },
+  updateParryPractice() {
+    const q=this.step===0;
+    this.title.textContent=q?'마법탄을 패링해 몬스터를 처치하세요':'물리탄을 패링해 몬스터를 처치하세요';
+    this.hint.textContent='몬스터 주위의 링이 완성되면 탄이 발사됩니다. 링 색으로 탄 종류를 미리 예측하세요. 흰색 링은 물리탄(E), 속성색 링은 마법탄(Q)입니다. '+
+      (q?'이번 보라색 링은 암흑 마법탄입니다. 탄이 가까워지면 ['+this.key()+']로 패링하세요.':'이번 흰색 링은 물리탄입니다. 탄이 가까워지면 ['+this.key()+']를 짧게 눌렀다 떼어 패링하세요.')+
+      '\n'+(this.parriedShot?'패링 성공! 반사탄으로 발사한 몬스터를 처치하면 완료됩니다.':'패링으로 탄을 되돌려 발사한 몬스터까지 처치하세요.');
+  },
+  spawnParryEnemy() {
+    const q=this.step===0;
+    if(this.parryEnemy){const i=ens.indexOf(this.parryEnemy);if(i>=0)ens.splice(i,1);}
+    this.parryEnemy=null;this.parriedShot=null;
+    for(let i=0;i<8;i++){
+      const a=-Math.PI/2+i*Math.PI/4;
+      const e=mkEn(P.x+Math.cos(a)*280,P.y+Math.sin(a)*280,G.stage,0,false,q?EL.D:EL.P,-1);
+      if(!e||Math.hypot(e.x-P.x,e.y-P.y)>450||Math.hypot(e.x-P.x,e.y-P.y)<160)continue;
+      e._lessonEnemy=true;e._lessonStage=this.step;e.hp=1;e.mhp=1;e.atk=0;e.elite=0;e.mods=[];e.spd=0;
+      e.el=q?EL.D:EL.P;e.s='idle';e._spawnT=0;e._projChargeT=0;e._projChargeCol=null;
+      e.facing=Math.atan2(P.y-e.y,P.x-e.x);
+      ens.push(e);this.parryEnemy=e;_shDirty=true;
+      addParts(e.x,e.y,q?'#b26dff':'#f4f4f4',12);return;
+    }
+    _shDirty=true;
+  },
+  tickParryEnemy() {
+    if(!this.parryEnemy?.alive||this.parryEnemy._lessonStage!==this.step){
+      this.clearShot();this.spawnParryEnemy();
+      if(!this.parryEnemy){this.cooldown=60;return;}
+    }
+    const e=this.parryEnemy;
+    e.facing=Math.atan2(P.y-e.y,P.x-e.x);
+    if(this.shot){
+      if(!projs.includes(this.shot)||this.shot.life<=0||Math.hypot(this.shot.x-P.x,this.shot.y-P.y)>1200){
+        this.clearShot(true);this.resetPose();this.cooldown=60;this.updateParryPractice();
+      }
+      return;
+    }
+    if(e._projChargeT>0){
+      e._projChargeT=Math.max(0,e._projChargeT-_dtSp);
+      if(e._projChargeT>0)return;
+      const q=this.step===0,ang=e.facing;
+      this.shot=spawnProj({x:e.x,y:e.y,vx:Math.cos(ang)*3,vy:Math.sin(ang)*3,dmg:0,el:q?EL.D:EL.P,col:q?'#b26dff':'#f4f4f4',life:360,ml:360,friendly:false,_commit:true,_lessonShot:true});
+      e._projChargeCol=null;
+      if(this.shot){this.shot._lessonExploded=false;this.shot.vx=Math.cos(ang)*3;this.shot.vy=Math.sin(ang)*3;this.shot.homing=true;}
+      else this.cooldown=60;
+      return;
+    }
+    if((this.cooldown-=_dtSp)<=0){
+      e._projChargeT=60;e._projChargeBean='normal';e._projChargeCol=this.step===0?'#b26dff':'#f4f4f4';
+    }
   },
   spawnAttackEnemies() {
     this.attackEnemies=[];
@@ -227,6 +278,7 @@ window._parryLesson = {
   },
   start() {
     this.chainPractice=null;
+    this.parryEnemy=null;this.parriedShot=null;
     this.attackEnemies=[];this.leftKills=0;this.rightKills=0;
     this.combatLabels??=this.labels.slice();this.labels=this.combatLabels.slice();this.chapter=1;this.resourceReadout=null;
     window._resourcePractice?.save();
@@ -261,8 +313,8 @@ window._parryLesson = {
       if(!this.volley?.includes(p)||this.volleyHits.has(p))return;
       this.volleyHits.add(p);this.rageParried=true;return;
     }
-    if(this.step>1||p!==this.shot)return;
-    this.completeStep();
+    if(this.step<0||this.step>1||!p||p!==this.shot||!this.parryEnemy?.alive)return;
+    this.parriedShot=p;this.updateParryPractice();
   },
   completeStep() {
     if(this.chapter!==2&&this.step<0){const key=['movementDone','leftClickDone','rightClickDone'][this.step+3];if(!this[key]){this[key]=true;this.pending='success';}return;}
@@ -301,6 +353,8 @@ window._parryLesson = {
       if (projs[i]._lessonShot) { if(explode)this.explode(projs[i]);_recycleProj(projs[i]); projs.splice(i, 1); }
     }
     this.shot = null; this.volley=[];
+    this.parriedShot=null;
+    if(this.parryEnemy){this.parryEnemy._projChargeT=0;this.parryEnemy._projChargeCol=null;}
   },
   tick() {
     if (!this.active) {
@@ -370,16 +424,7 @@ window._parryLesson = {
       if((this.cooldown-=_dtSp)<=0){this.fireVolley();this.rageClearTicks=0;if(!this.volley.length)this.cooldown=60;}
       return false;
     }
-    if (this.shot && (!projs.includes(this.shot) || this.shot.life <= 0 || Math.hypot(this.shot.x - P.x, this.shot.y - P.y) > 1200)) {
-      this.clearShot(true); this.resetPose(); this.cooldown = 60;
-      this.hint.textContent = '다시 해볼게요. 탄이 가까워질 때 ' + ('[' + this.key() + ']' + (this.step % 2 === 0 ? '를 눌러' : '를 짧게 눌렀다 떼어')) + ' 패링하세요.';
-    }
-    if (!this.shot && (this.cooldown -= _dtSp) <= 0) {
-      const q = this.step % 2 === 0;
-      this.shot = spawnProj({ x: P.x, y: P.y - 800, vx: 0, vy: 3, dmg: 0, el: q ? EL.D : EL.P, col: q ? '#b26dff' : '#f4f4f4', life: 360, ml: 360, friendly: false, _commit: true, _lessonShot: true });
-      if (this.shot) { this.shot._lessonExploded=false;this.shot.vx = 0; this.shot.vy = 3; this.shot.homing = true; }
-      else this.cooldown = 60;
-    }
+    if(this.step===0||this.step===1)this.tickParryEnemy();
     return false;
   },
   fireVolley() {
@@ -486,7 +531,9 @@ window._parryLesson = {
     const attack=this.chapter===1&&this.phase==='practice'&&!this.pending&&e._lessonStage===this.step&&this.attackEnemies.includes(e);
     const left=attack&&this.step===-2&&(opts?._lessonAttack==='kiSlash'||P.s==='wSwing'&&opts?._lessonAttack==='weapon');
     const right=attack&&this.step===-1&&opts?.magic&&opts?.fireball&&!opts._fromTurret&&!opts.dot;
-    if(!rage&&!left&&!right)return;
+    const reflected=this.chapter===1&&this.phase==='practice'&&!this.pending&&(this.step===0||this.step===1)&&e===this.parryEnemy&&e._lessonStage===this.step&&
+      !!this.parriedShot&&this.parriedShot===this.shot&&opts?._lessonParryShot===this.parriedShot&&this.parriedShot.friendly&&this.parriedShot.parryBlueBean;
+    if(!rage&&!left&&!right&&!reflected)return;
     e.hp=0;e.alive=false;
     const killAng=Number.isFinite(ang)?ang:Math.atan2(e.y-P.y,e.x-P.x);
     deathFX(e.x,e.y,e.r,e.col,false,false,e.etype);
@@ -498,6 +545,7 @@ window._parryLesson = {
       this.updateAttackPractice();
       if((left?this.leftKills:this.rightKills)>=3)this.completeStep();
     }
+    if(reflected)this.completeStep();
     _shDirty=true;
   },
   rageCast(amount) {
@@ -515,6 +563,6 @@ window._parryLesson = {
     window._resourcePractice?.restore();
     for(const [key,entry] of Object.entries(this.basicSkillSnapshot||{})){if(entry.had)P[key]=entry.value;else delete P[key];}
     this.basicSkillSnapshot=null;
-    this.active = false; this.pending = null; this.chainPractice=null; this.attackEnemies=[]; this.panel.remove(); this.backdrop.remove(); this.saved = null;
+    this.active = false; this.pending = null; this.chainPractice=null; this.attackEnemies=[];this.parryEnemy=null;this.parriedShot=null; this.panel.remove(); this.backdrop.remove(); this.saved = null;
   }
 };

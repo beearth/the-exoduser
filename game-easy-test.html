@@ -7,7 +7,7 @@
 <script src="system-lesson.js?v=20260912-skip-density1"></script>
 <link rel="stylesheet" href="parry-lesson.css?v=20260913-resource-sets1">
 <script src="resource-practice.js?v=20260913-resource-sets1"></script>
-<script src="parry-lesson.js?v=20260913-resource-sets1"></script>
+<script src="parry-lesson.js?v=20260913-parry-shooter1"></script>
 <link rel="stylesheet" href="skill-tutorial.css?v=20260913-3">
 <script src="skill-tutorial.js?v=20260913-2"></script>
 <meta charset="UTF-8">
@@ -16462,7 +16462,7 @@ function _hurtFieldMobs(x,y,hitR,dmg,hitSet){
 let _phtDone=false,_phtTgt=null;
 function _resetParryHomingCache(){_phtDone=false;_phtTgt=null}
 function _parryHomingTarget(){
-  if(window._parryLesson?.active)return null;
+  if(window._parryLesson?.active){const l=window._parryLesson;return l.chapter===1&&(l.step===0||l.step===1)&&l.parryEnemy?.alive?l.parryEnemy:null;}
   if(_phtDone)return _phtTgt;
   _phtDone=true;
   let _t=null,_m=360000;
@@ -31971,7 +31971,7 @@ function update(){
         for(let _bli=0;_bli<_blNe.length;_bli++){const be=_blNe[_bli];if(!be.alive)continue;
           const bd=dst(p.x,p.y,be.x,be.y);if(bd>_blR)continue;
           const ba=Math.atan2(be.y-p.y,be.x-p.x);const bf=Math.max(0,1-bd/_blR);
-          hurtE(be,~~(_blD*(.8+bf*.2)),ba,false,{kbMult:2,magic:!!p.magic,blueBean:!!p.blueBean,parryBlueBean:!!p.parryBlueBean},p.el);
+          hurtE(be,~~(_blD*(.8+bf*.2)),ba,false,{kbMult:2,magic:!!p.magic,blueBean:!!p.blueBean,parryBlueBean:!!p.parryBlueBean,_lessonParryShot:p._lessonShot?p:null},p.el);
           be.kb.x+=Math.cos(ba)*18*bf;be.kb.y+=Math.sin(ba)*18*bf;
           be.poisonT=Math.max(be.poisonT||0,600);be.poisonStk=Math.min(10,(be.poisonStk||0)+3);be._poisonPool=(be._poisonPool||0)+pDotPool()*_blD*0.15;be.poison=1}
         if(p.blackHoleBurst){_addBoom(p.x,p.y,_blR,36,'fire_medium');_addImpact(p.x,p.y,p.el,Math.atan2(p.vy,p.vx),'explosion');playVFXAng('magic_burst',p.x,p.y,0.42,1,Math.atan2(p.vy,p.vx));addParts(p.x,p.y,p.col||ELC[p.el]||'#ff6622',16)}

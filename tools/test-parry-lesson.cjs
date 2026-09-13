@@ -117,22 +117,33 @@ const original = { ens: c.ens, projs: c.projs, pProjs: c.pProjs, worldItems: c.w
 c.G._intro = true; assert.equal(lesson.tick(), false); c.G._intro = false;
 assert.equal(lesson.tick(), true); assert.equal(c.ens.length, 0); assert.equal(c.G.spawnHoles.length, 0);
 assert.equal(lesson.allows('weapon'), false); assert.equal(lesson.allows('parry'), false);
-lesson.button.onclick(); walk(c); for (let i = 0; i < 45; i++) lesson.tick();
+function waitForShot(l){for(let i=0;i<240&&!l.shot;i++)l.tick();assert.ok(l.shot,'a completed charge ring must fire');}
+function killByReflection(c,l,kind){
+  const p=l.shot;l.hit(p,kind);assert.equal(l.checks[l.step],false,'parrying alone is not completion');
+  p.friendly=true;p.parryBlueBean=true;
+  l.hurtEnemy(l.parryEnemy,10,0,{parryBlueBean:true,_lessonParryShot:p});
+}
+lesson.button.onclick(); walk(c);
+assert.ok(lesson.parryEnemy?.alive,'a visible monster must preview the single shot');
+for(let i=0;i<45;i++)lesson.tick();
+assert.equal(lesson.shot,null,'the ring must finish before a projectile appears');
+assert.ok(lesson.parryEnemy._projChargeT>0);
+waitForShot(lesson);
 assert.ok(lesson.shot); const first = lesson.shot;
 lesson.hit(first, 'physical'); assert.equal(lesson.checks[0], false);
 lesson.hit({}, 'magic'); assert.equal(lesson.checks[0], false);
 c.projs.length = 0; lesson.tick(); assert.equal(lesson.checks[0], false);
-for (let i = 0; i < 60; i++) lesson.tick(); assert.ok(lesson.shot); assert.notEqual(lesson.shot, first);
+waitForShot(lesson);assert.notEqual(lesson.shot, first);
 const reflected = lesson.shot;
-lesson.hit(reflected, 'magic'); assert.equal(lesson.tick(), false); assert.equal(lesson.rows[0].checked, true); assert.equal(lesson.phase, 'success');
+killByReflection(c,lesson,'magic'); assert.equal(lesson.tick(), false); assert.equal(lesson.rows[0].checked, true); assert.equal(lesson.phase, 'success');
 assert.equal(lesson.shot, reflected); assert.equal(lesson.button.hidden, true);
 for (let i = 0; i < 89; i++) assert.equal(lesson.tick(), false);
 assert.equal(lesson.phase, 'practice'); assert.equal(lesson.step, 1);
-for (let i = 0; i < 45; i++) lesson.tick();
+waitForShot(lesson);
 // Failing E retries E without clearing the completed Q checkbox.
 c.projs.length = 0; lesson.tick(); assert.equal(lesson.checks[0], true); assert.equal(lesson.step, 1);
-for (let i = 0; i < 60; i++) lesson.tick();
-lesson.hit(lesson.shot, 'physical'); assert.equal(lesson.tick(), false); assert.equal(lesson.phase, 'success'); assert.equal(lesson.rows[1].checked, true);
+waitForShot(lesson);
+killByReflection(c,lesson,'physical'); assert.equal(lesson.tick(), false); assert.equal(lesson.phase, 'success'); assert.equal(lesson.rows[1].checked, true);
 for (let i = 0; i < 89; i++) assert.equal(lesson.tick(), false);
 assert.equal(lesson.step,2);assert.equal(c.projs.length,0);
 // Hold/release alone cannot pass: require three distinct native parry events in one release.
@@ -228,7 +239,7 @@ for (const [start, vars, active] of gates) {
   assert.equal(vm.runInNewContext(expression, { ...vars, _parryClass: vars._parryClass === 'magic' ? 'physical' : 'magic' }), false);
 }
 const failure = fixture(), fl = failure.window._parryLesson;
-fl.tick();fl.button.onclick();walk(failure);for(let i=0;i<45;i++)fl.tick();
+fl.tick();fl.button.onclick();walk(failure);waitForShot(fl);
 let blasts=0, spriteBlasts=0;failure.addParts=()=>blasts++;failure._addBoom=()=>spriteBlasts++;
 fl.miss(fl.shot);assert.equal(failure.P.hp,71);assert.equal(blasts,1);
 assert.equal(spriteBlasts,1);
@@ -341,6 +352,35 @@ for(const name of ['game.html','game-easy-test.html']){
 }
 console.log('PASS: Ki Slash is the tutorial basic attack; live crescent collisions count once and original skill selection/levels restore.');
 module.exports={fixture,exerciseChainTiers};
+
+// Native warning rendering and reflection attribution for both single-shot lessons.
+for(const name of ['game.html','game-easy-test.html'])for(const step of [0,1]){
+  const c=fixture(),l=c.window._parryLesson;l.tick();l.beginPractice();l.step=step;l.cooldown=1;l.tick();
+  const e=l.parryEnemy;assert.ok(e.alive);assert.equal(e._projChargeT,60);assert.equal(l.shot,null);
+  assert.equal(e._spawnT,0,'the lesson shooter must be visible immediately');
+  for(let t=0;t<30;t++)l.tick();assert.equal(e._projChargeT,30);assert.equal(l.shot,null);
+  const source=fs.readFileSync(path.join(root,name),'utf8');
+  const rings=[];Object.assign(c,{_drawShootCharge:(...args)=>rings.push(args),_gameFrame:0});
+  vm.runInContext(source.slice(source.indexOf('function _drawEnemyShotWarnings(){'),source.indexOf('function radialProjs(')),c);
+  c._drawEnemyShotWarnings();assert.equal(rings.length,1);assert.equal(rings[0][3],.5);assert.equal(rings[0][4],step===0?'#b26dff':'#f4f4f4');
+  vm.runInContext(source.slice(source.indexOf('function _parryHomingTarget(){'),source.indexOf('let _deadPool=')),c);
+  assert.equal(c._parryHomingTarget(),e,'reflections must target the lesson shooter');
+  c.G.paused=true;l.tick();assert.equal(e._projChargeT,30);c.G.paused=false;
+  for(let t=0;t<29;t++)l.tick();assert.equal(l.shot,null);
+  l.tick();const shot=l.shot;assert.equal(shot.x,e.x);assert.equal(shot.y,e.y);assert.equal(e._projChargeT,0);
+  assert.ok(Math.abs(Math.hypot(shot.vx,shot.vy)-3)<1e-10);
+  l.hurtEnemy(e,10,0,{_lessonAttack:'kiSlash'});assert.equal(e.alive,true);
+  shot.friendly=true;shot.parryBlueBean=true;
+  l.hurtEnemy(e,10,0,{_lessonParryShot:shot});assert.equal(e.alive,true,'reflection without the matching parry event cannot kill');
+  l.hit(shot,step===0?'magic':'physical');assert.equal(l.checks[step],false);
+  l.hurtEnemy(e,10,0,{_lessonParryShot:{...shot}});assert.equal(e.alive,true,'another projectile cannot count');
+  // Execute the actual reflected-projectile splash damage call, preserving its provenance.
+  const hitLine=source.split('\n').find(line=>line.includes('hurtE(be,~~(_blD*(.8+bf*.2))'));
+  Object.assign(c,{be:e,p:shot,_blD:10,bf:1,ba:0,hurtE:(target,dmg,ang,quiet,opts)=>l.hurtEnemy(target,dmg,ang,opts)});
+  vm.runInContext(hitLine,c);assert.equal(e.alive,false);assert.equal(l.checks[step],true);
+  const deaths=c.deaths.length;vm.runInContext(hitLine,c);assert.equal(c.deaths.length,deaths);
+  l.finish();assert.equal(l.parryEnemy,null);assert.equal(e._projChargeT,0);
+}
 
 for(const file of ['game.html','game-easy-test.html']){
  const html=fs.readFileSync(path.join(root,file),'utf8');
