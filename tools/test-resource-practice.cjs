@@ -25,7 +25,25 @@ for(let i=0;i<4;i++){collide();assert.equal(c.P.poise,3-i);}
 assert.equal(c.P.s,'pStun');assert.equal(l.checks[2],true);
 next();assert.equal(l.step,3);assert.equal(c.P.s,'pStun');
 for(let i=0;i<500;i++)l.tick();assert.equal(l.checks[3],false);
-assert.equal(l.allowKey('ShiftLeft'),true);c.P.s='idle';c.P.poise=4;l.tick();assert.equal(l.checks[3],true);
+assert.equal(l.allowKey('ShiftLeft'),false,'start with the requested Space escape');
+assert.match(l.resourceReadout.textContent,/0\/4/);
+for(const [i,code,state] of [[0,'Space','gSlamWindup'],[1,'ShiftLeft','idle'],[2,'Space','bladeDash'],[3,'ControlLeft','ghostWalk']]){
+  if(i===2)l.allowKey('KeyW');
+  assert.equal(l.allowKey(code),true);
+  l.tick();assert.equal(l.checks[3],false,'input without an escape cannot complete the task');
+  c.P.s=state;c.P.poise=4;
+  if(i===2){c.P._bdMoveT=6;c.P.mp-=7;c._harpGauge-=31.5;}
+  if(i===3){c.P._gwActive=true;c.P._gwCd=1200;}
+  l.tick();assert.equal(l.checks[3],i===3,'all four different escapes are required');
+  assert.match(l.resourceReadout.textContent,new RegExp(`${i+1}/4`));
+  if(i<3){
+    for(let t=0;t<90;t++)l.tick();
+    assert.equal(l.step,3);assert.equal(l.checks[3],false);
+    assert.equal(c.P.s,'pStun');assert.equal(c.P.poise,0);
+    assert.equal(c.P.mp,c.P.mmp);assert.equal(c._harpGauge,c._HARP_GAUGE_MAX);
+    assert.equal(c.P._gslCd,0);assert.equal(c.P._gwCd,0);
+  }
+}
 next();assert.equal(l.step,4);
 assert.match(l.resourceReadout.textContent,/0.1초 홀딩/);assert.match(l.resourceReadout.textContent,/0.2초 홀딩 → 자동 발사/);
 assert.match(l.resourceReadout.textContent,/기동력 98\(2.18칸\) · ST 2%/);
@@ -68,11 +86,23 @@ for(let i=0;i<72;i++)burst.l.tick();assert.equal(burst.c.projs.length,4);
 for(const p of burst.c.projs.slice()){burst.l.miss(p);burst.l.miss(p);}
 assert.equal(burst.r.hits,4);assert.equal(burst.c.P.poise,0);assert.equal(burst.l.checks[2],true);burst.l.finish();
 const pointers=setup();
-for(const [code,state] of [['Space',{s:'gSlamWindup'}],['Space',{s:'bladeDash',_bdMoveT:6}],['ControlLeft',{s:'ghostWalk',_gwActive:true}]]){
-  const escape=setup();escape.l.step=3;escape.r.enter(escape.l);
-  assert.equal(escape.l.allowKey(code),true);escape.l.tick();assert.equal(escape.l.checks[3],false);
-  Object.assign(escape.c.P,state);escape.l.tick();assert.equal(escape.l.checks[3],true);escape.l.finish();
-}
+const escape=setup();escape.l.step=3;escape.r.enter(escape.l);escape.r.render(escape.l);
+escape.l.allowKey('KeyW');assert.equal(escape.l.allowKey('Space'),false,'slam requires releasing directions');
+escape.l.releaseKey('KeyW');assert.equal(escape.l.allowKey('Space'),true);
+escape.c.P.s='bladeDash';escape.c.P._bdMoveT=6;escape.l.tick();
+assert.equal(escape.r.escapeChecks.some(Boolean),false,'a different escape cannot satisfy the requested method');
+for(let i=0;i<90;i++)escape.l.tick();
+assert.equal(escape.r.escapeIndex,0);assert.equal(escape.c.P.s,'pStun','wrong-method escape retries without getting stuck');
+escape.r.enter(escape.l);escape.c.P.s='gSlamWindup';escape.l.tick();
+assert.equal(escape.r.escapeChecks.some(Boolean),false,'state without user input is not success');
+for(let i=0;i<90;i++)escape.l.tick();
+escape.c.P.s='pStun';escape.l.allowKey('Space');escape.c.P.s='gSlamWindup';escape.l.tick();
+for(let i=0;i<89;i++)escape.l.tick();
+assert.equal(escape.r.escapeChecks.filter(Boolean).length,1,'one escape cannot count repeatedly');
+assert.equal(escape.l.allowKey('Space'),false,'transition blocks escape inputs');
+escape.l.tick();assert.equal(escape.r.escapeIndex,1);
+escape.r.enter(escape.l);assert.equal(escape.r.escapeChecks.some(Boolean),false,'a new practice starts from zero');
+escape.l.finish();
 const positions={};const classes=new Set();
 for(const [i,id] of ['hpEyeL','hpEyeR','mpEyeL','mpEyeR'].entries())positions[id]={getBoundingClientRect:()=>({left:100+i*20,top:500,width:7,height:7})};
 for(const id of ['globeHP','globeMP'])positions[id]={classList:{toggle(key,on){on?classes.add(key):classes.delete(key)},remove(key){classes.delete(key)}}};
