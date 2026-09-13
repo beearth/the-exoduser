@@ -3,7 +3,7 @@ const fs=require('node:fs');
 const vm=require('node:vm');
 const {fixture}=require('./test-parry-lesson.cjs');
 for(const scale of [1,3])for(const index of [0,1,2])for(const costFraction of [.01,.8]){
-  const c=fixture();
+  const c=fixture(0,'?resourceTutorial=1');
   vm.runInContext(fs.readFileSync(require('node:path').join(__dirname,'../resource-practice.js'),'utf8'),c);
   const l=c.window._parryLesson,r=c.window._resourcePractice;
   l.tick();l.phase='done';l.transitionTicks=1;l.tick();

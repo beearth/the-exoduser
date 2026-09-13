@@ -71,7 +71,10 @@ assert.equal(lesson.panel.events.mouseup,undefined,'mouseup must reach the engin
 for (const name of ['game.html','game-easy-test.html']) {
   const html=fs.readFileSync(path.join(root,name),'utf8');
   assert.equal((html.match(/src="system-lesson.js/g)||[]).length,1);
-  assert.ok(html.includes('function update(){\n  window._systemLesson?.tick();') || html.includes('function update(){\r\n  window._systemLesson?.tick();'));
+  const updateStart=html.indexOf('function update(){'),gameGate=html.indexOf('if(!G.on)return;',updateStart);
+  const calls=[];
+  vm.runInNewContext(html.slice(updateStart,gameGate+'if(!G.on)return;'.length)+'}\nupdate();',{G:{on:false},window:{_systemLesson:{tick(){calls.push('system');}}}});
+  assert.deepEqual(calls,['system'],'the live game loop runs the system guide before gameplay gates');
   for (const [,attrs,code] of html.matchAll(/<script\b([^>]*)>([\s\S]*?)<\/script>/gi)) {
     if (/src\s*=|importmap|application\/json/i.test(attrs)||!code.trim())continue;
     if (/type\s*=\s*["']module/.test(attrs))new vm.SourceTextModule(code);else new vm.Script(code);

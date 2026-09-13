@@ -4,7 +4,7 @@ const vm=require('node:vm');
 const path=require('node:path');
 const {fixture,exerciseChainTiers,exerciseDashFive}=require('./test-parry-lesson.cjs');
 function setup(){
-  const c=fixture();c.P.poise=2;c.P.maxPoise=4;c.P.poiseR=17;c.P.activeCtSk='iceOrb';c.G.mats=123;c.pGuardAbsorb=()=>.3;
+  const c=fixture(0,'?resourceTutorial=1');c.P.poise=2;c.P.maxPoise=4;c.P.poiseR=17;c.P.activeCtSk='iceOrb';c.G.mats=123;c.pGuardAbsorb=()=>.3;
   c._HARP_TIER_F=[0,1,6,12];c._HARP_GAUGE_COST=[0,45,98,150];c._harpDistTier=t=>[0,300,500,700][t];c._harpTier=1;
   vm.runInContext(fs.readFileSync(path.join(__dirname,'../resource-practice.js'),'utf8'),c);
   const l=c.window._parryLesson;l.tick();l.phase='done';l.transitionTicks=1;l.tick();

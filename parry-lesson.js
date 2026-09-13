@@ -465,7 +465,7 @@ window._parryLesson = {
       // Keep the real reflection animation running; only the checklist changes on success.
       if ((this.transitionTicks -= _dtSp) > 0) return false;
       if (this.phase === 'done') {
-        if(window._resourcePractice&&new URLSearchParams(location.search).get('resourceTutorial')!=='0'){window._resourcePractice.start(this);return false;}
+        if(window._resourcePractice&&new URLSearchParams(location.search).get('resourceTutorial')==='1'){window._resourcePractice.start(this);return false;}
         this.finish(); return false;
       }
       this.clearShot();

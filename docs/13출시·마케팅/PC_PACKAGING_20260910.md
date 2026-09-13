@@ -14,7 +14,7 @@
 | 출력 | `G:\exoduser\out\EXODUSER-win64\` | `build-nwjs.mjs` |
 | 미디어 코덱 | `vendor/nwjs-ffmpeg/0.111.2/ffmpeg.dll`을 출력에 복사 | `build-nwjs.mjs` |
 | 레벨업 연출 | `level-up-vfx.js`를 FILES에 포함 | `game.html`, `build-nwjs.mjs` |
-| 2026-09-12 튜토리얼 | `parry-lesson.js/css`, `resource-practice.js`, `system-lesson.js/css`, `tutorial-badges.js/css`를 FILES에 포함 | 일반 → 자원 → 시스템 실습 및 배지 |
+| 2026-09-12 튜토리얼 | `parry-lesson.js/css`, `resource-practice.js`, `system-lesson.js/css`, `tutorial-badges.js/css`를 FILES에 포함 | 일반 → 시스템 안내 및 배지. 자원 실습은 기본 제외, 명시 테스트용 코드 보관 |
 | 추가 진입 파일 | `game-easy-test.html`, `game-guide.html` 포함. 기본 진입점은 기존 `index.html` 유지 | `build-nwjs.mjs` |
 | 튜토리얼 아트 | `assets/ui/tutorial/`는 기존 assets 전체 복사에 포함 | `build-nwjs.mjs` |
 

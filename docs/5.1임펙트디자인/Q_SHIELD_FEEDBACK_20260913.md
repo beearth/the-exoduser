@@ -11,6 +11,6 @@
 | 실전 | `_qZone==='absorb'`의 적대·패링 가능 탄을 소멸시킬 때 재생. 기존 파티클·흡수 텍스트 유지 |
 | 튜토리얼 | 엔진이 `miss(p,absorbed)`로 실제 코어 흡수 여부 전달. 1단은 absorbed, 자원 실습은 absorbed 또는 기존 step7 sBlock 흡수일 때 shield_hit 사용. 일반 피격은 player_hit1 유지 |
 | 중복 방지 | 튜토리얼은 컨트롤러만 소리를 재생하고 엔진은 바로 회수. 기존 pending/retry/탄 중복 차단 유지. 보호막 흡수에 player_hit1을 함께 재생하지 않음 |
-| 캐시 | parry-lesson.js 로드 키 `20260913-trap-shield1`, resource-practice.js 로드 키 `20260913-q-shield-feedback1` |
+| 캐시 | parry-lesson.js 로드 키 `20260913-resource-paused1`, resource-practice.js 로드 키 `20260913-q-shield-feedback1` |
 | 자동 검사 | 두 HTML 렌더 코드의 크기·중심·색/프레임 공유·회전기폭 제외, 실전/실습 사운드 분기·중복 방지, 일반 피격 및 실제 HP 피해 유지 검사. Q 판정/해제·오라 GPU 워밍 포함18개 검사 및 자원 실습 회귀 통과 |
 | 브라우저 | 별도 로컬 테스트 슬롯에서 실습 상태 준비 후 실제 Q keydown 유지로3발 흡수·3/3 완료. 재생 호출은 shield_hit 3회, player_hit 0회. 실제 drawP에서 큰 오라와 밀착 오라 크기 두 종류 확인. 음질 청감 검사는 별도 수행하지 않음 |
