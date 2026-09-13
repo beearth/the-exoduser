@@ -8,8 +8,6 @@
 <link rel="stylesheet" href="parry-lesson.css?v=20260913-mission-details1">
 <script src="resource-practice.js?v=20260913-q-shield-feedback1"></script>
 <script src="parry-lesson.js?v=20260913-resource-handoff2"></script>
-<link rel="stylesheet" href="skill-tutorial.css?v=20260913-3">
-<script src="skill-tutorial.js?v=20260913-2"></script>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>HELL: EXODUSER</title>
@@ -3256,7 +3254,7 @@ async function dbSave(){
       crystalBag:CRYSTAL_BAG,crystalDust:CRYSTAL_DUST,
       upgrades:{...UPGRADES},
       potLv:{...POT_LV},
-      skills:{...P.skills},skillTutorial:window._skillTutorial?.serialize(),
+      skills:{...P.skills},
       fused:P._fused||{},skProf:P._skProf||{},fuseProfSec:P._fuseProfSec||{},cardProf:P._cardProf||{},catProf:P._catProf||{},
       activeChargeSk:P.activeChargeSk||'charge',
       activeBowSk:P.activeBowSk||'normal',
@@ -3297,7 +3295,6 @@ function dbRestore(d){
   const savedCharIdx=Number.isInteger(d.charIdx)&&d.charIdx>=0&&d.charIdx<CHAR_LIST.length?d.charIdx:0;
   if(savedCharIdx!==_charIdx)_loadCharAtlas(savedCharIdx);
   if(!d.player)return false;
-  window._skillTutorial?.restore(d.skillTutorial);
   // Player
   const pd=d.player;
   P.lv=pd.lv||1; P.exp=pd.exp||0; P.maxExp=pd.maxExp||15;
@@ -25946,7 +25943,6 @@ function _execMagicE(){
 
 // ═══ 버스트루프 폭발 실행 ═══
 function _burstLoopExplode(tier){
-  if(tier>=1)window._skillTutorial?.used('burstLoop',true);
   const _blLv=P.skills.burstLoop||1;
   const _blFused=_isFused('stormBurst');
   const _blR=(_blFused?[0,600,800,1000]:[0,500,700,900])[tier]; // 범위 축소 (화면 내 유지)
@@ -29016,7 +29012,6 @@ function _editorUpdate(){
 // 벽 끼임 체크 — 모듈 레벨 (핫패스 클로저 할당 제거: 과거 적마다 매 프레임 생성)
 function _eWallStuck(px,py){const tx=~~(px/T),ty=~~(py/T);return tx<0||ty<0||tx>=G.mw||ty>=G.mh||G.map[ty][tx]===1}
 function update(){
-  window._skillTutorial?.tick();
   window._systemLesson?.tick();
   if(!G.on)return;
   if(window._parryLesson&&window._parryLesson.tick())return;
@@ -29975,7 +29970,7 @@ function update(){
         else if(P.st<_exStCost){showPH(_T('ST 부족!'),'#ffcc00')}
         else{
           P.hp-=_exHpCost;P.mp-=_exMpCost;P.st-=_exStCost;
-          P._execCd=300;window._skillTutorial?.used('execution'); // 5초 쿨다운
+          P._execCd=300; // 5초 쿨다운
           const _exHpPct=.20+(_exLv-1)*.02; // 보스 현재HP 20% + Lv당 2% (10Lv=38%)
           const _exWpnMul=30*(1+(_exLv-1)*.21); // 무기뎀×30, Lv당+21% (20Lv=150배)
           const _exWpnDmg=~~(meleeRef()*_exWpnMul*statStr()*pAtkMul()); // 풀 스케일링
@@ -33328,7 +33323,7 @@ function update(){
         addTxt(_iswx,_iswy-20,_T('❄아이스스톰!'),'#88ddff',30);
         shake(4);
         playSample('voice_magic',1,1);
-        P._isStk--;const _isMx2=(P.skills.iceStorm>=10)?3:2;if(P._isStk<_isMx2&&!P._isRech)P._isRech=1500;P._isAiming=false;window._skillTutorial?.used('iceStorm');
+        P._isStk--;const _isMx2=(P.skills.iceStorm>=10)?3:2;if(P._isStk<_isMx2&&!P._isRech)P._isRech=1500;P._isAiming=false;
       }
     }
   }
@@ -39731,11 +39726,9 @@ function addExp(v,trans){
     if(apGain>0)lvTxt+=' AP +'+apGain;
     addTxt(P.x,P.y-40,lvTxt,_lvCol,60);
     _levelUpVfx.trigger(P,G.stage,lvd,_demonic);
-    const _tutorialBefore=window._skillTutorial?.snapshot();
     if(P.lv>=300&&!P.skills.blueShot){P.skills.blueShot=1;showPH(_T('💎 푸른비 해금!'),'#00e5ff');addTxt(P.x,P.y-60,_T('💎 푸른비 해금!'),'#00e5ff',80)}
     if(P.lv>=700&&!P.skills.burstLoop){P.skills.burstLoop=1;showPH(_T('💫 버스트루프 해금!'),'#dd88ff');addTxt(P.x,P.y-80,_T('💫 버스트루프 해금!'),'#dd88ff',80)}
     if(P.lv>=700&&!P.skills.voidScarecrow){P.skills.voidScarecrow=1;showPH(_T('👻 유령 허수아비 해금!'),'#aa66dd');addTxt(P.x,P.y-100,_T('👻 유령 허수아비 해금!'),'#aa66dd',80)}
-    window._skillTutorial?.record(_tutorialBefore);
     dbSaveForce();
   }
 }
@@ -41124,7 +41117,6 @@ function _skProfCap(skId){return 9999}
 function _skProfMaxed(skId){return _skProfVal(skId)>=_skProfCap(skId)}
 // 순간형: 쿨타임 초만큼 카테고리에 적립 (쿨 없으면 기본 5초)
 function _addSkProf(skId,v){if(window._parryLesson?.active)return;if(!P||!skId)return;
-  window._skillTutorial?.used(skId);
   const cat=_SK_CAT[skId];if(!cat)return;
   if(!P._catProf)P._catProf={};
   const skDef=_skById(skId);
@@ -41135,7 +41127,6 @@ function _addSkProf(skId,v){if(window._parryLesson?.active)return;if(!P||!skId)r
 }
 // 지속형: 매 프레임 카테고리에 실시간 축적 (1프레임 = 1/60초)
 function _addSkProfTick(skId){if(window._parryLesson?.active)return;if(!P||!skId)return;
-  window._skillTutorial?.used(skId);
   const cat=_SK_CAT[skId];if(!cat)return;
   if(!P._catProf)P._catProf={};
   P._catProf[cat]=(P._catProf[cat]||0)+_dtSp/60;
@@ -41637,7 +41628,6 @@ function activateMaliceHunt(){
     {const _pp=_getPProj();_pp.x=P.x+_mdx*16;_pp.y=P.y+_mdy*16;_pp.vx=_mdx*18;_pp.vy=_mdy*18;_pp.dmg=_mhDmg;_pp.el=EL.P;_pp.maxDist=_mhRange;_pp.dist=0;_pp.r=10;_pp.stagger=8;_pp.kb=0;_pp.magic=true;_pp.maliceHunt=true;_pp.mhBlade=true;_pp._pierced=0;_pp._mhMaxPierce=_mhPierce;_pp._hitSet.clear();_pp._maxBounce=10;pProjs[pProjs.length]=_pp;}
     SFX.slash();playSample(Math.random()<.5?'voice_dark_skill':'voice_bladefuse',.8,_r(1,.08));addTxt(P.x,P.y-25,_T('⚔ 악의사냥!'),'#ffffff',35);
   }
-  window._skillTutorial?.used('maliceHunt',true);
 }
 
 // ═══ 독사 발동 (DEX+석궁 기반 독 DOT 추적칼날) ═══
@@ -41646,7 +41636,6 @@ function activateVenomBlade(){
   const _vbStCost=40;
   if(P.st<_vbStCost){showPH(_T('ST 부족!'),'#ff4444');return}
   P.st=Math.max(0,P.st-_vbStCost);
-  window._skillTutorial?.used('venomBlade',true);
   const _vbDmg=~~(bowRef()*statDex()*pBowMul()*_skMul('venomBlade')*_fuseMul('venomBlade'));
   const _vbRange=6000+(_vbLv-1)*300;
   const _vbPierceBonus=~~((bw().bowPierce||0)*300+(PASSIVES.pPierce||0)*30)+_eqAffix('pierceFlat');
@@ -41707,14 +41696,13 @@ function activateLtnChaser(){
     pProjs[pProjs.length]=_pp;
   }
   SFX.magic(EL.L);addTxt(P.x,P.y-25,_T('⚡ 뇌전추격자!'),'#3388ff',35);
-  _addSkProf('ltnChaser');window._skillTutorial?.used('ltnChaser',true);
+  _addSkProf('ltnChaser');
 }
 
 // ═══ 폭풍소환 발사 (키홀드 거리 → 기원 투척 → 착지 시 소용돌이 전개) ═══
 function fireMaliceMortar(_tx,_ty){
   P._mmAiming=false;
   useMp('mortar');
-  window._skillTutorial?.used('maliceMortar');
   const tx=_tx!=null?_tx:P.x+Math.cos(P.facing)*(P._mmDist||150);
   const ty=_ty!=null?_ty:P.y+Math.sin(P.facing)*(P._mmDist||150);
   const _mmSlv=P.skills.maliceMortar||1;
@@ -42792,7 +42780,6 @@ function activateTimeWarp(){
   P._twCd=_isFused('timeStep')?1200:(P.skills.timeWarp>=1?(_skById('timeWarp').cd||2700):2700); // 시간걸음 합체: 20초(걸음 시리즈 통일)
   // 버퍼 리셋 (연속 사용 방지)
   _twFilled=0;_twIdx=0;
-  window._skillTutorial?.used('timeWarp',true);
   // VFX + 피드백
   P.iframes=60; // 1초 무적
   G._flashT=8;G._flashCol='#8888ff';G.shake=6;G.slowMo=15;
@@ -43388,7 +43375,6 @@ function _execFuse(key){
   const _fuseStarCnt=(_grp.star)||_fuseSkills.length;
   const _fuseSpCost=_fuseStarCnt*3; // 성급×3 (star 오버라이드 지원)
   if(P.sp<_fuseSpCost){addTxt(P.x,P.y-40,_T('SP 부족! (')+P.sp+'/'+_fuseSpCost+')','#ff4444',60);return false}
-  const _tutorialBefore=window._skillTutorial?.snapshot();
   if(!P._fused)P._fused={};
   P.sp-=_fuseSpCost;
   let _refSp=0,_refMat=0;
@@ -43418,14 +43404,12 @@ function _execFuse(key){
   }}
   // ═══ 합체 후 활성 스킬 동기화 ═══
   _syncActiveSkAfterReset(absorbed);
-  window._skillTutorial?.record(_tutorialBefore);
   return true;
 }
 // ═══ 스킬 습득(자동용): 학습 분기 슬롯 자동배정 복제 (UI 알림 없이). 성공 시 true ═══
 function _learnSkillAuto(sk){
   const _learnMat=_malCost(sk.matCost||0);
   if(P.sp<(sk.spCost||0)||G.mats<_learnMat)return false;
-  const _tutorialBefore=window._skillTutorial?.snapshot();
   P.skills[sk.id]=1;P.sp-=(sk.spCost||0);G.mats-=_learnMat;
   if(sk.id==='chainAssault'&&!P.skills.chainSlam)P.skills.chainSlam=1;
   if(SKILL_SLOT_DEFS.charge.skills.includes(sk.id))P.activeChargeSk=sk.id;
@@ -43443,7 +43427,6 @@ function _learnSkillAuto(sk){
     const _emptyIdx=_findAutoSkillSlot(sk.id);
     if(_emptyIdx>=0&&!SKILL_SLOTS.includes(sk.id))SKILL_SLOTS[_emptyIdx]=sk.id;
   }
-  window._skillTutorial?.record(_tutorialBefore);
   return true;
 }
 // ═══ 추천 자동: SKILL_REC_PATH 순서대로 학습+합체 자동 진행 (레벨업은 별도 버튼) ═══
@@ -44422,7 +44405,6 @@ function _renderSkillRow(sk,grid){
           // 습득
           const _learnMat=_malCost(sk.matCost||0);
           if(P.sp<sk.spCost||G.mats<_learnMat){showPH(_T('자원 부족!'),'#ff4444');return}
-          const _tutorialBefore=window._skillTutorial?.snapshot();
           P.skills[sk.id]=1;P.sp-=sk.spCost;G.mats-=_learnMat;
           // chainAssault 습득 시 chainSlam 자동 부여
           if(sk.id==='chainAssault'&&!P.skills.chainSlam)P.skills.chainSlam=1;
@@ -44445,7 +44427,6 @@ function _renderSkillRow(sk,grid){
             const _emptyIdx=_findAutoSkillSlot(sk.id);
             if(_emptyIdx>=0&&!SKILL_SLOTS.includes(sk.id)){SKILL_SLOTS[_emptyIdx]=sk.id;const _asLbl=(_emptyIdx<4?_L('슬롯 ','Slot ')+(_emptyIdx+1):_emptyIdx===4?_L('Space 슬롯','Space Slot'):_L('F슬롯','F Slot'));addTxt(P.x,P.y-50,_asLbl+_L(' 배정!',' Assigned!'),'#ff8844',40);updateQS()}
           }
-          window._skillTutorial?.record(_tutorialBefore);
         } else if(_isStormBurst||_isStormBeam||_isDimBlast||_isDimRush||_isDimFuse||_isDimSlam||_isDimThunder||_isSlamStorm||_isSynth||_isElemFuse||_isSixFuse||_isBladeFuse||_isIceFuse||_isBoneStorm||_isElecRepent||_isShieldFuse||_isPlagueFuse||_isPlagueVenom||_isHolyIce||_isHolyFuse||_isHolyW1||_isHolyW2||_isHolyW3||_isHolyW4||_isPillarSlam||_isPillarSpike||_isInfernoSlam||_isSiegeGhost||_isDualScarecrow||_isThunderGhost||_isTimeStep){
           // ═══ 통합 합체 강화: 전 스킬 동시 +1, 비용 = 구성원 upSp/upMat 합산 ═══
           const _fuseKey=_isStormBurst?'stormBurst':_isStormBeam?'stormBeam':_isDimBlast?'dimBlast':_isDimRush?'dimRush':_isDimThunder?'dimThunder':_isDimSlam?'dimSlam':_isDimFuse?'dimBreach':_isSlamStorm?'slamStorm':_isSynth?'whirlDet':_isElemFuse?'elemFuse':_isSixFuse?'sixFuse':_isBladeFuse?'bladeFuse':_isBoneStorm?'boneStorm':_isElecRepent?'elecRepent':_isShieldFuse?'shieldFuse':_isPlagueVenom?'plagueVenom':_isPlagueFuse?'plagueFuse':_isPillarSlam?'pillarSlam':_isPillarSpike?'pillarSpike':_isInfernoSlam?'infernoSlam':_isSiegeGhost?'siegeGhost':_isDualScarecrow?'dualScarecrow':_isThunderGhost?'thunderGhost':_isTimeStep?'timeStep':_isHolyW4?'holyWeak4':_isHolyW3?'holyWeak3':_isHolyW2?'holyWeak2':_isHolyW1?'holyWeak1':_isHolyIce?'holyIce':_isHolyFuse?'holyFuse':'iceMortar';
@@ -46931,9 +46912,7 @@ function renderStatPanel(){
       const live={stats:STATS,passives:PASSIVES,grit:_grit,sp:P.sp,ap:P.ap||0};
       const next=ExoduserStatsPanel.evaluatePlan(plan,live,STAT_MAX,PASSIVE_DEF);
       if(!next||!next.changes)return false;
-      const _tutorialBefore=window._skillTutorial?.snapshot();
       Object.assign(STATS,next.stats);Object.assign(PASSIVES,next.passives);
-      window._skillTutorial?.record(_tutorialBefore);
       _grit=next.grit;P.sp=next.sp;P.ap=next.ap;
       applyStats();SFX.levelup();renderStatPanel();dbSaveNow();return true;
     },
@@ -46948,9 +46927,7 @@ function renderStatPanel(){
       const def=PASSIVE_DEF.find(pd=>pd.key===key);if(!def)return;
       const next=ExoduserStatsPanel.passiveChange(PASSIVES[key]||0,def.max,P.ap||0,amount);
       if(!next)return;
-      const _tutorialBefore=window._skillTutorial?.snapshot();
       PASSIVES[key]=next.value;P.ap=next.points;
-      window._skillTutorial?.record(_tutorialBefore);
       applyStats();SFX.levelup();renderStatPanel();dbSaveNow();
     }
   });
@@ -56899,7 +56876,7 @@ async function _startDemoTest(){
         qslots:QSLOTS,
         game:{stage:G.stage,kills:G.kills,mats:G.mats,cutsceneDone:true},
         bagMax:BAG_MAX,hellCleared:G.hellCleared||[],storage:{},
-        upgrades:{...UPGRADES},potLv:{...POT_LV},skills:{...P.skills},skillTutorial:window._skillTutorial?.serialize(),
+        upgrades:{...UPGRADES},potLv:{...POT_LV},skills:{...P.skills},
         fused:P._fused||{},skProf:P._skProf||{},
         activeChargeSk:P.activeChargeSk||'charge',
         activeBowSk:P.activeBowSk||'normal',
@@ -56925,7 +56902,6 @@ async function _startDemoTest(){
         P.hp=_d5.player.hp||P.mhp;P.mhp=_d5.player.mhp||P.mhp;
         P.mp=_d5.player.mp||P.mmp;P.mmp=_d5.player.mmp||P.mmp;
         P.st=_d5.player.st||P.mst;P.mst=_d5.player.mst||P.mst;
-        window._skillTutorial?.restore(_d5.skillTutorial);
         if(_d5.passives){for(const k in _d5.passives)PASSIVES[k]=_d5.passives[k]||0}
         if(_d5.stats){for(const k in _d5.stats)STATS[k]=_d5.stats[k]||0}
         if(_d5.skillSlots&&_d5.skillSlots.length){_d5.skillSlots.forEach((s,i)=>{SKILL_SLOTS[i]=s});_repairAreaSkillSlot()}
@@ -57034,7 +57010,7 @@ async function _startDemoNew(){
         qslots:QSLOTS,
         game:{stage:G.stage,kills:G.kills,mats:G.mats,cutsceneDone:G._cutsceneDone||false},
         bagMax:BAG_MAX,hellCleared:G.hellCleared||[],storage:{},
-        upgrades:{...UPGRADES},potLv:{...POT_LV},skills:{...P.skills},skillTutorial:window._skillTutorial?.serialize(),
+        upgrades:{...UPGRADES},potLv:{...POT_LV},skills:{...P.skills},
         fused:P._fused||{},skProf:P._skProf||{},
         activeChargeSk:P.activeChargeSk||'charge',
         activeBowSk:P.activeBowSk||'normal',
@@ -58611,7 +58587,7 @@ if((_isLocal&&!_charId)||new URLSearchParams(window.location.search).get('test')
         game:{stage:G.stage,kills:G.kills,mats:0,irisSz:G._irisSz||20,taRecords:G._taRecords||{},comboMax:G.comboMax||0,playTime:G.playTime||0,cutsceneDone:G._cutsceneDone||false},
         bagMax:BAG_MAX,hellCleared:G.hellCleared||[],storage:{},
         crystalBag:CRYSTAL_BAG,crystalDust:CRYSTAL_DUST,
-        upgrades:{...UPGRADES},potLv:{...POT_LV},skills:{...P.skills},skillTutorial:window._skillTutorial?.serialize(),
+        upgrades:{...UPGRADES},potLv:{...POT_LV},skills:{...P.skills},
         fused:P._fused||{},skProf:P._skProf||{},fuseProfSec:P._fuseProfSec||{},cardProf:P._cardProf||{},catProf:P._catProf||{},
         activeChargeSk:P.activeChargeSk||'charge',
         activeBowSk:P.activeBowSk||'normal',
@@ -58766,7 +58742,7 @@ if((_isLocal&&!_charId)||new URLSearchParams(window.location.search).get('test')
         game:{stage:G.stage,kills:G.kills,mats:0,irisSz:G._irisSz||20,taRecords:G._taRecords||{},comboMax:G.comboMax||0,playTime:G.playTime||0,cutsceneDone:G._cutsceneDone||false},
         bagMax:BAG_MAX,hellCleared:G.hellCleared||[],storage:{},
         crystalBag:CRYSTAL_BAG,crystalDust:CRYSTAL_DUST,
-        upgrades:{...UPGRADES},potLv:{...POT_LV},skills:{...P.skills},skillTutorial:window._skillTutorial?.serialize(),
+        upgrades:{...UPGRADES},potLv:{...POT_LV},skills:{...P.skills},
         fused:P._fused||{},skProf:P._skProf||{},fuseProfSec:P._fuseProfSec||{},cardProf:P._cardProf||{},catProf:P._catProf||{},
         activeChargeSk:P.activeChargeSk||'charge',
         activeBowSk:P.activeBowSk||'normal',
