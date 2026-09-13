@@ -2923,6 +2923,8 @@ $('visualCreateBtn').onclick=_visualConfirm;
 $('visualCancelBtn').onclick=()=>{$('charVisualPop').style.display='none'};
 
 async function _afterCharacterCreated(name,visualIdx){
+  // Only successful creation clears a reused local slot's tutorial preference.
+  if(_testMode){try{localStorage.removeItem('exoduser:tutorial-skipped:v2:slot:'+encodeURIComponent(name));}catch{}}
   // Save is already complete; a playback/list failure must never create another slot.
   try{
     if(visualIdx!==0){if(_testMode)await loadLocalCharacters();else await loadCharacters();return;}

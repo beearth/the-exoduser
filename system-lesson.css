@@ -1,0 +1,17 @@
+#systemLesson{position:fixed;right:18px;top:150px;z-index:100004;width:min(310px,calc(100vw - 36px));max-height:calc(100vh - 180px);overflow:auto;box-sizing:border-box;padding:16px;color:#eee2cb;background:transparent;border:0;border-radius:0;box-shadow:none;opacity:.3;text-shadow:0 1px 2px #0006;font:14px/1.65 var(--font-hell,sans-serif)}
+#systemLesson[hidden],#systemLesson [hidden]{display:none!important}
+#systemLesson .system-lesson-header{display:flex;align-items:center;justify-content:space-between;gap:8px}
+#systemLesson .system-lesson-header>span{color:#c5b9a3;white-space:nowrap;font-size:12px}
+#systemLesson h2{font:600 19px/1.4 var(--font-hell,sans-serif);color:#f5d496;margin:16px 0 8px}
+#systemLesson p{margin:8px 0;color:#ded3bf}
+#systemLesson .system-lesson-status{color:#b6dba5;min-height:1.65em;font-size:12px}
+#systemLesson ol{list-style:none;margin:12px 0;padding:0;display:grid;gap:4px}
+#systemLesson li{display:flex;gap:8px;color:#b8b1a3;font-size:12px}
+#systemLesson li[data-current="true"]{color:#f5d496}
+#systemLesson li[data-done="true"]{color:#b6dba5}
+#systemLesson button{font:inherit;font-size:12px;color:#e8d2aa;background:transparent;border:0;border-radius:0;text-shadow:inherit;padding:6px 8px;cursor:pointer}
+#systemLesson button:hover{background:transparent;color:#fff1cc;text-decoration:underline;text-underline-offset:3px}
+#systemLesson button:focus-visible{outline:2px solid #f6db96;outline-offset:3px}
+#systemLesson .system-lesson-actions{display:flex;gap:8px;flex-wrap:wrap;margin-top:12px}
+@media(max-height:700px){#systemLesson{top:72px;max-height:calc(100vh - 100px)}}
+@media(max-width:760px){#systemLesson{top:72px;right:10px;width:min(290px,calc(100vw - 20px));max-height:55vh}}

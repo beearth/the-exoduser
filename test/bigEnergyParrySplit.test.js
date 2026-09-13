@@ -83,9 +83,9 @@ test('large-energy parry grants ten times the normal recovery resources without 
   assert.match(resolveSrc, /doParry\(totalDmg,p\.x,p\.y,true,p\.el,_bigResourceMul\)/);
   assert.match(parrySrc, /function doParry\(_inDmg,_px,_py,_forceQ,_parryEl,_resourceMul,_impactKind\)/);
   assert.match(parrySrc, /const _resourceBonus=Math\.max\(1,_resourceMul\|\|1\)/);
-  assert.match(parrySrc, /const _prBase=~~\([^;]+\*_resourceBonus\)/);
+  assert.match(parrySrc, /const _prBase=~~\([^;]+\*_resourceBonus\)\*2/);
   assert.match(parrySrc, /const _harpAdd=\([^;]+\)\*_resourceBonus/);
-  assert.match(parrySrc, /const _rageAdd=\(\([^;]+\)\*_resourceBonus\+_uSR\)/);
+  assert.match(parrySrc, /const _rageAdd=\(\([^;]+\)\*_resourceBonus\+_uSR\)\*2/);
   assert.match(parrySrc, /const _matsAdd=\([^;]+\)\*_resourceBonus/);
   assert.match(resolveSrc, /_splitParriedBigEnergy\(p,totalDmg\)/,
     'the ten-times bonus must not be passed into the five-shot damage split');

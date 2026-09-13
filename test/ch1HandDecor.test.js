@@ -49,7 +49,7 @@ test('CH1 1-1 is authored-only and disables every automatic filler path', () => 
 
 test('CH1 1-1 reproduces the miniature landmark and side-region anchors', () => {
   assertAnchor('m_c1tree', { x: 102, y: 90 }, 5);
-  assertAnchor('m_cage_gate', { x: 100, y: 188 }, 9);
+  assert.deepEqual(byId('m_cage_gate'), [], 'start cage gate must not obstruct movement');
   assertAnchor('m_c1cocoon', { x: 47, y: 50 }, 7);
   assertAnchor('m_c1camp', { x: 45, y: 100 }, 7);
   assertAnchor('m_bone_arch', { x: 35, y: 150 }, 8);
@@ -58,7 +58,6 @@ test('CH1 1-1 reproduces the miniature landmark and side-region anchors', () => 
   assertAnchor('pit_poison', { x: 162, y: 139 }, 7);
 
   for (const [id, minScale, maxScale] of [
-    ['m_cage_gate', 1.15, 1.25],
     ['m_c1cocoon', 1.45, 1.65],
     ['m_c1camp', 1.45, 1.65],
     ['m_c1altar', 1.35, 1.55],
@@ -68,12 +67,7 @@ test('CH1 1-1 reproduces the miniature landmark and side-region anchors', () => 
     assert.ok(prop.scale >= minScale && prop.scale <= maxScale,
       `${id} must carry secondary-landmark weight (${minScale}-${maxScale}), got ${prop.scale}`);
   }
-  const [gate] = byId('m_cage_gate');
-  const spawnDistancePx = Math.hypot((100.5 - (gate.x + 0.5)) * 40, (185.5 - (gate.y + 0.5)) * 40);
-  const gateCollisionRadiusPx = 300 * 0.4 * gate.scale;
-  assert.ok(spawnDistancePx > gateCollisionRadiusPx + 12,
-    `START must clear the scaled gate collision by a player radius (${spawnDistancePx.toFixed(1)} <= ${(gateCollisionRadiusPx + 12).toFixed(1)})`);
-  assert.ok(gate.y <= 188, 'START gate must remain in the last reliably rendered south culling row');
+
 });
 
 test('CH1 1-1 keeps the central combat clearing and START-to-EXIT axis open', () => {
@@ -144,11 +138,11 @@ test('CH1 1-1 keeps the reference density contrast between center and outer thir
 });
 
 test('CH1 1-1 keeps authored scenes after absorbing modular vines into forest geometry', () => {
-  assert.equal(props.length, 63, 'the 59 obsolete modular boundary props and buried east eye-tree are absorbed into baked forest plus tile geometry');
+  assert.equal(props.length, 62, 'the 59 obsolete modular boundary props and buried east eye-tree are absorbed into baked forest plus tile geometry');
   assert.equal(props.filter(isStructural).length, 0, 'no modular vine collider may remain');
   assert.deepEqual(byId('m_eye_tree'), [], 'the east eye-tree must not remain as a dead authored prop behind the forest wall');
   assert.deepEqual(byId('m_c1tree')[0], { id: 'm_c1tree', x: 102, y: 90, scale: 1 });
-  assert.deepEqual(byId('m_cage_gate')[0], { id: 'm_cage_gate', x: 103, y: 188, scale: 1.2 });
+  assert.deepEqual(byId('m_cage_gate'), []);
   assert.deepEqual(byId('corpse').find((prop) => prop.y >= 170), { id: 'corpse', x: 124, y: 179, scale: 1 });
   assert.deepEqual(byId('m_vine_pillar')[0], { id: 'm_vine_pillar', x: 29, y: 158, scale: 1 });
   assert.deepEqual(byId('m_c1gtoxic')[0], { id: 'm_c1gtoxic', x: 168, y: 40, scale: 1 });
@@ -200,4 +194,13 @@ test('CH1 1-1 keeps authored scenes after absorbing modular vines into forest ge
 
   const treeScales = new Set(props.filter((prop) => /^m_ctree/.test(prop.id)).map((prop) => prop.scale));
   assert.ok(treeScales.size >= 6, `outer tree silhouettes need at least six scale variants, got ${treeScales.size}`);
+});
+
+test('normal and easy builds both remove only the opening gate placement',()=>{
+ const easy=readFileSync(new URL('../game-easy-test.html',import.meta.url),'utf8');
+ assert.deepEqual(readHandProps(easy),props);
+ for(const html of [gameHtml,easy]){
+  assert.match(html,/\['m_cage_gate',163,153,.88\]/,'other-stage cage gate remains');
+  assert.match(html,/type:'boss_gate_col'/,'required boss gate collider remains');
+ }
 });

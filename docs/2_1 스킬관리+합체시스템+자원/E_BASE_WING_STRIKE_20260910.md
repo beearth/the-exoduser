@@ -15,6 +15,7 @@
 | E 타격/전진 패링/충전 미리보기 | `_eSwingRadius(C)=floor((70+견갑bonusRange×4)×M×C)` |
 | 투사체 패링 | sBash 한정 기존 반경×M×C. `_normalR`의 sBash 분기도×M. Q는×1 유지 |
 | 날개치기 추가 반사 | `_sdRange=floor(_gsRange2×1.5)` (기존 합체 보너스 유지) |
+| 마력 부여 검격 (2026-09-12) | 쿨다운 완료로 날개치기가 발동한 sBash에서 `_stWingT>0`·shieldFuse 합체일 때 일반 마법탄도 반사. `_eCanReflectProjectile`을 E 단발·전진 반사에 공통 적용. 쿨다운 중 일반 E는 물리만 반사. 무지개·대형 에너지·반사 금지는 기존 제외 유지 |
 | 파워웨이브 | `_wvRangeMul=M×C`; 사거리210×M×C, 진행 판정 r=50×M×C, 폭95×M×C. C는 발사 시 충전 배율1~3 스냅샷. 적/탄막 충돌과 먼지 분포가 같은 r/w 사용. Lv1 풀차지 사거리630·r150·폭285 |
 | 시각 | 실버테일 아크 scale=C×M; 다른 캐릭터 sweepRange=floor((90+견갑bonusRange×4)×C×M). 룬 미리보기는 실제 `_eSwingRadius(C)` 사용 |
 | 초기화 | 1레벨 합체 유지. `_resetWingStrikeUpgrades`는 공통 합체 강화분(L−1)을 두 구성 스킬에서 차감하고 `sum(_fuseUpSpCost(i,2), i=1..L−1)`만 SP 환불. 무료 습득/합체 비용 환불 없음. 레벨 차이가 있는 기존 세이브의 초과 레벨은 보존 |
