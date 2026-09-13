@@ -60,3 +60,5 @@ Vercel 설정 근거: [Build 설정](https://vercel.com/docs/builds/configure-a-
 | Mac 상태 | Chrome/Safari 실기 비교 PENDING. 배포 성공을 세로 띠 해결로 판정하지 않음 |
 
 2026-09-12 macOS 빌드 보완: NFC/NFD 한글 파일명이 동일 파일로 해석되어 hard link EEXIST가 발생할 때 source/destination의 dev·ino가 모두 같은 경우만 기존 링크를 인정한다. 서로 다른 파일 충돌은 계속 실패한다. Linux의 별개 경로는 모두 스테이징한다.
+
+2026-09-13 최신 배포 경로: GitHub Actions의 약5GB 압축 전송 중 fetch failed가 확인되어 개별 파일 업로드·사전 크기 검사로 변경했다. [실패 증거·변경·검증](VERCEL_UPLOAD_FAILURE_20260913.md). 원격 성공 여부는 새 커밋의 배포 실행으로 별도 확인한다.
