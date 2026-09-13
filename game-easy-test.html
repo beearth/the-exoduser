@@ -2,12 +2,12 @@
 <html lang="ko">
 <head>
 <link rel="stylesheet" href="tutorial-badges.css?v=20260912-1">
-<script src="tutorial-badges.js?v=20260912-clicks1"></script>
+<script src="tutorial-badges.js?v=20260913-spike-trap"></script>
 <link rel="stylesheet" href="system-lesson.css?v=20260912-restored4">
 <script src="system-lesson.js?v=20260912-skip-density1"></script>
 <link rel="stylesheet" href="parry-lesson.css?v=20260913-mission-details1">
 <script src="resource-practice.js?v=20260913-q-shield-feedback1"></script>
-<script src="parry-lesson.js?v=20260913-q-shield-feedback1"></script>
+<script src="parry-lesson.js?v=20260913-trap-shield1"></script>
 <link rel="stylesheet" href="skill-tutorial.css?v=20260913-3">
 <script src="skill-tutorial.js?v=20260913-2"></script>
 <meta charset="UTF-8">
@@ -34258,7 +34258,7 @@ function update(){
           }else if(fz.type==='spikeTrap'){
             // 가시덫: 물리 DOT + 슬로우(기본 91%, Lv당+2%p, 최대95%) + 출혈
             if(Math.random()<.3)playSampleAt('melee_hit1',.25,_r(1.2,.15),e.x,e.y);
-            hurtE(e,fz.dmg,Math.atan2(e.y-fz.y,e.x-fz.x),true,{dot:true,shieldHit:true},EL.P);
+            hurtE(e,fz.dmg,Math.atan2(e.y-fz.y,e.x-fz.x),true,{dot:true,shieldHit:true,_lessonAttack:'spikeTrap'},EL.P);
             e.bleedT=Math.max(e.bleedT||0,300);e.bleedStk=Math.min(10,(e.bleedStk||0)+1);if((e.bleedStk||0)<10)e._bleedPool=(e._bleedPool||0)+pDotPool()*fz.dmg*0.10;e.bleed=1;
             if(!e._spikeSlow||e._spikeSlow<=0)addTxt(e.x,e.y-15,'🌿'+~~(_spikeTrapSlowPct(fz.lv)*100)+'%','#66aa44',25);
             e._spikeSlow=Math.max(e._spikeSlow||0,90); // 1.5초 갱신

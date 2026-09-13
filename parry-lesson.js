@@ -1,4 +1,4 @@
-/* 1-1 guided practice. Success is reported only by the game's projectile collision branches. */
+/* 1-1 guided practice. Completion requires actual movement, casts and combat hits. */
 window._parryLesson = {
   active: false, seen: false, phase: 'intro', step: 0, checks: Array(8).fill(false), shot: null,
   labels: ['마법탄 패링', '물리탄 패링', 'Q 홀딩 · 다수 마법탄 패링', 'E 홀딩 · 다수 물리탄 패링', 'Shift · 사슬 이동', '방향키 + Space · 전격이동', '패링 · 분노 축적', 'Space · 분노 발동'],
@@ -26,7 +26,7 @@ window._parryLesson = {
     const system=window._systemLesson;
     if(system){system.closed=true;system.active=false;system.panel?.remove();}
   },
-  actions() { if(this.chapter===2)return window._resourcePractice.actions(this);if(this.step<0)return this.step===-2?['weapon']:this.step===-1?['beam']:[];return this.step === 4 ? ['charge'] : this.step === 5 ? ['up','down','left','right','bow'] : this.step === 7 ? ['bow'] : ['parry','shield']; },
+  actions() { if(this.chapter===1&&this.step===8)return [];if(this.chapter===2)return window._resourcePractice.actions(this);if(this.step<0)return this.step===-2?['weapon']:this.step===-1?['beam']:[];return this.step === 4 ? ['charge'] : this.step === 5 ? ['up','down','left','right','bow'] : this.step === 7 ? ['bow'] : ['parry','shield']; },
   isDirection(action) { return ['up','down','left','right'].includes(action); },
   allows(action) { return !this.active || (this.phase !== 'intro' && this.isDirection(action)) || (this.phase === 'practice' && !this.focusTicks && this.actions().includes(action)); },
   directionHeld() { return this.heldDirections.size > 0 || ['up','down','left','right'].some(a => KH[BINDS[a]] || (BINDS2[a] && KH[BINDS2[a]])); },
@@ -36,6 +36,7 @@ window._parryLesson = {
     if(this.phase==='intro'&&['KeyW','KeyA','KeyS','KeyD'].includes(code))this.beginPractice();
     if(['up','down','left','right'].some(a=>code===BINDS[a]||code===BINDS2[a])){this.heldDirections.add(code);return this.phase!=='intro';}
     if(this.phase !== 'practice' || this.focusTicks > 0)return false;
+    if(this.chapter===1&&this.step===8)return code==='Digit1';
     // The live chain handler uses physical Left Shift, including with saved custom binds.
     if(code==='ShiftLeft'&&this.actions().includes('charge')){
       if(this.chapter===2)return window._resourcePractice.allowKey(this,code);
@@ -70,7 +71,7 @@ window._parryLesson = {
     const checklist = this.node('div'); checklist.className = 'lesson-checklist'; this.checklist=checklist;
     this.rowLabels = []; this.rowTexts = [];
     if(this.chapter!==2){
-      this.basicRows=['WASD / 방향키 · 이동','좌클릭 · 적 3마리 처치','우클릭 · 적 3마리 처치'].map(label=>{
+      this.basicRows=['WASD / 방향키 · 이동','좌클릭 · 적 3마리 처치','우클릭 · 적 3마리 처치','1 · 가시덫 설치 후 도망 · 10마리 처치'].map(label=>{
         const row=this.node('label');row.className='lesson-row';
         const box=this.node('input');box.type='checkbox';box.disabled=true;
         row.append(box,this.node('span',label));checklist.append(row);return {row,box};
@@ -136,11 +137,11 @@ window._parryLesson = {
     this.button.hidden = this.phase !== 'intro';
     this.button.textContent = 'W / A / S / D 또는 클릭하여 시작';
     this.progressFill.style.width = `${this.checks.filter(Boolean).length / this.labels.length * 100}%`;
-    const basicChecks=[this.movementDone,this.leftClickDone,this.rightClickDone];
-    this.basicRows.forEach(({row,box},i)=>{box.checked=!!basicChecks[i];row.setAttribute('data-current',String(this.step===i-3));row.setAttribute('data-complete',String(!!basicChecks[i]));});
+    const basicChecks=[this.movementDone,this.leftClickDone,this.rightClickDone,this.spikeTrapDone];
+    this.basicRows.forEach(({row,box},i)=>{box.checked=!!basicChecks[i];row.setAttribute('data-current',String(this.step===(i===3?8:i-3)));row.setAttribute('data-complete',String(!!basicChecks[i]));});
     const basicLabels=['WASD / 방향키 · 이동','좌클릭 · 적 3마리 처치','우클릭 · 적 3마리 처치'];
-    this.subtitle.textContent=`${this.step+4} / ${this.labels.length+3} · ${this.step<0?basicLabels[this.step+3]:this.label(this.step)}`;
-    this.progressFill.style.width=`${(this.checks.filter(Boolean).length+basicChecks.filter(Boolean).length)/(this.labels.length+3)*100}%`;
+    this.subtitle.textContent=`${this.step===8?4:this.step<0?this.step+4:this.step+5} / ${this.labels.length+4} · ${this.step===8?'1 · 가시덫':this.step<0?basicLabels[this.step+3]:this.label(this.step)}`;
+    this.progressFill.style.width=`${(this.checks.filter(Boolean).length+basicChecks.filter(Boolean).length)/(this.labels.length+4)*100}%`;
     if(this.step<0){
       const i=this.step+3;
       this.keycap.textContent=['W A S D','좌클릭','우클릭'][i];
@@ -154,6 +155,7 @@ window._parryLesson = {
     }
     if(this.step===4)this.updateChainPractice();
     if(this.step===5)this.updateDashPractice();
+    if(this.step===8)this.updateTrapPractice();
     this.placeDetails();
   },
   placeDetails() {
@@ -235,6 +237,57 @@ window._parryLesson = {
     this.title.textContent=left?'기검참으로 적 3마리를 처치하세요':'마법으로 적 3마리를 처치하세요';
     this.hint.textContent=`${left?'기검참은 기본공격입니다. 적을 마우스로 조준하고 좌클릭으로 검기를 날리세요.':'적을 마우스로 조준하고 우클릭으로 마법탄을 발사하세요.'}\n처치 ${count||0}/3 · 실제로 처치해야 완료됩니다.`;
   },
+  startTrapPractice() {
+    this.trapSnapshot={slot:SKILL_SLOTS[0],mats:G.mats,skills:P.skills,cd:{had:Object.prototype.hasOwnProperty.call(P,'_gcCd'),value:P._gcCd}};
+    P.skills={...P.skills,spikeTrap:Math.max(1,P.skills.spikeTrap||0)};SKILL_SLOTS[0]='spikeTrap';P._gcCd=0;
+    this.trapEnemies=[];this.trapKills=0;this.trapZone=null;this.trapEscaped=false;
+    this.spawnTrapEnemies();
+  },
+  spawnTrapEnemies() {
+    // Existing enemy placement and flow-field movement retain the world's collision rules.
+    for(let i=0;i<60&&this.trapEnemies.length<10;i++){
+      const a=-Math.PI/2+(i%10-4.5)*.16+Math.floor(i/10)*Math.PI/3;
+      const radius=180+(i%3)*40;
+      const e=mkEn(P.x+Math.cos(a)*radius,P.y+Math.sin(a)*radius,G.stage,0,false,EL.P,-1);
+      if(!e||Math.hypot(e.x-P.x,e.y-P.y)>300||this.trapEnemies.some(o=>o.alive&&Math.hypot(e.x-o.x,e.y-o.y)<24))continue;
+      // Stagger lethal DOT ticks so pursuers fall over time instead of bursting together.
+      e._lessonEnemy=true;e._lessonStage=8;e.hp=Math.max(1,_spikeTrapDmg())*(5+this.trapEnemies.length)*.5;e.mhp=e.hp;
+      e.eShield=e.hp;e.eShieldMax=e.mhp;
+      e.atk=0;e.elite=0;e.mods=[];e.speed=1.6;e.s='chase';e.facing=Math.atan2(P.y-e.y,P.x-e.x);
+      ens.push(e);this.trapEnemies.push(e);addParts(e.x,e.y,'#b26dff',12);
+    }
+    _shDirty=true;
+  },
+  tickTrapPractice() {
+    if(this.trapEnemies.length<10)this.spawnTrapEnemies();
+    G.mats=Math.max(G.mats||0,_malCost(10));
+    const zone=(G._fireZones||[]).find(z=>z.type==='spikeTrap'&&z.t<z.maxT);
+    if(zone&&zone!==this.trapZone){this.trapZone=zone;this.trapEscaped=false;}
+    if(this.trapZone&&this.directionHeld()&&Math.hypot(P.x-this.trapZone.x,P.y-this.trapZone.y)>=120)this.trapEscaped=true;
+    if(!zone)P._gcCd=0;
+    for(const e of this.trapEnemies){
+      if(!e.alive)continue;
+      e.facing=Math.atan2(P.y-e.y,P.x-e.x);
+      if(Math.hypot(e.x-P.x,e.y-P.y)>45){e.s='chase';e._aSpdM=e._spikeSlow>0?1-_spikeTrapSlowPct(e._spikeSlowLv):1;_ffMoveE(e,_dtSp);}
+      else e.s='idle';
+    }
+    _shDirty=true;this.updateTrapPractice();
+    if(this.trapKills>=10&&this.trapEscaped)this.completeStep();
+  },
+  updateTrapPractice() {
+    this.keycap.textContent='1 + W A S D';
+    this.title.textContent='붙으면 가시덫을 깔고 도망치세요';
+    this.hint.textContent='몬스터 10마리가 쫓아옵니다. 가까이 붙으면 1번으로 발밑에 가시덫을 깔고, WASD / 방향키로 도망치세요. 덫 안의 적은 느려지고 지속 피해로 쓰러집니다.\n'+
+      `${this.trapZone?'✓':'□'} 가시덫 설치 · ${this.trapEscaped?'✓':'□'} 설치 후 이동 · 처치 ${this.trapKills||0}/10`;
+    this.holdBox.hidden=true;this.rageBox.hidden=true;
+  },
+  restoreTrapPractice() {
+    if(!this.trapSnapshot)return;
+    const s=this.trapSnapshot;SKILL_SLOTS[0]=s.slot;G.mats=s.mats;P.skills=s.skills;
+    if(s.cd.had)P._gcCd=s.cd.value;else delete P._gcCd;
+    G._fireZones=G._fireZones.filter(z=>z.type!=='spikeTrap');
+    this.trapSnapshot=null;this.trapZone=null;this.trapEnemies=[];
+  },
   resetPose() {
     P.s = 'idle'; P.st2 = 0; P._sbParryT = 0; P._sbHoldT = 0; P._sbReleaseR = 0; P._sbCd = 0;
     this.holdReady = false; this.holdStarted = false;
@@ -309,6 +362,7 @@ window._parryLesson = {
     this.holdLabel.textContent=_dashHold?`현재 ${_dashTier||1}단 충전 중 · 목표 ${s.target}단`:s.completed.length===3?'모든 단계 완료':`${s.target}단 준비 · 1단 탭 / 2단 ${seconds(2)}초 / 3단 ${seconds(3)}초 자동`;
   },
   start() {
+    this.spikeTrapDone=false;this.trapEnemies=[];this.trapSnapshot=null;
     this.chainPractice=null;
     this.parryEnemy=null;this.parriedShot=null;
     this.attackEnemies=[];this.leftKills=0;this.rightKills=0;
@@ -349,11 +403,12 @@ window._parryLesson = {
     this.parriedShot=p;this.updateParryPractice();
   },
   completeStep() {
+    if(this.chapter===1&&this.step===8){if(!this.spikeTrapDone){this.spikeTrapDone=true;this.pending='success';}return;}
     if(this.chapter!==2&&this.step<0){const key=['movementDone','leftClickDone','rightClickDone'][this.step+3];if(!this[key]){this[key]=true;this.pending='success';}return;}
     if(this.pending || this.checks[this.step])return;
     this.checks[this.step] = true;
     this.pending = this.step < this.labels.length-1 ? 'success' : 'done';
-    if(this.pending==='done')window._tutorialBadges?.complete(this.chapter===2?'resources':'combat',this.chapter===2?this.checks:[this.movementDone,this.leftClickDone,this.rightClickDone,...this.checks]);
+    if(this.pending==='done')window._tutorialBadges?.complete(this.chapter===2?'resources':'combat',this.chapter===2?this.checks:[this.movementDone,this.leftClickDone,this.rightClickDone,this.spikeTrapDone,...this.checks]);
   },
   explode(p) {
     if(p._lessonExploded||p.friendly)return;
@@ -413,14 +468,18 @@ window._parryLesson = {
         if(window._resourcePractice&&new URLSearchParams(location.search).get('resourceTutorial')!=='0'){window._resourcePractice.start(this);return false;}
         this.finish(); return false;
       }
-      this.clearShot(); this.step++; this.phase = 'practice'; this.cooldown = 45;
+      this.clearShot();
+      if(this.step===8)this.restoreTrapPractice();
+      this.step=this.step===-1?8:this.step===8?0:this.step+1; this.phase = 'practice'; this.cooldown = 45;
       this.resetPose();
+      if(this.step===8)this.startTrapPractice();
       if(this.step===-2||this.step===-1)this.spawnAttackEnemies();
       if(this.step===7){this.spawnRageEnemies();this.focusTicks=150;this.setRageFocus(true);}
       this.render();
     }
     P.hp = this.saved.hp; P.mp = P.mmp; if(this.step!==4)P.st = P.mst; P.shield = this.saved.shield; P.iframes = 0;
     P.kb.x = 0; P.kb.y = 0;
+    if(this.step===8){this.tickTrapPractice();return false;}
     if(this.step===-3){
       if(this.directionHeld())this.moveDistance+=Math.hypot(P.x-this.moveLast.x,P.y-this.moveLast.y);
       this.moveLast={x:P.x,y:P.y};
@@ -564,7 +623,15 @@ window._parryLesson = {
     const right=attack&&this.step===-1&&opts?.magic&&opts?.fireball&&!opts._fromTurret&&!opts.dot;
     const reflected=this.chapter===1&&this.phase==='practice'&&!this.pending&&(this.step===0||this.step===1)&&e===this.parryEnemy&&e._lessonStage===this.step&&
       !!this.parriedShot&&this.parriedShot===this.shot&&opts?._lessonParryShot===this.parriedShot&&this.parriedShot.friendly&&this.parriedShot.parryBlueBean;
-    if(!rage&&!left&&!right&&!reflected)return;
+    const trap=this.chapter===1&&this.step===8&&this.phase==='practice'&&!this.pending&&this.trapEnemies.includes(e)&&opts?.dot&&opts?._lessonAttack==='spikeTrap';
+    if(!rage&&!left&&!right&&!reflected&&!trap)return;
+    if(trap){
+      if(e.eShieldMax>0&&e.eShield>0){
+        const absorbed=Math.min(e.eShield,dmg);
+        e.eShield=Math.max(0,e.eShield-absorbed);dmg-=absorbed;
+      }
+      e.hp=Math.max(0,e.hp-dmg);e.flashT=6;if(e.hp>0)return;
+    }
     e.hp=0;e.alive=false;
     const killAng=Number.isFinite(ang)?ang:Math.atan2(e.y-P.y,e.x-P.x);
     deathFX(e.x,e.y,e.r,e.col,false,false,e.etype);
@@ -577,6 +644,7 @@ window._parryLesson = {
       if((left?this.leftKills:this.rightKills)>=3)this.completeStep();
     }
     if(reflected)this.completeStep();
+    if(trap){this.trapKills++;this.updateTrapPractice();if(this.trapKills>=10&&this.trapEscaped)this.completeStep();}
     _shDirty=true;
   },
   rageCast(amount) {
@@ -584,6 +652,7 @@ window._parryLesson = {
   },
   finish() {
     if (!this.active) return;
+    this.restoreTrapPractice();
     this.clearShot(); this.resetPose();
     ens = this.saved.ens; projs = this.saved.projs; pProjs = this.saved.pProjs; worldItems = this.saved.worldItems;
     Object.assign(G, this.saved.fields);

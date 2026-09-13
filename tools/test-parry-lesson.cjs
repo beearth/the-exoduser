@@ -59,7 +59,7 @@ function fixture(stage = 0, search = '') {
     G: { stage, spawnHoles: [{}], rifts: [{}], _bonfire: { t: 300 } },
     P: { skills:{bladeDash:0},_fused:{existing:true},rage:17,parryBank:4,hp: 81, mhp: 100, mp: 42, mmp: 100, st: 51, mst: 100, shield: 9, iframes: 30, x: 500, y: 500, activeQSk: 'peaceShield', kb: { x: 0, y: 0 } },
     ens: [{}], projs: [{}], pProjs: [{}], worldItems: [{}], EL: { P:0,F:1,I:2,D:3,L:4,H:5 }, _stopShieldLoop() {}, _recycleProj() {},
-    addParts() {}, doHitFlash() {}, shake() {}, playSample() {}, addTxt() {},
+    _spikeTrapDmg:()=>10,_spikeTrapSlowPct:()=>.91,_malCost:n=>n,_ffMoveE(e,sp,mul=1){e.y+=sp*mul;}, addParts() {}, doHitFlash() {}, shake() {}, playSample() {}, addTxt() {},
     _addBoom() {}, _spawnSmoke() {},
     playVFXAng() {}, _addBloodSplat() {},
     deaths:[],corpses:[],deathImpacts:[],gore:[],
@@ -105,7 +105,22 @@ function walk(c) {
     assert.equal(l.rightKills,i+1);assert.equal(l.rightClickDone,i===2);
   }
   assert.equal(c.deaths.length,6);assert.equal(c.corpses.length,6);assert.equal(c.deathImpacts.length,6);
+  for(let i=0;i<90;i++)l.tick();assert.equal(l.step,8);
+  assert.equal(l.allowKey('Digit1'),true);assert.equal(l.allowKey('Digit2'),false);
+  assert.equal(l.trapEnemies.length,10);assert.equal(c.SKILL_SLOTS[0],'spikeTrap');
+  l.tick();assert.equal(l.spikeTrapDone,false,'a key press or chase alone cannot complete the trap exercise');
+  const zone={x:c.P.x,y:c.P.y,r:300,t:0,maxT:600,type:'spikeTrap'};
+  c.G._fireZones.push(zone);l.tick();
+  for(const [index,e] of l.trapEnemies.entries()){
+    l.hurtEnemy(e,10,0,{magic:true,fireball:true});assert.equal(e.alive,true);
+    for(let i=0;i<5+index;i++)l.hurtEnemy(e,10,0,{dot:true,_lessonAttack:'spikeTrap'});
+    l.hurtEnemy(e,10,0,{dot:true,_lessonAttack:'spikeTrap'});
+  }
+  assert.equal(l.trapKills,10);assert.equal(l.spikeTrapDone,false,'must also retreat after placing the trap');
+  l.heldDirections.add('KeyS');c.P.y+=130;l.tick();l.heldDirections.clear();
+  assert.equal(l.spikeTrapDone,true);
   for(let i=0;i<90;i++)l.tick();assert.equal(l.step,0);
+  assert.equal(c.SKILL_SLOTS[0],null);assert.equal(c.G._fireZones.length,0);
   assert.equal(l.allows('left'),true);
   c.P.x+=20;const x=c.P.x;l.tick();assert.equal(c.P.x,x);
 }
@@ -319,7 +334,7 @@ assert.deepEqual(focusChanges.at(-1),['lesson-rage-focus',false]);
   assert.equal(l.volley.length,10);assert.equal(c.P.rage,10);assert.equal(l.checks[6],false);
   l.finish();assert.equal(c.P.rage,17);
 }
-console.log('PASS: HTML syntax; eleven stages; left/right attack states; charged volleys; movement; rage zoom/cast; 24 practice enemies and slam kills; miss explosion, HP loss, duplicate protection, recovery; retry/skip and restoration; live parry gates.');
+console.log('PASS: HTML syntax; twelve stages including trap retreat and ten kills; left/right attack states; charged volleys; movement; rage zoom/cast; 24 practice enemies and slam kills; miss explosion, HP loss, duplicate protection, recovery; retry/skip and restoration; live parry gates.');
 for(const code of ['KeyW','KeyA','KeyS','KeyD']){
   const c=fixture(),l=c.window._parryLesson;l.tick();
   assert.equal(l.phase,'intro');assert.equal(l.allowKey('KeyQ'),false);
