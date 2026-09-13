@@ -67,7 +67,7 @@ window._parryLesson = {
     this.keycap = this.node('kbd'); this.keycap.className = 'lesson-key'; art.append(this.keycap);
     this.title = this.node('h2');
     this.subtitle = this.node('p'); this.subtitle.className = 'lesson-subtitle';
-    const checklist = this.node('div'); checklist.className = 'lesson-checklist';
+    const checklist = this.node('div'); checklist.className = 'lesson-checklist'; this.checklist=checklist;
     this.rowLabels = []; this.rowTexts = [];
     if(this.chapter!==2){
       this.basicRows=['WASD / 방향키 · 이동','좌클릭 · 적 3마리 처치','우클릭 · 적 3마리 처치'].map(label=>{
@@ -101,7 +101,9 @@ window._parryLesson = {
     const progress = this.node('div'); progress.className = 'lesson-progress';
     this.progressFill = this.node('div'); this.progressFill.className = 'lesson-progress-fill'; progress.append(this.progressFill);
     const content = this.node('div'); content.className = 'lesson-content';
-    content.append(eyebrow, art, this.title, this.subtitle, checklist, this.hint, this.holdBox, this.rageBox, safety);
+    this.details=this.node('div');this.details.className='lesson-details';
+    this.details.append(this.hint,this.holdBox,this.rageBox);
+    content.append(eyebrow, art, this.title, this.subtitle, checklist, this.details, safety);
     const footer = this.node('div'); footer.className = 'lesson-footer';
     footer.append(this.button, skip, progress);
     this.panel.append(content, footer);
@@ -111,7 +113,7 @@ window._parryLesson = {
   key(step = this.step) { if(step===4)return 'SHIFT';if(step===5)return '↔ + SPACE';if(step===7)return 'SPACE';return String(BINDS[step % 2 === 0 ? 'parry' : 'shield'] || (step % 2 === 0 ? 'q' : 'e')).replace(/^Key/,'').toUpperCase(); },
   label(step) { return step < 2 ? `${this.key(step)} · ${this.labels[step]}` : this.labels[step]; },
   render() {
-    if(this.chapter===2)return window._resourcePractice.render(this);
+    if(this.chapter===2){window._resourcePractice.render(this);this.placeDetails();return;}
     const q = this.step % 2 === 0, complete = this.phase === 'done';
     this.panel.setAttribute('data-kind', q ? 'magic' : 'physical');
     this.panel.setAttribute('data-phase', this.phase);
@@ -151,6 +153,13 @@ window._parryLesson = {
       if(this.step===-2||this.step===-1)this.updateAttackPractice();
     }
     if(this.step===4)this.updateChainPractice();
+    this.placeDetails();
+  },
+  placeDetails() {
+    const guide=this.chapter===2&&this.resourceGuide&&!this.resourceGuide.hidden;
+    const row=this.chapter===2?this.rowLabels[this.step]:this.step<0?this.basicRows[this.step+3]?.row:this.step===8?this.basicRows[3]?.row:this.rowLabels[this.step];
+    const anchor=guide?(this.step===5?this.resourceGuideRows[window._resourcePractice.resourceIndex]:this.resourceGuide):row;
+    (anchor||this.checklist).after(this.details);
   },
   beginPractice() {
     if(!this.active||this.phase!=='intro')return;

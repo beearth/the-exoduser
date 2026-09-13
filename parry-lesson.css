@@ -28,6 +28,9 @@
 #parryLesson .lesson-row input:checked{background:#b2d6ac;border-color:#b2d6ac;}
 #parryLesson .lesson-row input:checked::after{content:"";display:block;width:7px;height:4px;margin:3px 0 0 3px;border-left:2px solid #172117;border-bottom:2px solid #172117;transform:rotate(-45deg);}
 #parryLesson .lesson-hint{margin:18px 0 12px;min-height:72px;font-size:14px;line-height:1.85;color:#d4cbbc;white-space:pre-line;}
+#parryLesson .lesson-details{grid-column:1 / -1;min-width:0;padding:0 0 8px 25px;}
+#parryLesson .lesson-details .lesson-hint{min-height:0;margin:3px 0 10px;}
+#parryLesson .lesson-row[data-current="true"]{grid-column:1 / -1;}
 #parryLesson .lesson-safety{display:block;font-size:11px;color:#a99c89;margin-bottom:20px;}
 #parryLesson .lesson-primary{display:block;width:100%;padding:12px;border:1px solid #a78957;border-radius:2px;background:linear-gradient(#b39462,#806341);color:#130f0b;font:700 15px/1.4 var(--font-hell,sans-serif);cursor:pointer;box-shadow:inset 0 1px #e1c59966;}
 #parryLesson .lesson-primary:hover{filter:brightness(1.13);}
@@ -47,8 +50,8 @@
 #parryLesson .lesson-resource-readout{white-space:pre-line;color:#e4c67b;font-size:13px;line-height:1.8;}
 #parryLesson .lesson-resource-guide{display:grid;gap:6px;margin:8px 0 14px;}
 #parryLesson .lesson-resource-guide[hidden]{display:none;}
-#parryLesson .lesson-resource-guide p{margin:0;padding:7px 9px;border-left:2px solid #867057;background:#17141be6;color:#e4d8c6;white-space:pre-line;font:13px/1.6 var(--font-hell,sans-serif);}
-#parryLesson .lesson-resource-guide p[data-current="true"]{border-color:#ffe49c;color:#ffe49c;background:#332819;}
+#parryLesson .lesson-resource-guide>p{margin:0;padding:7px 9px;border-left:2px solid #867057;background:#17141be6;color:#e4d8c6;white-space:pre-line;font:13px/1.6 var(--font-hell,sans-serif);}
+#parryLesson .lesson-resource-guide>p[data-current="true"]{border-color:#ffe49c;color:#ffe49c;background:#332819;}
 #parryLesson[data-resource-guide="true"] .lesson-checklist{display:none;}
 #parryLesson[data-resource-guide="true"] .lesson-art{height:48px;margin:2px 0 10px;}
 #parryLesson[data-resource-guide="true"] .lesson-subtitle{margin-bottom:8px;}
