@@ -17331,12 +17331,12 @@ function teleportE(e,nx,ny,col,n){if(!canMv(nx,ny,e.r))return false;
   // ── 출발지 연기 (퍼지며 사라짐) ──
   _addTpSmoke(ox,oy,r*4,18,0);
   e.x=nx;e.y=ny;
-  // ── 착지 강타: 도착 조준범위 내 플레이어 타격 (돌진 e.atk*30 대비 70% = e.atk*21, 비보스 한정) ──
+  // ── 착지 강타: 도착 조준범위 내 플레이어 타격 (돌진 e.atk*30 대비 35% = e.atk*10.5, 비보스 한정) ──
   if(!e.ib&&P.iframes<=0&&P.s!=='charge'){
     const _landR=(r+10)*2;
     if(dst(P.x,P.y,nx,ny)<_landR+P.r){
-      hurtP(~~(e.atk*21*elMul(e.el,ar().el)));eModHitP(e);
-      const _la=Math.atan2(P.y-ny,P.x-nx);P.kb.x+=Math.cos(_la)*60;P.kb.y+=Math.sin(_la)*60;
+      hurtP(~~(e.atk*10.5*elMul(e.el,ar().el)));eModHitP(e);
+      const _la=Math.atan2(P.y-ny,P.x-nx);P.kb.x+=Math.cos(_la)*120;P.kb.y+=Math.sin(_la)*120;
       addTxt(P.x,P.y-25,_T('충격파!'),col,30);
     }
   }
@@ -56175,8 +56175,8 @@ function _fbTickOne(fb){
       if(!_isSpawn){
         var _sd2=dst(fb.x,fb.y,P.x,P.y);
         if(_sd2<fb.r+110&&P.iframes<=0&&P.s!=='charge'){
-          hurtP(~~(fb.atk*2));
-          var _ka2=Math.atan2(P.y-fb.y,P.x-fb.x);P.kb.x+=Math.cos(_ka2)*9;P.kb.y+=Math.sin(_ka2)*9;
+          hurtP(~~(fb.atk));
+          var _ka2=Math.atan2(P.y-fb.y,P.x-fb.x);P.kb.x+=Math.cos(_ka2)*18;P.kb.y+=Math.sin(_ka2)*18;
           addTxt(P.x,P.y-30,_T('💥심해강타!'),'#ff4444',40);
         }
       }
@@ -56356,8 +56356,8 @@ function _wmTick(){
     if(w.phase==='emerge'&&w.frame>=4&&!w.popHit){
       w.popHit=1;
       if(_d<w.r+P.r+28&&P.iframes<=0&&P.s!=='charge'){
-        hurtP(~~(w.atk*1.8));
-        var _ka=Math.atan2(P.y-w.y,P.x-w.x);P.kb.x+=Math.cos(_ka)*7;P.kb.y+=Math.sin(_ka)*7;
+        hurtP(~~(w.atk*.9));
+        var _ka=Math.atan2(P.y-w.y,P.x-w.x);P.kb.x+=Math.cos(_ka)*14;P.kb.y+=Math.sin(_ka)*14;
         shake(8);addTxt(P.x,P.y-28,_T('충격파!'),'#ff6688',28);
       }
     }
@@ -56554,8 +56554,8 @@ function _fdTickOne(m){
       m.hid=0;m.spawnIn=0;
       if(!m._landed){m._landed=1;shake(12)}
       else if(_d<m.r+110&&P.iframes<=0&&P.s!=='charge'){
-        hurtP(~~(m.atk*2),{dtype:'magic'});
-        var ka=Math.atan2(P.y-m.y,P.x-m.x);P.kb.x+=Math.cos(ka)*8;P.kb.y+=Math.sin(ka)*8;
+        hurtP(~~(m.atk),{dtype:'magic'});
+        var ka=Math.atan2(P.y-m.y,P.x-m.x);P.kb.x+=Math.cos(ka)*16;P.kb.y+=Math.sin(ka)*16;
         _addBoom(m.x,m.y,160,72,'fire');
       }
     }
