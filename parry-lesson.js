@@ -367,12 +367,12 @@ window._parryLesson = {
       addParts(p.x,p.y,p.col||'#b26dff',32);
     }
   },
-  miss(p) {
-    if(this.chapter===2)return window._resourcePractice.miss(this,p);
+  miss(p,absorbed=false) {
+    if(this.chapter===2)return window._resourcePractice.miss(this,p,absorbed);
     if(!this.active||this.phase!=='practice'||this.pending||this.failTicks||!p._lessonShot||p.friendly)return;
     this.explode(p);
     doHitFlash('#ff4422',.35);shake(7);
-    playSample('player_hit1',.6,1);
+    playSample(absorbed?'shield_hit':'player_hit1',.6,1);
     const damage=Math.min(Math.max(0,P.hp-1),Math.max(1,Math.ceil(P.mhp*.1)));
     P.hp-=damage;
     addTxt(P.x,P.y-30,`패링 실패! -${damage} HP`,'#ff6644',60);

@@ -181,13 +181,13 @@ window._resourcePractice = {
     if(l.phase!=='practice'||l.pending||p!==l.shot||kind!=='magic')return;
     if(l.step===1||l.step===9){this.parried=true;this.beforeParry={hp:P.hp,poise:P.poise,st:P.st,mp:P.mp,gauge:_harpGauge};}
   },
-  miss(l,p) {
+  miss(l,p,absorbed=false) {
     if(l.step===7&&(!this.guardFired||!this.burstShots.includes(p)))return;
     if(l.phase!=='practice'||l.pending||this.retryTicks||(p!==l.shot&&!this.burstShots.includes(p))||p.friendly||this.hitShots.has(p))return;
     this.hitShots.add(p);
-    l.explode(p);doHitFlash('#ff4422',.35);shake(7);playSample('player_hit1',.6,1);
-    const raw=Math.max(2,Math.ceil(P.mhp*(l.step===7?.02:.1)));
     const guarding=l.step===7&&P.s==='sBlock';
+    l.explode(p);doHitFlash('#ff4422',.35);shake(7);playSample(absorbed||guarding?'shield_hit':'player_hit1',.6,1);
+    const raw=Math.max(2,Math.ceil(P.mhp*(l.step===7?.02:.1)));
     const absorb=guarding?raw-Math.max(1,Math.floor(raw*(1-Math.min(.25,pGuardAbsorb()*.5)))):0;
     const damage=Math.min(P.hp-1,guarding?Math.floor((raw-absorb)*1.3):raw);
     P.hp=Math.max(1,P.hp-damage);

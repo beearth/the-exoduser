@@ -6,8 +6,8 @@
 <link rel="stylesheet" href="system-lesson.css?v=20260912-restored4">
 <script src="system-lesson.js?v=20260912-skip-density1"></script>
 <link rel="stylesheet" href="parry-lesson.css?v=20260913-mission-details1">
-<script src="resource-practice.js?v=20260913-resource-cost50"></script>
-<script src="parry-lesson.js?v=20260913-dash-five1"></script>
+<script src="resource-practice.js?v=20260913-q-shield-feedback1"></script>
+<script src="parry-lesson.js?v=20260913-q-shield-feedback1"></script>
 <link rel="stylesheet" href="skill-tutorial.css?v=20260913-3">
 <script src="skill-tutorial.js?v=20260913-2"></script>
 <meta charset="UTF-8">
@@ -31739,11 +31739,12 @@ function update(){
       const _lessonCorrect=_parryClass==='physical'?_sbActive:_qParryActive;
       const _lessonWrong=_parryClass==='physical'?_sbPW&&!_sbActive:_sbActive&&!_qParryActive;
       if((_lessonWrong&&_pDist<100)||(!_lessonCorrect&&_pDist<_pCollR+4)){
-        window._parryLesson.miss(p);p.life=0;_recycleProj(p);continue;
+        window._parryLesson.miss(p,_qZone==='absorb');p.life=0;_recycleProj(p);continue;
       }
     }
     if(_qZone==='absorb'&&!p.friendly&&!p.noParry&&!P._ioActive){
-      if(p._lessonShot){window._parryLesson.miss(p);p.life=0;_recycleProj(p);continue;}
+      if(p._lessonShot){window._parryLesson.miss(p,true);p.life=0;_recycleProj(p);continue;}
+      playSample('shield_hit',.6,1);
       addParts(p.x,p.y,p.blackBean?'#ff44ff':ELC[p.el]||'#88bbff',p.blackBean?8:4);
       addTxt(p.x,p.y-12,_T('흡수'),'#66bbff',20);
       _recycleProj(p);continue;
@@ -55034,12 +55035,14 @@ function drawP(){
     if(_saReady&&_saWarmDone){
       _saTimer++;if(_saTimer>=8){_saTimer=0;_saFrame=(_saFrame+1)%2}
       const _saCol2=_saFrame%_SA_COLS,_saRow2=~~(_saFrame/_SA_COLS);
-      const _saSz=ringR*3.75*pulse;
       const _sx=_saCol2*_SA_CW,_sy=_saRow2*_SA_CH;
-      const _dx=P.x-_saSz/2,_dy=P.y-_saSz/2;
       const _detProgMax=_wwDetCD>0?_wwDetCD:180; // 회전기폭: 주기(120/150)에 맞춤, sBlock: 3초
       const _detProg=_sbHasDet?Math.min((pt||0)/_detProgMax,1):0; // 0→1
       X.save();X.globalCompositeOperation='lighter';
+      // Q absorption core shares the outer aura's frame, pulse and color blend.
+      for(let _saLayer=0;_saLayer<(P.s==='sBlock'?2:1);_saLayer++){
+      const _saSz=(_saLayer===0?ringR:20)*3.75*pulse;
+      const _dx=P.x-_saSz/2,_dy=P.y-_saSz/2;
       // 파란 오라 (1-progress) — 2패스 (기존 3→2, alpha 보정)
       if(_detProg<1){
         const _bA=pulse*(1-_detProg);
@@ -55056,6 +55059,7 @@ function drawP(){
         if(!_s7UseLite){X.globalAlpha=_rA*.6;
         X.drawImage(_SA_IMG_R,_sx,_sy,_SA_CW,_SA_CH,_dx,_dy,_saSz,_saSz);}
       }
+      }
       X.restore();
     }
     if(P.s==='sBlock'){
@@ -55063,9 +55067,11 @@ function drawP(){
       X.globalAlpha=.68;X.strokeStyle=_sbPW?'#ffffff':'#69b8ff';X.lineWidth=2.5;
       X.setLineDash([14,9]);X.lineDashOffset=-t*.12;
       X.beginPath();X.arc(P.x,P.y,_sbRangeR,0,Math.PI*2);X.stroke();
-      // 20px 흡수 코어도 함께 표시해, 외곽 전체가 패링 띠라는 것을 구분한다.
-      X.setLineDash([]);X.globalAlpha=.3;X.strokeStyle='#bfe8ff';X.lineWidth=1.5;
-      X.beginPath();X.arc(P.x,P.y,20,0,Math.PI*2);X.stroke();
+      // Keep a core outline only while the shared aura texture is warming.
+      if(!_saReady||!_saWarmDone){
+        X.setLineDash([]);X.globalAlpha=.3;X.strokeStyle='#bfe8ff';X.lineWidth=1.5;
+        X.beginPath();X.arc(P.x,P.y,20,0,Math.PI*2);X.stroke();
+      }
       X.restore();
     }
     // 기폭팔 차지 텍스트
