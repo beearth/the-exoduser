@@ -35,6 +35,11 @@ window._parryLesson = {
     if(!this.active)return true;
     if(['up','down','left','right'].some(a=>code===BINDS[a]||code===BINDS2[a])){this.heldDirections.add(code);return this.phase!=='intro';}
     if(this.phase !== 'practice' || this.focusTicks > 0)return false;
+    // The live chain handler uses physical Left Shift, including with saved custom binds.
+    if(code==='ShiftLeft'&&this.actions().includes('charge')){
+      if(this.chapter===2&&this.step===3)window._resourcePractice.escapePressed=true;
+      return true;
+    }
     if(this.chapter===2)return window._resourcePractice.allowKey(this,code);
     const allowed=this.actions().some(a => code === BINDS[a] || code === BINDS2[a]);
     if(this.step === 7 && code === 'Space' && this.directionHeld())return false;
@@ -147,6 +152,7 @@ window._parryLesson = {
         '마우스로 발사할 방향을 가리키고 오른쪽 버튼을 누르세요. 기본 마법 공격은 마력을 사용합니다. 실제 마법 시전이 시작되면 성공입니다.'
       ][i];
     }
+    if(this.step===4)this.updateChainPractice();
   },
   resetPose() {
     P.s = 'idle'; P.st2 = 0; P._sbParryT = 0; P._sbHoldT = 0; P._sbReleaseR = 0; P._sbCd = 0;
@@ -161,7 +167,46 @@ window._parryLesson = {
     for (const key of Object.keys(MB)) MB[key] = false;
     _stopShieldLoop();
   },
+  tickChainPractice() {
+    if(!this.chainPractice){
+      _harpGauge=_HARP_GAUGE_MAX;P.st=P.mst;
+      this.chainPractice={target:1,completed:[],gauge:_harpGauge,flight:null,feedback:''};
+    }
+    const s=this.chainPractice,active=_harpActive||_dashActive;
+    if(!s.flight&&active&&_harpGauge<s.gauge){
+      s.flight={tier:_harpTier,spent:s.gauge-_harpGauge,x:P.x,y:P.y,pulled:false,moved:false};
+      s.feedback=`${_harpTier}단 발사 · 기동력 −${Math.round(s.flight.spent)} · 이동이 끝나면 Shift를 놓으세요.`;
+    }
+    if(s.flight){
+      const f=s.flight;
+      if(_dashActive)f.pulled=true;
+      if(f.pulled&&Math.hypot(P.x-f.x,P.y-f.y)>=1)f.moved=true;
+      if(!active&&!_dashHold&&!KH.ShiftLeft){
+        if(f.tier===s.target&&f.moved){
+          s.completed.push(s.target);
+          s.feedback=`${s.target}단 이동 완료 · 기동력 −${Math.round(f.spent)}`;
+          if(s.target===3){this.updateChainPractice();this.completeStep();return;}
+          s.target++;
+        }else{
+          s.feedback=f.tier!==s.target?`${f.tier}단으로 발사했습니다. ${s.target}단을 다시 연습하세요.`:'이동이 막히거나 취소됐습니다. 열린 바닥을 가리켜 다시 시도하세요.';
+        }
+        // Refill only between attempts so all tiers remain repeatable and costs stay visible.
+        s.flight=null;_harpGauge=_HARP_GAUGE_MAX;P.st=P.mst;s.gauge=_harpGauge;
+      }
+    }
+    this.updateChainPractice();
+  },
+  updateChainPractice() {
+    const s=this.chainPractice;if(!s)return;
+    const seconds=t=>_HARP_TIER_F[t]/60;
+    const instruction=s.target===1?`왼쪽 Shift를 ${seconds(2)}초 전에 짧게 눌렀다 놓으세요.`:s.target===2?`왼쪽 Shift를 ${seconds(2)}초 이상, ${seconds(3)}초 전에 놓으세요.`:`왼쪽 Shift를 ${seconds(3)}초 이상 누르면 자동 발사됩니다.`;
+    this.hint.textContent=`${[1,2,3].map(t=>`${s.completed.includes(t)?'✓':'□'} ${t}단`).join(' · ')}\n${s.completed.length===3?'1·2·3단 사슬이동을 모두 완료했습니다.':`지금은 ${s.target}단 연습입니다. 마우스로 열린 바닥을 가리키세요. ${instruction}`}\n${s.feedback}`;
+    this.holdBox.hidden=false;
+    this.holdMeter.value=Math.min(100,(_dashHoldF||0)/_HARP_TIER_F[3]*100);
+    this.holdLabel.textContent=_dashHold?`현재 ${_dashTier||1}단 충전 중 · 목표 ${s.target}단`:s.completed.length===3?'모든 단계 완료':`${s.target}단 준비 · 1단 탭 / 2단 ${seconds(2)}초 / 3단 ${seconds(3)}초 자동`;
+  },
   start() {
+    this.chainPractice=null;
     this.combatLabels??=this.labels.slice();this.labels=this.combatLabels.slice();this.chapter=1;this.resourceReadout=null;
     window._resourcePractice?.save();
     this.seen = true; this.active = true; this.phase = 'intro'; this.step = -3; this.checks = Array(this.labels.length).fill(false);
@@ -266,7 +311,7 @@ window._parryLesson = {
       if(this.step===7){this.spawnRageEnemies();this.focusTicks=150;this.setRageFocus(true);}
       this.render();
     }
-    P.hp = this.saved.hp; P.mp = P.mmp; P.st = P.mst; P.shield = this.saved.shield; P.iframes = 0;
+    P.hp = this.saved.hp; P.mp = P.mmp; if(this.step!==4)P.st = P.mst; P.shield = this.saved.shield; P.iframes = 0;
     P.kb.x = 0; P.kb.y = 0;
     if(this.step===-3){
       if(this.directionHeld())this.moveDistance+=Math.hypot(P.x-this.moveLast.x,P.y-this.moveLast.y);
@@ -280,8 +325,8 @@ window._parryLesson = {
     }
     if (this.step === 2 || this.step === 3) { this.watchHold(); return false; }
     if (this.step === 4 || this.step === 5) {
-      _harpGauge=_HARP_GAUGE_MAX;
-      if(this.step===4&&(_harpActive||_dashActive))this.completeStep();
+      if(this.step===4)this.tickChainPractice();
+      else _harpGauge=_HARP_GAUGE_MAX;
       if(this.step===5&&this.directionSpace&&P._bdMoveT>0)this.completeStep();
       return false;
     }
@@ -435,6 +480,6 @@ window._parryLesson = {
     window._resourcePractice?.restore();
     for(const [key,entry] of Object.entries(this.basicSkillSnapshot||{})){if(entry.had)P[key]=entry.value;else delete P[key];}
     this.basicSkillSnapshot=null;
-    this.active = false; this.pending = null; this.panel.remove(); this.backdrop.remove(); this.saved = null;
+    this.active = false; this.pending = null; this.chainPractice=null; this.panel.remove(); this.backdrop.remove(); this.saved = null;
   }
 };

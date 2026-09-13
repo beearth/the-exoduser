@@ -21,9 +21,40 @@ class Element {
   blur() {}
   after(node) { this.afterNode=node; }
 }
+function exerciseChainTiers(c,l) {
+  l.tick();assert.equal(l.checks[4],false);
+  const savedCharge=c.BINDS.charge;c.BINDS.charge='mouse0';
+  assert.equal(l.allowKey('ShiftLeft'),true,'saved custom charge bindings must not block the live Left Shift handler');
+  c.BINDS.charge=savedCharge;
+  // A held key and an active flag without resource consumption cannot complete a tier.
+  c._harpActive=true;l.tick();assert.equal(l.checks[4],false);
+  c._harpActive=false;l.tick();
+  // Starting with a full charge must not skip the requested tap exercise.
+  c._harpTier=3;c._harpGauge-=150;c._harpActive=true;l.tick();
+  c._harpActive=false;l.tick();assert.equal(l.checks[4],false);
+  assert.equal(l.chainPractice.target,1);
+  // A cancelled shot or wall-blocked pull cannot be counted as movement.
+  c._harpTier=1;c._harpGauge-=45;c._harpActive=true;l.tick();
+  c._harpActive=false;l.tick();assert.equal(l.chainPractice.target,1);
+  assert.equal(l.chainPractice.completed.length,0);assert.equal(c._harpGauge,c._HARP_GAUGE_MAX);
+  for(const tier of [1,2,3]){
+    c._harpTier=tier;c._harpGauge-=c._HARP_GAUGE_COST[tier];
+    c._harpActive=true;c.KH.ShiftLeft=true;l.tick();
+    const spent=c._harpGauge;
+    for(let i=0;i<95;i++)l.tick();
+    assert.equal(l.step,4,'never advance while the chain is still flying');
+    assert.equal(l.checks[4],false);assert.equal(c._harpGauge,spent,'keep consumption visible during flight');
+    c._harpActive=false;c._dashActive=true;c.P.x+=50;l.tick();
+    c._dashActive=false;l.tick();assert.equal(l.checks[4],false,'release Shift before advancing');
+    c.KH.ShiftLeft=false;l.tick();
+    assert.equal(l.checks[4],tier===3,'all three tiers are required');
+    assert.equal(l.chainPractice.completed.length,tier);
+    if(tier<3){assert.equal(l.chainPractice.target,tier+1);assert.equal(c._harpGauge,c._HARP_GAUGE_MAX);}
+  }
+}
 function fixture(stage = 0, search = '') {
   const c = vm.createContext({ window: {}, document: { createElement: tag => new Element(tag), getElementById: () => null, body: new Element('body') }, URLSearchParams, location: { search },
-    BINDS: { weapon:'mouse0',beam:'mouse2',parry: 'KeyQ', shield: 'KeyE', charge:'ShiftLeft',bow:'Space',up:'KeyW',down:'KeyS',left:'KeyA',right:'KeyD' }, BINDS2:{}, SKILL_SLOTS:[null,null,null,null,'customRage'],_harpGauge:24,_HARP_GAUGE_MAX:180,_harpActive:false,_dashActive:false, K: {}, KH: {}, MB: {}, _dtSp: 1,
+    BINDS: { weapon:'mouse0',beam:'mouse2',parry: 'KeyQ', shield: 'KeyE', charge:'ShiftLeft',bow:'Space',up:'KeyW',down:'KeyS',left:'KeyA',right:'KeyD' }, BINDS2:{}, SKILL_SLOTS:[null,null,null,null,'customRage'],_harpGauge:24,_HARP_GAUGE_MAX:180,_HARP_TIER_F:[0,1,6,12],_HARP_GAUGE_COST:[0,45,98,150],_harpDistTier:t=>[0,300,500,700][t],_harpTier:0,_harpActive:false,_dashActive:false, K: {}, KH: {}, MB: {}, _dtSp: 1,
     _EDITOR_MODE: false, _bossTestReq: -1, _MAP_QA_MODE: false, _saving: false,
     G: { stage, spawnHoles: [{}], rifts: [{}], _bonfire: { t: 300 } },
     P: { skills:{bladeDash:0},_fused:{existing:true},rage:17,parryBank:4,hp: 81, mhp: 100, mp: 42, mmp: 100, st: 51, mst: 100, shield: 9, iframes: 30, x: 500, y: 500, activeQSk: 'peaceShield', kb: { x: 0, y: 0 } },
@@ -130,7 +161,7 @@ for(const shot of lesson.volley.slice(0,3)){
 assert.equal(lesson.checks[3],true);
 for(let i=0;i<90;i++)lesson.tick();assert.equal(lesson.step,4);
 assert.equal(lesson.allowKey('Space'),false);assert.equal(lesson.allowKey('ShiftLeft'),true);
-lesson.tick();assert.equal(lesson.checks[4],false);c._harpActive=true;lesson.tick();assert.equal(lesson.checks[4],true);
+exerciseChainTiers(c,lesson);
 for(let i=0;i<90;i++)lesson.tick();assert.equal(lesson.step,5);
 c.P._bdMoveT=6;lesson.tick();assert.equal(lesson.checks[5],false); // dash alone is not the requested combination
 c.KH.ArrowUp=true;assert.equal(lesson.allowKey('Space'),true);lesson.tick();assert.equal(lesson.checks[5],true);
@@ -253,7 +284,7 @@ assert.deepEqual(focusChanges.at(-1),['lesson-rage-focus',false]);
   l.finish();assert.equal(c.P.rage,17);
 }
 console.log('PASS: HTML syntax; eleven stages; left/right attack states; charged volleys; movement; rage zoom/cast; 24 practice enemies and slam kills; miss explosion, HP loss, duplicate protection, recovery; retry/skip and restoration; live parry gates.');
-module.exports={fixture};
+module.exports={fixture,exerciseChainTiers};
 
 for(const file of ['game.html','game-easy-test.html']){
  const html=fs.readFileSync(path.join(root,file),'utf8');

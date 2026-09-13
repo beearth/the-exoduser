@@ -27,7 +27,7 @@
 #parryLesson .lesson-row input{appearance:none;width:16px;height:16px;flex-shrink:0;margin:0;border:1px solid #6b6052;background:#0d0d10;border-radius:2px;opacity:1;}
 #parryLesson .lesson-row input:checked{background:#b2d6ac;border-color:#b2d6ac;}
 #parryLesson .lesson-row input:checked::after{content:"";display:block;width:7px;height:4px;margin:3px 0 0 3px;border-left:2px solid #172117;border-bottom:2px solid #172117;transform:rotate(-45deg);}
-#parryLesson .lesson-hint{margin:18px 0 12px;min-height:72px;font-size:14px;line-height:1.85;color:#d4cbbc;}
+#parryLesson .lesson-hint{margin:18px 0 12px;min-height:72px;font-size:14px;line-height:1.85;color:#d4cbbc;white-space:pre-line;}
 #parryLesson .lesson-safety{display:block;font-size:11px;color:#a99c89;margin-bottom:20px;}
 #parryLesson .lesson-primary{display:block;width:100%;padding:12px;border:1px solid #a78957;border-radius:2px;background:linear-gradient(#b39462,#806341);color:#130f0b;font:700 15px/1.4 var(--font-hell,sans-serif);cursor:pointer;box-shadow:inset 0 1px #e1c59966;}
 #parryLesson .lesson-primary:hover{filter:brightness(1.13);}

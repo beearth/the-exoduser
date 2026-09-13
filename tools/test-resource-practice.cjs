@@ -2,7 +2,7 @@ const assert=require('node:assert/strict');
 const fs=require('node:fs');
 const vm=require('node:vm');
 const path=require('node:path');
-const {fixture}=require('./test-parry-lesson.cjs');
+const {fixture,exerciseChainTiers}=require('./test-parry-lesson.cjs');
 function setup(){
   const c=fixture();c.P.poise=2;c.P.maxPoise=4;c.P.poiseR=17;c.P.activeCtSk='iceOrb';c.G.mats=123;c.pGuardAbsorb=()=>.3;
   c._HARP_TIER_F=[0,1,6,12];c._HARP_GAUGE_COST=[0,45,98,150];c._harpDistTier=t=>[0,300,500,700][t];c._harpTier=1;
@@ -30,7 +30,7 @@ next();assert.equal(l.step,4);
 assert.match(l.resourceReadout.textContent,/0.1초 홀딩/);assert.match(l.resourceReadout.textContent,/0.2초 홀딩 → 자동 발사/);
 assert.match(l.resourceReadout.textContent,/기동력 98\(2.18칸\) · ST 2%/);
 c._harpDistTier=t=>[0,400,600,900][t];r.readout(l);assert.match(l.resourceReadout.textContent,/최대 거리 900/);
-c._harpActive=true;l.tick();assert.equal(l.checks[4],false);c._harpGauge-=45;l.tick();assert.equal(l.checks[4],true);
+exerciseChainTiers(c,l);
 const spent=c._harpGauge;l.tick();assert.equal(c._harpGauge,spent);
 next();assert.equal(l.step,5);c.P.s='sBash';l.tick();assert.equal(l.checks[5],false);c.P.st-=12;l.tick();assert.equal(l.checks[5],true);
 next();assert.equal(l.step,6);l.allowKey('KeyW');assert.equal(l.allowKey('Space'),true);

@@ -46,17 +46,18 @@ window._resourcePractice = {
     return ok;
   },
   enter(l) {
+    l.chainPractice=null;
     l.clearShot();l.resetPose();P._gwActive=false;P._gwCd=0;P._stWingT=0;P._stCd=9999;
     P.hp=P.mhp;P.mp=P.mmp;P.st=P.mst;P.shield=l.saved.shield;
     P.iframes=0;_harpGauge=_HARP_GAUGE_MAX;
     this.parried=false;this.hits=0;this.wait=60;this.escapePressed=false;this.guardFired=false;
     this.burstShots=[];this.hitShots=new Set();this.burstSpawned=0;
-    this.shiftTier=0;
     this.retryTicks=0;this.feedback='';
     P.poise=l.step===1?3:l.step===3?0:l.step===7?1:4;
     if(l.step===3){P.s='pStun';P.st2=480;P._gslCd=0;}
     if(l.step===9){P.hp=Math.max(1,P.mhp*.4);P.st=P.mst*.4;P.mp=P.mmp*.4;_harpGauge=_HARP_GAUGE_MAX*.4;}
     this.baseline={hp:P.hp,st:P.st,mp:P.mp,gauge:_harpGauge,poise:P.poise};
+    if(l.step===4)l.tickChainPractice();
   },
   render(l) {
     l.panel.setAttribute('data-kind','physical');l.panel.setAttribute('data-phase',l.phase);
@@ -71,6 +72,7 @@ window._resourcePractice = {
     if(!l.resourceReadout){l.resourceReadout=l.node('p');l.resourceReadout.className='lesson-resource-readout';l.hint.after(l.resourceReadout);}
     this.readout(l);
     this.eyeFocus(l);
+    if(l.step===4)l.updateChainPractice();
   },
   clearEyeFocus() {
     this.eyeOverlay?.remove();this.eyeOverlay=null;this.eyeMarkers=null;
@@ -103,9 +105,8 @@ window._resourcePractice = {
     l.resourceReadout.textContent=`정신력 ${eye}/4 · HP ${Math.ceil(P.hp)}/${P.mhp}\n기동력 ${Math.floor(_harpGauge)}/${_HARP_GAUGE_MAX}\nST ${Math.floor(P.st)}/${P.mst} · MP ${Math.floor(P.mp)}/${P.mmp}${this.feedback?'\n'+this.feedback:''}`;
     if(l.step===7)l.resourceReadout.textContent+=`\n현재 보호막 흡수율 ${Math.round(pGuardAbsorb()*100)}% · 이번 홀딩 적용 ${Math.round(Math.min(.25,pGuardAbsorb()*.5)*100)}%`;
     if(l.step===4){
-      if((_harpActive||_dashActive)&&_harpGauge<this.baseline.gauge)this.shiftTier=_harpTier||1;
       const rows=[1,2,3].map(t=>`${t}단 · ${t===1?'짧게 탭':`${_HARP_TIER_F[t]/60}초 홀딩${t===3?' → 자동 발사':''}`}\n최대 거리 ${_harpDistTier(t)} · 기동력 ${_HARP_GAUGE_COST[t]}(${(_HARP_GAUGE_COST[t]/_HARP_GAUGE_COST[1]).toFixed(t===1?0:2)}칸) · ST ${t}%`);
-      const current=this.shiftTier?`${this.shiftTier}단 발사 · 실제 기동력 −${Math.round(this.baseline.gauge-_harpGauge)}`:_dashHold?`현재 ${_dashTier||1}단 충전 중`:'홀딩 길이에 따라 아래 세 단계로 달라집니다.';
+      const current=l.chainPractice?.feedback||'1단 → 2단 → 3단을 순서대로 모두 이동해 보세요.';
       l.resourceReadout.textContent+='\n\n'+rows.join('\n')+'\n'+current;
     }
   },
@@ -172,7 +173,7 @@ window._resourcePractice = {
     // Keep an earned groggy state until the user performs the escape, not a timeout.
     if(l.step===3&&P.s==='pStun')P.st2=480;
     if(l.step===3&&this.escapePressed&&P.s!=='pStun'&&(P.poise===4||P.s==='gSlamWindup'||P._bdMoveT>0||P._gwActive))l.completeStep();
-    if(l.step===4&&(_harpActive||_dashActive)&&_harpGauge<this.baseline.gauge)l.completeStep();
+    if(l.step===4){l.tickChainPractice();this.readout(l);}
     if(l.step===5&&P.s==='sBash'&&P.st<this.baseline.st)l.completeStep();
     if(l.step===6&&l.directionSpace&&P._bdMoveT>0&&P.mp<this.baseline.mp&&_harpGauge<this.baseline.gauge)l.completeStep();
     if(l.step===8&&P._gwActive&&P._gwCd>0)l.completeStep();
