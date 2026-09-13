@@ -54,8 +54,8 @@ with sync_playwright() as p:
     lobby.wait_for_function("document.body.style.backgroundImage.includes('20260913-lobby-smooth1')")
     picker=source[source.index('const _RD_IMGS='):source.index('function showLoading(')]
     lobby_url=lobby.evaluate(picker+'\npickRandomLoadingImage();')
-    assert '?v=20260913-lobby-smooth1' in lobby_url
-    assert lobby.request.get('http://127.0.0.1:3333/img/lording/rd4.png?v=20260913-lobby-smooth1').ok
+    assert '?v=20260913-lobby-detail2' in lobby_url
+    assert lobby.request.get('http://127.0.0.1:3333/img/lording/rd4.png?v=20260913-lobby-detail2').ok
     assert not errors,errors
     browser.close()
 (O/'qa.json').write_text(json.dumps({'status':'PASS','assets':asset_info,'decoded':decoded,'captures':captures,'page_errors':errors,'real_save_writes':False,'next_cut_id':6,'loading_urls':loads},ensure_ascii=False,indent=2),encoding='utf-8')

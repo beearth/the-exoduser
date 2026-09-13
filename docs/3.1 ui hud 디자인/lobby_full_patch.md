@@ -142,7 +142,7 @@ function _swapLobbyBg(stage){
   const pick=_bgs[~~(Math.random()*_bgs.length)];
   if(_curBg===pick.k)return;
   _curBg=pick.k;
-  const url='assets/lobby/lobby_bg_'+pick.k+pick.e+'?v=20260913-lobby-smooth1';
+  const url='assets/lobby/lobby_bg_'+pick.k+pick.e+'?v=20260913-lobby-detail2';
   bg.style.opacity='0';
   const tmp=new Image();
   tmp.onload=()=>{
@@ -189,10 +189,20 @@ function _swapLobbyBg(stage){
 
 | 적용 위치 | 파일 | 공유 원본 | 캐시 |
 |---|---|---|---|
-| 메인 frost | assets/lobby/lobby_bg_frost.png | img/lording/rd17.png | 20260913-lobby-smooth1 |
-| 메인 flame | assets/lobby/lobby_bg_flame.png | img/lording/rd1.png | 20260913-lobby-smooth1 |
-| 메인 abyss | assets/lobby/lobby_bg_abyss.png | img/lording/rd6.png | 20260913-lobby-smooth1 |
+| 메인 frost | assets/lobby/lobby_bg_frost.png | img/lording/rd17.png | 20260913-lobby-detail2 |
+| 메인 flame | assets/lobby/lobby_bg_flame.png | img/lording/rd1.png | 20260913-lobby-detail2 |
+| 메인 abyss | assets/lobby/lobby_bg_abyss.png | img/lording/rd6.png | 20260913-lobby-detail2 |
 | 우측 패널 | assets/lobby/lobby_bg_new.png | 별도 편집 | 20260913-lobby-smooth1 |
 | 대체 초상화 | assets/lobby/lobby_portrait.png | 별도 편집 | 20260913-lobby-smooth1 |
 
 `_preloadLobbyBgs`와 `_swapLobbyBg`는 동일한 PNG3개와 버전 URL을 사용한다. `_curBg`가 같은 경우 재전환하지 않는다. 로딩 picker는 rd3을 제외한 rd1~rd17의16개(rd11.jpg 외 PNG)이며, 일반/쉬운 게임 전환 배경은 숫자1~19의19개다. 이미지의 전면 점무늬를 GPT로 정리했으며 [개별 판정·해상도](../1전체그래픽세팅/LOBBY_IMAGE_REVIEW_20260913.md)를 따른다.
+
+### 거대전사 재디자인·확대 계약 (2026-09-13 후속)
+
+| 항목 | 현행 |
+|---|---|
+| 메인3종 | 동일한 전사·직선 대검·두 펫 목걸이를 가진1536×1024 PNG, 불/얼음/심연 환경 변형 |
+| 캐시 | `_swapLobbyBg`, `_preloadLobbyBgs`, rd picker/preload는20260913-lobby-detail2. 숫자1~19·우측·대체 초상화는 기존20260913-lobby-smooth1 |
+| lobbyKenburns |46s ease-in-out infinite alternate 유지. 시작 scale(1) translate(0,0), 끝 scale(1.02) translate(-.3%,-.2%). transform-origin50%45%, reduced-motion은 animation:none |
+| 표시 | background-size:cover, left center. 추가 확대는 기존4~8%에서0~2%로 축소 |
+| 상세 | [디자인/해상도/실제 화면 검수](../1전체그래픽세팅/LOBBY_WARRIOR_REDESIGN_20260913.md) |

@@ -70,7 +70,7 @@
 | 컷신 유지 | 대사·시간·화자·카메라·비네트·색보정·스킵·음성·BGM 값 그대로. 데이터 차이는 grain 제거뿐 |
 | `_getCutsceneImg` | 기본 images/ 파일에 `?v=20260913-clean-shading`. `/`를 포함한 warintro 등 경로 분기는 기존 그대로 |
 | 게임 로딩 | `_STAGE_TRANSITION_RD`의1~19.png URL은 일반·쉬운 게임 모두 `?v=20260913-lobby-smooth1` (후속 검수 갱신) |
-| 로비 | 랜덤 배경·로딩 preload·실제 CSS·`pickRandomLoadingImage`의16개 rd 이미지 모두 `?v=20260913-lobby-smooth1`. rd6은 PNG로 변경. 메인 배경3종·우측 배경·대체 초상화도 같은 토큰. [로비 추가 검수](LOBBY_IMAGE_REVIEW_20260913.md) |
+| 로비 | 메인 배경3종과 `pickRandomLoadingImage`/rd preload16개는 `?v=20260913-lobby-detail2`. 숫자1~19 랜덤 배경/preload·우측 배경·대체 초상화는 `?v=20260913-lobby-smooth1`. rd6은 PNG. [로비 추가 검수](LOBBY_IMAGE_REVIEW_20260913.md) |
 | `OPT.grain` | 맵 설정 별도 유지. 현행 CSS 대비·밝기 처리이며 점 노이즈를 생성하지 않음 |
 | 맵 CSS | `_wantFx=OPT.postfx&&OPT.quality!=='low'`, `_wantGrain=_wantFx&&OPT.grain`, `_brVal=(OPT.brightness||100)/100`. grain일 때 contrast1.05·brightness0.97×brVal, postfx만일 때 contrast1.02·brightness brVal, 그 외 brightness brVal |
 | DOM | 부모 내용 교체 없음. 기존 img.src·CSS 배경 URL만 갱신 |
