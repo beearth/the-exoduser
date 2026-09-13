@@ -1,0 +1,107 @@
+{
+  "source_job": "88756648-e041-43b7-b645-e697e6e4a57e",
+  "upscale_job": "1fe88d22-767a-4085-ad97-d1202296bf31",
+  "provider": "topaz",
+  "resolution": "2160p",
+  "aspect_ratio": "16:9",
+  "native_4k": false,
+  "fps": 24,
+  "source_frames": 145,
+  "output_frames": 133,
+  "playback_rate": 0.75,
+  "assets": [
+    {
+      "path": "assets/charselect/idle_warrior_higgsfield_4k.mp4",
+      "bytes": 11222864,
+      "sha256": "fe7e16b5a879021948f68fb023e5ac191c2ed32c74343eec24ad179626480fb5",
+      "width": 3840,
+      "height": 2160
+    },
+    {
+      "path": "assets/charselect/poster_idle_warrior_higgsfield_4k.jpg",
+      "bytes": 572270,
+      "sha256": "f5d11863e353e164ae443d022e14e938769f3f51627ff7ec6d87d722fafa5c28",
+      "width": 3840,
+      "height": 2160
+    }
+  ],
+  "qa": {
+    "lobby": {
+      "height": 2160,
+      "paused": false,
+      "poster": "http://localhost:3333/assets/charselect/poster_idle_warrior_higgsfield_4k.jpg?v=20260913-detail1",
+      "rate": 0.75,
+      "src": "http://localhost:3333/assets/charselect/idle_warrior_higgsfield_4k.mp4?v=20260913-detail1",
+      "time": 4.07235,
+      "width": 3840
+    },
+    "selection": {
+      "height": 2160,
+      "paused": false,
+      "poster": "http://localhost:3333/assets/charselect/poster_idle_warrior_higgsfield_4k.jpg?v=20260913-detail1",
+      "rate": 0.75,
+      "src": "http://localhost:3333/assets/charselect/idle_warrior_higgsfield_4k.mp4?v=20260913-detail1",
+      "time": 4.622382,
+      "width": 3840
+    },
+    "parse": "4 inline scripts PASS",
+    "viewport": {
+      "width": 2548,
+      "height": 1255
+    },
+    "saveOperations": 0
+  },
+  "playback": {
+    "src": "http://localhost:3333/assets/charselect/idle_warrior_higgsfield_4k.mp4?v=20260913-detail1",
+    "stats": {
+      "errors": [],
+      "frames": 876,
+      "height": 2160,
+      "lastMedia": 3.208333,
+      "lastNow": 49125.1,
+      "loops": [
+        {
+          "from": 5.5,
+          "gapMs": 58.39999999999963,
+          "to": 0
+        },
+        {
+          "from": 5.5,
+          "gapMs": 50,
+          "to": 0
+        },
+        {
+          "from": 5.5,
+          "gapMs": 58.29999999999927,
+          "to": 0
+        },
+        {
+          "from": 5.5,
+          "gapMs": 50.10000000000218,
+          "to": 0
+        },
+        {
+          "from": 5.5,
+          "gapMs": 50.099999999998545,
+          "to": 0
+        },
+        {
+          "from": 5.5,
+          "gapMs": 58.400000000001455,
+          "to": 0
+        }
+      ],
+      "quality": {
+        "corruptedVideoFrames": 0,
+        "droppedVideoFrames": 0,
+        "totalVideoFrames": 879
+      },
+      "rate": 0.75,
+      "width": 3840
+    },
+    "viewport": {
+      "height": 1255,
+      "width": 2548
+    }
+  }
+}

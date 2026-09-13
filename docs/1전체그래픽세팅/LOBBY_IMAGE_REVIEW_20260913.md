@@ -96,7 +96,7 @@
 | `assets/charselect/warrior_cut.png` | 유지 — 이번 문제에 해당하는 전면 점묘 없음 |
 | `assets/charselect/portrait_warrior.png` | 유지 — 이번 문제에 해당하는 전면 점묘 없음 |
 | `assets/charselect/bg_scene1.png` | 유지 — 이번 문제에 해당하는 전면 점묘 없음 |
-| `assets/charselect/poster_idle_warrior_higgsfield.jpg` | 유지 — 이번 문제에 해당하는 전면 점묘 없음 |
+| `assets/charselect/poster_idle_warrior_higgsfield.jpg` | 초기 점묘 검수에서는 유지했으나 영상 선명도 검증은 누락. 22:25 사용자 신고 후 1080p 영상의 원본 디테일 부족·확대 문제 확인. 현재 `poster_idle_warrior_higgsfield_4k.jpg`와 4K 복원 영상으로 교체. `CHARSELECT_VIDEO_QUALITY_20260913.md` 참조 |
 | `assets/lobby/lobby_bg_frost.png` | 교체 — 전면 점무늬/입자감 정리 |
 | `assets/lobby/lobby_bg_flame.png` | 교체 — 전면 점무늬/입자감 정리 |
 | `assets/lobby/lobby_bg_abyss.webp` | 교체 — 전면 점무늬/입자감 정리 |
