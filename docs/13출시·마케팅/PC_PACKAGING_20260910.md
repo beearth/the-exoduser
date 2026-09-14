@@ -2,6 +2,8 @@
 
 현재 프로젝트의 PC 패키징은 아래 실제 설정을 기준으로 한다.
 
+> **2026-09-14 Steam Deck 시험본:** 별도 `tools/steamdeck-package.mjs`가 기존 Windows 실행 엔진과 현재 게임 데이터를 `out/EXODUSER-steamdeck-test-20260914-r2`에 독립 복사한다. 1280×800·중간 효과·60FPS 상한 및 작은 키캡 보정을 적용하며, 실제 Deck/Proton은 기기 부재로 미검증이다. 기존 일반 빌드 진입점·설정은 유지한다. [패키지·설정·검증 계약](STEAM_DECK_PREPARATION_20260914.md).
+
 | 항목 | 현재 값 | 근거 파일 |
 |---|---|---|
 | 런타임 | NW.js 0.111.2, normal | `build-nwjs.mjs` |

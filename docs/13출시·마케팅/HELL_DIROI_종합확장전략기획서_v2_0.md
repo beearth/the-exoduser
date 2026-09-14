@@ -360,7 +360,7 @@ HELL 우선순위
 DIROI 우선순위
 Steam Deck
 30% (Steam 동일)
-Steam 출시 시 자동, Verified 검증만
+Windows 빌드의 Proton 또는 Linux 빌드 실행 검증 필요. Verified는 Valve 별도 판정
 ★★★ 즉시
 ★★★ 즉시
 Nintendo Switch
@@ -385,7 +385,7 @@ Meta Quest VR
 ★ 검토 안 함
 ## 6.2 콘솔 이식 현실적 접근
 솔로 인디의 콘솔 이식 - 위탁 vs 자체
-Steam Deck: 검증 무료, Steam 출시와 동시 자동. 가장 빠른 "콘솔" 진입.
+Steam Deck: Windows 빌드를 Proton으로 시험할 수 있지만, Steam 출시만으로 호환성이나 Verified가 보장되지는 않는다. 2026-09-14 EXODUSER는 PC에서 시험 패키지를 준비했으며 실제 Deck은 기기 부재로 미검증이다. [현행 준비 상태](STEAM_DECK_PREPARATION_20260914.md).
 Switch / Xbox: 별도 SDK · 인증 필요. 솔로로는 시간 소모 큼.
 → 콘솔 이식 전문 퍼블리셔 위탁 검토:
 Whitethorn Games (Calico, Wholesome Direct)
@@ -1005,7 +1005,7 @@ EA 1년 후 진행, 부가 채널화 (핵심 의존 금지)
 콘솔 이식 비용 초과
 중간
 보통
-Switch는 Whitethorn 위탁, Steam Deck은 자동
+Switch는 Whitethorn 위탁 검토, Steam Deck은 Proton 실기 검증 및 패드·작은 화면 대응
 ## 13.2 절대 안 하는 것 (FDG의 약속)
 Self-Imposed Rules
 1. 가챠 (캐릭터/무기/스킨 랜덤 뽑기) - 절대 도입하지 않음
