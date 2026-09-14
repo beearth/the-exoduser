@@ -5574,6 +5574,24 @@ let BINDS2={
   interact:null, storage:null, stats:null, skill:null,
   skillCycle:null, irisToggle:null, bladeToggle:null
 };
+// 사슬 이동과 기본 공격의 중복 바인딩만 정리한다. 다른 사용자 설정은 유지.
+function _chainAttackBindingConflict(action,key){
+  if(!key)return false;
+  const others=action==='charge'?['weapon','shield']:(action==='weapon'||action==='shield')?['charge']:[];
+  return others.some(a=>BINDS[a]===key||BINDS2[a]===key);
+}
+function _repairChainAttackBinds(){
+  if(_chainAttackBindingConflict('charge',BINDS.charge))BINDS.charge=_chainAttackBindingConflict('charge','ShiftLeft')?null:'ShiftLeft';
+  if(_chainAttackBindingConflict('charge',BINDS2.charge))BINDS2.charge=null;
+}
+function _setInputBinding(action,key,alternate){
+  if(_chainAttackBindingConflict(action,key)){
+    showPH(_L('사슬 이동과 공격에는 서로 다른 키를 지정하세요.','Use separate keys for chain movement and attacks.'),'#ffaa44');
+    return false;
+  }
+  (alternate?BINDS2:BINDS)[action]=key;
+  return true;
+}
 const BIND_NAMES={
   up:'위로 이동', down:'아래로 이동', left:'왼쪽 이동', right:'오른쪽 이동',
   weapon:'무기 공격', shield:'칼등 처내기 (탭=처내기, 홀드=연사)',
@@ -11875,7 +11893,7 @@ addEventListener('keydown',e=>{
     if(e.code==='Escape'){
       listeningBind=null;_listenAlt=false;renderSettings();
     }else{
-      if(_listenAlt){BINDS2[listeningBind]=e.code}else{BINDS[listeningBind]=e.code}
+      _setInputBinding(listeningBind,e.code,_listenAlt);
       listeningBind=null;_listenAlt=false;renderSettings();saveSettings();
     }
     e.preventDefault();e.stopPropagation();return;
@@ -44858,7 +44876,7 @@ function renderSettings(){
     ov.style.cssText='position:fixed;top:0;left:0;width:100vw;height:100vh;z-index:99999;cursor:crosshair;pointer-events:none';
     ov.onmousedown=(e)=>{
       e.preventDefault();e.stopPropagation();
-      if(_listenAlt){BINDS2[listeningBind]='mouse'+e.button}else{BINDS[listeningBind]='mouse'+e.button}
+      _setInputBinding(listeningBind,'mouse'+e.button,_listenAlt);
       listeningBind=null;_listenAlt=false;renderSettings();saveSettings();
     };
     ov.oncontextmenu=(e)=>{e.preventDefault()};
@@ -45281,6 +45299,7 @@ function _loadPreset(slot){
     if(data.binds2){for(const k in data.binds2){if(k in BINDS2||k in BINDS)BINDS2[k]=data.binds2[k]}}
     if(data.opt){for(const k in data.opt)OPT[k]=data.opt[k]}
     if(OPT.atmos===undefined)OPT.atmos=2; // ATMOS 구저장본 호환
+    _repairChainAttackBinds();
     syncSettingsUI();
     renderSettings();saveSettings();
     $('saveMsg').style.color='#6699cc';$('saveMsg').textContent=_L('세팅'+slot+' 불러오기 완료!','Preset '+slot+' loaded!');
@@ -45389,6 +45408,7 @@ try{
     if(BINDS.storage==='KeyV')BINDS.storage='KeyN';
     // 2026-07-27 마이그레이션: 기본키 스왑 — 처내기(shield) mouse2→KeyE, 마법(beam) KeyE→mouse2 (구 기본값 그대로인 세이브만)
     if(BINDS.shield==='mouse2'&&BINDS.beam==='KeyE'){BINDS.shield='KeyE';BINDS.beam='mouse2'}
+    _repairChainAttackBinds();
     try{saveSettings()}catch(e){}
     if(OPT.bgmVol!==undefined)BGM.setVol(OPT.bgmVol/100);
     try{applyUIScale()}catch(e){}
