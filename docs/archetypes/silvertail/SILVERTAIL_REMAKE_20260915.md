@@ -6,20 +6,21 @@
 
 | 항목 | 현재 값·파일·공식 |
 |---|---|
-| 본체 원본 | `assets/sprites/player/silvertail_v2/{s,se,e,ne,n,nw,w,sw}.png`, 각각1254×1254 RGBA / 3×3 포즈. 같은 폴더 `prompt_방향.txt` |
+| 보행 교정 | `output/silvertail_walk_fix_20260915/`의8방향4포즈로 보행 교체. [원인·앵커·검증](./SILVERTAIL_WALK_FIX_20260915.md) |
+| 기반 본체 원본 | `assets/sprites/player/silvertail_v2/{s,se,e,ne,n,nw,w,sw}.png`, 각각1254×1254 RGBA / 3×3 포즈. 같은 폴더 `prompt_방향.txt` |
 | 제작 | 내장 imagegen으로8장, 각9고유 포즈. 순서 idle1 / walk4 / 공격 폴백4. 총72고유 포즈 |
 | 게임 시트 | `img/exoduser_silvertail/`의16파일(시계8+영문 별칭8), 각각480×48 RGBA |
 | 방향 매핑 | s=6, se=5, e=3, ne=1, n=12, nw=11, w=9, sw=7 |
 | 슬롯 | 48×48, idle2(동일 포즈 복제) + walk4(고유) + atk4(고유 폴백) =10. 공격 확장 성공 시 atk1/atk2/atk3/bash는80px 시트 우선 |
-| 버전 | `_SILVERTAIL_ASSET_VERSION='20260915-remake-v2'`, 두 게임 진입점 동일 |
-| 패커 | `tools/pack-silvertail-remake.mjs`. alpha≥80의8연결 성분, 면적>이미지면적×0.001, 정확히9포즈 검사. 세 행으로 나눈 뒤 가로 순서 정렬 |
+| 버전 | `_SILVERTAIL_ASSET_VERSION='20260915-walk-v3'`, 두 게임 진입점 동일 |
+| 패커 | 기반 `tools/pack-silvertail-remake.mjs` 후 `tools/pack-silvertail-walk.mjs`로 보행4셀 교정. alpha≥80의8연결 성분, 면적>이미지면적×0.001, 정확히9포즈 검사. 세 행으로 나눈 뒤 가로 순서 정렬 |
 | 크롭 | 각 연결 성분 경계에서2px 확장. 칼이 명목 격자를 넘어도 전체 실루엣 보존 |
 | 크기 | idle+walk 공통배율=min(45/idle높이,46/본체최대폭,46/본체최대높이). 공격 폴백=min(46/전체최대폭,46/전체최대높이). Lanczos3 축소, 프레임별 개별 정규화 없음 |
-| 배치 | 가로는 실루엣 중앙, 세로는 셀47px 바닥에 맞춤. 공격 확장 발y=62는80px 셀 중심에서22px, 본체 불투명 발은48px 중심에서약22px |
+| 배치 | 대기·공격 폴백 가로는 실루엣 중앙, 새 보행은 상체 갑옷 앵커 정렬, 세로는 셀47px 바닥에 맞춤. 공격 확장 발y=62는80px 셀 중심에서22px, 본체 불투명 발은48px 중심에서약22px |
 | 게임 배율 | 기존2×0.65=1.3 유지. 걷기 거리주기256px 및 피해·피격·이동속도 불변 |
 | 백업·재현 | `output/silvertail_sprites_20260915/originals/`, 패킹 결과·소스 경계는 같은 폴더 `packed/manifest.json` |
 | 미리보기 | `tools/silvertail-sprite-preview.html`, 실제 SpriteAnimator와 공격 병합 로더. 걷기/대기/공격/전환,1.3배·3배, 배경3종, 정지·단계 이동 |
-| 자동 검증 | 관련47테스트 통과:8방향32고유 보행,16파일 별칭 일치, 셀 상하 불투명 경계 여백, 기존 모션·캐릭터 교체·공격 병합 회귀 |
+| 이전 자동 검증 | 보행 자연스러움 판정 이전의 관련47테스트 통과:8방향32고유 보행,16파일 별칭 일치, 셀 상하 불투명 경계 여백, 기존 모션·캐릭터 교체·공격 병합 회귀 |
 | 시각 검증 | 브라우저에서 실제 게임 시트·명암 함수·SpriteAnimator·공격 병합을 사용해 걷기와 대기/공격 전환을1.3배·3배로 확인 |
 | 제한 | 생성 포즈는 수작업 리깅이 아니므로 머리카락·등칼·치마의 미세 형태와 공격 확장 간 자세 차이가 남는다. 스프라이트 구현과 완전한 장비 캐논 일치는 별도 판정 |
 

@@ -14,7 +14,7 @@
  const dirs=['s','se','e','ne','n','nw','w','sw'],files=['6','5','3','1','12','11','9','7'];
  const base=document.createElement('canvas');base.width=480;base.height=384;const ctx=base.getContext('2d'),fm={};
  for(let row=0;row<8;row++){
-  const im=new Image();im.src='img/exoduser_silvertail/'+files[row]+'.png?v=20260915-remake-v2';await im.decode();ctx.drawImage(im,0,row*48);
+  const im=new Image();im.src='img/exoduser_silvertail/'+files[row]+'.png?v=20260915-walk-v3';await im.decode();ctx.drawImage(im,0,row*48);
   fm['idle_'+dirs[row]]=[{x:0,y:row*48,w:48,h:48}];
   fm['walk_'+dirs[row]]=Array.from({length:4},(_,f)=>({x:(f+2)*48,y:row*48,w:48,h:48}));
  }

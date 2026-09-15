@@ -1,5 +1,7 @@
 // Attack-only atlas extension. Idle/walk sheets remain owned by the body remaster.
 var SilvertailAttackRemaster=(()=>{
+ const speed=1.5;
+ function spinProgress(value){return Math.max(0,Math.min(1,value*speed));}
  const dirs=['s','se','e','ne','n','nw','w','sw'];
  function apply(base,frameMap,done){
   const image=new Image();
@@ -28,7 +30,7 @@ var SilvertailAttackRemaster=(()=>{
   if(state==='wWindup')return 0;
   const recovery=Math.max(1,recoveryTicks);
   const elapsed=state==='wSwing'?5-left:5+recovery-left;
-  return Math.max(0,Math.min(1,elapsed/(5+recovery)));
+  return spinProgress(elapsed/(5+recovery));
  }
- return {apply,progress};
+ return {apply,progress,spinProgress,speed};
 })();

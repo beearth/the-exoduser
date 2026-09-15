@@ -1,0 +1,17 @@
+<!doctype html><html lang="ko"><meta charset="utf-8"><title>실버테일 보행 비교</title>
+<style>body{background:#20252b;color:#eee;font:16px system-ui;margin:24px}button{padding:10px;margin:8px}canvas{display:block;max-width:100%}p{color:#b9c2cd}</style>
+<h1>실버테일 · 보행 교정 비교</h1><p>위: 이전 보행 / 아래: 교정 후보. 8방향, 3배 확대. 네 자세를 한 단계씩 비교하세요.</p>
+<button id="pause">일시정지</button><button id="next">다음 자세</button><span id="status">로딩 중</span><canvas id="c" width="1200" height="450"></canvas>
+<script>
+(async()=>{
+ const names=['S','SE','E','NE','N','NW','W','SW'],files=['6','5','3','1','12','11','9','7'],ims=[[],[]];
+ for(let row=0;row<2;row++)for(const file of files){const im=new Image();im.src='../'+(row?'output/silvertail_walk_fix_20260915/packed/':'output/silvertail_walk_fix_20260915/originals/')+file+'.png';await im.decode();ims[row].push(im);}
+ const c=document.querySelector('#c'),x=c.getContext('2d');let pause=false,t=0,last=performance.now();
+ document.querySelector('#pause').onclick=e=>{pause=!pause;e.target.textContent=pause?'재생':'일시정지'};
+ document.querySelector('#next').onclick=()=>{pause=true;t=(Math.floor(t/180)+1)*180;document.querySelector('#pause').textContent='재생'};
+ function draw(now){if(!pause)t+=Math.min(now-last,60);last=now;const f=Math.floor(t/180)%4;x.fillStyle='#20252b';x.fillRect(0,0,1200,450);x.imageSmoothingEnabled=false;
+ for(let row=0;row<2;row++)for(let i=0;i<8;i++){const cx=75+i*150,cy=40+row*210;x.fillStyle='#eee';x.fillText(names[i],cx-8,cy-10);x.drawImage(ims[row][i],(f+2)*48,0,48,48,cx-72,cy,144,144);x.strokeStyle='#657080';x.beginPath();x.moveTo(cx-65,cy+138);x.lineTo(cx+65,cy+138);x.stroke();}
+ document.querySelector('#status').textContent='자세 '+(f+1)+'/4';requestAnimationFrame(draw);
+ }requestAnimationFrame(draw);
+})().catch(e=>document.querySelector('#status').textContent=e.message);
+</script></html>

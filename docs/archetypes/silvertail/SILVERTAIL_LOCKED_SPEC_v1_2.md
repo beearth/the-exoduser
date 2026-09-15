@@ -1,8 +1,10 @@
 # SILVERTAIL / BLADE DANCER — LOCKED VISUAL & EQUIPMENT SPEC v1.2
 
+> **보행 교정:** 걷기4포즈를 접지/교차 반복으로 재제작하고 몸통 앵커로 정렬했다. 원본 기반 패커 다음에 `tools/pack-silvertail-walk.mjs`를 실행한다. [현행 보행 계약](./SILVERTAIL_WALK_FIX_20260915.md).
+
 > **2026-09-15 구현 갱신:** 현행 본체 idle2/walk4/atk4, 48px 시계 시트. 공격은 내장 imagegen 생성9포즈을80px 셀 별도 아틀라스로 연결했다. [공격 런타임·원화와 장비 통합 잔여](./SILVERTAIL_ATTACK_REMASTER_20260915.md). 아래 video-first/idle2+walk8 및 공격 제작 전 표기는 당시 생산 계획이며 현행 프레임 수보다 우선하지 않는다.
 
-> **새 본체 적용(2026-09-15):** 승인된 시안으로 idle2(동일 포즈 복제)/walk4/atk4 폴백을8방향480×48 시트로 교체했다. 버전 `20260915-remake-v2`. 기존80px 공격 확장을 함께 사용한다. 아래 구 본체/제작 전 표기는 이력이며 [현행 패킹·프레임·검증 계약](../silvertail/SILVERTAIL_REMAKE_20260915.md)을 우선한다.
+> **새 본체 적용(2026-09-15):** 승인된 시안으로 idle2(동일 포즈 복제)/walk4/atk4 폴백을8방향480×48 시트로 교체했다. 버전 `20260915-walk-v3`. 기존80px 공격 확장을 함께 사용한다. 아래 구 본체/제작 전 표기는 이력이며 [현행 패킹·프레임·검증 계약](../silvertail/SILVERTAIL_REMAKE_20260915.md)을 우선한다.
 
 EXODUSER: HELL LORD / FDG
 스코프: **Blade Tail ↔ 쌍단검 설계 충돌 종결 + 스프라이트 제작용 LOCKED SPEC.**

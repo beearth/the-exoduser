@@ -1,0 +1,562 @@
+[
+  {
+    "direction": "s",
+    "source": "output/silvertail_walk_fix_20260915/s.png",
+    "base": "img/exoduser_silvertail/6.png",
+    "destination": "output/silvertail_walk_fix_20260915/packed/6.png",
+    "scale": 0.07588532883642496,
+    "bodyHeight": 45,
+    "frames": [
+      {
+        "frame": 0,
+        "box": {
+          "left": 233,
+          "right": 550,
+          "top": 22,
+          "bottom": 615
+        },
+        "anchor": 379,
+        "target": 23.5,
+        "x": 12,
+        "y": 2,
+        "width": 24,
+        "height": 45
+      },
+      {
+        "frame": 1,
+        "box": {
+          "left": 757,
+          "right": 1038,
+          "top": 20,
+          "bottom": 612
+        },
+        "anchor": 913,
+        "target": 23.5,
+        "x": 12,
+        "y": 2,
+        "width": 22,
+        "height": 45
+      },
+      {
+        "frame": 2,
+        "box": {
+          "left": 230,
+          "right": 549,
+          "top": 633,
+          "bottom": 1222
+        },
+        "anchor": 380,
+        "target": 23.5,
+        "x": 12,
+        "y": 2,
+        "width": 25,
+        "height": 45
+      },
+      {
+        "frame": 3,
+        "box": {
+          "left": 751,
+          "right": 1038,
+          "top": 631,
+          "bottom": 1222
+        },
+        "anchor": 867.5,
+        "target": 23.5,
+        "x": 15,
+        "y": 2,
+        "width": 22,
+        "height": 45
+      }
+    ]
+  },
+  {
+    "direction": "se",
+    "source": "output/silvertail_walk_fix_20260915/se.png",
+    "base": "img/exoduser_silvertail/5.png",
+    "destination": "output/silvertail_walk_fix_20260915/packed/5.png",
+    "scale": 0.07908611599297012,
+    "bodyHeight": 45,
+    "frames": [
+      {
+        "frame": 0,
+        "box": {
+          "left": 204,
+          "right": 516,
+          "top": 41,
+          "bottom": 610
+        },
+        "anchor": 389.5,
+        "target": 24.5,
+        "x": 10,
+        "y": 2,
+        "width": 25,
+        "height": 45
+      },
+      {
+        "frame": 1,
+        "box": {
+          "left": 813,
+          "right": 1075,
+          "top": 51,
+          "bottom": 611
+        },
+        "anchor": 978.5,
+        "target": 24.5,
+        "x": 11,
+        "y": 2,
+        "width": 21,
+        "height": 45
+      },
+      {
+        "frame": 2,
+        "box": {
+          "left": 196,
+          "right": 542,
+          "top": 673,
+          "bottom": 1208
+        },
+        "anchor": 380.5,
+        "target": 24.5,
+        "x": 10,
+        "y": 4,
+        "width": 28,
+        "height": 43
+      },
+      {
+        "frame": 3,
+        "box": {
+          "left": 825,
+          "right": 1090,
+          "top": 671,
+          "bottom": 1222
+        },
+        "anchor": 989.5,
+        "target": 24.5,
+        "x": 11,
+        "y": 3,
+        "width": 21,
+        "height": 44
+      }
+    ]
+  },
+  {
+    "direction": "e",
+    "source": "output/silvertail_walk_fix_20260915/e.png",
+    "base": "img/exoduser_silvertail/3.png",
+    "destination": "output/silvertail_walk_fix_20260915/packed/3.png",
+    "scale": 0.0847457627118644,
+    "bodyHeight": 45,
+    "frames": [
+      {
+        "frame": 0,
+        "box": {
+          "left": 149,
+          "right": 527,
+          "top": 57,
+          "bottom": 588
+        },
+        "anchor": 377.5,
+        "target": 26,
+        "x": 6,
+        "y": 2,
+        "width": 32,
+        "height": 45
+      },
+      {
+        "frame": 1,
+        "box": {
+          "left": 799,
+          "right": 1048,
+          "top": 58,
+          "bottom": 589
+        },
+        "anchor": 964,
+        "target": 26,
+        "x": 12,
+        "y": 2,
+        "width": 21,
+        "height": 45
+      },
+      {
+        "frame": 2,
+        "box": {
+          "left": 162,
+          "right": 558,
+          "top": 662,
+          "bottom": 1192
+        },
+        "anchor": 354.5,
+        "target": 26,
+        "x": 10,
+        "y": 2,
+        "width": 34,
+        "height": 45
+      },
+      {
+        "frame": 3,
+        "box": {
+          "left": 810,
+          "right": 1051,
+          "top": 669,
+          "bottom": 1192
+        },
+        "anchor": 985,
+        "target": 26,
+        "x": 11,
+        "y": 2,
+        "width": 21,
+        "height": 45
+      }
+    ]
+  },
+  {
+    "direction": "ne",
+    "source": "output/silvertail_walk_fix_20260915/ne.png",
+    "base": "img/exoduser_silvertail/1.png",
+    "destination": "output/silvertail_walk_fix_20260915/packed/1.png",
+    "scale": 0.0847457627118644,
+    "bodyHeight": 45,
+    "frames": [
+      {
+        "frame": 0,
+        "box": {
+          "left": 208,
+          "right": 545,
+          "top": 59,
+          "bottom": 587
+        },
+        "anchor": 405,
+        "target": 26,
+        "x": 9,
+        "y": 2,
+        "width": 29,
+        "height": 45
+      },
+      {
+        "frame": 1,
+        "box": {
+          "left": 807,
+          "right": 1064,
+          "top": 58,
+          "bottom": 589
+        },
+        "anchor": 967,
+        "target": 26,
+        "x": 12,
+        "y": 2,
+        "width": 22,
+        "height": 45
+      },
+      {
+        "frame": 2,
+        "box": {
+          "left": 203,
+          "right": 540,
+          "top": 660,
+          "bottom": 1183
+        },
+        "anchor": 403.5,
+        "target": 26,
+        "x": 9,
+        "y": 2,
+        "width": 29,
+        "height": 45
+      },
+      {
+        "frame": 3,
+        "box": {
+          "left": 805,
+          "right": 1078,
+          "top": 662,
+          "bottom": 1187
+        },
+        "anchor": 976,
+        "target": 26,
+        "x": 11,
+        "y": 2,
+        "width": 23,
+        "height": 45
+      }
+    ]
+  },
+  {
+    "direction": "n",
+    "source": "output/silvertail_walk_fix_20260915/n.png",
+    "base": "img/exoduser_silvertail/12.png",
+    "destination": "output/silvertail_walk_fix_20260915/packed/12.png",
+    "scale": 0.081374321880651,
+    "bodyHeight": 45,
+    "frames": [
+      {
+        "frame": 0,
+        "box": {
+          "left": 224,
+          "right": 513,
+          "top": 48,
+          "bottom": 601
+        },
+        "anchor": 306.5,
+        "target": 23,
+        "x": 16,
+        "y": 2,
+        "width": 24,
+        "height": 45
+      },
+      {
+        "frame": 1,
+        "box": {
+          "left": 796,
+          "right": 1045,
+          "top": 57,
+          "bottom": 563
+        },
+        "anchor": 864.5,
+        "target": 23,
+        "x": 17,
+        "y": 5,
+        "width": 21,
+        "height": 42
+      },
+      {
+        "frame": 2,
+        "box": {
+          "left": 197,
+          "right": 471,
+          "top": 671,
+          "bottom": 1209
+        },
+        "anchor": 324.5,
+        "target": 23,
+        "x": 12,
+        "y": 3,
+        "width": 23,
+        "height": 44
+      },
+      {
+        "frame": 3,
+        "box": {
+          "left": 807,
+          "right": 1042,
+          "top": 675,
+          "bottom": 1178
+        },
+        "anchor": 856,
+        "target": 23,
+        "x": 19,
+        "y": 6,
+        "width": 19,
+        "height": 41
+      }
+    ]
+  },
+  {
+    "direction": "nw",
+    "source": "output/silvertail_walk_fix_20260915/nw.png",
+    "base": "img/exoduser_silvertail/11.png",
+    "destination": "output/silvertail_walk_fix_20260915/packed/11.png",
+    "scale": 0.08302583025830258,
+    "bodyHeight": 45,
+    "frames": [
+      {
+        "frame": 0,
+        "box": {
+          "left": 199,
+          "right": 570,
+          "top": 42,
+          "bottom": 584
+        },
+        "anchor": 319,
+        "target": 21.5,
+        "x": 11,
+        "y": 2,
+        "width": 31,
+        "height": 45
+      },
+      {
+        "frame": 1,
+        "box": {
+          "left": 772,
+          "right": 1103,
+          "top": 52,
+          "bottom": 590
+        },
+        "anchor": 870.5,
+        "target": 21.5,
+        "x": 13,
+        "y": 2,
+        "width": 28,
+        "height": 45
+      },
+      {
+        "frame": 2,
+        "box": {
+          "left": 177,
+          "right": 569,
+          "top": 654,
+          "bottom": 1191
+        },
+        "anchor": 306,
+        "target": 21.5,
+        "x": 11,
+        "y": 2,
+        "width": 33,
+        "height": 45
+      },
+      {
+        "frame": 3,
+        "box": {
+          "left": 789,
+          "right": 1112,
+          "top": 661,
+          "bottom": 1201
+        },
+        "anchor": 878.5,
+        "target": 21.5,
+        "x": 14,
+        "y": 2,
+        "width": 27,
+        "height": 45
+      }
+    ]
+  },
+  {
+    "direction": "w",
+    "source": "output/silvertail_walk_fix_20260915/w.png",
+    "base": "img/exoduser_silvertail/9.png",
+    "destination": "output/silvertail_walk_fix_20260915/packed/9.png",
+    "scale": 0.07922535211267606,
+    "bodyHeight": 45,
+    "frames": [
+      {
+        "frame": 0,
+        "box": {
+          "left": 137,
+          "right": 533,
+          "top": 35,
+          "bottom": 601
+        },
+        "anchor": 320,
+        "target": 20,
+        "x": 5,
+        "y": 2,
+        "width": 32,
+        "height": 45
+      },
+      {
+        "frame": 1,
+        "box": {
+          "left": 808,
+          "right": 1107,
+          "top": 34,
+          "bottom": 602
+        },
+        "anchor": 920.5,
+        "target": 20,
+        "x": 11,
+        "y": 2,
+        "width": 24,
+        "height": 45
+      },
+      {
+        "frame": 2,
+        "box": {
+          "left": 131,
+          "right": 532,
+          "top": 641,
+          "bottom": 1199
+        },
+        "anchor": 316.5,
+        "target": 20,
+        "x": 5,
+        "y": 2,
+        "width": 32,
+        "height": 45
+      },
+      {
+        "frame": 3,
+        "box": {
+          "left": 812,
+          "right": 1107,
+          "top": 642,
+          "bottom": 1201
+        },
+        "anchor": 938,
+        "target": 20,
+        "x": 10,
+        "y": 2,
+        "width": 24,
+        "height": 45
+      }
+    ]
+  },
+  {
+    "direction": "sw",
+    "source": "output/silvertail_walk_fix_20260915/sw.png",
+    "base": "img/exoduser_silvertail/7.png",
+    "destination": "output/silvertail_walk_fix_20260915/packed/7.png",
+    "scale": 0.07588532883642496,
+    "bodyHeight": 45,
+    "frames": [
+      {
+        "frame": 0,
+        "box": {
+          "left": 201,
+          "right": 542,
+          "top": 22,
+          "bottom": 615
+        },
+        "anchor": 325,
+        "target": 21.5,
+        "x": 12,
+        "y": 2,
+        "width": 26,
+        "height": 45
+      },
+      {
+        "frame": 1,
+        "box": {
+          "left": 856,
+          "right": 1125,
+          "top": 22,
+          "bottom": 611
+        },
+        "anchor": 933.5,
+        "target": 21.5,
+        "x": 15,
+        "y": 2,
+        "width": 21,
+        "height": 45
+      },
+      {
+        "frame": 2,
+        "box": {
+          "left": 181,
+          "right": 523,
+          "top": 644,
+          "bottom": 1229
+        },
+        "anchor": 325,
+        "target": 21.5,
+        "x": 10,
+        "y": 2,
+        "width": 26,
+        "height": 45
+      },
+      {
+        "frame": 3,
+        "box": {
+          "left": 858,
+          "right": 1123,
+          "top": 647,
+          "bottom": 1227
+        },
+        "anchor": 952.5,
+        "target": 21.5,
+        "x": 14,
+        "y": 3,
+        "width": 20,
+        "height": 44
+      }
+    ]
+  }
+]

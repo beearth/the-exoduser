@@ -1,3 +1,12 @@
+## 2026-09-15 실버테일 몸 회전 속도 50% 증가
+
+| 항목 | 현행 값 |
+|---|---|
+| 재생 | `SilvertailAttackRemaster.speed=1.5`, `spinProgress(p)=clamp(p×1.5,0,1)`. LMB/E의 9프레임 몸 회전만 가속하고 완료 후 복귀 자세 유지 |
+| 시간 | LMB `(5+recoveryTicks)/1.5`틱, E 240→160ms. 전투 공속·판정·VFX와 4프레임 폴백은 기존 시간 유지 |
+| 미리보기 | 공격 전용 검수 화면 60→40ms/프레임. JS 캐시 `20260915-spin-speed15`, PNG 기존 버전 유지 |
+| 계약 | `docs/archetypes/silvertail/SILVERTAIL_ATTACK_REMASTER_20260915.md` 동기화 |
+
 ## 2026-09-15 실버테일 공격 모션 리마스터
 
 | 적용 | 변경 |

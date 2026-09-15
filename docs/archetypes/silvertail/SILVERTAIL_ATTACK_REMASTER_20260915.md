@@ -31,18 +31,19 @@
 | 회전 클립 | f=0..8, i=`(start+f)%8`; S 방향 마지막만 별도 복귀 포즈 i=8 사용. 모든 방향에9프레임, 처음8포즈는8방향 순환 |
 | 소스 좌표 | x=`(i%3)×80`, y=`base.height+floor(i/3)×80`, w/h=80 |
 | 매핑 | `atk1/atk2/atk3/bash`만 교체, idle/walk/gSlam 등 기존 매핑 보존 |
+| 몸 회전 배속 | `speed=1.5`, `spinProgress(p)=clamp(p×speed,0,1)`. 몸 회전 50% 가속, 완료 후 마지막 자세 유지 |
 | LMB 준비 | `SilvertailAttackRemaster.progress('wWindup',left,recoveryTicks)=0` |
-| LMB 타격 | recovery=`max(1,recoveryTicks)`, progress=`clamp((5-left)/(5+recovery),0,1)` |
-| LMB 회수 | progress=`clamp((5+recovery-left)/(5+recovery),0,1)` |
-| LMB 프레임 | `min(8,floor(progress×9))`; 타격5틱과 기존 회수시간 전체에 한 회전. 첫 공격 프레임 생략/회수 시 재시작 없음 |
-| E 프레임 | 실제 방향 atk2 배열 길이를 사용(확장9/폴백4), `min(n-1,floor(spinProgress×n))` |
-| E 시간 | 기존 spinProgress=`min(1,elapsed/240)`, 시각 계약360ms 유지 |
+| LMB 타격 | recovery=`max(1,recoveryTicks)`, progress=`clamp(1.5×(5-left)/(5+recovery),0,1)` |
+| LMB 회수 | progress=`clamp(1.5×(5+recovery-left)/(5+recovery),0,1)` |
+| LMB 프레임 | `min(8,floor(progress×9))`; 회전 정규화 시간 `(5+recovery)/1.5`틱. recovery=16이면21→14틱(60fps 기준350→233.33ms). 첫 공격 프레임 생략/회수 시 재시작 없음 |
+| E 프레임 | 실제 방향 atk2 배열 길이를 사용(확장9/폴백4), 9프레임 확장만 bodyProgress=`SilvertailAttackRemaster.spinProgress(spinProgress)`, 폴백4는 기존 spinProgress; `min(n-1,floor(bodyProgress×n))` |
+| E 시간 | 기존 spinProgress=`min(1,elapsed/240)`, 몸 회전은1.5배로160ms에 완료. 기존 VFX 진행률·시각 계약360ms 유지 |
 | 렌더 | `SpriteAnimator.draw`로 몸의 각 시점 순환. 화면 위에서 이미지 전체를 기울여 돌리지 않음 |
 | 조준·전투 | P.facing, 피해·범위·공속·자원·패링·검기/VFX 변경 없음 |
 | 명암·캐시 | 본체에 기존 `_shadePlayerAtlas` 후 공격 확장 병합. 공격에는48px 명암 필터 재적용 없음; 외곽선/밝기 캐시는 병합본으로 갱신 |
 | 폴백 | 이미지 로딩 실패 또는240×240 규격 불일치 시 원본 유지 |
 | 비동기 보호 | `_charIdx!==idx` 또는 `_atlasMask!==c`이면 늦은 결과 폐기 |
-| 버전 | JS·PNG `?v=20260915-spin2` |
+| 버전 | JS `?v=20260915-spin-speed15`; PNG `?v=20260915-spin2` |
 | 배포 | `build-nwjs.mjs` FILES에 로더 포함, PNG는 기존 img 복사 |
 | 배율 | 기존2×0.65=1.3 유지 |
 
@@ -50,9 +51,10 @@
 
 | 검증 | 결과 |
 |---|---|
-| 자동 | 회전 시작/완주·8시점 순환·폴백·캐릭터 전환·배포·기존 모션/선택·새 본체 패킹·명암 테스트36개 통과 |
+| 자동 | 회전 시작/완주·8시점 순환·폴백·캐릭터 전환·배포·기존 모션/선택·새 본체 패킹·명암 테스트36개 통과(초기 통합). 배속 변경 검증은 아래 추가 기록 |
+| 배속 검증 | 위 회귀 검사와 1.5배 진행률·14틱/160ms 완료·완료 자세 유지 검사를 합쳐37개 통과. 기존9포즈 순환 및 준비0프레임 유지 확인 |
 | 패킹 | 9포즈 모두80px 셀 내부 여백 검사 통과 |
-| 시각 | `tools/silvertail-attack-preview.html`: 실제 SpriteAnimator/병합 로더로8조준 방향×9프레임,1.3배/3배 확인. 미리보기60ms/프레임은 검수용이며 전투시간과 별개 |
+| 시각 | `tools/silvertail-attack-preview.html`: 실제 SpriteAnimator/병합 로더로8조준 방향×9프레임,1.3배/3배 확인. 미리보기 `60/speed=40ms/프레임`(기존60ms 대비1.5배)은 검수용이며 전투시간과 별개 |
 | 병렬 본체 | 새 idle/walk 리마스터가 현재 적용됨. 그 시트를 덮어쓰지 않고 조립된 결과 아래에 공격을 추가 |
 | 제한 | 생성 포즈의 등검 길이·머리카락·갑옷 세부가 시점마다 미세하게 달라짐. 손대검 동작은 제거했으며 완전한 리깅 모델과 동일한 형태 보존을 의미하지 않음 |
 

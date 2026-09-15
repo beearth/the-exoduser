@@ -5,7 +5,7 @@ import vm from 'node:vm';
 const file=new URL('../player-attack-remaster.js',import.meta.url);
 test('both game entrypoints and the packaged build include the attack loader',()=>{
  const build=readFileSync(new URL('../build-nwjs.mjs',import.meta.url),'utf8');
- for(const entry of ['game.html','game-easy-test.html'])assert.match(readFileSync(new URL('../'+entry,import.meta.url),'utf8'),/<script src="player-attack-remaster\.js\?v=20260915-spin2"><\/script>/);
+ for(const entry of ['game.html','game-easy-test.html'])assert.match(readFileSync(new URL('../'+entry,import.meta.url),'utf8'),/<script src="player-attack-remaster\.js\?v=20260915-spin-speed15"><\/script>/);
  assert.ok(existsSync(new URL('../img/exoduser_silvertail/attack-spin-v2.png',import.meta.url)));
  assert.match(build,/'player-attack-remaster\.js'/);
 });
@@ -53,6 +53,19 @@ test('failed or malformed attack image keeps the original atlas usable',()=>{
   if(fail==='network')h.images[0].onerror();else{h.images[0].naturalWidth=12;h.images[0].naturalHeight=12;h.images[0].onload()}
   assert.equal(result[0],base);assert.equal(result[1],fm);assert.equal(count,1);
  }
+});
+test('body spin runs 50 percent faster and holds the final pose',()=>{
+ const {api}=harness();
+ assert.equal(api.speed,1.5);
+ assert.equal(api.spinProgress(1/3),0.5);
+ assert.equal(api.spinProgress(2/3),1);
+ assert.equal(api.spinProgress(1),1);
+ assert.equal(api.spinProgress(-1),0);
+ assert.equal(api.progress('wSwing',5,16),0);
+ assert.equal(api.progress('wRecover',14,16),0.5);
+ assert.equal(api.progress('wRecover',7,16),1);
+ assert.equal(api.progress('wRecover',1,16),1);
+ assert.equal(api.spinProgress(160/240),1,'E finishes its body turn at 160 ms');
 });
 for(const entry of ['game.html','game-easy-test.html'])test(entry+': late attack atlas cannot overwrite a newly selected warrior',()=>{
  const src=readFileSync(new URL('../'+entry,import.meta.url),'utf8');
