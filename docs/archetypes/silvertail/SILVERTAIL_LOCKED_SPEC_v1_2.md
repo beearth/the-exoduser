@@ -1,5 +1,7 @@
 # SILVERTAIL / BLADE DANCER — LOCKED VISUAL & EQUIPMENT SPEC v1.2
 
+> **새 본체 적용(2026-09-15):** 승인된 시안으로 idle2(동일 포즈 복제)/walk4/atk4 폴백을8방향480×48 시트로 교체했다. 버전 `20260915-remake-v2`. 기존80px 공격 확장을 함께 사용한다. 아래 구 본체/제작 전 표기는 이력이며 [현행 패킹·프레임·검증 계약](../silvertail/SILVERTAIL_REMAKE_20260915.md)을 우선한다.
+
 EXODUSER: HELL LORD / FDG
 스코프: **Blade Tail ↔ 쌍단검 설계 충돌 종결 + 스프라이트 제작용 LOCKED SPEC.**
 근거: `SILVERTAIL_ARCHETYPE_v1.md` / `_v1_1.md`(기구·스킬), `PIXELLAB_PROMPT.md`, `refs/` MASTER TURNAROUND(09_41_58)·WEAPON BIBLE(10_20_48).

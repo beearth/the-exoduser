@@ -1,0 +1,47 @@
+<!doctype html><html lang="ko"><head><meta charset="utf-8"><base href="../"><title>실버테일 새 스프라이트</title>
+<script src="player-attack-remaster.js?v=20260915a"></script>
+<style>body{margin:24px;background:#17191e;color:#e0ded7;font:16px system-ui}h1{font-size:25px}button,select{padding:8px 14px;background:#30343c;color:inherit;border:1px solid #646974;margin-right:12px;font:inherit}canvas{display:block;margin:20px 0;max-width:100%;background:#272a30}output{display:block;color:#b4d4bc}p{color:#adb3bb}</style></head><body>
+<h1>실버테일 · 새 스프라이트</h1><p>8방향 · 새 대기·걷기 + 공격 리마스터. 위: 현재 게임 배율 / 아래: 3배 확대.</p>
+<button id="pause">일시정지</button><button id="step">다음 프레임</button>
+<label>동작 <select id="motion"><option value="walk">걷기 반복</option><option value="idle">대기</option><option value="attack">공격 반복</option><option value="transition">대기 → 공격 → 대기</option></select></label>
+<label>배경 <select id="bg"><option value="#272a30">회색</option><option value="#080c12">어두운 배경</option><option value="#807c74">밝은 배경</option></select></label>
+<canvas id="preview" width="1200" height="550" aria-label="실버테일 8방향 새 스프라이트 미리보기"></canvas><output id="result">로딩 중…</output>
+<script>
+(async()=>{
+ const source=await(await fetch('game.html')).text();
+ const start=source.indexOf('const SpriteAnimator={'),end=source.indexOf('\n};',start)+3;
+ const animator=Function(source.slice(start,end)+';return SpriteAnimator')();
+ const dirs=['s','se','e','ne','n','nw','w','sw'],files=['6','5','3','1','12','11','9','7'];
+ const base=document.createElement('canvas');base.width=480;base.height=384;const ctx=base.getContext('2d'),fm={};
+ for(let row=0;row<8;row++){
+  const im=new Image();im.src='img/exoduser_silvertail/'+files[row]+'.png?v=20260915-remake-v2';await im.decode();ctx.drawImage(im,0,row*48);
+  fm['idle_'+dirs[row]]=[{x:0,y:row*48,w:48,h:48}];
+  fm['walk_'+dirs[row]]=Array.from({length:4},(_,f)=>({x:(f+2)*48,y:row*48,w:48,h:48}));
+ }
+ const shade=Function(source.slice(source.indexOf('function _shadePlayerPixels('),source.indexOf('function _build8('))+';return _shadePlayerAtlas')();
+ shade(base,48,48);
+ const [atlas,frames]=await new Promise(resolve=>SilvertailAttackRemaster.apply(base,fm,(a,f)=>resolve([a,f])));
+ if(atlas===base)throw Error('공격 시트 로드 실패');
+ const canvas=document.getElementById('preview'),x=canvas.getContext('2d'),result=document.getElementById('result');
+ const sa=animator.create(atlas,frames,'atk2');let paused=false,time=0,last=performance.now();
+ document.getElementById('pause').onclick=e=>{paused=!paused;e.target.textContent=paused?'재생':'일시정지';};
+ document.getElementById('step').onclick=()=>{paused=true;time=(Math.floor(time/180)+1)*180;document.getElementById('pause').textContent='재생';};
+ function draw(now){
+  if(!paused)time+=Math.min(80,now-last);last=now;
+  const transition=document.getElementById('motion').value==='transition',phase=Math.floor(time/180)%(transition?8:4);
+  const motion=document.getElementById('motion').value;
+  sa.anim=motion==='walk'?'walk':motion==='idle'?'idle':transition&&(phase<2||phase>5)?'idle':'atk2';sa.f=sa.anim==='idle'?0:transition?phase-2:phase;
+  x.fillStyle=document.getElementById('bg').value;x.fillRect(0,0,1200,550);x.imageSmoothingEnabled=false;
+  dirs.forEach((d,i)=>{
+   const cx=75+i*150;x.fillStyle='#d7dbe1';x.font='16px system-ui';x.fillText(d.toUpperCase(),cx-12,30);
+   for(const [cy,scale] of [[142,1.3],[380,3]]){
+    x.strokeStyle='#454a53';x.beginPath();x.moveTo(cx-65,cy+22*scale);x.lineTo(cx+65,cy+22*scale);x.stroke();
+    x.save();x.translate(cx,cy);x.scale(scale,scale);animator.draw(sa,x,0,0,false,d);x.restore();
+   }
+  });
+  result.textContent='로드 완료 · 걷기 32프레임 + 공격 32프레임 · 공격 셀 80×80 · 새 본체 48×48 · '+sa.anim+' 프레임 '+(sa.f+1)+' / '+(sa.anim==='idle'?1:4);
+  requestAnimationFrame(draw);
+ }
+ requestAnimationFrame(draw);
+})().catch(e=>{document.getElementById('result').textContent='FAIL: '+e.message;});
+</script></body></html>

@@ -1,0 +1,1018 @@
+[
+  {
+    "direction": "s",
+    "clock": "6",
+    "source": "G:\\exoduser\\assets\\sprites\\player\\silvertail_v2\\s.png",
+    "destination": "G:\\exoduser\\output\\silvertail_sprites_20260915\\packed\\6.png",
+    "sourceSize": [
+      1254,
+      1254
+    ],
+    "scale": 0.10623556581986143,
+    "bodyScale": 0.10688836104513064,
+    "cell": 48,
+    "sourceFrames": [
+      0,
+      0,
+      1,
+      2,
+      3,
+      4,
+      5,
+      6,
+      7,
+      8
+    ],
+    "frames": [
+      {
+        "source": 0,
+        "crop": {
+          "left": 104,
+          "top": 7,
+          "right": 347,
+          "bottom": 428
+        },
+        "width": 26,
+        "height": 45
+      },
+      {
+        "source": 1,
+        "crop": {
+          "left": 511,
+          "top": 8,
+          "right": 751,
+          "bottom": 430
+        },
+        "width": 26,
+        "height": 45
+      },
+      {
+        "source": 2,
+        "crop": {
+          "left": 910,
+          "top": 8,
+          "right": 1154,
+          "bottom": 429
+        },
+        "width": 26,
+        "height": 45
+      },
+      {
+        "source": 3,
+        "crop": {
+          "left": 121,
+          "top": 429,
+          "right": 348,
+          "bottom": 841
+        },
+        "width": 24,
+        "height": 44
+      },
+      {
+        "source": 4,
+        "crop": {
+          "left": 519,
+          "top": 429,
+          "right": 750,
+          "bottom": 841
+        },
+        "width": 25,
+        "height": 44
+      },
+      {
+        "source": 5,
+        "crop": {
+          "left": 813,
+          "top": 440,
+          "right": 1202,
+          "bottom": 850
+        },
+        "width": 41,
+        "height": 44
+      },
+      {
+        "source": 6,
+        "crop": {
+          "left": 65,
+          "top": 843,
+          "right": 464,
+          "bottom": 1249
+        },
+        "width": 42,
+        "height": 43
+      },
+      {
+        "source": 7,
+        "crop": {
+          "left": 484,
+          "top": 845,
+          "right": 917,
+          "bottom": 1243
+        },
+        "width": 46,
+        "height": 42
+      },
+      {
+        "source": 8,
+        "crop": {
+          "left": 860,
+          "top": 843,
+          "right": 1162,
+          "bottom": 1242
+        },
+        "width": 32,
+        "height": 42
+      }
+    ],
+    "bytes": 26802
+  },
+  {
+    "direction": "se",
+    "clock": "5",
+    "source": "G:\\exoduser\\assets\\sprites\\player\\silvertail_v2\\se.png",
+    "destination": "G:\\exoduser\\output\\silvertail_sprites_20260915\\packed\\5.png",
+    "sourceSize": [
+      1254,
+      1254
+    ],
+    "scale": 0.10176991150442478,
+    "bodyScale": 0.11508951406649616,
+    "cell": 48,
+    "sourceFrames": [
+      0,
+      0,
+      1,
+      2,
+      3,
+      4,
+      5,
+      6,
+      7,
+      8
+    ],
+    "frames": [
+      {
+        "source": 0,
+        "crop": {
+          "left": 113,
+          "top": 35,
+          "right": 322,
+          "bottom": 426
+        },
+        "width": 24,
+        "height": 45
+      },
+      {
+        "source": 1,
+        "crop": {
+          "left": 515,
+          "top": 46,
+          "right": 729,
+          "bottom": 427
+        },
+        "width": 25,
+        "height": 44
+      },
+      {
+        "source": 2,
+        "crop": {
+          "left": 910,
+          "top": 46,
+          "right": 1128,
+          "bottom": 428
+        },
+        "width": 25,
+        "height": 44
+      },
+      {
+        "source": 3,
+        "crop": {
+          "left": 88,
+          "top": 448,
+          "right": 312,
+          "bottom": 827
+        },
+        "width": 26,
+        "height": 44
+      },
+      {
+        "source": 4,
+        "crop": {
+          "left": 501,
+          "top": 450,
+          "right": 738,
+          "bottom": 829
+        },
+        "width": 27,
+        "height": 44
+      },
+      {
+        "source": 5,
+        "crop": {
+          "left": 835,
+          "top": 484,
+          "right": 1201,
+          "bottom": 822
+        },
+        "width": 37,
+        "height": 34
+      },
+      {
+        "source": 6,
+        "crop": {
+          "left": 35,
+          "top": 853,
+          "right": 487,
+          "bottom": 1218
+        },
+        "width": 46,
+        "height": 37
+      },
+      {
+        "source": 7,
+        "crop": {
+          "left": 502,
+          "top": 865,
+          "right": 894,
+          "bottom": 1227
+        },
+        "width": 40,
+        "height": 37
+      },
+      {
+        "source": 8,
+        "crop": {
+          "left": 936,
+          "top": 856,
+          "right": 1190,
+          "bottom": 1225
+        },
+        "width": 26,
+        "height": 38
+      }
+    ],
+    "bytes": 24307
+  },
+  {
+    "direction": "e",
+    "clock": "3",
+    "source": "G:\\exoduser\\assets\\sprites\\player\\silvertail_v2\\e.png",
+    "destination": "G:\\exoduser\\output\\silvertail_sprites_20260915\\packed\\3.png",
+    "sourceSize": [
+      1254,
+      1254
+    ],
+    "scale": 0.1036036036036036,
+    "bodyScale": 0.11568123393316196,
+    "cell": 48,
+    "sourceFrames": [
+      0,
+      0,
+      1,
+      2,
+      3,
+      4,
+      5,
+      6,
+      7,
+      8
+    ],
+    "frames": [
+      {
+        "source": 0,
+        "crop": {
+          "left": 122,
+          "top": 42,
+          "right": 286,
+          "bottom": 431
+        },
+        "width": 19,
+        "height": 45
+      },
+      {
+        "source": 1,
+        "crop": {
+          "left": 496,
+          "top": 45,
+          "right": 753,
+          "bottom": 427
+        },
+        "width": 30,
+        "height": 44
+      },
+      {
+        "source": 2,
+        "crop": {
+          "left": 921,
+          "top": 49,
+          "right": 1152,
+          "bottom": 428
+        },
+        "width": 27,
+        "height": 44
+      },
+      {
+        "source": 3,
+        "crop": {
+          "left": 113,
+          "top": 452,
+          "right": 340,
+          "bottom": 832
+        },
+        "width": 26,
+        "height": 44
+      },
+      {
+        "source": 4,
+        "crop": {
+          "left": 521,
+          "top": 449,
+          "right": 738,
+          "bottom": 829
+        },
+        "width": 25,
+        "height": 44
+      },
+      {
+        "source": 5,
+        "crop": {
+          "left": 812,
+          "top": 478,
+          "right": 1192,
+          "bottom": 832
+        },
+        "width": 39,
+        "height": 37
+      },
+      {
+        "source": 6,
+        "crop": {
+          "left": 46,
+          "top": 884,
+          "right": 490,
+          "bottom": 1216
+        },
+        "width": 46,
+        "height": 34
+      },
+      {
+        "source": 7,
+        "crop": {
+          "left": 488,
+          "top": 880,
+          "right": 891,
+          "bottom": 1219
+        },
+        "width": 42,
+        "height": 35
+      },
+      {
+        "source": 8,
+        "crop": {
+          "left": 922,
+          "top": 854,
+          "right": 1212,
+          "bottom": 1223
+        },
+        "width": 30,
+        "height": 38
+      }
+    ],
+    "bytes": 24527
+  },
+  {
+    "direction": "ne",
+    "clock": "1",
+    "source": "G:\\exoduser\\assets\\sprites\\player\\silvertail_v2\\ne.png",
+    "destination": "G:\\exoduser\\output\\silvertail_sprites_20260915\\packed\\1.png",
+    "sourceSize": [
+      1254,
+      1254
+    ],
+    "scale": 0.11616161616161616,
+    "bodyScale": 0.1196808510638298,
+    "cell": 48,
+    "sourceFrames": [
+      0,
+      0,
+      1,
+      2,
+      3,
+      4,
+      5,
+      6,
+      7,
+      8
+    ],
+    "frames": [
+      {
+        "source": 0,
+        "crop": {
+          "left": 145,
+          "top": 45,
+          "right": 335,
+          "bottom": 421
+        },
+        "width": 23,
+        "height": 45
+      },
+      {
+        "source": 1,
+        "crop": {
+          "left": 524,
+          "top": 53,
+          "right": 738,
+          "bottom": 425
+        },
+        "width": 26,
+        "height": 45
+      },
+      {
+        "source": 2,
+        "crop": {
+          "left": 927,
+          "top": 52,
+          "right": 1150,
+          "bottom": 422
+        },
+        "width": 27,
+        "height": 44
+      },
+      {
+        "source": 3,
+        "crop": {
+          "left": 137,
+          "top": 459,
+          "right": 328,
+          "bottom": 832
+        },
+        "width": 23,
+        "height": 45
+      },
+      {
+        "source": 4,
+        "crop": {
+          "left": 539,
+          "top": 458,
+          "right": 751,
+          "bottom": 828
+        },
+        "width": 25,
+        "height": 44
+      },
+      {
+        "source": 5,
+        "crop": {
+          "left": 808,
+          "top": 478,
+          "right": 1188,
+          "bottom": 826
+        },
+        "width": 44,
+        "height": 40
+      },
+      {
+        "source": 6,
+        "crop": {
+          "left": 71,
+          "top": 854,
+          "right": 467,
+          "bottom": 1219
+        },
+        "width": 46,
+        "height": 42
+      },
+      {
+        "source": 7,
+        "crop": {
+          "left": 505,
+          "top": 878,
+          "right": 882,
+          "bottom": 1219
+        },
+        "width": 44,
+        "height": 40
+      },
+      {
+        "source": 8,
+        "crop": {
+          "left": 941,
+          "top": 863,
+          "right": 1212,
+          "bottom": 1221
+        },
+        "width": 31,
+        "height": 42
+      }
+    ],
+    "bytes": 26576
+  },
+  {
+    "direction": "n",
+    "clock": "12",
+    "source": "G:\\exoduser\\assets\\sprites\\player\\silvertail_v2\\n.png",
+    "destination": "G:\\exoduser\\output\\silvertail_sprites_20260915\\packed\\12.png",
+    "sourceSize": [
+      1254,
+      1254
+    ],
+    "scale": 0.11302211302211303,
+    "bodyScale": 0.11056511056511056,
+    "cell": 48,
+    "sourceFrames": [
+      0,
+      0,
+      1,
+      2,
+      3,
+      4,
+      5,
+      6,
+      7,
+      8
+    ],
+    "frames": [
+      {
+        "source": 0,
+        "crop": {
+          "left": 105,
+          "top": 16,
+          "right": 336,
+          "bottom": 423
+        },
+        "width": 26,
+        "height": 45
+      },
+      {
+        "source": 1,
+        "crop": {
+          "left": 547,
+          "top": 18,
+          "right": 745,
+          "bottom": 423
+        },
+        "width": 22,
+        "height": 45
+      },
+      {
+        "source": 2,
+        "crop": {
+          "left": 956,
+          "top": 20,
+          "right": 1163,
+          "bottom": 422
+        },
+        "width": 23,
+        "height": 44
+      },
+      {
+        "source": 3,
+        "crop": {
+          "left": 112,
+          "top": 428,
+          "right": 335,
+          "bottom": 824
+        },
+        "width": 25,
+        "height": 44
+      },
+      {
+        "source": 4,
+        "crop": {
+          "left": 531,
+          "top": 423,
+          "right": 755,
+          "bottom": 823
+        },
+        "width": 25,
+        "height": 44
+      },
+      {
+        "source": 5,
+        "crop": {
+          "left": 883,
+          "top": 475,
+          "right": 1247,
+          "bottom": 838
+        },
+        "width": 41,
+        "height": 41
+      },
+      {
+        "source": 6,
+        "crop": {
+          "left": 69,
+          "top": 841,
+          "right": 391,
+          "bottom": 1228
+        },
+        "width": 36,
+        "height": 44
+      },
+      {
+        "source": 7,
+        "crop": {
+          "left": 467,
+          "top": 856,
+          "right": 828,
+          "bottom": 1225
+        },
+        "width": 41,
+        "height": 42
+      },
+      {
+        "source": 8,
+        "crop": {
+          "left": 945,
+          "top": 847,
+          "right": 1229,
+          "bottom": 1235
+        },
+        "width": 32,
+        "height": 44
+      }
+    ],
+    "bytes": 25069
+  },
+  {
+    "direction": "nw",
+    "clock": "11",
+    "source": "G:\\exoduser\\assets\\sprites\\player\\silvertail_v2\\nw.png",
+    "destination": "G:\\exoduser\\output\\silvertail_sprites_20260915\\packed\\11.png",
+    "sourceSize": [
+      1254,
+      1254
+    ],
+    "scale": 0.10722610722610723,
+    "bodyScale": 0.1079136690647482,
+    "cell": 48,
+    "sourceFrames": [
+      0,
+      0,
+      1,
+      2,
+      3,
+      4,
+      5,
+      6,
+      7,
+      8
+    ],
+    "frames": [
+      {
+        "source": 0,
+        "crop": {
+          "left": 111,
+          "top": 19,
+          "right": 333,
+          "bottom": 436
+        },
+        "width": 24,
+        "height": 45
+      },
+      {
+        "source": 1,
+        "crop": {
+          "left": 502,
+          "top": 27,
+          "right": 771,
+          "bottom": 432
+        },
+        "width": 29,
+        "height": 44
+      },
+      {
+        "source": 2,
+        "crop": {
+          "left": 926,
+          "top": 25,
+          "right": 1186,
+          "bottom": 428
+        },
+        "width": 28,
+        "height": 43
+      },
+      {
+        "source": 3,
+        "crop": {
+          "left": 101,
+          "top": 444,
+          "right": 381,
+          "bottom": 848
+        },
+        "width": 30,
+        "height": 44
+      },
+      {
+        "source": 4,
+        "crop": {
+          "left": 519,
+          "top": 440,
+          "right": 782,
+          "bottom": 836
+        },
+        "width": 28,
+        "height": 43
+      },
+      {
+        "source": 5,
+        "crop": {
+          "left": 905,
+          "top": 474,
+          "right": 1251,
+          "bottom": 840
+        },
+        "width": 37,
+        "height": 39
+      },
+      {
+        "source": 6,
+        "crop": {
+          "left": 20,
+          "top": 869,
+          "right": 449,
+          "bottom": 1212
+        },
+        "width": 46,
+        "height": 37
+      },
+      {
+        "source": 7,
+        "crop": {
+          "left": 453,
+          "top": 861,
+          "right": 837,
+          "bottom": 1216
+        },
+        "width": 41,
+        "height": 38
+      },
+      {
+        "source": 8,
+        "crop": {
+          "left": 891,
+          "top": 850,
+          "right": 1188,
+          "bottom": 1238
+        },
+        "width": 32,
+        "height": 42
+      }
+    ],
+    "bytes": 26082
+  },
+  {
+    "direction": "w",
+    "clock": "9",
+    "source": "G:\\exoduser\\assets\\sprites\\player\\silvertail_v2\\w.png",
+    "destination": "G:\\exoduser\\output\\silvertail_sprites_20260915\\packed\\9.png",
+    "sourceSize": [
+      1254,
+      1254
+    ],
+    "scale": 0.1036036036036036,
+    "bodyScale": 0.10948905109489052,
+    "cell": 48,
+    "sourceFrames": [
+      0,
+      0,
+      1,
+      2,
+      3,
+      4,
+      5,
+      6,
+      7,
+      8
+    ],
+    "frames": [
+      {
+        "source": 0,
+        "crop": {
+          "left": 147,
+          "top": 15,
+          "right": 333,
+          "bottom": 426
+        },
+        "width": 20,
+        "height": 45
+      },
+      {
+        "source": 1,
+        "crop": {
+          "left": 496,
+          "top": 19,
+          "right": 762,
+          "bottom": 423
+        },
+        "width": 29,
+        "height": 44
+      },
+      {
+        "source": 2,
+        "crop": {
+          "left": 966,
+          "top": 15,
+          "right": 1183,
+          "bottom": 423
+        },
+        "width": 24,
+        "height": 45
+      },
+      {
+        "source": 3,
+        "crop": {
+          "left": 92,
+          "top": 443,
+          "right": 364,
+          "bottom": 840
+        },
+        "width": 30,
+        "height": 43
+      },
+      {
+        "source": 4,
+        "crop": {
+          "left": 527,
+          "top": 441,
+          "right": 764,
+          "bottom": 840
+        },
+        "width": 26,
+        "height": 44
+      },
+      {
+        "source": 5,
+        "crop": {
+          "left": 904,
+          "top": 480,
+          "right": 1245,
+          "bottom": 843
+        },
+        "width": 35,
+        "height": 38
+      },
+      {
+        "source": 6,
+        "crop": {
+          "left": 16,
+          "top": 866,
+          "right": 460,
+          "bottom": 1238
+        },
+        "width": 46,
+        "height": 39
+      },
+      {
+        "source": 7,
+        "crop": {
+          "left": 433,
+          "top": 879,
+          "right": 857,
+          "bottom": 1237
+        },
+        "width": 44,
+        "height": 37
+      },
+      {
+        "source": 8,
+        "crop": {
+          "left": 905,
+          "top": 855,
+          "right": 1190,
+          "bottom": 1241
+        },
+        "width": 30,
+        "height": 40
+      }
+    ],
+    "bytes": 24588
+  },
+  {
+    "direction": "sw",
+    "clock": "7",
+    "source": "G:\\exoduser\\assets\\sprites\\player\\silvertail_v2\\sw.png",
+    "destination": "G:\\exoduser\\output\\silvertail_sprites_20260915\\packed\\7.png",
+    "sourceSize": [
+      1254,
+      1254
+    ],
+    "scale": 0.10926365795724466,
+    "bodyScale": 0.1089588377723971,
+    "cell": 48,
+    "sourceFrames": [
+      0,
+      0,
+      1,
+      2,
+      3,
+      4,
+      5,
+      6,
+      7,
+      8
+    ],
+    "frames": [
+      {
+        "source": 0,
+        "crop": {
+          "left": 108,
+          "top": 8,
+          "right": 343,
+          "bottom": 421
+        },
+        "width": 26,
+        "height": 45
+      },
+      {
+        "source": 1,
+        "crop": {
+          "left": 518,
+          "top": 17,
+          "right": 759,
+          "bottom": 425
+        },
+        "width": 26,
+        "height": 44
+      },
+      {
+        "source": 2,
+        "crop": {
+          "left": 934,
+          "top": 11,
+          "right": 1192,
+          "bottom": 416
+        },
+        "width": 28,
+        "height": 44
+      },
+      {
+        "source": 3,
+        "crop": {
+          "left": 85,
+          "top": 422,
+          "right": 337,
+          "bottom": 842
+        },
+        "width": 27,
+        "height": 46
+      },
+      {
+        "source": 4,
+        "crop": {
+          "left": 515,
+          "top": 421,
+          "right": 742,
+          "bottom": 842
+        },
+        "width": 25,
+        "height": 46
+      },
+      {
+        "source": 5,
+        "crop": {
+          "left": 897,
+          "top": 449,
+          "right": 1244,
+          "bottom": 818
+        },
+        "width": 38,
+        "height": 40
+      },
+      {
+        "source": 6,
+        "crop": {
+          "left": 27,
+          "top": 859,
+          "right": 406,
+          "bottom": 1222
+        },
+        "width": 41,
+        "height": 40
+      },
+      {
+        "source": 7,
+        "crop": {
+          "left": 446,
+          "top": 845,
+          "right": 844,
+          "bottom": 1234
+        },
+        "width": 43,
+        "height": 43
+      },
+      {
+        "source": 8,
+        "crop": {
+          "left": 863,
+          "top": 845,
+          "right": 1186,
+          "bottom": 1237
+        },
+        "width": 35,
+        "height": 43
+      }
+    ],
+    "bytes": 27068
+  }
+]
