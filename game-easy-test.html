@@ -14747,6 +14747,22 @@ const _projFree=[];
 let _projNext=0;
 // ═══ 초승달 검기 스프라이트 ═══
 const _CRES_IMG=new Image();_CRES_IMG.src='assets/vfx/crescent_slash.webp';
+// 기검참: 생성 9프레임 검기 + 4프레임 명중광. 색 변환은 로드 때 한 번만 캐시.
+let _kiSlashRadiant=null;
+function _kiSlashPalette(c){return c.step===3?2:c.silvArc?1:0}
+function _kiSlashTintSurfaces(img){
+  const surfaces=[img];
+  for(const hue of [40,150]){
+    const cv=document.createElement('canvas');cv.width=img.naturalWidth;cv.height=img.naturalHeight;
+    const ctx=cv.getContext('2d');ctx.filter='hue-rotate('+hue+'deg)';ctx.drawImage(img,0,0);
+    surfaces.push(cv);
+  }
+  return surfaces;
+}
+const _KI_SLASH_IMG=new Image();
+_KI_SLASH_IMG.onload=()=>{_kiSlashRadiant={surfaces:_kiSlashTintSurfaces(_KI_SLASH_IMG),fw:_KI_SLASH_IMG.naturalWidth/3,fh:_KI_SLASH_IMG.naturalHeight/3}};
+_KI_SLASH_IMG.src='assets/vfx/ki_slash_radiant_sheet.png';
+
 const _CHAIN_BLADE_IMG=new Image();let _chainBladeReady=false,_chainBladeSurface=null;_CHAIN_BLADE_IMG.src='img/vfx/chain_blade_silver_realistic.png';_CHAIN_BLADE_IMG.onload=()=>{_chainBladeSurface=_makeGreenChromaCutout(_CHAIN_BLADE_IMG);_chainBladeReady=true};
 const _SKY_CRUSHER_IMG=new Image();let _skyCrusherImgReady=false;_SKY_CRUSHER_IMG.src='img/vfx/sky_crusher_iron_wedge.png';_SKY_CRUSHER_IMG.onload=()=>{_skyCrusherImgReady=true};
 const _SKY_CRUSHER_BURN_IMG=new Image();let _skyCrusherBurnImgReady=false;_SKY_CRUSHER_BURN_IMG.src='img/vfx/sky_crusher_burning.png';_SKY_CRUSHER_BURN_IMG.onload=()=>{_skyCrusherBurnImgReady=true};
@@ -16944,15 +16960,49 @@ function renderHitVFX(ctx){
   }
   ctx.globalAlpha=1;ctx.restore();
 }
+function _drawKiSlashFrame(ctx,img,sx,sy,sw,sh,dx,dy,dw,dh){
+  if(ctx.canvas===C&&(_useGPU||_useGL)){
+    // Native additive pipeline uses ONE/ONE: premultiply RGB by opacity too.
+    const alpha=ctx.globalAlpha,iw=img.width||img.naturalWidth,ih=img.height||img.naturalHeight;
+    _setTex(_getTex(img));_tQuad(dx,dy,dw,dh);
+    _quad(_tq[0],_tq[1],_tq[2],_tq[3],_tq[4],_tq[5],_tq[6],_tq[7],sx/iw,sy/ih,(sx+sw)/iw,(sy+sh)/ih,alpha,alpha,alpha,alpha,5,0,0);
+  }else ctx.drawImage(img,sx,sy,sw,sh,dx,dy,dw,dh);
+}
+function _drawRadiantKiSlash(ctx,c){
+  const sheet=_kiSlashRadiant;if(!sheet)return false;
+  const progress=Math.max(0,Math.min(1,1-c.life/c.ml));
+  const frame=Math.min(8,Math.floor(progress*9)),sx=(frame%3)*sheet.fw,sy=Math.floor(frame/3)*sheet.fh;
+  const size=c.step===3?252:192,height=size*sheet.fh/sheet.fw;
+  const alpha=Math.min(1,(1-progress)*2.5);
+  const img=sheet.surfaces[_kiSlashPalette(c)];
+  ctx.save();ctx.globalCompositeOperation='lighter';
+  // 점 스탬프 대신 이동 경로에 실제 칼날 잔상을 두 장 남긴다.
+  for(let n=2;n>=1;n--){
+    const trail=c.trail[(c._th-n*2+5)%5];
+    ctx.save();ctx.translate(trail.x,trail.y);ctx.rotate(c.ang);
+    ctx.globalAlpha=alpha*(n===1?.18:.08);
+    _drawKiSlashFrame(ctx,img,sx,sy,sheet.fw,sheet.fh,-size*.45,-height*.45,size*.9,height*.9);ctx.restore();
+  }
+  ctx.translate(c.x,c.y);ctx.rotate(c.ang);
+  ctx.globalAlpha=alpha*(c.step===3?.3:.18);
+  _drawKiSlashFrame(ctx,img,sx,sy,sheet.fw,sheet.fh,-size*.54,-height*.54,size*1.08,height*1.08);
+  ctx.globalAlpha=alpha;
+  _drawKiSlashFrame(ctx,img,sx,sy,sheet.fw,sheet.fh,-size*.5,-height*.5,size,height);
+  ctx.restore();return true;
+}
 function renderCrescents(X){
   const _cImg=_CRES_IMG;
   const _cReady=_cImg.complete&&_cImg.naturalWidth>0;
+  const gpu=!!_kiSlashRadiant&&X.canvas===C&&(_useGPU||_useGL);
+  let blendActive=false;
   for(let _ci=0;_ci<_CRES_MAX;_ci++){
     const c=_crescents[_ci];
     if(!c.active)continue;
+    if(gpu&&!blendActive){_setBlend(true);blendActive=true;}
     const prog=1-c.life/c.ml;
     const alpha=Math.max(.15,1-prog*1.1);
     const _is3=c.step===3;
+    if(_drawRadiantKiSlash(X,c))continue;
     // 트레일 글로우 (stamp drawImage)
     {const _trSt=_getSparkStamp(_is3?'#ff3322':'#66bbff'),_trR=_is3?14:8;
     for(let t=0;t<5;t++){
@@ -16990,6 +17040,7 @@ function renderCrescents(X){
     X.restore();
     X.globalAlpha=1;
   }
+  if(blendActive)_setBlend(false);
 }
 // ── VFX 스프라이트시트 시스템 ──
 const _VFX_SHEETS={};
@@ -17035,6 +17086,18 @@ registerVFX('earthquake','assets/vfx/vfx_earthquake.png',512,512,9,3);
 registerVFX('chain_slam_impact','assets/vfx/chain_slam_impact_realistic.png',418,418,9,3);
 // registerVFX('blue_vortex','assets/vfx/boss/vfx_dark_burst.png',192,192,5,4); // 파일 미존재 — 절차적 폴백 (404 제거 2026-06-28)
 registerVFX('ice_slash','assets/vfx/slash_impact_sheet.png',128,128,19,19);
+const _KI_SLASH_HIT_IMG=new Image();
+_KI_SLASH_HIT_IMG.onload=()=>{
+  const surfaces=_kiSlashTintSurfaces(_KI_SLASH_HIT_IMG);
+  for(let i=0;i<surfaces.length;i++)_VFX_SHEETS['ki_slash_hit_'+i]={img:surfaces[i],fw:_KI_SLASH_HIT_IMG.naturalWidth/2,fh:_KI_SLASH_HIT_IMG.naturalHeight/2,frames:4,cols:2,blend:'lighter'};
+};
+_KI_SLASH_HIT_IMG.src='assets/vfx/ki_slash_hit_radiant_sheet.png';
+function _playKiSlashHit(c,x,y){
+  const id='ki_slash_hit_'+_kiSlashPalette(c),sheet=_VFX_SHEETS[id];
+  if(sheet)playVFXAng(id,x,y,(c.step===3?184:140)/sheet.fw,3,c.ang,true);
+  else playVFXAng('ice_slash',x,y,c.step===3?1.25:.9,3,c.ang,true);
+}
+
 // registerVFX('whirl_slash','assets/vfx/boss/vfx_white_slash.png',192,192,20,5); // 파일 미존재 — 절차적 폴백 (404 제거 2026-06-28)
 // ── 패링/무지개탄 임팩트 VFX (parry_impact 시리즈, 128×128 프레임) ──
 registerVFX('parry_impact','assets/vfx/parry_impact_sheet.png',128,128,16,16);
@@ -17216,8 +17279,7 @@ function updateCrescents(sp){
         hurtE(e,c.dmg,Math.atan2(e.y-c.y,e.x-c.x),true,{poiseHit:true,kbMult:0.5,noImpact:true,_lessonAttack:'kiSlash'},c.el);
         if(c.step===3){G.hitStop=Math.max(G.hitStop,6);shake(8);}
         else G.hitStop=Math.max(G.hitStop,3);
-        addParts(c.x,c.y,c.step===3?'#ff4444':'#aaddff',c.step===3?14:6);
-        playVFXAng('ice_slash',e.x,e.y,c.step===3?1.25:0.9,3,c.ang+(Math.random()-.5)*1.2,true);
+        _playKiSlashHit(c,e.x,e.y);
         // 무한관통 — 같은 적만 중복히트 방지
       }
     }
@@ -58502,6 +58564,7 @@ function _preloadAssets(){
       'img/crow/south.png','img/cat_pet/south.png',
       // VFX
       'assets/vfx/chain_shuriken_2.webp','assets/vfx/crescent_slash.webp',
+      'assets/vfx/ki_slash_radiant_sheet.png','assets/vfx/ki_slash_hit_radiant_sheet.png',
       'assets/vfx/impact_basic_sheet.png','assets/vfx/lightning_burst_sheet.png',
       'assets/vfx/ground_crack_sheet.png','assets/vfx/parry_impact_rainbow.png',
       'assets/vfx/parry_impact_red.png','assets/vfx/malice_dome.png',

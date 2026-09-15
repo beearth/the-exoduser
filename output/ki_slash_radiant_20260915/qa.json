@@ -1,0 +1,42 @@
+{
+  "sheet": [
+    1254,
+    1254
+  ],
+  "hitSheet": [
+    1254,
+    1254
+  ],
+  "variants": [
+    {
+      "palette": 0,
+      "radius": 55,
+      "speed": 14,
+      "damage": 123,
+      "hit": "ki_slash_hit_0",
+      "hitFrames": 4,
+      "hitSize": 140
+    },
+    {
+      "palette": 1,
+      "radius": 55,
+      "speed": 14,
+      "damage": 123,
+      "hit": "ki_slash_hit_1",
+      "hitFrames": 4,
+      "hitSize": 140
+    },
+    {
+      "palette": 2,
+      "radius": 120,
+      "speed": 14,
+      "damage": 123,
+      "hit": "ki_slash_hit_2",
+      "hitFrames": 4,
+      "hitSize": 184
+    }
+  ],
+  "status": "PASS",
+  "errors": [],
+  "real_save_writes": false
+}

@@ -155,15 +155,15 @@
 
 ## 실버테일 사실적 입력 VFX (2026-09-04)
 
-좌클릭 캐릭터 주변 검호는 제거했다. 좌클릭 비행 검기는 백열 코어·난류 플라즈마·파편을 가진 단일 원화로 교체했고, 우클릭 악의구는 실버테일에 한해 검은 공허 핵과 은빛 초승달 칼날 3장·청보라 잔광을 쓴다. KeyE 칼등 처내기의 소형 진홍 검호 v3는 유지한다.
+좌클릭 캐릭터 주변 검호는 제거했다. 좌클릭 비행 검기는 2026-09-15 공용 9프레임 백열 칼날·겹검기 시트로 교체했고(실버테일 보라색 캐시), 기존 단일 원화는 로딩 실패 시 폴백으로 유지한다. [기검참 VFX 계약](KI_SLASH_RADIANT_20260915.md). 우클릭 악의구는 실버테일에 한해 검은 공허 핵과 은빛 초승달 칼날 3장·청보라 잔광을 쓴다. KeyE 칼등 처내기의 소형 진홍 검호 v3는 유지한다.
 
 | 항목 | 코드값 | 적용 위치 | 설명 |
 |---|---:|---|---|
-| 좌클릭 원본 | 1536×1024 RGB PNG, 녹색 크로마 단일 원화 | `img/vfx/silvertail_ki_slash_realistic.png` | 백열 곡선 코어, 자주색 플라즈마 난류, 청자색 날끝과 파편을 한 실루엣으로 구성 |
-| 좌클릭 로더 | `_silvKiSlashImg` → `_silvKiSlashSurface` | `game.html` | `_makeGreenChromaCutout()`으로 로드 시 1회 알파 추출 |
-| 좌클릭 동세 | `1+sin((ml−life)×0.72)×0.045` | `_crescents[].silvArc` | 프레임 시트 대신 비행 중 ±4.5% 미세 맥동 |
-| 좌클릭 크기 | 1·2타 144px, 3타 176px 폭 | 동일 | 원본 3:2 비율 유지, 글로우 패스는 1.14배 |
-| 좌클릭 2패스 | 1.14배 `lighter` 글로우 alpha `min(1,max(.82,alpha)×.28)` → 1.0배 `source-over` 본체 | 동일 | `saturate(1.12) contrast(1.08) brightness(1.06)`, 본체 최소 alpha `.82` |
+| 좌클릭 원본 | `assets/vfx/ki_slash_radiant_sheet.png`, 1254×1254 RGB, 3×3·9프레임 | 전사·실버테일 기검참 공통 | 백열 칼날, 청색 겹검기, 연속 리본 잔광. 검정 배경 `lighter` 합성 |
+| 좌클릭 로더 | `_KI_SLASH_IMG` → `_kiSlashRadiant` | `game.html`, `game-easy-test.html` | 로드 시 원색/40°/150° 세 팔레트 준비. 구 `_silvKiSlashSurface`는 폴백 |
+| 좌클릭 동세 | `min(8,floor(clamp(1−life/ml,0,1)×9))` | `_drawRadiantKiSlash()` | 비행 수명에 맞춘 9프레임. 진행률 60% 이후 `min(1,(1−progress)×2.5)`로 페이드 |
+| 좌클릭 크기 | 1·2타 192px, 3타 252px | 동일 | 정사각 비율 유지. 충돌 반경 55/55/120px는 유지 |
+| 좌클릭 4패스 | 잔상 2장 + 1.08배 글로우 + 본체 | 동일 | 잔상 0.9배·alpha .18/.08, 글로우 alpha .18(3타 .3). 모두 수명 alpha 곱. 프레임별 filter 없음. GPU 프록시는 `_setBlend(true/false)`로 검기 전체를 가산 합성 후 복구, 정점 RGB에 alpha를 곱해 과노출 방지 |
 | 우클릭 원본 | 1536×1024 RGB PNG, 녹색 크로마 3×2 배열·6프레임 시트 | `img/vfx/silvertail_malice_orb_sheet_v3.png` | 검은 공허 핵, 은빛 초승달 칼날 3장, 청보라 내부광과 짧은 잔광. 실제 소스 432×432, 프레임별 핵 중심 정렬 |
 | 우클릭 렌더 | `_silvMaliceOrbImg` → `_silvMaliceOrbSurface` | `p.fireball && _charIdx===1` | 지름 `p.r×6.2`, 회전 `now×2π/600−poseDeg[frame]×π/180` (이동 좌표와 무관), 1.08배 `lighter` 보조광 alpha `fa×.18`. `_SILV_MALICE_ORB_FRAME_SIZE=432`, `_SILV_MALICE_ORB_FRAME_MS=80`, `_SILV_MALICE_ORB_RECTS` 좌표는 `SILVERTAIL_MALICE_ORB_SHEET_V3.md` 참조. `floor(now/80)%6` 정방향. `_SILV_MALICE_ORB_SPIN_MS=600`, `_SILV_MALICE_ORB_POSE_DEG=[0,9,13,27,31,38]`° |
 | 다른 캐릭터 우클릭 | 171×171 셀, 7×3 중 20프레임 | `assets/vfx/vfx_magic_orb.png`, `_MO_IMG` | 기존 공용 악의구 시트 유지 |
@@ -173,7 +173,7 @@
 
 | 입력 | 전용 플래그·에셋 | 프레임·색 | 판정 영향 |
 |---|---|---|---|
-| 좌클릭 기검참 | `_crescents[].silvArc`, `silvertail_ki_slash_realistic.png` (1536×1024 RGB, 녹색 크로마 단일 원화) | `_makeGreenChromaCutout()` 캐시 후 ±4.5% 맥동. 1·2타 폭 144px, 3타 폭 176px. `saturate(1.12) contrast(1.08) brightness(1.06)`, 본체 `max(.82,alpha)` | 기존 3단 콤보 피해·사거리·히트 범위 그대로 |
+| 좌클릭 기검참 | `_kiSlashRadiant`, `ki_slash_radiant_sheet.png` (1254×1254 RGB, 3×3) | 9프레임, 실버테일 40° hue 캐시, 3타 공통150° 캐시. 폭192/252px. 구 `silvertail_ki_slash_realistic.png` 및 기존 맥동은 로드 실패 폴백에만 적용 | 기존 3단 콤보 피해·사거리·히트 범위 그대로 |
 | 우클릭 악의구 | `p.fireball`, `silvertail_malice_orb_sheet_v3.png` (1536×1024 RGB, 녹색 크로마, 3×2 배열·6프레임) | 실버테일(`_charIdx===1`)만 검은 공허 핵·은빛 초승달 칼날 3장으로 구성한 구체를 지름 `p.r×6.2`로 표시하고 크기 맥동 없이 시계방향 600ms/회전을 적용. 핵 중심 정렬 432×432 소스, 80ms 간격·정방향 480ms 반복. 다른 캐릭터는 공용 7×3/20프레임 시트 유지 | 악의구 피해·폭발·중독·사거리·자원 그대로 |
 | KeyE 칼등 처내기 | `_drawSilvertailEArc(ctx, pose, scale)`, `silvertail_violet_arc_anim_api_v3.png` (2132×738 RGBA, 폭 6등분) | `pose.kind==='shield'`에서만 `floor(spinProgress×6)`으로 재생. `hue-rotate(-28deg) saturate(2.05) contrast(1.28) brightness(1.28)`. 기본 폭 200→230px이며 차징 릴리즈는 `min(3,max(1,P._sBashChgMul||1))×(1+(E스킬Lv−1)×0.05)`을 곱한다. Lv1 풀차지600→690px, Lv10 풀차지870→1000.5px | 기본 E의 피해·반사·자원·입력은 그대로. E 아크는 충전 C와 스킬 레벨 범위 M을 함께 곱하며 좌클릭·우클릭 악의구에는 적용하지 않음 |
 
