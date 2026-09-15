@@ -13055,6 +13055,22 @@ function isHeld(action){if(window._parryLesson&&!window._parryLesson.allows(acti
 // Q키 얼음보주 모드: 선택스킬로 이동됨 (Q는 항상 패링)
 function _qIsIceOrb(){return false}
 function _qIsPeaceShield(){return P.skills.peaceShield>=1&&P.activeQSk==='peaceShield'}
+// 기검참의 준비/베기/회수를 Q로 즉시 취소. Q 자체 비용/쿨다운/패링 규칙은 동일.
+function _tryKiSlashQCancel(){
+  if(P.hp<=0||P.activeLMBSk!=='kiSlash'||(P.s!=='wWindup'&&P.s!=='wSwing'&&P.s!=='wRecover')||!isAct('parry'))return false;
+  if(_qIsIceOrb())return _qDispatchIceOrb();
+  if((P._sbCd||0)>0)return false;
+  if(_qIsPeaceShield()){
+    if(P.mp<=0)return false;
+    _enterPeaceShield();return true;
+  }
+  if(P.mp<10)return false;
+  P.mp-=10;P.s='sBlock';P.st2=999;P._sbParryT=20;P._sbHoldT=0;P._sbReleaseR=0;P.parryT=0;P._qDetonateFired=false;
+  P._sbCd=~~(30*(1+_eqAffix('shieldCdRed')));
+  G._sbBurst={x:P.x,y:P.y,r:P.r+5,maxR:P.skills.detonate>=1?150+((P.skills.detonate||1)-1)*15:90,spd:8,det:P.skills.detonate>=1};
+  playSample('shield_activate',.8,_r(1,.08));_startShieldLoop();
+  return true;
+}
 function _sBlockChargeRadius(holdT){
   const _p=Math.min(1,Math.max(0,holdT||0)/240);
   return 100+(500-100)*_p;
@@ -30411,6 +30427,7 @@ function update(){
 
   case 'wWindup':case 'wSwing':case 'wRecover':case 'sBash':case 'sRecover':
   case 'bowDraw':case 'bowRecover':case 'magicCast':case 'magicRecover':{
+    if(_tryKiSlashQCancel())break;
     // 공격 중 감속 이동 (20%)
     let adx=0,ady=0;
     if(isAct('up'))ady=-1;if(isAct('down'))ady=1;if(isAct('left'))adx=-1;if(isAct('right'))adx=1;

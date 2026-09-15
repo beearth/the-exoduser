@@ -1682,7 +1682,7 @@
 
 | id | 이전 문제 | 수정 | 적용 위치 | 검증 |
 |---|---|---|---|---|
-| `detonate` / `_qDetonateFired` | Q 홀드 120f마다 `parryT=0`으로 되돌아가 한 번의 홀드에서 기폭팔이 무한 반복 발동 | Q 진입마다 `parryT=0`과 1회 잠금을 초기화하고, 120f 자동기폭 뒤 `_qDetonateFired=true`로 같은 홀드의 재충전·HP 드레인·재폭발을 차단 | `game.html` `case 'sBlock'` 및 표준 Q 진입 5경로 | `test/qHoldDetonateOnce.test.js`, `test/qHoldReleaseParry.test.js` |
+| `detonate` / `_qDetonateFired` | Q 홀드 120f마다 `parryT=0`으로 되돌아가 한 번의 홀드에서 기폭팔이 무한 반복 발동 | Q 진입마다 `parryT=0`과 1회 잠금을 초기화하고, 120f 자동기폭 뒤 `_qDetonateFired=true`로 같은 홀드의 재충전·HP 드레인·재폭발을 차단 | `game.html` `case 'sBlock'` 및 표준 Q 진입 6경로(2026-09-16 기검참 취소 진입 추가) | `test/qHoldDetonateOnce.test.js`, `test/qHoldReleaseParry.test.js` |
 
 - 수치 계약: Q 홀드 자동기폭은 2초(120f), Q 한 번 홀드당 1회, Q를 놓고 다시 누르면 재무장한다.
 - 회전참 합체(`whirlDet`/`slamStorm`/`stormBeam`)의 별도 주기 자동기폭과 기폭 피해 공식은 변경하지 않았다.
@@ -1946,7 +1946,7 @@
 
 - 원인: sBlock 렌더가 `_sbR=(P.r+14)×2` 고정이었고, 해제 `G._sbBurst`는 시각 효과만 만들며 홀드 시간을 투사체 판정에 전달하지 않았다. 또한 유지 조건이 `isAct`를 사용해 Q 입력 플래그가 다른 단발 검사에서 소비될 수 있었다.
 - 기폭팔의 120f 자동기폭·HP 드레인·피해 공식은 변경하지 않았다.
-- TDD: `test/qHoldReleaseParry.test.js`에서 성장 helper·해제 반경 전달·렌더 연동·5개 진입점 초기화 부재를 RED로 확인한 뒤 **4/4 PASS**.
+- TDD: `test/qHoldReleaseParry.test.js`에서 성장 helper·해제 반경 전달·렌더 연동·당시5개 진입점 초기화 부재를 RED로 확인한 뒤 **4/4 PASS**. 2026-09-16 기검참 Q 취소 추가 후 현재6개 진입점을 검사한다.
 - 브라우저 QA: 실제 `Q` 입력에서 시작 7f=`115.25px`, 157f=`200px` 성장을 확인했다. 해제 시 저장 반경 `200px`·패링 윈도우 `12f`가 열렸고, 플레이어에게서 `180px` 떨어진 일반 원소탄이 적탄 0/반사탄 1로 전환됐다. `pageerror`·요청 오류는 0이다.
 
 ## 2026-09-03 해골무덤·해골번개에 공용 뼈감옥 6프레임 적용
