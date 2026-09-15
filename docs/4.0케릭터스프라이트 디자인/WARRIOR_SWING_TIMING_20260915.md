@@ -1,12 +1,14 @@
 # 전사 스윙 프레임·판정 동기화 — 2026-09-15
 
+> **이전 교정 기록 / 현재 8프레임 폴백:** 사용자가 운동감을 반려하여 [양손 가로 베기 9포즈](WARRIOR_BAT_SWING_20260915.md)로 교체했다. 아래 7→1→0과 6번 타격은 새 공격 시트 로드 실패 시에만 적용한다. 공용 모션 연결 계약은 유지한다.
+
 ## 원인과 적용 범위
 
 전사 기존 48px 공격 시트는 0~1번이 준비, 2~5번이 들어올림, 6~7번이 베기다(0 기준). 기존 일반 공격은 판정 시점에 3번을 표시하고 6~7번을 회수 구간까지 미뤘다. E는 8틱마다 한 프레임씩 재생하여 타격 시점에 1번, 종료까지 5번만 표시했다. 게임 실제 `update()`→`draw()`로 재현했다.
 
 `game.html`, `game-easy-test.html`의 전사(`_charIdx===0`) 렌더에 `_warriorAttackFrame`을 적용한다. 원본 PNG, 전투 상태 시간, 피해·반사·패링·입력은 변경하지 않는다. 실버테일은 기존 전용 재생을 유지한다.
 
-## 현행 계약
+## 8프레임 폴백 계약
 
 | 항목 | 값·공식 | 적용 위치 |
 |---|---|---|
@@ -51,7 +53,7 @@
 | 방향 선택 | 전사 일반 공격은 위 atkArc 규칙 우선. idle 보행은 `_walkFacing`, whirlwind는 `wwAng||0`, 나머지는 `facing` |
 | 보행 렌더 | `P.s==='idle'&&P._walkMoving===true`일 때 run. 기존 256px/주기 유지 |
 | 공용 공격 폴백 | `_playerMeleeProgress`: 준비 `0.2×clamp(1-left/max(1,windupTicks))`, 스윙 `0.2+0.55×clamp(1-left/5)`, 회수 `0.75+0.25×clamp(1-left/max(1,recoveryTicks))`; `min(N-1,floor(progress×N))` |
-| 전용 재생 우선 | 전사는 `_warriorAttackFrame`, 실버테일 9프레임은 `SilvertailAttackRemaster.progress`가 최종 적용 |
+| 전용 재생 우선 | 전사 9프레임은 `WarriorBatSwing.frame`, 전사 8프레임 폴백은 `_warriorAttackFrame`, 실버테일 9프레임은 `SilvertailAttackRemaster.progress`가 최종 적용 |
 | 실버테일 공격 중단 | HP≤0 또는 wSwing/wRecover/sBash/sRecover 이외 상태면 `_silvertailAttackPose`는 null. 시작 시각이 없고 재생 중도 아니면 null |
 | 실버테일 본체 덮어쓰기 | `_silvertailAttackPose`의 본체 프레임 선택은 sBash/sRecover만 적용, LMB 전용 시간 계산 보존 |
 | 통짜 본체 회전 제거 | wWindup/wSwing/wRecover/whirlwind는 원본 포즈와 방향 시트로 표현. 기존 본체 -12°→+20° 회전과 whirlwind 화면 평면 회전을 제거 |

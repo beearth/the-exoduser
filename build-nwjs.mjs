@@ -24,6 +24,7 @@ const FILES = [
   'index.html', 'game.html', 'credits.html',
   'game-easy-test.html', 'game-guide.html',
   'player-attack-remaster.js',
+  'warrior-bat-swing.js',
   'parry-lesson.js', 'parry-lesson.css', 'resource-practice.js',
   'system-lesson.js', 'system-lesson.css',
   'tutorial-badges.js', 'tutorial-badges.css',
