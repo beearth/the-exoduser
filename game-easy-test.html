@@ -1,6 +1,7 @@
 ﻿<!DOCTYPE html>
 <html lang="ko">
 <head>
+<script src="player-attack-remaster.js?v=20260915-spin2"></script>
 <link rel="stylesheet" href="tutorial-badges.css?v=20260912-1">
 <script src="tutorial-badges.js?v=20260913-area-practice8"></script>
 <link rel="stylesheet" href="system-lesson.css?v=20260912-restored4">
@@ -9511,6 +9512,12 @@ function _loadCharAtlas(idx){
     _shadePlayerAtlas(c,ch.fw,ch.fh);
     _atlasMask=c;_atlasMaskFm=fm;
     _applyMaskAtlas();
+    if(ch.id==='exoduser_silvertail'&&typeof SilvertailAttackRemaster!=='undefined'){
+      SilvertailAttackRemaster.apply(c,fm,(attackAtlas,attackFrames)=>{
+        if(_charIdx!==idx||_atlasMask!==c||attackAtlas===c)return;
+        _atlasMask=attackAtlas;_atlasMaskFm=attackFrames;_applyMaskAtlas();
+      });
+    }
   },_animInfo);
   // bare 버전 — mask와 동일 (별도 bare 폴더 미사용)
   _atlasBare=null;_atlasBareFm=null;
@@ -54173,6 +54180,13 @@ function drawP(){
     X.globalAlpha=1; // 무적 깜빡임과 무관하게 스프라이트는 풀 알파
     const _skillAnimLift=(_apAnim==='gSlam1'||_apAnim==='gSlam2'||_apAnim==='gSlamRecover'||_apAnim==='chain')?-18:0;
     const _silvAtk=_silvertailAttackPose();
+    if(_charIdx===1&&!_apDead&&(P.s==='wWindup'||P.s==='wSwing'||P.s==='wRecover')&&typeof SilvertailAttackRemaster!=='undefined'){
+      const _spinFrames=SpriteAnimator._fr(P._sa,_apDir);
+      if(_spinFrames&&_spinFrames.length===9){
+        const _spinRecovery=~~(16/((wp().spd||.3)*statDex()*(1+_eqAffix('meleeAtkSpd')+_eqAffix('glovesAtkSpd'))))||1;
+        P._sa.f=Math.min(8,Math.floor(SilvertailAttackRemaster.progress(P.s,P.st2,_spinRecovery)*9));
+      }
+    }
     X.save();X.translate(_px,_py+_skillAnimLift);
     // 정면 실루엣 높이: 전사 29px / 실버테일 45px → 본체 크기 정렬.
     if(_charIdx===1)X.scale(.65,.65);
@@ -54238,8 +54252,9 @@ function drawP(){
     }
     if(_silvAtk&&!_silvAtk.hasAtk){_drawSilvertailBackBlade(X,_silvAtk);}
     if(_silvAtk&&_silvAtk.hasAtk){
-      const _silvAtkN=CHAR_LIST[_charIdx].atkN||4;
       P._sa.anim='atk2';
+      const _silvAtkFr=SpriteAnimator._fr(P._sa,_silvAtk.spriteDir);
+      const _silvAtkN=_silvAtkFr&&_silvAtkFr.length||CHAR_LIST[_charIdx].atkN||4;
       P._sa.f=Math.min(_silvAtkN-1,~~(_silvAtk.spinProgress*_silvAtkN));
     }
     const _pFlip=!_apHasDir&&Math.abs(_fa)>Math.PI/2,_pDk=_apHasDir?(_silvAtk?_silvAtk.spriteDir:_apDir):null;
