@@ -16601,26 +16601,46 @@ function _fmApply(m,dmg,isFb){
   }
   return true;
 }
-function _hurtFieldMobs(x,y,hitR,dmg,hitSet){
+function _parryMagicFieldTarget(p,best,bestD){
+  // 분열탄만 별도 필드몹 저장소를 검색한다. 좌표는 실제 충돌 경로와 일치시킨다.
+  for(let kind=0;kind<3;kind++){
+    const list=kind===0?G._fieldBosses:kind===1?G._fireDevils:G._worms;
+    const count=list?list.length:kind===0&&G._fieldBoss?1:0;
+    for(let i=0;i<count;i++){
+      const m=list?list[i]:G._fieldBoss;
+      if(!m||m.asleep||!_fmCanHit(m,kind!==2)||(p._hitSet&&p._hitSet.has(m)))continue;
+      const xy=kind===0?_fmXY(m,1):m;
+      const d=dst(p.x,p.y,xy.x,xy.y);
+      if(d<bestD){bestD=d;best=xy;}
+    }
+  }
+  return best;
+}
+function _parryMagicHitFx(p){
+  if(p.el===EL.I)_addBoom(p.x,p.y,72,66,'waterImpact');
+  else _projHitFx(p.x,p.y,p.el,false);
+  playSampleAt('bullet_hit',.3,1,p.x,p.y);
+}
+function _hurtFieldMobs(x,y,hitR,dmg,hitSet,parryShot){
   var n=0,fbs=G._fieldBosses||(G._fieldBoss?[G._fieldBoss]:[]);
   for(var _fi=0;_fi<fbs.length;_fi++){
     var fb=fbs[_fi];if(!fb||!_fmCanHit(fb,1))continue;
     var fp=_fmXY(fb,1);
     if(dst(x,y,fp.x,fp.y)<hitR+(fb.r||120)&&!(hitSet&&hitSet.has(fb))){
-      if(hitSet)hitSet.add(fb);if(_fmApply(fb,dmg,1))n++;
+      if(hitSet)hitSet.add(fb);const applied=_fmApply(fb,dmg,1);if(applied||parryShot)n++;if(parryShot)_parryMagicHitFx(parryShot);
     }
   }
   var ws=G._worms;if(ws)for(var i=0;i<ws.length;i++){
     var w=ws[i];if(!w||!_fmCanHit(w,0))continue;
     if(dst(x,y,w.x,w.y)<hitR+(w.r||56)&&!(hitSet&&hitSet.has(w))){
-      if(hitSet)hitSet.add(w);if(_fmApply(w,dmg,0))n++;
+      if(hitSet)hitSet.add(w);const applied=_fmApply(w,dmg,0);if(applied||parryShot)n++;if(parryShot)_parryMagicHitFx(parryShot);
       if(w.hp<=0)ws[i]=null;
     }
   }
   var fds=G._fireDevils;if(fds)for(var i=0;i<fds.length;i++){
     var fd=fds[i];if(!fd||!_fmCanHit(fd,1))continue;
     if(dst(x,y,fd.x,fd.y)<hitR+(fd.r||100)&&!(hitSet&&hitSet.has(fd))){
-      if(hitSet)hitSet.add(fd);if(_fmApply(fd,dmg,1))n++;
+      if(hitSet)hitSet.add(fd);const applied=_fmApply(fd,dmg,1);if(applied||parryShot)n++;if(parryShot)_parryMagicHitFx(parryShot);
     }
   }
   return n;
@@ -32248,7 +32268,7 @@ function update(){
     if(p.venomBlade&&(p._reHitT||0)>0)p._reHitT=Math.max(0,p._reHitT-sp);
     // ── 유도: 일반 매 2프레임, ebHoming 매 6프레임 ──
     if(!(p._bounceCool>0)&&!p.explosive&&!p.bladeOrb&&!p.iceBlade&&!p.burstBolt&&!p.normalBow&&!(p._arcLock&&p.dist<p._arcLock)&&spd>0&&(G._gcT+i)%(p.ebHoming?6:p.fireball?4:2)===0){
-      let bestE=null,bestD=p.plagueHoming?(p._pierced===0?1000:500):p.mhBlade?(p._pierced===0?1000:500):p.blueBean?600:p.chainMax?400:p.arcMissile?350:p.fireball?280:p.magic?250:200;
+      let bestE=null,bestD=p._parryMagicShot?900:p.plagueHoming?(p._pierced===0?1000:500):p.mhBlade?(p._pierced===0?1000:500):p.blueBean?600:p.chainMax?400:p.arcMissile?350:p.fireball?280:p.magic?250:200;
       const _neH=shQuery(p.x,p.y,bestD);
       let _vbFall=null,_vbFD=bestD; // 독사 fallback: 이미 때린 적
       let _aaChk=false; // plague/mh _anyAlive(안 때린 생존적 존재?): 프레임당 1회만 계산 — 동일결과 재스캔 제거(byte-identical). TRUE면 루프중 불변, FALSE면 clear후 분기 재진입 없음
@@ -32257,12 +32277,13 @@ function update(){
         // 독사: 안 때린 적 우선, 때린 적은 fallback
         if(p.venomBlade&&p._hitSet&&p._hitSet.has(e)){const fd=dst(p.x,p.y,e.x,e.y);if(fd<_vbFD){_vbFD=fd;_vbFall=e}continue}
         const d=dst(p.x,p.y,e.x,e.y);if(d<bestD){bestD=d;bestE=e}}
+      if(p._parryMagicShot)bestE=_parryMagicFieldTarget(p,bestE,bestD);
       if(!bestE&&_vbFall)bestE=_vbFall; // 새 적 없으면 기존 적
       if(bestE){
         const ta=Math.atan2(bestE.y-p.y,bestE.x-p.x);
         const ca=Math.atan2(p.vy,p.vx);
         let da=ta-ca;while(da>Math.PI)da-=Math.PI*2;while(da<-Math.PI)da+=Math.PI*2;
-        const _turnSpd=p.venomBlade?3.0:p.plagueHoming?1.5:p.mhBlade?1.5:p.blueBean?0.08:p.arcMissile?Math.min(0.9,0.15+p.dist/60*.12):p.fireball?0.35:p.omniHoming?0.55:p.chainMax?0.7:p.magic?0.35:0.25;
+        const _turnSpd=p._parryMagicShot?0.7:p.venomBlade?3.0:p.plagueHoming?1.5:p.mhBlade?1.5:p.blueBean?0.08:p.arcMissile?Math.min(0.9,0.15+p.dist/60*.12):p.fireball?0.35:p.omniHoming?0.55:p.chainMax?0.7:p.magic?0.35:0.25;
         const turn=Math.min(Math.abs(da),_turnSpd*_dtSp)*Math.sign(da);
         p.vx=Math.cos(ca+turn)*spd;p.vy=Math.sin(ca+turn)*spd;
       }
@@ -32339,7 +32360,8 @@ function update(){
     }
     if(dead){continue}
     let hit=false;
-    if(_hurtFieldMobs(p.x,p.y,(p.r||6)+8,p.dmg||p.atk||10,p._hitSet)){hit=true;if(!p.pierce&&!p.plagueBlade&&!p.venomBlade){if(!p._hitSet)p._hitSet=new Set()}}
+    if(_hurtFieldMobs(p.x,p.y,(p.r||6)+8,p.dmg||p.atk||10,p._hitSet,p._parryMagicShot?p:null)){hit=true;if(!p.pierce&&!p.plagueBlade&&!p.venomBlade){if(!p._hitSet)p._hitSet=new Set()}}
+    if(hit&&p._parryMagicShot){_recyclePProj(p);continue}
     const _neP=shQuery(p.x,p.y,p.r+20);
     for(let _ni=0;_ni<_neP.length;_ni++){const e=_neP[_ni];if(!e.alive)continue;
       if(p._hitSet&&p._hitSet.has(e)&&!p.plagueBlade&&!p.venomBlade)continue; // 관통한 적 스킵 (폭독혈/독사는 같은 적 재히트 허용)
@@ -32465,6 +32487,7 @@ function update(){
         {const _isTurretProj=!!p._fromTurret;
         const _ftV=_isTurretProj&&_gxTurret?Math.max(0,1-dst(P.x,P.y,_gxTurret.x,_gxTurret.y)/2000):1;
         hurtE(e,dmg,ang,_isTurretProj||p.blueBean,p,p.el);
+        if(p._parryMagicShot)_parryMagicHitFx(p);
         // 칼날 출혈 DOT: 적중데미지의 10% 축적, 무한 중첩, 15초 지속
         if(p.maliceHunt||p.plagueBlade){
           const _bladeBleed=Math.max(1,~~(dmg*0.10));
@@ -32477,6 +32500,7 @@ function update(){
           if(p.bladeShard||p.maliceHunt||p.iceBlade){playSampleAt('chain_fly',.3*_ftV,_r(1.2,.2),e.x,e.y,_SFX_PRI.PROJ);playVFXAng('magic_burst',e.x,e.y,0.3,1,ang)}
           else if(p.blueBean){if(!P._bbHitCd||P._bbHitCd<=0){playSample('bean_hit',.1*_ftV,_r(1,.15));P._bbHitCd=4}}
           else if(p.arcMissile){}
+          else if(p._parryMagicShot){} // 전용 속성 임팩트에서 타격음 재생
           else if(p.magic)playSampleAt('bullet_hit',.15*_ftV,_r(1,.15),e.x,e.y);
           else if(p.normalBow)playSampleAt('bow_hit',.4*_ftV,_r(1,.15),e.x,e.y);
           else playSampleAt('bullet_hit',.15*_ftV,_r(1,.15),e.x,e.y);
