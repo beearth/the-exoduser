@@ -10860,8 +10860,10 @@ function _silvertailAttackPose(){
   if(!_silvAnimating&&!P._silvAttackStartedAt)return null;
   const p=Math.max(0,Math.min(1,_silvElapsed/_SILVERTAIL_ATTACK_VISUAL_MS));
   const _silvSpinFrame=Math.min(3,~~(_silvElapsed/_SILVERTAIL_ATTACK_SPIN_FRAME_MS));
-  const _silvSpinProgress=Math.min(1,_silvElapsed/(_SILVERTAIL_ATTACK_SPIN_FRAME_MS*4));
+  let _silvSpinProgress=Math.min(1,_silvElapsed/(_SILVERTAIL_ATTACK_SPIN_FRAME_MS*4));
   const _silvBaseDir=_facingDir8(P.facing),_silvBaseDirI=_DIR8.indexOf(_silvBaseDir);
+  const _silvAtkFrames=P._sa&&P._sa.fm&&P._sa.fm['atk2_'+_silvBaseDir];
+  if(P._silvAttackKind==='shield'&&_silvAtkFrames&&_silvAtkFrames.length===9&&typeof SilvertailAttackRemaster!=='undefined')_silvSpinProgress=SilvertailAttackRemaster.spinProgress(_silvSpinProgress);
   const _silvSpinOffsets=[-2,-1,1,2]; // 마우스 기준 왼쪽 몸통 → 중앙 → 오른쪽 몸통
   const smooth=q=>q*q*(3-2*q);
   // 목뒤에 둔 손잡이 축에서 90°만 꺾은 뒤, 칼끝은 바라보는 방향과 일치한다.
@@ -10930,8 +10932,15 @@ function _drawSilvertailEArc(ctx,pose,scale){
   const _silvEArcDrawW=(200+_silvEArcIn*30)*(scale||1);
   const _silvEArcDrawH=_silvEArcDrawW*(_silvEArcFrameH/_silvEArcFrameW);
   ctx.save();ctx.translate(P.x,P.y);ctx.rotate(P.facing);
-  ctx.globalCompositeOperation='lighter';ctx.globalAlpha=(.84+_silvEArcIn*.16)*_silvEArcOut;
-  ctx.filter='hue-rotate(-28deg) saturate(2.05) contrast(1.28) brightness(1.28)';
+  const _silvEArcBoost=(P._stWingT||0)>0;
+  const _silvEArcAlpha=(.84+_silvEArcIn*.16)*_silvEArcOut;
+  ctx.globalCompositeOperation='lighter';ctx.globalAlpha=_silvEArcAlpha;
+  ctx.filter=_silvEArcBoost?'hue-rotate(-28deg) saturate(2.05) contrast(1.28) brightness(1.6)':'hue-rotate(-28deg) saturate(2.05) contrast(1.28) brightness(1.28)';
+  if(_silvEArcBoost){
+    ctx.save();ctx.rotate(-.10);ctx.globalAlpha=_silvEArcAlpha*.20;
+    ctx.drawImage(_silvEArcImg,_silvEArcFrame*_silvEArcFrameW,0,_silvEArcFrameW,_silvEArcFrameH,-_silvEArcDrawW/2,-_silvEArcDrawH/2,_silvEArcDrawW,_silvEArcDrawH);
+    ctx.restore();ctx.globalAlpha=_silvEArcAlpha;
+  }
   ctx.drawImage(_silvEArcImg,_silvEArcFrame*_silvEArcFrameW,0,_silvEArcFrameW,_silvEArcFrameH,-_silvEArcDrawW/2,-_silvEArcDrawH/2,_silvEArcDrawW,_silvEArcDrawH);
   ctx.restore();
 }
@@ -10941,7 +10950,7 @@ const _flameBladeImg=new Image();let _flameBladeReady=false;
 _flameBladeImg.onload=()=>{_flameBladeReady=_flameBladeImg.naturalWidth>0&&_flameBladeImg.naturalHeight>0;};
 _flameBladeImg.src='assets/vfx/flame_blade_swing_8f.png';
 function _drawFlameBladeSwing(ctx,pose){
-  if(!_flameBladeReady||(P._stWingT||0)<=0||(P.s!=='sBash'&&P.s!=='sRecover'))return false;
+  if(_charIdx===1||!_flameBladeReady||(P._stWingT||0)<=0||(P.s!=='sBash'&&P.s!=='sRecover'))return false;
   const progress=pose&&pose.kind==='shield'?pose.spinProgress:(P.s==='sBash'?(24-P.st2)/40:(24+16-P.st2)/40);
   if(progress>=1)return false;
   const frame=Math.min(7,Math.max(0,Math.floor(progress*8)));
@@ -54297,7 +54306,7 @@ function drawP(){
       P._sa.anim='atk2';
       const _silvAtkFr=SpriteAnimator._fr(P._sa,_silvAtk.spriteDir);
       const _silvAtkN=_silvAtkFr&&_silvAtkFr.length||CHAR_LIST[_charIdx].atkN||4;
-      const _silvBodyProgress=_silvAtkN===9&&typeof SilvertailAttackRemaster!=='undefined'?SilvertailAttackRemaster.spinProgress(_silvAtk.spinProgress):_silvAtk.spinProgress;
+      const _silvBodyProgress=_silvAtk.spinProgress;
       P._sa.f=Math.min(_silvAtkN-1,~~(_silvBodyProgress*_silvAtkN));
     }
     const _pFlip=!_apHasDir&&Math.abs(_fa)>Math.PI/2,_pDk=_apHasDir?(_silvAtk?_silvAtk.spriteDir:_apDir):null;

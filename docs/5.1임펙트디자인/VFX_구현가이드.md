@@ -5,10 +5,10 @@
 | 이름 | `shieldThrow`와 기본 E 합체 `shieldFuse`: 불꽃칼날 / Flame Blade. `maliceSwipe` 기본 구성명 칼등 처내기, 합체 표시명 불꽃칼날 |
 | 호환 | 스킬/합체 ID, `_ensureBaseWingStrike`, `_wingStrikeLevel`, `_stWingT`, `_stCd` 및 세이브 구조 유지 |
 | 스프라이트 | `assets/vfx/flame_blade_swing_8f.png`, 1774×887 RGBA, 4열×2행 총8프레임. 실제 투명 알파, 원본 그대로 사용 |
-| 재생 | `_drawFlameBladeSwing`: `_stWingT>0`이며 `sBash/sRecover`일 때만. 실버테일 shield pose의 `spinProgress`(240ms), 나머지 캐릭터는 sBash24f+sRecover16f 진행률. 종료 시 숨김 |
+| 재생 | `_drawFlameBladeSwing`: `_stWingT>0`이며 `sBash/sRecover`일 때만. 실버테일은 기존 보라 아크 강화형 사용. `_silvertailAttackPose().spinProgress`를 몸/아크가 공유하며 9프레임 공격은 `clamp(elapsed/240×1.5,0,1)`=160ms, 4프레임 폴백은240ms. 다른 캐릭터 불꽃은 기존 sBash24f+sRecover16f 진행률. 종료 시 숨김 |
 | 배치 | 캐릭터 중심 피벗, `P.facing` 회전. 크기 `(200+견갑bonusRange×8)×C×M`, C=충전1~3, M=1+(L−1)×0.05. 프레임별 위치/크기 정규화 없이 동일 스케일 |
 | 샘플링 | 셀 폭/높이 각각443.5px, 셀당 가장자리1px 인셋. source-over 합성, alpha=1, filter=none, save/restore. 픽셀 재색칠·배경 제거 없음 |
-| 기존 연출 | 불꽃 스프라이트를 그린 프레임에는 실버테일 보라 아크/다른 캐릭터 검정 스윕 생략. 로딩 전 및 쿨다운 중에는 기존 E 연출. 발동 파티클/미합체 충격파 링 주황색 `#ff7a24` |
+| 기존 연출 | 실버테일은 불꽃 시트를 생략하고 기존6프레임 보라 아크를 사용: 강화 시 밝기1.28→1.6, 같은 프레임을 −0.10rad·alpha×0.20 잔광으로1회 추가. 쿨다운 중에는 원래 아크1회. 다른 캐릭터는 불꽃을 그린 프레임에 검정 스윕 생략, 로딩 전/쿨다운 중 기존 연출. 발동 파티클/미합체 충격파 링 주황색 `#ff7a24` |
 | 전투 | 피해 속성·수치, 전방 웨이브, 충전1.5초, 합체 쿨 `max(120,720−L×15)`f, 무적40f, 추가ST0, 기존 반사 규칙 유지. 불꽃 연출 자체에 별도 화상/DOT 없음 |
 | 번역 | KO/EN 스킬·합체·HUD·초기화·연습 안내를 갱신. 새 한국어 키의 미번역 언어는 공통 영문 Flame Blade 폴백. 과거 번역 기록의 기존 날개 용어는 현행 표시명이 아님 |
 | 생성 | built-in image_gen, 프롬프트: `assets/vfx/flame_blade_swing_prompt.txt`. 생성 원본을 복사하고 실제 알파 보존 |
@@ -175,7 +175,7 @@
 |---|---|---|---|
 | 좌클릭 기검참 | `_kiSlashRadiant`, `ki_slash_radiant_sheet.png` (1254×1254 RGB, 3×3) | 9프레임, 실버테일 40° hue 캐시, 3타 공통150° 캐시. 폭192/252px. 구 `silvertail_ki_slash_realistic.png` 및 기존 맥동은 로드 실패 폴백에만 적용 | 기존 3단 콤보 피해·사거리·히트 범위 그대로 |
 | 우클릭 악의구 | `p.fireball`, `silvertail_malice_orb_sheet_v3.png` (1536×1024 RGB, 녹색 크로마, 3×2 배열·6프레임) | 실버테일(`_charIdx===1`)만 검은 공허 핵·은빛 초승달 칼날 3장으로 구성한 구체를 지름 `p.r×6.2`로 표시하고 크기 맥동 없이 시계방향 600ms/회전을 적용. 핵 중심 정렬 432×432 소스, 80ms 간격·정방향 480ms 반복. 다른 캐릭터는 공용 7×3/20프레임 시트 유지 | 악의구 피해·폭발·중독·사거리·자원 그대로 |
-| KeyE 칼등 처내기 | `_drawSilvertailEArc(ctx, pose, scale)`, `silvertail_violet_arc_anim_api_v3.png` (2132×738 RGBA, 폭 6등분) | `pose.kind==='shield'`에서만 `floor(spinProgress×6)`으로 재생. `hue-rotate(-28deg) saturate(2.05) contrast(1.28) brightness(1.28)`. 기본 폭 200→230px이며 차징 릴리즈는 `min(3,max(1,P._sBashChgMul||1))×(1+(E스킬Lv−1)×0.05)`을 곱한다. Lv1 풀차지600→690px, Lv10 풀차지870→1000.5px | 기본 E의 피해·반사·자원·입력은 그대로. E 아크는 충전 C와 스킬 레벨 범위 M을 함께 곱하며 좌클릭·우클릭 악의구에는 적용하지 않음 |
+| KeyE 칼등 처내기 | `_drawSilvertailEArc(ctx, pose, scale)`, `silvertail_violet_arc_anim_api_v3.png` (2132×738 RGBA, 폭 6등분) | `pose.kind==='shield'`에서만 `floor(spinProgress×6)`으로 재생. `hue-rotate(-28deg) saturate(2.05) contrast(1.28) brightness(1.28)`, 강화 E는 brightness1.6+−0.10rad·alpha×0.20 잔광1장. 9프레임 몸과 동일160ms 진행률(폴백240ms). 기본 폭 200→230px이며 차징 릴리즈는 `min(3,max(1,P._sBashChgMul||1))×(1+(E스킬Lv−1)×0.05)`을 곱한다. Lv1 풀차지600→690px, Lv10 풀차지870→1000.5px | 기본 E의 피해·반사·자원·입력은 그대로. E 아크는 충전 C와 스킬 레벨 범위 M을 함께 곱하며 좌클릭·우클릭 악의구에는 적용하지 않음 |
 
 ### 스프라이트 시트 VFX
 1. **배경은 반드시 투명(alpha=0)** — JPEG 금지, PNG 사용

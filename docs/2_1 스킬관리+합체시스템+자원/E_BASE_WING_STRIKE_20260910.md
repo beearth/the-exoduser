@@ -5,10 +5,10 @@
 | 이름 | `shieldThrow`와 기본 E 합체 `shieldFuse`: 불꽃칼날 / Flame Blade. `maliceSwipe` 기본 구성명 칼등 처내기, 합체 표시명 불꽃칼날 |
 | 호환 | 스킬/합체 ID, `_ensureBaseWingStrike`, `_wingStrikeLevel`, `_stWingT`, `_stCd` 및 세이브 구조 유지 |
 | 스프라이트 | `assets/vfx/flame_blade_swing_8f.png`, 1774×887 RGBA, 4열×2행 총8프레임. 실제 투명 알파, 원본 그대로 사용 |
-| 재생 | `_drawFlameBladeSwing`: `_stWingT>0`이며 `sBash/sRecover`일 때만. 실버테일 shield pose의 `spinProgress`(240ms), 나머지 캐릭터는 sBash24f+sRecover16f 진행률. 종료 시 숨김 |
+| 재생 | `_drawFlameBladeSwing`: `_stWingT>0`이며 `sBash/sRecover`일 때만. 실버테일은 기존 보라 아크 강화형 사용. `_silvertailAttackPose().spinProgress`를 몸/아크가 공유하며 9프레임 공격은 `clamp(elapsed/240×1.5,0,1)`=160ms, 4프레임 폴백은240ms. 다른 캐릭터 불꽃은 기존 sBash24f+sRecover16f 진행률. 종료 시 숨김 |
 | 배치 | 캐릭터 중심 피벗, `P.facing` 회전. 크기 `(200+견갑bonusRange×8)×C×M`, C=충전1~3, M=1+(L−1)×0.05. 프레임별 위치/크기 정규화 없이 동일 스케일 |
 | 샘플링 | 셀 폭/높이 각각443.5px, 셀당 가장자리1px 인셋. source-over 합성, alpha=1, filter=none, save/restore. 픽셀 재색칠·배경 제거 없음 |
-| 기존 연출 | 불꽃 스프라이트를 그린 프레임에는 실버테일 보라 아크/다른 캐릭터 검정 스윕 생략. 로딩 전 및 쿨다운 중에는 기존 E 연출. 발동 파티클/미합체 충격파 링 주황색 `#ff7a24` |
+| 기존 연출 | 실버테일은 불꽃 시트를 생략하고 기존6프레임 보라 아크를 사용: 강화 시 밝기1.28→1.6, 같은 프레임을 −0.10rad·alpha×0.20 잔광으로1회 추가. 쿨다운 중에는 원래 아크1회. 다른 캐릭터는 불꽃을 그린 프레임에 검정 스윕 생략, 로딩 전/쿨다운 중 기존 연출. 발동 파티클/미합체 충격파 링 주황색 `#ff7a24` |
 | 전투 | 피해 속성·수치, 전방 웨이브, 충전1.5초, 합체 쿨 `max(120,720−L×15)`f, 무적40f, 추가ST0, 기존 반사 규칙 유지. 불꽃 연출 자체에 별도 화상/DOT 없음 |
 | 번역 | KO/EN 스킬·합체·HUD·초기화·연습 안내를 갱신. 새 한국어 키의 미번역 언어는 공통 영문 Flame Blade 폴백. 과거 번역 기록의 기존 날개 용어는 현행 표시명이 아님 |
 | 생성 | built-in image_gen, 프롬프트: `assets/vfx/flame_blade_swing_prompt.txt`. 생성 원본을 복사하고 실제 알파 보존 |
@@ -33,7 +33,7 @@
 | 불꽃칼날 추가 반사 | `_sdRange=floor(_gsRange2×1.5)` (기존 합체 보너스 유지) |
 | 마력 부여 검격 (2026-09-12) | 쿨다운 완료로 불꽃칼날이 발동한 sBash에서 `_stWingT>0`·shieldFuse 합체일 때 일반 마법탄도 반사. `_eCanReflectProjectile`을 E 단발·전진 반사에 공통 적용. 쿨다운 중 일반 E는 물리만 반사. 무지개·대형 에너지·반사 금지는 기존 제외 유지 |
 | 파워웨이브 | `_wvRangeMul=M×C`; 사거리210×M×C, 진행 판정 r=50×M×C, 폭95×M×C. C는 발사 시 충전 배율1~3 스냅샷. 적/탄막 충돌과 먼지 분포가 같은 r/w 사용. Lv1 풀차지 사거리630·r150·폭285 |
-| 시각 | 강화 E는 위 불꽃 스프라이트 계약 우선. 일반 E/로딩 폴백: 실버테일 아크 scale=C×M; 다른 캐릭터 sweepRange=floor((90+견갑bonusRange×4)×C×M). 룬 미리보기는 실제 `_eSwingRadius(C)` 사용 |
+| 시각 | 강화 E는 캐릭터별 위 계약 우선(실버테일 보라 아크 강화형 / 다른 캐릭터 불꽃). 실버테일 아크 scale=C×M; 다른 캐릭터 sweepRange=floor((90+견갑bonusRange×4)×C×M). 룬 미리보기는 실제 `_eSwingRadius(C)` 사용 |
 | 초기화 | 1레벨 합체 유지. `_resetWingStrikeUpgrades`는 공통 합체 강화분(L−1)을 두 구성 스킬에서 차감하고 `sum(_fuseUpSpCost(i,2), i=1..L−1)`만 SP 환불. 무료 습득/합체 비용 환불 없음. 레벨 차이가 있는 기존 세이브의 초과 레벨은 보존 |
 | 유지 | 기존 피해량 성장, 소모 ST, 패링 입력, 실버테일 전진 거리, 순간무적40f. 이동기 충전 취소는 폐기. Q/다른 스킬 범위 성장 변경 없음 |
 

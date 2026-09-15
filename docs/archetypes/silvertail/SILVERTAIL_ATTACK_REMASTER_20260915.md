@@ -36,10 +36,10 @@
 | LMB 타격 | recovery=`max(1,recoveryTicks)`, progress=`clamp(1.5×(5-left)/(5+recovery),0,1)` |
 | LMB 회수 | progress=`clamp(1.5×(5+recovery-left)/(5+recovery),0,1)` |
 | LMB 프레임 | `min(8,floor(progress×9))`; 회전 정규화 시간 `(5+recovery)/1.5`틱. recovery=16이면21→14틱(60fps 기준350→233.33ms). 첫 공격 프레임 생략/회수 시 재시작 없음 |
-| E 프레임 | 실제 방향 atk2 배열 길이를 사용(확장9/폴백4), 9프레임 확장만 bodyProgress=`SilvertailAttackRemaster.spinProgress(spinProgress)`, 폴백4는 기존 spinProgress; `min(n-1,floor(bodyProgress×n))` |
-| E 시간 | 기존 spinProgress=`min(1,elapsed/240)`, 몸 회전은1.5배로160ms에 완료. 기존 VFX 진행률·시각 계약360ms 유지 |
+| E 프레임 | 실제 방향 atk2 배열 길이를 사용(확장9/폴백4), 9프레임 배속은 `_silvertailAttackPose`에서1회 적용하며 bodyProgress=`pose.spinProgress`; 폴백4는 기존240ms; `min(n-1,floor(bodyProgress×n))` |
+| E 시간 | shield spinProgress=`clamp(elapsed/240×1.5,0,1)`(9프레임). 몸과 일반/강화 E 아크가160ms 진행률 공유. 4프레임 폴백240ms, 포즈 수명360ms 유지. [강화 아크](SILVERTAIL_E_ARC_20260916.md) |
 | 렌더 | `SpriteAnimator.draw`로 몸의 각 시점 순환. 화면 위에서 이미지 전체를 기울여 돌리지 않음 |
-| 조준·전투 | P.facing, 피해·범위·공속·자원·패링·검기/VFX 변경 없음 |
+| 조준·전투 | P.facing, 피해·범위·공속·자원·패링·LMB 검기 변경 없음. E VFX는2026-09-16 기존 보라 아크 강화형 및 몸 동기화 적용 |
 | 명암·캐시 | 본체에 기존 `_shadePlayerAtlas` 후 공격 확장 병합. 공격에는48px 명암 필터 재적용 없음; 외곽선/밝기 캐시는 병합본으로 갱신 |
 | 폴백 | 이미지 로딩 실패 또는240×240 규격 불일치 시 원본 유지 |
 | 비동기 보호 | `_charIdx!==idx` 또는 `_atlasMask!==c`이면 늦은 결과 폐기 |

@@ -1,0 +1,30 @@
+<!doctype html><html lang="ko"><meta charset="utf-8"><base href="../../"><title>실버테일 E 아크 검수</title>
+<style>body{background:#171b22;color:#e8e7ee;font:16px system-ui;margin:24px}canvas{display:block;max-width:100%;background:#252a35}button{padding:10px;margin:12px}</style>
+<h1>실버테일 E · 기존 아크 강화형</h1><p>위: 일반 E / 아래: 강화 E. 몸과 아크 160ms 동기화.</p><button id="toggle">애니메이션 재생</button><canvas id="preview" width="1200" height="640"></canvas><p id="status">로딩 중</p>
+<script src="player-attack-remaster.js?v=20260915-spin-speed15"></script><script>
+(async()=>{
+ const html=await(await fetch('game.html')).text();
+ const extract=name=>{const a=html.indexOf('function '+name+'(');return html.slice(a,html.indexOf('\n}',a)+2)};
+ const a=html.indexOf('const SpriteAnimator={'),b=html.indexOf('\n};',a)+3,animator=Function(html.slice(a,b)+';return SpriteAnimator')();
+ const base=document.createElement('canvas');base.width=480;base.height=384;
+ const [atlas,fm]=await new Promise(r=>SilvertailAttackRemaster.apply(base,{},(a,f)=>r([a,f])));
+ const arc=new Image();arc.src='img/vfx/silvertail_violet_arc_anim_api_v3.png';await arc.decode();
+ const P={s:'sBash',hp:100,facing:0,x:0,y:0,_silvAttackStartedAt:1000,_silvAttackKind:'shield',_stWingT:0,_sa:animator.create(atlas,fm,'atk2')};
+ const clock={now:()=>1000};
+ const api=Function('P','performance','SilvertailAttackRemaster','_silvEArcImg',"const _charIdx=1,CHAR_LIST=[{},{atkN:4}],_DIR8=['e','se','s','sw','w','nw','n','ne'],_facingDir8=()=> 'e',_SILVERTAIL_ATTACK_VISUAL_MS=360,_SILVERTAIL_ATTACK_SPIN_FRAME_MS=60,_silvEArcReady=true;"+extract('_silvertailAttackPose')+extract('_drawSilvertailEArc')+';return {pose:_silvertailAttackPose,draw:_drawSilvertailEArc}')(P,clock,SilvertailAttackRemaster,arc);
+ const x=document.getElementById('preview').getContext('2d');let playing=false;
+ document.getElementById('toggle').onclick=e=>{playing=!playing;e.target.textContent=playing?'시간별 프레임 보기':'애니메이션 재생'};
+ function draw(now){
+  x.fillStyle='#252a35';x.fillRect(0,0,1200,640);
+  for(let row=0;row<2;row++)for(let col=0;col<5;col++){
+   const ms=playing?(now%720):[0,40,80,120,160][col];clock.now=()=>1000+ms;P._stWingT=row?40:0;
+   const pose=api.pose();P._sa.f=Math.min(8,Math.floor(pose.spinProgress*9));
+   x.save();x.translate(120+col*240,155+row*310);
+   x.fillStyle='#e8e7ee';x.font='16px system-ui';x.fillText((row?'강화':'일반')+' · '+Math.floor(ms)+'ms',-90,-123);
+   x.save();x.scale(1.3,1.3);animator.draw(P._sa,x,0,0,false,'e');x.restore();api.draw(x,pose,.8);x.restore();
+  }
+  requestAnimationFrame(draw);
+ }
+ document.getElementById('status').textContent='로드 완료 · 실제 게임 렌더러 · 160ms에 아크 종료';requestAnimationFrame(draw);
+})().catch(e=>document.getElementById('status').textContent=e.message);
+</script></html>

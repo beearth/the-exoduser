@@ -11,7 +11,7 @@ for(const file of ['game.html','game-easy-test.html']){
     const end=html.indexOf('\n// ── 회전참 대검',start);
     const calls=[];
     const ctx={save(){calls.push(['save'])},restore(){calls.push(['restore'])},translate(...a){calls.push(['translate',...a])},rotate(...a){calls.push(['rotate',...a])},drawImage(...a){calls.push(['draw',...a])}};
-    const scope=vm.createContext({P:{s:'sBash',st2:24,_stWingT:40,_sBashChgMul:1,x:30,y:40,facing:Math.PI/2},_flameBladeReady:true,_flameBladeImg:{width:1774,height:887},_eSkillRangeMul:()=>1,sh:()=>({bonusRange:0})});
+    const scope=vm.createContext({_charIdx:0,P:{s:'sBash',st2:24,_stWingT:40,_sBashChgMul:1,x:30,y:40,facing:Math.PI/2},_flameBladeReady:true,_flameBladeImg:{width:1774,height:887},_eSkillRangeMul:()=>1,sh:()=>({bonusRange:0})});
     vm.runInContext(html.slice(start,end),scope);
     return {scope,ctx,calls,draw:pose=>scope._drawFlameBladeSwing(ctx,pose)};
   }
