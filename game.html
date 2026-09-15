@@ -10810,6 +10810,31 @@ const _ENV_LIGHT=[
   'rgba(200,180,120,.04)',
   'rgba(120,40,220,.06)'
 ];
+// 이동 시트만 실제 변위를 따른다. 조준/공격 판정의 P.facing은 유지.
+function _playerSpriteDirection(p){
+  if(_charIdx===0&&(p.s==='wWindup'||p.s==='wSwing'||p.s==='wRecover')&&Number.isFinite(p.atkArc))return _facingDir8(p.atkArc);
+  return _facingDir8(p.s==='idle'&&p._walkMoving?p._walkFacing:p.s==='whirlwind'?(p.wwAng||0):p.facing);
+}
+// 같은 공격 시트를 준비→타격→회수 구간으로 연속 재생한다 (판정 시간은 변경하지 않음).
+function _playerMeleeProgress(state,left,windupTicks,recoveryTicks){
+  const clamp=v=>Math.max(0,Math.min(1,v));
+  if(state==='wWindup')return .2*clamp(1-left/Math.max(1,windupTicks));
+  if(state==='wSwing')return .2+.55*clamp(1-left/5);
+  return .75+.25*clamp(1-left/Math.max(1,recoveryTicks));
+}
+// 전사 원본: 0~1 준비, 2~5 들어올림, 6~7 베기. 판정 순간에 6번을 맞춘다.
+function _warriorAttackFrame(state,left,windupTicks,recoveryTicks){
+  const clamp=v=>Math.max(0,Math.min(1,v));
+  if(state==='wWindup')return Math.min(1,Math.floor(clamp(1-left/Math.max(1,windupTicks))*2));
+  if(state==='wSwing'||state==='sBash'){
+    const t=clamp(1-left/(state==='sBash'?20:5));
+    const first=state==='sBash'?0:2;
+    return t<.4?Math.min(5,first+Math.floor(t/.4*(6-first))):Math.min(7,6+Math.floor((t-.4)/.6*2));
+  }
+  // 별도 회수 그림이 없으므로 베기 끝→검을 내린 준비 포즈→대기 직전 포즈.
+  const t=clamp(1-left/Math.max(1,recoveryTicks));
+  return t<.2?7:t<.55?1:0;
+}
 // ── _P_ANIM_MAP: 상태→애니메이션 매핑 ──
 const _P_ANIM_MAP={idle:'idle',wWindup:'atk1',wSwing:'atk2',wRecover:'atk3',whirlwind:'whirlwind',
   sBash:'bash',sRecover:'bash',sBlock:'block',charge:'charge_start',charging:'charge_start',
@@ -10824,7 +10849,8 @@ function _silvertailAttackPose(){
   if(_charIdx!==1||!P)return null;
   const _silvElapsed=performance.now()-(P._silvAttackStartedAt||0);
   const _silvAnimating=!!P._silvAttackStartedAt&&_silvElapsed<_SILVERTAIL_ATTACK_VISUAL_MS;
-  if((P.s!=='wSwing'&&P.s!=='wRecover'&&P.s!=='sBash'&&P.s!=='sRecover')&&!_silvAnimating)return null;
+  if(P.hp<=0||(P.s!=='wSwing'&&P.s!=='wRecover'&&P.s!=='sBash'&&P.s!=='sRecover'))return null;
+  if(!_silvAnimating&&!P._silvAttackStartedAt)return null;
   const p=Math.max(0,Math.min(1,_silvElapsed/_SILVERTAIL_ATTACK_VISUAL_MS));
   const _silvSpinFrame=Math.min(3,~~(_silvElapsed/_SILVERTAIL_ATTACK_SPIN_FRAME_MS));
   const _silvSpinProgress=Math.min(1,_silvElapsed/(_SILVERTAIL_ATTACK_SPIN_FRAME_MS*4));
@@ -30012,6 +30038,7 @@ function update(){
   if(P.hp<=0&&P.s!=='fallen'&&P.s!=='dead'){die()}
   // E 충전/릴리즈와 칼날이동은 독립 진행. 사망·기절 시 남은 이동 폐기.
   if(P.s!=='bladeDash'&&P._bdMoveT>0){if(P.hp<=0||P.s==='fallen'||P.s==='dead'||P.s==='pStun'){P._bdMoveT=0;P._preBdState=null}else _tickBladeDash(sp)}
+  P._walkMoving=false; // 매 업데이트 실제 보행 변위로만 다시 설정
   switch(P.s){
   case 'fallen':{
     P.st2-=sp;
@@ -30053,6 +30080,8 @@ function update(){
     const _wx0=P.x,_wy0=P.y;
     if(canMv(nx,P.y,P.r))P.x=nx;if(canMv(P.x,ny,P.r))P.y=ny;
     const _wdd=Math.sqrt((P.x-_wx0)*(P.x-_wx0)+(P.y-_wy0)*(P.y-_wy0));
+    P._walkMoving=_wdd>0;
+    if(P._walkMoving)P._walkFacing=Math.atan2(P.y-_wy0,P.x-_wx0);
     if(_wdd>0){const _prevD=P._walkDist||0;P._walkDist=_prevD+_wdd;const _prevF=~~(_prevD/32)%8,_curF=~~(P._walkDist/32)%8;if(_prevF!==_curF&&(_curF===0||_curF===4)){playSample(_curF===0?'footstep':'footstep2',.3,_r(.9,.15))}}else P._walkDist=P._walkDist||0
     // ═══ 칼날이동 — 더블탭 트리거 소비 ═══
     if(P._bdTrigger!=null){
@@ -54140,7 +54169,7 @@ function drawP(){
   const _playerAtlasNoWarmupNeeded=_atlasP_img&&typeof _atlasP_img.getContext==='function';
   if(_atlasPReady&&(_playerAtlasGpuWarmDone||_playerAtlasNoWarmupNeeded)&&(P._sa||(P._sa=SpriteAnimator.create(_atlasP_img,_atlasP_frames,'idle')))){
     // ── Atlas P 스프라이트 렌더링 (8방향) + Ori 영혼 글로우 ──
-    const _apDead=P.hp<=0;const _apMv=P.s==='idle'&&(isAct('up')||isAct('down')||isAct('left')||isAct('right'));
+    const _apDead=P.hp<=0;const _apMv=P.s==='idle'&&P._walkMoving===true;
     if(_harpLandT>0){_harpLandT-=_dtSp;if(_harpLandT<=0)_dashPhase=0;}
     let _apAnim=_P_ANIM_MAP[P.s]||'idle';
     if(_apDead)_apAnim='die';
@@ -54151,7 +54180,7 @@ function drawP(){
     else if(_dashActive)_apAnim='dash_fly';
     else if(_harpLandT>0)_apAnim='dash_land';
     else if(_apMv)_apAnim='run';
-    const _apDir=_facingDir8(P.facing);
+    const _apDir=_playerSpriteDirection(P);
     const _apHasDir=!!P._sa.fm[_apAnim+'_'+_apDir];
     if(!_apHasDir&&!P._sa.fm[_apAnim])_apAnim=(_apAnim==='whirlwind'||_apAnim==='stun'||_apAnim==='cast'||_apAnim==='ghost'||_apAnim.startsWith('gSlam')||_apAnim.startsWith('charge')||_apAnim==='atk3'||_apAnim.startsWith('dash'))?'dash':'idle';
     if(!P._sa.fm[_apAnim]&&!P._sa.fm[_apAnim+'_'+_apDir])_apAnim='idle';
@@ -54169,6 +54198,17 @@ function drawP(){
       SpriteAnimator.update(P._sa,_dtSp,_apHasDir?_apDir:null);
       // start 끝나면 fly로 전환
       if(_dashPhase===1&&P._sa.done)_dashPhase=2;
+    }else if(_charIdx===0&&!_apDead&&(P.s==='wWindup'||P.s==='wSwing'||P.s==='wRecover'||P.s==='sBash'||P.s==='sRecover')){
+      const _wFr=SpriteAnimator._fr(P._sa,_apHasDir?_apDir:null);
+      const _wWind=~~(10/(wp().spd||1))||1;
+      const _wRecovery=P.s==='sRecover'?(~~(28/pParryRmbSpd())||1):(~~(16/((wp().spd||.3)*statDex()*(1+_eqAffix('meleeAtkSpd')+_eqAffix('glovesAtkSpd'))))||1);
+      if(_wFr&&_wFr.length)P._sa.f=Math.min(_wFr.length-1,_warriorAttackFrame(P.s,P.st2,_wWind,_wRecovery));
+    }else if(P.s==='wWindup'||P.s==='wSwing'||P.s==='wRecover'){
+      const _mFr=SpriteAnimator._fr(P._sa,_apHasDir?_apDir:null);
+      const _mWind=~~(10/(wp().spd||1))||1;
+      const _mRecover=~~(16/((wp().spd||.3)*statDex()*(1+_eqAffix('meleeAtkSpd')+_eqAffix('glovesAtkSpd'))))||1;
+      const _mProgress=_playerMeleeProgress(P.s,P.st2,_mWind,_mRecover);
+      if(_mFr&&_mFr.length)P._sa.f=Math.min(_mFr.length-1,Math.floor(_mProgress*_mFr.length));
     }else if(_apMv){
       const _dFr=SpriteAnimator._fr(P._sa,_apHasDir?_apDir:null);
       // 전사 8프레임·실버테일 4프레임 모두 256px 이동마다 보행 한 주기.
@@ -54208,30 +54248,8 @@ function drawP(){
       const _bdSy=_bdSq[1];
       X.translate(0,(_pScale*48*(1-_bdSy))*0.5); // 발밑 고정(세로 압축 보정, 착지스쿼시 동일 idiom)
       X.scale(_pScale*_bdSq[0],_pScale*_bdSy); // x=_dsq[0] 가로 stretch, y=_dsq[1] 세로 squash
-    }else if((P.s==='wWindup'||P.s==='wSwing'||P.s==='wRecover')&&!_apDead){
-      // ── 근접 3단 스윙 엔벨로프: wWindup=되감기(0→-12°) / wSwing=내려침(-12°→+20°) / wRecover=복귀(+20°→0) (시각 회전 전용, 판정/히트박스/프레임수 무변경) ──
-      let _swAng;
-      if(P.s==='wWindup'){
-        const _totW=~~(10/(wp().spd||1))||1;const _tW=P.st2<=0?1:Math.max(0,Math.min(1,1-P.st2/_totW));
-        _swAng=-0.21*MOTION.ez(MOTION.OUT3,_tW);                 // 0 → -0.21rad(-12°) 뒤로 당김(OUT3 부드럽게)
-      }else if(P.s==='wSwing'){
-        const _tS=P.swProg;                                     // 0→1, hitArc=0.40
-        _swAng=-0.21+0.56*MOTION.ez(MOTION.OUT3,_tS);           // -0.21 → +0.35rad(+20°). OUT3이라 판정(0.40) 시 이미 +0.23(앞쪽)
-      }else{ // wRecover
-        const _totR=~~(16/((wp().spd||.3)*statDex()*(1+_eqAffix('meleeAtkSpd')+_eqAffix('glovesAtkSpd'))))||1;
-        const _tR=P.st2<=0?1:Math.max(0,Math.min(1,1-P.st2/_totR));
-        _swAng=0.35*(1-MOTION.ez(MOTION.OUT3,_tR));             // +0.35 → 0 복귀(힘 빠지며)
-      }
-      const _swSign=Math.cos(_fa)>=0?1:-1;         // 좌우 facing 반전 대응
-      X.translate(0,-_pScale*10);                  // 어깨 높이 피벗(발밑 회전 시 넘어져 보임 방지)
-      X.rotate(_swAng*_swSign);
-      X.translate(0,_pScale*10);
-      X.scale(_pScale,_pScale);
-    }else if(P.s==='whirlwind'&&!_apDead){
-      // ── 회전참: 캐릭터 본체가 칼날과 같은 각도로 팽이처럼 회전 (시각 전용, 판정/히트박스/프레임 무변경) ──
-      X.translate(0,-_pScale*12);                  // 몸통 중심 피벗(발밑 회전 방지)
-      X.rotate(P.wwAng||0);
-      X.translate(0,_pScale*12);
+    }else if((P.s==='wWindup'||P.s==='wSwing'||P.s==='wRecover'||P.s==='whirlwind')&&!_apDead){
+      // 공격은 원본 프레임, 회전참은 8방향 시트로 표현하고 본체는 세운다.
       X.scale(_pScale,_pScale);
     }else if(P.s==='kiGather'&&!_apDead){
       // ── 차징 검격 응축: 단계 비례 웅크림 squash (몸통은 idle 유지, 대검은 독립 렌더 — 통짜 회전 미사용) ──
@@ -54250,7 +54268,7 @@ function drawP(){
       X.scale(_pScale,_pScale);
     }
     if(_silvAtk&&!_silvAtk.hasAtk){_drawSilvertailBackBlade(X,_silvAtk);}
-    if(_silvAtk&&_silvAtk.hasAtk){
+    if(_silvAtk&&_silvAtk.hasAtk&&(P.s==='sBash'||P.s==='sRecover')){
       P._sa.anim='atk2';
       const _silvAtkFr=SpriteAnimator._fr(P._sa,_silvAtk.spriteDir);
       const _silvAtkN=_silvAtkFr&&_silvAtkFr.length||CHAR_LIST[_charIdx].atkN||4;
