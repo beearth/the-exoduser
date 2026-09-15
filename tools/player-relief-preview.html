@@ -1,0 +1,47 @@
+<!doctype html><html lang="ko"><meta charset="utf-8"><title>캐릭터 입체감 비교</title>
+<style>body{margin:28px;background:#16171b;color:#ded8cc;font:15px system-ui}h1{font-size:25px}button,select{font:inherit;padding:8px 14px;background:#303137;color:inherit;border:1px solid #606168;margin-right:8px}canvas{display:block;width:100%;max-width:1160px;margin:20px 0;background:#222328}p{color:#bbb5a9}output{display:block;white-space:pre-wrap;color:#a8cfae}</style>
+<h1>캐릭터 자체 개선 · 2.5D 명암</h1><p>기존 실루엣과 프레임을 보존한 좌상단 조명. 각 쌍은 원본 → 개선입니다.</p>
+<label>동작 <select id="motion"><option value="idle">대기</option><option value="walk" selected>걷기</option><option value="attack">공격</option></select></label>
+<button id="pause">일시정지</button><label>배경 <select id="background"><option value="#222328">중간 회색</option><option value="#090b10">어두운 배경</option><option value="#77746e">밝은 배경</option></select></label>
+<canvas id="preview" width="1160" height="650" aria-label="전사와 실버테일 8방향 원본과 개선 애니메이션 비교"></canvas><output id="result">원본 시트를 불러오는 중…</output>
+<script>
+(async()=>{
+ const source=await(await fetch('../game.html')).text(),start=source.indexOf('function _shadePlayerPixels('),end=source.indexOf('\n}',start)+2;
+ if(start<0)throw Error('명암 함수 없음');
+ const shade=Function(source.slice(start,end)+';return _shadePlayerPixels;')();
+ const dirs=['south','south-east','east','north-east','north','north-west','west','south-west'];
+ const clocks=['6','5','3','1','12','11','9','7'],sheets=[],metrics=[];
+ for(let c=0;c<2;c++){
+  let changed=0,alphaMismatch=0,elapsed=0;
+  for(let d=0;d<8;d++){
+   const image=new Image();image.src='../img/exoduser_'+(c?'silvertail/'+clocks[d]:'warrior/'+dirs[d])+'.png';await image.decode();
+   const lit=document.createElement('canvas');lit.width=image.width;lit.height=image.height;
+   const x=lit.getContext('2d');x.drawImage(image,0,0);const pixels=x.getImageData(0,0,lit.width,lit.height),before=pixels.data.slice();
+   const t=performance.now();pixels.data.set(shade(pixels,48,48));elapsed+=performance.now()-t;
+   for(let i=0;i<before.length;i+=4){if(before[i+3]!==pixels.data[i+3])alphaMismatch++;if(before[i]!==pixels.data[i]||before[i+1]!==pixels.data[i+1]||before[i+2]!==pixels.data[i+2])changed++;}
+   x.putImageData(pixels,0,0);sheets.push({c,d,image,lit});
+  }
+  metrics.push((c?'실버테일':'전사')+': 8방향 · 알파 변경 '+alphaMismatch+'px · 명암 개선 '+changed+'px · 로딩 계산 '+elapsed.toFixed(1)+'ms');
+ }
+ const canvas=document.getElementById('preview'),ctx=canvas.getContext('2d'),motion=document.getElementById('motion'),bg=document.getElementById('background');
+ let paused=false,clock=0,last=performance.now();document.getElementById('pause').onclick=e=>{paused=!paused;e.target.textContent=paused?'재생':'일시정지';};
+ document.getElementById('result').textContent='검증 완료: '+metrics.join('\n')+'\n48×48 셀 · 원본 PNG 수정 없음 · 좌측 원본 / 우측 개선 · 상단 2배 / 하단 4배';
+ function draw(now){
+  if(!paused)clock+=Math.min(100,now-last);last=now;
+  ctx.fillStyle=bg.value;ctx.fillRect(0,0,1160,650);ctx.imageSmoothingEnabled=false;
+  for(const s of sheets){
+   const walk=s.c?4:8,atk=s.c?4:8,kind=motion.value,n=kind==='idle'?2:kind==='walk'?walk:atk,offset=kind==='idle'?0:kind==='walk'?2:2+walk,frame=offset+Math.floor(clock/(kind==='walk'?800/n:100))%n;
+   const x=22+s.d*142,y=36+s.c*150;
+   ctx.fillStyle='#d6cdbd';ctx.font='13px system-ui';ctx.fillText((s.c?'S':'W')+' '+dirs[s.d],x,y-12);
+   ctx.drawImage(s.image,frame*48,0,48,48,x-22,y,96,96);ctx.drawImage(s.lit,frame*48,0,48,48,x+42,y,96,96);
+   if(s.d===0||s.d===2){
+    const bx=28+s.c*580+(s.d===2?280:0),by=370;
+    ctx.fillStyle='#d6cdbd';ctx.fillText((s.c?'실버테일':'전사')+' '+dirs[s.d]+' · 원본 / 개선',bx,by-20);
+    ctx.drawImage(s.image,frame*48,0,48,48,bx-45,by,192,192);ctx.drawImage(s.lit,frame*48,0,48,48,bx+95,by,192,192);
+   }
+  }
+  requestAnimationFrame(draw);
+ }
+ requestAnimationFrame(draw);
+})().catch(e=>{document.getElementById('result').textContent='FAIL: '+e.message;});
+</script></html>

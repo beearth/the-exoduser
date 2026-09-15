@@ -9508,6 +9508,7 @@ function _loadCharAtlas(idx){
   // mask 버전 (folder) 로드
   _load8Dir(ch.folder,ch.fw,ch.fh,function(c,fm){
     if(_charIdx!==idx)return; // 이전 캐릭터의 늦은 로딩 결과는 적용하지 않는다.
+    _shadePlayerAtlas(c,ch.fw,ch.fh);
     _atlasMask=c;_atlasMaskFm=fm;
     _applyMaskAtlas();
   },_animInfo);
@@ -9522,6 +9523,37 @@ function _load8Dir(folder,FW,FH,cb,animInfo){
     im.onload=function(){imgs[i]=im;ld++;if(ld+fail===8&&ld>0)_build8(imgs,FW,FH,cb,animInfo);};
     im.onerror=function(){fail++;if(ld+fail===8&&ld>0)_build8(imgs,FW,FH,cb,animInfo);};
   });
+}
+// 플레이어 2.5D 명암: 로딩 때만 계산, 48px 셀/원본 알파/밝은 은발 보존.
+function _shadePlayerPixels(image,FW,FH){
+  const {data,width,height}=image,out=new Uint8ClampedArray(data);
+  for(let cy=0;cy<height;cy+=FH)for(let cx=0;cx<width;cx+=FW){
+    const right=Math.min(width,cx+FW),bottom=Math.min(height,cy+FH);
+    for(let y=cy;y<bottom;y++)for(let x=cx;x<right;x++){
+      const i=(y*width+x)*4;if(!data[i+3])continue;
+      const peak=Math.max(data[i],data[i+1],data[i+2]);
+      // 검정 외곽선과 원본의 밝은 금속/은발은 그대로 남긴다.
+      if(peak<=18||peak>=185)continue;
+      let nx=0,ny=0,weight=0;
+      for(let dy=-2;dy<=2;dy++)for(let dx=-2;dx<=2;dx++){
+        if(!dx&&!dy)continue;
+        const sx=x+dx,sy=y+dy,w=1/(dx*dx+dy*dy);
+        const a=sx>=cx&&sx<right&&sy>=cy&&sy<bottom?data[(sy*width+sx)*4+3]/255:0;
+        nx-=dx*a*w;ny-=dy*a*w;weight+=w;
+      }
+      const light=Math.max(-1,Math.min(1,-(nx+ny)/weight*2));
+      const mid=Math.sin((peak-18)/167*Math.PI);
+      const lift=mid*(14+light*12),gain=(peak+lift)/peak;
+      out[i]=Math.round(data[i]*gain);out[i+1]=Math.round(data[i+1]*gain);out[i+2]=Math.round(data[i+2]*gain);
+    }
+  }
+  return out;
+}
+function _shadePlayerAtlas(canvas,FW,FH){
+  if(canvas._playerRelief)return;
+  const ctx=canvas.getContext('2d'),pixels=ctx.getImageData(0,0,canvas.width,canvas.height);
+  pixels.data.set(_shadePlayerPixels(pixels,FW,FH));ctx.putImageData(pixels,0,0);
+  canvas._playerRelief=true;
 }
 function _build8(imgs,FW,FH,cb,animInfo){
   // animInfo가 있으면 멀티프레임 스프라이트시트 (idle N + walk M 프레임)
