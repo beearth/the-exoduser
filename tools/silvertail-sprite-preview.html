@@ -1,5 +1,5 @@
 <!doctype html><html lang="ko"><head><meta charset="utf-8"><base href="../"><title>실버테일 새 스프라이트</title>
-<script src="player-attack-remaster.js?v=20260915a"></script>
+<script src="player-attack-remaster.js?v=20260915-spin-speed15"></script>
 <style>body{margin:24px;background:#17191e;color:#e0ded7;font:16px system-ui}h1{font-size:25px}button,select{padding:8px 14px;background:#30343c;color:inherit;border:1px solid #646974;margin-right:12px;font:inherit}canvas{display:block;margin:20px 0;max-width:100%;background:#272a30}output{display:block;color:#b4d4bc}p{color:#adb3bb}</style></head><body>
 <h1>실버테일 · 새 스프라이트</h1><p>8방향 · 새 대기·걷기 + 공격 리마스터. 위: 현재 게임 배율 / 아래: 3배 확대.</p>
 <button id="pause">일시정지</button><button id="step">다음 프레임</button>
@@ -28,9 +28,9 @@
  document.getElementById('step').onclick=()=>{paused=true;time=(Math.floor(time/180)+1)*180;document.getElementById('pause').textContent='재생';};
  function draw(now){
   if(!paused)time+=Math.min(80,now-last);last=now;
-  const transition=document.getElementById('motion').value==='transition',phase=Math.floor(time/180)%(transition?8:4);
+  const transition=document.getElementById('motion').value==='transition',phase=Math.floor(time/180)%(transition?13:document.getElementById('motion').value==='attack'?9:4);
   const motion=document.getElementById('motion').value;
-  sa.anim=motion==='walk'?'walk':motion==='idle'?'idle':transition&&(phase<2||phase>5)?'idle':'atk2';sa.f=sa.anim==='idle'?0:transition?phase-2:phase;
+  sa.anim=motion==='walk'?'walk':motion==='idle'?'idle':transition&&(phase<2||phase>10)?'idle':'atk2';sa.f=sa.anim==='idle'?0:transition?phase-2:phase;
   x.fillStyle=document.getElementById('bg').value;x.fillRect(0,0,1200,550);x.imageSmoothingEnabled=false;
   dirs.forEach((d,i)=>{
    const cx=75+i*150;x.fillStyle='#d7dbe1';x.font='16px system-ui';x.fillText(d.toUpperCase(),cx-12,30);
@@ -39,7 +39,7 @@
     x.save();x.translate(cx,cy);x.scale(scale,scale);animator.draw(sa,x,0,0,false,d);x.restore();
    }
   });
-  result.textContent='로드 완료 · 걷기 32프레임 + 공격 32프레임 · 공격 셀 80×80 · 새 본체 48×48 · '+sa.anim+' 프레임 '+(sa.f+1)+' / '+(sa.anim==='idle'?1:4);
+  result.textContent='로드 완료 · 걷기 32프레임 + 등검 회전 9포즈 · 왼손 단검 · 공격 셀 80×80 · 새 본체 48×48 · '+sa.anim+' 프레임 '+(sa.f+1)+' / '+(sa.anim==='idle'?1:sa.anim==='atk2'?9:4);
   requestAnimationFrame(draw);
  }
  requestAnimationFrame(draw);

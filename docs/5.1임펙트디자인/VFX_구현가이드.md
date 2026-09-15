@@ -63,9 +63,9 @@
 | 행2 | 6프레임 곡선 |
 | 로더 | `_physMouthImg` / `_drawPhysMouth` |
 | 회전 | 우향, `rotate(ang)` (머리=셀 중심) |
-| 적용 | `redBean+EL.P`, fast/일반 `el===EL.P` (`redBean+EL.P`는 `grayscale(1) brightness(1.65) contrast(1.25)` + `#dce7f0` 글로우의 회백색 E 외형, `redBean+EL.F`는 붉은 화염 혜성 Q 외형) |
+| 적용 | `parryClass=physical`의 일반·검기파·관통·빠른탄·환영검을 공통 회백색 이빨입으로 표시. 혈안탄 전용 눈알 유지. `grayscale(1) brightness(1.65) contrast(1.25)`. 마법 빨콩은 기존 화염 혜성 Q 외형 |
 | 패링 | 적대 `EL.P` 입/뱀 외형은 `pierce:true` 포함 **E(sBash) 전용**. `_isPhysicalMouthProjectile`가 전용 VFX 탄을 제외하고 판별하며 Q는 반사하지 않고 "❌ E키로!"를 표시 |
-| 폴백 | `_drawEyeBullet` row4 → 바버폴 |
+| 폴백 | 같은 폭·높이의 불투명 회백색 방향성 입·흰 이빨·어두운3px 외곽선. 회전 바버폴/작은 원 사용하지 않음. [최신 가시성](../8.0몬스터디자인/PHYSICAL_PROJECTILE_VISIBILITY_20260914.md) |
 | 원본 | 유저 제공 ChatGPT 시트 3장 (2026-08-23 12:02) |
 
 ## 원소 일반탄 (`proj_elem_orb`)
@@ -84,7 +84,7 @@
 
 ## 마법탄 (최초 무지개탄)
 
-마법탄은 `_drawClassicRainbow` — blackBean / blueBean만. **화염 빨콩(`redBean+EL.F`)**은 `redBean` 레거시 피해/색 플래그를 공유하지만 이빨입이 아닌 화염 혜성 마법 외형·Q 패링·500~600px/s·`.0262`≈90°/s다. 적 화염 혜성은 `_enemyMagicCometVisualScale(EL.F)=0.65`를 적용해 일반 최대 길이 `123.2→80.08px`, 빠른탄 최대 `110.88→72.072px`로 그리며 `sz/r`와 충돌은 불변이다. **물 파란콩(`waterBean`)**은 기존 `assets/vfx/water_blue_projectile_sheet.png` 4×2 8프레임을 `_drawWaterBlueFlight`로 약12fps 재생한다. 크기 `30×16×_sSc`, 세로 크롭 `0.255×cellH`, 행 오프셋 `0.675/0.10`, 진행 방향 회전, `lighter` 합성이다. Q 패링·피격은 `Water_ImpactWater_Sheet.png` 전체 16프레임을 공용 boom `waterImpact`로 재생한다(패링 r96/72f·최대288px, 피격 r72/66f·최대216px). 이전 얼음 시트 로더와 렌더를 제거했다. 직접 피해·속도·유도·히트박스·Q 패링·빙결 60f는 변하지 않는다. **화이트볼(bwBean) 제거(2026-08-23)**. **이빨형 E패링탄 공통=실제 물리 `parryClass`**(최종 300px/s 고정, homing 선회 `.00436332`≈15°/s): `redBean+EL.P`, `titanEye`다. **titanEye=혈안 눈깔** `proj_titan_eye.png` 시각 `21.7×_sSc`(그림만 눈깔). **2026-09-10 적대 물리탄 본체·꼬리 굵기×2**: `_sSc=_ps×_physicalProjectileMultiplier(p,2)`, `_ps=max(1.2,min(4,(sz||1)×1.5))×0.7`; 적대 physical만 multiplier2, 나머지1. 혈안탄 최대60.76→121.52px, 이빨입 최대123.48×61.74→246.96×123.48px. 원본 물리 드루이드 독탄도 별도 dw/dh×2, Q독탄·지뢰·반사 블루콩 및 광원 반경은 유지. [물리탄 계약](../8.0몬스터디자인/PHYSICAL_PROJECTILE_SCALE_REWARD_20260910.md). **라운드 컬러는 발사탄 속성 예고**이며 `redBean+EL.P`·일반 물리/E패링 차징 링만 흰색 `#f4f4f4`다. 화염 빨콩 차징은 화염색을 유지한다. 특수 산호 파편·기생충·삼지창의 `eShootWind`도 `_swChargeEl=EL.P`일 때 흰색이다.
+마법탄은 `_drawClassicRainbow` — blackBean / blueBean만. **화염 빨콩(`redBean+EL.F`)**은 `redBean` 레거시 피해/색 플래그를 공유하지만 이빨입이 아닌 화염 혜성 마법 외형·Q 패링·500~600px/s·`.0262`≈90°/s다. 적 화염 혜성은 `_enemyMagicCometVisualScale(EL.F)=0.65`를 적용해 일반 최대 길이 `123.2→80.08px`, 빠른탄 최대 `110.88→72.072px`로 그리며 `sz/r`와 충돌은 불변이다. **물 파란콩(`waterBean`)**은 기존 `assets/vfx/water_blue_projectile_sheet.png` 4×2 8프레임을 `_drawWaterBlueFlight`로 약12fps 재생한다. 크기 `30×16×_sSc`, 세로 크롭 `0.255×cellH`, 행 오프셋 `0.675/0.10`, 진행 방향 회전, `lighter` 합성이다. Q 패링·피격은 `Water_ImpactWater_Sheet.png` 전체 16프레임을 공용 boom `waterImpact`로 재생한다(패링 r96/72f·최대288px, 피격 r72/66f·최대216px). 이전 얼음 시트 로더와 렌더를 제거했다. 직접 피해·속도·유도·히트박스·Q 패링·빙결 60f는 변하지 않는다. **화이트볼(bwBean) 제거(2026-08-23)**. **이빨형 E패링탄 공통=실제 물리 `parryClass`**(최종 300px/s 고정, homing 선회 `.00436332`≈15°/s): `redBean+EL.P`, `titanEye`다. **titanEye=혈안 눈깔** `proj_titan_eye.png` 시각 `21.7×_sSc`(그림만 눈깔). **2026-09-10 적대 물리탄 본체·꼬리 굵기×2**: `_sSc=_ps×_physicalProjectileMultiplier(p,2)`, `_ps=max(1.2,min(4,(sz||1)×1.5))×0.7`; 적대 physical만 multiplier2, 나머지1. 혈안탄 최대60.76→121.52px, 이빨입은2026-09-16 공통 높이22.05×_sSc×0.55로 축소하여 최대135.828×67.914px. 원본 물리 드루이드 독탄도 별도 dw/dh×2, Q독탄·지뢰·반사 블루콩 및 광원 반경은 유지. [물리탄 계약](../8.0몬스터디자인/PHYSICAL_PROJECTILE_SCALE_REWARD_20260910.md). **라운드 컬러는 발사탄 속성 예고**이며 `redBean+EL.P`·일반 물리/E패링 차징 링만 흰색 `#f4f4f4`다. 화염 빨콩 차징은 화염색을 유지한다. 특수 산호 파편·기생충·삼지창의 `eShootWind`도 `_swChargeEl=EL.P`일 때 흰색이다.
 
 ## API 생성 소형 크라켄 탄두 / 은꼬리 차지 범위 (2026-09-03)
 
@@ -789,3 +789,12 @@ Ori 수준 대기 깊이감. 광원 근처에서 존재감 나는 미세 입자.
 분열탄은 공용 magic 벽 반사 경로를 그대로 사용한다. 기존 문서의 ‘튕김 미사용’은 arcMissile 전용 튕김을 뜻하며, 실제 공용 벽 반사는 _maxBounce||3에 따라 최대3회, 반사 후 _bounceCool=6이다. 이번 수정은 이 값을 변경하지 않는다.
 
 검증 결과: 관련6개 테스트 파일43개 PASS. Chrome 실제 런타임에서 `_hurtFieldMobs`의 쿨다운 중 분열탄 접촉 반환1·waterImpact r72/66f 생성·물 시트 로드·화면 물보라 표시 확인, 브라우저 error 로그0. 캡처 `tmp/kraken_parry_20260916/water-impact.jpg`. 브라우저 검증은 접촉 함수를 직접 실행한 효과 확인이며 키 입력 기반 전체 Q패링 전투 검증과 구분한다.
+
+## 2026-09-16 물리 뱀탄 축소·부착 피격
+
+| 항목 | 현행 계약 |
+|---|---|
+| 비행 외형 | 공통 이빨입 본체·꼬리 굵기는 직전의55%. 최대135.828×67.914px. 혈안탄·드루이드 전용탄은 기존 외형 |
+| 몸에 부착 | 실제 비DOT 피해가 방어 계산을 통과했을 때(에너지쉴드 흡수 포함), 플레이어를 따라48틱(60Hz 기준0.8초) 동안16틱씩3회 개구/씹기. 동시3개 제한 |
+| 일반 명중 | 입탄의 일반 몸통 명중 폭발을 부착 연출로 교체. 피해·화상·넉백·E패링·보상 유지. 추가 피해 없음 |
+| 상세 | [분류·크기·좌표·수명·검증 계약](../8.0몬스터디자인/PHYSICAL_PROJECTILE_BITE_20260916.md) |

@@ -8,7 +8,7 @@
 <link rel="stylesheet" href="system-lesson.css?v=20260912-restored4">
 <script src="system-lesson.js?v=20260912-skip-density1"></script>
 <link rel="stylesheet" href="parry-lesson.css?v=20260913-mission-details1">
-<script src="resource-practice.js?v=20260913-area-practice8"></script>
+<script src="resource-practice.js?v=20260916-recovery2"></script>
 <script src="parry-lesson.js?v=20260913-area-practice8"></script>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -15049,7 +15049,7 @@ function spawnProj(props){
   projs[projs.length]=p;
   return p;
 }
-function _hurtProjectilePlayer(p,dmg,opts){hurtP(dmg,{...opts,druidPoison:!!p._druidPoison,projectileHitSfx:true});}
+function _hurtProjectilePlayer(p,dmg,opts){hurtP(dmg,{...opts,druidPoison:!!p._druidPoison,projectileHitSfx:true,mouthProjectile:p});}
 let _projectileHitSfxAt=-Infinity;
 function _playProjectileHitSfx(){
   const now=performance.now();
@@ -15058,6 +15058,42 @@ function _playProjectileHitSfx(){
   playSample('player_projectile_impact',.55,1,true);
 }
 function _recycleProj(p){if(p._hitSet)p._hitSet.clear();if(_projFree.length<_PROJ_POOL)_projFree.push(p)}
+
+function _isBitingPhysicalProjectile(p){
+  return !!(p&&!p.friendly&&!p.titanEye&&!p._druidPoison&&!p.fbEnergy&&!p.fdEnergy&&_projectileParryClass(p)==='physical');
+}
+function _addPhysicalBite(p){
+  if(!_isBitingPhysicalProjectile(p))return;
+  const bites=P._physicalBites||(P._physicalBites=[]);
+  if(bites.length>=3)bites.shift();
+  const ang=p.vx||p.vy?Math.atan2(p.vy,p.vx):Math.atan2(P.y-p.y,P.x-p.x);
+  bites.push({born:_gameFrame,stage:G.stage,ang,size:Math.max(22,Math.min(36,22.05*Math.max(1.2,Math.min(4,(p.sz||1)*1.5))*.7*2*.55*.65))});
+}
+function _drawPhysicalBites(){
+  const bites=P._physicalBites;if(!bites||!bites.length)return;
+  if(!G.on||P.hp<=0){bites.length=0;return;}
+  let w=0;
+  X.save();X.globalCompositeOperation='source-over';
+  for(let i=0;i<bites.length;i++){
+    const b=bites[i],age=_gameFrame-b.born;
+    if(age<0||age>=48||b.stage!==G.stage)continue;
+    bites[w++]=b;
+    const phase=age%16,bite=Math.sin(phase/16*Math.PI),fade=Math.min(1,(48-age)/12);
+    const x=P.x-Math.cos(b.ang)*(18-bite*3),y=P.y-14-Math.sin(b.ang)*(12-bite*3);
+    X.filter='grayscale(1) brightness(1.65) contrast(1.25)';
+    _drawPhysMouth(x,y,b.size*(1-bite*.16),b.ang+Math.sin(age*1.4)*.055,fade,1,Math.min(5,Math.floor(phase/16*6)));
+    X.filter='none';
+    if(phase>=6&&phase<12){
+      X.globalAlpha=fade*(12-phase)/6;X.strokeStyle='#a92232';X.lineWidth=2;
+      for(let k=0;k<3;k++){
+        const a=b.ang+(k-1)*.65,len=4+(phase-6)*1.4;
+        X.beginPath();X.moveTo(x+Math.cos(a)*5,y+Math.sin(a)*5);
+        X.lineTo(x+Math.cos(a)*(5+len),y+Math.sin(a)*(5+len));X.stroke();
+      }
+    }
+  }
+  bites.length=w;X.restore();
+}
 
 function _isPhysicalMouthProjectile(p){
   return !!(p&&_projectileParryClass(p)==='physical'&&!p.friendly&&!p.redBean&&!p.titanEye&&!p.bwBean&&!p.swordWave&&!p.phantomSword&&!p.fbEnergy&&!p.fdEnergy);
@@ -21487,14 +21523,27 @@ function _drawElemOrb(x,y,el,sz,ang,alpha){
   X.drawImage(_elemOrbImg,fi*_ELEM_ORB_FW,row*_ELEM_ORB_FH,_ELEM_ORB_FW,_ELEM_ORB_FH,-dw/2,-dh/2,dw,dh);
   X.restore();X.globalAlpha=1;return true;
 }
-function _drawPhysMouth(x,y,sz,ang,alpha,row){
-  if(!_physMouthReady)return false;
+function _drawPhysMouth(x,y,sz,ang,alpha,row,frame){
   if(row==null)row=0;
-  const n=_PHYS_MOUTH_N[row]||8;
-  const fi=((_gameFrame>>2)+(~~(x*.03)))%n;
   const dh=sz,dw=sz*(_PHYS_MOUTH_FW/_PHYS_MOUTH_FH);
   X.save();X.translate(x,y);X.rotate(ang);X.globalAlpha=alpha;
-  X.drawImage(_physMouthImg,fi*_PHYS_MOUTH_FW,row*_PHYS_MOUTH_FH,_PHYS_MOUTH_FW,_PHYS_MOUTH_FH,-dw/2,-dh/2,dw,dh);
+  if(_physMouthReady){
+    const n=_PHYS_MOUTH_N[row]||8;
+    const fi=frame==null?(((_gameFrame>>2)+(~~(x*.03)))%n+n)%n:Math.max(0,Math.min(n-1,frame|0));
+    X.drawImage(_physMouthImg,fi*_PHYS_MOUTH_FW,row*_PHYS_MOUTH_FH,_PHYS_MOUTH_FW,_PHYS_MOUTH_FH,-dw/2,-dh/2,dw,dh);
+  }else{
+    // Keep a full-sized, directional mouth visible while the sprite loads or fails.
+    X.fillStyle='#dce7f0';X.strokeStyle='#151820';X.lineWidth=3;
+    X.beginPath();X.moveTo(-dw*.5,0);X.lineTo(-dw*.15,-dh*.28);X.lineTo(dw*.38,-dh*.4);
+    X.lineTo(dw*.5,-dh*.12);X.lineTo(dw*.2,0);X.lineTo(dw*.5,dh*.12);X.lineTo(dw*.38,dh*.4);X.lineTo(-dw*.15,dh*.28);X.closePath();X.fill();X.stroke();
+    X.fillStyle='#ffffff';X.beginPath();
+    for(let i=0;i<5;i++){
+      const tx=-dw*.1+i*dw*.1;
+      X.moveTo(tx,-dh*.2);X.lineTo(tx+dw*.055,-dh*.2);X.lineTo(tx+dw*.025,-dh*.03);X.closePath();
+      X.moveTo(tx,dh*.2);X.lineTo(tx+dw*.055,dh*.2);X.lineTo(tx+dw*.025,dh*.03);X.closePath();
+    }
+    X.fill();
+  }
   X.restore();X.globalAlpha=1;return true;
 }
 // ── API 생성 VFX의 near-black 배경 제거: 암부 24 이하는 완전 투명, 72까지 부드럽게 복원 ──
@@ -32071,7 +32120,7 @@ function update(){
         {if(!P._rbPoison)P._rbPoison=[];if(P._rbPoison.length<10){P._rbPoison.push({total:_bkD*2,t:600,tick:0});addTxt(P.x,P.y-30,_T('☠중독!')+'×'+P._rbPoison.length,'#33aa22',30)}}
         // 무지개탄 포이즈 데미지 (2칸 소모)
         {P.poise=Math.max(0,(P.poise||4)-2);P.poiseR=0;
-        if(P.poise<=0){P.poise=0;if(_isFocusState()){P.poise=1;addTxt(P.x,P.y-20,_T('집중!'),'#44ddff',20)}else{P.s='pStun';P.st2=~~(480*(1-Math.min(.5,_eqAffix('ccRes')+_eqAffix('stunRes'))))*.5;P.iframes=60;SFX.groggy();G.hitStop=~~((_HS.pStun||6)*OPT.hitStop/100);for(let j=0;j<12;j++){const sa=Math.PI*2*j/12;poolPart(P.x,P.y,Math.cos(sa)*5,Math.sin(sa)*5,'#ffcc44',3+Math.random()*3,15+Math.random()*8)}}}}
+        if(P.poise<=0){P.poise=0;if(_isFocusState()){P.poise=1;addTxt(P.x,P.y-20,_T('집중!'),'#44ddff',20)}else{P.s='pStun';P.st2=~~(240*(1-Math.min(.5,_eqAffix('ccRes')+_eqAffix('stunRes'))))*.5;P.iframes=60;SFX.groggy();G.hitStop=~~((_HS.pStun||6)*OPT.hitStop/100);for(let j=0;j<12;j++){const sa=Math.PI*2*j/12;poolPart(P.x,P.y,Math.cos(sa)*5,Math.sin(sa)*5,'#ffcc44',3+Math.random()*3,15+Math.random()*8)}}}}
         // 넉백 + 피격플래시
         {const _bkA=Math.atan2(P.y-p.y,P.x-p.x);P.kb.x+=Math.cos(_bkA)*7;P.kb.y+=Math.sin(_bkA)*7}
         P.iframes=Math.max(P.iframes,15);
@@ -32177,7 +32226,7 @@ function update(){
           _hurtProjectilePlayer(p,~~((p.dmg||10)*elMul(p.el,ar().el)),{dtype:'magic'});
           if(P.s!=='charge'&&P.s!=='sBlock'&&P.s!=='kiGather'&&P.s!=='sDraw'){P.s='stagger';P.st2=30}
           addTxt(P.x,P.y-20,_T('⚠ 덫!'),'#ffcc00',30);addParts(P.x,P.y,'#ffaa00',8);_pHit=true}
-        else{const _pjD=~~((p.dmg||10)*elMul(p.el,ar().el));_hurtProjectilePlayer(p,_pjD,{dtype:p.redBean?'parry':'magic',redBean:!!p.redBean,projHit:true,knockback:_normalProjectilePlayerKnockback(p,P.x,P.y)});if(p.fbEnergy||p.fdEnergy)_fbEnergyBoom(p);else if(!p.waterBean)_projHitFx(p.x,p.y,p.el,!!p.redBean);if(p.el===EL.L)P._elecT=Math.max(P._elecT||0,30);
+        else{const _pjD=~~((p.dmg||10)*elMul(p.el,ar().el));_hurtProjectilePlayer(p,_pjD,{dtype:p.redBean?'parry':'magic',redBean:!!p.redBean,projHit:true,knockback:_normalProjectilePlayerKnockback(p,P.x,P.y)});if(p.fbEnergy||p.fdEnergy)_fbEnergyBoom(p);else if(!p.waterBean&&!_isBitingPhysicalProjectile(p))_projHitFx(p.x,p.y,p.el,!!p.redBean);if(p.el===EL.L)P._elecT=Math.max(P._elecT||0,30);
           // 빨콩 피격 화상 (데미지×3, 10초, 최대10중첩)
           if(p.redBean&&!p._druidPoison){if(!P._rbBurn)P._rbBurn=[];if(P._rbBurn.length<10){P._rbBurn.push({total:_pjD*2,t:600,tick:0});addTxt(P.x,P.y-30,_T('🔥화상!')+'×'+P._rbBurn.length,'#ff4400',30)}}
           if(p.waterBean){_waterBeanIceBurst(p.x,p.y,false);P._freezeSlow=Math.max(P._freezeSlow||0,60);addTxt(P.x,P.y-30,_T('❄빙결!'),'#317cec',30);addParts(P.x,P.y,'#317cec',4)}
@@ -40225,7 +40274,7 @@ function hurtP(dmg,opts){
   if(G._pStats)G._pStats._pA++;if(P.s==='beam'){SFX.beamStop()}
   if(P.s==='burstLoop'){P._blCharge=0;P._blTier=0;P.s='idle';addTxt(P.x,P.y-30,_T('집중 해제!'),'#bbbbbb',30)}
   // 해제 패링: sBlock 뗀 직후 패링 윈도우 (빨콩은 Q패링 불가)
-  if(P.s!=='sBlock'&&P._sbParryT>0&&!(opts&&opts.redBean)){
+  if(P.s!=='sBlock'&&P._sbParryT>0&&!_isDotEarly&&!(opts&&opts.redBean)){
     P._sbParryT=0;dmg=0;
     doParry(0,P.x,P.y,true);
     if(P.skills.detonate){P.parryBank=(P.parryBank||0)+100;if((P.parryT||0)>=120)_detonateBlast('해제기폭!',wp().el||0)}
@@ -40233,7 +40282,7 @@ function hurtP(dmg,opts){
   }
   // 평화의보호: 데미지 70% 감소 (sBlock과 동일)
   if(P.s==='peaceShield'){
-    if(P._sbParryT>0&&!(opts&&opts.redBean)){
+    if(P._sbParryT>0&&!_isDotEarly&&!(opts&&opts.redBean)){
       P._sbParryT=0;dmg=0;
       doParry(0,P.x,P.y,true);
       return;
@@ -40247,7 +40296,7 @@ function hurtP(dmg,opts){
     dmg=Math.max(1,~~(dmg*(1-_psBlkRate)));
     if(_psParryFailed){dmg=~~(dmg*1.3);
       P.poise=Math.max(0,(P.poise||4)-1);P.poiseR=0;
-      if(P.poise<=0){P.poise=0;if(_isFocusState()){P.poise=1;addTxt(P.x,P.y-20,_T('집중!'),'#44ddff',20)}else{P.s='pStun';P.st2=~~(480*(1-Math.min(.5,_eqAffix('ccRes')+_eqAffix('stunRes'))))*.5;P.iframes=60;SFX.groggy()}}
+      if(P.poise<=0){P.poise=0;if(_isFocusState()){P.poise=1;addTxt(P.x,P.y-20,_T('집중!'),'#44ddff',20)}else{P.s='pStun';P.st2=~~(240*(1-Math.min(.5,_eqAffix('ccRes')+_eqAffix('stunRes'))))*.5;P.iframes=60;SFX.groggy()}}
       addTxt(P.x,P.y-32,_T('⚠패링 실패!'),'#ff6644',30)}
     if(P.skills.detonate){P.parryBank=(P.parryBank||0)+(_psRawDmg-dmg)}
     {var _psAng=opts&&opts.ang!==undefined?opts.ang+Math.PI:Math.random()*Math.PI*2;P.kb.x+=Math.cos(_psAng)*(_psParryFailed?5:3);P.kb.y+=Math.sin(_psAng)*(_psParryFailed?5:3)}
@@ -40257,7 +40306,7 @@ function hurtP(dmg,opts){
   // 보호막: 데미지 70% 감소 + 방패 DEF 적용 + 기폭팔 축적
   else if(P.s==='sBlock'){
     // ── 보호막 패링: Q 전용 사운드 (빨콩은 Q패링 불가) ──
-    if(P._sbParryT>0&&!(opts&&opts.redBean)){
+    if(P._sbParryT>0&&!_isDotEarly&&!(opts&&opts.redBean)){
       P._sbParryT=0;dmg=0;
       doParry(0,P.x,P.y,true);
       if(P.skills.detonate){P.parryBank=(P.parryBank||0)+100}
@@ -40272,7 +40321,7 @@ function hurtP(dmg,opts){
     dmg=Math.max(1,~~(dmg*(1-_blkRate)));
     if(_parryFailed){dmg=~~(dmg*1.3);
       P.poise=Math.max(0,(P.poise||4)-1);P.poiseR=0;
-      if(P.poise<=0){P.poise=0;if(_isFocusState()){P.poise=1;addTxt(P.x,P.y-20,_T('집중!'),'#44ddff',20)}else{P.s='pStun';P.st2=~~(480*(1-Math.min(.5,_eqAffix('ccRes')+_eqAffix('stunRes'))))*.5;P.iframes=60;SFX.groggy()}}
+      if(P.poise<=0){P.poise=0;if(_isFocusState()){P.poise=1;addTxt(P.x,P.y-20,_T('집중!'),'#44ddff',20)}else{P.s='pStun';P.st2=~~(240*(1-Math.min(.5,_eqAffix('ccRes')+_eqAffix('stunRes'))))*.5;P.iframes=60;SFX.groggy()}}
       addTxt(P.x,P.y-32,_T('⚠패링 실패!'),'#ff6644',30)}
     if(P.skills.detonate){P.parryBank=(P.parryBank||0)+(_rawDmg-dmg)}
     // 넉백 + 화면흔들림 + 피격음
@@ -40326,7 +40375,7 @@ function hurtP(dmg,opts){
   const _minDmg=Math.max(1,~~(P.mhp*0.005));
   if(a<_minDmg)a=_minDmg;
   a*=.5; // 쉬운 버전: 방어/최소 피해 계산 후 받는 피해 절반 (쉴드 포함)
-  if(!_isDot&&opts&&opts.projectileHitSfx&&a>0)_playProjectileHitSfx();
+  if(!_isDot&&opts&&opts.projectileHitSfx&&a>0){_playProjectileHitSfx();if(opts.mouthProjectile)_addPhysicalBite(opts.mouthProjectile);}
   // ═══ 에너지쉴드 — 추가 HP바 (색만 다름, 모든 DR 적용 후 처리) ═══
   // 모든 방어 계산 완료 후 쉴드 먼저 흡수 → 오버플로우만 HP로
   let _shFullBlock=false;
@@ -40361,7 +40410,7 @@ function hurtP(dmg,opts){
     P.iframes=0;if(!_isFocusState()&&P.s!=='pStun'){
       // ═══ 포이즈 감소 → 기절 (4칸 시스템) ═══ 탄막 1칸, 근접 1칸
       P.poise=Math.max(0,(P.poise||4)-1);P.poiseR=0;
-      if(P.poise<=0){P.poise=0;P.s='pStun';P.st2=~~(480*(1-Math.min(.5,_eqAffix('ccRes')+_eqAffix('stunRes'))))*.5;SFX.groggy();G.hitStop=~~((_HS.pStun||6)*OPT.hitStop/100);for(let j=0;j<12;j++){const sa=Math.PI*2*j/12;poolPart(P.x,P.y,Math.cos(sa)*5,Math.sin(sa)*5,'#ffcc44',3+Math.random()*3,15+Math.random()*8)}}
+      if(P.poise<=0){P.poise=0;P.s='pStun';P.st2=~~(240*(1-Math.min(.5,_eqAffix('ccRes')+_eqAffix('stunRes'))))*.5;SFX.groggy();G.hitStop=~~((_HS.pStun||6)*OPT.hitStop/100);for(let j=0;j<12;j++){const sa=Math.PI*2*j/12;poolPart(P.x,P.y,Math.cos(sa)*5,Math.sin(sa)*5,'#ffcc44',3+Math.random()*3,15+Math.random()*8)}}
       else if(P.s!=='kiGather'&&P.s!=='sDraw'){P.s='stagger';P.st2=6} // 차징(발도 응축)은 피격 경직 면역 — 포이즈는 계속 깎여 기절(pStun) 시에만 끊김
     }
     if(a>0)addTxt(P.x,P.y-10,'-'+a,'#ff3333',28);
@@ -41579,7 +41628,7 @@ function _skSpecificDetails(sk,slv){
   }
   if(id==='spikeTrap'){
     const _r=300+(lv-1)*15;
-    const _slow=Math.min(90,70+(lv-1)*2);
+    const _slow=Math.round(_spikeTrapSlowPct(lv)*100);
     return [
       [_L('반경','Radius'),_r+'px','#ddaa66'],
       [_L('슬로우','Slow'),_slow+'%','#88aaff'],
@@ -49830,7 +49879,7 @@ function draw(){
       const _tc=p.friendly?'#ffdd00':ELC[p.el]||p.col||'#ff4444';
       const _tN=p._trLen,_tLen2=p._trail.length,_tHd=p._trH;
       const _flk=.72+Math.sin(_now*.05+p.x*.3)*.28; // 도깨비불 일렁임
-      const _hr=Math.max(2.5,(p.sz||1)*2.2)*_flk*_physicalProjectileMultiplier(p,2);    // 머리 굵기(탄 크기 비례)
+      const _hr=Math.max(2.5,(p.sz||1)*2.2)*_flk*_physicalProjectileMultiplier(p,2)*(_isBitingPhysicalProjectile(p)?.55:1);    // 머리 굵기(탄 크기 비례)
       X.globalCompositeOperation='lighter';X.lineCap='round';X.strokeStyle=_tc;
       for(let ti=0;ti<_tN-1;ti++){ // 머리→끝: 세그먼트별 폭·알파 테이퍼
         const _a=p._trail[(_tHd-1-ti+_tLen2)%_tLen2];
@@ -49966,7 +50015,7 @@ function draw(){
     const _sRa=ra+_now*_spin+p.x*.1;
     const _sSc=_ps*_physicalProjectileMultiplier(p,2);
     // ── 검기파: 심플 원 ──
-    if(p.swordWave){
+    if(p.swordWave&&_projectileParryClass(p)!=='physical'){
       const _swC=ELC[p.el]||'#ff2200';
       X.globalAlpha=fa*.9;X.fillStyle=_swC;
       X.beginPath();X.arc(p.x,p.y,4*_sSc,0,Math.PI*2);X.fill();
@@ -49990,26 +50039,11 @@ function draw(){
       X.globalAlpha=1;continue;
     }
     // ── 빨간콩탄: 위협적인 화염구 ──
-    if(p.redBean&&_projectileParryClass(p)==='physical'){ // 물리 빨콩만 유기 이빨입/E 전용으로 그린다
-      const _rb=3.5*_sSc;
-      const _pulse=.8+Math.sin(_now/50+p.x*.3)*.2;
+    if(_projectileParryClass(p)==='physical'){ // All E-parry flying variants use the same readable mouth.
       X.save();X.filter='grayscale(1) brightness(1.65) contrast(1.25)';
-      const _rbDrawn=_drawPhysMouth(p.x,p.y,_rb*6.3,Math.atan2(p.vy,p.vx),fa,0)||_drawEyeBullet(p.x,p.y,4,_rb*8.6,Math.atan2(p.vy,p.vx),fa);
-      if(_rbDrawn){p._eyeSkin=1}
-      else{
-        X.globalAlpha=fa*.12*_pulse;X.fillStyle='#ffffff';
-        X.beginPath();X.arc(p.x,p.y,_rb*3.2,0,Math.PI*2);X.fill();
-        const _tvx=p.vx,_tvy=p.vy;
-        X.globalAlpha=fa*.16;X.strokeStyle='#ffffff';X.lineWidth=_rb*1.5;
-        X.beginPath();X.moveTo(p.x,p.y);X.lineTo(p.x-_tvx*6,p.y-_tvy*6);X.stroke();
-        X.globalAlpha=fa*.3;X.strokeStyle='#e8ecf0';X.lineWidth=_rb*.7;
-        X.beginPath();X.moveTo(p.x,p.y);X.lineTo(p.x-_tvx*4,p.y-_tvy*4);X.stroke();
-        const _bball=_getBarberBall();const _bd=_rb*2.7;
-        X.save();X.translate(p.x,p.y);X.rotate(Math.atan2(p.vy,p.vx)+_now*.01);X.globalAlpha=fa;
-        X.drawImage(_bball,-_bd/2,-_bd/2,_bd,_bd);X.restore();
-      }
-      X.restore();
-      X.globalAlpha=1;continue;
+      _drawPhysMouth(p.x,p.y,22.05*_sSc*.55,Math.atan2(p.vy,p.vx),fa,0);
+      p._eyeSkin=1;
+      X.restore();X.globalAlpha=1;continue;
     }
     // ── 무지개탄: 리얼블랙 코어 + 화이트/네온 무지개 (최초 프로시저럴) ──
     if(p.blackBean){
@@ -50250,6 +50284,7 @@ function draw(){
   const _tDP0=performance.now();
   _levelUpVfx.draw(X,P,G.stage,false,IS_MOBILE||OPT.quality==='low');
   drawP();
+  _drawPhysicalBites();
   _levelUpVfx.draw(X,P,G.stage,true,IS_MOBILE||OPT.quality==='low');
   _levelUpVfx.drawLabel(X,P,G.stage);
   const _tDP1=performance.now();
@@ -56526,6 +56561,23 @@ function _wmMkAt(x,y,asleep){
   var hp=~~(150+P.lv*45);
   return {x:x,y:y,homeX:x,homeY:y,r:56,hp:hp,mhp:hp,frame:0,ft:0,shotF:-1,atk:~~((16+P.lv*2.5)*1.2),hitCd:0,face:0,phase:'hide',shots:0,hideT:asleep?0:54,popHit:0,tpX:x,tpY:y,asleep:asleep?1:0};
 }
+function _wmContactHit(w,scale){
+  if(w.contactCd>0||P.iframes>0||P.s==='charge')return;
+  if(P.hp<=0||P.s==='fallen'||P.s==='dead'||G._bossLoadPhase>0||_harpActive||_dashActive||P._ioActive||P._gwActive)return;
+  w.contactCd=60; // Per eel: one contact hit per second, shared with emergence.
+  var dx=P.x-w.x,dy=P.y-w.y,d=Math.hypot(dx,dy);
+  var a=d>.001?Math.atan2(dy,dx):(w.face?Math.PI:0),ux=Math.cos(a),uy=Math.sin(a);
+  hurtP(Math.max(1,~~(w.atk*scale)),{ang:a+Math.PI,knockback:{x:0,y:0}});
+  if(P.hp<=0)return;
+  // Clear the body along a swept path; never snap through a wall.
+  var push=Math.max(0,w.r+P.r+32-d);
+  while(push>.001){
+    var step=Math.min(4,push),nx=P.x+ux*step,ny=P.y+uy*step;
+    if(!canMv(nx,ny,P.r))break;
+    P.x=nx;P.y=ny;push-=step;
+  }
+  P.kb.x+=ux*28;P.kb.y+=uy*28;
+}
 function _wmTick(){
   if(window._parryLesson?.active)return;
   if(!G.on||!P||!G.map){return}
@@ -56552,6 +56604,7 @@ function _wmTick(){
       w.asleep=0;_wmAppear(w);continue;
     }
     if(w.hitCd>0)w.hitCd--;
+    if(w.contactCd>0)w.contactCd--;
     if(!w.phase)w.phase='emerge';
     if(P.x<w.x-16)w.face=1;else if(P.x>w.x+16)w.face=0;
     if(w.phase==='hide'){
@@ -56583,14 +56636,13 @@ function _wmTick(){
     if(w.phase==='emerge'&&w.frame>=4&&!w.popHit){
       w.popHit=1;
       if(_d<w.r+P.r+28&&P.iframes<=0&&P.s!=='charge'){
-        hurtP(~~(w.atk*.9));
-        var _ka=Math.atan2(P.y-w.y,P.x-w.x);P.kb.x+=Math.cos(_ka)*14;P.kb.y+=Math.sin(_ka)*14;
+        _wmContactHit(w,.45);
         shake(8);addTxt(P.x,P.y-28,_T('충격파!'),'#ff6688',28);
       }
     }
     if(w.phase==='shoot'&&w.frame===5&&w.shotF!==5){w.shotF=5;_wmFire(w);w.shots++}
     if(w.frame!==5)w.shotF=-1;
-    if(_out&&_d<w.r+18&&P.iframes<=0&&P.s!=='charge')hurtP(w.atk);
+    if(_out&&_d<w.r+18&&P.iframes<=0&&P.s!=='charge')_wmContactHit(w,.5);
     if(w.hp<=0){_fmDeathFx(w,false);G._worms[_wi]=null}
   }
 }
@@ -57947,6 +57999,13 @@ function _cutsceneEnd(){
 
 function _renderIntroCutscene(){
   if(_cutsceneState!=='INTRO_CUTSCENE')return;
+  if(_cutSkipHolding){
+    const _nowT=performance.now();
+    _cutSkipHold+=_cutSkipLastT>0?Math.min(100,_nowT-_cutSkipLastT):16.67;
+    _cutSkipLastT=_nowT;
+    if(_cutSkipHold>=_CUT_SKIP_DUR){_cutSkipHold=0;_cutSkipHolding=false;_cutSkipLastT=0;_cutsceneEnd();return}
+  }else{_cutSkipLastT=0}
+
   const lns=_cutsceneGetLines();
   if(_cutLineIdx>=lns.length){_cutsceneEnd();return}
   const ln=lns[_cutLineIdx];
@@ -58146,12 +58205,6 @@ function _renderIntroCutscene(){
   cx.restore(); // 레터박스 클리핑 해제
 
   // ── 스페이스 홀드 스킵 게이지 (실제 경과시간 기반 — 144Hz 등 고주사율에서 과속 스킵 방지) ──
-  if(_cutSkipHolding){
-    const _nowT=performance.now();
-    _cutSkipHold+=_cutSkipLastT>0?Math.min(100,_nowT-_cutSkipLastT):16.67;
-    _cutSkipLastT=_nowT;
-    if(_cutSkipHold>=_CUT_SKIP_DUR){_cutSkipHold=0;_cutSkipHolding=false;_cutSkipLastT=0;_cutsceneEnd();return}
-  }else{_cutSkipLastT=0}
   // 우측 하단 스킵 힌트 (항상 표시)
   {
     const _skP=Math.min(1,_cutSkipHold/_CUT_SKIP_DUR);
@@ -58286,7 +58339,7 @@ function _renderIntroGuide(){
     item.appendChild(key);item.appendChild(desc);body.appendChild(item);
   }
   $('ikNote').textContent=step.note?_introGuideText(step.note):'';
-  $('ikHint').textContent=state.pad?'A · '+_introGuideText(['다음','Next'])+' / Start · '+_introGuideText(['건너뛰기','Skip']):_introGuideText(['클릭 / Enter / Space · 다음    ESC · 건너뛰기','Click / Enter / Space · Next    ESC · Skip']);
+  $('ikHint').textContent=state.pad?'A · '+_introGuideText(['다음','Next'])+' / Start · '+_introGuideText(['건너뛰기','Skip']):_introGuideText(['클릭 / Enter / Space · 다음    Space 길게 / ESC · 건너뛰기','Click / Enter / Space · Next    Hold Space / ESC · Skip']);
   $('ikNext').textContent=_introGuideText(state.step===3?['시작','Start']:['다음','Next']);
   $('ikSkip').textContent=_introGuideText(['건너뛰기','Skip']);
 }
@@ -58294,6 +58347,9 @@ function _disposeIntroGuide(state){
   if(!state)return;
   cancelAnimationFrame(state.raf);clearTimeout(state.closeTimer);
   window.removeEventListener('keydown',state.key,true);
+  window.removeEventListener('keyup',state.keyUp,true);
+  window.removeEventListener('blur',state.cancelHold);
+  window.removeEventListener('visibilitychange',state.cancelHold,true);
   if(_introGuide===state){
     $('introKeys').onclick=null;$('ikNext').onclick=null;$('ikSkip').onclick=null;
     _introGuide=null;
@@ -58318,11 +58374,12 @@ function _startIntroGuide(){
   _disposeIntroGuide(_introGuide);
   OPT.diff=5;G._stageDiffOff=0;saveSettings();
   const gp=_introGuidePad();
-  const state=_introGuide={step:0,done:false,pad:!!gp,readyAt:performance.now()+250,raf:0,
+  const state=_introGuide={step:0,done:false,pad:!!gp,readyAt:performance.now()+250,raf:0,spaceHeldAt:null,
     prevA:!!gp?.buttons[0]?.pressed,prevSkip:!!gp?.buttons[9]?.pressed};
   state.key=e=>{
     e.preventDefault();e.stopImmediatePropagation();
     if(state.done||e.repeat)return;
+    if(e.code==='Space'&&state.spaceHeldAt===null)state.spaceHeldAt=performance.now();
     if(e.code==='Tab'){
       (document.activeElement===$('ikNext')?$('ikSkip'):$('ikNext')).focus({preventScroll:true});return;
     }
@@ -58331,7 +58388,13 @@ function _startIntroGuide(){
       if(document.activeElement===$('ikSkip'))_finishIntroGuide();else _advanceIntroGuide();
     }
   };
+  state.cancelHold=()=>{state.spaceHeldAt=null;$('ikSkip').style.background='';};
+  state.keyUp=e=>{if(e.code==='Space'){e.preventDefault();e.stopImmediatePropagation();state.cancelHold();}};
   window.addEventListener('keydown',state.key,true);
+  window.addEventListener('keyup',state.keyUp,true);
+  window.addEventListener('blur',state.cancelHold);
+  window.addEventListener('visibilitychange',state.cancelHold,true);
+  state.cancelHold();
   $('introKeys').onclick=()=>_advanceIntroGuide();
   $('ikNext').onclick=e=>{e.stopPropagation();_advanceIntroGuide()};
   $('ikSkip').onclick=e=>{e.stopPropagation();_finishIntroGuide()};
@@ -58340,6 +58403,11 @@ function _startIntroGuide(){
   $('ikNext').focus({preventScroll:true});
   function poll(){
     if(_introGuide!==state||state.done)return;
+    if(state.spaceHeldAt!==null){
+      const held=Math.min(1,(performance.now()-state.spaceHeldAt)/2000);
+      $('ikSkip').style.background='linear-gradient(90deg,rgba(204,183,137,.4) '+(held*100)+'%,transparent '+(held*100)+'%)';
+      if(held>=1){_finishIntroGuide();return;}
+    }
     const pad=_introGuidePad(),a=!!pad?.buttons[0]?.pressed,skip=!!pad?.buttons[9]?.pressed;
     if(state.pad!==!!pad){state.pad=!!pad;state.prevA=a;state.prevSkip=skip;_renderIntroGuide()}
     if(skip&&!state.prevSkip)_finishIntroGuide();

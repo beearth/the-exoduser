@@ -2,7 +2,7 @@
 
 | 항목 | 현재 구현 |
 |---|---|
-| 적용 | `parry-lesson.js`, 일반 `game.html`, `game-easy-test.html`. 기초 연습 상위 항목은 11개 유지 |
+| 적용 | `parry-lesson.js`, 일반 `game.html`, `game-easy-test.html`. 기초 연습 상위 항목은 12개 유지 |
 | 시작 | 활성 연습의 `phase==='intro'`에서 물리 `KeyW/KeyA/KeyS/KeyD` 중 하나가 들어오면 `beginPractice()` 실행. 기존 시작 버튼도 같은 함수 사용 |
 | 시작 함수 | `active` 및 `phase==='intro'` 확인 후 `phase='practice'`, `cooldown=45`, `resetPose()`, 버튼 blur, render. 반복 입력으로 재초기화하지 않음. 시작 이벤트는 이후 기존 입력 처리로 전달되어 설정된 방향키라면 그대로 이동 |
 | 시작 안내 | 버튼 `W / A / S / D 또는 클릭하여 시작`. 시작만으로 이동 미션 완료하지 않음. Q 등 다른 키는 시작 트리거가 아님 |

@@ -14,7 +14,8 @@
 | 구성 | `_INTRO_LINES` 기존 문장 4개 보존, `_INTRO_KEY_STEPS`도 4개. 각 컷에 대사와 키 안내를 동시에 표시 |
 | 순서 | `_startIntro()` → `_startIntroGuide()` → 컷 1~4 → `_finishIntroGuide()` → `_openIntroCurtain()`. 기존 `_showIntroLine`, `_showIntroDiff`, `_showIntroKeys`, `_ikB` 제거 |
 | 진행 | 자동 넘김 없음. 안내 영역 클릭, 다음 버튼, Enter/Space, 패드 A로 다음 컷. 마지막 버튼은 시작 |
-| 스킵 | 첫 컷부터 건너뛰기 버튼 / Esc / 패드 Start. 해당 인트로를 종료하고 같은 커튼 열기·스폰 경로로 진행 |
+| 스킵 | 첫 컷부터 Space 2000ms 홀드 / 건너뛰기 버튼 / Esc / 패드 Start. 해당 인트로를 종료하고 같은 커튼 열기·스폰 경로로 진행 |
+| 홀드 | Space 첫 누름부터 실시간 2000ms. 스킵 버튼 배경에 진행률 표시. 키 해제·blur·visibilitychange에서 취소하며 종료 뒤 이벤트 해제 |
 | 입력 간격 | 첫 표시 및 다음 넘김 뒤 250ms 동안 다음 입력 무시. 스킵은 대기 없이 가능. key repeat 무시 |
 | 포커스 | 시작 시 다음 버튼. Tab으로 다음·스킵 순환, Enter/Space로 포커스 버튼 실행. 완료 시 버튼 blur |
 | 종료 방어 | `state.done`으로 중복 완료 차단, RAF 즉시 취소. 900ms 커튼 열림 동안 키 입력을 흡수한 뒤 `_disposeIntroGuide()`로 핸들러·상태 해제 |

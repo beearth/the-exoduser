@@ -51,6 +51,18 @@ for(const file of ['game.html','game-easy-test.html']){
     b.key('Enter',true);b.key('KeyE');assert.equal(b.$('ikProgress').textContent,'1 / 4');
     b.key('Enter');b.key('Enter');assert.equal(b.$('ikProgress').textContent,'2 / 4');
   });
+  test(file+': Space hold skips all remaining cuts and release cancels the timer',()=>{
+    const b=boot();b.run('_startIntroGuide()');b.tick();b.key('Space');
+    const frame=()=>{const [id,fn]=b.frames.entries().next().value;b.frames.delete(id);fn()};
+    b.tick();frame();
+    b.listeners.get('keyup')?.({code:'Space',preventDefault(){},stopImmediatePropagation(){}});
+    for(let i=0;i<8;i++){b.tick();frame()}
+    assert.equal(b.opened,0);
+    b.key('Space');b.key('Space',true);
+    for(let i=0;i<7&&!b.opened;i++){b.tick();frame()}
+    assert.equal(b.opened,1);assert.equal(b.frames.size,0);
+    for(const t of b.timers)t();assert.equal(b.listeners.size,0);
+  });
   test(file+': held gamepad A advances once and Start skips without leaving a poll',()=>{
     const b=boot(),buttons=Array.from({length:16},()=>({pressed:false}));
     b.c.navigator.getGamepads=()=>[{connected:true,buttons}];

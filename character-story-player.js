@@ -23,7 +23,7 @@
       const buttonStyle='position:relative;color:inherit;background:transparent;border:0;padding:10px 0;font:inherit;cursor:pointer;touch-action:none;text-shadow:0 2px 5px #000';
       const next=document.createElement('button');next.id='characterStoryNext';next.textContent=(language==='ko'?'다음 대사':'Next line')+' · A / Enter';next.style.cssText=buttonStyle;
       const skip=document.createElement('button');skip.id='characterStorySkip';skip.style.cssText=buttonStyle;
-      const label=document.createElement('span');label.textContent=skipLabel+' · '+(language==='ko'?'Esc / B 길게':'hold Esc / B');
+      const label=document.createElement('span');label.textContent=skipLabel+' · '+(language==='ko'?'Space / Esc / B 길게':'hold Space / Esc / B');
       const progress=document.createElement('span');progress.style.cssText='position:absolute;left:0;bottom:0;height:2px;width:0;background:#ccb789';
       skip.append(label,progress);ui.append(next,skip);overlay.append(video,ui);document.body.append(overlay);
       overlay.tabIndex=-1;
@@ -72,11 +72,12 @@
       }
       function key(e){
         e.stopPropagation();
-        if(e.key==='Escape'){e.preventDefault();if(!e.repeat)setHeld(true,'keyboard');}
-        else if(['Enter',' ','ArrowRight'].includes(e.key)){e.preventDefault();if(!e.repeat)advance();}
+        if(e.key==='Escape'){e.preventDefault();if(!e.repeat)setHeld(true,'keyboard-Escape');}
+        else if(e.code==='Space'||e.key===' '){e.preventDefault();if(!e.repeat){setHeld(true,'keyboard-Space');advance();}}
+        else if(['Enter','ArrowRight'].includes(e.key)){e.preventDefault();if(!e.repeat)advance();}
         else if(e.key==='Tab'){e.preventDefault();(hintsHidden?overlay:next).focus();}
       }
-      function keyUp(e){if(e.key==='Escape'){e.preventDefault();e.stopPropagation();setHeld(false,'keyboard');}}
+      function keyUp(e){if(e.key==='Escape'||e.code==='Space'||e.key===' '){e.preventDefault();e.stopPropagation();setHeld(false,e.key==='Escape'?'keyboard-Escape':'keyboard-Space');}}
       function pointerUp(){setHeld(false,'pointer');}
       finishCurrent=finish;nextCurrent=advance;holdCurrent=setHeld;
       document.addEventListener('keydown',key,true);

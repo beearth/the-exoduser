@@ -19,7 +19,7 @@ window._resourcePractice = {
     '방향키 또는 WASD를 누른 채 Space로 전격이동을 5번 사용하세요. 매번 노란 기동력과 파란 마력이 함께 줄어드는 것을 확인하세요. 이동이 끝나면 Space를 떼고 다시 누르세요.',
     '보호막의 기본 피해 흡수율은 30%입니다. 수호신 패시브는 레벨당 +2%p, 견갑의 블록흡수 옵션은 +4~22%p를 더하며 합산 최대 50%입니다. 이번 실습처럼 패링 타이밍 이후 계속 홀딩하면 흡수율은 절반(기본 15%, 최대 25%), 남은 피해는 1.3배가 됩니다. 홀딩 중에는 마지막 해골눈을 지켜 그로기를 막지만 HP 피해는 받습니다. Q를 떼지 말고 3발 모두 받아내세요.',
     '왼쪽 Ctrl을 눌러 유령걸음을 발동하세요. 이번 실습에서는 유령걸음을 제공하며, 발동 후 Ctrl 슬롯의 쿨타임도 확인하세요.',
-    '줄어든 체력(HP)·스태미나·마력·기동력을 확인하고 Q로 탄을 패링하세요. 실제 패링 보상으로 네 자원이 모두 회복되면 성공입니다.',
+    '줄어든 체력(HP)·스태미나·마력·기동력을 확인하고 Q로 탄을 2회 패링하세요. 매번 실제 패링 보상으로 네 자원이 모두 회복되어야 합니다. 첫 성공 후 자원을 다시 낮춰 두 번째 실습을 준비합니다.',
     '영역스킬은 영역 안에서 각종 버프를 주거나 적에게 너프(약화 효과)를 부여하는 기술입니다. 기본인 회복의 영역부터 사용해보세요. F를 눌러 현재 위치에 설치한 뒤, 영역 안에 머물며 HP·MP·ST가 회복되는 것을 확인하세요. 회복의 영역은 자원 회복과 다른 스킬의 쿨다운 회복을 돕습니다.'
   ],
   save() {
@@ -51,6 +51,7 @@ window._resourcePractice = {
     this.enter(l);l.render();
   },
   actions(l) {
+    if(l.step===9&&this.recoveryWait>0)return [];
     if(l.step===3)return this.escapeWait>0?[]:['bow','charge','up','down','left','right'];
     if(l.step===5)return this.resourceWait>0?[]:[this.resourceSets[this.resourceIndex].action];
     return [[],['parry'],[],['charge','up','down','left','right','bow'],['charge'],['shield'],['up','down','left','right','bow'],['parry'],[],['parry']][l.step]||[];
@@ -71,7 +72,7 @@ window._resourcePractice = {
     if(ok&&l.step===6&&(code===BINDS.bow||code===BINDS2.bow)&&l.directionHeld())l.armDashPractice(code);
     return ok;
   },
-  enter(l) {
+  enter(l,preserveRecovery=false) {
     this.clearArea();
     l.chainPractice=null;
     l.clearShot();l.resetPose();P._gwActive=false;P._gwCd=0;P._stWingT=0;P._stCd=9999;
@@ -88,7 +89,11 @@ window._resourcePractice = {
       P.hp=Math.max(1,P.mhp*.5);P.mp=P.mmp*.5;P.st=P.mst*.5;
       this.areaBeforeZones=new Set(G._fireZones||[]);this.areaPressed=false;
     }
-    if(l.step===9){P.hp=Math.max(1,P.mhp*.4);P.st=P.mst*.4;P.mp=P.mmp*.4;_harpGauge=_HARP_GAUGE_MAX*.4;}
+    if(l.step===9){
+      if(!preserveRecovery)this.recoveryCount=0;
+      this.recoveryWait=0;this.beforeParry=null;
+      P.hp=Math.max(1,P.mhp*.4);P.st=P.mst*.4;P.mp=P.mmp*.4;_harpGauge=_HARP_GAUGE_MAX*.4;
+    }
     this.baseline={hp:P.hp,st:P.st,mp:P.mp,gauge:_harpGauge,poise:P.poise};
     if(l.step===4)l.tickChainPractice();
   },
@@ -110,7 +115,7 @@ window._resourcePractice = {
     l.resetPose();l.heldDirections.clear();
     P._gwActive=false;P._gwCd=0;P._gslCd=0;
     P.hp=P.mhp;P.mp=P.mmp;P.st=P.mst;_harpGauge=_HARP_GAUGE_MAX;
-    P.poise=0;P.poiseR=0;P.s='pStun';P.st2=480;P.iframes=0;
+    P.poise=0;P.poiseR=0;P.s='pStun';P.st2=240;P.iframes=0;
     this.escapePressed=false;this.escapeAttempt=-1;this.escapeWait=0;
     this.feedback='자유 순서 · 체크되지 않은 탈출기를 사용하세요.';
   },
@@ -201,6 +206,7 @@ window._resourcePractice = {
     l.resourceReadout.textContent=`정신력 ${eye}/4 · HP ${Math.ceil(P.hp)}/${P.mhp}\n기동력 ${Math.floor(_harpGauge)}/${_HARP_GAUGE_MAX}\nST ${Math.floor(P.st)}/${P.mst} · MP ${Math.floor(P.mp)}/${P.mmp}${this.feedback?'\n'+this.feedback:''}`;
     if(l.step===5)l.resourceReadout.textContent+='\n자원·기술 확인 '+this.resourceChecks.filter(Boolean).length+'/3';
     if(l.step===6)l.resourceReadout.textContent+='\n전격이동 성공 '+(l.dashPractice?.count||0)+'/5';
+    if(l.step===9)l.resourceReadout.textContent+='\n자원 회복 성공 '+this.recoveryCount+'/2';
     if(l.step===3)l.resourceReadout.textContent+='\n탈출 성공 '+this.escapeChecks.filter(Boolean).length+'/4\n'+this.escapeLabels.map((name,i)=>(this.escapeChecks[i]?'✓ ':'□ ')+name).join('\n');
     if(l.step===7)l.resourceReadout.textContent+=`\n현재 보호막 흡수율 ${Math.round(pGuardAbsorb()*100)}% · 이번 홀딩 적용 ${Math.round(Math.min(.25,pGuardAbsorb()*.5)*100)}%`;
     if(l.step===4){
@@ -210,6 +216,7 @@ window._resourcePractice = {
     }
   },
   hit(l,p,kind) {
+    if(l.step===9&&(this.recoveryWait>0||this.retryTicks>0||this.parried))return;
     if(l.step===7&&l.phase==='practice'&&!l.pending&&this.burstShots.includes(p)){this.retryGuard();return;}
     if(l.phase!=='practice'||l.pending||p!==l.shot||kind!=='magic')return;
     if(l.step===1||l.step===9){this.parried=true;this.beforeParry={hp:P.hp,poise:P.poise,st:P.st,mp:P.mp,gauge:_harpGauge};}
@@ -228,7 +235,7 @@ window._resourcePractice = {
     else P.poise=Math.max(1,P.poise-1);
     addTxt(P.x,P.y-30,`-${damage} HP`,'#ff6644',60);
     this.hits++;if(l.step!==2)this.wait=75;
-    if(P.poise<=0){P.s='pStun';P.st2=480;P.iframes=0;}
+    if(P.poise<=0){P.s='pStun';P.st2=240;P.iframes=0;}
     if(l.step===0&&P.poise===3&&P.hp<this.baseline.hp)l.completeStep();
     else if(l.step===2&&P.poise===0&&this.hits>=4)l.completeStep();
     else if(guarding&&absorb>0&&P.s==='sBlock'&&P.poise>=1){
@@ -238,6 +245,7 @@ window._resourcePractice = {
     else if(l.step===1||l.step===7||l.step===9){this.retryTicks=75;this.feedback='다시 시도합니다. 같은 단계에서 연습하세요.';}
   },
   fire(l) {
+    if(l.step===9){this.parried=false;this.beforeParry=null;}
     l.shot=spawnProj({x:P.x,y:P.y-800,vx:0,vy:4,dmg:0,el:EL.D,col:'#a44cff',parryClass:'magic',life:420,ml:420,friendly:false,_commit:true,_lessonShot:true});
     if(l.shot){l.shot.vx=0;l.shot.vy=4;l.shot.homing=true;l.shot._lessonExploded=false;if(l.step===2){this.burstShots.push(l.shot);this.burstSpawned++;}}
   },
@@ -267,14 +275,18 @@ window._resourcePractice = {
       if(l.phase==='done'){l.finish();return false;}
       l.step=this.stepOrder[this.stepOrder.indexOf(l.step)+1];l.phase='practice';this.enter(l);l.render();return false;
     }
-    if(this.retryTicks>0){l.clearShot(true);if((this.retryTicks-=_dtSp)<=0){this.enter(l);l.render();}return false;}
+    if(this.retryTicks>0){l.clearShot(true);if((this.retryTicks-=_dtSp)<=0){this.enter(l,l.step===9);l.render();}return false;}
+    if(l.step===9&&this.recoveryWait>0){
+      if((this.recoveryWait-=_dtSp)<=0){this.enter(l,true);l.render();}
+      return false;
+    }
     if(l.step===3&&this.escapeWait>0){
       if((this.escapeWait-=_dtSp)<=0){this.prepareEscape(l);l.render();}
       return false;
     }
     if([0,1,2,7,9].includes(l.step)){P.kb.x=0;P.kb.y=0;}
     // Keep an earned groggy state until the user performs the escape, not a timeout.
-    if(l.step===3&&P.s==='pStun')P.st2=480;
+    if(l.step===3&&P.s==='pStun')P.st2=240;
     if(l.step===3&&P.s!=='pStun'){
       const attempt=this.escapeAttempt;
       const escaped=[P.s==='gSlamWindup',P.s==='idle'&&P.poise===4,P._bdMoveT>0,P._gwActive&&P._gwCd>0][attempt];
@@ -299,7 +311,14 @@ window._resourcePractice = {
     if(this.parried){
       const b=this.beforeParry;
       if(l.step===1&&P.poise>b.poise)l.completeStep();
-      if(l.step===9&&P.hp>b.hp&&P.mp>b.mp&&P.st>b.st&&_harpGauge>b.gauge)l.completeStep();
+      if(l.step===9&&P.hp>b.hp&&P.mp>b.mp&&P.st>b.st&&_harpGauge>b.gauge){
+        this.parried=false;this.beforeParry=null;this.recoveryCount++;
+        l.clearShot(true);
+        this.feedback='네 자원 회복 확인!';
+        if(this.recoveryCount>=2)l.completeStep();
+        else{this.recoveryWait=90;this.feedback+=' Q를 놓으세요. 잠시 후 두 번째 패링을 준비합니다.';}
+        l.render();return false;
+      }
     }
     if(l.pending)return false;
     if(l.step===2){

@@ -356,12 +356,14 @@ for(const name of ['game.html','game-easy-test.html']){
   l.step=-2;l.phase='practice';l.spawnAttackEnemies();
   const e=l.attackEnemies[0];c.P.s='idle';
   const crescent={active:true,life:20,x:e.x-14,y:e.y,vx:14,vy:0,_th:0,trail:Array.from({length:5},()=>({})),r:55,_hitSet:new Set(),dmg:10,el:0,step:1,ang:0};
-  Object.assign(c,{_CRES_MAX:1,_crescents:[crescent],isW:()=>false,shQuery:()=>[e],dst:(x,y,a,b)=>Math.hypot(x-a,y-b),hasLOS:()=>true,_hurtFieldMobs:()=>false,
+  let crescentImpacts=0;
+  Object.assign(c,{_CRES_MAX:1,_crescents:[crescent],isW:()=>false,shQuery:()=>[e],dst:(x,y,a,b)=>Math.hypot(x-a,y-b),hasLOS:()=>true,_hurtFieldMobs:()=>false,_playKiSlashHit:()=>crescentImpacts++,
     hurtE:(enemy,dmg,ang,quiet,opts)=>l.hurtEnemy(enemy,dmg,ang,opts)});
   const html=fs.readFileSync(path.join(root,name),'utf8');
   vm.runInContext(html.slice(html.indexOf('function updateCrescents(sp){'),html.indexOf('function poolUpdate(sp){')),c);
   c.updateCrescents(1);assert.equal(l.leftKills,1,'Ki Slash projectile kills count after wSwing ends');
   c.updateCrescents(1);assert.equal(l.leftKills,1,'duplicate hits cannot add kills');
+  assert.equal(crescentImpacts,1,'the live hit effect fires once for the accepted collision');
   l.finish();assert.equal(c.P.activeLMBSk,'whirlwind');assert.equal(c.P.skills,originalSkills);
 }
 console.log('PASS: Ki Slash is the tutorial basic attack; live crescent collisions count once and original skill selection/levels restore.');

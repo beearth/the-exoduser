@@ -55,7 +55,7 @@
 | L48760 | `const _accCap=IS_MOBILE?PHYS_STEP*2:(_prof.u<=8?PHYS_STEP*5:PHYS_STEP*3);` | 비모바일에서 최대 5틱 catch-up. 120Hz에서는 보통 0~1틱이므로 문제 없음. | OK |
 | L7228 | `_fogGLTime+=0.016;` | **하드코딩 16ms**. 120Hz에서 매 프레임 호출되면 시간이 2배 속도로 흐름 (안개 애니메이션 가속). 시각적 문제만 있고 성능에는 무관. | LOW |
 | L16477 | `var dt=0.016;` | 보스 스켈레탈 포즈 보간용. 매 draw에서 호출. 120Hz면 보간이 2배 빠름 (미세한 시각 차이). | LOW |
-| L49714 | `_cutSkipHold+=16.67;` | 컷씬 스킵 홀드. 120Hz면 스킵이 2배 빨리 됨. 사소함. | LOW |
+| 컷씬 홀드 | `_cutSkipHold` | 현재 performance.now 실시간 경과 사용(프레임 델타 상한100ms, 첫 프레임16.67ms). 2026-09-14 자동 진행/퇴장 컷의 조기 반환 이전에도 홀드 검사 적용 | 해결 |
 | L48737 | `if(_elapsed<_fpsCapInterval-1){requestAnimationFrame(loop);return}` | FPS 캡이 있으면 동작. 하지만 **기본값 fpsCap=0** (무제한). Mac ProMotion에서 120fps로 돌면 렌더 비용 2배. | **HIGH** |
 | L36155 | `~~(_cDelay*16.67)` | setTimeout ms 계산. 프레임 기반 딜레이를 ms로 환산. 문제 없음. | OK |
 

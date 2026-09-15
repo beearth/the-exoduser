@@ -39,8 +39,8 @@ test('spawn, render, and Q/E parry routing all consume the same stored class', (
   assert.match(gameHtml, /parryClass:''/, 'projectile pool must own an explicit class field');
   assert.match(gameHtml, /p\.parryClass=_projectileParryClass\(p\)/,
     'spawn must freeze the classification after all creation flags are set');
-  assert.match(gameHtml, /if\(p\.redBean&&_projectileParryClass\(p\)==='physical'\)/,
-    'only physical redBean shots may use the mouth visual');
+  assert.match(gameHtml, /if\(_projectileParryClass\(p\)==='physical'\)/,
+    'all physical flying variants use the mouth visual through stored classification');
   assert.match(gameHtml, /const _physicalRed=p\.redBean&&_projectileParryClass\(p\)==='physical';/,
     'physical redBean glow must be keyed from the shared class instead of its red skin flag');
   assert.match(gameHtml, /X\.filter='grayscale\(1\) brightness\(1\.65\) contrast\(1\.25\)'/,

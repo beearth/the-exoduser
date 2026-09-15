@@ -32,7 +32,7 @@ test('ordinary projectile knockback follows its travel direction with strength 2
 });
 
 test('ordinary projectile direct hits pass the small vector without changing big-energy slide', () => {
-  assert.match(gameHtml, /hurtP\(_pjD,\{dtype:p\.redBean\?'parry':'magic',redBean:!!p\.redBean,projHit:true,knockback:_normalProjectilePlayerKnockback\(p,P\.x,P\.y\)\}\)/,
+  assert.match(gameHtml, /_hurtProjectilePlayer\(p,_pjD,\{dtype:p\.redBean\?'parry':'magic',redBean:!!p\.redBean,projHit:true,knockback:_normalProjectilePlayerKnockback\(p,P\.x,P\.y\)\}\)/,
     'the ordinary direct-hit branch must use the projectile travel vector');
   assert.match(gameHtml, /return\{x:_kx\/_km\*100,y:_ky\/_km\*100\}/,
     'large energy knockback must remain at strength 100');

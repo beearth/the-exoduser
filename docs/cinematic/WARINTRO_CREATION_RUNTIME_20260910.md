@@ -11,7 +11,7 @@
 | 규격 |96.4초5784f,1920×1080/60fps,H.264/AAC스테레오,87,255,213 bytes |
 | 소리·자막 |영상 내 영어 음성·주제가 BGM·한글 고정 자막22cue,muted=false/volume=1. 로비 BGM·호버음·선택 영상 정지 |
 | 화면 |검정 전체 뷰포트,object-fit:contain,네이티브 재생바 제거·우측 하단 조작 안내는 재생 시각3초부터0.4초 페이드 후 숨김 |
-| 건너뛰기 |클릭·확인 입력으로 다음 대사,Esc·게임패드B/Start·하단 버튼1200ms 홀드로 전체 종료. 재생 중 로비 입력 차단 |
+| 건너뛰기 |클릭·확인 입력으로 다음 대사,Space·Esc·게임패드B/Start·하단 버튼1200ms 홀드로 전체 종료. 재생 중 로비 입력 차단 |
 | 자동재생 차단 |NotAllowedError이면 클릭하여 계속 표시,첫 확인 입력은 대사 이동 없이 소리 있게 재생 재시도 |
 | 종료/스킵 |미디어 pause·src 제거·load·overlay 제거,Promise true. `showCharGate(charId,true)` |
 | 진입 |기존 로딩1200ms 후 `game.html?...&story=warrior-v21`,생성한 슬롯/온라인id 유지 |
@@ -59,14 +59,14 @@
 | 부분 스킵 |화면 클릭, 다음 대사 버튼, Enter, Space, ArrowRight, 패드 A(0)/X(2)/Y(3) → 다음 대사 시작 |
 | 탐색 기준 |`CUES.find(t=>t>video.currentTime+.05)`, 22개 시작점. 마지막 대사에서 다시 넘기면 종료 |
 | 동기화 |하나의 video.currentTime을 이동하여 영상·내장 음성·고정 자막 함께 탐색 |
-| 전체 스킵 |Esc, 패드 B(1)/Start(9), 건너뛰기 버튼을 1200ms 연속 홀드 |
+| 전체 스킵 |Space, Esc, 패드 B(1)/Start(9), 건너뛰기 버튼을 1200ms 연속 홀드 |
 | 홀드 게이지 |HOLD_MS=1200, 16ms 간격으로 Date.now 경과시간 / HOLD_MS, 폭 0~100% |
 | 홀드 취소 |키·버튼 해제, 포인터 이탈/취소, 창 blur/visibilitychange. keyboard/pointer/gamepad 소스별 Set 관리 |
 | 로비 입력 |컷씬 중 패드 로비 조작 차단. 키보드 반복 입력 무시, Tab은 다음 대사 버튼 포커스 |
 | 화면 |검정 전체 뷰포트 contain, z-index2147483647, video pointer-events:none/tabIndex=-1, 네이티브 controls=false/PiP·원격재생 비활성 |
 | 조작 표시 |`characterStoryHints`: 오른쪽·아래3%, 버튼 간격22px, serif13px/자간.06em, 버튼 세로패딩10px, 게이지2px. video.currentTime≥3인 첫 timeupdate에서 opacity0으로0.4초 페이드, 이후 visibility:hidden. 숨김 시작부터 pointer-events:none, 해당 재생 중 다시 나타나지 않음 |
 | 숨김 후 입력 |화면 클릭·키보드·패드의 부분/전체 스킵 유지. 숨긴 안내 버튼은 포커스 대상에서 제외하고 Tab은 overlay에 유지. 자동재생 차단 시 영상이 진행하지 않으므로 클릭하여 계속 안내 유지 |
-| 언어 |play에 getCurrentLanguage 전달. ko: 다음 대사·클릭하여 계속·Esc / B 길게, 그 외 영어. 건너뛰기 명칭은 기존 _TL 사용 |
+| 언어 |play에 getCurrentLanguage 전달. ko: 다음 대사·클릭하여 계속·Space / Esc / B 길게, 그 외 영어. 건너뛰기 명칭은 기존 _TL 사용 |
 | 자동재생 차단 |NotAllowedError 시 클릭하여 계속 표시. 첫 확인 입력은 시간을 넘기지 않고 유음 재생 재시도 |
 | API |next(), setSkipHeld(held,source='gamepad'), CUES, HOLD_MS 공개. skip()은 내부 즉시 종료 API로 유지 |
 | 정리 |종료 시 홀드 타이머·리스너·미디어·overlay 제거, 기존 포커스 복원. 중복 완료 방지 |
