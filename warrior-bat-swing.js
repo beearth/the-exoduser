@@ -1,7 +1,19 @@
 // Two-handed horizontal cut: load, contact, opposite-shoulder follow-through.
 var WarriorBatSwing=(()=>{
  const dirs=['s','se','e','ne','n','nw','w','sw'];
+ const speed=.85;
  function frame(state,left,windupTicks,recoveryTicks){
+  if(state==='wWindup')return baseFrame(state,windupTicks-(windupTicks-left)*speed,windupTicks,recoveryTicks);
+  const bash=state==='sBash'||state==='sRecover',duration=bash?20:5;
+  if(state==='wSwing'||state==='sBash')return baseFrame(state,duration-(duration-left)*speed,windupTicks,recoveryTicks);
+  if(left<=0)return 8;
+  // Let the slower cut finish during recovery, then lower the sword before idle.
+  const recovery=Math.max(1,recoveryTicks),elapsed=recovery-left;
+  const delay=duration*(1/speed-1);
+  if(elapsed<delay)return baseFrame(bash?'sBash':'wSwing',duration-(duration+elapsed)*speed,windupTicks,recoveryTicks);
+  return baseFrame(state,left,windupTicks,Math.max(.001,recovery-delay));
+ }
+ function baseFrame(state,left,windupTicks,recoveryTicks){
   const clamp=v=>Math.max(0,Math.min(1,v));
   if(state==='wWindup')return Math.min(2,Math.floor(clamp(1-left/Math.max(1,windupTicks))*3));
   if(state==='wSwing')return Math.min(6,2+Math.floor(Math.max(0,5-left)));
@@ -29,5 +41,5 @@ var WarriorBatSwing=(()=>{
   };
   image.src='img/exoduser_warrior/attack-bat-v1.png?v=20260915-bat2';
  }
- return {apply,frame};
+ return {apply,frame,speed};
 })();

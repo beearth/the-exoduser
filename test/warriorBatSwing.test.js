@@ -28,9 +28,21 @@ test('E swing traverses all nine new poses, including held coil and finish',()=>
  for(let left=20;left>=1;left--)poses.push(a.frame('sBash',left,10,28));
  for(let left=28;left>=0;left--)poses.push(a.frame('sRecover',left,10,28));
  assert.deepEqual([...new Set(poses)],[0,1,2,3,4,5,6,7,8]);
- assert.equal(a.frame('sBash',12,10,28),4);
+ assert.equal(a.frame('sBash',10,10,28),4);
  assert.ok(poses.filter(x=>x===2).length>=2);
  assert.ok(poses.filter(x=>x===6).length>=5);
+});
+test('swing playback runs at 85 percent and carries into recovery without restarting',()=>{
+ const a=module();assert.equal(a.speed,.85);
+ assert.equal(a.frame('wSwing',4,10,16),2);
+ assert.equal(a.frame('sBash',12,10,28),2);
+ for(const [active,recover,total] of [['wSwing','wRecover',5],['sBash','sRecover',20]]){
+  for(const duration of [1,4,16,28]){
+   const before=a.frame(active,0,10,duration),after=a.frame(recover,duration,10,duration);
+   assert.equal(after,before);
+   assert.equal(a.frame(recover,0,10,duration),8);
+  }
+ }
 });
 test('atlas merge replaces only warrior attack animations and falls back on load failure',()=>{
  const path=new URL('../warrior-bat-swing.js',import.meta.url);assert.ok(fs.existsSync(path));
