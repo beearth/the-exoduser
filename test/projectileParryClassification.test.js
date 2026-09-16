@@ -43,8 +43,8 @@ test('spawn, render, and Q/E parry routing all consume the same stored class', (
     'all physical flying variants use the mouth visual through stored classification');
   assert.match(gameHtml, /const _physicalRed=p\.redBean&&_projectileParryClass\(p\)==='physical';/,
     'physical redBean glow must be keyed from the shared class instead of its red skin flag');
-  assert.match(gameHtml, /X\.filter='grayscale\(1\) brightness\(1\.65\) contrast\(1\.25\)'/,
-    'the physical redBean mouth must render in the gray E-only palette');
+  assert.match(extractFunction('_drawPhysMouth'), /X\.drawImage\(_physMouthSheet,/,
+    'physical mouth must use the baked gray texture even when GPU filters are unavailable');
   assert.match(gameHtml, /const _parryClass=_projectileParryClass\(p\);/,
     'collision handling must read the same classification');
   assert.match(gameHtml, /if\(_qParryActive&&_parryClass==='magic'\)/,

@@ -33,7 +33,7 @@ test('large energy projectiles retain one source element instead of an all-eleme
   assert.doesNotMatch(elemMove, /_allEl/);
 
   const anglerEnergy = between('function _fbFireEnergy(', 'function _fbClear(');
-  assert.match(anglerEnergy, /el:fb\.el/);
+  assert.match(anglerEnergy, /el:EL\.I/, 'Kraken energy uses its fixed water element');
   const fireEnergy = between('function _fdFireEnergy(', 'function _fdDrawFly(');
   assert.match(fireEnergy, /el:EL\.F/);
 });

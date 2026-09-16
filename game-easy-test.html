@@ -56776,7 +56776,16 @@ function _fdFireEnergy(m){
 }
 let _druidPoisonFly=null;
 function _drawDruidPoisonShot(p,alpha){
-  if(!_fdFlyImg.complete||!_fdFlyImg.naturalWidth)return false;
+  if(!_druidPoisonFly&&(!_fdFlyImg.complete||!_fdFlyImg.naturalWidth)){
+    // The caller always continues after this draw: never leave an invisible damaging shot.
+    const size=(p._druidMine||p.elemBall?240:Math.max(96,Math.min(180,(p.sz||4)*24)))*_physicalProjectileMultiplier(p,2);
+    X.save();X.globalAlpha=alpha==null?1:alpha;
+    X.fillStyle='#66dd22';X.strokeStyle='#102008';X.lineWidth=3;
+    X.beginPath();X.arc(p.x,p.y,size*.42,0,Math.PI*2);X.fill();X.stroke();
+    X.strokeStyle='#ddffb8';X.lineWidth=Math.max(2,size*.025);
+    X.beginPath();X.arc(p.x,p.y,size*.27,-Math.PI*.85,Math.PI*.35);X.stroke();
+    X.restore();return true;
+  }
   if(!_druidPoisonFly){
     const c=document.createElement('canvas');c.width=_fdFlyImg.naturalWidth;c.height=_fdFlyImg.naturalHeight;
     const cx=c.getContext('2d');cx.filter='grayscale(1)';cx.drawImage(_fdFlyImg,0,0);cx.filter='none';

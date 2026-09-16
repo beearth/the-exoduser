@@ -6,16 +6,18 @@ import {parseExpressionAt} from 'acorn';
 for(const file of ['game.html','game-easy-test.html']){
  const src=fs.readFileSync(new URL('../'+file,import.meta.url),'utf8');
  const fn=name=>{const i=src.indexOf('function '+name+'(');assert.ok(i>=0,name);return src.slice(i,parseExpressionAt(src,i,{ecmaVersion:'latest'}).end);};
- const start=src.indexOf('    const _ps=Math.max(1.2,Math.min(4.0,');
- const end=src.indexOf('    // ── 무지개탄:',start);
+ const marker=src.indexOf('// 패스 2: 메인 드로우');
+ const draw=parseExpressionAt(src,src.indexOf('function draw(){'),{ecmaVersion:'latest'});
+ const loop=draw.body.body.find(n=>n.type==='ForStatement'&&n.start>marker);
+ assert.ok(loop,'complete main projectile render pass');
  test(file+': every physical flying variant renders a readable mouth, not a dot',()=>{
   for(const props of [{redBean:true},{swordWave:true,redBean:true},{swordWave:true},{pierce:true},{fast:true},{phantomSword:true},{el:1,parryClass:'physical'}]){
    const draws=[];const X=new Proxy({}, {get:(t,k)=>t[k]||(()=>{}),set:(t,k,v)=>(t[k]=v,true)});
    const p={x:100,y:100,vx:5,vy:0,sz:3,r:5,dmg:10,el:0,...props};const before=JSON.stringify(p);
-   const c=vm.createContext({X,p,Math,_now:0,fa:1,EL:{P:0},ELC:['#fff'],_drawPhysMouth:(...a)=>(draws.push(a),true)});
-   vm.runInContext(fn('_projectileParryClass')+fn('_physicalProjectileMultiplier')+'for(let once=0;once<1;once++){'+src.slice(start,end)+'}',c);
+   const c=vm.createContext({X,projs:[p],_visProjs:[0],Math,_now:0,EL:{P:0},ELC:['#fff'],_drawPhysMouth:(...a)=>(draws.push(a),true)});
+   vm.runInContext(fn('_projectileParryClass')+fn('_physicalProjectileMultiplier')+src.slice(loop.start,loop.end),c);
    assert.equal(draws.length,1);assert.ok(Math.abs(draws[0][2]*2-135.828)<1e-8,'mouth width is 55% of the former 246.96px');
-   delete p._eyeSkin;assert.equal(JSON.stringify(p),before,'render must not change combat data');
+   delete p._eyeSkin;delete p._sprFr;assert.equal(JSON.stringify(p),before,'render must not change combat data');
   }
  });
  test(file+': unloaded mouth images still render opaque directional teeth',()=>{

@@ -34,9 +34,15 @@
 | 항목 | 현행 계약 |
 |---|---|
 | 원인 | `_drawPhysMouth`로 연결되어도 WebGL `X`에는 filter 처리가 없어 원본 적갈색 몸통이 어두운 바닥에 묻힘. 이전 분기 검사만으로 실제 대비를 보장하지 못했음 |
-| 적용 | `game.html`, `game-easy-test.html`. 공통 물리 비행탄과 부착 피격 연출. `_fireChargedProj`의 `normal`+EL.P(돌진형 etype2 포함)도 동일 경로 |
+| 적용 | `game.html`, `game-easy-test.html`. 공통 물리 비행탄과 부착 피격 연출. `_fireChargedProj`의 `normal`+EL.P도 동일 경로. etype2는 현재 돌진 비활성이며 실제 돌진형22/30/43은 아래 재검수 참조 |
 | 시트 준비 | 이미지 onload에서 `_preparePhysicalMouthSheet(img)`를 1회 실행. `_physMouthSheet` 캔버스6144×1152, `_glVer=1`로 GPU 업로드 캐시. 원본 PNG 보존 |
 | 픽셀 공식 | alpha>0 픽셀: grey=.2126R+.7152G+.0722B; lit=clamp((grey×1.65−127.5)×1.25+127.5,0,255); R=G=B=round(lit×.58+255×.42). 최저107, 최대255. alpha 원본 보존 |
 | 렌더 | 런타임 `X.filter` 제거, `_drawPhysMouth`가 보정 시트를 직접 그림. 2D/WebGL/WebGPU 동일 픽셀. 준비 실패는 기존 불투명 방향성 입 폴백 |
 | 유지 | 높이22.05×_sSc×.55·최대135.828×67.914px, 프레임8/6/6, 진행방향, 탄속·피해·충돌·E패링·Q 분류·0.55배 궤적 유지 |
 | 검증 | 픽셀 대비·투명패딩·무필터 렌더 검사, 물리탄 관련27개 PASS. 로컬 WebGL 게임에서 `_fireChargedProj`로 일반 물리탄3발을 생성해 수정 전 적갈색/수정 후 회백색 실루엣을 같은 위치에서 직접 비교. 사용자 전투 장면 전체를 재현한 것은 아님 |
+
+## 2026-09-16 투사체 재검수
+
+| 변경 | 현재 상태 |
+|---|---|
+| 검수 보강·예외 수정 | 실제 돌진형22/30/43의 충전 완료 발사와 물리6프로필 외형 확인. 드루이드 이미지 실패 시에도 녹색 본체를 표시. [검수 범위·폴백 수치·69개 테스트](PHYSICAL_PROJECTILE_AUDIT_20260916.md) |
