@@ -1,11 +1,12 @@
 # 변경 파일50개 자동 정리 — 2026-09-16
 
-사용자 지시: 변경 파일이50개 이상 쌓이지 않도록 자동 정리한다. 정리는 기존 작업을 로컬 Git 커밋으로 보존하는 동작이다. 기존 로컬 백업/검수 폴더 제외 정책은 `SOURCE_CONTROL_HYGIENE_20260916.md`를 따른다.
+사용자 지시: 변경 파일이50개 이상 쌓이지 않도록 자동 정리한다. 정리는 기존 작업을 로컬 Git 커밋으로 보존하는 동작이다. 검수·백업 파일은 아래 즉시 제외 규칙으로 처리하고, 실제 소스의50개 자동 커밋은 별도 동작이다. 기존 로컬 백업/검수 폴더 제외 정책은 `SOURCE_CONTROL_HYGIENE_20260916.md`를 따른다.
 
 | 항목 | 현행 계약 |
 |---|---|
 | 실행 | `tools/auto-cleanup.cjs`; `auto_commit.ps1`은 자기 위치의 저장소에서 고정 Node 경로로 실행 |
 | Node | `C:\nvm4w\nodejs\node.exe`, 없으면 `G:\NODE.JS\node.exe` |
+| 검수 즉시 제외 | `.gitignore`의 `/output/*_review_*/`, `/output/**/backups/`, `originals/`, `before/`, `profiles/`, `captures/` 및 `/output/**/*.log`. 새 날짜 폴더도 생성 즉시 제외하며50개/60초 조건을 기다리지 않음. 기존 추적 파일은 계속 추적 |
 | 임계값 | `DEFAULT_THRESHOLD=50`; `git status --porcelain=v1 --no-renames -z --untracked-files=all`의 파일 수 기준.49개 이하 보류 |
 | 정지 시간 | `DEFAULT_QUIET_MS=60000`. 파일 상태·경로·크기·mtimeNs와 HEAD가60초간 같아야 실행. 변경 시 다시 대기 |
 | 예약 작업 | `ExoduserAutoCleanup50`,1분 간격 및 현재 사용자의 로그온 시 실행. 숨김 창, 일반 사용자 권한, 중복 실행 IgnoreNew, 배터리 허용, 최대5분 |

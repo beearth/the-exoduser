@@ -119,3 +119,13 @@ assets/vfx/boss/gen/
 /지스타2026_제출사진_10장/
 # Superseded hand-held sword attack; runtime uses attack-spin-v2.png.
 /img/exoduser_silvertail/attack-remaster-v1.png
+
+# Live QA outputs: ignore newly created review/backup files immediately.
+# Existing tracked assets stay tracked; intentionally versioned review artifacts use git add -f.
+/output/*_review_*/
+/output/**/backups/
+/output/**/originals/
+/output/**/before/
+/output/**/profiles/
+/output/**/captures/
+/output/**/*.log
