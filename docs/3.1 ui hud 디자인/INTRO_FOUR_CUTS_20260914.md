@@ -20,7 +20,7 @@
 | 포커스 | 시작 시 다음 버튼. Tab으로 다음·스킵 순환, Enter/Space로 포커스 버튼 실행. 완료 시 버튼 blur |
 | 종료 방어 | `state.done`으로 중복 완료 차단, RAF 즉시 취소. 900ms 커튼 열림 동안 키 입력을 흡수한 뒤 `_disposeIntroGuide()`로 핸들러·상태 해제 |
 | 패드 | 시작 시 눌린 버튼은 기준 상태로 기록. A·Start의 새 누름만 사용. 연결 상태가 바뀌면 안내 갱신. `G._intro` 동안 일반 패드 UI/전투 처리는 `_gpClearAll()` 후 Start 눌림 상태를 `_gpBtnsPrev._noUI9`에 기록하고 return(스킵 뒤 홀드로 설정창 열림 방지) |
-| 언어 | `OPT.lang==='en'`이면 제목·설명·버튼 영문, 그 외 한글. 원래 한영 대사는 함께 표시 |
+| 언어 | 정식 game.html: 제목·설명·버튼·대사를 기존 `_L(ko,en)`로 조회하며 열린 안내도 변경 즉시 갱신. 미등록 비KO 문구는 영어 폴백. 대사는 선택 언어 한 줄(`introTextKr`), `introTextEn`은 빈 리프. game-easy-test.html은 기존 EN/KO 분기·한영 대사 병기 유지 |
 | 키 변경 | 이동·공격·패링·사슬·Space·줍기·인벤토리·설정은 `BINDS`에서 현재 키를 읽어 `keyName(...,true)` 표시. 패드는 기본 매핑 안내 |
 | DOM | `#introTextPanel`을 `#introKeys` 내부로 이동. 대사·제목·힌트·버튼은 리프 `textContent`; 조작 행은 `replaceChildren()` 뒤 `createElement`/`appendChild`로 생성 |
 | 화면 | 중앙 패널 폭 `min(720px,calc(100vw - 96px))`, 높이 상한 `calc(100vh - 48px)`, 세로 넘침 스크롤. 진행 숫자 1 / 4~4 / 4 |

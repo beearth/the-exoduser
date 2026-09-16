@@ -10,7 +10,7 @@
 | `resolveLanguage` | Steam ID·지역 코드 정규화, 알 수 없는 코드는 null. pt 계열→ptbr, zh-Hant/TW/HK/MO→zht, nb/nn→no |
 | `applyDocumentLanguage` | HTML lang: zh=zh-Hans, zht=zh-Hant, ptbr=pt-BR, no=nb, 나머지 내부 코드. 아랍어만 dir=rtl, 그 밖은 ltr |
 | `_L(ko,en,values)` | KO는 원문. EN을 포함한 모든 비KO는 `_T(ko)` 우선, 미등록 키만 EN 인수로 폴백. 선택한 텍스트에 치환값 삽입 |
-| 첫 진입 언어 | `hellSettings` 유무·JSON 파싱 성공과 무관하게 `hellLang`을 별도 복원하고 정규화한 뒤 `syncSettingsUI()` 호출 |
+| 첫 진입 언어 | `hellcave_settings` 유무·JSON 파싱 성공과 무관하게 `hellLang`을 별도 복원·정규화. `_settingsMigrated`가 true인 정상 설정만 그 뒤 `saveSettings()`로 저장하고 `syncSettingsUI()` 호출. 이전 OPT.lang이 로비 선택을 덮어쓰지 않음. 손상된 JSON 원문 보존 |
 | `format` | `{영문자로 시작하는 이름}` 토큰을 own property 값으로 치환. 0과 반복 토큰 보존, 없는 값의 토큰은 보존. 정규식 치환 문자열의 `$&` 등은 실행하지 않음 |
 | `_T` 장비명 | MAIN 정확 키 우선. 접두사+기본형 분리 시 각 PFX/BASE 우선, 새 UI MAIN의 단어도 사용. ms는 기본명+수식어, 나머지는 기존 접두사+기본형 순서 |
 | 패널 탭 | `.panel-nav-tab`에 원문 label/key를 저장. 언어 변경 시 자식 없는 해당 노드만 번역하여 즉시 갱신 |
@@ -56,6 +56,17 @@
 | 한계 | 구조·의미 표본·화면 검증은 출시용 원어민 감수를 대체하지 않음. 기본 카탈로그 전 항목의 문체 감수는 별도 |
 
 이번 UI 감사에서 BGM 고유 곡명은 원래 제목을 유지하며, 장/공통/이벤트 선택 레이블은 번역 대상으로 분리한다. 개발 전용 bosstest 패널의 스킬 프리셋 이름은 배포 UI 번역 목록에 포함하지 않는다.
+
+## 2026-09-16 Steam 반려 대응
+
+| 대상 | 현재 계약 |
+|---|---|
+| 로비 `setUserLanguage` | 명시적 메뉴 선택 시 hellLang 저장 후 URL의 lang만 제거(history.replaceState). 다른 쿼리 보존. 최초 URL 지정은 사용자가 선택하기 전까지 유효 |
+| 시작 안내 game.html | `_introGuideText`·조작 설명·대사 모두 기존 `_L` 조회. 언어 변경 중 열린 안내도 `_applyLang`에서 다시 그림. 최초 syncSettingsUI는 뒤쪽 let 초기화 전이므로 해당 안내 갱신만 로컬 try/catch로 보호. `introTextKr` 리프에 선택 번역, `introTextEn` 리프는 비움. 미등록 비KO 문구는 EN 인수 폴백 |
+| 열린 펫 대사 | `_petBubble.sourceTxt`·`pair.sourceTxt` 보존, `_applyLang`에서 `_refreshPetBubbleLanguage` 호출. 현재 대사·대기 응답을 재번역하되 타이머/음성 재시작 없음 |
+| ui-source.json | 악의기둥 원본 키의 오래된 5초/5s를 기존 런타임·번역 값인 10초/10s에 일치. 전투 값 변경 없음 |
+| 테스트 | 실제 saveSettings와 저장소를 사용하는 회귀 검사, 손상 설정 보존, URL 선택 우선순위, 안내 번역 조회. 등록 키 존재만으로 전체 언어 지원을 보증하지 않음 |
+| 현재 지원 판정 | 신규 한국어 고정 실습 및 영상 자막 때문에 비KO는 부분 번역. [재검수 보고서](../13출시·마케팅/STEAM_REVIEW_REMEDIATION_20260916.md)가 현재 Steam 표시 판정에 우선 |
 
 ## 최종 통합 검증
 

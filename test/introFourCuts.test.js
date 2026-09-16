@@ -10,7 +10,7 @@ for(const file of ['game.html','game-easy-test.html']){
     let now=1000, id=0, opened=0;
     const el=()=>({style:{},children:[],textContent:'',appendChild(n){this.children.push(n)},replaceChildren(){this.children=[]},focus(){}});
     const $=key=>{if(!els.has(key))els.set(key,el());return els.get(key)};
-    const c={$,OPT:{lang:'ko'},G:{},P:{},BINDS:{},keyName:x=>x,_T:x=>x,
+    const c={$,OPT:{lang:'ko'},G:{},P:{},BINDS:{},keyName:x=>x,_T:x=>x,_L:(ko,en)=>c.OPT.lang==='ko'?ko:en,
       document:{createElement:el,createTextNode:t=>({textContent:t})},
       window:{addEventListener:(k,f)=>listeners.set(k,f),removeEventListener:(k)=>listeners.delete(k)},
       navigator:{getGamepads:()=>[]},performance:{now:()=>now},

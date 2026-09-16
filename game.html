@@ -8431,14 +8431,18 @@ function _petSay(id,who,txt,durSec,pairWho,pairTxt,pairDur,_noSfx){
   if(_DEMO_MODE&&G.stage===3&&G.stage===_DEMO_LAST_STAGE&&G.bossAlive&&(G._bossArena||_isDruidFinale(G._bossRef))&&!_PET_SURV_W[id]&&_petTierOf(id)<=2)return false;
   if(_petBubble.t>0)return false; // 이미 말풍선 표시 중
   if(_petDlgCD[id]>0)return false; // 쿨다운 중
-  _petBubble.who=who;_petBubble.txt=_T(txt);_petBubble.mt=~~(durSec*60);_petBubble.t=_petBubble.mt;
+  _petBubble.who=who;_petBubble.sourceTxt=txt;_petBubble.txt=_T(txt);_petBubble.mt=~~(durSec*60);_petBubble.t=_petBubble.mt;
   _petBubble.pairFired=false;
-  if(pairWho&&pairTxt){_petBubble.pair={who:pairWho,txt:_T(pairTxt),mt:~~((pairDur||5)*60)}}
+  if(pairWho&&pairTxt){_petBubble.pair={who:pairWho,sourceTxt:pairTxt,txt:_T(pairTxt),mt:~~((pairDur||5)*60)}}
   else{_petBubble.pair=null}
   // 자막 표시
   _petBubbleShow(who,_T(txt));
   if(!_noSfx)_petSfx(who,false);
   return true;
+}
+function _refreshPetBubbleLanguage(){
+  if(_petBubble.pair&&_petBubble.pair.sourceTxt)_petBubble.pair.txt=_T(_petBubble.pair.sourceTxt);
+  if(_petBubble.t>0&&_petBubble.sourceTxt){_petBubble.txt=_T(_petBubble.sourceTxt);_petBubbleShow(_petBubble.who,_petBubble.txt)}
 }
 // ═══ v7 우선순위 디스패처 (즉시발동 → 프레임당 최고우선순위 1건만) ═══
 // 티어: 5생존 / 4전투핵심 / 3전투조언 / 2진행성취 / 1튜토리얼 / 0분위기
@@ -8526,7 +8530,7 @@ function _updatePetBubble(){
     // 메인 말풍선 끝 → 페어 발동
     if(_petBubble.t<=0&&_petBubble.pair&&!_petBubble.pairFired){
       _petBubble.pairFired=true;
-      _petBubble.who=_petBubble.pair.who;_petBubble.txt=_petBubble.pair.txt;
+      _petBubble.who=_petBubble.pair.who;_petBubble.sourceTxt=_petBubble.pair.sourceTxt;_petBubble.txt=_petBubble.pair.txt;
       _petBubble.mt=_petBubble.pair.mt;_petBubble.t=_petBubble.pair.mt;
       _petBubble.pair=null;
       // 자막 갱신 (페어 대사) + 후발 사운드
@@ -45264,6 +45268,8 @@ function _applyLang(){try{
   }
   // Refresh dynamic slots
   try{updateMagicSlot();updateLMBSlot();updateQSlot();_updateUltSlot();_renderPresetBtns()}catch(_e2){}
+  try{if(_introGuide)_renderIntroGuide()}catch(_e3){} // First startup precedes the guide's let initialization.
+  _refreshPetBubbleLanguage();
 }catch(_applyErr){console.warn('[_applyLang]',_applyErr)}}
 $('optDiff').oninput=function(){OPT.diff=+this.value;const d=OPT.diff;$('optDiffVal').textContent=_diffName(d);saveSettings();if(typeof applyStats==='function'&&typeof P!=='undefined'&&P)applyStats()};$('optDiff').max=10; // 난이도 변경 즉시 시작HP(300-20×diff) 반영
 $('optAutoPot').oninput=function(){const v=+this.value/100;OPT.autoPotThr=v;$('optAutoPotVal').textContent='HP '+this.value+_L('% 이하','% or below');saveSettings()};
@@ -45617,6 +45623,7 @@ function syncSettingsUI(){
 }
 
 // 게임 시작 시 자동 불러오기
+let _settingsMigrated=false;
 try{
   const raw=localStorage.getItem('hellcave_settings');
   if(raw){const data=JSON.parse(raw);
@@ -45644,7 +45651,7 @@ try{
     // 2026-07-27 마이그레이션: 기본키 스왑 — 처내기(shield) mouse2→KeyE, 마법(beam) KeyE→mouse2 (구 기본값 그대로인 세이브만)
     if(BINDS.shield==='mouse2'&&BINDS.beam==='KeyE'){BINDS.shield='KeyE';BINDS.beam='mouse2'}
     _repairChainAttackBinds();
-    try{saveSettings()}catch(e){}
+    _settingsMigrated=true;
     if(OPT.bgmVol!==undefined)BGM.setVol(OPT.bgmVol/100);
     try{applyUIScale()}catch(e){}
   }
@@ -45652,6 +45659,8 @@ try{
 // 첫 진입이나 손상된 설정에서도 로비의 언어 선택을 독립적으로 복원한다.
 try{const _lobbyLang=ExoduserI18n.resolveLanguage(localStorage.getItem('hellLang'));if(_lobbyLang)OPT.lang=_lobbyLang}catch(e){}
 OPT.lang=ExoduserI18n.resolveLanguage(OPT.lang)||'ko';
+// Persist migrations only after restoring the independent, newer lobby choice.
+if(_settingsMigrated)try{saveSettings()}catch(e){}
 syncSettingsUI();
 try{_applyCursor()}catch(e){}
 if($('resetBtn'))$('resetBtn').onclick=()=>{$('resetConfirm').style.display='block'};
@@ -58313,7 +58322,7 @@ const _INTRO_KEY_STEPS=[
   {title:['살아남아','Stay alive'],rows:[['interact','L3','아이템 줍기','Pick up items'],['inventory','D-pad →','인벤토리','Inventory'],['settings','Start','설정','Settings']],note:['물약은 설정한 HP% 이하 시 자동 사용','Potions activate automatically below your configured HP%.']}
 ];
 let _introGuide=null;
-function _introGuideText(pair){return pair[OPT.lang==='en'?1:0]}
+function _introGuideText(pair){return _L(pair[0],pair[1])}
 function _introGuidePad(){
   const gps=navigator.getGamepads();
   for(const gp of gps)if(gp&&gp.connected)return gp;
@@ -58325,7 +58334,7 @@ function _introGuideKeys(key){
 function _renderIntroGuide(){
   const state=_introGuide;if(!state||state.done)return;
   const step=_INTRO_KEY_STEPS[state.step],line=_INTRO_LINES[state.step];
-  $('introTextKr').textContent=line.ko;$('introTextEn').textContent=line.en;
+  $('introTextKr').textContent=_L(line.ko,line.en);$('introTextEn').textContent='';
   $('ikProgress').textContent=(state.step+1)+' / '+_INTRO_KEY_STEPS.length;
   $('ikTitle').textContent=_introGuideText(step.title);
   const body=$('ikBody');body.replaceChildren();
@@ -58333,7 +58342,7 @@ function _renderIntroGuide(){
     if(state.pad&&!row[1])continue;
     const item=document.createElement('div');item.className='intro-key-row';
     const key=document.createElement('span');key.textContent=state.pad?row[1]:_introGuideKeys(row[0]);
-    const desc=document.createElement('div');desc.textContent=row[OPT.lang==='en'?3:2];
+    const desc=document.createElement('div');desc.textContent=_L(row[2],row[3]);
     item.appendChild(key);item.appendChild(desc);body.appendChild(item);
   }
   $('ikNote').textContent=step.note?_introGuideText(step.note):'';

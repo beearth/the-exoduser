@@ -23,7 +23,7 @@
 | RTL | 아랍어 트랙 언어 ar, 네이티브 WebVTT의 BiDi/글자 결합 사용. 게임 HUD·로비 전체 RTL 개편은 범위 밖 |
 | 선택 UI | 영화 중 cinLang 표시. 마우스 및 기존 패드 좌우 언어 팝업으로 변경. 자막 변경은 영상·BGM의 play/pause/currentTime을 건드리지 않음 |
 | 언어 코드 | pt 및 pt-* → ptbr; zh-TW/HK/MO/Hant → zht; zh-CN → zh; nb/nn → no; 지원 안 되는 코드 resolve=null, 자막 fallback=en |
-| 선택 우선순위 | URL lang → 저장 hellLang → Steam → 브라우저 → en. 기존 pt 저장도 ptbr로 해석. Steam portuguese/brazilian/brazilianportuguese 모두 ptbr, malay는 ms |
+| 선택 우선순위 | 최초 진입은 URL lang → 저장 hellLang → Steam → 브라우저 → en. 사용자가 언어 메뉴를 직접 변경하면 URL lang만 제거하고 hellLang 선택을 즉시 적용·유지한다. 기존 pt 저장도 ptbr로 해석. Steam portuguese/brazilian/brazilianportuguese 모두 ptbr, malay는 ms |
 | 코드 보정 | _I18N_SUPPORTED의 pt를 실제 드롭다운 코드 ptbr로 일치. setUserLanguage가 재생 중 자막만 변경 |
 | 종료 | stopWorldIntro에서 모든 자막 트랙 disabled. 재진입 시 같은 트랙 재사용. 로고 위 큐32는 109.600~111.100초 표시하고 이후 끝까지 활성 큐 없음 |
 | 별도 납본 | `video/subtitles/world_intro_v6_<code>.srt` 및 .vtt, 29개씩 총 58개. 런타임 JS와 내용·시각 동일 |

@@ -3,18 +3,27 @@ import assert from 'node:assert/strict';
 import fs from 'node:fs';
 import vm from 'node:vm';
 import {parse} from 'acorn';
-import {scripts,walk} from '../tools/localization-catalog.mjs';
+import {scripts,walk,languages} from '../tools/localization-catalog.mjs';
 
 const game=fs.readFileSync(new URL('../game.html',import.meta.url),'utf8');
 const startup=game.slice(game.indexOf('// 게임 시작 시 자동 불러오기'),game.indexOf("try{_applyCursor()}catch(e){}",game.indexOf('// 게임 시작 시 자동 불러오기')));
 function start(saved,settings){
  const doc={documentElement:{}};
- const ctx=vm.createContext({OPT:{lang:'ko'},BINDS:{},BINDS2:{},document:doc,localStorage:{getItem:key=>key==='hellLang'?saved:settings},BGM:{setVol(){}},saveSettings(){},applyUIScale(){}});
+ const storage=new Map([['hellLang',saved],['hellcave_settings',settings],['progress-sentinel','unchanged']]);
+ const ctx=vm.createContext({OPT:{lang:'ko'},BINDS:{},BINDS2:{},document:doc,localStorage:{getItem:key=>storage.get(key)??null,setItem:(key,value)=>storage.set(key,value)},BGM:{setVol(){}},_repairChainAttackBinds(){},applyUIScale(){}});
+ vm.runInContext(game.match(/function saveSettings\(\)\{[^\n]+/)[0],ctx);
  vm.runInContext(fs.readFileSync(new URL('../localization-runtime.js',import.meta.url),'utf8'),ctx);
  vm.runInContext('function _applyLang(){OPT.lang=ExoduserI18n.resolveLanguage(OPT.lang)||"ko";ExoduserI18n.applyDocumentLanguage(document,OPT.lang)};function syncSettingsUI(){_applyLang()}',ctx);
  vm.runInContext(startup,ctx);
+ assert.equal(storage.get('progress-sentinel'),'unchanged');
+ if(settings==='{broken')assert.equal(storage.get('hellcave_settings'),settings,'Do not overwrite unreadable user settings during language recovery');
  return {code:ctx.OPT.lang,dir:doc.documentElement.dir};
 }
+test('existing settings migration cannot overwrite a newer lobby choice',()=>{
+ for(const code of languages){
+  assert.deepEqual(start(code,JSON.stringify({opt:{lang:'ko',diffV2:1}})),{code,dir:code==='ar'?'rtl':'ltr'});
+ }
+});
 test('first game entry inherits the lobby language even without settings',()=>{
  assert.deepEqual(start('malay',null),{code:'ms',dir:'ltr'});
  assert.deepEqual(start('arabic',null),{code:'ar',dir:'rtl'});

@@ -825,7 +825,7 @@ const HUD_ICON = {
 |---|---|
 | 통합 패널 | `#introKeys > .intro-key-panel`, 뷰포트 중앙, 폭 `min(720px,calc(100vw - 96px))`, 최대 높이 `calc(100vh - 48px)` 및 내부 스크롤 |
 | 시작 대사 | `#introTextPanel`을 통합 패널 안에 배치. `#introTextKr`와 `#introTextEn` 리프 노드만 갱신 |
-| 조작 목록 | `_INTRO_KEY_STEPS` 4개, DOM 행 생성, 한국어/영어 분기, 재바인딩 가능한 키는 `BINDS` 조회 |
+| 조작 목록 | `_INTRO_KEY_STEPS` 4개, DOM 행 생성. 정식 game.html은 대사·제목·설명·버튼을 `_L`로 조회하고 열린 컷도 언어 변경 즉시 갱신(미등록 비KO 문구는 영어 폴백). 선택 언어 대사는 `introTextKr` 한 줄, `introTextEn`은 비움. 시험용 엔트리는 기존 한영 분기 유지. 재바인딩 가능한 키는 `BINDS` 조회 |
 | 진행 | `1 / 4`~`4 / 4`, 자동 넘김 없음. 클릭/Enter/Space/패드 A 또는 다음 버튼. 마지막은 시작 |
 | 건너뛰기 | 모든 컷의 건너뛰기 버튼, Esc, 패드 Start. 반복 입력에도 커튼 열기 1회 |
 | 입력 수명 | 다음 입력 간격 250ms, key repeat 무시. 종료 즉시 패드 RAF 취소, 커튼 900ms 동안 키 입력 차단 후 핸들러 해제 |

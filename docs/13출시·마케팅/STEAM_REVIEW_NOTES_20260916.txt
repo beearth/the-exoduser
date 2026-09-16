@@ -1,0 +1,11 @@
+We corrected language persistence during settings migration and the language selector's handling of a URL language override. Selecting a language now updates the current locale and saves the choice. The opening control guide also uses the existing translation lookup and refreshes when the language changes.
+
+We tested the Windows NW.js executable with isolated profiles. All 29 selectable locales changed the main menu text and retained the selected language after terminating and relaunching the executable. We also checked first-entry French and switching from existing Korean settings to Japanese. This verifies switching and persistence, not complete translation coverage for all selectable languages. Steam client launch and overlay behavior have not been re-tested with a new uploaded build.
+
+After adding a small startup initialization guard and rebuilding, we repeated the packaged executable checks in Korean, English, French and Japanese, including first-entry French, existing-settings Japanese and Japanese after an executable restart.
+
+At the sign-in screen, use the language dropdown. During gameplay, open Settings with Esc and use the Language dropdown. The choice applies immediately; there is no separate Apply button and no restart is required. The sign-in labels, Settings title, menu tabs, inventory and skill descriptions provide visible places to inspect the change. Some recently added tutorials and the character-story video's embedded Korean subtitles are not fully localized, so we are not claiming complete support for the other selectable languages.
+
+We have saved the Steamworks Supported Languages settings with Korean interface and Korean subtitles enabled, and all Full Audio boxes disabled. The existing additional language selections and translation resources remain in the application, but are classified as incomplete.
+
+The game has dialogue subtitles but does not implement accessibility captions describing non-speech sounds. We have unchecked and saved “Captions available” in the Steamworks store editor. These store changes have not yet been published. No new Steam build has been uploaded as part of this local remediation.

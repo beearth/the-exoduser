@@ -18,7 +18,7 @@
 | A06 | 높음 | 스토리 예고편 1313572의 기본=1301291, 게임플레이 1301291의 기본=1313572. 둘 다 영어 | 서로 다른 영상이 서로의 언어 대체본으로 지정된 순환 구성. 독립 예고편이면 기본 연결을 비워 각각 노출하도록 정리할 대상. 현재 베타에는 두 편 모두 썸네일이 보여, 영상이 완전히 사라졌다고 단정하지 않음 | trailers.txt |
 | A07 | 대조 | 영어 About에 35+ 보스, 6 archetypes, 5 rarity tiers, 21+ fusion combinations, Live service 등 한국어에 없는 수치/약속 존재. 35 stages와 35+ stages 표현도 공존 | 한국어/영어 최종 원문과 실제 출시 콘텐츠 대조 필요. 앞선 번역 작업은 지시대로 KR/EN 보존, 신규 28언어는 한국어 기준. 이번 검수에서도 원문 변경 안 함 | store_preview.txt, 기존 현지화 REPORT.md |
 | A08 | 대조 | 극심한 폭력/유혈·살해는 체크, 주요 분류의 잦은 폭력 또는 유혈은 해제. 저장 등급은 브라질16, 독일18+ | 설문 내부의 폭력 표현을 실제 게임·시네마틱 전체와 대조. 법적 등급을 임의로 변경하거나 심사 통과를 보장할 수 없음 | content_survey.txt |
-| A09 | 대조 | Captions available 체크 | 이 항목은 대사 자막만이 아니라 소음·음악·효과음 등의 설명 자막을 뜻함. 관련 접근성 기능 실구현 확인 필요. docs 전체 키워드 검색으로 해당 구현 근거를 확보하지 못했으며, 부재를 확정한 것은 아님 | basic.txt |
+| A09 | 대조 | 당시 Captions available 체크 | 2026-09-09에는 실구현 미확인. 2026-09-16 코드·패키지 재감사에서 비언어적 소리 설명 기능 미구현으로 판정해 실제 체크 해제·저장·새로고침 확인(미게시). 대사 자막은 보존. [현재 보고서](STEAM_REVIEW_REMEDIATION_20260916.md) | basic.txt, output/steam_review_20260916/store-after.json |
 | A10 | 권장 수정 | 5번째 스크린샷 원본 1960×1183, 16:9 아님. 상점 표시본 1790×1080으로 좌우 검은 여백 | 16:9 실제 촬영본 사용 권장. 원본의 최소 픽셀 수 부족으로 판정한 것은 아님 | screenshot5_original.txt, screenshot_loading.json |
 | A11 | 대조 | 태그20개에 2D Platformer 포함. 상단에는 Souls-like, Multiple Endings, Drama 등이 먼저 노출 | 현재 탑다운 핵앤슬래시의 핵심 플레이와 태그/노출 순서 대조. 2D Platformer는 특히 적합성 검토 필요. Multiple Endings는 최종 구현 여부 확인 | tags.txt, store_preview.txt |
 | A12 | 번역 해결·상태 별도 | 2026-09-10 영어6답변 교정 및30언어180답변 저장·재내보내기 검증 완료. 한국어 원문 보존 | EA 상태·검토 요청은 변경하지 않음. 게임의 EA 출시 여부는 별도. [후속 현지화 기록](STEAM_EARLYACCESS_LOCALIZATION_20260910.md) | early_access.txt; output/steam_earlyaccess_20260910/verification.json |
