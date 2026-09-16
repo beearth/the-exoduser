@@ -63,7 +63,7 @@
 | 행2 | 6프레임 곡선 |
 | 로더 | `_physMouthImg` / `_drawPhysMouth` |
 | 회전 | 우향, `rotate(ang)` (머리=셀 중심) |
-| 적용 | `parryClass=physical`의 일반·검기파·관통·빠른탄·환영검을 공통 회백색 이빨입으로 표시. 혈안탄 전용 눈알 유지. `_preparePhysicalMouthSheet`가 회백색 픽셀을 한 번 생성하여 `_physMouthSheet`에 캐시. WebGL의 미지원 `X.filter`에 의존하지 않음. [픽셀 공식](../8.0몬스터디자인/PHYSICAL_PROJECTILE_VISIBILITY_20260914.md). 마법 빨콩은 기존 화염 혜성 Q 외형 |
+| 적용 | `parryClass=physical`의 일반·검기파·관통·빠른탄·환영검을 공통 원본 적갈색 이빨입으로 표시. 혈안탄 전용 눈알 유지. `_physMouthImg` 원본 색을 직접 사용. 사용자 지시로 grayscale·밝기·흰색 혼합 제거. [원본 색 계약](../8.0몬스터디자인/PHYSICAL_PROJECTILE_VISIBILITY_20260914.md). 마법 빨콩은 기존 화염 혜성 Q 외형 |
 | 패링 | 적대 `EL.P` 입/뱀 외형은 `pierce:true` 포함 **E(sBash) 전용**. `_isPhysicalMouthProjectile`가 전용 VFX 탄을 제외하고 판별하며 Q는 반사하지 않고 "❌ E키로!"를 표시 |
 | 폴백 | 같은 폭·높이의 불투명 회백색 방향성 입·흰 이빨·어두운3px 외곽선. 회전 바버폴/작은 원 사용하지 않음. [최신 가시성](../8.0몬스터디자인/PHYSICAL_PROJECTILE_VISIBILITY_20260914.md) |
 | 원본 | 유저 제공 ChatGPT 시트 3장 (2026-08-23 12:02) |

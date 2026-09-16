@@ -8,7 +8,7 @@
 |---|---|---|
 | `_physicalProjectileMultiplier(p,physicalScale=3)` | 물리탄 용도별 배율 | p 존재, `!friendly`, `_projectileParryClass(p)==='physical'`이면 physicalScale, 그 외1. 렌더는 `(p,2)`, 자원 보상은 `(p)`로 호출 |
 | draw `_sSc` | 공통 본체 크기 | `max(1.2,min(4,(sz||1)×1.5))×0.7×_physicalProjectileMultiplier(p,2)` |
-| redBean 물리 | 회백색 이빨입 | 높이=`22.05×_sSc×0.55`, 가로=높이×2. 최대 **135.828×67.914px** |
+| redBean 물리 | 원본 적갈색 이빨입 | 높이=`22.05×_sSc×0.55`, 가로=높이×2. 최대 **135.828×67.914px** |
 | 일반 물리 | 입/관통탄 | 공통 이빨입 높이=`22.05×_sSc×0.55`, 가로=높이×2. 최대 **135.828×67.914px** |
 | fast 물리 | 빠른 입탄 | 공통 이빨입 높이=`22.05×_sSc×0.55`, 가로=높이×2. 최대 **135.828×67.914px** |
 | titanEye | 혈안 눈알 | 가로/세로=`21.7×_sSc`, 최대 **121.52px** (기존60.76) |
@@ -69,4 +69,4 @@
 | 일반 명중 | 입탄의 일반 몸통 명중 폭발을 부착 연출로 교체. 피해·화상·넉백·E패링·보상 유지. 추가 피해 없음 |
 | 상세 | [분류·크기·좌표·수명·검증 계약](PHYSICAL_PROJECTILE_BITE_20260916.md) |
 
-| 2026-09-16 물리 뱀탄 대비 | WebGL 미지원 X.filter 대신 사전 보정 `_physMouthSheet` 사용. 비행·부착 외형 공통, 크기·전투 수치 유지. [픽셀 공식·검증](PHYSICAL_PROJECTILE_VISIBILITY_20260914.md) |
+| 2026-09-16 물리 뱀탄 대비 | 사용자 지시로 사전 회백색 보정을 취소하고 `_physMouthImg` 원본 색 사용. 비행·부착 외형 공통, 크기·전투 수치 유지. [픽셀 공식·검증](PHYSICAL_PROJECTILE_VISIBILITY_20260914.md) |

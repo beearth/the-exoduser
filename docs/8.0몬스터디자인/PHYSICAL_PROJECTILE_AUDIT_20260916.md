@@ -6,13 +6,13 @@
 |---|---|---|
 | 돌진 중 일반 물리 발사 | 실제 `mkEn` etype22/30/43을 생성하고 충전·돌진 타이머를 재현용으로 맞춘 뒤 `updateE` 12틱 실행 | 8틱에 세 개체 모두 eCharge, 12틱에 eCharge 상태에서 3발 생성. physical, sz3, 속도5px/틱. 흰 링과 뱀탄을 WebGL 화면에서 확인 |
 | 생성 구간 | `mkEn(...,si=1,...)`로 돌진형 초기 필드를 생성하고 테스트 화면에서 실행 | si0은 `_CH1_OPENING_EXCLUDED_ET`에 의해 돌진형이 etype0으로 치환됨. etype2도 현재 돌진 비활성. 이전 문서의 ‘돌진형 etype2’ 설명 정정 |
-| 일반·redBean·swordWave·pierce·fast·phantomSword | 실제 spawnProj → draw 전체 실행, 호출 기록 및 화면 비교 | 여섯 프로필 모두 공통 회백색 입, 높이67.914px(입력sz1.5→스폰sz3). 전용 플래그로 작은 점 렌더에 빠지지 않음 |
+| 일반·redBean·swordWave·pierce·fast·phantomSword | 실제 spawnProj → draw 전체 실행, 호출 기록 및 화면 비교 | 당시 여섯 프로필 모두 공통 회백색 입(후속 사용자 지시로 현재 원본 적갈색 복구), 높이67.914px(입력sz1.5→스폰sz3). 전용 플래그로 작은 점 렌더에 빠지지 않음 |
 | 혈안탄·드루이드 원본 물리탄 | 같은 화면에 함께 생성 | 혈안은 눈알, 드루이드는 녹색 독탄. 기존 전용 외형 유지 |
 | 시트 실패 | 물리 시트 준비=false, 드루이드 이미지 naturalWidth=0 및 캐시=null을 테스트 탭에서 강제 | 일반·검기·관통은 입 실루엣 유지. 드루이드 E/Q탄은 아래 수정 후 녹색 원형 본체 유지 |
 | 발사 전조 큐 | enemyShotWarning / projChargeTelegraph | 60틱 대기, 완료탄 밀도드랍 면제, 혼합탄 색 분리, 스턴/사망/스테이지 전환 취소, 사망탄 전조 검사 |
 | 패링·전투 데이터 | physicalProjectileParry / ScaleReward / Expiry / enemyProjectileSpeedBand / projectileParryClassification | E/Q 분류·속도·보상·만료 계약 확인 |
 | 렌더 검사 보강 | physicalProjectileVisibility | `_ps` 계산 이후 일부 조각 대신 draw의 실제 메인 투사체 ForStatement 전체 실행. 앞쪽 조기 분기로 공통 외형을 건너뛰는 회귀도 검사 |
-| 테스트 정비 | projectileParryClassification / projectileVisualTaxonomy | 제거된 X.filter 문자열 기대를 사전 보정 시트 사용 검사로 교체. 크라켄은 기존 현행 계약 EL.I를 기대하도록 정정(게임 속성 변경 없음) |
+| 테스트 정비 | projectileParryClassification / projectileVisualTaxonomy | 당시 제거된 X.filter 문자열 기대를 사전 보정 시트 검사로 교체했고, 후속 색 복구 시 원본 시트 사용 검사로 변경. 크라켄은 기존 현행 계약 EL.I를 기대하도록 정정(게임 속성 변경 없음) |
 
 ## 발견·수정: 드루이드 이미지 실패 시 투명한 공격
 

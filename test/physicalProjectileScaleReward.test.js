@@ -160,7 +160,6 @@ test('actual mouth and titan sprite draw calls grow both dimensions by exactly 2
   const { createCanvas, loadImage } = await import('canvas');
   const ctx = runtime();
   ctx._physMouthImg = await loadImage(fileURLToPath(new URL('../img/proj_phys_mouth.png', import.meta.url)));
-  ctx._physMouthSheet = ctx._physMouthImg;
   ctx._titanEyeImg = await loadImage(fileURLToPath(new URL('../img/proj_titan_eye.png', import.meta.url)));
   Object.assign(ctx, { _physMouthReady: true, _titanEyeReady: true, _gameFrame: 0,
     _PHYS_MOUTH_FW: 768, _PHYS_MOUTH_FH: 384, _PHYS_MOUTH_N: [8, 6, 6], _now: 0, fa: 1 });

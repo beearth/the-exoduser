@@ -14,7 +14,7 @@
 | 크기 | `clamp(22.05×max(1.2,min(4,(sz||1)×1.5))×.7×2×.55×.65,22,36)` |
 | 방향 | vx/vy가 있으면 atan2(vy,vx), 없으면 투사체→플레이어 방향 |
 | 위치 | bite=`sin((age%16)/16×π)`; x=`P.x−cos(ang)×(18−bite×3)`, y=`P.y−14−sin(ang)×(12−bite×3)` |
-| 연출 | row1의6프레임, scale=`1−bite×.16`, 회전=`ang+sin(age×1.4)×.055`, fade=`min(1,(48−age)/12)`, 비행탄과 같은 사전 보정 `_physMouthSheet` 사용. [회백색 픽셀 공식](PHYSICAL_PROJECTILE_VISIBILITY_20260914.md) |
+| 연출 | row1의6프레임, scale=`1−bite×.16`, 회전=`ang+sin(age×1.4)×.055`, fade=`min(1,(48−age)/12)`, 비행탄과 같은 원본 `_physMouthImg` 사용. [원본 색 유지 계약](PHYSICAL_PROJECTILE_VISIBILITY_20260914.md) |
 | 상처 | 주기6~11틱에 #a92232 선3개, 두께2px, 방향간격.65rad, 길이=`4+(phase−6)×1.4`, alpha=`fade×(12−phase)/6` |
 | 렌더 순서 | drawP 직후 `_drawPhysicalBites`, source-over·save/restore. 별도 추가 피해·DOT 없음 |
 | 시트 함수 | `_drawPhysMouth(x,y,sz,ang,alpha,row,frame)`의 frame 생략 시 기존 자동재생, 지정 시0..n−1 범위로 제한. 시트 미준비 실루엣 유지 |

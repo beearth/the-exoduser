@@ -21503,25 +21503,9 @@ const _eyeSheetImg=new Image();_eyeSheetImg.src='img/proj_eye_sheet.png';let _ey
 _eyeSheetImg.onload=function(){_eyeSheetReady=true};
 const _EYE_ROW=[4,0,1,2,3,3,2]; // EL {P,F,I,D,L,H,E} → 시트 행
 // 물리탄 유기 이빨입 — 유저 제공 3장 패킹. 768×384셀, 행0=8프레임 수평비행, 행1=개구, 행2=곡선. 우향.
-let _physMouthReady=false,_physMouthSheet=null;
-function _preparePhysicalMouthSheet(img){
-  // Bake neutral contrast once: the WebGL/WebGPU Canvas facade ignores X.filter.
-  const c=document.createElement('canvas');c.width=img.naturalWidth||img.width;c.height=img.naturalHeight||img.height;
-  const ctx=c.getContext('2d');ctx.drawImage(img,0,0);
-  const data=ctx.getImageData(0,0,c.width,c.height),px=data.data;
-  for(let i=0;i<px.length;i+=4){
-    if(!px[i+3])continue;
-    const grey=.2126*px[i]+.7152*px[i+1]+.0722*px[i+2];
-    const lit=Math.max(0,Math.min(255,(grey*1.65-127.5)*1.25+127.5));
-    px[i]=px[i+1]=px[i+2]=Math.round(lit*.58+255*.42);
-  }
-  ctx.putImageData(data,0,0);c._glVer=1;return c;
-}
+let _physMouthReady=false;
 const _physMouthImg=new Image();
-_physMouthImg.onload=function(){
-  try{_physMouthSheet=_preparePhysicalMouthSheet(this);_physMouthReady=true}
-  catch(err){console.warn('[PHYS-MOUTH] texture preparation failed',err)}
-};
+_physMouthImg.onload=function(){_physMouthReady=true};
 _physMouthImg.src='img/proj_phys_mouth.png?v=20260823-phys-user';
 const _PHYS_MOUTH_FW=768,_PHYS_MOUTH_FH=384,_PHYS_MOUTH_N=[8,6,6];
 // 원소 일반탄 — 유저 시트 6행×6프레임, 셀512×256, 우향. 행: 0불 1어둠 2얼음 3번개 4대지 5신성. 무지개탄 미사용.
@@ -21546,7 +21530,7 @@ function _drawPhysMouth(x,y,sz,ang,alpha,row,frame){
   if(_physMouthReady){
     const n=_PHYS_MOUTH_N[row]||8;
     const fi=frame==null?(((_gameFrame>>2)+(~~(x*.03)))%n+n)%n:Math.max(0,Math.min(n-1,frame|0));
-    X.drawImage(_physMouthSheet,fi*_PHYS_MOUTH_FW,row*_PHYS_MOUTH_FH,_PHYS_MOUTH_FW,_PHYS_MOUTH_FH,-dw/2,-dh/2,dw,dh);
+    X.drawImage(_physMouthImg,fi*_PHYS_MOUTH_FW,row*_PHYS_MOUTH_FH,_PHYS_MOUTH_FW,_PHYS_MOUTH_FH,-dw/2,-dh/2,dw,dh);
   }else{
     // Keep a full-sized, directional mouth visible while the sprite loads or fails.
     X.fillStyle='#dce7f0';X.strokeStyle='#151820';X.lineWidth=3;
