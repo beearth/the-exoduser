@@ -1,5 +1,13 @@
 {
   "version": "20260916-finish-1",
+  "bakeVersion": "20260916-finish-3",
+  "alphaFeather": {
+    "groundEdge": 0.24,
+    "groundRadial": 0.38,
+    "groundOpacityMultiplier": 0.7,
+    "forestEdge": 0.095,
+    "rgbBlur": 0
+  },
   "stage": 0,
   "masterSize": [
     8192,

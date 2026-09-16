@@ -1,3 +1,5 @@
+> **2026-09-16 CH1-1 PRODUCTION 적용 계약 — 이전 CH1-1 배경/경계 설명보다 우선:** 사용자 최신 지시에 따라 실제 `STAGES[0]`(표시 1-1)에 고정 수작업 전체맵을 적용했다. 현행 경계는 `assets/map/ch1/production_finish/layout.js`의 53점 polygon/8구역이며, 기본 배경은 `assets/map/ch1/production_finish`다. 8192² master의 1024px core를 **월드 1000px**로 그려 200×200타일(`T=40`, 8000²) 충돌 좌표와 일치시킨다. `smoothing`은 호환 phase 이름이며 과거 smoothing 폴더를 기본 로드한다는 뜻이 아니다. `outer` query는 과거 아트 비교용으로, 현행 경계와 시각 정합을 보증하지 않는다. authored62/runtime63, hand collision21/total22, 자동 scatter0. `_CH1S1`/stage1은 별도 맵이다. START `(100.5,185.5)`, 시체나무 `(102.5,90.5)`, 북쪽 gate y5/exit y7과 진행 조건은 유지한다. 아래의 이전 outer/smoothing 수치·좌표는 **해당 날짜의 이력**이며 현행값은 [전체 제작·수치·검증 보고서](CH1_1_PRODUCTION_FINISH_20260916.md)를 따른다. 기술 PASS와 시각 판정은 보고서에서 별도로 기록한다.
+
 > **2026-09-12 최신 변경:** 사용자 요청으로 CH1-1 시작 철창문 `m_cage_gate(103,188,scale1.2)` 배치를 제거했다. 해당 문 렌더·충돌 모두 제거, authored62/runtime63, hand collision21/total22. 아래의 START 성문·63/64·22/23 수치는 제거 이전 기록이다. 북쪽 보스 게이트와 다른 스테이지 문은 유지한다.
 
 # MAP SSOT INDEX — 세미 오픈월드 맵 기획 문서 세트
@@ -16,6 +18,10 @@
 맵 설계·geometry·collision·outer/baked composition·오브젝트 배치·랜드마크·카메라/전투 QA 작업은 종류와 stage에 관계없이 이 문서를 먼저 완독한다. 이 가이드는 **제작 프로세스 SSOT**이며, 확정 수치·좌표·runtime 계약은 사용자 최신 지시와 아래 stage별 LOCK/SSOT가 우선한다. `v0.9 FIELD TEST`이므로 CH1/CH2 검증 결과를 반영하되 임의로 `v1.0 PRODUCTION LOCK`으로 승격하지 않는다.
 
 실제 CH1-1(`si0/stage0`)의 GATE 2~4 locked outer는 `CH1_1_START_OUTER_MASS.md`, default smoothing 완성 master는 `CH1_1_SMOOTHING_PASS.md`, 현행 `forestBoundary:1` tile geometry와 authored63/runtime64 계약은 `CH1_1_COMPOSE_초안.md`에 기록한다. runtime은 smoothing/outer 중 선택한 chunk set 하나만 그리며 canonical tile wall은 둘 모두에 공통이다. 기존 CH1-2 opt-in 실험 기록과 혼용하지 않는다.
+
+### CH1-1 현행 적용 SSOT
+
+- `CH1_1_PRODUCTION_FINISH_20260916.md` — 사용자 전체 제작 지시에 따른 고정 geometry, production 배경, 접합 리터치, 5개 handProp 좌표 및 남서 스폰 보정, 런타임 증거와 검증 한계. 2026-09-04 smoothing/outer 문서는 이전 제작 이력이다.
 
 ### P0 — 마스터 SSOT 6종
 1. `WORLD_STRUCTURE_SSOT.md` — 세계 구조: 7지옥/35에리어/200×200/수직상승 S자/로딩경계/UD 해소 기록

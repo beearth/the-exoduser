@@ -48321,3 +48321,10 @@ mpR = 0.05 + s.int×0.005                                        [NO P.lv×0.001
 | EN 지원 범위 | 신규 실습3파일116/86/36개 한국어 리터럴 후보(aria·문장 조각 포함), 기존 정확 EN 키5/0/0. 캐릭터 선택 신규 설명·특성, 영상22개 고정 KO 자막은 별도 작업 필요. 영어 지원 체크 복원하지 않음 |
 | 오탐 제외 | Exoduser Warrior, HP/MP/ST 및 공용 기호, 시작4컷 정상 영어 fallback을 EN 누락으로 세지 않음 |
 | 상세 근거 | output/steam_install_review_20260916/english-audit.json, 후속 Steam 검수 보고서 |
+
+## 2026-09-16 — CH1-1 PRODUCTION FINISH 적용/리터치
+
+- 실제 stage0의 수작업 전체 경계(53점/8구역), 8192² production master/64 chunks, alpha 접합 리터치 적용. 원화1024px core→월드1000px, 카메라 zoom을 반영한 요청/표시 범위로 그림과 8000² 충돌 좌표를 통일.
+- 5개 handProp 좌표와 남서 spawnHole `(70,170)→(74,168)` 보정. 맵 크기/START/EXIT/전투 및 진행 규칙 유지. authored62/runtime63/scatter0.
+- 전체 docs 관련 키워드 검색 및 현행 계약 동기화. `2_3 돌진+패링+방패시스템` 수정 없음.
+- 실제 입력 종주/전투, 비교 캡처, 기술·시각 판정 및 미검증 한계는 `4.1맵디자인+설정/CH1_1_PRODUCTION_FINISH_20260916.md` 참조. 이 항목 자체가 최종 시각 PASS를 의미하지 않는다.

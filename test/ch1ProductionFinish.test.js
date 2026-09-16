@@ -39,3 +39,32 @@ test('production art and geometry are selected only for the real stage zero', ()
   assert.match(source, /CH1_1_PRODUCTION\.buildRLE\(mw,mh\)/);
   assert.match(source, /G\.stage===_CH1_START_OUTER\.stage/);
 });
+
+test('the 8192px baked image occupies exactly the 8000px gameplay world', () => {
+  const source=fs.readFileSync(new URL('../game.html',import.meta.url),'utf8');
+  const body=source.slice(source.indexOf('function _drawCh1StartOuter(ctx){'),source.indexOf('globalThis.__ch1StartOuterQA='));
+  const chunks={},cache={},rects=[];
+  for(let y=0;y<8;y++)for(let x=0;x<8;x++){chunks[x+','+y]='chunk';cache[x+','+y]={status:'ready',img:{}};}
+  const ctx={save(){},restore(){},translate(){},scale(){},drawImage(...args){rects.push(args.slice(5));}};
+  const env={G:{mw:200,mh:200,cam:{x:4000,y:4000},_camZoom:1},T:40,VW:8000,VH:8000,_EDITOR_MODE:false,
+    _CH1_START_ROOT:'assets/map/ch1/production_finish',_CH1_OUTER_HUG_X:.965,
+    _CH1_START_OUTER:{chunkSize:1024,bleed:1,chunks},_ch1StartOuterCache:cache,
+    _ch1StartOuterStats:{drawSamples:0,maxDrawMs:0},_ch1StartOuterEnabled:()=>true,_preloadCh1StartOuter(){},performance:{now:()=>0},ctx};
+  vm.runInNewContext(body+';_drawCh1StartOuter(ctx);',env);
+  assert.equal(rects.length,64);
+  assert.equal(Math.max(...rects.map(([x,y,w])=>x+w)),8000,'east visual boundary matches collision coordinates');
+  assert.equal(Math.max(...rects.map(([x,y,w,h])=>y+h)),8000,'south visual boundary matches collision coordinates');
+});
+
+test('CH1-1 overview keeps distant props visible while other stages keep their culling contract', () => {
+  const source=fs.readFileSync(new URL('../game.html',import.meta.url),'utf8');
+  const helper=source.match(/function _mapObjectCullBounds\(camX,camY,vw,vh,zoom\)\{[\s\S]*?\n\}/)[0];
+  const start=source.indexOf('  const _moCull=_mapObjectCullBounds(');
+  const call=source.slice(start,source.indexOf('  const _wvl=',start));
+  for(const enabled of [true,false]){
+    const env={G:{cam:{x:4000,y:4000},_camZoom:.3},VW:2400,VH:2400,_EDITOR_MODE:false,_ch1StartOuterEnabled:()=>enabled};
+    vm.runInNewContext(helper+'\n'+call+'\nresult=_moCull;',env);
+    assert.equal(env.result.left<=0,enabled);
+    assert.equal(env.result.right>=8000,enabled);
+  }
+});

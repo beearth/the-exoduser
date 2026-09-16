@@ -10531,7 +10531,7 @@ function _drawMapPaintWorld(ctx,x0,y0,x1,y1){
 const _CH1_START_OUTER={stage:0,chunkSize:1024,bleed:1,chunks:{}};
 const _CH1_START_PHASE=(()=>{if(typeof location==='undefined')return 'smoothing';const phase=new URLSearchParams(location.search).get('ch1StartPhase');return phase==='outer'?'outer':'smoothing'})();
 const _CH1_START_ROOT=_CH1_START_PHASE==='outer'?'assets/map/ch1/baked_start_outer':'assets/map/ch1/production_finish';
-for(let y=0;y<8;y++)for(let x=0;x<8;x++)_CH1_START_OUTER.chunks[x+','+y]=`${_CH1_START_ROOT}/chunk_${x}_${y}.png?v=20260916-finish-1`;
+for(let y=0;y<8;y++)for(let x=0;x<8;x++)_CH1_START_OUTER.chunks[x+','+y]=`${_CH1_START_ROOT}/chunk_${x}_${y}.png?v=20260916-finish-3`;
 const _CH1_START_OUTER_QUERY_ENABLED=typeof location==='undefined'||new URLSearchParams(location.search).get('ch1StartOuter')!=='0';
 const _ch1StartOuterCache=Object.create(null),_ch1StartOuterWarmQ=[];
 let _ch1StartOuterWarmBusy=false;
@@ -10585,20 +10585,20 @@ function _requestCh1StartOuter(id){
 }
 function _preloadCh1StartOuter(){
   if(!_ch1StartOuterEnabled())return;
-  const cs=_CH1_START_OUTER.chunkSize,z=_EDITOR_MODE&&Number.isFinite(G._edZoom)&&G._edZoom>0?G._edZoom:1;
+  const cs=_CH1_START_ROOT==='assets/map/ch1/production_finish'?G.mw*T/8:_CH1_START_OUTER.chunkSize,z=_EDITOR_MODE&&Number.isFinite(G._edZoom)&&G._edZoom>0?G._edZoom:Math.max(.3,G._camZoom||1);
   const cx0=Math.floor((G.cam.x-VW/(2*z))/cs)-1,cx1=Math.floor((G.cam.x+VW/(2*z)-.001)/cs)+1;
   const cy0=Math.floor((G.cam.y-VH/(2*z))/cs)-1,cy1=Math.floor((G.cam.y+VH/(2*z)-.001)/cs)+1;
   for(let cy=cy0;cy<=cy1;cy++)for(let cx=cx0;cx<=cx1;cx++)_requestCh1StartOuter(cx+','+cy);
 }
 function _drawCh1StartOuter(ctx){
   _ch1StartOuterStats.visibleIds=[];_ch1StartOuterStats.drawnIds=[];if(!_ch1StartOuterEnabled())return;_preloadCh1StartOuter();
-  const cs=_CH1_START_OUTER.chunkSize,b=_CH1_START_OUTER.bleed,z=_EDITOR_MODE&&Number.isFinite(G._edZoom)&&G._edZoom>0?G._edZoom:1;
+  const cs=_CH1_START_ROOT==='assets/map/ch1/production_finish'?G.mw*T/8:_CH1_START_OUTER.chunkSize,srcCs=_CH1_START_OUTER.chunkSize,b=_CH1_START_OUTER.bleed,z=_EDITOR_MODE&&Number.isFinite(G._edZoom)&&G._edZoom>0?G._edZoom:Math.max(.3,G._camZoom||1);
   const left=G.cam.x-VW/(2*z),right=G.cam.x+VW/(2*z),top=G.cam.y-VH/(2*z),bottom=G.cam.y+VH/(2*z);
   const cx0=Math.floor(left/cs)-1,cx1=Math.floor((right-.001)/cs)+1,cy0=Math.floor(top/cs),cy1=Math.floor((bottom-.001)/cs),started=performance.now();
   const hugX=G.mw*T*.5;
   ctx.save();ctx.imageSmoothingEnabled=true;
   ctx.translate(hugX,0);ctx.scale(_CH1_START_ROOT==='assets/map/ch1/production_finish'?1:_CH1_OUTER_HUG_X,1);ctx.translate(-hugX,0);
-  for(let cy=cy0;cy<=cy1;cy++)for(let cx=cx0;cx<=cx1;cx++){const id=cx+','+cy,src=_CH1_START_OUTER.chunks[id];if(!src)continue;_ch1StartOuterStats.visibleIds.push(id);const e=_ch1StartOuterCache[id];if(!e||e.status!=='ready')continue;ctx.drawImage(e.img,b,b,cs,cs,cx*cs,cy*cs,cs,cs);_ch1StartOuterStats.drawnIds.push(id)}
+  for(let cy=cy0;cy<=cy1;cy++)for(let cx=cx0;cx<=cx1;cx++){const id=cx+','+cy,src=_CH1_START_OUTER.chunks[id];if(!src)continue;_ch1StartOuterStats.visibleIds.push(id);const e=_ch1StartOuterCache[id];if(!e||e.status!=='ready')continue;ctx.drawImage(e.img,b,b,srcCs,srcCs,cx*cs,cy*cs,cs,cs);_ch1StartOuterStats.drawnIds.push(id)}
   ctx.restore();if(_ch1StartOuterStats.drawnIds.length){const ms=performance.now()-started;_ch1StartOuterStats.drawSamples++;if(ms>_ch1StartOuterStats.maxDrawMs)_ch1StartOuterStats.maxDrawMs=ms}
 }
 globalThis.__ch1StartOuterQA=()=>({enabled:_ch1StartOuterEnabled(),stage:typeof G==='undefined'?null:G.stage,phase:_CH1_START_PHASE,root:_CH1_START_ROOT,registered:Object.keys(_CH1_START_OUTER.chunks),cache:Object.fromEntries(Object.entries(_ch1StartOuterCache).map(([id,e])=>[id,{status:e.status,decodeMs:e.decodeMs,warmMs:e.warmMs}])),stats:{..._ch1StartOuterStats,visibleIds:[..._ch1StartOuterStats.visibleIds],drawnIds:[..._ch1StartOuterStats.drawnIds]}});
@@ -16174,10 +16174,10 @@ const _MAP_COMPOSE={
       // All former perimeter and side-shoulder dash/L modules are absorbed into the continuous baked forest.
       // One semantic tile mask owns the forest collision for player, enemies, flowfield, spawn, and minimap.
       // 저주나무는 외곽 벽과 POI에 붙인 8개만 사용한다. 서로 다른 scale로 반복 실루엣을 끊어 Layer 3 숲 덩어리를 만든다.
-      {id:'m_ctree1',x:80,y:184,scale:.85},{id:'m_ctree2',x:80,y:150,scale:1.1},{id:'m_ctree3',x:24,y:96,scale:.95},{id:'m_ctree4',x:80,y:36,scale:1.15},
+      {id:'m_ctree1',x:84,y:184,scale:.85},{id:'m_ctree2',x:80,y:150,scale:1.1},{id:'m_ctree3',x:30,y:96,scale:.95},{id:'m_ctree4',x:80,y:36,scale:1.15},
       {id:'m_ctree9',x:124,y:31,scale:.9},{id:'m_ctree10',x:176,y:96,scale:1.12},{id:'m_ctree11',x:124,y:149,scale:.88},{id:'m_ctree12',x:124,y:179,scale:1.08},
       // START FORECOURT / 감염된 성문: 문 전면은 깨끗하게, 좌우 shoulder에만 무너진 진입 흔적을 둔다.
-      {id:'m_fbones',x:78,y:182},{id:'corpse',x:124,y:179},
+      {id:'m_fbones',x:82,y:180},{id:'corpse',x:124,y:179},
       {id:'m_root',x:80,y:176},{id:'m_wpile',x:124,y:175},
       // LOWER TRANSITION: 성문에서 숲으로 들어갈 때 양쪽 높이가 올라가되 x82~122 주행로는 비운다.
       {id:'m_c1sroot',x:76,y:154},{id:'m_moss',x:80,y:147},{id:'m_root',x:124,y:151},{id:'m_ash',x:128,y:157},
@@ -16194,7 +16194,7 @@ const _MAP_COMPOSE={
       {id:'m_mud',x:44,y:97},{id:'m_root',x:49,y:98},{id:'m_c1camp',x:45,y:100,scale:1.55},{id:'m_sword_pile',x:39,y:104},
       {id:'m_wpile',x:51,y:105},{id:'m_tomb',x:36,y:97},{id:'m_c1sbone',x:48,y:108},
       // 좌하: 뿌리 벽 통로 — 좁은 side passage silhouette.
-      {id:'m_root',x:35,y:147},{id:'m_moss',x:41,y:151},{id:'m_bone_arch',x:35,y:150},{id:'m_vine_pillar',x:29,y:158},
+      {id:'m_root',x:35,y:147},{id:'m_moss',x:41,y:151},{id:'m_bone_arch',x:35,y:150},{id:'m_vine_pillar',x:34,y:156},
       {id:'m_c1sroot',x:43,y:158},
       // 우중: 저주받은 제단.
       {id:'m_crack',x:147,y:93},{id:'m_root',x:152,y:95},{id:'m_penta_circle',x:147,y:96},{id:'m_c1altar',x:147,y:97,scale:1.45},{id:'m_skull_totem',x:155,y:101},
@@ -16204,7 +16204,7 @@ const _MAP_COMPOSE={
       {id:'m_puddle',x:164,y:53},{id:'m_meat',x:164,y:47},
       // 우하: 가라앉은 썩은 웅덩이 — 별도 side pocket.
       {id:'m_c1gtoxicf',x:162,y:136},{id:'pit_poison',x:162,y:139},{id:'m_puddle',x:153,y:145},
-      {id:'m_acid',x:171,y:142},{id:'m_c1sroot',x:173,y:151},
+      {id:'m_acid',x:171,y:142},{id:'m_c1sroot',x:171,y:150},
       // START→중앙→EXIT는 바닥판으로 칠하지 않고 실제 negative space로 남긴다.
     ],
     // CH1-1 HAND PROPS END
@@ -27266,6 +27266,8 @@ function _cloneField11(si){
   tmpl.mw=200;tmpl.mh=200;
   const _pc=_MAP_COMPOSE[si];
   tmpl.tileRLE=(si===0&&_pc&&_pc.forestBoundary)?_buildCh1StartForestRLE(200,200):((si===1&&globalThis.CH1_SI1_GEOMETRY)?CH1_SI1_GEOMETRY.buildRLE():((_pc&&_pc.basin)?_buildBasinRLE(200,200,_pc.basin):((_pc&&_pc.path)?((_pc.path.col)?_buildColRectRLE(200,200,_pc.path.col):_buildWalkPathRLE(200,200,_pc.path,si)):[1,40000])));
+  // CH1-1 southwest shoulder: preserve encounter count/type, give large spawns trunk clearance.
+  if(si===0&&tmpl.spawnHoles)for(const h of tmpl.spawnHoles)if(h.x===70&&h.y===170){h.x=74;h.y=168;}
   if(tmpl.spawnHoles&&si>0){
     if(_pc&&_pc.basin){
       const b=_pc.basin,n=tmpl.spawnHoles.length;
@@ -48190,6 +48192,7 @@ function draw(){
   if(_DCP.on){_DCP._mark('map');_DCP._entry.world++;_DCP._setSource(_DCP_SRC.WORLD_OBJECT)} // [DCPROF] 맵/지형(타일 캐시+포탈+출구+데코) 구간 종료
   var _snapMobj=_fc2d?_PERF_PROF._snap():null;
   const _moCull=_mapObjectCullBounds(G.cam.x,G.cam.y,VW,VH,_EDITOR_MODE?G._edZoom:1);
+  if(!_EDITOR_MODE&&_ch1StartOuterEnabled()&&G._camZoom&&G._camZoom!==1)Object.assign(_moCull,_mapObjectCullBounds(G.cam.x,G.cam.y,VW,VH,G._camZoom));
   const _wvl=_moCull.left,_wvr=_moCull.right,_wvt=_moCull.top,_wvb=_moCull.bottom;
   const _hellWinterTone=G.stage===10;
   if(_hellWinterTone){X.save();X.filter='brightness(.46) contrast(1.34) saturate(.18)'}

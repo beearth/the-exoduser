@@ -7,11 +7,11 @@ import {createHash} from 'node:crypto';
 // One fixed stage composition. This is an asset bake, not a procedural map generator.
 const ROOT=path.resolve(import.meta.dirname,'..');
 const OUT=path.join(ROOT,'assets/map/ch1/production_finish');
-const SIZE=8192,T=40;
+const SIZE=8192,T=SIZE/200; // bake pixels per tile; runtime maps each 1024px core to 1000 world pixels
 const context={};vm.runInNewContext(fs.readFileSync(path.join(OUT,'layout.js'),'utf8'),context);
 const layout=context.CH1_1_PRODUCTION;
 sharp.concurrency(2);sharp.cache({memory:128,files:20,items:30});
-const svg=(body,size=SIZE)=>Buffer.from(`<svg xmlns="http://www.w3.org/2000/svg" width="${size}" height="${size}" viewBox="0 0 204.8 204.8">${body}</svg>`);
+const svg=(body,size=SIZE)=>Buffer.from(`<svg xmlns="http://www.w3.org/2000/svg" width="${size}" height="${size}" viewBox="0 0 200 200">${body}</svg>`);
 const polygon=layout.boundary.map(p=>p.join(',')).join(' ');
 const floorMask=await sharp(svg(`<polygon points="${polygon}" fill="white" stroke="white" stroke-width="1.8" stroke-linejoin="round"/>`)).blur(18).png().toBuffer();
 const forestMask=await sharp({create:{width:SIZE,height:SIZE,channels:4,background:'white'}}).composite([{input:floorMask,blend:'dest-out'}]).png().toBuffer();
@@ -28,7 +28,17 @@ async function layer(file,x,y,scale=1,opacity=1,brightness=.62,saturation=.65){
   const width=Math.min(w-cutX,SIZE-Math.max(0,left)),height=Math.min(h-cutY,SIZE-Math.max(0,top));
   if(width<=0||height<=0)return null;
   let im=sharp(source(file)).ensureAlpha().resize(w,h,{fit:'contain'}).modulate({brightness,saturation});
-  const input=await im.linear([1,1,1,opacity],[0,0,0,0]).extract({left:cutX,top:cutY,width,height}).png().toBuffer();
+  const pixels=await im.raw().toBuffer();
+  // Preserve source pixels; feather only alpha so material changes do not read as stamps.
+  const isGround=file.startsWith('floor_objects/');
+  const feather=isGround?.24:.095;
+  for(let py=0;py<h;py++)for(let px=0;px<w;px++){
+    const edge=Math.min(px/(w*feather),(w-1-px)/(w*feather),py/(h*feather),(h-1-py)/(h*feather),1);
+    let a=Math.max(0,edge);a=a*a*(3-2*a);
+    if(isGround){const nx=(px-w*.5)/(w*.5),ny=(py-h*.5)/(h*.5);let r=Math.max(0,Math.min(1,(1-Math.hypot(nx,ny))/.38));a*=r*r*(3-2*r);}
+    pixels[(py*w+px)*4+3]=Math.round(pixels[(py*w+px)*4+3]*opacity*a*(isGround?.7:1));
+  }
+  const input=await sharp(pixels,{raw:{width:w,height:h,channels:4}}).extract({left:cutX,top:cutY,width,height}).png().toBuffer();
   audit.push({file,x,y,scale,opacity,brightness,saturation});
   return{input,left:Math.max(0,left),top:Math.max(0,top)};
 }
@@ -152,6 +162,6 @@ for(let y=0;y<8;y++)for(let x=0;x<8;x++){
   .extend({left:x===0?1:0,right:x===7?1:0,top:y===0?1:0,bottom:y===7?1:0,extendWith:'copy'})
   .png({compressionLevel:6}).toFile(path.join(OUT,`chunk_${x}_${y}.png`));
 }
-fs.writeFileSync(path.join(OUT,'composition.json'),JSON.stringify({version:layout.version,stage:0,masterSize:[SIZE,SIZE],worldSize:[8000,8000],chunkSize:1024,bleed:1,chunkCount:64,geometryHash:createHash('sha256').update(JSON.stringify(layout.buildRLE(200,200))).digest('hex'),regions:layout.regions,counts:{ground:GROUND.length,forest:FOREST.length,connections:CONNECTIONS.length},sourceAssets:[...new Set(audit.map(a=>a.file))],placements:audit,groundTile:[groundTile.width,groundTile.height],runtimeScatter:0,structuralRotation:0,structuralMirror:0},null,2)+'\n');
+fs.writeFileSync(path.join(OUT,'composition.json'),JSON.stringify({version:layout.version,bakeVersion:'20260916-finish-3',alphaFeather:{groundEdge:.24,groundRadial:.38,groundOpacityMultiplier:.7,forestEdge:.095,rgbBlur:0},stage:0,masterSize:[SIZE,SIZE],worldSize:[8000,8000],chunkSize:1024,bleed:1,chunkCount:64,geometryHash:createHash('sha256').update(JSON.stringify(layout.buildRLE(200,200))).digest('hex'),regions:layout.regions,counts:{ground:GROUND.length,forest:FOREST.length,connections:CONNECTIONS.length},sourceAssets:[...new Set(audit.map(a=>a.file))],placements:audit,groundTile:[groundTile.width,groundTile.height],runtimeScatter:0,structuralRotation:0,structuralMirror:0},null,2)+'\n');
 await sharp(full,{raw:{width:SIZE,height:SIZE,channels:4}}).resize(1600).jpeg({quality:90}).toFile(path.join(OUT,'composition-preview.jpg'));
 console.log('CH1-1 production master + 64 chunks complete');
