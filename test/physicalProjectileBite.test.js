@@ -26,7 +26,7 @@ for(const file of ['game.html','game-easy-test.html']){
  });
  test(file+': magic, reflected, eye and custom druid sprites do not attach; dense hits stay capped',()=>{
   const {c}=fixture();
-  for(const props of [{el:1},{el:0,blackBean:true},{el:0,friendly:true},{el:0,titanEye:true},{el:0,_druidPoison:true}]){
+  for(const props of [{el:1},{el:0,blackBean:true},{el:0,friendly:true},{el:0,titanEye:true},{el:0,_druidPoison:true},{el:0,web:true}]){
    c._addPhysicalBite({x:0,y:0,vx:5,vy:0,sz:3,...props});
    assert.equal(c.P._physicalBites?.length||0,0);
   }

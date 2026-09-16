@@ -49949,10 +49949,10 @@ function draw(){
       X.restore();X.globalAlpha=1;X.lineWidth=1;continue;
     }
     if(p.web){
-      // 거미줄: 반투명 흰색 실
-      X.globalAlpha=.2;X.fillStyle='#cccccc';X.beginPath();X.arc(p.x,p.y,2,0,Math.PI*2);X.fill();
-      X.globalAlpha=.15;X.strokeStyle='#aaaaaa';X.lineWidth=1;
-      for(let wi=0;wi<4;wi++){const wa=Math.PI*2*wi/4+_now/500;X.beginPath();X.moveTo(p.x,p.y);X.lineTo(p.x+Math.cos(wa)*8,p.y+Math.sin(wa)*8);X.stroke()}
+      // 흰 링 거미줄탄도 원본 뱀형 표시 사용. 패링 불가/둔화 판정은 유지.
+      const _webScale=Math.max(1.2,Math.min(4,(p.sz||1)*1.5))*.7*2;
+      _drawPhysMouth(p.x,p.y,22.05*_webScale*.55,Math.atan2(p.vy,p.vx),fa,0);
+      p._eyeSkin=1;
       X.globalAlpha=1;continue;
     }
     if(p.mine){

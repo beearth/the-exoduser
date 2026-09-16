@@ -11,12 +11,13 @@ for(const file of ['game.html','game-easy-test.html']){
  const loop=draw.body.body.find(n=>n.type==='ForStatement'&&n.start>marker);
  assert.ok(loop,'complete main projectile render pass');
  test(file+': every physical flying variant renders a readable mouth, not a dot',()=>{
-  for(const props of [{redBean:true},{swordWave:true,redBean:true},{swordWave:true},{pierce:true},{fast:true},{phantomSword:true},{el:1,parryClass:'physical'}]){
+  for(const props of [{redBean:true},{swordWave:true,redBean:true},{swordWave:true},{pierce:true},{fast:true},{phantomSword:true},{el:1,parryClass:'physical'},{web:true}]){
    const draws=[];const X=new Proxy({}, {get:(t,k)=>t[k]||(()=>{}),set:(t,k,v)=>(t[k]=v,true)});
    const p={x:100,y:100,vx:5,vy:0,sz:3,r:5,dmg:10,el:0,...props};const before=JSON.stringify(p);
    const c=vm.createContext({X,projs:[p],_visProjs:[0],Math,_now:0,EL:{P:0},ELC:['#fff'],_drawPhysMouth:(...a)=>(draws.push(a),true)});
    vm.runInContext(fn('_projectileParryClass')+fn('_physicalProjectileMultiplier')+src.slice(loop.start,loop.end),c);
    assert.equal(draws.length,1);assert.ok(Math.abs(draws[0][2]*2-135.828)<1e-8,'mouth width is 55% of the former 246.96px');
+   if(p.web)assert.equal(c._projectileParryClass(p),'forbidden','web appearance must not change its parry rules');
    delete p._eyeSkin;delete p._sprFr;assert.equal(JSON.stringify(p),before,'render must not change combat data');
   }
  });
