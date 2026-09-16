@@ -1,0 +1,14 @@
+{
+  "tool": "built-in image_gen",
+  "purpose": "walkable low moss/litter material beside authored soil",
+  "prompt": "Use case: stylized-concept. Asset type: seamless repeatable square ground material texture for EXODUSER dark fantasy top-down 2D action game, intended for broad walkable forest floor beside earthen trails. Create one square 1024x1024 flat orthographic directly overhead material swatch, fills entire frame edge-to-edge. Dense very short desaturated olive-green moss, decomposing brown oak leaves and flattened dark fern litter growing over damp black-brown earth. Detailed hand-painted realistic game texture, crisp fine organic texture, tiny leaves only, restrained local contrast, matte surface, consistent diffuse neutral overhead light, mid-dark readable olive brown palette. Seamless on all four edges, uniform texture scale without central composition or vignette. No path, no large roots, no tree trunks, no stones larger than leaves, no flowers, no skulls, no characters, no objects, no cast shadows, no glow, no fog, no text, no border, no perspective horizon. This is a small-scale continuous floor material, not a scene or map.",
+  "generatedSize": [
+    1254,
+    1254
+  ],
+  "bakeTileSize": [
+    512,
+    512
+  ],
+  "foreignGameAssets": false
+}

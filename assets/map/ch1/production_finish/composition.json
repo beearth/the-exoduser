@@ -1,6 +1,21 @@
 {
   "version": "20260916-finish-1",
-  "bakeVersion": "20260916-finish-3",
+  "bakeVersion": "20260916-ground-2",
+  "groundMaterials": {
+    "mask": "ground-zones.svg",
+    "soil": {
+      "file": "ground_dark_soil.png",
+      "brightness": 0.85,
+      "saturation": 0.48
+    },
+    "litter": {
+      "file": "materials/forest_moss_litter.png",
+      "tileSize": 512,
+      "brightness": 0.76,
+      "saturation": 0.55
+    },
+    "collisionChanges": false
+  },
   "alphaFeather": {
     "groundEdge": 0.24,
     "groundRadial": 0.38,

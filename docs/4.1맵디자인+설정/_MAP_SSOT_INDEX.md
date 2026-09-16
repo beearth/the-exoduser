@@ -1,3 +1,7 @@
+> **2026-09-16 후속 실제 수정:** 사용자 추가 지시에 따라 bake/cache가 `20260916-ground-2`로 변경됐다. 흙길/공터와 이끼·낙엽을 구분하며 geometry/START/EXIT/배치/진행은 유지한다. [현재 지면 구성·전후 증거](CH1_1_GROUND_STRUCTURE_20260916.md). 아래 finish-3 및 ec7bf70d8 동일성 판정은 수정 전 검수 이력이다.
+
+> **2026-09-16 후속 결과 검수:** 맵 ec7bf70d8 보존. 최신 시각 판정은 **RETOUCH**. [원본 화면/일반 플레이/남은 결함](CH1_1_FINAL_REVIEW_20260916.md). 기존 제작 보고의 PASS를 정정하며 기술 이력과 구분한다.
+
 > **2026-09-16 CH1-1 PRODUCTION 적용 계약 — 이전 CH1-1 배경/경계 설명보다 우선:** 사용자 최신 지시에 따라 실제 `STAGES[0]`(표시 1-1)에 고정 수작업 전체맵을 적용했다. 현행 경계는 `assets/map/ch1/production_finish/layout.js`의 53점 polygon/8구역이며, 기본 배경은 `assets/map/ch1/production_finish`다. 8192² master의 1024px core를 **월드 1000px**로 그려 200×200타일(`T=40`, 8000²) 충돌 좌표와 일치시킨다. `smoothing`은 호환 phase 이름이며 과거 smoothing 폴더를 기본 로드한다는 뜻이 아니다. `outer` query는 과거 아트 비교용으로, 현행 경계와 시각 정합을 보증하지 않는다. authored62/runtime63, hand collision21/total22, 자동 scatter0. `_CH1S1`/stage1은 별도 맵이다. START `(100.5,185.5)`, 시체나무 `(102.5,90.5)`, 북쪽 gate y5/exit y7과 진행 조건은 유지한다. 아래의 이전 outer/smoothing 수치·좌표는 **해당 날짜의 이력**이며 현행값은 [전체 제작·수치·검증 보고서](CH1_1_PRODUCTION_FINISH_20260916.md)를 따른다. 기술 PASS와 시각 판정은 보고서에서 별도로 기록한다.
 
 > **2026-09-12 최신 변경:** 사용자 요청으로 CH1-1 시작 철창문 `m_cage_gate(103,188,scale1.2)` 배치를 제거했다. 해당 문 렌더·충돌 모두 제거, authored62/runtime63, hand collision21/total22. 아래의 START 성문·63/64·22/23 수치는 제거 이전 기록이다. 북쪽 보스 게이트와 다른 스테이지 문은 유지한다.

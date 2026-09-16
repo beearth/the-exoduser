@@ -45,10 +45,22 @@ async function layer(file,x,y,scale=1,opacity=1,brightness=.62,saturation=.65){
 async function collect(list){const out=[];for(const row of list){const l=await layer(...row);if(l)out.push(l);}return out;}
 
 // Ground is continuous: broad material bands follow the authored places, not square stamps.
-const ground=await sharp(source('ground_dark_soil.png')).ensureAlpha().modulate({brightness:.55,saturation:.58}).png().toBuffer();
+const ground=await sharp(source('ground_dark_soil.png')).ensureAlpha().modulate({brightness:.85,saturation:.48}).png().toBuffer();
 const groundTile=await sharp(ground).metadata();
+// Dimraeth-inspired separation: traversable ground is wider than the visible trail.
+// These masks change material only. Geometry, props, spawns and lighting stay unchanged.
+const litter=await sharp(path.join(OUT,'materials/forest_moss_litter.png'))
+  .resize(512,512).ensureAlpha().modulate({brightness:.76,saturation:.55}).png().toBuffer();
+// Rasterize the material boundary at 1024px, then upscale its alpha only.
+// Full-resolution fractal filtering adds bake cost without adding source-art detail.
+const soilMaskSvg=fs.readFileSync(path.join(OUT,'ground-zones.svg'),'utf8').replace('width="8192" height="8192"','width="1024" height="1024"');
+const soilMaskSmall=await sharp(Buffer.from(soilMaskSvg)).png().toBuffer();
+const soilMask=await sharp(soilMaskSmall).resize(SIZE,SIZE).png().toBuffer();
+const soilSurface=await sharp({create:{width:SIZE,height:SIZE,channels:4,background:'transparent'}})
+  .composite([{input:ground,tile:true}]).png().toBuffer();
+const trail=await sharp(soilSurface).composite([{input:soilMask,blend:'dest-in'}]).png().toBuffer();
 let base=sharp({create:{width:SIZE,height:SIZE,channels:4,background:'#101514'}})
-  .composite([{input:ground,tile:true}]);
+  .composite([{input:litter,tile:true},{input:trail}]);
 let raw=await base.raw().toBuffer();
 const surfacesSvg=svg(`
  <defs><filter id="soft"><feGaussianBlur stdDeviation="1.3"/></filter></defs>
@@ -67,7 +79,8 @@ const surfacesSvg=svg(`
   <path d="M102 91 C95 101 89 104 81 112 M102 90 C112 98 122 110 131 112 M103 90 C111 79 113 69 123 66" stroke="#74634a" stroke-width=".25" opacity=".3"/>
  </g>`,512);
 // These are low-frequency color fields only. Source art remains at native resolution.
-const surfaces=await sharp(surfacesSvg).resize(SIZE,SIZE).png().toBuffer();
+const surfacesSmall=await sharp(surfacesSvg).png().toBuffer();
+const surfaces=await sharp(surfacesSmall).resize(SIZE,SIZE).png().toBuffer();
 raw=await sharp(raw,{raw:{width:SIZE,height:SIZE,channels:4}}).composite([{input:surfaces}]).raw().toBuffer();
 console.log('continuous ground fields complete');
 
@@ -162,6 +175,6 @@ for(let y=0;y<8;y++)for(let x=0;x<8;x++){
   .extend({left:x===0?1:0,right:x===7?1:0,top:y===0?1:0,bottom:y===7?1:0,extendWith:'copy'})
   .png({compressionLevel:6}).toFile(path.join(OUT,`chunk_${x}_${y}.png`));
 }
-fs.writeFileSync(path.join(OUT,'composition.json'),JSON.stringify({version:layout.version,bakeVersion:'20260916-finish-3',alphaFeather:{groundEdge:.24,groundRadial:.38,groundOpacityMultiplier:.7,forestEdge:.095,rgbBlur:0},stage:0,masterSize:[SIZE,SIZE],worldSize:[8000,8000],chunkSize:1024,bleed:1,chunkCount:64,geometryHash:createHash('sha256').update(JSON.stringify(layout.buildRLE(200,200))).digest('hex'),regions:layout.regions,counts:{ground:GROUND.length,forest:FOREST.length,connections:CONNECTIONS.length},sourceAssets:[...new Set(audit.map(a=>a.file))],placements:audit,groundTile:[groundTile.width,groundTile.height],runtimeScatter:0,structuralRotation:0,structuralMirror:0},null,2)+'\n');
+fs.writeFileSync(path.join(OUT,'composition.json'),JSON.stringify({version:layout.version,bakeVersion:'20260916-ground-2',groundMaterials:{mask:'ground-zones.svg',soil:{file:'ground_dark_soil.png',brightness:.85,saturation:.48},litter:{file:'materials/forest_moss_litter.png',tileSize:512,brightness:.76,saturation:.55},collisionChanges:false},alphaFeather:{groundEdge:.24,groundRadial:.38,groundOpacityMultiplier:.7,forestEdge:.095,rgbBlur:0},stage:0,masterSize:[SIZE,SIZE],worldSize:[8000,8000],chunkSize:1024,bleed:1,chunkCount:64,geometryHash:createHash('sha256').update(JSON.stringify(layout.buildRLE(200,200))).digest('hex'),regions:layout.regions,counts:{ground:GROUND.length,forest:FOREST.length,connections:CONNECTIONS.length},sourceAssets:[...new Set(audit.map(a=>a.file))],placements:audit,groundTile:[groundTile.width,groundTile.height],runtimeScatter:0,structuralRotation:0,structuralMirror:0},null,2)+'\n');
 await sharp(full,{raw:{width:SIZE,height:SIZE,channels:4}}).resize(1600).jpeg({quality:90}).toFile(path.join(OUT,'composition-preview.jpg'));
 console.log('CH1-1 production master + 64 chunks complete');
