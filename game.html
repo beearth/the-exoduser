@@ -58,6 +58,7 @@ window._supabaseReady=new Promise(resolve=>{
 <script src="three.min.js"></script>
 <script src="maps_data.js"></script>
 <script src="assets/map/ch1/geometry/ch1_si1_geometry.js"></script>
+<script src="assets/map/ch1/production_finish/layout.js?v=20260916-finish-1"></script>
 <script src="lang_zh.js"></script>
 <script src="lang_ja.js"></script>
 <script src="lang_es.js"></script>
@@ -10529,8 +10530,8 @@ function _drawMapPaintWorld(ctx,x0,y0,x1,y1){
 // CH1-1(si0) production smoothing pass. Default ON; ch1StartPhase=outer compares the locked outer baseline.
 const _CH1_START_OUTER={stage:0,chunkSize:1024,bleed:1,chunks:{}};
 const _CH1_START_PHASE=(()=>{if(typeof location==='undefined')return 'smoothing';const phase=new URLSearchParams(location.search).get('ch1StartPhase');return phase==='outer'?'outer':'smoothing'})();
-const _CH1_START_ROOT=_CH1_START_PHASE==='outer'?'assets/map/ch1/baked_start_outer':'assets/map/ch1/baked_start_smoothing';
-for(let y=0;y<8;y++)for(let x=0;x<8;x++)_CH1_START_OUTER.chunks[x+','+y]=_CH1_START_PHASE==='outer'?`assets/map/ch1/baked_start_outer/chunk_${x}_${y}.png`:`assets/map/ch1/baked_start_smoothing/chunk_${x}_${y}.png`;
+const _CH1_START_ROOT=_CH1_START_PHASE==='outer'?'assets/map/ch1/baked_start_outer':'assets/map/ch1/production_finish';
+for(let y=0;y<8;y++)for(let x=0;x<8;x++)_CH1_START_OUTER.chunks[x+','+y]=`${_CH1_START_ROOT}/chunk_${x}_${y}.png?v=20260916-finish-1`;
 const _CH1_START_OUTER_QUERY_ENABLED=typeof location==='undefined'||new URLSearchParams(location.search).get('ch1StartOuter')!=='0';
 const _ch1StartOuterCache=Object.create(null),_ch1StartOuterWarmQ=[];
 let _ch1StartOuterWarmBusy=false;
@@ -10596,7 +10597,7 @@ function _drawCh1StartOuter(ctx){
   const cx0=Math.floor(left/cs)-1,cx1=Math.floor((right-.001)/cs)+1,cy0=Math.floor(top/cs),cy1=Math.floor((bottom-.001)/cs),started=performance.now();
   const hugX=G.mw*T*.5;
   ctx.save();ctx.imageSmoothingEnabled=true;
-  ctx.translate(hugX,0);ctx.scale(_CH1_OUTER_HUG_X,1);ctx.translate(-hugX,0);
+  ctx.translate(hugX,0);ctx.scale(_CH1_START_ROOT==='assets/map/ch1/production_finish'?1:_CH1_OUTER_HUG_X,1);ctx.translate(-hugX,0);
   for(let cy=cy0;cy<=cy1;cy++)for(let cx=cx0;cx<=cx1;cx++){const id=cx+','+cy,src=_CH1_START_OUTER.chunks[id];if(!src)continue;_ch1StartOuterStats.visibleIds.push(id);const e=_ch1StartOuterCache[id];if(!e||e.status!=='ready')continue;ctx.drawImage(e.img,b,b,cs,cs,cx*cs,cy*cs,cs,cs);_ch1StartOuterStats.drawnIds.push(id)}
   ctx.restore();if(_ch1StartOuterStats.drawnIds.length){const ms=performance.now()-started;_ch1StartOuterStats.drawSamples++;if(ms>_ch1StartOuterStats.maxDrawMs)_ch1StartOuterStats.maxDrawMs=ms}
 }
@@ -27188,6 +27189,7 @@ function _rleEncodeGrid(g,n){
   o.push(v,c);return o;
 }
 function _buildCh1StartForestRLE(mw,mh){
+  if(typeof CH1_1_PRODUCTION!=='undefined')return CH1_1_PRODUCTION.buildRLE(mw,mh);
   const n=mw*mh,g=new Uint8Array(n),bell=(v,c,w)=>Math.exp(-Math.pow((v-c)/w,2));
   for(let y=0;y<mh;y++){
     const ty=y*199/Math.max(1,mh-1);
@@ -44949,11 +44951,11 @@ function renderSettings(){
         card.appendChild(img);
       }
       // 이름
-      const nm=document.createElement('div');nm.textContent=ch.name;
+      const nm=document.createElement('div');nm.textContent=_T(ch.name);
       nm.style.cssText='color:'+(sel?'#ffcc00':'#cccccc')+';font-size:.85rem;font-weight:bold;margin-bottom:4px';
       card.appendChild(nm);
       // 설명
-      const ds=document.createElement('div');ds.textContent=ch.desc;
+      const ds=document.createElement('div');ds.textContent=_T(ch.desc);
       ds.style.cssText='color:#888888;font-size:.7rem;line-height:1.3';
       card.appendChild(ds);
       // 선택 표시

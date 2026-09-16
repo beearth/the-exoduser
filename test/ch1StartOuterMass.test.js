@@ -32,7 +32,8 @@ test('CH1-1 default gameplay loads the start outer, with an explicit QA opt-out 
   assert.match(GAME,/function _ch1StartOuterEnabled\(\)/);
   assert.match(GAME,/G\.stage===_CH1_START_OUTER\.stage/);
   assert.match(GAME,/get\('ch1StartOuter'\)!=='0'/);
-  assert.match(GAME,/assets\/map\/ch1\/baked_start_outer\/chunk_\$\{x\}_\$\{y\}\.png/);
+  assert.match(GAME,/_CH1_START_PHASE==='outer'\?'assets\/map\/ch1\/baked_start_outer':'assets\/map\/ch1\/production_finish'/);
+  assert.match(GAME,/\$\{_CH1_START_ROOT\}\/chunk_\$\{x\}_\$\{y\}\.png/);
   assert.match(GAME,/function _drawCh1StartOuter\(ctx\)/);
   assert.match(GAME,/function _ch1StartOuterPropAlpha\(mo\)/);
   assert.match(GAME,/function _drawCh1BakedSpike\(ctx\)\{\s*_drawCh1StartOuter\(ctx\);/);

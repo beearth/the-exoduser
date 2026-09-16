@@ -48301,3 +48301,13 @@ mpR = 0.05 + s.int×0.005                                        [NO P.lv×0.001
 | 원인 | `EL.P` 흰 링을 쓰는 `web:true`가 forbidden 분류·별도 조기 렌더로 물리탄 가시성 검사에서 누락. 반투명 2px 점과 가는 선4개로 표시됨 |
 | 수정 | 두 HTML의 web 렌더를 기존 원본 적갈색 뱀형으로 연결. 실제 sz2.4 셀122.2452×61.1226px, 색 보정 없음. 패링 불가·둔화90틱·피해·속도·히트박스 유지 |
 | 검증 | 실제 거미 AI→흰 링60틱→뱀탄 WebGL 확인, 관련56개 검사 통과. 특정 세 마리 무리/사용자 실행본은 미식별. 상세는 PHYSICAL_PROJECTILE_AUDIT_20260916.md |
+
+## 2026-09-16 영어 설정 카드 후속 수정
+
+| 대상 | 현재 계약 |
+|---|---|
+| game.html renderSettings / charSelectGrid | 이름·설명 리프에 `_T(ch.name)` / `_T(ch.desc)` 적용. 기존 영어 전사 이름·설명의 조회 우회 수정. 신규 번역·전투·아트 변경 없음 |
+| 검사 | settingsCharacterLanguage.test.js: 수정 전 한국어 노출 실패 재현, 수정 후 영어 표시 및 한국어 복귀 확인. 후속 관련 검사67개 통과 |
+| EN 지원 범위 | 신규 실습3파일116/86/36개 한국어 리터럴 후보(aria·문장 조각 포함), 기존 정확 EN 키5/0/0. 캐릭터 선택 신규 설명·특성, 영상22개 고정 KO 자막은 별도 작업 필요. 영어 지원 체크 복원하지 않음 |
+| 오탐 제외 | Exoduser Warrior, HP/MP/ST 및 공용 기호, 시작4컷 정상 영어 fallback을 EN 누락으로 세지 않음 |
+| 상세 근거 | output/steam_install_review_20260916/english-audit.json, 후속 Steam 검수 보고서 |

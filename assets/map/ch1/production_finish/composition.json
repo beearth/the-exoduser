@@ -1,0 +1,636 @@
+{
+  "version": "20260916-finish-1",
+  "stage": 0,
+  "masterSize": [
+    8192,
+    8192
+  ],
+  "worldSize": [
+    8000,
+    8000
+  ],
+  "chunkSize": 1024,
+  "bleed": 1,
+  "chunkCount": 64,
+  "geometryHash": "719b681344bf0ab5dc07ae58cb4c01342ca85fde6386a01753d147a66e6ee78c",
+  "regions": [
+    {
+      "id": "south_entry",
+      "name": "잠식된 진입로",
+      "anchor": [
+        100,
+        185
+      ],
+      "role": "arrival",
+      "ground": "worn-earth",
+      "transition": "좁은 남측 문턱에서 첫 공터로 벌어짐"
+    },
+    {
+      "id": "first_clearing",
+      "name": "쓰러진 숲의 공터",
+      "anchor": [
+        100,
+        151
+      ],
+      "role": "combat",
+      "ground": "dry-soil",
+      "transition": "서쪽 뿌리 통로와 동쪽 웅덩이가 비대칭으로 열림"
+    },
+    {
+      "id": "root_bend",
+      "name": "뿌리 어깨 숲길",
+      "anchor": [
+        83,
+        125
+      ],
+      "role": "travel",
+      "ground": "leaves-earth",
+      "transition": "서쪽 숲이 안으로 돌출되고 야영지로 길이 갈라짐"
+    },
+    {
+      "id": "west_camp",
+      "name": "버려진 야영지",
+      "anchor": [
+        45,
+        100
+      ],
+      "role": "side-combat",
+      "ground": "trampled-earth",
+      "transition": "낮고 긴 뿌리 경계와 중앙 공터 연결"
+    },
+    {
+      "id": "corpse_basin",
+      "name": "시체나무 분지",
+      "anchor": [
+        102,
+        90
+      ],
+      "role": "primary-landmark",
+      "ground": "root-humus",
+      "transition": "줄기 양쪽 우회와 넓은 전투 여백"
+    },
+    {
+      "id": "east_terrace",
+      "name": "부패한 제단 단구",
+      "anchor": [
+        147,
+        97
+      ],
+      "role": "optional-high-ground",
+      "ground": "wet-earth",
+      "transition": "기존 서측 경사로 유지"
+    },
+    {
+      "id": "north_fork",
+      "name": "고치 숲과 썩은 물가",
+      "anchor": [
+        100,
+        52
+      ],
+      "role": "late-combat",
+      "ground": "damp-leaf",
+      "transition": "서쪽 고치와 동쪽 습지 사이에서 북쪽 통로로 수렴"
+    },
+    {
+      "id": "north_exit",
+      "name": "숲의 마지막 문턱",
+      "anchor": [
+        100,
+        22
+      ],
+      "role": "exit-approach",
+      "ground": "exposed-soil",
+      "transition": "기존 gate y5 / exit y7 접근"
+    }
+  ],
+  "counts": {
+    "ground": 23,
+    "forest": 22,
+    "connections": 11
+  },
+  "sourceAssets": [
+    "floor_objects/prop_g_battle.png",
+    "floor_objects/prop_g_edge.png",
+    "floor_objects/prop_g_root.png",
+    "floor_objects/prop_g_corpse.png",
+    "floor_objects/prop_g_toxic.png",
+    "collision/bound_w.png",
+    "collision/corner_nw.png",
+    "collision/bound_n.png",
+    "collision/bound_e.png",
+    "collision/corner_ne.png"
+  ],
+  "placements": [
+    {
+      "file": "floor_objects/prop_g_battle.png",
+      "x": 100,
+      "y": 185,
+      "scale": 0.95,
+      "opacity": 0.54,
+      "brightness": 0.78,
+      "saturation": 0.45
+    },
+    {
+      "file": "floor_objects/prop_g_battle.png",
+      "x": 97,
+      "y": 171,
+      "scale": 1.2,
+      "opacity": 0.58,
+      "brightness": 0.8,
+      "saturation": 0.4
+    },
+    {
+      "file": "floor_objects/prop_g_battle.png",
+      "x": 91,
+      "y": 153,
+      "scale": 1.3,
+      "opacity": 0.65,
+      "brightness": 0.8,
+      "saturation": 0.4
+    },
+    {
+      "file": "floor_objects/prop_g_battle.png",
+      "x": 112,
+      "y": 154,
+      "scale": 1.1,
+      "opacity": 0.55,
+      "brightness": 0.76,
+      "saturation": 0.42
+    },
+    {
+      "file": "floor_objects/prop_g_edge.png",
+      "x": 71,
+      "y": 159,
+      "scale": 1.2,
+      "opacity": 0.58,
+      "brightness": 0.66,
+      "saturation": 0.5
+    },
+    {
+      "file": "floor_objects/prop_g_edge.png",
+      "x": 131,
+      "y": 163,
+      "scale": 1.1,
+      "opacity": 0.5,
+      "brightness": 0.62,
+      "saturation": 0.5
+    },
+    {
+      "file": "floor_objects/prop_g_root.png",
+      "x": 69,
+      "y": 131,
+      "scale": 1.1,
+      "opacity": 0.52,
+      "brightness": 0.62,
+      "saturation": 0.38
+    },
+    {
+      "file": "floor_objects/prop_g_battle.png",
+      "x": 90,
+      "y": 125,
+      "scale": 1.15,
+      "opacity": 0.5,
+      "brightness": 0.72,
+      "saturation": 0.4
+    },
+    {
+      "file": "floor_objects/prop_g_battle.png",
+      "x": 53,
+      "y": 107,
+      "scale": 1.12,
+      "opacity": 0.6,
+      "brightness": 0.76,
+      "saturation": 0.4
+    },
+    {
+      "file": "floor_objects/prop_g_edge.png",
+      "x": 36,
+      "y": 117,
+      "scale": 1,
+      "opacity": 0.56,
+      "brightness": 0.63,
+      "saturation": 0.43
+    },
+    {
+      "file": "floor_objects/prop_g_root.png",
+      "x": 88,
+      "y": 102,
+      "scale": 1.2,
+      "opacity": 0.66,
+      "brightness": 0.64,
+      "saturation": 0.38
+    },
+    {
+      "file": "floor_objects/prop_g_root.png",
+      "x": 113,
+      "y": 99,
+      "scale": 1.14,
+      "opacity": 0.63,
+      "brightness": 0.65,
+      "saturation": 0.38
+    },
+    {
+      "file": "floor_objects/prop_g_corpse.png",
+      "x": 103,
+      "y": 79,
+      "scale": 1.15,
+      "opacity": 0.44,
+      "brightness": 0.65,
+      "saturation": 0.4
+    },
+    {
+      "file": "floor_objects/prop_g_battle.png",
+      "x": 81,
+      "y": 88,
+      "scale": 0.92,
+      "opacity": 0.57,
+      "brightness": 0.72,
+      "saturation": 0.4
+    },
+    {
+      "file": "floor_objects/prop_g_battle.png",
+      "x": 123,
+      "y": 84,
+      "scale": 0.95,
+      "opacity": 0.5,
+      "brightness": 0.72,
+      "saturation": 0.4
+    },
+    {
+      "file": "floor_objects/prop_g_root.png",
+      "x": 132,
+      "y": 106,
+      "scale": 0.9,
+      "opacity": 0.51,
+      "brightness": 0.58,
+      "saturation": 0.42
+    },
+    {
+      "file": "floor_objects/prop_g_toxic.png",
+      "x": 163,
+      "y": 143,
+      "scale": 1.15,
+      "opacity": 0.38,
+      "brightness": 0.64,
+      "saturation": 0.34
+    },
+    {
+      "file": "floor_objects/prop_g_toxic.png",
+      "x": 166,
+      "y": 48,
+      "scale": 1.1,
+      "opacity": 0.4,
+      "brightness": 0.6,
+      "saturation": 0.33
+    },
+    {
+      "file": "floor_objects/prop_g_edge.png",
+      "x": 143,
+      "y": 58,
+      "scale": 1.12,
+      "opacity": 0.58,
+      "brightness": 0.6,
+      "saturation": 0.44
+    },
+    {
+      "file": "floor_objects/prop_g_root.png",
+      "x": 53,
+      "y": 58,
+      "scale": 1,
+      "opacity": 0.52,
+      "brightness": 0.62,
+      "saturation": 0.38
+    },
+    {
+      "file": "floor_objects/prop_g_battle.png",
+      "x": 96,
+      "y": 54,
+      "scale": 1.25,
+      "opacity": 0.56,
+      "brightness": 0.75,
+      "saturation": 0.4
+    },
+    {
+      "file": "floor_objects/prop_g_battle.png",
+      "x": 105,
+      "y": 35,
+      "scale": 1.13,
+      "opacity": 0.55,
+      "brightness": 0.77,
+      "saturation": 0.4
+    },
+    {
+      "file": "floor_objects/prop_g_battle.png",
+      "x": 100,
+      "y": 18,
+      "scale": 0.85,
+      "opacity": 0.5,
+      "brightness": 0.78,
+      "saturation": 0.4
+    },
+    {
+      "file": "collision/bound_w.png",
+      "x": 21,
+      "y": 30,
+      "scale": 1.15,
+      "opacity": 1,
+      "brightness": 0.53,
+      "saturation": 0.6
+    },
+    {
+      "file": "collision/corner_nw.png",
+      "x": 31,
+      "y": 23,
+      "scale": 1.25,
+      "opacity": 1,
+      "brightness": 0.57,
+      "saturation": 0.61
+    },
+    {
+      "file": "collision/bound_n.png",
+      "x": 64,
+      "y": 23,
+      "scale": 1.25,
+      "opacity": 1,
+      "brightness": 0.56,
+      "saturation": 0.59
+    },
+    {
+      "file": "collision/bound_w.png",
+      "x": 20,
+      "y": 67,
+      "scale": 1.25,
+      "opacity": 1,
+      "brightness": 0.52,
+      "saturation": 0.62
+    },
+    {
+      "file": "collision/corner_nw.png",
+      "x": 37,
+      "y": 73,
+      "scale": 1.2,
+      "opacity": 1,
+      "brightness": 0.58,
+      "saturation": 0.63
+    },
+    {
+      "file": "collision/bound_w.png",
+      "x": 13,
+      "y": 109,
+      "scale": 1.3,
+      "opacity": 1,
+      "brightness": 0.5,
+      "saturation": 0.58
+    },
+    {
+      "file": "collision/bound_n.png",
+      "x": 39,
+      "y": 123,
+      "scale": 1.24,
+      "opacity": 1,
+      "brightness": 0.58,
+      "saturation": 0.58
+    },
+    {
+      "file": "collision/corner_nw.png",
+      "x": 46,
+      "y": 129,
+      "scale": 1.18,
+      "opacity": 1,
+      "brightness": 0.61,
+      "saturation": 0.62
+    },
+    {
+      "file": "collision/bound_w.png",
+      "x": 19,
+      "y": 150,
+      "scale": 1.2,
+      "opacity": 1,
+      "brightness": 0.53,
+      "saturation": 0.58
+    },
+    {
+      "file": "collision/bound_n.png",
+      "x": 45,
+      "y": 171,
+      "scale": 1.25,
+      "opacity": 1,
+      "brightness": 0.55,
+      "saturation": 0.6
+    },
+    {
+      "file": "collision/corner_nw.png",
+      "x": 70,
+      "y": 184,
+      "scale": 1.2,
+      "opacity": 1,
+      "brightness": 0.57,
+      "saturation": 0.6
+    },
+    {
+      "file": "collision/bound_w.png",
+      "x": 78,
+      "y": 201,
+      "scale": 0.9,
+      "opacity": 1,
+      "brightness": 0.55,
+      "saturation": 0.58
+    },
+    {
+      "file": "collision/bound_n.png",
+      "x": 148,
+      "y": 22,
+      "scale": 1.25,
+      "opacity": 1,
+      "brightness": 0.5,
+      "saturation": 0.65
+    },
+    {
+      "file": "collision/bound_e.png",
+      "x": 186,
+      "y": 44,
+      "scale": 1.2,
+      "opacity": 1,
+      "brightness": 0.52,
+      "saturation": 0.64
+    },
+    {
+      "file": "collision/corner_ne.png",
+      "x": 174,
+      "y": 70,
+      "scale": 1.25,
+      "opacity": 1,
+      "brightness": 0.54,
+      "saturation": 0.64
+    },
+    {
+      "file": "collision/bound_e.png",
+      "x": 188,
+      "y": 99,
+      "scale": 1.22,
+      "opacity": 1,
+      "brightness": 0.48,
+      "saturation": 0.65
+    },
+    {
+      "file": "collision/corner_ne.png",
+      "x": 152,
+      "y": 119,
+      "scale": 1.15,
+      "opacity": 1,
+      "brightness": 0.56,
+      "saturation": 0.61
+    },
+    {
+      "file": "collision/bound_n.png",
+      "x": 180,
+      "y": 120,
+      "scale": 1.25,
+      "opacity": 1,
+      "brightness": 0.5,
+      "saturation": 0.58
+    },
+    {
+      "file": "collision/bound_e.png",
+      "x": 190,
+      "y": 151,
+      "scale": 1.25,
+      "opacity": 1,
+      "brightness": 0.51,
+      "saturation": 0.62
+    },
+    {
+      "file": "collision/corner_ne.png",
+      "x": 157,
+      "y": 168,
+      "scale": 1.25,
+      "opacity": 1,
+      "brightness": 0.55,
+      "saturation": 0.6
+    },
+    {
+      "file": "collision/bound_e.png",
+      "x": 134,
+      "y": 190,
+      "scale": 1.1,
+      "opacity": 1,
+      "brightness": 0.55,
+      "saturation": 0.6
+    },
+    {
+      "file": "collision/bound_n.png",
+      "x": 144,
+      "y": 199,
+      "scale": 1.3,
+      "opacity": 1,
+      "brightness": 0.48,
+      "saturation": 0.6
+    },
+    {
+      "file": "floor_objects/prop_g_edge.png",
+      "x": 76,
+      "y": 179,
+      "scale": 0.95,
+      "opacity": 0.72,
+      "brightness": 0.59,
+      "saturation": 0.5
+    },
+    {
+      "file": "floor_objects/prop_g_root.png",
+      "x": 126,
+      "y": 181,
+      "scale": 0.9,
+      "opacity": 0.62,
+      "brightness": 0.59,
+      "saturation": 0.42
+    },
+    {
+      "file": "floor_objects/prop_g_edge.png",
+      "x": 63,
+      "y": 168,
+      "scale": 1.1,
+      "opacity": 0.65,
+      "brightness": 0.61,
+      "saturation": 0.48
+    },
+    {
+      "file": "floor_objects/prop_g_edge.png",
+      "x": 146,
+      "y": 163,
+      "scale": 0.95,
+      "opacity": 0.65,
+      "brightness": 0.59,
+      "saturation": 0.5
+    },
+    {
+      "file": "floor_objects/prop_g_root.png",
+      "x": 58,
+      "y": 129,
+      "scale": 1.1,
+      "opacity": 0.7,
+      "brightness": 0.63,
+      "saturation": 0.44
+    },
+    {
+      "file": "floor_objects/prop_g_edge.png",
+      "x": 136,
+      "y": 120,
+      "scale": 1.2,
+      "opacity": 0.68,
+      "brightness": 0.58,
+      "saturation": 0.5
+    },
+    {
+      "file": "floor_objects/prop_g_edge.png",
+      "x": 30,
+      "y": 109,
+      "scale": 1,
+      "opacity": 0.65,
+      "brightness": 0.58,
+      "saturation": 0.48
+    },
+    {
+      "file": "floor_objects/prop_g_root.png",
+      "x": 49,
+      "y": 73,
+      "scale": 0.9,
+      "opacity": 0.67,
+      "brightness": 0.59,
+      "saturation": 0.45
+    },
+    {
+      "file": "floor_objects/prop_g_edge.png",
+      "x": 146,
+      "y": 74,
+      "scale": 1.05,
+      "opacity": 0.7,
+      "brightness": 0.58,
+      "saturation": 0.5
+    },
+    {
+      "file": "floor_objects/prop_g_edge.png",
+      "x": 74,
+      "y": 28,
+      "scale": 1,
+      "opacity": 0.64,
+      "brightness": 0.6,
+      "saturation": 0.5
+    },
+    {
+      "file": "floor_objects/prop_g_root.png",
+      "x": 129,
+      "y": 28,
+      "scale": 0.95,
+      "opacity": 0.64,
+      "brightness": 0.58,
+      "saturation": 0.45
+    }
+  ],
+  "groundTile": [
+    1024,
+    1024
+  ],
+  "runtimeScatter": 0,
+  "structuralRotation": 0,
+  "structuralMirror": 0
+}
