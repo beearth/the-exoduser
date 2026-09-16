@@ -42,6 +42,10 @@
 
 ---
 
+## 외부 게임 구조 연구 (참고 자료 / 구현 계약 아님)
+
+- [DIMRAETH_MAP_RESEARCH_20260916.md](DIMRAETH_MAP_RESEARCH_20260916.md) — 설치 파일의 환경 씬 5개 분석, 재사용 방 바닥·분리 지형 레이어·PLAY/vista 계층 근거와 EXODUSER 빌드 시 구역 조합 제안. **조사 완료 / production 미적용**이며 stage LOCK을 변경하지 않는다.
+
 ## 확정 결정 (LOCKED)
 
 | ID | 결정 | 근거 |
