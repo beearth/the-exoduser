@@ -1,3 +1,13 @@
+## 2026-09-16 Steam 업로드·영어 후속 감사
+
+| 대상 | 실제 결과 |
+|---|---|
+| 영어 연결 수정 | `renderSettings` 캐릭터 이름·설명2개 리프를 기존 `_T`로 조회. 수정 전 재현→후67개 관련 검사 통과. 대규모 실습 번역·영상 자막은 보류, 영어 지원 체크 미복원 |
+| 감사 도구 | `audit-steam-english-followup.mjs`: AST 한국어 리터럴 후보·정확 EN 키 대조. `prepare-steam-review-upload.mjs`: 고정 소스4539c6fbd+2줄과 패키지 game 일치, 전체 런타임·27개lang JS·제외 목록 기록, 기존 SteamPipe에서 파생한 별도 VDF 생성 |
+| 실제 업로드 | App4749590 / Build25341487 / Depot4749591 / Manifest6619142697949151359. 최종 미리보기5982파일·6097562545바이트, 서버 성공 로그+Steamworks 조회 확인 |
+| 미완료 구분 | 비공개 브랜치 접근 비밀번호 사용자 입력 대기, Computer Use 연결 불가로 Steam 라이브러리 실행 미검증. default25202408 유지, 상점 저장 KO UI/자막·Captions off, 미게시 |
+| 문서·증거 | `STEAM_INSTALL_REVIEW_20260916.md`, 기존 보고서 최신 결과 링크 및 Notes 갱신. `output/steam_install_review_20260916/`. grep docs 전체 재검색, 보호2_3 수정 없음 |
+
 ## 2026-09-16 Steam 필수 반려 대응 — 언어·캡션
 
 | 대상 | 변경 / 근거 |
