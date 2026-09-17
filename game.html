@@ -14865,7 +14865,7 @@ const _KI_SLASH_IMG=new Image();
 _KI_SLASH_IMG.onload=()=>{_kiSlashRadiant={surfaces:_kiSlashTintSurfaces(_KI_SLASH_IMG),fw:_KI_SLASH_IMG.naturalWidth/3,fh:_KI_SLASH_IMG.naturalHeight/3}};
 _KI_SLASH_IMG.src='assets/vfx/ki_slash_radiant_sheet.png';
 
-const _CHAIN_BLADE_IMG=new Image();let _chainBladeReady=false,_chainBladeSurface=null;_CHAIN_BLADE_IMG.src='img/vfx/chain_blade_silver_realistic.png';_CHAIN_BLADE_IMG.onload=()=>{_chainBladeSurface=_makeGreenChromaCutout(_CHAIN_BLADE_IMG);_chainBladeReady=true};
+const _CHAIN_BLADE_IMG=new Image();let _chainBladeReady=false;_CHAIN_BLADE_IMG.onload=()=>{_chainBladeReady=_CHAIN_BLADE_IMG.naturalWidth>0};_CHAIN_BLADE_IMG.src='img/vfx/chain_blade_cyclone_8f.png';
 const _SKY_CRUSHER_IMG=new Image();let _skyCrusherImgReady=false;_SKY_CRUSHER_IMG.src='img/vfx/sky_crusher_iron_wedge.png';_SKY_CRUSHER_IMG.onload=()=>{_skyCrusherImgReady=true};
 const _SKY_CRUSHER_BURN_IMG=new Image();let _skyCrusherBurnImgReady=false;_SKY_CRUSHER_BURN_IMG.src='img/vfx/sky_crusher_burning.png';_SKY_CRUSHER_BURN_IMG.onload=()=>{_skyCrusherBurnImgReady=true};
 const _scCols=4,_scRows=3;
@@ -29504,7 +29504,11 @@ function update(){
         poolPart(_bx+(Math.random()-.5)*15,_by+(Math.random()-.5)*15,(Math.random()-.5)*4,(Math.random()-.5)*4,'#a9bfd0',2+Math.random()*3,5+Math.random()*4);
       }
       if(!G._chainBlades)G._chainBlades=[];
-      G._chainBlades.push({x:P.x,y:P.y,ang:_csAng,r:_blR,t:0,maxT:16});
+      // One advancing cyclone; reuse it at the player during the pass-through dash.
+      const _blade=G._chainBlades[0]||(G._chainBlades[0]={});
+      _blade.x=P.x;_blade.y=P.y;_blade.ang=_csAng;_blade.r=_blR;
+      _blade.t=0;_blade.maxT=8;_blade.phase=P._chainSlashTick;
+      G._chainBlades.length=1;
       }
     }
     // ── INT(사슬기동:화염): 이동 경로에 화염길 DOT 생성 (magicBlink/dimBreach 합체 포함) ──
@@ -52670,11 +52674,13 @@ function drawP(){
       const fade=Math.max(0,1-_bP);
       X.save();
       X.translate(b.x,b.y);
-      X.rotate(b.ang-Math.PI*.5); // 이동방향 위쪽 기준 회전
+      X.rotate(b.ang); // Sprite reference dash direction is right; rotation is baked into its 8 frames.
       X.globalAlpha=fade;
       if(_chainBladeReady){
-        const _bw=b.r*2.2,_bh=b.r*1.6; // 날개 폭/높이
-        X.drawImage(_chainBladeSurface||_CHAIN_BLADE_IMG,-_bw*.5,-_bh*.45,_bw,_bh);
+        const _bw=b.r*2.6,_bh=_bw; // Core at 65% X; the spiral wake trails behind the player.
+        const _bf=Math.floor(((b.phase||0)+b.t)/1.5)%8; // 12 game frames per revolution.
+        const _cw=_CHAIN_BLADE_IMG.naturalWidth/4,_ch=_CHAIN_BLADE_IMG.naturalHeight/2;
+        X.drawImage(_CHAIN_BLADE_IMG,(_bf%4)*_cw+1,Math.floor(_bf/4)*_ch+1,_cw-2,_ch-2,-_bw*.65,-_bh*.5,_bw,_bh);
       }else{
         // 폴백: 날카로운 은빛 프로시저럴 칼날
         const len=b.r;
