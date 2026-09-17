@@ -533,6 +533,10 @@ canvas{display:block;position:fixed;inset:0}
 .id-stats span{color:var(--c-text-bright)}
 .id-el{display:inline-block;padding:2px 8px;font-size:.85rem;border-radius:2px;margin-top:4px}
 .id-btns{display:flex;gap:4px;margin-top:8px}
+/* Reserve the action row so hover previews cannot resize the bag hit area. */
+#invPanel .inv-actions{display:flex;gap:6px;justify-content:safe center;align-items:center;flex:0 0 68px;box-sizing:border-box;padding:6px 0 2px;overflow:auto;white-space:nowrap}
+#invPanel .inv-actions>*{flex-shrink:0}
+#invPanel .inv-actions .pclose,#invPanel .inv-actions .id-btns{margin-top:0;margin-bottom:0}
 .id-btn{flex:1;padding:6px;background:rgba(0,0,0,.3);border:1px solid var(--c-border);color:var(--c-text);font-size:.95rem;cursor:pointer;text-align:center}
 .id-btn:hover{border-color:var(--c-border-active);color:#ffaa66}
 .inv-cmp-float{position:absolute;z-index:35;background:linear-gradient(135deg,#1a0e08,#221510);border:1px solid #554422;padding:12px;width:240px;pointer-events:auto;box-shadow:0 4px 24px rgba(0,0,0,.8),0 0 1px #aa6633;display:none;max-height:70vh;overflow-y:auto}
@@ -2716,7 +2720,7 @@ canvas{display:block;position:fixed;inset:0}
       <div class="inv-right" id="invRight">
       </div>
     </div>
-    <div style="display:flex;gap:6px;justify-content:center;align-items:center;flex-shrink:0;padding:6px 0 2px">
+    <div class="inv-actions">
       <span id="invActionBtns" style="display:inline-flex;gap:6px"></span>
       <button class="pclose" id="invJunkSelBtn" style="background:rgba(180,120,20,.15);border-color:#aa8822;color:#ccaa44;display:none">쓰레기 전체선택</button>
       <button class="pclose" id="invJunkBtn" style="background:rgba(200,80,20,.15);border-color:#cc6622;color:#ffaa44;display:none">쓰레기 전부 분해</button>
