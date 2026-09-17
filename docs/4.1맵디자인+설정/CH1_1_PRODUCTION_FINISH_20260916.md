@@ -1,3 +1,5 @@
+> **2026-09-17 현행 리터치:** bake/cache `20260917-depth-2`. 신규 숲 원화 4종, 고정 외곽 42배치와 낮은 뿌리 9배치. CH1-1 hand `m_c1tree`만 화면 크기 0.72 / pivotY 0.72; 원본 metadata 1450 및 충돌은 유지. geometry/START/EXIT/진행 계약 유지. 최신 시각 판정 **RETOUCH**. [실제 화면·영상·검증 한계](CH1_1_DEPTH_RETOUCH_20260917.md). 아래 ground-2와 이전 PASS는 당시 이력이다.
+
 > **2026-09-16 후속 실제 수정:** 사용자 추가 지시에 따라 bake/cache가 `20260916-ground-2`로 변경됐다. 흙길/공터와 이끼·낙엽을 구분하며 geometry/START/EXIT/배치/진행은 유지한다. [현재 지면 구성·전후 증거](CH1_1_GROUND_STRUCTURE_20260916.md). 아래 finish-3 및 ec7bf70d8 동일성 판정은 수정 전 검수 이력이다.
 
 > **후속 검수 정정: VISUAL VERDICT: RETOUCH.** 아래 제작 당시 PASS 및 “필수 미완성 구간 없음” 판단은 철회한다. 게임/맵 ec7bf70d8은 보존했다. [실제 전후 화면·일반 플레이·위치별 결함 검수](CH1_1_FINAL_REVIEW_20260916.md)가 최신 판정이다. 기존 기술/QA 진행 이력은 그대로 유지하며 일반 클리어 증거로 확대하지 않는다.

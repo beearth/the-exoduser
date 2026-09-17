@@ -10531,7 +10531,7 @@ function _drawMapPaintWorld(ctx,x0,y0,x1,y1){
 const _CH1_START_OUTER={stage:0,chunkSize:1024,bleed:1,chunks:{}};
 const _CH1_START_PHASE=(()=>{if(typeof location==='undefined')return 'smoothing';const phase=new URLSearchParams(location.search).get('ch1StartPhase');return phase==='outer'?'outer':'smoothing'})();
 const _CH1_START_ROOT=_CH1_START_PHASE==='outer'?'assets/map/ch1/baked_start_outer':'assets/map/ch1/production_finish';
-for(let y=0;y<8;y++)for(let x=0;x<8;x++)_CH1_START_OUTER.chunks[x+','+y]=`${_CH1_START_ROOT}/chunk_${x}_${y}.png?v=20260916-ground-2`;
+for(let y=0;y<8;y++)for(let x=0;x<8;x++)_CH1_START_OUTER.chunks[x+','+y]=`${_CH1_START_ROOT}/chunk_${x}_${y}.png?v=20260917-depth-2`;
 const _CH1_START_OUTER_QUERY_ENABLED=typeof location==='undefined'||new URLSearchParams(location.search).get('ch1StartOuter')!=='0';
 const _ch1StartOuterCache=Object.create(null),_ch1StartOuterWarmQ=[];
 let _ch1StartOuterWarmBusy=false;
@@ -48336,7 +48336,8 @@ function draw(){
           }else if(_meta&&_meta.keepAR){
             const _sourceSize=_meta.sourceSize||[_spr.naturalWidth,_spr.naturalHeight],_ar=_sourceSize[0]/_sourceSize[1],_dw=_meta.squareDraw?sz:sz*(_ar<1?_ar:1),_dh=_meta.squareDraw?sz:sz*(_ar>1?1/_ar:1);
             const _moRot=((mo.rot||0)%360+360)%360;
-            if(_moRot||_meta.pivotX!==undefined||_meta.pivotY!==undefined){const _pvx=_meta.pivotX===undefined ? .5 : _meta.pivotX,_pvy=_meta.pivotY===undefined ? .5 : _meta.pivotY;X.save();X.translate(mo.x,mo.y);X.rotate(_moRot*Math.PI/180);
+            if(G.stage===0&&mo._hand&&mo.type==='m_c1tree')_drawMapObjectCrop(X,_spr,_meta,mo.x,mo.y,_dw*.72,_dh*.72,.5,.72,false);
+            else if(_moRot||_meta.pivotX!==undefined||_meta.pivotY!==undefined){const _pvx=_meta.pivotX===undefined ? .5 : _meta.pivotX,_pvy=_meta.pivotY===undefined ? .5 : _meta.pivotY;X.save();X.translate(mo.x,mo.y);X.rotate(_moRot*Math.PI/180);
               _drawMapObjectCrop(X,_spr,_meta,0,0,_dw,_dh,_pvx,_pvy,!!_meta.anchorBottom);
               X.restore()}
             else if(_meta.flip){X.save();X.translate(mo.x,mo.y);X.scale(-1,1);

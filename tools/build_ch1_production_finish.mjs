@@ -10,6 +10,7 @@ const OUT=path.join(ROOT,'assets/map/ch1/production_finish');
 const SIZE=8192,T=SIZE/200; // bake pixels per tile; runtime maps each 1024px core to 1000 world pixels
 const context={};vm.runInNewContext(fs.readFileSync(path.join(OUT,'layout.js'),'utf8'),context);
 const layout=context.CH1_1_PRODUCTION;
+const depth=JSON.parse(fs.readFileSync(path.join(OUT,'depth/composition.json'),'utf8'));
 sharp.concurrency(2);sharp.cache({memory:128,files:20,items:30});
 const svg=(body,size=SIZE)=>Buffer.from(`<svg xmlns="http://www.w3.org/2000/svg" width="${size}" height="${size}" viewBox="0 0 200 200">${body}</svg>`);
 const polygon=layout.boundary.map(p=>p.join(',')).join(' ');
@@ -117,30 +118,8 @@ raw=null;
 
 // Large continuous forest silhouettes: preserved direction/perspective, clipped by the same
 // region design, with branches overhanging the ground rather than rectangular image collision.
-const FOREST=[
- ['collision/bound_w.png',21,30,1.15,1,.53,.6],
- ['collision/corner_nw.png',31,23,1.25,1,.57,.61],
- ['collision/bound_n.png',64,23,1.25,1,.56,.59],
- ['collision/bound_w.png',20,67,1.25,1,.52,.62],
- ['collision/corner_nw.png',37,73,1.2,1,.58,.63],
- ['collision/bound_w.png',13,109,1.3,1,.5,.58],
- ['collision/bound_n.png',39,123,1.24,1,.58,.58],
- ['collision/corner_nw.png',46,129,1.18,1,.61,.62],
- ['collision/bound_w.png',19,150,1.2,1,.53,.58],
- ['collision/bound_n.png',45,171,1.25,1,.55,.6],
- ['collision/corner_nw.png',70,184,1.2,1,.57,.6],
- ['collision/bound_w.png',78,201,.9,1,.55,.58],
- ['collision/bound_n.png',148,22,1.25,1,.5,.65],
- ['collision/bound_e.png',186,44,1.2,1,.52,.64],
- ['collision/corner_ne.png',174,70,1.25,1,.54,.64],
- ['collision/bound_e.png',188,99,1.22,1,.48,.65],
- ['collision/corner_ne.png',152,119,1.15,1,.56,.61],
- ['collision/bound_n.png',180,120,1.25,1,.5,.58],
- ['collision/bound_e.png',190,151,1.25,1,.51,.62],
- ['collision/corner_ne.png',157,168,1.25,1,.55,.6],
- ['collision/bound_e.png',134,190,1.1,1,.55,.6],
- ['collision/bound_n.png',144,199,1.3,1,.48,.6]
-];
+const FOREST=depth.forest.map(([file,...args])=>['production_finish/depth/'+file,...args]);
+const ROOT_CONNECTIONS=depth.groundRoots.map(([file,...args])=>['production_finish/depth/'+file,...args]);
 const forestBackground=await sharp(source('ground_dark_soil.png')).modulate({brightness:.24,saturation:.35}).tint('#273326').png().toBuffer();
 const forest=await sharp({create:{width:SIZE,height:SIZE,channels:4,background:'#0d1512'}})
   .composite([{input:forestBackground,tile:true},...await collect(FOREST)])
@@ -164,7 +143,7 @@ const CONNECTIONS=[
 ];
 const master=path.join(OUT,'CH1_1_PRODUCTION_MASTER.png');
 const full=await sharp({create:{width:SIZE,height:SIZE,channels:4,background:'#0c1411'}})
- .composite([{input:paintedFloor},{input:clippedForest},...await collect(CONNECTIONS)])
+ .composite([{input:paintedFloor},{input:clippedForest},...await collect(CONNECTIONS),...await collect(ROOT_CONNECTIONS)])
  .raw().toBuffer();
 await sharp(full,{raw:{width:SIZE,height:SIZE,channels:4}}).png({compressionLevel:6}).toFile(master);
 console.log('master written');
@@ -175,6 +154,6 @@ for(let y=0;y<8;y++)for(let x=0;x<8;x++){
   .extend({left:x===0?1:0,right:x===7?1:0,top:y===0?1:0,bottom:y===7?1:0,extendWith:'copy'})
   .png({compressionLevel:6}).toFile(path.join(OUT,`chunk_${x}_${y}.png`));
 }
-fs.writeFileSync(path.join(OUT,'composition.json'),JSON.stringify({version:layout.version,bakeVersion:'20260916-ground-2',groundMaterials:{mask:'ground-zones.svg',soil:{file:'ground_dark_soil.png',brightness:.85,saturation:.48},litter:{file:'materials/forest_moss_litter.png',tileSize:512,brightness:.76,saturation:.55},collisionChanges:false},alphaFeather:{groundEdge:.24,groundRadial:.38,groundOpacityMultiplier:.7,forestEdge:.095,rgbBlur:0},stage:0,masterSize:[SIZE,SIZE],worldSize:[8000,8000],chunkSize:1024,bleed:1,chunkCount:64,geometryHash:createHash('sha256').update(JSON.stringify(layout.buildRLE(200,200))).digest('hex'),regions:layout.regions,counts:{ground:GROUND.length,forest:FOREST.length,connections:CONNECTIONS.length},sourceAssets:[...new Set(audit.map(a=>a.file))],placements:audit,groundTile:[groundTile.width,groundTile.height],runtimeScatter:0,structuralRotation:0,structuralMirror:0},null,2)+'\n');
+fs.writeFileSync(path.join(OUT,'composition.json'),JSON.stringify({version:layout.version,bakeVersion:'20260917-depth-2',groundMaterials:{mask:'ground-zones.svg',soil:{file:'ground_dark_soil.png',brightness:.85,saturation:.48},litter:{file:'materials/forest_moss_litter.png',tileSize:512,brightness:.76,saturation:.55},collisionChanges:false},alphaFeather:{groundEdge:.24,groundRadial:.38,groundOpacityMultiplier:.7,forestEdge:.095,rgbBlur:0},stage:0,masterSize:[SIZE,SIZE],worldSize:[8000,8000],chunkSize:1024,bleed:1,chunkCount:64,geometryHash:createHash('sha256').update(JSON.stringify(layout.buildRLE(200,200))).digest('hex'),regions:layout.regions,depthSource:depth,counts:{ground:GROUND.length,forest:FOREST.length,connections:CONNECTIONS.length+ROOT_CONNECTIONS.length},sourceAssets:[...new Set(audit.map(a=>a.file))],placements:audit,groundTile:[groundTile.width,groundTile.height],runtimeScatter:0,structuralRotation:0,structuralMirror:0},null,2)+'\n');
 await sharp(full,{raw:{width:SIZE,height:SIZE,channels:4}}).resize(1600).jpeg({quality:90}).toFile(path.join(OUT,'composition-preview.jpg'));
 console.log('CH1-1 production master + 64 chunks complete');

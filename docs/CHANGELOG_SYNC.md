@@ -1,3 +1,10 @@
+## 2026-09-17 — CH1-1 forest depth retouch
+
+- 배경/cache `20260917-depth-2`: 신규 원화4종, 외곽42배치, 낮은 뿌리9배치. 기존200×200 geometry/입출구/진행 보존.
+- stage0 hand 시체나무만 표시0.72/pivotY0.72. metadata1450/충돌 유지. 다른 stage 적용 없음.
+- 실제 전후12쌍, QA 입력 종주, Lv1 피해 전투 사망1회, 기술26/26·접합112/112. 일반 완주·1-2는 미검증. VISUAL RETOUCH.
+- 상세: [CH1_1_DEPTH_RETOUCH_20260917](4.1맵디자인+설정/CH1_1_DEPTH_RETOUCH_20260917.md). 동시 칼날개 VFX 작업은 별도 범위.
+
 ## 2026-09-16 Steam 업로드·영어 후속 감사
 
 | 대상 | 실제 결과 |

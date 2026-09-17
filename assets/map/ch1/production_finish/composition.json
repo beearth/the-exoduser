@@ -1,6 +1,6 @@
 {
   "version": "20260916-finish-1",
-  "bakeVersion": "20260916-ground-2",
+  "bakeVersion": "20260917-depth-2",
   "groundMaterials": {
     "mask": "ground-zones.svg",
     "soil": {
@@ -126,10 +126,484 @@
       "transition": "기존 gate y5 / exit y7 접근"
     }
   ],
+  "depthSource": {
+    "version": "20260917-depth-2",
+    "description": "Fixed CH1-1 forest groups. Positions are tile-space image centers. Outer groups are clipped by the existing non-walkable boundary; ground roots are low and traversable.",
+    "forest": [
+      [
+        "broken_thicket.png",
+        15,
+        8,
+        1.1,
+        1,
+        0.56,
+        0.6
+      ],
+      [
+        "forest_stand.png",
+        48,
+        4,
+        1.2,
+        1,
+        0.6,
+        0.61
+      ],
+      [
+        "broken_thicket.png",
+        2,
+        66,
+        1.2,
+        1,
+        0.58,
+        0.6
+      ],
+      [
+        "forest_stand.png",
+        1,
+        125,
+        1.2,
+        1,
+        0.58,
+        0.6
+      ],
+      [
+        "broken_thicket.png",
+        23,
+        192,
+        1.2,
+        1,
+        0.61,
+        0.6
+      ],
+      [
+        "forest_stand.png",
+        168,
+        197,
+        1.2,
+        1,
+        0.61,
+        0.6
+      ],
+      [
+        "broken_thicket.png",
+        196,
+        184,
+        1.2,
+        1,
+        0.61,
+        0.6
+      ],
+      [
+        "forest_stand.png",
+        198,
+        123,
+        1.2,
+        1,
+        0.59,
+        0.6
+      ],
+      [
+        "broken_thicket.png",
+        196,
+        23,
+        1.2,
+        1,
+        0.6,
+        0.6
+      ],
+      [
+        "forest_stand.png",
+        156,
+        1,
+        1.2,
+        1,
+        0.57,
+        0.6
+      ],
+      [
+        "forest_stand.png",
+        19,
+        25,
+        1.2,
+        1,
+        0.78,
+        0.66
+      ],
+      [
+        "broken_thicket.png",
+        44,
+        21,
+        1.15,
+        1,
+        0.88,
+        0.62
+      ],
+      [
+        "forest_stand.png",
+        72,
+        17,
+        1.18,
+        1,
+        0.86,
+        0.66
+      ],
+      [
+        "broken_thicket.png",
+        84,
+        4,
+        0.8,
+        1,
+        0.92,
+        0.64
+      ],
+      [
+        "forest_stand.png",
+        19,
+        53,
+        1.3,
+        1,
+        0.92,
+        0.64
+      ],
+      [
+        "root_bank.png",
+        32,
+        68,
+        1.2,
+        1,
+        1.02,
+        0.6
+      ],
+      [
+        "broken_thicket.png",
+        46,
+        76,
+        0.9,
+        1,
+        0.94,
+        0.64
+      ],
+      [
+        "forest_stand.png",
+        13,
+        86,
+        1.25,
+        1,
+        0.85,
+        0.66
+      ],
+      [
+        "forest_stand.png",
+        15,
+        115,
+        1.2,
+        1,
+        0.95,
+        0.62
+      ],
+      [
+        "root_bank.png",
+        34,
+        121,
+        1.05,
+        1,
+        1.08,
+        0.65
+      ],
+      [
+        "broken_thicket.png",
+        48,
+        132,
+        1.05,
+        1,
+        1.03,
+        0.63
+      ],
+      [
+        "forest_stand.png",
+        13,
+        148,
+        1.25,
+        1,
+        0.9,
+        0.64
+      ],
+      [
+        "root_bank.png",
+        31,
+        170,
+        1.1,
+        1,
+        0.97,
+        0.64
+      ],
+      [
+        "forest_stand.png",
+        55,
+        180,
+        1.25,
+        1,
+        0.94,
+        0.66
+      ],
+      [
+        "broken_thicket.png",
+        76,
+        191,
+        1.05,
+        1,
+        1.04,
+        0.65
+      ],
+      [
+        "forest_stand.png",
+        78,
+        207,
+        1.1,
+        1,
+        0.94,
+        0.66
+      ],
+      [
+        "root_bank.png",
+        111,
+        207,
+        1.2,
+        1,
+        1,
+        0.62
+      ],
+      [
+        "forest_stand.png",
+        135,
+        193,
+        1.2,
+        1,
+        0.92,
+        0.66
+      ],
+      [
+        "root_bank.png",
+        144,
+        177,
+        1.25,
+        1,
+        1.02,
+        0.6
+      ],
+      [
+        "broken_thicket.png",
+        166,
+        169,
+        1.2,
+        1,
+        0.94,
+        0.62
+      ],
+      [
+        "forest_stand.png",
+        187,
+        162,
+        1.25,
+        1,
+        0.87,
+        0.64
+      ],
+      [
+        "root_bank.png",
+        185,
+        130,
+        1.2,
+        1,
+        1.08,
+        0.62
+      ],
+      [
+        "root_bank.png",
+        150,
+        120,
+        1.25,
+        1,
+        1.02,
+        0.64
+      ],
+      [
+        "broken_thicket.png",
+        179,
+        113,
+        1.15,
+        1,
+        1.04,
+        0.65
+      ],
+      [
+        "forest_stand.png",
+        195,
+        93,
+        1.2,
+        1,
+        0.91,
+        0.65
+      ],
+      [
+        "root_bank.png",
+        173,
+        76,
+        1.18,
+        1,
+        1,
+        0.61
+      ],
+      [
+        "broken_thicket.png",
+        149,
+        70,
+        1.05,
+        1,
+        0.95,
+        0.64
+      ],
+      [
+        "forest_stand.png",
+        190,
+        50,
+        1.3,
+        1,
+        0.91,
+        0.64
+      ],
+      [
+        "root_bank.png",
+        178,
+        29,
+        1.2,
+        1,
+        1.01,
+        0.62
+      ],
+      [
+        "broken_thicket.png",
+        150,
+        21,
+        1.2,
+        1,
+        0.89,
+        0.65
+      ],
+      [
+        "forest_stand.png",
+        124,
+        13,
+        1.15,
+        1,
+        0.93,
+        0.63
+      ],
+      [
+        "root_bank.png",
+        116,
+        1,
+        0.85,
+        1,
+        1,
+        0.62
+      ]
+    ],
+    "groundRoots": [
+      [
+        "root_fan.png",
+        103,
+        96,
+        0.85,
+        0.84,
+        0.94,
+        0.56
+      ],
+      [
+        "root_fan.png",
+        78,
+        177,
+        0.52,
+        0.7,
+        0.88,
+        0.62
+      ],
+      [
+        "root_fan.png",
+        59,
+        128,
+        0.5,
+        0.72,
+        0.87,
+        0.6
+      ],
+      [
+        "root_fan.png",
+        129,
+        121,
+        0.47,
+        0.6,
+        0.87,
+        0.6
+      ],
+      [
+        "root_fan.png",
+        75,
+        29,
+        0.42,
+        0.62,
+        0.88,
+        0.6
+      ],
+      [
+        "root_fan.png",
+        81,
+        154,
+        0.4,
+        0.64,
+        0.9,
+        0.58
+      ],
+      [
+        "root_fan.png",
+        124,
+        153,
+        0.36,
+        0.61,
+        0.88,
+        0.6
+      ],
+      [
+        "root_fan.png",
+        80,
+        40,
+        0.4,
+        0.62,
+        0.87,
+        0.6
+      ],
+      [
+        "root_fan.png",
+        127,
+        45,
+        0.38,
+        0.6,
+        0.87,
+        0.6
+      ]
+    ],
+    "treeVisual": {
+      "stage": 0,
+      "type": "m_c1tree",
+      "scale": 0.72,
+      "pivotY": 0.72,
+      "collisionChanged": false
+    }
+  },
   "counts": {
     "ground": 23,
-    "forest": 22,
-    "connections": 11
+    "forest": 42,
+    "connections": 20
   },
   "sourceAssets": [
     "floor_objects/prop_g_battle.png",
@@ -137,11 +611,10 @@
     "floor_objects/prop_g_root.png",
     "floor_objects/prop_g_corpse.png",
     "floor_objects/prop_g_toxic.png",
-    "collision/bound_w.png",
-    "collision/corner_nw.png",
-    "collision/bound_n.png",
-    "collision/bound_e.png",
-    "collision/corner_ne.png"
+    "production_finish/depth/broken_thicket.png",
+    "production_finish/depth/forest_stand.png",
+    "production_finish/depth/root_bank.png",
+    "production_finish/depth/root_fan.png"
   ],
   "placements": [
     {
@@ -352,202 +825,382 @@
       "saturation": 0.4
     },
     {
-      "file": "collision/bound_w.png",
-      "x": 21,
-      "y": 30,
-      "scale": 1.15,
+      "file": "production_finish/depth/broken_thicket.png",
+      "x": 15,
+      "y": 8,
+      "scale": 1.1,
       "opacity": 1,
-      "brightness": 0.53,
+      "brightness": 0.56,
       "saturation": 0.6
     },
     {
-      "file": "collision/corner_nw.png",
-      "x": 31,
-      "y": 23,
-      "scale": 1.25,
+      "file": "production_finish/depth/forest_stand.png",
+      "x": 48,
+      "y": 4,
+      "scale": 1.2,
       "opacity": 1,
-      "brightness": 0.57,
+      "brightness": 0.6,
       "saturation": 0.61
     },
     {
-      "file": "collision/bound_n.png",
-      "x": 64,
-      "y": 23,
-      "scale": 1.25,
-      "opacity": 1,
-      "brightness": 0.56,
-      "saturation": 0.59
-    },
-    {
-      "file": "collision/bound_w.png",
-      "x": 20,
-      "y": 67,
-      "scale": 1.25,
-      "opacity": 1,
-      "brightness": 0.52,
-      "saturation": 0.62
-    },
-    {
-      "file": "collision/corner_nw.png",
-      "x": 37,
-      "y": 73,
+      "file": "production_finish/depth/broken_thicket.png",
+      "x": 2,
+      "y": 66,
       "scale": 1.2,
       "opacity": 1,
       "brightness": 0.58,
-      "saturation": 0.63
-    },
-    {
-      "file": "collision/bound_w.png",
-      "x": 13,
-      "y": 109,
-      "scale": 1.3,
-      "opacity": 1,
-      "brightness": 0.5,
-      "saturation": 0.58
-    },
-    {
-      "file": "collision/bound_n.png",
-      "x": 39,
-      "y": 123,
-      "scale": 1.24,
-      "opacity": 1,
-      "brightness": 0.58,
-      "saturation": 0.58
-    },
-    {
-      "file": "collision/corner_nw.png",
-      "x": 46,
-      "y": 129,
-      "scale": 1.18,
-      "opacity": 1,
-      "brightness": 0.61,
-      "saturation": 0.62
-    },
-    {
-      "file": "collision/bound_w.png",
-      "x": 19,
-      "y": 150,
-      "scale": 1.2,
-      "opacity": 1,
-      "brightness": 0.53,
-      "saturation": 0.58
-    },
-    {
-      "file": "collision/bound_n.png",
-      "x": 45,
-      "y": 171,
-      "scale": 1.25,
-      "opacity": 1,
-      "brightness": 0.55,
       "saturation": 0.6
     },
     {
-      "file": "collision/corner_nw.png",
-      "x": 70,
+      "file": "production_finish/depth/forest_stand.png",
+      "x": 1,
+      "y": 125,
+      "scale": 1.2,
+      "opacity": 1,
+      "brightness": 0.58,
+      "saturation": 0.6
+    },
+    {
+      "file": "production_finish/depth/broken_thicket.png",
+      "x": 23,
+      "y": 192,
+      "scale": 1.2,
+      "opacity": 1,
+      "brightness": 0.61,
+      "saturation": 0.6
+    },
+    {
+      "file": "production_finish/depth/forest_stand.png",
+      "x": 168,
+      "y": 197,
+      "scale": 1.2,
+      "opacity": 1,
+      "brightness": 0.61,
+      "saturation": 0.6
+    },
+    {
+      "file": "production_finish/depth/broken_thicket.png",
+      "x": 196,
       "y": 184,
       "scale": 1.2,
       "opacity": 1,
+      "brightness": 0.61,
+      "saturation": 0.6
+    },
+    {
+      "file": "production_finish/depth/forest_stand.png",
+      "x": 198,
+      "y": 123,
+      "scale": 1.2,
+      "opacity": 1,
+      "brightness": 0.59,
+      "saturation": 0.6
+    },
+    {
+      "file": "production_finish/depth/broken_thicket.png",
+      "x": 196,
+      "y": 23,
+      "scale": 1.2,
+      "opacity": 1,
+      "brightness": 0.6,
+      "saturation": 0.6
+    },
+    {
+      "file": "production_finish/depth/forest_stand.png",
+      "x": 156,
+      "y": 1,
+      "scale": 1.2,
+      "opacity": 1,
       "brightness": 0.57,
       "saturation": 0.6
     },
     {
-      "file": "collision/bound_w.png",
-      "x": 78,
-      "y": 201,
-      "scale": 0.9,
-      "opacity": 1,
-      "brightness": 0.55,
-      "saturation": 0.58
-    },
-    {
-      "file": "collision/bound_n.png",
-      "x": 148,
-      "y": 22,
-      "scale": 1.25,
-      "opacity": 1,
-      "brightness": 0.5,
-      "saturation": 0.65
-    },
-    {
-      "file": "collision/bound_e.png",
-      "x": 186,
-      "y": 44,
+      "file": "production_finish/depth/forest_stand.png",
+      "x": 19,
+      "y": 25,
       "scale": 1.2,
       "opacity": 1,
-      "brightness": 0.52,
-      "saturation": 0.64
+      "brightness": 0.78,
+      "saturation": 0.66
     },
     {
-      "file": "collision/corner_ne.png",
-      "x": 174,
-      "y": 70,
-      "scale": 1.25,
-      "opacity": 1,
-      "brightness": 0.54,
-      "saturation": 0.64
-    },
-    {
-      "file": "collision/bound_e.png",
-      "x": 188,
-      "y": 99,
-      "scale": 1.22,
-      "opacity": 1,
-      "brightness": 0.48,
-      "saturation": 0.65
-    },
-    {
-      "file": "collision/corner_ne.png",
-      "x": 152,
-      "y": 119,
+      "file": "production_finish/depth/broken_thicket.png",
+      "x": 44,
+      "y": 21,
       "scale": 1.15,
       "opacity": 1,
-      "brightness": 0.56,
-      "saturation": 0.61
-    },
-    {
-      "file": "collision/bound_n.png",
-      "x": 180,
-      "y": 120,
-      "scale": 1.25,
-      "opacity": 1,
-      "brightness": 0.5,
-      "saturation": 0.58
-    },
-    {
-      "file": "collision/bound_e.png",
-      "x": 190,
-      "y": 151,
-      "scale": 1.25,
-      "opacity": 1,
-      "brightness": 0.51,
+      "brightness": 0.88,
       "saturation": 0.62
     },
     {
-      "file": "collision/corner_ne.png",
-      "x": 157,
-      "y": 168,
-      "scale": 1.25,
+      "file": "production_finish/depth/forest_stand.png",
+      "x": 72,
+      "y": 17,
+      "scale": 1.18,
       "opacity": 1,
-      "brightness": 0.55,
-      "saturation": 0.6
+      "brightness": 0.86,
+      "saturation": 0.66
     },
     {
-      "file": "collision/bound_e.png",
-      "x": 134,
-      "y": 190,
-      "scale": 1.1,
+      "file": "production_finish/depth/broken_thicket.png",
+      "x": 84,
+      "y": 4,
+      "scale": 0.8,
       "opacity": 1,
-      "brightness": 0.55,
-      "saturation": 0.6
+      "brightness": 0.92,
+      "saturation": 0.64
     },
     {
-      "file": "collision/bound_n.png",
-      "x": 144,
-      "y": 199,
+      "file": "production_finish/depth/forest_stand.png",
+      "x": 19,
+      "y": 53,
       "scale": 1.3,
       "opacity": 1,
-      "brightness": 0.48,
+      "brightness": 0.92,
+      "saturation": 0.64
+    },
+    {
+      "file": "production_finish/depth/root_bank.png",
+      "x": 32,
+      "y": 68,
+      "scale": 1.2,
+      "opacity": 1,
+      "brightness": 1.02,
       "saturation": 0.6
+    },
+    {
+      "file": "production_finish/depth/broken_thicket.png",
+      "x": 46,
+      "y": 76,
+      "scale": 0.9,
+      "opacity": 1,
+      "brightness": 0.94,
+      "saturation": 0.64
+    },
+    {
+      "file": "production_finish/depth/forest_stand.png",
+      "x": 13,
+      "y": 86,
+      "scale": 1.25,
+      "opacity": 1,
+      "brightness": 0.85,
+      "saturation": 0.66
+    },
+    {
+      "file": "production_finish/depth/forest_stand.png",
+      "x": 15,
+      "y": 115,
+      "scale": 1.2,
+      "opacity": 1,
+      "brightness": 0.95,
+      "saturation": 0.62
+    },
+    {
+      "file": "production_finish/depth/root_bank.png",
+      "x": 34,
+      "y": 121,
+      "scale": 1.05,
+      "opacity": 1,
+      "brightness": 1.08,
+      "saturation": 0.65
+    },
+    {
+      "file": "production_finish/depth/broken_thicket.png",
+      "x": 48,
+      "y": 132,
+      "scale": 1.05,
+      "opacity": 1,
+      "brightness": 1.03,
+      "saturation": 0.63
+    },
+    {
+      "file": "production_finish/depth/forest_stand.png",
+      "x": 13,
+      "y": 148,
+      "scale": 1.25,
+      "opacity": 1,
+      "brightness": 0.9,
+      "saturation": 0.64
+    },
+    {
+      "file": "production_finish/depth/root_bank.png",
+      "x": 31,
+      "y": 170,
+      "scale": 1.1,
+      "opacity": 1,
+      "brightness": 0.97,
+      "saturation": 0.64
+    },
+    {
+      "file": "production_finish/depth/forest_stand.png",
+      "x": 55,
+      "y": 180,
+      "scale": 1.25,
+      "opacity": 1,
+      "brightness": 0.94,
+      "saturation": 0.66
+    },
+    {
+      "file": "production_finish/depth/broken_thicket.png",
+      "x": 76,
+      "y": 191,
+      "scale": 1.05,
+      "opacity": 1,
+      "brightness": 1.04,
+      "saturation": 0.65
+    },
+    {
+      "file": "production_finish/depth/forest_stand.png",
+      "x": 78,
+      "y": 207,
+      "scale": 1.1,
+      "opacity": 1,
+      "brightness": 0.94,
+      "saturation": 0.66
+    },
+    {
+      "file": "production_finish/depth/root_bank.png",
+      "x": 111,
+      "y": 207,
+      "scale": 1.2,
+      "opacity": 1,
+      "brightness": 1,
+      "saturation": 0.62
+    },
+    {
+      "file": "production_finish/depth/forest_stand.png",
+      "x": 135,
+      "y": 193,
+      "scale": 1.2,
+      "opacity": 1,
+      "brightness": 0.92,
+      "saturation": 0.66
+    },
+    {
+      "file": "production_finish/depth/root_bank.png",
+      "x": 144,
+      "y": 177,
+      "scale": 1.25,
+      "opacity": 1,
+      "brightness": 1.02,
+      "saturation": 0.6
+    },
+    {
+      "file": "production_finish/depth/broken_thicket.png",
+      "x": 166,
+      "y": 169,
+      "scale": 1.2,
+      "opacity": 1,
+      "brightness": 0.94,
+      "saturation": 0.62
+    },
+    {
+      "file": "production_finish/depth/forest_stand.png",
+      "x": 187,
+      "y": 162,
+      "scale": 1.25,
+      "opacity": 1,
+      "brightness": 0.87,
+      "saturation": 0.64
+    },
+    {
+      "file": "production_finish/depth/root_bank.png",
+      "x": 185,
+      "y": 130,
+      "scale": 1.2,
+      "opacity": 1,
+      "brightness": 1.08,
+      "saturation": 0.62
+    },
+    {
+      "file": "production_finish/depth/root_bank.png",
+      "x": 150,
+      "y": 120,
+      "scale": 1.25,
+      "opacity": 1,
+      "brightness": 1.02,
+      "saturation": 0.64
+    },
+    {
+      "file": "production_finish/depth/broken_thicket.png",
+      "x": 179,
+      "y": 113,
+      "scale": 1.15,
+      "opacity": 1,
+      "brightness": 1.04,
+      "saturation": 0.65
+    },
+    {
+      "file": "production_finish/depth/forest_stand.png",
+      "x": 195,
+      "y": 93,
+      "scale": 1.2,
+      "opacity": 1,
+      "brightness": 0.91,
+      "saturation": 0.65
+    },
+    {
+      "file": "production_finish/depth/root_bank.png",
+      "x": 173,
+      "y": 76,
+      "scale": 1.18,
+      "opacity": 1,
+      "brightness": 1,
+      "saturation": 0.61
+    },
+    {
+      "file": "production_finish/depth/broken_thicket.png",
+      "x": 149,
+      "y": 70,
+      "scale": 1.05,
+      "opacity": 1,
+      "brightness": 0.95,
+      "saturation": 0.64
+    },
+    {
+      "file": "production_finish/depth/forest_stand.png",
+      "x": 190,
+      "y": 50,
+      "scale": 1.3,
+      "opacity": 1,
+      "brightness": 0.91,
+      "saturation": 0.64
+    },
+    {
+      "file": "production_finish/depth/root_bank.png",
+      "x": 178,
+      "y": 29,
+      "scale": 1.2,
+      "opacity": 1,
+      "brightness": 1.01,
+      "saturation": 0.62
+    },
+    {
+      "file": "production_finish/depth/broken_thicket.png",
+      "x": 150,
+      "y": 21,
+      "scale": 1.2,
+      "opacity": 1,
+      "brightness": 0.89,
+      "saturation": 0.65
+    },
+    {
+      "file": "production_finish/depth/forest_stand.png",
+      "x": 124,
+      "y": 13,
+      "scale": 1.15,
+      "opacity": 1,
+      "brightness": 0.93,
+      "saturation": 0.63
+    },
+    {
+      "file": "production_finish/depth/root_bank.png",
+      "x": 116,
+      "y": 1,
+      "scale": 0.85,
+      "opacity": 1,
+      "brightness": 1,
+      "saturation": 0.62
     },
     {
       "file": "floor_objects/prop_g_edge.png",
@@ -647,6 +1300,87 @@
       "opacity": 0.64,
       "brightness": 0.58,
       "saturation": 0.45
+    },
+    {
+      "file": "production_finish/depth/root_fan.png",
+      "x": 103,
+      "y": 96,
+      "scale": 0.85,
+      "opacity": 0.84,
+      "brightness": 0.94,
+      "saturation": 0.56
+    },
+    {
+      "file": "production_finish/depth/root_fan.png",
+      "x": 78,
+      "y": 177,
+      "scale": 0.52,
+      "opacity": 0.7,
+      "brightness": 0.88,
+      "saturation": 0.62
+    },
+    {
+      "file": "production_finish/depth/root_fan.png",
+      "x": 59,
+      "y": 128,
+      "scale": 0.5,
+      "opacity": 0.72,
+      "brightness": 0.87,
+      "saturation": 0.6
+    },
+    {
+      "file": "production_finish/depth/root_fan.png",
+      "x": 129,
+      "y": 121,
+      "scale": 0.47,
+      "opacity": 0.6,
+      "brightness": 0.87,
+      "saturation": 0.6
+    },
+    {
+      "file": "production_finish/depth/root_fan.png",
+      "x": 75,
+      "y": 29,
+      "scale": 0.42,
+      "opacity": 0.62,
+      "brightness": 0.88,
+      "saturation": 0.6
+    },
+    {
+      "file": "production_finish/depth/root_fan.png",
+      "x": 81,
+      "y": 154,
+      "scale": 0.4,
+      "opacity": 0.64,
+      "brightness": 0.9,
+      "saturation": 0.58
+    },
+    {
+      "file": "production_finish/depth/root_fan.png",
+      "x": 124,
+      "y": 153,
+      "scale": 0.36,
+      "opacity": 0.61,
+      "brightness": 0.88,
+      "saturation": 0.6
+    },
+    {
+      "file": "production_finish/depth/root_fan.png",
+      "x": 80,
+      "y": 40,
+      "scale": 0.4,
+      "opacity": 0.62,
+      "brightness": 0.87,
+      "saturation": 0.6
+    },
+    {
+      "file": "production_finish/depth/root_fan.png",
+      "x": 127,
+      "y": 45,
+      "scale": 0.38,
+      "opacity": 0.6,
+      "brightness": 0.87,
+      "saturation": 0.6
     }
   ],
   "groundTile": [
