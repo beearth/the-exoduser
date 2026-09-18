@@ -1640,15 +1640,12 @@ canvas{display:block;position:fixed;inset:0}
   box-shadow:0 28px 64px rgba(0,0,0,.64),inset 0 0 0 1px rgba(255,225,190,.03) !important;
 }
 #crBagPop [style*='#553388'],
-#invCrystalRow [style*='#553388'],
 #forge [style*='#553388']{
   border-color:rgba(124,111,97,.46) !important;
 }
 #crBagPop [style*='rgba(100,0,200'],
-#invCrystalRow [style*='rgba(100,0,200'],
 #forge [style*='rgba(100,0,200'],
 #crBagPop [style*='rgba(187,136,255'],
-#invCrystalRow [style*='rgba(187,136,255'],
 #forge [style*='rgba(187,136,255']{
   background:linear-gradient(180deg,rgba(31,18,16,.95),rgba(10,6,6,.992)) !important;
 }
@@ -1658,12 +1655,6 @@ canvas{display:block;position:fixed;inset:0}
 #crBagPop [style*='#44ccff'],
 #crBagPop [style*='#ffcc44'],
 #crBagPop [style*='#ffdd66'],
-#invCrystalRow [style*='#bb88ff'],
-#invCrystalRow [style*='#ddaaff'],
-#invCrystalRow [style*='#44ff88'],
-#invCrystalRow [style*='#44ccff'],
-#invCrystalRow [style*='#ffcc44'],
-#invCrystalRow [style*='#ffdd66'],
 #forge [style*='#bb88ff'],
 #forge [style*='#ddaaff'],
 #forge [style*='#44ff88'],
@@ -1673,11 +1664,6 @@ canvas{display:block;position:fixed;inset:0}
 #forge [style*='#ffcc44'],
 #forge [style*='#ffdd66']{
   color:#f0d7b8 !important;
-}
-#invCrystalRow{
-  background:linear-gradient(180deg,rgba(28,17,15,.94),rgba(11,7,7,.988)) !important;
-  border:1px solid rgba(126,74,44,.38) !important;
-  border-radius:8px !important;
 }
 
 /* ══ PANEL-SPECIFIC FRAME ART ══ */
@@ -2669,7 +2655,6 @@ canvas{display:block;position:fixed;inset:0}
           <span id="cpVal" style="color:#ffcc44;font-size:1rem;font-weight:900;text-shadow:0 0 8px rgba(255,200,0,.3)">0</span>
           <span id="cpBreak" style="color:#776655;font-size:.75rem"></span>
         </div>
-        <div onclick="_crBagOpen=true;_crPickCb=null;_crBagSel=-1;_gpCrIdx=0;renderCrystalBag()" style="padding:2px 8px;cursor:pointer;border:1px solid #553388;color:#bb88ff;font-size:.8rem;font-weight:700;background:rgba(100,0,200,.08);border-radius:3px" onmouseover="this.style.borderColor='#bb88ff';this.style.background='rgba(100,0,200,.15)'" onmouseout="this.style.borderColor='#553388';this.style.background='rgba(100,0,200,.08)'">결정</div>
         <div id="invResBar" style="padding:2px 10px;font-size:.8rem;color:#887766;background:rgba(0,0,0,.3);border:1px solid #443322;border-radius:3px;white-space:nowrap"></div>
         <div id="invClose" style="width:28px;height:28px;display:flex;align-items:center;justify-content:center;cursor:pointer;border:1px solid #554433;color:#aa8866;font-size:1.2rem;font-weight:900;background:rgba(0,0,0,.3)" onmouseover="this.style.color='#ff6633';this.style.borderColor='#ff6633'" onmouseout="this.style.color='#aa8866';this.style.borderColor='#554433'">✕</div>
       </div>
@@ -5886,7 +5871,7 @@ const _EN={
 '죽음 그 자체':'Death Itself',
 // --- Crystals ---
 'HP결정':'HP Crystal','ST결정':'ST Crystal','MP결정':'MP Crystal',
-'ATK결정':'ATK Crystal','DEF결정':'DEF Crystal','속도결정':'Speed Crystal',
+'ATK결정':'ATK Crystal','DEF결정':'DEF Crystal','속성방어결정':'Elem DEF Crystal','속도결정':'Speed Crystal',
 '크리결정':'Crit Crystal','치명결정':'CritDmg Crystal','화염결정':'Fire Crystal',
 '냉기결정':'Ice Crystal','암흑결정':'Dark Crystal','번개결정':'Lightning Crystal',
 '신성결정':'Holy Crystal','생명결정':'Life Crystal','기력결정':'Stamina Crystal',
@@ -12365,7 +12350,6 @@ const _gpSectType=el=>{
   if(el.closest('.growth-inspector'))return'growthdetail';
   if(el.closest('#invFilters'))return'invfilter';
   if(el.closest('#invEqGrid'))return'inveq';
-  if(el.closest('#invCrystalRow'))return'invcr';
   if(el.closest('#invGrid'))return'invbag';
   if(el.closest('#invStGrid'))return'invst';
   if(el.closest('#invStBagSection'))return'invdep';
@@ -14005,10 +13989,23 @@ function _crAutoProcess(){
   if(did)applyStats();
 }
 const CRYSTAL_DUST_COST=[50,200,500,1500,5000];
-let _selectedCrystal=-1; // 결정 주머니에서 선택된 인덱스 (-1=미선택)
 let _crBagOpen=false,_crBagFilter='all',_crBagSel=-1;
 let _crPickCb=null,_crPickSlot=null; // _crPickSlot: 피커 필터용 target 슬롯명 (weapon/bow/helmet/shield/armor/gloves/pants/boots/cape/belt/bracelet/ring1/ring2/necklace/headband)
+let _crForgeFilter='all';
 let _crForgeTab='enhance',_crForgeSel=-1,_crSynthType=null,_crSynthStar=-1,_crCraftType=null,_crCraftStar=0;
+// View-only groups: preserve bag ordering and original indices used by transactions.
+function _crBagGroups(category='all',combineEnh=false){
+  const groups=new Map();
+  CRYSTAL_BAG.forEach((cr,i)=>{
+    const d=CRYSTAL_DEFS[cr.id];
+    if(!d||(category!=='all'&&d.cat!==category))return;
+    const enh=cr.enh||0,key=cr.id+'_'+cr.star+(combineEnh?'':'_'+enh);
+    if(!groups.has(key))groups.set(key,{id:cr.id,star:cr.star,enh,idxs:[]});
+    groups.get(key).idxs.push(i);
+  });
+  return Array.from(groups.values()).sort((a,b)=>(b.star-a.star)||(b.enh-a.enh)||CRYSTAL_IDS.indexOf(a.id)-CRYSTAL_IDS.indexOf(b.id));
+}
+function _crForgeMatches(cr){return _crForgeFilter==='all'||CRYSTAL_DEFS[cr.id]?.cat===_crForgeFilter;}
 function _crLabel(cr){if(!cr)return'';const d=CRYSTAL_DEFS[cr.id],s=CRYSTAL_STAR[cr.star];return d.emoji+' '+_crStarN(s)+' '+_crDefN(d)+(cr.enh>0?' +'+cr.enh:'');}
 function _crValFmt(v){return v===~~v?''+v:v.toFixed(1)}
 const _CR_UNIT={hpR:'/s',stR:'/s',mpR:'/s'};
@@ -14022,8 +14019,8 @@ function renderCrystalBag(){
   h+='<span style="color:#aa8866;font-size:.75rem">'+_T('가루')+': '+CRYSTAL_DUST+'</span>';
   h+='<span onclick="_crBagOpen=false;var p=$(\'crBagPop\');if(p)p.style.display=\'none\';_crPickCb=null" style="cursor:pointer;color:#aa6644;font-size:1.1rem;font-weight:900">✕</span></div>';
   h+='<div style="display:flex;gap:3px;margin-bottom:6px;flex-wrap:wrap">';
-  [['all','전체'],['stat','스탯'],['elem','원소'],['util','유틸']].forEach(([k,v])=>{
-    h+='<span onclick="_crBagFilter=\''+k+'\';renderCrystalBag()" style="cursor:pointer;padding:1px 6px;font-size:.75rem;border:1px solid '+(_crBagFilter===k?'#bb88ff':'#443322')+';color:'+(_crBagFilter===k?'#ddaaff':'#887766')+';background:'+(_crBagFilter===k?'rgba(187,136,255,.12)':'rgba(0,0,0,.2)')+';border-radius:3px">'+_T(v)+'</span>';
+  [['all','전체','All'],['atk','공격','Attack'],['def','방어','Defense'],['acc','자원','Resource']].forEach(([k,ko,en])=>{
+    h+='<span onclick="_crBagFilter=\''+k+'\';renderCrystalBag()" style="cursor:pointer;padding:1px 6px;font-size:.75rem;border:1px solid '+(_crBagFilter===k?'#bb88ff':'#443322')+';color:'+(_crBagFilter===k?'#ddaaff':'#887766')+';background:'+(_crBagFilter===k?'rgba(187,136,255,.12)':'rgba(0,0,0,.2)')+';border-radius:3px">'+_L(ko,en)+'</span>';
   });
   for(let si=0;si<5;si++){
     h+='<span onclick="_crBagFilter=\'s'+si+'\';renderCrystalBag()" style="cursor:pointer;padding:1px 6px;font-size:.75rem;border:1px solid '+(_crBagFilter==='s'+si?CRYSTAL_STAR[si].color:'#443322')+';color:'+(_crBagFilter==='s'+si?CRYSTAL_STAR[si].color:'#887766')+';border-radius:3px">'+(si+1)+_L('성','★')+'</span>';
@@ -14034,9 +14031,7 @@ function renderCrystalBag(){
     // 피커 모드: 타겟 슬롯에 장착 불가능한 결정 숨김
     if(_crPickSlot&&d.slots&&d.slots.indexOf(_crPickSlot)<0)return;
     if(_crBagFilter!=='all'){
-      if(_crBagFilter==='stat'&&d.cat!=='stat')return;
-      if(_crBagFilter==='elem'&&d.cat!=='elem')return;
-      if(_crBagFilter==='util'&&d.cat!=='util')return;
+      if(['atk','def','acc'].includes(_crBagFilter)&&d.cat!==_crBagFilter)return;
       if(_crBagFilter.startsWith('s')&&cr.star!==parseInt(_crBagFilter[1]))return;
     }
     const sel=_crBagSel===i;
@@ -14047,9 +14042,9 @@ function renderCrystalBag(){
     h+='<span style="color:#88cc88;font-size:.8rem;margin-left:auto">'+_crValStr(cr)+'</span></div>';
   });
   if(CRYSTAL_BAG.length===0)h+='<div style="color:#554433;text-align:center;padding:20px">'+_T('결정이 없습니다')+'</div>';
-  h+='</div>';pop.innerHTML=h;
+  h+='</div>';pop.replaceChildren(document.createRange().createContextualFragment(h));
 }
-function openCrystalPicker(cb,targetSlot){_crPickSlot=targetSlot||null;_crPickCb=function(idx){const cr=CRYSTAL_BAG[idx];cb(cr,idx);_crPickCb=null;_crPickSlot=null;var p=$('crBagPop');if(p)p.style.display='none'};_crBagSel=-1;renderCrystalBag();}
+function openCrystalPicker(cb,targetSlot){_crBagFilter='all';_gpCrIdx=0;_crPickSlot=targetSlot||null;_crPickCb=function(idx){const cr=CRYSTAL_BAG[idx];cb(cr,idx);_crPickCb=null;_crPickSlot=null;var p=$('crBagPop');if(p)p.style.display='none'};_crBagSel=-1;renderCrystalBag();}
 function closeCrystalPicker(){_crPickCb=null;var p=$('crBagPop');if(p)p.style.display='none';}
 function attachCrystal(item,slotIdx,cr,bagIdx){
   if(!item||!item.crystals||slotIdx>=item.crystals.length)return false;
@@ -45783,7 +45778,7 @@ function _invRenderDetail(idx,source){
         ch+='<span style="color:#88cc88;font-size:.8rem;margin-left:auto">'+(cd.pct?'+'+cv+'%':'+'+cv)+'</span>';
         ch+='<span style="color:#aa6644;font-size:.7rem">'+_T('탈착')+'</span></div>';
       }else{
-        ch+='<div onclick="if(_selectedCrystal>=0&&CRYSTAL_BAG[_selectedCrystal]){attachCrystal(INV.equipped[\''+idx+'\'],'+ci+',CRYSTAL_BAG[_selectedCrystal],_selectedCrystal);_selectedCrystal=-1;renderInv();_invRenderDetail(\''+idx+'\',\'eq\')}else{openCrystalPicker(function(cr,bi){attachCrystal(INV.equipped[\''+idx+'\'],'+ci+',cr,bi);renderInv();_invRenderDetail(\''+idx+'\',\'eq\')},\''+idx+'\')}" style="cursor:pointer;padding:3px 6px;margin:2px 0;border:1px dashed '+(_selectedCrystal>=0?'#bb88ff':'#554433')+';background:'+(_selectedCrystal>=0?'rgba(187,136,255,.1)':'rgba(0,0,0,.15)')+';border-radius:3px;color:'+(_selectedCrystal>=0?'#bb88ff':'#665544')+';font-size:.8rem" onmouseover="this.style.borderColor=\'#bb88ff\'" onmouseout="this.style.borderColor=\''+(_selectedCrystal>=0?'#bb88ff':'#554433')+'\'">◇ '+_L('빈 슬롯','Empty Slot')+''+ (_selectedCrystal>=0?' — '+_L('클릭하여 선택결정 장착','Click to equip selected crystal'):' — '+_L('결정 선택 후 클릭','Select crystal then click'))+'</div>';
+        ch+='<div onclick="openCrystalPicker(function(cr,bi){attachCrystal(INV.equipped[\''+idx+'\'],'+ci+',cr,bi);renderInv();_invRenderDetail(\''+idx+'\',\'eq\')},\''+idx+'\')" style="cursor:pointer;padding:3px 6px;margin:2px 0;border:1px dashed #554433;background:rgba(0,0,0,.15);border-radius:3px;color:#aa9988;font-size:.8rem" onmouseover="this.style.borderColor=\'#bb88ff\'" onmouseout="this.style.borderColor=\'#554433\'">◇ '+_L('빈 슬롯','Empty Slot')+' — '+_L('클릭하여 결정 선택','Click to choose a crystal')+'</div>';
       }
     }
     cDiv.innerHTML=ch;rp.appendChild(cDiv);
@@ -46118,7 +46113,7 @@ function renderInv(){
   $('cpVal').textContent=cp.total;
   $('cpBreak').innerHTML=`${_glyph('sword','#ff8866',12)}${cp.atk} ${_glyph('shield','#88aacc',12)}${cp.def} ${_glyph('sparkle','#ffdd88',12)}${cp.extra}`;
   // ── 리소스 바 ──
-{if(!isFinite(G.mats))G.mats=0;const _rb=$('invResBar');if(_rb)_rb.innerHTML=_L('결정','Crystals')+' '+CRYSTAL_BAG.length+'/'+CRYSTAL_BAG_MAX+' | '+_L('가루: ','Dust: ')+'<span style="color:#cc88ff">'+CRYSTAL_DUST+'</span> | '+_L('악의: ','Malice: ')+'<span style="color:#cc66ff">'+G.mats+'</span>'}
+{if(!isFinite(G.mats))G.mats=0;const _rb=$('invResBar');if(_rb)_rb.textContent=_L('악의: ','Malice: ')+G.mats}
   // ── 창고 컬럼 (항상 렌더) ──
   try{renderInvStorage()}catch(e){console.error('창고 렌더 오류:',e)}
   // ── 소환 유골함 도감 패널 (2026-09-01) ──
@@ -46194,97 +46189,6 @@ function renderInv(){
     expDiv.appendChild(eb);
   }else{const mx=document.createElement('span');mx.style.cssText='font-size:.95rem;color:#555';mx.textContent=_L('최대','MAX');expDiv.appendChild(mx)}
   $('invMax').textContent=BAG_MAX;
-
-  // ── 결정 주머니 (1칸 그리드, 가방 위) ──
-  {let _crDiv=$('invCrystalRow');
-  if(!_crDiv){_crDiv=document.createElement('div');_crDiv.id='invCrystalRow';
-    _crDiv.style.cssText='margin-bottom:4px;padding:4px;background:rgba(80,50,120,.12);border:1px solid #553388;border-radius:3px;min-height:28px';
-    const _gridP=$('invGrid')?.parentElement;if(_gridP)_gridP.insertBefore(_crDiv,_gridP.querySelector('#invGrid'))}
-  const _canBatchCrystalMerge=(()=>{const _g={};CRYSTAL_BAG.forEach(cr=>{if(cr.star>=4)return;const k=cr.id+'_'+cr.star;_g[k]=(_g[k]||0)+1});for(const k in _g)if(_g[k]>=3)return true;return false});
-  const _runBatchCrystalMerge=()=>{
-    if(!_canBatchCrystalMerge())return;
-    let _total=0;
-    while(true){
-      const _g={};CRYSTAL_BAG.forEach((cr,i)=>{if(cr.star>=4)return;const k=cr.id+'_'+cr.star;if(!_g[k])_g[k]={id:cr.id,star:cr.star,idxs:[]};_g[k].idxs.push(i)});
-      let _did=false;
-      for(const k in _g){const _gr=_g[k];if(_gr.idxs.length<3)continue;
-        const _times=~~(_gr.idxs.length/3);
-        _gr.idxs.slice(0,_times*3).sort((a,b)=>b-a).forEach(ri=>CRYSTAL_BAG.splice(ri,1));
-        for(let t=0;t<_times;t++){CRYSTAL_BAG.push({id:_gr.id,star:_gr.star+1,enh:0});_total++}
-        _did=true;break}
-      if(!_did)break}
-    if(_total>0){SFX.forge();addTxt(P.x,P.y-20,_T('일괄합성 완료')+' ×'+_total,'#ffdd66',60);applyStats();renderInv();dbSaveNow()}
-  };
-  const _cbTopOk=_canBatchCrystalMerge();
-  _crDiv.innerHTML=
-    '<div style="display:flex;align-items:center;justify-content:space-between;gap:6px;margin-bottom:2px">'+
-      '<div style="color:#bb88ff;font-size:.75rem;font-weight:700">'+_L('결정','Crystal')+' ('+CRYSTAL_BAG.length+'/'+CRYSTAL_BAG_MAX+')</div>'+
-      '<button id="invCrystalBatchTop" style="padding:2px 8px;font-size:.72rem;font-family:\'Noto Sans KR\';font-weight:700;cursor:'+(_cbTopOk?'pointer':'not-allowed')+';border:1px solid '+(_cbTopOk?'#ffcc44':'#443322')+';background:'+(_cbTopOk?'rgba(255,204,68,.12)':'rgba(0,0,0,.2)')+';color:'+(_cbTopOk?'#ffdd66':'#554433')+';border-radius:3px">'+_T('최상위 일괄합성')+'</button>'+
-    '</div>';
-  {const _cbTop=_crDiv.querySelector('#invCrystalBatchTop');if(_cbTop)_cbTop.onclick=()=>_runBatchCrystalMerge();}
-  if(CRYSTAL_BAG.length===0)_crDiv.innerHTML+='<span style="color:#555;font-size:.75rem">'+_L('결정 없음','No crystals')+'</span>';
-  else{
-    // 정렬: 성급 높은 순 → 강화 높은 순 → 종류별
-    CRYSTAL_BAG.sort((a,b)=>(b.star-a.star)||(b.enh-a.enh)||CRYSTAL_IDS.indexOf(a.id)-CRYSTAL_IDS.indexOf(b.id));
-    _selectedCrystal=-1; // 정렬 후 선택 리셋
-    const _crWrap=document.createElement('div');_crWrap.style.cssText='display:flex;flex-wrap:wrap;gap:2px';
-    for(let _bi=0;_bi<CRYSTAL_BAG.length;_bi++){const cr=CRYSTAL_BAG[_bi];const cd=CRYSTAL_DEFS[cr.id],cs=CRYSTAL_STAR[cr.star];
-      const _b=document.createElement('div');
-      const _isSel=_selectedCrystal===_bi;
-      _b.className='inv-cr-item';
-      _b.style.cssText='width:28px;height:28px;display:flex;align-items:center;justify-content:center;border:1px solid '+(_isSel?'#ffaa33':cs.color+'66')+';background:'+(_isSel?'rgba(255,170,50,.25)':'rgba(0,0,0,.3)')+';border-radius:2px;cursor:pointer;font-size:.85rem;position:relative';
-      _b.title=_crStarN(cs)+' '+_crDefN(cd)+(cr.enh>0?' +'+cr.enh:'')+' (+'+(_crValFmt(crystalVal(cr)))+(cd.pct?'%':'')+')\n'+_crDescTxt(cd)+(cd.slots?'\n'+_crSlotsStr(cd):'');
-      _b.innerHTML=_crIco(cd,22)+'<span style="position:absolute;top:-2px;left:0;font-size:.45rem;color:'+cs.color+'">'+(cr.star+1)+'★</span>'+(cr.enh>0?'<span style="position:absolute;bottom:-1px;right:0;font-size:.5rem;color:#ffcc00">+'+cr.enh+'</span>':'');
-      _b.onclick=()=>{_selectedCrystal=_isSel?-1:_bi;renderInv()};
-      _b.oncontextmenu=async(ev)=>{ev.preventDefault();
-        // 우클릭: 분해
-        const dust=~~(CRYSTAL_DUST_COST[cr.star]*.5);
-        if(await gameConfirm(_crStarN(cs)+' '+_crDefN(cd)+_L(' 분해?\n결정가루 +'+dust,' decompose?\nCrystal dust +'+dust))){CRYSTAL_BAG.splice(_bi,1);CRYSTAL_DUST+=dust;_selectedCrystal=-1;renderInv()}};
-      _crWrap.appendChild(_b)}
-    _crDiv.appendChild(_crWrap);
-    // ── 인벤 내 버튼 행: 일괄합성 + 일괄강화+합성 ──
-    const _btnRow=document.createElement('div');_btnRow.style.cssText='display:flex;gap:4px;margin-top:4px';
-    // 1) 일괄합성
-    const _cbk=_canBatchCrystalMerge();
-    const _cbBtn=document.createElement('button');
-    _cbBtn.style.cssText='flex:1;padding:5px 6px;font-size:.78rem;font-family:"Noto Sans KR";font-weight:700;cursor:'+(_cbk?'pointer':'not-allowed')+';border:2px solid '+(_cbk?'#ffcc44':'#443322')+';background:'+(_cbk?'rgba(255,204,68,.12)':'rgba(0,0,0,.2)')+';color:'+(_cbk?'#ffdd66':'#554433')+';border-radius:4px';
-    _cbBtn.textContent=_T('일괄합성');
-    _cbBtn.onclick=()=>_runBatchCrystalMerge();
-    _btnRow.appendChild(_cbBtn);
-    // 2) 일괄강화+합성
-    const _canBE=(()=>{for(let i=0;i<CRYSTAL_BAG.length;i++){const cr=CRYSTAL_BAG[i];if((cr.enh||0)>=20)continue;const cost=crystalEnhCost(cr);if(G.mats<cost)continue;if(CRYSTAL_BAG.findIndex((c,ci)=>ci!==i&&c.id===cr.id&&c.star===cr.star)>=0)return true}return _cbk})();
-    const _beBtn=document.createElement('button');
-    _beBtn.style.cssText='flex:1;padding:5px 6px;font-size:.78rem;font-family:"Noto Sans KR";font-weight:700;cursor:'+(_canBE?'pointer':'not-allowed')+';border:2px solid '+(_canBE?'#bb88ff':'#443322')+';background:'+(_canBE?'rgba(187,136,255,.12)':'rgba(0,0,0,.2)')+';color:'+(_canBE?'#ffcc44':'#554433')+';border-radius:4px';
-    _beBtn.textContent=_T('일괄강화+합성');
-    _beBtn.onclick=()=>{
-      if(!_canBE)return;
-      let _enhCnt=0,_synthCnt=0;
-      while(true){
-        let _didAny=false;
-        while(true){let _did=false;
-          for(let i=0;i<CRYSTAL_BAG.length;i++){const cr=CRYSTAL_BAG[i];if((cr.enh||0)>=20)continue;
-            const cost=crystalEnhCost(cr);if(G.mats<cost)continue;
-            const _fi=CRYSTAL_BAG.findIndex((c,ci)=>ci!==i&&c.id===cr.id&&c.star===cr.star);
-            if(_fi<0)continue;G.mats-=cost;CRYSTAL_BAG.splice(_fi,1);if(i>_fi)i--;
-            cr.enh=(cr.enh||0)+1;_enhCnt++;_did=true;_didAny=true;break}
-          if(!_did)break}
-        while(true){const _g={};
-          CRYSTAL_BAG.forEach((cr,i)=>{if(cr.star>=4)return;const k=cr.id+'_'+cr.star;if(!_g[k])_g[k]={id:cr.id,star:cr.star,idxs:[]};_g[k].idxs.push(i)});
-          let _did2=false;
-          for(const k in _g){const _gr=_g[k];if(_gr.idxs.length<3)continue;
-            const _times=~~(_gr.idxs.length/3);
-            _gr.idxs.slice(0,_times*3).sort((a,b)=>b-a).forEach(ri=>CRYSTAL_BAG.splice(ri,1));
-            for(let t=0;t<_times;t++){CRYSTAL_BAG.push({id:_gr.id,star:_gr.star+1,enh:0});_synthCnt++}
-            _did2=true;_didAny=true;break}
-          if(!_did2)break}
-        if(!_didAny)break}
-      if(_enhCnt+_synthCnt>0){SFX.forge();
-        if(_enhCnt>0)addTxt(P.x,P.y-20,_T('강화')+' ×'+_enhCnt,'#bb88ff',60);
-        if(_synthCnt>0)addTxt(P.x,P.y-40,_T('합성')+' ×'+_synthCnt,'#ffdd66',60);
-        applyStats();renderInv();dbSaveNow()}
-    };
-    _btnRow.appendChild(_beBtn);
-    _crDiv.appendChild(_btnRow)}}
 
   // ── Bag grid (2D 디아블로식) ──
   const grid=$('invGrid');grid.innerHTML='';
@@ -46524,7 +46428,7 @@ function renderForge(){
   BGM.play('forge');
 $('forgeMats').textContent=`${_T('악의')}: ${G.mats}`;
 $('forgeLore').textContent=_T('🔴화염→빙결 2배 | 🔵빙결→화염 2배 | ⚪물리=중립 | 악마 처치 시 악의 영혼 드롭');
-  const tabs=$('fgTabs');tabs.innerHTML='';
+  const tabs=$('fgTabs');tabs.replaceChildren();
   tabs.classList.add('atlas-v1-ready','atlas-v2-ready');
   const _fgTabMeta={
     // v1 icon atlas (4x3): 0 anvil, 1 hammer, 2 tongs, 3 molten ingot
@@ -46572,7 +46476,7 @@ $('forgeLore').textContent=_T('🔴화염→빙결 2배 | 🔵빙결→화염 2�
     d.onclick=()=>{G.forgeTab=k;_forgeSel=null;_salSel.clear();_rerollSel=null;_crForgeSel=-1;renderForge()};
     tabs.appendChild(d);
   });
-  const grid=$('fgGrid');grid.innerHTML='';
+  const grid=$('fgGrid');grid.replaceChildren();
   grid.style.gridTemplateColumns=(G.forgeTab==='upgrade'||G.forgeTab==='potion'||G.forgeTab==='salvage'||G.forgeTab==='reroll'||G.forgeTab==='crystal'||G.forgeTab==='craft')?'1fr':'1fr 1fr';
   // 제작 확인 바
   const cfm=$('forgeConfirm');
@@ -46850,22 +46754,35 @@ rHdr.textContent=_L('리롤 — 접두/접미 재설정 | 악의 '+REROLL_COST,'
     grid.style.gridTemplateColumns='1fr';
     // 서브탭
     const cSubBar=document.createElement('div');cSubBar.style.cssText='display:flex;gap:4px;margin-bottom:8px;justify-content:center';
-[['enhance','강화'],['synth','합성'],['decomp','분해/제작']].forEach(([k,v])=>{
+[['enhance','강화','Enhance'],['synth','합성','Synthesize'],['decomp','분해/제작','Decompose / Craft']].forEach(([k,ko,en])=>{
       const b=document.createElement('div');b.style.cssText='padding:3px 10px;font-size:.85rem;cursor:pointer;border:1px solid '+(_crForgeTab===k?'#bb88ff':'#443322')+';color:'+(_crForgeTab===k?'#ddaaff':'#887766')+';background:'+(_crForgeTab===k?'rgba(187,136,255,.12)':'rgba(0,0,0,.2)')+';border-radius:3px';
-      b.textContent=v;b.onclick=()=>{_crForgeTab=k;_crForgeSel=-1;renderForge()};cSubBar.appendChild(b);
+      b.textContent=_L(ko,en);b.onclick=()=>{_crForgeTab=k;_crForgeSel=-1;renderForge()};cSubBar.appendChild(b);
     });
     grid.appendChild(cSubBar);
     // 보유 표시
     const cInfo=document.createElement('div');cInfo.style.cssText='text-align:center;font-size:.85rem;color:#887766;margin-bottom:6px';
 cInfo.innerHTML=_L('보유: ','Owned: ')+CRYSTAL_BAG.length+'/'+CRYSTAL_BAG_MAX+' | '+_L('가루: ','Dust: ')+'<span style="color:#cc88ff">'+CRYSTAL_DUST+'</span> | '+_L('악의: ','Malice: ')+'<span style="color:#cc66ff">'+G.mats+'</span>';
     grid.appendChild(cInfo);
+    const cFilters=document.createElement('div');cFilters.id='crForgeFilters';
+    cFilters.style.cssText='display:flex;flex-wrap:wrap;gap:6px;justify-content:center;margin-bottom:6px';
+    [['all','전체','All'],['atk','공격','Attack'],['def','방어','Defense'],['acc','자원','Resource']].forEach(([key,ko,en])=>{
+      const active=_crForgeFilter===key,b=document.createElement('button');
+      b.type='button';b.setAttribute('aria-pressed',String(active));
+      b.style.cssText='padding:5px 16px;font:inherit;cursor:pointer;border:1px solid '+(active?'#bb88ff':'#443322')+';color:'+(active?'#ddaaff':'#aa9988')+';background:'+(active?'rgba(187,136,255,.12)':'rgba(0,0,0,.2)')+';border-radius:4px';
+      b.textContent=_L(ko,en);b.onclick=()=>{_crForgeFilter=key;_crForgeSel=-1;_crCraftType=null;renderForge()};cFilters.appendChild(b);
+    });
+    grid.appendChild(cFilters);
+    const cHint=document.createElement('div');cHint.style.cssText='text-align:center;color:#aa9988;font-size:.8rem;margin-bottom:8px';
+    cHint.textContent=_L('일괄 작업은 선택한 분류에만 적용됩니다. 장착·해제는 인벤의 장비 소켓에서 가능합니다.','Bulk actions affect the selected category. Equip or detach crystals through inventory sockets.');
+    grid.appendChild(cHint);
+    const crystalGroups=_crBagGroups(_crForgeFilter);
 
     if(_crForgeTab==='enhance'){
       // ── 일괄강화 버튼 ──
-      const _canBulkEnh=(()=>{for(let i=0;i<CRYSTAL_BAG.length;i++){const cr=CRYSTAL_BAG[i];if((cr.enh||0)>=20)continue;const cost=crystalEnhCost(cr);if(G.mats<cost)continue;if(CRYSTAL_BAG.findIndex((c,ci)=>ci!==i&&c.id===cr.id&&c.star===cr.star)>=0)return true}return false})();
+      const _canBulkEnh=(()=>{for(let i=0;i<CRYSTAL_BAG.length;i++){const cr=CRYSTAL_BAG[i];if(!_crForgeMatches(cr)||(cr.enh||0)>=20)continue;const cost=crystalEnhCost(cr);if(G.mats<cost)continue;if(CRYSTAL_BAG.findIndex((c,ci)=>ci!==i&&c.id===cr.id&&c.star===cr.star)>=0)return true}return _crBagGroups(_crForgeFilter,true).some(g=>g.star<4&&g.idxs.length>=3)})();
       const bulkEnhBtn=document.createElement('button');
       bulkEnhBtn.style.cssText='width:100%;margin-bottom:8px;padding:6px 12px;font-size:.85rem;font-family:"Noto Sans KR";font-weight:700;cursor:'+(_canBulkEnh?'pointer':'not-allowed')+';border:2px solid '+(_canBulkEnh?'#bb88ff':'#443322')+';background:'+(_canBulkEnh?'rgba(187,136,255,.12)':'rgba(0,0,0,.2)')+';color:'+(_canBulkEnh?'#ffcc44':'#554433')+';border-radius:4px';
-      bulkEnhBtn.textContent=_T('일괄강화+합성');
+      bulkEnhBtn.textContent=_T('일괄강화+합성');bulkEnhBtn.disabled=!_canBulkEnh;
       bulkEnhBtn.onclick=()=>{
         if(!_canBulkEnh)return;
         let _enhCnt=0,_synthCnt=0;
@@ -46876,7 +46793,7 @@ cInfo.innerHTML=_L('보유: ','Owned: ')+CRYSTAL_BAG.length+'/'+CRYSTAL_BAG_MAX+
           while(true){
             let _did=false;
             for(let i=0;i<CRYSTAL_BAG.length;i++){
-              const cr=CRYSTAL_BAG[i];if((cr.enh||0)>=20)continue;
+              const cr=CRYSTAL_BAG[i];if(!_crForgeMatches(cr)||(cr.enh||0)>=20)continue;
               const cost=crystalEnhCost(cr);if(G.mats<cost)continue;
               const _fi=CRYSTAL_BAG.findIndex((c,ci)=>ci!==i&&c.id===cr.id&&c.star===cr.star);
               if(_fi<0)continue;
@@ -46888,7 +46805,7 @@ cInfo.innerHTML=_L('보유: ','Owned: ')+CRYSTAL_BAG.length+'/'+CRYSTAL_BAG_MAX+
           // 2) 합성: 같은 id+star 3개 → 1성급 상승 (강화 리셋)
           while(true){
             const _g={};
-            CRYSTAL_BAG.forEach((cr,i)=>{if(cr.star>=4)return;const k=cr.id+'_'+cr.star;if(!_g[k])_g[k]={id:cr.id,star:cr.star,idxs:[]};_g[k].idxs.push(i)});
+            CRYSTAL_BAG.forEach((cr,i)=>{if(!_crForgeMatches(cr)||cr.star>=4)return;const k=cr.id+'_'+cr.star;if(!_g[k])_g[k]={id:cr.id,star:cr.star,idxs:[]};_g[k].idxs.push(i)});
             let _did2=false;
             for(const k in _g){const _gr=_g[k];if(_gr.idxs.length<3)continue;
               const _times=~~(_gr.idxs.length/3);
@@ -46902,18 +46819,19 @@ cInfo.innerHTML=_L('보유: ','Owned: ')+CRYSTAL_BAG.length+'/'+CRYSTAL_BAG_MAX+
         if(_enhCnt+_synthCnt>0){SFX.forge();
           if(_enhCnt>0)addTxt(P.x,P.y-20,_T('강화')+' ×'+_enhCnt,'#bb88ff',60);
           if(_synthCnt>0)addTxt(P.x,P.y-40,_T('합성')+' ×'+_synthCnt,'#ffdd66',60);
-          applyStats();renderForge();dbSaveNow()}
+          _crForgeSel=-1;applyStats();renderForge();dbSaveNow()}
       };
       grid.appendChild(bulkEnhBtn);
       // ── 결정 강화 ──
-      const cList=document.createElement('div');cList.style.cssText='display:flex;flex-direction:column;gap:2px;max-height:180px;overflow-y:auto;margin-bottom:8px';
-      CRYSTAL_BAG.forEach((cr,i)=>{
+      const cList=document.createElement('div');cList.id='crForgeList';cList.style.cssText='display:flex;flex-direction:column;gap:2px;max-height:32vh;overflow-y:auto;margin-bottom:8px';
+      crystalGroups.forEach(group=>{
+        const i=group.idxs.includes(_crForgeSel)?_crForgeSel:group.idxs[0],cr=CRYSTAL_BAG[i];
         const d=CRYSTAL_DEFS[cr.id],s=CRYSTAL_STAR[cr.star],sel=_crForgeSel===i;
         const row=document.createElement('div');row.style.cssText='cursor:pointer;display:flex;align-items:center;gap:6px;padding:4px 8px;border:1px solid '+(sel?'#bb88ff':'#332211')+';background:'+(sel?'rgba(187,136,255,.12)':'rgba(0,0,0,.2)')+';border-radius:3px';
-        row.innerHTML='<span>'+_crIco(d,16)+'</span><span style="color:'+s.color+';font-size:.85rem;font-weight:700">'+_crStarN(s)+'</span><span style="color:#ccaa88;font-size:.85rem">'+_crDefN(d)+'</span>'+(cr.enh>0?'<span style="color:#44ccff;font-size:.8rem">+'+cr.enh+'</span>':'')+'<span style="color:#88cc88;font-size:.8rem;margin-left:auto">'+_crValStr(cr)+'</span>';
+        row.innerHTML='<span>'+_crIco(d,16)+'</span><span style="color:'+s.color+';font-size:.85rem;font-weight:700">'+_crStarN(s)+'</span><span style="color:#ccaa88;font-size:.85rem">'+_crDefN(d)+'</span>'+(cr.enh>0?'<span style="color:#44ccff;font-size:.8rem">+'+cr.enh+'</span>':'')+'<span style="color:#ddbb88;font-size:.85rem">×'+group.idxs.length+'</span><span style="color:#88cc88;font-size:.8rem;margin-left:auto">'+_crValStr(cr)+'</span>';
         row.onclick=()=>{_crForgeSel=i;renderForge()};cList.appendChild(row);
       });
-      if(CRYSTAL_BAG.length===0){const em=document.createElement('div');em.style.cssText='color:#554433;text-align:center;padding:20px';em.textContent=_T('결정이 없습니다');cList.appendChild(em)}
+      if(crystalGroups.length===0){const em=document.createElement('div');em.style.cssText='color:#554433;text-align:center;padding:20px';em.textContent=_L('이 분류에 결정이 없습니다','No crystals in this category');cList.appendChild(em)}
       grid.appendChild(cList);
       // 선택된 결정 상세+강화 버튼
       if(_crForgeSel>=0&&_crForgeSel<CRYSTAL_BAG.length){
@@ -46949,13 +46867,13 @@ cInfo.innerHTML=_L('보유: ','Owned: ')+CRYSTAL_BAG.length+'/'+CRYSTAL_BAG_MAX+
       // ── 최상위 일괄합성 버튼 ──
       // 합성 가능 여부 미리 체크 (1회 이상 합성 가능하면 활성)
       const _canBulk=(()=>{
-        const _g={};CRYSTAL_BAG.forEach(cr=>{if(cr.star>=4)return;const k=cr.id+'_'+cr.star;_g[k]=(_g[k]||0)+1});
+        const _g={};CRYSTAL_BAG.forEach(cr=>{if(!_crForgeMatches(cr)||cr.star>=4)return;const k=cr.id+'_'+cr.star;_g[k]=(_g[k]||0)+1});
         for(const k in _g)if(_g[k]>=3)return true;
         return false;
       })();
       const bulkBtn=document.createElement('button');
       bulkBtn.style.cssText='width:100%;margin-bottom:8px;padding:6px 12px;font-size:.85rem;font-family:"Noto Sans KR";font-weight:700;cursor:'+(_canBulk?'pointer':'not-allowed')+';border:2px solid '+(_canBulk?'#ffcc44':'#443322')+';background:'+(_canBulk?'rgba(255,204,68,.12)':'rgba(0,0,0,.2)')+';color:'+(_canBulk?'#ffdd66':'#554433')+';border-radius:4px';
-      bulkBtn.textContent=_T('최상위 일괄합성');
+      bulkBtn.textContent=_T('최상위 일괄합성');bulkBtn.disabled=!_canBulk;
       bulkBtn.onclick=()=>{
         if(!_canBulk)return;
         let _total=0;
@@ -46963,7 +46881,7 @@ cInfo.innerHTML=_L('보유: ','Owned: ')+CRYSTAL_BAG.length+'/'+CRYSTAL_BAG_MAX+
         while(true){
           // 같은 id+star 그룹 집계 (낮은 star부터)
           const _g={};
-          CRYSTAL_BAG.forEach((cr,i)=>{if(cr.star>=4)return;const k=cr.id+'_'+cr.star;if(!_g[k])_g[k]={id:cr.id,star:cr.star,idxs:[]};_g[k].idxs.push(i)});
+          CRYSTAL_BAG.forEach((cr,i)=>{if(!_crForgeMatches(cr)||cr.star>=4)return;const k=cr.id+'_'+cr.star;if(!_g[k])_g[k]={id:cr.id,star:cr.star,idxs:[]};_g[k].idxs.push(i)});
           // 합성 가능 그룹 찾기 (3개 이상)
           let _synthedOne=false;
           for(const k in _g){
@@ -46986,18 +46904,17 @@ cInfo.innerHTML=_L('보유: ','Owned: ')+CRYSTAL_BAG.length+'/'+CRYSTAL_BAG_MAX+
         if(_total>0){
           SFX.forge();
           addTxt(P.x,P.y-20,_T('일괄합성 완료')+' ×'+_total,'#ffdd66',60);
-          applyStats();renderForge();dbSaveNow();
+          _crForgeSel=-1;applyStats();renderForge();dbSaveNow();
         }
       };
       grid.appendChild(bulkBtn);
       // 합성 가능 그룹 찾기
-      const groups={};
-      CRYSTAL_BAG.forEach((cr,i)=>{const k=cr.id+'_'+cr.star;if(!groups[k])groups[k]={id:cr.id,star:cr.star,idxs:[]};groups[k].idxs.push(i)});
+      const groups=_crBagGroups(_crForgeFilter,true);
       let hasGroup=false;
       for(const k in groups){const g=groups[k];if(g.idxs.length<3||g.star>=4)continue;hasGroup=true;
         const d=CRYSTAL_DEFS[g.id],s=CRYSTAL_STAR[g.star],ns=CRYSTAL_STAR[g.star+1];
         const row=document.createElement('div');row.style.cssText='display:flex;align-items:center;gap:6px;padding:6px 8px;border:1px solid #553388;background:rgba(100,0,200,.06);border-radius:4px;margin-bottom:4px';
-        row.innerHTML='<span style="color:'+s.color+'">'+_crIco(d,14)+' '+_crStarN(s)+' '+_crDefN(d)+' ×3</span><span style="color:#887766">→</span><span style="color:'+ns.color+';font-weight:700">'+_crStarN(ns)+' '+_crDefN(d)+'</span>';
+        row.innerHTML='<span style="color:'+s.color+'">'+_crIco(d,14)+' '+_crStarN(s)+' '+_crDefN(d)+' ×3 ('+_L('보유 ','Owned ')+g.idxs.length+')</span><span style="color:#887766">→</span><span style="color:'+ns.color+';font-weight:700">'+_crStarN(ns)+' '+_crDefN(d)+'</span>';
         const btn=document.createElement('button');btn.style.cssText='margin-left:auto;padding:3px 12px;font-size:.8rem;font-family:"Noto Sans KR";cursor:pointer;border:1px solid #44ccff;background:rgba(68,204,255,.1);color:#88eeff;border-radius:4px';
         btn.textContent=_T('합성');
         btn.onclick=()=>{
@@ -47005,7 +46922,7 @@ cInfo.innerHTML=_L('보유: ','Owned: ')+CRYSTAL_BAG.length+'/'+CRYSTAL_BAG_MAX+
           rem.forEach(ri=>CRYSTAL_BAG.splice(ri,1));
           CRYSTAL_BAG.push({id:g.id,star:g.star+1,enh:0});
           SFX.forge();addTxt(P.x,P.y-20,_crStarN(ns)+' '+_crDefN(d)+' '+_T('합성!'),ns.color,60);
-          applyStats();renderForge();dbSaveNow();
+          _crForgeSel=-1;applyStats();renderForge();dbSaveNow();
         };
         row.appendChild(btn);grid.appendChild(row);
       }
@@ -47013,16 +46930,17 @@ cInfo.innerHTML=_L('보유: ','Owned: ')+CRYSTAL_BAG.length+'/'+CRYSTAL_BAG_MAX+
     }else if(_crForgeTab==='decomp'){
       // ── 분해 / 제작 ──
 const secHdr1=document.createElement('div');secHdr1.style.cssText='color:#ff8844;font-size:.9rem;font-weight:700;margin-bottom:4px';secHdr1.textContent=_T('결정 분해 → 결정 가루');grid.appendChild(secHdr1);
-      const dList=document.createElement('div');dList.style.cssText='display:flex;flex-direction:column;gap:2px;max-height:140px;overflow-y:auto;margin-bottom:8px';
-      CRYSTAL_BAG.forEach((cr,i)=>{
+      const dList=document.createElement('div');dList.id='crDecompList';dList.style.cssText='display:flex;flex-direction:column;gap:2px;max-height:24vh;overflow-y:auto;margin-bottom:8px';
+      crystalGroups.forEach(group=>{
+        const i=group.idxs[0],cr=CRYSTAL_BAG[i];
         const d=CRYSTAL_DEFS[cr.id],s=CRYSTAL_STAR[cr.star];
         const dustGet=~~(CRYSTAL_DUST_COST[cr.star]*0.5);
         const row=document.createElement('div');row.style.cssText='cursor:pointer;display:flex;align-items:center;gap:6px;padding:3px 8px;border:1px solid #332211;background:rgba(0,0,0,.2);border-radius:3px';
-        row.innerHTML='<span style="color:'+s.color+';font-size:.85rem">'+_crIco(d,14)+' '+_crStarN(s)+' '+_crDefN(d)+(cr.enh>0?' +'+cr.enh:'')+'</span><span style="color:#aa6644;font-size:.75rem;margin-left:auto">→ '+_T('가루')+' +'+dustGet+'</span>';
-        row.onclick=()=>{CRYSTAL_BAG.splice(i,1);CRYSTAL_DUST+=dustGet;SFX.forge();addTxt(P.x,P.y-20,_T('분해! 가루 +')+dustGet,'#ff8844',50);renderForge();dbSaveNow()};
+        row.innerHTML='<span style="color:'+s.color+';font-size:.85rem">'+_crIco(d,14)+' '+_crStarN(s)+' '+_crDefN(d)+(cr.enh>0?' +'+cr.enh:'')+' ×'+group.idxs.length+'</span><span style="color:#aa6644;font-size:.75rem;margin-left:auto">'+_L('1개 분해','Decompose 1')+' → '+_T('가루')+' +'+dustGet+'</span>';
+        row.onclick=()=>{CRYSTAL_BAG.splice(i,1);CRYSTAL_DUST+=dustGet;_crForgeSel=-1;SFX.forge();addTxt(P.x,P.y-20,_T('분해! 가루 +')+dustGet,'#ff8844',50);renderForge();dbSaveNow()};
         dList.appendChild(row);
       });
-      if(CRYSTAL_BAG.length===0){const em=document.createElement('div');em.style.cssText='color:#554433;text-align:center;padding:10px';em.textContent=_T('분해할 결정이 없습니다');dList.appendChild(em)}
+      if(crystalGroups.length===0){const em=document.createElement('div');em.style.cssText='color:#554433;text-align:center;padding:10px';em.textContent=_L('이 분류에 분해할 결정이 없습니다','No crystals to decompose in this category');dList.appendChild(em)}
       grid.appendChild(dList);
       // ── 제작 ──
       const secHdr2=document.createElement('div');secHdr2.style.cssText='color:#44ff88;font-size:.9rem;font-weight:700;margin-bottom:4px;margin-top:8px;border-top:1px solid #332211;padding-top:6px';secHdr2.textContent=_T('결정 제작 (가루 → 결정)');grid.appendChild(secHdr2);
@@ -47030,6 +46948,7 @@ const secHdr1=document.createElement('div');secHdr1.style.cssText='color:#ff8844
       const typeBar=document.createElement('div');typeBar.style.cssText='display:flex;flex-wrap:wrap;gap:2px;margin-bottom:4px';
       CRYSTAL_IDS.forEach(id=>{
         const d=CRYSTAL_DEFS[id],sel=_crCraftType===id;
+        if(_crForgeFilter!=='all'&&d.cat!==_crForgeFilter)return;
         const b=document.createElement('span');b.style.cssText='cursor:pointer;padding:1px 5px;font-size:.75rem;border:1px solid '+(sel?'#44ff88':'#332211')+';color:'+(sel?'#88ffaa':'#776655')+';background:'+(sel?'rgba(68,255,136,.1)':'rgba(0,0,0,.2)')+';border-radius:3px';
         b.innerHTML=_crIco(d,14)+' '+_crDefN(d);b.onclick=()=>{_crCraftType=id;renderForge()};typeBar.appendChild(b);
       });
@@ -47059,7 +46978,7 @@ const secHdr3=document.createElement('div');secHdr3.style.cssText='color:#cc66ff
       const mBar=document.createElement('div');mBar.style.cssText='display:flex;flex-wrap:wrap;gap:3px;margin-bottom:4px';
       CRYSTAL_IDS.forEach(id=>{
         const d=CRYSTAL_DEFS[id];
-        if(!d.craft)return; // HP/MP/ST만 제작 가능, 나머지는 드랍
+        if(!d.craft||(_crForgeFilter!=='all'&&d.cat!==_crForgeFilter))return; // HP/MP/ST만 제작 가능, 나머지는 드랍
         const ok2=G.mats>=_crMatsCost&&CRYSTAL_BAG.length<CRYSTAL_BAG_MAX;
         const b=document.createElement('span');b.style.cssText='cursor:'+(ok2?'pointer':'not-allowed')+';padding:2px 6px;font-size:.8rem;border:1px solid '+(ok2?'#cc66ff':'#332211')+';color:'+(ok2?'#ddaaff':'#554433')+';background:'+(ok2?'rgba(200,100,255,.1)':'rgba(0,0,0,.2)')+';border-radius:3px';
         b.innerHTML=_crIco(d,14)+' '+_crDefN(d);
