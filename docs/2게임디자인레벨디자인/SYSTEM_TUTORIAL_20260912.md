@@ -23,3 +23,8 @@
 2026-09-12 건너뛰기: 1·2단의 `연습 건너뛰기`는 캐릭터별 `exoduser:tutorial-skipped:v2:char:<UUID>` 또는 `exoduser:tutorial-skipped:v2:slot:<슬롯명>`에 1을 저장한다(식별자는 encodeURIComponent). 이후 해당 캐릭터의 일반·자원·시스템 튜토리얼만 자동 시작하지 않는다. 새 캐릭터 생성 시 첫 1-1 진입은 안내한다. 시스템 안내의 개별 항목 건너뛰기는 기존처럼 해당 항목에만 적용한다.
 
 2026-09-12 명시적 다시보기: URL `tutorial=1`로 열면 저장된 건너뛰기 설정을 이번 접속에만 무시한다. 기존 localStorage 값은 보존하며, 다시보기 중 건너뛰면 그 접속에서도 즉시 닫힌다. 건너뛴 캐릭터의 일반 URL에서는 계속 자동 안내하지 않는다. 3333 확인 링크: `/game-easy-test.html?test=1&slot=tutorial-review&stage=0&tutorial=1`.
+
+
+## 2026-09-21 시스템 안내 영어 보완
+
+system-lesson.js의 7단계·버튼·상태·접근성 문구를 기존 _L에 연결했다. 열린 안내는 다음 표시 tick에서 현재 언어로 갱신하며 단계 체크·건너뛰기·DOM 자식을 보존한다. t(ko,en,values), steps getter, lastStatus(id/skipped), 언어를 포함한 bindingSignature를 사용한다. 신규 KO·EN 원본 34개는 번역 수집기가 검색하며 타 언어 미등록 키는 영어 폴백이다. 전체 영어/29언어 지원 완료나 Steam 배포 완료를 뜻하지 않는다. [구현·원문 표·남은 작업](../16번역·로컬라이제이션/STEAM_LANGUAGE_RESUME_20260921.md).

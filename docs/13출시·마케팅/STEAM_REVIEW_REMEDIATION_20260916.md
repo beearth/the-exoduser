@@ -180,3 +180,8 @@ Steamworks에서 사용자가 할 작업:
 | Developer’s Recommended Configuration | 현재 Steamworks Steam Input 페이지에서 기본 컨트롤러 구성이 **선택된 항목 없음**임을 확인. `steam-input.txt`. 실제 장치 구성 작성·테스트 후 Steam에서 선택·게시 필요. 로컬 파일을 만들거나 게시 완료라고 주장하지 않음 |
 
 Valve 재검수 전까지 심사 통과를 확정하지 않는다.
+
+
+## 2026-09-21 시스템 안내 영어 보완
+
+system-lesson.js의 7단계·버튼·상태·접근성 문구를 기존 _L에 연결했다. 열린 안내는 다음 표시 tick에서 현재 언어로 갱신하며 단계 체크·건너뛰기·DOM 자식을 보존한다. t(ko,en,values), steps getter, lastStatus(id/skipped), 언어를 포함한 bindingSignature를 사용한다. 신규 KO·EN 원본 34개는 번역 수집기가 검색하며 타 언어 미등록 키는 영어 폴백이다. 전체 영어/29언어 지원 완료나 Steam 배포 완료를 뜻하지 않는다. [구현·원문 표·남은 작업](../16번역·로컬라이제이션/STEAM_LANGUAGE_RESUME_20260921.md).
