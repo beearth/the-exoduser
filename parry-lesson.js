@@ -1,7 +1,8 @@
 /* 1-1 guided practice. Completion requires actual movement, casts and combat hits. */
 window._parryLesson = {
+  t(ko,en,values) { return typeof _L==='function' ? _L(ko,en,values) : ko.replace(/\{(\w+)\}/g,(all,key)=>values?.[key]??all); },
   active: false, seen: false, phase: 'intro', step: 0, checks: Array(8).fill(false), shot: null,
-  labels: ['마법탄 패링', '물리탄 패링', 'Q 홀딩 · 다수 마법탄 패링', 'E 홀딩 · 다수 물리탄 패링', 'Shift · 사슬 이동', '방향키 + Space · 전격이동', '패링 · 분노 축적', 'Space · 분노 발동'],
+  get labels() { return this.chapter===2?window._resourcePractice.labels:[this.t("마법탄 패링","Parry magic projectiles"), this.t("물리탄 패링","Parry physical projectiles"), this.t("Q 홀딩 · 다수 마법탄 패링","Hold Q · Parry multiple magic projectiles"), this.t("E 홀딩 · 다수 물리탄 패링","Hold E · Parry multiple physical projectiles"), this.t("Shift · 사슬 이동","Shift · Chain movement"), this.t("방향키 + Space · 전격이동","Direction + Space · Lightning Dash"), this.t("패링 · 분노 축적","Parry · Build Rage"), this.t("Space · 분노 발동","Space · Unleash Rage")]; },
   heldDirections: new Set(),
   skipKey() {
     const params=new URLSearchParams(location.search);
@@ -50,17 +51,19 @@ window._parryLesson = {
   },
   node(tag, text, css) {
     const el = document.createElement(tag);
-    if (text !== undefined) el.textContent = text;
+    if (text !== undefined) el.textContent = typeof text==='function'?text():text;
+    if(typeof text==='function')(this.localizedNodes??=[]).push({el,text});
     if (css) el.style.cssText = css;
     return el;
   },
   build() {
+    this.localizedNodes=[];
     this.backdrop = this.node('div'); this.backdrop.id = 'parryLessonBackdrop';
     // Decorative layer must never swallow game mouse input.
     this.backdrop.style.pointerEvents = 'none';
     document.body.append(this.backdrop);
     this.panel = this.node('section'); this.panel.id = 'parryLesson';
-    this.panel.setAttribute('aria-label', '1-1 패링 튜토리얼');
+    this.panel.setAttribute('aria-label', this.t("1-1 패링 튜토리얼","1-1 Parry Tutorial"));
     const eyebrow = this.node('div'); eyebrow.className = 'lesson-eyebrow';
     this.status = this.node('span'); this.status.className = 'lesson-state';
     eyebrow.append(this.node('span', this.chapter===2?'CHAPTER 02 · PRACTICE':'CHAPTER 01 · TRAINING'), this.status);
@@ -71,10 +74,11 @@ window._parryLesson = {
     const checklist = this.node('div'); checklist.className = 'lesson-checklist'; this.checklist=checklist;
     this.rowLabels = []; this.rowTexts = [];
     if(this.chapter!==2){
-      this.basicRows=['WASD / 방향키 · 이동','좌클릭 · 적 3마리 처치','우클릭 · 적 3마리 처치','1 · 가시덫 설치 후 도망 · 10마리 처치'].map(label=>{
+      this.basicLabelText=()=>[this.t("WASD / 방향키 · 이동","WASD / Arrow keys · Move"),this.t("좌클릭 · 적 3마리 처치","Left click · Defeat 3 enemies"),this.t("우클릭 · 적 3마리 처치","Right click · Defeat 3 enemies"),this.t("1 · 가시덫 설치 후 도망 · 10마리 처치","1 · Place Spike Trap and retreat · Defeat 10 enemies")];
+      this.basicRows=this.basicLabelText().map(label=>{
         const row=this.node('label');row.className='lesson-row';
         const box=this.node('input');box.type='checkbox';box.disabled=true;
-        row.append(box,this.node('span',label));checklist.append(row);return {row,box};
+        const text=this.node('span',label);row.append(box,text);checklist.append(row);return {row,box,text};
       });
     }
     this.rows = this.labels.map(label => {
@@ -85,20 +89,20 @@ window._parryLesson = {
     });
     this.hint = this.node('p'); this.hint.className = 'lesson-hint'; this.hint.setAttribute('role', 'status');
     this.holdBox = this.node('div'); this.holdBox.className = 'lesson-hold';
-    this.holdLabel = this.node('span', '키를 길게 눌러보세요');
-    this.holdMeter = this.node('progress'); this.holdMeter.max = 100; this.holdMeter.value = 0; this.holdMeter.setAttribute('aria-label', '홀딩 충전');
+    this.holdLabel = this.node('span', ()=>(this.t("키를 길게 눌러보세요","Try holding the key")));
+    this.holdMeter = this.node('progress'); this.holdMeter.max = 100; this.holdMeter.value = 0; this.holdMeter.setAttribute('aria-label', this.t("홀딩 충전","Hold charge"));
     this.holdBox.append(this.holdLabel, this.holdMeter);
     this.rageBox = this.node('div'); this.rageBox.className = 'lesson-rage';
-    this.rageText = this.node('span'); this.rageMeter = this.node('progress'); this.rageMeter.max=100;this.rageMeter.value=0;this.rageMeter.setAttribute('aria-label','분노 게이지');
+    this.rageText = this.node('span'); this.rageMeter = this.node('progress'); this.rageMeter.max=100;this.rageMeter.value=0;this.rageMeter.setAttribute('aria-label',this.t("분노 게이지","Rage gauge"));
     this.rageBox.append(this.rageText,this.rageMeter);
     this.rageZoom = this.node('section');this.rageZoom.id='lessonRageZoom';this.rageZoom.hidden=true;
     this.zoomText=this.node('h2');
     this.rageArrow=this.node('span','↓');this.rageArrow.className='lesson-rage-arrow';this.rageArrow.setAttribute('aria-hidden','true');
-    this.rageZoom.append(this.node('span','아래 SPACE 슬롯을 확인하세요'),this.zoomText,this.node('p','잠시 후 방향키를 떼고 SPACE만 누르세요.'),this.rageArrow);document.body.append(this.rageZoom);
-    const safety = this.node('span', '패링 실패 시 폭발 피해를 받습니다. 재시도하면 체력이 회복됩니다.'); safety.className = 'lesson-safety';
+    this.rageZoom.append(this.node('span',()=>(this.t("아래 SPACE 슬롯을 확인하세요","Check the SPACE slot below"))),this.zoomText,this.node('p',()=>(this.t("잠시 후 방향키를 떼고 SPACE만 누르세요.","In a moment, release the direction keys and press SPACE only."))),this.rageArrow);document.body.append(this.rageZoom);
+    const safety = this.node('span', ()=>(this.t("패링 실패 시 폭발 피해를 받습니다. 재시도하면 체력이 회복됩니다.","A failed parry deals blast damage. Your health is restored for the next attempt."))); safety.className = 'lesson-safety';
     this.button = this.node('button'); this.button.className = 'lesson-primary';
     this.button.onclick = () => this.beginPractice();
-    const skip = this.node('button', '연습 건너뛰기'); skip.className = 'lesson-skip'; skip.onclick = () => this.skipAll();
+    const skip = this.node('button', ()=>(this.t("연습 건너뛰기","Skip practice"))); skip.className = 'lesson-skip'; skip.onclick = () => this.skipAll();
     const progress = this.node('div'); progress.className = 'lesson-progress';
     this.progressFill = this.node('div'); this.progressFill.className = 'lesson-progress-fill'; progress.append(this.progressFill);
     const content = this.node('div'); content.className = 'lesson-content';
@@ -114,6 +118,11 @@ window._parryLesson = {
   key(step = this.step) { if(step===4)return 'SHIFT';if(step===5)return '↔ + SPACE';if(step===7)return 'SPACE';return String(BINDS[step % 2 === 0 ? 'parry' : 'shield'] || (step % 2 === 0 ? 'q' : 'e')).replace(/^Key/,'').toUpperCase(); },
   label(step) { return step < 2 ? `${this.key(step)} · ${this.labels[step]}` : this.labels[step]; },
   render() {
+    this.locale=typeof OPT==='undefined'?'ko':OPT.lang;
+    for(const {el,text} of this.localizedNodes||[])if(!el.children.length)el.textContent=text();
+    this.panel.setAttribute('aria-label',this.t('1-1 패링 튜토리얼','1-1 Parry Tutorial'));
+    this.holdMeter.setAttribute('aria-label',this.t('홀딩 충전','Hold charge'));
+    this.rageMeter.setAttribute('aria-label',this.t('분노 게이지','Rage gauge'));
     if(this.chapter===2){window._resourcePractice.render(this);this.placeDetails();return;}
     const q = this.step % 2 === 0, complete = this.phase === 'done';
     this.panel.setAttribute('data-kind', q ? 'magic' : 'physical');
@@ -124,32 +133,32 @@ window._parryLesson = {
       this.rowLabels[i].setAttribute('data-complete', String(this.checks[i]));
       this.rowTexts[i].textContent = this.label(i);
     });
-    this.status.textContent = complete ? 'COMPLETE' : this.phase === 'practice' ? '연습 중' : this.phase === 'success' ? '성공' : '일시정지';
+    this.status.textContent = complete ? 'COMPLETE' : this.phase === 'practice' ? this.t("연습 중","Practicing") : this.phase === 'success' ? this.t("성공","Success") : this.t("일시정지","Paused");
     this.keycap.textContent = complete ? '✓' : this.key();
-    this.title.textContent = complete ? '전투 준비 완료' : ['마법을 되돌려라', '물리탄을 쳐내라', '보호막을 펼쳐라', '힘을 모아 쳐내라', '사슬로 이동하라', '방향을 정해 이동하라', '패링으로 분노를 채워라', '분노를 폭발시켜라'][this.step];
-    this.subtitle.textContent = complete ? '전투 기본 조작을 모두 익혔습니다.' : `${this.step + 1} / ${this.labels.length} · ${this.label(this.step)}`;
-    const tips = this.step === 4 ? '이동할 곳에 마우스를 향하고 Shift를 눌렀다 떼세요. 사슬이 실제 발사되면 성공입니다.' : this.step === 5 ? 'WASD 또는 방향키를 누른 채 Space를 누르세요. 전격이동을 5번 발동하면 성공입니다.' : this.step === 6 ? 'Q를 2초 동안 누른 뒤, 함께 날아오는 마법탄 10발이 가까워지면 떼세요. 한 번에 여러 발을 패링해 분노 100%를 채워보세요.' : this.step === 7 ? '몬스터들이 주변을 둘러쌌습니다. 방향키에서 손을 떼고 Space만 눌러 분노 폭발로 한 번에 쓸어버리세요.' : this.step === 2 ? `[${this.key()}]를 2초 동안 누르세요. 화염·물·암흑·번개·무지개탄을 보고 키를 떼어 한 번에 3발 이상 패링하세요. 홀딩 중 보호막은 피해를 일부 흡수하고 그로기를 막습니다. 피해를 완전히 막는 무적은 아닙니다.` : this.step === 3 ? `[${this.key()}]를 누른 채 탄 쪽을 바라보세요. 이빨입탄·혈안탄·관통탄·물리 검기파·물리 환영검이 함께 날아옵니다. 3단계 충전 후 키를 떼어 5종 중 3발 이상 한 번에 쳐내세요. 풀차지 자동 발동도 인정합니다.` : q ? `보라색 탄이 가까워지는 순간 [${this.key()}]를 누르세요. 너무 일찍 눌렀다면 떼고 다시 시도하세요.` : `탄을 바라보고 [${this.key()}]를 짧게 눌렀다 떼세요. 길게 누르면 차징이 됩니다.`;
-    this.hint.textContent = complete ? '모든 연습 성공! 잠시 후 1-1 전투로 이어집니다.' : tips;
+    this.title.textContent = complete ? this.t("전투 준비 완료","Ready for combat") : [this.t("마법을 되돌려라","Reflect the magic"), this.t("물리탄을 쳐내라","Deflect physical projectiles"), this.t("보호막을 펼쳐라","Raise your shield"), this.t("힘을 모아 쳐내라","Charge and deflect"), this.t("사슬로 이동하라","Move with your chain"), this.t("방향을 정해 이동하라","Choose a direction and dash"), this.t("패링으로 분노를 채워라","Build Rage by parrying"), this.t("분노를 폭발시켜라","Unleash your Rage")][this.step];
+    this.subtitle.textContent = complete ? this.t("전투 기본 조작을 모두 익혔습니다.","You have learned the basic combat controls.") : `${this.step + 1} / ${this.labels.length} · ${this.label(this.step)}`;
+    const tips = this.step === 4 ? this.t("이동할 곳에 마우스를 향하고 Shift를 눌렀다 떼세요. 사슬이 실제 발사되면 성공입니다.","Point the mouse toward your destination, then press and release Shift. Successfully firing the chain completes this exercise.") : this.step === 5 ? this.t("WASD 또는 방향키를 누른 채 Space를 누르세요. 전격이동을 5번 발동하면 성공입니다.","Hold WASD or an arrow key and press Space. Activate Lightning Dash 5 times to complete this exercise.") : this.step === 6 ? this.t("Q를 2초 동안 누른 뒤, 함께 날아오는 마법탄 10발이 가까워지면 떼세요. 한 번에 여러 발을 패링해 분노 100%를 채워보세요.","Hold Q for 2 seconds, then release it as the 10 incoming magic projectiles approach. Parry several at once to fill Rage to 100%.") : this.step === 7 ? this.t("몬스터들이 주변을 둘러쌌습니다. 방향키에서 손을 떼고 Space만 눌러 분노 폭발로 한 번에 쓸어버리세요.","Monsters surround you. Release the direction keys and press Space only to sweep them away with a Rage burst.") : this.step === 2 ? this.t("[{p0}]를 2초 동안 누르세요. 화염·물·암흑·번개·무지개탄을 보고 키를 떼어 한 번에 3발 이상 패링하세요. 홀딩 중 보호막은 피해를 일부 흡수하고 그로기를 막습니다. 피해를 완전히 막는 무적은 아닙니다.","Hold [{p0}] for 2 seconds. Watch the fire, water, dark, lightning and rainbow projectiles, then release the key to parry at least 3 at once. While held, the shield absorbs some damage and prevents Groggy. It does not make you invulnerable.",{p0:(this.key())}) : this.step === 3 ? this.t("[{p0}]를 누른 채 탄 쪽을 바라보세요. 이빨입탄·혈안탄·관통탄·물리 검기파·물리 환영검이 함께 날아옵니다. 3단계 충전 후 키를 떼어 5종 중 3발 이상 한 번에 쳐내세요. 풀차지 자동 발동도 인정합니다.","Hold [{p0}] while facing the incoming projectiles. Tooth-mouth, blood-eye, piercing, physical sword-wave and physical phantom-sword projectiles arrive together. Charge to tier 3, then release to deflect at least 3 of the 5 at once. Automatic release at full charge also counts.",{p0:(this.key())}) : q ? this.t("보라색 탄이 가까워지는 순간 [{p0}]를 누르세요. 너무 일찍 눌렀다면 떼고 다시 시도하세요.","Press [{p0}] just as the purple projectile approaches. If you press too early, release the key and try again.",{p0:(this.key())}) : this.t("탄을 바라보고 [{p0}]를 짧게 눌렀다 떼세요. 길게 누르면 차징이 됩니다.","Face the projectile, then briefly press and release [{p0}]. Holding the key charges the attack.",{p0:(this.key())});
+    this.hint.textContent = complete ? this.t("모든 연습 성공! 잠시 후 1-1 전투로 이어집니다.","All exercises complete! Combat in 1-1 will resume shortly.") : tips;
     if(this.step===0||this.step===1)this.updateParryPractice();
     this.holdBox.hidden = (this.step !== 2 && this.step !== 3) || complete;
-    this.holdMeter.value = 0; this.holdLabel.textContent = '키를 길게 눌러보세요';
+    this.holdMeter.value = 0; this.holdLabel.textContent = this.t("키를 길게 눌러보세요","Try holding the key");
     this.rageBox.hidden = this.step !== 6 || complete; this.updateRage();
     this.button.hidden = this.phase !== 'intro';
-    this.button.textContent = 'W / A / S / D 또는 클릭하여 시작';
+    this.button.textContent = this.t("W / A / S / D 또는 클릭하여 시작","Press W / A / S / D or click to start");
     this.progressFill.style.width = `${this.checks.filter(Boolean).length / this.labels.length * 100}%`;
     const basicChecks=[this.movementDone,this.leftClickDone,this.rightClickDone,this.spikeTrapDone];
-    this.basicRows.forEach(({row,box},i)=>{box.checked=!!basicChecks[i];row.setAttribute('data-current',String(this.step===(i===3?8:i-3)));row.setAttribute('data-complete',String(!!basicChecks[i]));});
-    const basicLabels=['WASD / 방향키 · 이동','좌클릭 · 적 3마리 처치','우클릭 · 적 3마리 처치'];
-    this.subtitle.textContent=`${this.step===8?4:this.step<0?this.step+4:this.step+5} / ${this.labels.length+4} · ${this.step===8?'1 · 가시덫':this.step<0?basicLabels[this.step+3]:this.label(this.step)}`;
+    this.basicRows.forEach(({row,box,text},i)=>{text.textContent=this.basicLabelText()[i];box.checked=!!basicChecks[i];row.setAttribute('data-current',String(this.step===(i===3?8:i-3)));row.setAttribute('data-complete',String(!!basicChecks[i]));});
+    const basicLabels=[this.t("WASD / 방향키 · 이동","WASD / Arrow keys · Move"),this.t("좌클릭 · 적 3마리 처치","Left click · Defeat 3 enemies"),this.t("우클릭 · 적 3마리 처치","Right click · Defeat 3 enemies")];
+    this.subtitle.textContent=`${this.step===8?4:this.step<0?this.step+4:this.step+5} / ${this.labels.length+4} · ${this.step===8?this.t("1 · 가시덫","1 · Spike Trap"):this.step<0?basicLabels[this.step+3]:this.label(this.step)}`;
     this.progressFill.style.width=`${(this.checks.filter(Boolean).length+basicChecks.filter(Boolean).length)/(this.labels.length+4)*100}%`;
     if(this.step<0){
       const i=this.step+3;
-      this.keycap.textContent=['W A S D','좌클릭','우클릭'][i];
-      this.title.textContent=['먼저 움직여보세요','무기를 휘둘러보세요','마법을 발사해보세요'][i];
+      this.keycap.textContent=['W A S D',this.t("좌클릭","Left click"),this.t("우클릭","Right click")][i];
+      this.title.textContent=[this.t("먼저 움직여보세요","Try moving first"),this.t("무기를 휘둘러보세요","Try swinging your weapon"),this.t("마법을 발사해보세요","Try casting magic")][i];
       this.hint.textContent=[
-        'W 위 · A 왼쪽 · S 아래 · D 오른쪽. WASD 또는 방향키로 조금 걸어보세요. 이후 모든 실습에서도 이동할 수 있습니다.',
-        '마우스로 조준하고 좌클릭 기본공격 기검참으로 적 3마리를 처치하세요.',
-        '마우스로 조준하고 우클릭 마법탄으로 적 3마리를 처치하세요.'
+        this.t("W 위 · A 왼쪽 · S 아래 · D 오른쪽. WASD 또는 방향키로 조금 걸어보세요. 이후 모든 실습에서도 이동할 수 있습니다.","W up · A left · S down · D right. Walk a short distance using WASD or the arrow keys. You can also move during all later exercises."),
+        this.t("마우스로 조준하고 좌클릭 기본공격 기검참으로 적 3마리를 처치하세요.","Aim with the mouse and defeat 3 enemies using your left-click basic attack, Ki Slash."),
+        this.t("마우스로 조준하고 우클릭 마법탄으로 적 3마리를 처치하세요.","Aim with the mouse and defeat 3 enemies using right-click magic projectiles.")
       ][i];
       if(this.step===-2||this.step===-1)this.updateAttackPractice();
     }
@@ -171,10 +180,10 @@ window._parryLesson = {
   },
   updateParryPractice() {
     const q=this.step===0;
-    this.title.textContent=q?'마법탄을 패링해 몬스터를 처치하세요':'물리탄을 패링해 몬스터를 처치하세요';
-    this.hint.textContent='몬스터 주위의 링이 완성되면 탄이 발사됩니다. 링 색으로 탄 종류를 미리 예측하세요. 흰색 링은 물리탄(E), 속성색 링은 마법탄(Q)입니다. '+
-      (q?'이번 보라색 링은 암흑 마법탄입니다. 탄이 가까워지면 ['+this.key()+']로 패링하세요.':'이번 흰색 링은 물리탄입니다. 탄이 가까워지면 ['+this.key()+']를 짧게 눌렀다 떼어 패링하세요.')+
-      '\n'+(this.parriedShot?'패링 성공! 반사탄으로 발사한 몬스터를 처치하면 완료됩니다.':'패링으로 탄을 되돌려 발사한 몬스터까지 처치하세요.');
+    this.title.textContent=q?this.t("마법탄을 패링해 몬스터를 처치하세요","Parry magic projectiles to defeat the monster"):this.t("물리탄을 패링해 몬스터를 처치하세요","Parry physical projectiles to defeat the monster");
+    this.hint.textContent=this.t("몬스터 주위의 링이 완성되면 탄이 발사됩니다. 링 색으로 탄 종류를 미리 예측하세요. 흰색 링은 물리탄(E), 속성색 링은 마법탄(Q)입니다. ","The monster fires when the ring around it fills. The ring color previews the projectile type: white means physical (E); an elemental color means magic (Q). ")+
+      (q?this.t("이번 보라색 링은 암흑 마법탄입니다. 탄이 가까워지면 [","This purple ring signals a dark magic projectile. When it approaches, press [")+this.key()+this.t("]로 패링하세요.","] to parry."):this.t("이번 흰색 링은 물리탄입니다. 탄이 가까워지면 [","This white ring signals a physical projectile. When it approaches, briefly press [")+this.key()+this.t("]를 짧게 눌렀다 떼어 패링하세요.","] and release to parry."))+
+      '\n'+(this.parriedShot?this.t("패링 성공! 반사탄으로 발사한 몬스터를 처치하면 완료됩니다.","Parry successful! Defeat the shooter with the reflected projectile to complete this step."):this.t("패링으로 탄을 되돌려 발사한 몬스터까지 처치하세요.","Reflect the projectile and defeat the monster that fired it."));
   },
   spawnParryEnemy() {
     const q=this.step===0;
@@ -234,8 +243,8 @@ window._parryLesson = {
   },
   updateAttackPractice() {
     const left=this.step===-2,count=left?this.leftKills:this.rightKills;
-    this.title.textContent=left?'기검참으로 적 3마리를 처치하세요':'마법으로 적 3마리를 처치하세요';
-    this.hint.textContent=`${left?'기검참은 기본공격입니다. 적을 마우스로 조준하고 좌클릭으로 검기를 날리세요.':'적을 마우스로 조준하고 우클릭으로 마법탄을 발사하세요.'}\n처치 ${count||0}/3 · 실제로 처치해야 완료됩니다.`;
+    this.title.textContent=left?this.t("기검참으로 적 3마리를 처치하세요","Defeat 3 enemies with Ki Slash"):this.t("마법으로 적 3마리를 처치하세요","Defeat 3 enemies with magic");
+    this.hint.textContent=this.t("{p0}\n처치 {p1}/3 · 실제로 처치해야 완료됩니다.","{p0}\nDefeated {p1}/3 · Only actual defeats count.",{p0:(left?this.t("기검참은 기본공격입니다. 적을 마우스로 조준하고 좌클릭으로 검기를 날리세요.","Ki Slash is your basic attack. Aim at an enemy with the mouse and left-click to launch a sword wave."):this.t("적을 마우스로 조준하고 우클릭으로 마법탄을 발사하세요.","Aim at an enemy with the mouse and right-click to fire a magic projectile.")),p1:(count||0)});
   },
   startTrapPractice() {
     this.trapSnapshot={slot:SKILL_SLOTS[0],mats:G.mats,skills:P.skills,cd:{had:Object.prototype.hasOwnProperty.call(P,'_gcCd'),value:P._gcCd}};
@@ -276,9 +285,9 @@ window._parryLesson = {
   },
   updateTrapPractice() {
     this.keycap.textContent='1 + W A S D';
-    this.title.textContent='붙으면 가시덫을 깔고 도망치세요';
-    this.hint.textContent='몬스터 10마리가 쫓아옵니다. 가까이 붙으면 1번으로 발밑에 가시덫을 깔고, WASD / 방향키로 도망치세요. 덫 안의 적은 느려지고 지속 피해로 쓰러집니다.\n'+
-      `${this.trapZone?'✓':'□'} 가시덫 설치 · ${this.trapEscaped?'✓':'□'} 설치 후 이동 · 처치 ${this.trapKills||0}/10`;
+    this.title.textContent=this.t("붙으면 가시덫을 깔고 도망치세요","Place a Spike Trap and retreat when enemies close in");
+    this.hint.textContent=this.t("몬스터 10마리가 쫓아옵니다. 가까이 붙으면 1번으로 발밑에 가시덫을 깔고, WASD / 방향키로 도망치세요. 덫 안의 적은 느려지고 지속 피해로 쓰러집니다.\n","10 monsters are chasing you. When they approach, press 1 to place a Spike Trap at your feet, then retreat with WASD / arrow keys. Enemies inside the trap are slowed and take damage over time.\n")+
+      this.t("{p0} 가시덫 설치 · {p1} 설치 후 이동 · 처치 {p2}/10","{p0} Spike Trap placed · {p1} Moved after placement · Defeated {p2}/10",{p0:(this.trapZone?'✓':'□'),p1:(this.trapEscaped?'✓':'□'),p2:(this.trapKills||0)});
     this.holdBox.hidden=true;this.rageBox.hidden=true;
   },
   restoreTrapPractice() {
@@ -321,7 +330,7 @@ window._parryLesson = {
     if(this.chapter===1)this.updateDashPractice();
   },
   updateDashPractice() {
-    this.hint.textContent='WASD 또는 방향키를 누른 채 Space로 전격이동을 5번 사용하세요. 이동이 끝나면 Space를 떼고 다시 누르세요.\n전격이동 성공 '+(this.dashPractice?.count||0)+'/5';
+    this.hint.textContent=this.t("WASD 또는 방향키를 누른 채 Space로 전격이동을 5번 사용하세요. 이동이 끝나면 Space를 떼고 다시 누르세요.\n전격이동 성공 ","Hold WASD or an arrow key and press Space to use Lightning Dash 5 times. Release Space after each dash, then press it again.\nSuccessful dashes ")+(this.dashPractice?.count||0)+'/5';
   },
   tickChainPractice() {
     if(!this.chainPractice){
@@ -331,7 +340,7 @@ window._parryLesson = {
     const s=this.chainPractice,active=_harpActive||_dashActive;
     if(!s.flight&&active&&_harpGauge<s.gauge){
       s.flight={tier:_harpTier,spent:s.gauge-_harpGauge,x:P.x,y:P.y,pulled:false,moved:false};
-      s.feedback=`${_harpTier}단 발사 · 기동력 −${Math.round(s.flight.spent)} · 이동이 끝나면 Shift를 놓으세요.`;
+      s.feedback=this.t("{p0}단 발사 · 기동력 −{p1} · 이동이 끝나면 Shift를 놓으세요.","Tier {p0} launched · Mobility −{p1} · Release Shift when movement ends.",{p0:(_harpTier),p1:(Math.round(s.flight.spent))});
     }
     if(s.flight){
       const f=s.flight;
@@ -340,11 +349,11 @@ window._parryLesson = {
       if(!active&&!_dashHold&&!KH.ShiftLeft){
         if(f.tier===s.target&&f.moved){
           s.completed.push(s.target);
-          s.feedback=`${s.target}단 이동 완료 · 기동력 −${Math.round(f.spent)}`;
+          s.feedback=this.t("{p0}단 이동 완료 · 기동력 −{p1}","Tier {p0} movement complete · Mobility −{p1}",{p0:(s.target),p1:(Math.round(f.spent))});
           if(s.target===3){this.updateChainPractice();this.completeStep();return;}
           s.target++;
         }else{
-          s.feedback=f.tier!==s.target?`${f.tier}단으로 발사했습니다. ${s.target}단을 다시 연습하세요.`:'이동이 막히거나 취소됐습니다. 열린 바닥을 가리켜 다시 시도하세요.';
+          s.feedback=f.tier!==s.target?this.t("{p0}단으로 발사했습니다. {p1}단을 다시 연습하세요.","You launched at tier {p0}. Practice tier {p1} again.",{p0:(f.tier),p1:(s.target)}):this.t("이동이 막히거나 취소됐습니다. 열린 바닥을 가리켜 다시 시도하세요.","Movement was blocked or cancelled. Point toward open ground and try again.");
         }
         // Refill only between attempts so all tiers remain repeatable and costs stay visible.
         s.flight=null;_harpGauge=_HARP_GAUGE_MAX;P.st=P.mst;s.gauge=_harpGauge;
@@ -355,18 +364,18 @@ window._parryLesson = {
   updateChainPractice() {
     const s=this.chainPractice;if(!s)return;
     const seconds=t=>_HARP_TIER_F[t]/60;
-    const instruction=s.target===1?`왼쪽 Shift를 ${seconds(2)}초 전에 짧게 눌렀다 놓으세요.`:s.target===2?`왼쪽 Shift를 ${seconds(2)}초 이상, ${seconds(3)}초 전에 놓으세요.`:`왼쪽 Shift를 ${seconds(3)}초 이상 누르면 자동 발사됩니다.`;
-    this.hint.textContent=`${[1,2,3].map(t=>`${s.completed.includes(t)?'✓':'□'} ${t}단`).join(' · ')}\n${s.completed.length===3?'1·2·3단 사슬이동을 모두 완료했습니다.':`지금은 ${s.target}단 연습입니다. 마우스로 열린 바닥을 가리키세요. ${instruction}`}\n${s.feedback}`;
+    const instruction=s.target===1?this.t("왼쪽 Shift를 {p0}초 전에 짧게 눌렀다 놓으세요.","Briefly press and release Left Shift before {p0} seconds.",{p0:(seconds(2))}):s.target===2?this.t("왼쪽 Shift를 {p0}초 이상, {p1}초 전에 놓으세요.","Hold Left Shift for at least {p0} seconds, then release before {p1} seconds.",{p0:(seconds(2)),p1:(seconds(3))}):this.t("왼쪽 Shift를 {p0}초 이상 누르면 자동 발사됩니다.","Hold Left Shift for at least {p0} seconds to launch automatically.",{p0:(seconds(3))});
+    this.hint.textContent=`${[1,2,3].map(t=>this.t("{p0} {p1}단","{p0} Tier {p1}",{p0:(s.completed.includes(t)?'✓':'□'),p1:(t)})).join(' · ')}\n${s.completed.length===3?this.t("1·2·3단 사슬이동을 모두 완료했습니다.","All three chain movement tiers are complete."):this.t("지금은 {p0}단 연습입니다. 마우스로 열린 바닥을 가리키세요. {p1}","Practice tier {p0} now. Point the mouse toward open ground. {p1}",{p0:(s.target),p1:(instruction)})}\n${s.feedback}`;
     this.holdBox.hidden=false;
     this.holdMeter.value=Math.min(100,(_dashHoldF||0)/_HARP_TIER_F[3]*100);
-    this.holdLabel.textContent=_dashHold?`현재 ${_dashTier||1}단 충전 중 · 목표 ${s.target}단`:s.completed.length===3?'모든 단계 완료':`${s.target}단 준비 · 1단 탭 / 2단 ${seconds(2)}초 / 3단 ${seconds(3)}초 자동`;
+    this.holdLabel.textContent=_dashHold?this.t("현재 {p0}단 충전 중 · 목표 {p1}단","Charging tier {p0} · Target tier {p1}",{p0:(_dashTier||1),p1:(s.target)}):s.completed.length===3?this.t("모든 단계 완료","All tiers complete"):this.t("{p0}단 준비 · 1단 탭 / 2단 {p1}초 / 3단 {p2}초 자동","Prepare tier {p0} · Tier 1: tap / Tier 2: {p1}s / Tier 3: auto at {p2}s",{p0:(s.target),p1:(seconds(2)),p2:(seconds(3))});
   },
   start() {
     this.spikeTrapDone=false;this.trapEnemies=[];this.trapSnapshot=null;
     this.chainPractice=null;
     this.parryEnemy=null;this.parriedShot=null;
     this.attackEnemies=[];this.leftKills=0;this.rightKills=0;
-    this.combatLabels??=this.labels.slice();this.labels=this.combatLabels.slice();this.chapter=1;this.resourceReadout=null;
+    this.chapter=1;this.resourceReadout=null;
     window._resourcePractice?.save();
     this.seen = true; this.active = true; this.phase = 'intro'; this.step = -3; this.checks = Array(this.labels.length).fill(false);
     this.movementDone=false;this.leftClickDone=false;this.rightClickDone=false;this.moveDistance=0;this.moveLast={x:P.x,y:P.y};
@@ -391,7 +400,7 @@ window._parryLesson = {
       if(!this.volleyReleased||this.volleyFailed||!this.volley?.includes(p)||this.volleyHits.has(p))return;
       if(this.step===2&&(P.s==='sBlock'||P._sbReleaseR<300||P._sbParryT<=0))return;
       if(this.step===3&&(P.s!=='sBash'||P._sBashChgMul<3))return;
-      this.volleyHits.add(p);this.holdLabel.textContent=`한 번에 패링 · ${this.volleyHits.size}/3발`;
+      this.volleyHits.add(p);this.holdLabel.textContent=this.t("한 번에 패링 · {p0}/3발","Parried in one release · {p0}/3 projectiles",{p0:(this.volleyHits.size)});
       if(this.volleyHits.size>=3)this.completeStep();
       return;
     }
@@ -430,9 +439,9 @@ window._parryLesson = {
     playSample(absorbed?'shield_hit':'player_hit1',.6,1);
     const damage=Math.min(Math.max(0,P.hp-1),Math.max(1,Math.ceil(P.mhp*.1)));
     P.hp-=damage;
-    addTxt(P.x,P.y-30,`패링 실패! -${damage} HP`,'#ff6644',60);
+    addTxt(P.x,P.y-30,this.t("패링 실패! -{p0} HP","Parry failed! -{p0} HP",{p0:(damage)}),'#ff6644',60);
     this.failTicks=60;
-    this.hint.textContent='패링 실패! 탄에 맞았습니다. 체력을 회복하고 다시 연습합니다.';
+    this.hint.textContent=this.t("패링 실패! 탄에 맞았습니다. 체력을 회복하고 다시 연습합니다.","Parry failed! The projectile hit you. Your health will recover before you try again.");
     if(this.step===2||this.step===3)this.volleyFailed=true;
   },
   clearShot(explode = false) {
@@ -451,6 +460,12 @@ window._parryLesson = {
       this.start();
     }
     if (G.stage !== 0) { this.finish(); return false; }
+    if(this.locale!==(typeof OPT==='undefined'?'ko':OPT.lang)){
+      // Discard only transient prose; progress, counters, timers and combat stay intact.
+      if(this.chainPractice)this.chainPractice.feedback='';
+      if(this.chapter===2)window._resourcePractice.feedback='';
+      this.render();
+    }
     if(this.chapter===2)return window._resourcePractice.tick(this);
     if (this.pending) { this.phase = this.pending; this.pending = null; this.transitionTicks = 90; this.render(); }
     if (this.phase === 'intro') return true;
@@ -557,8 +572,8 @@ window._parryLesson = {
   },
   retryVolley() {
     this.clearShot(true);this.resetPose();this.volleyRetryTicks=60;
-    this.holdMeter.value=0;this.holdLabel.textContent='다시 시도 · 한 번의 해제로 3발 이상';
-    this.hint.textContent=`[${this.key()}]를 다시 길게 누르세요. 충전이 끝나고 탄이 가까워지면 키를 떼세요.`;
+    this.holdMeter.value=0;this.holdLabel.textContent=this.t("다시 시도 · 한 번의 해제로 3발 이상","Try again · At least 3 in one release");
+    this.hint.textContent=this.t("[{p0}]를 다시 길게 누르세요. 충전이 끝나고 탄이 가까워지면 키를 떼세요.","Hold [{p0}] again. Release after charging when the projectiles approach.",{p0:(this.key())});
   },
   watchHold() {
     if(this.volleyRetryTicks>0){this.volleyRetryTicks-=_dtSp;return;}
@@ -573,7 +588,7 @@ window._parryLesson = {
     }
     if(holding){
       this.holdMeter.value=Math.min(100,Math.floor(amount/target*100));
-      this.holdLabel.textContent=amount>=target?'지금 키를 떼세요 · 3발 이상 패링':`충전 ${this.holdMeter.value}% · 한 번에 3발 이상`;
+      this.holdLabel.textContent=amount>=target?this.t("지금 키를 떼세요 · 3발 이상 패링","Release now · Parry at least 3 projectiles"):this.t("충전 {p0}% · 한 번에 3발 이상","Charge {p0}% · At least 3 at once",{p0:(this.holdMeter.value)});
     }
     if(this.holdStarted&&(!holding||!this.volley.some(p=>projs.includes(p)&&!p.friendly)))this.retryVolley();
   },
@@ -598,8 +613,8 @@ window._parryLesson = {
   updateRage() {
     const value=Math.max(0,P.rage||0);
     this.rageMeter.value=Math.min(100,value);
-    this.rageText.textContent=`패링으로 축적한 분노 · ${Math.floor(value)}%`;
-    this.zoomText.textContent=`분노 ${Math.floor(value)}%`;
+    this.rageText.textContent=this.t("패링으로 축적한 분노 · {p0}%","Rage gained by parrying · {p0}%",{p0:(Math.floor(value))});
+    this.zoomText.textContent=this.t("분노 {p0}%","Rage {p0}%",{p0:(Math.floor(value))});
   },
   spawnRageEnemies() {
     this.rageEnemies=[];

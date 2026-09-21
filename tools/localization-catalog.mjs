@@ -20,7 +20,7 @@ export function collect(file){
   walk(ast,node=>{
    if(node.type==='VariableDeclarator'&&node.id.type==='Identifier')declarations[node.id.name]=source.slice(node.init?.start||0,node.init?.end||0);
    if(node.type==='CallExpression'&&['_T','_L','_TL','t',...(file==='stat-panel-ui.js'?['row']:[])].includes(node.callee.name))add(node.arguments[0]?.value,node.arguments[1]?.value);
-   if(file==='system-lesson.js'&&node.type==='CallExpression'&&node.callee.type==='MemberExpression'&&node.callee.object.type==='ThisExpression'&&node.callee.property.name==='t')add(node.arguments[0]?.value,node.arguments[1]?.value);
+   if(['system-lesson.js','parry-lesson.js','resource-practice.js'].includes(file)&&node.type==='CallExpression'&&node.callee.type==='MemberExpression'&&node.callee.object.type==='ThisExpression'&&node.callee.property.name==='t')add(node.arguments[0]?.value,node.arguments[1]?.value);
    if(file==='stat-panel-ui.js'&&node.type==='ArrayExpression'){
     add(node.elements[0]?.value,node.elements[1]?.value);
     if(node.elements.length===3)add(node.elements[1]?.value,node.elements[2]?.value);
