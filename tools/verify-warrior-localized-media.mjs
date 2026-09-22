@@ -1,0 +1,14 @@
+import fs from 'node:fs';
+import path from 'node:path';
+import {execFileSync,spawnSync} from 'node:child_process';
+const bin=path.join(process.env.LOCALAPPDATA,'Microsoft/WinGet/Packages/Gyan.FFmpeg_Microsoft.Winget.Source_8wekyb3d8bbwe/ffmpeg-8.0.1-full_build/bin');
+const ff=path.join(bin,'ffmpeg.exe');const video='video/warrior_story_v23_clean.mp4';
+const out='output/localization_20260922';fs.mkdirSync(out,{recursive:true});
+execFileSync(ff,['-v','error','-xerror','-i',video,'-f','null','-'],{stdio:'inherit'});
+execFileSync(ff,['-v','error','-y','-i',video,'-vf','fps=1/4,scale=384:216,tile=4x6','-frames:v','1',out+'/clean-movie-contact.jpg'],{stdio:'inherit'});
+const result=spawnSync(ff,['-hide_banner','-i',video,'-i','video/warrior_story_v22_bgm.mp4','-filter_complex','[0:v]crop=1920:760:0:0[a];[1:v]crop=1920:760:0:0[b];[a][b]ssim','-an','-f','null','-'],{encoding:'utf8',maxBuffer:8*1024*1024,stdio:['ignore','ignore','pipe']});
+if(result.status!==0)throw Error(result.stderr);
+const match=result.stderr.match(/All:([0-9.]+)/);if(!match)throw Error('Missing image comparison');
+const similarity=Number(match[1]);if(similarity<.97)throw Error('Unexpected picture difference '+similarity);
+fs.writeFileSync(out+'/media-qa.json',JSON.stringify({decode:'PASS',pictureTop760SSIM:similarity,crop:'1920:760:0:0',comparison:'released v22 vs clean v23, excludes subtitle band',contact:'clean-movie-contact.jpg'},null,2)+'\n');
+console.log('Decode PASS, picture SSIM '+similarity);
