@@ -642,6 +642,7 @@ body{background:#000 center/cover no-repeat;color:#ccaa88;font-family:'Noto Sans
       </div>
     </div>
     <div class="lobby-divider"></div>
+    <div id="developerSaveNotice" hidden style="color:#d3aa67;font-size:.75rem;flex-shrink:0">개발자용 · 테스트 캐릭터 · 슬롯 무제한</div>
     <div class="char-list" id="charList">
       <div class="no-chars">불러오는 중...</div>
     </div>
@@ -1020,10 +1021,11 @@ const _LOBBY_VER='v0.6.0 · 20260521';
 const _LOBBY_VER_LIMITS={
   full:'All Chapters · No Level Cap',
   ea:'Lv.500 · Chapter 1 (1-1~1-4) · 8~15h',
-  demo:'Lv.1 START · Stage 1-1 Only · 1~2h', // 2026-07-27 데모 Lv1 일반 시작으로 변경
+  demo:'Lv.1 START · Stage 1-1 Only · Lv.100 Cap · 1~2h',
 };
 var _selectedSlot=null,_selectedSlotName=null,_selectedCharDisplay=null;
 var _localSlots=[];
+var _developerSlots=false;
 var _curBg=null;
 var _spriteOk={};// 캐릭터 스프라이트 존재 캐시
 function _tryLoadSprite(folder,fw,fh,canvas){
@@ -2710,6 +2712,8 @@ async function showLobby({fromCinematic=false}={}){
   hideLoading();
 }
 async function loadCharacters(){
+  _developerSlots=false;
+  const devNotice=$('developerSaveNotice');if(devNotice)devNotice.hidden=true;
   const cl=$('charList');if(!cl)return;
   const request=++_onlineLoadSeq,userId=currentUser&&currentUser.id;
   _onlineChars=[];_selectedSlot=null;_selectedSlotName=null;_updateCharDisplay();
@@ -2984,13 +2988,16 @@ function escHtml(s){const d=document.createElement('div');d.textContent=s;return
 // moved to top
 
 async function loadLocalCharacters(){
-  const cl=$('charList');if(cl)cl.innerHTML='<div class="no-chars">'+_TL('불러오는 중...')+'</div>';
+  _developerSlots=false;
+  const devNotice=$('developerSaveNotice');if(devNotice)devNotice.hidden=true;
+  const cl=$('charList');if(cl){const loading=document.createElement('div');loading.className='no-chars';loading.textContent=_TL('불러오는 중...');cl.replaceChildren(loading);}
   _selectedSlot=null;_selectedSlotName=null;_updateCharDisplay();
   try{
     const res=await fetch('/api/slots').catch(()=>null);
     if(!res||!res.ok)throw new Error('no server');
     const j=await res.json();
     _localSlots=j.ok&&j.slots?j.slots:[];
+    _developerSlots=!!(j.ok&&j.development===true&&_testMode&&_LOBBY_BUILD!=='demo');
   }catch(e){
     // 서버 없음 (DEMO 등) — localStorage 폴백
     _localSlots=[];
@@ -3001,6 +3008,7 @@ async function loadLocalCharacters(){
       try{const d=JSON.parse(raw);_localSlots.push({name:d.name||('Slot '+(i+1)),lv:(d.player&&d.player.lv)||1,stage:(d.game&&d.game.stage)||0,charIdx:d.charIdx||0});}catch(pe){}
     }
   }
+  if(devNotice)devNotice.hidden=!_developerSlots;
   _renderSlotList();
   _updateCharDisplay();
 }
@@ -3013,14 +3021,14 @@ function _renderSlotList(){
   // ── DEMO: 슬롯 1개 고정, 생성 버튼 없음 ──
   if(_LOBBY_BUILD==='demo'){
     const div=document.createElement('div');div.className='char-item active';
-    div.innerHTML='<div class="char-thumb"><img src="assets/lobby/lobby_portrait.png?v=20260913-lobby-smooth1" style="width:100%;height:100%;object-fit:cover;object-position:center 20%;border-radius:2px"></div><div class="char-text"><div class="char-name">DEMO CHARACTER</div><div class="char-info" style="color:rgba(200,150,100,.6)">Lv.1 START · Stage 1-1</div></div>';
+    div.innerHTML='<div class="char-thumb"><img src="assets/lobby/lobby_portrait.png?v=20260913-lobby-smooth1" style="width:100%;height:100%;object-fit:cover;object-position:center 20%;border-radius:2px"></div><div class="char-text"><div class="char-name">DEMO CHARACTER</div><div class="char-info" style="color:rgba(200,150,100,.6)">Lv.1 START · Stage 1-1 · Lv.100 Cap</div></div>';
     const demoSlot={name:'DEMO CHARACTER',charIdx:0,stage:0};
     div.addEventListener('click',()=>{_selectedSlot='demo';_selectedSlotName='demo';_updateCharDisplay(demoSlot);});
     cl.appendChild(div);
     _selectedSlot='demo';_selectedSlotName='demo';_updateCharDisplay(demoSlot);
     return;
   }
-  const MAX_CHARS=5; // 최대 생성 가능 캐릭터 수
+  const MAX_CHARS=_developerSlots?Infinity:5; // 개발 서버만 무제한, 공개 오프라인은 5개
   const VIEW=2;      // 한번에 보이는 캐릭터 슬롯 수
   const chars=_localSlots||[];
   const total=chars.length;
