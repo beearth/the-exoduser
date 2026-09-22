@@ -45158,8 +45158,15 @@ $('optSfx').oninput=function(){OPT.sfxVol=+this.value;$('optSfxVal').textContent
 $('optBgm').oninput=function(){OPT.bgmVol=+this.value;$('optBgmVal').textContent=this.value+'%';BGM.setVol(this.value/100);saveSettings()};
 $('optBgmTrack').onchange=function(){OPT.bgmTrack=this.value;if(this.value==='auto'){BGM.play(BGM.stageKey(G.stage))}else if(this.value==='allRandom'){BGM.playTrack(BGM._pickAllRandom())}else if(this.value.startsWith('t:')){BGM.playTrack(this.value.slice(2))}else{BGM.play(this.value,true)}saveSettings()};
 $('optLang').onchange=function(){OPT.lang=this.value;_applyLang();try{renderSettings()}catch(_e){}saveSettings()};
+function _refreshPersistentHudLanguage(){
+  const labels=[['hudLevelLabel','레벨','Level'],['hudExpLabel','경험치','Experience'],['hudKillLabel','지역 처치','Area kills'],['hudMaliceLabel','악의','Malice']];
+  for(const [id,ko,en] of labels){const el=document.getElementById(id);if(el&&el.children.length===0)el.textContent=_L(ko,en);}
+  const panel=document.getElementById('mmLvl');if(panel)panel.setAttribute('aria-label',_L('플레이어 상태','Player status'));
+  window._tutorialBadges?.refreshLanguage?.();
+}
 function _applyLang(){try{
   OPT.lang=ExoduserI18n.applyDocumentLanguage(document,OPT.lang);
+  _refreshPersistentHudLanguage();
   document.querySelectorAll('.panel-nav-tab[data-label]').forEach(el=>{if(el.children.length===0)el.textContent=_T(el.dataset.label)+(el.dataset.key?' ['+el.dataset.key+']':'')});
   // HUD slot labels
   const _hl={skSlotLMB:'근접',skSlotRMB:'견갑',skSlot0:'사슬',qsE:'마법',qsT:'석궁',qsQ:'보막',skSlotCT:'유령',qsK:'스킬',qsG:'대장',qsTAB:'인벤',qsESC:'설정'};

@@ -665,8 +665,8 @@
       "en": "Mouse-aim placement. CD 20s. Dark spiral at click pos (10s duration, tick every 18f, INT/_skMul scale). Per Lv range+22. No stacking same area"
     },
     {
-      "key": "현재 위치에 9개 기둥 순차 발동. 5초간 악의 기둥을 소환하여 반경 내 적에게 지속 암전 데미지+감속. 범위 250+(Lv-1)×22. 지옥강타 2와 합체→기둥강타. 쿨 15초",
-      "en": "9 pillars activate sequentially at current pos. 5s dark pillars deal sustained dark DMG+slow to enemies in radius. Range 250+(Lv-1)×22. Fuses with Hell Slam II → Pillar Strike. CD 15s"
+      "key": "현재 위치에 9개 기둥 순차 발동. 10초간 악의 기둥을 소환하여 반경 내 적에게 지속 암전 데미지+감속. 범위 250+(Lv-1)×22. 지옥강타 2와 합체→기둥강타. 쿨 15초",
+      "en": "9 pillars activate sequentially at current pos. 10s dark pillars deal sustained dark DMG+slow to enemies in radius. Range 250+(Lv-1)×22. Fuses with Hell Slam II → Pillar Strike. CD 15s"
     },
     {
       "key": "현재 위치에 회복의 영역 설치 (12초 지속). 땅 위: HP/MP/ST 초당+10 리젠 + 회복력 2배 + 쿨다운 속도 2배. 쿨 30초. Lv당 범위+20 지속+0.5초",
@@ -2599,8 +2599,8 @@
       "en": "Mouse-aim placement. CD 20s. Dark spiral at click pos (10s duration, tick every 18f, INT/_skMul scale). Per Lv range+22. No stacking same area"
     },
     {
-      "key": "현재 위치에 9개 기둥 순차 발동. 5초간 악의 기둥을 소환하여 반경 내 적에게 지속 암전 데미지+감속. 범위 250+(Lv-1)×22. 지옥강타 2와 합체→기둥강타. 쿨 15초",
-      "en": "9 pillars activate sequentially at current pos. 5s dark pillars deal sustained dark DMG+slow to enemies in radius. Range 250+(Lv-1)×22. Fuses with Hell Slam II → Pillar Strike. CD 15s"
+      "key": "현재 위치에 9개 기둥 순차 발동. 10초간 악의 기둥을 소환하여 반경 내 적에게 지속 암전 데미지+감속. 범위 250+(Lv-1)×22. 지옥강타 2와 합체→기둥강타. 쿨 15초",
+      "en": "9 pillars activate sequentially at current pos. 10s dark pillars deal sustained dark DMG+slow to enemies in radius. Range 250+(Lv-1)×22. Fuses with Hell Slam II → Pillar Strike. CD 15s"
     },
     {
       "key": "현재 위치에 회복의 영역 설치 (12초 지속). 땅 위: HP/MP/ST 초당+10 리젠 + 회복력 2배 + 쿨다운 속도 2배. 쿨 30초. Lv당 범위+20 지속+0.5초",
@@ -4553,8 +4553,8 @@
       "en": "Mouse-aim placement. CD 20s. Dark spiral at click pos (10s duration, tick every 18f, INT/_skMul scale). Per Lv range+22. No stacking same area"
     },
     {
-      "key": "현재 위치에 9개 기둥 순차 발동. 5초간 악의 기둥을 소환하여 반경 내 적에게 지속 암전 데미지+감속. 범위 250+(Lv-1)×22. 지옥강타 2와 합체→기둥강타. 쿨 15초",
-      "en": "9 pillars activate sequentially at current pos. 5s dark pillars deal sustained dark DMG+slow to enemies in radius. Range 250+(Lv-1)×22. Fuses with Hell Slam II → Pillar Strike. CD 15s"
+      "key": "현재 위치에 9개 기둥 순차 발동. 10초간 악의 기둥을 소환하여 반경 내 적에게 지속 암전 데미지+감속. 범위 250+(Lv-1)×22. 지옥강타 2와 합체→기둥강타. 쿨 15초",
+      "en": "9 pillars activate sequentially at current pos. 10s dark pillars deal sustained dark DMG+slow to enemies in radius. Range 250+(Lv-1)×22. Fuses with Hell Slam II → Pillar Strike. CD 15s"
     },
     {
       "key": "현재 위치에 회복의 영역 설치 (12초 지속). 땅 위: HP/MP/ST 초당+10 리젠 + 회복력 2배 + 쿨다운 속도 2배. 쿨 30초. Lv당 범위+20 지속+0.5초",
@@ -6507,8 +6507,8 @@
       "en": "Mouse-aim placement. CD 20s. Dark spiral at click pos (10s duration, tick every 18f, INT/_skMul scale). Per Lv range+22. No stacking same area"
     },
     {
-      "key": "현재 위치에 9개 기둥 순차 발동. 5초간 악의 기둥을 소환하여 반경 내 적에게 지속 암전 데미지+감속. 범위 250+(Lv-1)×22. 지옥강타 2와 합체→기둥강타. 쿨 15초",
-      "en": "9 pillars activate sequentially at current pos. 5s dark pillars deal sustained dark DMG+slow to enemies in radius. Range 250+(Lv-1)×22. Fuses with Hell Slam II → Pillar Strike. CD 15s"
+      "key": "현재 위치에 9개 기둥 순차 발동. 10초간 악의 기둥을 소환하여 반경 내 적에게 지속 암전 데미지+감속. 범위 250+(Lv-1)×22. 지옥강타 2와 합체→기둥강타. 쿨 15초",
+      "en": "9 pillars activate sequentially at current pos. 10s dark pillars deal sustained dark DMG+slow to enemies in radius. Range 250+(Lv-1)×22. Fuses with Hell Slam II → Pillar Strike. CD 15s"
     },
     {
       "key": "현재 위치에 회복의 영역 설치 (12초 지속). 땅 위: HP/MP/ST 초당+10 리젠 + 회복력 2배 + 쿨다운 속도 2배. 쿨 30초. Lv당 범위+20 지속+0.5초",
@@ -8461,8 +8461,8 @@
       "en": "Mouse-aim placement. CD 20s. Dark spiral at click pos (10s duration, tick every 18f, INT/_skMul scale). Per Lv range+22. No stacking same area"
     },
     {
-      "key": "현재 위치에 9개 기둥 순차 발동. 5초간 악의 기둥을 소환하여 반경 내 적에게 지속 암전 데미지+감속. 범위 250+(Lv-1)×22. 지옥강타 2와 합체→기둥강타. 쿨 15초",
-      "en": "9 pillars activate sequentially at current pos. 5s dark pillars deal sustained dark DMG+slow to enemies in radius. Range 250+(Lv-1)×22. Fuses with Hell Slam II → Pillar Strike. CD 15s"
+      "key": "현재 위치에 9개 기둥 순차 발동. 10초간 악의 기둥을 소환하여 반경 내 적에게 지속 암전 데미지+감속. 범위 250+(Lv-1)×22. 지옥강타 2와 합체→기둥강타. 쿨 15초",
+      "en": "9 pillars activate sequentially at current pos. 10s dark pillars deal sustained dark DMG+slow to enemies in radius. Range 250+(Lv-1)×22. Fuses with Hell Slam II → Pillar Strike. CD 15s"
     },
     {
       "key": "현재 위치에 회복의 영역 설치 (12초 지속). 땅 위: HP/MP/ST 초당+10 리젠 + 회복력 2배 + 쿨다운 속도 2배. 쿨 30초. Lv당 범위+20 지속+0.5초",
@@ -10415,8 +10415,8 @@
       "en": "Mouse-aim placement. CD 20s. Dark spiral at click pos (10s duration, tick every 18f, INT/_skMul scale). Per Lv range+22. No stacking same area"
     },
     {
-      "key": "현재 위치에 9개 기둥 순차 발동. 5초간 악의 기둥을 소환하여 반경 내 적에게 지속 암전 데미지+감속. 범위 250+(Lv-1)×22. 지옥강타 2와 합체→기둥강타. 쿨 15초",
-      "en": "9 pillars activate sequentially at current pos. 5s dark pillars deal sustained dark DMG+slow to enemies in radius. Range 250+(Lv-1)×22. Fuses with Hell Slam II → Pillar Strike. CD 15s"
+      "key": "현재 위치에 9개 기둥 순차 발동. 10초간 악의 기둥을 소환하여 반경 내 적에게 지속 암전 데미지+감속. 범위 250+(Lv-1)×22. 지옥강타 2와 합체→기둥강타. 쿨 15초",
+      "en": "9 pillars activate sequentially at current pos. 10s dark pillars deal sustained dark DMG+slow to enemies in radius. Range 250+(Lv-1)×22. Fuses with Hell Slam II → Pillar Strike. CD 15s"
     },
     {
       "key": "현재 위치에 회복의 영역 설치 (12초 지속). 땅 위: HP/MP/ST 초당+10 리젠 + 회복력 2배 + 쿨다운 속도 2배. 쿨 30초. Lv당 범위+20 지속+0.5초",
@@ -12369,8 +12369,8 @@
       "en": "Mouse-aim placement. CD 20s. Dark spiral at click pos (10s duration, tick every 18f, INT/_skMul scale). Per Lv range+22. No stacking same area"
     },
     {
-      "key": "현재 위치에 9개 기둥 순차 발동. 5초간 악의 기둥을 소환하여 반경 내 적에게 지속 암전 데미지+감속. 범위 250+(Lv-1)×22. 지옥강타 2와 합체→기둥강타. 쿨 15초",
-      "en": "9 pillars activate sequentially at current pos. 5s dark pillars deal sustained dark DMG+slow to enemies in radius. Range 250+(Lv-1)×22. Fuses with Hell Slam II → Pillar Strike. CD 15s"
+      "key": "현재 위치에 9개 기둥 순차 발동. 10초간 악의 기둥을 소환하여 반경 내 적에게 지속 암전 데미지+감속. 범위 250+(Lv-1)×22. 지옥강타 2와 합체→기둥강타. 쿨 15초",
+      "en": "9 pillars activate sequentially at current pos. 10s dark pillars deal sustained dark DMG+slow to enemies in radius. Range 250+(Lv-1)×22. Fuses with Hell Slam II → Pillar Strike. CD 15s"
     },
     {
       "key": "현재 위치에 회복의 영역 설치 (12초 지속). 땅 위: HP/MP/ST 초당+10 리젠 + 회복력 2배 + 쿨다운 속도 2배. 쿨 30초. Lv당 범위+20 지속+0.5초",
@@ -14323,8 +14323,8 @@
       "en": "Mouse-aim placement. CD 20s. Dark spiral at click pos (10s duration, tick every 18f, INT/_skMul scale). Per Lv range+22. No stacking same area"
     },
     {
-      "key": "현재 위치에 9개 기둥 순차 발동. 5초간 악의 기둥을 소환하여 반경 내 적에게 지속 암전 데미지+감속. 범위 250+(Lv-1)×22. 지옥강타 2와 합체→기둥강타. 쿨 15초",
-      "en": "9 pillars activate sequentially at current pos. 5s dark pillars deal sustained dark DMG+slow to enemies in radius. Range 250+(Lv-1)×22. Fuses with Hell Slam II → Pillar Strike. CD 15s"
+      "key": "현재 위치에 9개 기둥 순차 발동. 10초간 악의 기둥을 소환하여 반경 내 적에게 지속 암전 데미지+감속. 범위 250+(Lv-1)×22. 지옥강타 2와 합체→기둥강타. 쿨 15초",
+      "en": "9 pillars activate sequentially at current pos. 10s dark pillars deal sustained dark DMG+slow to enemies in radius. Range 250+(Lv-1)×22. Fuses with Hell Slam II → Pillar Strike. CD 15s"
     },
     {
       "key": "현재 위치에 회복의 영역 설치 (12초 지속). 땅 위: HP/MP/ST 초당+10 리젠 + 회복력 2배 + 쿨다운 속도 2배. 쿨 30초. Lv당 범위+20 지속+0.5초",
@@ -16281,8 +16281,8 @@
       "en": "Mouse-aim placement. CD 20s. Dark spiral at click pos (10s duration, tick every 18f, INT/_skMul scale). Per Lv range+22. No stacking same area"
     },
     {
-      "key": "현재 위치에 9개 기둥 순차 발동. 5초간 악의 기둥을 소환하여 반경 내 적에게 지속 암전 데미지+감속. 범위 250+(Lv-1)×22. 지옥강타 2와 합체→기둥강타. 쿨 15초",
-      "en": "9 pillars activate sequentially at current pos. 5s dark pillars deal sustained dark DMG+slow to enemies in radius. Range 250+(Lv-1)×22. Fuses with Hell Slam II → Pillar Strike. CD 15s"
+      "key": "현재 위치에 9개 기둥 순차 발동. 10초간 악의 기둥을 소환하여 반경 내 적에게 지속 암전 데미지+감속. 범위 250+(Lv-1)×22. 지옥강타 2와 합체→기둥강타. 쿨 15초",
+      "en": "9 pillars activate sequentially at current pos. 10s dark pillars deal sustained dark DMG+slow to enemies in radius. Range 250+(Lv-1)×22. Fuses with Hell Slam II → Pillar Strike. CD 15s"
     },
     {
       "key": "현재 위치에 회복의 영역 설치 (12초 지속). 땅 위: HP/MP/ST 초당+10 리젠 + 회복력 2배 + 쿨다운 속도 2배. 쿨 30초. Lv당 범위+20 지속+0.5초",
@@ -18255,8 +18255,8 @@
       "en": "Mouse-aim placement. CD 20s. Dark spiral at click pos (10s duration, tick every 18f, INT/_skMul scale). Per Lv range+22. No stacking same area"
     },
     {
-      "key": "현재 위치에 9개 기둥 순차 발동. 5초간 악의 기둥을 소환하여 반경 내 적에게 지속 암전 데미지+감속. 범위 250+(Lv-1)×22. 지옥강타 2와 합체→기둥강타. 쿨 15초",
-      "en": "9 pillars activate sequentially at current pos. 5s dark pillars deal sustained dark DMG+slow to enemies in radius. Range 250+(Lv-1)×22. Fuses with Hell Slam II → Pillar Strike. CD 15s"
+      "key": "현재 위치에 9개 기둥 순차 발동. 10초간 악의 기둥을 소환하여 반경 내 적에게 지속 암전 데미지+감속. 범위 250+(Lv-1)×22. 지옥강타 2와 합체→기둥강타. 쿨 15초",
+      "en": "9 pillars activate sequentially at current pos. 10s dark pillars deal sustained dark DMG+slow to enemies in radius. Range 250+(Lv-1)×22. Fuses with Hell Slam II → Pillar Strike. CD 15s"
     },
     {
       "key": "현재 위치에 회복의 영역 설치 (12초 지속). 땅 위: HP/MP/ST 초당+10 리젠 + 회복력 2배 + 쿨다운 속도 2배. 쿨 30초. Lv당 범위+20 지속+0.5초",
@@ -20229,8 +20229,8 @@
       "en": "Mouse-aim placement. CD 20s. Dark spiral at click pos (10s duration, tick every 18f, INT/_skMul scale). Per Lv range+22. No stacking same area"
     },
     {
-      "key": "현재 위치에 9개 기둥 순차 발동. 5초간 악의 기둥을 소환하여 반경 내 적에게 지속 암전 데미지+감속. 범위 250+(Lv-1)×22. 지옥강타 2와 합체→기둥강타. 쿨 15초",
-      "en": "9 pillars activate sequentially at current pos. 5s dark pillars deal sustained dark DMG+slow to enemies in radius. Range 250+(Lv-1)×22. Fuses with Hell Slam II → Pillar Strike. CD 15s"
+      "key": "현재 위치에 9개 기둥 순차 발동. 10초간 악의 기둥을 소환하여 반경 내 적에게 지속 암전 데미지+감속. 범위 250+(Lv-1)×22. 지옥강타 2와 합체→기둥강타. 쿨 15초",
+      "en": "9 pillars activate sequentially at current pos. 10s dark pillars deal sustained dark DMG+slow to enemies in radius. Range 250+(Lv-1)×22. Fuses with Hell Slam II → Pillar Strike. CD 15s"
     },
     {
       "key": "현재 위치에 회복의 영역 설치 (12초 지속). 땅 위: HP/MP/ST 초당+10 리젠 + 회복력 2배 + 쿨다운 속도 2배. 쿨 30초. Lv당 범위+20 지속+0.5초",
@@ -22203,8 +22203,8 @@
       "en": "Mouse-aim placement. CD 20s. Dark spiral at click pos (10s duration, tick every 18f, INT/_skMul scale). Per Lv range+22. No stacking same area"
     },
     {
-      "key": "현재 위치에 9개 기둥 순차 발동. 5초간 악의 기둥을 소환하여 반경 내 적에게 지속 암전 데미지+감속. 범위 250+(Lv-1)×22. 지옥강타 2와 합체→기둥강타. 쿨 15초",
-      "en": "9 pillars activate sequentially at current pos. 5s dark pillars deal sustained dark DMG+slow to enemies in radius. Range 250+(Lv-1)×22. Fuses with Hell Slam II → Pillar Strike. CD 15s"
+      "key": "현재 위치에 9개 기둥 순차 발동. 10초간 악의 기둥을 소환하여 반경 내 적에게 지속 암전 데미지+감속. 범위 250+(Lv-1)×22. 지옥강타 2와 합체→기둥강타. 쿨 15초",
+      "en": "9 pillars activate sequentially at current pos. 10s dark pillars deal sustained dark DMG+slow to enemies in radius. Range 250+(Lv-1)×22. Fuses with Hell Slam II → Pillar Strike. CD 15s"
     },
     {
       "key": "현재 위치에 회복의 영역 설치 (12초 지속). 땅 위: HP/MP/ST 초당+10 리젠 + 회복력 2배 + 쿨다운 속도 2배. 쿨 30초. Lv당 범위+20 지속+0.5초",
@@ -24157,8 +24157,8 @@
       "en": "Mouse-aim placement. CD 20s. Dark spiral at click pos (10s duration, tick every 18f, INT/_skMul scale). Per Lv range+22. No stacking same area"
     },
     {
-      "key": "현재 위치에 9개 기둥 순차 발동. 5초간 악의 기둥을 소환하여 반경 내 적에게 지속 암전 데미지+감속. 범위 250+(Lv-1)×22. 지옥강타 2와 합체→기둥강타. 쿨 15초",
-      "en": "9 pillars activate sequentially at current pos. 5s dark pillars deal sustained dark DMG+slow to enemies in radius. Range 250+(Lv-1)×22. Fuses with Hell Slam II → Pillar Strike. CD 15s"
+      "key": "현재 위치에 9개 기둥 순차 발동. 10초간 악의 기둥을 소환하여 반경 내 적에게 지속 암전 데미지+감속. 범위 250+(Lv-1)×22. 지옥강타 2와 합체→기둥강타. 쿨 15초",
+      "en": "9 pillars activate sequentially at current pos. 10s dark pillars deal sustained dark DMG+slow to enemies in radius. Range 250+(Lv-1)×22. Fuses with Hell Slam II → Pillar Strike. CD 15s"
     },
     {
       "key": "현재 위치에 회복의 영역 설치 (12초 지속). 땅 위: HP/MP/ST 초당+10 리젠 + 회복력 2배 + 쿨다운 속도 2배. 쿨 30초. Lv당 범위+20 지속+0.5초",
@@ -26111,8 +26111,8 @@
       "en": "Mouse-aim placement. CD 20s. Dark spiral at click pos (10s duration, tick every 18f, INT/_skMul scale). Per Lv range+22. No stacking same area"
     },
     {
-      "key": "현재 위치에 9개 기둥 순차 발동. 5초간 악의 기둥을 소환하여 반경 내 적에게 지속 암전 데미지+감속. 범위 250+(Lv-1)×22. 지옥강타 2와 합체→기둥강타. 쿨 15초",
-      "en": "9 pillars activate sequentially at current pos. 5s dark pillars deal sustained dark DMG+slow to enemies in radius. Range 250+(Lv-1)×22. Fuses with Hell Slam II → Pillar Strike. CD 15s"
+      "key": "현재 위치에 9개 기둥 순차 발동. 10초간 악의 기둥을 소환하여 반경 내 적에게 지속 암전 데미지+감속. 범위 250+(Lv-1)×22. 지옥강타 2와 합체→기둥강타. 쿨 15초",
+      "en": "9 pillars activate sequentially at current pos. 10s dark pillars deal sustained dark DMG+slow to enemies in radius. Range 250+(Lv-1)×22. Fuses with Hell Slam II → Pillar Strike. CD 15s"
     },
     {
       "key": "현재 위치에 회복의 영역 설치 (12초 지속). 땅 위: HP/MP/ST 초당+10 리젠 + 회복력 2배 + 쿨다운 속도 2배. 쿨 30초. Lv당 범위+20 지속+0.5초",
@@ -28065,8 +28065,8 @@
       "en": "Mouse-aim placement. CD 20s. Dark spiral at click pos (10s duration, tick every 18f, INT/_skMul scale). Per Lv range+22. No stacking same area"
     },
     {
-      "key": "현재 위치에 9개 기둥 순차 발동. 5초간 악의 기둥을 소환하여 반경 내 적에게 지속 암전 데미지+감속. 범위 250+(Lv-1)×22. 지옥강타 2와 합체→기둥강타. 쿨 15초",
-      "en": "9 pillars activate sequentially at current pos. 5s dark pillars deal sustained dark DMG+slow to enemies in radius. Range 250+(Lv-1)×22. Fuses with Hell Slam II → Pillar Strike. CD 15s"
+      "key": "현재 위치에 9개 기둥 순차 발동. 10초간 악의 기둥을 소환하여 반경 내 적에게 지속 암전 데미지+감속. 범위 250+(Lv-1)×22. 지옥강타 2와 합체→기둥강타. 쿨 15초",
+      "en": "9 pillars activate sequentially at current pos. 10s dark pillars deal sustained dark DMG+slow to enemies in radius. Range 250+(Lv-1)×22. Fuses with Hell Slam II → Pillar Strike. CD 15s"
     },
     {
       "key": "현재 위치에 회복의 영역 설치 (12초 지속). 땅 위: HP/MP/ST 초당+10 리젠 + 회복력 2배 + 쿨다운 속도 2배. 쿨 30초. Lv당 범위+20 지속+0.5초",
@@ -30019,8 +30019,8 @@
       "en": "Mouse-aim placement. CD 20s. Dark spiral at click pos (10s duration, tick every 18f, INT/_skMul scale). Per Lv range+22. No stacking same area"
     },
     {
-      "key": "현재 위치에 9개 기둥 순차 발동. 5초간 악의 기둥을 소환하여 반경 내 적에게 지속 암전 데미지+감속. 범위 250+(Lv-1)×22. 지옥강타 2와 합체→기둥강타. 쿨 15초",
-      "en": "9 pillars activate sequentially at current pos. 5s dark pillars deal sustained dark DMG+slow to enemies in radius. Range 250+(Lv-1)×22. Fuses with Hell Slam II → Pillar Strike. CD 15s"
+      "key": "현재 위치에 9개 기둥 순차 발동. 10초간 악의 기둥을 소환하여 반경 내 적에게 지속 암전 데미지+감속. 범위 250+(Lv-1)×22. 지옥강타 2와 합체→기둥강타. 쿨 15초",
+      "en": "9 pillars activate sequentially at current pos. 10s dark pillars deal sustained dark DMG+slow to enemies in radius. Range 250+(Lv-1)×22. Fuses with Hell Slam II → Pillar Strike. CD 15s"
     },
     {
       "key": "현재 위치에 회복의 영역 설치 (12초 지속). 땅 위: HP/MP/ST 초당+10 리젠 + 회복력 2배 + 쿨다운 속도 2배. 쿨 30초. Lv당 범위+20 지속+0.5초",
@@ -31973,8 +31973,8 @@
       "en": "Mouse-aim placement. CD 20s. Dark spiral at click pos (10s duration, tick every 18f, INT/_skMul scale). Per Lv range+22. No stacking same area"
     },
     {
-      "key": "현재 위치에 9개 기둥 순차 발동. 5초간 악의 기둥을 소환하여 반경 내 적에게 지속 암전 데미지+감속. 범위 250+(Lv-1)×22. 지옥강타 2와 합체→기둥강타. 쿨 15초",
-      "en": "9 pillars activate sequentially at current pos. 5s dark pillars deal sustained dark DMG+slow to enemies in radius. Range 250+(Lv-1)×22. Fuses with Hell Slam II → Pillar Strike. CD 15s"
+      "key": "현재 위치에 9개 기둥 순차 발동. 10초간 악의 기둥을 소환하여 반경 내 적에게 지속 암전 데미지+감속. 범위 250+(Lv-1)×22. 지옥강타 2와 합체→기둥강타. 쿨 15초",
+      "en": "9 pillars activate sequentially at current pos. 10s dark pillars deal sustained dark DMG+slow to enemies in radius. Range 250+(Lv-1)×22. Fuses with Hell Slam II → Pillar Strike. CD 15s"
     },
     {
       "key": "현재 위치에 회복의 영역 설치 (12초 지속). 땅 위: HP/MP/ST 초당+10 리젠 + 회복력 2배 + 쿨다운 속도 2배. 쿨 30초. Lv당 범위+20 지속+0.5초",
@@ -33927,8 +33927,8 @@
       "en": "Mouse-aim placement. CD 20s. Dark spiral at click pos (10s duration, tick every 18f, INT/_skMul scale). Per Lv range+22. No stacking same area"
     },
     {
-      "key": "현재 위치에 9개 기둥 순차 발동. 5초간 악의 기둥을 소환하여 반경 내 적에게 지속 암전 데미지+감속. 범위 250+(Lv-1)×22. 지옥강타 2와 합체→기둥강타. 쿨 15초",
-      "en": "9 pillars activate sequentially at current pos. 5s dark pillars deal sustained dark DMG+slow to enemies in radius. Range 250+(Lv-1)×22. Fuses with Hell Slam II → Pillar Strike. CD 15s"
+      "key": "현재 위치에 9개 기둥 순차 발동. 10초간 악의 기둥을 소환하여 반경 내 적에게 지속 암전 데미지+감속. 범위 250+(Lv-1)×22. 지옥강타 2와 합체→기둥강타. 쿨 15초",
+      "en": "9 pillars activate sequentially at current pos. 10s dark pillars deal sustained dark DMG+slow to enemies in radius. Range 250+(Lv-1)×22. Fuses with Hell Slam II → Pillar Strike. CD 15s"
     },
     {
       "key": "현재 위치에 회복의 영역 설치 (12초 지속). 땅 위: HP/MP/ST 초당+10 리젠 + 회복력 2배 + 쿨다운 속도 2배. 쿨 30초. Lv당 범위+20 지속+0.5초",
@@ -35881,8 +35881,8 @@
       "en": "Mouse-aim placement. CD 20s. Dark spiral at click pos (10s duration, tick every 18f, INT/_skMul scale). Per Lv range+22. No stacking same area"
     },
     {
-      "key": "현재 위치에 9개 기둥 순차 발동. 5초간 악의 기둥을 소환하여 반경 내 적에게 지속 암전 데미지+감속. 범위 250+(Lv-1)×22. 지옥강타 2와 합체→기둥강타. 쿨 15초",
-      "en": "9 pillars activate sequentially at current pos. 5s dark pillars deal sustained dark DMG+slow to enemies in radius. Range 250+(Lv-1)×22. Fuses with Hell Slam II → Pillar Strike. CD 15s"
+      "key": "현재 위치에 9개 기둥 순차 발동. 10초간 악의 기둥을 소환하여 반경 내 적에게 지속 암전 데미지+감속. 범위 250+(Lv-1)×22. 지옥강타 2와 합체→기둥강타. 쿨 15초",
+      "en": "9 pillars activate sequentially at current pos. 10s dark pillars deal sustained dark DMG+slow to enemies in radius. Range 250+(Lv-1)×22. Fuses with Hell Slam II → Pillar Strike. CD 15s"
     },
     {
       "key": "현재 위치에 회복의 영역 설치 (12초 지속). 땅 위: HP/MP/ST 초당+10 리젠 + 회복력 2배 + 쿨다운 속도 2배. 쿨 30초. Lv당 범위+20 지속+0.5초",
@@ -37835,8 +37835,8 @@
       "en": "Mouse-aim placement. CD 20s. Dark spiral at click pos (10s duration, tick every 18f, INT/_skMul scale). Per Lv range+22. No stacking same area"
     },
     {
-      "key": "현재 위치에 9개 기둥 순차 발동. 5초간 악의 기둥을 소환하여 반경 내 적에게 지속 암전 데미지+감속. 범위 250+(Lv-1)×22. 지옥강타 2와 합체→기둥강타. 쿨 15초",
-      "en": "9 pillars activate sequentially at current pos. 5s dark pillars deal sustained dark DMG+slow to enemies in radius. Range 250+(Lv-1)×22. Fuses with Hell Slam II → Pillar Strike. CD 15s"
+      "key": "현재 위치에 9개 기둥 순차 발동. 10초간 악의 기둥을 소환하여 반경 내 적에게 지속 암전 데미지+감속. 범위 250+(Lv-1)×22. 지옥강타 2와 합체→기둥강타. 쿨 15초",
+      "en": "9 pillars activate sequentially at current pos. 10s dark pillars deal sustained dark DMG+slow to enemies in radius. Range 250+(Lv-1)×22. Fuses with Hell Slam II → Pillar Strike. CD 15s"
     },
     {
       "key": "현재 위치에 회복의 영역 설치 (12초 지속). 땅 위: HP/MP/ST 초당+10 리젠 + 회복력 2배 + 쿨다운 속도 2배. 쿨 30초. Lv당 범위+20 지속+0.5초",
@@ -39789,8 +39789,8 @@
       "en": "Mouse-aim placement. CD 20s. Dark spiral at click pos (10s duration, tick every 18f, INT/_skMul scale). Per Lv range+22. No stacking same area"
     },
     {
-      "key": "현재 위치에 9개 기둥 순차 발동. 5초간 악의 기둥을 소환하여 반경 내 적에게 지속 암전 데미지+감속. 범위 250+(Lv-1)×22. 지옥강타 2와 합체→기둥강타. 쿨 15초",
-      "en": "9 pillars activate sequentially at current pos. 5s dark pillars deal sustained dark DMG+slow to enemies in radius. Range 250+(Lv-1)×22. Fuses with Hell Slam II → Pillar Strike. CD 15s"
+      "key": "현재 위치에 9개 기둥 순차 발동. 10초간 악의 기둥을 소환하여 반경 내 적에게 지속 암전 데미지+감속. 범위 250+(Lv-1)×22. 지옥강타 2와 합체→기둥강타. 쿨 15초",
+      "en": "9 pillars activate sequentially at current pos. 10s dark pillars deal sustained dark DMG+slow to enemies in radius. Range 250+(Lv-1)×22. Fuses with Hell Slam II → Pillar Strike. CD 15s"
     },
     {
       "key": "현재 위치에 회복의 영역 설치 (12초 지속). 땅 위: HP/MP/ST 초당+10 리젠 + 회복력 2배 + 쿨다운 속도 2배. 쿨 30초. Lv당 범위+20 지속+0.5초",
@@ -41743,8 +41743,8 @@
       "en": "Mouse-aim placement. CD 20s. Dark spiral at click pos (10s duration, tick every 18f, INT/_skMul scale). Per Lv range+22. No stacking same area"
     },
     {
-      "key": "현재 위치에 9개 기둥 순차 발동. 5초간 악의 기둥을 소환하여 반경 내 적에게 지속 암전 데미지+감속. 범위 250+(Lv-1)×22. 지옥강타 2와 합체→기둥강타. 쿨 15초",
-      "en": "9 pillars activate sequentially at current pos. 5s dark pillars deal sustained dark DMG+slow to enemies in radius. Range 250+(Lv-1)×22. Fuses with Hell Slam II → Pillar Strike. CD 15s"
+      "key": "현재 위치에 9개 기둥 순차 발동. 10초간 악의 기둥을 소환하여 반경 내 적에게 지속 암전 데미지+감속. 범위 250+(Lv-1)×22. 지옥강타 2와 합체→기둥강타. 쿨 15초",
+      "en": "9 pillars activate sequentially at current pos. 10s dark pillars deal sustained dark DMG+slow to enemies in radius. Range 250+(Lv-1)×22. Fuses with Hell Slam II → Pillar Strike. CD 15s"
     },
     {
       "key": "현재 위치에 회복의 영역 설치 (12초 지속). 땅 위: HP/MP/ST 초당+10 리젠 + 회복력 2배 + 쿨다운 속도 2배. 쿨 30초. Lv당 범위+20 지속+0.5초",
@@ -43697,8 +43697,8 @@
       "en": "Mouse-aim placement. CD 20s. Dark spiral at click pos (10s duration, tick every 18f, INT/_skMul scale). Per Lv range+22. No stacking same area"
     },
     {
-      "key": "현재 위치에 9개 기둥 순차 발동. 5초간 악의 기둥을 소환하여 반경 내 적에게 지속 암전 데미지+감속. 범위 250+(Lv-1)×22. 지옥강타 2와 합체→기둥강타. 쿨 15초",
-      "en": "9 pillars activate sequentially at current pos. 5s dark pillars deal sustained dark DMG+slow to enemies in radius. Range 250+(Lv-1)×22. Fuses with Hell Slam II → Pillar Strike. CD 15s"
+      "key": "현재 위치에 9개 기둥 순차 발동. 10초간 악의 기둥을 소환하여 반경 내 적에게 지속 암전 데미지+감속. 범위 250+(Lv-1)×22. 지옥강타 2와 합체→기둥강타. 쿨 15초",
+      "en": "9 pillars activate sequentially at current pos. 10s dark pillars deal sustained dark DMG+slow to enemies in radius. Range 250+(Lv-1)×22. Fuses with Hell Slam II → Pillar Strike. CD 15s"
     },
     {
       "key": "현재 위치에 회복의 영역 설치 (12초 지속). 땅 위: HP/MP/ST 초당+10 리젠 + 회복력 2배 + 쿨다운 속도 2배. 쿨 30초. Lv당 범위+20 지속+0.5초",
@@ -45655,8 +45655,8 @@
       "en": "Mouse-aim placement. CD 20s. Dark spiral at click pos (10s duration, tick every 18f, INT/_skMul scale). Per Lv range+22. No stacking same area"
     },
     {
-      "key": "현재 위치에 9개 기둥 순차 발동. 5초간 악의 기둥을 소환하여 반경 내 적에게 지속 암전 데미지+감속. 범위 250+(Lv-1)×22. 지옥강타 2와 합체→기둥강타. 쿨 15초",
-      "en": "9 pillars activate sequentially at current pos. 5s dark pillars deal sustained dark DMG+slow to enemies in radius. Range 250+(Lv-1)×22. Fuses with Hell Slam II → Pillar Strike. CD 15s"
+      "key": "현재 위치에 9개 기둥 순차 발동. 10초간 악의 기둥을 소환하여 반경 내 적에게 지속 암전 데미지+감속. 범위 250+(Lv-1)×22. 지옥강타 2와 합체→기둥강타. 쿨 15초",
+      "en": "9 pillars activate sequentially at current pos. 10s dark pillars deal sustained dark DMG+slow to enemies in radius. Range 250+(Lv-1)×22. Fuses with Hell Slam II → Pillar Strike. CD 15s"
     },
     {
       "key": "현재 위치에 회복의 영역 설치 (12초 지속). 땅 위: HP/MP/ST 초당+10 리젠 + 회복력 2배 + 쿨다운 속도 2배. 쿨 30초. Lv당 범위+20 지속+0.5초",
@@ -47609,8 +47609,8 @@
       "en": "Mouse-aim placement. CD 20s. Dark spiral at click pos (10s duration, tick every 18f, INT/_skMul scale). Per Lv range+22. No stacking same area"
     },
     {
-      "key": "현재 위치에 9개 기둥 순차 발동. 5초간 악의 기둥을 소환하여 반경 내 적에게 지속 암전 데미지+감속. 범위 250+(Lv-1)×22. 지옥강타 2와 합체→기둥강타. 쿨 15초",
-      "en": "9 pillars activate sequentially at current pos. 5s dark pillars deal sustained dark DMG+slow to enemies in radius. Range 250+(Lv-1)×22. Fuses with Hell Slam II → Pillar Strike. CD 15s"
+      "key": "현재 위치에 9개 기둥 순차 발동. 10초간 악의 기둥을 소환하여 반경 내 적에게 지속 암전 데미지+감속. 범위 250+(Lv-1)×22. 지옥강타 2와 합체→기둥강타. 쿨 15초",
+      "en": "9 pillars activate sequentially at current pos. 10s dark pillars deal sustained dark DMG+slow to enemies in radius. Range 250+(Lv-1)×22. Fuses with Hell Slam II → Pillar Strike. CD 15s"
     },
     {
       "key": "현재 위치에 회복의 영역 설치 (12초 지속). 땅 위: HP/MP/ST 초당+10 리젠 + 회복력 2배 + 쿨다운 속도 2배. 쿨 30초. Lv당 범위+20 지속+0.5초",
@@ -49583,8 +49583,8 @@
       "en": "Mouse-aim placement. CD 20s. Dark spiral at click pos (10s duration, tick every 18f, INT/_skMul scale). Per Lv range+22. No stacking same area"
     },
     {
-      "key": "현재 위치에 9개 기둥 순차 발동. 5초간 악의 기둥을 소환하여 반경 내 적에게 지속 암전 데미지+감속. 범위 250+(Lv-1)×22. 지옥강타 2와 합체→기둥강타. 쿨 15초",
-      "en": "9 pillars activate sequentially at current pos. 5s dark pillars deal sustained dark DMG+slow to enemies in radius. Range 250+(Lv-1)×22. Fuses with Hell Slam II → Pillar Strike. CD 15s"
+      "key": "현재 위치에 9개 기둥 순차 발동. 10초간 악의 기둥을 소환하여 반경 내 적에게 지속 암전 데미지+감속. 범위 250+(Lv-1)×22. 지옥강타 2와 합체→기둥강타. 쿨 15초",
+      "en": "9 pillars activate sequentially at current pos. 10s dark pillars deal sustained dark DMG+slow to enemies in radius. Range 250+(Lv-1)×22. Fuses with Hell Slam II → Pillar Strike. CD 15s"
     },
     {
       "key": "현재 위치에 회복의 영역 설치 (12초 지속). 땅 위: HP/MP/ST 초당+10 리젠 + 회복력 2배 + 쿨다운 속도 2배. 쿨 30초. Lv당 범위+20 지속+0.5초",
@@ -51837,8 +51837,8 @@
       "en": "Mouse-aim placement. CD 20s. Dark spiral at click pos (10s duration, tick every 18f, INT/_skMul scale). Per Lv range+22. No stacking same area"
     },
     {
-      "key": "현재 위치에 9개 기둥 순차 발동. 5초간 악의 기둥을 소환하여 반경 내 적에게 지속 암전 데미지+감속. 범위 250+(Lv-1)×22. 지옥강타 2와 합체→기둥강타. 쿨 15초",
-      "en": "9 pillars activate sequentially at current pos. 5s dark pillars deal sustained dark DMG+slow to enemies in radius. Range 250+(Lv-1)×22. Fuses with Hell Slam II → Pillar Strike. CD 15s"
+      "key": "현재 위치에 9개 기둥 순차 발동. 10초간 악의 기둥을 소환하여 반경 내 적에게 지속 암전 데미지+감속. 범위 250+(Lv-1)×22. 지옥강타 2와 합체→기둥강타. 쿨 15초",
+      "en": "9 pillars activate sequentially at current pos. 10s dark pillars deal sustained dark DMG+slow to enemies in radius. Range 250+(Lv-1)×22. Fuses with Hell Slam II → Pillar Strike. CD 15s"
     },
     {
       "key": "현재 위치에 회복의 영역 설치 (12초 지속). 땅 위: HP/MP/ST 초당+10 리젠 + 회복력 2배 + 쿨다운 속도 2배. 쿨 30초. Lv당 범위+20 지속+0.5초",

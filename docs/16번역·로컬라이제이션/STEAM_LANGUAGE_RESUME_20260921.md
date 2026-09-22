@@ -78,3 +78,16 @@
 | 획득·장비·성장 메뉴와 자동 회복을 모두 확인했습니다. 안내 종료를 누르면 닫힙니다. | You have explored loot, equipment, progression menus and auto-healing. Select Close guide to dismiss this panel. |
 
 [전투·자원 실습 후속 계약](TUTORIAL_ENGLISH_20260921.md).
+
+
+## 2026-09-22 영어 캐릭터·배지·HUD 후속
+
+| 대상 | 현재 구현 |
+|---|---|
+| 캐릭터 | 신규 소개·직업·특성19개 영어 등록 |
+| 배지 | 3종 이름·조건·모음·알림 영어, 언어 전환 시 획득/알림 타이머 보존 |
+| HUD | _applyLang에서 리프4개 및 플레이어 상태 aria-label 즉시 갱신. 일시정지에서도 적용 |
+| 악의기둥 | 기존27언어 원본 JSON에는 5초가 남아 있었음. ui-needed와 실제 번역을10초로 고쳐 strict 빌드 복구 |
+| 검증 | 번역 빌드와 관련14개 검사 PASS. 캐릭터 영상/타 언어 신규 실습은 후속 |
+
+상세: docs/16번역·로컬라이제이션/ENGLISH_CHARACTER_BADGE_HUD_20260922.md
