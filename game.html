@@ -2287,9 +2287,10 @@ canvas{display:block;position:fixed;inset:0}
 }
 /* ═══ Inventory: dark iron armory / ARPG comparison layout (2026-09-23) ═══ */
 #invPanel .pbox{
-  width:min(1920px,98vw)!important;height:min(1080px,96vh)!important;
-  max-width:98vw!important;max-height:96vh!important;
-  padding:18px 20px 14px!important;gap:12px;
+  width:100vw!important;height:100vh!important;
+  max-width:100vw!important;max-height:100vh!important;box-sizing:border-box!important;
+  margin:0!important;border-radius:0!important;
+  padding:18px 24px 16px!important;gap:12px;
   background:
     radial-gradient(ellipse at 48% -15%,rgba(150,76,40,.22),transparent 52%),
     linear-gradient(145deg,rgba(20,17,16,.98),rgba(8,9,11,.985) 58%,rgba(19,12,11,.98))!important;
@@ -2313,16 +2314,25 @@ canvas{display:block;position:fixed;inset:0}
   box-shadow:inset 0 1px rgba(255,228,190,.06),0 3px 10px rgba(0,0,0,.28);
 }
 #invPanel .inv-wrap{
-  display:grid!important;grid-template-columns:600px minmax(420px,1fr) 350px!important;
-  gap:8px!important;overflow:hidden!important;padding:0!important;
+  position:relative!important;display:grid!important;
+  grid-template-columns:320px minmax(0,1fr)!important;
+  grid-template-rows:minmax(480px,1fr) minmax(230px,.42fr)!important;
+  gap:10px!important;overflow:hidden!important;padding:0!important;
 }
+#invPanel #invLeft{display:contents!important}
+#invPanel .inv-equip{grid-column:2;grid-row:1;display:flex!important;flex-direction:column;align-items:center;justify-content:flex-start;overflow:hidden}
+#invPanel #invOssuaryPanel{grid-column:1;grid-row:1;overflow:auto!important;padding:14px!important;border:1px solid rgba(176,126,84,.24);border-radius:6px;background:linear-gradient(160deg,rgba(31,27,25,.82),rgba(12,13,15,.91))}
+#invPanel #invStorageCol{grid-column:1;grid-row:2;overflow:auto!important;padding:14px 10px!important;border:1px solid rgba(176,126,84,.24);border-radius:6px;background:linear-gradient(160deg,rgba(31,27,25,.82),rgba(12,13,15,.91))}
+#invPanel #invCenter{grid-column:2;grid-row:2;min-width:0;overflow:auto!important}
+#invPanel #invRight{position:absolute!important;z-index:10;top:12px;right:12px;width:min(350px,28vw)!important;max-height:56vh;display:none!important;border-radius:6px!important}
+#invPanel #invRight:has(.item-detail){display:block!important}
 #invPanel .inv-left,#invPanel .inv-center,#invPanel .inv-right{
   min-width:0!important;min-height:0!important;padding:12px!important;
   border:1px solid rgba(176,126,84,.24)!important;border-radius:6px!important;
   background:linear-gradient(160deg,rgba(31,27,25,.82),rgba(12,13,15,.91))!important;
   box-shadow:inset 0 1px rgba(255,231,203,.045),0 8px 24px rgba(0,0,0,.24);
 }
-#invPanel .inv-left{width:auto!important;overflow-y:auto!important}
+#invPanel .inv-left{width:auto!important;overflow:visible!important}
 #invPanel .inv-equip{
   margin:0 0 10px!important;padding:10px 4px 12px!important;
   border-bottom:1px solid rgba(176,126,84,.18);
@@ -2331,18 +2341,18 @@ canvas{display:block;position:fixed;inset:0}
   color:#e6c39c!important;font-size:.83rem!important;letter-spacing:.16em!important;
   text-shadow:0 1px 8px rgba(210,131,69,.2)!important;
 }
-#invPanel .inv-eq-wrap{width:380px!important;height:310px!important;max-width:100%;margin:0 auto 140px!important;transform:scale(1.45);transform-origin:top center}
-#invPanel .inv-eq-sil{width:190px;height:285px;opacity:.98;mix-blend-mode:screen;object-fit:contain;filter:drop-shadow(0 0 18px rgba(201,55,45,.28))}
+#invPanel .inv-eq-wrap{width:420px!important;height:340px!important;max-width:none!important;margin:0 auto 90px!important;transform:scale(1.4);transform-origin:top center}
+#invPanel .inv-eq-sil{width:220px;height:330px;opacity:.98;mix-blend-mode:screen;object-fit:contain;filter:drop-shadow(0 0 24px rgba(201,55,45,.34))}
 #invPanel .inv-eq-slot{z-index:2}
 #invPanel .inv-eq-slot{
-  width:44px!important;height:44px!important;
+  width:52px!important;height:52px!important;
   border:1px solid rgba(168,143,115,.34)!important;border-radius:4px!important;
   background:linear-gradient(145deg,rgba(33,32,31,.68),rgba(8,9,11,.72))!important;
   backdrop-filter:blur(2px);
   box-shadow:inset 0 1px rgba(255,255,255,.07),0 3px 8px rgba(0,0,0,.42)!important;
   transition:transform .14s,border-color .14s,box-shadow .14s!important;
 }
-#invPanel .inv-eq-slot .iskin{width:34px!important;height:34px!important;flex-shrink:0}
+#invPanel .inv-eq-slot .iskin{width:40px!important;height:40px!important;flex-shrink:0}
 #invPanel .inv-eq-slot .iskin-img{width:100%!important;height:100%!important;object-fit:contain}
 #invPanel .inv-eq-slot.inv-eq-item .iskin-img{filter:drop-shadow(0 1px 3px rgba(0,0,0,.8)) drop-shadow(0 0 4px rgba(230,184,120,.22))}
 #invPanel .inv-eq-slot .ieq-label{font-size:.58rem!important;line-height:1;margin-top:0!important}
@@ -2406,18 +2416,22 @@ canvas{display:block;position:fixed;inset:0}
   border-top:1px solid rgba(198,139,91,.2);padding-top:10px!important;flex-basis:68px!important;
 }
 #invPanel .inv-actions .pclose{min-height:38px;border-radius:4px!important;padding:7px 14px!important;letter-spacing:.025em}
-@media(max-width:1460px) and (min-width:1101px){
-  #invPanel .inv-wrap{grid-template-columns:600px minmax(420px,1fr)!important;grid-template-rows:minmax(0,1fr) auto!important;overflow-y:auto!important}
-  #invPanel .inv-right{grid-column:2;max-height:240px}
+@media(max-width:1600px) and (min-width:1101px){
+  #invPanel .inv-wrap{grid-template-columns:280px minmax(0,1fr)!important;grid-template-rows:minmax(480px,1fr) minmax(230px,.42fr)!important}
+  #invPanel #invRight{width:min(330px,30vw)!important}
 }
 @media(max-width:1100px) and (min-width:901px){
   #invPanel .inv-wrap{display:flex!important;flex-direction:column!important;overflow-y:auto!important}
+  #invPanel .inv-equip,#invPanel #invOssuaryPanel,#invPanel #invStorageCol,#invPanel #invCenter{grid-column:auto!important;grid-row:auto!important;flex:0 0 auto!important}
+  #invPanel #invLeft{display:contents!important}
   #invPanel .inv-left,#invPanel .inv-center,#invPanel .inv-right{width:100%!important;flex:0 0 auto!important}
   #invPanel .inv-right{max-height:220px}
 }
 @media(max-width:900px){
   #invPanel .pbox{width:100vw!important;height:100vh!important;max-height:100vh!important;padding:12px!important;gap:8px}
   #invPanel .inv-wrap{display:flex!important;flex-direction:column!important;overflow-y:auto!important;gap:9px!important}
+  #invPanel .inv-equip,#invPanel #invOssuaryPanel,#invPanel #invStorageCol,#invPanel #invCenter{grid-column:auto!important;grid-row:auto!important;flex:0 0 auto!important}
+  #invPanel #invLeft{display:contents!important}
   #invPanel .inv-left,#invPanel .inv-center,#invPanel .inv-right{width:100%!important;flex:0 0 auto!important;padding:10px!important}
   #invPanel .inv-right{max-height:none!important}
   #invPanel .inv-center>#invGrid{align-self:center}
@@ -2425,7 +2439,7 @@ canvas{display:block;position:fixed;inset:0}
   #invPanel .ptitle{font-size:1.35rem!important;letter-spacing:.12em!important}
 }
 @media(max-width:480px){
-  #invPanel .inv-eq-wrap{max-width:none!important;transform:scale(1.08);transform-origin:top center;margin-left:calc((100% - 410px)/2)!important;margin-bottom:25px!important}
+  #invPanel .inv-eq-wrap{max-width:none!important;transform:scale(1.25);transform-origin:top center;margin-left:calc((100% - 420px)/2)!important;margin-bottom:90px!important}
 }
 </style>
 <link rel="stylesheet" href="stat-panel-ui.css?v=20260913-smooth-ui">
@@ -15744,7 +15758,8 @@ const _FO='assets/map/ch1/floor_objects/';
 const _CO='assets/map/ch1/collision/';
 const _OBJ_SPR_MAP={
   'diablo_hell_corpse_tree':'assets/map/ch1/diablo_hell_corpse_tree_v1.png',
-  'diablo_hell_torch':'assets/map/ch1/diablo_field_torch_v1.png',
+  'diablo_hell_torch':'assets/map/ch1/diablo_field_torch_base_v1.png',
+  'diablo_hell_torch_flame':'assets/map/ch1/diablo_field_torch_flame_v1.png',
   'dead_tree':_FO+'tree_dead_01.png','dead_tree_02':_FO+'tree_dead_02.png','dead_tree_03':_FO+'tree_dead_03.png',
   'skull_pile':_FO+'deco_bones_04.png','bone_rocks':_FO+'deco_bones_03.png',
   'poison_pool':_FO+'poison_pool.png',
@@ -16635,8 +16650,9 @@ function _waitObjSprites(timeout){
   });
 }
 const _OBJ_META={
-  'diablo_hell_corpse_tree':{sz:920,large:1,keepAR:1},'diablo_hell_torch':{sz:150,keepAR:1},
-  'dead_tree':{sz:64,col:1},'dead_tree_02':{sz:64,col:1},'dead_tree_03':{sz:64,col:1},
+  'diablo_hell_corpse_tree':{sz:920,large:1,keepAR:1,sway:.0045},'diablo_hell_torch':{sz:150,keepAR:1},
+  'diablo_hell_torch_flame':{sz:150,keepAR:1,anim:{frames:8,cols:4,rows:2,interval:110}},
+  'dead_tree':{sz:64,col:1,sway:.018},'dead_tree_02':{sz:64,col:1,sway:.016},'dead_tree_03':{sz:64,col:1,sway:.014},
   'skull_pile':{sz:32},'bone_rocks':{sz:32},
   'poison_pool':{sz:32},
   'frozen_bones':{sz:32},
@@ -21907,15 +21923,9 @@ function _drawShootCharge(x,y,r,prog,col,sa,physical=false){
   X.lineCap='round';
   X.globalAlpha=sa*.28;X.strokeStyle='#080808';X.lineWidth=5;
   X.beginPath();X.arc(x,y,R,0,Math.PI*2);X.stroke();
-  X.globalAlpha=physical?sa:sa*.4;X.strokeStyle=physical?'#ffffff':col||'#ff6644';X.lineWidth=physical?4.5:2;
-  X.beginPath();X.arc(x,y,R,0,Math.PI*2);X.stroke();
   if(prog>0){
     X.globalAlpha=physical?sa:sa*(.8+prog*.2);X.strokeStyle=physical?'#ffffff':col||'#ff6644';X.lineWidth=physical?6:3.5;
     X.beginPath();X.arc(x,y,R,-Math.PI/2,-Math.PI/2+Math.PI*2*prog);X.stroke();
-  }
-  if(prog>.92){
-    X.globalAlpha=sa*.7;X.strokeStyle='#ffffff';X.lineWidth=1.5;
-    X.beginPath();X.arc(x,y,R,0,Math.PI*2);X.stroke();
   }
   X.restore();
 }
@@ -24196,6 +24206,22 @@ function _paintHellFloorMarks(c,hell,map,tx0,ty0,tx1,ty1,wx0,wy0){
       c.restore();
     }
   }
+}
+function _diabloNatureSway(c,o,meta,sz,now){
+  if(!G._fieldRebuildQA||!meta||!meta.sway)return false;
+  const phase=(o.x*.017+o.y*.011),wave=Math.sin(now*.00058+phase)+.24*Math.sin(now*.00107+phase*1.73);
+  c.save();c.translate(o.x,o.y+sz*.34);c.rotate(wave*meta.sway);c.translate(-o.x,-o.y-sz*.34);
+  return true;
+}
+function _drawDiabloTorchFrame(c,x,y,now,seed,scale){
+  if(!G._fieldRebuildQA)return;
+  const img=_OBJ_SPR.diablo_hell_torch_flame,meta=_OBJ_META.diablo_hell_torch_flame;
+  if(!img||!img.complete||img.naturalWidth<4||!meta||!meta.anim)return;
+  const a=meta.anim,period=a.interval*a.frames,offset=((~~(seed*7919))&0x7fffffff)%period;
+  const frame=~~(((now+offset)%period)/a.interval),fw=img.naturalWidth/a.cols,fh=img.naturalHeight/a.rows,sz=meta.sz*(scale||1);
+  c.save();c.globalAlpha=1;c.globalCompositeOperation='lighter';
+  c.drawImage(img,(frame%a.cols)*fw,~~(frame/a.cols)*fh,fw,fh,x+sz*.13,y-sz*.5,sz*.28,sz*.4);
+  c.restore();
 }
 function _paintDiabloFieldGround(c,tx0,ty0,tx1,ty1,wx0,wy0){
   if(!G._fieldRebuildQA)return;
@@ -48520,6 +48546,7 @@ function draw(){
         const _drawFilter=_ch1Tone&&_metaFilter?_metaFilter+' '+_ch1Tone:_ch1Tone||_metaFilter;
         const _spriteFx=_drawFilter||(_meta&&_meta.blend);if(_spriteFx){X.save();if(_drawFilter)X.filter=_drawFilter;if(_meta&&_meta.blend)X.globalCompositeOperation=_meta.blend}
         const _moAlpha=(_meta&&_meta.alpha!==undefined?_meta.alpha:1)*_ch1StartOuterPropAlpha(mo);X.globalAlpha=_moAlpha;
+        const _swayActive=_diabloNatureSway(X,mo,_meta,(_meta?_meta.sz||32:32)*(mo.scale||1),_now);
         if(_spr&&_spr.complete&&_spr.naturalWidth>1){
           const sz=(_meta?_meta.sz||32:32)*(mo.scale||1);
           if(_meta&&_meta.sheet){const _sh=_meta.sheet,_cw=~~(_spr.naturalWidth/_sh.c),_ch=~~(_spr.naturalHeight/_sh.r);
@@ -48594,8 +48621,10 @@ function draw(){
         }
         if(_spriteFx)X.restore();
         if(_hwDormantTone)X.restore();
+        if(_swayActive)X.restore();
         break;}
     }
+    if(G._fieldRebuildQA&&mo.type==='diablo_hell_torch')_drawDiabloTorchFrame(X,mo.x,mo.y,_now,mo.x*.13+mo.y*.07,mo.scale);
     X.globalAlpha=1;
   }
   if(_hellWinterTone)X.restore();
