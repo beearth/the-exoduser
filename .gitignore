@@ -130,3 +130,15 @@ assets/vfx/boss/gen/
 /output/**/captures/
 /output/**/*.log
 /output/steam_save_incident_20260918_1542/
+
+# Reproducible Steam localization preview/package exports (keep local, don't pollute Git status)
+/output/language_package_20260923/
+/output/steam_languages_finish_20260923/
+/output/imagegen/mine_trap_ward_sheet.png
+
+# Local editor state and dated safety copies
+/.vscode/
+/game.html.bak_before_diablo4_map_20260923
+/game.html.bak_before_elite_affixes_20260923
+/game.html.bak_before_field_rebuild_20260923
+/maps_data.js.bak_before_diablo4_map_20260923
