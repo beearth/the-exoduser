@@ -17,6 +17,7 @@ const PORT = 3333;
 const APP_DIR = __dirname;
 
 const MIME = {
+  '.vtt': 'text/vtt; charset=utf-8',
   '.html': 'text/html; charset=utf-8',
   '.js':   'application/javascript',
   '.css':  'text/css',

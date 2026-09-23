@@ -1,6 +1,6 @@
 (function(){
   const fs=require('fs'),path=require('path');
-  const out='G:/exoduser/output/steam_review_20260916';
+  const out=process.env.EXODUSER_QA_OUTPUT||'G:/exoduser/output/steam_review_20260916';
   const smoke=process.env.EXODUSER_QA_SMOKE==='1';
   const reportPath=out+(smoke?'/runtime-smoke.json':'/runtime.json');
   const locales=()=>smoke?['ko','en','fr','ja']:ExoduserI18n.languages;
@@ -20,9 +20,10 @@
   async function run(){
     let r=read();
     try{
-      nw.Window.get().leaveFullscreen();nw.Window.get().resizeTo(1280,720);nw.Window.get().show();
+      nw.Window.get().leaveFullscreen();nw.Window.get().resizeTo(1280,720);if(process.env.EXODUSER_QA_HIDDEN!=='1')nw.Window.get().show();
       r.runtime={nw:process.versions.nw,chromium:process.versions.chrome,appData:process.env.APPDATA,profile:nw.App.dataPath,url:location.href};
-      if(!r.runtime.appData.includes('steam_review_20260916'))throw Error('Save isolation not active');
+      const profileRoot=path.resolve(out,'profiles')+path.sep;
+      if(!path.resolve(r.runtime.appData).startsWith(profileRoot))throw Error('Save isolation not active');
       if(location.pathname.endsWith('index.html')){
         await until(()=>typeof getCurrentLanguage==='function'&&typeof _worldIntroSubtitles!=='undefined');
         await wait(1500);await showLogin();

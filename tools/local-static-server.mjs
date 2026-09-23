@@ -4,6 +4,7 @@ import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 
 const MIME = {
+  '.vtt': 'text/vtt; charset=utf-8',
   '.css': 'text/css; charset=utf-8',
   '.gif': 'image/gif',
   '.html': 'text/html; charset=utf-8',

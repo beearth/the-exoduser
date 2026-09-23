@@ -167,3 +167,16 @@
 | verify-language-support.mjs | VM 모듈 활성화, 기존 성장 화면 테스트는 설치된 Chrome 사용. GROWTH_TEST_BROWSER_CHANNEL로 다른 설치 채널 지정 가능 |
 | 실습 경고 렌더 fixture | 실행 파일의 실제 _projectileParryClass 함수를 함께 로드해 의존성을 검증. 전투 규칙은 변경하지 않음 |
 | 생성 부위 문법 | 프랑스어 de l’ancêtre, 이탈리아어 dell’Antenato로 관사 축약 |
+
+검사용 fixture를 require할 때에는 fixture 함수만 제공한다. 전체 전투 검사는 tools/test-parry-lesson.cjs 직접 실행으로 유지하며 번역 검사에서 중복 실행하지 않는다.
+
+
+## 2026-09-23 자막 HTTP 응답
+
+| 서버 | .vtt Content-Type |
+|---|---|
+| server.cjs 개발 서버 | text/vtt; charset=utf-8 |
+| node-main.js NW.js 패키지 | text/vtt; charset=utf-8 |
+| tools/local-static-server.mjs 검사 서버 | text/vtt; charset=utf-8 |
+
+네이티브 TextTrack 자막을 올바른 MIME으로 전달한다. 패키지 서버의 실제 요청 처리 함수를29개 언어 자막에 실행하여 상태200·헤더·22큐를 검사한다.

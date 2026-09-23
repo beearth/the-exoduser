@@ -4,8 +4,11 @@ The manifest is restored byte-for-byte in finally; user saves are never used.
 import os, sys, json, time, subprocess, hashlib
 from pathlib import Path
 from urllib.request import urlopen
-ROOT=Path('G:/exoduser'); OUT=ROOT/'output/steam_review_20260916'
-APP=ROOT/'out/EXODUSER-win64'; package=APP/'package.nw'
+ROOT=Path('G:/exoduser'); OUT=Path(os.environ.get('EXODUSER_QA_OUTPUT', str(ROOT/'output/steam_review_20260916'))).resolve()
+APP=Path(os.environ.get('EXODUSER_QA_PACKAGE', str(ROOT/'out/EXODUSER-win64'))).resolve(); package=APP/'package.nw'
+assert OUT.is_relative_to(ROOT/'output'), 'QA output must stay under workspace output'
+assert APP.is_relative_to(ROOT/'out'), 'QA package must stay under workspace out'
+OUT.mkdir(parents=True,exist_ok=True)
 manifest=package/'package.json'; probe=package/'_steam_review_probe.js'
 original=manifest.read_bytes(); config=json.loads(original)
 server=package/'node-main.js';original_server=server.read_bytes()
@@ -15,6 +18,7 @@ smoke='--smoke' in sys.argv
 report_file=OUT/('runtime-smoke.json' if smoke else 'runtime.json')
 if report_file.exists():report_file.rename(OUT/('runtime-attempt-'+time.strftime('%H%M%S')+'.json'))
 env=os.environ.copy();env['APPDATA']=str(qa/'appdata');env['LOCALAPPDATA']=str(qa/'localappdata');env['STEAM_LANGUAGE']='koreana'
+env['EXODUSER_QA_OUTPUT']=str(OUT)
 env['EXODUSER_QA_SMOKE']='1' if smoke else '0'
 startup=subprocess.STARTUPINFO();startup.dwFlags|=subprocess.STARTF_USESHOWWINDOW;startup.wShowWindow=0
 proc=None

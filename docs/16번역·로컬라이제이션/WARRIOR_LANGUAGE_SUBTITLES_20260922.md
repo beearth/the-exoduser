@@ -45,3 +45,14 @@
 | wa31 | 88 | 90.33333333333333 | "너는 왜 지옥에 왔느냐?" | "Why have you come to hell?" |
 | wa33a | 90.33333333333333 | 91.395 | "지옥을 탈출하라." | "Escape from hell." |
 | wa33b | 92.9 | 95.6 | "죄의 무게를 짊어진 자여." | "You... who bear the weight of sin." |
+
+
+## 2026-09-23 자막 HTTP 응답
+
+| 서버 | .vtt Content-Type |
+|---|---|
+| server.cjs 개발 서버 | text/vtt; charset=utf-8 |
+| node-main.js NW.js 패키지 | text/vtt; charset=utf-8 |
+| tools/local-static-server.mjs 검사 서버 | text/vtt; charset=utf-8 |
+
+네이티브 TextTrack 자막을 올바른 MIME으로 전달한다. 패키지 서버의 실제 요청 처리 함수를29개 언어 자막에 실행하여 상태200·헤더·22큐를 검사한다.

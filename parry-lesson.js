@@ -66,7 +66,7 @@ window._parryLesson = {
     this.panel.setAttribute('aria-label', this.t("1-1 패링 튜토리얼","1-1 Parry Tutorial"));
     const eyebrow = this.node('div'); eyebrow.className = 'lesson-eyebrow';
     this.status = this.node('span'); this.status.className = 'lesson-state';
-    eyebrow.append(this.node('span', this.chapter===2?'CHAPTER 02 · PRACTICE':'CHAPTER 01 · TRAINING'), this.status);
+    eyebrow.append(this.node('span',()=>`${this.chapter===2?'02':'01'} · ${this.t('직접 실습','Hands-on practice')}`), this.status);
     const art = this.node('div'); art.className = 'lesson-art';
     this.keycap = this.node('kbd'); this.keycap.className = 'lesson-key'; art.append(this.keycap);
     this.title = this.node('h2');

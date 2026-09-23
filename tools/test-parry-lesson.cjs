@@ -124,6 +124,8 @@ function walk(c) {
   assert.equal(l.allows('left'),true);
   c.P.x+=20;const x=c.P.x;l.tick();assert.equal(c.P.x,x);
 }
+// Importers use the lesson fixture without running the unrelated full combat suite.
+if(require.main!==module){module.exports={fixture,exerciseChainTiers,exerciseDashFive};return;}
 for (const [stage, search] of [[1, ''], [0, '?tutorial=0'], [0, '?projectilelab=1']]) {
   const c = fixture(stage, search); assert.equal(c.window._parryLesson.tick(), false); assert.equal(c.window._parryLesson.active, false);
 }
