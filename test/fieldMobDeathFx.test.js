@@ -33,12 +33,12 @@ test('_addCorpse captures field-mob sheets before boss atlas', () => {
   assert.match(corpse, /_fmDrawSpriteTo\(c\.ctx,128,128,e,e\._fmKind==='fb'\)/);
 });
 
-test('every death leaves a visible persistent blood stain, capped so it is not a puddle', () => {
+test('every death leaves a visible temporary blood stain, capped so it is not a puddle', () => {
   const stain = sliceBetween(gameHtml, 'function _isLargeMob(e){', 'function _addCorpse(e,killAng,power){');
   assert.match(stain, /function _leaveFloorTrace\(e\)\{return!!e\}/);
   assert.match(stain, /Math\.max\(14,Math\.min\(36/);
   assert.match(stain, /Math\.max\(36,Math\.min\(56/);
-  assert.match(stain, /s\.persist=true/);
+  assert.match(stain, /s\.persist=false/);
   assert.doesNotMatch(stain, /if\(!large\)return/);
   assert.doesNotMatch(stain, /function _leaveFloorTrace\(e\)\{return!!e&&/);
   assert.doesNotMatch(gameHtml, /_poolSplatImg/);

@@ -487,7 +487,7 @@ path: '/v1/images/generations'
 | 사망음+혈흔 VFX | `deathFX` | `isBoss` → `death_boss`. `death_blood` scale `clamp(0.35+r×0.075,0.8,4.8)` = **4.8** | et 50 → `death_demon`. 같은 공식 = **4.55** |
 | 대형 파티클 | `_spawnLargeMonsterDeathFx` | 26발 `#ff5577/#ffccdd` (ib) | 16발 `#ffaa66/#ffd9aa` (`r>=18` 또는 `mhp>=220`로 발동) |
 | 시체 래그돌 | `_addCorpse` | `_fbSheet` 8방향 현재 프레임 → 128×128. sz=`max(80,r*2.5)`=**300**. 수명 600. 파워 `max(5, dmg/mhp*20)` cap 8 → 비행 spd max 5 | `_wmSheet[face]` 현재 프레임. sz=`min(200,r*2.2)`≈**123**. 수명 420. 파워 min 2 |
-| 바닥 잔류 | `_addFloorTrace` | 핏자국 **56** + 살점 1. 시체 팬케이크 sz **66** (구 300). 맵 전환까지 | 핏자국 **36** + 살점 1. 시체 sz **42** |
+| 바닥 잔류 | `_addFloorTrace` | 핏자국 **56** + 살점 1. 시체 팬케이크 sz **66** (구 300). 핏자국 7초 유지 + 2초 페이드, 살점은 맵 전환까지 | 핏자국 **36**(7초 유지 + 2초 페이드) + 살점 1(맵 전환까지). 시체 sz **42** |
 | 고어 파편 | `_addGorePiece` | 5개 (flesh/blood/내장 + skull/heart). 30% `camFling` | 2개 (공통 1 + 내장/장기 1) |
 | 혈흔 폭발 | `_addDeathImpact` | `maxSz=clamp(r×3,24,240)`=**240**. `blood_impact_2/3/4` 랜덤 | 같은 공식 = **168** |
 | 카메라 | `shake` + 플래시 | shake 18, `_flashT=4` `#66ddff`, `_chromaT=3` | shake 8 |

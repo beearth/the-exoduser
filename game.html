@@ -22547,8 +22547,8 @@ function _addStain(x,y,sz,large,ib){
   let oldest=0,minT=Infinity;
   for(let i=0;i<_STAIN_MAX;i++){if(!_stains[i].active){oldest=i;break}if(_stains[i].t<minT){minT=_stains[i].t;oldest=i}}
   const s=_stains[oldest];s.x=x;s.y=y;s.sz=sz||16;s.ang=Math.random()*Math.PI*2;
-  s.large=!!large;s.ib=!!ib;s.blobs=null;s.persist=true;
-  s.mt=1e9;s.t=s.mt;s.active=true; // 맵 전환까지 유지 (누가 치운 것처럼 사라지지 않음)
+  s.large=!!large;s.ib=!!ib;s.blobs=null;s.persist=false;
+  s.mt=_STAIN_HOLD+_STAIN_FADE;s.t=s.mt;s.active=true; // 7초 유지 후 2초 동안 사라짐
 }
 function _addFloorTrace(e){
   if(!OPT.deathFx||!_leaveFloorTrace(e))return;
@@ -22577,6 +22577,7 @@ function _captureEtypeSprite(ctx,e,sz){
 function _buildCorpseGoreOverlay(noEyes){
   const canvas=document.createElement('canvas');canvas.width=128;canvas.height=128;
   const ctx=canvas.getContext('2d');
+const _STAIN_HOLD=420,_STAIN_FADE=120; // 60틱/초: 7초 유지 + 2초 페이드
   // 내장 오버레이 (선홍색 얼룩 + 짙은 핏줄)
   ctx.globalAlpha=0.45;
   var _goreColors=['#ff2233','#ee1122','#dd0033','#cc0044','#ff4455'];
@@ -22614,7 +22615,7 @@ const _corpseGoreOverlays=Array.from({length:32},(_,i)=>_buildCorpseGoreOverlay(
 function _addCorpse(e,killAng,power){
   if(!OPT.deathFx)return;
   e._corpseSpawned=true;
-  _addFloorTrace(e); // 모든 사망 핏자국. 맵 전환까지 유지. 장판 스프라이트 없음
+  _addFloorTrace(e); // 모든 사망 핏자국. 7초 유지 + 2초 페이드. 장판 스프라이트 없음
   let oldest=0,minT=Infinity;
   for(let i=0;i<_CORPSE_MAX;i++){if(!_corpses[i].active){oldest=i;break}if(_corpses[i].t<minT){minT=_corpses[i].t;oldest=i}}
   const c=_corpses[oldest];
@@ -32130,9 +32131,8 @@ function update(){
     // 불 경계에서 불꽃
     if(Math.random()<.5*sp){const fx=bc.x+(Math.random()-.5)*sz*.8;const fy=bc.y-sz/2+burnLine*scale;poolPart(fx,fy,(Math.random()-.5)*.8,-1-Math.random()*1.5,Math.random()<.4?'#ffdd00':'#ff6600',1.5+Math.random(),6+Math.random()*4,1,0,0)}
   }
-  // 피 자국 업데이트 — persist는 맵 전환까지 유지
-  for(let si=0;si<_STAIN_MAX;si++){const s=_stains[si];if(!s.active)continue;if(s.persist)continue;s.t-=sp;if(s.t<=0){s.active=false;continue}
-    const _sAlpha=s.t<s.mt*.3?s.t/(s.mt*.3):1;if(_sAlpha<0.05){s.active=false}}
+  // 피 자국 업데이트 — 게임 시간 9초에 슬롯 반환
+  for(let si=0;si<_STAIN_MAX;si++){const s=_stains[si];if(!s.active)continue;s.t-=sp;if(s.t<=0)s.active=false}
   // 시체 잔해 업데이트 — 물리: 마찰 + 벽 바운스
   for(let ci=0;ci<_CORPSE_MAX;ci++){const c=_corpses[ci];if(!c.active)continue;c.t-=sp;if(c.t<=0){c.active=false;continue}
     const _cAlpha=c.t<c.mt*.4?c.t/(c.mt*.4):1;
@@ -50644,14 +50644,15 @@ function draw(){
   const _tDP2=performance.now();
   // 피 자국 + 시체 + 불타는 시체 렌더 (시체 캡 25, 핏자국은 전량)
   let _corpDrw=0;
-  // 잔류 핏자국 — 잡몹도 남김. 반경 캡으로 장판화 방지. 맵 전환까지
+  // 잔류 핏자국 — 7초 유지 후 2초 동안 두 레이어 함께 페이드
   for(let si=0;si<_STAIN_MAX;si++){const s=_stains[si];if(!s.active)continue;
     const pad=s.sz+8;
     if(s.x<_vl-pad||s.x>_vr+pad||s.y<_vt-pad||s.y>_vb+pad)continue;
     X.save();X.translate(s.x,s.y);X.rotate(s.ang);
-    X.globalAlpha=.42;X.fillStyle='#4a0508';
+    const _sAlpha=Math.max(0,Math.min(1,s.t/_STAIN_FADE));
+    X.globalAlpha=.42*_sAlpha;X.fillStyle='#4a0508';
     X.beginPath();X.ellipse(0,0,s.sz,s.sz*.58,0,0,Math.PI*2);X.fill();
-    X.globalAlpha=.30;X.fillStyle='#7a1018';
+    X.globalAlpha=.30*_sAlpha;X.fillStyle='#7a1018';
     X.beginPath();X.ellipse(-s.sz*.08,s.sz*.04,s.sz*.62,s.sz*.32,0,0,Math.PI*2);X.fill();
     X.restore();
   }

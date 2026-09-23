@@ -1,3 +1,15 @@
+## 2026-09-24 — 바닥 핏자국 자동 페이드
+
+| id | 한글명 | 값/공식 | 적용 위치 |
+|---|---|---|---|
+| `_STAIN_HOLD` | 유지 시간 | 420틱 = 게임 시간 7초 | `_addStain` |
+| `_STAIN_FADE` | 페이드 시간 | 120틱 = 게임 시간 2초 | 핏자국 렌더 |
+| `s.mt/s.t` | 전체/남은 수명 | 생성 시 540틱, 매 업데이트 `s.t-=sp`, 0 이하 비활성 | 핏자국 업데이트 |
+| `_sAlpha` | 페이드 배율 | `clamp(s.t/120,0,1)`, 외곽 `0.42×배율`, 내부 `0.30×배율` | 두 타원 렌더 |
+| `s.persist` | 영구 유지 | `false` | `_addStain` |
+
+일반몹·보스·필드몹 공통. 60틱/초 기준이며 슬로모션·일시정지는 기존 게임 시간에 따른다. 슬롯 30개 및 가장 오래된 자국 교체, 맵 전환 시 즉시 제거는 유지. 바닥 살점과 맵 장식은 기존 수명 유지.
+
 > **2026-09-09 전투 프레임 개선:** 물약 퀵슬롯 갱신 rAF 병합, 얼음보주 60틱 생성/120틱 자동 파쇄/117틱 파쇄 VFX 물리 시간 및 셀 보간, 시체 32장×128px 고어 오버레이 캐시. 수치·검증은 [현행 계약](../12퍼포먼스·최적화/COMBAT_PRESENTATION_20260909.md) 참조.
 
 # 사망 VFX 변경 로그
@@ -73,7 +85,7 @@
 - 거대 `scarlet_splat_2` 웅덩이가 과하다고 해서 **잡몹 핏자국을 통째로 지우고** 대형도 9~17px α0.18로 사실상 안 보이게 한 과보정 수정.
 - **모든 사망이 핏자국.** `_leaveFloorTrace=!!e`. `_addStain`의 `if(!large)return` 제거.
 - 과한 건 반경: 잡몹 `clamp(r×1.4, 14, 36)`, 보스/앵글러 `clamp(r×0.5, 36, 56)`. 구 ib `r×1.5`(앵글러 180) 장판 금지. `scarlet_splat_2` 스프라이트 웅덩이는 그대로 없음.
-- 알파 외곽 **0.42** / 속 **0.30**. 슬롯 **30**. persist 맵 전환까지.
+- 알파 외곽 **0.42** / 속 **0.30**. 슬롯 **30**. 핏자국은 7초 유지 + 2초 페이드(2026-09-24), 바닥 살점은 맵 전환까지.
 - 바닥 살점 1개는 대형만(`ib`/`_fmKind`/`r>=40`). 핏자국과 분리.
 
 ### 수치/공식 테이블
@@ -83,7 +95,7 @@
 | `leaveFloorTrace` | 바닥 잔류 대상 | 모든 사망 | `_leaveFloorTrace=!!e` | `_addFloorTrace` / `_addCorpse` |
 | `stainRNormal` | 잡몹·뱀장어 핏자국 | `clamp(r×1.4, 14, 36)` | r=12 → **16.8**, 뱀장어 r=56 → **36** | `_stainRadius` |
 | `stainRBoss` | 보스·앵글러 핏자국 | `clamp(r×0.5, 36, 56)` | 앵글러 r=120 → **56**. 구 180 장판 금지 | `_stainRadius` |
-| `stainLife` | 수명 | persist | 맵 전환까지 | `_addStain` `s.persist` |
+| `stainLife` | 수명 | `s.persist=false`, 540틱 | 7초 유지 + 2초 페이드 | `_addStain` `s.t/s.mt` |
 | `stainAlpha` | 불투명 | 외곽 0.42 / 속 0.30 | 구 과보정 0.26/0.18은 안 보임 | 렌더 |
 | `stainCap` | 슬롯 | `_STAIN_MAX=30` | LRU | `_addStain` |
 | `floorGoreN` | 살조각 | 대형만 1 | `ib \|\| _fmKind \|\| r>=40`. flesh만 | `_addFloorTrace` |
@@ -100,7 +112,7 @@
 - 큰 `scarlet_splat_2` 웅덩이(반경 100~336, alpha 0.8)가 1-1 같은 작은 맵을 온통 붉게 덮었다. 일반몹 `r>=18`/`mhp>=220`까지 웅덩이를 남겨 학살 후 바닥이 더러워졌다.
 - (당시) 소형몹 자국 제거, 대형만 9~17px. **과보정 — 후속 섹션에서 전원 복원.**
 - 남기는 것: 아주 작은 핏자국 + 살점 1개. 시체 팬케이크·눈알·blood_splat 장판 없음.
-- **맵을 나갈 때까지 유지.** 15~60초에 사라지면 누가 치운 것처럼 보임. `_clearDeathDecals`는 스테이지 전환·아레나 입장만.
+- (당시) 맵을 나갈 때까지 유지. **2026-09-24 변경: 핏자국은 7초 유지 + 2초 페이드, 살점은 맵 전환까지.** `_clearDeathDecals`는 스테이지 전환·아레나 입장만.
 
 ### 수치/공식 테이블
 
@@ -109,7 +121,7 @@
 | `leaveFloorTrace` | 바닥 잔류 대상 | `ib \|\| _fmKind \|\| r>=40` | 앵글러·뱀장어·챕터보스. 일반잡몹 제외 | `_leaveFloorTrace` |
 | `stainRLarge` | 대형 핏자국 | (당시) `clamp(r*0.16, 9, 14)` | 뱀장어 **9**. 현재 36 | `_stainRadius` |
 | `stainRBoss` | 보스 핏자국 | (당시) `clamp(r*0.14, 12, 18)` | 앵글러 **17**. 현재 56 | `_stainRadius` |
-| `stainLife` | 수명 | persist | 맵 전환까지 | `_addStain` `s.persist` |
+| `stainLife` | 수명 | `s.persist=false`, 540틱 | 7초 유지 + 2초 페이드 | `_addStain` `s.t/s.mt` |
 | `stainAlpha` | 불투명 | (당시) 외곽 0.26 / 속 0.18 | 현재 0.42/0.30 | 렌더 |
 | `stainCap` | 슬롯 | (당시) `_STAIN_MAX=16` | 현재 30 | `_addStain` |
 | `floorGoreN` | 살조각 | 1 | flesh만. blood_splat은 장판처럼 보여 제외 | `_addFloorTrace` |
@@ -149,7 +161,7 @@
 | `fmCorpseSzWm` | 뱀장어 시체 크기 | `min(200, r*2.2)` | r=56 → **123** | `_addCorpse` `c.sz` |
 | `fmCorpsePower` | 시체 비행 파워 | `min(8, max(isFb?5:2, dmg/mhp*20))` | 앵글러 최소 5 → spd 5 | `_addCorpse` `spd=min(5,1.5+power*.8)` |
 | `fmCorpseLife` | 시체 수명 | ib?600:420 | 앵글러 600 / 뱀장어 420 | `_addCorpse` `c.mt` |
-| `fmStainR` | 바닥 잔류 | 핏자국 + 대형만 살점 1 | 앵글러 자국 **56** / 뱀장어 **36**. 맵 전환까지. 거대 시체팬케이크·눈알 없음 | `_addFloorTrace` |
+| `fmStainR` | 바닥 잔류 | 핏자국 + 대형만 살점 1 | 앵글러 자국 **56** / 뱀장어 **36**. 핏자국 7초 유지 + 2초 페이드, 살점은 맵 전환까지. 거대 시체팬케이크·눈알 없음 | `_addFloorTrace` |
 | `fmGoreN` | 고어 파편 수 | 공통 2 + 앵글러 추가 3 | 앵글러 **5**, 뱀장어 **2** | `_addGorePiece` |
 | `fmGoreFling` | 카메라 플링 | 기존 30%, 프레임당 최대 5 | 30% | `_addGorePiece` |
 | `fmDeathImpact` | 혈흔 폭발 | (당시) `maxSz=r*4` | 현재 앵글러 **240** / 뱀장어 **168** | `_addDeathImpact` |
