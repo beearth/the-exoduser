@@ -120,11 +120,11 @@ const archive = path.join(OUT, 'source.tar');
 // Export the contract roots, then require an exact file set. export-ignore/export-subst cannot silently change the package.
 git('archive', '--format=tar', `--output=${archive}`, commit, '--', ...archiveFiles, ...archiveDirs,
   ...selected.filter(e => !e.path.includes('/') && !required.includes(e.path)).map(e => e.path));
-const archivePaths = run('tar', ['-tf', archive]).split(/\r?\n/).filter(Boolean);
-for (const p of archivePaths) safe(p.replace(/\/$/, ''));
 // A contract root may contain tracked editor logs. Exclude those archive members
 // before extraction; the final exact-file-set check still covers every output.
-const archiveExclusions = archivePaths.filter(p => forbidden(p)).map(p => `--exclude=${p.replace(/\/$/, '')}`);
+// Git's NUL-delimited UTF-8 tree is authoritative. Windows tar listings may
+// escape non-ASCII names, making a text listing unsuitable for path validation.
+const archiveExclusions = entries.filter(e => wanted(e.path) && forbidden(e.path)).map(e => `--exclude=${e.path}`);
 run('tar', ['-xf', archive, '-C', app, ...archiveExclusions]);
 await unlink(archive);
 const actual = (await filesUnder(app)).sort();
