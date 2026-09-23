@@ -20,6 +20,8 @@
 | 격리 | APPDATA·LOCALAPPDATA·Chromium 프로필을 증거 폴더의 profiles 하위에 생성. probe도 같은 경로를 검사. EXODUSER_QA_HIDDEN=1이면 창을 show하지 않음 |
 | 복원 | 임시 QA 주입·포트 3346 사용 후 package.json 및 node-main.js 원본 바이트 복원, 주입 파일 제거 |
 | 빌드 | LANGUAGE_PACKAGE_20260923.md 계약 적용. 검증 결과와 실제 소스 SHA는 후속 패키지 보고서에 기록 |
+| 최종 패키지 | out/EXODUSER-languages-20260923. 소스 170fb3c3112551e9b18adffc56f8f070c807ef42. 앱 7,411개·런타임 476개, EXE 언어 선택·재실행 29개 언어 검사 및 QA 후 원본 해시 복원 PASS |
+| 남은 지원 범위 | 초기 로딩의 한국어·시작 안내의 공통 영어 표기 등은 잔존. 영상 전체 재생·Steam 설치 검증·상점 지원 체크 복원은 별도. LANGUAGE_PACKAGE_20260923.md의 증거와 한계 참조 |
 
 ## 원문 레지스트리
 

@@ -5,6 +5,7 @@ import { createReadStream } from 'node:fs';
 import { access, copyFile, lstat, mkdir, readdir, readFile, unlink, writeFile } from 'node:fs/promises';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
+import { x as extractTar } from 'tar';
 
 const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
 const OUT = path.join(ROOT, 'out/EXODUSER-languages-20260923');
@@ -124,8 +125,13 @@ git('archive', '--format=tar', `--output=${archive}`, commit, '--', ...archiveFi
 // before extraction; the final exact-file-set check still covers every output.
 // Git's NUL-delimited UTF-8 tree is authoritative. Windows tar listings may
 // escape non-ASCII names, making a text listing unsuitable for path validation.
-const archiveExclusions = entries.filter(e => wanted(e.path) && forbidden(e.path)).map(e => `--exclude=${e.path}`);
-run('tar', ['-xf', archive, '-C', app, ...archiveExclusions]);
+await extractTar({ file: archive, cwd: app, strict: true, preservePaths: false,
+  filter(name, entry) {
+    const relative = safe(name.replace(/\/$/, ''));
+    if (!['File', 'Directory'].includes(entry.type)) throw new Error(`Unsupported archive entry: ${relative}`);
+    return !forbidden(relative);
+  }
+});
 await unlink(archive);
 const actual = (await filesUnder(app)).sort();
 const expected = selected.map(e => e.path).sort();
