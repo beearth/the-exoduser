@@ -25,7 +25,7 @@
       const video=document.getElementById('characterStoryVideo');
       await until(()=>video.readyState>=2&&video.textTracks[0]?.cues?.length===22);
       video.pause();const track=video.textTracks[0];
-      const expected=fs.readFileSync(path.join(process.cwd(),'package.nw/video/subtitles/warrior_story_v23_'+code+'.vtt'),'utf8').split(String.fromCharCode(13)).join('').trim().split(/\n\s*\n/).slice(1).map(block=>block.split('\n').slice(block.split('\n').findIndex(line=>line.includes('-->'))+1).join('\n'));
+      const expected=fs.readFileSync(path.join(process.env.EXODUSER_QA_PACKAGE||'G:/exoduser/out/EXODUSER-win64','package.nw/video/subtitles/warrior_story_v23_'+code+'.vtt'),'utf8').split(String.fromCharCode(13)).join('').trim().split(/\n\s*\n/).slice(1).map(block=>block.split('\n').slice(block.split('\n').findIndex(line=>line.includes('-->'))+1).join('\n'));
       const actual=Array.from(track.cues,c=>c.text);
       if(JSON.stringify(actual)!==JSON.stringify(expected))throw Error('Decoded subtitle text differs '+code);
       let active=0;
@@ -43,7 +43,7 @@
     }
     const complete=ExoduserCharacterStory.play({language:'en'});
     const movie=document.getElementById('characterStoryVideo');let ended=false;
-    movie.addEventListener('ended',()=>{ended=true;},{once:true});
+    movie.addEventListener('ended',()=>{ended=true;},{once:true,capture:true});
     const began=Date.now();let frames=0,audioBytes=0,maxTime=0;
     const sample=setInterval(()=>{frames=Math.max(frames,movie.getVideoPlaybackQuality?.().totalVideoFrames||0);audioBytes=Math.max(audioBytes,movie.webkitAudioDecodedByteCount||0);maxTime=Math.max(maxTime,movie.currentTime);},250);
     let timer;

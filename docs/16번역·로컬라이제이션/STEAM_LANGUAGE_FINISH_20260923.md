@@ -38,8 +38,8 @@
 | 제외 | 기존 2026-09-16 depot 제외 규칙에 language-package-manifest.json·Dictionaries/* 추가; 사용자 데이터·인증 경로 거부. 실제 참조 WAV 유지 |
 | 업로드 단계 | preview=1 사전 목록, preview=0 실제 업로드. setlive는 빈 값으로 새 빌드를 먼저 업로드하며 실제 새 BuildID 확인 후 브랜치 지정 |
 | 언어 범위 | 내부29·Steam31항목(스페인어/포르투갈어 지역 항목 공통 번역). 인터페이스·자막 대상, 전체 음성 체크 해제 유지 |
-| 실제 상점 저장 상태 | 2026-09-23 Steamworks 읽기 확인: 인터페이스31·자막31·전체 음성0. 아직 미게시 변경이며 이번 세션에서 체크박스를 변경한 것은 아님 |
-| 게시 전 확인 | View Diffs에 언어 복원과 기존 steam_release_date 변경(2026-12-01 → 2027-12-01), 빈 mac/linux/android 요구사항 블록이 함께 존재. 출시일 변경 포함 게시 여부를 사용자에게 확인 요청; 빌드 업로드는 계속 |
+| 실제 상점 게시 상태 | 사용자 후속 지시로 게시 완료. 공개 상점 전체 언어 표에서 인터페이스31·자막31·전체 음성0 확인 |
+| 출시일 분리 | 최초 게시에서 기존 날짜 변경도 함께 반영되어 즉시 알리고 기존2026-12-01로 복원·재게시. 2027-12-01 변경안은 미게시 초안으로 보존. 최종 View Diffs는 날짜 차이만 존재. 상세 기록은 STEAM_LANGUAGE_UPLOAD_20260923.md |
 
 ## 진행 기록
 
@@ -51,7 +51,9 @@
 | 전체 언어 회귀 | tools/verify-language-support.mjs: 273개 통과, 실패0 |
 | 실제 번역 함수 | 불꽃칼날 _T 동작 검사를 기존28개 언어 사례에 추가. 수정 전 독일어 실패(Flame Blade), 수정 후 Flammenklinge 및 전체273개 통과 |
 | 프로젝트 운영 지침 | 사용자 요청으로 AGENTS.md §7에 전체 에이전트·후속 세션의 반복 컨펌 최소화, 기존 승인 재사용, 필수 요청 묶기, 범위 밖 결정만 보류하는 규칙 추가. 필수 시스템 권한 우회나 승인 설정 완화는 하지 않음 |
-| 최종 패키지·업로드 | 진행 중; 새 BuildID 미확정 |
+| 최종 패키지·업로드 | 7,915개 파일 무결성 PASS. 29언어 실행·재실행·영상638큐 PASS, 실행 오류0. 6,165개 출하 파일 미리보기 목록 정확히 일치. Steam 업로드 완료: BuildID25482996, depot manifest8823738561027363802. 브랜치 적용 상태는 STEAM_LANGUAGE_UPLOAD_20260923.md 참조 |
 | QA 첫 시도 | 영상 감사 도구의 CR 제거식 구문 오류로 주입이 실행되지 않음. 도구를 String.fromCharCode(13) 기반 제거로 수정하고 첫 실행 중단·패키지 원상 복원 후 재시도. 게임·출하 패키지 코드 오류는 아님 |
+| QA 자막 원본 경로 | NW.js 내부 cwd는 package.nw이므로 EXODUSER_QA_PACKAGE(기본 out/EXODUSER-win64)의 package.nw/video/subtitles에서 원본을 읽도록 수정. package.nw 중복 경로 ENOENT를 해결 |
+| QA 종료 이벤트 | 실제96초 재생·영상5,774프레임·오디오3,025,694바이트 디코드 이후 플레이어의 ended 처리에서 Promise가 먼저 완료되어 감사 리스너보다 집계가 먼저 실행됨. 감사 ended 리스너를 capture:true로 등록해 플레이어 정리 전에 기록하도록 수정 |
 
 docs 전체에서 build-language-package·summarize-language-package·steam-review-probe·setBootLoading·csClsName·finish-source 관련 항목을 검색했다. 기존 패키지 결과는 당시 이력으로 보존하며 이번 최종 결과와 구별한다. 번역의 전체 기술적 검증은 원어민 감수 완료를 뜻하지 않는다.

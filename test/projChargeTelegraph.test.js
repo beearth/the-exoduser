@@ -1,6 +1,7 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import { readFileSync } from 'node:fs';
+import vm from 'node:vm';
 
 const gameHtml = readFileSync(new URL('../game.html', import.meta.url), 'utf8');
 
@@ -49,25 +50,40 @@ test('eProjAt commits windup shots so a finished round always produces a bullet'
 });
 
 test('shoot charge ring is a dark track plus round-cap progress arc', () => {
-  const draw = sliceBetween(gameHtml, 'function _drawShootCharge(', 'function ');
+  const draw = sliceBetween(gameHtml, 'function _drawShootCharge(', '\n// ── 은꼬리');
   assert.match(draw, /X\.lineCap='round'/);
-  assert.match(draw, /X\.arc\(x,y,R,0,Math\.PI\*2\)/);
   assert.match(draw, /X\.arc\(x,y,R,-Math\.PI\/2,-Math\.PI\/2\+Math\.PI\*2\*prog\)/);
   assert.doesNotMatch(draw, /X\.fill\(\)/);
+  const renderedArcs = (prog) => {
+    const arcs = [];
+    const ctx = vm.createContext({Math, X: {
+      save(){}, restore(){}, beginPath(){},
+      arc(...args){this.currentArc=args},
+      stroke(){arcs.push({arc:this.currentArc, color:this.strokeStyle})}
+    }});
+    vm.runInContext(`${draw};_drawShootCharge(0,0,10,${prog},'#ffee00',1,false)`, ctx);
+    return arcs;
+  };
+  for (const prog of [0, .5, .99]) {
+    const fullBrightArcs = renderedArcs(prog).filter(({arc,color}) =>
+      arc[3] === 0 && arc[4] === Math.PI * 2 && color !== '#080808');
+    assert.equal(fullBrightArcs.length, 0, `progress ${prog} must not draw a full bright ring`);
+  }
   assert.match(gameHtml, /if\(e\._projChargeT>0&&e\._projChargeCol\)\{[\s\S]{0,360}_drawShootCharge\(/);
   assert.match(gameHtml, /if\(e\.s==='eShootWind'\)\{[\s\S]{0,180}_drawShootCharge\(/);
 });
 
 test('only physical charge rings are white; fire red-bean comets retain their Q-magic color', () => {
   const chargeDraw = sliceBetween(gameHtml, 'function _drawEnemyShotWarnings(', 'function radialProjs(');
-  assert.match(chargeDraw, /const _pcPhysical=e\._projChargeBean==='normal'&&e\.el===EL\.P/);
+  assert.match(chargeDraw, /_projectileParryClass\(\{el:e\.el,parryClass:e\._projChargeParryClass\}\)==='physical'/);
   assert.match(chargeDraw, /const _pcCol=_pcPhysical\?'#f4f4f4'/);
   assert.doesNotMatch(chargeDraw, /e\._projChargeBean==='red'\?'#f4f4f4'/);
 });
 
 test('every physical eShootWind attack previews a white charge ring', () => {
   const chargeDraw = sliceBetween(gameHtml, 'function _drawEnemyShotWarnings(', 'function radialProjs(');
-  assert.match(chargeDraw, /e\._swChargeEl===EL\.P\?'#f4f4f4'/);
+  assert.match(chargeDraw, /_swPhysical=e\._swChargeEl===EL\.P/);
+  assert.match(chargeDraw, /_drawShootCharge\(e\.x,e\.y,e\.r,prog,_swCol,1,_swPhysical\)/);
 
   const coral = sliceBetween(gameHtml, '// 산호 파편 투사체', '// ── 67:인어 사도');
   const parasite = sliceBetween(gameHtml, '// 기생충 발사: 3방향 투사체', '// ── 69:심연의 대사도');

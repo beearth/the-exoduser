@@ -1,0 +1,96 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>CH1-1 Field Rebuild — Visual QA</title>
+<style>
+canvas#map{background:#120b0b url('assets/map/ch1/rottenwood_field_master_concept_hell_v2.png') center/cover no-repeat}
+:root{color-scheme:dark;--ink:#e7dfd0;--muted:#9c9b91;--gold:#d6a45c;--panel:#131512}
+*{box-sizing:border-box}body{margin:0;background:#0b0d0d;color:var(--ink);font:14px/1.5 "Segoe UI",sans-serif}
+.shell{min-height:100vh;display:grid;grid-template-columns:minmax(0,1fr) 310px;gap:18px;padding:18px}
+.stage{min-width:0;display:grid;place-items:center;background:radial-gradient(ellipse,#24251f 0,#11130f 58%,#090a09 100%);border:1px solid #37382e;border-radius:12px;overflow:hidden}
+canvas{display:block;width:min(100%,calc(100vh - 36px));height:auto;max-height:calc(100vh - 36px);aspect-ratio:1;image-rendering:auto;box-shadow:0 18px 80px #000b}
+aside{background:linear-gradient(150deg,#1b1d19,#10120f 65%);border:1px solid #38372e;border-radius:12px;padding:22px;align-self:stretch;display:flex;flex-direction:column;gap:18px}
+.eyebrow{color:var(--gold);font-size:11px;letter-spacing:.18em;text-transform:uppercase}h1{margin:4px 0 0;font:600 24px/1.12 Georgia,serif;letter-spacing:.02em}p{margin:0;color:#bcb9ae}.rule{height:1px;background:#39382f}
+.region{display:grid;grid-template-columns:26px 1fr;gap:10px;align-items:start;margin:10px 0}.num{font:italic 16px Georgia;color:var(--gold)}.region b{display:block;color:#e8e0cf;font-size:12px;letter-spacing:.08em}.region small{color:#8e9087;font-size:11px}
+.legend{display:grid;grid-template-columns:1fr 1fr;gap:8px;color:#a9a99f;font-size:11px}.swatch{width:9px;height:9px;border-radius:50%;display:inline-block;margin-right:7px;background:#e4a64d;box-shadow:0 0 9px #ffb14c}.swatch.mass{background:#242921;box-shadow:none;border:1px solid #6f705e}.swatch.path{background:#8a7151;box-shadow:none}.swatch.mark{background:#9e746a;box-shadow:0 0 8px #9e746a}
+.status{margin-top:auto;border-left:2px solid #9b7040;padding:8px 0 8px 12px;color:#98978c;font-size:11px}.status strong{color:#c9b894;font-weight:600}.controls{display:flex;gap:8px}button{background:#292b25;color:#d8d3c8;border:1px solid #4e4b3d;border-radius:5px;padding:7px 10px;cursor:pointer}button:hover{border-color:var(--gold)}
+@media(max-width:800px){.shell{grid-template-columns:1fr;padding:8px}.stage{min-height:60vh}canvas{width:min(100%,90vh);max-height:none}aside{gap:12px}.status{margin-top:0}}
+</style>
+</head>
+<body>
+<main class="shell">
+  <section class="stage" aria-label="맵 시각 검수 화면"><canvas id="map" width="1200" height="1200"></canvas></section>
+  <aside>
+    <div><div class="eyebrow">Environment Prototype · CH1 / 1-1</div><h1>Rottenwood<br>Frontier</h1></div>
+    <p>방과 복도 대신 하나의 이어진 야외 필드. 남쪽 입구에서 북쪽 관문까지, 넓은 전투터와 선택형 습지를 외곽 숲 mass로 묶었습니다.</p>
+    <div class="rule"></div>
+    <div id="regions"></div>
+    <div class="rule"></div>
+    <div class="legend"><span><i class="swatch"></i>길 안내 횃불</span><span><i class="swatch mass"></i>충돌 없는 숲 mass</span><span><i class="swatch path"></i>연속 이동 지형</span><span><i class="swatch mark"></i>주요 랜드마크</span></div>
+    <div class="controls"><button id="labels" type="button">지역 표식 끄기</button><button id="torches" type="button">횃불 끄기</button></div>
+    <div class="status"><strong>VISUAL QA · RETOUCH</strong><br>신규 환경 composition 미리보기입니다. 본편 충돌·보스·세이브에 연결되지 않으며, 시각 승인은 실제 플레이 카메라 검수 후 별도 판정합니다.</div>
+  </aside>
+</main>
+<script type="module">
+import { buildDiabloFieldStagePlan } from './src/diabloFieldStagePlan.js';
+import { decodeFieldRle } from './src/diabloFieldBlueprint.js';
+
+const plan=buildDiabloFieldStagePlan(0,'rotten_forest');
+const canvas=document.getElementById('map'),ctx=canvas.getContext('2d');
+const W=plan.blueprint.width,H=plan.blueprint.height,S=canvas.width/W;
+const cells=decodeFieldRle(plan.blueprint.tileRLE,W*H);
+const rnd=(seed)=>()=>{seed=(seed*1664525+1013904223)>>>0;return seed/4294967296};
+const rand=rnd(390173),labelsOn=true,torchesOn=true;
+let showLabels=labelsOn,showTorches=torchesOn;
+const names=[['START','South Forecourt'],['01','West Basin'],['02','Broken Causeway'],['03','Corpse-tree Clearing'],['SIDE','Altar Marsh'],['EXIT','North Gate']];
+document.getElementById('regions').replaceChildren(...plan.regions.map((r,i)=>{const row=document.createElement('div');row.className='region';const n=document.createElement('span');n.className='num';n.textContent=names[i][0];const text=document.createElement('span'),title=document.createElement('b'),desc=document.createElement('small');title.textContent=names[i][1];desc.textContent=r.intent;text.append(title,desc);row.append(n,text);return row}));
+const torch=new Image();torch.src='assets/map/ch1/diablo_field_torch_v1.png';torch.onload=()=>draw();
+
+function pathFromRegions(){const p=plan.regions.filter(r=>r.role!=='pocket');ctx.beginPath();ctx.moveTo(p[0].cx*S,p[0].cy*S);for(let i=1;i<p.length;i++){const a=p[i-1],b=p[i],mx=(a.cx+b.cx)/2+(i%2?22:-18),my=(a.cy+b.cy)/2;ctx.quadraticCurveTo(mx*S,my*S,b.cx*S,b.cy*S)}}
+function ground(){
+  const bg=ctx.createLinearGradient(0,0,canvas.width,canvas.height);bg.addColorStop(0,'#121713');bg.addColorStop(.5,'#1a1b15');bg.addColorStop(1,'#101410');ctx.fillStyle=bg;ctx.fillRect(0,0,1200,1200);
+  for(let y=0;y<H;y++)for(let x=0;x<W;x++){if(!cells[y*W+x])continue;const n=()=>rand(),v=n();let c=v<.25?'#34362b':v<.52?'#3b3829':v<.78?'#44402d':'#4b4430';ctx.fillStyle=c;ctx.fillRect(x*S,y*S,S+0.35,S+0.35);if(n()<.08){ctx.fillStyle=n()<.6?'#62583a':'#272e25';ctx.globalAlpha=.5;ctx.fillRect((x+n())*S,(y+n())*S,1+rand()*2,1+rand()*2);ctx.globalAlpha=1}}
+  // Broad worn-earth route laid over the NAV basins; artwork only.
+  pathFromRegions();ctx.lineCap='round';ctx.lineJoin='round';ctx.strokeStyle='#29271d';ctx.lineWidth=82;ctx.stroke();pathFromRegions();ctx.strokeStyle='#655338';ctx.globalAlpha=.34;ctx.lineWidth=48;ctx.stroke();ctx.globalAlpha=1;
+  for(let i=0;i<46;i++){const x=rand()*1200,y=rand()*1200;if(!cells[Math.floor(y/S)*W+Math.floor(x/S)])continue;ctx.fillStyle=i%3?'#74613c':'#292a20';ctx.globalAlpha=.1+rand()*.16;ctx.beginPath();ctx.ellipse(x,y,5+rand()*30,2+rand()*10,rand()*3,0,Math.PI*2);ctx.fill()}ctx.globalAlpha=1;
+}
+function treeMass(x,y,r,seed){const rr=rnd(seed),arms=7+Math.floor(rr()*5);ctx.save();ctx.translate(x*S,y*S);ctx.rotate(rr()*6.28);ctx.fillStyle='#111611';ctx.strokeStyle='#282d25';ctx.lineWidth=8;ctx.beginPath();for(let i=0;i<arms;i++){const a=Math.PI*2*i/arms+rr()*.35,rad=r*(.52+rr()*.5)*S;ctx.moveTo(0,0);ctx.quadraticCurveTo(Math.cos(a-0.2)*rad*.5,Math.sin(a-0.2)*rad*.5,Math.cos(a)*rad,Math.sin(a)*rad)}ctx.stroke();ctx.beginPath();for(let i=0;i<arms*2;i++){const a=Math.PI*2*i/(arms*2),rad=r*(.64+rr()*.43)*S,px=Math.cos(a)*rad,py=Math.sin(a)*rad;if(!i)ctx.moveTo(px,py);else ctx.lineTo(px,py)}ctx.closePath();ctx.fill();ctx.strokeStyle='#454536';ctx.lineWidth=2;ctx.globalAlpha=.48;ctx.stroke();ctx.globalAlpha=1;for(let i=0;i<Math.max(5,r|0);i++){const a=rr()*6.28,d=rr()*r*S*.72;ctx.fillStyle=i%2?'#242c24':'#343528';ctx.beginPath();ctx.ellipse(Math.cos(a)*d,Math.sin(a)*d,3+rr()*8,2+rr()*6,a,0,Math.PI*2);ctx.fill()}ctx.restore()}
+function boundaryMass(){
+  // Distant forest occlusion outside navigation, then broken tree/root clumps hug rather than grid-saw the edge.
+  for(let y=0;y<1200;y+=7)for(let x=0;x<1200;x+=7){if(cells[Math.floor(y/S)*W+Math.floor(x/S)])continue;const n=()=>rand();ctx.fillStyle=n()<.5?'#101510':'#151a14';ctx.globalAlpha=.4+n()*.32;ctx.fillRect(x,y,8,8)}ctx.globalAlpha=1;
+  const clusters=[];for(let y=8;y<194;y+=9){for(const x of [8+rand()*9,190-rand()*10])clusters.push([x,y,7+rand()*7])}for(let x=14;x<190;x+=12){clusters.push([x,8+rand()*8,7+rand()*8],[x,192-rand()*8,7+rand()*8])}
+  for(const [x,y,r] of clusters)treeMass(x,y,r,Math.round(x*91+y*17));
+  // A few large fallen trunks connect the perimeter masses into one forest silhouette.
+  for(const [x,y,angle,len] of [[28,112,-.45,22],[171,129,.63,24],[59,39,.2,19],[154,163,-.3,17],[45,184,.24,17]]){ctx.save();ctx.translate(x*S,y*S);ctx.rotate(angle);ctx.fillStyle='#28271e';ctx.beginPath();ctx.ellipse(0,0,len*S/2,4*S,0,0,Math.PI*2);ctx.fill();ctx.strokeStyle='#4a3c2b';ctx.lineWidth=3;ctx.stroke();ctx.restore()}
+}
+function landmark(){const x=111*S,y=58*S;ctx.save();ctx.translate(x,y);ctx.shadowColor='#090b08';ctx.shadowBlur=32;ctx.fillStyle='#151712';ctx.beginPath();ctx.ellipse(0,0,92,68,-.2,0,Math.PI*2);ctx.fill();ctx.shadowBlur=0;
+  // Corpse-tree: one hero silhouette near the basin rim, with raised antler-like roots.
+  ctx.strokeStyle='#30281e';ctx.lineCap='round';ctx.lineJoin='round';ctx.lineWidth=19;ctx.beginPath();ctx.moveTo(0,36);ctx.bezierCurveTo(-8,8,4,-6,-2,-37);ctx.bezierCurveTo(-18,-51,-44,-46,-56,-70);ctx.moveTo(-1,-23);ctx.quadraticCurveTo(17,-43,13,-75);ctx.quadraticCurveTo(27,-63,32,-42);ctx.moveTo(2,-8);ctx.quadraticCurveTo(46,-24,57,-51);ctx.moveTo(-1,2);ctx.quadraticCurveTo(-39,-4,-69,-36);ctx.moveTo(-3,5);ctx.quadraticCurveTo(-16,-18,-31,-34);ctx.stroke();ctx.strokeStyle='#51402d';ctx.lineWidth=4;ctx.globalAlpha=.75;ctx.stroke();ctx.globalAlpha=1;
+  for(let i=0;i<8;i++){const a=rand()*6.28,d=30+rand()*48;ctx.fillStyle=i%2?'#29251d':'#3c3022';ctx.beginPath();ctx.ellipse(Math.cos(a)*d,Math.sin(a)*d,14+rand()*12,3+rand()*4,a,0,6.28);ctx.fill()}ctx.restore()}
+function decals(){
+  // Hand-authored landmarks and environmental storytelling, kept on safe edges of combat space.
+  const rocks=[[61,145],[45,137],[124,117],[65,83],[129,91],[155,79],[90,34],[114,30],[43,173],[163,147],[33,99],[133,52]];
+  for(let i=0;i<rocks.length;i++){const [x,y]=rocks[i],r=3+rand()*3;ctx.save();ctx.translate(x*S,y*S);ctx.rotate(rand()*3);ctx.fillStyle='#282a24';ctx.beginPath();ctx.moveTo(-r*S,-r*S*.35);ctx.lineTo(-r*S*.4,-r*S);ctx.lineTo(r*S,.1*r*S);ctx.lineTo(r*S*.55,r*S*.8);ctx.lineTo(-r*S*.65,r*S*.6);ctx.closePath();ctx.fill();ctx.strokeStyle='#55503c';ctx.globalAlpha=.55;ctx.stroke();ctx.restore()}
+  for(let i=0;i<58;i++){const x=rand()*200,y=rand()*200;if(!cells[Math.floor(y)*W+Math.floor(x)])continue;const n=()=>rand();ctx.save();ctx.translate(x*S,y*S);ctx.rotate(n()*Math.PI);ctx.strokeStyle=n()<.5?'#81724b':'#3e4431';ctx.globalAlpha=.35;ctx.lineWidth=1+n()*1.2;ctx.beginPath();ctx.moveTo(-4,0);ctx.quadraticCurveTo(0,-5,5,2);ctx.stroke();ctx.restore()}ctx.globalAlpha=1;
+  // Altar pocket / cold marsh pool.
+  ctx.save();ctx.translate(151*S,82*S);ctx.fillStyle='#171e19';ctx.beginPath();ctx.ellipse(0,0,82,57,-.25,0,6.28);ctx.fill();ctx.fillStyle='#26352e';ctx.globalAlpha=.62;ctx.beginPath();ctx.ellipse(0,0,51,31,-.25,0,6.28);ctx.fill();ctx.globalAlpha=1;ctx.strokeStyle='#4e4a34';ctx.lineWidth=5;ctx.beginPath();ctx.moveTo(-9,-9);ctx.lineTo(0,-29);ctx.lineTo(10,-8);ctx.lineTo(0,8);ctx.closePath();ctx.stroke();ctx.restore();
+}
+function torchLight(x,y){const px=x*S,py=y*S;const glow=ctx.createRadialGradient(px,py,3,px,py,92);glow.addColorStop(0,'rgba(255,174,75,.38)');glow.addColorStop(.32,'rgba(207,117,43,.17)');glow.addColorStop(1,'rgba(0,0,0,0)');ctx.fillStyle=glow;ctx.beginPath();ctx.arc(px,py,92,0,6.28);ctx.fill();if(torch.complete&&torch.naturalWidth){ctx.drawImage(torch,px-18,py-49,36,54)}else{ctx.fillStyle='#d9933f';ctx.fillRect(px-2,py-11,4,18);ctx.fillStyle='#ffb750';ctx.beginPath();ctx.arc(px,py-14,5,0,6.28);ctx.fill()}}
+const torchPoints=[[100,164],[57,148],[105,115],[79,72],[145,80],[101,36],[100,18]];
+const corpseTree=new Image();corpseTree.src='assets/map/ch1/diablo_hell_corpse_tree_v1.png';corpseTree.onload=()=>draw();
+landmark=function(){
+  if(!corpseTree.complete||!corpseTree.naturalWidth)return;
+  const x=111*S,y=58*S;ctx.save();ctx.shadowColor='rgba(255,54,13,.22)';ctx.shadowBlur=20;
+  ctx.drawImage(corpseTree,x-112,y-112,224,224);ctx.restore();
+};
+
+function marker(x,y,text,color='#dec08b'){ctx.save();ctx.font='bold 11px Segoe UI';ctx.textAlign='center';ctx.lineWidth=3;ctx.strokeStyle='#11120f';ctx.strokeText(text,x*S,y*S);ctx.fillStyle=color;ctx.fillText(text,x*S,y*S);ctx.restore()}
+function draw(){ctx.clearRect(0,0,1200,1200);ground();boundaryMass();decals();landmark();if(showTorches)for(const [x,y]of torchPoints)torchLight(x,y);if(showLabels){marker(100,188,'START');marker(76,145,'WEST BASIN');marker(110,109,'CAUSEWAY');marker(103,74,'CORPSE TREE','#e2b989');marker(151,81,'ALTAR MARSH');marker(100,11,'NORTH GATE') }}
+document.getElementById('labels').addEventListener('click',e=>{showLabels=!showLabels;e.currentTarget.textContent=showLabels?'지역 표식 끄기':'지역 표식 켜기';draw()});
+document.getElementById('torches').addEventListener('click',e=>{showTorches=!showTorches;e.currentTarget.textContent=showTorches?'횃불 끄기':'횃불 켜기';draw()});
+draw();
+</script>
+</body>
+</html>
