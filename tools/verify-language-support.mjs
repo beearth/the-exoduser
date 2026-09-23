@@ -1,0 +1,10 @@
+import fs from 'node:fs';
+import {spawnSync} from 'node:child_process';
+const english=process.argv.includes('--english');
+const files=['badgeLocalization.test.cjs','boneItemLocalization.test.js','controlHintLocalization.test.js','dynamicItemLocalization.test.js','englishCharacterCatalog.test.js','introGuideLocalization.test.js','lobbyChapterLocalization.test.js','lobbyLanguageSelection.test.js','localizationCoverage.test.js','localizationHandoff.test.js','localizationRuntime.test.js','localizedGrowthSearch.test.js','persistentHudLanguage.test.js','petLanguageRefresh.test.js','practiceLocalization.test.cjs','settingsCharacterLanguage.test.js','systemLessonCatalog.test.js','systemLessonLocalization.test.cjs','warriorStoryLocalization.test.js','warriorStoryAllLocales.test.js','characterStoryControls.test.js','characterStoryCreation.test.js'];
+if(!english)files.push('resumeLocalization.test.js','resumeRuntime.test.cjs');
+for(const file of files)if(!fs.existsSync('test/'+file))throw Error('Missing test '+file);
+const result=spawnSync(process.execPath,['--experimental-vm-modules','--test',...files.map(f=>'test/'+f)],{encoding:'utf8',maxBuffer:16*1024*1024,env:{...process.env,GROWTH_TEST_BROWSER_CHANNEL:process.env.GROWTH_TEST_BROWSER_CHANNEL||'chrome'}});
+fs.mkdirSync('output/localization_20260922',{recursive:true});fs.writeFileSync('output/localization_20260922/'+(english?'english':'complete')+'-tests.log',(result.stdout||'')+(result.stderr||''));console.log((result.stdout||'').split('\n').filter(line=>/✖|ℹ|error|fail|pass|tests/.test(line)).join('\n'));if(result.status)console.error((result.stdout||'').slice(-18000),result.stderr||'');
+if(result.error)throw result.error;
+process.exit(result.status??1);

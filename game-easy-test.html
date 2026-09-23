@@ -45840,8 +45840,8 @@ function _invCardFields(it){
   }
   if(it.itemLv)stats+=`<div style="color:#aaa">${_L('아이템 Lv.','Item Lv.')}${it.itemLv}</div>`;
   if(it.reqLv>0){const canEquip=!P||P.lv>=it.reqLv;stats+=`<div style="color:${canEquip?'#88cc88':'#ff4444'}">${_L('요구 Lv.','Req. Lv.')}${it.reqLv}${canEquip?'':' ✘'}</div>`}
-  if(it.wtype)stats+=`<div style="color:#ccaa77;font-weight:700">${(WTYPES[it.wtype]||{}).name||it.wtype}</div>`;
-  if(it.btype)stats+=`<div style="color:#ccaa77;font-weight:700">${(BOWTYPES[it.btype]||{}).name||it.btype}</div>`;
+  if(it.wtype)stats+=`<div style="color:#ccaa77;font-weight:700">${_T((WTYPES[it.wtype]||{}).name||it.wtype)}</div>`;
+  if(it.btype)stats+=`<div style="color:#ccaa77;font-weight:700">${_T((BOWTYPES[it.btype]||{}).name||it.btype)}</div>`;
   if(it.atk){const _enhB=it.enh?enhMulAtk(it.enh):0;stats+=`<div>ATK: <span>${it.atk}</span>${_enhB>0?` <span style="color:${enhColor(it.enh)}">+${_enhB}</span>`:''}</div>`}
   if(it.atk&&(it.wtype||it.btype)){const _enhM=it.enh?enhMulAtk(it.enh):0;const _atkE=~~(it.atk*(1+_enhM));const dps=_itemDps({...it,atk:_atkE});if(dps!==null)stats+=`<div style="color:#ff6644;font-weight:700">DPS: <span style="color:#ffaa66">${dps.toFixed(1)}</span></div>`}
   if(it.def){const _isDefEnh=it.slot==='shield'||it.slot==='armor'||it.slot==='cape';const _defB=it.enh&&_isDefEnh?~~enhMul(it.enh):0;stats+=`<div>${_L('물리DEF','Phys DEF')}: <span>${it.def}</span>${_defB>0?` <span style="color:${enhColor(it.enh)}">+${_defB}</span>`:''}</div>`}
@@ -46013,7 +46013,7 @@ function _invBuildCompare(item,curEq){
     +'<div style="font-size:.85rem;color:#aa6644;font-weight:700;margin-bottom:6px;letter-spacing:.1em">'+(_L('\u2694 스탯 변화','\u2694 Stat Changes'))+'</div>'
     +'<div style="background:rgba(0,0,0,.2);border:1px solid #332211;padding:8px;border-radius:3px">'+diffs+'</div>'
     +'</div>':'';
-  const eqHtml='<div style="border-bottom:1px solid #332211;padding-bottom:8px;margin-bottom:8px"><div style="background:rgba(0,0,0,.2);border:1px solid #332211;padding:8px;border-radius:3px"><div style="height:3px;background:'+RARITY_C[curEq.rarity]+';margin:-8px -8px 6px -8px;border-radius:3px 3px 0 0"></div><div style="font-size:.75rem;color:#666">'+(_L('현재 장착','Currently Equipped'))+'</div><div style="color:'+RARITY_C[curEq.rarity]+';font-size:.95rem;font-weight:700">'+curEq.name+(curEq.enh?' <span style="color:'+enhColor(curEq.enh)+'">+'+curEq.enh+'</span>':'')+'</div><div class="id-stats" style="font-size:.8rem">'+_invCardFields(curEq)+'</div></div></div>';
+  const eqHtml='<div style="border-bottom:1px solid #332211;padding-bottom:8px;margin-bottom:8px"><div style="background:rgba(0,0,0,.2);border:1px solid #332211;padding:8px;border-radius:3px"><div style="height:3px;background:'+RARITY_C[curEq.rarity]+';margin:-8px -8px 6px -8px;border-radius:3px 3px 0 0"></div><div style="font-size:.75rem;color:#666">'+(_L('현재 장착','Currently Equipped'))+'</div><div style="color:'+RARITY_C[curEq.rarity]+';font-size:.95rem;font-weight:700">'+_T(curEq.name)+(curEq.enh?' <span style="color:'+enhColor(curEq.enh)+'">+'+curEq.enh+'</span>':'')+'</div><div class="id-stats" style="font-size:.8rem">'+_invCardFields(curEq)+'</div></div></div>';
   return {diffs:diffsHtml,eqCard:eqHtml};
 }
 // ═══ 인벤토리 드래그 시스템 ═══
@@ -46688,7 +46688,7 @@ d.innerHTML=`<div class="fg-in" style="color:${rc}">${label} <span style="color:
     // ═══ POTION TAB — 물약 강화만 ═══
     const upgHdr=document.createElement('div');upgHdr.style.cssText='color:#aa8855;font-size:.9rem;font-weight:700;margin-bottom:6px;letter-spacing:.1em';upgHdr.textContent=_T('⬆ 물약 강화 (최대 10단)');
     grid.appendChild(upgHdr);
-    [{type:'hp',n:'❤️‍🔥 HP 물약',col:'#cc2200'}].forEach(item=>{
+    [{type:'hp',n:'❤️‍🔥 '+_L('HP 물약','HP Potion'),col:'#cc2200'}].forEach(item=>{
       const lv=POT_LV[item.type],maxed=lv>=10;
       const cost=_malCost((lv+1)*5);
       const reqLv=(lv+1)*100;
@@ -47105,7 +47105,7 @@ const secHdr3=document.createElement('div');secHdr3.style.cssText='color:#cc66ff
     const curDiv=document.createElement('div');
     curDiv.style.cssText='text-align:center;padding:8px;margin-bottom:8px;background:rgba(0,0,0,.3);border:1px solid #332211;border-radius:4px';
     if(curEq){
-      curDiv.innerHTML=`<div style="color:#887766;font-size:.8rem;margin-bottom:4px">${_T('현재 장착')}</div><div style="color:${RARITY_C[curEq.rarity||0]};font-size:.95rem;font-weight:700">${_itemIco(curEq,RARITY_C[curEq.rarity||0],15)} ${curEq.name}</div><div style="color:#776655;font-size:.95rem;margin-top:2px">ATK:${curEq.atk||'-'} DEF:${curEq.def||'-'} ${ELN[curEq.el]||_T('물리')}</div>`;
+      curDiv.innerHTML=`<div style="color:#887766;font-size:.8rem;margin-bottom:4px">${_T('현재 장착')}</div><div style="color:${RARITY_C[curEq.rarity||0]};font-size:.95rem;font-weight:700">${_itemIco(curEq,RARITY_C[curEq.rarity||0],15)} ${_T(curEq.name)}</div><div style="color:#776655;font-size:.95rem;margin-top:2px">ATK:${curEq.atk||'-'} DEF:${curEq.def||'-'} ${_T(ELN[curEq.el]||'물리')}</div>`;
     }else{
       curDiv.innerHTML=`<div style="color:#554433;font-size:.8rem">${_T('현재 장착')}</div><div style="color:#665544;font-size:.95rem">${_T('없음 — 제작하세요!')}</div>`;
     }
@@ -47169,12 +47169,12 @@ matsDiv.innerHTML=_L('보유 악의: ','Malice: ')+`<span style="color:#cc66ff;f
     if(slot==='weapon'){
       const wtDiv=document.createElement('div');
       wtDiv.style.cssText='margin:6px auto;width:90%;text-align:center;color:#776655;font-size:.95rem';
-      wtDiv.innerHTML=_T('무기 타입')+': '+WTYPE_KEYS.map(k=>`<span style="color:#aa8855">${WTYPES[k].emoji}${WTYPES[k].name}</span>`).join(' ');
+      wtDiv.innerHTML=_T('무기 타입')+': '+WTYPE_KEYS.map(k=>`<span style="color:#aa8855">${WTYPES[k].emoji}${_T(WTYPES[k].name)}</span>`).join(' ');
       grid.appendChild(wtDiv);
     }else if(slot==='bow'){
       const bwDiv=document.createElement('div');
       bwDiv.style.cssText='margin:6px auto;width:90%;text-align:center;color:#776655;font-size:.95rem';
-      bwDiv.innerHTML=_T('활 타입')+': '+BTYPE_KEYS.map(k=>`<span style="color:#aa8855">${BOWTYPES[k].emoji}${BOWTYPES[k].name}</span>`).join(' ');
+      bwDiv.innerHTML=_T('활 타입')+': '+BTYPE_KEYS.map(k=>`<span style="color:#aa8855">${BOWTYPES[k].emoji}${_T(BOWTYPES[k].name)}</span>`).join(' ');
       grid.appendChild(bwDiv);
     }
   }
@@ -47302,7 +47302,7 @@ function renderStatSummary(){
     (()=>{const _ppLv=PASSIVES.pPierce||0;const _bpB=(bw().bowPierce||0);const _totalP=Math.min(0.95,_bpB+_ppLv*0.05);return`<div style="${_sLn}">🔱 ${_L('관통력','Pierce')}: <span style="color:${_totalP>0?'#44ffcc':'#555544'}">${~~(_totalP*100)}%</span> <span style="color:#887766;font-size:1.1rem">(${_L('패시브','passive')}${_ppLv}lv+${_L('장비','gear')}${~~(_bpB*100)}%)</span></div>`})()+
     // ── 속성 ──
     `<div style="${_sHd}">🔥 ${_L('속성','Elements')}</div>`+
-    `<div style="${_sLn}">${_L('무기속성','Wpn Elem')}: <span style="color:${ELC[wp().el||0]}">${ELN[wp().el||0]}</span></div>`+
+    `<div style="${_sLn}">${_L('무기속성','Wpn Elem')}: <span style="color:${ELC[wp().el||0]}">${_T(ELN[wp().el||0])}</span></div>`+
     `<div style="${_sLn}">${_L('독','Poison')}DoT: <span style="color:${_afc('poisonDot','#88ff00')}">${_af('poisonDot').toFixed(0)}/${_L('초','s')}</span> | ${_L('화상','Burn')}DoT: <span style="color:${_afc('fireDot','#ff5522')}">${_af('fireDot').toFixed(0)}/${_L('초','s')}</span> | ${_L('빙결','Ice')}DoT: <span style="color:${_afc('iceDot','#88ccff')}">${_af('iceDot').toFixed(0)}/${_L('초','s')}</span></div>`+
     `<div style="${_sLn}">${_L('연쇄전격','Chain Lightning')}: <span style="color:${_afc('lightChain','#ffee44')}">${_af('lightChain').toFixed(0)}</span> | ${_L('암흑저주','Dark Curse')}: <span style="color:${_afc('darkCurse','#9933cc')}">${_afp('darkCurse')}</span></div>`+
     `<div style="${_sLn}">${_L('원소집중','Elem Focus')}: <span style="color:${_afc('elemFocus','#66aaff')}">${_afp('elemFocus')}</span> | ${_L('원소전환','Elem Convert')}: <span style="color:${_afc('elemConvert','#bb44ff')}">${_afp('elemConvert')}</span></div>`+

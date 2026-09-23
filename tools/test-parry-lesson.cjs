@@ -397,6 +397,8 @@ for(const name of ['game.html','game-easy-test.html'])for(const step of [0,1]){
   for(let t=0;t<30;t++)l.tick();assert.equal(e._projChargeT,30);assert.equal(l.shot,null);
   const source=fs.readFileSync(path.join(root,name),'utf8');
   const rings=[];Object.assign(c,{_drawShootCharge:(...args)=>rings.push(args),_gameFrame:0});
+  const classifierStart=source.indexOf('function _projectileParryClass(p){');
+  vm.runInContext(source.slice(classifierStart,source.indexOf('\n}',classifierStart)+2),c);
   vm.runInContext(source.slice(source.indexOf('function _drawEnemyShotWarnings(){'),source.indexOf('function radialProjs(')),c);
   c._drawEnemyShotWarnings();assert.equal(rings.length,1);assert.equal(rings[0][3],.5);assert.equal(rings[0][4],step===0?'#b26dff':'#f4f4f4');
   vm.runInContext(source.slice(source.indexOf('function _parryHomingTarget(){'),source.indexOf('let _deadPool=')),c);

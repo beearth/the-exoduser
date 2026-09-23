@@ -112,7 +112,7 @@ const server = http.createServer(async (req, res) => {
           };
         } catch { return null; }
       }).filter(Boolean);
-      return sendJSON(res, 200, { ok: true, slots });
+      return sendJSON(res, 200, { ok: true, slots, development: true });
     }
 
     if (pathname === '/api/save' && req.method === 'POST') {

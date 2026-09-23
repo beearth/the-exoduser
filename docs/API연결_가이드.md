@@ -238,7 +238,7 @@ const sb = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
 
 | 메서드 | 엔드포인트 | 기능 |
 |--------|-----------|------|
-| GET | `/api/slots` | 세이브 슬롯 목록 |
+| GET | `/api/slots` | 개발 저장 슬롯 목록 `{ok:true,slots,development:true}`. 로컬 비데모 로비에서만 개발자 표시·슬롯 무제한. 출하 `node-main.js`는 development 표시 없음 |
 | POST | `/api/save` | 게임 저장 `{slot, data}` |
 | GET | `/api/load/:slot` | 세이브 로드 |
 | DELETE | `/api/save/:slot` | 세이브 삭제 |

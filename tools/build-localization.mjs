@@ -5,8 +5,9 @@ import {languages,loadCatalogs} from './localization-catalog.mjs';
 const draft=process.argv.includes('--draft');
 const read=path=>JSON.parse(fs.readFileSync(path,'utf8'));
 const stories={},ui={en:{}},lobbyMs=read('localization/lobby-ms.json');
-const source=['ui-source','ui-extra-source','ui-growth-source'].flatMap(name=>read('localization/'+name+'.json'));
+const source=['ui-source','ui-extra-source','ui-growth-source','notification-source'].flatMap(name=>read('localization/'+name+'.json'));
 const terminology=read('localization/terminology.json');
+const chapters=read('localization/lobby-chapter-source.json'),winter=read('localization/hell-winter.json');
 const needed=read('localization/ui-needed.json');
 const catalogs=loadCatalogs();
 for(const {key,en}of source)ui.en[key]=en;
@@ -31,6 +32,12 @@ for(const code of languages.filter(c=>c!=='ko')){
  if(fs.existsSync(extra))Object.assign(ui[code],read(extra));
  const growth='localization/ui-growth/'+code+'.json';
  if(fs.existsSync(growth))Object.assign(ui[code],read(growth));
+ for(const {key,en}of chapters){const value=key==='지옥의 겨울'?winter[code]:code==='en'?en:base[key];if(!value)throw Error(code+': missing lobby chapter '+key);ui[code][key]=value;}
+ const hpPotion=read('localization/hp-potion.json')[code];if(!hpPotion)throw Error(code+': missing HP potion');ui[code]['HP 물약']=hpPotion;
+ const boneNames=read('localization/bone-item-names.json')[code];
+ if(!Array.isArray(boneNames)||boneNames.length!==4||boneNames.some(s=>typeof s!=='string'||!s.trim()))throw Error(code+': missing bone item names');
+ ['두개골','몸통','팔','다리'].forEach((part,i)=>ui[code]['철갑 전대의 '+part]=boneNames[i]);
+ if(code==='en')ui.en['전대의 유골함']='Ancestral Ossuary';
  Object.assign(ui[code],terminology[code]||{});
  if(!draft){
   const incomplete=(needed[code]||[]).filter(({key})=>typeof translated[key]!=='string'||!translated[key].trim());

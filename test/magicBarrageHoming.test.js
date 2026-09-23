@@ -20,31 +20,31 @@ function enemyHomingTurnRate() {
   return Function(`const EL={P:0,F:1,I:2,D:3,L:4,H:5,E:6};${extractFunction('_projectileParryClass')};${extractFunction('_enemyHomingTurnRate')};return _enemyHomingTurnRate`)();
 }
 
-test('ordinary magic barrage homing is reduced 50% to roughly 90 degrees per second', () => {
+test('ordinary magic barrage homing is halved to roughly 45 degrees per second', () => {
   const turnRate = enemyHomingTurnRate();
-  assert.equal(turnRate({ homing: true, el: 1 }), 0.0262);
+  assert.equal(turnRate({ homing: true, el: 1 }), 0.0131);
 });
 
-test('all magic barrage family turn rates are reduced 50%', () => {
+test('all magic barrage family turn rates are halved', () => {
   const turnRate = enemyHomingTurnRate();
-  assert.equal(turnRate({ blackBean: true }), 0.02325);
-  assert.equal(turnRate({ fbEnergy: true }), 0.004);
-  assert.equal(turnRate({ elemBall: true }), 0.0291);
-  assert.equal(turnRate({ phantomSword: true }), 0.0262);
+  assert.equal(turnRate({ blackBean: true }), 0.011625);
+  assert.equal(turnRate({ fbEnergy: true }), 0.002);
+  assert.equal(turnRate({ elemBall: true }), 0.01455);
+  assert.equal(turnRate({ phantomSword: true }), 0.0131);
 
-  for (const rate of [0.02325, 0.0291, 0.0262]) {
+  for (const rate of [0.011625, 0.01455, 0.0131]) {
     const degPerSec = rate * 60 * 180 / Math.PI;
-    assert.ok(degPerSec >= 74 && degPerSec <= 101);
+    assert.ok(degPerSec >= 37 && degPerSec <= 51);
   }
 });
 
-test('only physical red-bean teeth and titan eyes home at roughly 15 degrees per second', () => {
+test('only physical red-bean teeth and titan eyes home at roughly 7.5 degrees per second', () => {
   const turnRate = enemyHomingTurnRate();
-  assert.equal(turnRate({ redBean: true, el: 0 }), 0.00436332);
-  assert.equal(turnRate({ redBean: true, el: 1 }), 0.0262, 'fire redBean is a Q magic comet');
-  assert.equal(turnRate({ _closeBean: true, redBean: true, el: 1 }), 0.0262, 'close fire redBean is a Q magic comet');
-  assert.equal(turnRate({ redBean: true, titanEye: true, el: 1 }), 0.00436332);
-  assert.ok(Math.abs(0.00436332 * 60 * 180 / Math.PI - 15) < 0.01);
+  assert.equal(turnRate({ redBean: true, el: 0 }), 0.00218166);
+  assert.equal(turnRate({ redBean: true, el: 1 }), 0.0131, 'fire redBean is a Q magic comet');
+  assert.equal(turnRate({ _closeBean: true, redBean: true, el: 1 }), 0.0131, 'close fire redBean is a Q magic comet');
+  assert.equal(turnRate({ redBean: true, titanEye: true, el: 1 }), 0.00218166);
+  assert.ok(Math.abs(0.00218166 * 60 * 180 / Math.PI - 7.5) < 0.01);
 });
 
 test('ordinary magical speed-band bullets opt into homing while giant energy balls stay straight', () => {

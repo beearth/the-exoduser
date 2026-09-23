@@ -103,3 +103,67 @@
 | 검증 | 번역 빌드와 관련14개 검사 PASS. 캐릭터 영상/타 언어 신규 실습은 후속 |
 
 상세: docs/16번역·로컬라이제이션/ENGLISH_CHARACTER_BADGE_HUD_20260922.md
+
+
+## 2026-09-22 로비 챕터명 번역
+
+| 항목 | 현행 계약 |
+|---|---|
+| 원인 | 게임 언어 테이블에만 있던 챕터명을 로비 _TL이 찾지 못해 한국어 표시 |
+| 로더 | build-localization에서 lobby-chapter-source7개를 ui[code]에 명시적으로 포함 |
+| 기존6개 | lang_* 현재 번역 재사용, EN은 source 영어 |
+| 지옥의 겨울 | hell-winter.json28언어 신규 번역, 구 얼음굴 명칭으로 대체하지 않음 |
+| 진행 |7장35스테이지의 경계·층·저장 값 변경 없음 |
+| 검증 |29언어×35스테이지 로비 표시 검사 |
+
+
+## 2026-09-23 유골함 알림 영어 연결
+
+직접 _T 호출 감사에서 발견된 알림6개를 notification-source.json에 등록했다. 기존 타 언어 테이블 번역을 보존하고 영어를 번들에 포함한다.8개 실행 파일의 직접 번역 호출 누락0개. 동적 데이터 전체를 보증하는 수치는 아니다.
+
+| KO | EN |
+|---|---|
+| 유골함이 필요합니다! | Ossuary required! |
+| 소환 가능한 전대가 없습니다! | No ancestors available to summon! |
+| 도감 등록! | Registered to codex! |
+| 전대 해금! | Ancestor unlocked! |
+| 이미 더 높은 등급의 부위를 수집했습니다 | Already collected a higher-grade part |
+| 전대 소환! | Ancestor summoned! |
+
+
+## 2026-09-23 장비 동적 표시 번역
+
+| 위치 | 표시 계약 |
+|---|---|
+| 인벤토리 상세·현재 장착 비교 | 무기/석궁 종류 및 장비명에 _T 적용 |
+| 대장간 제작 | 장착 장비명·속성·무기/석궁 목록에 _T 적용 |
+| 물약 강화 | HP 물약 이름을 _L로 번역하여 카드·선택 설명·성공 알림에 공유 |
+| 성장 상세 | 무기 속성 ELN 값을 _T로 번역 |
+
+양쪽 HTML에 동일 적용. 저장된 아이템 이름, 장비 수치, 제작 비용과 강화 효과는 변경하지 않는다.
+
+
+## 2026-09-23 생성 유골 아이템 표시 이름
+
+| 저장 키 | 영어 표시 | 번역 원본 |
+|---|---|---|
+| 전대의 유골함 | Ancestral Ossuary | 영어 번들 + 기존 27언어 lang 테이블 |
+| 철갑 전대의 두개골 | Iron Warlord's Skull | bone-item-names.json |
+| 철갑 전대의 몸통 | Iron Warlord's Torso | bone-item-names.json |
+| 철갑 전대의 팔 | Iron Warlord's Arms | bone-item-names.json |
+| 철갑 전대의 다리 | Iron Warlord's Legs | bone-item-names.json |
+
+4부위 × 28개 비한국어 이름을 정확한 전체 키로 번들에 등록한다. 이전 접두사 분해 실패로 남던 한국어 표시를 해소하며 저장 키는 유지한다.
+
+
+| 2026-09-23 품질 검토 보완 | 적용 |
+|---|---|
+| 철갑 전대 부위 명칭 | 영어 Iron Warlord, 나머지27언어는 기존 ui-extra 철갑 전대 명칭에 맞춰 소유격·격변화를 반영 |
+| HP 물약 | hp-potion.json의28개 비한국어 명칭을 전체 키로 번들에 등록하여 영어 폴백 방지 |
+
+
+| 2026-09-23 검증 실행 계약 | 내용 |
+|---|---|
+| verify-language-support.mjs | VM 모듈 활성화, 기존 성장 화면 테스트는 설치된 Chrome 사용. GROWTH_TEST_BROWSER_CHANNEL로 다른 설치 채널 지정 가능 |
+| 실습 경고 렌더 fixture | 실행 파일의 실제 _projectileParryClass 함수를 함께 로드해 의존성을 검증. 전투 규칙은 변경하지 않음 |
+| 생성 부위 문법 | 프랑스어 de l’ancêtre, 이탈리아어 dell’Antenato로 관사 축약 |
