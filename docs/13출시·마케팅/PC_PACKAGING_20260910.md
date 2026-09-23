@@ -19,7 +19,7 @@
 | 2026-09-12 튜토리얼 | `parry-lesson.js/css`, `resource-practice.js`, `system-lesson.js/css`, `tutorial-badges.js/css`를 FILES에 포함 | 전투1단 → 자원2단 → 시스템 안내 및 배지. 자원 실습은 기본 자동 연결 |
 | 추가 진입 파일 | `game-easy-test.html`, `game-guide.html` 포함. 기본 진입점은 기존 `index.html` 유지 | `build-nwjs.mjs` |
 | 튜토리얼 아트 | `assets/ui/tutorial/`는 기존 assets 전체 복사에 포함 | `build-nwjs.mjs` |
-| Steam 공개 데모 범위 | Lv.1 시작, Lv.100 상한, 1-1(`stage=0`) 클리어 후 종료 | `package.json` → `index.html?demo=1` → 로비·게임 `demo=1` 전달 |
+| 웹·Steam 공개 데모 범위 | Lv.1 시작, Lv.100 상한, 1-1(`stage=0`) 클리어 후 종료 | 웹 기본 로비·`game.html` 직접 진입·`package.json` 모두 데모 고정 |
 
 구형 패키징 경로·전용 설정·프록시 안내는 작업 지침, 기획 문서 및 과거 문서 사본에서 제거했다. 게임 코드와 빌드 결과물은 이번 문서 정리에서 변경하지 않았다.
 GPU Compute 예제는 향후 설계이며 현재 패키지에서 구현·실측된 성능으로 해석하지 않는다.

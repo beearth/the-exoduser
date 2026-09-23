@@ -1009,7 +1009,7 @@ function _gpDot(on){
 // 브라우저 줌 차단
 addEventListener('wheel',e=>{if(e.ctrlKey||e.metaKey)e.preventDefault()},{passive:false});
 // ── 빌드 버전 (demo.html → 'demo', ea.html → 'ea') ──
-const _LOBBY_BUILD=location.search.includes('demo')?'demo':'full';
+const _LOBBY_BUILD='demo';
 // ── 버전별 멘트 (추후 교체) ──
 const _LOBBY_QUOTES={
   full:'멘트 준비 중',
