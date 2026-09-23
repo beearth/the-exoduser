@@ -1,6 +1,8 @@
-> **2026-09-10 사용자 지정 비교 테스트:** Mac 자동 WebGPU 선택을 제거했다. 브라우저·NW.js에서 URL `webgpu=1`일 때만 WebGPU 시도, 기본/`webgpu=0`은 WebGL2 우선이다. 과거 Mac 측정은 이력으로 보존하며 현재 세로 띠 해결 근거로 쓰지 않는다. **Mac Chrome/Safari 실기 PENDING.** [현재 계약](12퍼포먼스·최적화/MAC_RENDERER_OPTIN_TEST_20260910.md).
+> **2026-09-10 로컬 FPS 후속 수정:** Mac+navigator.gpu는 URL webgpu 미지정 시 WebGPU 우선, 실패 시 WebGL2→Canvas2D. 명시적0/1 및 Windows/Electron 정책 유지. M5 Pro Chrome 일반 스테이지 실측과 한계는 [현행 계약](12퍼포먼스·최적화/MAC_DEFAULT_WEBGPU_FPS_20260910.md) 참조. 아래 과거 비교·배포 기록은 당시 결과이며 현재 로컬 기본값과 구분한다.
 
 # Mac Chrome 프레임 드롭 진단 리포트
+
+> **2026-09-10 새 Mac 실기 증거:** 공용 텍스트 아틀라스에서 `900 22px`를 900px로 해석하여 셀 높이1448px > atlas512px, 매 호출 clear와 반복 전체 업로드를 재현했다. px 토큰 파싱으로 수정. 기존 Track A/B/D 판정과 map texture lifetime은 변경하지 않는다. [별도 원인과 측정](12퍼포먼스·최적화/MAC_TEXT_ATLAS_FPS_20260910.md).
 
 > **감사일**: 2026-06-09
 > **대상**: `G:\hell\game.html`
@@ -53,7 +55,7 @@
 | L48760 | `const _accCap=IS_MOBILE?PHYS_STEP*2:(_prof.u<=8?PHYS_STEP*5:PHYS_STEP*3);` | 비모바일에서 최대 5틱 catch-up. 120Hz에서는 보통 0~1틱이므로 문제 없음. | OK |
 | L7228 | `_fogGLTime+=0.016;` | **하드코딩 16ms**. 120Hz에서 매 프레임 호출되면 시간이 2배 속도로 흐름 (안개 애니메이션 가속). 시각적 문제만 있고 성능에는 무관. | LOW |
 | L16477 | `var dt=0.016;` | 보스 스켈레탈 포즈 보간용. 매 draw에서 호출. 120Hz면 보간이 2배 빠름 (미세한 시각 차이). | LOW |
-| L49714 | `_cutSkipHold+=16.67;` | 컷씬 스킵 홀드. 120Hz면 스킵이 2배 빨리 됨. 사소함. | LOW |
+| 컷씬 홀드 | `_cutSkipHold` | 현재 performance.now 실시간 경과 사용(프레임 델타 상한100ms, 첫 프레임16.67ms). 2026-09-14 자동 진행/퇴장 컷의 조기 반환 이전에도 홀드 검사 적용 | 해결 |
 | L48737 | `if(_elapsed<_fpsCapInterval-1){requestAnimationFrame(loop);return}` | FPS 캡이 있으면 동작. 하지만 **기본값 fpsCap=0** (무제한). Mac ProMotion에서 120fps로 돌면 렌더 비용 2배. | **HIGH** |
 | L36155 | `~~(_cDelay*16.67)` | setTimeout ms 계산. 프레임 기반 딜레이를 ms로 환산. 문제 없음. | OK |
 

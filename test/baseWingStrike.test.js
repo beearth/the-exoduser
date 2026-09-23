@@ -51,9 +51,9 @@ test('blade movement preserves E charge and continues through release to its lan
   }
   assert.equal(ctx.P.s,'sBash','landing must not replace the E parry state');
   assert.equal(ctx.P.st2,20,'movement timer must not consume the E parry window');
-  assert.ok(Math.abs(ctx.P.x-500)<1e-6);
+  assert.ok(Math.abs(ctx.P.x-250)<1e-6,'preserve the pre-charge-refactor travel distance');
   assert.equal(ctx.G._fireZones.length,1);
-  assert.equal(ctx.P.mp,90);
+  assert.equal(ctx.P.mp,93);
 });
 
 test('E physical projectile parries remain active during movement invulnerability', () => {
@@ -78,6 +78,18 @@ test('ordinary blade dash still lands and restores a held skill', () => {
   assert.equal(ctx.P.s,'sBlock');assert.equal(ctx.P._bdMoveT,0);
   assert.equal(ctx.G._fireZones.length,1);
 });
+
+test('Flash Step travels its original 250 units once, including fractional final updates',()=>{
+  for(const sp of [1,.35,2]){
+    const ctx=chargeContext();ctx.P.s='idle';ctx.charge=false;ctx.isAct=()=>false;
+    vm.runInContext(fn('activateBladeDash')+fn('_tickBladeDash'),ctx);ctx.activateBladeDash(3);
+    let ticks=0;while(ctx.P._bdMoveT>0&&ticks++<100)ctx._tickBladeDash(sp);
+    assert.ok(Math.abs(ctx.P.x-250)<1e-6,'distance at step '+sp);
+    assert.equal(ctx.G._fireZones.length,1);assert.equal(ctx.P.mp,93);
+    ctx._tickBladeDash(sp);assert.ok(Math.abs(ctx.P.x-250)<1e-6,'completed dash cannot move again');
+    assert.equal(ctx.G._fireZones.length,1);
+  }
+});
 function fn(name) {
   const start = html.indexOf(`function ${name}(`);
   assert.ok(start >= 0, `${name} exists`);
@@ -89,7 +101,7 @@ function fn(name) {
   assert.fail(name);
 }
 
-test('level-one characters start with Wing Strike equipped and fused for free', () => {
+test('level-one characters start with Flame Blade equipped and fused for free', () => {
   const p = vm.runInNewContext(`${fn('mkP')};mkP()`);
   assert.equal(p.lv, 1);
   assert.equal(p.skills.maliceSwipe, 1);
@@ -191,7 +203,7 @@ test('a fresh character casts a wave; level growth enlarges its distance and wid
   }
 });
 
-test('base Wing Strike reset refunds only upgrades and keeps its free level', () => {
+test('base Flame Blade reset refunds only upgrades and keeps its free level', () => {
   const ctx = vm.createContext({ P: {}, _skillUpSpCost: () => 1 });
   vm.runInContext(fn('_fuseUpSpCost') + fn('_wingStrikeLevel') + fn('_resetWingStrikeUpgrades'), ctx);
   ctx.P = { skills: { maliceSwipe: 3, shieldThrow: 3 }, _fused: { shieldFuse: true }, sp: 0 };
@@ -204,7 +216,7 @@ test('base Wing Strike reset refunds only upgrades and keeps its free level', ()
   assert.equal(ctx.P.sp, 4, 'repeated resets cannot create SP from the free starter skill');
 });
 
-test('level-one Wing Strike fires without shoulder equipment and respects cooldown', () => {
+test('level-one Flame Blade fires without shoulder equipment and respects cooldown', () => {
   const noop = () => {};
   const ctx = vm.createContext({
     G: {}, INV: { equipped: { shield: null } },
@@ -226,7 +238,7 @@ test('level-one Wing Strike fires without shoulder equipment and respects cooldo
 test('charged E release enlarges the actual fused wave hit area, including skill growth', () => {
   const noop = () => {};
   const ctx = vm.createContext({
-    G: {}, INV: { equipped: { shield: null } }, _charIdx: 0,
+    G: {}, INV: { equipped: { shield: null } }, _charIdx: 0, window: {},
     pShieldMul: () => 1, statStr: () => 1, _fuseMul: () => 1,
     _addSkProf: noop, shake: noop, poolPart: noop,
     _startSilvertailAttackMotion: noop, _playSwordBack: noop, playSample: noop, _r: () => 1,

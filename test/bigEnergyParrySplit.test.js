@@ -80,12 +80,12 @@ test('large-energy parry grants ten times the normal recovery resources without 
 
   assert.match(resolveSrc, /const _bigResourceMul=10/);
   assert.match(resolveSrc, /P\.parryBank=\(P\.parryBank\|\|0\)\+totalDmg\*_bigResourceMul/);
-  assert.match(resolveSrc, /doParry\(totalDmg,p\.x,p\.y,true,p\.el,_bigResourceMul\)/);
+  assert.match(resolveSrc, /doParry\(totalDmg,p\.x,p\.y,true,p\.el,_bigResourceMul,p\.fbEnergy&&p\.el===EL\.I\?'waterEnergy':undefined\)/);
   assert.match(parrySrc, /function doParry\(_inDmg,_px,_py,_forceQ,_parryEl,_resourceMul,_impactKind\)/);
   assert.match(parrySrc, /const _resourceBonus=Math\.max\(1,_resourceMul\|\|1\)/);
-  assert.match(parrySrc, /const _prBase=~~\([^;]+\*_resourceBonus\)/);
+  assert.match(parrySrc, /const _prBase=~~\([^;]+\*_resourceBonus\);/);
   assert.match(parrySrc, /const _harpAdd=\([^;]+\)\*_resourceBonus/);
-  assert.match(parrySrc, /const _rageAdd=\(\([^;]+\)\*_resourceBonus\+_uSR\)/);
+  assert.match(parrySrc, /const _rageAdd=\(\([^;]+\)\*_resourceBonus\+_uSR\)\*2/);
   assert.match(parrySrc, /const _matsAdd=\([^;]+\)\*_resourceBonus/);
   assert.match(resolveSrc, /_splitParriedBigEnergy\(p,totalDmg\)/,
     'the ten-times bonus must not be passed into the five-shot damage split');
@@ -214,8 +214,9 @@ test('Q shield splits large energy while non-Q reflection loops leave it to the 
   assert.match(peaceShield, /if\(_isBigEnergy\(p\)\)[\s\S]{0,300}_resolveBigEnergyParry\(p,/,
     'peace shield Q parry must split the original immediately');
 
-  assert.match(gameHtml, /const p=projs\[i\];if\(p\.friendly\|\|p\.noParry\|\|p\.blackBean\|\|_isBigEnergy\(p\)\)continue;/,
-    'E back-blade reflection must not turn large magic energy friendly');
+  const eCanReflect=Function('P','_isBigEnergy','_projectileParryClass','_isFused',`${extractFunction('_eCanReflectProjectile')};return _eCanReflectProjectile`)({s:'sBash',_stWingT:120},p=>!!(p.fbEnergy||p.fdEnergy),()=> 'magic',()=>true);
+  for(const p of [{fbEnergy:true},{fdEnergy:true}])assert.equal(eCanReflect(p),false,'even empowered E reflection excludes large magic energy');
+  assert.ok(gameHtml.includes('if(!_eCanReflectProjectile(p))continue;'),'E uses the shared eligibility helper');
   assert.match(gameHtml, /const p=projs\[_pi\];if\(p\.friendly\|\|!p\.life\|\|_isBigEnergy\(p\)\)continue;/,
     'non-Q landing parry must not bypass large-energy ownership');
 });

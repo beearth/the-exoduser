@@ -484,7 +484,7 @@
   "모든 레벨을 습득했습니다.": "Tous les niveaux ont été appris.",
   "강화 후 남은 AP {n}": "AP restants après amélioration : {n}",
   "AP {n}이 더 필요합니다.": "Il manque {n} AP.",
-  "현재 위치에 9개 기둥 순차 발동. 5초간 악의 기둥을 소환하여 반경 내 적에게 지속 암전 데미지+감속. 범위 250+(Lv-1)×22. 지옥강타 2와 합체→기둥강타. 쿨 15초": "Déploie successivement 9 piliers à votre position. Pendant 5s, inflige des dégâts sombres continus et ralentit les ennemis proches. Rayon : 250+(niv.-1)×22. Fusion avec Frappe Colossale 2 → Frappe du pilier. Recharge 15s.",
+  "현재 위치에 9개 기둥 순차 발동. 10초간 악의 기둥을 소환하여 반경 내 적에게 지속 암전 데미지+감속. 범위 250+(Lv-1)×22. 지옥강타 2와 합체→기둥강타. 쿨 15초": "Déploie successivement 9 piliers à votre position. Pendant 10s, inflige des dégâts sombres continus et ralentit les ennemis proches. Rayon : 250+(niv.-1)×22. Fusion avec Frappe Colossale 2 → Frappe du pilier. Recharge 15s.",
   "[선택: 1~4번, Lv500 해금] 현재 위치에 공성쇠뇌 터렛 설치. 재입력 시 철거. 설치 중 플레이어 석궁 사용 불가 (터렛만 발사). 데미지+50%, 공속+50%, 사거리+50%. ST 100. 설치 쿨 20초. Lv당 뎀+5% 공속+5% 사거리+5%": "[Au choix : 1~4, débloqué au niv.500] Pose une tourelle d'arbalète de siège à votre position. Réactivez pour démonter. Tant qu'elle est déployée, votre arbalète est inutilisable : seule la tourelle tire. Dégâts +50%, vitesse d'attaque +50%, portée +50%. ST 100. Recharge de pose : 20s. Par niveau : dégâts +5%, vitesse d'attaque +5%, portée +5%.",
   "선택스킬: 터렛 설치/철거 (Lv500, ST100, 설치 쿨20초)": "Compétence au choix : poser/démonter la tourelle (niv.500, ST100, recharge de pose 20s)"
 }

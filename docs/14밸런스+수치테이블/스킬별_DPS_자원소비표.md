@@ -1,5 +1,11 @@
 # 스킬별 DPS + 자원 소비 총정리
 
+> **2026-09-10 현행 교정:** 악의구는 `_skMul=13.2+(Lv−1)×10.56×0.5`; Lv1=13.2, Lv10=60.72, Lv20=113.52; magicRef×statInt×pMagicMul×_fuseMul, 직격100%+폭발60%. Space 지옥강타는 `floor(floor(meleeRef×statStr×(20+(Lv−1)×19×0.5)×_rageMul)×pAtkMul)+_atkBon`; pAtkMul은 _gSlamHit에서1회. 분노100 기본20배. 쿨다운 `floor(max(60,1800−(slv−1)×12)×(1+_cdRed()))`f (Lv1=30초), 합체 giantSlam2 특정 경로는420f 기반. 과거 비교/순위는 당시 이력이며 [최신 기준](EARLY_COMBAT_5_7_1_20260910.md)을 우선한다.
+
+
+> **2026-09-10 마법 공격 2배:** `pMagicMul(forAttack=true)=_passDmgSum('magic')×(1+_uHelmMagic)×2`. 아래 공식의 `pMagicMul()`에 이미2배가 포함되므로 스킬 계수·후속 폭발·DOT에 다시 곱하지 않는다. `pMagicMul(false)`는 Q패링 장비스케일 전용으로 기존 값을 유지한다. 계수 표의 숫자는 이 공통 배율을 곱하기 전 값이다. [상세 계약](../14밸런스+수치테이블/MAGIC_ATTACK_DAMAGE_20260910.md).
+
+
 > **2026-09-09 업화선 현행 정정:** MP=`floor(50*(1+(Lv-1)*0.12))`, 최대5초 차징·재입력 발사, 직선 관통·폭발·화상, 유도/DEX 미사용. 쿨=`floor(60/pMagicSpd())`프레임. 정확한 피해·차징·관통 계약은 `docs/2_1 스킬관리+합체시스템+자원/FIREBEAM_LOCALIZATION_SOURCE_20260909.md`를 따른다. 아래 과거 업화선 DPS·효율 순위는 현행 수치가 아니다.
 
 ## 천공쇄기 (`skyCrusher`) — 2026-09-04
@@ -20,7 +26,7 @@
 
 > 기준: game.html 2026-04-18 기준 코드 분석 (패시브 곱연산→합연산 변경)
 > 프레임 = 1/60초, 패시브 0레벨 기준 (할인 미적용)
-> **2026-04-18**: 패시브 곱연산→합연산으로 변경되었으나, 본 표의 DPS/자원 계산은 변경 불필요 (패시브 0기준이므로). 다만 pAtkMul/pMagicMul/pBowMul 함수가 _passDmgSum()로 변경됨을 참고
+> **2026-04-18**: 패시브 곱연산→합연산으로 변경되었으나, 당시 표의 계수는 공통 배율 적용 전 기준이다. 2026-09-10부터 마법의 실제 데미지/DPS에는 pMagicMul의2배가 포함된다. 다만 pAtkMul/pMagicMul/pBowMul 함수가 _passDmgSum()로 변경됨을 참고
 
 ---
 
@@ -33,7 +39,7 @@ stCost(key) = COST_BASE[key] × (1 + (skLv-1) × DPS스케일) × 할인계수
 mpCost(key) = COST_BASE[key] × (1 + (skLv-1) × DPS스케일) × pMagicCost() → 최소 0.40
 
 COST_BASE: (단발성 기본 250, 기본공격 10)
-  weapon:10, finisher:250, shield:10, giantSlam:250
+  weapon:10, finisher:250, shield:10, giantSlam:50
   charge:250, bladeDash:250
   bow:250, bladeShot:250, blastShot:250, shieldThrow:250, fanShot:250
   magic:250, blink:250, iceOrb:250, dimBreach:250, exBolt:250, mortar:250
@@ -61,7 +67,7 @@ DPS_BAL = { bow: 0.77, magic: 0.475, beam: 0.0080 }
 |---|---|---|---|---|---|---|
 | chargeBoost | 사슬기동:충돌 | ST | 10×1=10 → 10×10=100 (물리할인) | 3회 충전식 | STR × meleeRef × pAtkMul | 충전 3회, 이동중 무적, 관통뎀+그로기 |
 | magicBlink | 사슬기동:화염 | MP | 10×1=10 → 10×10=100 (마법할인) | 없음 | INT × magicRef × pMagicMul | 경로 화염길 3초 DOT, 합체 시 착지폭발 |
-| bladeDash | 전격이동 | MP | 10+(Lv-1)×5 (1렙10, 10렙55) | 1렙10스택, 렙당+1. 쿨 300f→Lv당-18f(최소120f=2초). 1렙5초 | magicRef × INT × pMagicMul × **_skMul('bladeDash')** (b:10, g:6) 틱뎀 | 3tick/s → DPS 30(Lv1)→122(Lv20). 착지 전류장판 반경 캡200px (120+Lv×5). VFX: Power Lightning 스프라이트. (50% 너프 2026-06-11) |
+| bladeDash | 전격이동 | MP + 기동게이지 | MP (10+(Lv−1)×5)×7/10 (1렙7, 10렙38.5), 기동게이지31.5 | 공용게이지 회복, 전용 스톡/재충전 없음 | magicRef × INT × pMagicMul × **_skMul('bladeDash')** (b:10, g:6) 틱뎀 | 3tick/s → DPS 30(Lv1)→122(Lv20). 착지 전류장판 반경 캡200px (120+Lv×5). VFX: Power Lightning 스프라이트. (50% 너프 2026-06-11) |
 | chainAssault | 기동불꽃 | MP | mpCost('dimBreach') | 없음 (이동 중) | INT × _skMul('chainAssault') × **티어3단계(×30/×60/×100)** | 착지 화염폭발, 3티어=업화선 2.5초 차징급. 불바닥을 여러 개 쌓은 뒤 충돌 스킬(기동파괴) 또는 분노 스킬(지옥강타 1)로 일괄 기폭 가능. 천공쇄기 착탄은 활성 `assaultFlame` 전량을 기존 총피해 공식 그대로 즉시 기폭(추가 비용 없음) |
 | chainSlam | 기동파괴 | ST + 악의20 | stCost('giantSlam') | 없음 (이동 중) | STR × _skMul('chainSlam') × **티어3단계(×2/×5/×8)** | 보스 체간 대량삭감, 지옥강타 1급 데미지 (2026-05-30 재조정) |
 | chainSlash | 기동칼날개 | 없음 | 0 | 없음 (이동 중) | STR 물리 | 전방 광역 베기+출혈, 다단히트 (레벨제한 없음) |
@@ -74,7 +80,7 @@ DPS_BAL = { bow: 0.77, magic: 0.475, beam: 0.0080 }
 |---|---|---|---|---|---|---|
 | kiSlash | 기검참 | ST | 10+(Lv-1)×2 = **10→48** | 없음 | meleeRef×7×statStr×pAtkMul×_skMul(b:12,g:10.08) | Lv1=84×/타, Lv10=401.52×/타, Lv20=754.32×/타. 공속·비용 유지, 기존 코드 대비3배 |
 | whirlwind | 회전참 | ST(틱) | **30+(Lv-1)×5 ST/초** (Lv1=30, Lv10=75, Lv20=125) | 없음 (홀드) | meleeRef × statStr × pAtkMul × _skMul × _fuseMul | 360도 광역, Lv당 범위+5 뎀+5% |
-| giantSlam | 지옥강타 1 | ST + 악의20 | 250×DPS(+10%) (Lv1=250, Lv10=475) | max(60, 600-(Lv-1)×12)f = **10초→8초** | meleeRef × statStr × pAtkMul × **_skMul(b:16,g:12.8) × 4** | **Lv1=64×, Lv20=552×** (2026-05-29 밸런스 평균화). 보스: maxPoise×25% 고정 |
+| giantSlam | 지옥강타 1 | ST + 악의20 | stCost(giantSlam), 기준장비 Lv1=50 | max(60,1800-(Lv-1)×12)f × (1+_cdRed()) | `floor(floor(meleeRef×statStr×(20+(Lv−1)×19×0.5)×_rageMul)×pAtkMul)+_atkBon`; pAtkMul은 _gSlamHit에서1회. 분노100 기본20배 | 일반몹 분노100 1방 목표, 보스 포이즈25% |
 | giantSlam2 | 지옥강타 2 | ST + 악의20 | giantSlam과 동일 | 동일 | 동일 | infernoSlam 합체용 복제 |
 
 ---
@@ -105,7 +111,7 @@ DPS_BAL = { bow: 0.77, magic: 0.475, beam: 0.0080 }
 | needleShot | 만화방창 II | ST | 8 고정 | **90f (1.5초)** | DEX × bowRef × pBowMul × **_skMul('needleShot')** (b:4, g:3.2) | 1.3hit/s → DPS 5.2(Lv1)→45(Lv20). 2발+5렙당1발 (2026-05-29 밸런스 평균화) |
 | ~~blastShot~~ | ~~폭산탄~~ | — | — | — | — | **삭제됨 (2026-04-10 석궁개편)** |
 | 석궁 기본 (fireBow) | 악의1/발 | — | 없음 | (floor(bowRef×pBowMul×10)+_bowBon)×3 | 단일탄·관통0, 기존 데미지3배 |
-| shieldThrow | 칼등날개 | ST | 0 (E키 칼등에서 이미 차감) | **300f (5초)** | STR 스케일 | 합체 전용, 제자리 처내기+충격파, Lv당 뎀+12%, **넉백 1.5** |
+| shieldThrow | 불꽃칼날 | ST | 0 (E키 칼등에서 이미 차감) | **단독720f (12초), 기본 합체 Lv1 705f (11.75초)** | STR 스케일 | 합체 전용, 제자리 처내기+충격파, Lv당 뎀+12%, **넉백 1.5** |
 | ghostXbowTurret | 공성쇠뇌 | ST | 설치 100 고정, 철거 무료 | 설치 20초(1200f), 철거 무관 | DEX × (뎀+50%, 공속+50%, 사거리+50%) | Lv500 해금, 터렛이 설치 전 세팅된 석궁 스킬(bladeShot/fanShot 등)을 사용하여 발사 |
 
 ---
@@ -114,7 +120,7 @@ DPS_BAL = { bow: 0.77, magic: 0.475, beam: 0.0080 }
 
 | ID | 이름 | 자원 | 비용 | 쿨다운 | 데미지 공식 | DPS 비고 |
 |---|---|---|---|---|---|---|
-| fireball | 악의구 | MP | 50×DPS (마법할인) | 없음 | INT × magicRef × pMagicMul × _skMul('fireball') (b=5.0, g=4.0) | 기본 E, 범위폭발+넉백, Lv당 크기+50%. **Lv1=5×, Lv10=23×, Lv20=43× (g 2배 상향 2026-05-19)** |
+| fireball | 악의구 | MP | mpCost(magic) | 없음 | `_skMul=13.2+(Lv−1)×10.56×0.5`; Lv1=13.2, Lv10=60.72, Lv20=113.52; magicRef×statInt×pMagicMul×_fuseMul, 직격100%+폭발60% | 10레벨 기준7발, 중독 별도 |
 | omniBeam | 멸살광선 | MP(틱) | 멸살:**10**(1+(Lv-1)×0.18)/초, 만화광선:**15**, 추적암전:**30** | 과부하 **300f (5초)** | INT × magicRef × pBeamMul × _skMul × drainBonus | tickMul=4(전체×2), 단독 멸살 ×3 집중보너스, 합체는 줄기별 풀뎀. 1적 DPS: 멸살 최강 (2026-04-21) |
 | elemMissile | 원소추적탄 | MP | ~250×DPS (마법할인) | 없음 | INT × magicRef × pMagicMul × _skMul('elemMissile') (b=1.5, g=1.2) | 6원소 유도, 곡선궤적, 사거리+20/Lv. **Lv1=1.5×, Lv10=6.9×, Lv20=12.9× (b 1.0→1.5, g 2배 상향 2026-05-19)** |
 | ~~energyShot~~ | ~~마력연사~~ | — | — | — | — | **삭제됨 (2026-05-01)** |
@@ -136,7 +142,7 @@ DPS_BAL = { bow: 0.77, magic: 0.475, beam: 0.0080 }
 
 | ID | 이름 | 자원 | 비용 | 쿨다운 | 효과 | 지속시간 |
 |---|---|---|---|---|---|---|
-| spikeTrap | 가시덫 (phys 탭) | 악의 | **10** | **600f (10초)** | INT×magicRef×pMagic×**_skMul('spikeTrap')×0.5** (b:7, g:5.6), 슬로우 Lv1 91%(기존 대비 ×1.3)+Lv당2%p(최대95%)+출혈 | 기존 DPS의 50%: 약 8.5(Lv1)→72(Lv20). 범위 300→585 (Lv1→Lv20, slope +15/Lv — 코드 실측 `300+(Lv-1)*15`; 2026-05-29 밸런스로 base 200→300, slope는 +15 유지. 과거 문서/툴팁 +22 표기는 코드 불일치로 정정 2026-08-18) |
+| spikeTrap | 가시덫 (phys 탭) | 악의 | **10** | **600f (10초)** | INT×magicRef×pMagic×**_skMul('spikeTrap')×0.75** (b:14, g:11.2; `_skMul=14+(Lv-1)×11.2×0.5`), 슬로우 Lv1 91%(기존 대비 ×1.3)+Lv당2%p(최대95%)+출혈 | 25f 간격(초당2.4틱): 틱 계수10.5→90.3, 초당 계수25.2→216.72(Lv1→Lv20). 실제 DPS는 `floor(INT×magicRef×pMagic×틱계수)×2.4`, 출혈 별도. 직전 피해의50%. 범위 300→585 (Lv1→Lv20, slope +15/Lv — 코드 실측 `300+(Lv-1)*15`; 2026-05-29 밸런스로 base 200→300, slope는 +15 유지. 과거 문서/툴팁 +22 표기는 코드 불일치로 정정 2026-08-18) |
 | boneWall | 해골무덤 | 악의 | **12** | 25초/스택 (2→3스택) | floor(meleeRef×STR×pAtkMul×(9+(Lv-1)×3.6)) 솟을 때 | min(30,3+(Lv-1)×0.2)초 |
 | holyDome | 회복의 영역 | 없음 | 무료 | **1800f (30초)** | HP/MP/ST +10리젠, 회복×2, 쿨×2 | 12+Lv×0.5초 |
 | holyPrison | 구속의 영역 | 없음 | 무료 | **1800f (30초)** | 부활력 -15%~30%(Lv1=15%, Lv10=30%) | 10+Lv×0.3초 |
@@ -168,7 +174,7 @@ DPS_BAL = { bow: 0.77, magic: 0.475, beam: 0.0080 }
 |---|---|---|---|---|
 | kiSlash 기검참 | 좌클릭 | 5 | ~0.45초 (공속) | **~11.1** |
 | whirlwind 회전참 | 홀드 | Lv스케일 | 매 프레임 | **10→100/초** (Lv1→10) |
-| giantSlam 지옥강타 1 | 액티브 | 10 + 악의20 | 10초 | **1.25 ST + 2.5악의** |
+| giantSlam 지옥강타 1 | `floor(floor(meleeRef×statStr×(20+(Lv−1)×19×0.5)×_rageMul)×pAtkMul)+_atkBon`; pAtkMul은 _gSlamHit에서1회. 분노100 기본20배 | ST=stCost(giantSlam), 악의=_malCost(20) | 기본30초, 레벨당12f 감소·최소60f | 단위시간 효율은 실제 쿨/할인/명중 조건으로 측정 |
 | bladeShot 붉은꽃 | T자동 | 10 | 0.5초 | **20** |
 | fanShot 만화방창 | T자동 | 10 | 자동간격 | **~10~20** |
 | needleShot 만화방창II | T자동 | 8 | 1.5초 | **5.3** |
@@ -197,7 +203,7 @@ DPS_BAL = { bow: 0.77, magic: 0.475, beam: 0.0080 }
 | boneWall 해골무덤 | 12 | 25초/스택 | **0.48** |
 | spikeTrap 가시덫 | 10 | 10초 | **1.0** |
 | blastShot 폭산탄 | 5 | 0.5초 | **10.0** (최다 소비) |
-| giantSlam 지옥강타 1 | 20 | 8~10초 | **2.5~20** |
+| giantSlam 지옥강타 1 | `floor(floor(meleeRef×statStr×(20+(Lv−1)×19×0.5)×_rageMul)×pAtkMul)+_atkBon`; pAtkMul은 _gSlamHit에서1회. 분노100 기본20배 | ST=stCost(giantSlam), 악의=_malCost(20) | 기본30초, 레벨당12f 감소·최소60f | 단위시간 효율은 실제 쿨/할인/명중 조건으로 측정 |
 
 ---
 
@@ -235,21 +241,21 @@ DPS_BAL = { bow: 0.77, magic: 0.475, beam: 0.0080 }
 ---
 
 
-## E 기본 날개치기 — 2026-09-10 최신 계약
+## E 기본 불꽃칼날 — 2026-09-10 최신 계약
 
 | 항목 | 현재 구현 |
 |---|---|
 | 기본 보유 | 캐릭터1레벨부터 `maliceSwipe=1`, `shieldThrow=1`, `_fused.shieldFuse=true`, `activeRMBSk='maliceSwipe'`. 습득·합체 비용 없이 지급 |
-| 장비 조건 | 합체 날개치기는 견갑 없이 발동, 미장착 ATK 기본값3. 미합체 칼등날개만 견갑 필요; 미발동 시 숙련도/쿨다운 부여 없음 |
+| 장비 조건 | 합체 불꽃칼날은 견갑 없이 발동, 미장착 ATK 기본값3. 미합체 불꽃칼날만 견갑 필요; 미발동 시 숙련도/쿨다운 부여 없음 |
 | 기존 세이브 | `_ensureBaseWingStrike`가 누락/0레벨만 최소1로 보충, 기존 높은 레벨·다른 합체·자원 유지. `_sanitizeCoreState` 및 일반/로컬 시작 경로 적용 |
 | 범위 성장 기준 | **E 스킬 레벨** `L=max(1,min(maliceSwipe,shieldThrow))`. `M=1+(L−1)×0.05` (가산), 캐릭터 레벨과 별개 |
 | 충전 | `_sdHold` 실제프레임을×2로 승계, `kiGather`에서 `sp×2` 누적. 기존 가상60/120/180 임계는 실제30/60/90f = **0.5/1/1.5초** |
 | 자동 발동 | 가상186=실제93f(**1.55초**). 탭 판별10f는 유지, 홀드 놓기 최소 가상18f=실제0.15초(10f 게이트 별도) |
-| 이동 중 E | Shift 사슬이동은 `kiGather`와 충전량·단계를 보존. 칼날이동은 `sDraw/kiGather` 상태에서 별도 `_bdMoveT=12`로 진행하며 `sp×2` 충전 지속. 이동 중 E 릴리즈/자동 풀차지는 실제 `sBash`를 발동하고 이동은 착지까지 계속 |
+| 이동 중 E | Shift 사슬이동은 `kiGather`와 충전량·단계를 보존. 칼날이동은 `sDraw/kiGather` 상태에서 별도 `_bdMoveT=6`로 진행하며 `sp×2` 충전 지속. 이동 중 E 릴리즈/자동 풀차지는 실제 `sBash`를 발동하고 이동은 착지까지 계속 |
 | 연속 충전 배율 C | `min(3,1+0.5×min(t,2)+max(0,t−2))`, t=2배속 누적초. 실제0.5초=1.5, 1초=2, 1.5초=3 |
 | E 타격/전진 패링/충전 미리보기 | `_eSwingRadius(C)=floor((70+견갑bonusRange×4)×M×C)` |
 | 투사체 패링 | sBash 한정 기존 반경×M×C. `_normalR`의 sBash 분기도×M. Q는×1 유지 |
-| 날개치기 추가 반사 | `_sdRange=floor(_gsRange2×1.5)` (기존 합체 보너스 유지) |
+| 불꽃칼날 추가 반사 | `_sdRange=floor(_gsRange2×1.5)` (기존 합체 보너스 유지) |
 | 파워웨이브 | `_wvRangeMul=M×C`; 사거리210×M×C, 진행 판정 r=50×M×C, 폭95×M×C. C는 발사 시 충전 배율1~3 스냅샷. 적/탄막 충돌과 먼지 분포가 같은 r/w 사용. Lv1 풀차지 사거리630·r150·폭285 |
 | 시각 | 실버테일 아크 scale=C×M; 다른 캐릭터 sweepRange=floor((90+견갑bonusRange×4)×C×M). 룬 미리보기는 실제 `_eSwingRadius(C)` 사용 |
 | 초기화 | 1레벨 합체 유지. `_resetWingStrikeUpgrades`는 공통 합체 강화분(L−1)을 두 구성 스킬에서 차감하고 `sum(_fuseUpSpCost(i,2), i=1..L−1)`만 SP 환불. 무료 습득/합체 비용 환불 없음. 레벨 차이가 있는 기존 세이브의 초과 레벨은 보존 |

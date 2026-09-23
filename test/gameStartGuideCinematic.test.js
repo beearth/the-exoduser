@@ -1,31 +1,13 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import { readFile } from 'node:fs/promises';
-import path from 'node:path';
-import { fileURLToPath } from 'node:url';
 
-const rootDir = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
-
-test('game-start dialogue uses the true viewport center on ultrawide displays', async () => {
-  const game = await readFile(path.join(rootDir, 'game.html'), 'utf8');
-
-  assert.match(game, /<div id="introText"[\s\S]*<div id="introTextPanel"[\s\S]*id="introTextKr"[\s\S]*id="introTextEn"/);
-  assert.match(game, /#introText\s*\{[\s\S]*justify-content:\s*center[\s\S]*padding-left:\s*0/);
-  assert.match(game, /#introTextPanel\s*\{[\s\S]*position:\s*relative[\s\S]*border-left:\s*none[\s\S]*border-right:\s*none[\s\S]*box-shadow:\s*none/);
-  assert.match(game, /const msgKr=\$\('introTextKr'\),msgEn=\$\('introTextEn'\);[\s\S]*msgKr\.textContent=ln\.ko;msgEn\.textContent=ln\.en;/);
-});
-
-test('three-step start guide uses the true viewport center without a mobile override', async () => {
-  const game = await readFile(path.join(rootDir, 'game.html'), 'utf8');
-
-  assert.match(game, /<div id="introKeys"[\s\S]*<div class="intro-key-panel">/);
-  assert.match(game, /#introKeys\s*\{[\s\S]*justify-content:\s*center[\s\S]*padding-left:\s*0/);
-  assert.match(game, /#introDiff\s*\{[\s\S]*justify-content:\s*center[\s\S]*padding-left:\s*0/);
-  assert.match(game, /\.intro-key-panel\s*\{[\s\S]*width:\s*min\(44vw,650px\)[\s\S]*border-left:\s*none[\s\S]*border-top:\s*none[\s\S]*border-bottom:\s*none/);
-  assert.doesNotMatch(game, /\.intro-key-panel::before\s*\{\s*content:\s*['"]GUIDE['"]/);
-  assert.match(game, /#ikTitle\s*\{[\s\S]*font-size:\s*clamp\(2rem,2\.9vw,2\.84rem\)/);
-  assert.match(game, /#ikBody\s*\{[\s\S]*font-size:\s*clamp\(1\.45rem,1\.8vw,1\.8rem\)/);
-  assert.match(game, /#ikHint\s*\{[\s\S]*font-size:\s*1rem/);
-  assert.doesNotMatch(game, /@media\s*\(max-width:\s*760px\)\s*\{[^}]*#introText/s);
-  assert.match(game, /if\(step<_INTRO_KEY_STEPS\.length-1\)\{[\s\S]*setTimeout\(\(\)=>_showIntroKeys\(step\+1\),350\)/);
+test('wake-up dialogue and four-cut controls share one centered dialog', async()=>{
+  const game=await readFile(new URL('../game.html',import.meta.url),'utf8');
+  assert.match(game,/<div id="introKeys" role="dialog"[\s\S]*id="introTextKr"[\s\S]*id="introTextEn"[\s\S]*id="ikBody"[\s\S]*id="ikSkip"[\s\S]*id="ikNext"/);
+  assert.doesNotMatch(game,/<div id="introText">/);
+  assert.match(game,/#introKeys\{justify-content:center;padding-left:0/);
+  assert.match(game,/width:min\(720px,calc\(100vw - 96px\)\);max-height:calc\(100vh - 48px\);overflow-y:auto/);
+  assert.doesNotMatch(game,/function _showIntroLine|function _showIntroKeys/);
+  assert.match(game,/body\.replaceChildren\(\)/);
 });

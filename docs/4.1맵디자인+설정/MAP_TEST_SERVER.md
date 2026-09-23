@@ -39,6 +39,7 @@ npm run serve:map
 | `/` | `/map-test.html`로 302 |
 | `/map-test` | `/map-test.html`로 302 |
 | `/map/{si}` | 아래 본편 테스트 URL로 302. 단, si4는 `combatqa=1` 추가 |
+| `/map/field` | CH1-1 hell-field rebuild 실험 경로(`/mapqa=1&fieldrebuild=1`)로 302; production layout은 보존 |
 | `/map/35` 이상 | HTTP 404 |
 | `/map-test.html?stage=3` | 허브에서 1-4 선택 시작 |
 

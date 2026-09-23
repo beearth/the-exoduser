@@ -1,0 +1,82 @@
+{
+  "replaced": [
+    {
+      "path": "img/ui_refs/window_frames/panel-settings-chains-v2.png",
+      "before": [
+        2307,
+        1581
+      ],
+      "after": [
+        1515,
+        1038
+      ],
+      "sha256": "af0a7d2c65a4465146e6b6100b5be9fa723265d8704c57cd0407a2f12cbbdfed"
+    },
+    {
+      "path": "img/ui_refs/window_frames/panel-inventory-chains-v2.png",
+      "before": [
+        2313,
+        1545
+      ],
+      "after": [
+        1534,
+        1025
+      ],
+      "sha256": "7e14e2095b6a9f8339c7b9cad40691460e004666d5b602f13a8258178a0c8a21"
+    },
+    {
+      "path": "img/ui_refs/window_frames/panel-forge-skulls-v2.png",
+      "before": [
+        2223,
+        1452
+      ],
+      "after": [
+        1551,
+        1014
+      ],
+      "sha256": "a9f7e42c6a33fdf144b7b5631a033232067947c1384dc6224c9e9dc00acdd0f8"
+    },
+    {
+      "path": "img/ui_refs/window_frames/panel-stats-thorns.png",
+      "before": [
+        768,
+        512
+      ],
+      "after": [
+        1536,
+        1024
+      ],
+      "sha256": "8d6cf147b3d6537daea48e4ab5d0640fd56fce0d11cfc942effa30bf71898e03"
+    },
+    {
+      "path": "img/ui_refs/window_frames/panel-skills-runes.png",
+      "before": [
+        768,
+        512
+      ],
+      "after": [
+        1536,
+        1024
+      ],
+      "sha256": "591d915fc97d744df03de02105bf9cb90dcca1328e94a5dd1b2ab16fe183b8ca"
+    },
+    {
+      "path": "img/ui_refs/window_frames/panel-storage-bones.png",
+      "before": [
+        768,
+        512
+      ],
+      "after": [
+        1536,
+        1024
+      ],
+      "sha256": "6d732ee2d4ac68322d9a27048c39ee45038fe913483554ad2d45818ee3719fde"
+    }
+  ],
+  "deletion_candidates": [
+    "img/ui_refs/window_frames/panel-settings-chains.png",
+    "img/ui_refs/window_frames/panel-inventory-bloodhands.png",
+    "img/ui_refs/window_frames/panel-forge-relic.png"
+  ],
+  "backup": "G:\\exoduser\\output\\image_texture_cleanup_20260913\\runtime_scope\\originals"
+}

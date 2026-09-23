@@ -494,7 +494,7 @@
   "망토": "Jubah",
   "팔찌": "Gelang",
   "귀걸이": "Anting",
-  "현재 위치에 9개 기둥 순차 발동. 5초간 악의 기둥을 소환하여 반경 내 적에게 지속 암전 데미지+감속. 범위 250+(Lv-1)×22. 지옥강타 2와 합체→기둥강타. 쿨 15초": "9 pilar muncul berurutan di posisi sekarang. Pilar Niat Jahat selama 5 detik memberi kerusakan gelap berkelanjutan+perlambatan. Area 250+(Lv-1)×22. Gabungkan Hantaman Raksasa 2 → Hantaman Pilar. Waktu tunggu 15 detik",
+  "현재 위치에 9개 기둥 순차 발동. 10초간 악의 기둥을 소환하여 반경 내 적에게 지속 암전 데미지+감속. 범위 250+(Lv-1)×22. 지옥강타 2와 합체→기둥강타. 쿨 15초": "9 pilar muncul berurutan di posisi sekarang. Pilar Niat Jahat selama 10 detik memberi kerusakan gelap berkelanjutan+perlambatan. Area 250+(Lv-1)×22. Gabungkan Hantaman Raksasa 2 → Hantaman Pilar. Waktu tunggu 15 detik",
   "[선택: 1~4번, Lv500 해금] 현재 위치에 공성쇠뇌 터렛 설치. 재입력 시 철거. 설치 중 플레이어 석궁 사용 불가 (터렛만 발사). 데미지+50%, 공속+50%, 사거리+50%. ST 100. 설치 쿨 20초. Lv당 뎀+5% 공속+5% 사거리+5%": "[Pilihan: 1~4, terbuka Lv500] Pasang menara busur silang pengepung di posisi sekarang. Tekan lagi untuk membongkar. Saat terpasang, busur silang pemain dinonaktifkan (hanya menara menembak). Kerusakan+50%, kecepatan serangan+50%, jangkauan+50%. ST100. Waktu tunggu pemasangan 20 detik. Per Lv: kerusakan+5%, kecepatan serangan+5%, jangkauan+5%",
   "선택스킬: 터렛 설치/철거 (Lv500, ST100, 설치 쿨20초)": "Keterampilan pilihan: pasang/bongkar menara (Lv500, ST100, waktu tunggu pemasangan 20 detik)"
 }

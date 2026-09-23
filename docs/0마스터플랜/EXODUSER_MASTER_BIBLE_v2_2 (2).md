@@ -768,7 +768,7 @@ STEP 10. renderAffixTooltip() — 툴팁 어픽스 표시
 | 일반 | ×1.0 | 기본 |
 | 매직 | ×2 | 파란 틴트 |
 | 레어 | ×3 | 금색 틴트, 모디파이어 2개 |
-| 챔피언 | ×5 | 빨강+1.2배 크기, 모디파이어 3개 |
+| 챔피언 | ×5 | 빨강+1.35배 크기, 모디파이어 3개 |
 
 ## 8.4 공통 몬스터 20종
 
@@ -1763,7 +1763,7 @@ public class ObjectPool<T> : MonoBehaviour where T : MonoBehaviour {
 - 엘리트 등급 틴트:
     매직 = 파랑 (#4488ff)
     레어 = 금 (#ffcc00)
-    챔피언 = 빨강 (#ff2200) + 크기 ×1.2
+    챔피언 = 빨강 (#ff4444) + 크기 ×1.35
 ```
 
 ### #06-B: BossAI
@@ -2118,7 +2118,7 @@ draw()에서: atlas 있으면 SpriteAnimator.draw(), 없으면 기존 프로시�
 atlas_enemies.png + json. 폴백 동일.
 etype → 프레임 매핑 JSON: {"etype_00": {"idle":[{x,y,w,h}], ...}}
 런타임 팔레트 스왑: initStage() 1회, offscreenCanvas 캐싱.
-엘리트 틴트: 매직=파랑 / 레어=금 / 챔피언=빨강+1.2배 크기
+엘리트 틴트: 매직=파랑 / 레어=금 / 챔피언=빨강+1.35배 크기
 ```
 
 ### DAY 7: 보스 뼈대

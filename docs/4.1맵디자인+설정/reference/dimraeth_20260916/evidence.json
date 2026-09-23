@@ -1,0 +1,249 @@
+{
+  "source": "E:\\steam\\steamapps\\common\\Dimraeth\\Dimraeth_Data",
+  "unity": "6000.0.61f1",
+  "metadataVersion": 31,
+  "scenes": [
+    {
+      "sceneIndex": 2,
+      "scene": "Assets/Scenes/TheLostCaverns/TheLostCaverns.unity",
+      "sha256": "d4b5eedab38f0829fcfc775b641afede9252c9ee30e5c374d4cae48d8b0fd367",
+      "tilemapCount": 87,
+      "tileEntries": 84336,
+      "spriteRendererCount": 4008
+    },
+    {
+      "sceneIndex": 8,
+      "scene": "Assets/Scenes/WildWood/WildwoodForest/WildwoodForestPartI.unity",
+      "sha256": "8eddcb74261200c7da0976fd216bdfcadae74687746200dc7b159df9bdf2e988",
+      "tilemapCount": 128,
+      "tileEntries": 203883,
+      "spriteRendererCount": 17552
+    },
+    {
+      "sceneIndex": 10,
+      "scene": "Assets/Scenes/WildWood/WildwoodForest/WildwoodForestCorrupted.unity",
+      "sha256": "d59f8233075f68bda75bf7e734d556e6363d016e0fd15053ca886f2ff9133824",
+      "tilemapCount": 26,
+      "tileEntries": 41421,
+      "spriteRendererCount": 3143
+    },
+    {
+      "sceneIndex": 20,
+      "scene": "Assets/Scenes/WildWood/WildwoodForestIV/TheGoblinCaves.unity",
+      "sha256": "c9ae0279bcebc47254b5fa833abdf17030f588e85c3ea4c9a17dd84bf3e16977",
+      "tilemapCount": 104,
+      "tileEntries": 95214,
+      "spriteRendererCount": 6585
+    },
+    {
+      "sceneIndex": 25,
+      "scene": "Assets/Scenes/WildWood/WildwoodForestV/TheForestThrone.unity",
+      "sha256": "45cb2567b3b20ac1c554c47a0ec5e3b526243ca1536a275ea653730f2cb2484b",
+      "tilemapCount": 46,
+      "tileEntries": 89926,
+      "spriteRendererCount": 953
+    }
+  ],
+  "forestQ4Layers": [
+    {
+      "id": 101507,
+      "path": "NavMesh/Grid/Q4/Tilemap1/GrassTexture1",
+      "tiles": 1560,
+      "bounds": [
+        4,
+        -5,
+        114,
+        88
+      ],
+      "origin": {
+        "x": 4,
+        "y": -5,
+        "z": 0
+      },
+      "size": {
+        "x": 111,
+        "y": 94,
+        "z": 1
+      },
+      "tileAssets": 51,
+      "sprites": 51,
+      "transform": {
+        "x": 0.0,
+        "y": 0.0,
+        "z": 0.0
+      }
+    },
+    {
+      "id": 101509,
+      "path": "NavMesh/Grid/Q4/Tilemap1/Cliffs1",
+      "tiles": 194,
+      "bounds": [
+        11,
+        18,
+        105,
+        73
+      ],
+      "origin": {
+        "x": 11,
+        "y": 18,
+        "z": 0
+      },
+      "size": {
+        "x": 95,
+        "y": 56,
+        "z": 1
+      },
+      "tileAssets": 23,
+      "sprites": 23,
+      "transform": {
+        "x": 0.0,
+        "y": 0.0,
+        "z": 0.0
+      }
+    },
+    {
+      "id": 101512,
+      "path": "NavMesh/Grid/Q4/Tilemap1/Path1/Dirt",
+      "tiles": 464,
+      "bounds": [
+        34,
+        -1,
+        99,
+        74
+      ],
+      "origin": {
+        "x": 34,
+        "y": -1,
+        "z": 0
+      },
+      "size": {
+        "x": 66,
+        "y": 76,
+        "z": 1
+      },
+      "tileAssets": 1,
+      "sprites": 13,
+      "transform": {
+        "x": 0.0,
+        "y": 0.0,
+        "z": 0.0
+      }
+    },
+    {
+      "id": 101513,
+      "path": "NavMesh/Grid/Q4/Tilemap1/DarkestGrass1",
+      "tiles": 2098,
+      "bounds": [
+        -4,
+        0,
+        104,
+        70
+      ],
+      "origin": {
+        "x": -4,
+        "y": 0,
+        "z": 0
+      },
+      "size": {
+        "x": 109,
+        "y": 71,
+        "z": 1
+      },
+      "tileAssets": 1,
+      "sprites": 1,
+      "transform": {
+        "x": 0.0,
+        "y": 0.0001220703125,
+        "z": 0.0
+      }
+    },
+    {
+      "id": 101514,
+      "path": "NavMesh/Grid/Q4/Tilemap1/WalkableFloor1",
+      "tiles": 3792,
+      "bounds": [
+        -1,
+        -2,
+        104,
+        79
+      ],
+      "origin": {
+        "x": -1,
+        "y": -2,
+        "z": 0
+      },
+      "size": {
+        "x": 106,
+        "y": 82,
+        "z": 1
+      },
+      "tileAssets": 13,
+      "sprites": 44,
+      "transform": {
+        "x": 0.0,
+        "y": 0.0,
+        "z": 0.0
+      }
+    },
+    {
+      "id": 101515,
+      "path": "NavMesh/Grid/Q4/Tilemap1/Path1",
+      "tiles": 1433,
+      "bounds": [
+        30,
+        -1,
+        104,
+        78
+      ],
+      "origin": {
+        "x": 30,
+        "y": -1,
+        "z": 0
+      },
+      "size": {
+        "x": 75,
+        "y": 80,
+        "z": 1
+      },
+      "tileAssets": 1,
+      "sprites": 33,
+      "transform": {
+        "x": 0.0,
+        "y": 0.0,
+        "z": 0.0
+      }
+    }
+  ],
+  "repeatedFloorMasks": [
+    {
+      "shapeHash": "a85ab519fac06b81",
+      "instances": [
+        {
+          "id": 90635,
+          "path": "NavMesh/Grid/Branch 3/R5/Tilemaps1/WalkableFloor",
+          "cells": 832
+        },
+        {
+          "id": 90637,
+          "path": "NavMesh/Grid/Branch 2/R5/Tilemaps1/WalkableFloor",
+          "cells": 832
+        }
+      ]
+    },
+    {
+      "shapeHash": "e16b4c7bff7917f2",
+      "instances": [
+        {
+          "id": 90669,
+          "path": "NavMesh/Grid/Branch 4/R7/Tilemaps1/WalkableFloor1",
+          "cells": 704
+        },
+        {
+          "id": 90670,
+          "path": "NavMesh/Grid/Branch 5/R7/Tilemaps1/WalkableFloor1",
+          "cells": 704
+        }
+      ]
+    }
+  ]
+}

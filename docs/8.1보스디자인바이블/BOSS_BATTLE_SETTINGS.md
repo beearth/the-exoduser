@@ -511,3 +511,31 @@ X.translate(Math.round(C.width/2 - G.cam.x + sx), Math.round(C.height/2 - G.cam.
 - `bossRec` 처리 분기 누락으로 `fanWave`, `radialLaser`, `teleStrike` 종료 후 보스가 영구 정지하던 버그를 수정했다.
 - 공격 피해, 전조 시간, 패턴 쿨다운, 포이즈, 사거리 수치는 변경하지 않았다. 회복 상태의 정상 종료 연결만 보정했다.
 - 회귀 테스트: `test/bossRecRecovery.test.js`; 브라우저 검증: `?bosstest=3`에서 세 패턴 종료 후 `idle`/다음 패턴 진행 확인.
+
+## 2026-09-13 정지 덫 가시성 수정
+
+| 대상 | 변경 |
+|---|---|
+| trap | 중앙점4px→8px, 코어1.6→3px. 실제 접촉 반경28px에 고정 경계·반투명 채움 추가. 수명 음수인 영구 덫도 계속 표시 |
+| 렌더 | source-over, 빨강 채움 .24, 어두운 외곽5px, 밝은 경계2.5px·alpha .85~1. 기존 작은 가산 글로우7px 대체 |
+| 유지 | 피해·접촉·감속·Q 패링·영구 지속·누적50개 상한. 일반 지뢰/추적지뢰 변경 없음 |
+| 기준 | `docs/5.1임펙트디자인/GROUND_TRAP_VISIBILITY_20260913.md`. 이전 중앙점만 남기는 크기 축소 설명보다 이 계약이 우선 |
+
+
+## 2026-09-23 보스 레이저 — 예고 고정 스윕/발사 임팩트
+
+기존 `laser` 무브의 허용 보스·선택 조건·피해·사거리·지속시간은 유지한다. 변경은 `updateE()`의 `bossLaserWind → bossLaser` 실행 계약뿐이다.
+
+| id/필드 | 값 | 적용 위치 | 의도 |
+|---|---:|---|---|
+| `laser` 허용 구간 | si 10~13부터 | `_BOSS_MOVESET` | 기존 해금 구간 유지. 1장 보스 무브셋에는 추가하지 않음 |
+| `bossLaserWind` | 기존 전조 중에만 플레이어 추적 | `e.laserAng += diff×0.04×sp` | 플레이어에게 명확한 예고선을 제공 |
+| `_laserLockAng` | 전조 종료 시점의 `e.laserAng` | 발사 전 1회 저장 | 빔이 발사 뒤 플레이어를 재추적하지 않게 고정 |
+| `_laserSweepDir` | `-1` 또는 `1` | 발사 전 1회 무작위 | 좌/우 중 한 방향으로만 스윕 |
+| `_laserSweepT` | `0`에서 매 틱 `+sp` | `bossLaser` | 프레임 배율을 반영하는 누적 스윕 시간 |
+| 빔 각도 | `_laserLockAng + _laserSweepDir×0.0065×_laserSweepT` rad | `bossLaser` 80f | 약 0.52rad(30°)를 일정 속도로 훑어 예고 후 회피 가능 |
+| 발사 중 보스 이동/재조준 | 없음 | `bossLaser` | 빔 원점과 각도가 플레이어를 따라붙지 않게 해 안전한 회피 경로를 보장 |
+| 발사 임팩트 | flash 3f, shake 8×`OPT.shake/100`, 파티클 14개 | 전조→발사 전환 | 기존 빔 렌더를 유지하면서 발사 시작점을 또렷하게 표시 |
+| 불변 수치 | `st2=80f`, `laserLen=1400+stage×60`, 기존 판정/피해/패링/회복 | `bossLaser` | 난이도·보상 계약은 변경하지 않음 |
+
+- 회귀 테스트: `test/bossTelegraphReadability.test.js`는 전조 종료의 방향 잠금, 누적 스윕, 발사 중 재조준 제거를 검사한다.

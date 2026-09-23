@@ -1,0 +1,9 @@
+<!doctype html><html lang="en"><meta charset="utf-8"><base href="../"><title>Warrior language QA</title>
+<style>body{background:#151515;color:#eee;font:18px sans-serif;padding:24px}button,select{font:inherit;padding:12px}</style>
+<h1>Warrior language QA</h1><p>Real cinematic preview. No character or save data is changed.</p>
+<label>Language <select id="language"></select></label> <button id="play">Play</button><p id="result"></p>
+<script src="localization-runtime.js"></script><script src="localization-data.js"></script><script src="character-story-player.js"></script>
+<script>
+const select=document.getElementById('language');for(const code of ExoduserI18n.languages){const option=document.createElement('option');option.value=code;option.textContent=code;select.append(option);}select.value='en';
+document.getElementById('play').onclick=async()=>{document.getElementById('result').textContent=String(await ExoduserCharacterStory.play({language:select.value}));};
+</script>

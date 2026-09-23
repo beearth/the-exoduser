@@ -42,6 +42,7 @@ const FAVICON_PNG_PATH = path.join(ROOT, 'img', 'icon-256.png');
 if (!fs.existsSync(SAVE_DIR)) fs.mkdirSync(SAVE_DIR, { recursive: true });
 
 const MIME = {
+  '.vtt': 'text/vtt; charset=utf-8',
   '.html':'text/html; charset=utf-8','.js':'application/javascript','.css':'text/css',
   '.json':'application/json','.png':'image/png','.jpg':'image/jpeg','.jpeg':'image/jpeg',
   '.gif':'image/gif','.webp':'image/webp','.svg':'image/svg+xml','.ico':'image/x-icon',
@@ -112,7 +113,7 @@ const server = http.createServer(async (req, res) => {
           };
         } catch { return null; }
       }).filter(Boolean);
-      return sendJSON(res, 200, { ok: true, slots });
+      return sendJSON(res, 200, { ok: true, slots, development: true });
     }
 
     if (pathname === '/api/save' && req.method === 'POST') {

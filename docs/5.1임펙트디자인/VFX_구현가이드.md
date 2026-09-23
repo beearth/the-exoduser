@@ -1,25 +1,45 @@
+## 2026-09-13 불꽃칼날 이름·불꽃 스윙
+
+| 항목 | 현행 계약 |
+|---|---|
+| 이름 | `shieldThrow`와 기본 E 합체 `shieldFuse`: 불꽃칼날 / Flame Blade. `maliceSwipe` 기본 구성명 칼등 처내기, 합체 표시명 불꽃칼날 |
+| 호환 | 스킬/합체 ID, `_ensureBaseWingStrike`, `_wingStrikeLevel`, `_stWingT`, `_stCd` 및 세이브 구조 유지 |
+| 스프라이트 | `assets/vfx/flame_blade_swing_8f.png`, 1774×887 RGBA, 4열×2행 총8프레임. 실제 투명 알파, 원본 그대로 사용 |
+| 재생 | `_drawFlameBladeSwing`: `_stWingT>0`이며 `sBash/sRecover`일 때만. 실버테일은 기존 보라 아크 강화형 사용. `_silvertailAttackPose().spinProgress`를 몸/아크가 공유하며 9프레임 공격은 `clamp(elapsed/240×1.5,0,1)`=160ms, 4프레임 폴백은240ms. 다른 캐릭터 불꽃은 기존 sBash24f+sRecover16f 진행률. 종료 시 숨김 |
+| 배치 | 캐릭터 중심 피벗, `P.facing` 회전. 크기 `(200+견갑bonusRange×8)×C×M`, C=충전1~3, M=1+(L−1)×0.05. 프레임별 위치/크기 정규화 없이 동일 스케일 |
+| 샘플링 | 셀 폭/높이 각각443.5px, 셀당 가장자리1px 인셋. source-over 합성, alpha=1, filter=none, save/restore. 픽셀 재색칠·배경 제거 없음 |
+| 기존 연출 | 실버테일은 불꽃 시트를 생략하고 기존6프레임 보라 아크를 사용: 강화 시 밝기1.28→1.6, 같은 프레임을 −0.10rad·alpha×0.20 잔광으로1회 추가. 쿨다운 중에는 원래 아크1회. 다른 캐릭터는 불꽃을 그린 프레임에 검정 스윕 생략, 로딩 전/쿨다운 중 기존 연출. 발동 파티클/미합체 충격파 링 주황색 `#ff7a24` |
+| 전투 | 피해 속성·수치, 전방 웨이브, 충전1.5초, 합체 쿨 `max(120,720−L×15)`f, 무적40f, 추가ST0, 기존 반사 규칙 유지. 불꽃 연출 자체에 별도 화상/DOT 없음 |
+| 번역 | KO/EN 및 localization/finish의 27개 언어 스킬·합체·초기화·설명 번역 적용. _T의 강제 영문 Flame Blade 반환을 제거하여 언어별 새 이름 사용(2026-09-23). 과거 날개 용어는 현행 표시명이 아님 |
+| 생성 | built-in image_gen, 프롬프트: `assets/vfx/flame_blade_swing_prompt.txt`. 생성 원본을 복사하고 실제 알파 보존 |
+| 검증 | 스프라이트·기본 E·대형탄·기동칼날개 회귀36개 PASS, 양쪽 HTML 인라인 스크립트6개씩 구문 검사 PASS. 브라우저에서 Lv1 쿨705f·강화40f·웨이브1개, JS 오류0. 두 캐릭터 탭/풀차지·방향·8프레임 알파 확인 (`output/flame_blade_20260913/`) |
+
 > **2026-09-09 전투 프레임 개선:** 물약 퀵슬롯 갱신 rAF 병합, 얼음보주 60틱 생성/120틱 자동 파쇄/117틱 파쇄 VFX 물리 시간 및 셀 보간, 시체 32장×128px 고어 오버레이 캐시. 수치·검증은 [현행 계약](../12퍼포먼스·최적화/COMBAT_PRESENTATION_20260909.md) 참조.
 
 # VFX 구현 가이드
 
-> **2026-09-10 레벨업:** [인간성 금빛·악마성 보라빛 파동/기둥/상승 입자 + 머리 위 Lv.숫자](LEVEL_UP_GOLD_20260910.md), 1.45초. `pDemon>pHuman`이면 보라빛, 동률·미투자는 금빛. 512×512 정적 아틀라스 색상당1장(최대2장), 단일 활성 효과, 일반18/경량10개 입자. 보상·회복·저장·기존 소리는 유지한다.
+> **2026-09-10 레벨업:** [인간성 금빛·악마성 보라빛 파동/기둥/상승 입자 + 머리 위 Lv.숫자](LEVEL_UP_GOLD_20260910.md), 빛 연출3초·숫자3.5초·레벨업 배너2.5초. `pDemon>pHuman`이면 보라빛, 동률·미투자는 금빛. 512×512 정적 아틀라스 색상당1장(최대2장), 단일 활성 효과, 일반18/경량10개 입자. 보상·회복·저장·기존 소리는 유지한다.
 
 > **데모 피날레 필드몹 예외 (2026-09-09):** `?demo`/`?bic` 마지막 si3 아레나에서는 `_enterBossArena`와 `_wmTick`이 `G._worms`를 비우며 곰치를 생성·갱신하지 않는다. 일반 필드/일반 모드의4마리 스폰·공격은 유지한다. [v0.4 계약](../8.1보스디자인바이블/DARK_DRUID_FINALE_PACING_v04.md).
 
 > **2026-09-06 최종 확정 — 해골무덤 플레이어 전용:** 드루이드만이 아니라 **전체 보스(si0~34)의 cageTrap 사용을 금지**한다. 아래 보스 사용 계약은 이전 기록이다. 모든 무브셋에서 제외, 관련 콤보 2개 제거, AI 점수 -1, 강제 실행도 생성·피해·소리 없이 recover/25f 종료. idx41 정의는 배열 인덱스 호환용 예약으로 보존한다. 플레이어 boneWall/boneStorm과 공용 boss_cageTrap 이미지·음향은 유지한다. 기존 보스용 잔여 배열/렌더는 호환용이며 신규 생성 경로는 없다. 회귀 검사: 35개 stage 강제 호출 모두 생성 0, 플레이어 공용 시트·음향 포함 관련 테스트 7개 PASS.
 
-## 기동칼날개 은빛 칼날 VFX (2026-09-04)
+## 기동칼날개 전진 회오리 VFX (2026-09-17)
 
 | ID/항목 | 현재 계약 | 수치·색 | 적용 위치 |
 |---|---|---|---|
-| `chainSlash` 본체 | 좌우 대칭의 관절식 단검형 금속 깃, 체인 힌지와 중심 갑주, 바깥쪽으로 뻗는 날카로운 V 실루엣 | `img/vfx/chain_blade_silver_realistic.png`, 1448×1086 RGB PNG, 녹색 크로마 | `_CHAIN_BLADE_IMG` → `_chainBladeSurface` |
-| 배경 제거 | 로드 시 녹색 우세 픽셀만 투명화하고 은색 채널·명암·날 마모는 보존 | `_makeGreenChromaCutout()`: `G−max(R,B)` 기반 smoothstep alpha, 가장자리 녹색 스필 `G≤max(R,B)+10` | 1회 Canvas 캐시 |
-| 런타임 배치 | 이동 방향을 위쪽 기준으로 회전하고 플레이어 중심에 펼침 | 폭 `b.r×2.2`, 높이 `b.r×1.6`, Y 오프셋 `-0.45×height`, 수명 16f 선형 페이드 | `G._chainBlades`, `drawP()` |
-| 타격/끝 파편 | 기존 적색·마젠타를 냉은색 금속광으로 통일 | 타격 문자 `#dcecff`, 칼날 파편 `#a9bfd0`, 끝 하이라이트 `#f8fbff` | 사슬기동 중 `P._chainSlashActive` 분기 |
-| 로드 실패 폴백 | 길고 뾰족한 다중 꼭짓점 은빛 칼날 | 본체 `#a9bfd0` alpha `0.42×fade`, 능선 `#f8fbff` alpha `0.9×fade` | `_chainBladeReady===false` |
+| `chainSlash` 본체 | Shift 관통 이동 중 캐릭터를 중심으로 빠르게 말려 도는 은색 칼날 회오리, 진행 반대 방향으로 짧은 나선 꼬리 | `img/vfx/chain_blade_cyclone_8f.png`, 1774×887 RGBA, 4열×2행 8프레임 | `_CHAIN_BLADE_IMG`, `drawP()` |
+| 알파/샘플링 | 생성 원본의 투명 알파 그대로 사용, 크로마 변환 없음. 셀마다 1px 인셋 | 셀 443.5×443.5px, 소스 크기 441.5×441.5px | 로드 완료 후 직접 9인자 `drawImage` |
+| 크기/피벗 | 모든 프레임 동일 크기, 회오리 중심을 플레이어에 맞춤 | 폭·높이 `b.r×2.6`, 오프셋 `(-0.65×width,-0.5×height)`, 방향 `b.ang` | 원본 오른쪽 전진 방향을 대시 방향으로 회전 |
+| 애니메이션 | 8프레임 반복, 1.5 게임 프레임마다 다음 셀 | `floor(((b.phase\|\|0)+b.t)/1.5)%8`, 한 주기 12 게임 프레임(60Hz 기준 약 0.2초) | `b.phase=P._chainSlashTick` |
+| 위치/수명 | `G._chainBlades[0]` 1개 재사용. 기동 중 매 틱 현재 P.x/P.y·방향·반경 갱신, t=0. 이동 후 마지막 위치에서 선형 소멸 | `maxT:8`, `fade=max(0,1-b.t/b.maxT)`, 기존 매 틱 16f 잔상 누적 방식 대체 | `update()`, `G._chainBlades` |
+| 타격/끝 파편 | 은색 팔레트 유지 | 타격 문자 `#dcecff`, 칼날 파편 `#a9bfd0`, 하이라이트 `#f8fbff` | `P._chainSlashActive` 분기 |
+| 로드 실패 폴백 | 기존 은빛 다중 꼭짓점 칼날 | 본체 alpha `0.42×fade`, 능선 alpha `0.9×fade` | `_chainBladeReady===false` |
+| 게임 판정 | 기존 Shift 관통/광역베기/출혈/자원 로직 유지 | 반경 `160+(Lv-1)×5`, 4프레임 재히트 | `game.html`, `game-easy-test.html` |
 
-- 시각 교체만 수행했다. 반경 `160+(Lv-1)×5`, 4프레임 재히트, 피해·출혈·포이즈·자원 계약은 그대로다.
-- 원본 디자인은 내장 이미지 생성 도구로 제작하고 녹색 크로마를 로드 시 투명 알파로 변환한다. 빨강·마젠타는 기동칼날개 본체/파편에서 사용하지 않는다.
+- 사용자 수정 방향: 펼쳐진 날개 형태 대신 회오리가 회전하며 앞으로 파고드는 모션. 스프라이트가 별도 투사체로 발사되지 않고 플레이어와 함께 적을 통과한다.
+- 내장 image_gen으로 생성, 프롬프트: `img/vfx/chain_blade_cyclone_prompt.txt`. 기존 `chain_blade_silver_realistic.png`는 과거 디자인 보관용이며 현재 런타임 참조는 없다.
+- 검증: VFX 회귀 3개, 양쪽 HTML 인라인 스크립트 6개씩 구문 검사. 로컬 브라우저에서 기동 활성 15틱 동안 인스턴스 최대 1개·플레이어 위치 일치, 24틱 후 0개, JS 오류 0. 검수 자료: `output/chain_bladewing_review_20260917/`.
 
 ## 천공쇄기 45도 메테오 쇄기 VFX (2026-09-04)
 
@@ -47,9 +67,9 @@
 | 행2 | 6프레임 곡선 |
 | 로더 | `_physMouthImg` / `_drawPhysMouth` |
 | 회전 | 우향, `rotate(ang)` (머리=셀 중심) |
-| 적용 | `redBean+EL.P`, fast/일반 `el===EL.P` (`redBean+EL.P`는 `grayscale(1) brightness(1.65) contrast(1.25)` + `#dce7f0` 글로우의 회백색 E 외형, `redBean+EL.F`는 붉은 화염 혜성 Q 외형) |
+| 적용 | `parryClass=physical`의 일반·검기파·관통·빠른탄·환영검을 공통 원본 적갈색 이빨입으로 표시. 혈안탄 전용 눈알 유지. `_physMouthImg` 원본 색을 직접 사용. 사용자 지시로 grayscale·밝기·흰색 혼합 제거. [원본 색 계약](../8.0몬스터디자인/PHYSICAL_PROJECTILE_VISIBILITY_20260914.md). 마법 빨콩은 기존 화염 혜성 Q 외형 |
 | 패링 | 적대 `EL.P` 입/뱀 외형은 `pierce:true` 포함 **E(sBash) 전용**. `_isPhysicalMouthProjectile`가 전용 VFX 탄을 제외하고 판별하며 Q는 반사하지 않고 "❌ E키로!"를 표시 |
-| 폴백 | `_drawEyeBullet` row4 → 바버폴 |
+| 폴백 | 같은 폭·높이의 불투명 회백색 방향성 입·흰 이빨·어두운3px 외곽선. 회전 바버폴/작은 원 사용하지 않음. [최신 가시성](../8.0몬스터디자인/PHYSICAL_PROJECTILE_VISIBILITY_20260914.md) |
 | 원본 | 유저 제공 ChatGPT 시트 3장 (2026-08-23 12:02) |
 
 ## 원소 일반탄 (`proj_elem_orb`)
@@ -68,7 +88,7 @@
 
 ## 마법탄 (최초 무지개탄)
 
-마법탄은 `_drawClassicRainbow` — blackBean / blueBean만. **화염 빨콩(`redBean+EL.F`)**은 `redBean` 레거시 피해/색 플래그를 공유하지만 이빨입이 아닌 화염 혜성 마법 외형·Q 패링·500~600px/s·`.0262`≈90°/s다. 적 화염 혜성은 `_enemyMagicCometVisualScale(EL.F)=0.65`를 적용해 일반 최대 길이 `123.2→80.08px`, 빠른탄 최대 `110.88→72.072px`로 그리며 `sz/r`와 충돌은 불변이다. **물 파란콩(`waterBean`)**은 기존 `assets/vfx/water_blue_projectile_sheet.png` 4×2 8프레임을 `_drawWaterBlueFlight`로 약12fps 재생한다. 크기 `30×16×_sSc`, 세로 크롭 `0.255×cellH`, 행 오프셋 `0.675/0.10`, 진행 방향 회전, `lighter` 합성이다. Q 패링·피격은 `Water_ImpactWater_Sheet.png` 전체 16프레임을 공용 boom `waterImpact`로 재생한다(패링 r96/72f·최대288px, 피격 r72/66f·최대216px). 이전 얼음 시트 로더와 렌더를 제거했다. 직접 피해·속도·유도·히트박스·Q 패링·빙결 60f는 변하지 않는다. **화이트볼(bwBean) 제거(2026-08-23)**. **이빨형 E패링탄 공통=실제 물리 `parryClass`**(최종 300px/s 고정, homing 선회 `.00436332`≈15°/s): `redBean+EL.P`, `titanEye`다. **titanEye=혈안 눈깔** `proj_titan_eye.png` 시각 `21.7×_sSc`(그림만 눈깔). **2026-09-10 적대 물리탄 본체·꼬리 굵기×2**: `_sSc=_ps×_physicalProjectileMultiplier(p,2)`, `_ps=max(1.2,min(4,(sz||1)×1.5))×0.7`; 적대 physical만 multiplier2, 나머지1. 혈안탄 최대60.76→121.52px, 이빨입 최대123.48×61.74→246.96×123.48px. 원본 물리 드루이드 독탄도 별도 dw/dh×2, Q독탄·지뢰·반사 블루콩 및 광원 반경은 유지. [물리탄 계약](../8.0몬스터디자인/PHYSICAL_PROJECTILE_SCALE_REWARD_20260910.md). **라운드 컬러는 발사탄 속성 예고**이며 `redBean+EL.P`·일반 물리/E패링 차징 링만 흰색 `#f4f4f4`다. 화염 빨콩 차징은 화염색을 유지한다. 특수 산호 파편·기생충·삼지창의 `eShootWind`도 `_swChargeEl=EL.P`일 때 흰색이다.
+마법탄은 `_drawClassicRainbow` — blackBean / blueBean만. **화염 빨콩(`redBean+EL.F`)**은 `redBean` 레거시 피해/색 플래그를 공유하지만 이빨입이 아닌 화염 혜성 마법 외형·Q 패링·500~600px/s·`.0262`≈90°/s다. 적 화염 혜성은 `_enemyMagicCometVisualScale(EL.F)=0.65`를 적용해 일반 최대 길이 `123.2→80.08px`, 빠른탄 최대 `110.88→72.072px`로 그리며 `sz/r`와 충돌은 불변이다. **물 파란콩(`waterBean`)**은 기존 `assets/vfx/water_blue_projectile_sheet.png` 4×2 8프레임을 `_drawWaterBlueFlight`로 약12fps 재생한다. 크기 `30×16×_sSc`, 세로 크롭 `0.255×cellH`, 행 오프셋 `0.675/0.10`, 진행 방향 회전, `lighter` 합성이다. Q 패링·피격은 `Water_ImpactWater_Sheet.png` 전체 16프레임을 공용 boom `waterImpact`로 재생한다(패링 r96/72f·최대288px, 피격 r72/66f·최대216px). 이전 얼음 시트 로더와 렌더를 제거했다. 직접 피해·속도·유도·히트박스·Q 패링·빙결 60f는 변하지 않는다. **화이트볼(bwBean) 제거(2026-08-23)**. **이빨형 E패링탄 공통=실제 물리 `parryClass`**(최종 300px/s 고정, homing 선회 `.00436332`≈15°/s): `redBean+EL.P`, `titanEye`다. **titanEye=혈안 눈깔** `proj_titan_eye.png` 시각 `21.7×_sSc`(그림만 눈깔). **2026-09-10 적대 물리탄 본체·꼬리 굵기×2**: `_sSc=_ps×_physicalProjectileMultiplier(p,2)`, `_ps=max(1.2,min(4,(sz||1)×1.5))×0.7`; 적대 physical만 multiplier2, 나머지1. 혈안탄 최대60.76→121.52px, 이빨입은2026-09-16 공통 높이22.05×_sSc×0.55로 축소하여 최대135.828×67.914px. 원본 물리 드루이드 독탄도 별도 dw/dh×2, Q독탄·지뢰·반사 블루콩 및 광원 반경은 유지. [물리탄 계약](../8.0몬스터디자인/PHYSICAL_PROJECTILE_SCALE_REWARD_20260910.md). **라운드 컬러는 발사탄 속성 예고**이며 `redBean+EL.P`·일반 물리/E패링 차징 링만 흰색 `#f4f4f4`다. 화염 빨콩 차징은 화염색을 유지한다. 특수 산호 파편·기생충·삼지창의 `eShootWind`도 `_swChargeEl=EL.P`일 때 흰색이다.
 
 ## API 생성 소형 크라켄 탄두 / 은꼬리 차지 범위 (2026-09-03)
 
@@ -139,15 +159,15 @@
 
 ## 실버테일 사실적 입력 VFX (2026-09-04)
 
-좌클릭 캐릭터 주변 검호는 제거했다. 좌클릭 비행 검기는 백열 코어·난류 플라즈마·파편을 가진 단일 원화로 교체했고, 우클릭 악의구는 실버테일에 한해 검은 공허 핵과 은빛 초승달 칼날 3장·청보라 잔광을 쓴다. KeyE 칼등 처내기의 소형 진홍 검호 v3는 유지한다.
+좌클릭 캐릭터 주변 검호는 제거했다. 좌클릭 비행 검기는 2026-09-15 공용 9프레임 백열 칼날·겹검기 시트로 교체했고(실버테일 보라색 캐시), 기존 단일 원화는 로딩 실패 시 폴백으로 유지한다. [기검참 VFX 계약](KI_SLASH_RADIANT_20260915.md). 우클릭 악의구는 실버테일에 한해 검은 공허 핵과 은빛 초승달 칼날 3장·청보라 잔광을 쓴다. KeyE 칼등 처내기의 소형 진홍 검호 v3는 유지한다.
 
 | 항목 | 코드값 | 적용 위치 | 설명 |
 |---|---:|---|---|
-| 좌클릭 원본 | 1536×1024 RGB PNG, 녹색 크로마 단일 원화 | `img/vfx/silvertail_ki_slash_realistic.png` | 백열 곡선 코어, 자주색 플라즈마 난류, 청자색 날끝과 파편을 한 실루엣으로 구성 |
-| 좌클릭 로더 | `_silvKiSlashImg` → `_silvKiSlashSurface` | `game.html` | `_makeGreenChromaCutout()`으로 로드 시 1회 알파 추출 |
-| 좌클릭 동세 | `1+sin((ml−life)×0.72)×0.045` | `_crescents[].silvArc` | 프레임 시트 대신 비행 중 ±4.5% 미세 맥동 |
-| 좌클릭 크기 | 1·2타 144px, 3타 176px 폭 | 동일 | 원본 3:2 비율 유지, 글로우 패스는 1.14배 |
-| 좌클릭 2패스 | 1.14배 `lighter` 글로우 alpha `min(1,max(.82,alpha)×.28)` → 1.0배 `source-over` 본체 | 동일 | `saturate(1.12) contrast(1.08) brightness(1.06)`, 본체 최소 alpha `.82` |
+| 좌클릭 원본 | `assets/vfx/ki_slash_radiant_sheet.png`, 1254×1254 RGB, 3×3·9프레임 | 전사·실버테일 기검참 공통 | 백열 칼날, 청색 겹검기, 연속 리본 잔광. 검정 배경 `lighter` 합성 |
+| 좌클릭 로더 | `_KI_SLASH_IMG` → `_kiSlashRadiant` | `game.html`, `game-easy-test.html` | 로드 시 원색/40°/150° 세 팔레트 준비. 구 `_silvKiSlashSurface`는 폴백 |
+| 좌클릭 동세 | `min(8,floor(clamp(1−life/ml,0,1)×9))` | `_drawRadiantKiSlash()` | 비행 수명에 맞춘 9프레임. 진행률 60% 이후 `min(1,(1−progress)×2.5)`로 페이드 |
+| 좌클릭 크기 | 1·2타 192px, 3타 252px | 동일 | 정사각 비율 유지. 충돌 반경 55/55/120px는 유지 |
+| 좌클릭 4패스 | 잔상 2장 + 1.08배 글로우 + 본체 | 동일 | 잔상 0.9배·alpha .18/.08, 글로우 alpha .18(3타 .3). 모두 수명 alpha 곱. 프레임별 filter 없음. GPU 프록시는 `_setBlend(true/false)`로 검기 전체를 가산 합성 후 복구, 정점 RGB에 alpha를 곱해 과노출 방지 |
 | 우클릭 원본 | 1536×1024 RGB PNG, 녹색 크로마 3×2 배열·6프레임 시트 | `img/vfx/silvertail_malice_orb_sheet_v3.png` | 검은 공허 핵, 은빛 초승달 칼날 3장, 청보라 내부광과 짧은 잔광. 실제 소스 432×432, 프레임별 핵 중심 정렬 |
 | 우클릭 렌더 | `_silvMaliceOrbImg` → `_silvMaliceOrbSurface` | `p.fireball && _charIdx===1` | 지름 `p.r×6.2`, 회전 `now×2π/600−poseDeg[frame]×π/180` (이동 좌표와 무관), 1.08배 `lighter` 보조광 alpha `fa×.18`. `_SILV_MALICE_ORB_FRAME_SIZE=432`, `_SILV_MALICE_ORB_FRAME_MS=80`, `_SILV_MALICE_ORB_RECTS` 좌표는 `SILVERTAIL_MALICE_ORB_SHEET_V3.md` 참조. `floor(now/80)%6` 정방향. `_SILV_MALICE_ORB_SPIN_MS=600`, `_SILV_MALICE_ORB_POSE_DEG=[0,9,13,27,31,38]`° |
 | 다른 캐릭터 우클릭 | 171×171 셀, 7×3 중 20프레임 | `assets/vfx/vfx_magic_orb.png`, `_MO_IMG` | 기존 공용 악의구 시트 유지 |
@@ -157,9 +177,9 @@
 
 | 입력 | 전용 플래그·에셋 | 프레임·색 | 판정 영향 |
 |---|---|---|---|
-| 좌클릭 기검참 | `_crescents[].silvArc`, `silvertail_ki_slash_realistic.png` (1536×1024 RGB, 녹색 크로마 단일 원화) | `_makeGreenChromaCutout()` 캐시 후 ±4.5% 맥동. 1·2타 폭 144px, 3타 폭 176px. `saturate(1.12) contrast(1.08) brightness(1.06)`, 본체 `max(.82,alpha)` | 기존 3단 콤보 피해·사거리·히트 범위 그대로 |
+| 좌클릭 기검참 | `_kiSlashRadiant`, `ki_slash_radiant_sheet.png` (1254×1254 RGB, 3×3) | 9프레임, 실버테일 40° hue 캐시, 3타 공통150° 캐시. 폭192/252px. 구 `silvertail_ki_slash_realistic.png` 및 기존 맥동은 로드 실패 폴백에만 적용 | 기존 3단 콤보 피해·사거리·히트 범위 그대로 |
 | 우클릭 악의구 | `p.fireball`, `silvertail_malice_orb_sheet_v3.png` (1536×1024 RGB, 녹색 크로마, 3×2 배열·6프레임) | 실버테일(`_charIdx===1`)만 검은 공허 핵·은빛 초승달 칼날 3장으로 구성한 구체를 지름 `p.r×6.2`로 표시하고 크기 맥동 없이 시계방향 600ms/회전을 적용. 핵 중심 정렬 432×432 소스, 80ms 간격·정방향 480ms 반복. 다른 캐릭터는 공용 7×3/20프레임 시트 유지 | 악의구 피해·폭발·중독·사거리·자원 그대로 |
-| KeyE 칼등 처내기 | `_drawSilvertailEArc(ctx, pose, scale)`, `silvertail_violet_arc_anim_api_v3.png` (2132×738 RGBA, 폭 6등분) | `pose.kind==='shield'`에서만 `floor(spinProgress×6)`으로 재생. `hue-rotate(-28deg) saturate(2.05) contrast(1.28) brightness(1.28)`. 기본 폭 200→230px이며 차징 릴리즈는 `min(3,max(1,P._sBashChgMul||1))×(1+(E스킬Lv−1)×0.05)`을 곱한다. Lv1 풀차지600→690px, Lv10 풀차지870→1000.5px | 기본 E의 피해·반사·자원·입력은 그대로. E 아크는 충전 C와 스킬 레벨 범위 M을 함께 곱하며 좌클릭·우클릭 악의구에는 적용하지 않음 |
+| KeyE 칼등 처내기 | `_drawSilvertailEArc(ctx, pose, scale)`, `silvertail_violet_arc_anim_api_v3.png` (2132×738 RGBA, 폭 6등분) | `pose.kind==='shield'`에서만 `floor(spinProgress×6)`으로 재생. `hue-rotate(-28deg) saturate(2.05) contrast(1.28) brightness(1.28)`, 강화 E는 brightness1.6+−0.10rad·alpha×0.20 잔광1장. 9프레임 몸과 동일160ms 진행률(폴백240ms). 기본 폭 200→230px이며 차징 릴리즈는 `min(3,max(1,P._sBashChgMul||1))×(1+(E스킬Lv−1)×0.05)`을 곱한다. Lv1 풀차지600→690px, Lv10 풀차지870→1000.5px | 기본 E의 피해·반사·자원·입력은 그대로. E 아크는 충전 C와 스킬 레벨 범위 M을 함께 곱하며 좌클릭·우클릭 악의구에는 적용하지 않음 |
 
 ### 스프라이트 시트 VFX
 1. **배경은 반드시 투명(alpha=0)** — JPEG 금지, PNG 사용
@@ -401,13 +421,13 @@ path: '/v1/images/generations'
 | `_tpFlashT` 도착 충격파 `_ir` | `e.r*3.5` | `e.r*7` |
 
 ### 착지 강타 데미지 (2026-06-29 추가)
-`teleportE()` 도착 시, 조준 범위 내 플레이어를 타격한다. **돌진 충돌 `e.atk*30` 대비 70% = `e.atk*21`** (×`elMul(e.el, ar().el)`).
+`teleportE()` 도착 시, 조준 범위 내 플레이어를 타격한다. **돌진 충돌 `e.atk*30` 대비 35% = `e.atk*10.5`** (×`elMul(e.el, ar().el)`).
 | 항목 | 값 |
 |---|---|
-| 데미지 | `~~(e.atk*21*elMul(...))` |
+| 데미지 | `~~(e.atk*10.5*elMul(...))` |
 | 판정 반경 | `_landR=(r+10)*2` + `P.r` (조준 에임과 동일) |
 | 조건 | `!e.ib`(비보스) + `P.iframes<=0` + `P.s!=='charge'`(돌진 무적 회피 가능) |
-| 넉백 | 방사 방향 60 |
+| 넉백 | 방사 방향 120 |
 | 표시 | `_T('충격파!')` (기존 번역어 재사용, 신규 번역 없음) |
 | 회피법 | 2초 전조 동안 거리 벌리기. 조준 원은 그리지 않음 |
 > 보스/부활 텔포는 자체 패턴 유지 위해 `!e.ib` 가드로 착지 강타 제외.
@@ -726,7 +746,7 @@ Ori 수준 대기 깊이감. 광원 근처에서 존재감 나는 미세 입자.
 
 검증: darkSphereIdentity.test.js의 물리 메타 제거·비행 중 변조 금지·7속성 임팩트 매핑, tmp/verify_dark_sphere_identity.py 실제 spawnProj 검사. RGB만으로 임의 속성을 추측하지 않고 탄종과 el을 일치시킨다.
 
-### 날개치기 웨이브 충전 범위 동기화 (2026-09-10)
+### 불꽃칼날 웨이브 충전 범위 동기화 (2026-09-10)
 
 | 항목 | 현행 |
 |---|---|
@@ -744,3 +764,73 @@ Ori 수준 대기 깊이감. 광원 근처에서 존재감 나는 미세 입자.
 | 에셋 | `_VFX_SHEETS.lava_erupt`의 `assets/vfx/boss/vfx_lava_erupt.png`(2304×2304,3×3/768셀/9프레임). complete+naturalWidth 검사. 로딩 전 `_MM_EXP_IMGS` 폴백. 크기 `384×fz.r/120`, 중심 아래쪽75% 접지 |
 | 애니메이션 | 불기둥 `step=floor(fz.t/6)`, 최초0~8 분출 후3~8 유지 반복(10fps). 로딩 폴백만 기존 `floor(fz.t/12)%9`. 게임 수명 기반 |
 | 확인 | 실제 브라우저 Canvas에서 불기둥 분출/유지 프레임 확인. 주황 불티 `#ff9933/#dd4411/#ffcc66`. 임시 비교 DOM 제거. 현재 탭에도 적용. 이름·EL.D·기둥 수·범위·지속·소리 유지. 관련8개 PASS |
+
+2026-09-13 Q 홀딩: 중심20px 흡수 코어에도 바깥과 동일한 오라 스프라이트·프레임·색상 변화를 적용한다. 준비 후에는 얇은 선 대신 `75×pulse`px 크기로 표시한다. [Q 밀착 보호막 및 흡수음](Q_SHIELD_FEEDBACK_20260913.md).
+
+## 2026-09-23 정지 덫 진홍색 결계진 렌더 (확대 갱신)
+
+| 대상 | 변경 |
+|---|---|
+| trap | `img/vfx/mine_trap_ward_sheet.png` 오른쪽 시트 셀의 진홍색 육각 속박진을 112×112px로 표시, screen 합성·맥동 적용. 미로딩 시 외곽 반경50px·안쪽 고리r30·중심r14 등 절차 렌더 폴백. 실제 접촉 반경28px와 영구 덫 렌더 유지 |
+| mine | 같은 시트 왼쪽 셀의 원형 진홍색 결계진을 112×112px로 표시, screen 합성·회전·맥동 적용. 임박 시 노란 경고 링 유지. 미로딩 폴백은 발광 반경50px, 링r42/r30, 룬 눈금32~44px, 중심인장r20. 지뢰 판정은 변경하지 않음 |
+| 렌더 | 글로우 `#7233aa` alpha `.12~.22`; 룬선 `#c58aff`, 코어 `#f1d9ff`; 반시계 회전 `.00018rad/ms`, 펄스 `sin(_now/200)` |
+| 유지 | 피해·접촉28px·감속·Q 패링·영구 지속·누적50개 상한. 일반 지뢰/추적지뢰 렌더와 판정은 별도 유지 |
+| 기준 | `docs/8.0몬스터디자인/탄막시스템_총정리.md`의 2026-09-23 결계진 계약 |
+
+
+## 2026-09-16 — 대형탄 패링 분열탄 유도·적중 임팩트 수정
+
+| 항목 / 적용 위치 | 현재 코드 계약 |
+|---|---|
+| 원인 | 원형 5발 분열 이후 일반 magic의 250px 탐색만 사용. shQuery에 없는 크라켄·화마귀·지상뱀장어는 유도에서 누락. 필드몹 적중에는 전용 속성 임팩트·타격음이 없고, hitCd 중 접촉은 탄 소멸로 처리되지 않았음 |
+| 분열 / _splitParriedBigEnergy | 크라켄 fbEnergy와 화마귀 fdEnergy 공통. 5발·원형 균등 72° 간격·반지름12px 스폰·속도7.5·r8·사거리900·발당 max(1,floor(totalDmg/5))·magic/_parryMagicShot·혜성 길이246.4px 유지. Q 보상×10 유지 |
+| 탐색 / 플레이어 투사체 유도 루프 | _parryMagicShot만 탐색 반경900px, 최대 선회0.7×_dtSp rad/갱신, (G._gcT+i)%2===0에서 갱신. 일반 magic은 기존250px/0.35 유지. 반사 쿨다운 동안 유도 중단 유지 |
+| 필드 타깃 / _parryMagicFieldTarget | 일반 적 후보와 G._fieldBosses(없으면 G._fieldBoss)·G._fireDevils·G._worms를 거리로 비교. asleep, 사망, _fmCanHit 불가, _hitSet 포함 대상 제외. 크라켄 TP 중 _fmXY의 tpX/tpY를 추적하며 화마귀·뱀장어는 실제 충돌과 동일한 x/y 사용. 타깃이 사라지면 다음 갱신에 재탐색 |
+| 물 적중 / _parryMagicHitFx | EL.I: waterImpact r72/66f, Water_ImpactWater_Sheet.png 전체16프레임, 최대 표시216px. 분열 시작 Q 물보라는 기존 r96/72f·최대288px. 임팩트 위치는 탄 접촉 x/y |
+| 기타 속성·소리 | 물 이외에는 기존 _projHitFx(x,y,el,false). 모든 분열탄 적중에 playSampleAt('bullet_hit',0.3,1,x,y). 일반 적 magic 타격음 중복 호출 제외 |
+| 필드 접촉 / _hurtFieldMobs(...,parryShot) | 선택적 여섯째 인수에 분열탄 전달. 유효한 필드몹 접촉 시 임팩트·음향·탄 회수를 보장하고 일반 적 충돌까지 중복 진행하지 않음. 기존 _fmApply의 hitCd=8 피해 간격 유지: 쿨다운 중에는 추가 피해 없이 접촉 효과 후 소멸. 기존 다른 호출은 피해 적용 횟수 반환 유지 |
+| 적용 / 검증 | game.html 및 game-easy-test.html. test/parryMagicTrackingImpact.test.js: 5발 모두600px 크라켄 도달, 일반 적600px 포착, 일반 magic 범위 보존, 필드 쿨다운 접촉 효과·소멸 계약, TP 좌표·비활성 타깃 제외. 백업 tmp/kraken_parry_20260916/ |
+
+분열탄은 공용 magic 벽 반사 경로를 그대로 사용한다. 기존 문서의 ‘튕김 미사용’은 arcMissile 전용 튕김을 뜻하며, 실제 공용 벽 반사는 _maxBounce||3에 따라 최대3회, 반사 후 _bounceCool=6이다. 이번 수정은 이 값을 변경하지 않는다.
+
+검증 결과: 관련6개 테스트 파일43개 PASS. Chrome 실제 런타임에서 `_hurtFieldMobs`의 쿨다운 중 분열탄 접촉 반환1·waterImpact r72/66f 생성·물 시트 로드·화면 물보라 표시 확인, 브라우저 error 로그0. 캡처 `tmp/kraken_parry_20260916/water-impact.jpg`. 브라우저 검증은 접촉 함수를 직접 실행한 효과 확인이며 키 입력 기반 전체 Q패링 전투 검증과 구분한다.
+
+## 2026-09-16 물리 뱀탄 축소·부착 피격
+
+| 항목 | 현행 계약 |
+|---|---|
+| 비행 외형 | 공통 이빨입 본체·꼬리 굵기는 직전의55%. 최대135.828×67.914px. 혈안탄·드루이드 전용탄은 기존 외형 |
+| 몸에 부착 | 실제 비DOT 피해가 방어 계산을 통과했을 때(에너지쉴드 흡수 포함), 플레이어를 따라48틱(60Hz 기준0.8초) 동안16틱씩3회 개구/씹기. 동시3개 제한 |
+| 일반 명중 | 입탄의 일반 몸통 명중 폭발을 부착 연출로 교체. 피해·화상·넉백·E패링·보상 유지. 추가 피해 없음 |
+| 상세 | [분류·크기·좌표·수명·검증 계약](../8.0몬스터디자인/PHYSICAL_PROJECTILE_BITE_20260916.md) |
+
+## 2026-09-16 투사체 재검수
+
+| 변경 | 현재 상태 |
+|---|---|
+| 검수 보강·예외 수정 | 실제 돌진형22/30/43의 충전 완료 발사와 물리6프로필 외형 확인. 드루이드 이미지 실패 시에도 녹색 본체를 표시. [검수 범위·폴백 수치·69개 테스트](../8.0몬스터디자인/PHYSICAL_PROJECTILE_AUDIT_20260916.md) |
+
+
+## 공통 타격 임팩트 — 속성/보스 스프라이트 우선 (2026-09-23)
+
+기본 타격이 모든 속성에서 단일 `impact_basic_sheet.png`를 재생해 질감이 평평하게 보이던 문제를 고쳤다. 새 에셋을 만들지 않고 기존에 로드·워밍업만 되던 속성별 시트를 실제 공용 타격 렌더에 연결한다.
+
+| 분류 | 선택 시트 | 프레임 | 적용 | 폴백 |
+|---|---|---:|---|---|
+| 일반 명중 | `assets/vfx/impact_el{EL}_sheet.png` | 9 | `_addImpact(..., isBoss=false)` | 로드 실패 시 `impact_basic_sheet.png` 9프레임 |
+| 보스 피격/강타 | `assets/vfx/impact_el{EL}_boss_sheet.png` | 16 | `_addImpact(..., isBoss=true)`, `bigImpact()` | 로드 실패 시 `impact_basic_sheet.png` 9프레임 |
+| 회전참 | 기존 `wwSlash` 전용 시트 | 기존 계약 | `im.type===``wwSlash``` | 공용 선택기 미사용 |
+
+- 선택 함수는 `_impactSpriteFor(im)`이다. `im.boss`가 참이면 보스 시트와 16프레임, 아니면 일반 시트와 9프레임을 사용한다.
+- 속성·피해·포이즈·패링·히트스톱·VFX 풀 상한(12)·GL 인스턴싱 경로는 바꾸지 않았다. 시트 너비를 프레임 수로 나눠 셀을 계산하므로 일반 시트(대부분 765×85, EL5 1152×128)와 보스 시트(2048×128)를 모두 지원한다.
+- 회귀: `test/elementalImpactSprites.test.js`; 인라인 문법 및 VFX GL 회귀도 함께 검증한다.
+
+## 2026-09-23 엘리트 등급·공격 전조 가독성
+
+| 분류 | 렌더 계약 | 수치·판독 기준 |
+|---|---|---|
+| 등급 오라 | _drawEliteAuraTelegraph(X,e,sa,_now), GPU 인스턴스·일반 적 경로 양쪽 호출. lighter 발광 후 Canvas 상태 복원 | 매직 파랑 #4488ff, 레어 금 #ffaa00, 챔피언 빨강 #ff4444; 내부 링 r+1+tier, 외부 링 r+5+3×tier; 레어 아크6개, 챔피언 아크8개+백색 마름모 노드4개 |
+| 원형 장판 | _drawEliteZoneTelegraph: 피해반경과 일치하는 외곽 링, 20개 경계 눈금, 중심에서 바깥으로 자라는 면·발광 전선12개 | 외곽 r−1, 선폭2.2~3.4px; 전선 q=clamp(1−t/dur,0,1)×r, 코어 선폭3.2~4.8px, 글로우11px. M30 충격파·M19 낙뢰·M32 포격에 적용 |
+| 포격 구분 | 장판 내부 4방향 코너 조준선과 중앙 펄스 링 | 조준선 반경 0.38r~0.55r, 중앙 링 반경5~7px. 피해 반경/타이밍/경고 색은 기존 전투 수치 유지 |
+| 번개 조준 | _drawEliteBoltTelegraph: 3갈래 점선 위험 레인, 애니메이션 지그재그 중심선과 가지 아크 | 길이850px, 레인 간격20px, 점선18/13px, 중심 아크24분절·진폭8px, 코어2.2px. 투사체 속성·Q패링 판정 변경 없음 |
+| 비용·회귀 | 엘리트별 최대 활성 장판 수는 기존 패턴 생성량(낙뢰/충격파1, 포격3)과 동일. 고정 개수 반복으로 그리며 배열·그라디언트를 새로 만들지 않음. 번개 중심선에 Canvas shadowBlur=10 사용 | test/eliteTelegraphVisibility.test.js 실제 Canvas 픽셀에서 경계·중심 전선·포격 조준·챔피언 외곽선 검사. GPU/일반 렌더 경로 모두 검사 |

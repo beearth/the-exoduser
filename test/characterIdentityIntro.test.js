@@ -21,13 +21,14 @@ for(const [saved,previous,expected] of [[{charIdx:0},1,0],[{charIdx:1},0,1],[{},
   });
 }
 test('late previous-character atlas cannot replace the selected character',()=>{
-  const callbacks=[];
+  const callbacks=[],shaded=[];
   const ctx=vm.createContext({_charIdx:1,CHAR_LIST:[{folder:'warrior'},{folder:'silvertail'}],localStorage:{setItem(){}},
-    _load8Dir:(folder,w,h,cb)=>callbacks.push({folder,cb}),_applyMaskAtlas(){},_atlasMask:null,_atlasMaskFm:null,_atlasBare:null,_atlasBareFm:null});
+    _load8Dir:(folder,w,h,cb)=>callbacks.push({folder,cb}),_shadePlayerAtlas:c=>shaded.push(c),_applyMaskAtlas(){},_atlasMask:null,_atlasMaskFm:null,_atlasBare:null,_atlasBareFm:null});
   vm.runInContext(functions.get('_loadCharAtlas'),ctx);
   ctx._loadCharAtlas(1);ctx._loadCharAtlas(0);
   callbacks[1].cb('warrior atlas',{});callbacks[0].cb('stale silvertail atlas',{});
   assert.equal(ctx._atlasMask,'warrior atlas');assert.equal(ctx._charIdx,0);
+  assert.deepEqual(shaded,['warrior atlas'],'discard stale atlases before shading');
 });
 for(const mode of [{stage:0,done:false,force:false,seq:'INTRO'},{stage:0,done:true,force:false,seq:null},{stage:2,done:false,force:false,seq:null},{stage:0,done:true,force:true,seq:'PRO'}]){
   test('Nemesis entry preserves completed saves and explicit previews '+JSON.stringify(mode),()=>{

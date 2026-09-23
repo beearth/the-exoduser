@@ -1,0 +1,46 @@
+{
+  "activations": [
+    {
+      "mpSpent": 7,
+      "gaugeSpent": 31.5,
+      "moveTime": 6
+    }
+  ],
+  "ticks": [
+    {
+      "sp": 1,
+      "d": 41.66666666666697,
+      "remaining": 5
+    },
+    {
+      "sp": 1,
+      "d": 41.66666666666697,
+      "remaining": 4
+    },
+    {
+      "sp": 1,
+      "d": 41.66666666666697,
+      "remaining": 3
+    },
+    {
+      "sp": 1,
+      "d": 41.66666666666697,
+      "remaining": 2
+    },
+    {
+      "sp": 1,
+      "d": 41.66666666666697,
+      "remaining": 1
+    },
+    {
+      "sp": 1,
+      "d": 41.66666666666697,
+      "remaining": 0
+    }
+  ],
+  "distance": 250.00000000000182,
+  "landings": 1,
+  "status": "PASS",
+  "page_errors": [],
+  "real_save_writes": false
+}

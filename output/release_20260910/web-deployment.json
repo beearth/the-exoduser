@@ -1,0 +1,29 @@
+{
+  "id": "dpl_BzcdH63WW5n1aLV1SHuFyfHJvK4g",
+  "name": "the-exoduser",
+  "url": "the-exoduser-pi1qk9lhd-fordeargamers.vercel.app",
+  "readyState": "READY",
+  "target": "production",
+  "alias": [
+    "the-exoduser.vercel.app",
+    "the-exoduser-fordeargamers.vercel.app"
+  ],
+  "createdAt": 1789054232138,
+  "ready": 1789054330636,
+  "meta": {
+    "githubCommitAuthorName": "beearth",
+    "githubCommitAuthorEmail": "contact@fordeargamers.com",
+    "githubCommitMessage": "Record integrated web and portable Windows release contract",
+    "githubCommitOrg": "beearth",
+    "githubCommitRef": "codex/steam-languages-20260909",
+    "githubCommitRepo": "the-exoduser",
+    "githubCommitSha": "e55f37cd0a59d63f858e02a185b40ff0d9ebc43f",
+    "githubDeployment": "1",
+    "githubOrg": "beearth",
+    "githubRepo": "the-exoduser",
+    "gitDirty": "1",
+    "gitRootDirectory": "tmp/web-production-usb-release-20260910",
+    "sourceCommit": "e55f37cd0",
+    "actor": "codex"
+  }
+}

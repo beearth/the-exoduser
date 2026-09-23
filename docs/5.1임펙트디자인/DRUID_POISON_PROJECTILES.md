@@ -28,3 +28,9 @@
 - 관련 테스트 7개 PASS(소유자, 리듬탄, 풀, 문법).
 - `tmp/verify_druid_poison.py`: 실제 브라우저에서 드루이드 탄 poison=true/el0/green/Q, 일반 몬스터 false/el1 확인, pageerror0.
 - `captures/druid_poison_projectiles.png`: 녹색 재질·16f 시트 경로/일반과 대형 크기 확인. 모든 패턴 장시간 교전 검수는 미실시.
+
+## 2026-09-16 투사체 재검수
+
+| 변경 | 현재 상태 |
+|---|---|
+| 검수 보강·예외 수정 | 실제 돌진형22/30/43의 충전 완료 발사와 물리6프로필 외형 확인. 드루이드 이미지 실패 시에도 녹색 본체를 표시. [검수 범위·폴백 수치·69개 테스트](../8.0몬스터디자인/PHYSICAL_PROJECTILE_AUDIT_20260916.md) |

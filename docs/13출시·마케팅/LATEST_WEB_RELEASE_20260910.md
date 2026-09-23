@@ -1,5 +1,7 @@
 # 최신 전체 변경 웹 배포 — 2026-09-10
 
+> **2026-09-23 공개 범위·배포 완료:** 웹 기본 로비와 `game.html` 직접 진입은 URL 파라미터 없이 공개 데모로 고정한다. Steam/NW.js 패키지도 같은 규격이다: Lv.1 시작, Lv.100 상한, 1-1(`stage=0`) 클리어 후 종료. Vercel 프로덕션 `https://the-exoduser.vercel.app`은 deployment `the-exoduser-8rcqxw9lj-fordeargamers.vercel.app`으로 갱신했으며, 실배포 `index.html`의 `_LOBBY_BUILD='demo'`, `game.html`의 `_DEMO_MODE=true`와 로비 복귀 `demo=1` 전달을 확인했다.
+
 > **대상 정정:** 아래 hell-smoky 배포는 사용자 서비스와 다른 프로젝트였다. 실제 서비스는 **the-exoduser.vercel.app**. [정정·복구 기록](PRODUCTION_TARGET_CORRECTION_20260910.md)을 우선한다.
 
 사용자 지시: 최신 버전 전체 커밋·푸시·배포. 현 작업 디렉터리의 게임·로비·테스트·문서·영상 제작 결과를 커밋 대상으로 취합한다. 웹 서비스는 runtime manifest와 .vercelignore를 따른다. 제작 원본/검수 결과는 Git에 보존하고 런타임이 참조하는 파일만 정적 배포한다.

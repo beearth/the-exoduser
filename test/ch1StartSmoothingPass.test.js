@@ -117,11 +117,11 @@ test('central combat bypasses stay quieter than tree basin and POI ground connec
   assert.ok(mean(combatValues)<mean(influenceValues)*.55,'protected combat samples must remain materially quieter');
 });
 
-test('the existing CH1-1 loader defaults to smoothing, can compare outer, and still disables safely',()=>{
+test('the existing CH1-1 loader uses the production finish in smoothing phase, can compare outer, and disables safely',()=>{
   assert.match(GAME,/get\('ch1StartPhase'\)/);
   assert.match(GAME,/phase==='outer'/);
-  assert.match(GAME,/assets\/map\/ch1\/baked_start_smoothing\/chunk_\$\{x\}_\$\{y\}\.png/);
-  assert.match(GAME,/assets\/map\/ch1\/baked_start_outer\/chunk_\$\{x\}_\$\{y\}\.png/);
+  assert.match(GAME,/_CH1_START_PHASE==='outer'\?'assets\/map\/ch1\/baked_start_outer':'assets\/map\/ch1\/production_finish'/);
+  assert.match(GAME,/\$\{_CH1_START_ROOT\}\/chunk_\$\{x\}_\$\{y\}\.png/);
   assert.match(GAME,/get\('ch1StartOuter'\)!=='0'/);
   assert.match(GAME,/G\._bossArena/);
   assert.equal((GAME.match(/function _drawCh1StartOuter\(ctx\)/g)||[]).length,1,'reuse the single renderer');

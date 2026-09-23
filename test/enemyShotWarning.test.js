@@ -51,7 +51,7 @@ test('a mismatched windup cannot authorize an immediate physical shot',()=>{
 test('completed immediate and queued shots survive the real density gate',()=>{
  for(const queued of [false,true]){
   const {ctx}=setup(),created=[];
-  Object.assign(ctx,{_projFree:[],_eProjDropCnt:0,_mkProj:()=>({}),_projectileParryClass:()=> 'magic',_isEnemyMagicBullet:()=>false,_recycleProj(){},created});
+  Object.assign(ctx,{window:{},_projFree:[],_eProjDropCnt:0,_mkProj:()=>({}),_projectileParryClass:()=> 'magic',_isEnemyMagicBullet:()=>false,_recycleProj(){},created});
   const start=html.indexOf('function spawnProj(props){'),end=html.indexOf('p.sz*=2;p.r*=1.3;',start);
   vm.runInContext(html.slice(start,end)+'}}created.push(p);return p;}',ctx);
   for(let i=0;i<3;i++){

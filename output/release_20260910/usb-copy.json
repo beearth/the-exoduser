@@ -1,0 +1,52 @@
+﻿{
+    "source":  "G:\\exoduser\\out\\EXODUSER-win64",
+    "destination":  "I:\\EXODUSER",
+    "allSizesMatch":  true,
+    "files":  7775,
+    "bytes":  6433876898,
+    "hashes":  [
+                   {
+                       "sha256":  "18E36ED6254815F9239E75ED71E0DE99D24DECC1A127A8E9020DACB87357ACB0",
+                       "path":  "EXODUSER.exe"
+                   },
+                   {
+                       "sha256":  "BE2504FBCA75C5E3282A79481B5188167B43292CB378EC093AE8CA203EF30500",
+                       "path":  "ffmpeg.dll"
+                   },
+                   {
+                       "sha256":  "78764A31CE5254C29E573BA8077B224714F84112C5C89C97458C9DCEBD7DCED0",
+                       "path":  "node.dll"
+                   },
+                   {
+                       "sha256":  "21F500AB0C6807EA92E58C843F89AF7A9F4147960497FF7177011D3B5D1F6858",
+                       "path":  "nw.dll"
+                   },
+                   {
+                       "sha256":  "15AE092BB41E836BAB48E043638838FDEB036E7DAD00E67E465981DD248017E3",
+                       "path":  "package.nw\\game.html"
+                   },
+                   {
+                       "sha256":  "2BC2869364ED089AD1AD4E40282AAB3ACB9CB980479666C644550DD3FBEA0C21",
+                       "path":  "package.nw\\index.html"
+                   },
+                   {
+                       "sha256":  "6F0D94E51C23BF726FC9DD2E55578EFB01921F2281B307FD3AF994AB58963F89",
+                       "path":  "package.nw\\node-main.js"
+                   },
+                   {
+                       "sha256":  "184EBC2114ACA1688BB9BE07D41D9C115ED0E8A6F86DB563898D5EAD4C5C8259",
+                       "path":  "package.nw\\level-up-vfx.js"
+                   },
+                   {
+                       "sha256":  "EBC651ACB31763CC1B9A216A378E953B8F43BA3EA8379736BF748D6FBF914164",
+                       "path":  "package.nw\\video\\warrior_story_v22_bgm.mp4"
+                   },
+                   {
+                       "sha256":  "D983380924B029A5F19C98F0BCDED51C6607BE06235346C10520DFCC7716D910",
+                       "path":  "package.nw\\bgm\\공통\\네메시아의 강림 V3.mp3"
+                   }
+               ],
+    "status":  "PASS",
+    "portableLauncher":  "I:\\EXODUSER 게임 실행.cmd",
+    "shortcut":  "I:\\EXODUSER 게임 실행.lnk"
+}

@@ -1,0 +1,20 @@
+import test from 'node:test';
+import assert from 'node:assert/strict';
+import fs from 'node:fs';
+import vm from 'node:vm';
+const game=fs.readFileSync(new URL('../game.html',import.meta.url),'utf8');
+test('active and queued pet dialogue relocalize without restarting timers or sound',()=>{
+ const shown=[];let lang='en',sounds=0;
+ const ctx=vm.createContext({_DEMO_MODE:false,_petBubble:{t:0},_petDlgCD:{},_T:s=>lang+':'+s,_petBubbleShow:(who,txt)=>shown.push([who,txt]),_petSfx:()=>sounds++});
+ vm.runInContext(game.match(/function _petSay\([\s\S]*?\n\}/)[0],ctx);
+ const refresh=game.match(/function _refreshPetBubbleLanguage\([\s\S]*?\n\}/);
+ assert.ok(refresh,'Active dialogue must have a locale refresh path');
+ vm.runInContext(refresh[0],ctx);
+ ctx._petSay('test','crow','첫 대사',5,'cat','응답',4);
+ ctx._petBubble.t=123;lang='fr';ctx._refreshPetBubbleLanguage();
+ assert.equal(ctx._petBubble.txt,'fr:첫 대사');
+ assert.equal(ctx._petBubble.pair.txt,'fr:응답');
+ assert.equal(ctx._petBubble.t,123);assert.equal(sounds,1);
+ assert.deepEqual(shown.at(-1),['crow','fr:첫 대사']);
+ assert.match(game,/_applyLang[\s\S]*?_refreshPetBubbleLanguage\(\)/);
+});

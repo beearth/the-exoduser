@@ -20,6 +20,7 @@ export function collect(file){
   walk(ast,node=>{
    if(node.type==='VariableDeclarator'&&node.id.type==='Identifier')declarations[node.id.name]=source.slice(node.init?.start||0,node.init?.end||0);
    if(node.type==='CallExpression'&&['_T','_L','_TL','t',...(file==='stat-panel-ui.js'?['row']:[])].includes(node.callee.name))add(node.arguments[0]?.value,node.arguments[1]?.value);
+   if(['system-lesson.js','parry-lesson.js','resource-practice.js','tutorial-badges.js'].includes(file)&&node.type==='CallExpression'&&node.callee.type==='MemberExpression'&&node.callee.object.type==='ThisExpression'&&node.callee.property.name==='t')add(node.arguments[0]?.value,node.arguments[1]?.value);
    if(file==='stat-panel-ui.js'&&node.type==='ArrayExpression'){
     add(node.elements[0]?.value,node.elements[1]?.value);
     if(node.elements.length===3)add(node.elements[1]?.value,node.elements[2]?.value);
@@ -27,7 +28,7 @@ export function collect(file){
    if(node.type==='ObjectExpression'){
     const props=Object.fromEntries(node.properties.filter(p=>p.type==='Property').map(p=>[p.key.name||p.key.value,p.value?.value]));
     if(file==='stat-panel-ui.js')add(props.ko,props.en);
-    for(const name of ['name','desc','label','title','text'])if(props[name+'En'])add(props[name],props[name+'En']);
+    for(const name of ['name','desc','label','title','text','detail'])if(props[name+'En'])add(props[name],props[name+'En']);
    }
   });
   }

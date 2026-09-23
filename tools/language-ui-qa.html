@@ -1,0 +1,27 @@
+<!doctype html><html><head><meta charset="utf-8"><title>Language UI QA</title><link rel="stylesheet" href="/parry-lesson.css"><link rel="stylesheet" href="/localization.css"><style>body{margin:0;background:#15131a;color:#eee;font:16px sans-serif}aside{position:fixed;left:20px;top:20px;max-width:45vw}select{display:block;margin:12px 0;padding:10px;max-width:100%}#result{white-space:pre-line}</style></head><body><aside><h1>Language UI QA</h1><label>Language<select id="language"></select></label><label>Panel<select id="mode"><option value="combat">Combat</option><option value="resource">Resources</option></select></label><label>Step<select id="step"></select></label><p id="result"></p></aside><script src="/localization-runtime.js"></script><script src="/localization-data.js"></script><script>
+const params=new URLSearchParams(location.search),language=ExoduserI18n.resolveLanguage(params.get('lang')||'en'),mode=params.get('mode')||'combat',stage=0,c=window;
+Object.assign(c,{ OPT:{lang:language},
+    BINDS: { weapon:'mouse0',beam:'mouse2',parry: 'KeyQ', shield: 'KeyE', charge:'ShiftLeft',bow:'Space',up:'KeyW',down:'KeyS',left:'KeyA',right:'KeyD' }, BINDS2:{}, SKILL_SLOTS:[null,null,null,null,'customRage'],_harpGauge:24,_HARP_GAUGE_MAX:180,_HARP_TIER_F:[0,1,6,12],_HARP_GAUGE_COST:[0,45,98,150],_harpDistTier:t=>[0,300,500,700][t],_harpTier:0,_harpActive:false,_dashActive:false, K: {}, KH: {}, MB: {}, _dtSp: 1,
+    _EDITOR_MODE: false, _bossTestReq: -1, _MAP_QA_MODE: false, _saving: false,
+    G: { stage, spawnHoles: [{}], rifts: [{}], _bonfire: { t: 300 } },
+    P: { skills:{bladeDash:0},_fused:{existing:true},rage:17,parryBank:4,hp: 81, mhp: 100, mp: 42, mmp: 100, st: 51, mst: 100, shield: 9, iframes: 30, x: 500, y: 500, activeQSk: 'peaceShield', kb: { x: 0, y: 0 } },
+    ens: [{}], projs: [{}], pProjs: [{}], worldItems: [{}], EL: { P:0,F:1,I:2,D:3,L:4,H:5 }, _stopShieldLoop() {}, _recycleProj() {},
+    _spikeTrapDmg:()=>10,_spikeTrapSlowPct:()=>.91,_malCost:n=>n,_ffMoveE(e,sp,mul=1){e.y+=sp*mul;}, addParts() {}, doHitFlash() {}, shake() {}, playSample() {}, addTxt() {},
+    _addBoom() {}, _spawnSmoke() {},
+    playVFXAng() {}, _addBloodSplat() {},
+    deaths:[],corpses:[],deathImpacts:[],gore:[],
+    deathFX(...args){c.deaths.push(args);},_addCorpse(...args){c.corpses.push(args);},_addDeathImpact(...args){c.deathImpacts.push(args);},_addGorePiece(...args){c.gore.push(args);},
+    mkEn(x,y) { return {x,y,r:12,etype:0,col:'#ff0000',hp:100,mhp:100,alive:true,kb:{x:0,y:0}}; },
+  });
+c.spawnProj=props=>{const shot={...props};c.projs.push(shot);return shot;};c._dashHold=0;c._dashTier=1;c.pGuardAbsorb=()=>.3;
+c._L=(ko,en,values={})=>{const text=language==='ko'?ko:ExoduserLocalizationData.ui[language]?.[ko];if(typeof text!=='string')throw Error(language+' missing '+ko);return ExoduserI18n.format(text,values);};
+ExoduserI18n.applyDocumentLanguage(document,language);
+const langSelect=document.getElementById('language'),modeSelect=document.getElementById('mode'),stepSelect=document.getElementById('step');
+for(const code of ExoduserI18n.languages){const opt=document.createElement('option');opt.value=code;opt.textContent=code;langSelect.append(opt);}langSelect.value=language;modeSelect.value=mode;
+for(const n of (mode==='combat'?[-3,-2,-1,0,1,2,3,4,5,6,7,8]:[0,1,2,3,4,5,6,7,8,9,10])){const opt=document.createElement('option');opt.value=n;opt.textContent=n;stepSelect.append(opt);}stepSelect.value=params.get('step')||(mode==='combat'?'-3':'0');
+for(const el of [langSelect,modeSelect,stepSelect])el.addEventListener('change',()=>{location.search=new URLSearchParams({lang:langSelect.value,mode:modeSelect.value,step:el===modeSelect?(modeSelect.value==='combat'?'-3':'0'):stepSelect.value});});
+window.addEventListener('error',event=>{document.getElementById('result').textContent='FAIL: '+event.message;document.body.dataset.qa='fail';});
+</script><script src="/parry-lesson.js"></script><script src="/resource-practice.js"></script><script>
+const lesson=window._parryLesson;lesson.tick();if(mode==='resource')window._resourcePractice.start(lesson);lesson.step=Number(stepSelect.value);lesson.phase='practice';if(mode==='resource')window._resourcePractice.enter(lesson);else if(lesson.step===4)lesson.chainPractice={target:1,completed:[],feedback:''};lesson.render();
+document.getElementById('result').textContent=language+' / '+mode+' / '+lesson.step;document.body.dataset.qa='ready';
+</script></body></html>

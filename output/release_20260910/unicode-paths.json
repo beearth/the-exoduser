@@ -1,0 +1,422 @@
+{
+  "normalizedPaths": 0,
+  "changes": [],
+  "aliases": [
+    {
+      "source": "assets/cutscene/images/ChatGPT Image 2026년 4월 25일 오전 08_13_01.png",
+      "upload": "_unicode/829adb2915fc2e90980e4fd99168c3c6dca9faede290c4f5aa136d59b8d679bc.png",
+      "bytes": 1268625
+    },
+    {
+      "source": "assets/cutscene/images/ChatGPT Image 2026년 4월 27일 오전 12_53_57.png",
+      "upload": "_unicode/a2c13086ea3248bea34275f4611f6f7b7aab77650749a15055ad2d897b116858.png",
+      "bytes": 2110229
+    },
+    {
+      "source": "assets/map/ch1/ChatGPT Image 2026년 3월 29일 오후 05_35_53.png",
+      "upload": "_unicode/4d4a2523678dc3d7d79f004ac2407f2752e4378641e72b9214ef9f9d32a6f5f7.png",
+      "bytes": 2749740
+    },
+    {
+      "source": "assets/map/ch1/ChatGPT Image 2026년 3월 29일 오후 06_30_52.png",
+      "upload": "_unicode/a75558fe0852de21b00ef6f54a2a77f4e6fa361325f5db3572e79d85b7fb1f34.png",
+      "bytes": 2201462
+    },
+    {
+      "source": "assets/map/ch1/다운로드 (15).png",
+      "upload": "_unicode/e65f5976c7afa46e2c1224b1fde263cb099cc1bc2ada0fdffcc0254a15e05851.png",
+      "bytes": 17116425
+    },
+    {
+      "source": "assets/map/ch1/collision/ChatGPT Image 2026년 4월 2일 오후 01_57_22.png",
+      "upload": "_unicode/a239f8bbc4e85a67834436160bf17c34e064cd6b8dbf64e3767590d7a867761a.png",
+      "bytes": 395706
+    },
+    {
+      "source": "assets/map/ch1/floor_objects/eye_bloodshot_8dir - 복사본.png",
+      "upload": "_unicode/a916b8f3a1a18ae80865fcea87bcef37bbd40b0c57bf427475c9655d754569f6.png",
+      "bytes": 4125
+    },
+    {
+      "source": "bgm/1장_썩은숲/Ashes of the Fallen Gate.mp3",
+      "upload": "_unicode/349ad697c934eea10044e3cec66ce4822f203f12271e25a2c8578b04de3000e5.mp3",
+      "bytes": 6047859
+    },
+    {
+      "source": "bgm/1장_썩은숲/Ashes Under the Banner (Remastered).wav",
+      "upload": "_unicode/47e091b30725a842e2372da2ac5d7f8ea35d940f9074c3323c902848be0fa6a3.wav",
+      "bytes": 80640172
+    },
+    {
+      "source": "bgm/1장_썩은숲/Ashes Under the Banner.mp3",
+      "upload": "_unicode/9713beb9d965a70e3d2fd77b23aaa94cd40bccd94ab6b1ddc06b4dd646303aaf.mp3",
+      "bytes": 10427587
+    },
+    {
+      "source": "bgm/1장_썩은숲/Blade Choir of the Black Citadel.mp3",
+      "upload": "_unicode/1644025934e67e9d0958f717ed1a214011499b265bc2e3bc81e4a43b53d9dec3.mp3",
+      "bytes": 5892523
+    },
+    {
+      "source": "bgm/1장_썩은숲/Blood Moon Siege.mp3",
+      "upload": "_unicode/faadaa42fa482703a8b99ae3101b1581a4e6f70037dc17f4bbabaaf12075ca37.mp3",
+      "bytes": 6316580
+    },
+    {
+      "source": "bgm/1장_썩은숲/Blood Moon Siege2.mp3",
+      "upload": "_unicode/222b1f0559c2b0a83b8823066f413835bd33a651ab0299232eee9eb4733c8470.mp3",
+      "bytes": 6776833
+    },
+    {
+      "source": "bgm/1장_썩은숲/Bloodsteel Ascension 2.mp3",
+      "upload": "_unicode/2600d0faffad672dc9c175967f37a9839bf8e127fc91adffb52ec8709f8b94d2.mp3",
+      "bytes": 4817516
+    },
+    {
+      "source": "bgm/1장_썩은숲/Bloodsteel Ascension.mp3",
+      "upload": "_unicode/ade3cafabc6954e2d433b3653bf10001f32f6246a1c626b3d380d1492a2e38d3.mp3",
+      "bytes": 5614542
+    },
+    {
+      "source": "bgm/1장_썩은숲/Cathedral of Steel (1).mp3",
+      "upload": "_unicode/3c466215186e932addb6235937c895b0f3d4fd27a0f2230caa08223fd7698bf8.mp3",
+      "bytes": 6975433
+    },
+    {
+      "source": "bgm/1장_썩은숲/Cathedral of Steel (Remastered).wav",
+      "upload": "_unicode/d5c4c29a332b9f8bda4734de7bf40eda6a6c0ad678563458c78f4fd1a66f440b.wav",
+      "bytes": 55465132
+    },
+    {
+      "source": "bgm/1장_썩은숲/Cathedral of Steel.mp3",
+      "upload": "_unicode/26d13c5641f652dd0f2615ebe6c72fda065d8fb044c4a42575b3197bd8eec7ee.mp3",
+      "bytes": 4999198
+    },
+    {
+      "source": "bgm/1장_썩은숲/Exoduser.mp3",
+      "upload": "_unicode/f0fae48f76544343da4dfa3e397c033bb79ee2c15607501afa77398caab1f1c3.mp3",
+      "bytes": 7313766
+    },
+    {
+      "source": "bgm/1장_썩은숲/Exoduser2.1.mp3",
+      "upload": "_unicode/45be8eedf8a013d7e9078599f26349877a0990e9701c25ce72a8bb819842d17b.mp3",
+      "bytes": 7155396
+    },
+    {
+      "source": "bgm/1장_썩은숲/Exoduser2.mp3",
+      "upload": "_unicode/f272081bc016ac0ef921f2ae44cb978022794d3b7da0cd531e0ea17a9110e544.mp3",
+      "bytes": 7630159
+    },
+    {
+      "source": "bgm/1장_썩은숲/Exoduser3.mp3",
+      "upload": "_unicode/cf541d7ff42dba824c74acbcafcd4282249b58c53f78d09d5ea689a485d15c5e.mp3",
+      "bytes": 7199097
+    },
+    {
+      "source": "bgm/1장_썩은숲/h0_explore.mp3",
+      "upload": "_unicode/4db240891c3bc6de5e55f3380dc23969d6fd5ed652529da23cefa0548859e16d.mp3",
+      "bytes": 589494
+    },
+    {
+      "source": "bgm/1장_썩은숲/hell1_ice.mp3",
+      "upload": "_unicode/bf23d573b37be694400fbb724ecae95396368b9a57c44481e7513b0ad4f8f2aa.mp3",
+      "bytes": 6929308
+    },
+    {
+      "source": "bgm/1장_썩은숲/Iron Oath Under Ash (Remastered).wav",
+      "upload": "_unicode/c063cab5facb95f027a25169985b0705abe7d32369a42ff1f2159bdd6e6b7605.wav",
+      "bytes": 47470252
+    },
+    {
+      "source": "bgm/1장_썩은숲/Iron Oath Under Ash.mp3",
+      "upload": "_unicode/5cb330ced63c92019bfc680314a9e47bd25560c37db31e1efcbaffa6a978a001.mp3",
+      "bytes": 5714631
+    },
+    {
+      "source": "bgm/1장_썩은숲/Neon Hellfire Protocol (1).mp3",
+      "upload": "_unicode/422fbd5cbec76bc8e9ffc6c7a8bec86ebc26a638cd5fbe0f919c322b72c08b99.mp3",
+      "bytes": 5745854
+    },
+    {
+      "source": "bgm/1장_썩은숲/Neon Hellfire Protocol (Remastered).wav",
+      "upload": "_unicode/1186655a416350a0e55aca4542a4518abb467f1d57b13069676a56a25f334524.wav",
+      "bytes": 44997292
+    },
+    {
+      "source": "bgm/1장_썩은숲/Neon Hellfire Protocol.mp3",
+      "upload": "_unicode/4a14b91b0cf49bd1150c327f749931b8776d4ff8a6a5fdd411e4ed9c4c025265.mp3",
+      "bytes": 5817909
+    },
+    {
+      "source": "bgm/1장_썩은숲/Neon Hellfire Protocol2(Remastered).wav",
+      "upload": "_unicode/fa2100fe4496e4d99a864f921294b861978e9a6456c5c9c947949c854e41fbd1.wav",
+      "bytes": 44836012
+    },
+    {
+      "source": "bgm/1장_썩은숲/Wrath of the Golden Age (Remastered).wav",
+      "upload": "_unicode/59f8f4071411df13bb22470603d3efa654a1bef6acdeb05736dd1fb5b4c963e5.wav",
+      "bytes": 38238892
+    },
+    {
+      "source": "bgm/1장_썩은숲/Wrath of the Golden Age.mp3",
+      "upload": "_unicode/b0c9148a0225c4a8b92a03cfd09ee11aece90e18f954fe664405b417e0b35b32.mp3",
+      "bytes": 4896792
+    },
+    {
+      "source": "bgm/2장_벌레굴/Carapace Cathedral.mp3",
+      "upload": "_unicode/92096b00dd699ef3c7f082e031a052197801dc138a65b0436d5677b9ce505246.mp3",
+      "bytes": 6251473
+    },
+    {
+      "source": "bgm/2장_벌레굴/hell2_insect.mp3",
+      "upload": "_unicode/c04104c6bece8d8e701a1f48763780205bbfed172c4b775730e7c36e05e3b719.mp3",
+      "bytes": 5163461
+    },
+    {
+      "source": "bgm/3장_얼음굴/Abyssal Drift.mp3",
+      "upload": "_unicode/ca8acb9113e21f250404135d9fb9338f3c7f8d06b61bc821b433439fb9a8a80d.mp3",
+      "bytes": 3780056
+    },
+    {
+      "source": "bgm/3장_얼음굴/hell3_fire.mp3",
+      "upload": "_unicode/a1377481f03e973554e9eb737cbbe9a18a56719fa0044c3813b8c1847446aa14.mp3",
+      "bytes": 6558635
+    },
+    {
+      "source": "bgm/3장_얼음굴/흰눈의 맹세 (Remastered).wav",
+      "upload": "_unicode/2dabaac6732d3e3d151c2c280b8995cb10354ea2015e6a07aca297c50fb2dd79.wav",
+      "bytes": 66716332
+    },
+    {
+      "source": "bgm/3장_얼음굴/흰눈의 맹세2 (Remastered).wav",
+      "upload": "_unicode/2fe8b78192bbc0b8c0af9db358932816b123eab24e18d9825def051e28577ff3.wav",
+      "bytes": 66716332
+    },
+    {
+      "source": "bgm/4장_화염지대/hell4_abyss.mp3",
+      "upload": "_unicode/04c53bd37a7e69e33a5a66a99105fa7c2c1d60af2dc641deaa6e6590ea478f56.mp3",
+      "bytes": 5817971
+    },
+    {
+      "source": "bgm/4장_화염지대/Ignis et Sanguis.mp3",
+      "upload": "_unicode/ae6eb28a8800ebf7f81e8c0f7e5232223db2b42f9df9599b7b05fb8d10178f15.mp3",
+      "bytes": 5195757
+    },
+    {
+      "source": "bgm/4장_화염지대/Inferno Liturgia.mp3",
+      "upload": "_unicode/8a7500eb50e1166cac1f824e003141d3a6790fdb8c5b39cb03f13e603253a050.mp3",
+      "bytes": 5507763
+    },
+    {
+      "source": "bgm/5장_지옥군단/Abyss Below.mp3",
+      "upload": "_unicode/434890cc74af2f89d88af8bbb35aa4d324d40c550a91d53d2c7da3b5a744b8db.mp3",
+      "bytes": 5872873
+    },
+    {
+      "source": "bgm/5장_지옥군단/hell5_thunder.mp3",
+      "upload": "_unicode/004ac10ff08a891cd947442f5cdc34e66aa0c8106955dab594a18a5da720bee1.mp3",
+      "bytes": 4091859
+    },
+    {
+      "source": "bgm/6장_사도마굴/hell6_bone.mp3",
+      "upload": "_unicode/24d5aad235c2582fde13460646f1ecec83684c580d32444937279c34129535e0.mp3",
+      "bytes": 4270269
+    },
+    {
+      "source": "bgm/6장_사도마굴/Kiln of Broken Crowns.mp3",
+      "upload": "_unicode/506614cae90bec918c00a605f11f9c3c3a2fbb18097cc82c67bb9d336c903e40.mp3",
+      "bytes": 5137854
+    },
+    {
+      "source": "bgm/7장_지옥성/hell7_chaos.mp3",
+      "upload": "_unicode/363b217de8c429a691bb27034b7363137676197a7c2d3ef9637fab328399d1d7.mp3",
+      "bytes": 5137806
+    },
+    {
+      "source": "bgm/7장_지옥성/Midnight Cathedral of Ash.mp3",
+      "upload": "_unicode/4b7e72b23112a4077d54cb5b695fced9a26f6d684c136a3dca7542c1f9a86599.mp3",
+      "bytes": 4270380
+    },
+    {
+      "source": "bgm/7장_지옥성/Teeth in the Choir.mp3",
+      "upload": "_unicode/286fb9fe22f55908ca201890973212ed368dd52ebb4ca8438aa3a95bb0a7114e.mp3",
+      "bytes": 3658137
+    },
+    {
+      "source": "bgm/공통/Anvil Ashes.mp3",
+      "upload": "_unicode/cd93b57fc59ea1f26348358a97cb71d86b629519c5d2ff9f2b2e61b9dda74497.mp3",
+      "bytes": 8175386
+    },
+    {
+      "source": "bgm/공통/boss.mp3",
+      "upload": "_unicode/a1a7ec4d4c7b302749fb67bc0b279b32c8f9f0de2abd5c9d4c0ff2917625e3c6.mp3",
+      "bytes": 4025039
+    },
+    {
+      "source": "bgm/공통/Coronam Ferro (Remastered).wav",
+      "upload": "_unicode/05baf022654528602301661ac5fd551180e7dca5bf1bbd082fda07b43582e727.wav",
+      "bytes": 38730412
+    },
+    {
+      "source": "bgm/공통/Coronam Ferro V2.mp3",
+      "upload": "_unicode/e83a60ea1b73584fd3c8787fa1383b913d38198e2f0648b61fa37ce422c77d3e.mp3",
+      "bytes": 4754795
+    },
+    {
+      "source": "bgm/공통/Coronam Ferro.mp3",
+      "upload": "_unicode/2bc9c24e536ca911fe0c5babb760e643f7c1b0d96bc70b39064011a8188bcdf0.mp3",
+      "bytes": 5275995
+    },
+    {
+      "source": "bgm/공통/Coronam Ferro2(Remastered).wav",
+      "upload": "_unicode/c553df12dbc5e5fafc3a51b2cb90360d9b53d4e304a20ea1d71770c7e284df15.wav",
+      "bytes": 38730412
+    },
+    {
+      "source": "bgm/공통/Crown of Ash and Iron.mp3",
+      "upload": "_unicode/ec7c62dcf8fdb6b6b7f9a6ba2dc8fdf8b88072f8e57bce8e3cdb108278122e48.mp3",
+      "bytes": 4574401
+    },
+    {
+      "source": "bgm/공통/death.mp3",
+      "upload": "_unicode/3fbbe6321aa95f7980e53fff4d3bb60047d1feaacdb0bb2f9373ac7f75cb7977.mp3",
+      "bytes": 2494100
+    },
+    {
+      "source": "bgm/공통/exoduser.mp3",
+      "upload": "_unicode/acdbc3975ccd824bfc7029595e634f466c0b37462ff15a2576408c79570c22c1.mp3",
+      "bytes": 193767
+    },
+    {
+      "source": "bgm/공통/finalboss.mp3",
+      "upload": "_unicode/fa2f82252fb53ddae19347a4784865a47994aea1d1f46428e87d3f068d48ed66.mp3",
+      "bytes": 5194162
+    },
+    {
+      "source": "bgm/공통/forge.mp3",
+      "upload": "_unicode/00373c0151e94328e205b072f2ff333a58a24d0bc5ccc97b5923279f2773470e.mp3",
+      "bytes": 7247455
+    },
+    {
+      "source": "bgm/공통/intro.mp3",
+      "upload": "_unicode/2a5ccf40bcc5d105aae3e5fc327a1c440435aa3ce48252a7e23b2d6bddd8a924.mp3",
+      "bytes": 6047748
+    },
+    {
+      "source": "bgm/공통/intro_voice.mp3",
+      "upload": "_unicode/6961e242a15f61050c49725d36d8fd0a06b5d516d3dd6c11237be99d81620851.mp3",
+      "bytes": 1676920
+    },
+    {
+      "source": "bgm/공통/Just One More Hill (Remastered) 2.wav",
+      "upload": "_unicode/f2891a37e6f8f7a938cd98636935c07930618651e7e32e4db12e17613eb40323.wav",
+      "bytes": 52393132
+    },
+    {
+      "source": "bgm/공통/Just One More Hill (Remastered).wav",
+      "upload": "_unicode/b0fdccde60dd2d25bdf5146c665524083029ea818ed6c2b1f1bee5df3a346405.wav",
+      "bytes": 55680172
+    },
+    {
+      "source": "bgm/공통/Just One More Hill V4.mp3",
+      "upload": "_unicode/50743b97a99dd248a21580cc752be24c001ea37af47e74a8d162dde172efd43d.mp3",
+      "bytes": 6309676
+    },
+    {
+      "source": "bgm/공통/Just One More Hill V5.mp3",
+      "upload": "_unicode/c8a2be6ce368a7ed919498d4040112377c5c1e96f24091a35906d0f3298f0f00.mp3",
+      "bytes": 6695193
+    },
+    {
+      "source": "bgm/공통/lobby.mp3",
+      "upload": "_unicode/6beb5d4cd79364c90f1c12f339f6f3e3bbd71488f1a1d01bcd7e4655d1546798.mp3",
+      "bytes": 5234854
+    },
+    {
+      "source": "bgm/공통/victory.mp3",
+      "upload": "_unicode/e031a82ed615b04e46719d1ead3d4785b1be4fa8332eef00fbcc87134a5af80c.mp3",
+      "bytes": 4562186
+    },
+    {
+      "source": "bgm/공통/고개 하나만 (Remastered) 2.wav",
+      "upload": "_unicode/128c281b464740e4ccff8e7f131a9d6e184d22031da499affdf90512b9377837.wav",
+      "bytes": 50811052
+    },
+    {
+      "source": "bgm/공통/고개 하나만 (Remastered).wav",
+      "upload": "_unicode/c8f47376cefabd8098a031e293b52130f2f490eaa43922fc86ab08813181dc18.wav",
+      "bytes": 57423532
+    },
+    {
+      "source": "bgm/공통/네메시아 강림 (Remastered).wav",
+      "upload": "_unicode/07ca70d339b03d7d517aecca8d9e78a281e1bf7969905cf90ca04fe52148dccf.wav",
+      "bytes": 57369772
+    },
+    {
+      "source": "bgm/공통/네메시아 강림V5.mp3",
+      "upload": "_unicode/83176e97f6edcd36ec66765822fea34c0069cce2a498791b68fb744fd783a80d.mp3",
+      "bytes": 6841333
+    },
+    {
+      "source": "bgm/공통/네메시아의 강림 V3.mp3",
+      "upload": "_unicode/b17072b0a64c7c073640b6bc0ee3a9b3278d53c1efc4bb583ef87009fd78c276.mp3",
+      "bytes": 3557632
+    },
+    {
+      "source": "bgm/공통/네메시아의 강림.mp3",
+      "upload": "_unicode/0e7fa171976d736a9670223a6ab41bf6055012c03e5003d102749c5351ffb11d.mp3",
+      "bytes": 5529526
+    },
+    {
+      "source": "bgm/공통/네메시아의 강림2 (Remastered).wav",
+      "upload": "_unicode/70efafe42c939628becf1f94497701b79aa4bdb66631b693550719e176fcb979.wav",
+      "bytes": 27840172
+    },
+    {
+      "source": "bgm/공통/네메시아의 강림3(Remastered).wav",
+      "upload": "_unicode/69c7edbe9199cba1e7e90829ea410a8234d61fdecc60a4fbbb8a89476906b4c1.wav",
+      "bytes": 45035692
+    },
+    {
+      "source": "bgm/공통/복수의 대장간.mp3",
+      "upload": "_unicode/d27a4f0d718f5b8f52b000690dfaf24cd244d4efeabc0c9553ab89a31fa22dd6.mp3",
+      "bytes": 6304885
+    },
+    {
+      "source": "bgm/공통/지옥 추락 사망 징글.mp3",
+      "upload": "_unicode/32f33a40e28b04c0d45213888e4e2d5589b69ac481ffbfacbbc2a36eaa41c49a.mp3",
+      "bytes": 2422892
+    },
+    {
+      "source": "bgm/공통/탈출 성공.mp3",
+      "upload": "_unicode/39fb34f3062e4f2aa8ad2883608c41b07add1f0f1876fdb6281476bbe0d86b16.mp3",
+      "bytes": 4925332
+    },
+    {
+      "source": "img/cursors/ChatGPT Image 2026년 5월 19일 오후 07_08_20.png",
+      "upload": "_unicode/5b02174e80acee09b9e02362e077e629fc3f57cd0a84f46e4ae484b66943633a.png",
+      "bytes": 2210954
+    },
+    {
+      "source": "img/cursors/ChatGPT Image 2026년 5월 19일 오후 07_37_56.png",
+      "upload": "_unicode/fc6fb525330c480891628f32a9c18a234614b0d58168885a82be16653d6b5c7a.png",
+      "bytes": 2214062
+    },
+    {
+      "source": "img/lording/2026년 5월 12일 오후 08_50_41.png",
+      "upload": "_unicode/6c355a21dffce56ba93e1b44294aa1bbebfb486dc464863b65bf40e7c838a96f.png",
+      "bytes": 2507431
+    },
+    {
+      "source": "img/skillskinXX/스크린샷 2026-04-09 214635.png",
+      "upload": "_unicode/d4c3765ebcb874eeebf2e06283e33890a7db4b9d3a261a40789aaddd8e0d8a62.png",
+      "bytes": 301001
+    },
+    {
+      "source": "img/skillskinXX/스크린샷 2026-04-09 230223.png",
+      "upload": "_unicode/780340acc9ec88f008e063e3f4e0a9bbd8a8c6c2b20d7aa81abdcd41bf8219fb.png",
+      "bytes": 188066
+    }
+  ],
+  "files": 5454
+}

@@ -24,6 +24,8 @@ function fixture(){
     doParry(){},wp:()=>({}),die(){},scrFlash:null,scrFlashA:0});
   for(const name of ['sh','ar','bt','gl','pt','hm','nc','rg1','rg2','cp','blt'])ctx[name]=()=>({});
   vm.runInContext(fn('hurtP'),ctx);
+  ctx.EL={P:0};ctx._gameFrame=100;ctx.G.stage=1;
+  for(const name of ['_projectileParryClass','_isBitingPhysicalProjectile','_addPhysicalBite','_hurtProjectilePlayer'])vm.runInContext(fn(name),ctx);
   const sound=ast.body.find(n=>n.type==='FunctionDeclaration'&&n.id.name==='_playProjectileHitSfx');
   if(sound)vm.runInContext(code.slice(sound.start,sound.end),ctx);
   return {ctx,hits,tick:ms=>now+=ms,impactHits:()=>hits.filter(h=>h[0]==='player_projectile_impact')};
@@ -35,6 +37,23 @@ test('accepted projectile damage adds impact while preserving HP loss',()=>{
 test('energy shield absorption still produces a projectile impact',()=>{
   const s=fixture();s.ctx.P.shield=50;s.ctx.P.mshield=50;s.ctx.hurtP(10,{projectileHitSfx:true});
   assert.equal(s.ctx.P.hp,100);assert.equal(s.ctx.P.shield,40);assert.equal(s.impactHits().length,1);
+});
+test('physical body damage and shield absorption attach a mouth without extra damage',()=>{
+  for(const shield of [0,50]){
+    const s=fixture();s.ctx.P.shield=shield;s.ctx.P.mshield=shield;
+    s.ctx._hurtProjectilePlayer({el:0,x:0,y:0,vx:5,vy:0,sz:3},10,{projHit:true});
+    assert.equal(s.ctx.P._physicalBites.length,1);
+    assert.equal(s.ctx.P.hp,shield?100:90);assert.equal(s.ctx.P.shield,shield?40:0);
+  }
+});
+for(const mode of ['iframes','dodge','parry','dot'])test(mode+' never attaches a physical mouth',()=>{
+  const s=fixture();const opts={};
+  if(mode==='iframes')s.ctx.P.iframes=10;
+  if(mode==='dodge'){s.ctx.STATS.dex=1000;vm.runInContext('Math.random=()=>0',s.ctx);}
+  if(mode==='parry')s.ctx.P._sbParryT=1;
+  if(mode==='dot')opts.dot=true;
+  s.ctx._hurtProjectilePlayer({el:0,x:0,y:0,vx:5,vy:0,sz:3},10,opts);
+  assert.equal(s.ctx.P._physicalBites?.length||0,0);
 });
 test('player impact is prioritized above ordinary hit spam',()=>{
   const ctx=vm.createContext({_SFX_PRI:{PLAYER_HIT:8,HIT:2,PROJ:1}});

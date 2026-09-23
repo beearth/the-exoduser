@@ -4,6 +4,7 @@ import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 
 const MIME = {
+  '.vtt': 'text/vtt; charset=utf-8',
   '.css': 'text/css; charset=utf-8',
   '.gif': 'image/gif',
   '.html': 'text/html; charset=utf-8',
@@ -105,6 +106,11 @@ export function createStaticServer({ rootDir = process.cwd(), host = '127.0.0.1'
       }
       if (reqUrl.pathname === '/map-test') {
         res.writeHead(302, { Location: '/map-test.html' });
+        res.end();
+        return;
+      }
+      if (reqUrl.pathname === '/map/field') {
+        res.writeHead(302, { Location: '/game.html?test=1&testchar=1&stage=0&classic=1&mapqa=1&fieldrebuild=1' });
         res.end();
         return;
       }

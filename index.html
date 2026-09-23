@@ -163,7 +163,7 @@ body{background:#000 center/cover no-repeat;color:#ccaa88;font-family:'Noto Sans
 /* 좌측 영역 */
 .lobby-left{position:relative;flex:1;height:100%;overflow:hidden;background:#000}
 .lobby-bg-img{position:absolute;inset:0;background-position:left center;background-size:cover;background-repeat:no-repeat;opacity:1;transition:opacity 400ms ease;transform-origin:50% 45%;animation:lobbyKenburns 46s ease-in-out infinite alternate}
-@keyframes lobbyKenburns{0%{transform:scale(1.04) translate(.4%,.2%)}100%{transform:scale(1.08) translate(-.8%,-.5%)}}
+@keyframes lobbyKenburns{0%{transform:scale(1) translate(0,0)}100%{transform:scale(1.02) translate(-.3%,-.2%)}}
 @media(prefers-reduced-motion:reduce){.lobby-bg-img{animation:none}}
 .lobby-bg-img::after{content:'';position:absolute;inset:0;background:linear-gradient(90deg,rgba(0,0,0,0) 50%,rgba(0,0,0,0.55) 90%,rgba(0,0,0,0.85) 100%);pointer-events:none}
 .lobby-char-preview{position:absolute;inset:0;z-index:1;width:100%;height:100%;object-fit:cover;object-position:center center;pointer-events:none;user-select:none;opacity:0;filter:brightness(.82) contrast(1.04);transform:scale(1.02);transition:opacity .42s ease,transform .55s cubic-bezier(.2,.7,.2,1)}
@@ -179,7 +179,7 @@ body{background:#000 center/cover no-repeat;color:#ccaa88;font-family:'Noto Sans
 .char-disp-empty.hidden{opacity:0}
 
 /* 우측 영역 */
-.lobby-right{position:relative;flex:0 0 35%;height:100%;background:linear-gradient(180deg,rgba(8,3,18,0.42) 0%,rgba(4,2,12,0.48) 100%),url('assets/lobby/lobby_bg_new.png') center/cover no-repeat;padding:20px 24px 16px 24px;display:flex;flex-direction:column;border-left:2px solid;border-image:linear-gradient(180deg,#3a1a55 0%,#c44444 50%,#3a1a55 100%) 1}
+.lobby-right{position:relative;flex:0 0 35%;height:100%;background:linear-gradient(180deg,rgba(8,3,18,0.42) 0%,rgba(4,2,12,0.48) 100%),url('assets/lobby/lobby_bg_new.png?v=20260913-lobby-smooth1') center/cover no-repeat;padding:20px 24px 16px 24px;display:flex;flex-direction:column;border-left:2px solid;border-image:linear-gradient(180deg,#3a1a55 0%,#c44444 50%,#3a1a55 100%) 1}
 
 /* 우측 헤더 */
 .lobby-header{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:18px}
@@ -368,6 +368,8 @@ body{background:#000 center/cover no-repeat;color:#ccaa88;font-family:'Noto Sans
 .fdg-screen.video-intro{background:#000}
 .fdg-screen.video-intro>*:not(.fdg-video-intro){display:none}
 .fdg-screen.video-intro .fdg-video-intro{display:block}
+.fdg-screen.fdg-fallback{background:#000 url('img/fdg_intro/fdg_reference.png') center/contain no-repeat}
+.fdg-screen.fdg-fallback .fdg-video-intro{visibility:hidden}
 /* 늑대 + 눈 glow */
 .fdg-wolf-wrap{position:relative;width:clamp(80px,min(22vw,18vh),290px);flex-shrink:0}
 .fdg-wolf-emblem{width:100%;height:auto;opacity:0;transition:opacity 1.4s ease-out;display:block}
@@ -482,7 +484,7 @@ body{background:#000 center/cover no-repeat;color:#ccaa88;font-family:'Noto Sans
 
 <!-- FDG SCREEN 2: 늑대 엠블럼 -->
 <div id="fdgScreen" class="fdg-screen" style="display:none">
-  <video id="fdgIntroVideo" class="fdg-video-intro" muted playsinline preload="auto">
+  <video id="fdgIntroVideo" class="fdg-video-intro" muted playsinline preload="auto" poster="img/fdg_intro/fdg_reference.png">
     <source src="video/fdg_intro.mp4" type="video/mp4">
   </video>
   <div class="fdg-wolf-wrap">
@@ -640,6 +642,7 @@ body{background:#000 center/cover no-repeat;color:#ccaa88;font-family:'Noto Sans
       </div>
     </div>
     <div class="lobby-divider"></div>
+    <div id="developerSaveNotice" hidden style="color:#d3aa67;font-size:.75rem;flex-shrink:0">개발자용 · 테스트 캐릭터 · 슬롯 무제한</div>
     <div class="char-list" id="charList">
       <div class="no-chars">불러오는 중...</div>
     </div>
@@ -915,7 +918,7 @@ body{background:#000 center/cover no-repeat;color:#ccaa88;font-family:'Noto Sans
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
 <script src="lobby_i18n.js"></script>
 <script src="lobby-stage-info.js"></script>
-<script src="character-story-player.js?v=20260910-hints-fade"></script>
+<script src="character-story-player.js?v=20260914-space-hold"></script>
 <script src="world-intro-player.js?v=20260907-v12-fullscene-newvoice"></script>
 <script src="world-intro-subtitles-data.js?v=20260907-v13-exodus-ko-escape"></script>
 <script src="world-intro-subtitles.js?v=20260907-v6-cinema-size"></script>
@@ -1002,11 +1005,11 @@ function _gpDot(on){
 </script>
 <script>
 // ═══ 로비 배경: 트랜지션 이미지 중 랜덤 1장 ═══
-(function(){const n=~~(Math.random()*19)+1;const _base='img/lording/';const img=new Image();img.onload=function(){document.body.style.backgroundImage='linear-gradient(rgba(0,0,0,.55),rgba(0,0,0,.55)),url('+_base+n+'.png)'};img.src=_base+n+'.png'})();
+(function(){const n=~~(Math.random()*19)+1;const _base='img/lording/';const img=new Image();img.onload=function(){document.body.style.backgroundImage='linear-gradient(rgba(0,0,0,.55),rgba(0,0,0,.55)),url('+img.src+')'};img.src=_base+n+'.png?v=20260913-intro-detail2'})();
 // 브라우저 줌 차단
 addEventListener('wheel',e=>{if(e.ctrlKey||e.metaKey)e.preventDefault()},{passive:false});
 // ── 빌드 버전 (demo.html → 'demo', ea.html → 'ea') ──
-const _LOBBY_BUILD='full';
+const _LOBBY_BUILD='demo';
 // ── 버전별 멘트 (추후 교체) ──
 const _LOBBY_QUOTES={
   full:'멘트 준비 중',
@@ -1018,10 +1021,11 @@ const _LOBBY_VER='v0.6.0 · 20260521';
 const _LOBBY_VER_LIMITS={
   full:'All Chapters · No Level Cap',
   ea:'Lv.500 · Chapter 1 (1-1~1-4) · 8~15h',
-  demo:'Lv.1 START · Stage 1-1 Only · 1~2h', // 2026-07-27 데모 Lv1 일반 시작으로 변경
+  demo:'Lv.1 START · Stage 1-1 Only · Lv.100 Cap · 1~2h',
 };
 var _selectedSlot=null,_selectedSlotName=null,_selectedCharDisplay=null;
 var _localSlots=[];
+var _developerSlots=false;
 var _curBg=null;
 var _spriteOk={};// 캐릭터 스프라이트 존재 캐시
 function _tryLoadSprite(folder,fw,fh,canvas){
@@ -1903,7 +1907,7 @@ function detectSteamLanguage(){try{if(typeof window!=='undefined'&&window.steamw
 function detectBrowserLanguage(){const ls=navigator.languages||[navigator.language]||['en'];for(const l of ls){const c=WorldIntroSubtitles.resolveLanguage(l);if(c&&_I18N_SUPPORTED.includes(c))return c}return null}
 let _i18nLogged=false;
 function getCurrentLanguage(){const p=new URLSearchParams(location.search);const dbg=WorldIntroSubtitles.resolveLanguage(p.get('lang'));if(dbg&&_I18N_SUPPORTED.includes(dbg)){if(!_i18nLogged){console.log('[I18N] Debug override: '+dbg);_i18nLogged=true}return dbg}const u=getUserSelectedLanguage();if(u){if(!_i18nLogged){console.log('[I18N] User selected: '+u);_i18nLogged=true}return u}const s=detectSteamLanguage();if(s)return s;const b=detectBrowserLanguage();if(b)return b;if(!_i18nLogged){console.log('[I18N] Fallback: en');_i18nLogged=true}return'en'}
-function setUserLanguage(code){code=WorldIntroSubtitles.resolveLanguage(code);if(!_I18N_SUPPORTED.includes(code)){console.warn('[I18N] Unsupported: '+code);return false}localStorage.setItem('hellLang',code);console.log('[I18N] Saved: '+code);const cl=document.getElementById('cinLang');if(cl)cl.value=code;const ls=document.getElementById('langSelect');if(ls)ls.value=code;_applyLobbyLang();if(_worldIntroSubtitles&&_worldIntroPlayer)_worldIntroSubtitles.setLanguage(code);return true}
+function setUserLanguage(code){code=WorldIntroSubtitles.resolveLanguage(code);if(!_I18N_SUPPORTED.includes(code)){console.warn('[I18N] Unsupported: '+code);return false}localStorage.setItem('hellLang',code);const url=new URL(location.href);if(url.searchParams.has('lang')){url.searchParams.delete('lang');history.replaceState(history.state,'',url)}console.log('[I18N] Saved: '+code);const cl=document.getElementById('cinLang');if(cl)cl.value=code;const ls=document.getElementById('langSelect');if(ls)ls.value=code;_applyLobbyLang();if(_worldIntroSubtitles&&_worldIntroPlayer)_worldIntroSubtitles.setLanguage(code);return true}
 function _lobbyLang(){return getCurrentLanguage()}
 function _TL(s){const lang=_lobbyLang();if(lang==='ko')return s;const tbl=_LOBBY_TABLES[lang]||_LOBBY_EN;return tbl[s]||_LOBBY_EN[s]||s}
 const _HTML_LANG_MAP={ko:'ko',ja:'ja',zh:'zh-Hans',zht:'zh-Hant',ar:'ar',th:'th',vi:'vi',id:'id',tr:'tr',el:'el',ru:'ru',uk:'uk',bg:'bg',pl:'pl',cs:'cs',hu:'hu',ro:'ro',de:'de',nl:'nl',sv:'sv',da:'da',no:'no',fi:'fi',fr:'fr',it:'it',es:'es',ptbr:'pt',sk:'sk',en:'en'};
@@ -2418,7 +2422,7 @@ function playCinematic(){
       // 중앙
       _hgX.globalAlpha=a*0.8;_hgX.font='12px sans-serif';_hgX.fillStyle='#888';
       _hgX.textAlign='center';_hgX.textBaseline='middle';
-      _hgX.fillText(_cinGpHold?'Ⓑ':'ESC',gx,gy);
+      _hgX.fillText(_cinGpHold?'Ⓑ':'SPACE / ESC',gx,gy);
       // 라벨
       _hgX.globalAlpha=a*0.6;_hgX.font='10px sans-serif';_hgX.fillStyle='#666';
       _hgX.fillText('HOLD TO SKIP',gx,gy+r+16);
@@ -2476,22 +2480,22 @@ let _emberIv=setInterval(()=>{
 },150);
 
 // ═══ 로딩 화면 시스템 (전체 화면 이미지) ═══
-// 실제 존재하는 rd 파일 목록 (rd3 없음, rd6=webp, rd11=jpg)
+// 실제 존재하는 rd 파일 목록 (rd3 없음, rd6=png, rd11=jpg)
 const _RD_IMGS=[
-  'rd1.png','rd2.png','rd4.png','rd5.png','rd6.webp',
+  'rd1.png','rd2.png','rd4.png','rd5.png','rd6.png',
   'rd7.png','rd8.png','rd9.png','rd10.png','rd11.jpg',
   'rd12.png','rd13.png','rd14.png','rd15.png','rd16.png','rd17.png'
 ];
 function pickRandomLoadingImage(){
-  return 'img/lording/'+_RD_IMGS[~~(Math.random()*_RD_IMGS.length)];
+  return 'img/lording/'+_RD_IMGS[~~(Math.random()*_RD_IMGS.length)]+'?v=20260913-intro-detail2';
 }
 
 // 로비 진입 시 로딩 이미지 프리로드
-// - rd*.png 16장 (index.html 게이트 오버레이)
+// - rd 계열 16장: rd3 제외, rd11.jpg 외 PNG (로딩 후보 preload)
 // - 1~19.png 19장 (game.html 부트 로딩 배경)
 function _preloadLoadingImgs(){
-  _RD_IMGS.forEach(f=>{const i=new Image();i.src='img/lording/'+f;});
-  for(let n=1;n<=19;n++){const i=new Image();i.src='img/lording/'+n+'.png';}
+  _RD_IMGS.forEach(f=>{const i=new Image();i.src='img/lording/'+f+'?v=20260913-intro-detail2';});
+  for(let n=1;n<=19;n++){const i=new Image();i.src='img/lording/'+n+'.png?v=20260913-intro-detail2';}
 }
 
 function showLoading(msg){
@@ -2708,6 +2712,8 @@ async function showLobby({fromCinematic=false}={}){
   hideLoading();
 }
 async function loadCharacters(){
+  _developerSlots=false;
+  const devNotice=$('developerSaveNotice');if(devNotice)devNotice.hidden=true;
   const cl=$('charList');if(!cl)return;
   const request=++_onlineLoadSeq,userId=currentUser&&currentUser.id;
   _onlineChars=[];_selectedSlot=null;_selectedSlotName=null;_updateCharDisplay();
@@ -2761,7 +2767,7 @@ function _renderOnlineSlots(){
       const st=_formatLobbyStageProgress(stage,_TL);
       const _pci=(ch.charIdx!=null?ch.charIdx:(ch.data&&ch.data.charIdx)||0);const _vi=CHAR_VISUALS[_pci]||CHAR_VISUALS[0];
       const div=document.createElement('div');div.className='char-item'+(_selectedSlot===ch.id?' active':'');
-      div.innerHTML=`<div class="char-thumb"><img src="${(_vi&&(_vi.bust||_vi.portrait))||'assets/lobby/lobby_portrait.png?v=2'}" style="width:100%;height:100%;object-fit:cover;object-position:center 12%;border-radius:2px"></div><div class="char-text"><div class="char-name">${escHtml(ch.name)}<span class="char-cls">${escHtml(_TL((_vi&&(_vi.job||_vi.cls))||''))}</span></div><div class="char-info">Lv.${lv} | ${st}</div></div><button class="char-del" title="${_TL('삭제')}">✕</button>`;
+      div.innerHTML=`<div class="char-thumb"><img src="${(_vi&&(_vi.bust||_vi.portrait))||'assets/lobby/lobby_portrait.png?v=20260913-lobby-smooth1'}" style="width:100%;height:100%;object-fit:cover;object-position:center 12%;border-radius:2px"></div><div class="char-text"><div class="char-name">${escHtml(ch.name)}<span class="char-cls">${escHtml(_TL((_vi&&(_vi.job||_vi.cls))||''))}</span></div><div class="char-info">Lv.${lv} | ${st}</div></div><button class="char-del" title="${_TL('삭제')}">✕</button>`;
       div.addEventListener('click',e=>{
         if(e.target.classList.contains('char-del'))return;
         _selectedSlot=ch.id;_selectedSlotName=ch.name;
@@ -2806,7 +2812,7 @@ function _renderOnlineSlots(){
 // ── 캐릭터 외형 목록 (game.html CHAR_LIST와 동기화) ──
 // index = game.html CHAR_LIST 인덱스와 반드시 일치 (저장 charIdx가 곧 이 인덱스)
 const CHAR_VISUALS=[
-  {id:'exoduser_warrior',name:'엑소듀서 전사',cls:'WARRIOR',desc:'거대검을 휘두르는 흑철의 전사',folder:'img/exoduser_warrior',fw:48,fh:48,portrait:'assets/charselect/warrior_cut.png?v=3',bust:'assets/charselect/portrait_warrior.png?v=1',emblemImg:'assets/charselect/emblem_warrior.png?v=1',aura:'rgba(140,70,190,.55)',scene:'assets/charselect/bg_scene1.png?v=1',sceneVid:'assets/charselect/bg_scene1_loop.mp4?v=2',idleVid:'assets/charselect/idle_warrior_higgsfield.mp4?v=1',idleRate:0.75,poster:'assets/charselect/poster_idle_warrior_higgsfield.jpg?v=1',tab:'전사',job:'전사',
+  {id:'exoduser_warrior',name:'엑소듀서 전사',cls:'WARRIOR',desc:'거대검을 휘두르는 흑철의 전사',folder:'img/exoduser_warrior',fw:48,fh:48,portrait:'assets/charselect/warrior_cut.png?v=3',bust:'assets/charselect/portrait_warrior.png?v=1',emblemImg:'assets/charselect/emblem_warrior.png?v=1',aura:'rgba(140,70,190,.55)',scene:'assets/charselect/bg_scene1.png?v=1',sceneVid:'assets/charselect/bg_scene1_loop.mp4?v=2',idleVid:'assets/charselect/idle_warrior_higgsfield_4k.mp4?v=20260913-detail1',idleRate:0.75,poster:'assets/charselect/poster_idle_warrior_higgsfield_4k.jpg?v=20260913-detail1',tab:'전사',job:'전사',
     emblem:'<svg viewBox="0 0 100 100" fill="none" stroke="currentColor" stroke-width="6" stroke-linecap="round" stroke-linejoin="round"><path d="M50 28 L50 82"/><path d="M35 44 L65 44"/><path d="M31 33 C23 25 21 17 23 11 C31 15 34 24 35 32"/><path d="M69 33 C77 25 79 17 77 11 C69 15 66 24 65 32"/></svg>',
     traits:[
       ['⚔','근접 화신','거대검을 휘두르는 정면 돌파형 전투가입니다.'],
@@ -2856,7 +2862,7 @@ function selectVisual(ci){
     _showStatic();
   }
   // 좌측 정보
-  $('csClsName').textContent=ch.cls||'';
+  $('csClsName').textContent=_TL(ch.job||ch.cls||'');
   $('csCharName').textContent=_TL(ch.name);
   $('csCharDesc').textContent=_TL(ch.desc);
   const th=$('csThumb');if(th){const _tp=ch.bust||ch.portrait;th.style.backgroundImage=_tp?"url('"+_tp+"')":'';}
@@ -2921,6 +2927,8 @@ $('visualCreateBtn').onclick=_visualConfirm;
 $('visualCancelBtn').onclick=()=>{$('charVisualPop').style.display='none'};
 
 async function _afterCharacterCreated(name,visualIdx){
+  // Only successful creation clears a reused local slot's tutorial preference.
+  if(_testMode){try{localStorage.removeItem('exoduser:tutorial-skipped:v2:slot:'+encodeURIComponent(name));}catch{}}
   // Save is already complete; a playback/list failure must never create another slot.
   try{
     if(visualIdx!==0){if(_testMode)await loadLocalCharacters();else await loadCharacters();return;}
@@ -2980,13 +2988,16 @@ function escHtml(s){const d=document.createElement('div');d.textContent=s;return
 // moved to top
 
 async function loadLocalCharacters(){
-  const cl=$('charList');if(cl)cl.innerHTML='<div class="no-chars">'+_TL('불러오는 중...')+'</div>';
+  _developerSlots=false;
+  const devNotice=$('developerSaveNotice');if(devNotice)devNotice.hidden=true;
+  const cl=$('charList');if(cl){const loading=document.createElement('div');loading.className='no-chars';loading.textContent=_TL('불러오는 중...');cl.replaceChildren(loading);}
   _selectedSlot=null;_selectedSlotName=null;_updateCharDisplay();
   try{
     const res=await fetch('/api/slots').catch(()=>null);
     if(!res||!res.ok)throw new Error('no server');
     const j=await res.json();
     _localSlots=j.ok&&j.slots?j.slots:[];
+    _developerSlots=!!(j.ok&&j.development===true&&_testMode&&_LOBBY_BUILD!=='demo');
   }catch(e){
     // 서버 없음 (DEMO 등) — localStorage 폴백
     _localSlots=[];
@@ -2997,6 +3008,7 @@ async function loadLocalCharacters(){
       try{const d=JSON.parse(raw);_localSlots.push({name:d.name||('Slot '+(i+1)),lv:(d.player&&d.player.lv)||1,stage:(d.game&&d.game.stage)||0,charIdx:d.charIdx||0});}catch(pe){}
     }
   }
+  if(devNotice)devNotice.hidden=!_developerSlots;
   _renderSlotList();
   _updateCharDisplay();
 }
@@ -3009,14 +3021,14 @@ function _renderSlotList(){
   // ── DEMO: 슬롯 1개 고정, 생성 버튼 없음 ──
   if(_LOBBY_BUILD==='demo'){
     const div=document.createElement('div');div.className='char-item active';
-    div.innerHTML='<div class="char-thumb"><img src="assets/lobby/lobby_portrait.png?v=2" style="width:100%;height:100%;object-fit:cover;object-position:center 20%;border-radius:2px"></div><div class="char-text"><div class="char-name">DEMO CHARACTER</div><div class="char-info" style="color:rgba(200,150,100,.6)">Lv.1 START · Stage 1-1</div></div>';
+    div.innerHTML='<div class="char-thumb"><img src="assets/lobby/lobby_portrait.png?v=20260913-lobby-smooth1" style="width:100%;height:100%;object-fit:cover;object-position:center 20%;border-radius:2px"></div><div class="char-text"><div class="char-name">DEMO CHARACTER</div><div class="char-info" style="color:rgba(200,150,100,.6)">Lv.1 START · Stage 1-1 · Lv.100 Cap</div></div>';
     const demoSlot={name:'DEMO CHARACTER',charIdx:0,stage:0};
     div.addEventListener('click',()=>{_selectedSlot='demo';_selectedSlotName='demo';_updateCharDisplay(demoSlot);});
     cl.appendChild(div);
     _selectedSlot='demo';_selectedSlotName='demo';_updateCharDisplay(demoSlot);
     return;
   }
-  const MAX_CHARS=5; // 최대 생성 가능 캐릭터 수
+  const MAX_CHARS=_developerSlots?Infinity:5; // 개발 서버만 무제한, 공개 오프라인은 5개
   const VIEW=2;      // 한번에 보이는 캐릭터 슬롯 수
   const chars=_localSlots||[];
   const total=chars.length;
@@ -3046,7 +3058,7 @@ function _renderSlotList(){
       const st=_formatLobbyStageProgress(stage,_TL);
       const _vi=CHAR_VISUALS[s.charIdx||0]||CHAR_VISUALS[0];
       const div=document.createElement('div');div.className='char-item'+(_selectedSlot===s.name?' active':'');
-      div.innerHTML=`<div class="char-thumb"><img src="${(_vi&&(_vi.bust||_vi.portrait))||'assets/lobby/lobby_portrait.png?v=2'}" style="width:100%;height:100%;object-fit:cover;object-position:center 12%;border-radius:2px"></div><div class="char-text"><div class="char-name">${escHtml(s.name)}<span class="char-cls">${escHtml(_TL((_vi&&(_vi.job||_vi.cls))||''))}</span></div><div class="char-info">Lv.${s.lv||1} · ${st}</div></div><button class="char-del" title="${_TL('삭제')}">✕</button>`;
+      div.innerHTML=`<div class="char-thumb"><img src="${(_vi&&(_vi.bust||_vi.portrait))||'assets/lobby/lobby_portrait.png?v=20260913-lobby-smooth1'}" style="width:100%;height:100%;object-fit:cover;object-position:center 12%;border-radius:2px"></div><div class="char-text"><div class="char-name">${escHtml(s.name)}<span class="char-cls">${escHtml(_TL((_vi&&(_vi.job||_vi.cls))||''))}</span></div><div class="char-info">Lv.${s.lv||1} · ${st}</div></div><button class="char-del" title="${_TL('삭제')}">✕</button>`;
       div.addEventListener('click',e=>{if(e.target.classList.contains('char-del'))return;_selectSlot(s)});
       div.querySelector('.char-del').addEventListener('click',e=>{
         e.stopPropagation();
@@ -3145,18 +3157,18 @@ function _updateCharDisplay(s){
 
 // 로비 배경 preload (페이지 로드 시 미리 캐시)
 (function _preloadLobbyBgs(){
-  ['frost.png','flame.png','abyss.webp'].forEach(f=>{
-    const i=new Image();i.src='assets/lobby/lobby_bg_'+f;
+  ['frost.png','flame.png','abyss.png'].forEach(f=>{
+    const i=new Image();i.src='assets/lobby/lobby_bg_'+f+'?v=20260913-lobby-detail2';
   });
 })();
 
 function _swapLobbyBg(stage){
   const bg=$('lobbyBgImg');if(!bg)return;
-  const _bgs=[{k:'frost',e:'.png'},{k:'flame',e:'.png'},{k:'abyss',e:'.webp'}];
+  const _bgs=[{k:'frost',e:'.png'},{k:'flame',e:'.png'},{k:'abyss',e:'.png'}];
   const pick=_bgs[~~(Math.random()*_bgs.length)];
   if(_curBg===pick.k)return;
   _curBg=pick.k;
-  const url='assets/lobby/lobby_bg_'+pick.k+pick.e;
+  const url='assets/lobby/lobby_bg_'+pick.k+pick.e+'?v=20260913-lobby-detail2';
   bg.style.opacity='0';
   const tmp=new Image();
   tmp.onload=()=>{
@@ -3643,7 +3655,8 @@ function showCharGate(charId,storySeen=false){
   // 로고 프리로드
   const _preImg=new Image();_preImg.src='img/logo_exoduser.png';
   const _slotName=_testMode?charId:(_selectedSlotName||charId);
-  const _tp=_testMode?'game.html?test=1&slot='+encodeURIComponent(charId):'game.html?char='+charId+'&slot='+encodeURIComponent(_slotName);
+  const _demoParam=_LOBBY_BUILD==='demo'?'&demo=1':'';
+  const _tp=(_testMode?'game.html?test=1&slot='+encodeURIComponent(charId):'game.html?char='+charId+'&slot='+encodeURIComponent(_slotName))+_demoParam;
   setTimeout(()=>{window.location.href=_tp+(storySeen?'&story=warrior-v21':'')},1200);
 }
 
@@ -3824,27 +3837,53 @@ function showCharGate(charId,storySeen=false){
 
   // ── SCREEN 2: FDG 영상 인트로 (3.2초) ──
   const FDG_DUR=3200;
+  const FDG_LOAD_TIMEOUT=12000;
   const fdgEl=document.getElementById('fdgScreen');
   const fdgVideo=document.getElementById('fdgIntroVideo');
   const fdgSub=document.getElementById('fdgSubtitle');
   const fdgTitle=document.getElementById('fdgTitle');
   let fdgSteps=[];
+  let fdgTimerId=null,fdgFallback=false,fdgActive=false;
+  function finishFDG(){
+    if(fdgActive&&!done&&phase===1){fdgActive=false;nextPhase()}
+  }
+  function showFDGFallback(){
+    if(!fdgActive||done||phase!==1||fdgFallback)return;
+    fdgFallback=true;
+    clearTimeout(fdgTimerId);
+    fdgVideo.pause();
+    fdgEl.classList.add('fdg-fallback');
+    fdgTimerId=setTimeout(finishFDG,FDG_DUR);
+  }
+  function watchFDGLoading(){
+    if(!fdgActive||fdgFallback)return;
+    clearTimeout(fdgTimerId);
+    fdgTimerId=setTimeout(showFDGFallback,FDG_LOAD_TIMEOUT);
+  }
+  fdgVideo.addEventListener('timeupdate',()=>{
+    if(!fdgActive||fdgFallback)return;
+    if(fdgVideo.currentTime>=FDG_DUR/1000)finishFDG();
+    else watchFDGLoading();
+  });
+  fdgVideo.addEventListener('ended',()=>{if(!fdgFallback)finishFDG()});
+  fdgVideo.addEventListener('error',showFDGFallback);
   function showFDGScreen(){
+    fdgActive=true;fdgFallback=false;
     fdgEl.style.display='';
     fdgEl.classList.add('video-intro');
-    requestAnimationFrame(()=>requestAnimationFrame(()=>{fdgEl.classList.add('active')}));
+    requestAnimationFrame(()=>requestAnimationFrame(()=>{if(fdgActive)fdgEl.classList.add('active')}));
     fdgVideo.currentTime=0;
-    fdgVideo.play().catch(()=>{});
-    console.log('[SPLASH] FDG video intro loaded');
-    fdgTimerId=setTimeout(()=>{if(!done&&phase===1)nextPhase()},FDG_DUR);
+    watchFDGLoading();
+    fdgVideo.play().catch(showFDGFallback);
+    console.log('[SPLASH] FDG video intro requested');
   }
-  let fdgTimerId=null;
   function hideFDGScreen(){
+    fdgActive=false;
     clearTimeout(fdgTimerId);
     fdgSteps.forEach(clearTimeout);fdgSteps=[];
     fdgVideo.pause();
     fdgVideo.currentTime=0;
-    fdgEl.classList.remove('active','fadeout','video-intro');
+    fdgEl.classList.remove('active','fadeout','video-intro','fdg-fallback');
     fdgEl.style.display='none';
     // v2 리셋
     ['fdgAF','fdgAD','fdgAG','fdgXOR','fdgXEAR','fdgXAMERS'].forEach(id=>{const el=document.getElementById(id);if(el)el.classList.remove('on')});

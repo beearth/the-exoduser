@@ -1,7 +1,7 @@
 /* Humanity/demon level-up presentation. Static transparent atlases; no save state. */
 (function (root) {
   'use strict';
-  const DURATION=1.45, TAU=Math.PI*2;
+  const DURATION=3.5, VFX_DURATION=3.0, TAU=Math.PI*2;
   const CELLS={beam:[0,0,128,256],glow:[128,0,128,128],ring:[0,256,256,128],spark:[256,0,32,32],flare:[256,64,128,128]};
   let atlas=null,purpleAtlas=null;
   function prepareGold(){
@@ -85,7 +85,7 @@
         if(!active||owner!==player||stage!==currentStage||player.hp<=0||player.s==='fallen')return;
         const y=player.y-70-18*Math.min(1,age/DURATION);
         ctx.save();ctx.globalCompositeOperation='source-over';
-        ctx.globalAlpha=Math.min(1,age/.08)*Math.min(1,Math.max(0,(DURATION-age)/.4));
+        ctx.globalAlpha=Math.min(1,age/.08)*Math.min(1,Math.max(0,(DURATION-age)/.6));
         // The game text atlas reads the leading number as font size.
         ctx.font='24px "Cinzel", Georgia, serif';ctx.textAlign='center';ctx.textBaseline='middle';
         ctx.fillStyle=demonic?'#1d092b':'#241707';
@@ -96,17 +96,18 @@
       },
       draw(ctx,player,currentStage,front,reduced){
         if(!active||owner!==player||stage!==currentStage||player.hp<=0||player.s==='fallen')return;
+        if(age>=VFX_DURATION)return;
         const texture=prepare(demonic);if(!texture)return;
-        const t=age,px=player.x,foot=player.y+18;
-        const rise=Math.min(1,t/.065),tail=Math.max(0,1-t/DURATION);
+        const t=age*1.45/VFX_DURATION,px=player.x,foot=player.y+18;
+        const rise=Math.min(1,t/.065),tail=Math.max(0,1-age/VFX_DURATION),endFade=Math.min(1,(VFX_DURATION-age)/.5);
         ctx.save();ctx.globalCompositeOperation='lighter';
         if(!front){
-          const p=Math.min(1,t/.65),r=65+170*(1-Math.pow(1-p,3));
+          const p=Math.min(1,t/.9),r=65+170*(1-Math.pow(1-p,3));
           stamp(ctx,texture,CELLS.ring,px,foot,r*strength,r*.5*strength,rise*Math.pow(1-p,1.15)*.95);
-          const p2=Math.max(0,Math.min(1,(t-.1)/.7));
+          const p2=Math.max(0,Math.min(1,(t-.1)/1.0));
           if(t>.1&&!reduced)stamp(ctx,texture,CELLS.ring,px,foot,60+145*p2,(60+145*p2)*.5,(1-p2)*.38*Math.min(1,(t-.1)/.06));
-          stamp(ctx,texture,CELLS.glow,px,player.y-12,150,210,rise*Math.exp(-t*3.8)*.7);
-          const beam=rise*Math.exp(-Math.max(0,t-.09)*5);
+          stamp(ctx,texture,CELLS.glow,px,player.y-12,150,210,rise*Math.exp(-Math.max(0,t-.3)*2.8)*.7*endFade);
+          const beam=rise*Math.exp(-Math.max(0,t-.35)*3)*endFade;
           stamp(ctx,texture,CELLS.beam,px,foot-128,118*strength,280,beam*.9);
           if(!reduced){
             stamp(ctx,texture,CELLS.beam,px-26,foot-82,29,192,beam*.5);

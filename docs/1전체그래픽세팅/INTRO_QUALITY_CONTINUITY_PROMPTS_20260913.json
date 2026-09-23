@@ -1,0 +1,568 @@
+{
+  "tool": "built-in image_gen.imagegen",
+  "mode": "reference image editing",
+  "applied": [
+    {
+      "id": "03",
+      "prompt": "Use case: identity-preserve. Restore premium cinematic dark-fantasy cutscene quality using the supplied ORIGINAL scene as strict narrative, identity, anatomy and composition reference. Output edge-to-edge 16:9, highest available native resolution (request 3840x2160). Reconstruct fine, physically convincing MATERIAL DETAIL rather than smoothing it away: precise forged-metal plate edges and micro-scratches, readable carved ornament, coherent fine hair strands, subtle natural skin texture, woven cloth fibers, genuine wood grain and clean bark fissures. Surfaces must have distinct material responses. Sharp foreground subject, controlled filmic lighting, deep dimensional shadows with readable detail; background may have natural atmospheric depth. Preserve the original purple palette, framing, object count, gestures, facial identity, costume, silhouette and story action. Remove only the indiscriminate dot/noise overlay and confetti-like speckles that do not describe material; NOT natural material texture. Do not apply a blur filter, waxy skin, plastic armor, painterly smearing, exaggerated sharpening halos or global granular noise. No added text, frame or watermark. Scene: the SAME adult ominous goddess Nemesia with long black hair, violet glowing eyes, angular face and sinister restrained grin, worn ornate black armor. She extends one anatomically correct palm toward viewer, levitating the SAME small carved brown WOODEN TOY HORSE ON WHEELS above it with coherent purple lightning. Keep the original face and sinister personality; no beauty makeover. Facial dark magical veins are intentional character marks, preserve them as coherent fine lines, not speckled noise. Distinguish natural skin, brushed black steel with precisely sculpted gothic ornament, engraved silver chains, and real grain in the tiny wooden horse. Behind: chained dead trees, faint mist and restrained embers, no global dots.",
+      "refs": [
+        "G:\\exoduser\\output\\image_texture_cleanup_20260913\\originals\\images\\03.png"
+      ],
+      "output": "C:\\Users\\심도진\\.codex\\generated_images\\01a099a6-7b26-7e72-8d6c-f7d0d6215f28\\exec-86224058-1ee5-457c-9cc2-1b47762ec01a.png",
+      "status": "visually-reviewed",
+      "target": "assets/cutscene/images/03.png",
+      "asset": {
+        "path": "assets/cutscene/images/03.png",
+        "width": 1672,
+        "height": 941,
+        "bytes": 2784079,
+        "sha256": "39ca9e5cf80fec04adfca2ec91c578bcb6f9e67d6605ac82430c83594c423d59"
+      }
+    },
+    {
+      "id": "06",
+      "prompt": "Use case: identity-preserve. Restore premium cinematic dark-fantasy cutscene quality using the supplied ORIGINAL scene as strict narrative, identity, anatomy and composition reference. Output edge-to-edge 16:9, highest available native resolution (request 3840x2160). Reconstruct fine, physically convincing MATERIAL DETAIL rather than smoothing it away: precise forged-metal plate edges and micro-scratches, readable carved ornament, coherent fine hair strands, subtle natural skin texture, woven cloth fibers, genuine wood grain and clean bark fissures. Surfaces must have distinct material responses. Sharp foreground subject, controlled filmic lighting, deep dimensional shadows with readable detail; background may have natural atmospheric depth. Preserve the original purple palette, framing, object count, gestures, facial identity, costume, silhouette and story action. Remove only the indiscriminate dot/noise overlay and confetti-like speckles that do not describe material; NOT natural material texture. Do not apply a blur filter, waxy skin, plastic armor, painterly smearing, exaggerated sharpening halos or global granular noise. No added text, frame or watermark. Scene: the SAME adult rugged black-haired warrior in battered black metal armor and a dark red cloth cloak lies prone on the forest stone ground, slightly lifting his face toward a small wooden toy horse at foreground right. Keep his recognizable short spiky black hair, angular face, stubble, exhausted expression, position of both hands, and exact body posture. Preserve story continuity: he is dirty and battle-worn, with the same restrained dried blood and scratches already present, without increasing injury. Armor must be scratched dark forged metal with coherent overlapping plates, NEVER melted plastic. The same toy horse must have four little wooden wheels, carved mane, clear brown wood grain and consistent proportions. Broken dark stone ground, clear sword edge at bottom left, chained gothic forest in violet darkness. He must not look glossy, airbrushed or newly polished.",
+      "refs": [
+        "G:\\exoduser\\output\\image_texture_cleanup_20260913\\originals\\images\\06.png"
+      ],
+      "output": "C:\\Users\\심도진\\.codex\\generated_images\\01a099a6-7b26-7e72-8d6c-f7d0d6215f28\\exec-d771dd30-7107-4798-b972-1c5bf971b5f4.png",
+      "status": "visually-reviewed",
+      "target": "assets/cutscene/images/06.png",
+      "asset": {
+        "path": "assets/cutscene/images/06.png",
+        "width": 1672,
+        "height": 941,
+        "bytes": 2659352,
+        "sha256": "00207d1632bfb9160b022c9dfa1018445017c1bee9ce662d53533aff953c2361"
+      }
+    },
+    {
+      "id": "12",
+      "refs": [
+        "G:\\exoduser\\output\\image_texture_cleanup_20260913\\originals\\images\\12.png",
+        "G:\\exoduser\\assets\\cutscene\\images\\10.png"
+      ],
+      "prompt": "undefinedInput1 is scene composition; Input2 is the CANONICAL pet identity, eye color and fixed jewelry reference. The pet's silver-metal ornate chain collar with central violet faceted diamond pendant is mandatory in EVERY shot, even if missing or obscured in input1. Match input2 exact collar language, keep necklace visibly in front of neck/chest, do not invent a different accessory. Match realistic fine fur/feather definition of input2. Black cat standing alert three-quarter view, violet eyes, looming demon silhouettes behind. Preserve body size, pose and placement. Make fine black fur direction and whiskers readable, anatomy elegant.",
+      "output": "C:\\Users\\심도진\\.codex\\generated_images\\01a099a6-7b26-7e72-8d6c-f7d0d6215f28\\exec-8abd44f5-8c60-4962-b689-f8427a9c7e0f.png",
+      "status": "visually-reviewed",
+      "target": "assets/cutscene/images/12.png",
+      "asset": {
+        "path": "assets/cutscene/images/12.png",
+        "width": 1672,
+        "height": 941,
+        "bytes": 2263743,
+        "sha256": "ff12947c9047bfbc1573ae85274714a823b08d56d1ab5da64c4c336c0800d279"
+      }
+    },
+    {
+      "id": "13",
+      "refs": [
+        "G:\\exoduser\\output\\image_texture_cleanup_20260913\\originals\\images\\13.png",
+        "G:\\exoduser\\assets\\cutscene\\images\\11.png"
+      ],
+      "prompt": "undefinedInput1 is scene composition; Input2 is the CANONICAL pet identity, eye color and fixed jewelry reference. The pet's silver-metal ornate chain collar with central violet faceted diamond pendant is mandatory in EVERY shot, even if missing or obscured in input1. Match input2 exact collar language, keep necklace visibly in front of neck/chest, do not invent a different accessory. Match realistic fine fur/feather definition of input2. Close-up raven cocking its head inquisitively toward camera, AMBER ORANGE eyes and black plumage. Preserve recognizable beak, tilt, gaze, wing anatomy and pose. Necklace drapes naturally below neck onto chest.",
+      "output": "C:\\Users\\심도진\\.codex\\generated_images\\01a099a6-7b26-7e72-8d6c-f7d0d6215f28\\exec-ce49b89f-8672-461f-b0ee-d7519381e535.png",
+      "status": "visually-reviewed",
+      "target": "assets/cutscene/images/13.png",
+      "asset": {
+        "path": "assets/cutscene/images/13.png",
+        "width": 1672,
+        "height": 941,
+        "bytes": 2086762,
+        "sha256": "21ceaaaa002c49db8aedb21f6485af2742212ff14c88a16f7f9f60fc083d1b86"
+      }
+    },
+    {
+      "id": "14",
+      "refs": [
+        "G:\\exoduser\\output\\image_texture_cleanup_20260913\\originals\\images\\14.png",
+        "G:\\exoduser\\assets\\cutscene\\images\\10.png"
+      ],
+      "prompt": "undefinedInput1 is scene composition; Input2 is the CANONICAL pet identity, eye color and fixed jewelry reference. The pet's silver-metal ornate chain collar with central violet faceted diamond pendant is mandatory in EVERY shot, even if missing or obscured in input1. Match input2 exact collar language, keep necklace visibly in front of neck/chest, do not invent a different accessory. Match realistic fine fur/feather definition of input2. Small seated black cat centered low on a stone ledge, looming red-eyed demon army silhouettes fill the background. CRITICAL: add the canon necklace which is MISSING in image1: silver layered chain collar with one clearly visible faceted violet diamond pendant centered on upper chest. The cat is the same DiRoy from image2, not a generic undecorated cat. Preserve wide shot and original scale, but make jewelry silhouette and violet gem readable even at this scale.",
+      "output": "C:\\Users\\심도진\\.codex\\generated_images\\01a099a6-7b26-7e72-8d6c-f7d0d6215f28\\exec-5b214912-b901-4de1-8a3c-09aba04c7f05.png",
+      "status": "visually-reviewed",
+      "target": "assets/cutscene/images/14.png",
+      "asset": {
+        "path": "assets/cutscene/images/14.png",
+        "width": 1672,
+        "height": 941,
+        "bytes": 2230328,
+        "sha256": "2bb19139e517014e115ef8e3321187c5fc858f5a0cbd528a22e7ce95990fbb1d"
+      }
+    },
+    {
+      "id": "15",
+      "refs": [
+        "G:\\exoduser\\output\\image_texture_cleanup_20260913\\originals\\images\\15.png",
+        "G:\\exoduser\\assets\\cutscene\\images\\10.png"
+      ],
+      "prompt": "undefinedInput1 is scene composition; Input2 is the CANONICAL pet identity, eye color and fixed jewelry reference. The pet's silver-metal ornate chain collar with central violet faceted diamond pendant is mandatory in EVERY shot, even if missing or obscured in input1. Match input2 exact collar language, keep necklace visibly in front of neck/chest, do not invent a different accessory. Match realistic fine fur/feather definition of input2. Black cat at left standing beside a laid-out crossbow, straight double-edged sword and dark metal violet-gem headband. Keep every object placement and SAME gear designs. Real metal faces, straight parallel blade edges, legible crossbow construction with a continuous taut string, headband engraved with coherent fine cuts. The CAT must wear its own CANON chain collar and violet diamond pendant; the separate headband on the floor is NOT a replacement for its necklace.",
+      "output": "C:\\Users\\심도진\\.codex\\generated_images\\01a099a6-7b26-7e72-8d6c-f7d0d6215f28\\exec-20c794ee-eafd-4e2a-b553-a7b1522e1480.png",
+      "status": "visually-reviewed",
+      "target": "assets/cutscene/images/15.png",
+      "asset": {
+        "path": "assets/cutscene/images/15.png",
+        "width": 1672,
+        "height": 941,
+        "bytes": 2485905,
+        "sha256": "4f753b1a10223070ab24da0f2f2f7198e653f1110009260940653c37513309f7"
+      }
+    },
+    {
+      "id": "16",
+      "refs": [
+        "G:\\exoduser\\output\\image_texture_cleanup_20260913\\originals\\images\\16.png",
+        "G:\\exoduser\\assets\\cutscene\\images\\11.png"
+      ],
+      "prompt": "undefinedInput1 is scene composition; Input2 is the CANONICAL pet identity, eye color and fixed jewelry reference. The pet's silver-metal ornate chain collar with central violet faceted diamond pendant is mandatory in EVERY shot, even if missing or obscured in input1. Match input2 exact collar language, keep necklace visibly in front of neck/chest, do not invent a different accessory. Match realistic fine fur/feather definition of input2. Raven at right perches beside the sword and crossbow. A coherent pale-blue ghost orb streams energy into the crossbow at left. Preserve scene, all gear arrangement and the same headband on ground. Raven has canon necklace, violet pendant and amber eyes. Resolve real layered feathers, a sharp beak, clean weapon planes. Render magic as coherent thin flowing light strands, not grain or confetti.",
+      "output": "C:\\Users\\심도진\\.codex\\generated_images\\01a099a6-7b26-7e72-8d6c-f7d0d6215f28\\exec-8c815f79-54c4-4e14-8043-766a88c0aa40.png",
+      "status": "visually-reviewed",
+      "target": "assets/cutscene/images/16.png",
+      "asset": {
+        "path": "assets/cutscene/images/16.png",
+        "width": 1672,
+        "height": 941,
+        "bytes": 2511018,
+        "sha256": "794d98fe9fa246411a7324b7685a75c2608dff6c5a4af9b194cd6ca2bc333a9f"
+      }
+    },
+    {
+      "id": "00",
+      "refs": [
+        "G:\\exoduser\\output\\image_texture_cleanup_20260913\\originals\\images\\00.png",
+        "C:\\Users\\심도진\\.codex\\generated_images\\01a099a6-7b26-7e72-8d6c-f7d0d6215f28\\exec-86224058-1ee5-457c-9cc2-1b47762ec01a.png"
+      ],
+      "prompt": "Use case: identity-preserve. Restore premium cinematic dark-fantasy cutscene quality using the supplied ORIGINAL scene as strict narrative, identity, anatomy and composition reference. Output edge-to-edge 16:9, highest available native resolution (request 3840x2160). Reconstruct fine, physically convincing MATERIAL DETAIL rather than smoothing it away: precise forged-metal plate edges and micro-scratches, readable carved ornament, coherent fine hair strands, subtle natural skin texture, woven cloth fibers, genuine wood grain and clean bark fissures. Surfaces must have distinct material responses. Sharp foreground subject, controlled filmic lighting, deep dimensional shadows with readable detail; background may have natural atmospheric depth. Preserve the original purple palette, framing, object count, gestures, facial identity, costume, silhouette and story action. Remove only the indiscriminate dot/noise overlay and confetti-like speckles that do not describe material; NOT natural material texture. Do not apply a blur filter, waxy skin, plastic armor, painterly smearing, exaggerated sharpening halos or global granular noise. No added text, frame or watermark.  Input 1 is the strict scene reference. Input 2 is the approved goddess facial identity, armor design and material-quality reference ONLY. Do not import its toy horse or palm gesture into this scene. There is NO horse in this target scene. Full body goddess walking toward camera. Keep her stance, hands and exact original framing.",
+      "output": "C:\\Users\\심도진\\.codex\\generated_images\\01a099a6-7b26-7e72-8d6c-f7d0d6215f28\\exec-3a29fe85-0ad6-4ec7-a8e3-ac6d339fde9d.png",
+      "status": "visually-reviewed",
+      "target": "assets/cutscene/images/00.png",
+      "asset": {
+        "path": "assets/cutscene/images/00.png",
+        "width": 1672,
+        "height": 941,
+        "bytes": 2973399,
+        "sha256": "98bf433f5cbb4c9a5862134e8e0e600fddc3e9e9d4f0daba7d35a32386a2815d"
+      }
+    },
+    {
+      "id": "01",
+      "refs": [
+        "G:\\exoduser\\output\\image_texture_cleanup_20260913\\originals\\images\\01.png",
+        "C:\\Users\\심도진\\.codex\\generated_images\\01a099a6-7b26-7e72-8d6c-f7d0d6215f28\\exec-86224058-1ee5-457c-9cc2-1b47762ec01a.png"
+      ],
+      "prompt": "Use case: identity-preserve. Restore premium cinematic dark-fantasy cutscene quality using the supplied ORIGINAL scene as strict narrative, identity, anatomy and composition reference. Output edge-to-edge 16:9, highest available native resolution (request 3840x2160). Reconstruct fine, physically convincing MATERIAL DETAIL rather than smoothing it away: precise forged-metal plate edges and micro-scratches, readable carved ornament, coherent fine hair strands, subtle natural skin texture, woven cloth fibers, genuine wood grain and clean bark fissures. Surfaces must have distinct material responses. Sharp foreground subject, controlled filmic lighting, deep dimensional shadows with readable detail; background may have natural atmospheric depth. Preserve the original purple palette, framing, object count, gestures, facial identity, costume, silhouette and story action. Remove only the indiscriminate dot/noise overlay and confetti-like speckles that do not describe material; NOT natural material texture. Do not apply a blur filter, waxy skin, plastic armor, painterly smearing, exaggerated sharpening halos or global granular noise. No added text, frame or watermark.  Input 1 is the strict scene reference. Input 2 is the approved goddess facial identity, armor design and material-quality reference ONLY. Do not import its toy horse or palm gesture into this scene. There is NO horse in this target scene. Preserve goddess head tilted backward laughing, the original facial expression and portrait angle.",
+      "output": "C:\\Users\\심도진\\.codex\\generated_images\\01a099a6-7b26-7e72-8d6c-f7d0d6215f28\\exec-c978f040-6904-495a-8295-064aa203142c.png",
+      "status": "visually-reviewed",
+      "target": "assets/cutscene/images/01.png",
+      "asset": {
+        "path": "assets/cutscene/images/01.png",
+        "width": 1672,
+        "height": 941,
+        "bytes": 2906103,
+        "sha256": "6ef9a05effc51e965f433fb4d6f5c7019981b5c999d53d9edf8644cad4697028"
+      }
+    },
+    {
+      "id": "02",
+      "refs": [
+        "G:\\exoduser\\output\\image_texture_cleanup_20260913\\originals\\images\\02.png",
+        "C:\\Users\\심도진\\.codex\\generated_images\\01a099a6-7b26-7e72-8d6c-f7d0d6215f28\\exec-86224058-1ee5-457c-9cc2-1b47762ec01a.png"
+      ],
+      "prompt": "Use case: identity-preserve. Restore premium cinematic dark-fantasy cutscene quality using the supplied ORIGINAL scene as strict narrative, identity, anatomy and composition reference. Output edge-to-edge 16:9, highest available native resolution (request 3840x2160). Reconstruct fine, physically convincing MATERIAL DETAIL rather than smoothing it away: precise forged-metal plate edges and micro-scratches, readable carved ornament, coherent fine hair strands, subtle natural skin texture, woven cloth fibers, genuine wood grain and clean bark fissures. Surfaces must have distinct material responses. Sharp foreground subject, controlled filmic lighting, deep dimensional shadows with readable detail; background may have natural atmospheric depth. Preserve the original purple palette, framing, object count, gestures, facial identity, costume, silhouette and story action. Remove only the indiscriminate dot/noise overlay and confetti-like speckles that do not describe material; NOT natural material texture. Do not apply a blur filter, waxy skin, plastic armor, painterly smearing, exaggerated sharpening halos or global granular noise. No added text, frame or watermark.  Input 1 is the strict scene reference. Input 2 is the approved goddess facial identity, armor design and material-quality reference ONLY. Do not import its toy horse or palm gesture into this scene. There is NO horse in this target scene. Preserve the tilted head and sinister toothy grin, original close portrait framing.",
+      "output": "C:\\Users\\심도진\\.codex\\generated_images\\01a099a6-7b26-7e72-8d6c-f7d0d6215f28\\exec-80c87a91-7d05-41a6-82fd-511a187283b9.png",
+      "status": "visually-reviewed",
+      "target": "assets/cutscene/images/02.png",
+      "asset": {
+        "path": "assets/cutscene/images/02.png",
+        "width": 1672,
+        "height": 941,
+        "bytes": 2767280,
+        "sha256": "93586e7f1265f7b0f6d89ad3735316bbde7de9b6849147db87fd17c2863338b2"
+      }
+    },
+    {
+      "id": "08",
+      "refs": [
+        "G:\\exoduser\\output\\image_texture_cleanup_20260913\\originals\\images\\08.png",
+        "C:\\Users\\심도진\\.codex\\generated_images\\01a099a6-7b26-7e72-8d6c-f7d0d6215f28\\exec-86224058-1ee5-457c-9cc2-1b47762ec01a.png"
+      ],
+      "prompt": "Use case: identity-preserve. Restore premium cinematic dark-fantasy cutscene quality using the supplied ORIGINAL scene as strict narrative, identity, anatomy and composition reference. Output edge-to-edge 16:9, highest available native resolution (request 3840x2160). Reconstruct fine, physically convincing MATERIAL DETAIL rather than smoothing it away: precise forged-metal plate edges and micro-scratches, readable carved ornament, coherent fine hair strands, subtle natural skin texture, woven cloth fibers, genuine wood grain and clean bark fissures. Surfaces must have distinct material responses. Sharp foreground subject, controlled filmic lighting, deep dimensional shadows with readable detail; background may have natural atmospheric depth. Preserve the original purple palette, framing, object count, gestures, facial identity, costume, silhouette and story action. Remove only the indiscriminate dot/noise overlay and confetti-like speckles that do not describe material; NOT natural material texture. Do not apply a blur filter, waxy skin, plastic armor, painterly smearing, exaggerated sharpening halos or global granular noise. No added text, frame or watermark.  Input 1 is the strict scene reference. Input 2 is the approved goddess facial identity, armor design and material-quality reference ONLY. Do not import its toy horse or palm gesture into this scene. There is NO horse in this target scene. Preserve the goddess pointing downward/forward with her extended finger, exact hand gesture and composition.",
+      "output": "C:\\Users\\심도진\\.codex\\generated_images\\01a099a6-7b26-7e72-8d6c-f7d0d6215f28\\exec-ed866705-4058-45ad-a1c6-24d88b7311ef.png",
+      "status": "visually-reviewed",
+      "target": "assets/cutscene/images/08.png",
+      "asset": {
+        "path": "assets/cutscene/images/08.png",
+        "width": 1672,
+        "height": 941,
+        "bytes": 2890355,
+        "sha256": "06d1200e864cd5052e246991277f4142659bb41e933b2822853138dfefdf8297"
+      }
+    },
+    {
+      "id": "09",
+      "refs": [
+        "G:\\exoduser\\output\\image_texture_cleanup_20260913\\originals\\images\\09.png",
+        "C:\\Users\\심도진\\.codex\\generated_images\\01a099a6-7b26-7e72-8d6c-f7d0d6215f28\\exec-86224058-1ee5-457c-9cc2-1b47762ec01a.png"
+      ],
+      "prompt": "Use case: identity-preserve. Restore premium cinematic dark-fantasy cutscene quality using the supplied ORIGINAL scene as strict narrative, identity, anatomy and composition reference. Output edge-to-edge 16:9, highest available native resolution (request 3840x2160). Reconstruct fine, physically convincing MATERIAL DETAIL rather than smoothing it away: precise forged-metal plate edges and micro-scratches, readable carved ornament, coherent fine hair strands, subtle natural skin texture, woven cloth fibers, genuine wood grain and clean bark fissures. Surfaces must have distinct material responses. Sharp foreground subject, controlled filmic lighting, deep dimensional shadows with readable detail; background may have natural atmospheric depth. Preserve the original purple palette, framing, object count, gestures, facial identity, costume, silhouette and story action. Remove only the indiscriminate dot/noise overlay and confetti-like speckles that do not describe material; NOT natural material texture. Do not apply a blur filter, waxy skin, plastic armor, painterly smearing, exaggerated sharpening halos or global granular noise. No added text, frame or watermark.  Input 1 is the strict scene reference. Input 2 is the approved goddess facial identity, armor design and material-quality reference ONLY. Do not import its toy horse or palm gesture into this scene. There is NO horse in this target scene. Preserve the rear view of goddess walking away; her face is not visible.",
+      "output": "C:\\Users\\심도진\\.codex\\generated_images\\01a099a6-7b26-7e72-8d6c-f7d0d6215f28\\exec-e4941a1f-67c3-47b8-b441-a1f023bee754.png",
+      "status": "visually-reviewed",
+      "target": "assets/cutscene/images/09.png",
+      "asset": {
+        "path": "assets/cutscene/images/09.png",
+        "width": 1672,
+        "height": 941,
+        "bytes": 2924706,
+        "sha256": "d571649f3da71b2e90cd070f81f598ae5045445cb7ffa12b4c5fc56dcbd505b2"
+      }
+    },
+    {
+      "id": "cin_nemesia_appear1",
+      "refs": [
+        "G:\\exoduser\\output\\image_texture_cleanup_20260913\\originals\\images\\cin_nemesia_appear1.png",
+        "C:\\Users\\심도진\\.codex\\generated_images\\01a099a6-7b26-7e72-8d6c-f7d0d6215f28\\exec-86224058-1ee5-457c-9cc2-1b47762ec01a.png"
+      ],
+      "prompt": "Use case: identity-preserve. Restore premium cinematic dark-fantasy cutscene quality using the supplied ORIGINAL scene as strict narrative, identity, anatomy and composition reference. Output edge-to-edge 16:9, highest available native resolution (request 3840x2160). Reconstruct fine, physically convincing MATERIAL DETAIL rather than smoothing it away: precise forged-metal plate edges and micro-scratches, readable carved ornament, coherent fine hair strands, subtle natural skin texture, woven cloth fibers, genuine wood grain and clean bark fissures. Surfaces must have distinct material responses. Sharp foreground subject, controlled filmic lighting, deep dimensional shadows with readable detail; background may have natural atmospheric depth. Preserve the original purple palette, framing, object count, gestures, facial identity, costume, silhouette and story action. Remove only the indiscriminate dot/noise overlay and confetti-like speckles that do not describe material; NOT natural material texture. Do not apply a blur filter, waxy skin, plastic armor, painterly smearing, exaggerated sharpening halos or global granular noise. No added text, frame or watermark.  Input 1 is the strict scene reference. Input 2 is the approved goddess facial identity, armor design and material-quality reference ONLY. Do not import its toy horse or palm gesture into this scene. There is NO horse in this target scene. Preserve full body goddess walking through the forest with purple flames, exact original composition.",
+      "output": "C:\\Users\\심도진\\.codex\\generated_images\\01a099a6-7b26-7e72-8d6c-f7d0d6215f28\\exec-1d547d03-a953-485e-b679-ebbdfd4a426e.png",
+      "status": "visually-reviewed",
+      "target": "assets/cutscene/images/cin_nemesia_appear1.png",
+      "asset": {
+        "path": "assets/cutscene/images/cin_nemesia_appear1.png",
+        "width": 1672,
+        "height": 941,
+        "bytes": 2889366,
+        "sha256": "43c4c280db3cefdb817cf5bff2efe3ea8a3fd10d2d86f6a1cb3cbe369f97d5de"
+      }
+    },
+    {
+      "id": "19",
+      "refs": [
+        "G:\\exoduser\\output\\image_texture_cleanup_20260913\\originals\\images\\19.png",
+        "C:\\Users\\심도진\\.codex\\generated_images\\01a099a6-7b26-7e72-8d6c-f7d0d6215f28\\exec-d771dd30-7107-4798-b972-1c5bf971b5f4.png",
+        "G:\\exoduser\\assets\\cutscene\\images\\10.png",
+        "G:\\exoduser\\assets\\cutscene\\images\\11.png"
+      ],
+      "prompt": "Use case: identity-preserve. Restore premium cinematic dark-fantasy cutscene quality using the supplied ORIGINAL scene as strict narrative, identity, anatomy and composition reference. Output edge-to-edge 16:9, highest available native resolution (request 3840x2160). Reconstruct fine, physically convincing MATERIAL DETAIL rather than smoothing it away: precise forged-metal plate edges and micro-scratches, readable carved ornament, coherent fine hair strands, subtle natural skin texture, woven cloth fibers, genuine wood grain and clean bark fissures. Surfaces must have distinct material responses. Sharp foreground subject, controlled filmic lighting, deep dimensional shadows with readable detail; background may have natural atmospheric depth. Preserve the original purple palette, framing, object count, gestures, facial identity, costume, silhouette and story action. Remove only the indiscriminate dot/noise overlay and confetti-like speckles that do not describe material; NOT natural material texture. Do not apply a blur filter, waxy skin, plastic armor, painterly smearing, exaggerated sharpening halos or global granular noise. No added text, frame or watermark.  Input 1 is strict scene composition/action. Input 2 fixes the same battle-worn warrior face, dark armor, red cape, believable scratches/dried blood and toy horse materials; do not copy its pose. Warrior upright kneeling clutching wooden toy horse against chest with BOTH hands, head bowed. Cat on left ground and crow perched right. Retain all three figures and positions. Inputs 3 and 4 are the canonical cat and raven. BOTH pets MUST visibly wear their fixed ornate dark-silver layered chain collars with central faceted VIOLET diamond pendant and small dangling chains. This jewelry is missing/obscured in input 1: ADD it, matching reference designs and sized visibly at their small scene scale. Cat eyes violet; raven eyes amber-orange. Preserve fur and feather fine detail.",
+      "output": "C:\\Users\\심도진\\.codex\\generated_images\\01a099a6-7b26-7e72-8d6c-f7d0d6215f28\\exec-b52a7143-f448-4c0f-9a10-7f18051adab4.png",
+      "status": "visually-reviewed",
+      "target": "assets/cutscene/images/19.png",
+      "asset": {
+        "path": "assets/cutscene/images/19.png",
+        "width": 1672,
+        "height": 941,
+        "bytes": 2894180,
+        "sha256": "0ffc8271c1600575f62f31e4675d595fafa15062b65afbffe093048b8eb78e8f"
+      }
+    },
+    {
+      "id": "20",
+      "refs": [
+        "G:\\exoduser\\output\\intro_quality_20260913\\originals\\assets\\cutscene\\images\\20.png",
+        "G:\\exoduser\\assets\\cutscene\\images\\10.png",
+        "G:\\exoduser\\assets\\cutscene\\images\\11.png"
+      ],
+      "prompt": "Use case identity-preserve. Edit this non-graphic fantasy game cutscene for visual continuity. An adult tired warrior sits resting with head bowed in a purple gothic forest, wooden toy horse at his chest, black cat on left and black raven perched on right. Preserve the FIRST image composition, resting pose, character face/hair/costume, red fabric cape and toy horse. Make his armor read as finely crafted aged dark metal with localized scratches and natural cloth weave; no blood, wounds or graphic injuries. Restore clear material details and natural fur/feather strands without waxy smoothing or all-over speckled noise. Essential correction: BOTH pets must wear the ornate dark-silver chain necklaces with the central violet diamond pendant and small hanging chains shown in the second(cat) and third(raven) references. Keep those necklaces clearly visible on both chests despite the pets' small scale. Cat eyes violet, raven eyes amber orange. Edge-to-edge 16:9 illustration, highest available native resolution. No text, added characters or objects.",
+      "output": "C:\\Users\\심도진\\.codex\\generated_images\\01a099a6-7b26-7e72-8d6c-f7d0d6215f28\\exec-b935a225-d9c3-4984-8ede-d42c0f260929.png",
+      "status": "visually-reviewed",
+      "target": "assets/cutscene/images/20.png",
+      "rejected_attempt": {
+        "prompt": "Use case: identity-preserve. Restore premium cinematic dark-fantasy cutscene quality using the supplied ORIGINAL scene as strict narrative, identity, anatomy and composition reference. Output edge-to-edge 16:9, highest available native resolution (request 3840x2160). Reconstruct fine, physically convincing MATERIAL DETAIL rather than smoothing it away: precise forged-metal plate edges and micro-scratches, readable carved ornament, coherent fine hair strands, subtle natural skin texture, woven cloth fibers, genuine wood grain and clean bark fissures. Surfaces must have distinct material responses. Sharp foreground subject, controlled filmic lighting, deep dimensional shadows with readable detail; background may have natural atmospheric depth. Preserve the original purple palette, framing, object count, gestures, facial identity, costume, silhouette and story action. Remove only the indiscriminate dot/noise overlay and confetti-like speckles that do not describe material; NOT natural material texture. Do not apply a blur filter, waxy skin, plastic armor, painterly smearing, exaggerated sharpening halos or global granular noise. No added text, frame or watermark.  Input 1 is strict scene composition/action. Input 2 fixes the same battle-worn warrior face, dark armor, red cape, believable scratches/dried blood and toy horse materials; do not copy its pose. Warrior has slumped forward into a collapsed seated/kneeling posture, head deeply bowed, hands lowered onto ground/knees and toy horse wedged against chest. Preserve that distinct collapsed posture, different from upright kneeling. Inputs 3 and 4 are the canonical cat and raven. BOTH pets MUST visibly wear their fixed ornate dark-silver layered chain collars with central faceted VIOLET diamond pendant and small dangling chains. This jewelry is missing/obscured in input 1: ADD it, matching reference designs and sized visibly at their small scene scale. Cat eyes violet; raven eyes amber-orange. Preserve fur and feather fine detail.",
+        "refs": [
+          "G:\\exoduser\\output\\image_texture_cleanup_20260913\\originals\\images\\20.png",
+          "C:\\Users\\심도진\\.codex\\generated_images\\01a099a6-7b26-7e72-8d6c-f7d0d6215f28\\exec-d771dd30-7107-4798-b972-1c5bf971b5f4.png",
+          "G:\\exoduser\\assets\\cutscene\\images\\10.png",
+          "G:\\exoduser\\assets\\cutscene\\images\\11.png"
+        ],
+        "reason": "Image service output safety rejection; revised to non-graphic dust/weathering."
+      },
+      "asset": {
+        "path": "assets/cutscene/images/20.png",
+        "width": 1672,
+        "height": 941,
+        "bytes": 2273427,
+        "sha256": "9d814a36ad31bb0be31c953b046cc6a168985fef0a3305eeffbe06ee27c27724"
+      }
+    },
+    {
+      "id": "05",
+      "refs": [
+        "G:\\exoduser\\output\\intro_quality_20260913\\originals\\assets\\cutscene\\images\\05.png"
+      ],
+      "prompt": "Edit this non-graphic fantasy game illustration, preserving the exact scene layout and character identity. The adult armored man rests prone with his cheek against the stone ground, watching a small carved wooden toy horse with four wheels. Keep his cheek DOWN on the ground, open tired eyes, hand resting forward, short black hair and red fabric cape, sword foreground and crossbow at right. Restore high-quality realistic material detail: dark forged armor plates with fine surface scratches, rivets and clear overlapping edges; subtly textured skin; individual natural hair strands; woven red cloth; genuine wood grain and carved details on the horse. Replace reddish stains with ordinary dark dust and weathering; no blood or wounds. Preserve purple forest atmosphere with readable tree bark and distant depth. Avoid blurry/waxy/plastic smoothing and indiscriminate glitter speckles. Edge-to-edge 16:9, highest available native resolution. No new subjects or text.",
+      "output": "C:\\Users\\심도진\\.codex\\generated_images\\01a099a6-7b26-7e72-8d6c-f7d0d6215f28\\exec-92fa6cd0-b58c-48cb-9dac-af53db4ab235.png",
+      "status": "visually-reviewed",
+      "target": "assets/cutscene/images/05.png",
+      "rejected_attempt": {
+        "prompt": "Use case: identity-preserve. Restore premium cinematic dark-fantasy cutscene quality using the supplied ORIGINAL scene as strict narrative, identity, anatomy and composition reference. Output edge-to-edge 16:9, highest available native resolution (request 3840x2160). Reconstruct fine, physically convincing MATERIAL DETAIL rather than smoothing it away: precise forged-metal plate edges and micro-scratches, readable carved ornament, coherent fine hair strands, subtle natural skin texture, woven cloth fibers, genuine wood grain and clean bark fissures. Surfaces must have distinct material responses. Sharp foreground subject, controlled filmic lighting, deep dimensional shadows with readable detail; background may have natural atmospheric depth. Preserve the original purple palette, framing, object count, gestures, facial identity, costume, silhouette and story action. Remove only the indiscriminate dot/noise overlay and confetti-like speckles that do not describe material; NOT natural material texture. Do not apply a blur filter, waxy skin, plastic armor, painterly smearing, exaggerated sharpening halos or global granular noise. No added text, frame or watermark.  Input 1 is strict scene composition/action. Input 2 fixes the same battle-worn warrior face, dark armor, red cape, believable scratches/dried blood and toy horse materials; do not copy its pose. Warrior lying prone with cheek resting on ground, exhausted eyes looking at toy horse. Do not raise his head. Keep hand resting forward.",
+        "refs": [
+          "G:\\exoduser\\output\\image_texture_cleanup_20260913\\originals\\images\\05.png",
+          "C:\\Users\\심도진\\.codex\\generated_images\\01a099a6-7b26-7e72-8d6c-f7d0d6215f28\\exec-d771dd30-7107-4798-b972-1c5bf971b5f4.png"
+        ],
+        "reason": "Image service output safety rejection; revised to non-graphic dust/weathering."
+      },
+      "asset": {
+        "path": "assets/cutscene/images/05.png",
+        "width": 1672,
+        "height": 941,
+        "bytes": 2535593,
+        "sha256": "9da237781c9290d0107bff941425ad86033ea888ea4966cabc29c8b7b3e25240"
+      }
+    },
+    {
+      "id": "07",
+      "refs": [
+        "G:\\exoduser\\output\\image_texture_cleanup_20260913\\originals\\images\\07.png",
+        "C:\\Users\\심도진\\.codex\\generated_images\\01a099a6-7b26-7e72-8d6c-f7d0d6215f28\\exec-d771dd30-7107-4798-b972-1c5bf971b5f4.png"
+      ],
+      "prompt": "Use case: identity-preserve. Restore premium cinematic dark-fantasy cutscene quality using the supplied ORIGINAL scene as strict narrative, identity, anatomy and composition reference. Output edge-to-edge 16:9, highest available native resolution (request 3840x2160). Reconstruct fine, physically convincing MATERIAL DETAIL rather than smoothing it away: precise forged-metal plate edges and micro-scratches, readable carved ornament, coherent fine hair strands, subtle natural skin texture, woven cloth fibers, genuine wood grain and clean bark fissures. Surfaces must have distinct material responses. Sharp foreground subject, controlled filmic lighting, deep dimensional shadows with readable detail; background may have natural atmospheric depth. Preserve the original purple palette, framing, object count, gestures, facial identity, costume, silhouette and story action. Remove only the indiscriminate dot/noise overlay and confetti-like speckles that do not describe material; NOT natural material texture. Do not apply a blur filter, waxy skin, plastic armor, painterly smearing, exaggerated sharpening halos or global granular noise. No added text, frame or watermark.  Input 1 is strict scene composition/action. Input 2 fixes the same battle-worn warrior face, dark armor, red cape, believable scratches/dried blood and toy horse materials; do not copy its pose. Warrior prone but raising his head, reaching one gloved hand toward the toy horse. Keep original reaching gesture.",
+      "output": "C:\\Users\\심도진\\.codex\\generated_images\\01a099a6-7b26-7e72-8d6c-f7d0d6215f28\\exec-3937b6c4-d10b-4cea-a815-5dd22b026756.png",
+      "status": "visually-reviewed",
+      "target": "assets/cutscene/images/07.png",
+      "asset": {
+        "path": "assets/cutscene/images/07.png",
+        "width": 1672,
+        "height": 941,
+        "bytes": 2801783,
+        "sha256": "a7c25f1a9f8d2580d8255854b0c820c0bb7893746bb2a7b552237be4ba6789d7"
+      }
+    },
+    {
+      "id": "04",
+      "refs": [
+        "G:\\exoduser\\output\\image_texture_cleanup_20260913\\originals\\images\\04.png",
+        "C:\\Users\\심도진\\.codex\\generated_images\\01a099a6-7b26-7e72-8d6c-f7d0d6215f28\\exec-86224058-1ee5-457c-9cc2-1b47762ec01a.png"
+      ],
+      "prompt": "Use case: identity-preserve. Restore premium cinematic dark-fantasy cutscene quality using the supplied ORIGINAL scene as strict narrative, identity, anatomy and composition reference. Output edge-to-edge 16:9, highest available native resolution (request 3840x2160). Reconstruct fine, physically convincing MATERIAL DETAIL rather than smoothing it away: precise forged-metal plate edges and micro-scratches, readable carved ornament, coherent fine hair strands, subtle natural skin texture, woven cloth fibers, genuine wood grain and clean bark fissures. Surfaces must have distinct material responses. Sharp foreground subject, controlled filmic lighting, deep dimensional shadows with readable detail; background may have natural atmospheric depth. Preserve the original purple palette, framing, object count, gestures, facial identity, costume, silhouette and story action. Remove only the indiscriminate dot/noise overlay and confetti-like speckles that do not describe material; NOT natural material texture. Do not apply a blur filter, waxy skin, plastic armor, painterly smearing, exaggerated sharpening halos or global granular noise. No added text, frame or watermark.  Preserve input 1 wooden toy-horse closeup ONLY, four wooden wheels, worn carved wood, saddle, bridle, side profile and camera angle. Input 2 is the toy-horse material reference only. No goddess, hand, humans or pets in this shot. Fine directional wood grain and carved mane, circular true wheels, not plastic. Retain age and worn finish.",
+      "output": "C:\\Users\\심도진\\.codex\\generated_images\\01a099a6-7b26-7e72-8d6c-f7d0d6215f28\\exec-b85f68eb-f327-4726-af0a-bee4a094915f.png",
+      "status": "visually-reviewed",
+      "target": "assets/cutscene/images/04.png",
+      "asset": {
+        "path": "assets/cutscene/images/04.png",
+        "width": 1672,
+        "height": 941,
+        "bytes": 2075867,
+        "sha256": "11451e7c1f339927cd5df3d31e79f2380ac9e150057fb5c6b8e7dca930c2cd5e"
+      }
+    },
+    {
+      "id": "17",
+      "refs": [
+        "G:\\exoduser\\output\\image_texture_cleanup_20260913\\originals\\images\\17.png",
+        "C:\\Users\\심도진\\.codex\\generated_images\\01a099a6-7b26-7e72-8d6c-f7d0d6215f28\\exec-20c794ee-eafd-4e2a-b553-a7b1522e1480.png"
+      ],
+      "prompt": "Use case: identity-preserve. Restore premium cinematic dark-fantasy cutscene quality using the supplied ORIGINAL scene as strict narrative, identity, anatomy and composition reference. Output edge-to-edge 16:9, highest available native resolution (request 3840x2160). Reconstruct fine, physically convincing MATERIAL DETAIL rather than smoothing it away: precise forged-metal plate edges and micro-scratches, readable carved ornament, coherent fine hair strands, subtle natural skin texture, woven cloth fibers, genuine wood grain and clean bark fissures. Surfaces must have distinct material responses. Sharp foreground subject, controlled filmic lighting, deep dimensional shadows with readable detail; background may have natural atmospheric depth. Preserve the original purple palette, framing, object count, gestures, facial identity, costume, silhouette and story action. Remove only the indiscriminate dot/noise overlay and confetti-like speckles that do not describe material; NOT natural material texture. Do not apply a blur filter, waxy skin, plastic armor, painterly smearing, exaggerated sharpening halos or global granular noise. No added text, frame or watermark.  Input 1 is the strict closeup of the crossbow surrounded by violet spectral energy, with a single sword and headband laid beside it. Input 2 establishes same gear design/material, but do NOT add its cat. Preserve original camera and positions. Clearly constructed crossbow limbs and taut string; a precisely straight, flat forged sword blade with clean continuous bevels, subtle directional polish and localized scratches, NOT hammered lumps or faceted crumpled foil. Keep spectral energy strands but reduce random speckled clutter. No pets/humans.",
+      "output": "C:\\Users\\심도진\\.codex\\generated_images\\01a099a6-7b26-7e72-8d6c-f7d0d6215f28\\exec-8562c82f-eeae-4ba4-b578-4af760b1e3e6.png",
+      "status": "visually-reviewed",
+      "target": "assets/cutscene/images/17.png",
+      "asset": {
+        "path": "assets/cutscene/images/17.png",
+        "width": 1672,
+        "height": 941,
+        "bytes": 2746929,
+        "sha256": "6f4e44eccc028e9fd8c7dd84503b0f88107e3943b5ed04d8f6771e5a24fca353"
+      }
+    },
+    {
+      "id": "18",
+      "refs": [
+        "G:\\exoduser\\output\\image_texture_cleanup_20260913\\originals\\images\\18.png",
+        "C:\\Users\\심도진\\.codex\\generated_images\\01a099a6-7b26-7e72-8d6c-f7d0d6215f28\\exec-20c794ee-eafd-4e2a-b553-a7b1522e1480.png"
+      ],
+      "prompt": "Use case: identity-preserve. Restore premium cinematic dark-fantasy cutscene quality using the supplied ORIGINAL scene as strict narrative, identity, anatomy and composition reference. Output edge-to-edge 16:9, highest available native resolution (request 3840x2160). Reconstruct fine, physically convincing MATERIAL DETAIL rather than smoothing it away: precise forged-metal plate edges and micro-scratches, readable carved ornament, coherent fine hair strands, subtle natural skin texture, woven cloth fibers, genuine wood grain and clean bark fissures. Surfaces must have distinct material responses. Sharp foreground subject, controlled filmic lighting, deep dimensional shadows with readable detail; background may have natural atmospheric depth. Preserve the original purple palette, framing, object count, gestures, facial identity, costume, silhouette and story action. Remove only the indiscriminate dot/noise overlay and confetti-like speckles that do not describe material; NOT natural material texture. Do not apply a blur filter, waxy skin, plastic armor, painterly smearing, exaggerated sharpening halos or global granular noise. No added text, frame or watermark.  Input 1 is the strict closeup of ONE dark metal headband/circlet with central violet diamond gemstone on stone floor. Input 2 establishes shared gear identity. Keep original circlet silhouette and elegant carved pattern, very legible dark metal relief and crisp faceted gemstone, continuous round band with its intentional rear opening. No cat, sword, crossbow or other added objects. Do not flatten metal engravings or smudge stone texture.",
+      "output": "C:\\Users\\심도진\\.codex\\generated_images\\01a099a6-7b26-7e72-8d6c-f7d0d6215f28\\exec-d93f3055-9992-48d6-baa7-93ff3b13d9ef.png",
+      "status": "visually-reviewed",
+      "target": "assets/cutscene/images/18.png",
+      "asset": {
+        "path": "assets/cutscene/images/18.png",
+        "width": 1672,
+        "height": 941,
+        "bytes": 2402152,
+        "sha256": "956df3c2ad7d99da9467a088213c77875643b6eba2729fff58517cbefaf66fb4"
+      }
+    }
+  ],
+  "assets": [
+    {
+      "path": "assets/cutscene/images/00.png",
+      "width": 1672,
+      "height": 941,
+      "bytes": 2973399,
+      "sha256": "98bf433f5cbb4c9a5862134e8e0e600fddc3e9e9d4f0daba7d35a32386a2815d"
+    },
+    {
+      "path": "assets/cutscene/images/01.png",
+      "width": 1672,
+      "height": 941,
+      "bytes": 2906103,
+      "sha256": "6ef9a05effc51e965f433fb4d6f5c7019981b5c999d53d9edf8644cad4697028"
+    },
+    {
+      "path": "assets/cutscene/images/02.png",
+      "width": 1672,
+      "height": 941,
+      "bytes": 2767280,
+      "sha256": "93586e7f1265f7b0f6d89ad3735316bbde7de9b6849147db87fd17c2863338b2"
+    },
+    {
+      "path": "assets/cutscene/images/03.png",
+      "width": 1672,
+      "height": 941,
+      "bytes": 2784079,
+      "sha256": "39ca9e5cf80fec04adfca2ec91c578bcb6f9e67d6605ac82430c83594c423d59"
+    },
+    {
+      "path": "assets/cutscene/images/04.png",
+      "width": 1672,
+      "height": 941,
+      "bytes": 2075867,
+      "sha256": "11451e7c1f339927cd5df3d31e79f2380ac9e150057fb5c6b8e7dca930c2cd5e"
+    },
+    {
+      "path": "assets/cutscene/images/05.png",
+      "width": 1672,
+      "height": 941,
+      "bytes": 2535593,
+      "sha256": "9da237781c9290d0107bff941425ad86033ea888ea4966cabc29c8b7b3e25240"
+    },
+    {
+      "path": "assets/cutscene/images/06.png",
+      "width": 1672,
+      "height": 941,
+      "bytes": 2659352,
+      "sha256": "00207d1632bfb9160b022c9dfa1018445017c1bee9ce662d53533aff953c2361"
+    },
+    {
+      "path": "assets/cutscene/images/07.png",
+      "width": 1672,
+      "height": 941,
+      "bytes": 2801783,
+      "sha256": "a7c25f1a9f8d2580d8255854b0c820c0bb7893746bb2a7b552237be4ba6789d7"
+    },
+    {
+      "path": "assets/cutscene/images/08.png",
+      "width": 1672,
+      "height": 941,
+      "bytes": 2890355,
+      "sha256": "06d1200e864cd5052e246991277f4142659bb41e933b2822853138dfefdf8297"
+    },
+    {
+      "path": "assets/cutscene/images/09.png",
+      "width": 1672,
+      "height": 941,
+      "bytes": 2924706,
+      "sha256": "d571649f3da71b2e90cd070f81f598ae5045445cb7ffa12b4c5fc56dcbd505b2"
+    },
+    {
+      "path": "assets/cutscene/images/10.png",
+      "width": 1672,
+      "height": 941,
+      "bytes": 1911007,
+      "sha256": "f0bb790eedf0bbeeaf9213b5112c106c6f7f361c12a93d8341db99735f344d26"
+    },
+    {
+      "path": "assets/cutscene/images/11.png",
+      "width": 1672,
+      "height": 941,
+      "bytes": 1838070,
+      "sha256": "fe45c6b1a0429a615206b1e444267492b68c327d4c673ae1c1eb26bd02423815"
+    },
+    {
+      "path": "assets/cutscene/images/12.png",
+      "width": 1672,
+      "height": 941,
+      "bytes": 2263743,
+      "sha256": "ff12947c9047bfbc1573ae85274714a823b08d56d1ab5da64c4c336c0800d279"
+    },
+    {
+      "path": "assets/cutscene/images/13.png",
+      "width": 1672,
+      "height": 941,
+      "bytes": 2086762,
+      "sha256": "21ceaaaa002c49db8aedb21f6485af2742212ff14c88a16f7f9f60fc083d1b86"
+    },
+    {
+      "path": "assets/cutscene/images/14.png",
+      "width": 1672,
+      "height": 941,
+      "bytes": 2230328,
+      "sha256": "2bb19139e517014e115ef8e3321187c5fc858f5a0cbd528a22e7ce95990fbb1d"
+    },
+    {
+      "path": "assets/cutscene/images/15.png",
+      "width": 1672,
+      "height": 941,
+      "bytes": 2485905,
+      "sha256": "4f753b1a10223070ab24da0f2f2f7198e653f1110009260940653c37513309f7"
+    },
+    {
+      "path": "assets/cutscene/images/16.png",
+      "width": 1672,
+      "height": 941,
+      "bytes": 2511018,
+      "sha256": "794d98fe9fa246411a7324b7685a75c2608dff6c5a4af9b194cd6ca2bc333a9f"
+    },
+    {
+      "path": "assets/cutscene/images/17.png",
+      "width": 1672,
+      "height": 941,
+      "bytes": 2746929,
+      "sha256": "6f4e44eccc028e9fd8c7dd84503b0f88107e3943b5ed04d8f6771e5a24fca353"
+    },
+    {
+      "path": "assets/cutscene/images/18.png",
+      "width": 1672,
+      "height": 941,
+      "bytes": 2402152,
+      "sha256": "956df3c2ad7d99da9467a088213c77875643b6eba2729fff58517cbefaf66fb4"
+    },
+    {
+      "path": "assets/cutscene/images/19.png",
+      "width": 1672,
+      "height": 941,
+      "bytes": 2894180,
+      "sha256": "0ffc8271c1600575f62f31e4675d595fafa15062b65afbffe093048b8eb78e8f"
+    },
+    {
+      "path": "assets/cutscene/images/20.png",
+      "width": 1672,
+      "height": 941,
+      "bytes": 2273427,
+      "sha256": "9d814a36ad31bb0be31c953b046cc6a168985fef0a3305eeffbe06ee27c27724"
+    },
+    {
+      "path": "assets/cutscene/images/cin_nemesia_appear1.png",
+      "width": 1672,
+      "height": 941,
+      "bytes": 2889366,
+      "sha256": "43c4c280db3cefdb817cf5bff2efe3ea8a3fd10d2d86f6a1cb3cbe369f97d5de"
+    },
+    {
+      "path": "img/lording/1.png",
+      "width": 1672,
+      "height": 941,
+      "bytes": 2890355,
+      "sha256": "06d1200e864cd5052e246991277f4142659bb41e933b2822853138dfefdf8297"
+    },
+    {
+      "path": "img/lording/2.png",
+      "width": 1672,
+      "height": 941,
+      "bytes": 1838070,
+      "sha256": "fe45c6b1a0429a615206b1e444267492b68c327d4c673ae1c1eb26bd02423815"
+    },
+    {
+      "path": "img/lording/3.png",
+      "width": 1672,
+      "height": 941,
+      "bytes": 1911007,
+      "sha256": "f0bb790eedf0bbeeaf9213b5112c106c6f7f361c12a93d8341db99735f344d26"
+    },
+    {
+      "path": "img/lording/rd4.png",
+      "width": 1672,
+      "height": 941,
+      "bytes": 2889366,
+      "sha256": "43c4c280db3cefdb817cf5bff2efe3ea8a3fd10d2d86f6a1cb3cbe369f97d5de"
+    }
+  ]
+}

@@ -1,0 +1,58 @@
+{
+  "status": "PASS",
+  "real_save_writes": false,
+  "results": [
+    {
+      "chapter": 1,
+      "real_keyboard_counts": [
+        {
+          "count": 1,
+          "complete": false
+        },
+        {
+          "count": 2,
+          "complete": false
+        },
+        {
+          "count": 3,
+          "complete": false
+        },
+        {
+          "count": 4,
+          "complete": false
+        },
+        {
+          "count": 5,
+          "complete": true
+        }
+      ],
+      "errors": []
+    },
+    {
+      "chapter": 2,
+      "real_keyboard_counts": [
+        {
+          "count": 1,
+          "complete": false
+        },
+        {
+          "count": 2,
+          "complete": false
+        },
+        {
+          "count": 3,
+          "complete": false
+        },
+        {
+          "count": 4,
+          "complete": false
+        },
+        {
+          "count": 5,
+          "complete": true
+        }
+      ],
+      "errors": []
+    }
+  ]
+}

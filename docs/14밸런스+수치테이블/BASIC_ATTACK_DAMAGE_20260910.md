@@ -7,7 +7,7 @@
 | wSwing → hitArc | floor((P.baseAtk+무기atk+강화atk+15)×2) | floor((P.baseAtk+무기atk+강화atk+15)×6) | hitArc의 pAtkMul×pMeleeMul 및 ST 소비 가산 _atkBon 유지; 무기 기반 부분3배 |
 | _SK_MUL.kiSlash | b:4, g:3.36 | b:12, g:10.08 | _skMul=b+(Lv−1)×g×0.5 |
 | 기검참 일반 콤보 | 7×_skMul | 7×_skMul | Lv1=84, Lv10=401.52, Lv20=754.32배/타; meleeRef×statStr×pAtkMul 곱 후 정수화 |
-| bowRecover 캔슬 검기 | 1.2/1.2/2×이전 _skMul | 1.2/1.2/2×현재 _skMul | 기존 계수 유지, 각 타격도3배. 일반 콤보와의 기존 차이는 유지 |
+| bowRecover 캔슬 검기 | 1.2/1.2/2×이전 _skMul | 7/7/7×현재 _skMul | 후속 초반 밸런스 수정: 발사 직후에도 일반 콤보와 동일 피해. 기존 일반 대비17.14%/17.14%/28.57% 경로 제거 |
 | _fireXbow | floor((bowRef×pBowMul×pXbowMul×무기atkMul+28)×(_gxFiring 또는1)) | 이전 정수 결과×3 | 자동 normal·ghostXbowTurret 폴백, 장비·패시브·터렛·고정28 포함 |
 | fireBow | floor(bowRef×pBowMul×10)+_bowBon | 이전 결과×3 | 악의1/발, 보너스 소모/reset, 관통0 |
 | _skSpecificDetails(kiSlash) | 오래된 1.2/1.2/2, 레벨당100% | 일반 콤보별7×현재레벨 _SK_MUL, 레벨당+35.28배 | 표시 레벨 slv에 따라 계산, 소수2자리 |

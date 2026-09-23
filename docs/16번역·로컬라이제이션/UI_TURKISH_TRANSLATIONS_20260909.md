@@ -1,3 +1,5 @@
+> 2026-09-23: E 현행 표시명은 불꽃칼날 / Flame Blade다. 아래 기존 각국어 날개 명칭·문장은 과거 번역 기록이다. localization/finish의 27개 언어별 새 스킬명을 적용하며 _T의 강제 영어 폴백을 제거했다. 정확한 현행 이름은 FINISH_TRANSLATIONS_20260923.md를 따른다.
+
 # 튀르키예어 UI 보완 — 2026-09-09
 
 `localization/ui/tr.json`의 MAIN488개를 작성하고 스펙·품질 전행 검토를 통과했다. EXTRA66개도 별도 검토를 통과했다.
@@ -8,7 +10,7 @@
 | 뇌전창 / 전격의창 | Yıldırım Kazığı / Yıldırım Mızrağı |
 | 등급 / 근성 | Kahramanca / Sebat |
 | 지옥강타1 | Dev Vuruş 1. 기존 Giant Çarpma 혼합명 교정 |
-| 유령 허수아비 / 칼등날개 | Hayalet Yem / Kalkan Kanadı. 기존 Decoy/Wing 영어 잔류 교정 |
+| 유령 허수아비 / 불꽃칼날 | Hayalet Yem / Kalkan Kanadı. 기존 Decoy/Wing 영어 잔류 교정 |
 | 추적암전 / 얼음보주 / 아이스스톰 | İzleyen Yıldırım / Buz Küresi / Buz Fırtınası. 기존 Tracking/Orb/Storm 영어 잔류 교정 |
 | 원문 예외 | 기둥 어둠 피해·지옥강타2 합체, 공성쇠뇌 설치20초, 블랙홀Lv20추가배율10·최저피해30% |
 | 경계·발동 | HP ≥70%/≤30%, 칼날 발사 시만 독혈, 전격이동 두 번째 착지, 실제 배정키 유지 |

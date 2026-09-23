@@ -34,3 +34,16 @@ test('short hold cancels; full hold skips once and cleans up',async()=>{
   s.api.setSkipHeld(true,'keyboard');s.api.setSkipHeld(false,'gamepad');s.advanceMs(1200);
   assert.equal(await s.promise,true);assert.equal(s.api.active,false);assert.equal(s.video.paused,true);
 });
+function key(s,type,key,repeat=false){const e=new Event(type,{cancelable:true});Object.assign(e,{key,code:key===' '?'Space':key,repeat});s.doc.dispatchEvent(e);}
+test('Space hold skips the story; repeat does not seek through every line',async()=>{
+  const s=setup();key(s,'keydown',' ');const at=s.video.currentTime;
+  key(s,'keydown',' ',true);assert.equal(s.video.currentTime,at);
+  s.advanceMs(1199);assert.equal(s.api.active,true);
+  s.advanceMs(1);assert.equal(s.api.active,false);assert.equal(await s.promise,true);
+});
+test('Space release cancels its hold without cancelling a held Escape',()=>{
+  const s=setup();key(s,'keydown',' ');s.advanceMs(700);key(s,'keyup',' ');
+  s.advanceMs(1500);assert.equal(s.api.active,true);
+  key(s,'keydown','Escape');key(s,'keydown',' ');key(s,'keyup',' ');
+  s.advanceMs(1200);assert.equal(s.api.active,false);
+});

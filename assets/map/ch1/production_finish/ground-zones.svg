@@ -1,0 +1,34 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="8192" height="8192" viewBox="0 0 200 200">
+  <!-- White is worn soil, transparent is low moss/litter. All surfaces remain walkable.
+       Authored region shapes, not movement corridors or collision masks. -->
+  <defs>
+    <filter id="edge" x="-10%" y="-10%" width="120%" height="120%">
+      <feTurbulence type="fractalNoise" baseFrequency=".24" numOctaves="3" seed="16" result="grain"/>
+      <feDisplacementMap in="SourceGraphic" in2="grain" scale="2.6" xChannelSelector="R" yChannelSelector="G"/>
+      <feGaussianBlur stdDeviation=".32"/>
+    </filter>
+  </defs>
+  <g fill="white" stroke="white" stroke-linejoin="round" stroke-linecap="round" filter="url(#edge)">
+    <!-- Arrival: a narrow visible trail opens into the southern side of the clearing. -->
+    <path d="M101 198 C100 189 105 181 103 175 C102 170 98 167 99 161" fill="none" stroke-width="13"/>
+    <!-- First arena: irregular open earth, with a moss tongue at its north-east shoulder. -->
+    <path d="M86 167 C81 161 79 153 84 147 L91 144 C95 139 105 139 112 143 L116 149 C125 150 130 158 124 164 C117 170 108 174 101 171 L94 169Z" stroke-width="2"/>
+    <!-- Forest bend and side camp form a branch, not one central S-shaped corridor. -->
+    <path d="M93 144 C89 137 79 135 81 125 C83 117 80 111 82 104" fill="none" stroke-width="12"/>
+    <path d="M83 121 C72 118 66 111 58 108 L46 105" fill="none" stroke-width="9"/>
+    <path d="M34 102 C34 95 45 91 53 94 L59 99 C65 102 65 109 59 113 L48 115 C42 113 35 110 34 102Z" stroke-width="1"/>
+    <!-- Corpse-tree roots interrupt the basin; both existing bypasses stay visible. -->
+    <path d="M82 104 C77 96 80 86 88 80 C93 77 94 72 96 66" fill="none" stroke-width="13"/>
+    <path d="M85 108 C95 111 105 113 115 106 C125 99 128 92 122 84 C116 77 105 73 96 66" fill="none" stroke-width="13"/>
+    <path d="M91 105 C88 97 90 88 98 86 C107 84 115 91 116 100 C114 108 102 111 91 105Z" stroke-width="3"/>
+    <!-- East approach follows the existing ramp; no new height or obstacle. -->
+    <path d="M120 103 C126 105 131 101 136 99 L146 97" fill="none" stroke-width="8"/>
+    <!-- Late clearing and water-side spur vary the route before the final approach. -->
+    <path d="M96 66 C95 60 94 57 99 52" fill="none" stroke-width="11"/>
+    <path d="M82 57 C79 50 88 44 95 45 L102 41 C113 42 119 47 116 54 L107 60 C98 64 88 62 82 57Z" stroke-width="2"/>
+    <path d="M112 52 C126 56 139 56 153 52" fill="none" stroke-width="8"/>
+    <path d="M87 55 C77 55 65 51 50 48" fill="none" stroke-width="7"/>
+    <!-- Exit throat stays on the fixed north axis. -->
+    <path d="M99 44 C103 36 99 29 100 20 L100 3" fill="none" stroke-width="12"/>
+  </g>
+</svg>

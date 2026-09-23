@@ -37,11 +37,11 @@ function effect(){
 test('rapid levels share one animation instead of restarting the flash',()=>{
   const fx=effect(),p={x:1,y:2,hp:100};fx.trigger(p,0,1);fx.update(.12,p,0);
   const age=fx.age;fx.trigger(p,0,2);assert.equal(fx.age,age);assert.equal(fx.active,true);
-  fx.update(1.4,p,0);assert.equal(fx.active,false);
+  fx.update(3.5,p,0);assert.equal(fx.active,false);
 });
 test('effect lifetime uses elapsed seconds at 30, 60 and 120 updates per second',()=>{
   for(const fps of [30,60,120]){const fx=effect(),p={x:1,y:2,hp:100};fx.trigger(p,0,1);
-    for(let i=0;i<fps;i++)fx.update(1/fps,p,0);assert.equal(fx.active,true);
+    for(let i=0;i<fps*3;i++)fx.update(1/fps,p,0);assert.equal(fx.active,true);
     for(let i=0;i<fps*.6;i++)fx.update(1/fps,p,0);assert.equal(fx.active,false);}
 });
 test('death, stage changes and replacing the character discard the effect',()=>{
@@ -62,7 +62,22 @@ test('overhead label follows the character and updates to the latest earned leve
   assert.equal(drawn.at(-1).text,'Lv. 12');assert.equal(drawn.at(-1).x,100);assert.ok(drawn.at(-1).y<140);
   const y=drawn.at(-1).y;p.x+=30;p.lv=15;fx.trigger(p,0,3);fx.drawLabel(ctx,p,0);
   assert.equal(drawn.at(-1).text,'Lv. 15');assert.equal(drawn.at(-1).x,130);assert.equal(drawn.at(-1).y,y);
-  fx.update(2,p,0);const n=drawn.length;fx.drawLabel(ctx,p,0);assert.equal(drawn.length,n);
+  fx.update(3.5,p,0);const n=drawn.length;fx.drawLabel(ctx,p,0);assert.equal(drawn.length,n);
+});
+test('level text holds full opacity for reading then fades before dismissal',()=>{
+  const fx=effect(),p={x:100,y:200,hp:100,lv:12},alphas=[];
+  const ctx={save(){},restore(){},fillText(){alphas.push(this.globalAlpha);}};
+  fx.trigger(p,0,1);fx.update(2.5,p,0);fx.drawLabel(ctx,p,0);assert.equal(alphas.at(-1),1);
+  fx.update(.7,p,0);fx.drawLabel(ctx,p,0);assert.ok(alphas.at(-1)>.4&&alphas.at(-1)<.6);
+  fx.update(.4,p,0);const n=alphas.length;fx.drawLabel(ctx,p,0);assert.equal(alphas.length,n);
+});
+test('level-up banner requests a readable duration and newer notices cancel the prior timeout',()=>{
+  const {ctx}=fixture();let notice;ctx.showPH=(...a)=>notice=a;ctx.addExp(10,true);assert.equal(notice[2],2500);
+  const timers=new Map();let id=0;const el={textContent:'',style:{},classList:{add(){},remove(){}}};
+  const c=vm.createContext({_charIdx:0,_T:s=>s,$:()=>el,clearTimeout:i=>timers.delete(i),setTimeout:(cb,ms)=>{timers.set(++id,{cb,ms});return id;}});
+  vm.runInContext(fn('showPH'),c);c.showPH('old','#fff');c.showPH('LEVEL UP!','#ffdd00',2500);
+  assert.equal(timers.size,1);assert.equal([...timers.values()][0].ms,2500);
+  c.showPH('normal','#fff');assert.equal([...timers.values()][0].ms,500);
 });
 
 test('human and demonic level labels use gold and violet respectively',()=>{

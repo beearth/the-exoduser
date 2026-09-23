@@ -89,3 +89,56 @@ assets/vfx/boss/gen/
 
 # Named review copies of the canonical v7 source clips.
 /대검전사_뉴버전_컷별영상/
+
+# Reviewed local QA, backups and intermediate exports (2026-09-16).
+# Keep files on disk; existing tracked artifacts remain tracked.
+/output/charselect_quality_20260913/
+/output/fdg_startup_20260911/
+/output/flame_blade_20260913/
+/output/ground_trap_visibility_20260913/
+/output/gstar_2026_selection/
+/output/image_texture_cleanup_20260913/
+/output/intro_quality_20260913/
+/output/kislash_q_cancel_20260916/
+/output/lobby_image_review_20260913/
+/output/lobby_redesign_20260913/
+/output/parry_base50_20260913/
+/output/player_motion_audit_20260915/
+/output/resource_cost_20260913/
+/output/resource_pause_20260913/
+/output/silvertail_attack_20260915/
+/output/silvertail_e_arc_20260916/
+/output/silvertail_sprites_20260915/
+/output/silvertail_walk_fix_20260915/
+/output/spike_half_20260913/
+/output/steamdeck_20260914/
+/output/trap_shield_20260913/
+/output/tutorial_resource_sets_20260913/
+/output/warrior_swing_20260915/
+/output/warrior_swing_weight_20260915/
+/지스타2026_제출사진_10장/
+# Superseded hand-held sword attack; runtime uses attack-spin-v2.png.
+/img/exoduser_silvertail/attack-remaster-v1.png
+
+# Live QA outputs: ignore newly created review/backup files immediately.
+# Existing tracked assets stay tracked; intentionally versioned review artifacts use git add -f.
+/output/*_review_*/
+/output/**/backups/
+/output/**/originals/
+/output/**/before/
+/output/**/profiles/
+/output/**/captures/
+/output/**/*.log
+/output/steam_save_incident_20260918_1542/
+
+# Reproducible Steam localization preview/package exports (keep local, don't pollute Git status)
+/output/language_package_20260923/
+/output/steam_languages_finish_20260923/
+/output/imagegen/mine_trap_ward_sheet.png
+
+# Local editor state and dated safety copies
+/.vscode/
+/game.html.bak_before_diablo4_map_20260923
+/game.html.bak_before_elite_affixes_20260923
+/game.html.bak_before_field_rebuild_20260923
+/maps_data.js.bak_before_diablo4_map_20260923

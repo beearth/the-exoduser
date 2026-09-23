@@ -1,5 +1,11 @@
 # SILVERTAIL / BLADE DANCER — LOCKED VISUAL & EQUIPMENT SPEC v1.2
 
+> **보행 교정:** 걷기4포즈를 접지/교차 반복으로 재제작하고 몸통 앵커로 정렬했다. 원본 기반 패커 다음에 `tools/pack-silvertail-walk.mjs`를 실행한다. [현행 보행 계약](./SILVERTAIL_WALK_FIX_20260915.md).
+
+> **새 본체 적용(2026-09-15):** 승인된 시안으로 idle2(동일 포즈 복제)/walk4/atk4 폴백을8방향480×48 시트로 교체했다. 버전 `20260915-walk-v3`. 기존80px 공격 확장을 함께 사용한다. 아래 구 본체/제작 전 표기는 이력이며 [현행 패킹·프레임·검증 계약](../silvertail/SILVERTAIL_REMAKE_20260915.md)을 우선한다.
+
+> **2026-09-15 구현 갱신:** 현행 본체 idle2/walk4/atk4, 48px 시계 시트. 공격은 내장 imagegen 생성9포즈을80px 셀 별도 아틀라스로 연결했다. [공격 런타임·원화와 장비 통합 잔여](./SILVERTAIL_ATTACK_REMASTER_20260915.md). 아래 video-first/idle2+walk8 및 공격 제작 전 표기는 당시 생산 계획이며 현행 프레임 수보다 우선하지 않는다.
+
 EXODUSER: HELL LORD / FDG
 스코프: **Blade Tail ↔ 쌍단검 설계 충돌 종결 + 스프라이트 제작용 LOCKED SPEC.**
 근거: `SILVERTAIL_ARCHETYPE_v1.md` / `_v1_1.md`(기구·스킬), `PIXELLAB_PROMPT.md`, `refs/` MASTER TURNAROUND(09_41_58)·WEAPON BIBLE(10_20_48).
@@ -16,7 +22,7 @@ EXODUSER: HELL LORD / FDG
 | 3 | Folded Blade 접힘(IDLE, 척추, tip 허벅지) | **KEEP** + 측면오프셋 MODIFY | 접힘 기구 유지, 단 정면규칙 위해 한쪽 hip으로 오프셋(아래 [D]) |
 | 4 | **단검 개수** | **MODIFY 2 → 1** | v3 ACTION은 이미 단검 1자루만 draw. "휴대 2·사용 1" 불일치 해소 + "ONE BLADE" 정체성 + 48px 다운스케일 가독 |
 | 5 | **허벅지 sheath (BOTH SIDES)** | **MODIFY → 단측(Blade Tail 반대쪽 1개)** | 양측 유지 시 Blade Tail hip-오프셋 쪽과 물리 충돌. 반대 허벅지 단일화로 충돌 제거 |
-| 6 | Off-hand ACTION 단검(좌수 1자루) | **KEEP** | v3 ACTION 캐논 그대로(대검=우수, 단검=좌수). 이제 휴대 1과 정합 |
+| 6 | Off-hand ACTION 단검(좌수 1자루) | **KEEP** | 2026-09-15 사용자 확정: 등검은 등에 연결한 채 회전 타격, 손은 단검 사용. 좌수 단검1 유지 |
 | 7 | Empty hands (IDLE) | **KEEP** | v3 캐논. v2 "IDLE 양손 쌍단검"은 이미 폐기(액션배치 오적용) — REMOVE 확정 |
 | 8 | 칼날개(찢긴 검정 스커트→날개), 은발 포니테일, 흑철갑주, 힐부츠 | **KEEP** | 정체성·연무 게이지 UI. 무변경 |
 | 9 | 신규 무기/장비 | **없음(추가 금지)** | 충돌 해결만 — 신규 도입 0 |
@@ -37,14 +43,14 @@ EXODUSER: HELL LORD / FDG
 - **마운트**: 목뒤/상부 등의 **원형 기계식 회전 허브(rotary hub)**. 등에 매는 검집(back-slung sword) 아님 — 축 연결.
 - **IDLE**: 직선 양날 블레이드가 **접혀** 척추를 따라 수직 하강, **tip은 최소 종아리(캐논 기준 mid-thigh~calf)**. 대각선 ✗, 머리 위 솟음 ✗.
 - **접힘 구조**: 후면에서 **ㄱ자형(right-angle) 접힘** — 허브(상단 중앙)에서 하강 후 한쪽 hip으로 라우팅.
-- **ACTION(공격/스프린트/회전)**: 원심력으로 **직선 전개** → 대검을 **우수에 draw**, 몸 회전으로 회전 참격.
+- **ACTION(공격/회전)**: 등검은 목뒤/상부 등 허브에 **연결된 채 전개**하며 몸을 회전시켜 타격한다. 대검을 손으로 잡지 않는다. 왼손은 보조 단검을 사용한다(2026-09-15 사용자 최신 확정).
 - origin(허브)은 상부 척추 중앙(후면 가시), 접힌 날은 [D] 정면규칙 위해 한쪽 hip으로 오프셋.
 
 ## [C] DAGGER / SHEATH POSITION (LOCKED)
 
 - **단검 1자루**, **캐릭터 LEFT 바깥 허벅지 홀스터**(= Blade Tail tip 오프셋의 **반대쪽**).
 - 힐트가 pelvis 정중선을 넘지 않도록 살짝 후방·외측 각도. 다리 사이 ✗, 골반 앞 교차 ✗.
-- **ACTION**: 좌수로 draw(대검=우수, 단검=좌수 — v3 ACTION 캐논 동일). 동측 draw라 크로스드로 불필요.
+- **ACTION**: 단검은 좌수로 draw. 주 회전검은 등 허브에 연결을 유지한다. 오른손은 회전 균형 자세이며 대검을 잡지 않는다.
 - Blade Tail tip = RIGHT hip / Dagger = LEFT thigh → **좌우 분리로 물리·실루엣 충돌 0.**
 
 ## [D] FRONT VIEW RULE (LOCKED — 사용자 지정 규칙, 반드시 유지)
@@ -109,8 +115,9 @@ ash-white hair #C7C7C7)
 
 **ACTION (attack/whirl/sprint):**
 ```
-...(동일 캐릭터)... rotary blade DEPLOYED and gripped in the RIGHT hand as an oversized
-greatsword, the single curved dagger drawn in the LEFT hand, ragged skirt shreds trailing in motion
+...(동일 캐릭터)... rotary blade DEPLOYED while remaining mechanically ATTACHED to the
+UPPER BACK hub throughout a full-body spinning strike, NEVER held in either hand;
+ONE small curved dagger in the LEFT hand, RIGHT hand open for balance, skirt trailing the spin
 ```
 
 **FRONT-VIEW 강제 제약(생성/편집 공통):** Blade Tail 본체 torso 완전 차폐 · RIGHT 바깥 허벅지로 tip만 소량 노출 · pelvis 앞/다리 사이/centerline 금지 · LEFT 허벅지 단검 힐트만 소량 · 중앙 클린.

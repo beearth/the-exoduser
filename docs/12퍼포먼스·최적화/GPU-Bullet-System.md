@@ -117,8 +117,8 @@ function drawBullets() {
 | 항목 | 값 | 비고 |
 |------|-----|------|
 | 메인 캔버스 | `C` | id="c" |
-| WebGPU context | `GPU` (device), `_gpuCtx` | 브라우저·NW.js에서 명시적 `?webgpu=1`만 시도 (2026-09-10) |
-| WebGL2 context | `GL` | 기본 백엔드 및 명시적 WebGPU 실패 시 폴백 |
+| WebGPU context | `GPU` (device), `_gpuCtx` | 비 Electron의 명시적 `?webgpu=1`, 또는 쿼리 미지정 Mac+navigator.gpu에서 시도. 실패 시 WebGL2 ([2026-09-10 로컬 정책](MAC_DEFAULT_WEBGPU_FPS_20260910.md)) |
+| WebGL2 context | `GL` | Windows/Electron/미지원 Mac/명시적 webgpu=0의 기본 백엔드 및 WebGPU 초기화 실패 폴백 |
 | Canvas2D | `X` | 최종 폴백 |
 | 렌더 백엔드 플래그 | `_useGPU`, `_useGL` | |
 | 카메라 | `G.cam.x`, `G.cam.y` | |
@@ -844,7 +844,7 @@ async function updateComputeBullets(sp) {
 |-----|------------|------|
 | `_vfxAnims` (스프라이트시트 VFX 전체) | O | whirl_slash, eq_impact, magic_burst 등 |
 | `wwSlash` 히트 임팩트 | O | 칼바람 슬래시 임팩트 |
-| `_impSpr` 히트 임팩트 | O | 일반 스프라이트시트 임팩트 |
+| `_impactSpriteFor(im)` 히트 임팩트 | O | 속성별 일반 9프레임/보스 16프레임 시트, 로드 실패 시 `_impSpr` 폴백 |
 | `_fireExps` 화염폭발 | X | 프레임별 개별 이미지, 인스턴싱 이점 없음 |
 | `_esAnim` 마력연사 | X | 단일 인스턴스, 오버헤드만 증가 |
 

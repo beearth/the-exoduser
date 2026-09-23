@@ -1,0 +1,40 @@
+docs\15 세이브+데이터구조\15 세이브+데이터구조.md
+docs\0마스터플랜\EXODUSER_MASTER_BIBLE_v2_2 (2).md
+docs\12퍼포먼스·최적화\12퍼포먼스·최적화.md
+docs\14밸런스+수치테이블\스킬별_DPS_자원소비표.md
+docs\16번역·로컬라이제이션\번역대상_전체목록.md
+docs\2_3 돌진+패링+방패시스템\2_3 돌진+패링+방패시스템.md
+docs\12퍼포먼스·최적화\코드전수조사_디버그_최적화_2026-09-03.md
+docs\3.1 ui hud 디자인\캐릭터선택_리모델링_기획서.md
+docs\3.1 ui hud 디자인\남전사_로비_아이들_모션_20260908.md
+docs\3.1 ui hud 디자인\exoduser-hud-redesign.md
+docs\미구현+구현예정.md
+docs\2_1 스킬관리+합체시스템+자원\2_1 스킬관리+합체시스템.md
+docs\2_1 스킬관리+합체시스템+자원\E_BASE_WING_STRIKE_20260910.md
+docs\4.0케릭터스프라이트 디자인\4.0케릭터스프라이트 디자인.md
+docs\4.0케릭터스프라이트 디자인\PLAYER_RELIEF_2_5D_20260915.md
+docs\4.0케릭터스프라이트 디자인\캐릭터_몬스터_보스_최적화디자인_v1.md
+docs\3.3 키바인딩+설정\3.3 키바인딩+설정.md
+docs\2_1 스킬관리+합체시스템+자원\전격이동_사슬기동_공용기동게이지_개편.md
+docs\6사운드디자인\TRAILER_CHARACTER_VOICE_FIX_20260909.md
+docs\4.0케릭터스프라이트 디자인\refs\2026-07-27_silvertail_keyart\README.md
+docs\4.0케릭터스프라이트 디자인\refs\2026-08-02_keyart\README.md
+docs\6사운드디자인\PROJECTILE_PLAYER_HIT_20260910.md
+docs\6사운드디자인\6사운드디자인.md
+docs\archetypes\silvertail\PIXELLAB_PROMPT.md
+docs\archetypes\silvertail\SILVERTAIL_ARCHETYPE_v1_1.md
+docs\archetypes\silvertail\SILVERTAIL_REMAKE_20260915.md
+docs\archetypes\silvertail\SILVERTAIL_ARCHETYPE_v1.md
+docs\archetypes\silvertail\SILVERTAIL_ATTACK_REMASTER_20260915.md
+docs\archetypes\silvertail\SILVERTAIL_LOCKED_SPEC_v1_2.md
+docs\CHANGELOG_SYNC.md
+docs\5.1임펙트디자인\BOSS_CAGE_TRAP_VFX.md
+docs\5.0애니메이션파이프라인\5.0애니메이션파이프라인.md
+docs\5.1임펙트디자인\KI_SLASH_RADIANT_20260915.md
+docs\8.0몬스터디자인\PHYSICAL_PROJECTILE_SCALE_REWARD_20260910.md
+docs\5.1임펙트디자인\SILVERTAIL_MALICE_ORB_MOONBLADE_V2.md
+docs\8.0몬스터디자인\몬스터_공격시스템.md
+docs\5.1임펙트디자인\SILVERTAIL_MALICE_ORB_SHEET_V3.md
+docs\5.1임펙트디자인\VFX_구현가이드.md
+docs\8.0몬스터디자인\탄막시스템_총정리.md
+docs\cinematic\WARINTRO_CREATION_RUNTIME_20260910.md

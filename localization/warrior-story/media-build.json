@@ -1,0 +1,8 @@
+{
+  "target": "video/warrior_story_v23_clean.mp4",
+  "frames": 5784,
+  "duration": 96.4,
+  "audioHash": "SHA256=e8bec0638d2e7ebf213d0d4b13fdaa860ded28c68acd0cf23c68e1f2dad122dc",
+  "source": "video/warrior_story_v22_bgm.mp4",
+  "captionCues": 22
+}

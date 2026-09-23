@@ -1,0 +1,90 @@
+{
+  "tool": "built-in image_gen.imagegen",
+  "jobs": [
+    {
+      "id": "flame",
+      "prompt": "Use case: identity-preserve / premium game key art redesign. Input 1 is the old FLAME lobby scene and a loose composition/theme reference ONLY: its lumpy sword, muddy armor, missing pet accessories and granular texture are defects to REPLACE. Input 2 is the canonical black cat design reference; input 3 is the canonical raven design reference. Rebuild this as exceptionally high-quality sharp dark fantasy AAA game key art, physically credible sculpted metal and cinematic lighting, not an oil painting. Output a high-resolution 3072x2048 landscape 3:2 image, edge to edge, composed to also crop to the LEFT 70 percent as a nearly-square lobby panel. Keep all three subjects entirely within left 70%, with comfortable clearances. Full-body powerful black armored knight kneeling on ONE knee, leaning both anatomically correct armored hands on the pommel of a planted gigantic sword. Helmet fully closed. Sword is the centerpiece: a REAL FORGED STEEL broad straight double-edged greatsword, coherent symmetric silhouette, perfectly straight uninterrupted cutting edges from guard to a clean tapered point, flat planar blade faces with a subtle precise fuller, uniform controlled silver-grey bevel highlights. NO jagged edges, no rock-like bumps, no black melted blade, no serrations, no decoration on the cutting edges, no crooked geometry. Blade contrasts clearly with the armor. Armor: deliberate layered blackened steel plates, individually readable overlaps and beveled edges, coherent construction, restrained fine directional scuffs and satin metal response, not piles of thorns or melted lumps. Sharp foreground focus and fine material definition, NOT oversharpened/noisy. Dark red cloth cloak has clear woven fabric and broad folds, distinct from metal. At lower left a proud black cat with glowing violet eyes, wearing the CLEARLY VISIBLE intricate dark silver chained collar with a faceted violet diamond amulet exactly inspired by input2. Cat's face, whiskers, paws, fur direction and collar are carefully resolved. On warrior's LEFT shoulder a black raven with amber-orange eye, wearing the CLEARLY VISIBLE draped silver chain necklace and violet gemstone amulet from input3. The raven is turned three-quarter toward camera so necklace is visible on chest. Well-separated feathers and elegant beak. All pet jewelry should be readable, not tiny vague dots or lost in black. Background: ominous crimson infernal sky, one coherent red lightning shaft behind knight, massive distant horned demon silhouette high on right, gothic citadel and restrained rocky ground. Atmospheric distant depth with softer background but sharp subjects. Preserve original oppressive dark red mood while providing readable neutral cool steel highlights on subjects. Highly polished art direction and anatomically convincing proportions. NO floating particles, no global grain, no stippling, no snow, no speckles, no screen overlays, no text, no logos, no borders. Do NOT erase genuine fur/feather/metal material details when avoiding noise. Quality priority: precise sword geometry, premium armor craftsmanship, consistent jewelry on BOTH pets, physically distinct materials and crisp high-resolution foreground.",
+      "output": "C:\\Users\\심도진\\.codex\\generated_images\\01a099a6-7b26-7e72-8d6c-f7d0d6215f28\\exec-d992183a-d150-49a9-bbee-3183eed5e86b.png",
+      "references": [
+        "output/lobby_image_review_20260913/originals/img/lording/rd1.png",
+        "assets/cutscene/images/10.png",
+        "assets/cutscene/images/11.png"
+      ],
+      "approved": true
+    },
+    {
+      "id": "frost",
+      "prompt": "Edit this newly redesigned game key art into another environment variant of the SAME lobby artwork. Preserve the exact knight identity, expertly constructed black plate armor, smooth perfectly straight double-edged steel sword silhouette and planar bevels, precise hilt, anatomically correct kneeling pose and hands, cat and raven designs, and sharp foreground material definition. BOTH pets MUST keep their intricate silver chain collars and clearly visible violet diamond pendants; cat eyes violet, raven eye amber. Keep all subjects fully within left 70 percent, comfortable margins, entire artwork 3:2 edge-to-edge. Fine authentic directional metal scuffs, cloth weave, individual fur and feathers must remain resolved, not smeared, plastic or painterly. Do not add pointillism, floating particles, speckled grain, snow dots or gritty screen texture. NO text, NO watermark, NO borders. Request highest output resolution 3072x2048. Main change only: Replace the hellfire scene with an imposing icebound gothic realm. Blue slate clouds, towering frozen rock columns, distant ruined ice citadel and broad layered blue mist. Remove the horned demon and red lightning. Cold pale-blue key light with a restrained warm rim on the knight. Ground is clear frozen dark rock with coherent thin sheets of ice, not speckled snow. Keep the sword as straight clean forged steel, NO icicles or crust obstructing its edges. The same cloth cloak is dark burgundy with readable folds under cool lighting. Preserve foreground sharpness and the same camera framing.",
+      "output": "C:\\Users\\심도진\\.codex\\generated_images\\01a099a6-7b26-7e72-8d6c-f7d0d6215f28\\exec-fed7043d-8e0b-43e1-82b1-b44d61b5599b.png",
+      "references": [
+        "C:\\Users\\심도진\\.codex\\generated_images\\01a099a6-7b26-7e72-8d6c-f7d0d6215f28\\exec-d992183a-d150-49a9-bbee-3183eed5e86b.png"
+      ],
+      "approved": true
+    },
+    {
+      "id": "abyss",
+      "prompt": "Edit this newly redesigned game key art into another environment variant of the SAME lobby artwork. Preserve the exact knight identity, expertly constructed black plate armor, smooth perfectly straight double-edged steel sword silhouette and planar bevels, precise hilt, anatomically correct kneeling pose and hands, cat and raven designs, and sharp foreground material definition. BOTH pets MUST keep their intricate silver chain collars and clearly visible violet diamond pendants; cat eyes violet, raven eye amber. Keep all subjects fully within left 70 percent, comfortable margins, entire artwork 3:2 edge-to-edge. Fine authentic directional metal scuffs, cloth weave, individual fur and feathers must remain resolved, not smeared, plastic or painterly. Do not add pointillism, floating particles, speckled grain, snow dots or gritty screen texture. NO text, NO watermark, NO borders. Request highest output resolution 3072x2048. Main change only: Replace the red demon sky with an abyssal infernal ruin under dark burnt-orange storm clouds. Behind the knight on far left rises a monumental chained gothic tower containing one coherent blazing orange circular portal, other dark linked towers recede on right, small lava channels below, oppressive dark atmosphere. Remove the horned demon and red lightning. Amber side light and neutral silver highlights keep knight and sword sharply readable. Same burgundy cloth cloak. Maintain impeccable blade edge geometry and BOTH necklaces, detailed cat fur and raven feathers.",
+      "output": "C:\\Users\\심도진\\.codex\\generated_images\\01a099a6-7b26-7e72-8d6c-f7d0d6215f28\\exec-d7e0b706-1efa-4d0c-a016-a524d2fb035c.png",
+      "references": [
+        "C:\\Users\\심도진\\.codex\\generated_images\\01a099a6-7b26-7e72-8d6c-f7d0d6215f28\\exec-d992183a-d150-49a9-bbee-3183eed5e86b.png"
+      ],
+      "approved": true
+    }
+  ],
+  "applied": [
+    {
+      "path": "assets/lobby/lobby_bg_flame.png",
+      "size": [
+        1536,
+        1024
+      ],
+      "bytes": 2749418,
+      "sha256": "3fc09ed70d8566c013eee65c55c627464493422c6756554ece897e8722791430"
+    },
+    {
+      "path": "img/lording/rd1.png",
+      "size": [
+        1536,
+        1024
+      ],
+      "bytes": 2749418,
+      "sha256": "3fc09ed70d8566c013eee65c55c627464493422c6756554ece897e8722791430"
+    },
+    {
+      "path": "assets/lobby/lobby_bg_frost.png",
+      "size": [
+        1536,
+        1024
+      ],
+      "bytes": 3172044,
+      "sha256": "e1446cc81aa5aedf03e7ae17d4e8e86698bb5844c3414b9aca97d3f51ff98a12"
+    },
+    {
+      "path": "img/lording/rd17.png",
+      "size": [
+        1536,
+        1024
+      ],
+      "bytes": 3172044,
+      "sha256": "e1446cc81aa5aedf03e7ae17d4e8e86698bb5844c3414b9aca97d3f51ff98a12"
+    },
+    {
+      "path": "assets/lobby/lobby_bg_abyss.png",
+      "size": [
+        1536,
+        1024
+      ],
+      "bytes": 2745961,
+      "sha256": "bdd9a1fb38ca78f0871b9c7ad13672920a8332dcab3c2ec162c09968edd01d79"
+    },
+    {
+      "path": "img/lording/rd6.png",
+      "size": [
+        1536,
+        1024
+      ],
+      "bytes": 2745961,
+      "sha256": "bdd9a1fb38ca78f0871b9c7ad13672920a8332dcab3c2ec162c09968edd01d79"
+    }
+  ]
+}

@@ -11,7 +11,7 @@
 | 항목 | 현행 계약 |
 |---|---|
 | 주 기준 | `assets/charselect/warrior_cut.png`의 현재 전사 전신 |
-| 보조 기준 | `assets/charselect/poster_idle_warrior_higgsfield.jpg`의 캐릭터 선택 화면 |
+| 보조 기준 | `assets/charselect/poster_idle_warrior_higgsfield_4k.jpg`의 캐릭터 선택 화면 (2026-09-13 기존 포스터/영상의 Topaz 4K 복원, 동일 인물·구도) |
 | 머리·얼굴 | 짧고 헝클어진 흑발, 기존 전신 원화의 각진 눈썹·코·턱과 성인 남성 비율 |
 | 체격·갑옷 | 같은 운동형 체격, 마모된 흑철 겹판 갑옷·각진 분절 견갑·장갑·부츠. W10의 별도 해골형 견갑/무릎 장식 제거 |
 | 망토 | 어두운 붉은 스카프와 찢어진 붉은 망토. W09의 검회색 망토를 교정 |

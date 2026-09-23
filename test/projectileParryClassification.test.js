@@ -39,21 +39,28 @@ test('spawn, render, and Q/E parry routing all consume the same stored class', (
   assert.match(gameHtml, /parryClass:''/, 'projectile pool must own an explicit class field');
   assert.match(gameHtml, /p\.parryClass=_projectileParryClass\(p\)/,
     'spawn must freeze the classification after all creation flags are set');
-  assert.match(gameHtml, /if\(p\.redBean&&_projectileParryClass\(p\)==='physical'\)/,
-    'only physical redBean shots may use the mouth visual');
+  assert.match(gameHtml, /if\(_projectileParryClass\(p\)==='physical'\)/,
+    'all physical flying variants use the mouth visual through stored classification');
   assert.match(gameHtml, /const _physicalRed=p\.redBean&&_projectileParryClass\(p\)==='physical';/,
     'physical redBean glow must be keyed from the shared class instead of its red skin flag');
-  assert.match(gameHtml, /X\.filter='grayscale\(1\) brightness\(1\.65\) contrast\(1\.25\)'/,
-    'the physical redBean mouth must render in the gray E-only palette');
+  assert.match(extractFunction('_drawPhysMouth'), /X\.drawImage\(_physMouthImg,/,
+    'physical mouth must preserve the original sprite colors');
   assert.match(gameHtml, /const _parryClass=_projectileParryClass\(p\);/,
     'collision handling must read the same classification');
   assert.match(gameHtml, /if\(_qParryActive&&_parryClass==='magic'\)/,
     'Q must reflect magic only');
-  assert.match(gameHtml, /const _pcPhysical=e\._projChargeBean==='normal'&&e\.el===EL\.P;/,
-    'the fire-red charge telegraph must not impersonate a physical white E projectile');
+  assert.match(gameHtml, /const _pcPhysical=_projectileParryClass\(\{el:e\.el,parryClass:e\._projChargeParryClass\}\)===\u0027physical\u0027;/,
+    'every E-physical charge telegraph, including special physical shots, must use the white ring');
   const trapUpdate = gameHtml.slice(gameHtml.indexOf('// 덫(16:덫사도)'), gameHtml.indexOf('// 차원 균열(98:균열체)'));
   assert.doesNotMatch(trapUpdate, /projs\[pw\+\+\]=p;continue;/,
     'a Q-parryable trap must reach the common magic-Q collision route');
+});
+
+test('ground eel blood-eye warning is unmistakably physical and names E parry', () => {
+  const eelDraw = extractFunction('_wmDraw');
+  assert.match(eelDraw, /X\.strokeStyle='#ffffff'/);
+  assert.match(eelDraw, /혈안탄 예고 · 물리탄 · E 패링/);
+  assert.match(eelDraw, /X\.globalAlpha=1;X\.strokeStyle='#ffffff'/);
 });
 
 test('homing profile follows source class where a shared skin used to override it', () => {
@@ -64,9 +71,9 @@ test('homing profile follows source class where a shared skin used to override i
     return _enemyHomingTurnRate;
   `)();
 
-  assert.equal(turnRate({ el: 1, redBean: true }), .0262, 'fire redBean keeps the magic homing profile');
-  assert.equal(turnRate({ el: 0, redBean: true }), .00436332, 'physical redBean keeps the physical homing profile');
-  assert.equal(turnRate({ el: 1, titanEye: true }), .00436332, 'fire-colored titan eye remains physical');
+  assert.equal(turnRate({ el: 1, redBean: true }), .0131, 'fire redBean keeps the magic homing profile');
+  assert.equal(turnRate({ el: 0, redBean: true }), .00218166, 'physical redBean keeps the physical homing profile');
+  assert.equal(turnRate({ el: 1, titanEye: true }), .00218166, 'fire-colored titan eye remains physical');
 });
 
 test('peace-shield Q routing accepts magic red comets by parry class', () => {

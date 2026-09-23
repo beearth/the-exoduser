@@ -1,3 +1,5 @@
+> **2026-09-12 최신 변경:** 사용자 요청으로 CH1-1 시작 철창문 `m_cage_gate(103,188,scale1.2)` 배치를 제거했다. 해당 문 렌더·충돌 모두 제거, authored62/runtime63, hand collision21/total22. 아래의 START 성문·63/64·22/23 수치는 제거 이전 기록이다. 북쪽 보스 게이트와 다른 스테이지 문은 유지한다.
+
 # LEVEL DESIGN RULES SSOT — EXODUSER: HELL LORD
 
 > **역할**: 모든 맵/레벨의 공간 설계 규칙. PLAY/RIM/OUTER, 길·전투장 비율, 전투구역 요구조건, 사이드포켓, 미니보스, 보스구역, 관문, 시야 유도, 외곽 스케일, 가독성, 금지 패턴.

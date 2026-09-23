@@ -1,0 +1,501 @@
+{
+  "method": "Normal difficulty(index5), stage0, seeded(910) starter T0 white gear, no invested stats/passives/enhancements, non-critical direct hits; fire=direct+60% splash, poison/regen/misses excluded. Skill level alternatives are separate scenarios.",
+  "gear": {
+    "weapon": {
+      "id": 1789048036107.8877,
+      "slot": "weapon",
+      "el": 0,
+      "rarity": 0,
+      "tier": 0,
+      "name": "녹슨 검",
+      "emoji": "⚔️",
+      "wtype": "sword",
+      "atk": 17,
+      "spd": 0.45,
+      "wStCost": 8,
+      "wArcW": 0.95,
+      "wRange": 47,
+      "wStagger": 8,
+      "bonusRange": 0,
+      "affixes": [],
+      "_implicitStat": "_iAtkPct",
+      "_implicitVal": 14.85,
+      "_implicitKo": "공격력 +X%",
+      "legendarySpecial": null,
+      "uniqueSpecial": null,
+      "itemLv": 0,
+      "reqLv": 0,
+      "socketCount": 1,
+      "crystals": [
+        null
+      ]
+    },
+    "helmet": {
+      "id": 1789048036107.3606,
+      "slot": "helmet",
+      "el": 0,
+      "rarity": 0,
+      "tier": 0,
+      "name": "낡은 머리띠",
+      "emoji": "⛑️",
+      "atk": 23,
+      "def": 21,
+      "beamDmg": 1.5,
+      "elements": [
+        {
+          "el": 0,
+          "dmg": 12
+        }
+      ],
+      "bonusRange": 1,
+      "affixes": [],
+      "_implicitStat": "_iMaxHP",
+      "_implicitVal": 24.04,
+      "_implicitKo": "최대 HP +X",
+      "legendarySpecial": null,
+      "uniqueSpecial": null,
+      "itemLv": 0,
+      "reqLv": 0,
+      "socketCount": 2,
+      "crystals": [
+        null,
+        null
+      ]
+    },
+    "bow": {
+      "id": 1789048036107.2615,
+      "slot": "bow",
+      "el": 0,
+      "rarity": 0,
+      "tier": 0,
+      "name": "낡은 석궁",
+      "emoji": "⚙️",
+      "btype": "crossbow",
+      "atk": 32,
+      "bowSpd": 1,
+      "bowStCost": 8,
+      "bowRange": 813,
+      "bowProjSpd": 22,
+      "bonusRange": 1,
+      "bowPierce": 0.02,
+      "affixes": [],
+      "_implicitStat": "_iPierce",
+      "_implicitVal": 13.9,
+      "_implicitKo": "관통 확률 +X%",
+      "legendarySpecial": null,
+      "uniqueSpecial": null,
+      "itemLv": 0,
+      "reqLv": 0,
+      "socketCount": 1,
+      "crystals": [
+        null
+      ]
+    }
+  },
+  "rows": [
+    {
+      "lv": 1,
+      "skillLv": 1,
+      "ref": {
+        "melee": 32,
+        "magic": 38,
+        "bow": 47
+      },
+      "hp": 875,
+      "shield": 875,
+      "actual": {
+        "ki": 1881,
+        "fire": 705,
+        "fireSplash": 423,
+        "swing": 197,
+        "bow": 153
+      },
+      "hits": {
+        "ki": 1,
+        "fire": 2,
+        "swing": 9,
+        "bow": 12
+      },
+      "anglerHp": 64500,
+      "fireDevilHp": 21500,
+      "player": {
+        "hp": 494,
+        "mp": 244,
+        "st": 302
+      }
+    },
+    {
+      "lv": 5,
+      "skillLv": 1,
+      "ref": {
+        "melee": 34,
+        "magic": 40,
+        "bow": 49
+      },
+      "hp": 3349,
+      "shield": 3349,
+      "actual": {
+        "ki": 1999,
+        "fire": 742,
+        "fireSplash": 445,
+        "swing": 197,
+        "bow": 156
+      },
+      "hits": {
+        "ki": 4,
+        "fire": 6,
+        "swing": 34,
+        "bow": 43
+      },
+      "anglerHp": 106500,
+      "fireDevilHp": 35500,
+      "player": {
+        "hp": 507,
+        "mp": 250,
+        "st": 304
+      }
+    },
+    {
+      "lv": 5,
+      "skillLv": 2,
+      "ref": {
+        "melee": 34,
+        "magic": 40,
+        "bow": 49
+      },
+      "hp": 3349,
+      "shield": 3349,
+      "actual": {
+        "ki": 2838,
+        "fire": 1039,
+        "fireSplash": 623,
+        "swing": 197,
+        "bow": 156
+      },
+      "hits": {
+        "ki": 3,
+        "fire": 5,
+        "swing": 34,
+        "bow": 43
+      },
+      "anglerHp": 106500,
+      "fireDevilHp": 35500,
+      "player": {
+        "hp": 507,
+        "mp": 250,
+        "st": 304
+      }
+    },
+    {
+      "lv": 10,
+      "skillLv": 1,
+      "ref": {
+        "melee": 37,
+        "magic": 43,
+        "bow": 52
+      },
+      "hp": 7283,
+      "shield": 7283,
+      "actual": {
+        "ki": 2175,
+        "fire": 798,
+        "fireSplash": 478,
+        "swing": 197,
+        "bow": 159
+      },
+      "hits": {
+        "ki": 7,
+        "fire": 12,
+        "swing": 74,
+        "bow": 92
+      },
+      "anglerHp": 159000,
+      "fireDevilHp": 53000,
+      "player": {
+        "hp": 526,
+        "mp": 259,
+        "st": 307
+      }
+    },
+    {
+      "lv": 10,
+      "skillLv": 3,
+      "ref": {
+        "melee": 37,
+        "magic": 43,
+        "bow": 52
+      },
+      "hp": 7283,
+      "shield": 7283,
+      "actual": {
+        "ki": 4003,
+        "fire": 1437,
+        "fireSplash": 862,
+        "swing": 197,
+        "bow": 159
+      },
+      "hits": {
+        "ki": 4,
+        "fire": 7,
+        "swing": 74,
+        "bow": 92
+      },
+      "anglerHp": 159000,
+      "fireDevilHp": 53000,
+      "player": {
+        "hp": 526,
+        "mp": 259,
+        "st": 307
+      }
+    },
+    {
+      "lv": 20,
+      "skillLv": 1,
+      "ref": {
+        "melee": 42,
+        "magic": 48,
+        "bow": 57
+      },
+      "hp": 21294,
+      "shield": 21294,
+      "actual": {
+        "ki": 2469,
+        "fire": 891,
+        "fireSplash": 534,
+        "swing": 197,
+        "bow": 165
+      },
+      "hits": {
+        "ki": 18,
+        "fire": 30,
+        "swing": 217,
+        "bow": 259
+      },
+      "anglerHp": 264000,
+      "fireDevilHp": 88000,
+      "player": {
+        "hp": 559,
+        "mp": 274,
+        "st": 312
+      }
+    },
+    {
+      "lv": 20,
+      "skillLv": 5,
+      "ref": {
+        "melee": 42,
+        "magic": 48,
+        "bow": 57
+      },
+      "hp": 21294,
+      "shield": 21294,
+      "actual": {
+        "ki": 6618,
+        "fire": 2317,
+        "fireSplash": 1390,
+        "swing": 197,
+        "bow": 165
+      },
+      "hits": {
+        "ki": 7,
+        "fire": 12,
+        "swing": 217,
+        "bow": 259
+      },
+      "anglerHp": 264000,
+      "fireDevilHp": 88000,
+      "player": {
+        "hp": 559,
+        "mp": 274,
+        "st": 312
+      }
+    },
+    {
+      "lv": 30,
+      "skillLv": 1,
+      "ref": {
+        "melee": 47,
+        "magic": 53,
+        "bow": 62
+      },
+      "hp": 49344,
+      "shield": 49344,
+      "actual": {
+        "ki": 2763,
+        "fire": 984,
+        "fireSplash": 590,
+        "swing": 197,
+        "bow": 174
+      },
+      "hits": {
+        "ki": 36,
+        "fire": 63,
+        "swing": 501,
+        "bow": 568
+      },
+      "anglerHp": 369000,
+      "fireDevilHp": 123000,
+      "player": {
+        "hp": 591,
+        "mp": 289,
+        "st": 317
+      }
+    },
+    {
+      "lv": 30,
+      "skillLv": 7,
+      "ref": {
+        "melee": 47,
+        "magic": 53,
+        "bow": 62
+      },
+      "hp": 49344,
+      "shield": 49344,
+      "actual": {
+        "ki": 9727,
+        "fire": 3345,
+        "fireSplash": 2007,
+        "swing": 197,
+        "bow": 174
+      },
+      "hits": {
+        "ki": 11,
+        "fire": 19,
+        "swing": 501,
+        "bow": 568
+      },
+      "anglerHp": 369000,
+      "fireDevilHp": 123000,
+      "player": {
+        "hp": 591,
+        "mp": 289,
+        "st": 317
+      }
+    },
+    {
+      "lv": 50,
+      "skillLv": 1,
+      "ref": {
+        "melee": 57,
+        "magic": 63,
+        "bow": 72
+      },
+      "hp": 175646,
+      "shield": 175646,
+      "actual": {
+        "ki": 3351,
+        "fire": 1169,
+        "fireSplash": 701,
+        "swing": 197,
+        "bow": 189
+      },
+      "hits": {
+        "ki": 105,
+        "fire": 188,
+        "swing": 1784,
+        "bow": 1859
+      },
+      "anglerHp": 579000,
+      "fireDevilHp": 193000,
+      "player": {
+        "hp": 656,
+        "mp": 319,
+        "st": 327
+      }
+    },
+    {
+      "lv": 50,
+      "skillLv": 11,
+      "ref": {
+        "melee": 57,
+        "magic": 63,
+        "bow": 72
+      },
+      "hp": 175646,
+      "shield": 175646,
+      "actual": {
+        "ki": 17428,
+        "fire": 5848,
+        "fireSplash": 3508,
+        "swing": 197,
+        "bow": 189
+      },
+      "hits": {
+        "ki": 21,
+        "fire": 38,
+        "swing": 1784,
+        "bow": 1859
+      },
+      "anglerHp": 579000,
+      "fireDevilHp": 193000,
+      "player": {
+        "hp": 656,
+        "mp": 319,
+        "st": 327
+      }
+    },
+    {
+      "lv": 100,
+      "skillLv": 1,
+      "ref": {
+        "melee": 82,
+        "magic": 88,
+        "bow": 97
+      },
+      "hp": 1228500,
+      "shield": 1228500,
+      "actual": {
+        "ki": 4821,
+        "fire": 1633,
+        "fireSplash": 979,
+        "swing": 197,
+        "bow": 225
+      },
+      "hits": {
+        "ki": 510,
+        "fire": 941,
+        "swing": 12473,
+        "bow": 10920
+      },
+      "anglerHp": 1104000,
+      "fireDevilHp": 368000,
+      "player": {
+        "hp": 817,
+        "mp": 394,
+        "st": 352
+      }
+    },
+    {
+      "lv": 100,
+      "skillLv": 20,
+      "ref": {
+        "melee": 82,
+        "magic": 88,
+        "bow": 97
+      },
+      "hp": 1228500,
+      "shield": 1228500,
+      "actual": {
+        "ki": 43297,
+        "fire": 14051,
+        "fireSplash": 8430,
+        "swing": 197,
+        "bow": 225
+      },
+      "hits": {
+        "ki": 57,
+        "fire": 110,
+        "swing": 12473,
+        "bow": 10920
+      },
+      "anglerHp": 1104000,
+      "fireDevilHp": 368000,
+      "player": {
+        "hp": 817,
+        "mp": 394,
+        "st": 352
+      }
+    }
+  ],
+  "errors": []
+}

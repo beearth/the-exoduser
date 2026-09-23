@@ -1,0 +1,852 @@
+[
+  {
+    "file": "parry-lesson.js",
+    "key": "마법탄 패링",
+    "en": "Parry magic projectiles"
+  },
+  {
+    "file": "parry-lesson.js",
+    "key": "물리탄 패링",
+    "en": "Parry physical projectiles"
+  },
+  {
+    "file": "parry-lesson.js",
+    "key": "Q 홀딩 · 다수 마법탄 패링",
+    "en": "Hold Q · Parry multiple magic projectiles"
+  },
+  {
+    "file": "parry-lesson.js",
+    "key": "E 홀딩 · 다수 물리탄 패링",
+    "en": "Hold E · Parry multiple physical projectiles"
+  },
+  {
+    "file": "parry-lesson.js",
+    "key": "Shift · 사슬 이동",
+    "en": "Shift · Chain movement"
+  },
+  {
+    "file": "parry-lesson.js",
+    "key": "방향키 + Space · 전격이동",
+    "en": "Direction + Space · Lightning Dash"
+  },
+  {
+    "file": "parry-lesson.js",
+    "key": "패링 · 분노 축적",
+    "en": "Parry · Build Rage"
+  },
+  {
+    "file": "parry-lesson.js",
+    "key": "Space · 분노 발동",
+    "en": "Space · Unleash Rage"
+  },
+  {
+    "file": "parry-lesson.js",
+    "key": "1-1 패링 튜토리얼",
+    "en": "1-1 Parry Tutorial"
+  },
+  {
+    "file": "parry-lesson.js",
+    "key": "WASD / 방향키 · 이동",
+    "en": "WASD / Arrow keys · Move"
+  },
+  {
+    "file": "parry-lesson.js",
+    "key": "좌클릭 · 적 3마리 처치",
+    "en": "Left click · Defeat 3 enemies"
+  },
+  {
+    "file": "parry-lesson.js",
+    "key": "우클릭 · 적 3마리 처치",
+    "en": "Right click · Defeat 3 enemies"
+  },
+  {
+    "file": "parry-lesson.js",
+    "key": "1 · 가시덫 설치 후 도망 · 10마리 처치",
+    "en": "1 · Place Spike Trap and retreat · Defeat 10 enemies"
+  },
+  {
+    "file": "parry-lesson.js",
+    "key": "키를 길게 눌러보세요",
+    "en": "Try holding the key"
+  },
+  {
+    "file": "parry-lesson.js",
+    "key": "홀딩 충전",
+    "en": "Hold charge"
+  },
+  {
+    "file": "parry-lesson.js",
+    "key": "분노 게이지",
+    "en": "Rage gauge"
+  },
+  {
+    "file": "parry-lesson.js",
+    "key": "아래 SPACE 슬롯을 확인하세요",
+    "en": "Check the SPACE slot below"
+  },
+  {
+    "file": "parry-lesson.js",
+    "key": "잠시 후 방향키를 떼고 SPACE만 누르세요.",
+    "en": "In a moment, release the direction keys and press SPACE only."
+  },
+  {
+    "file": "parry-lesson.js",
+    "key": "패링 실패 시 폭발 피해를 받습니다. 재시도하면 체력이 회복됩니다.",
+    "en": "A failed parry deals blast damage. Your health is restored for the next attempt."
+  },
+  {
+    "file": "parry-lesson.js",
+    "key": "연습 건너뛰기",
+    "en": "Skip practice"
+  },
+  {
+    "file": "parry-lesson.js",
+    "key": "연습 중",
+    "en": "Practicing"
+  },
+  {
+    "file": "parry-lesson.js",
+    "key": "성공",
+    "en": "Success"
+  },
+  {
+    "file": "parry-lesson.js",
+    "key": "일시정지",
+    "en": "Paused"
+  },
+  {
+    "file": "parry-lesson.js",
+    "key": "전투 준비 완료",
+    "en": "Ready for combat"
+  },
+  {
+    "file": "parry-lesson.js",
+    "key": "마법을 되돌려라",
+    "en": "Reflect the magic"
+  },
+  {
+    "file": "parry-lesson.js",
+    "key": "물리탄을 쳐내라",
+    "en": "Deflect physical projectiles"
+  },
+  {
+    "file": "parry-lesson.js",
+    "key": "보호막을 펼쳐라",
+    "en": "Raise your shield"
+  },
+  {
+    "file": "parry-lesson.js",
+    "key": "힘을 모아 쳐내라",
+    "en": "Charge and deflect"
+  },
+  {
+    "file": "parry-lesson.js",
+    "key": "사슬로 이동하라",
+    "en": "Move with your chain"
+  },
+  {
+    "file": "parry-lesson.js",
+    "key": "방향을 정해 이동하라",
+    "en": "Choose a direction and dash"
+  },
+  {
+    "file": "parry-lesson.js",
+    "key": "패링으로 분노를 채워라",
+    "en": "Build Rage by parrying"
+  },
+  {
+    "file": "parry-lesson.js",
+    "key": "분노를 폭발시켜라",
+    "en": "Unleash your Rage"
+  },
+  {
+    "file": "parry-lesson.js",
+    "key": "전투 기본 조작을 모두 익혔습니다.",
+    "en": "You have learned the basic combat controls."
+  },
+  {
+    "file": "parry-lesson.js",
+    "key": "이동할 곳에 마우스를 향하고 Shift를 눌렀다 떼세요. 사슬이 실제 발사되면 성공입니다.",
+    "en": "Point the mouse toward your destination, then press and release Shift. Successfully firing the chain completes this exercise."
+  },
+  {
+    "file": "parry-lesson.js",
+    "key": "WASD 또는 방향키를 누른 채 Space를 누르세요. 전격이동을 5번 발동하면 성공입니다.",
+    "en": "Hold WASD or an arrow key and press Space. Activate Lightning Dash 5 times to complete this exercise."
+  },
+  {
+    "file": "parry-lesson.js",
+    "key": "Q를 2초 동안 누른 뒤, 함께 날아오는 마법탄 10발이 가까워지면 떼세요. 한 번에 여러 발을 패링해 분노 100%를 채워보세요.",
+    "en": "Hold Q for 2 seconds, then release it as the 10 incoming magic projectiles approach. Parry several at once to fill Rage to 100%."
+  },
+  {
+    "file": "parry-lesson.js",
+    "key": "몬스터들이 주변을 둘러쌌습니다. 방향키에서 손을 떼고 Space만 눌러 분노 폭발로 한 번에 쓸어버리세요.",
+    "en": "Monsters surround you. Release the direction keys and press Space only to sweep them away with a Rage burst."
+  },
+  {
+    "file": "parry-lesson.js",
+    "key": "[{p0}]를 2초 동안 누르세요. 화염·물·암흑·번개·무지개탄을 보고 키를 떼어 한 번에 3발 이상 패링하세요. 홀딩 중 보호막은 피해를 일부 흡수하고 그로기를 막습니다. 피해를 완전히 막는 무적은 아닙니다.",
+    "en": "Hold [{p0}] for 2 seconds. Watch the fire, water, dark, lightning and rainbow projectiles, then release the key to parry at least 3 at once. While held, the shield absorbs some damage and prevents Groggy. It does not make you invulnerable."
+  },
+  {
+    "file": "parry-lesson.js",
+    "key": "[{p0}]를 누른 채 탄 쪽을 바라보세요. 이빨입탄·혈안탄·관통탄·물리 검기파·물리 환영검이 함께 날아옵니다. 3단계 충전 후 키를 떼어 5종 중 3발 이상 한 번에 쳐내세요. 풀차지 자동 발동도 인정합니다.",
+    "en": "Hold [{p0}] while facing the incoming projectiles. Tooth-mouth, blood-eye, piercing, physical sword-wave and physical phantom-sword projectiles arrive together. Charge to tier 3, then release to deflect at least 3 of the 5 at once. Automatic release at full charge also counts."
+  },
+  {
+    "file": "parry-lesson.js",
+    "key": "보라색 탄이 가까워지는 순간 [{p0}]를 누르세요. 너무 일찍 눌렀다면 떼고 다시 시도하세요.",
+    "en": "Press [{p0}] just as the purple projectile approaches. If you press too early, release the key and try again."
+  },
+  {
+    "file": "parry-lesson.js",
+    "key": "탄을 바라보고 [{p0}]를 짧게 눌렀다 떼세요. 길게 누르면 차징이 됩니다.",
+    "en": "Face the projectile, then briefly press and release [{p0}]. Holding the key charges the attack."
+  },
+  {
+    "file": "parry-lesson.js",
+    "key": "모든 연습 성공! 잠시 후 1-1 전투로 이어집니다.",
+    "en": "All exercises complete! Combat in 1-1 will resume shortly."
+  },
+  {
+    "file": "parry-lesson.js",
+    "key": "W / A / S / D 또는 클릭하여 시작",
+    "en": "Press W / A / S / D or click to start"
+  },
+  {
+    "file": "parry-lesson.js",
+    "key": "1 · 가시덫",
+    "en": "1 · Spike Trap"
+  },
+  {
+    "file": "parry-lesson.js",
+    "key": "좌클릭",
+    "en": "Left click"
+  },
+  {
+    "file": "parry-lesson.js",
+    "key": "우클릭",
+    "en": "Right click"
+  },
+  {
+    "file": "parry-lesson.js",
+    "key": "먼저 움직여보세요",
+    "en": "Try moving first"
+  },
+  {
+    "file": "parry-lesson.js",
+    "key": "무기를 휘둘러보세요",
+    "en": "Try swinging your weapon"
+  },
+  {
+    "file": "parry-lesson.js",
+    "key": "마법을 발사해보세요",
+    "en": "Try casting magic"
+  },
+  {
+    "file": "parry-lesson.js",
+    "key": "W 위 · A 왼쪽 · S 아래 · D 오른쪽. WASD 또는 방향키로 조금 걸어보세요. 이후 모든 실습에서도 이동할 수 있습니다.",
+    "en": "W up · A left · S down · D right. Walk a short distance using WASD or the arrow keys. You can also move during all later exercises."
+  },
+  {
+    "file": "parry-lesson.js",
+    "key": "마우스로 조준하고 좌클릭 기본공격 기검참으로 적 3마리를 처치하세요.",
+    "en": "Aim with the mouse and defeat 3 enemies using your left-click basic attack, Ki Slash."
+  },
+  {
+    "file": "parry-lesson.js",
+    "key": "마우스로 조준하고 우클릭 마법탄으로 적 3마리를 처치하세요.",
+    "en": "Aim with the mouse and defeat 3 enemies using right-click magic projectiles."
+  },
+  {
+    "file": "parry-lesson.js",
+    "key": "마법탄을 패링해 몬스터를 처치하세요",
+    "en": "Parry magic projectiles to defeat the monster"
+  },
+  {
+    "file": "parry-lesson.js",
+    "key": "물리탄을 패링해 몬스터를 처치하세요",
+    "en": "Parry physical projectiles to defeat the monster"
+  },
+  {
+    "file": "parry-lesson.js",
+    "key": "몬스터 주위의 링이 완성되면 탄이 발사됩니다. 링 색으로 탄 종류를 미리 예측하세요. 흰색 링은 물리탄(E), 속성색 링은 마법탄(Q)입니다. ",
+    "en": "The monster fires when the ring around it fills. The ring color previews the projectile type: white means physical (E); an elemental color means magic (Q). "
+  },
+  {
+    "file": "parry-lesson.js",
+    "key": "이번 보라색 링은 암흑 마법탄입니다. 탄이 가까워지면 [",
+    "en": "This purple ring signals a dark magic projectile. When it approaches, press ["
+  },
+  {
+    "file": "parry-lesson.js",
+    "key": "]로 패링하세요.",
+    "en": "] to parry."
+  },
+  {
+    "file": "parry-lesson.js",
+    "key": "이번 흰색 링은 물리탄입니다. 탄이 가까워지면 [",
+    "en": "This white ring signals a physical projectile. When it approaches, briefly press ["
+  },
+  {
+    "file": "parry-lesson.js",
+    "key": "]를 짧게 눌렀다 떼어 패링하세요.",
+    "en": "] and release to parry."
+  },
+  {
+    "file": "parry-lesson.js",
+    "key": "패링 성공! 반사탄으로 발사한 몬스터를 처치하면 완료됩니다.",
+    "en": "Parry successful! Defeat the shooter with the reflected projectile to complete this step."
+  },
+  {
+    "file": "parry-lesson.js",
+    "key": "패링으로 탄을 되돌려 발사한 몬스터까지 처치하세요.",
+    "en": "Reflect the projectile and defeat the monster that fired it."
+  },
+  {
+    "file": "parry-lesson.js",
+    "key": "기검참으로 적 3마리를 처치하세요",
+    "en": "Defeat 3 enemies with Ki Slash"
+  },
+  {
+    "file": "parry-lesson.js",
+    "key": "마법으로 적 3마리를 처치하세요",
+    "en": "Defeat 3 enemies with magic"
+  },
+  {
+    "file": "parry-lesson.js",
+    "key": "{p0}\n처치 {p1}/3 · 실제로 처치해야 완료됩니다.",
+    "en": "{p0}\nDefeated {p1}/3 · Only actual defeats count."
+  },
+  {
+    "file": "parry-lesson.js",
+    "key": "기검참은 기본공격입니다. 적을 마우스로 조준하고 좌클릭으로 검기를 날리세요.",
+    "en": "Ki Slash is your basic attack. Aim at an enemy with the mouse and left-click to launch a sword wave."
+  },
+  {
+    "file": "parry-lesson.js",
+    "key": "적을 마우스로 조준하고 우클릭으로 마법탄을 발사하세요.",
+    "en": "Aim at an enemy with the mouse and right-click to fire a magic projectile."
+  },
+  {
+    "file": "parry-lesson.js",
+    "key": "붙으면 가시덫을 깔고 도망치세요",
+    "en": "Place a Spike Trap and retreat when enemies close in"
+  },
+  {
+    "file": "parry-lesson.js",
+    "key": "몬스터 10마리가 쫓아옵니다. 가까이 붙으면 1번으로 발밑에 가시덫을 깔고, WASD / 방향키로 도망치세요. 덫 안의 적은 느려지고 지속 피해로 쓰러집니다.\n",
+    "en": "10 monsters are chasing you. When they approach, press 1 to place a Spike Trap at your feet, then retreat with WASD / arrow keys. Enemies inside the trap are slowed and take damage over time.\n"
+  },
+  {
+    "file": "parry-lesson.js",
+    "key": "{p0} 가시덫 설치 · {p1} 설치 후 이동 · 처치 {p2}/10",
+    "en": "{p0} Spike Trap placed · {p1} Moved after placement · Defeated {p2}/10"
+  },
+  {
+    "file": "parry-lesson.js",
+    "key": "WASD 또는 방향키를 누른 채 Space로 전격이동을 5번 사용하세요. 이동이 끝나면 Space를 떼고 다시 누르세요.\n전격이동 성공 ",
+    "en": "Hold WASD or an arrow key and press Space to use Lightning Dash 5 times. Release Space after each dash, then press it again.\nSuccessful dashes "
+  },
+  {
+    "file": "parry-lesson.js",
+    "key": "{p0}단 발사 · 기동력 −{p1} · 이동이 끝나면 Shift를 놓으세요.",
+    "en": "Tier {p0} launched · Mobility −{p1} · Release Shift when movement ends."
+  },
+  {
+    "file": "parry-lesson.js",
+    "key": "{p0}단 이동 완료 · 기동력 −{p1}",
+    "en": "Tier {p0} movement complete · Mobility −{p1}"
+  },
+  {
+    "file": "parry-lesson.js",
+    "key": "{p0}단으로 발사했습니다. {p1}단을 다시 연습하세요.",
+    "en": "You launched at tier {p0}. Practice tier {p1} again."
+  },
+  {
+    "file": "parry-lesson.js",
+    "key": "이동이 막히거나 취소됐습니다. 열린 바닥을 가리켜 다시 시도하세요.",
+    "en": "Movement was blocked or cancelled. Point toward open ground and try again."
+  },
+  {
+    "file": "parry-lesson.js",
+    "key": "왼쪽 Shift를 {p0}초 전에 짧게 눌렀다 놓으세요.",
+    "en": "Briefly press and release Left Shift before {p0} seconds."
+  },
+  {
+    "file": "parry-lesson.js",
+    "key": "왼쪽 Shift를 {p0}초 이상, {p1}초 전에 놓으세요.",
+    "en": "Hold Left Shift for at least {p0} seconds, then release before {p1} seconds."
+  },
+  {
+    "file": "parry-lesson.js",
+    "key": "왼쪽 Shift를 {p0}초 이상 누르면 자동 발사됩니다.",
+    "en": "Hold Left Shift for at least {p0} seconds to launch automatically."
+  },
+  {
+    "file": "parry-lesson.js",
+    "key": "{p0} {p1}단",
+    "en": "{p0} Tier {p1}"
+  },
+  {
+    "file": "parry-lesson.js",
+    "key": "1·2·3단 사슬이동을 모두 완료했습니다.",
+    "en": "All three chain movement tiers are complete."
+  },
+  {
+    "file": "parry-lesson.js",
+    "key": "지금은 {p0}단 연습입니다. 마우스로 열린 바닥을 가리키세요. {p1}",
+    "en": "Practice tier {p0} now. Point the mouse toward open ground. {p1}"
+  },
+  {
+    "file": "parry-lesson.js",
+    "key": "현재 {p0}단 충전 중 · 목표 {p1}단",
+    "en": "Charging tier {p0} · Target tier {p1}"
+  },
+  {
+    "file": "parry-lesson.js",
+    "key": "모든 단계 완료",
+    "en": "All tiers complete"
+  },
+  {
+    "file": "parry-lesson.js",
+    "key": "{p0}단 준비 · 1단 탭 / 2단 {p1}초 / 3단 {p2}초 자동",
+    "en": "Prepare tier {p0} · Tier 1: tap / Tier 2: {p1}s / Tier 3: auto at {p2}s"
+  },
+  {
+    "file": "parry-lesson.js",
+    "key": "한 번에 패링 · {p0}/3발",
+    "en": "Parried in one release · {p0}/3 projectiles"
+  },
+  {
+    "file": "parry-lesson.js",
+    "key": "패링 실패! -{p0} HP",
+    "en": "Parry failed! -{p0} HP"
+  },
+  {
+    "file": "parry-lesson.js",
+    "key": "패링 실패! 탄에 맞았습니다. 체력을 회복하고 다시 연습합니다.",
+    "en": "Parry failed! The projectile hit you. Your health will recover before you try again."
+  },
+  {
+    "file": "parry-lesson.js",
+    "key": "다시 시도 · 한 번의 해제로 3발 이상",
+    "en": "Try again · At least 3 in one release"
+  },
+  {
+    "file": "parry-lesson.js",
+    "key": "[{p0}]를 다시 길게 누르세요. 충전이 끝나고 탄이 가까워지면 키를 떼세요.",
+    "en": "Hold [{p0}] again. Release after charging when the projectiles approach."
+  },
+  {
+    "file": "parry-lesson.js",
+    "key": "지금 키를 떼세요 · 3발 이상 패링",
+    "en": "Release now · Parry at least 3 projectiles"
+  },
+  {
+    "file": "parry-lesson.js",
+    "key": "충전 {p0}% · 한 번에 3발 이상",
+    "en": "Charge {p0}% · At least 3 at once"
+  },
+  {
+    "file": "parry-lesson.js",
+    "key": "패링으로 축적한 분노 · {p0}%",
+    "en": "Rage gained by parrying · {p0}%"
+  },
+  {
+    "file": "parry-lesson.js",
+    "key": "분노 {p0}%",
+    "en": "Rage {p0}%"
+  },
+  {
+    "file": "resource-practice.js",
+    "key": "Space · 지옥강타",
+    "en": "Space · Hell Slam"
+  },
+  {
+    "file": "resource-practice.js",
+    "key": "Shift · 사슬 탈출",
+    "en": "Shift · Chain escape"
+  },
+  {
+    "file": "resource-practice.js",
+    "key": "방향키 + Space · 전격이동",
+    "en": "Direction + Space · Lightning Dash"
+  },
+  {
+    "file": "resource-practice.js",
+    "key": "왼쪽 Ctrl · 유령걸음",
+    "en": "Left Ctrl · Ghost Walk"
+  },
+  {
+    "file": "resource-practice.js",
+    "key": "Q 보호막 · 파란 마력(MP)",
+    "en": "Q shield · Blue Mana (MP)"
+  },
+  {
+    "file": "resource-practice.js",
+    "key": "Q로 보호막을 펼쳐 파란 마력(MP) 소모를 확인하세요. 홀딩 중에도 소모되며, 마법탄 패링에 성공하면 자원이 회복됩니다.",
+    "en": "Raise your shield with Q and watch your blue Mana (MP) decrease. Holding it also drains Mana; successfully parrying magic projectiles restores resources."
+  },
+  {
+    "file": "resource-practice.js",
+    "key": "E 검격 · 스태미나(ST)",
+    "en": "E sword strike · Stamina (ST)"
+  },
+  {
+    "file": "resource-practice.js",
+    "key": "E를 짧게 눌렀다 떼어 검격을 사용하세요. 스태미나는 E 검격 같은 신체 기술에 쓰입니다.",
+    "en": "Briefly press and release E to use a sword strike. Stamina fuels physical techniques such as the E strike."
+  },
+  {
+    "file": "resource-practice.js",
+    "key": "Shift 사슬 · 노란 기동력 + ST",
+    "en": "Shift chain · Yellow Mobility + ST"
+  },
+  {
+    "file": "resource-practice.js",
+    "key": "마우스로 열린 바닥을 가리키고 왼쪽 Shift를 눌렀다 떼세요. 사슬 발사로 노란 기동력과 스태미나가 함께 줄어듭니다.",
+    "en": "Point the mouse toward open ground, then press and release Left Shift. Firing the chain consumes both yellow Mobility and Stamina."
+  },
+  {
+    "file": "resource-practice.js",
+    "key": "자원 소개 · 해골눈",
+    "en": "Resource basics · Skull eyes"
+  },
+  {
+    "file": "resource-practice.js",
+    "key": "Q 패링 · 정신력 회복",
+    "en": "Q parry · Restore Poise"
+  },
+  {
+    "file": "resource-practice.js",
+    "key": "4회 피격 · 그로기",
+    "en": "Take 4 hits · Groggy"
+  },
+  {
+    "file": "resource-practice.js",
+    "key": "그로기 탈출 · 4가지 방법",
+    "en": "Escape Groggy · 4 methods"
+  },
+  {
+    "file": "resource-practice.js",
+    "key": "Shift · 사슬 1·2·3단",
+    "en": "Shift · Chain tiers 1, 2 and 3"
+  },
+  {
+    "file": "resource-practice.js",
+    "key": "자원 실습 · Q·E·Shift",
+    "en": "Resource practice · Q, E and Shift"
+  },
+  {
+    "file": "resource-practice.js",
+    "key": "방향키 + Space · 마력·기동력 소모",
+    "en": "Direction + Space · Mana and Mobility costs"
+  },
+  {
+    "file": "resource-practice.js",
+    "key": "Q 홀딩 · 흡수와 그로기 저항",
+    "en": "Hold Q · Absorption and Groggy resistance"
+  },
+  {
+    "file": "resource-practice.js",
+    "key": "왼쪽 Ctrl · 스킬 발동",
+    "en": "Left Ctrl · Activate a skill"
+  },
+  {
+    "file": "resource-practice.js",
+    "key": "Q 패링 · 자원 회복",
+    "en": "Q parry · Restore resources"
+  },
+  {
+    "file": "resource-practice.js",
+    "key": "F · 회복의 영역",
+    "en": "F · Holy Dome"
+  },
+  {
+    "file": "resource-practice.js",
+    "key": "해골눈 4개는 정신력입니다. 피격 −1, 패링 +1, 0이면 그로기입니다. Q·E·Shift와 자원 짝을 살펴본 뒤, 탄을 한 번 맞아보세요.",
+    "en": "The 4 skull eyes represent Poise. Taking a hit costs 1; parrying restores 1. At 0, you become Groggy. Check the resources used by Q, E and Shift, then let one projectile hit you."
+  },
+  {
+    "file": "resource-practice.js",
+    "key": "다가오는 마법탄을 Q로 패링하세요. 실제 패링에 성공하면 꺼진 해골눈 1개가 다시 켜집니다.",
+    "en": "Parry the incoming magic projectile with Q. A successful parry lights up one depleted skull eye."
+  },
+  {
+    "file": "resource-practice.js",
+    "key": "4발이 연속으로 날아옵니다. 화살표가 가리키는 해골눈이 피격마다 4 → 3 → 2 → 1 → 0으로 줄어들고 그로기에 걸리는 것을 확인하세요.",
+    "en": "4 projectiles arrive in succession. Watch the skull eyes marked by the arrows decrease with each hit: 4 → 3 → 2 → 1 → 0, leaving you Groggy."
+  },
+  {
+    "file": "resource-practice.js",
+    "key": "Space 지옥강타 · Shift 사슬 · 방향키 + Space 전격이동 · 왼쪽 Ctrl 유령걸음으로 순서와 상관없이 각각 한 번씩 탈출하세요. 이미 성공한 방법은 중복 집계하지 않습니다. 탈출 후 그로기와 자원·쿨타임을 다시 준비합니다. Space 지옥강타는 방향키를 떼고 누르세요.",
+    "en": "Escape once with each method, in any order: Space for Hell Slam, Shift for the chain, direction + Space for Lightning Dash, and Left Ctrl for Ghost Walk. Repeating a completed method does not count. Groggy, resources and cooldowns reset for the next attempt. Release direction keys before using Space for Hell Slam."
+  },
+  {
+    "file": "resource-practice.js",
+    "key": "마우스로 이동할 곳을 가리키고 Shift를 누르세요. 오래 누를수록 더 멀리 이동하며 기동력과 스태미나 소모가 커집니다. 1·2단은 키를 떼면 발사하고, 3단 충전이 끝나면 자동 발사합니다. 아래 단계별 수치를 확인하세요.",
+    "en": "Point the mouse toward your destination and hold Shift. A longer hold moves you farther and costs more Mobility and Stamina. Release the key to launch tiers 1 and 2; tier 3 launches automatically at full charge. Check the values for each tier below."
+  },
+  {
+    "file": "resource-practice.js",
+    "key": "Q 보호막 → E 검격 → Shift 사슬 순서로 기술을 사용하며, 각 기술이 쓰는 자원을 확인하세요. 세 짝을 모두 직접 실습해야 완료됩니다.",
+    "en": "Use the Q shield → E sword strike → Shift chain in order and observe each resource cost. You must perform all three pairs to complete the exercise."
+  },
+  {
+    "file": "resource-practice.js",
+    "key": "방향키 또는 WASD를 누른 채 Space로 전격이동을 5번 사용하세요. 매번 노란 기동력과 파란 마력이 함께 줄어드는 것을 확인하세요. 이동이 끝나면 Space를 떼고 다시 누르세요.",
+    "en": "Hold an arrow key or WASD and use Space for Lightning Dash 5 times. Watch both yellow Mobility and blue Mana decrease each time. Release Space after each dash before pressing it again."
+  },
+  {
+    "file": "resource-practice.js",
+    "key": "보호막의 기본 피해 흡수율은 30%입니다. 수호신 패시브는 레벨당 +2%p, 견갑의 블록흡수 옵션은 +4~22%p를 더하며 합산 최대 50%입니다. 이번 실습처럼 패링 타이밍 이후 계속 홀딩하면 흡수율은 절반(기본 15%, 최대 25%), 남은 피해는 1.3배가 됩니다. 홀딩 중에는 마지막 해골눈을 지켜 그로기를 막지만 HP 피해는 받습니다. Q를 떼지 말고 3발 모두 받아내세요.",
+    "en": "Base shield absorption is 30%. Guardian Spirit adds 2 percentage points per level; the pauldron Block Absorption affix adds 4–22 points, up to 50% total. Continuing to hold past the parry window, as in this exercise, halves absorption (15% base, 25% maximum) and multiplies the remaining damage by 1.3. Holding preserves the last skull eye and prevents Groggy, but you still lose HP. Keep holding Q through all 3 hits."
+  },
+  {
+    "file": "resource-practice.js",
+    "key": "왼쪽 Ctrl을 눌러 유령걸음을 발동하세요. 이번 실습에서는 유령걸음을 제공하며, 발동 후 Ctrl 슬롯의 쿨타임도 확인하세요.",
+    "en": "Press Left Ctrl to activate Ghost Walk. It is provided for this exercise. After activation, check the cooldown on the Ctrl slot."
+  },
+  {
+    "file": "resource-practice.js",
+    "key": "줄어든 체력(HP)·스태미나·마력·기동력을 확인하고 Q로 탄을 2회 패링하세요. 매번 실제 패링 보상으로 네 자원이 모두 회복되어야 합니다. 첫 성공 후 자원을 다시 낮춰 두 번째 실습을 준비합니다.",
+    "en": "Check your reduced HP, Stamina, Mana and Mobility, then parry 2 projectiles with Q. Each successful parry must restore all four resources through the actual parry reward. After the first success, resources are lowered again for the second attempt."
+  },
+  {
+    "file": "resource-practice.js",
+    "key": "영역스킬은 영역 안에서 각종 버프를 주거나 적에게 너프(약화 효과)를 부여하는 기술입니다. 기본인 회복의 영역부터 사용해보세요. F를 눌러 현재 위치에 설치한 뒤, 영역 안에 머물며 HP·MP·ST가 회복되는 것을 확인하세요. 회복의 영역은 자원 회복과 다른 스킬의 쿨다운 회복을 돕습니다.",
+    "en": "Area skills grant buffs inside their zone or weaken enemies. Try the basic Holy Dome first. Press F to place it at your location, then stay inside and watch HP, MP and ST recover. Holy Dome helps restore resources and recover other skill cooldowns."
+  },
+  {
+    "file": "resource-practice.js",
+    "key": "영역이 사라졌습니다. F로 다시 설치하고 안에 머무르세요.",
+    "en": "The zone has expired. Press F to place it again and stay inside."
+  },
+  {
+    "file": "resource-practice.js",
+    "key": "회복의 영역 안에서 HP·MP·ST 회복 확인!",
+    "en": "HP, MP and ST recovery confirmed inside Holy Dome!"
+  },
+  {
+    "file": "resource-practice.js",
+    "key": "자유 순서 · 체크되지 않은 탈출기를 사용하세요.",
+    "en": "Any order · Use an escape method you have not checked off."
+  },
+  {
+    "file": "resource-practice.js",
+    "key": "현재 목표: ",
+    "en": "Current target: "
+  },
+  {
+    "file": "resource-practice.js",
+    "key": " 확인! 연습용 소모: 최대치의 최소 50%",
+    "en": " confirmed! Practice cost: at least 50% of maximum."
+  },
+  {
+    "file": "resource-practice.js",
+    "key": " 키를 놓으세요. 잠시 후 다음 기술을 준비합니다.",
+    "en": " Release the key. The next technique will be ready shortly."
+  },
+  {
+    "file": "resource-practice.js",
+    "key": "2단계 · 준비",
+    "en": "Chapter 2 · Ready"
+  },
+  {
+    "file": "resource-practice.js",
+    "key": "직접 실습",
+    "en": "Hands-on practice"
+  },
+  {
+    "file": "resource-practice.js",
+    "key": "2단계 완료",
+    "en": "Chapter 2 complete"
+  },
+  {
+    "file": "resource-practice.js",
+    "key": "성공",
+    "en": "Success"
+  },
+  {
+    "file": "resource-practice.js",
+    "key": "피격",
+    "en": "Take a hit"
+  },
+  {
+    "file": "resource-practice.js",
+    "key": "탈출기",
+    "en": "Escape skill"
+  },
+  {
+    "file": "resource-practice.js",
+    "key": "Q 홀딩",
+    "en": "Hold Q"
+  },
+  {
+    "file": "resource-practice.js",
+    "key": "자유 순서",
+    "en": "Any order"
+  },
+  {
+    "file": "resource-practice.js",
+    "key": "자원 실습 완료",
+    "en": "Resource practice complete"
+  },
+  {
+    "file": "resource-practice.js",
+    "key": "2단계 · {p0} / {p1}",
+    "en": "Chapter 2 · {p0} / {p1}"
+  },
+  {
+    "file": "resource-practice.js",
+    "key": "해골눈 4개 · 정신력\n피격 −1 / 패링 +1 / 0이면 그로기",
+    "en": "4 skull eyes · Poise\nHit −1 / Parry +1 / Groggy at 0"
+  },
+  {
+    "file": "resource-practice.js",
+    "key": "모든 실습 성공! 잠시 후 1-1 전투로 이어집니다.",
+    "en": "All exercises complete! Combat in 1-1 will resume shortly."
+  },
+  {
+    "file": "resource-practice.js",
+    "key": " 이번 연습에서는 해당 자원을 최대치의 최소 50% 소모합니다.",
+    "en": " This exercise consumes at least 50% of the relevant resource maximum."
+  },
+  {
+    "file": "resource-practice.js",
+    "key": "2단계 실습 시작 →",
+    "en": "Start chapter 2 practice →"
+  },
+  {
+    "file": "resource-practice.js",
+    "key": "▼ 해골눈 · 정신력",
+    "en": "▼ Skull eyes · Poise"
+  },
+  {
+    "file": "resource-practice.js",
+    "key": "▼ 해골눈 · 정신력 회복",
+    "en": "▼ Skull eyes · Poise recovery"
+  },
+  {
+    "file": "resource-practice.js",
+    "key": "▼ 해골눈 · 그로기 저항",
+    "en": "▼ Skull eyes · Groggy resistance"
+  },
+  {
+    "file": "resource-practice.js",
+    "key": "▼ 해골눈 · 정신력 감소",
+    "en": "▼ Skull eyes · Poise loss"
+  },
+  {
+    "file": "resource-practice.js",
+    "key": "정신력 {p0}/4 · HP {p1}/{p2}\n기동력 {p3}/{p4}\nST {p5}/{p6} · MP {p7}/{p8}{p9}",
+    "en": "Poise {p0}/4 · HP {p1}/{p2}\nMobility {p3}/{p4}\nST {p5}/{p6} · MP {p7}/{p8}{p9}"
+  },
+  {
+    "file": "resource-practice.js",
+    "key": "\n자원·기술 확인 ",
+    "en": "\nResource/skill pairs confirmed "
+  },
+  {
+    "file": "resource-practice.js",
+    "key": "\n전격이동 성공 ",
+    "en": "\nSuccessful dashes "
+  },
+  {
+    "file": "resource-practice.js",
+    "key": "\n자원 회복 성공 ",
+    "en": "\nResource recovery successes "
+  },
+  {
+    "file": "resource-practice.js",
+    "key": "\n탈출 성공 ",
+    "en": "\nSuccessful escapes "
+  },
+  {
+    "file": "resource-practice.js",
+    "key": "\n현재 보호막 흡수율 {p0}% · 이번 홀딩 적용 {p1}%",
+    "en": "\nCurrent shield absorption {p0}% · Applied while holding {p1}%"
+  },
+  {
+    "file": "resource-practice.js",
+    "key": "{p0}단 · {p1}\n최대 거리 {p2} · 기동력 {p3}({p4}칸) · ST {p5}%",
+    "en": "Tier {p0} · {p1}\nMax distance {p2} · Mobility {p3} ({p4} segments) · ST {p5}%"
+  },
+  {
+    "file": "resource-practice.js",
+    "key": "짧게 탭",
+    "en": "Brief tap"
+  },
+  {
+    "file": "resource-practice.js",
+    "key": "{p0}초 홀딩{p1}",
+    "en": "Hold for {p0}s{p1}"
+  },
+  {
+    "file": "resource-practice.js",
+    "key": " → 자동 발사",
+    "en": " → Automatic launch"
+  },
+  {
+    "file": "resource-practice.js",
+    "key": "1단 → 2단 → 3단을 순서대로 모두 이동해 보세요.",
+    "en": "Complete chain movement at tier 1 → tier 2 → tier 3 in order."
+  },
+  {
+    "file": "resource-practice.js",
+    "key": "연속 흡수 {p0}/3 · 흡수 {p1} · 실제 피해 {p2} · 그로기 없음",
+    "en": "Consecutive blocks {p0}/3 · Absorbed {p1} · Actual damage {p2} · No Groggy"
+  },
+  {
+    "file": "resource-practice.js",
+    "key": "다시 시도합니다. 같은 단계에서 연습하세요.",
+    "en": "Try again. Keep practicing this step."
+  },
+  {
+    "file": "resource-practice.js",
+    "key": "연속 흡수 0/3 · Q를 계속 누르세요",
+    "en": "Consecutive blocks 0/3 · Keep holding Q"
+  },
+  {
+    "file": "resource-practice.js",
+    "key": "홀딩을 유지해 3발을 모두 받아내세요. 처음부터 다시 시도합니다.",
+    "en": "Keep holding through all 3 projectiles. Try again from the beginning."
+  },
+  {
+    "file": "resource-practice.js",
+    "key": " · 이미 성공한 탈출기입니다.",
+    "en": " · This escape method is already complete."
+  },
+  {
+    "file": "resource-practice.js",
+    "key": " 성공!",
+    "en": " successful!"
+  },
+  {
+    "file": "resource-practice.js",
+    "key": " 잠시 후 남은 탈출기를 자유롭게 연습하세요.",
+    "en": " Practice any remaining escape method when ready."
+  },
+  {
+    "file": "resource-practice.js",
+    "key": "탈출 발동이 확인되지 않았습니다. 잠시 후 원하는 방법으로 다시 시도하세요.",
+    "en": "No escape activation was confirmed. Try your preferred method again shortly."
+  },
+  {
+    "file": "resource-practice.js",
+    "key": "네 자원 회복 확인!",
+    "en": "All four resources restored!"
+  },
+  {
+    "file": "resource-practice.js",
+    "key": " Q를 놓으세요. 잠시 후 두 번째 패링을 준비합니다.",
+    "en": " Release Q. The second parry attempt will be ready shortly."
+  },
+  {
+    "file": "resource-practice.js",
+    "key": "탄을 피했습니다. 정신력 감소 실습을 위해 이번에는 4발을 연속으로 받아보세요.",
+    "en": "You avoided a projectile. Take all 4 hits in succession this time to observe Poise loss."
+  }
+]

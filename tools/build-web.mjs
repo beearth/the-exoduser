@@ -20,7 +20,13 @@ mkdirSync(out,{recursive:true});let bytes=0;
 for(const p of selected){
   const dest=resolve(out,p);if(!dest.startsWith(out+sep))throw new Error('Unsafe output path');
   mkdirSync(dirname(dest),{recursive:true});
-  try{linkSync(resolve(root,p),dest)}catch(e){if(!['EXDEV','EPERM','EACCES','ENOTSUP'].includes(e.code))throw e;copyFileSync(resolve(root,p),dest)}
+  try{linkSync(resolve(root,p),dest)}catch(e){
+    // macOS resolves NFC/NFD spellings to one file; accept only an identical hard link.
+    if(e.code==='EEXIST'){
+      const sourceStat=statSync(resolve(root,p)),destStat=statSync(dest);
+      if(sourceStat.dev!==destStat.dev||sourceStat.ino!==destStat.ino)throw e;
+    }else{if(!['EXDEV','EPERM','EACCES','ENOTSUP'].includes(e.code))throw e;copyFileSync(resolve(root,p),dest)}
+  }
   bytes+=statSync(dest).size;
 }
 console.log(JSON.stringify({output:out,files:selected.length,bytes,excluded:'source archives, cinematic work files, backups, tools, dependencies, Git history'}));

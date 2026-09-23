@@ -1,3 +1,5 @@
+> 2026-09-23: E 현행 표시명은 불꽃칼날 / Flame Blade다. 아래 기존 각국어 날개 명칭·문장은 과거 번역 기록이다. localization/finish의 27개 언어별 새 스킬명을 적용하며 _T의 강제 영어 폴백을 제거했다. 정확한 현행 이름은 FINISH_TRANSLATIONS_20260923.md를 따른다.
+
 # 아시아권 UI 보완 — 2026-09-09
 
 Steam 자막·인터페이스 지원 목표 중 일본어·말레이어·인도네시아어·태국어·베트남어의 누락 UI를 보완한다. 런타임 및 번들 통합 상태는 [언어 범위](STEAM_LANGUAGE_SCOPE_20260909.md)를 따른다. 이 문서는 번역 데이터 작업 기록이며 음성 더빙이나 게임 수치를 변경하지 않는다.
@@ -31,7 +33,7 @@ Steam 자막·인터페이스 지원 목표 중 일본어·말레이어·인도�
 
 `뇌전창` 명칭은 `localization/terminology.json`의 루트 확정값에 맞춘다. 무지개·보라 마법탄은 Q, 물리탄은 E라는 명시 문구를 보존한다. Shift/Space/CT/Ctrl/Q/E/F/L/R/T 등 조작키와 `{p0}`, `{n}`, `{name}`의 철자·중복 횟수를 유지한다. `<br>`, `&nbsp;`, 줄바꿈도 유지한다.
 
-일본어 합체 참조는 루트 추가명과 일치하도록 雷撃螺旋·骸骨雷撃·悔悟の帰還·剣背翼·疫血解放으로 정리했다. 인도네시아어는 기본 명칭 Umpan Hantu·Putar-Ledak·Sayap Perisai·Domain Suci·Domain Pengikat·Domain Penghancur·Domain Korosi·Domain Tembus를 따른다. 기본 기동 칼날개와 칼등날개를 같은 이름으로 바꾸지 않는다.
+일본어 합체 참조는 루트 추가명과 일치하도록 雷撃螺旋·骸骨雷撃·悔悟の帰還·剣背翼·疫血解放으로 정리했다. 인도네시아어는 기본 명칭 Umpan Hantu·Putar-Ledak·Sayap Perisai·Domain Suci·Domain Pengikat·Domain Penghancur·Domain Korosi·Domain Tembus를 따른다. 기본 기동 칼날개와 불꽃칼날을 같은 이름으로 바꾸지 않는다.
 
 말레이어 기본 참조는 Umpan Hantu·Putar-Letup·Sayap Perisai·Domain Suci·Domain Pengikat·Domain Pemusnah·Domain Korosi·Domain Tembus로, 추가 합체명은 별도 `ui-extra/ms.json`과 맞췄다. 태국어는 หุ่นล่อผี·การสำนึกผิด·เขตศักดิ์สิทธิ์·เขตทำลาย·เขตเจาะทะลุ, 베트남어는 Xoáy Nổ·Cánh Khiên·Sét Truy Vết·Lĩnh Vực Thánh·Lĩnh Vực Trói·Lĩnh Vực Vỡ·Lĩnh Vực Ăn Mòn·Lĩnh Vực Xuyên을 따른다. 근성은 ja 根性, ms/id Keteguhan, th ความอดทน, vi Bền Chí로 사용한다. 베트남어 기본 키의 Bền Chí override 및 말레이 추가 환불 문구의 Keteguhan 동기화는 루트 통합 소유다.
 

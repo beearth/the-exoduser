@@ -144,5 +144,5 @@ test('releasing Q keeps a visible bubble at the stored charged radius', () => {
 
 test('every standard Q shield entry starts a fresh charge cycle', () => {
   const entries = gameHtml.match(/P\.s='sBlock';P\.st2=999;P\._sbParryT=20;P\._sbHoldT=0;P\._sbReleaseR=0;/g) || [];
-  assert.equal(entries.length, 5);
+  assert.equal(entries.length, 6);
 });
