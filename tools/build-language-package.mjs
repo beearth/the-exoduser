@@ -8,7 +8,10 @@ import { fileURLToPath } from 'node:url';
 import { x as extractTar } from 'tar';
 
 const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
-const OUT = path.join(ROOT, 'out/EXODUSER-languages-20260923');
+const outputArgIndex = process.argv.indexOf('--output-name');
+const outputName = outputArgIndex < 0 ? 'EXODUSER-languages-20260923' : process.argv[outputArgIndex + 1];
+if (!/^EXODUSER-[A-Za-z0-9-]+$/.test(outputName || '')) throw new Error('Invalid package output name');
+const OUT = path.join(ROOT, 'out', outputName);
 const RUNTIME = path.join(ROOT, 'out/EXODUSER-win64');
 const RUNTIME_FILES = ['EXODUSER.exe', 'nw.dll', 'nw_elf.dll', 'node.dll', 'notification_helper.exe',
   'libGLESv2.dll', 'libEGL.dll', 'icudtl.dat', 'ffmpeg.dll', 'dxil.dll', 'dxcompiler.dll',
@@ -17,9 +20,9 @@ const RUNTIME_FILES = ['EXODUSER.exe', 'nw.dll', 'nw_elf.dll', 'node.dll', 'noti
 const args = process.argv.slice(2);
 const build = args.includes('--build');
 const commit = args[args.indexOf('--commit') + 1];
-if (args.some((a, i) => !['--build', '--check', '--commit'].includes(a) && args[i - 1] !== '--commit') ||
+if (args.some((a, i) => !['--build', '--check', '--commit', '--output-name'].includes(a) && !['--commit', '--output-name'].includes(args[i - 1])) ||
     !args.includes('--commit') || !/^[0-9a-f]{40}$/.test(commit || '')) {
-  throw new Error('Usage: node tools/build-language-package.mjs --commit <full 40-character commit> [--check|--build]');
+  throw new Error('Usage: node tools/build-language-package.mjs --commit <full 40-character commit> [--check|--build] [--output-name EXODUSER-name]');
 }
 if (build && args.includes('--check')) throw new Error('Choose --check or --build');
 

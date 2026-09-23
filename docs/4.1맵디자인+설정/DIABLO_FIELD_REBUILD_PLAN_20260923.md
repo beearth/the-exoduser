@@ -113,7 +113,13 @@ StageBlueprint
 
 ## 9. 현재 상태
 
+- hell v2 시각 시안 `assets/map/ch1/rottenwood_field_master_concept_hell_v2.png`을 추가했다. 기존 남→북 동선·서측 전투터·중앙 시체나무·동측 습지·북측 관문 구도는 유지하고, 용암 균열·타버린 뿌리·재·진홍 연무·강화 관문으로 지옥 분위기를 올린 **컨셉 원화 전용**이다. baked/runtime 타일 연결, 에셋 분해, 카메라 가독성 QA는 미완료다.
+- `game.html`에는 **`mapqa=1&fieldrebuild=1&stage=0` 전용** 런타임 실험 경로를 연결했다. 나머지 실행 URL과 CH1-1 production map은 변경하지 않는다. `_buildDiabloField(0,200,200)`이 deterministic 200×200 tileRLE 및 south→north six-region layout을 만들고 기존 `genFromTemplate`으로 넘긴다. 시작 중심은 tile `(100,181)`, 북쪽 boss room은 `(100,24)` 부근이고 보스 접근은 engine gate generator가 잇는다. 일반 enemy wave는 map QA 설정이 비운다.
+- QA 전용 시각 오브젝트: 시체나무 `assets/map/ch1/diablo_hell_corpse_tree_v1.png` 1개(메타 size 920, non-collision) + `assets/map/ch1/diablo_field_torch_v1.png` 횃불 8개(메타 size 150, non-collision). 기존 stage composition/editor prop은 이 분기에서 제외한다. 바닥은 stage0의 기존 `gt_03`/soil floor를 재사용하고, render-only burnt fissure 9 path + blood-soil stain 5개를 full-map cache와 stream-chunk cache 양쪽에 그린다. 타일·충돌·production 배치는 변경하지 않는다.
+- 실행: `http://127.0.0.1:3334/map/field` → `/game.html?test=1&testchar=1&stage=0&classic=1&mapqa=1&fieldrebuild=1`. 기존 `/map/0`은 본편 CH1-1 QA를 그대로 연다. 허브에는 “지옥 필드 실험맵” 링크가 추가됐다.
+- 자동검증 `test/diabloFieldMap.test.js`, `test/diabloFieldRuntime.test.js`, `test/diabloFieldPreview.test.js`, blueprint/stage-plan, `test/mapTestServer.test.js`: 11/11 PASS (2026-09-23). 실제 브라우저 런타임에서 map cache/terrain/오브젝트 생성 및 URL 오류 0을 확인했고, Three.js 중복 import 경고 1건은 기존 의존성 경고다. 시작 시점 화면은 여전히 지나치게 어둡고 시체나무 landmark camera / combat readability / 8-way camera board / WASD full route QA는 미완료. 현 visual verdict는 **RETOUCH**, 자동 테스트 PASS를 시각 PASS로 간주하지 않는다.
+- QA 미리보기 `map-field-preview.html`은 blueprint 지형과 비충돌 외곽 mass를 그리고, 투명 배경 `assets/map/ch1/diablo_hell_corpse_tree_v1.png`를 시체나무 landmark로 사용한다. 횃불은 `diablo_field_torch_v1.png`를 사용한다. 자동 검증 `test/diabloFieldPreview.test.js`는 랜드마크 에셋·외곽 렌더 경로 및 legacy `_CH_DECO`/`floor_objects` 미사용을 확인한다. 이 뷰어는 playable runtime이 아니다.
 - 계획 문서와 공용 cold-field prototype texture 생성 완료.
 - `src/diabloFieldStagePlan.js`의 순서 역할은 `start/combat/travel/combat/pocket/boss`로 blueprint와 일치한다. Blueprint/stage plan/terrain/NPC 자동 테스트 6/6 PASS.
-- `game.html` 런타임 연결은 아직 미적용이며, 기존 CH1-1 제작맵 교체는 새 경로의 기술·카메라·전투 QA 완료 후 진행한다.
+- 기존 CH1-1 제작맵 교체는 새 경로의 시각·카메라·전투·이동 QA 및 사용자 승인을 받은 뒤 별도 결정한다. 현재는 QA-only additive branch다.
 - 기존 맵 소스 백업: `game.html.bak_before_diablo4_map_20260923`, `maps_data.js.bak_before_diablo4_map_20260923`.

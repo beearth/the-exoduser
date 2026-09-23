@@ -15,8 +15,44 @@
     for(let i=0;i<3;i++){document.getElementById('splashOverlay')?.click();await wait(600);}
     await wait(1000);_goLogin();await wait(600);
   }
-  async function capture(name){fs.appendFileSync(out+'/probe-steps.log',new Date().toISOString()+' '+name+'\n');await wait(500);await new Promise((resolve,reject)=>{const timer=setTimeout(()=>reject(Error('Screenshot timeout '+name)),10000);nw.Window.get().capturePage(data=>{clearTimeout(timer);fs.writeFileSync(out+'/'+name+'.png',Buffer.from(data.split(',')[1],'base64'));resolve();},{format:'png',datatype:'datauri'});});}
+  async function capture(name){fs.appendFileSync(out+'/probe-steps.log',new Date().toISOString()+' '+name+'\n');await until(()=>{const cover=document.getElementById('stageTransition');return !cover||Number(getComputedStyle(cover).opacity)<.01;});await wait(500);await new Promise((resolve,reject)=>{const timer=setTimeout(()=>reject(Error('Screenshot timeout '+name)),10000);nw.Window.get().capturePage(data=>{clearTimeout(timer);fs.writeFileSync(out+'/'+name+'.png',Buffer.from(data.split(',')[1],'base64'));resolve();},{format:'png',datatype:'datauri'});});}
   async function until(fn){for(let i=0;i<180;i++){try{if(fn())return;}catch{}await wait(250);}throw Error('Initialization timeout '+location.href);}
+  async function verifyStory(r){
+    await until(()=>typeof ExoduserCharacterStory!=='undefined');
+    r.storyTracks=[];
+    for(const code of locales()){
+      const completion=ExoduserCharacterStory.play({language:code});
+      const video=document.getElementById('characterStoryVideo');
+      await until(()=>video.readyState>=2&&video.textTracks[0]?.cues?.length===22);
+      video.pause();const track=video.textTracks[0];
+      const expected=fs.readFileSync(path.join(process.cwd(),'package.nw/video/subtitles/warrior_story_v23_'+code+'.vtt'),'utf8').split(String.fromCharCode(13)).join('').trim().split(/\n\s*\n/).slice(1).map(block=>block.split('\n').slice(block.split('\n').findIndex(line=>line.includes('-->'))+1).join('\n'));
+      const actual=Array.from(track.cues,c=>c.text);
+      if(JSON.stringify(actual)!==JSON.stringify(expected))throw Error('Decoded subtitle text differs '+code);
+      let active=0;
+      for(const cue of Array.from(track.cues)){
+        await new Promise((resolve,reject)=>{
+          const finish=()=>{clearTimeout(timer);resolve();};
+          const timer=setTimeout(()=>{video.removeEventListener('seeked',finish);reject(Error('Subtitle seek timeout '+code));},10000);
+          video.addEventListener('seeked',finish,{once:true});video.currentTime=(cue.startTime+cue.endTime)/2;
+        });
+        await until(()=>!video.seeking&&Array.from(track.activeCues||[]).some(c=>c.text===cue.text));active++;
+      }
+      r.storyTracks.push({code,cues:actual.length,activeCuesVerified:active,mode:track.mode,duration:video.duration,videoWidth:video.videoWidth,videoHeight:video.videoHeight});
+      if(['en','ar','ja'].includes(code))await capture('story-'+code);
+      ExoduserCharacterStory.skip();await completion;save(r);
+    }
+    const complete=ExoduserCharacterStory.play({language:'en'});
+    const movie=document.getElementById('characterStoryVideo');let ended=false;
+    movie.addEventListener('ended',()=>{ended=true;},{once:true});
+    const began=Date.now();let frames=0,audioBytes=0,maxTime=0;
+    const sample=setInterval(()=>{frames=Math.max(frames,movie.getVideoPlaybackQuality?.().totalVideoFrames||0);audioBytes=Math.max(audioBytes,movie.webkitAudioDecodedByteCount||0);maxTime=Math.max(maxTime,movie.currentTime);},250);
+    let timer;
+    try{const seen=await Promise.race([complete,new Promise((_,reject)=>{timer=setTimeout(()=>reject(Error('Full movie playback timeout')),180000);})]);
+      r.storyPlayback={seen,ended,elapsedMs:Date.now()-began,maxTime,frames,audioBytes};
+      if(!seen||!ended||frames<100||maxTime<90||audioBytes<=0)throw Error('Movie decode/playback incomplete '+JSON.stringify(r.storyPlayback));
+    }finally{clearInterval(sample);clearTimeout(timer);ExoduserCharacterStory.skip();}
+    save(r);
+  }
   async function run(){
     let r=read();
     try{
@@ -44,6 +80,7 @@
           await capture('restart-'+r.restartExpected);r.phase='complete';r.errors=(r.errors||[]).concat(errors);save(r);nw.App.quit();return;
         }
         r.freshSettings=localStorage.getItem('hellcave_settings');
+        if(!smoke&&!r.storyPlayback)await verifyStory(r);
         r.lobby=[];
         for(const code of locales()){
           select('loginLangSelect',code);await wait(40);

@@ -1,0 +1,238 @@
+[
+  {
+    "key": "사슬 이동과 공격에는 서로 다른 키를 지정하세요.",
+    "en": "Use separate keys for chain movement and attacks."
+  },
+  {
+    "key": "공통 피해 +10%/lv (합연산), ST비용 -4%/lv (최대-40%)",
+    "en": "Shared DMG +10%/lv (additive), ST cost -4%/lv (max -40%)"
+  },
+  {
+    "key": "HP/ST리젠 +3%/lv, 물약쿨 -3%/lv (최대30%), 패링회복 +20%/lv",
+    "en": "HP/ST regen +3%/lv, Potion cooldown -3%/lv (max 30%), Parry recovery +20%/lv"
+  },
+  {
+    "key": "크리률 +1.5%, 크리뎀 +8%/lv",
+    "en": "Crit rate +1.5%, Crit DMG +8%/lv"
+  },
+  {
+    "key": "적 HP 70%↑: 뎀+20%/lv. 회복력+5%/lv (항상 적용)",
+    "en": "Enemy HP≥70%: DMG+20%/lv. Recovery+5%/lv (always active)"
+  },
+  {
+    "key": "부활확률 +2%/lv, 부활쿨 -30초/lv (최저100초). 부활 성공 시 HP/MP/ST 전부 회복",
+    "en": "Revive chance +2%/lv, Revive CD -30s/lv (minimum 100s). Successful revival restores all HP/MP/ST"
+  },
+  {
+    "key": "악의기둥 + 가시덫 → 합체: 기둥가시",
+    "en": "Dark Pillar + Spike Trap → Fuse: Pillar Spike"
+  },
+  {
+    "key": "칼등치기 + 불꽃칼날 → 합체: 처내기 강화",
+    "en": "Blade Parry + Flame Blade → Fuse: Parry Enhanced"
+  },
+  {
+    "key": "지옥강타 2 습득 — 기둥강타/용암형 강화용",
+    "en": "Learn Hell Slam II for Pillar Slam and its lava upgrade"
+  },
+  {
+    "key": "[이동기] 방향키 더블탭으로 발동. 경직/기절 중에도 탈출 가능. 250유닛 순간이동, 무적(15프레임). MP[(10+(Lv-1)×5)×0.7] + 공용 기동게이지 0.7칸(31.5)을 소모한다. 기본 기동게이지 5칸, Shift 사슬과 공유. 착지 시 전류장판(10초+Lv×0.5초): INT 틱뎀 + 방어력↓(1렙10%, 렙당+5%, 캡50%)",
+    "en": "[Mobility] Double-tap to activate. Escapes stagger/stun. 250-unit blink, invincible 15f. Costs MP[(10+(Lv-1)×5)×0.7] plus 0.7 shared mobility-gauge cells (31.5). Base gauge has 5 cells and is shared with Shift chain. Landing shock field(10s+Lv×0.5s): INT tick DMG + DEF↓(Lv1=10%, +5%/Lv, cap 50%)"
+  },
+  {
+    "key": "기본 E 불꽃칼날. E 홀드 충전: 풀차지 1.5초. 스킬 Lv당 범위 +5%.",
+    "en": "Base E Flame Blade. Hold E to charge fully in 1.5s. +5% range per skill level."
+  },
+  {
+    "key": "스킬 키로 마우스 위치에 즉시 소환 (최대 1000px, 패드: 조준 후 확정). 2스택 (25초/1충전, Lv10→3스택). 원형 해골벽이 적/투사체 차단. 솟을 때 데미지. 악의 12. 반경 280px+12.6px/Lv, 지속 3초+0.2초/Lv (최대 30초)",
+    "en": "Press skill key to summon at cursor (max 1000px; gamepad: aim and confirm). 2 stocks (25s/charge, Lv10: 3). Circular bone wall blocks enemies/projectiles. DMG on rise. Malice 12. Radius 280px +12.6px/level; duration 3s +0.2s/level (max 30s)."
+  },
+  {
+    "key": "[선택: 1~4번] 현재 위치에 가시덫 설치 (1렙 반경300, 10렙435). 슬로우 91%(+2%/Lv, 최대95%)+출혈. INT×magicRef×pMagicMul×(14+5.6×(Lv-1))×0.75. 악의 10, 쿨 10초. Lv당 범위+15",
+    "en": "[Select: 1-4] Place spike trap at current pos (Lv1 radius 300, Lv10 435). Slow 91%(+2%/Lv, max 95%)+bleed. INT×magicRef×pMagicMul×(14+5.6×(Lv-1))×0.75. Malice 10, CD 10s. Per Lv range+15"
+  },
+  {
+    "key": "E: 쿨타임 완료 시 불꽃을 두른 칼날을 크게 휘두릅니다. 일반 마법탄도 반사. 홀드 풀차지 1.5초, 스킬 Lv당 범위 +5%.",
+    "en": "E: Swing a flaming blade when ready; also reflects ordinary magic shots. Hold for 1.5s full charge. +5% range per skill level."
+  },
+  {
+    "key": "합체 Lv.{p0} | 처내기뎀+{p1}% 불꽃칼날뎀+{p1}% 쿨감{p2}%",
+    "en": "Fuse Lv.{p0} | Parry DMG +{p1}% / Flame Blade DMG +{p1}% / Cooldown -{p2}%"
+  },
+  {
+    "key": "해금",
+    "en": "Unlocked"
+  },
+  {
+    "key": "불꽃칼날은 기본 스킬입니다 (1레벨 유지)",
+    "en": "Flame Blade is a base skill (level 1 retained)"
+  },
+  {
+    "key": "불꽃칼날 강화분을 초기화하고 1레벨을 유지합니다.",
+    "en": "Reset Flame Blade upgrades and retain level 1."
+  },
+  {
+    "key": "클릭하여 결정 선택",
+    "en": "Click to choose a crystal"
+  },
+  {
+    "key": "유골 부위",
+    "en": "Bone Part"
+  },
+  {
+    "key": "부위",
+    "en": "Part"
+  },
+  {
+    "key": "유골 포인트",
+    "en": "Bone Points"
+  },
+  {
+    "key": "도감 등록분",
+    "en": "Collected"
+  },
+  {
+    "key": "장착(우클릭) 시 유골함 도감에 등록됩니다",
+    "en": "Equip (RMB) to register to the ossuary codex"
+  },
+  {
+    "key": "전대 위력",
+    "en": "Ancestor Power"
+  },
+  {
+    "key": "소환 유골함",
+    "en": "Summon Ossuary"
+  },
+  {
+    "key": "4부위를 모두 모은 전대만 소환됩니다",
+    "en": "Only fully collected ancestors can be summoned"
+  },
+  {
+    "key": "유골함 미보유 — 유골 부위 획득 시 자동 지급",
+    "en": "No ossuary — granted on first bone part"
+  },
+  {
+    "key": "미수집",
+    "en": "Not collected"
+  },
+  {
+    "key": "4부위 수집 시 소환 해금",
+    "en": "Collect all 4 parts to unlock"
+  },
+  {
+    "key": "소환 가능",
+    "en": "Ready"
+  },
+  {
+    "key": "유골",
+    "en": "Bones"
+  },
+  {
+    "key": "일괄 작업은 선택한 분류에만 적용됩니다. 장착·해제는 인벤의 장비 소켓에서 가능합니다.",
+    "en": "Bulk actions affect the selected category. Equip or detach crystals through inventory sockets."
+  },
+  {
+    "key": "이 분류에 결정이 없습니다",
+    "en": "No crystals in this category"
+  },
+  {
+    "key": "보유 ",
+    "en": "Owned "
+  },
+  {
+    "key": "1개 분해",
+    "en": "Decompose 1"
+  },
+  {
+    "key": "이 분류에 분해할 결정이 없습니다",
+    "en": "No crystals to decompose in this category"
+  },
+  {
+    "key": "유골함",
+    "en": "Ossuary"
+  },
+  {
+    "key": "지역 처치",
+    "en": "Area kills"
+  },
+  {
+    "key": "두개골",
+    "en": "Skull"
+  },
+  {
+    "key": "몸통",
+    "en": "Torso"
+  },
+  {
+    "key": "팔",
+    "en": "Arms"
+  },
+  {
+    "key": "다리",
+    "en": "Legs"
+  },
+  {
+    "key": "불꽃칼날 [합체]",
+    "en": "Flame Blade [Fuse]"
+  },
+  {
+    "key": "1레벨부터 기본 보유하는 E 불꽃칼날. E 홀드 풀차지 1.5초. 스킬 레벨마다 범위 +5%. 전방 파워웨이브·투사체 반사·그로기.",
+    "en": "Base E Flame Blade, available from level 1. Hold E for a 1.5s full charge. +5% range per skill level. Forward power wave, projectile reflection and stagger."
+  },
+  {
+    "key": "눈을 떠",
+    "en": "Open your eyes"
+  },
+  {
+    "key": "정신 차려",
+    "en": "Get a grip"
+  },
+  {
+    "key": "이제 진짜 지옥이야",
+    "en": "This is real hell"
+  },
+  {
+    "key": "야! 몬스터다!!!",
+    "en": "Hey! Monsters!!!"
+  },
+  {
+    "key": "이동과 공격",
+    "en": "Move & attack"
+  },
+  {
+    "key": "패링과 이동",
+    "en": "Parry & movement"
+  },
+  {
+    "key": "마법 패링 · 보호막",
+    "en": "Magic parry / shield"
+  },
+  {
+    "key": "지옥강타 · 분노 폭발",
+    "en": "Hell Slam / rage burst"
+  },
+  {
+    "key": "CT 스킬 (뇌전걸음 / 얼음보주)",
+    "en": "CT skill (Ghost Walk / Ice Orb)"
+  },
+  {
+    "key": "살아남아",
+    "en": "Stay alive"
+  },
+  {
+    "key": "클릭 / Enter / Space · 다음    Space 길게 / ESC · 건너뛰기",
+    "en": "Click / Enter / Space · Next    Hold Space / ESC · Skip"
+  },
+  {
+    "key": "불꽃칼날",
+    "en": "Flame Blade"
+  },
+  {
+    "key": "출시 준비 중",
+    "en": "Coming Soon"
+  },
+  {
+    "key": "서버에서 삭제를 확인하지 못했습니다. 목록을 확인한 뒤 다시 시도하세요.",
+    "en": "Could not confirm deletion on the server. Check the list and try again."
+  }
+]

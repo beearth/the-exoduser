@@ -844,7 +844,7 @@ async function updateComputeBullets(sp) {
 |-----|------------|------|
 | `_vfxAnims` (스프라이트시트 VFX 전체) | O | whirl_slash, eq_impact, magic_burst 등 |
 | `wwSlash` 히트 임팩트 | O | 칼바람 슬래시 임팩트 |
-| `_impSpr` 히트 임팩트 | O | 일반 스프라이트시트 임팩트 |
+| `_impactSpriteFor(im)` 히트 임팩트 | O | 속성별 일반 9프레임/보스 16프레임 시트, 로드 실패 시 `_impSpr` 폴백 |
 | `_fireExps` 화염폭발 | X | 프레임별 개별 이미지, 인스턴싱 이점 없음 |
 | `_esAnim` 마력연사 | X | 단일 인스턴스, 오버헤드만 증가 |
 

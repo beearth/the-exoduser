@@ -2862,7 +2862,7 @@ function selectVisual(ci){
     _showStatic();
   }
   // 좌측 정보
-  $('csClsName').textContent=ch.cls||'';
+  $('csClsName').textContent=_TL(ch.job||ch.cls||'');
   $('csCharName').textContent=_TL(ch.name);
   $('csCharDesc').textContent=_TL(ch.desc);
   const th=$('csThumb');if(th){const _tp=ch.bust||ch.portrait;th.style.backgroundImage=_tp?"url('"+_tp+"')":'';}

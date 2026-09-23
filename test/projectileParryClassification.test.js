@@ -56,6 +56,13 @@ test('spawn, render, and Q/E parry routing all consume the same stored class', (
     'a Q-parryable trap must reach the common magic-Q collision route');
 });
 
+test('ground eel blood-eye warning is unmistakably physical and names E parry', () => {
+  const eelDraw = extractFunction('_wmDraw');
+  assert.match(eelDraw, /X\.strokeStyle='#ffffff'/);
+  assert.match(eelDraw, /혈안탄 예고 · 물리탄 · E 패링/);
+  assert.match(eelDraw, /X\.globalAlpha=1;X\.strokeStyle='#ffffff'/);
+});
+
 test('homing profile follows source class where a shared skin used to override it', () => {
   const turnRate = Function(`
     const EL={P:0,F:1,I:2,D:3,L:4,H:5,E:6};

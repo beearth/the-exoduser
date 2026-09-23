@@ -1,12 +1,15 @@
 """Summarize the isolated language EXE run; optionally verify every final file."""
 import hashlib
 import json
+import os
 import sys
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
-OUT = ROOT / 'output/language_package_20260923'
-APP = ROOT / 'out/EXODUSER-languages-20260923'
+OUT = (ROOT / os.environ.get('EXODUSER_QA_OUTPUT', 'output/language_package_20260923')).resolve()
+APP = (ROOT / os.environ.get('EXODUSER_QA_PACKAGE', 'out/EXODUSER-languages-20260923')).resolve()
+assert OUT.is_relative_to((ROOT / 'output').resolve()), 'Evidence must stay under output'
+assert APP.is_relative_to((ROOT / 'out').resolve()), 'Package must stay under out'
 
 def read(path):
     return json.loads(path.read_text(encoding='utf-8-sig'))
@@ -42,6 +45,12 @@ if '--integrity' in sys.argv:
     assert summary['phase'] == 'complete', summary
     assert not summary['failure'] and not summary['errors'] and not summary['resourceErrors'], summary
     assert all(count == 29 for count in summary['counts'].values()), summary['counts']
+    if runtime.get('storyTracks'):
+        assert len(runtime['storyTracks']) == 29
+        assert all(row['cues'] == row['activeCuesVerified'] == 22 and row['mode'] == 'showing' for row in runtime['storyTracks'])
+        playback = runtime['storyPlayback']
+        assert playback['seen'] and playback['ended'] and playback['frames'] >= 100 and playback['maxTime'] >= 90 and playback['audioBytes'] > 0
+        summary['story'] = {'tracks': 29, 'cuesPerTrack': 22, 'playback': playback}
     assert runtime['freshSettings'] is None, 'Expected an isolated fresh profile'
     for key in ['freshGame', 'existingGame', 'restart']:
         assert runtime[key]['actual'] == runtime[key]['expected'], key

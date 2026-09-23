@@ -34,7 +34,7 @@ try:
     for launch in range(2):
         proc=subprocess.Popen([str(APP/'EXODUSER.exe')],cwd=APP,env=env,startupinfo=startup,stdout=subprocess.DEVNULL,stderr=subprocess.DEVNULL)
         verified=False
-        for step in range(420):
+        for step in range(900):
             if not verified:
                 try:
                     body=urlopen('http://127.0.0.1:3346/game.html',timeout=1).read()

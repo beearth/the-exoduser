@@ -5,7 +5,7 @@
 | 항목 | 정확한 계약 |
 |---|---|
 | 빌더 | `tools/build-language-package.mjs` |
-| 출력 | `out/EXODUSER-languages-20260923`, 이미 존재하면 중단 |
+| 출력 | 기본 `out/EXODUSER-languages-20260923`. `--output-name EXODUSER-name`으로 out 하위 새 폴더 지정 가능; ASCII 영숫자·하이픈만 허용, 이미 존재하면 중단 |
 | 소스 | `--commit`으로 지정한 40자리 커밋 SHA, Git tree·archive 사용 |
 | 필수 파일 | 지정 커밋 `build-nwjs.mjs` FILES 배열 + node-main.js + package.json. 기존 선택 입력 credits.html은 제외 |
 | 디렉터리 | 지정 커밋 DIRS 배열. 기존 선택 입력 output/imagegen/forge-tabs-v3 이외에 비어 있거나 커밋에서 빠지면 중단 |
@@ -61,6 +61,7 @@ FINAL_COMMIT_SHA를 실제 최종 40자리 커밋으로 바꾼다. 기본 동작
 | 최종 집계 도구 | 계약 |
 |---|---|
 | tools/summarize-language-package.py | 현재 런타임 단계·언어별 결과 수·오류·설정 글자 넘침 집계 |
+| 집계 경로 선택 | EXODUSER_QA_PACKAGE·EXODUSER_QA_OUTPUT 환경변수 지원. 각각 작업 폴더 out·output 하위인지 검사. 기본 경로는 기존 기록 유지 |
 | --integrity | 로비·안내·게임 설정·사망·재실행·아이템/HUD 각각 29행, 언어 선택/저장·새 프로필/기존 설정 진입·재시작·표시 중 펫 대사 일치, 실행/리소스 오류 없음, QA 원상 복원, 패키지 모든 파일의 크기·SHA-256·파일 목록 확인 후 summary.json 기록 |
 | --collect-runtime-artifacts | 실제 실행이 생성한 Dictionaries/en-US-10-1.bdic, Dictionaries/ko-3-0.bdic, package.nw/oauth-debug.log 3개 경로만 증거 폴더 runtime-artifacts 하위로 이동하여 보존. 기존 대상 덮어쓰기 금지, 그 외 추가 파일은 무결성 검사 실패 유지 |
 | 시각 범위 | 행 수·해시 PASS가 전체 UI의 글자 배치나 전체 영상 재생 검증을 대체하지 않음 |
@@ -72,7 +73,7 @@ FINAL_COMMIT_SHA를 실제 최종 40자리 커밋으로 바꾼다. 기본 동작
 | 종합 보고서 | output/language_package_20260923/summary.json |
 | 실제 실행 기록 | runtime.json, manifest-restored.json, probe-start.log, probe-steps.log |
 | 대표 화면 직접 확인 | character-de.png 긴 문장, character-ar.png RTL, settings-ar.png, tutorial-th.png, item-ms.png |
-| 아이템 화면 캡처 한계 | item-en.png는 초기 스킨 로딩 오버레이가 전경에 보임. 아이템 데이터 29행 검사는 통과했지만 모든 아이템 화면의 시각 PASS로 집계하지 않음 |
-| 잔존 혼합 표기 | 시작 안내의 OPEN YOUR EYES / MOVE & ATTACK / 진행 키 힌트 및 캐릭터의 WARRIOR / Coming Soon 같은 영어 공통 표기, 초기 로딩의 한국어가 대표 화면에 남아 있음. 29개 언어 전체 콘텐츠 번역 완성 선언은 아님 |
+| 아이템 화면 캡처 한계 | 첫 검사의 item-en.png는 초기 스킨 로딩 오버레이가 전경에 보임. 아이템 데이터 29행 검사는 통과했지만 모든 아이템 화면의 시각 PASS로 집계하지 않음. 후속 steam-review-probe.js capture는 stageTransition이 없거나 계산된 opacity < .01이 될 때까지 기존 until(180회×250ms)로 대기한 뒤 500ms 후 캡처 |
+| 첫 패키지의 혼합 표기 | 시작 안내의 OPEN YOUR EYES / MOVE & ATTACK / 진행 키 힌트 및 캐릭터의 WARRIOR / Coming Soon, 초기 로딩 한국어가 첫 패키지에 남아 있었음. 후속 finish 번역·로딩 및 직업명 연결 수정은 STEAM_LANGUAGE_FINISH_20260923.md에 기록 |
 | 사용자 데이터 | 별도 APPDATA·LOCALAPPDATA·Chromium 프로필 사용. 실행이 만든 사전 2개·oauth-debug.log는 증거 폴더로 옮겨 보존하여 배포 패키지에서 제외 |
 | Steam 상태 | 새 Steam BuildID 없음. 업로드·상점 언어 지원 체크 변경·게시 미실행 |

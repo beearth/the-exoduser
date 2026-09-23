@@ -39,6 +39,10 @@ test('map test mode opens its hub and provides safe stage shortcuts', async t =>
   assert.equal(root.status, 302);
   assert.equal(root.headers.get('location'), '/map-test.html');
 
+  const rebuiltField = await fetch(`${base}/map/field`, { redirect: 'manual' });
+  assert.equal(rebuiltField.status, 302);
+  assert.equal(rebuiltField.headers.get('location'), '/game.html?test=1&testchar=1&stage=0&classic=1&mapqa=1&fieldrebuild=1');
+
   const first = await fetch(`${base}/map/0`, { redirect: 'manual' });
   assert.equal(first.status, 302);
   assert.equal(first.headers.get('location'), '/game.html?test=1&testchar=1&stage=0&classic=1&mapqa=1');
@@ -63,6 +67,7 @@ test('map test hub lists every stage and builds classic-map preview URLs', async
   assert.match(html, /stages:\s*7/);
   assert.match(html, /stage=\$\{stage\}&classic=1&mapqa=1/);
   assert.match(html, /iframe/);
+  assert.match(html, /href="\/map\/field"[^>]*>지옥 필드 실험맵</);
   assert.doesNotMatch(html, /\.innerHTML\s*=/, 'hub must not replace parent DOM with innerHTML');
 });
 
