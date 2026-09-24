@@ -142,3 +142,11 @@ assets/vfx/boss/gen/
 /game.html.bak_before_elite_affixes_20260923
 /game.html.bak_before_field_rebuild_20260923
 /maps_data.js.bak_before_diablo4_map_20260923
+
+# Local applications, QA captures and distributable copies (keep on disk).
+/output/applications/
+/output/*_visual_qa_*/
+/output/*_before_visual_qa_*.html
+/output/ui_design_*/
+/output/localization_20260922/
+/release/
