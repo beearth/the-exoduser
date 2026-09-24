@@ -1,0 +1,57 @@
+import fs from 'node:fs';
+import path from 'node:path';
+import {createHash} from 'node:crypto';
+
+const root=path.resolve(import.meta.dirname,'..');
+const game=fs.readFileSync(path.join(root,'game.html'),'utf8');
+function extract(name){
+  const start=game.indexOf(`function ${name}(`);
+  if(start<0)throw Error(`Missing ${name}`);
+  let depth=0;
+  for(let i=game.indexOf('{',start);i<game.length;i++){
+    if(game[i]==='{')depth++;
+    if(game[i]==='}'&&!--depth)return game.slice(start,i+1);
+  }
+  throw Error(`Incomplete ${name}`);
+}
+const layout=Function(`${extract('_rleEncodeGrid')};return ${extract('_buildDiabloField')}`)()(0,200,200);
+const nav=[];
+for(let i=0;i<layout.tileRLE.length;i+=2)for(let n=0;n<layout.tileRLE[i+1];n++)nav.push(layout.tileRLE[i]);
+if(nav.length!==40000)throw Error('Expected 200x200 template');
+let navPath='';
+for(let y=0;y<200;y++)for(let x=0;x<200;x++)if(nav[y*200+x]){
+  const start=x;while(x+1<200&&nav[y*200+x+1])x++;
+  navPath+=`M${start} ${y}h${x-start+1}v1h-${x-start+1}Z`;
+}
+const hash=createHash('sha256').update(JSON.stringify(layout.tileRLE)).digest('hex');
+const cameras=['01_START','02_EARLY','03_ARENA','04_SIDE_L','05_SIDE_R','06_LANDMARK','07_LATE','08_EXIT'];
+const label=(x,y,text)=>`<text x="${x}" y="${y}" text-anchor="middle">${text}</text>`;
+const html=`<!doctype html><html lang="ko"><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>CH1-1 · 전체 구도 비교</title>
+<style>
+:root{color-scheme:dark;background:#11120f;color:#e8e1d3;font-family:'Malgun Gothic',sans-serif}*{box-sizing:border-box}body{margin:0;padding:32px;max-width:2000px;margin-inline:auto}header{display:flex;justify-content:space-between;align-items:end;border-bottom:1px solid #555443;padding-bottom:20px;margin-bottom:24px}h1{font-family:Batang,serif;font-size:34px;font-weight:400;margin:8px 0}h2{font-size:18px;margin:0 0 12px}p{line-height:1.65;color:#bcb8ab;font-size:14px}.eyebrow{letter-spacing:.18em;font-size:12px;color:#c59b69}a{color:#dbb488}main{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:22px}article img,article svg{width:100%;aspect-ratio:1;display:block;background:#090b09;border:1px solid #3c4034}svg text{font-family:'Malgun Gothic',sans-serif;font-size:6px;fill:#fff8e7;paint-order:stroke;stroke:#171b17;stroke-width:1.8px;stroke-linejoin:round}.note{border-left:2px solid #a77140;padding-left:12px}table{width:100%;border-collapse:collapse;font-size:14px;margin:22px 0}td,th{text-align:left;border-bottom:1px solid #3b3c31;padding:12px;vertical-align:top}th{color:#c59b69}.cameras{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:14px}figure{margin:0}figure img{width:100%;display:block}figcaption{font-size:12px;padding:7px 0;color:#bcb8ab}code{overflow-wrap:anywhere;font-size:11px}.status{color:#dc9967}footer{margin-top:24px;border-top:1px solid #3b3c31;padding-top:16px}@media(max-width:1000px){main{grid-template-columns:1fr}body{padding:18px}.cameras{grid-template-columns:repeat(2,minmax(0,1fr))}header{display:block}h1{font-size:28px}}
+</style>
+<header><div><div class="eyebrow">HELL ROAD / CH1—1 / MASTER STUDY 01</div><h1>전체 장소를 먼저 만든다.</h1><p>승인 원화 → 현재 구조 진단 → 전체 배치 수정안</p></div><div><div class="status">GATE 1 재작업 · 런타임 미적용</div><p><a href="/map/field">현재 테스트 맵 열기 ↗</a></p></div></header>
+<main>
+<article><h2>01 / 승인된 시각 목표</h2><img src="/assets/map/ch1/rottenwood_field_rootworld_master_v2.png" alt="불탄 거대 뿌리가 중앙과 외곽을 연결하고 오른쪽에 독성 습지가 있는 승인 원화"><p>중앙 뿌리 덩어리가 공간을 나누고, 회갈색 흙길·검은 숲·국소적인 독성색이 장소를 구분한다. 원화의 사선 구도를 200×200 남→북 플레이 좌표로 번역한다.</p></article>
+<article><h2>02 / 현재 QA 구조</h2><svg viewBox="0 0 200 200" role="img" aria-label="현재 템플릿 이동 가능 영역과 외곽 합성 구조도"><image href="/assets/map/ch1/rootworld_outer/preview.png" width="200" height="200"/><path id="current-nav" d="${navPath}" fill="#746655" fill-opacity=".9"/><circle cx="101.5" cy="68.5" r="6" fill="#b76435"/>${label(101,62,'현재 나무')}${label(100,185,'입구')}${label(76,145,'넓은 공터')}${label(112,108,'연결 공터')}${label(153,82,'곁공간')}${label(100,22,'북측 관문')}</svg><p>실제 <code>_buildDiabloField(0,200,200)</code>에서 추출한 NAV + 현재 outer 미리보기. 회색은 통행 구역이며 실제 지면 캡처가 아니다. 엔진의 북쪽 gate 후처리·소환굴·오브젝트 충돌은 이 도면에 포함하지 않는다.</p></article>
+<article><h2>03 / 다음 전체 배치안</h2><svg id="proposal" data-status="design-only" viewBox="0 0 200 200" role="img" aria-label="중앙 뿌리 양쪽으로 이동이 갈라지고 북쪽에서 합류하는 미적용 설계안">
+<rect width="200" height="200" fill="#1a201a"/>
+<path d="M92 194 Q75 186 73 168 Q47 166 40 142 Q31 121 44 98 Q48 85 63 77 Q61 62 64 47 Q66 25 91 20 L91 8 L109 8 L109 21 Q134 24 137 44 Q141 62 131 72 Q159 73 171 93 Q182 114 168 138 Q155 155 135 151 Q128 167 112 177 L111 194Z" fill="#84735c"/>
+<path d="M122 86 Q147 72 165 94 Q181 115 162 135 Q144 152 126 137 Q137 116 122 86Z" fill="#66683e"/>
+<path d="M86 83 Q96 73 109 80 L119 95 Q115 108 123 123 L113 140 L94 151 L78 143 L74 128 L84 117 L80 100Z" fill="#242923" stroke="#b27343" stroke-width="1.2"/>
+<path d="M102 186 Q82 164 66 144 Q48 122 61 102 Q69 87 82 71 Q72 47 98 35 L100 14 M89 161 Q134 152 150 124 Q167 95 128 76 Q111 65 98 35" fill="none" stroke="#e1c999" stroke-width="1.1" stroke-dasharray="3 2"/>
+${label(101,187,'南 입구')}${label(61,126,'서측 전투장')}${label(103,108,'중앙 뿌리')}${label(151,112,'동측 습지')}${label(95,53,'관문 전투장')}${label(100,17,'北 관문')}${label(58,172,'숲 질량')}${label(150,51,'숲 질량')}
+</svg><p>설계용 도식 — 완성 아트 또는 신규 충돌맵이 아니다. 중앙 비통행 질량을 두고 서측 주동선 / 동측 선택 우회를 구성한다. 남쪽 진입은 압축하고 전투장에서 시야를 연다.</p></article>
+</main>
+<table><thead><tr><th>전체 구성의 차이</th><th>수정 방향</th><th>다음 검증</th></tr></thead><tbody>
+<tr><td>나무가 북쪽 공터의 단일 소품으로 서 있음</td><td>중앙 뿌리 영역이 동선과 주변 여백을 실제로 나누도록 설계</td><td>서·동 우회 연결과 카메라 가림 검증</td></tr>
+<tr><td>넓은 공터가 연달아 나와 화면이 반복 바닥으로 채워짐</td><td>시작·이동부를 압축하고 서측/관문 전투장만 의도적으로 개방</td><td>전투 회피 공간을 유지하며 경계가 화면에 들어오는지 확인</td></tr>
+<tr><td>동측은 같은 바닥의 막다른 곁공간</td><td>남북에서 연결되는 독성 습지 우회 영역으로 구분</td><td>습지 가장자리 안전 동선과 주동선 합류 위치</td></tr>
+<tr><td>원화 조각을 외곽에 반복한 별도 에셋처럼 보임</td><td>신규 전체 경계 확정 후 연속된 뿌리 숲 master를 제작</td><td>기존 청크 재사용만으로 완성 처리하지 않음</td></tr>
+</tbody></table>
+<h2>현재 실제 플레이 카메라 / 이전 패스 증거</h2><p>2026-09-24 외곽 패스 캡처 · 1280×720 · 순간이동 관찰 · 현재 코드 재촬영 아님 · 종주/전투 검증 아님</p>
+<section class="cameras">${cameras.map(name=>`<figure data-camera="${name}"><img loading="eager" src="/captures/rootworld_outer_20260924/${name}.png" alt="이전 패스 실제 게임 카메라 ${name}"><figcaption>${name}</figcaption></figure>`).join('')}</section>
+<footer><p class="note">VISUAL VERDICT: RETOUCH. 이번 산출물은 전체 구성 비교와 수정 방향 고정이다. 실제 게임 개선 완료나 제출 승인으로 해석하지 않는다.</p><p>현재 템플릿 NAV SHA256: <code>${hash}</code><br>재생성: <code>C:\\nvm4w\\nodejs\\node.exe tools/build_rootworld_master_board.mjs</code></p></footer></html>`;
+fs.writeFileSync(path.join(root,'tools/rootworld-master-board.html'),html);
+console.log(JSON.stringify({board:'tools/rootworld-master-board.html',navHash:hash,walkableTiles:nav.reduce((a,b)=>a+b,0),runtimeChanged:false}));
