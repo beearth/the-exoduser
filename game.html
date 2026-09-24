@@ -9757,6 +9757,11 @@ const CHAR_LIST=[
   {id:'exoduser_silvertail',name:'실버테일',desc:'블레이드 댄서. 회전대검, 단검 하나',folder:'img/exoduser_silvertail',fw:48,fh:48,idleN:2,walkN:4,atkN:4,whirlN:0,throwN:0,chainN:0,dashN:0},
 ];
 let _charIdx=0;
+    }else if(ch.id==='exoduser_silvertail'&&typeof WarriorDashFlight!=='undefined'){
+      WarriorDashFlight.apply(c,fm,(dashAtlas,dashFrames)=>{
+        if(_charIdx!==idx||_atlasMask!==c||dashAtlas===c)return;
+        _atlasMask=dashAtlas;_atlasMaskFm=dashFrames;_applyMaskAtlas();
+      },'silvertail');
 try{const _sv=localStorage.getItem('_charIdx');if(_sv!=null)_charIdx=+_sv;}catch(e){}
 const _charPreviews=[];
 CHAR_LIST.forEach((ch,ci)=>{
@@ -9785,8 +9790,12 @@ function _loadCharAtlas(idx){
     _applyMaskAtlas();
     if(ch.id==='exoduser_warrior'&&typeof WarriorBatSwing!=='undefined'){
       WarriorBatSwing.apply(c,fm,(attackAtlas,attackFrames)=>{
-        if(_charIdx!==idx||_atlasMask!==c||attackAtlas===c)return;
-        _atlasMask=attackAtlas;_atlasMaskFm=attackFrames;_applyMaskAtlas();
+        if(_charIdx!==idx||_atlasMask!==c)return;
+        if(attackAtlas!==c){_atlasMask=attackAtlas;_atlasMaskFm=attackFrames;_applyMaskAtlas();}
+        if(typeof WarriorDashFlight!=='undefined')WarriorDashFlight.apply(attackAtlas,attackFrames,(dashAtlas,dashFrames)=>{
+          if(_charIdx!==idx||_atlasMask!==attackAtlas||dashAtlas===attackAtlas)return;
+          _atlasMask=dashAtlas;_atlasMaskFm=dashFrames;_applyMaskAtlas();
+        });
       });
     }
     if(ch.id==='exoduser_silvertail'&&typeof SilvertailAttackRemaster!=='undefined'){
@@ -9796,7 +9805,7 @@ function _loadCharAtlas(idx){
         if(typeof WarriorDashFlight!=='undefined')WarriorDashFlight.apply(attackAtlas,attackFrames,(dashAtlas,dashFrames)=>{
           if(_charIdx!==idx||_atlasMask!==attackAtlas||dashAtlas===attackAtlas)return;
           _atlasMask=dashAtlas;_atlasMaskFm=dashFrames;_applyMaskAtlas();
-        });
+        },'silvertail');
       });
     }
   },_animInfo);
@@ -27557,15 +27566,6 @@ function _buildDiabloField(stageIndex,width,height){
   const variant=((stageIndex|0)*37)%17,sway=(index,amount)=>Math.sin((index+1)*(variant+11)*.173)*amount;
   const regions=[
     {role:'start',cx:100+sway(1,5),cy:181,rx:40,ry:22},{role:'combat',cx:76+sway(2,7),cy:145,rx:42,ry:30},
-    {role:'travel',cx:112+sway(3,8),cy:108,rx:35,ry:26},{role:'combat',cx:86+sway(4,9),cy:70,rx:46,ry:32},
-    {role:'pocket',cx:151+sway(5,7),cy:82,rx:30,ry:24},{role:'boss',cx:100+sway(6,4),cy:24,rx:40,ry:24}
-  ];
-  const cells=new Uint8Array(width*height),mark=(cx,cy,rx,ry,rough)=>{
-    const clamp=(v,lo,hi)=>Math.max(lo,Math.min(hi,v));
-    for(let y=clamp(Math.floor(cy-ry-2),2,height-3);y<=clamp(Math.ceil(cy+ry+2),2,height-3);y++)for(let x=clamp(Math.floor(cx-rx-2),2,width-3);x<=clamp(Math.ceil(cx+rx+2),2,width-3);x++){
-      const dx=(x-cx)/rx,dy=(y-cy)/ry,edge=1+rough*(Math.sin(x*.37+variant)+Math.cos(y*.29-variant))*.5;
-      if(dx*dx+dy*dy<=edge*edge)cells[y*width+x]=1;
-    }
   if((stageIndex|0)===0){
     // QA master blockout: west combat void and eastern marsh bypass.
     const outer=[[92,194],[82,188],[76,177],[74,165],[57,166],[43,153],[37,137],[33,119],[40,101],[49,91],[61,78],[59,65],[64,48],[66,35],[78,25],[91,20],[91,8],[109,8],[109,21],[125,25],[135,37],[138,52],[133,66],[128,74],[148,73],[164,84],[174,100],[179,117],[173,134],[158,147],[137,153],[127,166],[114,176],[111,194]];
@@ -27582,6 +27582,15 @@ function _buildDiabloField(stageIndex,width,height){
     const rooms=[{id:'s',type:'start',cx:100,cy:181,shape:'ellipse',rx:8,ry:8},{id:'c1',type:'combat',cx:62,cy:126,shape:'ellipse',rx:18,ry:18},{id:'b',type:'boss',cx:100,cy:24,shape:'ellipse',rx:12,ry:12}];
     return{mw:width,mh:height,width,height,route:'south_to_north',regions,rooms,spawnHoles:[{x:60,y:130,type:'M'},{x:69,y:86,type:'M'},{x:102,y:44,type:'M'},{x:151,y:115,type:'L'}],start:{x:100,y:181},bossGate:{x:100,y:12},tileRLE:_rleEncodeGrid(cells,width*height),corridors:[],portals:[],objects:[],_testbed:true,masterVersion:'20260924-blockout-2',outerBoundary:outer,centralMass:mass};
   }
+    {role:'travel',cx:112+sway(3,8),cy:108,rx:35,ry:26},{role:'combat',cx:86+sway(4,9),cy:70,rx:46,ry:32},
+    {role:'pocket',cx:151+sway(5,7),cy:82,rx:30,ry:24},{role:'boss',cx:100+sway(6,4),cy:24,rx:40,ry:24}
+  ];
+  const cells=new Uint8Array(width*height),mark=(cx,cy,rx,ry,rough)=>{
+    const clamp=(v,lo,hi)=>Math.max(lo,Math.min(hi,v));
+    for(let y=clamp(Math.floor(cy-ry-2),2,height-3);y<=clamp(Math.ceil(cy+ry+2),2,height-3);y++)for(let x=clamp(Math.floor(cx-rx-2),2,width-3);x<=clamp(Math.ceil(cx+rx+2),2,width-3);x++){
+      const dx=(x-cx)/rx,dy=(y-cy)/ry,edge=1+rough*(Math.sin(x*.37+variant)+Math.cos(y*.29-variant))*.5;
+      if(dx*dx+dy*dy<=edge*edge)cells[y*width+x]=1;
+    }
   };
   for(const r of regions)mark(r.cx,r.cy,r.rx,r.ry,.09);
   const bridge=(a,b,r)=>{const dx=b.cx-a.cx,dy=b.cy-a.cy,steps=Math.max(1,Math.ceil(Math.hypot(dx,dy)/3));for(let i=0;i<=steps;i++){const p=i/steps;mark(a.cx+dx*p,a.cy+dy*p,r,r*.76,.08)}};
@@ -54688,9 +54697,9 @@ function drawP(){
     else if(P._chainAssaultReady&&(_harpActive||_dashActive))_apAnim='atk1';
     else if(_harpActive&&!_dashActive)_apAnim=_dashPhase===1?'dash_start':'dash_fly';
     else if(_dashActive)_apAnim='dash_fly';
-    else if(_harpLandT>0&&(_charIdx!==0||typeof WarriorDashFlight==='undefined'||WarriorDashFlight.landing(true,P.s,_apMv)))_apAnim='dash_land';
+    else if(_harpLandT>0&&(_charIdx>=2||typeof WarriorDashFlight==='undefined'||WarriorDashFlight.landing(true,P.s,_apMv)))_apAnim='dash_land';
     else if(_apMv)_apAnim='run';
-    const _dashFlightPose=_charIdx===0&&typeof WarriorDashFlight!=='undefined'&&_apAnim.startsWith('dash');
+    const _dashFlightPose=_charIdx<2&&typeof WarriorDashFlight!=='undefined'&&_apAnim.startsWith('dash');
     const _apDir=_dashFlightPose?_facingDir8(WarriorDashFlight.direction(_dashActive,_harpActive,_harpLandT,_dashVX,_dashVY,_harpVX,_harpVY,P.facing)):_playerSpriteDirection(P);
     const _apHasDir=!!P._sa.fm[_apAnim+'_'+_apDir];
     if(!_apHasDir&&!P._sa.fm[_apAnim])_apAnim=(_apAnim==='whirlwind'||_apAnim==='stun'||_apAnim==='cast'||_apAnim==='ghost'||_apAnim.startsWith('gSlam')||_apAnim.startsWith('charge')||_apAnim==='atk3'||_apAnim.startsWith('dash'))?'dash':'idle';
@@ -54748,7 +54757,7 @@ function drawP(){
       X.globalAlpha=Math.max(.3,1-_dieT*.5);
     }
     // ── 착지 스쿼시 이펙트: Y축 찌그러짐 + X축 확장 ──
-    if(_harpLandT>0&&_charIdx!==0){
+    if(_harpLandT>0&&_charIdx>=2){
       const _lp=_harpLandT/30; // 1→0 진행도
       const _sqY=1-0.25*_lp; // 착지 순간 Y 0.75배 → 점점 복귀
       const _sqX=1+0.15*_lp; // 착지 순간 X 1.15배 → 점점 복귀

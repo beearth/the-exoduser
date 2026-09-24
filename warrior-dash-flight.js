@@ -1,7 +1,7 @@
 // Shift grappling leap: anticipation, airborne flight, impact and recovery.
 var WarriorDashFlight=(()=>{
  const dirs=['s','se','e','ne','n','nw','w','sw'];
- function apply(base,frameMap,done){
+ function apply(base,frameMap,done,character='warrior'){
   const image=new Image();
   image.onerror=()=>done(base,frameMap);
   image.onload=()=>{
@@ -19,7 +19,9 @@ var WarriorDashFlight=(()=>{
    });
    done(atlas,fm);
   };
-  image.src='img/exoduser_warrior/dash-flight-v1.png?v=20260924-flight1';
+  image.src=character==='silvertail'
+   ?'img/exoduser_silvertail/dash-flight-v1.png?v=20260924-flight1'
+   :'img/exoduser_warrior/dash-flight-v1.png?v=20260924-flight1';
  }
  function direction(dashing,harpoon,landLeft,vx,vy,hvx,hvy,fallback){
   if((dashing||landLeft>0)&&(vx!==0||vy!==0))return Math.atan2(vy,vx);

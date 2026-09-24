@@ -9526,9 +9526,18 @@ function _loadCharAtlas(idx){
     }
     if(ch.id==='exoduser_silvertail'&&typeof SilvertailAttackRemaster!=='undefined'){
       SilvertailAttackRemaster.apply(c,fm,(attackAtlas,attackFrames)=>{
-        if(_charIdx!==idx||_atlasMask!==c||attackAtlas===c)return;
-        _atlasMask=attackAtlas;_atlasMaskFm=attackFrames;_applyMaskAtlas();
+        if(_charIdx!==idx||_atlasMask!==c)return;
+        if(attackAtlas!==c){_atlasMask=attackAtlas;_atlasMaskFm=attackFrames;_applyMaskAtlas();}
+        if(typeof WarriorDashFlight!=='undefined')WarriorDashFlight.apply(attackAtlas,attackFrames,(dashAtlas,dashFrames)=>{
+          if(_charIdx!==idx||_atlasMask!==attackAtlas||dashAtlas===attackAtlas)return;
+          _atlasMask=dashAtlas;_atlasMaskFm=dashFrames;_applyMaskAtlas();
+        },'silvertail');
       });
+    }else if(ch.id==='exoduser_silvertail'&&typeof WarriorDashFlight!=='undefined'){
+      WarriorDashFlight.apply(c,fm,(dashAtlas,dashFrames)=>{
+        if(_charIdx!==idx||_atlasMask!==c||dashAtlas===c)return;
+        _atlasMask=dashAtlas;_atlasMaskFm=dashFrames;_applyMaskAtlas();
+      },'silvertail');
     }
   },_animInfo);
   // bare 버전 — mask와 동일 (별도 bare 폴더 미사용)
@@ -54293,9 +54302,9 @@ function drawP(){
     else if(P._chainAssaultReady&&(_harpActive||_dashActive))_apAnim='atk1';
     else if(_harpActive&&!_dashActive)_apAnim=_dashPhase===1?'dash_start':'dash_fly';
     else if(_dashActive)_apAnim='dash_fly';
-    else if(_harpLandT>0&&(_charIdx!==0||typeof WarriorDashFlight==='undefined'||WarriorDashFlight.landing(true,P.s,_apMv)))_apAnim='dash_land';
+    else if(_harpLandT>0&&(_charIdx>=2||typeof WarriorDashFlight==='undefined'||WarriorDashFlight.landing(true,P.s,_apMv)))_apAnim='dash_land';
     else if(_apMv)_apAnim='run';
-    const _dashFlightPose=_charIdx===0&&typeof WarriorDashFlight!=='undefined'&&_apAnim.startsWith('dash');
+    const _dashFlightPose=_charIdx<2&&typeof WarriorDashFlight!=='undefined'&&_apAnim.startsWith('dash');
     const _apDir=_dashFlightPose?_facingDir8(WarriorDashFlight.direction(_dashActive,_harpActive,_harpLandT,_dashVX,_dashVY,_harpVX,_harpVY,P.facing)):_playerSpriteDirection(P);
     const _apHasDir=!!P._sa.fm[_apAnim+'_'+_apDir];
     if(!_apHasDir&&!P._sa.fm[_apAnim])_apAnim=(_apAnim==='whirlwind'||_apAnim==='stun'||_apAnim==='cast'||_apAnim==='ghost'||_apAnim.startsWith('gSlam')||_apAnim.startsWith('charge')||_apAnim==='atk3'||_apAnim.startsWith('dash'))?'dash':'idle';
@@ -54353,7 +54362,7 @@ function drawP(){
       X.globalAlpha=Math.max(.3,1-_dieT*.5);
     }
     // ── 착지 스쿼시 이펙트: Y축 찌그러짐 + X축 확장 ──
-    if(_harpLandT>0&&_charIdx!==0){
+    if(_harpLandT>0&&_charIdx>=2){
       const _lp=_harpLandT/30; // 1→0 진행도
       const _sqY=1-0.25*_lp; // 착지 순간 Y 0.75배 → 점점 복귀
       const _sqX=1+0.15*_lp; // 착지 순간 X 1.15배 → 점점 복귀

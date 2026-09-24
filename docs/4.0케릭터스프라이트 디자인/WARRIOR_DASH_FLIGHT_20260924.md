@@ -4,7 +4,7 @@
 
 | 항목 | 현행 값/계약 |
 |---|---|
-| 대상 | `exoduser_warrior` 전사 Shift 사슬 이동. 실버테일 기존 시트 유지 |
+| 대상 | 전사 Shift 사슬 이동. 실버테일 별도 제작은 [실버테일 Shift 계약](../archetypes/silvertail/SILVERTAIL_DASH_FLIGHT_20260924.md) |
 | 생성 | OpenAI GPT Image API, `gpt-image-2`, edit, high, 1536×1280. `.env`의 연결된 인증을 메모리로만 사용 |
 | 외형 참조 | `img/exoduser_warrior/attack-bat-v1.png` |
 | 원화 | `output/imagegen/warrior_dash_20260924/source.png`, 정면·후면 방향 보정 `source_v2.png` |

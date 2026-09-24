@@ -1,0 +1,21 @@
+Create a production-quality sprite sheet for the SAME mature silver-haired female sword dancer in input image 1, which is her actual compact dark-game attack sprite. Preserve silver-white high ponytail, black fitted armor, split dark skirt panels, red/purple if present trim, dual decorative silver curved sword-blades attached at the upper-back/neck hub, and one small curved dagger in her left hand. Keep her consistent silhouette and the current compact pixel-art game's style. No black-haired male warrior, no cape, no large handheld sword, no outfit redesign.
+
+Output exactly 1536 x 1280 pixels, exactly 6 columns x 5 rows, thirty individual 256 x 256 cells. Transparent-looking solid pure green #00FF00 background between figures, no grid, labels, borders, cast shadows, dust, trails, particles, glow, or lettering. Each character full body, same scale across poses, centered around x=128 within cell, feet baseline y=218, maximum standing height ~155px, generous green padding. Clean crisp pixel-art edges and compact clustered shading.
+
+Directions per row, viewed from the game's elevated 3/4 top-down camera. Within a row every pose keeps that row's direction:
+Row 1 faces south toward viewer (front view).
+Row 2 faces southeast toward bottom-right (front/right three-quarter).
+Row 3 faces east toward screen right (right profile).
+Row 4 faces northeast toward top-right (back/right three-quarter).
+Row 5 faces north away from viewer (back view; show rear of silver ponytail and back-mounted sword hub; no face).
+Character's movement vector is forward in each row's direction. Do not rotate screen framing within a row.
+
+Columns, genuine different body poses, not standing or running:
+1 anticipation: deep balanced crouch, torso leans in travel direction, dagger remains in left hand, knees bent.
+2 push-off: one knee drives up, trailing foot starts leaving ground, torso pitches forward.
+3 airborne flight: body streamlined nearly horizontal and visibly off the ground, legs tuck and trail behind, ponytail and split skirt flare behind. The attached paired blades stay anchored to their upper-back rotating hub and sweep out behind the body, not held in the hands.
+4 flight continuation: same airborne silhouette with arms, knees, ponytail and skirt in a visibly changed midair phase; attached blades stay connected and trail with flight.
+5 impact landing: deep one-knee crouch near ground, front foot planted, torso compressed, dagger stays in hand.
+6 recovery: rising from the crouch while keeping soft bent knees; ponytail and skirt settle, back blades return near the hub.
+
+Top-down isometric action RPG sprite. Keep humanoid anatomy, unmistakably female sword dancer, flowing silver ponytail; show truly low horizontal flight and deep landing, not just leaned standing. Exact grid and row/column ordering are essential.

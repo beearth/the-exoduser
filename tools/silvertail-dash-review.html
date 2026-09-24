@@ -1,0 +1,27 @@
+<!doctype html><html lang="ko"><meta charset="utf-8"><title>실버테일 Shift 도약 · 비행 · 착지</title>
+<style>body{background:#17191c;color:#ddd;font:16px system-ui;margin:28px}h1{font-size:24px}button{padding:9px 18px;background:#333;color:#fff;border:1px solid #666;border-radius:5px}canvas{display:block;max-width:100%;image-rendering:pixelated;margin:16px 0}p{color:#adb2bc}</style>
+<h1>실버테일 Shift 도약 → 비행 → 착지</h1><p>8방향 전용 모션 · 실제 게임 시트와 로더 · 3배 확대</p>
+<button id="pause">일시정지</button> <button id="step">한 프레임</button><p id="status">시트 로딩 중</p><canvas id="preview" width="1152" height="580"></canvas>
+<script src="../warrior-dash-flight.js?v=20260924-flight1"></script>
+<script>
+const canvas=document.getElementById('preview'),ctx=canvas.getContext('2d'),status=document.getElementById('status');
+const img=new Image();img.src='../img/exoduser_silvertail/dash-flight-v1.png?v=20260924-flight1';
+let tick=0,paused=false,last=0;
+const labels=['남','남동','동','북동','북','북서','서','남서'];
+document.getElementById('pause').onclick=()=>{paused=!paused;document.getElementById('pause').textContent=paused?'재생':'일시정지'};
+document.getElementById('step').onclick=()=>{paused=true;tick+=4;document.getElementById('pause').textContent='재생';draw()};
+function draw(){
+ ctx.fillStyle='#22262b';ctx.fillRect(0,0,1152,580);ctx.imageSmoothingEnabled=false;
+ const t=tick%70,frame=t<8?Math.floor(t/4):t<24?2+Math.floor((t-8)/4)%2:t<54?4+Math.min(1,Math.floor((t-24)/4)):5;
+ status.textContent=(t<8?'도약':t<24?'공중 비행':t<54?'착지·회복':'다음 이동 대기')+' · 포즈 '+(frame+1)+'/6';
+ for(let row=0;row<8;row++){
+  const x=(row%4)*288+144,y=Math.floor(row/4)*270+200;
+  ctx.fillStyle='#111';ctx.beginPath();ctx.ellipse(x,y+53,35,9,0,0,Math.PI*2);ctx.fill();
+  const lift=t>=8&&t<24?-18*Math.sin(Math.PI*(t-8)/16):0;
+  if(img.complete&&img.naturalWidth)ctx.drawImage(img,frame*64,row*64,64,64,x-96,y-96+lift,192,192);
+  ctx.fillStyle='#aeb6c0';ctx.font='16px system-ui';ctx.fillText(labels[row],x-15,y+95);
+ }
+}
+function loop(now){if(!last)last=now;if(!paused)tick+=(now-last)*.06;last=now;draw();requestAnimationFrame(loop)}
+requestAnimationFrame(loop);
+</script></html>
