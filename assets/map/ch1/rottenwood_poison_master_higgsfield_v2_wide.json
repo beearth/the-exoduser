@@ -1,0 +1,27 @@
+{
+  "provider": "Higgsfield",
+  "model": "gpt_image_2_5",
+  "variant": "flare",
+  "quality": "high",
+  "requestedResolution": "4k",
+  "actualDimensions": [
+    2880,
+    2880
+  ],
+  "aspectRatio": "1:1",
+  "count": 1,
+  "jobId": "5a650be9-a06d-48b1-91ac-1e4e17f7798c",
+  "referenceJobId": "b327eb8b-f726-4f84-8024-7d7467707304",
+  "reference": "assets/map/ch1/rottenwood_poison_master_higgsfield_v1.png",
+  "output": "assets/map/ch1/rottenwood_poison_master_higgsfield_v2_wide.png",
+  "status": "completed",
+  "usage": "wide-combat concept reference; not connected to runtime",
+  "userDirection": "넓은 전투공간이 게임의 특징. 다시 제작.",
+  "prompt": "Edit the referenced poison rotten forest image for EXODUSER, a horde hack-and-slash ARPG whose defining feature is VERY WIDE COMBAT SPACES. The previous image was rejected because oversized roots fill the middle and force narrow winding walking paths. SUBSTANTIALLY REDESIGN ITS SPATIAL COMPOSITION. Retain its poison-rotted forest art style, damp black-brown bark, grey-green decay, subdued olive poison, realistic painterly detail and overhead game view. Do NOT preserve its cramped layout.\n\nThe first thing visible must be expansive connected fighting ground, spacious enough for dozens of enemies to surround a player and for long lateral dodges and projectile volleys. Create an asymmetric open forest battlefield with a huge broad west-central clearing that flows directly into a wide southern approach, and a second broadly connected north-east combat clearing. Connections must be broad open shoulders, not tunnels, thin winding paths or narrow necks. Use variations in flat ground material and uneven forest edges to distinguish areas, not walls dividing rooms. There must be several directions to move around during a battle. Avoid a single rectangular empty field, perfect oval arena, symmetrical layout, ring road or room-corridor sequence.\n\nMove ALL colossal trunks, dense branching root masses and tall obstacles to the OUTER forest perimeter. The primary infected living bio-tree stands on the UPPER-LEFT OUTER SHOULDER, attached to the forest edge, with its enormous silhouette leaning outward and roots running along the boundary. It must not occupy or divide the central fighting ground. No large trees, islands, ribcages, pits or raised roots in the center. Any root marks within the combat floor must be flat worn traces that are visibly passable.\n\nPoison sinkholes occupy irregular recessed side pockets at the far right and far left boundary, with a broad dry combat apron around each. Do not place a huge lake across the east route. Preserve extensive dry ground. The pockets have collapsed mud edges, murky olive-yellow poison, sediment, hollow rotten stumps, restrained sickly poison sacs and low localized vapor. Peripheral rotten trees have split wet bark, hollow trunks, rotten wood and shelf fungi. The main living tree has subtle sinewy fibers exposed within bark and a few diseased poison sacs, still recognizably a tree. No faces or mouths.\n\nSouth/bottom center has a BROAD entry opening leading straight into spacious ground. North/top center has a recognizable ruined STONE gate framed by peripheral trees, with a broad open approach. The entire map is one coherent natural place, with dense continuous forest depth surrounding it on all four sides. Ground is damp brown soil, flattened decaying leaves and subtle muddy wear, with calm readable low-contrast detail. The wide empty spaces are intentionally designed combat clearings, not unfinished blank flat texture. No random prop scatter, no line of evenly spaced trunks. No orange flames, lava, neon outlines, saturated green wash, heavy fog obscuring paths, characters, UI, labels, text, frame or watermark.\n\nOne square complete environment master, overhead orthographic-like ARPG view with enough slight elevation to read the peripheral trees. Highest detail. Prioritize the large unobstructed fighting spaces over impressive central tree decoration.",
+  "visualVerdict": "RETOUCH",
+  "notes": [
+    "Central tall root mass removed; broad continuous combat clearing.",
+    "Living bio-tree moved to upper-left perimeter; poison pits placed at sides; north stone gate.",
+    "Runtime scale, combat and collision unverified."
+  ]
+}
