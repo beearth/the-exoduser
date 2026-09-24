@@ -1,0 +1,24 @@
+{
+  "base": "rottenwood_living_hell_v5.png",
+  "source": "rottenwood_living_hell_v6_detail_source.png",
+  "width": 2048,
+  "height": 2048,
+  "blend": "source-over",
+  "blurSigma": 12,
+  "alphaBelow2Zeroed": true,
+  "regions": [
+    {
+      "id": "left",
+      "points": "20,480 290,450 470,820 520,1230 440,1760 20,1800"
+    },
+    {
+      "id": "right",
+      "points": "1740,300 2020,300 2020,1820 1670,1760 1530,1420 1600,1060 1510,800"
+    }
+  ],
+  "layers": [
+    "rottenwood_living_hell_v6_left_layer.png",
+    "rottenwood_living_hell_v6_right_layer.png"
+  ],
+  "prompt": "rottenwood_living_hell_v6_prompt.txt"
+}
