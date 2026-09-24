@@ -1,0 +1,21 @@
+Create a production sprite sheet for the SAME black-haired dark-fantasy warrior in input image 1 (current game sprite sheet). Preserve his black iron armor, red cape/scarf, human black-haired head and broad steel greatsword, with restrained dark pixel-art colors and readable low-resolution shapes. No helmet or new ornaments.
+
+Output canvas exactly 1536 x 1280 pixels. EXACTLY 6 columns x 5 rows of equal 256 x 256 cells, 30 separate full-body poses. No visible grid, labels, borders or lettering. Every cell has one warrior, consistent body scale and camera, centered at x=128 relative to its cell; foot baseline y=218. Nominal standing height about 160 pixels; crouches are genuinely shorter, DO NOT enlarge crouches to fill a cell. Keep all parts inside each cell with 20px padding. Flat solid pure green #00FF00 everywhere outside the character, including spaces between limbs. No gradients, background shadows, floor, dust, smoke, trails, particles or glow. Clean chroma-key silhouette edges.
+
+Rows are camera directions for a top-down 3/4 isometric action RPG, camera looking down about 35 degrees:
+ROW 1: moving south toward viewer, front view.
+ROW 2: moving southeast toward bottom-right, front/right three-quarter view.
+ROW 3: moving east toward screen right, right-facing side view.
+ROW 4: moving northeast toward top-right, rear/right three-quarter view.
+ROW 5: moving north away from viewer, back view.
+Keep each row facing its exact direction across all six poses. The sword and red cape trail behind the movement, never cover the face, and remain within cell margins.
+
+Columns show a grappling leap / airborne dash / landing, NOT standing idle or running:
+1: deep anticipation crouch, knees bent, torso leaning strongly in travel direction, ready to push off.
+2: powerful push-off, front knee raised, back foot leaving ground, torso thrust forward.
+3: fully airborne streamlined low flight, torso diagonal nearly horizontal along travel, both knees bent backward with feet trailing. Visibly flying, not standing.
+4: airborne flight continuation, cape fluttered back, knees and feet slightly shifted, same trajectory and size as column 3.
+5: low impact landing, one knee deeply bent and one foot forward, body compressed close to ground, greatsword safely trailing.
+6: recovery from landing, knees still bent, torso rising toward neutral, cape settling.
+
+Draw real distinct anatomical animation poses, not a rotated or scaled standing character. Game-ready hand-pixeled dark fantasy style matching input image 1; large crisp clusters, no photoreal texture. Exact 6 by 5 layout is essential.
