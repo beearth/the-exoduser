@@ -239,6 +239,7 @@ body:has(#parryLesson) :is(#mmLvl,#tutorialBadgeButton){visibility:hidden;}
 .lobby-right::after{content:'';position:absolute;inset:2px;border:40px solid transparent;border-image:var(--ui-frame) 22% / 40px / 0 stretch;pointer-events:none;z-index:2;}
 .lobby-right .char-item.active{background:linear-gradient(90deg,#481718,#160e10)!important;border-color:#c15b47!important;box-shadow:inset 3px 0 #d3634b!important;}
 .lobby-right .char-item.active::before{background:#cf634b!important;}
+.lobby-right .enter-game-btn img{filter:hue-rotate(95deg) saturate(.9);}
 .lobby-right .lobby-divider{height:56px!important;background:var(--ui-crest) center/168px 56px no-repeat!important;opacity:1;mix-blend-mode:normal;}
 @media(max-width:1400px){
   :is(#settings,#invPanel,#forge,#skillPanel,#storagePanel,#statPanel).panel .pbox{padding:74px 32px 24px!important;}

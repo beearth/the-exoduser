@@ -95,7 +95,7 @@
 
 ## 2026-09-24 공통 UI 현재 적용 계약
 
-사용자가 승인한 고딕·악마·지옥 시안에 따라 Hell Gothic을 적용한다. 이전 Iron Covenant 황동 테마는 제작 이력이다. 런타임은 ui-foundation.css?v=20260924-hell2가 기존 스타일 뒤에서 덮어쓴다.
+사용자가 승인한 고딕·악마·지옥 시안에 따라 Hell Gothic을 적용한다. 이전 Iron Covenant 황동 테마는 제작 이력이다. 런타임은 ui-foundation.css?v=20260924-hell3가 기존 스타일 뒤에서 덮어쓴다.
 
 | 대상 | 현재 표시/동작 |
 |---|---|
@@ -112,7 +112,7 @@
 | 스킬 추천 | skill-recommendations: 폭>1100 2열/≤1100 1열, 간격14px/카드패딩16px. 추천15단계 및 학습/합체 로직 유지 |
 | 성장/인벤토리 | 기존 성장 인체 트리·투자 계획, 장비 좌표·두 귀걸이 슬롯·유골함·아이템 희귀도 색 유지. 문장/프레임/메뉴 표면만 변경 |
 | 낮은 장비창 | 폭≥781이면서 높이≤800: 제목 margin/padding0·줄높이1.2, 헤더 최소44px·아래10px. 장비/가방 행 minmax(220px,1fr) minmax(170px,.65fr), 세로 스크롤. 성장 growth-shell은 전용 CSS보다 공통 패딩 우선 |
-| 로비 | 붉은 흑철 표면, 40px 9-slice 프레임/inset2px. 선택 카드 #481718→#160e10, 선 #c15b47/왼쪽3px #d3634b. 구분선 위치 문장168×56px, 높이≤800은120×40px. 미선택 입장 숨김/이미지≤120px(낮은 화면≤96px), 중앙 안내 스크롤 유지 |
+| 로비 | 붉은 흑철 표면, 40px 9-slice 프레임/inset2px. 선택 카드 #481718→#160e10, 선 #c15b47/왼쪽3px #d3634b. 구분선 위치 문장168×56px, 높이≤800은120×40px. 입장 이미지 hue-rotate(95deg) saturate(.9)로 붉은 강조. 미선택 입장 숨김/이미지≤120px(낮은 화면≤96px), 중앙 안내 스크롤 유지 |
 | 전투 HUD | skBar::before 문장114×38px, left50%/top18px, pointer-events:none. 기존 HP/MP/SP/쉴드/기동력 색·수치·슬롯·위치 유지 |
 | 튜토리얼 가림 방지 | #parryLesson이 DOM에 존재하는 동안 mmLvl·tutorialBadgeButton visibility:hidden. 튜토리얼 종료 시 원상 복구 |
 
