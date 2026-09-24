@@ -60,7 +60,7 @@ window._supabaseReady=new Promise(resolve=>{
 <script src="maps_data.js"></script>
 <script src="assets/map/ch1/geometry/ch1_si1_geometry.js"></script>
 <script src="assets/map/ch1/production_finish/layout.js?v=20260916-finish-1"></script>
-<script src="ch1-living-detail.js?v=20260925-1"></script>
+<script src="ch1-living-detail.js?v=20260925-2"></script>
 <script src="lang_zh.js"></script>
 <script src="lang_ja.js"></script>
 <script src="lang_es.js"></script>
@@ -48245,6 +48245,7 @@ function draw(){
   }
   _drawCh1BakedSpike(X);
   _drawCh1Hill(X);
+  if(globalThis.Ch1LivingDetail?.shadows)Ch1LivingDetail.shadows(X,G,MAP_OBJS,_OBJ_SPR,_OBJ_META,_now,VW,VH);
   if(globalThis.Ch1LivingDetail)Ch1LivingDetail.draw(X,G,MAP_OBJS,_now,VW,VH);
   const _tMap=performance.now();
   if(_fc2d){var _dPara=_PERF_PROF._delta(_snapPara);_PERF_PROF._para_di=_dPara.di}
@@ -48687,7 +48688,7 @@ function draw(){
         const _spriteFx=_drawFilter||(_meta&&_meta.blend);if(_spriteFx){X.save();if(_drawFilter)X.filter=_drawFilter;if(_meta&&_meta.blend)X.globalCompositeOperation=_meta.blend}
         const _moAlpha=(_meta&&_meta.alpha!==undefined?_meta.alpha:1)*_ch1StartOuterPropAlpha(mo);X.globalAlpha=_moAlpha;
         const _swayActive=_diabloNatureSway(X,mo,_meta,(_meta?_meta.sz||32:32)*(mo.scale||1),_now);
-        const _ch1TissueActive=globalThis.Ch1LivingDetail&&Ch1LivingDetail.deform(X,G,mo,_now);
+        const _ch1TissueActive=globalThis.Ch1LivingDetail&&Ch1LivingDetail.deform(X,G,mo,_now,_meta);
         if(_spr&&_spr.complete&&_spr.naturalWidth>1){
           const sz=(_meta?_meta.sz||32:32)*(mo.scale||1);
           if(_meta&&_meta.sheet){const _sh=_meta.sheet,_cw=~~(_spr.naturalWidth/_sh.c),_ch=~~(_spr.naturalHeight/_sh.r);

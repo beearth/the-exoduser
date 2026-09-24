@@ -1,7 +1,9 @@
 /* CH1-1 local living tissue. Visual only; coordinates and collision stay owned by the map. */
 (function(root){
   'use strict';
-  const kinds={m_c1tree:2.1,m_c1cocoon:1.1,m_c1pool:1.25,m_c1spod:.65,m_c1sroot:.75,pit_poison:1.2,m_rotten_tree:1};
+  const kinds={m_c1tree:2.1,m_c1cocoon:1.1,m_c1pool:1.25,m_c1spod:.65,m_c1sroot:.75,pit_poison:1.2,m_rotten_tree:1,tissue_bed:1.8};
+  const ground=[[91,181,-.3],[114,177,.5],[87,155,.7],[122,148,-.5],[79,124,.2],[119,114,-.8],[85,96,.4],[126,81,-.6],[91,62,.5],[116,47,-.2],[97,27,.8]].map(([x,y,angle])=>({type:'tissue_bed',x:(x+.5)*40,y:(y+.5)*40,angle}));
+  function isTree(type){return type==='m_c1tree'||type==='m_rotten_tree'||type==='m_vine_pillar'||/^m_ctree\d+$/.test(type);}
   const feet={m_c1tree:230,m_c1cocoon:100,m_c1spod:40,m_rotten_tree:50};
   function enabled(g){return g.stage===0&&!g._bossArena&&!g._fieldRebuildQA;}
   function paint(c,g,objects,now,width,height,surfaceOnly=false){
@@ -24,11 +26,18 @@
       // Uneven branching tendons, each pulse delayed along the length.
       for(let j=0;j<5;j++){
         const a=seed+j*2.399,len=100+42*Math.sin(seed+j*1.7),ex=Math.cos(a)*len,ey=Math.sin(a)*len*.55+24;
-        const bend=Math.sin(phase-j*.8)*3.2,pulse=.5+.5*Math.sin(phase-j*.8);
-        c.beginPath();c.moveTo(0,8);c.bezierCurveTo(ex*.24-18,ey*.1+bend,ex*.64+22,ey*.95-bend,ex,ey);
-        c.strokeStyle='rgba(13,7,12,.38)';c.lineWidth=11;c.stroke();
-        c.strokeStyle=wet?'rgba(63,61,35,.55)':'rgba(69,39,43,.58)';c.lineWidth=5.2+pulse*1.5;c.stroke();
-        c.save();c.translate(-.8,-1.6);c.strokeStyle='rgba(139,112,100,.19)';c.lineWidth=1.25;c.stroke();c.restore();
+        const bend=Math.sin(phase-j*.8)*8,pulse=.5+.5*Math.sin(phase-j*.8);
+        let px=0,py=8;
+        for(let k=1;k<=24;k++){
+          const u=k/24,v=1-u,taper=Math.pow(v,.8),wrinkle=Math.sin(u*31+j)*u*v*2;
+          const nx=3*v*v*u*(ex*.24-18)+3*v*u*u*(ex*.64+22)+u*u*u*ex+wrinkle;
+          const ny=v*v*v*8+3*v*v*u*(ey*.1+bend)+3*v*u*u*(ey*.95-bend)+u*u*u*ey;
+          c.beginPath();c.moveTo(px,py);c.lineTo(nx,ny);
+          c.strokeStyle='rgba(13,7,12,.38)';c.lineWidth=11*taper+.35;c.stroke();
+          c.strokeStyle=wet?'rgba(63,61,35,.55)':'rgba(69,39,43,.58)';c.lineWidth=(5.2+pulse*1.5)*taper+.2;c.stroke();
+          c.beginPath();c.moveTo(px-.8*taper,py-1.6*taper);c.lineTo(nx-.8*taper,ny-1.6*taper);
+          c.strokeStyle='rgba(139,112,100,.19)';c.lineWidth=1.25*taper+.1;c.stroke();px=nx;py=ny;
+        }
         // A tapered smaller offshoot connects the tissue to the existing soil.
         c.beginPath();c.moveTo(ex*.58,ey*.6);c.quadraticCurveTo(ex*.74-14,ey*.56-12,ex*.85-23,ey*.7-23);
         c.strokeStyle='rgba(71,43,44,.3)';c.lineWidth=1.5;c.stroke();
@@ -61,7 +70,8 @@
     if(!enabled(g))return;
     const z=Math.max(.3,g._edZoom||g._camZoom||1),hw=width/(2*z),hh=height/(2*z);
     c.save();const alpha=c.globalAlpha;
-    for(const o of objects){
+    for(let i=0;i<objects.length+(surfaceOnly?0:ground.length);i++){
+      const o=i<objects.length?objects[i]:ground[i-objects.length];
       const k=kinds[o.type];if(!k)continue;
       const wet=o.type==='m_c1pool'||o.type==='pit_poison';if(surfaceOnly&&!wet)continue;
       const s=k*Math.min(1.6,o.scale||1),pad=160*s;
@@ -70,16 +80,50 @@
       const a=atlas(wet,surfaceOnly);
       const phase=((now*.00095+o.x*.017+o.y*.011)/(Math.PI*2)%1+1)%1*16;
       const f=Math.floor(phase),next=(f+1)%16,mix=phase-f;
-      c.globalAlpha=alpha*(1-mix);c.drawImage(a,(f%4)*320,Math.floor(f/4)*320,320,320,o.x-pad,y-pad,320*s,320*s);
-      c.globalAlpha=alpha*mix;c.drawImage(a,(next%4)*320,Math.floor(next/4)*320,320,320,o.x-pad,y-pad,320*s,320*s);
+      c.save();c.translate(o.x,y);if(o.angle)c.rotate(o.angle);
+      c.globalAlpha=alpha*(1-mix);c.drawImage(a,(f%4)*320,Math.floor(f/4)*320,320,320,-pad,-pad,320*s,320*s);
+      c.globalAlpha=alpha*mix;c.drawImage(a,(next%4)*320,Math.floor(next/4)*320,320,320,-pad,-pad,320*s,320*s);c.restore();
     }
     c.restore();
   }
-  function deform(c,g,o,now){
-    if(!enabled(g)||!['m_c1cocoon','m_c1spod'].includes(o.type))return false;
+  const shadowCache=new WeakMap();
+  function shadows(c,g,objects,sprites,metas,now,width,height){
+    if(!enabled(g))return;
+    const z=Math.max(.3,g._edZoom||g._camZoom||1),hw=width/(2*z),hh=height/(2*z);
+    c.save();const alpha=c.globalAlpha;
+    for(const o of objects){
+      if(!isTree(o.type))continue;
+      const img=sprites[o.type],meta=metas[o.type];
+      if(!img||!meta||img.complete===false||!(img.naturalWidth||img.width))continue;
+      const size=(meta.sz||400)*(o.scale||1),scale=size*(o.type==='m_c1tree'?.72:1)/400;
+      const foot=o.y+size*(o.type==='m_c1tree'?.2016:.45);
+      if(Math.abs(o.x-g.cam.x)>hw+size||Math.abs(foot-g.cam.y)>hh+size)continue;
+      let tex=shadowCache.get(img);
+      if(!tex){
+        tex=root.document.createElement('canvas');tex.width=640;tex.height=320;
+        const x=tex.getContext('2d'),r=meta.srcRect||[0,0,img.naturalWidth||img.width,img.naturalHeight||img.height];
+        x.save();x.translate(170,24);x.transform(1,0,-.55,-.52,0,0);x.filter='blur(4px)';
+        x.drawImage(img,r[0],r[1],r[2],r[3],-145,-400,290,400);x.restore();
+        x.globalCompositeOperation='source-in';const fade=x.createLinearGradient(0,24,0,260);
+        fade.addColorStop(0,'rgba(8,5,12,.65)');fade.addColorStop(.65,'rgba(8,5,12,.36)');fade.addColorStop(1,'rgba(8,5,12,0)');
+        x.fillStyle=fade;x.fillRect(0,0,640,320);shadowCache.set(img,tex);
+      }
+      const drift=Math.sin(now*.00072+o.x*.017+o.y*.011)*4*scale;
+      c.globalAlpha=alpha*.6;c.drawImage(tex,o.x-170*scale+drift,foot-24*scale,640*scale,320*scale);
+    }
+    c.restore();
+  }
+  function deform(c,g,o,now,meta){
+    if(!enabled(g))return false;
+    if(isTree(o.type)){
+      const size=(meta&&meta.sz||400)*(o.scale||1),foot=o.y+(o.type==='m_c1tree'?size*.2016:size*.45);
+      const wave=Math.sin(now*.00072+o.x*.017+o.y*.011)+.3*Math.sin(now*.00131+o.y*.019);
+      c.save();c.translate(o.x,foot);c.rotate(wave*(o.type==='m_c1tree'?.009:.018));c.translate(-o.x,-foot);return true;
+    }
+    if(!['m_c1cocoon','m_c1spod'].includes(o.type))return false;
     const wave=Math.sin(now*.00105+o.x*.017+o.y*.011);
     c.save();c.translate(o.x,o.y+32);c.scale(1+wave*.018,1-wave*.012);c.translate(-o.x,-o.y-32);
     return true;
   }
-  root.Ch1LivingDetail=Object.freeze({draw,deform});
+  root.Ch1LivingDetail=Object.freeze({draw,deform,shadows});
 })(globalThis);
