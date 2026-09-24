@@ -10,7 +10,7 @@
 
 | 항목 | 현재 구현 |
 |---|---|
-| 연결 | game.html/game-easy-test.html: ui-refinement.css?v=20260925-1, defer ui-panels.js?v=20260925-1. index.html은 CSS만. NW.js 두 파일 복사 |
+| 연결 | game.html/game-easy-test.html: ui-refinement.css?v=20260925-2, defer ui-panels.js?v=20260925-1. index.html은 CSS만. NW.js 두 파일 복사 |
 | 설정 | 왼쪽 폭 min(680px,100vw−24px), 높이100dvh−24px, 최대높이1000px |
 | 장비 | 오른쪽 폭 clamp(640px,36vw,780px), 최대100vw−24px; 폭≤780에서는100vw−16px |
 | 스킬/대장간/창고 | 각각 최대1020/980/700px, 화면폭−24px 이내. 스킬 왼쪽; 대장간/창고 중앙 |
@@ -57,7 +57,7 @@
 
 ## 에셋 생성
 
-스킬 추천 카드는 동일 iron.png/480px 표면을 사용한다. 카드선#534b3e, 제목14px/#deccaa, 설명12px/#b8ae9a/줄높이1.6. 현재 추천은# a75e46(공백 없이 #a75e46) 테두리와 왼쪽3px 표시를 사용한다.
+스킬 추천 카드는 동일 iron.png/480px 표면을 사용한다. 카드선#534b3e, 제목14px/#deccaa, 설명12px/#b8ae9a/줄높이1.6. 현재 추천은#a75e46 테두리와 왼쪽3px 표시를 사용한다.
 
 | 항목 | 기록 |
 |---|---|
