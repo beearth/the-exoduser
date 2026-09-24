@@ -1,0 +1,73 @@
+{
+  "base": "rottenwood_poison_master_higgsfield_v2_wide.png",
+  "result": "rottenwood_poison_master_v3_detail.png",
+  "sourcePatch": "rottenwood_poison_tree_detail_v3_source.png",
+  "layer": "rottenwood_poison_tree_v3_layer.png",
+  "provider": "Higgsfield",
+  "model": "gpt_image_2_5",
+  "variant": "flare",
+  "quality": "high",
+  "requestedResolution": "4k",
+  "jobId": "2e8b6efc-cac6-41da-b95c-3f5251f47c20",
+  "referenceMediaId": "11aaf749-7232-4f7e-8d7c-db300c3173ec",
+  "crop": [
+    0,
+    0,
+    1440,
+    1440
+  ],
+  "canvas": [
+    2880,
+    2880
+  ],
+  "compositionTool": "ImageMagick 6 (Higgsfield sandbox)",
+  "maskPolygon": [
+    [
+      0,
+      0
+    ],
+    [
+      1060,
+      0
+    ],
+    [
+      1050,
+      230
+    ],
+    [
+      960,
+      380
+    ],
+    [
+      980,
+      600
+    ],
+    [
+      1090,
+      810
+    ],
+    [
+      810,
+      1000
+    ],
+    [
+      640,
+      1250
+    ],
+    [
+      480,
+      1390
+    ],
+    [
+      0,
+      1390
+    ]
+  ],
+  "maskBlurSigma": 24,
+  "blend": "source-over",
+  "outsideCropAbsoluteErrorPixels": 0,
+  "verification": "ImageMagick compare -metric AE: right half=0; bottom-left quarter=0",
+  "prompt": "This input is the UPPER LEFT DETAIL CROP of an existing overhead dark fantasy ARPG environment. It will be composited back into the unchanged original map. Perform a LOCAL PROFESSIONAL ENVIRONMENT PAINTOVER, NOT a new composition. Match the exact crop framing, camera elevation, ground edges and overall exposure. Preserve the rightmost and bottommost margins and the open dirt fighting ground.\n\nThe existing enormous tree in the upper-left looks like randomly braided smooth tubes and has crude swollen blobs. Rebuild THIS TREE within its existing outer footprint into a convincing ancient POISON-ROTTED BIOLOGICAL TREE. A single massive tapering trunk with believable structural grain and irregular secondary branches, heavy buttress roots widening naturally into soil. Replace tubular spaghetti knots with large legible woody planes and broken, splintered radial fibers. Include one deep asymmetrical hollow fracture exposing layered rotten heartwood, sharp peeling plates of wet black bark, crumbly pale diseased wood and dark stringy connective tissue deep INSIDE the fissure. Integrate a restrained cluster of irregular translucent amber-olive toxin vesicles growing from a split in the bark, with viscous dark sap leaking down into stained soil. No hanging balloon blobs, face, mouth, teeth or eyeballs. The tree must still look structurally like a tree, with horrifying disease revealed up close.\n\nUpgrade only this tree and the immediately surrounding forest shoulder: overlapping old stumps with distinct broken silhouettes, attached shelf fungi sized much smaller than the trunk, compressed wet leaf rot, exposed half-buried roots, deep soil contact shadows and localized decomposing organic litter. Natural progression large silhouette → bark planes → microdetail. Do not repeat similar stumps. Do not add upright obstacles or shrubs into the open fighting ground. Keep the existing side poison hollow in place, give its bank a convincing collapsed mud cross-section and a dark wet waterline without spreading the pool. Blend all tree roots into the ground; no sticker effect.\n\nArt quality: meticulous production matte painting for a grim mature ARPG, physically convincing wood anatomy and wet decay, readable graphic large forms, rich sharp brushwork, restrained desaturated brown/grey/olive. Keep highlights directional and subdued. No photo collage, no comic outlines, no blanket green wash, no new fog hiding detail. Preserve spatial layout and scale. No changes to the main open clearing. Right and bottom 10 percent borders must remain visually consistent with the input for seamless compositing. No text, labels, UI, characters, framing or watermark.",
+  "usage": "concept local paintover only, runtime not modified",
+  "visualVerdict": "RETOUCH"
+}

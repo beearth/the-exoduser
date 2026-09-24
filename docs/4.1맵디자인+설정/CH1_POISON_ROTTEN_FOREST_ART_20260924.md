@@ -1,5 +1,7 @@
 # CH1-1 독속성 썩은 숲 원화 — 2026-09-24
 
+> **v3 부분 수정:** 사용자 요청으로 전체 재생성을 중단하고 베이스 위 부분 편집을 적용했다. 좌상단 거목 crop을 Higgsfield에서 수정한 뒤 ImageMagick 마스크 합성. `rottenwood_poison_detail_review.html`에서 같은 구역 전후 비교, `rottenwood_poison_v3_layers.svg`에 베이스와 수정 레이어 분리 보존. 게임 미적용/RETOUCH.
+
 > **최신 사용자 수정 및 v2:** 게임의 특징은 **넓은 전투공간**이다. 중앙까지 뿌리가 차지하는 v1 구도는 채택하지 않는다. v2는 중앙의 넓게 연결된 전투 지면, 외곽 생체나무·고목, 양측 가장자리 독 구덩이로 재제작했다. 기존 구도 보존·중앙 랜드마크 배치보다 이 최신 지시가 우선한다. 아래 v1·직접 API 시도는 이전 이력이다.
 
 > **후속 사용자 승인:** “힉스필드일단써”. 이번 원화는 Higgsfield 사용을 허용한다. 아래 GPT 직접 API 잔액 부족 및 대체 도구 금지는 이전 시도 이력이며 이번 명시적 승인에 우선하지 않는다. 기준 원화 업로드 확인 후 Higgsfield `gpt_image_2_5` / flare / high / 4k / 1:1 / 1장 편집을 제출했다. 사전 견적4.25크레딧, job `b327eb8b-f726-4f84-8024-7d7467707304`, 참조 media `1403c113-4387-4cd9-80f3-de6b0988e261`. 생성 결과는 후속 절에 기록한다.
@@ -69,3 +71,23 @@ STAGE: CH1-1 원화 시안. MASTER: 넓은 비대칭 전투 공터, 남→북, �
 **VISUAL VERDICT: RETOUCH — 넓은 전투공간 방향을 반영한 원화 시안, 실제 게임 맵 PASS 아님.**
 
 NEXT PASS: 이 공간 원칙을 기준으로 실제 맵 geometry·원화 배율·카메라·전투를 맞춘다. v1의 좁은 중앙 뿌리 구도로 되돌리지 않는다.
+
+## v3 — 베이스 고정, 거목 부분 편집
+
+| 항목 | 결과 |
+|---|---|
+| 입력 | v2의 좌상단 x0/y0/1440×1440 crop. 전체2880² 베이스 보존 |
+| 편집 | Higgsfield gpt_image_2_5/flare/high/4k, job `2e8b6efc-cac6-41da-b95c-3f5251f47c20`; 큰 줄기의 해부학적 형태·갈라진 목질·부패 공동·독액·접지 보강 |
+| 디자인 합성 | Higgsfield sandbox ImageMagick6. 생성 crop을1440²에 맞춰 축소, 11점 polygon/blur sigma24 알파 마스크로 source-over. 정확한 점·프롬프트는 `rottenwood_poison_master_v3_detail.json` |
+| 파일 | `rottenwood_poison_tree_detail_v3_source.png` 생성원본, `rottenwood_poison_tree_v3_layer.png` RGBA 편집 레이어, `rottenwood_poison_master_v3_detail.png` 합성본, `rottenwood_poison_v3_layers.svg` 편집용2레이어, `rottenwood_poison_detail_review.html` 전후 |
+| 보존 검증 | ImageMagick AE: 오른쪽1440×2880=0, 좌하1440²=0. 좌상 crop 밖 차이 픽셀0. crop 내부 마스크 feather 영역은 의도적 혼합 |
+| 시각 열람 | 수정 crop과 전체 합성본 실제 열람. 좌상 거목 공동·목질이 구분되고 전투 공터의 큰 배치 유지. 나머지 외곽/바닥 품질은 이번에 해결했다고 주장하지 않음 |
+| 적용 상태 | 원화 부분 수정 결과. 런타임·충돌·청크·게임 코드 변경 없음 |
+
+### MAP PRODUCTION REPORT — v3
+
+STAGE: CH1-1 좌상 거목 부분 원화. MASTER: v2 넓은 전투공간 유지. OUTER LEFT/TOP: 거목과 접점 국소 수정; RIGHT/SOUTH: 원본 픽셀 유지. LARGE: 단일 거목 구조·부패 공동 보강. MEDIUM: 목질·뿌리 접지, 나머지 외곽 잔여. GROUND: 선택 영역의 독액·젖은 접촉면만 수정. PLAYABLE: 큰 공터 유지, 실제 전투 미검증. LANDMARK: 좌상 생체나무. CAMERA START/EARLY/ARENA/SIDE L/SIDE R/LANDMARK/LATE/EXIT: 원화 crop/전체 시각 열람, 런타임 미실시. TECH: crop밖 픽셀 동일성 확인; route/collision/pageerror/404/seam/loading/performance 게임 검증 없음. FILES: v3 원본/레이어/합성/SVG/HTML/JSON 및 문서. 동시·무관 변경 없음. GIT: 이번 파일만 별도 커밋 대상; push/deploy 없음.
+
+**VISUAL VERDICT: RETOUCH — 좌상단 국소 개선, 전체 맵 완성 판정 아님.**
+
+NEXT PASS: 동일 베이스·레이어 방식으로 나머지 외곽과 구덩이·바닥의 부족한 구역을 순차 보강.
