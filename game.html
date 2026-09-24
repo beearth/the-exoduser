@@ -2430,6 +2430,9 @@ body:has(#invPanel.on) #mmWrap,
 body:has(#invPanel.on) #mmLvl,
 body:has(#invPanel.on) #stageClock,
 body:has(#invPanel.on) #areaTitle,
+body:has(#invPanel.on) #hudTop,
+body:has(#invPanel.on) #tutorialBadgeButton,
+body:has(#invPanel.on) #skBarTip,
 body:has(#invPanel.on) #keyGuide{display:none!important}
 #invPanel .inv-wrap{grid-template-rows:minmax(0,1.45fr) minmax(260px,.8fr)!important}
 #invPanel .inv-equip{justify-content:center!important;padding-top:0!important}
@@ -2467,6 +2470,35 @@ body:has(#invPanel.on) #keyGuide{display:none!important}
   #invPanel .inv-eq-sil{width:250px!important;height:375px!important}
   #invPanel .inv-eq-slot{width:52px!important;height:52px!important}
   #invPanel .inv-eq-slot .iskin{width:40px!important;height:40px!important}
+}
+/* Inventory visual QA 2026-09-24: fit the board, never crop its scaled contents. */
+#invPanel .inv-wrap{grid-template-columns:clamp(230px,20vw,320px) minmax(0,1fr)!important;grid-template-rows:minmax(0,1fr) minmax(230px,.65fr)!important}
+#invPanel .inv-equip{position:relative;container-type:size;min-height:0;margin:0!important;padding:0!important;overflow:hidden;background:radial-gradient(ellipse at center,rgba(77,52,37,.22),transparent 65%)}
+#invPanel .inv-equip>div:first-child{position:absolute;left:16px;top:12px;font-size:.8rem!important;letter-spacing:.1em!important}
+#invPanel .inv-eq-wrap{position:absolute;left:50%;top:50%;width:600px!important;height:324px!important;margin:0!important;transform:translate(-50%,-50%)!important;transform-origin:center;zoom:min(1.4,calc((100cqw - 32px) / 600px),calc((100cqh - 20px) / 324px))}
+#invPanel .inv-eq-sil{width:210px!important;height:320px!important;opacity:.9!important;filter:drop-shadow(0 4px 18px rgba(0,0,0,.7))!important}
+#invPanel .inv-eq-slot{box-sizing:border-box;width:72px!important;height:72px!important;backdrop-filter:none;border-radius:3px!important}
+#invPanel .inv-eq-slot .iskin{width:56px!important;height:56px!important}
+#invPanel .inv-eq-slot .ieq-label{font-size:.65rem!important;line-height:1.15!important;max-width:100%;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+#invPanel #invCenter{padding:10px 14px!important;min-height:0}
+#invPanel #invFilters{gap:4px!important;padding:6px 0!important}
+#invPanel .inv-filter-btn{padding:4px 8px!important;min-height:26px;font-size:.75rem!important}
+#invPanel #invGrid{padding:0!important;border:0!important;border-radius:0!important;outline:1px solid rgba(176,126,84,.25);flex:1 1 auto!important;min-height:84px;max-height:none!important}
+#invPanel .inv-grid-bg{border-radius:2px!important}
+#invPanel #invRight{max-height:calc(100% - 24px)!important}
+@media(max-height:800px) and (min-width:1101px){
+  #invPanel .pbox{padding:12px 18px!important}
+  #invPanel .ptitle{font-size:1.5rem!important;margin:0!important}
+  #invPanel .inv-actions{flex-basis:48px!important;min-height:48px!important;padding-top:6px!important}
+  #invPanel .inv-wrap{grid-template-rows:minmax(0,1fr) 220px!important}
+}
+@media(max-width:1100px){
+  #invPanel .inv-equip{height:420px!important;min-height:420px;order:0}
+  #invPanel #invCenter{height:340px;min-height:340px;order:1}
+  #invPanel #invOssuaryPanel{max-height:260px;order:2}
+  #invPanel #invStorageCol{height:240px;order:3}
+  #invPanel #invRight{position:fixed!important;top:100px!important;right:16px!important;width:min(360px,85vw)!important;max-height:calc(100vh - 180px)!important}
+  #invPanel #invGrid{align-self:flex-start!important;flex-shrink:0!important;max-height:210px!important}
 }
 </style>
 <link rel="stylesheet" href="stat-panel-ui.css?v=20260913-smooth-ui">
@@ -14318,21 +14350,21 @@ const SLOT_EMOJI=['⚔️','🛡️','👢','🦺','⛑️','🏹','🧤','👖'
 // Paper doll slot positions [left, top] — indexed by SLOT_NAMES; 380×310 human mannequin layout.
 // Wearable armor/accessories sit on body zones; weapon/bow/cape remain on the flanks.
 const EQ_POS=[
-  [18,64],   // 0 weapon — 손 왼쪽 외부
-  [224,112], // 1 shield — 오른팔/방패
-  [170,236], // 2 boots — 발
-  [170,96],  // 3 armor — 몸통
-  [170,0],   // 4 helmet — 머리
-  [322,64],  // 5 bow — 오른쪽 외부
-  [116,112], // 6 gloves — 왼팔/손
-  [170,185], // 7 pants — 다리
-  [170,143], // 8 belt — 허리
-  [170,48],  // 9 necklace — 목
-  [116,48],  // 10 ring1 — 왼쪽 장신구
-  [224,48],  // 11 ring2 — 오른쪽 장신구
-  [322,176], // 12 cape — 뒤쪽 외부
-  [116,163], // 13 bracelet — 왼손목
-  [224,0],   // 14 headband — 머리 외부
+  [24,168],  // 0 weapon — 600x324 board, 72px sockets
+  [416,168], // 1 shield — right arm
+  [416,252], // 2 boots — feet level
+  [112,84],  // 3 armor — torso level
+  [112,0],   // 4 helmet — head level
+  [504,168], // 5 bow — outer right
+  [112,168], // 6 gloves — left arm
+  [112,252], // 7 pants — legs
+  [416,84],  // 8 belt
+  [416,0],   // 9 necklace — upper right
+  [24,84],   // 10 ring1
+  [504,84],  // 11 ring2
+  [504,252], // 12 cape
+  [24,252],  // 13 bracelet
+  [24,0],    // 14 headband
   [120,220], // 15 ossuary  — Row5 M (유골함 — 전대 소환 전용)
 ];
 
@@ -46469,9 +46501,8 @@ function renderInv(){
   try{renderOssPanel()}catch(e){console.error('유골함 패널 렌더 오류:',e)}
   // Equipped slots (paper doll)
   const eqGrid=$('invEqGrid');
-  // preserve SVG silhouette, remove old slots
-  const _silSvg=eqGrid.querySelector('.inv-eq-sil');
-  eqGrid.innerHTML='';if(_silSvg)eqGrid.appendChild(_silSvg);
+  // Preserve the art node and its loading state; replace only equipment sockets.
+  eqGrid.querySelectorAll(':scope > .inv-eq-slot').forEach(node=>node.remove());
   SLOT_NAMES.forEach((slot,i)=>{
     if(slot==='ossuary')return; // 유골함은 전용 도감 패널(renderOssPanel)에서 관리 — 페이퍼돌 제외 (2026-09-01)
     const item=INV.equipped[slot];
