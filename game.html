@@ -60,6 +60,7 @@ window._supabaseReady=new Promise(resolve=>{
 <script src="maps_data.js"></script>
 <script src="assets/map/ch1/geometry/ch1_si1_geometry.js"></script>
 <script src="assets/map/ch1/production_finish/layout.js?v=20260916-finish-1"></script>
+<script src="ch1-living-detail.js?v=20260925-1"></script>
 <script src="lang_zh.js"></script>
 <script src="lang_ja.js"></script>
 <script src="lang_es.js"></script>
@@ -48244,6 +48245,7 @@ function draw(){
   }
   _drawCh1BakedSpike(X);
   _drawCh1Hill(X);
+  if(globalThis.Ch1LivingDetail)Ch1LivingDetail.draw(X,G,MAP_OBJS,_now,VW,VH);
   const _tMap=performance.now();
   if(_fc2d){var _dPara=_PERF_PROF._delta(_snapPara);_PERF_PROF._para_di=_dPara.di}
   if(_DCP.on){_DCP._mark('bg');_DCP._setSource(_DCP_SRC.TILE_FALLBACK)} // [DCPROF] 배경(패럴랙스+검정오버레이+반딧불이) 구간 종료
@@ -48685,6 +48687,7 @@ function draw(){
         const _spriteFx=_drawFilter||(_meta&&_meta.blend);if(_spriteFx){X.save();if(_drawFilter)X.filter=_drawFilter;if(_meta&&_meta.blend)X.globalCompositeOperation=_meta.blend}
         const _moAlpha=(_meta&&_meta.alpha!==undefined?_meta.alpha:1)*_ch1StartOuterPropAlpha(mo);X.globalAlpha=_moAlpha;
         const _swayActive=_diabloNatureSway(X,mo,_meta,(_meta?_meta.sz||32:32)*(mo.scale||1),_now);
+        const _ch1TissueActive=globalThis.Ch1LivingDetail&&Ch1LivingDetail.deform(X,G,mo,_now);
         if(_spr&&_spr.complete&&_spr.naturalWidth>1){
           const sz=(_meta?_meta.sz||32:32)*(mo.scale||1);
           if(_meta&&_meta.sheet){const _sh=_meta.sheet,_cw=~~(_spr.naturalWidth/_sh.c),_ch=~~(_spr.naturalHeight/_sh.r);
@@ -48757,6 +48760,7 @@ function draw(){
           // fallback: 이미지 미로드 오브젝트 — 숨김 (소환굴/보스게이트 충돌체 제외)
           if(!mo._fallbackLogged){console.warn('[OBJ-FALLBACK]',mo.type,'at',~~mo.x,~~mo.y,'spr=',_spr?'loaded:'+_spr.complete:'null');mo._fallbackLogged=true}
         }
+        if(_ch1TissueActive)X.restore();
         if(_spriteFx)X.restore();
         if(_hwDormantTone)X.restore();
         if(_swayActive)X.restore();
@@ -48766,6 +48770,7 @@ function draw(){
     X.globalAlpha=1;
   }
   if(_hellWinterTone)X.restore();
+  if(globalThis.Ch1LivingDetail)Ch1LivingDetail.draw(X,G,MAP_OBJS,_now,VW,VH,true);
   const _tWI=performance.now();
   if(_fc2d){var _dMobj=_PERF_PROF._delta(_snapMobj);_PERF_PROF._mobj_di=_dMobj.di}
   // World items (화면 내만 렌더)

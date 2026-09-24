@@ -26,6 +26,7 @@ const FILES = [
   'player-attack-remaster.js',
   'warrior-bat-swing.js',
   'warrior-dash-flight.js',
+  'ch1-living-detail.js',
   'parry-lesson.js', 'parry-lesson.css', 'resource-practice.js',
   'system-lesson.js', 'system-lesson.css',
   'tutorial-badges.js', 'tutorial-badges.css',

@@ -1,0 +1,64 @@
+# CH1-1 기존 맵 디테일·접지·생체 움직임
+
+사용자 지시: 현재 1-1을 보존하고 디테일·입체감·동적 움직임만 추가한다. 기존 production_finish 베이스 위의 국소 보강이며 v4~v8 정지 원화의 게임 적용이 아니다.
+
+## 런타임 계약
+
+| id / 적용 위치 | 값 / 동작 |
+|---|---|
+| 구현 | `ch1-living-detail.js`, 전역 `Ch1LivingDetail.draw/deform`; `build-nwjs.mjs` 배포 FILES에도 포함 |
+| 범위 | `G.stage===0`, `_bossArena` 및 `_fieldRebuildQA` 제외 |
+| 지면 순서 | `_drawCh1Hill` 다음, 오브젝트·캐릭터·전투 효과 이전. `surfaceOnly=true` 잔물결은 맵 오브젝트 뒤/캐릭터 앞 |
+| 앵커 배율 | `m_c1tree:2.1`, `m_c1cocoon:1.1`, `m_c1pool:1.25`, `m_c1spod:.65`, `m_c1sroot:.75`, `pit_poison:1.2`, `m_rotten_tree:1` |
+| 실제 배율 s | 앵커 배율 × `min(1.6, mo.scale || 1)` |
+| 시야 제외 | 카메라 반폭/반높이 + `160*s`; zoom=`max(.3, _edZoom || _camZoom || 1)` |
+| 렌더 자원 | 런타임 생성 투명 canvas atlas 3종(조직/독액 주변/수면), 각각 1280², 4×4칸, 셀320², 16프레임. 최대 RGBA 18.75MiB, 최초 사용 후 재사용 |
+| 접지 Y 오프셋 | `m_c1tree:230`, `m_c1cocoon:100`, `m_c1spod:40`, `m_rotten_tree:50` px × `(mo.scale || 1)`; 기타0. 수면은 오프셋0 |
+| 합성 | source-over 기본, 인접 두 프레임 alpha `1-mix`/`mix`. GPU에는 `drawImage`만 전달, 곡선/gradient는 native Canvas2D에서 최초 베이크 |
+| 맥동 | 각속도 `.00095 rad/ms`, 약6.614초/주기; 앵커 위상 `x*.017+y*.011`; 프레임16개 사이 선형 혼합 |
+| 접촉 그림자 | 중심(12,24), Y축 .42; 반경12→156, alpha `.48/.25/0`(stop `0/.48/1`) |
+| 힘줄 | 5갈래, 각도간격2.399rad, 길이 `100+42*sin(j*1.7)`, 지면 Y `.55`; 굴곡진폭3.2px, 갈래 위상차.8rad |
+| 힘줄 명암 | 그림자폭11, 몸체폭 `5.2+pulse*1.5`, 상면빛폭1.25 및 (-.8,-1.6) 오프셋, 가지폭1.5. 실제 크기는 s 배율 적용 |
+| 독액 | `m_c1pool`/`pit_poison` 주변 끊어진 잔물결3개; X반경14→59, Y반경5→17, alpha 최대.16. 맥동과 같은 주기 |
+| 고치·독낭 | `m_c1cocoon`/`m_c1spod`만 변형; `sin(now*.00105+x*.017+y*.011)`, 약5.984초; X±1.8%, Y∓1.2%, 기준점 `(x,y+32)` |
+| 보존 | MAP_OBJS/geometry/collision/START/EXIT/진행/데미지/원본 청크 수정 없음. 자동 scatter 추가0 |
+| 폴백 | 스크립트 미로드 시 optional global 검사로 기존 맵을 계속 렌더. 신규 외부 이미지 다운로드 없음 |
+
+색상/곡선 제어점의 상세값은 동명의 소스에 대응하며 조직 몸체 RGBA `(69,39,43,.58)`, 독액 몸체 `(63,61,35,.55)`, 상면 `(139,112,100,.19)`, 가지 `(71,43,44,.3)`, 잔물결 RGB `(149,142,83)`이다. 전체 지면 피부 교체, 대형 외곽 높이 재설계, 구덩이 벽 수축은 이번 구현 범위 밖이다.
+
+## 검증
+
+- `test/ch1LivingDetail.test.js`: stage/arena/실험맵 격리, 결정적 시간 변화, 화면 밖 제외, 게임 데이터 및 canvas 상태 보존, 곡선 API 없는 GPU proxy 지원.
+- `tools/qa_ch1_living_detail.py`: 로컬3333의 본편 경로, 8개 기본 카메라+나무/고치/독액 상세3개, pageerror/console error/HTTP error, 렌더 CPU 표본, 지형 무변경 검사.
+- 근거 경로: `captures/ch1_living_detail_20260925/`. before/after는 로컬 검수 파일이며 git ignore 대상.
+- 최초 검수에서 GPU proxy의 `bezierCurveTo` 미지원으로 월드 그리기가 중단됨을 발견했다. 실패 재현 테스트 후 atlas drawImage 방식으로 수정했다.
+
+## MAP PRODUCTION REPORT
+
+STAGE: CH1-1 production.
+
+MASTER: silhouette/8 regions/남북 main route/side spaces는 기존 고정 배치 유지.
+
+OUTER MASS: LEFT/RIGHT/TOP/SOUTH 베이스 보존. major holes 새로 메우거나 외곽을 재설계하지 않음.
+
+LARGE: source assets는 기존 production_finish 및 시체나무/고치/웅덩이. composites/overlap/repeated silhouette 변경 없음.
+
+MEDIUM: 기존 나무/뿌리 주변의 낮은 생체 연결만 추가. remaining holes는 이번 범위의 수정 대상 아님.
+
+GROUND: 부드러운 접촉 shadow, 저대비 괴사조직, 가는 동맥과 상면빛으로 structure integration 보강. 지면 원본 보존.
+
+PLAYABLE: main arenas/travel/breathing/threat space 보존. 저대비 지면 효과이며 신규 장애물 없음. 다수 적 실전 가독성은 별도 확인 필요.
+
+LANDMARK: primary 시체나무, secondary 고치/독액, tertiary 뿌리·독낭에 기존 좌표 기반 효과.
+
+CAMERA QA: START/EARLY/ARENA/SIDE L/SIDE R/LANDMARK/LATE/EXIT 및 상세3개를 캡처해 확인한다. 전체 아트 최종 승인과 구분한다.
+
+TECH QA: route/collision 기존 배치 테스트5개 PASS, inline 문법1개 및 효과 테스트5개 PASS, NW.js 패키징2개 PASS. 최종11카메라 pageerror/console error/HTTP error0, 지형 무변경. native Canvas2D CPU 표본은 runtime.json(120회, GPU 프레임시간 아님)에 기록. seam은 기존 청크를 유지하며 추가 경계 없음. 전체 전투 FPS 보증으로 해석하지 않는다.
+
+FILES: stage-owned `ch1-living-detail.js`, 테스트, QA 도구, 본 문서. concurrent touched `game.html`과 맵디테일 문서에는 이번 변경만 적용. unrelated touched 없음.
+
+GIT: 다른 작업의 staged 변경을 포함하지 않는 부분 체크포인트. push/deploy 없음.
+
+VISUAL VERDICT: RETOUCH — 국소 입체감·움직임 보강. 전체 생체지옥 재질 완성 및 대규모 전투 최종 검수는 미완료.
+
+NEXT PASS: 사용자 플레이 피드백에 따라 강도 조정. 기존 구도 보존 원칙 유지.
