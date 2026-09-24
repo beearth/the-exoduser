@@ -10,7 +10,7 @@
 
 | 항목 | 현재 구현 |
 |---|---|
-| 연결 | game.html/game-easy-test.html: ui-refinement.css?v=20260925-4, defer ui-panels.js?v=20260925-1. index.html은 CSS만. NW.js 두 파일 복사 |
+| 연결 | game.html/game-easy-test.html: ui-refinement.css?v=20260925-5, defer ui-panels.js?v=20260925-1. index.html은 CSS만. NW.js 두 파일 복사 |
 | 설정 | 왼쪽 폭 min(680px,100vw−24px), 높이100dvh−24px, 최대높이1000px |
 | 장비 | 오른쪽 폭 clamp(640px,36vw,780px), 최대100vw−24px; 폭≤780에서는100vw−16px |
 | 스킬/대장간/창고 | 각각 최대1020/980/700px, 화면폭−24px 이내. 스킬 왼쪽; 대장간/창고 중앙 |
@@ -90,3 +90,25 @@
 | 반응/스크롤 | 색·테두리·그림자120ms. reduced-motion에서는 전환 없음. 스크롤#796b50/#0c100d, thin |
 
 기존 iron.png/frame.png/crest.png 재사용, 신규 이미지 생성 없음. 자동 테스트 추가·실행 없음. 전체 게임패드/다국어 회귀 검증 완료를 의미하지 않는다.
+
+
+## 2026-09-25 조각 프레임·창고 슬롯 개편
+
+POE2 설정 화면과 Diablo IV 장비 화면을 참고한 최신 표현 계약이다. 앞선 동일 항목의 프레임/제목 수치는 아래 표로 대체한다.
+
+| 항목 | 현재 구현 |
+|---|---|
+| 공통 프레임 | frame.png 22% 슬라이스, 42px 표시, opacity 1, 아래 3px/blur2px 그림자 |
+| 제목 | 설정/장비/대장간/스킬/창고: 최소112px, padding72px 20px 8px, 중앙 crest270×90px, brightness1.55. 제목 주변 frame 10px. 높이760px 이하 최소76px/padding-top40px/crest180×60px |
+| 설정 본문 | 10px 틀, frame18px, padding18px. 어두운 본문과 바깥 금속의 명도 분리. 하단 padding12px 8px. 키캡/닫기 frame9px, 키캡 최소38px |
+| 창고 배치 | 기존700px 패널 안에 좌측 슬롯/우측180px 상세, 간격12px. 본문 독립 스크롤. 폭560px 이하 세로 배치 |
+| 슬롯 | 5열, gap3px, padding5px, 3px double 틀. 창고 최소30칸/가방 최소10칸을 시각적으로 표시하며 초과 시 5칸 단위 행 추가. 빈칸은 비대화형 장식, 실제 용량 STORAGE_MAX=200 유지 |
+| 아이템 | 기존 _itemSkin 56px, 상세112px. 속성→물리→글리프 폴백 유지. 희귀도 테두리, 레벨 표시 |
+| 선택/이동 | 첫 아이템 자동 선택. 슬롯 클릭은 상세 선택만, 우측 보관/꺼내기 버튼이 실제 이동. 이름·레벨·희귀도·강화수치 표시. native button/aria-pressed/포커스 지원 |
+| 저장 | 실제 이동 직전에 배열 indexOf로 현재 위치 재확인. 기존 용량 제한, 좌표 초기화, SFX.pickup, _persistSharedStorage, dbSaveNow 유지. 인벤토리 내 보관함 동작은 기존 계약 |
+| DOM | renderStorage가 소유하는 grid/nav 자식만 remove하고 새 노드 append. 부모 innerHTML/textContent 교체 없음. 기존 _itemSkin 마크업은 새 리프에 삽입 |
+| 에셋 | 기존 crest.png/frame.png/iron.png 및 item-skins 재사용, 신규 이미지 생성 없음. CSS 배경/기본 선은 이미지 실패 시 유지 |
+
+자동 테스트 추가·실행 없음. 기존 번역 키 재사용. 세이브 형식·아이템 수치 변경 없음.
+
+아이템 아트 폴백 중복 표시 방지: `.vault-art .iskin:has(img)`는 font-size:0, 직계 SVG visibility:hidden. 이미지가 실패하여 제거되면 기본 글리프가 다시 표시된다.

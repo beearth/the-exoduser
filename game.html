@@ -2505,7 +2505,7 @@ body:has(#invPanel.on) #keyGuide{display:none!important}
 <link rel="stylesheet" href="stat-panel-ui.css?v=20260913-smooth-ui">
 <link rel="stylesheet" href="localization.css?v=20260909">
 <link rel="stylesheet" href="ui-foundation.css?v=20260924-hell3">
-<link rel="stylesheet" href="ui-refinement.css?v=20260925-4">
+<link rel="stylesheet" href="ui-refinement.css?v=20260925-5">
 <script defer src="ui-panels.js?v=20260925-1"></script>
 <script src="stat-panel-ui.js?v=20260909-constellation-v3"></script>
 </head>
@@ -45261,32 +45261,49 @@ function _persistSharedStorage(){if(STORAGE[0]){_saveSharedStorage(STORAGE[0]);_
 // dbSave 주기 호출용: 변경이 없으면 200개 아이템 stringify+localStorage 동기쓰기를 건너뜀 (5초 주기 스터터 방지)
 function _flushSharedStorage(){if(_sharedStorageDirty)_persistSharedStorage()}
 function renderStorage(){
-  const nav=$('storageFloorNav');nav.innerHTML='';
-  const grid=$('storageGrid');grid.innerHTML='';
-  const store=_getStore();
-  // 헤더
-  const hdr=document.createElement('div');hdr.style.cssText='color:#ccaa66;font-size:.9rem;font-weight:700;margin-bottom:6px;text-align:center';
-  hdr.textContent=`${_T('지옥창고')} — ${store.length}/${STORAGE_MAX}`;
-  grid.appendChild(hdr);
-  // 보관 (가방→창고)
-  const depHdr=document.createElement('div');depHdr.style.cssText='color:#88aa66;font-size:.95rem;margin:4px 0';depHdr.textContent=_T('▼ 가방 → 창고 보관');grid.appendChild(depHdr);
-  if(INV.bag.length===0){const e=document.createElement('div');e.style.cssText='color:#666;font-size:1rem;padding:4px';e.textContent=_T('가방이 비어있습니다');grid.appendChild(e)}
-  INV.bag.forEach((it,idx)=>{
-    const d=document.createElement('div');d.className='fg-i';d.style.borderLeftColor=RARITY_C[it.rarity];
-    d.innerHTML=`<div class="fg-in" style="color:${RARITY_C[it.rarity]}">${_itemIco(it,RARITY_C[it.rarity],15)} ${_T(it.name)}</div><div class="fg-id">Lv.${it.itemLv||0} ${_rarName(it.rarity)}</div><div class="fg-ic" style="color:#88cc66;cursor:pointer">${_T('보관')}</div>`;
-    d.onclick=()=>{if(store.length>=STORAGE_MAX){notify(_T('창고가 가득 찼습니다!'));return}store.push(it);INV.bag.splice(idx,1);SFX.pickup();_persistSharedStorage();renderStorage();dbSaveNow()};
-    grid.appendChild(d);
-  });
-  // 꺼내기 (창고→가방)
-  const wdHdr=document.createElement('div');wdHdr.style.cssText='color:#66aacc;font-size:.95rem;margin:6px 0 4px';wdHdr.textContent=_T('▲ 창고 → 가방 꺼내기');grid.appendChild(wdHdr);
-  if(store.length===0){const e=document.createElement('div');e.style.cssText='color:#666;font-size:1rem;padding:4px';e.textContent=_T('창고가 비어있습니다');grid.appendChild(e)}
-  store.forEach((it,idx)=>{
-    const d=document.createElement('div');d.className='fg-i';d.style.borderLeftColor=RARITY_C[it.rarity];
-    d.innerHTML=`<div class="fg-in" style="color:${RARITY_C[it.rarity]}">${_itemIco(it,RARITY_C[it.rarity],15)} ${_T(it.name)}</div><div class="fg-id">Lv.${it.itemLv||0} ${_rarName(it.rarity)}</div><div class="fg-ic" style="color:#66aacc;cursor:pointer">${_T('꺼내기')}</div>`;
-    d.onclick=()=>{if(INV.bag.length>=BAG_MAX){notify(_T('가방이 가득 찼습니다!'));return}it._gx=null;it._gy=null;INV.bag.push(it);store.splice(idx,1);SFX.pickup();_persistSharedStorage();renderStorage();dbSaveNow()};
-    grid.appendChild(d);
-  });
+  const grid=$('storageGrid'),nav=$('storageFloorNav'),store=_getStore();
+  for(const n of Array.from(grid.children))n.remove();
+  for(const n of Array.from(nav.children))n.remove();
+  const make=(tag,cls,text)=>{const n=document.createElement(tag);n.className=cls;if(text)n.textContent=text;return n};
+  const art=(it,size)=>{const n=make('span','vault-art');n.insertAdjacentHTML('afterbegin',_itemSkin(it,size));return n};
+  const ledger=make('div','vault-ledger');ledger.append(make('span','',_T('지옥창고')),make('span','',store.length+' / '+STORAGE_MAX));nav.append(ledger);
+  const sections=make('div','vault-sections'),detail=make('aside','vault-detail');detail.setAttribute('aria-live','polite');grid.append(sections,detail);
+  let selected=false;
+  function select(it,source,button){
+    selected=true;
+    grid.querySelectorAll('.vault-slot[aria-pressed="true"]').forEach(n=>n.setAttribute('aria-pressed','false'));button.setAttribute('aria-pressed','true');
+    for(const n of Array.from(detail.children))n.remove();
+    detail.append(make('div','vault-caption',_T(source==='store'?'꺼내기':'보관')),art(it,112));
+    const name=make('h3','vault-name',_T(it.name));name.style.color=RARITY_C[it.rarity];
+    detail.append(name,make('p','vault-meta','Lv.'+(it.itemLv||0)+' · '+_rarName(it.rarity)));
+    if(it.enh)detail.append(make('p','vault-meta','+'+it.enh));
+    const action=make('button','vault-transfer',_T(source==='store'?'꺼내기':'보관'));action.type='button';
+    action.onclick=()=>{
+      const current=_getStore(),list=source==='store'?current:INV.bag,index=list.indexOf(it);
+      if(index<0){renderStorage();return;}
+      if(source==='store'){
+        if(INV.bag.length>=BAG_MAX){notify(_T('가방이 가득 찼습니다!'));return;}
+        it._gx=null;it._gy=null;INV.bag.push(it);current.splice(index,1);
+      }else{
+        if(current.length>=STORAGE_MAX){notify(_T('창고가 가득 찼습니다!'));return;}
+        current.push(it);INV.bag.splice(index,1);
+      }
+      SFX.pickup();_persistSharedStorage();renderStorage();dbSaveNow();$('storageGrid').querySelector('.vault-slot')?.focus();
+    };detail.append(action);
+  }
+  function section(items,source,title,minSlots){
+    const wrap=make('section','vault-section'),slots=make('div','vault-slots');wrap.append(make('h3','vault-heading',title),slots);sections.append(wrap);
+    items.forEach(it=>{
+      const b=make('button','vault-slot');b.type='button';b.style.setProperty('--item-colour',RARITY_C[it.rarity]||'#bba989');b.title=_T(it.name);b.setAttribute('aria-label',_T(it.name));b.setAttribute('aria-pressed','false');
+      b.append(art(it,56),make('span','vault-level',String(it.itemLv||0)));b.onclick=()=>select(it,source,b);slots.append(b);if(!selected)select(it,source,b);
+    });
+    for(let i=items.length;i<Math.max(minSlots,Math.ceil(items.length/5)*5);i++){const n=make('span','vault-slot vault-empty');n.setAttribute('aria-hidden','true');slots.append(n);}
+    if(!items.length)wrap.append(make('p','vault-meta',_T(source==='store'?'창고가 비어있습니다':'가방이 비어있습니다')));
+  }
+  section(store,'store',_T('지옥창고'),30);section(INV.bag,'bag',_T('▼ 가방 → 창고 보관'),10);
+  if(!selected)detail.append(make('div','vault-seal'),make('p','vault-meta',_T('비어있음')));
 }
+
 
 // ═══ INVENTORY-STORAGE RENDER (인벤토리 왼쪽 창고 컬럼) ═══
 function renderInvStorage(){
