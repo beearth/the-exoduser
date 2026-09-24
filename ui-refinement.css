@@ -267,3 +267,53 @@
 .vault-detail{background:radial-gradient(ellipse at 50% 30%,#80705235,transparent 65%),linear-gradient(#25291ecf,#080c08ef),var(--ui-surface) center/240px;}
 @media(max-width:560px){#settings #keyBindList .set-row{grid-template-columns:minmax(85px,1fr) minmax(58px,.8fr) minmax(52px,.7fr) 16px;gap:4px!important;}#settings #keyBindList .set-name{font-size:12px!important;}#settings.panel.ui-composed .settings-pages.frame-inner-panel{padding:8px!important;margin-inline:0!important;}}
 @media(max-height:760px){:is(#settings,#invPanel,#forge,#skillPanel,#storagePanel) .ptitle::after{top:40px;}}
+
+
+/* Single frame contract: the artwork owns the outer edge. */
+:is(#settings,#invPanel,#forge,#skillPanel,#storagePanel,#statPanel).panel .pbox{
+  border:0!important;outline:0!important;border-image:none!important;
+  box-shadow:0 14px 40px #000c!important;
+  background:linear-gradient(#171b15d9,#090d0bec),var(--ui-surface) center/320px!important;
+}
+:is(#settings,#invPanel,#forge,#skillPanel,#storagePanel,#statPanel).panel .pbox::after{
+  inset:0!important;border:32px solid transparent!important;
+  border-image:var(--ui-frame) 350 / 32px / 0 stretch!important;
+  opacity:1!important;filter:none!important;pointer-events:none!important;
+}
+:is(#settings,#invPanel,#forge,#skillPanel,#storagePanel) .ptitle{
+  box-shadow:none!important;background:none!important;border:0!important;
+}
+:is(#settings,#invPanel,#forge,#skillPanel,#storagePanel) .ptitle::after{
+  border:1px solid #806944!important;border-image:none!important;
+  background:linear-gradient(#3c3422,#191b12)!important;
+  box-shadow:0 3px 5px #0008!important;
+}
+#settings.panel.ui-composed .settings-pages.frame-inner-panel{
+  border:1px solid #716047!important;outline:0!important;box-shadow:none!important;
+}
+#invPanel.panel .pbox>div:has(>.ptitle){
+  display:grid!important;grid-template-columns:minmax(0,1fr)!important;
+  gap:8px!important;margin:0 0 10px!important;min-width:0;
+}
+#invPanel.panel .pbox .ptitle{
+  width:100%!important;box-sizing:border-box;min-height:88px!important;
+  padding:54px 12px 8px!important;margin:0!important;text-align:center;
+}
+#invPanel.panel .pbox .ptitle::before{width:204px!important;height:68px!important;top:0!important;left:50%!important;}
+#invPanel.panel .pbox .ptitle::after{inset:53px 24% 0!important;}
+#invPanel.panel .pbox>div:has(>.ptitle)>div:not(.ptitle){
+  display:flex!important;gap:8px!important;justify-content:space-between!important;
+  min-width:0;width:100%;padding:0 4px 8px;box-sizing:border-box;border-bottom:1px solid #65583f;
+}
+#invPanel #combatPower,#invPanel #invResBar{
+  background:none!important;border:0!important;box-shadow:none!important;border-radius:0!important;
+  min-height:24px!important;padding:0!important;color:#c1b08b!important;
+}
+#invPanel #combatPower{flex-wrap:wrap;gap:6px!important;}
+#invPanel #invClose{flex-shrink:0;border-radius:0!important;background:#271310!important;border:1px solid #865e43!important;}
+#invPanel .ui-section-tabs{padding:0!important;margin-bottom:10px;border-bottom:0!important;gap:3px;}
+#invPanel :is(.inv-equip,#invCenter,#invOssuaryPanel,#invStorageCol){border:1px solid #65583f!important;box-shadow:none!important;}
+#invPanel .inv-eq-slot .iskin{box-shadow:none!important;border-radius:0!important;}
+#invPanel .inv-eq-slot{box-shadow:inset 0 2px 5px #000!important;}
+#invPanel .inv-eq-slot .ieq-label{color:#e0d2b2!important;text-shadow:0 1px 2px #000;}
+@media(max-width:560px){#invPanel #cpBreak{font-size:10px!important;}#invPanel.panel .pbox .ptitle::after{left:18%!important;right:18%!important;}}
