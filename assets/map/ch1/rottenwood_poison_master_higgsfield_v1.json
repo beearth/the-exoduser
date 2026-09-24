@@ -1,0 +1,28 @@
+{
+  "provider": "Higgsfield",
+  "model": "gpt_image_2_5",
+  "variant": "flare",
+  "quality": "high",
+  "requestedResolution": "4k",
+  "actualDimensions": [
+    2880,
+    2880
+  ],
+  "aspectRatio": "1:1",
+  "count": 1,
+  "quotedCredits": 4.25,
+  "jobId": "b327eb8b-f726-4f84-8024-7d7467707304",
+  "referenceMediaId": "1403c113-4387-4cd9-80f3-de6b0988e261",
+  "reference": "assets/map/ch1/rottenwood_field_rootworld_master_v2.png",
+  "output": "assets/map/ch1/rottenwood_poison_master_higgsfield_v1.png",
+  "status": "completed",
+  "usage": "concept reference only; not connected to runtime",
+  "userAuthorization": "힉스필드일단써",
+  "prompt": "Use case: precise-object-edit\nAsset type: EXODUSER CH1-1 poison rotten forest environment concept, square full-map master.\nInput image: approved rootworld master; edit target and composition reference.\nPreserve the original enormous twisted root composition, oblique overhead game camera, entire square framing, asymmetric spaces, southwest approach, western combat clearing, eastern wetland, upper clearing and northeast gate. Keep the same sense of scale and coherent interconnected environment. The user now explicitly changes the biome to a POISON ROTTEN FOREST.\nTransform the burnt infernal forest into a damp, diseased forest that is rotting but still alive. Remove ALL lava, flames, ember cracks and orange glowing perimeter outlines. Use charcoal brown, wet black bark, desaturated grey-green decay, olive sludge and sparse sickly yellow-green poison accents. Do not turn the whole scene bright green.\nThree characteristic features must read clearly at full-map scale:\n1. POISON SINKHOLES: a few irregular collapsed ground cavities embedded beside the paths, with exposed mud strata, broken roots, murky yellow-olive poisonous fluid, scum and organic sediment. Deep dark edges and low localized vapor. Different sizes and shapes; not identical round pools. The east wetland is the major contaminated basin, with an irregular dry walkable rim.\n2. ROTTEN TREES: huge hollow dead trunks integrated into the outer forest, peeled wet bark, crumbling fibrous wood, broken limbs, restrained shelf fungi and moss in seams. Continuous layered forest masses, never individually spaced prop islands.\n3. LIVING BIO-TREE: one dominant central colossal corpse-root tree, recognizably a TREE, with contorted branching roots, bark split locally to reveal dark sinewy organic fibers, subtle vein ridges, a few swollen olive poison sacs and diseased woody growths. It feels alive and infected. Keep flesh accents restrained and mostly enclosed by bark. No cartoon face, eyes or giant mouth. The central tree shapes the surrounding paths and clearings; roots visibly embed into the soil with natural contact shadow.\nGround: damp dark earth, compressed rotting leaves, decayed wood, shallow stagnant water and subtle fungal staining. Maintain calm, legible fighting spaces and passage widths, with ground detail concentrated near boundaries. A little low toxic mist confined to the pits, never a fog veil over the whole picture. Maintain readable large silhouettes and rich sharp wood texture without noisy small prop scatter.\nLighting: subdued cool ambient light with enough midtone detail to read bark and soil, dark recesses, tiny localized yellow-green bioluminescence at poison sacs and pit edges. No neon rim around the map, no fire or volcanic red.\nHigh quality dark fantasy ARPG environment painting, tactile materials, unified composition, no characters, UI, map symbols, labels, text, border or watermark. One complete image, not a comparison sheet.",
+  "visualVerdict": "RETOUCH",
+  "notes": [
+    "Poison biome readable; no orange fire fissures.",
+    "Northeast stone gate changed to organic arch; exact geometry preservation not achieved.",
+    "Requested 4k, actual PNG 2880x2880."
+  ]
+}
