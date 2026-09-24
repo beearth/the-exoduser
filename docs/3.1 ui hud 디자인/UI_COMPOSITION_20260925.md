@@ -10,7 +10,7 @@
 
 | 항목 | 현재 구현 |
 |---|---|
-| 연결 | game.html/game-easy-test.html: ui-refinement.css?v=20260925-8, defer ui-panels.js?v=20260925-1. index.html은 CSS만. NW.js 두 파일 복사 |
+| 연결 | game.html/game-easy-test.html: ui-refinement.css?v=20260925-9, defer ui-panels.js?v=20260925-1. index.html은 CSS만. NW.js 두 파일 복사 |
 | 설정 | 왼쪽 폭 min(680px,100vw−24px), 높이100dvh−24px, 최대높이1000px |
 | 장비 | 오른쪽 폭 clamp(640px,36vw,780px), 최대100vw−24px; 폭≤780에서는100vw−16px |
 | 스킬/대장간/창고 | 각각 최대1020/980/700px, 화면폭−24px 이내. 스킬 왼쪽; 대장간/창고 중앙 |
@@ -149,6 +149,26 @@ POE2 설정 화면과 Diablo IV 장비 화면을 참고한 최신 표현 계약�
 | 인벤 헤더 | 제목과 정보행을 한 열 grid로 분리. 제목 폭100%/최소88px/padding54px 12px 8px. 중앙 문장204×68px. 제목판 top53/좌우24%/bottom0, 폭560px 이하 좌우18% |
 | 정보행 | 전투력·악의·닫기 정렬. gap8px/padding0 4px 8px/아래선1px #65583f. 전투력·악의의 중첩 박스 삭제. 문장과 충돌하지 않음 |
 | 장비 구획 | 섹션 선1px #65583f, 중복 inset선 제거. 슬롯 안쪽 iskin 등급 그림자 제거, 바깥 슬롯 희귀도 테두리 유지. 슬롯 음영 inset0 2px5px, 라벨#e0d2b2 |
-| 캐시 | ui-refinement.css?v=20260925-8, 게임 두 HTML 및 로비 동기화 |
+| 캐시 | ui-refinement.css?v=20260925-9, 게임 두 HTML 및 로비 동기화 |
 
 CSS 변경만 적용. 기존 에셋 재사용. 자동 테스트 추가·실행 없음.
+
+
+## 2026-09-25 Blackiron 아트 교체
+
+악마 문장과 프레임의 원본 품질 개선 요청에 따라 게임 메뉴 6종의 에셋을 교체했다. 아래 표가 메뉴 프레임/문장 표시의 최신 계약이다.
+
+| 항목 | 구현 |
+|---|---|
+| 생성 | 연결 Higgsfield GPT Image 2, High/2K/투명, 각각1장. 실제 PNG는 각각2048×2048 RGBA, 원본 보존 |
+| 문장 | img/ui/blackiron/crest.png. 흑철·백랍 얼굴, 굵은 산양 뿔, 넓은 조각 날개, 황동 가장자리. 원본 알파>32 bbox[14,409,2033,1514] |
+| 프레임 | img/ui/blackiron/frame.png. 뿔·아칸서스 모서리와 직선 레일. alpha>32 bbox[18,37,2030,2013], 중앙alpha0 |
+| 사용 범위 | 설정/장비/대장간/스킬/창고/능력치 패널에서만 --ui-crest/--ui-frame 교체. 로비·튜토리얼·HUD는 기존 에셋 유지 |
+| 외곽 | pbox 패딩36px30px28px. 프레임26% slice/60px 표시, 단일 ::after. 이미지 실패 시 #2c3029 테두리. 기존 pbox 자체border0 계약 유지 |
+| 제목 | 최소142px/padding112px12px8px. 문장 박스200×112px, 원본 배경200×200px/center −36px, 필터 없음. 제목판top110/좌우20%/bottom0, 선#8d7b51 |
+| 낮은 화면 | 높이800px 이하 제목최소116px/padding-top86px. 문장156×88px, 원본156×156px/center −28px. 제목판top84px |
+| 좁은 화면 | 폭560px 이하 패널padding30px22px24px, 프레임48px. 원본 투명 합성, 배경실패 시 제목 텍스트/기본 판 유지 |
+| 기록 | img/ui/blackiron/prompts.md에 두 프롬프트 전문·생성ID·투명도 기록. 신규 픽셀 후처리 없음. img 폴더는 기존 NW.js 패키징 대상 |
+| 버전 | ui-refinement.css?v=20260925-9 |
+
+자동 테스트 추가·실행 없음. 원본 알파와 브라우저 렌더를 직접 확인.

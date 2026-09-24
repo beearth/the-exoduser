@@ -317,3 +317,38 @@
 #invPanel .inv-eq-slot{box-shadow:inset 0 2px 5px #000!important;}
 #invPanel .inv-eq-slot .ieq-label{color:#e0d2b2!important;text-shadow:0 1px 2px #000;}
 @media(max-width:560px){#invPanel #cpBreak{font-size:10px!important;}#invPanel.panel .pbox .ptitle::after{left:18%!important;right:18%!important;}}
+
+
+/* Blackiron art set: cast pewter crest and continuous architectural frame. */
+:is(#settings,#invPanel,#forge,#skillPanel,#storagePanel,#statPanel){
+  --ui-crest:url('img/ui/blackiron/crest.png');
+  --ui-frame:url('img/ui/blackiron/frame.png');
+}
+:is(#settings,#invPanel,#forge,#skillPanel,#storagePanel,#statPanel).panel .pbox{
+  padding:36px 30px 28px!important;
+}
+:is(#settings,#invPanel,#forge,#skillPanel,#storagePanel,#statPanel).panel .pbox::after{
+  border:60px solid #2c3029!important;
+  border-image:var(--ui-frame) 26% / 60px / 0 stretch!important;
+}
+:is(#settings,#invPanel,#forge,#skillPanel,#storagePanel) .ptitle,
+#invPanel.panel .pbox .ptitle{
+  min-height:142px!important;padding:112px 12px 8px!important;
+}
+:is(#settings,#invPanel,#forge,#skillPanel,#storagePanel) .ptitle::before,
+#invPanel.panel .pbox .ptitle::before{
+  width:200px!important;height:112px!important;top:0!important;
+  background:var(--ui-crest) center -36px / 200px 200px no-repeat!important;
+  filter:none!important;
+}
+:is(#settings,#invPanel,#forge,#skillPanel,#storagePanel) .ptitle::after,
+#invPanel.panel .pbox .ptitle::after{
+  inset:110px 20% 0!important;border-color:#8d7b51!important;
+  background:linear-gradient(#393a2e,#171b15)!important;
+}
+@media(max-height:800px){
+ :is(#settings,#invPanel,#forge,#skillPanel,#storagePanel) .ptitle,#invPanel.panel .pbox .ptitle{min-height:116px!important;padding-top:86px!important;}
+ :is(#settings,#invPanel,#forge,#skillPanel,#storagePanel) .ptitle::before,#invPanel.panel .pbox .ptitle::before{width:156px!important;height:88px!important;background-size:156px 156px!important;background-position:center -28px!important;}
+ :is(#settings,#invPanel,#forge,#skillPanel,#storagePanel) .ptitle::after,#invPanel.panel .pbox .ptitle::after{top:84px!important;}
+}
+@media(max-width:560px){:is(#settings,#invPanel,#forge,#skillPanel,#storagePanel,#statPanel).panel .pbox{padding:30px 22px 24px!important;} :is(#settings,#invPanel,#forge,#skillPanel,#storagePanel,#statPanel).panel .pbox::after{border-width:48px!important;border-image-width:48px!important;}}
