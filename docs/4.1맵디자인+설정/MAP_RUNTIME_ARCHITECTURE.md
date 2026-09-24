@@ -78,7 +78,7 @@ kit builders (24417~24507)   ─┘        │
 
 ### CH1-1 stage0 baked outer + smoothing (2026-08-30)
 
-- 기본 탐험 phase의 smoothing master는 build 시 locked `baked_start_outer` 8192² base 위에 overlay를 합성한 완성본이다. runtime `_CH1_START_ROOT`는 smoothing 또는 outer-only 중 한 root만 선택해 그린다. 둘 다 8×8/64 chunk, core1024 + copy bleed1(파일1026)이다.
+- 기본 탐험 phase의 smoothing master는 build 시 locked `baked_start_outer` 8192² base 위에 overlay를 합성한 완성본이다. runtime `_CH1_START_ROOT`는 smoothing 또는 outer-only 중 한 root만 선택해 그린다. 둘 다 8×8/64 chunk, core1024 + copy bleed1(파일1026)이다. 2026-09-24 QA 예외: `_DIABLO_FIELD_QA`이면 `rootworld_outer` 한 세트를 선택한다. 이 세트도 8192²/64청크/1024 core/1px bleed이며 청크 하나를 월드 1000px로 그린다. mask는 `_buildDiabloField(0,200,200)`를 사용하며 collision을 수정하지 않는다. 상세 수치는 `ROOTWORLD_OUTER_MASS_20260924.md`를 따른다.
 - `?ch1StartPhase=outer`는 outer-only set 비교, `?ch1StartOuter=0`은 selected baked set 전체 OFF 비교다. `G._bossArena===true`에서는 자동 OFF다.
 - smoothing은 기존 stage0 cache/decode/GPU warm/draw 경로를 재사용한다. QA는 64/64 ready, error0, max warm<17ms, draw<=.4ms, pageerror/404 0이다.
 - `_MAP_COMPOSE[0].forestBoundary=1`, `MAP_ALL_FLOOR=false`다. `_buildCh1StartForestRLE(200,200)`이 side/top/south baked forest와 대응하는 canonical tile wall을 만들며 이 `G.map` 경계를 player `isW/canMv`, enemy 이동, flow/path, spawn `safePt`, minimap이 공통 사용한다.

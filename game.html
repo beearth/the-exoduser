@@ -10799,8 +10799,8 @@ function _drawMapPaintWorld(ctx,x0,y0,x1,y1){
 // CH1-1(si0) production smoothing pass. Default ON; ch1StartPhase=outer compares the locked outer baseline.
 const _CH1_START_OUTER={stage:0,chunkSize:1024,bleed:1,chunks:{}};
 const _CH1_START_PHASE=(()=>{if(typeof location==='undefined')return 'smoothing';const phase=new URLSearchParams(location.search).get('ch1StartPhase');return phase==='outer'?'outer':'smoothing'})();
-const _CH1_START_ROOT=_CH1_START_PHASE==='outer'?'assets/map/ch1/baked_start_outer':'assets/map/ch1/production_finish';
-for(let y=0;y<8;y++)for(let x=0;x<8;x++)_CH1_START_OUTER.chunks[x+','+y]=`${_CH1_START_ROOT}/chunk_${x}_${y}.png?v=20260917-depth-2`;
+const _CH1_START_ROOT=_DIABLO_FIELD_QA?'assets/map/ch1/rootworld_outer':_CH1_START_PHASE==='outer'?'assets/map/ch1/baked_start_outer':'assets/map/ch1/production_finish';
+for(let y=0;y<8;y++)for(let x=0;x<8;x++)_CH1_START_OUTER.chunks[x+','+y]=`${_CH1_START_ROOT}/chunk_${x}_${y}.png?v=${_DIABLO_FIELD_QA?'20260924-rootworld-1':'20260917-depth-2'}`;
 const _CH1_START_OUTER_QUERY_ENABLED=typeof location==='undefined'||new URLSearchParams(location.search).get('ch1StartOuter')!=='0';
 const _ch1StartOuterCache=Object.create(null),_ch1StartOuterWarmQ=[];
 let _ch1StartOuterWarmBusy=false;
@@ -10854,19 +10854,19 @@ function _requestCh1StartOuter(id){
 }
 function _preloadCh1StartOuter(){
   if(!_ch1StartOuterEnabled())return;
-  const cs=_CH1_START_ROOT==='assets/map/ch1/production_finish'?G.mw*T/8:_CH1_START_OUTER.chunkSize,z=_EDITOR_MODE&&Number.isFinite(G._edZoom)&&G._edZoom>0?G._edZoom:Math.max(.3,G._camZoom||1);
+  const cs=_CH1_START_ROOT!=='assets/map/ch1/baked_start_outer'?G.mw*T/8:_CH1_START_OUTER.chunkSize,z=_EDITOR_MODE&&Number.isFinite(G._edZoom)&&G._edZoom>0?G._edZoom:Math.max(.3,G._camZoom||1);
   const cx0=Math.floor((G.cam.x-VW/(2*z))/cs)-1,cx1=Math.floor((G.cam.x+VW/(2*z)-.001)/cs)+1;
   const cy0=Math.floor((G.cam.y-VH/(2*z))/cs)-1,cy1=Math.floor((G.cam.y+VH/(2*z)-.001)/cs)+1;
   for(let cy=cy0;cy<=cy1;cy++)for(let cx=cx0;cx<=cx1;cx++)_requestCh1StartOuter(cx+','+cy);
 }
 function _drawCh1StartOuter(ctx){
   _ch1StartOuterStats.visibleIds=[];_ch1StartOuterStats.drawnIds=[];if(!_ch1StartOuterEnabled())return;_preloadCh1StartOuter();
-  const cs=_CH1_START_ROOT==='assets/map/ch1/production_finish'?G.mw*T/8:_CH1_START_OUTER.chunkSize,srcCs=_CH1_START_OUTER.chunkSize,b=_CH1_START_OUTER.bleed,z=_EDITOR_MODE&&Number.isFinite(G._edZoom)&&G._edZoom>0?G._edZoom:Math.max(.3,G._camZoom||1);
+  const cs=_CH1_START_ROOT!=='assets/map/ch1/baked_start_outer'?G.mw*T/8:_CH1_START_OUTER.chunkSize,srcCs=_CH1_START_OUTER.chunkSize,b=_CH1_START_OUTER.bleed,z=_EDITOR_MODE&&Number.isFinite(G._edZoom)&&G._edZoom>0?G._edZoom:Math.max(.3,G._camZoom||1);
   const left=G.cam.x-VW/(2*z),right=G.cam.x+VW/(2*z),top=G.cam.y-VH/(2*z),bottom=G.cam.y+VH/(2*z);
   const cx0=Math.floor(left/cs)-1,cx1=Math.floor((right-.001)/cs)+1,cy0=Math.floor(top/cs),cy1=Math.floor((bottom-.001)/cs),started=performance.now();
   const hugX=G.mw*T*.5;
   ctx.save();ctx.imageSmoothingEnabled=true;
-  ctx.translate(hugX,0);ctx.scale(_CH1_START_ROOT==='assets/map/ch1/production_finish'?1:_CH1_OUTER_HUG_X,1);ctx.translate(-hugX,0);
+  ctx.translate(hugX,0);ctx.scale(_CH1_START_ROOT!=='assets/map/ch1/baked_start_outer'?1:_CH1_OUTER_HUG_X,1);ctx.translate(-hugX,0);
   for(let cy=cy0;cy<=cy1;cy++)for(let cx=cx0;cx<=cx1;cx++){const id=cx+','+cy,src=_CH1_START_OUTER.chunks[id];if(!src)continue;_ch1StartOuterStats.visibleIds.push(id);const e=_ch1StartOuterCache[id];if(!e||e.status!=='ready')continue;ctx.drawImage(e.img,b,b,srcCs,srcCs,cx*cs,cy*cs,cs,cs);_ch1StartOuterStats.drawnIds.push(id)}
   ctx.restore();if(_ch1StartOuterStats.drawnIds.length){const ms=performance.now()-started;_ch1StartOuterStats.drawSamples++;if(ms>_ch1StartOuterStats.maxDrawMs)_ch1StartOuterStats.maxDrawMs=ms}
 }

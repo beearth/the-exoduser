@@ -1,5 +1,7 @@
 # EXODUSER Diablo-Style Field Rebuild Plan — 2026-09-23
 
+> 2026-09-24 GATE 2 QA 적용: `rootworld_outer`의 NAV 마스크 기반 8192² 외곽 합성/64청크를 fieldrebuild 전용 런타임에 연결했다. 아래 §9의 “원화 미연결”은 9월 23일 이력이다. 현재 수치·검증·잔여 항목은 [외곽 제작 보고서](ROOTWORLD_OUTER_MASS_20260924.md)를 따른다. 본편 `production_finish`와 비교용 `baked_start_outer` 선택은 유지한다.
+
 > 상태: IMPLEMENTATION PLAN / 기존 stage layout 폐기 승인 대기 아님 — 사용자 지시로 재구축 가능.
 > 참고: Diablo IV의 구조적 레벨 디자인(넓은 필드, 연속된 외곽 지형, 전투 우선 가독성)을 분석 대상으로 삼는다. 특정 게임의 에셋·맵 데이터를 복제하지 않는다.
 
@@ -115,6 +117,7 @@ StageBlueprint
 
 - hell v2 시각 시안 `assets/map/ch1/rottenwood_field_master_concept_hell_v2.png`을 추가했다. 기존 남→북 동선·서측 전투터·중앙 시체나무·동측 습지·북측 관문 구도는 유지하고, 용암 균열·타버린 뿌리·재·진홍 연무·강화 관문으로 지옥 분위기를 올린 **컨셉 원화 전용**이다. baked/runtime 타일 연결, 에셋 분해, 카메라 가독성 QA는 미완료다.
 - 2026-09-23 사용자가 제공한 플레이 화면을 기준으로 전체맵 미술 방향을 **불탄 거대 뿌리 숲**으로 확정했다. 제작 시안 `assets/map/ch1/rottenwood_field_rootworld_concept_v1.png` (1254×1254)은 연속된 검은 뿌리 외곽 질량, 얇은 진홍 균열, 재 바닥, 남→북 진행축, 서측 전투 분지, 동측 습지, 북측 관문을 한 장에 제안한다. 이 파일은 **GATE 1/비주얼 컨셉 전용**이며 runtime bake·tile crop·collision·좌표 계약에는 사용하지 않았다. 다음 제작은 GATE 2 LARGE OUTER MASS로 좌/우/북/남 mass를 기존 locked NAV에 정합한다.
+- 힉스필드 Seedream 4.5 high로 전체맵 제작 마스터 `assets/map/ch1/rottenwood_field_rootworld_master_v2.png` (4096×4096 PNG, 22.34MiB)를 생성했다. 업로드된 사용자 참조 이미지는 재질/분위기만 참고하고, 실제 map geometry·collision·locked region 좌표는 변경하지 않았다. GATE 1 시각 방향 검토용이며 아직 runtime/background bake에는 연결하지 않았다. 첫 산출물에 생긴 격자 오버레이는 폐기하고 격자 없는 수정 산출물(v2)만 보관한다.
 - `game.html`에는 **`mapqa=1&fieldrebuild=1&stage=0` 전용** 런타임 실험 경로를 연결했다. 나머지 실행 URL과 CH1-1 production map은 변경하지 않는다. `_buildDiabloField(0,200,200)`이 deterministic 200×200 tileRLE 및 south→north six-region layout을 만들고 기존 `genFromTemplate`으로 넘긴다. 시작 중심은 tile `(100,181)`, 북쪽 boss room은 `(100,24)` 부근이고 보스 접근은 engine gate generator가 잇는다. 일반 enemy wave는 map QA 설정이 비운다.
 - QA 전용 시각 오브젝트: 시체나무 `assets/map/ch1/diablo_hell_corpse_tree_v1.png` 1개(메타 size 920, non-collision) + 횃불 8개(런타임 메타 size 150, non-collision). 횃불 받침은 `assets/map/ch1/diablo_field_torch_base_v1.png` (1180×1333, 고정 정지 이미지), 불꽃은 `assets/map/ch1/diablo_field_torch_flame_v1.png` (1672×944 RGBA, 4열×2행·8프레임 투명 시트)로 분리한다. `diablo_hell_torch_flame` 메타는 `interval:110ms`; 전체 루프는 880ms이며 위치 시드로 재생 위상을 분산한다. 프레임은 원본 위치의 불꽃/불티를 유기적으로 변화시키고 나무·철제 받침은 고정한다. `_drawDiabloTorchFrame`은 `G._fieldRebuildQA`일 때만 시트를 그리며, flame overlay는 map cache에 베이크하지 않는다. 타일·충돌·production 배치는 변경하지 않는다. 기존 stage composition/editor prop은 이 분기에서 제외한다. 바닥은 stage0의 기존 `gt_03`/soil floor를 재사용하고, render-only burnt fissure 9 path + blood-soil stain 5개를 full-map cache와 stream-chunk cache 양쪽에 그린다.
 - QA 한정 자연 흔들림: 시체나무 `sway:0.0045rad`, 고목 3종 `0.018/0.016/0.014rad`. 밑동 pivot은 sprite size의 `0.34` 지점에 고정하고, 시간각 `now×0.00058` 및 `now×0.00107`의 느린 sin 중첩(`1.0 + 0.24` 가중)과 오브젝트 좌표 seed로 작은 바람 응답을 만든다. `G._fieldRebuildQA` 밖에서는 비활성이고 geometry, collision, production placement는 바꾸지 않는다.

@@ -1,0 +1,187 @@
+{
+  "version": "20260924-rootworld-1",
+  "stage": 0,
+  "qaOnly": true,
+  "source": "assets/map/ch1/rottenwood_field_rootworld_master_v2.png",
+  "sourceSize": 4096,
+  "masterSize": 8192,
+  "worldSize": 8000,
+  "chunkSize": 1024,
+  "bleed": 1,
+  "chunkCount": 64,
+  "navHash": "0e57fc87cee2eb6dadbbd4c0e0382afff6c6fc0ecbbd60ff9d3b24d0abde8b59",
+  "navSource": "_buildDiabloField(0,200,200)",
+  "floorMask": {
+    "dilateTiles": 1,
+    "scale": 4,
+    "blur": 5
+  },
+  "visualGateClearance": {
+    "x": [
+      90,
+      110
+    ],
+    "y": [
+      0,
+      15
+    ]
+  },
+  "patches": {
+    "crown": [
+      900,
+      350,
+      1650,
+      1300
+    ],
+    "west": [
+      250,
+      1400,
+      1500,
+      1500
+    ],
+    "east": [
+      2450,
+      1050,
+      1500,
+      1550
+    ],
+    "south": [
+      1250,
+      2350,
+      1700,
+      1650
+    ]
+  },
+  "placements": [
+    [
+      "crown",
+      45,
+      13,
+      1.1
+    ],
+    [
+      "crown",
+      77,
+      -1,
+      1.05
+    ],
+    [
+      "east",
+      132,
+      1,
+      1.05
+    ],
+    [
+      "east",
+      154,
+      26,
+      1.1
+    ],
+    [
+      "west",
+      40,
+      38,
+      1.15
+    ],
+    [
+      "west",
+      24,
+      66,
+      1.1
+    ],
+    [
+      "south",
+      42,
+      94,
+      1.1
+    ],
+    [
+      "crown",
+      59,
+      113,
+      1.05
+    ],
+    [
+      "west",
+      19,
+      139,
+      1.15
+    ],
+    [
+      "south",
+      30,
+      165,
+      1.05
+    ],
+    [
+      "west",
+      46,
+      192,
+      1.15
+    ],
+    [
+      "south",
+      70,
+      211,
+      1.1
+    ],
+    [
+      "south",
+      106,
+      214,
+      1.1
+    ],
+    [
+      "east",
+      143,
+      204,
+      1.15
+    ],
+    [
+      "east",
+      155,
+      177,
+      1.15
+    ],
+    [
+      "south",
+      145,
+      148,
+      1.05
+    ],
+    [
+      "east",
+      155,
+      123,
+      1.1
+    ],
+    [
+      "east",
+      191,
+      104,
+      1.15
+    ],
+    [
+      "east",
+      198,
+      72,
+      1.1
+    ],
+    [
+      "crown",
+      171,
+      49,
+      1.1
+    ],
+    [
+      "east",
+      143,
+      48,
+      1.05
+    ]
+  ],
+  "randomScatter": 0,
+  "sourcePatchScaleMax": 1.15,
+  "backScale": 2,
+  "visualVerdict": "RETOUCH"
+}
