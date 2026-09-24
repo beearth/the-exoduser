@@ -1,0 +1,265 @@
+/* Hell Gothic — approved demonic UI art direction, 2026-09-24.
+   Geometry and gameplay remain owned by each screen's system stylesheet. */
+:root{
+  --ui-ink:#100d0e;--ui-well:#090809;--ui-raised:#211416;
+  --ui-bone:#eee4d4;--ui-muted:#bfb2a5;--ui-brass:#be5747;
+  --ui-line:#57413c;--ui-garnet:#681e1b;
+  --ui-frame:url('img/ui/hell_gothic/frame.png');
+  --ui-crest:url('img/ui/hell_gothic/crest.png');
+  --ui-button:linear-gradient(180deg,#581611,#240809);
+  --ui-divider:linear-gradient(90deg,transparent,#973c2d,transparent);
+}
+
+/* User directive: one shared near-fullscreen shell across all six menus. */
+:is(#settings,#invPanel,#forge,#skillPanel,#storagePanel,#statPanel).panel{
+  padding:12px!important;box-sizing:border-box;align-items:center!important;justify-content:center!important;
+  background:#050607f5!important;
+}
+:is(#settings,#invPanel,#forge,#skillPanel,#storagePanel,#statPanel).panel .pbox{
+  width:calc(100vw - 24px)!important;max-width:none!important;
+  height:calc(100dvh - 24px)!important;max-height:calc(100dvh - 24px)!important;
+  margin:0!important;padding:20px 24px!important;box-sizing:border-box;transform:none!important;
+  display:flex!important;flex-direction:column!important;
+}
+:is(#settings,#invPanel,#forge,#skillPanel,#storagePanel,#statPanel).panel .panel-nav{
+  flex:0 0 auto!important;width:100%;margin:0 0 12px!important;padding:0 0 12px!important;
+}
+:is(#settings,#invPanel,#forge,#skillPanel,#storagePanel,#statPanel).panel .panel-nav-tab{
+  min-height:42px!important;font-family:'Noto Sans KR',sans-serif!important;font-size:14px!important;font-weight:700!important;
+}
+:is(#settings,#forge,#storagePanel).panel .frame-inner-panel{flex:1 1 auto!important;min-height:0!important;overflow-y:auto!important;}
+#storagePanel.panel .pbox>.pclose{align-self:flex-start;margin-top:16px!important;flex-shrink:0;}
+@media(max-width:1400px){
+  :is(#settings,#invPanel,#forge,#skillPanel,#storagePanel,#statPanel).panel{padding:8px!important;}
+  :is(#settings,#invPanel,#forge,#skillPanel,#storagePanel,#statPanel).panel .pbox{
+    width:calc(100vw - 16px)!important;height:calc(100dvh - 16px)!important;max-height:calc(100dvh - 16px)!important;padding:14px 16px!important;
+  }
+}
+:is(#settings,#invPanel,#forge,#skillPanel,#storagePanel,#statPanel){
+  color:var(--ui-bone);scrollbar-color:#75674f #101113;scrollbar-width:thin;
+}
+:is(#settings,#invPanel,#forge,#skillPanel,#storagePanel,#statPanel) .pbox{
+  background:var(--ui-ink)!important;border:1px solid var(--ui-line)!important;
+  border-radius:3px!important;box-shadow:0 24px 90px #000c,inset 0 0 0 4px #08090a!important;
+}
+:is(#settings,#invPanel,#forge,#skillPanel,#storagePanel,#statPanel) .pbox::after{
+  background:none!important;border:38px solid transparent;
+  border-image:var(--ui-frame) 350 / 38px / 0 stretch!important;
+  opacity:.7!important;pointer-events:none!important;
+}
+:is(#settings,#invPanel,#forge,#skillPanel,#storagePanel,#statPanel) .pbox::before{display:none!important;background:none!important;}
+:is(#settings,#invPanel,#forge,#skillPanel,#storagePanel,#statPanel) .panel-nav{
+  gap:4px;padding:0 0 12px;border-bottom:1px solid var(--ui-line);margin-bottom:14px;
+}
+:is(#settings,#invPanel,#forge,#skillPanel,#storagePanel,#statPanel) .panel-nav-tab{
+  min-height:38px;display:flex;align-items:center;justify-content:center;
+  padding:8px 10px;box-sizing:border-box;background:#161719!important;
+  border:1px solid #39372f!important;border-radius:2px!important;
+  color:var(--ui-muted)!important;font-size:14px!important;letter-spacing:.02em!important;
+  text-shadow:0 1px 2px #000!important;box-shadow:none!important;
+}
+:is(#settings,#invPanel,#forge,#skillPanel,#storagePanel,#statPanel) .panel-nav-tab.active{
+  background:linear-gradient(#342c24,#221d19)!important;color:#f1e2c3!important;
+  border-color:var(--ui-brass)!important;box-shadow:inset 0 -2px #b09a70!important;
+}
+:is(#settings,#invPanel,#forge,#skillPanel,#storagePanel,#statPanel) .panel-nav-tab:hover{
+  color:#fff0d6!important;border-color:#a18c66!important;
+}
+:is(#settings,#invPanel,#forge,#skillPanel,#storagePanel) .ptitle{
+  background:none!important;color:var(--ui-bone)!important;-webkit-text-fill-color:var(--ui-bone);
+  font-size:clamp(24px,2vw,34px)!important;letter-spacing:.14em!important;
+  text-shadow:0 2px 2px #000!important;filter:none!important;font-weight:700!important;
+}
+:is(#settings,#invPanel,#forge,#skillPanel,#storagePanel) .frame-inner-panel{
+  background:var(--ui-well)!important;border:1px solid #39382f!important;
+  border-image:none!important;border-radius:2px!important;box-shadow:inset 0 1px 0 #ffffff05!important;
+}
+:is(#settings,#invPanel,#forge,#skillPanel,#storagePanel) .frame-inner-panel::before,
+:is(#settings,#invPanel,#forge,#skillPanel,#storagePanel) .frame-inner-panel::after{
+  background:none!important;pointer-events:none;
+}
+:is(#settings,#invPanel,#forge,#skillPanel,#storagePanel) .pclose{
+  min-height:42px;padding:10px 28px!important;letter-spacing:.08em!important;
+  font-size:16px!important;color:var(--ui-bone)!important;border:1px solid #8f7a54!important;
+  border-radius:2px!important;background:#191a1b var(--ui-button) center/100% 100% no-repeat!important;
+  text-shadow:0 2px 3px #000!important;box-shadow:none!important;
+}
+:is(#settings,#invPanel,#forge,#skillPanel,#storagePanel,#statPanel) :is(button,select,input):focus-visible{
+  outline:2px solid #ead6a5!important;outline-offset:3px;
+}
+#settings .frame-inner-panel-split{overflow-x:hidden!important;gap:28px!important;}
+#settings .set-section{min-width:0!important;background:none!important;}
+#settings .set-label{color:#d1b98b!important;text-shadow:none!important;letter-spacing:.1em!important;}
+#settings :is(.set-row,.set-range-row){border-bottom:1px solid #ffffff08;padding-top:8px;padding-bottom:8px;min-width:0;}
+#settings .set-name{color:var(--ui-bone)!important;text-shadow:none!important;}
+#settings :is(.set-name,.set-key,select),#forge :is(.fg-id,.fg-in){font-family:'Noto Sans KR',sans-serif!important;}
+#settings .set-name{font-size:15px!important;line-height:1.55;}
+#settings .set-label{font-size:18px!important;}
+#settings .set-label{width:auto!important;max-width:none!important;display:block!important;margin-left:0!important;transform:none!important;word-break:keep-all;letter-spacing:.04em!important;}
+#settings .set-label::before,#settings .set-label::after{display:none!important;}
+#settings .set-key{background:#1c1d1f!important;border:1px solid #645944!important;color:#e5d6b7!important;box-shadow:inset 0 -2px #08090a;}
+#settings :is(input[type=range],input[type=checkbox]){accent-color:#b69a66!important;}
+#settings select{background:#141517!important;color:var(--ui-bone)!important;border:1px solid #655943!important;min-height:32px;}
+#forge :is(#forgeMats,#forgeConfirm){background:#121315!important;border:1px solid var(--ui-line)!important;border-radius:2px;}
+#forge .fg-tab{border-radius:2px!important;color:var(--ui-bone)!important;min-height:38px;}
+#forge .fg-tab.fg-tab-v4{background-image:none!important;background-color:#191a1d!important;border:1px solid #514a3d!important;opacity:1;}
+#forge .fg-tab.act{border-color:var(--ui-brass)!important;box-shadow:inset 0 -2px #b09a70!important;background-color:#31291f!important;}
+#forge .fg-id{color:var(--ui-muted)!important;line-height:1.5;}
+#forge .fg-i{border-radius:2px!important;background:#141517!important;}
+#forge .fg-i:hover{border-color:var(--ui-brass)!important;}
+#skillPanel.panel .pbox.skill-pbox{max-width:none!important;}
+#skillPanel #skillGridWrap{border-radius:2px!important;background:#0b0c0e!important;border-color:#39382f!important;}
+#skillPanel #skillInfo{background:#17181a!important;color:#d1c4ae!important;border-radius:2px!important;font-size:15px;}
+#skillPanel .skill-recommendations{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px;width:100%;max-width:none!important;}
+#skillPanel .skill-recommendations>div{margin:0!important;padding:16px!important;border-radius:2px!important;background:#17181a!important;}
+#skillPanel .skill-recommendations>div[data-rec-cur]{border-color:#baa06c!important;box-shadow:inset 3px 0 #baa06c;}
+#statPanel.panel .pbox.growth-shell{border-image:none!important;border:1px solid #675b44!important;background:#101113!important;}
+#statPanel .growth-shell::after{display:block!important;}
+@media(max-width:1100px){#skillPanel .skill-recommendations{grid-template-columns:1fr;}}
+#invPanel :is(#invCenter,.inv-equip){background-color:#101113!important;}
+#invPanel #invCenter > div:first-child,#invPanel .inv-equip > div:first-child{
+  color:#d9c8a7!important;text-shadow:0 1px 2px #000!important;letter-spacing:.1em!important;
+}
+#mmLvl{background:#101113ed!important;border-color:#675b44!important;color:var(--ui-bone);box-shadow:inset 0 0 0 2px #08090a;}
+body:has(:is(#settings,#invPanel,#forge,#skillPanel,#storagePanel,#statPanel).on) :is(#petSubtitle,#hud,#hudTop,#hudCorner,#bossBar,#bossPostureBox,#globeHP,#globeMP,#skBar,#mmWrap,#mmLvl,#stageClock,#areaTitle,#tutorialBadgeButton,#skBarTip,#keyGuide){display:none!important;}
+.lobby-right{background:#101113f5!important;border-image:none!important;border-left:1px solid #7d6b4d!important;box-shadow:-20px 0 60px #0008;}
+.lobby-header h1{color:#dcc69d!important;text-shadow:0 2px 3px #000!important;}
+.lobby-divider{height:24px!important;background:var(--ui-divider) center/contain no-repeat!important;opacity:.75;mix-blend-mode:screen;}
+.lobby-right :is(.char-item,.char-item-new){background:#18191be8!important;border-color:#514a3d!important;box-shadow:inset 0 1px #ffffff06!important;}
+.lobby-right .char-item.active{border-color:#b09a70!important;background:linear-gradient(90deg,#3a3025,#18191b)!important;box-shadow:inset 3px 0 #b09a70!important;}
+.lobby-right .char-item.active::before{background:#b09a70!important;box-shadow:none!important;}
+.lobby-right .char-item:hover{border-color:#a28c64!important;transform:none!important;}
+.lobby-right .char-name{color:#eee4d4!important;}
+.lobby-right .char-info{color:#b8af9f!important;opacity:1!important;}
+.lobby-right .char-thumb{border-color:#756447!important;background:#0b0c0e!important;}
+.lobby-right .char-del{color:#c78f88;border-color:#75443e;}
+.lobby-right .char-del:focus-visible{opacity:1;outline:2px solid #ead6a5;outline-offset:2px;}
+.lobby-right .enter-game-btn{filter:drop-shadow(0 4px 12px #000b)!important;}
+.lobby-right .enter-game-btn:disabled{display:none!important;}
+.lobby-right .enter-game-btn img{max-height:120px!important;object-fit:contain;}
+.lobby-right .lobby-mid-area{overflow-y:auto;scrollbar-width:thin;scrollbar-color:#75674f #101113;}
+.lobby-right .lma-steam-btn{max-width:300px;}
+.lobby-right .enter-game-btn:hover:not(:disabled){filter:brightness(1.12) drop-shadow(0 4px 14px #b09a7033)!important;transform:translateY(-1px)!important;}
+.lobby-right :is(button,select):focus-visible{outline:2px solid #ead6a5;outline-offset:3px;}
+.lobby-right .lma-main-txt{text-shadow:0 2px 3px #000!important;color:#ddc698!important;}
+.lobby-right .lma-sub-txt{color:#b8af9f!important;}
+@media(max-height:800px){
+  .lobby-right .lobby-header{margin-bottom:8px;}
+  .lobby-right .lobby-divider{margin-bottom:8px;}
+  .lobby-right .lma-banner-inner{padding:6px 4%;gap:4px;}
+  .lobby-right .lma-txt-group{gap:0;}
+  .lobby-right .lma-main-txt{font-size:14px;line-height:1.3;}
+  .lobby-right .lma-sub-txt{font-size:11px;line-height:1.3;}
+  .lobby-right .lma-steam-btn{width:190px;}
+  .lobby-right .enter-game-btn img{max-height:96px!important;}
+}
+@media(max-width:780px){
+  :is(#settings,#invPanel,#forge,#skillPanel,#storagePanel,#statPanel) .panel-nav{display:grid!important;grid-template-columns:repeat(3,minmax(0,1fr));gap:4px!important;}
+  :is(#settings,#invPanel,#forge,#skillPanel,#storagePanel,#statPanel) .panel-nav-tab{min-width:0;min-height:42px!important;padding:6px 4px;font-size:14px!important;line-height:1.25!important;white-space:normal;word-break:keep-all;}
+  #settings .frame-inner-panel-split{gap:14px!important;}
+}
+
+/* Approved Hell Gothic: the frame is decorative; solid CSS remains on image failure. */
+:is(#settings,#invPanel,#forge,#skillPanel,#storagePanel,#statPanel).panel .pbox{
+  position:relative;padding:88px 38px 28px!important;
+  background:radial-gradient(ellipse at 50% 0,#42151166,transparent 46%),var(--ui-ink)!important;
+  border:1px solid #695047!important;border-radius:0!important;
+  box-shadow:0 24px 90px #000d,inset 0 0 0 5px #070607,inset 0 0 48px #6f100e18!important;
+}
+:is(#settings,#invPanel,#forge,#skillPanel,#storagePanel,#statPanel).panel .pbox::after{
+  content:'';position:absolute;inset:0;border:64px solid transparent!important;
+  border-image:var(--ui-frame) 22% / 64px / 0 stretch!important;
+  border-radius:0;background:none!important;box-shadow:none!important;opacity:1!important;z-index:2;pointer-events:none;
+}
+:is(#settings,#invPanel,#forge,#skillPanel,#storagePanel,#statPanel).panel .pbox::before{
+  content:'';display:block!important;position:absolute;inset:6px auto auto 50%;
+  width:216px;height:72px;transform:translateX(-50%);border:0;
+  background:var(--ui-crest) center/contain no-repeat!important;opacity:1;z-index:2;pointer-events:none;
+}
+:is(#settings,#invPanel,#forge,#skillPanel,#storagePanel,#statPanel) .panel-nav-tab.active{
+  background:linear-gradient(#501614,#230c0d)!important;color:#fff0df!important;
+  border-color:#c45b47!important;box-shadow:inset 0 -2px #dd6a4f,0 0 12px #ad211c20!important;
+}
+:is(#settings,#invPanel,#forge,#skillPanel,#storagePanel,#statPanel) .panel-nav-tab:hover{border-color:#bc6a55!important;color:#fff1df!important;}
+:is(#settings,#invPanel,#forge,#skillPanel,#storagePanel) .pclose{
+  background:#310d0e var(--ui-button)!important;border-color:#a05042!important;color:#f3e6d5!important;
+  box-shadow:inset 0 0 0 2px #100909,inset 0 1px #c4876555!important;
+}
+:is(#settings,#invPanel,#forge,#skillPanel,#storagePanel) .pclose:hover{filter:brightness(1.2);}
+#settings :is(input[type=range],input[type=checkbox]){accent-color:#c45b47!important;}
+#settings .set-label{color:#ddbc9d!important;}
+#settings .set-range-row input[type=range]{min-width:0;flex:1 1 80px;}
+#settings .set-range-val{flex:0 0 76px;min-width:76px;max-width:76px;white-space:normal;overflow-wrap:anywhere;text-align:right;font-size:13px;line-height:1.4;}
+#forge .fg-tab.act{background-color:#3b1314!important;box-shadow:inset 0 -2px #d96148!important;}
+#skillPanel .skill-recommendations>div[data-rec-cur]{border-color:#bb5948!important;box-shadow:inset 3px 0 #c85c49;}
+#invPanel :is(#invCenter,.inv-equip){background-color:#100d0e!important;}
+#statPanel.panel .pbox.growth-shell{padding:88px 38px 28px!important;background:radial-gradient(ellipse at 50% 0,#42151166,transparent 46%),#100d0e!important;}
+
+/* Tutorial: opaque text, ornamental edges and a pinned footer. Gameplay colours stay semantic. */
+#parryLesson{
+  opacity:1;padding:68px 24px 20px;color:#eee4d4;
+  background:radial-gradient(ellipse at 50% 0,#47171288,transparent 48%),#100d0ef5;
+  border:1px solid #695047;box-shadow:0 20px 70px #000b,inset 0 0 0 4px #070607;
+}
+#parryLesson::before{content:'';position:absolute;inset:0;border:40px solid transparent;border-image:var(--ui-frame) 22% / 40px / 0 stretch;z-index:-1;pointer-events:none;}
+#parryLesson::after{content:'';position:absolute;top:6px;left:50%;transform:translateX(-50%);width:174px;height:58px;background:var(--ui-crest) center/contain no-repeat;pointer-events:none;z-index:-1;}
+#parryLesson .lesson-eyebrow{color:#c7b4a2;letter-spacing:.08em;flex-wrap:wrap;gap:4px 12px;}
+#parryLesson .lesson-art{height:64px;margin:12px 0 16px;}
+#parryLesson[data-phase="practice"] .lesson-art{height:50px;margin:10px 0 14px;}
+#parryLesson .lesson-key{background:linear-gradient(#332c2c,#100e10);color:#fff0df;box-shadow:0 4px 0 #050405,inset 0 0 0 3px #080708;}
+#parryLesson h2{color:#f4e6d2;text-shadow:0 2px 3px #000;}
+#parryLesson .lesson-subtitle{color:#c2b6a9;line-height:1.6;}
+#parryLesson .lesson-checklist{gap:6px;border-color:#65453c;}
+#parryLesson .lesson-row{padding:7px 8px;align-items:flex-start;color:#bfb4a8;font-size:14px;line-height:1.6;border:1px solid transparent;}
+#parryLesson .lesson-row input{margin-top:3px;border-color:#9a8271;}
+#parryLesson .lesson-row[data-current="true"]{color:#fff0df;background:linear-gradient(90deg,#551819aa,#25101166);border-color:#a34d3f;box-shadow:inset 2px 0 #ec7958;}
+#parryLesson .lesson-row[data-complete="true"]{color:#b2d6ac;}
+#parryLesson .lesson-details{padding-left:8px;}
+#parryLesson .lesson-hint{color:#e8d9c6;line-height:1.7;}
+#parryLesson .lesson-safety{color:#c2b6a9;}
+#parryLesson .lesson-footer{border-top:1px solid #57413c;background:#100d0e;padding-top:12px;}
+#parryLesson .lesson-primary{min-height:44px;background:var(--ui-button);border:1px solid #b6614b;color:#fff0df;box-shadow:inset 0 0 0 2px #170a0b;}
+#parryLesson .lesson-skip{min-height:36px;margin-top:8px;border:1px solid #665044;background:#1d1413;color:#dccbb6;}
+#parryLesson .lesson-skip:hover{background:#38201c;color:#fff0df;}
+#parryLesson .lesson-progress{margin-top:12px;background:#42322d;}
+
+/* Secondary teaching and collection panels share the same legible material. */
+#systemLesson,#tutorialBadgeCollection{opacity:1;color:#eee4d4;background:linear-gradient(135deg,#281413f5,#100d0ef5);border:1px solid #805443;box-shadow:0 12px 32px #0008;}
+#systemLesson h2{color:#f1d9bd;}
+#systemLesson button{border:1px solid #855044;background:#351011;color:#f0dfcd;min-height:36px;}
+#systemLesson li[data-current="true"]{color:#ffd6bb;}
+#tutorialBadgeButton{background:#1d1111ed;border-color:#875044;color:#edd9bf;}
+
+/* Keep health, magic, mobility and shield colours and all existing HUD geometry. */
+#skBar::before{content:'';position:absolute;left:50%;top:18px;transform:translateX(-50%);width:114px;height:38px;background:var(--ui-crest) center/contain no-repeat;pointer-events:none;}
+body:has(#parryLesson) :is(#mmLvl,#tutorialBadgeButton){visibility:hidden;}
+.globe-val{text-shadow:0 2px 3px #000,0 0 6px #000;}
+#mmLvl{background:#140e0eef!important;border-color:#815044!important;}
+.lobby-right{background:radial-gradient(ellipse at 50% 0,#52171355,transparent 45%),#100d0ef5!important;border-left-color:#844337!important;}
+.lobby-right::after{content:'';position:absolute;inset:2px;border:40px solid transparent;border-image:var(--ui-frame) 22% / 40px / 0 stretch;pointer-events:none;z-index:2;}
+.lobby-right .char-item.active{background:linear-gradient(90deg,#481718,#160e10)!important;border-color:#c15b47!important;box-shadow:inset 3px 0 #d3634b!important;}
+.lobby-right .char-item.active::before{background:#cf634b!important;}
+.lobby-right .lobby-divider{height:56px!important;background:var(--ui-crest) center/168px 56px no-repeat!important;opacity:1;mix-blend-mode:normal;}
+@media(max-width:1400px){
+  :is(#settings,#invPanel,#forge,#skillPanel,#storagePanel,#statPanel).panel .pbox{padding:74px 32px 24px!important;}
+  #statPanel.panel .pbox.growth-shell{padding:74px 32px 24px!important;}
+  :is(#settings,#invPanel,#forge,#skillPanel,#storagePanel,#statPanel).panel .pbox::before{width:180px;height:60px;}
+}
+@media(max-width:780px){
+  :is(#settings,#invPanel,#forge,#skillPanel,#storagePanel,#statPanel).panel .pbox{padding:56px 18px 16px!important;}
+  #statPanel.panel .pbox.growth-shell{padding:56px 18px 16px!important;}
+  :is(#settings,#invPanel,#forge,#skillPanel,#storagePanel,#statPanel).panel .pbox::before{width:126px;height:42px;}
+  :is(#settings,#invPanel,#forge,#skillPanel,#storagePanel,#statPanel).panel .pbox::after{border-width:32px!important;border-image-width:32px!important;}
+}
+@media(max-height:800px){.lobby-right .lobby-divider{height:40px!important;background-size:120px 40px!important;}}
+@media(min-width:781px) and (max-height:800px){
+  #invPanel .ptitle{margin:0!important;padding:0!important;line-height:1.2;}
+  #invPanel .pbox>.panel-nav+div{min-height:44px;margin-bottom:10px!important;}
+  #invPanel .inv-wrap{grid-template-rows:minmax(220px,1fr) minmax(170px,.65fr)!important;overflow-y:auto!important;}
+}
+@media(max-height:700px) and (min-width:761px){#parryLesson{padding:54px 20px 16px;}#parryLesson::after{width:120px;height:40px;top:6px;}}
+@media(max-width:760px){
+  #parryLesson{padding:18px 20px 16px;}
+  #parryLesson::after{display:none;}
+  #parryLesson .lesson-row{font-size:12px;padding:5px;}
+}

@@ -30,6 +30,7 @@ const FILES = [
   'system-lesson.js', 'system-lesson.css',
   'tutorial-badges.js', 'tutorial-badges.css',
   'stat-panel-ui.js', 'stat-panel-ui.css',
+  'ui-foundation.css',
   'localization-runtime.js', 'localization-data.js', 'localization.css',
   'lobby-stage-info.js', 'character-story-player.js', 'level-up-vfx.js',
   'world-intro-player.js', 'world-intro-subtitles-data.js', 'world-intro-subtitles.js',

@@ -2298,6 +2298,7 @@ canvas{display:block;position:fixed;inset:0}
 </style>
 <link rel="stylesheet" href="stat-panel-ui.css?v=20260910-fullscreen-readable-v1">
 <link rel="stylesheet" href="localization.css?v=20260909">
+<link rel="stylesheet" href="ui-foundation.css?v=20260924-hell2">
 <script src="stat-panel-ui.js?v=20260909-constellation-v3"></script>
 </head>
 <body>
@@ -43792,7 +43793,7 @@ function renderSkillPanel(){
   const _visibleCats=_isRecTab?SKILL_CATS.map(c=>c.id):_curHier.cats;
   // ── 추천 탭: 고정 빌드 패스 ──
   if(_isRecTab){
-    const col=document.createElement('div');col.style.cssText='min-width:0;grid-column:1/-1;max-width:700px;margin:0 auto';
+    const col=document.createElement('div');col.className='skill-recommendations';col.style.cssText='min-width:0;grid-column:1/-1;max-width:700px;margin:0 auto';
     let _curPhaseIdx=-1;
     for(let _pi=0;_pi<SKILL_REC_PATH.length;_pi++){
       const ph=SKILL_REC_PATH[_pi];

@@ -26,7 +26,7 @@
 | 재시작·복원 | step5 재진입은3개 체크와 입력 상태 초기화. 종료/건너뛰기는 기존 스냅샷으로 플레이어 자원·스킬·월드 복원 |
 | DOM | .lesson-resource-guide를 새로 만들어 제목 아래 삽입. 각 p는 리프 노드로 갱신. 해당 안내 중 기존 전체 체크리스트를 숨겨 핵심 설명을 위쪽에 표시. 다른 단계는 기존 체크리스트 표시 |
 | CSS | data-resource-guide=true에서 체크리스트 숨김, 아트 높이48px·margin2px 0 10px·부제 margin-bottom8px. 안내 행13px/1.6, 좌측 테두리2px, 현재 목표 강조 |
-| 색 | 안내 행 #e4d8c6 / 배경 #17141be6 / 테두리 #867057. 현재 목표 #ffe49c / 배경 #332819. 기존 튜토리얼 전체 투명도 유지 |
+| 색 | 안내 행 #e4d8c6 / 배경 #17141be6 / 테두리 #867057. 현재 목표 #ffe49c / 배경 #332819. 2026-09-24 공통 Hell Gothic에 따라 튜토리얼 전체 opacity1 |
 | 캐시 | 일반/쉬운 게임의 resource-practice.js는 20260913-resource-cost50, parry-lesson.css는 20260913-resource-sets1. parry-lesson.js는 해당 전투 실습의 최신 캐시 버전 유지 |
 | 물리 Shift | charge를 mouse0로 바꿔도 왼쪽 Shift 입력을 사슬 실습 및 그로기 탈출 입력으로 기록. 커스텀 바인딩 회귀 검사 PASS |
 | 전투 규칙 | Q/E/Shift 세트(step5)의 연습 소모는 최대치의 최소 50%. 실전 비용·피해·패링 분류·그로기 탈출4방법·사슬3단 실습은 변경 없음 |
