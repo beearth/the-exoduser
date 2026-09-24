@@ -1,5 +1,7 @@
 # EXODUSER Diablo-Style Field Rebuild Plan — 2026-09-23
 
+> **최신 QA 적용:** [Rootworld blockout2](ROOTWORLD_BLOCKOUT_20260924.md). `20260924-blockout-2`는 stage0 QA 전용 34점 외곽/12점 중앙 질량과 서·동 양방향 동선을 사용한다. 템플릿 통행 13396칸, 나무 `(102.5,112.5)`, 북측 gate y5/exit y7, 시각 gate clearance x88~112/y2~35. 아래 이전 수치·미적용 설명은 당시 이력이며 본편 LOCK은 변경하지 않는다.
+
 > 2026-09-24 GATE 2 QA 적용: `rootworld_outer`의 NAV 마스크 기반 8192² 외곽 합성/64청크를 fieldrebuild 전용 런타임에 연결했다. 아래 §9의 “원화 미연결”은 9월 23일 이력이다. 현재 수치·검증·잔여 항목은 [외곽 제작 보고서](ROOTWORLD_OUTER_MASS_20260924.md)를 따른다. 본편 `production_finish`와 비교용 `baked_start_outer` 선택은 유지한다.
 
 > 상태: IMPLEMENTATION PLAN / 기존 stage layout 폐기 승인 대기 아님 — 사용자 지시로 재구축 가능.

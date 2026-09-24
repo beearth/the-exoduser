@@ -1,5 +1,7 @@
 # CH1-1 전체 구도 비교 — MASTER STUDY 01
 
+> **최신 QA 적용:** [Rootworld blockout2](ROOTWORLD_BLOCKOUT_20260924.md). `20260924-blockout-2`는 stage0 QA 전용 34점 외곽/12점 중앙 질량과 서·동 양방향 동선을 사용한다. 템플릿 통행 13396칸, 나무 `(102.5,112.5)`, 북측 gate y5/exit y7, 시각 gate clearance x88~112/y2~35. 아래 이전 수치·미적용 설명은 당시 이력이며 본편 LOCK은 변경하지 않는다.
+
 > 상태: GATE 1 재작업 / 설계안만 작성 / 런타임 변경 없음 / VISUAL VERDICT: RETOUCH
 
 ## 비교 산출물과 데이터 계약

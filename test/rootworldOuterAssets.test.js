@@ -24,7 +24,7 @@ test('neighboring chunks share exact horizontal and vertical bleed pixels',async
   }
 });
 test('primary playable centers and north gate remain transparent in the visual layer',async()=>{
-  for(const[x,y]of[[100,181],[76,145],[112,108],[86,70],[151,82],[100,24],[100,5]]){
+  for(const[x,y]of[[100,181],[62,126],[70,84],[148,112],[96,42],[100,24],[100,5]]){
     const b=await sharp(file('master.png')).extract({left:Math.floor((x+.5)*8192/200),top:Math.floor((y+.5)*8192/200),width:1,height:1}).raw().toBuffer();
     assert.equal(b[3],0,`outer mass covers floor at ${x},${y}`);
   }

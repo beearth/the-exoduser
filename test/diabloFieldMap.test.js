@@ -32,6 +32,35 @@ function decodeRle(rle, size) {
   return cells;
 }
 
+test('CH1 rootworld central mass leaves independent west and east routes', () => {
+  const a=diabloFieldBuilder()(0,200,200),cells=decodeRle(a.tileRLE,40000);
+  assert.equal(cells[112*200+102],0,'central mass must shape navigation');
+  const reach=(blocked)=>{
+    const seen=new Set(),queue=[[100,181]];
+    for(let i=0;i<queue.length;i++){
+      const [x,y]=queue[i],k=y*200+x;
+      if(x<0||y<0||x>=200||y>=200||seen.has(k)||!cells[k]||blocked(x,y))continue;
+      seen.add(k);for(const [dx,dy]of[[1,0],[-1,0],[0,1],[0,-1]])queue.push([x+dx,y+dy]);
+    }return seen;
+  };
+  assert.ok(reach((x,y)=>y>=85&&y<=145&&x>115).has(24*200+100),'west route');
+  assert.ok(reach((x,y)=>y>=85&&y<=145&&x<125).has(24*200+100),'east route');
+  const all=reach(()=>false);
+  assert.equal(all.size,cells.filter(Boolean).length,'no disconnected floor');
+  for(const h of a.spawnHoles)assert.ok(all.has(h.y*200+h.x),'accessible spawn');
+  for(const [cx,cy,r]of[[62,126,12],[148,112,9],[96,42,12]])
+    for(let y=cy-r;y<=cy+r;y++)for(let x=cx-r;x<=cx+r;x++)
+      if((x-cx)**2+(y-cy)**2<=r*r)assert.equal(cells[y*200+x],1,`combat clearance ${x},${y}`);
+});
+
+test('QA and production both apply canonical north gate after template generation',()=>{
+  const line=gameHtml.split('\n').find(s=>s.includes('const _ch1Gate=_applyCh1StartNorthGate'));
+  const run=Function('_DIABLO_FIELD_QA',`${extractFunction('_applyCh1StartNorthGate')};const si=0,_MAP_COMPOSE=[{forestBoundary:1}],mw=200,mh=200,map=Array.from({length:mh},()=>Array(mw).fill(1));let bossCx=0,_gateY=0,_gateTiles=[];const exits=[];${line};return{map,exits,gate:_gateY};`);
+  for(const qa of [true,false]){
+    const result=run(qa);assert.equal(result.gate,5);assert.equal(result.map[7][100],2);assert.equal(result.map[35][100],0);assert.equal(result.exits.length,3);
+  }
+});
+
 test('Diablo field is deterministic and uses broad field regions instead of room corridors', () => {
   const build = diabloFieldBuilder();
   const a = build(6, 200, 200);

@@ -1,5 +1,5 @@
 {
-  "version": "20260924-rootworld-1",
+  "version": "20260924-blockout-2",
   "stage": 0,
   "qaOnly": true,
   "source": "assets/map/ch1/rottenwood_field_rootworld_master_v2.png",
@@ -9,7 +9,7 @@
   "chunkSize": 1024,
   "bleed": 1,
   "chunkCount": 64,
-  "navHash": "0e57fc87cee2eb6dadbbd4c0e0382afff6c6fc0ecbbd60ff9d3b24d0abde8b59",
+  "navHash": "9cadbd6831211387a0c0f27f3b765764b252cc0f3c6d00a4699b460db0b356b4",
   "navSource": "_buildDiabloField(0,200,200)",
   "floorMask": {
     "dilateTiles": 1,
@@ -18,12 +18,12 @@
   },
   "visualGateClearance": {
     "x": [
-      90,
-      110
+      88,
+      112
     ],
     "y": [
-      0,
-      15
+      2,
+      35
     ]
   },
   "patches": {

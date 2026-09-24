@@ -26,7 +26,7 @@ for(let i=0;i<layout.tileRLE.length;i+=2)for(let n=0;n<layout.tileRLE[i+1];n++)n
 if(nav.length!==40000)throw Error('Unexpected QA NAV size');
 // Keep the engine-authored north gate approach visually open as well.
 const visualNav=nav.slice();
-for(let y=0;y<16;y++)for(let x=90;x<=110;x++)visualNav[y*200+x]=1;
+for(let y=2;y<=35;y++)for(let x=88;x<=112;x++)visualNav[y*200+x]=1;
 const mask=Buffer.alloc(40000);
 for(let y=0;y<200;y++)for(let x=0;x<200;x++){
   for(let dy=-1;dy<=1;dy++)for(let dx=-1;dx<=1;dx++){
@@ -86,11 +86,11 @@ for(let y=0;y<8;y++)for(let x=0;x<8;x++){
     .png().toFile(path.join(out,`chunk_${x}_${y}.png`));
 }
 fs.writeFileSync(path.join(out,'composition.json'),JSON.stringify({
-  version:'20260924-rootworld-1',stage:0,qaOnly:true,source:path.relative(root,source).replaceAll('\\','/'),
+  version:'20260924-blockout-2',stage:0,qaOnly:true,source:path.relative(root,source).replaceAll('\\','/'),
   sourceSize:4096,masterSize:size,worldSize:8000,chunkSize:1024,bleed:1,chunkCount:64,
   navHash:createHash('sha256').update(JSON.stringify(layout.tileRLE)).digest('hex'),
   navSource:'_buildDiabloField(0,200,200)',floorMask:{dilateTiles:1,scale:4,blur:5},
-  visualGateClearance:{x:[90,110],y:[0,15]},patches,placements,randomScatter:0,
+  visualGateClearance:{x:[88,112],y:[2,35]},patches,placements,randomScatter:0,
   sourcePatchScaleMax:1.15,backScale:2,visualVerdict:'RETOUCH'
 },null,2)+'\n');
 console.log('Rootworld QA outer master + 64 bleed chunks baked');
