@@ -1,5 +1,7 @@
 # CH1-1 Rootworld — 전체 블록아웃 2
 
+> **2026-09-24 후속:** 사용자 목표는 기준 모델 이미지와 동일한 구현이다. blockout2는 원화 일치 확정안이 아니며, 별도 candidate-v1의 8카메라 수집과 시각 FAIL 판정은 [모델 일치 재개 보고](ROOTWORLD_REFERENCE_FIDELITY_20260924.md)를 따른다. 아래 blockout2 기술 이력과 후보 아트 검수를 구분한다.
+
 > QA 전용 구현. 본편 LOCK 유지. GATE 1~2 진행 중이며 최종 아트가 아니다.
 
 ## 현행 계약
