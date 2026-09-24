@@ -53,6 +53,7 @@
 | 중복 제목 | 장비 탭으로 설명되는 장착 중 라벨은 숨겨 첫 슬롯과 겹침 방지 |
 | 가방 | 필터는 details/summary로 접기, 기존invFilters/선택 로직 유지. invGrid최소140px, 가방최소200px |
 | 상세 | invRight top135/right26px, 폭min(360px,85vw), 최대높이calc(100%−210px) |
+| 호버 안정성 | `_invRenderDetail(idx,source,preview=false)`에서 호버 호출은 true, `inv-hover-preview` 클래스와 pointer-events:none!important로 마우스 가로채기 방지. 장착·가방·유골함 진입은 mouseenter. 클릭 선택 상세는 기본 false로 스크롤·버튼 조작 유지 |
 | 조작 | 기존 분해/정렬/장착/비교 이벤트 유지. inv-actions 최소36px, 버튼 줄바꿈 |
 
 ## 에셋 생성

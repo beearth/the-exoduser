@@ -2327,6 +2327,7 @@ canvas{display:block;position:fixed;inset:0}
 #invPanel #invCenter{grid-column:2;grid-row:2;min-width:0;overflow:auto!important}
 #invPanel #invRight{position:absolute!important;z-index:10;top:12px;right:12px;width:min(350px,28vw)!important;max-height:56vh;display:none!important;border-radius:6px!important}
 #invPanel #invRight:has(.item-detail){display:block!important}
+#invPanel #invRight.inv-hover-preview{pointer-events:none!important}
 #invPanel .inv-left,#invPanel .inv-center,#invPanel .inv-right{
   min-width:0!important;min-height:0!important;padding:12px!important;
   border:1px solid rgba(176,126,84,.24)!important;border-radius:6px!important;
@@ -46187,10 +46188,11 @@ function toggleInvStorage(){
 let _invSalSel=new Set(); // 인벤토리 분해 선택
 let _invHover=-1; // 호버 중인 가방 인덱스
 // _invRenderDetail: 우측 패널에 비교+아이템상세 렌더 (호버/선택 공용)
-function _invRenderDetail(idx,source){
+function _invRenderDetail(idx,source,preview=false){
   const it=source==='eq'?INV.equipped[idx]:source==='st'?(_getStore()[idx]||null):INV.bag[idx];
   if(!it)return;
   const rp=$('invRight');if(!rp)return;
+  rp.classList.toggle('inv-hover-preview',preview);
   rp.innerHTML='';
   // ── 비교 데이터 준비 (가방 아이템일 때) ──
   let _cmpData=null;
@@ -46562,7 +46564,7 @@ function renderOssPanel(){
   if(urn&&oss){
     urn.onclick=()=>{INV.selected='eq:ossuary';renderInv()};
     urn.oncontextmenu=(ev)=>{ev.preventDefault();unequipItem('ossuary');applyStats();const _ui=INV.bag.findIndex(i=>i&&i.slot==='ossuary');INV.selected=_ui>=0?_ui:null;renderInv()};
-    urn.onmouseover=()=>{_invHover=-1;_invRenderDetail('ossuary','eq')};
+    urn.onmouseenter=()=>{_invHover=-1;_invRenderDetail('ossuary','eq',true)};
     urn.onmouseleave=()=>_invClearHover();
   }
 }
@@ -46599,7 +46601,7 @@ function renderInv(){
         div.style.borderColor=RARITY_C[item.rarity];
         div.style.boxShadow=`inset 0 0 12px ${RARITY_C[item.rarity]}33, 0 0 8px ${RARITY_C[item.rarity]}44`;
       }
-      div.onmouseover=()=>{_invHover=-1;_invRenderDetail(slot,'eq')};
+      div.onmouseenter=()=>{_invHover=-1;_invRenderDetail(slot,'eq',true)};
       div.onmouseleave=()=>_invClearHover();
     }
     div.onclick=(ev)=>{
@@ -46728,7 +46730,7 @@ function renderInv(){
       const it=INV.bag[i];
       if(it){const _eqSlot=_equipSlot(it);equipItem(it);applyStats();INV.selected='eq:'+_eqSlot;renderInv();return}
     };
-    div.onmouseover=()=>{if(_invHover===i)return;_invHover=i;_invRenderDetail(i,'bag')};
+    div.onmouseenter=()=>{if(_invHover===i)return;_invHover=i;_invRenderDetail(i,'bag',true)};
     div.onmouseleave=()=>_invClearHover();
     grid.appendChild(div);
   }

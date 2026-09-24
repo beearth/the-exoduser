@@ -1,3 +1,12 @@
+## 2026-09-25 — 인벤토리 호버 깜빡임 수정
+
+| 항목 | 변경·검증 |
+|---|---|
+| 원인 | 겹친 상세 창이 마우스를 가로채 슬롯 진입·이탈 반복. Chrome 재현에서 240ms 동안 17~29회 이탈 |
+| 수정 | _invRenderDetail(idx,source,preview=false), 호버에서만 true. inv-hover-preview에 pointer-events:none!important. 장착·가방·유골함 mouseenter 사용 |
+| 보존 | 클릭 선택 상세는 포인터 상호작용 유지, 기존 선택 복원·장착·분해 동작 유지 |
+| 검증 | tools/check-inventory-hover.cjs: 1280×720·1920×1080·900×900 총120회 통과, 기존 가방 레이아웃 검사 포함. inventoryPaperdollLayout.test.cjs 2개 통과 |
+
 ## 2026-09-24 — 엘리트 금색 고정 링 제거
 
 | 등급 | 색 | 오오라 결 수 | 기본 각도폭 | 중심선 폭 | 후광 폭 | 글로우 블러 |
