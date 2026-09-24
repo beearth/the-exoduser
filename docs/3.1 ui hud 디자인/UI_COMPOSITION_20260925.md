@@ -10,7 +10,7 @@
 
 | 항목 | 현재 구현 |
 |---|---|
-| 연결 | game.html/game-easy-test.html: ui-refinement.css?v=20260925-5, defer ui-panels.js?v=20260925-1. index.html은 CSS만. NW.js 두 파일 복사 |
+| 연결 | game.html/game-easy-test.html: ui-refinement.css?v=20260925-6, defer ui-panels.js?v=20260925-1. index.html은 CSS만. NW.js 두 파일 복사 |
 | 설정 | 왼쪽 폭 min(680px,100vw−24px), 높이100dvh−24px, 최대높이1000px |
 | 장비 | 오른쪽 폭 clamp(640px,36vw,780px), 최대100vw−24px; 폭≤780에서는100vw−16px |
 | 스킬/대장간/창고 | 각각 최대1020/980/700px, 화면폭−24px 이내. 스킬 왼쪽; 대장간/창고 중앙 |
@@ -112,3 +112,6 @@ POE2 설정 화면과 Diablo IV 장비 화면을 참고한 최신 표현 계약�
 자동 테스트 추가·실행 없음. 기존 번역 키 재사용. 세이브 형식·아이템 수치 변경 없음.
 
 아이템 아트 폴백 중복 표시 방지: `.vault-art .iskin:has(img)`는 font-size:0, 직계 SVG visibility:hidden. 이미지가 실패하여 제거되면 기본 글리프가 다시 표시된다.
+
+
+현재 공통 프레임·제목 및 독립 창고 선택/이동 UI는 `UI_COMPOSITION_20260925.md`의 **2026-09-25 조각 프레임·창고 슬롯 개편 절**을 따른다. 이전 중복 수치는 해당 최신 표로 대체한다.
