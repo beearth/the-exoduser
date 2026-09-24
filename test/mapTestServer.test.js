@@ -102,12 +102,18 @@ test('CH2-1 map QA can opt into an invulnerable monster combat preview', async (
     'combat preview must be expressed through the explicit URL flag');
 });
 
-test('map QA keeps a 1920x1080 logical view while supersampling the backing canvas on HiDPI displays', async () => {
+test('map QA uses the same resolution and backing pixels as normal gameplay', async () => {
   const game = await readFile(new URL('../game.html', import.meta.url), 'utf8');
-  assert.match(game, /const _MAP_QA_HIDPI=_MAP_QA_MODE;/,
-    'HiDPI supersampling must be scoped to map QA and never change normal gameplay defaults');
-  assert.match(game, /VW=rw; VH=rh;[\s\S]*?_ssaa=_MAP_QA_HIDPI\?Math\.min\(Math\.max\(devicePixelRatio\|\|1,1\),2\):1;[\s\S]*?bw=\(~~\(rw\*_ssaa\)\)&~1/,
-    'logical viewport must stay fixed while only the backing canvas grows up to 2x');
-  assert.match(game, /const cssW=_renderRes \? '100vw' : innerWidth\+'px'/,
-    'HiDPI backing pixels must not enlarge the CSS viewport or the gameplay camera');
+  const start=game.indexOf('function rz(){');
+  const end=game.indexOf('  // If nothing changed',start);
+  const body=game.slice(start+'function rz(){'.length,end);
+  const calculate=Function('innerWidth','innerHeight','devicePixelRatio','_MAP_QA_MODE','OPT',
+    'let _dpr,VW,VH,_ssaa;const _MAP_QA_HIDPI=_MAP_QA_MODE,_renderRes=null,IS_MOBILE=false;const document={getElementById:()=>null};'+body+';return {VW,VH,bw,bh,cssW,cssH,_ssaa};');
+  for(const [w,h,dpr] of [[1280,720,1],[1920,1080,2],[2560,1440,3]])for(const resScale of [100,75]){
+    const normal=calculate(w,h,dpr,false,{resScale});
+    const qa=calculate(w,h,dpr,true,{resScale});
+    assert.deepEqual(qa,normal);
+    assert.equal(qa.bw,qa.VW);assert.equal(qa.bh,qa.VH);
+    assert.equal(qa.VW,Math.floor(w*resScale/100)&~1);
+  }
 });

@@ -49,8 +49,8 @@
       {name:'고통의 화염지대',stages:7},{name:'지옥의 군단',stages:5},
       {name:'사도의 마굴',stages:6},{name:'지옥성',stages:3}
     ];
-    const PREVIEW_W=1920;
-    const PREVIEW_H=1080;
+    let PREVIEW_W=innerWidth;
+    let PREVIEW_H=innerHeight;
     const TOTAL=CHAPTERS.reduce((sum,ch)=>sum+ch.stages,0);
     const $=id=>document.getElementById(id);
     const clamp=n=>Math.max(0,Math.min(TOTAL-1,n|0));
@@ -62,6 +62,8 @@
     function paintCombatButton(){const button=$('combat');const enabled=stage===4;button.disabled=!enabled;button.textContent=enabled?(combatPreview?'몬스터 ON':'몬스터 OFF'):'2-1 전용';button.classList.toggle('hot',enabled&&combatPreview)}
     function applyPreviewScale(){
       const area=$('previewArea'),frame=$('viewport'),mode=$('scale').value;
+      PREVIEW_W=innerWidth;PREVIEW_H=innerHeight;
+      for(const element of [frame,$('game')]){element.style.width=PREVIEW_W+'px';element.style.height=PREVIEW_H+'px';}
       const fit=Math.min(area.clientWidth/PREVIEW_W,area.clientHeight/PREVIEW_H);
       const displayScale=mode==='fit'?fit:Number(mode);
       const shownW=PREVIEW_W*displayScale,shownH=PREVIEW_H*displayScale;

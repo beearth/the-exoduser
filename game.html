@@ -3388,7 +3388,7 @@ const _classicMap=new URLSearchParams(window.location.search).get('classic')==='
 const _MAP_QA_MODE=new URLSearchParams(window.location.search).get('mapqa')==='1';
 const _DIABLO_FIELD_QA=_MAP_QA_MODE&&_stageTestReq===0&&new URLSearchParams(window.location.search).get('fieldrebuild')==='1';
 const _MAP_QA_COMBAT=_MAP_QA_MODE&&_stageTestReq===4&&new URLSearchParams(window.location.search).get('combatqa')==='1';
-const _MAP_QA_HIDPI=_MAP_QA_MODE;
+
 function _wantPlateTest(){return !_classicMap&&(_mapTestReq==='v4'||_mapTestReq==='1'||_stageTestReq===0)}
 // stage=0 QA plate: default PROD. Instant restore: ?stage=0&plate=fieldone
 const _kitPlateReq=(new URLSearchParams(window.location.search).get('plate')||'').toLowerCase();
@@ -4285,9 +4285,8 @@ function rz(){
   // ── 논리 시야(VW/VH) = rw/rh (ss 미포함). 백킹(bw/bh) = VW*ss / VH*ss. ──
   // ss=1이면 bw===rw 로 기존과 완전 동일.
   VW=rw; VH=rh;
-  // Map QA only: preserve the 1920×1080 logical camera while matching HiDPI backing pixels.
-  // Normal gameplay remains 1x; cap QA at 2x to avoid excessive 4K/5K GPU memory use.
-  _ssaa=_MAP_QA_HIDPI?Math.min(Math.max(devicePixelRatio||1,1),2):1;
+  // Map QA and normal gameplay share the same window/resolution-scale contract.
+  _ssaa=1;
   let bw=(~~(rw*_ssaa))&~1, bh=(~~(rh*_ssaa))&~1;
   bw=Math.max(2,bw); bh=Math.max(2,bh);
   const cssW=_renderRes ? '100vw' : innerWidth+'px';

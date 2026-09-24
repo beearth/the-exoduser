@@ -57,11 +57,11 @@ CH2-1(si4)만 `combatqa=1`을 함께 주면 `_MAP_QA_COMBAT`이 활성화되어 
 | 기능 | 정확한 동작 |
 |---|---|
 | 맵 선택 | 7장 35개 버튼 |
-| 미리보기 | 동일 출처 iframe, CSS logical viewport **1920×1080 고정** |
-| 표시 배율 | **FIT 기본**, 100%, 75%, 50%; `min(availableWidth/1920, availableHeight/1080)` 단일 uniform scale |
-| 리사이즈 | sidebar/브라우저 크기는 바깥 표시 배율만 변경, iframe `innerWidth/innerHeight=1920×1080` 불변 |
-| HiDPI 백킹 | `mapqa=1`에서 `ssaa=clamp(devicePixelRatio,1,2)`; DPR 2는 `VW/VH=1920×1080`, `C.width/height=3840×2160`, CSS `1920×1080` | 논리 시야·카메라·오브젝트 크기는 유지하고 물리 픽셀만 2배로 렌더한다. 일반 게임은 1x 유지 |
-| 입력 좌표 | iframe transform의 브라우저 역매핑으로 표시 중앙 클릭이 logical `(960,540)`에 도달 |
+| 미리보기 | 동일 출처 iframe; logical viewport는 허브 창 innerWidth×innerHeight와 동일 |
+| 표시 배율 | FIT 기본, 100%, 75%, 50%; min(availableWidth/innerWidth, availableHeight/innerHeight) uniform scale |
+| 리사이즈 | 브라우저 resize 시 iframe logical 크기도 같은 창 크기로 갱신; iframe URL/맵은 재로딩하지 않음 |
+| 렌더 해상도 | 일반 게임과 QA 모두 _ssaa=1. 창 크기×OPT.resScale를 짝수 픽셀로 정렬; DPR 추가 배율 없음. DPR2/창1920×1080/100%이면 logical=backing=1920×1080 |
+| 입력 좌표 | iframe transform의 브라우저 역매핑으로 표시 중앙 클릭이 logical (innerWidth/2,innerHeight/2)에 도달 |
 | 이전/다음 | 버튼 또는 `[` / `]` |
 | 재로딩 | 버튼 또는 `R` |
 | 몬스터 | CH2-1에서 기본 `몬스터 ON`; 버튼으로 ON/OFF. 다른 stage에서는 비활성 `2-1 전용` |
@@ -82,4 +82,4 @@ npm run serve:map
 & "C:\nvm4w\nodejs\node.exe" --test test\mapTestServer.test.js test\localStaticServerSaveApi.test.js
 ```
 
-테스트는 루트/직접 경로 리다이렉트, `si 0/4/34`, 범위 밖 404, 35스테이지 데이터, `classic=1&mapqa=1`, 기본 무전투 관람 계약, CH2-1 `combatqa=1`, iframe, DOM 안전, 기존 저장 API를 검증한다. Playwright viewport 검증은 1280×720, 1920×1080, 2560×900 host에서 iframe 1920×1080 불변, X/Y scale 동일, resize 무재로딩, FIT/100/75/50, 중앙 클릭 `(960,540)`을 확인한다. DPR 2 실브라우저 검증은 CH2-1에서 logical `1920×1080`, backing `3840×2160`, CSS `1920×1080`, pageerror/404 0을 확인하며 `tmp/verify_map_test_hidpi.py`와 `captures/map_test_hidpi_20260830/`에 증거를 남긴다. CH2-1 몬스터 미리보기 증거는 `tmp/probe_ch2_monster_runtime.py`와 `captures/ch2_monster_preview_20260830/`다.
+현행 자동검증은 URL/범위/기본 관람 계약과 일반·QA 렌더 일치를 확인한다. 2026-09-24부터 고정1920×1080/QA DPR2x 계약은 폐기했다. tools/qa_map_resolution.py는 일반/QA 창1280×720 DPR1 및 1920×1080 DPR2에서 100%/75% 해상도 비교, 허브1280×720·1920×1080·2560×900 resize와 URL 무재로딩을 검사한다. 과거 tmp/verify_map_test_hidpi.py와 captures/map_test_hidpi_20260830/는 변경 전 이력이다.

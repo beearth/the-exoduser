@@ -3284,7 +3284,7 @@
 ## 2026-08-30 — MAP TEST HiDPI 해상도 / 2배 확대 수정
 
 - 원인 1: 테스트맵도 일반 게임과 같이 `_dpr=1` 백킹을 사용해 Windows 200%/DPR 2 화면에서 1920×1080 캔버스가 2×2 물리 픽셀로 확대됐다. 원인 2: HiDPI 백킹을 켰을 때 `rz()`가 CSS 크기 캐시를 style 적용 전에 갱신해 캔버스 CSS까지 3840×2160이 되어 화면이 실제 2배 커졌다.
-- 현행: `mapqa=1`에서만 `_ssaa=clamp(devicePixelRatio,1,2)`를 적용한다. DPR 2 실측은 iframe/logical `1920×1080`, backing `3840×2160`, CSS `1920×1080`; 일반 게임은 1x, 카메라·월드 범위·오브젝트 크기는 불변이다.
+- 당시 적용(2026-08-30 이력; 2026-09-24 폐기): `mapqa=1`에서만 `_ssaa=clamp(devicePixelRatio,1,2)`를 적용했다. 현행은 사용자 지시로 일반 게임과 QA 모두 backing1x이며 MAP_TEST_SERVER.md를 따른다.
 - TDD `test/mapTestServer.test.js` 4/4 PASS. Edge DPR 2 실브라우저에서 CH2-1 200×200, pageerror/asset 404 0을 확인했다. 증거: `captures/map_test_hidpi_20260830/ch2_si4_map_test_dpr2.png`, `report.json`.
 
 ## 2026-08-30 — ACTUAL CH1-1(si0/stage0) START OUTER MASS
