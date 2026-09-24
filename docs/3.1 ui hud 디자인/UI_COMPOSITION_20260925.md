@@ -10,7 +10,7 @@
 
 | 항목 | 현재 구현 |
 |---|---|
-| 연결 | game.html/game-easy-test.html: ui-refinement.css?v=20260925-6, defer ui-panels.js?v=20260925-1. index.html은 CSS만. NW.js 두 파일 복사 |
+| 연결 | game.html/game-easy-test.html: ui-refinement.css?v=20260925-7, defer ui-panels.js?v=20260925-1. index.html은 CSS만. NW.js 두 파일 복사 |
 | 설정 | 왼쪽 폭 min(680px,100vw−24px), 높이100dvh−24px, 최대높이1000px |
 | 장비 | 오른쪽 폭 clamp(640px,36vw,780px), 최대100vw−24px; 폭≤780에서는100vw−16px |
 | 스킬/대장간/창고 | 각각 최대1020/980/700px, 화면폭−24px 이내. 스킬 왼쪽; 대장간/창고 중앙 |
@@ -116,3 +116,22 @@ POE2 설정 화면과 Diablo IV 장비 화면을 참고한 최신 표현 계약�
 
 
 현재 공통 프레임·제목 및 독립 창고 선택/이동 UI는 `UI_COMPOSITION_20260925.md`의 **2026-09-25 조각 프레임·창고 슬롯 개편 절**을 따른다. 이전 중복 수치는 해당 최신 표로 대체한다.
+
+
+## 2026-09-25 금속 마감 보강
+
+이 절은 앞선 제목판·본문 프레임·키캡 표현의 최신 규칙이다.
+
+| 항목 | 구현 |
+|---|---|
+| 외곽 | 320px iron 반복, 좌우 밝은 금속 띠와 내부 음영. 안쪽 3/5/8/11px 단계의 턱, 외부0 16px 48px 그림자 |
+| 제목판 | 중앙판 좌우19%, top70/bottom3px, border9px. 황동 #44321b→#94733e→#654b29→#34271a, soft-light 재질 합성. 글자#f7e7bb. 높이760px 이하 top40px |
+| 설정 본문 | 9px #3c4137 틀, border-image 없음, margin6px 5px 0/padding14px. 안쪽 outline#8a7754 offset−5px, 금속 안쪽 선과 음영 |
+| 구획 제목 | 16px, 배경 제거, 오른쪽으로 이어지는 금속 구분선, padding4px 2px 12px |
+| 키 설정 행 | grid minmax(130px,1.3fr)/minmax(80px,1fr)/minmax(68px,.8fr)/20px. 간격8px, 최소48px, padding5px 3px. 이름13px/행간1.5, 홀수행 옅은 배경 |
+| 키캡 | 폭100%, 최소36px, padding3px 5px, 글자12px. 4px #655438 금속 테두리, 모서리2px, 방사 그라디언트 고정점. 기본/호버/입력대기 구분, 기존 입력 로직 유지 |
+| 작은 화면 | 폭560px 이하 행 열85px/58px/52px 최소+삭제16px, gap4px. 이름12px. 설정 본문 padding8px/좌우margin0 |
+| 창고 | 헤더와 상세 배경의 금속 명도 보강. 선택/이동/용량 계약은 이전 절 유지 |
+| 에셋 | 기존 iron/frame/crest 재사용, 신규 생성 없음. 제목판 CSS 기본색은 이미지 실패 시에도 유지 |
+
+코드 변경은 CSS와 캐시 버전(20260925-7)만. 자동 테스트 추가·실행 없음.
