@@ -6,7 +6,7 @@
 
 | id / 적용 위치 | 값 / 동작 |
 |---|---|
-| 구현 | `ch1-living-detail.js?v=20260925-3`, 전역 `Ch1LivingDetail.draw/deform/shadows`; `build-nwjs.mjs` 배포 FILES에도 포함 |
+| 구현 | `ch1-living-detail.js?v=20260925-4`, 전역 `Ch1LivingDetail.draw/deform/shadows`; `build-nwjs.mjs` 배포 FILES에도 포함 |
 | 범위 | `G.stage===0`, `_bossArena` 및 `_fieldRebuildQA` 제외 |
 | 지면 순서 | `_drawCh1Hill` 다음, 오브젝트·캐릭터·전투 효과 이전. `surfaceOnly=true` 잔물결은 맵 오브젝트 뒤/캐릭터 앞 |
 | 앵커 배율 | `m_c1tree:2.1`, `m_c1cocoon:1.1`, `m_c1pool:1.25`, `m_c1spod:.65`, `m_c1sroot:.75`, `pit_poison:1.2`, `m_rotten_tree:1` |
@@ -18,7 +18,7 @@
 | 맥동 | 각속도 `.00095 rad/ms`, 약6.614초/주기; 앵커 위상 `x*.017+y*.011`; 프레임16개 사이 선형 혼합 |
 | 접촉 그림자 | 중심(12,24), Y축 .42; 반경12→156, alpha `.48/.25/0`(stop `0/.48/1`) |
 | 힘줄 | 5갈래, 각도간격2.399rad, 길이 `100+42*sin(j*1.7)`, 지면 Y `.55`; 굴곡진폭8px(1차3.2에서 확대), 갈래 위상차.8rad |
-| 힘줄 명암 | 길이를24구간으로 분할, u=k/24, taper=`(1-u)^.8`. 그림자폭 `11*taper+.35`, 몸체폭 `(5.2+pulse*1.5)*taper+.2`, 상면폭 `1.25*taper+.1` 및 (-.8,-1.6)×taper 오프셋. X주름 `sin(u*31+j)*u*(1-u)*2`, 가지폭1.5. 끝으로 가늘어져 균일한 선 느낌을 줄임. 실제 크기는 s 배율 적용 |
+| 힘줄 명암 | 4차 연속 리본 면: 아래 공식 표 참조. 기존24분절 스트로크를32구간 표본의 연결 면으로 교체, 겹치는 선 끝의 어두운 마디 제거 |
 | 독액 | `m_c1pool`/`pit_poison` 주변 끊어진 잔물결3개; X반경14→59, Y반경5→17, alpha 최대.16. 맥동과 같은 주기 |
 | 고치·독낭 | `m_c1cocoon`/`m_c1spod`만 변형; `sin(now*.00105+x*.017+y*.011)`, 약5.984초; X±1.8%, Y∓1.2%, 기준점 `(x,y+32)` |
 | 나무 움직임 | `m_c1tree`, `m_rotten_tree`, `m_vine_pillar`, `m_ctree숫자` 대상. wave=`sin(now*.00072+x*.017+y*.011)+.3*sin(now*.00131+y*.019)`; 시체나무 회전wave×.009rad, 기타×.018rad |
@@ -30,7 +30,7 @@
 | 보존 | MAP_OBJS/geometry/collision/START/EXIT/진행/데미지/원본 청크 수정 없음. 자동 scatter 추가0 |
 | 폴백 | 스크립트 미로드 시 optional global 검사로 기존 맵을 계속 렌더. 신규 외부 이미지 다운로드 없음 |
 
-색상/곡선 제어점의 상세값은 동명의 소스에 대응하며 조직 몸체 RGBA `(69,39,43,.58)`, 독액 몸체 `(63,61,35,.55)`, 상면 `(139,112,100,.19)`, 가지 `(71,43,44,.3)`, 잔물결 RGB `(149,142,83)`이다. 전체 지면 피부 교체, 대형 외곽 높이 재설계, 구덩이 벽 수축은 이번 구현 범위 밖이다.
+색상/곡선 제어점의 상세값은 동명의 소스에 대응하며 조직 몸체 RGBA `(77,40,47,.68)`, 독액 몸체 `(63,61,35,.65)`, 상면 `(148,112,110,.22)`, 가지 `(71,43,44,.3)`, 잔물결 RGB `(149,142,83)`이다. 전체 지면 피부 교체, 대형 외곽 높이 재설계, 구덩이 벽 수축은 이번 구현 범위 밖이다.
 
 ### 2차 길 가장자리 고정 좌표
 
@@ -108,3 +108,26 @@ MAP PRODUCTION REPORT (3차): MASTER/OUTER MASS/LARGE/PLAYABLE 기존 보존. ME
 3차 브라우저 결과: 11카메라 촬영 완료, pageerror/console error/HTTP error 모두0. 고치/웅덩이 상세 스크린샷 직접 확인. 전체 카메라를 직접 플레이한 결과는 아니며 영상에는 카메라 강제 이동이 포함된다. 확인 페이지: <http://localhost:3333/captures/ch1_living_detail_pass3_20260925/index.html>.
 
 VISUAL VERDICT: RETOUCH — 국소 효과 보강, 전체 생체 재질과 대규모 전투 최종 검수 미완료.
+
+
+## 4차: 연속 동맥과 이동하는 압력 맥동
+
+| id | 값 / 공식 |
+|---|---|
+| 표본 | k=0..32, u=k/32, v=1-u, taper=v^.8. 기존 cubic 경로·굴곡8px·주기6.614초 유지 |
+| 압력 | pressure=(.5+.5*sin(phase-u*2π-j*.8))^6. 동맥 길이를 따라 이동하는 국소 팽창, 별도 발광 없음 |
+| 폭 | w=(5.2+pulse*1.5+pressure*4)*taper+.2. pulse=.5+.5*sin(phase-j*.8) |
+| 면 연결 | 이전/다음 표본 방향의 수직 단위벡터로 좌우 경계 생성, 끝에서 역순 연결 후 fill. 기존 atlas 최초 생성에만 적용 |
+| 그림자 | 반폭 w*.6+2.2, 오프셋(1.5,2.5), RGBA13,7,12,.32 |
+| 몸체 | 반폭 w*.5, 오프셋0, dry RGBA77,40,47,.68 / wet63,61,35,.65 |
+| 상면 | 반폭 w*.19, 오프셋(-.7,-1.3), RGBA148,112,110,.22 |
+| 보존 | atlas4종/16프레임/25MiB/기포5개/체액3개/길11곳, geometry·충돌·게임플레이 불변 |
+
+MAP PRODUCTION REPORT — 4차
+
+STAGE: CH1-1. MASTER: silhouette/8region/남북 동선/side spaces 보존. OUTER MASS: LEFT/RIGHT/TOP/SOUTH 및 기존 holes 불변. LARGE: 기존 source/composites/overlap/repeated silhouette 유지. MEDIUM: 기존11지면 연결과 앵커의 동맥 면 개선, holes 재설계 없음. GROUND: 연속 접촉 그림자·괴사색 몸체·이동하는 팽창으로 접지와 높이 보강. PLAYABLE: arena/travel/breathing/threat 공간 유지, 전투 가독성 최종 대규모 검수 미완료. LANDMARK: 시체나무/고치/독액/뿌리 위계 유지. CAMERA QA: START/EARLY/ARENA/SIDE L/SIDE R/LANDMARK/LATE/EXIT 및 상세3곳 촬영; START에도6초 정지 추가. TECH QA: 17검사 PASS, 기존 route/collision 및 원본 chunk seam 보존. 브라우저 로그는 captures/ch1_living_detail_pass4_20260925/after/runtime.json. FILES: 전용효과/QA/문서, 공유 game.html 캐시버전과 콘셉트 문서 해당 행만 변경. GIT: 이번 변경만 부분커밋, push/deploy 없음.
+
+VISUAL VERDICT: RETOUCH — 국소 동맥 표현 개선. 전체 지면 피부화/외곽 생체지옥 완성은 미완료.
+4차 브라우저 실측: 11카메라 촬영 완료, pageerror/console error/HTTP error 모두0. START 및 TREE_DETAIL 직접 이미지 검수: 분절 선 끝의 반복 마디 감소, 중앙 플레이어·전투 이펙트와 구분됨. 나뭇가지형 조직의 반복 배치와 전체 재질 차이는 잔여 RETOUCH. 대규모 전투 FPS를 보증하지 않는다. 확인 영상: <http://localhost:3333/captures/ch1_living_detail_pass4_20260925/index.html>.
+
+NEXT PASS: 실제 플레이 피드백에 맞춰 강도·주변 연결 개선.

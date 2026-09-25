@@ -35,17 +35,33 @@
       for(let j=0;j<5;j++){
         const a=seed+j*2.399,len=100+42*Math.sin(seed+j*1.7),ex=Math.cos(a)*len,ey=Math.sin(a)*len*.55+24;
         const bend=Math.sin(phase-j*.8)*8,pulse=.5+.5*Math.sin(phase-j*.8);
-        let px=0,py=8;
-        for(let k=1;k<=24;k++){
-          const u=k/24,v=1-u,taper=Math.pow(v,.8),wrinkle=Math.sin(u*31+j)*u*v*2;
+        const points=[];
+        for(let k=0;k<=32;k++){
+          const u=k/32,v=1-u,taper=Math.pow(v,.8),wrinkle=Math.sin(u*31+j)*u*v*2;
           const nx=3*v*v*u*(ex*.24-18)+3*v*u*u*(ex*.64+22)+u*u*u*ex+wrinkle;
           const ny=v*v*v*8+3*v*v*u*(ey*.1+bend)+3*v*u*u*(ey*.95-bend)+u*u*u*ey;
-          c.beginPath();c.moveTo(px,py);c.lineTo(nx,ny);
-          c.strokeStyle='rgba(13,7,12,.38)';c.lineWidth=11*taper+.35;c.stroke();
-          c.strokeStyle=wet?'rgba(63,61,35,.55)':'rgba(69,39,43,.58)';c.lineWidth=(5.2+pulse*1.5)*taper+.2;c.stroke();
-          c.beginPath();c.moveTo(px-.8*taper,py-1.6*taper);c.lineTo(nx-.8*taper,ny-1.6*taper);
-          c.strokeStyle='rgba(139,112,100,.19)';c.lineWidth=1.25*taper+.1;c.stroke();px=nx;py=ny;
+          // A localized pressure wave travels along the artery, rather than flashing it.
+          const pressure=Math.pow(.5+.5*Math.sin(phase-u*Math.PI*2-j*.8),6);
+          points.push({x:nx,y:ny,w:((5.2+pulse*1.5)+pressure*4)*taper+.2});
         }
+        // Single filled ribbons remove the dark joins from overlapping short strokes.
+        function ribbon(factor,extra,dx,dy,color){
+          c.beginPath();
+          for(let side=1;side>=-1;side-=2){
+            for(let n=0;n<points.length;n++){
+              const k=side===1?n:points.length-1-n,p=points[k];
+              const prev=points[Math.max(0,k-1)],next=points[Math.min(points.length-1,k+1)];
+              const vx=next.x-prev.x,vy=next.y-prev.y,len=Math.hypot(vx,vy)||1;
+              const radius=p.w*factor+extra;
+              const x=p.x-vy/len*radius*side+dx,y=p.y+vx/len*radius*side+dy;
+              if(side===1&&n===0)c.moveTo(x,y);else c.lineTo(x,y);
+            }
+          }
+          c.closePath();c.fillStyle=color;c.fill();
+        }
+        ribbon(.6,2.2,1.5,2.5,'rgba(13,7,12,.32)');
+        ribbon(.5,0,0,0,wet?'rgba(63,61,35,.65)':'rgba(77,40,47,.68)');
+        ribbon(.19,0,-.7,-1.3,'rgba(148,112,110,.22)');
         // A tapered smaller offshoot connects the tissue to the existing soil.
         c.beginPath();c.moveTo(ex*.58,ey*.6);c.quadraticCurveTo(ex*.74-14,ey*.56-12,ex*.85-23,ey*.7-23);
         c.strokeStyle='rgba(71,43,44,.3)';c.lineWidth=1.5;c.stroke();
