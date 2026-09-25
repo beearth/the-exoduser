@@ -14,7 +14,7 @@
       const size=kinds[o.type];if(!size)continue;
       const s=size*Math.min(1.6,o.scale||1),pad=250*s;
       if(Math.abs(o.x-g.cam.x)>hw+pad||Math.abs(o.y-g.cam.y)>hh+pad)continue;
-      const seed=o.x*.017+o.y*.011,t=now*.001,phase=t*.95+seed;
+      const seed=o.x*.017+o.y*.011+(o.variant||0)*1.7,t=now*.001,phase=t*.95+seed;
       const wet=o.type==='m_c1pool'||o.type==='pit_poison';
       c.save();c.translate(o.x,o.y);c.scale(s,s);
       // Broad soft contact shadow: independent of the moving raised tissue.
@@ -32,17 +32,19 @@
         c.fillStyle=stain;c.fillRect(-48,-48,96,96);c.restore();
       }
       // Uneven branching tendons, each pulse delayed along the length.
-      for(let j=0;j<5;j++){
+      for(let j=0;j<(wet?5:3+(o.variant||0));j++){
         const a=seed+j*2.399,len=100+42*Math.sin(seed+j*1.7),ex=Math.cos(a)*len,ey=Math.sin(a)*len*.55+24;
+        const sx=Math.sin(j*1.3+seed)*22,sy=8+Math.cos(j*1.9+seed)*12;
         const bend=Math.sin(phase-j*.8)*8,pulse=.5+.5*Math.sin(phase-j*.8);
         const points=[];
         for(let k=0;k<=32;k++){
           const u=k/32,v=1-u,taper=Math.pow(v,.8),wrinkle=Math.sin(u*31+j)*u*v*2;
-          const nx=3*v*v*u*(ex*.24-18)+3*v*u*u*(ex*.64+22)+u*u*u*ex+wrinkle;
-          const ny=v*v*v*8+3*v*v*u*(ey*.1+bend)+3*v*u*u*(ey*.95-bend)+u*u*u*ey;
+          const nx=v*v*v*sx+3*v*v*u*(ex*.24-18)+3*v*u*u*(ex*.64+22)+u*u*u*ex+wrinkle;
+          const ny=v*v*v*sy+3*v*v*u*(ey*.1+bend)+3*v*u*u*(ey*.95-bend)+u*u*u*ey;
           // A localized pressure wave travels along the artery, rather than flashing it.
           const pressure=Math.pow(.5+.5*Math.sin(phase-u*Math.PI*2-j*.8),6);
-          points.push({x:nx,y:ny,w:((5.2+pulse*1.5)+pressure*4)*taper+.2});
+          const emerge=Math.sin(Math.min(1,u/.14)*Math.PI/2);
+          points.push({x:nx,y:ny,w:(((5.2+pulse*1.5)+pressure*4)*taper+.2)*emerge});
         }
         // Single filled ribbons remove the dark joins from overlapping short strokes.
         function ribbon(factor,extra,dx,dy,color){
@@ -109,13 +111,22 @@
     c.restore();
   }
   const atlases=[];
-  function atlas(wet,surfaceOnly=false){
-    const id=surfaceOnly?(wet?2:3):wet?1:0;if(atlases[id])return atlases[id];
+  function atlas(wet,surfaceOnly=false,variant=0){
+    const id=surfaceOnly?(wet?2:3):wet?1:variant?3+variant:0;if(atlases[id])return atlases[id];
     const a=root.document.createElement('canvas');a.width=1280;a.height=1280;
     const c=a.getContext('2d'),type=wet?'m_c1pool':'m_rotten_tree';
     for(let f=0;f<16;f++){
       c.save();c.translate((f%4)*320+160,Math.floor(f/4)*320+160);
-      paint(c,{stage:0,cam:{x:0,y:0}},[{type,x:0,y:0,scale:1/kinds[type]}],f/16*Math.PI*2/.00095,320,320,surfaceOnly);c.restore();
+      c.beginPath();c.rect(-160,-160,320,320);c.clip();
+      paint(c,{stage:0,cam:{x:0,y:0}},[{type,x:0,y:0,variant,scale:1/kinds[type]}],f/16*Math.PI*2/.00095,320,320,surfaceOnly);
+      if(!surfaceOnly){
+        // Feather each cell independently so distant vein tips sink into the soil.
+        c.globalCompositeOperation='destination-in';
+        const fade=c.createRadialGradient(0,12,82,0,12,155);
+        fade.addColorStop(0,'rgba(0,0,0,1)');fade.addColorStop(1,'rgba(0,0,0,0)');
+        c.fillStyle=fade;c.fillRect(-160,-160,320,320);
+      }
+      c.restore();
     }
     atlases[id]=a;return a;
   }
@@ -132,7 +143,8 @@
       const s=k*Math.min(1.6,o.scale||1),pad=160*s;
       const y=o.y+((surfaceOnly&&wet)?0:(feet[o.type]||0)*(o.scale||1));
       if(Math.abs(o.x-g.cam.x)>hw+pad||Math.abs(y-g.cam.y)>hh+pad)continue;
-      const a=atlas(wet,surfaceOnly);
+      const variant=wet||surfaceOnly?0:Math.abs(Math.floor(o.x/40)*7+Math.floor(o.y/40)*11)%3;
+      const a=atlas(wet,surfaceOnly,variant);
       const phase=((now*.00095+o.x*.017+o.y*.011)/(Math.PI*2)%1+1)%1*16;
       const f=Math.floor(phase),next=(f+1)%16,mix=phase-f;
       c.save();c.translate(o.x,y);if(o.angle)c.rotate(o.angle);

@@ -6,18 +6,18 @@
 
 | id / 적용 위치 | 값 / 동작 |
 |---|---|
-| 구현 | `ch1-living-detail.js?v=20260925-4`, 전역 `Ch1LivingDetail.draw/deform/shadows`; `build-nwjs.mjs` 배포 FILES에도 포함 |
+| 구현 | `ch1-living-detail.js?v=20260925-5`, 전역 `Ch1LivingDetail.draw/deform/shadows`; `build-nwjs.mjs` 배포 FILES에도 포함 |
 | 범위 | `G.stage===0`, `_bossArena` 및 `_fieldRebuildQA` 제외 |
 | 지면 순서 | `_drawCh1Hill` 다음, 오브젝트·캐릭터·전투 효과 이전. `surfaceOnly=true` 잔물결은 맵 오브젝트 뒤/캐릭터 앞 |
 | 앵커 배율 | `m_c1tree:2.1`, `m_c1cocoon:1.1`, `m_c1pool:1.25`, `m_c1spod:.65`, `m_c1sroot:.75`, `pit_poison:1.2`, `m_rotten_tree:1` |
 | 실제 배율 s | 앵커 배율 × `min(1.6, mo.scale || 1)` |
 | 시야 제외 | 카메라 반폭/반높이 + `160*s`; zoom=`max(.3, _edZoom || _camZoom || 1)` |
-| 렌더 자원 | 런타임 생성 투명 canvas atlas 4종(조직/독액 주변/수면/체액), 각각 1280², 4×4칸, 셀320², 16프레임. 최대 RGBA 25MiB, 최초 사용 후 재사용 |
+| 렌더 자원 | 런타임 생성 투명 canvas atlas 6종(조직3형태/독액 주변/수면/체액), 각각 1280², 4×4칸, 셀320², 16프레임. 최대 RGBA 37.5MiB, 최초 사용 후 재사용 |
 | 접지 Y 오프셋 | `m_c1tree:230`, `m_c1cocoon:100`, `m_c1spod:40`, `m_rotten_tree:50` px × `(mo.scale || 1)`; 기타0. 수면은 오프셋0 |
 | 합성 | source-over 기본, 인접 두 프레임 alpha `1-mix`/`mix`. GPU에는 `drawImage`만 전달, 곡선/gradient는 native Canvas2D에서 최초 베이크 |
 | 맥동 | 각속도 `.00095 rad/ms`, 약6.614초/주기; 앵커 위상 `x*.017+y*.011`; 프레임16개 사이 선형 혼합 |
 | 접촉 그림자 | 중심(12,24), Y축 .42; 반경12→156, alpha `.48/.25/0`(stop `0/.48/1`) |
-| 힘줄 | 5갈래, 각도간격2.399rad, 길이 `100+42*sin(j*1.7)`, 지면 Y `.55`; 굴곡진폭8px(1차3.2에서 확대), 갈래 위상차.8rad |
+| 힘줄 | dry3/4/5갈래, wet5갈래; seed=variant*1.7, 각도간격2.399rad, 길이 `100+42*sin(seed+j*1.7)`, 지면 Y `.55`; 굴곡진폭8px(1차3.2에서 확대), 갈래 위상차.8rad |
 | 힘줄 명암 | 4차 연속 리본 면: 아래 공식 표 참조. 기존24분절 스트로크를32구간 표본의 연결 면으로 교체, 겹치는 선 끝의 어두운 마디 제거 |
 | 독액 | `m_c1pool`/`pit_poison` 주변 끊어진 잔물결3개; X반경14→59, Y반경5→17, alpha 최대.16. 맥동과 같은 주기 |
 | 고치·독낭 | `m_c1cocoon`/`m_c1spod`만 변형; `sin(now*.00105+x*.017+y*.011)`, 약5.984초; X±1.8%, Y∓1.2%, 기준점 `(x,y+32)` |
@@ -131,3 +131,25 @@ VISUAL VERDICT: RETOUCH — 국소 동맥 표현 개선. 전체 지면 피부화
 4차 브라우저 실측: 11카메라 촬영 완료, pageerror/console error/HTTP error 모두0. START 및 TREE_DETAIL 직접 이미지 검수: 분절 선 끝의 반복 마디 감소, 중앙 플레이어·전투 이펙트와 구분됨. 나뭇가지형 조직의 반복 배치와 전체 재질 차이는 잔여 RETOUCH. 대규모 전투 FPS를 보증하지 않는다. 확인 영상: <http://localhost:3333/captures/ch1_living_detail_pass4_20260925/index.html>.
 
 NEXT PASS: 실제 플레이 피드백에 맞춰 강도·주변 연결 개선.
+
+
+## 5차: 반복 완화와 바닥 접합
+
+| id | 적용 / 수치 |
+|---|---|
+| 형태 선택 | dry만 variant=abs(floor(x/40)*7+floor(y/40)*11)%3. wet/surface는0. 동일 좌표 항상 동일 형태, 무작위 프레임 변화 없음 |
+| 갈래 | dry3+variant, wet5. seed=variant*1.7; 각도seed+j*2.399, 길이100+42*sin(seed+j*1.7). 실제 시간 위상은 기존 x*.017+y*.011과 atlas 위상 유지 |
+| 시작점 | sx=sin(j*1.3+seed)*22, sy=8+cos(j*1.9+seed)*12; cubic 시작 항 v³*sx/v³*sy. 중앙 한 점 집중을 분산 |
+| 지면 출현 | 기존 폭w에 emerge=sin(min(1,u/.14)*π/2)를 곱해 시작14%를0→전체 폭으로 연결. 잘린 관 단면처럼 보이는 시작점 보정 |
+| 끝 접합 | ground atlas만 destination-in radial 중심(0,12), 반경82에서alpha1→155에서0. 셀(-160,-160,320,320) clip 후 적용해 인접 프레임 침범 방지 |
+| 자원 | dry3 + wet ground1 + surface2 = 최대6장,1280²각각, RGBA37.5MiB. 이전4장25MiB 대비12.5MiB 증가. visible 앵커가 필요로 하는 형태만 최초 생성, 재사용 |
+| 불변 | .00095rad/ms 맥동/16frame/충돌/동선/오브젝트 좌표/11지면 패치 보존. 전체 맵 피부 재질 교체 아님 |
+
+MAP PRODUCTION REPORT — 5차
+
+STAGE CH1-1. MASTER silhouette/region/남북 route/side spaces 기존 유지. OUTER MASS LEFT/RIGHT/TOP/SOUTH와 major holes 불변. LARGE source/composites/overlap 유지, 신규 대형 반복 없음. MEDIUM 기존 앵커의 형태를3종으로 분화, remaining holes 범위 밖. GROUND shadow/contamination 유지, 동맥 시작점 분산과 끝 감쇠로 structure integration 보강. PLAYABLE arenas/travel/breathing/threat 공간 보존, 대규모 전투 가독성 최종 미검수. LANDMARK primary시체나무/secondary고치·독액/tertiary뿌리 유지. CAMERA QA START/EARLY/ARENA/SIDE L/SIDE R/LANDMARK/LATE/EXIT+상세3곳. TECH QA17검사 PASS, route/collision 보존, 기존 chunk seam 불변; pageerror/404/loading은 captures/ch1_living_detail_pass5_20260925/after/runtime.json. 메모리 비용 위 표 참고, GPU FPS 보증 아님. FILES 전용효과/QA/docs, 공유 game 캐시버전·콘셉트 행만 수정, unrelated 변경 없음. GIT 전용 부분커밋, push/deploy 없음.
+
+VISUAL VERDICT: RETOUCH — 국소 반복 감소, 전체 재질·외곽 완성 및 대규모 전투 검수 미완료.
+5차 최종 재촬영: 11카메라 완료, pageerror/console error/HTTP error 모두0. START_motion 및 ARENA 직접 이미지 확인. 초기 촬영에서 잘린 관 시작점 확인 후 emerge 보정하고 재촬영함. 입구의 일부 형태 반복과 주변 흙 대비 조직 재질 차이는 잔여 RETOUCH. 확인 페이지 <http://localhost:3333/captures/ch1_living_detail_pass5_20260925/index.html>.
+
+NEXT PASS: 화면 피드백에 따른 국소 연결 보강.
