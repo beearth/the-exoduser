@@ -7,7 +7,7 @@ from PIL import Image
 from pathlib import Path
 from playwright.sync_api import sync_playwright
 
-out = Path('captures/ch1_living_detail_pass9_20260926') / ('before' if '--before' in sys.argv else 'after')
+out = Path('captures/ch1_living_detail_pass10_20260926') / ('before' if '--before' in sys.argv else 'after')
 out.mkdir(parents=True, exist_ok=True)
 errors, failed, boards = [], [], []
 with sync_playwright() as p:
@@ -15,7 +15,7 @@ with sync_playwright() as p:
     context = browser.new_context(viewport={'width':1280,'height':720},record_video_dir=str(out),record_video_size={'width':1280,'height':720})
     page = context.new_page()
     if '--before' in sys.argv:
-        page.route('**/ch1-living-detail.js*',lambda route:route.fulfill(path='tmp/ch1-living-detail-pass8.js',content_type='text/javascript'))
+        page.route('**/ch1-living-detail.js*',lambda route:route.fulfill(path='tmp/ch1-living-detail-pass9.js',content_type='text/javascript'))
     page.on('pageerror', lambda e: errors.append(str(e)))
     page.on('console', lambda m: errors.append(m.text) if m.type=='error' else None)
     page.on('response', lambda r: failed.append(r.url) if r.status >= 400 else None)

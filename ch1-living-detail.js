@@ -69,16 +69,17 @@
       // Uneven branching tendons, each pulse delayed along the length.
       for(let j=0;j<(wet?5:3+(o.variant||0));j++){
         const a=seed+j*2.399,len=100+42*Math.sin(seed+j*1.7),ex=Math.cos(a)*len,ey=Math.sin(a)*len*.55+24;
-        const sx=Math.sin(j*1.3+seed)*22,sy=8+Math.cos(j*1.9+seed)*12;
-        const bend=Math.sin(phase-j*.8)*22,pulse=.5+.5*Math.sin(phase-j*.8);
+        // Every branch grows from one fixed attachment, not separate free-moving worms.
+        const sx=0,sy=14;
+        const bend=Math.sin(phase-j*.8)*7,pulse=.5+.5*Math.sin(phase-j*.8);
         const points=[];
         for(let k=0;k<=32;k++){
           const u=k/32,v=1-u,taper=Math.pow(v,.8),wrinkle=Math.sin(u*31+j)*u*v*2;
           const nx=v*v*v*sx+3*v*v*u*(ex*.24-18)+3*v*u*u*(ex*.64+22)+u*u*u*ex+wrinkle;
-          const ny=v*v*v*sy+3*v*v*u*(ey*.1+bend)+3*v*u*u*(ey*.95-bend)+u*u*u*ey;
+          const ny=v*v*v*sy+3*v*v*u*(ey*.1)+3*v*u*u*(ey*.95)+u*u*u*ey+bend*Math.pow(Math.sin(u*Math.PI),2);
           // A localized pressure wave travels along the artery, rather than flashing it.
           const pressure=Math.pow(.5+.5*Math.sin(phase-u*Math.PI*2-j*.8),6);
-          const emerge=Math.sin(Math.min(1,u/.14)*Math.PI/2);
+          const emerge=.7+.3*Math.sin(Math.min(1,u/.14)*Math.PI/2);
           points.push({x:nx,y:ny-pressure*7*Math.sin(u*Math.PI),w:(((5.2+pulse*1.5)+pressure*9)*taper+.2)*emerge});
         }
         // Single filled ribbons remove the dark joins from overlapping short strokes.
@@ -100,9 +101,17 @@
         ribbon(.5,0,0,0,wet?'rgba(63,61,35,.65)':'rgba(87,44,52,.78)');
         ribbon(.19,0,-.7,-1.3,'rgba(158,119,114,.3)');
         // A tapered smaller offshoot connects the tissue to the existing soil.
-        c.beginPath();c.moveTo(ex*.58,ey*.6);c.quadraticCurveTo(ex*.74-14,ey*.56-12,ex*.85-23,ey*.7-23);
+        const joint=points[19];
+        c.beginPath();c.moveTo(joint.x,joint.y);c.quadraticCurveTo(ex*.74-14,ey*.56-12,ex*.85-23,ey*.7-23);
         c.strokeStyle='rgba(71,43,44,.3)';c.lineWidth=1.5;c.stroke();
       }
+      // A stationary broad tissue seam covers the joins and anchors them into the skin.
+      c.save();c.translate(0,14);c.scale(1,.42);
+      const attachment=c.createRadialGradient(0,0,2,0,0,23);
+      attachment.addColorStop(0,wet?'rgba(64,60,37,.95)':'rgba(83,47,53,.95)');
+      attachment.addColorStop(.55,wet?'rgba(66,59,40,.75)':'rgba(81,50,57,.75)');
+      attachment.addColorStop(1,'rgba(63,40,46,0)');
+      c.fillStyle=attachment;c.fillRect(-23,-23,46,46);c.restore();
       }
       if(wet&&surfaceOnly){
         // Thin rising pockets of damp vapor; opacity vanishes at both loop ends.

@@ -6,7 +6,7 @@
 
 | id / 적용 위치 | 값 / 동작 |
 |---|---|
-| 구현 | `ch1-living-detail.js?v=20260926-9`, 전역 `Ch1LivingDetail.draw/deform/shadows/hideDuplicate/pit`; `build-nwjs.mjs` 배포 FILES에도 포함 |
+| 구현 | `ch1-living-detail.js?v=20260926-10`, 전역 `Ch1LivingDetail.draw/deform/shadows/hideDuplicate/pit`; `build-nwjs.mjs` 배포 FILES에도 포함 |
 | 범위 | `G.stage===0`, `_bossArena` 및 `_fieldRebuildQA` 제외 |
 | 지면 순서 | `_drawCh1Hill` 다음, 오브젝트·캐릭터·전투 효과 이전. `surfaceOnly=true` 잔물결은 맵 오브젝트 뒤/캐릭터 앞 |
 | 앵커 배율 | `m_c1tree:2.1`, `m_c1cocoon:1.1`, `m_c1pool:1.25`, `m_c1spod:.65`, `m_c1sroot:.75`, `pit_poison:1.2`, `m_rotten_tree:1` |
@@ -17,7 +17,7 @@
 | 합성 | source-over 기본, 인접 두 프레임 alpha `1-mix`/`mix`. GPU에는 `drawImage`만 전달, 곡선/gradient는 native Canvas2D에서 최초 베이크 |
 | 맥동 | 각속도 `.00095 rad/ms`, 약6.614초/주기; 앵커 위상 `x*.017+y*.011`; 프레임16개 사이 선형 혼합 |
 | 접촉 그림자 | 중심(12,24), Y축 .42; 반경12→156, alpha `.48/.25/0`(stop `0/.48/1`) |
-| 힘줄 | dry3/4/5갈래, wet5갈래; seed=variant*1.7, 각도간격2.399rad, 길이 `100+42*sin(seed+j*1.7)`, 지면 Y `.55`; 굴곡 제어점진폭22px(6차, 실제 경로 변위와 다름), 갈래 위상차.8rad |
+| 힘줄 | dry3/4/5갈래, wet5갈래; seed=variant*1.7, 각도간격2.399rad, 길이 `100+42*sin(seed+j*1.7)`, 지면 Y `.55`; 고정 시작부(0,14), 중간 굽힘7*sin(phase-j*.8)*sin(πu)^2 px(10차), 끝점 고정, 갈래 위상차.8rad |
 | 힘줄 명암 | 4차 연속 리본 면: 아래 공식 표 참조. 기존24분절 스트로크를32구간 표본의 연결 면으로 교체, 겹치는 선 끝의 어두운 마디 제거 |
 | 독액 | `m_c1pool`/`pit_poison` 주변 끊어진 잔물결3개; X반경14→59, Y반경5→17, alpha 최대.16. 맥동과 같은 주기 |
 | 고치·독낭 | `m_c1cocoon`/`m_c1spod`만 변형; `sin(now*.00105+x*.017+y*.011)`, 약5.984초; X±1.8%, Y∓1.2%, 기준점 `(x,y+32)` |
@@ -30,7 +30,7 @@
 | 보존 | MAP_OBJS/geometry/collision/START/EXIT/진행/데미지/원본 청크 수정 없음. 자동 scatter 추가0 |
 | 폴백 | 스크립트 미로드 시 optional global 검사로 기존 맵을 계속 렌더. 신규 외부 이미지 다운로드 없음 |
 
-색상/곡선 제어점의 상세값은 동명의 소스에 대응하며 조직 몸체 RGBA `(87,44,52,.78)`, 독액 몸체 `(63,61,35,.65)`, 상면 `(158,119,114,.3)`, 가지 `(71,43,44,.3)`, 잔물결 RGB `(149,142,83)`이다. 전체 지면 피부 교체, 대형 외곽 높이 재설계, 구덩이 벽 수축은 이번 구현 범위 밖이다.
+색상/곡선 제어점의 상세값은 동명의 소스에 대응하며 조직 몸체 RGBA `(87,44,52,.78)`, 독액 몸체 `(63,61,35,.65)`, 상면 `(158,119,114,.3)`, 가지 `(71,43,44,.3)`, 잔물결 RGB `(149,142,83)`이다. 전체 지면 피부 교체와 대형 외곽 높이 재설계는 범위 밖이다. 동측 작은 구덩이 깊이/국소 수축은 9차에 적용, 기존 대형 원화의 벽 분리 변형은 미구현이다.
 
 ### 2차 길 가장자리 고정 좌표
 
@@ -262,3 +262,25 @@ VISUAL VERDICT: RETOUCH — 국소 구덩이 깊이 보강. 전체 지면/대형
 9차 최종 QA: 최초 화면의 매끈한 그릇형 테두리를 확인하여 외측 명암/앞턱 폭을 낮추고 벽 미세 재질을 추가한 뒤 재촬영. POOL_DETAIL과 전체 camera-board 직접 확인. before/after 각13곳+COMBAT,오류/HTTP오류0,mapUnchanged=true. 재촬영90RAF median16.7ms,p95 49.9ms(1280×720 headless녹화중);성능등급 확정 아님. 실제 WASD/LMB/Q 입력,체력50ms보충 조건. 사망 UI 직접 호출buttonPresent/shown=true,error=null. 21검사 PASS. 뒤쪽 포토 재질과 절차식 구덩이의 스타일 차이가 남아 RETOUCH 유지.
 
 확인 페이지: <http://localhost:3333/captures/ch1_living_detail_pass9_20260926/index.html>. 변경 전은 현재게임에8차효과를 라우팅한 비교다. 기존 원본 pit_poison.png와 대형 웅덩이 에셋 보존.
+
+## 10차: 분리되어 보이는 촉수의 유착 고정 (2026-09-26)
+
+사용자 지적: “촉수들은 붙어있어야할텐데 왜 나눠졌다가 흩어졌다가 그러지 지렁이 3마리같이”. 5차의 분산 시작점과 서로 다른 굽힘,동맥 경로와 독립 좌표로 그린 작은 가지 때문에 붙어 있는 조직보다 독립 생물처럼 읽혔다. 해당 표현은 승인된 완성형이 아니며 아래 계약으로 대체한다. 5/6차 수치는 당시 이력이다.
+
+| 대상 | 현재 계약 |
+|---|---|
+| 시작부 | 모든 갈래 sx=0,sy=14(local),시간/갈래에 따른 위치 분산 제거. 앵커 월드좌표·고정angle 유지 |
+| 굽힘 | bend=sin(phase-j*.8)*7. ny=v³*sy+3*v²*u*(ey*.1)+3*v*u²*(ey*.95)+u³*ey+bend*sin(πu)². 양끝 굽힘0,중간만 움직임. 이전 cubic 제어점±22 변형 폐기 |
+| 시작 두께 | emerge=.7+.3*sin(min(1,u/.14)*π/2). 기존0 시작 대신 .7로 연결 폭 유지. 압력파/리본 명암/끝 감쇠는 기존 유지 |
+| 작은 가지 | 시작점을 ex*.58,ey*.6에서 실제 동맥 표본points[19]의 x/y로 변경. parent 변형을 그대로 따라 분리 틈 방지. 제어/끝 좌표는 기존 유지 |
+| 고정 유착부 | 모든 갈래 렌더 후 translate(0,14),scale(1,.42),radial반경2→23. stop0 dryRGBA83,47,53,.95 / wet64,60,37,.95; .55 dry81,50,57,.75 / wet66,59,40,.75; 1 RGBA63,40,46,0. 영역(-23,-23,46,46). 고정 피부 이음새로 시작부 연결 |
+| 유지 | 길11곳·기존tree/cocoon/pool등 앵커·16프레임·주기6.614초·pressure9·들림7px·기포/증기/나무/구덩이 유지. 시작/끝 좌표는 고정,중간 형태·굵기만 변화. geometry/collision/배치/게임플레이 무변경 |
+| 자원 | 기존 native atlas내에 합성,추가 atlas/메모리 없음. 런타임drawImage 및 culling 계약 유지 |
+
+MAP PRODUCTION REPORT — 10차
+
+STAGE CH1-1. MASTER silhouette/regions/남북main route/side spaces유지. OUTER MASS LEFT/RIGHT/TOP/SOUTH/holes유지. LARGE source/composites/overlap/repeated silhouette유지. MEDIUM 촉수 갈래 연결 수정,대형 접합 잔여. GROUND 그림자/오염 유지,고정 피부 유착부 추가. PLAYABLE arenas/travel/breathing/threat 공간 유지,독립 생물처럼 보이는 바닥 움직임 완화. LANDMARK primary/secondary/tertiary보존. CAMERA QA START/EARLY/ARENA/SIDE L/SIDE R/LANDMARK/LATE/EXIT+상세5곳,동맥 확대GIF. TECH QA 기존21검사,geometry/collision/chunk seam보존,브라우저 결과 아래 기록. FILES stage-owned효과/QA/본 문서,concurrent touched game캐시·맵디테일2행,unrelated없음. GIT 코드+docs전용부분커밋,push/deploy없음.
+
+VISUAL VERDICT: RETOUCH — 사용자 지적한 분리된 촉수 표현 수정. 전체 맵 재질 통합은 남아 있음. NEXT PASS: 고정 유착부와 주변 원화의 재질 접합 검토.
+
+10차 검수: TISSUE_DETAIL 원배율 화면에서 갈래의 공통 유착부 확인.13카메라+COMBAT 촬영,실제 입력WASD/LMB/Q,체력50ms보충 조건. 오류/HTTP오류0,21검사PASS. 동맥24프레임GIF와 전후 캡처: <http://localhost:3333/captures/ch1_living_detail_pass10_20260926/index.html>. 비교의 이전 화면은9차 당시캡처이며 현재 전체코드 동일시점 A/B는 아니다. 런타임 원본은 after/runtime.json에 보존.
