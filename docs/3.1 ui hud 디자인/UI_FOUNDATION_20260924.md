@@ -6,7 +6,7 @@
 
 최종 표면·버튼 상태·슬롯 음영은 UI_COMPOSITION_20260925.md의 디테일 마감 절을 따른다. 기존 기본표에서 동일 항목의 색·그림자는 해당 절이 우선한다.
 
-2026-09-24 전체화면 Hell Gothic 구성은 2026-09-25 재구성으로 대체됐다. 사용자 제공 Diablo IV/POE2 화면의 구획·정렬·재질 규칙을 반영했다. ui-foundation.css 뒤에 ui-refinement.css?v=20260925-11을 로드하고 게임 두 HTML은 ui-panels.js?v=20260925-1을 defer 로드한다. 전체 세부 수치·컨트롤 목록·에셋 생성 기록의 SSOT: docs/3.1 ui hud 디자인/UI_COMPOSITION_20260925.md.
+2026-09-24 전체화면 Hell Gothic 구성은 2026-09-25 재구성으로 대체됐다. 사용자 제공 Diablo IV/POE2 화면의 구획·정렬·재질 규칙을 반영했다. ui-foundation.css 뒤에 ui-refinement.css?v=20260925-12을 로드하고 게임 두 HTML은 ui-panels.js?v=20260925-1을 defer 로드한다. 전체 세부 수치·컨트롤 목록·에셋 생성 기록의 SSOT: docs/3.1 ui hud 디자인/UI_COMPOSITION_20260925.md.
 
 | 대상 | 현재 계약 |
 |---|---|
@@ -43,7 +43,7 @@
 | img/ui/hell_gothic/crest.png | 2172×724 RGBA, 1,283,642 bytes, 단일 장식/프레임 셀 없음 | 시안의 상단 악마 문장. 정면 대칭 흑철 해골·긴 뿔·박쥐 날개·붉은 눈, 3:1 실루엣, 투명 배경, 텍스트/패널/배경 없음 |
 | img/ui/hell_gothic/frame.png | 1254×1254 RGBA, 821,639 bytes, 단일 9-slice 프레임/애니메이션 없음 | 시안의 흑철 이중 레일·뼈 형태 고딕 조각·핏빛 법랑·불씨. 네 모서리 악마 장식, 신축 가능한 직선 중앙 레일, 완전 투명 중앙, 텍스트/중앙 문장 없음 |
 
-CSS 이미지 실패 시 solid 배경/테두리/DOM 글자·버튼이 남는다. 알파 합성은 normal이고 screen·검정색 키잉을 사용하지 않는다. 에셋 경로는 img/ 아래이며 NW.js 기존 img 폴더 전체 복사에 포함된다. 이전 iron_covenant_20260924 에셋은 제작 이력이며 현행 CSS에서 참조하지 않는다.
+CSS 이미지 실패 시 solid 배경/테두리/DOM 글자·버튼이 남는다. 알파 합성은 normal이고 screen·검정색 키잉을 사용하지 않는다. 에셋 경로는 img/ 아래이며 NW.js 기존 img 폴더 전체 복사에 포함된다. iron_covenant_20260924의 button.webp와 frame.webp는 인벤토리 금속판·내부 레일에 재사용한다. divider.webp는 사용하지 않는다.
 
 ## 검수 기록
 
