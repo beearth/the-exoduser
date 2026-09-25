@@ -6,7 +6,7 @@
 
 | id / 적용 위치 | 값 / 동작 |
 |---|---|
-| 구현 | `ch1-living-detail.js?v=20260925-5`, 전역 `Ch1LivingDetail.draw/deform/shadows`; `build-nwjs.mjs` 배포 FILES에도 포함 |
+| 구현 | `ch1-living-detail.js?v=20260925-6`, 전역 `Ch1LivingDetail.draw/deform/shadows`; `build-nwjs.mjs` 배포 FILES에도 포함 |
 | 범위 | `G.stage===0`, `_bossArena` 및 `_fieldRebuildQA` 제외 |
 | 지면 순서 | `_drawCh1Hill` 다음, 오브젝트·캐릭터·전투 효과 이전. `surfaceOnly=true` 잔물결은 맵 오브젝트 뒤/캐릭터 앞 |
 | 앵커 배율 | `m_c1tree:2.1`, `m_c1cocoon:1.1`, `m_c1pool:1.25`, `m_c1spod:.65`, `m_c1sroot:.75`, `pit_poison:1.2`, `m_rotten_tree:1` |
@@ -17,7 +17,7 @@
 | 합성 | source-over 기본, 인접 두 프레임 alpha `1-mix`/`mix`. GPU에는 `drawImage`만 전달, 곡선/gradient는 native Canvas2D에서 최초 베이크 |
 | 맥동 | 각속도 `.00095 rad/ms`, 약6.614초/주기; 앵커 위상 `x*.017+y*.011`; 프레임16개 사이 선형 혼합 |
 | 접촉 그림자 | 중심(12,24), Y축 .42; 반경12→156, alpha `.48/.25/0`(stop `0/.48/1`) |
-| 힘줄 | dry3/4/5갈래, wet5갈래; seed=variant*1.7, 각도간격2.399rad, 길이 `100+42*sin(seed+j*1.7)`, 지면 Y `.55`; 굴곡진폭8px(1차3.2에서 확대), 갈래 위상차.8rad |
+| 힘줄 | dry3/4/5갈래, wet5갈래; seed=variant*1.7, 각도간격2.399rad, 길이 `100+42*sin(seed+j*1.7)`, 지면 Y `.55`; 굴곡 제어점진폭22px(6차, 실제 경로 변위와 다름), 갈래 위상차.8rad |
 | 힘줄 명암 | 4차 연속 리본 면: 아래 공식 표 참조. 기존24분절 스트로크를32구간 표본의 연결 면으로 교체, 겹치는 선 끝의 어두운 마디 제거 |
 | 독액 | `m_c1pool`/`pit_poison` 주변 끊어진 잔물결3개; X반경14→59, Y반경5→17, alpha 최대.16. 맥동과 같은 주기 |
 | 고치·독낭 | `m_c1cocoon`/`m_c1spod`만 변형; `sin(now*.00105+x*.017+y*.011)`, 약5.984초; X±1.8%, Y∓1.2%, 기준점 `(x,y+32)` |
@@ -30,7 +30,7 @@
 | 보존 | MAP_OBJS/geometry/collision/START/EXIT/진행/데미지/원본 청크 수정 없음. 자동 scatter 추가0 |
 | 폴백 | 스크립트 미로드 시 optional global 검사로 기존 맵을 계속 렌더. 신규 외부 이미지 다운로드 없음 |
 
-색상/곡선 제어점의 상세값은 동명의 소스에 대응하며 조직 몸체 RGBA `(77,40,47,.68)`, 독액 몸체 `(63,61,35,.65)`, 상면 `(148,112,110,.22)`, 가지 `(71,43,44,.3)`, 잔물결 RGB `(149,142,83)`이다. 전체 지면 피부 교체, 대형 외곽 높이 재설계, 구덩이 벽 수축은 이번 구현 범위 밖이다.
+색상/곡선 제어점의 상세값은 동명의 소스에 대응하며 조직 몸체 RGBA `(87,44,52,.78)`, 독액 몸체 `(63,61,35,.65)`, 상면 `(158,119,114,.3)`, 가지 `(71,43,44,.3)`, 잔물결 RGB `(149,142,83)`이다. 전체 지면 피부 교체, 대형 외곽 높이 재설계, 구덩이 벽 수축은 이번 구현 범위 밖이다.
 
 ### 2차 길 가장자리 고정 좌표
 
@@ -153,3 +153,26 @@ VISUAL VERDICT: RETOUCH — 국소 반복 감소, 전체 재질·외곽 완성 �
 5차 최종 재촬영: 11카메라 완료, pageerror/console error/HTTP error 모두0. START_motion 및 ARENA 직접 이미지 확인. 초기 촬영에서 잘린 관 시작점 확인 후 emerge 보정하고 재촬영함. 입구의 일부 형태 반복과 주변 흙 대비 조직 재질 차이는 잔여 RETOUCH. 확인 페이지 <http://localhost:3333/captures/ch1_living_detail_pass5_20260925/index.html>.
 
 NEXT PASS: 화면 피드백에 따른 국소 연결 보강.
+
+
+## 6차: 사용자 “잘 안 보이지만” 대응
+
+이전4/5차 표는 해당 시점 이력. 현재 동맥 폭·변위·색은 아래 값이 우선한다.
+
+| id | 변경 / 현재 값 |
+|---|---|
+| 굽힘 | bend=sin(phase-j*.8)*22, 이전8 대비2.75배. cubic 제어점 변위이며 전체 픽셀 이동량22px를 보장하는 뜻 아님 |
+| 압력 폭 | w=((5.2+pulse*1.5+pressure*9)*taper+.2)*emerge. 압력 계수4→9 |
+| 들림 | 표본Y=기존ny-pressure*7*sin(u*π). 양끝은 고정, 내부 국소 들림 |
+| 색 | dry body RGBA87,44,52,.78; wet body63,61,35,.65 유지; 상면158,119,114,.3. additive 발광/점멸 없음 |
+| 보존 | 주기6.614초, 16frame, atlas6장37.5MiB,3형태/11앵커/지형/충돌/진행 유지 |
+| 확인 | 게임 카메라 TISSUE_DETAIL 타일91,184 추가. 실제 화면 영역(400,80,480,360)을24회 캡처해 반복 GIF, 각 캡처 사이250ms 대기. GIF 실제 측정 간격 사용, 인위적 가속 없음 |
+
+MAP PRODUCTION REPORT — 6차
+
+STAGE CH1-1. MASTER silhouette/regions/main route/side spaces 보존. OUTER MASS LEFT/RIGHT/TOP/SOUTH·holes 보존. LARGE source/composites/overlap/repeat 보존. MEDIUM 기존 앵커의 가시성 조정, 신규 holes 처리 없음. GROUND 그림자/오염 유지, 동맥 굽힘·압력 폭·들림과 상면 대비 강화. PLAYABLE arena/travel/breathing/threat 공간 불변, 화면 전체 흔들림 없음, 대규모 전투 최종 QA 미완료. LANDMARK primary시체나무/secondary고치·독액/tertiary뿌리 기존. CAMERA QA 기본8곳+기존상세3곳+동맥상세1곳. TECH QA 기존17검사 및 브라우저 pageerror/404 기록, route/collision/chunk seam 불변, GPU 성능 보증 아님. FILES 전용효과/QA/docs 및 공유game 캐시·맵디테일 행, unrelated 변경 없음. GIT 전용 부분커밋, push/deploy 없음.
+
+VISUAL VERDICT: RETOUCH — 움직임 가시성 보강 단계, 전체 재질/외곽 완성과 별도.
+6차 검수: 17검사 PASS,12카메라 완료, pageerror/console error/HTTP error0. TISSUE_DETAIL 직접 이미지에서 굵기와 상면 변화 확인. 실제 게임 화면 crop24프레임 GIF 저장, 리뷰 페이지에서2배 표시(480×360→960×720), 속도는 실제 측정 간격. 전체 플레이 배율 영상도 제공. <http://localhost:3333/captures/ch1_living_detail_pass6_20260925/index.html>.
+
+NEXT PASS: 정상 플레이 배율에서 사용자 시인성 피드백 확인.

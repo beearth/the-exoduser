@@ -35,7 +35,7 @@
       for(let j=0;j<(wet?5:3+(o.variant||0));j++){
         const a=seed+j*2.399,len=100+42*Math.sin(seed+j*1.7),ex=Math.cos(a)*len,ey=Math.sin(a)*len*.55+24;
         const sx=Math.sin(j*1.3+seed)*22,sy=8+Math.cos(j*1.9+seed)*12;
-        const bend=Math.sin(phase-j*.8)*8,pulse=.5+.5*Math.sin(phase-j*.8);
+        const bend=Math.sin(phase-j*.8)*22,pulse=.5+.5*Math.sin(phase-j*.8);
         const points=[];
         for(let k=0;k<=32;k++){
           const u=k/32,v=1-u,taper=Math.pow(v,.8),wrinkle=Math.sin(u*31+j)*u*v*2;
@@ -44,7 +44,7 @@
           // A localized pressure wave travels along the artery, rather than flashing it.
           const pressure=Math.pow(.5+.5*Math.sin(phase-u*Math.PI*2-j*.8),6);
           const emerge=Math.sin(Math.min(1,u/.14)*Math.PI/2);
-          points.push({x:nx,y:ny,w:(((5.2+pulse*1.5)+pressure*4)*taper+.2)*emerge});
+          points.push({x:nx,y:ny-pressure*7*Math.sin(u*Math.PI),w:(((5.2+pulse*1.5)+pressure*9)*taper+.2)*emerge});
         }
         // Single filled ribbons remove the dark joins from overlapping short strokes.
         function ribbon(factor,extra,dx,dy,color){
@@ -62,8 +62,8 @@
           c.closePath();c.fillStyle=color;c.fill();
         }
         ribbon(.6,2.2,1.5,2.5,'rgba(13,7,12,.32)');
-        ribbon(.5,0,0,0,wet?'rgba(63,61,35,.65)':'rgba(77,40,47,.68)');
-        ribbon(.19,0,-.7,-1.3,'rgba(148,112,110,.22)');
+        ribbon(.5,0,0,0,wet?'rgba(63,61,35,.65)':'rgba(87,44,52,.78)');
+        ribbon(.19,0,-.7,-1.3,'rgba(158,119,114,.3)');
         // A tapered smaller offshoot connects the tissue to the existing soil.
         c.beginPath();c.moveTo(ex*.58,ey*.6);c.quadraticCurveTo(ex*.74-14,ey*.56-12,ex*.85-23,ey*.7-23);
         c.strokeStyle='rgba(71,43,44,.3)';c.lineWidth=1.5;c.stroke();
