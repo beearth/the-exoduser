@@ -352,7 +352,6 @@
  :is(#settings,#invPanel,#forge,#skillPanel,#storagePanel) .ptitle::after,#invPanel.panel .pbox .ptitle::after{top:84px!important;}
 }
 @media(max-width:560px){:is(#settings,#invPanel,#forge,#skillPanel,#storagePanel,#statPanel).panel .pbox{padding:30px 22px 24px!important;} :is(#settings,#invPanel,#forge,#skillPanel,#storagePanel,#statPanel).panel .pbox::after{border-width:48px!important;border-image-width:48px!important;}}
-
 /* Inventory finish: an integrated heading, legible labels and recessed iron. */
 #invPanel.panel .pbox .ptitle{
   min-height:78px!important;padding:0 164px 0 16px!important;
