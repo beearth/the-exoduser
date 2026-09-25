@@ -7,7 +7,7 @@ from PIL import Image
 from pathlib import Path
 from playwright.sync_api import sync_playwright
 
-out = Path('captures/ch1_living_detail_pass6_20260925') / ('before' if '--before' in sys.argv else 'after')
+out = Path('captures/ch1_living_detail_pass7_20260925') / ('before' if '--before' in sys.argv else 'after')
 out.mkdir(parents=True, exist_ok=True)
 errors, failed, boards = [], [], []
 with sync_playwright() as p:
@@ -15,7 +15,7 @@ with sync_playwright() as p:
     context = browser.new_context(viewport={'width':1280,'height':720},record_video_dir=str(out),record_video_size={'width':1280,'height':720})
     page = context.new_page()
     if '--before' in sys.argv:
-        page.route('**/ch1-living-detail.js*',lambda route:route.fulfill(path='tmp/ch1-living-detail-pass5.js',content_type='text/javascript'))
+        page.route('**/ch1-living-detail.js*',lambda route:route.fulfill(path='tmp/ch1-living-detail-pass6.js',content_type='text/javascript'))
     page.on('pageerror', lambda e: errors.append(str(e)))
     page.on('console', lambda m: errors.append(m.text) if m.type=='error' else None)
     page.on('response', lambda r: failed.append(r.url) if r.status >= 400 else None)
@@ -30,9 +30,12 @@ with sync_playwright() as p:
     page.wait_for_load_state('networkidle',timeout=30000)
     page.wait_for_function('__ch1StartOuterQA().stats.drawnIds.length>0',timeout=30000)
     page.evaluate('closeAllPanels()')
-    for name, tx, ty in [('TISSUE_DETAIL',91,184),('START',100,180),('EARLY',100,157),('ARENA',100,120),('SIDE_L',49,151),('SIDE_R',151,136),('LANDMARK',83,80),('LATE',100,48),('EXIT',100,15),('TREE_DETAIL',102,97),('COCOON_DETAIL',47,56),('POOL_DETAIL',162,141)]:
+    # Visual/input audit only: preserve enemy/VFX behavior, prevent death interrupting the camera tour.
+    page.evaluate("window.__ch1QAHeal=setInterval(()=>{if(P&&P.hp>0)P.hp=P.mhp;},50)")
+    for name, tx, ty in [('TISSUE_DETAIL',91,184),('START',100,180),('EARLY',100,157),('ARENA',100,120),('SIDE_L',49,151),('SIDE_R',151,136),('LANDMARK',83,80),('LATE',100,48),('EXIT',100,15),('TREE_DETAIL',102,97),('COCOON_DETAIL',47,56),('POOL_DETAIL',162,141),('AUTHORED_POOL',167,45)]:
         state=page.evaluate('''([x,y])=>{P.x=(x+.5)*T;P.y=(y+.5)*T;G.cam.x=P.x;G.cam.y=P.y;const top=document.elementFromPoint(640,360);return {tile:G.map[y][x],topElement:top?.outerHTML?.slice(0,500),objects:MAP_OBJS.filter(o=>Math.abs(o.x-P.x)<800&&Math.abs(o.y-P.y)<600).map(o=>({type:o.type,x:o.x,y:o.y}))}}''',[tx,ty])
         page.wait_for_timeout(1500)
+        assert page.evaluate("P.hp>0&&P.s!=='fallen'&&P.s!=='dead'"), 'camera tour interrupted by player death'
         page.screenshot(path=str(out / (name+'.png')))
         if name=='TISSUE_DETAIL':
             frames, times = [], []
@@ -55,7 +58,19 @@ with sync_playwright() as p:
       samples.sort((a,b)=>a-b);
       return {mapUnchanged:before===JSON.stringify(G.map),cpuP95:samples[114],cpuMax:samples[119]};
     }''')
-    result={'errors':errors,'httpErrors':failed,'cameras':boards,'detail':audit,'outer':page.evaluate('__ch1StartOuterQA()')}
+    page.evaluate('P.x=100.5*T;P.y=180.5*T;G.cam.x=P.x;G.cam.y=P.y;closeAllPanels()')
+    start=page.evaluate('({x:P.x,y:P.y})')
+    for key in ['w','d','s','a']:
+        page.keyboard.down(key);page.wait_for_timeout(650);page.keyboard.up(key)
+    end=page.evaluate('({x:P.x,y:P.y})')
+    page.mouse.move(880,300);page.mouse.down();page.wait_for_timeout(1200)
+    page.keyboard.press('q');page.screenshot(path=str(out/'COMBAT.png'));page.mouse.up()
+    frame_times=page.evaluate('''()=>new Promise(resolve=>{const times=[];let last=performance.now();function step(t){times.push(t-last);last=t;if(times.length<91)requestAnimationFrame(step);else{times.shift();times.sort((a,b)=>a-b);resolve({median:times[45],p95:times[85],samples:90});}}requestAnimationFrame(step);})''')
+    sheet=Image.new('RGB',(1280,720),'#141216')
+    for i,name in enumerate([b['name'] for b in boards]+['COMBAT']):
+        shot=Image.open(out/(name+'.png')).convert('RGB');shot.thumbnail((320,180));sheet.paste(shot,((i%4)*320,(i//4)*180))
+    sheet.save(out/'camera-board.jpg',quality=90)
+    result={'errors':errors,'httpErrors':failed,'cameras':boards,'detail':audit,'inputQA':{'healthRefillMs':50,'start':start,'end':end,'frameTimesMs':frame_times},'outer':page.evaluate('__ch1StartOuterQA()')}
     (out/'runtime.json').write_text(json.dumps(result,ensure_ascii=False,indent=2),encoding='utf-8')
     print(json.dumps({'errors':errors,'httpErrors':failed,'captures':str(out)},ensure_ascii=False))
     context.close()

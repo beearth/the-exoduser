@@ -48556,3 +48556,13 @@ mpR = 0.05 + s.int×0.005                                        [NO P.lv×0.001
 - 사용자 요청으로 실버테일용6포즈×8방향 전용 투명 시트를 제작·연결. 본체·등검 원화를 기준으로 은발 포니테일, 흑철 갑주, 회전검 허브를 보존한다.
 - 기존 `WarriorDashFlight` 아틀라스 합성기에 `silvertail` 에셋 선택 추가. 본체→등검 공격→비행 순서로 합성하고 로드 실패/캐릭터 전환 폴백을 유지한다. 비행은 사슬 이동 벡터를 향하고, 기존 사슬 시간·전투 판정에 손대지 않고 시각 높이만 적용한다.
 - 에셋 계약·수치·한계·미리보기는 `docs/archetypes/silvertail/SILVERTAIL_DASH_FLIGHT_20260924.md` 참조. 에셋/프롬프트: `output/imagegen/silvertail_dash_20260924/`.
+
+
+### 2026-09-25 CH1-1 생체 디테일 마감: 중복 독액 장식
+
+| 적용 | 현재 계약 |
+|---|---|
+| 본편 stage0 렌더 | `m_c1gtoxic` 월드(6740,1620), 타일(168,40)만 기존 `m_c1pool` 이미지 로드 완료(complete 및 naturalWidth>1) 시 숨긴다. `Ch1LivingDetail.hideDuplicate` 사용 |
+| 보존 | authored/MAP_OBJS 좌표·개수·충돌 불변. `m_c1gtoxicf`, 다른 좌표/스테이지, bossArena/fieldRebuildQA와 기존 bake에는 적용하지 않음 |
+| 폴백 | 웅덩이 이미지 또는 효과 스크립트/API 미로드 시 기존 장식을 그린다 |
+| 근거 | 겹친 두 웅덩이 실루엣을 하나로 정리하는 시각 전용 마감. 세부 수치·QA는 `docs/4.1맵디자인+설정/CH1_LIVING_DETAIL_RUNTIME_20260925.md` 7차에 기록. 위 날짜별 제작 수치는 해당 시점 이력 |

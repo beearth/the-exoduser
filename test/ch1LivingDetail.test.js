@@ -79,3 +79,22 @@ test('cocoon surface secretion animates locally and stays isolated from other st
   assert.deepEqual(surface(0,1200),surface(0,1200));
   assert.notDeepEqual(surface(0,1200),surface(0,3200));
 });
+test('authored poison pool contracts around its fixed center without changing gameplay data',()=>{
+  const c=createCanvas(10,10).getContext('2d'),o={type:'m_c1pool',x:400,y:300,scale:1.55};
+  const before=JSON.stringify(o);
+  assert.equal(scope.Ch1LivingDetail.deform(c,{stage:1},o,1500),false);
+  for(let time=0;time<7000;time+=200){
+    assert.equal(scope.Ch1LivingDetail.deform(c,{stage:0},o,time),true);
+    const m=c.getTransform();assert.ok(m.a>=.988&&m.a<=1.012);assert.ok(m.d>=.982&&m.d<=1.018);
+    assert.ok(Math.abs(m.a*o.x+m.e-o.x)<.001);assert.ok(Math.abs(m.d*o.y+m.f-o.y)<.001);c.restore();
+  }
+  assert.equal(JSON.stringify(o),before);
+});
+test('duplicate toxic ground hides only at the authored pool and retains loading fallback',()=>{
+  const g={stage:0},o={type:'m_c1gtoxic',x:6740,y:1620},loaded={m_c1pool:{complete:true,naturalWidth:800}};
+  assert.equal(scope.Ch1LivingDetail.hideDuplicate(g,o,loaded),true);
+  assert.equal(scope.Ch1LivingDetail.hideDuplicate({stage:1},o,loaded),false);
+  assert.equal(scope.Ch1LivingDetail.hideDuplicate(g,o,{}),false);
+  assert.equal(scope.Ch1LivingDetail.hideDuplicate(g,{...o,type:'m_c1gtoxicf'},loaded),false);
+  assert.equal(scope.Ch1LivingDetail.hideDuplicate(g,{...o,x:100},loaded),false);
+});

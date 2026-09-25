@@ -60,7 +60,7 @@ window._supabaseReady=new Promise(resolve=>{
 <script src="maps_data.js"></script>
 <script src="assets/map/ch1/geometry/ch1_si1_geometry.js"></script>
 <script src="assets/map/ch1/production_finish/layout.js?v=20260916-finish-1"></script>
-<script src="ch1-living-detail.js?v=20260925-6"></script>
+<script src="ch1-living-detail.js?v=20260925-7"></script>
 <script src="lang_zh.js"></script>
 <script src="lang_ja.js"></script>
 <script src="lang_es.js"></script>
@@ -48678,6 +48678,7 @@ function draw(){
         break;}
       default:{
         // ── 스프라이트 장식 오브젝트 ──
+        if(globalThis.Ch1LivingDetail?.hideDuplicate?.(G,mo,_OBJ_SPR))break;
         const _hwDormantTone=_hellWinterTone&&mo.type==='m_c3sealbeast';
         if(_hwDormantTone){X.save();X.filter='brightness(.42) contrast(1.28) saturate(.18)'}
         const _spr=_OBJ_SPR[mo.type];

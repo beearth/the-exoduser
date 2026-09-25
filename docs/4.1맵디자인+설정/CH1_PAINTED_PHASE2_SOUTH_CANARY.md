@@ -149,3 +149,13 @@ B는 `MAP_OBJS`를 삭제·filter·splice하지 않는다. `MAP_OBJS` draw loop�
 ## 8. 판정
 
 `PASS` — 구조물 재료의 개별 단위보다 LEFT/RIGHT의 연속 환경 질량이 먼저 읽힌다. 중앙은 열려 있고 전투 가독성·75 authored layout·collision·loader/warm 경로는 유지된다. 이 판정은 SOUTH canary visual pass에만 해당하며 CENTER/NORTH production 확대 승인은 아니다.
+
+
+### 2026-09-25 CH1-1 생체 디테일 마감: 중복 독액 장식
+
+| 적용 | 현재 계약 |
+|---|---|
+| 본편 stage0 렌더 | `m_c1gtoxic` 월드(6740,1620), 타일(168,40)만 기존 `m_c1pool` 이미지 로드 완료(complete 및 naturalWidth>1) 시 숨긴다. `Ch1LivingDetail.hideDuplicate` 사용 |
+| 보존 | authored/MAP_OBJS 좌표·개수·충돌 불변. `m_c1gtoxicf`, 다른 좌표/스테이지, bossArena/fieldRebuildQA와 기존 bake에는 적용하지 않음 |
+| 폴백 | 웅덩이 이미지 또는 효과 스크립트/API 미로드 시 기존 장식을 그린다 |
+| 근거 | 겹친 두 웅덩이 실루엣을 하나로 정리하는 시각 전용 마감. 세부 수치·QA는 `docs/4.1맵디자인+설정/CH1_LIVING_DETAIL_RUNTIME_20260925.md` 7차에 기록. 위 날짜별 제작 수치는 해당 시점 이력 |

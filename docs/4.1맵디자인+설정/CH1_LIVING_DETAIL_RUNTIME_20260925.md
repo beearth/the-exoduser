@@ -6,7 +6,7 @@
 
 | id / 적용 위치 | 값 / 동작 |
 |---|---|
-| 구현 | `ch1-living-detail.js?v=20260925-6`, 전역 `Ch1LivingDetail.draw/deform/shadows`; `build-nwjs.mjs` 배포 FILES에도 포함 |
+| 구현 | `ch1-living-detail.js?v=20260925-7`, 전역 `Ch1LivingDetail.draw/deform/shadows/hideDuplicate`; `build-nwjs.mjs` 배포 FILES에도 포함 |
 | 범위 | `G.stage===0`, `_bossArena` 및 `_fieldRebuildQA` 제외 |
 | 지면 순서 | `_drawCh1Hill` 다음, 오브젝트·캐릭터·전투 효과 이전. `surfaceOnly=true` 잔물결은 맵 오브젝트 뒤/캐릭터 앞 |
 | 앵커 배율 | `m_c1tree:2.1`, `m_c1cocoon:1.1`, `m_c1pool:1.25`, `m_c1spod:.65`, `m_c1sroot:.75`, `pit_poison:1.2`, `m_rotten_tree:1` |
@@ -176,3 +176,36 @@ VISUAL VERDICT: RETOUCH — 움직임 가시성 보강 단계, 전체 재질/외
 6차 검수: 17검사 PASS,12카메라 완료, pageerror/console error/HTTP error0. TISSUE_DETAIL 직접 이미지에서 굵기와 상면 변화 확인. 실제 게임 화면 crop24프레임 GIF 저장, 리뷰 페이지에서2배 표시(480×360→960×720), 속도는 실제 측정 간격. 전체 플레이 배율 영상도 제공. <http://localhost:3333/captures/ch1_living_detail_pass6_20260925/index.html>.
 
 NEXT PASS: 정상 플레이 배율에서 사용자 시인성 피드백 확인.
+
+
+## 7차: 국소 피부막과 웅덩이 마감
+
+사용자 “다음 맵디테일 완성해”에 따라 기존 맵 보존 범위의 디테일을 마감한다. 전체 신규 생체맵 원화로 교체하는 작업과 구분한다.
+
+| id | 현재 적용 / 정확한 수치 |
+|---|---|
+| 피부막 캐시 | membrane(wet,variant), dry3+wet1 최대4장,320² RGBA 총1.5625MiB. 기존6atlas37.5MiB와 합산39.0625MiB(나무 그림자 별도). 기존 atlas 생성 시에만 합성, 프레임마다 재생성 없음 |
+| 형태 | 72구간 폐곡선. angle=j/72*2π, r=102+18*sin(angle*3+variant)+11*cos(angle*5-variant), x=cos(angle)*r*1.12, y=12+sin(angle)*r*.62 |
+| 피부 명암 | linear Y-70→85, stop0 RGBA34,25,31,.12 / .43 dry102,79,82,.54 또는 wet74,72,48,.54 / 1 RGBA26,18,25,.12 |
+| 미세 재질 | LCG seed=781+variant*357+(wet?91:0), next=(imul(seed,1664525)+1013904223)>>>0, rand=seed/4294967296. 1600점: x=rand*290-145,y=rand*180-90,r=.35+rand*1.3,크기1.8r×r. j%3이면RGBA33,20,28,.08,그외169,144,130,.1. 고정 재질이므로 시간 깜빡임 없음 |
+| 주름 | 9개. y=-42+j*12,x=-104+sin(j*2.1+variant)*16; cubic제어(-42,y-16),(32,y+13),끝(104-cos(j)*18,y-5). 암부RGBA29,18,27,.18 폭1.7, 상면Y-1.2/RGBA171,143,132,.12 폭.8 |
+| 경계 | destination-in radial중심(0,12)반경28alpha1→143alpha0. 기존 지면 atlas 감쇠82→155도 마지막에 적용 |
+| 웅덩이 수축 | m_c1pool만, wave=sin(now*.00095+x*.017+y*.011). pivot(x,y),X=1+wave*.012,Y=1-wave*.018. 중심 고정,충돌과 좌표 불변. 구덩이 수직벽을 별도 분리 변형한 구현 아님 |
+| 순서 | 접촉 그림자→피부막→오염→동맥→기존 오브젝트→수면/체액→캐릭터. 캐릭터/UI 위에 피부막을 합성하지 않음 |
+| QA | 기존12카메라+AUTHORED_POOL(167,45). 별도 시작부 WASD이동/LMB공격/Q입력 및90RAF간격 기록. 강제 카메라 이동과 실제 입력 검수를 구분 |
+| QA 생존 조건 | 테스트 브라우저에서50ms마다 살아 있는 P.hp를P.mhp로 보충. 적/탄/VFX·입력은 유지. production 코드/밸런스/세이브 변경 없음. 난이도·생존 검증이 아닌 화면·입력 검수 |
+
+MAP PRODUCTION REPORT — 7차
+
+STAGE: CH1-1 production. MASTER: 기존53점 silhouette/8regions/남북 route/side spaces 유지. OUTER MASS: LEFT/RIGHT/TOP/SOUTH,holes 보존. LARGE: 기존 source/composites/overlap/repeated silhouette 유지, 전체 원화 교체 없음. MEDIUM: 기존 나무/고치/동맥 연결부에 피부막 추가,remaining holes 재설계 없음. GROUND: 기존 접지 그림자/오염 위에 주름진 피부막을 연결. PLAYABLE: arenas/travel/breathing/threat 공간 보존,새장애물0. LANDMARK: primary시체나무/secondary고치·독액/tertiary뿌리 계층 보존. CAMERA QA: 기본8곳+상세5곳 캡처 및 실제 입력 전투 화면. TECH QA: 19검사(효과11/geometry5/문법1/패키징2),route/collision 및 원본chunk seam 불변. 브라우저·성능·입력 결과는 captures/ch1_living_detail_pass7_20260925/after/runtime.json. FILES: 효과/test/QA/docs 및 공유game캐시·콘셉트행,unrelated 변경 없음. GIT: 전용 부분커밋,push/deploy 없음.
+
+VISUAL VERDICT: RETOUCH — 기존 맵 보존 범위의 피부막·움직임·북동 웅덩이 중복 마감 반영. 전체 화면은 여전히 일반 흙과 식생 비중이 높고, 고치/나무와 지면의 스타일 차이가 남아 전체 생체지옥 콘셉트 FINAL PASS로 판정하지 않는다. 자동19검사로 visual PASS를 대체하지 않는다.
+
+초기7차 촬영 실패: 사망 후 `_fallenResolve`가 없는 DOM의 disabled를 설정하며 `[LOOP CRASH] Cannot set properties of null` 발생. 이후 동일 정지 화면이 반복되어 카메라 근거로 폐기. 원본 실패 로그 `tmp/ch1-pass7-failed-death-runtime.json` 보존. 사망/리플레이 관련 동시작업과 충돌하지 않도록 이번 맵 작업에서 해당 시스템을 변경하지 않음. 재촬영은 위 체력 보충 조건을 명시하며 사망 흐름 자체의 해결 증거로 삼지 않는다.
+
+
+7차 중복 POI 마감: 위 `hideDuplicate` 계약 적용. 북동 m_c1gtoxic 월드(6740,1620)를 loaded m_c1pool이 있을 때만 렌더 제외. authored/MAP_OBJS/충돌 개수 유지,시각중복1건 제거. 다른 toxicf 및 baked 청크 불변. 단계별 문서·에셋목록·CHANGELOG에도 같은 현행 예외를 동기화했다.
+
+7차 최종 after 결과: 카메라13곳 및 COMBAT 촬영, 전체 contact board/AUTHORED_POOL/COMBAT 직접 확인. errors/HTTP errors0, mapUnchanged=true. 실제 입력 전후 위치(4020,7220)→(4011.69222,7211.69222); 네 방향 복귀 입력이므로 총 이동거리가 아닌 종료 좌표다.90RAF 표본 median33.4ms/p95 50.1ms(1280×720 headless·녹화중). 이는 대규모 전투 성능 통과 근거가 아니다. native효과 CPU 표본은 별도로runtime.json에 보존. 최초 사망 오류는 미해결이며 재촬영의0오류와 구분한다.
+
+확인 페이지: <http://localhost:3333/captures/ch1_living_detail_pass7_20260925/index.html>. before는 같은 현재게임에6차 효과 스크립트를 연결한 아트 비교이며, 이전 게임 전체버전을 실행한 결과가 아니다. 기존 맵의 국소 디테일 마감과 전체 콘셉트 완성 상태를 구분한다.

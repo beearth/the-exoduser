@@ -6,6 +6,40 @@
   function isTree(type){return type==='m_c1tree'||type==='m_rotten_tree'||type==='m_vine_pillar'||/^m_ctree\d+$/.test(type);}
   const feet={m_c1tree:230,m_c1cocoon:100,m_c1spod:40,m_rotten_tree:50};
   function enabled(g){return g.stage===0&&!g._bossArena&&!g._fieldRebuildQA;}
+  const membranes=[];
+  function membrane(wet,variant){
+    const id=wet?3:variant;if(membranes[id])return membranes[id];
+    const a=root.document.createElement('canvas');a.width=a.height=320;
+    const c=a.getContext('2d');c.translate(160,160);c.save();c.beginPath();
+    for(let j=0;j<=72;j++){
+      const angle=j/72*Math.PI*2,r=102+18*Math.sin(angle*3+variant)+11*Math.cos(angle*5-variant);
+      const x=Math.cos(angle)*r*1.12,y=12+Math.sin(angle)*r*.62;
+      if(j)c.lineTo(x,y);else c.moveTo(x,y);
+    }
+    c.closePath();c.clip();
+    const skin=c.createLinearGradient(0,-70,0,85);
+    skin.addColorStop(0,'rgba(34,25,31,.12)');
+    skin.addColorStop(.43,wet?'rgba(74,72,48,.54)':'rgba(102,79,82,.54)');
+    skin.addColorStop(1,'rgba(26,18,25,.12)');c.fillStyle=skin;c.fillRect(-160,-160,320,320);
+    // Stable fine mottling belongs to the material; it does not flicker with the animation.
+    let seed=781+variant*357+(wet?91:0);
+    function rand(){seed=(Math.imul(seed,1664525)+1013904223)>>>0;return seed/4294967296;}
+    for(let j=0;j<1600;j++){
+      const x=rand()*290-145,y=rand()*180-90,r=.35+rand()*1.3;
+      c.fillStyle=j%3?'rgba(33,20,28,.08)':'rgba(169,144,130,.1)';
+      c.fillRect(x,y,r*1.8,r);
+    }
+    for(let j=0;j<9;j++){
+      const y=-42+j*12,x=-104+Math.sin(j*2.1+variant)*16;
+      c.beginPath();c.moveTo(x,y);c.bezierCurveTo(-42,y-16,32,y+13,104-Math.cos(j)*18,y-5);
+      c.strokeStyle='rgba(29,18,27,.18)';c.lineWidth=1.7;c.stroke();
+      c.save();c.translate(0,-1.2);c.strokeStyle='rgba(171,143,132,.12)';c.lineWidth=.8;c.stroke();c.restore();
+    }
+    c.restore();c.globalCompositeOperation='destination-in';
+    const fade=c.createRadialGradient(0,12,28,0,12,143);
+    fade.addColorStop(0,'rgba(0,0,0,1)');fade.addColorStop(1,'rgba(0,0,0,0)');
+    c.fillStyle=fade;c.fillRect(-160,-160,320,320);membranes[id]=a;return a;
+  }
   function paint(c,g,objects,now,width,height,surfaceOnly=false){
     if(!enabled(g))return;
     const zoom=Math.max(.3,g._edZoom||g._camZoom||1),hw=width/(2*zoom),hh=height/(2*zoom);
@@ -23,6 +57,7 @@
       const shade=c.createRadialGradient(0,0,12,0,0,156);
       shade.addColorStop(0,'rgba(9,5,10,.48)');shade.addColorStop(.48,'rgba(12,7,12,.25)');shade.addColorStop(1,'rgba(12,7,12,0)');
       c.fillStyle=shade;c.fillRect(-156,-156,312,312);c.restore();
+      c.drawImage(membrane(wet,o.variant||0),-160,-160);
       // Matte, irregular wet contact patches stay below the raised veins.
       for(let j=0;j<7;j++){
         const x=Math.cos(j*2.399)*38,y=18+Math.sin(j*2.399)*17;
@@ -182,6 +217,10 @@
   }
   function deform(c,g,o,now,meta){
     if(!enabled(g))return false;
+    if(o.type==='m_c1pool'){
+      const wave=Math.sin(now*.00095+o.x*.017+o.y*.011);
+      c.save();c.translate(o.x,o.y);c.scale(1+wave*.012,1-wave*.018);c.translate(-o.x,-o.y);return true;
+    }
     if(isTree(o.type)){
       const size=(meta&&meta.sz||400)*(o.scale||1),foot=o.y+(o.type==='m_c1tree'?size*.2016:size*.45);
       const wave=Math.sin(now*.00072+o.x*.017+o.y*.011)+.3*Math.sin(now*.00131+o.y*.019);
@@ -192,5 +231,9 @@
     c.save();c.translate(o.x,o.y+32);c.scale(1+wave*.018,1-wave*.012);c.translate(-o.x,-o.y-32);
     return true;
   }
-  root.Ch1LivingDetail=Object.freeze({draw,deform,shadows});
+  function hideDuplicate(g,o,sprites){
+    const pool=sprites&&sprites.m_c1pool;
+    return enabled(g)&&o.type==='m_c1gtoxic'&&o.x===6740&&o.y===1620&&!!(pool&&pool.complete&&pool.naturalWidth>1);
+  }
+  root.Ch1LivingDetail=Object.freeze({draw,deform,shadows,hideDuplicate});
 })(globalThis);
