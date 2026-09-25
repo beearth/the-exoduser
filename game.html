@@ -3024,7 +3024,7 @@ body:has(#invPanel.on) #keyGuide{display:none!important}
 <div id="spStart" style="margin-top:18px;font-size:clamp(.6rem,1.2vw,.9rem);color:#886644;letter-spacing:.2em;animation:spBlink 1.2s ease-in-out infinite">— 클릭하여 시작 —</div>
 </div></div>
 <div id="deathReplay"><canvas id="drCvs"></canvas><div id="drLabel">☠ 사망 리플레이</div><div id="drTime"></div><div id="drBar"><div id="drBarFill"></div></div></div>
-<div id="death"><div class="dt" id="deathTitle">빛이 꺼졌다</div><div class="ds" id="deathSub">누군가는 너를 기다리고 있다</div><div class="ds" id="dInfo"></div><button class="retry" id="retryBtn">다시 일어서라</button><button class="retry retry-lobby" id="toLobbyBtn">로비로 돌아가기</button><div id="dDmgLog" style="position:fixed;right:24px;top:50%;transform:translateY(-50%);text-align:right;font-size:.95rem;line-height:2;color:#aa8866;pointer-events:none"></div><div id="deathPetDlg" style="position:absolute;left:50%;bottom:20px;transform:translateX(-50%) scale(calc(var(--ui-scale) * 1.5));transform-origin:center bottom;display:flex;gap:12px;pointer-events:none;opacity:0;transition:opacity .25s;z-index:41;font-family:'Malgun Gothic',sans-serif"><div style="position:relative;width:480px"><img src="img/crow/portrait.png?v=4" style="display:block;width:480px;height:auto;filter:drop-shadow(0 2px 8px rgba(0,0,0,.7))"><div id="dpdCrowTxt" style="position:absolute;left:92px;top:237px;width:306px;height:51px;display:flex;align-items:center;color:#fff;font-weight:700;font-size:.92rem;line-height:1.25;text-shadow:0 1px 4px rgba(0,0,0,.95),0 0 8px rgba(0,0,0,.85)"></div></div><div style="position:relative;width:480px"><img src="img/cat_pet/portrait.png?v=4" style="display:block;width:480px;height:auto;filter:drop-shadow(0 2px 8px rgba(0,0,0,.7))"><div id="dpdCatTxt" style="position:absolute;left:122px;top:250px;width:190px;height:42px;display:flex;align-items:center;color:#fff;font-weight:700;font-size:.92rem;line-height:1.25;text-shadow:0 1px 4px rgba(0,0,0,.95),0 0 8px rgba(0,0,0,.85)"></div></div></div></div>
+<div id="death"><div class="dt" id="deathTitle">빛이 꺼졌다</div><div class="ds" id="deathSub">누군가는 너를 기다리고 있다</div><div class="ds" id="dInfo"></div><button class="retry" id="retryBtn">다시 일어서라</button><button class="retry retry-lobby" id="deathReplayBtn">리플레이 보기</button><button class="retry retry-lobby" id="toLobbyBtn">로비로 돌아가기</button><div id="dDmgLog" style="position:fixed;right:24px;top:50%;transform:translateY(-50%);text-align:right;font-size:.95rem;line-height:2;color:#aa8866;pointer-events:none"></div><div id="deathPetDlg" style="position:absolute;left:50%;bottom:20px;transform:translateX(-50%) scale(calc(var(--ui-scale) * 1.5));transform-origin:center bottom;display:flex;gap:12px;pointer-events:none;opacity:0;transition:opacity .25s;z-index:41;font-family:'Malgun Gothic',sans-serif"><div style="position:relative;width:480px"><img src="img/crow/portrait.png?v=4" style="display:block;width:480px;height:auto;filter:drop-shadow(0 2px 8px rgba(0,0,0,.7))"><div id="dpdCrowTxt" style="position:absolute;left:92px;top:237px;width:306px;height:51px;display:flex;align-items:center;color:#fff;font-weight:700;font-size:.92rem;line-height:1.25;text-shadow:0 1px 4px rgba(0,0,0,.95),0 0 8px rgba(0,0,0,.85)"></div></div><div style="position:relative;width:480px"><img src="img/cat_pet/portrait.png?v=4" style="display:block;width:480px;height:auto;filter:drop-shadow(0 2px 8px rgba(0,0,0,.7))"><div id="dpdCatTxt" style="position:absolute;left:122px;top:250px;width:190px;height:42px;display:flex;align-items:center;color:#fff;font-weight:700;font-size:.92rem;line-height:1.25;text-shadow:0 1px 4px rgba(0,0,0,.95),0 0 8px rgba(0,0,0,.85)"></div></div></div></div>
 
 <!-- LEVEL UP SCREEN (10렙마다) -->
 <div id="lvUpScreen" style="position:fixed;inset:0;z-index:35;display:flex;align-items:center;justify-content:center;background:rgba(0,0,0,.92);opacity:0;pointer-events:none;transition:opacity .4s">
@@ -12978,7 +12978,7 @@ function _pollGamepad(){
   if(_gcEl&&_gcEl.classList.contains("on")){_gpClearAll();_gpVCUpdate();_gpUINav(_gcEl);return;}
   const _gpOpenPanel=document.querySelector('.panel.on');
   const _gpOverlay=(()=>{
-    for(const id of['introDiff','introKeys','death','lvUpScreen','tutorial','stageClear','victory','stageTransition']){
+    for(const id of['introDiff','introKeys','deathReplay','death','lvUpScreen','tutorial','stageClear','victory','stageTransition']){
       const el=$(id);if(!el)continue;
       if(el.classList.contains('on'))return el;
       if(el.style.opacity==='1'&&el.style.pointerEvents==='all')return el;
@@ -41155,13 +41155,11 @@ function _fallenResolve(){
     }
     _dlHtml+=`<div style="color:#886644;font-size:.85rem;margin-top:4px;border-top:1px solid #442211;padding-top:4px">${_T('맞아서 사망')}</div>`;
   }
-  // 리플레이 재생 후 사망 화면 표시
-  _drPlay(()=>{
-    $('dInfo').textContent=infoTxt;
-    $('dDmgLog').innerHTML=_dlHtml;
-    $('death').classList.add('on');
-    _deathDlgStart(); // 두 펫 동시 대사 로테이션 시작
-  });
+  $('dInfo').textContent=infoTxt;
+  $('dDmgLog').innerHTML=_dlHtml;
+  $('deathReplayBtn').disabled=_drLen===0;
+  $('death').classList.add('on');
+  _deathDlgStart(); // 두 펫 동시 대사 로테이션 시작
 }
 function nextStage(){SFX.beamStop();$('stageClear').style.opacity='0';$('stageClear').style.pointerEvents='none';G.stageCleared=false;G.on=false;ens=[];G.rooms=[];G.exits=[];_cacheExitCenter();G.bossAlive=true;_ensWarmDone=false;G._zones=null;G._curZone=0;G._zoneState={};G._portals=null;G._bossRef=null;G._crT=0;G.atkTickets=0;_hudT=0;_hudAlive=0;G.rifts=[];G.spawnHoles=[];G._chainCnt=0;G._chainT=0;G._bossArena=false;G._bossLoadPhase=0;G._bossLoadFade=0;G._bfxBolt=null;const _curHell=SI_TO_HELL[G.stage];const _ch=CHAPTER_STAGES[_curHell];if(_DEMO_MODE&&G.stage===_DEMO_LAST_STAGE&&_curHell===0){const _de=$('demoEnd');if(_de){_de.style.display='flex';const _dt=$('demoEndTitle');if(_dt)_dt.textContent=_T('데모 종료');const _dm=$('demoEndMsg');if(_dm)_dm.textContent=_T('여기까지 데모입니다. 정식 출시를 기대해주세요!');const _ds=$('demoEndSupport');if(_ds)_ds.textContent=_T('STEAM 위시리스트로 응원해 주세요!');const _dw=$('demoEndWishlist');if(_dw)_dw.textContent=_T('STEAM 위시리스트');const _dl=$('demoEndLobby');if(_dl)_dl.textContent=_T('로비로 돌아가기');}G.on=false;return}if(G.stage===_ch.startSi+_ch.stages-1&&_curHell<6){G.stage=CHAPTER_STAGES[_curHell+1].startSi}else{G.stage++}if(G.stage>=TOTAL_STAGES){doWin();return}initStage(G.stage);G.on=true;BGM.play(BGM.stageKey(G.stage))}
 function doWin(){
@@ -45706,6 +45704,7 @@ function _applyLang(){try{
   const _dt=$('deathTitle');if(_dt)_dt.textContent=_T('빛이 꺼졌다');
   const _ds=$('deathSub');if(_ds)_ds.textContent=_T('누군가는 너를 기다리고 있다');
   const _rb=$('retryBtn');if(_rb)_rb.textContent=_T('다시 일어서라');
+  const _drb=$('deathReplayBtn');if(_drb)_drb.textContent=_L('리플레이 보기','View Replay');
   const _tlb=$('toLobbyBtn');if(_tlb)_tlb.textContent=_T('로비로 돌아가기');
   const _drl=$('drLabel');if(_drl)_drl.textContent=_T('☠ 사망 리플레이');
   // Level-up screen
@@ -58937,6 +58936,11 @@ function _refillRespawnResources(){
   _HARP_GAUGE_MAX=cells*_HARP_GAUGE_COST[1]+~~(_eqAffix('extraST')||0);
   _harpGauge=_HARP_GAUGE_MAX;
 }
+if($('deathReplayBtn'))$('deathReplayBtn').onclick=()=>{
+  if(!$('death').classList.contains('on')||_drLen===0)return;
+  _deathDlgStop();
+  _drPlay(()=>{if($('death').classList.contains('on'))_deathDlgStart()});
+};
 $('retryBtn').onclick=async()=>{
   $('death').classList.remove('on');$('victory').classList.remove('on');_drReset();if(typeof _deathDlgStop==='function')_deathDlgStop();
   // 경험치 30% 손실
