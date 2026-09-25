@@ -68,3 +68,14 @@ test('tree shadows preserve source alpha and do not leak into another stage',()=
   const raw=canvas.toBuffer('raw');assert.ok(raw.some(v=>v!==0));
   assert.ok(raw.filter(v=>v!==0).length<raw.length*.2,'no opaque rectangular shadow');
 });
+test('cocoon surface secretion animates locally and stays isolated from other stages',()=>{
+  function surface(stage,time){
+    const a=createCanvas(600,600),c=a.getContext('2d');c.globalAlpha=.7;
+    scope.Ch1LivingDetail.draw(c,{stage,cam:{x:300,y:300}},[{type:'m_c1cocoon',x:300,y:250}],time,600,600,true);
+    assert.ok(Math.abs(c.globalAlpha-.7)<.01);return a.toBuffer('raw');
+  }
+  assert.ok(surface(1,1200).every(v=>v===0));
+  assert.ok(surface(0,1200).some(v=>v!==0));
+  assert.deepEqual(surface(0,1200),surface(0,1200));
+  assert.notDeepEqual(surface(0,1200),surface(0,3200));
+});

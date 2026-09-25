@@ -6,13 +6,13 @@
 
 | id / 적용 위치 | 값 / 동작 |
 |---|---|
-| 구현 | `ch1-living-detail.js?v=20260925-2`, 전역 `Ch1LivingDetail.draw/deform/shadows`; `build-nwjs.mjs` 배포 FILES에도 포함 |
+| 구현 | `ch1-living-detail.js?v=20260925-3`, 전역 `Ch1LivingDetail.draw/deform/shadows`; `build-nwjs.mjs` 배포 FILES에도 포함 |
 | 범위 | `G.stage===0`, `_bossArena` 및 `_fieldRebuildQA` 제외 |
 | 지면 순서 | `_drawCh1Hill` 다음, 오브젝트·캐릭터·전투 효과 이전. `surfaceOnly=true` 잔물결은 맵 오브젝트 뒤/캐릭터 앞 |
 | 앵커 배율 | `m_c1tree:2.1`, `m_c1cocoon:1.1`, `m_c1pool:1.25`, `m_c1spod:.65`, `m_c1sroot:.75`, `pit_poison:1.2`, `m_rotten_tree:1` |
 | 실제 배율 s | 앵커 배율 × `min(1.6, mo.scale || 1)` |
 | 시야 제외 | 카메라 반폭/반높이 + `160*s`; zoom=`max(.3, _edZoom || _camZoom || 1)` |
-| 렌더 자원 | 런타임 생성 투명 canvas atlas 3종(조직/독액 주변/수면), 각각 1280², 4×4칸, 셀320², 16프레임. 최대 RGBA 18.75MiB, 최초 사용 후 재사용 |
+| 렌더 자원 | 런타임 생성 투명 canvas atlas 4종(조직/독액 주변/수면/체액), 각각 1280², 4×4칸, 셀320², 16프레임. 최대 RGBA 25MiB, 최초 사용 후 재사용 |
 | 접지 Y 오프셋 | `m_c1tree:230`, `m_c1cocoon:100`, `m_c1spod:40`, `m_rotten_tree:50` px × `(mo.scale || 1)`; 기타0. 수면은 오프셋0 |
 | 합성 | source-over 기본, 인접 두 프레임 alpha `1-mix`/`mix`. GPU에는 `drawImage`만 전달, 곡선/gradient는 native Canvas2D에서 최초 베이크 |
 | 맥동 | 각속도 `.00095 rad/ms`, 약6.614초/주기; 앵커 위상 `x*.017+y*.011`; 프레임16개 사이 선형 혼합 |
@@ -88,3 +88,23 @@ VISUAL VERDICT: RETOUCH — 국소 입체감·움직임 보강. 전체 생체지
 NEXT PASS: 사용자 플레이 피드백에 따라 강도 조정. 기존 구도 보존 원칙 유지.
 
 2차 직접 확인: <http://localhost:3333/captures/ch1_living_detail_pass2_20260925/index.html>. 게임 전체 화면 녹화 `after/camera-tour.webm`에는 자동 카메라 이동과 나무 앞6초 정지가 포함된다. QA 인트로 Escape 반복이 설정 패널을 열던 문제를 발견하여 컷씬일 때만 Escape를 누르고 촬영 전에 `closeAllPanels()`를 호출한다. 패널/흰 레이어로 가려진 초기 촬영은 완료 근거에서 제외한다.
+
+## 3차: 수면과 고치의 국소 반응
+
+| id | 값 / 적용 |
+|---|---|
+| 접지 얼룩 | 7개, 중심(cos(j*2.399)*38,18+sin(j*2.399)*17), Y배율.38, 반경3→48, alpha.22→0. wet RGB52,53,29 / dry55,29,40; 끝 RGB30,19,28 alpha0 |
+| 기포 | m_c1pool/pit_poison에5개, 기존6.614초 주기. p=fract(phase/2π+j*.219), 중심(cos(j*2.399)*42,sin(j*2.399)*19) |
+| 팽창 | p<.72, r=2+5*sin(min(1,p/.72)*π/2); 중심Y-r*.45, 반경(r,r*.65), RGB25,30,16 alpha=sin(p/.72*π)*.65 |
+| 상면 | 중심(-1,-1) 이동, 반경(r*.72,r*.43), 회전-.2, arc3.4→5.7, RGB156,151,94 alpha=sin(p/.72*π)*.48, 폭1.2 |
+| 붕괴 | p≥.72, q=(p-.72)/.28; 반경(7+15q,3+6q), arc.2→5.4, RGB143,140,83 alpha=(1-q)*.3, 폭1 |
+| 체액 | m_c1cocoon/m_c1spod에3개, 기존feet Y오프셋 적용. p=fract(phase/2π+j/3), x=(j-1)*23 |
+| 방울 | p<.65, q=p/.65; 중심(x+sin(phase+j)*2,-42+56q²), 반경(2.2,3+3q), RGB92,74,55 alpha=sin(qπ)*.65 |
+| 착지 | p≥.65, q=(p-.65)/.35; 중심(x,14), 반경(3+14q,1+4q), arc.3→5.7, RGB115,88,71 alpha=(1-q)*.3, 폭1 |
+| 자원/격리 | atlas4종 최대25MiB, 기존16프레임 crossfade; stage0 production만. 기존 물결3개/속도/피해/충돌/좌표 유지 |
+
+MAP PRODUCTION REPORT (3차): MASTER/OUTER MASS/LARGE/PLAYABLE 기존 보존. MEDIUM/GROUND 접지 얼룩, LANDMARK 웅덩이 기포·고치 체액 추가. CAMERA QA는 기본8곳+상세3곳, 상세마다6초 정지 녹화. TECH QA 17검사 PASS(효과9/배치5/문법1/패키징2). FILES/GIT는 본문과 동일한 작업 전용 부분 커밋. 근거 `captures/ch1_living_detail_pass3_20260925/after/runtime.json` 및 영상.
+
+3차 브라우저 결과: 11카메라 촬영 완료, pageerror/console error/HTTP error 모두0. 고치/웅덩이 상세 스크린샷 직접 확인. 전체 카메라를 직접 플레이한 결과는 아니며 영상에는 카메라 강제 이동이 포함된다. 확인 페이지: <http://localhost:3333/captures/ch1_living_detail_pass3_20260925/index.html>.
+
+VISUAL VERDICT: RETOUCH — 국소 효과 보강, 전체 생체 재질과 대규모 전투 최종 검수 미완료.
