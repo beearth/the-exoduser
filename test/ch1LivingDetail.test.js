@@ -108,3 +108,16 @@ test('pool vapor rises locally above the surface and loops without a frame seam'
   assert.notDeepEqual(vapor(1200),vapor(3200));
   assert.deepEqual(vapor(1200),vapor(1200+Math.PI*2/.00095));
 });
+test('recessed pit replacement stays local, animated and gameplay-neutral',()=>{
+  const o={type:'pit_poison',x:6500,y:5580,scale:1},before=JSON.stringify(o);
+  function frame(time,g={stage:0},obj=o){
+    const a=createCanvas(240,240),c=a.getContext('2d');c.translate(120-o.x,120-o.y);c.globalAlpha=.8;
+    const used=scope.Ch1LivingDetail.pit(c,g,obj,time,{sz:200});
+    assert.ok(Math.abs(c.globalAlpha-.8)<.01);return {used,raw:a.toBuffer('raw')};
+  }
+  assert.equal(typeof scope.Ch1LivingDetail.pit,'function');
+  assert.equal(frame(0).used,true);assert.notDeepEqual(frame(0).raw,frame(2700).raw);
+  for(const g of [{stage:1},{stage:0,_bossArena:true},{stage:0,_fieldRebuildQA:true}])assert.equal(frame(0,g).used,false);
+  assert.equal(frame(0,{stage:0},{...o,x:100}).used,false);
+  assert.equal(JSON.stringify(o),before);
+});

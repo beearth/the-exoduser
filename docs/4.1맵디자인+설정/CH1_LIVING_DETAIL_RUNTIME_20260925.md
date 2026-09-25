@@ -6,7 +6,7 @@
 
 | id / 적용 위치 | 값 / 동작 |
 |---|---|
-| 구현 | `ch1-living-detail.js?v=20260925-8`, 전역 `Ch1LivingDetail.draw/deform/shadows/hideDuplicate`; `build-nwjs.mjs` 배포 FILES에도 포함 |
+| 구현 | `ch1-living-detail.js?v=20260926-9`, 전역 `Ch1LivingDetail.draw/deform/shadows/hideDuplicate/pit`; `build-nwjs.mjs` 배포 FILES에도 포함 |
 | 범위 | `G.stage===0`, `_bossArena` 및 `_fieldRebuildQA` 제외 |
 | 지면 순서 | `_drawCh1Hill` 다음, 오브젝트·캐릭터·전투 효과 이전. `surfaceOnly=true` 잔물결은 맵 오브젝트 뒤/캐릭터 앞 |
 | 앵커 배율 | `m_c1tree:2.1`, `m_c1cocoon:1.1`, `m_c1pool:1.25`, `m_c1spod:.65`, `m_c1sroot:.75`, `pit_poison:1.2`, `m_rotten_tree:1` |
@@ -232,3 +232,33 @@ VISUAL VERDICT: RETOUCH — 기존 맵의 국소 습기·체액 움직임 추가
 사망 재검수: 이번 현재 작업트리에서 deathReplayBtn 존재=true,_fallenResolve 이후 death 표시=true,error=null. 7차 사망오류는 이번 조건에서 재현되지 않았으며 이 작업이 사망 시스템을 수정한 것은 아니다. 자연 사망부터 리플레이·재시작까지의 전체 회귀 검수는 별도다.
 
 확인: <http://localhost:3333/captures/ch1_living_detail_pass8_20260925/index.html>. before는 현재게임에7차 효과를 연결한 비교. NEXT PASS: 전체 재질 통합과 동측 독액 POI의 평면적인 원형 마커 접합 검토. 원본·충돌 유지, 위험범위 가독성을 먼저 검증할 것.
+
+## 9차: 동측 독구덩이 안쪽 깊이 (2026-09-26)
+
+| id | 구현 계약 / 정확한 수치 |
+|---|---|
+| 범위 | `Ch1LivingDetail.pit`, enabled(stage0,!bossArena,!fieldRebuildQA)이며 pit_poison 월드(6500,5580)만 true. 그 외 false. default sprite 분기 전에 호출, true면 기존 sprite 중복 렌더 제외. API 없으면 원본 폴백 |
+| atlas | 1024² RGBA1장,4×4셀256²,16프레임,4MiB추가. 기존39.0625MiB+4=43.0625MiB(나무 그림자 별도). 최초 사용 시 native canvas 생성. GPU proxy에는 drawImage만 전달 |
+| 좌표·크기 | 각셀 중심(128,128),clip(-128,-128,256,256). 실제 draw 크기(meta.sz 또는200)*scale,원점(o.x-sz/2,o.y-sz/2),좌표/충돌/개수 불변 |
+| contour | n=0..96,t=n/96*2π,r=1+.035sin(5t)+.025cos(9t),squeeze=sin(phase-2t)*inset. px=cos(t)*(rx*r+squeeze),py=cy+sin(t)*(ry*r+squeeze*.6). phase=f/16*2π |
+| 접촉 그림자 | scaleY.7,radial중심(0,15),반경65alpha.7→124alpha0,RGB12,10,11 |
+| 외측 턱 | contour(106,80,9,1.6),fill#38372c,strokeRGBA148,128,96,.18,폭2 |
+| 안쪽 벽 | contour(97,71,9,1.6),linearY-65→78,stops0 #100f11 / .55 #26231d / 1 #69604a |
+| 벽 미세 재질 | 280점,x=sin(j*12.989)*103,y=9+cos(j*7.31)*76,2×(1+j%4). 홀수RGBA120,109,82,.2,짝수RGBA8,10,8,.3. 시간 고정 |
+| 벽 균열 | 안쪽 벽 clip안19개,t=j/19*2π,시작(cos(t)*98,9+sin(t)*72),끝(px*.88,py+19),RGBA10,9,10,.5,폭2+j%3 |
+| 낮은 독액 | contour(86,48,23,2),linearY-25→73,stops0 #1b2416 / .5 #45522a / 1 #788052. 벽과 독액 모두 clip해 가장자리 밖 유출 방지 |
+| 침전물 | 32개,px=sin(j*12.989)*81,py=23+cos(j*7.31)*43,타원반경(3+j%5,1+j%3),회전.2. 홀수RGBA16,24,14,.24 / 짝수147,151,90,.19 |
+| 수면 흐름 | 3개,p=(f/16+j/3)%1,중심((j-1)*24,22+sin(j)*14),반경(8+p*28,3+p*10),회전-.1,호.4→5.3,RGB176,173,110,alpha(1-p)*.24,폭1.3 |
+| 앞턱 가림 | j=0..48,t=j/48*π,rx=99+sin(phase-2t)*1.6,px=cos(t)*rx,py=9+sin(t)*73. RGBA36,28,26,.9 폭4;상면Y-2,RGBA143,125,91,.3 폭1.6. 수면보다 뒤에 그려 전경 턱 표현 |
+| 재생 | fract((now*.00095+x*.017+y*.011)/(2π))*16. 현재/다음프레임alpha(1-mix)/mix,기존6.614초 주기. 함수 전후 context state 보존 |
+| 구분 | 절차식 작은 pit의 깊이·국소 변형 구현. 뒤쪽 큰 m_c1gtoxicf 그림의 수직벽 분리·변형이나 전체 맵 높이/지형 변경은 아님. 기존 증기/기포/지면 층 유지 |
+
+MAP PRODUCTION REPORT — 9차
+
+STAGE: CH1-1 production. MASTER: 53점 silhouette/8regions/main route남북/side spaces보존. OUTER MASS: LEFT/RIGHT/TOP/SOUTH/major holes보존. LARGE: 원본source assets/composites/overlap/repeated silhouette보존. MEDIUM: 동측 독액 POI의 평면 원형 표현 교체,대형 원화 접합 잔여. GROUND: 국소 contact shadow·탁한 독액·지면 턱 연결;기존 contamination/동맥 유지. PLAYABLE: main arenas/travel/breathing/threat공간과 충돌 보존,녹색 독액과 어두운 경계 식별 유지. LANDMARK: primary시체나무/tertiary뿌리보존,secondary동측 독구덩이 깊이 보강. CAMERA QA: START/EARLY/ARENA/SIDE L/SIDE R/LANDMARK/LATE/EXIT+상세5곳,POOL_DETAIL 움직임GIF 추가. TECH QA: 21검사(효과13/geometry5/문법1/패키징2);route/collision/chunk seam원본불변,브라우저검수 결과 아래 기록. FILES: stage-owned효과/test/QA/본 문서;concurrent touched game전용hook·캐시/맵디테일2행/4개문서추가계약;unrelated touched없음. GIT: 코드+docs전용부분커밋,push/deploy없음.
+
+VISUAL VERDICT: RETOUCH — 국소 구덩이 깊이 보강. 전체 지면/대형 독액 원화와의 재질 통합 및 대규모 전투 최종 검수는 남음. NEXT PASS: 서로 다른 원화의 접합을 큰 재질 단위로 정리하되 넓은 공터·기존 배치 유지.
+
+9차 최종 QA: 최초 화면의 매끈한 그릇형 테두리를 확인하여 외측 명암/앞턱 폭을 낮추고 벽 미세 재질을 추가한 뒤 재촬영. POOL_DETAIL과 전체 camera-board 직접 확인. before/after 각13곳+COMBAT,오류/HTTP오류0,mapUnchanged=true. 재촬영90RAF median16.7ms,p95 49.9ms(1280×720 headless녹화중);성능등급 확정 아님. 실제 WASD/LMB/Q 입력,체력50ms보충 조건. 사망 UI 직접 호출buttonPresent/shown=true,error=null. 21검사 PASS. 뒤쪽 포토 재질과 절차식 구덩이의 스타일 차이가 남아 RETOUCH 유지.
+
+확인 페이지: <http://localhost:3333/captures/ch1_living_detail_pass9_20260926/index.html>. 변경 전은 현재게임에8차효과를 라우팅한 비교다. 기존 원본 pit_poison.png와 대형 웅덩이 에셋 보존.

@@ -48575,3 +48575,12 @@ mpR = 0.05 + s.int×0.005                                        [NO P.lv×0.001
 | 보존 | authored/MAP_OBJS 좌표·개수·충돌 불변. `m_c1gtoxicf`, 다른 좌표/스테이지, bossArena/fieldRebuildQA와 기존 bake에는 적용하지 않음 |
 | 폴백 | 웅덩이 이미지 또는 효과 스크립트/API 미로드 시 기존 장식을 그린다 |
 | 근거 | 겹친 두 웅덩이 실루엣을 하나로 정리하는 시각 전용 마감. 세부 수치·QA는 `docs/4.1맵디자인+설정/CH1_LIVING_DETAIL_RUNTIME_20260925.md` 7차에 기록. 위 날짜별 제작 수치는 해당 시점 이력 |
+
+
+### 2026-09-26 동측 독구덩이 입체 디테일
+
+| 대상 | 현행 런타임 예외 |
+|---|---|
+| pit_poison | 본편 stage0의 월드(6500,5580),타일(162,139)만 Ch1LivingDetail.pit의 절차식 투명 atlas로 그린다. 크기200×scale,좌표·collision·배치개수 유지. 안쪽 벽/낮은 수면/앞턱 가림 및 국소 수축 추가 |
+| 폴백·범위 | 효과 API 미로드 시 원래 pit_poison.png 렌더. 다른 위치/스테이지/bossArena/fieldRebuildQA에는 원래 그림 유지. 대형 m_c1gtoxicf 원화 보존 |
+| 계약 | 상세 수치·검수: CH1_LIVING_DETAIL_RUNTIME_20260925.md 9차. 원본 이미지 파일 변경 없음 |

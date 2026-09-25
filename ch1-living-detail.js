@@ -256,5 +256,81 @@
     const pool=sprites&&sprites.m_c1pool;
     return enabled(g)&&o.type==='m_c1gtoxic'&&o.x===6740&&o.y===1620&&!!(pool&&pool.complete&&pool.naturalWidth>1);
   }
-  root.Ch1LivingDetail=Object.freeze({draw,deform,shadows,hideDuplicate});
+  let pitAtlas;
+  function pit(c,g,o,now,meta){
+    // Only the existing eastern CH1 pit. Keep its original collision and footprint.
+    if(!enabled(g)||o.type!=='pit_poison'||o.x!==6500||o.y!==5580)return false;
+    if(!pitAtlas){
+      const a=root.document.createElement('canvas');a.width=a.height=1024;
+      const x=a.getContext('2d');
+      for(let f=0;f<16;f++){
+        const phase=f/16*Math.PI*2;
+        x.save();x.translate(f%4*256+128,Math.floor(f/4)*256+128);
+        x.beginPath();x.rect(-128,-128,256,256);x.clip();
+        function contour(rx,ry,cy,inset=0){
+          x.beginPath();
+          for(let n=0;n<=96;n++){
+            const t=n/96*Math.PI*2,r=1+.035*Math.sin(t*5)+.025*Math.cos(t*9);
+            const squeeze=Math.sin(phase-t*2)*inset;
+            const px=Math.cos(t)*(rx*r+squeeze),py=cy+Math.sin(t)*(ry*r+squeeze*.6);
+            if(n)x.lineTo(px,py);else x.moveTo(px,py);
+          }x.closePath();
+        }
+        // Soil contact, torn lip, then a dark inner wall above the sunken liquid.
+        x.save();x.scale(1,.7);
+        const shadow=x.createRadialGradient(0,15,65,0,15,124);
+        shadow.addColorStop(0,'rgba(12,10,11,.7)');shadow.addColorStop(1,'rgba(12,10,11,0)');
+        x.fillStyle=shadow;x.fillRect(-128,-128,256,256);x.restore();
+        contour(106,80,9,1.6);x.fillStyle='#38372c';x.fill();
+        x.strokeStyle='rgba(148,128,96,.18)';x.lineWidth=2;x.stroke();
+        contour(97,71,9,1.6);
+        const wall=x.createLinearGradient(0,-65,0,78);
+        wall.addColorStop(0,'#100f11');wall.addColorStop(.55,'#26231d');wall.addColorStop(1,'#69604a');
+        x.fillStyle=wall;x.fill();
+        x.save();x.clip();
+        for(let j=0;j<280;j++){
+          x.fillStyle=j%2?'rgba(120,109,82,.2)':'rgba(8,10,8,.3)';
+          x.fillRect(Math.sin(j*12.989)*103,9+Math.cos(j*7.31)*76,2,1+j%4);
+        }
+        for(let j=0;j<19;j++){
+          const t=j/19*Math.PI*2,px=Math.cos(t)*98,py=9+Math.sin(t)*72;
+          x.beginPath();x.moveTo(px,py);x.lineTo(px*.88,py+19);
+          x.strokeStyle='rgba(10,9,10,.5)';x.lineWidth=2+j%3;x.stroke();
+        }
+        contour(86,48,23,2);
+        const water=x.createLinearGradient(0,-25,0,73);
+        water.addColorStop(0,'#1b2416');water.addColorStop(.5,'#45522a');water.addColorStop(1,'#788052');
+        x.fillStyle=water;x.fill();x.save();x.clip();
+        for(let j=0;j<32;j++){
+          const px=Math.sin(j*12.989)*81,py=23+Math.cos(j*7.31)*43;
+          x.beginPath();x.ellipse(px,py,3+j%5,1+j%3,.2,0,Math.PI*2);
+          x.fillStyle=j%2?'rgba(16,24,14,.24)':'rgba(147,151,90,.19)';x.fill();
+        }
+        for(let j=0;j<3;j++){
+          const p=(f/16+j/3)%1;
+          x.beginPath();x.ellipse((j-1)*24,22+Math.sin(j)*14,8+p*28,3+p*10,-.1,.4,5.3);
+          x.strokeStyle='rgba(176,173,110,'+((1-p)*.24)+')';x.lineWidth=1.3;x.stroke();
+        }
+        x.restore();x.restore();
+        // Front lip occludes the liquid edge and catches a narrow damp highlight.
+        x.beginPath();
+        for(let j=0;j<=48;j++){
+          const t=j/48*Math.PI,rx=99+Math.sin(phase-t*2)*1.6;
+          const px=Math.cos(t)*rx,py=9+Math.sin(t)*73;
+          if(j)x.lineTo(px,py);else x.moveTo(px,py);
+        }
+        x.strokeStyle='rgba(36,28,26,.9)';x.lineWidth=4;x.stroke();
+        x.save();x.translate(0,-2);x.strokeStyle='rgba(143,125,91,.3)';x.lineWidth=1.6;x.stroke();x.restore();
+        x.restore();
+      }
+      pitAtlas=a;
+    }
+    const phase=((now*.00095+o.x*.017+o.y*.011)/(Math.PI*2)%1+1)%1*16;
+    const f=Math.floor(phase),next=(f+1)%16,mix=phase-f,sz=(meta&&meta.sz||200)*(o.scale||1);
+    c.save();const alpha=c.globalAlpha;
+    c.globalAlpha=alpha*(1-mix);c.drawImage(pitAtlas,f%4*256,Math.floor(f/4)*256,256,256,o.x-sz/2,o.y-sz/2,sz,sz);
+    c.globalAlpha=alpha*mix;c.drawImage(pitAtlas,next%4*256,Math.floor(next/4)*256,256,256,o.x-sz/2,o.y-sz/2,sz,sz);
+    c.restore();return true;
+  }
+  root.Ch1LivingDetail=Object.freeze({draw,deform,shadows,hideDuplicate,pit});
 })(globalThis);
