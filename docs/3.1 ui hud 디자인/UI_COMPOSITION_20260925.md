@@ -10,7 +10,7 @@
 
 | 항목 | 현재 구현 |
 |---|---|
-| 연결 | game.html/game-easy-test.html: ui-refinement.css?v=20260925-12, defer ui-panels.js?v=20260925-1. index.html은 CSS만. NW.js 두 파일 복사 |
+| 연결 | game.html/game-easy-test.html: ui-refinement.css?v=20260925-14, defer ui-panels.js?v=20260925-1. index.html은 CSS만. NW.js 두 파일 복사 |
 | 설정 | 왼쪽 폭 min(680px,100vw−24px), 높이100dvh−24px, 최대높이1000px |
 | 장비 | 오른쪽 폭 clamp(640px,36vw,780px), 최대100vw−24px; 폭≤780에서는100vw−16px |
 | 스킬/대장간/창고 | 각각 최대1020/980/700px, 화면폭−24px 이내. 스킬 왼쪽; 대장간/창고 중앙 |
@@ -149,7 +149,7 @@ POE2 설정 화면과 Diablo IV 장비 화면을 참고한 최신 표현 계약�
 | 인벤 헤더 | 제목과 정보행을 한 열 grid로 분리. 제목 폭100%/최소88px/padding54px 12px 8px. 중앙 문장204×68px. 제목판 top53/좌우24%/bottom0, 폭560px 이하 좌우18% |
 | 정보행 | 전투력·악의·닫기 정렬. gap8px/padding0 4px 8px/아래선1px #65583f. 전투력·악의의 중첩 박스 삭제. 문장과 충돌하지 않음 |
 | 장비 구획 | 섹션 선1px #65583f, 중복 inset선 제거. 슬롯 안쪽 iskin 등급 그림자 제거, 바깥 슬롯 희귀도 테두리 유지. 슬롯 음영 inset0 2px5px, 라벨#e0d2b2 |
-| 캐시 | ui-refinement.css?v=20260925-12, 게임 두 HTML 및 로비 동기화 |
+| 캐시 | ui-refinement.css?v=20260925-14, 게임 두 HTML 및 로비 동기화 |
 
 CSS 변경만 적용. 기존 에셋 재사용. 자동 테스트 추가·실행 없음.
 
@@ -169,7 +169,7 @@ CSS 변경만 적용. 기존 에셋 재사용. 자동 테스트 추가·실행 �
 | 낮은 화면 | 높이800px 이하 제목최소116px/padding-top86px. 문장156×88px, 원본156×156px/center −28px. 제목판top84px |
 | 좁은 화면 | 폭560px 이하 패널padding30px22px24px, 프레임48px. 원본 투명 합성, 배경실패 시 제목 텍스트/기본 판 유지 |
 | 기록 | img/ui/blackiron/prompts.md에 두 프롬프트 전문·생성ID·투명도 기록. 신규 픽셀 후처리 없음. img 폴더는 기존 NW.js 패키징 대상 |
-| 버전 | ui-refinement.css?v=20260925-12 |
+| 버전 | ui-refinement.css?v=20260925-14 |
 
 자동 테스트 추가·실행 없음. 원본 알파와 브라우저 렌더를 직접 확인.
 
@@ -190,7 +190,7 @@ CSS 변경만 적용. 기존 에셋 재사용. 자동 테스트 추가·실행 �
 | 가방 | padding12px14px, 헤더최소30px/하단padding8px/여백8px/구분선1px#49483e. 제목14px/500, 정렬버튼최소28px/12px/좌우10px |
 | 필터·격자 | 필터12px/행간1.5/하단9px, 추가 상단선 제거. 격자 외곽outline0, 각 빈 셀1px#3b4037/각진 모서리/흑철 음영 |
 | 폭560px 이하 | 제목최소68px/22px/좌8px·우132px, 문장우8px/120×70px/배경120×120px/center−21px |
-| 적용 | ui-refinement.css?v=20260925-12, game.html/game-easy-test.html/index.html 동기화. DOM·게임 수치 변경 없음 |
+| 적용 | ui-refinement.css?v=20260925-14, game.html/game-easy-test.html/index.html 동기화. DOM·게임 수치 변경 없음 |
 
 자동 테스트 추가·실행 없음. 렌더 확인은 디자인 외관에 한정한다.
 
@@ -216,6 +216,43 @@ CSS 변경만 적용. 기존 에셋 재사용. 자동 테스트 추가·실행 �
 | 문장 연결 | 제목 오른쪽 기존 문장을164×96px/배경164×164px/center−28px, bottom−10px로 내려 제목 구분선과 연결 |
 | 폭560px 이하 | 문장120×70px/배경120×120px/center−21px/bottom−6px |
 | 범위·폴백 | 인벤토리에만 적용. 에셋 로드 실패 시 단색 바탕과 기존 DOM 텍스트 유지. normal 합성, 기존 NW.js img 복사 대상 |
-| 버전 | ui-refinement.css?v=20260925-12 |
+| 버전 | ui-refinement.css?v=20260925-14 |
 
 위 규격이 인벤토리의 이전 표면·테두리·문장 위치 규격을 대체한다. 자동 테스트는 추가하거나 실행하지 않으며 실제 브라우저 외관을 확인한다.
+
+
+## 2026-09-25 참고 화면 조사·인벤토리 디테일 통합
+
+참고: 사용자 스크린샷 175513(디아블로 캐릭터 UI),175521(현재 게임). 외부 근거: [Blizzard UI Design, 2020-02](https://news.blizzard.com/en-gb/article/23308274/diablo-iv-quarterly-updatefebruary-2020). 공식 설명은 작은 아이콘의 현실적인 재질, 낮은 배경 채도, 테두리 장식의 보조 등급 표시, 개별 UI 요소의 대비 및 배치 균형을 강조한다. 아래 비교는 제공 화면에 대한 관찰이며 현재 디아블로 최신 빌드의 수치 규격을 주장하지 않는다.
+
+| 영역 | 참고 화면에서 관찰한 점 | 기존 구현의 부족 | 보강 |
+|---|---|---|---|
+| 박스 위계 | 외곽/구획/슬롯의 프레임 굵기와 장식 크기가 구분됨 | 안쪽은 균일한 얇은 선, 외곽만 장식 | 외곽 기존 Blackiron, 내부6px·슬롯3px 금속 레일 |
+| 슬롯 | 눌린 바탕과 틀, 작은 등급 장식 | 초록 테두리와 빈 칸이 같은 구조 | 금속 틀/낮은 채도 등급 인레이/보조 마름모, 빈 슬롯 감광 |
+| 글자 | 제목·주요수치·보조정보 크기 구분 | 제목 주변 여백은 크고 세부 수치는 작음 | 제목띠58px, 전투력21px, 세부12px |
+| 조작부 | 버튼·구획 제목·화폐 줄까지 같은 재질 | 하단 버튼과 스크롤이 별도 양식 | 공통 금속판 버튼/하단 레일/가방 전용 스크롤 |
+| 누적 스타일 | 요소별 재질 체계가 반복됨 | 후속 override 블록3개 누적 | Inventory finish 이후를 통합 규칙1개로 교체 |
+
+### 최신 인벤토리 표시 계약
+
+이 절은 이전 인벤토리 전용 제목·슬롯·가방·하단 마감 규격을 대체한다. 게임 수치/장비 좌표/아이템 크기/드래그·선택·잠금 기능은 변경하지 않는다.
+
+| 대상 | 구현 규격 |
+|---|---|
+| 제목 | 최소58px/padding0 130px 0 16px,24px·600·자간.08em, 철판 질감 띠. 문장122×72px/right12px/bottom−9px/background122×122px center−21px |
+| 수치 | 라벨12px,전투력21px/600,세부12px,재화12px. 수치 행padding0 8px/간격10px/하단12px |
+| 탭·버튼 | 기존 button.webp 100%×100%, normal 합성. 탭높이36px/13px·500. 적갈색 선택/하단2px#ac7953. hover 밝기1.18,키보드focus2px#d6bd89 |
+| 구획 | 장비/가방/유골함/보관함/상세 border-image frame.webp 4%/6px. 실패시6px#504b41 |
+| 장비 슬롯 | 기존72×72px, border-image동일4%/3px, padding2px 0 18px. 아이콘48×48px,이름하단1px/좌우2px/높이16px/12px·500 |
+| 등급 색 | rarity0=#978e7d,1=#81a36b,2=#6f9dba,3=#ac86b8,4=#c5a15f,5=#d48d5b. 실제 게임 등급 이름은 원래 시스템을 따르며 여기서는 rarity0~5 순서의 색상 규격 |
+| 보조 표식 | 장착 아이템 좌상단5px/6×6px 마름모. rarity4~5는12×6px 두 마름모. 이름 위1px 등급 인레이. 빈 슬롯은 표식 없이 글자#8f897d/선#403d37 |
+| 가방 | padding8px10px10px/헤더34px/하단여백8px/구분선1px#635b4d,제목14px·500. 정렬66×28px최소/12px |
+| 필터 |12px/summary최소24px/하단8px,열림색#e4cfaa |
+| 빈 격자·아이템 | 빈칸선1px#383638/철판감광. 아이템 각진모서리/낮은 적갈색 바탕. 기존 좌측등급선·잠금·선택outline 유지 |
+| 가방 스크롤 | invCenter overflow hidden,invGrid flex-shrink1/min-height140px/overflow-y auto. scrollbar thin,WebKit7px/철색thumb/트랙#121113 |
+| 공간 배분 | 장비 minmax(320px,1.3fr), 가방 minmax(200px,1fr). 실행할 버튼이 전혀 없는 하단은 숨겨 빈 공간 제거 |
+| 하단 | 상단여백8px/padding-top8px/높이최소42px/상단선1px#5b5143/우측 정렬. 버튼최소34px/padding7px16px/12px·500 |
+| 폭560px 이하 | 제목52px/22px/좌8px우110px,문장104×62px/right4px/bottom−8px/background104×104px center−18px,세부수치10px |
+| 통합·버전 | ui-refinement.css Inventory finish 블록 하나로 최근3개 마감 블록 대체. ui-refinement.css?v=20260925-14. 신규 에셋 생성 없음 |
+
+전체 아트 완성도는 콘셉트와 동등하다고 판정하지 않는다. 이번 범위는 박스 위계·슬롯 재질·조작부 통일. 자동 테스트 추가·실행 없이 실제 렌더를 확인한다.
