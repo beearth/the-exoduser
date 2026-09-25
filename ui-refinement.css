@@ -321,7 +321,7 @@
 
 /* Blackiron art set: cast pewter crest and continuous architectural frame. */
 :is(#settings,#invPanel,#forge,#skillPanel,#storagePanel,#statPanel){
-  --ui-crest:url('img/ui/blackiron/crest.png');
+  --ui-crest:url('img/ui/blackiron/skull.png');
   --ui-frame:url('img/ui/blackiron/frame.png');
 }
 :is(#settings,#invPanel,#forge,#skillPanel,#storagePanel,#statPanel).panel .pbox{
@@ -338,7 +338,7 @@
 :is(#settings,#invPanel,#forge,#skillPanel,#storagePanel) .ptitle::before,
 #invPanel.panel .pbox .ptitle::before{
   width:200px!important;height:112px!important;top:0!important;
-  background:var(--ui-crest) center -36px / 200px 200px no-repeat!important;
+  background:var(--ui-crest) center/contain no-repeat!important;
   filter:none!important;
 }
 :is(#settings,#invPanel,#forge,#skillPanel,#storagePanel) .ptitle::after,
@@ -348,7 +348,7 @@
 }
 @media(max-height:800px){
  :is(#settings,#invPanel,#forge,#skillPanel,#storagePanel) .ptitle,#invPanel.panel .pbox .ptitle{min-height:116px!important;padding-top:86px!important;}
- :is(#settings,#invPanel,#forge,#skillPanel,#storagePanel) .ptitle::before,#invPanel.panel .pbox .ptitle::before{width:156px!important;height:88px!important;background-size:156px 156px!important;background-position:center -28px!important;}
+ :is(#settings,#invPanel,#forge,#skillPanel,#storagePanel) .ptitle::before,#invPanel.panel .pbox .ptitle::before{width:156px!important;height:88px!important;background-size:contain!important;background-position:center!important;}
  :is(#settings,#invPanel,#forge,#skillPanel,#storagePanel) .ptitle::after,#invPanel.panel .pbox .ptitle::after{top:84px!important;}
 }
 @media(max-width:560px){:is(#settings,#invPanel,#forge,#skillPanel,#storagePanel,#statPanel).panel .pbox{padding:30px 22px 24px!important;} :is(#settings,#invPanel,#forge,#skillPanel,#storagePanel,#statPanel).panel .pbox::after{border-width:48px!important;border-image-width:48px!important;}}
@@ -369,7 +369,7 @@
 #invPanel.panel .pbox .ptitle::before{
  width:122px!important;height:72px!important;top:auto!important;bottom:-9px!important;
  left:auto!important;right:12px!important;transform:none!important;filter:none!important;
- background:var(--ui-crest) center -21px/122px 122px no-repeat!important;
+ background:var(--ui-crest) center/contain no-repeat!important;
 }
 #invPanel.panel .pbox .ptitle::after{
  inset:auto 0 0!important;height:1px!important;border:0!important;box-shadow:none!important;
@@ -447,7 +447,7 @@
 #invPanel.panel .pbox #invGrid::-webkit-scrollbar-thumb{background:linear-gradient(90deg,#514b40,#897a60,#514b40);border:1px solid #171617;border-radius:0;}
 @media(max-width:560px){
  #invPanel.panel .pbox .ptitle{min-height:52px!important;padding-left:8px!important;padding-right:110px!important;font-size:22px!important;}
- #invPanel.panel .pbox .ptitle::before{width:104px!important;height:62px!important;right:4px!important;bottom:-8px!important;background-size:104px 104px!important;background-position:center -18px!important;}
+ #invPanel.panel .pbox .ptitle::before{width:104px!important;height:62px!important;right:4px!important;bottom:-8px!important;background-size:contain!important;background-position:center!important;}
  #invPanel.panel .pbox #cpBreak{font-size:10px!important;}
 }
 
