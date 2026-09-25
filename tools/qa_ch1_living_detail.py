@@ -7,7 +7,7 @@ from PIL import Image
 from pathlib import Path
 from playwright.sync_api import sync_playwright
 
-out = Path('captures/ch1_living_detail_pass7_20260925') / ('before' if '--before' in sys.argv else 'after')
+out = Path('captures/ch1_living_detail_pass8_20260925') / ('before' if '--before' in sys.argv else 'after')
 out.mkdir(parents=True, exist_ok=True)
 errors, failed, boards = [], [], []
 with sync_playwright() as p:
@@ -15,7 +15,7 @@ with sync_playwright() as p:
     context = browser.new_context(viewport={'width':1280,'height':720},record_video_dir=str(out),record_video_size={'width':1280,'height':720})
     page = context.new_page()
     if '--before' in sys.argv:
-        page.route('**/ch1-living-detail.js*',lambda route:route.fulfill(path='tmp/ch1-living-detail-pass6.js',content_type='text/javascript'))
+        page.route('**/ch1-living-detail.js*',lambda route:route.fulfill(path='tmp/ch1-living-detail-pass7.js',content_type='text/javascript'))
     page.on('pageerror', lambda e: errors.append(str(e)))
     page.on('console', lambda m: errors.append(m.text) if m.type=='error' else None)
     page.on('response', lambda r: failed.append(r.url) if r.status >= 400 else None)
@@ -37,14 +37,14 @@ with sync_playwright() as p:
         page.wait_for_timeout(1500)
         assert page.evaluate("P.hp>0&&P.s!=='fallen'&&P.s!=='dead'"), 'camera tour interrupted by player death'
         page.screenshot(path=str(out / (name+'.png')))
-        if name=='TISSUE_DETAIL':
+        if name in ['TISSUE_DETAIL','COCOON_DETAIL','AUTHORED_POOL']:
             frames, times = [], []
             for _ in range(24):
                 times.append(time.monotonic())
                 frames.append(Image.open(io.BytesIO(page.screenshot(clip={'x':400,'y':80,'width':480,'height':360}))).convert('RGB'))
                 page.wait_for_timeout(250)
             durations=[round((b-a)*1000) for a,b in zip(times,times[1:])]
-            frames[0].save(out/'artery-closeup.gif',save_all=True,append_images=frames[1:],duration=durations+[durations[-1]],loop=0)
+            frames[0].save(out/(name.lower()+'-closeup.gif'),save_all=True,append_images=frames[1:],duration=durations+[durations[-1]],loop=0)
         if name in ['START','TREE_DETAIL','COCOON_DETAIL','POOL_DETAIL']:
             page.wait_for_timeout(6000)
             page.screenshot(path=str(out / (name+'_motion.png')))
@@ -70,7 +70,8 @@ with sync_playwright() as p:
     for i,name in enumerate([b['name'] for b in boards]+['COMBAT']):
         shot=Image.open(out/(name+'.png')).convert('RGB');shot.thumbnail((320,180));sheet.paste(shot,((i%4)*320,(i//4)*180))
     sheet.save(out/'camera-board.jpg',quality=90)
-    result={'errors':errors,'httpErrors':failed,'cameras':boards,'detail':audit,'inputQA':{'healthRefillMs':50,'start':start,'end':end,'frameTimesMs':frame_times},'outer':page.evaluate('__ch1StartOuterQA()')}
+    death_check=page.evaluate('''()=>{clearInterval(window.__ch1QAHeal);const buttonPresent=!!document.getElementById('deathReplayBtn');try{P._fallenCanRevive=false;P.s='fallen';G.paused=true;_fallenResolve();return {buttonPresent,shown:document.getElementById('death').classList.contains('on'),error:null};}catch(e){return {buttonPresent,error:String(e),stack:e.stack};}}''')
+    result={'errors':errors,'httpErrors':failed,'cameras':boards,'detail':audit,'deathCheck':death_check,'inputQA':{'healthRefillMs':50,'start':start,'end':end,'frameTimesMs':frame_times},'outer':page.evaluate('__ch1StartOuterQA()')}
     (out/'runtime.json').write_text(json.dumps(result,ensure_ascii=False,indent=2),encoding='utf-8')
     print(json.dumps({'errors':errors,'httpErrors':failed,'captures':str(out)},ensure_ascii=False))
     context.close()

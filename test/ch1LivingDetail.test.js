@@ -98,3 +98,13 @@ test('duplicate toxic ground hides only at the authored pool and retains loading
   assert.equal(scope.Ch1LivingDetail.hideDuplicate(g,{...o,type:'m_c1gtoxicf'},loaded),false);
   assert.equal(scope.Ch1LivingDetail.hideDuplicate(g,{...o,x:100},loaded),false);
 });
+test('pool vapor rises locally above the surface and loops without a frame seam',()=>{
+  function vapor(time){
+    const a=createCanvas(600,600),c=a.getContext('2d');
+    scope.Ch1LivingDetail.draw(c,{stage:0,cam:{x:300,y:300}},[{type:'m_c1pool',x:300,y:300}],time,600,600,true);
+    return c.getImageData(200,140,200,110).data;
+  }
+  assert.ok(vapor(1200).some(v=>v!==0),'rising vapor must extend above the existing surface bubbles');
+  assert.notDeepEqual(vapor(1200),vapor(3200));
+  assert.deepEqual(vapor(1200),vapor(1200+Math.PI*2/.00095));
+});

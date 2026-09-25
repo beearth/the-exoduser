@@ -105,6 +105,19 @@
       }
       }
       if(wet&&surfaceOnly){
+        // Thin rising pockets of damp vapor; opacity vanishes at both loop ends.
+        for(let j=0;j<3;j++){
+          const p=((phase/(Math.PI*2)+j/3)%1+1)%1;
+          const opacity=Math.pow(Math.sin(p*Math.PI),1.4)*.24;
+          const x=(j-1)*35+Math.sin(p*Math.PI*2+j)*14,y=6-p*105;
+          const radius=13+p*17;
+          c.save();c.translate(x,y);c.scale(.72,1.4);
+          const mist=c.createRadialGradient(0,0,0,0,0,radius);
+          mist.addColorStop(0,'rgba(157,150,105,'+opacity+')');
+          mist.addColorStop(.45,'rgba(105,111,74,'+(opacity*.65)+')');
+          mist.addColorStop(1,'rgba(74,83,55,0)');
+          c.fillStyle=mist;c.fillRect(-radius,-radius,radius*2,radius*2);c.restore();
+        }
         for(let j=0;j<5;j++){
           const p=((phase/(Math.PI*2)+j*.219)%1+1)%1;
           const x=Math.cos(j*2.399)*42,y=Math.sin(j*2.399)*19;
@@ -132,6 +145,14 @@
           const p=((phase/(Math.PI*2)+j/3)%1+1)%1,x=(j-1)*23;
           if(p<.65){
             const q=p/.65;
+            // A sticky neck stretches, thins, then detaches before the droplet lands.
+            if(q<.82){
+              const endY=-42+q*q*56,drift=Math.sin(phase+j)*2;
+              c.beginPath();c.moveTo(x,-44);c.quadraticCurveTo(x-3+drift,-40+(endY+42)*.45,x+drift,endY);
+              c.strokeStyle='rgba(112,91,66,'+((1-q/.82)*.55)+')';
+              c.lineWidth=2.2*(1-q/.82)+.35;c.stroke();
+              c.save();c.translate(-.65,0);c.strokeStyle='rgba(176,151,108,'+((1-q/.82)*.24)+')';c.lineWidth=.65;c.stroke();c.restore();
+            }
             c.beginPath();c.ellipse(x+Math.sin(phase+j)*2,-42+q*q*56,2.2,3+q*3,0,0,Math.PI*2);
             c.fillStyle='rgba(92,74,55,'+(Math.sin(q*Math.PI)*.65)+')';c.fill();
           }else{

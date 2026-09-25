@@ -6,7 +6,7 @@
 
 | id / 적용 위치 | 값 / 동작 |
 |---|---|
-| 구현 | `ch1-living-detail.js?v=20260925-7`, 전역 `Ch1LivingDetail.draw/deform/shadows/hideDuplicate`; `build-nwjs.mjs` 배포 FILES에도 포함 |
+| 구현 | `ch1-living-detail.js?v=20260925-8`, 전역 `Ch1LivingDetail.draw/deform/shadows/hideDuplicate`; `build-nwjs.mjs` 배포 FILES에도 포함 |
 | 범위 | `G.stage===0`, `_bossArena` 및 `_fieldRebuildQA` 제외 |
 | 지면 순서 | `_drawCh1Hill` 다음, 오브젝트·캐릭터·전투 효과 이전. `surfaceOnly=true` 잔물결은 맵 오브젝트 뒤/캐릭터 앞 |
 | 앵커 배율 | `m_c1tree:2.1`, `m_c1cocoon:1.1`, `m_c1pool:1.25`, `m_c1spod:.65`, `m_c1sroot:.75`, `pit_poison:1.2`, `m_rotten_tree:1` |
@@ -209,3 +209,26 @@ VISUAL VERDICT: RETOUCH — 기존 맵 보존 범위의 피부막·움직임·�
 7차 최종 after 결과: 카메라13곳 및 COMBAT 촬영, 전체 contact board/AUTHORED_POOL/COMBAT 직접 확인. errors/HTTP errors0, mapUnchanged=true. 실제 입력 전후 위치(4020,7220)→(4011.69222,7211.69222); 네 방향 복귀 입력이므로 총 이동거리가 아닌 종료 좌표다.90RAF 표본 median33.4ms/p95 50.1ms(1280×720 headless·녹화중). 이는 대규모 전투 성능 통과 근거가 아니다. native효과 CPU 표본은 별도로runtime.json에 보존. 최초 사망 오류는 미해결이며 재촬영의0오류와 구분한다.
 
 확인 페이지: <http://localhost:3333/captures/ch1_living_detail_pass7_20260925/index.html>. before는 같은 현재게임에6차 효과 스크립트를 연결한 아트 비교이며, 이전 게임 전체버전을 실행한 결과가 아니다. 기존 맵의 국소 디테일 마감과 전체 콘셉트 완성 상태를 구분한다.
+
+## 8차: 독액 증기와 고치 점액 연결
+
+| id / 적용 | 현재 수치·공식 |
+|---|---|
+| 증기 / m_c1pool,pit_poison | surfaceOnly 기존 수면 atlas에3갈래 추가. j=0..2,p=fract(phase/(2π)+j/3),phase=now*.00095+x*.017+y*.011. 주기약6.614초, 기존16프레임 보간 사용 |
+| 이동·크기 | local x=(j-1)*35+sin(p*2π+j)*14,y=6-p*105,radius=13+p*17. 타원배율(.72,1.4). 위로105local px 상승,기존 오브젝트별 배율 적용 |
+| 증기 합성 | opacity=sin(p*π)^1.4*.24. radial 0 RGB157,150,105 alpha opacity / .45 RGB105,111,74 alpha opacity*.65 / 1 RGB74,83,55 alpha0. source-over,양끝 투명,글로우 없음 |
+| 점액 줄기 / m_c1cocoon,m_c1spod | 기존3개 낙하 체액에서 p<.65,q=p/.65,그중 q<.82일 때만 목 연결. x=(j-1)*23,endY=-42+q²*56,drift=sin(phase+j)*2 |
+| 줄기 곡선 | 시작(x,-44),quadratic제어(x-3+drift,-40+(endY+42)*.45),끝(x+drift,endY). 폭2.2*(1-q/.82)+.35,RGBA112,91,66,alpha(1-q/.82)*.55 |
+| 줄기 상면 | X-.65,폭.65,RGB176,151,108,alpha(1-q/.82)*.24. 분리 후 기존 방울·착지 파문 유지 |
+| 자원·영향 | 기존 atlas에만 추가해6atlas+4membrane의39.0625MiB 상한 유지(나무 그림자 별도). 새파일/로드/파티클/충돌/피해/스폰 없음. 네이티브 canvas에서 최초 생성, GPU proxy에는 drawImage만 전달 |
+| QA | 카메라13곳+COMBAT. TISSUE_DETAIL/COCOON_DETAIL/AUTHORED_POOL은 각각24프레임 GIF,측정한 캡처 간격으로 재생. 체력50ms보충 조건 유지. 촬영 후 보충 중단·부활불가 설정·_fallenResolve 직접 호출로 사망 UI 분리 검사 |
+
+MAP PRODUCTION REPORT — 8차
+
+STAGE: CH1-1 production. MASTER: 기존53점 silhouette,8regions,남북 main route,side spaces 보존. OUTER MASS: LEFT/RIGHT/TOP/SOUTH와 holes 보존. LARGE: 기존 sources/composites/overlap/repeated silhouette 유지. MEDIUM: 기존 연결부와 remaining holes 변경 없음. GROUND: 기존 피부막/오염/그림자/동맥 유지. PLAYABLE: arenas/travel/breathing/threat 공간·장애물·충돌 불변. LANDMARK: primary시체나무 유지,secondary고치·독액에 점액 목과 상승증기 추가,tertiary뿌리 유지. CAMERA QA: START/EARLY/ARENA/SIDE L/SIDE R/LANDMARK/LATE/EXIT 및 상세5곳,contact board와 웅덩이/고치 원배율 화면 직접 확인. TECH QA: 20검사(효과12/geometry5/문법1/패키징2) PASS;mapUnchanged=true,errors/HTTP errors0,route/collision/chunk seam 보존.90RAF median33.3ms,p95 50ms(headless1280×720녹화중),native효과CPU p95약.1ms;대규모 전투 성능PASS 근거 아님. FILES: stage-owned효과/test/QA/본 문서,concurrent touched game캐시·맵디테일2행만,unrelated touched없음. GIT: 전용 부분커밋,코드+docs포함,push/deploy없음.
+
+VISUAL VERDICT: RETOUCH — 기존 맵의 국소 습기·체액 움직임 추가는 확인. 전체 흙·식생과 생체 오브젝트의 재질 통합은 미완료. 새 원화 전체 적용이나 구덩이 벽 변형을 완료로 판정하지 않는다.
+
+사망 재검수: 이번 현재 작업트리에서 deathReplayBtn 존재=true,_fallenResolve 이후 death 표시=true,error=null. 7차 사망오류는 이번 조건에서 재현되지 않았으며 이 작업이 사망 시스템을 수정한 것은 아니다. 자연 사망부터 리플레이·재시작까지의 전체 회귀 검수는 별도다.
+
+확인: <http://localhost:3333/captures/ch1_living_detail_pass8_20260925/index.html>. before는 현재게임에7차 효과를 연결한 비교. NEXT PASS: 전체 재질 통합과 동측 독액 POI의 평면적인 원형 마커 접합 검토. 원본·충돌 유지, 위험범위 가독성을 먼저 검증할 것.
