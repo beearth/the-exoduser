@@ -10,7 +10,7 @@
 
 | 항목 | 현재 구현 |
 |---|---|
-| 연결 | game.html/game-easy-test.html: ui-refinement.css?v=20260925-16, defer ui-panels.js?v=20260925-1. index.html은 CSS만. NW.js 두 파일 복사 |
+| 연결 | game.html/game-easy-test.html: ui-refinement.css?v=20260925-19, defer ui-panels.js?v=20260925-1. index.html은 CSS만. NW.js 두 파일 복사 |
 | 설정 | 왼쪽 폭 min(680px,100vw−24px), 높이100dvh−24px, 최대높이1000px |
 | 장비 | 오른쪽 폭 clamp(640px,36vw,780px), 최대100vw−24px; 폭≤780에서는100vw−16px |
 | 스킬/대장간/창고 | 각각 최대1020/980/700px, 화면폭−24px 이내. 스킬 왼쪽; 대장간/창고 중앙 |
@@ -149,7 +149,7 @@ POE2 설정 화면과 Diablo IV 장비 화면을 참고한 최신 표현 계약�
 | 인벤 헤더 | 제목과 정보행을 한 열 grid로 분리. 제목 폭100%/최소88px/padding54px 12px 8px. 중앙 문장204×68px. 제목판 top53/좌우24%/bottom0, 폭560px 이하 좌우18% |
 | 정보행 | 전투력·악의·닫기 정렬. gap8px/padding0 4px 8px/아래선1px #65583f. 전투력·악의의 중첩 박스 삭제. 문장과 충돌하지 않음 |
 | 장비 구획 | 섹션 선1px #65583f, 중복 inset선 제거. 슬롯 안쪽 iskin 등급 그림자 제거, 바깥 슬롯 희귀도 테두리 유지. 슬롯 음영 inset0 2px5px, 라벨#e0d2b2 |
-| 캐시 | ui-refinement.css?v=20260925-16, 게임 두 HTML 및 로비 동기화 |
+| 캐시 | ui-refinement.css?v=20260925-19, 게임 두 HTML 및 로비 동기화 |
 
 CSS 변경만 적용. 기존 에셋 재사용. 자동 테스트 추가·실행 없음.
 
@@ -169,7 +169,7 @@ CSS 변경만 적용. 기존 에셋 재사용. 자동 테스트 추가·실행 �
 | 낮은 화면 | 높이800px 이하 제목최소116px/padding-top86px. 문장156×88px, 원본156×156px/center −28px. 제목판top84px |
 | 좁은 화면 | 폭560px 이하 패널padding30px22px24px, 프레임48px. 원본 투명 합성, 배경실패 시 제목 텍스트/기본 판 유지 |
 | 기록 | img/ui/blackiron/prompts.md에 두 프롬프트 전문·생성ID·투명도 기록. 신규 픽셀 후처리 없음. img 폴더는 기존 NW.js 패키징 대상 |
-| 버전 | ui-refinement.css?v=20260925-16 |
+| 버전 | ui-refinement.css?v=20260925-19 |
 
 자동 테스트 추가·실행 없음. 원본 알파와 브라우저 렌더를 직접 확인.
 
@@ -190,7 +190,7 @@ CSS 변경만 적용. 기존 에셋 재사용. 자동 테스트 추가·실행 �
 | 가방 | padding12px14px, 헤더최소30px/하단padding8px/여백8px/구분선1px#49483e. 제목14px/500, 정렬버튼최소28px/12px/좌우10px |
 | 필터·격자 | 필터12px/행간1.5/하단9px, 추가 상단선 제거. 격자 외곽outline0, 각 빈 셀1px#3b4037/각진 모서리/흑철 음영 |
 | 폭560px 이하 | 제목최소68px/22px/좌8px·우132px, 문장우8px/120×70px/배경120×120px/center−21px |
-| 적용 | ui-refinement.css?v=20260925-16, game.html/game-easy-test.html/index.html 동기화. DOM·게임 수치 변경 없음 |
+| 적용 | ui-refinement.css?v=20260925-19, game.html/game-easy-test.html/index.html 동기화. DOM·게임 수치 변경 없음 |
 
 자동 테스트 추가·실행 없음. 렌더 확인은 디자인 외관에 한정한다.
 
@@ -216,7 +216,7 @@ CSS 변경만 적용. 기존 에셋 재사용. 자동 테스트 추가·실행 �
 | 문장 연결 | 제목 오른쪽 기존 문장을164×96px/배경164×164px/center−28px, bottom−10px로 내려 제목 구분선과 연결 |
 | 폭560px 이하 | 문장120×70px/배경120×120px/center−21px/bottom−6px |
 | 범위·폴백 | 인벤토리에만 적용. 에셋 로드 실패 시 단색 바탕과 기존 DOM 텍스트 유지. normal 합성, 기존 NW.js img 복사 대상 |
-| 버전 | ui-refinement.css?v=20260925-16 |
+| 버전 | ui-refinement.css?v=20260925-19 |
 
 위 규격이 인벤토리의 이전 표면·테두리·문장 위치 규격을 대체한다. 자동 테스트는 추가하거나 실행하지 않으며 실제 브라우저 외관을 확인한다.
 
@@ -253,7 +253,7 @@ CSS 변경만 적용. 기존 에셋 재사용. 자동 테스트 추가·실행 �
 | 공간 배분 | 장비 minmax(320px,1.3fr), 가방 minmax(200px,1fr). 실행할 버튼이 전혀 없는 하단은 숨겨 빈 공간 제거 |
 | 하단 | 상단여백8px/padding-top8px/높이최소42px/상단선1px#5b5143/우측 정렬. 버튼최소34px/padding7px16px/12px·500 |
 | 폭560px 이하 | 제목52px/22px/좌8px우110px,문장104×62px/right4px/bottom−8px/background104×104px center−18px,세부수치10px |
-| 통합·버전 | ui-refinement.css Inventory finish 블록 하나로 최근3개 마감 블록 대체. ui-refinement.css?v=20260925-16. 신규 에셋 생성 없음 |
+| 통합·버전 | ui-refinement.css Inventory finish 블록 하나로 최근3개 마감 블록 대체. ui-refinement.css?v=20260925-19. 신규 에셋 생성 없음 |
 
 전체 아트 완성도는 콘셉트와 동등하다고 판정하지 않는다. 이번 범위는 박스 위계·슬롯 재질·조작부 통일. 자동 테스트 추가·실행 없이 실제 렌더를 확인한다.
 
@@ -271,7 +271,7 @@ CSS 변경만 적용. 기존 에셋 재사용. 자동 테스트 추가·실행 �
 | 사용 범위 | 기존 Blackiron 문장을 참조하는 설정/인벤토리/대장간/스킬/창고/능력치 변수 교체. 로비/HUD 원본은 유지 |
 | 합성 | normal 알파, 배경center/contain. 원본의 뿔·턱을 자르던 이전 crop offset 제거. 인벤토리122×72px 박스/좁은화면104×62px 기존 크기 유지 |
 | 폴백 | CSS 이미지 로딩 실패 시 문장 장식만 사라지고 DOM 제목·프레임·조작 유지 |
-| 버전 | ui-refinement.css?v=20260925-16, game.html/game-easy-test.html/index.html 동기화 |
+| 버전 | ui-refinement.css?v=20260925-19, game.html/game-easy-test.html/index.html 동기화 |
 | 기록 | img/ui/blackiron/skull.md 프롬프트 및 생성 정보. 기존 crest.png 보존 |
 
 자동 테스트 추가·실행 없음. 원본 알파 및 실제 UI 축소 렌더 확인.
@@ -291,6 +291,28 @@ CSS 변경만 적용. 기존 에셋 재사용. 자동 테스트 추가·실행 �
 | 폭560px 이하 | 문장140×50px/right4px/bottom−6px/background140×140px center−43px. 제목 오른쪽padding154px |
 | 다른 메뉴 | 기존200×112px 박스/background200×200px center−45px. 높이800px 이하는156×88px/background156×156px center−35px |
 | 합성·실패 | normal 알파. 이미지실패시 기존 DOM 제목/프레임/조작 유지. 메뉴 범위는 직전 skull 교체 범위 유지 |
-| 버전 | ui-refinement.css?v=20260925-16 |
+| 버전 | ui-refinement.css?v=20260925-19 |
 
 원본과 실제 제목 표시를 확인. 자동 테스트 추가·실행 없음.
+
+
+## 2026-09-25 설정을 인벤토리 스타일로 통일
+
+사용자 최신 지시: 인벤토리 스타일로 통일. 생성한 plate.png의 가죽 노이즈는 채택하지 않으며,추가 생성 요청 중이던 후보도 연결하지 않는다. 기존 인벤토리 원본 button.webp/frame.webp/iron.png/skull2.png를 재사용한다.
+
+| 요소 | 설정 화면 적용 계약 |
+|---|---|
+| 제목 | 인벤토리와 동일한 좌측 제목 띠:최소58px/padding0 194px0 16px/24px·600·자간.08em. 별도 직사각형 제목판 제거/하단1px 그라데이션선 |
+| 문장 | skull2.png,우측6px/bottom−8px/180×64px/background180×180px center−56px. 기존 해골 원본 유지 |
+| 배경 | pbox 인벤토리와 동일한 iron.png320px+숯색 감광. 본문 iron.png480px+동일 감광 |
+| 본문틀 | frame.webp4% slice/6px/0 stretch,기본border6px#504b41,outline0,shadow0,padding14px |
+| 탭·키·버튼 | button.webp100%×100%+동일감광,추가CSSborder0/border-image없음/각진모서리. 일반글자#c7bead |
+| 크기 | 내비최소32px/padding6px. 분류최소36px/padding7px6px/13px·500·자간.04em. 기존 키입력행 정렬 유지 |
+| 선택 | 인벤토리와 같은 적갈색판/#f4e3bd계열 대신 실제#f4e6cb/하단2px#ac7953. hover밝기1.18/focus2px#d6bd89 |
+| 입력상태 | 키입력대기outline2px#b7945e/글자#ffe5ac. 위험 버튼 글자#d9a08c. 가짜 키 리벳::before 제거 |
+| 구획·하단 | 분류하단 중복선 없음/간격3px. 본문제목15px·600/padding8px0 10px. 하단상단여백8px/padding-top8px/선1px#5b5143. 닫기최소34px/padding7px16px/12px |
+| 폭560px 이하 | 제목52px/22px/좌8px우154px. 문장140×50px/right4px/bottom−6px/background140×140px center−43px |
+| 폴백·합성 | normal알파/단색배경·테두리·DOM텍스트 폴백. 설정동작·값·자동저장 변경 없음 |
+| 버전 | ui-refinement.css?v=20260925-19. game.html/game-easy-test.html/index.html 및 관련 문서 동기화 |
+
+설정 전용 후속 스타일은 Settings plates 블록 하나로 교체한다. 새 가죽판 생성본은 미채택 작업물이며 런타임 참조 없음. 자동 테스트 추가·실행 없음.

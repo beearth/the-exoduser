@@ -453,3 +453,47 @@
 
 #invPanel.panel .pbox .inv-wrap{grid-template-rows:minmax(320px,1.3fr) minmax(200px,1fr)!important;}
 #invPanel.panel .pbox .inv-actions:has(#invActionBtns:empty):not(:has(button:not([style*="display: none"]):not([style*="display:none"]))){display:none!important;}
+
+/* Settings plates: match the inventory materials and header. */
+#settings.panel .pbox{
+ --settings-plate:url('img/ui/iron_covenant_20260924/button.webp');
+ --settings-rail:url('img/ui/iron_covenant_20260924/frame.webp');
+ background:linear-gradient(#141315e8,#09090aee),var(--ui-surface) center/320px!important;
+}
+#settings.panel .pbox .ptitle{
+ min-height:58px!important;padding:0 194px 0 16px!important;justify-content:flex-start!important;text-align:left!important;
+ font-size:24px!important;font-weight:600!important;letter-spacing:.08em!important;color:#ded4c0!important;-webkit-text-fill-color:#ded4c0!important;
+ background:linear-gradient(90deg,#3c25204a,#17171980 65%),var(--ui-surface) center/320px!important;text-shadow:0 2px 2px #000!important;
+}
+#settings.panel .pbox .ptitle::before{
+ width:180px!important;height:64px!important;top:auto!important;bottom:-8px!important;left:auto!important;right:6px!important;transform:none!important;
+ background:var(--ui-crest) center -56px/180px 180px no-repeat!important;filter:none!important;
+}
+#settings.panel .pbox .ptitle::after{inset:auto 0 0!important;height:1px!important;border:0!important;border-image:none!important;box-shadow:none!important;background:linear-gradient(90deg,#a38c61,#645b49)!important;}
+#settings.panel.ui-composed .settings-pages.frame-inner-panel{
+ box-sizing:border-box;border:6px solid #504b41!important;border-image:var(--settings-rail) 4% / 6px / 0 stretch!important;outline:0!important;box-shadow:none!important;
+ background:linear-gradient(#0c0b0ddd,#101012e8),var(--ui-surface) center/480px!important;padding:14px!important;
+}
+#settings.panel .pbox :is(.panel-nav-tab,.ui-section-tab,.set-key,.pclose),#settings.panel .pbox button:not(.ui-section-tab):not(.panel-nav-tab):not(.pclose){
+ background:linear-gradient(#15141782,#0b0a0cac),var(--settings-plate) center/100% 100% no-repeat,#232225!important;
+ border:0!important;border-image:none!important;box-shadow:none!important;border-radius:0!important;color:#c7bead!important;text-shadow:0 1px 2px #000!important;
+}
+#settings.panel .pbox .panel-nav-tab{min-height:32px!important;padding:6px!important;}
+#settings.panel .pbox .ui-section-tab{min-height:36px!important;padding:7px 6px!important;font:500 13px/1.4 'Noto Sans KR',sans-serif!important;letter-spacing:.04em!important;}
+#settings.panel .pbox :is(.panel-nav-tab.active,.ui-section-tab[aria-selected=true]){background:linear-gradient(#57170c99,#260907b8),var(--settings-plate) center/100% 100% no-repeat,#391713!important;color:#f4e6cb!important;box-shadow:inset 0 -2px #ac7953!important;filter:none!important;}
+#settings.panel .pbox :is(button,.set-key):hover{filter:brightness(1.18);}
+#settings.panel .pbox :is(button,.set-key):focus-visible{outline:2px solid #d6bd89!important;outline-offset:2px;}
+#settings.panel .pbox .set-key::before{display:none!important;}
+#settings.panel .pbox .set-key.listening{outline:2px solid #b7945e!important;outline-offset:1px;color:#ffe5ac!important;}
+#settings.panel .pbox :is(#resetBtn,#resetYes,#quitBtn){color:#d9a08c!important;}
+#settings.panel .pbox .ui-section-tabs{border:0!important;background:none!important;padding:0!important;gap:3px;}
+#settings.panel .pbox .ui-section-heading{padding:8px 0 10px!important;border:0!important;background:none!important;box-shadow:none!important;color:#ded4c0!important;font:600 15px/1.4 'Noto Sans KR',sans-serif!important;}
+#settings.panel .pbox .settings-footer{margin-top:8px!important;padding:8px 0 0!important;border-top:1px solid #5b5143!important;background:none!important;}
+#settings.panel .pbox .settings-footer .pclose{min-height:34px!important;padding:7px 16px!important;font:500 12px/1.4 'Noto Sans KR',sans-serif!important;}
+#settings.panel .pbox .set-name{color:#c5beb0!important;}
+#settings.panel .pbox .set-range-val{color:#d9c59e!important;}
+#settings.panel .pbox .settings-pages{scrollbar-color:#7c6f58 #121113;}
+@media(max-width:560px){
+ #settings.panel .pbox .ptitle{min-height:52px!important;padding-left:8px!important;padding-right:154px!important;font-size:22px!important;}
+ #settings.panel .pbox .ptitle::before{width:140px!important;height:50px!important;right:4px!important;bottom:-6px!important;background-size:140px 140px!important;background-position:center -43px!important;}
+}
