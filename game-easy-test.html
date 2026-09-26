@@ -14910,13 +14910,13 @@ const _crescents=[];
 for(let _ci=0;_ci<_CRES_MAX;_ci++){
   _crescents.push({active:false,x:0,y:0,vx:0,vy:0,
     ang:0,life:0,ml:0,dmg:0,el:0,r:36,step:1,silvArc:false,
-    trail:[{x:0,y:0},{x:0,y:0},{x:0,y:0},{x:0,y:0},{x:0,y:0}],_th:0});
+    trail:[{x:0,y:0},{x:0,y:0},{x:0,y:0},{x:0,y:0},{x:0,y:0}],_th:0,chargeScale:1});
 }
 let _cresStep=0;
 let _cresCd=0;
 let _cresComboT=0;
 function _playKiSlashComboSfx(step){const _sw=['sword_swing1','sword_swing2','sword_swing3'];const _idx=Math.max(0,Math.min(2,(step||1)-1));playSample(_sw[_idx],.85,_r(1,.06))}
-function spawnCrescent(x,y,ang,dmg,el,step,distMul){
+function spawnCrescent(x,y,ang,dmg,el,step,distMul,chargeScale=1){
   for(let _ci=0;_ci<_CRES_MAX;_ci++){
     const c=_crescents[_ci];
     if(c.active)continue;
@@ -14931,13 +14931,39 @@ function spawnCrescent(x,y,ang,dmg,el,step,distMul){
     c.life=_stepLife;c.ml=c.life;
     c._hitSet=new Set();
     c.dmg=dmg;c.el=el||0;
-    c.r=step===3?120:55; // 3타 범위 +50% (80→120)
+    c.chargeScale=step===3?chargeScale:1;
+    c.r=(step===3?120:55)*c.chargeScale; // 충전 3타는 시각과 판정 범위를 함께 확대
     c.step=step;
     c.silvArc=_charIdx===1;
     for(let t=0;t<5;t++){c.trail[t].x=x;c.trail[t].y=y;}
     c._th=0;
     return;
   }
+}
+function _kiSlashHoldMultiplier(frames){return 1+Math.min(3,Math.floor(Math.max(0,frames||0)/60))}
+function _fireKiSlashCrescent(step,chargeFrames=0){
+  _addSkProf('kiSlash');_cresStep=step;_cresComboT=120;_cresCd=step===3?20:12;
+  _playKiSlashComboSfx(step);
+  const _ksLv=P.skills.kiSlash||1,_ksDistMul=(_ksLv-1)*15;
+  const _mul=step===3?_kiSlashHoldMultiplier(chargeFrames):1;
+  const _scale=step===3?1+(_mul-1)*.4:1;
+  spawnCrescent(P.x,P.y,P.facing,~~(meleeRef()*7.0*statStr()*pAtkMul()*_skMul('kiSlash')*_mul),0,step,_ksDistMul,_scale);
+  addTxt(P.x,P.y-40,step+_L('타',' Hit')+(_mul>1?' ×'+_mul:''),step===3?'#ff4444':'#ffcc00',20);
+}
+function _beginKiSlashThirdCharge(){P.s='wWindup';P.st2=999;P._kiChargeActive=true;P._kiChargeT=0;P.atkArc=P.facing}
+function _updateKiSlashThirdCharge(sp){
+  const _before=_kiSlashHoldMultiplier(P._kiChargeT);
+  P._kiChargeT=Math.min(180,(P._kiChargeT||0)+sp);P.st2=999;
+  if(isHeld('weapon')){
+    const _after=_kiSlashHoldMultiplier(P._kiChargeT);
+    if(_after>_before){addTxt(P.x,P.y-42,_L('기검참 충전','Ki Slash Charge')+' ×'+_after,'#ff4466',34);playSample('scarecrow_charge',.35,1)}
+    if(_gameFrame%4===0){const a=Math.random()*Math.PI*2,r=30+Math.random()*20;poolPart(P.x+Math.cos(a)*r,P.y+Math.sin(a)*r,-Math.cos(a)*2,-Math.sin(a)*2,'#ff4466',2,12)}
+    return false;
+  }
+  const frames=P._kiChargeT;P._kiChargeActive=false;P._kiChargeT=0;
+  P.s='wSwing';P.st2=5;P.swProg=0;P.atkArc=P.facing;
+  _startSilvertailAttackMotion('lmb');_fireKiSlashCrescent(3,frames);
+  return true;
 }
 function _mkProj(){return{x:0,y:0,vx:0,vy:0,dmg:0,el:0,friendly:false,life:0,ml:0,col:'',sz:1,r:4,dist:0,
   redBean:false,blackBean:false,bwBean:false,gbBean:false,homing:false,blueBean:false,parryBlueBean:false,fireMagic:false,waterBean:false,_cCol:null,
@@ -17146,7 +17172,7 @@ function _drawRadiantKiSlash(ctx,c){
   const sheet=_kiSlashRadiant;if(!sheet)return false;
   const progress=Math.max(0,Math.min(1,1-c.life/c.ml));
   const frame=Math.min(8,Math.floor(progress*9)),sx=(frame%3)*sheet.fw,sy=Math.floor(frame/3)*sheet.fh;
-  const size=c.step===3?252:192,height=size*sheet.fh/sheet.fw;
+  const size=(c.step===3?252:192)*(c.chargeScale||1),height=size*sheet.fh/sheet.fw;
   const alpha=Math.min(1,(1-progress)*2.5);
   const img=sheet.surfaces[_kiSlashPalette(c)];
   ctx.save();ctx.globalCompositeOperation='lighter';
@@ -17190,7 +17216,7 @@ function renderCrescents(X){
     if(c.silvArc&&_silvKiSlashReady){
       const _silvCAlpha=Math.max(.82,alpha);
       const _silvPulse=1+Math.sin((c.ml-c.life)*.72)*.045;
-      const _silvCw=(_is3?176:144)*_silvPulse;
+      const _silvCw=(_is3?176:144)*_silvPulse*(c.chargeScale||1);
       const _silvCh=_silvCw*(_silvKiSlashImg.naturalHeight/_silvKiSlashImg.naturalWidth);
       X.filter='saturate(1.12) contrast(1.08) brightness(1.06)';
       X.globalCompositeOperation='lighter';X.globalAlpha=Math.min(1,_silvCAlpha*.28);
@@ -17203,7 +17229,7 @@ function renderCrescents(X){
       const fw=_cImg.naturalWidth/cols,fh=_cImg.naturalHeight/rows;
       const fi=Math.min(totalF-1,~~(prog*totalF));
       const fcol=fi%cols,frow=~~(fi/cols);
-      const sz=_is3?220:160;
+      const sz=(_is3?220:160)*(c.chargeScale||1);
       X.globalCompositeOperation='lighter';
       X.globalAlpha=alpha;
       X.drawImage(_cImg,fcol*fw,frow*fh,fw,fh,-sz/2,-sz/2,sz,sz);
@@ -30183,6 +30209,7 @@ function update(){
     // 얼음보주: 이동 불가, 빔 회복만 허용
     break;}
   case 'idle':{
+    if(P._kiChargeActive){P._kiChargeActive=false;P._kiChargeT=0;_cresStep=0;_cresComboT=0}
     if(P._sbParryT>0)P._sbParryT-=sp; // 해제 패링 윈도우 카운트다운
     else if(P._sbReleaseR)P._sbReleaseR=0;
     let dx=0,dy=0;
@@ -30236,17 +30263,10 @@ function update(){
     else if(isAct('parry')&&!_qIsIceOrb()&&!_qIsPeaceShield()&&(P._sbCd||0)<=0&&P.mp>=10){P.mp-=10;P.s='sBlock';P.st2=999;P._sbParryT=20;P._sbHoldT=0;P._sbReleaseR=0;P.parryT=0;P._qDetonateFired=false;P._sbCd=~~(30*(1+_eqAffix('shieldCdRed')));G._sbBurst={x:P.x,y:P.y,r:P.r+5,maxR:P.skills.detonate>=1?150+((P.skills.detonate||1)-1)*15:90,spd:8,det:P.skills.detonate>=1};playSample('shield_activate',.8,_r(1,.08));_startShieldLoop();if(Math.random()<.3)playSample(['voice_parry1','voice_parry2','voice_parry3','voice_parry4'][~~(Math.random()*4)],1,_r(1,.03));else playSample('male_grunt',1,_r(1,.15))} // Q: 보호막 (데미지 감소)
     // burstLoop는 E키(마법슬롯)에서 발동 → _execMagicE()에서 처리
     else if(isHeld('weapon')&&P.skills.whirlwind&&P.activeLMBSk==='whirlwind'&&P.st>=2){P.s='whirlwind';P.wwAng=0;P._wwDetTimer=0;SFX._swIdx=0;SFX.slashSeq();if(_isFused('stormBeam')){P._eStormIdx=0;P._eStormT=0;P._eStormActive=true;playSample(['electric_storm','electric_storm2','electric_storm3','electric_storm4'][~~(Math.random()*4)],.6,_r(1,.1))}if(Math.random()<.45){playSample(['voice_flee','voice_storm_attack'][~~(Math.random()*2)],1,1)}else{const _ve=['voice_grunt','male_grunt'];playSample(_ve[~~(Math.random()*2)],1,_r(1,.15))}_addSkProf('whirlwind')}
-    else if(isAct('weapon')&&useStPct('weapon')){if(_gpActive)_gpAutoAim(250);P._atkBon=~~(_lastCost*1.5);P.s='wSwing';P.st2=5;P.swProg=0;_startSilvertailAttackMotion('lmb');P.atkArc=P.facing;if(G._pStats)G._pStats._atkC++;if(Math.random()<.35){const _ve=['voice_grunt','male_grunt','voice_attack'];playSample(_ve[~~(Math.random()*3)],1,_r(1,.15))}
-      // ── 기검참 스킬 선택 시에만 검기 발사 (Lv당 뎀+10%, 거리+15px) ──
-      if(P.activeLMBSk==='kiSlash'){
-        _addSkProf('kiSlash');
-        _cresStep=(_cresStep%3)+1;_cresComboT=120;_cresCd=_cresStep===3?20:12;
-        _playKiSlashComboSfx(_cresStep);
-        const _ksLv=P.skills.kiSlash||1,_ksDistMul=(_ksLv-1)*15;
-        // 7/7/7 균등 콤보 (2026-05-11)
-        spawnCrescent(P.x,P.y,P.facing,~~(meleeRef()*7.0*statStr()*pAtkMul()*_skMul('kiSlash')),0,_cresStep,_ksDistMul);
-        addTxt(P.x,P.y-40,_cresStep+_L('타',' Hit'),_cresStep===3?'#ff4444':'#ffcc00',20);
-      }else SFX.slash();
+    else if(isAct('weapon')&&useStPct('weapon')){if(_gpActive)_gpAutoAim(250);P._atkBon=~~(_lastCost*1.5);if(G._pStats)G._pStats._atkC++;
+      if(P.activeLMBSk==='kiSlash'&&_cresStep===2&&_cresComboT>0){_beginKiSlashThirdCharge()}
+      else{P.s='wSwing';P.st2=5;P.swProg=0;_startSilvertailAttackMotion('lmb');P.atkArc=P.facing;if(Math.random()<.35){const _ve=['voice_grunt','male_grunt','voice_attack'];playSample(_ve[~~(Math.random()*3)],1,_r(1,.15))}
+        if(P.activeLMBSk==='kiSlash')_fireKiSlashCrescent((_cresStep%3)+1);else SFX.slash()}
     }
     else if(isJust('shield')||_sdTapOk()){_sdTapBuf=-999;P.s='sDraw';P._sdHold=0} // ═ 발도 게이팅: 탭=뗄 때 칼등처내기, 홀드=차징. 탭버퍼로 초고속 탭 씹힘 방지 ═
     // Space키: SKILL_SLOTS[4]로 처리 (keydown에서 _dispatchSkillSlot)
@@ -30536,7 +30556,7 @@ function update(){
 
   case 'wWindup':case 'wSwing':case 'wRecover':case 'sBash':case 'sRecover':
   case 'bowDraw':case 'bowRecover':case 'magicCast':case 'magicRecover':{
-    if(_tryKiSlashQCancel())break;
+    if(_tryKiSlashQCancel()){if(P._kiChargeActive){P._kiChargeActive=false;P._kiChargeT=0;_cresStep=0;_cresComboT=0}break}
     // 공격 중 감속 이동 (20%)
     let adx=0,ady=0;
     if(isAct('up'))ady=-1;if(isAct('down'))ady=1;if(isAct('left'))adx=-1;if(isAct('right'))adx=1;
@@ -30545,7 +30565,7 @@ function update(){
     let anx=P.x+adx*ams,any=P.y+ady*ams;
     if(canMv(anx,P.y,P.r))P.x=anx;if(canMv(P.x,any,P.r))P.y=any;
     // 상태별 로직
-    if(P.s==='wWindup'){if(P.st2<=0){P.s='wSwing';P.st2=5;P.swProg=0}}
+    if(P.s==='wWindup'){if(P._kiChargeActive)_updateKiSlashThirdCharge(sp);else if(P.st2<=0){P.s='wSwing';P.st2=5;P.swProg=0}}
     else if(P.s==='wSwing'){P.swProg=(5-P.st2)/5;
       if(P.st2<=3&&P.st2+sp>3){
         const _wRange=(wp().wRange||50)+(wp().bonusRange||0)*4;
@@ -30739,15 +30759,10 @@ function update(){
     else if(P.s==='bowDraw'){P.s='idle'} // bowDraw는 더이상 사용되지 않음
     else if(P.s==='bowRecover'){
       // 활 회복 중 무기/돌진/패링으로 캔슬 가능
-      if(isAct('weapon')&&useStPct('weapon')){P._atkBon=~~(_lastCost*1.5);P.s='wSwing';P.st2=5;P.swProg=0;_startSilvertailAttackMotion('lmb');P.atkArc=P.facing;if(G._pStats)G._pStats._atkC++;if(Math.random()<.35){const _ve=['voice_grunt','male_grunt','voice_attack'];playSample(_ve[~~(Math.random()*3)],1,_r(1,.15))}
-        if(P.activeLMBSk==='kiSlash'){
-          _addSkProf('kiSlash');
-          _cresStep=(_cresStep%3)+1;_cresComboT=120;_cresCd=_cresStep===3?20:12;
-          _playKiSlashComboSfx(_cresStep);
-          const _ksLv=P.skills.kiSlash||1,_ksDistMul=(_ksLv-1)*15;
-          spawnCrescent(P.x,P.y,P.facing,~~(meleeRef()*7.0*statStr()*pAtkMul()*_skMul('kiSlash')),0,_cresStep,_ksDistMul);
-          addTxt(P.x,P.y-40,_cresStep+_L('타',' Hit'),'#ffcc00',20);
-        }else SFX.slash();}
+      if(isAct('weapon')&&useStPct('weapon')){P._atkBon=~~(_lastCost*1.5);if(G._pStats)G._pStats._atkC++;
+        if(P.activeLMBSk==='kiSlash'&&_cresStep===2&&_cresComboT>0){_beginKiSlashThirdCharge()}
+        else{P.s='wSwing';P.st2=5;P.swProg=0;_startSilvertailAttackMotion('lmb');P.atkArc=P.facing;if(Math.random()<.35){const _ve=['voice_grunt','male_grunt','voice_attack'];playSample(_ve[~~(Math.random()*3)],1,_r(1,.15))}
+          if(P.activeLMBSk==='kiSlash')_fireKiSlashCrescent((_cresStep%3)+1);else SFX.slash()}}
       else if(isAct('charge')&&P.chargeStocks>0&&!_harpActive&&(P.activeChargeSk==='magicBlink'?P.mp>=mpCost('blink'):useStPct('charge'))){
         // ── 사슬 발사 (bowRecover 캔슬) ──
         _dashHold=false;_dashHoldF=0;_dashTier=0; // 홀드 리셋
@@ -41013,7 +41028,7 @@ const SKILL_LIST=[
   {id:'magicBlink',name:'사슬기동:화염',cat:'move',desc:'INT 스케일. 이동 경로에 화염길 생성(3초 DOT). 통과 적 화상. MP 소모. 합체 시 착지 폭발',descEn:'INT scale. Fire trail on dash path (3s DOT). Burns passed enemies. MP cost. Fuse: landing explosion',spCost:10,matCost:100,up:true,upSp:5,upMat:0},
   {id:'ghostWalk',name:'뇌전걸음',cat:'def',act:true,emoji:'⚡',desc:'5초간 유령화 — 무적+이동. 통과한 적/탄막 수만큼 종료 시 암전 폭발(+10%/회) + 전기줄기 방사(3회 체인). 카운트 캡=Lv×5(최대50). 쿨 20초. Lv당 뎀+15% 범위+10',descEn:'5s ghost form — invincible+move. Blackout explosion on end (+10%/enemy passed) + lightning arc (3 chains). Count cap=Lv×5 (max 50). CD 20s. Per Lv DMG+15% range+10',spCost:10,matCost:100,cd:1200,up:true,upSp:5,upMat:0},
   {id:'bladeDash',name:'전격이동',cat:'move',desc:'[이동기] 방향키 더블탭으로 발동. 경직/기절 중에도 탈출 가능. 250유닛 순간이동, 무적(15프레임). MP[(10+(Lv-1)×5)×0.7] + 공용 기동게이지 0.7칸(31.5)을 소모한다. 기본 기동게이지 5칸, Shift 사슬과 공유. 착지 시 전류장판(10초+Lv×0.5초): INT 틱뎀 + 방어력↓(1렙10%, 렙당+5%, 캡50%)',descEn:'[Mobility] Double-tap to activate. Escapes stagger/stun. 250-unit blink, invincible 15f. Costs MP[(10+(Lv-1)×5)×0.7] plus 0.7 shared mobility-gauge cells (31.5). Base gauge has 5 cells and is shared with Shift chain. Landing shock field(10s+Lv×0.5s): INT tick DMG + DEF↓(Lv1=10%, +5%/Lv, cap 50%)',spCost:10,matCost:60,up:true,upSp:6,upMat:0},
-  {id:'kiSlash',name:'기검참',cat:'phys',desc:'좌클 스킬: 기본공격에 3단 콤보 초승달 검기 추가. ST 10+Lv당2. Lv당 뎀+10% 거리+15px',descEn:'LMB skill: adds 3-hit crescent ki blade combo to basic attack. ST 10+2/Lv. Per Lv DMG+10% range+15px',spCost:10,matCost:0,up:true,upSp:5,upMat:0,default:true},
+  {id:'kiSlash',name:'기검참',cat:'phys',desc:'좌클 스킬: 3단 검기. 3타 입력을 홀드해 충전, 놓으면 발사. 1초마다 검기 피해 +1배(최대 4배), 크기도 증가. ST 10+Lv당2. 거리+15px/Lv',descEn:'LMB skill: 3-hit ki blade. Hold the third attack, release to fire. +1× blade damage per second (up to 4×), with larger size. ST 10+2/Lv; +15px range/Lv',spCost:10,matCost:0,up:true,upSp:5,upMat:0,default:true},
   {id:'fireball',name:'악의구',cat:'magic',desc:'[기본: E] 어둠 마법 오브 발사. 범위폭발. 넉백 0.5%. Lv당 크기+50% (뎀은 _skMul 계수 적용)',descEn:'[Default: E] Dark magic orb fired. AoE explosion. Knockback 0.5%. Per Lv size+50% (DMG uses _skMul)',spCost:10,matCost:0,up:true,upSp:5,upMat:0,default:true},
   {id:'whirlwind',name:'회전참',cat:'phys',desc:'무기 홀드 → 전진 회전 공격. 360도 광역, ST 지속소모. Lv당 범위+5 뎀+5%',descEn:'Hold weapon → forward spin attack. 360° AoE, continuous ST drain. Per Lv range+5 DMG+5%',spCost:10,matCost:100,up:true,upSp:5,upMat:0},
   {id:'detonate',name:'기폭팔',cat:'def',desc:'패링 3초 홀드 → 흡수 데미지 광역 폭발. Lv당 범위+15 (1렙150, 10렙285)',descEn:'Parry 3s hold → absorbed DMG AoE explosion. Per Lv range+15 (Lv1: 150, Lv10: 285)',spCost:10,matCost:100,up:true,upSp:5,upMat:0},
@@ -41152,7 +41167,7 @@ const SKILL_SLOT_DEFS={
     info:{giantSlam:{name:'지옥강타 1',nameEn:'Hell Slam I',emoji:'🔨',desc:'Space: 원형 진동파 (ST+악의20, 포이즈 특화, 쿨30초)',descEn:'Space: AoE shockwave (ST+malice20, poise focus, cd 30s)'},
           }},
   lmb:{name:'좌클 스킬',nameEn:'LMB Skill',key:'lmb',skills:['kiSlash','whirlwind'],
-    info:{kiSlash:{name:'기검참',nameEn:'Ki Slash',emoji:'⚔',desc:'좌클: 3단 콤보 검기 (ST 10+Lv당2)',descEn:'LMB: 3-hit combo ki blade (ST 10+2/Lv)'},
+    info:{kiSlash:{name:'기검참',nameEn:'Ki Slash',emoji:'⚔',desc:'좌클 3타 홀드 충전·해제 발사 (+1배/초, 최대 4배). ST 10+Lv당2',descEn:'Hold 3rd LMB hit, release to fire (+1×/s, max 4×). ST 10+2/Lv'},
           whirlwind:{name:'회전참',nameEn:'Whirlwind',emoji:'🌀',desc:'좌클 홀드: 회전 베기',descEn:'LMB Hold: Spin attack'}}},
   rmb:{name:'E 스킬',nameEn:'E Skill',key:'rmb',skills:['maliceSwipe'],
     info:{maliceSwipe:{name:'불꽃칼날',nameEn:'Flame Blade',emoji:'🔥',desc:'E: 쿨타임 완료 시 불꽃을 두른 칼날을 크게 휘두릅니다. 일반 마법탄도 반사. 홀드 풀차지 1.5초, 스킬 Lv당 범위 +5%.',descEn:'E: Swing a flaming blade when ready; also reflects ordinary magic shots. Hold for 1.5s full charge. +5% range per skill level.'}}},

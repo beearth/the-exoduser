@@ -1,3 +1,10 @@
+## 2026-09-27 기검참 3타 홀드 충전
+
+| 대상 | 현재 동작 | 검증 |
+|---|---|---|
+| `game.html`, `game-easy-test.html` 기검참 | 1·2타 즉시 발사, 3타 입력 홀드 중 준비 자세·충전 피드백, 해제 시 3타 검기 1회 발사. 완료된 60f마다 기본 검기 피해 +1배, 180f 최대4배. 3타 판정 반경120→168→216→264px, 비행 크기252→352.8→453.6→554.4px. 근접 타격·ST·거리 유지, Q 취소 시 충전 초기화 | `test/kiSlashHoldCharge.test.cjs`, `test/kiSlashSwingSound.test.js`, `test/kiSlashQCancel.test.js`, `test/basicAttackDamage.test.js` |
+| 설계·밸런스·VFX 문서 | [기검참 홀드 계약](2_1%20스킬관리+합체시스템+자원/KISLASH_HOLD_CHARGE_20260927.md)에 시간·공식·표시·취소를 기록하고 스킬·피해·VFX 표를 동기화 | 코드/문서 키워드 검색 |
+
 ## 2026-09-26 — 적 장판 마법진과 폭발 화염
 
 | 범위 | 변경·검증 |

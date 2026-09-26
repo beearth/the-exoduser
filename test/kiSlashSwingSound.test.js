@@ -13,6 +13,7 @@ test('kiSlash combo uses sequential swing sounds across combo hits', () => {
     gameHtml,
     /function _isSkillSfx\(key\)\{return _SKILL_SFX_KEYS\.has\(key\)\|\|key\.startsWith\('chain_'\)\|\|key\.startsWith\('electric_storm'\)\|\|key\.startsWith\('fire_magic'\)\|\|key\.startsWith\('sword_swing'\)\}/
   );
-  const uses = gameHtml.match(/_playKiSlashComboSfx\(_cresStep\);/g) || [];
-  assert.equal(uses.length, 2);
+  assert.match(gameHtml, /function _fireKiSlashCrescent\(step,chargeFrames=0\)\{[\s\S]*?_playKiSlashComboSfx\(step\);/);
+  assert.equal((gameHtml.match(/_fireKiSlashCrescent\(\(_cresStep%3\)\+1\)/g) || []).length, 2);
+  assert.match(gameHtml, /_startSilvertailAttackMotion\('lmb'\);_fireKiSlashCrescent\(3,frames\)/);
 });

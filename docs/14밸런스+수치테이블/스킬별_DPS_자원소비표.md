@@ -78,7 +78,7 @@ DPS_BAL = { bow: 0.77, magic: 0.475, beam: 0.0080 }
 
 | ID | 이름 | 자원 | 비용 (Lv1→Lv10) | 쿨다운 | 데미지 공식 | DPS 비고 |
 |---|---|---|---|---|---|---|
-| kiSlash | 기검참 | ST | 10+(Lv-1)×2 = **10→48** | 없음 | meleeRef×7×statStr×pAtkMul×_skMul(b:12,g:10.08) | Lv1=84×/타, Lv10=401.52×/타, Lv20=754.32×/타. 공속·비용 유지, 기존 코드 대비3배 |
+| kiSlash | 기검참 | ST | 10+(Lv-1)×2 = **10→48** | 없음 | meleeRef×7×statStr×pAtkMul×_skMul(b:12,g:10.08)×M, 3타 홀드만 M=1+min(3,⌊충전f/60⌋) | 무충전 Lv1=84×/타, Lv10=401.52×/타, Lv20=754.32×/타. 3타 1/2/3초 충전 시 각각 2/3/4배. ST 비용 불변 |
 | whirlwind | 회전참 | ST(틱) | **30+(Lv-1)×5 ST/초** (Lv1=30, Lv10=75, Lv20=125) | 없음 (홀드) | meleeRef × statStr × pAtkMul × _skMul × _fuseMul | 360도 광역, Lv당 범위+5 뎀+5% |
 | giantSlam | 지옥강타 1 | ST + 악의20 | stCost(giantSlam), 기준장비 Lv1=50 | max(60,1800-(Lv-1)×12)f × (1+_cdRed()) | `floor(floor(meleeRef×statStr×(20+(Lv−1)×19×0.5)×_rageMul)×pAtkMul)+_atkBon`; pAtkMul은 _gSlamHit에서1회. 분노100 기본20배 | 일반몹 분노100 1방 목표, 보스 포이즈25% |
 | giantSlam2 | 지옥강타 2 | ST + 악의20 | giantSlam과 동일 | 동일 | 동일 | infernoSlam 합체용 복제 |
@@ -172,7 +172,7 @@ DPS_BAL = { bow: 0.77, magic: 0.475, beam: 0.0080 }
 ### ST 소비 스킬 (초당)
 | 스킬 | 발동방식 | ST/회 | 발동간격 | **ST/초** |
 |---|---|---|---|---|
-| kiSlash 기검참 | 좌클릭 | 5 | ~0.45초 (공속) | **~11.1** |
+| kiSlash 기검참 | 좌클릭 | 5 | 무충전 ~0.45초 (공속); 3타 홀드 시 충전 시간 추가 | **무충전 ~11.1** (홀드 DPS는 충전 시간 포함 재산정) |
 | whirlwind 회전참 | 홀드 | Lv스케일 | 매 프레임 | **10→100/초** (Lv1→10) |
 | giantSlam 지옥강타 1 | `floor(floor(meleeRef×statStr×(20+(Lv−1)×19×0.5)×_rageMul)×pAtkMul)+_atkBon`; pAtkMul은 _gSlamHit에서1회. 분노100 기본20배 | ST=stCost(giantSlam), 악의=_malCost(20) | 기본30초, 레벨당12f 감소·최소60f | 단위시간 효율은 실제 쿨/할인/명중 조건으로 측정 |
 | bladeShot 붉은꽃 | T자동 | 10 | 0.5초 | **20** |

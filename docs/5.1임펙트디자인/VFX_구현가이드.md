@@ -177,7 +177,7 @@
 
 | 입력 | 전용 플래그·에셋 | 프레임·색 | 판정 영향 |
 |---|---|---|---|
-| 좌클릭 기검참 | `_kiSlashRadiant`, `ki_slash_radiant_sheet.png` (1254×1254 RGB, 3×3) | 9프레임, 실버테일 40° hue 캐시, 3타 공통150° 캐시. 폭192/252px. 구 `silvertail_ki_slash_realistic.png` 및 기존 맥동은 로드 실패 폴백에만 적용 | 기존 3단 콤보 피해·사거리·히트 범위 그대로 |
+| 좌클릭 기검참 | `_kiSlashRadiant`, `ki_slash_radiant_sheet.png` (1254×1254 RGB, 3×3) | 9프레임, 실버테일 40° hue 캐시, 3타 공통150° 캐시. 무충전 폭192/252px. 2026-09-27부터 3타 홀드 배율M=1/2/3/4에 따라 폭·높이×(1+(M−1)×0.4), 판정 반경120/168/216/264px. 구 `silvertail_ki_slash_realistic.png`는 로드 실패 폴백 | 3타 홀드 60/120/180f에 검기 피해 2/3/4배. 거리·자원 불변 |
 | 우클릭 악의구 | `p.fireball`, `silvertail_malice_orb_sheet_v3.png` (1536×1024 RGB, 녹색 크로마, 3×2 배열·6프레임) | 실버테일(`_charIdx===1`)만 검은 공허 핵·은빛 초승달 칼날 3장으로 구성한 구체를 지름 `p.r×6.2`로 표시하고 크기 맥동 없이 시계방향 600ms/회전을 적용. 핵 중심 정렬 432×432 소스, 80ms 간격·정방향 480ms 반복. 다른 캐릭터는 공용 7×3/20프레임 시트 유지 | 악의구 피해·폭발·중독·사거리·자원 그대로 |
 | KeyE 칼등 처내기 | `_drawSilvertailEArc(ctx, pose, scale)`, `silvertail_violet_arc_anim_api_v3.png` (2132×738 RGBA, 폭 6등분) | `pose.kind==='shield'`에서만 `floor(spinProgress×6)`으로 재생. `hue-rotate(-28deg) saturate(2.05) contrast(1.28) brightness(1.28)`, 강화 E는 brightness1.6+−0.10rad·alpha×0.20 잔광1장. 9프레임 몸과 동일160ms 진행률(폴백240ms). 기본 폭 200→230px이며 차징 릴리즈는 `min(3,max(1,P._sBashChgMul||1))×(1+(E스킬Lv−1)×0.05)`을 곱한다. Lv1 풀차지600→690px, Lv10 풀차지870→1000.5px | 기본 E의 피해·반사·자원·입력은 그대로. E 아크는 충전 C와 스킬 레벨 범위 M을 함께 곱하며 좌클릭·우클릭 악의구에는 적용하지 않음 |
 
