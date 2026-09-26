@@ -45839,6 +45839,11 @@ _actB.innerHTML=`<div class="id-btns" style="display:flex;gap:6px"><div class="i
   }
 }
 function _invClearHover(){
+  _invRestoreSelectedActions();
+  const rp=$('invRight');if(rp)rp.style.visibility='hidden';
+  const cmp=$('invCompareFloat');if(cmp)cmp.style.display='none';
+}
+function _invRestoreSelectedActions(){
   _invHover=-1;
   // 선택된 아이템이 있으면 선택 아이템 상세 유지
   if(INV.selected!==null&&typeof INV.selected==='number'){

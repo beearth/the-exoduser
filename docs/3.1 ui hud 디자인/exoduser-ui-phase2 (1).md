@@ -949,3 +949,15 @@ L키(`skillCycle`)로 여는 스킬 슬롯 배정 팝업(`#skSlotPop`, `openSkSl
 CSS 캐시 ui-refinement.css?v=20260927-3. 신규 이미지/아이템 데이터 변경/자동 테스트 추가·실행 없음.
 
 정확한 CSS는 UI_COMPOSITION_20260925.md의 같은 절을 따른다.
+
+
+## 2026-09-27 아이템 정보 호버 종료
+
+| 항목 | 현재 동작 |
+|---|---|
+| 원인 | _invClearHover가 이전 선택 아이템의 상세를 다시 렌더하여 마우스를 뗀 후에도 정보창이 남음 |
+| 종료 | 기존 선택 복원 처리를 _invRestoreSelectedActions로 분리. _invClearHover는 이를 호출한 뒤 invRight visibility:hidden, invCompareFloat display:none |
+| 재진입·선택 | _invRenderDetail에서 유효 아이템 확인 후 visibility:visible. 호버/클릭/패드 상세 진입 시 표시 |
+| 유지 | INV.selected와 선택 테두리, 하단 장착·분해 버튼, 고정 48px 조작 영역 유지 |
+
+이 절은 이전 선택 상세 자동 복원 계약을 대체한다. 아이템 데이터·저장 변경 없음. 자동 테스트 추가·실행 없음.
