@@ -10,7 +10,7 @@
 
 | 항목 | 현재 구현 |
 |---|---|
-| 연결 | game.html/game-easy-test.html: ui-refinement.css?v=20260926-5, defer ui-panels.js?v=20260925-1. index.html은 CSS만. NW.js 두 파일 복사 |
+| 연결 | game.html/game-easy-test.html: ui-refinement.css?v=20260926-6, defer ui-panels.js?v=20260925-1. index.html은 CSS만. NW.js 두 파일 복사 |
 | 설정 | 왼쪽 폭 min(680px,100vw−24px), 높이100dvh−24px, 최대높이1000px |
 | 장비 | 오른쪽 폭 clamp(640px,36vw,780px), 최대100vw−24px; 폭≤780에서는100vw−16px |
 | 스킬/대장간/창고 | 각각 최대1020/980/700px, 화면폭−24px 이내. 스킬 왼쪽; 대장간/창고 중앙 |
@@ -149,7 +149,7 @@ POE2 설정 화면과 Diablo IV 장비 화면을 참고한 최신 표현 계약�
 | 인벤 헤더 | 제목과 정보행을 한 열 grid로 분리. 제목 폭100%/최소88px/padding54px 12px 8px. 중앙 문장204×68px. 제목판 top53/좌우24%/bottom0, 폭560px 이하 좌우18% |
 | 정보행 | 전투력·악의·닫기 정렬. gap8px/padding0 4px 8px/아래선1px #65583f. 전투력·악의의 중첩 박스 삭제. 문장과 충돌하지 않음 |
 | 장비 구획 | 섹션 선1px #65583f, 중복 inset선 제거. 슬롯 안쪽 iskin 등급 그림자 제거, 바깥 슬롯 희귀도 테두리 유지. 슬롯 음영 inset0 2px5px, 라벨#e0d2b2 |
-| 캐시 | ui-refinement.css?v=20260926-5, 게임 두 HTML 및 로비 동기화 |
+| 캐시 | ui-refinement.css?v=20260926-6, 게임 두 HTML 및 로비 동기화 |
 
 CSS 변경만 적용. 기존 에셋 재사용. 자동 테스트 추가·실행 없음.
 
@@ -169,7 +169,7 @@ CSS 변경만 적용. 기존 에셋 재사용. 자동 테스트 추가·실행 �
 | 낮은 화면 | 높이800px 이하 제목최소116px/padding-top86px. 문장156×88px, 원본156×156px/center −28px. 제목판top84px |
 | 좁은 화면 | 폭560px 이하 패널padding30px22px24px, 프레임48px. 원본 투명 합성, 배경실패 시 제목 텍스트/기본 판 유지 |
 | 기록 | img/ui/blackiron/prompts.md에 두 프롬프트 전문·생성ID·투명도 기록. 신규 픽셀 후처리 없음. img 폴더는 기존 NW.js 패키징 대상 |
-| 버전 | ui-refinement.css?v=20260926-5 |
+| 버전 | ui-refinement.css?v=20260926-6 |
 
 자동 테스트 추가·실행 없음. 원본 알파와 브라우저 렌더를 직접 확인.
 
@@ -190,7 +190,7 @@ CSS 변경만 적용. 기존 에셋 재사용. 자동 테스트 추가·실행 �
 | 가방 | padding12px14px, 헤더최소30px/하단padding8px/여백8px/구분선1px#49483e. 제목14px/500, 정렬버튼최소28px/12px/좌우10px |
 | 필터·격자 | 필터12px/행간1.5/하단9px, 추가 상단선 제거. 격자 외곽outline0, 각 빈 셀1px#3b4037/각진 모서리/흑철 음영 |
 | 폭560px 이하 | 제목최소68px/22px/좌8px·우132px, 문장우8px/120×70px/배경120×120px/center−21px |
-| 적용 | ui-refinement.css?v=20260926-5, game.html/game-easy-test.html/index.html 동기화. DOM·게임 수치 변경 없음 |
+| 적용 | ui-refinement.css?v=20260926-6, game.html/game-easy-test.html/index.html 동기화. DOM·게임 수치 변경 없음 |
 
 자동 테스트 추가·실행 없음. 렌더 확인은 디자인 외관에 한정한다.
 
@@ -216,7 +216,7 @@ CSS 변경만 적용. 기존 에셋 재사용. 자동 테스트 추가·실행 �
 | 문장 연결 | 제목 오른쪽 기존 문장을164×96px/배경164×164px/center−28px, bottom−10px로 내려 제목 구분선과 연결 |
 | 폭560px 이하 | 문장120×70px/배경120×120px/center−21px/bottom−6px |
 | 범위·폴백 | 인벤토리에만 적용. 에셋 로드 실패 시 단색 바탕과 기존 DOM 텍스트 유지. normal 합성, 기존 NW.js img 복사 대상 |
-| 버전 | ui-refinement.css?v=20260926-5 |
+| 버전 | ui-refinement.css?v=20260926-6 |
 
 위 규격이 인벤토리의 이전 표면·테두리·문장 위치 규격을 대체한다. 자동 테스트는 추가하거나 실행하지 않으며 실제 브라우저 외관을 확인한다.
 
@@ -253,7 +253,7 @@ CSS 변경만 적용. 기존 에셋 재사용. 자동 테스트 추가·실행 �
 | 공간 배분 | 장비 minmax(320px,1.3fr), 가방 minmax(200px,1fr). 실행할 버튼이 전혀 없는 하단은 숨겨 빈 공간 제거 |
 | 하단 | 상단여백8px/padding-top8px/높이최소42px/상단선1px#5b5143/우측 정렬. 버튼최소34px/padding7px16px/12px·500 |
 | 폭560px 이하 | 제목52px/22px/좌8px우110px,문장104×62px/right4px/bottom−8px/background104×104px center−18px,세부수치10px |
-| 통합·버전 | ui-refinement.css Inventory finish 블록 하나로 최근3개 마감 블록 대체. ui-refinement.css?v=20260926-5. 신규 에셋 생성 없음 |
+| 통합·버전 | ui-refinement.css Inventory finish 블록 하나로 최근3개 마감 블록 대체. ui-refinement.css?v=20260926-6. 신규 에셋 생성 없음 |
 
 전체 아트 완성도는 콘셉트와 동등하다고 판정하지 않는다. 이번 범위는 박스 위계·슬롯 재질·조작부 통일. 자동 테스트 추가·실행 없이 실제 렌더를 확인한다.
 
@@ -271,7 +271,7 @@ CSS 변경만 적용. 기존 에셋 재사용. 자동 테스트 추가·실행 �
 | 사용 범위 | 기존 Blackiron 문장을 참조하는 설정/인벤토리/대장간/스킬/창고/능력치 변수 교체. 로비/HUD 원본은 유지 |
 | 합성 | normal 알파, 배경center/contain. 원본의 뿔·턱을 자르던 이전 crop offset 제거. 인벤토리122×72px 박스/좁은화면104×62px 기존 크기 유지 |
 | 폴백 | CSS 이미지 로딩 실패 시 문장 장식만 사라지고 DOM 제목·프레임·조작 유지 |
-| 버전 | ui-refinement.css?v=20260926-5, game.html/game-easy-test.html/index.html 동기화 |
+| 버전 | ui-refinement.css?v=20260926-6, game.html/game-easy-test.html/index.html 동기화 |
 | 기록 | img/ui/blackiron/skull.md 프롬프트 및 생성 정보. 기존 crest.png 보존 |
 
 자동 테스트 추가·실행 없음. 원본 알파 및 실제 UI 축소 렌더 확인.
@@ -291,7 +291,7 @@ CSS 변경만 적용. 기존 에셋 재사용. 자동 테스트 추가·실행 �
 | 폭560px 이하 | 문장140×50px/right4px/bottom−6px/background140×140px center−43px. 제목 오른쪽padding154px |
 | 다른 메뉴 | 기존200×112px 박스/background200×200px center−45px. 높이800px 이하는156×88px/background156×156px center−35px |
 | 합성·실패 | normal 알파. 이미지실패시 기존 DOM 제목/프레임/조작 유지. 메뉴 범위는 직전 skull 교체 범위 유지 |
-| 버전 | ui-refinement.css?v=20260926-5 |
+| 버전 | ui-refinement.css?v=20260926-6 |
 
 원본과 실제 제목 표시를 확인. 자동 테스트 추가·실행 없음.
 
@@ -313,7 +313,7 @@ CSS 변경만 적용. 기존 에셋 재사용. 자동 테스트 추가·실행 �
 | 구획·하단 | 분류하단 중복선 없음/간격3px. 본문제목15px·600/padding8px0 10px. 하단상단여백8px/padding-top8px/선1px#5b5143. 닫기최소34px/padding7px16px/12px |
 | 폭560px 이하 | 제목52px/22px/좌8px우154px. 문장140×50px/right4px/bottom−6px/background140×140px center−43px |
 | 폴백·합성 | normal알파/단색배경·테두리·DOM텍스트 폴백. 설정동작·값·자동저장 변경 없음 |
-| 버전 | ui-refinement.css?v=20260926-5. game.html/game-easy-test.html/index.html 및 관련 문서 동기화 |
+| 버전 | ui-refinement.css?v=20260926-6. game.html/game-easy-test.html/index.html 및 관련 문서 동기화 |
 
 설정 전용 후속 스타일은 Settings plates 블록 하나로 교체한다. 새 가죽판 생성본은 미채택 작업물이며 런타임 참조 없음. 자동 테스트 추가·실행 없음.
 
@@ -336,7 +336,7 @@ CSS 변경만 적용. 기존 에셋 재사용. 자동 테스트 추가·실행 �
 | 스킬 탭 | button.webp, 기본 #c7bead. 선택 적갈색/글자#f4e6cb/하단2px#ac7953 |
 | 폴백 | 이미지 실패 시 DOM 제목·본문·기존 단색 배경/6px 테두리 유지. JS 및 게임 수치 변경 없음 |
 | 빈 배경 문양 | sigil.png 원본 재사용. 세 창 pbox에서 620×620px center -150px, 전면감광 #141315d9→#09090af2. 장비 배경은410×410px center, 감광#0c0b0dcc→#111012eb. 정보 위 DOM 오버레이 없음/클릭 차단 없음 |
-| 캐시 | ui-refinement.css?v=20260926-5, game.html/game-easy-test.html/index.html |
+| 캐시 | ui-refinement.css?v=20260926-6, game.html/game-easy-test.html/index.html |
 
 원본 비율에 맞춰 CSS로 투명 여백만 표시 범위 밖에 둔다. 래스터 변형/재생성 후처리 없음. 자동 테스트 추가·실행 없음.
 
@@ -357,7 +357,7 @@ CSS 변경만 적용. 기존 에셋 재사용. 자동 테스트 추가·실행 �
 | 낮은 화면에서 제목 장식이 본문을 차지 | 높이800px 이하 설정·대장간·스킬·창고 제목118px으로 축소 |
 | 초점·스크롤 마감 차이 | 여섯 메뉴2px 황동 초점선,얇은 철색 스크롤. 기존 disabled와 게임 상태 유지 |
 
-캐시 ui-refinement.css?v=20260926-5. game.html/game-easy-test.html/index.html 동기화. 게임 수치·저장·전투 로직 변경 없음. DOM 구조를 교체하지 않고 CSS 배경으로 합성하므로 이미지 실패 시 제목과 조작은 남는다. 자동 테스트 추가·실행 없음. 이번 전체 적용 범위는 여섯 메인 메뉴와 로비/캐릭터 정보 면, 공통 확인창(gcModal), 스킬 툴팁(skBarTip)이다. 전투 HUD의 조작 배치는 유지한다. 대장간의 기존 낮은 대비 보조문구(#886644/#665544/#776655)는 #b6a58f로 올린다.
+캐시 ui-refinement.css?v=20260926-6. game.html/game-easy-test.html/index.html 동기화. 게임 수치·저장·전투 로직 변경 없음. DOM 구조를 교체하지 않고 CSS 배경으로 합성하므로 이미지 실패 시 제목과 조작은 남는다. 자동 테스트 추가·실행 없음. 이번 전체 적용 범위는 여섯 메인 메뉴와 로비/캐릭터 정보 면, 공통 확인창(gcModal), 스킬 툴팁(skBarTip)이다. 전투 HUD의 조작 배치는 유지한다. 대장간의 기존 낮은 대비 보조문구(#886644/#665544/#776655)는 #b6a58f로 올린다.
 
 
 ### 스타일 수치 원본
@@ -430,5 +430,65 @@ CSS 변경만 적용. 기존 에셋 재사용. 자동 테스트 추가·실행 �
  :is(#settings,#forge,#skillPanel,#storagePanel).panel .pbox .ptitle::before{width:270px!important;height:118px!important;background-size:270px 270px!important;background-position:center -67px!important;}
  .lobby-right .lobby-divider{height:32px!important;background-size:64px 64px!important;}
 }
+
+```
+
+
+## 2026-09-26 슬롯과 상호작용 마감
+
+| 영역 | 변경 계약 |
+|---|---|
+| 가방 상태 | renderInv의 inv-item에 data-ui-selected/isSelected, data-ui-locked/isFav, data-ui-junk/isJunk, data-ui-salvage/isSal을 문자열 true/false로 기록. 저장 상태·동작 변경 없음 |
+| 선택·잠금 | 선택2px 상아색 안쪽 outline, 잠금1px 황동 outline와17px 잠금 배지. 분해 선택 붉은 바탕과 기존 X 유지 |
+| 슬롯 수치 | ui-item-power,10px 고정폭 숫자/어두운 받침. 등급 점5px 마름모, 기존 등급색 유지 |
+| 상세 계층 | 이름20px/1.4, 능력치13px/1.75, 출처·조작안내11px. ui-item-source/ui-item-hint 클래스로 특정 정보만 스타일 지정 |
+| 수치 행 | id-stats 직계 div 중 직계 span이 있고 div가 없는 행만 flex 정렬. 첫 수치 span을 오른쪽으로, 강화 추가값은 그 뒤에 유지 |
+| 버튼 | hover밝기1.16/누름.88+안쪽음영/전환.14초. 비활성opacity.48와채도.3. disabled 동작을 CSS로 변경하지 않음 |
+| 툴팁 | skBarTip 최대480px 또는 화면−32px, 줄바꿈. 이름14px,설명12px/행간1.6, padding10px14px |
+| 접근성 | prefers-reduced-motion은 이번 전환 제거. 기존 키보드/게임패드 초점 경로 유지 |
+
+관련 CSS 전체 수치·선택자는 아래 원본 표기를 따른다. CSS 캐시 ui-refinement.css?v=20260926-6. game.html/game-easy-test.html/index.html 동기화. 신규 이미지 없음. 부모 컨테이너 교체를 추가하지 않고 기존 렌더 문자열에 클래스와 데이터 속성만 추가한다. 자동 테스트 추가·실행 없음.
+
+### 실제 화면 관찰
+
+소지품 가방의 등급 마름모·수치 받침 및 선택 테두리, 전대의 유골함 상세에서 이름/능력치 우측 수치 정렬을 확인했다. 잠금·분해 선택 상태는 렌더 속성과 스타일 연결까지 구현했으며 해당 상태의 화면 확인은 별도로 남는다. 기존 전대의 유골함 선택 시 하단 분해 예상 금액이 NaN으로 표시되는 문제를 발견했다. 이번 시각 마감은 분해 금액 공식에 손대지 않았으며 이 금액 계산은 후속 수정 항목이다.
+
+
+### 스타일 수치 원본
+
+최신 추가 스타일의 정확한 색상·치수·선택자는 아래와 같다. 기존 정보 배경 계약에 덧붙여 적용한다.
+
+```css
+/* Interaction finish: readable states, restrained feedback, structured details. */
+#invPanel.panel .pbox .inv-item{transition:border-color .14s,box-shadow .14s,filter .14s!important;}
+#invPanel.panel .pbox .inv-item[data-ui-selected=true],#invPanel.panel .pbox .inv-cell.sel{outline:2px solid #ead1a0!important;outline-offset:-2px!important;box-shadow:inset 0 0 0 3px #15100bd9,inset 0 0 18px #b9853930!important;z-index:6;}
+#invPanel.panel .pbox .inv-item[data-ui-locked=true]:not([data-ui-selected=true]){outline:1px solid #9c8355!important;outline-offset:-1px!important;}
+#invPanel.panel .pbox .inv-item[data-ui-junk=true]{background:linear-gradient(#56211e77,#160e10dd)!important;}
+#invPanel.panel .pbox .inv-item[data-ui-salvage=true]{background:linear-gradient(#6c171777,#21090bdd)!important;box-shadow:inset 0 0 0 2px #af5b49!important;}
+#invPanel.panel .pbox .inv-item .ui-item-mark{top:2px!important;right:2px!important;display:flex!important;align-items:center;justify-content:center;min-width:17px;min-height:17px;background:#17130eed;border:1px solid #8b7451;border-radius:2px;z-index:3;}
+#invPanel.panel .pbox .inv-item .ui-item-power{bottom:2px!important;right:3px!important;color:#dfd0b5!important;background:#0b0b0bcb;padding:2px 3px;font:500 10px/1.1 'Noto Sans KR',sans-serif!important;font-variant-numeric:tabular-nums;}
+#invPanel.panel .pbox .inv-item .rarity-dot{width:5px;height:5px;top:4px;left:5px;border-radius:0;transform:rotate(45deg);box-shadow:0 0 0 1px #090909;}
+#invPanel.panel .pbox .inv-eq-slot:not(.inv-eq-item){box-shadow:inset 0 3px 8px #000b!important;}
+#invPanel.panel .pbox .inv-eq-slot.inv-eq-item:hover,#invPanel.panel .pbox .inv-item:not(.dragging):hover{filter:brightness(1.12);box-shadow:inset 0 1px #e5d2a75c,inset 0 -1px #b19b6955!important;}
+#invPanel.panel .pbox .inv-item.dragging{filter:none!important;transition:none!important;}
+#invPanel.panel :is(.item-detail,.inv-cmp-float){border-radius:0!important;background:linear-gradient(#191619f5,#0d0c0ff9),var(--ui-surface) center/320px!important;box-shadow:0 8px 28px #000b!important;padding:14px!important;}
+#invPanel.panel .id-name{font:600 20px/1.4 'Noto Serif KR',serif!important;letter-spacing:.01em!important;margin:5px 0 10px!important;overflow-wrap:anywhere;text-shadow:0 2px 2px #000!important;}
+#invPanel.panel .id-stats{font:400 13px/1.75 'Noto Sans KR',sans-serif!important;font-variant-numeric:tabular-nums;padding-top:10px!important;border-top:1px solid #75624755!important;}
+#invPanel.panel .id-stats>div{padding:3px 0;}
+#invPanel.panel .id-stats>div:has(>span):not(:has(>div)){display:flex;align-items:baseline;gap:6px;flex-wrap:wrap;}
+#invPanel.panel .id-stats>div:has(>span):not(:has(>div))>span:first-of-type{margin-left:auto;text-align:right;}
+#invPanel.panel .ui-item-source{font:500 11px/1.5 'Noto Sans KR',sans-serif!important;color:#bbaa8d!important;letter-spacing:.04em;}
+#invPanel.panel .ui-item-hint{font:400 11px/1.65 'Noto Sans KR',sans-serif!important;color:#b4aa98!important;margin-top:12px!important;padding-top:8px;border-top:1px solid #6c5c414d;}
+#invPanel.panel .cmp-header{font:600 12px/1.5 'Noto Sans KR',sans-serif!important;color:#cdb992!important;padding-right:22px;}
+#invPanel.panel .cmp-close{color:#cbb99b!important;padding:4px;min-width:24px;text-align:center;}
+#invPanel.panel :is(#combatPower,#invResBar,.id-btn,.inv-dep-item),#statPanel .growth-metric strong,#forge #forgeMats{font-variant-numeric:tabular-nums;}
+:is(#settings,#invPanel,#forge,#skillPanel,#storagePanel,#statPanel).panel .pbox :is(.panel-nav-tab,.pclose,.ui-section-tab,.id-btn,.fg-tab,.set-key){transition:filter .14s,box-shadow .14s,color .14s!important;}
+:is(#settings,#invPanel,#forge,#skillPanel,#storagePanel,#statPanel).panel .pbox :is(.panel-nav-tab,.pclose,.ui-section-tab,.id-btn,.fg-tab,.set-key):not(:disabled):not(.dis):not([aria-disabled=true]):hover{filter:brightness(1.16)!important;}
+:is(#settings,#invPanel,#forge,#skillPanel,#storagePanel,#statPanel).panel .pbox :is(.panel-nav-tab,.pclose,.ui-section-tab,.id-btn,.fg-tab,.set-key):not(:disabled):not(.dis):not([aria-disabled=true]):active{filter:brightness(.88)!important;box-shadow:inset 0 3px 6px #000b!important;}
+:is(#settings,#invPanel,#forge,#skillPanel,#storagePanel,#statPanel).panel .pbox :is(button:disabled,.id-btn.dis,[aria-disabled=true]){opacity:.48!important;filter:saturate(.3)!important;cursor:default!important;}
+#skBarTip{width:max-content;max-width:min(480px,calc(100vw - 32px));white-space:normal!important;line-height:1.6!important;padding:10px 14px!important;}
+#skBarTip .sbt-name{display:block;font-size:14px!important;line-height:1.5;margin:0 0 4px!important;color:#ead6ad!important;}
+#skBarTip .sbt-desc{font-size:12px!important;color:#c4b69e!important;}
+@media(prefers-reduced-motion:reduce){#invPanel .inv-item,.panel .pbox :is(.panel-nav-tab,.pclose,.ui-section-tab,.id-btn,.fg-tab,.set-key){transition:none!important;}}
 
 ```
