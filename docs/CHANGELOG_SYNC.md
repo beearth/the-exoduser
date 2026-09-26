@@ -48592,3 +48592,5 @@ mpR = 0.05 + s.int×0.005                                        [NO P.lv×0.001
 | pit_poison | 본편 stage0의 월드(6500,5580),타일(162,139)만 Ch1LivingDetail.pit의 절차식 투명 atlas로 그린다. 크기200×scale,좌표·collision·배치개수 유지. 안쪽 벽/낮은 수면/앞턱 가림 및 국소 수축 추가 |
 | 폴백·범위 | 효과 API 미로드 시 원래 pit_poison.png 렌더. 다른 위치/스테이지/bossArena/fieldRebuildQA에는 원래 그림 유지. 대형 m_c1gtoxicf 원화 보존 |
 | 계약 | 상세 수치·검수: CH1_LIVING_DETAIL_RUNTIME_20260925.md 9차. 원본 이미지 파일 변경 없음 |
+
+전체 메뉴와 로비의 최신 재질·제목·문양·선택·초점·스크롤 스타일은 UI_COMPOSITION_20260925.md의 **2026-09-26 전체 메뉴 마감 절**을 따른다.

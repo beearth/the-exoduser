@@ -206,3 +206,5 @@ function _swapLobbyBg(stage){
 | lobbyKenburns |46s ease-in-out infinite alternate 유지. 시작 scale(1) translate(0,0), 끝 scale(1.02) translate(-.3%,-.2%). transform-origin50%45%, reduced-motion은 animation:none |
 | 표시 | background-size:cover, left center. 추가 확대는 기존4~8%에서0~2%로 축소 |
 | 상세 | [디자인/해상도/실제 화면 검수](../1전체그래픽세팅/LOBBY_WARRIOR_REDESIGN_20260913.md) |
+
+전체 메뉴와 로비의 최신 재질·제목·문양·선택·초점·스크롤 스타일은 UI_COMPOSITION_20260925.md의 **2026-09-26 전체 메뉴 마감 절**을 따른다.
