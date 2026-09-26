@@ -716,7 +716,7 @@
 @media(prefers-reduced-motion:reduce){#storagePanel.panel .pbox .vault-slot{transition:none;}}
 
 /* Inventory filter finish: readable plates and explicit selection. */
-#invPanel.panel .pbox #invFilters{gap:5px!important;padding:8px 0!important;}
+#invPanel.panel .pbox #invFilters{gap:5px!important;padding:8px 0!important;max-height:68px;overflow-y:auto;overscroll-behavior:contain;scrollbar-gutter:stable;}
 #invPanel.panel .pbox .inv-filter-btn{appearance:none;box-sizing:border-box;min-height:28px;padding:5px 9px!important;margin:0!important;border:1px solid #544a3b!important;border-radius:0;color:#c8bda7!important;background:linear-gradient(#19171ac9,#100e11ed),var(--menu-plate) center/100% 100% no-repeat!important;font:500 11px/1.4 'Noto Sans KR',sans-serif!important;letter-spacing:.02em;transition:filter .14s!important;}
 #invPanel.panel .pbox .inv-filter-btn.act{color:var(--filter-color,#ecd4a4)!important;border-color:#9b8259!important;box-shadow:inset 0 -2px var(--filter-color,#ecd4a4)!important;background:linear-gradient(#483724a6,#1b1510df),var(--menu-plate) center/100% 100% no-repeat!important;}
 #invPanel.panel .pbox .inv-filter-btn:hover{filter:brightness(1.18);}
