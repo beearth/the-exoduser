@@ -48657,3 +48657,19 @@ CSS 캐시 ui-refinement.css?v=20260927-3. 신규 이미지/아이템 데이터 
 | 유지 | INV.selected와 선택 테두리, 하단 장착·분해 버튼, 고정 48px 조작 영역 유지 |
 
 이 절은 이전 선택 상세 자동 복원 계약을 대체한다. 아이템 데이터·저장 변경 없음. 자동 테스트 추가·실행 없음.
+
+
+## 2026-09-27 유골함 탭 아이템 분류
+
+| 항목 | 현재 계약 |
+|---|---|
+| 유골함 탭 배낭 | slot=ossuary 또는 bonePart인 소지 아이템 모두 표시. 장착 유골함·등록 도감은 상단 기존 패널 유지 |
+| 장비 탭 배낭 | ossuary/bonePart 제외 |
+| 보관함 탭 배낭 | 기존 전체 소지 아이템 표시 |
+| 전환 | _invChangeCategory: INV.selected=null, _invHover=-1, 분해 선택 clear, invFilter의 slot/rarity/el=null. renderInv 후 정보창 숨김 |
+| 개수 | invCount는 현재 분류 보유 개수. invMax/BAG_MAX는 기존 공유 용량 |
+| 일괄 조작 | 전체 쓰레기 지정/일괄분해는 filtered에 포함된 현재 표시 아이템만 대상. 분해는 확인창에 제시한 _jkItems 객체만 제거 |
+| 데이터 | INV.bag/장착/도감/창고 저장 구조와 기존 좌표·용량 유지. 실제 아이템 복제·자동등록·소모 없음 |
+| 함수/캐시 | _invCategoryMatches, _invChangeCategory. ui-panels.js?v=20260927-1 |
+
+기존 필터 조건은 탭 분류 안에서 적용한다. 자동 테스트 추가·실행 없음.

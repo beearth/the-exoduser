@@ -2508,7 +2508,7 @@ body:has(#invPanel.on) #keyGuide{display:none!important}
 <link rel="stylesheet" href="localization.css?v=20260909">
 <link rel="stylesheet" href="ui-foundation.css?v=20260924-hell3">
 <link rel="stylesheet" href="ui-refinement.css?v=20260927-3">
-<script defer src="ui-panels.js?v=20260925-1"></script>
+<script defer src="ui-panels.js?v=20260927-1"></script>
 <script src="stat-panel-ui.js?v=20260909-constellation-v3"></script>
 </head>
 <body>
@@ -46598,6 +46598,17 @@ function renderOssPanel(){
     urn.onmouseleave=()=>_invClearHover();
   }
 }
+function _invCategoryMatches(it){
+  if(!it)return false;
+  const page=$('invPanel')?.dataset.inventoryPage||'equipment';
+  const bone=it.slot==='ossuary'||it.slot==='bonePart';
+  return page==='ossuary'?bone:page==='equipment'?!bone:true;
+}
+function _invChangeCategory(){
+  INV.selected=null;_invHover=-1;_invSalSel.clear();
+  invFilter={slot:null,rarity:null,el:null};
+  renderInv();_invClearHover();
+}
 function renderInv(){
   // Combat power
   const cp=calcCP();
@@ -46692,7 +46703,7 @@ function renderInv(){
   _GC_SZ=_GC;
   const _IR=_invRows();
   grid.style.width=INV_COLS*_GC+'px';grid.style.height=_IR*_GC+'px';
-  $('invCount').textContent=INV.bag.length;
+  $('invCount').textContent=INV.bag.filter(_invCategoryMatches).length;
   // 좌표 없거나 2x2 경계 밖이면 리셋 후 빈 자리에 재배치
   for(let i=0;i<INV.bag.length;i++){const _it=INV.bag[i];if(!_it)continue;const[w,h]=_itemSz(_it);if(_it._gx==null||_it._gx+w>INV_COLS||_it._gy+h>_invRows()){_it._gx=null;_it._gy=null;const pos=_invFindSpace(w,h,i);if(pos){_it._gx=pos.x;_it._gy=pos.y}}}
   // 유효하지 않은 분해 선택 제거
@@ -46706,7 +46717,7 @@ function renderInv(){
   // 필터 적용
   const filtered=[];
   for(let i=0;i<INV.bag.length;i++){
-    const item=INV.bag[i];if(!item)continue;
+    const item=INV.bag[i];if(!_invCategoryMatches(item))continue;
     if(invFilter.slot&&item.slot!==invFilter.slot&&!(invFilter.slot==='headband'&&_earringSlot(item.slot)))continue;
     if(invFilter.rarity!==null&&item.rarity!==invFilter.rarity)continue;
     if(invFilter.el!==null&&item.el!==invFilter.el)continue;
@@ -46804,22 +46815,22 @@ _isBtn.style.display='';_isBtn.textContent=_L("선택분해 ({p0}개 -> 악의 +
   // ── 전체 쓰레기 지정 버튼 ──
   const _jkSelBtn=$('invJunkSelBtn');
   if(_jkSelBtn){
-    const _nonJunk=INV.bag.filter(it=>it&&!it.junk&&!it.fav);
+    const _nonJunk=filtered.map(i=>INV.bag[i]).filter(it=>it&&!it.junk&&!it.fav);
     if(_nonJunk.length>0){
 _jkSelBtn.style.display='';_jkSelBtn.textContent=_L("전체 쓰레기 지정 ({p0}개)","Mark all junk ({p0})",{p0:_nonJunk.length});
-      _jkSelBtn.onclick=()=>{for(const it of INV.bag){if(it&&!it.fav)it.junk=true}renderInv()};
+      _jkSelBtn.onclick=()=>{for(const i of filtered){const it=INV.bag[i];if(it&&!it.fav)it.junk=true}renderInv()};
     }else{_jkSelBtn.style.display='none'}
   }
   // ── 쓰레기 일괄분해 버튼 ──
   const _jkBtn=$('invJunkBtn');
   if(_jkBtn){
-    const _jkItems=INV.bag.filter(it=>it.junk&&!it.fav);
+    const _jkItems=filtered.map(i=>INV.bag[i]).filter(it=>it&&it.junk&&!it.fav);
     if(_jkItems.length>0){
       let _jkTot=0;for(const it of _jkItems)_jkTot+=salvageVal(it);
 _jkBtn.style.display='';_jkBtn.textContent=_L("쓰레기 전부 분해 ({p0}개 -> 악의 +{p1})","Salvage all junk ({p0} -> +{p1} Malice)",{p0:_jkItems.length,p1:_jkTot});
       _jkBtn.onclick=async()=>{
         if(!await gameConfirm(_L("{p0} 쓰레기 {p1}개를 일괄 분해합니다.<br>{p2} {p3} 악의 획득.<br><br>{p4} 중요잠금 아이템은 제외됩니다.<br>{p5} 복구 불가!","{p0} Bulk salvage {p1} junk items.<br>{p2} {p3} Malice gained.<br><br>{p4} Favorited items excluded.<br>{p5} Cannot undo!",{p0:_glyph('trash','#cc9944',15),p1:_jkItems.length,p2:_glyph('demon','#cc66ff',15),p3:_jkTot,p4:_glyph('warn','#ffaa33',15),p5:_glyph('warn','#ff6644',15)}),null,null,true))return;
-        INV.bag=INV.bag.filter(it=>!(it.junk&&!it.fav));
+        INV.bag=INV.bag.filter(it=>!_jkItems.includes(it));
         G.mats+=_jkTot;_invSalSel.clear();INV.selected=null;
         SFX.pickup();dbSaveNow();renderInv();
       };

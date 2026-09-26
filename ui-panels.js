@@ -102,7 +102,9 @@
     const entries = [['equipment','장비','Equipment'],['ossuary','유골함','Ossuary'],['storage','보관함','Storage']];
     const targets = {equipment:equip,ossuary:document.getElementById('invOssuaryPanel'),storage:document.getElementById('invStorageCol')};
     const nav = tabBar(entries, key => {
+      const changed = root.dataset.inventoryPage !== key;
       root.dataset.inventoryPage = key; selected(nav,key);
+      if(changed && typeof _invChangeCategory === 'function') _invChangeCategory();
       Object.entries(targets).forEach(([name,node]) => { if(node) node.setAttribute('aria-hidden', String(name !== key)); });
     }, 'inventory');
     for(const button of nav.children) {
