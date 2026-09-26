@@ -29,7 +29,7 @@ function renderZone(zone){
 
 test('elite ground telegraph has a readable full-radius boundary and center-out wavefront',()=>{
   assert.ok(source,'elite ground telegraph renderer must exist');
-  const z={x:110,y:110,t:30,dur:60,r:68,kind:'burst',col:'#ff8844'};
+  const z={x:110,y:110,t:30,dur:60,r:68,kind:'burst',col:'#ff2438'};
   const {image,X}=renderZone(z),front=maxColor(image,144,110),edge=maxColor(image,178,110);
   assert.ok(front.red>150&&front.red>front.green*1.15,'expanding impact front must read clearly halfway to the rim');
   assert.ok(edge.red>100&&edge.red>edge.green*1.15,'fixed outer rim must mark the actual damage radius');

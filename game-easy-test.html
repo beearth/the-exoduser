@@ -53372,12 +53372,12 @@ function drawP(){
         X.beginPath();X.arc(fr.x,fr.y,fr.r*(1+_ep*.5),0,Math.PI*2);X.stroke();
       }else{
         const _fp=Math.min(1,fr.t/fr.delay);
-        X.globalAlpha=_fp*.12;X.fillStyle='#ff6600';
+        X.globalAlpha=_fp*.2;X.fillStyle='#b50022';
         X.beginPath();X.arc(fr.x,fr.y,fr.r,0,Math.PI*2);X.fill();
-        X.globalAlpha=_fp*(.3+Math.sin(_now*.02+fi)*.15);X.strokeStyle='#ff8800';X.lineWidth=2+_fp*2;
+        X.globalAlpha=_fp*(.55+Math.sin(_now*.02+fi)*.2);X.strokeStyle='#ff2438';X.lineWidth=2+_fp*2;
         X.beginPath();X.arc(fr.x,fr.y,fr.r,0,Math.PI*2);X.stroke();
         if(_fp>.5){const _shr=1-((_fp-.5)*2);
-          X.globalAlpha=(.5-_shr*.3);X.strokeStyle='#ffcc00';X.lineWidth=1.5;
+          X.globalAlpha=(.5-_shr*.3);X.strokeStyle='#ff4455';X.lineWidth=1.5;
           X.beginPath();X.arc(fr.x,fr.y,fr.r*_shr,0,Math.PI*2);X.stroke();}
       }
     }

@@ -5051,10 +5051,10 @@ function _drawEliteAuraTelegraph(X,e,sa,now){
 }
 function _drawEliteZoneTelegraph(X,z,now){
   if(!z||!z.r||!z.dur)return;
-  const q=Math.max(0,Math.min(1,1-z.t/z.dur)),r=z.r,head=Math.max(1.5,r*q),col=z.col||'#ff8844';
+  const q=Math.max(0,Math.min(1,1-z.t/z.dur)),r=z.r,head=Math.max(1.5,r*q),col=z.col||'#ff2438';
   const pulse=.5+.5*Math.sin(now*.018),spin=now*.0008,mortar=z.kind==='mortar';
   X.save();X.globalCompositeOperation='source-over';
-  X.globalAlpha=.075+pulse*.025;X.fillStyle=col;X.beginPath();X.arc(z.x,z.y,r,0,Math.PI*2);X.fill();
+  X.globalAlpha=.15+pulse*.05;X.fillStyle=col;X.beginPath();X.arc(z.x,z.y,r,0,Math.PI*2);X.fill();
   X.globalAlpha=.82+pulse*.12;X.strokeStyle=col;X.lineWidth=2.2+pulse*1.2;X.beginPath();X.arc(z.x,z.y,r-1,0,Math.PI*2);X.stroke();
   X.globalAlpha=.70;X.lineWidth=1.4;
   for(let i=0;i<20;i++){const a=spin+Math.PI*2*i/20,len=i%5===0?8:4;X.beginPath();X.moveTo(z.x+Math.cos(a)*(r-len),z.y+Math.sin(a)*(r-len));X.lineTo(z.x+Math.cos(a)*(r+1),z.y+Math.sin(a)*(r+1));X.stroke()}
@@ -36287,7 +36287,7 @@ function updateE(e,sp){
     // M29 돌진: 붉은 직선 전조 60f 후 돌격, 9초 재사용
     if(e.mods.includes('M29')&&e.s==='idle'&&d>140&&d<520){e.modT.eliteCharge+=sp;if(e.modT.eliteCharge>=540&&_claimEliteAttack(e,78)){e.modT.eliteCharge=0;const a=Math.atan2(P.y-e.y,P.x-e.x);e.facing=a;e.echDx=Math.cos(a);e.echDy=Math.sin(a);e.s='eChargeWind';e.st2=60;e._chgAimMax=60;e._chgDur=18;e._chgSpd=32;e._chgLen=640+e.r;e._chgVisLen=e._chgLen;}}
     // M30 진원 충격파: 반경이 성장하며 8초마다 폭발
-    if(e.mods.includes('M30')&&d<800){e.modT.eliteRing+=sp;if(e.modT.eliteRing>=480&&_claimEliteAttack(e,54)){e.modT.eliteRing=0;e._eliteZones=e._eliteZones||[];e._eliteZones.push({x:P.x,y:P.y,t:54,dur:54,r:125,kind:'burst',col:'#ff8844'});}}
+    if(e.mods.includes('M30')&&d<800){e.modT.eliteRing+=sp;if(e.modT.eliteRing>=480&&_claimEliteAttack(e,54)){e.modT.eliteRing=0;e._eliteZones=e._eliteZones||[];e._eliteZones.push({x:P.x,y:P.y,t:54,dur:54,r:125,kind:'burst',col:'#ff2438'});}}
     // M31 번개 연사: 조준선 예고 후 Q 패링 가능한 번개 투사체 3발
     if(e.mods.includes('M31')){if(e._eliteBoltWarn>0){e._eliteBoltWarn-=sp;if(e._eliteBoltWarn<=0){const a=e._eliteBoltAim;eProjAt(e,a-.24,3,.72,EL.L,260,'#ffee44',3.5);eProjAt(e,a,3,.72,EL.L,260,'#ffee44',3.5);eProjAt(e,a+.24,3,.72,EL.L,260,'#ffee44',3.5);}}else if(d<850){e.modT.eliteBolt+=sp;if(e.modT.eliteBolt>=360&&_claimEliteAttack(e,45)){e.modT.eliteBolt=0;e._eliteBoltAim=Math.atan2(P.y-e.y,P.x-e.x);e._eliteBoltWarn=45;}}}
     // M32 지옥 포격: 플레이어 주변 세 지점을 순차 표적화
@@ -53777,12 +53777,12 @@ function drawP(){
         X.beginPath();X.arc(fr.x,fr.y,fr.r*(1+_ep*.5),0,Math.PI*2);X.stroke();
       }else{
         const _fp=Math.min(1,fr.t/fr.delay);
-        X.globalAlpha=_fp*.12;X.fillStyle='#ff6600';
+        X.globalAlpha=_fp*.2;X.fillStyle='#b50022';
         X.beginPath();X.arc(fr.x,fr.y,fr.r,0,Math.PI*2);X.fill();
-        X.globalAlpha=_fp*(.3+Math.sin(_now*.02+fi)*.15);X.strokeStyle='#ff8800';X.lineWidth=2+_fp*2;
+        X.globalAlpha=_fp*(.55+Math.sin(_now*.02+fi)*.2);X.strokeStyle='#ff2438';X.lineWidth=2+_fp*2;
         X.beginPath();X.arc(fr.x,fr.y,fr.r,0,Math.PI*2);X.stroke();
         if(_fp>.5){const _shr=1-((_fp-.5)*2);
-          X.globalAlpha=(.5-_shr*.3);X.strokeStyle='#ffcc00';X.lineWidth=1.5;
+          X.globalAlpha=(.5-_shr*.3);X.strokeStyle='#ff4455';X.lineWidth=1.5;
           X.beginPath();X.arc(fr.x,fr.y,fr.r*_shr,0,Math.PI*2);X.stroke();}
       }
     }
