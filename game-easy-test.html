@@ -2299,7 +2299,7 @@ canvas{display:block;position:fixed;inset:0}
 <link rel="stylesheet" href="stat-panel-ui.css?v=20260910-fullscreen-readable-v1">
 <link rel="stylesheet" href="localization.css?v=20260909">
 <link rel="stylesheet" href="ui-foundation.css?v=20260924-hell3">
-<link rel="stylesheet" href="ui-refinement.css?v=20260926-10">
+<link rel="stylesheet" href="ui-refinement.css?v=20260927-1">
 <script defer src="ui-panels.js?v=20260925-1"></script>
 <script src="stat-panel-ui.js?v=20260909-constellation-v3"></script>
 </head>
@@ -46191,10 +46191,13 @@ function renderInv(){
   // ── Filter bar ──
   const fBar=$('invFilters');fBar.innerHTML='';
   const mkF=(label,key,val,col)=>{
-    const b=document.createElement('span');
+    const b=document.createElement('button');
+    b.type='button';
     const act=invFilter[key]===val;
-    b.className='inv-filter-btn';
+    b.className='inv-filter-btn'+(act?' act':'');
+    b.setAttribute('aria-pressed',String(act));
     b.style.cssText=`display:inline-block;padding:1px 6px;font-size:.95rem;font-family:'Noto Sans KR';cursor:pointer;border:1px solid ${act?col:'#332211'};background:${act?col+'22':'rgba(0,0,0,.2)'};color:${act?col:'#776655'};margin:0 2px 2px 0;transition:all .15s`;
+    b.style.setProperty('--filter-color',col);
     b.textContent=label;
     b.onclick=()=>{invFilter[key]=act?null:val;renderInv()};
     fBar.appendChild(b);
