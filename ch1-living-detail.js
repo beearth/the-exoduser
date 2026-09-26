@@ -384,18 +384,99 @@
     c.restore();return true;
   }
   const organicCache={m_c1tree:new WeakMap(),m_c1camp:new WeakMap()};
+  // Authored hand silhouettes, in the existing 880 x 663 camp image.
+  // Only these three hands articulate; the forearms, stones and spikes stay rigid.
+  const campHandRigs=[
+    {wrist:[452,504],axis:[-19,12],sign:-1,outline:[[458,495],[461,509],[448,515],[440,532],[428,541],[413,540],[410,526],[414,513],[427,504],[442,501]]},
+    {wrist:[591,541],axis:[8,18],sign:1,outline:[[581,536],[600,535],[608,545],[622,557],[626,574],[616,587],[596,588],[578,575],[576,556]]},
+    {wrist:[580,420],axis:[12,-17],sign:-1,outline:[[569,422],[575,403],[578,383],[601,378],[622,385],[620,405],[617,424],[589,431],[579,427]]}
+  ];
+  function campHands(c,o,now,meta,img){
+    let cached=organicCache.m_c1camp.get(img);
+    if(!cached){
+      const iw=img.naturalWidth||img.width,ih=img.naturalHeight||img.height,ratio=Math.min(1,880/Math.max(iw,ih));
+      const w=Math.round(iw*ratio),h=Math.round(ih*ratio),sx=w/880,sy=h/663;
+      const body=root.document.createElement('canvas');body.width=w;body.height=h;
+      const b=body.getContext('2d');b.drawImage(img,0,0,w,h);
+      const hands=campHandRigs.map((rig,index)=>{
+        const minX=Math.min(...rig.outline.map(p=>p[0]))-18,minY=Math.min(...rig.outline.map(p=>p[1]))-18;
+        const pw=Math.ceil(Math.max(...rig.outline.map(p=>p[0]))-minX+18),ph=Math.ceil(Math.max(...rig.outline.map(p=>p[1]))-minY+18);
+        const source=root.document.createElement('canvas');source.width=pw;source.height=ph;
+        const s=source.getContext('2d');
+        function mask(ctx,dx,dy,scaleX=1,scaleY=1){
+          ctx.beginPath();rig.outline.forEach(([x,y],i)=>{if(i)ctx.lineTo((x+dx)*scaleX,(y+dy)*scaleY);else ctx.moveTo((x+dx)*scaleX,(y+dy)*scaleY);});ctx.closePath();
+        }
+        s.save();mask(s,-minX,-minY);s.clip();s.drawImage(img,0,0,iw,ih,-minX,-minY,880,663);s.restore();
+        b.save();b.globalCompositeOperation='destination-out';mask(b,0,0,sx,sy);b.fill();b.restore();
+        const atlas=root.document.createElement('canvas');atlas.width=pw*6;atlas.height=ph*4;
+        const a=atlas.getContext('2d'),len=Math.hypot(...rig.axis),ux=rig.axis[0]/len,uy=rig.axis[1]/len;
+        function pose(x,y,grip){
+          const dx=x+minX-rig.wrist[0],dy=y+minY-rig.wrist[1],u=dx*ux+dy*uy,v=-dx*uy+dy*ux;
+          // Palm, proximal phalanges and distal phalanges have separate rigid joint angles.
+          const angle=rig.sign*grip*(.65+v*.006),distal=angle+rig.sign*grip*.5;
+          let pu=u,pv=v;
+          if(u>14){
+            const first=Math.min(11,u-14),last=Math.max(0,u-25),rot=u>25?distal:angle;
+            pu=14+Math.cos(angle)*first+Math.cos(distal)*last-Math.sin(rot)*v;
+            pv=Math.sin(angle)*first+Math.sin(distal)*last+Math.cos(rot)*v;
+          }
+          const wristAngle=rig.sign*grip*.18*Math.max(0,Math.min(1,u/10));
+          const ru=pu*Math.cos(wristAngle)-pv*Math.sin(wristAngle),rv=pu*Math.sin(wristAngle)+pv*Math.cos(wristAngle);
+          return [rig.wrist[0]+ru*ux-rv*uy-minX,rig.wrist[1]+ru*uy+rv*ux-minY];
+        }
+        function triangle(src,dst){
+          const [p,q,r]=src,[d,e,f]=dst,ax=q[0]-p[0],ay=q[1]-p[1],bx=r[0]-p[0],by=r[1]-p[1],det=ax*by-ay*bx;
+          const A=((e[0]-d[0])*by-(f[0]-d[0])*ay)/det,B=((e[1]-d[1])*by-(f[1]-d[1])*ay)/det;
+          const C=((f[0]-d[0])*ax-(e[0]-d[0])*bx)/det,D=((f[1]-d[1])*ax-(e[1]-d[1])*bx)/det;
+          const cx=(d[0]+e[0]+f[0])/3,cy=(d[1]+e[1]+f[1])/3;
+          const edge=dst.map(([x,y])=>{const length=Math.hypot(x-cx,y-cy)||1;return [x+(x-cx)/length*.35,y+(y-cy)/length*.35];});
+          a.save();a.beginPath();a.moveTo(...edge[0]);a.lineTo(...edge[1]);a.lineTo(...edge[2]);a.closePath();a.clip();
+          a.transform(A,B,C,D,d[0]-A*p[0]-C*p[1],d[1]-B*p[0]-D*p[1]);a.drawImage(source,0,0);a.restore();
+        }
+        for(let frame=0;frame<24;frame++){
+          const grip=frame/23;
+          a.save();a.translate(frame%6*pw,Math.floor(frame/6)*ph);
+          for(let y=0;y<ph;y+=6)for(let x=0;x<pw;x+=6){
+            const vertices=[[x,y],[Math.min(pw,x+6),y],[Math.min(pw,x+6),Math.min(ph,y+6)],[x,Math.min(ph,y+6)]];
+            const moved=vertices.map(p=>pose(...p,grip));
+            for(const ids of [[0,1,2],[0,2,3]])triangle(ids.map(i=>vertices[i]),ids.map(i=>moved[i]));
+          }
+          a.restore();
+        }
+        const blended=root.document.createElement('canvas');blended.width=pw;blended.height=ph;
+        return {atlas,blended,pw,ph,minX,minY,index,key:-1};
+      });
+      cached={body,hands,w,h};organicCache.m_c1camp.set(img,cached);
+    }
+    const size=(meta.sz||400)*(o.scale||1),ar=cached.w/cached.h,dw=size*Math.min(1,ar),dh=size*Math.min(1,1/ar),dx=o.x-dw/2,dy=o.y-dh/2;
+    c.drawImage(cached.body,dx,dy,dw,dh);
+    for(const hand of cached.hands){
+      const p=((now/5200+hand.index*.27)%1+1)%1,ease=t=>t*t*(3-2*t);
+      const grip=p<.18?0:p<.4?ease((p-.18)/.22):p<.57?1:p<.84?1-ease((p-.57)/.27):0;
+      const key=Math.round(grip*92),sample=key/4,frame=Math.floor(sample),next=Math.min(23,frame+1),mix=sample-frame;
+      const {pw,ph,atlas,blended}=hand;
+      if(hand.key!==key){
+        const b=blended.getContext('2d');b.clearRect(0,0,pw,ph);b.globalCompositeOperation='source-over';b.globalAlpha=1-mix;
+        b.drawImage(atlas,frame%6*pw,Math.floor(frame/6)*ph,pw,ph,0,0,pw,ph);
+        b.globalCompositeOperation='lighter';b.globalAlpha=mix;b.drawImage(atlas,next%6*pw,Math.floor(next/6)*ph,pw,ph,0,0,pw,ph);
+        b.globalAlpha=1;b.globalCompositeOperation='source-over';hand.key=key;blended._glVer=(blended._glVer||0)+1;
+      }
+      c.drawImage(blended,dx+hand.minX/880*dw,dy+hand.minY/663*dh,pw/880*dw,ph/663*dh);
+    }
+    return true;
+  }
   function organic(c,g,o,now,meta,img){
     const tree=o.type==='m_c1tree',camp=o.type==='m_c1camp';
     if(!enabled(g)||(!tree&&!camp)||!img||img.complete===false||!(img.naturalWidth||img.width)||!meta||meta.srcRect)return false;
+    if(camp)return campHands(c,o,now,meta,img);
     const cache=organicCache[o.type];let cached=cache.get(img);
     if(!cached){
-      const iw=img.naturalWidth||img.width,ih=img.naturalHeight||img.height,max=tree?1024:512;
+      const iw=img.naturalWidth||img.width,ih=img.naturalHeight||img.height,max=1024;
       const ratio=Math.min(1,max/Math.max(iw,ih)),w=Math.round(iw*ratio),h=Math.round(ih*ratio);
       const source=root.document.createElement('canvas');source.width=w;source.height=h;source.getContext('2d').drawImage(img,0,0,w,h);
       const a=root.document.createElement('canvas');a.width=w*4;a.height=h*2;const x=a.getContext('2d');
       // Local smooth displacement fields leave trunk joints, crate boards and stone rims fixed.
-      const regions=tree?[[.27,.79,.20,.17,.011,0],[.75,.80,.19,.17,.011,1.4],[.50,.89,.12,.085,.004,2.1]]:
-        [[.60,.64,.11,.09,.010,0],[.70,.37,.08,.12,.008,1.5],[.14,.43,.11,.13,.009,2.8]];
+      const regions=[[.27,.79,.20,.17,.011,0],[.75,.80,.19,.17,.011,1.4],[.50,.89,.12,.085,.004,2.1]];
       function shift(u,v,phase){
         let value=0;
         for(const [cx,cy,rx,ry,amp,offset] of regions){

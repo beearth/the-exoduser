@@ -2,7 +2,7 @@ import test from 'node:test';
 import assert from 'node:assert/strict';
 import {existsSync,readFileSync} from 'node:fs';
 import vm from 'node:vm';
-import {createCanvas} from 'canvas';
+import {createCanvas,loadImage} from 'canvas';
 const file=new URL('../ch1-living-detail.js',import.meta.url);
 const scope={document:{createElement:()=>createCanvas(320,320)}};
 if(existsSync(file))vm.runInNewContext(readFileSync(file,'utf8'),scope);
@@ -153,5 +153,20 @@ test('organic sprite motion keeps camp crates and the tree trunk attached and st
       for(let k=0;k<3;k++)assert.ok(Math.abs(p[k]-q[k])<3,'rigid material must retain its source pixel');
       assert.equal(p[3],q[3],'static surfaces must not fade during the blend');
     }
+  }
+});
+test('camp corpse hands grip at the fingers while the firepit and forearms stay still',async()=>{
+  const source=await loadImage(new URL('../assets/map/ch1/collision/prop_camp.png',import.meta.url).pathname.replace(/^\/(\w:)/,'$1'));
+  function frame(time){
+    const a=createCanvas(880,663),c=a.getContext('2d');
+    scope.Ch1LivingDetail.organic(c,{stage:0},{type:'m_c1camp',x:440,y:331.5},time,{sz:880},source);
+    return c;
+  }
+  const a=frame(0),b=frame(1800);
+  for(const [x,y,w,h] of [[413,510,38,30],[580,550,43,34],[580,383,37,30]]){
+    assert.notDeepEqual(a.getImageData(x,y,w,h).data,b.getImageData(x,y,w,h).data,'the actual fingers must change pose');
+  }
+  for(const [x,y,w,h] of [[464,483,49,20],[558,489,23,30],[475,413,56,64],[600,275,90,70]]){
+    assert.deepEqual(a.getImageData(x,y,w,h).data,b.getImageData(x,y,w,h).data,'forearms, spikes and crates must not undulate');
   }
 });

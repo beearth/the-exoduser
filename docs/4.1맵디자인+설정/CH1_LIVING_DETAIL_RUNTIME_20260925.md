@@ -6,7 +6,7 @@
 
 | id / 적용 위치 | 값 / 동작 |
 |---|---|
-| 구현 | `ch1-living-detail.js?v=20260926-12`, 전역 `Ch1LivingDetail.draw/deform/shadows/hideDuplicate/pit/organic`; `build-nwjs.mjs` 배포 FILES에도 포함 |
+| 구현 | `ch1-living-detail.js?v=20260926-13`, 전역 `Ch1LivingDetail.draw/deform/shadows/hideDuplicate/pit/organic`; `build-nwjs.mjs` 배포 FILES에도 포함 |
 | 범위 | `G.stage===0`, `_bossArena` 및 `_fieldRebuildQA` 제외 |
 | 지면 순서 | `_drawCh1Hill` 다음, 오브젝트·캐릭터·전투 효과 이전. `surfaceOnly=true` 잔물결은 맵 오브젝트 뒤/캐릭터 앞 |
 | 앵커 배율 | `m_c1tree:2.1`, `m_c1cocoon:1.1`, `m_c1pool:1.25`, `m_c1spod:.65`, `m_c1sroot:.75`, `pit_poison:1.2`, `m_rotten_tree:1` |
@@ -307,7 +307,37 @@ VISUAL VERDICT: RETOUCH — 오른쪽 아래 국소 접합 보강. 전체 생체
 
 11차 최종 검수: POOL_DETAIL과camera-board 직접 확인.13카메라+COMBAT,errors/HTTPerrors0,mapUnchanged=true,사망UI직접호출error=null. 실제 WASD/LMB/Q입력,체력50ms보충 조건.90RAF median16.7ms,p95 33.4ms(headless1280×720녹화중);대규모 전투 성능통과 판정 아님.21검사PASS. 원본기록 after/runtime.json,확인 페이지 <http://localhost:3333/captures/ch1_living_detail_pass11_20260926/index.html>. 이전비교는10차 당시캡처. 큰독액과작은구덩이의 재질차이는 잔여RETOUCH.
 
-## 12차: 야영지 힘줄·화로와 대왕나무 뿌리 (2026-09-26)
+## 13차 현행: 화로의 시체 손 관절 동작 (2026-09-26)
+
+사용자 “그냥 흐물거리네”, “손이 움직여야지” 교정. 원인은 12차 camp 변형 영역이 실제 세 손보다 가시와 힘줄에 걸쳐 있었기 때문이다. **m_c1camp의 3구역 수평 출렁임을 제거하고 손 3개만 관절 변형한다.** 나무는 12차 유지. 아래 12차의 camp 영역·규격·메모리 설명은 제작 이력이며 현행은 본 13차가 우선한다. 원본 PNG는 변경하지 않는다.
+
+| id / 적용 | 현행 값·공식 |
+|---|---|
+| 진입 | 기존 organic의 stage0,!bossArena,!fieldRebuildQA,loaded/meta/srcRect 가드 이후 campHands로 분기. 렌더 콜리전/배치/외부 API 변화 없음 |
+| 기준 좌표 | 기존 prop_camp.png 880×663. campHandRigs의 wrist/axis/outline은 이 좌표계. 원본max변880,확대금지;ratio=min(1,880/max(iw,ih)),w/h=round(iw/ih*ratio),sx=w/880,sy=h/663 |
+| 왼손 | wrist(452,504),axis(-19,12),sign=-1. outline[(458,495),(461,509),(448,515),(440,532),(428,541),(413,540),(410,526),(414,513),(427,504),(442,501)] |
+| 오른손 | wrist(591,541),axis(8,18),sign=1. outline[(581,536),(600,535),(608,545),(622,557),(626,574),(616,587),(596,588),(578,575),(576,556)] |
+| 위쪽 손 | wrist(580,420),axis(12,-17),sign=-1. outline[(569,422),(575,403),(578,383),(601,378),(622,385),(620,405),(617,424),(589,431),(579,427)] |
+| 분리 | minX/Y=outline최소-18,pw/ph=ceil(outline최대-min+18). source캔버스에 outline clip 후 원본 draw. 정적body에서는 같은 outline을 destination-out으로 제거,원래 손과 움직이는 손이 중복되지 않음. 생성 중 source/mesh는 임시 |
+| 실제 규격 | body880×663. 왼손 patch(minX392,minY477,pw87,ph82),오른손(558,517,86,89),위쪽(551,360,89,89). 각24포즈6×4atlas+patch크기blendcanvas. camp 캐시4.391345977783203MiB RGBA |
+| 손목 좌표계 | axis길이len,ux=axisX/len,uy=axisY/len. dx=x+minX-wristX,dy=y+minY-wristY;u=dx*ux+dy*uy,v=-dx*uy+dy*ux. u<=0은 손목 고정,forearm은 원본 그대로 |
+| 관절 | grip0~1,angle=sign*grip*(.65+v*.006),distal=angle+sign*grip*.5. u<=14는 palm 좌표(u,v) 유지. u>14:first=min(11,u-14),last=max(0,u-25),rot=u>25?distal:angle;pu=14+cos(angle)*first+cos(distal)*last-sin(rot)*v,pv=sin(angle)*first+sin(distal)*last+cos(rot)*v |
+| 손목 회전 | wristAngle=sign*grip*.18*clamp(u/10,0,1). (pu,pv)를 wristAngle로 회전한 (ru,rv)를 원축으로 복귀: x=wristX+ru*ux-rv*uy-minX,y=wristY+ru*uy+rv*ux-minY. 손바닥·첫마디·끝마디가 별도 각도로 굽음 |
+| 베이크 | 각frame0..23의grip=frame/23.6px격자의quad를(0,1,2)/(0,2,3) 두 triangle로 나누고 원본→pose의 affine변환을clip내drawImage로 적용. triangle중심에서각vertex로 .35px clip확장하여 안티앨리어싱 틈 완화 |
+| affine | p,q,r→d,e,f;ax=qX-pX,ay=qY-pY,bx=rX-pX,by=rY-pY,det=ax*by-ay*bx. A=((eX-dX)*by-(fX-dX)*ay)/det,B=((eY-dY)*by-(fY-dY)*ay)/det,C=((fX-dX)*ax-(eX-dX)*bx)/det,D=((fY-dY)*ax-(eY-dY)*bx)/det;transform(A,B,C,D,dX-A*pX-C*pY,dY-B*pX-D*pY) |
+| 동작 | p=fract(now/5200+index*.27),ease(t)=t²*(3-2t). p<.18:0, .18~.4:ease((p-.18)/.22), .4~.57:1, .57~.84:1-ease((p-.57)/.27), .84~1:0. 5.2초 주기,펴기→움켜쥐기→유지→이완,세 손 시간차 |
+| 재생 | key=round(grip*92),sample=key/4,frame=floor(sample),next=min(23,frame+1),mix=sample-frame.93보간상태. key변경 시 source-over alpha1-mix+lighter alpha mix,reset alpha1/source-over,_glVer++. 손별patch만 갱신 |
+| draw | size=(meta.sz또는400)*scale,ar=w/h,dw=size*min(1,ar),dh=size*min(1,1/ar),dx=o.x-dw/2,dy=o.y-dh/2. body1회,손3회. 손 draw(dx+minX/880*dw,dy+minY/663*dh,pw/880*dw,ph/663*dh) |
+| 전체 비용 | 기존43.0625+tree12.7149658203125+raisedShadow1.5625+camp4.391345977783203=61.7313117980957MiB native캐시. 기존나무그림자/임시생성canvas/GPU복제별도. 최초손atlas베이크는 동기 실행 비용 존재 |
+| 검사 | 실제 원본 손가락3영역의포즈차이,forearm/가시/상자의정지 비교 추가. 이 검사는12차에서실패→13차PASS. 총24검사(효과16/geometry5/문법1/패키징2). QA --camp-only 추가,현재13차 after/와12차라우팅 before/지원 |
+
+MAP PRODUCTION REPORT — 13차
+
+STAGE CH1-1. MASTER silhouette/8regions/남북main route/side spaces 유지. OUTER MASS LEFT/RIGHT/TOP/SOUTH/major holes 유지. LARGE sourceassets/composites/overlap/repeated silhouette 유지. MEDIUM 화로의 손목 연결 보존,큰 재질접합 잔여. GROUND 기존 shadow/contamination/structure integration 유지. PLAYABLE main arenas/travel/breathing/threat공간과 충돌 유지,움직임은 야영지 손3개. LANDMARK primary나무 유지,secondary야영지 손동작 교정,tertiary 유지. CAMERA QA 이번에는CAMP_DETAIL와COMBAT,START/EARLY/ARENA/SIDE L/SIDE R/LANDMARK/LATE/EXIT 전체 재촬영은 하지 않음(12차 자료). TECH QA route/collision24검사,배경 로딩대기,브라우저오류·성능은 아래최종검수기록. FILES stage-owned효과/test/QA/본 문서;concurrent touched game캐시/맵디테일2행/에셋목록/production문서/CHANGELOG의해당계약;unrelated없음. GIT 코드+docs부분커밋,push/deploy없음.
+
+VISUAL VERDICT: RETOUCH — 손 관절 동작으로 대상 교정. 전체맵 재질·성능 완성 판정은 아님. NEXT PASS: 손 동작 실제배율 가시성,지면/대형구조물 접합.
+
+## 12차 제작 이력: 야영지 힘줄·화로와 대왕나무 뿌리 (2026-09-26)
 
 최종 검수 보충(아래 최초 검수 이후): 보간 갱신 빈도만 낮춘 중간 검사에서 tree median33.4/p95 83.4ms,camp33.3/50ms로 나무 지연이 남아, 최종적으로 정적 몸체와 동적 patch를 분리했다. 최종 규격은 아래 표를 따른다. `--motion-only` TREE/CAMP/COCOON+COMBAT 최종 결과 errors/HTTPerrors0,mapUnchanged=true,사망UI직접호출error=null. 각60RAF tree median33.3/p95 33.4ms,camp33.3/66.6ms;COMBAT90RAF33.3/50ms(headless1280×720녹화중). 적상태·녹화부하가 다른 짧은 표본이며 야영지p95는 악화되어 전체 성능 PASS로 보고하지 않는다. 최종 코드23검사PASS, TREE/CAMP 최종 원배율 이미지 직접 확인. QA는 visibleIds가 비어있지 않고 전부 drawnIds에 포함될 때까지 최대30000ms 대기하여 배경chunk 로딩 전 캡처를 방지한다. 최종 캡처는 motion-optimized/에 보존. 배경에 구워진 뿌리는 정적이며 이번 변형은 m_c1tree 원본 안의 뿌리다. 다음 잔여 작업은 배경 뿌리 움직임·대형 재질 접합·야영지 지연이다. 동기화 추가파일: 맵오브젝트_에셋목록.md,CH1_1_PRODUCTION_FINISH_20260916.md,docs/CHANGELOG_SYNC.md. 확인 페이지 <http://localhost:3333/captures/ch1_living_detail_pass12_20260926/index.html>.
 
