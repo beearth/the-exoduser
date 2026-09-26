@@ -2507,7 +2507,7 @@ body:has(#invPanel.on) #keyGuide{display:none!important}
 <link rel="stylesheet" href="stat-panel-ui.css?v=20260913-smooth-ui">
 <link rel="stylesheet" href="localization.css?v=20260909">
 <link rel="stylesheet" href="ui-foundation.css?v=20260924-hell3">
-<link rel="stylesheet" href="ui-refinement.css?v=20260926-8">
+<link rel="stylesheet" href="ui-refinement.css?v=20260926-10">
 <script defer src="ui-panels.js?v=20260925-1"></script>
 <script src="stat-panel-ui.js?v=20260909-constellation-v3"></script>
 </head>
@@ -45301,7 +45301,7 @@ function renderStorage(){
     };detail.append(action);
   }
   function section(items,source,title,minSlots){
-    const wrap=make('section','vault-section'),slots=make('div','vault-slots');wrap.append(make('h3','vault-heading',title),slots);sections.append(wrap);
+    const wrap=make('section','vault-section'),slots=make('div','vault-slots');wrap.append(make('h3','vault-heading',title+' · '+items.length),slots);sections.append(wrap);
     items.forEach(it=>{
       const b=make('button','vault-slot');b.type='button';b.style.setProperty('--item-colour',RARITY_C[it.rarity]||'#bba989');b.title=_T(it.name);b.setAttribute('aria-label',_T(it.name));b.setAttribute('aria-pressed','false');
       b.append(art(it,56),make('span','vault-level',String(it.itemLv||0)));b.onclick=()=>select(it,source,b);slots.append(b);if(!selected)select(it,source,b);
@@ -45309,7 +45309,7 @@ function renderStorage(){
     for(let i=items.length;i<Math.max(minSlots,Math.ceil(items.length/5)*5);i++){const n=make('span','vault-slot vault-empty');n.setAttribute('aria-hidden','true');slots.append(n);}
     if(!items.length)wrap.append(make('p','vault-meta',_T(source==='store'?'창고가 비어있습니다':'가방이 비어있습니다')));
   }
-  section(store,'store',_T('지옥창고'),30);section(INV.bag,'bag',_T('▼ 가방 → 창고 보관'),10);
+  section(store,'store',_T('지옥창고'),10);section(INV.bag,'bag',_T('▼ 가방 → 창고 보관'),10);
   if(!selected)detail.append(make('div','vault-seal'),make('p','vault-meta',_T('비어있음')));
 }
 

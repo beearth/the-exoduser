@@ -26,7 +26,7 @@
 
 | 요소 | 현재 계약 |
 |---|---|
-| 하단 `.inv-actions` | 높이 68px 고정(`flex:0 0 68px`, border-box), 패딩 6px 0 2px. 호버 액션 버튼 생성/제거로 가방 높이가 바뀌지 않음 |
+| 하단 `.inv-actions` | 높이 48px 고정(`height/min-height/max-height:48px; flex-shrink:0`, border-box), 패딩 8px 0 0. 호버 액션 버튼 생성/제거로 가방 높이가 바뀌지 않음 |
 | 버튼 | 직계 자식 축소 금지, `.pclose`와 `.id-btns` 위아래 margin 0. nowrap + overflow auto + safe center로 긴 액션 문구 스크롤 가능 |
 | 검증 | 수정 전 가방 548→546px 변동 및 정지 커서 진입/이탈 반복 재현. 수정 후 기본 화면·1280×720 각각 가방 4개+장착 16개 상세 전환 시 위치·크기 동일 |
 
@@ -890,7 +890,7 @@ L키(`skillCycle`)로 여는 스킬 슬롯 배정 팝업(`#skSlotPop`, `openSkSl
 
 최종 표면·버튼 상태·슬롯 음영은 UI_COMPOSITION_20260925.md의 디테일 마감 절을 따른다. 기존 기본표에서 동일 항목의 색·그림자는 해당 절이 우선한다.
 
-2026-09-24 전체화면 Hell Gothic 구성은 2026-09-25 재구성으로 대체됐다. 사용자 제공 Diablo IV/POE2 화면의 구획·정렬·재질 규칙을 반영했다. ui-foundation.css 뒤에 ui-refinement.css?v=20260926-8을 로드하고 게임 두 HTML은 ui-panels.js?v=20260925-1을 defer 로드한다. 전체 세부 수치·컨트롤 목록·에셋 생성 기록의 SSOT: docs/3.1 ui hud 디자인/UI_COMPOSITION_20260925.md.
+2026-09-24 전체화면 Hell Gothic 구성은 2026-09-25 재구성으로 대체됐다. 사용자 제공 Diablo IV/POE2 화면의 구획·정렬·재질 규칙을 반영했다. ui-foundation.css 뒤에 ui-refinement.css?v=20260926-10을 로드하고 게임 두 HTML은 ui-panels.js?v=20260925-1을 defer 로드한다. 전체 세부 수치·컨트롤 목록·에셋 생성 기록의 SSOT: docs/3.1 ui hud 디자인/UI_COMPOSITION_20260925.md.
 
 | 대상 | 현재 계약 |
 |---|---|
@@ -931,3 +931,5 @@ L키(`skillCycle`)로 여는 스킬 슬롯 배정 팝업(`#skSlotPop`, `openSkSl
 전체 메뉴와 로비의 최신 재질·제목·문양·선택·초점·스크롤 스타일은 UI_COMPOSITION_20260925.md의 **2026-09-26 슬롯과 상호작용 마감 절**을 따른다.
 
 전체 메뉴와 로비의 최신 재질·제목·문양·선택·초점·스크롤 스타일은 UI_COMPOSITION_20260925.md의 **2026-09-26 유니크 분해 NaN 수정과 상세창 마감 절**을 따른다.
+
+전체 메뉴와 로비의 최신 재질·제목·문양·선택·초점·스크롤 스타일은 UI_COMPOSITION_20260925.md의 **2026-09-26 창고와 상세 스크롤 마감 절**을 따른다.
