@@ -677,3 +677,15 @@
 #skBarTip .sbt-name{display:block;font-size:14px!important;line-height:1.5;margin:0 0 4px!important;color:#ead6ad!important;}
 #skBarTip .sbt-desc{font-size:12px!important;color:#c4b69e!important;}
 @media(prefers-reduced-motion:reduce){#invPanel .inv-item,.panel .pbox :is(.panel-nav-tab,.pclose,.ui-section-tab,.id-btn,.fg-tab,.set-key){transition:none!important;}}
+
+/* Detail follow-through: separate metadata, controls, and long descriptions. */
+#invPanel.panel .ui-item-source:empty{display:none;}
+#invPanel.panel .ui-item-hint{background:linear-gradient(90deg,#33271c33,transparent);padding:8px!important;}
+#invPanel.panel .pbox .id-btns{gap:6px!important;align-items:stretch;flex-wrap:nowrap;flex-shrink:0;}
+#invPanel.panel .pbox .id-btn{min-height:34px;display:flex;align-items:center;justify-content:center;padding:7px 10px!important;font:500 12px/1.4 'Noto Sans KR',sans-serif!important;white-space:nowrap;background:linear-gradient(#15141782,#0b0a0cac),var(--menu-plate) center/100% 100% no-repeat!important;border:0!important;border-radius:0!important;}
+#invPanel.panel .pbox .id-btn.equip:not(.dis){color:#dce5c0!important;box-shadow:inset 0 -2px #788967!important;}
+#invPanel.panel .id-stats{scrollbar-gutter:stable;padding-right:6px!important;}
+#invPanel.panel .id-stats>div:has(>span:only-child)[style*="margin"]{display:block!important;}
+#invPanel.panel .id-stats>div:has(>span:only-child)[style*="margin"]>span{margin-left:0!important;text-align:left!important;}
+#invPanel.panel .pbox .inv-item[data-ui-selected=true]:hover{box-shadow:inset 0 0 0 3px #15100bd9,inset 0 0 18px #b9853930!important;}
+#invPanel.panel .pbox .inv-item[data-ui-salvage=true]:hover{box-shadow:inset 0 0 0 2px #af5b49!important;}

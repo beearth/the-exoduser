@@ -2507,7 +2507,7 @@ body:has(#invPanel.on) #keyGuide{display:none!important}
 <link rel="stylesheet" href="stat-panel-ui.css?v=20260913-smooth-ui">
 <link rel="stylesheet" href="localization.css?v=20260909">
 <link rel="stylesheet" href="ui-foundation.css?v=20260924-hell3">
-<link rel="stylesheet" href="ui-refinement.css?v=20260926-6">
+<link rel="stylesheet" href="ui-refinement.css?v=20260926-8">
 <script defer src="ui-panels.js?v=20260925-1"></script>
 <script src="stat-panel-ui.js?v=20260909-constellation-v3"></script>
 </head>
@@ -14831,7 +14831,7 @@ function equipItem(item){
       G.mats-=xc;
       item.enh=fromE;
       // 강화 투자분 기록: 분해 시 50% 환불용
-      {const _rMul=[0.5,0.7,1.0,1.3,1.8][old.rarity||0];let _tc=0;for(let _i=0;_i<fromE;_i++)_tc+=Math.ceil(Math.max(1,Math.ceil((1+_i*0.15)*1.5))*_rMul);old._enhRefund=~~(_tc*0.5);}
+      {const _rMul=[0.5,0.7,1.0,1.3,1.8][_itemEconomyRarity(old.rarity)];let _tc=0;for(let _i=0;_i<fromE;_i++)_tc+=Math.ceil(Math.max(1,Math.ceil((1+_i*0.15)*1.5))*_rMul);old._enhRefund=~~(_tc*0.5);}
       old.enh=0;
       notify(`⚒ +${fromE} `+_L('강화 이전 완료','Enhancement transferred')+` (-${xc.toLocaleString()}`+_L('악의)',' Malice)'));
       try{addTxt(P.x,P.y-25,'⚒ +'+fromE+_L(' 이전',' Transfer'),enhColor(fromE),80)}catch(_e){}
@@ -14907,13 +14907,16 @@ function dropItem(idx){
   if(_now-_dropItemLast<1000)return false;
   _dropItemLast=_now;
   const it=INV.bag[idx];
+  if(!it||it.fav)return false;
   const mats=salvageVal(it);
+  if(!Number.isFinite(mats)||mats<0)return false;
   G.mats+=mats;
   SFX.pickup();
   INV.bag.splice(idx,1);
   if(INV.bag.length===0) INV.selected=null;
   else INV.selected=Math.min(idx, INV.bag.length-1);
   dbSaveNow();
+  return true;
 }
 function pickupItem(item){
   // ═══ 유골 부위 (2026-09-01 도감 개편): 페이퍼돌 자동장착 경로 금지 — 도감 자동 등록, 하위 등급이면 가방행 ═══
@@ -25744,7 +25747,7 @@ function enhCostRaw(n){
   return Math.max(20000,Math.ceil((20000+n*3500)*1.5)); // 최소 2만(=1만악의), 0강=3만, 100강=55.5만, 1000강=533만
 }
 function enhCost(enh,rarity){
-  const rMul=[0.5,0.7,1.0,1.3,1.8][rarity||0];
+  const rMul=[0.5,0.7,1.0,1.3,1.8][_itemEconomyRarity(rarity)];
   return{rate:enhRate(enh)/100,cost:_malCost(Math.ceil(enhCostRaw(enh)*rMul))};
 }
 function enhMul(n){
@@ -25838,19 +25841,21 @@ function _doAiEnhance(){
   }
   renderForge();
 }
+// Unique items use the existing legendary economy tier; visual rarity is unchanged.
+function _itemEconomyRarity(r){return Number.isInteger(r)&&r>=0?Math.min(r,4):0;}
 function salvageVal(it){
   const e=it.enh||0;
   // 강화 투자분 50% 환수: 실제 강화 비용 누적합의 절반
   let enhRefund=0;
   if(e>0){
-    const rMul=[0.5,0.7,1.0,1.3,1.8][it.rarity||0];
+    const rMul=[0.5,0.7,1.0,1.3,1.8][_itemEconomyRarity(it.rarity)];
     let totalCost=0;
     for(let i=0;i<e;i++) totalCost+=Math.ceil(Math.max(1,Math.ceil((1+i*0.15)*1.5))*rMul);
     enhRefund=~~(totalCost*0.5);
   }
   // 강화 이전된 구 장비: 이전 시 기록된 투자분 환불
   if(it._enhRefund>0)enhRefund=Math.max(enhRefund,it._enhRefund);
-  return[1000,2000,10000,20000,50000][it.rarity||0]+enhRefund+(it.tier||0)*2;
+  return[1000,2000,10000,20000,50000][_itemEconomyRarity(it.rarity)]+enhRefund+(it.tier||0)*2;
 }
 function useQuickslot(idx){
   if(idx<0||idx>3)return;
