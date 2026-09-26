@@ -60,7 +60,7 @@ window._supabaseReady=new Promise(resolve=>{
 <script src="maps_data.js"></script>
 <script src="assets/map/ch1/geometry/ch1_si1_geometry.js"></script>
 <script src="assets/map/ch1/production_finish/layout.js?v=20260916-finish-1"></script>
-<script src="ch1-living-detail.js?v=20260926-11"></script>
+<script src="ch1-living-detail.js?v=20260926-12"></script>
 <script src="lang_zh.js"></script>
 <script src="lang_ja.js"></script>
 <script src="lang_es.js"></script>
@@ -48693,7 +48693,8 @@ function draw(){
         const _ch1TissueActive=globalThis.Ch1LivingDetail&&Ch1LivingDetail.deform(X,G,mo,_now,_meta);
         if(_spr&&_spr.complete&&_spr.naturalWidth>1){
           const sz=(_meta?_meta.sz||32:32)*(mo.scale||1);
-          if(_meta&&_meta.sheet){const _sh=_meta.sheet,_cw=~~(_spr.naturalWidth/_sh.c),_ch=~~(_spr.naturalHeight/_sh.r);
+          if(globalThis.Ch1LivingDetail?.organic?.(X,G,mo,_now,_meta,_spr)){/* Local living material. */}
+          else if(_meta&&_meta.sheet){const _sh=_meta.sheet,_cw=~~(_spr.naturalWidth/_sh.c),_ch=~~(_spr.naturalHeight/_sh.r);
             const _si=((~~(mo.x*7919+mo.y*104729+31))&0x7fffffff)%(_sh.c*_sh.r);
             X.drawImage(_spr,(_si%_sh.c)*_cw,~~(_si/_sh.c)*_ch,_cw,_ch,mo.x-sz/2,mo.y-sz/2,sz,sz);
           }else if(_meta&&_meta.flip&&!_meta.keepAR){X.save();X.translate(mo.x,mo.y);X.scale(-1,1);X.drawImage(_spr,-sz/2,-sz/2,sz,sz);X.restore()

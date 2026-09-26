@@ -6,7 +6,7 @@
 
 | id / 적용 위치 | 값 / 동작 |
 |---|---|
-| 구현 | `ch1-living-detail.js?v=20260926-11`, 전역 `Ch1LivingDetail.draw/deform/shadows/hideDuplicate/pit`; `build-nwjs.mjs` 배포 FILES에도 포함 |
+| 구현 | `ch1-living-detail.js?v=20260926-12`, 전역 `Ch1LivingDetail.draw/deform/shadows/hideDuplicate/pit/organic`; `build-nwjs.mjs` 배포 FILES에도 포함 |
 | 범위 | `G.stage===0`, `_bossArena` 및 `_fieldRebuildQA` 제외 |
 | 지면 순서 | `_drawCh1Hill` 다음, 오브젝트·캐릭터·전투 효과 이전. `surfaceOnly=true` 잔물결은 맵 오브젝트 뒤/캐릭터 앞 |
 | 앵커 배율 | `m_c1tree:2.1`, `m_c1cocoon:1.1`, `m_c1pool:1.25`, `m_c1spod:.65`, `m_c1sroot:.75`, `pit_poison:1.2`, `m_rotten_tree:1` |
@@ -306,3 +306,39 @@ STAGE CH1-1. MASTER silhouette/8regions/main route남북/side spaces보존. OUTE
 VISUAL VERDICT: RETOUCH — 오른쪽 아래 국소 접합 보강. 전체 생체지옥 재질 완성 판정은 아님. NEXT PASS: 지면과 구조물의 큰 재질 차이 개선,넓은 전투공간 유지.
 
 11차 최종 검수: POOL_DETAIL과camera-board 직접 확인.13카메라+COMBAT,errors/HTTPerrors0,mapUnchanged=true,사망UI직접호출error=null. 실제 WASD/LMB/Q입력,체력50ms보충 조건.90RAF median16.7ms,p95 33.4ms(headless1280×720녹화중);대규모 전투 성능통과 판정 아님.21검사PASS. 원본기록 after/runtime.json,확인 페이지 <http://localhost:3333/captures/ch1_living_detail_pass11_20260926/index.html>. 이전비교는10차 당시캡처. 큰독액과작은구덩이의 재질차이는 잔여RETOUCH.
+
+## 12차: 야영지 힘줄·화로와 대왕나무 뿌리 (2026-09-26)
+
+최종 검수 보충(아래 최초 검수 이후): 보간 갱신 빈도만 낮춘 중간 검사에서 tree median33.4/p95 83.4ms,camp33.3/50ms로 나무 지연이 남아, 최종적으로 정적 몸체와 동적 patch를 분리했다. 최종 규격은 아래 표를 따른다. `--motion-only` TREE/CAMP/COCOON+COMBAT 최종 결과 errors/HTTPerrors0,mapUnchanged=true,사망UI직접호출error=null. 각60RAF tree median33.3/p95 33.4ms,camp33.3/66.6ms;COMBAT90RAF33.3/50ms(headless1280×720녹화중). 적상태·녹화부하가 다른 짧은 표본이며 야영지p95는 악화되어 전체 성능 PASS로 보고하지 않는다. 최종 코드23검사PASS, TREE/CAMP 최종 원배율 이미지 직접 확인. QA는 visibleIds가 비어있지 않고 전부 drawnIds에 포함될 때까지 최대30000ms 대기하여 배경chunk 로딩 전 캡처를 방지한다. 최종 캡처는 motion-optimized/에 보존. 배경에 구워진 뿌리는 정적이며 이번 변형은 m_c1tree 원본 안의 뿌리다. 다음 잔여 작업은 배경 뿌리 움직임·대형 재질 접합·야영지 지연이다. 동기화 추가파일: 맵오브젝트_에셋목록.md,CH1_1_PRODUCTION_FINISH_20260916.md,docs/CHANGELOG_SYNC.md. 확인 페이지 <http://localhost:3333/captures/ch1_living_detail_pass12_20260926/index.html>.
+
+사용자 `스크린샷 2026-09-26 141253.png`는 `m_c1camp` 원본 오른쪽 아래의 뼈·힘줄 화로다. 이번 작업은 고치/독낭 그림자 보강에 더해 해당 야영지와 대왕나무의 기존 그림 안에 국소 움직임을 넣는다. 모든 맵 오브젝트 애니메이션을 완료했다고 해석하지 않는다.
+
+| id / 적용 | 현재 계약 |
+|---|---|
+| organic | `Ch1LivingDetail.organic(c,g,o,now,meta,img)`. enabled(stage0,!bossArena,!fieldRebuildQA),type m_c1tree/m_c1camp,로드된 이미지,meta존재,meta.srcRect없음일 때만 true. 그외 false→기존sprite폴백. game 기존sprite분기 내부에서 호출,기존 tone/alpha/나무 전체sway 계승 |
+| 야영지 위치 | m_c1camp authored(45,100),scale1.55. 원본prop_camp.png의 화로·힘줄만 국소변형,상자/돌테두리/천막의 대부분은 변형영역 밖. 신규 이미지 생성 없음 |
+| 나무 위치 | 기존m_c1tree runtime(102.5,90.5). hand크기계수.72,pivotY.72 유지. 몸통과 뿌리 연결부는 국소 변형 영역 밖,기존 전체나무 sway 유지 |
+| 캐시 | type별WeakMap→이미지별atlas 및blendcanvas. 원본max변1024(tree)/512(camp),확대금지. w/h=round(원본w/h*min(1,max/max(iw,ih))).8프레임4×2atlas |
+| 실제 규격 | tree원본1143×1400→full836×1024,동적patch(56,628,732,376),최종atlas2928×752. static+atlas+blend12.7149658203125MiB. camp원본880×663→full512×386,patch(13,92,389,196),최종atlas1556×392,static+atlas+blend3.3715362548828125MiB. 합16.086502075195312MiB RGBA. 생성 중 전체8프레임atlas는 임시,최종patch 복사후보존안함 |
+| 국소장 공식 | 각지역(cx,cy,rx,ry,amp,offset). d=((u-cx)/rx)^2+((v-cy)/ry)^2. d<1만 shift+=(1-d)^2*sin(phase+v*9+offset)*amp*w. 경계에서 변위/기울기0,수평방향만 변형 |
+| tree 지역3 | (.27,.79,.20,.17,.011,0),(.75,.80,.19,.17,.011,1.4),(.50,.89,.12,.085,.004,2.1). 좌우뿌리와아래조직,몸통 고정 |
+| camp 지역3 | (.60,.64,.11,.09,.010,0),(.70,.37,.08,.12,.008,1.5),(.14,.43,.11,.13,.009,2.8). 화로위힘줄/오른쪽조직/왼쪽촉수 |
+| 래스터 | 프레임phase=f/8*2π. 원본축소canvas복사 후 영역에 닿는4px행만 clear,가로32구간. source left=j*w/32,right=(j+1)*w/32,rh=min(4,h-y),v=(y+rh/2)/h;dest dl=left+shift(j/32,v),dr=right+shift((j+1)/32,v),폭dr-dl+.15. cellclip으로 atlas이웃침범 방지 |
+| 동적 영역 절단 | x0=max(0,floor(min(cx-rx)*fullW)-2),x1=min(fullW,ceil(max(cx+rx)*fullW)+2). y0=max(0,floor(min(cy-ry)*fullH/4)*4-4),y1=min(fullH,ceil(max(cy+ry)*fullH/4)*4+4). pw=x1-x0,ph=y1-y0.8개patch를4×2atlas로복사하고staticBody의동일rect만clear. 매갱신업로드면적은tree원본32.15%,camp38.58% |
+| 재생 | phase=fract((now*.0008+x*.017+y*.011)/(2π))*8,주기약7.854초. blendKey=floor(phase*16),sample=key/16,frame=floor(sample),next=(frame+1)%8,mix=sample-frame.128보간상태/주기(약61.36ms간격),느린변형의텍스처업로드빈도제한 |
+| 불투명도 보존 | patch크기blendcanvas clear→source-over alpha1-mix 현재프레임→lighter alpha mix 다음프레임. native premultiplied 합성. key변경 시만 _glVer 증가;기존WebGL/WebGPU 동적canvas업로드·동일크기GPU텍스처재사용 계약 사용. 정적인 상자/몸통이 프레임보간 때문에 반투명해지지 않도록 테스트 |
+| 실제 draw | sz=(meta.sz또는400)*scale,ar=fullW/fullH,dw=sz*min(1,ar)*factor,dh=sz*min(1,1/ar)*factor. hand tree factor.72,py.72;그외factor1,py.5.좌상(dx,dy)=(o.x-dw*.5,o.y-dh*py). staticBody전체1회+blendpatch1회. patch좌상(dx+x0/fullW*dw,dy+y0/fullH*dh),크기(pw/fullW*dw,ph/fullH*dh) |
+| raised shadows | m_c1cocoon/m_c1spod만 별도이미지별WeakMap캐시640×320.2종총1.5625MiB. size=(meta.sz또는280)*scale,s=size/320,foot=o.y+feet[type]*scale;feet100/40.카메라반폭/높이+size밖스킵 |
+| 투영 | native translate(260,32),transform(1,0,-.65,-.32,0,0),blur5.원본 또는meta.srcRect를(-160,-320,320,320)에투영. source-in linearY32→175,RGBA9,7,13 alpha.58/.26/0 @0/.6/1 |
+| 밑동접촉 | source-over translate(260,32),scaleY.22,radial반경8→135,RGB9,6,12 alpha.42→0,270²영역.바닥접촉은실루엣그림자와 같은tex에합성 |
+| 그림자 호흡 | wave=sin(now*.00105+x*.017+y*.011),pivot(o.x,foot),scale(1+wave*.018,1-wave*.012),alpha기존*.85,draw(-260*s,-32*s,640*s,320*s).밑동좌표고정.평평한pool에는추가하지않음 |
+| 비용·보존 | 기존43.0625MiB+이번16.086502075195312+1.5625=60.71150207519531MiB native캐시(기존나무그림자/임시canvas/GPU복제별도). 최초atlas베이크비용과가시중동적blend업로드비용존재.고정배치/충돌/원본파일/다른stage/촉수공동유착불변 |
+| QA | 기존13카메라+CAMP_DETAIL(46,104),TREE_DETAIL/CAMP_DETAIL 확대GIF·각60RAF표본추가. 총14카메라+COMBAT.체력50ms보충조건 유지.23검사(효과15/geometry5/문법1/패키징2) |
+
+MAP PRODUCTION REPORT — 12차
+
+STAGE CH1-1. MASTER silhouette/8regions/main route남북/side spaces보존. OUTER MASS LEFT/RIGHT/TOP/SOUTH/major holes유지. LARGE sourceassets보존,composites/overlap/repeated silhouette동일. MEDIUM 나무/야영지의기존붙은조직만국소변형,대형접합잔여. GROUND 고치/독낭 투영·밑동그림자추가,오염유지. PLAYABLE arenas/travel/breathing/threat공간·충돌보존,상자/돌/몸통국소변형제외. LANDMARK primary대왕나무뿌리/secondary야영지힘줄 움직임,tertiary독낭그림자. CAMERA QA START/EARLY/ARENA/SIDE L/SIDE R/LANDMARK/LATE/EXIT+상세6곳. TECH QA23검사,route/collision/chunkseam보존,pageerror/404/loading/성능아래기록. FILES stage-owned효과/test/QA/본 문서,concurrent touched game캐시+spritehook/맵디테일2행,unrelated없음. GIT 코드+docs전용부분커밋,push/deploy없음.
+
+VISUAL VERDICT: RETOUCH — 지정된 생체 오브젝트의 국소 움직임 확대. 전체맵 재질·애니메이션완성은아님. NEXT PASS: 실제플레이배율의가시성과가시영역성능검수결과를기준으로움직임범위조정.
+
+12차 최초 전후검수: 동일현재게임에11차효과를라우팅한before와12차초기after,각14카메라+COMBAT,errors/HTTPerrors0,mapUnchanged=true. TREE/CAMP/COCOON 원배율이미지 직접확인.23검사PASS. headless1280×720녹화중 각60RAF: tree before median33.3/p95 50.1ms→초기after33.4/83.3ms,camp33.3/50→33.3/50ms. 적상태·녹화부하가동일하지않아엄밀한성능비교는아니지만나무구간의지연증가를보아최종보간상태를256→128로조정. 초기30.68ms업로드주기를61.36ms로완화하고 `--motion-only`로TREE/CAMP/COCOON+COMBAT를재검수한다. 메모리규격/위치/변형범위는동일. 최초전체검수는after/,최종대상검수는motion-optimized/에분리보존.

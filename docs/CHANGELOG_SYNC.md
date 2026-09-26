@@ -48596,3 +48596,12 @@ mpR = 0.05 + s.int×0.005                                        [NO P.lv×0.001
 전체 메뉴와 로비의 최신 재질·제목·문양·선택·초점·스크롤 스타일은 UI_COMPOSITION_20260925.md의 **2026-09-26 전체 메뉴 마감 절**을 따른다.
 
 전체 메뉴와 로비의 최신 재질·제목·문양·선택·초점·스크롤 스타일은 UI_COMPOSITION_20260925.md의 **2026-09-26 슬롯과 상호작용 마감 절**을 따른다.
+
+
+### 2026-09-26 생체 야영지·대왕나무 국소 움직임
+
+| 대상 | 현재 렌더 계약 |
+|---|---|
+| m_c1tree / m_c1camp | Ch1LivingDetail.organic으로 기존 PNG 내부의 뿌리/힘줄/화로 조직3구역씩만 국소 수평변형. 몸통/상자/돌은 지역 밖 고정. stage0,bossArena/fieldRebuildQA제외;이미지로드실패/meta.srcRect존재/API없음이면기존sprite폴백 |
+| m_c1cocoon / m_c1spod | 기존이미지알파를이용한바닥투영그림자+밑동접촉그림자,밑동고정호흡.다른stage/평면pool제외 |
+| 보존·성능 | 좌표/크기/pivot/충돌/원본파일불변.동적canvas _glVer 및기존GPU텍스처재사용.추가캐시17.649002075195312MiB(native,기존나무그림자/GPU복제별도).상세공식·검수는CH1_LIVING_DETAIL_RUNTIME_20260925.md 12차 |

@@ -219,14 +219,39 @@
     c.restore();
   }
   const shadowCache=new WeakMap();
+  const raisedShadowCache=new WeakMap();
   function shadows(c,g,objects,sprites,metas,now,width,height){
     if(!enabled(g))return;
     const z=Math.max(.3,g._edZoom||g._camZoom||1),hw=width/(2*z),hh=height/(2*z);
     c.save();const alpha=c.globalAlpha;
     for(const o of objects){
-      if(!isTree(o.type))continue;
+      const raised=o.type==='m_c1cocoon'||o.type==='m_c1spod';
+      if(!isTree(o.type)&&!raised)continue;
       const img=sprites[o.type],meta=metas[o.type];
       if(!img||!meta||img.complete===false||!(img.naturalWidth||img.width))continue;
+      if(raised){
+        const size=(meta.sz||280)*(o.scale||1),scale=size/320,foot=o.y+(feet[o.type]||0)*(o.scale||1);
+        if(Math.abs(o.x-g.cam.x)>hw+size||Math.abs(foot-g.cam.y)>hh+size)continue;
+        let tex=raisedShadowCache.get(img);
+        if(!tex){
+          tex=root.document.createElement('canvas');tex.width=640;tex.height=320;
+          const x=tex.getContext('2d'),r=meta.srcRect||[0,0,img.naturalWidth||img.width,img.naturalHeight||img.height];
+          x.save();x.translate(260,32);x.transform(1,0,-.65,-.32,0,0);x.filter='blur(5px)';
+          x.drawImage(img,r[0],r[1],r[2],r[3],-160,-320,320,320);x.restore();
+          x.globalCompositeOperation='source-in';
+          const fade=x.createLinearGradient(0,32,0,175);
+          fade.addColorStop(0,'rgba(9,7,13,.58)');fade.addColorStop(.6,'rgba(9,7,13,.26)');fade.addColorStop(1,'rgba(9,7,13,0)');
+          x.fillStyle=fade;x.fillRect(0,0,640,320);
+          x.globalCompositeOperation='source-over';x.save();x.translate(260,32);x.scale(1,.22);
+          const contact=x.createRadialGradient(0,0,8,0,0,135);
+          contact.addColorStop(0,'rgba(9,6,12,.42)');contact.addColorStop(1,'rgba(9,6,12,0)');
+          x.fillStyle=contact;x.fillRect(-135,-135,270,270);x.restore();raisedShadowCache.set(img,tex);
+        }
+        const wave=Math.sin(now*.00105+o.x*.017+o.y*.011);
+        c.save();c.translate(o.x,foot);c.scale(1+wave*.018,1-wave*.012);
+        c.globalAlpha=alpha*.85;c.drawImage(tex,-260*scale,-32*scale,640*scale,320*scale);c.restore();
+        continue;
+      }
       const size=(meta.sz||400)*(o.scale||1),scale=size*(o.type==='m_c1tree'?.72:1)/400;
       const foot=o.y+size*(o.type==='m_c1tree'?.2016:.45);
       if(Math.abs(o.x-g.cam.x)>hw+size||Math.abs(foot-g.cam.y)>hh+size)continue;
@@ -358,5 +383,67 @@
     c.globalAlpha=alpha*mix;c.drawImage(pitAtlas,next%4*256,Math.floor(next/4)*256,256,256,o.x-sz/2,o.y-sz/2,sz,sz);
     c.restore();return true;
   }
-  root.Ch1LivingDetail=Object.freeze({draw,deform,shadows,hideDuplicate,pit});
+  const organicCache={m_c1tree:new WeakMap(),m_c1camp:new WeakMap()};
+  function organic(c,g,o,now,meta,img){
+    const tree=o.type==='m_c1tree',camp=o.type==='m_c1camp';
+    if(!enabled(g)||(!tree&&!camp)||!img||img.complete===false||!(img.naturalWidth||img.width)||!meta||meta.srcRect)return false;
+    const cache=organicCache[o.type];let cached=cache.get(img);
+    if(!cached){
+      const iw=img.naturalWidth||img.width,ih=img.naturalHeight||img.height,max=tree?1024:512;
+      const ratio=Math.min(1,max/Math.max(iw,ih)),w=Math.round(iw*ratio),h=Math.round(ih*ratio);
+      const source=root.document.createElement('canvas');source.width=w;source.height=h;source.getContext('2d').drawImage(img,0,0,w,h);
+      const a=root.document.createElement('canvas');a.width=w*4;a.height=h*2;const x=a.getContext('2d');
+      // Local smooth displacement fields leave trunk joints, crate boards and stone rims fixed.
+      const regions=tree?[[.27,.79,.20,.17,.011,0],[.75,.80,.19,.17,.011,1.4],[.50,.89,.12,.085,.004,2.1]]:
+        [[.60,.64,.11,.09,.010,0],[.70,.37,.08,.12,.008,1.5],[.14,.43,.11,.13,.009,2.8]];
+      function shift(u,v,phase){
+        let value=0;
+        for(const [cx,cy,rx,ry,amp,offset] of regions){
+          const d=((u-cx)/rx)**2+((v-cy)/ry)**2;
+          if(d<1)value+=(1-d)**2*Math.sin(phase+v*9+offset)*amp*w;
+        }
+        return value;
+      }
+      for(let f=0;f<8;f++){
+        x.save();x.translate(f%4*w,Math.floor(f/4)*h);x.beginPath();x.rect(0,0,w,h);x.clip();x.drawImage(source,0,0);
+        const phase=f/8*Math.PI*2;
+        for(let y=0;y<h;y+=4){
+          const rh=Math.min(4,h-y),v=(y+rh/2)/h;
+          if(!regions.some(r=>Math.abs(v-r[1])<r[3]))continue;
+          x.clearRect(0,y,w,rh);
+          for(let j=0;j<32;j++){
+            const left=j*w/32,right=(j+1)*w/32,dl=left+shift(j/32,v,phase),dr=right+shift((j+1)/32,v,phase);
+            x.drawImage(source,left,y,right-left,rh,dl,y,dr-dl+.15,rh);
+          }
+        }
+        x.restore();
+      }
+      const x0=Math.max(0,Math.floor(Math.min(...regions.map(r=>r[0]-r[2]))*w)-2);
+      const y0=Math.max(0,Math.floor(Math.min(...regions.map(r=>r[1]-r[3]))*h/4)*4-4);
+      const x1=Math.min(w,Math.ceil(Math.max(...regions.map(r=>r[0]+r[2]))*w)+2);
+      const y1=Math.min(h,Math.ceil(Math.max(...regions.map(r=>r[1]+r[3]))*h/4)*4+4);
+      const pw=x1-x0,ph=y1-y0,patch=root.document.createElement('canvas');patch.width=pw*4;patch.height=ph*2;
+      const p=patch.getContext('2d');
+      for(let f=0;f<8;f++)p.drawImage(a,f%4*w+x0,Math.floor(f/4)*h+y0,pw,ph,f%4*pw,Math.floor(f/4)*ph,pw,ph);
+      source.getContext('2d').clearRect(x0,y0,pw,ph);
+      const blended=root.document.createElement('canvas');blended.width=pw;blended.height=ph;
+      cached={a:patch,w:pw,h:ph,fullW:w,fullH:h,x0,y0,staticBody:source,blended,blendKey:-1};cache.set(img,cached);
+    }
+    const {a,w,h}=cached,phase=((now*.0008+o.x*.017+o.y*.011)/(Math.PI*2)%1+1)%1*8;
+    const blendKey=Math.floor(phase*16),sample=blendKey/16,frame=Math.floor(sample),next=(frame+1)%8,mix=sample-frame;
+    const sz=(meta.sz||400)*(o.scale||1),ar=cached.fullW/cached.fullH;
+    const factor=tree&&o._hand?.72:1,dw=sz*Math.min(1,ar)*factor,dh=sz*Math.min(1,1/ar)*factor,py=tree&&o._hand?.72:.5;
+    if(cached.blendKey!==blendKey){
+      const b=cached.blended.getContext('2d');b.clearRect(0,0,w,h);b.globalCompositeOperation='source-over';b.globalAlpha=1-mix;
+      b.drawImage(a,frame%4*w,Math.floor(frame/4)*h,w,h,0,0,w,h);
+      b.globalCompositeOperation='lighter';b.globalAlpha=mix;b.drawImage(a,next%4*w,Math.floor(next/4)*h,w,h,0,0,w,h);
+      b.globalAlpha=1;b.globalCompositeOperation='source-over';cached.blendKey=blendKey;
+      cached.blended._glVer=(cached.blended._glVer||0)+1;
+    }
+    const dx=o.x-dw*.5,dy=o.y-dh*py;
+    c.drawImage(cached.staticBody,dx,dy,dw,dh);
+    c.drawImage(cached.blended,dx+cached.x0/cached.fullW*dw,dy+cached.y0/cached.fullH*dh,w/cached.fullW*dw,h/cached.fullH*dh);
+    return true;
+  }
+  root.Ch1LivingDetail=Object.freeze({draw,deform,shadows,hideDuplicate,pit,organic});
 })(globalThis);

@@ -7,7 +7,9 @@ from PIL import Image
 from pathlib import Path
 from playwright.sync_api import sync_playwright
 
-out = Path('captures/ch1_living_detail_pass11_20260926') / ('before' if '--before' in sys.argv else 'after')
+out = Path('captures/ch1_living_detail_pass12_20260926') / ('before' if '--before' in sys.argv else 'after')
+if '--motion-only' in sys.argv:
+    out=out.parent/'motion-optimized'
 out.mkdir(parents=True, exist_ok=True)
 errors, failed, boards = [], [], []
 with sync_playwright() as p:
@@ -15,7 +17,7 @@ with sync_playwright() as p:
     context = browser.new_context(viewport={'width':1280,'height':720},record_video_dir=str(out),record_video_size={'width':1280,'height':720})
     page = context.new_page()
     if '--before' in sys.argv:
-        page.route('**/ch1-living-detail.js*',lambda route:route.fulfill(path='tmp/ch1-living-detail-pass10.js',content_type='text/javascript'))
+        page.route('**/ch1-living-detail.js*',lambda route:route.fulfill(path='tmp/ch1-living-detail-pass11.js',content_type='text/javascript'))
     page.on('pageerror', lambda e: errors.append(str(e)))
     page.on('console', lambda m: errors.append(m.text) if m.type=='error' else None)
     page.on('response', lambda r: failed.append(r.url) if r.status >= 400 else None)
@@ -32,12 +34,15 @@ with sync_playwright() as p:
     page.evaluate('closeAllPanels()')
     # Visual/input audit only: preserve enemy/VFX behavior, prevent death interrupting the camera tour.
     page.evaluate("window.__ch1QAHeal=setInterval(()=>{if(P&&P.hp>0)P.hp=P.mhp;},50)")
-    for name, tx, ty in [('TISSUE_DETAIL',91,184),('START',100,180),('EARLY',100,157),('ARENA',100,120),('SIDE_L',49,151),('SIDE_R',151,136),('LANDMARK',83,80),('LATE',100,48),('EXIT',100,15),('TREE_DETAIL',102,97),('COCOON_DETAIL',47,56),('POOL_DETAIL',162,141),('AUTHORED_POOL',167,45)]:
+    for name, tx, ty in [('TISSUE_DETAIL',91,184),('START',100,180),('EARLY',100,157),('ARENA',100,120),('SIDE_L',49,151),('SIDE_R',151,136),('LANDMARK',83,80),('LATE',100,48),('EXIT',100,15),('TREE_DETAIL',102,97),('CAMP_DETAIL',46,104),('COCOON_DETAIL',47,56),('POOL_DETAIL',162,141),('AUTHORED_POOL',167,45)]:
+        if '--motion-only' in sys.argv and name not in ['TREE_DETAIL','CAMP_DETAIL','COCOON_DETAIL']:
+            continue
         state=page.evaluate('''([x,y])=>{P.x=(x+.5)*T;P.y=(y+.5)*T;G.cam.x=P.x;G.cam.y=P.y;const top=document.elementFromPoint(640,360);return {tile:G.map[y][x],topElement:top?.outerHTML?.slice(0,500),objects:MAP_OBJS.filter(o=>Math.abs(o.x-P.x)<800&&Math.abs(o.y-P.y)<600).map(o=>({type:o.type,x:o.x,y:o.y}))}}''',[tx,ty])
         page.wait_for_timeout(1500)
+        page.wait_for_function("(()=>{const s=__ch1StartOuterQA().stats;return s.visibleIds.length>0&&s.visibleIds.every(id=>s.drawnIds.includes(id));})()",timeout=30000)
         assert page.evaluate("P.hp>0&&P.s!=='fallen'&&P.s!=='dead'"), 'camera tour interrupted by player death'
         page.screenshot(path=str(out / (name+'.png')))
-        if name in ['TISSUE_DETAIL','COCOON_DETAIL','AUTHORED_POOL','POOL_DETAIL']:
+        if name in ['TISSUE_DETAIL','COCOON_DETAIL','AUTHORED_POOL','POOL_DETAIL','TREE_DETAIL','CAMP_DETAIL']:
             frames, times = [], []
             for _ in range(24):
                 times.append(time.monotonic())
@@ -48,6 +53,8 @@ with sync_playwright() as p:
         if name in ['START','TREE_DETAIL','COCOON_DETAIL','POOL_DETAIL']:
             page.wait_for_timeout(6000)
             page.screenshot(path=str(out / (name+'_motion.png')))
+        if name in ['TREE_DETAIL','CAMP_DETAIL']:
+            state['frameTimesMs']=page.evaluate("()=>new Promise(resolve=>{const a=[];let last;function step(t){if(last!==undefined)a.push(t-last);last=t;if(a.length<60)requestAnimationFrame(step);else{a.sort((x,y)=>x-y);resolve({median:a[30],p95:a[57],samples:60});}}requestAnimationFrame(step);})")
         boards.append({'name':name,**state})
     audit=page.evaluate('''()=>{
       if(!globalThis.Ch1LivingDetail)return null;

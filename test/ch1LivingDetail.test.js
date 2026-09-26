@@ -121,3 +121,37 @@ test('recessed pit replacement stays local, animated and gameplay-neutral',()=>{
   assert.equal(frame(0,{stage:0},{...o,x:100}).used,false);
   assert.equal(JSON.stringify(o),before);
 });
+test('raised cocoon and pod cast alpha-shaped shadows while flat props remain clear',()=>{
+  const source=createCanvas(80,100),s=source.getContext('2d');s.fillStyle='#fff';s.fillRect(25,15,30,75);
+  for(const type of ['m_c1cocoon','m_c1spod']){
+    const a=createCanvas(700,500),c=a.getContext('2d'),o={type,x:240,y:190,scale:1},before=JSON.stringify(o);
+    const sprites={[type]:source},meta={[type]:{sz:280}};
+    scope.Ch1LivingDetail.shadows(c,{stage:1,cam:{x:350,y:250}},[o],sprites,meta,0,700,500);
+    assert.ok(a.toBuffer('raw').every(v=>v===0));
+    scope.Ch1LivingDetail.shadows(c,{stage:0,cam:{x:350,y:250}},[o],sprites,meta,0,700,500);
+    assert.ok(a.toBuffer('raw').some(v=>v!==0));
+    assert.equal(JSON.stringify(o),before);
+  }
+  const a=createCanvas(700,500),c=a.getContext('2d');
+  scope.Ch1LivingDetail.shadows(c,{stage:0,cam:{x:350,y:250}},[{type:'m_c1pool',x:240,y:190}],{m_c1pool:source},{m_c1pool:{sz:300}},0,700,500);
+  assert.ok(a.toBuffer('raw').every(v=>v===0));
+});
+test('organic sprite motion keeps camp crates and the tree trunk attached and still',()=>{
+  const source=createCanvas(256,256),s=source.getContext('2d');
+  for(let x=0;x<256;x+=4){s.fillStyle=x%8?'#935547':'#42382b';s.fillRect(x,0,4,256);}
+  for(const type of ['m_c1tree','m_c1camp']){
+    function frame(time,stage=0){
+      const a=createCanvas(256,256),c=a.getContext('2d');
+      const used=scope.Ch1LivingDetail.organic(c,{stage},{type,x:128,y:128},time,{sz:256},source);
+      return {a,c,used};
+    }
+    assert.equal(frame(0,1).used,false);
+    const first=frame(0),second=frame(2800);assert.equal(first.used,true);
+    assert.notDeepEqual(first.a.toBuffer('raw'),second.a.toBuffer('raw'));
+    for(const [x,y] of type==='m_c1tree'?[[128,90],[128,160]]:[[220,145],[158,205]]){
+      const p=first.c.getImageData(x,y,1,1).data,q=second.c.getImageData(x,y,1,1).data;
+      for(let k=0;k<3;k++)assert.ok(Math.abs(p[k]-q[k])<3,'rigid material must retain its source pixel');
+      assert.equal(p[3],q[3],'static surfaces must not fade during the blend');
+    }
+  }
+});
