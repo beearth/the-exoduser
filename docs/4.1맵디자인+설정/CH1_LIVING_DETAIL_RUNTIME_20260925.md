@@ -372,3 +372,6 @@ STAGE CH1-1. MASTER silhouette/8regions/main route남북/side spaces보존. OUTE
 VISUAL VERDICT: RETOUCH — 지정된 생체 오브젝트의 국소 움직임 확대. 전체맵 재질·애니메이션완성은아님. NEXT PASS: 실제플레이배율의가시성과가시영역성능검수결과를기준으로움직임범위조정.
 
 12차 최초 전후검수: 동일현재게임에11차효과를라우팅한before와12차초기after,각14카메라+COMBAT,errors/HTTPerrors0,mapUnchanged=true. TREE/CAMP/COCOON 원배율이미지 직접확인.23검사PASS. headless1280×720녹화중 각60RAF: tree before median33.3/p95 50.1ms→초기after33.4/83.3ms,camp33.3/50→33.3/50ms. 적상태·녹화부하가동일하지않아엄밀한성능비교는아니지만나무구간의지연증가를보아최종보간상태를256→128로조정. 초기30.68ms업로드주기를61.36ms로완화하고 `--motion-only`로TREE/CAMP/COCOON+COMBAT를재검수한다. 메모리규격/위치/변형범위는동일. 최초전체검수는after/,최종대상검수는motion-optimized/에분리보존.
+
+
+13차 최종 검수: 현재 게임에12차모듈을라우팅한before/13차after 각각CAMP_DETAIL+COMBAT,errors/HTTPerrors0,mapUnchanged=true. 양쪽camp60RAF median16.7/p95 33.4ms,COMBAT90RAF16.7/33.4ms. headless1280×720녹화·체력50ms보충 조건,전체 대규모전투 성능검증 아님. after 사망UI 직접호출error=null. 24검사PASS. 원배율CAMP_DETAIL 및 확대 손포즈2장 직접확인. 확인페이지 pageerror0: <http://localhost:3333/captures/ch1_living_detail_pass13_20260926/index.html>. 확대canvas는 현행 모듈·동일 원본을 직접 재생하며 실제게임 전후GIF/녹화영상도 함께 제공. QA 산출물은ignored captures/에 보관.
