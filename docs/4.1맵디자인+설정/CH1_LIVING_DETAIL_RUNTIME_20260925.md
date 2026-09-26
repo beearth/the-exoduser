@@ -6,7 +6,7 @@
 
 | id / 적용 위치 | 값 / 동작 |
 |---|---|
-| 구현 | `ch1-living-detail.js?v=20260926-13`, 전역 `Ch1LivingDetail.draw/deform/shadows/hideDuplicate/pit/organic`; `build-nwjs.mjs` 배포 FILES에도 포함 |
+| 구현 | `ch1-living-detail.js?v=20260927-14`, 전역 `Ch1LivingDetail.draw/deform/shadows/hideDuplicate/pit/organic`; `build-nwjs.mjs` 배포 FILES에도 포함 |
 | 범위 | `G.stage===0`, `_bossArena` 및 `_fieldRebuildQA` 제외 |
 | 지면 순서 | `_drawCh1Hill` 다음, 오브젝트·캐릭터·전투 효과 이전. `surfaceOnly=true` 잔물결은 맵 오브젝트 뒤/캐릭터 앞 |
 | 앵커 배율 | `m_c1tree:2.1`, `m_c1cocoon:1.1`, `m_c1pool:1.25`, `m_c1spod:.65`, `m_c1sroot:.75`, `pit_poison:1.2`, `m_rotten_tree:1` |
@@ -307,9 +307,9 @@ VISUAL VERDICT: RETOUCH — 오른쪽 아래 국소 접합 보강. 전체 생체
 
 11차 최종 검수: POOL_DETAIL과camera-board 직접 확인.13카메라+COMBAT,errors/HTTPerrors0,mapUnchanged=true,사망UI직접호출error=null. 실제 WASD/LMB/Q입력,체력50ms보충 조건.90RAF median16.7ms,p95 33.4ms(headless1280×720녹화중);대규모 전투 성능통과 판정 아님.21검사PASS. 원본기록 after/runtime.json,확인 페이지 <http://localhost:3333/captures/ch1_living_detail_pass11_20260926/index.html>. 이전비교는10차 당시캡처. 큰독액과작은구덩이의 재질차이는 잔여RETOUCH.
 
-## 13차 현행: 화로의 시체 손 관절 동작 (2026-09-26)
+## 13차 제작 이력: 화로의 시체 손 관절 동작 (2026-09-26)
 
-사용자 “그냥 흐물거리네”, “손이 움직여야지” 교정. 원인은 12차 camp 변형 영역이 실제 세 손보다 가시와 힘줄에 걸쳐 있었기 때문이다. **m_c1camp의 3구역 수평 출렁임을 제거하고 손 3개만 관절 변형한다.** 나무는 12차 유지. 아래 12차의 camp 영역·규격·메모리 설명은 제작 이력이며 현행은 본 13차가 우선한다. 원본 PNG는 변경하지 않는다.
+사용자 “그냥 흐물거리네”, “손이 움직여야지” 교정. 원인은 12차 camp 변형 영역이 실제 세 손보다 가시와 힘줄에 걸쳐 있었기 때문이다. **m_c1camp의 3구역 수평 출렁임을 제거하고 손 3개만 관절 변형한다.** 나무는 12차 유지. 아래 12차의 camp 영역·규격·메모리 설명은 제작 이력이며 13차 당시에는 본 절의 계약이 우선하며 현행 관절식은14차를 따른다. 원본 PNG는 변경하지 않는다.
 
 | id / 적용 | 현행 값·공식 |
 |---|---|
@@ -375,3 +375,28 @@ VISUAL VERDICT: RETOUCH — 지정된 생체 오브젝트의 국소 움직임 �
 
 
 13차 최종 검수: 현재 게임에12차모듈을라우팅한before/13차after 각각CAMP_DETAIL+COMBAT,errors/HTTPerrors0,mapUnchanged=true. 양쪽camp60RAF median16.7/p95 33.4ms,COMBAT90RAF16.7/33.4ms. headless1280×720녹화·체력50ms보충 조건,전체 대규모전투 성능검증 아님. after 사망UI 직접호출error=null. 24검사PASS. 원배율CAMP_DETAIL 및 확대 손포즈2장 직접확인. 확인페이지 pageerror0: <http://localhost:3333/captures/ch1_living_detail_pass13_20260926/index.html>. 확대canvas는 현행 모듈·동일 원본을 직접 재생하며 실제게임 전후GIF/녹화영상도 함께 제공. QA 산출물은ignored captures/에 보관.
+
+
+## 14차 현행: 손가락 순차 접힘과 관절 연결 보강 (2026-09-27)
+
+13차의 손목·마스크·크기·포즈수·시간표·메모리 계약을 유지한다. 아래 관절식은13차의 관절 행을 대체한다. 기존 식은 u=14/25 경계에서 v방향의 회전값이 갑자기 바뀌었으므로 연속된 가중치로 연결한다.
+
+| 항목 | 현행 수치/공식 |
+|---|---|
+| smooth | t=clamp(t,0,1),smooth(t)=t²*(3-2t) |
+| 손가락별 지연 | delay=min(.28,abs(v)*.012),finger=smooth((grip-delay)/(1-delay)),tip=smooth((finger-.15)/.85). 가운데 손가락→양옆,첫마디→끝마디 순으로 접힘 |
+| 관절각 | angle=sign*finger*(.65+v*.006),distal=sign*tip*.5,joint=angle*smooth((u-10)/8),end=distal*smooth((u-22)/6). 첫관절 전이 u10~18,끝관절 전이 u22~28 |
+| 첫관절 좌표 | pu=14+(u-14)*cos(joint)-v*sin(joint),pv=(u-14)*sin(joint)+v*cos(joint) |
+| 끝관절 좌표 | jx=14+11*cos(joint),jy=11*sin(joint),ex=pu-jx,ey=pv-jy;pu=jx+ex*cos(end)-ey*sin(end),pv=jy+ex*sin(end)+ey*cos(end). 이후13차 wristAngle/원축변환 유지. u<=0변위0 |
+| 베이크 최적화 | source getImageData1회,6px격자quad의주변1px까지 알파를 검사. py=max(0,y-1)..min(ph,y+7)미만,px=max(0,x-1)..min(pw,x+7)미만에서alpha>0인셀만mesh에저장.24포즈가 같은mesh재사용,투명셀 triangle생략. .35px clip확장/원본마스크 유지 |
+| 보존 | 화로/팔/손목 연결·맵좌표·콜리전·전투·나무·다른stage 불변. 추가지속캐시없음,mesh/pixels는생성중임시. native캐시61.7313117980957MiB 그대로 |
+| 검증 | 기존24검사PASS. 효과실제원본손검사 Node 실행 표본410.8→124.1ms(베이크 포함 전체테스트시간,엄밀벤치마크 아님). 실제 게임검수는14차 after/runtime.json |
+
+MAP PRODUCTION REPORT — 14차
+
+STAGE CH1-1. MASTER silhouette/regions/main route/side spaces 유지. OUTER MASS LEFT/RIGHT/TOP/SOUTH/major holes 유지. LARGE sourceassets/composites/overlap/repeated silhouette 유지. MEDIUM 손관절 연결만 연속화,큰 재질접합 잔여. GROUND shadow/contamination/structure integration 유지. PLAYABLE arenas/travel/breathing/threat/combat공간 불변. LANDMARK primary나무/tertiary 유지,secondary야영지 손동작 보강. CAMERA QA CAMP_DETAIL+COMBAT,START/EARLY/ARENA/SIDE L/SIDE R/LANDMARK/LATE/EXIT는이전검수자료 유지. TECH QA24검사,route/collision불변,visible chunk 로딩대기,오류/성능 아래최종결과. FILES stage-owned효과/QA/본 문서,concurrent touched game캐시·맵디테일2행·에셋목록·production·CHANGELOG해당내용,unrelated없음. GIT 코드+docs전용커밋,push/deploy없음.
+
+VISUAL VERDICT: RETOUCH — 손 연결·접힘 순서 보강,전체맵 완성 판정 아님. NEXT PASS: 맵의 큰 재질접합과 생체 구조물 가시성.
+
+
+14차 최종 검수: CAMP_DETAIL+COMBAT,errors/HTTPerrors=0/0,mapUnchanged=True. camp60RAF median33.3/p95 33.4ms,COMBAT90RAF33.3/33.4ms. headless1280×720녹화·체력50ms보충. 사망UI직접호출error=None. 24검사PASS. 확대포즈2장/실제게임CAMP_DETAIL 검수,확인페이지pageerror=0. 전체전투 성능 판정 아님. 확인페이지 <http://localhost:3333/captures/ch1_living_detail_pass14_20260927/index.html>.

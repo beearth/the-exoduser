@@ -412,14 +412,16 @@
         const a=atlas.getContext('2d'),len=Math.hypot(...rig.axis),ux=rig.axis[0]/len,uy=rig.axis[1]/len;
         function pose(x,y,grip){
           const dx=x+minX-rig.wrist[0],dy=y+minY-rig.wrist[1],u=dx*ux+dy*uy,v=-dx*uy+dy*ux;
-          // Palm, proximal phalanges and distal phalanges have separate rigid joint angles.
-          const angle=rig.sign*grip*(.65+v*.006),distal=angle+rig.sign*grip*.5;
-          let pu=u,pv=v;
-          if(u>14){
-            const first=Math.min(11,u-14),last=Math.max(0,u-25),rot=u>25?distal:angle;
-            pu=14+Math.cos(angle)*first+Math.cos(distal)*last-Math.sin(rot)*v;
-            pv=Math.sin(angle)*first+Math.sin(distal)*last+Math.cos(rot)*v;
-          }
+          // Knuckles close before the fingertips; outer fingers follow the central fingers.
+          // Smooth skin weights across each hinge avoid a jump at u=14 or u=25.
+          const smooth=t=>{t=Math.max(0,Math.min(1,t));return t*t*(3-2*t);};
+          const delay=Math.min(.28,Math.abs(v)*.012),finger=smooth((grip-delay)/(1-delay)),tip=smooth((finger-.15)/.85);
+          const angle=rig.sign*finger*(.65+v*.006),distal=rig.sign*tip*.5;
+          const joint=angle*smooth((u-10)/8),end=distal*smooth((u-22)/6);
+          const jx=14+11*Math.cos(joint),jy=11*Math.sin(joint);
+          let pu=14+(u-14)*Math.cos(joint)-v*Math.sin(joint),pv=(u-14)*Math.sin(joint)+v*Math.cos(joint);
+          const ex=pu-jx,ey=pv-jy;
+          pu=jx+ex*Math.cos(end)-ey*Math.sin(end);pv=jy+ex*Math.sin(end)+ey*Math.cos(end);
           const wristAngle=rig.sign*grip*.18*Math.max(0,Math.min(1,u/10));
           const ru=pu*Math.cos(wristAngle)-pv*Math.sin(wristAngle),rv=pu*Math.sin(wristAngle)+pv*Math.cos(wristAngle);
           return [rig.wrist[0]+ru*ux-rv*uy-minX,rig.wrist[1]+ru*uy+rv*ux-minY];
@@ -433,11 +435,18 @@
           a.save();a.beginPath();a.moveTo(...edge[0]);a.lineTo(...edge[1]);a.lineTo(...edge[2]);a.closePath();a.clip();
           a.transform(A,B,C,D,d[0]-A*p[0]-C*p[1],d[1]-B*p[0]-D*p[1]);a.drawImage(source,0,0);a.restore();
         }
+        // Build geometry once, excluding transparent cells (with a 1px sampling margin).
+        const pixels=s.getImageData(0,0,pw,ph).data,mesh=[];
+        for(let y=0;y<ph;y+=6)for(let x=0;x<pw;x+=6){
+          let occupied=false;
+          for(let py=Math.max(0,y-1);py<Math.min(ph,y+7)&&!occupied;py++)
+            for(let px=Math.max(0,x-1);px<Math.min(pw,x+7);px++)if(pixels[(py*pw+px)*4+3]){occupied=true;break;}
+          if(occupied)mesh.push([[x,y],[Math.min(pw,x+6),y],[Math.min(pw,x+6),Math.min(ph,y+6)],[x,Math.min(ph,y+6)]]);
+        }
         for(let frame=0;frame<24;frame++){
           const grip=frame/23;
           a.save();a.translate(frame%6*pw,Math.floor(frame/6)*ph);
-          for(let y=0;y<ph;y+=6)for(let x=0;x<pw;x+=6){
-            const vertices=[[x,y],[Math.min(pw,x+6),y],[Math.min(pw,x+6),Math.min(ph,y+6)],[x,Math.min(ph,y+6)]];
+          for(const vertices of mesh){
             const moved=vertices.map(p=>pose(...p,grip));
             for(const ids of [[0,1,2],[0,2,3]])triangle(ids.map(i=>vertices[i]),ids.map(i=>moved[i]));
           }
