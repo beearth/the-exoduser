@@ -497,3 +497,85 @@
  #settings.panel .pbox .ptitle{min-height:52px!important;padding-left:8px!important;padding-right:154px!important;font-size:22px!important;}
  #settings.panel .pbox .ptitle::before{width:140px!important;height:50px!important;right:4px!important;bottom:-6px!important;background-size:140px 140px!important;background-position:center -43px!important;}
 }
+
+/* Information architecture: integrated headings and recessed content beds. */
+:is(#settings,#invPanel,#skillPanel).panel .pbox{
+ --info-header:url('img/ui/blackiron/header.png');
+ --info-rail:url('img/ui/iron_covenant_20260924/frame.webp');
+ --info-plate:url('img/ui/iron_covenant_20260924/button.webp');
+}
+:is(#settings,#invPanel,#skillPanel).panel .pbox .ptitle{
+ position:relative;isolation:isolate;box-sizing:border-box;min-height:158px!important;height:158px!important;flex-shrink:0!important;
+ padding:96px 12px 30px!important;margin:0 0 10px!important;
+ justify-content:center!important;align-items:center!important;text-align:center!important;
+ background:none!important;border:0!important;box-shadow:none!important;
+ font-size:24px!important;line-height:32px!important;letter-spacing:.08em!important;color:#efe1c5!important;-webkit-text-fill-color:#efe1c5!important;text-shadow:0 2px 2px #000!important;
+}
+:is(#settings,#invPanel,#skillPanel).panel .pbox .ptitle::before{
+ content:''!important;position:absolute!important;z-index:-1!important;top:0!important;bottom:auto!important;
+ left:50%!important;right:auto!important;transform:translateX(-50%)!important;
+ width:360px!important;max-width:100%!important;height:158px!important;filter:none!important;
+ background:var(--info-header) center -90px/360px 360px no-repeat!important;pointer-events:none;
+}
+:is(#settings,#invPanel,#skillPanel).panel .pbox .ptitle::after{display:none!important;}
+#invPanel.panel .pbox .ptitle{height:118px!important;min-height:118px!important;padding:68px 12px 18px!important;font-size:22px!important;}
+#invPanel.panel .pbox .ptitle::before{width:270px!important;height:118px!important;background-size:270px 270px!important;background-position:center -67px!important;}
+#invPanel.panel .pbox .inv-wrap{grid-template-rows:minmax(270px,1.1fr) minmax(200px,1fr)!important;}
+#skillPanel.panel .pbox #skillInfo:empty{display:none!important;}
+#settings.panel .pbox .ui-section-heading{
+ position:relative;padding:10px 14px!important;min-height:40px;box-sizing:border-box;
+ background:linear-gradient(90deg,#1b171466,#111114bb),var(--info-plate) center/100% 100% no-repeat!important;
+ color:#e4d5b8!important;font-size:15px!important;
+}
+#settings.panel .pbox .ui-section-heading::before,#settings.panel .pbox .ui-section-heading::after{display:none!important;}
+#settings.panel .pbox .set-range-row,#settings.panel .pbox .set-row{padding-left:12px!important;padding-right:12px!important;}
+#invPanel.panel .pbox .inv-equip{isolation:isolate;background:linear-gradient(#0c0b0dc9,#111012e0),var(--ui-surface) center/480px!important;}
+#invPanel.panel .pbox .inv-equip::before{
+ content:'';position:absolute;z-index:-1;top:5%;bottom:4%;left:31%;right:31%;pointer-events:none;
+ border-radius:48% 48% 5px 5px;border:1px solid #62563c4d;
+ background:radial-gradient(ellipse at 50% 30%,#77624720,transparent 65%),linear-gradient(#0b0a0dcc,#29211755);
+ box-shadow:inset 8px 0 18px #0008,inset -8px 0 18px #0008,0 0 0 5px #93816207;
+}
+#invPanel.panel .pbox .inv-grid-bg::before{
+ content:'';position:absolute;width:18px;height:18px;left:50%;top:50%;transform:translate(-50%,-50%) rotate(45deg);
+ border:1px solid #9d8d6320;border-radius:3px;box-shadow:inset 0 0 0 3px #0003;pointer-events:none;
+}
+#invPanel.panel .pbox #invCenter>div:first-child{
+ padding:4px 8px 8px!important;background:linear-gradient(#19161982,#111015bf),var(--info-plate) center/100% 100% no-repeat!important;
+}
+#skillPanel.panel .pbox{background:linear-gradient(#141315e8,#09090aee),var(--ui-surface) center/320px!important;}
+#skillPanel.panel .pbox .frame-inner-panel-stack:not(#skillInfo){border:0!important;box-shadow:none!important;padding:0!important;background:none!important;}
+#skillPanel.panel .pbox #skillInfo{
+ border:6px solid #504b41!important;border-image:var(--info-rail) 4% / 6px / 0 stretch!important;
+ background:linear-gradient(#171319ba,#0e0c11df),var(--ui-surface) center/320px!important;
+ border-radius:0!important;box-shadow:none!important;padding:12px 14px!important;color:#d9cbb3!important;
+}
+#skillPanel.panel .pbox #skillGridWrap{
+ border:6px solid #504b41!important;border-image:var(--info-rail) 4% / 6px / 0 stretch!important;
+ background:linear-gradient(#0c0b0ddd,#101012e8),var(--ui-surface) center/480px!important;
+ border-radius:0!important;box-shadow:none!important;padding:12px!important;
+}
+#skillPanel.panel .pbox #skillGrid>div:not(.skill-recommendations)>div:first-child{
+ background:linear-gradient(#19161982,#111015bf),var(--info-plate) center/100% 100% no-repeat!important;
+ border:0!important;border-radius:0!important;box-shadow:none!important;padding:10px!important;color:#e0ccb0!important;
+}
+#skillPanel.panel .pbox #skillGrid [data-sk-id]{
+ border-radius:0!important;background:linear-gradient(#2820298a,#0e0b10e3),var(--ui-surface) center/240px!important;
+ box-shadow:inset 0 2px #d8c29113,inset 0 -4px 8px #0007!important;
+}
+#skillPanel.panel .pbox .skill-recommendations>div{
+ border-radius:0!important;background:linear-gradient(#211c21c9,#100d12e8),var(--ui-surface) center/320px!important;
+ box-shadow:inset 0 1px #b19a672e!important;
+}
+#skillPanel.panel .pbox #skSlotBar{padding:10px!important;border:6px solid #504b41!important;border-image:var(--info-rail) 4% / 6px / 0 stretch!important;background:linear-gradient(#181419dd,#0d0b10ed),var(--ui-surface) center/320px!important;}
+#skillPanel.panel .pbox :is(.panel-nav-tab,.pclose){background:linear-gradient(#15141782,#0b0a0cac),var(--info-plate) center/100% 100% no-repeat,#232225!important;border:0!important;border-image:none!important;border-radius:0!important;box-shadow:none!important;color:#c7bead!important;}
+#skillPanel.panel .pbox .panel-nav-tab.active{background:linear-gradient(#57170c99,#260907b8),var(--info-plate) center/100% 100% no-repeat!important;color:#f4e6cb!important;box-shadow:inset 0 -2px #ac7953!important;}
+@media(max-width:560px){:is(#settings,#invPanel,#skillPanel).panel .pbox .ptitle{font-size:22px!important;}}
+/* Engraved background: subdued rose-window tracery in the empty margins. */
+:is(#settings,#invPanel,#skillPanel).panel .pbox{
+ --info-sigil:url('img/ui/blackiron/sigil.png');
+ background:linear-gradient(#141315d9,#09090af2),var(--info-sigil) center -150px/620px 620px no-repeat,var(--ui-surface) center/320px!important;
+}
+#invPanel.panel .pbox .inv-equip:not(#invCenter){
+ background:linear-gradient(#0c0b0dcc,#111012eb),var(--info-sigil) center/410px 410px no-repeat,var(--ui-surface) center/480px!important;
+}

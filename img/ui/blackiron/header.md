@@ -1,0 +1,13 @@
+# 통합 제목판 원본
+
+- 생성: 2026-09-26 KST, 연결된 Higgsfield GPT Image 2. High / 2K / transparent / 1장.
+- 생성 ID: hf_20260925_172307_5c634956-ed99-4a38-9f16-7915ca3d86bc
+- 파일: header.png, 2048×2048 RGBA. 알파 경계 [29,529,2018,1398]. 다운로드 원본 그대로 사용.
+- 런타임: 설정·인벤토리·스킬 중앙 제목. CSS 표시360×158px, background360×360px center -90px. 제목은 DOM 텍스트. 알파 normal 합성, 원본 반투명 음영 포함.
+- 소지품 창은 가방 공간 확보를 위해 표시270×118px/background270×270px center -67px/글자22px로 축소한다.
+- 생성 요청4:1과 달리 정사각 캔버스로 출력됨. 조각 실루엣을 보존하면서 투명 여백을 CSS 표시 범위 밖에 둔다.
+- 실패 폴백: DOM 제목과 기존 본문 배경/테두리. NW.js img/ 포함 규칙으로 패키징.
+
+## Prompt
+
+Design ONE original premium dark-fantasy RPG menu HEADER ASSET, not a full menu. The whole object is ONE integrated architectural sculpture: a centered solemn masked iron guardian bust crowns a wide BLANK title cartouche, and two low sculptural supports flow horizontally from the bust into the left and right ends of that cartouche. Wide horizontal composition, overall width about FOUR times height. Central figure: small stern faceless iron executioner hood/helm, clear broad folded planes, no human portrait, no smiling skull, no ram horns. Figure occupies top central quarter of the object, shoulders merge naturally into frame supports. Side supports: low dark carved bat-like stone buttresses, restrained angular folds, a few intentional negative spaces, not feather wings and not filigree curls. Lower title cartouche: wide quiet inset rectangular plate occupying lower HALF of the object, about three quarters total width, perfectly EMPTY to receive editable game title text. Cartouche surface is smooth matte warm charcoal, nearly uniform, NO grain noise and NO leather pores. Its one continuous substantial bevel frame has precision corner joints and tiny worn edges. Sculpture and title plate touch and overlap convincingly as one physical construction. Original gothic iron-and-dark-stone craftsmanship. Very restrained aged brass on a few bevels, otherwise blackened iron, dark grey, muted warm shadows. Central plate a little lighter than lateral sculpture to support ivory title lettering later. Details concentrated around silhouette, corners and junctions; broad quiet surfaces behind text. Elegant and ominous, realistic hand-carved game prop, expertly balanced symmetrical layout. Strong readable silhouette at 440 pixels wide by110 pixels high. Soft raking light from upper left, no bright chrome, no glitter, no gritty speckles, no hard glow, no ornate lace, no repeated skulls, no background scene, NO TEXT, NO LETTERING, NO LOGO. Truly transparent alpha outside the one connected header silhouette. No outside halo or shadow. Entire silhouette visible with small transparent margins. Original design, do not reproduce any existing game logo or artwork.
