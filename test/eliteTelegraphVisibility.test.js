@@ -22,7 +22,7 @@ function maxColor(image,cx,cy,half=2){
   return {red,green,blue};
 }
 function renderZone(zone){
-  const {X,image}=canvas(),scope={X,_now:170,Math,zone};
+  const {X,image}=canvas(),scope={X,_now:170,Math,zone,_pentaRed:{complete:false}};
   vm.runInNewContext(source+';_drawEliteZoneTelegraph(X,zone,_now)',scope);
   return {image:image(),X};
 }

@@ -5054,6 +5054,10 @@ function _drawEliteZoneTelegraph(X,z,now){
   const q=Math.max(0,Math.min(1,1-z.t/z.dur)),r=z.r,head=Math.max(1.5,r*q),col=z.col||'#ff2438';
   const pulse=.5+.5*Math.sin(now*.018),spin=now*.0008,mortar=z.kind==='mortar';
   X.save();X.globalCompositeOperation='source-over';
+  if((mortar||col==='#ff2438')&&_pentaRed.complete&&_pentaRed.naturalWidth){
+    X.save();X.translate(z.x,z.y);X.rotate(now*.00028);
+    X.globalAlpha=.15+q*.13;X.drawImage(_pentaRed,-r*.88,-r*.88,r*1.76,r*1.76);X.restore();
+  }
   X.globalAlpha=.15+pulse*.05;X.fillStyle=col;X.beginPath();X.arc(z.x,z.y,r,0,Math.PI*2);X.fill();
   X.globalAlpha=.82+pulse*.12;X.strokeStyle=col;X.lineWidth=2.2+pulse*1.2;X.beginPath();X.arc(z.x,z.y,r-1,0,Math.PI*2);X.stroke();
   X.globalAlpha=.70;X.lineWidth=1.4;
@@ -34658,7 +34662,7 @@ function update(){
   // ═══ 용암 장판 업데이트 ═══
   if(G._lavaPools&&G._lavaPools.length>0){let _lpW=0;for(let li=0;li<G._lavaPools.length;li++){const lp=G._lavaPools[li];lp.t+=sp;if(lp.t>=lp.warnT){lp.tickT=(lp.tickT||0)+sp;if(dst(P.x,P.y,lp.x,lp.y)<lp.r+P.r&&P.iframes<=0&&lp.tickT>=30){lp.tickT=0;hurtP(~~(lp.dmg*.4*elMul(lp.el,ar().el)));addTxt(P.x,P.y-15,'🔥','#ff4400',20)}}if(lp.t<lp.maxT)G._lavaPools[_lpW++]=lp}G._lavaPools.length=_lpW}
   // ═══ 화염비 업데이트 ═══
-  if(G._fireRains&&G._fireRains.length>0){let _frW=0;for(let fi=0;fi<G._fireRains.length;fi++){const fr=G._fireRains[fi];fr.t+=sp;if(!fr.hit&&fr.t>=fr.delay){fr.hit=true;SFX.detonate();shake(4);if(dst(P.x,P.y,fr.x,fr.y)<fr.r+P.r&&P.iframes<=0&&P.s!=='charge'){hurtP(~~(fr.dmg*elMul(fr.el,ar().el)));const ka=Math.atan2(P.y-fr.y,P.x-fr.x);P.kb.x+=Math.cos(ka)*6;P.kb.y+=Math.sin(ka)*6}for(let k=0;k<8;k++){const a=Math.PI*2*k/8;poolPart(fr.x,fr.y,Math.cos(a)*4,Math.sin(a)*4,'#ff6600',3,8)}}if(fr.hit){fr._fadeT=(fr._fadeT||0)+sp;if(fr._fadeT>=20)continue}else if(fr.t>fr.delay+30)continue;G._fireRains[_frW++]=fr}G._fireRains.length=_frW}
+  if(G._fireRains&&G._fireRains.length>0){let _frW=0;for(let fi=0;fi<G._fireRains.length;fi++){const fr=G._fireRains[fi];fr.t+=sp;if(!fr.hit&&fr.t>=fr.delay){fr.hit=true;SFX.detonate();shake(4);const _flameSize=Math.min(fr.r*2.5,360);playVFXAng('lava_erupt',fr.x,fr.y-_flameSize*.25,_flameSize/768,5,0,false,.85);if(dst(P.x,P.y,fr.x,fr.y)<fr.r+P.r&&P.iframes<=0&&P.s!=='charge'){hurtP(~~(fr.dmg*elMul(fr.el,ar().el)));const ka=Math.atan2(P.y-fr.y,P.x-fr.x);P.kb.x+=Math.cos(ka)*6;P.kb.y+=Math.sin(ka)*6}for(let k=0;k<8;k++){const a=Math.PI*2*k/8;poolPart(fr.x,fr.y,Math.cos(a)*4,Math.sin(a)*4,'#ff6600',3,8)}}if(fr.hit){fr._fadeT=(fr._fadeT||0)+sp;if(fr._fadeT>=20)continue}else if(fr.t>fr.delay+30)continue;G._fireRains[_frW++]=fr}G._fireRains.length=_frW}
   // ═══ 전격 격자 업데이트 ═══
   if(G._shockGrids&&G._shockGrids.length>0){let _sgW=0;for(let si=0;si<G._shockGrids.length;si++){const sg=G._shockGrids[si];sg.t+=sp;if(sg.t>=sg.warnT){sg.tickT=(sg.tickT||0)+sp;if(sg.tickT>=25&&P.iframes<=0){const _dx=P.x-sg.x,_dy=P.y-sg.y;const _parD=Math.cos(sg.ang)*_dx+Math.sin(sg.ang)*_dy;const _perpD=Math.abs(-Math.sin(sg.ang)*_dx+Math.cos(sg.ang)*_dy);if(_parD>0&&_parD<sg.len&&_perpD<sg.w){sg.tickT=0;hurtP(~~(sg.dmg*.3*elMul(sg.el,ar().el)));addTxt(P.x,P.y-15,'⚡','#44ccff',20)}}}if(sg.t<sg.maxT)G._shockGrids[_sgW++]=sg}G._shockGrids.length=_sgW}
   // ═══ 도넛 장판 업데이트 ═══
@@ -36297,7 +36301,7 @@ function updateE(e,sp){
     if(e.mods.includes('M31')){if(e._eliteBoltWarn>0){e._eliteBoltWarn-=sp;if(e._eliteBoltWarn<=0){const a=e._eliteBoltAim;eProjAt(e,a-.24,3,.72,EL.L,260,'#ffee44',3.5);eProjAt(e,a,3,.72,EL.L,260,'#ffee44',3.5);eProjAt(e,a+.24,3,.72,EL.L,260,'#ffee44',3.5);}}else if(d<850){e.modT.eliteBolt+=sp;if(e.modT.eliteBolt>=360&&_claimEliteAttack(e,45)){e.modT.eliteBolt=0;e._eliteBoltAim=Math.atan2(P.y-e.y,P.x-e.x);e._eliteBoltWarn=45;}}}
     // M32 지옥 포격: 플레이어 주변 세 지점을 순차 표적화
     if(e.mods.includes('M32')&&d<1100){e.modT.eliteMortar+=sp;if(e.modT.eliteMortar>=600&&_claimEliteAttack(e,126)){e.modT.eliteMortar=0;e._eliteZones=e._eliteZones||[];const a=Math.atan2(P.y-e.y,P.x-e.x),px=P.x,py=P.y;for(let i=-1;i<=1;i++){const off=i*92;e._eliteZones.push({x:px-Math.sin(a)*off,y:py+Math.cos(a)*off,t:78+(i+1)*24,dur:78+(i+1)*24,r:68,kind:'mortar',col:'#ff3322'});}}}
-    if(e._eliteZones&&e._eliteZones.length){for(let zi=e._eliteZones.length-1;zi>=0;zi--){const z=e._eliteZones[zi];z.t-=sp;if(z.t<=0){const hit=dst(P.x,P.y,z.x,z.y)<=z.r;if(hit&&P.iframes<=0&&P.s!=='charge'){hurtP(Math.max(1,~~(e.atk*(z.kind==='mortar'?.8:.65))),{dtype:'magic'});addTxt(P.x,P.y-18,z.kind==='mortar'?'💥포격!':'충격파! ',z.col,22);}addParts(z.x,z.y,z.col,z.kind==='mortar'?18:12);e._eliteZones.splice(zi,1);}}}
+    if(e._eliteZones&&e._eliteZones.length){for(let zi=e._eliteZones.length-1;zi>=0;zi--){const z=e._eliteZones[zi];z.t-=sp;if(z.t<=0){const hit=dst(P.x,P.y,z.x,z.y)<=z.r;if(hit&&P.iframes<=0&&P.s!=='charge'){hurtP(Math.max(1,~~(e.atk*(z.kind==='mortar'?.8:.65))),{dtype:'magic'});addTxt(P.x,P.y-18,z.kind==='mortar'?'💥포격!':'충격파! ',z.col,22);}addParts(z.x,z.y,z.col,z.kind==='mortar'?18:12);if(z.kind==='mortar'||z.col==='#ff2438'){const _flameSize=Math.min(z.r*2.5,360);playVFXAng('lava_erupt',z.x,z.y-_flameSize*.25,_flameSize/768,5,0,false,.85)}e._eliteZones.splice(zi,1);}}}
     // M23 영혼포식: 주변 시체 흡수 → HP/ATK+20%
     if(e.mods.includes('M23')){for(let _di=0;_di<_deadPool.length;_di++){const oe=_deadPool[_di];if(!oe._absorbed&&oe!==e&&dst(oe.x,oe.y,e.x,e.y)<100){
       oe._absorbed=true;e.hp=Math.min(e.mhp,e.hp+~~(e.mhp*.2));e.baseAtk=~~(e.baseAtk*1.2);e.atk=e.baseAtk;
@@ -53784,6 +53788,10 @@ function drawP(){
         X.beginPath();X.arc(fr.x,fr.y,fr.r*(1+_ep*.5),0,Math.PI*2);X.stroke();
       }else{
         const _fp=Math.min(1,fr.t/fr.delay);
+        if(_pentaRed.complete&&_pentaRed.naturalWidth){
+          X.save();X.translate(fr.x,fr.y);X.rotate(_now*.00028);
+          X.globalAlpha=.12+_fp*.15;X.drawImage(_pentaRed,-fr.r*.88,-fr.r*.88,fr.r*1.76,fr.r*1.76);X.restore();
+        }
         X.globalAlpha=_fp*.2;X.fillStyle='#b50022';
         X.beginPath();X.arc(fr.x,fr.y,fr.r,0,Math.PI*2);X.fill();
         X.globalAlpha=_fp*(.55+Math.sin(_now*.02+fi)*.2);X.strokeStyle='#ff2438';X.lineWidth=2+_fp*2;
