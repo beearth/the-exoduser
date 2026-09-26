@@ -6,7 +6,7 @@
 
 | id / 적용 위치 | 값 / 동작 |
 |---|---|
-| 구현 | `ch1-living-detail.js?v=20260926-10`, 전역 `Ch1LivingDetail.draw/deform/shadows/hideDuplicate/pit`; `build-nwjs.mjs` 배포 FILES에도 포함 |
+| 구현 | `ch1-living-detail.js?v=20260926-11`, 전역 `Ch1LivingDetail.draw/deform/shadows/hideDuplicate/pit`; `build-nwjs.mjs` 배포 FILES에도 포함 |
 | 범위 | `G.stage===0`, `_bossArena` 및 `_fieldRebuildQA` 제외 |
 | 지면 순서 | `_drawCh1Hill` 다음, 오브젝트·캐릭터·전투 효과 이전. `surfaceOnly=true` 잔물결은 맵 오브젝트 뒤/캐릭터 앞 |
 | 앵커 배율 | `m_c1tree:2.1`, `m_c1cocoon:1.1`, `m_c1pool:1.25`, `m_c1spod:.65`, `m_c1sroot:.75`, `pit_poison:1.2`, `m_rotten_tree:1` |
@@ -284,3 +284,25 @@ STAGE CH1-1. MASTER silhouette/regions/남북main route/side spaces유지. OUTER
 VISUAL VERDICT: RETOUCH — 사용자 지적한 분리된 촉수 표현 수정. 전체 맵 재질 통합은 남아 있음. NEXT PASS: 고정 유착부와 주변 원화의 재질 접합 검토.
 
 10차 검수: TISSUE_DETAIL 원배율 화면에서 갈래의 공통 유착부 확인.13카메라+COMBAT 촬영,실제 입력WASD/LMB/Q,체력50ms보충 조건. 오류/HTTP오류0,21검사PASS. 동맥24프레임GIF와 전후 캡처: <http://localhost:3333/captures/ch1_living_detail_pass10_20260926/index.html>. 비교의 이전 화면은9차 당시캡처이며 현재 전체코드 동일시점 A/B는 아니다. 런타임 원본은 after/runtime.json에 보존.
+
+## 11차: 오른쪽 아래 독액 지대 접합 (2026-09-26)
+
+작업 위치는 사용자의 두 번째 스크린샷 `스크린샷 2026-09-26 042826.png`에 해당한다. 오른쪽 위 m_c1pool(167,43)과 혼동하지 않는다. 동측 pit_poison(162,139),월드(6500,5580)만 기존9차 atlas 내에서 수정하며 뒤쪽 큰 m_c1gtoxicf의 원본은 보존한다.
+
+| id | 현행 값 / 변경 |
+|---|---|
+| 불규칙 경계 | contour의 r=1+.06*sin(5t)+.035*cos(9t). 기존9차 .035/.025 계수 대체. 나머지 rx/ry/cy와 수축 범위 유지 |
+| 젖은 지면 연결 | 외측 턱 이전9곳. j=0..8,t=j/9*2π,중심(cos(t)*99,9+sin(t)*73),회전t,scaleY.55. radial반경3→24,RGB36,36,24 alpha.58→0,48² 영역. 같은 위치의 고정 오염으로 경계 분절 |
+| 유입 자국 | j=0,1. 시작(-27,-69)/(34,-57),끝(-17,-6)/(22,2). cubic제어(sx-9,sy+19),(ex+8,ey-23),시작·끝 고정 |
+| 자국 깊이 | RGB14,20,14 alpha.82 폭8-j*2;내측 RGB95,108,58 alpha.48 폭3-j*.5 |
+| 습윤 상면 | X-1,폭1,RGB161,159,99,alpha=.14+.07*sin(phase-j),범위.07~.21. 기존6.614초 주기. 자국의 위치는 움직이지 않음 |
+| 렌더 순서 | contact shadow→젖은 지면→외측 턱→안쪽 벽/침전물/수면→유입 자국→앞턱. 기존256²셀/16프레임/pitAtlas4MiB 재사용,추가 atlas없음 |
+| 보존 | 10차 촉수 고정 유착부·중간 맥동 유지. 배치/geometry/collision/크기/물리/피해/맵 데이터/대형 원본 불변 |
+
+MAP PRODUCTION REPORT — 11차
+
+STAGE CH1-1. MASTER silhouette/8regions/main route남북/side spaces보존. OUTER MASS LEFT/RIGHT/TOP/SOUTH/major holes유지. LARGE source/composites/overlap/repeated silhouette보존. MEDIUM 동측 큰독액과 작은구덩이 사이 시각연결 보강,대형 재질접합 잔여. GROUND 접촉그림자 유지·젖은흙9곳·유입자국2개. PLAYABLE arenas/travel/breathing/threat공간 보존,새장애물0. LANDMARK primary시체나무/tertiary뿌리 유지,secondary오른쪽아래독액만 수정. CAMERA QA START/EARLY/ARENA/SIDE L/SIDE R/LANDMARK/LATE/EXIT+상세5곳,POOL_DETAIL 확대. TECH QA21검사(효과13/geometry5/문법1/패키징2),route/collision/chunk seam보존,브라우저 결과 아래기록. FILES stage-owned효과/QA/본 문서,concurrent touched game캐시·맵디테일2행,unrelated없음. GIT 코드+docs전용부분커밋,push/deploy없음.
+
+VISUAL VERDICT: RETOUCH — 오른쪽 아래 국소 접합 보강. 전체 생체지옥 재질 완성 판정은 아님. NEXT PASS: 지면과 구조물의 큰 재질 차이 개선,넓은 전투공간 유지.
+
+11차 최종 검수: POOL_DETAIL과camera-board 직접 확인.13카메라+COMBAT,errors/HTTPerrors0,mapUnchanged=true,사망UI직접호출error=null. 실제 WASD/LMB/Q입력,체력50ms보충 조건.90RAF median16.7ms,p95 33.4ms(headless1280×720녹화중);대규모 전투 성능통과 판정 아님.21검사PASS. 원본기록 after/runtime.json,확인 페이지 <http://localhost:3333/captures/ch1_living_detail_pass11_20260926/index.html>. 이전비교는10차 당시캡처. 큰독액과작은구덩이의 재질차이는 잔여RETOUCH.

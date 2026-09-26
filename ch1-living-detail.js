@@ -279,7 +279,7 @@
         function contour(rx,ry,cy,inset=0){
           x.beginPath();
           for(let n=0;n<=96;n++){
-            const t=n/96*Math.PI*2,r=1+.035*Math.sin(t*5)+.025*Math.cos(t*9);
+            const t=n/96*Math.PI*2,r=1+.06*Math.sin(t*5)+.035*Math.cos(t*9);
             const squeeze=Math.sin(phase-t*2)*inset;
             const px=Math.cos(t)*(rx*r+squeeze),py=cy+Math.sin(t)*(ry*r+squeeze*.6);
             if(n)x.lineTo(px,py);else x.moveTo(px,py);
@@ -290,6 +290,14 @@
         const shadow=x.createRadialGradient(0,15,65,0,15,124);
         shadow.addColorStop(0,'rgba(12,10,11,.7)');shadow.addColorStop(1,'rgba(12,10,11,0)');
         x.fillStyle=shadow;x.fillRect(-128,-128,256,256);x.restore();
+        // Broken damp soil shoulders tie the hole into the larger contaminated ground.
+        for(let j=0;j<9;j++){
+          const t=j/9*Math.PI*2,px=Math.cos(t)*99,py=9+Math.sin(t)*73;
+          x.save();x.translate(px,py);x.rotate(t);x.scale(1,.55);
+          const stain=x.createRadialGradient(0,0,3,0,0,24);
+          stain.addColorStop(0,'rgba(36,36,24,.58)');stain.addColorStop(1,'rgba(36,36,24,0)');
+          x.fillStyle=stain;x.fillRect(-24,-24,48,48);x.restore();
+        }
         contour(106,80,9,1.6);x.fillStyle='#38372c';x.fill();
         x.strokeStyle='rgba(148,128,96,.18)';x.lineWidth=2;x.stroke();
         contour(97,71,9,1.6);
@@ -321,6 +329,15 @@
           x.strokeStyle='rgba(176,173,110,'+((1-p)*.24)+')';x.lineWidth=1.3;x.stroke();
         }
         x.restore();x.restore();
+        // Two fixed channels cross the back lip; only their damp highlight pulses.
+        for(let j=0;j<2;j++){
+          const sx=j?34:-27,sy=j?-57:-69,ex=j?22:-17,ey=j?2:-6;
+          x.beginPath();x.moveTo(sx,sy);x.bezierCurveTo(sx-9,sy+19,ex+8,ey-23,ex,ey);
+          x.strokeStyle='rgba(14,20,14,.82)';x.lineWidth=8-j*2;x.stroke();
+          x.strokeStyle='rgba(95,108,58,.48)';x.lineWidth=3-j*.5;x.stroke();
+          x.save();x.translate(-1,0);
+          x.strokeStyle='rgba(161,159,99,'+(.14+.07*Math.sin(phase-j))+')';x.lineWidth=1;x.stroke();x.restore();
+        }
         // Front lip occludes the liquid edge and catches a narrow damp highlight.
         x.beginPath();
         for(let j=0;j<=48;j++){
