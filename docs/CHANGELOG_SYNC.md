@@ -48610,9 +48610,9 @@ mpR = 0.05 + s.int×0.005                                        [NO P.lv×0.001
 
 | 대상 | 현재 렌더 계약 |
 |---|---|
-| m_c1tree / m_c1camp | Ch1LivingDetail.organic: tree는 기존 뿌리3구역 국소변형 유지. camp는13차에서 수평출렁임을 제거하고 화로의 시체 손3개만 손목/손가락 관절로 굽혔다 펴는 동작으로 교체. 팔/가시/상자/돌 고정. stage0,bossArena/fieldRebuildQA제외;이미지로드실패/meta.srcRect존재/API없음이면기존sprite폴백 |
+| m_c1tree / m_c1camp | Ch1LivingDetail.organic: tree는15차에서 좌우뿌리2축의 붙은 밑동을 고정하고 끝을 들었다 내리는 굽힘으로 교체. camp는13차에서 수평출렁임을 제거하고 화로의 시체 손3개만 손목/손가락 관절로 굽혔다 펴는 동작으로 교체. 팔/가시/상자/돌 고정. stage0,bossArena/fieldRebuildQA제외;이미지로드실패/meta.srcRect존재/API없음이면기존sprite폴백 |
 | m_c1cocoon / m_c1spod | 기존이미지알파를이용한바닥투영그림자+밑동접촉그림자,밑동고정호흡.다른stage/평면pool제외 |
-| 보존·성능 | 좌표/크기/pivot/충돌/원본파일불변.동적canvas _glVer 및기존GPU텍스처재사용.추가캐시18.668811798095703MiB(native,기존나무그림자/GPU복제별도).상세공식·검수는CH1_LIVING_DETAIL_RUNTIME_20260925.md 13차 14차: 손가락별 접힘 지연·연속 관절 연결·투명셀 베이크 생략. 상세는 같은 문서14차. |
+| 보존·성능 | 좌표/크기/pivot/충돌/원본파일불변.동적canvas _glVer 및기존GPU텍스처재사용.추가캐시18.518848419189453MiB(native,기존나무그림자/GPU복제별도).상세공식·검수는CH1_LIVING_DETAIL_RUNTIME_20260925.md 13차 14차: 손가락별 접힘 지연·연속 관절 연결·투명셀 베이크 생략. 손은14차,뿌리는15차 계약 참조. |
 
 전체 메뉴와 로비의 최신 재질·제목·문양·선택·초점·스크롤 스타일은 UI_COMPOSITION_20260925.md의 **2026-09-26 유니크 분해 NaN 수정과 상세창 마감 절**을 따른다.
 

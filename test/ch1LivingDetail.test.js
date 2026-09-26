@@ -155,6 +155,20 @@ test('organic sprite motion keeps camp crates and the tree trunk attached and st
     }
   }
 });
+test('giant tree root tips lift while their trunk attachment remains fixed',()=>{
+  const source=createCanvas(400,500),s=source.getContext('2d');
+  s.fillStyle='#fff';s.fillRect(34,394,10,10);s.fillStyle='#f00';s.fillRect(196,245,8,10);
+  const tipYs=[];
+  for(const time of [0,1400,2800,4200,5600]){
+    const a=createCanvas(500,500),c=a.getContext('2d');
+    scope.Ch1LivingDetail.organic(c,{stage:0},{type:'m_c1tree',x:250,y:250},time,{sz:500},source);
+    const pixels=c.getImageData(0,0,500,500).data;let sum=0,count=0;
+    for(let y=340;y<450;y++)for(let x=40;x<150;x++){const i=(y*500+x)*4;if(pixels[i+1]>150&&pixels[i+3]>100){sum+=y;count++;}}
+    assert.ok(count>10,'root material must remain visible');tipYs.push(sum/count);
+    assert.deepEqual([...c.getImageData(250,250,1,1).data],[255,0,0,255],'trunk attachment is fixed');
+  }
+  assert.ok(Math.max(...tipYs)-Math.min(...tipYs)>4,'root tip must lift, not just smear sideways');
+});
 test('camp corpse hands grip at the fingers while the firepit and forearms stay still',async()=>{
   const source=await loadImage(new URL('../assets/map/ch1/collision/prop_camp.png',import.meta.url).pathname.replace(/^\/(\w:)/,'$1'));
   function frame(time){

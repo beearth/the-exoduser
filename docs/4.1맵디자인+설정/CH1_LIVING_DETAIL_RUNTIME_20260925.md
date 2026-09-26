@@ -6,7 +6,7 @@
 
 | id / 적용 위치 | 값 / 동작 |
 |---|---|
-| 구현 | `ch1-living-detail.js?v=20260927-14`, 전역 `Ch1LivingDetail.draw/deform/shadows/hideDuplicate/pit/organic`; `build-nwjs.mjs` 배포 FILES에도 포함 |
+| 구현 | `ch1-living-detail.js?v=20260927-15`, 전역 `Ch1LivingDetail.draw/deform/shadows/hideDuplicate/pit/organic`; `build-nwjs.mjs` 배포 FILES에도 포함 |
 | 범위 | `G.stage===0`, `_bossArena` 및 `_fieldRebuildQA` 제외 |
 | 지면 순서 | `_drawCh1Hill` 다음, 오브젝트·캐릭터·전투 효과 이전. `surfaceOnly=true` 잔물결은 맵 오브젝트 뒤/캐릭터 앞 |
 | 앵커 배율 | `m_c1tree:2.1`, `m_c1cocoon:1.1`, `m_c1pool:1.25`, `m_c1spod:.65`, `m_c1sroot:.75`, `pit_poison:1.2`, `m_rotten_tree:1` |
@@ -377,7 +377,7 @@ VISUAL VERDICT: RETOUCH — 지정된 생체 오브젝트의 국소 움직임 �
 13차 최종 검수: 현재 게임에12차모듈을라우팅한before/13차after 각각CAMP_DETAIL+COMBAT,errors/HTTPerrors0,mapUnchanged=true. 양쪽camp60RAF median16.7/p95 33.4ms,COMBAT90RAF16.7/33.4ms. headless1280×720녹화·체력50ms보충 조건,전체 대규모전투 성능검증 아님. after 사망UI 직접호출error=null. 24검사PASS. 원배율CAMP_DETAIL 및 확대 손포즈2장 직접확인. 확인페이지 pageerror0: <http://localhost:3333/captures/ch1_living_detail_pass13_20260926/index.html>. 확대canvas는 현행 모듈·동일 원본을 직접 재생하며 실제게임 전후GIF/녹화영상도 함께 제공. QA 산출물은ignored captures/에 보관.
 
 
-## 14차 현행: 손가락 순차 접힘과 관절 연결 보강 (2026-09-27)
+## 14차 제작 이력: 손가락 순차 접힘과 관절 연결 보강 (2026-09-27)
 
 13차의 손목·마스크·크기·포즈수·시간표·메모리 계약을 유지한다. 아래 관절식은13차의 관절 행을 대체한다. 기존 식은 u=14/25 경계에서 v방향의 회전값이 갑자기 바뀌었으므로 연속된 가중치로 연결한다.
 
@@ -400,3 +400,29 @@ VISUAL VERDICT: RETOUCH — 손 연결·접힘 순서 보강,전체맵 완성 �
 
 
 14차 최종 검수: CAMP_DETAIL+COMBAT,errors/HTTPerrors=0/0,mapUnchanged=True. camp60RAF median33.3/p95 33.4ms,COMBAT90RAF33.3/33.4ms. headless1280×720녹화·체력50ms보충. 사망UI직접호출error=None. 24검사PASS. 확대포즈2장/실제게임CAMP_DETAIL 검수,확인페이지pageerror=0. 전체전투 성능 판정 아님. 확인페이지 <http://localhost:3333/captures/ch1_living_detail_pass14_20260927/index.html>.
+
+
+## 15차 현행: 대왕나무 외측 뿌리 굽힘 (2026-09-27)
+
+12차 tree의3구역 수평변형/4px행 stretch는 폐기한다. 기존 원본 안에서 바깥으로 뻗은 뿌리2축을 따라 회전량을 늘려 끝이 들렸다 내려오게 한다. 다른 레이어에 구워진 배경 뿌리는 이번 대상이 아니다. 손14차 유지.
+
+| 항목 | 현행 수치·공식 |
+|---|---|
+| roots | 정규화원본좌표(ax,ay,tx,ty,radius,angle,offset). 좌(.38,.67,.09,.795,.047,.085,0),우(.65,.70,.91,.81,.045,-.075,2.1). 원본max변1024/축소full836×1024 유지 |
+| 축 좌표 | vx=tx-ax,vy=ty-ay,length2=vx²+vy²,rx=px/w-ax,ry=py/h-ay. u=(rx*vx+ry*vy)/length2,d=abs(rx*vy-ry*vx)/sqrt(length2)/radius |
+| 고정·감쇠 | u<=.15 또는 u>=1.25 또는 d>=1이면변위0. smooth(t)=clamp(t,0,1)²*(3-2*clamp(t,0,1)). weight=smooth((u-.15)/.85)*(1-d²)²*(1-smooth((u-1.05)/.2)). 몸통쪽15% 고정,옆경계와끝범위에서연속감쇠 |
+| 들기 | lift=(.5+.5*sin(phase-u*.75+offset))²,theta=angle*lift*weight. bx=px-ax*w,by=py-ay*h. dx+=bx*(cos(theta)-1)-by*sin(theta),dy+=bx*sin(theta)+by*(cos(theta)-1). pose=(px+dx,py+dy). 좌우시간차·길이방향지연 |
+| 래스터 | source전체복사→patch영역clear→16px격자quad두triangle(0,1,2)/(0,2,3). 네 꼭짓점 변위가 모두0이면원본셀drawImage1회,그외13차와동일affine/중심방향.35px확장clip. phase=f/8*2π,8프레임4×2 유지 |
+| patch | x0=0,y0=floor(.60*h),x1=w,y1=min(h,ceil(.90*h)+16). 실제(0,614,836,324),atlas3344×648. source동일rect제거→staticBody전체+동적patchdraw. 기존128보간상태/약7.854초/_glVer/culling외부계약 유지 |
+| 비용 | tree static+atlas+blend12.56500244140625MiB. 기존43.0625+tree12.56500244140625+raised1.5625+camp4.391345977783203=61.58134841918945MiB native캐시. tree포함추가18.518848419189453MiB. 임시/GPU복제/기존나무shadow별도 |
+| 검증 | 실제끝을나타내는밝은표식의Y중심이5시점에서4px초과이동하며고정몸통표식이보존되는검사추가.14차실패→15차PASS.25검사(효과17/geometry5/문법1/패키징2). QA --tree-only 추가,before는14차모듈 |
+| 보존 | 원본에셋/배치/크기/pivot/남북동선/충돌/전투규칙/다른stage/손동작 불변 |
+
+MAP PRODUCTION REPORT — 15차
+
+STAGE CH1-1. MASTER silhouette/regions/main route/side spaces 유지. OUTER MASS LEFT/RIGHT/TOP/SOUTH/major holes 유지. LARGE sourceassets/composites/overlap/repeated silhouette 유지. MEDIUM 나무뿌리 연결부 고정,큰 재질접합 잔여. GROUND shadow/contamination 유지,원본뿌리 끝의 국소들기. PLAYABLE arenas/travel/breathing/threat/combat공간 유지. LANDMARK primary대왕나무 외측뿌리2개 굽힘,secondary/tertiary 유지. CAMERA QA TREE_DETAIL+COMBAT,START/EARLY/ARENA/SIDE L/SIDE R/LANDMARK/LATE/EXIT전체는이전자료. TECH QA25검사,route/collision불변,로딩·오류·성능최종기록아래. FILES stage-owned효과/test/QA/본 문서,concurrent touched game캐시·맵디테일2행·에셋목록·production·CHANGELOG부분,unrelated없음. GIT 코드+docs부분커밋,push/deploy없음.
+
+VISUAL VERDICT: RETOUCH — 나무원본의뿌리 동작 보강. 전체배경뿌리 애니메이션/재질완성은아님. NEXT PASS: 큰 재질접합과 배경에 구워진 뿌리의 분리 검토.
+
+
+15차 최종 검수: TREE_DETAIL+COMBAT,errors/HTTPerrors=0/0,mapUnchanged=True. tree60RAF median33.3/p95 50.0ms,COMBAT90RAF33.3/50.0ms. headless1280×720녹화·체력50ms보충. 사망UI직접호출error=None.25검사PASS. 확대포즈2장과실제TREE_DETAIL 검수,확인페이지pageerror=0. 전체전투 성능검증 아님. 확인페이지 <http://localhost:3333/captures/ch1_living_detail_pass15_20260927/index.html>. 이전비교GIF는동일뿌리효과였던12차최종검수영상.

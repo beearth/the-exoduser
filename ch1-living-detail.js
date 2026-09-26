@@ -484,34 +484,44 @@
       const ratio=Math.min(1,max/Math.max(iw,ih)),w=Math.round(iw*ratio),h=Math.round(ih*ratio);
       const source=root.document.createElement('canvas');source.width=w;source.height=h;source.getContext('2d').drawImage(img,0,0,w,h);
       const a=root.document.createElement('canvas');a.width=w*4;a.height=h*2;const x=a.getContext('2d');
-      // Local smooth displacement fields leave trunk joints, crate boards and stone rims fixed.
-      const regions=[[.27,.79,.20,.17,.011,0],[.75,.80,.19,.17,.011,1.4],[.50,.89,.12,.085,.004,2.1]];
-      function shift(u,v,phase){
-        let value=0;
-        for(const [cx,cy,rx,ry,amp,offset] of regions){
-          const d=((u-cx)/rx)**2+((v-cy)/ry)**2;
-          if(d<1)value+=(1-d)**2*Math.sin(phase+v*9+offset)*amp*w;
+      // Two authored root axes: attachment stays fixed, distal wood lifts as a branch.
+      const roots=[[.38,.67,.09,.795,.047,.085,0],[.65,.70,.91,.81,.045,-.075,2.1]];
+      const x0=0,y0=Math.floor(.60*h),x1=w,y1=Math.min(h,Math.ceil(.90*h)+16);
+      function pose(px,py,phase){
+        let dx=0,dy=0;
+        const smooth=t=>{t=Math.max(0,Math.min(1,t));return t*t*(3-2*t);};
+        for(const [ax,ay,tx,ty,radius,angle,offset] of roots){
+          const vx=tx-ax,vy=ty-ay,length2=vx*vx+vy*vy,rx=px/w-ax,ry=py/h-ay;
+          const u=(rx*vx+ry*vy)/length2,d=Math.abs(rx*vy-ry*vx)/Math.sqrt(length2)/radius;
+          if(u<=.15||u>=1.25||d>=1)continue;
+          const weight=smooth((u-.15)/.85)*(1-d*d)**2*(1-smooth((u-1.05)/.2));
+          const lift=(.5+.5*Math.sin(phase-u*.75+offset))**2,theta=angle*lift*weight;
+          const bx=px-ax*w,by=py-ay*h;
+          dx+=bx*(Math.cos(theta)-1)-by*Math.sin(theta);dy+=bx*Math.sin(theta)+by*(Math.cos(theta)-1);
         }
-        return value;
+        return [px+dx,py+dy];
+      }
+      function triangle(src,dst){
+        const [p,q,r]=src,[d,e,f]=dst,ax=q[0]-p[0],ay=q[1]-p[1],bx=r[0]-p[0],by=r[1]-p[1],det=ax*by-ay*bx;
+        const A=((e[0]-d[0])*by-(f[0]-d[0])*ay)/det,B=((e[1]-d[1])*by-(f[1]-d[1])*ay)/det;
+        const C=((f[0]-d[0])*ax-(e[0]-d[0])*bx)/det,D=((f[1]-d[1])*ax-(e[1]-d[1])*bx)/det;
+        const cx=(d[0]+e[0]+f[0])/3,cy=(d[1]+e[1]+f[1])/3;
+        const edge=dst.map(([px,py])=>{const length=Math.hypot(px-cx,py-cy)||1;return [px+(px-cx)/length*.35,py+(py-cy)/length*.35];});
+        x.save();x.beginPath();x.moveTo(...edge[0]);x.lineTo(...edge[1]);x.lineTo(...edge[2]);x.closePath();x.clip();
+        x.transform(A,B,C,D,d[0]-A*p[0]-C*p[1],d[1]-B*p[0]-D*p[1]);x.drawImage(source,0,0);x.restore();
       }
       for(let f=0;f<8;f++){
         x.save();x.translate(f%4*w,Math.floor(f/4)*h);x.beginPath();x.rect(0,0,w,h);x.clip();x.drawImage(source,0,0);
         const phase=f/8*Math.PI*2;
-        for(let y=0;y<h;y+=4){
-          const rh=Math.min(4,h-y),v=(y+rh/2)/h;
-          if(!regions.some(r=>Math.abs(v-r[1])<r[3]))continue;
-          x.clearRect(0,y,w,rh);
-          for(let j=0;j<32;j++){
-            const left=j*w/32,right=(j+1)*w/32,dl=left+shift(j/32,v,phase),dr=right+shift((j+1)/32,v,phase);
-            x.drawImage(source,left,y,right-left,rh,dl,y,dr-dl+.15,rh);
-          }
+        x.clearRect(x0,y0,x1-x0,y1-y0);
+        for(let y=y0;y<y1;y+=16)for(let px=x0;px<x1;px+=16){
+          const right=Math.min(x1,px+16),bottom=Math.min(y1,y+16),vertices=[[px,y],[right,y],[right,bottom],[px,bottom]];
+          const moved=vertices.map(p=>pose(...p,phase));
+          if(vertices.every((p,i)=>p[0]===moved[i][0]&&p[1]===moved[i][1])){x.drawImage(source,px,y,right-px,bottom-y,px,y,right-px,bottom-y);continue;}
+          for(const ids of [[0,1,2],[0,2,3]])triangle(ids.map(i=>vertices[i]),ids.map(i=>moved[i]));
         }
         x.restore();
       }
-      const x0=Math.max(0,Math.floor(Math.min(...regions.map(r=>r[0]-r[2]))*w)-2);
-      const y0=Math.max(0,Math.floor(Math.min(...regions.map(r=>r[1]-r[3]))*h/4)*4-4);
-      const x1=Math.min(w,Math.ceil(Math.max(...regions.map(r=>r[0]+r[2]))*w)+2);
-      const y1=Math.min(h,Math.ceil(Math.max(...regions.map(r=>r[1]+r[3]))*h/4)*4+4);
       const pw=x1-x0,ph=y1-y0,patch=root.document.createElement('canvas');patch.width=pw*4;patch.height=ph*2;
       const p=patch.getContext('2d');
       for(let f=0;f<8;f++)p.drawImage(a,f%4*w+x0,Math.floor(f/4)*h+y0,pw,ph,f%4*pw,Math.floor(f/4)*ph,pw,ph);
