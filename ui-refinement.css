@@ -725,3 +725,8 @@
 #invPanel.panel .pbox .cmp-header{min-height:28px;box-sizing:border-box;padding:4px 36px 8px 0!important;border-bottom:1px solid #75624766!important;}
 #invPanel.panel .pbox .cmp-close{box-sizing:border-box;width:28px;height:28px;line-height:20px;border:1px solid #786144;background:#181417;right:8px;top:6px;}
 @media(prefers-reduced-motion:reduce){#invPanel.panel .pbox .inv-filter-btn{transition:none!important;}}
+
+/* Inventory uses its navigation tab as the title; give the recovered space to the bag. */
+#invPanel.panel .pbox>div:has(>.ptitle)>.ptitle{display:none!important;}
+#invPanel.panel .pbox>div:has(>.ptitle){gap:0!important;margin:4px 0 8px!important;}
+#invPanel.panel .pbox .inv-wrap{grid-template-rows:270px minmax(240px,1fr)!important;}
