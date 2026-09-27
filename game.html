@@ -2518,7 +2518,7 @@ body:has(#invPanel.on) #keyGuide{display:none!important}
 <link rel="stylesheet" href="inventory-gems-finish.css?v=20260927-square-art2">
 <link rel="stylesheet" href="inventory-space.css?v=20260927-aligned12">
 <link rel="stylesheet" href="skill-workspace.css?v=20260928-fixed-categories5">
-<link rel="stylesheet" href="inventory-oss-balance.css?v=20260927-scale2">
+<link rel="stylesheet" href="inventory-oss-balance.css?v=20260928-ossuary-fit5">
 <link rel="stylesheet" href="inventory-gems-balance.css?v=20260927-half">
 <script src="stat-panel-ui.js?v=20260927-auto-invest2"></script>
 </head>
@@ -2908,6 +2908,13 @@ body:has(#invPanel.on) #keyGuide{display:none!important}
         <!-- 소환 유골함 도감 (2026-09-01) — 전대 7종 × 4부위 콜렉션, renderOssPanel()이 채움 -->
         <div class="inv-ossuary" id="invOssuaryPanel"></div>
         <div class="inv-storage" id="invStorageCol">
+        <section class="inv-oss-ancestor" id="invOssAncestor" aria-label="소환 전대">
+          <div class="oss-portrait-head"><span class="oss-portrait-kicker">소환 전대</span><span class="oss-portrait-index">I / I</span></div>
+          <div class="oss-portrait-stage"><div class="oss-portrait-glow" aria-hidden="true"></div><div class="oss-portrait-frame"><img id="ossAncestorImage" alt="" decoding="async"></div><span class="oss-portrait-fallback" id="ossAncestorFallback" hidden>전대 형상 없음</span></div>
+          <div class="oss-portrait-caption"><span class="oss-portrait-rank">ANCESTOR · 01</span><strong id="ossAncestorName">철갑 전대</strong><span id="ossAncestorState" class="oss-portrait-state">유골 수집 중</span></div>
+          <div class="oss-portrait-progress"><span>유골 수집</span><strong id="ossAncestorProgress">0 / 4</strong><div class="oss-portrait-progress-track"><span id="ossAncestorProgressFill"></span></div></div>
+          <p id="ossAncestorSummary" class="oss-portrait-summary">네 부위를 모으면 철갑 전대를 소환할 수 있습니다.</p>
+        </section>
           <div class="inv-storage-toggle" onclick="toggleInvStorage()">
             <span>지옥창고</span>
             <span id="invStorageArrow">▼</span>
@@ -15026,7 +15033,7 @@ function mkItem(slot,tier,el,rarity,wtype){
   // 소환 위력은 유골 도감(INV.ossCollect)의 부위 포인트에서 나온다. 획득: 첫 유골 부위 드랍 시 자동 지급.
   if(slot==='ossuary'){
     item.rarity=5;item.tier=0;item.el=EL.P;item.unique=true;
-    item.name='전대의 유골함';item.emoji='⚱️';
+     item.name='전대의 유골함';item.emoji='⚱️';item.anc='iron_warlord';
     item.eDef=60;item.bonusMp=150;item.ancPow=0.25;
     delete item.bStr;delete item.bDex;delete item.bInt;delete item.bLck;delete item.bGrit;
     item.affixes=[{id:'ancHP',tier:3,value:.9}]; // 전대 최대HP +90% 고정
@@ -43249,7 +43256,7 @@ function _drawAncestorSummonCircle(ctx,a){
 const _ANC_PLANT_SHEET='img/vfx_ancestor/ancestor_iron_warlord_plant_v2.png';
 const _ANC_WALK_SHEET='img/vfx_ancestor/ancestor_iron_warlord_walk_v2.png';
 const _ANC_SWING_SHEET='img/vfx_ancestor/ancestor_iron_warlord_swing_v4.png';
-const ANC_ROSTER=[{id:'iron_warlord',ko:'철갑 전대',en:'Iron Warlord'}];
+ const ANC_ROSTER=[{id:'iron_warlord',ko:'철갑 전대',en:'Iron Warlord',portrait:'img/vfx_ancestor/iron_warlord_portrait.png',portraitFrame:0,portraitFrames:1,portraitFallback:'img/vfx_ancestor/ancestor_iron_warlord_walk_v2.png'}];
 const _ANC_KIT=[{reach:320,atkCd:46,radius:142,dmgMult:1.25,kb:1.3,hits:1}]; // 검기 발사 거리까지 접근한 뒤 정지한다.
 function _launchAncestorKiWave(a,ang,dmg,kb){
   const dx=Math.cos(ang),dy=Math.sin(ang);
@@ -47233,7 +47240,7 @@ document.addEventListener('mouseup',function(ev){
 });
 function _ossHideBoneInfo(){const tip=$('ossBoneInfo');if(tip)tip.hidden=true;const host=$('invOssInfo');if(host)host.classList.remove('has-bone');}
 function _ossShowBoneInfo(part,ev){
-  const R=ANC_ROSTER[0],c=R&&INV.ossCollect&&INV.ossCollect[R.id+'_'+part];
+   const R=ANC_ROSTER.find(r=>r.id===$('invOssuaryPanel')?.dataset.ancestorId)||ANC_ROSTER[0],c=R&&INV.ossCollect&&INV.ossCollect[R.id+'_'+part];
   const role={skull:_L('치명 · 위력','Critical · Power'),torso:_L('최대 HP','Maximum HP'),arms:_L('공격 위력','Attack power'),legs:_L('크기 · 이동속도','Size · Movement speed')}[part];
   const host=$('invOssInfo'),card=$('invOssBoneCard');
   if(host&&card&&$('invPanel')?.dataset.inventoryPage==='ossuary'){
@@ -47281,7 +47288,7 @@ function renderOssPanel(){
       node.onmouseenter=(ev)=>_ossShowBoneInfo(part,ev);
       node.onmousemove=(ev)=>_ossShowBoneInfo(part,ev);
       node.onmouseleave=_ossHideBoneInfo;
-      node.oncontextmenu=(ev)=>{ev.preventDefault();_ossHideBoneInfo();withdrawBonePart(0,part);};
+       node.oncontextmenu=(ev)=>{ev.preventDefault();_ossHideBoneInfo();withdrawBonePart(~~pn.dataset.ancestorIndex,part);};
       node.onclick=()=>{
         pn.dataset.selectedPart=part;
         _invClearHover();
@@ -47295,12 +47302,18 @@ function renderOssPanel(){
     make('p','oss-collection-hint',pn);
     const actions=make('div','oss-actions',pn);
     const take=make('button','oss-withdraw',actions);take.type='button';
-    take.onclick=()=>withdrawBonePart(0,pn.dataset.selectedPart);
+     take.onclick=()=>withdrawBonePart(~~pn.dataset.ancestorIndex,pn.dataset.selectedPart);
     const remove=make('button','oss-unequip',actions);remove.type='button';
   }
-  const R=ANC_ROSTER[0],oss=INV.equipped.ossuary;
-  const collected=_BONE_PARTS.filter(pt=>INV.ossCollect[R.id+'_'+pt]).length;
-  const complete=_ossSetComplete(0),ready=complete&&!!oss;
+   const oss=INV.equipped.ossuary;
+   const selectedOss=typeof INV.selected==='number'?INV.bag[INV.selected]:null;
+   const displayedOss=(selectedOss&&selectedOss.slot==='ossuary'?selectedOss:null)||oss||INV.bag.find(it=>it&&it.slot==='ossuary');
+   const ai=Math.max(0,ANC_ROSTER.findIndex(r=>r.id===displayedOss?.anc));
+   const R=ANC_ROSTER[ai];
+   if(pn.dataset.ancestorId!==R.id){pn.dataset.selectedPart='';_ossHideBoneInfo();}
+   pn.dataset.ancestorId=R.id;pn.dataset.ancestorIndex=String(ai);
+   const collected=_BONE_PARTS.filter(pt=>INV.ossCollect[R.id+'_'+pt]).length;
+   const complete=_ossSetComplete(ai),ready=complete&&!!oss&&(!oss.anc||oss.anc===R.id);
   const label=(cls,value)=>{const leaf=pn.querySelector('.'+cls);if(leaf&&!leaf.children.length)leaf.textContent=value;};
   pn.classList.toggle('oss-complete',complete);
   pn.classList.toggle('oss-ready',ready);
@@ -47340,7 +47353,28 @@ function renderOssPanel(){
   take.disabled=!record;label('oss-withdraw',_L('선택 유골 해제','Remove selected bone'));
   remove.disabled=!oss;label('oss-unequip',_L('유골함 해제','Unequip ossuary'));
   remove.onclick=urn.oncontextmenu;
-  label('oss-collection-hint',_L('유골 우클릭 또는 선택 후 해제 · 해제한 유골은 가방으로 이동','Right-click a bone or select Remove · Returns the bone to your bag'));
+   label('oss-collection-hint',_L('유골 우클릭 또는 선택 후 해제 · 해제한 유골은 가방으로 이동','Right-click a bone or select Remove · Returns the bone to your bag'));
+   const portrait=$('invOssAncestor'),img=$('ossAncestorImage'),fallback=$('ossAncestorFallback');
+   if(portrait&&img&&fallback){
+     const source=R.portrait||'',frames=Math.max(1,R.portraitFrames||1),frame=Math.min(frames-1,Math.max(0,R.portraitFrame||0));
+     if(img.dataset.source!==source){img.dataset.source=source;img.dataset.fallback='';img.src=source;img.hidden=!source;fallback.hidden=!!source;}
+     if(!img.dataset.fallback){img.style.width=(frames*100)+'%';img.style.left=-(frame*100)+'%';}
+     img.classList.toggle('oss-portrait-art',frames===1&&!img.dataset.fallback);
+     img.onerror=()=>{
+       if(R.portraitFallback&&!img.dataset.fallback){img.dataset.fallback='1';img.classList.remove('oss-portrait-art');img.style.width='600%';img.style.left='-400%';img.src=R.portraitFallback;return;}
+       img.hidden=true;fallback.hidden=false;
+     };
+     img.onload=()=>{img.hidden=false;fallback.hidden=true;};
+     portrait.classList.toggle('oss-portrait-ready',ready);
+     const leaf=(id,value)=>{const n=$(id);if(n&&!n.children.length)n.textContent=value;};
+     leaf('ossAncestorName',_L(R.ko,R.en));
+     leaf('ossAncestorSummary',ready?_L('전대 소환 스킬로 전장에 강림합니다.','Use Ancestral Summon to call this ancestor.'):_L('네 부위를 모으면 전대 소환이 해금됩니다.','Collect all four bones to unlock this ancestor.'));
+     leaf('ossAncestorState',ready?_L('소환 가능','Ready to summon'):complete?_L('유골함 장착 필요','Equip ossuary'):_L('유골 수집 중','Collecting bones'));
+     leaf('ossAncestorProgress',collected+' / '+_BONE_PARTS.length);
+     const index=portrait.querySelector('.oss-portrait-index');if(index&&!index.children.length)index.textContent=(ai+1)+' / '+ANC_ROSTER.length;
+     const rank=portrait.querySelector('.oss-portrait-rank');if(rank&&!rank.children.length)rank.textContent='ANCESTOR · '+String(ai+1).padStart(2,'0');
+     $('ossAncestorProgressFill').style.width=(collected/_BONE_PARTS.length*100)+'%';
+   }
 }
 function _invCategoryMatches(it){
   if(!it)return false;
