@@ -2649,7 +2649,7 @@ body:has(#invPanel.on) #keyGuide{display:none!important}
   <div><b style="color:#fff">L</b> — 스킬 슬롯 배정</div>
   <div><b style="color:#fff">K</b> — 스킬  |  <b style="color:#fff">C</b> — 능력치</div>
   <div><b style="color:#fff">TAB</b> — 인벤토리  |  <b style="color:#fff">G</b> — 대장간</div>
-  <div><b style="color:#fff">V</b> — 창고  |  <b style="color:#fff">ESC</b> — 설정</div>
+  <div><b style="color:#fff">N</b> — 보관함  |  <b style="color:#fff">ESC</b> — 설정</div>
   <div style="color:#666;margin-top:4px;font-size:1rem">클릭하면 닫힘</div>
 </div>
 
@@ -2978,17 +2978,6 @@ body:has(#invPanel.on) #keyGuide{display:none!important}
   </div>
 </div>
 
-<div class="panel" id="storagePanel">
-  <div class="pbox" style="width:420px">
-    <div class="ptitle">창고</div>
-    <div class="frame-inner-panel frame-inner-panel-stack">
-      <div id="storageFloorNav" style="display:flex;gap:4px;flex-wrap:wrap;margin-bottom:8px;justify-content:center"></div>
-      <div id="storageGrid" style="display:grid;grid-template-columns:1fr;gap:6px;max-height:50vh;overflow-y:auto"></div>
-    </div>
-    <button class="pclose" id="storageClose">닫기 [N]</button>
-  </div>
-</div>
-
 <!-- STAT/PASSIVE PANEL -->
 <div class="panel" id="statPanel" role="dialog" aria-modal="true" aria-labelledby="growthTitle">
   <div class="pbox growth-shell">
@@ -3103,7 +3092,7 @@ body:has(#invPanel.on) #keyGuide{display:none!important}
       </div>
       <div style="padding:8px 0 8px 12px">
         <div style="color:#886644;font-weight:700;margin-bottom:6px;font-size:.9rem;letter-spacing:.1em">시스템</div>
-        <div style="margin-bottom:3px"><span class="tkey">V</span> 창고</div>
+        <div style="margin-bottom:3px"><span class="tkey">N</span> 보관함</div>
         <div style="margin-bottom:3px"><span class="tkey">L</span> 스킬 슬롯 배정</div>
         <div style="margin-bottom:3px"><span class="tkey">ESC</span> 설정</div>
         <div style="margin-bottom:3px"><span class="tkey">F11</span> 전체화면</div>
@@ -5911,7 +5900,7 @@ const BIND_NAMES={
   parry:'데빌포스 흡수', beam:'마법 (탭=투사체, 홀드=빔)',
   skill:'전투 스킬', forge:'대장간',
   inventory:'인벤토리', settings:'설정',
-  interact:'아이템 줍기', storage:'창고', stats:'능력치 (스탯/패시브)',
+  interact:'아이템 줍기', storage:'보관함', stats:'능력치 (스탯/패시브)',
   skillCycle:'스킬 슬롯 배정',
   irisToggle:'유령불꽃 켜기/끄기',
   bladeToggle:'기동칼날개 자동 켜기/끄기',
@@ -12556,7 +12545,7 @@ const GP_BINDS={ // ⚠ 미사용 레거시 (실제 패드 매핑은 _GP_KEY 키
   12:'skill',       // D-pad ↑ — 스킬 패널 (K)
   13:'forge',       // D-pad ↓ — 대장간 (G)
   14:'skillCycle',  // D-pad ← — 스킬 슬롯 배정 (L)
-  15:'storage'      // D-pad → — 창고 (V)
+  15:'storage'      // D-pad → — 인벤토리 보관함 (N)
 };
 const GP_DEAD=0.25; // 스틱 데드존
 let _gpad=null,_gpBtns={},_gpBtnsJust={},_gpBtnsPrev={},_gpAxes=[0,0,0,0,0,0,0,0];
@@ -13021,7 +13010,7 @@ function _pollGamepad(){
       if(G&&G.on){
         if(act==='toggle')togglePanel(pid);
         else if(act==='forge'){if(G.forgeOpen){closePanel('forge');G.forgeOpen=false}else openPanel('forge')}
-        else if(act==='storage'){_storageViewFloor=G.stage;togglePanel('invPanel')}
+        else if(act==='storage')openInventoryStorage()
       }
     }
     _gpBtnsPrev['_dpg'+bi]=_on;
@@ -30160,7 +30149,7 @@ function update(){
   // 패널 단축키는 퍼즈 중에도 처리하되, 모든 게임플레이 틱은 그 직후 완전히 정지한다.
   if(isJust('settings'))togglePanel('settings');
   if(isJust('inventory'))togglePanel('invPanel');
-  if(isJust('storage')&&G.on){_storageViewFloor=G.stage;togglePanel('invPanel')}
+  if(isJust('storage')&&G.on)openInventoryStorage()
   if(isJust('stats'))togglePanel('statPanel');
   if(isJust('skill')){togglePanel('skillPanel')}
   if(isJust('forge')){if(G.forgeOpen){closePanel('forge');G.forgeOpen=false}else openPanel('forge')}
@@ -41724,7 +41713,6 @@ const _PANEL_TABS=[
   {id:'forge',label:'대장간',labelEn:'Forge',key:'G'},
   {id:'skillPanel',label:'스킬',labelEn:'Skills',key:'K'},
   {id:'statPanel',label:'능력치',labelEn:'Stats',key:'J'},
-  {id:'storagePanel',label:'창고',labelEn:'Storage',key:'N'},
 ];
 function _injectPanelNav(activeId){
   _PANEL_TABS.forEach(function(tab){
@@ -41747,7 +41735,13 @@ function _injectPanelNav(activeId){
   });
 }
 function togglePanel(id){const el=$(id);const isOn=el.classList.contains('on');closeAllPanels();const _rc=$('resetConfirm');if(_rc)_rc.style.display='none';if(!isOn){el.classList.add('on');G.paused=true;_injectPanelNav(id);if(id==='invPanel')renderInv();if(id==='settings'){const _rc2=$('resetConfirm');if(_rc2)_rc2.style.display='none';renderSettings();}if(id==='statPanel')renderStatPanel();if(id==='skillPanel')renderSkillPanel()}}
-function openPanel(id){closeAllPanels();$(id).classList.add('on');G.paused=true;_injectPanelNav(id);if(id==='invPanel')renderInv();if(id==='settings')renderSettings();if(id==='forge')renderForge();if(id==='storagePanel')renderStorage();if(id==='statPanel')renderStatPanel();if(id==='skillPanel')renderSkillPanel()}
+function openPanel(id){closeAllPanels();$(id).classList.add('on');G.paused=true;_injectPanelNav(id);if(id==='invPanel')renderInv();if(id==='settings')renderSettings();if(id==='forge')renderForge();if(id==='statPanel')renderStatPanel();if(id==='skillPanel')renderSkillPanel()}
+function openInventoryStorage(){
+  const panel=$('invPanel');
+  if(panel.classList.contains('on')&&panel.dataset.inventoryPage==='storage'){closeAllPanels();return}
+  if(!panel.classList.contains('on'))openPanel('invPanel');
+  $('inventory-tab-storage')?.click();
+}
 // 뒤로가기 — 서브상태 → 패널 순으로 한 단계씩 빠져나옴
 function _panelBack(){
   // 1. gcModal (확인 팝업)
@@ -41763,14 +41757,14 @@ function _panelBack(){
   // Character growth summary is a nested view: Back closes it first.
   const gs=$('growthSummaryDrawer');if($('statPanel').classList.contains('on')&&gs&&!gs.hidden){toggleStatSummary();return true}
   // 6. 열린 패널 닫기
-  const op=['invPanel','forge','storagePanel','statPanel','skillPanel'].find(id=>$(id)&&$(id).classList.contains('on'));
+  const op=['invPanel','forge','statPanel','skillPanel'].find(id=>$(id)&&$(id).classList.contains('on'));
   if(op){closeAllPanels();return true}
   // 7. 설정 패널
   if($('settings')&&$('settings').classList.contains('on')){closePanel('settings');return true}
   return false
 }
 function closePanel(id){$(id).classList.remove('on');G.paused=false}
-function closeAllPanels(){$('resetConfirm')&&($('resetConfirm').style.display='none');['settings','invPanel','forge','storagePanel','statPanel','skillPanel'].forEach(id=>{$(id).classList.remove('on')});G.paused=false;_skPopOwnsPause=false;if(G.forgeOpen)BGM.play(BGM.stageKey(G.stage));G.forgeOpen=false;_fuseSelId=null;_skExpandedId=null;const _sp=$('skSlotPop');if(_sp)_sp.style.display='none';const _cf=$('invCompareFloat');if(_cf)_cf.style.display='none';const _rc=$('resetConfirm');if(_rc)_rc.style.display='none';/* 패드 UI 잔류 정리 */for(let i=0;i<16;i++){const el=$('qs'+i);if(el)el.classList.remove('sk-drop-hover')}const _uc=$('ultSlot');if(_uc){_uc.classList.remove('sk-drop-hover');_uc.style.outline='';_uc.style.outlineOffset=''}document.querySelectorAll('[style*="outline"]').forEach(el=>{if(el.style.outline){el.style.outline='';el.style.outlineOffset=''}})}
+function closeAllPanels(){$('resetConfirm')&&($('resetConfirm').style.display='none');['settings','invPanel','forge','statPanel','skillPanel'].forEach(id=>{$(id).classList.remove('on')});G.paused=false;_skPopOwnsPause=false;if(G.forgeOpen)BGM.play(BGM.stageKey(G.stage));G.forgeOpen=false;_fuseSelId=null;_skExpandedId=null;const _sp=$('skSlotPop');if(_sp)_sp.style.display='none';const _cf=$('invCompareFloat');if(_cf)_cf.style.display='none';const _rc=$('resetConfirm');if(_rc)_rc.style.display='none';/* 패드 UI 잔류 정리 */for(let i=0;i<16;i++){const el=$('qs'+i);if(el)el.classList.remove('sk-drop-hover')}const _uc=$('ultSlot');if(_uc){_uc.classList.remove('sk-drop-hover');_uc.style.outline='';_uc.style.outlineOffset=''}document.querySelectorAll('[style*="outline"]').forEach(el=>{if(el.style.outline){el.style.outline='';el.style.outlineOffset=''}})}
 
 // ═══ 스킬 패널 ═══
 const SKILL_CATS=[
@@ -45882,7 +45876,6 @@ function _renderSkillRow(sk,grid){
 // ═══════════════════════════════════════
 //  [S19] PANELS — Storage, Settings, Forge, Inv Render
 // ═══════════════════════════════════════
-let _storageViewFloor=0;
 // ═══ 계정 전체 공유 창고 (localStorage) ═══
 const _SHARED_STORAGE_KEY='hellcave_sharedStorage';
 const _SHARED_MATS_KEY='hellcave_sharedMats';
@@ -45917,51 +45910,6 @@ let _sharedStorageDirty=false; // _persistSharedStorage를 거치지 않고 STOR
 function _persistSharedStorage(){if(STORAGE[0]){_saveSharedStorage(STORAGE[0]);_sharedStorageDirty=false}}
 // dbSave 주기 호출용: 변경이 없으면 200개 아이템 stringify+localStorage 동기쓰기를 건너뜀 (5초 주기 스터터 방지)
 function _flushSharedStorage(){if(_sharedStorageDirty)_persistSharedStorage()}
-function renderStorage(){
-  const grid=$('storageGrid'),nav=$('storageFloorNav'),store=_getStore();
-  for(const n of Array.from(grid.children))n.remove();
-  for(const n of Array.from(nav.children))n.remove();
-  const make=(tag,cls,text)=>{const n=document.createElement(tag);n.className=cls;if(text)n.textContent=text;return n};
-  const art=(it,size)=>{const n=make('span','vault-art');n.insertAdjacentHTML('afterbegin',_itemSkin(it,size));return n};
-  const ledger=make('div','vault-ledger');ledger.append(make('span','',_T('지옥창고')),make('span','',store.length+' / '+STORAGE_MAX));nav.append(ledger);
-  const sections=make('div','vault-sections'),detail=make('aside','vault-detail');detail.setAttribute('aria-live','polite');grid.append(sections,detail);
-  let selected=false;
-  function select(it,source,button){
-    selected=true;
-    grid.querySelectorAll('.vault-slot[aria-pressed="true"]').forEach(n=>n.setAttribute('aria-pressed','false'));button.setAttribute('aria-pressed','true');
-    for(const n of Array.from(detail.children))n.remove();
-    detail.append(make('div','vault-caption',_T(source==='store'?'꺼내기':'보관')),art(it,112));
-    const name=make('h3','vault-name',_T(it.name));name.style.color=RARITY_C[it.rarity];
-    detail.append(name,make('p','vault-meta','Lv.'+(it.itemLv||0)+' · '+_rarName(it.rarity)));
-    if(it.enh)detail.append(make('p','vault-meta','+'+it.enh));
-    const action=make('button','vault-transfer',_T(source==='store'?'꺼내기':'보관'));action.type='button';
-    action.onclick=()=>{
-      const current=_getStore(),list=source==='store'?current:INV.bag,index=list.indexOf(it);
-      if(index<0){renderStorage();return;}
-      if(source==='store'){
-        if(INV.bag.length>=BAG_MAX){notify(_T('가방이 가득 찼습니다!'));return;}
-        it._gx=null;it._gy=null;INV.bag.push(it);current.splice(index,1);
-      }else{
-        if(current.length>=STORAGE_MAX){notify(_T('창고가 가득 찼습니다!'));return;}
-        current.push(it);INV.bag.splice(index,1);
-      }
-      SFX.pickup();_persistSharedStorage();renderStorage();dbSaveNow();$('storageGrid').querySelector('.vault-slot')?.focus();
-    };detail.append(action);
-  }
-  function section(items,source,title,minSlots){
-    const wrap=make('section','vault-section'),slots=make('div','vault-slots');wrap.append(make('h3','vault-heading',title+' · '+items.length),slots);sections.append(wrap);
-    items.forEach(it=>{
-      const b=make('button','vault-slot');b.type='button';b.style.setProperty('--item-colour',RARITY_C[it.rarity]||'#bba989');b.title=_T(it.name);b.setAttribute('aria-label',_T(it.name));b.setAttribute('aria-pressed','false');
-      b.append(art(it,56),make('span','vault-level',String(it.itemLv||0)));b.onclick=()=>select(it,source,b);slots.append(b);if(!selected)select(it,source,b);
-    });
-    for(let i=items.length;i<Math.max(minSlots,Math.ceil(items.length/5)*5);i++){const n=make('span','vault-slot vault-empty');n.setAttribute('aria-hidden','true');slots.append(n);}
-    if(!items.length)wrap.append(make('p','vault-meta',_T(source==='store'?'창고가 비어있습니다':'가방이 비어있습니다')));
-  }
-  section(store,'store',_T('지옥창고'),10);section(INV.bag,'bag',_T('▼ 가방 → 창고 보관'),10);
-  if(!selected)detail.append(make('div','vault-seal'),make('p','vault-meta',_T('비어있음')));
-}
-
-
 // ═══ INVENTORY-STORAGE RENDER (인벤토리 왼쪽 창고 컬럼) ═══
 function renderInvStorage(){
   const nav=$('invStFloorNav');nav.innerHTML='';
@@ -46320,7 +46268,7 @@ function _applyLang(){try{
   const _ho=$('keyGuide');if(_ho){
     const _ht=_ho.querySelector('div[style*="ffcc66"]');if(_ht)_ht.textContent=_T('⌨ 조작법');
     const _hDivs=_ho.querySelectorAll('div');
-    const _hMap=[['WASD','이동'],['좌클릭','무기 공격'],['E 탭','칼등 처내기 (투사체 반사, 홀드 연사)'],['E 홀드','연속 처내기'],['SPACE','분노 폭발 스킬 전용'],['F','영역 스킬 전용'],['SHIFT','사슬 발사'],['우클릭','마법 (탭=투사체, 홀드=빔)'],['Q','데빌포스 흡수'],['R','아이템 줍기'],['1~4','물약 / 스킬슬롯'],['Z / L-CTRL','필살기 / CT스킬'],['L','스킬 슬롯 배정'],['K','스킬'],['C','능력치'],['TAB','인벤토리'],['G','대장간'],['V','창고'],['ESC','설정']];
+    const _hMap=[['WASD','이동'],['좌클릭','무기 공격'],['E 탭','칼등 처내기 (투사체 반사, 홀드 연사)'],['E 홀드','연속 처내기'],['SPACE','분노 폭발 스킬 전용'],['F','영역 스킬 전용'],['SHIFT','사슬 발사'],['우클릭','마법 (탭=투사체, 홀드=빔)'],['Q','데빌포스 흡수'],['R','아이템 줍기'],['1~4','물약 / 스킬슬롯'],['Z / L-CTRL','필살기 / CT스킬'],['L','스킬 슬롯 배정'],['K','스킬'],['C','능력치'],['TAB','인벤토리'],['G','대장간'],['N','보관함'],['ESC','설정']];
     _hDivs.forEach(d=>{const b=d.querySelector(':scope > b');if(!b||b.children.length)return;const k=b.dataset.ko||(b.dataset.ko=b.textContent);const m=_hMap.find(h=>h[0]===k);if(!m)return;b.textContent=_localizedControlKey(k);const tail=[...d.childNodes].find(n=>n.nodeType===3&&n.textContent.includes('—'));if(tail)tail.nodeValue=' — '+_T(m[1]);});
     const _lastD=_ho.querySelector('div[style*="color:#666"]');if(_lastD)_lastD.textContent=_T('클릭하면 닫힘');
   }
@@ -46344,11 +46292,6 @@ function _applyLang(){try{
     const _pt2=_fgP.querySelector('.ptitle');if(_pt2)_pt2.textContent=_T('복수의 대장간');
     const _cb=$('fgCraftBtn');if(_cb)_cb.textContent=_T('제작');
     const _fc=$('fgClose');if(_fc)_fc.textContent=_T('닫기 [G]');
-  }
-  // Storage panel
-  const _stpP=$('storagePanel');if(_stpP){
-    const _pt3=_stpP.querySelector('.ptitle');if(_pt3)_pt3.textContent=_T('창고');
-    const _sc=$('storageClose');if(_sc)_sc.textContent=_T('닫기 [V]');
   }
   // Character growth labels use explicit leaf nodes; the module localizes its view.
   if(typeof _statPanelUI!=='undefined'&&_statPanelUI)_statPanelUI.render();
@@ -48438,7 +48381,6 @@ matsDiv.innerHTML=_L('보유 악의: ','Malice: ')+`<span style="color:#cc66ff;f
   }
 }
 $('fgClose').onclick=()=>closePanel('forge');
-$('storageClose').onclick=()=>closePanel('storagePanel');
 $('statClose').onclick=()=>closePanel('statPanel');
 $('statResetBtn').onclick=async()=>{
   const {sp:totalSP,ap:totalAP}=ExoduserStatsPanel.refundTotals(STATS,PASSIVES,_grit);
