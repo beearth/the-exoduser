@@ -136,6 +136,15 @@ test('raised cocoon and pod cast alpha-shaped shadows while flat props remain cl
   scope.Ch1LivingDetail.shadows(c,{stage:0,cam:{x:350,y:250}},[{type:'m_c1pool',x:240,y:190}],{m_c1pool:source},{m_c1pool:{sz:300}},0,700,500);
   assert.ok(a.toBuffer('raw').every(v=>v===0));
 });
+test('giant tree roots have a local ground-contact shadow above the foot, without a rectangular stain',()=>{
+  const source=createCanvas(100,100),s=source.getContext('2d');s.fillStyle='#fff';s.fillRect(35,72,30,28);
+  const a=createCanvas(600,500),c=a.getContext('2d'),o={type:'m_c1tree',x:300,y:180,_hand:true};
+  const state={stage:0,cam:{x:300,y:250}},before=JSON.stringify(o);
+  scope.Ch1LivingDetail.shadows(c,state,[o],{m_c1tree:source},{m_c1tree:{sz:400}},0,600,500);
+  assert.ok(c.getImageData(292,237,16,12).data.some((v,i)=>i%4===3&&v>8),'root contact must extend just above the fixed foot');
+  assert.ok(c.getImageData(120,228,20,10).data.every(v=>v===0),'transparent source margins must not create a box');
+  assert.equal(JSON.stringify(o),before);
+});
 test('organic sprite motion keeps camp crates and the tree trunk attached and still',()=>{
   const source=createCanvas(256,256),s=source.getContext('2d');
   for(let x=0;x<256;x+=4){s.fillStyle=x%8?'#935547':'#42382b';s.fillRect(x,0,4,256);}

@@ -219,6 +219,7 @@
     c.restore();
   }
   const shadowCache=new WeakMap();
+  const rootContactCache=new WeakMap();
   const raisedShadowCache=new WeakMap();
   function shadows(c,g,objects,sprites,metas,now,width,height){
     if(!enabled(g))return;
@@ -255,6 +256,25 @@
       const size=(meta.sz||400)*(o.scale||1),scale=size*(o.type==='m_c1tree'?.72:1)/400;
       const foot=o.y+size*(o.type==='m_c1tree'?.2016:.45);
       if(Math.abs(o.x-g.cam.x)>hw+size||Math.abs(foot-g.cam.y)>hh+size)continue;
+      if(o.type==='m_c1tree'){
+        // The existing root alpha supplies the contact silhouette; no new ground prop.
+        let contact=rootContactCache.get(img);
+        const r=meta.srcRect||[0,0,img.naturalWidth||img.width,img.naturalHeight||img.height];
+        if(!contact){
+          contact=root.document.createElement('canvas');contact.width=512;contact.height=192;
+          const b=contact.getContext('2d');b.filter='blur(6px)';
+          b.drawImage(img,r[0],r[1]+r[3]*.72,r[2],r[3]*.28,16,16,480,160);
+          b.filter='none';b.globalCompositeOperation='source-in';
+          const fade=b.createLinearGradient(0,0,0,192);
+          fade.addColorStop(0,'rgba(18,12,17,0)');fade.addColorStop(.25,'rgba(18,12,17,.3)');
+          fade.addColorStop(.7,'rgba(18,12,17,.65)');fade.addColorStop(1,'rgba(18,12,17,0)');
+          b.fillStyle=fade;b.fillRect(0,0,512,192);rootContactCache.set(img,contact);
+        }
+        const factor=o._hand?.72:1,ar=r[2]/r[3],dw=size*Math.min(1,ar)*factor,dh=size*Math.min(1,1/ar)*factor;
+        const sx=dw/480,sy=dh*.28*.55/160;
+        const base=o.y+dh*(o._hand?.28:.5);
+        c.globalAlpha=alpha;c.drawImage(contact,o.x-dw/2-16*sx,base-dh*.28*.55-16*sy+dh*.012,512*sx,192*sy);
+      }
       let tex=shadowCache.get(img);
       if(!tex){
         tex=root.document.createElement('canvas');tex.width=640;tex.height=320;
