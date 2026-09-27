@@ -909,3 +909,15 @@ CSS 캐시 ui-refinement.css?v=20260927-4. 신규 이미지/아이템 데이터 
 | 적용 | ui-refinement.css/ui-panels.js 캐시20260927-storage-split. game.html/game-easy-test.html 공통 |
 | 검증 | uiPanelInitialization 회귀3개 PASS. 저장 API 차단한 game.html UI에서 보관1회·꺼내기1회·탭 왕복 시 노드 동일성 PASS.1440×1080/1280×720/900×720 좌우 동등폭,390×844 상하 배치,가로넘침0·슬롯 넘침0·pageerror0. QA에서 전환 연출만 숨김,게임 시작 전체 흐름은 검증 범위 밖 |
 | 화면 | tmp/storage_split_1280.png,tmp/storage_split_390.png. 원본 백업 tmp/storage-split-backup |
+
+
+## 2026-09-27 대장간 탭 글자 중앙 정렬
+
+| 항목 | 현행 계약 |
+|---|---|
+| 대상 | 강화(upgrade)·물약(potion)·분해(salvage)·리롤(reroll)·결정(crystal)·제작(craft),fg-tab-v4 내부 fg-tab-txt |
+| 원인·수정 | 예전 이미지 버튼의 아이콘 자리 margin-left:55%가 텍스트를 오른쪽으로 밀었음. renderForge의 라벨 인라인 스타일을 margin:0;text-align:center로 수정. 기존 버튼 중앙 배치 사용 |
+| 유지 | 탭 크기·위치·재질·활성 표시·텍스트·기능·비용·저장 불변. CSS 추가 없음 |
+| 파일 | game.html/game-easy-test.html 동일 변경 |
+| 검증 | 저장 API 차단·전환 연출만 숨긴 game.html UI.1440×1080/1280×720/1024×768/390×844에서6개 라벨 중심과 버튼 중심의 가로 오차0px,영역 이탈0.6탭 클릭 전환 PASS,pageerror0. 수정 전1280px +52.8px,1024px +76.63px,390px +21.81px 쏠림 재현 |
+| 캡처 | tmp/forge_alignment_after_1280.png. 게임 시작 전체 경로·실제 강화/제작 비용 소비는 검증 범위 밖 |

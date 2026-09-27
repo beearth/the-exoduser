@@ -263,7 +263,7 @@ style 맨 아래에 추가:
 
 | 항목 | 변경 내용 | 위치 |
 |---|---|---|
-| 탭 구조 | 텍스트만 출력 → `아이콘 박스 + 라벨` 2요소 구조로 분리 (`fg-tab-ico`, `fg-tab-txt`) | `game.html` `renderForge()` |
+| 탭 구조 | 현행6탭은 fg-tab-v4 텍스트 라벨(fg-tab-txt)만 사용,margin0/중앙 정렬. 이전 아이콘+라벨 구조는 폴백 | `game.html` `renderForge()` |
 | 탭 메타 | 탭별 `icon/ko/en` 메타 객체 도입 (`_fgTabMeta`)으로 아이콘/언어 라벨 일관화 | `game.html` `renderForge()` |
 | 탭 시각 | 대장간 전용 `#forge` 오버라이드에서 4열 카드형 탭, 34x34 아이콘 칩, 활성 탭 주홍-금색 하이라이트, hover 리프트를 적용 | `game.html` `#forge .fg-tabs`, `#forge .fg-tab`, `#forge .fg-tab .fg-tab-ico`, `#forge .fg-tab.act` |
 | 아이콘 소스 | 탭별 개별 PNG 직접 삽입: `output/imagegen/forge-tabs-v3/{tabKey}.png` | `game.html` `renderForge()` |
@@ -565,7 +565,7 @@ Space 슬롯(`SKILL_SLOTS[4]`)은 지옥강타 계열과 `cat:'rage'` 분노 스
 | 타이틀 활자 | 뼛빛-구리빛 그라데이션 텍스트, 과한 glow 제거, `Noto Sans KR` 기반 고딕 톤 | `.ptitle` |
 | 패널 카드 | `set-section`, `combatPower`, `forgeMats`, `forgeConfirm`, `statSummary`를 동일한 흑철 카드 톤으로 통일 | `#settings`, `#invPanel`, `#forge`, `#statPanel` |
 | 버튼류 | 버튼/닫기/능력치요약/결정버튼을 검정 배경 + 은회색 테두리로 통일, hover는 밝기만 소폭 상승 | `button`, `#smToggleBtn`, `#combatPower + div` |
-| 대장간 탭 | 중앙 정렬 아이콘+텍스트 카드형 유지, active는 레퍼런스처럼 붉은 동테두리만 약하게 점등 | `#forge .fg-tab*` |
+| 대장간 탭 | 중앙 정렬 텍스트 카드형6탭, active는 레퍼런스처럼 붉은 동테두리만 약하게 점등 | `#forge .fg-tab*` |
 | 인벤/창고 셀 | 인벤 슬롯/장비칸/창고칸을 검정 배경 + 은회색 테두리로 통일 | `#invPanel .inv-*`, `#storagePanel #storageGrid>div` |
 | 스킬 패널 | 카테고리 헤더/스킬 카드/설명 박스를 동일한 지옥 유물 프레임 톤으로 정렬 | `#skillGrid*`, `#skillInfo`, `#skillGridWrap` |
 | 이모지 제거 | `결정`, `지옥창고`, `능력치 요약`, `키 설정 초기화`, `장비 강화`, `악의의 분해로`, `결정 분해` 등 패널 UI 텍스트에서 이모지 제거 | 정적 HTML + `_applyLang()` + `_T()` 번역 키 |
@@ -980,3 +980,15 @@ CSS 캐시 ui-refinement.css?v=20260927-3. 신규 이미지/아이템 데이터 
 | 검증 범위 | tmp/inventory-gems-qa/preview.html, screenshots/result.json. 전체 게임 시작 경로는 전환 연출/실행 중단으로 검증 완료하지 않음. UI 검수는 격리 fixture 결과 |
 
 상세 데이터 계약: docs/2_9 결정슬롯시스템/2_9 결정슬롯시스템.md. 스타일 원본: inventory-gems.css.
+
+
+## 2026-09-27 대장간 탭 글자 중앙 정렬
+
+| 항목 | 현행 계약 |
+|---|---|
+| 대상 | 강화(upgrade)·물약(potion)·분해(salvage)·리롤(reroll)·결정(crystal)·제작(craft),fg-tab-v4 내부 fg-tab-txt |
+| 원인·수정 | 예전 이미지 버튼의 아이콘 자리 margin-left:55%가 텍스트를 오른쪽으로 밀었음. renderForge의 라벨 인라인 스타일을 margin:0;text-align:center로 수정. 기존 버튼 중앙 배치 사용 |
+| 유지 | 탭 크기·위치·재질·활성 표시·텍스트·기능·비용·저장 불변. CSS 추가 없음 |
+| 파일 | game.html/game-easy-test.html 동일 변경 |
+| 검증 | 저장 API 차단·전환 연출만 숨긴 game.html UI.1440×1080/1280×720/1024×768/390×844에서6개 라벨 중심과 버튼 중심의 가로 오차0px,영역 이탈0.6탭 클릭 전환 PASS,pageerror0. 수정 전1280px +52.8px,1024px +76.63px,390px +21.81px 쏠림 재현 |
+| 캡처 | tmp/forge_alignment_after_1280.png. 게임 시작 전체 경로·실제 강화/제작 비용 소비는 검증 범위 밖 |
