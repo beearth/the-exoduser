@@ -2507,7 +2507,7 @@ body:has(#invPanel.on) #keyGuide{display:none!important}
 <link rel="stylesheet" href="stat-panel-ui.css?v=20260913-smooth-ui">
 <link rel="stylesheet" href="localization.css?v=20260909">
 <link rel="stylesheet" href="ui-foundation.css?v=20260924-hell3">
-<link rel="stylesheet" href="ui-refinement.css?v=20260927-bone-hover-clear">
+<link rel="stylesheet" href="ui-refinement.css?v=20260927-bone-hover-flow">
 <script defer src="ui-panels.js?v=20260927-storage-split"></script>
 <link rel="stylesheet" href="inventory-gems.css?v=20260927-2">
 <script src="stat-panel-ui.js?v=20260909-constellation-v3"></script>
@@ -43024,6 +43024,7 @@ function registerBonePart(item){
     if(typeof INV.selected==='number')INV.selected=null;
     dbSaveForce();
     if(typeof renderInv==='function'&&document.getElementById('invPanel'))try{renderInv()}catch(e){}
+    _invClearHover();
   }else notify(_T('이미 더 높은 등급의 부위를 수집했습니다'));
 }
 // 도감 → 가방. 공간 확보 후에만 등록을 해제하여 손실·중복 반환을 막는다.
@@ -46650,6 +46651,18 @@ document.addEventListener('mouseup',function(ev){
   }
   renderInv();
 });
+function _ossHideBoneInfo(){const tip=$('ossBoneInfo');if(tip)tip.hidden=true;}
+function _ossShowBoneInfo(part,ev){
+  const R=ANC_ROSTER[0],c=R&&INV.ossCollect&&INV.ossCollect[R.id+'_'+part];
+  if(!c){_ossHideBoneInfo();return;}
+  let tip=$('ossBoneInfo');
+  if(!tip){tip=document.createElement('div');tip.id='ossBoneInfo';tip.setAttribute('role','tooltip');document.body.append(tip);}
+  const role={skull:_L('치명 · 위력','Critical · Power'),torso:_L('최대 HP','Maximum HP'),arms:_L('공격 위력','Attack power'),legs:_L('크기 · 이동속도','Size · Movement speed')}[part];
+  tip.textContent=_bonePartName(part)+'\n'+_rarName(c.r||0)+' T'+((c.t||0)+1)+' · '+_L('위력 ','Power ')+((c.r||0)+(c.t||0))+'\n'+role;
+  tip.hidden=false;
+  tip.style.left=Math.max(8,Math.min(ev.clientX+16,innerWidth-tip.offsetWidth-8))+'px';
+  tip.style.top=Math.max(8,Math.min(ev.clientY+16,innerHeight-tip.offsetHeight-8))+'px';
+}
 // ═══ 유골 콜렉션 — 중앙 유골함과 등급별 4부위 제단 ═══
 function renderOssPanel(){
   const pn=$('invOssuaryPanel');if(!pn)return;
@@ -46671,7 +46684,10 @@ function renderOssPanel(){
       const img=make('img','oss-bone-image',node);img.alt='';img.src='output/imagegen/item-skins/bone_'+part+'.png';img.onerror=()=>{img.hidden=true;};
       make('span','oss-bone-grade',node);
       make('span','oss-bone-tier',node);
-      node.oncontextmenu=(ev)=>{ev.preventDefault();withdrawBonePart(0,part);};
+      node.onmouseenter=(ev)=>_ossShowBoneInfo(part,ev);
+      node.onmousemove=(ev)=>_ossShowBoneInfo(part,ev);
+      node.onmouseleave=_ossHideBoneInfo;
+      node.oncontextmenu=(ev)=>{ev.preventDefault();_ossHideBoneInfo();withdrawBonePart(0,part);};
       node.onclick=()=>{
         pn.dataset.selectedPart=part;
         _invClearHover();
@@ -46711,7 +46727,7 @@ function renderOssPanel(){
     node.querySelector('.oss-bone-grade').textContent=c?_rarName(c.r||0):_L('미수집','Missing');
     node.querySelector('.oss-bone-tier').textContent=c?'T'+((c.t||0)+1)+' · '+_L('위력 ','Power ')+((c.r||0)+(c.t||0)):'—';
     const description=_bonePartName(part)+' · '+roles[part]+' · '+(c?_rarName(c.r||0)+' T'+((c.t||0)+1):_L('미수집','Missing'));
-    if(c)node.title=description;else node.removeAttribute('title');
+    node.removeAttribute('title');
     node.setAttribute('aria-label',description);
   }
   const part=pn.dataset.selectedPart;
@@ -46909,7 +46925,7 @@ function renderInv(){
     div.oncontextmenu=(ev)=>{
       ev.preventDefault();
       const it=INV.bag[i];
-      if(it){const _eqSlot=_equipSlot(it);equipItem(it);applyStats();INV.selected='eq:'+_eqSlot;renderInv();return}
+      if(it){if(it.slot==='bonePart'){registerBonePart(it);return}const _eqSlot=_equipSlot(it);equipItem(it);applyStats();INV.selected='eq:'+_eqSlot;renderInv();return}
     };
     div.onmouseenter=()=>{if(_invHover===i)return;_invHover=i;_invRenderDetail(i,'bag',true)};
     div.onmouseleave=()=>_invClearHover();

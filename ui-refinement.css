@@ -821,3 +821,6 @@
 #invOssuaryPanel .oss-actions{display:flex;justify-content:center;gap:8px;flex-wrap:wrap;margin-top:6px;flex-shrink:0;}
 #invPanel.panel .pbox #invOssuaryPanel .oss-actions button{min-height:30px;padding:5px 10px;border:1px solid #756044;background:#181513;color:#dfcda5;font:500 11px/1.5 'Noto Sans KR',sans-serif;cursor:pointer;}
 #invPanel.panel .pbox #invOssuaryPanel .oss-actions button:disabled{opacity:.45;cursor:default;}
+
+#ossBoneInfo{position:fixed;z-index:2147483647;pointer-events:none;max-width:min(240px,calc(100vw - 16px));padding:9px 12px;border:1px solid #8d704b;background:rgba(16,13,16,.97);box-shadow:0 8px 22px #000;color:#e9d8bd;font:500 12px/1.6 'Noto Sans KR',sans-serif;white-space:pre-line;text-align:left;}
+#ossBoneInfo[hidden]{display:none!important;}
