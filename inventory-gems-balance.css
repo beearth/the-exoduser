@@ -1,0 +1,11 @@
+/* Share the gem collection's remaining height between the tray and detail plate. */
+@media(min-width:701px) and (min-height:600px){
+  #invPanel.panel[data-inventory-page=crystals] .inv-cr-collection{
+    grid-template-rows:auto minmax(120px,1fr) minmax(160px,1fr)!important;
+  }
+}
+@media(min-width:900px){
+  #invPanel.panel[data-inventory-page=crystals] .inv-cr-body{
+    grid-template-columns:repeat(2,minmax(0,1fr))!important;
+  }
+}
