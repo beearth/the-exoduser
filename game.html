@@ -53355,15 +53355,15 @@ function drawP(){
         // 지속적 미세 화면 흔들림
         if(_faFade>0.1)G.shake=Math.max(G.shake,~~(1.5*_faFade*OPT.shake/100));
       }else if(fz.type==='spikeTrap'){
-        // ═══ 가시덫 — 빨간 가시 마법진 (lighter 블렌딩) ═══
+        // ═══ 가시덫 — 붉은 가시 마법진 (얇은 선이 배경을 가리지 않도록 약한 screen 합성) ═══
         const _deployT=Math.min(1,fz.t/12);
         const _stSz=fz.r*2*_deployT;
         if(!G._spikeTrapImg){G._spikeTrapImg=new Image();G._spikeTrapImg.src='sprites/spike_trap/spike_thorn.png'}
         const _stImg=G._spikeTrapImg;
         if(_stImg.complete&&_stImg.naturalWidth>0){
-          X.globalAlpha=(1+.15*Math.sin(_now*.003))*_fzFade;
+          X.globalAlpha=(.43+.04*Math.sin(_now*.003))*_fzFade;
           const _prevComp=X.globalCompositeOperation;
-          X.globalCompositeOperation='lighter';
+          X.globalCompositeOperation='screen';
           X.save();X.translate(fz.x,fz.y);
           X.rotate(_now*0.00005);
           X.drawImage(_stImg,-_stSz/2,-_stSz/2,_stSz,_stSz);
