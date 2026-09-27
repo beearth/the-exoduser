@@ -8,10 +8,10 @@ function source(name){
   if(html[i]==='{')n++;if(html[i]==='}'&&!--n)return html.slice(start,i+1);
  }
 }
-test('recall starts once, preserves stored bullets and bypasses summon costs',()=>{
+test('recall starts once with empty red-charge storage and bypasses summon costs',()=>{
  const a={hp:100,x:12,y:34,_swordAbsorbed:3,_swordDmgPool:90};
  const recall=Function('G',`${source('_recallAncestor')};return _recallAncestor`)({_ancestors:[a]});
- assert.equal(recall(),true);assert.equal(a._swordT,132);assert.equal(a._swordAbsorbed,3);
+ assert.equal(recall(),true);assert.equal(a._swordT,132);assert.equal(a._swordAbsorbed,0);assert.equal(a._swordDmgPool,0);
  a._swordT=100;assert.equal(recall(),true);assert.equal(a._swordT,100);
  const gate=html.slice(html.indexOf("case 'ancestorSummon':"),html.indexOf("case 'ghostXbowTurret':",html.indexOf("case 'ancestorSummon':")));
  assert.ok(gate.indexOf('_recallAncestor()')<gate.indexOf('INV.equipped.ossuary'));
@@ -33,17 +33,17 @@ test('manual charge explodes once, removes summon, and queues stored resources o
  assert.equal(G._ancestorReturns[0].amount,400);
  update(1);assert.equal(blasts,1);
 });
-test('lethal damage starts sword planting, preserves stored damage and only removes after explosion',()=>{
+test('lethal damage starts sword planting and only removes after explosion',()=>{
  const a={hp:0,_dead:true,_swordT:0,_swordAbsorbed:4,_swordDmgPool:900,x:10,y:20};
  const G={_ancestors:[a]},P={hp:100};const blasts=[];
- const update=Function('G','P','_detonateAncestorSword','_ancestorMeleePressure','addParts','addTxt','_T',`${source('_recallAncestor')};${source('_updateAncestorReturns')};${source('_updateAncestors')};return _updateAncestors`)(G,P,a=>blasts.push(a._swordDmgPool),()=>{},()=>{},()=>{},x=>x);
+ const update=Function('G','P','_detonateAncestorSword','_ancestorMeleePressure','_updateAncestorKiWaves','_ancestorCanAbsorb','addParts','addTxt','_T',`${source('_recallAncestor')};${source('_updateAncestorReturns')};${source('_updateAncestors')};return _updateAncestors`)(G,P,a=>blasts.push(a._swordDmgPool),()=>{},()=>{},()=>false,()=>{},()=>{},x=>x);
  update(1);assert.equal(G._ancestors.length,1,'must not vanish on lethal hit');
  assert.equal(a._recalling,true);assert.equal(a._swordT,132);assert.equal(blasts.length,0);
  const recall=Function('G',`${source('_recallAncestor')};return _recallAncestor`)(G);
  assert.equal(recall(),true,'dying summon still consumes recast instead of allowing replacement');
  assert.equal(a._swordT,132);
  update(72);assert.equal(a._swordT,60);assert.equal(blasts.length,0);
- update(60);assert.deepEqual(blasts,[900]);assert.equal(G._ancestors.length,0);
- assert.equal(G._ancestorReturns[0].amount,400);
+ update(60);assert.deepEqual(blasts,[0]);assert.equal(G._ancestors.length,0);
+ assert.equal(G._ancestorReturns,undefined);
  update(1);assert.equal(blasts.length,1);
 });

@@ -21,7 +21,7 @@ for (const mode of ['deleted', 'zero rows', 'denied']) {
 }
 const loadCode = html.slice(html.indexOf('async function loadCharacters(){'), html.indexOf('function _renderOnlineSlots(){'));
 function element() {
-  return { style: {}, children: [], classList: { add() {} }, addEventListener() {},
+  return { style: {}, dataset: {}, children: [], setAttribute() {}, focus() {}, prepend(child) { this.children.unshift(child); }, classList: { add() {} }, addEventListener() {},
     appendChild(child) { this.children.push(child); }, replaceChildren(...nodes) { this.children = nodes; } };
 }
 function lobby(query) {
@@ -73,7 +73,7 @@ test('delete confirmation waits for the request and prevents duplicate submissio
   const els = Object.fromEntries(['delConfirmModal', 'delConfirmMsg', 'delConfirmYes', 'delConfirmNo'].map(id => [id, element()]));
   let finish, calls = 0;
   const errors = [];
-  const ctx = vm.createContext({ $: id => els[id], _TL: s => s, setStatus: (...args) => errors.push(args) });
+  const ctx = vm.createContext({ $: id => els[id], document: { activeElement: null, querySelector: () => null }, _TL: s => s, setStatus: (...args) => errors.push(args) });
   const code = html.slice(html.indexOf('let _delConfirmCb=null;'), html.indexOf('// ── 가상 키보드'));
   vm.runInContext(code, ctx);
   ctx._showDelConfirm('test', () => { calls++; return new Promise((resolve, reject) => { finish = reject; }); });

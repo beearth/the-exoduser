@@ -45,7 +45,7 @@
 
 | 항목 | 상태 |
 |---|---|
-| 원화 | `output/silvertail_remake_20260915/silvertail_turnaround_v1.png` |
+| 원화 | 당시 8시점 시안은 2026-09-27 공식 이미지 2장 고정으로 프로젝트에서 제거. 현행 키아트는 [`SILVERTAIL_KEYART_CANON_20260927.md`](./SILVERTAIL_KEYART_CANON_20260927.md) |
 | 규격 | 1536×1024 RGBA, 4열×2행, 8시점 외형 시안 |
 | 생성 프롬프트 | 같은 폴더 `prompt_v1.txt` |
 | 외형 개선 | 기존 가는 팔다리보다 갑옷·몸통·부츠가 명확하고 치마 패널 분리 |

@@ -886,6 +886,7 @@ L키(`skillCycle`)로 여는 스킬 슬롯 배정 팝업(`#skSlotPop`, `openSkSl
 
 상세: docs/16번역·로컬라이제이션/ENGLISH_CHARACTER_BADGE_HUD_20260922.md
 
+
 ## 2026-09-25 공통 UI 현재 적용 계약
 
 최종 표면·버튼 상태·슬롯 음영은 UI_COMPOSITION_20260925.md의 디테일 마감 절을 따른다. 기존 기본표에서 동일 항목의 색·그림자는 해당 절이 우선한다.
@@ -943,7 +944,7 @@ L키(`skillCycle`)로 여는 스킬 슬롯 배정 팝업(`#skSlotPop`, `openSkSl
 |---|---|
 | 인벤토리 제목판 | 직계 헤더의 .ptitle display:none. 제목 이미지와 가상요소도 표시하지 않음 |
 | 정보행 | 전투력/악의/닫기 유지. gap0, margin4px 0 8px |
-| 높이 배분 | inv-wrap 첫 행270px, 가방 행 minmax(240px,1fr). 확보한 나머지 높이는 가방에 배정. 작은 화면은 기존 바깥 세로 스크롤 사용 |
+| 높이 배분 | 장비 탭 inv-wrap 첫 행270px, 가방 행 minmax(min-content,1fr). invCenter height:auto/min-height260px,invGrid height140px/flex1 1 140px. 필터 높이를 반영하며 나머지 높이는 가방에 배정. 작은 화면은 기존 바깥 세로 스크롤 사용 |
 | 적용 범위 | 인벤토리 내부 장비/유골함/보석/보관함 페이지 공통. 다른 메뉴 제목 유지 |
 
 CSS 캐시 ui-refinement.css?v=20260927-3. 신규 이미지/아이템 데이터 변경/자동 테스트 추가·실행 없음.
@@ -965,6 +966,12 @@ CSS 캐시 ui-refinement.css?v=20260927-3. 신규 이미지/아이템 데이터 
 
 ## 2026-09-27 보석 전용 인벤토리
 
+**중앙 배치판 최종 적용:** 보석함 창 최대1280px·높이 min(860px,96vh), 보유 보석 영역과 캐릭터 주변17부위 배치판(.78:1.22). 장착 현황 used/total 표시, 호환 부위 강조, 장식 이미지 로딩 실패 폴백. 실제 코드 브라우저12항목 및 독립 화면 장착·390px 검수 완료. `docs/3.1 ui hud 디자인/GEM_ATELIER_20260927.md`가 아래 이전 디자인 규격을 대체한다. CSS 키 `20260927-atelier2`; 기존 장착 규칙·저장 계약 유지.
+
+**디자인 보강 최종값:** `inventory-gems-finish.css` 후순위 적용으로 창 최대1100px·높이 min(780px,94vh), 제목 ‘보석함’, 보석 이름 표시, 장비 이미지 생성 크기38px, 원형 홈23×23px로 보강. 유골함 받침/원판 이미지 재사용. 기존 17부위·장착/탈착 유지. 아래 이전 980×680 규격은 이 보강 전 기록. 전체 수치는 `UI_COMPOSITION_20260925.md`의 ‘보석함 디자인 보강 — 최신 확정’ 참조.
+
+**후속 확정 — 유골함형 보석함:** 좌우 2단(폭 최대980px, 높이 min(680px,94vh))으로 변경. 왼쪽 보유 보석/상세, 오른쪽 `SLOT_NAMES` 17부위 전체를 4열로 표시한다. 미장착 부위도 표시. 빈 홈은 선택 보석 장착 또는 호환 피커 열기, 장착 홈은 무료 탈착. 기존 부위 제한·보석 수치 유지. 클릭 시 장비/홈/보석 객체 재검증, 성공 시 `dbSaveNow`. 상세 규격은 `UI_COMPOSITION_20260925.md`의 유골함형 보석함 절, 회귀 검증은 `test/crystalEquipment.browser.js`(격리 브라우저 9항목 통과). 터미널 장애로 CLI/Git 검증·커밋은 미완료.
+
 사용자 요청은 유골함처럼 보석 전용 인벤토리 탭을 만드는 것이다. 기존 장비·결정 등급/수치/저장 구조는 변경하지 않는다.
 
 | 항목 | 현행 계약 |
@@ -982,6 +989,20 @@ CSS 캐시 ui-refinement.css?v=20260927-3. 신규 이미지/아이템 데이터 
 상세 데이터 계약: docs/2_9 결정슬롯시스템/2_9 결정슬롯시스템.md. 스타일 원본: inventory-gems.css.
 
 
+### 2026-09-27 대장간 카드 현행 마감
+
+제작 목록(.fg-i/.fg-in/.fg-id/.fg-ic), 선택(.fg-sel), 제작 확인 바(#forgeConfirm)의 최신 스타일은 `UI_COMPOSITION_20260925.md`의 **2026-09-27 대장간 제작 목록 마감** 표를 따른다. 앞선 같은 선택자의 스타일은 해당 표로 대체한다. 강화·제작 수치와 실제 소비 동작은 변경하지 않았다.
+
+
+대장간의 낮은 창 제목88px 및 폭1200px 이하 3열2행 탭 배치는 `UI_COMPOSITION_20260925.md`의 **2026-09-27 대장간 낮은 화면·좁은 화면 공간 확보** 표가 현행이다. 5해상도×6탭30개 실제 클릭 조합에서 목록clientHeight150px 이상을 검증했다. 이전 넘침 검사만 통과한 기록은 목록 가독성 검증을 의미하지 않는다.
+
+
+스킬 화면의 현행 장착바 크기·키 글자·스크롤과 낮은 화면 제목은 `UI_COMPOSITION_20260925.md`의 **2026-09-27 스킬 장착바 키캡과 낮은 화면 마감** 표를 따른다. 기존 슬롯 ID·키 매핑·선택 팝업은 보존한다.
+
+
+스킬 대분류4탭의 전용 클래스·선택 표시·금속판 및 카드 호버 마감은 `UI_COMPOSITION_20260925.md`의 **2026-09-27 스킬 분류 탭·카드 디테일** 표를 따른다. 첫 추천 탭에 하위 카테고리 제목 스타일이 중복 적용되지 않도록 선택자를 분리했다. 기존 분류·번역·선택 로직은 유지한다.
+
+
 ## 2026-09-27 대장간 탭 글자 중앙 정렬
 
 | 항목 | 현행 계약 |
@@ -992,3 +1013,16 @@ CSS 캐시 ui-refinement.css?v=20260927-3. 신규 이미지/아이템 데이터 
 | 파일 | game.html/game-easy-test.html 동일 변경 |
 | 검증 | 저장 API 차단·전환 연출만 숨긴 game.html UI.1440×1080/1280×720/1024×768/390×844에서6개 라벨 중심과 버튼 중심의 가로 오차0px,영역 이탈0.6탭 클릭 전환 PASS,pageerror0. 수정 전1280px +52.8px,1024px +76.63px,390px +21.81px 쏠림 재현 |
 | 캡처 | tmp/forge_alignment_after_1280.png. 게임 시작 전체 경로·실제 강화/제작 비용 소비는 검증 범위 밖 |
+
+
+## 2026-09-27 장비 가방 높이·긴 호버 설명 접근 수정
+
+| 항목 | 현행 계약 |
+|---|---|
+| 장비 탭 높이 | ui-refinement.css: data-inventory-page=equipment의 inv-wrap 행270px minmax(min-content,1fr),invCenter height:auto/min-height260px,invGrid height140px/flex1 1 140px. 모두 important. 필터를 펼치면 행이 늘고 큰 화면에서는 가방이 남은 높이를 사용 |
+| 호버 상세 휠 | ui-panels.js inventory 초기화에서 invPanel wheel 위임. .inv-item/.inv-eq-slot/.inv-cell/.oss-center 위에서 invRight가 inv-hover-preview이며 visible이고 clientHeight>0/실제 세로 넘침이 있을 때만 상세 스크롤 |
+| 입력 규칙 | deltaMode=0은 픽셀,1은16px,2는상세창 clientHeight 배율. deltaY=0 또는 Ctrl/Meta/Shift는 전달하지 않음. 처리할 때만 preventDefault/passive:false,양끝에서도 가방 이동 방지. 빈 칸에서는 기존 가방 스크롤 |
+| 표시 | game.html _invRenderDetail의 preview 분기에 inv-preview-scroll-hint 리프 생성. KO 휠: 상세 스크롤 / EN Wheel: scroll details. sticky top0/z-index2/padding4px 6px/margin-bottom8px/배경#181417/글자#c9bda7/11px 500 1.5/아래선1px #75624766 |
+| 기존 동작 | 호버 미리보기 pointer-events:none 유지. 마우스 이탈 시 정보창 숨김,선택·장착·저장 유지. game-easy-test.html은 기존 비미리보기 상세 구현이므로 preview 안내를 추가하지 않음; 공통 CSS와 가드된 리스너만 로드 |
+| 검증 | 390×844/640×720/900×720/1280×720/1920×1080 ×4탭×필터 열림/닫힘40조합: 표시된 가방의 세로·가로 넘침0,페이지 가로 넘침0. 휠 상세 위/아래 끝 접근,배경 가방 정지,마우스 이탈 숨김,빈 칸 휠 가방 이동 확인. pageerror0 |
+| 회귀·환경 | gameHtmlInlineSyntax 및 uiPanelInitialization 기존 테스트4개 PASS. 저장 API 차단 테스트 캐릭터와 실제 저장 CSS/JS로 검수,canvas만 QA에서 숨김. 전체언어·게임패드·실제 저장 미검증. tmp/inventory-detail-audit/report.json |

@@ -1,9 +1,11 @@
 """Fixed-viewport camera audit for the isolated CH1 field QA map."""
 import json
+import sys
 from pathlib import Path
 from playwright.sync_api import sync_playwright, TimeoutError as PlaywrightTimeout
 
-out = Path(__file__).resolve().parents[1] / 'captures/rootworld_blockout_20260924'
+candidate = '--candidate' in sys.argv
+out = Path(__file__).resolve().parents[1] / ('captures/rootworld_candidate_20260924' if candidate else 'captures/rootworld_blockout_20260924')
 out.mkdir(parents=True, exist_ok=True)
 errors, failed, boards = [], [], []
 with sync_playwright() as p:
@@ -11,7 +13,8 @@ with sync_playwright() as p:
     page = browser.new_page(viewport={"width": 1280, "height": 720}, device_scale_factor=1)
     page.on('pageerror', lambda error: errors.append(str(error)))
     page.on('response', lambda response: failed.append({'status': response.status, 'url': response.url}) if response.status >= 400 else None)
-    page.goto('http://127.0.0.1:3334/map/field', wait_until='domcontentloaded', timeout=90000)
+    url = 'http://127.0.0.1:3334/game.html?test=1&testchar=1&stage=0&classic=1&mapqa=1&fieldrebuild=1&fieldart=candidate' if candidate else 'http://127.0.0.1:3334/map/field'
+    page.goto(url, wait_until='domcontentloaded', timeout=90000)
     page.wait_for_function("typeof G!=='undefined' && G._fieldRebuildQA && G.map && typeof P!=='undefined'", timeout=90000)
     page.wait_for_function("_cutsceneState==='INTRO_CUTSCENE' || __ch1StartOuterQA().stats.requests>0", timeout=30000)
     for _ in range(3):

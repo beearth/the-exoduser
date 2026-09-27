@@ -6,8 +6,7 @@
 
 파이프라인: PixelLab character `eda1221a-6fee-4228-9350-c36a15a3eaea` / template `mannequin` / directions 8 / view `low top-down` / size 224×224
 
-> **캐논 기준 = MASTER TURNAROUND + WEAPON BIBLE (refs/).**
-> 스프라이트 세트는 이 두 레퍼런스와 99% 싱크가 목표. 프롬프트/편집은 전부 여기에 맞춘다.
+> **현행 이미지 캐논 (2026-09-27):** [`SILVERTAIL_KEYART_CANON_20260927.md`](./SILVERTAIL_KEYART_CANON_20260927.md)의 2장. 아래 MASTER TURNAROUND·WEAPON BIBLE 언급은 제작 이력이다. 해당 PNG는 프로젝트에서 제거됐으며, 장비 제약은 `SILVERTAIL_LOCKED_SPEC_v1_2.md`의 텍스트를 따른다.
 
 ## 무기 = ROTARY BLADE SYSTEM (웨폰 바이블 확정)
 - **단일 회전대검 1자루** — 목 뒤 **회전 허브(rotary hub)** 에 연결. 총길이 1830mm.
@@ -67,7 +66,7 @@ PixelLab ZIP의 최신 `Idle/animations/walk`만 `img/exoduser_silvertail/`에 �
 
 현재 적용됨: idle rotations, walk 9프레임. 미적용: attack(deploy), whirl, throw, dash. 추가 상태를 만들 때도 48×48 다운스케일 후 방향·프레임 수를 `game.html`과 이 문서에 함께 반영한다.
 
-## 참고 레퍼런스 (refs/)
+## 과거 참고 레퍼런스 (2026-09-27 프로젝트 이미지 제거)
 - MASTER TURNAROUND (09_41_58) — FRONT/45/SIDE/REAR45/REAR + 디테일(넥허브·접힌블레이드·허벅지단검)
 - WEAPON BIBLE (10_20_48) — 로터리 블레이드 구조/폴드·디플로이/콤보
 - 2D GAME SPRITE CONCEPT — 게임 스프라이트 타겟 룩

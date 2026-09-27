@@ -168,6 +168,7 @@ body{background:#000 center/cover no-repeat;color:#ccaa88;font-family:'Noto Sans
 .lobby-bg-img::after{content:'';position:absolute;inset:0;background:linear-gradient(90deg,rgba(0,0,0,0) 50%,rgba(0,0,0,0.55) 90%,rgba(0,0,0,0.85) 100%);pointer-events:none}
 .lobby-char-preview{position:absolute;inset:0;z-index:1;width:100%;height:100%;object-fit:cover;object-position:center center;pointer-events:none;user-select:none;opacity:0;filter:brightness(.82) contrast(1.04);transform:scale(1.02);transition:opacity .42s ease,transform .55s cubic-bezier(.2,.7,.2,1)}
 .lobby-char-preview.show{opacity:1;transform:translateY(0) scale(1)}
+.lobby-char-keyart{object-position:75% center}
 .char-disp-empty{position:absolute;left:50%;bottom:8%;z-index:2;width:min(74%,760px);transform:translateX(-50%);text-align:center;pointer-events:none;user-select:none;opacity:1;transition:opacity .35s ease,transform .35s ease;filter:drop-shadow(0 5px 12px rgba(0,0,0,.9))}
 .char-disp-empty::before,.char-disp-empty::after{content:'';position:absolute;top:43%;width:21%;height:1px;background:linear-gradient(90deg,transparent,rgba(164,147,115,.54));opacity:.76}
 .char-disp-empty::before{left:0}.char-disp-empty::after{right:0;transform:scaleX(-1)}
@@ -453,8 +454,8 @@ body{background:#000 center/cover no-repeat;color:#ccaa88;font-family:'Noto Sans
 #splashTitlePrompt{position:absolute;left:50%;top:92%;transform:translate(-50%,-50%);display:none;z-index:2;pointer-events:none;margin:0;color:#f1e9dc;font:500 clamp(17px,1.2vw,26px)/1.4 'Noto Sans KR',sans-serif;letter-spacing:.06em;white-space:nowrap;text-shadow:0 1px 2px #000,0 2px 5px #000;direction:inherit}
 </style>
 <link rel="stylesheet" href="localization.css?v=20260909">
-<link rel="stylesheet" href="ui-foundation.css?v=20260924-hell3">
-<link rel="stylesheet" href="ui-refinement.css?v=20260927-4">
+<link rel="stylesheet" href="ui-foundation.css?v=20260927-frame-interior">
+<link rel="stylesheet" href="ui-refinement.css?v=20260927-single-lobby-scene">
 </head>
 <body>
 
@@ -566,7 +567,7 @@ body{background:#000 center/cover no-repeat;color:#ccaa88;font-family:'Noto Sans
   <button class="skip-btn" id="skipBtn" style="display:none">SKIP ></button>
   <canvas id="cinHoldGauge" style="position:absolute;bottom:30px;right:30px;width:120px;height:100px;z-index:300;pointer-events:none"></canvas>
   <select id="cinLang" style="position:absolute;top:3vh;right:4vw;z-index:300;background:rgba(0,0,0,.7);border:1px solid rgba(255,255,255,.2);color:rgba(255,255,255,.7);font-family:'Noto Sans KR';font-size:.85rem;padding:4px 12px;border-radius:4px;cursor:pointer">
-    <option value="ko">한국어</option><option value="en">English</option><option value="zh">中文简体</option><option value="zht">繁體中文</option><option value="ja">日本語</option><option value="vi">Tiếng Việt</option><option value="th">ไทย</option><option value="id">Bahasa Indonesia</option><option value="ms">Bahasa Melayu</option><option value="es">Español</option><option value="fr">Français</option><option value="it">Italiano</option><option value="ptbr">Português</option><option value="ro">Română</option><option value="de">Deutsch</option><option value="nl">Nederlands</option><option value="sv">Svenska</option><option value="da">Dansk</option><option value="no">Norsk</option><option value="ru">Русский</option><option value="uk">Українська</option><option value="pl">Polski</option><option value="cs">Čeština</option><option value="hu">Magyar</option><option value="bg">Български</option><option value="el">Ελληνικά</option><option value="fi">Suomi</option><option value="tr">Türkçe</option><option value="ar">العربية</option>
+    <option value="ko">한국어</option><option value="en">English</option><option value="zh">中文简体</option><option value="zht">繁體中文</option><option value="ja">日本語</option><option value="vi">Tiếng Việt</option><option value="th">ไทย</option><option value="id">Bahasa Indonesia</option><option value="ms">Bahasa Melayu</option><option value="es">Español (España)</option><option value="fr">Français</option><option value="it">Italiano</option><option value="ptbr">Português (Brasil)</option><option value="ro">Română</option><option value="de">Deutsch</option><option value="nl">Nederlands</option><option value="sv">Svenska</option><option value="da">Dansk</option><option value="no">Norsk</option><option value="ru">Русский</option><option value="uk">Українська</option><option value="pl">Polski</option><option value="cs">Čeština</option><option value="hu">Magyar</option><option value="bg">Български</option><option value="el">Ελληνικά</option><option value="fi">Suomi</option><option value="tr">Türkçe</option><option value="ar">العربية</option>
   </select>
 </div>
 
@@ -584,7 +585,7 @@ body{background:#000 center/cover no-repeat;color:#ccaa88;font-family:'Noto Sans
     <div class="title"><img src="img/logo_exoduser.png" alt="EXODUSER" style="max-width:700px;width:90%;height:auto;display:block;margin:0 auto"></div>
     <div style="text-align:center;margin:-10px 0 10px">
       <select id="langSelect" style="background:#1a1008;border:1px solid #443322;color:#ccaa88;font-family:'Noto Sans KR';font-size:.85rem;padding:4px 12px;border-radius:4px;cursor:pointer">
-        <option value="ko">한국어</option><option value="en">English</option><option value="zh">中文简体</option><option value="zht">繁體中文</option><option value="ja">日本語</option><option value="vi">Tiếng Việt</option><option value="th">ไทย</option><option value="id">Bahasa Indonesia</option><option value="ms">Bahasa Melayu</option><option value="es">Español</option><option value="fr">Français</option><option value="it">Italiano</option><option value="ptbr">Português</option><option value="ro">Română</option><option value="de">Deutsch</option><option value="nl">Nederlands</option><option value="sv">Svenska</option><option value="da">Dansk</option><option value="no">Norsk</option><option value="ru">Русский</option><option value="uk">Українська</option><option value="pl">Polski</option><option value="cs">Čeština</option><option value="hu">Magyar</option><option value="bg">Български</option><option value="el">Ελληνικά</option><option value="fi">Suomi</option><option value="tr">Türkçe</option><option value="ar">العربية</option>
+        <option value="ko">한국어</option><option value="en">English</option><option value="zh">中文简体</option><option value="zht">繁體中文</option><option value="ja">日本語</option><option value="vi">Tiếng Việt</option><option value="th">ไทย</option><option value="id">Bahasa Indonesia</option><option value="ms">Bahasa Melayu</option><option value="es">Español (España)</option><option value="fr">Français</option><option value="it">Italiano</option><option value="ptbr">Português (Brasil)</option><option value="ro">Română</option><option value="de">Deutsch</option><option value="nl">Nederlands</option><option value="sv">Svenska</option><option value="da">Dansk</option><option value="no">Norsk</option><option value="ru">Русский</option><option value="uk">Українська</option><option value="pl">Polski</option><option value="cs">Čeština</option><option value="hu">Magyar</option><option value="bg">Български</option><option value="el">Ελληνικά</option><option value="fi">Suomi</option><option value="tr">Türkçe</option><option value="ar">العربية</option>
       </select>
     </div>
     <div class="card">
@@ -595,7 +596,7 @@ body{background:#000 center/cover no-repeat;color:#ccaa88;font-family:'Noto Sans
         </div>
         <div class="login-lang">
           <select id="loginLangSelect" style="background:rgba(10,6,2,.8);border:1px solid rgba(120,80,40,.4);color:#ccaa88;font-family:'Noto Sans KR';font-size:.8rem;padding:5px 14px;border-radius:3px;cursor:pointer">
-            <option value="ko">한국어</option><option value="en">English</option><option value="zh">中文简体</option><option value="zht">繁體中文</option><option value="ja">日本語</option><option value="vi">Tiếng Việt</option><option value="th">ไทย</option><option value="id">Bahasa Indonesia</option><option value="ms">Bahasa Melayu</option><option value="es">Español</option><option value="fr">Français</option><option value="it">Italiano</option><option value="ptbr">Português</option><option value="ro">Română</option><option value="de">Deutsch</option><option value="nl">Nederlands</option><option value="sv">Svenska</option><option value="da">Dansk</option><option value="no">Norsk</option><option value="ru">Русский</option><option value="uk">Українська</option><option value="pl">Polski</option><option value="cs">Čeština</option><option value="hu">Magyar</option><option value="bg">Български</option><option value="el">Ελληνικά</option><option value="fi">Suomi</option><option value="tr">Türkçe</option><option value="ar">العربية</option>
+            <option value="ko">한국어</option><option value="en">English</option><option value="zh">中文简体</option><option value="zht">繁體中文</option><option value="ja">日本語</option><option value="vi">Tiếng Việt</option><option value="th">ไทย</option><option value="id">Bahasa Indonesia</option><option value="ms">Bahasa Melayu</option><option value="es">Español (España)</option><option value="fr">Français</option><option value="it">Italiano</option><option value="ptbr">Português (Brasil)</option><option value="ro">Română</option><option value="de">Deutsch</option><option value="nl">Nederlands</option><option value="sv">Svenska</option><option value="da">Dansk</option><option value="no">Norsk</option><option value="ru">Русский</option><option value="uk">Українська</option><option value="pl">Polski</option><option value="cs">Čeština</option><option value="hu">Magyar</option><option value="bg">Български</option><option value="el">Ελληνικά</option><option value="fi">Suomi</option><option value="tr">Türkçe</option><option value="ar">العربية</option>
           </select>
         </div>
         <h2>계정으로 입장하세요</h2>
@@ -620,9 +621,10 @@ body{background:#000 center/cover no-repeat;color:#ccaa88;font-family:'Noto Sans
 <!-- ═══ LOBBY (body 직속 — container 밖) ═══ -->
 <div class="lobby" id="lobby" style="display:none">
   <!-- 좌측: 배경 + 안내 -->
+  <div class="lobby-bg-img" id="lobbyBgImg"></div>
   <div class="lobby-left">
-    <div class="lobby-bg-img" id="lobbyBgImg"></div>
     <video class="lobby-char-preview" id="lobbyCharPreview" muted loop playsinline></video>
+    <img class="lobby-char-preview lobby-char-keyart" id="lobbyCharKeyart" alt="" aria-hidden="true">
     <canvas id="lobbyParticles" style="position:absolute;top:0;left:0;width:100%;height:100%;pointer-events:none;z-index:5"></canvas>
     <div id="lobbyVerOverlay" style="position:absolute;top:12px;left:14px;z-index:10;font-size:.75rem;color:rgba(160,130,90,.5);letter-spacing:.15em;line-height:1.6;pointer-events:none"></div>
   <div class="char-disp-empty" id="charDispEmpty">
@@ -632,18 +634,16 @@ body{background:#000 center/cover no-repeat;color:#ccaa88;font-family:'Noto Sans
   </div>
   <!-- 우측: 슬롯 + 버튼 -->
   <div class="lobby-right">
+   <div class="lobby-content">
     <div class="lobby-header">
-      <div style="display:flex;flex-direction:column;align-items:flex-start">
-        <img src="img/logo_exoduser.png" alt="EXODUSER" style="height:48px;width:auto">
-      </div>
-      <div style="display:flex;align-items:center;gap:8px">
+      <div class="lobby-account-controls">
         <select id="lobbyLangSelect" style="background:rgba(10,6,2,.8);border:1px solid rgba(120,80,40,.4);color:#ccaa88;font-family:'Noto Sans KR';font-size:.75rem;padding:3px 10px;border-radius:3px;cursor:pointer">
-          <option value="ko">한국어</option><option value="en">English</option><option value="zh">中文简体</option><option value="zht">繁體中文</option><option value="ja">日本語</option><option value="vi">Tiếng Việt</option><option value="th">ไทย</option><option value="id">Bahasa Indonesia</option><option value="ms">Bahasa Melayu</option><option value="es">Español</option><option value="fr">Français</option><option value="it">Italiano</option><option value="ptbr">Português</option><option value="ro">Română</option><option value="de">Deutsch</option><option value="nl">Nederlands</option><option value="sv">Svenska</option><option value="da">Dansk</option><option value="no">Norsk</option><option value="ru">Русский</option><option value="uk">Українська</option><option value="pl">Polski</option><option value="cs">Čeština</option><option value="hu">Magyar</option><option value="bg">Български</option><option value="el">Ελληνικά</option><option value="fi">Suomi</option><option value="tr">Türkçe</option><option value="ar">العربية</option>
+          <option value="ko">한국어</option><option value="en">English</option><option value="zh">中文简体</option><option value="zht">繁體中文</option><option value="ja">日本語</option><option value="vi">Tiếng Việt</option><option value="th">ไทย</option><option value="id">Bahasa Indonesia</option><option value="ms">Bahasa Melayu</option><option value="es">Español (España)</option><option value="fr">Français</option><option value="it">Italiano</option><option value="ptbr">Português (Brasil)</option><option value="ro">Română</option><option value="de">Deutsch</option><option value="nl">Nederlands</option><option value="sv">Svenska</option><option value="da">Dansk</option><option value="no">Norsk</option><option value="ru">Русский</option><option value="uk">Українська</option><option value="pl">Polski</option><option value="cs">Čeština</option><option value="hu">Magyar</option><option value="bg">Български</option><option value="el">Ελληνικά</option><option value="fi">Suomi</option><option value="tr">Türkçe</option><option value="ar">العربية</option>
         </select>
         <div class="lobby-mode" id="lobbyMode"></div>
       </div>
     </div>
-    <div class="lobby-divider"></div>
+    <div class="lobby-divider"><img class="lobby-brand-logo" src="img/logo_exoduser.png" alt="EXODUSER" draggable="false"></div>
     <div id="developerSaveNotice" hidden style="color:#d3aa67;font-size:.75rem;flex-shrink:0">개발자용 · 테스트 캐릭터 · 슬롯 무제한</div>
     <div class="char-list" id="charList">
       <div class="no-chars">불러오는 중...</div>
@@ -668,19 +668,20 @@ body{background:#000 center/cover no-repeat;color:#ccaa88;font-family:'Noto Sans
       </div>
     </div>
     <div class="lobby-footer">
-      <button class="enter-game-btn" id="enterGameBtn" disabled><img src="assets/lobby/lobby_enter_btn.png" draggable="false" alt=""></button>
+      <button class="enter-game-btn" id="enterGameBtn" aria-label="입장" disabled><img src="assets/lobby/lobby_enter_btn.png" draggable="false" alt=""></button>
     </div>
     <div style="display:flex;justify-content:space-between;align-items:center;padding:4px 0 2px">
-      <span id="replayCinBtn" onclick="_goCinematic()" style="cursor:pointer;color:rgba(180,140,110,.45);font-size:.7rem;letter-spacing:.08em;transition:color .2s" onmouseover="this.style.color='#ccaa77'" onmouseout="this.style.color='rgba(180,140,110,.45)'">▶ 시네마틱</span>
+      <button type="button" id="replayCinBtn" onclick="_goCinematic()">▶ 시네마틱</button>
       <span class="ll-version-txt" id="lobbyVersionTxt"></span>
     </div>
+   </div>
   </div>
 </div>
 
 <!-- 생성 모달 -->
-<div class="create-modal" id="createModal">
+<div class="create-modal" id="createModal" role="dialog" aria-modal="true" aria-labelledby="createModalTitle">
   <div class="create-modal-inner">
-    <h2>새 캐릭터 생성</h2>
+    <h2 id="createModalTitle">새 캐릭터 생성</h2>
     <p>지옥에 보낼 캐릭터의 이름을 지어주세요</p>
     <input class="name-input" id="charName" placeholder="이름 (2~8자)" maxlength="8">
     <div id="vkbWrap" style="display:none;margin:10px 0 6px"></div>
@@ -693,7 +694,7 @@ body{background:#000 center/cover no-repeat;color:#ccaa88;font-family:'Noto Sans
 </div>
 
 <!-- ═══ 캐릭터 삭제 확인 모달 ═══ -->
-<div id="delConfirmModal" style="display:none;position:fixed;inset:0;z-index:350;background:rgba(0,0,0,.85);align-items:center;justify-content:center">
+<div id="delConfirmModal" role="dialog" aria-modal="true" aria-labelledby="delConfirmMsg" tabindex="-1" style="display:none;position:fixed;inset:0;z-index:350;background:rgba(0,0,0,.85);align-items:center;justify-content:center">
   <div style="background:#1a1410;border:2px solid #663322;border-radius:8px;padding:24px 32px;max-width:400px;text-align:center">
     <p id="delConfirmMsg" style="color:#ccaa77;font-size:1rem;margin-bottom:20px"></p>
     <div style="display:flex;gap:12px;justify-content:center">
@@ -734,6 +735,7 @@ body{background:#000 center/cover no-repeat;color:#ccaa88;font-family:'Noto Sans
     #csThumb{width:100%;aspect-ratio:3/4;border:1px solid rgba(150,110,60,.5);border-radius:2px;
       background-size:cover;background-position:top center;
       box-shadow:0 8px 26px rgba(0,0,0,.6),inset 0 0 40px rgba(0,0,0,.45),inset 0 0 0 3px rgba(0,0,0,.4)}
+    #csThumb.silvertail-keyart{background-position:75% center}
     /* 공용 코너 브래킷 장식 */
     .cnr{position:absolute;width:16px;height:16px;border:2px solid rgba(205,155,75,.7);pointer-events:none;z-index:2}
     .cnr.tl{top:-2px;left:-2px;border-right:0;border-bottom:0}
@@ -766,6 +768,8 @@ body{background:#000 center/cover no-repeat;color:#ccaa88;font-family:'Noto Sans
     #csPortrait{max-height:min(80vh,860px);max-width:100%;width:auto;height:auto;object-fit:contain;object-position:bottom center;
       filter:drop-shadow(0 22px 40px rgba(0,0,0,.75));transition:opacity .28s ease;
       transform-origin:50% 100%;animation:csIdle 5.6s ease-in-out infinite}
+    .cs-stage.silvertail-keyart #csPortrait{width:100%;max-height:min(76vh,800px);animation:none}
+    .cs-stage.silvertail-keyart::after{display:none}
     #csPortrait.swap{opacity:0;animation:none}
     @keyframes csIdle{
       0%{transform:translateY(0) scale(1) rotate(0deg)}
@@ -1951,6 +1955,7 @@ function _applyLobbyLang(){
     if(title)title.textContent=_TL('당신은 누구인가');
     if(sub)sub.textContent='';
   }
+  const entry=document.getElementById('enterGameBtn');if(entry)entry.setAttribute('aria-label',_TL('입장'));
   // Google 버튼 (SVG 보존)
   const gb=document.getElementById('googleBtn');
   if(gb){const svg=gb.querySelector('svg');const txt=_TL('Google로 입장');gb.innerHTML='';if(svg)gb.appendChild(svg);gb.appendChild(document.createTextNode(txt))}
@@ -2613,33 +2618,44 @@ async function _goLobby({fromCinematic=false}={}){
 }
 
 // ═══ 오프라인 모드 진입 ═══
+function _showCreateFailure(name,message){
+  $('createBtn').disabled=false;
+  $('charName').value=name;setStatus(message,true);
+  $('createModal').classList.add('show');$('charName').focus();
+}
+
 function _enterOffline(){
   _testMode=true;
   $('createBtn').onclick=async()=>{
+    if($('createBtn').disabled)return;
     if(CHAR_VISUALS[_pendingVisualIdx]?.comingSoon){setStatus(_TL('출시 준비 중'),true);return}
     const name=$('charName').value.trim();
     if(name.length<2||name.length>8){setStatus(_TL('이름은 2~8자여야 합니다.'),true);return}
     if(/[<>"'&\/\\]/.test(name)){setStatus(_TL('특수문자는 사용할 수 없습니다.'),true);return}
+    try{
     $('createBtn').disabled=true;setStatus(_TL('생성 중...'));
     $('createModal').classList.remove('show');
     try{
       const chk=await fetch('/api/load/'+encodeURIComponent(name));
-      if(chk.ok){const j=await chk.json();if(j.ok){$('createBtn').disabled=false;$('createModal').classList.add('show');setStatus(_TL('이미 같은 이름의 캐릭터가 있습니다.'),true);return}}
+      if(chk.ok){const j=await chk.json();if(j.ok){_showCreateFailure(name,_TL('이미 같은 이름의 캐릭터가 있습니다.'));return}}
       const res=await fetch('/api/save',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({slot:name,data:{name:name,ts:Date.now(),charIdx:_pendingVisualIdx}})});
       const j=await res.json();
       $('createBtn').disabled=false;
-      if(!j.ok){$('createModal').classList.add('show');setStatus(_TL('생성 실패: ')+(j.error||'unknown'),true);return}
+      if(!j.ok){_showCreateFailure(name,_TL('생성 실패: ')+(j.error||_TL('알 수 없는 오류')));return}
       $('charName').value='';setStatus('');await _afterCharacterCreated(name,_pendingVisualIdx);
     }catch(e){
       // 서버 없음 — localStorage 폴백 (DEMO)
       const _LS_PREFIX='hellsave_demo_';
+      for(let i=0;i<5;i++){const raw=localStorage.getItem(_LS_PREFIX+i);let saved=null;try{saved=raw?JSON.parse(raw):null}catch{}if(saved&&saved.name===name){_showCreateFailure(name,_TL('이미 같은 이름의 캐릭터가 있습니다.'));return}}
       let _slot=-1;
       for(let i=0;i<5;i++){if(!localStorage.getItem(_LS_PREFIX+i)){_slot=i;break}}
-      if(_slot<0){$('createBtn').disabled=false;setStatus(_TL('슬롯이 가득 찼습니다.'),true);return}
+      if(_slot<0){_showCreateFailure(name,_TL('슬롯이 가득 찼습니다.'));return}
       localStorage.setItem(_LS_PREFIX+_slot,JSON.stringify({name:name,ts:Date.now(),charIdx:_pendingVisualIdx}));
       $('createBtn').disabled=false;
       $('charName').value='';setStatus('');await _afterCharacterCreated(name,_pendingVisualIdx);
     }
+    }catch(error){_showCreateFailure(name,_TL('생성 실패: ')+(error.message||_TL('알 수 없는 오류')))}
+    finally{$('createBtn').disabled=false;}
   };
   if($('logoutBtn'))$('logoutBtn').style.display='none';
   _goLobby();
@@ -2709,7 +2725,13 @@ async function showLobby({fromCinematic=false}={}){
   if(!fromCinematic)showLoading(_TL('캐릭터 불러오는 중...'));
   $('loginSection').style.display='none';$('lobby').style.display='flex';document.querySelector('.container').style.display='none';var _cl=$('cinLang');if(_cl)_cl.style.display='none';
   if($('userEmail'))$('userEmail').textContent=currentUser.email||'';
-  const _lm=$('lobbyMode');if(_lm){_lm.innerHTML='<span style="font-size:.7rem;color:#aa8855">'+((currentUser&&currentUser.email)||'')+'</span> <span style="cursor:pointer;color:#886644;font-size:.65rem" id="lobbyLogout">LOGOUT</span>';const _lo=$('lobbyLogout');if(_lo)_lo.onclick=()=>{sb.auth.signOut()}}
+  const _lm=$('lobbyMode');if(_lm){
+    const email=document.createElement('span');email.className='lobby-account-email';
+    email.textContent=(currentUser&&currentUser.email)||'';email.title=email.textContent;
+    const logout=document.createElement('button');logout.type='button';logout.id='lobbyLogout';logout.textContent='LOGOUT';
+    logout.onclick=()=>{sb.auth.signOut()};
+    _lm.replaceChildren(email,logout);
+  }
   await loadCharacters();
   hideLoading();
 }
@@ -2739,6 +2761,7 @@ async function loadCharacters(){
     const plus=document.createElement('span');plus.className='char-thumb-empty';plus.textContent='+';thumb.appendChild(plus);
     const label=document.createElement('div');label.className='char-name';label.style.color='#886644';label.textContent=_TL('새 캐릭터');
     const text=document.createElement('div');text.className='char-text';text.appendChild(label);newBtn.replaceChildren(thumb,text);
+    _addLobbyCardControl(newBtn,_TL('새 캐릭터'),'new');
     newBtn.addEventListener('click',()=>openVisualSelect());
     cl.appendChild(newBtn);
   }
@@ -2748,8 +2771,38 @@ async function loadCharacters(){
   if(data&&data.length>0){const _d0=data[0].data||{};_swapLobbyBg(_d0.game?_d0.game.stage||0:0)}else{_swapLobbyBg(0);}
 }
 let _onlineChars=[],_onlineScrollIdx=0,_onlineLoadSeq=0;
+function _addLobbyCardControl(card,label,key){
+  const control=document.createElement('button');
+  control.type='button';control.className='char-select';
+  control.setAttribute('aria-label',label);control.title=label;control.dataset.cardKey=key;
+  control.addEventListener('click',()=>{
+    const focused=document.activeElement===control;
+    setTimeout(()=>{
+      if(!focused||control.isConnected||document.activeElement!==document.body)return;
+      const list=document.getElementById('charList');
+      const replacement=list&&Array.from(list.querySelectorAll('.char-select')).find(el=>el.dataset.cardKey===key);
+      if(replacement)replacement.focus({preventScroll:true});
+    },0);
+  });
+  card.prepend(control);
+}
+
+function _bindLobbyListNavigation(up,down,move){
+  for(const [button,direction,opposite] of [[up,-1,down],[down,1,up]]){
+    if(!button)continue;
+    button.addEventListener('click',()=>{
+      const focused=document.activeElement===button,id=button.id,otherId=opposite&&opposite.id;
+      move(direction);
+      if(!focused||document.activeElement!==document.body)return;
+      const same=document.getElementById(id),other=otherId&&document.getElementById(otherId);
+      const target=same&&!same.disabled?same:other;
+      if(target&&!target.disabled)target.focus({preventScroll:true});
+    });
+  }
+}
+
 function _renderOnlineSlots(){
-  const cl=$('charList');if(!cl)return;cl.innerHTML='';
+  const cl=$('charList');if(!cl)return;cl.replaceChildren();
   const data=_onlineChars,VIEW=2,total=data.length,canScroll=total>VIEW;
   _onlineScrollIdx=Math.max(0,Math.min(_onlineScrollIdx,Math.max(0,total-VIEW)));
   // ── 위 화살표 ──
@@ -2769,7 +2822,9 @@ function _renderOnlineSlots(){
       const st=_formatLobbyStageProgress(stage,_TL);
       const _pci=(ch.charIdx!=null?ch.charIdx:(ch.data&&ch.data.charIdx)||0);const _vi=CHAR_VISUALS[_pci]||CHAR_VISUALS[0];
       const div=document.createElement('div');div.className='char-item'+(_selectedSlot===ch.id?' active':'');
-      div.innerHTML=`<div class="char-thumb"><img src="${(_vi&&(_vi.bust||_vi.portrait))||'assets/lobby/lobby_portrait.png?v=20260913-lobby-smooth1'}" style="width:100%;height:100%;object-fit:cover;object-position:center 12%;border-radius:2px"></div><div class="char-text"><div class="char-name">${escHtml(ch.name)}<span class="char-cls">${escHtml(_TL((_vi&&(_vi.job||_vi.cls))||''))}</span></div><div class="char-info">Lv.${lv} | ${st}</div></div><button class="char-del" title="${_TL('삭제')}">✕</button>`;
+      div.innerHTML=`<div class="char-thumb"><img src="${(_vi&&(_vi.bust||_vi.portrait))||'assets/lobby/lobby_portrait.png?v=20260913-lobby-smooth1'}" style="width:100%;height:100%;object-fit:cover;object-position:${_vi.thumbPos||'center 12%'};border-radius:2px"></div><div class="char-text"><div class="char-name"><span class="char-name-label">${escHtml(ch.name)}</span><span class="char-cls">${escHtml(_TL((_vi&&(_vi.job||_vi.cls))||''))}</span></div><div class="char-info">Lv.${lv} | ${st}</div></div><button class="char-del" title="${_TL('삭제')}">✕</button>`;
+      div.querySelector('.char-name-label').title=ch.name;
+      _addLobbyCardControl(div,ch.name+' · '+_TL((_vi&&(_vi.job||_vi.cls))||''),'online:'+ch.id);
       div.addEventListener('click',e=>{
         if(e.target.classList.contains('char-del'))return;
         _selectedSlot=ch.id;_selectedSlotName=ch.name;
@@ -2801,15 +2856,14 @@ function _renderOnlineSlots(){
   const MAX_CHARS=5,canCreate=total<MAX_CHARS;
   const newDiv=document.createElement('div');newDiv.className='char-item-new';newDiv.style.marginTop='10px';
   newDiv.innerHTML='<div class="char-thumb"><span class="char-thumb-empty">'+(canCreate?'+':'✕')+'</span></div><div class="char-text"><div class="char-name" style="color:#886644">'+(canCreate?_TL('새 캐릭터'):_TL('슬롯 가득참'))+'</div></div>';
-  if(canCreate)newDiv.addEventListener('click',()=>openVisualSelect());
+  if(canCreate){_addLobbyCardControl(newDiv,_TL('새 캐릭터'),'new');newDiv.addEventListener('click',()=>openVisualSelect());}
   else{newDiv.style.opacity='.35';newDiv.style.cursor='default';newDiv.style.pointerEvents='none'}
   cl.appendChild(newDiv);
   // ── 이벤트 ──
   const btnUp=cl.querySelector('#charNavUpOn'),btnDn=cl.querySelector('#charNavDnOn');
-  if(btnUp)btnUp.addEventListener('click',()=>{_onlineScrollIdx=Math.max(0,_onlineScrollIdx-1);_renderOnlineSlots()});
-  if(btnDn)btnDn.addEventListener('click',()=>{_onlineScrollIdx=Math.min(total-VIEW,_onlineScrollIdx+1);_renderOnlineSlots()});
+  _bindLobbyListNavigation(btnUp,btnDn,direction=>{_onlineScrollIdx=Math.max(0,Math.min(total-VIEW,_onlineScrollIdx+direction));_renderOnlineSlots()});
   // 휠
-  vp.addEventListener('wheel',e=>{e.preventDefault();if(e.deltaY>0&&_onlineScrollIdx<total-VIEW){_onlineScrollIdx++;_renderOnlineSlots()}else if(e.deltaY<0&&_onlineScrollIdx>0){_onlineScrollIdx--;_renderOnlineSlots()}},{passive:false});
+  vp.addEventListener('wheel',e=>{const next=Math.max(0,Math.min(Math.max(0,_onlineChars.length-VIEW),_onlineScrollIdx+Math.sign(e.deltaY)));if(next===_onlineScrollIdx)return;e.preventDefault();_onlineScrollIdx=next;_renderOnlineSlots()},{passive:false});
 }
 // ── 캐릭터 외형 목록 (game.html CHAR_LIST와 동기화) ──
 // index = game.html CHAR_LIST 인덱스와 반드시 일치 (저장 charIdx가 곧 이 인덱스)
@@ -2821,7 +2875,7 @@ const CHAR_VISUALS=[
       ['🛡','흑철의 방어','검은 갑옷으로 적의 공세를 견디고 되받아칩니다.'],
       ['💥','파멸의 일격','느리지만 치명적인 광역 참격을 내리꽂습니다.'],
     ]},
-  {id:'exoduser_silvertail',name:'실버테일',cls:'BLADE DANCER',desc:'회전하는 단 하나의 검, 그녀의 춤은 파멸',folder:'img/exoduser_silvertail',fw:48,fh:48,portrait:'assets/charselect/silvertail_cut.png?v=3',bust:'assets/charselect/portrait_silvertail.png?v=1',emblemImg:'assets/charselect/emblem_silvertail.png?v=1',aura:'rgba(120,165,215,.5)',scene:'assets/charselect/bg_scene2.png?v=1',sceneVid:'assets/charselect/bg_scene2_loop.mp4?v=1',idleVid:'assets/charselect/idle_silvertail.mp4?v=1',poster:'assets/charselect/poster_idle_silvertail.jpg?v=1',tab:'실버테일',job:'블레이드 댄서',
+  {id:'exoduser_silvertail',name:'실버테일',cls:'BLADE DANCER',desc:'회전하는 단 하나의 검, 그녀의 춤은 파멸',folder:'img/exoduser_silvertail',fw:48,fh:48,portrait:'assets/charselect/silvertail_solo.png?v=20260927',bust:'assets/charselect/silvertail_title.png?v=20260927',keyart:true,thumbPos:'75% center',emblemImg:'assets/charselect/emblem_silvertail.png?v=1',aura:'rgba(120,165,215,.5)',tab:'실버테일',job:'블레이드 댄서',
     comingSoon:true,
     emblem:'<svg viewBox="0 0 100 100" fill="none" stroke="currentColor" stroke-width="7" stroke-linecap="round" stroke-linejoin="round"><path d="M24 24 L72 72"/><path d="M76 24 L28 72"/><circle cx="50" cy="50" r="3.5" fill="currentColor" stroke="none"/></svg>',
     traits:[
@@ -2836,6 +2890,7 @@ let _pendingVisualIdx=0;
 function selectVisual(ci){
   const ch=CHAR_VISUALS[ci];if(!ch)return;
   _pendingVisualIdx=ci;
+  $('csPortrait').parentElement.classList.toggle('silvertail-keyart',!!ch.keyart);
   const locked=!!ch.comingSoon;
   $('charVisualPop').classList.toggle('release-locked',locked);
   $('visualCreateBtn').disabled=locked;
@@ -2847,7 +2902,7 @@ function selectVisual(ci){
     if(idle){idle.classList.remove('on');idle.pause&&idle.pause();}
     if(port){port.style.display='';port.classList.add('swap');
       setTimeout(()=>{port.src=ch.portrait||'';port.classList.remove('swap');},180);}
-    const _sc=$('csScene');if(_sc&&ch.scene){_sc.style.backgroundImage="url('"+ch.scene+"')";_sc.style.opacity='1';}
+    const _sc=$('csScene');if(_sc){if(ch.scene)_sc.style.backgroundImage="url('"+ch.scene+"')";_sc.style.opacity=ch.scene?'1':'0';}
   };
   if(ch.idleVid&&idle){
     if(ch.poster)idle.poster=ch.poster;             // 로딩 중 즉시 첫 프레임 표시
@@ -2867,7 +2922,7 @@ function selectVisual(ci){
   $('csClsName').textContent=_TL(ch.job||ch.cls||'');
   $('csCharName').textContent=_TL(ch.name);
   $('csCharDesc').textContent=_TL(ch.desc);
-  const th=$('csThumb');if(th){const _tp=ch.bust||ch.portrait;th.style.backgroundImage=_tp?"url('"+_tp+"')":'';}
+  const th=$('csThumb');if(th){const _tp=ch.bust||ch.portrait;th.style.backgroundImage=_tp?"url('"+_tp+"')":'';th.classList.toggle('silvertail-keyart',!!ch.keyart);}
   const aura=$('csAura');if(aura&&ch.aura)aura.style.setProperty('--aura',ch.aura);
   // 배경 씬 — 아이들 영상 있으면 그게 전체를 덮으므로 배경 레이어는 끔
   const sc=$('csScene'), vid=$('csSceneVid');
@@ -2875,7 +2930,7 @@ function selectVisual(ci){
     if(sc)sc.style.opacity='0';
     if(vid){vid.classList.remove('on');vid.pause&&vid.pause();}
   }else{
-    if(sc&&ch.scene){sc.style.opacity='0';setTimeout(()=>{sc.style.backgroundImage="url('"+ch.scene+"')";sc.style.opacity='1';},180);}
+    if(sc){sc.style.opacity='0';if(ch.scene)setTimeout(()=>{sc.style.backgroundImage="url('"+ch.scene+"')";sc.style.opacity='1';},180);}
     if(vid){
       if(ch.sceneVid){const _src=ch.sceneVid.split('?')[0];if(!vid.src.endsWith(_src)){vid.src=ch.sceneVid;}vid.classList.add('on');vid.play&&vid.play().catch(()=>{});}
       else{vid.classList.remove('on');vid.pause&&vid.pause();}
@@ -2922,8 +2977,8 @@ function openVisualSelect(){
 function _visualConfirm(){
   if(CHAR_VISUALS[_pendingVisualIdx]?.comingSoon)return;
   const pop=$('charVisualPop');pop.style.display='none';
-  $('createModal').classList.add('show');$('charName').value='';
-  setTimeout(()=>$('charName').focus(),50);
+  $('createModal').classList.add('show');$('charName').value='';setStatus('');
+  setTimeout(()=>{if($('createModal').classList.contains('show'))$('charName').focus()},50);
 }
 $('visualCreateBtn').onclick=_visualConfirm;
 $('visualCancelBtn').onclick=()=>{$('charVisualPop').style.display='none'};
@@ -2950,29 +3005,41 @@ async function _afterCharacterCreated(name,visualIdx){
 }
 
 async function doCreateChar(name,visualIdx){
+  if($('createBtn').disabled)return;
   if(CHAR_VISUALS[visualIdx]?.comingSoon){setStatus(_TL('출시 준비 중'),true);return}
   $('createBtn').disabled=true;setStatus(_TL('생성 중...'));
   if(_testMode){
+    try{
     try{
       const res=await fetch('/api/save',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({slot:name,data:{ts:Date.now(),charIdx:visualIdx}})});
       if(!res.ok)throw new Error('no server');
       const j=await res.json();
       $('createBtn').disabled=false;
-      if(!j.ok){setStatus(_TL('생성 실패: ')+(j.error||_TL('알 수 없는 오류')),true);return}
+      if(!j.ok){_showCreateFailure(name,_TL('생성 실패: ')+(j.error||_TL('알 수 없는 오류')));return}
       $('charName').value='';setStatus('');await _afterCharacterCreated(name,visualIdx);
     }catch(e){
       const _LS_PREFIX='hellsave_demo_';const MAX_LS=5;
-      for(let i=0;i<MAX_LS;i++){const raw=localStorage.getItem(_LS_PREFIX+i);if(raw){try{const d=JSON.parse(raw);if(d.name===name){$('createBtn').disabled=false;setStatus(_TL('이미 같은 이름의 캐릭터가 있습니다.'),true);return}}catch(pe){}}}
+      for(let i=0;i<MAX_LS;i++){const raw=localStorage.getItem(_LS_PREFIX+i);if(raw){try{const d=JSON.parse(raw);if(d.name===name){_showCreateFailure(name,_TL('이미 같은 이름의 캐릭터가 있습니다.'));return}}catch(pe){}}}
       let _slot=-1;for(let i=0;i<MAX_LS;i++){if(!localStorage.getItem(_LS_PREFIX+i)){_slot=i;break}}
-      if(_slot<0){$('createBtn').disabled=false;setStatus(_TL('슬롯이 가득 찼습니다.'),true);return}
+      if(_slot<0){_showCreateFailure(name,_TL('슬롯이 가득 찼습니다.'));return}
       localStorage.setItem(_LS_PREFIX+_slot,JSON.stringify({name:name,ts:Date.now(),charIdx:visualIdx}));
       $('createBtn').disabled=false;$('charName').value='';setStatus('');await _afterCharacterCreated(name,visualIdx);
     }
     return;
+    }catch(error){_showCreateFailure(name,_TL('생성 실패: ')+(error.message||_TL('알 수 없는 오류')))}
+    finally{$('createBtn').disabled=false;}
+    return;
   }
-  const{error}=await sb.from('characters').insert({user_id:currentUser.id,name:name,data:{charIdx:visualIdx}});
-  $('createBtn').disabled=false;
-  if(error){if(error.code==='23505')setStatus(_TL('이미 같은 이름의 캐릭터가 있습니다.'),true);else setStatus(_TL('생성 실패: ')+error.message,true);return}
+  let error=null;
+  try{
+    if(!currentUser||!currentUser.id)throw new Error(_TL('로그인 필요'));
+    ({error}=await sb.from('characters').insert({user_id:currentUser.id,name:name,data:{charIdx:visualIdx}}));
+  }catch(cause){error=cause||new Error(_TL('알 수 없는 오류'));}
+  finally{$('createBtn').disabled=false;}
+  if(error){
+    setStatus(error.code==='23505'?_TL('이미 같은 이름의 캐릭터가 있습니다.'):_TL('생성 실패: ')+(error.message||_TL('알 수 없는 오류')),true);
+    $('charName').value=name;$('createModal').classList.add('show');$('charName').focus();return;
+  }
   $('charName').value='';setStatus('');await _afterCharacterCreated(name,visualIdx);
 }
 
@@ -2982,7 +3049,7 @@ $('createBtn').onclick=()=>{
   if(/[<>"'&]/.test(name)){setStatus(_TL('특수문자는 사용할 수 없습니다.'),true);return}
   setStatus('');$('createModal').classList.remove('show');doCreateChar(name,_pendingVisualIdx);
 };
-$('charName').addEventListener('keydown',e=>{if(e.key==='Enter')$('createBtn').click()});
+$('charName').addEventListener('keydown',e=>{if(e.key!=='Enter'||e.isComposing||e.keyCode===229)return;e.preventDefault();if(!e.repeat)$('createBtn').click()});
 function setStatus(m,err){for(const id of ['status','lobbyStatus']){const el=$(id);if(el&&el.children.length===0){el.textContent=m;el.className=err?'status error':'status'}}}
 function escHtml(s){const d=document.createElement('div');d.textContent=s;return d.innerHTML}
 
@@ -3019,11 +3086,12 @@ async function loadLocalCharacters(){
 let _slotScrollIdx=0; // 캐릭터 뷰포트 상단 인덱스
 
 function _renderSlotList(){
-  const cl=$('charList');if(!cl)return;cl.innerHTML='';
+  const cl=$('charList');if(!cl)return;cl.replaceChildren();
   // ── DEMO: 슬롯 1개 고정, 생성 버튼 없음 ──
   if(_LOBBY_BUILD==='demo'){
     const div=document.createElement('div');div.className='char-item active';
     div.innerHTML='<div class="char-thumb"><img src="assets/lobby/lobby_portrait.png?v=20260913-lobby-smooth1" style="width:100%;height:100%;object-fit:cover;object-position:center 20%;border-radius:2px"></div><div class="char-text"><div class="char-name">DEMO CHARACTER</div><div class="char-info" style="color:rgba(200,150,100,.6)">Lv.1 START · Stage 1-1 · Lv.100 Cap</div></div>';
+    _addLobbyCardControl(div,'DEMO CHARACTER','demo');
     const demoSlot={name:'DEMO CHARACTER',charIdx:0,stage:0};
     div.addEventListener('click',()=>{_selectedSlot='demo';_selectedSlotName='demo';_updateCharDisplay(demoSlot);});
     cl.appendChild(div);
@@ -3060,7 +3128,9 @@ function _renderSlotList(){
       const st=_formatLobbyStageProgress(stage,_TL);
       const _vi=CHAR_VISUALS[s.charIdx||0]||CHAR_VISUALS[0];
       const div=document.createElement('div');div.className='char-item'+(_selectedSlot===s.name?' active':'');
-      div.innerHTML=`<div class="char-thumb"><img src="${(_vi&&(_vi.bust||_vi.portrait))||'assets/lobby/lobby_portrait.png?v=20260913-lobby-smooth1'}" style="width:100%;height:100%;object-fit:cover;object-position:center 12%;border-radius:2px"></div><div class="char-text"><div class="char-name">${escHtml(s.name)}<span class="char-cls">${escHtml(_TL((_vi&&(_vi.job||_vi.cls))||''))}</span></div><div class="char-info">Lv.${s.lv||1} · ${st}</div></div><button class="char-del" title="${_TL('삭제')}">✕</button>`;
+      div.innerHTML=`<div class="char-thumb"><img src="${(_vi&&(_vi.bust||_vi.portrait))||'assets/lobby/lobby_portrait.png?v=20260913-lobby-smooth1'}" style="width:100%;height:100%;object-fit:cover;object-position:${_vi.thumbPos||'center 12%'};border-radius:2px"></div><div class="char-text"><div class="char-name"><span class="char-name-label">${escHtml(s.name)}</span><span class="char-cls">${escHtml(_TL((_vi&&(_vi.job||_vi.cls))||''))}</span></div><div class="char-info">Lv.${s.lv||1} · ${st}</div></div><button class="char-del" title="${_TL('삭제')}">✕</button>`;
+      div.querySelector('.char-name-label').title=s.name;
+      _addLobbyCardControl(div,s.name+' · '+_TL((_vi&&(_vi.job||_vi.cls))||''),'local:'+s.name);
       div.addEventListener('click',e=>{if(e.target.classList.contains('char-del'))return;_selectSlot(s)});
       div.querySelector('.char-del').addEventListener('click',e=>{
         e.stopPropagation();
@@ -3094,6 +3164,7 @@ function _renderSlotList(){
   const canCreate=total<MAX_CHARS;
   newDiv.innerHTML='<div class="char-thumb"><span class="char-thumb-empty">'+(canCreate?'+':'✕')+'</span></div><div class="char-text"><div class="char-name" style="color:#886644">'+(canCreate?_TL('새 캐릭터'):_TL('슬롯 가득참'))+'</div>'+(canCreate?'':'<div class="char-info">'+_TL('최대')+' '+MAX_CHARS+_TL('개')+'</div>')+'</div>';
   if(canCreate){
+    _addLobbyCardControl(newDiv,_TL('새 캐릭터'),'new');
     newDiv.addEventListener('click',()=>openVisualSelect());
   }else{
     newDiv.style.opacity='.35';newDiv.style.cursor='default';newDiv.style.pointerEvents='none';
@@ -3103,18 +3174,15 @@ function _renderSlotList(){
   // ── 이벤트: 화살표 버튼 ──
   const btnUp=cl.querySelector('#charNavUp');
   const btnDn=cl.querySelector('#charNavDn');
-  if(btnUp) btnUp.addEventListener('click',()=>{_slotScrollIdx=Math.max(0,_slotScrollIdx-1);_renderSlotList()});
-  if(btnDn) btnDn.addEventListener('click',()=>{_slotScrollIdx=Math.min(total-VIEW,_slotScrollIdx+1);_renderSlotList()});
+  _bindLobbyListNavigation(btnUp,btnDn,direction=>{_slotScrollIdx=Math.max(0,Math.min(total-VIEW,_slotScrollIdx+direction));_renderSlotList()});
 
   // ── 이벤트: 휠 스크롤 ──
   if(!cl._wheelBound){
     cl._wheelBound=true;
     cl.addEventListener('wheel',e=>{
-      if(!canScroll&&(chars.length<=VIEW))return;
-      e.preventDefault();
-      if(e.deltaY>0) _slotScrollIdx=Math.min(Math.max(0,chars.length-VIEW),_slotScrollIdx+1);
-      else            _slotScrollIdx=Math.max(0,_slotScrollIdx-1);
-      _renderSlotList();
+      const next=Math.max(0,Math.min(Math.max(0,(_localSlots||[]).length-VIEW),_slotScrollIdx+Math.sign(e.deltaY)));
+      if(next===_slotScrollIdx)return;
+      e.preventDefault();_slotScrollIdx=next;_renderSlotList();
     },{passive:false});
   }
 }
@@ -3132,6 +3200,7 @@ function _updateCharDisplay(s){
   const title=$('charDispTitle');
   const sub=$('charDispSub');
   const preview=$('lobbyCharPreview');
+  const keyart=$('lobbyCharKeyart');
   _selectedCharDisplay=s||null;
   if(!s){
     if(btn) btn.disabled=true;
@@ -3139,6 +3208,7 @@ function _updateCharDisplay(s){
     if(title) title.textContent=_TL('당신은 누구인가');
     if(sub) sub.textContent='';
     if(preview){preview.classList.remove('show');preview.pause&&preview.pause();preview.removeAttribute('src');preview.removeAttribute('poster');preview.load&&preview.load();}
+    if(keyart)keyart.classList.remove('show');
     _swapLobbyBg(0);
     return;
   }
@@ -3149,11 +3219,15 @@ function _updateCharDisplay(s){
   if(title) title.textContent=s.name||_TL('당신은 누구인가');
   if(sub) sub.textContent=_TL(_vi.job||_vi.cls||'');
   if(preview&&_vi.idleVid){
+    if(keyart)keyart.classList.remove('show');
     const _src=_vi.idleVid.split('?')[0];
     if(!preview.src.endsWith(_src)){preview.classList.remove('show');preview.poster=_vi.poster||'';preview.src=_vi.idleVid;preview.load&&preview.load();}
     preview.defaultPlaybackRate=_vi.idleRate||1;preview.playbackRate=preview.defaultPlaybackRate;
     preview.classList.add('show');
     const _play=preview.play&&preview.play();if(_play&&_play.catch)_play.catch(()=>{});
+  }else{
+    if(preview){preview.classList.remove('show');preview.pause&&preview.pause();}
+    if(keyart){keyart.src=_vi.portrait||'';keyart.classList.toggle('show',!!_vi.keyart);}
   }
 }
 
@@ -3241,34 +3315,64 @@ if($('enterGameBtn')){
   $('enterGameBtn').addEventListener('click',()=>{playEnterSFX();if(_selectedSlot)showCharGate(_selectedSlot)});
 }
 // 생성 모달
-$('createCancelBtn').addEventListener('click',()=>{$('createModal').classList.remove('show')});
+$('createCancelBtn').addEventListener('click',()=>{
+  $('createModal').classList.remove('show');_vkbHide();setStatus('');
+  const target=document.querySelector('#charList .char-item-new .char-select')||document.querySelector('#charList .char-select');
+  if(target)target.focus({preventScroll:true});
+});
+$('createModal').addEventListener('keydown',e=>{
+  if(e.isComposing||e.keyCode===229)return;
+  if(e.key==='Escape'){e.preventDefault();e.stopPropagation();$('createCancelBtn').click();return;}
+  if(e.key!=='Tab')return;
+  const controls=[$('charName'),$('createCancelBtn'),$('createBtn')].filter(el=>el&&!el.disabled);
+  if(!controls.length)return;
+  e.preventDefault();
+  const index=controls.indexOf(document.activeElement);
+  controls[(index+(e.shiftKey?-1:1)+controls.length)%controls.length].focus();
+});
 
 // ── 커스텀 삭제 확인 모달 ──
 let _delConfirmCb=null;
 let _delConfirmBusy=false;
+let _delConfirmReturnFocus=null;
 let _delConfirmIdx=0; // 0=확인, 1=취소
 function _showDelConfirm(name,onYes){
   if(_delConfirmBusy)return;
   setStatus('');
   const m=$('delConfirmModal');if(!m)return;
   $('delConfirmMsg').textContent=name+_TL(' 캐릭터를 정말 삭제하시겠습니까?');
+  _delConfirmReturnFocus=document.activeElement;
   m.style.display='flex';_delConfirmCb=onYes;_delConfirmIdx=1; // 기본 취소에 포커스
   _delHighlight();
 }
-function _hideDelConfirm(){if(_delConfirmBusy)return;const m=$('delConfirmModal');if(m)m.style.display='none';_delConfirmCb=null;}
+function _hideDelConfirm(){
+  if(_delConfirmBusy)return;
+  const m=$('delConfirmModal');if(m)m.style.display='none';_delConfirmCb=null;
+  const target=_delConfirmReturnFocus&&_delConfirmReturnFocus.isConnected?_delConfirmReturnFocus:document.querySelector('#charList .char-select');
+  _delConfirmReturnFocus=null;if(target&&target.focus)target.focus({preventScroll:true});
+}
 function _delHighlight(){
   const y=$('delConfirmYes'),n=$('delConfirmNo');if(!y||!n)return;
   y.style.outline=_delConfirmIdx===0?'2px solid #C9A961':'';
   n.style.outline=_delConfirmIdx===1?'2px solid #C9A961':'';
+  if(!_delConfirmBusy)(_delConfirmIdx===0?y:n).focus({preventScroll:true});
 }
 $('delConfirmYes').onclick=async()=>{
   if(_delConfirmBusy||!_delConfirmCb)return;
-  _delConfirmBusy=true;$('delConfirmYes').disabled=true;$('delConfirmNo').disabled=true;
+  _delConfirmBusy=true;$('delConfirmModal').focus({preventScroll:true});$('delConfirmYes').disabled=true;$('delConfirmNo').disabled=true;
   try{await _delConfirmCb()}
   catch(error){setStatus(_TL('삭제 실패: ')+(error.message||_TL('알 수 없는 오류')),true)}
   finally{_delConfirmBusy=false;$('delConfirmYes').disabled=false;$('delConfirmNo').disabled=false;_hideDelConfirm()}
 };
 $('delConfirmNo').onclick=()=>{_hideDelConfirm()};
+$('delConfirmModal').addEventListener('keydown',e=>{
+  if(e.key==='Escape'){e.preventDefault();e.stopPropagation();_hideDelConfirm();return;}
+  if(e.key!=='Tab')return;
+  e.preventDefault();e.stopPropagation();if(_delConfirmBusy)return;
+  _delConfirmIdx=document.activeElement===$('delConfirmYes')?1:0;_delHighlight();
+});
+$('delConfirmYes').addEventListener('focus',()=>{_delConfirmIdx=0});
+$('delConfirmNo').addEventListener('focus',()=>{_delConfirmIdx=1});
 
 // ── 가상 키보드 (게임패드용) + 한글 자동 조합 ──
 const _VKB_ROWS=[
@@ -3325,6 +3429,14 @@ function _vkbHighlight(){
     s.style.color=(r===_vkbRow&&c===_vkbCol)?'#ffcc00':'#ccaa77';
     s.style.background=(r===_vkbRow&&c===_vkbCol)?'rgba(80,60,20,.8)':'rgba(40,30,20,.8)';
   });
+  const selected=w.querySelector('[data-vr="'+_vkbRow+'"][data-vc="'+_vkbCol+'"]');
+  const panel=w.closest('.create-modal-inner');
+  if(selected&&panel){
+    const keyRect=selected.getBoundingClientRect(),panelRect=panel.getBoundingClientRect();
+    const top=panelRect.top+panel.clientTop+4,bottom=panelRect.top+panel.clientTop+panel.clientHeight-4;
+    if(keyRect.top<top)panel.scrollTop-=top-keyRect.top;
+    else if(keyRect.bottom>bottom)panel.scrollTop+=keyRect.bottom-bottom;
+  }
 }
 function _vkbInput(k){
   const inp=$('charName');if(!inp)return;
@@ -3351,6 +3463,10 @@ function _vkbInput(k){
   // 비한글
   if(!_isJamo(k)){_hgState=null;if(inp.value.length<8)inp.value+=k;inp.dispatchEvent(new Event('input'));return;}
   if(inp.value.length>=8&&!_hgState){inp.dispatchEvent(new Event('input'));return;}
+  if(inp.value.length>=8&&_hgState){
+    const sameSyllable=!_hgState.jung?_isJung(k):!_hgState.jong?(_isCho(k)&&_isJong(k)):(_isCho(k)&&!!_JONG_MERGE[_hgState.jong+k]);
+    if(!sameSyllable){inp.dispatchEvent(new Event('input'));return;}
+  }
   // 한글 조합
   if(!_hgState){
     if(_isCho(k)){
@@ -3414,49 +3530,71 @@ function _vkbInput(k){
 
 // ── 로그인 게임패드 네비게이션 ──
 // ── 커스텀 언어 드롭다운 (패드+마우스 공용) ──
-let _langPopOpen = false, _langPopIdx = 0, _langPopSel = null;
+let _langPopOpen = false, _langPopIdx = 0, _langPopSel = null, _langPopPointer = null;
 function _openLangPop(targetSel){
   let pop=$('_langPop');
   const sel=targetSel||$('loginLangSelect')||$('langSelect');if(!sel)return;
   _langPopSel=sel;
+  _langPopPointer=null;
+  _GP.prev._lpU=false;_GP.prev._lpD=false;_GP.prev._lpDir=null;_GP.prev._lpRepT=0;
   if(!pop){
-    pop=document.createElement('div');pop.id='_langPop';
+    pop=document.createElement('div');pop.id='_langPop';pop.tabIndex=0;pop.setAttribute('role','listbox');pop.setAttribute('aria-label','Language');
+    pop.addEventListener('keydown',_langPopKeydown);
     pop.style.cssText='position:fixed;z-index:9999;background:rgba(10,6,2,.95);border:1px solid rgba(120,80,40,.6);border-radius:6px;padding:6px 0;max-height:60vh;overflow-y:auto;min-width:200px;box-shadow:0 8px 32px rgba(0,0,0,.8)';
     document.body.appendChild(pop);
   }
-  pop.innerHTML='';
+  pop.replaceChildren();
   const opts=sel.options;_langPopIdx=sel.selectedIndex;
   for(let i=0;i<opts.length;i++){
     const row=document.createElement('div');
     row.style.cssText='padding:6px 16px;color:#ccaa88;font-size:.85rem;cursor:pointer;transition:background .1s';
     row.textContent=opts[i].text;
-    row.dataset.idx=i;
-    row.onmouseenter=function(){this.style.background='rgba(255,150,80,.15)'};
-    row.onmouseleave=function(){this.style.background=''};
+    row.dataset.idx=i;row.id='_langOption'+i;row.setAttribute('role','option');row.setAttribute('aria-selected',String(i===sel.selectedIndex));
+    row.onmousemove=function(e){if(_langPopPointer&&_langPopPointer.x===e.clientX&&_langPopPointer.y===e.clientY)return;_langPopPointer={x:e.clientX,y:e.clientY};_langPopIdx=+this.dataset.idx;_hlLangPop(false)};
     row.onclick=function(){sel.selectedIndex=+this.dataset.idx;sel.dispatchEvent(new Event('change'));_closeLangPop()};
     if(i===sel.selectedIndex)row.style.color='#ffcc44';
     pop.appendChild(row);
   }
   // 위치: select 아래
-  const r=sel.getBoundingClientRect();
-  pop.style.left=r.left+'px';pop.style.top=(r.bottom+4)+'px';
-  pop.style.display='block';_langPopOpen=true;
+  _positionLangPop(pop,sel);
+  _langPopOpen=true;sel.setAttribute('aria-expanded','true');pop.focus({preventScroll:true});
   _hlLangPop();
 }
-function _closeLangPop(){const p=$('_langPop');if(p)p.style.display='none';_langPopOpen=false;}
-function _hlLangPop(){
+function _positionLangPop(pop,sel){
+  const r=sel.getBoundingClientRect();
+  const below=innerHeight-r.bottom-8,above=r.top-8;
+  const down=below>=Math.min(240,innerHeight*.6)||below>=above;
+  pop.style.minWidth=Math.min(200,innerWidth-16)+'px';pop.style.maxWidth=(innerWidth-16)+'px';
+  pop.style.maxHeight=Math.max(48,Math.min(innerHeight*.6,down?below:above))+'px';
+  pop.style.display='block';
+  pop.style.left=Math.max(8,Math.min(r.left,innerWidth-pop.offsetWidth-8))+'px';
+  pop.style.top=Math.max(8,Math.min(down?r.bottom+4:r.top-pop.offsetHeight-4,innerHeight-pop.offsetHeight-8))+'px';
+}
+window.addEventListener('resize',()=>{const p=$('_langPop');if(_langPopOpen&&p&&_langPopSel){_positionLangPop(p,_langPopSel);_hlLangPop();}});
+function _closeLangPop(restore=true){const p=$('_langPop');if(p)p.style.display='none';_langPopOpen=false;if(_langPopSel){_langPopSel.setAttribute('aria-expanded','false');if(restore&&_langPopSel.isConnected)_langPopSel.focus({preventScroll:true});}}
+function _langPopKeydown(e){
+  if(e.key==='Escape'||e.key==='Tab'){if(e.key==='Escape')e.preventDefault();e.stopPropagation();_closeLangPop();return;}
+  if(['ArrowUp','ArrowDown','Home','End','Enter',' '].includes(e.key)){
+    e.preventDefault();e.stopPropagation();const count=_langPopSel.options.length;
+    if(e.key==='Enter'||e.key===' '){const row=$('_langPop').children[_langPopIdx];if(row)row.click();return;}
+    _langPopIdx=e.key==='Home'?0:e.key==='End'?count-1:Math.max(0,Math.min(count-1,_langPopIdx+(e.key==='ArrowDown'?1:-1)));_hlLangPop();
+  }
+}
+document.addEventListener('pointerdown',e=>{const p=$('_langPop');if(_langPopOpen&&p&&!p.contains(e.target)&&e.target!==_langPopSel)_closeLangPop(false)});
+function _hlLangPop(scroll=true){
   const p=$('_langPop');if(!p)return;
   const rows=p.children;
   for(let i=0;i<rows.length;i++){
     rows[i].style.background=i===_langPopIdx?'rgba(255,150,80,.2)':'';
     rows[i].style.outline=i===_langPopIdx?'1px solid #C9A961':'';
   }
-  if(rows[_langPopIdx])rows[_langPopIdx].scrollIntoView({block:'nearest'});
+  if(rows[_langPopIdx]){p.setAttribute('aria-activedescendant',rows[_langPopIdx].id);if(scroll)rows[_langPopIdx].scrollIntoView({block:'nearest'});}
 }
 // 마우스로 select 클릭 시에도 커스텀 팝업 사용
 (function(){
   ['loginLangSelect','langSelect','cinLang','lobbyLangSelect'].forEach(function(id){
-    const s=$(id);if(s)s.addEventListener('mousedown',function(e){e.preventDefault();if(_langPopOpen)_closeLangPop();else _openLangPop(s)});
+    const s=$(id);if(s){s.setAttribute('aria-controls','_langPop');s.setAttribute('aria-expanded','false');s.addEventListener('keydown',e=>{if(['Enter',' ','ArrowDown','ArrowUp'].includes(e.key)){e.preventDefault();e.stopPropagation();_openLangPop(s)}});}
+    if(s)s.addEventListener('mousedown',function(e){e.preventDefault();if(_langPopOpen)_closeLangPop();else _openLangPop(s)});
   });
 })();
 
@@ -3572,6 +3710,13 @@ _GP.on('lobbyNav', (gp, just) => {
     return false;
   }
 
+  // 우측 스틱 → 캐릭터 슬롯 스크롤 (휠처럼)
+  const _rsY = gp.axes&&gp.axes.length>=4 ? gp.axes[3] : 0;
+  if(_rsY < -0.5 && !_GP.prev._rsUp) { const u=$('charNavUpOn')||$('charNavUp');if(u&&!u.disabled)u.click(); }
+  if(_rsY > 0.5 && !_GP.prev._rsDown) { const d=$('charNavDnOn')||$('charNavDn');if(d&&!d.disabled)d.click(); }
+  _GP.prev._rsUp = _rsY < -0.5;
+  _GP.prev._rsDown = _rsY > 0.5;
+
   // 로비 내 상호작용 가능한 요소 전부 자동 수집 (부모-자식 중복 제거)
   const _navItems = [];
   // 언어 select 먼저 추가
@@ -3588,6 +3733,8 @@ _GP.on('lobbyNav', (gp, just) => {
   }
   if(!_navItems.length) return false;
 
+  const _retainedGpIdx = _navItems.findIndex(ni => ni.el === _GP.prev._lobbyEl);
+  if(_retainedGpIdx >= 0) _lobbyGpIdx = _retainedGpIdx;
   if(_lobbyGpIdx >= _navItems.length) _lobbyGpIdx = _navItems.length - 1;
 
   // D-pad 위(12)/아래(13) 또는 좌스틱
@@ -3600,29 +3747,32 @@ _GP.on('lobbyNav', (gp, just) => {
     else if(_lNow>=_GP.prev._lobbyRepT){_GP.prev._lobbyRepT=_lNow+80;_lobbyGpIdx=_lU?Math.max(0,_lobbyGpIdx-1):Math.min(_navItems.length-1,_lobbyGpIdx+1);}
   } else {_GP.prev._lobbyDir=null;}
 
-  // 우측 스틱 → 캐릭터 슬롯 스크롤 (휠처럼)
-  const _rsY = gp.axes&&gp.axes.length>=4 ? gp.axes[3] : 0;
-  if(_rsY < -0.5 && !_GP.prev._rsUp) { const u=$('charNavUp');if(u&&!u.disabled)u.click(); }
-  if(_rsY > 0.5 && !_GP.prev._rsDown) { const d=$('charNavDn');if(d&&!d.disabled)d.click(); }
-  _GP.prev._rsUp = _rsY < -0.5;
-  _GP.prev._rsDown = _rsY > 0.5;
-
   // 포커스 하이라이트 + ENTER 호버 사운드
   const _prevGpIdx = _GP.prev._lobbyIdx;
   _navItems.forEach((ni, i) => {
     if(i === _lobbyGpIdx) { ni.el.style.outline = '2px solid #C9A961'; ni.el.style.outlineOffset = '-2px'; }
     else { ni.el.style.outline = ''; ni.el.style.outlineOffset = ''; }
   });
-  if(_lobbyGpIdx !== _prevGpIdx) {
+  if(_lobbyGpIdx !== _prevGpIdx || _navItems[_lobbyGpIdx].el !== _GP.prev._lobbyEl) {
     const cur = _navItems[_lobbyGpIdx];
     // 이전 포커스 hover 제거
-    if(_prevGpIdx!==undefined&&_navItems[_prevGpIdx])_navItems[_prevGpIdx].el.classList.remove('gp-hover');
+    if(_GP.prev._lobbyEl)_GP.prev._lobbyEl.classList.remove('gp-hover');
     // 현재 포커스 hover 추가
-    if(cur) cur.el.classList.add('gp-hover');
+    if(cur){
+      cur.el.classList.add('gp-hover');
+      const panel=cur.el.closest('.lobby-content');
+      if(panel&&panel.clientHeight>0&&panel.scrollHeight>panel.clientHeight){
+        const pr=panel.getBoundingClientRect(),r=cur.el.getBoundingClientRect();
+        const top=pr.top+panel.clientTop+4,bottom=pr.top+panel.clientTop+panel.clientHeight-4;
+        if(r.top<top)panel.scrollTop-=top-r.top;
+        else if(r.bottom>bottom)panel.scrollTop+=r.bottom-bottom;
+      }
+    }
     if(cur && cur.el.id === 'enterGameBtn') { try{_startHover();}catch(e){} _GP.vibLoop(100,0.10,0.06,200); }
     else { try{_stopHover();}catch(e){} _GP.vibLoopStop(); _GP.vib(60,0.12,0.06); }
   }
   _GP.prev._lobbyIdx = _lobbyGpIdx;
+  _GP.prev._lobbyEl = _navItems[_lobbyGpIdx].el;
 
   // A(0) = 선택/실행
   if(just[0]) {

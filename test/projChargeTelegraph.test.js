@@ -92,3 +92,11 @@ test('every physical eShootWind attack previews a white charge ring', () => {
     assert.match(physicalWindup, /e\.s='eShootWind';e\.st2=60;e\._swChargeEl=EL\.P/);
   }
 });
+
+test('pillar demon shockwave does not hide a physical shot inside its dark charge ring', () => {
+  const pillar = sliceBetween(gameHtml, '// ── 46:기둥 악마', '// ── 47:그림자 쌍둥이');
+  const shockwave = pillar.slice(pillar.indexOf('// 지면 AoE'));
+  assert.match(shockwave, /_swChargeEl=EL\.D/);
+  assert.doesNotMatch(shockwave, /eProjAt\([^;]*,e\.el,/);
+  assert.match(shockwave, /eProjAt\([^;]*,EL\.D,/);
+});

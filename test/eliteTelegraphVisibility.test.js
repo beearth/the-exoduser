@@ -51,12 +51,28 @@ test('elite lightning warning has a bright central bolt and readable side lanes'
   assert.equal(X.globalAlpha,1);assert.equal(X.globalCompositeOperation,'source-over');
 });
 
-test('champions show a brighter outer aura in both GPU-instanced and regular render paths',()=>{
+function renderAura(tier,now,etype=tier===2?90:12){
+  const {X}=canvas(),image={complete:true},calls=[],filters=[];
+  const ctx=new Proxy(X,{get(target,key){if(key==='drawImage')return(...args)=>calls.push(args);const value=Reflect.get(target,key,target);return typeof value==='function'?value.bind(target):value},set(target,key,value){if(key==='filter')filters.push(value);target[key]=value;return true}});
+  const scope={X:ctx,e:{x:110,y:110,r:18,elite:tier,etype},sa:1,now,Math,_SA_IMG:image,_SA_CW:480,_SA_CH:480,_SA_COLS:5,_SA_FRAMES:20,_saReady:true};
+  vm.runInNewContext(source+';_drawEliteAuraTelegraph(X,e,sa,now)',scope);
+  return {calls,filters,X};
+}
+
+test('champions use the Q shield energy aura with champion tint in both enemy render paths',()=>{
   assert.ok(source.includes('function _drawEliteAuraTelegraph('),'elite aura renderer must exist');
-  const {X,image}=canvas(),e={x:110,y:110,r:18,elite:3};
-  vm.runInNewContext(source+';_drawEliteAuraTelegraph(X,e,1,_now)',{X,e,_now:170,Math});
-  const ring=maxColor(image(),142,110,2);
-  assert.ok(ring.red>120&&ring.red>ring.green*1.35,'champion outline must read as a distinct red threat tier');
+  const {calls,filters}=renderAura(3,170);
+  assert.equal(calls.length,2,'each aura frame draws a soft glow and a defined energy sprite');
+  assert.match(filters[0],/hue-rotate\(145deg\)/,'champion energy should use the red tier tint');
   const renderCalls=(html.match(/_drawEliteAuraTelegraph\(X,e,sa,_now\)/g)||[]).length;
   assert.ok(renderCalls>=2,'both GPU-instanced and regular enemy paths must draw the aura');
+});
+
+test('rare named monsters use a moving Q shield energy aura rather than circular bands',()=>{
+  const a=renderAura(0,170,90),b=renderAura(0,390,90);
+  assert.equal(a.calls.length,2);
+  assert.match(a.filters[0],/hue-rotate\(187deg\)/,'rare energy should be gold tinted');
+  assert.notEqual(a.calls[0][1]+','+a.calls[0][2],b.calls[0][1]+','+b.calls[0][2],'sprite animation frame should advance over time');
+  assert.doesNotMatch(source.slice(0,source.indexOf('function _drawEliteZoneTelegraph(')),/X\.(?:arc|ellipse|stroke)\(/,'aura renderer must not draw closed circular bands');
+  assert.equal(a.X.globalAlpha,1);assert.equal(a.X.globalCompositeOperation,'source-over');
 });

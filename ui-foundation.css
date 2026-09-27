@@ -198,8 +198,8 @@ body:has(:is(#settings,#invPanel,#forge,#skillPanel,#storagePanel,#statPanel).on
 /* Tutorial: opaque text, ornamental edges and a pinned footer. Gameplay colours stay semantic. */
 #parryLesson{
   opacity:1;padding:68px 24px 20px;color:#eee4d4;
-  background:radial-gradient(ellipse at 50% 0,#47171288,transparent 48%),#100d0ef5;
-  border:1px solid #695047;box-shadow:0 20px 70px #000b,inset 0 0 0 4px #070607;
+  background:transparent;
+  border:0;box-shadow:none;text-shadow:0 1px 3px #000,0 0 6px #000;
 }
 #parryLesson::before{content:'';position:absolute;inset:0;border:40px solid transparent;border-image:var(--ui-frame) 22% / 40px / 0 stretch;z-index:-1;pointer-events:none;}
 #parryLesson::after{content:'';position:absolute;top:6px;left:50%;transform:translateX(-50%);width:174px;height:58px;background:var(--ui-crest) center/contain no-repeat;pointer-events:none;z-index:-1;}
@@ -239,7 +239,6 @@ body:has(#parryLesson) :is(#mmLvl,#tutorialBadgeButton){visibility:hidden;}
 .lobby-right::after{content:'';position:absolute;inset:2px;border:40px solid transparent;border-image:var(--ui-frame) 22% / 40px / 0 stretch;pointer-events:none;z-index:2;}
 .lobby-right .char-item.active{background:linear-gradient(90deg,#481718,#160e10)!important;border-color:#c15b47!important;box-shadow:inset 3px 0 #d3634b!important;}
 .lobby-right .char-item.active::before{background:#cf634b!important;}
-.lobby-right .enter-game-btn img{filter:hue-rotate(95deg) saturate(.9);}
 .lobby-right .lobby-divider{height:56px!important;background:var(--ui-crest) center/168px 56px no-repeat!important;opacity:1;mix-blend-mode:normal;}
 @media(max-width:1400px){
   :is(#settings,#invPanel,#forge,#skillPanel,#storagePanel,#statPanel).panel .pbox{padding:74px 32px 24px!important;}
@@ -264,3 +263,8 @@ body:has(#parryLesson) :is(#mmLvl,#tutorialBadgeButton){visibility:hidden;}
   #parryLesson::after{display:none;}
   #parryLesson .lesson-row{font-size:12px;padding:5px;}
 }
+
+
+
+/* Keep the tutorial interior opaque; only the ornament exterior is transparent. */
+#parryLesson::before{border-width:18px;border-image-width:40px;background:radial-gradient(ellipse at 50% 0,#47171288,transparent 48%),#100d0ef5;background-clip:padding-box;}

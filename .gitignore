@@ -130,6 +130,8 @@ assets/vfx/boss/gen/
 /output/**/captures/
 /output/**/*.log
 /output/steam_save_incident_20260918_1542/
+/output/steam_demo_20260927/
+/output/imagegen/rootworld_master_20260924/
 
 # Reproducible Steam localization preview/package exports (keep local, don't pollute Git status)
 /output/language_package_20260923/

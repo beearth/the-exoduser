@@ -1,0 +1,28 @@
+{
+  "status": "REJECTED_LOW_QUALITY",
+  "reuseAllowed": false,
+  "date": "2026-09-27",
+  "reason": "CH2 four-seam before/hidden inspection: legacy red pixel web is not needed to join existing wall masses. Large web pillars preserved.",
+  "files": [
+    {
+      "original": "assets/map/ch1/floor_objects/spider_web.png",
+      "archived": "archive/retired-map-assets/20260927-web/assets/map/ch1/floor_objects/spider_web.png",
+      "sha256": "8d02049d385ffbe0a053a4fae0a3556d7dd9d487d7792501eba2ffd123fd7af8"
+    },
+    {
+      "original": "assets/map/ch2/floor_objects/spider_web.png",
+      "archived": "archive/retired-map-assets/20260927-web/assets/map/ch2/floor_objects/spider_web.png",
+      "sha256": "8d02049d385ffbe0a053a4fae0a3556d7dd9d487d7792501eba2ffd123fd7af8"
+    },
+    {
+      "original": "assets/objects/spider_web.png",
+      "archived": "archive/retired-map-assets/20260927-web/assets/objects/spider_web.png",
+      "sha256": "8d02049d385ffbe0a053a4fae0a3556d7dd9d487d7792501eba2ffd123fd7af8"
+    },
+    {
+      "original": "docs/4.1맵디자인+설정/objects/spider_web.png",
+      "archived": "archive/retired-map-assets/20260927-web/docs/4.1맵디자인+설정/objects/spider_web.png",
+      "sha256": "8d02049d385ffbe0a053a4fae0a3556d7dd9d487d7792501eba2ffd123fd7af8"
+    }
+  ]
+}

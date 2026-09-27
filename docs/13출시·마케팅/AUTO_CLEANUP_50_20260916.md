@@ -1,5 +1,7 @@
 # 변경 파일50개 자동 정리 — 2026-09-16
 
+> 2026-09-27 현행 운영: 사용자 요청으로 `ExoduserAutoCleanup50` 예약 작업 삭제 완료. 1분 주기 및 로그온 자동 실행은 해제되었다. 터미널 창 깜빡임·작업 방해로 자동 재등록하지 않는다. 아래 도구·임계값은 수동 실행 시에만 적용하며 과거 등록 기록은 이 지시를 대체하지 않는다.
+
 사용자 지시: 변경 파일이50개 이상 쌓이지 않도록 자동 정리한다. 정리는 기존 작업을 로컬 Git 커밋으로 보존하는 동작이다. 검수·백업 파일은 아래 즉시 제외 규칙으로 처리하고, 실제 소스의50개 자동 커밋은 별도 동작이다. 기존 로컬 백업/검수 폴더 제외 정책은 `SOURCE_CONTROL_HYGIENE_20260916.md`를 따른다.
 
 | 항목 | 현행 계약 |
@@ -9,9 +11,9 @@
 | 검수 즉시 제외 | `.gitignore`의 `/output/*_review_*/`, `/output/**/backups/`, `originals/`, `before/`, `profiles/`, `captures/` 및 `/output/**/*.log`. 새 날짜 폴더도 생성 즉시 제외하며50개/60초 조건을 기다리지 않음. 기존 추적 파일은 계속 추적 |
 | 임계값 | `DEFAULT_THRESHOLD=50`; `git status --porcelain=v1 --no-renames -z --untracked-files=all`의 파일 수 기준.49개 이하 보류 |
 | 정지 시간 | `DEFAULT_QUIET_MS=60000`. 파일 상태·경로·크기·mtimeNs와 HEAD가60초간 같아야 실행. 변경 시 다시 대기 |
-| 예약 작업 | `ExoduserAutoCleanup50`,1분 간격 및 현재 사용자의 로그온 시 실행. 숨김 창, 일반 사용자 권한, 중복 실행 IgnoreNew, 배터리 허용, 최대5분 |
-| 등록 도구 | `tools/install-auto-sync-task.ps1`. 저장소 위치는 스크립트에서 계산. 동일 이름 작업은 현행 설정으로 갱신하고 즉시1회 시작 |
-| 실행 환경 | 현재 사용자가 Windows에 로그인한 동안 실행. 절전/종료 중 동작하지 않으며 StartWhenAvailable 사용 |
+| 예약 작업 | `ExoduserAutoCleanup50` 삭제됨(2026-09-27). 1분 주기 및 로그온 자동 실행 없음 |
+| 등록 도구 | `tools/install-auto-sync-task.ps1`은 과거 설치 도구로 보존. 사용자 재요청 없이 실행·재등록 금지 |
+| 실행 환경 | 자동 실행 해제. 필요 시 명시적으로 수동 검사 |
 | 검증 | 변경된 JS/CJS/MJS 및 HTML 인라인 JS를 acorn으로 파싱. 변경된 `test/*.test.[cm]js` 실행. 각 외부 명령 제한120초. CRLF 허용 후행 공백 검사 |
 | 문서 조건 | docs 외 파일 변경 시 관련 docs 문서와 `docs/CHANGELOG_SYNC.md` 모두 수정되어 있어야 자동 커밋. 의미/수치의 완전 동기화는 작성자가 수행해야 하며 자동 도구가 이를 추론하지 않음 |
 | 보류 | 이미 스테이징된 작업, 병합/리베이스/체리픽/리버트 진행, detached HEAD, 기존 index.lock, 검증 실패, 검증 도중 파일/HEAD 변경 |
@@ -26,17 +28,14 @@
 ## 사용·점검
 
 ```powershell
-# 설치/갱신
-powershell -ExecutionPolicy Bypass -File tools/install-auto-sync-task.ps1
+# 자동 설치/갱신 금지: 2026-09-27 사용자 요청으로 예약 작업 삭제
 # 수동1회 검사 (50개/60초 조건 동일)
 powershell -ExecutionPolicy Bypass -File auto_commit.ps1
 # 최근 결과
 Get-Content tmp/auto-cleanup/state.json
 # 예약 작업 상태
 Get-ScheduledTask -TaskName ExoduserAutoCleanup50
-# 일시 중지/재개
-Disable-ScheduledTask -TaskName ExoduserAutoCleanup50
-Enable-ScheduledTask -TaskName ExoduserAutoCleanup50
+# 조회 시 작업 없음이 정상이며 자동 복구하지 않는다.
 ```
 
 1분 주기 검사와 편집 정지·검증을 거치므로 파일이 한 번에 대량 생성되거나 편집이 계속되면 잠시50개를 넘을 수 있다. 강제로 파일을 숨기거나 삭제해서 개수를 맞추지 않는다.

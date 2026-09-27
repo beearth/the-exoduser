@@ -15,10 +15,11 @@ class Element {
   appendChild(child){this.children.push(child);return child;}
   replaceChildren(...children){this.children=children;}
   setAttribute(key,value){this[key]=value;}
+  querySelector(){return null;}
 }
 function runtime(bag){
   const elements=new Map();
-  const ctx=vm.createContext({document:{createElement:()=>new Element()},
+  const ctx=vm.createContext({HTMLButtonElement:Element,document:{activeElement:null,createElement:()=>new Element(),querySelector:()=>null,querySelectorAll:()=>[]},
     $:id=>{if(!elements.has(id))elements.set(id,new Element());return elements.get(id);},
     G:{mats:100000,forgeTab:'crystal'},OPT:{lang:'ko'},P:{x:0,y:0},
     _L:(ko)=>ko,_T:x=>x,_glyph:()=>'',_malCost:x=>x,
@@ -35,7 +36,7 @@ function button(rt,label){return descendants(rt.elements.get('fgGrid')).find(e=>
 function list(rt,id){return descendants(rt.elements.get('fgGrid')).find(e=>e.id===id);}
 
 test('gems inventory groups quantities without changing bag order and filters independently of the forge',()=>{
-  const bag=[cr('cr_hp'),cr('cr_atk',2),cr('cr_hp'),cr('cr_hp',0,3)];
+  const bag=[cr('cr_martyr_tear'),cr('cr_blood_oath',2),cr('cr_martyr_tear'),cr('cr_martyr_tear',0,3)];
   const rt=runtime(bag),before=JSON.stringify(bag);
   assert.equal(rt.run('typeof renderInvCrystals'),'function','Dedicated inventory renderer exists');
   rt.run("_crForgeFilter='atk';_invCrFilter='def';renderInvCrystals()");
@@ -48,12 +49,12 @@ test('gems inventory groups quantities without changing bag order and filters in
 });
 
 test('gems inventory attaches exactly the selected object to a compatible empty equipped socket',()=>{
-  const selected=cr('cr_hp',2,4),other=cr('cr_atk'),rt=runtime([other,selected]);
+  const selected=cr('cr_martyr_tear',2,4),other=cr('cr_blood_oath'),rt=runtime([other,selected]);
   assert.equal(rt.run('typeof renderInvCrystals'),'function');
   const armor={slot:'armor',name:'Test armor',crystals:[null]},weapon={slot:'weapon',name:'Test sword',crystals:[null]};
   rt.ctx.INV.equipped={armor,weapon};
   rt.run('renderInvCrystals()');
-  const slot=descendants(rt.elements.get('invCrystalsPanel')).find(n=>n.className==='inv-cr-slot'&&n.dataset.id==='cr_hp');
+  const slot=descendants(rt.elements.get('invCrystalsPanel')).find(n=>n.className==='inv-cr-slot'&&n.dataset.id==='cr_martyr_tear');
   slot.onclick();
   const buttons=descendants(rt.elements.get('invCrystalsPanel')).filter(n=>n.className==='inv-cr-attach');
   assert.equal(buttons.length,1,'Incompatible weapons are not offered');
@@ -73,6 +74,18 @@ test('empty gems inventory shows an empty state without changing items or resour
   assert.equal(rt.ctx.INV.bag.length,0);
 });
 
+test('selected named gem shows every effect as a separate row with its lore',()=>{
+  const rt=runtime([cr('cr_blood_oath')]);
+  rt.run('renderInvCrystals()');
+  const panel=rt.elements.get('invCrystalsPanel');
+  descendants(panel).find(n=>n.className==='inv-cr-slot').onclick();
+  const rows=descendants(panel).filter(n=>n.className==='inv-cr-effect');
+  assert.equal(rows.length,3);
+  assert.deepEqual(rows.map(n=>n.children[0].textContent),['공격력','치명확률','최대 HP']);
+  assert.deepEqual(rows.map(n=>n.children[1].textContent),['+1','+0.06%','+2']);
+  assert.match(descendants(panel).find(n=>n.className==='inv-cr-lore').textContent,/서약/);
+});
+
 test('inventory has no crystal management section or pouch shortcut; sockets still open the picker',()=>{
   const inv=html.slice(html.indexOf('function renderInv(){'),html.indexOf('function _fgCraft('));
   assert.doesNotMatch(inv,/invCrystalRow|CRYSTAL_BAG\.sort/);
@@ -82,7 +95,7 @@ test('inventory has no crystal management section or pouch shortcut; sockets sti
 });
 
 test('display groups preserve distinct enhancements, original bag order and source indices',()=>{
-  const bag=[cr('cr_hp'),cr('cr_atk',3),cr('cr_hp',0,2),{id:'cr_hp',star:0},cr('cr_mp')];
+  const bag=[cr('cr_martyr_tear'),cr('cr_blood_oath',3),cr('cr_martyr_tear',0,2),{id:'cr_martyr_tear',star:0},cr('cr_deep_well')];
   const rt=runtime(bag),before=JSON.stringify(bag);
   assert.equal(rt.run('typeof _crBagGroups'),'function');
   const groups=rt.run("_crBagGroups('def')");
@@ -90,12 +103,12 @@ test('display groups preserve distinct enhancements, original bag order and sour
   assert.deepEqual(Array.from(groups[0].idxs),[2]);
   assert.deepEqual(Array.from(groups[1].idxs),[0,3]);
   assert.equal(JSON.stringify(bag),before);
-  assert.equal(rt.run("_crBagGroups('acc')[0].id"),'cr_mp');
+  assert.equal(rt.run("_crBagGroups('acc')[0].id"),'cr_deep_well');
   assert.equal(rt.run("_crBagGroups('atk')[0].star"),3);
 });
 
 test('grouped enhancement consumes exactly one feed and retains the selected crystal after index shifts',()=>{
-  const target=cr('cr_hp',0,2),feed=cr('cr_hp'),other=cr('cr_mp');
+  const target=cr('cr_martyr_tear',0,2),feed=cr('cr_martyr_tear'),other=cr('cr_deep_well');
   const rt=runtime([feed,other,target]);
   rt.run("_crForgeFilter='def';renderForge()");
   assert.ok(list(rt,'crForgeList'),'grouped owned-crystal list');
@@ -109,7 +122,7 @@ test('grouped enhancement consumes exactly one feed and retains the selected cry
 });
 
 test('decomposing a grouped row removes one crystal, credits one refund and keeps unrelated crystals',()=>{
-  const a=cr('cr_hp'),b=cr('cr_hp'),other=cr('cr_atk');
+  const a=cr('cr_martyr_tear'),b=cr('cr_martyr_tear'),other=cr('cr_blood_oath');
   const rt=runtime([other,a,b]);
   rt.run("_crForgeFilter='def';_crForgeTab='decomp';renderForge()");
   assert.ok(list(rt,'crDecompList'),'grouped decomposition list');
@@ -120,20 +133,20 @@ test('decomposing a grouped row removes one crystal, credits one refund and keep
 });
 
 test('filtered bulk synthesis includes mixed enhancements but never consumes hidden categories',()=>{
-  const hidden=[cr('cr_atk'),cr('cr_atk'),cr('cr_atk')];
-  const rt=runtime([...hidden,cr('cr_hp'),cr('cr_hp',0,2),cr('cr_hp',0,4)]);
+  const hidden=[cr('cr_blood_oath'),cr('cr_blood_oath'),cr('cr_blood_oath')];
+  const rt=runtime([...hidden,cr('cr_martyr_tear'),cr('cr_martyr_tear',0,2),cr('cr_martyr_tear',0,4)]);
   rt.run("_crForgeFilter='def';_crForgeTab='synth';renderForge()");
   button(rt,'최상위 일괄합성').onclick();
   assert.equal(rt.ctx.bag.length,4);
   hidden.forEach((item,i)=>assert.equal(rt.ctx.bag[i],item));
-  assert.equal(rt.ctx.bag[3].id,'cr_hp');
+  assert.equal(rt.ctx.bag[3].id,'cr_martyr_tear');
   assert.equal(rt.ctx.bag[3].star,1);
   assert.equal(rt.ctx.bag[3].enh,0);
 });
 
 test('bulk enhance+fuse remains usable with no malice when synthesis alone is possible',()=>{
-  const hidden=[cr('cr_atk'),cr('cr_atk'),cr('cr_atk')];
-  const rt=runtime([...hidden,cr('cr_hp'),cr('cr_hp'),cr('cr_hp')]);
+  const hidden=[cr('cr_blood_oath'),cr('cr_blood_oath'),cr('cr_blood_oath')];
+  const rt=runtime([...hidden,cr('cr_martyr_tear'),cr('cr_martyr_tear'),cr('cr_martyr_tear')]);
   rt.ctx.G.mats=0;
   rt.run("_crForgeFilter='def';renderForge()");
   button(rt,'일괄강화+합성').onclick();
@@ -144,7 +157,7 @@ test('bulk enhance+fuse remains usable with no malice when synthesis alone is po
 });
 
 test('socket picker resets stale filters; attach/detach preserves the same crystal object',()=>{
-  const crystal=cr('cr_hp',3,5),rt=runtime([crystal]);
+  const crystal=cr('cr_martyr_tear',3,5),rt=runtime([crystal]);
   rt.run("renderCrystalBag=()=>{};_crBagFilter='s4';openCrystalPicker(()=>{},'armor')");
   assert.equal(rt.run('_crBagFilter'),'all');
   rt.ctx.item={slot:'armor',crystals:[null]};
@@ -155,9 +168,15 @@ test('socket picker resets stale filters; attach/detach preserves the same cryst
   assert.equal(rt.ctx.bag[0],crystal);
 });
 
-test('English crystal names cover every category including elemental defense',()=>{
-  const rt=runtime([]),start=html.indexOf('const _EN={');
-  rt.run(html.slice(start,html.indexOf('\n};',start)+3));
-  const untranslated=rt.run('Object.values(CRYSTAL_DEFS).filter(d=>!_EN[d.ko]).map(d=>d.ko)');
-  assert.deepEqual(Array.from(untranslated),[]);
+test('all named gems have English names and two or three scaled options',()=>{
+  const rt=runtime([]);
+  const result=rt.run('CRYSTAL_IDS.map(id=>({en:CRYSTAL_DEFS[id].en,options:crystalEffects({id,star:4,enh:20})}))');
+  assert.equal(result.length,18);
+  for(const gem of result){assert.ok(gem.en);assert.ok(gem.options.length>=2&&gem.options.length<=3);}
+  const oath=rt.run("crystalEffects({id:'cr_blood_oath',star:4,enh:20})");
+  assert.deepEqual(Array.from(oath,x=>x.stat),['atk','crit','hp']);
+  assert.equal(oath[0].value,30);
+  assert.ok(Math.abs(oath[1].value-1.8)<1e-9);
+  assert.equal(oath[2].value,60);
+  assert.match(rt.run("_crValStr({id:'cr_blood_oath',star:0,enh:0})"),/공격력.*치명확률.*최대 HP/);
 });

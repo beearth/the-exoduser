@@ -1,5 +1,7 @@
 # 1-1 공개 보스 — 다크드루이드 (2026-09-06)
 
+> **2026-09-27 임팩트 보정:** 일반 si0의 23개 패턴을 코드 경로에서 재조사했다. `groundFissure`·`tideWave`·`chaseAoe`는 드루이드 전용 흙·뿌리·독성 표현으로 개선했고, 누락되었던 `emerge.png` 4×2/8f 로딩을 연결했다. 범위·피해·시간·안전 틈은 유지한다. [패턴별 판정과 검수 범위](../5.1임펙트디자인/CH1_1_BOSS_IMPACT_AUDIT_20260927.md)를 따른다.
+
 > **2026-09-09 피날레 v0.4:** 데모/bic 마지막 si3 보스의 HP는 `floor(22278×(1+.055n+.0015n²)×dm)`, n=max(0,monLv−1); 초기 쉴드=HP, 부활력20, 최대1회 35% HP 저항(확률clamp(1−신성력,0,1)), phase ATK는 base×1/1.12/1.25/1.4/1.6이다. 3막 음악·HUD·120f 카드 및 보스 바로 재도전/60f 인트로의 [현행 계약·검증](../8.1보스디자인바이블/DARK_DRUID_FINALE_PACING_v04.md)을 따른다. 일반 모드와 공용 패링 계약은 기존대로다. 아래 이전 버전의 HP/부활 유지 표현은 당시 이력이다.
 
 
@@ -14,7 +16,7 @@
 | 항목 | 현행 값 / 적용 위치 |
 |---|---|
 | 스테이지 / 표시 이름 | si0 / `HELL_BOSSES[0][0]='다크드루이드'`, `STG[0].bn`·보스 HUD·등장 타이틀 |
-| 외형 | `_CODEX_BOSS[0]=_CODEX_BOSS[3]`, use2D=true, anim=true, dw=9.3, dh=14.1 (기존 대비 1.5배, r=44 기준 높이 620.4px). 기존 드루이드 8방향 walk/attack 및 idle/emerge 시트를 사용 |
+| 외형 | `_CODEX_BOSS[0]=_CODEX_BOSS[3]`, use2D=true, anim=true, dw=9.3, dh=14.1 (기존 대비 1.5배, r=44 기준 높이 620.4px). 기본 대기는 `8dir_v3.png` 1656×1240/4×2 방향 셀(414×620), 이동/공격은 기존 `walk.png`/`attack.png` 4×8, 순간이동은 `emerge.png` 4×2 사용. 비정수 셀은 렌더에서 정수 픽셀 경계로 샘플링. 원본 walk/attack의 가장자리 손실은 후속 시트 보정 과제 |
 | 3D / 거대 플래그 | use2D로 3D overlay 차단; `_enterBossArena`에서 si0 `_isLargeBoss=true` 할당 제거 |
 | 속성 | `STG` 생성 `be:th.be`; CH1 EL.P=0. 구 si0 EL.F 강제 지정 제거. 독 디버프는 전용 패턴의 기존 규칙 |
 | 무브셋 | `_BOSS_MOVESET[0]=new Set(_BOSS_MOVESET[3])`; 23종: slashCombo, slam, sweep, charge, jump, burst, shock, fan, groundFissure, poisonTrail, spin, grab, multiDash, tideWave, chaseAoe, elemBall, beanStorm, summon, mine, seekerMines, lavaPools, rapidMissile, burrowStrike |

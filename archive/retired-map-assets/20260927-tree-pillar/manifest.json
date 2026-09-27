@@ -1,0 +1,43 @@
+{
+  "status": "REJECTED_LOW_QUALITY",
+  "reuseAllowed": false,
+  "date": "2026-09-27",
+  "reason": "Follow-up audit: enlarged legacy 64x64 tree and 48x80 pillar conflict with current environment. Retire visuals and collision together.",
+  "files": [
+    {
+      "original": "assets/map/ch1/collision/rotten_tree.png",
+      "archived": "archive/retired-map-assets/20260927-tree-pillar/assets/map/ch1/collision/rotten_tree.png",
+      "sha256": "f1aec9cf25add6fb0fce53f1c6c1f7f11b5b999e01cc5c194fe9e7fe26d19c51"
+    },
+    {
+      "original": "assets/map/ch1/collision/vine_pillar.png",
+      "archived": "archive/retired-map-assets/20260927-tree-pillar/assets/map/ch1/collision/vine_pillar.png",
+      "sha256": "e36d222e86aa6fd3de43684460a86ce426519b860c52876da9b4cfab8bfb622b"
+    },
+    {
+      "original": "assets/map/ch7/collision/vine_pillar.png",
+      "archived": "archive/retired-map-assets/20260927-tree-pillar/assets/map/ch7/collision/vine_pillar.png",
+      "sha256": "e36d222e86aa6fd3de43684460a86ce426519b860c52876da9b4cfab8bfb622b"
+    },
+    {
+      "original": "assets/objects/rotten_tree.png",
+      "archived": "archive/retired-map-assets/20260927-tree-pillar/assets/objects/rotten_tree.png",
+      "sha256": "f1aec9cf25add6fb0fce53f1c6c1f7f11b5b999e01cc5c194fe9e7fe26d19c51"
+    },
+    {
+      "original": "assets/objects/vine_pillar.png",
+      "archived": "archive/retired-map-assets/20260927-tree-pillar/assets/objects/vine_pillar.png",
+      "sha256": "e36d222e86aa6fd3de43684460a86ce426519b860c52876da9b4cfab8bfb622b"
+    },
+    {
+      "original": "docs/4.1맵디자인+설정/objects/rotten_tree.png",
+      "archived": "archive/retired-map-assets/20260927-tree-pillar/docs/4.1맵디자인+설정/objects/rotten_tree.png",
+      "sha256": "f1aec9cf25add6fb0fce53f1c6c1f7f11b5b999e01cc5c194fe9e7fe26d19c51"
+    },
+    {
+      "original": "docs/4.1맵디자인+설정/objects/vine_pillar.png",
+      "archived": "archive/retired-map-assets/20260927-tree-pillar/docs/4.1맵디자인+설정/objects/vine_pillar.png",
+      "sha256": "e36d222e86aa6fd3de43684460a86ce426519b860c52876da9b4cfab8bfb622b"
+    }
+  ]
+}

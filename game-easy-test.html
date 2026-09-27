@@ -2298,11 +2298,11 @@ canvas{display:block;position:fixed;inset:0}
 </style>
 <link rel="stylesheet" href="stat-panel-ui.css?v=20260910-fullscreen-readable-v1">
 <link rel="stylesheet" href="localization.css?v=20260909">
-<link rel="stylesheet" href="ui-foundation.css?v=20260924-hell3">
-<link rel="stylesheet" href="ui-refinement.css?v=20260927-oss-info-plate">
-<script defer src="ui-panels.js?v=20260927-storage-split"></script>
-<script src="stat-panel-ui.js?v=20260909-constellation-v3"></script>
+<link rel="stylesheet" href="ui-foundation.css?v=20260927-frame-interior">
+<link rel="stylesheet" href="ui-refinement.css?v=20260927-frame-exterior">
 <link rel="stylesheet" href="inventory-oss-balance.css?v=20260927-half">
+<script defer src="ui-panels.js?v=20260927-compare-wheel"></script>
+<script src="stat-panel-ui.js?v=20260909-constellation-v3"></script>
 </head>
 <body>
 <div id="gcModal"><div class="gc-box"><div class="gc-msg" id="gcMsg"></div><div class="gc-btns"><button class="gc-btn gc-ok" id="gcOk"></button><button class="gc-btn gc-cancel" id="gcCancel"></button></div></div></div>
@@ -2728,7 +2728,7 @@ canvas{display:block;position:fixed;inset:0}
             <span class="inv-oss-bone-note"></span>
           </div>
         </section>
-                <div id="invCompareArea" style="border-top:1px solid #332211;margin-top:8px;padding-top:8px;flex:1;min-height:0;overflow-y:auto;display:none"></div>
+        <div id="invCompareArea" style="border-top:1px solid #332211;margin-top:8px;padding-top:8px;flex:1;min-height:0;overflow-y:auto;display:none"></div>
       </div>
       <!-- RIGHT: 아이템 상세 + 비교 -->
       <div class="inv-right" id="invRight">
@@ -2786,7 +2786,7 @@ canvas{display:block;position:fixed;inset:0}
     </header>
     <div class="growth-body">
       <section id="statLeft" class="growth-column growth-attributes" aria-labelledby="growthAttributesTitle">
-        <div class="growth-section-heading"><h2 id="growthAttributesTitle"></h2><p id="growthAttributesNote" class="growth-small-note"></p><button type="button" id="smToggleBtn" class="growth-text-button" aria-expanded="false" aria-controls="growthSummaryDrawer"></button><div id="growthAmount"></div></div>
+        <div class="growth-section-heading"><h2 id="growthAttributesTitle"></h2><p id="growthAttributesNote" class="growth-small-note"></p><button type="button" id="smToggleBtn" class="growth-text-button" aria-expanded="false" aria-controls="growthSummaryDrawer"></button></div>
         <div id="statGrid"></div>
         <div id="growthMetrics" class="growth-metrics"></div>
       </section>
@@ -10095,11 +10095,6 @@ const MAP_DECOR_DEFS={0:[
   {src:_FO_CH1+'bones.png',chance:0.012,scale:1.0,sz:28},
   {src:_FO_CH1+'corpse.png',chance:0.006,scale:1.0,sz:36},
   {src:_FO_CH1+'vine_roots.png',chance:0.010,scale:1.0,sz:32},
-  {src:_FO_CH1+'spider_web.png',chance:0.008,scale:1.0,sz:32},
-  {src:_FO_CH1+'tombstone.png',chance:0.005,scale:1.0,sz:28},
-  {src:_FO_CH1+'weapon_pile.png',chance:0.004,scale:1.0,sz:32},
-  {src:_FO_CH1+'flesh_pile.png',chance:0.005,scale:1.0,sz:32},
-  {src:_FO_CH1+'meat_stake.png',chance:0.004,scale:1.0,sz:28},
   {src:_FO_CH1+'deco_bones_03.png',chance:0.006,scale:1.0,sz:30},
   {src:_FO_CH1+'deco_bones_04.png',chance:0.006,scale:1.0,sz:30},
   {src:_FO_CH1+'frozen_bones.png',chance:0.004,scale:1.0,sz:28},
@@ -10109,9 +10104,7 @@ const MAP_DECOR_DEFS={0:[
   {src:_FO_CH1+'glow_flower_blue.png',chance:0.004,scale:1.0,sz:24,light:1},
   {src:_FO_CH1+'glow_flower_yellow.png',chance:0.004,scale:1.0,sz:24,light:1},
   // 웅덩이 (sz:40~48)
-  {src:_FO_CH1+'poison_puddle.png',chance:0.008,scale:1.0,sz:40},
   {src:_FO_CH1+'poison_pool.png',chance:0.006,scale:1.0,sz:44},
-  {src:_FO_CH1+'acid_pool.png',chance:0.005,scale:1.0,sz:44},
   // {src:_CO_CH1+'pit_blood_anim.png',chance:0.003,scale:1.0,sz:48}, // 피웅덩이 제거
   // {src:_CO_CH1+'pit_blood_b.png',chance:0.003,scale:1.0,sz:48}, // 피웅덩이 제거
   {src:_CO_CH1+'pit_corpse.png',chance:0.003,scale:1.0,sz:48},
@@ -12020,6 +12013,8 @@ addEventListener('keydown',e=>{
   if(e.code==='F8'){e.preventDefault();if(window._v3fx&&P){const _v3keys=['fire','ice','lightning','dark','poison'];window._v3fx(_v3keys[window._v3ti||0],P.x,P.y);addTxt(P.x,P.y-30,'3D: '+_v3keys[window._v3ti||0],'#ffcc44',30);window._v3ti=((window._v3ti||0)+1)%_v3keys.length}else{_tvfx2Spawn()}return}
   if(e.code==='F4'){e.preventDefault();const _nf=!OPT.fog;OPT.fog=_nf;OPT.bossFog=_nf;saveSettings();showPH(_nf?_L('안개 ON','Fog ON'):_L('안개 OFF','Fog OFF'),_nf?'#8899cc':'#888888');return}
   if(window._parryLesson?.active&&!window._parryLesson.allowKey(e.code)){e.preventDefault();return;}
+  // Focused inventory controls own activation and focus traversal keys.
+  if(['Space','Enter','NumpadEnter','Tab'].includes(e.code)&&e.target instanceof Element&&e.target.closest('#invPanel.on button,#crBagPop button'))return;
   K[e.code]=true;KH[e.code]=true;
   // E(shield) 탭 버퍼: 초고속 탭에서 keyup이 K를 지우기 전에 press 사실을 프레임 스탬프로 보존 (게임패드 synth 키다운도 경유)
   if(!e.repeat&&G&&G.on&&!G.paused&&(e.code===BINDS.shield||e.code===BINDS2.shield))_sdTapBuf=G.frame;
@@ -12923,8 +12918,9 @@ function _gpCrBagNav(){
   if(!_gpad)return;
   const pop=$('crBagPop');if(!pop||pop.style.display!=='flex')return;
   const listEl=pop.querySelector('div[style*="overflow-y:auto"]');
-  const rows=listEl?listEl.querySelectorAll('div[onclick]'):[];
+  const rows=listEl?listEl.querySelectorAll('.cr-picker-item'):[];
   const len=rows.length;
+  _gpCrIdx=Math.max(0,Math.min(_gpCrIdx,len-1));
   const u=(_gpad.buttons[12]&&_gpad.buttons[12].pressed)||_gpAxes[7]<-0.5;
   const d=(_gpad.buttons[13]&&_gpad.buttons[13].pressed)||_gpAxes[7]>0.5;
   const a=_gpad.buttons[0]&&_gpad.buttons[0].pressed;
@@ -12934,7 +12930,7 @@ function _gpCrBagNav(){
   if(d&&!_gpUIPrev.d&&len>0){_gpCrIdx=Math.min(len-1,_gpCrIdx+1);}
   // 하이라이트
   rows.forEach((r,i)=>{r.style.outline=i===_gpCrIdx?'2px solid #C9A961':'';r.style.outlineOffset='-1px'});
-  if(rows[_gpCrIdx]&&(u&&!_gpUIPrev.u||d&&!_gpUIPrev.d))rows[_gpCrIdx].scrollIntoView({block:'nearest'});
+  if(rows[_gpCrIdx]&&(u&&!_gpUIPrev.u||d&&!_gpUIPrev.d)){rows[_gpCrIdx].focus({preventScroll:true});rows[_gpCrIdx].scrollIntoView({block:'nearest'});}
   // A = 선택 클릭
   if(a&&!_gpUIPrev.a&&rows[_gpCrIdx])rows[_gpCrIdx].click();
   // 우스틱 스크롤
@@ -14040,18 +14036,32 @@ function _crSlotsStr(cd){if(!cd||!cd.slots)return'';return _L('슬롯: ','Slots:
 function renderCrystalBag(){
   let pop=$('crBagPop');
   if(!pop){pop=document.createElement('div');pop.id='crBagPop';pop.style.cssText='position:fixed;top:50%;left:50%;transform:translate(-50%,-50%);width:380px;max-height:70vh;background:#1a1008;border:2px solid #553388;border-radius:8px;z-index:9999;display:flex;flex-direction:column;padding:10px;box-shadow:0 0 30px rgba(100,0,200,.3)';document.body.appendChild(pop);}
+  pop.setAttribute('role','dialog');pop.setAttribute('aria-label',_T('결정 주머니'));
+  pop.onkeydown=event=>{
+    if(event.key==='Escape'){event.preventDefault();event.stopPropagation();closeCrystalPicker();return;}
+    if(event.key!=='Tab')return;
+    const buttons=Array.from(pop.querySelectorAll('button:not(:disabled)')).filter(button=>button.getClientRects().length);
+    if(!buttons.length)return;
+    const first=buttons[0],last=buttons[buttons.length-1];
+    if(event.shiftKey&&document.activeElement===first){event.preventDefault();last.focus();}
+    else if(!event.shiftKey&&document.activeElement===last){event.preventDefault();first.focus();}
+    event.stopPropagation();
+  };
+  if(pop.dataset.crFilter!==_crBagFilter){_gpCrIdx=0;pop.dataset.crFilter=_crBagFilter;}
   pop.style.display='flex';
-  let h='<div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:6px"><span style="color:#bb88ff;font-size:1rem;font-weight:700">'+_T('결정 주머니')+' ('+CRYSTAL_BAG.length+'/'+CRYSTAL_BAG_MAX+')</span>';
+  const focusFilter=pop.querySelector('.cr-picker-filter:focus')?.dataset.filter;
+  let h='<div class="cr-picker-head" style="display:flex;justify-content:space-between;align-items:center;margin-bottom:6px"><span style="color:#bb88ff;font-size:1rem;font-weight:700">'+_T('결정 주머니')+' ('+CRYSTAL_BAG.length+'/'+CRYSTAL_BAG_MAX+')</span>';
   h+='<span style="color:#aa8866;font-size:.75rem">'+_T('가루')+': '+CRYSTAL_DUST+'</span>';
-  h+='<span onclick="_crBagOpen=false;var p=$(\'crBagPop\');if(p)p.style.display=\'none\';_crPickCb=null" style="cursor:pointer;color:#aa6644;font-size:1.1rem;font-weight:900">✕</span></div>';
-  h+='<div style="display:flex;gap:3px;margin-bottom:6px;flex-wrap:wrap">';
+  h+='<button type="button" class="cr-picker-close" aria-label="'+_L('닫기','Close')+'" onclick="closeCrystalPicker()">✕</button></div>';
+  h+='<div class="cr-picker-filters" style="display:flex;gap:3px;margin-bottom:6px;flex-wrap:wrap">';
   [['all','전체'],['stat','스탯'],['elem','원소'],['util','유틸']].forEach(([k,v])=>{
-    h+='<span onclick="_crBagFilter=\''+k+'\';renderCrystalBag()" style="cursor:pointer;padding:1px 6px;font-size:.75rem;border:1px solid '+(_crBagFilter===k?'#bb88ff':'#443322')+';color:'+(_crBagFilter===k?'#ddaaff':'#887766')+';background:'+(_crBagFilter===k?'rgba(187,136,255,.12)':'rgba(0,0,0,.2)')+';border-radius:3px">'+_T(v)+'</span>';
+    h+='<button type="button" class="cr-picker-filter" data-filter="'+k+'" aria-pressed="'+(_crBagFilter===k)+'" onclick="_crBagFilter=\''+k+'\';renderCrystalBag()" style="cursor:pointer;padding:1px 6px;font-size:.75rem;border:1px solid '+(_crBagFilter===k?'#bb88ff':'#443322')+';color:'+(_crBagFilter===k?'#ddaaff':'#887766')+';background:'+(_crBagFilter===k?'rgba(187,136,255,.12)':'rgba(0,0,0,.2)')+';border-radius:3px">'+_T(v)+'</button>'; 
   });
   for(let si=0;si<5;si++){
-    h+='<span onclick="_crBagFilter=\'s'+si+'\';renderCrystalBag()" style="cursor:pointer;padding:1px 6px;font-size:.75rem;border:1px solid '+(_crBagFilter==='s'+si?CRYSTAL_STAR[si].color:'#443322')+';color:'+(_crBagFilter==='s'+si?CRYSTAL_STAR[si].color:'#887766')+';border-radius:3px">'+(si+1)+_L('성','★')+'</span>';
+    h+='<button type="button" class="cr-picker-filter" data-filter="s'+si+'" aria-pressed="'+(_crBagFilter==='s'+si)+'" onclick="_crBagFilter=\'s'+si+'\';renderCrystalBag()" style="cursor:pointer;padding:1px 6px;font-size:.75rem;border:1px solid '+(_crBagFilter==='s'+si?CRYSTAL_STAR[si].color:'#443322')+';color:'+(_crBagFilter==='s'+si?CRYSTAL_STAR[si].color:'#887766')+';border-radius:3px">'+(si+1)+_L('성','★')+'</button>'; 
   }
-  h+='</div><div style="flex:1;overflow-y:auto;display:flex;flex-direction:column;gap:2px">';
+  h+='</div><div class="cr-picker-list" style="flex:1;overflow-y:auto;display:flex;flex-direction:column;gap:2px">';
+  let visibleCount=0;
   CRYSTAL_BAG.forEach((cr,i)=>{
     const d=CRYSTAL_DEFS[cr.id],s=CRYSTAL_STAR[cr.star];
     // 피커 모드: 타겟 슬롯에 장착 불가능한 결정 숨김
@@ -14062,18 +14072,41 @@ function renderCrystalBag(){
       if(_crBagFilter==='util'&&d.cat!=='util')return;
       if(_crBagFilter.startsWith('s')&&cr.star!==parseInt(_crBagFilter[1]))return;
     }
+    visibleCount++;
     const sel=_crBagSel===i;
-    h+='<div onclick="'+(_crPickCb?'_crPickCb('+i+')':'_crBagSel='+i+';renderCrystalBag()')+'" style="cursor:pointer;display:flex;align-items:center;gap:6px;padding:4px 8px;border:1px solid '+(sel?'#bb88ff':'#332211')+';background:'+(sel?'rgba(187,136,255,.12)':'rgba(0,0,0,.2)')+';border-radius:3px">';
+    h+='<button type="button" class="cr-picker-item" onclick="'+(_crPickCb?'_crPickCb('+i+')':'_crBagSel='+i+';renderCrystalBag()')+'" style="cursor:pointer;display:flex;align-items:center;gap:6px;padding:4px 8px;border:1px solid '+(sel?'#bb88ff':'#332211')+';background:'+(sel?'rgba(187,136,255,.12)':'rgba(0,0,0,.2)')+';border-radius:3px">';
     h+='<span>'+_crIco(d,16)+'</span><span style="color:'+s.color+';font-size:.85rem;font-weight:700">'+_crStarN(s)+'</span>';
     h+='<span style="color:#ccaa88;font-size:.85rem">'+_crDefN(d)+'</span>';
     if(cr.enh>0)h+='<span style="color:#44ccff;font-size:.8rem">+'+cr.enh+'</span>';
-    h+='<span style="color:#88cc88;font-size:.8rem;margin-left:auto">'+_crValStr(cr)+'</span></div>';
+    h+='<span style="color:#88cc88;font-size:.8rem;margin-left:auto">'+_crValStr(cr)+'</span></button>';
   });
-  if(CRYSTAL_BAG.length===0)h+='<div style="color:#554433;text-align:center;padding:20px">'+_T('결정이 없습니다')+'</div>';
-  h+='</div>';pop.innerHTML=h;
+  if(visibleCount===0)h+='<div class="cr-picker-empty" role="status">'+(CRYSTAL_BAG.length===0?_T('결정이 없습니다'):_L('현재 장비와 필터에 맞는 보석이 없습니다.','No gems match this equipment and filter.'))+'</div>';
+  h+='</div>';pop.replaceChildren(document.createRange().createContextualFragment(h));
+  const navRows=pop.querySelectorAll('.cr-picker-item');
+  _gpCrIdx=Math.max(0,Math.min(_gpCrIdx,navRows.length-1));
+  navRows.forEach((row,index)=>{
+    const syncIndex=()=>{_gpCrIdx=index;};
+    row.addEventListener('focus',syncIndex);
+    row.addEventListener('mousemove',event=>{if(event.movementX||event.movementY)syncIndex();});
+  });
+  if(focusFilter)Array.from(pop.querySelectorAll('.cr-picker-filter')).find(button=>button.dataset.filter===focusFilter)?.focus({preventScroll:true});
 }
-function openCrystalPicker(cb,targetSlot){_crPickSlot=targetSlot||null;_crPickCb=function(idx){const cr=CRYSTAL_BAG[idx];cb(cr,idx);_crPickCb=null;_crPickSlot=null;var p=$('crBagPop');if(p)p.style.display='none'};_crBagSel=-1;renderCrystalBag();}
-function closeCrystalPicker(){_crPickCb=null;var p=$('crBagPop');if(p)p.style.display='none';}
+let _crPickerFocusOrigin=null;
+function _crPickerFocusStart(){
+  const pop=$('crBagPop');
+  (pop?.querySelector('.cr-picker-item')||pop?.querySelector('.cr-picker-filter')||pop?.querySelector('.cr-picker-close'))?.focus();
+}
+function _crPickerFocusRestore(){
+  const origin=_crPickerFocusOrigin;_crPickerFocusOrigin=null;if(!origin)return;
+  let target=origin.node;
+  if(!target?.isConnected||!target.getClientRects().length){
+    target=Array.from(document.querySelectorAll('.inv-cr-equipment-card')).find(card=>card.dataset.slot===origin.slot)?.querySelector('[data-socket="'+origin.socket+'"]');
+  }
+  if(!target||!target.getClientRects().length)target=document.querySelector('#invPanel.on .ui-section-tab[aria-selected="true"]');
+  target?.focus({preventScroll:true});
+}
+function openCrystalPicker(cb,targetSlot){const opener=document.activeElement;_crPickerFocusOrigin={node:opener instanceof HTMLButtonElement?opener:null,slot:opener?.closest('.inv-cr-equipment-card')?.dataset.slot,socket:opener?.dataset.socket};_crPickSlot=targetSlot||null;_crPickCb=function(idx){const cr=CRYSTAL_BAG[idx];cb(cr,idx);closeCrystalPicker()};_crBagSel=-1;renderCrystalBag();_crPickerFocusStart();}
+function closeCrystalPicker(){_crBagOpen=false;_crPickSlot=null;_crPickCb=null;var p=$('crBagPop');if(p)p.style.display='none';_crPickerFocusRestore();}
 function attachCrystal(item,slotIdx,cr,bagIdx){
   if(!item||!item.crystals||slotIdx>=item.crystals.length)return false;
   if(item.crystals[slotIdx])return false;
@@ -14956,24 +14989,26 @@ function spawnCrescent(x,y,ang,dmg,el,step,distMul,chargeScale=1){
     return;
   }
 }
-function _kiSlashHoldMultiplier(frames){return 1+Math.min(3,Math.floor(Math.max(0,frames||0)/60))}
+function _kiSlashHoldTier(frames){return Math.min(3,Math.floor(Math.max(0,frames||0)/60))}
+function _kiSlashHoldMultiplier(frames){return 2**_kiSlashHoldTier(frames)}
 function _fireKiSlashCrescent(step,chargeFrames=0){
   _addSkProf('kiSlash');_cresStep=step;_cresComboT=120;_cresCd=step===3?20:12;
   _playKiSlashComboSfx(step);
   const _ksLv=P.skills.kiSlash||1,_ksDistMul=(_ksLv-1)*15;
+  const _tier=step===3?_kiSlashHoldTier(chargeFrames):0;
   const _mul=step===3?_kiSlashHoldMultiplier(chargeFrames):1;
-  const _scale=step===3?1+(_mul-1)*.4:1;
+  const _scale=1+_tier*.4;
   spawnCrescent(P.x,P.y,P.facing,~~(meleeRef()*7.0*statStr()*pAtkMul()*_skMul('kiSlash')*_mul),0,step,_ksDistMul,_scale);
   addTxt(P.x,P.y-40,step+_L('타',' Hit')+(_mul>1?' ×'+_mul:''),step===3?'#ff4444':'#ffcc00',20);
 }
 function _beginKiSlashThirdCharge(){P.s='wWindup';P.st2=999;P._kiChargeActive=true;P._kiChargeT=0;P.atkArc=P.facing}
 function _updateKiSlashThirdCharge(sp){
+  P.atkArc=P.facing; // 홀드 중에도 차징 검기·공격 자세가 현재 조준 방향을 따른다.
   const _before=_kiSlashHoldMultiplier(P._kiChargeT);
   P._kiChargeT=Math.min(180,(P._kiChargeT||0)+sp);P.st2=999;
   if(isHeld('weapon')){
     const _after=_kiSlashHoldMultiplier(P._kiChargeT);
-    if(_after>_before){addTxt(P.x,P.y-42,_L('기검참 충전','Ki Slash Charge')+' ×'+_after,'#ff4466',34);playSample('scarecrow_charge',.35,1)}
-    if(_gameFrame%4===0){const a=Math.random()*Math.PI*2,r=30+Math.random()*20;poolPart(P.x+Math.cos(a)*r,P.y+Math.sin(a)*r,-Math.cos(a)*2,-Math.sin(a)*2,'#ff4466',2,12)}
+    if(_after>_before)playSample('scarecrow_charge',.35,1);
     return false;
   }
   const frames=P._kiChargeT;P._kiChargeActive=false;P._kiChargeT=0;
@@ -15597,6 +15632,7 @@ function _drawMapObjectCrop(ctx,img,meta,cx,cy,dw,dh,pvx,pvy,anchorBottom){
 }
 // ── 맵 장식 오브젝트 스프라이트 ──
 const _OBJ_SPR={};
+const _RETIRED_MAP_OBJECT_TYPES=new Set(['tombstone','m_tomb','m_root','m_c5tomb','m_c7tomb','weapon_pile','m_wpile','m_c5wpile','m_rotten_tree','m_vine_pillar','m_c7vine','rotten_tree','vine_pillar','m_rtree','m_vpillar','m_moss','m_ash','m_mud','m_crack','acid_pool','poison_puddle','flesh_pile','meat_stake','m_acid','m_puddle','m_flesh','m_meat','m_c6flesh','m_c6meat','spider_web','m_web','m_c2web','m_c2seamWeb','m_leaf']);
 const _FO='assets/map/ch1/floor_objects/';
 const _CO='assets/map/ch1/collision/';
 const _OBJ_SPR_MAP={
@@ -15606,13 +15642,13 @@ const _OBJ_SPR_MAP={
   'frozen_bones':_FO+'frozen_bones.png',
   'bones':_FO+'bones.png','vine_roots':_FO+'vine_roots.png',
   'corpse':_FO+'corpse.png','eyeball':_FO+'eyeball.png',
-  'poison_puddle':_FO+'poison_puddle.png',
+  
   'glow_flower_blue':_FO+'glow_flower_blue.png','glow_flower_yellow':_FO+'glow_flower_yellow.png',
   'minibug':_FO+'minibug.png',
-  'flesh_pile':_FO+'flesh_pile.png','spider_web':_FO+'spider_web.png',
-  'tombstone':_FO+'tombstone.png','weapon_pile':_FO+'weapon_pile.png',
-  'meat_stake':_FO+'meat_stake.png',
-  'acid_pool':_FO+'acid_pool.png',
+  
+  
+  
+  
   'cursed_tree_01':_CO+'cursed_tree_01.png','cursed_tree_02':_CO+'cursed_tree_02.png',
   'cursed_tree_03':_CO+'cursed_tree_03.png','cursed_tree_04':_CO+'cursed_tree_04.png',
   'cursed_tree_05':_CO+'cursed_tree_05.png','cursed_tree_06':_CO+'cursed_tree_06.png',
@@ -15629,17 +15665,17 @@ const _CH_DECO={
   0:[ // CH1 썩은숲
     {id:'m_tree1',file:'tree_dead_01.png',sz:100},{id:'m_tree2',file:'tree_dead_02.png',sz:100},{id:'m_tree3',file:'tree_dead_03.png',sz:100},
     {id:'m_eye',file:'eyeball.png',sz:40},{id:'m_eye1',file:'eye1_bloodshot.png',sz:40},{id:'m_eye2',file:'eye2_terror.png',sz:40},
-    {id:'m_poison',file:'poison_pool.png',sz:48},{id:'m_puddle',file:'poison_puddle.png',sz:48},
+    {id:'m_poison',file:'poison_pool.png',sz:48},
     {id:'m_fblue',file:'glow_flower_blue.png',sz:40,light:1},{id:'m_fyellow',file:'glow_flower_yellow.png',sz:40,light:1},
     {id:'m_fbones',file:'frozen_bones.png',sz:48},
     {id:'m_larva',file:'larva.png',sz:56},{id:'m_mini',file:'minibug.png',sz:40},
-    {id:'m_flesh',file:'flesh_pile.png',sz:64},{id:'m_web',file:'spider_web.png',sz:56},
-    {id:'m_tomb',file:'tombstone.png',sz:56},{id:'m_wpile',file:'weapon_pile.png',sz:64},
-    {id:'m_meat',file:'meat_stake.png',sz:64},
-    {id:'m_acid',file:'acid_pool.png',sz:56},
-    // ── 신규 지면 데칼 6종 (비충돌, 투명 RGBA, 캐릭터 180cm 환산 sz) ──
-    {id:'m_moss',file:'moss_patch.png',sz:90},{id:'m_leaf',file:'leaf_pile.png',sz:70},{id:'m_crack',file:'ground_crack.png',sz:120},
-    {id:'m_ash',file:'ash_pile.png',sz:60},{id:'m_root',file:'exposed_root.png',sz:110},{id:'m_mud',file:'mud_stain.png',sz:80},
+    
+    
+    
+    
+    // ── 구형 지면 데칼 root/moss/ash/mud/crack/leaf 폐기 ──
+    
+    
     {id:'m_ctree1',file:'cursed_tree_01.png',sz:400,large:1,dir:'collision',colSz:60,hardAlpha:1},
     {id:'m_ctree2',file:'cursed_tree_02.png',sz:400,large:1,dir:'collision',colSz:60,hardAlpha:1},
     {id:'m_ctree3',file:'cursed_tree_03.png',sz:400,large:1,dir:'collision',colSz:60,hardAlpha:1},
@@ -15665,8 +15701,8 @@ const _CH_DECO={
     {id:'m_bone_arch',file:'bone_arch.png',sz:300,large:1,dir:'collision'},
     {id:'m_eye_tree',file:'eye_tree.png',sz:350,large:1,dir:'collision'},
     {id:'m_throne',file:'throne.png',sz:250,large:1,dir:'collision'},
-    {id:'m_vine_pillar',file:'vine_pillar.png',sz:280,large:1,dir:'collision',col:1,colSz:45,keepAR:1},
-    {id:'m_rotten_tree',file:'rotten_tree.png',sz:380,large:1,dir:'collision',col:1,colSz:60,keepAR:1},
+    
+    
     {id:'m_mega_statue',file:'mega_statue.png',sz:480,large:1,mega:1,dir:'collision',col:1,colSz:140,keepAR:1},
     {id:'m_mega_ribs',file:'mega_ribs.png',sz:900,large:1,mega:1,dir:'collision',col:1,colW:380,colH:150,keepAR:1},
     {id:'m_mega_chapel',file:'mega_chapel.png',sz:520,large:1,mega:1,dir:'collision',col:1,colSz:110,keepAR:1},
@@ -15746,7 +15782,7 @@ const _CH_DECO={
     {id:'m_c2chitin',file:'chitin_debris.png',sz:56,scatter:1},
     {id:'m_c2larva',file:'larva.png',sz:52,scatter:1},
     {id:'m_c2mini',file:'minibug.png',sz:36,scatter:1},
-    {id:'m_c2web',file:'spider_web.png',sz:64,scatter:1},
+    
     {id:'m_c2mush',file:'toxic_mushroom.png',sz:56,light:1},
     {id:'m_c2glow',file:'mushroom_glow_01.png',sz:44,light:1,scatter:1},
     {id:'m_c2eye',file:'eye_mushroom.png',sz:52,scatter:1},
@@ -15786,7 +15822,7 @@ const _CH_DECO={
     {id:'m_c2midJaw',file:'wall_broken_mega.png',sz:860,dir:'mega',keepAR:1,sharedAtlas:1,authoredOnly:1},
     {id:'m_c2midRib',file:'chitin_arch.png',sz:880,dir:'mega',keepAR:1,sharedAtlas:1,authoredOnly:1},
     {id:'m_c2midHive',file:'hive_wall_mega.png',sz:820,dir:'mega',keepAR:1,sharedAtlas:1,authoredOnly:1},
-    {id:'m_c2seamWeb',file:'spider_web.png',sz:320,keepAR:1,authoredOnly:1},
+    
     {id:'m_c2seamChitin',file:'chitin_debris.png',sz:220,keepAR:1,authoredOnly:1},
     {id:'m_c2seamEgg',file:'prop_hive.png',sz:320,dir:'collision',keepAR:1,hardAlpha:1,authoredOnly:1},
   ],
@@ -15873,10 +15909,10 @@ const _CH_DECO={
     {id:'m_c5bannerf',file:'prop_banner.png',sz:380,large:1,dir:'collision',col:1,colSz:50,keepAR:1,flip:1},
     {id:'m_c5totem',file:'skull_totem.png',sz:260,large:1,dir:'collision',col:1,colSz:55,keepAR:1},
     {id:'m_c5arch',file:'bone_arch.png',sz:300,large:1,dir:'collision',col:1,colSz:60,keepAR:1},
-    {id:'m_c5wpile',file:'weapon_pile.png',sz:72},
+    
     {id:'m_c5bones',file:'bones.png',sz:44,scatter:1},
     {id:'m_c5deco',file:'deco_bones_04.png',sz:48,scatter:1},
-    {id:'m_c5tomb',file:'tombstone.png',sz:56},
+    
   ],
   5:[ // CH6 사도
     {id:'m_c6p1',file:'prop_a.png',sz:400,large:1,dir:'collision',col:1,colSz:75,keepAR:1},
@@ -15884,8 +15920,8 @@ const _CH_DECO={
     {id:'m_c6p2',file:'prop_b.png',sz:360,large:1,dir:'collision',col:1,colSz:68,keepAR:1},
     {id:'m_c6eyetotem',file:'prop_eyetotem.png',sz:340,large:1,dir:'collision',col:1,colSz:55,keepAR:1},
     {id:'m_c6eyetotemf',file:'prop_eyetotem.png',sz:340,large:1,dir:'collision',col:1,colSz:55,keepAR:1,flip:1},
-    {id:'m_c6flesh',file:'flesh_pile.png',sz:80,scatter:1},
-    {id:'m_c6meat',file:'meat_stake.png',sz:64},
+    
+    
     {id:'m_c6corpse',file:'corpse.png',sz:52,scatter:1},
     {id:'m_c6rune',file:'rune_mark.png',sz:44,light:1,scatter:1},
     {id:'m_c6eye',file:'eyeball.png',sz:36,scatter:1},
@@ -15898,9 +15934,9 @@ const _CH_DECO={
     {id:'m_c7gargf',file:'prop_gargoyle.png',sz:340,large:1,dir:'collision',col:1,colSz:70,keepAR:1,flip:1},
     {id:'m_c7obelisk',file:'obelisk.png',sz:300,large:1,dir:'collision',col:1,colSz:50,keepAR:1},
     {id:'m_c7throne',file:'throne.png',sz:260,large:1,dir:'collision',col:1,colSz:55,keepAR:1},
-    {id:'m_c7vine',file:'vine_pillar.png',sz:240,large:1,dir:'collision',col:1,colSz:45,keepAR:1},
+    
     {id:'m_c7rune',file:'rune_mark.png',sz:44,light:1,scatter:1},
-    {id:'m_c7tomb',file:'tombstone.png',sz:56,scatter:1},
+    
   ],
 };
 // 한 장씩만 채운다. 없으면 균등 살포(구 동작). 기획: docs/4.1맵디자인+설정/맵구성_1장.md
@@ -16193,25 +16229,25 @@ const _CH2S4=(function(){
     ['m_c2midRidgeL',68,44,348],['m_c2midRidgeR',132,44,14],['m_c2midJaw',118,58,22]
   ]);
   A('seam','top_chamber',[
-    ['m_c2seamWeb',78,39,352],['m_c2seamEgg',128,48,8]
+    ['m_c2seamEgg',128,48,8]
   ]);
   A('filler','central_bridge',[
     ['m_c2midRib',60,84,342],['m_c2midRidgeL',68,68,16],['m_c2midJaw',112,84,352]
   ]);
   A('seam','central_bridge',[
-    ['m_c2seamWeb',66,78,10],['m_c2seamChitin',106,74,340],['m_c2seamEgg',112,82,352]
+    ['m_c2seamChitin',106,74,340],['m_c2seamEgg',112,82,352]
   ]);
   A('filler','east_pocket_belt',[
     ['m_c2midRidgeR',132,142,18],['m_c2midHive',150,136,348],['m_c2midJaw',164,140,342]
   ]);
   A('seam','east_pocket_belt',[
-    ['m_c2seamWeb',140,137,12],['m_c2seamEgg',154,132,8]
+    ['m_c2seamEgg',154,132,8]
   ]);
   A('filler','lower_chamber_belt',[
     ['m_c2midRidgeL',56,172,352],['m_c2midRib',78,174,8],['m_c2midRidgeR',118,172,15]
   ]);
   A('seam','lower_chamber_belt',[
-    ['m_c2seamWeb',64,169,345],['m_c2seamChitin',74,174,10],['m_c2seamEgg',114,168,352]
+    ['m_c2seamChitin',74,174,10],['m_c2seamEgg',114,168,352]
   ]);
   return back.concat(o);
 })();
@@ -16238,33 +16274,33 @@ const _MAP_COMPOSE={
       {id:'m_ctree9',x:124,y:31,scale:.9},{id:'m_ctree10',x:176,y:96,scale:1.12},{id:'m_ctree11',x:124,y:149,scale:.88},{id:'m_ctree12',x:124,y:179,scale:1.08},
       // START FORECOURT / 감염된 성문: 문 전면은 깨끗하게, 좌우 shoulder에만 무너진 진입 흔적을 둔다.
       {id:'m_fbones',x:78,y:182},{id:'corpse',x:124,y:179},
-      {id:'m_root',x:80,y:176},{id:'m_wpile',x:124,y:175},
+      
       // LOWER TRANSITION: 성문에서 숲으로 들어갈 때 양쪽 높이가 올라가되 x82~122 주행로는 비운다.
-      {id:'m_c1sroot',x:76,y:154},{id:'m_moss',x:80,y:147},{id:'m_root',x:124,y:151},{id:'m_ash',x:128,y:157},
+      {id:'m_c1sroot',x:76,y:154},
       // CENTER HERO CLEARING: 나무 28타일 안은 비우고 바깥 ring에만 비대칭 support를 둔다.
       {id:'m_c1groot',x:102,y:86},{id:'m_c1tree',x:102,y:90},
-      {id:'m_ash',x:73,y:88},{id:'m_c1sroot',x:75,y:105},{id:'m_moss',x:132,y:81},{id:'m_leaf',x:132,y:111},
+      {id:'m_c1sroot',x:75,y:105},
       // NORTH APPROACH: EXIT x82~118은 비우고 좌우의 오래된 통로 흔적으로 북쪽을 프레이밍한다.
       {id:'m_c1sbone',x:80,y:29},{id:'corpse',x:78,y:37},{id:'m_fbones',x:75,y:43},
-      {id:'m_puddle',x:124,y:35},{id:'m_root',x:126,y:43},
+      
       // 좌상: 썩은 고치 구락 — 강한 boundary cluster.
-      {id:'m_moss',x:47,y:47},{id:'m_root',x:52,y:49},{id:'m_c1cocoon',x:47,y:50,scale:1.55},{id:'m_hang_cage',x:39,y:48},{id:'m_rotten_tree',x:56,y:47},
+      {id:'m_c1cocoon',x:47,y:50,scale:1.55},{id:'m_hang_cage',x:39,y:48},
       {id:'m_c1spod',x:40,y:57},{id:'m_c1spod',x:53,y:59},
       // 좌중: 타락한 야영지 — 폐허형 side POI.
-      {id:'m_mud',x:44,y:97},{id:'m_root',x:49,y:98},{id:'m_c1camp',x:45,y:100,scale:1.55},{id:'m_sword_pile',x:39,y:104},
-      {id:'m_wpile',x:51,y:105},{id:'m_tomb',x:36,y:97},{id:'m_c1sbone',x:48,y:108},
+      {id:'m_c1camp',x:45,y:100,scale:1.55},{id:'m_sword_pile',x:39,y:104},
+      {id:'m_c1sbone',x:48,y:108},
       // 좌하: 뿌리 벽 통로 — 좁은 side passage silhouette.
-      {id:'m_root',x:35,y:147},{id:'m_moss',x:41,y:151},{id:'m_bone_arch',x:35,y:150},{id:'m_vine_pillar',x:29,y:158},
+      {id:'m_bone_arch',x:35,y:150},
       {id:'m_c1sroot',x:43,y:158},
       // 우중: 저주받은 제단.
-      {id:'m_crack',x:147,y:93},{id:'m_root',x:152,y:95},{id:'m_penta_circle',x:147,y:96},{id:'m_c1altar',x:147,y:97,scale:1.45},{id:'m_skull_totem',x:155,y:101},
+      {id:'m_penta_circle',x:147,y:96},{id:'m_c1altar',x:147,y:97,scale:1.45},{id:'m_skull_totem',x:155,y:101},
       {id:'m_fyellow',x:140,y:101},{id:'m_c1sbone',x:151,y:106},
       // 우상: 부패한 습지 — 외곽 접근 제한 포켓.
       {id:'m_c1gtoxic',x:168,y:40},{id:'m_c1pool',x:167,y:43,scale:1.55},
-      {id:'m_puddle',x:164,y:53},{id:'m_meat',x:164,y:47},
+      
       // 우하: 가라앉은 썩은 웅덩이 — 별도 side pocket.
-      {id:'m_c1gtoxicf',x:162,y:136},{id:'pit_poison',x:162,y:139},{id:'m_puddle',x:153,y:145},
-      {id:'m_acid',x:171,y:142},{id:'m_c1sroot',x:173,y:151},
+      {id:'m_c1gtoxicf',x:162,y:136},{id:'pit_poison',x:162,y:139},
+      {id:'m_c1sroot',x:173,y:151},
       // START→중앙→EXIT는 바닥판으로 칠하지 않고 실제 negative space로 남긴다.
     ],
     // CH1-1 HAND PROPS END
@@ -16474,10 +16510,10 @@ const _OBJ_META={
   'rune_mark':{sz:40},
   'bones':{sz:32},'vine_roots':{sz:40},
   'corpse':{sz:40},'eyeball':{sz:24},'eye1_bloodshot':{sz:24},'eye2_terror':{sz:24},
-  'poison_puddle':{sz:32},'glow_flower_blue':{sz:32,light:1},'glow_flower_yellow':{sz:32,light:1},
+  'glow_flower_blue':{sz:32,light:1},'glow_flower_yellow':{sz:32,light:1},
   'centipede':{sz:40},'larva':{sz:32},'minibug':{sz:24},'chitin_debris':{sz:32},
-  'flesh_pile':{sz:64},'spider_web':{sz:56},'tombstone':{sz:56},'weapon_pile':{sz:64},
-  'meat_stake':{sz:64},'acid_pool':{sz:56},
+  
+  
   'pit_lava':{sz:200,collision:true},'pit_poison':{sz:200,collision:true},
   'pit_ice':{sz:200,collision:true},'pit_corpse':{sz:200,collision:true},'pit_bugs':{sz:200,collision:true},
   // 'pit_blood_a':{sz:150,collision:false,dot:true,dotPct:0.02,dotInterval:30,anim:{frames:9,cols:3,rows:3,interval:300}}, // 피웅덩이 제거
@@ -17206,6 +17242,36 @@ function _drawRadiantKiSlash(ctx,c){
   _drawKiSlashFrame(ctx,img,sx,sy,sheet.fw,sheet.fh,-size*.5,-height*.5,size,height);
   ctx.restore();return true;
 }
+function _drawKiSlashCharge(ctx){
+  if(!P._kiChargeActive)return;
+  const charge=Math.max(0,P._kiChargeT||0),tier=_kiSlashHoldTier(charge);
+  const pulse=1+Math.sin(_now*.025)*.035,size=(78+tier*13+4*(charge%60)/60)*pulse;
+  const ang=P.atkArc==null?P.facing:P.atkArc;
+  const x=P.x,y=P.y;
+  const gpu=ctx.canvas===C&&(_useGPU||_useGL);
+  if(gpu)_setBlend(true);
+  ctx.save();ctx.translate(x,y);ctx.rotate(ang);ctx.globalCompositeOperation='lighter';
+  const sheet=_kiSlashRadiant;
+  if(sheet){
+    const img=sheet.surfaces[2],frame=((_gameFrame/7)|0)%3,sx=frame*sheet.fw;
+    ctx.globalAlpha=.24+.08*tier;
+    _drawKiSlashFrame(ctx,img,sx,0,sheet.fw,sheet.fh,-size*.48,-size*.5,size*.96,size);
+    ctx.globalAlpha=.58+.08*tier;
+    _drawKiSlashFrame(ctx,img,sx,0,sheet.fw,sheet.fh,-size*.41,-size*.43,size*.82,size*.86);
+  }else{
+    ctx.strokeStyle='#ff596d';ctx.lineWidth=5+tier;ctx.globalAlpha=.7;
+    ctx.beginPath();ctx.moveTo(-size*.32,-size*.34);
+    for(let i=1;i<=12;i++){const t=i/12,u=1-t;ctx.lineTo(-size*.32*(u*u+t*t)+size*.96*u*t,size*.34*(t*t-u*u))}
+    ctx.stroke();
+  }
+  // Lit diagonal cuts show each completed damage tier without floating text.
+  for(let i=0;i<3;i++){
+    const nx=-size*.23+i*12,ny=size*.29;
+    ctx.strokeStyle=i<tier?'#fff4df':'#8c3445';ctx.lineWidth=i<tier?4:2;ctx.globalAlpha=i<tier?0.9:0.45;
+    ctx.beginPath();ctx.moveTo(nx,ny);ctx.lineTo(nx+9,ny-12);ctx.stroke();
+  }
+  ctx.restore();if(gpu)_setBlend(false);
+}
 function renderCrescents(X){
   const _cImg=_CRES_IMG;
   const _cReady=_cImg.complete&&_cImg.naturalWidth>0;
@@ -17310,8 +17376,9 @@ _KI_SLASH_HIT_IMG.onload=()=>{
 _KI_SLASH_HIT_IMG.src='assets/vfx/ki_slash_hit_radiant_sheet.png';
 function _playKiSlashHit(c,x,y){
   const id='ki_slash_hit_'+_kiSlashPalette(c),sheet=_VFX_SHEETS[id];
-  if(sheet)playVFXAng(id,x,y,(c.step===3?184:140)/sheet.fw,3,c.ang,true);
-  else playVFXAng('ice_slash',x,y,c.step===3?1.25:.9,3,c.ang,true);
+  const scale=c.step===3?(c.chargeScale||1):1;
+  if(sheet)playVFXAng(id,x,y,(c.step===3?184*scale:140)/sheet.fw,3,c.ang,true);
+  else playVFXAng('ice_slash',x,y,c.step===3?1.25*scale:.9,3,c.ang,true);
 }
 
 // registerVFX('whirl_slash','assets/vfx/boss/vfx_white_slash.png',192,192,20,5); // 파일 미존재 — 절차적 폴백 (404 제거 2026-06-28)
@@ -23495,7 +23562,7 @@ function initMapObjects(){
     // ── CH1-1 비충돌 지면 데칼 산포: 20×20 그리드 지터, 겹침가드 무관(noGrid/noCol), 결정론 mkRng ──
     if(G.stage===0&&!(_cmp&&_cmp.hand)){
       const _decoRng=mkRng(G.stage*7919+4242);
-      const _decoPool=['m_moss','m_leaf','m_crack','m_ash','m_root','m_mud','m_moss','m_leaf','m_crack','m_ash','m_root','m_mud','m_fbones','m_flesh','m_puddle','m_poison','m_acid'];
+      const _decoPool=['m_fbones','m_poison'];
       const _DGC=20,_dcw=_mwPx/_DGC,_dch=_mhPx/_DGC;
       let _decoPlaced=0;
       for(let _gcy=0;_gcy<_DGC;_gcy++)for(let _gcx=0;_gcx<_DGC;_gcx++){
@@ -24135,6 +24202,14 @@ function _buildCh1HillTex(edge){
   }
   c.restore();return out;
 }
+function _featherCh1HillSkirt(out){
+  // One-time alpha-only edge integration; hill height and collision stay unchanged.
+  const c=out.getContext('2d'),w=out.width,h=out.height,p=c.getImageData(0,0,w,h),a=p.data,d=new Uint8Array(w*h),fade=48;
+  for(let y=0;y<h;y++)for(let x=0;x<w;x++){const i=y*w+x;d[i]=a[i*4+3]?Math.min(fade,x,y,w-1-x,h-1-y):0;}
+  for(let y=0;y<h;y++)for(let x=0;x<w;x++){const i=y*w+x;if(x)d[i]=Math.min(d[i],d[i-1]+1);if(y)d[i]=Math.min(d[i],d[i-w]+1);}
+  for(let y=h-1;y>=0;y--)for(let x=w-1;x>=0;x--){const i=y*w+x;if(x+1<w)d[i]=Math.min(d[i],d[i+1]+1);if(y+1<h)d[i]=Math.min(d[i],d[i+w]+1);const t=d[i]/fade,k=i*4;a[k+3]=Math.round(a[k+3]*t*t*(3-2*t));if(!a[k+3])a[k]=a[k+1]=a[k+2]=0;}
+  c.putImageData(p,0,0);return out;
+}
 function _buildCh1HillSmoothingTex(edge){
   const h=_CH1_HILL,W=1900,H=960,cx=950,cy=480,rx=h.rx*T,ry=h.ry*T;
   const out=document.createElement('canvas');out.width=W;out.height=H;
@@ -24148,28 +24223,39 @@ function _buildCh1HillSmoothingTex(edge){
     c.bezierCurveTo(cx-rx*.48,cy+ry*1.22,cx-rx*1.08,cy+ry*.72,cx-rx*1.17,cy+ry*.08);c.closePath();
   };
   const x0=cx+(h.rampX0-h.cx)*T,x1=cx+(h.rampX1-h.cx)*T,y=cy+(h.rampY-h.cy)*T,hw0=h.rampHalf0*T,hw1=h.rampHalf1*T;
-  const rampPath=()=>{c.beginPath();c.moveTo(x0-12,y-hw0*.72);c.bezierCurveTo(x0+105,y-hw0*1.08,x1-105,y-hw1*.92,x1+18,y-hw1);c.lineTo(x1+18,y+hw1);c.bezierCurveTo(x1-95,y+hw1*.86,x0+110,y+hw0*1.1,x0-12,y+hw0*.68);c.closePath()};
+  const rampPath=(rc=c)=>{rc.beginPath();rc.moveTo(x0-12,y-hw0*.72);rc.bezierCurveTo(x0+105,y-hw0*1.08,x1-105,y-hw1*.92,x1+18,y-hw1);rc.lineTo(x1+18,y+hw1);rc.bezierCurveTo(x1-95,y+hw1*.86,x0+110,y+hw0*1.1,x0-12,y+hw0*.68);rc.closePath()};
   c.save();organicSkirt();c.clip();
-  c.globalAlpha=.34;c.filter='grayscale(.65) sepia(.48) saturate(.52) brightness(.58)';
+  c.globalAlpha=.48;c.filter='grayscale(.72) sepia(.18) saturate(.46) brightness(.68)';
   const drawW=rx*2.34,drawH=drawW*(edge.naturalHeight/edge.naturalWidth);c.drawImage(edge,cx-drawW/2,cy-drawH/2,drawW,drawH);
   c.filter='none';c.globalAlpha=1;
-  const soil=c.createRadialGradient(cx-rx*.18,cy+ry*.12,ry*.08,cx,cy,rx*1.16);
-  soil.addColorStop(0,'rgba(78,52,38,.52)');soil.addColorStop(.58,'rgba(49,35,28,.6)');soil.addColorStop(1,'rgba(18,16,14,.24)');
-  c.beginPath();c.ellipse(cx,cy+10,rx*1.14,ry*1.08,-.035,0,Math.PI*2);c.fillStyle=soil;c.fill();
+  const soil=c.createLinearGradient(0,cy-ry,0,cy+ry*1.08);
+  soil.addColorStop(0,'rgba(95,90,84,.1)');soil.addColorStop(.42,'rgba(56,49,46,.08)');soil.addColorStop(.72,'rgba(28,25,26,.28)');soil.addColorStop(1,'rgba(18,17,19,.12)');
+  organicSkirt();c.fillStyle=soil;c.fill();
   c.restore();
-  c.save();c.beginPath();c.ellipse(cx+10,cy-12,rx*.9,ry*.77,-.025,0,Math.PI*2);c.clip();
+  const surface=document.createElement('canvas');surface.width=W;surface.height=H;const sc=surface.getContext('2d');
+  const plateauPath=()=>{
+    sc.beginPath();
+    for(let i=0;i<96;i++){
+      const a=i*Math.PI*2/96,r=1+.055*Math.sin(a*3+.6)+.03*Math.sin(a*5-1.1),px=rx*.9*r*Math.cos(a),py=ry*.77*r*Math.sin(a),x=cx+10+px*Math.cos(-.025)-py*Math.sin(-.025),y=cy-12+px*Math.sin(-.025)+py*Math.cos(-.025);
+      if(i===0)sc.moveTo(x,y);else sc.lineTo(x,y);
+    }
+    sc.closePath();
+  };
+  sc.save();plateauPath();sc.clip();
   if(floor){
-    const sz=_gtTileSz(floor),wx0=h.cx*T-cx,wy0=h.cy*T-cy,sx=-((wx0%sz)+sz)%sz,sy=-((wy0%sz)+sz)%sz;
-    c.imageSmoothingEnabled=false;
-    for(let py=sy;py<H;py+=sz)for(let px=sx;px<W;px+=sz)c.drawImage(floor,px,py,sz,sz);
+    const sz=Math.round(_gtTileSz(floor)*1.4),wx0=h.cx*T-cx,wy0=h.cy*T-cy,sx=-((wx0%sz)+sz)%sz,sy=-((wy0%sz)+sz)%sz;
+    sc.imageSmoothingEnabled=true;sc.imageSmoothingQuality='high';sc.filter='saturate(.7) contrast(.92) brightness(.92)';
+    for(let py=sy;py<H;py+=sz)for(let px=sx;px<W;px+=sz)sc.drawImage(floor,px,py,sz,sz);
   }
-  c.beginPath();c.ellipse(cx+10,cy-12,rx*.9,ry*.77,-.025,0,Math.PI*2);c.fillStyle='rgba(91,66,45,.2)';c.fill();c.restore();
-  c.save();rampPath();c.clip();
-  if(floor){const sz=_gtTileSz(floor);for(let py=0;py<H;py+=sz)for(let px=0;px<W;px+=sz)c.drawImage(floor,px,py,sz,sz)}
-  const rampTone=c.createLinearGradient(x0,0,x1,0);rampTone.addColorStop(0,'rgba(28,22,18,.58)');rampTone.addColorStop(.62,'rgba(84,60,41,.28)');rampTone.addColorStop(1,'rgba(109,78,48,.2)');c.fillStyle=rampTone;c.fill();c.restore();
+  sc.filter='none';plateauPath();sc.fillStyle='rgba(78,69,63,.08)';sc.fill();sc.restore();
+  sc.save();rampPath(sc);sc.clip();
+  if(floor){const sz=Math.round(_gtTileSz(floor)*1.4),wx0=h.cx*T-cx,wy0=h.cy*T-cy,sx=-((wx0%sz)+sz)%sz,sy=-((wy0%sz)+sz)%sz;sc.imageSmoothingEnabled=true;sc.imageSmoothingQuality='high';sc.filter='saturate(.7) contrast(.92) brightness(.92)';for(let py=sy;py<H;py+=sz)for(let px=sx;px<W;px+=sz)sc.drawImage(floor,px,py,sz,sz)}
+  sc.filter='none';const rampTone=sc.createLinearGradient(x0,0,x1,0);rampTone.addColorStop(0,'rgba(28,25,26,.18)');rampTone.addColorStop(.62,'rgba(70,63,58,.1)');rampTone.addColorStop(1,'rgba(91,83,74,.08)');sc.fillStyle=rampTone;sc.fill();sc.restore();
+  c.save();c.shadowColor='rgba(10,9,12,.32)';c.shadowBlur=20;c.shadowOffsetX=0;c.shadowOffsetY=18;
+  c.drawImage(_featherCh1HillSkirt(surface),0,0);c.restore();
   c.save();c.strokeStyle='rgba(31,23,18,.48)';c.lineCap='round';
   [[-.84,.38,-.68,.77],[-.39,.74,-.24,1.02],[.28,.78,.48,1.04],[.73,.42,.91,.72]].forEach(([ax,ay,bx,by],i)=>{c.beginPath();c.moveTo(cx+rx*ax,cy+ry*ay);c.quadraticCurveTo(cx+rx*(ax+bx)*.5,cy+ry*(ay+by)*.54,cx+rx*bx,cy+ry*by);c.lineWidth=18-i*2;c.stroke()});c.restore();
-  return out;
+  return _featherCh1HillSkirt(out);
 }
 function _drawCh1Hill(ctx){
   if(G.stage!==0)return;
@@ -28935,7 +29021,7 @@ function hasLOS(x1,y1,x2,y2){
 // isW 판정 기준·값 100% 동일 — MAP_OBJS 재할당(identity)/length 변경 시에만 rebuild. (근거: docs 6.8, differential 363K query mismatch=0)
 var _colObjs=[],_colObjsSrc=null,_colObjsN=-1,_colScaleLogged=false;
 function _appendRotatedColParts(o,m,A){const sc=o.scale||1,base=((o.rot||0)%360+360)%360*Math.PI/180,cb=Math.cos(base),sb=Math.sin(base);for(let i=0;i<m.colParts.length;i++){const p=m.colParts[i],ox=(p.x||0)*sc,oy=(p.y||0)*sc;A[A.length]={type:o.type,x:o.x+ox*cb-oy*sb,y:o.y+ox*sb+oy*cb,noCol:o.noCol,_colRect:1,_colW:p.w*sc,_colH:p.h*sc,_colRot:base+(p.rot||0)*Math.PI/180,_colSource:o}}}
-function _rebuildColObjs(){var A=_colObjs,_d3w=0,_d3h=0,_chapW=0,_chapH=0;A.length=0;for(var _ci=0;_ci<MAP_OBJS.length;_ci++){var _co=MAP_OBJS[_ci];if(_co.noCol)continue;var _cm=_OBJ_META[_co.type];if(_cm&&(_cm.collision||_cm.col)){if(_cm.colParts){_appendRotatedColParts(_co,_cm,A);continue}const _pcs=_co.scale||1;_co._colW=(_cm.colW||0)*_pcs;_co._colH=(_cm.colH||_cm.colW||0)*_pcs;_co._colSz=(_cm.colSz||(_cm.sz||64)*.4)*_pcs;A[A.length]=_co;if(_co.type==='m_dragon_3d'){_d3w=_co._colW*2;_d3h=_co._colH*2}else if(_co.type==='m_mega_chapel'){_chapW=_co._colSz*2;_chapH=_chapW}}}if(!_colScaleLogged&&_d3w&&_chapW){console.log('[COL_SCALE] 3D 용 [118,55] '+_d3w.toFixed(1)+'x'+_d3h.toFixed(1)+' / 무너진 예배당 [118,181] '+_chapW.toFixed(1)+'x'+_chapH.toFixed(1));_colScaleLogged=true}_colObjsSrc=MAP_OBJS;_colObjsN=MAP_OBJS.length;}
+function _rebuildColObjs(){var A=_colObjs,_d3w=0,_d3h=0,_chapW=0,_chapH=0;A.length=0;for(var _ci=0;_ci<MAP_OBJS.length;_ci++){var _co=MAP_OBJS[_ci];if(_co.noCol||_RETIRED_MAP_OBJECT_TYPES.has(_co.type))continue;var _cm=_OBJ_META[_co.type];if(_cm&&(_cm.collision||_cm.col)){if(_cm.colParts){_appendRotatedColParts(_co,_cm,A);continue}const _pcs=_co.scale||1;_co._colW=(_cm.colW||0)*_pcs;_co._colH=(_cm.colH||_cm.colW||0)*_pcs;_co._colSz=(_cm.colSz||(_cm.sz||64)*.4)*_pcs;A[A.length]=_co;if(_co.type==='m_dragon_3d'){_d3w=_co._colW*2;_d3h=_co._colH*2}else if(_co.type==='m_mega_chapel'){_chapW=_co._colSz*2;_chapH=_chapW}}}if(!_colScaleLogged&&_d3w&&_chapW){console.log('[COL_SCALE] 3D 용 [118,55] '+_d3w.toFixed(1)+'x'+_d3h.toFixed(1)+' / 무너진 예배당 [118,181] '+_chapW.toFixed(1)+'x'+_chapH.toFixed(1));_colScaleLogged=true}_colObjsSrc=MAP_OBJS;_colObjsN=MAP_OBJS.length;}
 function _ensureColObjs(){if(_colObjsSrc!==MAP_OBJS||_colObjsN!==MAP_OBJS.length)_rebuildColObjs();}
 // CH1-1 HIGH GROUND START
 // 우측 제단 언덕. 서쪽 ramp만 low→high를 연결하며 다른 stage에는 영향 없음.
@@ -41044,7 +41130,7 @@ const SKILL_LIST=[
   {id:'magicBlink',name:'사슬기동:화염',cat:'move',desc:'INT 스케일. 이동 경로에 화염길 생성(3초 DOT). 통과 적 화상. MP 소모. 합체 시 착지 폭발',descEn:'INT scale. Fire trail on dash path (3s DOT). Burns passed enemies. MP cost. Fuse: landing explosion',spCost:10,matCost:100,up:true,upSp:5,upMat:0},
   {id:'ghostWalk',name:'뇌전걸음',cat:'def',act:true,emoji:'⚡',desc:'5초간 유령화 — 무적+이동. 통과한 적/탄막 수만큼 종료 시 암전 폭발(+10%/회) + 전기줄기 방사(3회 체인). 카운트 캡=Lv×5(최대50). 쿨 20초. Lv당 뎀+15% 범위+10',descEn:'5s ghost form — invincible+move. Blackout explosion on end (+10%/enemy passed) + lightning arc (3 chains). Count cap=Lv×5 (max 50). CD 20s. Per Lv DMG+15% range+10',spCost:10,matCost:100,cd:1200,up:true,upSp:5,upMat:0},
   {id:'bladeDash',name:'전격이동',cat:'move',desc:'[이동기] 방향키 더블탭으로 발동. 경직/기절 중에도 탈출 가능. 250유닛 순간이동, 무적(15프레임). MP[(10+(Lv-1)×5)×0.7] + 공용 기동게이지 0.7칸(31.5)을 소모한다. 기본 기동게이지 5칸, Shift 사슬과 공유. 착지 시 전류장판(10초+Lv×0.5초): INT 틱뎀 + 방어력↓(1렙10%, 렙당+5%, 캡50%)',descEn:'[Mobility] Double-tap to activate. Escapes stagger/stun. 250-unit blink, invincible 15f. Costs MP[(10+(Lv-1)×5)×0.7] plus 0.7 shared mobility-gauge cells (31.5). Base gauge has 5 cells and is shared with Shift chain. Landing shock field(10s+Lv×0.5s): INT tick DMG + DEF↓(Lv1=10%, +5%/Lv, cap 50%)',spCost:10,matCost:60,up:true,upSp:6,upMat:0},
-  {id:'kiSlash',name:'기검참',cat:'phys',desc:'좌클 스킬: 3단 검기. 3타 입력을 홀드해 충전, 놓으면 발사. 1초마다 검기 피해 +1배(최대 4배), 크기도 증가. ST 10+Lv당2. 거리+15px/Lv',descEn:'LMB skill: 3-hit ki blade. Hold the third attack, release to fire. +1× blade damage per second (up to 4×), with larger size. ST 10+2/Lv; +15px range/Lv',spCost:10,matCost:0,up:true,upSp:5,upMat:0,default:true},
+  {id:'kiSlash',name:'기검참',cat:'phys',desc:'좌클 스킬: 3단 검기. 3타를 홀드해 1초마다 1단씩 최대 3단 충전. 검기 피해 2/4/8배, 놓으면 발사. ST 10+Lv당2. 거리+15px/Lv',descEn:'LMB skill: 3-hit ki blade. Hold the third hit to charge one stage each second, up to stage 3. Blade damage ×2/×4/×8; release to fire. ST 10+2/Lv; +15px range/Lv',spCost:10,matCost:0,up:true,upSp:5,upMat:0,default:true},
   {id:'fireball',name:'악의구',cat:'magic',desc:'[기본: E] 어둠 마법 오브 발사. 범위폭발. 넉백 0.5%. Lv당 크기+50% (뎀은 _skMul 계수 적용)',descEn:'[Default: E] Dark magic orb fired. AoE explosion. Knockback 0.5%. Per Lv size+50% (DMG uses _skMul)',spCost:10,matCost:0,up:true,upSp:5,upMat:0,default:true},
   {id:'whirlwind',name:'회전참',cat:'phys',desc:'무기 홀드 → 전진 회전 공격. 360도 광역, ST 지속소모. Lv당 범위+5 뎀+5%',descEn:'Hold weapon → forward spin attack. 360° AoE, continuous ST drain. Per Lv range+5 DMG+5%',spCost:10,matCost:100,up:true,upSp:5,upMat:0},
   {id:'detonate',name:'기폭팔',cat:'def',desc:'패링 3초 홀드 → 흡수 데미지 광역 폭발. Lv당 범위+15 (1렙150, 10렙285)',descEn:'Parry 3s hold → absorbed DMG AoE explosion. Per Lv range+15 (Lv1: 150, Lv10: 285)',spCost:10,matCost:100,up:true,upSp:5,upMat:0},
@@ -41183,7 +41269,7 @@ const SKILL_SLOT_DEFS={
     info:{giantSlam:{name:'지옥강타 1',nameEn:'Hell Slam I',emoji:'🔨',desc:'Space: 원형 진동파 (ST+악의20, 포이즈 특화, 쿨30초)',descEn:'Space: AoE shockwave (ST+malice20, poise focus, cd 30s)'},
           }},
   lmb:{name:'좌클 스킬',nameEn:'LMB Skill',key:'lmb',skills:['kiSlash','whirlwind'],
-    info:{kiSlash:{name:'기검참',nameEn:'Ki Slash',emoji:'⚔',desc:'좌클 3타 홀드 충전·해제 발사 (+1배/초, 최대 4배). ST 10+Lv당2',descEn:'Hold 3rd LMB hit, release to fire (+1×/s, max 4×). ST 10+2/Lv'},
+    info:{kiSlash:{name:'기검참',nameEn:'Ki Slash',emoji:'⚔',desc:'좌클 3타 홀드: 1초마다 1단, 최대 3단. 검기 피해 2/4/8배. ST 10+Lv당2',descEn:'Hold 3rd LMB hit: one stage each second, up to 3. Blade damage ×2/×4/×8. ST 10+2/Lv'},
           whirlwind:{name:'회전참',nameEn:'Whirlwind',emoji:'🌀',desc:'좌클 홀드: 회전 베기',descEn:'LMB Hold: Spin attack'}}},
   rmb:{name:'E 스킬',nameEn:'E Skill',key:'rmb',skills:['maliceSwipe'],
     info:{maliceSwipe:{name:'불꽃칼날',nameEn:'Flame Blade',emoji:'🔥',desc:'E: 쿨타임 완료 시 불꽃을 두른 칼날을 크게 휘두릅니다. 일반 마법탄도 반사. 홀드 풀차지 1.5초, 스킬 Lv당 범위 +5%.',descEn:'E: Swing a flaming blade when ready; also reflects ordinary magic shots. Hold for 1.5s full charge. +5% range per skill level.'}}},
@@ -43835,11 +43921,14 @@ function renderSkillPanel(){
   const grid=$('skillGrid');grid.innerHTML='';
   // ── 대분류 탭 바 ──
   const _hierBar=document.createElement('div');
+  _hierBar.className='skill-category-tabs';
   _hierBar.style.cssText='display:flex;gap:6px;margin-bottom:10px;justify-content:center;grid-column:1/-1';
   SKILL_HIER.forEach(h=>{
     const _act=_skHierTab===h.id;
     const tb=document.createElement('div');
+    tb.className='skill-category-tab'+(_act?' active':'');
     tb.style.cssText='padding:6px 18px;font-size:1rem;font-weight:800;cursor:pointer;border:2px solid '+(_act?h.col:'#332211')+';border-radius:8px;color:'+(_act?h.col:'#776655')+';background:'+(_act?h.col+'18':'rgba(0,0,0,.3)')+';letter-spacing:.1em;transition:all .15s';
+    tb.style.setProperty('--skill-category-color',h.col);
     tb.textContent=_L(h.name,h.nameEn||h.name);
     tb.onmouseenter=function(){if(!_act)this.style.borderColor=h.col+'88';this.style.color=h.col};
     tb.onmouseleave=function(){if(!_act){this.style.borderColor='#332211';this.style.color='#776655'}};
@@ -43875,6 +43964,8 @@ function renderSkillPanel(){
       const _isCur=_pi===_curPhaseIdx;
       const _isFuture=_pi>_curPhaseIdx&&_curPhaseIdx>=0;
       const phDiv=document.createElement('div');
+      phDiv.className='skill-rec-step';
+      phDiv.dataset.recState=_done?'complete':(_isCur?'current':'upcoming');
       if(_done){
         // 완료: 한 줄로 축소
         phDiv.style.cssText='margin-bottom:4px;border:1px solid #336633;border-radius:6px;padding:4px 10px;background:rgba(10,30,10,.2);display:flex;align-items:center;gap:6px';
@@ -43885,10 +43976,12 @@ function renderSkillPanel(){
         phDiv.style.cssText='margin-bottom:12px;border:1px solid '+(_isCur?'#ffaa44':'#332211')+';border-radius:8px;padding:8px 10px;background:'+(_isCur?'rgba(60,30,5,.5)':'rgba(10,5,2,.4)');
         if(_isCur)phDiv.setAttribute('data-rec-cur','1');
         const phHdr=document.createElement('div');
+        phHdr.className='skill-rec-title';
         phHdr.style.cssText='display:flex;align-items:center;gap:8px;margin-bottom:6px';
         phHdr.innerHTML='<span style="font-size:1.1rem">'+(_isCur?'👉':'⬜')+'</span><span style="color:'+(_isCur?'#ffcc44':'#887766')+';font-size:.95rem;font-weight:700">'+_L(ph.phase,ph.phaseEn||ph.phase)+'</span>';
         phDiv.appendChild(phHdr);
         const phDesc=document.createElement('div');
+        phDesc.className='skill-rec-description';
         phDesc.style.cssText='color:#998877;font-size:.8rem;margin-bottom:6px;padding-left:28px';
         phDesc.textContent=_L(ph.desc,ph.descEn||ph.desc);
         phDiv.appendChild(phDesc);
@@ -45826,7 +45919,6 @@ function toggleInvStorage(){
 }
 let _invSalSel=new Set(); // 인벤토리 분해 선택
 let _invHover=-1; // 호버 중인 가방 인덱스
-// _invRenderDetail: 우측 패널에 비교+아이템상세 렌더 (호버/선택 공용)
 function _invPlaceDetail(){
   const rp=$('invRight'),host=$('invOssInfo'),wrap=$('invPanel')?.querySelector('.inv-wrap');
   if(!rp||!host||!wrap)return;
@@ -45907,7 +45999,7 @@ _actB.innerHTML=`<div class="id-btns" style="display:flex;gap:6px"><button type=
     } else if(source==='eq'){
       _actB.innerHTML=`<div class="id-btns"><button type="button" class="id-btn" onclick="unequipItem('${idx}');applyStats();renderInv()">${_T('해제')}</button></div>`;
     } else if(source==='st'){
-      _actB.innerHTML=`<div class="id-btns"><div class="id-btn equip" onclick="withdrawStorage(${idx})">${_T('꺼내기')}</div></div>`;
+      _actB.innerHTML=`<div class="id-btns"><button type="button" class="id-btn equip" onclick="withdrawStorage(${idx})">${_T('꺼내기')}</button></div>`;
     } else _actB.innerHTML='';
   }
 }
@@ -46136,6 +46228,7 @@ function _invBuildCompare(item,curEq){
 // ═══ 인벤토리 드래그 시스템 ═══
 let _invDrag=null,_invDragMoved=false;
 let _GC_SZ=48;
+let _invGridResizeObserver=null,_invGridParentWidth=0;
 document.addEventListener('mousemove',function(ev){
   if(!_invDrag)return;
   _invDragMoved=true;
@@ -46482,12 +46575,22 @@ function renderInv(){
 
   // ── Bag grid (2D 디아블로식) ──
   const grid=$('invGrid');grid.innerHTML='';
-  // 셀 크기: 가용 너비에 맞춰 동적 계산 (최소 38, 최대 56)
-  const _avW=grid.parentElement?grid.parentElement.clientWidth-20:INV_COLS*48;
-  const _GC=Math.max(38,Math.min(56,Math.floor(_avW/INV_COLS)));
+  // 부모 안쪽 너비에서 스크롤바 여유를 먼저 확보해 마지막 열까지 표시한다.
+  const _gridParent=grid.parentElement;
+  const _parentStyle=_gridParent?getComputedStyle(_gridParent):null;
+  const _avW=_gridParent?_gridParent.clientWidth-parseFloat(_parentStyle.paddingLeft)-parseFloat(_parentStyle.paddingRight):INV_COLS*48+12;
+  const _gridGutter=Math.max(12,grid.offsetWidth-grid.clientWidth);
+  const _GC=Math.max(1,Math.min(56,Math.floor((_avW-_gridGutter)/INV_COLS)));
+  _invGridParentWidth=_gridParent?_gridParent.clientWidth:0;
+  if(_gridParent&&!_invGridResizeObserver){
+    _invGridResizeObserver=new ResizeObserver(()=>{
+      if(_gridParent.clientWidth>0&&_gridParent.clientWidth!==_invGridParentWidth)renderInv();
+    });
+    _invGridResizeObserver.observe(_gridParent);
+  }
   _GC_SZ=_GC;
   const _IR=_invRows();
-  grid.style.width=INV_COLS*_GC+'px';grid.style.height=_IR*_GC+'px';
+  grid.style.width=(INV_COLS*_GC+_gridGutter)+'px';grid.style.height=_IR*_GC+'px';
   $('invCount').textContent=INV.bag.filter(_invCategoryMatches).length;
   // 좌표 없거나 2x2 경계 밖이면 리셋 후 빈 자리에 재배치
   for(let i=0;i<INV.bag.length;i++){const _it=INV.bag[i];if(!_it)continue;const[w,h]=_itemSz(_it);if(_it._gx==null||_it._gx+w>INV_COLS||_it._gy+h>_invRows()){_it._gx=null;_it._gy=null;const pos=_invFindSpace(w,h,i);if(pos){_it._gx=pos.x;_it._gy=pos.y}}}
@@ -46560,7 +46663,7 @@ function renderInv(){
       const it=INV.bag[i];
       if(it){if(it.slot==='bonePart'){registerBonePart(it);return}equipItem(it);applyStats();renderInv();return}
     };
-    div.onmouseover=()=>{if(_invHover===i)return;_invHover=i;_invRenderDetail(i,'bag')};
+    div.onmouseover=()=>{if(_invHover===i)return;_invHover=i;_invRenderDetail(i,'bag',true)};
     div.onmouseleave=()=>_invClearHover();
     grid.appendChild(div);
   }
@@ -48406,6 +48509,7 @@ function draw(){
   const _hellWinterTone=G.stage===10;
   if(_hellWinterTone){X.save();X.filter='brightness(.46) contrast(1.34) saturate(.18)'}
   for(let _moi=0;_moi<MAP_OBJS.length;_moi++){const mo=MAP_OBJS[_moi];
+    if(_RETIRED_MAP_OBJECT_TYPES.has(mo.type))continue;
     if(_ch1ShouldSuppressSouthVisualProp(mo))continue;
     if(mo.type==='breakable'&&!mo.alive)continue;
     if(mo.type==='trap'&&!mo.active)continue;
@@ -54785,6 +54889,7 @@ function drawP(){
     X.restore();
   }
 
+  _drawKiSlashCharge(X);
   _s6PlayerEnd=performance.now();
   // ══ 쓰러짐 카운트다운 렌더 ══
   if(P.s==='fallen'){

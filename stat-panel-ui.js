@@ -281,7 +281,8 @@
     const icon=(key,size=24)=>{const n=el('span','growth-glyph');n.innerHTML=api.icon(key,'currentColor',size);n.setAttribute('aria-hidden','true');return n;};
     const button=(label,cls,action,focus)=>{const n=el('button',cls,label);n.type='button';n.onclick=action;if(focus)n.dataset.focus=focus;return n;};
     const format=r=>r.unit==='×'?'×'+r.value.toFixed(2):r.value.toLocaleString(undefined,{maximumFractionDigits:4})+(r.unit==='s'?t('초','s'):r.unit);
-    let selected=api.passiveDefs[0].key,selectedStat=null,selectedRank=0,path='all',filter='all',amount=1,plan=null;
+    let selected=api.passiveDefs[0].key,selectedStat=null,selectedRank=0,path='all',filter='all',plan=null;
+    const amount=1;
     const search=$('growthSearch');
     const pathNav=el('div','growth-paths');pathNav.id='growthPaths';
     search.before(pathNav);
@@ -296,6 +297,8 @@
     const bodyTree=mountBodyTree(root,t,format,api.passiveDefs,(key,rank)=>{selected=key;selectedStat=null;selectedRank=rank;$('growthDetail').scrollTop=0;render();});
     const draftList=el('section','growth-draft-list');draftList.id='growthDraftList';draftList.hidden=true;
     root.querySelector('.growth-actions').before(draftList);
+    const queueList=el('section','growth-draft-list');queueList.id='growthPassiveQueue';queueList.hidden=true;
+    draftList.after(queueList);
     new MutationObserver(()=>{if(!root.classList.contains('on'))plan=null;}).observe(root,{attributes:true,attributeFilter:['class']});
     search.addEventListener('input',render);
     for(const event of ['keydown','keyup'])root.addEventListener(event,e=>{
@@ -325,6 +328,7 @@
       const scroll=[$('statGrid').scrollTop,$('passiveGrid').scrollTop,$('growthDetail').scrollTop];
       if(!plan||!evaluatePlan(plan,live,api.caps,api.passiveDefs))plan=createPlan(live);
       const state=evaluatePlan(plan,live,api.caps,api.passiveDefs)||live;
+      const queued=api.queuedPassives?api.queuedPassives():[];
       const changed=state.changes||0;
       const activePath=paths.find(p=>p.id===path);
       root.style.setProperty('--path-accent',activePath?.color||'#d99172');
@@ -337,7 +341,7 @@
       set('growthAttributesNote',t('투자량 · 1포인트 = 1 SP','Allocated points · 1 point = 1 SP'));
       set('growthPassivesTitle',t('전투의 길','COMBAT PATHS'));
       set('growthDetailLabel',t('패시브 분석','PASSIVE INSIGHT'));
-      set('growthFooterNote',changed?t('{n}개 변경 대기 · 적용 전에는 저장되지 않습니다.','{n} pending changes · Not saved until applied.',{n:changed}):t('자유롭게 배분하고, 적용하세요. 창을 닫으면 미적용 계획은 취소됩니다.','Plan freely, then apply. Closing discards unapplied changes.'));
+      set('growthFooterNote',queued.length?t('자동 투자 예약 {n}개 저장됨 · 짝수 레벨업마다 AP +1, 충분해지면 예약 순서대로 투자됩니다.','{n} auto-invest reservations saved · Gain 1 AP every even level; affordable ranks invest in order.',{n:queued.length}):changed?t('{n}개 변경 대기 · 적용 전에는 저장되지 않습니다.','{n} pending changes · Not saved until applied.',{n:changed}):t('AP가 부족해도 예약 가능 · 짝수 레벨업으로 AP가 모이면 순서대로 자동 투자됩니다.','Reserve without enough AP · even levels grant AP and affordable ranks auto-invest in order.'));
       set('statResetBtn',t('전체 환불 계획','Plan full refund'));
       set('statClose',t('닫기 [J]','Close [J]'));
       set('smToggleBtn',t('현재 전투 능력치 ↗','Current combat stats ↗'));
@@ -349,7 +353,6 @@
       const metrics=doc.createDocumentFragment();
       for(const [label,value] of [['HP',live.hp],['ST',live.st],['MP',live.mp]]){const metric=el('div','growth-metric');metric.append(el('span','',label),el('strong','',Number(value||0).toLocaleString()));metrics.append(metric);}
       $('growthMetrics').replaceChildren(metrics);
-      $('growthAmount').replaceChildren(...[1,10].map(n=>{const b=button('×'+n,'growth-amount-btn',()=>{amount=n;render();},'amount-'+n);b.setAttribute('aria-pressed',String(amount===n));return b;}));
       const stats=doc.createDocumentFragment();
       const query=search.value.trim().toLocaleLowerCase();
       const defs=[...api.statDefs,{key:'grit',name:'근성 (GRIT)',nameEn:'GRIT',desc:'HP / MP / ST 각각 +1 · 물리/속성 방어 +0.5',descEn:'HP / MP / ST +1 each · DEF / eDEF +0.5'}];
@@ -422,12 +425,14 @@
       detail.append(el('p','growth-effect',t(...note)));
       if(def.key==='pHuman'&&(state.passives.pDemon||0)>0||def.key==='pDemon'&&(state.passives.pHuman||0)>0)detail.append(el('p','growth-tradeoff',t('인간성과 악마성에 함께 투자 중입니다. 부활 확률을 확인하세요.','Humanity and Demon are both allocated. Check your revival chance.')));
       $('growthDetail').replaceChildren(detail);
-      const maxed=value>=def.max,addRanks=Math.max(1,selectedRank-value),cost=Array.from({length:addRanks},(_,i)=>rankCost(value+i)).reduce((a,b)=>a+b,0),upgrade=$('growthUpgrade'),refund=$('growthRefund');
+      const reserved=queued.filter(key=>key===def.key).length,futureRank=value+reserved,maxed=futureRank>=def.max;
+      const addRanks=Math.max(1,selectedRank-futureRank),cost=Array.from({length:addRanks},(_,i)=>rankCost(futureRank+i)).reduce((a,b)=>a+b,0),upgrade=$('growthUpgrade'),refund=$('growthRefund');
       const removeRanks=selectedRank>0&&selectedRank<=value?value-selectedRank+1:1,refundCost=Array.from({length:removeRanks},(_,i)=>rankCost(value-i-1)).reduce((a,b)=>a+b,0);
-      upgrade.disabled=maxed||state.ap<cost;upgrade.textContent=maxed?t('최대 레벨','Maximum rank'):t('계획에 추가 · {n} AP','Add to plan · {n} AP',{n:cost});upgrade.onclick=()=>change('passive',def.key,addRanks);
+      const reserve=queued.length>0||state.ap<cost;
+      upgrade.disabled=maxed||futureRank+addRanks>def.max;upgrade.textContent=maxed?t('최대 레벨','Maximum rank'):reserve?t('자동 투자 예약 · {n} AP','Reserve auto-invest · {n} AP',{n:cost}):t('계획에 추가 · {n} AP','Add to plan · {n} AP',{n:cost});upgrade.onclick=()=>reserve?api.queuePassive(def.key,addRanks):change('passive',def.key,addRanks);
       refund.disabled=value<1;refund.textContent=(removeRanks===1?t('1레벨 환불 계획','Plan rank refund'):t('환불 계획','Plan refund')+' · Lv. '+value+' → '+(value-removeRanks))+(value?' · +'+refundCost+' AP':'');refund.onclick=()=>change('passive',def.key,-removeRanks);
-      set('growthUpgradeNote',maxed?t('레벨 상한에 도달했습니다.','Rank cap reached.'):state.ap<cost?t('AP {n} 부족','Need {n} more AP',{n:cost-state.ap}):t('추가 후 계획 잔여 AP {n}','{n} AP left after adding',{n:state.ap-cost}));
-      planNotice.textContent=changed?t('변경 {n}개 · 하단에서 적용','{n} changes · Apply below',{n:changed}):t('탐색과 계획은 포인트를 소모하지 않습니다.','Browsing and planning do not spend points.');
+      set('growthUpgradeNote',maxed?t('레벨 상한에 도달했습니다.','Rank cap reached.'):reserve?t('현재 AP {ap} · 예약 후 예상 레벨 {rank} · AP가 모이면 자동 투자','Current AP {ap} · reserved target rank {rank} · auto-invest when affordable',{ap:state.ap,rank:futureRank+addRanks}):t('추가 후 계획 잔여 AP {n}','{n} AP left after adding',{n:state.ap-cost}));
+      planNotice.textContent=queued.length?t('자동 투자 예약 {n}개 저장됨 · 아래에서 개별 취소 가능','{n} auto-invest reservations saved · cancel individually below',{n:queued.length}):changed?t('변경 {n}개 · 하단에서 적용','{n} changes · Apply below',{n:changed}):t('AP가 부족해도 예약할 수 있습니다. 예약은 즉시 저장됩니다.','Reserve without enough AP. Reservations save immediately.');
       planNotice.classList.toggle('pending',!!changed);
       if(selectedStat){
         const stat=defs.find(d=>d.key===selectedStat),key=selectedStat;
@@ -458,6 +463,9 @@
       }
       const ledgerHeading=el('h3','growth-draft-heading',t('변경 중','Pending')+' · '+entries.length),ledgerBody=el('div','growth-draft-entries');ledgerBody.append(...entries);
       draftList.replaceChildren(ledgerHeading,ledgerBody);draftList.hidden=!entries.length;
+      const queueHeading=el('h3','growth-draft-heading',t('자동 투자 예약','AUTO-INVEST QUEUE')+' · '+queued.length),queueBody=el('div','growth-draft-entries');
+      queueBody.append(...queued.map((key,index)=>{const def=api.passiveDefs.find(d=>d.key===key),b=button(undefined,'growth-draft-entry',()=>api.cancelQueuedPassive(index),'queue-'+index);b.append(el('span','',`${index+1}. ${def?name(def):key}`),el('strong','',t('예약 취소','Cancel')));b.setAttribute('aria-label',(def?name(def):key)+' '+t('자동 투자 예약 취소','Cancel auto-invest reservation'));return b;}));
+      queueList.replaceChildren(queueHeading,queueBody);queueList.hidden=!queued.length;
       bodyTree.update(selectedStat||selected,state,live,selectedStat?0:selectedRank,filter);
       if(focus){const target=Array.from(root.querySelectorAll('[data-focus]')).find(n=>n.dataset.focus===focus);if(target&&!target.disabled)target.focus({preventScroll:true});}
       $('statGrid').scrollTop=scroll[0];$('passiveGrid').scrollTop=scroll[1];$('growthDetail').scrollTop=scroll[2];

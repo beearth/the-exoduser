@@ -1,5 +1,7 @@
 > **2026-09-17 현행 리터치:** bake/cache `20260917-depth-2`. 신규 숲 원화 4종, 고정 외곽 42배치와 낮은 뿌리 9배치. CH1-1 hand `m_c1tree`만 화면 크기 0.72 / pivotY 0.72; 원본 metadata 1450 및 충돌은 유지. geometry/START/EXIT/진행 계약 유지. 최신 시각 판정 **RETOUCH**. [실제 화면·영상·검증 한계](CH1_1_DEPTH_RETOUCH_20260917.md). 아래 ground-2와 이전 PASS는 당시 이력이다.
 
+> **42차 현행(2026-09-27):** 구형 spider_web 원화·동일사본4개와CH2 seamWeb4배치폐기. CH2 authored105/시스템포함107,충돌51+비충돌54,seam6,wall-belt27. 구형거미줄유지였던41차기록은검토이력. 큰거미줄뼈기둥보존. [현행SSOT](CH2_WEB_RETIREMENT_PASS42.md).
+
 > **2026-09-16 후속 실제 수정:** 사용자 추가 지시에 따라 bake/cache가 `20260916-ground-2`로 변경됐다. 흙길/공터와 이끼·낙엽을 구분하며 geometry/START/EXIT/배치/진행은 유지한다. [현재 지면 구성·전후 증거](CH1_1_GROUND_STRUCTURE_20260916.md). 아래 finish-3 및 ec7bf70d8 동일성 판정은 수정 전 검수 이력이다.
 
 > **2026-09-16 후속 결과 검수:** 맵 ec7bf70d8 보존. 최신 시각 판정은 **RETOUCH**. [원본 화면/일반 플레이/남은 결함](CH1_1_FINAL_REVIEW_20260916.md). 기존 제작 보고의 PASS를 정정하며 기술 이력과 구분한다.
@@ -9,6 +11,8 @@
 > **2026-09-12 최신 변경:** 사용자 요청으로 CH1-1 시작 철창문 `m_cage_gate(103,188,scale1.2)` 배치를 제거했다. 해당 문 렌더·충돌 모두 제거, authored62/runtime63, hand collision21/total22. 아래의 START 성문·63/64·22/23 수치는 제거 이전 기록이다. 북쪽 보스 게이트와 다른 스테이지 문은 유지한다.
 
 # MAP SSOT INDEX — 세미 오픈월드 맵 기획 문서 세트
+
+> **CH1-1 최우선 콘셉트 (2026-09-25): [맵디테일.md](맵디테일.md) 필독.** 넓은 전투공간·피부 바닥·꿈틀거리는 동맥·부패 생체나무의 음침한 지옥. 이전 자연숲 원화들은 현행 승인안이 아니다. 공통 제작 가이드 다음에 읽고 이전 제작 이력보다 이 최신 콘셉트를 적용한다.
 
 > **오늘 작업 재개·최신 목표 (2026-09-24):** [Rootworld 모델 이미지 일치 검수](ROOTWORLD_REFERENCE_FIDELITY_20260924.md). 기준 원화와 동일 구현이 목표. candidate-v1 시각 FAIL, 신규 API 생성은 잔액 부족으로 출력 없음. 오늘 QA 작업을 위 9월 17일 본편 리터치 이력과 혼동하지 않는다.
 
@@ -86,3 +90,29 @@
 
 ## 미완 (P1 이후)
 - CH2-1(si4)은 `_CH2S4` **109-entry** mega-first 벌레굴(locked base 78 + wall-belt BACK/MID 9 + filler 12 + seam 10; backfill 9/boundary 50/landmark 18/detail 6/mask 4/filler 12/seam 10, authored runtime 109/109, skip 0; system 포함 `MAP_OBJS` 111)로 구현했다. collision/non-collision은 **51/58**이다. `w:30,authoredWidth:1` 22-point 경로가 START→알집→동측 dead end→점액→굽은 굴→깊은 굴→EXIT를 잇는 실제 S자 tile silhouette를 만든다. CH2 전용 RGBA MEGA 10종/실배치 17개와 giant carapace·giant hive·deep hive·organic EXIT frame은 고정했다. visual-only BACK/MID 9개는 사용자 제공 1254² RGBA wall skin 6종, 기존 ridge L/R 2개, 중앙 오른쪽 collision recess를 막힌 깊이로 읽히게 하는 `m_c2backHive (112,70,8°,overlap .16)` 1개이며 잠금 MEGA 뒤에 먼저 렌더한다. connector 5종/12개와 web/chitin/egg seam 3종/10개가 top 7/central bridge 8/central recess 1/east pocket 7/lower 8개 외벽 shoulder를 마감한다. backfill/filler/seam collision은 각각 0이다. legacy `m_c2edge*` authored 사용은 0, 반복 중형 세로 구조물은 runtime-visible 57→42개(-26.32%), off-path 자동 배치·random wall eye·accidental floor patch는 0을 유지한다. floor cleanup은 CH2 ground 연속 dark void base + 가변 반경 `(w+4)` render mask + render-only stain 10/vein 6/soft halo + 양쪽 3층 quadratic chitin rim(shadow `6.4T`/body `4.5T`/highlight `.34T`)으로 collision tile을 수정하지 않으면서 긴 대각 color cutoff를 벽 shoulder로 판독시킨다. reported recess runtime `(111.5,70.5)`, prop collision false, map hash `fefe09a0`, pageerror/CH2 broken sprite/asset 404 0이며 최신 비교는 `captures/ch2_reported_gap_20260830/after_recess_fix/`다. 사용자 visual 승인 전 FINAL은 미확정이다. 잔여 CH2-2~CH7 에리어 blockout · 위험타일 런타임 · 늪 전이타일/전경occluder/OUTER렌더 · hell1~6 per-boss 문서 · 미니맵 보스/게이트 마커.
+
+## 저품질 에셋 재사용 금지
+
+맵 에셋 선택 전 [2026-09-27 폐기 SSOT](LOW_QUALITY_ASSET_RETIREMENT_20260927.md)를 확인한다. 구형 묘비·흑백 노출 뿌리와 동일 사본은 현행 승인 에셋이 아니다.
+
+38차 [구형무기더미 폐기 및20종검수](CH1_LOW_QUALITY_AUDIT_20260927_PASS38.md): 기존폐기목록에추가,현재금지id총8개. sword_pile과혼동금지.
+
+39차 [구형나무·덩굴기둥 폐기](CH1_LOW_QUALITY_RETIREMENT_PASS39.md): 추가7id,전체15id사용금지. 원화와충돌동반제거,내부dry아틀라스동작보존.
+
+40차 [지면소품4종폐기](CH1_GROUND_DECAL_RETIREMENT_PASS40.md): 전체19id사용금지. 전투VFX ground_crack_sheet와혼동금지.
+
+41차 [소형독액·육편장식폐기](CH1_SMALL_ORGANIC_RETIREMENT_PASS41.md): 전체29id사용금지. 거미줄/실제독구덩이와혼동금지.
+
+42차 [구형거미줄폐기](CH2_WEB_RETIREMENT_PASS42.md): 전체33id사용금지. CH2 seam4개제거,큰벽·통행·충돌보존.
+
+43차 [낙엽소품폐기](CH1_LEAF_RETIREMENT_PASS43.md): 전체34id사용금지. 공유뼈·시체는타챕터검토대상으로유지.
+
+44차 [제단고지대외곽알파연결](CH1_HILL_EDGE_BLEND_PASS44.md): smoothing 정상부·오르막 접합 및 전체 외곽 48px 감쇠, 높이·충돌 불변.
+
+45차 [제단 사면 재질·방향광](CH1_HILL_SHADING_PASS45.md): 갈색 띠 완화 및 ramp 월드 텍스처 정렬. 44차 alpha 감쇠 유지.
+
+46차 [제단 정상부 윤곽](CH1_HILL_CONTOUR_PASS46.md): 96점 비대칭 정상부와 organicSkirt 명암, 높이·충돌 유지.
+
+47차 [제단 바닥 반복 완화](CH1_HILL_MATERIAL_PASS47.md): 정상부/ramp 무늬1.4배·저채도 대비, 공통 월드 정렬·윤곽·충돌 유지.
+
+48차 [제단 사면 깊이 보강](CH1_HILL_DEPTH_PASS48.md): 정상부/ramp alpha 실루엣 그림자, 높이·충돌 불변.

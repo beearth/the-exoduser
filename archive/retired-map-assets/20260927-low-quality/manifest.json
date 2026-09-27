@@ -1,0 +1,39 @@
+{
+  "status": "REJECTED_LOW_QUALITY",
+  "reuseAllowed": false,
+  "date": "2026-09-27",
+  "reason": "User rejected screenshot: legacy pixel tombstone and monochrome exposed root; includes byte-identical copies.",
+  "screenshot": "C:/Users/심도진/Pictures/Screenshots/스크린샷 2026-09-27 212138.png",
+  "files": [
+    {
+      "original": "assets/map/ch1/floor_objects/tombstone.png",
+      "archived": "archive/retired-map-assets/20260927-low-quality/assets/map/ch1/floor_objects/tombstone.png",
+      "sha256": "4a9ff48bf0f630d1c4d5c517db6fb962b1763b95b6f0af0d284360706b39093b"
+    },
+    {
+      "original": "assets/map/ch5/floor_objects/tombstone.png",
+      "archived": "archive/retired-map-assets/20260927-low-quality/assets/map/ch5/floor_objects/tombstone.png",
+      "sha256": "4a9ff48bf0f630d1c4d5c517db6fb962b1763b95b6f0af0d284360706b39093b"
+    },
+    {
+      "original": "assets/map/ch7/floor_objects/tombstone.png",
+      "archived": "archive/retired-map-assets/20260927-low-quality/assets/map/ch7/floor_objects/tombstone.png",
+      "sha256": "4a9ff48bf0f630d1c4d5c517db6fb962b1763b95b6f0af0d284360706b39093b"
+    },
+    {
+      "original": "assets/objects/tombstone.png",
+      "archived": "archive/retired-map-assets/20260927-low-quality/assets/objects/tombstone.png",
+      "sha256": "4a9ff48bf0f630d1c4d5c517db6fb962b1763b95b6f0af0d284360706b39093b"
+    },
+    {
+      "original": "docs/4.1맵디자인+설정/objects/tombstone.png",
+      "archived": "archive/retired-map-assets/20260927-low-quality/docs/4.1맵디자인+설정/objects/tombstone.png",
+      "sha256": "4a9ff48bf0f630d1c4d5c517db6fb962b1763b95b6f0af0d284360706b39093b"
+    },
+    {
+      "original": "assets/map/ch1/floor_objects/exposed_root.png",
+      "archived": "archive/retired-map-assets/20260927-low-quality/assets/map/ch1/floor_objects/exposed_root.png",
+      "sha256": "8417bb2ea817f0ce96e4b1884574058c8d4207a028e956937429391d1edc5082"
+    }
+  ]
+}

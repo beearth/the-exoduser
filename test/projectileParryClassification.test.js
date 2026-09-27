@@ -63,6 +63,23 @@ test('ground eel blood-eye warning is unmistakably physical and names E parry', 
   assert.match(eelDraw, /X\.globalAlpha=1;X\.strokeStyle='#ffffff'/);
 });
 
+test('direct physical projectile attacks cannot bypass the charge-warning path',()=>{
+  const angler=extractFunction('_fbTickOne');
+  assert.match(angler,/_emitEnemyShot\(fb,\{[^}]*titanEye:true/,
+    'angler blood-eye burst must enter the shared physical warning queue');
+  assert.doesNotMatch(angler,/spawnProj\(\{[^}]*titanEye:true/);
+
+  const update=gameHtml.slice(gameHtml.indexOf('// ═══ 나선탄 업데이트 ═══'),gameHtml.indexOf('// ═══ 지옥기둥 업데이트 ═══'));
+  assert.match(update,/if\(sb\.t>=windup\)sb\.nextShot-=sp/,
+    'spiral bullets must wait for their configured attack-level warning before release');
+  assert.match(update,/sb\.nextShot<=0&&sb\.t>=windup/);
+  const draw=extractFunction('_drawEnemyShotWarnings');
+  assert.match(draw,/G\._spiralBullets[\s\S]{0,220}물리탄 차징 · E로 패링/);
+  assert.match(draw,/G\._phantomSwords[\s\S]{0,220}물리탄 차징 · E로 패링/);
+  assert.match(draw,/ps\.el===EL\.P[\s\S]{0,260}물리탄 차징 · E로 패링/,
+    'physical phantom swords must label their existing orbit windup');
+});
+
 test('homing profile follows source class where a shared skin used to override it', () => {
   const turnRate = Function(`
     const EL={P:0,F:1,I:2,D:3,L:4,H:5,E:6};
@@ -71,9 +88,9 @@ test('homing profile follows source class where a shared skin used to override i
     return _enemyHomingTurnRate;
   `)();
 
-  assert.equal(turnRate({ el: 1, redBean: true }), .0131, 'fire redBean keeps the magic homing profile');
-  assert.equal(turnRate({ el: 0, redBean: true }), .00218166, 'physical redBean keeps the physical homing profile');
-  assert.equal(turnRate({ el: 1, titanEye: true }), .00218166, 'fire-colored titan eye remains physical');
+  assert.equal(turnRate({ el: 1, redBean: true }), .00655, 'fire redBean keeps the current magic homing profile');
+  assert.equal(turnRate({ el: 0, redBean: true }), .00109083, 'physical redBean keeps the current physical homing profile');
+  assert.equal(turnRate({ el: 1, titanEye: true }), .00109083, 'fire-colored titan eye remains physical');
 });
 
 test('peace-shield Q routing accepts magic red comets by parry class', () => {

@@ -1,5 +1,7 @@
 # 전체 UI 통일 — Hell Gothic
 
+> 2026-09-27 인벤토리 최신 창 규격은 [장비 시스템 최신 절](../2_7%20인벤토리+장비시스템/2_7%20인벤토리+장비시스템.md)의 `100dvh−24px`(620px 이하 `−8px`) 및 장비/가방/정보 가변폭 1.28fr/clamp(400px,30vw,600px)/1fr이다. 아래 기존 270px 장비 행과 680px 창 높이는 당시 제작 기록이다.
+
 사용자 승인: 2026-09-24 ui_hell_concept.png의 고딕·악마·지옥 분위기로 실제 UI 작업 진행. 검은 철, 악마의 뿔과 날개, 붉은 지옥불, 밝은 뼈색 문자를 공통 언어로 사용한다. 기존 Iron Covenant는 이전 제작 방향이며 현재 SSOT는 아래다.
 
 ## 2026-09-25 공통 UI 현재 적용 계약
@@ -24,7 +26,7 @@
 
 | 항목 | 현재 구현 |
 |---|---|
-| parryLesson | opacity1. 배경 radial-gradient(ellipse at 50% 0,#47171288,transparent 48%),#100d0ef5. 패딩68px 24px 20px. 기존 반투명 배경 전체 이미지를 덮어씀 |
+| parryLesson | opacity1. 부모 transparent/border0/box-shadow:none, 내부 ::before padding-box에 기존 어두운 배경 유지(2026-09-27 정정). 패딩68px 24px 20px. 장식 프레임·문장 유지 |
 | 프레임/문장 | frame.png slice22%/40px, crest.png 174×58px·top6px. 이미지 레이어 pointer-events:none; 실제 체크/텍스트/버튼은 DOM |
 | 작은/낮은 화면 | 폭≤760 패딩18px 20px 16px, 문장 숨김, 행12px·패딩5px. 폭>760이면서 높이≤700 패딩54px 20px 16px, 문장120×40px·top6px. 기존 최대 높이·본문 스크롤·하단 버튼 고정 유지 |
 | 현재 목표 | 행14px/줄높이1.6, 패딩7px 8px, #fff0df, #551819aa→#25101166 배경, 선 #a34d3f, 왼쪽2px #ec7958. 완료 #b2d6ac. 마법/물리/성공 게이지의 의미 색 유지 |
@@ -98,9 +100,78 @@ CSS 이미지 실패 시 solid 배경/테두리/DOM 글자·버튼이 남는다.
 |---|---|
 | 인벤토리 제목판 | 직계 헤더의 .ptitle display:none. 제목 이미지와 가상요소도 표시하지 않음 |
 | 정보행 | 전투력/악의/닫기 유지. gap0, margin4px 0 8px |
-| 높이 배분 | inv-wrap 첫 행270px, 가방 행 minmax(240px,1fr). 확보한 나머지 높이는 가방에 배정. 작은 화면은 기존 바깥 세로 스크롤 사용 |
+| 높이 배분 | 장비 탭 inv-wrap 첫 행270px, 가방 행 minmax(min-content,1fr). invCenter height:auto/min-height260px,invGrid height140px/flex1 1 140px. 필터 높이를 반영하며 나머지 높이는 가방에 배정. 작은 화면은 기존 바깥 세로 스크롤 사용 |
 | 적용 범위 | 인벤토리 내부 장비/유골함/보석/보관함 페이지 공통. 다른 메뉴 제목 유지 |
 
 CSS 캐시 ui-refinement.css?v=20260927-3. 신규 이미지/아이템 데이터 변경/자동 테스트 추가·실행 없음.
 
 정확한 CSS는 UI_COMPOSITION_20260925.md의 같은 절을 따른다.
+
+
+## 2026-09-27 로비 ENTER 버튼 원본 색상 복원
+
+| 항목 | 현행 규격 |
+|---|---|
+| 의도 | 사용자 피드백에 따라 로비 입장 버튼의 기존 원본 색상 보존 |
+| 에셋 | assets/lobby/lobby_enter_btn.png 유지. 보라색 보석·문양과 밝은 금속색 ENTER 글자 |
+| CSS | ui-foundation.css의 .lobby-right .enter-game-btn img 색조 회전·채도 필터 제거. 선택 상태의 이미지 computed filter:none (미선택은 아래 소등 계약 적용) |
+| 범위 | 버튼 크기·배치·hover·disabled·입장 동작 유지. 시네마틱 ENTER와 무관 |
+| 캐시 | index.html의 ui-foundation.css?v=20260927-enter-original |
+| 검증 | 스크립트 비활성 로비에서 원본 이미지 로딩과 computed filter:none 확인. tmp/lobby-enter-original-color/after.png. 로그인·세이브 API 호출 없음 |
+
+
+## 2026-09-27 로비 프레임 외곽 투명화·장식 확대
+
+| 항목 | 현행 규격 |
+|---|---|
+| 원인 | .lobby-right 전체의 배경·왼쪽 선·외부 그림자가 알파 프레임 바깥에도 사각형으로 남음 |
+| 패널 | isolation:isolate, background:transparent!important, border:0!important, box-shadow:none!important. padding:28px 30px 24px |
+| 안쪽 배경 | ::before, position:absolute, inset:22px, z-index:-1, pointer-events:none. 기존 철판·문양·그라디언트 유지, 네 모서리 12px 사선 clip-path로 배경만 제한 |
+| 장식 프레임 | ::after inset:0, border-width:48px, border-image-width:48px. 기존 40px 대비 20% 확대. 기존 --ui-frame 이미지·slice22%·stretch·z-index2·pointer-events:none 유지 |
+| 원본 이미지 | 수정·생성 없음. 프레임의 기존 PNG 알파 사용, 바깥은 로비 배경이 비침 |
+| 캐시 | index.html의 ui-refinement.css?v=20260927-lobby-frame |
+| 검증 | 스크립트 비활성 실제 index/CSS, 1280/1600/1920px에서 패널 배경 투명·border0·shadow none·fill inset22px·frame48px 확인. 패널 가로 넘침 없음. tmp/lobby-frame-transparency/after.png 및 report.json. 로그인·세이브 API 미실행 |
+
+
+## 2026-09-27 캐릭터 선택에 따른 ENTER 소등·점등
+
+| 항목 | 현행 규격 |
+|---|---|
+| 미선택 | disabled 유지, display:block!important, opacity:1!important, 버튼 filter:none!important. 이미지 grayscale(1) brightness(.45)로 보석·문양 소등, 클릭 불가 |
+| 선택 | 기존 _updateCharDisplay(s) 및 온라인 선택 처리의 disabled=false를 그대로 사용. 이미지 filter:none으로 원본 보라색 점등 |
+| 선택 해제 | 기존 _updateCharDisplay()의 disabled=true로 소등 복귀 |
+| 전환 | 이미지 filter .45s ease, prefers-reduced-motion:reduce에서는 transition:none |
+| 배치·원본 | assets/lobby/lobby_enter_btn.png 재사용. 상태 전환 시 버튼 영역 높이 동일, 숨김에 따른 레이아웃 이동 제거. 입장은 별도 클릭 |
+| 캐시 | index.html의 ui-refinement.css?v=20260927-enter-light |
+| 검증 | 스크립트 비활성 로비에서 실제 _updateCharDisplay 함수만 추출 실행, 번역·배경 교체·캐릭터 영상은 격리. 미선택 disabled/display:block/opacity1/filter grayscale(1) brightness(.45), 선택 disabled=false/filter none, 해제 disabled=true 확인. 두 상태 높이120px 동일. tmp/lobby-enter-light/off.png 및 on.png. 로그인·세이브 API 미실행 |
+
+
+## 2026-09-27 내부 전체 투명화 폐기
+
+사용자 의도를 오해한 변경으로 폐기. 아래 프레임 안 유지·밖만 투명 정정 규격을 적용한다.
+
+
+## 2026-09-27 투명화 범위 정정: 프레임 안 유지·밖만 투명
+
+| 항목 | 현행 규격 |
+|---|---|
+| 사용자 확정 | 230651 스크린샷 지적: 박스 안을 투명하게 하라는 뜻이 아님. 직전 전체 내부 투명화는 오해로 폐기. 장식 테두리 바깥만 투명 |
+| 로비 원인·수정 | .lobby-right 자체는 이미 transparent이고 ::before inset22px 안쪽 배경 유지. 최신 단일 장면 규칙에 따라 #lobbyBgImg를 로비 전체로 확장하고 .lobby의 검정 로딩 폴백을 유지. 외곽에 별도 body 배경이 비치지 않음. 카드·배너·버튼·내부 문양 유지 |
+| 튜토리얼 | #parryLesson 부모 background:transparent,border0,box-shadow:none 유지. ::before의 실제 border-width18px·border-image-width40px에 기존 radial-gradient(ellipse at 50% 0,#47171288,transparent 48%),#100d0ef5 배경을 padding-box로 제한. 프레임22% 슬라이스·문장 유지 |
+| 내부 복원 | 키·현재 행·footer·시작/건너뛰기 버튼·자원 안내·체크박스의 직전 투명 오버라이드 제거. 기존 붉은 현재 행/버튼 및 배경 복원. parryLessonBackdrop도 기존 정의 복원 |
+| 캐시 | index.html/game.html/game-easy-test.html: ui-foundation.css?v=20260927-frame-interior, ui-refinement.css?v=20260927-frame-exterior |
+| 검증 | Chromium1280×900에서 검수용 줄무늬 배경을 이용해 로비/튜토리얼 바깥만 배경이 비치고 내부는 어두운 배경 유지 확인. 튜토리얼 내부 rgba(16,13,14,.96),padding-box,frame40px,부모border0. 로비 부모/전체 배경transparent 및 내부 inset22px 확인. 실제 CSS 격리 검수,게임 데이터 변경 없음 |
+| 기록 | tmp/frame-outside-only/report.json,lobby-after.png,tutorial-after.png,changes.patch. 기존 터미널/.git 제한으로 커밋 미완료 |
+
+
+## 2026-09-27 로비 장면 배경 한 장으로 통일
+
+| 항목 | 현행 규격 |
+|---|---|
+| 원인 | 로비 투명 외곽에서 body의 별도 img/lording 랜덤 배경이 노출되어 왼쪽 로비 장면과 오른쪽 외곽 장면이 달라짐 |
+| 구조 | #lobbyBgImg를 .lobby-left 내부에서 #lobby 직계 자식으로 이동. absolute/inset0/cover/left center로 로비 전체에 한 장 표시. 기존 _swapLobbyBg의 이미지 선택·전환 및 DOM id 유지 |
+| 레이어 | .lobby background:#000/isolation:isolate/overflow:hidden. 검정은 로딩·페이드 시 별도 body 배경 노출 방지용. 직계 배경 z-index0/pointer-events:none,좌우 패널 z-index1,왼쪽 자체 배경 transparent |
+| 유지 | 오른쪽 장식 바깥은 동일 로비 장면을 노출. 내부 inset22px 배경·문양·카드·로고·버튼 및 캐릭터 미리보기 유지. 기존 배경3종 선택 정책 유지,새 이미지 생성 없음 |
+| 캐시 | index.html의 ui-refinement.css?v=20260927-single-lobby-scene |
+| 검증 | 실제 HTML/CSS 격리 브라우저에서 flame 기존 에셋1장으로1600×900 시각 확인. #lobbyBgImg1개/부모lobby/전체화면크기 일치. body에 검수용 마젠타 배경을 두어 외곽에 노출되지 않음 확인. 960×540·1920×1080에서도 전체크기 일치/횡넘침 없음 |
+| 기록 | tmp/lobby-single-scene/after.png,report.json,sizes.json,changes.patch. 게임 저장·계정 변경 없음. 기존 터미널/.git 제한으로 커밋 미완료 |

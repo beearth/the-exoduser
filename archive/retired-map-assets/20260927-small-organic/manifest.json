@@ -1,0 +1,63 @@
+{
+  "status": "REJECTED_LOW_QUALITY",
+  "reuseAllowed": false,
+  "date": "2026-09-27",
+  "reason": "Low-resolution decorative puddles, flesh pile and meat stake conflict with current living environment; gameplay poison and CH2 web retained.",
+  "files": [
+    {
+      "original": "assets/map/ch1/floor_objects/acid_pool.png",
+      "archived": "archive/retired-map-assets/20260927-small-organic/assets/map/ch1/floor_objects/acid_pool.png",
+      "sha256": "f007500ff05ef6d17050ec12be70cafca1bab47afab4d7cb4e52e204238ba89e"
+    },
+    {
+      "original": "assets/map/ch1/floor_objects/flesh_pile.png",
+      "archived": "archive/retired-map-assets/20260927-small-organic/assets/map/ch1/floor_objects/flesh_pile.png",
+      "sha256": "b716cf792a9030ba22c7c51aaf12a69b89e3cb7b382ab1cf76c87a84a8b855c3"
+    },
+    {
+      "original": "assets/map/ch1/floor_objects/meat_stake.png",
+      "archived": "archive/retired-map-assets/20260927-small-organic/assets/map/ch1/floor_objects/meat_stake.png",
+      "sha256": "b59b0abf3dc35d3223bd795c6fafd6ccbb84ecc164f1089dbfd6f6aa2b0b019c"
+    },
+    {
+      "original": "assets/map/ch1/floor_objects/poison_puddle.png",
+      "archived": "archive/retired-map-assets/20260927-small-organic/assets/map/ch1/floor_objects/poison_puddle.png",
+      "sha256": "b5d11b19f91be1635c80e198013f00347a3cd7118b76b977c8c7fd306a095f48"
+    },
+    {
+      "original": "assets/map/ch6/floor_objects/flesh_pile.png",
+      "archived": "archive/retired-map-assets/20260927-small-organic/assets/map/ch6/floor_objects/flesh_pile.png",
+      "sha256": "b716cf792a9030ba22c7c51aaf12a69b89e3cb7b382ab1cf76c87a84a8b855c3"
+    },
+    {
+      "original": "assets/map/ch6/floor_objects/meat_stake.png",
+      "archived": "archive/retired-map-assets/20260927-small-organic/assets/map/ch6/floor_objects/meat_stake.png",
+      "sha256": "b59b0abf3dc35d3223bd795c6fafd6ccbb84ecc164f1089dbfd6f6aa2b0b019c"
+    },
+    {
+      "original": "assets/objects/acid_pool.png",
+      "archived": "archive/retired-map-assets/20260927-small-organic/assets/objects/acid_pool.png",
+      "sha256": "f007500ff05ef6d17050ec12be70cafca1bab47afab4d7cb4e52e204238ba89e"
+    },
+    {
+      "original": "assets/objects/flesh_pile.png",
+      "archived": "archive/retired-map-assets/20260927-small-organic/assets/objects/flesh_pile.png",
+      "sha256": "b716cf792a9030ba22c7c51aaf12a69b89e3cb7b382ab1cf76c87a84a8b855c3"
+    },
+    {
+      "original": "assets/objects/poison_puddle.png",
+      "archived": "archive/retired-map-assets/20260927-small-organic/assets/objects/poison_puddle.png",
+      "sha256": "b5d11b19f91be1635c80e198013f00347a3cd7118b76b977c8c7fd306a095f48"
+    },
+    {
+      "original": "docs/4.1맵디자인+설정/objects/flesh_pile.png",
+      "archived": "archive/retired-map-assets/20260927-small-organic/docs/4.1맵디자인+설정/objects/flesh_pile.png",
+      "sha256": "b716cf792a9030ba22c7c51aaf12a69b89e3cb7b382ab1cf76c87a84a8b855c3"
+    },
+    {
+      "original": "docs/4.1맵디자인+설정/objects/meat_stake.png",
+      "archived": "archive/retired-map-assets/20260927-small-organic/docs/4.1맵디자인+설정/objects/meat_stake.png",
+      "sha256": "b59b0abf3dc35d3223bd795c6fafd6ccbb84ecc164f1089dbfd6f6aa2b0b019c"
+    }
+  ]
+}

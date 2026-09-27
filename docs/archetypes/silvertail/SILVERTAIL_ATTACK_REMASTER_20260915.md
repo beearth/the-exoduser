@@ -12,7 +12,7 @@
 | 공격 시트 | `img/exoduser_silvertail/attack-spin-v2.png`, 240×240 RGBA, 3×3, 9고유 포즈 |
 | 소스 순서 | S→SW→W→NW→N→NE→E→SE→S 복귀. 생성 원본 중 후면 대각 두 셀은 실제 시점을 확인해 패킹 때 순서를 교정 |
 | 셀 | 80×80, 발 앵커 `(40,62)`, 중앙 렌더 원점 대비 발 y=22 |
-| 생성 참조 | `output/silvertail_remake_20260915/silvertail_turnaround_v1.png` |
+| 생성 참조 | 당시 8시점 시안은 2026-09-27 프로젝트에서 제거. 현행 공식 키아트는 [`SILVERTAIL_KEYART_CANON_20260927.md`](./SILVERTAIL_KEYART_CANON_20260927.md)의 2장. 기존 패킹 수치는 이력으로 유지 |
 | 생성본 | `output/silvertail_attack_20260915/spin/source.png`, 1223×1286 RGBA |
 | 생성 | 내장 imagegen: 회전 본체 생성→왼손 단검 편집. PixelLab 미사용 |
 | 패커 | `tools/pack-silvertail-attack.cjs`; 모든 프레임 동일0.112배율, alpha 경계 크롭·발 정렬·80px 셀 경계 여백 검사 |

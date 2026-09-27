@@ -1,0 +1,24 @@
+/* The generated growth art replaces the old SVG body drawing, but not the passive routes. */
+@media (min-width: 781px) {
+  #statPanel.growth-body-tree.growth-constellation .growth-body-anatomy,
+  #statPanel.growth-body-tree.growth-constellation .growth-body-ornament {
+    visibility: hidden !important;
+    opacity: 0 !important;
+  }
+}
+
+/* One portrait-format knight is reused in the two inventory character views. */
+#invPanel .inv-eq-sil {
+  object-fit: cover !important;
+  object-position: center center !important;
+  mask-image: radial-gradient(ellipse at 50% 49%, #000 55%, transparent 85%);
+  filter: brightness(1.16) contrast(1.08) drop-shadow(0 5px 18px rgba(0, 0, 0, .75)) !important;
+}
+
+#invPanel .inv-cr-portrait-image {
+  object-fit: cover !important;
+  object-position: center center !important;
+  opacity: .94 !important;
+  filter: brightness(1.13) contrast(1.07) saturate(.77) drop-shadow(0 8px 16px #000) !important;
+  mask-image: radial-gradient(ellipse at 50% 48%, #000 48%, rgba(0, 0, 0, .88) 63%, transparent 84%) !important;
+}

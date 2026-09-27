@@ -1,0 +1,10 @@
+# Settings plate
+
+Connected Higgsfield GPT Image 2, High / 2K / one image. Original artwork generated for nine-slice UI rendering. The provider transparency setting was on, while the prompt explicitly requested an opaque inset.
+
+## Exact prompt
+
+Create ONE original blank gothic action RPG UI panel plate texture for nine-slice rendering. Square 1:1 canvas, orthographic perfectly front-facing, straight rectangular edges. Entire canvas occupied by the plate, outer edge exactly at the canvas edges, NO exterior margin. A solid opaque soot-brown charcoal leather or fine-grained dark stone inset, bordered by ONE continuous narrow dark iron frame contained strictly in the outer FIVE percent of the image. Frame has a dark outer bevel, a softly worn grey edge, and a recessed inner lip, all part of the SAME substantial metal piece. At each corner, a small precise engraved hooked geometric detail confined within that same five percent band, symmetrical and clean. Long straight side rails uninterrupted and uniform thickness, designed to stretch for a 400 by 60 pixel game menu button. Center 90 percent is quiet matte nearly-black warm grey with subtle realistic fine grain, no lighting hotspot, no gradient shine, no pattern, no scratches crossing the whole surface. Low contrast surface but visibly sculpted edges. Medieval cathedral craftsmanship, serious restrained dark gothic game interface. NO gold, NO brass, NO rivets, NO skulls, NO demons, NO text, NO letters, NO symbols in the center, NO red color, NO chrome, NO blue steel, NO extra nested rectangles, NO thin disconnected outlines, NO shiny plastic or glass, NO transparent holes. Everything is opaque inside the plate. Crisp consistent corners suitable for nine-slice scaling. Original artwork, not a screenshot or a menu mockup.
+
+
+Generation ID: hf_20260925_115037_62b740ff-1f00-47c0-8eae-d26138fefcba. Actual output2048×2048 RGBA. Alpha >32 bounds[32,39,2016,2007];zero alpha250,370;partial alpha3,943,934. Original pixels preserved. Runtime14% slice: title12px with fill, controls8px with fill, settings body10px without fill. Normal alpha over solid fallback.

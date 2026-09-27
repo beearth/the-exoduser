@@ -1,12 +1,43 @@
 # CH1-1 기존 맵 디테일·접지·생체 움직임
 
+> **48차 현행(2026-09-27):** 정상부/ramp surface 합성에 alpha 실루엣 기반 그림자 rgba(10,9,12,.32), blur20, offset(0,18) 추가. 정적 언덕 캐시에만 적용. [적용 범위·검증](CH1_HILL_DEPTH_PASS48.md).
+
+
+> **47차 현행(2026-09-27):** 제단 정상부·ramp floor 반복 크기 round(_gtTileSz(floor)×1.4), texture에만 saturate(.7)/contrast(.92)/brightness(.92) 적용. 공통 월드 원점·46차 윤곽·44차 feather 유지. [현행 수치·검증](CH1_HILL_MATERIAL_PASS47.md).
+
+
+> **46차 현행(2026-09-27):** 정상부의 정확한 타원을 96점 비대칭 폐곡선으로 교체. 사면 명암은 organicSkirt 전체에 적용. 44차 feather·45차 색상/월드 정렬·높이·충돌 유지. [윤곽 공식·검증](CH1_HILL_CONTOUR_PASS46.md).
+
+
+> **45차 현행(2026-09-27):** 제단 사면의 갈색 radial wash를 저채도 방향광으로 교체하고, ramp 바닥을 정상부와 같은 월드 좌표에 정렬. 44차 48px alpha·높이·충돌 유지. [현행 색상·검증](CH1_HILL_SHADING_PASS45.md).
+
+
+> **44차 렌더 보강(2026-09-27):** smoothing 언덕의 정상부·오르막 접합과 전체 외곽에 48px L1거리/smoothstep 알파 감쇠 적용. 캐시 1900×960 유지. 높이·충돌·서쪽ramp·원본PNG·배경청크불변. [현행공식·검증](CH1_HILL_EDGE_BLEND_PASS44.md).
+
+> **43차 현행(2026-09-27):** m_leaf/leaf_pile 원화·고정1배치폐기. 낙엽유지였던이전기록은검수이력. scatter현재m_fbones,m_poison 2항목,전체폐기34id. 공유뼈·시체유지. [현행SSOT](CH1_LEAF_RETIREMENT_PASS43.md).
+
+> **42차 현행(2026-09-27):** 구형 spider_web 원화·동일사본4개와CH2 seamWeb4배치폐기. CH2 authored105/시스템포함107,충돌51+비충돌54,seam6,wall-belt27. 구형거미줄유지였던41차기록은검토이력. 큰거미줄뼈기둥보존. [현행SSOT](CH2_WEB_RETIREMENT_PASS42.md).
+
+> **41차 현행(2026-09-27):** 구형장식 acid_pool/poison_puddle/flesh_pile/meat_stake 4원화·사본11개폐기. 기존배치/재작업계획은이력. 실제독구덩이·대형늪·거미줄유지. [현행SSOT](CH1_SMALL_ORGANIC_RETIREMENT_PASS41.md).
+
+> **40차 현행(2026-09-27):** 흰부유돌처럼읽히는 moss_patch/ash_pile/mud_stain/ground_crack 지면원화4종폐기. loader·고정8배치·scatter후보에서제거. leaf와전투VFX ground_crack_sheet는유지. [현행SSOT](CH1_GROUND_DECAL_RETIREMENT_PASS40.md).
+
+> **39차 현행(2026-09-27):** 구형 rotten_tree/vine_pillar 원화와사본7개 폐기. 게임·편집기·충돌·나무움직임에서제외. 과거배치/확대재작업계획은이력. dry아틀라스는전용 _atlasDry:1로분리해동작보존. [현행폐기SSOT](CH1_LOW_QUALITY_RETIREMENT_PASS39.md).
+
+> **38차 현행(2026-09-27):** 구형 weapon_pile.png 및 동일사본4개 폐기·격리. m_wpile/m_c5wpile/weapon_pile 사용금지. 과거무기더미배치·접지기록은이력이다. 접지현행2장/0.5MiB,전체native87.81269454956055MiB,모듈20260927-38. [검수·폐기 SSOT](CH1_LOW_QUALITY_AUDIT_20260927_PASS38.md).
+
+> **2026-09-27 37차 현행 폐기 결정:** 구형 tombstone.png와 exposed_root.png는 사용자 지정 저품질 원화로 사용 금지. 36차 접지 보강은 폐기되었다. 아래의 해당 에셋 수치·좌표·접지 기록은 과거 이력이며 현행 등록·배치가 아니다. 동일 원화 6파일 격리, CH1 authored 8배치 제거, 접지 계열은 3장/0.75MiB로 복귀. [폐기 SSOT](LOW_QUALITY_ASSET_RETIREMENT_20260927.md).
+
+> 2026-09-27 보석함 작업 후속: 아래 역사적 검증 결과의 `inventory-gems-finish.css` NW.js FILES 누락은 보석함 작업에서 `build-nwjs.mjs` 복사 목록에 추가했다. CSS 참조·목록 포함은 디스크 소스로 확인했으며 전체 패키징 테스트/실제 빌드는 재실행하지 않았다. 아래 당시 실패 수를 성공으로 바꿔 기록하지 않는다. 이 보완은 맵 코드·설계 변경이 아니다.
+
 사용자 지시: 현재 1-1을 보존하고 디테일·입체감·동적 움직임만 추가한다. 기존 production_finish 베이스 위의 국소 보강이며 v4~v8 정지 원화의 게임 적용이 아니다.
 
 ## 런타임 계약
 
 | id / 적용 위치 | 값 / 동작 |
 |---|---|
-| 구현 | `ch1-living-detail.js?v=20260927-18`, 전역 `Ch1LivingDetail.draw/deform/shadows/hideDuplicate/pit/organic`; `build-nwjs.mjs` 배포 FILES에도 포함 |
+| 구현 | `ch1-living-detail.js?v=20260927-36`, 전역 `Ch1LivingDetail.draw/deform/shadows/hideDuplicate/groundSprite/swamp/pit/organic`; `build-nwjs.mjs` 배포 FILES에도 포함 |
+| 구역 지면 전이 | `skinRegions`/`regionalSkin`: SIDE_L·SIDE_R·ARENA·CAMP_FRONT의 정적 피부막. 각768×512 RGBA, 최대4장/6MiB. 위치·팔레트·베이크 규격은 아래20차·32차·34차 표. 기존 국소 움직임과 별도이며 전체 지면 교체 아님 |
 | 범위 | `G.stage===0`, `_bossArena` 및 `_fieldRebuildQA` 제외 |
 | 지면 순서 | `_drawCh1Hill` 다음, 오브젝트·캐릭터·전투 효과 이전. `surfaceOnly=true` 잔물결은 맵 오브젝트 뒤/캐릭터 앞 |
 | 앵커 배율 | `m_c1tree:2.1`, `m_c1cocoon:1.1`, `m_c1pool:1.25`, `m_c1spod:.65`, `m_c1sroot:.75`, `pit_poison:1.2`, `m_rotten_tree:1` |
@@ -17,7 +48,7 @@
 | 합성 | source-over 기본, 인접 두 프레임 alpha `1-mix`/`mix`. GPU에는 `drawImage`만 전달, 곡선/gradient는 native Canvas2D에서 최초 베이크 |
 | 맥동 | 각속도 `.00095 rad/ms`, 약6.614초/주기; 앵커 위상 `x*.017+y*.011`; 프레임16개 사이 선형 혼합 |
 | 접촉 그림자 | 중심(12,24), Y축 .42; 반경12→156, alpha `.48/.25/0`(stop `0/.48/1`) |
-| 힘줄 | dry3/4/5갈래, wet5갈래; seed=variant*1.7, 각도간격2.399rad, 길이 `100+42*sin(seed+j*1.7)`, 지면 Y `.55`; 고정 시작부(0,14), 중간 굽힘7*sin(phase-j*.8)*sin(πu)^2 px(10차), 끝점 고정, 갈래 위상차.8rad |
+| 힘줄 | dry3/4/5갈래, wet5갈래; seed=variant*1.7, 각도간격2.399rad, 길이 `100+42*sin(seed+j*1.7)`, 지면 Y `.55`; 고정 시작부(0,14), 중간 굽힘7*sin(phase-j*.8)*sin(πu)^2 px(10차), wet 끝점 고정; dry는23차 끝 선행 포복 추가, 갈래 위상차.8rad |
 | 힘줄 명암 | 4차 연속 리본 면: 아래 공식 표 참조. 기존24분절 스트로크를32구간 표본의 연결 면으로 교체, 겹치는 선 끝의 어두운 마디 제거 |
 | 독액 | `m_c1pool`/`pit_poison` 주변 끊어진 잔물결3개; X반경14→59, Y반경5→17, alpha 최대.16. 맥동과 같은 주기 |
 | 고치·독낭 | `m_c1cocoon`/`m_c1spod`만 변형; `sin(now*.00105+x*.017+y*.011)`, 약5.984초; X±1.8%, Y∓1.2%, 기준점 `(x,y+32)` |
@@ -30,7 +61,7 @@
 | 보존 | MAP_OBJS/geometry/collision/START/EXIT/진행/데미지/원본 청크 수정 없음. 자동 scatter 추가0 |
 | 폴백 | 스크립트 미로드 시 optional global 검사로 기존 맵을 계속 렌더. 신규 외부 이미지 다운로드 없음 |
 
-색상/곡선 제어점의 상세값은 동명의 소스에 대응하며 조직 몸체 RGBA `(87,44,52,.78)`, 독액 몸체 `(63,61,35,.65)`, 상면 `(158,119,114,.3)`, 가지 `(71,43,44,.3)`, 잔물결 RGB `(149,142,83)`이다. 전체 지면 피부 교체와 대형 외곽 높이 재설계는 범위 밖이다. 동측 작은 구덩이 깊이/국소 수축은 9차에 적용, 기존 대형 원화의 벽 분리 변형은 미구현이다.
+색상/곡선 제어점의 상세값은 동명의 소스에 대응하며 조직 몸체 RGBA `(87,44,52,.78)`, 독액 몸체 `(63,61,35,.65)`, 상면 `(158,119,114,.3)`, 가지 `(71,43,44,.3)`, 잔물결 RGB `(149,142,83)`이다. 전체 지면 피부 교체와 대형 외곽 높이 재설계는 범위 밖이다. 동측 작은 구덩이 깊이/국소 수축은 9차에 적용, 기존 대형 원화의 벽 분리 변형은 미구현이다. 단,27차부터 큰늪 수면4곳의 흐름·기포는 구현되며 바위·외곽은 정적이다.
 
 ### 2차 길 가장자리 고정 좌표
 
@@ -249,7 +280,7 @@ VISUAL VERDICT: RETOUCH — 기존 맵의 국소 습기·체액 움직임 추가
 | 낮은 독액 | contour(86,48,23,2),linearY-25→73,stops0 #1b2416 / .5 #45522a / 1 #788052. 벽과 독액 모두 clip해 가장자리 밖 유출 방지 |
 | 침전물 | 32개,px=sin(j*12.989)*81,py=23+cos(j*7.31)*43,타원반경(3+j%5,1+j%3),회전.2. 홀수RGBA16,24,14,.24 / 짝수147,151,90,.19 |
 | 수면 흐름 | 3개,p=(f/16+j/3)%1,중심((j-1)*24,22+sin(j)*14),반경(8+p*28,3+p*10),회전-.1,호.4→5.3,RGB176,173,110,alpha(1-p)*.24,폭1.3 |
-| 앞턱 가림 | j=0..48,t=j/48*π,rx=99+sin(phase-2t)*1.6,px=cos(t)*rx,py=9+sin(t)*73. RGBA36,28,26,.9 폭4;상면Y-2,RGBA143,125,91,.3 폭1.6. 수면보다 뒤에 그려 전경 턱 표현 |
+| 앞턱 가림(9차/현행 미로드 폴백;재질로드는26차) | j=0..48,t=j/48*π,rx=99+sin(phase-2t)*1.6,px=cos(t)*rx,py=9+sin(t)*73. RGBA36,28,26,.9 폭4;상면Y-2,RGBA143,125,91,.3 폭1.6. 수면보다 뒤에 그려 전경 턱 표현 |
 | 재생 | fract((now*.00095+x*.017+y*.011)/(2π))*16. 현재/다음프레임alpha(1-mix)/mix,기존6.614초 주기. 함수 전후 context state 보존 |
 | 구분 | 절차식 작은 pit의 깊이·국소 변형 구현. 뒤쪽 큰 m_c1gtoxicf 그림의 수직벽 분리·변형이나 전체 맵 높이/지형 변경은 아님. 기존 증기/기포/지면 층 유지 |
 
@@ -529,3 +560,928 @@ NEXT PASS: 기존 구도 보존, 큰 재질 접합 개선 및 전체8카메라 �
 
 
 18차 실제 검수: {"errors": [], "httpErrors": [], "mapUnchanged": true, "cameras": [{"name": "TREE_DETAIL", "frameTimesMs": {"median": 33.30000000000291, "p95": 33.400000000001455, "samples": 60}}, {"name": "HANGING_DETAIL", "frameTimesMs": {"median": 33.30000000000291, "p95": 33.400000000001455, "samples": 60}}], "combatRAF": {"median": 33.30000000000291, "p95": 50, "samples": 90}, "deathCheck": {"buttonPresent": true, "shown": true, "error": null}, "ready": 28}. headless1280×720 녹화·50ms 체력보충·카메라무적 후 전투 전 무적해제. 전체성능 보증 아님. 확인 <http://localhost:3333/captures/ch1_living_detail_pass18_20260927/index.html>.
+
+
+## 19차: 전체 카메라 검수 및 주 랜드마크 QA 좌표 교정 (2026-09-27)
+
+런타임 아트는18차 `20260927-18`을 유지한다. 이번 코드 변경은 QA 도구의 LANDMARK 카메라와 네트워크 실패 기록뿐이다. 전체 촬영 결과를 새 재질이 구현된 것으로 보고하지 않는다.
+
+| 항목 | 현재 값 / 범위 |
+|---|---|
+| LANDMARK 검수 좌표 | 타일(83,80)→(102,90). 기존 카메라는 SI1의 옛 기준을 따라 나무가 화면 오른쪽으로 잘림. 현행 production 시체나무 runtime(4100,3620)=(102.5,90.5)*40과 일치시킴. 실제 나무 배치 변경0 |
+| 카메라 수 | 기본8 + 상세7 =15곳, COMBAT1. 전체 초기촬영 LANDMARK는 옛 위치이며 보드/갤러리에서는 `landmark-fix/after/LANDMARK.png` 재촬영으로 교체. 원본 촬영 기록 보존 |
+| requestFailures | page.on('requestfailed')에서 url/failure를 배열로 보존, runtime.json 최상위 requestFailures에 기록. 기존 errors/HTTP 오류 기록 유지 |
+| 경로/격리 검사 | test/ch1LivingDetail.test.js20 + test/ch1ProductionFinish.test.js5 =25 PASS. Windows GLib manifest 경고1건, 검사 실패0 |
+| 전체촬영 로그 | errors=5,HTTP오류=0,mapUnchanged=True. errors는 모두 ERR_NETWORK_ACCESS_DENIED. 초기 버전은 실패URL을 수집하지 않아 주소 특정 불가. 로그를 삭제하지 않음 |
+| 랜드마크 재촬영 | 네트워크 접근 허용 후 errors=0,HTTP오류=0,requestFailures=8,mapUnchanged=True. 단일 재촬영0건을 전체촬영0건으로 바꾸지 않음 |
+| 로딩 | 전체 requests=64,ready=64,chunk errors=0. 각 촬영은 visibleIds 전부 drawnIds일 때 진행 |
+| 성능 표본 | [{"name": "TREE_DETAIL", "median": 16.80000000000291, "p95": 33.40000000000873, "samples": 60}, {"name": "HANGING_DETAIL", "median": 16.69999999999709, "p95": 33.40000000000873, "samples": 60}, {"name": "CAMP_DETAIL", "median": 33.19999999999709, "p95": 33.40000000000873, "samples": 60}]. 전체촬영 COMBAT={"median": 16.70000000001164, "p95": 49.89999999999418, "samples": 90}. headless1280×720녹화 부하 포함,전체성능 PASS 아님 |
+| 보존 | MAP_OBJS/geometry/collision/전투규칙/새에셋/런타임효과 수치 변경0. 카메라 무적60하한·체력50ms보충,COMBAT전 무적해제. 이동은 QA강제전환이며 실제 종주 아님 |
+
+| CAMERA QA | 타일 | 직접 이미지 검수 | 판정 |
+|---|---|---|---|
+| START | (100,180) | 전투면과 남북 방향은 읽힘. 좌우 조직 갈래 형태 반복이 남음. | RETOUCH |
+| EARLY | (100,157) | 넓은 회피 공간. 흙 균열 재질이 지배하며 피부 재질은 아직 약함. | RETOUCH |
+| ARENA | (100,120) | 공간 유지. 낙엽 패턴 반복과 구역 간 재질 차이 부족. | RETOUCH |
+| SIDE_L | (49,151) | 통로 유지. 넓은 낙엽 바닥의 반복이 강해 우선 리터치 대상. | RETOUCH |
+| SIDE_R | (151,136) | 독성 지형으로 장소 구별. 오염 원화의 보라 테두리·절차식 구덩이 재질 차이 잔여. | RETOUCH |
+| LANDMARK | (102,90) | 검수 좌표 교정. 나무 몸통·뿌리 위계와 플레이어 확인, 주위 바닥 통합 잔여. | RETOUCH |
+| LATE | (100,48) | 통로와 적 윤곽 확인. 초반과 바닥 색·재질의 차이가 작음. | RETOUCH |
+| EXIT | (100,15) | 북쪽 게이트 접근과 측면 프레임 확인. 최종 보스 진행을 완료한 검사는 아님. | RETOUCH |
+
+| NEXT PASS 우선순위 | 위치 / 개선할 결함 | 보존할 계약 |
+|---|---|---|
+| 1 지면 재질 | SIDE_L(49,151),SIDE_R(151,136),ARENA(100,120)의 반복 낙엽. 선택영역에서 괴사한 피부막·습윤 오염으로 국소 전이 필요 | 기존 베이스/레이어 보존, 전체재생성 금지, 넓은 공터·충돌 불변 |
+| 2 독구덩이 접합 | POOL_DETAIL(162,141),기존 큰 오염원화와 작은 절차식 pit의 색/밀도차,보라빛 외곽 경계 | pit collision/위치/동작 유지,경계를 바닥과 부드럽게 연결 |
+| 3 구역 구분 | EARLY/LATE의 유사한 흙 균열·갈색 팔레트 | 새 장애물·scatter 대신 지면 재질과 저대비 오염 변화 |
+
+MAP PRODUCTION REPORT — 19차
+
+STAGE: CH1-1 production.
+MASTER: silhouette/8regions/남북 main route/side spaces 유지. route 테스트PASS.
+OUTER MASS: LEFT/RIGHT/TOP/SOUTH 유지. 이번8카메라는 주요 공간 기준, 외곽 전체를 연속 답사한 검수는 아님. major holes 전체 해소 판정 안함.
+LARGE: source assets/composites/overlap/repeated silhouette 변경 없음. source원본 반복감은 지면 반복과 구분.
+MEDIUM: connections 유지,큰 재질 접합 문제 잔여.
+GROUND: 18차 접촉shadow 유지,contamination/structure integration 잔여 결함 위표에 지정.
+PLAYABLE: main arenas/travel/breathing/threat 공간 유지. START/LATE/COMBAT에서 플레이어·적·스킬 윤곽 확인;다수 적·드롭·모든 탄종의 대규모 검수 아님.
+LANDMARK: primary나무(102,90) QA교정,secondary야영지/고치/독액·tertiary뿌리 유지.
+CAMERA QA: START/EARLY/ARENA/SIDE L/SIDE R/LANDMARK/LATE/EXIT 직접검수,7상세촬영 및 COMBAT. 판정 위표.
+TECH QA: route/collision25검사,초기network5/HTTP0→랜드마크재촬영0. seam명백한청크격자미관찰이나전청크경계전수검사아님. loading/성능은위수치.
+FILES: stage-owned tools/qa_ch1_living_detail.py/본 문서. captures와tmp는기존ignore검수파일. concurrent/unrelated 코드 수정 없음.
+GIT: QA코드+docs만 로컬격리커밋,다른staged보존,push/deploy없음.
+VISUAL VERDICT: RETOUCH — 큰 공간은 유지되지만 반복 지면과 재질 접합 보강 필요.
+NEXT PASS: 위표의 SIDE_L/SIDE_R 지면 재질부터 기존 베이스의 부분 편집. 미실행 새 아트를 완료라고 보고하지 않음.
+
+검수 갤러리: <http://localhost:3333/captures/ch1_full_review19_20260927/index.html>.
+
+
+## 20차: 공터의 정적 피부막 전이 (2026-09-27)
+
+19차 NEXT PASS의 반복 낙엽 바닥을 대상으로 GATE4 재질 연결을 보강한다. 원본 production 청크·원화는 보존하고, 기존 draw()의 지면 단계에서만 저대비 정적 재질을 겹친다. 신규 생성 이미지·소품·콜리전·지면 전체 변형은 없다.
+
+| id / 적용 위치 | 타일 중심 | 월드 중심(px) | 월드 폭×높이(px) | variant / 의미 |
+|---|---|---|---|---|
+| SIDE_L | (49.5,151.5) | (1980,6060) | 1280×880 | 0 / 회갈색 괴사 피부막 |
+| SIDE_R | (151.5,136.5) | (6060,5460) | 1200×800 | 1 / 황회색 젖은 조직 전이 |
+| ARENA | (100.5,120.5) | (4020,4820) | 1360×820 | 2 / 중앙 공터의 낮은 피부 주름 |
+
+| 변수·항목 | 구현 계약 |
+|---|---|
+| skinRegions / regionalSkin / regionSkins | 위3개 고정 영역, variant별 최초 사용시 native Canvas2D 캐시. MAP_OBJS 추가0 |
+| 텍스처·메모리 | 768×512 투명 RGBA×최대3장=4.5MiB 상주 추가. 마스크768×512는 베이크 임시자원, 캐시에 보존하지 않음. 18차 native62.171810150146484 기준 최대66.671810150146484MiB(기존 투영그림자·임시·GPU복제 별도) |
+| 범위·순서 | stage0 production, bossArena/fieldRebuild 제외. surfaceOnly=false에서만 기존 힘줄보다 먼저; 오브젝트·캐릭터·전투효과 아래. 기존 shadows 호출 뒤. 표면 패스 재합성 없음 |
+| 카메라 제외 | zoom=max(.3,_edZoom||_camZoom||1), 중심거리 > 카메라 반폭+영역폭/2 또는 반높이+영역높이/2이면 제외. 화면 내 영역당 globalAlpha=기존alpha×.6으로 drawImage1회 후 alpha 복원, 프레임별 gradient/베이크/텍스처 업로드 없음 |
+| 기본색 | dry variant0/2: #342e31→#4c403e→#342e2f. wet variant1: #303329→#494a37→#32342b. gradient (0,0)→(180,512), stop0/.45/1 |
+| 결정적 seed | 1397+variant×971, LCG=(imul(seed,1664525)+1013904223)>>>0, rand=seed/4294967296. 시간·게임 난수와 독립 |
+| 넓은 얼룩 | 28개, x=rand×768/y=rand×512/r=35+rand×100. 중심 j%3 ? rgba(27,22,26,.23) : rgba(118,101,84,.14), 경계 rgba(40,29,34,0) |
+| 미세 재질 | 9500개, x/y 동일범위, r=.4+rand×1.6, 크기(r×1.8,r). j%3 ? rgba(23,18,21,.09) : rgba(170,150,126,.08) |
+| 피부 주름 | 23개, x=40+rand×510,y=48+rand×400,len=35+rand×90,bend=6+rand×12. translate(x,y),rotate((rand-.5)×1.4) 후 local cubic (0,0)→(.3len,-bend)→(.7len,.4bend)→(len,-.3bend). 어두운 선 rgba(29,22,27,.22), 폭1.2+rand×1.6; 밝은 선 y-1.4, rgba(156,134,116,.14), 폭.8 |
+| 비대칭 마스크 | (중심x,y,rx,ry)=(300,255,288,210)/(500,225,232,172)/(440,332,220,152), x에(variant-1)×18. 각 정규화 반경.12→1 gradient, stop0 alpha.88/.48 alpha.75/1 alpha0, source-over 결합→destination-in. 사각 텍스처 경계는 투명 |
+| 시간·상태 | 정적인 재질. 동맥 맥동·고치/시체/나무 동작은 기존 계약 유지. 캔버스 alpha/transform 복원. 원본맵·geometry·route·collision·START/EXIT·게임플레이·원본PNG 변경 없음 |
+| 테스트 | 지면 중앙의 가시성 검사 실패를 먼저 재현. 현행 효과21+지형5+구문1+패키징2=29 PASS. native canvas가 Windows GLib manifest 경고1건 출력했으나 검사 실패0 |
+
+실제 전후 검수와 MAP PRODUCTION REPORT는 아래와 같다.
+
+
+20차 실제 검수: before(18차 런타임)/after(첫20차)/final(대비 보정20차)를 별도 보존. 초기 넓은 회색 면과 평행 주름을 발견해 palette를 어둡게, 합성alpha를.6으로 낮추고 주름 길이·각도를 보정했다. 최종값은 위표다.
+
+| CAMERA QA | 이번 직접 검수 | 판정 |
+|---|---|---|
+| START / EARLY | 기존 넓은 통로와 국소 힘줄 유지. 피부막 추가 영역 밖이며 갈색 바닥 반복은 잔여 | RETOUCH |
+| ARENA | 기존 바닥 결을 보존하며 낮은 회갈색 전이. 플레이어 윤곽 유지. 피부 재질로 완전히 교체된 상태 아님 | RETOUCH |
+| SIDE L | 낙엽 대비 완화와 낮은 주름. 사각 경계 없음. 반복 낙엽이 여전히 읽힘 | RETOUCH |
+| SIDE R | 황회색 전이로 독성 지형 주변 연결. 대형 독구덩이 보라 테두리·절차식 pit 재질차는 잔여 | RETOUCH |
+| LANDMARK / LATE / EXIT | 기존 나무·후반 지면·북쪽 게이트 유지, 추가 대형 구조물 없음 | RETOUCH |
+| COMBAT | 입구 이동·공격·Q 입력과 적/스킬 윤곽 확인. 세 지면 영역의 대규모 전투 검수는 아님 | RETOUCH |
+
+| TECH QA | 실제 결과 / 한계 |
+|---|---|
+| 자동검사 | 29 PASS(효과21/geometry5/구문1/패키징2), Windows canvas GLib manifest 경고1건 |
+| 오류 | 최종 errors5건은 외부 Google Fonts3/Three.js2의 ERR_NETWORK_ACCESS_DENIED. before에도 동일5건. 수집로그의 JS pageerror stack 없음,HTTP오류0. 런타임 오류0이라고 보고하지 않음 |
+| requestFailures | 외부 차단5 + intro.mp4 ERR_ABORTED8 =13. 인트로 생략에 따른 중단 기록 보존 |
+| 충돌·이동 | mapUnchanged=true. 입구 WASD 이동 (4020,7220)→(4098.803036043917,7247.681663849677), 종주/보스 클리어 검수 아님 |
+| loading / seam | 요청46/ready46/chunk오류0. 각 화면 visibleIds 모두 drawnIds 포함 후 촬영. 원본 청크 변경0, seam 전수 검사 아님 |
+| frame time | ARENA/SIDE_L/SIDE_R 각60RAF median16.7ms/p95≈33.4ms. COMBAT90RAF median16.7ms/p95≈33.4ms. headless1280×720 녹화, 성능 표본이며 전체성능 PASS 아님 |
+| 렌더 CPU 표본 | 최종 EXIT 위치의 draw120회 p95≈.1ms/max≈.1ms. 새 지면 영역 밖이므로 새 재질 비용 측정값으로 사용하지 않음 |
+| QA 조건 | 카메라 촬영 중 체력50ms보충/iframes60하한,전투 전 무적보충 해제. 사망UI검사 error=null |
+
+MAP PRODUCTION REPORT — 20차
+
+STAGE: CH1-1 production.
+MASTER: silhouette/8regions/남북 main route/side spaces 유지.
+OUTER MASS: LEFT/RIGHT/TOP/SOUTH 및 major holes 변경 없음. 외곽 완성 판정 아님.
+LARGE: source assets/composites/overlap/repeated silhouette 유지. 새 생성 이미지0.
+MEDIUM: 기존 connections 유지,큰 재질 접합은 잔여.
+GROUND: 기존 shadow 유지,3구역 저대비 피부 주름·습윤 contamination 전이 추가. 완전한 피부 재질화 아님.
+PLAYABLE: main arenas/travel/breathing/threat 공간 유지,추가 충돌0. 플레이어 가독성 확인,대규모 전투 최종 검수 미실시.
+LANDMARK: primary시체나무/secondary야영지·고치·독구덩이/tertiary뿌리 유지.
+CAMERA QA: START/EARLY/ARENA/SIDE L/SIDE R/LANDMARK/LATE/EXIT 8카메라+COMBAT 전후 촬영. 위표 참조.
+TECH QA: route/collision29검사 및 mapUnchanged=true. pageerror/404/seam/loading/performance의 확인범위는 위표.
+FILES: stage-owned ch1-living-detail.js/test/ch1LivingDetail.test.js. concurrent touched game.html의버전1행·런타임문서20차추가·맵디테일1행만. unrelated touched 없음. 백업/검수도구/영상은 tmp/ch1-pass20 및 captures/ch1_skin_regions20_20260927(기존ignore).
+GIT: 이번5파일의 코드+docs 격리 체크포인트를 준비했으나 git hash-object -w가 .git/objects 권한 거부로 실패. require_escalated 승인 후 재시도도 exec_command 셸 생성 오류(-1073283067)로 실패하여 커밋 미완료. 실제 공유 index·타작업 staged/unstaged 보존. 시작100→중간102→완료조회106개(동시작업 변동 포함)로 타 작업 누적이 이미 한계이며 타 작업을 개수만 줄이려고 숨기거나 임의커밋하지 않음. push/deploy 없음. 준비 스크립트 tmp/ch1-pass20/checkpoint.mjs는 권한·셸 정상화 후 재준비/검토가 필요하다.
+VISUAL VERDICT: RETOUCH — 국소 바닥 전이 보강. 전체 피부 재질·독구덩이 경계 통합은 미완료.
+NEXT PASS: 보라빛 구덩이 외곽 접합과 반복 낙엽을 기존 아트의 국소 편집으로 개선. 전체맵 재생성·새 장애물 추가 없이 큰 재질 연결을 우선한다.
+
+전후 갤러리: <http://localhost:3333/captures/ch1_skin_regions20_20260927/index.html>.
+
+
+## 21차: 동측 독구덩이의 보라색 경계와 알파 접합 (2026-09-27)
+
+이 절의18px 알파 폭은21차 당시 계약이다. 현행25차는 아래 명도별24~56px로 대체하며,색 보정·거리장·폴백 계약은 유지한다.
+
+20차 잔여인 동측 대형 오염 원화의 보라색 테두리를 런타임에서 국소 보정한다. 원본 PNG·베이크 청크를 수정하지 않으며, 기존 독액·바위의 내부 질감을 보존한다. 작은 pit_poison의 벽·잔물결·수축과는 별개다.
+
+| id / 항목 | 현행 계약 |
+|---|---|
+| groundSprite | Ch1LivingDetail의 스프라이트 반환 API. 게임 default 장식 렌더에서 원본 _OBJ_SPR를 받은 뒤 호출. 기존 keepAR/flip/alpha/filter/crop/anchor 처리 경로 유지 |
+| 대상 | stage0 production의 m_c1gtoxicf, 월드(6500,5460)=타일(162.5,136.5) 한 배치. _bossArena/_fieldRebuildQA 제외. 원본 assets/map/ch1/floor_objects/prop_g_toxic.png |
+| 로딩·격리 폴백 | meta 없음/srcRect 있음/img 없음/complete===false/폭0 또는 대상 외 조건이면 입력 img 그대로 반환. API 미로드면 기존 그림. 다른 stage·좌표·오브젝트·우상단 m_c1pool/m_c1gtoxic 불변 |
+| toxicRimCache | 이미지 키 WeakMap. 처음 쓸 때 원본폭w×높이h native Canvas2D에 복사·getImageData 후 처리, 이후 같은canvas 재사용. complete=true/naturalWidth=w/naturalHeight=h로 기존 스프라이트 로드·비율 계약 유지 |
+| 크기·메모리 | 원본881×900, 정적RGBA1장=3.0246734619140625MiB 추가. 20차 native66.671810150146484 기준 최대69.69648361206055MiB. 처리중 ImageData/Float32Array 각w×h×4byte 임시, GPU복제 별도. 프레임별 픽셀처리/업로드 없음 |
+| 거리장 초기값 | 알파<=8이면d=0. 그외 min(64,x+1,y+1,w-x,h-y). 첫 정방향 순회에서 좌/위 d+1, 역방향 순회에서 우/아래 d+1 최소값. 투명 윤곽·패인 부분·이미지 경계를 기준으로 한 L1거리, 대각 보간거리 아님 |
+| 보라색 분리 | spill=max(0,min(R,B)-G-6),mix=min(1,spill/10)×min(1,max(0,(64-d)/24)). 색차가 없거나 경계로부터64px 이상이면 색 불변 |
+| 경계색 | L=.299R+.587G+.114B, target=(.96L,.9L,.76L). RGB=원본+(target-원본)×mix. Uint8ClampedArray 반올림. 내부 독액/황색/바위 전체에 광역 필터를 씌우지 않음 |
+| 알파 전이 | f=min(1,d/18),A'=A×f²×(3-2f). 원본 공간의18px 범위만 짧게 페더. source footprint/배치/scale/meta 불변,추가 그림자·장애물 없음 |
+| 원본 보존 | 원본img·PNG·_OBJ_SPR·meta·MAP_OBJS·geometry·collision·START/EXIT·진행 불변. 캐시canvas만 기존 렌더에 전달 |
+| 테스트 | 미구현 API 실패 재현 후 테두리alpha/보라색 감소·내부olive RGBA(71,86,44,255)·원본 불변·cache재사용·stage/arena/QA/좌표/srcRect/미로드 폴백 검사 PASS. 초기 효과22+geometry5+구문1+패키징2=30 PASS. 경계색 최종 보정 후29 PASS/패키징1 FAIL: 동시작업에서 game.html에 추가한 inventory-gems-finish.css가 NW.js FILES에 없음. 맵 관련28검사와 나머지 패키징1검사는 PASS. 해당 CSS/패키징은 이번 맵 수정 범위 밖이며 완료로 보고하지 않음. Windows canvas GLib manifest 경고1건 |
+
+
+
+21차 최종 검수: 보라 경계 잔여를 직접 확인해 초기거리48/색분모24에서 최종거리64/색분모10/감쇠폭24로 조정했다. 위표는 최종값이다. before=20차,after=21차초기,final=21차최종이며 각기 다른 게임 실행이므로 전투 상태·시간은 일치하지 않는다.
+
+| CAMERA QA | 실제 검수 / 판정 |
+|---|---|
+| START / EARLY / ARENA / SIDE L | 기존 지면20차·넓은 전투면 유지. 이번 효과의 대상 밖. 기존 반복 낙엽 문제 잔여. RETOUCH |
+| SIDE R / POOL_DETAIL | 독성 원화의 보라색 가장자리 감소·짧은 지면 전이 확인. 내부 독액·바위 윤곽 유지. 작은 절차식pit와 사진성 대형 원화의 재질차는 잔여. RETOUCH |
+| LANDMARK / LATE / EXIT | 시체나무·후반/북쪽 게이트 유지. 추가 장애물 없음. RETOUCH |
+| AUTHORED_POOL | 우상단 m_c1pool 기존 원본·위치·맥동 유지. 동측 원화 처리와 격리. RETOUCH |
+| COMBAT | 입구 공격·Q 입력·적/스킬 윤곽 촬영. 독구덩이 앞 전투 경고도 POOL_DETAIL에 보임. 대규모 전투/모든 탄종 검수 아님. RETOUCH |
+
+| TECH QA | 결과와 한계 |
+|---|---|
+| 검사 | 초기30 PASS. 최종29 PASS/1 FAIL: 맵관련28검사(효과22/geometry5/구문1)와 패키징1검사 PASS; inventory-gems-finish.css NW.js FILES 누락으로 패키징1검사 FAIL. 동시작업 파일이며 이번에 수정 안함 |
+| 오류 | 전후/최종 공통 errors5: 외부 Google Fonts3/Three.js2 ERR_NETWORK_ACCESS_DENIED. JS pageerror stack 수집0,HTTP오류0. 최종 requestFailures13=외부차단5+intro.mp4 ERR_ABORTED8. 인트로 생략 중단 기록 보존. 전체오류0이라 보고하지 않음 |
+| 로딩 | requests56/ready56/chunk오류0. visibleIds가 drawnIds에 모두 포함된 후 촬영. 원본 청크 수정0,전청크 seam 전수검사 아님 |
+| 상태·이동 | mapUnchanged=true, 원본 PNG의 Git blob hash 동일. 입구 WASD 입력 시작(4020,7220)→끝(4020,7217.20968). 순차 왕복 입력의 순변위이며 전체 종주·각 방향 이동거리 검사 아님. 사망UI error=null |
+| 성능 | SIDE_R/POOL_DETAIL 각60RAF median16.7ms/p95≈33.4ms. COMBAT90RAF median16.7ms/p95≈33.4ms. headless1280×720 녹화,전체성능 보증 아님. draw120회 CPU p95≈.1ms/max≈.1ms는 마지막 AUTHORED_POOL 지점 표본으로 신규groundSprite 처리 비용이 아님 |
+| 조건 | 카메라중 체력50ms보충/iframes60하한,전투전 무적보충 해제. 독구덩이 앞 적과 플레이어 상태는 전후 다를 수 있음 |
+| 디스크 확인 | 개발서버 ch1-living-detail.js?v=20260927-21 응답과 디스크 byte 동일. 갤러리HTTP200. 원본 prop_g_toxic.png는 HEAD와 blob동일 |
+
+MAP PRODUCTION REPORT — 21차
+
+STAGE: CH1-1 production.
+MASTER: silhouette/8regions/남북 main route/side spaces 유지.
+OUTER MASS: LEFT/RIGHT/TOP/SOUTH/major holes 변경 없음.
+LARGE: source assets/composites/overlap/repeated silhouette 유지. 원본PNG 변경0,신규 이미지0.
+MEDIUM: 기존 connections 유지,독구덩이 재질 접합은 일부 개선·잔여 존재.
+GROUND: 기존 shadow 유지. 동측 toxic contamination의 보라 경계64px 이내 색 보정/18px alpha전이로 structure integration 보강.
+PLAYABLE: main arenas/travel/breathing/threat 공간과 충돌 유지. 캐릭터/전투 경고 윤곽 확인,대규모 전투 미검수.
+LANDMARK: primary시체나무 유지,secondary동측 독구덩이의 접합만 변경. 우상단 웅덩이·tertiary뿌리 유지.
+CAMERA QA: START/EARLY/ARENA/SIDE L/SIDE R/LANDMARK/LATE/EXIT 기본8+POOL_DETAIL/AUTHORED_POOL+COMBAT 최종 촬영·보드 검수.
+TECH QA: route/collision/map 불변,검사29PASS/패키징1FAIL. 오류·404·seam·loading·performance는 위표 범위.
+FILES: stage-owned ch1-living-detail.js/test/ch1LivingDetail.test.js. concurrent touched game.html의버전·스프라이트변환3행,런타임/맵디테일/관련기획6문서/CHANGELOG의21차 기록만. unrelated touched 없음. tmp/ch1-pass21 백업·검수도구와 captures/ch1_toxic_rim21_20260927은 기존ignore.
+GIT: 이전20차에서 확인된 .git 쓰기권한 제한과 승인 재시도 셸 생성 실패로 유효한 커밋 실행 경로가 확보되지 않음. 이번21차 커밋 미완료. 공유index·타작업 staged 보존. 시작106→중간112→완료조회113개(동시작업 변동 포함); 타 작업을 숨기거나 강제커밋하지 않음. push/deploy 없음. tmp/ch1-pass20/checkpoint.mjs는20차전용이므로21차에 사용하지 않는다.
+VISUAL VERDICT: RETOUCH — 국소 경계 개선,전체 구덩이/바닥 재질 통합 미완료.
+NEXT PASS: 작은 절차식pit와 큰 오염 원화의 접점을 실제 독액/벽 재질에 맞춰 통합하고,반복 낙엽을 기존 아트의 부분 편집으로 보강. 기존 구도와 넓은 전투면 유지.
+
+전후 갤러리: <http://localhost:3333/captures/ch1_toxic_rim21_20260927/index.html>.
+
+
+## 22차: 작은 독구덩이에 기존 원화 재질 연결 (2026-09-27)
+
+21차에서 남은 절차식 구덩이와 사진성 오염 원화의 재질 차이를 줄인다. 기존 prop_g_toxic.png의 벽과 독액을 샘플링하며 새 이미지 생성·원본 수정은 없다.
+
+| id / 항목 | 현행 계약 |
+|---|---|
+| 대상·호출 | Ch1LivingDetail.pit(c,g,o,now,meta,img), stage0 production pit_poison 월드(6500,5580)만. game.html이 _OBJ_SPR.m_c1gtoxicf를 전달. bossArena/fieldRebuildQA 제외 |
+| material 판정 | img 존재, complete!==false, (naturalWidth 또는 width)>1, (naturalHeight 또는 height)>1. 나머지는 null |
+| 로딩·캐시 | pitAtlasSource와 material이 달라지거나 atlas가 없을 때 재생성. 미로드는 기존 절차식 렌더, 로드 후 재질 버전으로 교체. 동일 이미지면 재사용. API 미로드는 원래 pit sprite 렌더 |
+| atlas·메모리 | 기존1024×1024 RGBA,4×4셀/각256×256/16프레임/4MiB 교체. 지속 atlas 수 증가0,21차 native 합계69.69648361206055MiB 유지(기타shadow·GPU복제 제외). 교체중 이전4MiB가 GC 전 잠시 공존 가능 |
+| 외측 턱 | contour(106,80,9,1.6) 클립. source=(.67iw,.16ih,.24iw,.36ih), destination=(-114,-78,228,172). rgba(20,19,16,.38) 음영 |
+| 안쪽 벽 | contour(97,71,9,1.6) 클립. 같은 source를 destination=(-110,-75,220,160)에 배치. gradient(0,-65→0,78):0 rgba(8,9,8,.76),.55 rgba(14,14,11,.48),1 rgba(24,23,18,.22) |
+| 독액 | contour(86,48,23,2) 클립. source=(.16iw,.15ih,.34iw,.4ih),destination=(-92,-31,184,108). rgba(9,15,8,.3) 음영. iw/ih는 원본881×900의 실제치 |
+| 절차식 폴백 | 기존 wall 점280/균열19/독액 반점32는 material 없을 때만. 기존 기본색·그라디언트는 재질 아래 유지 |
+| 명암 | 잔물결3개의 alpha=(1-p)×.14(재질)/.24(폴백),p=(f/16+j/3)%1. 22차 당시 앞턱 강조 rgba(143,125,91,.14) / 폴백 .3,선폭1.6. 현행 재질로드 앞턱은26차에서 .12/1px 및 불규칙 접촉선으로 대체 |
+| 동작·구조 | phase=((now×.00095+x×.017+y×.011)/(2π)%1+1)%1×16,인접프레임 보간. sz=(meta.sz 또는200)×(scale 또는1). 기존 contour·수축·접촉shadow·습윤9곳·유입2개·충돌·좌표·배치개수 유지 |
+| 원본 보존 | 원본PNG Git blob이 HEAD와 동일. _OBJ_SPR 이미지 픽셀 변경 없음. 큰 원화의21차 groundSprite 경계처리와 별개 |
+| 자동검사 | 신규 재질 테스트의 실패를 먼저 확인한 뒤 구현. 폴백→로드 전환/같은 재질 재현성/소스불변/다시 null 폴백 검사. 효과23+geometry5+구문1=29 PASS. 패키징1 PASS/1 FAIL,전체31중30 PASS. 기존 동시작업 inventory-gems-finish.css의 NW.js FILES 누락은 미수정. Windows canvas GLib manifest 경고 |
+
+| CAMERA / TECH QA | 결과·한계 |
+|---|---|
+| SIDE R / POOL_DETAIL | 구덩이 벽·수면에 기존 원화 질감 적용 확인. 단순 녹색 반점 감소. 겹치는 윤곽·큰 원화와 바닥 밀도 차이는 잔여 RETOUCH |
+| START/EARLY/ARENA/SIDE L/LANDMARK/LATE/EXIT | 7카메라 직접 보드 검수. 기존 남북 동선·넓은 전투면·시체나무 유지. 반복 낙엽과 전체 피부 재질화는 잔여 RETOUCH |
+| AUTHORED_POOL / COMBAT | 우상단 웅덩이 격리 유지. 입구 공격/Q 촬영. 전후 적·게임시간은 달라 픽셀 완전일치 비교 아님 |
+| 오류·로딩 | errors5(외부 Google Fonts3/Three.js2 네트워크차단),JS pageerror stack0,HTTP오류0. requestFailures14=외부5+인트로생략 ERR_ABORTED9. requests56/ready56/chunk오류0,visibleIds가 drawnIds에 모두 포함. 전청크 seam 전수검수 아님 |
+| 상태·입력 | mapUnchanged=true,사망UI error=null. 체력50ms보충/카메라 iframes60하한,전투전 무적보충 해제. WASD 순차왕복 시작과끝(4020,7220) 동일; 순변위만 기록하여 각방향 이동/전체종주 입증 아님 |
+| 성능 | headless1280×720 녹화. SIDE_R/POOL_DETAIL 각60RAF median16.7ms/p95≈33.4ms,COMBAT90RAF median16.7ms/p95 50ms. 전투 p95가21차보다 높아 전체 성능 PASS 판정하지 않음. 마지막 AUTHORED_POOL draw표본 CPU p95≈.1ms는 새 atlas 생성비용 측정 아님 |
+| 실서버 | ch1-living-detail.js?v=20260927-22 응답과 디스크 byte 동일. 전후갤러리 HTTP200. captures/ch1_pit_material22_20260927/{before,after}/runtime.json·PNG·webm 보존 |
+
+MAP PRODUCTION REPORT — 22차
+
+STAGE: CH1-1 production.
+MASTER: silhouette/8regions/남북 main route/side spaces 유지.
+OUTER MASS: LEFT/RIGHT/TOP/SOUTH/major holes 변경 없음.
+LARGE: source assets/composites/overlap/repeated silhouette 유지. 원본PNG 수정0,신규생성0.
+MEDIUM: 독구덩이 connection의 국소 재질 통합,겹치는 윤곽과 remaining holes는 미해결.
+GROUND: 기존 shadow·contamination 유지. 작은 pit의 벽/독액을 같은 원화에 연결하여 structure integration 보강.
+PLAYABLE: main arenas/travel/breathing/threat 공간·충돌 유지. 추가장애물0. 전투경고 윤곽 확인,대규모 전투 미검수.
+LANDMARK: primary시체나무/tertiary뿌리 유지. secondary동측 구덩이 재질만 변경.
+CAMERA QA: START/EARLY/ARENA/SIDE L/SIDE R/LANDMARK/LATE/EXIT 기본8+POOL_DETAIL/AUTHORED_POOL+COMBAT 전후 촬영·검수.
+TECH QA: route/collision/map 보존,맵관련29 PASS. pageerror/404/seam/loading/performance 한계는 위표. 전체31중30PASS/기존 패키징1FAIL.
+FILES: stage-owned ch1-living-detail.js/test/ch1LivingDetail.test.js. concurrent touched game.html은버전·pit 이미지인자만,관련맵문서8개/CHANGELOG에22차 동기화. unrelated touched 없음. tmp/ch1-pass22 백업·도구와 captures/ch1_pit_material22_20260927은 기존ignore.
+GIT: .git 쓰기권한 제한과 승인 재시도 셸 생성오류(-1073283067)로 커밋 미완료. 공유index·타작업 staged 보존. 시작113→중간114→완료조회115개(동시작업 포함). 임의숨김/강제커밋 없음,push/deploy 없음. pass20 전용 체크포인트는20차 외 실행을 차단하도록 보호.
+VISUAL VERDICT: RETOUCH — 작은 구덩이의 재질 연결 개선. 전체 구덩이 윤곽·바닥 통합은 미완료.
+NEXT PASS: 겹치는 턱 윤곽과 큰 독성 원화의 바닥 접합을 부분 보강. 반복 낙엽/전체 피부 재질도 잔여. 넓은 전투면과 기존 geometry 유지.
+
+전후 갤러리: <http://localhost:3333/captures/ch1_pit_material22_20260927/index.html>.
+
+
+## 23차: 밑동 고정·끝 선행 촉수 포복 (2026-09-27)
+
+사용자 스크린샷 2026-09-27 184846.png의 지면 촉수에 대한 “끝이 먼저 기어가고 몸통이 따라 당겨지는 움직임” 승인 반영. 10차의 dry 끝점 고정을 대체한다. 오브젝트 전체의 월드 이동이나 충돌 이동은 아니다.
+
+| id / 항목 | 현행 수치·동작 |
+|---|---|
+| 대상 | 기존 paint의 dry 촉수3/4/5갈래,길 어깨11곳 및 기존 dry 오브젝트 접지 촉수. stage0 production만. wet(m_c1pool/pit_poison) 촉수는 기존 동작 |
+| tendonCrawl | u=0..1,phase=now×.00095+seed,branch=j. q=fract((phase-j×.8-(1-u)×.85)/(2π)). 밑동에서 지연이 크고 끝에서0. 가지별.8rad 차이 |
+| 뻗기·당김 | S(t)=t²(3-2t). q<.32:R=S(q/.32); .32≤q<.52:R=1; .52≤q<.86:R=1-S((q-.52)/.34); 이후R=0. 뻗기32%/유지20%/당김34%/휴지14% |
+| 전진·횡굴곡 | along=18×R×u^1.7; side=9×sin(phase-5u-.8j)×sin(πu)+3×sin(phase-.8j)×u². 단위 atlas px. 밑동u=0 이동0,끝은 전진0..18 및 좌우±3. 중간9는 기존굽힘/압력에 더하는 값 |
+| 방향 | axis=(ex,ey-14)/hypot(ex,ey-14). x+=axis.x×along-axis.y×side,y+=axis.y×along+axis.x×side. 기존 압력/중간굽힘/폭 유지 |
+| 곁가지 | points[19]와 함께 이동. dry control=(joint.x-12,joint.y-9),end=(joint.x-23,joint.y-23). wet 기존 ex/ey 공식 보존 |
+| 주기·스케일 | 기존16프레임·선형보간·약6.614초·1280² atlas/320²셀 유지. dry3종을 같은 크기로 교체,추가 상주atlas0. 지면tissue_bed s=1.8에서는 전진 최대32.4월드px(카메라zoom 전). 원래 알파 페더 유지 |
+| 보존 | 밑동(0,14)/공동 유착부/지면막·그림자/월드 앵커/충돌·START·EXIT 유지. 새 산포·원본이미지수정0. 22차 독구덩이 재질 유지 |
+| 검사 | 신규 실패를 먼저 확인. 밑동 고정/끝 이동/몸통 지연/2π 루프 검사와 기존 효과24+geometry5+구문1=30 PASS. 이번에는 패키징검사 재실행 안함;22차의 별도 FILES 누락 해결 여부는 미확인 |
+
+MAP PRODUCTION REPORT — 23차
+
+STAGE: CH1-1 production.
+MASTER: silhouette/8regions/남북 main route/side spaces 유지.
+OUTER MASS: LEFT/RIGHT/TOP/SOUTH/major holes 유지.
+LARGE: source/composites/overlap/repeated silhouette 유지,원본변경0.
+MEDIUM: 기존connections/remaining holes 유지.
+GROUND: dry 촉수 국소 포복,기존shadow·contamination·structure integration 유지.
+PLAYABLE: main arenas/travel/breathing/threat 공간·충돌 유지,새장애물0.
+LANDMARK: primary시체나무/secondary야영지·구덩이/tertiary뿌리 유지. 그 아래 dry 접지 촉수만 동작 변경.
+FILES: stage-owned ch1-living-detail.js/test/ch1LivingDetail.test.js. concurrent game.html은캐시버전1행,맵문서8개/CHANGELOG에23차 동기화. unrelated touched 없음. tmp/ch1-pass23 백업·QA 및 captures/ch1_tendon_crawl23_20260927은 기존ignore.
+GIT: 앞서 확인한 .git 쓰기권한 제한/승인후 셸 생성오류로 커밋 미완료. 공유index·타작업 보존,push/deploy 없음.
+
+CAMERA QA: START/EARLY/ARENA/SIDE L/SIDE R/LANDMARK/LATE/EXIT 기본8+TISSUE_DETAIL/POOL_DETAIL/AUTHORED_POOL 및 COMBAT 촬영. 촉수 GIF의0/8/16프레임과 전체보드 직접검수. 밑동은 붙어 있고 끝/몸통 형태가 변하며 촬영영역에서 셀 경계 잘림 미관찰. 적/VFX가 일부 가리는 프레임 포함.
+TECH QA: 자동30 PASS,mapUnchanged=true,사망UI error=null. HTTP오류0,pageerror stack0,외부 Fonts3/Three.js2 차단5건. requestFailures15=외부5+인트로생략중단10. 청크56/56 ready,촬영시 visibleIds 모두 drawnIds에 포함(전청크 seam 전수검수 아님). WASD 왕복입력 시작(4020,7220)→끝(4020,7217.31134):각방향 이동·종주 증명 아님. 체력50ms보충/카메라iframes60,전투전 무적보충 해제. SIDE_R/POOL_DETAIL60RAF median16.7ms/p95 33.4ms,COMBAT90RAF median16.7ms/p95 50ms. headless1280×720 녹화이며 전체성능 PASS 아님. 개발서버23차와 디스크 byte 동일.
+GIT 누적: 시작116→완료조회118개(동시작업 포함). 타작업을 숨기거나 임의커밋하지 않음.
+VISUAL VERDICT: RETOUCH — 요청한 촉수 포복은 적용·실게임 확인. 기존 지면막 재질접합·전체 피부바닥은 잔여.
+NEXT PASS: 사용자 확인에 맞춰 촉수의 이동폭/속도를 조정할 수 있으나,현재 적용값은 위표. 기존 지면막 윤곽과 바닥 재질접합 보완 잔여.
+
+움직임: <http://localhost:3333/captures/ch1_tendon_crawl23_20260927/index.html>.
+
+
+## 24차: 촉수 피부막의 잘린 윤곽 접합 (2026-09-27)
+
+23차 실제 화면에 남은 피부막의 종이 패치 같은 경계를 보강한다. 원래 불규칙 윤곽에 걸린 알파를 안쪽에서 감쇠하며,촉수 움직임·중앙 피부 주름은 보존한다.
+
+| id / 항목 | 현행 수치·공식 |
+|---|---|
+| 대상 | membrane(false,variant)의 dry3종만. wet1종·regionalSkin3구역은 변경 없음. stage0 production의 기존 dry 접지 촉수 아래 |
+| 기준좌표 | 기존320×320 canvas의 픽셀중심 dx=(x+.5-160)/1.12,dy=(y+.5-172)/.62,angle=atan2(dy,dx) |
+| 기존 윤곽 반경 | radius=102+18×sin(3angle+variant)+11×cos(5angle-variant). clip의 기존72구간 윤곽과 같은 함수 사용 |
+| 알파 감쇠 | depth=radius-hypot(dx,dy),t=clamp(depth/28,0,1),A'=A×t²×(3-2t). 기존 방사형 알파 이후 곱함. 28은 타원 정규화 좌표 폭으로 실제 유클리드 거리28px와 다름. RGB 변경0 |
+| 실행·메모리 | 각320² native 캐시 최초 생성시에만 getImageData/putImageData. 픽셀연산102400회/종,ImageData409600byte(0.390625MiB) 임시. 프레임별 처리0,새 상주atlas0. 기존 native 합계 산정69.69648361206055MiB 유지(기타shadow/GPU/임시 제외) |
+| 보존 | 기존 촉수 포복23차·밑동·지면shadow·막 중심·원본이미지·월드배치·충돌 유지. 새 산포0. 기존 wet membrane의 native RGBA byte가23차와 동일함을 별도비교 |
+| 회귀검사 | 실패 먼저 확인: 윤곽 안쪽3 정규화 단위의 alpha최대92. 구현후 dry3종 경계alpha≤5,중앙alpha>30 검사 PASS. 효과25+geometry5+구문1=31 PASS. 패키징 재검사 안함,기존 별도누락 해결 여부 미확인 |
+| 동일시점 비교 | tmp/ch1-pass24/before-after.png:23차 왼쪽/24차 오른쪽,1600ms·같은 위치·같은 단색배경. 기존 윗면의 끊긴 윤곽 완화,중앙 주름·촉수 형태 보존. 실제 게임 증거와 구분 |
+
+MAP PRODUCTION REPORT — 24차
+
+STAGE: CH1-1 production.
+MASTER: silhouette/8regions/남북 main route/side spaces 유지.
+OUTER MASS: LEFT/RIGHT/TOP/SOUTH/major holes 유지.
+LARGE: source/composites/overlap/repeated silhouette 유지. 원본에셋수정0.
+MEDIUM: 기존 connections 유지,remaining holes 미변경.
+GROUND: dry 피부막의 불규칙 윤곽 감쇠로 structure integration 보강,기존shadow·contamination 보존.
+PLAYABLE: arenas/travel/breathing/threat 공간·충돌 유지,새장애물0.
+LANDMARK: primary시체나무/secondary야영지·독구덩이/tertiary뿌리 유지.
+FILES: stage-owned ch1-living-detail.js/test/ch1LivingDetail.test.js. concurrent game.html 캐시버전1행,런타임문서·맵디테일·CHANGELOG에24차 동기화. unrelated touched 없음. tmp/ch1-pass24 백업·QA 및 captures/ch1_tissue_join24_20260927은 기존ignore.
+GIT: 앞서 확인한 .git 쓰기권한 제한/승인후 셸생성오류로 커밋 미완료. 공유index·타작업 보존,push/deploy 없음.
+
+CAMERA QA: START/EARLY/ARENA/SIDE L/SIDE R/LANDMARK/LATE/EXIT 기본8+TISSUE_DETAIL/POOL_DETAIL/AUTHORED_POOL 및 COMBAT 촬영. 실제 촉수 상세와 전체보드 직접 확인: dry 피부막의 잘린 윤곽 감소,밑동·포복 유지. 전후 실게임은 서로 다른 실행이라 적·시간 불일치.
+TECH QA: 자동31 PASS,mapUnchanged=true,사망UI error=null. 외부 Fonts3/Three.js2 차단5건,JS pageerror stack0,HTTP오류0. requestFailures13=외부5+인트로생략 ERR_ABORTED8. 청크56/56 ready,촬영시 visibleIds 모두 drawnIds 포함;전청크 seam 전수검수 아님. WASD 입력 시작(4020,7220)→끝(4022.70348,7222.70348),왕복 순변위로 전체종주·방향별 이동 검증 아님. 체력50ms보충/카메라iframes60,전투전 무적보충 해제. SIDE_R/POOL_DETAIL 각60RAF median16.7ms/p95 33.4ms,COMBAT90RAF median16.7ms/p95 50ms. headless1280×720녹화이며 전체 성능PASS 아님. 개발서버24차와 디스크byte 동일,갤러리HTTP200.
+GIT 누적: 시작118→완료조회119개(동시작업 포함). 타작업 숨김/임의커밋 없음.
+VISUAL VERDICT: RETOUCH — 피부막의 패치 경계 개선,전체 피부지면과 독구덩이의 큰 재질차는 잔여.
+NEXT PASS: 넓은 공터의 반복 낙엽·독성 원화와 바닥 사이 큰 재질 연결 보완. 촉수23차 이동은 유지.
+
+비교·움직임: <http://localhost:3333/captures/ch1_tissue_join24_20260927/index.html>.
+
+
+## 25차: 독구덩이 원화의 명도별 바닥 접합 (2026-09-27)
+
+큰 독구덩이 원화가 지면 위의 잘린 타원처럼 읽히는 경계를 보강한다. 밝은 바위를 비교적 보존하고,어두운 오염흙에는 더 넓은 알파 전이를 적용한다. 재질 분류 AI가 아니라 원본 명도를 사용하는 시각적 근사다.
+
+| id / 항목 | 현행 수치·공식 |
+|---|---|
+| 대상 | groundSprite의 stage0 production m_c1gtoxicf 월드(6500,5460) 한 배치. 기존 제외조건·로딩·srcRect 폴백 유지 |
+| 명도 | 색보정 전 원본RGB의 L=.299R+.587G+.114B. rock=clamp((L-35)/100,0,1) |
+| 전이폭 | edgeSpan=24+32×(1-rock). L≤35이면56px,L≥135이면24px,그사이 선형. 기존21차의 고정18px 대체 |
+| 알파 | f=min(1,d/edgeSpan),A'=A×f²×(3-2f). d는21차와 같은L1거리장/상한64. 단위는원본881×900픽셀. 밝은경계도최소24px 감쇠하며 완전 불변이라는 뜻 아님 |
+| 보존 | 기존 보라색 제거RGB공식·내부거리≥64px·원본PNG·캐시크기881×900·배치·비율·충돌 유지. 작은pit22차/포복23차/피부막24차 유지. 신규에셋0/추가상주캐시0,기존3.0246734619140625MiB 재사용 |
+| 비용 | 기존 최초 캐시 픽셀순회에 clamp·선형폭 계산만 추가. 프레임별픽셀처리0. 별도픽셀버퍼추가0 |
+| 검사 | 실패 먼저 확인 후 darkRGB30의거리24px alpha<180,brightRGB160은alpha>240,거리100px 내부RGBA(30,30,30,255),원본byte보존 검사 PASS. 효과26+geometry5+구문1=32 PASS. 패키징검사 재실행 안함 |
+| 비교 | tmp/ch1-pass25/before-after.png 동일 단색배경·같은 원본24차/25차 비교. 어두운테두리 감소,내부질감 보존. 실제게임검수와 구분 |
+
+MAP PRODUCTION REPORT — 25차
+
+STAGE: CH1-1 production.
+MASTER: silhouette/8regions/남북main route/side spaces 유지.
+OUTER MASS: LEFT/RIGHT/TOP/SOUTH/major holes 유지.
+LARGE: source/composites/overlap/repeated silhouette 유지,원본이미지수정0.
+MEDIUM: 독성원화와 지면의connection 국소보강,remaining holes 유지.
+GROUND: 기존shadow/contamination 유지,명도별알파로structure integration 보강.
+PLAYABLE: arenas/travel/breathing/threat 공간·충돌 유지,새장애물0.
+LANDMARK: primary시체나무/tertiary뿌리 유지,secondary동측큰독구덩이 경계만 수정.
+FILES: stage-owned ch1-living-detail.js/test/ch1LivingDetail.test.js. concurrent game.html 캐시버전1행,맵문서8개/CHANGELOG25차 동기화. unrelated touched없음. tmp/ch1-pass25 백업·QA와 captures/ch1_toxic_join25_20260927은기존ignore.
+GIT: 앞서확인한 .git 쓰기권한제한/승인후 셸생성오류로커밋미완료. 공유index·타작업보존,push/deploy없음.
+
+CAMERA QA: START/EARLY/ARENA/SIDE L/SIDE R/LANDMARK/LATE/EXIT 기본8+TISSUE_DETAIL/POOL_DETAIL/AUTHORED_POOL 및 COMBAT 촬영. POOL_DETAIL·전체보드 직접검수:외곽 어두운띠 감소,내부독액·바위 유지. 전후적·시간은 서로달라 완전동일프레임 비교아님.
+TECH QA: 자동32 PASS,mapUnchanged=true,사망UI error=null. 외부 Fonts3/Three.js2 차단5,pageerror stack0,HTTP오류0. requestFailures11=외부5+인트로생략중단6. 청크56/56 ready,촬영시visibleIds 모두drawnIds 포함;전청크 seam 전수검수아님. WASD 시작(4020,7220)→끝(4022.79942,7222.79942),순차왕복 순변위이며 각방향/전체종주 증명아님. 체력50ms보충/카메라iframes60,전투전 무적보충해제. SIDE_R/POOL_DETAIL60RAF median16.7ms/p95 33.4ms,COMBAT90RAF median16.7ms/p95 33.5ms. headless1280×720녹화,전체성능PASS아님. 개발서버25차byte동일/갤러리HTTP200/원본PNG HEAD blob동일.
+GIT 누적: 시작123→완료조회122개(동시작업포함). 임의숨김/타작업커밋없음.
+VISUAL VERDICT: RETOUCH — 국소경계 연결개선. 원화와 바닥의 전체질감차·겹친구덩이윤곽은잔여.
+NEXT PASS: 작은구덩이 앞턱의 중복윤곽·큰원화와 바닥의 재질밀도차 보완. 기존촉수포복·넓은전투면 유지.
+
+비교: <http://localhost:3333/captures/ch1_toxic_join25_20260927/index.html>.
+
+
+## 26차: 작은 독구덩이의 중복 반원 앞턱 제거 (2026-09-27)
+
+22차 재질 위의 매끈한 앞턱 반원이 기존 찢어진 벽 윤곽과 겹쳤다. material 로드 상태의 앞턱만 동일한 불규칙 반경을 따르며 접촉선을 끊는다. 구덩이 수면/벽 깊이·collision 변경은 없다.
+
+| id / 항목 | 현행 수치·동작 |
+|---|---|
+| 대상 | stage0 production pit_poison(6500,5580),material 로드 상태의 pitAtlas 앞턱만 |
+| 경로 | j=0..48,t=j/48×π,squeeze=sin(phase-2t)×1.6,rough=1+.06sin(5t)+.035cos(9t). px=cos(t)×(99rough+squeeze),py=9+sin(t)×(73rough+.6squeeze). 외벽과 같은 비정형 반경 |
+| 접촉선 | material에서 native setLineDash([13,7,5,11]),offset 기본0. rgba(36,28,26,.42),폭2. 기존 .9/4px의 매끈한 반원 대체 |
+| 젖은 강조 | 동일dash 유지,Y-2px,rgba(143,125,91,.12),폭1. 기존 .14/1.6px 대체 |
+| 폴백 | material 없으면rough1,py=9+sin(t)×73,dash없음,접촉 .9/4px,강조 .3/1.6px.25차native동일시점RGBA byte완전동일 확인 |
+| 비용·보존 | 기존16프레임·1024²atlas/4MiB 내부 생성만 변경,추가캐시0. GPU프록시에는기존drawImage만 전달. 프레임별path연산0. 원본PNG·수면·유입2개·수축·좌표·collision 유지 |
+| 검증 | 기존 효과26+geometry5+구문1=32 PASS. 단순선명암수정용 구현복제테스트 추가0. tmp/ch1-pass26/before-after.png 동일1600ms/같은원본·배경 비교에서 두번째반원 윤곽감소. 패키징재검사안함 |
+
+MAP PRODUCTION REPORT — 26차
+
+STAGE: CH1-1 production.
+MASTER: silhouette/8regions/남북main route/side spaces 유지.
+OUTER MASS: LEFT/RIGHT/TOP/SOUTH/major holes 유지.
+LARGE: source/composites/overlap/repeated silhouette 유지,원본이미지변경0.
+MEDIUM: 독구덩이 기존connection 유지,remaining holes 미변경.
+GROUND: 작은pit 접촉선의중복윤곽감소로structure integration 보강. 기존shadow·contamination 유지.
+PLAYABLE: arenas/travel/breathing/threat 공간·충돌 유지,새장애물0.
+LANDMARK: primary시체나무/tertiary뿌리 유지,secondary동측작은구덩이 앞턱만 변경.
+FILES: stage-owned ch1-living-detail.js. concurrent game.html 캐시버전1행,런타임·맵디테일·관련기획3문서·CHANGELOG 동기화. unrelated touched없음. tmp/ch1-pass26 백업·QA와 captures/ch1_pit_lip26_20260927은기존ignore.
+GIT: 기존 .git 쓰기권한제한/승인후 셸생성오류로커밋미완료. 공유index·타작업보존,push/deploy없음.
+
+CAMERA QA: START/EARLY/ARENA/SIDE L/SIDE R/LANDMARK/LATE/EXIT 기본8+TISSUE_DETAIL/POOL_DETAIL/AUTHORED_POOL 및 COMBAT촬영. POOL_DETAIL·전체보드직접검수:앞턱 중복반원감소·수면깊이와기존큰원화유지. 전후는서로다른게임실행이라적·시간불일치.
+TECH QA: 자동32 PASS,mapUnchanged=true,사망UI error=null. 외부 Fonts3/Three.js2 차단5,pageerror stack0,HTTP오류0. requestFailures12=외부5+인트로생략중단7. 청크56/56ready,촬영시visibleIds 모두drawnIds포함;전청크seam전수검수아님. WASD시작(4020,7220)→끝(4017.20084,7220),순차왕복순변위로각방향/전체종주증명아님. 체력50ms보충/카메라iframes60,전투전무적보충해제. SIDE_R/POOL_DETAIL60RAF median16.7ms/p9533.4ms,COMBAT90RAF median16.8ms/p9550ms. headless1280×720녹화,전체성능PASS아님. 개발서버26차byte동일/갤러리HTTP200.
+GIT 누적: 시작124→완료조회124개(동시작업포함). 임의숨김/타작업커밋없음.
+VISUAL VERDICT: RETOUCH — 앞턱중복선개선,큰원화와바닥의재질밀도차·전체피부지면은잔여.
+NEXT PASS: 반복낙엽과생체재질이따로보이는넓은공터의중간크기연결보강. 기존큰구도·포복·충돌유지.
+
+비교: <http://localhost:3333/captures/ch1_pit_lip26_20260927/index.html>.
+
+최종 diff --check: 이번효과·문서는통과. 공유game.html의타작업 보석필터버튼행14513/14516에trailing whitespace2건발견. 이번수정캐시버전행과무관하며타작업행은변경하지않음.
+
+
+## 27차: 큰 늪 원화 내부의 실제 수면 흐름 (2026-09-27)
+
+27차의 기포 수치·마스크 밖에는 기반만 표시한다는 설명은 당시 구현 이력이다. 현행28차는 기포 팽창/파열 수치를 대체하고,물 마스크 뒤에 가스를 추가하여 위쪽으로 벗어나도록 한다. 바위의 형태·위치는 계속 고정이다.
+
+사용자 “큰 변화는 안 보이는데 늪 동적 움직임은 있는가” 교정. 26차까지 큰 m_c1gtoxicf는 정적이고 작은pit/주변기포만 움직였다. 이번부터 큰 원화 내부 수면4곳을 직접 움직인다. 원본PNG는 그대로이며 캐시된 수면영상만 위에 합성한다.
+
+| id / 항목 | 현행 계약 |
+|---|---|
+| swamp API | Ch1LivingDetail.swamp(c,g,o,now,meta,img). game.html 기본 장식 렌더의 groundSprite 보정·filter/blend/alpha 적용 후 organic 이전 호출. true면 원래 정적스프라이트 분기 대체 |
+| 대상·폴백 | stage0 production m_c1gtoxicf(6500,5460)만. bossArena/fieldRebuildQA·다른위치·이미지미로드/0크기·meta없음/srcRect/sheet/rot·o.rot·anchorBottom·pivotX/Y 있으면 false,기존렌더 유지 |
+| 크기·반전 | size=(meta.sz 또는450)×(scale 또는1). sourceSize 또는 실제이미지 비율 사용. keepAR&&!squareDraw이면 dw=size×min(1,ar),dh=size×min(1,1/ar),그외 정사각형. meta.flip은 x반전. 원래 위치·alpha·filter/blend 문맥 보존 |
+| 정적 기반 | 25차 경계보정이 끝난881×900 이미지를 먼저 그대로 그린다. 바위·외곽·가지와 마스크 밖 픽셀은 이 기반만 표시 |
+| 수면 마스크 | 아래4개 원본881×900 좌표polygon을440×450에 축소. alpha<128을거리0으로하는 L1거리장,거리상한6. alpha×S(d/6),S(t)=t²(3-2t),윤곽안쪽6native px에서 페더 |
+| 수면 왜곡 | 각frame의phase=f/16×2π. native y=0..449의4px띠마다 dx=4sin(phase-.065y)+2sin(2phase+.035y),dy=2cos(phase+.04y). 원본이미지를440×450으로샘플링하여 해당띠에만그린뒤 수면마스크 적용. dx최대±6native px/dy±2,바위좌표변형0 |
+| 주기·프레임 | 6400ms,16프레임,phase=fract(now/6400)×16. 인접2프레임을 기존globalAlpha×(1-mix),×mix로 정적기반위에source-over 합성. 수면외곽은고정 |
+| 기포 | 수면4곳×2개=8. 중심은polygon꼭짓점 산술평균을축소. k0=(-12,-8),k1=(15,7),q=(f/16+.23j+.47k)%1,r=2+6q. ellipse(r,.6r),몸체rgba(15,23,13,.48sinπq) |
+| 기포 강조·파열 | 중심(-1,-1),ellipse(.8r,.45r),회전-.2,호3.3..5.9,rgba(181,172,99,.55sinπq),폭1.1. q>.65이면burst=(q-.65)/.35,파열ellipse(8+13burst,4+6burst),호.4..5.5,rgba(159,153,88,.28(1-burst)),폭.8 |
+| 캐시·메모리 | swampCache WeakMap 이미지키. 새 atlas1760×1800(4×4셀,각440×450)/RGBA12.0849609375MiB. 종전합계69.69648361206055→81.78144454956055MiB(native산정,기타shadow/GPU제외). 임시mask/frame 각.75531005859375MiB,ImageData.75531005859375MiB,Uint8거리장.1888275146484375MiB. 캐시초기화때만생성 |
+| 프레임 비용 | 기존정적1drawImage 대신 정적1+수면2=3drawImage. 매프레임pixel/path연산·atlas업로드없음. 최초생성비용·GPU메모리 별도 |
+| 검사 | API미구현 실패 확인후 실제수면픽셀시간변화·바위영역불변·6400ms루프·동일시간재현·원본byte불변·상태불변·stage/위치/로드/srcRect폴백 검사. 효과27+geometry5+구문1=33PASS. 패키징검사재실행안함 |
+
+| 수면 id | 원본881×900 polygon 좌표(순서대로 닫음) |
+|---|---|
+| 0 / 상부 | (225,145),(345,130),(434,142),(460,213),(494,269),(453,342),(390,370),(307,361),(268,310),(305,296),(250,253),(213,226) |
+| 1 / 우중부 | (532,295),(584,316),(658,322),(693,365),(687,417),(638,445),(600,478),(541,477),(476,489),(423,470),(421,421),(464,388),(488,339) |
+| 2 / 좌중부 | (186,397),(228,403),(302,416),(347,444),(362,503),(328,548),(266,548),(233,513),(188,510),(153,493),(165,444) |
+| 3 / 하부 | (416,537),(475,524),(539,547),(574,582),(591,628),(557,660),(474,658),(421,635),(385,611) |
+
+MAP PRODUCTION REPORT — 27차
+
+STAGE: CH1-1 production.
+MASTER: silhouette/8regions/남북main route/side spaces 유지.
+OUTER MASS: LEFT/RIGHT/TOP/SOUTH/major holes 유지.
+LARGE: source/composites/overlap/repeated silhouette 유지,원본PNG변경0. 큰늪 내부수면만동적합성.
+MEDIUM: 기존connections/remaining holes 유지.
+GROUND: 큰늪 수면4곳 흐름·기포8개. 기존shadow·contamination·경계접합 보존.
+PLAYABLE: arenas/travel/breathing/threat 공간·충돌 유지,새장애물0.
+LANDMARK: primary시체나무/tertiary뿌리 유지. secondary큰늪이정적원화에서국소동적수면으로변경. 바위고정.
+FILES: stage-owned ch1-living-detail.js/test/ch1LivingDetail.test.js. concurrent game.html 캐시버전·swamp호출분기,관련맵문서8개/CHANGELOG27차동기화. unrelated touched없음. tmp/ch1-pass27 백업·QA와 captures/ch1_swamp_flow27_20260927은기존ignore.
+GIT: 기존 .git 쓰기권한제한/승인후 셸생성오류로커밋미완료. 공유index·타작업보존,push/deploy없음.
+
+CAMERA QA: START/EARLY/ARENA/SIDE L/SIDE R/LANDMARK/LATE/EXIT 기본8+SWAMP_DETAIL/TISSUE_DETAIL/POOL_DETAIL/AUTHORED_POOL 및 COMBAT촬영. SWAMP_DETAIL·전체보드직접검수. 별도같은원본·시간32프레임GIF(좌정적/우동적)와실게임24프레임GIF보존. 물무늬·기포이동,바위고정확인. 플레이어/적이일부수면가림.
+TECH QA: 자동33PASS,mapUnchanged=true,사망UI error=null. probe/water-audit.json에서실제MAP_OBJS/_OBJ_META/groundSprite입력으로swamp used=true·object불변확인(meta.sz450,keepAR1,flip1). cachedDrawMs약.1ms 단일native샘플로초기생성비용이나GPU전체비용아님. 외부 Fonts3/Three.js2 차단5,pageerror stack0,HTTP오류0. requestFailures13=외부5+인트로생략중단8. 청크56/56ready,visibleIds 모두drawnIds포함;전청크seam전수검수아님. WASD시작(4020,7220)→끝(4020,7217.22268),순차왕복순변위로각방향/전체종주증명아님. 체력50ms보충/카메라iframes60,전투전무적보충해제. SWAMP_DETAIL/SIDE_R/POOL_DETAIL 각60RAF와COMBAT90RAF 모두median16.7ms/p9533.4ms. headless1280×720녹화,전체성능PASS아님. 개발서버27차byte동일/갤러리HTTP200/원본PNG HEAD blob동일.
+GIT 누적: 시작128→완료조회129개(동시작업포함). 임의숨김/타작업커밋없음.
+VISUAL VERDICT: RETOUCH — 큰늪의동적수면은실제구현·게임활성화확인. 원화와바닥의재질차·전체피부지면은잔여.
+NEXT PASS: 실제플레이배율에서수면흐름·기포의가독성을유지하며바닥재질접합보완. 큰늪전체회전/바위출렁임은적용하지않음.
+
+움직임 비교: <http://localhost:3333/captures/ch1_swamp_flow27_20260927/index.html>.
+
+최종diff --check 공유game.html의기존보석UI행 trailing whitespace 경고는 별도타작업으로분리. 이번맵효과/문서는아래전용검사로확인.
+
+
+## 28차: 버블 팽창·파열과 늪 가스의 연동 (2026-09-27)
+
+이 절의 버블 크기·돔 명암·파열 시작 반경은 28차 이력이다. 사용자 가독성 교정에 따라 현행 29차 값으로 대체한다. 가스·물방울·파열 시점은 유지한다.
+
+사용자 요청: “늪이니까 가스가 올라오면서 버블이 터지고”. 큰늪8개 기포에 팽창→파열/물방울→같은자리 가스상승을 연결한다. 가스는 물마스크 밖 위쪽으로 올라가지만 캐릭터·전투렌더보다 아래에 합성된다. 피해·충돌을 주는 독가스 기믹은 아니다.
+
+| id / 항목 | 현행 수치·공식 |
+|---|---|
+| 대상·주기 | 27차 swamp의 수면4곳×2개=8개 vent. 기존좌표·q=(f/16+.23j+.47k)%1·6400ms/16프레임 유지 |
+| 팽창 | q<.6. swell=q/.6,r=2+6×swell²(3-2swell),appear=min(1,q/.08). ellipse 중심(bx,by-.25r),반경(r,.65r),몸체rgba(15,23,13,.58appear) |
+| 버블 광택 | 중심(bx-1,by-.25r-1),반경(.8r,.45r),회전-.2/호3.3..5.9,rgba(181,172,99,.65appear),폭1.2 |
+| 파열·잔물결 | q≥.6이면돔표시중단. burst=(q-.6)/.4,반경(8+18burst,4+8burst),호.4..5.5,rgba(159,153,88,.38(1-burst)),폭1 |
+| 튀는 물방울 | .6≤q<.78,6개/파열. splash=(q-.6)/.18,angle=n/6×2π+.7j. px=bx+cos(angle)(4+14splash),py=by+sin(angle)(2+5splash)-8sin(πsplash). 타원반경(1.3,1.6)×(1-.5splash),rgba(154,151,85,.55(1-splash)) |
+| 가스 시점 | paintSwampGas(c,bx,by,q,seed),q≤.6 또는q≥1이면그리지않음. p=(q-.6)/.4,opacity=sin(πp)^1.4×.5. seed=1.7j+k. 파열이전에는가스없음,주기끝완전소멸 |
+| 가스 형태 | vent당3개부드러운lobes,인덱스n=0..2. x=bx+sin(4p+seed+n)(5+10p)+(n-1)7p,y=by-8-78p+6n,r=12+20p+2n. native축척(.85,1.3). 상향이동78native px/주기후반,좌우로흩어짐 |
+| 가스 색·투명도 | alpha=opacity×[.9,.65,.45][n]. radial stop0 rgba(133,145,81,alpha),stop.5 rgba(89,104,56,.5alpha),stop1 rgba(46,59,35,0). 탁한황록색,가장자리완전투명 |
+| 합성 순서 | 수면왜곡→버블/잔물결/물방울→수면마스크(destination-in)→가스(source-over)→기존atlas셀에저장. 가스는물가·바위위로지나갈수있으나바위형태를변형하지않음. 플레이어/전투는기존오브젝트뒤순서에서정상표시 |
+| 자원·폴백 | 기존1760×1800/12.0849609375MiB atlas 재사용,추가상주캐시0·매프레임path/pixel작업0. 기존native합계81.78144454956055MiB(기타shadow/GPU제외)유지. stage/로드/메타폴백·원본·collision불변 |
+| 테스트 | 신규실패확인후 가스파열전비표시/수면위상승/아래로침강없음/주기끝소멸검사. 기존루프·원본·바위·맵검사포함 효과28+geometry5+구문1=34PASS. 패키징재검사안함 |
+| 시각 보정 | 초기 가스가수면무늬에묻혀최종 opacity.5·상승78·r12+20p+2n·축척.85/1.3으로보강. after는초기,final이현행캡처. 비교GIF는최종코드로재생성 |
+
+MAP PRODUCTION REPORT — 28차
+
+STAGE: CH1-1 production.
+MASTER: silhouette/8regions/남북 main route/side spaces 유지.
+OUTER MASS: LEFT/RIGHT/TOP/SOUTH/major holes 유지.
+LARGE: source/composites/overlap/repeated silhouette 유지,원본PNG변경0.
+MEDIUM: 기존 connections/remaining holes 유지.
+GROUND: 큰늪 수면4곳의버블8개 팽창→파열·물방울→탁한가스상승. 기존shadow·contamination·structure integration 유지.
+PLAYABLE: arenas/travel/breathing/threat 공간·충돌유지,추가피해·장애물0. 가스는캐릭터뒤렌더.
+LANDMARK: primary시체나무/tertiary뿌리 유지,secondary큰늪의부패가스만추가.
+FILES: stage-owned ch1-living-detail.js/test/ch1LivingDetail.test.js. concurrent game.html 캐시버전1행,맵문서8개/CHANGELOG28차동기화. unrelated touched없음. tmp/ch1-pass28 백업·QA와 captures/ch1_swamp_gas28_20260927은기존ignore.
+GIT: 기존 .git 쓰기권한제한/승인후 셸생성오류로커밋미완료. 공유index·타작업보존,push/deploy없음.
+
+CAMERA QA: START/EARLY/ARENA/SIDE L/SIDE R/LANDMARK/LATE/EXIT 기본8+SWAMP_DETAIL/TISSUE_DETAIL/POOL_DETAIL/AUTHORED_POOL 및COMBAT촬영. 최종SWAMP_DETAIL·전체보드직접검수,동일조건32프레임전후GIF및실게임24프레임GIF보존. 파열후가스상승·기포시차확인,플레이어윤곽유지.
+TECH QA: 최종자동34PASS,mapUnchanged=true,사망UI error=null. 최종errors11=외부Fonts3/Three.js2/CloudFront이미지4 차단9+보석에셋404 2. HTTP오류2:assets/gems/cursed_relics_1.png 및cursed_relics_2.png(타작업에셋,이번늪코드미수정). JS pageerror stack0. requestFailures17=외부9+인트로생략중단8. 청크56/56ready,visibleIds 모두drawnIds포함;전청크seam전수검수아님. WASD시작(4020,7220)→끝(4022.7807,7220),순차왕복순변위로각방향/종주증명아님. 체력50ms보충/카메라iframes60,전투전무적보충해제. SWAMP_DETAIL/SIDE_R60RAF median33.2ms/p9533.4ms,POOL_DETAIL60RAF/COMBAT90RAF median16.7ms/p9533.4ms. headless1280×720녹화,전체성능PASS아님. 개발서버28차byte동일/갤러리HTTP200.
+GIT 누적: 시작132→완료조회135개(동시작업포함). 타작업임의숨김/커밋없음.
+VISUAL VERDICT: RETOUCH — 요청한버블파열·늪가스는적용·실게임확인. 전체지면재질통합은잔여.
+NEXT PASS: 현재효과의실제플레이가독성유지,전체바닥재질연결보완. 가스의피해기믹은별도요청전추가하지않음.
+
+움직임: <http://localhost:3333/captures/ch1_swamp_gas28_20260927/index.html>.
+
+
+## 29차: 실제 게임에서 안 보이던 버블의 가독성 교정 (2026-09-27)
+
+사용자 “버블 같은 건 안 보이는데” 교정. 원인은 기존 최대 반경8native px의 어두운 몸체·얇은 광택이 물 원화의 기포와 겹쳐 읽히지 않는 것이다. 코드 동작 유무 검사만으로 가시성을 보장하지 못했다. 450px 표시 크기의 동일시간 대조에서 버블 몸체 대비를 측정하고 실제 원화 위 전후를 검수한다.
+
+| 항목 | 현행 수치·동작 |
+|---|---|
+| 팽창·유지 | q<.6 유지. swell=min(1,q/.46),r=3+13×swell²(3-2swell),appear=min(1,q/.08). 최대반경16native px/지름32. q=.46~.6에서최대크기유지,6400×.14=896ms. q=.6에서기존대로파열 |
+| 몸체 위치 | cy=by-.32r,타원반경(r,.85r). 수면에서 솟은 돔 실루엣으로 표현 |
+| 접촉 그림자 | 중심(bx,by+.2r),반경(1.12r,.42r),rgba(9,15,8,.55appear) |
+| 돔 재질 | radial 시작(bx-.3r,cy-.35r,1),끝(bx,cy,1.05r). stop0 rgba(167,177,99,.95appear),.38 rgba(93,116,51,.95appear),.8 rgba(47,65,27,.94appear),1 rgba(19,29,14,.9appear) |
+| 외곽선 | rgba(136,153,72,.7appear),폭1 |
+| 광택 호 | 중심(bx-.08r,cy-.08r),반경(.78r,.62r),회전-.2,호3.4..5.7. rgba(208,210,137,.9appear),폭1.8 |
+| 막 반사점 | 중심(bx-.25r,cy-.32r),반경(.24r,.13r),회전-.35. rgba(218,220,154,.55appear) |
+| 파열 반경 | burst=(q-.6)/.4,ellipse(16+18burst,8+8burst). 기존8/4 시작반경을 커진 돔16/8에맞춤. 나머지28차선색·두께·물방울·가스 유지 |
+| 가독성 회귀 | 원본대용RGB(21,26,18),표시450px,3200ms의상부vent ROI(147,97,36,30)에서G>65픽셀수:이전18→수정635. 최소130 회귀 기준. 실제사진원화 검수와구분하며전체시각품질점수로쓰지않음 |
+| 검증 | 신규검사가이전18픽셀로실패하는것을먼저확인. 효과29+geometry5+구문1=35PASS. 바위·원본·루프·가스시점 검사포함. 패키징재검사안함 |
+| 보존·자원 | 8vent/6400ms/16프레임/기존1760×1800atlas 유지,추가상주캐시0. 파열·가스시점 .6/기존collision·수면흐름 유지. 원본PNG수정0. 처리량증가는캐시최초생성시에만발생 |
+| 반영 | game.html의모듈버전20260927-29. 이미열린게임은기존JS를메모리에유지하므로새로로드한페이지에서새효과가반영됨 |
+
+MAP PRODUCTION REPORT — 29차
+
+STAGE: CH1-1 production.
+MASTER: silhouette/8regions/남북 main route/side spaces 유지.
+OUTER MASS: LEFT/RIGHT/TOP/SOUTH/major holes 유지.
+LARGE: source/composites/overlap/repeated silhouette 유지,원본변경0.
+MEDIUM: 기존 connections/remaining holes 유지.
+GROUND: 큰늪 버블의 몸체·접촉그림자·광택으로 가독성 보강. 기존 contamination/structure integration 유지.
+PLAYABLE: arenas/travel/breathing/threat 공간·충돌유지,추가피해·장애물0.
+LANDMARK: primary시체나무/tertiary뿌리 유지,secondary큰늪 버블의표시크기만교정.
+FILES: stage-owned ch1-living-detail.js/test/ch1LivingDetail.test.js. concurrent game.html 캐시버전1행,맵문서8개/CHANGELOG29차동기화. unrelated touched없음. tmp/ch1-pass29 백업·QA와 captures/ch1_bubble_readability29_20260927은기존ignore.
+GIT: 기존 .git 쓰기권한제한/승인후 셸생성오류로커밋미완료. 공유index·타작업보존,push/deploy없음.
+
+CAMERA QA: START/EARLY/ARENA/SIDE L/SIDE R/LANDMARK/LATE/EXIT 기본8+SWAMP_DETAIL/TISSUE_DETAIL/POOL_DETAIL/AUTHORED_POOL 및COMBAT촬영. 실제SWAMP_DETAIL에서물무늬와분리된황록돔이보임을직접확인. 전체보드검수,실게임24프레임GIF와같은시간/배율32프레임전후GIF보존.
+TECH QA: 자동35PASS,mapUnchanged=true,사망UI error=null. 외부리소스차단8,pageerror stack0,HTTP오류0. requestFailures15=외부8+인트로생략중단7. 청크56/56ready,visibleIds 모두drawnIds포함;전청크seam전수검수아님. WASD시작(4020,7220)→끝(4020,7214.45992),순차왕복순변위로각방향/종주증명아님. 체력50ms보충/카메라iframes60,전투전무적보충해제. SWAMP_DETAIL/SIDE_R/POOL_DETAIL 각60RAF median16.7ms/p9533.4ms,COMBAT90RAF median16.7ms/p9550ms. headless1280×720녹화,전체성능PASS아님. 개발서버29차byte동일/갤러리HTTP200.
+GIT 누적: 시작135→완료조회136개(동시작업포함). 타작업임의숨김/커밋없음.
+VISUAL VERDICT: RETOUCH — 버블가독성은이전대비개선·실게임확인. 전체지면재질통합은잔여.
+NEXT PASS: 실제사용자화면에서버블가독성을유지하며늪재질과의조화보완. 큰구도·수면·충돌유지.
+
+실게임·전후영상: <http://localhost:3333/captures/ch1_bubble_readability29_20260927/index.html>.
+
+
+## 30차: 버블 막 파열과 튀는 물방울을 분리한 빠른 동작 (2026-09-27)
+
+사용자 “뽕 하고 터지는 게 안 보인다” 교정. 29차 돔은 커졌지만 물과 같은 16프레임/6400ms 캐시를 사용하여 자세 간격400ms로 파열이 희미하게 넘어갔다. 물·가스는 기존 속도를 유지하고 버블만64프레임으로 분리한다. 27~29차의 버블 프레임·물방울6개·합성순서·추가캐시0 설명은 당시 이력이며 현행은 아래 표가 대체한다. 29차 몸체·그림자·광택 재질은 유지한다.
+
+| id / 적용 위치 | 현행 수치·공식 |
+|---|---|
+| 대상 | stage0 production의 m_c1gtoxicf(6500,5460). 수면4곳×2vent=8, polygon/좌표/위상offset=.23j+.47k 유지. 원본 PNG 변경0 |
+| 함수 | paintSwampBubble(x,bx,by,q), swampVents, bubbleAtlas(), swampBubbleAtlas. 함수·캐시는 모듈 내부, 공개 API 추가0 |
+| 버블 시간 | pose=fract(now/6400+offset)×64, b=floor(pose), bn=(b+1)%64. 두 자세를 기존 alpha×(1-blend),alpha×blend로 보간. 100ms 자세 간격. q=f/64로 베이크 |
+| 최대 돔·긴장 | 29차 r=3+13×swell²(3-2swell),swell=min(1,q/.46),q<.6. .46~.54에서 최대크기 정지512ms; .54~.6의384ms는 tension=sin((q-.54)/.06×π), (bx,by) 기준 scale(1+.2tension,1-.3tension). 최대 가로1.2/세로.7 |
+| 균열 | .57<q<.6,192ms. crack=min(1,(q-.57)/.03),3갈래 angle=n/3×2π-.8. (bx,cy)→(bx+cos(angle+.25)×.38r,cy+sin(angle+.25)×.3r)→(bx+cos(angle)×.78r,cy+sin(angle)×.65r). rgba(14,24,10,.9crack),폭1.8 |
+| 잔물결 | .6≤q<.78,1152ms. ripple=(q-.6)/.18,ellipse(16+26ripple,8+12ripple),호.2..6,rgba(185,184,107,.75(1-ripple)),폭1.8 |
+| 막 파열 | .6≤q<.66,384ms. tear=(q-.6)/.06,outer=16+18√tear,inner=13+8tear,lift=12sin(πtear). 8갈래 angle=n/8×2π+.2, p(a,r)=(bx+cos(a)r,by+.65sin(a)r-lift). path p(angle-.15,inner)→quadratic p(angle-.08,.9outer),p(angle,outer)→quadratic p(angle+.08,.9outer),p(angle+.15,inner)→close |
+| 파열 재질 | 채움 rgba(129,151,64,.9(1-tear)),테두리 rgba(211,214,133,.9(1-tear)),폭1.6. 빈 중심 ellipse(11(1-tear),5(1-tear)),rgba(7,16,7,.7(1-tear)) |
+| 물방울 | .6≤q<.72,768ms,8개. flight=(q-.6)/.12,angle=n/8×2π+.25,distance=14+25flight. x=bx+cos(angle)distance,y=by+.5sin(angle)distance-18sin(πflight). 반경(2.6,3.4)×(1-.6flight),회전angle,rgba(179,189,98,.95(1-flight)) |
+| 소멸 | q≥.78에서 버블·파열·잔물결 완전비표시. 다음 주기 시작에서 다시성장. 가스는28차 공식을 유지하고 .6~1에서 상승·소멸 |
+| 합성 | 원본기반→물마스크적용 수면+가스의16프레임atlas→별도 버블64프레임atlas. 파열물방울은 물마스크로 잘리지 않고 물가 밖까지 튈 수 있음. 캐릭터·전투 뒤, 바위형태 불변 |
+| 캐시 | 버블 cell96×96, 중심(48,64),8×8배치768×768 RGBA=2.25MiB. 셀별clip으로 이웃침범방지. 물·가스1760×1800/12.0849609375MiB 유지. native 합계84.03144454956055MiB(기타 shadow/GPU/임시베이크 제외) |
+| 프레임 비용 | 기존3drawImage→최대19회(기반1+물가스2+8vent×2). path/pixel 작업은 캐시 생성시에만, 매프레임 vent 위상8개와 drawImage 추가. 무비용 보강으로 보고하지 않음 |
+| 검사 | 신규 막파열 외측픽셀/직전눌림/파열후소멸 검사 RED→GREEN. 효과30+geometry5+인라인구문1=36PASS. 기존 루프·원본·바위·폴백 검사 포함. 패키징 재검사 안함 |
+| 반영 | game.html 모듈버전20260927-30. 이미 열린 게임은 새로 로드해야 최신 모듈을 사용 |
+
+
+MAP PRODUCTION REPORT — 30차
+
+STAGE: CH1-1 production, 큰늪의 버블 파열 가독성 교정.
+MASTER PLAN: silhouette/8regions/남북 main route/side spaces 보존.
+OUTER MASS: LEFT/RIGHT/TOP/SOUTH/major holes 변경0.
+LARGE: source/composites/overlap/repeated silhouette 유지. 원본 prop_g_toxic.png HEAD blob과 현재 hash 9367ee29021977d792c533310d9cfe5d60b14595 동일.
+MEDIUM CONNECTION: 기존 connections/remaining holes 변경0.
+GROUND CONNECTION: 버블 직전 눌림·균열, 막 파열·물방울 확대. 기존 shadow/contamination/structure integration 보존.
+PLAYABLE/COMBAT: arenas/travel/breathing/threat 공간·collision 유지, 추가 피해·장애물0.
+LANDMARK/CENTER: primary시체나무/tertiary뿌리 유지,secondary큰늪의 국소 동작 교정.
+CAMERA QA: 기본 START/EARLY/ARENA/SIDE_L/SIDE_R/LANDMARK/LATE/EXIT 및 SWAMP_DETAIL/TISSUE_DETAIL/POOL_DETAIL/AUTHORED_POOL. 실게임72프레임GIF의 연속 contact sheet에서 4→5→6,15→16→17번 등의 눌림→막파열→물방울/잔물결 확인. 단독 자세표와 원본450px/50ms/128프레임 전후GIF 별도 보존.
+FILES: stage-owned ch1-living-detail.js/test/ch1LivingDetail.test.js. concurrent game.html 캐시버전1행,맵문서8개/CHANGELOG 동기화. unrelated 변경0. tmp/ch1-pass30 백업과 captures/ch1_bubble_pop30_20260927 검수자료는 기존ignore.
+GIT: .git 쓰기권한제한 및 기존 승인 후 셸 생성오류로 커밋 미완료. 재확인에서도 명시한 PowerShell 경로 대신 stale WindowsApps pwsh를 호출하며 CreateProcessW -1073283067. 공유index·타작업 보존, push/deploy없음. 코드+docs 함께 커밋할 후속 작업 남음.
+VISUAL VERDICT: RETOUCH — 요청한 버블 파열은 실제 게임에서 구분됨. 전체 지면 재질 통합은 잔여이며 이번 국소 파열 교정을 전체 맵 PASS로 보고하지 않음.
+NEXT PASS: 사용자 플레이 화면에서 파열 가독성 확인 유지, 전체 바닥 재질 연결 보완. 큰 구도·수면·collision 유지.
+
+실게임·전후영상: <http://localhost:3333/captures/ch1_bubble_pop30_20260927/index.html>.
+
+
+TECH QA (30차 최종): verify/runtime.json 기준 효과30+geometry5+구문1=36PASS. mapUnchanged=true(별도draw3회 불변검사이며 cpuP95 필드는3표본으로 성능지표에 사용하지 않음). 사망UI error=null. JS pageerror stack0,HTTP오류0. 외부Fonts3/Three.js2/CloudFront1 네트워크차단6; requestFailures15=외부6+인트로생략중단9. 청크56/56ready,visibleIds 모두drawnIds포함;전청크seam전수검수아님. WASD왕복 시작(4020,7220)→끝(4017.24894,7214.49788),각방향/전체경로종주 증명아님. 체력50ms보충/카메라iframes60,전투전무적보충해제. SWAMP_DETAIL/SIDE_R/POOL_DETAIL 각60RAF median16.7ms/p9533.4ms,COMBAT90RAF median16.8ms/p9533.4ms. headless1280×720녹화 조건,전체성능PASS아님. 최초after 촬영은72프레임GIF·12카메라가저장됐으나최종JSON미저장되어verify로카메라/전투/오류기록재검수,verify가최종기술근거. 전체보드 직접검수. 개발서버30차byte동일/갤러리HTTP200,효과·테스트·맵문서diff --check PASS.
+GIT 누적 (30차): 시작136→중간140→완료조회140개(동시작업포함). 타작업 임의숨김/삭제/커밋0. 자동예약정리 재등록0.
+
+
+## 31차: 큰늪 윤곽을 따라 번지는 젖은 흙 접지 (2026-09-27)
+
+30차 버블 파열을 사용자가 승인한 뒤 다음 디테일 작업. 큰 원화의 돌 가장자리가 주변 바닥에서 분리되어 보이는 국소 접합을 보완한다. 불규칙한 원본 알파 윤곽에서 바깥으로 젖은 흙색을 감쇠시켜 연결한다. 바닥 전체 교체나 새로운 장애물·오브젝트 배치가 아니다. 30차 버블·가스·물 흐름은 그대로 유지한다.
+
+| id / 항목 | 현행 수치·공식·적용 위치 |
+|---|---|
+| 대상 | 기존 swamp 전용 m_c1gtoxicf(6500,5460),stage0 production. 기존 stage/좌표/로드/crop/rotation/pivot 폴백 계약 유지 |
+| 내부 함수 | swampApron(img). 입력은 groundSprite로 보정된 원화. source PNG를 수정하지 않고 캐시 생성시에만 픽셀 처리 |
+| 규격 | 512×512 RGBA,입력 drawImage(img,36,31,440,450). 중심은 원본 기준(256,256),원본 여백 X36/Y31 |
+| 실루엣 거리 | alpha>80인 픽셀을d=0,나머지28. 전진/후진2패스 L1 거리,상한28. x/y 이웃+1의 최소값. 원본alpha형상을 따르며 원형/타원형 그림자 stamp 아님 |
+| 외측 감쇠 | edge=1-d/28,fade=edge²(3-2edge). 외측 최대28native px,끝alpha0. 여백보다작아 canvas 사각 테두리노출없음 |
+| 흙결 | grain=.76+.14sin(.19x+2sin(.11y))+.1sin(.31y-.09x). 시간·random 미사용,항상같은정적질감 |
+| 젖은 흙색 | damp=.5+.5sin(.043x+2sin(.027y)). RGB=(27+10damp,28+10damp,19+4damp). alpha=round(255×.48×fade×grain),alpha0이면RGB도0 |
+| 합성 | swamp의save/위치이동/기존flip 이후,원본기반 이전에 한 번 그린다. drawImage(apron,-dw/2-36dw/440,-dh/2-31dh/450,512dw/440,512dh/450). 기존globalAlpha 상속,추가filter/blend없음 |
+| 캐시·비용 | 기존swampCache의값에apron 추가,원화별512²×4=1MiB. 기존30차native합계84.03144454956055→85.03144454956055MiB(기타shadow/GPU/임시베이크제외). swamp 최대19→20drawImage. 최초생성2패스거리/픽셀작업,매프레임1drawImage만추가 |
+| 검증 | 원본바깥접지픽셀존재·외측감쇠·canvas상단/좌측완전투명·입력byte보존 신규검사 RED→GREEN. 기존버블파열·수면·바위고정·루프·폴백 포함 효과31+geometry5+인라인구문1=37PASS. 패키징미재검사 |
+| 반영 | game.html 모듈버전20260927-31. 원본PNG·버블64프레임·수면가스16프레임·6400ms주기·좌표·collision변경0 |
+
+
+MAP PRODUCTION REPORT — 31차
+
+STAGE: CH1-1 production,기존 늪 가장자리의 국소 접지.
+MASTER: silhouette/8regions/남북 main route/side spaces 보존.
+OUTER MASS: LEFT/RIGHT/TOP/SOUTH/major holes 변경0.
+LARGE: 기존 source assets/composites/overlap/repeated silhouette 유지. 원본PNG HEAD hash와현재 9367ee29021977d792c533310d9cfe5d60b14595 동일.
+MEDIUM: 기존 connections/remaining holes 유지,새오브젝트0.
+GROUND: shadow·contamination을원본alpha윤곽과연결하는젖은흙층 추가. 외곽28native px의약한전이. structure integration 국소보강,전체피부바닥완성아님.
+PLAYABLE: main arenas/travel/breathing/threat 공간과collision보존. 플레이어·적·투사체·전투효과와접지색분리확인.
+LANDMARK: primary시체나무/secondary큰늪/tertiary뿌리 위계유지. secondary늪의바닥연결만수정.
+CAMERA QA: START/EARLY/ARENA/SIDE_L/SIDE_R/LANDMARK/LATE/EXIT 기본8+SWAMP_DETAIL/TISSUE_DETAIL/POOL_DETAIL/AUTHORED_POOL 및COMBAT. 실제SWAMP_DETAIL·전체보드직접검수. 30차버블파열 유지. 동일원화·시간·크기의별도비교이미지는캡처바닥일부에재합성한자료이며실제게임촬영과구분.
+TECH QA: 효과31+geometry5+구문1=37PASS. 기존입출구·나무우회·POI경로/collision검사PASS. 별도draw3회 mapUnchanged=true,해당3회 cpuP95필드는성능지표로사용하지않음. JS pageerror stack0,HTTP오류0. 외부리소스차단6,requestFailures14=외부6+인트로생략중단8. 사망UI error=null. 청크56/56ready/visibleIds 모두drawnIds포함,전청크seam전수검수아님. SWAMP_DETAIL/SIDE_R/POOL_DETAIL60RAF 및COMBAT90RAF median16.7ms/p9533.4ms. headless1280×720녹화조건,전체성능PASS아님. 체력50ms보충/카메라iframes60,전투전무적보충해제. WASD왕복(4020,7220)→(4020,7222.79266),전경로종주증명아님. 개발서버31차byte동일/갤러리HTTP200.
+FILES: stage-owned ch1-living-detail.js/test/ch1LivingDetail.test.js. concurrent game.html 모듈버전1행,맵문서8개+CHANGELOG동기화. unrelated변경0. tmp/ch1-pass31백업/검수와captures/ch1_swamp_ground31_20260927은기존ignore.
+GIT: staged공유index보존,commit미완료(.git쓰기제한/기존승인후Windows셸생성오류),push/deploy없음. 코드+docs함께커밋할후속작업남음. 변경누적시작142/완료142개,타작업임의숨김·삭제·커밋없음.
+VISUAL VERDICT: RETOUCH — 늪의외곽접지는소폭개선,전체바닥재질과랜드마크통합은잔여. 기술검사PASS를전체맵시각PASS로대체하지않음.
+NEXT PASS: 동측늪주변오염과기존생체지면의넓은재질전이검토. 기존큰구도·버블가독성·전투공간유지.
+
+검수: <http://localhost:3333/captures/ch1_swamp_ground31_20260927/index.html>.
+
+
+## 32차: 동측 생체 지면에서 늪으로 이어지는 재질 전이 (2026-09-27)
+
+31차 국소 접지를 사용자 승인 후,넓은 동측 지면의 조직색과 오염색 연결을 보강한다. 20차 동측 영역의 폭·팔레트·마스크는 아래 값으로 대체하며 서측/중앙 영역은 보존한다. 장애물·geometry·collision·늪 버블/가스/물 흐름은 변경하지 않는다.
+
+| id / 항목 | 현행 수치·공식·적용 위치 |
+|---|---|
+| SIDE_R / skinRegions variant1 | 중심(6060,5460),tile(151.5,136.5)유지. 폭1200→1440,높이800. 표시bounds X5340..6780/Y5060..5860. 픽셀bounds는투명여백포함,충돌범위아님 |
+| 재질 색 | variant1 팔레트 #3a3034/#424237/#303829. createLinearGradient(0,256,768,256),stop0/.45/1. 서쪽회갈색조직→중간괴사흙→동쪽녹갈색오염. variant0/2의기존팔레트·(0,0,180,512)gradient유지 |
+| 얕은 연결주름 | variant1만3줄. [sx,sy,cx,cy,ex,ey,width]=[245,192,455,215,691,273,12];[330,358,495,307,715,319,9];[432,120,556,161,678,230,7]. move(sx,sy)→bezier(cx,sy,cx,cy,ex,ey) |
+| 주름 명암 | 본선rgba(24,26,19,.16),폭각12/9/7native px. y-2상면선rgba(120,112,84,.12),폭1.1. 최초베이크에서기존세부주름23개뒤/알파마스크전에추가. 움직이는촉수나벽아님 |
+| 늪방향 마스크 | 기존3lobes에 variant1만[670,270,94,142]추가. 각좌표 [x,y,rx,ry],기존variant중심오프셋(variant-1)×18은variant1에서0. 기존radial stop .12부터/.48/1,alpha .88/.75/0 유지. 외곽x764에서완전감쇠하여768px사각경계가노출되지않음 |
+| 합성·비용 | 기존 regionalSkin 768×512 RGBA캐시재사용,최대3장4.5MiB유지. frame alpha .6,영역당1drawImage·culling·surfaceOnly제외유지. 추가상주캐시0/추가프레임draw0. 총native85.03144454956055MiB 유지(기타shadow/GPU/임시제외) |
+| 검증 | 동측마스크(680,270)alpha>150,끝(767,270)alpha<4,동일캐시재사용신규회귀RED→GREEN. 효과32+geometry5+구문1=38PASS. 기존타stage/화면밖/surfaceOnly/버블파열/접지·원본검사포함. 패키징미재검사 |
+| 반영 | game.html 모듈20260927-32. 30차버블/31차늪접지와기존전체맵공간유지 |
+
+
+MAP PRODUCTION REPORT — 32차
+
+STAGE: CH1-1 production,동측지면→늪의낮은대비재질연결.
+MASTER: silhouette/8regions/main route남북/side spaces 유지.
+OUTER MASS: LEFT/RIGHT/TOP/SOUTH/major holes 변경0.
+LARGE: source assets/composites/overlap/repeated silhouette 유지,기존원본에셋변경0.
+MEDIUM: 기존connections/remaining holes유지. 새오브젝트0.
+GROUND: 기존shadow보존. 동측contamination색상전이와얕은주름3줄로structure integration보강. 기존31차늪접지연결.
+PLAYABLE: main arenas/travel/breathing/threat 공간·collision유지. 캐릭터·적·투사체·전투색분리보존. 바닥의낮은대비변화이며입체장애물추가없음.
+LANDMARK: primary시체나무/secondary늪/tertiary뿌리위계유지,secondary주변지면만연결.
+CAMERA QA: START/EARLY/ARENA/SIDE_L/SIDE_R/LANDMARK/LATE/EXIT 기본8+SWAMP_DETAIL/TISSUE_DETAIL/POOL_DETAIL/AUTHORED_POOL 및COMBAT촬영. SIDE_R/SWAMP_DETAIL/전체보드직접검수. 재질비교이미지는단색바탕에native캐시표시이며실제게임촬영과구분.
+TECH QA: 효과32+geometry5+구문1=38PASS. 경로·충돌보존검사PASS,mapUnchanged=true(draw3회,해당cpuP95필드는성능지표로사용안함). JS pageerror stack0/HTTP오류0/외부차단6. requestFailures16=외부6+인트로중단10. 사망UI error=null. 청크56/56ready/visibleIds모두drawnIds포함,전청크seam전수검수아님. SWAMP_DETAIL/SIDE_R/POOL_DETAIL60RAF median16.7ms/p9533.4ms,COMBAT90RAF median16.7ms/p9550ms. headless1280×720녹화,전체성능PASS아님. 체력50ms보충/카메라iframes60,전투전무적보충해제. WASD왕복시작·끝약(4020,7220),순변위0으로개별방향이나전체경로종주를증명하지않음.
+FILES: stage-owned ch1-living-detail.js/test/ch1LivingDetail.test.js. concurrent game.html 모듈버전1행/맵문서8개+CHANGELOG동기화. unrelated변경0. tmp/ch1-pass32백업·QA/captures/ch1_east_transition32_20260927은기존ignore.
+GIT: staged공유index보존,commit미완료(.git쓰기제한/기존승인후셸생성오류),push/deploy없음. 코드+docs함께커밋후속남음. 변경누적시작143→완료144개(동시작업포함),타작업숨김·삭제·강제커밋0.
+VISUAL VERDICT: RETOUCH — 동측조직/늪색연결은소폭개선. 전체맵의피부지면·원화재질통합은잔여,자동PASS와구분.
+NEXT PASS: 서측야영지주변의재/그을음과기존생체지면접합검토. 기존손동작·넓은전투면보존.
+
+검수: <http://localhost:3333/captures/ch1_east_transition32_20260927/index.html>.
+
+
+## 33차: 서측 야영지의 재·그을음 접지 (2026-09-27)
+
+32차 승인 후 다음 디테일. 원본 야영지의 하부 알파 윤곽을 따라 얇은 회갈색 재·그을음을 합성한다. 움직이는 손3개,화로/상자/천막 원본,전체맵 공간은 보존한다. 원본하부와기존바닥사이의국소연결이며넓은서측전체피부지면교체가아니다.
+
+| id / 항목 | 현행 수치·공식·적용 위치 |
+|---|---|
+| 대상 | organic의기존stage0 production범위 내 m_c1camp(1820,4020),authored tile(45,100),scale1.55. 다른좌표camp는기존렌더. 로드/srcRect/타stage폴백유지 |
+| 내부 함수 | campGround(img),campHands의cached.ground에최초대상표시시캐시. 공개API추가0 |
+| 규격 | 512×400 RGBA. 원본880×663을(36,32)에440×331.5로그린뒤알파윤곽거리계산 |
+| 거리 | 원본축소alpha>80이면d0,그외22. 전진/후진2패스 L1 이웃+1 최소,상한22. edge=1-d/22,fade=edge²(3-2edge). 실루엣외측최대22native px에서소멸 |
+| 하부 제한 | lower=clamp((y-140)/120,0,1). 하부가중치lower²(3-2lower). y≤140은완전투명,y≥260은최대. 천막상부가평면재얼룩으로나오지않도록제한 |
+| 재·그을음 질감 | grain=.72+.18sin(.31x+2sin(.13y))+.1cos(.47y-.17x). ash=.5+.5sin(.073x+3cos(.041y)). RGB=(30+25ash,27+23ash,26+18ash). alpha=round(255×.46×fade×lower²(3-2lower)×grain). alpha0이면RGB0. 시간/random미사용 |
+| 합성 | 기존campHands의body직전. dx=o.x-dw/2,dy=o.y-dh/2. drawImage(ground,dx-36dw/440,dy-32dh/331.5,512dw/440,400dh/331.5). 기존sprite의tone/globalAlpha상속,손3개는body이후기존대로합성 |
+| 자원 | 512×400×4=0.78125MiB추가. camp4.391345977783203→5.172595977783203MiB. 전체native85.03144454956055→85.81269454956055MiB(기타shadow/GPU/임시베이크제외). 대상camp매프레임1drawImage추가,최초생성에만거리/픽셀처리 |
+| 검사 | 신규하부접지픽셀/위쪽완전투명/바깥감쇠/하단테두리투명/원본byte보존 RED→GREEN. 손3개동작과팔/화로고정보존기존검사포함 효과33+geometry5+구문1=39PASS. 패키징미재검사 |
+| 반영 | game.html 모듈20260927-33. 원본PNG·맵좌표·collision·기존늪효과·동측지면변경0 |
+
+
+MAP PRODUCTION REPORT — 33차
+
+STAGE: CH1-1 production,서측야영지하부재·그을음접지.
+MASTER: silhouette/8regions/남북main route/side spaces유지.
+OUTER MASS: LEFT/RIGHT/TOP/SOUTH/major holes변경0.
+LARGE: 원본source assets/composites/overlap/repeated silhouette보존.
+MEDIUM: 기존connections/remaining holes유지,새오브젝트0.
+GROUND: 원본하부윤곽에맞는재·그을음색접지로shadow/contamination/structure integration국소보강. 상부천막평면얼룩제외.
+PLAYABLE: main arenas/travel/breathing/threat공간·collision유지. 야영지촬영에서캐릭터/적/공격예고구분유지. 손·화로일부는전투중몬스터에정상가림. COMBAT촬영의붉은사각VFX잔여는이번접지범위밖이며전체시각PASS로보지않음.
+LANDMARK: primary시체나무/secondary야영지·늪/tertiary뿌리위계유지. 야영지손3개동작보존.
+CAMERA QA: START/EARLY/ARENA/SIDE_L/SIDE_R/LANDMARK/LATE/EXIT 기본8+SWAMP_DETAIL/TISSUE_DETAIL/CAMP_DETAIL/POOL_DETAIL/AUTHORED_POOL 총13시점및COMBAT촬영. CAMP_DETAIL/전체보드직접검수. 동일원화/1800ms포즈/660px비교는단색배경렌더이며실게임촬영과구분.
+TECH QA: 효과33+geometry5+구문1=39PASS. 기존경로·충돌검사PASS. mapUnchanged=true(draw3회,해당cpuP95필드는성능지표로사용하지않음). JS pageerror stack0/HTTP오류0/외부차단6;requestFailures15=외부6+인트로생략중단9. 사망UI error=null. 청크60/60ready,visibleIds모두drawnIds포함,전청크seam전수검수아님. SWAMP_DETAIL/SIDE_R/CAMP_DETAIL/POOL_DETAIL60RAF median16.7ms/p9533.4ms,COMBAT90RAF median16.7ms/p9549.9ms. headless1280×720녹화,전체성능PASS아님. 체력50ms보충/카메라iframes60,전투전무적보충해제. WASD왕복(4020,7220)→(4022.70062,7222.70062),개별방향/전경로종주증명아님.
+FILES: stage-owned ch1-living-detail.js/test/ch1LivingDetail.test.js. concurrent game.html 모듈버전1행/맵문서8개+CHANGELOG동기화. unrelated변경0. tmp/ch1-pass33백업·QA/captures/ch1_camp_ground33_20260927은기존ignore.
+GIT: staged공유index보존,commit미완료(.git쓰기제한/기존승인후셸생성오류),push/deploy없음. 코드+docs함께커밋후속남음. 시작146→완료조회147개(동시작업포함),타작업임의숨김·삭제·강제커밋0.
+VISUAL VERDICT: RETOUCH — 하부접지는국소개선,야영지전체바닥재질·맵전체통합잔여. 자동PASS와전체시각완성구분.
+NEXT PASS: 야영지앞빈바닥과기존뿌리주변의넓은재질전이검토,손동작·전투공간보존.
+
+검수: <http://localhost:3333/captures/ch1_camp_ground33_20260927/index.html>.
+
+
+## 34차: 야영지 앞 바닥과 뿌리의 넓은 재질 연결 (2026-09-27)
+
+33차 하부접지 승인 후,야영지 앞 전투면에 재색흙→괴사피부색의 정적 지면 전이를 추가한다. 소품이나충돌을추가하지않으며,기존손동작·늪효과·서측/동측/중앙피부막을보존한다. 20차/32차의regionalSkin최대3장/4.5MiB는당시이력이며현행최대4장/6MiB로대체한다.
+
+| id / 항목 | 현행 수치·공식·적용 위치 |
+|---|---|
+| CAMP_FRONT / skinRegions variant3 | tx46/ty107,world중심(1860,4300),표시960×640. bounds X1380..2340/Y3980..4620. 투명여백포함시각범위,collision변경없음 |
+| 재질 | palette #302d2c/#47403c/#3a3035. createLinearGradient(384,0,384,512),stop0/.45/1. 상부재색흙→중간회갈색재→하부괴사피부. native768×512 |
+| 바탕질감 | 기존regionalSkin규칙의얼룩28개/세부9500개/짧은주름23개유지. variant3 seed=1397+3×971=4310으로별도결. 시간·Math.random미사용,고정정적캐시 |
+| 연결주름3줄 | [sx,sy,cx,cy,ex,ey]=[185,178,280,245,370,386];[310,168,385,246,558,320];[456,204,517,293,490,416]. move(sx,sy)→bezier(cx,sy,cx,cy,ex,ey). native폭5/rgba(26,22,25,.2). 상면(-1,-1)이동,폭1/rgba(133,117,105,.16) |
+| 비대칭마스크 | variant3전용[x,y,rx,ry]=[300,220,280,180],[500,290,190,145],[340,365,200,120]. variant중심오프셋0. 기존radial시작반경.12/끝1,stop0/.48/1,alpha.88/.75/0. 사각경계전에감쇠 |
+| 합성·캐시 | 기존draw의오브젝트전지면패스. alpha=.6×기존globalAlpha,화면밖culling,surfaceOnly제외,stage0 production한정. 추가RGBA1장768×512=1.5MiB,지역캐시합계6MiB,전체native87.31269454956055MiB(기타shadow/GPU/임시제외). 보이는동안1drawImage추가,최초베이크후프레임path/pixel작업0 |
+| 회귀검사 | 캠프전면중앙픽셀표시/1700ms후byte동일/surfaceOnly비표시/stage1비표시 RED→GREEN. 기존손·화로·늪·경로보존포함 효과34+geometry5+구문1=40PASS. 패키징미재검사 |
+| 반영 | game.html 모듈20260927-34. 원본PNG·오브젝트배치·collision·기존생체동작변경0 |
+
+
+MAP PRODUCTION REPORT — 34차
+
+STAGE: CH1-1 production,야영지전면재색흙·괴사조직전이.
+MASTER: silhouette/8regions/남북main route/side spaces유지.
+OUTER MASS: LEFT/RIGHT/TOP/SOUTH/major holes변경0.
+LARGE: source assets/composites/overlap/repeated silhouette보존,원본PNG변경0.
+MEDIUM: 기존connections/remaining holes유지,새오브젝트0.
+GROUND: 기존33차shadow/contamination접지에서야영지앞빈바닥으로색과주름연결. 구조물주변좁은외곽과넓은지면을연속화.
+PLAYABLE: main arenas/travel/breathing/threat공간·collision유지. 넓은전투면과캐릭터/적/공격예고의대비확인. 낮은지면전이이며장애물추가없음.
+LANDMARK: primary시체나무/secondary야영지·늪/tertiary뿌리위계유지. 손3개동작보존.
+CAMERA QA: START/EARLY/ARENA/SIDE_L/SIDE_R/LANDMARK/LATE/EXIT 기본8+SWAMP_DETAIL/TISSUE_DETAIL/CAMP_DETAIL/POOL_DETAIL/AUTHORED_POOL 총13시점및COMBAT. CAMP_DETAIL을(46,107)로옮겨전면검수. 이전33차모듈라우팅before와34차verify의동일카메라직접비교,전투시간/적상태는상이. 전체보드직접검수.
+TECH QA: 효과34+geometry5+구문1=40PASS,기존경로/충돌보존검사PASS. mapUnchanged=true(draw3회,해당cpuP95는성능지표아님). verify JS pageerror stack0/HTTP오류0/외부차단6;requestFailures13=외부6+인트로중단7. 사망UI error=null. 청크60/60ready,visibleIds모두drawnIds포함,전청크seam전수검수아님. SWAMP60RAF median16.8/p9533.4ms,SIDE_R33.2/33.4,CAMP/POOL33.3/33.4,COMBAT90RAF33.3/50. headless1280×720녹화,전후검수프로세스일부동시실행으로전체성능PASS/단독성능회귀판정불가. before HTTP오류0/외부차단6,camp median33.3/p9533.4ms. 체력50ms보충/카메라iframes60,전투전무적보충해제. WASD왕복(4020,7220)→(4025.37004,7225.37004),전경로종주증명아님.
+FILES: stage-owned ch1-living-detail.js/test/ch1LivingDetail.test.js. concurrent game.html 모듈버전1행/맵문서8개+CHANGELOG동기화. unrelated변경0. tmp/ch1-pass34백업·QA/captures/ch1_camp_foreground34_20260927은기존ignore.
+GIT: staged공유index보존,commit미완료(.git쓰기제한/기존승인후셸생성오류),push/deploy없음. 코드+docs동반커밋후속남음. 시작148→완료조회148개(동시작업포함),타작업임의숨김·삭제·강제커밋0.
+VISUAL VERDICT: RETOUCH — 야영지전면의바닥연결개선,전체맵피부재질·독립소품접합잔여. 자동PASS와전체맵시각승인구분.
+NEXT PASS: 야영지앞뼈무더기와잔해의바닥접지검토. 기존넓은전투면·손동작보존.
+
+검수: <http://localhost:3333/captures/ch1_camp_foreground34_20260927/index.html>.
+
+
+## 35차: 야영지 앞 뼈·무기 잔해의 하부 접촉 그림자 (2026-09-27)
+
+34차 전면지면 승인 후,원본알파를따르는얇은그림자로소형잔해의바닥접촉을보강한다. 지정3개만적용하며다른배치/챕터에는전파하지않는다. 높은해골장대의상부실루엣은평면그림자에서제외한다.
+
+| id / 항목 | 현행 수치·공식·적용 위치 |
+|---|---|
+| 대상3개 | m_c1sbone(1940,4340),m_sword_pile(1580,4180),m_wpile(2060,4220). 각각authored tile(48,108)/(39,104)/(51,105). 기존좌표·scale·collision유지 |
+| 진입 | Ch1LivingDetail.shadows의stage0 production가드후exact type+좌표확인. 이미지로드/메타필수. srcRect/sheet/meta.rot/o.rot/anchorBottom/pivotX/pivotY 있으면접지생략,기존sprite유지 |
+| 내부캐시 | debrisContact(img),debrisContactCache WeakMap. 원본을(32,32)에192×192로베이크한256×256RGBA. 원본픽셀수정0 |
+| 거리감쇠 | alpha>80→d0,그외12. 전진/후진2패스L1이웃+1최소,상한12. e=1-d/12,edge=e²(3-2e) |
+| 상부제외 | t=clamp((y-128)/64,0,1),가중치t²(3-2t). y≤128완전투명,y≥192최대. 바닥닿는하부만표시 |
+| 색·결 | RGB(29,24,24),grain=.82+.18sin(.37x+2cos(.21y)). alpha=round(255×.56×e²(3-2e)×t²(3-2t)×grain). alpha0이면RGB0. 시간/random미사용 |
+| 원본정렬 | size=(meta.sz또는200)×(o.scale또는1). source=meta.sourceSize또는원본폭높이,ar=w/h. keepAR&&!squareDraw면dw=size×min(1,ar),dh=size×min(1,1/ar),그외dw=dh=size. meta.flip반영 |
+| 표시 | translate(o.x,o.y),기존alpha상속. drawImage(tex,-dw/2-32dw/192,-dh/2-32dh/192,256dw/192,256dh/192). 객체전그림자패스. camera기준hw+dw/hh+dh밖culling |
+| 비용 | 객체이미지당256²RGBA=.25MiB,대상3개최대.75MiB추가. 전체native88.06269454956055MiB(기타shadow/GPU/임시제외). 화면내대상당1drawImage추가,픽셀/거리작업은최초캐시생성만 |
+| 검사 | 하부픽셀/상부완전투명/좌표1941미적용/타stage미적용/원본byte보존 RED→GREEN. 기존손·늪·지면·경로검사포함 효과35+geometry5+구문1=41PASS. 패키징미재검사 |
+| 반영 | game.html 모듈20260927-35. 기존34차지면/33차야영지하부/손동작·소품원본·배치·collision보존 |
+
+
+MAP PRODUCTION REPORT — 35차
+
+STAGE: CH1-1 production,야영지뼈·무기잔해3개접지.
+MASTER: silhouette/8regions/남북main route/side spaces유지.
+OUTER MASS: LEFT/RIGHT/TOP/SOUTH/major holes변경0.
+LARGE: source assets/composites/overlap/repeated silhouette보존,원본PNG변경0.
+MEDIUM: 기존connections/remaining holes유지,새오브젝트0.
+GROUND: 원본하부알파를따르는접촉shadow로34차지면과잔해의structure integration보강. 기존contamination보존. 높은장대의상부평면그림자제외.
+PLAYABLE: main arenas/travel/breathing/threat공간·collision유지. 캐릭터·적·공격예고대비보존. 지면상부만낮은대비보강.
+LANDMARK: primary시체나무/secondary야영지·늪보존,tertiary뼈/잔해접지보강. 손3개동작보존.
+CAMERA QA: START/EARLY/ARENA/SIDE_L/SIDE_R/LANDMARK/LATE/EXIT 기본8+SWAMP_DETAIL/TISSUE_DETAIL/CAMP_DETAIL/POOL_DETAIL/AUTHORED_POOL 총13시점및COMBAT. CAMP_DETAIL/전체보드/동일원본1.5배확대비교직접검수. 단색확대렌더와실게임촬영구분.
+TECH QA: 효과35+geometry5+구문1=41PASS. 경로/충돌보존검사PASS,mapUnchanged=true(draw3회,해당cpuP95필드는성능지표로사용하지않음). JS pageerror stack0/HTTP오류0/외부차단6;requestFailures15=외부6+인트로중단9. 사망UI error=null. 청크60/60ready,visibleIds모두drawnIds포함,전청크seam전수검수아님. SWAMP60RAF median16.7/p9533.4ms,SIDE_R/POOL33.3/33.4,CAMP33.2/33.4,COMBAT90RAF33.2/50. headless1280×720녹화,전체성능PASS아님. 체력50ms보충/카메라iframes60,전투전무적보충해제. WASD왕복(4020,7220)→(4022.68788,7217.31212),전경로종주증명아님.
+LIVE RENDER PROOF: probe/runtime.json에서실제MAP_OBJS/_OBJ_SPR/_OBJ_META를사용한shadows단독호출 drawImage=3확인. pivotX/Y는세대상모두실제undefined(Playwright→Python JSON에서는null표시). 실제sz bone150/keepAR1,sword200/keepAR0,wpile64/keepAR0;scale기본1. 캡처메타직렬화의null을가드실패로잘못판정하지않도록호출수로검증.
+FILES: stage-owned ch1-living-detail.js/test/ch1LivingDetail.test.js. concurrent game.html 모듈버전1행/맵문서8개+CHANGELOG동기화. unrelated변경0. tmp/ch1-pass35백업·QA/captures/ch1_camp_debris35_20260927은기존ignore.
+GIT: staged공유index보존,commit미완료(.git쓰기제한/기존승인후셸생성오류),push/deploy없음. 코드+docs동반커밋후속남음. 시작149→완료조회149개(동시작업포함),타작업임의숨김·삭제·강제커밋0.
+VISUAL VERDICT: RETOUCH — 세잔해하부의접촉개선,전체맵재질통합잔여. 자동PASS와전체맵시각승인구분.
+NEXT PASS: 야영지뒤묘비와노출뿌리의바닥연결검토. 기존소품위치·전투면·손동작보존.
+
+검수: <http://localhost:3333/captures/ch1_camp_debris35_20260927/index.html>.
+
+
+## 36차: 야영지 뒤 묘비 밑동과 노출 뿌리의 접지 (2026-09-27)
+
+35차 잔해접지 승인 후 지정묘비와평면뿌리2곳을추가한다. 묘비는상부실루엣을제외하는기존밑동감쇠,납작한뿌리는원본전체밑면에접촉그림자를사용한다. 원화스타일차이를새그림자로해결했다고보고하지않는다. 묘비48×64의밝은픽셀원화/뿌리256²의흑백에가까운원화와주변재질차이는잔여.
+
+| id / 항목 | 현행 수치·공식·적용 위치 |
+|---|---|
+| 추가대상 | m_tomb(1460,3900),authored tile(36,97),기본sz56. m_root(1980,3940),tile(49,98),기본sz110. 기존잔해3곳포함총5곳,다른동일type배치미적용 |
+| 묘비 | debrisContact(img,false),기존35차t=clamp((y-128)/64,0,1)와t²(3-2t)유지. 상부비표시/밑동접촉. 원본48×64이나기존keepAR0정사각표시계약유지 |
+| 평면뿌리 | debrisContact(img,true),t=1로상부감쇠해제. 256²원본의전체alpha윤곽을따라받침. 하부반쪽만그리지않으며원본뿌리·흙패턴보존 |
+| 캐시분리 | debrisContactCache=밑동형,rootSoilCache=평면형의별도WeakMap. 같은img가두모드로쓰여도캐시충돌없음. 기본flat=false |
+| 공통공식 | 35차256²RGBA/원본(32,32,192,192)베이크,alpha>80실루엣,L1상한12,RGB(29,24,24),grain=.82+.18sin(.37x+2cos(.21y)),alpha=round(255×.56×e²(3-2e)×t²(3-2t)×grain). 투명픽셀RGB0 |
+| 정렬·폴백 | 35차shadows패스·exact좌표·stage0 production·keepAR/squareDraw/flip·화면밖culling·unsupported crop/sheet/rotation/pivot폴백그대로. 원본·배치·collision변경0 |
+| 비용 | 추가2이미지×256²RGBA=.5MiB. 이접지계열총5장최대1.25MiB. 전체native88.56269454956055MiB(기타shadow/GPU/임시제외). 새대상이보일때각1drawImage추가 |
+| 검사 | 동일입력이미지에서묘비밑동/상부비표시와평면뿌리상하부표시차이·다른좌표1981미적용·원본byte불변 RED→GREEN. 효과36+geometry5+구문1=42PASS. 패키징미재검사 |
+| 반영 | game.html 모듈20260927-36. 35차잔해/34차지면/손동작·늪효과보존 |
+
+
+MAP PRODUCTION REPORT — 36차
+
+STAGE: CH1-1 production,야영지뒤묘비/노출뿌리접지.
+MASTER: silhouette/8regions/남북main route/side spaces유지.
+OUTER MASS: LEFT/RIGHT/TOP/SOUTH/major holes변경0.
+LARGE: source assets/composites/overlap/repeated silhouette보존,원본PNG변경0.
+MEDIUM: 기존connections/remaining holes유지,새오브젝트0.
+GROUND: 묘비밑동/평면뿌리전체밑면의contact shadow분리로structure integration보강. 기존contamination보존. 원화스타일차이잔여.
+PLAYABLE: main arenas/travel/breathing/threat공간·collision유지. 플레이어/공격예고식별가능. 기존야영지와전투효과가뿌리를일부가림,가림구조변경하지않음.
+LANDMARK: primary시체나무/secondary야영지·늪위계보존,tertiary묘비/뿌리접지보강. 손동작보존.
+CAMERA QA: START/EARLY/ARENA/SIDE_L/SIDE_R/LANDMARK/LATE/EXIT 기본8+SWAMP_DETAIL/TISSUE_DETAIL/CAMP_DETAIL/CAMP_REAR/POOL_DETAIL/AUTHORED_POOL 총14시점및COMBAT. CAMP_REAR(43,97)신규,원배율/전체보드직접검수. 묘비3배·뿌리2배단색확대비교별도,실게임에서가려진뿌리전체를육안확인했다고보고하지않음.
+TECH QA: 효과36+geometry5+구문1=42PASS. 경로/충돌보존검사PASS,mapUnchanged=true(draw3회,cpuP95필드는성능지표아님). JS pageerror stack0/HTTP오류0/외부차단6;requestFailures12=외부6+인트로중단6. 사망UI error=null. 청크60/60ready,visibleIds모두drawnIds포함,전청크seam전수검수아님. SWAMP/SIDE_R/CAMP_DETAIL/CAMP_REAR60RAF median16.7/p9533.4ms,POOL16.8/33.4,COMBAT90RAF33.3/33.5. headless1280×720녹화,전체성능PASS아님. 체력50ms보충/카메라iframes60,전투전무적보충해제. WASD왕복(4020,7220)→(4088.28615,7157.71381),전경로종주증명아님.
+LIVE RENDER: 실제MAP_OBJS/_OBJ_SPR/_OBJ_META와진단camera(1820,4020)를사용한shadows호출 drawImage5회확인. 신규묘비sz56/root110,둘다keepAR0. 진단camera는복사된G에만적용,실제게임상태변경0.
+FILES: stage-owned ch1-living-detail.js/test/ch1LivingDetail.test.js. concurrent game.html 모듈버전1행/맵문서8개+CHANGELOG동기화. unrelated변경0. tmp/ch1-pass36백업·QA/captures/ch1_camp_rear36_20260927은기존ignore.
+GIT: staged공유index보존,commit미완료(.git쓰기제한/기존승인후셸생성오류),push/deploy없음. 코드+docs동반커밋후속남음. 시작151→완료조회151개(동시작업포함),타작업임의숨김·삭제·강제커밋0.
+VISUAL VERDICT: RETOUCH — 접지개선,밝은픽셀묘비/흑백뿌리의원화재질차이와전체맵통합잔여. 자동PASS와시각완성구분.
+NEXT PASS: 야영지전체소품의재질·명도조화를검토. 기존원화보존및넓은전투공간/손동작유지.
+
+검수: <http://localhost:3333/captures/ch1_camp_rear36_20260927/index.html>.
+
+## 37차: 사용자 지정 저품질 원화 폐기 (2026-09-27)
+
+현행 계약은 [폐기 SSOT](LOW_QUALITY_ASSET_RETIREMENT_20260927.md) 표를 따른다. 36차 보강을 폐기하고 두 원화와 사본6개를 격리했다. module20260927-37,접지3장0.75MiB,전체native88.06269454956055MiB.
+
+
+MAP PRODUCTION REPORT — 37차
+
+STAGE: CH1-1 저품질 원화 폐기, CH5/CH7 동일 사본과 편집기 등록 정리.
+MASTER: silhouette/regions/main route/side spaces 유지.
+OUTER MASS: LEFT/RIGHT/TOP/SOUTH/major holes 변경 없음.
+LARGE: 구형 묘비/노출뿌리 원화2종 및 동일 사본 포함6파일 격리. 기존 composites/overlap 유지. 신규 반복실루엣 없음.
+MEDIUM: connections 유지. 제거 대상은 소형 비충돌 데코로 연결구조 변경 없음. remaining holes 전수 검수 아님.
+GROUND: 폐기2대상의 접촉shadow/flat모드 제거. 기존오염·야영지바닥·잔해3곳접지 유지. 기존재질통합 개선 여지 잔여.
+PLAYABLE: main arenas/travel/breathing/threat space 유지. 남쪽START/북쪽EXIT와 시체나무 양쪽우회 geometry 검사 통과. 전투화면 가독성 유지.
+LANDMARK: primary시체나무/secondary야영지·늪 유지,tertiary구형묘비·노출뿌리 제거.
+CAMERA QA: START/EARLY/ARENA/SIDE_L/SIDE_R/LANDMARK/LATE/EXIT 8개와 SWAMP_DETAIL/TISSUE_DETAIL/CAMP_DETAIL/CAMP_REAR/POOL_DETAIL/AUTHORED_POOL,합계14시점+COMBAT 캡처. CAMP_REAR 원배율 및 전체보드 직접검수,밝은묘비가 사라지고 기존지면 연결 유지.
+TECH QA: 43테스트 PASS. 보조game-easy-test inline6개/editor1개/tilemap-editor1개 추가 구문검사 PASS. 격리6파일 SHA256 일치 및 활성경로 부재검사 PASS. 실게임 retired objects/sprites/metadata 모두0,기존잔해shadows drawImage3. JS pageerror0/HTTP오류0,외부네트워크차단6개와인트로중단9개. 60청크 ready/60,visibleIds=drawnIds. 캡처시 seam 관찰,전청크전수검수아님. 사망UI error=null. 카메라체력50ms보충/iframes60,전투전무적보충해제. WASD왕복(4020,7220)→(4113.96369,7238.51573),전경로종주아님. COMBAT90RAF median33.3/p9533.4ms(headless1280×720녹화),전체성능PASS 아님. mapUnchanged=true;draw샘플cpuP95=0은성능근거로사용하지않음. NW.js 전체빌드와CH5/CH7화면검수 미수행.
+FILES: stage-owned ch1-living-detail.js/test2개/archive6개+manifest/폐기SSOT. concurrent touched game.html/game-easy-test.html/editor.html/tilemap-editor.html/관련맵문서/CHANGELOG. unrelated touched0. tmp백업·captures는기존ignore.
+GIT: staged 공유index보존. commit미완료(.git쓰기제한/기존승인후셸생성실패),push/deploy없음. 시작154→완료174개(동시작업포함). 타작업숨김·삭제·강제커밋없음. 코드+docs동반커밋후속필요.
+VISUAL VERDICT: RETOUCH — 지정저품질원화 제거는 확인. 전체맵소품의 재질·명도 통합은 잔여이며 전체맵최종PASS로보고하지않음.
+NEXT PASS: 남은구형소품을 현재지면·랜드마크와 비교해 저품질후보를 분류. 폐기된 두원화의 재보강·재사용 금지.
+
+## 38차: 구형무기더미 폐기
+
+현행값과검수분류는 [38차SSOT](CH1_LOW_QUALITY_AUDIT_20260927_PASS38.md)를 따른다.
+
+
+MAP PRODUCTION REPORT — 38차
+
+STAGE: CH1-1 소형구형무기더미폐기 및CH5동일사본정리.
+MASTER: silhouette/regions/남북main route/side spaces 유지.
+OUTER MASS: LEFT/RIGHT/TOP/SOUTH/major holes 변경없음.
+LARGE: source assets 구형무기더미1종/동일사본4개격리. composites/overlap/repeated silhouette 변경없음.
+MEDIUM: connections 유지,remaining holes 전수검수아님. 새배치없음.
+GROUND: 무기더미전용접지제거. shadow2곳유지,contamination/structure integration은기존상태보존.
+PLAYABLE: main arenas/travel/breathing/threat space 보존. 작은픽셀더미제거로전투면확보,combat readability 유지.
+LANDMARK: primary시체나무/secondary야영지·늪보존. tertiary구형무기더미제거,큰sword_pile보호.
+CAMERA QA: START/EARLY/ARENA/SIDE_L/SIDE_R/LANDMARK/LATE/EXIT 및SWAMP_DETAIL/TISSUE_DETAIL/CAMP_DETAIL/CAMP_REAR/POOL_DETAIL/AUTHORED_POOL 총14시점+COMBAT. CAMP_DETAIL원배율/전체보드직접검수. 제거된위치의지면연결유지.
+TECH QA: route/collision geometry검사PASS,전체44테스트PASS. 보조game inline6/editor1/tilemap1문법PASS. retired objects/sprites/metadata모두0,유지접지drawImage2. JS pageerror0/HTTP오류0. 외부네트워크차단6건,총requestFailures16건(인트로중단포함). 청크60/60ready,visibleIds모두drawnIds포함. seam전체전수검사아님. WASD(4020,7220)→(4017.2245,7220),전체경로종주아님. 카메라체력50ms보충/iframes60,전투전무적보충해제. 사망UI오류없음. COMBAT90RAF median33.3/p9533.5ms,headless1280×720녹화환경측정. 전체성능PASS/NW.js빌드/CH5시각검수는미수행.
+FILES: stage-owned ch1-living-detail.js/test/mapAssetRetirement.test.js/archive4개+manifest/검수문서. concurrent touched game.html/game-easy-test.html/editor.html/tilemap-editor.html/관련맵docs/CHANGELOG. unrelated touched0.
+GIT: shared index보존,staged추가없음. commit미완료(.git쓰기제한/기존셸실행오류). push/deploy없음. 시작175→완료186개. 타작업숨김/삭제/강제커밋없음.
+VISUAL VERDICT: RETOUCH — 구형무기더미제거확인. 나머지구형소품과지면재질통합잔여.
+NEXT PASS: rotten_tree/vine_pillar 등구형픽셀소품의충돌·공유사용부터확인후정리. 이번검수만으로폐기확정하지않음.
+
+## 39차: 구형나무·기둥과충돌정리
+
+[현행값·폐기목록](CH1_LOW_QUALITY_RETIREMENT_PASS39.md). 내부dry아틀라스는 _atlasDry:1로분리했고일반/표면패스픽셀동일을확인했다.
+
+
+MAP PRODUCTION REPORT — 39차
+
+STAGE: CH1-1 구형나무·기둥폐기,CH7동일기둥등록제거.
+MASTER: silhouette/regions/main route/side spaces 유지.
+OUTER MASS: LEFT/RIGHT/TOP/SOUTH/major holes 변경없음.
+LARGE: source assets2종7사본격리. composites/overlap 유지,구형픽셀나무·기둥실루엣제거.
+MEDIUM: connections유지,remaining holes 신규발견없음(전체전수검수아님).
+GROUND: 구형나무앵커제거. shadow/contamination/structure integration의기존지역효과유지. dry아틀라스일반/표면패스원시RGBA해시수정전후동일확인. _atlasDry로내부종속성분리.
+PLAYABLE: main arenas/travel/breathing/threat space/남북루트보존. 두소품충돌제거로통행면확보. 새보이지않는충돌없음. combat readability유지.
+LANDMARK: primary시체나무/secondary고치·야영지·늪유지. tertiary구형나무/기둥제거,큰뼈아치보호.
+CAMERA QA: START/EARLY/ARENA/SIDE_L/SIDE_R/LANDMARK/LATE/EXIT 8개+SWAMP_DETAIL/TISSUE_DETAIL/CAMP_DETAIL/CAMP_REAR/POOL_DETAIL/AUTHORED_POOL/OLD_TREE(56,47)/OLD_PILLAR(34,156),합계16시점+COMBAT. 제거2지점원배율과전체보드직접검수. 신규빈사각패치없음,남은밝은지면소품은후속검토.
+TECH QA: 45테스트PASS. 보조game inline6/editor1/tilemap1구문PASS. route/terrain geometry검사PASS,오브젝트충돌은의도된제거. 실제retired objects/sprites/metadata/collisions모두0. JS pageerror0/HTTP오류0,외부차단6/총requestFailures13(인트로중단포함). 청크64ready,visibleIds모두drawnIds포함. seam전청크전수검수아님. 최종verify-final만승인증거(중간verify는수정전내부앵커문제포함). WASD(4020,7220)→(4017.2453,7222.7547),전경로종주아님. 카메라50ms체력보충/iframes60,전투전무적보충해제. 사망UI오류없음. COMBAT90RAF median16.7/p9550ms,headless1280×720녹화로전체성능PASS아님. CH7시각검수/NW.js전체빌드미수행.
+FILES: stage-owned ch1-living-detail.js/test2개/archive7개+manifest/39차문서. concurrent touched game.html/game-easy-test.html/editor.html/tilemap-editor.html/관련docs/CHANGELOG. unrelated touched0. tmp백업·captures기존ignore.
+GIT: staged공유index보존. commit미완료(.git쓰기제한/기존셸실행오류),push/deploy없음. 시작186→완료204개(동시작업포함),타작업숨김·삭제·강제커밋없음. 코드+docs동반커밋필요.
+VISUAL VERDICT: RETOUCH — 구형나무·기둥제거및기존동맥동작보존확인. 전체맵지면재질/남은구형소품통합잔여.
+NEXT PASS: 흰부유돌처럼보이는 moss_patch/ash_pile 등지면데칼의실제원화·배치검수. 저해상도만으로일괄폐기하지않음.
+
+## 40차: 지면데칼정리
+
+[현행폐기계약](CH1_GROUND_DECAL_RETIREMENT_PASS40.md). 생체모듈및모듈버전변경없음.
+
+
+MAP PRODUCTION REPORT — 40차
+
+STAGE: CH1-1 지면데칼4종폐기.
+MASTER: silhouette/regions/main route/side spaces유지.
+OUTER MASS: LEFT/RIGHT/TOP/SOUTH/major holes변경없음.
+LARGE: source assets 중소형지면4원화격리. composites/overlap/대형repeated silhouette변경없음.
+MEDIUM: connections유지. remaining holes 신규발견없음,전수검수아님.
+GROUND: 독립된밝은돌형지면8배치제거. 기존shadow/contamination/structure integration/피부막효과보존. 뼈아치우측밝은소품소멸확인.
+PLAYABLE: main arenas/travel/breathing/threat space유지. 비충돌장식만제거,terrain/남북루트유지. combat readability유지.
+LANDMARK: primary시체나무/secondary야영지·늪·고치보존. tertiary지면데칼정리.
+CAMERA QA: START/EARLY/ARENA/SIDE_L/SIDE_R/LANDMARK/LATE/EXIT 및SWAMP_DETAIL/TISSUE_DETAIL/CAMP_DETAIL/CAMP_REAR/POOL_DETAIL/AUTHORED_POOL/OLD_TREE/OLD_PILLAR 총16시점+COMBAT. OLD_PILLAR원배율/전체보드직접검수. 흰부유돌제거후지면연결확인.
+TECH QA: 46테스트PASS,보조game inline6구문PASS. route/collision geometry검사PASS. 실제retired objects/sprites/metadata/collisions모두0. JS pageerror0/HTTP오류0,외부차단6/총requestFailures15(인트로중단포함). 64청크ready,visibleIds모두drawnIds포함. seam전청크전수검수아님. 사망UI오류없음. WASD(4020,7220)→(4020,7222.70712),전경로종주아님. 카메라50ms체력보충/iframes60,전투전무적보충해제. COMBAT90RAF median16.7/p9550ms,headless1280×720녹화로전체성능PASS아님. 전체NW.js빌드미수행.
+FILES: stage-owned test/mapAssetRetirement.test.js/archive4개+manifest/40차문서. concurrent touched game.html/game-easy-test.html/관련docs/CHANGELOG. 생체모듈변경없음. unrelated touched0. tmp/captures기존ignore.
+GIT: staged공유index보존. commit미완료(.git쓰기제한/기존셸오류),push/deploy없음. 시작206→완료217개(동시작업포함). 타작업숨김·삭제·강제커밋없음. 코드+docs동반커밋필요.
+VISUAL VERDICT: RETOUCH — 지면4원화제거확인. 전체맵재질통합/남은구형소품은추가검토.
+NEXT PASS: 남은소형독액·고기·거미줄원화의실제사용과게임기능을분리해검토. 기존대형늪효과보존.
+
+## 41차: 소형구형독액·육편정리
+
+[현행계약](CH1_SMALL_ORGANIC_RETIREMENT_PASS41.md). 생체모듈변경없음.
+
+
+MAP PRODUCTION REPORT — 41차
+
+STAGE: CH1-1 소형독액·육편장식폐기,CH6동일사본등록정리.
+MASTER: silhouette/regions/main route/side spaces유지.
+OUTER MASS: LEFT/RIGHT/TOP/SOUTH/major holes변경없음.
+LARGE: 소형source assets4종11파일격리. 기존composites/overlap/repeated silhouette대형구조유지.
+MEDIUM: connections유지. CH2거미줄연결부는보류/보존,remaining holes전수검수아님.
+GROUND: 소형독액스티커제거,기존shadow/contamination/structure integration과실제대형늪유지.
+PLAYABLE: main arenas/travel/breathing/threat space 및combat readability유지. 제거대상비충돌장식으로독피해·경로·terrain변경없음.
+LANDMARK: primary시체나무/secondary늪·고치·야영지보존. tertiary구형장식정리.
+CAMERA QA: START/EARLY/ARENA/SIDE_L/SIDE_R/LANDMARK/LATE/EXIT 및SWAMP_DETAIL/TISSUE_DETAIL/CAMP_DETAIL/CAMP_REAR/POOL_DETAIL/AUTHORED_POOL/OLD_TREE/OLD_PILLAR 총16시점+COMBAT. AUTHORED_POOL원배율/전체보드직접검수. 큰늪보존,소형장식제거후지면연결확인.
+TECH QA: 47테스트PASS,보조game inline6/editor1/tilemap1문법PASS. route/collision검사PASS. 실제retired objects/sprites/metadata/collisions모두0. JS pageerror0/HTTP오류0,외부차단6/총requestFailures14(인트로중단포함). 청크64ready,visibleIds모두drawnIds포함. seam전체전수검수아님. 사망UI오류없음. WASD(4020,7220)→(4022.72428,7220),전경로종주아님. 카메라50ms체력보충/iframes60,전투전무적보충해제. COMBAT90RAF median33.3/p9550ms,headless1280×720녹화로전체성능PASS아님. CH6시각검수/NW.js전체빌드미수행.
+FILES: stage-owned test/mapAssetRetirement.test.js/archive11개+manifest/41차문서. concurrent touched game.html/game-easy-test.html/editor.html/tilemap-editor.html/관련docs/CHANGELOG. 생체모듈변경없음. unrelated touched0. tmp/captures기존ignore.
+GIT: staged공유index보존. commit미완료(.git쓰기제한/기존셸실행오류),push/deploy없음. 시작217→완료242개(동시작업포함),타작업숨김·삭제·강제커밋없음. 코드+docs동반커밋필요.
+VISUAL VERDICT: RETOUCH — 구형장식제거확인. 전체맵재질통합과거미줄등공유구형원화는추가검토.
+NEXT PASS: CH2거미줄연결부의실제사용·가림·경계기능검토. CH1정리목적으로CH2구조를무검수제거하지않음.
+
+## 43차: 낙엽소품폐기
+
+[현행계약](CH1_LEAF_RETIREMENT_PASS43.md),생체모듈변경없음.
+
+
+MAP PRODUCTION REPORT — 43차
+
+STAGE: CH1-1 낙엽소품폐기,공유뼈·시체원화검토.
+MASTER: silhouette/regions/main route/side spaces유지.
+OUTER MASS: LEFT/RIGHT/TOP/SOUTH변경없음. major holes추가없음. LEAF_SITE상단의기존직선형재질경계는잔여결함으로기록.
+LARGE: source asset leaf1개격리. 큰뼈아치/나무/composites/overlap/repeated silhouette보존.
+MEDIUM: connections유지,remaining holes전수검수아님.
+GROUND: 낙엽덩어리1배치제거,shadow/contamination/동맥·피부structure integration보존. 상단직선재질경계는이번소품제거로해결되지않음.
+PLAYABLE: main arenas/travel/breathing/threat space유지,비충돌장식제거. combat readability유지.
+LANDMARK: primary시체나무/secondary늪·야영지·고치/tertiary큰뼈구조보존.
+CAMERA QA: START/EARLY/ARENA/SIDE_L/SIDE_R/LANDMARK/LATE/EXIT 및SWAMP_DETAIL/TISSUE_DETAIL/CAMP_DETAIL/CAMP_REAR/POOL_DETAIL/AUTHORED_POOL/OLD_TREE/OLD_PILLAR/LEAF_SITE(132,111),총17시점+COMBAT. LEAF_SITE원배율및전체보드직접검수.
+TECH QA: 49검사PASS,보조game inline6구문PASS. route/collision검사PASS. retired objects/sprites/metadata/collisions모두0. JS pageerror0/HTTP오류0,외부차단6/총requestFailures15(인트로중단포함). 청크64ready,visibleIds모두drawnIds포함. seam전청크전수검수아님. 사망UI오류없음. WASD(4020,7220)→(4022.71726,7220),전경로종주아님. 카메라50ms체력보충/iframes60,전투전무적보충해제. COMBAT90RAF median33.3/p9550ms,headless1280×720녹화로전체성능PASS아님. 전체NW.js빌드미수행.
+FILES: stage-owned test/mapAssetRetirement.test.js/archive원화1+manifest/43차문서. concurrent touched game.html/game-easy-test.html/관련docs/CHANGELOG. 생체모듈·편집기변경없음. unrelated touched0.
+GIT: staged공유index보존. commit미완료(.git쓰기제한/기존셸오류),push/deploy없음. 시작258→완료264개(동시작업포함). 타작업숨김·삭제·강제커밋없음. 코드+docs동반커밋필요.
+VISUAL VERDICT: RETOUCH — 낙엽소품제거확인. LEAF_SITE상단직선재질경계/전체지면통합잔여.
+NEXT PASS: LEAF_SITE상단직선형재질경계의소스레이어확인. 작은장식추가로덮지말고해당경계의원인부터검토. 공유뼈·시체는다른챕터영향확인전유지.

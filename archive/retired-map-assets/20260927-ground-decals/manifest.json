@@ -1,0 +1,28 @@
+{
+  "status": "REJECTED_LOW_QUALITY",
+  "reuseAllowed": false,
+  "date": "2026-09-27",
+  "reason": "Ground decal audit: moss, ash, mud and crack art reads as detached bright raised stones rather than integrated ground.",
+  "files": [
+    {
+      "original": "assets/map/ch1/floor_objects/ash_pile.png",
+      "archived": "archive/retired-map-assets/20260927-ground-decals/assets/map/ch1/floor_objects/ash_pile.png",
+      "sha256": "6e9166661ac42d2887afe02e55b25c0bf002236539a216556d6fc5aaa82a8d41"
+    },
+    {
+      "original": "assets/map/ch1/floor_objects/moss_patch.png",
+      "archived": "archive/retired-map-assets/20260927-ground-decals/assets/map/ch1/floor_objects/moss_patch.png",
+      "sha256": "0fde6ed3036a89b933aa7501fae4fa9226a996aa5376e7388537c2fc08ec5c5b"
+    },
+    {
+      "original": "assets/map/ch1/floor_objects/mud_stain.png",
+      "archived": "archive/retired-map-assets/20260927-ground-decals/assets/map/ch1/floor_objects/mud_stain.png",
+      "sha256": "7bc9bb94c2482a489e855ed812678feea8a47a2dfe9d2f4c90c40db838486a70"
+    },
+    {
+      "original": "assets/map/ch1/floor_objects/ground_crack.png",
+      "archived": "archive/retired-map-assets/20260927-ground-decals/assets/map/ch1/floor_objects/ground_crack.png",
+      "sha256": "01379801e39c4ce389ef3eec8ffe1c12944eab9d1bae337c0fda498fd81f6df3"
+    }
+  ]
+}

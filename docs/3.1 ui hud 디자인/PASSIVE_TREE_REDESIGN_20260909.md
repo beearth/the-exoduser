@@ -58,7 +58,7 @@
 |---|---|---|
 | 직접 배분 | `STATS`, `_grit`, `STAT_DEF`, `STAT_MAX` | 신규 투자 UI를 트리 노드로 전환. 기존 투자량은 이력 보관 및 명시적인 환불/이전 절차 필요 |
 | 장비 능력치 | `bStr/bDex/bInt`, `_eqStat`, `strFlat/dexFlat/intFlat`, 행운/근성 어픽스 등 | 동일 장비의 보너스 보존, 트리 기여와 중복 계산 금지 |
-| 결정 | `CRYSTAL_DEFS`, `crystalVal`, `P._crystalStats` | 현행 결정은 ATK/치명/속성/HP/DEF/속도/회복/드롭/ST/MP 등을 부여. 모든 결정이 STR/DEX/INT를 직접 주는 구조로 오인하지 않음 |
+| 고유 보석 | `CRYSTAL_DEFS[id].opts`, `crystalEffects`, `P._crystalStats` | 18종 각각 2~3개 옵션을 동시에 합산. ATK/치명/속성/HP/DEF/속도/회복/드롭/ST/MP 중 조합이며 STR/DEX/INT를 직접 주지는 않음 |
 | 최종 전투 수치 | `applyStats`, `recalcSt`, 공격 ref, `statDex/statCrit/statCritDmg`, 쉴드 재생·회피 등 | 장비 + 결정 + 트리 + 기존 기본 성장의 기여를 각 공식의 기존 적용 단계에 합산 |
 | 기본 성장 | `_lvB()=floor(P.lv×0.5)`와 스테이지/난이도 기반 값 | 이번 사용자 설명으로 삭제 또는 새 값 확정된 항목이 아님. 트리 전환 시 별도 수치 감사 |
 | SP | 액티브 습득·강화·합체와 스탯 투자가 공유. 레벨업 SP+3 | 스탯 창 폐기만으로 SP 자체를 삭제하거나 잔고를 AP와 임의 합치지 않음 |

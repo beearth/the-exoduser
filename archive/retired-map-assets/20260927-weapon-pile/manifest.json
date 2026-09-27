@@ -1,0 +1,28 @@
+{
+  "status": "REJECTED_LOW_QUALITY",
+  "reuseAllowed": false,
+  "date": "2026-09-27",
+  "reason": "Follow-up visual audit: low-resolution cartoon weapon pile conflicts with current CH1 camp; same artwork copies only.",
+  "files": [
+    {
+      "original": "assets/map/ch1/floor_objects/weapon_pile.png",
+      "archived": "archive/retired-map-assets/20260927-weapon-pile/assets/map/ch1/floor_objects/weapon_pile.png",
+      "sha256": "611516a43de681696ff23727ab8d32cf386b6890a5fdf1076003c7a1019d175b"
+    },
+    {
+      "original": "assets/map/ch5/floor_objects/weapon_pile.png",
+      "archived": "archive/retired-map-assets/20260927-weapon-pile/assets/map/ch5/floor_objects/weapon_pile.png",
+      "sha256": "611516a43de681696ff23727ab8d32cf386b6890a5fdf1076003c7a1019d175b"
+    },
+    {
+      "original": "assets/objects/weapon_pile.png",
+      "archived": "archive/retired-map-assets/20260927-weapon-pile/assets/objects/weapon_pile.png",
+      "sha256": "611516a43de681696ff23727ab8d32cf386b6890a5fdf1076003c7a1019d175b"
+    },
+    {
+      "original": "docs/4.1맵디자인+설정/objects/weapon_pile.png",
+      "archived": "archive/retired-map-assets/20260927-weapon-pile/docs/4.1맵디자인+설정/objects/weapon_pile.png",
+      "sha256": "611516a43de681696ff23727ab8d32cf386b6890a5fdf1076003c7a1019d175b"
+    }
+  ]
+}

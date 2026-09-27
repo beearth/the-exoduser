@@ -1,11 +1,79 @@
 /* CH1-1 local living tissue. Visual only; coordinates and collision stay owned by the map. */
 (function(root){
   'use strict';
-  const kinds={m_c1tree:2.1,m_c1cocoon:1.1,m_c1pool:1.25,m_c1spod:.65,m_c1sroot:.75,pit_poison:1.2,m_rotten_tree:1,tissue_bed:1.8};
+  const kinds={m_c1tree:2.1,m_c1cocoon:1.1,m_c1pool:1.25,m_c1spod:.65,m_c1sroot:.75,pit_poison:1.2,_atlasDry:1,tissue_bed:1.8};
   const ground=[[91,181,-.3],[114,177,.5],[87,155,.7],[122,148,-.5],[79,124,.2],[119,114,-.8],[85,96,.4],[126,81,-.6],[91,62,.5],[116,47,-.2],[97,27,.8]].map(([x,y,angle])=>({type:'tissue_bed',x:(x+.5)*40,y:(y+.5)*40,angle}));
-  function isTree(type){return type==='m_c1tree'||type==='m_rotten_tree'||type==='m_vine_pillar'||/^m_ctree\d+$/.test(type);}
-  const feet={m_c1tree:230,m_c1cocoon:100,m_c1spod:40,m_rotten_tree:50};
+  function isTree(type){return type==='m_c1tree'||/^m_ctree\d+$/.test(type);}
+  const feet={m_c1tree:230,m_c1cocoon:100,m_c1spod:40};
   function enabled(g){return g.stage===0&&!g._bossArena&&!g._fieldRebuildQA;}
+  // Authored material transitions, not new props: preserve the open combat floor.
+  const skinRegions=[
+    {tx:49,ty:151,w:1280,h:880,variant:0},
+    {tx:151,ty:136,w:1440,h:800,variant:1},
+    {tx:100,ty:120,w:1360,h:820,variant:2},
+    {tx:46,ty:107,w:960,h:640,variant:3}
+  ];
+  const regionSkins=[];
+  function regionalSkin(variant){
+    if(regionSkins[variant])return regionSkins[variant];
+    const a=root.document.createElement('canvas');a.width=768;a.height=512;
+    const c=a.getContext('2d');
+    const palette=variant===3?['#302d2c','#47403c','#3a3035']:variant===1?['#3a3034','#424237','#303829']:['#342e31','#4c403e','#342e2f'];
+    const base=variant===3?c.createLinearGradient(384,0,384,512):variant===1?c.createLinearGradient(0,256,768,256):c.createLinearGradient(0,0,180,512);
+    base.addColorStop(0,palette[0]);base.addColorStop(.45,palette[1]);base.addColorStop(1,palette[2]);
+    c.fillStyle=base;c.fillRect(0,0,768,512);
+    let seed=1397+variant*971;
+    function rand(){seed=(Math.imul(seed,1664525)+1013904223)>>>0;return seed/4294967296;}
+    // Broad bruising joins dead wood, skin and damp soil before the fine wrinkles.
+    for(let j=0;j<28;j++){
+      const x=rand()*768,y=rand()*512,r=35+rand()*100;
+      const stain=c.createRadialGradient(x,y,0,x,y,r);
+      stain.addColorStop(0,j%3?'rgba(27,22,26,.23)':'rgba(118,101,84,.14)');
+      stain.addColorStop(1,'rgba(40,29,34,0)');c.fillStyle=stain;c.fillRect(x-r,y-r,r*2,r*2);
+    }
+    for(let j=0;j<9500;j++){
+      const x=rand()*768,y=rand()*512,r=.4+rand()*1.6;
+      c.fillStyle=j%3?'rgba(23,18,21,.09)':'rgba(170,150,126,.08)';c.fillRect(x,y,r*1.8,r);
+    }
+    // Unequal, shallow folds: avoid stripes and high-contrast combat-warning shapes.
+    for(let j=0;j<23;j++){
+      const x=40+rand()*510,y=48+rand()*400,len=35+rand()*90,bend=6+rand()*12;
+      c.save();c.translate(x,y);c.rotate((rand()-.5)*1.4);
+      c.beginPath();c.moveTo(0,0);c.bezierCurveTo(len*.3,-bend,len*.7,bend*.4,len,-bend*.3);
+      c.strokeStyle='rgba(29,22,27,.22)';c.lineWidth=1.2+rand()*1.6;c.stroke();
+      c.save();c.translate(0,-1.4);c.strokeStyle='rgba(156,134,116,.14)';c.lineWidth=.8;c.stroke();c.restore();
+      c.restore();
+    }
+    if(variant===1){
+      // Broad, shallow tissue folds converge into the contaminated bank, not a new obstacle.
+      for(const [sx,sy,cx,cy,ex,ey,width] of [[245,192,455,215,691,273,12],[330,358,495,307,715,319,9],[432,120,556,161,678,230,7]]){
+        c.beginPath();c.moveTo(sx,sy);c.bezierCurveTo(cx,sy,cx,cy,ex,ey);
+        c.strokeStyle='rgba(24,26,19,.16)';c.lineWidth=width;c.stroke();
+        c.save();c.translate(0,-2);c.strokeStyle='rgba(120,112,84,.12)';c.lineWidth=1.1;c.stroke();c.restore();
+      }
+    }
+    if(variant===3){
+      // Shallow creases carry the camp's ash into the dead tissue in front of its roots.
+      for(const [sx,sy,cx,cy,ex,ey] of [[185,178,280,245,370,386],[310,168,385,246,558,320],[456,204,517,293,490,416]]){
+        c.beginPath();c.moveTo(sx,sy);c.bezierCurveTo(cx,sy,cx,cy,ex,ey);
+        c.strokeStyle='rgba(26,22,25,.2)';c.lineWidth=5;c.stroke();
+        c.save();c.translate(-1,-1);c.strokeStyle='rgba(133,117,105,.16)';c.lineWidth=1;c.stroke();c.restore();
+      }
+    }
+    // A continuous feathered, asymmetric edge, with no visible rectangular bounds.
+    const mask=root.document.createElement('canvas');mask.width=768;mask.height=512;
+    const m=mask.getContext('2d');
+    const lobes=variant===3?[[300,220,280,180],[500,290,190,145],[340,365,200,120]]:[[300,255,288,210],[500,225,232,172],[440,332,220,152]];
+    if(variant===1)lobes.push([670,270,94,142]);
+    for(const [x,y,rx,ry] of lobes){
+      m.save();m.translate(x+(variant===3?0:(variant-1)*18),y);m.scale(rx,ry);
+      const fade=m.createRadialGradient(0,0,.12,0,0,1);
+      fade.addColorStop(0,'rgba(0,0,0,.88)');fade.addColorStop(.48,'rgba(0,0,0,.75)');fade.addColorStop(1,'rgba(0,0,0,0)');
+      m.fillStyle=fade;m.fillRect(-1,-1,2,2);m.restore();
+    }
+    c.globalCompositeOperation='destination-in';c.drawImage(mask,0,0);
+    regionSkins[variant]=a;return a;
+  }
   const membranes=[];
   function membrane(wet,variant){
     const id=wet?3:variant;if(membranes[id])return membranes[id];
@@ -38,7 +106,27 @@
     c.restore();c.globalCompositeOperation='destination-in';
     const fade=c.createRadialGradient(0,12,28,0,12,143);
     fade.addColorStop(0,'rgba(0,0,0,1)');fade.addColorStop(1,'rgba(0,0,0,0)');
-    c.fillStyle=fade;c.fillRect(-160,-160,320,320);membranes[id]=a;return a;
+    c.fillStyle=fade;c.fillRect(-160,-160,320,320);
+    if(!wet){
+      // Fade inside the actual lobed outline, rather than clipping an opaque oval.
+      // Native pixels are processed once per cached material, never during draw.
+      const image=c.getImageData(0,0,320,320),data=image.data;
+      for(let y=0;y<320;y++)for(let x=0;x<320;x++){
+        const dx=(x+.5-160)/1.12,dy=(y+.5-172)/.62,angle=Math.atan2(dy,dx);
+        const radius=102+18*Math.sin(angle*3+variant)+11*Math.cos(angle*5-variant);
+        const depth=radius-Math.hypot(dx,dy),t=Math.max(0,Math.min(1,depth/28));
+        data[(y*320+x)*4+3]*=t*t*(3-2*t);
+      }
+      c.putImageData(image,0,0);
+    }
+    membranes[id]=a;return a;
+  }
+  // A planted root, reaching tip, then delayed body pull; one seamless crawl cycle.
+  function tendonCrawl(u,phase,branch){
+    const q=((phase-branch*.8-(1-u)*.85)/(Math.PI*2)%1+1)%1;
+    const smooth=t=>t*t*(3-2*t);
+    const reach=q<.32?smooth(q/.32):q<.52?1:q<.86?1-smooth((q-.52)/.34):0;
+    return {along:18*reach*Math.pow(u,1.7),side:9*Math.sin(phase-u*5-branch*.8)*Math.sin(Math.PI*u)+3*Math.sin(phase-branch*.8)*u*u};
   }
   function paint(c,g,objects,now,width,height,surfaceOnly=false){
     if(!enabled(g))return;
@@ -80,7 +168,9 @@
           // A localized pressure wave travels along the artery, rather than flashing it.
           const pressure=Math.pow(.5+.5*Math.sin(phase-u*Math.PI*2-j*.8),6);
           const emerge=.7+.3*Math.sin(Math.min(1,u/.14)*Math.PI/2);
-          points.push({x:nx,y:ny-pressure*7*Math.sin(u*Math.PI),w:(((5.2+pulse*1.5)+pressure*9)*taper+.2)*emerge});
+          const crawl=wet?{along:0,side:0}:tendonCrawl(u,phase,j);
+          const axisLength=Math.hypot(ex,ey-sy)||1,ax=ex/axisLength,ay=(ey-sy)/axisLength;
+          points.push({x:nx+ax*crawl.along-ay*crawl.side,y:ny+ay*crawl.along+ax*crawl.side-pressure*7*Math.sin(u*Math.PI),w:(((5.2+pulse*1.5)+pressure*9)*taper+.2)*emerge});
         }
         // Single filled ribbons remove the dark joins from overlapping short strokes.
         function ribbon(factor,extra,dx,dy,color){
@@ -102,7 +192,8 @@
         ribbon(.19,0,-.7,-1.3,'rgba(158,119,114,.3)');
         // A tapered smaller offshoot connects the tissue to the existing soil.
         const joint=points[19];
-        c.beginPath();c.moveTo(joint.x,joint.y);c.quadraticCurveTo(ex*.74-14,ey*.56-12,ex*.85-23,ey*.7-23);
+        c.beginPath();c.moveTo(joint.x,joint.y);if(wet)c.quadraticCurveTo(ex*.74-14,ey*.56-12,ex*.85-23,ey*.7-23);
+        else c.quadraticCurveTo(joint.x-12,joint.y-9,joint.x-23,joint.y-23);
         c.strokeStyle='rgba(71,43,44,.3)';c.lineWidth=1.5;c.stroke();
       }
       // A stationary broad tissue seam covers the joins and anchors them into the skin.
@@ -179,7 +270,7 @@
   function atlas(wet,surfaceOnly=false,variant=0){
     const id=surfaceOnly?(wet?2:3):wet?1:variant?3+variant:0;if(atlases[id])return atlases[id];
     const a=root.document.createElement('canvas');a.width=1280;a.height=1280;
-    const c=a.getContext('2d'),type=wet?'m_c1pool':'m_rotten_tree';
+    const c=a.getContext('2d'),type=wet?'m_c1pool':'_atlasDry';
     for(let f=0;f<16;f++){
       c.save();c.translate((f%4)*320+160,Math.floor(f/4)*320+160);
       c.beginPath();c.rect(-160,-160,320,320);c.clip();
@@ -199,6 +290,11 @@
     if(!enabled(g))return;
     const z=Math.max(.3,g._edZoom||g._camZoom||1),hw=width/(2*z),hh=height/(2*z);
     c.save();const alpha=c.globalAlpha;
+    if(!surfaceOnly)for(const region of skinRegions){
+      const x=(region.tx+.5)*40,y=(region.ty+.5)*40;
+      if(Math.abs(x-g.cam.x)>hw+region.w/2||Math.abs(y-g.cam.y)>hh+region.h/2)continue;
+      c.globalAlpha=alpha*.6;c.drawImage(regionalSkin(region.variant),x-region.w/2,y-region.h/2,region.w,region.h);c.globalAlpha=alpha;
+    }
     for(let i=0;i<objects.length+(surfaceOnly?0:ground.length);i++){
       const o=i<objects.length?objects[i]:ground[i-objects.length];
       const k=kinds[o.type];if(!k)continue;
@@ -221,11 +317,68 @@
   const shadowCache=new WeakMap();
   const rootContactCache=new WeakMap();
   const raisedShadowCache=new WeakMap();
+  const debrisContactCache=new WeakMap();
+  function debrisContact(img){
+    const cache=debrisContactCache;
+    if(cache.has(img))return cache.get(img);
+    const a=root.document.createElement('canvas');a.width=a.height=256;
+    const c=a.getContext('2d');c.drawImage(img,32,32,192,192);
+    const pixels=c.getImageData(0,0,256,256),p=pixels.data,d=new Uint8Array(256*256);
+    for(let y=0;y<256;y++)for(let x=0;x<256;x++){
+      const i=y*256+x;d[i]=p[i*4+3]>80?0:12;
+      if(x)d[i]=Math.min(d[i],d[i-1]+1);if(y)d[i]=Math.min(d[i],d[i-256]+1);
+    }
+    for(let y=255;y>=0;y--)for(let x=255;x>=0;x--){
+      const i=y*256+x;if(x<255)d[i]=Math.min(d[i],d[i+1]+1);if(y<255)d[i]=Math.min(d[i],d[i+256]+1);
+      const e=1-d[i]/12,t=Math.max(0,Math.min(1,(y-128)/64)),grain=.82+.18*Math.sin(x*.37+Math.cos(y*.21)*2),k=i*4;
+      p[k]=29;p[k+1]=24;p[k+2]=24;p[k+3]=Math.round(255*.56*e*e*(3-2*e)*t*t*(3-2*t)*grain);
+      if(!p[k+3])p[k]=p[k+1]=p[k+2]=0;
+    }
+    c.putImageData(pixels,0,0);cache.set(img,a);return a;
+  }
+  const poolContactCache=new WeakMap();
+  function poolContact(img){
+    if(poolContactCache.has(img))return poolContactCache.get(img);
+    const a=root.document.createElement('canvas');a.width=a.height=512;
+    const c=a.getContext('2d');c.drawImage(img,48,48,416,416);
+    const pixels=c.getImageData(0,0,512,512),p=pixels.data,d=new Uint8Array(512*512);
+    for(let y=0;y<512;y++)for(let x=0;x<512;x++){
+      const i=y*512+x;d[i]=p[i*4+3]>80?0:24;
+      if(x)d[i]=Math.min(d[i],d[i-1]+1);if(y)d[i]=Math.min(d[i],d[i-512]+1);
+    }
+    for(let y=511;y>=0;y--)for(let x=511;x>=0;x--){
+      const i=y*512+x;if(x<511)d[i]=Math.min(d[i],d[i+1]+1);if(y<511)d[i]=Math.min(d[i],d[i+512]+1);
+      const e=1-d[i]/24,grain=.88+.12*Math.sin(x*.17+Math.cos(y*.13)*2),k=i*4;
+      p[k]=24;p[k+1]=27;p[k+2]=19;p[k+3]=Math.round(255*.48*e*e*(3-2*e)*grain);
+      if(!p[k+3])p[k]=p[k+1]=p[k+2]=0;
+    }
+    c.putImageData(pixels,0,0);poolContactCache.set(img,a);return a;
+  }
   function shadows(c,g,objects,sprites,metas,now,width,height){
     if(!enabled(g))return;
     const z=Math.max(.3,g._edZoom||g._camZoom||1),hw=width/(2*z),hh=height/(2*z);
     c.save();const alpha=c.globalAlpha;
     for(const o of objects){
+      if(o.type==='m_c1pool'&&o.x===6700&&o.y===1740){
+        const img=sprites[o.type],meta=metas[o.type];
+        if(!img||img.complete===false||!(img.naturalWidth||img.width)||!meta||meta.srcRect||meta.sheet||meta.rot||o.rot||meta.anchorBottom||meta.pivotX!==undefined||meta.pivotY!==undefined)continue;
+        const size=(meta.sz||300)*(o.scale||1),source=meta.sourceSize||[img.naturalWidth||img.width,img.naturalHeight||img.height],ar=source[0]/source[1];
+        const dw=meta.keepAR&&!meta.squareDraw?size*Math.min(1,ar):size,dh=meta.keepAR&&!meta.squareDraw?size*Math.min(1,1/ar):size;
+        if(Math.abs(o.x-g.cam.x)>hw+dw||Math.abs(o.y-g.cam.y)>hh+dh)continue;
+        c.save();c.translate(o.x,o.y);if(meta.flip)c.scale(-1,1);c.globalAlpha=alpha;
+        c.drawImage(poolContact(img),-dw/2-48*dw/416,-dh/2-48*dh/416,512*dw/416,512*dh/416);c.restore();continue;
+      }
+      const debris=(o.type==='m_c1sbone'&&o.x===1940&&o.y===4340)||(o.type==='m_sword_pile'&&o.x===1580&&o.y===4180);
+      if(debris){
+        const img=sprites[o.type],meta=metas[o.type];
+        if(!img||img.complete===false||!(img.naturalWidth||img.width)||!meta||meta.srcRect||meta.sheet||meta.rot||o.rot||meta.anchorBottom||meta.pivotX!==undefined||meta.pivotY!==undefined)continue;
+        const size=(meta.sz||200)*(o.scale||1),source=meta.sourceSize||[img.naturalWidth||img.width,img.naturalHeight||img.height],ar=source[0]/source[1];
+        const dw=meta.keepAR&&!meta.squareDraw?size*Math.min(1,ar):size,dh=meta.keepAR&&!meta.squareDraw?size*Math.min(1,1/ar):size;
+        if(Math.abs(o.x-g.cam.x)>hw+dw||Math.abs(o.y-g.cam.y)>hh+dh)continue;
+        c.save();c.translate(o.x,o.y);if(meta.flip)c.scale(-1,1);c.globalAlpha=alpha;
+        c.drawImage(debrisContact(img),-dw/2-32*dw/192,-dh/2-32*dh/192,256*dw/192,256*dh/192);c.restore();
+        continue;
+      }
       const raised=o.type==='m_c1cocoon'||o.type==='m_c1spod';
       if(!isTree(o.type)&&!raised)continue;
       const img=sprites[o.type],meta=metas[o.type];
@@ -310,11 +463,177 @@
     const pool=sprites&&sprites.m_c1pool;
     return enabled(g)&&o.type==='m_c1gtoxic'&&o.x===6740&&o.y===1620&&!!(pool&&pool.complete&&pool.naturalWidth>1);
   }
-  let pitAtlas;
-  function pit(c,g,o,now,meta){
+  const toxicRimCache=new WeakMap();
+  function groundSprite(g,o,meta,img){
+    if(!enabled(g)||o.type!=='m_c1gtoxicf'||o.x!==6500||o.y!==5460||!meta||meta.srcRect||!img||img.complete===false||!(img.naturalWidth||img.width))return img;
+    if(toxicRimCache.has(img))return toxicRimCache.get(img);
+    const w=img.naturalWidth||img.width,h=img.naturalHeight||img.height;
+    const a=root.document.createElement('canvas');a.width=w;a.height=h;
+    const c=a.getContext('2d');c.drawImage(img,0,0);
+    const pixels=c.getImageData(0,0,w,h),p=pixels.data,d=new Float32Array(w*h);
+    // Distance from the existing transparent silhouette, including irregular notches.
+    for(let y=0;y<h;y++)for(let x=0;x<w;x++){
+      const i=y*w+x;d[i]=p[i*4+3]<=8?0:Math.min(64,x+1,y+1,w-x,h-y);
+      if(x)d[i]=Math.min(d[i],d[i-1]+1);
+      if(y)d[i]=Math.min(d[i],d[i-w]+1);
+    }
+    for(let y=h-1;y>=0;y--)for(let x=w-1;x>=0;x--){
+      const i=y*w+x;if(x+1<w)d[i]=Math.min(d[i],d[i+1]+1);
+      if(y+1<h)d[i]=Math.min(d[i],d[i+w]+1);
+    }
+    for(let i=0;i<d.length;i++){
+      const k=i*4,r=p[k],green=p[k+1],b=p[k+2];
+      const spill=Math.max(0,Math.min(r,b)-green-6);
+      const mix=Math.min(1,spill/10)*Math.min(1,Math.max(0,(64-d[i])/24));
+      const l=r*.299+green*.587+b*.114;
+      p[k]=r+(l*.96-r)*mix;p[k+1]=green+(l*.9-green)*mix;p[k+2]=b+(l*.76-b)*mix;
+      // Dark contaminated soil settles into the floor; bright rock ridges keep a shorter edge.
+      const rock=Math.max(0,Math.min(1,(l-35)/100)),edgeSpan=24+32*(1-rock);
+      const fade=Math.min(1,d[i]/edgeSpan);p[k+3]*=fade*fade*(3-2*fade);
+    }
+    c.putImageData(pixels,0,0);
+    // Keep the original sprite dimensions and the existing keepAR/flip/crop draw path.
+    a.complete=true;a.naturalWidth=w;a.naturalHeight=h;toxicRimCache.set(img,a);return a;
+  }
+  // Four authored liquid pockets in prop_g_toxic.png (881 x 900 source space).
+  const swampPockets=[
+    [[225,145],[345,130],[434,142],[460,213],[494,269],[453,342],[390,370],[307,361],[268,310],[305,296],[250,253],[213,226]],
+    [[532,295],[584,316],[658,322],[693,365],[687,417],[638,445],[600,478],[541,477],[476,489],[423,470],[421,421],[464,388],[488,339]],
+    [[186,397],[228,403],[302,416],[347,444],[362,503],[328,548],[266,548],[233,513],[188,510],[153,493],[165,444]],
+    [[416,537],[475,524],[539,547],[574,582],[591,628],[557,660],[474,658],[421,635],[385,611]]
+  ];
+  function paintSwampGas(c,bx,by,q,seed){
+    if(q<=.6||q>=1)return;
+    const p=(q-.6)/.4,opacity=Math.pow(Math.sin(p*Math.PI),1.4)*.5;
+    for(let j=0;j<3;j++){
+      const x=bx+Math.sin(p*4+seed+j)*(5+10*p)+(j-1)*7*p,y=by-8-p*78+j*6,r=12+20*p+j*2;
+      c.save();c.translate(x,y);c.scale(.85,1.3);
+      const mist=c.createRadialGradient(0,0,0,0,0,r),alpha=opacity*[.9,.65,.45][j];
+      mist.addColorStop(0,'rgba(133,145,81,'+alpha+')');mist.addColorStop(.5,'rgba(89,104,56,'+(alpha*.5)+')');mist.addColorStop(1,'rgba(46,59,35,0)');
+      c.fillStyle=mist;c.fillRect(-r,-r,r*2,r*2);c.restore();
+    }
+  }
+  function paintSwampBubble(x,bx,by,q){
+    if(q<.6){
+      const tension=q>.54?Math.sin((q-.54)/.06*Math.PI):0;
+      x.save();x.translate(bx,by);x.scale(1+.2*tension,1-.3*tension);x.translate(-bx,-by);
+
+      const swell=Math.min(1,q/.46),r=3+13*swell*swell*(3-2*swell),appear=Math.min(1,q/.08),cy=by-r*.32;
+      x.beginPath();x.ellipse(bx,by+r*.2,r*1.12,r*.42,0,0,Math.PI*2);x.fillStyle='rgba(9,15,8,'+(appear*.55)+')';x.fill();
+      const skin=x.createRadialGradient(bx-r*.3,cy-r*.35,1,bx,cy,r*1.05);
+      skin.addColorStop(0,'rgba(167,177,99,'+(appear*.95)+')');skin.addColorStop(.38,'rgba(93,116,51,'+(appear*.95)+')');
+      skin.addColorStop(.8,'rgba(47,65,27,'+(appear*.94)+')');skin.addColorStop(1,'rgba(19,29,14,'+(appear*.9)+')');
+      x.beginPath();x.ellipse(bx,cy,r,r*.85,0,0,Math.PI*2);x.fillStyle=skin;x.fill();
+      x.strokeStyle='rgba(136,153,72,'+(appear*.7)+')';x.lineWidth=1;x.stroke();
+      x.beginPath();x.ellipse(bx-r*.08,cy-r*.08,r*.78,r*.62,-.2,3.4,5.7);x.strokeStyle='rgba(208,210,137,'+(appear*.9)+')';x.lineWidth=1.8;x.stroke();
+      x.beginPath();x.ellipse(bx-r*.25,cy-r*.32,r*.24,r*.13,-.35,0,Math.PI*2);x.fillStyle='rgba(218,220,154,'+(appear*.55)+')';x.fill();
+
+      if(q>.57){
+        const crack=Math.min(1,(q-.57)/.03);
+        for(let n=0;n<3;n++){const angle=n/3*Math.PI*2-.8;x.beginPath();x.moveTo(bx,cy);x.lineTo(bx+Math.cos(angle+.25)*r*.38,cy+Math.sin(angle+.25)*r*.3);x.lineTo(bx+Math.cos(angle)*r*.78,cy+Math.sin(angle)*r*.65);x.strokeStyle='rgba(14,24,10,'+(crack*.9)+')';x.lineWidth=1.8;x.stroke();}
+      }
+      x.restore();return;
+    }
+    if(q>=.78)return;
+    const ripple=(q-.6)/.18;
+    x.beginPath();x.ellipse(bx,by,16+26*ripple,8+12*ripple,0,.2,6);x.strokeStyle='rgba(185,184,107,'+((1-ripple)*.75)+')';x.lineWidth=1.8;x.stroke();
+    if(q<.66){
+      const tear=(q-.6)/.06,outer=16+18*Math.sqrt(tear),inner=13+8*tear,lift=Math.sin(tear*Math.PI)*12;
+      x.beginPath();x.ellipse(bx,by,11*(1-tear),5*(1-tear),0,0,Math.PI*2);x.fillStyle='rgba(7,16,7,'+((1-tear)*.7)+')';x.fill();
+      for(let n=0;n<8;n++){
+        const angle=n/8*Math.PI*2+.2;
+        const p=(a,r)=>[bx+Math.cos(a)*r,by+Math.sin(a)*r*.65-lift];
+        x.beginPath();x.moveTo(...p(angle-.15,inner));x.quadraticCurveTo(...p(angle-.08,outer*.9),...p(angle,outer));x.quadraticCurveTo(...p(angle+.08,outer*.9),...p(angle+.15,inner));x.closePath();
+        x.fillStyle='rgba(129,151,64,'+((1-tear)*.9)+')';x.fill();x.strokeStyle='rgba(211,214,133,'+((1-tear)*.9)+')';x.lineWidth=1.6;x.stroke();
+      }
+    }
+    if(q<.72){const flight=(q-.6)/.12;for(let n=0;n<8;n++){
+      const angle=n/8*Math.PI*2+.25,distance=14+25*flight,px=bx+Math.cos(angle)*distance,py=by+Math.sin(angle)*distance*.5-Math.sin(flight*Math.PI)*18;
+      x.beginPath();x.ellipse(px,py,2.6*(1-.6*flight),3.4*(1-.6*flight),angle,0,Math.PI*2);x.fillStyle='rgba(179,189,98,'+((1-flight)*.95)+')';x.fill();
+    }}
+  }
+  const swampVents=swampPockets.flatMap((p,j)=>{const cx=p.reduce((n,v)=>n+v[0],0)/p.length*440/881,cy=p.reduce((n,v)=>n+v[1],0)/p.length*.5;return [0,1].map(k=>({x:cx+(k?15:-12),y:cy+(k?7:-8),offset:j*.23+k*.47}));});
+  let swampBubbleAtlas;
+  function bubbleAtlas(){
+    if(swampBubbleAtlas)return swampBubbleAtlas;
+    const a=root.document.createElement('canvas');a.width=a.height=768;const x=a.getContext('2d');
+    for(let f=0;f<64;f++){x.save();x.beginPath();x.rect(f%8*96,Math.floor(f/8)*96,96,96);x.clip();paintSwampBubble(x,f%8*96+48,Math.floor(f/8)*96+64,f/64);x.restore();}
+    swampBubbleAtlas=a;return a;
+  }
+  function swampApron(img){
+    const a=root.document.createElement('canvas');a.width=a.height=512;
+    const c=a.getContext('2d');c.drawImage(img,36,31,440,450);
+    const pixels=c.getImageData(0,0,512,512),p=pixels.data,d=new Uint8Array(512*512);
+    // Distance outward from the actual alpha silhouette, never an oval shadow stamp.
+    for(let y=0;y<512;y++)for(let x=0;x<512;x++){
+      const i=y*512+x;d[i]=p[i*4+3]>80?0:28;
+      if(x)d[i]=Math.min(d[i],d[i-1]+1);if(y)d[i]=Math.min(d[i],d[i-512]+1);
+    }
+    for(let y=511;y>=0;y--)for(let x=511;x>=0;x--){
+      const i=y*512+x;if(x<511)d[i]=Math.min(d[i],d[i+1]+1);if(y<511)d[i]=Math.min(d[i],d[i+512]+1);
+      const edge=1-d[i]/28,fade=edge*edge*(3-2*edge);
+      const grain=.76+.14*Math.sin(x*.19+Math.sin(y*.11)*2)+.1*Math.sin(y*.31-x*.09);
+      const damp=.5+.5*Math.sin(x*.043+Math.sin(y*.027)*2);
+      const k=i*4;p[k]=27+10*damp;p[k+1]=28+10*damp;p[k+2]=19+4*damp;
+      p[k+3]=Math.round(255*.48*fade*grain);
+      if(!p[k+3])p[k]=p[k+1]=p[k+2]=0;
+    }
+    c.putImageData(pixels,0,0);return a;
+  }
+  const swampCache=new WeakMap();
+  function swamp(c,g,o,now,meta,img){
+    if(!enabled(g)||o.type!=='m_c1gtoxicf'||o.x!==6500||o.y!==5460||!meta||meta.srcRect||meta.sheet||meta.rot||o.rot||meta.anchorBottom||meta.pivotX!==undefined||meta.pivotY!==undefined||!img||img.complete===false||!(img.naturalWidth||img.width)||!(img.naturalHeight||img.height))return false;
+    let cached=swampCache.get(img);
+    if(!cached){
+      const w=440,h=450,mask=root.document.createElement('canvas');mask.width=w;mask.height=h;
+      const m=mask.getContext('2d');m.fillStyle='#fff';
+      for(const pocket of swampPockets){m.beginPath();pocket.forEach(([x,y],i)=>{if(i)m.lineTo(x*w/881,y*h/900);else m.moveTo(x*w/881,y*h/900);});m.closePath();m.fill();}
+      const pixels=m.getImageData(0,0,w,h),p=pixels.data,d=new Uint8Array(w*h);
+      for(let y=0;y<h;y++)for(let x=0;x<w;x++){const i=y*w+x;d[i]=p[i*4+3]<128?0:Math.min(6,x+1,y+1,w-x,h-y);if(x)d[i]=Math.min(d[i],d[i-1]+1);if(y)d[i]=Math.min(d[i],d[i-w]+1);}
+      for(let y=h-1;y>=0;y--)for(let x=w-1;x>=0;x--){const i=y*w+x;if(x+1<w)d[i]=Math.min(d[i],d[i+1]+1);if(y+1<h)d[i]=Math.min(d[i],d[i+w]+1);const f=d[i]/6;p[i*4+3]*=f*f*(3-2*f);}
+      m.putImageData(pixels,0,0);
+      const atlas=root.document.createElement('canvas');atlas.width=w*4;atlas.height=h*4;const a=atlas.getContext('2d');
+      const frame=root.document.createElement('canvas');frame.width=w;frame.height=h;const x=frame.getContext('2d');
+      for(let f=0;f<16;f++){
+        const phase=f/16*Math.PI*2;x.clearRect(0,0,w,h);
+        // Refract only the water overlay, with no moving rock or perimeter pixels.
+        for(let y=0;y<h;y+=4){
+          const dx=4*Math.sin(phase-y*.065)+2*Math.sin(phase*2+y*.035),dy=2*Math.cos(phase+y*.04);
+          x.save();x.beginPath();x.rect(0,y,w,4);x.clip();x.drawImage(img,dx,dy,w,h);x.restore();
+        }
+        x.globalCompositeOperation='destination-in';x.drawImage(mask,0,0);x.globalCompositeOperation='source-over';
+        // Gas escapes above the shoreline after the water-only mask is applied.
+        for(const [j,pocket] of swampPockets.entries()){
+          const cx=pocket.reduce((n,p)=>n+p[0],0)/pocket.length*w/881,cy=pocket.reduce((n,p)=>n+p[1],0)/pocket.length*h/900;
+          for(let k=0;k<2;k++)paintSwampGas(x,cx+(k?15:-12),cy+(k?7:-8),(f/16+j*.23+k*.47)%1,j*1.7+k);
+        }
+        a.drawImage(frame,f%4*w,Math.floor(f/4)*h);
+      }
+      cached={atlas,w,h,apron:swampApron(img)};swampCache.set(img,cached);
+    }
+    const size=(meta.sz||450)*(o.scale||1),source=meta.sourceSize||[img.naturalWidth||img.width,img.naturalHeight||img.height],ar=source[0]/source[1];
+    const dw=meta.keepAR&&!meta.squareDraw?size*Math.min(1,ar):size,dh=meta.keepAR&&!meta.squareDraw?size*Math.min(1,1/ar):size;
+    const phase=((now/6400)%1+1)%1*16,f=Math.floor(phase),next=(f+1)%16,mix=phase-f,{atlas,w,h}=cached;
+    c.save();c.translate(o.x,o.y);if(meta.flip)c.scale(-1,1);const alpha=c.globalAlpha;
+    c.drawImage(cached.apron,-dw/2-36*dw/440,-dh/2-31*dh/450,512*dw/440,512*dh/450);
+    c.drawImage(img,-dw/2,-dh/2,dw,dh);
+    c.globalAlpha=alpha*(1-mix);c.drawImage(atlas,f%4*w,Math.floor(f/4)*h,w,h,-dw/2,-dh/2,dw,dh);
+    c.globalAlpha=alpha*mix;c.drawImage(atlas,next%4*w,Math.floor(next/4)*h,w,h,-dw/2,-dh/2,dw,dh);
+    // Fast bubble poses are independent of the slow 400ms water/gas samples.
+    const bubbles=bubbleAtlas(),sx=dw/440,sy=dh/450;
+    for(const vent of swampVents){
+      const pose=(((now/6400+vent.offset)%1+1)%1)*64,b=Math.floor(pose),bn=(b+1)%64,blend=pose-b,dx=-dw/2+(vent.x-48)*sx,dy=-dh/2+(vent.y-64)*sy;
+      c.globalAlpha=alpha*(1-blend);c.drawImage(bubbles,b%8*96,Math.floor(b/8)*96,96,96,dx,dy,96*sx,96*sy);
+      c.globalAlpha=alpha*blend;c.drawImage(bubbles,bn%8*96,Math.floor(bn/8)*96,96,96,dx,dy,96*sx,96*sy);
+    }
+    c.restore();return true;
+  }
+  let pitAtlas,pitAtlasSource;
+  function pit(c,g,o,now,meta,img){
     // Only the existing eastern CH1 pit. Keep its original collision and footprint.
     if(!enabled(g)||o.type!=='pit_poison'||o.x!==6500||o.y!==5580)return false;
-    if(!pitAtlas){
+    const material=img&&img.complete!==false&&(img.naturalWidth||img.width)>1&&(img.naturalHeight||img.height)>1?img:null;
+    if(!pitAtlas||pitAtlasSource!==material){
       const a=root.document.createElement('canvas');a.width=a.height=1024;
       const x=a.getContext('2d');
       for(let f=0;f<16;f++){
@@ -344,17 +663,29 @@
           x.fillStyle=stain;x.fillRect(-24,-24,48,48);x.restore();
         }
         contour(106,80,9,1.6);x.fillStyle='#38372c';x.fill();
+        if(material){
+          const iw=material.naturalWidth||material.width,ih=material.naturalHeight||material.height;
+          x.save();x.clip();x.drawImage(material,iw*.67,ih*.16,iw*.24,ih*.36,-114,-78,228,172);
+          x.fillStyle='rgba(20,19,16,.38)';x.fillRect(-128,-128,256,256);x.restore();
+        }
         x.strokeStyle='rgba(148,128,96,.18)';x.lineWidth=2;x.stroke();
         contour(97,71,9,1.6);
         const wall=x.createLinearGradient(0,-65,0,78);
         wall.addColorStop(0,'#100f11');wall.addColorStop(.55,'#26231d');wall.addColorStop(1,'#69604a');
         x.fillStyle=wall;x.fill();
         x.save();x.clip();
-        for(let j=0;j<280;j++){
+        if(material){
+          const iw=material.naturalWidth||material.width,ih=material.naturalHeight||material.height;
+          x.drawImage(material,iw*.67,ih*.16,iw*.24,ih*.36,-110,-75,220,160);
+          const depth=x.createLinearGradient(0,-65,0,78);
+          depth.addColorStop(0,'rgba(8,9,8,.76)');depth.addColorStop(.55,'rgba(14,14,11,.48)');depth.addColorStop(1,'rgba(24,23,18,.22)');
+          x.fillStyle=depth;x.fillRect(-128,-128,256,256);
+        }
+        for(let j=0;!material&&j<280;j++){
           x.fillStyle=j%2?'rgba(120,109,82,.2)':'rgba(8,10,8,.3)';
           x.fillRect(Math.sin(j*12.989)*103,9+Math.cos(j*7.31)*76,2,1+j%4);
         }
-        for(let j=0;j<19;j++){
+        for(let j=0;!material&&j<19;j++){
           const t=j/19*Math.PI*2,px=Math.cos(t)*98,py=9+Math.sin(t)*72;
           x.beginPath();x.moveTo(px,py);x.lineTo(px*.88,py+19);
           x.strokeStyle='rgba(10,9,10,.5)';x.lineWidth=2+j%3;x.stroke();
@@ -363,7 +694,12 @@
         const water=x.createLinearGradient(0,-25,0,73);
         water.addColorStop(0,'#1b2416');water.addColorStop(.5,'#45522a');water.addColorStop(1,'#788052');
         x.fillStyle=water;x.fill();x.save();x.clip();
-        for(let j=0;j<32;j++){
+        if(material){
+          const iw=material.naturalWidth||material.width,ih=material.naturalHeight||material.height;
+          x.drawImage(material,iw*.16,ih*.15,iw*.34,ih*.4,-92,-31,184,108);
+          x.fillStyle='rgba(9,15,8,.3)';x.fillRect(-128,-128,256,256);
+        }
+        for(let j=0;!material&&j<32;j++){
           const px=Math.sin(j*12.989)*81,py=23+Math.cos(j*7.31)*43;
           x.beginPath();x.ellipse(px,py,3+j%5,1+j%3,.2,0,Math.PI*2);
           x.fillStyle=j%2?'rgba(16,24,14,.24)':'rgba(147,151,90,.19)';x.fill();
@@ -371,7 +707,7 @@
         for(let j=0;j<3;j++){
           const p=(f/16+j/3)%1;
           x.beginPath();x.ellipse((j-1)*24,22+Math.sin(j)*14,8+p*28,3+p*10,-.1,.4,5.3);
-          x.strokeStyle='rgba(176,173,110,'+((1-p)*.24)+')';x.lineWidth=1.3;x.stroke();
+          x.strokeStyle='rgba(176,173,110,'+((1-p)*(material?.14:.24))+')';x.lineWidth=1.3;x.stroke();
         }
         x.restore();x.restore();
         // Two fixed channels cross the back lip; only their damp highlight pulses.
@@ -386,15 +722,18 @@
         // Front lip occludes the liquid edge and catches a narrow damp highlight.
         x.beginPath();
         for(let j=0;j<=48;j++){
-          const t=j/48*Math.PI,rx=99+Math.sin(phase-t*2)*1.6;
-          const px=Math.cos(t)*rx,py=9+Math.sin(t)*73;
+          const t=j/48*Math.PI,squeeze=Math.sin(phase-t*2)*1.6;
+          const rough=material?1+.06*Math.sin(t*5)+.035*Math.cos(t*9):1;
+          const px=Math.cos(t)*(99*rough+squeeze),py=9+Math.sin(t)*(73*rough+(material?squeeze*.6:0));
           if(j)x.lineTo(px,py);else x.moveTo(px,py);
         }
-        x.strokeStyle='rgba(36,28,26,.9)';x.lineWidth=4;x.stroke();
-        x.save();x.translate(0,-2);x.strokeStyle='rgba(143,125,91,.3)';x.lineWidth=1.6;x.stroke();x.restore();
+        // Broken contact follows the torn wall instead of drawing a second smooth oval.
+        x.save();if(material)x.setLineDash([13,7,5,11]);
+        x.strokeStyle=material?'rgba(36,28,26,.42)':'rgba(36,28,26,.9)';x.lineWidth=material?2:4;x.stroke();
+        x.translate(0,-2);x.strokeStyle=material?'rgba(143,125,91,.12)':'rgba(143,125,91,.3)';x.lineWidth=material?1:1.6;x.stroke();x.restore();
         x.restore();
       }
-      pitAtlas=a;
+      pitAtlas=a;pitAtlasSource=material;
     }
     const phase=((now*.00095+o.x*.017+o.y*.011)/(Math.PI*2)%1+1)%1*16;
     const f=Math.floor(phase),next=(f+1)%16,mix=phase-f,sz=(meta&&meta.sz||200)*(o.scale||1);
@@ -411,6 +750,25 @@
     {wrist:[591,541],axis:[8,18],sign:1,outline:[[581,536],[600,535],[608,545],[622,557],[626,574],[616,587],[596,588],[578,575],[576,556]]},
     {wrist:[580,420],axis:[12,-17],sign:-1,outline:[[569,422],[575,403],[578,383],[601,378],[622,385],[620,405],[617,424],[589,431],[579,427]]}
   ];
+  function campGround(img){
+    const a=root.document.createElement('canvas');a.width=512;a.height=400;
+    const c=a.getContext('2d');c.drawImage(img,36,32,440,331.5);
+    const pixels=c.getImageData(0,0,512,400),p=pixels.data,d=new Uint8Array(512*400);
+    for(let y=0;y<400;y++)for(let x=0;x<512;x++){
+      const i=y*512+x;d[i]=p[i*4+3]>80?0:22;
+      if(x)d[i]=Math.min(d[i],d[i-1]+1);if(y)d[i]=Math.min(d[i],d[i-512]+1);
+    }
+    for(let y=399;y>=0;y--)for(let x=511;x>=0;x--){
+      const i=y*512+x;if(x<511)d[i]=Math.min(d[i],d[i+1]+1);if(y<399)d[i]=Math.min(d[i],d[i+512]+1);
+      const edge=1-d[i]/22,fade=edge*edge*(3-2*edge),lower=Math.max(0,Math.min(1,(y-140)/120));
+      const grain=.72+.18*Math.sin(x*.31+Math.sin(y*.13)*2)+.1*Math.cos(y*.47-x*.17);
+      const ash=.5+.5*Math.sin(x*.073+Math.cos(y*.041)*3),k=i*4;
+      p[k]=30+25*ash;p[k+1]=27+23*ash;p[k+2]=26+18*ash;
+      p[k+3]=Math.round(255*.46*fade*lower*lower*(3-2*lower)*grain);
+      if(!p[k+3])p[k]=p[k+1]=p[k+2]=0;
+    }
+    c.putImageData(pixels,0,0);return a;
+  }
   function campHands(c,o,now,meta,img){
     let cached=organicCache.m_c1camp.get(img);
     if(!cached){
@@ -478,6 +836,10 @@
       cached={body,hands,w,h};organicCache.m_c1camp.set(img,cached);
     }
     const size=(meta.sz||400)*(o.scale||1),ar=cached.w/cached.h,dw=size*Math.min(1,ar),dh=size*Math.min(1,1/ar),dx=o.x-dw/2,dy=o.y-dh/2;
+    if(o.x===1820&&o.y===4020){
+      if(!cached.ground)cached.ground=campGround(img);
+      c.drawImage(cached.ground,dx-36*dw/440,dy-32*dh/331.5,512*dw/440,400*dh/331.5);
+    }
     c.drawImage(cached.body,dx,dy,dw,dh);
     for(const hand of cached.hands){
       const p=((now/5200+hand.index*.27)%1+1)%1,ease=t=>t*t*(3-2*t);
@@ -590,5 +952,5 @@
     }
     return true;
   }
-  root.Ch1LivingDetail=Object.freeze({draw,deform,shadows,hideDuplicate,pit,organic});
+  root.Ch1LivingDetail=Object.freeze({draw,deform,shadows,hideDuplicate,groundSprite,swamp,pit,organic});
 })(globalThis);

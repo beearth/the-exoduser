@@ -4,7 +4,7 @@ import {readFileSync} from 'node:fs';
 import vm from 'node:vm';
 const html=readFileSync(new URL('../game.html',import.meta.url),'utf8');
 function draw(ens){
- const calls=[];const ctx=vm.createContext({ens,G:{},EL:{P:0},ELC:[],_gameFrame:0,_BEAN_RAINBOW:['rainbow'],_drawShootCharge:(...a)=>calls.push(a)});
+ const calls=[];const ctx=vm.createContext({ens,G:{},EL:{P:0},ELC:[],_gameFrame:0,_BEAN_RAINBOW:['rainbow'],_projectileParryClass:p=>p.parryClass||(p.el===0?'physical':'magic'),_drawProjectileChargeLabel(){},_L:s=>s,_drawShootCharge:(...a)=>calls.push(a)});
  const a=html.indexOf('function _drawEnemyShotWarnings('),b=html.indexOf('function radialProjs(',a);
  vm.runInContext(html.slice(a,b),ctx);ctx._drawEnemyShotWarnings();return calls;
 }

@@ -1,0 +1,13 @@
+{
+  "status": "REJECTED_LOW_QUALITY",
+  "reuseAllowed": false,
+  "date": "2026-09-27",
+  "reason": "Detached rounded leaf heap does not blend with the living skin ground; shared bone and corpse art deferred pending other chapter review.",
+  "files": [
+    {
+      "original": "assets/map/ch1/floor_objects/leaf_pile.png",
+      "archived": "archive/retired-map-assets/20260927-leaf-pile/assets/map/ch1/floor_objects/leaf_pile.png",
+      "sha256": "b1aa8623448ecbfb85cd4ae38dae38d2b3b3918cb285acc33844ed9eac798750"
+    }
+  ]
+}

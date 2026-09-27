@@ -1,0 +1,37 @@
+{
+  "base": "rottenwood_living_hell_v6.png",
+  "source": "rottenwood_living_hell_v7_source.png",
+  "width": 2048,
+  "height": 2048,
+  "blend": "source-over",
+  "blurSigma": 20,
+  "alphaBelow2Zeroed": true,
+  "regions": [
+    {
+      "id": "ground",
+      "label": "피부 지면 변화",
+      "points": "600,550 1360,450 1520,900 1450,1450 1220,1960 700,1950 490,1400 500,900"
+    },
+    {
+      "id": "left",
+      "label": "괴사 구덩이",
+      "points": "0,520 410,500 630,800 600,1320 470,1730 0,1850"
+    },
+    {
+      "id": "right",
+      "label": "쓰러진 생체 고목",
+      "points": "1630,350 2048,300 2048,1900 1660,1790 1470,1400 1490,850"
+    },
+    {
+      "id": "north",
+      "label": "북문 동맥 조직",
+      "points": "590,0 1470,0 1510,430 1240,590 800,590 560,350"
+    }
+  ],
+  "layers": [
+    "rottenwood_living_hell_v7_ground_layer.png",
+    "rottenwood_living_hell_v7_left_layer.png",
+    "rottenwood_living_hell_v7_right_layer.png",
+    "rottenwood_living_hell_v7_north_layer.png"
+  ]
+}

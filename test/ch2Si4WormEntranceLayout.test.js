@@ -33,7 +33,7 @@ const newWallSkinIds = new Set([
   'm_c2skinHookL', 'm_c2skinHookR', 'm_c2skinRibArc',
   'm_c2skinWebArc', 'm_c2skinJawArc', 'm_c2skinDepthArch',
 ]);
-const wallBeltSeamIds = new Set(['m_c2seamWeb', 'm_c2seamChitin', 'm_c2seamEgg']);
+const wallBeltSeamIds = new Set(['m_c2seamChitin', 'm_c2seamEgg']);
 const structuralIds = new Set([...collidableIds, ...megaBoundaryIds]);
 const collidable = props.filter((prop) => collidableIds.has(prop.id));
 
@@ -186,10 +186,10 @@ test('CH2 si4 reduces the actually visible repeated medium vertical set by 20 to
 });
 
 test('CH2 si4 worm entrance is rebuilt from mega silhouettes instead of authored-count inflation', () => {
-  assert.equal(props.length, 109, 'the locked 78-entry layout plus 9 BACK/MID underlays, 12 front fillers, and 10 seam decals must total 109 deliberate placements');
+  assert.equal(props.length, 105, 'the locked 78-entry layout plus 9 BACK/MID underlays, 12 front fillers, and 6 retained seam decals must total 105 deliberate placements');
 
   const roleCounts = Object.fromEntries(['backfill', 'boundary', 'landmark', 'detail', 'mask', 'filler', 'seam'].map((role) => [role, props.filter((prop) => prop.role === role).length]));
-  assert.deepEqual(roleCounts, { backfill: 9, boundary: 50, landmark: 18, detail: 6, mask: 4, filler: 12, seam: 10 });
+  assert.deepEqual(roleCounts, { backfill: 9, boundary: 50, landmark: 18, detail: 6, mask: 4, filler: 12, seam: 6 });
   assert.equal(Object.values(roleCounts).reduce((sum, count) => sum + count, 0), props.length, 'every placement must declare its visual or technical role');
   const lockedVisualCount = roleCounts.boundary + roleCounts.landmark + roleCounts.detail;
   assert.ok(roleCounts.boundary / lockedVisualCount >= 0.60 && roleCounts.boundary / lockedVisualCount <= 0.70,
@@ -213,10 +213,10 @@ test('CH2 si4 forms one authored wall belt with MID connectors and seam-only dec
   const seams = props.filter((prop) => prop.role === 'seam');
   assert.equal(backfills.length, 9, 'the four priority belts need eight underlays plus one reported collision-recess repair');
   assert.equal(fillers.length, 12, 'wall density pass must stay a controlled 12-piece MID kit, not another MEGA scatter');
-  assert.equal(seams.length, 10, 'every priority belt section needs a small number of seam finishers');
+  assert.equal(seams.length, 6, 'every priority belt section needs a small number of seam finishers');
   assert.ok(backfills.every((prop) => wallBeltBackfillIds.has(prop.id)), 'backfills must use broad shell/hive/jaw underlay art only');
   assert.ok(fillers.every((prop) => wallBeltFillerIds.has(prop.id)), 'fillers must use curved shell/rib/hive/jaw connector art only');
-  assert.ok(seams.every((prop) => wallBeltSeamIds.has(prop.id)), 'seams must use web/chitin/egg surface decals only');
+  assert.ok(seams.every((prop) => wallBeltSeamIds.has(prop.id)), 'seams must use chitin/egg surface decals only');
   assert.ok([...backfills, ...fillers, ...seams].every((prop) => Number.isFinite(prop.rot)), 'wall-belt pieces must declare asymmetrical authored rotation');
   assert.equal([...backfills, ...fillers, ...seams].filter((prop) => ['m_c2p1', 'm_c2p1b', 'm_c2p2', 'm_c2webp', 'm_c2webpf'].includes(prop.id)).length, 0,
     'the wall belt must not reintroduce the repeated vertical-pillar vocabulary');
@@ -227,10 +227,10 @@ test('CH2 si4 forms one authored wall belt with MID connectors and seam-only dec
     'subdued BACK/MID underlays must render before the locked MEGA layer instead of covering the approved giant structures');
 
   const expectedZones = {
-    top_chamber: { backfill: 2, filler: 3, seam: 2 },
-    central_bridge: { backfill: 2, filler: 3, seam: 3 },
-    east_pocket_belt: { backfill: 2, filler: 3, seam: 2 },
-    lower_chamber_belt: { backfill: 2, filler: 3, seam: 3 },
+    top_chamber: { backfill: 2, filler: 3, seam: 1 },
+    central_bridge: { backfill: 2, filler: 3, seam: 2 },
+    east_pocket_belt: { backfill: 2, filler: 3, seam: 1 },
+    lower_chamber_belt: { backfill: 2, filler: 3, seam: 2 },
   };
   for (const [zone, expected] of Object.entries(expectedZones)) {
     assert.equal(backfills.filter((prop) => prop.zone === zone).length, expected.backfill, `${zone} BACK/MID underlay count`);
@@ -329,7 +329,7 @@ test('CH2 si4 replaces six BACK slots with the supplied RGBA wall-connection kit
     assert.equal(png.readUInt32BE(20), 1254, `${file} height must preserve the supplied source`);
     assert.equal(png[25], 6, `${file} must retain RGBA rather than bake a black rectangle`);
   }
-  assert.equal(props.length, 109, 'the six supplied replacements plus one explicit recess repair must total 109 authored entries');
+  assert.equal(props.length, 105, 'the six supplied replacements plus one explicit recess repair must total 105 authored entries');
 });
 
 test('CH2 si4 preserves the six-stage landmark flow from the refined reference', () => {

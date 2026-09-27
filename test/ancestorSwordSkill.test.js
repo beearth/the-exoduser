@@ -75,14 +75,14 @@ test('ancestor summon has one iron warlord and no legacy multi-summon modifier',
   assert.doesNotMatch(gameHtml, /ancCount/, 'the former multi-summon affix must not survive a fixed single-summon design');
 });
 
-test('iron warlord stops pursuing at his full 142px strike radius instead of residual moving nearby', () => {
-  assert.match(gameHtml, /const _ANC_KIT=\[\{reach:142,atkCd:46,radius:142,dmgMult:1\.25,kb:1\.3,hits:1\}\];/,
-    'the pursuit stop distance must equal the actual 142px melee hit radius');
+test('iron warlord stops pursuing at ki-wave firing distance', () => {
+  assert.match(gameHtml, /const _ANC_KIT=\[\{reach:320,atkCd:46,radius:142,dmgMult:1\.25,kb:1\.3,hits:1\}\];/,
+    'the warlord should fire from range');
   const update = extractFunction('_updateAncestors');
-  assert.match(update, /const K=a\.kit\|\|\{reach:142,atkCd:42,radius:110,dmgMult:1,kb:\.5,hits:1\};/,
-    'legacy/fallback instances must not reintroduce the short pursuit threshold');
-  assert.match(update, /if\(bd>\(K\.reach\|\|142\)\)/,
-    'only targets outside the full strike radius may switch the warlord into moving state');
+  assert.match(update, /const K=a\.kit\|\|\{reach:320,atkCd:42,radius:110,dmgMult:1,kb:\.5,hits:1\};/,
+    'fallback instances use the same ranged threshold');
+  assert.match(update, /if\(bd>\(K\.reach\|\|320\)\)/,
+    'only targets outside firing range cause pursuit');
 });
 
 test('stationary iron warlord stays ground-anchored instead of receiving a perpetual floating bob', () => {
@@ -105,7 +105,8 @@ test('iron warlord has no timer lifetime and only falls when hostile damage exha
   assert.doesNotMatch(update, /a\.t>=a\.maxT/, 'the update loop must never expire an alive warlord by time');
   assert.match(update, /if\(a\._dead\|\|a\.hp<=0\)/, 'only depleted HP may remove the warlord');
   assert.match(gameHtml, /function _ancestorTargetForEnemy\(/, 'hostile projectiles must be able to choose the warlord');
-  assert.match(gameHtml, /_hurtAncestor\(_ancHit/, 'a hostile projectile collision must damage the warlord');
+  assert.match(update, /_ancestorMeleePressure\(a,sp\)/, 'nearby melee contact still damages the warlord');
+  assert.doesNotMatch(gameHtml, /_hurtAncestor\(_ancHit/, 'ordinary hostile projectiles no longer damage or aggro the warlord');
 
   const hurt = Function('addParts', 'addTxt', '_T', `${hurtSource};return _hurtAncestor`)(() => {}, () => {}, value => value);
   const warlord = { x: 10, y: 20, hp: 100, mhp: 100 };
@@ -225,20 +226,13 @@ test('iron warlord renders authored plant, walk, and swing sheets without reusin
     'the malformed legacy strip must remain out of the runtime load path');
 });
 
-test('iron warlord greatsword swing uses an eight-frame weight-up, impact, and recovery cadence', () => {
+test('iron warlord keeps the old swing asset available but uses a still body for ki-wave attacks', () => {
   const update = extractFunction('_updateAncestors');
-  const frameSource = extractFunction('_ancestorSwingFrame');
-  const swingFrame = Function(`${frameSource};return _ancestorSwingFrame`)();
-
-  assert.match(update, /a\._atkT=Math\.max\(0,a\._atkT-sp\*\.026\)/,
-    'the attack pose must last roughly 38 simulation frames rather than disappearing in eleven');
-  assert.deepEqual(
-    [swingFrame(1), swingFrame(.87), swingFrame(.70), swingFrame(.50), swingFrame(.36), swingFrame(.28), swingFrame(.18), swingFrame(.05)],
-    [0, 1, 2, 3, 4, 5, 6, 7],
-    'the eight phases must cover guard, deep wind-up, lift, apex, impact, trail, and recovery in order',
-  );
+  assert.doesNotMatch(update, /a\._atkT=1/);
+  assert.match(update, /_launchAncestorKiWave\(a,/);
+  assert.match(gameHtml, /const _swingingSprite=false;/);
   assert.match(gameHtml, /const _swingFW=_swingImg\.naturalWidth\/8/,
-    'the runtime must use all eight equal-width cells of the new swing strip');
+    'the retained sheet uses eight equal-width cells');
   assert.equal(existsSync(new URL('../img/vfx_ancestor/ancestor_iron_warlord_swing_v4.png', import.meta.url)), true,
     'the authored heavy-swing sheet must ship with the runtime path');
 });

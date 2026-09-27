@@ -1,4 +1,4 @@
-/* Socket gems: iron specimen trays above a compact inspection desk. */
+/* Socket gems: ossuary-style collection and full equipment socket board. */
 #invPanel.panel .pbox #invCrystalsPanel{display:none;}
 #invPanel.panel[data-inventory-page=crystals] .pbox{width:min(860px,calc(100vw - 24px))!important;}
 #invPanel.panel[data-inventory-page=crystals] .pbox :is(.inv-equip,#invOssuaryPanel,#invStorageCol,#invCenter,#invRight,.inv-actions){display:none!important;}
@@ -58,3 +58,41 @@
 @media(max-width:640px){#invPanel.panel[data-inventory-page=crystals] .pbox #invCrystalsPanel{padding:12px 10px 10px;}#invPanel .inv-cr-body{grid-template-rows:minmax(140px,1fr) 230px;gap:12px;}#invPanel .inv-cr-grid{grid-template-columns:repeat(auto-fill,minmax(61px,1fr));grid-auto-rows:80px;gap:4px;padding:5px;}#invPanel .inv-cr-detail{grid-template-columns:58px minmax(0,1fr) 130px;column-gap:10px;padding:12px;}#invPanel .inv-cr-detail::before{width:65px;left:8px;background-size:85px;}#invPanel .inv-cr-detail>.inv-cr-gem{width:44px;height:54px;}#invPanel .inv-cr-targets{padding-left:9px;}#invPanel .inv-cr-heading{font-size:15px;letter-spacing:.01em;}#invPanel .inv-cr-name{font-size:15px;}#invPanel .inv-cr-filter{padding:6px 12px;}#invPanel .inv-cr-detail:not(:has(>.inv-cr-gem)){padding-left:94px;}#invPanel .inv-cr-footer>.inv-cr-note{max-width:60%;}}
 @media(max-width:420px){#invPanel .inv-cr-head{flex-wrap:wrap;gap:4px;padding-bottom:9px;}#invPanel .inv-cr-capacity{font-size:10px;padding:0 6px;}#invPanel .inv-cr-detail{grid-template-columns:48px minmax(0,1fr);grid-template-rows:auto;overflow-y:auto;}#invPanel .inv-cr-targets{grid-column:1/-1;grid-row:6;border-left:0;border-top:1px solid #74634766;padding:8px 0 0;margin-top:7px;overflow:visible;}#invPanel .inv-cr-detail::before{display:none;}#invPanel .inv-cr-detail:not(:has(>.inv-cr-gem)){padding:14px;}#invPanel .inv-cr-gem{width:36px;height:45px;}#invPanel .inv-cr-footer{flex-wrap:wrap;gap:3px;}#invPanel .inv-cr-footer>.inv-cr-note{max-width:100%;}}
 @media(prefers-reduced-motion:reduce){#invPanel :is(.inv-cr-gem,.inv-cr-slot,.inv-cr-filter,.inv-cr-attach){transition:none;}#invPanel .inv-cr-slot:hover .inv-cr-gem{transform:none;}}
+
+/* Same compact two-pane footprint as the ossuary collection. */
+#invPanel.panel[data-inventory-page=crystals] .pbox{width:min(980px,calc(100vw - 24px))!important;height:min(680px,94vh)!important;}
+#invPanel.panel[data-inventory-page=crystals] .pbox #invCrystalsPanel{padding:10px 12px;border:1px solid #65583f;border-image:none;background:linear-gradient(#0c0e10b8,#0c0d0fea),var(--ui-surface) center/cover;box-shadow:none;}
+#invPanel .inv-cr-heading{font-size:14px;letter-spacing:.07em;}
+#invPanel .inv-cr-head{padding-bottom:8px;}
+#invPanel .inv-cr-filters{padding:8px 0;}
+#invPanel .inv-cr-body{grid-template-columns:repeat(2,minmax(0,1fr));grid-template-rows:minmax(100px,1fr) 140px;gap:10px;}
+#invPanel .inv-cr-grid{grid-column:1;grid-row:1;grid-template-columns:repeat(auto-fill,minmax(54px,1fr));grid-auto-rows:58px;gap:3px;padding:5px;outline:none;}
+#invPanel .inv-cr-grid .inv-cr-gem{width:29px;height:36px;}
+#invPanel .inv-cr-grid .inv-cr-count{font-size:12px;}
+#invPanel .inv-cr-detail{grid-column:1;grid-row:2;grid-template-columns:58px minmax(0,1fr);gap:0 10px;padding:10px 12px;border:1px solid #75604470;box-shadow:none;}
+#invPanel .inv-cr-detail::before{display:none;}
+#invPanel .inv-cr-detail>.inv-cr-gem{width:36px;height:45px;}
+#invPanel .inv-cr-detail .inv-cr-targets{display:none;}
+#invPanel .inv-cr-detail:not(:has(>.inv-cr-gem)){padding:12px;}
+#invPanel .inv-cr-name{font-size:14px;}
+#invPanel .inv-cr-stat{font-size:21px;}
+#invPanel .inv-cr-equipment{grid-column:2;grid-row:1/3;min-height:0;min-width:0;display:flex;flex-direction:column;padding:8px 10px;border:1px solid #65583f;background:radial-gradient(ellipse at 50% 42%,#44352345,transparent 70%),linear-gradient(#0c0e10b8,#0c0d0fea),var(--ui-surface) center/cover;}
+#invPanel .inv-cr-equipment-title{margin:0 0 3px;color:#e0ceb0;font:600 14px/1.5 'Noto Serif KR',serif;letter-spacing:.07em;}
+#invPanel .inv-cr-equipment>.inv-cr-note{font-size:10px;margin:0 0 8px;}
+#invPanel .inv-cr-equipment-list{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:4px;overflow-y:auto;min-height:0;align-content:start;scrollbar-width:thin;scrollbar-color:#756247 #0d1011;}
+#invPanel .inv-cr-equipment-card{position:relative;min-width:0;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:2px;min-height:0;border:1px solid #75604455;background:radial-gradient(ellipse,#76603a20,transparent 75%),#080a0b80;}
+#invPanel .inv-cr-equipment-name{margin:0;font:500 10px/1.3 'Noto Serif KR',serif;color:#ddceb4;}
+#invPanel .inv-cr-equipment-item{display:none;}
+#invPanel .inv-cr-equipment-icon{height:18px;display:flex;align-items:center;justify-content:center;}
+#invPanel .inv-cr-equipment-icon :is(img,svg){max-height:18px;max-width:26px;object-fit:contain;}
+#invPanel .inv-cr-equipment-card[data-empty=true]{opacity:.5;}
+#invPanel .inv-cr-equipment-card[data-empty=true] .inv-cr-equipment-item{display:block;font-size:9px;margin:2px 0;color:#968974;}
+#invPanel .inv-cr-equipment-sockets{display:flex;flex-wrap:wrap;justify-content:center;gap:2px;min-height:18px;}
+#invPanel .inv-cr-socket{appearance:none;display:flex;align-items:center;justify-content:center;width:18px;height:18px;padding:1px;border:1px solid #8c7348;background:#080a0de0;color:#c8b17c;cursor:pointer;}
+#invPanel .inv-cr-socket .inv-cr-gem{width:12px;height:15px;}
+#invPanel .inv-cr-socket .inv-cr-gem::before{inset:2px;}
+#invPanel .inv-cr-socket:disabled{opacity:.24;cursor:not-allowed;}
+#invPanel .inv-cr-socket:not(:disabled):hover{border-color:#ead6a9;background:#55422b;}
+#invPanel .inv-cr-socket:focus-visible{outline:2px solid #f2dbac;outline-offset:1px;}
+#invPanel .inv-cr-footer{margin-top:6px;padding-top:6px;}
+@media(max-width:640px){#invPanel .inv-cr-body{grid-template-columns:minmax(0,1fr);grid-template-rows:200px 140px minmax(370px,auto);overflow-y:auto;}#invPanel .inv-cr-grid{grid-column:1;grid-row:1;}#invPanel .inv-cr-detail{grid-column:1;grid-row:2;}#invPanel .inv-cr-equipment{grid-column:1;grid-row:3;}#invPanel .inv-cr-equipment-list{overflow:visible;}#invPanel .inv-cr-footer>.inv-cr-note{max-width:75%;}}

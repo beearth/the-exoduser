@@ -58,7 +58,7 @@
 | 배치 | 데스크톱 오른쪽 중앙, 폭 300~400px; 최대 높이 화면 높이에서 32px 제외(dvh 우선). 높이 700px 이하는 90vh. 탄의 중앙 진입 경로를 비움 |
 | 좁은 화면 | 760px 이하 하단 패널, 연습 중 최대 45dvh(폴백 45vh), 최초 안내는 화면 높이에서 24px 제외. 장식 영역 숨김 |
 | 하단 잘림 방지 | 패널을 세로 flex로 구성. 안내 본문만 min-height:0·세로 스크롤 적용, 시작/건너뛰기 버튼·진행 바는 축소되지 않는 하단 영역으로 항상 표시. 하단 상단 여백 12px |
-| 배경 | ui-foundation.css의 Hell Gothic 흑철·붉은 그라데이션 + frame.png/crest.png 투명 장식. 이전 parry-plaque-v1.png는 덮어씀. 글자·버튼·체크는 DOM |
+| 배경 | ui-foundation.css의 내부 어두운 배경 + frame.png/crest.png 장식. 프레임 외부만 투명(2026-09-27 정정). 이전 parry-plaque-v1.png는 덮어씀. 글자·버튼·체크는 DOM |
 | 단계 색 | 마법 보라 `#c5a4f2`, 물리 황동 `#e0c18b`, 성공 녹색 `#b2d6ac` |
 | 키 안내 | 현재 바인딩을 큰 키캡으로 표시. 첫 두 체크 항목과 단계 부제에도 `Q · 마법탄 패링`, `E · 물리탄 패링` 표시. Q/E는 현재 parry/shield 바인딩을 따라 변경 |
 | 체크 | 이동 1개 + 좌/우클릭 2개 + 가시덫 1개 + 전투 8개 실제 성공 체크, 진행 바 성공 개수/12 |
@@ -145,4 +145,35 @@
 
 ## 2026-09-24 승인된 Hell Gothic UI
 
-전체 UI 시안 승인으로 공통 악마 프레임·문장·붉은 행동 버튼·불투명 글자를 적용했다. 기존 튜토리얼 이미지 예외와 전체 opacity0.5 기록보다 이 변경이 우선한다. 단계 색과 판정은 유지하고 현재 행은 붉은 배경/밝은 글자로 강조한다. 치수·생성 정보·검수는 [공통 UI SSOT](../3.1%20ui%20hud%20디자인/UI_FOUNDATION_20260924.md)를 따른다.
+전체 UI 시안 승인으로 공통 악마 프레임·문장·붉은 행동 버튼·불투명 글자를 적용했다. 기존 튜토리얼 이미지 예외와 전체 opacity0.5 기록보다 이 변경이 우선한다. 단계 색과 판정은 유지하고 현재 행은 붉은 배경/왼쪽 강조선/밝은 글자로 강조한다. 2026-09-27 투명화는 외곽 프레임 바깥에만 적용한다. 치수·생성 정보·검수는 [공통 UI SSOT](../3.1%20ui%20hud%20디자인/UI_FOUNDATION_20260924.md)를 따른다.
+
+
+## 2026-09-27 내부 전체 투명화 폐기
+
+사용자 의도를 오해한 변경으로 폐기. 아래 프레임 안 유지·밖만 투명 정정 규격을 적용한다.
+
+
+## 2026-09-27 투명화 범위 정정: 프레임 안 유지·밖만 투명
+
+| 항목 | 현행 규격 |
+|---|---|
+| 사용자 확정 | 230651 스크린샷 지적: 박스 안을 투명하게 하라는 뜻이 아님. 직전 전체 내부 투명화는 오해로 폐기. 장식 테두리 바깥만 투명 |
+| 로비 원인·수정 | .lobby-right 자체는 이미 transparent이고 ::before inset22px 안쪽 배경 유지. 최신 단일 장면 규칙에 따라 #lobbyBgImg를 로비 전체로 확장하고 .lobby의 검정 로딩 폴백을 유지. 외곽에 별도 body 배경이 비치지 않음. 카드·배너·버튼·내부 문양 유지 |
+| 튜토리얼 | #parryLesson 부모 background:transparent,border0,box-shadow:none 유지. ::before의 실제 border-width18px·border-image-width40px에 기존 radial-gradient(ellipse at 50% 0,#47171288,transparent 48%),#100d0ef5 배경을 padding-box로 제한. 프레임22% 슬라이스·문장 유지 |
+| 내부 복원 | 키·현재 행·footer·시작/건너뛰기 버튼·자원 안내·체크박스의 직전 투명 오버라이드 제거. 기존 붉은 현재 행/버튼 및 배경 복원. parryLessonBackdrop도 기존 정의 복원 |
+| 캐시 | index.html/game.html/game-easy-test.html: ui-foundation.css?v=20260927-frame-interior, ui-refinement.css?v=20260927-frame-exterior |
+| 검증 | Chromium1280×900에서 검수용 줄무늬 배경을 이용해 로비/튜토리얼 바깥만 배경이 비치고 내부는 어두운 배경 유지 확인. 튜토리얼 내부 rgba(16,13,14,.96),padding-box,frame40px,부모border0. 로비 부모/전체 배경transparent 및 내부 inset22px 확인. 실제 CSS 격리 검수,게임 데이터 변경 없음 |
+| 기록 | tmp/frame-outside-only/report.json,lobby-after.png,tutorial-after.png,changes.patch. 기존 터미널/.git 제한으로 커밋 미완료 |
+
+
+## 2026-09-27 로비 장면 배경 한 장으로 통일
+
+| 항목 | 현행 규격 |
+|---|---|
+| 원인 | 로비 투명 외곽에서 body의 별도 img/lording 랜덤 배경이 노출되어 왼쪽 로비 장면과 오른쪽 외곽 장면이 달라짐 |
+| 구조 | #lobbyBgImg를 .lobby-left 내부에서 #lobby 직계 자식으로 이동. absolute/inset0/cover/left center로 로비 전체에 한 장 표시. 기존 _swapLobbyBg의 이미지 선택·전환 및 DOM id 유지 |
+| 레이어 | .lobby background:#000/isolation:isolate/overflow:hidden. 검정은 로딩·페이드 시 별도 body 배경 노출 방지용. 직계 배경 z-index0/pointer-events:none,좌우 패널 z-index1,왼쪽 자체 배경 transparent |
+| 유지 | 오른쪽 장식 바깥은 동일 로비 장면을 노출. 내부 inset22px 배경·문양·카드·로고·버튼 및 캐릭터 미리보기 유지. 기존 배경3종 선택 정책 유지,새 이미지 생성 없음 |
+| 캐시 | index.html의 ui-refinement.css?v=20260927-single-lobby-scene |
+| 검증 | 실제 HTML/CSS 격리 브라우저에서 flame 기존 에셋1장으로1600×900 시각 확인. #lobbyBgImg1개/부모lobby/전체화면크기 일치. body에 검수용 마젠타 배경을 두어 외곽에 노출되지 않음 확인. 960×540·1920×1080에서도 전체크기 일치/횡넘침 없음 |
+| 기록 | tmp/lobby-single-scene/after.png,report.json,sizes.json,changes.patch. 게임 저장·계정 변경 없음. 기존 터미널/.git 제한으로 커밋 미완료 |

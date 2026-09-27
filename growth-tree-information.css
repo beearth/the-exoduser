@@ -1,0 +1,18 @@
+/* The tree stays readable at rest; names appear on direct interaction. */
+@media (min-width: 781px) {
+  #statPanel.growth-body-tree.growth-constellation .growth-body-node .growth-card-name {
+    opacity: 0 !important;
+    visibility: hidden;
+    pointer-events: none;
+  }
+
+  #statPanel.growth-body-tree.growth-constellation .growth-body-node:is(:hover, :focus-visible) .growth-card-name {
+    opacity: 1 !important;
+    visibility: visible;
+  }
+
+  #statPanel.growth-body-tree.growth-constellation .growth-resources,
+  #statPanel.growth-body-tree.growth-constellation .growth-wallet:has(#growthSPLabel) {
+    display: none !important;
+  }
+}

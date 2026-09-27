@@ -1,5 +1,7 @@
 # MAP DESIGN CLOSURE — 반복 감사 · 착수 게이트 · 최종 판정 (Section G/H)
 
+> **42차 현행(2026-09-27):** 구형 spider_web 원화·동일사본4개와CH2 seamWeb4배치폐기. CH2 authored105/시스템포함107,충돌51+비충돌54,seam6,wall-belt27. 구형거미줄유지였던41차기록은검토이력. 큰거미줄뼈기둥보존. [현행SSOT](CH2_WEB_RETIREMENT_PASS42.md).
+
 > **역할**: 35스테이지 확장 시 반복감 방지(G), 구현 착수 PASS 조건(H), 전체 설계 최종 감사 + IMPLEMENTATION_READINESS 판정.
 > **상태**: 2026-08-23. 코드 변경 없음.
 

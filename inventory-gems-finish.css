@@ -1,0 +1,233 @@
+/* Jewel collection finish and character-centred equipment atelier. */
+#invPanel.panel[data-inventory-page=crystals] .pbox{width:min(1100px,calc(100vw - 24px))!important;height:min(780px,94vh)!important;}
+#invPanel.panel[data-inventory-page=crystals] .pbox #invCrystalsPanel{padding:16px 18px 10px;background:radial-gradient(ellipse at 80% 0,#80683b15,transparent 55%),linear-gradient(#0c1115e8,#080b0ef5),var(--ui-surface) center/480px;border:1px solid #786444;box-shadow:inset 0 0 0 3px #080b0d,inset 0 0 0 4px #ac895f16;}
+#invPanel .inv-cr-head{padding:0 0 12px;}
+#invPanel .inv-cr-heading{font-size:22px;letter-spacing:.14em;color:#e3cf9f;padding-left:26px;position:relative;}
+#invPanel .inv-cr-heading:before{content:'◆';position:absolute;left:0;top:5px;font-size:15px;color:#bc965b;text-shadow:0 0 12px #b3824255;}
+#invPanel .inv-cr-capacity{border:1px solid #7a644444;background:#080b0dd0;padding:5px 12px;font-size:11px;color:#c8b696;}
+#invPanel .inv-cr-filters{padding:10px 0;gap:6px;}
+#invPanel .inv-cr-filter{padding:5px 18px;min-height:31px;font-size:11px;}
+#invPanel .inv-cr-body{grid-template-columns:minmax(0,1fr) minmax(0,1.08fr);grid-template-rows:minmax(120px,1fr) 154px;gap:12px;}
+#invPanel .inv-cr-grid{grid-template-columns:repeat(auto-fill,minmax(69px,1fr));grid-auto-rows:91px;gap:6px;padding:9px;background:radial-gradient(ellipse at 40% 0,#24444825,transparent 70%),repeating-linear-gradient(0deg,#fff1 0 .2px,transparent .2px 4px),#080d12;box-shadow:inset 0 2px 18px #000d;border:1px solid #65563f;}
+#invPanel .inv-cr-slot{padding:14px 6px 23px;background:radial-gradient(ellipse at 50% 42%,color-mix(in srgb,var(--gem-rank) 12%,transparent),transparent 70%),linear-gradient(145deg,#1d2428,#0a0e12 65%);border-color:#64573f80;box-shadow:inset 0 0 0 2px #060a0d,inset 0 1px #b7a07733,0 2px 4px #0008;}
+#invPanel .inv-cr-grid .inv-cr-gem{width:34px;height:43px;}
+#invPanel .inv-cr-label{position:absolute;bottom:7px;left:4px;right:15px;text-align:center;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;font:500 10px/1.3 'Noto Sans KR',sans-serif;color:#c5b99f;}
+#invPanel .inv-cr-grid .inv-cr-count{bottom:7px;right:5px;font-size:11px;color:#e6d6ad;}
+#invPanel .inv-cr-tier{top:5px;left:6px;font-size:9px;}
+#invPanel .inv-cr-slot[aria-pressed=true]{border-color:#d5b67a;background:radial-gradient(ellipse,#8d683634,transparent 80%),#141b20;box-shadow:inset 0 0 0 2px #11100b,inset 0 0 16px #b4914828,0 0 8px #caa06218;}
+#invPanel .inv-cr-equipment{position:relative;isolation:isolate;padding:10px 12px;background:radial-gradient(ellipse at 50% 40%,#6e522025,transparent 68%),linear-gradient(#111416ed,#080d10ed),var(--ui-surface) center/420px;box-shadow:inset 0 0 0 2px #070a0c;}
+#invPanel .inv-cr-equipment:before{content:'';position:absolute;inset:48px 20px 20px;background:url('img/ui/ossuary_altar_hf_v2.png') center/contain no-repeat;opacity:.13;filter:saturate(.45);pointer-events:none;z-index:-1;}
+#invPanel .inv-cr-equipment-title{font-size:15px;letter-spacing:.12em;padding-bottom:7px;border-bottom:1px solid #75604470;}
+#invPanel .inv-cr-equipment>.inv-cr-note{font-size:10px;padding:5px 0 3px;color:#a69b87;}
+#invPanel .inv-cr-equipment-list{gap:6px;padding:3px 3px 7px;grid-template-columns:repeat(4,minmax(0,1fr));}
+#invPanel .inv-cr-equipment-card{padding:5px 3px 6px;min-height:78px;box-sizing:border-box;gap:2px;background:linear-gradient(#bea67566,#bea67566) top left/8px 1px no-repeat,linear-gradient(#bea67566,#bea67566) bottom right/8px 1px no-repeat,linear-gradient(145deg,#51442c38,transparent 60%),#090d10c9;border:1px solid #79674770;box-shadow:inset 0 0 0 2px #080b0d,inset 0 0 0 3px #7c653d24,0 2px 4px #0006;}
+#invPanel .inv-cr-equipment-name{font-size:11px;color:#dfceb0;letter-spacing:.025em;}
+#invPanel .inv-cr-equipment-icon{position:relative;isolation:isolate;width:48px;height:38px;flex-shrink:0;}
+#invPanel .inv-cr-equipment-icon:before{content:'';position:absolute;inset:-5px -7px;z-index:-1;background:url('img/ui/ossuary_socket_hf_v2.png') center/100% 100% no-repeat;filter:brightness(.66) saturate(.55);opacity:.75;}
+#invPanel .inv-cr-equipment-icon :is(img,svg){max-width:36px;max-height:32px;filter:drop-shadow(0 3px 3px #000) brightness(1.15);}
+#invPanel .inv-cr-equipment-card[data-empty=true]{opacity:.48;border-style:dashed;}
+#invPanel .inv-cr-equipment-card[data-empty=true] .inv-cr-equipment-icon{height:23px;}
+#invPanel .inv-cr-equipment-card[data-empty=true] .inv-cr-equipment-icon:before{display:none;}
+#invPanel .inv-cr-equipment-sockets{gap:3px;min-height:23px;}
+#invPanel .inv-cr-socket{width:23px;height:23px;border:1px solid #958058;border-radius:50%;background:radial-gradient(circle,#070c10 35%,#22251f 65%,#0a0c0e 70%);box-shadow:inset 0 2px 5px #000,0 1px #bb9e6020;}
+#invPanel .inv-cr-socket-empty{font-size:13px;color:#968464;}
+#invPanel .inv-cr-socket[data-filled=true]{border-color:#baab81;background:radial-gradient(circle,#56666b66,#0a0d12 70%);}
+#invPanel .inv-cr-socket .inv-cr-gem{width:14px;height:18px;}
+#invPanel .inv-cr-equipment-card:has(.inv-cr-socket:hover){border-color:#b09a6a;}
+#invPanel .inv-cr-detail{padding:14px 16px;grid-template-columns:70px minmax(0,1fr);column-gap:14px;background:radial-gradient(ellipse at 12% 50%,#77603925,transparent 50%),linear-gradient(#151c20,#0b1014);border:1px solid #8a724c;box-shadow:inset 0 0 0 3px #080c0e,inset 0 0 0 4px #91734d22;}
+#invPanel .inv-cr-detail>.inv-cr-gem{width:43px;height:54px;}
+#invPanel .inv-cr-name{font-size:16px;}
+#invPanel .inv-cr-stat{font-size:26px;}
+#invPanel .inv-cr-detail:not(:has(>.inv-cr-gem)){padding-left:96px;}
+#invPanel .inv-cr-detail:not(:has(>.inv-cr-gem)):before{display:block;left:13px;top:50%;transform:translateY(-50%);width:68px;height:94px;background:var(--menu-sigil) center/82px no-repeat;border:0;opacity:.5;}
+#invPanel .inv-cr-footer{padding-top:8px;margin-top:8px;}
+@media(max-width:640px){#invPanel.panel[data-inventory-page=crystals] .pbox #invCrystalsPanel{padding:10px;}#invPanel .inv-cr-heading{font-size:18px;}#invPanel .inv-cr-body{grid-template-columns:minmax(0,1fr);grid-template-rows:240px 154px minmax(470px,auto);}#invPanel .inv-cr-equipment-list{grid-template-columns:repeat(3,minmax(0,1fr));}#invPanel .inv-cr-equipment{padding:10px 8px;}#invPanel .inv-cr-grid{grid-template-columns:repeat(auto-fill,minmax(62px,1fr));}#invPanel .inv-cr-capacity{padding:4px 6px;}}
+
+/* Final composition: jewellery tray beside a full character equipment diagram. */
+#invPanel.panel[data-inventory-page=crystals] .pbox{width:min(1280px,calc(100vw - 24px))!important;height:min(860px,96vh)!important;}
+#invPanel.panel[data-inventory-page=crystals] .pbox #invCrystalsPanel{padding:16px 20px 10px;background:radial-gradient(ellipse at 68% 38%,#8c6d3520,transparent 55%),linear-gradient(#11151be8,#070b10f5),var(--ui-surface) center/520px;}
+#invPanel .inv-cr-head{padding-bottom:14px;margin-bottom:14px;}
+#invPanel .inv-cr-heading{font-size:25px;letter-spacing:.18em;color:#ead9b4;}
+#invPanel .inv-cr-body{display:grid;grid-template-columns:minmax(0,.78fr) minmax(0,1.22fr);grid-template-rows:minmax(0,1fr);gap:22px;overflow:hidden;}
+#invPanel .inv-cr-collection{display:grid;grid-template-rows:auto minmax(120px,1fr) 172px;gap:12px;min-width:0;min-height:0;}
+#invPanel .inv-cr-collection-head{display:flex;flex-direction:column;gap:8px;}
+#invPanel .inv-cr-collection-title{font:600 14px/1.4 'Noto Serif KR',serif;letter-spacing:.08em;color:#b9aa8c;margin:0;}
+#invPanel .inv-cr-filters{padding:0;gap:5px;}
+#invPanel .inv-cr-filter{flex:1;padding:5px 6px;background:linear-gradient(#1d2328,#0c1116);border-color:#76624655;min-height:30px;}
+#invPanel .inv-cr-filter[aria-pressed=true]{background:linear-gradient(#80633a66,#31261a88);border-color:#b4975d;color:#f0dfb8;box-shadow:inset 0 -2px #c6a268;}
+#invPanel .inv-cr-grid{grid-column:auto;grid-row:auto;grid-template-columns:repeat(auto-fill,minmax(76px,1fr));grid-auto-rows:98px;padding:10px;gap:7px;border:1px solid #856d465c;background:radial-gradient(ellipse at 50% 0,#29464c28,transparent 70%),#060b10;box-shadow:inset 0 0 0 3px #020508,inset 0 0 30px #000b;}
+#invPanel .inv-cr-slot{border:1px solid #8a775542;border-top-color:#a892684f;border-bottom-color:#2c2d28;outline-offset:-4px;background:radial-gradient(ellipse at 50% 46%,color-mix(in srgb,var(--gem-rank) 15%,transparent),transparent 70%),linear-gradient(135deg,#242c334d,#090e15 70%);box-shadow:inset 0 0 0 2px #070c11,inset 0 1px #dacb9a14,0 3px 5px #0009;}
+#invPanel .inv-cr-grid .inv-cr-gem{width:38px;height:48px;filter:saturate(.9) contrast(1.12) drop-shadow(0 4px 3px #000);}
+#invPanel .inv-cr-label{font-size:10px;bottom:8px;left:3px;right:14px;color:#d7cbb5;}
+#invPanel .inv-cr-grid .inv-cr-count{bottom:8px;font-size:11px;}
+#invPanel .inv-cr-detail{grid-column:auto;grid-row:auto;grid-template-columns:76px minmax(0,1fr);padding:16px;min-height:0;border:1px solid #a28a5a70;background:radial-gradient(ellipse at 8% 50%,#b29a5230,transparent 48%),linear-gradient(#192127,#0b1117);box-shadow:inset 0 0 0 3px #090d10,inset 0 0 0 4px #af8e4d1c;}
+#invPanel .inv-cr-detail>.inv-cr-gem{width:48px;height:62px;}
+#invPanel .inv-cr-name{font-size:17px;letter-spacing:.03em;}
+#invPanel .inv-cr-stat{font-size:28px;line-height:1.2;color:#d4dfbd;}
+#invPanel .inv-cr-equipment{grid-column:2;grid-row:1;position:relative;padding:0 0 0 18px;border:0;border-left:1px solid #a28a5a44;background:radial-gradient(ellipse at 50% 45%,#81643c15,transparent 68%);box-shadow:none;}
+#invPanel .inv-cr-equipment:before{display:none;}
+#invPanel .inv-cr-equipment-head{display:flex;justify-content:space-between;align-items:center;gap:8px;padding:0 0 7px;}
+#invPanel .inv-cr-equipment-title{border:0;padding:0;margin:0;font-size:14px;color:#d6c4a1;}
+#invPanel .inv-cr-socket-summary{font:500 11px/1.4 'Noto Sans KR',sans-serif;color:#adba9a;border:1px solid #7e8e6744;padding:4px 8px;background:#121b1580;white-space:nowrap;}
+#invPanel .inv-cr-equipment>.inv-cr-note{padding:0;margin:0 0 10px;font-size:10px;color:#8d897d;}
+#invPanel .inv-cr-equipment-list{position:relative;isolation:isolate;display:grid;grid-template-columns:repeat(5,minmax(0,1fr));grid-template-rows:repeat(6,minmax(70px,1fr));grid-auto-rows:70px;gap:5px 8px;flex:1;min-height:0;padding:4px 5px 6px;overflow-y:auto;overflow-x:hidden;align-content:stretch;}
+#invPanel .inv-cr-portrait{grid-column:2/5;grid-row:2/7;position:relative;align-self:stretch;min-height:0;overflow:hidden;pointer-events:none;isolation:isolate;display:flex;align-items:center;justify-content:center;background:radial-gradient(ellipse,#baa26612,transparent 68%);}
+#invPanel .inv-cr-portrait:before{content:'';position:absolute;width:100%;aspect-ratio:1;top:20%;background:url('img/ui/ossuary_altar_hf_v2.png') center/contain no-repeat;opacity:.23;filter:saturate(.5);z-index:-1;}
+#invPanel .inv-cr-portrait:after{content:'';position:absolute;inset:6% 5%;border:1px solid #baa26920;border-radius:48% 48% 43% 43%;box-shadow:0 0 0 14px #bca46905,inset 0 0 40px #ad8d3410;z-index:-1;}
+#invPanel .inv-cr-portrait-image{width:100%;height:100%;object-fit:contain;opacity:.8;filter:brightness(.9) saturate(.55) drop-shadow(0 8px 12px #000);mask-image:radial-gradient(ellipse at 50% 46%,#000 32%,#000e 56%,transparent 76%);}
+#invPanel .inv-cr-equipment-card{z-index:1;position:relative;display:grid;grid-template-columns:minmax(0,1fr);grid-template-rows:13px minmax(32px,1fr) 21px;gap:0;align-items:center;justify-items:center;min-height:70px;padding:1px;border:1px solid #97805266;background:linear-gradient(#b99a625c,#b99a625c) top left/8px 1px no-repeat,linear-gradient(#b99a625c,#b99a625c) bottom right/8px 1px no-repeat,radial-gradient(ellipse at 50% 30%,#56482f40,transparent 75%),linear-gradient(#151a20eb,#070c11f5);box-shadow:inset 0 0 0 2px #080c10,inset 0 0 0 3px #ac8e5220,0 4px 7px #0006;transition:border-color .15s,background-color .15s,opacity .15s;}
+#invPanel .inv-cr-equipment-name{font-size:11px;line-height:13px;color:#d8ccb7;white-space:nowrap;}
+#invPanel .inv-cr-equipment-icon{height:32px;width:42px;}
+#invPanel .inv-cr-equipment-icon:before{inset:-4px -5px;opacity:.65;}
+#invPanel .inv-cr-equipment-icon :is(img,svg){max-width:36px;max-height:32px;}
+#invPanel .inv-cr-equipment-item{display:none!important;}
+#invPanel .inv-cr-equipment-card[data-empty=true]{opacity:.35;border-style:solid;}
+#invPanel .inv-cr-equipment-card[data-empty=true] .inv-cr-equipment-icon{height:28px;}
+#invPanel .inv-cr-equipment-sockets{gap:3px;min-height:21px;flex-wrap:nowrap;}
+#invPanel .inv-cr-socket{width:21px;height:21px;min-width:0;flex-shrink:1;border-color:#94815a;color:#af9b71;}
+#invPanel .inv-cr-socket .inv-cr-gem{width:13px;height:17px;}
+#invPanel .inv-cr-equipment-card[data-compatible=true]{border-color:#c8b17a;background-color:#5d4c2e;box-shadow:inset 0 0 0 2px #090d10,0 0 12px #c4a25d24;}
+#invPanel .inv-cr-equipment-card[data-compatible=false]{opacity:.42;}
+#invPanel .inv-cr-equipment-card:focus-within{outline:1px solid #e5cea0;outline-offset:1px;}
+#invPanel .inv-cr-equipment-card[data-slot=cape]{grid-column:1;grid-row:1;}
+#invPanel .inv-cr-equipment-card[data-slot=armor]{grid-column:1;grid-row:2;}
+#invPanel .inv-cr-equipment-card[data-slot=weapon]{grid-column:1;grid-row:3;}
+#invPanel .inv-cr-equipment-card[data-slot=gloves]{grid-column:1;grid-row:4;}
+#invPanel .inv-cr-equipment-card[data-slot=belt]{grid-column:2;grid-row:6;}
+#invPanel .inv-cr-equipment-card[data-slot=ring1]{grid-column:1;grid-row:5;}
+#invPanel .inv-cr-equipment-card[data-slot=boots]{grid-column:1;grid-row:6;}
+#invPanel .inv-cr-equipment-card[data-slot=ossuary]{grid-column:5;grid-row:1;}
+#invPanel .inv-cr-equipment-card[data-slot=necklace]{grid-column:5;grid-row:2;}
+#invPanel .inv-cr-equipment-card[data-slot=shield]{grid-column:5;grid-row:3;}
+#invPanel .inv-cr-equipment-card[data-slot=bow]{grid-column:5;grid-row:4;}
+#invPanel .inv-cr-equipment-card[data-slot=ring2]{grid-column:5;grid-row:5;}
+#invPanel .inv-cr-equipment-card[data-slot=pants]{grid-column:4;grid-row:6;}
+#invPanel .inv-cr-equipment-card[data-slot=bracelet]{grid-column:5;grid-row:6;}
+#invPanel .inv-cr-equipment-card[data-slot=headband]{grid-column:2;grid-row:1;}
+#invPanel .inv-cr-equipment-card[data-slot=helmet]{grid-column:3;grid-row:1;}
+#invPanel .inv-cr-equipment-card[data-slot=headband2]{grid-column:4;grid-row:1;}
+@media(max-width:900px){#invPanel .inv-cr-body{grid-template-columns:minmax(0,.85fr) minmax(0,1.15fr);gap:12px;}#invPanel .inv-cr-equipment{padding-left:10px;}#invPanel .inv-cr-equipment-list{gap:5px 3px;grid-template-columns:repeat(5,minmax(0,1fr));}#invPanel .inv-cr-socket{width:17px;height:19px;}#invPanel .inv-cr-equipment-sockets{gap:1px;}#invPanel .inv-cr-equipment-name{font-size:9px;}#invPanel .inv-cr-grid{grid-template-columns:repeat(auto-fill,minmax(66px,1fr));}}
+@media(max-width:700px){#invPanel.panel[data-inventory-page=crystals] .pbox #invCrystalsPanel{padding:10px;}#invPanel .inv-cr-head{margin-bottom:10px;}#invPanel .inv-cr-heading{font-size:20px;}#invPanel .inv-cr-body{display:flex;flex-direction:column;overflow-y:auto;gap:16px;}#invPanel .inv-cr-collection{flex:0 0 490px;grid-template-rows:auto minmax(180px,1fr) 154px;overflow:visible;}#invPanel .inv-cr-equipment{flex:0 0 575px;grid-column:auto;grid-row:auto;border-left:0;border-top:1px solid #a28a5a44;padding:12px 0 0;overflow:visible;}#invPanel .inv-cr-equipment-list{min-height:490px;overflow:visible;}#invPanel .inv-cr-detail{padding:12px;grid-template-columns:58px minmax(0,1fr);}#invPanel .inv-cr-detail>.inv-cr-gem{width:38px;height:48px;}#invPanel .inv-cr-footer>.inv-cr-note{max-width:70%;}}
+@media(prefers-reduced-motion:reduce){#invPanel .inv-cr-equipment-card{transition:none;}}
+
+/* Each named relic has its own silhouette, core mark and material color. Star is a separate rim. */
+#invPanel .inv-cr-gem[data-form=spire]{--cut:polygon(50% 0,78% 20%,73% 72%,50% 100%,27% 72%,22% 20%)}
+#invPanel .inv-cr-gem[data-form=eye]{--cut:polygon(0 50%,21% 18%,50% 8%,79% 18%,100% 50%,79% 82%,50% 92%,21% 82%)}
+#invPanel .inv-cr-gem[data-form=heart]{--cut:polygon(50% 21%,72% 2%,97% 17%,92% 54%,50% 100%,8% 54%,3% 17%,28% 2%)}
+#invPanel .inv-cr-gem[data-form=crown]{--cut:polygon(6% 15%,28% 36%,50% 2%,72% 36%,94% 15%,83% 91%,17% 91%)}
+#invPanel .inv-cr-gem[data-form=fang]{--cut:polygon(29% 0,79% 10%,95% 38%,57% 100%,43% 64%,10% 45%)}
+#invPanel .inv-cr-gem[data-form=seed]{--cut:polygon(50% 0,84% 25%,91% 57%,50% 100%,9% 57%,16% 25%)}
+#invPanel .inv-cr-gem[data-form=bolt]{--cut:polygon(62% 0,19% 53%,50% 51%,34% 100%,86% 41%,56% 44%)}
+#invPanel .inv-cr-gem[data-form=sun]{--cut:polygon(50% 0,62% 19%,81% 9%,81% 31%,100% 50%,81% 69%,81% 91%,62% 81%,50% 100%,38% 81%,19% 91%,19% 69%,0 50%,19% 31%,19% 9%,38% 19%)}
+#invPanel .inv-cr-gem[data-form=tear]{--cut:polygon(50% 0,76% 34%,89% 65%,73% 91%,50% 100%,27% 91%,11% 65%,24% 34%)}
+#invPanel .inv-cr-gem[data-form=shield]{--cut:polygon(50% 0,88% 12%,85% 70%,50% 100%,15% 70%,12% 12%)}
+#invPanel .inv-cr-gem[data-form=core]{--cut:polygon(50% 0,84% 15%,100% 50%,84% 85%,50% 100%,16% 85%,0 50%,16% 15%)}
+#invPanel .inv-cr-gem[data-form=wing]{--cut:polygon(0 22%,44% 40%,100% 0,75% 50%,90% 83%,46% 69%,13% 100%)}
+#invPanel .inv-cr-gem[data-form=root]{--cut:polygon(47% 0,70% 25%,100% 18%,76% 60%,95% 100%,52% 77%,15% 100%,25% 58%,0 23%,33% 28%)}
+#invPanel .inv-cr-gem[data-form=lantern]{--cut:polygon(37% 0,63% 0,70% 15%,91% 27%,82% 78%,65% 87%,65% 100%,35% 100%,35% 87%,18% 78%,9% 27%,30% 15%)}
+#invPanel .inv-cr-gem[data-form=hourglass]{--cut:polygon(15% 0,85% 0,75% 18%,56% 50%,75% 82%,85% 100%,15% 100%,25% 82%,44% 50%,25% 18%)}
+#invPanel .inv-cr-gem[data-form=well]{--cut:polygon(50% 0,91% 31%,84% 80%,50% 100%,16% 80%,9% 31%)}
+#invPanel .inv-cr-gem[data-form=reed]{--cut:polygon(50% 0,66% 22%,59% 57%,84% 34%,71% 74%,50% 100%,29% 74%,16% 34%,41% 57%,34% 22%)}
+#invPanel .inv-cr-gem[data-form=pupil]{--cut:polygon(50% 0,83% 16%,100% 50%,83% 84%,50% 100%,17% 84%,0 50%,17% 16%)}
+#invPanel .inv-cr-gem::after{content:attr(data-sigil);display:grid;place-items:center;color:#fff9;font:700 17px/1 Georgia,serif;text-shadow:0 1px 3px #000,0 0 7px #fff9;letter-spacing:0;}
+#invPanel .inv-cr-grid .inv-cr-gem::after{font-size:14px;}
+#invPanel .inv-cr-socket .inv-cr-gem::after{content:'';}
+#invPanel .inv-cr-stat{font:600 12px/1.55 'Noto Sans KR',sans-serif;color:#d6dfc3;overflow-y:auto;overflow-wrap:anywhere;max-height:74px;align-self:start;}
+#invPanel .inv-cr-detail>.inv-cr-note:nth-child(5){color:#dfc792;}
+
+/* Socket rows and skin bounds adapt to the actual equipment column width. */
+#invPanel .inv-cr-equipment-list{grid-template-rows:repeat(6,minmax(min-content,1fr));}
+#invPanel .inv-cr-equipment-card{grid-template-rows:13px minmax(32px,1fr) auto;min-width:0;}
+#invPanel .inv-cr-equipment-sockets{width:100%;max-width:100%;flex-wrap:wrap;justify-content:center;}
+#invPanel .inv-cr-socket{flex-shrink:0;}
+#invPanel .inv-cr-equipment-icon{display:flex;align-items:center;justify-content:center;max-width:100%;}
+#invPanel .inv-cr-equipment-icon>.iskin{width:36px!important;height:32px!important;max-width:100%;}
+#invPanel .inv-cr-equipment-icon:before{inset:-4px 0;}
+
+/* Relic inspection: readable names, separated powers and authored lore. */
+#invPanel .inv-cr-collection{grid-template-rows:auto minmax(120px,1fr) 208px;}
+#invPanel .inv-cr-grid{grid-template-columns:repeat(auto-fill,minmax(80px,1fr));grid-auto-rows:106px;gap:7px;}
+#invPanel .inv-cr-slot{padding:10px 5px 30px;overflow:hidden;}
+#invPanel .inv-cr-grid .inv-cr-gem{width:40px;height:50px;}
+#invPanel .inv-cr-slot:hover .inv-cr-gem,
+#invPanel .inv-cr-slot[aria-pressed=true] .inv-cr-gem{filter:saturate(1.18) contrast(1.14) drop-shadow(0 0 6px var(--gem-color));}
+#invPanel .inv-cr-label{left:4px;right:15px;bottom:6px;display:-webkit-box;-webkit-box-orient:vertical;-webkit-line-clamp:2;white-space:normal;overflow:hidden;text-overflow:clip;max-height:27px;text-align:center;font:600 10px/1.25 'Noto Sans KR',sans-serif;color:#e2d6bd;}
+#invPanel .inv-cr-grid .inv-cr-count{bottom:5px;right:4px;}
+#invPanel .inv-cr-detail{grid-template-columns:78px minmax(0,1fr);grid-template-rows:auto auto auto minmax(0,1fr) auto auto;column-gap:14px;align-content:stretch;padding:12px 16px;}
+#invPanel .inv-cr-detail>.inv-cr-gem{grid-column:1;grid-row:1/5;width:54px;height:70px;align-self:center;filter:saturate(1.12) drop-shadow(0 0 10px var(--gem-color));}
+#invPanel .inv-cr-name{grid-column:2;grid-row:1;font-size:17px;line-height:1.25;margin:0;}
+#invPanel .inv-cr-meta{grid-column:2;grid-row:2;margin:1px 0 2px;color:#d4bb82;font-size:10px;}
+#invPanel .inv-cr-unique{grid-column:2;grid-row:3;margin:0 0 4px;color:#d0b27b;font:700 10px/1.3 'Noto Sans KR',sans-serif;letter-spacing:.1em;}
+#invPanel .inv-cr-stat{grid-column:2;grid-row:4;display:flex;flex-direction:column;gap:2px;min-height:0;max-height:none;overflow-y:auto;margin:0;padding:0;scrollbar-width:thin;}
+#invPanel .inv-cr-effect{display:flex;align-items:center;justify-content:space-between;gap:8px;min-height:23px;padding:2px 8px 2px 9px;border-left:2px solid #a58a5b;background:linear-gradient(90deg,#ab835425,#485e5a0d 76%,transparent);font:500 11px/1.35 'Noto Sans KR',sans-serif;}
+#invPanel .inv-cr-effect-name{color:#d5d0c2;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+#invPanel .inv-cr-effect-value{color:#dcebbe;white-space:nowrap;font:700 13px/1.2 'Noto Sans KR',sans-serif;font-variant-numeric:tabular-nums;}
+#invPanel .inv-cr-lore{grid-column:1/-1;grid-row:5;margin:7px 0 2px;padding:5px 0 0;border-top:1px solid #a58a5b44;color:#b7aa91;font:italic 11px/1.4 'Noto Serif KR',serif;}
+#invPanel .inv-cr-slots{grid-column:1/-1;grid-row:6;margin:0;color:#938d7f;font:10px/1.35 'Noto Sans KR',sans-serif;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}
+#invPanel .inv-cr-detail .inv-cr-targets{display:none;}
+@media(max-width:700px){
+  #invPanel .inv-cr-collection{flex-basis:555px;grid-template-rows:auto minmax(170px,1fr) 210px;}
+  #invPanel .inv-cr-grid{grid-template-columns:repeat(auto-fill,minmax(76px,1fr));}
+  #invPanel .inv-cr-detail{grid-template-columns:62px minmax(0,1fr);padding:10px 12px;}
+  #invPanel .inv-cr-detail>.inv-cr-gem{width:42px;height:55px;}
+}
+@media(prefers-reduced-motion:reduce){#invPanel .inv-cr-slot .inv-cr-gem{transition:none;}}
+
+/* Socket readiness is based on an actual empty, compatible socket. */
+#invPanel .inv-cr-equipment-card[data-socket-state=ready]{border-color:#dfc77e;background:radial-gradient(ellipse at 50% 75%,#8b7e4538,transparent 80%),linear-gradient(#171e22,#0b1014);box-shadow:inset 0 0 0 2px #090d10,inset 0 0 0 3px #b9a36235,0 0 13px #d1b76b34;opacity:1;}
+#invPanel .inv-cr-equipment-card[data-socket-state=full]{border-color:#927c55a6;box-shadow:inset 0 0 0 2px #090d10,0 2px 5px #0008;}
+#invPanel .inv-cr-equipment-card[data-socket-state=incompatible]{opacity:.38;}
+#invPanel .inv-cr-socket[data-ready=true]{border-color:var(--socket-gem);background:radial-gradient(circle,color-mix(in srgb,var(--socket-gem) 27%,#101414),#0b0f12 72%);color:#f0ddb1;box-shadow:inset 0 0 0 2px #080d10,0 0 8px color-mix(in srgb,var(--socket-gem) 60%,transparent);}
+#invPanel .inv-cr-socket[data-ready=true]:hover{filter:brightness(1.35);box-shadow:inset 0 0 0 2px #080d10,0 0 13px var(--socket-gem);}
+#invPanel .inv-cr-socket[data-filled=true]{border-color:var(--socket-gem,#baab81);box-shadow:inset 0 2px 5px #000,0 0 5px color-mix(in srgb,var(--socket-gem,#baab81) 40%,transparent);}
+#invPanel .inv-cr-equipment-help{min-height:16px;}
+
+/* Two transparent 3x3 painted relic sheets replace the geometric gem cut. */
+#invPanel .inv-cr-gem,
+.cr-relic-inline{display:block;flex-shrink:0;clip-path:none;background-color:transparent;background-image:var(--relic-sheet);background-position:var(--relic-x) var(--relic-y);background-size:300% 300%;background-repeat:no-repeat;filter:drop-shadow(0 3px 3px #000c);transition:filter .16s,transform .16s;}
+#invPanel .inv-cr-gem::before,#invPanel .inv-cr-gem::after{display:none;}
+#invPanel .inv-cr-grid .inv-cr-gem{width:58px;height:58px;max-width:100%;filter:drop-shadow(0 4px 3px #000d);}
+#invPanel .inv-cr-detail>.inv-cr-gem{width:78px;height:78px;filter:drop-shadow(0 5px 7px #000e) drop-shadow(0 0 9px color-mix(in srgb,var(--gem-color) 42%,transparent));}
+#invPanel .inv-cr-socket .inv-cr-gem{width:20px;height:20px;}
+#invPanel .inv-cr-slot:hover .inv-cr-gem,#invPanel .inv-cr-slot[aria-pressed=true] .inv-cr-gem{filter:drop-shadow(0 0 7px var(--gem-color)) brightness(1.14);transform:translateY(-2px) scale(1.06);}
+#invPanel #invCrystalsPanel[data-gem-dragging=true] .inv-cr-slot[data-dragging=true]{border-color:#f1d391;box-shadow:inset 0 0 0 2px #21190b,0 0 18px #ddb66e88;}
+#invPanel #invCrystalsPanel[data-gem-dragging=true] .inv-cr-equipment-card[data-socket-state=ready]{border-color:#f4d690;box-shadow:inset 0 0 0 2px #090d10,0 0 18px #e6b85999;}
+#invPanel #invCrystalsPanel[data-gem-dragging=true] .inv-cr-socket[data-ready=true]{border-color:#ffe5ab;box-shadow:inset 0 0 0 2px #080d10,0 0 12px var(--socket-gem);}
+#invPanel #invCrystalsPanel[data-gem-dragging=true] .inv-cr-socket[data-drop-target=true]{border-color:#fff1ca;box-shadow:inset 0 0 0 2px #171007,0 0 18px #f3cf85;transform:scale(1.18);}
+#invPanel .inv-cr-slot[data-dragging=true][data-count="1"]>.inv-cr-gem{visibility:hidden;}
+#invPanel .inv-cr-drag-ghost{position:fixed;z-index:80;display:grid;place-items:center;width:64px;height:64px;padding:0;border:0;background:none;box-shadow:none;pointer-events:none;transform:translate(-50%,-50%);}
+#invPanel .inv-cr-drag-ghost .inv-cr-gem{width:58px;height:58px;filter:drop-shadow(0 4px 5px #000e) drop-shadow(0 0 11px var(--gem-color));transform:none;}
+/* Empty sockets are recessed black holes; readiness changes the rim, never the core. */
+#invPanel .inv-cr-socket[data-filled=false]{border-color:#756c58;background:radial-gradient(circle at 50% 52%,#000 0 43%,#030506 54%,#111817 65%,#050708 77%);box-shadow:inset 0 0 0 2px #171d1d,inset 0 2px 7px #000,0 1px 0 #a3906159;}
+#invPanel .inv-cr-socket[data-filled=false] .inv-cr-socket-empty{visibility:hidden;}
+#invPanel .inv-cr-socket[data-filled=false]:disabled{opacity:.6;}
+#invPanel .inv-cr-socket[data-filled=false][data-ready=true]{border-color:var(--socket-gem);box-shadow:inset 0 0 0 2px #202524,inset 0 2px 7px #000,0 0 0 1px var(--socket-gem),0 0 9px color-mix(in srgb,var(--socket-gem) 75%,transparent);}
+#invPanel .inv-cr-socket[data-filled=false]:not(:disabled):hover{background:radial-gradient(circle at 50% 52%,#000 0 43%,#030506 54%,#1a211d 65%,#050708 77%);border-color:#f4d99d;box-shadow:inset 0 0 0 2px #252724,inset 0 2px 7px #000,0 0 11px #e2bd76a8;}
+#invPanel #invCrystalsPanel[data-gem-dragging=true] .inv-cr-socket[data-filled=false][data-drop-target=true]{background:radial-gradient(circle at 50% 52%,#000 0 43%,#030506 54%,#22261d 65%,#050708 77%);border-color:#fff1ca;box-shadow:inset 0 0 0 2px #303027,inset 0 2px 7px #000,0 0 0 2px #e9bc6d,0 0 18px #f3cf85;}
+.cr-relic-inline{display:inline-block;vertical-align:middle;max-width:100%;}
+.cr-relic-fallback{display:none;}
+html.cr-relic-art-missing-1 #invPanel .inv-cr-gem[data-sheet="1"],html.cr-relic-art-missing-2 #invPanel .inv-cr-gem[data-sheet="2"]{clip-path:var(--cut);background:linear-gradient(125deg,#fffc 0%,#fff2 14%,transparent 27%,#0008 75%,#fff8 100%),conic-gradient(from 16deg at 48% 36%,#fff7 0deg 37deg,#0009 38deg 85deg,#fff1 86deg 131deg,#000b 132deg 180deg,#fff6 181deg 229deg,#0006 230deg 277deg,#fffb 278deg 322deg,#fff2 323deg 360deg),var(--gem-color);}
+html.cr-relic-art-missing-1 #invPanel .inv-cr-gem[data-sheet="1"]::before,html.cr-relic-art-missing-2 #invPanel .inv-cr-gem[data-sheet="2"]::before{display:block;}
+html.cr-relic-art-missing-1 .cr-relic-inline[data-sheet="1"],html.cr-relic-art-missing-2 .cr-relic-inline[data-sheet="2"]{background-image:none;}
+html.cr-relic-art-missing-1 .cr-relic-inline[data-sheet="1"] .cr-relic-fallback,html.cr-relic-art-missing-2 .cr-relic-inline[data-sheet="2"] .cr-relic-fallback{display:block;}
+@media(max-width:700px){#invPanel .inv-cr-detail>.inv-cr-gem{width:62px;height:62px;}}
+
+/* The source skins are square paintings: keep the card and image plane 1:1. */
+#invPanel .inv-cr-equipment-list{grid-template-rows:repeat(6,max-content);grid-auto-rows:max-content;align-content:start;}
+#invPanel .inv-cr-equipment-card{isolation:isolate;overflow:hidden;aspect-ratio:1;min-height:72px;width:100%;grid-template-rows:1fr;}
+#invPanel .inv-cr-equipment-name{position:absolute;top:2px;left:0;right:0;z-index:3;text-align:center;text-shadow:0 1px 3px #000,0 0 5px #000;}
+#invPanel .inv-cr-equipment-icon{position:absolute;inset:1px;z-index:0;width:auto;height:auto;max-width:none;display:flex;align-items:center;justify-content:center;pointer-events:none;}
+#invPanel .inv-cr-equipment-icon:before{inset:0;opacity:.42;}
+#invPanel .inv-cr-equipment-icon>.iskin{width:100%!important;height:100%!important;max-width:none;}
+#invPanel .inv-cr-equipment-icon :is(img,svg){width:100%;height:100%;max-width:none;max-height:none;object-fit:contain;}
+#invPanel .inv-cr-equipment-icon .iskin-img{transform:none;}
+#invPanel .inv-cr-equipment-sockets{position:absolute;z-index:2;bottom:3px;left:0;right:0;margin:0;}
+#invPanel .inv-cr-socket{background-color:#030506;box-shadow:inset 0 2px 6px #000,0 0 0 2px #080b0dd9,0 2px 4px #000;}
+#invPanel .inv-cr-socket[data-filled=false]{box-shadow:inset 0 0 0 2px #171d1d,inset 0 2px 7px #000,0 0 0 2px #080b0de8,0 1px 0 #a3906159;}
+#invPanel .inv-cr-socket[data-filled=false][data-ready=true]{box-shadow:inset 0 0 0 2px #202524,inset 0 2px 7px #000,0 0 0 2px #080b0de8,0 0 0 3px var(--socket-gem),0 0 9px color-mix(in srgb,var(--socket-gem) 75%,transparent);}
+@media(max-width:700px){
+  #invPanel .inv-cr-equipment-list{grid-template-columns:repeat(4,minmax(0,1fr));grid-template-rows:none;grid-auto-rows:max-content;}
+  #invPanel .inv-cr-equipment-list>.inv-cr-equipment-card{grid-column:auto!important;grid-row:auto!important;}
+  #invPanel .inv-cr-portrait{display:none;}
+}
+@media(max-width:480px){#invPanel .inv-cr-equipment-list{grid-template-columns:repeat(3,minmax(0,1fr));}}

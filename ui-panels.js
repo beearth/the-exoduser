@@ -122,6 +122,29 @@
       details.append(label(el('summary'), '아이템 필터', 'Item filters'));
       filters.before(details); details.append(filters);
     }
+    // Hover previews ignore pointer events; scroll them from the source item.
+    root.addEventListener('wheel', event => {
+      if(event.ctrlKey || event.metaKey || event.shiftKey || !event.deltaY) return;
+      if(!event.target.closest('.inv-item,.inv-eq-slot,.inv-cell,.oss-center')) return;
+      const preview = document.getElementById('invRight');
+      if(!preview?.classList.contains('inv-hover-preview') || getComputedStyle(preview).visibility !== 'visible' || preview.clientHeight === 0) return;
+      const compareCards = preview.classList.contains('inv-side-compare')
+        ? [...preview.querySelectorAll('.inv-compare-card')]
+        : [];
+      const scrollTargets = compareCards.length ? compareCards : [preview];
+      if(!scrollTargets.some(node => node.scrollHeight > node.clientHeight)) return;
+      const unit = event.deltaMode === 1 ? 16 : event.deltaMode === 2 ? preview.clientHeight : 1;
+      for(const node of scrollTargets) node.scrollTop += event.deltaY * unit;
+      event.preventDefault();
+    }, {passive:false});
+    root.addEventListener('focusin', event => {
+      const button=event.target.closest('.inv-actions button');
+      if(!button) return;
+      const rail=button.closest('.inv-actions');
+      const bounds=rail.getBoundingClientRect(),item=button.getBoundingClientRect();
+      if(item.right>bounds.right) rail.scrollLeft+=item.right-bounds.right;
+      else if(item.left<bounds.left) rail.scrollLeft-=bounds.left-item.left;
+    });
     root.classList.add('ui-composed'); nav.children[0].click();
   }
   function init() {

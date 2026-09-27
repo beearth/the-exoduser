@@ -1,0 +1,23 @@
+/* Keep the knight illustration tied to the viewport, not the zoomable tree. */
+@media (min-width: 781px) {
+  #statPanel.growth-body-tree.growth-constellation .growth-tree-viewport::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    z-index: 0;
+    pointer-events: none;
+    background:
+      linear-gradient(rgba(7, 12, 10, .17), rgba(7, 12, 10, .17)),
+      url("https://d8j0ntlcm91z4.cloudfront.net/user_3G1zto9sz11Uf3iEOhJefE9HdGG/hf_20260927_102905_7c7fc782-eb73-4bf0-9f4b-4de19dfa79ae.png") center / 100% 100% no-repeat;
+    -webkit-mask-image: radial-gradient(66% 74%, #000 55%, transparent 100%);
+    mask-image: radial-gradient(66% 74%, #000 55%, transparent 100%);
+  }
+
+  #statPanel.growth-body-tree.growth-constellation .growth-tree-scene {
+    z-index: 1;
+  }
+
+  #statPanel.growth-body-tree.growth-constellation .growth-tree-scene::before {
+    content: none;
+  }
+}

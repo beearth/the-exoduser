@@ -1,5 +1,13 @@
 # PC 패키징 기준 (2026-09-10)
 
+## 2026-09-27 보석함 스타일 패키징 보완
+
+| 항목 | 반영 |
+|---|---|
+| `build-nwjs.mjs` / `FILES` | 기존 `inventory-gems.css` 다음에 `inventory-gems-finish.css` 추가 |
+| 사유 | `game.html`에서 참조하는 보석함 최종 스타일이 브라우저에만 존재하고 NW.js 복사 목록에서 누락된 문제 수정 |
+| 검증 | 디스크 game.html 링크·FILES 목록·CSS 존재 확인. 실제 NW.js 빌드·CLI 패키징 테스트는 터미널 오류로 미실행 |
+
 현재 프로젝트의 PC 패키징은 아래 실제 설정을 기준으로 한다.
 
 > **2026-09-14 Steam Deck 시험본:** 별도 `tools/steamdeck-package.mjs`가 기존 Windows 실행 엔진과 현재 게임 데이터를 `out/EXODUSER-steamdeck-test-20260914-r2`에 독립 복사한다. 1280×800·중간 효과·60FPS 상한 및 작은 키캡 보정을 적용하며, 실제 Deck/Proton은 기기 부재로 미검증이다. 기존 일반 빌드 진입점·설정은 유지한다. [패키지·설정·검증 계약](STEAM_DECK_PREPARATION_20260914.md).

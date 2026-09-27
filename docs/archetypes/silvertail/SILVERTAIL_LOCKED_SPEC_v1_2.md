@@ -8,7 +8,7 @@
 
 EXODUSER: HELL LORD / FDG
 스코프: **Blade Tail ↔ 쌍단검 설계 충돌 종결 + 스프라이트 제작용 LOCKED SPEC.**
-근거: `SILVERTAIL_ARCHETYPE_v1.md` / `_v1_1.md`(기구·스킬), `PIXELLAB_PROMPT.md`, `refs/` MASTER TURNAROUND(09_41_58)·WEAPON BIBLE(10_20_48).
+근거: `SILVERTAIL_ARCHETYPE_v1.md` / `_v1_1.md`(기구·스킬), `PIXELLAB_PROMPT.md`, 아래 장비·실루엣 텍스트 계약. 과거 MASTER TURNAROUND·WEAPON BIBLE PNG는 2026-09-27 사용자 지정 이미지 정리로 제거했다. 현행 외형 키아트는 [`SILVERTAIL_KEYART_CANON_20260927.md`](./SILVERTAIL_KEYART_CANON_20260927.md)의 2장이다.
 성격: 아래 [A]~[I]는 **LOCKED**. 재질문 없이 이 값으로 스프라이트/아트 제작 진입 가능. 스킬·수치는 v1_1 유지(무변경).
 
 ---

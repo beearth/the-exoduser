@@ -6,11 +6,41 @@
 | 성능 진단 | `?perf=1` 또는 `G.debugPerf=true`에서 활성 적 300마리 초과 시 기존 프로파일러가 켜진다. 300마리 이하에서는 꺼진다. |
 | 검증 | 300마리 초과 브라우저 검증에서 일반 모드 `enabled=false`/`hooked=false`, `?perf=1` 모드 `enabled=true`/`hooked=true`. 관련 회귀 테스트 5건 통과. 전후 FPS 수치는 실행 순서에 민감해 확정하지 않았다. |
 
+## 2026-09-27 기검참 차징 검기 단계별 성장
+
+| 범위 | 현행 결과 |
+|---|---|
+| 차징 시각 | 0/1/2/3단에서 몸을 감싸는 검기 기본 크기 78/91/104/117px. 단계 사이 최대4px 성장, 단계 완료 시 크기와 밝기가 상승. 두 게임 HTML에 동일 적용 |
+| 검증 | `test/kiSlashHoldCharge.test.cjs`에서 매 60f 단계 경계의 크기 증가와 최대 단계의 시작 대비 1.4배 이상 크기를 검사 |
+
+## 2026-09-27 기검참 3타 충전 재조정
+
+| 범위 | 현행 결과 |
+|---|---|
+| 조작·피해 | 1초마다 1단씩 최대 3단. 3타 검기 피해는 무충전 대비 2/4/8배(60/120/180f), 근접 스윙·ST·거리 불변 |
+| 시각 | 홀드 검기 중심을 플레이어 몸에 맞추고 단계별 기본 크기를 78/91/104/117px로 조정. 비행 검기 크기는 충전 단계별 1/1.4/1.8/2.2배 유지. 3타 명중 섬광 폭은 184/257.6/331.2/404.8px |
+| 적용·검증 | `game.html`, `game-easy-test.html`, `test/kiSlashHoldCharge.test.cjs`, [충전 계약](2_1%20스킬관리+합체시스템+자원/KISLASH_HOLD_CHARGE_20260927.md) 및 밸런스·VFX 문서 동기화 |
+
+## 2026-09-27 성장 화면 투자 단위 버튼 제거
+
+| 항목 | 현행 동작 |
+|---|---|
+| 능력치 투자·환불 | `×1`·`×10` 선택 UI와 생성 코드를 제거. 기본 능력치·근성의 상세 `+`·`−`는 항상 1포인트(1 SP)씩 계획에 반영 |
+| 적용 범위 | `game.html`, `game-easy-test.html`, `stat-panel-ui.js`, `stat-panel-ui.css` 및 UI·밸런스·번역 문서 동기화 |
+| 검증 | `test/growthRemaster.test.js` 8/8 통과. 로컬 게임 성장 화면에서 선택 버튼 0개, 능력치 `+1` 계획 후 SP 40→39·투자값 0→1, 1920×900 시각 배치 확인. `test/localizedGrowthSearch.test.js`는 Playwright Chromium 실행 파일 부재로 미실행 |
+
+## 2026-09-27 기검참 충전 임팩트 정비
+
+| 범위 | 변경 |
+|---|---|
+| 3타 홀드 연출 | 랜덤 붉은 입자·떠오르는 단계 문구를 제거. 기존 붉은 기검참 시트를 가산 합성. 현행은 플레이어 몸 중심에 78/91/104/117px로 단계별 확대 표시하고, 긴 집속 곡선을 제거하며 60/120/180f 단계 자국을 유지. 로딩 실패 폴백과 GPU/Canvas2D 합성 유지 |
+| 적용·수치 | `game.html`, `game-easy-test.html` 공통. 현행 피해 2/4/8배, 비행 범위·시간·ST·해제 발사·Q 취소는 [충전 계약](2_1%20스킬관리+합체시스템+자원/KISLASH_HOLD_CHARGE_20260927.md)에 동기화 |
+
 ## 2026-09-27 기검참 3타 홀드 충전
 
 | 대상 | 현재 동작 | 검증 |
 |---|---|---|
-| `game.html`, `game-easy-test.html` 기검참 | 1·2타 즉시 발사, 3타 입력 홀드 중 준비 자세·충전 피드백, 해제 시 3타 검기 1회 발사. 완료된 60f마다 기본 검기 피해 +1배, 180f 최대4배. 3타 판정 반경120→168→216→264px, 비행 크기252→352.8→453.6→554.4px. 근접 타격·ST·거리 유지, Q 취소 시 충전 초기화 | `test/kiSlashHoldCharge.test.cjs`, `test/kiSlashSwingSound.test.js`, `test/kiSlashQCancel.test.js`, `test/basicAttackDamage.test.js` |
+| `game.html`, `game-easy-test.html` 기검참 | 1·2타 즉시 발사, 3타 입력 홀드 중 준비 자세·충전 피드백, 해제 시 3타 검기 1회 발사. 완료된 60/120/180f마다 1/2/3단, 검기 피해 2/4/8배. 3타 판정 반경120→168→216→264px, 비행 크기252→352.8→453.6→554.4px. 근접 타격·ST·거리 유지, Q 취소 시 충전 초기화 | `test/kiSlashHoldCharge.test.cjs`, `test/kiSlashSwingSound.test.js`, `test/kiSlashQCancel.test.js`, `test/basicAttackDamage.test.js` |
 | 설계·밸런스·VFX 문서 | [기검참 홀드 계약](2_1%20스킬관리+합체시스템+자원/KISLASH_HOLD_CHARGE_20260927.md)에 시간·공식·표시·취소를 기록하고 스킬·피해·VFX 표를 동기화 | 코드/문서 키워드 검색 |
 
 ## 2026-09-26 — 적 장판 마법진과 폭발 화염
@@ -47,15 +77,29 @@
 | 보존 | 클릭 선택 상세는 포인터 상호작용 유지, 기존 선택 복원·장착·분해 동작 유지 |
 | 검증 | tools/check-inventory-hover.cjs: 1280×720·1920×1080·900×900 총120회 통과, 기존 가방 레이아웃 검사 포함. inventoryPaperdollLayout.test.cjs 2개 통과 |
 
-## 2026-09-24 — 엘리트 금색 고정 링 제거
+## 2026-09-24 — Q 보호막형 정예 에너지 오오라와 레어 네임드 이름표
 
-| 등급 | 색 | 오오라 결 수 | 기본 각도폭 | 중심선 폭 | 후광 폭 | 글로우 블러 |
-|---|---|---:|---:|---:|---:|---:|
-| 매직 | #4488ff | 2 | 0.94~1.08rad | 1.85px | 8px | 11px |
-| 레어 | #ffaa00 | 3 | 0.94~1.08rad | 2.30px | 9px | 14px |
-| 챔피언 | #ff4444 | 4 | 0.84~0.98rad | 2.75px | 10px | 17px |
+| 범위 | 계약 |
+|---|---|
+| 등급 오오라 | 플레이어 Q 홀드 보호막의 _SA_IMG 스프라이트 사용(5×4, 20프레임). 닫힌 원형/타원형 밴드 및 기하학적 외곽선은 그리지 않는다. |
+| 애니메이션 | Q 홀드와 같은 시트 프레임 0/1 교차(약 140ms 간격). 매직 e.r×5, 레어 e.r×5.8, 챔피언 e.r×6.4로 크게 둘러싼다; pulse=.92+.08×sin(now/105+etype). |
+| 색상 | 매직 파랑 원본, 레어 금색 hue-rotate(187deg), 챔피언 빨강 hue-rotate(145deg). 레어몬스터(etype 90~99)는 최소 레어 오오라 적용. |
+| 네임드 이름표 | etype 90~99는 월드 위에 금색 #ffd24a 이름을 상시 표시한다. 호버 정보에도 동일한 현지화 이름을 사용한다. |
 
-각 결은 `sin(a×3 + now×0.006 + lane×1.7)×2.1 + sin(a×5.4 − now×0.004 + lane×0.9)×1.1`의 윤곽 파동과 시간 위상으로 움직인다. 닫힌 원형 채움·이중 테두리를 없애고 오오라 결만 유지한다. 챔피언의 흰 마름모 노드4개, 등급 색, 능력치는 유지. `test/eliteTelegraphVisibility.test.js`에서 금색 링의 열린 간격, 시간에 따른 픽셀 이동, 챔피언 적색 가독성, 양 렌더 경로를 검증.
+| etype | 한글명 | English name |
+|---:|---|---|
+| 90 | 방랑 기사 | Wandering Knight |
+| 91 | 보물 악마 | Treasure Demon |
+| 92 | 거울의 사도 | Mirror Apostle |
+| 93 | 상인 악마 | Merchant Demon |
+| 94 | 사슬의 죄수 | Chained Prisoner |
+| 95 | 시간의 사도 | Time Apostle |
+| 96 | 탐욕의 사도 | Greed Apostle |
+| 97 | 저주받은 쌍둥이 | Cursed Twins |
+| 98 | 차원 균열체 | Dimensional Rift |
+| 99 | 죽음 그 자체 | Death Itself |
+
+test/eliteTelegraphVisibility.test.js와 test/rareMobNameplates.test.js에서 프레임 진행, 색상 틴트, 링 미사용, 양 렌더 경로, 네임드 10종 및 금색 이름표를 검사한다.
 
 ## 2026-09-24 — 바닥 핏자국 자동 페이드
 
@@ -305,7 +349,7 @@
 | 적용 | 변경 |
 |---|---|
 | 생성 에셋 | GPT 내장 이미지 생성: `ki_slash_radiant_sheet.png` 3×3·9프레임, `ki_slash_hit_radiant_sheet.png` 2×2·4프레임. 모두1254×1254·검정 가산 배경(검기 RGB, 명중 RGBA) |
-| 기검참 | 백열 칼날·겹검기·칼날 잔상 2장, 전사 청색/실버테일 보라색/3타 붉은빛. 본체 폭192/252px, 명중광140/184px. 구 로딩 실패 폴백 유지 |
+| 기검참 | 백열 칼날·겹검기·칼날 잔상 2장, 전사 청색/실버테일 보라색/3타 붉은빛. 무충전 본체 폭192/252px, 명중광 1·2타140px/3타184px(충전 시 최대404.8px). 구 로딩 실패 폴백 유지 |
 | 성능·판정 | 틴트는 로드 시 1회 캐시, 비행은4 drawImage. 일반 적 명중의 점 파티클을 전용 명중 시트로 교체. 피해·자원·공속·사거리·충돌 반경·히트스톱 유지 |
 | 문서·검수 | `KI_SLASH_RADIANT_20260915.md`, VFX 구현가이드 동기화. 비교 화면·27프레임/팔레트 조합·실제 렌더 결과는 `output/ki_slash_radiant_20260915` |
 
@@ -48589,13 +48633,21 @@ mpR = 0.05 + s.int×0.005                                        [NO P.lv×0.001
 세부 계약: `docs/8.0몬스터디자인/탄막시스템_총정리.md`의 “차징 링 진행 표시” 표.
 ## 2026-09-24 — 기둥 악마 충격 링/탄종 정합성
 - etype 46의 어두운 `EL.D` 충격 링 아래 근접 추가탄이 몬스터 `e.el`을 사용해 물리탄으로 바뀌던 불일치를 수정. 근접 추가탄도 `EL.D`로 고정하고 회귀 테스트 추가.
-## 2026-09-24 — 정예 금색 오라와 물리탄 차징 링 분리
-- 정예 레어 등급의 회전 금색 오라가 흰 물리탄 차징 링 반경(`e.r+10`)과 겹치던 렌더 경로를 수정. 오라 기준 반경을 `e.r+25+tier×4`로 바꿔 등급 표시와 공격 예고를 공간상 분리.
 ## 2026-09-24 실버테일 Shift 비행·착지 모션
 
 - 사용자 요청으로 실버테일용6포즈×8방향 전용 투명 시트를 제작·연결. 본체·등검 원화를 기준으로 은발 포니테일, 흑철 갑주, 회전검 허브를 보존한다.
 - 기존 `WarriorDashFlight` 아틀라스 합성기에 `silvertail` 에셋 선택 추가. 본체→등검 공격→비행 순서로 합성하고 로드 실패/캐릭터 전환 폴백을 유지한다. 비행은 사슬 이동 벡터를 향하고, 기존 사슬 시간·전투 판정에 손대지 않고 시각 높이만 적용한다.
 - 에셋 계약·수치·한계·미리보기는 `docs/archetypes/silvertail/SILVERTAIL_DASH_FLIGHT_20260924.md` 참조. 에셋/프롬프트: `output/imagegen/silvertail_dash_20260924/`.
+## 2026-09-24 물리탄 링-실제 발사 경로 전수 점검
+
+| 경로 | 원인 | 조치 |
+|---|---|---|
+| 심연의 앵글러 혈안 3연사 | 원소 에너지 충전 링이 먼저 보이고, 뒤이어 `titanEye` 물리탄이 직접 생성되어 물리 전조 단계가 없었음 | 각 혈안탄을 `_emitEnemyShot`에 연결해 실제 물리 분류 기준 순백 링과 `물리탄 차징 · E로 패링` 60f 후 발사. 3발 간격 유지 |
+| 보스 나선탄 | 직접 `spawnProj`로 생성되어 물리 속성도 즉시 방출 | `EL.P`만 공격 시작점 60f 물리 경고 후 180f 활성 발사. 마법 속성의 기존 즉시 발사/180f 지속 보존 |
+| 보스 환영검 | 회전 준비 60f가 있었지만 물리/E 표식 없음 | 기존 준비 동작에 물리 속성 한정 흰 링과 물리/E 문구 추가. 발사 일정 유지 |
+
+- 정예의 Q 보호막 시트 에너지 오오라는 사용자의 최신 디자인 상태로 유지하며 물리 경고 링으로 취급하지 않는다.
+- `test/projectileParryClassification.test.js`: 실제 탄 분류, 앵글러 큐 경유, 나선탄 속성별 대기, 환영검 물리 라벨을 회귀 검증한다.
 
 
 ### 2026-09-25 CH1-1 생체 디테일 마감: 중복 독액 장식
@@ -48618,8 +48670,6 @@ mpR = 0.05 + s.int×0.005                                        [NO P.lv×0.001
 
 전체 메뉴와 로비의 최신 재질·제목·문양·선택·초점·스크롤 스타일은 UI_COMPOSITION_20260925.md의 **2026-09-26 전체 메뉴 마감 절**을 따른다.
 
-전체 메뉴와 로비의 최신 재질·제목·문양·선택·초점·스크롤 스타일은 UI_COMPOSITION_20260925.md의 **2026-09-26 슬롯과 상호작용 마감 절**을 따른다.
-
 
 ### 2026-09-26 생체 야영지·대왕나무 국소 움직임
 
@@ -48629,9 +48679,31 @@ mpR = 0.05 + s.int×0.005                                        [NO P.lv×0.001
 | m_c1cocoon / m_c1spod | 기존이미지알파를이용한바닥투영그림자+밑동접촉그림자,밑동고정호흡.다른stage/평면pool제외 |
 | 보존·성능 | 좌표/크기/pivot/충돌/원본파일불변.동적canvas _glVer 및기존GPU텍스처재사용.추가캐시19.109310150146484MiB(native,기존나무그림자/GPU복제별도).상세공식·검수는CH1_LIVING_DETAIL_RUNTIME_20260925.md 13차 14차: 손가락별 접힘 지연·연속 관절 연결·투명셀 베이크 생략. 손14차/뿌리15차/매달린물체17차 계약 참조. 16차 고치3개·왼쪽시체1개에 이어17차 오른쪽시체1개 추가: 고치3개·시체2개, 고정 매듭 중심 진자 회전. 18차 원본 하단28% 알파 기반 접촉 그림자 추가(512×192,0.375MiB). 현행 수치·검증은 CH1_LIVING_DETAIL_RUNTIME_20260925.md 18차 참조. |
 
+전체 메뉴와 로비의 최신 재질·제목·문양·선택·초점·스크롤 스타일은 UI_COMPOSITION_20260925.md의 **2026-09-26 슬롯과 상호작용 마감 절**을 따른다.
+## 2026-09-26 — 철갑 전대 기본 공격을 전방 검기로 변경
+
+| 항목 | 현재 계약 |
+|---|---|
+| AI·주기 | 900px 탐색, 320px에서 추적 정지, 46f마다 검기 1장 발사 |
+| 검기·판정 | 전방 50px 시작, 18px/f, 최대 360px, 반폭 `44×big+적r`. 경로의 적은 검기당 1회 타격. 기존 피해·치명·넉백·`EL.D` 유지 |
+| 외형 | 작은 은백색 초승달을 절차적으로 렌더. 기본 공격의 구 8프레임 대검 스윙과 근접 즉시 광역 판정 중지 |
+| 유지 | 강림·보행·탄막 흡수·재입력 설치와 폭발·100타 내구도 |
+| 검증 | `test/ancestorKiWave.test.js`, `test/ancestorSwordSkill.test.js` |
+
 전체 메뉴와 로비의 최신 재질·제목·문양·선택·초점·스크롤 스타일은 UI_COMPOSITION_20260925.md의 **2026-09-26 유니크 분해 NaN 수정과 상세창 마감 절**을 따른다.
 
 전체 메뉴와 로비의 최신 재질·제목·문양·선택·초점·스크롤 스타일은 UI_COMPOSITION_20260925.md의 **2026-09-26 창고와 상세 스크롤 마감 절**을 따른다.
+
+## 2026-09-26 — 철갑 전대 발구르기 기절·붉은 충전 탄막 흡수
+
+| id·항목 | 현행 수치·조건 | 적용 위치 |
+|---|---|---|
+| `ancestorSummon` 발구르기 | 강림 완료 후 주변 적이 있을 때 600f(10초)마다 자율 발동. 발 들기 24f, 착지 후 회복 12f, 총 36f. 기존 보행 시트 자세와 30f 지면 링 사용 | `_updateAncestorStomp(a,sp,bd)`, `_stompCd/_stompT/_stompRingT` |
+| 착지 판정 | 반경 `200×big`, 피해 없음. 일반 적 기절 90f, `_pImmune` 없는 보스 기절 30f. `_stunImmune`과 돌진 예고·진행(`eChargeWind`/`eCharge`) 중인 적은 제외 | `_ancestorStompImpact(a)` |
+| 평상시 전대 | 적 탄막 어그로·흡수 없음. 전방 검기·100타 내구도·근접 피격 계약 유지 | `_ancestorTargetForEnemy()`, 투사체 충돌 |
+| 재입력 설치 | 첫 72f 칼 꽂기에는 탄막 어그로·흡수 없음. 마지막 60f 붉은 충전에서만 일반 적 탄막을 표적 유도·흡수. 만충 24발이면 어그로도 종료 | `_ancestorCanAbsorb(a)`; `_recalling && 0<_swordT<=60 && _swordAbsorbed<24` |
+| 충전 흡수 | 반경=`105+85×clamp(1-_swordT/132,0,1)`(붉은 시작 약 151px→최대 190px), 최대 24발. 아군탄·`blackBean`·mine/trap/web/poisonZone·소멸탄 제외. 기존 폭발 반경·피해·흡수 1발당 HP/MP/ST 각 100 반환 유지 | `_ancestorSwordAbsorbProjectiles()`, `_detonateAncestorSword()` |
+| 충전 시각 | 갑옷 뒤 흡수 오라와 검으로 모이는 12개 빛줄기를 적주황으로 표시. 바닥 링도 붉은 충전 중 적색 `#ff4a28`·밝은 주황 `#ffd6b8`으로 전환 | `_drawAncestorAbsorbAura()`, 전대 설치 바닥 링 |
 
 
 ## 2026-09-27 소지품 필터와 상세 보조 정보
@@ -48647,7 +48719,7 @@ mpR = 0.05 + s.int×0.005                                        [NO P.lv×0.001
 |---|---|
 | 인벤토리 제목판 | 직계 헤더의 .ptitle display:none. 제목 이미지와 가상요소도 표시하지 않음 |
 | 정보행 | 전투력/악의/닫기 유지. gap0, margin4px 0 8px |
-| 높이 배분 | inv-wrap 첫 행270px, 가방 행 minmax(240px,1fr). 확보한 나머지 높이는 가방에 배정. 작은 화면은 기존 바깥 세로 스크롤 사용 |
+| 높이 배분 | 장비 탭 inv-wrap 첫 행270px, 가방 행 minmax(min-content,1fr). invCenter height:auto/min-height260px,invGrid height140px/flex1 1 140px. 필터 높이를 반영하며 나머지 높이는 가방에 배정. 작은 화면은 기존 바깥 세로 스크롤 사용 |
 | 적용 범위 | 인벤토리 내부 장비/유골함/보석/보관함 페이지 공통. 다른 메뉴 제목 유지 |
 
 CSS 캐시 ui-refinement.css?v=20260927-4. 신규 이미지/아이템 데이터 변경/자동 테스트 추가·실행 없음.
@@ -48674,7 +48746,8 @@ CSS 캐시 ui-refinement.css?v=20260927-4. 신규 이미지/아이템 데이터 
 | 유골함 탭 배낭 | slot=ossuary 또는 bonePart인 소지 아이템 모두 표시. 장착 유골함·등록 도감은 우측 컬렉션(폭899px 이하 가방 아래)에서 표시 |
 | 장비 탭 배낭 | ossuary/bonePart 제외 |
 | 보관함 탭 배낭 | 기존 전체 소지 아이템 표시 |
-| 전환 | _invChangeCategory: INV.selected=null, _invHover=-1, 분해 선택 clear, invFilter의 slot/rarity/el=null. renderInv 후 정보창 숨김 |
+| 전환 | 초기 UI 구성은 기본 equipment 탭과 접근성 상태만 설정한다. inventoryPage가 이미 정의되고 새 탭과 다를 때만 _invChangeCategory 호출: INV.selected=null, _invHover=-1, 분해 선택 clear, invFilter의 slot/rarity/el=null. renderInv 후 정보창 숨김. 같은 탭 재선택은 재렌더하지 않음 |
+| 초기화 회귀 검증 (2026-09-27) | test/uiPanelInitialization.test.js 2개 통과. 수정 전 플레이어 생성 전 렌더 호출 실패 재현 후 수정. Chrome에서 게임 시작 및 설정→인벤토리→유골함 전환 확인 |
 | 개수 | invCount는 현재 분류 보유 개수. invMax/BAG_MAX는 기존 공유 용량 |
 | 일괄 조작 | 전체 쓰레기 지정/일괄분해는 filtered에 포함된 현재 표시 아이템만 대상. 분해는 확인창에 제시한 _jkItems 객체만 제거 |
 | 데이터 | INV.bag/장착/도감/창고 저장 구조와 기존 좌표·용량 유지. 실제 아이템 복제·자동등록·소모 없음 |
@@ -48697,7 +48770,7 @@ CSS 캐시 ui-refinement.css?v=20260927-4. 신규 이미지/아이템 데이터 
 | 상호작용 | 부위 버튼 클릭/키보드 선택 → 하단 성장 효과. 중앙 유골함 좌클릭 상세, 호버 미리보기, 우클릭/유골함 해제 버튼. 유골 부위 우클릭/선택 유골 해제 버튼으로 가방 반환. 기존 등록/분해 유지 |
 | DOM | renderOssPanel이 최초 1회 createElement/append로 구성. 이후 기존 노드·초점·핸들러 보존, 특정 리프 textContent만 갱신. 부모 innerHTML 교체 없음 |
 | 제단 레이아웃 | 유골함 탭 창 폭 min(980px,100vw−24px),높이 min(680px,94vh). 좌측 가방/우측 컬렉션 동등한 1fr씩,간격10px. 제단 최대폭380px/높이284px,원환274×274px. 중앙90×100px,부위88×88px. 두개골(50%,16%),팔(18%,50%),몸통(82%,50%),다리(50%,84%). 유골함 그림58×66px,부위38×38px |
-| 좁은 화면 | 폭899px 이하 가방 위/컬렉션 아래,행240px/minmax(440px,1fr),세로 스크롤. 폭560px 이하 부위76×88px,중앙82×100px,팔x15%/몸통x85%,패딩10px 8px. 제단284px/원환274px/그림 크기 유지 |
+| 좁은 화면 | 폭899px 이하 가방 위/컬렉션 아래,행max-content/minmax(440px,1fr),가방최소260px·격자140px,세로 스크롤. 폭560px 이하 부위76×88px,중앙82×100px,팔x15%/몸통x85%,패딩10px 8px. 제단284px/원환274px/그림 크기 유지 |
 | 그림·폴백 | 기존 유골함58×66px/부위38×38px. 제단·슬롯 PNG 유지. 로딩 실패 시 이름·그림·조작 및 CSS 바탕 유지 |
 | 금속 원환 | 1024px 석재·황동 제단 아트를274×274px로 표시 |
 | 접근성 | 실제 button·aria-label·aria-pressed·focus-visible. 해금 상태 role=status, 부위 설명 aria-live=polite. reduced-motion 시 transition 제거 |
@@ -48707,7 +48780,16 @@ CSS 캐시 ui-refinement.css?v=20260927-4. 신규 이미지/아이템 데이터 
 실제 유골 수집 기록이 없는 구세이브는 잠금 상태로 표시된다. 임시 우회로 소환하던 기록을 유골 수집으로 만들어 주지 않으며 기존 아이템·도감 저장값을 삭제하거나 이관하지 않는다.
 
 
+
 ## 2026-09-27 보석 전용 인벤토리
+
+**패키징 누락 수정:** `build-nwjs.mjs`의 `FILES`에 `inventory-gems-finish.css` 추가. 기존 맵 검증 기록에서 보고한 동시작업 CSS 목록 누락을 해소했다. 디스크 소스의 CSS 링크/FILES 포함 검증이며 실제 NW.js 빌드 성공을 의미하지 않는다.
+
+**중앙 배치판 최종 적용:** 보석함 창 최대1280px·높이 min(860px,96vh), 보유 보석 영역과 캐릭터 주변17부위 배치판(.78:1.22). 장착 현황 used/total 표시, 호환 부위 강조, 장식 이미지 로딩 실패 폴백. 실제 코드 브라우저12항목 및 독립 화면 장착·390px 검수 완료. `docs/3.1 ui hud 디자인/GEM_ATELIER_20260927.md`가 아래 이전 디자인 규격을 대체한다. CSS 키 `20260927-atelier2`; 기존 장착 규칙·저장 계약 유지.
+
+**디자인 보강 최종값:** `inventory-gems-finish.css` 후순위 적용으로 창 최대1100px·높이 min(780px,94vh), 제목 ‘보석함’, 보석 이름 표시, 장비 이미지 생성 크기38px, 원형 홈23×23px로 보강. 유골함 받침/원판 이미지 재사용. 기존 17부위·장착/탈착 유지. 아래 이전 980×680 규격은 이 보강 전 기록. 전체 수치는 `UI_COMPOSITION_20260925.md`의 ‘보석함 디자인 보강 — 최신 확정’ 참조.
+
+**후속 확정 — 유골함형 보석함:** 좌우 2단(폭 최대980px, 높이 min(680px,94vh))으로 변경. 왼쪽 보유 보석/상세, 오른쪽 `SLOT_NAMES` 17부위 전체를 4열로 표시한다. 미장착 부위도 표시. 빈 홈은 선택 보석 장착 또는 호환 피커 열기, 장착 홈은 무료 탈착. 기존 부위 제한·보석 수치 유지. 클릭 시 장비/홈/보석 객체 재검증, 성공 시 `dbSaveNow`. 상세 규격은 `UI_COMPOSITION_20260925.md`의 유골함형 보석함 절, 회귀 검증은 `test/crystalEquipment.browser.js`(격리 브라우저 9항목 통과). 터미널 장애로 CLI/Git 검증·커밋은 미완료.
 
 사용자 요청은 유골함처럼 보석 전용 인벤토리 탭을 만드는 것이다. 기존 장비·결정 등급/수치/저장 구조는 변경하지 않는다.
 
@@ -48756,7 +48838,7 @@ CSS 캐시 ui-refinement.css?v=20260927-4. 신규 이미지/아이템 데이터 
 | 제단 에셋 | img/ui/ossuary_altar_hf_v2.png,1024×1024 RGB. .oss-ritual-ring:before, normal 합성. radial mask 62% 불투명/66% alpha .6/71% 투명. 로딩 실패 시 아래 CSS 석색 radial 바탕 유지 |
 | 슬롯 에셋 | img/ui/ossuary_socket_hf_v2.png,1024×1024 RGBA, 모서리 alpha0. .oss-center:before/.oss-bone-node:before, background-size125% 112%, normal 합성. 원본 픽셀/알파 보존, 런타임 색 필터만 적용. 실패 시 부위 텍스트·그림·상호작용 유지 |
 | 배치 | 유골함 탭 창 폭 min(980px,100vw−24px),높이 min(680px,94vh). 좌측 가방/우측 컬렉션 동등한 1fr씩,간격10px. 제단 최대폭380px/높이284px,원환274×274px. 중앙90×100px,부위88×88px. 두개골(50%,16%),팔(18%,50%),몸통(82%,50%),다리(50%,84%). 유골함 그림58×66px,부위38×38px |
-| 모바일 | 폭899px 이하 가방 위/컬렉션 아래,행240px/minmax(440px,1fr),세로 스크롤. 폭560px 이하 부위76×88px,중앙82×100px,팔x15%/몸통x85%,패딩10px 8px. 제단284px/원환274px/그림 크기 유지 |
+| 모바일 | 폭899px 이하 가방 위/컬렉션 아래,행max-content/minmax(440px,1fr),가방최소260px·격자140px,세로 스크롤. 폭560px 이하 부위76×88px,중앙82×100px,팔x15%/몸통x85%,패딩10px 8px. 제단284px/원환274px/그림 크기 유지 |
 | 등급 표현 | 모든 테두리 금속 재질 통일. 개별 등급은 이름의 70% RARITY_C+30%#e1ccb0 혼색 및 하단4×4px 마름모 보석. 선택 프레임 brightness1.28/saturate.9. 수집 프레임 brightness.95/saturate.75,미수집.6/.4 |
 | 읽기 | 슬롯에는 부위명·그림·등급만 노출. .oss-bone-tier display:none. 선택 상세는 부위·등급·T(t+1)·위력(r+t)·성장 효과. 중앙 이름은 하단 어두운 명판 위에 표시 |
 | 완료 | 4/4+유골함 장착 시 중앙 프레임 brightness1.14/saturate.9, 제단 brightness.9/saturate.85. 기본 제단 .72/.7. 소환 해금 배지와 미수집 상태 구분 |
@@ -48764,7 +48846,14 @@ CSS 캐시 ui-refinement.css?v=20260927-4. 신규 이미지/아이템 데이터 
 | 불변 | 실제 4부위 해금 조건, 등급·티어 저장, 상위 r+t 등록, 전대 전투 수치, 재입력 회수 |
 | 제작 | Higgsfield GPT Image 2.5(gpt_image_2_5),quality high,resolution1k,aspect1:1. 잔액1111.25 확인 후 2건 생성, GPT API 폴백 없음 |
 | 작업 ID | 제단9ceb151d-45d5-476e-83ec-3a13c63e6b25 / 슬롯fa8121e1-87f3-4623-89c1-2edcd900e15e |
-| 최종 화면 검증 | 1440×1080 실화면·390×844 좁은 화면 시각 확인. 1280×720/390×844 슬롯 겹침0·가로넘침0. 수집0→4 해금,상위갱신/하위거부,DOM 유지 확인. pageerror0. tmp/ossuary_altar_complete.png·ossuary_altar_390.png |
+
+
+## 2026-09-27 대장간 제작 카드 마감
+
+| 변경 | 검증 |
+|---|---|
+| ui-refinement.css: 카드 재질·이름/효과/비용 구획·호버/선택·확인 바 마감 | 6탭×3해상도 레이아웃 통과, pageerror0. CSS만 변경 |
+| 문서 동기화 | docs 전체 fg-in/fg-id/fg-ic/fg-sel/forgeConfirm 검색. UI_COMPOSITION_20260925.md 최신 규격 및 phase2 참조 반영 |
 
 
 ## 2026-09-27 유골함 가방·컬렉션 반반 구성
@@ -48772,13 +48861,32 @@ CSS 캐시 ui-refinement.css?v=20260927-4. 신규 이미지/아이템 데이터 
 | 항목 | 현행 계약 |
 |---|---|
 | 배치 | 유골함 탭 창 폭 min(980px,100vw−24px),높이 min(680px,94vh). 좌측 가방/우측 컬렉션 동등한 1fr씩,간격10px. 제단 최대폭380px/높이284px,원환274×274px. 중앙90×100px,부위88×88px. 두개골(50%,16%),팔(18%,50%),몸통(82%,50%),다리(50%,84%). 유골함 그림58×66px,부위38×38px |
-| 반응형 | 폭899px 이하 가방 위/컬렉션 아래,행240px/minmax(440px,1fr),세로 스크롤. 폭560px 이하 부위76×88px,중앙82×100px,팔x15%/몸통x85%,패딩10px 8px. 제단284px/원환274px/그림 크기 유지 |
+| 반응형 | 폭899px 이하 가방 위/컬렉션 아래,행max-content/minmax(440px,1fr),가방최소260px·격자140px,세로 스크롤. 폭560px 이하 부위76×88px,중앙82×100px,팔x15%/몸통x85%,패딩10px 8px. 제단284px/원환274px/그림 크기 유지 |
 | 정보 밀도 | 큰 제단 영역을 축소. 부위명·그림·등급은 슬롯에 유지,선택한 부위의 티어·위력·성장 효과는 하단 상세1곳. 상세 최소높이42px,패딩8px 10px |
 | 재질 | 기존 제단·슬롯 아트 재사용. 슬롯 background-size125% 112%,중앙 inset −6px −4px,부위 inset −4px −2px. 등급 보석4×4px/bottom3px. 새로운 생성 에셋 없음 |
 | 헤더·여백 | 컬렉션 기본 패딩10px 12px,제목14px(폭560px 이하12px),헤더 padding2px 0 8px. 부위명11px/1.4,footer padding8px 0 6px. 상세·힌트 margin4px 0 |
-| 데이터·입력 | DOM·수집·저장·해금·장착·해제·분해 로직 유지. 가방10열·기존 셀 크기 및 내부 스크롤 유지 |
+| 데이터·입력 | DOM·수집·저장·해금·장착·해제·분해 로직 유지. 가방10열·가용 너비에 맞춘 셀 크기 및 세로 내부 스크롤 유지(2026-09-27: 스크롤바 여유 최소12px 확보) |
 | 적용·캐시 | ui-refinement.css,game.html,game-easy-test.html. ui-refinement.css?v=20260927-bone-hover-flow |
 | 검증 | 기존 ossuaryCollection 회귀6개 PASS. 저장 API를 차단한 실제 game.html UI에서1440×1080/1280×720/900×720 동등폭·좌우 배치,390×844 상하 배치 확인. 노드 겹침0·페이지 가로넘침0·pageerror0. 전환 연출을 QA 전용 CSS로 숨겨 검수했으며 게임 시작부터의 전체 흐름은 검증하지 않음. 캡처 tmp/ossuary_split_1440.png, tmp/ossuary_split_390.png |
+
+
+## 2026-09-27 대장간 화면 공간 후속 정비
+
+| 변경 | 검증 |
+|---|---|
+| 낮은 데스크톱 제목88px·본문 여백 조정 |1280×720 목록 높이58px 확보 |
+| 폭1200px 이하6탭을3열2행으로 재배치 |520×800 목록clientHeight16→196px,1024×768 70→254px |
+| 디스크 반영·회귀 |서버CSS 일치,5해상도×6탭 실제 클릭30조합PASS,pageerror0. 문서 전체 관련 키워드 검색 후 UI 구성/phase2 동기화 |
+| 남은 작업 |터미널 장애 및 .git 쓰기 제한으로 로컬 커밋 미완료. 승인 재요청 반복 없이 대체 파일 수정 경로 사용 |
+
+
+## 2026-09-27 스킬 장착바 가독성 마감
+
+| 변경 | 검증 |
+|---|---|
+| 장착바42×48px/키10px/아이콘26px, 좁은 화면 가로스크롤 |4해상도×4분류16조합 통과, 마지막 슬롯 팝업 열림 확인 |
+| 낮은 화면 제목88px·요약 패딩 정리 |디스크CSS 재로딩,1280×720 시각 확인,오류0 |
+| docs |관련 키워드 전체 검색, UI_COMPOSITION 최신 표 반영. 수치·저장 로직 변경 없음. 커밋 미완료 |
 
 
 ## 2026-09-27 보관함 좌우 반반 구성
@@ -48792,10 +48900,34 @@ CSS 캐시 ui-refinement.css?v=20260927-4. 신규 이미지/아이템 데이터 
 | 창고 슬롯 | 기본6열,간격6px,폭100%/높이auto/aspect-ratio1. 패딩10px 12px. 아이템 그림 _itemSkin(item,34),빈 반환 시 _itemIco 폴백. 이름 title,등급점3×3px/좌상단3px. 기존 아트 로딩 폴백 경로 유지 |
 | 가방 하단 | 보관 목록 margin-top8px. 제목12px/1.5,padding8px 0. 목록 최대높이112px,행 최소30px/padding4px 6px,아이템명12px/보관11px |
 | 보관함 정보 | invStHeader 12px/1.5,margin8px 0 12px. 용량·저장·정렬·필터·접기·펼치기 기존 로직 유지 |
-| 좁은 화면 | 폭899px 이하 가방 위/보관함 아래,행360px/minmax(280px,1fr),세로 스크롤. 폭560px 이하 보관함5열 |
+| 좁은 화면 | 폭899px 이하 가방 위/보관함 아래,행max-content/minmax(280px,1fr),가방최소360px·격자140px,세로 스크롤. 폭560px 이하 보관함5열 |
 | 적용 | ui-refinement.css 캐시20260927-bone-hover-flow/ui-panels.js 캐시20260927-storage-split. game.html/game-easy-test.html 공통 |
 | 검증 | uiPanelInitialization 회귀3개 PASS. 저장 API 차단한 game.html UI에서 보관1회·꺼내기1회·탭 왕복 시 노드 동일성 PASS.1440×1080/1280×720/900×720 좌우 동등폭,390×844 상하 배치,가로넘침0·슬롯 넘침0·pageerror0. QA에서 전환 연출만 숨김,게임 시작 전체 흐름은 검증 범위 밖 |
 | 화면 | tmp/storage_split_1280.png,tmp/storage_split_390.png. 원본 백업 tmp/storage-split-backup |
+
+
+## 2026-09-27 스킬 분류 탭·카드 디테일 마감
+
+| 변경 | 검증 |
+|---|---|
+|4분류 전용 클래스·활성색 변수,금속판·호버·작은화면 간격 |4해상도×4분류16조합PASS,모션감소0s,pageerror0 |
+| 추천 탭 중복 제목 스타일 분리 |양쪽 게임 HTML 동기화,일반 inline syntax1개/쉬운 inline4개 구문PASS |
+| docs |관련 키워드 docs 전체검색,UI 구성/phase2 규격 동기화. 커밋은 기존 환경 장애로 미완료 |
+
+
+## 2026-09-27 추천 빌드 진행 카드 마감
+
+| 변경 | 검증 |
+|---|---|
+| 단계의 complete/current/upcoming 시각 표식과 제목·설명 클래스,완료 축약행·현재 황동선·텍스트 대비 |4해상도×3진행상태12조합PASS,양쪽 게임 구문PASS,실제 투자·저장 로직 변경 없음 |
+| 문서 |docs 전체 키워드검색,UI 구성 규격/추천빌드 계약 동기화. 기존 환경 장애로 커밋 미완료 |
+
+
+### 2026-09-27 CH1 지면21차 — 독구덩이 경계
+
+| 코드 | 적용 | 문서 |
+|---|---|---|
+| Ch1LivingDetail.groundSprite / toxicRimCache | stage0 m_c1gtoxicf(6500,5460)에 국소 경계색·18px 알파 전이. 원본881×900 보존,정적캐시3.0246734619140625MiB. game.html 모듈20260927-21 | [21차 계약·검수](4.1맵디자인+설정/CH1_LIVING_DETAIL_RUNTIME_20260925.md) |
 
 
 ## 2026-09-27 대장간 탭 글자 중앙 정렬
@@ -48808,6 +48940,42 @@ CSS 캐시 ui-refinement.css?v=20260927-4. 신규 이미지/아이템 데이터 
 | 파일 | game.html/game-easy-test.html 동일 변경 |
 | 검증 | 저장 API 차단·전환 연출만 숨긴 game.html UI.1440×1080/1280×720/1024×768/390×844에서6개 라벨 중심과 버튼 중심의 가로 오차0px,영역 이탈0.6탭 클릭 전환 PASS,pageerror0. 수정 전1280px +52.8px,1024px +76.63px,390px +21.81px 쏠림 재현 |
 | 캡처 | tmp/forge_alignment_after_1280.png. 게임 시작 전체 경로·실제 강화/제작 비용 소비는 검증 범위 밖 |
+
+
+## 2026-09-27 가방 마지막 열 잘림 수정
+
+| 항목 | 현재 구현 |
+|---|---|
+| 적용 위치 | game.html, game-easy-test.html의 renderInv 및 ui-refinement.css의 #invGrid |
+| 가용 너비 | 부모 clientWidth에서 computed paddingLeft와 paddingRight를 뺀 안쪽 너비 |
+| 스크롤바 여유 | max(12, grid.offsetWidth − grid.clientWidth)px; scrollbar-gutter:stable로 세로 스크롤바 공간 확보 |
+| 셀 크기 | max(1,min(56,floor((가용 너비 − 스크롤바 여유)/10)))px. 기존 최소38px 제한을 없애 좁은 화면에서도10열 전체 표시 |
+| 그리드 폭 | 10 × 셀 크기 + 스크롤바 여유. 기존 자동 좌우 여백으로 중앙 정렬, overflow-x:hidden 유지 |
+| 창 크기 변경 | 부모 clientWidth 변경을 ResizeObserver로 감지해 renderInv 재실행. 높이만 바뀔 때는 재실행하지 않음 |
+| 좌표 | 셀·아이템·드래그 모두 _GC_SZ 사용. 격자 시작점과 아이템 _gx/_gy 저장 좌표 유지 |
+| 검증 | 1920/1280/900/640/390px 너비에서 마지막 열 및2×2 아이템 오른쪽 경계 확인. 리사이즈 후 드래그 x8→x6 확인 |
+
+
+## 2026-09-27 가방 패딩 충돌·분할 화면 높이 보정
+
+| 항목 | 현재 구현 |
+|---|---|
+| 공통 격자 | ui-refinement.css의 #invPanel.panel .pbox #invGrid: display:block,padding:0,gap:0 모두 important. 절대좌표 셀에 기존 CSS Grid의 패딩9px/gap4px이 적용되던 충돌 제거 |
+| 좁은 분할 화면 | 폭899px 이하 유골함/보관함 탭만 적용. invCenter height:auto,유골함 min-height260px/보관함360px. invGrid height140px/flex0 0 140px. 모두 important |
+| 행 높이 | 유골함 max-content minmax(440px,1fr),보관함 max-content minmax(280px,1fr). 필터 펼침·보관 목록 높이를 첫 행에 반영하고 전체 본문 세로 스크롤 유지 |
+| 데이터 | 셀 수·저장 좌표·아이템 이동·필터 기능 불변. CSS 변경만 적용 |
+| 검증 | 실제 디스크 CSS를 새로고침해390/640/899/900/1280/1920px ×2탭×필터 열림/닫힘24조합. 가방 부모 세로 넘침0,가방 가로 넘침0,페이지 가로 넘침0,마지막 열 경계 정상,pageerror0 |
+| 검수 환경 | 저장 API 쓰기 차단 테스트 캐릭터,2×2 아이템 포함. canvas만 QA CSS로 숨김. 보고서 tmp/bag-split-fit-review/report.json. 실제 저장·전체언어·게임패드 미검증 |
+
+
+## 2026-09-27 CH1 독구덩이 재질 연결22차
+
+| 항목 | 변경·검증 |
+|---|---|
+| 런타임 | ch1-living-detail.js?v=20260927-22. pit_poison(6500,5580)의16프레임 atlas에 기존 prop_g_toxic.png 벽·독액 crop 적용. 미로드 시 기존 절차식 폴백,로드 후 캐시 교체. 원본·좌표·충돌·수축 보존 |
+| 계약 | [런타임22차](4.1맵디자인+설정/CH1_LIVING_DETAIL_RUNTIME_20260925.md)의 수치표·MAP PRODUCTION REPORT가 현행. 맵디테일/관련기획6문서 동기화. 전체 docs grep 완료 |
+| QA | 맵관련29 PASS,전체31중30 PASS/기존 패키징1 FAIL(inventory-gems-finish.css). 카메라10+COMBAT,HTTP오류0/외부차단5,mapUnchanged=true. SIDE_R/POOL_DETAIL p95 33.4ms,COMBAT p95 50ms. VISUAL VERDICT RETOUCH |
+| Git | .git 권한과 승인후 셸 생성오류로 커밋 미완료. 타작업 staged 보존,push/deploy 없음 |
 
 
 ## 2026-09-27 등록 유골 해제·가방 반환
@@ -48828,6 +48996,89 @@ CSS 캐시 ui-refinement.css?v=20260927-4. 신규 이미지/아이템 데이터 
 | 검증 | 신규 ossuaryWithdrawal6개+기존 ossuaryCollection6개=12 PASS. 브라우저 버튼 해제·우클릭·재등록·유골함 버튼 해제·1280/390px 조작부 스크롤 접근 PASS,pageerror0. 저장API 차단/전환연출 숨김,실사용 저장파일 수정 없음. tmp/bone_withdrawal_1280.png |
 
 
+## 2026-09-27 장비 가방 높이·긴 호버 설명 접근 수정
+
+| 항목 | 현행 계약 |
+|---|---|
+| 장비 탭 높이 | ui-refinement.css: data-inventory-page=equipment의 inv-wrap 행270px minmax(min-content,1fr),invCenter height:auto/min-height260px,invGrid height140px/flex1 1 140px. 모두 important. 필터를 펼치면 행이 늘고 큰 화면에서는 가방이 남은 높이를 사용 |
+| 호버 상세 휠 | ui-panels.js inventory 초기화에서 invPanel wheel 위임. .inv-item/.inv-eq-slot/.inv-cell/.oss-center 위에서 invRight가 inv-hover-preview이며 visible이고 clientHeight>0/실제 세로 넘침이 있을 때만 상세 스크롤 |
+| 입력 규칙 | deltaMode=0은 픽셀,1은16px,2는상세창 clientHeight 배율. deltaY=0 또는 Ctrl/Meta/Shift는 전달하지 않음. 처리할 때만 preventDefault/passive:false,양끝에서도 가방 이동 방지. 빈 칸에서는 기존 가방 스크롤 |
+| 표시 | game.html _invRenderDetail의 preview 분기에 inv-preview-scroll-hint 리프 생성. KO 휠: 상세 스크롤 / EN Wheel: scroll details. sticky top0/z-index2/padding4px 6px/margin-bottom8px/배경#181417/글자#c9bda7/11px 500 1.5/아래선1px #75624766 |
+| 기존 동작 | 호버 미리보기 pointer-events:none 유지. 마우스 이탈 시 정보창 숨김,선택·장착·저장 유지. game-easy-test.html은 기존 비미리보기 상세 구현이므로 preview 안내를 추가하지 않음; 공통 CSS와 가드된 리스너만 로드 |
+| 검증 | 390×844/640×720/900×720/1280×720/1920×1080 ×4탭×필터 열림/닫힘40조합: 표시된 가방의 세로·가로 넘침0,페이지 가로 넘침0. 휠 상세 위/아래 끝 접근,배경 가방 정지,마우스 이탈 숨김,빈 칸 휠 가방 이동 확인. pageerror0 |
+| 회귀·환경 | gameHtmlInlineSyntax 및 uiPanelInitialization 기존 테스트4개 PASS. 저장 API 차단 테스트 캐릭터와 실제 저장 CSS/JS로 검수,canvas만 QA에서 숨김. 전체언어·게임패드·실제 저장 미검증. tmp/inventory-detail-audit/report.json |
+
+
+## 2026-09-27 CH1 촉수 포복23차
+
+| 항목 | 현행 변경·검증 |
+|---|---|
+| 사용자 교정 | 스크린샷184846의 dry 생체촉수:밑동 고정·끝 선행 이동·몸통 지연 당김. wet 독액 촉수와 월드 앵커·충돌 유지 |
+| 수치 | 전진최대18atlas px,지연.85rad,횡굴곡9px/끝3px,갈래.8rad.16프레임/약6.614초 유지. [런타임23차](4.1맵디자인+설정/CH1_LIVING_DETAIL_RUNTIME_20260925.md)의 공식·MAP PRODUCTION REPORT 참조 |
+| QA | 효과24+geometry5+구문1=30 PASS. 카메라11+COMBAT/GIF 검수,mapUnchanged=true,HTTP오류0/외부차단5. COMBAT p95 50ms. VISUAL VERDICT RETOUCH(국소포복 적용,지면접합 잔여) |
+| Git | 권한·셸 오류로 커밋 미완료. 다른작업 staged 보존,push/deploy 없음 |
+
+
+## 2026-09-27 좁은 장비 카드의 홈·아이콘 잘림 수정
+
+| 항목 | 구현·검증 |
+|---|---|
+| 원인 | 작은 화면의4홈 장비가 nowrap과 고정21px 마지막 행 때문에 카드 오른쪽을 넘음. 38px 스킨 wrapper와42×32px 받침도 불일치 |
+| 수정 | inventory-gems-finish.css에서 장비판 행 minmax(min-content,1fr),카드 마지막 행 auto/min-width0. 홈 컨테이너width/max-width100%·wrap·center,버튼flex-shrink0. 아이콘 flex 중앙정렬/max-width100%,내부 .iskin36×32px important/max-width100%,받침 inset −4px 0 |
+| 폭 검증 |360/390/700/701/900/1280/1920px에서17부위 유지,카드·홈·아이콘 가로 넘침0,홈의 카드 경계 이탈0,페이지 가로 넘침0. 본문 세로 스크롤로 모든 부위 접근 |
+| 실제 조작 |390px에서 왕관4번째 홈에 피의 맹세 장착:보유12→11/장착0→1,탈착:보유11→12/장착1→0. 저장 API와 저장 함수를 차단한 테스트 캐릭터 메모리만 사용 |
+| 회귀 갱신 |test/crystalEquipment.browser.js의 제거된 cr_hp/cr_atk/cr_mp를 현행 cr_martyr_tear/cr_blood_oath/cr_last_breath로 교체. 기존12개 시나리오 그대로 브라우저 실행 PASS. 최초 구 ID 기반 실패와 현행 ID 재검증을 구분 |
+| 범위 |장비 부위 좌표·보석 능력치·비용·저장 구조 불변. CSS 및 기존 테스트 입력만 수정. 전체언어·게임패드 검증 없음. tmp/gem-detail-audit에 결과·백업 |
+
+
+## 2026-09-27 CH1 촉수 피부막 접합24차
+
+| 항목 | 현행 변경·검증 |
+|---|---|
+| 구현 | ch1-living-detail.js?v=20260927-24. dry membrane3종의 기존 불규칙 윤곽 안쪽28 정규화 단위에 smoothstep 알파 감쇠. RGB·중앙피부·촉수포복·wet·collision 유지. 추가 상주atlas0 |
+| 수치·보고 | [런타임24차](4.1맵디자인+설정/CH1_LIVING_DETAIL_RUNTIME_20260925.md)의 공식·MAP PRODUCTION REPORT 참조. 전체docs 검색과 맵디테일 동기화 완료 |
+| QA | 효과25+geometry5+구문1=31 PASS,wet native RGBA byte 동일. 카메라11+COMBAT/GIF,HTTP오류0/외부차단5,mapUnchanged=true. COMBAT p95 50ms. VISUAL VERDICT RETOUCH |
+| Git | 기존 권한·셸오류로 커밋 미완료. 공유index·타작업 보존,push/deploy 없음 |
+## 2026-09-27 고유 보석 18종 전면 교체
+
+| 대상 | 현행 변경·검증 |
+|---|---|
+| `game.html` | 일반 단일 옵션 결정 18종을 각각 2~3개 실효 옵션의 이름 있는 보석으로 교체. 드롭/가루 제작/악의 제작은 신규 id만 사용. 기존 id는 `dbRestore()`에서 보유·장착·가방·창고 홈 모두 1:1 변환하며 성급/강화/위치를 보존 |
+| `inventory-gems-finish.css`, 보석 UI | 18개 고유 실루엣·각인·색, 성급 테두리 분리. 보석함·피커·장비 상세·대장간 강화 전후에 모든 옵션 표시. CSS 캐시 `20260927-unique1` |
+| 검증 | 메인 JS 구문, 18종 모두 2~3옵션과 5성+20강 배율, 실제 게임 세이브 보유17/장착1 변환 및 능력치 3개 적용, 보석함 17부위 확인. `test/crystalForgeManagement.test.js` 11개·`test/crystalEquipment.browser.js` 1개 통과 |
+| 문서 | `docs/2_9 결정슬롯시스템/2_9 결정슬롯시스템.md` 현행 18종 표, 장비 파트·UI·번역 문서 동기화. 이전 일반 결정표는 이력으로 명시 |
+
+
+## 2026-09-27 결정 선택 팝업 디테일 보정
+
+| 항목 | 현행 규격·동작 |
+|---|---|
+| 적용 | game.html/game-easy-test.html renderCrystalBag 및 closeCrystalPicker,공통 ui-refinement.css |
+| 창 | #crBagPop border-box,폭 min(380px,100vw−24px),최대높이 min(70vh,100dvh−24px),padding12px,gap8px,선1px #8b7350,모서리0,기존 ui-surface320px 재사용 |
+| 제목·닫기 | cr-picker-head gap8px/shrink0,제목14px600/1.5·색#dfcba4·줄바꿈,가루11px. cr-picker-close는 type=button/aria-label 닫기 또는 Close,30×30px. focus-visible 2px #ead1a0/offset−3px |
+| 필터 | cr-picker-filters는20개 균등 CSS 열/gap5px. 첫4분류 각각5열,성급5개 각각4열. 최소높이28px/padding3px 4px/11px1.4. 기존 분류·성급 클릭 핸들러 유지 |
+| 목록 | cr-picker-list min-height0,세로스크롤/가로hidden,overscroll contain,thin/stable scrollbar,gap6px. cr-picker-item shrink0/wrap/padding8px,선#67563f/모서리0. 이름12px600/1.5·flex1,마지막 옵션행100%/위여백5px/위선1px #67563f66/11px1.65,긴 옵션 줄바꿈 |
+| 빈 결과 | 장비 슬롯 및 필터 조건 통과 후 visibleCount 증가. 0이면 role=status 안내. 주머니 자체가 비면 기존 결정이 없습니다,보유 중 필터0건이면 현재 장비와 필터에 맞는 보석이 없습니다. / No gems match this equipment and filter. |
+| 닫기 | closeCrystalPicker가 _crBagOpen=false,_crPickSlot=null,_crPickCb=null 후 팝업숨김. 닫기 버튼이 공통 함수 호출. 선택 콜백과 원래 bag index 전달 유지 |
+| 검증 |320×568/360×740/390×844/640×480/1280×720 모두 화면 안,가로 넘침0·행 텍스트 넘침0. 장비와 맞지 않는 필터/빈 주머니 안내,선택 후 콜백/피커 상태 초기화,Enter로 닫기 확인 |
+| 환경·제한 | 저장 함수 및 API 쓰기를 차단한 테스트 캐릭터. main inline syntax 테스트1개 및 easy 인라인4개 구문PASS. 검수 재실행 pageerror0. 모든 언어·패드 미검증. tmp/crystal-picker-detail에 백업·보고서 |
+
+
+## 2026-09-27 CH1 독구덩이 바닥 접합25차
+
+| 항목 | 변경·검증 |
+|---|---|
+| groundSprite | m_c1gtoxicf(6500,5460)의고정18px 알파전이를 원본명도별24~56px로 대체. L=.299R+.587G+.114B,rock=clamp((L-35)/100),폭=24+32×(1-rock). 원본·내부·충돌·캐시크기유지 |
+| 계약 | [런타임25차](4.1맵디자인+설정/CH1_LIVING_DETAIL_RUNTIME_20260925.md)의공식·MAP PRODUCTION REPORT참조. 전체docs검색,관련기획6문서·맵디테일수치동기화 |
+| QA | 맵검사32 PASS,카메라11+COMBAT,mapUnchanged=true,HTTP오류0/외부차단5. COMBAT p9533.5ms. VISUAL VERDICT RETOUCH. 원본PNG blob동일 |
+| Git | 기존권한·셸오류로커밋미완료. 공유index보존,push/deploy없음 |
+## 2026-09-27 고유 보석 감정판 디테일
+
+| 변경 | 검증 |
+|---|---|
+| 이름 2줄, 18종 선택 광택, 2~3옵션 개별 행, 18종별 한국어/영어 설정 문구. 감정판208px·보석칸80×106px, CSS 캐시 `20260927-unique2` | 실제 게임 2·3옵션 상세와 17부위, 390px 가로 넘침0. `test/crystalForgeManagement.test.js`에 개별 옵션 행/문구 검증 추가 |
+
+
 ## 2026-09-27 유골 해제 직후 호버 초기화
 
 | 항목 | 현행 동작 |
@@ -48838,6 +49089,37 @@ CSS 캐시 ui-refinement.css?v=20260927-4. 신규 이미지/아이템 데이터 
 | 스타일 | CSS 호버 밝기 적용 대상을 등록된 유골(.collected)과 장착 유골함(.oss-center:not(.empty))으로 제한. 빈 소켓과 빈 유골함 transition:none으로 해제 직후 원래 밝기로 복귀 |
 | 적용 | game.html, game-easy-test.html, ui-refinement.css. CSS 캐시 20260927-bone-hover-clear |
 | 검증 | ossuaryWithdrawal+ossuaryCollection 12개 PASS. 저장 API 차단 브라우저에서 네 부위 우클릭→미수집/title 없음/재등록, 선택 해제, 유골함 해제→title 없음, 1280/390px 및 pageerror0 확인 |
+
+
+## 2026-09-27 CH1 독구덩이 앞턱26차
+
+| 항목 | 변경·검증 |
+|---|---|
+| pit 앞턱 | 재질로드 상태의매끈한반원을외벽과같은불규칙반경·dash[13,7,5,11]로교체. 접촉alpha.42/2px·강조.12/1px. 미로드폴백RGBA동일,충돌·수면보존 |
+| 계약 | [런타임26차](4.1맵디자인+설정/CH1_LIVING_DETAIL_RUNTIME_20260925.md)의공식·MAP PRODUCTION REPORT참조. 전체docs검색,관련기획3문서·맵디테일동기화 |
+| QA | 맵검사32PASS,카메라11+COMBAT,mapUnchanged=true,HTTP오류0/외부차단5. COMBAT p9550ms. VISUAL VERDICT RETOUCH |
+| Git | 기존권한·셸오류로커밋미완료. 공유index보존,push/deploy없음 |
+## 2026-09-27 보석 장착 가능 홈 피드백
+
+2026-09-27 고유 보석 아트: 기하학적 CSS 컷 보석을 18개 비대칭 저주 유물 이미지로 교체. Higgsfield GPT 이미지 시트2장(각 3×3) 생성·배경 제거, 투명 WebP 내장 로컬 SVG 768×768px 2개를 `assets/gems/`에 저장. 보석함 칸58×58px·감정판78×78px(작은 화면62×62px)·장착 홈20×20px·대장간 작은 아이콘에 연결. 시트 로딩 실패 시 기존 CSS/SVG 아이콘 폴백. CSS 캐시 `20260927-relic-art2`. 옵션·성급·저장·장착 수치 변경 없음. 게임에서 18종 실표시·로컬 파일 HTTP200·SVG 디코딩·구문 확인, 보석 관련 Node 테스트13개 통과. [아트 좌표와 제작 기록](3.1%20ui%20hud%20디자인/GEM_ATELIER_20260927.md).
+
+| 변경 | 검증 |
+|---|---|
+| 선택 보석과 호환되면서 실제 빈 홈이 있는 장비만 `ready` 강조. 빈 홈에 보석색 링, 꽉 찬 호환 장비는 `full`, 채워진 홈은 장착 보석색 링. 장비판에 장착 가능 빈 홈 수 표시. 채워진 홈 hover/focus는 장착 보석의 옵션 감정판을 임시 표시하고 떠나면 선택 보석으로 복귀. CSS 캐시 `20260927-unique3` | 실제 게임에서 사냥꾼의 눈 선택 시 빈 홈4개·왕관/석궁 ready·무기 full 확인. 장착 피의 맹세 hover/leave 미리보기 확인. 보석함 격리 회귀 내부16항목·Node 전체13테스트 통과 |
+
+
+## 2026-09-27 인벤토리·보석 피커 키보드 조작 보정
+
+| 항목 | 현재 구현 |
+|---|---|
+| 하단 조작 | 양쪽 game HTML의 _invRenderDetail에서 장착·분해·해제·꺼내기 id-btn을 type=button으로 렌더. 기존 onclick 동작 유지,48px 하단 영역·가로 스크롤 유지 |
+| 피커 필터 | cr-picker-filter type=button/data-filter/aria-pressed. renderCrystalBag가 재렌더 전 포커스된 필터 key를 읽고 동일 key 버튼에 focus({preventScroll:true}) 복원. CSS의 span 선택자는 해당 버튼 class로 변경 |
+| 피커 목록 | cr-picker-item type=button. Enter/Space 기본 클릭 사용. 게임패드 목록 선택자는 div[onclick]에서 .cr-picker-item으로 변경하여 기존 순서·클릭 경로 보존 |
+| 전역 키 예외 | K/KH 입력 등록 전에 초점 대상이 #invPanel.on button 또는 #crBagPop button이고 code가 Space/Enter/NumpadEnter/Tab이면 게임 키 핸들러 return. preventDefault 없이 브라우저 기본 입력 사용. 버튼 밖 기존 Space 쓰레기·Tab 메뉴 동작 유지 |
+| 초점 표시 | 피커 필터/목록 focus-visible outline2px #ead1a0/offset−3px,상속폰트/색·왼쪽정렬. 기존 하단 버튼 초점 표시 유지 |
+| 하단 초점 노출 | ui-panels.js inventory focusin에서 .inv-actions button 경계를 측정. 오른쪽 또는 왼쪽 이탈분만큼 rail.scrollLeft 조정. 본문 세로 위치·가방 높이 변경 없음 |
+| 검증 | 실제 Space로 필터 변경·보석 선택·장착·해제 성공. Space 후 junk=false 보존. Tab/Shift+Tab 이동·필터 초점 유지 확인.320/390/640/1280px에서 실제 Tab 이동 후 마지막 하단 버튼 전체 노출. pageerror0 |
+| 회귀·범위 | 기존 gameHtmlInlineSyntax/uiPanelInitialization4개 PASS,easy 실행 인라인4개 구문PASS. 저장 차단 격리 캐릭터 검수. 분해 실제 실행·물리 게임패드·전체언어 미검증. tmp/inventory-keyboard-detail 보고서·백업 |
 
 
 ## 2026-09-27 유골 등록 직후 호버 해제와 장착 유골 정보
@@ -48852,6 +49134,44 @@ CSS 캐시 ui-refinement.css?v=20260927-4. 신규 이미지/아이템 데이터 
 | 저장 | INV.ossCollect와 가방 데이터 형식·기존 수치 변경 없음. 정보 팝업과 호버 상태는 저장하지 않음 |
 | 적용 | game.html, game-easy-test.html, ui-refinement.css?v=20260927-bone-hover-flow |
 | 검증 | 저장 API를 차단한 게임 화면에서 가방 유골 호버→우클릭 등록 직후 호버 상세 닫힘, 등록 유골 호버 정보 즉시 표시, 우클릭 해제 즉시 팝업 닫힘 PASS. 기존 유골 회귀12개·네 부위 우클릭 QA PASS, pageerror0. tmp/bone_hover_info_1280.png |
+
+
+## 2026-09-27 보석 피커 진입·복귀 초점 연결
+
+| 항목 | 현행 동작 |
+|---|---|
+| 적용 | 양쪽 game HTML의 renderCrystalBag/openCrystalPicker/closeCrystalPicker 및 _crPickerFocusStart/_crPickerFocusRestore |
+| 진입 기록 | _crPickerFocusOrigin에 원래 버튼 node와 장비 card의 data-slot,홈 data-socket 저장. openCrystalPicker 렌더 후 첫 cr-picker-item으로 focus,목록이 비면 첫 cr-picker-filter,없으면 닫기 버튼 |
+| 피커 의미 | role=dialog,aria-label=번역된 결정 주머니. 배경을 inert로 바꾸지 않으며 aria-modal 선언 없음 |
+| Tab·Escape | 표시·활성 버튼 사이에서 마지막 Tab→첫 버튼,첫 Shift+Tab→마지막 버튼. Escape는 기본동작과 전파를 중지한 뒤 closeCrystalPicker 호출하여 부모 인벤토리를 함께 닫지 않음 |
+| 복귀 | 닫기에서 상태 초기화·숨김 뒤 원래 연결된 표시 버튼으로 focus({preventScroll:true}). 재렌더로 원래 노드가 없어지면 동일 data-slot/data-socket의 새 버튼,그것도 숨겨지거나 없으면 현재 인벤토리 선택 탭으로 복귀. 복귀 정보는 사용 전 null로 초기화 |
+| 선택 완료 | 보석 선택 콜백을 실행한 뒤 공통 closeCrystalPicker 호출. 장착으로 보석함 DOM이 재생성되어도 같은 부위·같은 홈으로 복귀 |
+| 검증 | Enter 진입 후 첫 보석 초점,Tab/Shift+Tab 양끝 순환,Escape 복귀·부모 창 유지,Space 장착 후 armor 홈0의 새 버튼 복귀 확인. 빈 피커→all 필터→Escape→armor 홈1,탭 이탈 후 equipment 활성탭 복귀 확인 |
+| 환경·회귀 | 저장 API/함수 차단 격리 캐릭터. 검수 재시작 후 튜토리얼 안내 입력 가로채기를 식별하고 해당 구간 분리 재확인. 기존 구문/패널 초기화4검사PASS,easy 실행 인라인4개 구문PASS. 전체언어·물리게임패드 미검증. tmp/picker-focus-return/report.json 및 edge-report.json |
+
+
+## 2026-09-27 큰 늪 수면 애니메이션27차
+
+| 항목 | 변경·검증 |
+|---|---|
+| 실제동작 | Ch1LivingDetail.swamp 추가. 큰m_c1gtoxicf(6500,5460) 원화수면4곳에6.4초/16프레임흐름·기포8개. 바위·외곽정적,원본·collision보존.26차까지정적이던큰원화에직접적용 |
+| 자원 |1760×1800/12.0849609375MiB native atlas추가,프레임당base1+water2 drawImage. 폴백·전체수치·polygon은[런타임27차](4.1맵디자인+설정/CH1_LIVING_DETAIL_RUNTIME_20260925.md)참조 |
+| 검증 | 맵검사33PASS,실제meta/배치로used=true,원본blob동일. 카메라12+COMBAT/움직임GIF,mapUnchanged=true,HTTP오류0/외부차단5,SWAMP_DETAIL·COMBAT p9533.4ms. VISUAL VERDICT RETOUCH |
+| 동기화·Git | 전체docs검색,관련맵문서8개동기화. 기존권한·셸오류로커밋미완료,공유index보존,push/deploy없음 |
+
+
+## 2026-09-27 결정 피커 필터·입력 선택 동기화
+
+| 항목 | 현행 구현·검증 |
+|---|---|
+| 재현 | 기존18행에서 _gpCrIdx=17인 상태로6행 필터로 전환하면 표시 선택0개·A버튼 무반응 |
+| 필터 전환 | renderCrystalBag가 pop.dataset.crFilter와 _crBagFilter를 비교해 바뀌면 _gpCrIdx=0. 필터 유지 재렌더는 인덱스를0~현재 행 수−1 범위로 제한,빈 목록은0 |
+| 입력 동기화 | 각 .cr-picker-item focus 및 movementX/Y가 있는 mousemove에서 현재 행 index를 _gpCrIdx에 반영. _gpCrBagNav도 매 실행 유효 범위로 제한. D-pad 이동 시 같은 행 focus({preventScroll:true}) 후 scrollIntoView({block:nearest}) |
+| 보존 | A 클릭은 표시된 행의 기존 원본 bag index 핸들러 실행. 필터/홈 호환 판정·보석 데이터·저장·강화 비용 변경 없음 |
+| 자동 회귀 | test/crystalPickerNavigation.test.js 추가: 일반/쉬운게임 각각 목록축소 후A선택,빈 목록 무선택,D-pad 초점·스크롤·A 일치 총6개. 기존 결정관리12개+구문1개+패널초기화3개 포함 총22개PASS |
+| 기존 테스트 보완 | crystalForgeManagement.test.js의 간이 DOM에 HTMLButtonElement/activeElement/querySelector/querySelectorAll 모형 보충. 앞선 초점 API 도입에 따른 테스트 환경 누락 수정. 기존 검증 조건 유지 |
+| 브라우저 | 실제 디스크 코드에서18→6행 필터 변경 후index0,키보드focus행3→index3,마우스행1→index1,D-pad 아래→행2초점,A→cr_ward_stone 선택·팝업닫힘 확인. pageerror0 |
+| 범위 | 저장 차단 테스트 캐릭터,실제 게임 함수를 모의 패드 상태로 실행. 물리 게임패드·전체언어 미검증. 튜토리얼은 건너뛰기 버튼으로 종료 후 검수. tmp/crystal-picker-nav에 보고서·백업 |
 
 ## 2026-09-27 인벤토리 장비 이동 직후 호버 종료
 
@@ -48870,6 +49190,221 @@ CSS 캐시 ui-refinement.css?v=20260927-4. 신규 이미지/아이템 데이터 
 | 수정 | 가방 충돌맵·빈자리 탐색·정렬을 장비/유골 분류별로 계산. 공통 BAG_MAX=300 및 저장 좌표 형식 유지 |
 | 검증 | 725×550·1280×720 브라우저, 일반·쉬운 게임의 장비 2×2 좌상단 드래그 성공·같은 분류 충돌 유지·분류별 정렬 `(0,0)`. 관련 Node 회귀 8개 통과 |
 
+
+## 2026-09-27 늪 버블 파열·가스28차
+
+| 항목 | 변경·검증 |
+|---|---|
+| 동작 | 큰늪버블8개가주기60%까지팽창후터짐. 잔물결·물방울6개/vent와같은자리황록가스3lobes상승·소멸. 기존6400ms/16프레임atlas재사용,추가상주캐시0·피해0 |
+| 계약 | [런타임28차](4.1맵디자인+설정/CH1_LIVING_DETAIL_RUNTIME_20260925.md)의수치·MAP PRODUCTION REPORT참조. 전체docs검색,관련맵문서8개동기화 |
+| 검증 | 맵검사34PASS,카메라12+COMBAT/GIF,mapUnchanged=true. 최종별도보석이미지404 2건/외부차단9건기록. VISUAL VERDICT RETOUCH |
+| Git | 기존권한·셸오류로커밋미완료. 공유index·타작업보존,push/deploy없음 |
+
+
+## 2026-09-27 정지 포인터 아래 스크롤 선택 튐 방지
+
+| 항목 | 현행 동작·검증 |
+|---|---|
+| 원인 | 스크롤에 따른 mouseenter까지 선택 변경으로 처리. 60행 목록에서 index30에 초점/스크롤 후 index25,휠 후28로 덮어써짐 |
+| 입력 규칙 | .cr-picker-item focus는 선택 동기화 유지. mouseenter 동기화 제거. mousemove의 movementX 또는 movementY가0이 아닐 때만 syncIndex. 스크롤·0거리 이벤트는 현재 선택 보존 |
+| 쉬운게임 보완 | renderCrystalBag 말미의 목록 이벤트 연결과 재렌더 필터 초점 복원 누락을 보완. 생성 영역은 createContextualFragment + replaceChildren으로 갱신. 기존 쉬운게임 분류·아이템 수치 유지 |
+| 브라우저 재현 | 디스크 renderCrystalBag 함수를 격리 게임 페이지에 반영해 동일 포인터 위치에서 재현. 수정 후 index30/초점30이 자동 스크롤과 휠 뒤에도 유지,실제 포인터를32행에 이동하면 index32. 마지막 index59/초점59/목록끝 일치 |
+| 이벤트 회귀 | test/crystalPickerPointer.browser.js: 양쪽 실제 렌더러를 독립 DOM에서 실행. 행생성/초점/포인터진입/0거리이동/실제이동/필터축소 각6개,총12개PASS. 앱 데이터·저장 변경 없음 |
+| 기존 회귀 | 결정관리12+패드이동6+구문1+패널초기화3=22개PASS. 쉬운게임 실행 인라인4개 구문PASS. 물리 게임패드·전체언어 미검증 |
+| 기록 | tmp/picker-scroll-stability의 before/after/last-row/pointer-regression JSON과 코드 백업 |
+
+
+## 2026-09-27 안 보이던 늪 버블 교정29차
+
+| 항목 | 변경·검증 |
+|---|---|
+| 원인 | 기존버블최대지름16native px·어두운몸체·얇은호가수면원화에묻힘.450px표시대비회귀에서가독픽셀18로실패 |
+| 교정 | 반경3→16native px볼록돔·막광택·접촉그림자. q.46~.6/896ms유지후파열. 잔물결시작반경16/8로맞춤. 가스·충돌·기존atlas유지 |
+| 검수 | 대비회귀18→635픽셀,총35검사PASS. 실제게임카메라12+COMBAT/GIF에서돔확인,mapUnchanged=true,HTTP오류0/외부차단8. VISUAL VERDICT RETOUCH |
+| 문서·Git | [런타임29차](4.1맵디자인+설정/CH1_LIVING_DETAIL_RUNTIME_20260925.md)공식·MAP PRODUCTION REPORT참조. 전체docs검색/관련맵8문서동기화. 기존권한·셸오류로커밋미완료,push/deploy없음 |
+
+
+## 2026-09-27 늪 버블 막 파열30차
+
+| 항목 | 반영 |
+|---|---|
+| 원인 | 버블이 물·가스16프레임/6400ms를 공유,400ms 자세 간격으로 파열이 천천히 사라져 보임 |
+| 교정 | 버블64프레임/100ms로 분리. 눌림384ms·균열192ms→막8갈래 파열384ms·물방울8개768ms·잔물결1152ms. 원본·바위·물·collision 보존 |
+| 비용 | 버블768×768/2.25MiB 추가,swamp 최대19drawImage. native캐시 합계84.03144454956055MiB(기타shadow/GPU/임시 제외) |
+| 검증 | 효과30+geometry5+구문1=36PASS. 실게임72프레임GIF,동일시간/배율128프레임전후GIF. 모듈20260927-30 byte동일,원본PNG HEAD동일. [전체 계약·MAP PRODUCTION REPORT](4.1맵디자인+설정/CH1_LIVING_DETAIL_RUNTIME_20260925.md)30차 참조 |
+| 상태 | 국소 파열 교정,전체 맵 VISUAL VERDICT: RETOUCH. .git 권한/셸생성오류로 코드+docs 커밋 미완료,타작업 보존 |
+
+
+## 2026-09-27 로비 원본 로고 중앙 이동
+
+| 항목 | 현행 규격 |
+|---|---|
+| 사용자 지시 | 기존 좌상단 EXODUSER 이미지 로고를 캐릭터 목록 위 중앙으로 이동. 별도로 추가했던 게임명 텍스트 제거 |
+| DOM | index.html의 .lobby-divider 안에 img.lobby-brand-logo, src=img/logo_exoduser.png, alt=EXODUSER, draggable=false |
+| 문양 제거 | 해당 구분영역 background:none, opacity:1, flex 중앙정렬. 큰 배경 문양 유지 |
+| 헤더 | 기존 좌상단 로고 래퍼 제거. .lobby-header는 justify-content:flex-end, min-height:48px로 언어·계정 영역 정렬 |
+| 로고 규격 | display:block, height:100%, max-height:100%, max-width:100%, width:auto, object-fit:contain |
+| 높이·캐시 | 구분영역 120px·화면 높이800px 이하 80px, flex-shrink:0. index의 ui-refinement.css 캐시 20260927-lobby-logo250 |
+| 검증 | 실제 index/CSS를 스크립트 비활성 격리 페이지에서 표시. 360/664/1280/1920px에서 원본 이미지 로딩·영역 내 배치, 가로 중심 오차 0.01px 미만. 헤더 이미지와 추가 텍스트 각각 0개. 로그인/세이브 API 실행 없음. tmp/lobby-logo-center/after.png 및 report.json |
+
+
+## 2026-09-27 늪 윤곽 접지31차
+
+| 항목 | 반영 |
+|---|---|
+| 동작 | 큰늪원화의alpha윤곽을따라외측28native px까지감쇠하는정적젖은흙층. 원본아래합성,버블파열·수면·가스·충돌보존 |
+| 자원 | 512×512 RGBA 1MiB추가,swamp최대20drawImage. native합계85.03144454956055MiB(기타shadow/GPU/임시제외). 최초생성만거리·픽셀처리 |
+| 검증 | 효과31+geometry5+구문1=37PASS,12시점+전투촬영. JS pageerror0/HTTP오류0/외부차단6. 원본HEAD hash동일,모듈20260927-31 byte동일 |
+| 문서·상태 | [런타임31차](4.1맵디자인+설정/CH1_LIVING_DETAIL_RUNTIME_20260925.md)전체공식·제작보고와관련7문서동기화. VISUAL VERDICT: RETOUCH. .git권한/셸오류로커밋미완료,공유작업보존 |
+
+
+## 2026-09-27 로비 ENTER 버튼 원본 색상 복원
+
+| 항목 | 현행 규격 |
+|---|---|
+| 의도 | 사용자 피드백에 따라 로비 입장 버튼의 기존 원본 색상 보존 |
+| 에셋 | assets/lobby/lobby_enter_btn.png 유지. 보라색 보석·문양과 밝은 금속색 ENTER 글자 |
+| CSS | ui-foundation.css의 .lobby-right .enter-game-btn img 색조 회전·채도 필터 제거. 선택 상태의 이미지 computed filter:none (미선택은 아래 소등 계약 적용) |
+| 범위 | 버튼 크기·배치·hover·disabled·입장 동작 유지. 시네마틱 ENTER와 무관 |
+| 캐시 | index.html의 ui-foundation.css?v=20260927-enter-original |
+| 검증 | 스크립트 비활성 로비에서 원본 이미지 로딩과 computed filter:none 확인. tmp/lobby-enter-original-color/after.png. 로그인·세이브 API 호출 없음 |
+
+
+## 2026-09-27 로비 프레임 외곽 투명화·장식 확대
+
+| 항목 | 현행 규격 |
+|---|---|
+| 원인 | .lobby-right 전체의 배경·왼쪽 선·외부 그림자가 알파 프레임 바깥에도 사각형으로 남음 |
+| 패널 | isolation:isolate, background:transparent!important, border:0!important, box-shadow:none!important. padding:28px 30px 24px |
+| 안쪽 배경 | ::before, position:absolute, inset:22px, z-index:-1, pointer-events:none. 기존 철판·문양·그라디언트 유지, 네 모서리 12px 사선 clip-path로 배경만 제한 |
+| 장식 프레임 | ::after inset:0, border-width:48px, border-image-width:48px. 기존 40px 대비 20% 확대. 기존 --ui-frame 이미지·slice22%·stretch·z-index2·pointer-events:none 유지 |
+| 원본 이미지 | 수정·생성 없음. 프레임의 기존 PNG 알파 사용, 바깥은 로비 배경이 비침 |
+| 캐시 | index.html의 ui-refinement.css?v=20260927-lobby-frame |
+| 검증 | 스크립트 비활성 실제 index/CSS, 1280/1600/1920px에서 패널 배경 투명·border0·shadow none·fill inset22px·frame48px 확인. 패널 가로 넘침 없음. tmp/lobby-frame-transparency/after.png 및 report.json. 로그인·세이브 API 미실행 |
+
+
+## 2026-09-27 중앙 EXODUSER 로고 2.5배 확대
+
+| 항목 | 현행 규격 |
+|---|---|
+| 기본 크기 | .lobby-divider 높이120px!important, flex-shrink:0. 기존48px 대비2.5배 |
+| 낮은 화면 | max-height:800px에서 영역80px!important. 기존32px 대비2.5배 |
+| 이미지 | .lobby-brand-logo height:100%, max-height:100%, max-width:100%, width:auto, object-fit:contain. 원본 이미지·중앙 정렬 유지 |
+| 캐시 | index.html의 ui-refinement.css?v=20260927-lobby-logo250 |
+| 검증 | 1920×960,1280×900,1280×720,800×720에서 영역 내 배치·중심 오차0.01px 미만·캐릭터 목록 비겹침. tmp/lobby-logo-250/after.png 및 report.json. 스크립트 비활성 렌더 검수 |
+
+
+## 2026-09-27 캐릭터 선택에 따른 ENTER 소등·점등
+
+| 항목 | 현행 규격 |
+|---|---|
+| 미선택 | disabled 유지, display:block!important, opacity:1!important, 버튼 filter:none!important. 이미지 grayscale(1) brightness(.45)로 보석·문양 소등, 클릭 불가 |
+| 선택 | 기존 _updateCharDisplay(s) 및 온라인 선택 처리의 disabled=false를 그대로 사용. 이미지 filter:none으로 원본 보라색 점등 |
+| 선택 해제 | 기존 _updateCharDisplay()의 disabled=true로 소등 복귀 |
+| 전환 | 이미지 filter .45s ease, prefers-reduced-motion:reduce에서는 transition:none |
+| 배치·원본 | assets/lobby/lobby_enter_btn.png 재사용. 상태 전환 시 버튼 영역 높이 동일, 숨김에 따른 레이아웃 이동 제거. 입장은 별도 클릭 |
+| 캐시 | index.html의 ui-refinement.css?v=20260927-enter-light |
+| 검증 | 스크립트 비활성 로비에서 실제 _updateCharDisplay 함수만 추출 실행, 번역·배경 교체·캐릭터 영상은 격리. 미선택 disabled/display:block/opacity1/filter grayscale(1) brightness(.45), 선택 disabled=false/filter none, 해제 disabled=true 확인. 두 상태 높이120px 동일. tmp/lobby-enter-light/off.png 및 on.png. 로그인·세이브 API 미실행 |
+
+
+## 2026-09-27 동측 생체 지면 연결32차
+
+| 항목 | 반영 |
+|---|---|
+| 재질 | SIDE_R 중심(6060,5460)유지,1200×800→1440×800. 회갈색조직→녹갈색오염팔레트/수평gradient. 얕은주름3줄과늪쪽마스크lobe추가 |
+| 보존·비용 | 버블/가스/31차접지/좌표·collision유지. 기존768×512캐시재사용,추가상주메모리0/프레임draw0 |
+| 검증 | 효과32+geometry5+구문1=38PASS,12시점+전투검수. JS pageerror0/HTTP오류0/외부차단6. 모듈20260927-32 |
+| 문서·상태 | [런타임32차](4.1맵디자인+설정/CH1_LIVING_DETAIL_RUNTIME_20260925.md)의정확한수치·제작보고와관련7문서동기화. VISUAL VERDICT: RETOUCH. 권한/셸오류로커밋미완료 |
+
+
+## 2026-09-27 로비 계정 영역 폭과 키보드 로그아웃 수정
+
+| 항목 | 현행 규격 |
+|---|---|
+| 재현 | 긴 계정명이 flex 최소 콘텐츠 폭을 강제하여 1280px 화면의 우측 패널이784.34px로 확대. 정상35%는448px |
+| 레이아웃 | .lobby-right 및 헤더 min-width:0, 헤더 flex-shrink:0. .lobby-account-controls grid-template-columns:minmax(0,140px) minmax(0,1fr), gap8px, width100%, min-width0, align-items:center |
+| 언어 선택 | width100%, min-width0, max-width100%. 기존 다국어 옵션과 이벤트 유지 |
+| 계정명 | lobby-mode flex/right 정렬, gap8px,min-width0,margin-top0,letter-spacing.04em. .lobby-account-email은 한 줄 ellipsis, font-size.7rem,색#aa8855, title에 전체 주소 |
+| 로그아웃 | span 대신 type=button, id=lobbyLogout 유지. flex:0 0 auto, 최소높이28px,padding3px4px,border0,transparent배경,색#b8a386,글자.65rem,자간.08em. hover와 gp-hover는#ead6a5. 기존 공통 focus-visible outline 사용 |
+| DOM·이벤트 | createElement와 리프 textContent로 주소를 텍스트 처리, replaceChildren으로 계정 요소 구성. 기존 sb.auth.signOut 호출 유지 |
+| 캐시 | index.html의 ui-refinement.css?v=20260927-account-layout |
+| 검증 | 800/1280/1600/1920px에서 패널 폭360/448/560/672px, 계정 컨트롤 영역 내 배치·가로 넘침 없음. 실제 생성 코드와 signOut 스텁으로 Enter/Space 각1회 호출 확인. 로비 회귀8개 통과, 인라인 스크립트4개 구문 통과. tmp/lobby-account-layout/report.json 및 after.png. 실계정 로그아웃·저장 호출 없음 |
+
+
+## 2026-09-27 야영지 재·그을음 접지33차
+
+| 항목 | 반영 |
+|---|---|
+| 대상·동작 | m_c1camp(1820,4020)하부alpha윤곽외측22native px 감쇠접지. 상부천막제외,body아래합성,손3개동작보존 |
+| 자원 | 512×400RGBA/0.78125MiB추가,대상camp1drawImage추가. native합계85.81269454956055MiB(기타shadow/GPU/임시제외) |
+| 검증 | 효과33+geometry5+구문1=39PASS.13시점+전투촬영. JS pageerror0/HTTP오류0/외부차단6. 모듈20260927-33 |
+| 문서·상태 | [런타임33차](4.1맵디자인+설정/CH1_LIVING_DETAIL_RUNTIME_20260925.md)정확한공식·제작보고와관련7문서동기화. VISUAL VERDICT: RETOUCH. 권한/셸오류로커밋미완료 |
+
+
+## 2026-09-27 캐릭터 카드 이름·직업·삭제 영역 분리
+
+| 항목 | 현행 규격 |
+|---|---|
+| 문제 | 긴 이름 뒤 직업 배지가 잘리고 삭제 버튼과 텍스트 영역이16px 겹침 |
+| 온라인·로컬 이름 | 기존 .char-name 안에 .char-name-label span 추가. 이름 본문은 escHtml 적용, title은 해당 리프 DOM 프로퍼티에 원문 직접 대입하여 전체 이름 확인 |
+| 이름·직업 배치 | 이름 행 flex/align-items:center/gap8px. 이름 min-width0/한 줄 ellipsis. 직업 flex:0 0 auto/max-width50%/margin-left0/한 줄 ellipsis |
+| 삭제 영역 | 삭제 버튼이 있는 .char-item만 padding-right48px·삭제28px, pointer:coarse에서는 padding-right64px·삭제44px. 텍스트와 삭제 버튼 사이10px 확보 |
+| 진행 정보 | .char-info 한 줄 ellipsis로 긴 지역명이 카드 밖에 넘치지 않음 |
+| 삭제 발견성 | 카드 focus-within 또는 hover:none 환경에서 삭제 버튼 opacity1. 기존 삭제 확인 동작 유지 |
+| 캐시 | index.html의 ui-refinement.css?v=20260927-card-details |
+| 검증 | 온라인·로컬 실제 카드 템플릿을 격리 페이지에 렌더. 화면폭800/1280/1920에서 직업 배지 영역 내·삭제 간격10px·이름 말줄임 및 전체 이름 title 확인. 삭제 키보드 초점 opacity1. 로비 회귀7개 및 인라인 스크립트4개 구문 통과. tmp/lobby-card-details/after.png 및 report.json. 실제 캐릭터 선택·삭제·세이브 요청 없음 |
+
+
+## 2026-09-27 로비 카드 키보드 선택·생성
+
+| 항목 | 현행 규격 |
+|---|---|
+| 대상 | 온라인·로컬·데모의 실제 캐릭터 카드, 생성 가능한 새 캐릭터 카드 및 온라인 빈 목록 생성 카드. 빈 슬롯·생성 불가 카드는 제외 |
+| DOM | _addLobbyCardControl(card,label,key)가 type=button.char-select를 prepend. aria-label/title은 이름·직업 또는 번역된 새 캐릭터, data-card-key는 online:id/local:name/demo/new |
+| 배치 | .char-select absolute/inset0/z-index1/width100%/height100%/padding0/border0/radius0/transparent. 삭제 버튼은 별도 형제이며 z-index2 |
+| 키보드 | Tab으로 카드 선택 가능, Enter/Space의 네이티브 click이 기존 카드 선택·생성 이벤트로 전달. 선택만 하고 실제 입장은 ENTER 버튼으로 진행 |
+| 초점 복원 | 클릭 시작 시 초점 여부 저장, setTimeout 0으로 이벤트 버블링·목록 재생성 이후 처리. 기존 버튼이 제거되고 activeElement가 body일 때 동일 data-card-key 버튼에 focus(preventScroll:true). 다른 초점은 빼앗지 않음 |
+| 초점 표시 | outline2px solid #ead6a5, outline-offset:-3px로 카드 내부에 표시 |
+| 목록 초기화 | 온라인·로컬 렌더러의 cl.innerHTML 초기화를 replaceChildren으로 변경 |
+| 캐시 | index.html의 ui-refinement.css?v=20260927-card-keyboard |
+| 검증 | 실제 온라인/로컬 렌더러·선택 함수 추출, 격리된 선택·생성·삭제 확인 콜백 사용. Enter/Space 각각 선택1회, 재렌더 후 초점 유지, 삭제 Enter는 선택 없이 확인1회, 생성 Space1회. 로비 회귀8개 통과 및 inline4개 구문 확인. tmp/lobby-card-keyboard/report.json 및 after.png. 실제 계정·저장·삭제 API 호출 없음 |
+
+
+## 2026-09-27 야영지 전면 지면 연결34차
+
+| 항목 | 반영 |
+|---|---|
+| 범위 | CAMP_FRONT(1860,4300),960×640. 재색흙→괴사피부정적전이/주름3줄,기존33차하부접지와연결 |
+| 비용 | regionalSkin variant3,768×512RGBA/1.5MiB추가,지역캐시4장6MiB. 전체native87.31269454956055MiB(기타shadow/GPU/임시제외),보일때1drawImage추가 |
+| 보존·검증 | 손·늪·원본·충돌보존. 효과34+geometry5+구문1=40PASS.13시점+전투/이전모듈같은카메라비교. JS pageerror0/HTTP오류0/외부차단6.모듈20260927-34 |
+| 문서·상태 | [런타임34차](4.1맵디자인+설정/CH1_LIVING_DETAIL_RUNTIME_20260925.md)정확한수치·제작보고와관련7문서동기화. VISUAL VERDICT: RETOUCH. 권한/셸오류로커밋미완료 |
+
+
+## 2026-09-27 목록 이동 초점·온라인 오른쪽 스틱 수정
+
+| 항목 | 현행 규격 |
+|---|---|
+| 재현 | 목록 이동 버튼 클릭이 렌더러를 재실행하여 활성 버튼을 제거, 키보드 초점이 body로 유실. 오른쪽 스틱은 로컬 ID만 조회하여 온라인 목록 미동작 |
+| 공통 바인딩 | _bindLobbyListNavigation(up,down,move), 위 -1/아래 +1. 각 렌더러는 인덱스를0~total-VIEW로 제한한 뒤 재렌더 |
+| 초점 유지 | 클릭 전 활성 버튼이었다면 재렌더 후 동일 ID의 활성 버튼에 focus(preventScroll:true). 마지막/첫 페이지에서 해당 버튼이 disabled이면 반대 방향 버튼으로 초점 이동. 이미 다른 요소로 이동한 초점은 보존 |
+| 게임패드 | 위 charNavUpOn 우선·charNavUp 폴백, 아래 charNavDnOn 우선·charNavDn 폴백. 기존 오른쪽 스틱 임계값±0.5 및 방향 진입1회 처리 유지 |
+| 검증 | 온라인/로컬 실제 렌더러로 Enter3회:2-3→3-4→4-5/5, 끝에서 위 버튼 초점, Space로3-4/5 복귀. 실제 스틱 처리 코드에1,1,0,1,-1 입력:2-3,2-3,2-3,3-4,2-3/5로 두 모드 일치. 실제 게임패드 하드웨어 검증은 아님 |
+| 회귀·기록 | 로비 회귀8개 통과, inline4개 구문 통과. tmp/lobby-list-navigation/report.json 및 gamepad-report.json. 테스트 데이터5개 사용, 계정·저장·삭제 API 호출 없음 |
+
+
+## 2026-09-27 로비 목록 컨트롤 클릭·터치 영역 확대
+
+| 항목 | 현행 규격 |
+|---|---|
+| 재현 | 화살표 실제 높이15.2px, 삭제24×24px로 클릭 영역이 작음 |
+| 기본 입력 | 화살표 최소32×32px, inline-flex 중앙정렬, padding4px8px. 삭제28×28px, 카드 오른쪽 padding48px |
+| 터치 | pointer:coarse에서 화살표 최소44×44px, 삭제44×44px 및 opacity1, 카드 오른쪽 padding64px |
+| 간격 | 삭제 버튼 right10px 유지, 텍스트와 버튼 사이10px 유지 |
+| 초점·호버 | 목록 내비 align-items:center. 화살표 focus-visible outline-offset:-2px. 활성 화살표 hover/gp-hover 색#ffd6bb,배경#6b38282e |
+| 캐시 | index.html의 ui-refinement.css?v=20260927-control-targets |
+| 검증 | 온라인 실제 렌더러,1920/1280/800×720에서 화살표32px·삭제28px·간격10px·가로 넘침 없음·footer 화면 내. 키보드 이동 후 초점 유지. Chromium hasTouch 입력 에뮬레이션에서44×44px 및 간격10px 확인, 실제 터치 기기 검증은 아님. tmp/lobby-control-targets/report.json,desktop.png,touch.png |
+
+
 ## 2026-09-27 유골함 고정 호버 정보판
 
 | 항목 | 변경·검증 |
@@ -48880,6 +49415,323 @@ CSS 캐시 ui-refinement.css?v=20260927-4. 신규 이미지/아이템 데이터 
 | 적용 | game.html, game-easy-test.html, ui-refinement.css. CSS 캐시 `20260927-oss-info-plate`; INV 저장 데이터/용량 변경 없음 |
 | 검증 | 저장 API 차단 브라우저 1280×720·725×550·390×844, 가방/제단/장착 유골함 호버·탭 왕복·장착/해제·휠 스크롤·pageerror0. 관련 Node 회귀17개 PASS |
 
+## 2026-09-27 야영지 뼈·잔해 접지35차
+
+| 항목 | 반영 |
+|---|---|
+| 대상 | m_c1sbone(1940,4340)/m_sword_pile(1580,4180)/m_wpile(2060,4220),원본하부alpha접촉그림자. 솟은장대상부제외 |
+| 비용 | 256²RGBA×최대3=.75MiB추가,전체native88.06269454956055MiB(기타shadow/GPU/임시제외). 보이는대상당1drawImage |
+| 검증 | 효과35+geometry5+구문1=41PASS,13시점+전투검수. live메타사용drawImage3회확인. JS pageerror0/HTTP오류0/외부차단6. 모듈20260927-35 |
+| 문서·상태 | [런타임35차](4.1맵디자인+설정/CH1_LIVING_DETAIL_RUNTIME_20260925.md)정확한수치·제작보고와관련7문서동기화. VISUAL VERDICT: RETOUCH. 권한/셸오류로커밋미완료 |
+
+
+## 2026-09-27 낮은 로비 화면 세로 접근성 수정
+
+| 항목 | 현행 규격 |
+|---|---|
+| 재현 | 높이600px 이하에서 ENTER 하단612px, footer620px로 화면 밖 잘림. 배너 영역6px로 축소 |
+| 구조 | .lobby-right 내부 콘텐츠를 .lobby-content로 감쌈. 기본 display:contents로 기존 배치 유지 |
+| 낮은 화면 | max-height:680px에서 내부만 flex column/overflow-y:auto/overflow-x:hidden/flex:1 1 auto/min-height0/min-width0. scrollbar-gutter:stable,padding-right8px,thin 스크롤바 색#75674f/#101113,scroll-padding-block4px. 직계 자식 flex-shrink0 |
+| 배너·프레임 | 낮은 화면의 lobby-mid-area flex:0 0 auto/overflow:visible로 중첩 스크롤 제거. 부모 장식 프레임·배경은 고정, 로고·카드 크기 보존 |
+| 휠 경계 | 온라인·로컬 목록은 Math.sign(deltaY)와 현재 데이터 길이로 다음 인덱스 계산. 실제 목록 이동 때만 preventDefault/렌더, 시작·끝·delta0에서는 기본 외부 스크롤 허용. 로컬 최초 바인딩의 오래된 chars 길이 캡처 제거 |
+| 캐시 | index.html의 ui-refinement.css?v=20260927-short-lobby |
+| 검증 | 격리 로비 카드3개 고정 높이로1280×720/1024×600/960×540/800×480 검수. 낮은 화면에서 ENTER 초점 시 내부 스크롤196/256/316px, 버튼 화면 내·가로 넘침 없음. 실제 휠 핸들러 상하 경계/이동/0 입력 확인. 로비 회귀8개·inline4개 구문 통과. tmp/lobby-short-height/after.png,report.json,wheel-report.json |
+
+
+## 2026-09-27 야영지 묘비·뿌리 접지36차
+
+| 항목 | 반영 |
+|---|---|
+| 대상·동작 | m_tomb(1460,3900)밑동접지/m_root(1980,3940)평면전체alpha접지. debrisContact flat모드와별도rootSoilCache추가 |
+| 비용 | 256²RGBA×2=.5MiB추가,접지계열총5장1.25MiB. 전체native88.56269454956055MiB(기타shadow/GPU/임시제외),신규보이는대상당1drawImage |
+| 검증 | 효과36+geometry5+구문1=42PASS,14시점+전투검수. 실제메타접지5회렌더확인. JS pageerror0/HTTP오류0/외부차단6.모듈20260927-36 |
+| 문서·상태 | [런타임36차](4.1맵디자인+설정/CH1_LIVING_DETAIL_RUNTIME_20260925.md)정확한수치·제작보고와관련7문서동기화. VISUAL VERDICT: RETOUCH,원화스타일차이잔여. 권한/셸오류로커밋미완료 |
+# 2026-09-27 — 1-1 다크드루이드 임팩트 23종 조사·우선 개선
+
+- 일반 si0의 23개 기술의 시작/갱신/렌더 경로를 조사하고 `groundFissure`, `tideWave`, `chaseAoe`의 단색 도형 표현을 드루이드 흙·뿌리·독성 연출로 보정했다. 균열·추적 장판 폭발에 기존 `druid_hit` 8f를 연결하고 순간이동 `emerge.png` 4×2/8f 누락 로딩을 보완했다.
+- 기존 피해·반경·주기·안전 갭은 유지한다. [패턴별 현황·검수 한계](5.1임펙트디자인/CH1_1_BOSS_IMPACT_AUDIT_20260927.md) 참조.
+
+## 2026-09-27 맵 37차 — 사용자 지정 저품질 에셋 폐기
+
+36차 묘비/평면뿌리 접지 보강을 폐기하고 두 원화 및 동일 사본6개를 비런타임 archive로 격리했다. 현행 사용/좌표/캐시/편집기 계약은 [폐기 SSOT](4.1맵디자인+설정/LOW_QUALITY_ASSET_RETIREMENT_20260927.md) 표를 따른다. 과거 36차 기록의5장/1.25MiB,전체88.56269454956055MiB는 과거 값이다. 현행3장/0.75MiB,전체88.06269454956055MiB. 코드+docs 커밋은 .git 쓰기제한 및 셸 실행 문제로 미완료.
+
+
+## 2026-09-27 삭제 확인창 키보드 초점·취소 보완
+
+| 항목 | 현행 규격 |
+|---|---|
+| 모달 의미 | delConfirmModal role=dialog, aria-modal=true, aria-labelledby=delConfirmMsg, tabindex=-1 |
+| 열기 | _delConfirmReturnFocus에 호출 전 activeElement 저장, 기본 취소 버튼에 실제 focus(preventScroll:true). 기존 게임패드 선택 테두리와 초점 동기화 |
+| 키보드 | Tab/Shift+Tab은 확인·취소2개 사이 순환, Escape는 비처리중 닫기. 버튼 focus 이벤트가 _delConfirmIdx를 동기화 |
+| 처리 중 | 기존 _delConfirmBusy 및 두 버튼 disabled 유지. 모달 컨테이너에 초점, Tab은 이동 차단, Escape도 busy 잠금으로 닫히지 않음 |
+| 복귀 | 닫힐 때 기존 요소가 연결되어 있으면 복귀, 목록 재렌더로 제거됐으면 #charList .char-select 첫 버튼에 복귀. 오류 메시지 기존 lobbyStatus에 유지 |
+| 테스트 지원 | characterSync.test.js DOM 목 객체에 dataset/setAttribute/prepend/focus 및 document.activeElement/querySelector 보완. 삭제 검증 조건 유지 |
+| 검증 | 실제 모달 함수 격리 실행: 취소 최초 초점,Tab/Shift+Tab 순환,Escape 취소와 원래 초점 복귀,콜백0회. 비동기 처리 중 Tab/Escape 잠금·콜백1회,모의 실패 후 오류 표시·대체 카드 초점 확인. characterSync8개·inline4개 구문 통과. tmp/lobby-delete-focus/report.json. 실제 삭제·계정·저장 요청 없음 |
+
+## 2026-09-27 맵38차: 구형무기더미 폐기
+
+[검수·현행값·파일목록](4.1맵디자인+설정/CH1_LOW_QUALITY_AUDIT_20260927_PASS38.md). 20종비교후weapon_pile 원화와동일사본4개격리,CH1배치2개/CH5등록/편집기제거. 접지2장0.5MiB,전체native87.81269454956055MiB. 모듈20260927-38,44테스트PASS. 기존35~37차의무기더미와캐시값은이력.
+
+
+## 2026-09-27 이름 입력 IME와 생성창 키보드 보완
+
+| 항목 | 현행 규격 |
+|---|---|
+| 한글 확정 | charName keydown Enter는 isComposing 또는 keyCode229이면 생성하지 않음. 일반 Enter는 preventDefault, repeat이면 생성하지 않음. 일반 단일 Enter만 기존 createBtn.click 호출 |
+| 모달 의미 | createModal role=dialog,aria-modal=true,aria-labelledby=createModalTitle. 기존 제목 h2에 해당 id 부여 |
+| 열기 | _visualConfirm에서 이름 초기화와 setStatus 공백으로 이전 오류 제거. 기존50ms 입력 초점은 모달이 여전히 show일 때만 실행 |
+| 이동·취소 | Tab/Shift+Tab이 이름·취소·생성의 enabled 컨트롤 사이 순환. 조합 중 Escape 무시, 일반 Escape는 기존 취소 버튼 클릭 |
+| 취소 정리 | 모달 닫기, _vkbHide 및 상태 안내 초기화. 생성 가능 카드 버튼 우선, 없으면 첫 캐릭터 버튼으로 focus(preventScroll:true) |
+| 검증 | 실제 입력 핸들러 격리 실행: composing Enter/keyCode229/repeat 각각 생성0회, 단일 Enter1회. Tab 순환·조합 Escape 유지·일반 Escape 닫힘·카드 초점 복귀·가상 키보드 정리 확인. 브라우저 합성 입력 검증이며 OS IME 실기 테스트는 아님. 생성/삭제/스토리 회귀27개,inline4개 구문 통과. tmp/lobby-create-input/report.json. 실제 캐릭터 생성·삭제 없음 |
+
+## 2026-09-27 맵39차 구형나무·덩굴기둥 폐기
+
+[현행수치·경로·계약](4.1맵디자인+설정/CH1_LOW_QUALITY_RETIREMENT_PASS39.md). 원화2종/동일사본포함7파일격리,main/easy 배치·CH7등록·편집기제거. 폐기Set총15id,충돌목록재구성에서제외. _atlasDry:1로dry동맥캐시분리,기존지면동작보존. module20260927-39,45테스트PASS. 과거이력의해당배치/colSz/확대계획은현행아님.
+
+
+## 2026-09-27 온라인 생성 실패 복귀·중복 요청 방지
+
+| 항목 | 현행 규격 |
+|---|---|
+| 재현 | 온라인 insert Promise 예외가 처리되지 않아 생성 버튼 disabled가 유지. 중복 이름 실패 시 숨긴 이름 입력창 미복원. 진행 중 직접 호출은 요청 중복 가능 |
+| 요청 잠금 | doCreateChar 시작 시 createBtn.disabled이면 즉시 반환. 기존 처리중 버튼 상태를 공통 중복 요청 가드로 사용 |
+| 온라인 예외 | currentUser.id 확인 후 insert, try/catch로 Promise rejection 및 인증 누락 처리, finally에서 버튼 disabled=false |
+| 재시도 UI | 중복23505는 기존 중복 이름 안내, 기타 오류는 기존 생성 실패 접두어·message/알 수 없는 오류 표시. charName에 시도한 이름 유지, createModal show 및 입력 focus |
+| 저장 계약 | 온라인 오류를 로컬 저장으로 대체하거나 자동 재시도하지 않음. 성공 이후 _afterCharacterCreated는 insert 예외 처리 바깥에서1회 실행. 기존 오프라인 저장 경로 유지 |
+| 회귀 | characterStoryCreation.test.js에 네트워크 rejection/중복 이름/인증 없음의 버튼 해제·이름 보존·창 복원·초점·스토리 미진입3건, 대기 요청 중복 차단1건 추가. 수정 전4건 실패→수정 후통과 |
+| 검증 | 생성·삭제·스토리 회귀31개 통과, inline4개 구문 통과. 외부 저장 없이 모의 API 검증. tmp/lobby-create-retry/changes.patch |
+## 2026-09-27 1-1 다크드루이드 임팩트 디테일·본체 외곽 보정
+
+| 항목 | 현행 변경 |
+|---|---|
+| 임팩트 | `groundFissure` 흙 파편 16개·종착 그라디언트, `tideWave` 이동 반짝임 12개·안전 틈 끝 매듭, `chaseAoe` 토양 불투명도 최대 `.13`·불규칙 폭발 원판·뿌리 결, `burrowStrike` 잠행 두둑 반경 `e.r×5.5`/7갈래 뿌리/9개 파편 |
+| 선 렌더 | 전체 스킬 경계 숨김 게이트 아래에서도 드루이드 전용 균열·파동 3층 선과 잔뿌리를 원본 `stroke`로 표시 |
+| 보스 본체 | 기본 대기 `8dir_v3.png` 1656×1240/4×2 방향 셀(414×620), Higgsfield 원본 참조 8방향 재생성·투명 여백 및 ±2px 호흡. 로더 `20260927-edge3`. 기존 walk/attack 887×1774/4×8은 반올림 정수 셀 경계 샘플링 및 150ms/프레임 유지 |
+| 테스트 화면 | `?bosstest=0` 초기 플레이어 위치 보스 남쪽 `10T`→`4T`→`2T`, 카메라 `P.y-4T`→`P.y-T`로 보스 뿔이 상단 HP바에 가리지 않게 배치. 실제 스폰과 전투 수치 불변 |
+| 잔여 | 기존 이동·공격 원본의 셀 가장자리 픽셀 손실은 시트 재제작 필요. [23종 조사와 판정](5.1임펙트디자인/CH1_1_BOSS_IMPACT_AUDIT_20260927.md) |
+
+
+## 2026-09-27 오프라인 생성 실패 복귀·저장 예외 처리
+
+| 항목 | 현행 규격 |
+|---|---|
+| 대상 | _enterOffline의 createBtn override 및 doCreateChar의 _testMode 분기 |
+| 공통 실패 UI | _showCreateFailure(name,message):버튼 잠금 해제,이름 보존,setStatus 오류,생성창 show,이름 입력 초점 |
+| 예외 | 기존 서버→localStorage 폴백 바깥에 저장 예외 처리 추가. getItem/setItem 용량·접근 예외 시 재시도 UI, finally에서 버튼 잠금 해제 |
+| 중복 보호 | 오프라인 버튼 override도 disabled이면 재진입 차단. localStorage hellsave_demo_0~4를 먼저 조사해 같은 이름이 있으면 빈 슬롯이 있어도 저장 없이 중단 |
+| 기존 제한 | 폴백5슬롯 유지. 가득참·중복 이름·명시적 서버 생성 실패 모두 공통 실패 UI로 복귀. 기존 캐릭터 삭제·덮어쓰기 없음 |
+| 테스트 | 버튼/직접 경로×용량 예외/슬롯 가득참/중복 이름6건 추가. 중복은 첫 슬롯 동일 이름·나머지 빈 슬롯으로 확인. 저장 실패 시 스토리0회,기존 데이터 쓰기0회(용량 오류의 실패 시도1회) |
+| 검증 | 생성·삭제·스토리37개 통과, 보강한 중복 fixture 포함6건 재통과,inline4개 구문 통과. 수정 전 신규6건 실패. 모의 API/localStorage만 사용. tmp/lobby-offline-retry/changes.patch |
+
+## 2026-09-27 맵40차 지면소품4종폐기
+
+[현행계약·경로·수치](4.1맵디자인+설정/CH1_GROUND_DECAL_RETIREMENT_PASS40.md). m_moss/m_ash/m_mud/m_crack 4원화격리,main/easy loader·고정8배치·scatter제거. 전체폐기19id. leaf·전투균열VFX·생체모듈보존. 46검사PASS. 코드+docs커밋은기존.git쓰기제한/셸오류로미완료.
+
+
+## 2026-09-27 생성·삭제창 좁은 화면 및 긴 문구 대응
+
+| 항목 | 현행 규격 |
+|---|---|
+| 재현 | 360px 화면 삭제창400px로 좌우20px 넘침. 공백 없는 긴 오류/이름이 생성창1601px·삭제창3104px scrollWidth 유발 |
+| 창 범위 | .create-modal-inner 및 #delConfirmModal>div min-width0/max-width:calc(100vw - 24px)!important/max-height:calc(100dvh - 24px), overflow-y:auto/overflow-x:hidden/overflow-wrap:anywhere/scroll-padding-block8px. 삭제창 width400px |
+| 작은 화면 | max-width480px 또는 max-height480px에서 두 창 padding24px18px!important |
+| 버튼 | 생성·삭제 버튼행 flex-wrap:wrap, 버튼 flex:1 1 96px/min-width0/min-height44px |
+| 긴 문구 | 생성 제목·안내·삭제 질문 anywhere 줄바꿈. 생성 #status font12px/line-height1.5/max-height140px/overflow-y:auto/anywhere 줄바꿈 |
+| 캐시 | index.html의 ui-refinement.css?v=20260927-dialog-layout |
+| 검증 |1280×720,360×480,640×360,320×280×생성/삭제2종=8경우. 긴 오류·삭제 안내로 창 화면 내·가로 넘침 없음·초점 버튼 보임 확인. tmp/lobby-dialog-layout/report.json 및 after.png. 스크립트 비활성 격리 렌더로 실제 저장·삭제 없음 |
+
+## 2026-09-27 맵41차 소형독액·육편장식폐기
+
+[현행수치·경로·계약](4.1맵디자인+설정/CH1_SMALL_ORGANIC_RETIREMENT_PASS41.md). 4원화11사본격리,고정5배치/CH6등록/편집기정리. 폐기총29id,scatter후보4항목. 실제독구덩이·대형늪·거미줄보존,47테스트PASS. 코드+docs커밋은기존권한/셸문제로미완료.
+
+
+## 2026-09-27 가상 키보드 선택 키 자동 스크롤
+
+| 항목 | 현행 규격 |
+|---|---|
+| 재현 |640×360에서 가상 키보드 마지막 OK 키 하단442px,생성창 하단348px. 게임패드 선택 표시만 이동하여 키가 화면 밖에 남음 |
+| 처리 | _vkbHighlight에서 data-vr/data-vc로 선택 키 확인. closest(.create-modal-inner) 내부 가시영역을 panelRect.top+clientTop부터 clientHeight까지 계산,위아래4px 여유 |
+| 이동 | 선택 키가 위/아래 경계를 넘을 때 필요한 거리만 panel.scrollTop 보정. 이미 보이면 스크롤하지 않음. 문서·로비 및 실제 입력 초점은 이동하지 않음 |
+| 유지 | 기존8행·키 크기·한글 조합·게임패드 입력 방식 유지. 신규 이미지·저장 없음 |
+| 검증 | 실제 _vkbShow/_vkbHighlight 격리 실행,1280×720/640×360/360×480/320×280에서 첫행→마지막행→첫행12경우 선택 키 가시성 통과. 640×360 마지막행 scrollTop99px. inline4개 구문 통과. 게임패드 선택 좌표 시뮬레이션이며 실물 하드웨어 검증은 아님. tmp/lobby-vkb-scroll/report.json 및 after.png |
+
+## 2026-09-27 인벤토리 전체 높이·장비/가방/정보 1:1:1
+
+| 항목 | 변경·검증 |
+|---|---|
+| 공통 창 | 장비·유골함·보석·보관함 `.pbox`를 폭 `100vw−24px`, 높이 `100dvh−24px`로 통일. 폭 620px 이하는 양쪽 4px 여백. 기존 680/780/860px 높이 상한보다 우선 적용 |
+| 장비 탭 | 폭 1050px 초과에서 장착판/가방/정보판을 동일 너비 3열·전체 높이 1행으로 배치. 가방 격자는 중앙 열에서 내부 스크롤. 작은 화면은 세로 스택이며 가방 최소높이 440px(620px 이하 400px) |
+| 정보 | `#invRight`를 고정 정보판으로 재사용. 선택 전 실제 공격/방어/추가 효과/보석 홈 현황, 선택·호버 시 기존 상세/비교 표시. 장착판 하단 장착 부위 수/보석 홈/전투력. 아이템·보석 데이터와 저장 계약 불변 |
+| 좌우 비교 | 같은 부위의 장착 아이템이 있을 때 정보판 안에서 현재 장착 왼쪽/가방 후보 오른쪽 두 카드로 즉시 표시. CP 차이는 상단, 모든 스탯 차이는 하단 접기 영역에 보존. 두 카드가 독립 스크롤하여 비교 대상을 보기 위해 전체 정보판을 휠로 내릴 필요 없음 |
+| 소스 | `game.html`, 새 `inventory-space.css?v=20260927-three-columns7`, `build-nwjs.mjs` 파일 목록. 세부 규격은 `2_7 인벤토리+장비시스템/2_7 인벤토리+장비시스템.md`의 최신 절 참조 |
+| 브라우저 | 1454×721에서 세 열 각각 약448px, 가방 격자 높이314px. 아이템 실제 클릭 후 선택 정보판 표시·가방 위치 불변. 네 탭 모두 패널 상하 약12px 여백. 좁은 CSS 화면493×605에서 세로 370/400/300px, 가방 격자272px, 페이지 가로 넘침0. 콘솔 오류0. CLI·커밋은 터미널 생성 오류로 별도 미실행 |
+
+
+## 2026-09-27 로비 하단 버튼 접근성 보완
+
+| 항목 | 현행 규격 |
+|---|---|
+| 다시보기 | replayCinBtn을 span에서 type=button으로 변경. 기존 _goCinematic onclick·번역 셀렉터·게임패드 목록 유지. 키보드 Enter/Space로 동작 |
+| 표시 | 최소높이32px,padding4px0,border0,transparent배경,글자#b8a386/.7rem/자간.08em. hover·gp-hover #ead6a5, focus-visible outline-offset0 |
+| 입장 | enterGameBtn 기본 aria-label=입장, _applyLobbyLang에서 _TL(입장)로 갱신. 이미지 노드·선택 전 disabled 유지 |
+| 캐시 | index.html의 ui-refinement.css?v=20260927-footer-controls |
+| 검증 | 실제 마크업 격리 브라우저에서 Enter/Space 각각 다시보기 콜백1회(시네마틱 실행은 스텁). 입장 접근성 이름·이미지1개·disabled 보존,영문/한글 라벨 갱신 확인. 로비 언어·선택 회귀5개 통과. tmp/lobby-footer-controls/report.json 및 after.png |
+
+## 2026-09-27 맵42차 구형거미줄폐기
+
+[현행경로·수치·검증](4.1맵디자인+설정/CH2_WEB_RETIREMENT_PASS42.md). 동일4원화격리,CH2 seamWeb4배치제거. authored105/runtime총107,hand collision51/noncollision54,seam6,wall-belt27. 큰벽17/세로42/경로·충돌보존. 69검사PASS. CH1생체모듈변경없음. 코드+docs커밋은기존권한/셸문제로미완료.
+
+
+## 2026-09-27 언어 팝업 화면 경계·키보드 보완
+
+| 항목 | 현행 규격 |
+|---|---|
+| 재현 |360×480 화면 우하단 선택창에서 기존 팝업 right412/bottom764로 잘림 |
+| 배치 | 좌우 여백8px, min-width=min(200,화면폭−16),max-width=화면폭−16. 아래 공간이 min(240,화면높이×.6) 이상 또는 위 공간보다 크면 아래, 아니면 위로 배치. 최대높이는 가용공간과60vh 중 작은 값,최소48px. 좌표 화면 내 보정 |
+| 키보드 | 선택창 Enter/Space/위/아래로 열기, 팝업 ArrowUp/Down/Home/End로 탐색,Enter/Space로 기존 change1회 실행. 열기·팝업 키는 시네마틱 등 상위 키 처리로 전파하지 않음 |
+| 닫기 | Escape는 선택값 유지하고 원래 select로 초점 복귀,Tab은 닫은 후 기본 이동. 바깥 pointerdown은 초점을 강제로 되돌리지 않고 닫기 |
+| 접근성 | 팝업 tabindex0/role=listbox/aria-label=Language. 행 role=option/aria-selected 및 고유id,팝업 aria-activedescendant. 선택창 aria-controls/aria-expanded 상태 동기화 |
+| DOM | 팝업 재구성은 replaceChildren,행 텍스트는 리프 textContent. 기존 옵션·change 처리·게임패드 인덱스 계약 유지 |
+| 검증 | 실제 팝업 코드 격리 실행,360×480/1280×720/640×360/320×280 우하단 배치 모두 화면내. 방향키 선택change1회,Escape취소 값 유지·초점복귀,바깥 클릭닫기 확인. 로비 회귀5개·inline4개 구문 통과. tmp/lobby-language-popup/report.json 및 after.png. 언어 저장은 검수용 change 계수로 대체 |
+
+
+## 2026-09-27 언어 메뉴 혼합 입력·화면 크기 변경 보완
+
+| 항목 | 현행 규격 |
+|---|---|
+| 재현 | 마우스로3번 행을 가리킨 후 Enter가0번을 확정.1280→360px 축소 후 팝업 right1062px로 화면 밖 유지 |
+| 마우스 | 행 mousemove의 clientX/clientY를 _langPopPointer와 비교,처음 또는 좌표 변경 때만 _langPopIdx 갱신 및 _hlLangPop(false). 정지 포인터의 동일 좌표 이벤트는 키보드 선택을 덮어쓰지 않음 |
+| 강조 | 개별 enter/leave 배경 조작 제거, 공통 _hlLangPop으로 배경·outline·aria-activedescendant 동기화. scroll 기본true,마우스 이동은false로 스크롤 점프 방지 |
+| 창 크기 변경 | 기존 배치 수식을 _positionLangPop(pop,sel)로 분리. 열린 상태의 window resize에서 위치·최대높이 재계산 후 선택 행을 내부 스크롤로 노출,행 재생성·언어 확정·키보드 초점 이동 없음 |
+| 검증 | 실제 메뉴 코드 격리 브라우저:마우스3번→Enter3번 확정,End28번 강조 후1280×720→360×480 축소 시 화면 내·28번 강조 유지,Enter28번 확정. 로비 회귀5개 통과. tmp/lobby-language-mixed-input/report.json. 실제 언어 저장 없음 |
+
+## 2026-09-27 맵43차 낙엽소품폐기
+
+[현행경로·계약](4.1맵디자인+설정/CH1_LEAF_RETIREMENT_PASS43.md). m_leaf 256²원화격리,sz70 고정(132,111)1배치/loader/scatter2항목제거. 전체폐기34id,scatter2항목. 뼈·시체공유원화유지. 49검사PASS,생체모듈변경없음. 코드+docs커밋은기존권한·셸문제로미완료.
+## 2026-09-27 전투 스킬 전체화면·합체 정보판
+
+| 항목 | 현행 결과 |
+|---|---|
+| 창 | 기존 1020px 폭 제한을 제거하고 화면 사방 8px을 남기는 전폭·전고 스킬 작업공간으로 확장 |
+| 정보 | 스킬 목록 옆에 선택 스킬 설명과 합체 도감 32종/연결 합체식을 고정 배치. 습득 재료 구분 및 재료 클릭으로 해당 스킬 상세 이동 |
+| 목록 | 카테고리 3열(1100px 이하 2열), 추천 2열. 선택 상세 카테고리 전폭 확장. 목록/정보판 독립 스크롤, 폭 760px 이하 1열 및 높이 620px 이하 창 스크롤 |
+| 적용 | `game.html`, `skill-workspace.css?v=20260927-fullscreen4`, `build-nwjs.mjs`, 스킬 시스템·UI 구성 문서 동기화 |
+
+
+## 2026-09-27 로비 통합 검증·언어 선택 행 가시성 보정
+
+| 항목 | 결과·현행 규격 |
+|---|---|
+| 통합 검증 | 로비 단계·언어 선택·선택 정보·29언어 지역명·캐릭터 동기화·생성 스토리·스토리 제어·울트라와이드·언어 지역명9개 테스트 파일,82개 통과 |
+| 추가 재현 | 메뉴 마지막 언어 선택 후1280×900→360×280 축소 시 팝업 하단227px,선택 행 하단598px로 내부 시야 밖 |
+| 보정 | 열린 언어 팝업 resize에서 _positionLangPop 뒤 _hlLangPop 호출. 선택 인덱스 유지하며 현재 행을 내부 스크롤로 노출 |
+| 브라우저 검증 |360×280→640×360→1280×900에서 마지막28번 항목 유지·선택 행 가시성·메뉴 화면 내 확인. tmp/lobby-integrated-review/report.json. 모의 팝업 검수,사용자 언어·저장 데이터 변경 없음 |
+
+## 2026-09-27 맵44차 고지대지면연결
+
+[현행공식·수치](4.1맵디자인+설정/CH1_HILL_EDGE_BLEND_PASS44.md). main/easy _buildCh1HillSmoothingTex의 정상부·오르막 접합과 전체 외곽에48px L1거리×smoothstep 알파감쇠. 임시surface 및 helper2회 할당 합계25,536,000bytes(실제 peak 미계측),상시캐시1900×960유지,매프레임추가작업없음. 원본PNG/청크/height/collision동일. 50검사PASS. 코드+docs커밋은기존권한/셸문제로미완료.
+
+
+## 2026-09-27 저장 이름 툴팁의 따옴표 보존
+
+| 항목 | 현행 규격 |
+|---|---|
+| 재현 | escHtml은 텍스트용 변환으로 따옴표를 인코딩하지 않음. 기존 저장 이름 전사 "별명" & 동료의 title이 전사 공백까지만 표시 |
+| 수정 | 온라인/로컬 .char-name-label의 HTML title 보간 제거. 새 카드 생성 후 특정 리프 노드의 title 프로퍼티에 ch.name/s.name 직접 대입 |
+| 유지 | 이름 본문은 기존 escHtml로 표시,선택 버튼 aria-label/title은 기존 DOM 대입. 신규 이름 입력 제한·저장 데이터 변경 없음 |
+| 검증 | 온라인·로컬 실제 템플릿×큰따옴표/작은따옴표/꺾쇠·앰퍼샌드3종=6경우 본문·title 원문 일치,추가 속성·자식 없음. 로비 회귀7개 통과. tmp/lobby-name-attributes/report.json. 사용자 저장 수정 없음 |
+## 2026-09-27 바닥 장비 가방 우선·가방 옆 정보판
+
+| 항목 | 현행 결과 |
+|---|---|
+| 원인 | 빈 부위로 떨어진 일반 장비가 `pickupItem`에서 즉시 자동 장착되어 `INV.bag`와 가방 수량이 0으로 남았다. 저장을 차단한 재현에서 빈 벨트 픽업 성공·가방 변화 0·장착 true |
+| 픽업 | 일반 장비 전 부위는 빈 장착칸과 무관하게 가방 좌표를 배정한다. 유골 부위 자동 등록과 대장간 제작 자동 장착은 유지. 재현 재검사에서 가방 +1·장착 false·DOM 아이템 +1 |
+| 화면 | 폭 1200px 초과 장비/10열 가방/정보판을 `1.28fr / 1fr / clamp(380px,26vw,480px)`로 배치해 가방 오른쪽 검은 여백을 정보판에 배정. 1200px 이하는 세로 배치 |
+| 적용 | `game.html`, `inventory-space.css?v=20260927-three-columns9`, 인벤토리·UI·사운드·번역 관련 문서. 테스트 브라우저 오류 로그 0, 저장 파일 변경 없이 검증 |
+
+## 2026-09-27 CH1 제단 사면 45차
+
+[색상·정렬 SSOT](4.1맵디자인+설정/CH1_HILL_SHADING_PASS45.md). main/easy 언덕의 갈색 radial wash를 저채도 세로 명암으로 교체, ramp floor 월드 원점 정렬. 캐시·feather·높이·충돌 보존. 50검사 및 easy6 script 문법 통과. 커밋은 기존 shell/.git 권한 문제로 미완료.
+
+
+## 2026-09-27 가상 키보드 한글 8글자 경계 보호
+
+| 항목 | 현행 규격 |
+|---|---|
+| 대상 | index.html의 _vkbInput(k), 이름 최대 8글자 유지 |
+| 재현 | 8번째 초성 뒤 새 초성을 입력하면 표시되지 않은 입력이 _hgState를 덮어써 다음 모음에서 마지막 글자 변경. 8번째 음절의 받침 뒤 모음을 입력하면 새 글자 추가 없이 기존 받침만 소실 |
+| 경계 처리 | 길이 8 이상이고 조합 중이면 상태 변경 전에 sameSyllable 검사. 중성 전에는 모음(_isJung), 중성 이후 종성 전에는 초성이면서 종성 가능한 자음(_isCho와 _isJong), 종성 이후에는 _JONG_MERGE가 있는 자음만 허용. 그 외 입력은 input 이벤트 후 반환하여 값과 조합 상태 보존 |
+| 유지 | 같은 음절의 모음·받침·겹받침 조합 및 기존 백스페이스 유지. 여유 글자 수가 있으면 받침 분리 후 다음 음절 생성 유지 |
+| 회귀 | test/lobbyHangulInput.test.js: 초성 덮어쓰기·받침 소실·종성 불가 초성 덮어쓰기 방지, 겹받침·백스페이스·여유 길이 받침 분리 총 6건. 수정 전 3건 실패, 수정 후 6건 통과 |
+| 검증 | 한글 입력·캐릭터 생성·언어 선택 관련 테스트 총 36건 통과. 실제 함수 VM 실행이며 실물 게임패드·OS IME 검증은 아님. tmp/lobby-hangul-limit/changes.patch에 코드·테스트·문서 함께 보관 |
+
+
+## 2026-09-27 언어 메뉴 재열기 입력 상태 초기화
+
+| 항목 | 현행 규격 |
+|---|---|
+| 재현 | 스틱을 기울인 채 메뉴를 닫고 밖에서 중립 복귀 후 다시 열면 로그인 첫 상하 이동이 무시됨. 로비는 이전 반복 대기시간이 남아 첫 이동 지연. 동일 좌표의 첫 마우스 이동도 이전 좌표 비교 때문에 무시됨 |
+| 공통 처리 | _openLangPop에서 대상 select 확인 후 _langPopPointer=null, _GP.prev._lpU=false, _lpD=false, _lpDir=null, _lpRepT=0. 로그인·로비·시네마틱 공통 열기 함수에 적용 |
+| 유지 | 현재 select.selectedIndex로 초기 선택. 탐색만으로 언어 확정하지 않음. 기존 스틱 임계값 ±0.5 및 로비 반복 초기300ms/이후80ms 유지. 같은 열린 메뉴 안에서는 정지 포인터가 키보드 선택을 덮어쓰지 않음 |
+| 검증 | lobbyLanguageReopen.test.js: 로그인/로비 × 상/하 4건 및 동일 좌표 재열기 마우스1건. 수정 전5건 실패→수정 후 통과. 언어 선택·한글 입력 포함 총12건 통과. 실제 함수 VM 실행, 실물 게임패드 미검증 |
+| 기록 | tmp/lobby-language-reopen/changes.patch에 코드·회귀 테스트·문서 동시 보관. 기존 터미널/.git 쓰기 제한으로 커밋 미완료 |
+
+## 2026-09-27 CH1 제단 정상부 윤곽 46차
+
+[윤곽 공식·검증](4.1맵디자인+설정/CH1_HILL_CONTOUR_PASS46.md). main/easy 정상부96점 비대칭 clip/fill, 사면 organicSkirt fill. 44차 feather·45차 색상과 월드 정렬 유지. 높이·충돌 코드 동일, 50검사 및 easy6 script 통과. 커밋은 기존 shell/.git 권한 제한으로 미완료.
+## 2026-09-27 가방 10열 옆 검은 띠를 정보판으로 전환
+
+| 항목 | 현행 결과 |
+|---|---|
+| 원인 | 이전 열 폭은 가방을 격자 10열보다 넓게 잡아 오른쪽에 큰 검은 띠를 남겼다. 정보판은 그 바깥에서 시작했고 선택 전 내용도 세로 중앙에 붙었다 |
+| 배치 | 1200px 초과 장비/가방/정보판 `minmax(0,1.28fr) clamp(400px,30vw,600px) minmax(380px,1fr)`. 10열 가방은 최대 600px, 남는 폭은 정보판. 넓은 CSS 뷰포트 2457px에서 가방 600px·격자 565px·정보판 767px·격자 끝부터 정보판까지 30px |
+| 기본 정보 | 정보판 내용을 상단부터 배치하고 CP 공격/방어/추가 효과·보석 홈 아래에 16개 장착 부위를 2열 목록으로 채움. 착용 항목 클릭 시 해당 아이템 상세로 이동. 기존 호버·가방 선택 비교 유지 |
+| 적용 | `game.html`, `inventory-space.css?v=20260927-three-columns11`, 인벤토리/공통 UI 관련 docs 동기화 |
+
+
+## 2026-09-27 낮은 로비 게임패드 선택 자동 노출
+
+| 항목 | 현행 규격 |
+|---|---|
+| 재현 | 960×540에서 게임패드로 하단 시네마틱 버튼 선택 시 패널 하단516px,선택 버튼 하단768.19px,scrollTop0으로 화면 밖 유지 |
+| 처리 | lobbyNav에서 _lobbyGpIdx 또는 실제 선택 요소 변경 시 현재 컨트롤의 closest(.lobby-content) 확인. clientHeight>0 및 scrollHeight>clientHeight일 때만 패널 내부 scrollTop 보정 |
+| 경계 | 패널 getBoundingClientRect.top+clientTop 기준 위아래4px 여유. 선택 요소가 위 경계보다 위면 차이만큼 감소,아래 경계보다 아래면 차이만큼 증가. 이미 보이면 이동 없음 |
+| 유지 | 기본 display:contents 레이아웃은 스크롤하지 않음. 실제 DOM 초점·언어 선택·캐릭터 선택/삭제 동작은 변경 없음. 중립 프레임은 같은 인덱스·동일 요소에서 스크롤하지 않음 |
+| 브라우저 검증 | 실제 로비 HTML/CSS와 lobbyNav 함수,검수 카드3개로 960×540/800×480/1024×600/1280×900 각 첫 선택+아래6+위6 총52개 가시성 통과. 중립 스크롤 유지 및 document.scrollY0. 실제 저장/삭제 요청 없이 모의 패드 입력,실물 패드 미검증 |
+| 회귀·기록 | 언어 재열기·캐릭터 선택 정보·언어 선택 테스트10개 통과. tmp/lobby-pad-visibility/report.json,after.png,changes.patch. 기존 터미널/.git 제한으로 커밋 미완료 |
+
+## 2026-09-27 CH1 제단 바닥 반복 47차
+
+[수치·검증](4.1맵디자인+설정/CH1_HILL_MATERIAL_PASS47.md). main/easy 정상부·ramp floor1.4배, texture에만 saturate(.7) contrast(.92) brightness(.92). 공통 월드 정렬·윤곽·feather·높이·충돌 보존. 50검사/easy6 script 통과. 커밋은 기존 shell/.git 권한 제한으로 미완료.
+
+
+## 2026-09-27 목록 재렌더 후 게임패드 대상 동기화
+
+| 항목 | 현행 규격 |
+|---|---|
+| 재현 | 오른쪽 스틱 목록 이동과 A/X를 같은 프레임에 입력하면 미리 수집한 _navItems가 제거된 카드 DOM을 참조하여 이전 카드 선택/삭제 확인 실행. 같은 인덱스의 새 DOM에는 gp-hover 누락 |
+| 순서 | 오른쪽 스틱 페이지 이동을 _navItems 수집 전에 처리. 최신 보이는 DOM 수집 → 이전 요소가 남아 있으면 인덱스 복원 → 인덱스 상한 보정 → 방향 탐색 → 강조 → A/X 실행 순서 |
+| 강조 상태 | _GP.prev._lobbyEl에 이전 실제 요소 참조 저장. 인덱스 또는 요소가 바뀌면 이전 요소 gp-hover 제거 후 현재 요소 강조·패널 노출·호버 사운드 처리. 교체 DOM도 같은 인덱스에서 갱신 |
+| 유지 | 오른쪽 스틱 ±0.5 임계값 및 중립 복귀 전 방향별1회 이동, 온라인 ID 우선·로컬 폴백 유지. X는 기존 삭제 확인 클릭만 실행하며 삭제 확정 과정 유지 |
+| 회귀 | lobbyGamepadRefresh.test.js 신규4건: 우스틱+A 최신 카드 선택,우스틱+X 최신 카드 삭제 확인,같은 인덱스 DOM 교체 강조 복구·이전 강조 제거,우스틱 홀드1회 및 중립 재진입. 수정 전3실패/1통과→수정 후4통과 |
+| 검증·기록 | 캐릭터 동기화·선택 정보·언어 재열기 포함21개 통과. 실제 lobbyNav 추출 및 모의 DOM/패드 입력,실제 저장·삭제/실물 패드 검증 없음. tmp/lobby-pad-refresh/changes.patch. 기존 터미널/.git 제한으로 커밋 미완료 |
+
+
+## 2026-09-27 로비 버튼 목록 변경 시 선택 대상 유지
+
+| 항목 | 현행 규격 |
+|---|---|
+| 재현 | 현재 선택 앞에 버튼이 추가되거나 제거되면 숫자 인덱스만 유지되어 다른 컨트롤로 강조/A 실행 대상 이동. 입장 버튼 활성화로 시네마틱 앞에 탐색 항목 추가되는 경우 포함 |
+| 처리 | _navItems 수집 후 _GP.prev._lobbyEl과 동일한 요소를 findIndex하여 _retainedGpIdx 계산. 0 이상이면 _lobbyGpIdx를 해당 위치로 복원한 뒤 상한 보정·방향 입력 처리 |
+| 폴백 | 이전 요소가 제거되거나 탐색 대상에서 제외되면 기존 인덱스 상한 보정 유지. DOM이 교체된 카드는 기존 교체 감지·강조 갱신 경로 사용 |
+| 자동 회귀 | lobbyGamepadRefresh.test.js에 앞 항목 삽입/제거 후 A 대상 유지,삽입 후 방향 입력의 기준 유지,현재 요소 제거 후 남은 항목 폴백4건 추가. 수정 전 신규3건 실패/1건 통과,수정 후 통과. 관련 테스트 총25건 통과 |
+| 브라우저 | 실제 로비 마크업/CSS/lobbyNav 격리 실행. 960×540에서 시네마틱 선택 후 입장 버튼 활성화/비활성화 각각 A 실행이 시네마틱 콜백으로 전달(총2회),강조1개 유지. 실제 시네마틱 실행·저장 없음,실물 패드 미검증 |
+| 기록 | tmp/lobby-pad-stable-target/report.json 및 changes.patch. 코드·테스트·문서 함께 보관,기존 터미널/.git 제한으로 커밋 미완료 |
+
+## 2026-09-27 CH1 제단 사면 깊이 48차
+
+[정확한 수치·검증](4.1맵디자인+설정/CH1_HILL_DEPTH_PASS48.md). surface alpha 기반 shadow rgba(10,9,12,.32), blur20, offset(0,18). 캐시 생성시만 처리, 기존 geometry/collision·재질 보존. 50검사/easy6 script 통과. 기존 shell/.git 권한 문제로 커밋 미완료.
+
 ## 2026-09-27 보석함 보유 격자·감정판 반반 배치
 
 | 항목 | 현행 계약 |
@@ -48888,3 +49740,41 @@ CSS 캐시 ui-refinement.css?v=20260927-4. 신규 이미지/아이템 데이터 
 | CSS | `inventory-gems-balance.css?v=20260927-half`를 `inventory-space.css`·`inventory-gems-finish.css` 뒤에 로드한다. 열 1:1은 폭900px 이상, 행 1:1은 폭701px 이상·높이600px 이상에 적용한다. 행은 `auto minmax(120px,1fr) minmax(160px,1fr)`, 간격12px이다. 폭700px 이하/높이600px 미만의 기존 세로 배치는 유지한다. |
 | 측정 | 2500×1200 격자393px·감정판393px, 1280×720과 900×720 격자147px·감정판160px. 390×844는 기존 격자263px·감정판210px. |
 | 동작·저장 | 보석 선택·호버 감정·장착/탈착·옵션 수치·`CRYSTAL_BAG` 저장 형식 변경 없음. 선택 보석 이름 표시와 pageerror 0을 네 화면 크기에서 확인했다. |
+## 2026-09-27 실버테일 공식 키아트 2장 고정
+
+| 항목 | 현행 동작·검증 |
+|---|---|
+| 공식 이미지 | `assets/charselect/silvertail_solo.png`, `silvertail_title.png`를 사용자 지정 Downloads 원본과 동일한 SHA-256으로 복사. 출처·해시는 `docs/archetypes/silvertail/SILVERTAIL_KEYART_CANON_20260927.md` 참조 |
+| 선택 화면 | `index.html`의 실버테일 중앙·로비 정적 화면은 대표 키아트, 선택·저장 슬롯 썸네일은 타이틀 키아트. 이전 실버테일 idle 영상·컷아웃·포스터 경로 제거 |
+| 정리 | 이전 선택 화면 4개 파일, 문서 원화 38개, 구 미리보기·8시점 시안 2개, 합계 44개 제거. 복구용 백업은 `tmp/silvertail_art_backup_20260927.zip`. Downloads 원본과 전투용 스프라이트·VFX는 보존 |
+
+
+## 2026-09-27 내부 전체 투명화 폐기
+
+사용자 의도를 오해한 변경으로 폐기. 아래 프레임 안 유지·밖만 투명 정정 규격을 적용한다.
+
+
+## 2026-09-27 투명화 범위 정정: 프레임 안 유지·밖만 투명
+
+| 항목 | 현행 규격 |
+|---|---|
+| 사용자 확정 | 230651 스크린샷 지적: 박스 안을 투명하게 하라는 뜻이 아님. 직전 전체 내부 투명화는 오해로 폐기. 장식 테두리 바깥만 투명 |
+| 로비 원인·수정 | .lobby-right 자체는 이미 transparent이고 ::before inset22px 안쪽 배경 유지. 최신 단일 장면 규칙에 따라 #lobbyBgImg를 로비 전체로 확장하고 .lobby의 검정 로딩 폴백을 유지. 외곽에 별도 body 배경이 비치지 않음. 카드·배너·버튼·내부 문양 유지 |
+| 튜토리얼 | #parryLesson 부모 background:transparent,border0,box-shadow:none 유지. ::before의 실제 border-width18px·border-image-width40px에 기존 radial-gradient(ellipse at 50% 0,#47171288,transparent 48%),#100d0ef5 배경을 padding-box로 제한. 프레임22% 슬라이스·문장 유지 |
+| 내부 복원 | 키·현재 행·footer·시작/건너뛰기 버튼·자원 안내·체크박스의 직전 투명 오버라이드 제거. 기존 붉은 현재 행/버튼 및 배경 복원. parryLessonBackdrop도 기존 정의 복원 |
+| 캐시 | index.html/game.html/game-easy-test.html: ui-foundation.css?v=20260927-frame-interior, ui-refinement.css?v=20260927-frame-exterior |
+| 검증 | Chromium1280×900에서 검수용 줄무늬 배경을 이용해 로비/튜토리얼 바깥만 배경이 비치고 내부는 어두운 배경 유지 확인. 튜토리얼 내부 rgba(16,13,14,.96),padding-box,frame40px,부모border0. 로비 부모/전체 배경transparent 및 내부 inset22px 확인. 실제 CSS 격리 검수,게임 데이터 변경 없음 |
+| 기록 | tmp/frame-outside-only/report.json,lobby-after.png,tutorial-after.png,changes.patch. 기존 터미널/.git 제한으로 커밋 미완료 |
+
+
+## 2026-09-27 로비 장면 배경 한 장으로 통일
+
+| 항목 | 현행 규격 |
+|---|---|
+| 원인 | 로비 투명 외곽에서 body의 별도 img/lording 랜덤 배경이 노출되어 왼쪽 로비 장면과 오른쪽 외곽 장면이 달라짐 |
+| 구조 | #lobbyBgImg를 .lobby-left 내부에서 #lobby 직계 자식으로 이동. absolute/inset0/cover/left center로 로비 전체에 한 장 표시. 기존 _swapLobbyBg의 이미지 선택·전환 및 DOM id 유지 |
+| 레이어 | .lobby background:#000/isolation:isolate/overflow:hidden. 검정은 로딩·페이드 시 별도 body 배경 노출 방지용. 직계 배경 z-index0/pointer-events:none,좌우 패널 z-index1,왼쪽 자체 배경 transparent |
+| 유지 | 오른쪽 장식 바깥은 동일 로비 장면을 노출. 내부 inset22px 배경·문양·카드·로고·버튼 및 캐릭터 미리보기 유지. 기존 배경3종 선택 정책 유지,새 이미지 생성 없음 |
+| 캐시 | index.html의 ui-refinement.css?v=20260927-single-lobby-scene |
+| 검증 | 실제 HTML/CSS 격리 브라우저에서 flame 기존 에셋1장으로1600×900 시각 확인. #lobbyBgImg1개/부모lobby/전체화면크기 일치. body에 검수용 마젠타 배경을 두어 외곽에 노출되지 않음 확인. 960×540·1920×1080에서도 전체크기 일치/횡넘침 없음 |
+| 기록 | tmp/lobby-single-scene/after.png,report.json,sizes.json,changes.patch. 게임 저장·계정 변경 없음. 기존 터미널/.git 제한으로 커밋 미완료 |

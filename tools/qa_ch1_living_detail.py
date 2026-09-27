@@ -11,7 +11,7 @@ out = Path('captures/ch1_living_detail_pass18_20260927') / ('before' if '--befor
 if '--motion-only' in sys.argv:
     out=out.parent/'motion-optimized'
 out.mkdir(parents=True, exist_ok=True)
-errors, failed, boards = [], [], []
+errors, failed, boards, request_failures = [], [], [], []
 with sync_playwright() as p:
     browser = p.chromium.launch(headless=True)
     context = browser.new_context(viewport={'width':1280,'height':720},record_video_dir=str(out),record_video_size={'width':1280,'height':720})
@@ -21,6 +21,7 @@ with sync_playwright() as p:
     page.on('pageerror', lambda e: errors.append(e.stack or str(e)))
     page.on('console', lambda m: errors.append(m.text) if m.type=='error' else None)
     page.on('response', lambda r: failed.append(r.url) if r.status >= 400 else None)
+    page.on('requestfailed', lambda r: request_failures.append({'url':r.url,'failure':r.failure}))
     page.goto('http://127.0.0.1:3333/game.html?test=1&testchar=1&stage=0&classic=1&mapqa=1', wait_until='domcontentloaded', timeout=90000)
     page.wait_for_function("typeof G!=='undefined' && G.map && typeof P!=='undefined'",timeout=90000)
     for _ in range(5):
@@ -34,7 +35,7 @@ with sync_playwright() as p:
     page.evaluate('closeAllPanels()')
     # Visual/input audit only: preserve enemy/VFX behavior, prevent death interrupting the camera tour.
     page.evaluate("window.__ch1QACamera=true;window.__ch1QAHeal=setInterval(()=>{if(P&&P.hp>0){P.hp=P.mhp;if(window.__ch1QACamera)P.iframes=Math.max(P.iframes||0,60);}},50)")
-    for name, tx, ty in [('TISSUE_DETAIL',91,184),('START',100,180),('EARLY',100,157),('ARENA',100,120),('SIDE_L',49,151),('SIDE_R',151,136),('LANDMARK',83,80),('LATE',100,48),('EXIT',100,15),('TREE_DETAIL',102,97),('HANGING_DETAIL',102,82),('CAMP_DETAIL',46,104),('COCOON_DETAIL',47,56),('POOL_DETAIL',162,141),('AUTHORED_POOL',167,45)]:
+    for name, tx, ty in [('TISSUE_DETAIL',91,184),('START',100,180),('EARLY',100,157),('ARENA',100,120),('SIDE_L',49,151),('SIDE_R',151,136),('LANDMARK',102,90),('LATE',100,48),('EXIT',100,15),('TREE_DETAIL',102,97),('HANGING_DETAIL',102,82),('CAMP_DETAIL',46,104),('COCOON_DETAIL',47,56),('POOL_DETAIL',162,141),('AUTHORED_POOL',167,45)]:
         if '--camp-only' in sys.argv and name!='CAMP_DETAIL':
             continue
         if '--tree-only' in sys.argv and name not in ['TREE_DETAIL','HANGING_DETAIL']:
@@ -85,7 +86,7 @@ with sync_playwright() as p:
         shot=Image.open(out/(name+'.png')).convert('RGB');shot.thumbnail((320,180));sheet.paste(shot,((i%4)*320,(i//4)*180))
     sheet.save(out/'camera-board.jpg',quality=90)
     death_check=page.evaluate('''()=>{clearInterval(window.__ch1QAHeal);const buttonPresent=!!document.getElementById('deathReplayBtn');try{P._fallenCanRevive=false;P.s='fallen';G.paused=true;_fallenResolve();return {buttonPresent,shown:document.getElementById('death').classList.contains('on'),error:null};}catch(e){return {buttonPresent,error:String(e),stack:e.stack};}}''')
-    result={'errors':errors,'httpErrors':failed,'cameras':boards,'detail':audit,'deathCheck':death_check,'inputQA':{'healthRefillMs':50,'cameraIframesFloor':60,'combatIframesRefill':False,'start':start,'end':end,'frameTimesMs':frame_times},'outer':page.evaluate('__ch1StartOuterQA()')}
+    result={'errors':errors,'httpErrors':failed,'requestFailures':request_failures,'cameras':boards,'detail':audit,'deathCheck':death_check,'inputQA':{'healthRefillMs':50,'cameraIframesFloor':60,'combatIframesRefill':False,'start':start,'end':end,'frameTimesMs':frame_times},'outer':page.evaluate('__ch1StartOuterQA()')}
     (out/'runtime.json').write_text(json.dumps(result,ensure_ascii=False,indent=2),encoding='utf-8')
     print(json.dumps({'errors':errors,'httpErrors':failed,'captures':str(out)},ensure_ascii=False))
     context.close()
