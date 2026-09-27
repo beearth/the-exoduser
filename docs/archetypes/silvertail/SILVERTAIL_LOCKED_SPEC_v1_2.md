@@ -131,3 +131,5 @@ ONE small curved dagger in the LEFT hand, RIGHT hand open for balance, skirt tra
 - attack-deploy/whirl/throw/dash 스프라이트 상태 실제 생성은 LOCK 확정 후 진행(**video-first**, 구 PixelLab 단계 폐기).
 
 FDG / EXODUSER: HELL LORD / (c) 2026 SIM DOJIN
+
+> **2026-09-28 보정:** 사용자가 7월 이미지 12개를 실버테일 자료로 재지정하여 [원본 레퍼런스](./refs/README.md)에 복원했다. 위의 일괄 제거 표현은 당시 이력이며 이 12개에는 적용하지 않는다. 현행 화면 매핑과 확정 장비 계약은 별도 유지한다.

@@ -71,3 +71,5 @@ PixelLab ZIP의 최신 `Idle/animations/walk`만 `img/exoduser_silvertail/`에 �
 - WEAPON BIBLE (10_20_48) — 로터리 블레이드 구조/폴드·디플로이/콤보
 - 2D GAME SPRITE CONCEPT — 게임 스프라이트 타겟 룩
 - 색상: PRIMARY #0E0E10 / METAL #2B2B2F / BLOOD RED #6B0D0D / ASH WHITE #C7C7C7
+
+> **2026-09-28 보정:** 사용자가 7월 이미지 12개를 실버테일 자료로 재지정하여 [원본 레퍼런스](./refs/README.md)에 복원했다. 위의 일괄 제거 표현은 당시 이력이며 이 12개에는 적용하지 않는다. 현행 화면 매핑과 확정 장비 계약은 별도 유지한다.
