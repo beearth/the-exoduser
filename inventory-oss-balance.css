@@ -1,0 +1,13 @@
+/* Ossuary workspace: the bag and information share the left pane equally. */
+@media(min-width:900px){
+  #invPanel.panel[data-inventory-page=ossuary] .pbox #invGrid{
+    height:auto!important;
+    min-height:146px!important;
+    max-height:none!important;
+    flex:1 1 0!important;
+  }
+  #invPanel.panel[data-inventory-page=ossuary] .pbox #invOssInfo{
+    flex:1 1 0!important;
+    min-height:160px!important;
+  }
+}
