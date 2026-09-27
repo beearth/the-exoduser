@@ -2507,7 +2507,7 @@ body:has(#invPanel.on) #keyGuide{display:none!important}
 <link rel="stylesheet" href="stat-panel-ui.css?v=20260913-smooth-ui">
 <link rel="stylesheet" href="localization.css?v=20260909">
 <link rel="stylesheet" href="ui-foundation.css?v=20260924-hell3">
-<link rel="stylesheet" href="ui-refinement.css?v=20260927-4">
+<link rel="stylesheet" href="ui-refinement.css?v=20260927-ossuary">
 <script defer src="ui-panels.js?v=20260927-1"></script>
 <script src="stat-panel-ui.js?v=20260909-constellation-v3"></script>
 </head>
@@ -42888,9 +42888,9 @@ function mkBonePart(ancIdx,part,tier,rarity){
     itemLv:Math.min(900,Math.floor((P&&P.lv?P.lv:1)/10)*10),reqLv:0,affixes:[]};
 }
 // 부위 포인트 = rarity(0~5)+tier(0~4) → 부위당 0~9, 세트 합산 0~36
-let _OSS_UNLOCK_ALL=true; // TEMP(2026-09-01): 콜렉션 도감 UI 미완성 — 유골함 장착 시 전원 base 해금(등급기반 거대 1기 소환 복구). 콜렉션 완성 후 false로.
-function _ancPartPts(ancId,part){const c=INV.ossCollect&&INV.ossCollect[ancId+'_'+part];if(c)return (c.r||0)+(c.t||0);return (_OSS_UNLOCK_ALL&&INV.equipped&&INV.equipped.ossuary)?((INV.equipped.ossuary.tier||0)+2):-1}
-function _ossSetComplete(ai){const R=ANC_ROSTER[ai];if(!R)return false;if(_OSS_UNLOCK_ALL&&INV.equipped&&INV.equipped.ossuary)return true;if(!INV.ossCollect)return false;for(let i=0;i<4;i++){if(!INV.ossCollect[R.id+'_'+_BONE_PARTS[i]])return false}return true}
+// 4부위 실제 수집으로만 해금한다. 임시 전원 해금은 폐지했다.
+function _ancPartPts(ancId,part){const c=INV.ossCollect&&INV.ossCollect[ancId+'_'+part];if(c)return (c.r||0)+(c.t||0);return -1}
+function _ossSetComplete(ai){const R=ANC_ROSTER[ai];if(!R)return false;if(!INV.ossCollect)return false;for(let i=0;i<4;i++){if(!INV.ossCollect[R.id+'_'+_BONE_PARTS[i]])return false}return true}
 function _ossUnlockedList(){const out=[];for(let ai=0;ai<ANC_ROSTER.length;ai++)if(_ossSetComplete(ai))out.push(ai);return out}
 // ═══ 소환 스탯 산출 (소환·미리보기 공용 SSOT) — 미완성 전대는 null ═══
 // 부위 역할: 두개골=치명/위력, 몸통=HP, 팔=공격, 다리=크기·속도
@@ -46546,57 +46546,74 @@ document.addEventListener('mouseup',function(ev){
   }
   renderInv();
 });
-// ═══ 소환 유골함 도감 패널 (2026-09-01) — 전대 7종 × 4부위 콜렉션 렌더 ═══
-// #invOssuaryPanel(전용 컨테이너)만 innerHTML로 재구성 — 형제/부모 DOM 불간섭 (DOM 안전규칙 준수)
+// ═══ 유골 콜렉션 — 중앙 유골함과 등급별 4부위 제단 ═══
 function renderOssPanel(){
   const pn=$('invOssuaryPanel');if(!pn)return;
   if(!INV.ossCollect||typeof INV.ossCollect!=='object')INV.ossCollect={};
-  const oss=INV.equipped.ossuary;
-  const unlocked=_ossUnlockedList();
-  let h='';
-  h+='<div class="inv-oss-head"><span>⚱️ '+_L('소환 유골함','Summon Ossuary')+'</span><span style="color:#66ddaa;font-size:.72rem">'+_L('해금','Unlocked')+' '+unlocked.length+'/'+ANC_ROSTER.length+'</span></div>';
-  h+='<div style="display:flex;gap:8px;align-items:center;margin-bottom:5px">';
-  if(oss){
-    h+='<div class="inv-oss-urn" id="invOssUrn" style="border-color:'+RARITY_C[oss.rarity]+';box-shadow:inset 0 0 10px '+RARITY_C[oss.rarity]+'33">'+_itemSkin(oss,36,RARITY_C[oss.rarity])+'</div>';
-    h+='<div style="flex:1;min-width:0"><div style="color:'+RARITY_C[oss.rarity]+';font-size:.8rem;font-weight:700;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">'+_T(oss.name)+'</div>';
-    h+='<div style="color:#887799;font-size:.68rem">'+_L('4부위를 모두 모은 전대만 소환됩니다','Only fully collected ancestors can be summoned')+'</div></div>';
-  }else{
-    h+='<div class="inv-oss-urn" id="invOssUrn"><span style="opacity:.4;font-size:1.3rem">⚱️</span></div>';
-    h+='<div style="flex:1;min-width:0;color:#665577;font-size:.72rem">'+_L('유골함 미보유 — 유골 부위 획득 시 자동 지급','No ossuary — granted on first bone part')+'</div>';
-  }
-  h+='</div>';
-  h+='<div class="inv-oss-list">';
-  for(let ai=0;ai<ANC_ROSTER.length;ai++){
-    const R=ANC_ROSTER[ai];
-    const st=_calcAncestorStats(ai);
-    const done=!!st;
-    let parts='';
-    for(let pi=0;pi<_BONE_PARTS.length;pi++){
-      const pt=_BONE_PARTS[pi];
-      const c=INV.ossCollect[R.id+'_'+pt];
-      const _pn2=_bonePartName(pt);
-      const _tip=c?(_pn2+' — '+_rarName(c.r||0)+' T'+((c.t||0)+1)+' (+'+((c.r||0)+(c.t||0))+')'):(_pn2+' — '+_L('미수집','Not collected'));
-      parts+='<div class="inv-oss-part'+(c?'':' empty')+'" title="'+_tip+'"'+(c?' style="border-color:'+(RARITY_C[c.r||0]||'#888')+'"':'')+'><img src="output/imagegen/item-skins/bone_'+pt+'.png" alt="" loading="lazy"></div>';
+  // Build once. Preserve the panel, child nodes, focus and all attached handlers.
+  if(!pn.querySelector('.oss-altar')){
+    const make=(tag,cls,parent)=>{const n=document.createElement(tag);n.className=cls;parent.append(n);return n;};
+    const head=make('div','oss-collection-head',pn);
+    make('span','oss-collection-title',head);
+    make('span','oss-collection-count',head);
+    const altar=make('div','oss-altar',pn);
+    const ring=make('div','oss-ritual-ring',altar);ring.setAttribute('aria-hidden','true');
+    const urn=make('button','oss-center',altar);urn.id='invOssUrn';urn.type='button';
+    const urnImg=make('img','oss-urn-image',urn);urnImg.alt='';urnImg.src='output/imagegen/item-skins/ossuary_phys.png';urnImg.onerror=()=>{urnImg.hidden=true;};
+    make('span','oss-urn-label',urn);
+    for(const part of _BONE_PARTS){
+      const node=make('button','oss-bone-node',altar);node.type='button';node.dataset.part=part;
+      make('span','oss-bone-name',node);
+      const img=make('img','oss-bone-image',node);img.alt='';img.src='output/imagegen/item-skins/bone_'+part+'.png';img.onerror=()=>{img.hidden=true;};
+      make('span','oss-bone-grade',node);
+      make('span','oss-bone-tier',node);
+      node.onclick=()=>{
+        pn.dataset.selectedPart=part;
+        _invClearHover();
+        renderOssPanel();
+      };
     }
-    const _stTip=done
-      ?(_L('위력','DMG')+' '+st.dmg+' | HP '+st.hp+' | '+_L('크기','Size')+' ×'+st.bigSz.toFixed(2)+' | '+_L('치명','Crit')+' '+~~(st.crit*100)+'% | '+_L('이속','Speed')+' ×'+st.spd.toFixed(2)+' | '+_L('지속','Dur')+' '+~~(st.dur/60)+_L('초','s'))
-      :_L('4부위 수집 시 소환 해금','Collect all 4 parts to unlock');
-    h+='<div class="inv-oss-row'+(done?' done':'')+'" title="'+_stTip+'">';
-    h+='<img class="inv-oss-port'+(done?'':' lock')+'" src="'+_ANC_SPRITE_POOL[ai]+'" alt="" loading="lazy">';
-    h+='<span class="oss-name">'+_L(R.ko,R.en)+'</span>'+parts;
-    h+=(done?'<span class="oss-badge">'+_L('소환 가능','Ready')+'</span>':'');
-    h+='</div>';
+    const footer=make('div','oss-collection-footer',pn);
+    make('span','oss-ancestor-name',footer);
+    const state=make('span','oss-unlock-state',footer);state.setAttribute('role','status');
+    const detail=make('p','oss-part-detail',pn);detail.setAttribute('aria-live','polite');
+    make('p','oss-collection-hint',pn);
   }
-  h+='</div>';
-  pn.innerHTML=h;
-  // 유골함 슬롯 인터랙션: 좌클릭=상세, 우클릭=해제, 호버=상세
+  const R=ANC_ROSTER[0],oss=INV.equipped.ossuary;
+  const collected=_BONE_PARTS.filter(pt=>INV.ossCollect[R.id+'_'+pt]).length;
+  const complete=_ossSetComplete(0),ready=complete&&!!oss;
+  const label=(cls,value)=>{const leaf=pn.querySelector('.'+cls);if(leaf&&!leaf.children.length)leaf.textContent=value;};
+  pn.classList.toggle('oss-complete',complete);
+  pn.classList.toggle('oss-ready',ready);
+  label('oss-collection-title',_L('선대의 유골 콜렉션','Ancestral Bone Collection'));
+  label('oss-collection-count',_L('수집 ','Collected ')+collected+' / '+_BONE_PARTS.length);
+  label('oss-urn-label',_L('유골함','Ossuary'));
+  label('oss-ancestor-name',_L(R.ko,R.en));
+  label('oss-unlock-state',ready?_L('소환 해금','Summon unlocked'):complete?_L('유골함 장착 필요','Equip an ossuary'):_L('유골 수집 중','Collection incomplete'));
+  label('oss-collection-hint',ready?_L('전대 소환 스킬로 불러낼 수 있습니다.','Use Ancestral Summon to call the ancestor.'):_L('네 부위를 모두 모으면 소환이 해금됩니다.','Collect all four parts to unlock summoning.'));
+  const roles={skull:_L('치명 · 위력','Critical · Power'),torso:_L('최대 HP','Maximum HP'),arms:_L('공격 위력','Attack power'),legs:_L('크기 · 이동속도','Size · Movement speed')};
+  for(const part of _BONE_PARTS){
+    const node=pn.querySelector('[data-part="'+part+'"]'),c=INV.ossCollect[R.id+'_'+part];
+    node.classList.toggle('collected',!!c);
+    node.classList.toggle('selected',pn.dataset.selectedPart===part);
+    node.setAttribute('aria-pressed',String(pn.dataset.selectedPart===part));
+    node.style.setProperty('--bone-rarity',c?(RARITY_C[c.r||0]||'#b7aa90'):'#756852');
+    node.querySelector('.oss-bone-name').textContent=_bonePartName(part);
+    node.querySelector('.oss-bone-grade').textContent=c?_rarName(c.r||0):_L('미수집','Missing');
+    node.querySelector('.oss-bone-tier').textContent=c?'T'+((c.t||0)+1)+' · '+_L('위력 ','Power ')+((c.r||0)+(c.t||0)):'—';
+    node.title=_bonePartName(part)+' · '+roles[part]+' · '+(c?_rarName(c.r||0)+' T'+((c.t||0)+1):_L('미수집','Missing'));
+    node.setAttribute('aria-label',node.title);
+  }
+  const part=pn.dataset.selectedPart;
+  label('oss-part-detail',part?_bonePartName(part)+' — '+roles[part]:_L('부위를 선택하면 성장 효과를 확인할 수 있습니다.','Select a bone to view its growth effect.'));
   const urn=$('invOssUrn');
-  if(urn&&oss){
-    urn.onclick=()=>{INV.selected='eq:ossuary';renderInv()};
-    urn.oncontextmenu=(ev)=>{ev.preventDefault();unequipItem('ossuary');applyStats();const _ui=INV.bag.findIndex(i=>i&&i.slot==='ossuary');INV.selected=_ui>=0?_ui:null;renderInv()};
-    urn.onmouseenter=()=>{_invHover=-1;_invRenderDetail('ossuary','eq',true)};
-    urn.onmouseleave=()=>_invClearHover();
-  }
+  urn.classList.toggle('empty',!oss);
+  urn.title=oss?_T(oss.name):_L('첫 유골 획득 시 유골함 자동 지급','An ossuary is granted with your first bone');
+  urn.setAttribute('aria-label',urn.title);
+  urn.onclick=()=>{if(oss){INV.selected='eq:ossuary';renderInv();}};
+  urn.oncontextmenu=(ev)=>{ev.preventDefault();if(!oss)return;unequipItem('ossuary');applyStats();const i=INV.bag.findIndex(it=>it&&it.slot==='ossuary');INV.selected=i>=0?i:null;renderInv();};
+  urn.onmouseenter=()=>{if(oss){_invHover=-1;_invRenderDetail('ossuary','eq',true);}};
+  urn.onmouseleave=()=>_invClearHover();
 }
 function _invCategoryMatches(it){
   if(!it)return false;
