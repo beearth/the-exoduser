@@ -47,7 +47,7 @@
 | 항목 | 현재 구현 |
 |---|---|
 | 기본 | 장비 탭. 상단 장비·하단 가방 |
-| 탭 | 장비/유골함/보석/보관함. 보석은 invCrystalsPanel 전용 그리드. 나머지 탭은 기존 상단 패널과 가방 유지 |
+| 탭 | 장비/유골함/보석/보관함. 보석은 invCrystalsPanel 전용 그리드. 장비는 상단 장착창/하단 가방,유골함·보관함은 왼쪽 가방/오른쪽 전용 패널 동등폭(폭899px 이하 상하) |
 | 격자 | 1열, 상단 minmax(270px,1.1fr), 하단 minmax(200px,1fr), 간격10px; 본문 세로스크롤 |
 | 장비 도면 | 기존600×324 좌표 유지. zoom min(1,(100cqw−16px)/600px,(100cqh−26px)/324px) |
 | 중복 제목 | 장비 탭으로 설명되는 장착 중 라벨은 숨겨 첫 슬롯과 겹침 방지 |
@@ -671,7 +671,7 @@ CSS 캐시 ui-refinement.css?v=20260927-4. 신규 이미지/아이템 데이터 
 | 그림·폴백 | 기존 유골함58×66px/부위38×38px. 제단·슬롯 PNG 유지. 로딩 실패 시 이름·그림·조작 및 CSS 바탕 유지 |
 | 금속 원환 | 1024px 석재·황동 제단 아트를274×274px로 표시 |
 | 접근성 | 실제 button·aria-label·aria-pressed·focus-visible. 해금 상태 role=status, 부위 설명 aria-live=polite. reduced-motion 시 transition 제거 |
-| 버전·적용 | game.html 및 game-easy-test.html, ui-refinement.css?v=20260927-ossuary-split |
+| 버전·적용 | game.html 및 game-easy-test.html, ui-refinement.css?v=20260927-storage-split |
 | 검증 | test/ossuaryCollection.test.js 6개 PASS(미수집 차단/혼합등급 완성/기존 저장 보존). 격리 브라우저 0→4 수집·하위거부·상위갱신·DOM 보존·유골함 해제 확인. 1440×1080 캡처,1280×720·390×844 슬롯 겹침/가로 넘침 없음, pageerror 0 |
 
 실제 유골 수집 기록이 없는 구세이브는 잠금 상태로 표시된다. 임시 우회로 소환하던 기록을 유골 수집으로 만들어 주지 않으며 기존 아이템·도감 저장값을 삭제하거나 이관하지 않는다.
@@ -873,7 +873,7 @@ CSS 캐시 ui-refinement.css?v=20260927-4. 신규 이미지/아이템 데이터 
 | 등급 표현 | 모든 테두리 금속 재질 통일. 개별 등급은 이름의 70% RARITY_C+30%#e1ccb0 혼색 및 하단4×4px 마름모 보석. 선택 프레임 brightness1.28/saturate.9. 수집 프레임 brightness.95/saturate.75,미수집.6/.4 |
 | 읽기 | 슬롯에는 부위명·그림·등급만 노출. .oss-bone-tier display:none. 선택 상세는 부위·등급·T(t+1)·위력(r+t)·성장 효과. 중앙 이름은 하단 어두운 명판 위에 표시 |
 | 완료 | 4/4+유골함 장착 시 중앙 프레임 brightness1.14/saturate.9, 제단 brightness.9/saturate.85. 기본 제단 .72/.7. 소환 해금 배지와 미수집 상태 구분 |
-| 캐시 | game.html/game-easy-test.html: ui-refinement.css?v=20260927-ossuary-split |
+| 캐시 | game.html/game-easy-test.html: ui-refinement.css?v=20260927-storage-split |
 | 불변 | 실제 4부위 해금 조건, 등급·티어 저장, 상위 r+t 등록, 전대 전투 수치, 재입력 회수 |
 | 제작 | Higgsfield GPT Image 2.5(gpt_image_2_5),quality high,resolution1k,aspect1:1. 잔액1111.25 확인 후 2건 생성, GPT API 폴백 없음 |
 | 작업 ID | 제단9ceb151d-45d5-476e-83ec-3a13c63e6b25 / 슬롯fa8121e1-87f3-4623-89c1-2edcd900e15e |
@@ -890,5 +890,22 @@ CSS 캐시 ui-refinement.css?v=20260927-4. 신규 이미지/아이템 데이터 
 | 재질 | 기존 제단·슬롯 아트 재사용. 슬롯 background-size125% 112%,중앙 inset −6px −4px,부위 inset −4px −2px. 등급 보석4×4px/bottom3px. 새로운 생성 에셋 없음 |
 | 헤더·여백 | 컬렉션 기본 패딩10px 12px,제목14px(폭560px 이하12px),헤더 padding2px 0 8px. 부위명11px/1.4,footer padding8px 0 6px. 상세·힌트 margin4px 0 |
 | 데이터·입력 | DOM·수집·저장·해금·장착·해제·분해 로직 유지. 가방10열·기존 셀 크기 및 내부 스크롤 유지 |
-| 적용·캐시 | ui-refinement.css,game.html,game-easy-test.html. ui-refinement.css?v=20260927-ossuary-split |
+| 적용·캐시 | ui-refinement.css,game.html,game-easy-test.html. ui-refinement.css?v=20260927-storage-split |
 | 검증 | 기존 ossuaryCollection 회귀6개 PASS. 저장 API를 차단한 실제 game.html UI에서1440×1080/1280×720/900×720 동등폭·좌우 배치,390×844 상하 배치 확인. 노드 겹침0·페이지 가로넘침0·pageerror0. 전환 연출을 QA 전용 CSS로 숨겨 검수했으며 게임 시작부터의 전체 흐름은 검증하지 않음. 캡처 tmp/ossuary_split_1440.png, tmp/ossuary_split_390.png |
+
+
+## 2026-09-27 보관함 좌우 반반 구성
+
+| 항목 | 현행 계약 |
+|---|---|
+| 범위 | 인벤토리 내부 보관함 탭(data-inventory-page=storage). 별도 storagePanel은 그대로 유지 |
+| 창 | 폭 min(980px,100vw−24px),높이 min(680px,94vh),유골함 탭과 동일 |
+| 좌우 | 왼쪽 invCenter 가방,오른쪽 invStorageCol 보관함. repeat(2,minmax(0,1fr)),간격10px,1행 minmax(0,1fr) |
+| 보관 조작 | invStBagSection을 보관함 탭 진입 시 invCenter 아래로 이동. 다른 탭은 invStorageCol로 복귀. 같은 DOM 노드를 append해 핸들러 보존. 목록 클릭 보관·창고 슬롯 클릭/우클릭 꺼내기 유지 |
+| 창고 슬롯 | 기본6열,간격6px,폭100%/높이auto/aspect-ratio1. 패딩10px 12px. 아이템 그림 _itemSkin(item,34),빈 반환 시 _itemIco 폴백. 이름 title,등급점3×3px/좌상단3px. 기존 아트 로딩 폴백 경로 유지 |
+| 가방 하단 | 보관 목록 margin-top8px. 제목12px/1.5,padding8px 0. 목록 최대높이112px,행 최소30px/padding4px 6px,아이템명12px/보관11px |
+| 보관함 정보 | invStHeader 12px/1.5,margin8px 0 12px. 용량·저장·정렬·필터·접기·펼치기 기존 로직 유지 |
+| 좁은 화면 | 폭899px 이하 가방 위/보관함 아래,행360px/minmax(280px,1fr),세로 스크롤. 폭560px 이하 보관함5열 |
+| 적용 | ui-refinement.css/ui-panels.js 캐시20260927-storage-split. game.html/game-easy-test.html 공통 |
+| 검증 | uiPanelInitialization 회귀3개 PASS. 저장 API 차단한 game.html UI에서 보관1회·꺼내기1회·탭 왕복 시 노드 동일성 PASS.1440×1080/1280×720/900×720 좌우 동등폭,390×844 상하 배치,가로넘침0·슬롯 넘침0·pageerror0. QA에서 전환 연출만 숨김,게임 시작 전체 흐름은 검증 범위 밖 |
+| 화면 | tmp/storage_split_1280.png,tmp/storage_split_390.png. 원본 백업 tmp/storage-split-backup |

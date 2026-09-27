@@ -105,6 +105,9 @@
       // Initial composition precedes player creation; only refresh on later switches.
       const changed = root.dataset.inventoryPage !== undefined && root.dataset.inventoryPage !== key;
       root.dataset.inventoryPage = key; selected(nav,key);
+      const deposit = document.getElementById('invStBagSection');
+      const depositParent = document.getElementById(key === 'storage' ? 'invCenter' : 'invStorageCol');
+      if(deposit && depositParent && deposit.parentElement !== depositParent) depositParent.append(deposit);
       if(changed && typeof _invChangeCategory === 'function') _invChangeCategory();
       Object.entries(targets).forEach(([name,node]) => { if(node) node.setAttribute('aria-hidden', String(name !== key)); });
     }, 'inventory');

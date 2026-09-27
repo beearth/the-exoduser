@@ -2299,8 +2299,8 @@ canvas{display:block;position:fixed;inset:0}
 <link rel="stylesheet" href="stat-panel-ui.css?v=20260910-fullscreen-readable-v1">
 <link rel="stylesheet" href="localization.css?v=20260909">
 <link rel="stylesheet" href="ui-foundation.css?v=20260924-hell3">
-<link rel="stylesheet" href="ui-refinement.css?v=20260927-ossuary-split">
-<script defer src="ui-panels.js?v=20260927-1"></script>
+<link rel="stylesheet" href="ui-refinement.css?v=20260927-storage-split">
+<script defer src="ui-panels.js?v=20260927-storage-split"></script>
 <script src="stat-panel-ui.js?v=20260909-constellation-v3"></script>
 </head>
 <body>
@@ -44919,7 +44919,9 @@ function renderInvStorage(){
     const div=document.createElement('div');div.className='inv-cell'+(sel?' sel':'');
     div.style.cssText=`width:36px;height:36px;background:rgba(0,0,0,.3);border:1px solid ${sel?'#ffaa44':ELC[item.el]+'66'};display:flex;align-items:center;justify-content:center;font-size:14px;cursor:pointer;position:relative`;
     if(sel)div.style.background='rgba(255,150,0,.1)';
-    div.innerHTML=`<span>${_itemIco(item,RARITY_C[item.rarity],20)}</span><div style="position:absolute;top:1px;left:1px;width:3px;height:3px;border-radius:50%;background:${RARITY_C[item.rarity]}"></div>`;
+    const art=document.createElement('span');art.insertAdjacentHTML('afterbegin',_itemSkin(item,34)||_itemIco(item,RARITY_C[item.rarity],34));
+    const grade=document.createElement('span');grade.style.cssText='position:absolute;top:3px;left:3px;width:3px;height:3px;background:'+RARITY_C[item.rarity];
+    div.append(art,grade);div.title=_T(item.name);
     const ii=i;
     div.onclick=()=>{withdrawStorage(ii)};
     div.oncontextmenu=(ev)=>{ev.preventDefault();withdrawStorage(ii)};
