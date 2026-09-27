@@ -473,7 +473,7 @@ VISUAL VERDICT: RETOUCH — 원배율 윤곽 움직임 보강. 모든 고치·�
 | 격리 | stage0 production만, arena/fieldRebuild 제외, 미로드/srcRect 폴백 유지. geometry/collision/START/EXIT/배치/진행 불변 |
 | 검증 | 오른쪽 몸통 crop(904,490,30,115) 시간 변화 실패 재현 후 PASS. 가지 crop(895,350,40,50) 고정. 효과19검사 PASS. QA before=16차 모듈, 출력 captures/ch1_living_detail_pass17_20260927 |
 
-MAP PRODUCTION REPORT — 17차 체크포인트
+MAP PRODUCTION REPORT — 17차 완료 기록
 
 STAGE: CH1-1 production.
 MASTER: silhouette/8regions/남북 main route/side spaces 유지.
@@ -481,11 +481,13 @@ OUTER MASS: LEFT/RIGHT/TOP/SOUTH/major holes 변경 없음.
 LARGE: 기존 원본·composites·overlap·repeated silhouette 유지.
 MEDIUM: 오른쪽 시체 매듭 고정, 큰 재질 연결 문제 잔여.
 GROUND: shadow/contamination/structure integration 유지; 전체 피부 재질 통합 미완료.
-PLAYABLE: arenas/travel/breathing/threat 공간 유지. 추가 충돌 없음, 전투 가독성 검수 진행 중.
+PLAYABLE: arenas/travel/breathing/threat 공간 유지. 추가 충돌 없음, HANGING_DETAIL/입구 COMBAT에서 플레이어·스킬 윤곽 확인. 대규모 전투 검수는 미실시.
 LANDMARK: primary 대왕나무 오른쪽 시체 보강; secondary 고치/독액 및 tertiary 뿌리 유지.
-CAMERA QA: HANGING_DETAIL 촬영 확인, COMBAT 진행 중. START/EARLY/ARENA/SIDE L/SIDE R/LANDMARK/LATE/EXIT는 이번 재촬영 전.
-TECH QA: 효과19검사 PASS; route/collision 구현 불변. pageerror/404/loading/performance는 후속 runtime.json에 기록. 청크 변경 없음.
+CAMERA QA: HANGING_DETAIL 및 COMBAT 촬영·직접 이미지 확인 완료. START/EARLY/ARENA/SIDE L/SIDE R/LANDMARK/LATE/EXIT는 이번 재촬영 전.
+TECH QA: 27검사 PASS(효과19/geometry5/문법1/패키징2); route/collision 구현 불변, mapUnchanged=true. pageerror/console error/HTTP error=0. 로드28/28청크 ready, seam 관련 청크 변경 없음. HANGING_DETAIL 60RAF median33.4/p95 50.1ms, COMBAT90RAF 33.4/66.7ms. headless1280×720 녹화, 카메라 무적/50ms 체력 보충, 전투 전 무적 해제. 전체 전투 성능 PASS를 뜻하지 않음. 사망UI error=null.
 FILES: stage-owned ch1-living-detail.js/test/ch1LivingDetail.test.js/tools/qa_ch1_living_detail.py/본 문서. concurrent touched game.html 캐시버전·맵디테일 해당2행. unrelated 수정 없음.
 GIT: 변경 누적100개 방지를 위한 작업 단위 부분 체크포인트. 기존 타 작업 staged 보존. push/deploy 없음.
 VISUAL VERDICT: RETOUCH — 국소 움직임 보강, 전체맵 완성 아님.
-NEXT PASS: 실제 화면 동작·전투 검수 기록 및 에셋목록/production/CHANGELOG 동기화 마무리.
+NEXT PASS: 기존 구도를 유지하며 큰 재질 접합 보강. 상단 작은 고치와 나무 투영 그림자 내부 실루엣은 정적. 기본8카메라 전체 재촬영·대규모 전투 검수는 이번에 미실시.
+
+확인: <http://localhost:3333/captures/ch1_living_detail_pass17_20260927/index.html>. 기존16차와 현행17차를 같은 시간·캔버스에서 전환한다. 실제 게임 영상/움직임 GIF/runtime.json 포함. 코드 체크포인트 fc49313f2. 후속 문서 동기화 커밋은 별도. 기존 다른 작업의 staged 변경은 보존했다.
