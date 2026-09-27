@@ -45337,7 +45337,7 @@ function _renderSkillRow(sk,grid){
     const _isExpanded=_skExpandedId===sk.id;
     // 스킬 아이콘 PNG (img/skillskin_upscaled/{id}.png) — 없으면 이모지 폴백
     const _hasIcon=_SKILL_ICON_SET.has(sk.id);
-    const _iconImg=_hasIcon?'<img src="img/skillskin_upscaled/'+sk.id+'.png" style="width:48px;height:48px;image-rendering:pixelated;display:block;margin:0 auto">':'<div style="font-size:1.6rem;line-height:48px;text-align:center">'+(sk.emoji||'⚡')+'</div>';
+    const _iconImg=_hasIcon?'<img src="img/skillskin_upscaled/'+sk.id+'.png" style="width:74px;height:74px;object-fit:contain;image-rendering:pixelated;display:block;margin:0 auto">':'<div style="width:74px;height:74px;font-size:2.5rem;line-height:74px;text-align:center">'+(sk.emoji||'⚡')+'</div>';
     if(_skCompact && !_isExpanded){
       // 아이콘 모드: PNG + 이름 + 레벨 (이름 명확하게 표시)
       // ── 합체 선택 모드: _skExpandedId(상세 펼친 스킬) 있을 때 합체 가능 스킬만 컬러, 나머지 페이드 ──
