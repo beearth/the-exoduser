@@ -2479,10 +2479,10 @@ body:has(#invPanel.on) #keyGuide{display:none!important}
 #invPanel .inv-wrap{grid-template-columns:clamp(230px,20vw,320px) minmax(0,1fr)!important;grid-template-rows:minmax(0,1fr) minmax(230px,.65fr)!important}
 #invPanel .inv-equip{position:relative;container-type:size;min-height:0;margin:0!important;padding:0!important;overflow:hidden;background:radial-gradient(ellipse at center,rgba(77,52,37,.22),transparent 65%)}
 #invPanel .inv-equip>div:first-child{position:absolute;left:16px;top:12px;font-size:.8rem!important;letter-spacing:.1em!important}
-#invPanel .inv-eq-wrap{position:absolute;left:50%;top:50%;width:600px!important;height:324px!important;margin:0!important;transform:translate(-50%,-50%)!important;transform-origin:center;zoom:min(1.4,calc((100cqw - 32px) / 600px),calc((100cqh - 20px) / 324px))}
-#invPanel .inv-eq-sil{width:210px!important;height:320px!important;opacity:.9!important;filter:drop-shadow(0 4px 18px rgba(0,0,0,.7))!important}
-#invPanel .inv-eq-slot{box-sizing:border-box;width:72px!important;height:72px!important;backdrop-filter:none;border-radius:3px!important}
-#invPanel .inv-eq-slot .iskin{width:56px!important;height:56px!important}
+#invPanel .inv-eq-wrap{position:absolute;left:50%;top:50%;width:654px!important;height:480px!important;margin:0!important;transform:translate(-50%,-50%)!important;transform-origin:center;zoom:min(1.5,calc((100cqw - 36px) / 654px),calc((100cqh - 74px) / 480px))}
+#invPanel .inv-eq-sil{width:315px!important;height:480px!important;opacity:.9!important;filter:drop-shadow(0 4px 18px rgba(0,0,0,.7))!important}
+#invPanel .inv-eq-slot{box-sizing:border-box;width:96px!important;height:96px!important;backdrop-filter:none;border-radius:3px!important}
+#invPanel .inv-eq-slot .iskin{width:70px!important;height:70px!important}
 #invPanel .inv-eq-slot .ieq-label{font-size:.65rem!important;line-height:1.15!important;max-width:100%;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 #invPanel #invCenter{padding:10px 14px!important;min-height:0}
 #invPanel #invFilters{gap:4px!important;padding:6px 0!important}
@@ -2510,13 +2510,14 @@ body:has(#invPanel.on) #keyGuide{display:none!important}
 <link rel="stylesheet" href="ui-foundation.css?v=20260927-frame-interior">
 <link rel="stylesheet" href="ui-refinement.css?v=20260928-storage-icon-gem-picker2">
 <link rel="stylesheet" href="growth-tree-detail.css?v=20260927-body-art3">
-<link rel="stylesheet" href="knight-portrait.css?v=20260927-portrait2">
+<link rel="stylesheet" href="knight-portrait.css?v=20260928-equipment-key1">
+<script defer src="inventory-paperdoll.js?v=20260928-equipment-cabinet3"></script>
 <link rel="stylesheet" href="growth-tree-fixed-background.css?v=20260927-fixed2">
 <link rel="stylesheet" href="growth-tree-information.css?v=20260927-info1">
 <script defer src="ui-panels.js?v=20260927-compare-wheel"></script>
 <link rel="stylesheet" href="inventory-gems.css?v=20260927-jewel-finish">
 <link rel="stylesheet" href="inventory-gems-finish.css?v=20260927-square-art2">
-<link rel="stylesheet" href="inventory-space.css?v=20260927-aligned12">
+<link rel="stylesheet" href="inventory-space.css?v=20260928-equipment-cabinet3">
 <link rel="stylesheet" href="skill-workspace.css?v=20260928-fixed-categories5">
 <link rel="stylesheet" href="inventory-oss-balance.css?v=20260928-ossuary-fit5">
 <link rel="stylesheet" href="inventory-gems-balance.css?v=20260927-half">
@@ -2897,7 +2898,7 @@ body:has(#invPanel.on) #keyGuide{display:none!important}
         <div class="inv-equip">
           <div style="color:#886644;font-size:.95rem;margin-bottom:4px;letter-spacing:.1em">장착 중</div>
           <div class="inv-eq-wrap" id="invEqGrid">
-<img class="inv-eq-sil" src="https://d8j0ntlcm91z4.cloudfront.net/user_3G1zto9sz11Uf3iEOhJefE9HdGG/hf_20260927_105447_dfd433c7-3dab-4a3e-b4fb-818c1ff73b9d.png" alt="" aria-hidden="true" decoding="async" onerror="this.onerror=null;this.src='img/ui/inventory_paperdoll_hf_20260923.png'">
+<img class="inv-eq-sil" src="img/ui/inventory_paperdoll_hf_20260923.png" data-original-src="https://d8j0ntlcm91z4.cloudfront.net/user_3G1zto9sz11Uf3iEOhJefE9HdGG/hf_20260927_105447_dfd433c7-3dab-4a3e-b4fb-818c1ff73b9d.png" alt="" aria-hidden="true" decoding="async" onerror="this.hidden=true">
           </div>
           <div class="inv-equip-readout" aria-label="장착 현황">
             <div><span>장착 부위</span><strong id="invEquippedCount">0 / 0</strong></div>
@@ -14720,26 +14721,26 @@ const SLOT_KR=['무기','견갑','부츠','갑옷','왕관','석궁','장갑','�
 const SLOT_EN=['Weapon','Shield','Boots','Armor','Helmet','Crossbow','Gloves','Pants','Belt','Necklace','Ring1','Ring2','Cape','Bracelet','Earring1','Ossuary','Earring2'];
 function _slotName(i){if(_earringSlot(SLOT_NAMES[i]))return _L('귀걸이','Earring')+(SLOT_NAMES[i]==='headband2'?'2':'1');return _L(SLOT_KR[i],SLOT_EN[i])}
 const SLOT_EMOJI=['⚔️','🛡️','👢','🦺','⛑️','🏹','🧤','👖','🪢','📿','💍','💍','🧣','⭕','🎀','⚱️','🎀'];
-// Paper doll slot positions [left, top] — indexed by SLOT_NAMES; 600×324 human mannequin layout.
+// Paper doll slot positions [left, top] — indexed by SLOT_NAMES; 654×480 board, 96px sockets.
 // Wearable armor/accessories sit on body zones; weapon/bow/cape remain on the flanks.
 const EQ_POS=[
-  [24,168],  // 0 weapon — 600x324 board, 72px sockets
-  [416,168], // 1 shield — right arm
-  [416,252], // 2 boots — feet level
-  [112,84],  // 3 armor — torso level
-  [112,0],   // 4 helmet — head level
-  [504,168], // 5 bow — outer right
-  [112,168], // 6 gloves — left arm
-  [112,252], // 7 pants — legs
-  [416,84],  // 8 belt
-  [416,0],   // 9 necklace — upper right
-  [24,84],   // 10 ring1
-  [504,84],  // 11 ring2
-  [504,252], // 12 cape
-  [24,252],  // 13 bracelet
-  [24,0],    // 14 headband
+  [0,246],   // 0 weapon
+  [450,246], // 1 shield — right arm
+  [450,354], // 2 boots — feet level
+  [108,138], // 3 armor — torso level
+  [108,30],  // 4 helmet — head level
+  [558,246], // 5 bow — outer right
+  [108,246], // 6 gloves — left arm
+  [108,354], // 7 pants — legs
+  [450,138], // 8 belt
+  [450,30],  // 9 necklace — upper right
+  [0,138],   // 10 ring1
+  [558,138], // 11 ring2
+  [558,354], // 12 cape
+  [0,354],   // 13 bracelet
+  [0,30],    // 14 headband
   [120,220], // 15 ossuary — separate ancestor panel
-  [504,0],   // 16 headband2 — beside necklace, paired with headband
+  [558,30],  // 16 headband2 — beside necklace, paired with headband
 ];
 
 // ═══ WEAPON TYPES ═══

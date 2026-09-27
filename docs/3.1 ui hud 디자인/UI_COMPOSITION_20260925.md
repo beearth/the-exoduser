@@ -1720,3 +1720,17 @@ CSS 캐시 ui-refinement.css?v=20260927-4. 신규 이미지/아이템 데이터 
 | 레벨·자원 정보 | `#skillInfo`(LV/SP/악의/사슬)는 `#skillGridWrap`의 첫 자식이다. 휠로 목록을 내리면 요약도 스킬 카드와 함께 위로 이동한다. |
 | 스크롤 경계 | `#skillGridWrap`과 우측 `#skillDetail`만 각각 내부 스크롤한다. 높이 620px 이하에서도 바깥 `.skill-pbox`는 스크롤하지 않고 중앙 영역이 남는 높이를 사용한다. 게임패드 기본 스크롤 대상도 `#skillGridWrap`이다. |
 | 연결·검증 | `skill-workspace.css?v=20260928-fixed-categories5`를 사용한다. 1940×1158, 970×579, 390×844에서 휠 후 탭의 화면 y좌표 유지, 정보 y좌표 감소, 목록 scrollTop 증가, pageerror 0을 확인했다. 스킬 데이터·레벨업·합체·저장 형식은 변경하지 않았다. |
+
+## 2026-09-28 장비 기사·아이템 박스 확대
+
+| 항목 | 현행 규격 |
+|---|---|
+| 대상 | 메인 game.html 장비창. 원래 회색 기사와 16개 장착 슬롯 유지 |
+| 장비판 | 654×480px. 슬롯 좌표는 인벤토리 시스템 문서 EQ_POS 표가 기준 |
+| 기사 | 315×480px, 이전 210×320px 대비 50% 확대. contain·opacity 1·normal 합성. 최종 필터 brightness1.35/contrast1.06 |
+| 슬롯·스킨 | 96×96px·64×64px. padding 상·좌우6px, 하단 예약24px, 이름 띠22px·글자11px. border-image 없는 금속 1px선, 모서리2px, 등급색 상단2px선 |
+| 배율 | ResizeObserver로 장비 패널 clientWidth=W/clientHeight=H 측정. max(.1,min(2.1,(W-36)/654,(H-130)/480))를 inline zoom에 적용. 숨김 W/H=0이면 보류. 기사·슬롯·아이콘·라벨 공통 배율 |
+| 배경·비율 | 역 U자·원형 문양 모두 제거. 장비판은 낮은 대비 금속 표면과 중앙 세로 레일. 1201px 이상 장비:가방:정보=1.25:1.1:.85, 간격10px. 하단 현황은 구분선으로 정리 |
+| 캐시·빌드 | game.html: ui-refinement.css?v=20260928-equipment-stage3, inventory-space.css?v=20260928-equipment-cabinet3, inventory-paperdoll.js?v=20260928-equipment-cabinet3. NW.js FILES에 inventory-paperdoll.js·knight-portrait.css 추가 |
+| 검수 | Chromium 1940×1080,3440×1440,970×579,390×844에서 16슬롯 경계 및 하단 현황 침범0,장비 선택·우클릭 해제 확인,pageerror0,guard 통과. 최신 화면과 규격은 EQUIPMENT_CABINET_20260928.md 참조. 패키지 빌드 미실행 |
+| 동기화 | 관련 docs 전체 검색과 인벤토리/UI 문서 동기화 완료. 다른 작업의 변경은 유지하고 장비창 관련 파일만 로컬 체크포인트에 포함 |
