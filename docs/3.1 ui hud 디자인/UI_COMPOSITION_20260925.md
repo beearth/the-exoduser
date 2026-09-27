@@ -743,7 +743,7 @@ CSS 캐시 ui-refinement.css?v=20260927-4. 신규 이미지/아이템 데이터 
 | 조작 | 호버 상세, 클릭/키보드 초점 선택, 호환 장착 장비 빈 홈 선택 → attachCrystal → dbSaveNow. 객체 인덱스·장비 동일성·빈 홈 재확인 |
 | 가공 | 강화·합성·분해·제작은 기존 대장간 결정 탭. 장비 상세 소켓 피커·무료 탈착 유지 |
 | 분리 | 보석 탭에서 장비판/유골함/창고/일반 가방/장비 상세/분해 버튼 숨김. 다른 페이지로 전환하면 기존 표시 복귀 |
-| 구현 파일 | game.html, ui-panels.js, inventory-gems.css. ui-panels.js 캐시 20260927-gems, inventory-gems.css 캐시 20260927-1 |
+| 구현 파일 | game.html, ui-panels.js, inventory-gems.css. ui-panels.js 캐시 20260927-gems, inventory-gems.css 캐시 20260927-2 |
 | 검증 | Node 회귀 14개 PASS, game.html 인라인6개 구문 PASS. 저장 IO 없는 실제 UI 함수/CSS 브라우저 fixture에서 36묶음(72개)·방어12묶음·클릭/키보드 장착·4탭 왕복·영문·520px·빈 화면 PASS, pageerror0 |
 | 검증 범위 | tmp/inventory-gems-qa/preview.html, screenshots/result.json. 전체 게임 시작 경로는 전환 연출/실행 중단으로 검증 완료하지 않음. UI 검수는 격리 fixture 결과 |
 
@@ -751,13 +751,98 @@ CSS 캐시 ui-refinement.css?v=20260927-4. 신규 이미지/아이템 데이터 
 
 ### 보석 화면 스타일 규격
 
-| 대상 | 값 |
+| 대상 | 현행 값 (2026-09-27 디테일 2차) |
 |---|---|
-| 패널 | padding16px, 프레임6px/menu-rail4%, 단일 minmax(0,1fr)행 |
-| 내부 | 그리드 minmax(0,1fr)+상세250px, gap18px |
-| 셀 | auto-fill 최소68px, 행86px, 간격4px, 내부5px, grid 최소높이180px |
-| 보석 | 42×48px, 상세56×64px, 기존 CRYSTAL_DEFS.col. CSS conic/linear-gradient+clip-path, 외부 이미지 없음 |
-| 정보 | 제목16px, 이름17px, 효과24px, 설명12px, 성급/강화11px, 수량16px |
-| 상태 | 등급색48%+기본색 테두리, 선택/키보드초점2px #ebd29e. 버튼 최소높이32px |
-| ≤780px | 상세200px, gap10px, 셀 최소58px/행78px |
-| ≤560px | 그리드 위/상세 아래, 패널padding10px·세로스크롤, 상세 좌측선 제거·상단선. 헤더/푸터 줄바꿈 |
+| 보석 탭 창 | width min(860px,100vw−24px). 다른 탭 폭은 기존 규칙 |
+| 패널 | padding18px 20px 12px, 프레임6px/menu-rail4%, 단일 minmax(0,1fr)행 |
+| 내부 | 상단 보석 격자 minmax(150px,1fr) + 하단 감정판208px, 간격14px |
+| 셀 | auto-fill 최소72px, 행88px, 간격5px, 내부8px. 그리드 세로스크롤 |
+| 상세판 | 열80px/남은폭/180px, 간격16px, padding16px 18px. 좌측 보석/중앙 효과/우측 홈 버튼 |
+| 재질 | 기존 ui-surface/menu-rail/menu-plate/menu-sigil 재사용. 함몰 칸·각인 모서리·접촉 그림자·세선 황동 구획 |
+| 보석 | 기본43×51px, 상세54×64px. 기존 CRYSTAL_DEFS.col + CSS 면 분할·반사선. 기본 saturate(.88) contrast(1.2) |
+| 정보 | 제목18px, 이름17px, 효과26px, 설명11px, 부위 설명10px, 성급/강화10px, 수량16px |
+| 상태 | 등급색30% 셀 테두리. 선택1px #ceb57e 안쪽선, 키보드2px #f2dbac. hover 보석−2px/brightness1.16/saturate1.12 |
+| 버튼 | 필터 최소34px, 장착 최소32px. 장착 버튼7px 마름모 홈 표시, 자원10px 가루 문양 |
+| 높이≤760·폭≥641 | 상단 minmax(120px,1fr), 하단178px, 간격10px, 행80px, 상세padding12px 16px |
+| 폭≤640 | 패널padding12px 10px 10px; 상단minmax(140px,1fr)/하단230px/간격12px; 셀 최소61px/행80px/gap4px/padding5px |
+| 폭≤640 상세 | 열58px/남은폭/130px·간격10px·padding12px, 보석44×54px, 제목/이름15px |
+| 폭≤420 | 상세2열48px/남은폭, 장착 버튼은 하단 전체폭, 상세 내부스크롤. 일반 보석36×45px, 제목행/푸터 줄바꿈 |
+| 접근성 | 버튼·aria·초점은 기존 유지. prefers-reduced-motion에서 전환과 hover 이동 제거 |
+| 캐시 | inventory-gems.css?v=20260927-2 |
+
+정확한 색상·면 좌표·그림자·반응형 선택자는 아래 CSS 원본을 따른다.
+
+```css
+/* Socket gems: iron specimen trays above a compact inspection desk. */
+#invPanel.panel .pbox #invCrystalsPanel{display:none;}
+#invPanel.panel[data-inventory-page=crystals] .pbox{width:min(860px,calc(100vw - 24px))!important;}
+#invPanel.panel[data-inventory-page=crystals] .pbox :is(.inv-equip,#invOssuaryPanel,#invStorageCol,#invCenter,#invRight,.inv-actions){display:none!important;}
+#invPanel.panel[data-inventory-page=crystals] .pbox .inv-wrap{grid-template-rows:minmax(0,1fr)!important;}
+#invPanel.panel[data-inventory-page=crystals] .pbox #invCrystalsPanel{position:relative;isolation:isolate;display:flex;flex-direction:column;grid-column:1;grid-row:1;min-width:0;min-height:0;padding:18px 20px 12px;border:6px solid #504b41;border-image:var(--menu-rail) 4% / 6px / 0 stretch;background:radial-gradient(ellipse at 50% 0,#5c482f20,transparent 62%),linear-gradient(#141617f5,#0b0d0ff7),var(--ui-surface) center/420px;box-shadow:inset 0 0 30px #0009;}
+#invPanel .inv-cr-head{position:relative;display:flex;align-items:center;justify-content:space-between;gap:12px;padding-bottom:14px;border-bottom:1px solid #75624780;box-shadow:0 1px #000;flex-shrink:0;}
+#invPanel .inv-cr-head::after{content:'';position:absolute;width:5px;height:5px;bottom:-3px;left:50%;transform:rotate(45deg);background:#a78a58;box-shadow:0 0 0 3px #151617;}
+#invPanel .inv-cr-heading{margin:0;font:600 18px/1.5 'Noto Serif KR',serif;letter-spacing:.06em;color:#e1cfac;text-shadow:0 2px 2px #000;}
+#invPanel :is(.inv-cr-capacity,.inv-cr-dust){color:#c5b698;font:500 12px/1.5 'Noto Sans KR',sans-serif;font-variant-numeric:tabular-nums;white-space:nowrap;}
+#invPanel .inv-cr-capacity{padding:4px 8px;border-left:1px solid #6c5d42;background:linear-gradient(90deg,#79613c19,transparent);}
+#invPanel .inv-cr-filters{display:flex;gap:4px;padding:12px 0;flex-wrap:wrap;flex-shrink:0;}
+#invPanel :is(.inv-cr-filter,.inv-cr-attach){appearance:none;box-sizing:border-box;border:1px solid #504b40;border-radius:1px;background:linear-gradient(#2c2c29b0,#111515e8),var(--menu-plate) center/100% 100%;box-shadow:inset 0 1px #b5a07920,inset 0 -2px #0008;color:#b6ae9c;cursor:pointer;font:500 12px/1.5 'Noto Sans KR',sans-serif;padding:7px 18px;min-height:34px;transition:border-color .14s,color .14s,filter .14s;}
+#invPanel .inv-cr-filter[aria-pressed=true]{color:#ecdbb8;border-color:#9c8155;background:linear-gradient(#574532a0,#211d18dc),var(--menu-plate) center/100% 100%;box-shadow:inset 0 1px #c5a87766,inset 0 -2px #ad8b56;}
+#invPanel .inv-cr-filter:hover{color:#e6d8bd;filter:brightness(1.12);}
+#invPanel .inv-cr-body{display:grid;grid-template-columns:minmax(0,1fr);grid-template-rows:minmax(150px,1fr) 208px;gap:14px;flex:1;min-height:0;overflow:hidden;}
+#invPanel .inv-cr-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(72px,1fr));grid-auto-rows:88px;align-content:start;gap:5px;padding:8px;overflow-y:auto;overscroll-behavior:contain;min-height:0;border:1px solid #615642;border-top-color:#817052;outline:1px solid #080a0b;outline-offset:2px;background:repeating-linear-gradient(0deg,#ffffff02 0 1px,transparent 1px 4px),radial-gradient(ellipse at 50% 0,#342d252e,transparent 75%),#090c0e;box-shadow:inset 0 3px 12px #000b,0 1px #afa07b22;scrollbar-gutter:stable;scrollbar-width:thin;scrollbar-color:#756247 #0d1011;}
+#invPanel .inv-cr-slot{position:relative;isolation:isolate;display:flex;align-items:center;justify-content:center;min-width:0;padding:12px 8px 16px;border:1px solid color-mix(in srgb,var(--gem-rank) 30%,#3a3b38);border-bottom-color:#242928;border-radius:1px;background:linear-gradient(130deg,#ffffff05,transparent 45%),radial-gradient(ellipse at 50% 80%,color-mix(in srgb,var(--gem-rank) 9%,transparent),transparent 75%),linear-gradient(#171c1ecf,#090c10ed),var(--ui-surface) center/260px;box-shadow:inset 0 0 0 2px #080b0cc9,inset 0 3px 8px #000c,0 1px #9891771a;cursor:pointer;color:#e6ddc8;transition:border-color .14s;}
+#invPanel .inv-cr-slot::before{content:'';position:absolute;left:19%;right:19%;height:12px;bottom:16px;background:#000b;filter:blur(3px);border-radius:50%;z-index:-1;}
+#invPanel .inv-cr-slot::after{content:'';position:absolute;inset:3px;pointer-events:none;background:linear-gradient(#9c8a5d,#9c8a5d) top left/7px 1px no-repeat,linear-gradient(#9c8a5d,#9c8a5d) top left/1px 7px no-repeat,linear-gradient(#9c8a5d,#9c8a5d) bottom right/7px 1px no-repeat,linear-gradient(#9c8a5d,#9c8a5d) bottom right/1px 7px no-repeat;opacity:.25;}
+#invPanel .inv-cr-slot:hover{border-color:#9c8e70;}
+#invPanel .inv-cr-slot:hover .inv-cr-gem{filter:brightness(1.16) saturate(1.12);transform:translateY(-2px);}
+#invPanel .inv-cr-slot[aria-pressed=true]{border-color:#ceb57e;outline:1px solid #ceb57e;outline-offset:-3px;box-shadow:inset 0 0 18px #9972382b,0 0 0 1px #090909;}
+#invPanel .inv-cr-slot[aria-pressed=true]::after{opacity:1;}
+#invPanel :is(.inv-cr-slot,.inv-cr-filter,.inv-cr-attach):focus-visible{outline:2px solid #f2dbac;outline-offset:-3px;}
+#invPanel .inv-cr-gem{--cut:polygon(50% 0,94% 28%,84% 78%,50% 100%,16% 78%,6% 28%);position:relative;display:block;width:43px;height:51px;flex-shrink:0;clip-path:var(--cut);background:linear-gradient(125deg,#fffc 0%,#fff2 14%,transparent 27%,#0008 75%,#fff8 100%),conic-gradient(from 16deg at 48% 36%,#fff7 0deg 37deg,#0009 38deg 85deg,#fff1 86deg 131deg,#000b 132deg 180deg,#fff6 181deg 229deg,#0006 230deg 277deg,#fffb 278deg 322deg,#fff2 323deg 360deg),var(--gem-color);filter:saturate(.88) contrast(1.2);transition:filter .16s,transform .16s;}
+#invPanel .inv-cr-gem::before{content:'';position:absolute;inset:8px 9px 13px;clip-path:polygon(50% 0,100% 29%,78% 83%,48% 100%,17% 80%,0 29%);background:linear-gradient(145deg,#fff9,transparent 33%,#0007 72%,#fffa),conic-gradient(from 30deg at 54% 45%,transparent 0deg 105deg,#0005 106deg 220deg,#fff3 221deg 300deg,transparent 301deg),var(--gem-color);box-shadow:inset 0 0 8px #ffffff45;}
+#invPanel .inv-cr-gem::after{content:'';position:absolute;inset:0;clip-path:var(--cut);background:linear-gradient(115deg,transparent 24%,#fff8 25%,transparent 26%),linear-gradient(67deg,transparent 57%,#fff5 58%,transparent 59%),radial-gradient(ellipse at 28% 25%,#fff 0 1%,#fff8 2%,transparent 13%);opacity:.8;}
+#invPanel .inv-cr-gem[data-category=def]{--cut:polygon(24% 0,76% 0,100% 25%,100% 75%,76% 100%,24% 100%,0 75%,0 25%);}
+#invPanel .inv-cr-gem[data-category=acc]{--cut:polygon(50% 0,100% 50%,50% 100%,0 50%);}
+#invPanel :is(.inv-cr-tier,.inv-cr-enh,.inv-cr-count){position:absolute;font:500 10px/1.2 'Noto Sans KR',sans-serif;font-variant-numeric:tabular-nums;text-shadow:0 1px 3px #000,0 1px 1px #000;pointer-events:none;}
+#invPanel .inv-cr-tier{top:5px;left:6px;color:color-mix(in srgb,var(--gem-rank) 70%,#a6a18f);}
+#invPanel .inv-cr-enh{top:5px;right:6px;color:#b4c9ca;}
+#invPanel .inv-cr-count{bottom:5px;right:7px;font:500 16px/1 'Noto Serif KR',serif;color:#e3d6b9;}
+#invPanel .inv-cr-detail{position:relative;isolation:isolate;box-sizing:border-box;display:grid;grid-template-columns:80px minmax(0,1fr) 180px;grid-template-rows:auto auto auto auto 1fr;column-gap:16px;align-content:start;overflow-y:auto;min-height:0;padding:16px 18px;border:1px solid #746344;border-top:3px double #8a7650;background:radial-gradient(ellipse at 10% 40%,#76644520,transparent 55%),linear-gradient(#181b1cee,#0b0f11f5),var(--ui-surface) center/380px;box-shadow:inset 0 0 0 3px #070a0b,inset 0 0 0 4px #76654822;scrollbar-width:thin;scrollbar-color:#756247 #0d1011;}
+#invPanel .inv-cr-detail::before{content:'';position:absolute;left:16px;top:22px;width:94px;height:120px;border:1px solid #75613c66;background:var(--menu-sigil) center/110px no-repeat;opacity:.38;z-index:-1;}
+#invPanel .inv-cr-detail>.inv-cr-gem{grid-column:1;grid-row:1/6;width:54px;height:64px;align-self:center;justify-self:center;margin:0;}
+#invPanel .inv-cr-name{grid-column:2;grid-row:1;font:600 17px/1.4 'Noto Serif KR',serif;margin:0 0 4px;text-shadow:0 2px #000;}
+#invPanel .inv-cr-meta{grid-column:2;grid-row:2;font:11px/1.5 'Noto Sans KR',sans-serif;color:#b4a78d;margin:0 0 6px;}
+#invPanel .inv-cr-stat{grid-column:2;grid-row:3;font:600 26px/1.2 'Noto Serif KR',serif;color:#d3dfbe;margin:1px 0 5px;text-shadow:0 2px #000;}
+#invPanel .inv-cr-note{font:11px/1.65 'Noto Sans KR',sans-serif;color:#a99f8d;margin:3px 0;overflow-wrap:anywhere;}
+#invPanel .inv-cr-detail>.inv-cr-note:nth-child(5){grid-column:2;grid-row:4;color:#cbbfa5;}
+#invPanel .inv-cr-detail>.inv-cr-note:nth-child(6){grid-column:2;grid-row:5;font-size:10px;color:#8c887c;}
+#invPanel .inv-cr-help{font:500 16px/1.5 'Noto Serif KR',serif;letter-spacing:.03em;color:#d5c29e;margin:14px 0 7px;}
+#invPanel .inv-cr-detail:not(:has(>.inv-cr-gem)){display:flex;flex-direction:column;justify-content:center;padding-left:140px;}
+#invPanel .inv-cr-detail:not(:has(>.inv-cr-gem))::before{top:50%;transform:translateY(-50%);height:110px;opacity:.3;}
+#invPanel .inv-cr-targets{grid-column:3;grid-row:1/6;border-left:1px solid #74634766;padding-left:14px;display:flex;flex-direction:column;align-self:stretch;gap:5px;min-height:0;overflow-y:auto;scrollbar-width:thin;}
+#invPanel .inv-cr-targets>.inv-cr-note{margin:0 0 5px;color:#c0b08e;font-size:10px;}
+#invPanel .inv-cr-attach{position:relative;text-align:left;padding:7px 10px 7px 29px;min-height:32px;flex-shrink:0;font-size:11px;color:#d8c7a4;}
+#invPanel .inv-cr-attach::before{content:'';position:absolute;left:10px;top:50%;width:7px;height:7px;border:1px solid #b69b62;transform:translateY(-50%) rotate(45deg);box-shadow:inset 0 0 0 2px #111;}
+#invPanel .inv-cr-attach:hover{border-color:#c5a771;color:#ffebc2;filter:brightness(1.12);}
+#invPanel .inv-cr-empty{grid-column:1/-1;align-self:center;text-align:center;color:#a99e8e;font:13px/1.8 'Noto Serif KR',serif;padding:25px 10px;}
+#invPanel .inv-cr-footer{display:flex;justify-content:space-between;align-items:center;gap:12px;padding-top:10px;margin-top:10px;border-top:1px solid #60503b66;flex-shrink:0;}
+#invPanel .inv-cr-footer>.inv-cr-note{font-size:10px;color:#857f70;}
+#invPanel .inv-cr-dust{position:relative;padding:3px 0 3px 19px;color:#ccba93;}
+#invPanel .inv-cr-dust::before{content:'';position:absolute;left:0;top:50%;width:10px;height:10px;transform:translateY(-50%) rotate(45deg);border:1px solid #988564;background:radial-gradient(#c3b7a6 1px,transparent 1.5px) 0 0/3px 3px,#50475c;box-shadow:0 1px 4px #000;}
+@media(max-height:760px) and (min-width:641px){#invPanel .inv-cr-body{grid-template-rows:minmax(120px,1fr) 178px;gap:10px;}#invPanel .inv-cr-detail{padding:12px 16px;}#invPanel .inv-cr-grid{grid-auto-rows:80px;}#invPanel .inv-cr-footer{margin-top:7px;padding-top:7px;}}
+@media(max-width:640px){#invPanel.panel[data-inventory-page=crystals] .pbox #invCrystalsPanel{padding:12px 10px 10px;}#invPanel .inv-cr-body{grid-template-rows:minmax(140px,1fr) 230px;gap:12px;}#invPanel .inv-cr-grid{grid-template-columns:repeat(auto-fill,minmax(61px,1fr));grid-auto-rows:80px;gap:4px;padding:5px;}#invPanel .inv-cr-detail{grid-template-columns:58px minmax(0,1fr) 130px;column-gap:10px;padding:12px;}#invPanel .inv-cr-detail::before{width:65px;left:8px;background-size:85px;}#invPanel .inv-cr-detail>.inv-cr-gem{width:44px;height:54px;}#invPanel .inv-cr-targets{padding-left:9px;}#invPanel .inv-cr-heading{font-size:15px;letter-spacing:.01em;}#invPanel .inv-cr-name{font-size:15px;}#invPanel .inv-cr-filter{padding:6px 12px;}#invPanel .inv-cr-detail:not(:has(>.inv-cr-gem)){padding-left:94px;}#invPanel .inv-cr-footer>.inv-cr-note{max-width:60%;}}
+@media(max-width:420px){#invPanel .inv-cr-head{flex-wrap:wrap;gap:4px;padding-bottom:9px;}#invPanel .inv-cr-capacity{font-size:10px;padding:0 6px;}#invPanel .inv-cr-detail{grid-template-columns:48px minmax(0,1fr);grid-template-rows:auto;overflow-y:auto;}#invPanel .inv-cr-targets{grid-column:1/-1;grid-row:6;border-left:0;border-top:1px solid #74634766;padding:8px 0 0;margin-top:7px;overflow:visible;}#invPanel .inv-cr-detail::before{display:none;}#invPanel .inv-cr-detail:not(:has(>.inv-cr-gem)){padding:14px;}#invPanel .inv-cr-gem{width:36px;height:45px;}#invPanel .inv-cr-footer{flex-wrap:wrap;gap:3px;}#invPanel .inv-cr-footer>.inv-cr-note{max-width:100%;}}
+@media(prefers-reduced-motion:reduce){#invPanel :is(.inv-cr-gem,.inv-cr-slot,.inv-cr-filter,.inv-cr-attach){transition:none;}#invPanel .inv-cr-slot:hover .inv-cr-gem{transform:none;}}
+```
+
+
+## 2026-09-27 보석 창 디테일 2차
+
+| 변경 | 적용·검증 |
+|---|---|
+| 보석 창 | 상단의 넓은 보석 보관 격자와 하단 감정판으로 재배치. 함몰 슬롯·각인 모서리·보석 절단면/반사선·선택 표시 정리 |
+| 데이터·조작 | renderInvCrystals/CRYSTAL_BAG/장착/가공/저장 변경 없음. CSS와 로딩 캐시만 변경 |
+| 패키지 | build-nwjs.mjs FILES에 inventory-gems.css 추가. 기존 root CSS 누락 검사에서 해당1개 누락 RED → 보완 후 패키징2검사 PASS |
+| 브라우저 | 실제 UI 함수/CSS를 사용하는 저장 IO 없는 fixture: 선택/필터/수량/마우스·키보드 장착/4탭 왕복/KO·EN/빈 목록 PASS. 1280×900,1280×720,520×800,390×844,1920×1080 캡처; 가로 넘침 없음, pageerror0 |
+| 범위 | 전체 게임 진행·새 NW.js EXE 빌드는 이번 검수에 포함하지 않음. 에셋 생성 없음 |
+| 규격 SSOT | docs/3.1 ui hud 디자인/UI_COMPOSITION_20260925.md 보석 화면 스타일 규격. 백업 tmp/gems-polish-backup, 캡처 tmp/inventory-gems-qa |

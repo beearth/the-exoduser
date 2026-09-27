@@ -33,6 +33,7 @@ const FILES = [
   'stat-panel-ui.js', 'stat-panel-ui.css',
   'ui-foundation.css',
   'ui-refinement.css',
+  'inventory-gems.css',
   'ui-panels.js',
   'localization-runtime.js', 'localization-data.js', 'localization.css',
   'lobby-stage-info.js', 'character-story-player.js', 'level-up-vfx.js',

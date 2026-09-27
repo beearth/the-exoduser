@@ -48711,7 +48711,7 @@ CSS 캐시 ui-refinement.css?v=20260927-4. 신규 이미지/아이템 데이터 
 | 조작 | 호버 상세, 클릭/키보드 초점 선택, 호환 장착 장비 빈 홈 선택 → attachCrystal → dbSaveNow. 객체 인덱스·장비 동일성·빈 홈 재확인 |
 | 가공 | 강화·합성·분해·제작은 기존 대장간 결정 탭. 장비 상세 소켓 피커·무료 탈착 유지 |
 | 분리 | 보석 탭에서 장비판/유골함/창고/일반 가방/장비 상세/분해 버튼 숨김. 다른 페이지로 전환하면 기존 표시 복귀 |
-| 구현 파일 | game.html, ui-panels.js, inventory-gems.css. ui-panels.js 캐시 20260927-gems, inventory-gems.css 캐시 20260927-1 |
+| 구현 파일 | game.html, ui-panels.js, inventory-gems.css. ui-panels.js 캐시 20260927-gems, inventory-gems.css 캐시 20260927-2 |
 | 검증 | Node 회귀 14개 PASS, game.html 인라인6개 구문 PASS. 저장 IO 없는 실제 UI 함수/CSS 브라우저 fixture에서 36묶음(72개)·방어12묶음·클릭/키보드 장착·4탭 왕복·영문·520px·빈 화면 PASS, pageerror0 |
 | 검증 범위 | tmp/inventory-gems-qa/preview.html, screenshots/result.json. 전체 게임 시작 경로는 전환 연출/실행 중단으로 검증 완료하지 않음. UI 검수는 격리 fixture 결과 |
 
@@ -48726,3 +48726,15 @@ CSS 캐시 ui-refinement.css?v=20260927-4. 신규 이미지/아이템 데이터 
 | _mkProj | 객체 중간에 들어간 기검참 함수들을 객체 선언 밖에 유지하도록 함수 시작행 위치 정정 |
 | _buildDiabloField | regions 배열 선언 중간의 stage0 분기를 배열 밖으로 유지하도록 선언3행 위치 정정. 좌표·수치·배치·판정 변화 없음 |
 | 범위 | 세 항목 모두 이 작업 시작 시 게임 작업 사본에 이미 있던 구문 수정이다. 별도 게임플레이 변경을 혼합하지 않고 구문 분석 가능한 커밋을 위해 함께 보존. 시각/맵 제작 검수 대상 아님 |
+
+
+## 2026-09-27 보석 창 디테일 2차
+
+| 변경 | 적용·검증 |
+|---|---|
+| 보석 창 | 상단의 넓은 보석 보관 격자와 하단 감정판으로 재배치. 함몰 슬롯·각인 모서리·보석 절단면/반사선·선택 표시 정리 |
+| 데이터·조작 | renderInvCrystals/CRYSTAL_BAG/장착/가공/저장 변경 없음. CSS와 로딩 캐시만 변경 |
+| 패키지 | build-nwjs.mjs FILES에 inventory-gems.css 추가. 기존 root CSS 누락 검사에서 해당1개 누락 RED → 보완 후 패키징2검사 PASS |
+| 브라우저 | 실제 UI 함수/CSS를 사용하는 저장 IO 없는 fixture: 선택/필터/수량/마우스·키보드 장착/4탭 왕복/KO·EN/빈 목록 PASS. 1280×900,1280×720,520×800,390×844,1920×1080 캡처; 가로 넘침 없음, pageerror0 |
+| 범위 | 전체 게임 진행·새 NW.js EXE 빌드는 이번 검수에 포함하지 않음. 에셋 생성 없음 |
+| 규격 SSOT | docs/3.1 ui hud 디자인/UI_COMPOSITION_20260925.md 보석 화면 스타일 규격. 백업 tmp/gems-polish-backup, 캡처 tmp/inventory-gems-qa |
