@@ -36,6 +36,7 @@ const FILES = [
   'inventory-gems.css',
   'inventory-gems-finish.css',
   'inventory-space.css',
+  'inventory-oss-balance.css', 'inventory-gems-balance.css',
   'skill-workspace.css',
   'ui-panels.js',
   'localization-runtime.js', 'localization-data.js', 'localization.css',

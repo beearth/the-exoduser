@@ -11,3 +11,11 @@
     min-height:160px!important;
   }
 }
+
+/* Keep the ritual illustration near the paper doll's visual scale on tall screens. */
+@media(min-width:1400px) and (min-height:850px){
+  #invPanel.panel[data-inventory-page=ossuary] #invOssuaryPanel .oss-altar{
+    zoom:1.35;
+    margin-block:auto!important;
+  }
+}
