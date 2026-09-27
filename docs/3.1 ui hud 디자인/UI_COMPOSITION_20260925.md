@@ -167,7 +167,7 @@ CSS 변경만 적용. 기존 에셋 재사용. 자동 테스트 추가·실행 �
 | 외곽 | pbox 패딩36px30px28px. 프레임26% slice/60px 표시, 단일 ::after. 이미지 실패 시 #2c3029 테두리. 기존 pbox 자체border0 계약 유지 |
 | 제목 | 최소142px/padding112px12px8px. 문장 박스200×112px, 원본 배경200×200px/center −36px, 필터 없음. 제목판top110/좌우20%/bottom0, 선#8d7b51 |
 | 낮은 화면 | 높이800px 이하 제목최소116px/padding-top86px. 문장156×88px, 원본156×156px/center −28px. 제목판top84px |
-| 좁은 화면 | 폭560px 이하 패널padding30px22px24px, 프레임48px. 원본 투명 합성, 배경실패 시 제목 텍스트/기본 판 유지 |
+| 좁은 화면 | v2: 폭560px 이하 첫 행556px,제단높이380px,부위82×116px,중앙90×128px,팔x14%/몸통x86%. padding12px 8px |
 | 기록 | img/ui/blackiron/prompts.md에 두 프롬프트 전문·생성ID·투명도 기록. 신규 픽셀 후처리 없음. img 폴더는 기존 NW.js 패키징 대상 |
 | 버전 | ui-refinement.css?v=20260927-4 |
 
@@ -660,18 +660,18 @@ CSS 캐시 ui-refinement.css?v=20260927-4. 신규 이미지/아이템 데이터 
 | 항목 | 현행 계약 |
 |---|---|
 | 구성 | 중앙 유골함, 위 두개골(skull), 왼쪽 팔(arms), 오른쪽 몸통(torso), 아래 다리(legs). 철갑 전대 1종, 4부위 |
-| 등급 | 각 부위 독립 rarity 0~5, tier 0~4. 등급명·RARITY_C 테두리·T(tier+1)·위력(r+t) 표시. 미수집은 어두운 실루엣과 미수집 문구 |
+| 등급 | 각 부위 독립 rarity 0~5, tier 0~4. 등급명·등급색 보석 표시. T(tier+1)·위력(r+t)는 선택 상세에 표시. 미수집은 어두운 실루엣과 미수집 문구 |
 | 수집·갱신 | 기존 INV.ossCollect['iron_warlord_'+part]={r,t}. 부위별 최고 r+t만 유지, 높은 포인트만 교체. 동점/하위는 가방에서 기존 분해 가능. 등급별 별도 중복 앨범이나 동일 등급 세트 조건은 없음 |
 | 해금 | _OSS_UNLOCK_ALL 임시 우회 제거. _ancPartPts는 미수집=-1, _ossSetComplete는 실제 4부위 필요. 혼합 등급 허용, 일반 r0/t0도 유효. 4/4+유골함 장착 시 소환 해금 표시. 자동 시전하지 않고 기존 전대 소환 스킬 사용 |
 | 부위 효과 | 두개골=치명·위력, 몸통=최대HP, 팔=공격 위력, 다리=크기·이속. 기존 _calcAncestorStats 수치와 r+t 공식 유지 |
 | 상호작용 | 부위 버튼 클릭/키보드 선택 → 하단 성장 효과. 중앙 유골함 좌클릭 상세, 호버 미리보기, 우클릭 해제. 기존 장착/등록/분해 유지 |
 | DOM | renderOssPanel이 최초 1회 createElement/append로 구성. 이후 기존 노드·초점·핸들러 보존, 특정 리프 textContent만 갱신. 부모 innerHTML 교체 없음 |
-| 제단 레이아웃 | 유골함 탭 첫 행480px, 가방 minmax(210px,1fr), 바깥 세로 스크롤. 제단 최대폭480px/높이338px. 중앙(50%,50%)110×112px. 두개골(50%,17%),팔(18%,50%),몸통(82%,50%),다리(50%,83%),부위96×104px |
+| 제단 레이아웃 | v2: 첫 행580px,가방 minmax(210px,1fr),제단최대폭510px/높이404px,중앙130×138px,부위116×124px. 위16%/아래84%,좌18%/우82%. 상세는 아래 재질 아트 마감 v2 절 |
 | 좁은 화면 | 폭560px 이하 부위76×96px, 중앙90×112px, 팔x14%/몸통x86%, 패널 padding12px 8px. 제단 높이338px 유지 |
-| 그림·폴백 | 기존 output/imagegen/item-skins/ossuary_phys.png 및 bone_{skull,torso,arms,legs}.png 재사용. 유골함64×78px, 부위45×45px object-fit:contain/normal 합성. 실패 시 이미지만 hidden, 이름·등급·조작 유지. 신규 이미지 생성 없음 |
-| 금속 원환 | CSS double 원환278×278px, 좁은 화면244×278px, 각도15도 간격1도 눈금. 원본 이미지 수정 없음 |
+| 그림·폴백 | 기존 유골함/부위 그림 유지. v2 유골함84×94px,부위51×51px. 제단/슬롯 PNG 2종 신규 연결. 실패 시 이름·그림·조작 유지. 아래 v2 절 참조 |
+| 금속 원환 | v2: CSS 눈금을1024px 석재/황동 제단 아트로 교체. 기본404×404px,모바일322×322px |
 | 접근성 | 실제 button·aria-label·aria-pressed·focus-visible. 해금 상태 role=status, 부위 설명 aria-live=polite. reduced-motion 시 transition 제거 |
-| 버전·적용 | game.html 및 game-easy-test.html, ui-refinement.css?v=20260927-ossuary |
+| 버전·적용 | game.html 및 game-easy-test.html, ui-refinement.css?v=20260927-ossuary-art2 |
 | 검증 | test/ossuaryCollection.test.js 6개 PASS(미수집 차단/혼합등급 완성/기존 저장 보존). 격리 브라우저 0→4 수집·하위거부·상위갱신·DOM 보존·유골함 해제 확인. 1440×1080 캡처,1280×720·390×844 슬롯 겹침/가로 넘침 없음, pageerror 0 |
 
 실제 유골 수집 기록이 없는 구세이브는 잠금 상태로 표시된다. 임시 우회로 소환하던 기록을 유골 수집으로 만들어 주지 않으며 기존 아이템·도감 저장값을 삭제하거나 이관하지 않는다.
@@ -680,54 +680,67 @@ CSS 캐시 ui-refinement.css?v=20260927-4. 신규 이미지/아이템 데이터 
 ### 유골 제단 현행 CSS
 
 ```css
-/* Ancestral collection altar: central urn, four independently graded bones. */
-#invPanel.panel[data-inventory-page=ossuary] .pbox .inv-wrap{grid-template-rows:480px minmax(210px,1fr)!important;overflow-y:auto!important;}
-#invPanel.panel .pbox #invOssuaryPanel{display:flex;flex-direction:column;align-items:stretch;padding:14px 20px!important;overflow:hidden!important;background:radial-gradient(ellipse at 50% 46%,#53402344,transparent 65%),linear-gradient(#0d1010c9,#0c0e10ed),var(--ui-surface) center/cover!important;}
-#invOssuaryPanel .oss-collection-head{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:0 0 10px;border-bottom:1px solid #6b594044;flex-shrink:0;}
-#invOssuaryPanel .oss-collection-title{font:600 15px/1.5 'Noto Serif KR',serif;color:#d7c4a0;letter-spacing:.07em;}
-#invOssuaryPanel .oss-collection-count{font:500 12px/1.5 'Noto Sans KR',sans-serif;color:#b4a993;white-space:nowrap;font-variant-numeric:tabular-nums;}
-#invOssuaryPanel .oss-altar{width:100%;max-width:480px;height:338px;min-height:338px;position:relative;align-self:center;isolation:isolate;}
-#invOssuaryPanel .oss-ritual-ring{position:absolute;left:50%;top:50%;width:278px;height:278px;transform:translate(-50%,-50%);border:8px double #8b744650;border-radius:50%;box-shadow:0 0 0 10px #151617,0 0 0 11px #78614055,inset 0 0 0 10px #121312,inset 0 0 0 11px #7d683b66,inset 0 0 35px #000;background:repeating-conic-gradient(from 0deg,#b3995e55 0deg 1deg,transparent 1deg 15deg);z-index:-1;}
-#invOssuaryPanel .oss-ritual-ring:before{content:'';position:absolute;inset:34px;border:1px solid #9f845c66;transform:rotate(45deg);background:linear-gradient(135deg,#8f734514,transparent 55%);box-shadow:0 0 0 6px #6e562518;}
-#invOssuaryPanel .oss-ritual-ring:after{content:'';position:absolute;inset:62px;border:5px double #97734277;border-radius:50%;background:#121413;box-shadow:0 0 30px #000;}
-#invPanel.panel .pbox #invOssuaryPanel :is(.oss-center,.oss-bone-node){appearance:none;position:absolute;transform:translate(-50%,-50%);margin:0;padding:0;box-sizing:border-box;display:flex;flex-direction:column;align-items:center;justify-content:center;cursor:pointer;transition:filter .16s,border-color .16s;}
-#invPanel.panel .pbox #invOssuaryPanel .oss-center{left:50%;top:50%;width:110px;height:112px;border:3px double #ac8750;border-radius:44% 44% 35% 35%;background:radial-gradient(ellipse,#77603744,#111414 70%);box-shadow:0 0 0 4px #161715,0 0 0 5px #77614088,inset 0 0 18px #000;z-index:2;}
-#invOssuaryPanel .oss-urn-image{width:64px;height:78px;object-fit:contain;filter:drop-shadow(0 3px 5px #000);}
-#invOssuaryPanel .oss-urn-label{font:600 12px/1.6 'Noto Serif KR',serif;color:#dfcda5;letter-spacing:.12em;}
-#invOssuaryPanel .oss-center.empty .oss-urn-image{filter:grayscale(1) brightness(.4);opacity:.6;}
-#invPanel.panel .pbox #invOssuaryPanel .oss-bone-node{width:96px;height:104px;border:3px double #756852;border-radius:10px 2px;background:linear-gradient(#1d2020e8,#0c1011f5),var(--menu-plate) center/100% 100%;box-shadow:0 0 0 3px #0b0d0e,0 0 0 4px #554a3766,inset 0 0 12px #000;color:#968c79;}
-#invOssuaryPanel .oss-bone-node[data-part=skull]{left:50%;top:17%;}
+/* Ancestral collection altar: sculpted basalt, bronze and individual relic sockets. */
+#invPanel.panel[data-inventory-page=ossuary] .pbox .inv-wrap{grid-template-rows:580px minmax(210px,1fr)!important;overflow-y:auto!important;}
+#invPanel.panel .pbox #invOssuaryPanel{display:flex;flex-direction:column;align-items:stretch;padding:12px 18px!important;overflow:hidden!important;background:radial-gradient(ellipse at 50% 42%,#44352345,transparent 70%),linear-gradient(#0c0e10b8,#0c0d0fea),var(--ui-surface) center/cover!important;}
+#invOssuaryPanel .oss-collection-head{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:3px 2px 12px;border-bottom:1px solid #75604470;flex-shrink:0;}
+#invOssuaryPanel .oss-collection-title{font:600 16px/1.5 'Noto Serif KR',serif;color:#e0ceb0;letter-spacing:.07em;text-shadow:0 2px 2px #000;}
+#invOssuaryPanel .oss-collection-count{font:500 11px/1.5 'Noto Sans KR',sans-serif;color:#c9b593;white-space:nowrap;font-variant-numeric:tabular-nums;padding:4px 9px;background:#090b0e80;border:1px solid #6f583b70;box-shadow:inset 0 1px 5px #0008;}
+#invOssuaryPanel .oss-altar{width:100%;max-width:510px;height:404px;min-height:404px;position:relative;align-self:center;isolation:isolate;margin:4px 0;}
+#invOssuaryPanel .oss-ritual-ring{position:absolute;left:50%;top:50%;width:404px;height:404px;transform:translate(-50%,-50%);border:0;border-radius:50%;background:radial-gradient(circle,#121414 22%,#665132 44%,#141617 69%);box-shadow:0 8px 24px #000a;z-index:-1;}
+#invOssuaryPanel .oss-ritual-ring:before{content:'';position:absolute;inset:-12px;background:url('img/ui/ossuary_altar_hf_v2.png') center/contain no-repeat;mask-image:radial-gradient(circle,#000 62%,#0009 66%,transparent 71%);filter:brightness(.72) saturate(.7);}
+#invOssuaryPanel .oss-ritual-ring:after{content:'';position:absolute;inset:32%;border-radius:50%;background:radial-gradient(ellipse,#c8a35216,transparent 67%);box-shadow:inset 0 0 30px #0009;}
+#invPanel.panel .pbox #invOssuaryPanel :is(.oss-center,.oss-bone-node){appearance:none;position:absolute;transform:translate(-50%,-50%);margin:0;padding:0;box-sizing:border-box;display:flex;flex-direction:column;align-items:center;justify-content:center;cursor:pointer;border:0;border-radius:0;background:transparent;color:#b8ab94;transition:filter .18s;isolation:isolate;}
+#invPanel.panel .pbox #invOssuaryPanel .oss-center{left:50%;top:50%;width:130px;height:138px;background:radial-gradient(ellipse at 50% 64%,#bea46318,transparent 67%);z-index:2;filter:drop-shadow(0 6px 7px #000);}
+#invOssuaryPanel .oss-center:before{content:'';position:absolute;inset:-14px -10px;background:url('img/ui/ossuary_socket_hf_v2.png') center/145% 112% no-repeat;z-index:-1;filter:brightness(.82) saturate(.7);}
+#invOssuaryPanel .oss-urn-image{width:84px;height:94px;object-fit:contain;filter:drop-shadow(0 3px 4px #000) brightness(1.2);}
+#invOssuaryPanel .oss-urn-label{position:absolute;bottom:1px;padding:2px 10px;background:linear-gradient(90deg,transparent,#0b0d0fed 18%,#0b0d0fed 82%,transparent);font:600 12px/1.5 'Noto Serif KR',serif;color:#dfcda5;letter-spacing:.16em;text-shadow:0 2px 3px #000;}
+#invOssuaryPanel .oss-center.empty .oss-urn-image{filter:grayscale(1) brightness(.45);opacity:.65;}
+#invPanel.panel .pbox #invOssuaryPanel .oss-bone-node{width:116px;height:124px;filter:drop-shadow(0 5px 4px #000);}
+#invOssuaryPanel .oss-bone-node:before{content:'';position:absolute;inset:-8px -6px;background:url('img/ui/ossuary_socket_hf_v2.png') center/145% 112% no-repeat;filter:brightness(.6) saturate(.4);z-index:-1;}
+#invOssuaryPanel .oss-bone-node:after{content:'';position:absolute;left:50%;bottom:9px;width:5px;height:5px;transform:translateX(-50%) rotate(45deg);background:#39362d;border:1px solid #7d694a;box-shadow:0 1px 2px #000;}
+#invOssuaryPanel .oss-bone-node[data-part=skull]{left:50%;top:16%;}
 #invOssuaryPanel .oss-bone-node[data-part=torso]{left:82%;top:50%;}
 #invOssuaryPanel .oss-bone-node[data-part=arms]{left:18%;top:50%;}
-#invOssuaryPanel .oss-bone-node[data-part=legs]{left:50%;top:83%;}
-#invOssuaryPanel .oss-bone-name{font:600 12px/1.4 'Noto Serif KR',serif;color:#b9ad94;}
-#invOssuaryPanel .oss-bone-image{width:45px;height:45px;object-fit:contain;filter:grayscale(1) brightness(.5);opacity:.6;}
-#invOssuaryPanel .oss-bone-grade{font:600 11px/1.4 'Noto Sans KR',sans-serif;}
-#invOssuaryPanel .oss-bone-tier{font:400 10px/1.4 'Noto Sans KR',sans-serif;color:#978e7c;font-variant-numeric:tabular-nums;}
-#invPanel.panel .pbox #invOssuaryPanel .oss-bone-node.collected{border-color:var(--bone-rarity);color:var(--bone-rarity);box-shadow:0 0 0 3px #0b0d0e,0 0 0 4px color-mix(in srgb,var(--bone-rarity) 40%,transparent),inset 0 -10px 22px color-mix(in srgb,var(--bone-rarity) 14%,transparent);}
-#invOssuaryPanel .oss-bone-node.collected .oss-bone-image{filter:drop-shadow(0 2px 3px #000);opacity:1;}
-#invPanel.panel .pbox #invOssuaryPanel :is(.oss-bone-node,.oss-center):hover{filter:brightness(1.22);}
-#invPanel.panel .pbox #invOssuaryPanel :is(.oss-bone-node,.oss-center):focus-visible,#invPanel.panel .pbox #invOssuaryPanel .oss-bone-node.selected{outline:2px solid #e4cca0;outline-offset:5px;}
-#invOssuaryPanel.oss-ready .oss-center{border-color:#c9a862!important;box-shadow:0 0 0 4px #171b16,0 0 0 5px #b7a16b,0 0 26px #9cac4c44,inset 0 0 28px #90733555!important;}
-#invOssuaryPanel.oss-ready .oss-ritual-ring{border-color:#ad945488;}
-#invOssuaryPanel .oss-collection-footer{display:flex;align-items:center;justify-content:center;gap:16px;padding:9px 0 6px;border-top:1px solid #7a654844;}
-#invOssuaryPanel .oss-ancestor-name{font:600 14px/1.5 'Noto Serif KR',serif;color:#d8c5a2;}
-#invOssuaryPanel .oss-unlock-state{font:500 11px/1.5 'Noto Sans KR',sans-serif;color:#a69b83;}
-#invOssuaryPanel.oss-ready .oss-unlock-state{color:#bcd297;}
-#invOssuaryPanel :is(.oss-part-detail,.oss-collection-hint){margin:2px 0!important;text-align:center;font:400 11px/1.5 'Noto Sans KR',sans-serif;color:#b5a992;}
-#invOssuaryPanel .oss-collection-hint{color:#908773;font-size:10px;}
+#invOssuaryPanel .oss-bone-node[data-part=legs]{left:50%;top:84%;}
+#invOssuaryPanel .oss-bone-name{font:600 12px/1.5 'Noto Serif KR',serif;color:#ddceb4;text-shadow:0 2px 2px #000;letter-spacing:.06em;}
+#invOssuaryPanel .oss-bone-image{width:51px;height:51px;object-fit:contain;filter:grayscale(1) brightness(.42);opacity:.7;}
+#invOssuaryPanel .oss-bone-grade{font:600 11px/1.5 'Noto Sans KR',sans-serif;color:#938c7e;text-shadow:0 2px 3px #000;}
+#invOssuaryPanel .oss-bone-tier{display:none;}
+#invOssuaryPanel .oss-bone-node.collected:before{filter:brightness(.95) saturate(.75);}
+#invOssuaryPanel .oss-bone-node.collected:after{background:var(--bone-rarity);border-color:color-mix(in srgb,var(--bone-rarity),#e4c78c 35%);box-shadow:0 0 7px color-mix(in srgb,var(--bone-rarity) 65%,transparent);}
+#invOssuaryPanel .oss-bone-node.collected .oss-bone-grade{color:color-mix(in srgb,var(--bone-rarity) 70%,#e1ccb0);}
+#invOssuaryPanel .oss-bone-node.collected .oss-bone-image{filter:drop-shadow(0 3px 3px #000) brightness(1.13);opacity:1;}
+#invOssuaryPanel .oss-bone-node.selected:before{filter:brightness(1.28) saturate(.9);}
+#invPanel.panel .pbox #invOssuaryPanel :is(.oss-bone-node,.oss-center):hover{filter:drop-shadow(0 5px 4px #000) brightness(1.2);}
+#invPanel.panel .pbox #invOssuaryPanel :is(.oss-bone-node,.oss-center):focus-visible{outline:1px solid #e4cca0;outline-offset:2px;}
+#invOssuaryPanel.oss-ready .oss-center:before{filter:brightness(1.14) saturate(.9) drop-shadow(0 0 7px #b6a04b44);}
+#invOssuaryPanel.oss-ready .oss-center{background:radial-gradient(ellipse at 50% 60%,#b1bb672a,transparent 70%);}
+#invOssuaryPanel.oss-ready .oss-ritual-ring:before{filter:brightness(.9) saturate(.85);}
+#invOssuaryPanel .oss-collection-footer{display:flex;align-items:center;justify-content:center;gap:14px;padding:10px 0 7px;border-top:1px solid #75604470;background:linear-gradient(90deg,transparent,#8b70471a,transparent);}
+#invOssuaryPanel .oss-ancestor-name{font:600 15px/1.5 'Noto Serif KR',serif;color:#e0cdae;letter-spacing:.1em;text-shadow:0 2px 2px #000;}
+#invOssuaryPanel .oss-unlock-state{font:500 10px/1.5 'Noto Sans KR',sans-serif;color:#aa9e85;border:1px solid #74603d66;padding:3px 7px;background:#0b0d0f99;}
+#invOssuaryPanel.oss-ready .oss-unlock-state{color:#c6d7a7;border-color:#98a16c66;background:#27301b55;}
+#invOssuaryPanel :is(.oss-part-detail,.oss-collection-hint){margin:2px 0!important;text-align:center;font:400 11px/1.5 'Noto Sans KR',sans-serif;color:#c0b39b;}
+#invOssuaryPanel .oss-collection-hint{color:#968974;font-size:10px;}
 @media(max-width:560px){
+  #invPanel.panel[data-inventory-page=ossuary] .pbox .inv-wrap{grid-template-rows:556px minmax(210px,1fr)!important;}
   #invPanel.panel .pbox #invOssuaryPanel{padding:12px 8px!important;}
   #invOssuaryPanel .oss-collection-title{font-size:13px;letter-spacing:0;}
-  #invOssuaryPanel .oss-collection-count{font-size:10px;}
-  #invPanel.panel .pbox #invOssuaryPanel .oss-bone-node{width:76px;height:96px;}
-  #invPanel.panel .pbox #invOssuaryPanel .oss-center{width:90px;height:112px;}
+  #invOssuaryPanel .oss-collection-count{font-size:10px;padding:3px 5px;}
+  #invOssuaryPanel .oss-altar{height:380px;min-height:380px;}
+  #invPanel.panel .pbox #invOssuaryPanel .oss-bone-node{width:82px;height:116px;}
+  #invPanel.panel .pbox #invOssuaryPanel .oss-center{width:90px;height:128px;}
+  #invOssuaryPanel .oss-center:before{inset:-9px -8px;}
+  #invOssuaryPanel .oss-urn-image{width:66px;height:85px;}
+  #invOssuaryPanel .oss-bone-image{width:43px;height:48px;}
   #invOssuaryPanel .oss-bone-node[data-part=arms]{left:14%;}
   #invOssuaryPanel .oss-bone-node[data-part=torso]{left:86%;}
-  #invOssuaryPanel .oss-ritual-ring{width:244px;height:278px;}
+  #invOssuaryPanel .oss-ritual-ring{width:322px;height:322px;}
+  #invOssuaryPanel .oss-bone-name{font-size:11px;}
+  #invOssuaryPanel .oss-bone-tier{font-size:9px;}
 }
 @media(prefers-reduced-motion:reduce){#invPanel.panel .pbox #invOssuaryPanel :is(.oss-center,.oss-bone-node){transition:none;}}
-
 ```
 
 
@@ -846,3 +859,22 @@ CSS 캐시 ui-refinement.css?v=20260927-4. 신규 이미지/아이템 데이터 
 | 브라우저 | 실제 UI 함수/CSS를 사용하는 저장 IO 없는 fixture: 선택/필터/수량/마우스·키보드 장착/4탭 왕복/KO·EN/빈 목록 PASS. 1280×900,1280×720,520×800,390×844,1920×1080 캡처; 가로 넘침 없음, pageerror0 |
 | 범위 | 전체 게임 진행·새 NW.js EXE 빌드는 이번 검수에 포함하지 않음. 에셋 생성 없음 |
 | 규격 SSOT | docs/3.1 ui hud 디자인/UI_COMPOSITION_20260925.md 보석 화면 스타일 규격. 백업 tmp/gems-polish-backup, 캡처 tmp/inventory-gems-qa |
+
+
+## 2026-09-27 유골 제단 재질 아트 마감 v2
+
+| 항목 | 현행 규격·연결 |
+|---|---|
+| 의도 | 기존 CSS 선형 원환·네온 등급 테두리를 고딕 석재 제단과 닳은 황동/흑철 유골 홈으로 교체. 중앙 유골함과 4부위 콜렉션 구조 유지 |
+| 제단 에셋 | img/ui/ossuary_altar_hf_v2.png,1024×1024 RGB. .oss-ritual-ring:before, normal 합성. radial mask 62% 불투명/66% alpha .6/71% 투명. 로딩 실패 시 아래 CSS 석색 radial 바탕 유지 |
+| 슬롯 에셋 | img/ui/ossuary_socket_hf_v2.png,1024×1024 RGBA, 모서리 alpha0. .oss-center:before/.oss-bone-node:before, background-size145% 112%, normal 합성. 원본 픽셀/알파 보존, 런타임 색 필터만 적용. 실패 시 부위 텍스트·그림·상호작용 유지 |
+| 배치 | 첫 행580px/배낭 minmax(210px,1fr). 제단 최대폭510px,높이404px. 중앙130×138px. 주변116×124px, 두개골(50%,16%),팔(18%,50%),몸통(82%,50%),다리(50%,84%). 기본 그림84×94px(유골함)/51×51px(부위) |
+| 모바일 | 폭560px 이하 첫 행556px,제단높이380px,원환322×322px,부위82×116px,중앙90×128px. 팔x14%/몸통x86%. 유골함66×85px/부위43×48px |
+| 등급 표현 | 모든 테두리 금속 재질 통일. 개별 등급은 이름의 70% RARITY_C+30%#e1ccb0 혼색 및 하단5×5px 마름모 보석. 선택 프레임 brightness1.28/saturate.9. 수집 프레임 brightness.95/saturate.75,미수집.6/.4 |
+| 읽기 | 슬롯에는 부위명·그림·등급만 노출. .oss-bone-tier display:none. 선택 상세는 부위·등급·T(t+1)·위력(r+t)·성장 효과. 중앙 이름은 하단 어두운 명판 위에 표시 |
+| 완료 | 4/4+유골함 장착 시 중앙 프레임 brightness1.14/saturate.9, 제단 brightness.9/saturate.85. 기본 제단 .72/.7. 소환 해금 배지와 미수집 상태 구분 |
+| 캐시 | game.html/game-easy-test.html: ui-refinement.css?v=20260927-ossuary-art2 |
+| 불변 | 실제 4부위 해금 조건, 등급·티어 저장, 상위 r+t 등록, 전대 전투 수치, 재입력 회수 |
+| 제작 | Higgsfield GPT Image 2.5(gpt_image_2_5),quality high,resolution1k,aspect1:1. 잔액1111.25 확인 후 2건 생성, GPT API 폴백 없음 |
+| 작업 ID | 제단9ceb151d-45d5-476e-83ec-3a13c63e6b25 / 슬롯fa8121e1-87f3-4623-89c1-2edcd900e15e |
+| 최종 화면 검증 | 1440×1080 실화면·390×844 좁은 화면 시각 확인. 1280×720/390×844 슬롯 겹침0·가로넘침0. 수집0→4 해금,상위갱신/하위거부,DOM 유지 확인. pageerror0. tmp/ossuary_altar_complete.png·ossuary_altar_390.png |

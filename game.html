@@ -2507,7 +2507,7 @@ body:has(#invPanel.on) #keyGuide{display:none!important}
 <link rel="stylesheet" href="stat-panel-ui.css?v=20260913-smooth-ui">
 <link rel="stylesheet" href="localization.css?v=20260909">
 <link rel="stylesheet" href="ui-foundation.css?v=20260924-hell3">
-<link rel="stylesheet" href="ui-refinement.css?v=20260927-gems">
+<link rel="stylesheet" href="ui-refinement.css?v=20260927-ossuary-art2">
 <script defer src="ui-panels.js?v=20260927-gems"></script>
 <link rel="stylesheet" href="inventory-gems.css?v=20260927-2">
 <script src="stat-panel-ui.js?v=20260909-constellation-v3"></script>
@@ -46684,7 +46684,8 @@ function renderOssPanel(){
     node.setAttribute('aria-label',node.title);
   }
   const part=pn.dataset.selectedPart;
-  label('oss-part-detail',part?_bonePartName(part)+' — '+roles[part]:_L('부위를 선택하면 성장 효과를 확인할 수 있습니다.','Select a bone to view its growth effect.'));
+  const record=part&&INV.ossCollect[R.id+'_'+part];
+  label('oss-part-detail',part?_bonePartName(part)+' · '+(record?_rarName(record.r||0)+' T'+((record.t||0)+1)+' · '+_L('위력 ','Power ')+((record.r||0)+(record.t||0)):_L('미수집','Missing'))+' — '+roles[part]:_L('부위를 선택하면 등급과 성장 효과를 확인할 수 있습니다.','Select a bone to view its grade and growth effect.'));
   const urn=$('invOssUrn');
   urn.classList.toggle('empty',!oss);
   urn.title=oss?_T(oss.name):_L('첫 유골 획득 시 유골함 자동 지급','An ossuary is granted with your first bone');

@@ -118,3 +118,22 @@
 CSS 캐시 ui-refinement.css?v=20260927-3. 신규 이미지/아이템 데이터 변경/자동 테스트 추가·실행 없음.
 
 정확한 CSS는 UI_COMPOSITION_20260925.md의 같은 절을 따른다.
+
+
+## 2026-09-27 유골 제단 재질 아트 마감 v2
+
+| 항목 | 현행 규격·연결 |
+|---|---|
+| 의도 | 기존 CSS 선형 원환·네온 등급 테두리를 고딕 석재 제단과 닳은 황동/흑철 유골 홈으로 교체. 중앙 유골함과 4부위 콜렉션 구조 유지 |
+| 제단 에셋 | img/ui/ossuary_altar_hf_v2.png,1024×1024 RGB. .oss-ritual-ring:before, normal 합성. radial mask 62% 불투명/66% alpha .6/71% 투명. 로딩 실패 시 아래 CSS 석색 radial 바탕 유지 |
+| 슬롯 에셋 | img/ui/ossuary_socket_hf_v2.png,1024×1024 RGBA, 모서리 alpha0. .oss-center:before/.oss-bone-node:before, background-size145% 112%, normal 합성. 원본 픽셀/알파 보존, 런타임 색 필터만 적용. 실패 시 부위 텍스트·그림·상호작용 유지 |
+| 배치 | 첫 행580px/배낭 minmax(210px,1fr). 제단 최대폭510px,높이404px. 중앙130×138px. 주변116×124px, 두개골(50%,16%),팔(18%,50%),몸통(82%,50%),다리(50%,84%). 기본 그림84×94px(유골함)/51×51px(부위) |
+| 모바일 | 폭560px 이하 첫 행556px,제단높이380px,원환322×322px,부위82×116px,중앙90×128px. 팔x14%/몸통x86%. 유골함66×85px/부위43×48px |
+| 등급 표현 | 모든 테두리 금속 재질 통일. 개별 등급은 이름의 70% RARITY_C+30%#e1ccb0 혼색 및 하단5×5px 마름모 보석. 선택 프레임 brightness1.28/saturate.9. 수집 프레임 brightness.95/saturate.75,미수집.6/.4 |
+| 읽기 | 슬롯에는 부위명·그림·등급만 노출. .oss-bone-tier display:none. 선택 상세는 부위·등급·T(t+1)·위력(r+t)·성장 효과. 중앙 이름은 하단 어두운 명판 위에 표시 |
+| 완료 | 4/4+유골함 장착 시 중앙 프레임 brightness1.14/saturate.9, 제단 brightness.9/saturate.85. 기본 제단 .72/.7. 소환 해금 배지와 미수집 상태 구분 |
+| 캐시 | game.html/game-easy-test.html: ui-refinement.css?v=20260927-ossuary-art2 |
+| 불변 | 실제 4부위 해금 조건, 등급·티어 저장, 상위 r+t 등록, 전대 전투 수치, 재입력 회수 |
+| 제작 | Higgsfield GPT Image 2.5(gpt_image_2_5),quality high,resolution1k,aspect1:1. 잔액1111.25 확인 후 2건 생성, GPT API 폴백 없음 |
+| 작업 ID | 제단9ceb151d-45d5-476e-83ec-3a13c63e6b25 / 슬롯fa8121e1-87f3-4623-89c1-2edcd900e15e |
+| 최종 화면 검증 | 1440×1080 실화면·390×844 좁은 화면 시각 확인. 1280×720/390×844 슬롯 겹침0·가로넘침0. 수집0→4 해금,상위갱신/하위거부,DOM 유지 확인. pageerror0. tmp/ossuary_altar_complete.png·ossuary_altar_390.png |
