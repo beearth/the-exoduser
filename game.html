@@ -15949,14 +15949,14 @@ function _druidFinaleUpdate(e,sp){
   }
   return false;
 }
-function _drawDruidFinaleRing(ctx,x,y,r,progress=1){
+function _drawDruidFinaleRing(ctx,x,y,r,progress=1,strokeFn=null){
   ctx.beginPath();
   const end=Math.max(0,Math.min(1,progress))*Math.PI*2;
   for(let i=0;i<=48;i++){
     const a=-Math.PI/2+end*i/48,px=x+Math.cos(a)*r,py=y+Math.sin(a)*r;
     if(i===0)ctx.moveTo(px,py);else ctx.lineTo(px,py);
   }
-  ctx.stroke();
+  (strokeFn||ctx.stroke).call(ctx);
 }
 function _drawDruidFinaleTell(ctx,e){
   if(!_isDruidFinale(e))return;
@@ -15976,18 +15976,18 @@ function _drawDruidFinaleTell(ctx,e){
   }
   ctx.restore();
 }
-function _drawDruidFinalePool(ctx,lp,sheet){
+function _drawDruidFinalePool(ctx,lp,sheet,strokeFn){
   const armed=lp.t>=lp.warnT,fade=Math.min(1,(lp.maxT-lp.t)/60);
   ctx.save();ctx.beginPath();ctx.arc(lp.x,lp.y,lp.r,0,Math.PI*2);
-  ctx.globalAlpha=(armed?.16:.06)*fade;ctx.fillStyle='#66dd22';ctx.fill();
+  ctx.globalAlpha=(armed?.10:.04)*fade;ctx.fillStyle='#66dd22';ctx.fill();
   if(sheet){
     const im=sheet.img,cw=im.naturalWidth/4,ch=im.naturalHeight/2,fr=Math.min(7,~~(lp.t/lp.maxT*8)),artR=lp.r*Math.SQRT1_2;
-    ctx.globalAlpha=(armed?.32:.14)*fade;
+    ctx.globalAlpha=(armed?.24:.10)*fade;
     ctx.drawImage(im,(fr%4)*cw,~~(fr/4)*ch,cw,ch,lp.x-artR,lp.y-artR,artR*2,artR*2);
   }
-  ctx.restore();ctx.save();ctx.globalAlpha=.85*fade;ctx.strokeStyle=armed?'#8bdd45':'#d4f7a8';ctx.lineWidth=3;
-  _drawDruidFinaleRing(ctx,lp.x,lp.y,lp.r);
-  if(!armed){ctx.lineWidth=5;_drawDruidFinaleRing(ctx,lp.x,lp.y,lp.r,lp.t/lp.warnT);}
+  ctx.restore();ctx.save();ctx.globalAlpha=.62*fade;ctx.strokeStyle=armed?'#8bdd45':'#d4f7a8';ctx.lineWidth=1.5;
+  _drawDruidFinaleRing(ctx,lp.x,lp.y,lp.r,1,strokeFn);
+  if(!armed){ctx.lineWidth=1.5;_drawDruidFinaleRing(ctx,lp.x,lp.y,lp.r,lp.t/lp.warnT,strokeFn);}
   ctx.restore();
 }
 // [/DRUID-FINALE]
@@ -53035,7 +53035,7 @@ function drawP(){
         }
       }else if(fz.type==='shockField'){
         // ═══ 전격이동 전류장판 — Power Lightning 스프라이트 (악의폭풍과 동일 에셋) ═══
-        const _sfFade=(_fzProg>.8?1-(_fzProg-.8)/.2:1)*0.32; // 겹치는 전기 스프라이트가 탄막을 가리지 않도록 제한
+        const _sfFade=(_fzProg>.8?1-(_fzProg-.8)/.2:1)*0.24; // 겹치는 전기 스프라이트가 탄막을 가리지 않도록 제한
         if(!fz._spr){
           fz._spr={f0:Math.random()*16, f1:Math.random()*12, f2:Math.random()*9,
             sc:fz.r/60, rot:Math.random()*Math.PI*2, flip:Math.random()>.5?-1:1};
@@ -53158,7 +53158,7 @@ function drawP(){
             const fi1=~~((s.f0+_spT*0.2)%16);
             const sx1=(fi1%4)*fw1, sy1=~~(fi1/4)*fh1;
             const sz1=fw1*s.sc*0.8;
-            X.globalAlpha=.35*_fzFade;
+            X.globalAlpha=.25*_fzFade;
             X.save();X.translate(px,py);X.rotate(s.rot);X.scale(s.flip,1);
             X.drawImage(_msStormImg1,sx1,sy1,fw1,fh1,-sz1/2,-sz1/2,sz1,sz1);
             X.restore();
@@ -53168,7 +53168,7 @@ function drawP(){
             const fi2=~~((s.f1+_spT*0.25)%12);
             const sx2=(fi2%4)*fw2, sy2=~~(fi2/4)*fh2;
             const sz2=fw2*s.sc*0.9;
-            X.globalAlpha=.32*_fzFade;
+            X.globalAlpha=.22*_fzFade;
             X.save();X.translate(px,py);X.rotate(s.rot+0.7);X.scale(s.flip,1);
             X.drawImage(_msStormImg2,sx2,sy2,fw2,fh2,-sz2/2,-sz2/2,sz2,sz2);
             X.restore();
@@ -53178,7 +53178,7 @@ function drawP(){
             const fi3=~~((s.f2+_spT*0.18)%9);
             const sx3=(fi3%3)*fw3, sy3=~~(fi3/3)*fh3;
             const sz3=fw3*s.sc*0.5;
-            X.globalAlpha=.30*_fzFade;
+            X.globalAlpha=.20*_fzFade;
             X.save();X.translate(px,py);X.rotate(s.rot-0.4);X.scale(s.flip,1);
             X.drawImage(_msStormImg3,sx3,sy3,fw3,fh3,-sz3/2,-sz3/2,sz3,sz3);
             X.restore();
@@ -54618,7 +54618,7 @@ function drawP(){
         const z=ca.zones[zi];
          if(z.hit){
            const _ep=z.explT/z.explMax;
-            X.globalAlpha=(1-_ep)*(z.druid?.18:.24);
+            X.globalAlpha=(1-_ep)*(z.druid?.14:.18);
             if(z.druid){const _eg=X.createRadialGradient(z.x,z.y,z.r*.08,z.x,z.y,z.r*(1+_ep*.25));
               _eg.addColorStop(0,'#1a2819');_eg.addColorStop(.56,'#5c713c');_eg.addColorStop(1,'#b6ce74');X.fillStyle=_eg;
               X.beginPath();for(let k=0;k<=32;k++){const a=k*Math.PI/16,rr=z.r*(1+_ep*.25)*(1+Math.sin(k*4.3+zi)*.025);
@@ -54633,12 +54633,12 @@ function drawP(){
             const _soil=X.createRadialGradient(z.x,z.y,z.r*.08,z.x,z.y,z.r);
             _soil.addColorStop(0,'#131f18');_soil.addColorStop(.58,'#31472a');_soil.addColorStop(1,'#64854a');
              X.globalAlpha=_zP*.13;X.fillStyle=_soil;X.beginPath();X.arc(z.x,z.y,z.r,0,Math.PI*2);X.fill();
-           X.globalAlpha=_zP*_pulse*.7;X.fillStyle='#badb67';X.beginPath();
-           X.arc(z.x,z.y,z.r,0,Math.PI*2);X.arc(z.x,z.y,Math.max(0,z.r-8),0,Math.PI*2,true);X.fill();
+           X.globalAlpha=_zP*_pulse*.55;X.fillStyle='#badb67';X.beginPath();
+           X.arc(z.x,z.y,z.r,0,Math.PI*2);X.arc(z.x,z.y,Math.max(0,z.r-1.5),0,Math.PI*2,true);X.fill();
            if(_zP>.5){const _inner=z.r*(1-(_zP-.5)*1.65);
-             X.globalAlpha=(_zP-.5)*.85;X.fillStyle='#d7e89b';X.beginPath();
-             X.arc(z.x,z.y,_inner+5,0,Math.PI*2);X.arc(z.x,z.y,_inner,0,Math.PI*2,true);X.fill();}
-            X.globalAlpha=_zP*.38;X.fillStyle='#a5bd6d';X.beginPath();
+             X.globalAlpha=(_zP-.5)*.65;X.fillStyle='#d7e89b';X.beginPath();
+             X.arc(z.x,z.y,_inner+1.5,0,Math.PI*2);X.arc(z.x,z.y,_inner,0,Math.PI*2,true);X.fill();}
+            X.globalAlpha=_zP*.25;X.fillStyle='#a5bd6d';X.beginPath();
             for(let ri=0;ri<10;ri++){const a=ri*Math.PI/5+zi*.17,rr=z.r*(.68+(ri%3)*.07),bend=.08*(ri%2?1:-1);
               X.moveTo(z.x+Math.cos(a)*z.r*.14,z.y+Math.sin(a)*z.r*.14);
               X.lineTo(z.x+Math.cos(a+bend)*rr,z.y+Math.sin(a+bend)*rr);
@@ -54678,11 +54678,11 @@ function drawP(){
       const lp=G._lavaPools[li];
       // [다크드루이드] stage3 lavaPools = 커스텀 녹색 가시 장판 아트(빨간원 대체)
       const _dzl=((G.stage===0||G.stage===3)&&typeof _druidSheets!=='undefined'&&_druidSheets.aoe&&_druidSheets.aoe.ready)?_druidSheets.aoe:null;
-      if(_isDruidFinale(G._bossRef)){_drawDruidFinalePool(X,lp,_dzl);continue;}
+      if(_isDruidFinale(G._bossRef)){_drawDruidFinalePool(X,lp,_dzl,__strokeBak);continue;}
       if(_dzl){const im=_dzl.img,cw=im.naturalWidth/4,ch=im.naturalHeight/2,fr=Math.min(7,~~(lp.t/lp.maxT*8)),sx=(fr%4)*cw,sy=(~~(fr/4))*ch,R=lp.r*1.4;
-        const _la=lp.t<lp.warnT?(lp.t/lp.warnT*.28):(lp.t>lp.maxT*.8?(1-(lp.t-lp.maxT*.8)/(lp.maxT*.2))*.38:.38);
+        const _la=lp.t<lp.warnT?(lp.t/lp.warnT*.18):(lp.t>lp.maxT*.8?(1-(lp.t-lp.maxT*.8)/(lp.maxT*.2))*.26:.26);
         X.globalAlpha=_la;X.drawImage(im,sx,sy,cw,ch,lp.x-R,lp.y-R,R*2,R*2);
-        X.globalAlpha=Math.min(1,_la*1.8);X.fillStyle='#a9d76a';X.beginPath();X.arc(lp.x,lp.y,lp.r,0,Math.PI*2);X.arc(lp.x,lp.y,Math.max(0,lp.r-2),0,Math.PI*2,true);X.fill();X.globalAlpha=1;continue;}
+        X.globalAlpha=Math.min(1,_la*1.8);X.fillStyle='#a9d76a';X.beginPath();X.arc(lp.x,lp.y,lp.r,0,Math.PI*2);X.arc(lp.x,lp.y,Math.max(0,lp.r-1.2),0,Math.PI*2,true);X.fill();X.globalAlpha=1;continue;}
       if(lp.t<lp.warnT){
         // 경고 원
         const _wp=lp.t/lp.warnT;
@@ -54696,9 +54696,9 @@ function drawP(){
       }else{
         // 활성 용암
         const _fade=Math.min(1,(lp.maxT-lp.t)/60);
-        X.globalAlpha=.25*_fade;X.fillStyle='#ff2200';
+        X.globalAlpha=.15*_fade;X.fillStyle='#ff2200';
         X.beginPath();X.arc(lp.x,lp.y,lp.r,0,Math.PI*2);X.fill();
-        X.globalAlpha=(.15+Math.sin(_now*.01+li)*.08)*_fade;X.fillStyle='#ff8800';
+        X.globalAlpha=(.08+Math.sin(_now*.01+li)*.04)*_fade;X.fillStyle='#ff8800';
         X.beginPath();X.arc(lp.x,lp.y,lp.r*.7,0,Math.PI*2);X.fill();
         X.globalAlpha=.4*_fade;X.strokeStyle='#ff4400';X.lineWidth=2;
         X.beginPath();X.arc(lp.x,lp.y,lp.r,0,Math.PI*2);X.stroke();
@@ -54712,7 +54712,7 @@ function drawP(){
       const fr=G._fireRains[fi];
       if(fr.hit){
         const _ep=(fr._fadeT||0)/20;
-        X.globalAlpha=(1-_ep)*.24;X.fillStyle='#ff4400';
+        X.globalAlpha=(1-_ep)*.18;X.fillStyle='#ff4400';
         X.beginPath();X.arc(fr.x,fr.y,fr.r*(1+_ep*.3),0,Math.PI*2);X.fill();
         X.globalAlpha=(1-_ep)*.8;X.strokeStyle='#ffaa00';X.lineWidth=3*(1-_ep);
         X.beginPath();X.arc(fr.x,fr.y,fr.r*(1+_ep*.5),0,Math.PI*2);X.stroke();
@@ -54720,9 +54720,9 @@ function drawP(){
         const _fp=Math.min(1,fr.t/fr.delay);
         if(_pentaRed.complete&&_pentaRed.naturalWidth){
           X.save();X.translate(fr.x,fr.y);X.rotate(_now*.00028);
-          X.globalAlpha=.12+_fp*.15;X.drawImage(_pentaRed,-fr.r*.88,-fr.r*.88,fr.r*1.76,fr.r*1.76);X.restore();
+          X.globalAlpha=.07+_fp*.09;X.drawImage(_pentaRed,-fr.r*.88,-fr.r*.88,fr.r*1.76,fr.r*1.76);X.restore();
         }
-        X.globalAlpha=_fp*.2;X.fillStyle='#b50022';
+        X.globalAlpha=_fp*.1;X.fillStyle='#b50022';
         X.beginPath();X.arc(fr.x,fr.y,fr.r,0,Math.PI*2);X.fill();
         X.globalAlpha=_fp*(.55+Math.sin(_now*.02+fi)*.2);X.strokeStyle='#ff2438';X.lineWidth=2+_fp*2;
         X.beginPath();X.arc(fr.x,fr.y,fr.r,0,Math.PI*2);X.stroke();
@@ -54767,14 +54767,14 @@ function drawP(){
     for(let di=0;di<G._donutSlams.length;di++){
       const ds=G._donutSlams[di];
       if(ds.hit){const _ep=Math.min(1,(ds.t-ds.warnT)/(ds.maxT-ds.warnT));
-        X.globalAlpha=(1-_ep)*.22;X.fillStyle='#ff2200';
+        X.globalAlpha=(1-_ep)*.16;X.fillStyle='#ff2200';
         X.beginPath();X.arc(ds.x,ds.y,ds.outerR,0,Math.PI*2);X.arc(ds.x,ds.y,ds.innerR,0,Math.PI*2,true);X.fill();
       }else{const _wp=ds.t/ds.warnT;
         X.globalAlpha=_wp*.1;X.fillStyle='#ff0000';
         X.beginPath();X.arc(ds.x,ds.y,ds.outerR,0,Math.PI*2);X.arc(ds.x,ds.y,ds.innerR,0,Math.PI*2,true);X.fill();
         X.globalAlpha=_wp*(.4+Math.sin(_now*.02)*.2);X.strokeStyle='#ff4444';X.lineWidth=3+_wp*3;
         X.beginPath();X.arc(ds.x,ds.y,ds.outerR,0,Math.PI*2);X.stroke();
-        X.globalAlpha=_wp*.2;X.fillStyle='#44ff44';X.beginPath();X.arc(ds.x,ds.y,ds.innerR,0,Math.PI*2);X.fill();
+        X.globalAlpha=_wp*.1;X.fillStyle='#44ff44';X.beginPath();X.arc(ds.x,ds.y,ds.innerR,0,Math.PI*2);X.fill();
         X.globalAlpha=_wp*(.5+Math.sin(_now*.015)*.2);X.strokeStyle='#44ff44';X.lineWidth=2+_wp*2;
         X.beginPath();X.arc(ds.x,ds.y,ds.innerR,0,Math.PI*2);X.stroke();
         if(_wp>.4){const _shr=1-((_wp-.4)/.6);X.globalAlpha=.4;X.strokeStyle='#ffcc00';X.lineWidth=2;
@@ -55140,8 +55140,8 @@ function drawP(){
       // [다크드루이드] stage3 독장판 = 커스텀 8프레임 솟는 장판 아트
       const _dz=((G.stage===0||G.stage===3)&&typeof _druidSheets!=='undefined'&&_druidSheets.aoe&&_druidSheets.aoe.ready)?_druidSheets.aoe:null;
       if(_dz){const im=_dz.img,cw=im.naturalWidth/4,ch=im.naturalHeight/2,fr=Math.min(7,~~(pp.t/pp.maxT*8)),sx=(fr%4)*cw,sy=(~~(fr/4))*ch,R=pp.r*1.5;
-        X.globalAlpha=_ppF*.38;X.drawImage(im,sx,sy,cw,ch,pp.x-R,pp.y-R,R*2,R*2);
-        X.globalAlpha=_ppF*.65;X.fillStyle='#a9d76a';X.beginPath();X.arc(pp.x,pp.y,pp.r,0,Math.PI*2);X.arc(pp.x,pp.y,Math.max(0,pp.r-2),0,Math.PI*2,true);X.fill();X.globalAlpha=1;continue;}
+        X.globalAlpha=_ppF*.25;X.drawImage(im,sx,sy,cw,ch,pp.x-R,pp.y-R,R*2,R*2);
+        X.globalAlpha=_ppF*.55;X.fillStyle='#a9d76a';X.beginPath();X.arc(pp.x,pp.y,pp.r,0,Math.PI*2);X.arc(pp.x,pp.y,Math.max(0,pp.r-1.2),0,Math.PI*2,true);X.fill();X.globalAlpha=1;continue;}
       X.globalAlpha=_ppF;
       X.drawImage(_zoneGradStamp('pp',pp.r,_PP_STOPS),pp.x-pp.r,pp.y-pp.r,pp.r*2,pp.r*2);
       X.globalAlpha=1;
