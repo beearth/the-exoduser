@@ -162,6 +162,16 @@ test('hanging tree cocoons and corpse swing independently of the solid trunk',as
   for(const rect of [[90,630,110,235],[277,640,70,140],[967,458,111,171]])assert.notDeepEqual(a.getImageData(...rect).data,b.getImageData(...rect).data,'hanging silhouette must visibly change');
   assert.deepEqual(a.getImageData(450,410,140,180).data,b.getImageData(450,410,140,180).data,'solid trunk stays still');
 });
+test('right hanging corpse moves below a fixed branch without changing its source',async()=>{
+  const source=await loadImage(new URL('../assets/map/ch1/collision/prop_corpsetree.png',import.meta.url).pathname.replace(/^\/(\w:)/,'$1'));
+  const frames=[0,1700,3400].map(time=>{
+    const a=createCanvas(1143,1400),c=a.getContext('2d');
+    scope.Ch1LivingDetail.organic(c,{stage:0},{type:'m_c1tree',x:571.5,y:700},time,{sz:1400},source);
+    return c;
+  });
+  assert.notDeepEqual(frames[0].getImageData(904,490,30,115).data,frames[1].getImageData(904,490,30,115).data,'right corpse silhouette must sway');
+  for(const c of frames.slice(1))assert.deepEqual(c.getImageData(895,350,40,50).data,frames[0].getImageData(895,350,40,50).data,'supporting branch must remain rigid');
+});
 test('giant tree root tips lift while their trunk attachment remains fixed',()=>{
   const source=createCanvas(400,500),s=source.getContext('2d');
   s.fillStyle='#fff';s.fillRect(34,394,10,10);s.fillStyle='#f00';s.fillRect(196,245,8,10);

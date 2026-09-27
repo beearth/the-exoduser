@@ -6,7 +6,7 @@
 
 | id / 적용 위치 | 값 / 동작 |
 |---|---|
-| 구현 | `ch1-living-detail.js?v=20260927-16`, 전역 `Ch1LivingDetail.draw/deform/shadows/hideDuplicate/pit/organic`; `build-nwjs.mjs` 배포 FILES에도 포함 |
+| 구현 | `ch1-living-detail.js?v=20260927-17`, 전역 `Ch1LivingDetail.draw/deform/shadows/hideDuplicate/pit/organic`; `build-nwjs.mjs` 배포 FILES에도 포함 |
 | 범위 | `G.stage===0`, `_bossArena` 및 `_fieldRebuildQA` 제외 |
 | 지면 순서 | `_drawCh1Hill` 다음, 오브젝트·캐릭터·전투 효과 이전. `surfaceOnly=true` 잔물결은 맵 오브젝트 뒤/캐릭터 앞 |
 | 앵커 배율 | `m_c1tree:2.1`, `m_c1cocoon:1.1`, `m_c1pool:1.25`, `m_c1spod:.65`, `m_c1sroot:.75`, `pit_poison:1.2`, `m_rotten_tree:1` |
@@ -428,7 +428,7 @@ VISUAL VERDICT: RETOUCH — 나무원본의뿌리 동작 보강. 전체배경뿌
 15차 최종 검수: TREE_DETAIL+COMBAT,errors/HTTPerrors=0/0,mapUnchanged=True. tree60RAF median33.3/p95 50.0ms,COMBAT90RAF33.3/50.0ms. headless1280×720녹화·체력50ms보충. 사망UI직접호출error=None.25검사PASS. 확대포즈2장과실제TREE_DETAIL 검수,확인페이지pageerror=0. 전체전투 성능검증 아님. 확인페이지 <http://localhost:3333/captures/ch1_living_detail_pass15_20260927/index.html>. 이전비교GIF는동일뿌리효과였던12차최종검수영상.
 
 
-## 16차 현행: 나무에 매달린 고치와 시체 (2026-09-27)
+## 16차 제작 이력: 나무에 매달린 고치와 시체 (2026-09-27)
 
 사용자 “바뀐지 잘 모르겠다”에 따라 원배율에서 윤곽 이동이 읽히는 매달린 물체를 추가한다. 나무 원본 안의 고치3개·왼쪽시체1개를 코드 마스크로 분리하며 원본 PNG는 보존한다. 오른쪽 시체와 상단 작은 고치는 이번에 분리하지 않는다. 손14차/뿌리15차 유지.
 
@@ -457,3 +457,35 @@ VISUAL VERDICT: RETOUCH — 원배율 윤곽 움직임 보강. 모든 고치·�
 
 
 16차 최종 검수: 초기TREE_DETAIL+HANGING_DETAIL+COMBAT 후,피해색/튜토리얼가림을제거한HANGING_DETAIL+COMBAT재검수. errors/HTTPerrors=1/0,mapUnchanged=True. hanging60RAF median16.7/p95 33.4ms,COMBAT90RAF16.7/33.4ms. headless1280×720녹화·체력50ms보충. 카메라촬영동안50ms마다P.iframes최소60유지,COMBAT전에플래그false/P.iframes=0으로해제. 사망UI직접호출error=None.26검사PASS. 최초오류기록initial-runtime.json보존. baseline15차에서도errors=1,동일calcCP→renderInv→_invChangeCategory→ui-panels.js:init의P=null/baseAtk오류가재현됨. 새맵렌더와별도인인벤토리초기화오류이며이번범위에서UI코드수정안함. 전체런타임오류0이라고보고하지않는다. 확대2포즈/실제HANGING_DETAIL 확인,확인페이지pageerror=0,이전/수정후토글정상. 전체전투성능판정아님. <http://localhost:3333/captures/ch1_living_detail_pass16_20260927/index.html>. 동일캔버스의15차/16차렌더토글로피해필터조건차이없이윤곽이동비교가능.
+
+
+## 17차 현행: 오른쪽 매달린 시체 보강 (2026-09-27)
+
+기존 맵 보강 재개. 16차에서 정지 상태로 남은 오른쪽 시체를 추가 분리했다. 상단 작은 고치는 정적이다. 원본 파일·가지·몸통·고치3개·왼쪽시체·뿌리·손 동작 계약은 유지한다.
+
+| id | 적용 위치 / 값 / 공식 |
+|---|---|
+| RIGHT_CORPSE | m_c1tree 원본1143×1400, anchor=[928,415], amp=.065rad, speed=.0012rad/ms, phase=2.4rad; angle=sin(now*.0012+2.4)*.065, 주기약5.236초 |
+| outline | [[924, 415], [933, 415], [934, 435], [947, 433], [958, 444], [960, 461], [949, 481], [948, 510], [945, 548], [947, 579], [936, 600], [940, 623], [938, 640], [926, 633], [919, 604], [916, 622], [921, 642], [912, 651], [902, 640], [907, 612], [907, 591], [901, 603], [897, 582], [897, 546], [899, 509], [899, 484], [905, 469], [922, 454], [926, 437]] |
+| 추출 | 16차 outline clip/destination-out 재사용. 축소836×1024 기준 crop=(654,301,51,178), 정적 RGBA 캐시1장 추가. 원본PNG 불변 |
+| 순서 | staticBody→rootpatch→오른쪽시체→기존4개. 매달린 고치3개·시체2개 총5개, draw5회. 신규 프레임별 텍스처 업로드 없음 |
+| 메모리 | 이번 증가0.03462982177734375MiB, hanging합계0.21546173095703125MiB, 전체 native캐시61.796810150146484MiB. 기존43.0625MiB 대비 추가18.734310150146484MiB. 임시/GPU복제/기존나무shadow 별도 |
+| 격리 | stage0 production만, arena/fieldRebuild 제외, 미로드/srcRect 폴백 유지. geometry/collision/START/EXIT/배치/진행 불변 |
+| 검증 | 오른쪽 몸통 crop(904,490,30,115) 시간 변화 실패 재현 후 PASS. 가지 crop(895,350,40,50) 고정. 효과19검사 PASS. QA before=16차 모듈, 출력 captures/ch1_living_detail_pass17_20260927 |
+
+MAP PRODUCTION REPORT — 17차 체크포인트
+
+STAGE: CH1-1 production.
+MASTER: silhouette/8regions/남북 main route/side spaces 유지.
+OUTER MASS: LEFT/RIGHT/TOP/SOUTH/major holes 변경 없음.
+LARGE: 기존 원본·composites·overlap·repeated silhouette 유지.
+MEDIUM: 오른쪽 시체 매듭 고정, 큰 재질 연결 문제 잔여.
+GROUND: shadow/contamination/structure integration 유지; 전체 피부 재질 통합 미완료.
+PLAYABLE: arenas/travel/breathing/threat 공간 유지. 추가 충돌 없음, 전투 가독성 검수 진행 중.
+LANDMARK: primary 대왕나무 오른쪽 시체 보강; secondary 고치/독액 및 tertiary 뿌리 유지.
+CAMERA QA: HANGING_DETAIL 촬영 확인, COMBAT 진행 중. START/EARLY/ARENA/SIDE L/SIDE R/LANDMARK/LATE/EXIT는 이번 재촬영 전.
+TECH QA: 효과19검사 PASS; route/collision 구현 불변. pageerror/404/loading/performance는 후속 runtime.json에 기록. 청크 변경 없음.
+FILES: stage-owned ch1-living-detail.js/test/ch1LivingDetail.test.js/tools/qa_ch1_living_detail.py/본 문서. concurrent touched game.html 캐시버전·맵디테일 해당2행. unrelated 수정 없음.
+GIT: 변경 누적100개 방지를 위한 작업 단위 부분 체크포인트. 기존 타 작업 staged 보존. push/deploy 없음.
+VISUAL VERDICT: RETOUCH — 국소 움직임 보강, 전체맵 완성 아님.
+NEXT PASS: 실제 화면 동작·전투 검수 기록 및 에셋목록/production/CHANGELOG 동기화 마무리.
