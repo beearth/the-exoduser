@@ -733,30 +733,33 @@
 
 
 /* Ancestral collection altar: sculpted basalt, bronze and individual relic sockets. */
-#invPanel.panel[data-inventory-page=ossuary] .pbox .inv-wrap{grid-template-rows:580px minmax(210px,1fr)!important;overflow-y:auto!important;}
-#invPanel.panel .pbox #invOssuaryPanel{display:flex;flex-direction:column;align-items:stretch;padding:12px 18px!important;overflow:hidden!important;background:radial-gradient(ellipse at 50% 42%,#44352345,transparent 70%),linear-gradient(#0c0e10b8,#0c0d0fea),var(--ui-surface) center/cover!important;}
-#invOssuaryPanel .oss-collection-head{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:3px 2px 12px;border-bottom:1px solid #75604470;flex-shrink:0;}
-#invOssuaryPanel .oss-collection-title{font:600 16px/1.5 'Noto Serif KR',serif;color:#e0ceb0;letter-spacing:.07em;text-shadow:0 2px 2px #000;}
+#invPanel.panel[data-inventory-page=ossuary] .pbox{width:min(980px,calc(100vw - 24px))!important;height:min(680px,94vh)!important;}
+#invPanel.panel[data-inventory-page=ossuary] .pbox .inv-wrap{grid-template-columns:repeat(2,minmax(0,1fr))!important;grid-template-rows:minmax(0,1fr)!important;overflow:hidden!important;}
+#invPanel.panel[data-inventory-page=ossuary] .pbox #invCenter{grid-column:1!important;grid-row:1!important;min-width:0!important;min-height:0!important;}
+#invPanel.panel[data-inventory-page=ossuary] .pbox #invOssuaryPanel{grid-column:2!important;grid-row:1!important;min-width:0!important;overflow-y:auto!important;}
+#invPanel.panel .pbox #invOssuaryPanel{display:flex;flex-direction:column;align-items:stretch;padding:10px 12px!important;overflow:hidden!important;background:radial-gradient(ellipse at 50% 42%,#44352345,transparent 70%),linear-gradient(#0c0e10b8,#0c0d0fea),var(--ui-surface) center/cover!important;}
+#invOssuaryPanel .oss-collection-head{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:2px 0 8px;border-bottom:1px solid #75604470;flex-shrink:0;}
+#invOssuaryPanel .oss-collection-title{font:600 14px/1.5 'Noto Serif KR',serif;color:#e0ceb0;letter-spacing:.07em;text-shadow:0 2px 2px #000;}
 #invOssuaryPanel .oss-collection-count{font:500 11px/1.5 'Noto Sans KR',sans-serif;color:#c9b593;white-space:nowrap;font-variant-numeric:tabular-nums;padding:4px 9px;background:#090b0e80;border:1px solid #6f583b70;box-shadow:inset 0 1px 5px #0008;}
-#invOssuaryPanel .oss-altar{width:100%;max-width:510px;height:404px;min-height:404px;position:relative;align-self:center;isolation:isolate;margin:4px 0;}
-#invOssuaryPanel .oss-ritual-ring{position:absolute;left:50%;top:50%;width:404px;height:404px;transform:translate(-50%,-50%);border:0;border-radius:50%;background:radial-gradient(circle,#121414 22%,#665132 44%,#141617 69%);box-shadow:0 8px 24px #000a;z-index:-1;}
+#invOssuaryPanel .oss-altar{width:100%;max-width:380px;height:284px;min-height:284px;position:relative;align-self:center;isolation:isolate;margin:4px 0;}
+#invOssuaryPanel .oss-ritual-ring{position:absolute;left:50%;top:50%;width:274px;height:274px;transform:translate(-50%,-50%);border:0;border-radius:50%;background:radial-gradient(circle,#121414 22%,#665132 44%,#141617 69%);box-shadow:0 8px 24px #000a;z-index:-1;}
 #invOssuaryPanel .oss-ritual-ring:before{content:'';position:absolute;inset:-12px;background:url('img/ui/ossuary_altar_hf_v2.png') center/contain no-repeat;mask-image:radial-gradient(circle,#000 62%,#0009 66%,transparent 71%);filter:brightness(.72) saturate(.7);}
 #invOssuaryPanel .oss-ritual-ring:after{content:'';position:absolute;inset:32%;border-radius:50%;background:radial-gradient(ellipse,#c8a35216,transparent 67%);box-shadow:inset 0 0 30px #0009;}
 #invPanel.panel .pbox #invOssuaryPanel :is(.oss-center,.oss-bone-node){appearance:none;position:absolute;transform:translate(-50%,-50%);margin:0;padding:0;box-sizing:border-box;display:flex;flex-direction:column;align-items:center;justify-content:center;cursor:pointer;border:0;border-radius:0;background:transparent;color:#b8ab94;transition:filter .18s;isolation:isolate;}
-#invPanel.panel .pbox #invOssuaryPanel .oss-center{left:50%;top:50%;width:130px;height:138px;background:radial-gradient(ellipse at 50% 64%,#bea46318,transparent 67%);z-index:2;filter:drop-shadow(0 6px 7px #000);}
-#invOssuaryPanel .oss-center:before{content:'';position:absolute;inset:-14px -10px;background:url('img/ui/ossuary_socket_hf_v2.png') center/145% 112% no-repeat;z-index:-1;filter:brightness(.82) saturate(.7);}
-#invOssuaryPanel .oss-urn-image{width:84px;height:94px;object-fit:contain;filter:drop-shadow(0 3px 4px #000) brightness(1.2);}
+#invPanel.panel .pbox #invOssuaryPanel .oss-center{left:50%;top:50%;width:90px;height:100px;background:radial-gradient(ellipse at 50% 64%,#bea46318,transparent 67%);z-index:2;filter:drop-shadow(0 6px 7px #000);}
+#invOssuaryPanel .oss-center:before{content:'';position:absolute;inset:-6px -4px;background:url('img/ui/ossuary_socket_hf_v2.png') center/125% 112% no-repeat;z-index:-1;filter:brightness(.82) saturate(.7);}
+#invOssuaryPanel .oss-urn-image{width:58px;height:66px;object-fit:contain;filter:drop-shadow(0 3px 4px #000) brightness(1.2);}
 #invOssuaryPanel .oss-urn-label{position:absolute;bottom:1px;padding:2px 10px;background:linear-gradient(90deg,transparent,#0b0d0fed 18%,#0b0d0fed 82%,transparent);font:600 12px/1.5 'Noto Serif KR',serif;color:#dfcda5;letter-spacing:.16em;text-shadow:0 2px 3px #000;}
 #invOssuaryPanel .oss-center.empty .oss-urn-image{filter:grayscale(1) brightness(.45);opacity:.65;}
-#invPanel.panel .pbox #invOssuaryPanel .oss-bone-node{width:116px;height:124px;filter:drop-shadow(0 5px 4px #000);}
-#invOssuaryPanel .oss-bone-node:before{content:'';position:absolute;inset:-8px -6px;background:url('img/ui/ossuary_socket_hf_v2.png') center/145% 112% no-repeat;filter:brightness(.6) saturate(.4);z-index:-1;}
-#invOssuaryPanel .oss-bone-node:after{content:'';position:absolute;left:50%;bottom:9px;width:5px;height:5px;transform:translateX(-50%) rotate(45deg);background:#39362d;border:1px solid #7d694a;box-shadow:0 1px 2px #000;}
+#invPanel.panel .pbox #invOssuaryPanel .oss-bone-node{width:88px;height:88px;filter:drop-shadow(0 5px 4px #000);}
+#invOssuaryPanel .oss-bone-node:before{content:'';position:absolute;inset:-4px -2px;background:url('img/ui/ossuary_socket_hf_v2.png') center/125% 112% no-repeat;filter:brightness(.6) saturate(.4);z-index:-1;}
+#invOssuaryPanel .oss-bone-node:after{content:'';position:absolute;left:50%;bottom:3px;width:4px;height:4px;transform:translateX(-50%) rotate(45deg);background:#39362d;border:1px solid #7d694a;box-shadow:0 1px 2px #000;}
 #invOssuaryPanel .oss-bone-node[data-part=skull]{left:50%;top:16%;}
 #invOssuaryPanel .oss-bone-node[data-part=torso]{left:82%;top:50%;}
 #invOssuaryPanel .oss-bone-node[data-part=arms]{left:18%;top:50%;}
 #invOssuaryPanel .oss-bone-node[data-part=legs]{left:50%;top:84%;}
-#invOssuaryPanel .oss-bone-name{font:600 12px/1.5 'Noto Serif KR',serif;color:#ddceb4;text-shadow:0 2px 2px #000;letter-spacing:.06em;}
-#invOssuaryPanel .oss-bone-image{width:51px;height:51px;object-fit:contain;filter:grayscale(1) brightness(.42);opacity:.7;}
+#invOssuaryPanel .oss-bone-name{font:600 11px/1.4 'Noto Serif KR',serif;color:#ddceb4;text-shadow:0 2px 2px #000;letter-spacing:.06em;}
+#invOssuaryPanel .oss-bone-image{width:38px;height:38px;object-fit:contain;filter:grayscale(1) brightness(.42);opacity:.7;}
 #invOssuaryPanel .oss-bone-grade{font:600 11px/1.5 'Noto Sans KR',sans-serif;color:#938c7e;text-shadow:0 2px 3px #000;}
 #invOssuaryPanel .oss-bone-tier{display:none;}
 #invOssuaryPanel .oss-bone-node.collected:before{filter:brightness(.95) saturate(.75);}
@@ -769,27 +772,24 @@
 #invOssuaryPanel.oss-ready .oss-center:before{filter:brightness(1.14) saturate(.9) drop-shadow(0 0 7px #b6a04b44);}
 #invOssuaryPanel.oss-ready .oss-center{background:radial-gradient(ellipse at 50% 60%,#b1bb672a,transparent 70%);}
 #invOssuaryPanel.oss-ready .oss-ritual-ring:before{filter:brightness(.9) saturate(.85);}
-#invOssuaryPanel .oss-collection-footer{display:flex;align-items:center;justify-content:center;gap:14px;padding:10px 0 7px;border-top:1px solid #75604470;background:linear-gradient(90deg,transparent,#8b70471a,transparent);}
+#invOssuaryPanel .oss-collection-footer{display:flex;align-items:center;justify-content:center;gap:14px;padding:8px 0 6px;border-top:1px solid #75604470;background:linear-gradient(90deg,transparent,#8b70471a,transparent);}
 #invOssuaryPanel .oss-ancestor-name{font:600 15px/1.5 'Noto Serif KR',serif;color:#e0cdae;letter-spacing:.1em;text-shadow:0 2px 2px #000;}
 #invOssuaryPanel .oss-unlock-state{font:500 10px/1.5 'Noto Sans KR',sans-serif;color:#aa9e85;border:1px solid #74603d66;padding:3px 7px;background:#0b0d0f99;}
 #invOssuaryPanel.oss-ready .oss-unlock-state{color:#c6d7a7;border-color:#98a16c66;background:#27301b55;}
-#invOssuaryPanel :is(.oss-part-detail,.oss-collection-hint){margin:2px 0!important;text-align:center;font:400 11px/1.5 'Noto Sans KR',sans-serif;color:#c0b39b;}
+#invOssuaryPanel :is(.oss-part-detail,.oss-collection-hint){margin:4px 0!important;text-align:center;font:400 11px/1.5 'Noto Sans KR',sans-serif;color:#c0b39b;}
+#invOssuaryPanel .oss-part-detail{min-height:42px;padding:8px 10px;background:#080a0b9c;border:1px solid #75604440;box-sizing:border-box;}
 #invOssuaryPanel .oss-collection-hint{color:#968974;font-size:10px;}
+@media(max-width:899px){
+  #invPanel.panel[data-inventory-page=ossuary] .pbox .inv-wrap{grid-template-columns:minmax(0,1fr)!important;grid-template-rows:240px minmax(440px,1fr)!important;overflow-y:auto!important;}
+  #invPanel.panel[data-inventory-page=ossuary] .pbox #invOssuaryPanel{grid-column:1!important;grid-row:2!important;}
+}
 @media(max-width:560px){
-  #invPanel.panel[data-inventory-page=ossuary] .pbox .inv-wrap{grid-template-rows:556px minmax(210px,1fr)!important;}
-  #invPanel.panel .pbox #invOssuaryPanel{padding:12px 8px!important;}
-  #invOssuaryPanel .oss-collection-title{font-size:13px;letter-spacing:0;}
+  #invPanel.panel .pbox #invOssuaryPanel{padding:10px 8px!important;}
+  #invOssuaryPanel .oss-collection-title{font-size:12px;letter-spacing:0;}
   #invOssuaryPanel .oss-collection-count{font-size:10px;padding:3px 5px;}
-  #invOssuaryPanel .oss-altar{height:380px;min-height:380px;}
-  #invPanel.panel .pbox #invOssuaryPanel .oss-bone-node{width:82px;height:116px;}
-  #invPanel.panel .pbox #invOssuaryPanel .oss-center{width:90px;height:128px;}
-  #invOssuaryPanel .oss-center:before{inset:-9px -8px;}
-  #invOssuaryPanel .oss-urn-image{width:66px;height:85px;}
-  #invOssuaryPanel .oss-bone-image{width:43px;height:48px;}
-  #invOssuaryPanel .oss-bone-node[data-part=arms]{left:14%;}
-  #invOssuaryPanel .oss-bone-node[data-part=torso]{left:86%;}
-  #invOssuaryPanel .oss-ritual-ring{width:322px;height:322px;}
-  #invOssuaryPanel .oss-bone-name{font-size:11px;}
-  #invOssuaryPanel .oss-bone-tier{font-size:9px;}
+  #invPanel.panel .pbox #invOssuaryPanel .oss-bone-node{width:76px;height:88px;}
+  #invPanel.panel .pbox #invOssuaryPanel .oss-center{width:82px;height:100px;}
+  #invOssuaryPanel .oss-bone-node[data-part=arms]{left:15%;}
+  #invOssuaryPanel .oss-bone-node[data-part=torso]{left:85%;}
 }
 @media(prefers-reduced-motion:reduce){#invPanel.panel .pbox #invOssuaryPanel :is(.oss-center,.oss-bone-node){transition:none;}}
