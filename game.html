@@ -56963,6 +56963,8 @@ function _perfReport(){
   _PERF_PROF.drawCalls=0;
 }
 function _perfFrameTick(){
+  // 진단용 GL/Canvas 후킹은 일반 플레이에서 설치하지 않는다.
+  if(!_DEBUG_PERF&&!G.debugPerf)return;
   let _alive=0;for(let _ai=0;_ai<ens.length;_ai++)if(ens[_ai]&&ens[_ai].alive)_alive++;
   const _shouldOn=_alive>300;
   if(_shouldOn&&!_PERF_PROF.enabled){_PERF_PROF.enabled=true;_PERF_PROF.drawCalls=0;_perfHookGL()} // [TRACK-B FIX] ON 진입 시 창 리셋 — 이전 잔여 draw 격리

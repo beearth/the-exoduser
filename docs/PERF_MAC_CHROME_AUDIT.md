@@ -241,7 +241,7 @@
 ### 정적 분석으로 좁힌 범위
 - **맵/배경/리플레이는 폭발원 아님**: 맵 캐시는 단일 `drawImage`(L42154/42157), 배경은 뷰포트 한정(L42047~), 리플레이 캡처는 `drawImage(C,…)` 캔버스 복사(L35767) — 어느 것도 scene를 재순회하지 않음.
 - **2.7M drawCall ≈ 2.7M flush**: WebGL2 `_flush`는 1 flush=1 drawElements이며 텍스처/블렌드 전환·버퍼풀에서만 flush → 폭발은 (a) 텍스처 thrash로 flush 폭증, 또는 (b) 단일 프레임 내 scene traversal 중복. `_DCP.sub`/`reasons`/`drawInvokes`가 즉시 판별.
-- **500마리 프로파일러(`_PERF_PROF`)는 전환 시 OFF**: `_alive>300` 게이트라 저-적군 맵 전환 프레임은 계측 공백 → 이 게이트가 그 공백을 메움.
+- **500마리 프로파일러(`_PERF_PROF`)는 전환 시 OFF**: 당시 `_alive>300` 게이트라 저-적군 맵 전환 프레임은 계측 공백 → 이 게이트가 그 공백을 메움. 2026-09-27부터 일반 플레이에서는 후킹을 설치하지 않으며 `?perf=1` 또는 `G.debugPerf`에서만 이 적 수 게이트를 사용한다.
 
 ### 독립 결함 후보 (root cause와 분리) — `Insufficient buffer size`
 정적 근거로 **restore-path 독립 결함**을 특정:
