@@ -815,3 +815,8 @@
  #invPanel.panel[data-inventory-page=storage] .pbox #invStorageCol{grid-column:1!important;grid-row:2!important;}
 }
 @media(max-width:560px){#invPanel.panel[data-inventory-page=storage] .pbox #invStGrid{grid-template-columns:repeat(5,minmax(0,1fr))!important;}}
+
+/* Visible ossuary and bone removal actions; native buttons retain keyboard access. */
+#invOssuaryPanel .oss-actions{display:flex;justify-content:center;gap:8px;flex-wrap:wrap;margin-top:6px;flex-shrink:0;}
+#invPanel.panel .pbox #invOssuaryPanel .oss-actions button{min-height:30px;padding:5px 10px;border:1px solid #756044;background:#181513;color:#dfcda5;font:500 11px/1.5 'Noto Sans KR',sans-serif;cursor:pointer;}
+#invPanel.panel .pbox #invOssuaryPanel .oss-actions button:disabled{opacity:.45;cursor:default;}

@@ -2299,7 +2299,7 @@ canvas{display:block;position:fixed;inset:0}
 <link rel="stylesheet" href="stat-panel-ui.css?v=20260910-fullscreen-readable-v1">
 <link rel="stylesheet" href="localization.css?v=20260909">
 <link rel="stylesheet" href="ui-foundation.css?v=20260924-hell3">
-<link rel="stylesheet" href="ui-refinement.css?v=20260927-storage-split">
+<link rel="stylesheet" href="ui-refinement.css?v=20260927-bone-withdraw">
 <script defer src="ui-panels.js?v=20260927-storage-split"></script>
 <script src="stat-panel-ui.js?v=20260909-constellation-v3"></script>
 </head>
@@ -42525,6 +42525,27 @@ function registerBonePart(item){
     if(typeof renderInv==='function'&&document.getElementById('invPanel'))try{renderInv()}catch(e){}
   }else notify(_T('이미 더 높은 등급의 부위를 수집했습니다'));
 }
+// 도감 → 가방. 공간 확보 후에만 등록을 해제하여 손실·중복 반환을 막는다.
+function withdrawBonePart(ancIdx,part){
+  const R=ANC_ROSTER[ancIdx];if(!R||!_BONE_PARTS.includes(part))return false;
+  const key=R.id+'_'+part,record=INV.ossCollect&&INV.ossCollect[key];
+  if(!record)return false;
+  if(INV.bag.length>=BAG_MAX){notify(_T('가방에 공간이 없습니다!'));return false;}
+  const item=mkBonePart(ancIdx,part,record.t,record.r);if(!item)return false;
+  // 도감에는 r/t만 저장된다. 현재 플레이어 레벨로 아이템 레벨을 올리지 않는다.
+  item.itemLv=0;
+  INV.bag.push(item);
+  const pos=_invFindSpace(1,1,INV.bag.length-1);
+  if(!pos){INV.bag.pop();notify(_T('가방에 공간이 없습니다!'));return false;}
+  item._gx=pos.x;item._gy=pos.y;
+  delete INV.ossCollect[key];
+  INV.selected=INV.bag.length-1;
+  _invClearHover();
+  dbSaveForce();
+  renderInv();
+  notify(_T(item.name)+' '+_L('해제 — 가방으로 이동','removed — returned to bag'));
+  return true;
+}
 // 유니크 유골함 자동 지급 — 첫 유골 부위 획득 시 (미보유 시에만)
 function _grantOssuaryIfNeeded(){
   if(INV.equipped.ossuary)return;
@@ -46131,6 +46152,7 @@ function renderOssPanel(){
       const img=make('img','oss-bone-image',node);img.alt='';img.src='output/imagegen/item-skins/bone_'+part+'.png';img.onerror=()=>{img.hidden=true;};
       make('span','oss-bone-grade',node);
       make('span','oss-bone-tier',node);
+      node.oncontextmenu=(ev)=>{ev.preventDefault();withdrawBonePart(0,part);};
       node.onclick=()=>{
         pn.dataset.selectedPart=part;
         _invClearHover();
@@ -46142,6 +46164,10 @@ function renderOssPanel(){
     const state=make('span','oss-unlock-state',footer);state.setAttribute('role','status');
     const detail=make('p','oss-part-detail',pn);detail.setAttribute('aria-live','polite');
     make('p','oss-collection-hint',pn);
+    const actions=make('div','oss-actions',pn);
+    const take=make('button','oss-withdraw',actions);take.type='button';
+    take.onclick=()=>withdrawBonePart(0,pn.dataset.selectedPart);
+    const remove=make('button','oss-unequip',actions);remove.type='button';
   }
   const R=ANC_ROSTER[0],oss=INV.equipped.ossuary;
   const collected=_BONE_PARTS.filter(pt=>INV.ossCollect[R.id+'_'+pt]).length;
@@ -46179,6 +46205,11 @@ function renderOssPanel(){
   urn.oncontextmenu=(ev)=>{ev.preventDefault();if(!oss)return;unequipItem('ossuary');applyStats();const i=INV.bag.findIndex(it=>it&&it.slot==='ossuary');INV.selected=i>=0?i:null;renderInv();};
   urn.onmouseenter=()=>{if(oss){_invHover=-1;_invRenderDetail('ossuary','eq',true);}};
   urn.onmouseleave=()=>_invClearHover();
+  const take=pn.querySelector('.oss-withdraw'),remove=pn.querySelector('.oss-unequip');
+  take.disabled=!record;label('oss-withdraw',_L('선택 유골 해제','Remove selected bone'));
+  remove.disabled=!oss;label('oss-unequip',_L('유골함 해제','Unequip ossuary'));
+  remove.onclick=urn.oncontextmenu;
+  label('oss-collection-hint',_L('유골 우클릭 또는 선택 후 해제 · 해제한 유골은 가방으로 이동','Right-click a bone or select Remove · Returns the bone to your bag'));
 }
 function _invCategoryMatches(it){
   if(!it)return false;

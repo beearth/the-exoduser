@@ -201,7 +201,7 @@ CSS 캐시 ui-refinement.css?v=20260927-3. 신규 이미지/아이템 데이터 
 | 등급 표현 | 모든 테두리 금속 재질 통일. 개별 등급은 이름의 70% RARITY_C+30%#e1ccb0 혼색 및 하단4×4px 마름모 보석. 선택 프레임 brightness1.28/saturate.9. 수집 프레임 brightness.95/saturate.75,미수집.6/.4 |
 | 읽기 | 슬롯에는 부위명·그림·등급만 노출. .oss-bone-tier display:none. 선택 상세는 부위·등급·T(t+1)·위력(r+t)·성장 효과. 중앙 이름은 하단 어두운 명판 위에 표시 |
 | 완료 | 4/4+유골함 장착 시 중앙 프레임 brightness1.14/saturate.9, 제단 brightness.9/saturate.85. 기본 제단 .72/.7. 소환 해금 배지와 미수집 상태 구분 |
-| 캐시 | game.html/game-easy-test.html: ui-refinement.css?v=20260927-storage-split |
+| 캐시 | game.html/game-easy-test.html: ui-refinement.css?v=20260927-bone-withdraw |
 | 불변 | 실제 4부위 해금 조건, 등급·티어 저장, 상위 r+t 등록, 전대 전투 수치, 재입력 회수 |
 | 제작 | Higgsfield GPT Image 2.5(gpt_image_2_5),quality high,resolution1k,aspect1:1. 잔액1111.25 확인 후 2건 생성, GPT API 폴백 없음 |
 | 작업 ID | 제단9ceb151d-45d5-476e-83ec-3a13c63e6b25 / 슬롯fa8121e1-87f3-4623-89c1-2edcd900e15e |
@@ -232,5 +232,5 @@ Production game UI sprite asset. One empty reliquary item socket frame, centered
 | 재질 | 기존 제단·슬롯 아트 재사용. 슬롯 background-size125% 112%,중앙 inset −6px −4px,부위 inset −4px −2px. 등급 보석4×4px/bottom3px. 새로운 생성 에셋 없음 |
 | 헤더·여백 | 컬렉션 기본 패딩10px 12px,제목14px(폭560px 이하12px),헤더 padding2px 0 8px. 부위명11px/1.4,footer padding8px 0 6px. 상세·힌트 margin4px 0 |
 | 데이터·입력 | DOM·수집·저장·해금·장착·해제·분해 로직 유지. 가방10열·기존 셀 크기 및 내부 스크롤 유지 |
-| 적용·캐시 | ui-refinement.css,game.html,game-easy-test.html. ui-refinement.css?v=20260927-storage-split |
+| 적용·캐시 | ui-refinement.css,game.html,game-easy-test.html. ui-refinement.css?v=20260927-bone-withdraw |
 | 검증 | 기존 ossuaryCollection 회귀6개 PASS. 저장 API를 차단한 실제 game.html UI에서1440×1080/1280×720/900×720 동등폭·좌우 배치,390×844 상하 배치 확인. 노드 겹침0·페이지 가로넘침0·pageerror0. 전환 연출을 QA 전용 CSS로 숨겨 검수했으며 게임 시작부터의 전체 흐름은 검증하지 않음. 캡처 tmp/ossuary_split_1440.png, tmp/ossuary_split_390.png |
