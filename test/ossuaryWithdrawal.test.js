@@ -5,7 +5,8 @@ import vm from 'node:vm';
 for(const file of ['game.html','game-easy-test.html']){
  const html=readFileSync(new URL('../'+file,import.meta.url),'utf8');
  function setup(){
-  const c=vm.createContext({INV:{bag:[],selected:null,ossCollect:{iron_warlord_skull:{r:5,t:4}}},ANC_ROSTER:[{id:'iron_warlord',ko:'철갑 전대'}],_BONE_PARTS:['skull','torso','arms','legs'],_BONE_PART_KO:{skull:'두개골'},P:{lv:900},BAG_MAX:3,saves:0,renders:0,notify(){},_T:s=>s,_L:(s)=>s,_invFindSpace:()=>({x:2,y:3}),_invClearHover(){},dbSaveForce(){c.saves++},renderInv(){c.renders++}});
+  const panel={dataset:{selectedPart:'skull'}};
+  const c=vm.createContext({INV:{bag:[],selected:0,ossCollect:{iron_warlord_skull:{r:5,t:4}}},ANC_ROSTER:[{id:'iron_warlord',ko:'철갑 전대'}],_BONE_PARTS:['skull','torso','arms','legs'],_BONE_PART_KO:{skull:'두개골'},P:{lv:900},BAG_MAX:3,saves:0,renders:0,events:[],panel,$:id=>id==='invOssuaryPanel'?panel:null,notify(){},_T:s=>s,_L:(s)=>s,_invFindSpace:()=>({x:2,y:3}),_invClearHover(){c.events.push('clear')},dbSaveForce(){c.saves++},renderInv(){c.renders++;c.events.push('render')}});
   const a=html.indexOf('function mkBonePart('),b=html.indexOf('// 부위 포인트 =',a);vm.runInContext(html.slice(a,b),c);
   const start=html.indexOf('function withdrawBonePart(');
   if(start>=0)vm.runInContext(html.slice(start,html.indexOf('// 유니크 유골함 자동 지급',start)),c);
@@ -18,6 +19,8 @@ for(const file of ['game.html','game-easy-test.html']){
   assert.equal(it.rarity,5);assert.equal(it.tier,4);assert.equal(it.part,'skull');assert.equal(it.anc,'iron_warlord');
   assert.equal(it._gx,2);assert.equal(it._gy,3);assert.equal(it.itemLv,0);
   assert.equal(c.INV.ossCollect.iron_warlord_skull,undefined);assert.equal(c.saves,1);
+  assert.equal(c.INV.selected,null);assert.equal(c.panel.dataset.selectedPart,'');
+  assert.equal(c.events.join(','),'render,clear');
   assert.equal(c.withdrawBonePart(0,'skull'),false);assert.equal(c.INV.bag.length,1);
  });
  test(file+': a full grid or bag preserves the registered bone without saving',()=>{

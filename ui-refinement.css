@@ -767,7 +767,8 @@
 #invOssuaryPanel .oss-bone-node.collected .oss-bone-grade{color:color-mix(in srgb,var(--bone-rarity) 70%,#e1ccb0);}
 #invOssuaryPanel .oss-bone-node.collected .oss-bone-image{filter:drop-shadow(0 3px 3px #000) brightness(1.13);opacity:1;}
 #invOssuaryPanel .oss-bone-node.selected:before{filter:brightness(1.28) saturate(.9);}
-#invPanel.panel .pbox #invOssuaryPanel :is(.oss-bone-node,.oss-center):hover{filter:drop-shadow(0 5px 4px #000) brightness(1.2);}
+#invPanel.panel .pbox #invOssuaryPanel :is(.oss-bone-node.collected,.oss-center:not(.empty)):hover{filter:drop-shadow(0 5px 4px #000) brightness(1.2);}
+#invPanel.panel .pbox #invOssuaryPanel :is(.oss-bone-node:not(.collected),.oss-center.empty){transition:none;}
 #invPanel.panel .pbox #invOssuaryPanel :is(.oss-bone-node,.oss-center):focus-visible{outline:1px solid #e4cca0;outline-offset:2px;}
 #invOssuaryPanel.oss-ready .oss-center:before{filter:brightness(1.14) saturate(.9) drop-shadow(0 0 7px #b6a04b44);}
 #invOssuaryPanel.oss-ready .oss-center{background:radial-gradient(ellipse at 50% 60%,#b1bb672a,transparent 70%);}

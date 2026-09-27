@@ -671,7 +671,7 @@ CSS 캐시 ui-refinement.css?v=20260927-4. 신규 이미지/아이템 데이터 
 | 그림·폴백 | 기존 유골함58×66px/부위38×38px. 제단·슬롯 PNG 유지. 로딩 실패 시 이름·그림·조작 및 CSS 바탕 유지 |
 | 금속 원환 | 1024px 석재·황동 제단 아트를274×274px로 표시 |
 | 접근성 | 실제 button·aria-label·aria-pressed·focus-visible. 해금 상태 role=status, 부위 설명 aria-live=polite. reduced-motion 시 transition 제거 |
-| 버전·적용 | game.html 및 game-easy-test.html, ui-refinement.css?v=20260927-bone-withdraw |
+| 버전·적용 | game.html 및 game-easy-test.html, ui-refinement.css?v=20260927-bone-hover-clear |
 | 검증 | test/ossuaryCollection.test.js 6개 PASS(미수집 차단/혼합등급 완성/기존 저장 보존). 격리 브라우저 0→4 수집·하위거부·상위갱신·DOM 보존·유골함 해제 확인. 1440×1080 캡처,1280×720·390×844 슬롯 겹침/가로 넘침 없음, pageerror 0 |
 
 실제 유골 수집 기록이 없는 구세이브는 잠금 상태로 표시된다. 임시 우회로 소환하던 기록을 유골 수집으로 만들어 주지 않으며 기존 아이템·도감 저장값을 삭제하거나 이관하지 않는다.
@@ -873,7 +873,7 @@ CSS 캐시 ui-refinement.css?v=20260927-4. 신규 이미지/아이템 데이터 
 | 등급 표현 | 모든 테두리 금속 재질 통일. 개별 등급은 이름의 70% RARITY_C+30%#e1ccb0 혼색 및 하단4×4px 마름모 보석. 선택 프레임 brightness1.28/saturate.9. 수집 프레임 brightness.95/saturate.75,미수집.6/.4 |
 | 읽기 | 슬롯에는 부위명·그림·등급만 노출. .oss-bone-tier display:none. 선택 상세는 부위·등급·T(t+1)·위력(r+t)·성장 효과. 중앙 이름은 하단 어두운 명판 위에 표시 |
 | 완료 | 4/4+유골함 장착 시 중앙 프레임 brightness1.14/saturate.9, 제단 brightness.9/saturate.85. 기본 제단 .72/.7. 소환 해금 배지와 미수집 상태 구분 |
-| 캐시 | game.html/game-easy-test.html: ui-refinement.css?v=20260927-bone-withdraw |
+| 캐시 | game.html/game-easy-test.html: ui-refinement.css?v=20260927-bone-hover-clear |
 | 불변 | 실제 4부위 해금 조건, 등급·티어 저장, 상위 r+t 등록, 전대 전투 수치, 재입력 회수 |
 | 제작 | Higgsfield GPT Image 2.5(gpt_image_2_5),quality high,resolution1k,aspect1:1. 잔액1111.25 확인 후 2건 생성, GPT API 폴백 없음 |
 | 작업 ID | 제단9ceb151d-45d5-476e-83ec-3a13c63e6b25 / 슬롯fa8121e1-87f3-4623-89c1-2edcd900e15e |
@@ -890,7 +890,7 @@ CSS 캐시 ui-refinement.css?v=20260927-4. 신규 이미지/아이템 데이터 
 | 재질 | 기존 제단·슬롯 아트 재사용. 슬롯 background-size125% 112%,중앙 inset −6px −4px,부위 inset −4px −2px. 등급 보석4×4px/bottom3px. 새로운 생성 에셋 없음 |
 | 헤더·여백 | 컬렉션 기본 패딩10px 12px,제목14px(폭560px 이하12px),헤더 padding2px 0 8px. 부위명11px/1.4,footer padding8px 0 6px. 상세·힌트 margin4px 0 |
 | 데이터·입력 | DOM·수집·저장·해금·장착·해제·분해 로직 유지. 가방10열·기존 셀 크기 및 내부 스크롤 유지 |
-| 적용·캐시 | ui-refinement.css,game.html,game-easy-test.html. ui-refinement.css?v=20260927-bone-withdraw |
+| 적용·캐시 | ui-refinement.css,game.html,game-easy-test.html. ui-refinement.css?v=20260927-bone-hover-clear |
 | 검증 | 기존 ossuaryCollection 회귀6개 PASS. 저장 API를 차단한 실제 game.html UI에서1440×1080/1280×720/900×720 동등폭·좌우 배치,390×844 상하 배치 확인. 노드 겹침0·페이지 가로넘침0·pageerror0. 전환 연출을 QA 전용 CSS로 숨겨 검수했으며 게임 시작부터의 전체 흐름은 검증하지 않음. 캡처 tmp/ossuary_split_1440.png, tmp/ossuary_split_390.png |
 
 
@@ -906,7 +906,7 @@ CSS 캐시 ui-refinement.css?v=20260927-4. 신규 이미지/아이템 데이터 
 | 가방 하단 | 보관 목록 margin-top8px. 제목12px/1.5,padding8px 0. 목록 최대높이112px,행 최소30px/padding4px 6px,아이템명12px/보관11px |
 | 보관함 정보 | invStHeader 12px/1.5,margin8px 0 12px. 용량·저장·정렬·필터·접기·펼치기 기존 로직 유지 |
 | 좁은 화면 | 폭899px 이하 가방 위/보관함 아래,행360px/minmax(280px,1fr),세로 스크롤. 폭560px 이하 보관함5열 |
-| 적용 | ui-refinement.css 캐시20260927-bone-withdraw/ui-panels.js 캐시20260927-storage-split. game.html/game-easy-test.html 공통 |
+| 적용 | ui-refinement.css 캐시20260927-bone-hover-clear/ui-panels.js 캐시20260927-storage-split. game.html/game-easy-test.html 공통 |
 | 검증 | uiPanelInitialization 회귀3개 PASS. 저장 API 차단한 game.html UI에서 보관1회·꺼내기1회·탭 왕복 시 노드 동일성 PASS.1440×1080/1280×720/900×720 좌우 동등폭,390×844 상하 배치,가로넘침0·슬롯 넘침0·pageerror0. QA에서 전환 연출만 숨김,게임 시작 전체 흐름은 검증 범위 밖 |
 | 화면 | tmp/storage_split_1280.png,tmp/storage_split_390.png. 원본 백업 tmp/storage-split-backup |
 
@@ -930,12 +930,24 @@ CSS 캐시 ui-refinement.css?v=20260927-4. 신규 이미지/아이템 데이터 
 | 함수 | withdrawBonePart(ancIdx,part). 유효 전대·skull/torso/arms/legs 및 현재 등록 확인. 성공true/실패false |
 | 조작 | 부위 우클릭 즉시 해제 또는 부위 선택→선택 유골 해제(.oss-withdraw). 중앙 유골함은 기존 우클릭과 유골함 해제(.oss-unequip) 버튼 모두 지원 |
 | 반환 | mkBonePart(ancIdx,part,record.t,record.r),기존 등급r/티어t/전대/부위 유지. 도감은 원래{r,t}만 보관하므로 반환 itemLv=0으로 고정하여 현재 캐릭터 레벨로 상승시키지 않음. 신규 ID,1×1 칸 |
-| 원자적 이동 | BAG_MAX 및 _invFindSpace(1,1,신규가방index) 검사. 임시push 후 공간이 없으면pop하고 등록 유지. 공간 성공 시 _gx/_gy 지정→등록 키 delete→가방 아이템 선택→호버 제거→dbSaveForce→renderInv→이동 안내 |
+| 원자적 이동 | BAG_MAX 및 _invFindSpace(1,1,신규가방index) 검사. 임시push 후 공간이 없으면pop하고 등록 유지. 공간 성공 시 _gx/_gy 지정→등록 키 delete→선택 부위·아이템 선택 초기화→dbSaveForce→renderInv→_invClearHover→이동 안내 |
 | 중복 방지 | 해제 후 등록 키가 없어져 연속 호출은false. 가방 개수 또는 실제 칸이 부족하면 저장·등록·아이템 수 불변 |
 | 소환 | 한 부위 해제 시4/4 미완성으로 새 소환 잠금. 반환 아이템 도감 재등록 가능. 이미 소환된 전대의 HP·회수·생존 규칙은 변경하지 않음 |
 | 유골함 | 기존 unequipItem('ossuary') 재사용.2×2 공간 필요,등급/강화/결정 유지. 새 버튼도 기존 우클릭 핸들러 공유 |
 | DOM·가용성 | 최초1회 .oss-actions와 실제button2개 추가,기존 자식 유지. 등록된 선택 부위가 없으면 유골 해제 disabled,유골함 미장착이면 유골함 해제 disabled. 키보드 버튼 실행 지원,KO/EN _L 안내 |
 | 스타일 | actions flex/중앙/gap8px/wrap/margin-top6px/flex-shrink0. 버튼 최소높이30px,padding5px 10px,border1px #756044,배경#181513,글자#dfcda5,11px/1.5. disabled opacity.45 |
 | 세이브 | INV.ossCollect 기존{ancId_part:{r,t}} 구조 유지. 해제 시 해당 키 삭제와 INV.bag 반환 아이템을 함께 dbSaveForce. 마이그레이션 없음 |
-| 적용 | game.html/game-easy-test.html/ui-refinement.css. CSS 캐시20260927-bone-withdraw |
+| 적용 | game.html/game-easy-test.html/ui-refinement.css. CSS 캐시20260927-bone-hover-clear |
 | 검증 | 신규 ossuaryWithdrawal6개+기존 ossuaryCollection6개=12 PASS. 브라우저 버튼 해제·우클릭·재등록·유골함 버튼 해제·1280/390px 조작부 스크롤 접근 PASS,pageerror0. 저장API 차단/전환연출 숨김,실사용 저장파일 수정 없음. tmp/bone_withdrawal_1280.png |
+
+
+## 2026-09-27 유골 해제 직후 호버 초기화
+
+| 항목 | 현행 동작 |
+|---|---|
+| 원인 | 해제 후 선택 부위와 반환 아이템 선택을 유지했고, 빈 소켓에도 CSS :hover 및 기본 title 툴팁이 남았음. 유골함도 해제 후 기존 호버 상세가 남을 수 있었음 |
+| 유골 부위 | 성공 시 선택 부위와 INV.selected를 비우고 renderInv 뒤 _invClearHover 호출. 미수집 소켓은 title 제거, aria-label의 미수집 설명은 유지 |
+| 유골함 | unequipItem('ossuary') 성공 확인 후 INV.selected를 비우고 renderInv 뒤 _invClearHover. 빈 유골함은 title 제거, aria-label 유지. 공간 부족으로 해제 실패하면 기존 상태 유지 |
+| 스타일 | CSS 호버 밝기 적용 대상을 등록된 유골(.collected)과 장착 유골함(.oss-center:not(.empty))으로 제한. 빈 소켓과 빈 유골함 transition:none으로 해제 직후 원래 밝기로 복귀 |
+| 적용 | game.html, game-easy-test.html, ui-refinement.css. CSS 캐시 20260927-bone-hover-clear |
+| 검증 | ossuaryWithdrawal+ossuaryCollection 12개 PASS. 저장 API 차단 브라우저에서 네 부위 우클릭→미수집/title 없음/재등록, 선택 해제, 유골함 해제→title 없음, 1280/390px 및 pageerror0 확인 |

@@ -2299,7 +2299,7 @@ canvas{display:block;position:fixed;inset:0}
 <link rel="stylesheet" href="stat-panel-ui.css?v=20260910-fullscreen-readable-v1">
 <link rel="stylesheet" href="localization.css?v=20260909">
 <link rel="stylesheet" href="ui-foundation.css?v=20260924-hell3">
-<link rel="stylesheet" href="ui-refinement.css?v=20260927-bone-withdraw">
+<link rel="stylesheet" href="ui-refinement.css?v=20260927-bone-hover-clear">
 <script defer src="ui-panels.js?v=20260927-storage-split"></script>
 <script src="stat-panel-ui.js?v=20260909-constellation-v3"></script>
 </head>
@@ -42539,10 +42539,12 @@ function withdrawBonePart(ancIdx,part){
   if(!pos){INV.bag.pop();notify(_T('가방에 공간이 없습니다!'));return false;}
   item._gx=pos.x;item._gy=pos.y;
   delete INV.ossCollect[key];
-  INV.selected=INV.bag.length-1;
-  _invClearHover();
+  const panel=$('invOssuaryPanel');
+  if(panel&&panel.dataset.selectedPart===part)panel.dataset.selectedPart='';
+  INV.selected=null;
   dbSaveForce();
   renderInv();
+  _invClearHover();
   notify(_T(item.name)+' '+_L('해제 — 가방으로 이동','removed — returned to bag'));
   return true;
 }
@@ -46191,18 +46193,20 @@ function renderOssPanel(){
     node.querySelector('.oss-bone-name').textContent=_bonePartName(part);
     node.querySelector('.oss-bone-grade').textContent=c?_rarName(c.r||0):_L('미수집','Missing');
     node.querySelector('.oss-bone-tier').textContent=c?'T'+((c.t||0)+1)+' · '+_L('위력 ','Power ')+((c.r||0)+(c.t||0)):'—';
-    node.title=_bonePartName(part)+' · '+roles[part]+' · '+(c?_rarName(c.r||0)+' T'+((c.t||0)+1):_L('미수집','Missing'));
-    node.setAttribute('aria-label',node.title);
+    const description=_bonePartName(part)+' · '+roles[part]+' · '+(c?_rarName(c.r||0)+' T'+((c.t||0)+1):_L('미수집','Missing'));
+    if(c)node.title=description;else node.removeAttribute('title');
+    node.setAttribute('aria-label',description);
   }
   const part=pn.dataset.selectedPart;
   const record=part&&INV.ossCollect[R.id+'_'+part];
   label('oss-part-detail',part?_bonePartName(part)+' · '+(record?_rarName(record.r||0)+' T'+((record.t||0)+1)+' · '+_L('위력 ','Power ')+((record.r||0)+(record.t||0)):_L('미수집','Missing'))+' — '+roles[part]:_L('부위를 선택하면 등급과 성장 효과를 확인할 수 있습니다.','Select a bone to view its grade and growth effect.'));
   const urn=$('invOssUrn');
   urn.classList.toggle('empty',!oss);
-  urn.title=oss?_T(oss.name):_L('첫 유골 획득 시 유골함 자동 지급','An ossuary is granted with your first bone');
-  urn.setAttribute('aria-label',urn.title);
+  const urnDescription=oss?_T(oss.name):_L('첫 유골 획득 시 유골함 자동 지급','An ossuary is granted with your first bone');
+  if(oss)urn.title=urnDescription;else urn.removeAttribute('title');
+  urn.setAttribute('aria-label',urnDescription);
   urn.onclick=()=>{if(oss){INV.selected='eq:ossuary';renderInv();}};
-  urn.oncontextmenu=(ev)=>{ev.preventDefault();if(!oss)return;unequipItem('ossuary');applyStats();const i=INV.bag.findIndex(it=>it&&it.slot==='ossuary');INV.selected=i>=0?i:null;renderInv();};
+  urn.oncontextmenu=(ev)=>{ev.preventDefault();if(!oss)return;unequipItem('ossuary');if(INV.equipped.ossuary)return;applyStats();INV.selected=null;renderInv();_invClearHover();};
   urn.onmouseenter=()=>{if(oss){_invHover=-1;_invRenderDetail('ossuary','eq',true);}};
   urn.onmouseleave=()=>_invClearHover();
   const take=pn.querySelector('.oss-withdraw'),remove=pn.querySelector('.oss-unequip');
