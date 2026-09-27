@@ -99,10 +99,11 @@
     if (!root || !body) return;
     const equip = root.querySelector('.inv-equip');
     if (equip) equip.id = 'inventory-page-equipment';
-    const entries = [['equipment','장비','Equipment'],['ossuary','유골함','Ossuary'],['storage','보관함','Storage']];
-    const targets = {equipment:equip,ossuary:document.getElementById('invOssuaryPanel'),storage:document.getElementById('invStorageCol')};
+    const entries = [['equipment','장비','Equipment'],['ossuary','유골함','Ossuary'],['crystals','보석','Gems'],['storage','보관함','Storage']];
+    const targets = {equipment:equip,ossuary:document.getElementById('invOssuaryPanel'),crystals:document.getElementById('invCrystalsPanel'),storage:document.getElementById('invStorageCol')};
     const nav = tabBar(entries, key => {
-      const changed = root.dataset.inventoryPage !== key;
+      // Initial composition precedes player creation; only refresh on later switches.
+      const changed = root.dataset.inventoryPage !== undefined && root.dataset.inventoryPage !== key;
       root.dataset.inventoryPage = key; selected(nav,key);
       if(changed && typeof _invChangeCategory === 'function') _invChangeCategory();
       Object.entries(targets).forEach(([name,node]) => { if(node) node.setAttribute('aria-hidden', String(name !== key)); });

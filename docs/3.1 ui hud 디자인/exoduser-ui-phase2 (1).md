@@ -895,7 +895,7 @@ L키(`skillCycle`)로 여는 스킬 슬롯 배정 팝업(`#skSlotPop`, `openSkSl
 | 대상 | 현재 계약 |
 |---|---|
 | 설정 | 왼쪽 min(680px,100vw−24px), 게임/화면/사운드/조작/시스템 5탭, 본문만 스크롤, 자동저장/닫기 고정 |
-| 장비 | 오른쪽 clamp(640px,36vw,780px), 화면폭−24px 상한. 장비/유골함/보관함 탭 + 가방, 필터 접기. 폭≤780은 화면폭−16px |
+| 장비 | 오른쪽 clamp(640px,36vw,780px), 화면폭−24px 상한. 장비/유골함/보석/보관함 탭(보석은 전용 그리드, 나머지는 기존 가방), 필터 접기. 폭≤780은 화면폭−16px |
 | 스킬/대장간/창고 | 각각 최대1020/980/700px, 화면폭−24px 상한. 스킬 왼쪽, 대장간/창고 중앙 |
 | 성장 | 기존 전체화면/인체 트리 유지, 공통 표면/내비게이션 마감 적용 |
 | 재질/프레임 | iron.png 1254×1254,480px 반복+감광 CSS. 3px double선, 기존 frame.png 22%/24px/opacity.65. pbox 상단 문장 제거, 설정/대장간/창고 제목에144×48px 문장 |
@@ -944,7 +944,7 @@ L키(`skillCycle`)로 여는 스킬 슬롯 배정 팝업(`#skSlotPop`, `openSkSl
 | 인벤토리 제목판 | 직계 헤더의 .ptitle display:none. 제목 이미지와 가상요소도 표시하지 않음 |
 | 정보행 | 전투력/악의/닫기 유지. gap0, margin4px 0 8px |
 | 높이 배분 | inv-wrap 첫 행270px, 가방 행 minmax(240px,1fr). 확보한 나머지 높이는 가방에 배정. 작은 화면은 기존 바깥 세로 스크롤 사용 |
-| 적용 범위 | 인벤토리 내부 장비/유골함/보관함 페이지 공통. 다른 메뉴 제목 유지 |
+| 적용 범위 | 인벤토리 내부 장비/유골함/보석/보관함 페이지 공통. 다른 메뉴 제목 유지 |
 
 CSS 캐시 ui-refinement.css?v=20260927-3. 신규 이미지/아이템 데이터 변경/자동 테스트 추가·실행 없음.
 
@@ -961,3 +961,22 @@ CSS 캐시 ui-refinement.css?v=20260927-3. 신규 이미지/아이템 데이터 
 | 유지 | INV.selected와 선택 테두리, 하단 장착·분해 버튼, 고정 48px 조작 영역 유지 |
 
 이 절은 이전 선택 상세 자동 복원 계약을 대체한다. 아이템 데이터·저장 변경 없음. 자동 테스트 추가·실행 없음.
+
+
+## 2026-09-27 보석 전용 인벤토리
+
+사용자 요청은 유골함처럼 보석 전용 인벤토리 탭을 만드는 것이다. 기존 장비·결정 등급/수치/저장 구조는 변경하지 않는다.
+
+| 항목 | 현행 계약 |
+|---|---|
+| 경로 | 장비 / 유골함 / 보석 / 보관함. 보석 버튼 inventory-tab-crystals, 패널 invCrystalsPanel, data-inventory-page=crystals |
+| 데이터 | CRYSTAL_BAG 9999개 한도, CRYSTAL_DUST. 동일 id+star+enh 묶음, 원본 순서 보존. 18종·5성·+20강 유지 |
+| 렌더 | renderInvCrystals; _invCrFilter=all/atk/def/acc, _invCrSelected는 실제 객체. 대장간/피커 필터와 독립 |
+| 조작 | 호버 상세, 클릭/키보드 초점 선택, 호환 장착 장비 빈 홈 선택 → attachCrystal → dbSaveNow. 객체 인덱스·장비 동일성·빈 홈 재확인 |
+| 가공 | 강화·합성·분해·제작은 기존 대장간 결정 탭. 장비 상세 소켓 피커·무료 탈착 유지 |
+| 분리 | 보석 탭에서 장비판/유골함/창고/일반 가방/장비 상세/분해 버튼 숨김. 다른 페이지로 전환하면 기존 표시 복귀 |
+| 구현 파일 | game.html, ui-panels.js, inventory-gems.css. ui-panels.js 캐시 20260927-gems, inventory-gems.css 캐시 20260927-1 |
+| 검증 | Node 회귀 14개 PASS, game.html 인라인6개 구문 PASS. 저장 IO 없는 실제 UI 함수/CSS 브라우저 fixture에서 36묶음(72개)·방어12묶음·클릭/키보드 장착·4탭 왕복·영문·520px·빈 화면 PASS, pageerror0 |
+| 검증 범위 | tmp/inventory-gems-qa/preview.html, screenshots/result.json. 전체 게임 시작 경로는 전환 연출/실행 중단으로 검증 완료하지 않음. UI 검수는 격리 fixture 결과 |
+
+상세 데이터 계약: docs/2_9 결정슬롯시스템/2_9 결정슬롯시스템.md. 스타일 원본: inventory-gems.css.

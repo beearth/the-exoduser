@@ -2507,8 +2507,9 @@ body:has(#invPanel.on) #keyGuide{display:none!important}
 <link rel="stylesheet" href="stat-panel-ui.css?v=20260913-smooth-ui">
 <link rel="stylesheet" href="localization.css?v=20260909">
 <link rel="stylesheet" href="ui-foundation.css?v=20260924-hell3">
-<link rel="stylesheet" href="ui-refinement.css?v=20260927-ossuary">
-<script defer src="ui-panels.js?v=20260927-1"></script>
+<link rel="stylesheet" href="ui-refinement.css?v=20260927-gems">
+<script defer src="ui-panels.js?v=20260927-gems"></script>
+<link rel="stylesheet" href="inventory-gems.css?v=20260927-1">
 <script src="stat-panel-ui.js?v=20260909-constellation-v3"></script>
 </head>
 <body>
@@ -2902,6 +2903,7 @@ body:has(#invPanel.on) #keyGuide{display:none!important}
           <div id="invStBagSection"></div>
         </div>
       </div>
+      <section id="invCrystalsPanel" role="tabpanel" aria-labelledby="inventory-tab-crystals" aria-hidden="true"></section>
       <!-- CENTER: 가방 -->
       <div class="inv-center" id="invCenter">
         <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:4px">
@@ -9766,11 +9768,6 @@ const CHAR_LIST=[
   {id:'exoduser_silvertail',name:'실버테일',desc:'블레이드 댄서. 회전대검, 단검 하나',folder:'img/exoduser_silvertail',fw:48,fh:48,idleN:2,walkN:4,atkN:4,whirlN:0,throwN:0,chainN:0,dashN:0},
 ];
 let _charIdx=0;
-    }else if(ch.id==='exoduser_silvertail'&&typeof WarriorDashFlight!=='undefined'){
-      WarriorDashFlight.apply(c,fm,(dashAtlas,dashFrames)=>{
-        if(_charIdx!==idx||_atlasMask!==c||dashAtlas===c)return;
-        _atlasMask=dashAtlas;_atlasMaskFm=dashFrames;_applyMaskAtlas();
-      },'silvertail');
 try{const _sv=localStorage.getItem('_charIdx');if(_sv!=null)_charIdx=+_sv;}catch(e){}
 const _charPreviews=[];
 CHAR_LIST.forEach((ch,ci)=>{
@@ -9816,6 +9813,11 @@ function _loadCharAtlas(idx){
           _atlasMask=dashAtlas;_atlasMaskFm=dashFrames;_applyMaskAtlas();
         },'silvertail');
       });
+    }else if(ch.id==='exoduser_silvertail'&&typeof WarriorDashFlight!=='undefined'){
+      WarriorDashFlight.apply(c,fm,(dashAtlas,dashFrames)=>{
+        if(_charIdx!==idx||_atlasMask!==c||dashAtlas===c)return;
+        _atlasMask=dashAtlas;_atlasMaskFm=dashFrames;_applyMaskAtlas();
+      },'silvertail');
     }
   },_animInfo);
   // bare 버전 — mask와 동일 (별도 bare 폴더 미사용)
@@ -14309,6 +14311,83 @@ function _crValFmt(v){return v===~~v?''+v:v.toFixed(1)}
 const _CR_UNIT={hpR:'/s',stR:'/s',mpR:'/s'};
 function _crValStr(cr){if(!cr)return'';const d=CRYSTAL_DEFS[cr.id],v=crystalVal(cr);const u=_CR_UNIT[d.stat]||'';return d.pct?'+'+_crValFmt(v)+'%':'+'+_crValFmt(v)+u;}
 function _crSlotsStr(cd){if(!cd||!cd.slots)return'';return _L('슬롯: ','Slots: ')+cd.slots.map(s=>_slotName(SLOT_NAMES.indexOf(s))).join(',');}
+// Inventory gems use the existing crystal bag; grouping is display-only.
+let _invCrFilter='all',_invCrSelected=null;
+function renderInvCrystals(){
+  const panel=$('invCrystalsPanel');if(!panel)return;
+  const make=(tag,cls,text)=>{const n=document.createElement(tag);n.className=cls;if(text!==undefined)n.textContent=text;return n;};
+  const button=(cls,text,action)=>{const b=make('button',cls,text);b.type='button';b.onclick=action;return b;};
+  const groups=_crBagGroups(_invCrFilter);
+  if(!groups.some(g=>g.idxs.some(i=>CRYSTAL_BAG[i]===_invCrSelected)))_invCrSelected=null;
+  const head=make('header','inv-cr-head');
+  head.append(make('h3','inv-cr-heading',_L('홈에 끼우는 보석','Socket gems')),
+    make('span','inv-cr-capacity',_L('보유 ','Owned ')+CRYSTAL_BAG.length+' / '+CRYSTAL_BAG_MAX));
+  const filters=make('div','inv-cr-filters');filters.setAttribute('aria-label',_L('보석 분류','Gem categories'));
+  for(const [key,ko,en] of [['all','전체','All'],['atk','공격','Attack'],['def','방어','Defense'],['acc','자원','Resource']]){
+    const b=button('inv-cr-filter',_L(ko,en),()=>{_invCrFilter=key;renderInvCrystals();
+      panel.querySelector('[data-filter="'+key+'"]')?.focus();});
+    b.dataset.filter=key;b.setAttribute('aria-pressed',String(_invCrFilter===key));filters.append(b);
+  }
+  const body=make('div','inv-cr-body'),grid=make('div','inv-cr-grid'),detail=make('aside','inv-cr-detail');
+  grid.setAttribute('aria-label',_L('보유 보석','Owned gems'));
+  const gem=cr=>{const d=CRYSTAL_DEFS[cr.id],n=make('span','inv-cr-gem');
+    n.style.setProperty('--gem-color',d.col||'#88aacc');n.dataset.category=d.cat;n.setAttribute('aria-hidden','true');return n;};
+  const showDetail=cr=>{
+    if(!cr||!CRYSTAL_BAG.includes(cr)){
+      detail.replaceChildren(make('p','inv-cr-help',_L('보석을 선택하세요','Select a gem')),
+        make('p','inv-cr-note',_L('장비의 빈 홈에 끼워 능력치를 더합니다.','Add stats by placing gems in empty equipment sockets.')),
+        make('p','inv-cr-note',_L('강화·합성·분해는 대장간 → 결정에서 할 수 있습니다.','Enhance, fuse and dismantle at Forge → Crystal.')));return;
+    }
+    const d=CRYSTAL_DEFS[cr.id],s=CRYSTAL_STAR[cr.star];
+    const name=make('h4','inv-cr-name',_crDefN(d));name.style.color=s.color;
+    const meta=make('p','inv-cr-meta',_crStarN(s)+' · '+(cr.star+1)+_L('성','★')+(cr.enh?' · +'+cr.enh:''));
+    const stat=make('p','inv-cr-stat',_crValStr(cr));
+    const targets=make('div','inv-cr-targets');
+    targets.append(make('p','inv-cr-note',_L('장착할 빈 홈 선택','Choose an empty socket')));
+    let available=0;
+    for(const slot of SLOT_NAMES){
+      const item=INV.equipped[slot];if(!item||!d.slots.includes(item.slot)||!Array.isArray(item.crystals))continue;
+      item.crystals.forEach((value,si)=>{
+        if(value)return;available++;
+        const label=_slotName(SLOT_NAMES.indexOf(slot))+' · '+_L('홈 ','Socket ')+(si+1);
+        const b=button('inv-cr-attach',label,()=>{
+          const bi=CRYSTAL_BAG.indexOf(cr);
+          if(bi<0||INV.equipped[slot]!==item||item.crystals[si])return;
+          if(attachCrystal(item,si,cr,bi)){dbSaveNow();renderInvCrystals();}
+        });
+        b.title=item.name||label;targets.append(b);
+      });
+    }
+    if(!available)targets.append(make('p','inv-cr-note',_L('장착 중인 장비에 호환되는 빈 홈이 없습니다.','Your equipped gear has no compatible empty sockets.')));
+    detail.replaceChildren(gem(cr),name,meta,stat,make('p','inv-cr-note',_crDescTxt(d)),
+      make('p','inv-cr-note',_crSlotsStr(d)),targets);
+  };
+  const cells=[];
+  for(const group of groups){
+    const cr=CRYSTAL_BAG[group.idxs[0]],d=CRYSTAL_DEFS[cr.id],s=CRYSTAL_STAR[cr.star];
+    const cell=button('inv-cr-slot',undefined,()=>{
+      _invCrSelected=cr;
+      for(const [b,c] of cells)b.setAttribute('aria-pressed',String(c===cr));
+      showDetail(cr);
+    });
+    cell.dataset.id=cr.id;cell.dataset.count=String(group.idxs.length);
+    cell.style.setProperty('--gem-rank',s.color);
+    cell.setAttribute('aria-pressed',String(group.idxs.some(i=>CRYSTAL_BAG[i]===_invCrSelected)));
+    cell.setAttribute('aria-label',_crDefN(d)+' · '+_crStarN(s)+' · '+_crValStr(cr)+(cr.enh?' · +'+cr.enh:'')+' · ×'+group.idxs.length);
+    cell.append(gem(cr),make('span','inv-cr-tier',(cr.star+1)+'◆'),make('span','inv-cr-count',String(group.idxs.length)));
+    if(cr.enh)cell.append(make('span','inv-cr-enh','+'+cr.enh));
+    cell.onmouseenter=()=>showDetail(cr);cell.onmouseleave=()=>showDetail(_invCrSelected);
+    cell.onfocus=cell.onclick;
+    cells.push([cell,cr]);grid.append(cell);
+  }
+  if(!groups.length)grid.append(make('p','inv-cr-empty',CRYSTAL_BAG.length?
+    _L('이 분류의 보석이 없습니다.','No gems in this category.'):_L('아직 보유한 보석이 없습니다.','No gems collected yet.')));
+  body.append(grid,detail);
+  const footer=make('footer','inv-cr-footer');
+  footer.append(make('span','inv-cr-note',_L('같은 종류·성급·강화는 한 칸에 모아 표시합니다.','Matching type, star and enhancement share one slot.')),
+    make('span','inv-cr-dust',_L('결정 가루 ','Crystal dust ')+CRYSTAL_DUST));
+  panel.replaceChildren(head,filters,body,footer);showDetail(_invCrSelected);
+}
 function renderCrystalBag(){
   let pop=$('crBagPop');
   if(!pop){pop=document.createElement('div');pop.id='crBagPop';pop.style.cssText='position:fixed;top:50%;left:50%;transform:translate(-50%,-50%);width:380px;max-height:70vh;background:#1a1008;border:2px solid #553388;border-radius:8px;z-index:9999;display:flex;flex-direction:column;padding:10px;box-shadow:0 0 30px rgba(100,0,200,.3)';document.body.appendChild(pop);}
@@ -15243,7 +15322,6 @@ function spawnCrescent(x,y,ang,dmg,el,step,distMul,chargeScale=1){
     return;
   }
 }
-function _mkProj(){return{x:0,y:0,vx:0,vy:0,dmg:0,el:0,friendly:false,life:0,ml:0,col:'',sz:1,r:4,dist:0,
 function _kiSlashHoldMultiplier(frames){return 1+Math.min(3,Math.floor(Math.max(0,frames||0)/60))}
 function _fireKiSlashCrescent(step,chargeFrames=0){
   _addSkProf('kiSlash');_cresStep=step;_cresComboT=120;_cresCd=step===3?20:12;
@@ -15269,6 +15347,7 @@ function _updateKiSlashThirdCharge(sp){
   _startSilvertailAttackMotion('lmb');_fireKiSlashCrescent(3,frames);
   return true;
 }
+function _mkProj(){return{x:0,y:0,vx:0,vy:0,dmg:0,el:0,friendly:false,life:0,ml:0,col:'',sz:1,r:4,dist:0,
   redBean:false,blackBean:false,bwBean:false,gbBean:false,homing:false,blueBean:false,parryBlueBean:false,fireMagic:false,waterBean:false,_cCol:null,
   mine:false,bomb:false,trap:false,web:false,dimRift:false,poisonZone:false,
   iceZone:false,blizzard:false,elemBall:false,swordWave:false,fast:false,
@@ -27603,9 +27682,6 @@ function _rleEncodeGrid(g,n){
 }
 function _buildDiabloField(stageIndex,width,height){
   width=width||200;height=height||200;
-  const variant=((stageIndex|0)*37)%17,sway=(index,amount)=>Math.sin((index+1)*(variant+11)*.173)*amount;
-  const regions=[
-    {role:'start',cx:100+sway(1,5),cy:181,rx:40,ry:22},{role:'combat',cx:76+sway(2,7),cy:145,rx:42,ry:30},
   if((stageIndex|0)===0){
     // QA master blockout: west combat void and eastern marsh bypass.
     const outer=[[92,194],[82,188],[76,177],[74,165],[57,166],[43,153],[37,137],[33,119],[40,101],[49,91],[61,78],[59,65],[64,48],[66,35],[78,25],[91,20],[91,8],[109,8],[109,21],[125,25],[135,37],[138,52],[133,66],[128,74],[148,73],[164,84],[174,100],[179,117],[173,134],[158,147],[137,153],[127,166],[114,176],[111,194]];
@@ -27622,6 +27698,9 @@ function _buildDiabloField(stageIndex,width,height){
     const rooms=[{id:'s',type:'start',cx:100,cy:181,shape:'ellipse',rx:8,ry:8},{id:'c1',type:'combat',cx:62,cy:126,shape:'ellipse',rx:18,ry:18},{id:'b',type:'boss',cx:100,cy:24,shape:'ellipse',rx:12,ry:12}];
     return{mw:width,mh:height,width,height,route:'south_to_north',regions,rooms,spawnHoles:[{x:60,y:130,type:'M'},{x:69,y:86,type:'M'},{x:102,y:44,type:'M'},{x:151,y:115,type:'L'}],start:{x:100,y:181},bossGate:{x:100,y:12},tileRLE:_rleEncodeGrid(cells,width*height),corridors:[],portals:[],objects:[],_testbed:true,masterVersion:'20260924-blockout-2',outerBoundary:outer,centralMass:mass};
   }
+  const variant=((stageIndex|0)*37)%17,sway=(index,amount)=>Math.sin((index+1)*(variant+11)*.173)*amount;
+  const regions=[
+    {role:'start',cx:100+sway(1,5),cy:181,rx:40,ry:22},{role:'combat',cx:76+sway(2,7),cy:145,rx:42,ry:30},
     {role:'travel',cx:112+sway(3,8),cy:108,rx:35,ry:26},{role:'combat',cx:86+sway(4,9),cy:70,rx:46,ry:32},
     {role:'pocket',cx:151+sway(5,7),cy:82,rx:30,ry:24},{role:'boss',cx:100+sway(6,4),cy:24,rx:40,ry:24}
   ];
@@ -46618,6 +46697,7 @@ function renderOssPanel(){
 function _invCategoryMatches(it){
   if(!it)return false;
   const page=$('invPanel')?.dataset.inventoryPage||'equipment';
+  if(page==='crystals')return false;
   const bone=it.slot==='ossuary'||it.slot==='bonePart';
   return page==='ossuary'?bone:page==='equipment'?!bone:true;
 }
@@ -46633,6 +46713,7 @@ function renderInv(){
   $('cpBreak').innerHTML=`${_glyph('sword','#ff8866',12)}${cp.atk} ${_glyph('shield','#88aacc',12)}${cp.def} ${_glyph('sparkle','#ffdd88',12)}${cp.extra}`;
   // ── 리소스 바 ──
 {if(!isFinite(G.mats))G.mats=0;const _rb=$('invResBar');if(_rb)_rb.textContent=_L('악의: ','Malice: ')+G.mats}
+  if($('invPanel')?.dataset.inventoryPage==='crystals'){renderInvCrystals();return;}
   // ── 창고 컬럼 (항상 렌더) ──
   try{renderInvStorage()}catch(e){console.error('창고 렌더 오류:',e)}
   // ── 소환 유골함 도감 패널 (2026-09-01) ──

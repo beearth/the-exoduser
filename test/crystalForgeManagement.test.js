@@ -9,6 +9,7 @@ const forge=html.slice(html.indexOf('function renderForge(){'),html.indexOf("$('
 // Minimal DOM for exercising the real forge's click handlers without game boot/save IO.
 class Element {
   constructor(){this.children=[];this.style={setProperty(){}};this.classList={add(){}};this.dataset={};this.textContent='';}
+  append(...nodes){this.children.push(...nodes);}
   set innerHTML(value){this.markup=value;this.children=[];}
   get innerHTML(){return this.markup||'';}
   appendChild(child){this.children.push(child);return child;}
@@ -22,7 +23,8 @@ function runtime(bag){
     G:{mats:100000,forgeTab:'crystal'},OPT:{lang:'ko'},P:{x:0,y:0},
     _L:(ko)=>ko,_T:x=>x,_glyph:()=>'',_malCost:x=>x,
     _ensureForgeAtlasLoad(){},BGM:{play(){}},SFX:{forge(){}},
-    applyStats(){},addTxt(){},dbSaveNow(){},notify(){},
+    applyStats(){},addTxt(){},dbSaveNow(){},notify(){},INV:{equipped:{},bag:[]},
+    SLOT_NAMES:['weapon','armor','ring1'],_slotName:i=>['Weapon','Armor','Ring'][i],
     _forgeSel:null,_salSel:new Set(),_rerollSel:null,bag});
   vm.runInContext(crystals+'\n'+forge+'\nCRYSTAL_BAG=bag;',ctx);
   return {ctx,elements,run:code=>vm.runInContext(code,ctx)};
@@ -31,6 +33,45 @@ const cr=(id,star=0,enh=0)=>({id,star,enh});
 function descendants(node){return [node,...node.children.flatMap(descendants)];}
 function button(rt,label){return descendants(rt.elements.get('fgGrid')).find(e=>e.textContent===label);}
 function list(rt,id){return descendants(rt.elements.get('fgGrid')).find(e=>e.id===id);}
+
+test('gems inventory groups quantities without changing bag order and filters independently of the forge',()=>{
+  const bag=[cr('cr_hp'),cr('cr_atk',2),cr('cr_hp'),cr('cr_hp',0,3)];
+  const rt=runtime(bag),before=JSON.stringify(bag);
+  assert.equal(rt.run('typeof renderInvCrystals'),'function','Dedicated inventory renderer exists');
+  rt.run("_crForgeFilter='atk';_invCrFilter='def';renderInvCrystals()");
+  const slots=descendants(rt.elements.get('invCrystalsPanel')).filter(n=>n.className==='inv-cr-slot');
+  assert.equal(slots.length,2);
+  assert.equal(slots[0].dataset.count,'1');
+  assert.equal(slots[1].dataset.count,'2');
+  assert.equal(rt.run('_crForgeFilter'),'atk');
+  assert.equal(JSON.stringify(bag),before);
+});
+
+test('gems inventory attaches exactly the selected object to a compatible empty equipped socket',()=>{
+  const selected=cr('cr_hp',2,4),other=cr('cr_atk'),rt=runtime([other,selected]);
+  assert.equal(rt.run('typeof renderInvCrystals'),'function');
+  const armor={slot:'armor',name:'Test armor',crystals:[null]},weapon={slot:'weapon',name:'Test sword',crystals:[null]};
+  rt.ctx.INV.equipped={armor,weapon};
+  rt.run('renderInvCrystals()');
+  const slot=descendants(rt.elements.get('invCrystalsPanel')).find(n=>n.className==='inv-cr-slot'&&n.dataset.id==='cr_hp');
+  slot.onclick();
+  const buttons=descendants(rt.elements.get('invCrystalsPanel')).filter(n=>n.className==='inv-cr-attach');
+  assert.equal(buttons.length,1,'Incompatible weapons are not offered');
+  buttons[0].onclick();
+  assert.equal(armor.crystals[0],selected);
+  assert.deepEqual(rt.ctx.bag,[other]);
+  buttons[0].onclick();
+  assert.deepEqual(rt.ctx.bag,[other],'A stale click cannot consume another gem');
+});
+
+test('empty gems inventory shows an empty state without changing items or resources',()=>{
+  const rt=runtime([]);
+  assert.equal(rt.run('typeof renderInvCrystals'),'function');
+  rt.run('renderInvCrystals()');
+  assert.ok(descendants(rt.elements.get('invCrystalsPanel')).some(n=>n.className==='inv-cr-empty'));
+  assert.equal(rt.ctx.G.mats,100000);
+  assert.equal(rt.ctx.INV.bag.length,0);
+});
 
 test('inventory has no crystal management section or pouch shortcut; sockets still open the picker',()=>{
   const inv=html.slice(html.indexOf('function renderInv(){'),html.indexOf('function _fgCraft('));

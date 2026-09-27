@@ -47,7 +47,7 @@
 | 항목 | 현재 구현 |
 |---|---|
 | 기본 | 장비 탭. 상단 장비·하단 가방 |
-| 탭 | 장비/유골함/보관함. 기존 invOssuaryPanel/invStorageCol은 동일한 상단 영역에서 교체, 가방은 유지 |
+| 탭 | 장비/유골함/보석/보관함. 보석은 invCrystalsPanel 전용 그리드. 나머지 탭은 기존 상단 패널과 가방 유지 |
 | 격자 | 1열, 상단 minmax(270px,1.1fr), 하단 minmax(200px,1fr), 간격10px; 본문 세로스크롤 |
 | 장비 도면 | 기존600×324 좌표 유지. zoom min(1,(100cqw−16px)/600px,(100cqh−26px)/324px) |
 | 중복 제목 | 장비 탭으로 설명되는 장착 중 라벨은 숨겨 첫 슬롯과 겹침 방지 |
@@ -613,7 +613,7 @@ CSS 변경만 적용. 기존 에셋 재사용. 자동 테스트 추가·실행 �
 | 인벤토리 제목판 | 직계 헤더의 .ptitle display:none. 제목 이미지와 가상요소도 표시하지 않음 |
 | 정보행 | 전투력/악의/닫기 유지. gap0, margin4px 0 8px |
 | 높이 배분 | inv-wrap 첫 행270px, 가방 행 minmax(240px,1fr). 확보한 나머지 높이는 가방에 배정. 작은 화면은 기존 바깥 세로 스크롤 사용 |
-| 적용 범위 | 인벤토리 내부 장비/유골함/보관함 페이지 공통. 다른 메뉴 제목 유지 |
+| 적용 범위 | 인벤토리 내부 장비/유골함/보석/보관함 페이지 공통. 다른 메뉴 제목 유지 |
 
 CSS 캐시 ui-refinement.css?v=20260927-4. 신규 이미지/아이템 데이터 변경/자동 테스트 추가·실행 없음.
 
@@ -729,3 +729,35 @@ CSS 캐시 ui-refinement.css?v=20260927-4. 신규 이미지/아이템 데이터 
 @media(prefers-reduced-motion:reduce){#invPanel.panel .pbox #invOssuaryPanel :is(.oss-center,.oss-bone-node){transition:none;}}
 
 ```
+
+
+## 2026-09-27 보석 전용 인벤토리
+
+사용자 요청은 유골함처럼 보석 전용 인벤토리 탭을 만드는 것이다. 기존 장비·결정 등급/수치/저장 구조는 변경하지 않는다.
+
+| 항목 | 현행 계약 |
+|---|---|
+| 경로 | 장비 / 유골함 / 보석 / 보관함. 보석 버튼 inventory-tab-crystals, 패널 invCrystalsPanel, data-inventory-page=crystals |
+| 데이터 | CRYSTAL_BAG 9999개 한도, CRYSTAL_DUST. 동일 id+star+enh 묶음, 원본 순서 보존. 18종·5성·+20강 유지 |
+| 렌더 | renderInvCrystals; _invCrFilter=all/atk/def/acc, _invCrSelected는 실제 객체. 대장간/피커 필터와 독립 |
+| 조작 | 호버 상세, 클릭/키보드 초점 선택, 호환 장착 장비 빈 홈 선택 → attachCrystal → dbSaveNow. 객체 인덱스·장비 동일성·빈 홈 재확인 |
+| 가공 | 강화·합성·분해·제작은 기존 대장간 결정 탭. 장비 상세 소켓 피커·무료 탈착 유지 |
+| 분리 | 보석 탭에서 장비판/유골함/창고/일반 가방/장비 상세/분해 버튼 숨김. 다른 페이지로 전환하면 기존 표시 복귀 |
+| 구현 파일 | game.html, ui-panels.js, inventory-gems.css. ui-panels.js 캐시 20260927-gems, inventory-gems.css 캐시 20260927-1 |
+| 검증 | Node 회귀 14개 PASS, game.html 인라인6개 구문 PASS. 저장 IO 없는 실제 UI 함수/CSS 브라우저 fixture에서 36묶음(72개)·방어12묶음·클릭/키보드 장착·4탭 왕복·영문·520px·빈 화면 PASS, pageerror0 |
+| 검증 범위 | tmp/inventory-gems-qa/preview.html, screenshots/result.json. 전체 게임 시작 경로는 전환 연출/실행 중단으로 검증 완료하지 않음. UI 검수는 격리 fixture 결과 |
+
+상세 데이터 계약: docs/2_9 결정슬롯시스템/2_9 결정슬롯시스템.md. 스타일 원본: inventory-gems.css.
+
+### 보석 화면 스타일 규격
+
+| 대상 | 값 |
+|---|---|
+| 패널 | padding16px, 프레임6px/menu-rail4%, 단일 minmax(0,1fr)행 |
+| 내부 | 그리드 minmax(0,1fr)+상세250px, gap18px |
+| 셀 | auto-fill 최소68px, 행86px, 간격4px, 내부5px, grid 최소높이180px |
+| 보석 | 42×48px, 상세56×64px, 기존 CRYSTAL_DEFS.col. CSS conic/linear-gradient+clip-path, 외부 이미지 없음 |
+| 정보 | 제목16px, 이름17px, 효과24px, 설명12px, 성급/강화11px, 수량16px |
+| 상태 | 등급색48%+기본색 테두리, 선택/키보드초점2px #ebd29e. 버튼 최소높이32px |
+| ≤780px | 상세200px, gap10px, 셀 최소58px/행78px |
+| ≤560px | 그리드 위/상세 아래, 패널padding10px·세로스크롤, 상세 좌측선 제거·상단선. 헤더/푸터 줄바꿈 |
