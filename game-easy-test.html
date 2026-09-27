@@ -45020,7 +45020,8 @@ function renderInvStorage(){
     const d=document.createElement('div');d.className='inv-dep-item';d.style.cssText='display:flex;align-items:center;justify-content:space-between;padding:2px 3px;font-size:1rem;cursor:pointer;border-bottom:1px solid #1a0e00;transition:background .1s';
     d.onmouseenter=()=>d.style.background='rgba(136,170,102,.08)';d.onmouseleave=()=>d.style.background='';
     d.innerHTML=`<span style="color:${RARITY_C[it.rarity]};white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:120px">${_itemIco(it,RARITY_C[it.rarity],14)} ${_T(it.name)}</span><span style="color:#88cc66;font-size:1rem;flex-shrink:0;margin-left:4px">${_T('보관')}</span>`;
-    d.onclick=()=>{if(store.length>=STORAGE_MAX){notify(_T('창고가 가득 찼습니다!'));return}store.push(it);INV.bag.splice(idx,1);SFX.pickup();_persistSharedStorage();renderInv();dbSaveNow()};
+    d.onclick=()=>depositStorage(idx);
+    d.oncontextmenu=(ev)=>{ev.preventDefault();depositStorage(idx)};
     bagList.appendChild(d);
   });
   sec.appendChild(bagList);
@@ -45038,6 +45039,19 @@ function renderSettings(){
   // ── 커서 선택 그리드 ──
   const _cg=$('cursorGrid');if(_cg){_cg.innerHTML='';
     _CURSORS.forEach((cur,ci)=>{
+function depositStorage(idx){
+  const item=INV.bag[idx];if(!item)return false;
+  const store=_getStore();
+  if(store.length>=STORAGE_MAX){notify(_T('창고가 가득 찼습니다!'));return false}
+  store.push(item);INV.bag.splice(idx,1);INV.selected=null;
+  SFX.pickup();_persistSharedStorage();renderInv();dbSaveNow();return true;
+}
+function _invBagRightClick(idx){
+  const item=INV.bag[idx];if(!item)return;
+  if($('invPanel')?.dataset.inventoryPage==='storage'){depositStorage(idx);return}
+  if(item.slot==='bonePart'){registerBonePart(item);return}
+  equipItem(item);applyStats();renderInv();
+}
       const sel=ci===(OPT.cursor||0);
       const card=document.createElement('div');
       card.style.cssText='width:72px;min-width:72px;height:80px;border-radius:6px;cursor:pointer;text-align:center;border:2px solid '+(sel?'#ffcc00':'#443322')+';background:'+(sel?'rgba(80,60,20,.6)':'rgba(20,20,30,.6)')+';display:flex;flex-direction:column;align-items:center;justify-content:center;transition:all .2s;flex-shrink:0';
@@ -46603,8 +46617,7 @@ function renderInv(){
     };
     div.oncontextmenu=(ev)=>{
       ev.preventDefault();
-      const it=INV.bag[i];
-      if(it){if(it.slot==='bonePart'){registerBonePart(it);return}equipItem(it);applyStats();renderInv();return}
+      _invBagRightClick(i);
     };
     div.onmouseover=()=>{if(_invHover===i)return;_invHover=i;_invRenderDetail(i,'bag',true)};
     div.onmouseleave=()=>_invClearHover();
