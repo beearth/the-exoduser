@@ -2517,7 +2517,7 @@ body:has(#invPanel.on) #keyGuide{display:none!important}
 <link rel="stylesheet" href="inventory-gems.css?v=20260927-jewel-finish">
 <link rel="stylesheet" href="inventory-gems-finish.css?v=20260927-square-art2">
 <link rel="stylesheet" href="inventory-space.css?v=20260927-aligned12">
-<link rel="stylesheet" href="skill-workspace.css?v=20260927-fullscreen4">
+<link rel="stylesheet" href="skill-workspace.css?v=20260928-fixed-categories5">
 <link rel="stylesheet" href="inventory-oss-balance.css?v=20260927-scale2">
 <link rel="stylesheet" href="inventory-gems-balance.css?v=20260927-half">
 <script src="stat-panel-ui.js?v=20260927-auto-invest2"></script>
@@ -12937,7 +12937,7 @@ function _gpUINav(panel){
     let _sc=null;
     if(_gpVC.vis){_sc=_gpFindScroll(document.elementFromPoint(_gpVC.x,_gpVC.y))}
     if(!_sc){
-      if(panel.id==='skillPanel')_sc=panel.querySelector('.frame-inner-panel-stack');
+      if(panel.id==='skillPanel')_sc=panel.querySelector('#skillGridWrap');
       if(!_sc&&cur)_sc=_gpFindScroll(cur);
     }
     if(!_sc)_sc=_gpFindScroll(panel)||_gpFindScrollDown(panel);
@@ -44834,6 +44834,10 @@ function renderSkillPanel(){
   const _oldGritBtn=$('gritBtn');if(_oldGritBtn)_oldGritBtn.remove();
   const _cb=$('skCompBtn');if(_cb)_cb.textContent=_skCompact?_L('펼치기 [K]','Expand [K]'):_L('접기 [K]','Collapse [K]');
   const grid=$('skillGrid');grid.innerHTML='';
+  const _skillScroll=$('skillGridWrap');
+  if(_si.parentNode!==_skillScroll)_skillScroll.insertBefore(_si,_skillScroll.firstChild);
+  let _skillNav=$('skillCategoryNav');
+  if(!_skillNav){_skillNav=document.createElement('div');_skillNav.id='skillCategoryNav';_skillScroll.parentNode.insertBefore(_skillNav,_skillScroll);}
   // ── 대분류 탭 바 ──
   const _hierBar=document.createElement('div');
   _hierBar.className='skill-category-tabs';
@@ -44850,7 +44854,7 @@ function renderSkillPanel(){
     tb.onclick=function(){_skHierTab=h.id;renderSkillPanel()};
     _hierBar.appendChild(tb);
   });
-  grid.appendChild(_hierBar);
+  _skillNav.replaceChildren(_hierBar);
   // ── 현재 대분류의 하위 카테고리만 표시 ──
   const _curHier=SKILL_HIER.find(h=>h.id===_skHierTab)||SKILL_HIER[1];
   const _isRecTab=_curHier.cats===null;
