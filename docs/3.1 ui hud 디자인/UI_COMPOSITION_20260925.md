@@ -10,7 +10,7 @@
 
 | 항목 | 현재 구현 |
 |---|---|
-| 연결 | game.html/game-easy-test.html: ui-refinement.css?v=20260927-3, defer ui-panels.js?v=20260925-1. index.html은 CSS만. NW.js 두 파일 복사 |
+| 연결 | game.html/game-easy-test.html: ui-refinement.css?v=20260927-4, defer ui-panels.js?v=20260925-1. index.html은 CSS만. NW.js 두 파일 복사 |
 | 설정 | 왼쪽 폭 min(680px,100vw−24px), 높이100dvh−24px, 최대높이1000px |
 | 장비 | 오른쪽 폭 clamp(640px,36vw,780px), 최대100vw−24px; 폭≤780에서는100vw−16px |
 | 스킬/대장간/창고 | 각각 최대1020/980/700px, 화면폭−24px 이내. 스킬 왼쪽; 대장간/창고 중앙 |
@@ -149,7 +149,7 @@ POE2 설정 화면과 Diablo IV 장비 화면을 참고한 최신 표현 계약�
 | 인벤 헤더 | 제목과 정보행을 한 열 grid로 분리. 제목 폭100%/최소88px/padding54px 12px 8px. 중앙 문장204×68px. 제목판 top53/좌우24%/bottom0, 폭560px 이하 좌우18% |
 | 정보행 | 전투력·악의·닫기 정렬. gap8px/padding0 4px 8px/아래선1px #65583f. 전투력·악의의 중첩 박스 삭제. 문장과 충돌하지 않음 |
 | 장비 구획 | 섹션 선1px #65583f, 중복 inset선 제거. 슬롯 안쪽 iskin 등급 그림자 제거, 바깥 슬롯 희귀도 테두리 유지. 슬롯 음영 inset0 2px5px, 라벨#e0d2b2 |
-| 캐시 | ui-refinement.css?v=20260927-3, 게임 두 HTML 및 로비 동기화 |
+| 캐시 | ui-refinement.css?v=20260927-4, 게임 두 HTML 및 로비 동기화 |
 
 CSS 변경만 적용. 기존 에셋 재사용. 자동 테스트 추가·실행 없음.
 
@@ -169,7 +169,7 @@ CSS 변경만 적용. 기존 에셋 재사용. 자동 테스트 추가·실행 �
 | 낮은 화면 | 높이800px 이하 제목최소116px/padding-top86px. 문장156×88px, 원본156×156px/center −28px. 제목판top84px |
 | 좁은 화면 | 폭560px 이하 패널padding30px22px24px, 프레임48px. 원본 투명 합성, 배경실패 시 제목 텍스트/기본 판 유지 |
 | 기록 | img/ui/blackiron/prompts.md에 두 프롬프트 전문·생성ID·투명도 기록. 신규 픽셀 후처리 없음. img 폴더는 기존 NW.js 패키징 대상 |
-| 버전 | ui-refinement.css?v=20260927-3 |
+| 버전 | ui-refinement.css?v=20260927-4 |
 
 자동 테스트 추가·실행 없음. 원본 알파와 브라우저 렌더를 직접 확인.
 
@@ -190,7 +190,7 @@ CSS 변경만 적용. 기존 에셋 재사용. 자동 테스트 추가·실행 �
 | 가방 | padding12px14px, 헤더최소30px/하단padding8px/여백8px/구분선1px#49483e. 제목14px/500, 정렬버튼최소28px/12px/좌우10px |
 | 필터·격자 | 필터12px/행간1.5/하단9px, 추가 상단선 제거. 격자 외곽outline0, 각 빈 셀1px#3b4037/각진 모서리/흑철 음영 |
 | 폭560px 이하 | 제목최소68px/22px/좌8px·우132px, 문장우8px/120×70px/배경120×120px/center−21px |
-| 적용 | ui-refinement.css?v=20260927-3, game.html/game-easy-test.html/index.html 동기화. DOM·게임 수치 변경 없음 |
+| 적용 | ui-refinement.css?v=20260927-4, game.html/game-easy-test.html/index.html 동기화. DOM·게임 수치 변경 없음 |
 
 자동 테스트 추가·실행 없음. 렌더 확인은 디자인 외관에 한정한다.
 
@@ -216,7 +216,7 @@ CSS 변경만 적용. 기존 에셋 재사용. 자동 테스트 추가·실행 �
 | 문장 연결 | 제목 오른쪽 기존 문장을164×96px/배경164×164px/center−28px, bottom−10px로 내려 제목 구분선과 연결 |
 | 폭560px 이하 | 문장120×70px/배경120×120px/center−21px/bottom−6px |
 | 범위·폴백 | 인벤토리에만 적용. 에셋 로드 실패 시 단색 바탕과 기존 DOM 텍스트 유지. normal 합성, 기존 NW.js img 복사 대상 |
-| 버전 | ui-refinement.css?v=20260927-3 |
+| 버전 | ui-refinement.css?v=20260927-4 |
 
 위 규격이 인벤토리의 이전 표면·테두리·문장 위치 규격을 대체한다. 자동 테스트는 추가하거나 실행하지 않으며 실제 브라우저 외관을 확인한다.
 
@@ -253,7 +253,7 @@ CSS 변경만 적용. 기존 에셋 재사용. 자동 테스트 추가·실행 �
 | 공간 배분 | 장비 minmax(320px,1.3fr), 가방 minmax(200px,1fr). 실행할 버튼이 전혀 없는 하단은 숨겨 빈 공간 제거 |
 | 하단 | 상단여백8px/padding-top8px/높이최소42px/상단선1px#5b5143/우측 정렬. 버튼최소34px/padding7px16px/12px·500 |
 | 폭560px 이하 | 제목52px/22px/좌8px우110px,문장104×62px/right4px/bottom−8px/background104×104px center−18px,세부수치10px |
-| 통합·버전 | ui-refinement.css Inventory finish 블록 하나로 최근3개 마감 블록 대체. ui-refinement.css?v=20260927-3. 신규 에셋 생성 없음 |
+| 통합·버전 | ui-refinement.css Inventory finish 블록 하나로 최근3개 마감 블록 대체. ui-refinement.css?v=20260927-4. 신규 에셋 생성 없음 |
 
 전체 아트 완성도는 콘셉트와 동등하다고 판정하지 않는다. 이번 범위는 박스 위계·슬롯 재질·조작부 통일. 자동 테스트 추가·실행 없이 실제 렌더를 확인한다.
 
@@ -271,7 +271,7 @@ CSS 변경만 적용. 기존 에셋 재사용. 자동 테스트 추가·실행 �
 | 사용 범위 | 기존 Blackiron 문장을 참조하는 설정/인벤토리/대장간/스킬/창고/능력치 변수 교체. 로비/HUD 원본은 유지 |
 | 합성 | normal 알파, 배경center/contain. 원본의 뿔·턱을 자르던 이전 crop offset 제거. 인벤토리122×72px 박스/좁은화면104×62px 기존 크기 유지 |
 | 폴백 | CSS 이미지 로딩 실패 시 문장 장식만 사라지고 DOM 제목·프레임·조작 유지 |
-| 버전 | ui-refinement.css?v=20260927-3, game.html/game-easy-test.html/index.html 동기화 |
+| 버전 | ui-refinement.css?v=20260927-4, game.html/game-easy-test.html/index.html 동기화 |
 | 기록 | img/ui/blackiron/skull.md 프롬프트 및 생성 정보. 기존 crest.png 보존 |
 
 자동 테스트 추가·실행 없음. 원본 알파 및 실제 UI 축소 렌더 확인.
@@ -291,7 +291,7 @@ CSS 변경만 적용. 기존 에셋 재사용. 자동 테스트 추가·실행 �
 | 폭560px 이하 | 문장140×50px/right4px/bottom−6px/background140×140px center−43px. 제목 오른쪽padding154px |
 | 다른 메뉴 | 기존200×112px 박스/background200×200px center−45px. 높이800px 이하는156×88px/background156×156px center−35px |
 | 합성·실패 | normal 알파. 이미지실패시 기존 DOM 제목/프레임/조작 유지. 메뉴 범위는 직전 skull 교체 범위 유지 |
-| 버전 | ui-refinement.css?v=20260927-3 |
+| 버전 | ui-refinement.css?v=20260927-4 |
 
 원본과 실제 제목 표시를 확인. 자동 테스트 추가·실행 없음.
 
@@ -313,7 +313,7 @@ CSS 변경만 적용. 기존 에셋 재사용. 자동 테스트 추가·실행 �
 | 구획·하단 | 분류하단 중복선 없음/간격3px. 본문제목15px·600/padding8px0 10px. 하단상단여백8px/padding-top8px/선1px#5b5143. 닫기최소34px/padding7px16px/12px |
 | 폭560px 이하 | 제목52px/22px/좌8px우154px. 문장140×50px/right4px/bottom−6px/background140×140px center−43px |
 | 폴백·합성 | normal알파/단색배경·테두리·DOM텍스트 폴백. 설정동작·값·자동저장 변경 없음 |
-| 버전 | ui-refinement.css?v=20260927-3. game.html/game-easy-test.html/index.html 및 관련 문서 동기화 |
+| 버전 | ui-refinement.css?v=20260927-4. game.html/game-easy-test.html/index.html 및 관련 문서 동기화 |
 
 설정 전용 후속 스타일은 Settings plates 블록 하나로 교체한다. 새 가죽판 생성본은 미채택 작업물이며 런타임 참조 없음. 자동 테스트 추가·실행 없음.
 
@@ -336,7 +336,7 @@ CSS 변경만 적용. 기존 에셋 재사용. 자동 테스트 추가·실행 �
 | 스킬 탭 | button.webp, 기본 #c7bead. 선택 적갈색/글자#f4e6cb/하단2px#ac7953 |
 | 폴백 | 이미지 실패 시 DOM 제목·본문·기존 단색 배경/6px 테두리 유지. JS 및 게임 수치 변경 없음 |
 | 빈 배경 문양 | sigil.png 원본 재사용. 세 창 pbox에서 620×620px center -150px, 전면감광 #141315d9→#09090af2. 장비 배경은410×410px center, 감광#0c0b0dcc→#111012eb. 정보 위 DOM 오버레이 없음/클릭 차단 없음 |
-| 캐시 | ui-refinement.css?v=20260927-3, game.html/game-easy-test.html/index.html |
+| 캐시 | ui-refinement.css?v=20260927-4, game.html/game-easy-test.html/index.html |
 
 원본 비율에 맞춰 CSS로 투명 여백만 표시 범위 밖에 둔다. 래스터 변형/재생성 후처리 없음. 자동 테스트 추가·실행 없음.
 
@@ -357,7 +357,7 @@ CSS 변경만 적용. 기존 에셋 재사용. 자동 테스트 추가·실행 �
 | 낮은 화면에서 제목 장식이 본문을 차지 | 높이800px 이하 설정·대장간·스킬·창고 제목118px으로 축소 |
 | 초점·스크롤 마감 차이 | 여섯 메뉴2px 황동 초점선,얇은 철색 스크롤. 기존 disabled와 게임 상태 유지 |
 
-캐시 ui-refinement.css?v=20260927-3. game.html/game-easy-test.html/index.html 동기화. 게임 수치·저장·전투 로직 변경 없음. DOM 구조를 교체하지 않고 CSS 배경으로 합성하므로 이미지 실패 시 제목과 조작은 남는다. 자동 테스트 추가·실행 없음. 이번 전체 적용 범위는 여섯 메인 메뉴와 로비/캐릭터 정보 면, 공통 확인창(gcModal), 스킬 툴팁(skBarTip)이다. 전투 HUD의 조작 배치는 유지한다. 대장간의 기존 낮은 대비 보조문구(#886644/#665544/#776655)는 #b6a58f로 올린다.
+캐시 ui-refinement.css?v=20260927-4. game.html/game-easy-test.html/index.html 동기화. 게임 수치·저장·전투 로직 변경 없음. DOM 구조를 교체하지 않고 CSS 배경으로 합성하므로 이미지 실패 시 제목과 조작은 남는다. 자동 테스트 추가·실행 없음. 이번 전체 적용 범위는 여섯 메인 메뉴와 로비/캐릭터 정보 면, 공통 확인창(gcModal), 스킬 툴팁(skBarTip)이다. 전투 HUD의 조작 배치는 유지한다. 대장간의 기존 낮은 대비 보조문구(#886644/#665544/#776655)는 #b6a58f로 올린다.
 
 
 ### 스타일 수치 원본
@@ -447,7 +447,7 @@ CSS 변경만 적용. 기존 에셋 재사용. 자동 테스트 추가·실행 �
 | 툴팁 | skBarTip 최대480px 또는 화면−32px, 줄바꿈. 이름14px,설명12px/행간1.6, padding10px14px |
 | 접근성 | prefers-reduced-motion은 이번 전환 제거. 기존 키보드/게임패드 초점 경로 유지 |
 
-관련 CSS 전체 수치·선택자는 아래 원본 표기를 따른다. CSS 캐시 ui-refinement.css?v=20260927-3. game.html/game-easy-test.html/index.html 동기화. 신규 이미지 없음. 부모 컨테이너 교체를 추가하지 않고 기존 렌더 문자열에 클래스와 데이터 속성만 추가한다. 자동 테스트 추가·실행 없음.
+관련 CSS 전체 수치·선택자는 아래 원본 표기를 따른다. CSS 캐시 ui-refinement.css?v=20260927-4. game.html/game-easy-test.html/index.html 동기화. 신규 이미지 없음. 부모 컨테이너 교체를 추가하지 않고 기존 렌더 문자열에 클래스와 데이터 속성만 추가한다. 자동 테스트 추가·실행 없음.
 
 ### 실제 화면 관찰
 
@@ -506,7 +506,7 @@ CSS 변경만 적용. 기존 에셋 재사용. 자동 테스트 추가·실행 �
 | dropItem | 없는 아이템·fav 잠금은 false. 지급액 비유한/음수이면 삭제·지급 없이false. 정상 삭제/저장 후true를 반환해 기존 onclick의 renderInv 실행 |
 | 상세 마감 | 빈 출처행 숨김,조작안내 받침,장착버튼 하단색,12px·34px최소높이·한줄 금속판 버튼,스크롤 거터. hover해도 선택/분해 테두리 유지 |
 
-앞선 슬롯과 상호작용 마감 절에서 기록한 유골함 분해 NaN 미해결 항목을 해결한다. 실제 소지품 화면의 유골함 선택에서 분해(악의 +50000) 표시를 확인했다. 아이템을 실제로 삭제하는 분해 동작은 실행하지 않았다. 기존 저장 데이터의 이미 손상된 악의 잔액은 이 변경으로 추정 복원하지 않는다. 자동 테스트 추가·실행 없음. 캐시 ui-refinement.css?v=20260927-3.
+앞선 슬롯과 상호작용 마감 절에서 기록한 유골함 분해 NaN 미해결 항목을 해결한다. 실제 소지품 화면의 유골함 선택에서 분해(악의 +50000) 표시를 확인했다. 아이템을 실제로 삭제하는 분해 동작은 실행하지 않았다. 기존 저장 데이터의 이미 손상된 악의 잔액은 이 변경으로 추정 복원하지 않는다. 자동 테스트 추가·실행 없음. 캐시 ui-refinement.css?v=20260927-4.
 
 
 ### 스타일 수치 원본
@@ -542,7 +542,7 @@ CSS 변경만 적용. 기존 에셋 재사용. 자동 테스트 추가·실행 �
 | 상세창 내부 중첩 스크롤 | id-stats flex:none/overflow:visible, 바깥 invRight에서 스크롤. overscroll contain/안정 거터로 폭 변화 최소화 |
 | 접근성 | 기존 보관/꺼내기 동작·aria-pressed·키보드 포커스 유지,감소된 동작 환경에서는 슬롯전환 제거 |
 
-새 이미지 생성 없음. CSS 캐시 ui-refinement.css?v=20260927-3. game.html/game-easy-test.html/index.html 동기화. 자동 테스트 추가·실행 없음. 창고 표시 슬롯 수만 변경하며 아이템 상태·저장 용량·보관 동작 변경 없음. 실제 창고의 새 제목·문양·상세 카드 표시를 확인했다.
+새 이미지 생성 없음. CSS 캐시 ui-refinement.css?v=20260927-4. game.html/game-easy-test.html/index.html 동기화. 자동 테스트 추가·실행 없음. 창고 표시 슬롯 수만 변경하며 아이템 상태·저장 용량·보관 동작 변경 없음. 실제 창고의 새 제목·문양·상세 카드 표시를 확인했다.
 
 
 ### 스타일 수치 원본
@@ -588,7 +588,7 @@ CSS 변경만 적용. 기존 에셋 재사용. 자동 테스트 추가·실행 �
 | 상세 보조 정보 | id-type 12px/1.6, #c0b298, 긴 단어 줄바꿈 |
 | 비교 닫기 | 28×28px 금속색 버튼 받침, 헤더 오른쪽 36px 확보 |
 
-캐시 ui-refinement.css?v=20260927-3. 신규 이미지 없음. 자동 테스트 추가·실행 없음. 정확한 스타일 수치는 아래 원본 참조.
+캐시 ui-refinement.css?v=20260927-4. 신규 이미지 없음. 자동 테스트 추가·실행 없음. 정확한 스타일 수치는 아래 원본 참조.
 
 ```css
 /* Inventory filter finish: readable plates and explicit selection. */
@@ -615,7 +615,7 @@ CSS 변경만 적용. 기존 에셋 재사용. 자동 테스트 추가·실행 �
 | 높이 배분 | inv-wrap 첫 행270px, 가방 행 minmax(240px,1fr). 확보한 나머지 높이는 가방에 배정. 작은 화면은 기존 바깥 세로 스크롤 사용 |
 | 적용 범위 | 인벤토리 내부 장비/유골함/보관함 페이지 공통. 다른 메뉴 제목 유지 |
 
-CSS 캐시 ui-refinement.css?v=20260927-3. 신규 이미지/아이템 데이터 변경/자동 테스트 추가·실행 없음.
+CSS 캐시 ui-refinement.css?v=20260927-4. 신규 이미지/아이템 데이터 변경/자동 테스트 추가·실행 없음.
 
 ```css
 /* Inventory uses its navigation tab as the title; give the recovered space to the bag. */
@@ -651,3 +651,40 @@ CSS 캐시 ui-refinement.css?v=20260927-3. 신규 이미지/아이템 데이터 
 | 함수/캐시 | _invCategoryMatches, _invChangeCategory. ui-panels.js?v=20260927-1 |
 
 기존 필터 조건은 탭 분류 안에서 적용한다. 자동 테스트 추가·실행 없음.
+
+
+## 2026-09-27 유골함 도감 디테일
+
+| 대상 | 현행 스타일 |
+|---|---|
+| 유골함 전용 첫 행 | 190px(기존270px). 화면폭560px 이하224px. 배낭 minmax(240px,1fr) |
+| 제목/해금 | 13px 명조/11px 고딕. 황동색 제목과 회녹색 해금 수치 |
+| 장착 유골함 | 48px 각진 슬롯, 이름14px, 안내11px |
+| 전대 행 | 초상32px, 이름13px, 부위30px/이미지24px. 기존 등급색 테두리 보존 |
+| 수집 상태 | 미수집 점선/회색 이미지. 소환 가능10px 회녹색 배지 |
+| 넘침 | 전대 목록 내부 스크롤. 좁은 화면에서 이름·부위 줄바꿈 |
+
+기존 등록·장착·선택·분해 및 저장 데이터 변경 없음. 새 이미지/자동 테스트 추가·실행 없음. CSS 캐시 ui-refinement.css?v=20260927-4.
+
+```css
+/* Ossuary collection: compact ledger, readable parts, restrained status accents. */
+#invPanel.panel[data-inventory-page=ossuary] .pbox .inv-wrap{grid-template-rows:190px minmax(240px,1fr)!important;}
+#invPanel.panel .pbox #invOssuaryPanel{display:flex;flex-direction:column;padding:12px!important;overflow:hidden!important;}
+#invPanel.panel .pbox .inv-oss-head{font:600 13px/1.5 'Noto Serif KR',serif;color:#ddc7a0;letter-spacing:.04em;margin:0 0 10px;padding-bottom:7px;border-bottom:1px solid #75624766;flex-shrink:0;}
+#invPanel.panel .pbox .inv-oss-head>span:last-child{font:500 11px/1.5 'Noto Sans KR',sans-serif!important;color:#b4c8a2!important;font-variant-numeric:tabular-nums;letter-spacing:0;}
+#invPanel.panel .pbox .inv-oss-head+div{gap:10px!important;margin-bottom:10px!important;flex-shrink:0;}
+#invPanel.panel .pbox .inv-oss-urn{width:48px;height:48px;border-radius:0;background:linear-gradient(#27202799,#0f0d11ed),var(--ui-surface) center/240px;}
+#invPanel.panel .pbox .inv-oss-head+div>div:last-child>div:first-child{font:600 14px/1.5 'Noto Serif KR',serif!important;}
+#invPanel.panel .pbox .inv-oss-head+div>div:last-child>div:last-child{font:400 11px/1.6 'Noto Sans KR',sans-serif!important;color:#b0a696!important;}
+#invPanel.panel .pbox .inv-oss-list{min-height:0;max-height:none;overflow-y:auto;overscroll-behavior:contain;scrollbar-gutter:stable;}
+#invPanel.panel .pbox .inv-oss-row{gap:8px;padding:8px 6px;border-bottom:1px solid #60503b66;background:linear-gradient(90deg,#54412826,transparent);}
+#invPanel.panel .pbox .inv-oss-row .oss-name{font:500 13px/1.5 'Noto Sans KR',sans-serif;color:#b4aa99;white-space:normal;overflow-wrap:anywhere;}
+#invPanel.panel .pbox .inv-oss-row.done .oss-name{color:#ded1b7;}
+#invPanel.panel .pbox .inv-oss-port{width:32px;height:32px;}
+#invPanel.panel .pbox .inv-oss-part{width:30px;height:30px;border-radius:0;box-sizing:border-box;background:#111014;box-shadow:inset 0 2px 5px #0009;}
+#invPanel.panel .pbox .inv-oss-part img{width:24px;height:24px;image-rendering:auto;}
+#invPanel.panel .pbox .inv-oss-part.empty{border-style:dashed;border-color:#625849;}
+#invPanel.panel .pbox .inv-oss-part.empty img{filter:grayscale(1) brightness(.65);opacity:.65;}
+#invPanel.panel .pbox .oss-badge{font:500 10px/1.5 'Noto Sans KR',sans-serif;border:1px solid #657355;border-radius:0;color:#c4d5b0;background:#25302077;padding:3px 6px;}
+@media(max-width:560px){#invPanel.panel .pbox .inv-oss-row{flex-wrap:wrap;gap:6px;}#invPanel.panel .pbox .inv-oss-row .oss-name{flex-basis:calc(100% - 46px);}#invPanel.panel[data-inventory-page=ossuary] .pbox .inv-wrap{grid-template-rows:224px minmax(240px,1fr)!important;}}
+```

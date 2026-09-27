@@ -730,3 +730,24 @@
 #invPanel.panel .pbox>div:has(>.ptitle)>.ptitle{display:none!important;}
 #invPanel.panel .pbox>div:has(>.ptitle){gap:0!important;margin:4px 0 8px!important;}
 #invPanel.panel .pbox .inv-wrap{grid-template-rows:270px minmax(240px,1fr)!important;}
+
+/* Ossuary collection: compact ledger, readable parts, restrained status accents. */
+#invPanel.panel[data-inventory-page=ossuary] .pbox .inv-wrap{grid-template-rows:190px minmax(240px,1fr)!important;}
+#invPanel.panel .pbox #invOssuaryPanel{display:flex;flex-direction:column;padding:12px!important;overflow:hidden!important;}
+#invPanel.panel .pbox .inv-oss-head{font:600 13px/1.5 'Noto Serif KR',serif;color:#ddc7a0;letter-spacing:.04em;margin:0 0 10px;padding-bottom:7px;border-bottom:1px solid #75624766;flex-shrink:0;}
+#invPanel.panel .pbox .inv-oss-head>span:last-child{font:500 11px/1.5 'Noto Sans KR',sans-serif!important;color:#b4c8a2!important;font-variant-numeric:tabular-nums;letter-spacing:0;}
+#invPanel.panel .pbox .inv-oss-head+div{gap:10px!important;margin-bottom:10px!important;flex-shrink:0;}
+#invPanel.panel .pbox .inv-oss-urn{width:48px;height:48px;border-radius:0;background:linear-gradient(#27202799,#0f0d11ed),var(--ui-surface) center/240px;}
+#invPanel.panel .pbox .inv-oss-head+div>div:last-child>div:first-child{font:600 14px/1.5 'Noto Serif KR',serif!important;}
+#invPanel.panel .pbox .inv-oss-head+div>div:last-child>div:last-child{font:400 11px/1.6 'Noto Sans KR',sans-serif!important;color:#b0a696!important;}
+#invPanel.panel .pbox .inv-oss-list{min-height:0;max-height:none;overflow-y:auto;overscroll-behavior:contain;scrollbar-gutter:stable;}
+#invPanel.panel .pbox .inv-oss-row{gap:8px;padding:8px 6px;border-bottom:1px solid #60503b66;background:linear-gradient(90deg,#54412826,transparent);}
+#invPanel.panel .pbox .inv-oss-row .oss-name{font:500 13px/1.5 'Noto Sans KR',sans-serif;color:#b4aa99;white-space:normal;overflow-wrap:anywhere;}
+#invPanel.panel .pbox .inv-oss-row.done .oss-name{color:#ded1b7;}
+#invPanel.panel .pbox .inv-oss-port{width:32px;height:32px;}
+#invPanel.panel .pbox .inv-oss-part{width:30px;height:30px;border-radius:0;box-sizing:border-box;background:#111014;box-shadow:inset 0 2px 5px #0009;}
+#invPanel.panel .pbox .inv-oss-part img{width:24px;height:24px;image-rendering:auto;}
+#invPanel.panel .pbox .inv-oss-part.empty{border-style:dashed;border-color:#625849;}
+#invPanel.panel .pbox .inv-oss-part.empty img{filter:grayscale(1) brightness(.65);opacity:.65;}
+#invPanel.panel .pbox .oss-badge{font:500 10px/1.5 'Noto Sans KR',sans-serif;border:1px solid #657355;border-radius:0;color:#c4d5b0;background:#25302077;padding:3px 6px;}
+@media(max-width:560px){#invPanel.panel .pbox .inv-oss-row{flex-wrap:wrap;gap:6px;}#invPanel.panel .pbox .inv-oss-row .oss-name{flex-basis:calc(100% - 46px);}#invPanel.panel[data-inventory-page=ossuary] .pbox .inv-wrap{grid-template-rows:224px minmax(240px,1fr)!important;}}
