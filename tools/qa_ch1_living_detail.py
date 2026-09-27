@@ -7,7 +7,7 @@ from PIL import Image
 from pathlib import Path
 from playwright.sync_api import sync_playwright
 
-out = Path('captures/ch1_living_detail_pass15_20260927') / ('before' if '--before' in sys.argv else 'after')
+out = Path('captures/ch1_living_detail_pass16_20260927') / ('before' if '--before' in sys.argv else 'after')
 if '--motion-only' in sys.argv:
     out=out.parent/'motion-optimized'
 out.mkdir(parents=True, exist_ok=True)
@@ -17,8 +17,8 @@ with sync_playwright() as p:
     context = browser.new_context(viewport={'width':1280,'height':720},record_video_dir=str(out),record_video_size={'width':1280,'height':720})
     page = context.new_page()
     if '--before' in sys.argv:
-        page.route('**/ch1-living-detail.js*',lambda route:route.fulfill(path='tmp/ch1-living-detail-pass14.js',content_type='text/javascript'))
-    page.on('pageerror', lambda e: errors.append(str(e)))
+        page.route('**/ch1-living-detail.js*',lambda route:route.fulfill(path='tmp/ch1-living-detail-pass15.js',content_type='text/javascript'))
+    page.on('pageerror', lambda e: errors.append(e.stack or str(e)))
     page.on('console', lambda m: errors.append(m.text) if m.type=='error' else None)
     page.on('response', lambda r: failed.append(r.url) if r.status >= 400 else None)
     page.goto('http://127.0.0.1:3333/game.html?test=1&testchar=1&stage=0&classic=1&mapqa=1', wait_until='domcontentloaded', timeout=90000)
@@ -33,11 +33,13 @@ with sync_playwright() as p:
     page.wait_for_function('__ch1StartOuterQA().stats.drawnIds.length>0',timeout=30000)
     page.evaluate('closeAllPanels()')
     # Visual/input audit only: preserve enemy/VFX behavior, prevent death interrupting the camera tour.
-    page.evaluate("window.__ch1QAHeal=setInterval(()=>{if(P&&P.hp>0)P.hp=P.mhp;},50)")
-    for name, tx, ty in [('TISSUE_DETAIL',91,184),('START',100,180),('EARLY',100,157),('ARENA',100,120),('SIDE_L',49,151),('SIDE_R',151,136),('LANDMARK',83,80),('LATE',100,48),('EXIT',100,15),('TREE_DETAIL',102,97),('CAMP_DETAIL',46,104),('COCOON_DETAIL',47,56),('POOL_DETAIL',162,141),('AUTHORED_POOL',167,45)]:
+    page.evaluate("window.__ch1QACamera=true;window.__ch1QAHeal=setInterval(()=>{if(P&&P.hp>0){P.hp=P.mhp;if(window.__ch1QACamera)P.iframes=Math.max(P.iframes||0,60);}},50)")
+    for name, tx, ty in [('TISSUE_DETAIL',91,184),('START',100,180),('EARLY',100,157),('ARENA',100,120),('SIDE_L',49,151),('SIDE_R',151,136),('LANDMARK',83,80),('LATE',100,48),('EXIT',100,15),('TREE_DETAIL',102,97),('HANGING_DETAIL',102,82),('CAMP_DETAIL',46,104),('COCOON_DETAIL',47,56),('POOL_DETAIL',162,141),('AUTHORED_POOL',167,45)]:
         if '--camp-only' in sys.argv and name!='CAMP_DETAIL':
             continue
-        if '--tree-only' in sys.argv and name!='TREE_DETAIL':
+        if '--tree-only' in sys.argv and name not in ['TREE_DETAIL','HANGING_DETAIL']:
+            continue
+        if '--hanging-only' in sys.argv and name!='HANGING_DETAIL':
             continue
         if '--motion-only' in sys.argv and name not in ['TREE_DETAIL','CAMP_DETAIL','COCOON_DETAIL']:
             continue
@@ -46,18 +48,19 @@ with sync_playwright() as p:
         page.wait_for_function("(()=>{const s=__ch1StartOuterQA().stats;return s.visibleIds.length>0&&s.visibleIds.every(id=>s.drawnIds.includes(id));})()",timeout=30000)
         assert page.evaluate("P.hp>0&&P.s!=='fallen'&&P.s!=='dead'"), 'camera tour interrupted by player death'
         page.screenshot(path=str(out / (name+'.png')))
-        if name in ['TISSUE_DETAIL','COCOON_DETAIL','AUTHORED_POOL','POOL_DETAIL','TREE_DETAIL','CAMP_DETAIL']:
+        if name in ['TISSUE_DETAIL','COCOON_DETAIL','AUTHORED_POOL','POOL_DETAIL','TREE_DETAIL','HANGING_DETAIL','CAMP_DETAIL']:
             frames, times = [], []
             for _ in range(24):
                 times.append(time.monotonic())
-                frames.append(Image.open(io.BytesIO(page.screenshot(clip={'x':400,'y':80,'width':480,'height':360}))).convert('RGB'))
+                clip={'x':100,'y':100,'width':1050,'height':480} if name=='HANGING_DETAIL' else {'x':400,'y':80,'width':480,'height':360}
+                frames.append(Image.open(io.BytesIO(page.screenshot(clip=clip))).convert('RGB'))
                 page.wait_for_timeout(250)
             durations=[round((b-a)*1000) for a,b in zip(times,times[1:])]
             frames[0].save(out/(name.lower()+'-closeup.gif'),save_all=True,append_images=frames[1:],duration=durations+[durations[-1]],loop=0)
         if name in ['START','TREE_DETAIL','COCOON_DETAIL','POOL_DETAIL']:
             page.wait_for_timeout(6000)
             page.screenshot(path=str(out / (name+'_motion.png')))
-        if name in ['TREE_DETAIL','CAMP_DETAIL']:
+        if name in ['TREE_DETAIL','HANGING_DETAIL','CAMP_DETAIL']:
             state['frameTimesMs']=page.evaluate("()=>new Promise(resolve=>{const a=[];let last;function step(t){if(last!==undefined)a.push(t-last);last=t;if(a.length<60)requestAnimationFrame(step);else{a.sort((x,y)=>x-y);resolve({median:a[30],p95:a[57],samples:60});}}requestAnimationFrame(step);})")
         boards.append({'name':name,**state})
     audit=page.evaluate('''()=>{
@@ -69,7 +72,7 @@ with sync_playwright() as p:
       samples.sort((a,b)=>a-b);
       return {mapUnchanged:before===JSON.stringify(G.map),cpuP95:samples[114],cpuMax:samples[119]};
     }''')
-    page.evaluate('P.x=100.5*T;P.y=180.5*T;G.cam.x=P.x;G.cam.y=P.y;closeAllPanels()')
+    page.evaluate('window.__ch1QACamera=false;P.iframes=0;P.x=100.5*T;P.y=180.5*T;G.cam.x=P.x;G.cam.y=P.y;closeAllPanels()')
     start=page.evaluate('({x:P.x,y:P.y})')
     for key in ['w','d','s','a']:
         page.keyboard.down(key);page.wait_for_timeout(650);page.keyboard.up(key)
@@ -82,7 +85,7 @@ with sync_playwright() as p:
         shot=Image.open(out/(name+'.png')).convert('RGB');shot.thumbnail((320,180));sheet.paste(shot,((i%4)*320,(i//4)*180))
     sheet.save(out/'camera-board.jpg',quality=90)
     death_check=page.evaluate('''()=>{clearInterval(window.__ch1QAHeal);const buttonPresent=!!document.getElementById('deathReplayBtn');try{P._fallenCanRevive=false;P.s='fallen';G.paused=true;_fallenResolve();return {buttonPresent,shown:document.getElementById('death').classList.contains('on'),error:null};}catch(e){return {buttonPresent,error:String(e),stack:e.stack};}}''')
-    result={'errors':errors,'httpErrors':failed,'cameras':boards,'detail':audit,'deathCheck':death_check,'inputQA':{'healthRefillMs':50,'start':start,'end':end,'frameTimesMs':frame_times},'outer':page.evaluate('__ch1StartOuterQA()')}
+    result={'errors':errors,'httpErrors':failed,'cameras':boards,'detail':audit,'deathCheck':death_check,'inputQA':{'healthRefillMs':50,'cameraIframesFloor':60,'combatIframesRefill':False,'start':start,'end':end,'frameTimesMs':frame_times},'outer':page.evaluate('__ch1StartOuterQA()')}
     (out/'runtime.json').write_text(json.dumps(result,ensure_ascii=False,indent=2),encoding='utf-8')
     print(json.dumps({'errors':errors,'httpErrors':failed,'captures':str(out)},ensure_ascii=False))
     context.close()

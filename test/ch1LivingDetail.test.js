@@ -155,6 +155,13 @@ test('organic sprite motion keeps camp crates and the tree trunk attached and st
     }
   }
 });
+test('hanging tree cocoons and corpse swing independently of the solid trunk',async()=>{
+  const source=await loadImage(new URL('../assets/map/ch1/collision/prop_corpsetree.png',import.meta.url).pathname.replace(/^\/(\w:)/,'$1'));
+  function frame(time){const a=createCanvas(1143,1400),c=a.getContext('2d');scope.Ch1LivingDetail.organic(c,{stage:0},{type:'m_c1tree',x:571.5,y:700},time,{sz:1400},source);return c;}
+  const a=frame(0),b=frame(1800);
+  for(const rect of [[90,630,110,235],[277,640,70,140],[967,458,111,171]])assert.notDeepEqual(a.getImageData(...rect).data,b.getImageData(...rect).data,'hanging silhouette must visibly change');
+  assert.deepEqual(a.getImageData(450,410,140,180).data,b.getImageData(450,410,140,180).data,'solid trunk stays still');
+});
 test('giant tree root tips lift while their trunk attachment remains fixed',()=>{
   const source=createCanvas(400,500),s=source.getContext('2d');
   s.fillStyle='#fff';s.fillRect(34,394,10,10);s.fillStyle='#f00';s.fillRect(196,245,8,10);

@@ -474,6 +474,24 @@
     }
     return true;
   }
+  function treeHangers(source){
+    const sx=source.width/1143,sy=source.height/1400,b=source.getContext('2d');
+    const rigs=[
+      {anchor:[222,424],amp:.10,speed:.00135,phase:0,points:[[217,424],[227,424],[239,455],[263,485],[268,532],[250,562],[224,572],[192,546],[188,510],[202,470],[214,447]]},
+      {anchor:[303,608],amp:.13,speed:.00165,phase:1.8,points:[[298,608],[308,608],[314,641],[340,673],[340,726],[325,766],[311,790],[295,766],[277,718],[273,681],[292,640]]},
+      {anchor:[140,609],amp:.085,speed:.0011,phase:3.1,points:[[134,609],[146,609],[150,624],[170,642],[183,685],[185,758],[174,824],[156,862],[139,876],[126,834],[106,803],[103,698],[106,654],[120,627]]},
+      {anchor:[1005,430],amp:.11,speed:.00145,phase:4.4,points:[[998,430],[1010,430],[1015,470],[1036,494],[1053,518],[1063,564],[1059,650],[1043,680],[1038,706],[1025,728],[1001,740],[987,727],[982,691],[971,666],[960,633],[953,568],[958,523],[979,486],[990,453]]}
+    ];
+    return rigs.map(rig=>{
+      const x0=Math.max(0,Math.floor(Math.min(...rig.points.map(p=>p[0]))*sx)-2),y0=Math.max(0,Math.floor(Math.min(...rig.points.map(p=>p[1]))*sy)-2);
+      const x1=Math.min(source.width,Math.ceil(Math.max(...rig.points.map(p=>p[0]))*sx)+2),y1=Math.min(source.height,Math.ceil(Math.max(...rig.points.map(p=>p[1]))*sy)+2);
+      const tex=root.document.createElement('canvas');tex.width=x1-x0;tex.height=y1-y0;const t=tex.getContext('2d');
+      function outline(ctx,dx,dy){ctx.beginPath();rig.points.forEach(([px,py],i)=>{if(i)ctx.lineTo(px*sx+dx,py*sy+dy);else ctx.moveTo(px*sx+dx,py*sy+dy);});ctx.closePath();}
+      t.save();outline(t,-x0,-y0);t.clip();t.drawImage(source,-x0,-y0);t.restore();
+      b.save();b.globalCompositeOperation='destination-out';outline(b,0,0);b.fill();b.restore();
+      return {tex,x0,y0,ax:rig.anchor[0]*sx,ay:rig.anchor[1]*sy,amp:rig.amp,speed:rig.speed,phase:rig.phase};
+    });
+  }
   function organic(c,g,o,now,meta,img){
     const tree=o.type==='m_c1tree',camp=o.type==='m_c1camp';
     if(!enabled(g)||(!tree&&!camp)||!img||img.complete===false||!(img.naturalWidth||img.width)||!meta||meta.srcRect)return false;
@@ -483,6 +501,7 @@
       const iw=img.naturalWidth||img.width,ih=img.naturalHeight||img.height,max=1024;
       const ratio=Math.min(1,max/Math.max(iw,ih)),w=Math.round(iw*ratio),h=Math.round(ih*ratio);
       const source=root.document.createElement('canvas');source.width=w;source.height=h;source.getContext('2d').drawImage(img,0,0,w,h);
+      const hanging=treeHangers(source);
       const a=root.document.createElement('canvas');a.width=w*4;a.height=h*2;const x=a.getContext('2d');
       // Two authored root axes: attachment stays fixed, distal wood lifts as a branch.
       const roots=[[.38,.67,.09,.795,.047,.085,0],[.65,.70,.91,.81,.045,-.075,2.1]];
@@ -527,7 +546,7 @@
       for(let f=0;f<8;f++)p.drawImage(a,f%4*w+x0,Math.floor(f/4)*h+y0,pw,ph,f%4*pw,Math.floor(f/4)*ph,pw,ph);
       source.getContext('2d').clearRect(x0,y0,pw,ph);
       const blended=root.document.createElement('canvas');blended.width=pw;blended.height=ph;
-      cached={a:patch,w:pw,h:ph,fullW:w,fullH:h,x0,y0,staticBody:source,blended,blendKey:-1};cache.set(img,cached);
+      cached={a:patch,w:pw,h:ph,fullW:w,fullH:h,x0,y0,staticBody:source,blended,blendKey:-1,hanging};cache.set(img,cached);
     }
     const {a,w,h}=cached,phase=((now*.0008+o.x*.017+o.y*.011)/(Math.PI*2)%1+1)%1*8;
     const blendKey=Math.floor(phase*16),sample=blendKey/16,frame=Math.floor(sample),next=(frame+1)%8,mix=sample-frame;
@@ -543,6 +562,11 @@
     const dx=o.x-dw*.5,dy=o.y-dh*py;
     c.drawImage(cached.staticBody,dx,dy,dw,dh);
     c.drawImage(cached.blended,dx+cached.x0/cached.fullW*dw,dy+cached.y0/cached.fullH*dh,w/cached.fullW*dw,h/cached.fullH*dh);
+    for(const part of cached.hanging){
+      c.save();c.translate(dx+part.ax/cached.fullW*dw,dy+part.ay/cached.fullH*dh);
+      c.rotate(Math.sin(now*part.speed+part.phase)*part.amp);
+      c.drawImage(part.tex,(part.x0-part.ax)/cached.fullW*dw,(part.y0-part.ay)/cached.fullH*dh,part.tex.width/cached.fullW*dw,part.tex.height/cached.fullH*dh);c.restore();
+    }
     return true;
   }
   root.Ch1LivingDetail=Object.freeze({draw,deform,shadows,hideDuplicate,pit,organic});

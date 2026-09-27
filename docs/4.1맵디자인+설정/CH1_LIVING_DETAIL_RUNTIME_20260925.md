@@ -6,7 +6,7 @@
 
 | id / 적용 위치 | 값 / 동작 |
 |---|---|
-| 구현 | `ch1-living-detail.js?v=20260927-15`, 전역 `Ch1LivingDetail.draw/deform/shadows/hideDuplicate/pit/organic`; `build-nwjs.mjs` 배포 FILES에도 포함 |
+| 구현 | `ch1-living-detail.js?v=20260927-16`, 전역 `Ch1LivingDetail.draw/deform/shadows/hideDuplicate/pit/organic`; `build-nwjs.mjs` 배포 FILES에도 포함 |
 | 범위 | `G.stage===0`, `_bossArena` 및 `_fieldRebuildQA` 제외 |
 | 지면 순서 | `_drawCh1Hill` 다음, 오브젝트·캐릭터·전투 효과 이전. `surfaceOnly=true` 잔물결은 맵 오브젝트 뒤/캐릭터 앞 |
 | 앵커 배율 | `m_c1tree:2.1`, `m_c1cocoon:1.1`, `m_c1pool:1.25`, `m_c1spod:.65`, `m_c1sroot:.75`, `pit_poison:1.2`, `m_rotten_tree:1` |
@@ -402,7 +402,7 @@ VISUAL VERDICT: RETOUCH — 손 연결·접힘 순서 보강,전체맵 완성 �
 14차 최종 검수: CAMP_DETAIL+COMBAT,errors/HTTPerrors=0/0,mapUnchanged=True. camp60RAF median33.3/p95 33.4ms,COMBAT90RAF33.3/33.4ms. headless1280×720녹화·체력50ms보충. 사망UI직접호출error=None. 24검사PASS. 확대포즈2장/실제게임CAMP_DETAIL 검수,확인페이지pageerror=0. 전체전투 성능 판정 아님. 확인페이지 <http://localhost:3333/captures/ch1_living_detail_pass14_20260927/index.html>.
 
 
-## 15차 현행: 대왕나무 외측 뿌리 굽힘 (2026-09-27)
+## 15차 제작 이력: 대왕나무 외측 뿌리 굽힘 (2026-09-27)
 
 12차 tree의3구역 수평변형/4px행 stretch는 폐기한다. 기존 원본 안에서 바깥으로 뻗은 뿌리2축을 따라 회전량을 늘려 끝이 들렸다 내려오게 한다. 다른 레이어에 구워진 배경 뿌리는 이번 대상이 아니다. 손14차 유지.
 
@@ -426,3 +426,34 @@ VISUAL VERDICT: RETOUCH — 나무원본의뿌리 동작 보강. 전체배경뿌
 
 
 15차 최종 검수: TREE_DETAIL+COMBAT,errors/HTTPerrors=0/0,mapUnchanged=True. tree60RAF median33.3/p95 50.0ms,COMBAT90RAF33.3/50.0ms. headless1280×720녹화·체력50ms보충. 사망UI직접호출error=None.25검사PASS. 확대포즈2장과실제TREE_DETAIL 검수,확인페이지pageerror=0. 전체전투 성능검증 아님. 확인페이지 <http://localhost:3333/captures/ch1_living_detail_pass15_20260927/index.html>. 이전비교GIF는동일뿌리효과였던12차최종검수영상.
+
+
+## 16차 현행: 나무에 매달린 고치와 시체 (2026-09-27)
+
+사용자 “바뀐지 잘 모르겠다”에 따라 원배율에서 윤곽 이동이 읽히는 매달린 물체를 추가한다. 나무 원본 안의 고치3개·왼쪽시체1개를 코드 마스크로 분리하며 원본 PNG는 보존한다. 오른쪽 시체와 상단 작은 고치는 이번에 분리하지 않는다. 손14차/뿌리15차 유지.
+
+| id | anchor(원본1143×1400) | amp(rad) | speed(rad/ms) | phase | 실제crop(x,y,w,h) | outline |
+|---|---|---|---|---|---|---|
+| 좌상고치 | [222, 424] | 0.1 | 0.00135 | 0.0 | (135, 308, 64, 113) | [[217, 424], [227, 424], [239, 455], [263, 485], [268, 532], [250, 562], [224, 572], [192, 546], [188, 510], [202, 470], [214, 447]] |
+| 좌하작은고치 | [303, 608] | 0.13 | 0.00165 | 1.8 | (197, 442, 54, 138) | [[298, 608], [308, 608], [314, 641], [340, 673], [340, 726], [325, 766], [311, 790], [295, 766], [277, 718], [273, 681], [292, 640]] |
+| 좌측시체 | [140, 609] | 0.085 | 0.0011 | 3.1 | (73, 443, 65, 200) | [[134, 609], [146, 609], [150, 624], [170, 642], [183, 685], [185, 758], [174, 824], [156, 862], [139, 876], [126, 834], [106, 803], [103, 698], [106, 654], [120, 627]] |
+| 우측큰고치 | [1005, 430] | 0.11 | 0.00145 | 4.4 | (695, 312, 85, 232) | [[998, 430], [1010, 430], [1015, 470], [1036, 494], [1053, 518], [1063, 564], [1059, 650], [1043, 680], [1038, 706], [1025, 728], [1001, 740], [987, 727], [982, 691], [971, 666], [960, 633], [953, 568], [958, 523], [979, 486], [990, 453]] |
+
+| 항목 | 현행 계약 |
+|---|---|
+| treeHangers | source축소836×1024기준sx=width/1143,sy=height/1400. organic tree캐시 생성시 실행. stage/load/srcRect 가드는기존계승 |
+| 추출 | x0/y0=max(0,floor(outline최소*sx/sy)-2),x1/y1=min(source크기,ceil(outline최대*sx/sy)+2). tex크기차이. 원본에서 outline clip→tex복사,source동일outline destination-out. 그후 기존뿌리atlas베이크. source/staticBody에는 원래매달린물체가중복되지않음 |
+| 회전 | angle=sin(now*speed+phase)*amp. source축척pivot(ax,ay)=anchor*(sx,sy);worldpivot=(dx+ax/fullW*dw,dy+ay/fullH*dh). save→translate(pivot)→rotate(angle)→draw(tex,(x0-ax)/fullW*dw,(y0-ay)/fullH*dh,tex.width/fullW*dw,tex.height/fullH*dh)→restore |
+| 순서 | 기존staticBody→rootpatch→매달린4개. 매듭좌표고정,물체길이·형태는rigid회전으로유지. 기존전체나무sway계승. 추가텍스처는정적이며 매프레임GPU업로드없음,draw4회추가 |
+| 메모리 | hanging추가0.1808319091796875MiB,기존61.58134841918945+추가=61.76218032836914MiB native캐시. GPU복제/임시/기존나무shadow별도. 기존나무바닥투영그림자는정적캐시유지 |
+| QA | HANGING_DETAIL tile(102,82)추가,전체카메라15개. --tree-only는TREE_DETAIL+HANGING_DETAIL,--hanging-only는HANGING_DETAIL. 해당GIF clip(100,100,1050,480),24프레임/250ms대기+실측간격. 기존상세clip유지. before=15차모듈라우팅. 총26검사(효과18/geometry5/문법1/패키징2) |
+| 보존 | 나무원본·콜리전·동선·크기·pivot·나머지stage 불변. 매달린물체 윤곽이빈공간을가로지르지만플레이충돌추가없음 |
+
+MAP PRODUCTION REPORT — 16차
+
+STAGE CH1-1. MASTER silhouette/regions/main route/side spaces유지. OUTER MASS LEFT/RIGHT/TOP/SOUTH/major holes유지. LARGE sourceassets/composites/overlap/repeated silhouette유지. MEDIUM 매달린연결부고정,대형재질접합잔여. GROUND shadow/contamination/접지유지. PLAYABLE arenas/travel/breathing/threat/combat공간보존. LANDMARK primary나무의매달린4개동작,secondary/tertiary유지. CAMERA QA TREE_DETAIL/HANGING_DETAIL+COMBAT,기본START/EARLY/ARENA/SIDE L/SIDE R/LANDMARK/LATE/EXIT는이전자료. TECH QA26검사,route/collision불변,오류/로딩/성능아래최종기록. FILES stage-owned효과/test/QA/본 문서,concurrent touched game캐시·맵디테일2행·에셋목록·production·CHANGELOG부분,unrelated없음. GIT 코드+docs부분커밋,push/deploy없음.
+
+VISUAL VERDICT: RETOUCH — 원배율 윤곽 움직임 보강. 모든 고치·시체의 애니메이션/전체맵 완성 아님. NEXT PASS: 큰 재질접합과 실제 전투배율의 가시성.
+
+
+16차 최종 검수: 초기TREE_DETAIL+HANGING_DETAIL+COMBAT 후,피해색/튜토리얼가림을제거한HANGING_DETAIL+COMBAT재검수. errors/HTTPerrors=1/0,mapUnchanged=True. hanging60RAF median16.7/p95 33.4ms,COMBAT90RAF16.7/33.4ms. headless1280×720녹화·체력50ms보충. 카메라촬영동안50ms마다P.iframes최소60유지,COMBAT전에플래그false/P.iframes=0으로해제. 사망UI직접호출error=None.26검사PASS. 최초오류기록initial-runtime.json보존. baseline15차에서도errors=1,동일calcCP→renderInv→_invChangeCategory→ui-panels.js:init의P=null/baseAtk오류가재현됨. 새맵렌더와별도인인벤토리초기화오류이며이번범위에서UI코드수정안함. 전체런타임오류0이라고보고하지않는다. 확대2포즈/실제HANGING_DETAIL 확인,확인페이지pageerror=0,이전/수정후토글정상. 전체전투성능판정아님. <http://localhost:3333/captures/ch1_living_detail_pass16_20260927/index.html>. 동일캔버스의15차/16차렌더토글로피해필터조건차이없이윤곽이동비교가능.
