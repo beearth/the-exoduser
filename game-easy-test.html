@@ -14428,10 +14428,11 @@ function _itemSz(it){
   if(it.slot==='bow'&&it.btype&&BTYPE_SIZE[it.btype])return BTYPE_SIZE[it.btype];
   return ITEM_SIZE[it.slot]||[1,1];
 }
-function _invGrid(){
+function _invCategoryKey(it){return it.slot==='ossuary'||it.slot==='bonePart'?'ossuary':'equipment'}
+function _invGrid(item){
   // INV_COLS × rows 2D 충돌맵 생성
   const g=[];for(let i=0;i<_invRows();i++){g[i]=[];for(let j=0;j<INV_COLS;j++)g[i][j]=-1}
-  for(let i=0;i<INV.bag.length;i++){const it=INV.bag[i];if(!it||it._gx==null||it._gy==null)continue;
+  for(let i=0;i<INV.bag.length;i++){const it=INV.bag[i];if(!it||it._gx==null||it._gy==null||item&&_invCategoryKey(it)!==_invCategoryKey(item))continue;
     const[w,h]=_itemSz(it);
     for(let dy=0;dy<h;dy++)for(let dx=0;dx<w;dx++){
       const ry=it._gy+dy,rx=it._gx+dx;
@@ -14439,8 +14440,8 @@ function _invGrid(){
     }
   }return g;
 }
-function _invFindSpace(w,h,skip){
-  const g=_invGrid();
+function _invFindSpace(w,h,skip,item=INV.bag[skip]){
+  const g=_invGrid(item);
   for(let y=0;y<=_invRows()-h;y++)for(let x=0;x<=INV_COLS-w;x++){
     let ok=true;
     for(let dy=0;dy<h&&ok;dy++)for(let dx=0;dx<w&&ok;dx++){
@@ -14479,24 +14480,24 @@ function _invAutoPlace(){
   // 그리드 초기화
   for(let i=0;i<INV.bag.length;i++){INV.bag[i]._gx=null;INV.bag[i]._gy=null}
   // 행 단위 배치: 파워순으로 현재 행에 넣고, 안 들어가면 다음 행
-  let _cy=0,_cx=0,_rh=1; // 현재 x, y, 현재 행 최대 높이
+  const _layout={equipment:{x:0,y:0,h:1},ossuary:{x:0,y:0,h:1}};
   for(let i=0;i<INV.bag.length;i++){
-    const it=INV.bag[i];const[w,h]=_itemSz(it);
-    if(_cx+w>INV_COLS){_cy+=_rh;_cx=0;_rh=1} // 줄바꿈
-    if(_cy+h>_invRows()){// 행 초과 시 빈 자리 아무데나
-      const pos=_invFindSpace(w,h,-1);
+    const it=INV.bag[i];const[w,h]=_itemSz(it),place=_layout[_invCategoryKey(it)];
+    if(place.x+w>INV_COLS){place.y+=place.h;place.x=0;place.h=1} // 줄바꿈
+    if(place.y+h>_invRows()){// 행 초과 시 같은 탭의 빈 자리
+      const pos=_invFindSpace(w,h,-1,it);
       if(pos){it._gx=pos.x;it._gy=pos.y}
       continue;
     }
-    it._gx=_cx;it._gy=_cy;
-    _rh=Math.max(_rh,h);_cx+=w;
+    it._gx=place.x;it._gy=place.y;
+    place.h=Math.max(place.h,h);place.x+=w;
   }
 }
 function _invCanPlace(idx,gx,gy){
   const it=INV.bag[idx];if(!it)return false;
   const[w,h]=_itemSz(it);
   if(gx<0||gy<0||gx+w>INV_COLS||gy+h>_invRows())return false;
-  const g=_invGrid();
+  const g=_invGrid(it);
   for(let dy=0;dy<h;dy++)for(let dx=0;dx<w;dx++){
     const v=g[gy+dy][gx+dx];if(v!==-1&&v!==idx)return false;
   }
@@ -14582,7 +14583,7 @@ function equipItem(item){
   // old 그리드 위치 잡기 (null이면)
   if(old&&old._gx==null){
     const[ow,oh]=_itemSz(old);
-    const pos=_invFindSpace(ow,oh,-1);
+    const pos=_invFindSpace(ow,oh,-1,old);
     if(pos){old._gx=pos.x;old._gy=pos.y}
   }
   recalcSt();playEquipSfx(item);notify(_T(item.name)+_T(' 장착!'));
