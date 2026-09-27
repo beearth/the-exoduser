@@ -965,3 +965,12 @@ CSS 캐시 ui-refinement.css?v=20260927-4. 신규 이미지/아이템 데이터 
 | 저장 | INV.ossCollect와 가방 데이터 형식·기존 수치 변경 없음. 정보 팝업과 호버 상태는 저장하지 않음 |
 | 적용 | game.html, game-easy-test.html, ui-refinement.css?v=20260927-bone-hover-flow |
 | 검증 | 저장 API를 차단한 게임 화면에서 가방 유골 호버→우클릭 등록 직후 호버 상세 닫힘, 등록 유골 호버 정보 즉시 표시, 우클릭 해제 즉시 팝업 닫힘 PASS. 기존 유골 회귀12개·네 부위 우클릭 QA PASS, pageerror0. tmp/bone_hover_info_1280.png |
+
+## 2026-09-27 장비 이동 후 호버 시각 상태
+
+| 항목 | UI 계약 |
+|---|---|
+| 이동 직후 | 가방 위치·장착 부위가 바뀌면 마우스가 정지해 있어도 우측 상세와 비교창을 숨기고 이전 선택·호버를 해제 |
+| 다시 보기 | 새 아이템 위로 마우스를 이동하거나 클릭하면 상세 표시. 위치가 그대로인 일반 재렌더는 클릭 선택 유지 |
+| 빈 장비 슬롯 | 장비 해제 뒤 커서 아래 빈 소켓에는 장착 아이템용 호버 밝기를 적용하지 않음 |
+| 적용 | `game.html`, `game-easy-test.html`, `ui-refinement.css?v=20260927-inventory-move-hover` |

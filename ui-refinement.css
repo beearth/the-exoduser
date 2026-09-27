@@ -178,7 +178,7 @@
   box-shadow:inset 0 0 0 2px #060909,inset 0 3px 7px #000c,inset 0 -2px #b8a47720,0 1px #a7977224!important;
 }
 #invPanel .inv-eq-slot .ieq-label{color:#d0c3a5!important;text-shadow:0 1px 2px #000,0 0 4px #000;}
-#invPanel .inv-eq-slot:hover{transform:none!important;box-shadow:inset 0 0 0 2px #060909,inset 0 0 14px #d2b16d18,0 0 0 1px #c5a471!important;}
+#invPanel .inv-eq-slot.inv-eq-item:hover{transform:none!important;box-shadow:inset 0 0 0 2px #060909,inset 0 0 14px #d2b16d18,0 0 0 1px #c5a471!important;}
 #invPanel :is(.inv-cell,.inv-grid-bg){background:linear-gradient(#090e0bd9,#20251add),var(--ui-surface) center/240px!important;box-shadow:inset 0 2px 5px #0009,inset 0 -1px #d0b67512!important;}
 #invPanel .item-detail{border-color:#8c7654!important;box-shadow:0 12px 24px #000b,inset 0 0 0 2px #080b09!important;}
 :is(#settings,#invPanel,#forge,#skillPanel,#storagePanel,#statPanel) *{scrollbar-color:#796b50 #0c100d;scrollbar-width:thin;}
@@ -423,7 +423,7 @@
 #invPanel.panel .pbox .inv-eq-slot:is(.rarity-4,.rarity-5)::after{width:12px;clip-path:polygon(25% 0,50% 50%,75% 0,100% 50%,75% 100%,50% 50%,25% 100%,0 50%);}
 #invPanel.panel .pbox .inv-eq-slot:not(.inv-eq-item){background:linear-gradient(#141316,#0b0b0c)!important;}
 #invPanel.panel .pbox .inv-eq-slot:not(.inv-eq-item) .ieq-label{color:#8f897d!important;border-top-color:#403d37;}
-#invPanel.panel .pbox .inv-eq-slot:hover{filter:brightness(1.2);box-shadow:inset 0 0 12px #cfb98720!important;}
+#invPanel.panel .pbox .inv-eq-slot.inv-eq-item:hover{filter:brightness(1.2);box-shadow:inset 0 0 12px #cfb98720!important;}
 #invPanel.panel .pbox .inv-eq-slot.selected{outline:2px solid #d7b576!important;outline-offset:1px;}
 #invPanel.panel .pbox #invCenter{padding:8px 10px 10px!important;overflow:hidden!important;}
 #invPanel.panel .pbox #invCenter>div:first-child{
