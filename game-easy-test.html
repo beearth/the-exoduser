@@ -2299,7 +2299,7 @@ canvas{display:block;position:fixed;inset:0}
 <link rel="stylesheet" href="stat-panel-ui.css?v=20260910-fullscreen-readable-v1">
 <link rel="stylesheet" href="localization.css?v=20260909">
 <link rel="stylesheet" href="ui-foundation.css?v=20260924-hell3">
-<link rel="stylesheet" href="ui-refinement.css?v=20260927-inventory-move-hover">
+<link rel="stylesheet" href="ui-refinement.css?v=20260927-oss-info-plate">
 <script defer src="ui-panels.js?v=20260927-storage-split"></script>
 <script src="stat-panel-ui.js?v=20260909-constellation-v3"></script>
 </head>
@@ -2713,7 +2713,21 @@ canvas{display:block;position:fixed;inset:0}
         </div>
         <div id="invFilters" style="margin-bottom:4px"></div>
         <div class="inv-grid" id="invGrid"></div>
-        <div id="invCompareArea" style="border-top:1px solid #332211;margin-top:8px;padding-top:8px;flex:1;min-height:0;overflow-y:auto;display:none"></div>
+        <section id="invOssInfo" class="inv-oss-info" aria-label="유골함 정보">
+          <div class="inv-oss-info-placeholder">
+            <span class="inv-oss-info-seal" aria-hidden="true">◇</span>
+            <span class="inv-oss-info-heading">유골함 정보</span>
+            <span class="inv-oss-info-hint">아이템 또는 유골에 마우스를 올려 정보를 확인하세요</span>
+          </div>
+          <div id="invOssBoneCard" class="inv-oss-bone-card">
+            <span class="inv-oss-bone-kicker">선대의 유골</span>
+            <strong class="inv-oss-bone-title"></strong>
+            <span class="inv-oss-bone-meta"></span>
+            <span class="inv-oss-bone-effect"></span>
+            <span class="inv-oss-bone-note"></span>
+          </div>
+        </section>
+                <div id="invCompareArea" style="border-top:1px solid #332211;margin-top:8px;padding-top:8px;flex:1;min-height:0;overflow-y:auto;display:none"></div>
       </div>
       <!-- RIGHT: 아이템 상세 + 비교 -->
       <div class="inv-right" id="invRight">
@@ -45812,11 +45826,27 @@ function toggleInvStorage(){
 let _invSalSel=new Set(); // 인벤토리 분해 선택
 let _invHover=-1; // 호버 중인 가방 인덱스
 // _invRenderDetail: 우측 패널에 비교+아이템상세 렌더 (호버/선택 공용)
-function _invRenderDetail(idx,source){
+function _invPlaceDetail(){
+  const rp=$('invRight'),host=$('invOssInfo'),wrap=$('invPanel')?.querySelector('.inv-wrap');
+  if(!rp||!host||!wrap)return;
+  host.setAttribute('aria-label',_L('유골함 정보','Ossuary information'));
+  const heading=host.querySelector('.inv-oss-info-heading'),hint=host.querySelector('.inv-oss-info-hint');
+  if(heading&&!heading.children.length)heading.textContent=_L('유골함 정보','Ossuary information');
+  if(hint&&!hint.children.length)hint.textContent=_L('아이템 또는 유골에 마우스를 올려 정보를 확인하세요','Hover an item or bone to see its details.');
+  const parent=$('invPanel')?.dataset.inventoryPage==='ossuary'?host:wrap;
+  if(rp.parentElement!==parent)parent.appendChild(rp);
+  if(parent!==host)host.classList.remove('has-detail','has-bone');
+}
+// _invRenderDetail: 우측 패널에 비교+아이템상세 렌더 (호버/선택 공용)
+function _invRenderDetail(idx,source,preview=false){
   const it=source==='eq'?INV.equipped[idx]:source==='st'?(_getStore()[idx]||null):INV.bag[idx];
   if(!it)return;
   const rp=$('invRight');if(!rp)return;
+  rp.style.visibility='visible';
+  rp.classList.toggle('inv-hover-preview',preview);
   rp.innerHTML='';
+  const inline=$('invOssInfo');
+  if(inline&&rp.parentElement===inline){inline.classList.add('has-detail');inline.classList.remove('has-bone');}
   // ── 비교 데이터 준비 (가방 아이템일 때) ──
   let _cmpData=null;
   if(source==='bag'){
@@ -45883,6 +45913,7 @@ _actB.innerHTML=`<div class="id-btns" style="display:flex;gap:6px"><button type=
 function _invClearHover(){
   _invRestoreSelectedActions();
   const rp=$('invRight');if(rp)rp.style.visibility='hidden';
+  const inline=$('invOssInfo');if(inline)inline.classList.remove('has-detail','has-bone');
   const cmp=$('invCompareFloat');if(cmp)cmp.style.display='none';
 }
 function _invRestoreSelectedActions(){
@@ -46135,13 +46166,27 @@ document.addEventListener('mouseup',function(ev){
   }
   renderInv();
 });
-function _ossHideBoneInfo(){const tip=$('ossBoneInfo');if(tip)tip.hidden=true;}
+function _ossHideBoneInfo(){const tip=$('ossBoneInfo');if(tip)tip.hidden=true;const host=$('invOssInfo');if(host)host.classList.remove('has-bone');}
 function _ossShowBoneInfo(part,ev){
   const R=ANC_ROSTER[0],c=R&&INV.ossCollect&&INV.ossCollect[R.id+'_'+part];
+  const role={skull:_L('치명 · 위력','Critical · Power'),torso:_L('최대 HP','Maximum HP'),arms:_L('공격 위력','Attack power'),legs:_L('크기 · 이동속도','Size · Movement speed')}[part];
+  const host=$('invOssInfo'),card=$('invOssBoneCard');
+  if(host&&card&&$('invPanel')?.dataset.inventoryPage==='ossuary'){
+    if(host.classList.contains('has-bone')&&host.dataset.bonePart===part)return;
+    const set=(cls,value)=>{const leaf=card.querySelector('.'+cls);if(leaf&&!leaf.children.length)leaf.textContent=value;};
+    set('inv-oss-bone-kicker',_L('선대의 유골','Ancestral bone'));
+    set('inv-oss-bone-title',_bonePartName(part));
+    set('inv-oss-bone-meta',c?_rarName(c.r||0)+' · T'+((c.t||0)+1):_L('미수집','Not collected'));
+    set('inv-oss-bone-effect',role+(c?' · '+_L('위력 ','Power ')+((c.r||0)+(c.t||0)):''));
+    set('inv-oss-bone-note',c?_L('우클릭하면 가방으로 해제됩니다.','Right-click to return it to your bag.'):_L('유골을 획득하면 이 부위에 등록됩니다.','Collect a bone to register this part.'));
+    const rp=$('invRight');if(rp)rp.style.visibility='hidden';
+    host.classList.remove('has-detail');host.classList.add('has-bone');host.dataset.bonePart=part;
+    const tip=$('ossBoneInfo');if(tip)tip.hidden=true;
+    return;
+  }
   if(!c){_ossHideBoneInfo();return;}
   let tip=$('ossBoneInfo');
   if(!tip){tip=document.createElement('div');tip.id='ossBoneInfo';tip.setAttribute('role','tooltip');document.body.append(tip);}
-  const role={skull:_L('치명 · 위력','Critical · Power'),torso:_L('최대 HP','Maximum HP'),arms:_L('공격 위력','Attack power'),legs:_L('크기 · 이동속도','Size · Movement speed')}[part];
   tip.textContent=_bonePartName(part)+'\n'+_rarName(c.r||0)+' T'+((c.t||0)+1)+' · '+_L('위력 ','Power ')+((c.r||0)+(c.t||0))+'\n'+role;
   tip.hidden=false;
   tip.style.left=Math.max(8,Math.min(ev.clientX+16,innerWidth-tip.offsetWidth-8))+'px';
@@ -46254,6 +46299,7 @@ function _invPlacementChanged(before,after){
     ||before.eq.some((item,i)=>item!==after.eq[i]);
 }
 function renderInv(){
+  _invPlaceDetail();
   const _placementBefore=_invPlacement();
   const _placementMoved=_invPlacementChanged(_invLastPlacement,_placementBefore);
   if(_placementMoved){INV.selected=null;_invHover=-1;}
@@ -46289,7 +46335,7 @@ function renderInv(){
         div.style.borderColor=RARITY_C[item.rarity];
         div.style.boxShadow=`inset 0 0 12px ${RARITY_C[item.rarity]}33, 0 0 8px ${RARITY_C[item.rarity]}44`;
       }
-      div.onmouseover=()=>{_invHover=-1;_invRenderDetail(slot,'eq')};
+      div.onmouseover=()=>{_invHover=-1;_invRenderDetail(slot,'eq',true)};
       div.onmouseleave=()=>_invClearHover();
     }
     div.onclick=(ev)=>{
