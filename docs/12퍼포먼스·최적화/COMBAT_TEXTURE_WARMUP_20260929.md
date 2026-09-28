@@ -60,3 +60,18 @@ AMD Radeon RX 9070 XT / WebGL2 / NW.js 0.111.2 / Chromium148 / 1600×900 / High 
 | GIT / DEPLOY | 아래 완료 기록 참조. Drive 공유본은 별도 교체가 완료되기 전 기존 ZIP임 |
 | VISUAL VERDICT | RETOUCH — 이번 성능 수정으로 전체 맵 시각 PASS를 선언하지 않음 |
 | NEXT PASS | 이동·연속 공격·전체 화면40초 실측 완료. 장시간·보스·창 크기 변경/신규 드롭 경로는 추가 추적 |
+
+## 로컬 패키지 완료 기록
+
+| 항목 | 검증 결과 |
+|---|---|
+| 코드 커밋 | `30e9cf16ba683c2daaddae945099d445bccec2d0`, 코드·회귀·관련 문서12파일만 기록. 나머지 인덱스 항목 완전 동일 및 공유 파일의 기존 staging+이번 변경 일치 확인 |
+| r2 ZIP | `output/applications/publisher-20260929/02_EXODUSER_DEMO_WIN64_20260929_r2.zip`,6,737,898,306바이트 |
+| SHA256 | `d64038bfd35e87001b263037991fba1ea16206a164c212c219d2f6d1e9821a13` |
+| 무결성 | 전체6,589개를 ZIP에서 다시 읽어 CRC·바이트 수·SHA256 대조. 모두 `build-manifest-r2.json`과 일치 |
+| 변경 범위 | 원 배포 snapshot의 두HTML에 helper·호출22줄씩만 이식. ZIP의 다른6,587개 payload는 이전 manifest 해시 유지. QA·개인 세이브·프로필 제외 |
+| 원본 보존 | 기존 `02_EXODUSER_DEMO_WIN64_20260929.zip`과 기존 checksum/manifest 유지. 추출 폴더의 두HTML은 r2, 원HTML 백업은 `tmp/publisher-lag-20260929/delivery-before-*` |
+| Drive / Steam | 공유 Drive ZIP은 기존6,737,897,304바이트. r2 교체 승인 질문 대기. Steam 업로드0 |
+| 근거 | `archive-verification-r2.json`, `delivery-patch.json`, `commit-verification.json` |
+
+QA용 독립 런타임 PID28212의 실행 경로를 확인한 뒤 종료했다. 사용자 게임·브라우저 프로세스는 종료하지 않았다. 전체 worktree 변경110개는 타 작업을 포함하며, 자동 정리·타 파일 강제 커밋을 수행하지 않았다.
