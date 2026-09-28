@@ -11,7 +11,7 @@
 | 저장 | `assets/video-bases/20260928/` |
 | 프롬프트·참조·작업 ID | 같은 폴더 `generation-manifest.json` |
 | 프리뷰 | 같은 폴더 `index.html` |
-| 적용 | 이 폴더의 이미지들은 영상 생성 입력 후보이며 게임 런타임에 연결하지 않음. 별도 사용자 첨부 원화로 제작한 영상 06·07은 `HAILUO_CHARACTER_VIDEO_TEST_20260928.md`에 기록 |
+| 적용 | 이 폴더의 이미지들은 영상 생성 입력 후보이며 게임 런타임에 연결하지 않음. 별도 사용자 첨부 원화로 제작한 영상 06·07·08은 `HAILUO_CHARACTER_VIDEO_TEST_20260928.md`에 기록 |
 
 ## 선택한 기준 이미지
 
@@ -23,6 +23,8 @@
 | 아케인 랜서 | 03-arcane-lancer-idle-v2.png | 창 전체와 발이 보이는 준비 자세 → 시전 / 한 차례 동작 |
 | 실버테일 | 04-silvertail-idle.png | 원형 등 허브와 넓은 등검이 보이는 후면 사선 대기 → 등검 작동 |
 | 총사 이전 정면 참고 | 06-cruciform-front-open-v2.png / 07-cruciform-front-closed.png | 구조 참고로 보존. 최신 남녀 구도의 시작·끝 쌍으로 사용하지 않음. [기록](CRUCIFORM_FRONT_BASE_20260928.md) |
+
+아케인 랜서 후속 영상 08은 사용자가 새로 첨부한 `hf_20260928_011117_d25ad6a4-dcbb-46d4-aa19-e9c9eb5e65bc.png`를 사용한다. 입력은 `assets/video-tests/hailuo-20260928/08-arcane-lancer-source.png`에 보존했다. `03-arcane-lancer-idle-v2.png`의 영상 승인으로 확대 해석하지 않는다. 생성 원본과 창 찌르기 검수는 `HAILUO_CHARACTER_VIDEO_TEST_20260928.md`에 기록한다.
 
 ## 공통 제작 기준
 

@@ -1,0 +1,40 @@
+{
+  "date": "2026-09-28",
+  "authorization": "User attached hf_20260928_011117_d25ad6a4-dcbb-46d4-aa19-e9c9eb5e65bc.png and requested another video in the ongoing image-to-video workflow. Approval is specific to this image.",
+  "source_asset": "assets/video-tests/hailuo-20260928/08-arcane-lancer-source.png",
+  "source_dimensions": [
+    2816,
+    1584
+  ],
+  "source_sha256": "95C4093A87D757C6B7FF82F53E4A7C36ADB2DB53E6FD16482C8EA84A541419D8",
+  "service": "MagicLight",
+  "model": "Hailuo 2.3",
+  "settings": {
+    "resolution": "768p",
+    "duration": "5s"
+  },
+  "prompt": "Animate this exact EXODUSER artwork as a single 5-second cinematic shot. The adult silver-haired female ARCANE LANCER makes ONE forceful controlled spear thrust along the EXISTING diagonal shaft toward the lower-left. 0-1.2s: hold her stable stance, violet energy gathers around the existing spearhead rings. 1.2-1.8s: a short anticipation, pulling the intact spear back only slightly. 1.8-2.3s: ONE quick sharp thrust forward toward lower-left, driving from her legs and hips while both hands remain firmly around the SAME shaft. 2.3-3.2s: brief follow-through, one compact violet pulse at the spear tip. 3.2-5s: controlled recovery into a strong guard, energy dims. The entire long polearm is ONE rigid connected object, always perfectly straight from pointed head to rear cap. Preserve the ornate metal spearhead, physical ring assembly, shaft length and engravings; energy orbits the real metal rings without changing their shape. Never spin, swing overhead, bend, split, shorten, grow or transform the spear. Preserve face, hood, silver hair, black armor and coverage. Her face stays recognizable, three-quarter toward camera, no full turn away. Hair and shredded cape flow naturally with wind and thrust. Keep the gothic skyline, violet eclipse and EXODUSER HELL LORD title stable. Camera locked, no zoom, pan, cuts or shake. No new characters, huge beams or explosions. Clear physical spear action and stable hands take priority over effects.",
+  "credits_before": 81930,
+  "credits_after": 81680,
+  "actual_credits_spent": 250,
+  "status": "completed",
+  "output": "08-arcane-lancer-thrust.mp4",
+  "task_id": "7510150349916897280",
+  "output_properties": {
+    "codec": "h264",
+    "width": 1248,
+    "height": 704,
+    "fps": 24,
+    "duration_seconds": 5.041667,
+    "bytes": 8352901,
+    "audio_stream": false
+  },
+  "review": {
+    "verdict": "RETOUCH",
+    "observed": "A spear thrust toward screen left, violet energy gathering, a forward pulse and recovery are visible. The long shaft, female silhouette, face and gothic composition remain recognizable in the sampled frames.",
+    "limitations": "The purple effect grows into a broad forward plume rather than the requested compact pulse, obscuring spearhead and ring detail at peak. Fine rigid ornament preservation and all hand frames are not approved.",
+    "evidence": "08-arcane-lancer-contact.jpg",
+    "sampling": "10 frames at 0.5-second intervals",
+    "runtime_integration": false
+  }
+}
