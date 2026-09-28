@@ -8,18 +8,19 @@
   function enabled(g){return g.stage===0&&!g._bossArena&&!g._fieldRebuildQA;}
   // Authored material transitions, not new props: preserve the open combat floor.
   const skinRegions=[
-    {tx:49,ty:151,w:1280,h:880,variant:0},
+    {tx:49,ty:151,w:1440,h:880,variant:0},
     {tx:151,ty:136,w:1440,h:800,variant:1},
     {tx:100,ty:120,w:1360,h:820,variant:2},
-    {tx:46,ty:107,w:960,h:640,variant:3}
+    {tx:46,ty:107,w:960,h:640,variant:3},
+    {tx:167,ty:47,w:900,h:680,variant:4}
   ];
   const regionSkins=[];
   function regionalSkin(variant){
     if(regionSkins[variant])return regionSkins[variant];
     const a=root.document.createElement('canvas');a.width=768;a.height=512;
     const c=a.getContext('2d');
-    const palette=variant===3?['#302d2c','#47403c','#3a3035']:variant===1?['#3a3034','#424237','#303829']:['#342e31','#4c403e','#342e2f'];
-    const base=variant===3?c.createLinearGradient(384,0,384,512):variant===1?c.createLinearGradient(0,256,768,256):c.createLinearGradient(0,0,180,512);
+    const palette=variant===4?['#353c2a','#413c36','#342e31']:variant===3?['#302d2c','#47403c','#3a3035']:variant===1?['#343034','#49443c','#303829']:variant===2?['#343034','#494042','#343034']:['#342e31','#4c403e','#342e2f'];
+    const base=variant>=3?c.createLinearGradient(384,0,384,512):variant===1?c.createLinearGradient(0,256,768,256):c.createLinearGradient(0,0,180,512);
     base.addColorStop(0,palette[0]);base.addColorStop(.45,palette[1]);base.addColorStop(1,palette[2]);
     c.fillStyle=base;c.fillRect(0,0,768,512);
     let seed=1397+variant*971;
@@ -44,12 +45,42 @@
       c.save();c.translate(0,-1.4);c.strokeStyle='rgba(156,134,116,.14)';c.lineWidth=.8;c.stroke();c.restore();
       c.restore();
     }
+    if(variant===0){
+      // Broad matte tissue folds replace leaf-pattern contrast without raised obstacles.
+      for(const [sx,sy,cx,cy,ex,ey] of [[110,246,166,340,324,374],[270,170,346,220,394,298],[512,182,468,288,588,340],[264,395,358,408,430,350],[556,425,600,350,668,280]]){
+        c.beginPath();c.moveTo(sx,sy);c.bezierCurveTo(cx,sy-22,cx,cy,ex,ey);
+        c.strokeStyle='rgba(32,23,29,.16)';c.lineWidth=5;c.stroke();
+        c.save();c.translate(0,-1.5);c.strokeStyle='rgba(148,121,111,.14)';c.lineWidth=1.5;c.stroke();c.restore();
+      }
+      // Worn red-brown soil connects the western arch foot to the existing skin ground.
+      for(const [sx,sy,cx,cy,ex,ey,width] of [[105,318,164,342,290,365,6],[124,285,218,312,348,322,4],[142,346,206,382,268,401,5]]){
+        c.beginPath();c.moveTo(sx,sy);c.bezierCurveTo(cx,sy,cx,cy,ex,ey);
+        c.strokeStyle='rgba(43,24,27,.2)';c.lineWidth=width;c.stroke();
+        c.save();c.translate(0,-1);c.strokeStyle='rgba(131,106,91,.12)';c.lineWidth=1;c.stroke();c.restore();
+      }
+    }
     if(variant===1){
       // Broad, shallow tissue folds converge into the contaminated bank, not a new obstacle.
       for(const [sx,sy,cx,cy,ex,ey,width] of [[245,192,455,215,691,273,12],[330,358,495,307,715,319,9],[432,120,556,161,678,230,7]]){
         c.beginPath();c.moveTo(sx,sy);c.bezierCurveTo(cx,sy,cx,cy,ex,ey);
         c.strokeStyle='rgba(24,26,19,.16)';c.lineWidth=width;c.stroke();
         c.save();c.translate(0,-2);c.strokeStyle='rgba(120,112,84,.12)';c.lineWidth=1.1;c.stroke();c.restore();
+      }
+    }
+    if(variant===2){
+      // Sparse, unequal folds keep the central fighting floor flat and quiet.
+      for(const [sx,sy,cx,cy,ex,ey] of [[190,160,255,235,310,330],[410,120,360,215,470,285],[550,260,520,352,620,390],[280,395,380,360,432,420]]){
+        c.beginPath();c.moveTo(sx,sy);c.bezierCurveTo(cx,sy-18,cx,cy,ex,ey);
+        c.strokeStyle='rgba(31,24,30,.14)';c.lineWidth=4;c.stroke();
+        c.save();c.translate(-1,-1);c.strokeStyle='rgba(145,123,117,.12)';c.lineWidth=1;c.stroke();c.restore();
+      }
+    }
+    if(variant===2){
+      // Short seams join the northern soil and the southern approach to the membrane.
+      for(const [sx,sy,cx,cy,ex,ey] of [[270,98,304,128,330,202],[410,72,388,127,438,179],[338,358,302,410,354,466],[482,348,510,409,456,454]]){
+        c.beginPath();c.moveTo(sx,sy);c.bezierCurveTo(cx,sy+18,cx,cy,ex,ey);
+        c.strokeStyle='rgba(35,26,30,.16)';c.lineWidth=3;c.stroke();
+        c.save();c.translate(-1,-1);c.strokeStyle='rgba(133,117,106,.1)';c.lineWidth=1;c.stroke();c.restore();
       }
     }
     if(variant===3){
@@ -60,13 +91,23 @@
         c.save();c.translate(-1,-1);c.strokeStyle='rgba(133,117,105,.16)';c.lineWidth=1;c.stroke();c.restore();
       }
     }
+    if(variant===4){
+      // Shallow seams carry damp soil away from the pool into the southern approach.
+      for(const [sx,sy,cx,cy,ex,ey] of [[330,145,260,275,235,405],[410,170,455,280,520,370],[370,230,350,340,390,450]]){
+        c.beginPath();c.moveTo(sx,sy);c.bezierCurveTo(cx,sy,cx,cy,ex,ey);
+        c.strokeStyle='rgba(24,27,21,.18)';c.lineWidth=4;c.stroke();
+        c.save();c.translate(-1,-1);c.strokeStyle='rgba(119,117,92,.12)';c.lineWidth=1;c.stroke();c.restore();
+      }
+    }
     // A continuous feathered, asymmetric edge, with no visible rectangular bounds.
     const mask=root.document.createElement('canvas');mask.width=768;mask.height=512;
     const m=mask.getContext('2d');
-    const lobes=variant===3?[[300,220,280,180],[500,290,190,145],[340,365,200,120]]:[[300,255,288,210],[500,225,232,172],[440,332,220,152]];
-    if(variant===1)lobes.push([670,270,94,142]);
+    const lobes=variant===4?[[384,190,240,160],[295,310,220,145],[520,340,170,120]]:variant===3?[[300,220,280,180],[500,290,190,145],[340,365,200,120]]:[[300,255,288,210],[500,225,232,172],[440,332,220,152]];
+    if(variant===0)lobes.push([108,308,86,95]);
+    if(variant===1)lobes.push([670,270,94,142],[155,282,146,140]);
+    if(variant===2)lobes.push([325,113,205,106],[400,405,182,99]);
     for(const [x,y,rx,ry] of lobes){
-      m.save();m.translate(x+(variant===3?0:(variant-1)*18),y);m.scale(rx,ry);
+      m.save();m.translate(x+(variant>=3?0:(variant-1)*18),y);m.scale(rx,ry);
       const fade=m.createRadialGradient(0,0,.12,0,0,1);
       fade.addColorStop(0,'rgba(0,0,0,.88)');fade.addColorStop(.48,'rgba(0,0,0,.75)');fade.addColorStop(1,'rgba(0,0,0,0)');
       m.fillStyle=fade;m.fillRect(-1,-1,2,2);m.restore();
@@ -293,7 +334,7 @@
     if(!surfaceOnly)for(const region of skinRegions){
       const x=(region.tx+.5)*40,y=(region.ty+.5)*40;
       if(Math.abs(x-g.cam.x)>hw+region.w/2||Math.abs(y-g.cam.y)>hh+region.h/2)continue;
-      c.globalAlpha=alpha*.6;c.drawImage(regionalSkin(region.variant),x-region.w/2,y-region.h/2,region.w,region.h);c.globalAlpha=alpha;
+      c.globalAlpha=alpha*(region.variant===0?.82:region.variant===1||region.variant===2?.76:.6);c.drawImage(regionalSkin(region.variant),x-region.w/2,y-region.h/2,region.w,region.h);c.globalAlpha=alpha;
     }
     for(let i=0;i<objects.length+(surfaceOnly?0:ground.length);i++){
       const o=i<objects.length?objects[i]:ground[i-objects.length];
@@ -304,6 +345,7 @@
       const s=k*Math.min(1.6,o.scale||1),pad=160*s;
       const y=o.y+((surfaceOnly&&wet)?0:(feet[o.type]||0)*(o.scale||1));
       if(Math.abs(o.x-g.cam.x)>hw+pad||Math.abs(y-g.cam.y)>hh+pad)continue;
+      if(surfaceOnly&&o.type==='m_c1pool'&&o.x===6700&&o.y===1740){poolSurface(c,o,now);continue;}
       const variant=wet||surfaceOnly?0:Math.abs(Math.floor(o.x/40)*7+Math.floor(o.y/40)*11)%3;
       const a=atlas(wet,surfaceOnly,variant);
       const phase=((now*.00095+o.x*.017+o.y*.011)/(Math.PI*2)%1+1)%1*16;
@@ -343,12 +385,13 @@
     const c=a.getContext('2d');c.drawImage(img,48,48,416,416);
     const pixels=c.getImageData(0,0,512,512),p=pixels.data,d=new Uint8Array(512*512);
     for(let y=0;y<512;y++)for(let x=0;x<512;x++){
-      const i=y*512+x;d[i]=p[i*4+3]>80?0:24;
+      const i=y*512+x;d[i]=p[i*4+3]>80?0:44;
       if(x)d[i]=Math.min(d[i],d[i-1]+1);if(y)d[i]=Math.min(d[i],d[i-512]+1);
     }
     for(let y=511;y>=0;y--)for(let x=511;x>=0;x--){
       const i=y*512+x;if(x<511)d[i]=Math.min(d[i],d[i+1]+1);if(y<511)d[i]=Math.min(d[i],d[i+512]+1);
-      const e=1-d[i]/24,grain=.88+.12*Math.sin(x*.17+Math.cos(y*.13)*2),k=i*4;
+      const left=Math.exp(-(((x-170)/110)**2+((y-350)/105)**2)),right=Math.exp(-(((x-365)/95)**2+((y-260)/115)**2));
+      const reach=18+26*Math.max(left,right),e=Math.max(0,1-d[i]/reach),grain=.88+.12*Math.sin(x*.17+Math.cos(y*.13)*2),k=i*4;
       p[k]=24;p[k+1]=27;p[k+2]=19;p[k+3]=Math.round(255*.48*e*e*(3-2*e)*grain);
       if(!p[k+3])p[k]=p[k+1]=p[k+2]=0;
     }
@@ -368,7 +411,7 @@
         c.save();c.translate(o.x,o.y);if(meta.flip)c.scale(-1,1);c.globalAlpha=alpha;
         c.drawImage(poolContact(img),-dw/2-48*dw/416,-dh/2-48*dh/416,512*dw/416,512*dh/416);c.restore();continue;
       }
-      const debris=(o.type==='m_c1sbone'&&o.x===1940&&o.y===4340)||(o.type==='m_sword_pile'&&o.x===1580&&o.y===4180);
+      const debris=(o.type==='m_c1sbone'&&o.x===1940&&o.y===4340)||(o.type==='m_sword_pile'&&o.x===1580&&o.y===4180)||(o.type==='m_bone_arch'&&o.x===1420&&o.y===6020);
       if(debris){
         const img=sprites[o.type],meta=metas[o.type];
         if(!img||img.complete===false||!(img.naturalWidth||img.width)||!meta||meta.srcRect||meta.sheet||meta.rot||o.rot||meta.anchorBottom||meta.pivotX!==undefined||meta.pivotY!==undefined)continue;
@@ -487,6 +530,9 @@
       const mix=Math.min(1,spill/10)*Math.min(1,Math.max(0,(64-d[i])/24));
       const l=r*.299+green*.587+b*.114;
       p[k]=r+(l*.96-r)*mix;p[k+1]=green+(l*.9-green)*mix;p[k+2]=b+(l*.76-b)*mix;
+      // Dry white glints on the outer rock fade into the damp soil, not the liquid interior.
+      const glare=Math.max(0,Math.min(1,(l-105)/110))*Math.max(0,1-d[i]/64)*.38;
+      p[k]*=1-glare;p[k+1]*=1-glare;p[k+2]*=1-glare;
       // Dark contaminated soil settles into the floor; bright rock ridges keep a shorter edge.
       const rock=Math.max(0,Math.min(1,(l-35)/100)),edgeSpan=24+32*(1-rock);
       const fade=Math.min(1,d[i]/edgeSpan);p[k+3]*=fade*fade*(3-2*fade);
@@ -560,22 +606,44 @@
     for(let f=0;f<64;f++){x.save();x.beginPath();x.rect(f%8*96,Math.floor(f/8)*96,96,96);x.clip();paintSwampBubble(x,f%8*96+48,Math.floor(f/8)*96+64,f/64);x.restore();}
     swampBubbleAtlas=a;return a;
   }
+  let poolGasAtlas;
+  function poolSurface(c,o,now){
+    if(!poolGasAtlas){
+      const a=root.document.createElement('canvas');a.width=a.height=512;const x=a.getContext('2d');
+      for(let f=0;f<16;f++){x.save();x.translate(f%4*128,Math.floor(f/4)*128);x.beginPath();x.rect(0,0,128,128);x.clip();paintSwampGas(x,64,112,f/16,1.3);x.restore();}
+      poolGasAtlas=a;
+    }
+    const bubbles=bubbleAtlas(),scale=Math.min(1.6,o.scale||1),s=scale*.65,alpha=c.globalAlpha;
+    const wave=Math.sin(now*.00095+o.x*.017+o.y*.011);
+    c.save();c.translate(o.x,o.y);c.scale(1+wave*.012,1-wave*.018);
+    for(const [vx,vy,offset] of [[-48,-24,0],[38,-6,.31],[-3,35,.67]]){
+      const q=((now/6400+offset)%1+1)%1,b=q*64,bf=Math.floor(b),bn=(bf+1)%64,bmix=b-bf,g=q*16,gf=Math.floor(g),gn=(gf+1)%16,gmix=g-gf;
+      const x=vx*scale,y=vy*scale;
+      c.globalAlpha=alpha*(1-bmix);c.drawImage(bubbles,bf%8*96,Math.floor(bf/8)*96,96,96,x-48*s,y-64*s,96*s,96*s);
+      c.globalAlpha=alpha*bmix;c.drawImage(bubbles,bn%8*96,Math.floor(bn/8)*96,96,96,x-48*s,y-64*s,96*s,96*s);
+      c.globalAlpha=alpha*(1-gmix);c.drawImage(poolGasAtlas,gf%4*128,Math.floor(gf/4)*128,128,128,x-64*s,y-112*s,128*s,128*s);
+      c.globalAlpha=alpha*gmix;c.drawImage(poolGasAtlas,gn%4*128,Math.floor(gn/4)*128,128,128,x-64*s,y-112*s,128*s,128*s);
+    }
+    c.restore();
+  }
   function swampApron(img){
     const a=root.document.createElement('canvas');a.width=a.height=512;
     const c=a.getContext('2d');c.drawImage(img,36,31,440,450);
     const pixels=c.getImageData(0,0,512,512),p=pixels.data,d=new Uint8Array(512*512);
     // Distance outward from the actual alpha silhouette, never an oval shadow stamp.
     for(let y=0;y<512;y++)for(let x=0;x<512;x++){
-      const i=y*512+x;d[i]=p[i*4+3]>80?0:28;
+      const i=y*512+x;d[i]=p[i*4+3]>80?0:30;
       if(x)d[i]=Math.min(d[i],d[i-1]+1);if(y)d[i]=Math.min(d[i],d[i-512]+1);
     }
     for(let y=511;y>=0;y--)for(let x=511;x>=0;x--){
       const i=y*512+x;if(x<511)d[i]=Math.min(d[i],d[i+1]+1);if(y<511)d[i]=Math.min(d[i],d[i+512]+1);
-      const edge=1-d[i]/28,fade=edge*edge*(3-2*edge);
+      const left=Math.exp(-(((x-140)/120)**2+((y-340)/145)**2));
+      const lower=Math.exp(-(((x-340)/135)**2+((y-410)/95)**2));
+      const reach=18+12*Math.max(left,lower),edge=Math.max(0,1-d[i]/reach),fade=edge*edge*(3-2*edge);
       const grain=.76+.14*Math.sin(x*.19+Math.sin(y*.11)*2)+.1*Math.sin(y*.31-x*.09);
       const damp=.5+.5*Math.sin(x*.043+Math.sin(y*.027)*2);
       const k=i*4;p[k]=27+10*damp;p[k+1]=28+10*damp;p[k+2]=19+4*damp;
-      p[k+3]=Math.round(255*.48*fade*grain);
+      p[k+3]=Math.round(255*.58*fade*grain);
       if(!p[k+3])p[k]=p[k+1]=p[k+2]=0;
     }
     c.putImageData(pixels,0,0);return a;

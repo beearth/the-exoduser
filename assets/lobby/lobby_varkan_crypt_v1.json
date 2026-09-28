@@ -1,0 +1,15 @@
+{
+  "source_job": "4e2e475f-7bdc-44ea-a1c5-2ccf4821d5a9",
+  "loop_method": "original plus reverse, no duplicated architecture generation",
+  "streams": [
+    {
+      "codec": "h264",
+      "type": "video",
+      "width": 1920,
+      "height": 1088,
+      "fps": "24/1",
+      "pix_fmt": "yuv420p"
+    }
+  ],
+  "duration": 12.084
+}

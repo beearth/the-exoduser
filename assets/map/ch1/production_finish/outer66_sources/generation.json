@@ -1,0 +1,16 @@
+{
+  "provider": "Higgsfield",
+  "model": "gpt_image_2_5",
+  "jobId": "d7e3db21-1e68-4a14-92c4-8b1b71101926",
+  "resolution": "2k",
+  "quality": "high",
+  "background": "transparent",
+  "aspectRatio": "1:1",
+  "actualSize": [
+    2048,
+    2048
+  ],
+  "sourceUrl": "https://d8j0ntlcm91z4.cloudfront.net/user_3G1zto9sz11Uf3iEOhJefE9HdGG/hf_20260928_001635_d7e3db21-1e68-4a14-92c4-8b1b71101926.png",
+  "referenceImages": [],
+  "prompt": "Use case: stylized-concept. A single production ENVIRONMENT MASS sprite for EXODUSER dark fantasy elevated top-down hack-and-slash game. Entire asymmetric composition fully visible inside square frame with genuine transparent margins. An oppressive rotten living-hell forest perimeter, not a leafy natural forest. Large collapsed hollow hardwood log lies diagonally across a low crumbling root bank, with one split hollow upright trunk set BACK at upper left, a leaning broken trunk at upper center, and a lower snapped stub to the right; unequal sizes and irregular connected silhouette. Big weathered bark plates, empty cracked heartwood, drooping dead wood fibers, exposed dull dark red parasitic sinew inside a few wood splits, thin corpse-grey leathery membranes fused into the bottom root fan. Dead materials, muted grey-brown and grey-mauve, very low saturation, restrained soft upper-left illumination. Clear raised upper/back silhouette and low flat tapered foreground root transition. Top-down orthographic camera about 65 degrees, no horizon. Bold readable LARGE wood forms, sparse fine detail. No lush bushes, leaves, healthy moss, ferns, flowers, upright cone stumps, bone/skull ornaments, faces, characters, text, architecture, neon glow, bright red ribbons, lava, orange fire, broad black ground rectangle, baked checkerboard or scenery/background. No combat-floor obstruction in the low root transition. A coherent continuous perimeter mass rather than separate isolated props. Image is a still sprite, not animation. It will be clipped to the existing nonwalkable west perimeter in a protected masked composite; no map geometry is generated."
+}

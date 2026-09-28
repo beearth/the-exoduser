@@ -1,0 +1,20 @@
+{
+  "provider": "Higgsfield",
+  "model": "gpt_image_2_5",
+  "generationJobId": "ef33d5b1-192d-48d4-a7da-1500e3872fdf",
+  "nativeSize": [
+    2048,
+    2048
+  ],
+  "parameters": {
+    "aspect_ratio": "1:1",
+    "count": 1,
+    "resolution": "2k",
+    "quality": "high",
+    "background": "transparent"
+  },
+  "sourceUrl": "https://d8j0ntlcm91z4.cloudfront.net/user_3G1zto9sz11Uf3iEOhJefE9HdGG/hf_20260928_010012_ef33d5b1-192d-48d4-a7da-1500e3872fdf.png",
+  "prompt": "Use case: stylized-concept. Asset type: EXODUSER CH1-1 production ENVIRONMENT MASS with real transparent alpha. Generate a coherent broad fallen rotten forest barricade for the nonwalkable NORTHWEST outer perimeter of an elevated top-down hack-and-slash map. Dominant form: one enormous hollow collapsed log lying almost horizontally, split lengthwise to expose empty black rotten heartwood; asymmetrical low root bank connected along the bottom, a few unequal broken snag tips in the rear, no repeated upright trunks. Layered large charcoal grey-brown bark plates with brittle dead fibres, tiny local corpse-grey membrane and dull dark red parasitic sinew inside two cracked cavities. Elevated orthographic top-down camera about 65 degrees, no horizon. Large readable low silhouette occupying middle and lower frame, genuine transparent margin around all sides; isolated environment mass, no ground rectangle, no sky, no scenery backdrop. Soft dim upper-left light, low saturation, no orange highlights or green foliage. Entire shape visible. A coherent composite rather than separate props. No healthy leaves, bushes, moss, ferns, cones, skull decorations, faces, characters, UI, text, symbols, neon, bright red ribbon, fire, lava or checkerboard. This still sprite will be locally clipped to existing NONWALKABLE geometry and feathered into the existing base; it must keep the combat floor and northward route open. No animation is implied.",
+  "alpha": "native RGBA, alpha 0..254; no background remover; RGB composed only on protected nonwalkable geometry",
+  "animation": false
+}

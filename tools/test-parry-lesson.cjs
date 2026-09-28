@@ -85,26 +85,33 @@ function walk(c) {
   c.P.s='wSwing';l.tick();assert.equal(l.leftClickDone,false,'swinging in the air is not a kill');
   assert.equal(l.attackEnemies.length,3);
   l.hurtEnemy(l.attackEnemies[0],10,0,{magic:true,fireball:true});assert.equal(l.leftKills,0);
-  for(const [i,e] of l.attackEnemies.entries()){
+  for(let i=0;i<10;i++){
+    const e=l.attackEnemies.find(enemy=>enemy.alive);
+    assert.ok(e,'a new practice target must be available until ten defeats');
     // A travelling Ki Slash can land after the swing animation has finished.
     c.P.s=i===0?'wSwing':'idle';
-    const opts={_lessonAttack:i===0?'weapon':'kiSlash'};
+    const opts={_lessonAttack:i===0?'weapon':'kiSlash',_lessonFullCharge:i===9};
     l.hurtEnemy(e,10,0,opts);l.hurtEnemy(e,10,0,opts);
-    assert.equal(l.leftKills,i+1);assert.equal(l.leftClickDone,i===2);
+    assert.equal(l.leftKills,i+1);assert.equal(l.leftClickDone,i===9);
+    if(i<9)assert.equal(l.attackEnemies.filter(enemy=>enemy.alive).length,3,'targets replenish during the ten-kill lesson');
   }
-  assert.equal(c.deaths.length,3);assert.equal(c.corpses.length,3);
+  assert.equal(l.leftFullChargeKill,true);
+  assert.equal(c.deaths.length,10);assert.equal(c.corpses.length,10);
   for(let i=0;i<90;i++)l.tick();assert.equal(l.step,-1);
+  assert.ok(!c.ens.some(e=>e.alive&&e._lessonStage===-2),'remaining left-click targets must be removed');
   assert.equal(l.allows('beam'),true);assert.equal(l.allows('weapon'),false);
   c.MB[2]=true;l.tick();assert.equal(l.rightClickDone,false);
   c.P.s='magicCast';l.tick();assert.equal(l.rightClickDone,false,'casting in the air is not a kill');
   assert.equal(l.attackEnemies.length,3);
   l.hurtEnemy(l.attackEnemies[0],10,0,{magic:true,fireball:true,_fromTurret:true});assert.equal(l.rightKills,0);
   c.P.s='idle'; // A launched projectile may hit after the casting state ends.
-  for(const [i,e] of l.attackEnemies.entries()){
+  for(let i=0;i<5;i++){
+    const e=l.attackEnemies.find(enemy=>enemy.alive);
+    assert.ok(e,'right-click practice replenishes targets until five defeats');
     l.hurtEnemy(e,10,0,{magic:true,fireball:true});l.hurtEnemy(e,10,0,{magic:true,fireball:true});
-    assert.equal(l.rightKills,i+1);assert.equal(l.rightClickDone,i===2);
+    assert.equal(l.rightKills,i+1);assert.equal(l.rightClickDone,i===4);
   }
-  assert.equal(c.deaths.length,6);assert.equal(c.corpses.length,6);assert.equal(c.deathImpacts.length,6);
+  assert.equal(c.deaths.length,15);assert.equal(c.corpses.length,15);assert.equal(c.deathImpacts.length,15);
   for(let i=0;i<90;i++)l.tick();assert.equal(l.step,8);
   assert.equal(l.allowKey('Digit1'),true);assert.equal(l.allowKey('Digit2'),false);
   assert.equal(l.trapEnemies.length,10);assert.equal(c.SKILL_SLOTS[0],'spikeTrap');
@@ -141,6 +148,19 @@ function killByReflection(c,l,kind){
   l.hurtEnemy(l.parryEnemy,10,0,{parryBlueBean:true,_lessonParryShot:p});
 }
 lesson.button.onclick(); walk(c);
+{
+  const gate=fixture(),l=gate.window._parryLesson;
+  l.tick();l.beginPractice();l.step=-2;l.spawnAttackEnemies();
+  for(let i=0;i<10;i++){
+    const e=l.attackEnemies.find(enemy=>enemy.alive);
+    assert.ok(e);
+    l.hurtEnemy(e,10,0,{_lessonAttack:'kiSlash',_lessonFullCharge:false});
+  }
+  assert.equal(l.leftKills,10);assert.equal(l.leftClickDone,false,'ten ordinary kills do not skip the tier-three lesson');
+  const e=l.attackEnemies.find(enemy=>enemy.alive);assert.ok(e,'a target remains for the full-charge exercise');
+  l.hurtEnemy(e,10,0,{_lessonAttack:'kiSlash',_lessonFullCharge:true});
+  assert.equal(l.leftKills,10);assert.equal(l.leftFullChargeKill,true);assert.equal(l.leftClickDone,true);
+}
 assert.ok(lesson.parryEnemy?.alive,'a visible monster must preview the single shot');
 for(let i=0;i<45;i++)lesson.tick();
 assert.equal(lesson.shot,null,'the ring must finish before a projectile appears');
@@ -366,6 +386,10 @@ for(const name of ['game.html','game-easy-test.html']){
   c.updateCrescents(1);assert.equal(l.leftKills,1,'Ki Slash projectile kills count after wSwing ends');
   c.updateCrescents(1);assert.equal(l.leftKills,1,'duplicate hits cannot add kills');
   assert.equal(crescentImpacts,1,'the live hit effect fires once for the accepted collision');
+  const charged=l.attackEnemies.find(enemy=>enemy.alive);
+  Object.assign(crescent,{active:true,life:20,x:charged.x-14,y:charged.y,r:264,step:3,chargeScale:2.2,_hitSet:new Set()});
+  c.shQuery=()=>[charged];c.updateCrescents(1);
+  assert.equal(l.leftKills,2);assert.equal(l.leftFullChargeKill,true,'the live full-charge crescent marks the tier-three objective');
   l.finish();assert.equal(c.P.activeLMBSk,'whirlwind');assert.equal(c.P.skills,originalSkills);
 }
 console.log('PASS: Ki Slash is the tutorial basic attack; live crescent collisions count once and original skill selection/levels restore.');
@@ -398,7 +422,7 @@ for(const name of ['game.html','game-easy-test.html'])for(const step of [0,1]){
   assert.equal(e._spawnT,0,'the lesson shooter must be visible immediately');
   for(let t=0;t<30;t++)l.tick();assert.equal(e._projChargeT,30);assert.equal(l.shot,null);
   const source=fs.readFileSync(path.join(root,name),'utf8');
-  const rings=[];Object.assign(c,{_drawShootCharge:(...args)=>rings.push(args),_gameFrame:0});
+  const rings=[];Object.assign(c,{_drawShootCharge:(...args)=>rings.push(args),_drawProjectileChargeLabel(){},_L:ko=>ko,_gameFrame:0});
   const classifierStart=source.indexOf('function _projectileParryClass(p){');
   vm.runInContext(source.slice(classifierStart,source.indexOf('\n}',classifierStart)+2),c);
   vm.runInContext(source.slice(source.indexOf('function _drawEnemyShotWarnings(){'),source.indexOf('function radialProjs(')),c);
@@ -429,9 +453,11 @@ for(const file of ['game.html','game-easy-test.html']){
  for(const flags of [{},{blackBean:true},{phantomSword:true},{parryClass:'physical'},{titanEye:true},{waterBean:true},{pierce:true}]){
   assert.equal(context._enemyHomingTurnRate({...flags,_lessonShot:true}),100*Math.PI/180/60);
  }
- assert.equal(context._enemyHomingTurnRate({parryClass:'physical'}),.00436332);
- assert.equal(context._enemyHomingTurnRate({blackBean:true}),.02325);
- assert.equal(context._enemyHomingTurnRate({_lessonShot:true,friendly:true,blackBean:true}),.02325);
+ const physicalTurn=file==='game.html'?.00109083:.00436332;
+ const beanTurn=file==='game.html'?.0058125:.02325;
+ assert.equal(context._enemyHomingTurnRate({parryClass:'physical'}),physicalTurn);
+ assert.equal(context._enemyHomingTurnRate({blackBean:true}),beanTurn);
+ assert.equal(context._enemyHomingTurnRate({_lessonShot:true,friendly:true,blackBean:true}),beanTurn);
  assert.ok(html.includes('const _vsT=!p._lessonShot&&'));
  assert.ok(html.includes('const _ancT=!p._lessonShot&&!p.blackBean?'));
 }

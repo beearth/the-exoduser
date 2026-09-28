@@ -60,7 +60,7 @@ window._supabaseReady=new Promise(resolve=>{
 <script src="maps_data.js"></script>
 <script src="assets/map/ch1/geometry/ch1_si1_geometry.js"></script>
 <script src="assets/map/ch1/production_finish/layout.js?v=20260916-finish-1"></script>
-<script src="ch1-living-detail.js?v=20260927-49"></script>
+<script src="ch1-living-detail.js?v=20260928-61"></script>
 <script src="lang_zh.js"></script>
 <script src="lang_ja.js"></script>
 <script src="lang_es.js"></script>
@@ -847,6 +847,7 @@ canvas{display:block;position:fixed;inset:0}
 /* ═══ 아이템 스킨 컨테이너 + 등급 프레임 글로우 ═══ */
 .iskin{position:relative;display:inline-flex;align-items:center;justify-content:center;vertical-align:middle;border-radius:6px;overflow:hidden;flex:none}
 .iskin>svg{position:absolute;z-index:0}
+.iskin:has(>.iskin-img)>svg{visibility:hidden}
 .iskin .iskin-img{position:relative;z-index:1;width:100%;height:100%;object-fit:contain;display:block}
 .iskin.r0{box-shadow:inset 0 0 0 1px rgba(150,150,150,.28)}
 .iskin.r1{box-shadow:inset 0 0 0 1px rgba(76,203,76,.5),0 0 4px rgba(76,203,76,.28)}
@@ -2479,8 +2480,8 @@ body:has(#invPanel.on) #keyGuide{display:none!important}
 #invPanel .inv-wrap{grid-template-columns:clamp(230px,20vw,320px) minmax(0,1fr)!important;grid-template-rows:minmax(0,1fr) minmax(230px,.65fr)!important}
 #invPanel .inv-equip{position:relative;container-type:size;min-height:0;margin:0!important;padding:0!important;overflow:hidden;background:radial-gradient(ellipse at center,rgba(77,52,37,.22),transparent 65%)}
 #invPanel .inv-equip>div:first-child{position:absolute;left:16px;top:12px;font-size:.8rem!important;letter-spacing:.1em!important}
-#invPanel .inv-eq-wrap{position:absolute;left:50%;top:50%;width:654px!important;height:480px!important;margin:0!important;transform:translate(-50%,-50%)!important;transform-origin:center;zoom:min(1.5,calc((100cqw - 36px) / 654px),calc((100cqh - 74px) / 480px))}
-#invPanel .inv-eq-sil{width:315px!important;height:480px!important;opacity:.9!important;filter:drop-shadow(0 4px 18px rgba(0,0,0,.7))!important}
+#invPanel .inv-eq-wrap{position:absolute;left:50%;top:50%;width:654px!important;height:560px!important;margin:0!important;transform:translate(-50%,-50%)!important;transform-origin:center;zoom:min(1.5,calc((100cqw - 36px) / 654px),calc((100cqh - 98px) / 560px))}
+#invPanel .inv-eq-sil{width:385px!important;height:560px!important;opacity:.9!important;filter:drop-shadow(0 4px 18px rgba(0,0,0,.7))!important}
 #invPanel .inv-eq-slot{box-sizing:border-box;width:96px!important;height:96px!important;backdrop-filter:none;border-radius:3px!important}
 #invPanel .inv-eq-slot .iskin{width:70px!important;height:70px!important}
 #invPanel .inv-eq-slot .ieq-label{font-size:.65rem!important;line-height:1.15!important;max-width:100%;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
@@ -2508,16 +2509,16 @@ body:has(#invPanel.on) #keyGuide{display:none!important}
 <link rel="stylesheet" href="stat-panel-ui.css?v=20260913-smooth-ui">
 <link rel="stylesheet" href="localization.css?v=20260909">
 <link rel="stylesheet" href="ui-foundation.css?v=20260927-frame-interior">
-<link rel="stylesheet" href="ui-refinement.css?v=20260928-storage-icon-gem-picker2">
+<link rel="stylesheet" href="ui-refinement.css?v=20260928-equipment-stage3">
 <link rel="stylesheet" href="growth-tree-detail.css?v=20260927-body-art3">
-<link rel="stylesheet" href="knight-portrait.css?v=20260928-equipment-key1">
-<script defer src="inventory-paperdoll.js?v=20260928-equipment-cabinet3"></script>
+<link rel="stylesheet" href="knight-portrait.css?v=20260928-equipment-cutout3">
+<script defer src="inventory-paperdoll.js?v=20260928-equipment-cutout3"></script>
 <link rel="stylesheet" href="growth-tree-fixed-background.css?v=20260927-fixed2">
 <link rel="stylesheet" href="growth-tree-information.css?v=20260927-info1">
-<script defer src="ui-panels.js?v=20260927-compare-wheel"></script>
+<script defer src="ui-panels.js?v=20260927-compare-wheel2"></script>
 <link rel="stylesheet" href="inventory-gems.css?v=20260927-jewel-finish">
 <link rel="stylesheet" href="inventory-gems-finish.css?v=20260927-square-art2">
-<link rel="stylesheet" href="inventory-space.css?v=20260928-equipment-cabinet3">
+<link rel="stylesheet" href="inventory-space.css?v=20260928-relic-frame1">
 <link rel="stylesheet" href="skill-workspace.css?v=20260928-fixed-categories5">
 <link rel="stylesheet" href="inventory-oss-balance.css?v=20260928-ossuary-fit5">
 <link rel="stylesheet" href="inventory-gems-balance.css?v=20260927-half">
@@ -2898,7 +2899,7 @@ body:has(#invPanel.on) #keyGuide{display:none!important}
         <div class="inv-equip">
           <div style="color:#886644;font-size:.95rem;margin-bottom:4px;letter-spacing:.1em">장착 중</div>
           <div class="inv-eq-wrap" id="invEqGrid">
-<img class="inv-eq-sil" src="img/ui/inventory_paperdoll_hf_20260923.png" data-original-src="https://d8j0ntlcm91z4.cloudfront.net/user_3G1zto9sz11Uf3iEOhJefE9HdGG/hf_20260927_105447_dfd433c7-3dab-4a3e-b4fb-818c1ff73b9d.png" alt="" aria-hidden="true" decoding="async" onerror="this.hidden=true">
+<img class="inv-eq-sil" src="img/ui/inventory_knight_cutout_20260928.png" data-original-src="https://d8j0ntlcm91z4.cloudfront.net/user_3G1zto9sz11Uf3iEOhJefE9HdGG/hf_20260927_105447_dfd433c7-3dab-4a3e-b4fb-818c1ff73b9d.png" alt="" aria-hidden="true" decoding="async" onerror="this.onerror=null;this.src='img/ui/inventory_paperdoll_hf_20260923.png'">
           </div>
           <div class="inv-equip-readout" aria-label="장착 현황">
             <div><span>장착 부위</span><strong id="invEquippedCount">0 / 0</strong></div>
@@ -2908,7 +2909,6 @@ body:has(#invPanel.on) #keyGuide{display:none!important}
         </div>
         <!-- 소환 유골함 도감 (2026-09-01) — 전대 7종 × 4부위 콜렉션, renderOssPanel()이 채움 -->
         <div class="inv-ossuary" id="invOssuaryPanel"></div>
-        <div class="inv-storage" id="invStorageCol">
         <section class="inv-oss-ancestor" id="invOssAncestor" aria-label="소환 전대">
           <div class="oss-portrait-head"><span class="oss-portrait-kicker">소환 전대</span><span class="oss-portrait-index">I / I</span></div>
           <div class="oss-portrait-stage"><div class="oss-portrait-glow" aria-hidden="true"></div><div class="oss-portrait-frame"><img id="ossAncestorImage" alt="" decoding="async"></div><span class="oss-portrait-fallback" id="ossAncestorFallback" hidden>전대 형상 없음</span></div>
@@ -2916,6 +2916,7 @@ body:has(#invPanel.on) #keyGuide{display:none!important}
           <div class="oss-portrait-progress"><span>유골 수집</span><strong id="ossAncestorProgress">0 / 4</strong><div class="oss-portrait-progress-track"><span id="ossAncestorProgressFill"></span></div></div>
           <p id="ossAncestorSummary" class="oss-portrait-summary">네 부위를 모으면 철갑 전대를 소환할 수 있습니다.</p>
         </section>
+        <div class="inv-storage" id="invStorageCol">
           <div class="inv-storage-toggle" onclick="toggleInvStorage()">
             <span>지옥창고</span>
             <span id="invStorageArrow">▼</span>
@@ -4385,7 +4386,7 @@ function _initBloom(){
 }
 let _bloomFrame=0;
 function _renderBloom(){
-  if(!OPT.bloom||OPT.quality==='low'||OPT.quality==='mid')return;
+  if(!OPT.bloom||OPT.quality==='low'||OPT.quality==='mid'||C.width<6||C.height<6)return;
   if(!_bloomCvs||_bloomW!==~~(C.width/6)||_bloomH!==~~(C.height/6))_initBloom();
   const bx=_bloomCtx,ux=_blurCtx;
   bx.clearRect(0,0,_bloomW,_bloomH);
@@ -4563,8 +4564,12 @@ function _collectLights(){
   // 9.5) 유령불꽃 → 요정 위치에서 은은한 등불 광원
   _pushLight(P.x,P.y-6,LIT_PLAYER_R,LIT_PLAYER_A+Math.sin(_gameFrame*.07)*.03,255,214,158);
   if(G.bossAlive&&G._bossRef&&G._bossRef.x!=null){
-   var _bel=G._bossRef.el||0;var _bc=_elLightCol[_bel]||_elLightCol[0];
-   _pushLight(G._bossRef.x,G._bossRef.y,520,.62+Math.sin(_gameFrame*.05)*.08,_bc[0],_bc[1],_bc[2]);
+    var _bel=G._bossRef.el||0;var _bc=_elLightCol[_bel]||_elLightCol[0];
+    _pushLight(G._bossRef.x,G._bossRef.y,520,.62+Math.sin(_gameFrame*.05)*.08,_bc[0],_bc[1],_bc[2]);
+    if((G.stage===0||G.stage===3)&&_CODEX_BOSS[G.stage]&&_CODEX_BOSS[G.stage].use2D){
+      var _druidTop=G._bossRef.y-G._bossRef.r*_CODEX_BOSS[G.stage].dh*.62;
+      _pushLight(G._bossRef.x,_druidTop,560,.58,205,225,190,-1); // 상반신 어둠만 완화; 색상 글로우 원판은 만들지 않음
+    }
   }
   if(G._fireZones){
    for(var _fzL=0;_fzL<G._fireZones.length;_fzL++){
@@ -4615,7 +4620,7 @@ function _renderLighting(){
    var cx2=_litColCtx;cx2.clearRect(0,0,_lightW,_lightH);
    cx2.globalCompositeOperation='lighter';
    for(var ci=0;ci<_lightCnt;ci++){
-    var cl=_lights[ci];if(!_CENTER_GLOW&&(cl.ci||0)===6)continue;var cst=_colStamps[cl.ci||0];if(!cst)continue;
+     var cl=_lights[ci];if(cl.ci===-1||(!_CENTER_GLOW&&(cl.ci||0)===6))continue;var cst=_colStamps[cl.ci||0];if(!cst)continue;
     var cd=cl.r*2;cx2.globalAlpha=cl.a*.85;
     cx2.drawImage(cst,cl.sx-cl.r,cl.sy-cl.r,cd,cd);
    }
@@ -10147,6 +10152,20 @@ function _drawCodexBoss(X,e,sa,tdY,si){
 function _drawStage1CodexBoss(X,e,sa,tdY){return _drawCodexBoss(X,e,sa,tdY,0)}
 // ═══ [다크드루이드] 8방향 프레임 애니메이션 렌더러 (walk/attack=4열8행, 대기=8dir 4열2행) ═══
 const _druidSheets={};
+const _druidGroundRing=new Image();
+_druidGroundRing.src='assets/vfx/boss/druid_corruption_ring.svg?v=20260928';
+function _drawDruidGroundRing(ctx,x,y,r,alpha,angle=0,innerFraction=0){
+  if(!_druidGroundRing.complete||!_druidGroundRing.naturalWidth){
+    ctx.save();ctx.globalAlpha=alpha*.7;ctx.fillStyle='#8eaa62';ctx.beginPath();
+    ctx.arc(x,y,r,0,Math.PI*2);ctx.arc(x,y,Math.max(0,r-2),0,Math.PI*2,true);ctx.fill();ctx.restore();
+    return false;
+  }
+  ctx.save();ctx.translate(x,y);ctx.rotate(angle);ctx.globalAlpha=alpha;
+  if(innerFraction>0){ctx.beginPath();ctx.arc(0,0,r,0,Math.PI*2);
+    ctx.arc(0,0,r*innerFraction,0,Math.PI*2,true);ctx.clip();}
+  ctx.drawImage(_druidGroundRing,-r,-r,r*2,r*2);ctx.restore();
+  return true;
+}
 (function _loadDruidSheets(){
   const files={base8:'8dir_v3.png',walk:'walk.png',attack:'attack.png',idle:'idle.png',aoe:'aoe.png',orb:'orb.png',beast:'beast.png',transform:'transform.png',dive:'dive.png',emerge:'emerge.png'};
   for(const k in files){const im=new Image();_druidSheets[k]={img:im,ready:false};
@@ -10859,7 +10878,7 @@ function _drawMapPaintWorld(ctx,x0,y0,x1,y1){
 const _CH1_START_OUTER={stage:0,chunkSize:_ROOTWORLD_ART_PREVIEW?256:1024,bleed:1,chunks:{}};
 const _CH1_START_PHASE=(()=>{if(typeof location==='undefined')return 'smoothing';const phase=new URLSearchParams(location.search).get('ch1StartPhase');return phase==='outer'?'outer':'smoothing'})();
 const _CH1_START_ROOT=_DIABLO_FIELD_QA?(_ROOTWORLD_ART_PREVIEW?'assets/map/ch1/rootworld_candidate':'assets/map/ch1/rootworld_outer'):_CH1_START_PHASE==='outer'?'assets/map/ch1/baked_start_outer':'assets/map/ch1/production_finish';
-for(let y=0;y<8;y++)for(let x=0;x<8;x++)_CH1_START_OUTER.chunks[x+','+y]=`${_CH1_START_ROOT}/chunk_${x}_${y}.png?v=${_DIABLO_FIELD_QA?'20260924-blockout-2':'20260917-depth-2'}`;
+for(let y=0;y<8;y++)for(let x=0;x<8;x++)_CH1_START_OUTER.chunks[x+','+y]=`${_CH1_START_ROOT}/chunk_${x}_${y}.png?v=${_DIABLO_FIELD_QA?'20260924-blockout-2':_CH1_START_PHASE==='outer'?'20260917-depth-2':'20260928-outer-72'}`;
 const _CH1_START_OUTER_QUERY_ENABLED=typeof location==='undefined'||new URLSearchParams(location.search).get('ch1StartOuter')!=='0';
 const _ch1StartOuterCache=Object.create(null),_ch1StartOuterWarmQ=[];
 let _ch1StartOuterWarmBusy=false;
@@ -14624,7 +14643,7 @@ function renderInvCrystals(){
 function renderCrystalBag(){
   let pop=$('crBagPop');
   if(!pop){pop=document.createElement('div');pop.id='crBagPop';pop.style.cssText='position:fixed;top:50%;left:50%;transform:translate(-50%,-50%);width:380px;max-height:70vh;background:#1a1008;border:2px solid #553388;border-radius:8px;z-index:9999;display:flex;flex-direction:column;padding:10px;box-shadow:0 0 30px rgba(100,0,200,.3)';document.body.appendChild(pop);}
-  pop.setAttribute('role','dialog');pop.setAttribute('aria-label',_T('결정 주머니'));
+  pop.setAttribute('role','dialog');pop.setAttribute('aria-label',_crPickSlot?_L('장착 가능한 보석','Equipable gems'):_L('보유 보석','Owned gems'));
   pop.onkeydown=event=>{
     if(event.key==='Escape'){event.preventDefault();event.stopPropagation();closeCrystalPicker();return;}
     if(event.key!=='Tab')return;
@@ -14638,17 +14657,21 @@ function renderCrystalBag(){
   if(pop.dataset.crFilter!==_crBagFilter){_gpCrIdx=0;pop.dataset.crFilter=_crBagFilter;}
   pop.style.display='flex';
   const focusFilter=pop.querySelector('.cr-picker-filter:focus')?.dataset.filter;
-  let h='<div class="cr-picker-head" style="display:flex;justify-content:space-between;align-items:center;margin-bottom:6px"><span style="color:#bb88ff;font-size:1rem;font-weight:700">'+_T('결정 주머니')+' ('+CRYSTAL_BAG.length+'/'+CRYSTAL_BAG_MAX+')</span>';
-  h+='<span style="color:#aa8866;font-size:.75rem">'+_T('가루')+': '+CRYSTAL_DUST+'</span>';
+  const compatibleGems=CRYSTAL_BAG.filter(cr=>{const d=CRYSTAL_DEFS[cr.id];return d&&(!_crPickSlot||d.slots?.includes(_crPickSlot));});
+  const compatibleCount=compatibleGems.length;
+  const slotLabel=_crPickSlot?document.querySelector('.inv-cr-equipment-card[data-slot="'+_crPickSlot+'"] .inv-cr-equipment-name')?.textContent:'';
+  let h='<div class="cr-picker-head"><span class="cr-picker-heading"><span class="cr-picker-eyebrow">RELIC SOCKET</span><strong class="cr-picker-title">'+(_crPickSlot?_L('장착 가능한 보석','Equipable gems'):_L('보유 보석','Owned gems'))+'</strong><span class="cr-picker-target">'+(slotLabel?slotLabel+' · '+_L('빈 홈','Empty socket'):_L('보석을 선택하세요','Choose a gem'))+'</span></span><span class="cr-picker-count"><small>'+_L('호환','Fit')+'</small><b>'+compatibleCount+'</b><i>/</i><small>'+_L('보유','Owned')+' '+CRYSTAL_BAG.length+'</small></span>';
   h+='<button type="button" class="cr-picker-close" aria-label="'+_L('닫기','Close')+'" onclick="closeCrystalPicker()">✕</button></div>';
-  h+='<div class="cr-picker-filters" style="display:flex;gap:3px;margin-bottom:6px;flex-wrap:wrap">';
+  h+='<div class="cr-picker-filters">';
   [['all','전체','All'],['atk','공격','Attack'],['def','방어','Defense'],['acc','자원','Resource']].forEach(([k,ko,en])=>{
-    h+='<button type="button" class="cr-picker-filter" data-filter="'+k+'" aria-pressed="'+(_crBagFilter===k)+'" onclick="_crBagFilter=\''+k+'\';renderCrystalBag()" style="cursor:pointer;padding:1px 6px;font-size:.75rem;border:1px solid '+(_crBagFilter===k?'#bb88ff':'#443322')+';color:'+(_crBagFilter===k?'#ddaaff':'#887766')+';background:'+(_crBagFilter===k?'rgba(187,136,255,.12)':'rgba(0,0,0,.2)')+';border-radius:3px">'+_L(ko,en)+'</button>'; 
+    const n=k==='all'?compatibleCount:compatibleGems.filter(cr=>CRYSTAL_DEFS[cr.id]?.cat===k).length;
+    h+='<button type="button" class="cr-picker-filter" data-filter="'+k+'" data-empty="'+(n===0)+'" aria-pressed="'+(_crBagFilter===k)+'" onclick="_crBagFilter=\''+k+'\';renderCrystalBag()"><span>'+_L(ko,en)+'</span><small>'+n+'</small></button>';
   });
   for(let si=0;si<5;si++){
-    h+='<button type="button" class="cr-picker-filter" data-filter="s'+si+'" aria-pressed="'+(_crBagFilter==='s'+si)+'" onclick="_crBagFilter=\'s'+si+'\';renderCrystalBag()" style="cursor:pointer;padding:1px 6px;font-size:.75rem;border:1px solid '+(_crBagFilter==='s'+si?CRYSTAL_STAR[si].color:'#443322')+';color:'+(_crBagFilter==='s'+si?CRYSTAL_STAR[si].color:'#887766')+';border-radius:3px">'+(si+1)+_L('성','★')+'</button>'; 
+    const n=compatibleGems.filter(cr=>cr.star===si).length;
+    h+='<button type="button" class="cr-picker-filter" data-filter="s'+si+'" data-empty="'+(n===0)+'" aria-pressed="'+(_crBagFilter==='s'+si)+'" onclick="_crBagFilter=\'s'+si+'\';renderCrystalBag()"><span>◆ '+(si+1)+_L('성','★')+'</span><small>'+n+'</small></button>';
   }
-  h+='</div><div class="cr-picker-list" style="flex:1;overflow-y:auto;display:flex;flex-direction:column;gap:2px">';
+  h+='</div><div class="cr-picker-list" style="flex:1;overflow-y:auto">';
   let visibleCount=0;
   CRYSTAL_BAG.forEach((cr,i)=>{
     const d=CRYSTAL_DEFS[cr.id],s=CRYSTAL_STAR[cr.star];
@@ -14660,13 +14683,18 @@ function renderCrystalBag(){
     }
     visibleCount++;
     const sel=_crBagSel===i;
-    h+='<button type="button" class="cr-picker-item" onclick="'+(_crPickCb?'_crPickCb('+i+')':'_crBagSel='+i+';renderCrystalBag()')+'" style="cursor:pointer;display:flex;align-items:center;gap:6px;padding:4px 8px;border:1px solid '+(sel?'#bb88ff':'#332211')+';background:'+(sel?'rgba(187,136,255,.12)':'rgba(0,0,0,.2)')+';border-radius:3px">';
-    h+='<span>'+_crIco(d,16)+'</span><span style="color:'+s.color+';font-size:.85rem;font-weight:700">'+_crStarN(s)+'</span>';
-    h+='<span style="color:#ccaa88;font-size:.85rem">'+_crDefN(d)+'</span>';
-    if(cr.enh>0)h+='<span style="color:#44ccff;font-size:.8rem">+'+cr.enh+'</span>';
-    h+='<span style="color:#88cc88;font-size:.8rem;margin-left:auto">'+_crValStr(cr)+'</span></button>';
+    h+='<button type="button" class="cr-picker-item" aria-label="'+_crDefN(d)+' · '+_crStarN(s)+' · '+_crValStr(cr)+'" onclick="'+(_crPickCb?'_crPickCb('+i+')':'_crBagSel='+i+';renderCrystalBag()')+'" style="cursor:pointer;border:1px solid '+(sel?'#bb88ff':'#66543d')+';background:'+(sel?'rgba(187,136,255,.12)':'rgba(0,0,0,.32)')+'">';
+    h+='<span class="cr-picker-art">'+_crIco(d,64)+'</span><span class="cr-picker-copy"><span class="cr-picker-rank" style="color:'+s.color+'">'+_crStarN(s)+(cr.enh?' · +'+cr.enh:'')+'</span>';
+    h+='<strong class="cr-picker-name">'+_crDefN(d)+'</strong><span class="cr-picker-options">'+_crValStr(cr)+'</span></span></button>';
   });
-  if(visibleCount===0)h+='<div class="cr-picker-empty" role="status">'+(CRYSTAL_BAG.length===0?_T('결정이 없습니다'):_L('현재 장비와 필터에 맞는 보석이 없습니다.','No gems match this equipment and filter.'))+'</div>';
+  if(visibleCount===0){
+    const noOwned=CRYSTAL_BAG.length===0,noFit=compatibleCount===0;
+    const title=noOwned?_L('보유한 보석이 없습니다','No gems owned'):noFit?_L('이 홈에 맞는 보석이 없습니다','No gems fit this socket'):_L('선택한 분류에 보석이 없습니다','No gems in this filter');
+    const hint=noFit?_L('다른 장비 홈을 선택하거나 호환 보석을 획득하세요.','Choose another socket or collect a matching gem.'):_L('다른 성급 또는 분류를 선택하면 장착 후보가 표시됩니다.','Choose another rank or category to see matching gems.');
+    h+='<div class="cr-picker-empty" role="status"><span class="cr-picker-empty-mark" aria-hidden="true">◇</span><span class="cr-picker-empty-kicker">NO RELIC FOUND</span><strong>'+title+'</strong><p>'+hint+'</p>';
+    if(!noOwned&&!noFit&&_crBagFilter!=='all')h+='<button type="button" class="cr-picker-reset" onclick="_crBagFilter=\'all\';renderCrystalBag();_crPickerFocusStart()">'+_L('전체 호환 보석 보기','Show all fitting gems')+' <span aria-hidden="true">↗</span></button>';
+    h+='</div>';
+  }
   h+='</div>';pop.replaceChildren(document.createRange().createContextualFragment(h));
   const navRows=pop.querySelectorAll('.cr-picker-item');
   _gpCrIdx=Math.max(0,Math.min(_gpCrIdx,navRows.length-1));
@@ -14721,23 +14749,23 @@ const SLOT_KR=['무기','견갑','부츠','갑옷','왕관','석궁','장갑','�
 const SLOT_EN=['Weapon','Shield','Boots','Armor','Helmet','Crossbow','Gloves','Pants','Belt','Necklace','Ring1','Ring2','Cape','Bracelet','Earring1','Ossuary','Earring2'];
 function _slotName(i){if(_earringSlot(SLOT_NAMES[i]))return _L('귀걸이','Earring')+(SLOT_NAMES[i]==='headband2'?'2':'1');return _L(SLOT_KR[i],SLOT_EN[i])}
 const SLOT_EMOJI=['⚔️','🛡️','👢','🦺','⛑️','🏹','🧤','👖','🪢','📿','💍','💍','🧣','⭕','🎀','⚱️','🎀'];
-// Paper doll slot positions [left, top] — indexed by SLOT_NAMES; 654×480 board, 96px sockets.
+// Paper doll slot positions [left, top] — indexed by SLOT_NAMES; 654×560 board, 96px sockets.
 // Wearable armor/accessories sit on body zones; weapon/bow/cape remain on the flanks.
 const EQ_POS=[
-  [0,246],   // 0 weapon
-  [450,246], // 1 shield — right arm
-  [450,354], // 2 boots — feet level
-  [108,138], // 3 armor — torso level
+  [0,294],   // 0 weapon
+  [450,294], // 1 shield — right arm
+  [450,426], // 2 boots — feet level
+  [108,162], // 3 armor — torso level
   [108,30],  // 4 helmet — head level
-  [558,246], // 5 bow — outer right
-  [108,246], // 6 gloves — left arm
-  [108,354], // 7 pants — legs
-  [450,138], // 8 belt
+  [558,294], // 5 bow — outer right
+  [108,294], // 6 gloves — left arm
+  [108,426], // 7 pants — legs
+  [450,162], // 8 belt
   [450,30],  // 9 necklace — upper right
-  [0,138],   // 10 ring1
-  [558,138], // 11 ring2
-  [558,354], // 12 cape
-  [0,354],   // 13 bracelet
+  [0,162],   // 10 ring1
+  [558,162], // 11 ring2
+  [558,426], // 12 cape
+  [0,426],   // 13 bracelet
   [0,30],    // 14 headband
   [120,220], // 15 ossuary — separate ancestor panel
   [558,30],  // 16 headband2 — beside necklace, paired with headband
@@ -15601,9 +15629,15 @@ function _updateKiSlashThirdCharge(sp){
   P.atkArc=P.facing; // 홀드 중에도 차징 검기·공격 자세가 현재 조준 방향을 따른다.
   const _before=_kiSlashHoldMultiplier(P._kiChargeT);
   P._kiChargeT=Math.min(180,(P._kiChargeT||0)+sp);P.st2=999;
+  const _after=_kiSlashHoldMultiplier(P._kiChargeT);
+  if(_after>_before){
+    if(_after===8){
+      playSample('sword_parry',.72,1.08);
+      if(_VFX_SHEETS.ki_slash_hit_2)playVFXAng('ki_slash_hit_2',P.x,P.y,.26,2,P.atkArc,true);
+      else playVFXAng('parry_impact',P.x,P.y,.85,1,P.atkArc,true);
+    }else playSample('scarecrow_charge',.35,1);
+  }
   if(isHeld('weapon')){
-    const _after=_kiSlashHoldMultiplier(P._kiChargeT);
-    if(_after>_before)playSample('scarecrow_charge',.35,1);
     return false;
   }
   const frames=P._kiChargeT;P._kiChargeActive=false;P._kiChargeT=0;
@@ -15975,14 +16009,14 @@ function _drawDruidFinaleTell(ctx,e){
 }
 function _drawDruidFinalePool(ctx,lp,sheet,strokeFn){
   const armed=lp.t>=lp.warnT,fade=Math.min(1,(lp.maxT-lp.t)/60);
-  ctx.save();ctx.beginPath();ctx.arc(lp.x,lp.y,lp.r,0,Math.PI*2);
-  ctx.globalAlpha=(armed?.10:.04)*fade;ctx.fillStyle='#66dd22';ctx.fill();
-  if(sheet){
+  const artReady=_drawDruidGroundRing(ctx,lp.x,lp.y,lp.r,(armed?.72:.36)*fade,lp.x*.007+lp.y*.003);
+  ctx.save();
+  if(!artReady&&sheet){
     const im=sheet.img,cw=im.naturalWidth/4,ch=im.naturalHeight/2,fr=Math.min(7,~~(lp.t/lp.maxT*8)),artR=lp.r*Math.SQRT1_2;
     ctx.globalAlpha=(armed?.24:.10)*fade;
     ctx.drawImage(im,(fr%4)*cw,~~(fr/4)*ch,cw,ch,lp.x-artR,lp.y-artR,artR*2,artR*2);
   }
-  ctx.restore();ctx.save();ctx.globalAlpha=.62*fade;ctx.strokeStyle=armed?'#8bdd45':'#d4f7a8';ctx.lineWidth=1.5;
+  ctx.restore();ctx.save();ctx.globalAlpha=.38*fade;ctx.strokeStyle=armed?'#8bdd45':'#d4f7a8';ctx.lineWidth=1.5;
   _drawDruidFinaleRing(ctx,lp.x,lp.y,lp.r,1,strokeFn);
   if(!armed){ctx.lineWidth=1.5;_drawDruidFinaleRing(ctx,lp.x,lp.y,lp.r,lp.t/lp.warnT,strokeFn);}
   ctx.restore();
@@ -18191,7 +18225,7 @@ function updateCrescents(sp){
       if(!e.alive||!isFinite(e.x)||!isFinite(e.y))continue;
       if(dst(c.x,c.y,e.x,e.y)<c.r+e.r&&!c._hitSet.has(e)&&hasLOS(c.x,c.y,e.x,e.y)){
         c._hitSet.add(e);
-        hurtE(e,c.dmg,Math.atan2(e.y-c.y,e.x-c.x),true,{poiseHit:true,kbMult:0.5,noImpact:true,_lessonAttack:'kiSlash'},c.el);
+        hurtE(e,c.dmg,Math.atan2(e.y-c.y,e.x-c.x),true,{poiseHit:true,kbMult:0.5,noImpact:true,_lessonAttack:'kiSlash',_lessonFullCharge:c.step===3&&c.chargeScale>=2.2-1e-6},c.el);
         if(c.step===3){G.hitStop=Math.max(G.hitStop,6);shake(8);}
         else G.hitStop=Math.max(G.hitStop,3);
         _playKiSlashHit(c,e.x,e.y);
@@ -25895,6 +25929,7 @@ function _itemIco(it,col,sz){if(!it)return '';const i=(typeof SLOT_NAMES!=='unde
 // ═══ 아이템 스킨: 지옥 대장간 톤 PNG (output/imagegen/item-skins/), 없으면 글리프 폴백 (2026-08-02) ═══
 const _ELKEY=['phys','fire','ice','dark','light','holy','earth'];
 // 현재 생성돼 있지 않은 변형은 존재하는 물리 스킨을 바로 사용해 UI 재렌더마다 404를 반복하지 않는다.
+const _ITEM_CUTOUT_BASES=new Set(['armor','axe','belt','boots','bracelet','cape','crossbow','earring','gloves','helmet','necklace','pants','shield','sword']); // 투명 누끼 원화: 속성별 배경 아트를 쓰지 않고 장비군 공통 컷아웃을 우선 사용
 const _ITEM_SKIN_MISSING_ELEMENTS=new Set(['fire']);
 const _ITEM_SKIN_MISSING_VARIANTS=new Set(['necklace_fire','cape_fire','earring_fire','ossuary_ice','ossuary_dark','ossuary_light','ossuary_holy','ossuary_earth']); // ossuary: 플레이스홀더 phys 1장만 존재 — 원소 변형 아트 추가 시 ossuary_* 제거
 function _itemSkinSrc(base,el){if(base.lastIndexOf('bone_',0)===0)return 'output/imagegen/item-skins/'+base+'.png';const variant=_ITEM_SKIN_MISSING_ELEMENTS.has(el)||_ITEM_SKIN_MISSING_VARIANTS.has(base+'_'+el)?'phys':el;return 'output/imagegen/item-skins/'+base+'_'+variant+'.png';}
@@ -25907,11 +25942,13 @@ function _itemSkin(it,sz,col){
   const el=_ELKEY[it.el||0]||'phys';
   const src=_itemSkinSrc(base,el);
   const srcPhys=_itemSkinSrc(base,'phys');       // 속성 전용 아트 없으면 물리 base로 폴백
-  const fbAttr=(src!==srcPhys)?' data-fb="'+srcPhys+'"':'';
-  // 폴백 글리프를 스킨 뒤에 깔고, 이미지 성공 시 덮음. onerror: 속성→물리→(그래도 없으면)제거→글리프
+  const cutoutSrc=_ITEM_CUTOUT_BASES.has(base)?'img/ui/item-cutouts/'+base+'_phys_cutout.png':'';
+  const renderSrc=cutoutSrc||src;                 // 컷아웃 실패 시 기존 원소별 원화를 복구한다.
+  const fbAttr=(renderSrc!==srcPhys)?' data-fb="'+srcPhys+'"':'';
+  // 이미지 노드가 있으면 폴백 SVG는 숨김. onerror: 속성→물리→최종 실패 시 이미지 제거→SVG 표시.
   return '<span class="iskin r'+(it.rarity||0)+'" style="width:'+sz+'px;height:'+sz+'px">'
     +_itemIco(it,col,Math.round(sz*0.82))
-    +'<img class="iskin-img" src="'+src+'"'+fbAttr+' data-el="'+(it.el||0)+'" width="'+sz+'" height="'+sz+'" loading="lazy" '
+    +'<img class="iskin-img" src="'+renderSrc+'"'+fbAttr+' data-el="'+(it.el||0)+'" width="'+sz+'" height="'+sz+'" loading="lazy" '
     +'onerror="if(this.dataset.fb){this.src=this.dataset.fb;this.classList.add(\'el\'+this.dataset.el);this.removeAttribute(\'data-fb\');}else{this.remove();}">'
     +'</span>';
 }
@@ -25965,14 +26002,17 @@ function _worldItemSkin(it){
   const el=_ELKEY[it.el||0]||'phys';
   const src=_itemSkinSrc(base,el);
   const fallback=_itemSkinSrc(base,'phys');
-  let img=_worldItemSkinCache.get(src);
+  const cutoutSrc=_ITEM_CUTOUT_BASES.has(base)?'img/ui/item-cutouts/'+base+'_phys_cutout.png':'';
+  const renderSrc=cutoutSrc||src;
+  let img=_worldItemSkinCache.get(renderSrc);
   if(!img){
     img=new Image();
     img.onload=()=>{img._worldDropMasked=null;};
-    if(src!==fallback)img.onerror=()=>{img.onerror=null;img._worldDropMasked=null;img.src=fallback;};
-    img.src=src;_worldItemSkinCache.set(src,img);
+    if(renderSrc!==fallback)img.onerror=()=>{img.onerror=null;img._worldDropMasked=null;img.src=fallback;};
+    img.src=renderSrc;_worldItemSkinCache.set(renderSrc,img);
   }
   if(!img.complete||!img.naturalWidth)return null;
+  if(cutoutSrc)return img; // 알파가 보존된 투명 원화는 검정 마스킹을 다시 적용하지 않는다.
   if(!img._worldDropMasked){
     const canvas=document.createElement('canvas');canvas.width=img.naturalWidth;canvas.height=img.naturalHeight;
     canvas.getContext('2d').drawImage(img,0,0);
@@ -28823,6 +28863,8 @@ function _enterBossArena(retry=false){
   G._darkZones=[];G._mirrorClones=[];G._fissures=[];G._tideWaves=[];G._seekerMines=[];
   G._rewindMarks=[];G._gravityWells=[];G._wallPushes=[];G._poisonPools=[];G._cageTraps=[];
   G._druidOrbs=[];G._druidOrbT=0;G._druidParryT=0;G._druidParryVolley=0;
+  // 1-1 필드 전용 부보스·화마귀·곰치가 보스 아레나에서 남거나 재생성되지 않게 한다.
+  if(si===0){G._fieldBoss=null;G._fieldBosses=null;G._fireDevils=null;G._worms=[];}
   if(_isDruidFinale({ib:true})){G._worms=[];G._wmStage=G.stage;}
   G._chainLights=[];G._orbWeaves=[];G._soulAnchors=[];G._chaseAoes=[];G._lavaPools=[];G._fireRains=[];G._shockGrids=[];G._donutSlams=[];G._safeCorners=[];G._crossWipes=[];G._tidalWipes=[];G._gSlamWave=[];G._skyCrushers=[];G._lavaField=null;G._gwPillar=null;_shDirty=true;
   G.spawnHoles=[];G.rifts=[];
@@ -28846,10 +28888,10 @@ function _enterBossArena(retry=false){
     G._flashT=0;G._chromaT=0;G.paused=false;
   }
   // 1-1 드루이드는 use2D 프레임 렌더 사용; 구 흑요염 거대보스 플래그 제외.
-  // ?bosstest: 보스 뿔이 화면 상단과 HP바에 가리지 않도록 남쪽 2타일에서 시작 (실제 보스 아레나 배치는 유지)
+  // ?bosstest: 보스 구도는 유지하고 플레이어를 발 아래서 한 타일 더 분리 (실제 보스 아레나 배치는 유지)
   if(_bossTestReq>=0&&!retry){
     const _tb=ens[ens.length-1];
-    if(_tb&&_tb.ib){P.x=_tb.x;P.y=_tb.y+2*T;G.cam.x=P.x;G.cam.y=P.y-T}
+    if(_tb&&_tb.ib){P.x=_tb.x;P.y=_tb.y+3*T;G.cam.x=P.x;G.cam.y=P.y-2*T}
   }
   G.bossAlive=true;G._bossRef=null;G._crT=0;G.atkTickets=0;if(!G._killedBosses)G._killedBosses=[];
   G.pets={crow:{x:P.x,y:P.y-20,tx:P.x,ty:P.y,s:'follow',_tRef:null,_fetchT:0,t:0},cat:{x:P.x,y:P.y+10,tx:P.x,ty:P.y,s:'follow',_tRef:null,_fetchT:0,t:~~(Math.random()*100)},xbow:{x:P.x-30,y:P.y-28,tx:P.x,ty:P.y,s:'follow',_tRef:null,_fetchT:0,t:25,_atkCd:0,_ang:0},iris:{x:P.x+20,y:P.y-34,tx:P.x,ty:P.y,s:'follow',t:50,sz:G._irisSz||20,_feedT:0}};
@@ -35672,7 +35714,7 @@ function _bossStartPattern(e,mv,d,phase,extraDelay){
       const _mtW=(G.mw||50)*T,_mtH=(G.mh||42)*T,_mtCx=_mtW/2,_mtCy=_mtH/2;
       for(let mi=0;mi<mc;mi++)e.meteors.push({x:_mtCx+(Math.random()-.5)*(_mtW*.65),y:_mtCy+(Math.random()-.5)*(_mtH*.65),t:50});
       e.s='bossMeteorWind';e.st2=tele||50;addTxt(e.x,e.y-30,_T('☄ 유성우!'),'#ff8800',50);break;}
-    case'grab':if(d<120){e.s='bossGrabWind';e.st2=tele||40;e._grabAng=e.facing;addTxt(e.x,e.y-30,_T('🖐 잡기!'),'#cc00ff',45);SFX.charge()}
+    case'grab':if(d<120){e.s='bossGrabWind';e.st2=tele||40;e._grabWindMax=e.st2;e._grabAng=e.facing;addTxt(e.x,e.y-30,_T('🖐 잡기!'),'#cc00ff',45);SFX.charge()}
       else{e.s='bossChargeWind';e.st2=~~(55*BOSS_PHASES[phase].teleM)+(extraDelay||0)||55;addTxt(e.x,e.y-30,_T('⚠ 돌진!'),'#ffaa00',50);SFX.charge()}break;
     case'spin':e.s='bossSpinWind';e.st2=tele||35;e._spinAng=0;addTxt(e.x,e.y-30,_T('🌀 회전참!'),'#ff6644',45);SFX.swing();break;
     case'mine':e.s='bossMineWind';e.st2=tele||30;addTxt(e.x,e.y-30,_T('💣 지뢰!'),'#5e10a8',40);SFX.magic(0);break;
@@ -39881,6 +39923,7 @@ function checkRooms(){
             $('clearSub').textContent=_L('썩은 숲을 정복했습니다.','You conquered the Rotten Forest.');
             $('nextBtn').textContent=_T('데모 종료');
           }
+          if(_dbReady)dbSave(); // 클리어 보상·기록은 다음 자동저장 전에 확정
           break;
         }
       }
@@ -40107,6 +40150,8 @@ function hurtE(e,dmg,ang,noSound,opts,atkEl=0){
     const _shAbs=Math.min(e.eShield,dmg);
     e.eShield=Math.max(0,e.eShield-dmg);
     dmg=Math.max(0,dmg-_shAbs);
+    // 에너지쉴드 흡수량도 실제 피해로 표시한다. HP 오버플로우 숫자와 구분해 청색으로 렌더.
+    if(_shAbs>0&&!isDot)addTxt(e.x,e.y-70,String(_shAbs),'#66ddff',45,48,String(_shAbs));
     if(dmg===0)_shBlocked=true;
   }
   // ═══ 데미지 → HP 직행 ═══
@@ -41644,8 +41689,8 @@ function _buildNumAtlas(){
     {top:'#ffffff',mid:'#cccccc',bot:'#888888',outline:'#000000',glow:'rgba(200,200,200,0.5)'},
     // 1: 크림슨 (크리티컬) — 게임 톤 통일, 어둡고 진한 빨강
     {top:'#dd2200',mid:'#aa0000',bot:'#440000',outline:'#000000',glow:'rgba(180,0,0,0.7)'},
-    // 2: 예비
-    {top:'#ffffff',mid:'#cccccc',bot:'#888888',outline:'#000000',glow:'rgba(200,200,200,0.5)'}
+    // 2: 에너지쉴드 흡수 피해
+    {top:'#a9f5ff',mid:'#55caff',bot:'#2365b8',outline:'#07182e',glow:'rgba(60,180,255,0.7)'}
   ];
   const _font='900 44px "Pirata One","Noto Sans KR","Apple SD Gothic Neo","Malgun Gothic",serif';
   _numAx.textBaseline='top';_numAx.textAlign='center';
@@ -45956,6 +46001,19 @@ function renderInvStorage(){
   });
   sec.appendChild(bagList);
 }
+function depositStorage(idx){
+  const item=INV.bag[idx];if(!item)return false;
+  const store=_getStore();
+  if(store.length>=STORAGE_MAX){notify(_T('창고가 가득 찼습니다!'));return false}
+  store.push(item);INV.bag.splice(idx,1);INV.selected=null;
+  SFX.pickup();_persistSharedStorage();renderInv();dbSaveNow();return true;
+}
+function _invBagRightClick(idx){
+  const item=INV.bag[idx];if(!item)return;
+  if($('invPanel')?.dataset.inventoryPage==='storage'){depositStorage(idx);return}
+  if(item.slot==='bonePart'){registerBonePart(item);return}
+  equipItem(item);applyStats();renderInv();
+}
 function withdrawStorage(idx){
   if(INV.bag.length>=BAG_MAX){notify(_T('가방이 가득 찼습니다!'));return}
   const store=_getStore();if(!store[idx])return;
@@ -45989,19 +46047,6 @@ function renderSettings(){
       }
       const nm=document.createElement('div');nm.textContent=_L(cur.name,cur.nameEn||cur.name);
       nm.style.cssText='color:'+(sel?'#ffcc00':'#aaa')+';font-size:.6rem;margin-top:2px';
-function depositStorage(idx){
-  const item=INV.bag[idx];if(!item)return false;
-  const store=_getStore();
-  if(store.length>=STORAGE_MAX){notify(_T('창고가 가득 찼습니다!'));return false}
-  store.push(item);INV.bag.splice(idx,1);INV.selected=null;
-  SFX.pickup();_persistSharedStorage();renderInv();dbSaveNow();return true;
-}
-function _invBagRightClick(idx){
-  const item=INV.bag[idx];if(!item)return;
-  if($('invPanel')?.dataset.inventoryPage==='storage'){depositStorage(idx);return}
-  if(item.slot==='bonePart'){registerBonePart(item);return}
-  equipItem(item);applyStats();renderInv();
-}
       card.appendChild(nm);
       card.onclick=()=>{OPT.cursor=ci;_cursorCache=[];_applyCursor();saveSettings();renderSettings()};
       _cg.appendChild(card);
@@ -46827,6 +46872,13 @@ function _invRenderDetail(idx,source,preview=false){
   const it=source==='eq'?INV.equipped[idx]:source==='st'?(_getStore()[idx]||null):INV.bag[idx];
   if(!it)return;
   const rp=$('invRight');if(!rp)return;
+  const sameDetail=rp._detailItem===it&&rp._detailSource===source;
+  const scrollState=sameDetail?{
+    panel:rp.scrollTop,
+    cards:[...rp.querySelectorAll('.inv-compare-card')].map(node=>node.scrollTop),
+    moreOpen:!!rp.querySelector('.inv-compare-more')?.open,
+    more:rp.querySelector('.inv-compare-more')?.scrollTop||0
+  }:null;
   rp.style.visibility='visible';
   rp.classList.toggle('inv-hover-preview',preview);
   rp.replaceChildren();
@@ -46937,9 +46989,17 @@ _actB.innerHTML=`<div class="id-btns" style="display:flex;gap:6px"><button type=
       _actB.innerHTML=`<div class="id-btns"><button type="button" class="id-btn equip" onclick="withdrawStorage(${idx})">${_T('꺼내기')}</button></div>`;
     } else _actB.innerHTML='';
   }
+  rp._detailItem=it;rp._detailSource=source;
+  if(scrollState){
+    const more=rp.querySelector('.inv-compare-more');
+    if(more){more.open=scrollState.moreOpen;more.scrollTop=scrollState.more}
+    rp.scrollTop=scrollState.panel;
+    [...rp.querySelectorAll('.inv-compare-card')].forEach((node,i)=>{node.scrollTop=scrollState.cards[i]||0});
+  }
 }
 function _invRenderEmptyDetail(){
   const rp=$('invRight');if(!rp)return;
+  rp._detailItem=null;rp._detailSource=null;
   rp.classList.remove('inv-side-compare','inv-hover-preview');
   if($('invPanel')?.dataset.inventoryPage!=='equipment'){
     const hint=document.createElement('div');
@@ -50102,12 +50162,6 @@ function draw(){
       X.globalAlpha=_spP*.12;X.fillStyle='#ff6644';X.beginPath();X.arc(e.x,e.y,_spR*_spP,0,Math.PI*2);X.fill();
       X.globalAlpha=_spP*.4;X.strokeStyle='#ff6644';X.lineWidth=3;X.setLineDash(_D8_6);
       X.beginPath();X.arc(e.x,e.y,_spR,0,Math.PI*2);X.stroke();X.setLineDash(_D0);X.globalAlpha=sa}
-    if(e.ib&&e.s==='bossGrabWind'){
-      const _grP=1-e.st2/40;const _grR=e.r+(P.r||8)+200;
-      X.globalAlpha=_grP*.2;X.fillStyle='#cc00ff';
-      X.beginPath();X.moveTo(e.x,e.y);X.arc(e.x,e.y,_grR,e.facing-.8,e.facing+.8);X.closePath();X.fill();
-      X.globalAlpha=_grP*.6;X.strokeStyle='#cc00ff';X.lineWidth=2;X.setLineDash(_D6_4);
-      X.beginPath();X.arc(e.x,e.y,_grR,e.facing-.8,e.facing+.8);X.stroke();X.setLineDash(_D0);X.globalAlpha=sa}
     if(e.ib&&e.s==='bossShockWind'){
       const _shP=1-e.st2/30;const _shR=1000+(G.stage||0)*50;
       X.globalAlpha=_shP*.1;X.fillStyle='#44ccff';X.beginPath();X.arc(e.x,e.y,_shR*_shP,0,Math.PI*2);X.fill();
@@ -50396,27 +50450,41 @@ function draw(){
       }
       X.globalAlpha=sa}
     // ── 잡기 전조 ──
-    if(e.s==='bossGrabWind'){const p=1-e.st2/40;
-      X.globalAlpha=p*.4+Math.sin(_now/50)*.2;X.fillStyle='#cc00ff';X.beginPath();X.arc(e.x,e.y,e.r+6+p*15,0,Math.PI*2);X.fill();
-      // 집게 모양 경고
-      const ga=e._grabAng||e.facing;
-      X.globalAlpha=p*.7;X.strokeStyle='#cc00ff';X.lineWidth=3+p*3;
-      X.beginPath();X.arc(e.x+Math.cos(ga)*(e.r+10),e.y+Math.sin(ga)*(e.r+10),12+p*8,ga-1,ga+1);X.stroke();
+    if(e.s==='bossGrabWind'){
+      const p=Math.max(0,Math.min(1,1-e.st2/(e._grabWindMax||40)));
+      const gr=e.r+P.r+200,ga=e._grabAng??e.facing;
+      // 판정과 같은 반경을 처음부터 알리고, 끝으로 갈수록 경계를 선명하게 한다.
+      X.globalAlpha=.08+p*.1;X.fillStyle='#bf37dc';X.beginPath();X.arc(e.x,e.y,gr,0,Math.PI*2);X.fill();
+      X.globalAlpha=.7+p*.3;X.strokeStyle='#ffa3ef';X.lineWidth=4+p*2;
+      X.beginPath();X.arc(e.x,e.y,gr,0,Math.PI*2);X.stroke();
+      X.globalAlpha=.18+p*.28;X.strokeStyle='#76319a';X.lineWidth=1.5;
+      X.beginPath();X.arc(e.x,e.y,gr*.82,0,Math.PI*2);X.stroke();
+      // 몸통 주변의 집게 형상은 공격 종류를 구분하는 보조 표식이다.
+      X.globalAlpha=.45+p*.45;X.strokeStyle='#ff8be8';X.lineWidth=3+p*2;
+      for(const side of [-1,1]){
+        const a=ga+side*.72,cx=e.x+Math.cos(a)*(e.r+28),cy=e.y+Math.sin(a)*(e.r+28);
+        X.beginPath();X.arc(cx,cy,18+p*12,a-side*1.35,a+side*.2,side<0);X.stroke();
+      }
       X.globalAlpha=sa}
     if(e.s==='bossGrab'){
       X.globalAlpha=.3+Math.sin(_now/30)*.2;X.fillStyle='#ff0044';X.beginPath();X.arc(e.x,e.y,e.r+20,0,Math.PI*2);X.fill();
       X.globalAlpha=sa}
     // ── 회전참 ──
-    if(e.s==='bossSpinWind'){const p=1-e.st2/35;
-      X.globalAlpha=p*.3;X.strokeStyle='#ff6644';X.lineWidth=2+p*3;
-      X.beginPath();X.arc(e.x,e.y,50+G.stage*3,0,Math.PI*2);X.stroke();
+    if(e.s==='bossSpinWind'){
+      const p=Math.max(0,Math.min(1,1-e.st2/35)),_spR=500+G.stage*15;
+      X.globalAlpha=p*.07;X.fillStyle='#ff6644';X.beginPath();X.arc(e.x,e.y,_spR,0,Math.PI*2);X.fill();
+      X.globalAlpha=.28+p*.42;X.strokeStyle='#ff8d55';X.lineWidth=2+p*2;
+      X.beginPath();X.arc(e.x,e.y,_spR,0,Math.PI*2);X.stroke();
+      X.globalAlpha=.17+p*.22;X.lineWidth=1.5;X.beginPath();X.arc(e.x,e.y,_spR*.55,0,Math.PI*2);X.stroke();
       X.globalAlpha=sa}
     if(e.s==='bossSpin'){
-      const _spR=50+G.stage*3;const sa2=e._spinAng||0;
-      X.globalAlpha=.2;X.fillStyle=e.col;X.beginPath();X.arc(e.x,e.y,_spR,0,Math.PI*2);X.fill();
-      X.globalAlpha=.6;X.strokeStyle=e.col;X.lineWidth=3;
+      const _spR=500+G.stage*15,sa2=e._spinAng||0;
+      X.globalAlpha=.055;X.fillStyle=e.col;X.beginPath();X.arc(e.x,e.y,_spR,0,Math.PI*2);X.fill();
+      X.globalAlpha=.48;X.strokeStyle='#ffb075';X.lineWidth=3;
+      X.beginPath();X.arc(e.x,e.y,_spR,0,Math.PI*2);X.stroke();
+      X.globalAlpha=.34;X.strokeStyle=e.col;X.lineWidth=5;
       for(let si=0;si<3;si++){const a=sa2+Math.PI*2*si/3;
-        X.beginPath();X.moveTo(e.x,e.y);X.lineTo(e.x+Math.cos(a)*_spR,e.y+Math.sin(a)*_spR);X.stroke()}
+        X.beginPath();X.arc(e.x,e.y,_spR*(.39+si*.2),a,a+1.25);X.stroke()}
       X.globalAlpha=sa}
     // ── 지뢰 전조 ──
     if(e.s==='bossMineWind'){const p=1-e.st2/30;
@@ -51966,7 +52034,7 @@ function draw(){
     const _sk=_bSz>=36&&_age<0.3?(Math.sin(_age*80)*(1-_age*3.3)*3):0;
     // 데미지 숫자 (sz>=28): 비트맵 폰트 렌더
     if(t.sz>=28&&t._numStr){
-      const _ci=t.c==='#dd2200'||t.c==='#cc0000'||t.c==='#ff0000'?1:0;
+      const _ci=t.c==='#66ddff'?2:t.c==='#dd2200'||t.c==='#cc0000'||t.c==='#ff0000'?1:0;
       const _sc=(_bSz/48)*_bn;
       X.save();X.globalAlpha=_ta;
       drawNumStr(X,t._numStr,t.x+_sk,t.y-_NUM_H*_sc/2,_ci,_sc);
@@ -54612,36 +54680,14 @@ function drawP(){
         const z=ca.zones[zi];
          if(z.hit){
            const _ep=z.explT/z.explMax;
-            X.globalAlpha=(1-_ep)*(z.druid?.14:.18);
-            if(z.druid){const _eg=X.createRadialGradient(z.x,z.y,z.r*.08,z.x,z.y,z.r*(1+_ep*.25));
-              _eg.addColorStop(0,'#1a2819');_eg.addColorStop(.56,'#5c713c');_eg.addColorStop(1,'#b6ce74');X.fillStyle=_eg;
-              X.beginPath();for(let k=0;k<=32;k++){const a=k*Math.PI/16,rr=z.r*(1+_ep*.25)*(1+Math.sin(k*4.3+zi)*.025);
-                if(k===0)X.moveTo(z.x+Math.cos(a)*rr,z.y+Math.sin(a)*rr);
-                else X.lineTo(z.x+Math.cos(a)*rr,z.y+Math.sin(a)*rr);}X.closePath();X.fill();
-            }else{X.fillStyle='#ff4400';X.beginPath();X.arc(z.x,z.y,z.r*(1+_ep*.3),0,Math.PI*2);X.fill();}
+            if(z.druid){_drawDruidGroundRing(X,z.x,z.y,z.r*(1+_ep*.25),(1-_ep)*.68,zi*.67);
+            }else{X.globalAlpha=(1-_ep)*.18;X.fillStyle='#ff4400';X.beginPath();X.arc(z.x,z.y,z.r*(1+_ep*.3),0,Math.PI*2);X.fill();}
            if(!z.druid){X.globalAlpha=(1-_ep)*.8;X.strokeStyle='#ffaa00';X.lineWidth=3*(1-_ep);
              X.beginPath();X.arc(z.x,z.y,z.r*(1+_ep*.5),0,Math.PI*2);X.stroke();}
          }else if(z.druid){
-           // 독성 뿌리 장판: 반투명 토양과 두 겹의 밝은 경고 테두리. 피해 판정 반경은 그대로 둔다.
+           // 부패한 뿌리 장판: 중앙을 비워 캐릭터가 보이게 한다. 피해 판정 반경은 그대로 둔다.
            const _zP=Math.min(1,z.t/z.delay),_pulse=.78+Math.sin(_now*.018+zi)*.22;
-            const _soil=X.createRadialGradient(z.x,z.y,z.r*.08,z.x,z.y,z.r);
-            _soil.addColorStop(0,'#131f18');_soil.addColorStop(.58,'#31472a');_soil.addColorStop(1,'#64854a');
-             X.globalAlpha=_zP*.13;X.fillStyle=_soil;X.beginPath();X.arc(z.x,z.y,z.r,0,Math.PI*2);X.fill();
-           X.globalAlpha=_zP*_pulse*.55;X.fillStyle='#badb67';X.beginPath();
-           X.arc(z.x,z.y,z.r,0,Math.PI*2);X.arc(z.x,z.y,Math.max(0,z.r-1.5),0,Math.PI*2,true);X.fill();
-           if(_zP>.5){const _inner=z.r*(1-(_zP-.5)*1.65);
-             X.globalAlpha=(_zP-.5)*.65;X.fillStyle='#d7e89b';X.beginPath();
-             X.arc(z.x,z.y,_inner+1.5,0,Math.PI*2);X.arc(z.x,z.y,_inner,0,Math.PI*2,true);X.fill();}
-            X.globalAlpha=_zP*.25;X.fillStyle='#a5bd6d';X.beginPath();
-            for(let ri=0;ri<10;ri++){const a=ri*Math.PI/5+zi*.17,rr=z.r*(.68+(ri%3)*.07),bend=.08*(ri%2?1:-1);
-              X.moveTo(z.x+Math.cos(a)*z.r*.14,z.y+Math.sin(a)*z.r*.14);
-              X.lineTo(z.x+Math.cos(a+bend)*rr,z.y+Math.sin(a+bend)*rr);
-              X.lineTo(z.x+Math.cos(a+bend+.035)*(rr+z.r*.05),z.y+Math.sin(a+bend+.035)*(rr+z.r*.05));
-              X.lineTo(z.x+Math.cos(a+.055)*z.r*.17,z.y+Math.sin(a+.055)*z.r*.17);X.closePath();}
-            X.fill();
-            X.globalAlpha=_zP*.2;X.fillStyle='#16231a';
-            for(let ri=0;ri<12;ri++){const a=ri*Math.PI/6,rr=z.r*(.3+(ri%3)*.24);
-              X.beginPath();X.ellipse(z.x+Math.cos(a)*rr,z.y+Math.sin(a)*rr,12,4,a,0,Math.PI*2);X.fill();}
+           _drawDruidGroundRing(X,z.x,z.y,z.r,_zP*(.55+.12*_pulse),zi*.67);
          }else{
           // 안내 원 (점점 밝아짐)
           const _zP=Math.min(1,z.t/z.delay);
@@ -54673,6 +54719,9 @@ function drawP(){
       // [다크드루이드] stage3 lavaPools = 커스텀 녹색 가시 장판 아트(빨간원 대체)
       const _dzl=((G.stage===0||G.stage===3)&&typeof _druidSheets!=='undefined'&&_druidSheets.aoe&&_druidSheets.aoe.ready)?_druidSheets.aoe:null;
       if(_isDruidFinale(G._bossRef)){_drawDruidFinalePool(X,lp,_dzl,__strokeBak);continue;}
+      if((G.stage===0||G.stage===3)&&_druidGroundRing.complete&&_druidGroundRing.naturalWidth){
+        const _la=lp.t<lp.warnT?lp.t/lp.warnT*.42:lp.t>lp.maxT*.8?(1-(lp.t-lp.maxT*.8)/(lp.maxT*.2))*.65:.65;
+        _drawDruidGroundRing(X,lp.x,lp.y,lp.r,_la,li*.73);continue;}
       if(_dzl){const im=_dzl.img,cw=im.naturalWidth/4,ch=im.naturalHeight/2,fr=Math.min(7,~~(lp.t/lp.maxT*8)),sx=(fr%4)*cw,sy=(~~(fr/4))*ch,R=lp.r*1.4;
         const _la=lp.t<lp.warnT?(lp.t/lp.warnT*.18):(lp.t>lp.maxT*.8?(1-(lp.t-lp.maxT*.8)/(lp.maxT*.2))*.26:.26);
         X.globalAlpha=_la;X.drawImage(im,sx,sy,cw,ch,lp.x-R,lp.y-R,R*2,R*2);
@@ -54987,17 +55036,16 @@ function drawP(){
           if(fs2.exploded&&fs2._visExplAt==null)fs2._visExplAt=fs2.t;
           const _ep=fs2.exploded?Math.min(1,(fs2.t-fs2._visExplAt)/30):0;
           const _markR=fs2.exploded?fs2.explR*(1+_ep*.12):fs2.explR;
-          const _markGrad=X.createRadialGradient(_hx,_hy,_markR*.05,_hx,_hy,_markR);
-          _markGrad.addColorStop(0,fs2.exploded?'#829e51':'#35462c');
-          _markGrad.addColorStop(.72,fs2.exploded?'#536a38':'#293926');
-          _markGrad.addColorStop(1,'#b1c878');
-          X.globalAlpha=fs2.exploded?(1-_ep)*.38:.14+Math.sin(_now*.018)*.035;X.fillStyle=_markGrad;
-          X.beginPath();for(let k=0;k<=32;k++){const a=k*Math.PI/16,rr=_markR*(1+Math.sin(k*2.9+fi)*.018);
-            if(k===0)X.moveTo(_hx+Math.cos(a)*rr,_hy+Math.sin(a)*rr);
-            else X.lineTo(_hx+Math.cos(a)*rr,_hy+Math.sin(a)*rr);}X.closePath();X.fill();
-          if(!fs2.exploded){X.globalAlpha=.52;X.strokeStyle='#a9c872';X.lineWidth=5;
-             X.beginPath();X.arc(_hx,_hy,fs2.explR,0,Math.PI*2);__strokeBak.call(X);
-            X.globalAlpha=.46;X.fillStyle='#b0d16b';X.beginPath();X.arc(_hx,_hy,fs2.explR*.16,0,Math.PI*2);X.fill();}
+          _drawDruidGroundRing(X,_hx,_hy,_markR,fs2.exploded?(1-_ep)*.48:.32+Math.sin(_now*.018)*.035,fi*.69,.78);
+          // 낮은 대비의 뿌리 테두리 조각으로 실제 폭발 경계만 또렷하게 표시한다.
+          X.lineCap='round';X.lineWidth=Math.max(2,Math.min(4,_markR*.004));
+          for(let seg=0;seg<18;seg++){
+            const a0=seg*Math.PI/9+fi*.19,a1=a0+Math.PI/9*(.56+(seg%3)*.10);
+            const rr=_markR*(.985+Math.sin(seg*2.7+fi)*.013);
+            X.globalAlpha=(fs2.exploded?1-_ep:1)*(.24+(seg%4)*.045);
+            X.strokeStyle=seg%5===0?'#a6b568':'#746d48';X.beginPath();
+            X.arc(_hx,_hy,rr,a0,a1);__strokeBak.call(X);
+          }
           X.restore();continue;
        }
        // 균열 선
@@ -55133,6 +55181,8 @@ function drawP(){
       const pp=G._poisonPools[pi];const _ppF=pp.t>pp.maxT*.8?(1-(pp.t-pp.maxT*.8)/(pp.maxT*.2)):Math.min(1,pp.t*5/pp.maxT);
       // [다크드루이드] stage3 독장판 = 커스텀 8프레임 솟는 장판 아트
       const _dz=((G.stage===0||G.stage===3)&&typeof _druidSheets!=='undefined'&&_druidSheets.aoe&&_druidSheets.aoe.ready)?_druidSheets.aoe:null;
+      if((G.stage===0||G.stage===3)&&_druidGroundRing.complete&&_druidGroundRing.naturalWidth){
+        _drawDruidGroundRing(X,pp.x,pp.y,pp.r,_ppF*.68,pi*.81);continue;}
       if(_dz){const im=_dz.img,cw=im.naturalWidth/4,ch=im.naturalHeight/2,fr=Math.min(7,~~(pp.t/pp.maxT*8)),sx=(fr%4)*cw,sy=(~~(fr/4))*ch,R=pp.r*1.5;
         X.globalAlpha=_ppF*.25;X.drawImage(im,sx,sy,cw,ch,pp.x-R,pp.y-R,R*2,R*2);
         X.globalAlpha=_ppF*.55;X.fillStyle='#a9d76a';X.beginPath();X.arc(pp.x,pp.y,pp.r,0,Math.PI*2);X.arc(pp.x,pp.y,Math.max(0,pp.r-1.2),0,Math.PI*2,true);X.fill();X.globalAlpha=1;continue;}
@@ -57835,6 +57885,7 @@ function _fbMk(tx,ty,el){
 function _fbTick(){
   if(window._parryLesson?.active)return;
   if(!G.on||!P){return}
+  if(G._bossArena&&G.stage===0){_fbClear();return}
   if(_MAP_QA_MODE){_fbClear();return}
   if(G.stage!==0){_fbClear();return} // 1-1 전용
   if(G._fbStage!==G.stage){G._fbStage=G.stage;G._fbSpawned=false;G._fbAnnounced=false;_fbClear()}
@@ -58047,7 +58098,7 @@ function _wmContactHit(w,scale){
 function _wmTick(){
   if(window._parryLesson?.active)return;
   if(!G.on||!P||!G.map){return}
-  if(G._bossArena&&_DEMO_MODE&&G.stage===3&&G.stage===_DEMO_LAST_STAGE){if(G._worms)G._worms.length=0;return;}
+  if(G._bossArena&&(G.stage===0||(_DEMO_MODE&&G.stage===3&&G.stage===_DEMO_LAST_STAGE))){if(G._worms)G._worms.length=0;return;}
   if(G._wmStage!==G.stage){G._wmStage=G.stage;G._worms=null}
   if(!G._worms){
     G._worms=[];
@@ -58281,6 +58332,7 @@ function _fdDrawEmerge(frame,wx,wy,scale){
 function _fdTick(){
   if(window._parryLesson?.active)return;
   if(!G.on||!P)return;
+  if(G._bossArena&&G.stage===0){_fdClear();return}
   if(_MAP_QA_MODE){_fdClear();return}
   if(G.stage!==0){_fdClear();return}
   if(G._fdStage!==G.stage){G._fdStage=G.stage;G._fdSpawned=false;_fdClear()}
@@ -58761,19 +58813,25 @@ async function _startDemoNew(){
       const sd={
         ts:Date.now(),
         player:{lv:P.lv,exp:P.exp,maxExp:P.maxExp,sp:P.sp,ap:P.ap||0,passiveQueue:_passiveQueueItems(),
+          transLvDate:P._transLvDate||null,transLvCount:P._transLvCount||0,
+          apBossCleared:P._apBossCleared||[],goddessGift:P._goddessGift||[],
           baseAtk:P.baseAtk,baseDef:P.baseDef,mpR:P.mpR,stR:P.stR,
           hp:P.hp,mhp:P.mhp,mp:P.mp,mmp:P.mmp,st:P.st,mst:P.mst,speed:P.speed,
           shield:P.shield,mshield:P.mshield,maskOn:P.maskOn},
         inv:{bag:INV.bag,equipped:INV.equipped,ossCollect:INV.ossCollect||{}},
-        stats:{...STATS},passives:{...PASSIVES},
+        stats:{...STATS},passives:{...PASSIVES},grit:_grit,gritCostModeV2:1,
         qslots:QSLOTS,
-        game:{stage:G.stage,kills:G.kills,mats:G.mats,cutsceneDone:G._cutsceneDone||false},
+        game:{stage:G.stage,kills:G.kills,mats:G.mats,irisSz:G._irisSz||20,
+          taRecords:G._taRecords||{},comboMax:G.comboMax||0,playTime:G.playTime||0,
+          cutsceneDone:G._cutsceneDone||false},
         bagMax:BAG_MAX,hellCleared:G.hellCleared||[],storage:{},
         crystalBag:CRYSTAL_BAG,crystalDust:CRYSTAL_DUST,
         upgrades:{...UPGRADES},potLv:{...POT_LV},skills:{...P.skills},
-        fused:P._fused||{},skProf:P._skProf||{},
+        fused:P._fused||{},skProf:P._skProf||{},fuseProfSec:P._fuseProfSec||{},
+        cardProf:P._cardProf||{},catProf:P._catProf||{},
         activeChargeSk:P.activeChargeSk||'charge',
         activeBowSk:P.activeBowSk||'normal',
+        activeTechSk:P.activeTechSk||'giantSlam',
         activeMagicSk:P.activeMagicSk||'fireball',
         activeLMBSk:P.activeLMBSk||'whirlwind',
         activeRMBSk:P.activeRMBSk||'shieldBlock',
@@ -58792,10 +58850,6 @@ async function _startDemoNew(){
     if(_raw){
       const _d=JSON.parse(_raw);
       if(dbRestore(_d)){
-        G.stage=_d.game?.stage||0;
-        G.mats=_d.game?.mats||1000;
-        G._cutsceneDone=_d.game?.cutsceneDone||false;
-        G.hellCleared=_d.hellCleared||[];
         _demoLoaded=true;
         console.log('[DEMO] 세이브 불러옴 — Lv.'+P.lv+' Stage '+G.stage);
       }
@@ -60856,7 +60910,7 @@ function _btBuildUI(){
       <button class="_btBtn" id="_btHitboxBtn" onclick="_btHitboxToggle()">📦 히트박스</button>
       <button class="_btBtn" onclick="window._btBoss&&(window._btBoss.elite=(window._btBoss.elite||0)+1)" title="엘리트 등급 올리기">⭐ 엘리트+</button>
       <button class="_btBtn" onclick="window._btBoss&&(window._btBoss.elite=0)">🔄 엘리트 리셋</button>
-      <button class="_btBtn" onclick="P.x=window._btBoss.x;P.y=window._btBoss.y-80" title="보스 앞으로 순간이동">📍 텔레포트</button>
+      <button class="_btBtn" onclick="P.x=window._btBoss.x;P.y=window._btBoss.y-80;G.cam.x=P.x;G.cam.y=P.y" title="보스 앞으로 순간이동">📍 텔레포트</button>
     </div>
     <div style="margin-top:6px">
       <span style="color:#aa8866;font-size:11px">속도: <span id="_btSpeedVal">1.0x</span></span>

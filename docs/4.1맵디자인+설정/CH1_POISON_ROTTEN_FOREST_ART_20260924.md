@@ -1,3 +1,53 @@
+> 2026-09-28 현재 72차: 남측 시작 오른쪽 비보행 외곽에 낮은 부패 목질·수피판·검은 공동을 부분 반영했습니다. 중심 tile[129,181], master/3청크(cache `20260928-outer-72`), 433,965픽셀 변화·보행 픽셀 변경0. 후보 전후7·일반 본편35카메라·오류0·회귀8 PASS, 64청크/224경계 strip 및 skin65→outer66→outer67→outer68→outer69→outer70→outer71→outer72 helper 전체 재현. 늪 버블·가스·동맥 유지. 전체 VISUAL VERDICT RETOUCH; 아래 이전 현행 표기는 당시 이력이며 production SSOT의72차 MAP PRODUCTION REPORT가 우선합니다.
+
+> 2026-09-28 71차 기록(72차 이전): 남동 부패 뿌리 한 개를 tile[184,158]→[178,150]으로 재배치해 보행 경계의 목질 공동·접합 가독성을 개선(master/4청크 x6..7/y5..6). production cache `20260928-outer-71`; 1,103,760픽셀 변화·보행 픽셀 변경0, 본편30카메라·오류0·회귀8 PASS. 기존70자리 복원543,276픽셀과 새 위치를 보정patch로 기록, skin65→outer66→outer67→outer68→outer69→outer70→outer71 보존. 전체 VISUAL VERDICT RETOUCH; 아래 이전 현행 표기는 당시 이력이며 production 문서71차 보고가 우선합니다.
+
+> 2026-09-28 70차 기록(71차 이전): 남동 비보행 외곽에 낮게 무너진 부패 뿌리·수피판·목질 공동을 부분 반영(master/3청크 x7/y5, x6..7/y6). production cache `20260928-outer-70`; 686,730픽셀 변화·보행 픽셀 변경0, 본편29카메라·오류0·회귀8 PASS. skin65→outer66→outer67→outer68→outer69→outer70 보존, 전체 VISUAL VERDICT RETOUCH. 아래 이전 현행 표기는 당시 이력이며 production 문서 70차 MAP PRODUCTION REPORT가 우선합니다.
+
+> 2026-09-28 69차 기록(70차 이전): 동쪽 비보행 외곽에 기울어진 속빈 고목과 낮은 부채꼴 뿌리를 부분 반영(master/3청크 x7/y3, x6..7/y4). production cache `20260928-outer-69`; 801,475픽셀 변화·보행 픽셀 변경 0, 본편25카메라·오류0·회귀8 PASS. skin65→outer66→outer67→outer68→outer69 보존, 전체 VISUAL VERDICT RETOUCH. 아래 이전 pass의 현행 표기는 당시 기록이며 상세 계약은 production 문서 69차 MAP PRODUCTION REPORT가 우선합니다.
+
+> 2026-09-28 68차 기록(69차 이전): 북쪽 비보행 외곽에 쓰러진 속빈 고목을 부분 반영(master/6청크 x1..3/y0..1). production cache `20260928-outer-68`; 보행 픽셀 변경 0, 본편 21카메라·오류 0·회귀 8 PASS. 67차 실제 원화 1024²/scale1.5로 정정했으며, master/64청크 불일치 기록은 검사기 좌표 오류였다. 전체 VISUAL VERDICT RETOUCH. 상세는 CH1_1_PRODUCTION_FINISH_20260916.md의 68차 MAP PRODUCTION REPORT.
+
+> 2026-09-28 67차 기록(68차 이전): 북서쪽 비보행 외곽의 건강한 수풀 띠를 죽은 속빈 목질·내부 숲 질량으로 부분반영(master/4청크 x0..1/y1..2). production cache `20260928-outer-67`; 보행pixels 변경0, 65차 피부·66차 서쪽 고목·생체모듈61차 보존. 생성본의 체크무늬 배경은 폐기하고 background-remover cutout만 사용. 전체 VISUAL VERDICT RETOUCH.
+
+> 2026-09-28 현재 66차: 서쪽비보행외곽에썩은고목·통나무·뿌리질량을부분반영(master/4청크x0..1/y3..4).production cache `20260928-outer-66`;65차피부/생체모듈61차보존.보행pixels변경0.재베이크는skin65→outer66패치순서,전체8192²픽셀재현확인.아래이전버전은이력;전체VISUAL VERDICT RETOUCH.
+
+## 2026-09-28 — 65차 피부 바닥 본편 반영
+
+첫공터→root_bend→나무앞→서쪽의63/64/65차 저대비피부재질을기존production master와30청크에부분반영했다.배경cache는`20260928-skin-65`,Ch1LivingDetail생체모듈은61차그대로다.아래62~64차의production61차유지문구와9월17일버전은당시이력이다.기존outer비교cache20260917-depth-2/diablo20260924-blockout-2는유지한다.
+
+| id | 본편 계약 | 값 |
+|---|---|---|
+| SKIN65_AREA | 원본·레이어 | 8192²master crop[2007,2867,5447,7249],3440×4382.63차Higgsfield gpt_image_2_5재질1024²재사용;추가생성없음 |
+| SKIN65_BLEND | 재질 | anchor[2498,4587],RGB×.53;sample1024/step512/Hanning floor.001/rotation90×((ix+2iy)%4).기존63/64mask·pixels보존 |
+| SKIN65_WEST | 추가영역 | tile타원[69,100,12,25],[73,123,12,15],alpha.60/feather.35/smoothstep.64mask와max union |
+| SKIN65_PROTECT | 보존 | 타원[105,95,20,15],[108,79,18,10];protect=smoothstep(clamp((1.18-r)/.18));mask0 8,247,686pixels변경0/새서쪽밖64pixels변경0 |
+| SKIN65_CHUNKS | production | x1..5/y2..7 30청크.전체64×1026²(core1024/bleed1);단일master에서crop검증.월드끝bleed는끝pixel복제.나머지34청크보존 |
+| SKIN65_SOURCE | 복구·생성기록 | assets/map/ch1/production_finish/skin65_sources의재질/crop/layer/mask/prep/generation 6파일.원본master+30청크backup은tmp/ch1-production-pre65 |
+| SKIN65_QA | 비교 검수 | 14카메라before64/after65,임시24적·탄·공격/Q;G.map동일;관찰pageerror/HTTP오류0;224stripPASS.본편경로검수결과는제작보고에후속기록 |
+| SKIN65_STATE | 판정 | VISUAL VERDICT: RETOUCH.낮은바닥재질만부분반영.전체외곽·건강한식생·중앙캐릭터중첩·성능검수잔여.새피부맥동미구현;기존늪가스/버블/동맥유지 |
+
+[65차제작보고](../../captures/ch1_ground_skin65/REPORT.md) · [실제화면비교](../../captures/ch1_ground_skin65/index.html).현행복구가능수치·좌표는[production SSOT](CH1_1_PRODUCTION_FINISH_20260916.md#skin65)에도보존한다.
+
+## 2026-09-28 — 64차 북쪽 피부 지면 연결 검수
+
+현행 production은61차이며64차아트는별도검수본이다.63차의Higgsfield GPT 재질을재사용해나무앞·서쪽으로연결;신규생성없음.본편master/청크/충돌/캐시버전은변경하지않았다.
+
+| id | 계약·검수 | 실제 값 |
+|---|---|---|
+| SKIN64 | 선택·레이어 | source crop[2498,2867,5447,7249],2949×4382; anchor[2498,4587];RGB×.53;sample1024/step512/Hanning floor.001/rotation90×((ix+2iy)%4) |
+| SKIN64_MASK | 연결·보호 | tile타원[96,112,29,24],[80,93,16,23],alpha.58/feather.23.뿌리보호[105,95,20,15],[108,79,18,10],protect=smoothstep(clamp((1.18-r)/.18));63mask와max union |
+| SKIN64_KEEP | 픽셀보존 | mask0영역6,976,692pixels중변경0;새북쪽영역밖63pixels변경0 |
+| SKIN64_QA | 실제게임 | before63/after64;12카메라;24검수청크(x2..5/y2..7);224stripPASS;G.map동일;pageerror/HTTP오류0;ch1LivingDetail41PASS |
+| SKIN64_COMBAT | 밀집가독성 | 임시기존AI적24마리추가;밝은투사체구분확인.중앙실루엣가림잔여.HP50ms보충/iframes60;성능·밸런스PASS아님 |
+| SKIN64_STATE | 판정·기록 | VISUAL VERDICT: RETOUCH.정지재질이며신규피부모션완료아님.외곽·녹색잔여·밀집중앙중첩·성능QA잔여 |
+
+전체수치·12카메라좌표·MAP PRODUCTION REPORT: [64차보고서](../../captures/ch1_ground_skin64/REPORT.md), [비교갤러리](../../captures/ch1_ground_skin64/index.html).승격시assets원본/레이어/마스크와master→64청크→cacheversion→docs를같이반영한다.
+
+> **2026-09-28 63차 신규 피부 재질 검수:** `gpt_image_2_5`, job `8297189f-c4f9-4719-91f1-7cb5df20c1a6`,1024×1024 RGB. 생성원본·프롬프트·검수용합성레이어를 `captures/ch1_ground_skin63/`에보존했다. 신규맵전체재생성이아니며현행production원화미교체. [생성정보](../../captures/ch1_ground_skin63/generation.json) / [규격·합성·QA](../../captures/ch1_ground_skin63/REPORT.md).
+
+> **2026-09-28 59차 현행:** 동측 region1 합성은 .76, palette #343034/#49443c/#303829,서쪽 lobe [155,282,146,140] 추가. 중앙과 회갈색을 공유하고 늪쪽 녹갈색 유지. region0 .82/region1·2 .76/region3·4 .6,지역5캐시7.5MiB/추가draw0. [현행 수치·검수](CH1_EAST_TISSUE_PASS59.md). 아래 이전 수치는 당시 이력이다.
+
 # CH1-1 독속성 썩은 숲 원화 — 2026-09-24
 
 > **2026-09-25 현행 콘셉트 정정:** [맵디테일.md](맵디테일.md)가 현재 기준이다. 사용자가 v2/v3의 싱싱한 식생과 자연숲 인상을 지적했고, **피부 바닥·꿈틀거리는 동맥·부패 생체조직의 음침한 지옥**으로 확정했다. 아래는 기존 생성·합성의 기술 이력이며 현행 디자인 승인안이 아니다. 피부/동맥 원화 및 움직임 구현은 아직 미완료다.

@@ -299,6 +299,8 @@ test('toxic ground blends dark soil farther inward while retaining bright rock e
   const c=result.getContext('2d'),dark=c.getImageData(23,80,1,1).data,rock=c.getImageData(23,240,1,1).data;
   assert.ok(dark[3]<180,'dark soil edge must expose the underlying floor beyond the old 18px feather');
   assert.ok(rock[3]>240,'bright rock ridge must retain its silhouette');
+  assert.ok(rock[0]<160,'outer bright rock glare should settle into the damp soil');
+  assert.deepEqual(Array.from(c.getImageData(100,240,1,1).data),[160,160,160,255]);
   assert.deepEqual(Array.from(c.getImageData(100,80,1,1).data),[30,30,30,255]);
   assert.deepEqual(source.toBuffer('raw'),original);
 });
@@ -424,4 +426,39 @@ test('authored northern pool contact is cached, culled and isolated from gamepla
  const z=createCanvas(700,700),ctx=z.getContext('2d');ctx.translate(350-o.x,350-o.y);local.Ch1LivingDetail.shadows(ctx,state,[obj],sprites,{m_c1pool:meta},1200,700,700);assert.ok(z.toBuffer('raw').every(v=>v===0));
  }
  const a=allocations[0].getContext('2d').getImageData(0,0,512,512).data;assert.equal(a[3],0);assert.ok(a[(256*512+256)*4+3]>0);
+ assert.ok(a[(340*512+116)*4+3]>0,'lower-left wet seep extends beyond the old 24px band');assert.equal(a[(170*512+116)*4+3],0,'upper-left edge keeps a narrow transition');
+});
+
+test('northern pool uses three staggered cached burst vents without duplicating old surface',()=>{
+ const allocations=[],local={document:{createElement:()=>{const a=createCanvas(1,1);allocations.push(a);return a;}}};vm.runInNewContext(readFileSync(file,'utf8'),local);
+ const o={type:'m_c1pool',x:6700,y:1740,scale:1.55},g={stage:0,cam:{x:o.x,y:o.y}},state=JSON.stringify({o,g});
+ function frame(t,state=g){const a=createCanvas(700,700),c=a.getContext('2d');c.translate(350-o.x,350-o.y);c.globalAlpha=.7;local.Ch1LivingDetail.draw(c,state,[o],t,700,700,true);assert.ok(Math.abs(c.globalAlpha-.7)<.01);return a.toBuffer('raw');}
+ const swell=frame(3200),burst=frame(4000);assert.notDeepEqual(swell,burst);assert.deepEqual(burst,frame(4000));assert.equal(JSON.stringify({o,g}),state);
+ assert.deepEqual(allocations.map(a=>[a.width,a.height]).sort((a,b)=>a[0]-b[0]),[[512,512],[768,768]],'shared burst atlas plus compact gas atlas only');
+ assert.ok(frame(4000,{...g,stage:1}).every(v=>v===0));assert.ok(frame(4000,{...g,cam:{x:0,y:0}}).every(v=>v===0));
+});
+
+test('northern pool approach has a static feathered ground transition only below props',()=>{
+ const local={document:{createElement:()=>createCanvas(1,1)}};vm.runInNewContext(readFileSync(file,'utf8'),local);
+ const g={stage:0,cam:{x:6700,y:1900}},before=JSON.stringify(g);
+ function frame(time,surface=false,extra={}){const a=createCanvas(1200,900),c=a.getContext('2d');c.translate(600-6700,450-1900);local.Ch1LivingDetail.draw(c,{...g,...extra},[],time,1200,900,surface);return a;}
+ const a=frame(1200),raw=a.toBuffer('raw');assert.ok(raw.some(v=>v!==0));assert.deepEqual(raw,frame(2800).toBuffer('raw'));assert.ok(frame(1200,true).toBuffer('raw').every(v=>v===0));assert.ok(frame(1200,false,{stage:1}).toBuffer('raw').every(v=>v===0));assert.equal(JSON.stringify(g),before);
+ const d=a.getContext('2d').getImageData(0,0,1200,900).data;assert.equal(d[3],0);assert.equal(d[(899*1200+1199)*4+3],0);assert.ok(d[(450*1200+600)*4+3]>0);
+});
+
+test('western bone arch receives cached lower-foot contact only at its CH1 placement',()=>{
+ const allocations=[],local={document:{createElement:()=>{const a=createCanvas(1,1);allocations.push(a);return a;}}};vm.runInNewContext(readFileSync(file,'utf8'),local);
+ const img=createCanvas(128,128),x=img.getContext('2d');x.fillStyle='#fff';x.fillRect(30,10,68,108);
+ const o={type:'m_bone_arch',x:1420,y:6020},g={stage:0,cam:{x:o.x,y:o.y}},meta={sz:300,col:1,large:1},before=JSON.stringify({o,g,meta});
+ function frame(state=g,obj=o){const a=createCanvas(600,600),c=a.getContext('2d');c.translate(300-o.x,300-o.y);c.globalAlpha=.6;local.Ch1LivingDetail.shadows(c,state,[obj],{m_bone_arch:img},{m_bone_arch:meta},1200,600,600);assert.ok(Math.abs(c.globalAlpha-.6)<.01);return a.toBuffer('raw');}
+ assert.ok(frame().some(v=>v!==0));assert.equal(allocations.length,1);frame();assert.equal(allocations.length,1);assert.equal(allocations[0].width,256);assert.equal(JSON.stringify({o,g,meta}),before);
+ const p=allocations[0].getContext('2d').getImageData(0,0,256,256).data;assert.equal(p[(80*256+128)*4+3],0);assert.ok(p[(200*256+128)*4+3]>0);
+ assert.ok(frame({...g,stage:2}).every(v=>v===0));assert.ok(frame(g,{...o,x:1500}).every(v=>v===0));assert.ok(frame({...g,cam:{x:0,y:0}}).every(v=>v===0));
+});
+
+test('western regional ground reaches the arch foot without adding another region cache',()=>{
+ const made=[],local={document:{createElement:()=>{const a=createCanvas(1,1);made.push(a);return a;}}};vm.runInNewContext(readFileSync(file,'utf8'),local);
+ const g={stage:0,cam:{x:1420,y:6170}},before=JSON.stringify(g);
+ function frame(time,extra={}){const a=createCanvas(1000,800),c=a.getContext('2d');c.translate(500-g.cam.x,400-g.cam.y);local.Ch1LivingDetail.draw(c,{...g,...extra},[],time,1000,800);return a;}
+ const a=frame(1200);assert.ok(a.getContext('2d').getImageData(500,400,1,1).data[3]>64,'arch foot should connect to the western soil');assert.deepEqual(a.toBuffer('raw'),frame(2400).toBuffer('raw'));assert.equal(made.length,2,'one regional texture and its temporary mask');assert.equal(made[0].width,768);assert.equal(made[0].height,512);assert.equal(JSON.stringify(g),before);assert.ok(frame(1200,{stage:1}).toBuffer('raw').every(v=>v===0));
 });

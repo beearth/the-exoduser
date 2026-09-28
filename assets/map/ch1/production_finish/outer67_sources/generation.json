@@ -1,0 +1,15 @@
+{
+  "provider": "Higgsfield",
+  "model": "gpt_image_2_5",
+  "generationJobId": "3bafa672-c310-4c12-974e-e94aaef66a84",
+  "backgroundRemovalJobId": "74074919-4563-4c2f-a331-923ad7ea9b11",
+  "nativeSize": [
+    1024,
+    1024
+  ],
+  "storedAliases": "rotten_northwest_generated.png and rotten_northwest_generated_cutout.png contain the same approved cutout; original checkerboard image was discarded",
+  "cutout": "Higgsfield image_background_remover; initial generated checkerboard pixels were never used in production",
+  "sourceUrl": "https://d8j0ntlcm91z4.cloudfront.net/user_3G1zto9sz11Uf3iEOhJefE9HdGG/hf_20260928_003811_74074919-4563-4c2f-a331-923ad7ea9b11.png",
+  "prompt": "Use case: stylized-concept\nAsset type: production environment mass for EXODUSER CH1-1 baked perimeter\nPrimary request: Generate one cohesive dead forest interior and rotten outer-mass sprite to replace a north-west strip of healthy leafy foliage. It must join an existing giant hollow rotten trunk below it without introducing any gameplay obstacle.\nScene/backdrop: transparent background only; all content contained inside the square with transparent margin.\nSubject: tangled deep shadow forest recess, one or two distant split hollow trunks, collapsed grey-brown branch ribs, sparse dead fibres, blackened wet bark and only tiny localized dull red parasitic sinew inside wood cracks.\nStyle/medium: detailed dark fantasy painted game environment asset, elevated top-down orthographic around 65 degrees.\nComposition/framing: broad connected horizontal mass, back layer is near-black forest depth, middle layer unequal dead trunks, front edge low flat tapering roots that dissolve into ground. Avoid any isolated upright cone stump silhouette.\nLighting/mood: oppressive living hell, restrained cold grey-mauve and charcoal, very low saturation, subtle top-left light.\nMaterials/textures: cracked heartwood, large bark plates, corpse-grey membrane at low roots, damp connective shadow.\nConstraints: no collision or map geometry; intended only for nonwalkable outer perimeter. No text, character, props, architecture, UI, skulls, leaves, lush bushes, moss, green foliage, flowers, cheerful daylight, lava, orange fire, broad black rectangle, checkerboard, or scenery background. Preserve broad combat clearings by keeping the forward root transition low and narrow.\nAvoid: healthy natural forest, repeated vertical tree columns, clean cutout props, bright green, neon, red ribbons.",
+  "aliasSha256": "9e2568aa973a24696b3bff15dab90a1ac7b18a8b71996577e049ac8f6dfed066"
+}

@@ -114,3 +114,17 @@
 | 한계 | 연결 브라우저 백엔드가 없어 별도 테스트 브라우저로 검증. 실제 스피커 전 구간 청취·음악 선곡/밸런스 최종 승인은 사용자가 확인 |
 
 오디오 시스템 스킬을 따라 영상 내 내레이션과 기존 BGM을 분리하고 종료 수명주기를 함께 관리한다. 후속 사용자 요청 “문이열리면서 BGM 나오고 이어져야지 왜 또 끈키냐”에 따라 BGM은 영화 시계가 아닌 전체 시네마틱의 연속 배경음으로 정정했다. 자동 정지·0초 재시작·컷 seek에 따른 음악 점프를 제거하고 본편 진입은 볼륨만 부드럽게 낮춘다. 현재 스크립트 캐시 키는 `20260907-v12-fullscene-newvoice`이며 연속 BGM 수정도 포함한다. 헤드리스 테스트는 사용자 계정·세이브에 접근하지 않는다.
+
+
+## 2026-09-28 로비 로딩 후처리 요청 확인
+
+| id / 위치 | 현행 계약 |
+|---|---|
+| 원인 | 목록 함수가 오래된 응답을 무시해도 이를 기다린 _goLobby/showLobby가 마지막 hideLoading을 실행하여 새 요청/다른 화면의 로딩 표시까지 제거. _goLobby는 이미지16장 프리로드도 실행 |
+| _goLobby | 모드별 목록 호출의 Promise를 pending에 저장한 뒤 시작된 _characterLoadSeq를 request에 캡처. await pending 후 request!==_characterLoadSeq 또는 lobby.style.display!==flex이면 반환 |
+| showLobby | loadCharacters() 호출 직후 pending와 현재 request 캡처. await 후 동일 번호/로비 표시 조건 검사,통과할 때만 hideLoading |
+| 후처리 | 현재 로비 진입만 hideLoading 및 _preloadLoadingImgs 실행. 숨겨진 로비/이전 진입은 로딩 DOM·프리로드에 영향 없음. 정상 온라인/로컬 진입은 기존 로딩 종료 유지 |
+| 시네마틱 | fromCinematic=true의 전체 화면 로딩 로고 생략 및 목록 내 로딩 표시 유지. 기존 handoff 동작 변경 없음 |
+| 테스트 | 온라인/로컬×이전 요청 완료/숨긴 로비 완료4회귀 수정 전 실패→통과 및 정상 완료2건 통과. 데모 경로·목록·동기화·영화 handoff·패드63개 통과 |
+| 브라우저 | Chromium960×540 실제 HTML/CSS/로비 진입·로딩 DOM 함수,대기 목록 Promise 격리. 전후8조건: 수정 전 이전 완료가 loading/chapterGate none·프리로드1회,수정 후 새 로딩 block 유지·프리로드0회. 최신 완료는 none·프리로드1회 확인 |
+| 범위·기록 | 실계정/저장 API·사용자 데이터·로딩 에셋 변경 없음. tmp/lobby-loading-owner/browser-report.json,changes.patch. 기존 Git 쓰기 제한으로 커밋 미완료 |

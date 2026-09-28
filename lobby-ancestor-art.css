@@ -1,9 +1,13 @@
-/* Approved ancestor artwork; keep the existing lobby controls and layout. */
+/* Independent background video and transparent animated ancestor. */
 .lobby{background:radial-gradient(ellipse at 32% 35%,#1c263955 0%,#10131955 38%,#05060700 70%),linear-gradient(145deg,#0c1018,#08090c 65%,#0c070a);}
 .lobby>.lobby-left{background:transparent;}
-.lobby>.lobby-bg-img{z-index:1;left:0;right:auto;width:65%;pointer-events:none;animation:none;transform:none;background-image:url('assets/lobby/lobby_ancestor_shoulder_v4.png?v=20260928-shoulder-v4');background-size:auto calc(100% - 100px);background-position:center 24px;}
-.lobby>.lobby-bg-img::after{background:linear-gradient(0deg,#07080b 0%,#07080b00 12%);}
+.lobby>.lobby-bg-img{z-index:0;inset:0;width:100%;pointer-events:none;animation:none;transform:none;background-image:url('assets/lobby/lobby_varkan_crypt_poster_v1.webp?v=20260928-animated1');background-size:cover;background-position:center 75%;}
+.lobby>.lobby-bg-img::after{display:none;}
+.lobby-ambient-video{position:absolute;inset:0;z-index:0;width:100%;height:100%;object-fit:cover;object-position:center 75%;pointer-events:none;}
+.lobby-ancestor-sprite{position:absolute;z-index:1;pointer-events:none;background:url('assets/lobby/varkan_idle_first_v1.png?v=20260928-animated1') center/contain no-repeat;}
+.lobby-ancestor-sprite.sprite-loaded{background:none;}
+.lobby-ancestor-shadow{position:absolute;z-index:1;pointer-events:none;border-radius:50%;background:radial-gradient(ellipse,#0009,transparent 68%);transform:translate(-50%,-50%);}
 .lobby .char-disp-empty{bottom:3%;}
+.lobby .char-disp-sub{height:1.4em;margin-top:6px;opacity:1;}
 .lobby .lobby-char-preview{display:none;}
-@media(max-width:1100px){.lobby>.lobby-bg-img{width:55%;}}
-@media(max-height:600px){.lobby>.lobby-bg-img{background-size:auto calc(100% - 76px);background-position:center 14px;}.lobby .char-disp-empty{bottom:3%;}}
+@media(prefers-reduced-motion:reduce){.lobby-ambient-video{display:none;}}

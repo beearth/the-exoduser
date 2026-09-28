@@ -24,6 +24,8 @@
 | 수치 유지 | 본체 시각 크기만 1.5배. 기술 피해·주기·범위, 피격 반경 r=44, si0 HP/ATK·부활·보상 공식 및 맵/스폰 좌표 불변 |
 | 구 자산 | 흑요염 이미지/번역/음성 카탈로그 보존. 기존 `_BOSS_SFX[0]` 음성 유지 |
 | 적용 범위 | 일반 1-1 보스 아레나 및 `bosstest=0`. mapqa 무전투 관람의 보스 제거 규칙은 변경하지 않음 |
+| 독립 필드몹 분리 | si0 보스 아레나 진입 시 `G._fieldBoss(es)`·`G._fireDevils`·`G._worms` 정리, `_fbTick`·`_fdTick`·`_wmTick` 재스폰 차단. 탐험 필드 4각 배치와 `G._fbDone` 게이트는 유지. 보스 `summon`의 `ens` 소환수는 유지 |
+| 독립 필드몹 분리 | si0 보스 아레나 진입 시 `G._fieldBoss(es)`·`G._fireDevils`·`G._worms` 정리, `_fbTick`·`_fdTick`·`_wmTick` 재스폰 차단. 탐험 필드 4각 배치와 `G._fbDone` 게이트는 유지. 보스 `summon`의 `ens` 소환수는 유지 |
 
 ## 검증
 

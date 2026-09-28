@@ -74,7 +74,7 @@ window._parryLesson = {
     const checklist = this.node('div'); checklist.className = 'lesson-checklist'; this.checklist=checklist;
     this.rowLabels = []; this.rowTexts = [];
     if(this.chapter!==2){
-      this.basicLabelText=()=>[this.t("WASD / 방향키 · 이동","WASD / Arrow keys · Move"),this.t("좌클릭 · 적 3마리 처치","Left click · Defeat 3 enemies"),this.t("우클릭 · 적 3마리 처치","Right click · Defeat 3 enemies"),this.t("1 · 가시덫 설치 후 도망 · 10마리 처치","1 · Place Spike Trap and retreat · Defeat 10 enemies")];
+      this.basicLabelText=()=>[this.t("WASD / 방향키 · 이동","WASD / Arrow keys · Move"),this.t("좌클릭 · 10마리 처치 + 3단 차징","Left click · 10 defeats + Tier 3 charge"),this.t("우클릭 · 적 5마리 처치","Right click · Defeat 5 enemies"),this.t("1 · 가시덫 설치 후 도망 · 10마리 처치","1 · Place Spike Trap and retreat · Defeat 10 enemies")];
       this.basicRows=this.basicLabelText().map(label=>{
         const row=this.node('label');row.className='lesson-row';
         const box=this.node('input');box.type='checkbox';box.disabled=true;
@@ -148,7 +148,7 @@ window._parryLesson = {
     this.progressFill.style.width = `${this.checks.filter(Boolean).length / this.labels.length * 100}%`;
     const basicChecks=[this.movementDone,this.leftClickDone,this.rightClickDone,this.spikeTrapDone];
     this.basicRows.forEach(({row,box,text},i)=>{text.textContent=this.basicLabelText()[i];box.checked=!!basicChecks[i];row.setAttribute('data-current',String(this.step===(i===3?8:i-3)));row.setAttribute('data-complete',String(!!basicChecks[i]));});
-    const basicLabels=[this.t("WASD / 방향키 · 이동","WASD / Arrow keys · Move"),this.t("좌클릭 · 적 3마리 처치","Left click · Defeat 3 enemies"),this.t("우클릭 · 적 3마리 처치","Right click · Defeat 3 enemies")];
+    const basicLabels=[this.t("WASD / 방향키 · 이동","WASD / Arrow keys · Move"),this.t("좌클릭 · 10마리 처치 + 3단 차징","Left click · 10 defeats + Tier 3 charge"),this.t("우클릭 · 적 5마리 처치","Right click · Defeat 5 enemies")];
     this.subtitle.textContent=`${this.step===8?4:this.step<0?this.step+4:this.step+5} / ${this.labels.length+4} · ${this.step===8?this.t("1 · 가시덫","1 · Spike Trap"):this.step<0?basicLabels[this.step+3]:this.label(this.step)}`;
     this.progressFill.style.width=`${(this.checks.filter(Boolean).length+basicChecks.filter(Boolean).length)/(this.labels.length+4)*100}%`;
     if(this.step<0){
@@ -157,8 +157,8 @@ window._parryLesson = {
       this.title.textContent=[this.t("먼저 움직여보세요","Try moving first"),this.t("무기를 휘둘러보세요","Try swinging your weapon"),this.t("마법을 발사해보세요","Try casting magic")][i];
       this.hint.textContent=[
         this.t("W 위 · A 왼쪽 · S 아래 · D 오른쪽. WASD 또는 방향키로 조금 걸어보세요. 이후 모든 실습에서도 이동할 수 있습니다.","W up · A left · S down · D right. Walk a short distance using WASD or the arrow keys. You can also move during all later exercises."),
-        this.t("마우스로 조준하고 좌클릭 기본공격 기검참으로 적 3마리를 처치하세요.","Aim with the mouse and defeat 3 enemies using your left-click basic attack, Ki Slash."),
-        this.t("마우스로 조준하고 우클릭 마법탄으로 적 3마리를 처치하세요.","Aim with the mouse and defeat 3 enemies using right-click magic projectiles.")
+        this.t("마우스로 조준해 기검참으로 적 10마리를 처치하세요. 1·2타 뒤 3타를 3초 누르고 떼어 검기로 적도 처치해 보세요.","Aim with the mouse and defeat 10 enemies with Ki Slash. After hits 1 and 2, hold the third hit for 3 seconds, then release it to defeat an enemy."),
+        this.t("마우스로 조준하고 우클릭 마법탄으로 적 5마리를 처치하세요.","Aim with the mouse and defeat 5 enemies using right-click magic projectiles.")
       ][i];
       if(this.step===-2||this.step===-1)this.updateAttackPractice();
     }
@@ -229,10 +229,14 @@ window._parryLesson = {
     }
   },
   spawnAttackEnemies() {
-    this.attackEnemies=[];
-    const radius=this.step===-2?120:220;
-    for(let i=0;i<24&&this.attackEnemies.length<3;i++){
-      const a=-Math.PI/2+(i%3-1)*.65+Math.floor(i/3)*Math.PI/4;
+    const left=this.step===-2;
+    for(const old of this.attackEnemies||[])if(old.alive&&old._lessonStage!==this.step){old.alive=false;const index=ens.indexOf(old);if(index>=0)ens.splice(index,1);}
+    this.attackEnemies=(this.attackEnemies||[]).filter(e=>e.alive&&e._lessonStage===this.step);
+    const needed=left?(this.leftKills<10||!this.leftFullChargeKill):this.rightKills<5;
+    if(!needed){_shDirty=true;return;}
+    const radius=left?120:220;
+    for(let i=0;i<48&&this.attackEnemies.length<3;i++){
+      const j=i+(left?this.leftKills:0),a=-Math.PI/2+(j%3-1)*.65+Math.floor(j/3)*Math.PI/4;
       const e=mkEn(P.x+Math.cos(a)*radius,P.y+Math.sin(a)*radius,G.stage,0,false,EL.P,-1);
       if(!e||Math.hypot(e.x-P.x,e.y-P.y)>450||this.attackEnemies.some(other=>Math.hypot(e.x-other.x,e.y-other.y)<40))continue;
       e._lessonEnemy=true;e._lessonStage=this.step;e.hp=1;e.mhp=1;e.atk=0;e.elite=0;e.mods=[];e.spd=0;
@@ -243,8 +247,16 @@ window._parryLesson = {
   },
   updateAttackPractice() {
     const left=this.step===-2,count=left?this.leftKills:this.rightKills;
-    this.title.textContent=left?this.t("기검참으로 적 3마리를 처치하세요","Defeat 3 enemies with Ki Slash"):this.t("마법으로 적 3마리를 처치하세요","Defeat 3 enemies with magic");
-    this.hint.textContent=this.t("{p0}\n처치 {p1}/3 · 실제로 처치해야 완료됩니다.","{p0}\nDefeated {p1}/3 · Only actual defeats count.",{p0:(left?this.t("기검참은 기본공격입니다. 적을 마우스로 조준하고 좌클릭으로 검기를 날리세요.","Ki Slash is your basic attack. Aim at an enemy with the mouse and left-click to launch a sword wave."):this.t("적을 마우스로 조준하고 우클릭으로 마법탄을 발사하세요.","Aim at an enemy with the mouse and right-click to fire a magic projectile.")),p1:(count||0)});
+    if(left){
+      this.title.textContent=this.t("기검참으로 적 10마리를 처치하세요","Defeat 10 enemies with Ki Slash");
+      this.hint.textContent=this.t("1·2타 뒤 3타에서 좌클릭을 3초 누르고 떼어 검기로 적을 처치하세요.\n처치 {p0}/10 · 3단 차징 검기 처치 {p1}/1","After hits 1 and 2, hold the third left click for 3 seconds, then release it to defeat an enemy with the sword wave.\nDefeated {p0}/10 · Tier 3 sword-wave defeat {p1}/1",{p0:Math.min(10,count||0),p1:this.leftFullChargeKill?1:0});
+      this.holdBox.hidden=false;
+      this.holdMeter.value=Math.min(100,Math.max(0,P._kiChargeT||0)/180*100);
+      this.holdLabel.textContent=this.leftFullChargeKill?this.t("3단 차징 검기 처치 완료","Tier 3 sword-wave defeat complete"):P._kiChargeActive?this.t("3타 차징 {p0}/3단 · 3초까지 유지","Third-hit charge Tier {p0}/3 · Hold for 3 seconds",{p0:Math.min(3,Math.floor((P._kiChargeT||0)/60))}):this.t("1·2타 뒤 3타를 3초 누르세요","After hits 1 and 2, hold the third hit for 3 seconds");
+    }else{
+      this.title.textContent=this.t("마법으로 적 5마리를 처치하세요","Defeat 5 enemies with magic");
+      this.hint.textContent=this.t("적을 마우스로 조준하고 우클릭으로 마법탄을 발사하세요.\n처치 {p0}/5 · 실제로 처치해야 완료됩니다.","Aim at an enemy with the mouse and right-click to fire a magic projectile.\nDefeated {p0}/5 · Only actual defeats count.",{p0:count||0});
+    }
   },
   startTrapPractice() {
     this.trapSnapshot={slot:SKILL_SLOTS[0],mats:G.mats,skills:P.skills,cd:{had:Object.prototype.hasOwnProperty.call(P,'_gcCd'),value:P._gcCd}};
@@ -374,7 +386,7 @@ window._parryLesson = {
     this.spikeTrapDone=false;this.trapEnemies=[];this.trapSnapshot=null;
     this.chainPractice=null;
     this.parryEnemy=null;this.parriedShot=null;
-    this.attackEnemies=[];this.leftKills=0;this.rightKills=0;
+    this.attackEnemies=[];this.leftKills=0;this.rightKills=0;this.leftFullChargeKill=false;
     this.chapter=1;this.resourceReadout=null;
     window._resourcePractice?.save();
     this.seen = true; this.active = true; this.phase = 'intro'; this.step = -3; this.checks = Array(this.labels.length).fill(false);
@@ -502,6 +514,7 @@ window._parryLesson = {
       return false;
     }
     if(this.step===-2||this.step===-1){
+      if(this.step===-2&&this.attackEnemies.filter(e=>e.alive).length<3)this.spawnAttackEnemies();
       this.updateAttackPractice();
       return false;
     }
@@ -654,9 +667,12 @@ window._parryLesson = {
     _addGorePiece(e.x,e.y,'flesh');_addDeathImpact(e.x,e.y,e.r);
     if(rage){_addBoom(e.x,e.y,100,72,'fire');addParts(e.x,e.y,'#ff6633',24);}
     if(left||right){
-      if(left)this.leftKills++;else this.rightKills++;
+      if(left){this.leftKills=Math.min(10,this.leftKills+1);if(opts?._lessonAttack==='kiSlash'&&opts?._lessonFullCharge)this.leftFullChargeKill=true;}
+      else this.rightKills++;
       this.updateAttackPractice();
-      if((left?this.leftKills:this.rightKills)>=3)this.completeStep();
+      if(left){if(this.leftKills>=10&&this.leftFullChargeKill)this.completeStep();else this.spawnAttackEnemies();}
+      else if(this.rightKills>=5)this.completeStep();
+      else this.spawnAttackEnemies();
     }
     if(reflected)this.completeStep();
     if(trap){this.trapKills++;this.updateTrapPractice();if(this.trapKills>=10&&this.trapEscaped)this.completeStep();}

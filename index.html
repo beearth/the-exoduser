@@ -172,7 +172,7 @@ body{background:#000 center/cover no-repeat;color:#ccaa88;font-family:'Noto Sans
 .char-disp-empty{position:absolute;left:50%;bottom:8%;z-index:2;width:min(74%,760px);transform:translateX(-50%);text-align:center;pointer-events:none;user-select:none;opacity:1;transition:opacity .35s ease,transform .35s ease;filter:drop-shadow(0 5px 12px rgba(0,0,0,.9))}
 .char-disp-empty::before,.char-disp-empty::after{content:'';position:absolute;top:43%;width:21%;height:1px;background:linear-gradient(90deg,transparent,rgba(164,147,115,.54));opacity:.76}
 .char-disp-empty::before{left:0}.char-disp-empty::after{right:0;transform:scaleX(-1)}
-.char-disp-title{color:rgba(220,110,80,.78);font-family:'Cinzel Decorative','Noto Serif KR',serif;font-size:clamp(1.6rem,2.6vw,2.8rem);font-weight:300;letter-spacing:.25em;text-shadow:0 0 28px rgba(196,68,68,.35),0 0 60px rgba(0,0,0,.7);white-space:nowrap;animation:lobbyDispGlow 4.6s ease-in-out infinite}
+.char-disp-title{color:rgba(220,110,80,.78);font-family:'Cinzel Decorative','Noto Serif KR',serif;font-size:clamp(1.6rem,2.6vw,2.8rem);font-weight:300;letter-spacing:.25em;text-shadow:0 0 28px rgba(196,68,68,.35),0 0 60px rgba(0,0,0,.7);white-space:normal;overflow-wrap:anywhere;text-wrap:balance;animation:lobbyDispGlow 4.6s ease-in-out infinite}
 .char-disp-sub{height:0;margin-top:0;overflow:hidden;color:rgba(168,153,127,.78);font-family:'Cinzel','Noto Serif KR',serif;font-size:clamp(.52rem,.72vw,.7rem);letter-spacing:.32em;line-height:1.4;opacity:0;transition:height .35s ease,margin .35s ease,opacity .35s ease}
 .char-disp-empty.selected .char-disp-title{color:rgba(223,214,194,.94);font-size:clamp(1.55rem,2.15vw,2.25rem);letter-spacing:.16em;text-shadow:0 2px 6px #000}
 .char-disp-empty.selected .char-disp-sub{height:1.4em;margin-top:6px;opacity:1}
@@ -183,6 +183,19 @@ body{background:#000 center/cover no-repeat;color:#ccaa88;font-family:'Noto Sans
 .lobby-right{position:relative;flex:0 0 35%;height:100%;background:linear-gradient(180deg,rgba(8,3,18,0.42) 0%,rgba(4,2,12,0.48) 100%);padding:20px 24px 16px 24px;display:flex;flex-direction:column;border-left:2px solid;border-image:linear-gradient(180deg,#3a1a55 0%,#c44444 50%,#3a1a55 100%) 1}
 
 /* 우측 헤더 */
+/* Quiet corner action, with its focus ring inside the scroll clipping boundary. */
+#lobbyStatus{line-height:1.5;max-height:min(80px,20dvh);overflow-y:auto;overflow-wrap:anywhere;flex:0 0 auto;}
+#lobbyStatus:empty{display:none;}
+.lobby-corner-actions{display:flex;align-items:center;justify-content:flex-end;gap:12px;min-width:0;flex:1 1 auto;}
+.lobby-bottom-actions :is(#replayCinBtn,#lobbyQuitBtn){flex:0 0 auto;white-space:nowrap;}
+.lobby-corner-actions>#gpDot{position:static!important;flex:0 0 auto;font-size:18px!important;line-height:1;width:24px;text-align:center;}
+.lobby-corner-actions #lobbyVersionTxt{min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;margin-top:0;text-align:right;}
+#lobbyQuitBtn{width:36px;height:36px;min-height:36px;padding:7px;display:inline-flex;align-items:center;justify-content:center;border:1px solid #77604766;border-radius:50%;background:#100d0e80;color:#b8a386;cursor:pointer;transition:color .2s,border-color .2s,background .2s;}
+#lobbyQuitBtn svg{display:block;pointer-events:none;}
+@media(pointer:coarse){#lobbyQuitBtn{width:44px;height:44px;min-height:44px;padding:11px;}#lobby .lobby-right .no-chars{padding:0 20px;}#lobby .lobby-bottom-actions{padding-top:0!important;}}
+#lobbyQuitBtn:hover,#lobbyQuitBtn.gp-hover{color:#f1b6a2;border-color:#bd795b;background:#52261f66;}
+.lobby-right :is(#lobbyQuitBtn,#enterGameBtn,#replayCinBtn,#lobbyLangSelect):focus-visible{outline-offset:-2px;}
+
 .lobby-header{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:18px}
 .lobby-header h1{font-family:'Cinzel Decorative',serif;color:#ff6633;font-size:1.8rem;letter-spacing:0.15em;text-shadow:0 0 20px rgba(255,80,30,0.4)}
 .lobby-mode{color:rgba(180,140,110,0.55);font-size:0.72rem;letter-spacing:0.3em;font-weight:700;margin-top:8px}
@@ -216,6 +229,17 @@ body{background:#000 center/cover no-repeat;color:#ccaa88;font-family:'Noto Sans
 .lma-steam-btn img{width:100%;display:block}
 .lma-steam-btn:hover,.lma-steam-btn.gp-hover{filter:brightness(1.2) drop-shadow(0 0 14px rgba(80,160,255,.7))}
 .no-chars{color:rgba(180,140,110,0.5);text-align:center;padding:40px 20px;font-size:0.9rem;letter-spacing:0.1em}
+@media(max-height:680px){
+ .lobby-right .no-chars{padding:4px 20px;}
+ .lobby-right .lobby-header{margin-bottom:4px;}
+ .lobby-right .lobby-divider{margin-bottom:4px;}
+ .lobby-right .lma-banner-inner{padding-top:4px;padding-bottom:4px;}
+ .lobby-right .lobby-mid-area{padding-top:0;}
+}
+@media(max-height:480px){
+ #lobby .lobby-right .lobby-divider{height:52px!important;}
+ .lobby-right .no-chars{padding:0 20px;}
+}
 
 /* 슬롯 카드 */
 .char-item,.char-item-new{position:relative;display:flex;align-items:center;gap:14px;height:84px;padding:14px 18px 14px 24px;margin-bottom:0;background:linear-gradient(135deg,rgba(28,16,12,0.7) 0%,rgba(18,10,6,0.85) 100%);border:1px solid rgba(120,60,40,0.18);border-radius:2px;cursor:pointer;transition:all 200ms ease;overflow:hidden}
@@ -232,6 +256,19 @@ body{background:#000 center/cover no-repeat;color:#ccaa88;font-family:'Noto Sans
 /* 썸네일 */
 .char-thumb{flex:0 0 56px;width:56px;height:56px;background:rgba(0,0,0,0.4);border:1px solid rgba(120,60,40,0.3);border-radius:2px;display:flex;align-items:center;justify-content:center;overflow:hidden}
 .char-thumb-empty{color:rgba(180,140,110,0.4);font-size:1.6rem;font-weight:300}
+
+
+/* Keep names readable when the lobby card column is narrow. */
+#lobby .char-list{container-type:inline-size;container-name:lobby-cards;}
+@container lobby-cards (max-width:300px){
+ #lobby :is(.char-item,.char-item-new){padding-left:12px;gap:10px;}
+ #lobby .char-thumb{flex-basis:40px;width:40px;height:40px;}
+ #lobby .char-name:has(.char-name-label){flex-direction:column;align-items:flex-start;gap:2px;font-size:.9rem;line-height:1.2;}
+ #lobby .char-name-label{width:100%;max-width:100%;}
+ #lobby .char-name:has(.char-name-label) .char-cls{max-width:100%;line-height:1.2;}
+ #lobby .char-text{gap:2px;}
+ #lobby .char-info{font-size:.65rem;line-height:1.3;}
+}
 
 /* 텍스트 영역 */
 .char-text{flex:1;min-width:0;display:flex;flex-direction:column;gap:4px}
@@ -454,9 +491,10 @@ body{background:#000 center/cover no-repeat;color:#ccaa88;font-family:'Noto Sans
 #splashTitlePrompt{position:absolute;left:50%;top:92%;transform:translate(-50%,-50%);display:none;z-index:2;pointer-events:none;margin:0;color:#f1e9dc;font:500 clamp(17px,1.2vw,26px)/1.4 'Noto Sans KR',sans-serif;letter-spacing:.06em;white-space:nowrap;text-shadow:0 1px 2px #000,0 2px 5px #000;direction:inherit}
 </style>
 <link rel="stylesheet" href="localization.css?v=20260909">
-<link rel="stylesheet" href="ui-foundation.css?v=20260927-frame-interior">
-<link rel="stylesheet" href="ui-refinement.css?v=20260927-single-lobby-scene">
-<link rel="stylesheet" href="lobby-ancestor-art.css?v=20260928-shoulder-v4">
+<link rel="stylesheet" href="ui-foundation.css?v=20260927-enter-responsive">
+<link rel="stylesheet" href="ui-refinement.css?v=20260928-lobby-quit">
+<link rel="stylesheet" href="lobby-ancestor-art.css?v=20260928-animated1">
+<script src="lobby-ancestor-sprite.js?v=20260928-animated1" defer></script>
 </head>
 <body>
 
@@ -623,14 +661,17 @@ body{background:#000 center/cover no-repeat;color:#ccaa88;font-family:'Noto Sans
 <div class="lobby" id="lobby" style="display:none">
   <!-- 좌측: 배경 + 안내 -->
   <div class="lobby-bg-img" id="lobbyBgImg"></div>
-  <div class="lobby-left">
+  <video class="lobby-ambient-video" id="lobbyAmbientVideo" muted autoplay loop playsinline preload="metadata" poster="assets/lobby/lobby_varkan_crypt_poster_v1.webp?v=20260928-animated1" src="assets/lobby/lobby_varkan_crypt_loop_v1.mp4?v=20260928-animated1" aria-hidden="true"></video>
+  <div class="lobby-ancestor-shadow" id="lobbyAncestorShadow" aria-hidden="true"></div>
+  <canvas class="lobby-ancestor-sprite" id="lobbyAncestorSprite" width="384" height="624" aria-hidden="true"></canvas>
     <video class="lobby-char-preview" id="lobbyCharPreview" muted loop playsinline></video>
     <img class="lobby-char-preview lobby-char-keyart" id="lobbyCharKeyart" alt="" aria-hidden="true">
+  <div class="lobby-left">
     <canvas id="lobbyParticles" style="position:absolute;top:0;left:0;width:100%;height:100%;pointer-events:none;z-index:5"></canvas>
     <div id="lobbyVerOverlay" style="position:absolute;top:12px;left:14px;z-index:10;font-size:.75rem;color:rgba(160,130,90,.5);letter-spacing:.15em;line-height:1.6;pointer-events:none"></div>
   <div class="char-disp-empty" id="charDispEmpty">
-   <div class="char-disp-title" id="charDispTitle">당신은 누구인가</div>
-   <div class="char-disp-sub" id="charDispSub"></div>
+   <div class="char-disp-title" id="charDispTitle">묘왕 바르칸</div>
+   <div class="char-disp-sub" id="charDispSub">전대 소환</div>
   </div>
   </div>
   <!-- 우측: 슬롯 + 버튼 -->
@@ -650,7 +691,6 @@ body{background:#000 center/cover no-repeat;color:#ccaa88;font-family:'Noto Sans
       <div class="no-chars">불러오는 중...</div>
     </div>
     <!-- 슬롯 아래 공백 -->
-    <div class="status" id="lobbyStatus" role="status" aria-live="polite" style="font-size:.75rem;min-height:0;flex-shrink:0"></div>
     <div style="height:8px;flex-shrink:0"></div>
     <!-- 3슬롯 아래 배너 영역 -->
     <div class="lobby-mid-area" id="lobbyMidArea">
@@ -671,11 +711,12 @@ body{background:#000 center/cover no-repeat;color:#ccaa88;font-family:'Noto Sans
     <div class="lobby-footer">
       <button class="enter-game-btn" id="enterGameBtn" aria-label="입장" disabled><img src="assets/lobby/lobby_enter_btn.png" draggable="false" alt=""></button>
     </div>
-    <div style="display:flex;justify-content:space-between;align-items:center;padding:4px 0 2px">
-      <button type="button" id="replayCinBtn" onclick="_goCinematic()">▶ 시네마틱</button>
-      <span class="ll-version-txt" id="lobbyVersionTxt"></span>
-    </div>
    </div>
+    <div class="status" id="lobbyStatus" role="status" aria-live="polite" style="font-size:.75rem;min-height:0;flex-shrink:0"></div>
+    <div class="lobby-bottom-actions" style="display:flex;justify-content:space-between;align-items:center;padding:4px 0 2px;flex-shrink:0;gap:12px">
+      <button type="button" id="replayCinBtn" onclick="_goCinematic()">▶ 시네마틱</button>
+      <div class="lobby-corner-actions" id="lobbyCornerActions"><span class="ll-version-txt" id="lobbyVersionTxt"></span><button type="button" id="lobbyQuitBtn" onclick="_showLobbyQuit()" aria-label="게임 종료" title="게임 종료"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" aria-hidden="true" focusable="false"><path d="M12 3v9M6.3 5.7a8 8 0 1 0 11.4 0"/></svg></button></div>
+    </div>
   </div>
 </div>
 
@@ -706,7 +747,7 @@ body{background:#000 center/cover no-repeat;color:#ccaa88;font-family:'Noto Sans
 </div>
 
 <!-- ═══ 캐릭터 외형 선택 팝업 ═══ -->
-<div id="charVisualPop" style="display:none;position:fixed;inset:0;z-index:300;background:radial-gradient(ellipse at 50% 38%,#191019 0%,#0b0709 58%,#050304 100%);align-items:center;justify-content:center">
+<div id="charVisualPop" role="dialog" aria-modal="true" aria-labelledby="charVisualTitle" style="display:none;position:fixed;inset:0;z-index:300;background:radial-gradient(ellipse at 50% 38%,#191019 0%,#0b0709 58%,#050304 100%);align-items:center;justify-content:center">
   <style>
     #charVisualPop .cs-panel{position:relative;width:100%;height:100%;max-width:none;padding:0;text-align:center;
       display:flex;flex-direction:column;align-items:stretch;justify-content:flex-start;background:none;overflow:hidden}
@@ -782,7 +823,8 @@ body{background:#000 center/cover no-repeat;color:#ccaa88;font-family:'Noto Sans
     /* ── 하단 아이콘 레일 ── */
     #charVisualPop .cs-foot{flex:0 0 auto;position:relative;z-index:5;padding:0 min(4vw,64px) min(3vh,30px)}
     #visualGrid{display:flex;gap:min(2.6vw,36px);justify-content:center;align-items:flex-start;margin-bottom:18px}
-    .cs-ico{display:flex;flex-direction:column;align-items:center;gap:9px;cursor:pointer;transition:transform .18s}
+    .cs-ico{display:flex;flex-direction:column;align-items:center;gap:9px;padding:0;border:0;background:transparent;font:inherit;cursor:pointer;transition:transform .18s}
+    .cs-ico:focus-visible{outline:2px solid #ead6a5;outline-offset:6px;border-radius:4px}
     .cs-ico:hover{transform:translateY(-3px)}
     .cs-ico-ring{position:relative;width:min(5.6vw,70px);aspect-ratio:1;border-radius:50%;
       display:flex;align-items:center;justify-content:center;
@@ -834,13 +876,13 @@ body{background:#000 center/cover no-repeat;color:#ccaa88;font-family:'Noto Sans
       opacity:0;transition:opacity .5s ease;filter:saturate(.92) brightness(.66);pointer-events:none}
     #charVisualPop .cs-scene-vid.on{opacity:1}
     /* 캐릭터 포함 풀스테이지 아이들 영상 */
-    #charVisualPop .cs-idle-vid{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;z-index:1;
+    #charVisualPop .cs-idle-vid{position:absolute;inset:0;width:100%;height:100%;object-fit:contain;object-position:center top;transform:none;z-index:1;
       opacity:0;transition:opacity .55s ease;filter:saturate(.96) brightness(.82);pointer-events:none}
     #charVisualPop .cs-idle-vid.on{opacity:1}
     #charVisualPop .cs-side-texture{display:none}
     /* 16:9 무대 영상은 21:9 이상에서 cover 중앙 크롭 시 위쪽 247px가 잘린다. contain 기준 15% 확대는 머리를 보존하면서 발끝만 자연스럽게 크롭한다. */
     @media (min-aspect-ratio:21/9){
-      #charVisualPop .cs-idle-vid{object-fit:contain;object-position:center top;transform-origin:center top;transform:scale(1.15) scaleX(1.1)}
+      #charVisualPop .cs-idle-vid{object-fit:contain;object-position:center top;transform-origin:center top;transform:none}
       /* 원본 중앙 로고는 피하고 좌우 가장자리 질감만 거의 불투명하게 사용한다. */
       #charVisualPop .cs-side-texture{display:block;position:absolute;inset:0;z-index:1;pointer-events:none}
       #charVisualPop .cs-side-texture::before,#charVisualPop .cs-side-texture::after{content:'';position:absolute;top:0;bottom:0;width:30vw;
@@ -889,7 +931,7 @@ body{background:#000 center/cover no-repeat;color:#ccaa88;font-family:'Noto Sans
     <div class="cs-embers" id="csEmbers"></div>
     <div class="cs-frame"></div>
     <div class="cs-head">
-      <h2>캐릭터 선택</h2>
+      <h2 id="charVisualTitle">캐릭터 선택</h2>
       <p class="cs-sub">지옥에 강림할 화신을 선택하라</p>
     </div>
     <div class="cs-body">
@@ -943,38 +985,85 @@ const _GP = {
   _handlers: [],
   on(id, test, action) { this._handlers.push({id, test, action}) },
   off(id) { this._handlers = this._handlers.filter(h => h.id !== id) },
-  vib(dur,weak,strong){try{if(this.vibRef&&this.vibRef.vibrationActuator)this.vibRef.vibrationActuator.playEffect('dual-rumble',{startDelay:0,duration:dur,weakMagnitude:weak,strongMagnitude:strong})}catch(e){}},
+  vib(dur,weak,strong){try{if(this.vibRef&&this.vibRef.vibrationActuator)this.vibRef.vibrationActuator.playEffect('dual-rumble',{startDelay:0,duration:dur,weakMagnitude:weak,strongMagnitude:strong}).catch(()=>{})}catch(e){}},
   _vibLoop:null,
   vibLoop(dur,weak,strong,interval){this.vibLoopStop();this.vib(dur,weak,strong);this._vibLoop=setInterval(()=>this.vib(dur,weak,strong),interval||dur+30)},
   vibLoopStop(){if(this._vibLoop){clearInterval(this._vibLoop);this._vibLoop=null}},
 };
 addEventListener('gamepadconnected', e => {
   _GP.connected = true;
-  _GP.vibRef = e.gamepad;
+  if(!_GP.vibRef)_GP.vibRef = e.gamepad;
   console.log('[GP] 연결:', e.gamepad.id, 'vibrator:', !!e.gamepad.vibrationActuator);
 });
+function _clearGamepadFeedback(){
+  _GP.vibLoopStop();
+  try{_stopHover();}catch(e){}
+  const previous=_GP.prev._lobbyEl;
+  if(previous){previous.classList.remove('gp-hover');previous.style.outline='';previous.style.outlineOffset='';}
+  delete _GP.prev._lobbyEl;delete _GP.prev._lobbyIdx;
+}
+function _leaveGamepadInput(){
+  _GP.active = false;_clearGamepadFeedback();
+  document.body.style.cursor='';localStorage.setItem('inputMode','kbm');
+}
+function _resetDisconnectedPadState(){
+  _GP.connected = false; _GP.vibRef = null;
+  _GP.axes=[0,0,0,0];_leaveGamepadInput();
+  _GP.prev = {};
+}
+function _handoffConnectedPadState(next){
+  _GP.connected=true;_GP.vibRef=next;
+  _GP.axes=[0,0,0,0];_leaveGamepadInput();
+  _GP.prev={};
+}
 addEventListener('gamepaddisconnected', e => {
-  _GP.connected = false; _GP.active = false; _GP.vibRef = null;
+  const pads=typeof navigator!=='undefined'&&navigator.getGamepads?navigator.getGamepads():[];
+  let remaining=null;
+  for(let i=0;i<pads.length;i++){
+    const candidate=pads[i];
+    const isLost=candidate===e.gamepad||(candidate&&e.gamepad&&candidate.index===e.gamepad.index);
+    if(candidate&&candidate.connected&&!isLost){remaining=candidate;break}
+  }
+  if(remaining){
+    const lostCurrent=_GP.vibRef===e.gamepad||(_GP.vibRef&&e.gamepad&&_GP.vibRef.index===e.gamepad.index);
+    if(lostCurrent){
+      _handoffConnectedPadState(remaining);
+      console.log('[GP] 주 패드 교체:', remaining.id);
+    }else{
+      _GP.connected=true;_GP.vibRef=remaining;
+      console.log('[GP] 보조 패드 해제, 주 패드 유지:', remaining.id);
+    }
+    return;
+  }
+  _resetDisconnectedPadState();
   console.log('[GP] 해제');
 });
 addEventListener('mousemove', e => {
   if(_GP.active && (Math.abs(e.movementX)+Math.abs(e.movementY) > 3)) {
-    _GP.active = false; localStorage.setItem('inputMode','kbm');
-    document.body.style.cursor = '';
+    _leaveGamepadInput();
   }
 }, {passive:true});
 addEventListener('keydown', e => {
   if(_GP.active && !e._fromGp) {
-    _GP.active = false; localStorage.setItem('inputMode','kbm');
-    document.body.style.cursor = '';
+    _leaveGamepadInput();
   }
 }, {passive:true});
+addEventListener('pointerdown', e => {
+  if(_GP.active && !e._fromGp) {
+    _leaveGamepadInput();
+  }
+}, {passive:true,capture:true});
 // 🎮 패드 상태 인디케이터 (우하단 아이콘) — 브라우저가 지금 패드를 노출 중인지 육안 확인용 (텍스트 없음)
 let _gpDotOn=null;
 function _gpDot(on){
-  if(on===_gpDotOn||!document.body)return;_gpDotOn=on;
+  if(!document.body)return;
   let d=document.getElementById('gpDot');
   if(!d){d=document.createElement('div');d.id='gpDot';d.textContent='🎮';d.style.cssText='position:fixed;right:14px;bottom:12px;font-size:24px;z-index:99999;pointer-events:none;filter:drop-shadow(0 0 4px #000);transition:opacity .3s;opacity:0';document.body.appendChild(d)}
+  const lobby=document.getElementById('lobby'),corner=document.getElementById('lobbyCornerActions');
+  const host=lobby&&lobby.style.display==='flex'&&corner?corner:document.body;
+  if(d.parentElement!==host){if(host===corner)host.insertBefore(d,document.getElementById('lobbyQuitBtn'));else host.appendChild(d);}
+  if(on===_gpDotOn)return;_gpDotOn=on;
+  d.hidden=!on;d.setAttribute('aria-hidden','true');
   d.style.opacity=on?'1':'0';
 }
 (function _gpGlobalPoll() {
@@ -983,7 +1072,14 @@ function _gpDot(on){
   let gp = null;
   for(let i=0;i<gps.length;i++){if(gps[i]&&gps[i].connected){gp=gps[i];break}}
   _gpDot(!!gp);
-  if(!gp) return;
+  if(!gp){
+    if(_GP.connected||_GP.active||_GP.vibRef||_GP._vibLoop||_GP.prev._lobbyEl)_resetDisconnectedPadState();
+    return;
+  }
+  if(_GP.vibRef&&(_GP.vibRef.index!==gp.index||_GP.vibRef.id!==gp.id)){
+    _handoffConnectedPadState(gp);
+  }
+  _GP.connected=true;_GP.vibRef=gp;
   const just = {};
   let anyInput = false;
   for(let i=0;i<gp.buttons.length;i++){
@@ -994,16 +1090,15 @@ function _gpDot(on){
   }
   _GP.axes[0] = Math.abs(gp.axes[0]||0) < _GP.DEAD ? 0 : gp.axes[0];
   _GP.axes[1] = Math.abs(gp.axes[1]||0) < _GP.DEAD ? 0 : gp.axes[1];
-  if(gp.axes.length >= 4){
-    _GP.axes[2] = Math.abs(gp.axes[2]||0) < _GP.DEAD ? 0 : gp.axes[2];
-    _GP.axes[3] = Math.abs(gp.axes[3]||0) < _GP.DEAD ? 0 : gp.axes[3];
-  }
+  _GP.axes[2] = Math.abs(gp.axes[2]||0) < _GP.DEAD ? 0 : gp.axes[2];
+  _GP.axes[3] = Math.abs(gp.axes[3]||0) < _GP.DEAD ? 0 : gp.axes[3];
   if(_GP.axes[0]||_GP.axes[1]||_GP.axes[2]||_GP.axes[3]) anyInput = true;
   if(anyInput && !_GP.active) {
     _GP.active = true;
     localStorage.setItem('inputMode','pad');
     document.body.style.cursor = 'none';
   }
+  if(!_GP.active)return;
   for(let i=0;i<_GP._handlers.length;i++){
     const h = _GP._handlers[i];
     try { if(h.test(gp, just)) { h.action(); break; } } catch(e){}
@@ -1031,6 +1126,7 @@ const _LOBBY_VER_LIMITS={
   demo:'Lv.1 START · Stage 1-1 Only · Lv.100 Cap · 1~2h',
 };
 var _selectedSlot=null,_selectedSlotName=null,_selectedCharDisplay=null;
+var _characterLoadSeq=0;
 var _localSlots=[];
 var _developerSlots=false;
 var _curBg=null;
@@ -1049,6 +1145,7 @@ const sb=typeof supabase!=='undefined'?supabase.createClient(SUPABASE_URL,SUPABA
 
 // ═══ [LANG] 로비 다국어 ═══
 const _LOBBY_EN={
+  '처치':'Kills','브라우저 저장':'Saved in this browser',
   '출시 준비 중':'Coming Soon',
   '로그인 필요':'Login Required','▶ 시네마틱':'▶ Cinematic','확인':'Confirm',
   '지옥의 길':'HELL: EXODUSER','연결 중...':'Connecting...','캐릭터를 선택하세요':'Select your character','당신은 누구인가':'WHO ART THOU',
@@ -1096,6 +1193,7 @@ const _LOBBY_EN={
   '문은 늘 그 자리에 있다':'The door is always there','이 자에게 또 기회를':'Another chance for this one',
   '지옥 학살자':'Hell Slayer','대검 영웅':'Greatsword Hero','거대검 기사':'Colossal Knight',
   '대검 기사':'Greatsword Knight','엑소듀서 전사':'Exoduser Warrior',
+  '전사':'Warrior','블레이드 댄서':'Blade Dancer',
   '거츠 스타일. 특대검+석궁+망토':'Guts style. Greatsword+Crossbow+Cape',
   '풀갑옷 기사. 특대검+빨간 망토':'Full armor knight. Greatsword+Red cape',
   '검은 갑옷. 초대형 특대검':'Black armor. Colossal greatsword',
@@ -1950,6 +2048,8 @@ function _applyLobbyLang(){
     if(lang==='ko')el.textContent=pair[0];
     else{const k=pair[0];el.textContent=(tbl&&tbl[k])||_LOBBY_EN[k]||pair[1];}
   }
+  _refreshStatusLanguage();
+  const quitBtn=document.getElementById('lobbyQuitBtn');if(quitBtn){const label=lang==='ko'?'게임 종료':(tbl&&tbl['게임 종료'])||_LOBBY_EN['게임 종료']||'Quit Game';quitBtn.setAttribute('aria-label',label);quitBtn.title=label;}
   if(_selectedCharDisplay)_updateCharDisplay(_selectedCharDisplay);
   else{
     const title=document.getElementById('charDispTitle');const sub=document.getElementById('charDispSub');
@@ -2249,7 +2349,7 @@ function playCinematic(){
     // 문 열림 진동 — 4초 페이드아웃
     try{if(_GP.vibRef&&_GP.vibRef.vibrationActuator){
       const _v=_GP.vibRef.vibrationActuator;const _steps=[[0,200,.5,.7],[200,500,.45,.6],[700,500,.35,.5],[1200,500,.25,.35],[1700,500,.18,.25],[2200,500,.12,.15],[2700,500,.06,.08],[3200,800,.02,.03]];
-      _steps.forEach(s=>{setTimeout(()=>{try{_v.playEffect('dual-rumble',{startDelay:0,duration:s[1],weakMagnitude:s[2],strongMagnitude:s[3]})}catch(e){}},s[0])});
+      _steps.forEach(s=>{setTimeout(()=>{try{_v.playEffect('dual-rumble',{startDelay:0,duration:s[1],weakMagnitude:s[2],strongMagnitude:s[3]}).catch(()=>{})}catch(e){}},s[0])});
     }}catch(e){}
     // 사용자 제스처 컨텍스트에서 오디오 언락
     window._introVoiceUnlocked=true;
@@ -2543,6 +2643,13 @@ const _cinPreview=_qp.get('cinematic')==='1';
 let _testMode=_qp.get('test')==='1';
 
 function _goLogin({fromCinematic=false}={}){
+  if(typeof _closeCreationOverlays==='function')_closeCreationOverlays();
+  const confirm=$('delConfirmModal');if(confirm&&confirm.style.display==='flex')_hideDelConfirm({fromTransition:true});
+  try{_stopHover();}catch(e){}
+  if(typeof _GP!=='undefined'&&typeof _GP.vibLoopStop==='function')_GP.vibLoopStop();
+  if($('_langPop'))_closeLangPop(false);
+  ++_characterLoadSeq;
+  _selectedSlot=null;_selectedSlotName=null;_updateCharDisplay();
   stopWorldIntro();stopCinBgm();stopMediaVideo($('cinVideo'));
   // 로그인창만 표시
   _cinDone=true;startBGM();
@@ -2564,6 +2671,13 @@ function _goLogin({fromCinematic=false}={}){
   hideLoading();
 }
 function _goCinematic(){
+  if(typeof _closeCreationOverlays==='function')_closeCreationOverlays();
+  const confirm=$('delConfirmModal');if(confirm&&confirm.style.display==='flex')_hideDelConfirm({fromTransition:true});
+  try{_stopHover();}catch(e){}
+  if(typeof _GP!=='undefined'&&typeof _GP.vibLoopStop==='function')_GP.vibLoopStop();
+  if($('_langPop'))_closeLangPop(false);
+  ++_characterLoadSeq;
+  _selectedSlot=null;_selectedSlotName=null;_updateCharDisplay();
   stopWorldIntro();stopCinBgm();_clearVidTimers();
   _cinReady=false;
   $('cinScene').classList.toggle('world-intro-preview',_cinPreview);
@@ -2591,6 +2705,10 @@ function _goCinematic(){
   playCinematic();
 }
 async function _goLobby({fromCinematic=false}={}){
+  if(typeof _closeCreationOverlays==='function')_closeCreationOverlays();
+  const confirm=$('delConfirmModal');if(confirm&&confirm.style.display==='flex')_hideDelConfirm({fromTransition:true});
+  if($('_langPop'))_closeLangPop(false);
+  if(_LOBBY_BUILD==='demo')_testMode=true; // 공개 데모는 로그인 세션이 있어도 브라우저 저장만 표시
   stopWorldIntro();stopCinBgm();stopMediaVideo($('cinVideo'));
   // 로비만 표시
   _cinDone=true;startBGM();
@@ -2607,13 +2725,17 @@ async function _goLobby({fromCinematic=false}={}){
     const _lm=_LOBBY_VER_LIMITS[_LOBBY_BUILD]||'';
     _vo.innerHTML=_lb+'<br>'+_LOBBY_VER+'<br>'+_md+(_lm?'<br><span style="color:rgba(200,120,80,.5)">'+_lm+'</span>':'');
   }
+  let pending;
   if(_testMode){
     if($('userEmail'))$('userEmail').textContent='OFFLINE';
     if($('lobbyMode'))$('lobbyMode').textContent='OFFLINE';
-    await loadLocalCharacters();
+    pending=loadLocalCharacters();
   }else{
-    await showLobby({fromCinematic});
+    pending=showLobby({fromCinematic});
   }
+  const request=_characterLoadSeq;
+  await pending;
+  if(request!==_characterLoadSeq||$('lobby').style.display!=='flex')return;
   hideLoading();
   _preloadLoadingImgs(); // 로딩 이미지 16장 백그라운드 캐시
 }
@@ -2633,29 +2755,34 @@ function _enterOffline(){
     const name=$('charName').value.trim();
     if(name.length<2||name.length>8){setStatus(_TL('이름은 2~8자여야 합니다.'),true);return}
     if(/[<>"'&\/\\]/.test(name)){setStatus(_TL('특수문자는 사용할 수 없습니다.'),true);return}
+    const request=_characterLoadSeq,visualIdx=_pendingVisualIdx;
     try{
     $('createBtn').disabled=true;setStatus(_TL('생성 중...'));
     $('createModal').classList.remove('show');
     try{
       const chk=await fetch('/api/load/'+encodeURIComponent(name));
-      if(chk.ok){const j=await chk.json();if(j.ok){_showCreateFailure(name,_TL('이미 같은 이름의 캐릭터가 있습니다.'));return}}
-      const res=await fetch('/api/save',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({slot:name,data:{name:name,ts:Date.now(),charIdx:_pendingVisualIdx}})});
+      if(request!==_characterLoadSeq)return;
+      if(chk.ok){const j=await chk.json();if(request!==_characterLoadSeq)return;if(j.ok){_showCreateFailure(name,_TL('이미 같은 이름의 캐릭터가 있습니다.'));return}}
+      const res=await fetch('/api/save',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({slot:name,data:{name:name,ts:Date.now(),charIdx:visualIdx}})});
+      if(request!==_characterLoadSeq)return;
       const j=await res.json();
+      if(request!==_characterLoadSeq)return;
       $('createBtn').disabled=false;
       if(!j.ok){_showCreateFailure(name,_TL('생성 실패: ')+(j.error||_TL('알 수 없는 오류')));return}
-      $('charName').value='';setStatus('');await _afterCharacterCreated(name,_pendingVisualIdx);
+      $('charName').value='';setStatus('');await _afterCharacterCreated(name,visualIdx);
     }catch(e){
+      if(request!==_characterLoadSeq)return;
       // 서버 없음 — localStorage 폴백 (DEMO)
       const _LS_PREFIX='hellsave_demo_';
       for(let i=0;i<5;i++){const raw=localStorage.getItem(_LS_PREFIX+i);let saved=null;try{saved=raw?JSON.parse(raw):null}catch{}if(saved&&saved.name===name){_showCreateFailure(name,_TL('이미 같은 이름의 캐릭터가 있습니다.'));return}}
       let _slot=-1;
       for(let i=0;i<5;i++){if(!localStorage.getItem(_LS_PREFIX+i)){_slot=i;break}}
       if(_slot<0){_showCreateFailure(name,_TL('슬롯이 가득 찼습니다.'));return}
-      localStorage.setItem(_LS_PREFIX+_slot,JSON.stringify({name:name,ts:Date.now(),charIdx:_pendingVisualIdx}));
+      localStorage.setItem(_LS_PREFIX+_slot,JSON.stringify({name:name,ts:Date.now(),charIdx:visualIdx}));
       $('createBtn').disabled=false;
-      $('charName').value='';setStatus('');await _afterCharacterCreated(name,_pendingVisualIdx);
+      $('charName').value='';setStatus('');await _afterCharacterCreated(name,visualIdx);
     }
-    }catch(error){_showCreateFailure(name,_TL('생성 실패: ')+(error.message||_TL('알 수 없는 오류')))}
+    }catch(error){if(request===_characterLoadSeq)_showCreateFailure(name,_TL('생성 실패: ')+(error.message||_TL('알 수 없는 오류')))}
     finally{$('createBtn').disabled=false;}
   };
   if($('logoutBtn'))$('logoutBtn').style.display='none';
@@ -2722,6 +2849,9 @@ $('googleBtn').onclick=async()=>{
 if($('logoutBtn'))$('logoutBtn').onclick=async()=>{await sb.auth.signOut();currentUser=null;$('lobby').style.display='none';$('loginSection').style.display='flex';document.querySelector('.container').style.display=''};
 
 async function showLobby({fromCinematic=false}={}){
+  if(typeof _closeCreationOverlays==='function')_closeCreationOverlays();
+  const confirm=$('delConfirmModal');if(confirm&&confirm.style.display==='flex')_hideDelConfirm({fromTransition:true});
+  if($('_langPop'))_closeLangPop(false);
   // The movie already ends on the logo; load characters in the visible lobby.
   if(!fromCinematic)showLoading(_TL('캐릭터 불러오는 중...'));
   $('loginSection').style.display='none';$('lobby').style.display='flex';document.querySelector('.container').style.display='none';var _cl=$('cinLang');if(_cl)_cl.style.display='none';
@@ -2733,14 +2863,16 @@ async function showLobby({fromCinematic=false}={}){
     logout.onclick=()=>{sb.auth.signOut()};
     _lm.replaceChildren(email,logout);
   }
-  await loadCharacters();
+  const pending=loadCharacters(),request=_characterLoadSeq;
+  await pending;
+  if(request!==_characterLoadSeq||$('lobby').style.display!=='flex')return;
   hideLoading();
 }
 async function loadCharacters(){
   _developerSlots=false;
   const devNotice=$('developerSaveNotice');if(devNotice)devNotice.hidden=true;
   const cl=$('charList');if(!cl)return;
-  const request=++_onlineLoadSeq,userId=currentUser&&currentUser.id;
+  const request=++_characterLoadSeq,userId=currentUser&&currentUser.id;
   _onlineChars=[];_selectedSlot=null;_selectedSlotName=null;_updateCharDisplay();
   const btn=$('enterGameBtn');if(btn)btn.disabled=true;
   const message=(text,error=false)=>{const node=document.createElement('div');node.className='no-chars';node.textContent=text;if(error)node.style.color='#cc4433';cl.replaceChildren(node)};
@@ -2749,7 +2881,7 @@ async function loadCharacters(){
   let result;
   try{result=await sb.from('characters').select('*').eq('user_id',userId).order('created_at',{ascending:true})}
   catch(error){result={error}}
-  if(request!==_onlineLoadSeq||!currentUser||currentUser.id!==userId)return;
+  if(request!==_characterLoadSeq||!currentUser||currentUser.id!==userId)return;
   const{data,error}=result;
   if(error){message(_TL('오류: ')+error.message,true);return}
   _onlineChars=data||[];
@@ -2771,11 +2903,14 @@ async function loadCharacters(){
   }
   if(data&&data.length>0){const _d0=data[0].data||{};_swapLobbyBg(_d0.game?_d0.game.stage||0:0)}else{_swapLobbyBg(0);}
 }
-let _onlineChars=[],_onlineScrollIdx=0,_onlineLoadSeq=0;
+let _onlineChars=[],_onlineScrollIdx=0;
 function _addLobbyCardControl(card,label,key){
   const control=document.createElement('button');
   control.type='button';control.className='char-select';
-  control.setAttribute('aria-label',label);control.title=label;control.dataset.cardKey=key;
+  const info=card.querySelector('.char-info');
+  const detail=info&&info.children.length===0?info.textContent.trim():'';
+  const description=detail?label+' · '+detail:label;
+  control.setAttribute('aria-label',description);control.title=description;control.dataset.cardKey=key;
   control.addEventListener('click',()=>{
     const focused=document.activeElement===control;
     setTimeout(()=>{
@@ -2836,9 +2971,12 @@ function _renderOnlineSlots(){
       });
       div.querySelector('.char-del').addEventListener('click',e=>{
         e.stopPropagation();
+        e.currentTarget.focus({preventScroll:true});
         _showDelConfirm(ch.name,async()=>{
           if(!currentUser||!currentUser.id)throw new Error(_TL('로그인 필요'));
+          const request=_characterLoadSeq;
           const{data:deleted,error:de}=await sb.from('characters').delete().eq('id',ch.id).eq('user_id',currentUser.id).select('id');
+          if(request!==_characterLoadSeq)return;
           if(de)throw de;
           await loadCharacters();
           if(!deleted||deleted.length!==1||deleted[0].id!==ch.id)throw new Error(_TL('서버에서 삭제를 확인하지 못했습니다. 목록을 확인한 뒤 다시 시도하세요.'));
@@ -2868,6 +3006,8 @@ function _renderOnlineSlots(){
 }
 // ── 캐릭터 외형 목록 (game.html CHAR_LIST와 동기화) ──
 // index = game.html CHAR_LIST 인덱스와 반드시 일치 (저장 charIdx가 곧 이 인덱스)
+function _lobbyAncestorName(){return _lobbyLang()==='ko'?'묘왕 바르칸':'Varkan, the Tomb King';}
+function _lobbyAncestorCaption(){return _lobbyLang()==='ko'?'전대 소환':'ANCESTRAL SUMMON';}
 const CHAR_VISUALS=[
   {id:'exoduser_warrior',name:'엑소듀서 전사',cls:'WARRIOR',desc:'거대검을 휘두르는 흑철의 전사',folder:'img/exoduser_warrior',fw:48,fh:48,portrait:'assets/charselect/warrior_cut.png?v=3',bust:'assets/charselect/portrait_warrior.png?v=1',emblemImg:'assets/charselect/emblem_warrior.png?v=1',aura:'rgba(140,70,190,.55)',scene:'assets/charselect/bg_scene1.png?v=1',sceneVid:'assets/charselect/bg_scene1_loop.mp4?v=2',idleVid:'assets/charselect/idle_warrior_higgsfield_4k.mp4?v=20260913-detail1',idleRate:0.75,poster:'assets/charselect/poster_idle_warrior_higgsfield_4k.jpg?v=20260913-detail1',tab:'전사',job:'전사',
     emblem:'<svg viewBox="0 0 100 100" fill="none" stroke="currentColor" stroke-width="6" stroke-linecap="round" stroke-linejoin="round"><path d="M50 28 L50 82"/><path d="M35 44 L65 44"/><path d="M31 33 C23 25 21 17 23 11 C31 15 34 24 35 32"/><path d="M69 33 C77 25 79 17 77 11 C69 15 66 24 65 32"/></svg>',
@@ -2876,7 +3016,7 @@ const CHAR_VISUALS=[
       ['🛡','흑철의 방어','검은 갑옷으로 적의 공세를 견디고 되받아칩니다.'],
       ['💥','파멸의 일격','느리지만 치명적인 광역 참격을 내리꽂습니다.'],
     ]},
-  {id:'exoduser_silvertail',name:'실버테일',cls:'BLADE DANCER',desc:'회전하는 단 하나의 검, 그녀의 춤은 파멸',folder:'img/exoduser_silvertail',fw:48,fh:48,portrait:'assets/charselect/silvertail_solo.png?v=20260927',bust:'assets/charselect/silvertail_title.png?v=20260927',keyart:true,thumbPos:'75% center',emblemImg:'assets/charselect/emblem_silvertail.png?v=1',aura:'rgba(120,165,215,.5)',tab:'실버테일',job:'블레이드 댄서',
+  {id:'exoduser_silvertail',name:'실버테일',cls:'BLADE DANCER',desc:'회전하는 단 하나의 검, 그녀의 춤은 파멸',folder:'img/exoduser_silvertail',fw:48,fh:48,portrait:'assets/charselect/silvertail_cut.png?v=20260927-restored',bust:'assets/charselect/portrait_silvertail.png?v=20260927-restored',emblemImg:'assets/charselect/emblem_silvertail.png?v=1',aura:'rgba(120,165,215,.5)',scene:'assets/charselect/bg_scene2.png?v=1',sceneVid:'assets/charselect/bg_scene2_loop.mp4?v=1',idleVid:'assets/charselect/idle_silvertail.mp4?v=20260927-restored',poster:'assets/charselect/poster_idle_silvertail.jpg?v=20260927-restored',tab:'실버테일',job:'블레이드 댄서',
     comingSoon:true,
     emblem:'<svg viewBox="0 0 100 100" fill="none" stroke="currentColor" stroke-width="7" stroke-linecap="round" stroke-linejoin="round"><path d="M24 24 L72 72"/><path d="M76 24 L28 72"/><circle cx="50" cy="50" r="3.5" fill="currentColor" stroke="none"/></svg>',
     traits:[
@@ -2886,10 +3026,37 @@ const CHAR_VISUALS=[
     ]},
 ];
 let _pendingVisualIdx=0;
+let _visualPreviewSeq=0;
+let _visualReturnFocus=null;
+
+function _closeVisualSelect({restoreFocus=false}={}){
+  const pop=$('charVisualPop');if(!pop||pop.style.display!=='flex')return;
+  ++_visualPreviewSeq;
+  const target=_visualReturnFocus;_visualReturnFocus=null;
+  if(pop.contains(document.activeElement))document.activeElement.blur();
+  pop.style.display='none';
+  ['csIdleVid','csSceneVid'].forEach(id=>{
+    const v=$(id);if(!v)return;
+    clearTimeout(v._csT);v._csT=null;v.onerror=null;v.oncanplay=null;
+    stopMediaVideo(v);v.classList.remove('on');v.removeAttribute('src');v.removeAttribute('poster');v.load();
+  });
+  if(restoreFocus&&target&&target.isConnected)target.focus({preventScroll:true});
+}
+function _closeCreationOverlays(){
+  _closeVisualSelect();
+  const modal=$('createModal'),keyboard=$('vkbWrap');
+  if((modal&&modal.classList.contains('show'))||$('createBtn')?.disabled)setStatus('');
+  if(modal&&modal.classList.contains('show')){
+    if(modal.contains(document.activeElement))document.activeElement.blur();
+    modal.classList.remove('show');_vkbHide();
+  }else if(keyboard&&keyboard.style.display==='block')_vkbHide();
+  if(typeof ExoduserCharacterStory!=='undefined'&&ExoduserCharacterStory.active)ExoduserCharacterStory.skip();
+}
 
 // 선택된 화신으로 좌·중·우 패널을 갱신 (미리보기)
 function selectVisual(ci){
-  const ch=CHAR_VISUALS[ci];if(!ch)return;
+  const ch=CHAR_VISUALS[ci],pop=$('charVisualPop');if(!ch||!pop||pop.style.display!=='flex')return;
+  const request=++_visualPreviewSeq,isCurrent=()=>request===_visualPreviewSeq&&pop.style.display==='flex';
   _pendingVisualIdx=ci;
   $('csPortrait').parentElement.classList.toggle('silvertail-keyart',!!ch.keyart);
   const locked=!!ch.comingSoon;
@@ -2900,9 +3067,10 @@ function selectVisual(ci){
   // 중앙: 아이들 영상 있으면 우선 재생(실패·지연 시 정적 누끼로 폴백), 없으면 정적 누끼
   const idle=$('csIdleVid'), port=$('csPortrait');
   const _showStatic=()=>{
+    if(!isCurrent())return;
     if(idle){idle.classList.remove('on');idle.pause&&idle.pause();}
     if(port){port.style.display='';port.classList.add('swap');
-      setTimeout(()=>{port.src=ch.portrait||'';port.classList.remove('swap');},180);}
+      setTimeout(()=>{if(!isCurrent())return;port.src=ch.portrait||'';port.classList.remove('swap');},180);}
     const _sc=$('csScene');if(_sc){if(ch.scene)_sc.style.backgroundImage="url('"+ch.scene+"')";_sc.style.opacity=ch.scene?'1':'0';}
   };
   if(ch.idleVid&&idle){
@@ -2912,8 +3080,8 @@ function selectVisual(ci){
     idle.defaultPlaybackRate=ch.idleRate||1;idle.playbackRate=idle.defaultPlaybackRate;
     clearTimeout(idle._csT);
     idle.onerror=_showStatic;                         // 로드/디코드 실패 → 정적 폴백
-    idle.oncanplay=()=>{clearTimeout(idle._csT);};
-    idle._csT=setTimeout(()=>{if(idle.readyState<2)_showStatic();},5000); // 5초 스톨 → 폴백
+    idle.oncanplay=()=>{if(isCurrent())clearTimeout(idle._csT);};
+    idle._csT=setTimeout(()=>{if(isCurrent()&&idle.readyState<2)_showStatic();},5000); // 5초 스톨 → 폴백
     idle.classList.add('on');if(port)port.style.display='none';
     const _pr=idle.play&&idle.play();if(_pr&&_pr.catch)_pr.catch(()=>{}); // autoplay 막혀도 poster 프레임 유지
   }else{
@@ -2931,7 +3099,7 @@ function selectVisual(ci){
     if(sc)sc.style.opacity='0';
     if(vid){vid.classList.remove('on');vid.pause&&vid.pause();}
   }else{
-    if(sc){sc.style.opacity='0';if(ch.scene)setTimeout(()=>{sc.style.backgroundImage="url('"+ch.scene+"')";sc.style.opacity='1';},180);}
+    if(sc){sc.style.opacity='0';if(ch.scene)setTimeout(()=>{if(!isCurrent())return;sc.style.backgroundImage="url('"+ch.scene+"')";sc.style.opacity='1';},180);}
     if(vid){
       if(ch.sceneVid){const _src=ch.sceneVid.split('?')[0];if(!vid.src.endsWith(_src)){vid.src=ch.sceneVid;}vid.classList.add('on');vid.play&&vid.play().catch(()=>{});}
       else{vid.classList.remove('on');vid.pause&&vid.pause();}
@@ -2943,7 +3111,7 @@ function selectVisual(ci){
     '<div class="cs-trait"><div class="ti">'+t[0]+'</div><div><div class="tt">'+escHtml(_TL(t[1]))
     +'</div><div class="td">'+escHtml(_TL(t[2]))+'</div></div></div>').join('');}
   // 아이콘 레일 선택 표시
-  const grid=$('visualGrid');if(grid)grid.querySelectorAll('.cs-ico').forEach((c,i)=>c.classList.toggle('sel',i===ci));
+  const grid=$('visualGrid');if(grid)grid.querySelectorAll('.cs-ico').forEach((c,i)=>{c.classList.toggle('sel',i===ci);c.setAttribute('aria-pressed',String(i===ci));});
   // 좌우 패널 등장 애니메이션 (재트리거)
   ['csLeft','csRight'].forEach(id=>{const el=$(id);if(el){el.classList.remove('in');void el.offsetWidth;el.classList.add('in');}});
 }
@@ -2958,11 +3126,12 @@ function _spawnEmbers(){
   box.innerHTML=h;
 }
 function openVisualSelect(){
+  _visualReturnFocus=document.activeElement;
   const pop=$('charVisualPop');pop.style.display='flex';
   _spawnEmbers();
   const grid=$('visualGrid');grid.replaceChildren();
   CHAR_VISUALS.forEach((ch,ci)=>{
-    const ico=document.createElement('div');ico.className='cs-ico';ico.setAttribute('data-vi',ci);
+    const ico=document.createElement('button');ico.type='button';ico.className='cs-ico';ico.setAttribute('data-vi',ci);
     ico.title=_TL(ch.name);
     const ring=document.createElement('div');ring.className='cs-ico-ring';
     if(ch.emblemImg){const img=document.createElement('img');img.src=ch.emblemImg;img.alt='';ring.appendChild(img)}
@@ -2973,26 +3142,49 @@ function openVisualSelect(){
     grid.appendChild(ico);
   });
   selectVisual(_pendingVisualIdx||0);
+  const target=grid.querySelector('.cs-ico.sel')||$('visualCancelBtn');if(target)target.focus({preventScroll:true});
 }
+function _visualSelectKeydown(e){
+  const pop=$('charVisualPop');if(!pop||pop.style.display!=='flex'||e.isComposing||e.keyCode===229)return;
+  if(e.key==='Escape'){e.preventDefault();e.stopPropagation();if(!e.repeat)$('visualCancelBtn').click();return;}
+  const icons=[...$('visualGrid').querySelectorAll('.cs-ico')];
+  if(['ArrowLeft','ArrowRight','Home','End'].includes(e.key)&&icons.includes(document.activeElement)){
+    e.preventDefault();e.stopPropagation();
+    const index=icons.indexOf(document.activeElement),last=icons.length-1;
+    const next=e.key==='Home'?0:e.key==='End'?last:Math.max(0,Math.min(last,index+(e.key==='ArrowRight'?1:-1)));
+    icons[next].click();icons[next].focus({preventScroll:true});return;
+  }
+  if(e.key!=='Tab')return;
+  const controls=[...icons,$('visualCancelBtn'),$('visualCreateBtn')].filter(el=>el&&!el.disabled);
+  if(!controls.length)return;
+  e.preventDefault();e.stopPropagation();
+  const index=controls.indexOf(document.activeElement);
+  const next=index<0?(e.shiftKey?controls.length-1:0):(index+(e.shiftKey?-1:1)+controls.length)%controls.length;
+  controls[next].focus({preventScroll:true});
+}
+$('charVisualPop').addEventListener('keydown',_visualSelectKeydown);
 // 생성 확정 → 이름 입력 모달
 function _visualConfirm(){
   if(CHAR_VISUALS[_pendingVisualIdx]?.comingSoon)return;
-  const pop=$('charVisualPop');pop.style.display='none';
+  _closeVisualSelect();
   $('createModal').classList.add('show');$('charName').value='';setStatus('');
   setTimeout(()=>{if($('createModal').classList.contains('show'))$('charName').focus()},50);
 }
 $('visualCreateBtn').onclick=_visualConfirm;
-$('visualCancelBtn').onclick=()=>{$('charVisualPop').style.display='none'};
+$('visualCancelBtn').onclick=()=>_closeVisualSelect({restoreFocus:true});
 
 async function _afterCharacterCreated(name,visualIdx){
+  let request=_characterLoadSeq;
   // Only successful creation clears a reused local slot's tutorial preference.
   if(_testMode){try{localStorage.removeItem('exoduser:tutorial-skipped:v2:slot:'+encodeURIComponent(name));}catch{}}
   // Save is already complete; a playback/list failure must never create another slot.
   try{
-    if(visualIdx!==0){if(_testMode)await loadLocalCharacters();else await loadCharacters();return;}
+    if(visualIdx!==0){const pending=_testMode?loadLocalCharacters():loadCharacters();request=_characterLoadSeq;await pending;return;}
     let charId=name;
     if(!_testMode){
-      await loadCharacters();
+      const pending=loadCharacters();request=_characterLoadSeq;
+      await pending;
+      if(request!==_characterLoadSeq)return;
       const created=_onlineChars.find(ch=>ch.name===name);
       if(!created)return;
       charId=created.id;
@@ -3001,24 +3193,29 @@ async function _afterCharacterCreated(name,visualIdx){
     stopLobbyBgm();_stopHover();
     ['lobbyCharPreview','csIdleVid','csSceneVid'].forEach(id=>{const v=$(id);if(v&&v.pause)v.pause();});
     const seen=await ExoduserCharacterStory.play({skipLabel:_TL('건너뛰기'),language:getCurrentLanguage()});
+    if(request!==_characterLoadSeq)return;
     showCharGate(charId,seen);
-  }catch(error){console.error('[CHARACTER STORY]',error);startBGM();}
+  }catch(error){if(request!==_characterLoadSeq)return;console.error('[CHARACTER STORY]',error);startBGM();}
 }
 
 async function doCreateChar(name,visualIdx){
   if($('createBtn').disabled)return;
   if(CHAR_VISUALS[visualIdx]?.comingSoon){setStatus(_TL('출시 준비 중'),true);return}
+  const request=_characterLoadSeq;
   $('createBtn').disabled=true;setStatus(_TL('생성 중...'));
   if(_testMode){
     try{
     try{
       const res=await fetch('/api/save',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({slot:name,data:{ts:Date.now(),charIdx:visualIdx}})});
+      if(request!==_characterLoadSeq)return;
       if(!res.ok)throw new Error('no server');
       const j=await res.json();
+      if(request!==_characterLoadSeq)return;
       $('createBtn').disabled=false;
       if(!j.ok){_showCreateFailure(name,_TL('생성 실패: ')+(j.error||_TL('알 수 없는 오류')));return}
       $('charName').value='';setStatus('');await _afterCharacterCreated(name,visualIdx);
     }catch(e){
+      if(request!==_characterLoadSeq)return;
       const _LS_PREFIX='hellsave_demo_';const MAX_LS=5;
       for(let i=0;i<MAX_LS;i++){const raw=localStorage.getItem(_LS_PREFIX+i);if(raw){try{const d=JSON.parse(raw);if(d.name===name){_showCreateFailure(name,_TL('이미 같은 이름의 캐릭터가 있습니다.'));return}}catch(pe){}}}
       let _slot=-1;for(let i=0;i<MAX_LS;i++){if(!localStorage.getItem(_LS_PREFIX+i)){_slot=i;break}}
@@ -3027,7 +3224,7 @@ async function doCreateChar(name,visualIdx){
       $('createBtn').disabled=false;$('charName').value='';setStatus('');await _afterCharacterCreated(name,visualIdx);
     }
     return;
-    }catch(error){_showCreateFailure(name,_TL('생성 실패: ')+(error.message||_TL('알 수 없는 오류')))}
+    }catch(error){if(request===_characterLoadSeq)_showCreateFailure(name,_TL('생성 실패: ')+(error.message||_TL('알 수 없는 오류')))}
     finally{$('createBtn').disabled=false;}
     return;
   }
@@ -3037,6 +3234,7 @@ async function doCreateChar(name,visualIdx){
     ({error}=await sb.from('characters').insert({user_id:currentUser.id,name:name,data:{charIdx:visualIdx}}));
   }catch(cause){error=cause||new Error(_TL('알 수 없는 오류'));}
   finally{$('createBtn').disabled=false;}
+  if(request!==_characterLoadSeq)return;
   if(error){
     setStatus(error.code==='23505'?_TL('이미 같은 이름의 캐릭터가 있습니다.'):_TL('생성 실패: ')+(error.message||_TL('알 수 없는 오류')),true);
     $('charName').value=name;$('createModal').classList.add('show');$('charName').focus();return;
@@ -3051,13 +3249,15 @@ $('createBtn').onclick=()=>{
   setStatus('');$('createModal').classList.remove('show');doCreateChar(name,_pendingVisualIdx);
 };
 $('charName').addEventListener('keydown',e=>{if(e.key!=='Enter'||e.isComposing||e.keyCode===229)return;e.preventDefault();if(!e.repeat)$('createBtn').click()});
-function setStatus(m,err){for(const id of ['status','lobbyStatus']){const el=$(id);if(el&&el.children.length===0){el.textContent=m;el.className=err?'status error':'status'}}}
+function setStatus(m,err){const localized=m&&typeof m==='object'&&typeof m.ko==='string'&&typeof m.en==='string';const text=localized?(_lobbyLang()==='ko'?m.ko:m.en):m;for(const id of ['status','lobbyStatus']){const el=$(id);if(el&&el.children.length===0){el._localizedStatus=localized?{message:m,error:!!err}:null;if(el.textContent!==text){el.textContent=text;el.scrollTop=0;}el.className=err?'status error':'status'}}}
+function _refreshStatusLanguage(){const el=document.getElementById('lobbyStatus');const state=el&&el._localizedStatus;if(state)setStatus(state.message,state.error);}
 function escHtml(s){const d=document.createElement('div');d.textContent=s;return d.innerHTML}
 
 // ═══ 로컬 캐릭터 목록 (서버 saves/ 폴더) — 3분할 UI ═══
 // moved to top
 
 async function loadLocalCharacters(){
+  const request=++_characterLoadSeq;
   _developerSlots=false;
   const devNotice=$('developerSaveNotice');if(devNotice)devNotice.hidden=true;
   const cl=$('charList');if(cl){const loading=document.createElement('div');loading.className='no-chars';loading.textContent=_TL('불러오는 중...');cl.replaceChildren(loading);}
@@ -3066,9 +3266,11 @@ async function loadLocalCharacters(){
     const res=await fetch('/api/slots').catch(()=>null);
     if(!res||!res.ok)throw new Error('no server');
     const j=await res.json();
+    if(request!==_characterLoadSeq)return;
     _localSlots=j.ok&&j.slots?j.slots:[];
     _developerSlots=!!(j.ok&&j.development===true&&_testMode&&_LOBBY_BUILD!=='demo');
   }catch(e){
+    if(request!==_characterLoadSeq)return;
     // 서버 없음 (DEMO 등) — localStorage 폴백
     _localSlots=[];
     const _LS_PREFIX='hellsave_demo_';
@@ -3080,7 +3282,6 @@ async function loadLocalCharacters(){
   }
   if(devNotice)devNotice.hidden=!_developerSlots;
   _renderSlotList();
-  _updateCharDisplay();
 }
 
 // 슬롯 스크롤 상태
@@ -3090,9 +3291,19 @@ function _renderSlotList(){
   const cl=$('charList');if(!cl)return;cl.replaceChildren();
   // ── DEMO: 슬롯 1개 고정, 생성 버튼 없음 ──
   if(_LOBBY_BUILD==='demo'){
+    let demoProgress=null;
+    try{
+      const saved=JSON.parse(localStorage.getItem('hellsave_demo')||'null');
+      if(saved&&saved.player&&Number.isFinite(Number(saved.player.lv))){
+        demoProgress={lv:Math.max(1,Math.floor(Number(saved.player.lv))),kills:Math.max(0,Math.floor(Number(saved.game?.kills)||0))};
+      }
+    }catch(e){}
+    const demoInfo=demoProgress
+      ?'Lv.'+demoProgress.lv+' · Stage 1-1 · '+_TL('처치')+' '+demoProgress.kills.toLocaleString()+' · '+_TL('브라우저 저장')
+      :'Lv.1 START · Stage 1-1 · Lv.100 Cap';
     const div=document.createElement('div');div.className='char-item active';
-    div.innerHTML='<div class="char-thumb"><img src="assets/lobby/lobby_ancestor_portrait_v4.webp?v=20260928-shoulder-v4" style="width:100%;height:100%;object-fit:cover;object-position:center 20%;border-radius:2px"></div><div class="char-text"><div class="char-name">DEMO CHARACTER</div><div class="char-info" style="color:rgba(200,150,100,.6)">Lv.1 START · Stage 1-1 · Lv.100 Cap</div></div>';
-    _addLobbyCardControl(div,'DEMO CHARACTER','demo');
+    div.innerHTML='<div class="char-thumb"><img src="assets/lobby/lobby_ancestor_portrait_v4.webp?v=20260928-shoulder-v4" style="width:100%;height:100%;object-fit:cover;object-position:center 20%;border-radius:2px"></div><div class="char-text"><div class="char-name">'+_lobbyAncestorName()+'</div><div class="char-info" style="color:rgba(200,150,100,.6)">'+_lobbyAncestorCaption()+' · '+demoInfo+'</div></div>';
+    _addLobbyCardControl(div,_lobbyAncestorCaption()+' · '+_lobbyAncestorName(),'demo');
     const demoSlot={name:'DEMO CHARACTER',charIdx:0,stage:0};
     div.addEventListener('click',()=>{_selectedSlot='demo';_selectedSlotName='demo';_updateCharDisplay(demoSlot);});
     cl.appendChild(div);
@@ -3135,12 +3346,16 @@ function _renderSlotList(){
       div.addEventListener('click',e=>{if(e.target.classList.contains('char-del'))return;_selectSlot(s)});
       div.querySelector('.char-del').addEventListener('click',e=>{
         e.stopPropagation();
+        e.currentTarget.focus({preventScroll:true});
         _showDelConfirm(s.name,async()=>{
+          const request=_characterLoadSeq;
           try{
             const dr=await fetch('/api/save/'+encodeURIComponent(s.name),{method:'DELETE'});
+            if(request!==_characterLoadSeq)return;
             if(!dr.ok)throw new Error('no server');
             _slotScrollIdx=Math.max(0,_slotScrollIdx-1);await loadLocalCharacters();
           }catch(de){
+            if(request!==_characterLoadSeq)return;
             const _LS_PREFIX='hellsave_demo_';let _found=false;
             for(let i=0;i<5;i++){const raw=localStorage.getItem(_LS_PREFIX+i);if(raw){try{const d=JSON.parse(raw);if(d.name===s.name){localStorage.removeItem(_LS_PREFIX+i);_found=true;break}}catch(pe){}}}
             if(_found){_slotScrollIdx=Math.max(0,_slotScrollIdx-1);await loadLocalCharacters()}
@@ -3177,15 +3392,12 @@ function _renderSlotList(){
   const btnDn=cl.querySelector('#charNavDn');
   _bindLobbyListNavigation(btnUp,btnDn,direction=>{_slotScrollIdx=Math.max(0,Math.min(total-VIEW,_slotScrollIdx+direction));_renderSlotList()});
 
-  // ── 이벤트: 휠 스크롤 ──
-  if(!cl._wheelBound){
-    cl._wheelBound=true;
-    cl.addEventListener('wheel',e=>{
-      const next=Math.max(0,Math.min(Math.max(0,(_localSlots||[]).length-VIEW),_slotScrollIdx+Math.sign(e.deltaY)));
-      if(next===_slotScrollIdx)return;
-      e.preventDefault();_slotScrollIdx=next;_renderSlotList();
-    },{passive:false});
-  }
+  // ── 이벤트: 현재 카드 뷰포트의 휠 스크롤 ──
+  vp.addEventListener('wheel',e=>{
+    const next=Math.max(0,Math.min(Math.max(0,(_localSlots||[]).length-VIEW),_slotScrollIdx+Math.sign(e.deltaY)));
+    if(next===_slotScrollIdx)return;
+    e.preventDefault();_slotScrollIdx=next;_renderSlotList();
+  },{passive:false});
 }
 
 function _selectSlot(s){
@@ -3212,30 +3424,29 @@ function _updateCharDisplay(s){
   if(!s){
     if(btn) btn.disabled=true;
     if(empty) empty.classList.remove('selected','hidden');
-    if(title) title.textContent=_TL('당신은 누구인가');
-    if(sub) sub.textContent='';
+    if(title) title.textContent=_lobbyAncestorName();
+    if(sub) sub.textContent=_lobbyAncestorCaption();
     if(preview){preview.classList.remove('show');preview.pause&&preview.pause();preview.removeAttribute('src');preview.removeAttribute('poster');preview.load&&preview.load();}
     if(keyart){keyart.classList.remove('show');keyart.removeAttribute('src');}
     _swapLobbyBg(0);
     return;
   }
   if(btn) btn.disabled=false;
-  const _vi=CHAR_VISUALS[s.charIdx||0]||CHAR_VISUALS[0];
   if(empty) empty.classList.remove('hidden');
   if(empty) empty.classList.add('selected');
-  if(title) title.textContent=s.name||_TL('당신은 누구인가');
-  if(sub) sub.textContent=_TL(_vi.job||_vi.cls||'');
+  if(title) title.textContent=_lobbyAncestorName();
+  if(sub) sub.textContent=_lobbyAncestorCaption();
 }
 
 // 로비 배경 preload (페이지 로드 시 미리 캐시)
 (function _preloadLobbyBgs(){
-  const i=new Image();i.src='assets/lobby/lobby_ancestor_shoulder_v4.png?v=20260928-shoulder-v4';
+  const i=new Image();i.src='assets/lobby/lobby_varkan_crypt_poster_v1.webp?v=20260928-animated1';
 })();
 
 function _swapLobbyBg(stage){
   const bg=$('lobbyBgImg');if(!bg)return;
-  const url='assets/lobby/lobby_ancestor_shoulder_v4.png?v=20260928-shoulder-v4';
-  _curBg='ancestor-shoulder-v4';
+  const url='assets/lobby/lobby_varkan_crypt_poster_v1.webp?v=20260928-animated1';
+  _curBg='varkan-crypt-v1';
   bg.style.backgroundImage="url('"+url+"')";
   bg.style.opacity='1';
 }
@@ -3243,7 +3454,7 @@ function _swapLobbyBg(stage){
 // ── 로비 mid-area 버전 멘트 + 라벨 ──
 (function _initLobbyMid(){
   const q=$('lmaQuote');if(q)q.textContent=_LOBBY_QUOTES[_LOBBY_BUILD]||'';
-  const v=$('lobbyVersionTxt');if(v)v.textContent=_LOBBY_VER_LABEL[_LOBBY_BUILD]||'';
+  const v=$('lobbyVersionTxt');if(v){v.textContent=_LOBBY_VER_LABEL[_LOBBY_BUILD]||'';v.title=v.textContent;}
   // 좌측 상단 버전 오버레이
   const vo=$('lobbyVerOverlay');if(vo){
     const label=_LOBBY_VER_LABEL[_LOBBY_BUILD]||'UNKNOWN';
@@ -3283,11 +3494,12 @@ function _startHover(){
   }catch(e){}
 }
 function _stopHover(){
-  if(_hoverSrc&&_hoverGain&&_hoverCtx){
+  const src=_hoverSrc,gain=_hoverGain;
+  if(src&&gain&&_hoverCtx){
     try{
       _hoverGain.gain.setValueAtTime(_hoverGain.gain.value,_hoverCtx.currentTime);
       _hoverGain.gain.linearRampToValueAtTime(0,_hoverCtx.currentTime+0.08);
-      setTimeout(()=>{try{_hoverSrc.stop();}catch(e){}},100);
+      setTimeout(()=>{try{src.stop();}catch(e){}try{src.disconnect();}catch(e){}try{gain.disconnect();}catch(e){}},100);
     }catch(e){}
   }
   _hoverSrc=null;_hoverGain=null;
@@ -3316,24 +3528,41 @@ $('createModal').addEventListener('keydown',e=>{
   controls[(index+(e.shiftKey?-1:1)+controls.length)%controls.length].focus();
 });
 
+function _showLobbyQuit(){
+  const trigger=$('lobbyQuitBtn');if(trigger)trigger.focus({preventScroll:true});
+  _showDelConfirm('',async()=>{
+    const request=_characterLoadSeq;
+    try{
+      if(window.nw?.App?.quit){window.nw.App.quit();return;}
+      if(window.electronAPI?.quitApp){await window.electronAPI.quitApp();return;}
+      window.close();
+      setTimeout(()=>{if(request===_characterLoadSeq)setStatus({ko:'브라우저에서는 탭을 직접 닫아 주세요.',en:'Please close this browser tab manually.'});},150);
+    }catch(error){if(request===_characterLoadSeq)setStatus({ko:'게임 종료에 실패했습니다. 다시 시도해 주세요.',en:'Unable to quit. Please try again.'},true);}
+  },_lobbyLang()==='ko'?'게임을 종료하시겠습니까?':'Quit the game?');
+}
+
 // ── 커스텀 삭제 확인 모달 ──
 let _delConfirmCb=null;
 let _delConfirmBusy=false;
 let _delConfirmReturnFocus=null;
 let _delConfirmIdx=0; // 0=확인, 1=취소
-function _showDelConfirm(name,onYes){
+function _showDelConfirm(name,onYes,message){
   if(_delConfirmBusy)return;
   setStatus('');
   const m=$('delConfirmModal');if(!m)return;
-  $('delConfirmMsg').textContent=name+_TL(' 캐릭터를 정말 삭제하시겠습니까?');
+  $('delConfirmMsg').textContent=message||name+_TL(' 캐릭터를 정말 삭제하시겠습니까?');
   _delConfirmReturnFocus=document.activeElement;
   m.style.display='flex';_delConfirmCb=onYes;_delConfirmIdx=1; // 기본 취소에 포커스
+  // Ignore a stick already held when entering the confirmation dialog.
+  if(typeof _GP!=='undefined'){_GP.prev._dlL=_GP.axes[0]<-0.5;_GP.prev._dlR=_GP.axes[0]>0.5;}
   _delHighlight();
 }
-function _hideDelConfirm(){
-  if(_delConfirmBusy)return;
-  const m=$('delConfirmModal');if(m)m.style.display='none';_delConfirmCb=null;
-  const target=_delConfirmReturnFocus&&_delConfirmReturnFocus.isConnected?_delConfirmReturnFocus:document.querySelector('#charList .char-select');
+function _hideDelConfirm({fromTransition=false}={}){
+  if(_delConfirmBusy&&!fromTransition)return;
+  const m=$('delConfirmModal'),wasOpen=m&&m.style.display==='flex';
+  if(fromTransition&&wasOpen&&m.contains(document.activeElement))document.activeElement.blur();
+  if(m)m.style.display='none';_delConfirmCb=null;
+  const target=!fromTransition&&wasOpen?(_delConfirmReturnFocus&&_delConfirmReturnFocus.isConnected?_delConfirmReturnFocus:document.querySelector('#charList .char-select')):null;
   _delConfirmReturnFocus=null;if(target&&target.focus)target.focus({preventScroll:true});
 }
 function _delHighlight(){
@@ -3344,13 +3573,15 @@ function _delHighlight(){
 }
 $('delConfirmYes').onclick=async()=>{
   if(_delConfirmBusy||!_delConfirmCb)return;
+  const onYes=_delConfirmCb;
   _delConfirmBusy=true;$('delConfirmModal').focus({preventScroll:true});$('delConfirmYes').disabled=true;$('delConfirmNo').disabled=true;
-  try{await _delConfirmCb()}
-  catch(error){setStatus(_TL('삭제 실패: ')+(error.message||_TL('알 수 없는 오류')),true)}
-  finally{_delConfirmBusy=false;$('delConfirmYes').disabled=false;$('delConfirmNo').disabled=false;_hideDelConfirm()}
+  try{await onYes()}
+  catch(error){if(_delConfirmCb===onYes)setStatus(_TL('삭제 실패: ')+(error.message||_TL('알 수 없는 오류')),true)}
+  finally{_delConfirmBusy=false;$('delConfirmYes').disabled=false;$('delConfirmNo').disabled=false;if(_delConfirmCb===onYes)_hideDelConfirm()}
 };
 $('delConfirmNo').onclick=()=>{_hideDelConfirm()};
 $('delConfirmModal').addEventListener('keydown',e=>{
+  if(e.repeat&&(e.key==='Enter'||e.key===' ')){e.preventDefault();e.stopPropagation();return;}
   if(e.key==='Escape'){e.preventDefault();e.stopPropagation();_hideDelConfirm();return;}
   if(e.key!=='Tab')return;
   e.preventDefault();e.stopPropagation();if(_delConfirmBusy)return;
@@ -3405,7 +3636,7 @@ function _vkbShow(){
   w.style.display='block';w.innerHTML=h;
   _vkbHighlight();
 }
-function _vkbHide(){const w=$('vkbWrap');if(w){w.style.display='none';w.innerHTML='';}_vkbActive=false;_hgState=null;}
+function _vkbHide(){const w=$('vkbWrap');if(w){w.style.display='none';w.replaceChildren();}_vkbActive=false;_hgState=null;}
 function _vkbHighlight(){
   const w=$('vkbWrap');if(!w)return;
   w.querySelectorAll('span[data-vr]').forEach(s=>{
@@ -3708,8 +3939,8 @@ _GP.on('lobbyNav', (gp, just) => {
   const _lSel=$('lobbyLangSelect');if(_lSel&&_lSel.offsetParent!==null)_navItems.push({el:_lSel,type:'lang'});
   const _lobbyRight = lobby.querySelector('.lobby-right');
   if(_lobbyRight) {
-    _lobbyRight.querySelectorAll('.char-item,.char-item-new,#enterGameBtn:not([disabled]),#lobbyLogout,#logoutBtn,.lma-steam-btn,.ll-steam-btn,.char-nav-btn:not([disabled]),#replayCinBtn').forEach(el => {
-      if(el.offsetParent === null) return;
+    _lobbyRight.querySelectorAll('.char-item,.char-item-new,#enterGameBtn:not([disabled]),#lobbyLogout,#logoutBtn,.lma-steam-btn,.ll-steam-btn,.char-nav-btn:not([disabled]),#replayCinBtn,#lobbyQuitBtn').forEach(el => {
+      if(el.offsetParent === null || el.style.pointerEvents === 'none') return;
       if(_navItems.some(n => n.el === el)) return;
       const type = el.classList.contains('char-item') || el.classList.contains('char-item-new') ? 'slot'
         : el.id === 'enterGameBtn' ? 'enter' : 'other';
@@ -3741,7 +3972,7 @@ _GP.on('lobbyNav', (gp, just) => {
   if(_lobbyGpIdx !== _prevGpIdx || _navItems[_lobbyGpIdx].el !== _GP.prev._lobbyEl) {
     const cur = _navItems[_lobbyGpIdx];
     // 이전 포커스 hover 제거
-    if(_GP.prev._lobbyEl)_GP.prev._lobbyEl.classList.remove('gp-hover');
+    if(_GP.prev._lobbyEl && _GP.prev._lobbyEl !== cur.el){_GP.prev._lobbyEl.classList.remove('gp-hover');_GP.prev._lobbyEl.style.outline='';_GP.prev._lobbyEl.style.outlineOffset='';}
     // 현재 포커스 hover 추가
     if(cur){
       cur.el.classList.add('gp-hover');
@@ -3793,7 +4024,7 @@ function showCharGate(charId,storySeen=false){
   const _preImg=new Image();_preImg.src='img/logo_exoduser.png';
   const _slotName=_testMode?charId:(_selectedSlotName||charId);
   const _demoParam=_LOBBY_BUILD==='demo'?'&demo=1':'';
-  const _tp=(_testMode?'game.html?test=1&slot='+encodeURIComponent(charId):'game.html?char='+charId+'&slot='+encodeURIComponent(_slotName))+_demoParam;
+  const _tp=(_LOBBY_BUILD==='demo'?'game.html?test=1&slot=demo':_testMode?'game.html?test=1&slot='+encodeURIComponent(charId):'game.html?char='+charId+'&slot='+encodeURIComponent(_slotName))+_demoParam;
   setTimeout(()=>{window.location.href=_tp+(storySeen?'&story=warrior-v21':'')},1200);
 }
 

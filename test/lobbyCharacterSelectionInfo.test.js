@@ -1,6 +1,7 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import { readFileSync } from 'node:fs';
+import vm from 'node:vm';
 
 const indexHtml = readFileSync(new URL('../index.html', import.meta.url), 'utf8');
 
@@ -27,4 +28,14 @@ test('keeps the lobby display child nodes intact during language changes', () =>
 
 test('does not access the delayed DOM helper during initial language setup', () => {
   assert.match(indexHtml, /const title=document\.getElementById\('charDispTitle'\);const sub=document\.getElementById\('charDispSub'\);/);
+});
+
+test('selected jobs use the lobby English fallback outside Korean',()=>{
+ const source=indexHtml.slice(indexHtml.indexOf('const _LOBBY_EN={'),indexHtml.indexOf('const _LOBBY_ZH='));
+ const ctx=vm.createContext({});vm.runInContext(source+';globalThis.en=_LOBBY_EN;',ctx);
+ ctx._lobbyLang=()=> 'en';
+ vm.runInContext('const _LOBBY_TABLES={en:_LOBBY_EN};'+indexHtml.match(/function _TL\(s\)\{[^\n]+/)[0],ctx);
+ assert.equal(ctx._TL('전사'),'Warrior');
+ assert.equal(ctx._TL('블레이드 댄서'),'Blade Dancer');
+ ctx._lobbyLang=()=> 'ko';assert.equal(ctx._TL('전사'),'전사');
 });

@@ -1,6 +1,6 @@
 {
   "version": "20260916-finish-1",
-  "bakeVersion": "20260917-depth-2",
+  "bakeVersion": "20260928-outer-70",
   "groundMaterials": {
     "mask": "ground-zones.svg",
     "soil": {
@@ -1389,5 +1389,71 @@
   ],
   "runtimeScatter": 0,
   "structuralRotation": 0,
-  "structuralMirror": 0
+  "structuralMirror": 0,
+  "retouchLayers": [
+    {
+      "id": "skin65",
+      "file": "skin65_sources/skin65_patch.png",
+      "x": 2007,
+      "y": 2867,
+      "width": 3440,
+      "height": 4382
+    },
+    {
+      "id": "outer66",
+      "file": "outer66_sources/outer_patch66.png",
+      "x": 0,
+      "y": 3072,
+      "width": 2048,
+      "height": 2048
+    },
+    {
+      "id": "outer67",
+      "file": "outer67_sources/outer67_patch.png",
+      "x": 0,
+      "y": 1024,
+      "width": 3072,
+      "height": 2048
+    },
+    {
+      "id": "outer68",
+      "file": "outer68_sources/outer68_patch.png",
+      "x": 1024,
+      "y": 0,
+      "width": 2048,
+      "height": 2048
+    },
+    {
+      "id": "outer69",
+      "file": "outer69_sources/outer69_patch.png",
+      "x": 6144,
+      "y": 3072,
+      "width": 2048,
+      "height": 2048
+    },
+    {
+      "id": "outer70",
+      "file": "outer70_sources/outer70_patch.png",
+      "x": 6144,
+      "y": 5120,
+      "width": 2048,
+      "height": 2048
+    },
+    {
+      "id": "outer71",
+      "file": "outer71_sources/outer71_patch.png",
+      "x": 6144,
+      "y": 5120,
+      "width": 2048,
+      "height": 2048
+    },
+    {
+      "id": "outer72",
+      "file": "outer72_sources/outer72_patch.png",
+      "x": 4096,
+      "y": 6144,
+      "width": 2048,
+      "height": 2048
+    }
+  ]
 }

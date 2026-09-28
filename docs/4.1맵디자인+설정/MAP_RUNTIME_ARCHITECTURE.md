@@ -185,6 +185,7 @@ kit builders (24417~24507)   ─┘        │
 - **게이트 개방**: `checkRooms` — `_stageKills/_totalSpawned + 0.10(가드보너스) >= 0.8` (80%). CH1-1(`G.stage===0`)은 **추가로** 앵글러 4마리 전멸(`G._fbDone`). 추적스폰 0이어도 CH1-1은 `_fbDone` 필수.
 - **보스 로드 스테이트머신**: `_bossLoadPhase` 1=페이드아웃→`_enterBossArena()`(35514), 2=네임카드, 3=페이드인, 4=보스등장. 트리거 = 출구타일 밟기(`bossAlive && !_bossArena && _bossUnlocked`, 35606).
 - `_enterBossArena()` 25111: `_preArenaBackup`로 던전 백업(25113) → 생존몹 kills 전환 → 풀 클리어 → `G.map=arena.map`(25130) → 보스 mkEn(ib=true, 25139) → 캐시 재빌드.
+- **1-1 필드몹/보스 아레나 분리 (2026-09-28):** `si0` 아레나 진입 시 `G._fieldBoss`, `G._fieldBosses`, `G._fireDevils`을 비우고 `G._worms=[]`로 초기화한다. `_fbTick`·`_fdTick`은 `G._bossArena && G.stage===0`이면 저장 배열을 비우고 스폰 전에 반환한다. `_wmTick`도 같은 조건에서 곰치 배열을 비우고 반환한다. 탐험 필드의 4각 위치·HP·탄막·게이트 조건 `G._fbDone`은 유지하며, 기존 데모 si3 피날레 곰치 차단도 유지한다.
 - **Q9(배경표현→실엔티티) 최저위험 경로**: `_preArenaBackup`/`_enterBossArena` 구조가 이미 "월드↔아레나 스왑"을 함. 배경표현은 **탐험 맵의 MAP_OBJS에 거대 실루엣 오브젝트(비충돌, OUTER 레이어)를 두고**, 아레나 진입 시 기존 `_enterBossArena`로 실 엔티티 스폰 → 신규 프레임워크 불필요. (`MAP_IMPLEMENTATION_ROADMAP.md PHASE 7`)
 
 ---

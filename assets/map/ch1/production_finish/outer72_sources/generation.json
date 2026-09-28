@@ -1,0 +1,25 @@
+{
+  "provider": "Higgsfield",
+  "model": "gpt_image_2_5",
+  "job": "24f6587e-8685-4082-819a-ae9564d8fd38",
+  "prompt": "Create ONE isolated high quality 2.5D top-down environment cutout for a dark action RPG, true transparent background. A LOW HORIZONTAL collapsed rotten hollow root-and-bark shelf, a wide irregular bank of dead wood rather than an upright tree. Entire asset centered in the middle of the square canvas with generous transparent padding on all sides. The wood runs from lower left to upper right on a shallow diagonal. A large split bark plate exposes dark recessed wood chambers, splintered porous end grain, wet charcoal-brown decayed heartwood, sparse bruised gray skin tissue and thin muted dark burgundy sinews embedded inside the breaks. Layers of overlapping heavy wood create clear height with narrow contact shadow contained under the object. Top-down 3/4 overhead game camera, consistent soft dim upper-left lighting. Rough matte bark and small damp highlights, gray-brown low saturation palette, subtle irregular grounded root tips. Painterly realistic AAA game environment asset with crisp material hierarchy, dark readable cavities and an asymmetrical silhouette. Wide low mass fills about 75 percent of canvas width and 45 percent height, centered, no large empty top margin. No healthy foliage, no green leaves, no ferns, no grass, no upright branch bouquet, no skulls, no decorative symbols, no magical glow, no floor/background, no checkerboard pattern, no frame, no text. Keep the object and its internal surface details visible on transparency. This is a standalone environment layer to be locally composited into an existing map, not a new full map.",
+  "requested": {
+    "aspect_ratio": "1:1",
+    "resolution": "2k",
+    "quality": "high",
+    "background": "transparent"
+  },
+  "referenceInput": null,
+  "resultUrl": "https://d8j0ntlcm91z4.cloudfront.net/user_3G1zto9sz11Uf3iEOhJefE9HdGG/hf_20260928_074409_24f6587e-8685-4082-819a-ae9564d8fd38.png",
+  "actual": {
+    "size": [
+      2048,
+      2048
+    ],
+    "mode": "RGBA",
+    "alphaMin": 0,
+    "alphaMax": 254,
+    "alphaZeroPixels": 3066102,
+    "sha256": "a000d1c3775cbc46a3a0e6d692e800cc21bcfd0326b08077b816f63f27745c79"
+  }
+}

@@ -840,6 +840,7 @@ canvas{display:block;position:fixed;inset:0}
 /* ═══ 아이템 스킨 컨테이너 + 등급 프레임 글로우 ═══ */
 .iskin{position:relative;display:inline-flex;align-items:center;justify-content:center;vertical-align:middle;border-radius:6px;overflow:hidden;flex:none}
 .iskin>svg{position:absolute;z-index:0}
+.iskin:has(>.iskin-img)>svg{visibility:hidden}
 .iskin .iskin-img{position:relative;z-index:1;width:100%;height:100%;object-fit:contain;display:block}
 .iskin.r0{box-shadow:inset 0 0 0 1px rgba(150,150,150,.28)}
 .iskin.r1{box-shadow:inset 0 0 0 1px rgba(76,203,76,.5),0 0 4px rgba(76,203,76,.28)}
@@ -2299,7 +2300,7 @@ canvas{display:block;position:fixed;inset:0}
 <link rel="stylesheet" href="stat-panel-ui.css?v=20260910-fullscreen-readable-v1">
 <link rel="stylesheet" href="localization.css?v=20260909">
 <link rel="stylesheet" href="ui-foundation.css?v=20260927-frame-interior">
-<link rel="stylesheet" href="ui-refinement.css?v=20260928-storage-icon-gem-picker2">
+<link rel="stylesheet" href="ui-refinement.css?v=20260928-equipment-stage3">
 <link rel="stylesheet" href="inventory-oss-balance.css?v=20260928-ossuary-fit5">
 <script defer src="ui-panels.js?v=20260927-compare-wheel2"></script>
 <script src="stat-panel-ui.js?v=20260909-constellation-v3"></script>
@@ -14032,7 +14033,7 @@ function _crSlotsStr(cd){if(!cd||!cd.slots)return'';return _L('슬롯: ','Slots:
 function renderCrystalBag(){
   let pop=$('crBagPop');
   if(!pop){pop=document.createElement('div');pop.id='crBagPop';pop.style.cssText='position:fixed;top:50%;left:50%;transform:translate(-50%,-50%);width:380px;max-height:70vh;background:#1a1008;border:2px solid #553388;border-radius:8px;z-index:9999;display:flex;flex-direction:column;padding:10px;box-shadow:0 0 30px rgba(100,0,200,.3)';document.body.appendChild(pop);}
-  pop.setAttribute('role','dialog');pop.setAttribute('aria-label',_T('결정 주머니'));
+  pop.setAttribute('role','dialog');pop.setAttribute('aria-label',_crPickSlot?_L('장착 가능한 보석','Equipable gems'):_L('보유 보석','Owned gems'));
   pop.onkeydown=event=>{
     if(event.key==='Escape'){event.preventDefault();event.stopPropagation();closeCrystalPicker();return;}
     if(event.key!=='Tab')return;
@@ -14046,17 +14047,21 @@ function renderCrystalBag(){
   if(pop.dataset.crFilter!==_crBagFilter){_gpCrIdx=0;pop.dataset.crFilter=_crBagFilter;}
   pop.style.display='flex';
   const focusFilter=pop.querySelector('.cr-picker-filter:focus')?.dataset.filter;
-  let h='<div class="cr-picker-head" style="display:flex;justify-content:space-between;align-items:center;margin-bottom:6px"><span style="color:#bb88ff;font-size:1rem;font-weight:700">'+_T('결정 주머니')+' ('+CRYSTAL_BAG.length+'/'+CRYSTAL_BAG_MAX+')</span>';
-  h+='<span style="color:#aa8866;font-size:.75rem">'+_T('가루')+': '+CRYSTAL_DUST+'</span>';
+  const compatibleGems=CRYSTAL_BAG.filter(cr=>{const d=CRYSTAL_DEFS[cr.id];return d&&(!_crPickSlot||d.slots?.includes(_crPickSlot));});
+  const compatibleCount=compatibleGems.length;
+  const slotLabel=_crPickSlot?document.querySelector('.inv-cr-equipment-card[data-slot="'+_crPickSlot+'"] .inv-cr-equipment-name')?.textContent:'';
+  let h='<div class="cr-picker-head"><span class="cr-picker-heading"><span class="cr-picker-eyebrow">RELIC SOCKET</span><strong class="cr-picker-title">'+(_crPickSlot?_L('장착 가능한 보석','Equipable gems'):_L('보유 보석','Owned gems'))+'</strong><span class="cr-picker-target">'+(slotLabel?slotLabel+' · '+_L('빈 홈','Empty socket'):_L('보석을 선택하세요','Choose a gem'))+'</span></span><span class="cr-picker-count"><small>'+_L('호환','Fit')+'</small><b>'+compatibleCount+'</b><i>/</i><small>'+_L('보유','Owned')+' '+CRYSTAL_BAG.length+'</small></span>';
   h+='<button type="button" class="cr-picker-close" aria-label="'+_L('닫기','Close')+'" onclick="closeCrystalPicker()">✕</button></div>';
-  h+='<div class="cr-picker-filters" style="display:flex;gap:3px;margin-bottom:6px;flex-wrap:wrap">';
+  h+='<div class="cr-picker-filters">';
   [['all','전체'],['stat','스탯'],['elem','원소'],['util','유틸']].forEach(([k,v])=>{
-    h+='<button type="button" class="cr-picker-filter" data-filter="'+k+'" aria-pressed="'+(_crBagFilter===k)+'" onclick="_crBagFilter=\''+k+'\';renderCrystalBag()" style="cursor:pointer;padding:1px 6px;font-size:.75rem;border:1px solid '+(_crBagFilter===k?'#bb88ff':'#443322')+';color:'+(_crBagFilter===k?'#ddaaff':'#887766')+';background:'+(_crBagFilter===k?'rgba(187,136,255,.12)':'rgba(0,0,0,.2)')+';border-radius:3px">'+_T(v)+'</button>'; 
+    const n=k==='all'?compatibleCount:compatibleGems.filter(cr=>CRYSTAL_DEFS[cr.id]?.cat===k).length;
+    h+='<button type="button" class="cr-picker-filter" data-filter="'+k+'" data-empty="'+(n===0)+'" aria-pressed="'+(_crBagFilter===k)+'" onclick="_crBagFilter=\''+k+'\';renderCrystalBag()"><span>'+_T(v)+'</span><small>'+n+'</small></button>';
   });
   for(let si=0;si<5;si++){
-    h+='<button type="button" class="cr-picker-filter" data-filter="s'+si+'" aria-pressed="'+(_crBagFilter==='s'+si)+'" onclick="_crBagFilter=\'s'+si+'\';renderCrystalBag()" style="cursor:pointer;padding:1px 6px;font-size:.75rem;border:1px solid '+(_crBagFilter==='s'+si?CRYSTAL_STAR[si].color:'#443322')+';color:'+(_crBagFilter==='s'+si?CRYSTAL_STAR[si].color:'#887766')+';border-radius:3px">'+(si+1)+_L('성','★')+'</button>'; 
+    const n=compatibleGems.filter(cr=>cr.star===si).length;
+    h+='<button type="button" class="cr-picker-filter" data-filter="s'+si+'" data-empty="'+(n===0)+'" aria-pressed="'+(_crBagFilter==='s'+si)+'" onclick="_crBagFilter=\'s'+si+'\';renderCrystalBag()"><span>◆ '+(si+1)+_L('성','★')+'</span><small>'+n+'</small></button>';
   }
-  h+='</div><div class="cr-picker-list" style="flex:1;overflow-y:auto;display:flex;flex-direction:column;gap:2px">';
+  h+='</div><div class="cr-picker-list" style="flex:1;overflow-y:auto">';
   let visibleCount=0;
   CRYSTAL_BAG.forEach((cr,i)=>{
     const d=CRYSTAL_DEFS[cr.id],s=CRYSTAL_STAR[cr.star];
@@ -14070,13 +14075,18 @@ function renderCrystalBag(){
     }
     visibleCount++;
     const sel=_crBagSel===i;
-    h+='<button type="button" class="cr-picker-item" onclick="'+(_crPickCb?'_crPickCb('+i+')':'_crBagSel='+i+';renderCrystalBag()')+'" style="cursor:pointer;display:flex;align-items:center;gap:6px;padding:4px 8px;border:1px solid '+(sel?'#bb88ff':'#332211')+';background:'+(sel?'rgba(187,136,255,.12)':'rgba(0,0,0,.2)')+';border-radius:3px">';
-    h+='<span>'+_crIco(d,16)+'</span><span style="color:'+s.color+';font-size:.85rem;font-weight:700">'+_crStarN(s)+'</span>';
-    h+='<span style="color:#ccaa88;font-size:.85rem">'+_crDefN(d)+'</span>';
-    if(cr.enh>0)h+='<span style="color:#44ccff;font-size:.8rem">+'+cr.enh+'</span>';
-    h+='<span style="color:#88cc88;font-size:.8rem;margin-left:auto">'+_crValStr(cr)+'</span></button>';
+    h+='<button type="button" class="cr-picker-item" aria-label="'+_crDefN(d)+' · '+_crStarN(s)+' · '+_crValStr(cr)+'" onclick="'+(_crPickCb?'_crPickCb('+i+')':'_crBagSel='+i+';renderCrystalBag()')+'" style="cursor:pointer;border:1px solid '+(sel?'#bb88ff':'#66543d')+';background:'+(sel?'rgba(187,136,255,.12)':'rgba(0,0,0,.32)')+'">';
+    h+='<span class="cr-picker-art">'+_crIco(d,64)+'</span><span class="cr-picker-copy"><span class="cr-picker-rank" style="color:'+s.color+'">'+_crStarN(s)+(cr.enh?' · +'+cr.enh:'')+'</span>';
+    h+='<strong class="cr-picker-name">'+_crDefN(d)+'</strong><span class="cr-picker-options">'+_crValStr(cr)+'</span></span></button>';
   });
-  if(visibleCount===0)h+='<div class="cr-picker-empty" role="status">'+(CRYSTAL_BAG.length===0?_T('결정이 없습니다'):_L('현재 장비와 필터에 맞는 보석이 없습니다.','No gems match this equipment and filter.'))+'</div>';
+  if(visibleCount===0){
+    const noOwned=CRYSTAL_BAG.length===0,noFit=compatibleCount===0;
+    const title=noOwned?_L('보유한 보석이 없습니다','No gems owned'):noFit?_L('이 홈에 맞는 보석이 없습니다','No gems fit this socket'):_L('선택한 분류에 보석이 없습니다','No gems in this filter');
+    const hint=noFit?_L('다른 장비 홈을 선택하거나 호환 보석을 획득하세요.','Choose another socket or collect a matching gem.'):_L('다른 성급 또는 분류를 선택하면 장착 후보가 표시됩니다.','Choose another rank or category to see matching gems.');
+    h+='<div class="cr-picker-empty" role="status"><span class="cr-picker-empty-mark" aria-hidden="true">◇</span><span class="cr-picker-empty-kicker">NO RELIC FOUND</span><strong>'+title+'</strong><p>'+hint+'</p>';
+    if(!noOwned&&!noFit&&_crBagFilter!=='all')h+='<button type="button" class="cr-picker-reset" onclick="_crBagFilter=\'all\';renderCrystalBag();_crPickerFocusStart()">'+_L('전체 호환 보석 보기','Show all fitting gems')+' <span aria-hidden="true">↗</span></button>';
+    h+='</div>';
+  }
   h+='</div>';pop.replaceChildren(document.createRange().createContextualFragment(h));
   const navRows=pop.querySelectorAll('.cr-picker-item');
   _gpCrIdx=Math.max(0,Math.min(_gpCrIdx,navRows.length-1));
@@ -15002,9 +15012,15 @@ function _updateKiSlashThirdCharge(sp){
   P.atkArc=P.facing; // 홀드 중에도 차징 검기·공격 자세가 현재 조준 방향을 따른다.
   const _before=_kiSlashHoldMultiplier(P._kiChargeT);
   P._kiChargeT=Math.min(180,(P._kiChargeT||0)+sp);P.st2=999;
+  const _after=_kiSlashHoldMultiplier(P._kiChargeT);
+  if(_after>_before){
+    if(_after===8){
+      playSample('sword_parry',.72,1.08);
+      if(_VFX_SHEETS.ki_slash_hit_2)playVFXAng('ki_slash_hit_2',P.x,P.y,.26,2,P.atkArc,true);
+      else playVFXAng('parry_impact',P.x,P.y,.85,1,P.atkArc,true);
+    }else playSample('scarecrow_charge',.35,1);
+  }
   if(isHeld('weapon')){
-    const _after=_kiSlashHoldMultiplier(P._kiChargeT);
-    if(_after>_before)playSample('scarecrow_charge',.35,1);
     return false;
   }
   const frames=P._kiChargeT;P._kiChargeActive=false;P._kiChargeT=0;
@@ -17555,7 +17571,7 @@ function updateCrescents(sp){
       if(!e.alive||!isFinite(e.x)||!isFinite(e.y))continue;
       if(dst(c.x,c.y,e.x,e.y)<c.r+e.r&&!c._hitSet.has(e)&&hasLOS(c.x,c.y,e.x,e.y)){
         c._hitSet.add(e);
-        hurtE(e,c.dmg,Math.atan2(e.y-c.y,e.x-c.x),true,{poiseHit:true,kbMult:0.5,noImpact:true,_lessonAttack:'kiSlash'},c.el);
+        hurtE(e,c.dmg,Math.atan2(e.y-c.y,e.x-c.x),true,{poiseHit:true,kbMult:0.5,noImpact:true,_lessonAttack:'kiSlash',_lessonFullCharge:c.step===3&&c.chargeScale>=2.2-1e-6},c.el);
         if(c.step===3){G.hitStop=Math.max(G.hitStop,6);shake(8);}
         else G.hitStop=Math.max(G.hitStop,3);
         _playKiSlashHit(c,e.x,e.y);
@@ -25243,7 +25259,7 @@ function _itemSkin(it,sz,col){
   const src=_itemSkinSrc(base,el);
   const srcPhys=_itemSkinSrc(base,'phys');       // 속성 전용 아트 없으면 물리 base로 폴백
   const fbAttr=(src!==srcPhys)?' data-fb="'+srcPhys+'"':'';
-  // 폴백 글리프를 스킨 뒤에 깔고, 이미지 성공 시 덮음. onerror: 속성→물리→(그래도 없으면)제거→글리프
+  // 이미지 노드가 있으면 폴백 SVG는 숨김. onerror: 속성→물리→최종 실패 시 이미지 제거→SVG 표시.
   return '<span class="iskin r'+(it.rarity||0)+'" style="width:'+sz+'px;height:'+sz+'px">'
     +_itemIco(it,col,Math.round(sz*0.82))
     +'<img class="iskin-img" src="'+src+'"'+fbAttr+' data-el="'+(it.el||0)+'" width="'+sz+'" height="'+sz+'" loading="lazy" '
@@ -45033,19 +45049,6 @@ function renderInvStorage(){
   });
   sec.appendChild(bagList);
 }
-function withdrawStorage(idx){
-  if(INV.bag.length>=BAG_MAX){notify(_T('가방이 가득 찼습니다!'));return}
-  const store=_getStore();if(!store[idx])return;
-  const wi=store[idx];wi._gx=null;wi._gy=null;INV.bag.push(wi);store.splice(idx,1);INV.selected=null;SFX.pickup();_persistSharedStorage();renderInv();dbSaveNow();
-}
-
-// ═══ SETTINGS RENDER ═══
-function renderSettings(){
-  // 리셋 확인창 강제 숨기기
-  const _rcS=$('resetConfirm');if(_rcS)_rcS.style.display='none';
-  // ── 커서 선택 그리드 ──
-  const _cg=$('cursorGrid');if(_cg){_cg.innerHTML='';
-    _CURSORS.forEach((cur,ci)=>{
 function depositStorage(idx){
   const item=INV.bag[idx];if(!item)return false;
   const store=_getStore();
@@ -45059,6 +45062,19 @@ function _invBagRightClick(idx){
   if(item.slot==='bonePart'){registerBonePart(item);return}
   equipItem(item);applyStats();renderInv();
 }
+function withdrawStorage(idx){
+  if(INV.bag.length>=BAG_MAX){notify(_T('가방이 가득 찼습니다!'));return}
+  const store=_getStore();if(!store[idx])return;
+  const wi=store[idx];wi._gx=null;wi._gy=null;INV.bag.push(wi);store.splice(idx,1);INV.selected=null;SFX.pickup();_persistSharedStorage();renderInv();dbSaveNow();
+}
+
+// ═══ SETTINGS RENDER ═══
+function renderSettings(){
+  // 리셋 확인창 강제 숨기기
+  const _rcS=$('resetConfirm');if(_rcS)_rcS.style.display='none';
+  // ── 커서 선택 그리드 ──
+  const _cg=$('cursorGrid');if(_cg){_cg.innerHTML='';
+    _CURSORS.forEach((cur,ci)=>{
       const sel=ci===(OPT.cursor||0);
       const card=document.createElement('div');
       card.style.cssText='width:72px;min-width:72px;height:80px;border-radius:6px;cursor:pointer;text-align:center;border:2px solid '+(sel?'#ffcc00':'#443322')+';background:'+(sel?'rgba(80,60,20,.6)':'rgba(20,20,30,.6)')+';display:flex;flex-direction:column;align-items:center;justify-content:center;transition:all .2s;flex-shrink:0';
@@ -46299,7 +46315,7 @@ function renderOssPanel(){
   if(pn.dataset.ancestorId!==R.id){pn.dataset.selectedPart='';_ossHideBoneInfo();}
   pn.dataset.ancestorId=R.id;pn.dataset.ancestorIndex=String(ai);
   const collected=_BONE_PARTS.filter(pt=>INV.ossCollect[R.id+'_'+pt]).length;
-  const complete=_ossSetComplete(0),ready=complete&&!!oss;
+  const complete=_ossSetComplete(ai),ready=complete&&!!oss&&(!oss.anc||oss.anc===R.id);
   const label=(cls,value)=>{const leaf=pn.querySelector('.'+cls);if(leaf&&!leaf.children.length)leaf.textContent=value;};
   pn.classList.toggle('oss-complete',complete);
   pn.classList.toggle('oss-ready',ready);
@@ -46340,21 +46356,6 @@ function renderOssPanel(){
   remove.disabled=!oss;label('oss-unequip',_L('유골함 해제','Unequip ossuary'));
   remove.onclick=urn.oncontextmenu;
   label('oss-collection-hint',_L('유골 우클릭 또는 선택 후 해제 · 해제한 유골은 가방으로 이동','Right-click a bone or select Remove · Returns the bone to your bag'));
-}
-function _invCategoryMatches(it){
-  if(!it)return false;
-  const page=$('invPanel')?.dataset.inventoryPage||'equipment';
-  const bone=it.slot==='ossuary'||it.slot==='bonePart';
-  return page==='ossuary'?bone:page==='equipment'?!bone:true;
-}
-function _invChangeCategory(){
-  INV.selected=null;_invHover=-1;_invSalSel.clear();
-  invFilter={slot:null,rarity:null,el:null};
-  renderInv();_invClearHover();
-}
-let _invLastPlacement=null;
-function _invPlacement(){
-  return {bag:INV.bag.map(it=>it?[it,it._gx,it._gy]:null),eq:SLOT_NAMES.map(slot=>INV.equipped[slot])};
   const portrait=$('invOssAncestor'),img=$('ossAncestorImage'),fallback=$('ossAncestorFallback');
   if(portrait&&img&&fallback){
     const source=R.portrait||'',frames=Math.max(1,R.portraitFrames||1),frame=Math.min(frames-1,Math.max(0,R.portraitFrame||0));
@@ -46376,6 +46377,21 @@ function _invPlacement(){
     const rank=portrait.querySelector('.oss-portrait-rank');if(rank&&!rank.children.length)rank.textContent='ANCESTOR · '+String(ai+1).padStart(2,'0');
     $('ossAncestorProgressFill').style.width=(collected/_BONE_PARTS.length*100)+'%';
   }
+}
+function _invCategoryMatches(it){
+  if(!it)return false;
+  const page=$('invPanel')?.dataset.inventoryPage||'equipment';
+  const bone=it.slot==='ossuary'||it.slot==='bonePart';
+  return page==='ossuary'?bone:page==='equipment'?!bone:true;
+}
+function _invChangeCategory(){
+  INV.selected=null;_invHover=-1;_invSalSel.clear();
+  invFilter={slot:null,rarity:null,el:null};
+  renderInv();_invClearHover();
+}
+let _invLastPlacement=null;
+function _invPlacement(){
+  return {bag:INV.bag.map(it=>it?[it,it._gx,it._gy]:null),eq:SLOT_NAMES.map(slot=>INV.equipped[slot])};
 }
 function _invPlacementChanged(before,after){
   if(!before)return false;

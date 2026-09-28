@@ -1,0 +1,15 @@
+{
+  "source": "assets/map/ch1/production_finish/outer70_sources/southeast_mass_generated.png",
+  "originalGeneration": "assets/map/ch1/production_finish/outer70_sources/generation.json",
+  "newGeneration": false,
+  "operation": "relocate one asset, reuse pre70 crop for old-only pixels, append outer71 correction patch after outer70",
+  "retainedLayers": [
+    "skin65",
+    "outer66",
+    "outer67",
+    "outer68",
+    "outer69",
+    "outer70"
+  ],
+  "sourceSha256": "e11b688acd8e3d38f5b14be4060bcddc4a4053ad0c60611d459203302528cbf6"
+}

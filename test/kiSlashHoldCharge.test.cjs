@@ -65,6 +65,26 @@ for(const file of ['game.html','game-easy-test.html']){
     update(0);
     assert.equal(shots[0][2],Math.PI/2,'released blade should use the same direction');
   });
+  test(`${file}: third charge completion clangs and flashes exactly once`,()=>{
+    const P={x:10,y:20,facing:Math.PI/4,atkArc:0,s:'wWindup',st2:999,_kiChargeActive:true,_kiChargeT:179,skills:{kiSlash:1}};
+    const sounds=[],flashes=[];
+    const scope={P,Math,isHeld:()=>true,_L:(ko)=>ko,_cresStep:2,_cresComboT:120,_cresCd:0,
+      _addSkProf(){},_playKiSlashComboSfx(){},meleeRef:()=>10,statStr:()=>1,pAtkMul:()=>1,_skMul:()=>1,
+      spawnCrescent(){},_startSilvertailAttackMotion(){},addTxt(){},
+      playSample:(...args)=>sounds.push(args),playVFXAng:(...args)=>flashes.push(args),
+      _VFX_SHEETS:{ki_slash_hit_2:{fw:627}}};
+    const update=vm.runInNewContext(html.slice(start,end)+';_updateKiSlashThirdCharge',scope);
+    update(1);update(1);update(60);
+    assert.equal(sounds.length,1,'completed third tier should sound once while held');
+    assert.equal(sounds[0][0],'sword_parry','full charge should have a metallic clang');
+    assert.equal(flashes.length,1,'completed third tier should flash once while held');
+    assert.equal(flashes[0][0],'ki_slash_hit_2');
+    assert.equal(flashes[0][1],P.x);
+    assert.equal(flashes[0][2],P.y);
+    scope.isHeld=()=>false;update(0);
+    assert.equal(sounds.length,1,'release should not repeat the completion clang');
+    assert.equal(flashes.length,1,'release should not repeat the completion flash');
+  });
   test(`${file}: charged blade does not draw stray arrow lines outside the sprite`,()=>{
     assert.ok(vfxStart>=0&&vfxEnd>vfxStart);
     let strokes=0;

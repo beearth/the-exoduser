@@ -5,7 +5,7 @@
 
 | 항목 | 현재 구현 |
 |---|---|
-| 시작 | index.html 이름 입력 후 생성 저장 성공 → `_afterCharacterCreated(name,visualIdx)` |
+| 시작 | 현재 요청 번호의 이름 입력·생성 저장 성공 → `_afterCharacterCreated(name,visualIdx)`. 화면 이탈 뒤 늦은 성공은 재생하지 않음 |
 | 대상 | `visualIdx===0`, CHAR_VISUALS의 exoduser_warrior. 2026-09-10 실버테일1은 `comingSoon:true`로 신규 생성 단계에서 차단. 기존 다른 캐릭터의 목록·입장은 유지 |
 | 저장 경로 | 오프라인 `/api/save`, 서버 없는 localStorage 폴백, 온라인 Supabase 성공 모두 연결 |
 | 저장 실패 | 중복 이름·실패 응답에서는 영상 시작 안 함 |
@@ -16,7 +16,7 @@
 | 화면 |검정 전체 뷰포트,object-fit:contain,네이티브 재생바 제거·우측 하단 조작 안내는 재생 시각3초부터0.4초 페이드 후 숨김 |
 | 건너뛰기 |클릭·확인 입력으로 다음 대사,Space·Esc·게임패드B/Start·하단 버튼1200ms 홀드로 전체 종료. 재생 중 로비 입력 차단 |
 | 자동재생 차단 |NotAllowedError이면 클릭하여 계속 표시,첫 확인 입력은 대사 이동 없이 소리 있게 재생 재시도 |
-| 종료/스킵 |미디어 pause·src 제거·load·overlay 제거,Promise true. `showCharGate(charId,true)` |
+| 종료/스킵 |미디어 pause·src 제거·load·overlay 제거,Promise true. 현재 요청 번호일 때만 `showCharGate(charId,true)`. 화면 전환의 skip() 완료는 이전 게임 진입 차단 |
 | 진입 |기존 로딩1200ms 후 `game.html?...&story=warrior-v21`,생성한 슬롯/온라인id 유지 |
 | 게임 후속 |신규 stage0·cutsceneDone=false이면 네메시스 INTRO부터 재생. 완료 저장은 직접 플레이. 구 한글 전쟁 PRO는 일반 입장에서 생략 |
 | 미디어 오류 |Promise false,story 매개변수 없이 게임 진입 후 네메시스 INTRO. 구 전쟁 PRO로 폴백하지 않음 |
@@ -149,3 +149,17 @@
 ## 현재 오디오 — v22 BGM 적용
 
 v21과 동일한 영상에 무가사 「심연의 탈주」를 합성한 v22를 재생한다. 대사 중 음악은 절반으로 낮추고 영상·음성·자막·음악을 같은 시각으로 탐색한다. [믹스·검증 전체 계약](WARINTRO_BGM_V22_20260910.md).
+
+
+## 2026-09-28 화면 이탈 후 캐릭터 생성 응답·스토리 후처리 차단
+
+| id / 적용 위치 | 현행 계약 |
+|---|---|
+| 요청 번호 | doCreateChar와 _enterOffline 생성 콜백 시작 시 기존 _characterLoadSeq를 request로 캡처. _goLogin/_goCinematic 및 새 로컬·온라인 목록 요청이 번호를 바꾸면 이전 생성 후처리 중단 |
+| 외형 일치 | 버튼 경로에서 _pendingVisualIdx를 visualIdx로 한 번 캡처. 서버 charIdx, localStorage charIdx 및 _afterCharacterCreated에 같은 값을 전달 |
+| 스토리 수명 | _afterCharacterCreated는 자체 loadCharacters/loadLocalCharacters 호출 직후 증가한 번호를 캡처. 온라인 목록 완료와 story.play 완료/예외 후 번호가 같아야 showCharGate·BGM 복구. 자체 목록 갱신은 정상 생성 취소로 간주하지 않음 |
+| 전환 정리 | _closeCreationOverlays는 이름창 show 또는 createBtn.disabled일 때 setStatus('')로 이전 생성 안내 제거. 기존 팝업/키보드 정리 후 ExoduserCharacterStory.active이면 skip() 호출. 이전 Promise 완료는 번호 검사로 게임 진입하지 않음 |
+| 실제 저장 | 이미 전송된 저장 요청을 취소하거나 성공 데이터를 되돌리지 않음. 다음 정상 목록 조회에서 서버 결과 확인. 화면 이탈 뒤 추가 localStorage 폴백 쓰기·자동 재시도 없음 |
+| 회귀 | test/lobbyCreationResponse.test.js 신규22건. 최초21건은 원본에서20실패/1통과, 안내·재생기 정리 추가 검사는 수정 전22건 중10실패/12통과. 관련 통합209건·inline script4개 구문 통과 |
+| 실제 브라우저 | Node 서버 실제 페이지960×540, 시작 타이틀 실제 클릭 후 직접/버튼×성공/오류/네트워크 실패6조건: 로그인 유지·생성창 숨김·안내 빈값·현재 초점 유지·스토리/입장0회·추가 폴백 저장0회·버튼 해제. 실제 재생 중 스토리도 전환 즉시 종료, 이전 입장0회 |
+| 전체 계약·증거 | [세이브 설계](../15%20세이브+데이터구조/15%20세이브+데이터구조.md)의 동명 절. 같은 화면의 기존 생성 성공/실패 유지. 관련 문서7개 동기화, 커밋은 기존 .git 쓰기 제한으로 미완료 |

@@ -17,7 +17,7 @@
 | 심연 | 주황 원형 포털·사슬 탑·용암 계곡 |
 | 구도 |3:2, 왼쪽 약70%에 주체3개를 배치해 로비 cover 크롭 대응 |
 | 해상도 한계 |3072×2048을 프롬프트로 요청했으나 실제 도구 출력은1536×1024. 네이티브4K나 단순 업스케일로 표기하지 않음. 1296px 높이에서는 여전히 확대되므로 실제 화면으로 확인 |
-| 추가 확대 | lobbyKenburns 시작1/끝1.02, translate 시작0,0/끝-.3%,-.2%. 기존1.04~1.08 확대를 축소.46초·원점50%45% 유지 |
+| 추가 확대 | 현재 로비 배경 animation:none/transform:none. 기존46초·1~1.02배 Ken Burns는 2026-09-27 머리 잘림 수정으로 미사용 |
 | 캐시 | images/ 컷신(일반·쉬운 게임), 숫자1~19 로딩/로비 배경/preload, rd16개 picker/preload는 `20260913-intro-detail2`. 메인 로비3종 preload/swap는 `20260913-lobby-detail2`. 우측 배경·대체 초상화는 `20260913-lobby-smooth1` |
 | 도구 | 내장 image_gen.imagegen, [정확한 프롬프트·출력·해시](LOBBY_WARRIOR_REDESIGN_PROMPTS_20260913.json) |
 
@@ -47,3 +47,16 @@
 | 회귀 |lobbyCharacterSelectionInfo/lobbyStageInfo 기존 테스트7개 PASS |
 
 VISUAL VERDICT: PASS — 이번3종의 칼날 형상·재질 분리·목걸이 및 위 확대 화면 기준. 실제 출력 해상도 한계는 위 표에 명시했다.
+
+
+## 2026-09-27 미선택 기사 배경 머리 잘림 수정
+
+| 항목 | 현행 규격 |
+|---|---|
+| 원인 | 사용자233356 스크린샷은 선택 전 #lobbyBgImg. 선택 영상만 contain으로 바꾼 뒤 미선택 배경cover/전체화면 크기/자동줌이 남아 투구·머리 잘림 |
+| 적용 | .lobby>.lobby-bg-img:left0,right:auto,width65%,background-size:contain,background-position:center center,animation:none,transform:none. 폭1100px 이하 width55%. 기존 z-index0/pointer-events:none 유지 |
+| 표시 | 원본 전체를 좌측 영역 안에 표시,비율 차이는 검정 여백. 기존 로비 Ken Burns 확대는 이 요소에서 사용하지 않음. frost/flame/abyss1536×1024 원본·선택 정책 변경 없음 |
+| 상태 | 선택 전에는 배경1개,선택 후에는 기존 선택 캐릭터 영상·정적 폴백으로 전환. 이번 수정은 미선택 상태의 표시 배율만 변경 |
+| 캐시 | index.html ui-refinement.css?v=20260927-unselected-fit |
+| 검증 | 실제 HTML/CSS 격리 브라우저:배경3종×2560×900/1920×1080/1600×900/960×540=12경우 contain/animation none/transform none·우측 겹침 없음·횡넘침 없음 확인. frost투구·까마귀·고양이·검 원본 전체 시각 확인 |
+| 기록 | tmp/lobby-unselected-fit/report.json,frost-after.png,changes.patch. 기존 터미널/.git 제한으로 커밋 미완료 |

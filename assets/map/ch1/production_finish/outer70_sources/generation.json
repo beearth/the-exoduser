@@ -1,0 +1,14 @@
+{
+  "jobId": "a5a1431a-8ed6-4cb0-8f80-49ceda92bb42",
+  "model": "gpt_image_2_5",
+  "url": "https://d8j0ntlcm91z4.cloudfront.net/user_3G1zto9sz11Uf3iEOhJefE9HdGG/hf_20260928_055934_a5a1431a-8ed6-4cb0-8f80-49ceda92bb42.png",
+  "prompt": "Create a high-quality game environment asset: a single continuous, low collapsed rotten root-bank for the southeast perimeter of an oppressive living-hell forest, viewed from the same elevated 3/4 top-down camera as a dark isometric action RPG. This asset will be alpha composited over the existing southeast outer mass of an 8192-square map, only on non-walkable forest pixels; the broad clearing and swamp are protected. The mass is horizontally elongated and diagonally recedes toward upper right: a broken, half-buried root crown, large dead bark slabs, crushed hollow wood with black recessed cavities, several thick branching roots hugging the ground, wet necrotic skin and sparse dark burgundy sinew fused into cracks. Make one unified overlapping landform, not many separate trees. Distinct from an upright stump or the previous tilted trunk: predominantly LOW, broken, heavy and asymmetrical, with strong layered side surfaces and contact shadows. Readable large wood grain and bark plates, corpse-grey/brown and desaturated purple tissue, subtle muddy dark olive toxin staining limited to underside. No green leafy canopy, lush bushes, ferns, normal healthy forest, conical stumps, orange lava, flames, bright glowing veins, ring-shaped pool, characters, text, frame, checkerboard, or painted rectangular ground. Soft upper-left muted light; detailed but low contrast. Transparent true-alpha background including holes around the silhouette, generous empty margins. Native 2048x2048 RGBA standalone compositing layer. This still asset does not imply animation.",
+  "requested": {
+    "aspect_ratio": "1:1",
+    "resolution": "2k",
+    "quality": "high",
+    "background": "transparent"
+  },
+  "inputReference": "standalone transparent layer; existing master retained in local protected composition",
+  "animation": "static; existing gas/bubbles remain"
+}

@@ -1,0 +1,20 @@
+{
+  "provider": "Higgsfield",
+  "model": "gpt_image_2_5",
+  "generationJobId": "461ba944-d5ea-448d-8eb5-37a87dc366cb",
+  "nativeSize": [
+    2048,
+    2048
+  ],
+  "parameters": {
+    "aspect_ratio": "1:1",
+    "count": 1,
+    "resolution": "2k",
+    "quality": "high",
+    "background": "transparent"
+  },
+  "sourceUrl": "https://d8j0ntlcm91z4.cloudfront.net/user_3G1zto9sz11Uf3iEOhJefE9HdGG/hf_20260928_013404_461ba944-d5ea-448d-8eb5-37a87dc366cb.png",
+  "prompt": "Use case: stylized-concept. Asset type: production ENVIRONMENT MASS for EXODUSER CH1-1 EAST nonwalkable perimeter. Make one coherent irregular rotten wood embankment with a huge collapsed split hollow trunk leaning diagonally toward the upper right, a low broad fan of decayed root plates attached at its left-bottom foot, and black recessed broken heartwood behind it. It must read as an asymmetric damaged forest wall rather than an isolated upright tree or separate props. This east-facing composition is DIFFERENT from a horizontal fallen log: dominant long diagonal body, broken open mouth facing lower-left, unequal jagged side branch stubs, large bent bark plates and frayed dead fibres. Tiny localized corpse-grey membrane and dark burgundy parasitic sinew recessed inside two cracks, never glowing. Elevated top-down orthographic game camera around 65 degrees, no horizon; the lowest left edge is flat low roots to merge with the existing combat edge, main high mass stays on the right. Charcoal, desaturated grey-brown, muted cold mauve; soft dim upper-left light, oppressive living hell mood. Real transparent RGBA background with transparent margins around the entire connected silhouette, no ground rectangle or black backdrop. Detailed painted dark fantasy game art with large readable bark forms, matching a dim rotten forest base. No healthy foliage, green moss, leaves, ferns, shrubs, repeated vertical pillars, cone stumps, skulls, faces, creatures, architecture, UI, lettering, symbols, bright red ribbons, fire, orange lava, neon, checkerboard, scenery background or scenery floor. Entire connected mass visible. Locally composited only into existing NONWALKABLE geometry; keep the broad fighting floor and routes untouched. Still artwork, no animation claim.",
+  "alpha": "native RGBA alpha 0..254; no background removal",
+  "animation": false
+}

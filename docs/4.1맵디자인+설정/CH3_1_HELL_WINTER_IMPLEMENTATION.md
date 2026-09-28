@@ -1,5 +1,8 @@
 # CH3-1 핏빛 황폐지 — HELL WINTER 구현 SSOT
 
+> **53차 현행(2026-09-27):** CH1서쪽 m_bone_arch(1420,6020)에 하단alpha접촉그림자256²/.25MiB 추가.원화·불꽃·충돌·타챕터아치유지.모듈20260927-53. [수치·검증](CH1_ARCH_CONTACT_PASS53.md).
+
+
 > 구현 기준: `game.html` 내부 stage `si10` / 2026-08-30 CH3-1 CENTRAL DETAIL PASS
 > 장 공개명: **3장 — 지옥의 겨울 (HELL WINTER)**
 > 에리어명: **3-1 핏빛 황폐지**

@@ -3,6 +3,7 @@ import fs from 'node:fs';
 import path from 'node:path';
 import vm from 'node:vm';
 import {createHash} from 'node:crypto';
+import {applyRetouchLayers} from './ch1-production-retouch.mjs';
 
 // One fixed stage composition. This is an asset bake, not a procedural map generator.
 const ROOT=path.resolve(import.meta.dirname,'..');
@@ -142,9 +143,11 @@ const CONNECTIONS=[
  ['floor_objects/prop_g_root.png',129,28,.95,.64,.58,.45]
 ];
 const master=path.join(OUT,'CH1_1_PRODUCTION_MASTER.png');
-const full=await sharp({create:{width:SIZE,height:SIZE,channels:4,background:'#0c1411'}})
+let full=await sharp({create:{width:SIZE,height:SIZE,channels:4,background:'#0c1411'}})
  .composite([{input:paintedFloor},{input:clippedForest},...await collect(CONNECTIONS),...await collect(ROOT_CONNECTIONS)])
  .raw().toBuffer();
+const retouches=JSON.parse(fs.readFileSync(path.join(OUT,'retouch-layers.json'),'utf8'));
+full=await applyRetouchLayers(full,SIZE,SIZE,OUT,retouches.layers);
 await sharp(full,{raw:{width:SIZE,height:SIZE,channels:4}}).png({compressionLevel:6}).toFile(master);
 console.log('master written');
 for(let y=0;y<8;y++)for(let x=0;x<8;x++){
@@ -154,6 +157,6 @@ for(let y=0;y<8;y++)for(let x=0;x<8;x++){
   .extend({left:x===0?1:0,right:x===7?1:0,top:y===0?1:0,bottom:y===7?1:0,extendWith:'copy'})
   .png({compressionLevel:6}).toFile(path.join(OUT,`chunk_${x}_${y}.png`));
 }
-fs.writeFileSync(path.join(OUT,'composition.json'),JSON.stringify({version:layout.version,bakeVersion:'20260917-depth-2',groundMaterials:{mask:'ground-zones.svg',soil:{file:'ground_dark_soil.png',brightness:.85,saturation:.48},litter:{file:'materials/forest_moss_litter.png',tileSize:512,brightness:.76,saturation:.55},collisionChanges:false},alphaFeather:{groundEdge:.24,groundRadial:.38,groundOpacityMultiplier:.7,forestEdge:.095,rgbBlur:0},stage:0,masterSize:[SIZE,SIZE],worldSize:[8000,8000],chunkSize:1024,bleed:1,chunkCount:64,geometryHash:createHash('sha256').update(JSON.stringify(layout.buildRLE(200,200))).digest('hex'),regions:layout.regions,depthSource:depth,counts:{ground:GROUND.length,forest:FOREST.length,connections:CONNECTIONS.length+ROOT_CONNECTIONS.length},sourceAssets:[...new Set(audit.map(a=>a.file))],placements:audit,groundTile:[groundTile.width,groundTile.height],runtimeScatter:0,structuralRotation:0,structuralMirror:0},null,2)+'\n');
+fs.writeFileSync(path.join(OUT,'composition.json'),JSON.stringify({version:layout.version,bakeVersion:retouches.bakeVersion,retouchLayers:retouches.layers,groundMaterials:{mask:'ground-zones.svg',soil:{file:'ground_dark_soil.png',brightness:.85,saturation:.48},litter:{file:'materials/forest_moss_litter.png',tileSize:512,brightness:.76,saturation:.55},collisionChanges:false},alphaFeather:{groundEdge:.24,groundRadial:.38,groundOpacityMultiplier:.7,forestEdge:.095,rgbBlur:0},stage:0,masterSize:[SIZE,SIZE],worldSize:[8000,8000],chunkSize:1024,bleed:1,chunkCount:64,geometryHash:createHash('sha256').update(JSON.stringify(layout.buildRLE(200,200))).digest('hex'),regions:layout.regions,depthSource:depth,counts:{ground:GROUND.length,forest:FOREST.length,connections:CONNECTIONS.length+ROOT_CONNECTIONS.length},sourceAssets:[...new Set(audit.map(a=>a.file))],placements:audit,groundTile:[groundTile.width,groundTile.height],runtimeScatter:0,structuralRotation:0,structuralMirror:0},null,2)+'\n');
 await sharp(full,{raw:{width:SIZE,height:SIZE,channels:4}}).resize(1600).jpeg({quality:90}).toFile(path.join(OUT,'composition-preview.jpg'));
 console.log('CH1-1 production master + 64 chunks complete');

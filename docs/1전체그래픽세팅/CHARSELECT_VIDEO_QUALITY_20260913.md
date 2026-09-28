@@ -33,3 +33,26 @@
 | 범위 | 이번 교체는 남전사 선택/로비 아이들 영상. 기존 인트로 PNG 검수 완료를 이 영상의 원본 품질 보증으로 해석하지 않는다 |
 
 시각 판정: **선명도 개선 채택**. 칼과 갑옷의 디자인 정합성까지 모두 해결됐다는 판정은 아니다. 재제작 시 선명한 재질과 직선 칼날을 원화 단계에서 확정하고, 실제 움직이는 프레임의 동일성까지 다시 검수해야 한다.
+
+
+## 2026-09-27 실버테일 이전 초상화·애니메이션 복원 및 영상 잘림 방지
+
+| 항목 | 현행 규격 |
+|---|---|
+| 사용자 결정 | 실버테일 애니메이션 전환 요청 후 초상화 교체 이력 확인,이전 초상화·영상 복원 방향으로 진행. 정적 키아트만 표시하던 당일 변경을 대체 |
+| 복원 | tmp/silvertail_art_backup_20260927.zip에서 assets/charselect/silvertail_cut.png,portrait_silvertail.png,poster_idle_silvertail.jpg,idle_silvertail.mp4 4개 원본 바이트 복원. 기존 PNG2장은 삭제하지 않고 보관,CHAR_VISUALS에서 미사용 |
+| 연결 | CHAR_VISUALS[1] portrait=silvertail_cut.png,bust=portrait_silvertail.png,idleVid=idle_silvertail.mp4,poster=poster_idle_silvertail.jpg. 네 경로 v=20260927-restored. 기존 bg_scene2.png?v=1/bg_scene2_loop.mp4?v=1 복원. comingSoon:true 유지 |
+| 영상 | 실버테일1280×720/3초,기본1배속·muted/loop/playsinline. 로비 및 선택창 기존 video 경로로 재생,오류 시 같은 캐릭터 포스터·정적 초상화 사용 |
+| 목 잘림 | 전사 원본 및 로비 중간 프레임에 머리 정상. #charVisualPop .cs-idle-vid 기본cover→contain/center top/transform:none,21:9 이상 scale1.15/scaleX1.1 제거. 로비 contain 배율 유지 |
+| 검증 | 실제 로비 영상 실버테일0.2초/1.5초 프레임 축소 샘플값279839597/268599186으로 동작 확인. 초광폭2560×900 선택창 전사3840×2160/5.541667초 및 실버테일1280×720/3초 모두 contain/transform none 확인. 관련10개 회귀 통과 |
+| 생성·기록 | 새 Higgsfield 영상 생성 제출 없음. tmp/silvertail-animation-restore/에 백업·복원 자산 목록·브라우저 캡처·report.json·코드/문서 changes.patch. 기존 터미널/.git 제한으로 커밋 미완료 |
+
+
+## 2026-09-28 선택창 영상 수명·캐릭터 폴백 정합성
+
+| 항목 | 현행 계약 |
+|---|---|
+| 닫기 | index.html _closeVisualSelect가 취소/이름 확정/화면 전환 시 csIdleVid·csSceneVid를 정지하고 src/poster·5000ms 스톨 타이머·미디어 이벤트를 해제. 재열면 선택한 기존 영상과 포스터를 다시 지정 |
+| 이전 오류 | selectVisual의 _visualPreviewSeq/isCurrent가 새 선택 또는 창 닫기 이전의 오류·canplay·180ms 초상화/배경 콜백을 무시. 실버테일 선택 뒤 전사 늦은 폴백은 전사 표시나 실버테일 정지를 일으키지 않음 |
+| 아트 계약 | 기존 영상/포스터/초상화 파일·캐시 경로·전사0.75배속·실버테일 comingSoon·contain 비율 유지. 새 이미지/영상 생성·수정 없음 |
+| 증거 | 실제 Node 서버 페이지의 전후 미디어 재생/선택 정합성 및960×540/1920×1080 취소·재열기 확인. 신규17회귀와 관련187건 통과. tmp/lobby-creation-overlays/browser-report.json. 전체 팝업·키보드 계약은 캐릭터선택_리모델링_기획서.md의 같은 날짜 표 참조 |

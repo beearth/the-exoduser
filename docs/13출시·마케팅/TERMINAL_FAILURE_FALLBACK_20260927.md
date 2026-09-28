@@ -17,6 +17,19 @@
 
 터미널 복구가 완료된 것은 아니다. 파일 접근 대체 경로가 검증된 것이다. 앱 재시작을 사용자에게 요구하기 전에 독립 도구의 동작을 확인한다.
 
+### 2026-09-28 추가 확인 — 숨김 Windows PowerShell 읽기
+
+맵71차 세션에서 Node REPL의 `child_process.execFileSync`로 시스템 Windows PowerShell을 직접 호출한 읽기 작업은 성공했다. `exec_command`는 같은 시스템 경로를 지정해도 오류에 WindowsApps `pwsh.exe`가 나타나고 시작 전에 OS317로 실패했다. 따라서 PowerShell 전체가 실행 불가능하다는 뜻은 아니다.
+
+| 항목 | 실제 확인 | 경계 |
+|---|---|---|
+| 호출 경로 | `C:/Windows/System32/WindowsPowerShell/v1.0/powershell.exe`, `-NoProfile`, `-NonInteractive` | Node REPL에서 이미 제공하는 파일/프로세스 도구로 실행 |
+| 읽기 결과 | `Get-Location`의 Path가 `G:\exoduser` | 파일·Git 쓰기를 검증한 결과가 아님 |
+| 창 설정 | child_process 옵션 `cwd:'G:/exoduser'`, `windowsHide:true`, `encoding:'utf8'` | 이번 호출의 창 숨김 설정이며 모든 앱의 팝업 해결 선언 아님 |
+| Git 제한 | `.git` 직접 수정·별도 도구를 이용한 권한 우회 금지 유지 | Git 쓰기는 허용된 실행 경로와 해당 쓰기 권한이 모두 확보된 후 수행 |
+
+이 조회 성공을 터미널 실행기 복구 또는 커밋 성공으로 보고하지 않는다. 맵71차의 실제 Node 회귀 검사·로컬 브라우저 검수는 별도 로그로 남겼다: `captures/ch1_outer71/tests.log`, `live/runtime.json`.
+
 ## 실제 사용 절차
 
 1. `cua.getState()`로 실행 중인 게임 탭을 확인한다. 임의로 다른 사용자의 탭을 선택하지 않는다.

@@ -12,7 +12,7 @@ for (const mode of ['deleted', 'zero rows', 'denied']) {
     const response = { data: mode === 'deleted' ? [{ id: 'hero' }] : [], error: mode === 'denied' ? { message: 'denied' } : null };
     const builder = { eq(key, value) { filters.push([key, value]); return this; }, select() { return Promise.resolve(response); }, then(resolve, reject) { return Promise.resolve(response).then(resolve, reject); } };
     const ctx = vm.createContext({ sb: { from: () => ({ delete: () => builder }) }, ch: { id: 'hero' }, currentUser: { id: 'owner' },
-      _TL: s => s, setStatus() {}, loadCharacters: async () => { reloads++; } });
+      _characterLoadSeq: 0, _TL: s => s, setStatus() {}, loadCharacters: async () => { reloads++; } });
     const run = vm.runInContext(`(async()=>{${deleteBody}})`, ctx);
     if (mode === 'deleted') { await run(); assert.equal(reloads, 1); }
     else await assert.rejects(run);
@@ -21,14 +21,14 @@ for (const mode of ['deleted', 'zero rows', 'denied']) {
 }
 const loadCode = html.slice(html.indexOf('async function loadCharacters(){'), html.indexOf('function _renderOnlineSlots(){'));
 function element() {
-  return { style: {}, dataset: {}, children: [], setAttribute() {}, focus() {}, prepend(child) { this.children.unshift(child); }, classList: { add() {} }, addEventListener() {},
+  return { style: {}, dataset: {}, children: [], querySelector() { return null; }, setAttribute() {}, focus() {}, prepend(child) { this.children.unshift(child); }, classList: { add() {} }, addEventListener() {},
     appendChild(child) { this.children.push(child); }, replaceChildren(...nodes) { this.children = nodes; } };
 }
 function lobby(query) {
   const els = Object.fromEntries(['charList', 'enterGameBtn', 'status', 'lobbyStatus'].map(id => [id, element()]));
   const ctx = vm.createContext({
     $: id => els[id], document: { createElement: element }, currentUser: { id: 'owner' },
-    _selectedSlot: 'old', _selectedSlotName: 'old', _TL: s => s,
+    _characterLoadSeq: 0, _selectedSlot: 'old', _selectedSlotName: 'old', _TL: s => s,
     _updateCharDisplay() {}, _swapLobbyBg() {}, _renderOnlineSlots() {}, openVisualSelect() {},
     sb: { from: () => ({ select: () => ({ eq: () => ({ order: query }) }) }) },
   });
@@ -86,4 +86,31 @@ test('delete confirmation waits for the request and prevents duplicate submissio
   finish(new Error('server unavailable')); await click;
   assert.match(errors.at(-1)[0], /server unavailable/);
   assert.equal(els.delConfirmYes.disabled, false);
+});
+
+test('new status starts at the top but identical messages preserve reading position',()=>{
+ const {ctx,els}=lobby(async()=>({data:[]}));
+ vm.runInContext(html.match(/function setStatus\(m,err\)\{[^\n]+/)[0],ctx);
+ ctx.setStatus('Old message',true);
+ for(const id of ['status','lobbyStatus'])els[id].scrollTop=200;
+ ctx.setStatus('New message',true);
+ for(const id of ['status','lobbyStatus'])assert.equal(els[id].scrollTop,0);
+ for(const id of ['status','lobbyStatus'])els[id].scrollTop=100;
+ ctx.setStatus('New message',true);
+ for(const id of ['status','lobbyStatus'])assert.equal(els[id].scrollTop,100);
+});
+
+test('localized status follows language and cannot overwrite a later server error',()=>{
+ const {ctx,els}=lobby(async()=>({data:[]}));let lang='ko';ctx._lobbyLang=()=>lang;ctx.document.getElementById=id=>els[id];
+ vm.runInContext(html.match(/function setStatus\(m,err\)\{[^\n]+/)[0]+'\n'+html.match(/function _refreshStatusLanguage\(\)\{[^\n]+/)[0],ctx);
+ ctx.setStatus({ko:'종료 실패',en:'Quit failed'},true);assert.equal(els.lobbyStatus.textContent,'종료 실패');
+ lang='en';ctx._refreshStatusLanguage();assert.equal(els.lobbyStatus.textContent,'Quit failed');assert.match(els.lobbyStatus.className,/error/);
+ lang='ko';ctx._refreshStatusLanguage();assert.equal(els.lobbyStatus.textContent,'종료 실패');
+ ctx.setStatus('Server error details',true);lang='en';ctx._refreshStatusLanguage();assert.equal(els.lobbyStatus.textContent,'Server error details');
+ ctx.setStatus('');ctx._refreshStatusLanguage();assert.equal(els.lobbyStatus.textContent,'');
+});
+
+test('initial status language refresh does not need the later DOM helper',()=>{
+ const ctx=vm.createContext({document:{getElementById:()=>({})}});
+ vm.runInContext(html.match(/function _refreshStatusLanguage\(\)\{[^\n]+/)[0],ctx);assert.doesNotThrow(()=>ctx._refreshStatusLanguage());
 });

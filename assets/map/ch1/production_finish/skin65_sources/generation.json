@@ -1,0 +1,31 @@
+{
+  "params": {
+    "model": "gpt_image_2_5",
+    "count": 1,
+    "aspect_ratio": "1:1",
+    "prompt": "Use case: stylized-concept. Asset type: seamless top-down ground MATERIAL TEXTURE for an existing dark fantasy hack-and-slash map, not a new map or scenery. Generate a square uniformly sharp tileable texture of a flat corpse-grey and grey-mauve SKIN MEMBRANE floor: broad low relief stretched tissue sheets, sparse shallow slack skin folds, small irregular necrotic tears and damp connective fibers. The skin is dead, diseased and fused with a little decayed soil, visibly organic rather than ordinary cracked dirt. Sparse dark muted red subcutaneous capillaries are subtle short branching shapes at uneven intervals, not long parallel lines or channels. Nearly flat and low contrast so tiny player/enemies/projectiles remain readable. Low saturation, medium-dark values, diffuse ambient illumination, no bright highlights or deep black holes. Physically detailed painted game texture, preserve microtexture with restrained large forms. No horizon, perspective, vignette, center spotlight, text, border, objects, trees, roots, rocks, puddles, bones, props, healthy moss/leaves, lava, orange fire, glowing veins, glossy intestine tubes. Uniform material fills every edge; no conspicuous repeated motif. Designed to be partially blended into an existing floor using a separate protected mask, not to redefine geometry. A still image depicts no animation."
+  },
+  "job": {
+    "jobs": [
+      {
+        "index": 0,
+        "job_id": "8297189f-c4f9-4719-91f1-7cb5df20c1a6",
+        "status": "completed",
+        "type": "image",
+        "model": "gpt_image_2_5",
+        "result_url": "https://d8j0ntlcm91z4.cloudfront.net/user_3G1zto9sz11Uf3iEOhJefE9HdGG/hf_20260927_232644_8297189f-c4f9-4719-91f1-7cb5df20c1a6.png"
+      }
+    ],
+    "summary": {
+      "total": 1,
+      "completed": 1,
+      "failed": 0,
+      "active": 0,
+      "errors": 0
+    },
+    "all_terminal": true
+  },
+  "purpose": "Material generation; partial masked composition; isolated QA only",
+  "source": "Higgsfield GPT image",
+  "status": "not production"
+}

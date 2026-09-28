@@ -15,7 +15,7 @@ function declaration(file,name){
 }
 function creationContext({offline=true,fallback=false,rejected=false}={}){
   const nodes=new Map();const calls=[];const ls=new Map();
-  const ctx=vm.createContext({console,_testMode:offline,_pendingVisualIdx:0,currentUser:{id:'user'},
+  const ctx=vm.createContext({console,_characterLoadSeq:0,_testMode:offline,_pendingVisualIdx:0,currentUser:{id:'user'},
     $:id=>{if(!nodes.has(id))nodes.set(id,{value:id==='charName'?'테스트전사':'',classList:{add(){},remove(){}},focus(){},style:{}});return nodes.get(id);},
     _TL:s=>s,setStatus(){},_goLobby(){},loadLocalCharacters:async()=>{},loadCharacters:async()=>{},
     _afterCharacterCreated:async(...a)=>calls.push(a),
@@ -83,7 +83,7 @@ for(const kind of ['ended','skip','error'])test('movie '+kind+' releases its med
 });
 for(const visualIdx of [0,1])test('creation routing only plays the warrior movie: '+visualIdx,async()=>{
   const movies=[],gates=[],refresh=[];
-  const ctx=vm.createContext({_testMode:true,_selectedSlot:null,_selectedSlotName:null,console,
+  const ctx=vm.createContext({_characterLoadSeq:0,_testMode:true,_selectedSlot:null,_selectedSlotName:null,console,
     loadLocalCharacters:async()=>refresh.push('local'),loadCharacters:async()=>{},stopLobbyBgm(){},_stopHover(){},$:()=>null,
     _TL:s=>s,getCurrentLanguage:()=> 'ko',ExoduserCharacterStory:{play:async()=>{movies.push(1);return true;}},showCharGate:(...a)=>gates.push(a),startBGM(){}});
   vm.runInContext(declaration('index.html','_afterCharacterCreated'),ctx);await ctx._afterCharacterCreated('새전사',visualIdx);

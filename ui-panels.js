@@ -125,14 +125,15 @@
     // Hover previews ignore pointer events; scroll them from the source item.
     root.addEventListener('wheel', event => {
       if(event.ctrlKey || event.metaKey || event.shiftKey || !event.deltaY) return;
-      if(!event.target.closest('.inv-item,.inv-eq-slot,.inv-cell,.oss-center')) return;
+      if(!event.target.closest('#invGrid,.inv-eq-slot,.oss-center')) return;
       const preview = document.getElementById('invRight');
-      if(!preview?.classList.contains('inv-hover-preview') || getComputedStyle(preview).visibility !== 'visible' || preview.clientHeight === 0) return;
-      const compareCards = preview.classList.contains('inv-side-compare')
+      if(!preview || getComputedStyle(preview).visibility !== 'visible' || preview.clientHeight === 0) return;
+      const comparing = preview.classList.contains('inv-side-compare');
+      if(!comparing && !preview.classList.contains('inv-hover-preview')) return;
+      const compareCards = comparing
         ? [...preview.querySelectorAll('.inv-compare-card')]
         : [];
       const scrollTargets = compareCards.length ? compareCards : [preview];
-      if(!scrollTargets.some(node => node.scrollHeight > node.clientHeight)) return;
       const unit = event.deltaMode === 1 ? 16 : event.deltaMode === 2 ? preview.clientHeight : 1;
       for(const node of scrollTargets) node.scrollTop += event.deltaY * unit;
       event.preventDefault();

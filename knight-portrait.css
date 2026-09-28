@@ -16,7 +16,8 @@
   object-fit: contain !important;
   object-position: center center !important;
   mask-image: none !important;
-  filter: brightness(1.18) contrast(1.1) drop-shadow(0 10px 20px rgba(0, 0, 0, .7)) !important;
+  opacity: 1 !important;
+  filter: brightness(1.65) contrast(1.02) drop-shadow(0 8px 12px #000) !important;
 }
 
 #invPanel .inv-cr-portrait-image {

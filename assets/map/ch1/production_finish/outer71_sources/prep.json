@@ -1,0 +1,73 @@
+{
+  "sourceCrop": [
+    6144,
+    5120,
+    8192,
+    7168
+  ],
+  "previousCenterTile": [
+    184,
+    158
+  ],
+  "placementCenterTile": [
+    178,
+    150
+  ],
+  "moveTiles": [
+    -6,
+    -8
+  ],
+  "moveWorld": [
+    -240,
+    -320
+  ],
+  "spriteNative": [
+    2048,
+    2048
+  ],
+  "spriteScale": 0.75,
+  "spriteSize": [
+    1536,
+    1536
+  ],
+  "spriteOffset": [
+    379,
+    256
+  ],
+  "brightness": 0.7,
+  "opacity": 0.84,
+  "forestErodeFilter": 49,
+  "forestBlur": 20,
+  "changedChunks": [
+    [
+      6,
+      5
+    ],
+    [
+      7,
+      5
+    ],
+    [
+      6,
+      6
+    ],
+    [
+      7,
+      6
+    ]
+  ],
+  "changedPixels": 1103760,
+  "previousFootprintPixels": 686730,
+  "newFootprintPixels": 560515,
+  "restoredOldOnlyPixels": 543276,
+  "walkablePixelsChanged": 0,
+  "zeroMaskPixelsChanged": 0,
+  "clampedMasterChunks": 64,
+  "seamComparisons": 224,
+  "sourceSha256": "807da1d785853f8cb59b440c3b291615b354fd8c8d0e91b0ac463cc9d7954f86",
+  "sourceArt": "outer70_sources/southeast_mass_generated.png",
+  "sourceArtSha256": "e11b688acd8e3d38f5b14be4060bcddc4a4053ad0c60611d459203302528cbf6",
+  "pre70MasterSha256": "730e21b31b6c5fe1bf61197e0430cc48ff9e542f6d4e7456f64b66db23ccde27",
+  "patchAlpha": "binary actual difference versus pass70; includes old-position restoration",
+  "newGeneration": false
+}

@@ -6,12 +6,12 @@ import { fileURLToPath } from 'node:url';
 
 const rootDir = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
 
-test('character-selection idle video uses a head-safe wide crop on ultrawide displays', async () => {
+test('character-selection idle video uses a uncropped frame on ultrawide displays', async () => {
   const lobby = await readFile(path.join(rootDir, 'index.html'), 'utf8');
 
   assert.match(
     lobby,
-    /@media\s*\(min-aspect-ratio:\s*21\s*\/\s*9\)\s*\{\s*#charVisualPop\s+\.cs-idle-vid\s*\{[^}]*object-fit:\s*contain\s*;?[^}]*object-position:\s*center\s+top\s*;?[^}]*transform-origin:\s*center\s+top\s*;?[^}]*transform:\s*scale\(1\.15\)\s+scaleX\(1\.1\)\s*;?/s,
+    /@media\s*\(min-aspect-ratio:\s*21\s*\/\s*9\)\s*\{\s*#charVisualPop\s+\.cs-idle-vid\s*\{[^}]*object-fit:\s*contain\s*;?[^}]*object-position:\s*center\s+top\s*;?[^}]*transform-origin:\s*center\s+top\s*;?[^}]*transform:\s*none\s*;?/s,
   );
 });
 

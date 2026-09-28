@@ -94,8 +94,9 @@ for (const key of ['_D5K', '_DEMO_LS_KEY']) {
     let reject = true;
     const ctx = vm.createContext({
       P: { skills: {} }, INV: { bag: [], equipped: {} }, G: {},
-      STATS: {}, PASSIVES: {}, QSLOTS: [], BAG_MAX: 300, UPGRADES: {}, POT_LV: {},
-      SKILL_SLOTS: [], ULT_SLOT: null, _charIdx: 0,
+      STATS: {}, PASSIVES: {}, _grit: 0, QSLOTS: [], BAG_MAX: 300, UPGRADES: {}, POT_LV: {},
+      SKILL_SLOTS: [], ULT_SLOT: null, _charIdx: 0, CRYSTAL_BAG: [], CRYSTAL_DUST: 0,
+      _passiveQueueItems: () => [],
       _D5K: 'demo500', _DEMO_LS_KEY: 'demo0', _lastSaveTime: 0,
       localStorage: { setItem() { if (reject) throw new Error('storage full'); } },
       console: { warn() {} },
@@ -108,6 +109,54 @@ for (const key of ['_D5K', '_DEMO_LS_KEY']) {
     assert.ok(ctx._lastSaveTime > 0);
   });
 }
+
+test('public demo save keeps growth, skill mastery, and time played across a restart', async () => {
+  const end = html.indexOf('localStorage.setItem(_DEMO_LS_KEY,JSON.stringify(sd));');
+  const start = html.lastIndexOf('dbSave=async function(){', end);
+  const body = html.slice(start, html.indexOf('\n  };', end) + 5);
+  let saved;
+  const ctx = vm.createContext({
+    P: { lv: 12, skills: { spikeTrap: 2 }, _transLvDate: '2026-09-28', _transLvCount: 1,
+      _apBossCleared: ['boss-1'], _goddessGift: ['gift-1'], _fuseProfSec: { spikeTrap: 25 },
+      _cardProf: { card: 3 }, _catProf: { cat: 4 }, activeTechSk: 'giantSlam' },
+    INV: { bag: [], equipped: {} }, G: { stage: 2, kills: 70, mats: 500, playTime: 3600,
+      comboMax: 12, _taRecords: { run: 1 }, _irisSz: 24 },
+    STATS: {}, PASSIVES: {}, _grit: 3, QSLOTS: [], BAG_MAX: 300, UPGRADES: {}, POT_LV: {},
+    SKILL_SLOTS: [], ULT_SLOT: null, _charIdx: 0, CRYSTAL_BAG: [], CRYSTAL_DUST: 0,
+    _passiveQueueItems: () => [], _DEMO_LS_KEY: 'demo0', _lastSaveTime: 0,
+    localStorage: { setItem(key, value) { saved = JSON.parse(value); } }, console: { warn() {} },
+  });
+  vm.runInContext(body, ctx);
+  await ctx.dbSave();
+  assert.equal(saved.player.transLvDate, '2026-09-28');
+  assert.equal(saved.player.transLvCount, 1);
+  assert.deepEqual([...saved.player.apBossCleared], ['boss-1']);
+  assert.equal(saved.grit, 3);
+  assert.equal(saved.gritCostModeV2, 1);
+  assert.equal(saved.fuseProfSec.spikeTrap, 25);
+  assert.equal(saved.cardProf.card, 3);
+  assert.equal(saved.catProf.cat, 4);
+  assert.equal(saved.activeTechSk, 'giantSlam');
+  assert.equal(saved.game.playTime, 3600);
+  assert.equal(saved.game.comboMax, 12);
+  assert.equal(saved.game.irisSz, 24);
+  assert.equal(saved.game.taRecords.run, 1);
+});
+
+test('public demo restore does not replace restored currency with the starting amount', () => {
+  const start = html.indexOf('  // 기존 세이브 불러오기', html.indexOf('async function _startDemoNew(){'));
+  const end = html.indexOf('  if(!_demoLoaded){', start);
+  const saved = { player: { lv: 12 }, game: { stage: 2, mats: 500, kills: 70 } };
+  const state = { mats: 1000 };
+  const ctx = vm.createContext({
+    _DEMO_LS_KEY: 'demo0', localStorage: { getItem() { return JSON.stringify(saved); } },
+    G: state, P: { lv: 1 },
+    dbRestore(data) { state.mats = 500; data.game.mats = 0; return true; },
+    console: { log() {}, warn() {} },
+  });
+  vm.runInContext(html.slice(start, end), ctx);
+  assert.equal(ctx.G.mats, 500);
+});
 
 test('autosave does not mark failed or skipped writes as successful saves', () => {
   let calls = 0;
@@ -139,8 +188,9 @@ test('30-second autosave sends live progress to the selected cloud character and
   const writes = [];
   let tick, delay, fail = true;
   const ctx = vm.createContext({
-    _charId: 'account-character', _dbReady: true, _saving: false,
+    _charId: 'account-character', _dbReady: true, _saving: false, _pendingForce: false,
     _lastSaveTime: 0, _autoSaveTimer: null, IS_ELECTRON: false,
+    window: {}, _passiveQueueItems: () => [],
     P: { lv: 12, exp: 345, skills: { spikeTrap: 2 } },
     G: { on: true, stage: 2, kills: 70, mats: 100 },
     INV: { bag: [{ id: 'kept-item' }], equipped: {} },

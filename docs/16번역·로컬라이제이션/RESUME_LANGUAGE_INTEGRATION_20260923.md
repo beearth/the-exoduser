@@ -37,8 +37,8 @@
 | parry-lesson.js | Space · 분노 발동 | Space · Unleash Rage |
 | parry-lesson.js | 1-1 패링 튜토리얼 | 1-1 Parry Tutorial |
 | parry-lesson.js | WASD / 방향키 · 이동 | WASD / Arrow keys · Move |
-| parry-lesson.js | 좌클릭 · 적 3마리 처치 | Left click · Defeat 3 enemies |
-| parry-lesson.js | 우클릭 · 적 3마리 처치 | Right click · Defeat 3 enemies |
+| parry-lesson.js | 좌클릭 · 10마리 처치 + 3단 차징 | Left click · 10 defeats + Tier 3 charge |
+| parry-lesson.js | 우클릭 · 적 5마리 처치 | Right click · Defeat 5 enemies |
 | parry-lesson.js | 1 · 가시덫 설치 후 도망 · 10마리 처치 | 1 · Place Spike Trap and retreat · Defeat 10 enemies |
 | parry-lesson.js | 키를 길게 눌러보세요 | Try holding the key |
 | parry-lesson.js | 홀딩 충전 | Hold charge |
@@ -77,8 +77,8 @@
 | parry-lesson.js | 무기를 휘둘러보세요 | Try swinging your weapon |
 | parry-lesson.js | 마법을 발사해보세요 | Try casting magic |
 | parry-lesson.js | W 위 · A 왼쪽 · S 아래 · D 오른쪽. WASD 또는 방향키로 조금 걸어보세요. 이후 모든 실습에서도 이동할 수 있습니다. | W up · A left · S down · D right. Walk a short distance using WASD or the arrow keys. You can also move during all later exercises. |
-| parry-lesson.js | 마우스로 조준하고 좌클릭 기본공격 기검참으로 적 3마리를 처치하세요. | Aim with the mouse and defeat 3 enemies using your left-click basic attack, Ki Slash. |
-| parry-lesson.js | 마우스로 조준하고 우클릭 마법탄으로 적 3마리를 처치하세요. | Aim with the mouse and defeat 3 enemies using right-click magic projectiles. |
+| parry-lesson.js | 마우스로 조준해 기검참으로 적 10마리를 처치하세요. 1·2타 뒤 3타를 3초 누르고 떼어 검기로 적도 처치해 보세요. | Aim with the mouse and defeat 10 enemies with Ki Slash. After hits 1 and 2, hold the third hit for 3 seconds, then release it to defeat an enemy. |
+| parry-lesson.js | 마우스로 조준하고 우클릭 마법탄으로 적 5마리를 처치하세요. | Aim with the mouse and defeat 5 enemies using right-click magic projectiles. |
 | parry-lesson.js | 마법탄을 패링해 몬스터를 처치하세요 | Parry magic projectiles to defeat the monster |
 | parry-lesson.js | 물리탄을 패링해 몬스터를 처치하세요 | Parry physical projectiles to defeat the monster |
 | parry-lesson.js | 몬스터 주위의 링이 완성되면 탄이 발사됩니다. 링 색으로 탄 종류를 미리 예측하세요. 흰색 링은 물리탄(E), 속성색 링은 마법탄(Q)입니다.  | The monster fires when the ring around it fills. The ring color previews the projectile type: white means physical (E); an elemental color means magic (Q).  |
@@ -88,11 +88,13 @@
 | parry-lesson.js | ]를 짧게 눌렀다 떼어 패링하세요. | ] and release to parry. |
 | parry-lesson.js | 패링 성공! 반사탄으로 발사한 몬스터를 처치하면 완료됩니다. | Parry successful! Defeat the shooter with the reflected projectile to complete this step. |
 | parry-lesson.js | 패링으로 탄을 되돌려 발사한 몬스터까지 처치하세요. | Reflect the projectile and defeat the monster that fired it. |
-| parry-lesson.js | 기검참으로 적 3마리를 처치하세요 | Defeat 3 enemies with Ki Slash |
-| parry-lesson.js | 마법으로 적 3마리를 처치하세요 | Defeat 3 enemies with magic |
-| parry-lesson.js | {p0}<br>처치 {p1}/3 · 실제로 처치해야 완료됩니다. | {p0}<br>Defeated {p1}/3 · Only actual defeats count. |
-| parry-lesson.js | 기검참은 기본공격입니다. 적을 마우스로 조준하고 좌클릭으로 검기를 날리세요. | Ki Slash is your basic attack. Aim at an enemy with the mouse and left-click to launch a sword wave. |
-| parry-lesson.js | 적을 마우스로 조준하고 우클릭으로 마법탄을 발사하세요. | Aim at an enemy with the mouse and right-click to fire a magic projectile. |
+| parry-lesson.js | 기검참으로 적 10마리를 처치하세요 | Defeat 10 enemies with Ki Slash |
+| parry-lesson.js | 마법으로 적 5마리를 처치하세요 | Defeat 5 enemies with magic |
+| parry-lesson.js | 1·2타 뒤 3타에서 좌클릭을 3초 누르고 떼어 검기로 적을 처치하세요.<br>처치 {p0}/10 · 3단 차징 검기 처치 {p1}/1 | After hits 1 and 2, hold the third left click for 3 seconds, then release it to defeat an enemy with the sword wave.<br>Defeated {p0}/10 · Tier 3 sword-wave defeat {p1}/1 |
+| parry-lesson.js | 3단 차징 검기 처치 완료 | Tier 3 sword-wave defeat complete |
+| parry-lesson.js | 3타 차징 {p0}/3단 · 3초까지 유지 | Third-hit charge Tier {p0}/3 · Hold for 3 seconds |
+| parry-lesson.js | 1·2타 뒤 3타를 3초 누르세요 | After hits 1 and 2, hold the third hit for 3 seconds |
+| parry-lesson.js | 적을 마우스로 조준하고 우클릭으로 마법탄을 발사하세요.<br>처치 {p0}/5 · 실제로 처치해야 완료됩니다. | Aim at an enemy with the mouse and right-click to fire a magic projectile.<br>Defeated {p0}/5 · Only actual defeats count. |
 | parry-lesson.js | 붙으면 가시덫을 깔고 도망치세요 | Place a Spike Trap and retreat when enemies close in |
 | parry-lesson.js | 몬스터 10마리가 쫓아옵니다. 가까이 붙으면 1번으로 발밑에 가시덫을 깔고, WASD / 방향키로 도망치세요. 덫 안의 적은 느려지고 지속 피해로 쓰러집니다.<br> | 10 monsters are chasing you. When they approach, press 1 to place a Spike Trap at your feet, then retreat with WASD / arrow keys. Enemies inside the trap are slowed and take damage over time.<br> |
 | parry-lesson.js | {p0} 가시덫 설치 · {p1} 설치 후 이동 · 처치 {p2}/10 | {p0} Spike Trap placed · {p1} Moved after placement · Defeated {p2}/10 |
