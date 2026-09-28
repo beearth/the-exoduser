@@ -83,7 +83,7 @@ SHA256 안내 Drive ID: `1uYr_Pw6diz-2TwusVGx1NcfNrevI2yJ6`
 
 이미지 출처·규격·SHA256: `output/applications/publisher-20260929/review-screens/image-provenance.json`. PDF와 편집용 HTML·Markdown·JSON을 함께 갱신했다. 3·5·6페이지의 이미지·캡션·배치를 직접 확인하고 Drive의 기존 기획서 ID·링크와 담당자 권한을 유지한 채 수정본을 업로드했다. 게임 소스 및 실행 ZIP은 변경하지 않았다. 촬영용 브라우저와 이번 작업이 시작한 서버만 종료했다.
 
-소스 제어 이력: 이 이미지 교체 기록의 첫 문서 커밋은 pre-commit에서 `tools/guard.baseline.json`에 대한 Node `fs.writeFileSync`가 `UNKNOWN`으로 실패하여 두 번 중단됐다. 훅을 우회하지 않았다. 당시 작업 전후 baseline의 `lines=62161`은 같고, PowerShell의 읽기·쓰기 모드 열기만 확인했으며 그 진단으로 파일 내용을 쓰지 않았다. 후속 작업의 커밋 결과는 아래에 별도로 기록한다.
+소스 제어 이력: 이 이미지 교체 기록의 첫 문서 커밋은 pre-commit에서 `tools/guard.baseline.json`에 대한 Node `fs.writeFileSync`가 `UNKNOWN`으로 실패하여 두 번 중단됐다. 훅을 우회하지 않았다. 당시 작업 전후 baseline의 `lines=62161`은 같고, PowerShell의 읽기·쓰기 모드 열기만 확인했으며 그 진단으로 파일 내용을 쓰지 않았다. 이후 홀딩·차징 시연을 포함한 두 제출 문서는 `27e4afb12`에서 정상 훅을 통과해 커밋했다. 훅이 만든 baseline의 `lines` 변경만 원복하고 다른 작업의 staged blob이 보존된 것을 대조했다. 이전 실패의 원인을 해결했다는 의미는 아니다.
 
 ### 홀딩·차징 액션 추가 — 현재 17페이지 구성
 
