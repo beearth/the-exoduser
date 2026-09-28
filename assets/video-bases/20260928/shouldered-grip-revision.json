@@ -1,0 +1,32 @@
+{
+  "date": "2026-09-28",
+  "source": "assets/video-bases/20260928/10-cruciform-male-gun-match-v2.png",
+  "source_job_id": "f1feca82-454c-44d6-bfa6-e442740df636",
+  "provider": "Higgsfield",
+  "model": "gpt_image_2_5",
+  "mode": "reference-based image edit",
+  "job_id": "914b3c18-5f4b-4289-91de-5676ad04872f",
+  "filename": "11-cruciform-shouldered-grip.png",
+  "status": "completed",
+  "width": 2688,
+  "height": 1520,
+  "estimated_credits": 2.75,
+  "params": {
+    "model": "gpt_image_2_5",
+    "quality": "high",
+    "resolution": "2k",
+    "aspect_ratio": "16:9",
+    "count": 1,
+    "folder_id": "cec12414-13bc-49e4-b460-5d26f3bee4c7",
+    "medias": [
+      {
+        "role": "image",
+        "value": "f1feca82-454c-44d6-bfa6-e442740df636"
+      }
+    ],
+    "prompt": "Correct the rifle HOLDING ANATOMY and SHOULDER CONTACT of BOTH adult characters in this exact image. The foreground woman and background man must each visibly SHOULDER their own heavy Gothic revolver rifle using a natural two-handed grip. This is a precise pose/hand correction, not a new scene.\nFor the foreground woman: place the rear BUTTPLATE firmly against the front pocket of her RIGHT SHOULDER, directly below the collarbone. It must visibly press into the shoulder armor, never float in front of her chest or pass through her arm. Her RIGHT HAND wraps a clearly defined rear pistol grip BEHIND and BELOW the large revolver cylinder, aligned with a visible trigger guard; her index finger rests straight along the side in a non-firing ready pose. Her LEFT PALM supports the UNDERSIDE of the front wooden/metal HANDGUARD just ahead of the cylinder, with thumb and four fingers visibly wrapping the handguard and the support elbow beneath the gun. Show both complete hands and plausible wrists, with a clear visual separation between each glove and weapon. Do not have either hand resting on top of the cylinder, gripping sharp blades or floating. Adjust ONLY her arms, hands, rear stock and rifle placement as much as needed for this believable shoulder-supported ready stance. Preserve her exact face, head angle and gaze, and avoid hiding her face behind the stock.\nApply the SAME correct two-handed shouldered support to the smaller background man: butt firmly seated at shoulder, bent trigger arm with hand on rear grip, other arm and palm supporting fore-end from BELOW; two hands distinct from barrel, no fused arm-gun. Retain him facing away to the right.\nKeep BOTH rifles' matching heavy six-shot cylinder, long straight barrel, bronze collars, red cloth ties, and CLOSED pointed harpoon muzzle design. Keep their muzzles directed diagonally down-right as in the reference, clear of faces. No firing from the man's gun. Preserve the foreground woman's existing red muzzle energy and all other effects exactly. Preserve character identities, faces, hairstyles, armor design and coverage, bodies, legs, overall placement, gargoyle, stairs, castle, blood moon, atmosphere, lighting and EXODUSER HELL LORD typography. No additional people, hands, fingers, arms, weapon parts or text. Only repair the hand/arm/stock geometry so both weapons are visibly and convincingly supported by shoulder plus two hands."
+  },
+  "result_url": "https://d8j0ntlcm91z4.cloudfront.net/user_3G1zto9sz11Uf3iEOhJefE9HdGG/hf_20260928_020807_914b3c18-5f4b-4289-91de-5676ad04872f.png",
+  "review": "Both rifles have visible stocks contacting shoulders, separate rear grip hands and front support hands underneath the fore-end. Woman's extended index finger and curled support fingers are readable. Male rifle is separate from arms and supported with two hands. Rifle height/angle, arm poses, and foreground muzzle position adjusted to achieve shoulder contact. Main composition, character identities, background and typography retained; generative edit not pixel-identical outside hand regions.",
+  "approval_status": "User image review pending; no video generated with this revision"
+}
