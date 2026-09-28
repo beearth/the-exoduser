@@ -29719,31 +29719,16 @@ function update(){
         const _csDmg=~~(meleeRef()*_skMul('chainSlam')*statStr()*pAtkMul()*_csDistMul*_fuseMul('chainSlam'));
         const _csEl=wp().el||0;
         G._noHitStopT=40;
-        const _csNe=shQuery(P.x,P.y,_csR+20);
-        for(let _ci=0;_ci<_csNe.length;_ci++){const e=_csNe[_ci];if(!e.alive)continue;
-          const d=dst(P.x,P.y,e.x,e.y);if(d>_csR+e.r)continue;
-          const ang=Math.atan2(e.y-P.y,e.x-P.x);
-          const mult=elMul(_csEl,e.el);const fd=~~(_csDmg*mult);
-          // 기동파괴: 보스 maxPoise 30% 고정, 일반몹 데미지 비례
-          if(e.ib){
-            hurtE(e,fd,ang,false,{kbMult:0.8},_csEl);
-            _poiseHit(e, ~~(e.maxPoise*0.30), _T('💥 기동파괴 그로기!'));
-          }
-          else{hurtE(e,fd,ang,false,{kbMult:0.8,poiseHit:true,poiseMult:1.5},_csEl)}
-          e.kb.x+=Math.cos(ang)*5;e.kb.y+=Math.sin(ang)*5;
-          if(!e.ib){e.stunned=Math.max(e.stunned,300);addTxt(e.x,e.y-18,_T('💫 기절!'),'#ffcc00',35)}
-          for(let j=0;j<8;j++){const a2=Math.PI*2*j/8;poolPart(e.x,e.y,Math.cos(a2)*4,Math.sin(a2)*4,'#ffcc00',3+Math.random()*4,14)}
-        }
         playSample('heavy_hit',1,_r(.8,.1));
         const _csTierCol=_csTier>=3?'#ff2200':_csTier>=2?'#ffaa00':'#ffcc44';
 
         shake(_csTier>=3?70:_csTier>=2?40:18);_gpVibrate(_csTier>=3?60:_csTier>=2?30:12,_csTier>=3?500:_csTier>=2?250:120);G.chromaT=_csTier>=3?18:_csTier>=2?12:6;
-        playVFXAng('chain_slam_impact',P.x,P.y-_csR*0.28,_csR/256,12,0,true); // 기동파괴 전용 착지 VFX (~1.8초, 좌클 시트 중심 피벗)
+        // 착지점에서 조준 방향으로 3갈래 지면 균열이 10f 동안 뻗으며 타격한다.
         if(!G._gSlamWave)G._gSlamWave=[];
-        G._gSlamWave.push({x:P.x,y:P.y,r:30,maxR:_csR,t:0,maxT:24,col:'#ffcc00',kind:'chainSlam'});
+        G._gSlamWave.push({x:P.x,y:P.y,ang:P._csSlamAng??P.facing,maxR:_csR,halfW:36+(_csLv-1)*2,dmg:_csDmg,el:_csEl,t:0,maxT:32,hits:[],col:'#b9a58a',kind:'chainSlam'});
         for(let j=0;j<12;j++){const _a=Math.PI*2*j/12;const _d=20+Math.random()*(_csR*.35);
-          poolPart(P.x+Math.cos(_a)*_d,P.y+Math.sin(_a)*_d,Math.cos(_a)*4,Math.sin(_a)*4,'#ffcc00',3+Math.random()*3,12)}
-        addParts(P.x,P.y,'#ffee00',6);addParts(P.x,P.y,'#ffffff',4);
+          poolPart(P.x+Math.cos(_a)*_d,P.y+Math.sin(_a)*_d,Math.cos(_a)*3,Math.sin(_a)*3,'#a99a84',2+Math.random()*2,10)}
+        addParts(P.x,P.y,'#b9a58a',6);
         _addSkProf('chainSlam');
         G.hitStop=0;G.slowMo=0;
         MB[2]=false;MBjust[2]=false;K['KeyE']=false;P._sbCd=Math.max(P._sbCd||0,30);
@@ -29906,7 +29891,7 @@ function update(){
     _sdTapBuf=-999; // E 소비됨 → 탭버퍼 클리어 (sDraw 중복 진입 방지)
     const _csCost=20+(P.skills.chainSlam||1)*2;
     if(P.st<_csCost){addTxt(P.x,P.y-25,_T('ST 부족!'),'#ff4444',30)}
-    else{P.st-=_csCost;P._chainSlamReady=true;P._csSlamOX=_harpX||P.x;P._csSlamOY=_harpY||P.y;
+    else{P.st-=_csCost;P._chainSlamReady=true;P._csSlamOX=_harpX||P.x;P._csSlamOY=_harpY||P.y;P._csSlamAng=_gpActive?P.facing:_aimDir();
     }
   }
   // ── 기동전폭: 사슬기동 중 좌클릭 (5성 dimBlast) ──
@@ -34828,8 +34813,9 @@ function update(){
   // ── 지옥강타 1 진동파 링 ──
   if(G._gSlamWave){
     let _swW=0;for(let _wi=0;_wi<G._gSlamWave.length;_wi++){
-      const w=G._gSlamWave[_wi];w.t+=sp;
-      w.r=30+(w.maxR-30)*(w.t/w.maxT);
+      const w=G._gSlamWave[_wi];
+      if(w.kind==='chainSlam')_updateChainSlamCleave(w,sp);
+      else{w.t+=sp;w.r=30+(w.maxR-30)*(w.t/w.maxT)}
       if(w.t<w.maxT)G._gSlamWave[_swW++]=w;
     }G._gSlamWave.length=_swW;
   }
@@ -41190,7 +41176,7 @@ const SKILL_LIST=[
   {id:'skyCrusher',name:'천공쇄기',cat:'rage',act:true,emoji:'🪨',desc:'[선택: Space] 커서 위치에 거대한 철제 쇄기를 낙하시킨다. 분노급 착탄 피해 후 3초간 남아 주변에 화염 지속 피해. MP 80, 최대 3충전, 충전당 15초. 패링 시 다음 충전 0.5초 감소. Lv당 범위+12·낙하속도·파편 수 증가',descEn:'[Select: Space] Drop a colossal iron crusher at the cursor. Its rage-tier impact remains for 3s after impact and burns nearby enemies. MP 80, up to 3 charges, 15s per charge. Parries trim the next charge by 0.5s. Per Lv: +12 radius, faster fall, more shards',spCost:10,matCost:120,cd:900,up:true,upSp:5,upMat:0},
   // quakeStride 삭제됨
   {id:'chainAssault',name:'기동불꽃',cat:'move',desc:'사슬기동 중 우클릭 → 즉시 착지하며 화염폭발. 범위200~350 INT 스케일 화염 마법데미지+넉백. 이동거리에 비례해 데미지↑(최대 x4.0). 불바닥을 여러 개 쌓은 뒤 충돌 스킬(기동파괴) 또는 분노 스킬(지옥강타 1)로 한 번에 폭발시킬 수 있다. MP 소모. Lv당 범위+16 뎀+12%',descEn:'During chain dash RMB → instant land with fire explosion. Range 200~350 INT scale fire magic DMG+knockback. DMG scales with travel distance (max x4.0). Stack multiple flame zones, then detonate them all at once with the collision skill (Chain Crush) or rage skill (Hell Slam I). MP cost. Per Lv range+16 DMG+12%',spCost:10,matCost:0,up:true,upSp:5,upMat:0},
-  {id:'chainSlam',name:'기동파괴',cat:'move',desc:'사슬기동 중 E → 땅 내려찍기. 범위200~350 데미지x8 그로기x6. 이동거리 비례 최대x6. 일반몹 즉시 기절(5초), 보스 체간 대량 삭감. Lv당 범위+16 데미지+15% 그로기+15%',descEn:'During chain dash E → ground slam. Range 200~350 DMG x8 groggy x6. Distance scale max x6. Instant stun mobs (5s), massive boss posture break. Per Lv range+16 DMG+15% groggy+15%',spCost:10,matCost:100,up:true,upSp:5,upMat:0},
+  {id:'chainSlam',name:'기동파괴',cat:'move',desc:'사슬기동 중 좌클릭/E → 조준한 전방으로 세 갈래 대지가르기. 사거리450~675, 균열 경로의 적마다 1회 타격. 일반몹 기절5초, 보스 최대체간30% 삭감. 후방과 갈래 사이의 적은 제외. Lv당 사거리+25, 경로 반폭+2. ST 소모.',descEn:'During chain movement LMB/E → three forward earth fissures toward your aim. Range 450–675; each enemy in the paths is hit once. Stuns mobs for 5s and removes 30% of boss max posture. Excludes rear targets and gaps. Per Lv range+25, path half-width+2. Costs ST.',spCost:10,matCost:100,up:true,upSp:5,upMat:0},
   // earthBreaker 삭제됨
   {id:'chainSlash',name:'기동칼날개',cat:'move',fixed:true,hidden:true,emoji:'⚔',desc:'[히든: 5성 dimRush 합체] 사슬기동 중 좌클릭 → 이동 중 전방 광역 베기+출혈. STR 스케일 물리데미지. 다단히트. Lv당 뎀+12% 범위+15',descEn:'[Hidden: 5-star dimRush fuse] During chain dash LMB → forward AoE slash+bleed while moving. STR scale physical DMG. Multi-hit. Per Lv DMG+12% range+15',spCost:0,matCost:0,up:true,upSp:5,upMat:0},
   {id:'peaceShield',name:'평화의보호',cat:'def',fixed:true,noDmg:true,emoji:'🕊️',desc:'Q 홀드 시 보호막이 점점 커지며 HP 초당 5% 회복. 보호막 크기에 비례해 데미지 감소. MP 소모',descEn:'Q hold: shield grows over time + HP 5%/s regen. DMG reduction scales with shield size. MP cost',spCost:0,matCost:0,up:true,upSp:5,upMat:0},
@@ -43106,6 +43092,92 @@ function activateDarkPillar(){
   }
   // pillarSlam 합체 효과 제거 — 모체가 giantSlam으로 이동됨 (activateGiantSlam 내부에서 처리)
 }
+// 기동파괴: 전방 세 갈래 대지가르기. 피해/그로기는 경로당이 아니라 적당 1회.
+function _chainSlamRayHit(e,w,reach){
+  const dx=e.x-w.x,dy=e.y-w.y;
+  if(dx*Math.cos(w.ang)+dy*Math.sin(w.ang)<0)return false;
+  const er=e.r||0;
+  for(let arm=-1;arm<=1;arm++){
+    const a=w.ang+arm*Math.PI/7,c=Math.cos(a),s=Math.sin(a);
+    const along=dx*c+dy*s,across=Math.abs(-dx*s+dy*c);
+    if(along>=0&&along<=reach+er&&across<=w.halfW+er)return true;
+  }
+  return false;
+}
+function _updateChainSlamCleave(w,sp){
+  const oldT=w.t;w.t+=sp;
+  if(oldT>=10)return;
+  const reach=w.maxR*Math.min(1,w.t/10);
+  const near=shQuery(w.x,w.y,reach+w.halfW+20);
+  for(let i=0;i<near.length;i++){
+    const e=near[i];if(!e.alive||w.hits.includes(e)||!_chainSlamRayHit(e,w,reach))continue;
+    w.hits.push(e);
+    const ang=Math.atan2(e.y-w.y,e.x-w.x),fd=~~(w.dmg*elMul(w.el,e.el));
+    if(e.ib){hurtE(e,fd,ang,false,{kbMult:.8},w.el);_poiseHit(e,~~(e.maxPoise*.30),_T('💥 기동파괴 그로기!'))}
+    else{hurtE(e,fd,ang,false,{kbMult:.8,poiseHit:true,poiseMult:1.5},w.el);e.stunned=Math.max(e.stunned||0,300);addTxt(e.x,e.y-18,_T('💫 기절!'),'#c8b69c',35)}
+    e.kb.x+=Math.cos(ang)*5;e.kb.y+=Math.sin(ang)*5;
+    const pc=~~(4*(OPT.parts||0)/100);
+    for(let j=0;j<pc;j++){const a=ang+(j-1.5)*.7;poolPart(e.x,e.y,Math.cos(a)*4,Math.sin(a)*4-1,j%2?'#736558':'#c8b69c',3,12)}
+  }
+}
+const _chainCleaveImg=new Image();_chainCleaveImg.src='img/vfx/chain_earth_cleave.png';
+function _drawChainSlamCleave(w){
+  const travel=Math.min(1,w.t/10),p=w.t/w.maxT;
+  const fade=p<.55?1:Math.max(0,(1-p)/.45);
+  if(_chainCleaveImg.complete&&_chainCleaveImg.naturalWidth>0){
+    const sw=_chainCleaveImg.naturalWidth,sh=_chainCleaveImg.naturalHeight,h=w.maxR*sh/sw;
+    X.save();X.globalCompositeOperation='source-over';X.globalAlpha=fade*.92;
+    for(let arm=-1;arm<=1;arm++){
+      X.save();X.translate(w.x,w.y);X.rotate(w.ang+arm*Math.PI/7);
+      const end=sw*travel,tip=Math.min(end,sw*.06),body=end-tip,scale=w.maxR/sw;
+      X.globalAlpha=fade*.92;
+      if(body>0)X.drawImage(_chainCleaveImg,0,0,body,sh,0,-h/2,body*scale,h);
+      for(let i=0;i<6;i++){const sx=body+tip*i/6,seg=tip/6;
+        X.globalAlpha=fade*.92*(1-(i+.5)/6*Math.min(1,(1-travel)*10));
+        if(seg>0)X.drawImage(_chainCleaveImg,sx,0,seg,sh,sx*scale,-h/2,seg*scale,h);
+      }
+      X.restore();
+    }
+    X.restore();return;
+  }
+  if(!w.paths){
+    w.paths=[];
+    for(let arm=-1;arm<=1;arm++){
+      const a=w.ang+arm*Math.PI/7,c=Math.cos(a),s=Math.sin(a),path=[];
+      for(let j=0;j<=14;j++){const d=w.maxR*j/14,b=j===0?0:Math.sin(j*7.13+arm*4.7)*(8+(j%3)*2);path.push({x:w.x+c*d-s*b,y:w.y+s*d+c*b,d})}
+      w.paths.push({c,s,path});
+    }
+  }
+  X.save();X.globalCompositeOperation='source-over';X.lineCap='round';X.lineJoin='round';
+  for(let arm=0;arm<3;arm++){
+    const ray=w.paths[arm],pts=ray.path,reach=w.maxR*travel;
+    const n=Math.max(1,Math.min(14,Math.ceil(travel*14)));
+    // 불규칙한 돌 테두리와 검은 균열. 높은 기둥·원형 링과 실루엣을 분리한다.
+    for(let layer=0;layer<2;layer++){
+      X.globalAlpha=fade*(layer?.92:.72);X.fillStyle=layer?'#1a1816':'#766b5b';
+      const width=layer?9:w.halfW*.58;
+      // WebGL fill은 4개 꼭짓점까지만 지원하므로 각 균열 구간을 독립 사각형으로 연결한다.
+      for(let j=1;j<=n;j++){
+        const a=pts[j-1],b=pts[j],ratio=b.d>reach?reach/b.d:1;
+        const ax=a.x,ay=a.y,bx=w.x+(b.x-w.x)*ratio,by=w.y+(b.y-w.y)*ratio;
+        const wa=width*(.68+.25*Math.sin((j-1)*2.3+arm))*Math.max(.25,1-(j-1)/18);
+        const wb=width*(.68+.25*Math.sin(j*2.3+arm))*Math.max(.25,1-j/18);
+        X.beginPath();X.moveTo(ax-ray.s*wa,ay+ray.c*wa);X.lineTo(bx-ray.s*wb,by+ray.c*wb);
+        X.lineTo(bx+ray.s*wb,by-ray.c*wb);X.lineTo(ax+ray.s*wa,ay-ray.c*wa);X.closePath();X.fill();
+      }
+    }
+    X.globalAlpha=.55*fade;X.strokeStyle='#c1aa83';X.lineWidth=1.5;X.beginPath();
+    for(let j=0;j<=n;j++){const pt=pts[j],ratio=pt.d>reach?reach/pt.d:1;const x=w.x+(pt.x-w.x)*ratio-ray.s*7,y=w.y+(pt.y-w.y)*ratio+ray.c*7;if(j===0)X.moveTo(x,y);else X.lineTo(x,y)}X.stroke();
+    // 균열 양옆의 낮은 돌조각. 균열 끝까지 전파하며 짧게 가라앉는다.
+    for(let j=2;j<=n;j+=3){const pt=pts[j];if(pt.d>reach)continue;const side=j%2?1:-1;
+      const hop=Math.sin(Math.min(1,Math.max(0,(w.t-j/14*10)/18))*Math.PI)*14;
+      const x=pt.x-ray.s*(w.halfW*.8)*side,y=pt.y+ray.c*(w.halfW*.8)*side-hop,sz=4+(j%3)*2;
+      X.globalAlpha=.8*fade;X.fillStyle=j%2?'#aaa18e':'#665f52';X.beginPath();X.moveTo(x-sz,y);X.lineTo(x,y-sz*.7);X.lineTo(x+sz*1.4,y+sz*.2);X.lineTo(x,y+sz*.7);X.closePath();X.fill();
+    }
+  }
+  X.restore();
+}
+
 function activateGiantSlam(srcId){
   G._dbgSlam=120;
   srcId=srcId||'giantSlam';
@@ -44340,8 +44412,8 @@ function _renderSkillRow(sk,grid){
     const _lockBg=_isLocked?'background:linear-gradient(180deg,rgba(40,5,5,.4),rgba(15,2,2,.8));opacity:.6;':'background:linear-gradient(180deg,rgba('+_bgRgb+',.24),rgba(10,4,4,.76));';
     d.style.cssText='position:relative;padding:10px 10px 8px;margin-bottom:10px;border-radius:10px;'+(_isLocked?_lockBdr:_bdrCss)+_lockBg+'box-shadow:inset 0 0 0 1px rgba(255,142,87,.05),0 4px 12px rgba(0,0,0,.28);'+(_isLocked?'':_gemGlow)+((canLearn||canUp)?'cursor:pointer;':'');
     let lockTxt='';
-    const _fixedKeyMap={bladeShot:'T자동',fanShot:'T자동',blastShot:'T자동',omniBeam:'E',elemMissile:'E',fireball:'E',blueShot:'E',burstLoop:'E',whirlwind:'좌클',maliceSwipe:'우클',shieldThrow:'우클',chargeBoost:'SH',magicBlink:'SH',ghostWalk:'CT',iceOrb:'CT',timeWarp:'CT',chainAssault:'SH+E',chainSlash:'기동+좌클',chainSlam:'SH+우클',giantSlam:'SH+좌클',peaceShield:'Q',hellRay:'E',ghostXbowTurret:'T자동'};
-    const _fixedKeyMapEn={bladeShot:'T-Auto',fanShot:'T-Auto',blastShot:'T-Auto',omniBeam:'E',elemMissile:'E',fireball:'E',blueShot:'E',burstLoop:'E',whirlwind:'LMB',maliceSwipe:'RMB',shieldThrow:'RMB',chargeBoost:'SH',magicBlink:'SH',ghostWalk:'CT',iceOrb:'CT',timeWarp:'CT',chainAssault:'SH+E',chainSlash:'Chain+LMB',chainSlam:'SH+RMB',giantSlam:'SH+LMB',peaceShield:'Q',hellRay:'E',ghostXbowTurret:'T-Auto'};
+    const _fixedKeyMap={bladeShot:'T자동',fanShot:'T자동',blastShot:'T자동',omniBeam:'E',elemMissile:'E',fireball:'E',blueShot:'E',burstLoop:'E',whirlwind:'좌클',maliceSwipe:'우클',shieldThrow:'우클',chargeBoost:'SH',magicBlink:'SH',ghostWalk:'CT',iceOrb:'CT',timeWarp:'CT',chainAssault:'기동+우클/SP',chainSlash:'기동+좌클',chainSlam:'기동+좌클/E',giantSlam:'SP/슬롯',peaceShield:'Q',hellRay:'E',ghostXbowTurret:'T자동'};
+    const _fixedKeyMapEn={bladeShot:'T-Auto',fanShot:'T-Auto',blastShot:'T-Auto',omniBeam:'E',elemMissile:'E',fireball:'E',blueShot:'E',burstLoop:'E',whirlwind:'LMB',maliceSwipe:'RMB',shieldThrow:'RMB',chargeBoost:'SH',magicBlink:'SH',ghostWalk:'CT',iceOrb:'CT',timeWarp:'CT',chainAssault:'Chain+RMB/SP',chainSlash:'Chain+LMB',chainSlam:'Chain+LMB/E',giantSlam:'SP/Slot',peaceShield:'Q',hellRay:'E',ghostXbowTurret:'T-Auto'};
     const _fixedKey=_L(_fixedKeyMap[sk.id]||'',_fixedKeyMapEn[sk.id]||'')||undefined;
     const _skTypeLbl=_fixedKey?' <span style="background:rgba(60,100,140,.35);border:1px solid #5588aa;border-radius:3px;padding:1px 5px;color:#88ccff;font-size:.78rem;font-weight:700;letter-spacing:.05em">'+_fixedKey+'</span>':sk.act?' <span style="background:rgba(140,80,20,.3);border:1px solid #aa7733;border-radius:3px;padding:1px 5px;color:#ffaa44;font-size:.78rem;font-weight:700">'+(_L('선택','Select'))+'</span>':'';
     if(!learned){
@@ -52853,51 +52925,8 @@ function drawP(){
       const fade=Math.max(0,1-_wP);
       const _t2=_now;
       const _isGSlam=!w.col; // col 없으면 지옥강타 1, 있으면 불꽃칼날/기타
-      // 기동강타도 지옥강타 1의 2×2 영웅 임팩트 시트를 공유한다.
-      const _isChainSlamHero=w.kind==='chainSlam';
-      const _isSlamHero=_isGSlam||_isChainSlamHero;
-      // 기동강타: 공용 VFX의 가산 합성에서는 어두운 흙·균열이 묻히므로 지면층을 직접 남긴다.
-      if(w.kind==='chainSlam'){
-        const _csImpactP=Math.min(1,_wP*3.4);
-        const _csCraterR=w.maxR*(.22+.54*_csImpactP);
-        X.save();
-        X.globalCompositeOperation='source-over';
-        X.globalAlpha=(.64-.30*_wP)*fade;
-        X.fillStyle='#170f0a';
-        X.beginPath();X.ellipse(w.x,w.y,_csCraterR,_csCraterR*.30,0,0,Math.PI*2);X.fill();
-        X.globalAlpha=(.72-.36*_wP)*fade;
-        X.strokeStyle='#9a6734';
-        X.lineWidth=6-2*_csImpactP;
-        X.beginPath();X.ellipse(w.x,w.y,_csCraterR*1.04,_csCraterR*.33,0,0,Math.PI*2);X.stroke();
-        X.globalAlpha=(.96-.40*_wP)*fade;
-        X.strokeStyle='#ffd27a';
-        X.lineWidth=7-3*_csImpactP;
-        X.lineCap='round';
-        for(let _csCrack=0;_csCrack<16;_csCrack++){
-          const _csA=Math.PI*2*_csCrack/16+Math.sin(_csCrack*11.7)*.12;
-          const _csIn=_csCraterR*(.12+(_csCrack%3)*.024);
-          const _csOut=_csCraterR*(.58+(_csCrack%4)*.075);
-          const _csBend=_csA+Math.sin(_csCrack*4.9)*.14;
-          X.beginPath();
-          X.moveTo(w.x+Math.cos(_csA)*_csIn,w.y+Math.sin(_csA)*_csIn*.54);
-          X.lineTo(w.x+Math.cos(_csBend)*(_csOut*.54),w.y+Math.sin(_csBend)*(_csOut*.54)*.54);
-          X.lineTo(w.x+Math.cos(_csA)*_csOut,w.y+Math.sin(_csA)*_csOut*.54);
-          X.stroke();
-        }
-        X.globalAlpha=(.95-.48*_wP)*fade;
-        X.fillStyle='#ffd27a';
-        for(let _csShard=0;_csShard<18;_csShard++){
-          const _csShardA=Math.PI*2*_csShard/18+Math.sin(_csShard*8.3)*.18;
-          const _csShardD=_csCraterR*(.20+(_csShard%6)*.105);
-          const _csShardX=w.x+Math.cos(_csShardA)*_csShardD;
-          const _csShardY=w.y+Math.sin(_csShardA)*_csShardD*.54;
-          const _csShardS=5+(_csShard%4)*2.5;
-          X.save();X.translate(_csShardX,_csShardY);X.rotate(_csShardA+_csShard*.7);
-          X.beginPath();X.moveTo(0,-_csShardS);X.lineTo(_csShardS*.72,0);X.lineTo(0,_csShardS*.65);X.lineTo(-_csShardS*.72,0);X.closePath();X.fill();
-          X.restore();
-        }
-        X.restore();
-      }
+      if(w.kind==='chainSlam'){_drawChainSlamCleave(w);continue}
+      const _isSlamHero=_isGSlam;
       // 지옥강타 1(Shift+좌클릭): 지진 링과 구분되는 대지 압착 중심부.
       // 먼저 지면 데칼을 깔아 영웅급 스프라이트 아래에서 묵직하게 눌리는 느낌을 만든다.
       if(_isGSlam&&w.kind==='giant'){
@@ -52920,7 +52949,7 @@ function drawP(){
         const _slamFrame=Math.min(3,~~(_wP*4));
         const _slamSx=(_slamFrame%2)*512,_slamSy=~~(_slamFrame/2)*512;
         const _slamGrow=.72+.28*Math.min(1,_wP*3.5);
-        const _slamSize=w.maxR*(_isChainSlamHero?1.8:(w.kind==='inferno'?.98:.9))*_slamGrow;
+        const _slamSize=w.maxR*(w.kind==='inferno'?.98:.9)*_slamGrow;
         const _slamAlpha=_wP<.62?1:Math.max(0,(1-_wP)/.38);
         if(_slamVfx.ready){
           X.save();X.globalAlpha=_slamAlpha;

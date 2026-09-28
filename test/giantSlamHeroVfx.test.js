@@ -34,7 +34,7 @@ for (const [label, sheetUrl] of sheets) {
   });
 }
 
-test('Hell Slam I selects inferno while Chain Crush keeps the giant earth impact', () => {
+test('Hell Slam I and II preserve their hero artwork independently of Chain Crush', () => {
   assert.match(gameHtml, /giant_slam_impact_sheet\.png/);
   assert.match(gameHtml, /inferno_slam_impact_sheet\.png/);
   assert.match(gameHtml, /const _slamKind=\(srcId==='giantSlam2'&&_isFused\('infernoSlam'\)\)\?'inferno':'giant';/);
