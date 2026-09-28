@@ -1,0 +1,50 @@
+{
+  "sourceCrop": [
+    2048,
+    6144,
+    4096,
+    8192
+  ],
+  "placementCenterTile": [
+    73,
+    180
+  ],
+  "spriteNative": [
+    2048,
+    2048
+  ],
+  "sourceAlphaZeroPixels": 2945977,
+  "spriteScale": 0.75,
+  "spriteSize": [
+    1536,
+    1536
+  ],
+  "spriteOffset": [
+    174,
+    461
+  ],
+  "brightness": 0.7,
+  "opacity": 0.84,
+  "forestErodeFilter": 49,
+  "forestBlur": 20,
+  "changedChunks": [
+    [
+      2,
+      6
+    ],
+    [
+      2,
+      7
+    ],
+    [
+      3,
+      7
+    ]
+  ],
+  "changedPixels": 580534,
+  "walkablePixelsChanged": 0,
+  "zeroMaskPixelsChanged": 0,
+  "clampedMasterChunks": 64,
+  "seamComparisons": 224,
+  "sourceSha256": "92a8628afd7196b8880b0487a6584fb3169a993f2cd6aeef93591646e01cd2e1"
+}

@@ -1,0 +1,32 @@
+{
+  "provider": "Higgsfield",
+  "model": "gpt_image_2_5",
+  "job": "aa478af7-f0cd-4b02-a870-405d6263937b",
+  "prompt": "Use case: precise-object-edit. Edit the supplied 2048x2048 game environment crop, keeping the same overhead 3/4 camera, scale, dark exposure and composition. The large crooked hollow dead trunk at lower-left is already approved: retain its outline, open cavity, broken bark slabs and muted burgundy wounds. Preserve the broad flat clearing at the right, every outer border and the upper root cluster. Change ONLY the lower-middle perimeter connection immediately to the right and below the existing hollow trunk, approximately input pixels x850..1650 y700..1900. Replace the healthy leafy bushes and repeated thin fan-shaped roots within that area with a LOW asymmetrical ground bank: broad flattened rotten root plates, damp charcoal-brown necrotic skin, shallow torn fibrous folds, narrow local dark maroon sinew buried in wood splits, and contact shadow. These medium structures must grow out of the existing trunk base and fade into the adjacent ground as one continuous old diseased forest perimeter. Clear material separation between peeled bark, dark recesses and low skin membrane; restrained highlights, no glow. Maintain the existing large trunk; add no new tree, no new stump, no new landmark, no rocks, bones or props. No high walls or central obstacles. Do not fill the wide flat fighting area. An oppressive living hell, dead diseased timber fused with corpse-gray skin, not a healthy mossy forest. No green foliage, no fern bouquet, no repeated branch fans in the edited connection. No lava, orange fire, symbols, text, borders, checkerboard or transparency. Output one full edited crop in exactly the same framing and aspect ratio, not a new standalone cutout. Preserve surroundings; local matte grounding rather than a pasted island.",
+  "requested": {
+    "aspect_ratio": "1:1",
+    "resolution": "2k",
+    "quality": "high",
+    "background": "opaque"
+  },
+  "referenceInput": {
+    "media_id": "1f960bf0-1945-4140-92f2-bd134fddecbe",
+    "file": "input-base.png",
+    "crop": [
+      2048,
+      6144,
+      4096,
+      8192
+    ],
+    "sha256": "fee0f47941a83bcdd7640e306c7cee6b77ec72a44ce7ce6a607b8da7fed1f905"
+  },
+  "resultUrl": "https://d8j0ntlcm91z4.cloudfront.net/user_3G1zto9sz11Uf3iEOhJefE9HdGG/hf_20260928_094719_aa478af7-f0cd-4b02-a870-405d6263937b.png",
+  "actual": {
+    "size": [
+      2048,
+      2048
+    ],
+    "sha256": "7d4071594a377e04e12d584474a1c446397a167f107dbab2df0c6799730cf6fc",
+    "mode": "RGB"
+  }
+}

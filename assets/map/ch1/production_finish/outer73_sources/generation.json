@@ -1,0 +1,25 @@
+{
+  "provider": "Higgsfield",
+  "model": "gpt_image_2_5",
+  "job": "a0982929-ab1d-42e1-b230-efa86193c5b0",
+  "prompt": "One isolated dark action RPG environment cutout on a TRUE TRANSPARENT background. Top-down 3/4 overhead camera. An asymmetrical LOW BROKEN DEAD TREE ELBOW with a broad collapsed root buttress, designed as a left perimeter bank beside a wide fighting clearing. Heavy crooked trunk segment bends from upper-left into a hollow splintered stump at center-left, then flattens into layered root plates toward lower-right. Distinct angular bent silhouette, NOT an upright tree, NOT a horizontal open canoe. Big peeled charcoal gray bark slabs, split lengthwise fibers, black recessed heartwood cavities, porous torn wood at the break. Local bruised corpse-gray skin membrane and thin dark maroon sinews inside the wounds, very sparse. Low irregular root tips extend along the ground with confined contact shadow. Rough matte decayed timber, a few restrained wet highlights, dim soft upper-left lighting, muted gray-brown and dark burgundy colors, high quality painterly realistic AAA game art, crisp material shapes and readable depth. Entire object centered with generous transparent padding on every side; fills about 75 percent of canvas width and 65 percent height, no excessive blank upper margin. No green foliage, no ferns, no healthy shrubs, no healthy tree, no fine repeating branch bouquet, no pointed conical stump, no skulls, no bones, no orange glow, no magic symbols, no floor or landscape, no background, no checkerboard painted into pixels, no text, no border. Standalone new environment asset for local composition into an existing game map; preserve true alpha transparency.",
+  "requested": {
+    "aspect_ratio": "1:1",
+    "resolution": "2k",
+    "quality": "high",
+    "background": "transparent"
+  },
+  "referenceInput": null,
+  "resultUrl": "https://d8j0ntlcm91z4.cloudfront.net/user_3G1zto9sz11Uf3iEOhJefE9HdGG/hf_20260928_083714_a0982929-ab1d-42e1-b230-efa86193c5b0.png",
+  "actual": {
+    "size": [
+      2048,
+      2048
+    ],
+    "mode": "RGBA",
+    "alphaMin": 0,
+    "alphaMax": 254,
+    "alphaZeroPixels": 2945977,
+    "sha256": "dd48da6d3738e7051d396421b526db3e9cd6247df75b764c89751aec78c0c985"
+  }
+}

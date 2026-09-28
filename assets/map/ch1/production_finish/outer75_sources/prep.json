@@ -1,0 +1,58 @@
+{
+  "sourceCrop": [
+    2048,
+    6144,
+    4096,
+    8192
+  ],
+  "sourceSha256": "3b05ccc2c022f32c327acf4e96eceb6a9db2ca5d79a715bd74253923412c844c",
+  "inputSha256": "f0af874df9ddd714d567e232aa730fc6a54b38a6159a18ea38fe6f3d01f26fc5",
+  "nativeSize": [
+    2048,
+    2048
+  ],
+  "regionEllipse": [
+    1220,
+    950,
+    400,
+    480
+  ],
+  "regionFeather": 0.3,
+  "opacity": 0.92,
+  "edgeBandTiles": 8,
+  "edgeBandMetric": "Chebyshev",
+  "edgeBandWorldMaxAxis": 320,
+  "edgeBandImageMaxAxis": 327.68,
+  "forestBlur": 20,
+  "trunkProtectedThreshold": 12,
+  "trunkProtectDilate": 25,
+  "trunkProtectBlur": 18,
+  "trunkProtectedPixels": 572420,
+  "protectedTrunkPixelsChanged": 0,
+  "changedPixels": 384431,
+  "walkablePixelsChanged": 368590,
+  "innerFloorPixelsChanged": 0,
+  "geometryChanged": false,
+  "zeroMaskPixelsChanged": 0,
+  "outsideCropChangedPixels": 0,
+  "changedChunks": [
+    [
+      2,
+      6
+    ],
+    [
+      3,
+      6
+    ],
+    [
+      2,
+      7
+    ],
+    [
+      3,
+      7
+    ]
+  ],
+  "clampedMasterChunks": 64,
+  "seamComparisons": 224
+}

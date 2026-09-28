@@ -246,7 +246,9 @@ function main() {
 
   // baseline 저장: 실패가 없을 때만 갱신 (실패 시 원본 유지 — 오염 방지)
   if (!fails.length) {
-    fs.writeFileSync(BASELINE, JSON.stringify(nextBaseline, null, 2) + '\n');
+    const serialized = JSON.stringify(nextBaseline, null, 2) + '\n';
+    const existing = fs.existsSync(BASELINE) ? fs.readFileSync(BASELINE, 'utf8') : null;
+    if (existing !== serialized) fs.writeFileSync(BASELINE, serialized);
   }
 
   console.log('───── guard.js 결과 ─────');

@@ -1,0 +1,89 @@
+{
+  "pass": 75,
+  "provider": "Higgsfield",
+  "model": "gpt_image_2_5",
+  "job": "bbf05779-74e3-4b4a-ad6b-5e751c41bc09",
+  "referenceMedia": "5bc83eb3-93f6-4022-9e98-26d4dc613684",
+  "input": "input-base.png",
+  "inputSource": "actual pass74 master crop [2048,6144,4096,8192]",
+  "inputSha256": "f0af874df9ddd714d567e232aa730fc6a54b38a6159a18ea38fe6f3d01f26fc5",
+  "source": "edited_connection.png",
+  "sourceSha256": "e4e39f9331d7add613fa94018ea1775c6971e333d4a5480fee7ed281df21a627",
+  "requested": {
+    "resolution": "2k",
+    "quality": "high",
+    "background": "opaque",
+    "aspectRatio": "1:1",
+    "count": 1
+  },
+  "prompt": "Edit this exact provided 2048x2048 game environment crop in place. Preserve its pixel registration, camera angle, scale, lighting and overall composition. The crop is a top-down/isometric dark rotten forest game background. Keep the large broken hollow dead trunk in the lower left absolutely unchanged, including its bark plates and dark red interior. Keep the right-hand broad flat combat floor, all outer crop edges and the separate small root at the top border unchanged. ONLY repair the middle-right connection immediately above and to the right of the hollow trunk, centered near input pixel (1220,950) in an oval about 800 pixels wide and 960 pixels tall. Here a conspicuous grey symmetrical fan of small tree roots and leafy bushes remains. Remove that entire small grey fan root and the leafy canopy underneath it. Replace it with a low, traversable ground transition: a few irregular broken rotten bark plates embedded flat in dead fibrous wood, tapering into damp corpse-grey and muted brown-purple necrotic skin membrane with broad shallow folds. Clear readable large material shapes, a dark contact fissure only beside the existing trunk, and quiet flat skin farther right. Absolutely no identifiable leaves, leafy bushes, moss, healthy foliage, new upright trunk, conical stump, radial root fan, rounded stones, gravel field, or scattered props in the edited oval. No high contrast veins, neon glow, orange lava, fire or new poison pool. Restrained low-contrast lighting compatible with the existing dim base; do not brighten the patch. The small replacement must connect to the existing trunk and floor as one scene and keep ample flat fighting space. Biological forest decay, dead wood fused with necrotic connective tissue. No text, interface, character, border or checkerboard. Output a complete edited image at 2048x2048, opaque RGB, not a collage.",
+  "sourceUrl": "https://d8j0ntlcm91z4.cloudfront.net/user_3G1zto9sz11Uf3iEOhJefE9HdGG/hf_20260928_103549_bbf05779-74e3-4b4a-ad6b-5e751c41bc09.png",
+  "download": "observed local source-page image downloaded with pageAssets.list/bundle",
+  "earlierCandidates": "attempt1 2-tile band was too narrow; attempt2 reused74 art retained oversized leafy pattern and was not applied",
+  "actual": {
+    "dimensions": [
+      2048,
+      2048
+    ],
+    "sha256": "e4e39f9331d7add613fa94018ea1775c6971e333d4a5480fee7ed281df21a627",
+    "mode": "RGB"
+  },
+  "integration": {
+    "sourceCrop": [
+      2048,
+      6144,
+      4096,
+      8192
+    ],
+    "sourceSha256": "3b05ccc2c022f32c327acf4e96eceb6a9db2ca5d79a715bd74253923412c844c",
+    "inputSha256": "f0af874df9ddd714d567e232aa730fc6a54b38a6159a18ea38fe6f3d01f26fc5",
+    "nativeSize": [
+      2048,
+      2048
+    ],
+    "regionEllipse": [
+      1220,
+      950,
+      400,
+      480
+    ],
+    "regionFeather": 0.3,
+    "opacity": 0.92,
+    "edgeBandTiles": 8,
+    "edgeBandMetric": "Chebyshev",
+    "edgeBandWorldMaxAxis": 320,
+    "edgeBandImageMaxAxis": 327.68,
+    "forestBlur": 20,
+    "trunkProtectedThreshold": 12,
+    "trunkProtectDilate": 25,
+    "trunkProtectBlur": 18,
+    "trunkProtectedPixels": 572420,
+    "protectedTrunkPixelsChanged": 0,
+    "changedPixels": 384431,
+    "walkablePixelsChanged": 368590,
+    "innerFloorPixelsChanged": 0,
+    "geometryChanged": false,
+    "zeroMaskPixelsChanged": 0,
+    "outsideCropChangedPixels": 0,
+    "changedChunks": [
+      [
+        2,
+        6
+      ],
+      [
+        3,
+        6
+      ],
+      [
+        2,
+        7
+      ],
+      [
+        3,
+        7
+      ]
+    ],
+    "clampedMasterChunks": 64,
+    "seamComparisons": 224
+  }
+}

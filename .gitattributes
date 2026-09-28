@@ -2,3 +2,4 @@
 *.bat text eol=crlf
 *.ps1 text eol=crlf
 assets/map/ch1/production_finish/CH1_1_PRODUCTION_MASTER.png filter=lfs diff=lfs merge=lfs -text
+assets/map/ch1/production_finish/outer76_81-provenance.zip filter=lfs diff=lfs merge=lfs -text
