@@ -1,0 +1,25 @@
+{
+  "date": "2026-09-28",
+  "provider": "Higgsfield",
+  "model": "gpt_image_2_5",
+  "quality": "high",
+  "resolution": "2k",
+  "aspect_ratio": "16:9",
+  "project_id": "cec12414-13bc-49e4-b460-5d26f3bee4c7",
+  "reference_media_id": "58bda911-98c0-44a6-bccb-1a9ccf6b6e00",
+  "job_id": "6d6271ec-1802-4ade-8b62-4f421e156833",
+  "prompt": "TARGETED WEAPON EDIT of this exact supplied screenshot artwork, NOT a new composition. Preserve the adult male on left and adult hooded woman on right in the exact back-to-back positions, SAME faces, hair, hood, costumes, body poses, hand locations, framing, red moon, cathedral background, palette and original EXODUSER title. Do not replace the woman with the character from another reference. Do not make a solo front portrait. Keep her existing face unmodified. The user approves this precise composition. Remove only the video-player controls and black screenshot border to output the clean full artwork. Correct the WOMAN'S long rifle weapon: preserve its length, diagonal aim toward lower-right, black-bronze gothic materials, red cloth ties, hand positions and rear six-shot REVOLVER CYLINDER; that cylinder belongs near hands on rear receiver, NOT at muzzle. Replace the misleading front cluster of six little barrels with ONE thick continuous large-caliber central cannon barrel terminating in ONE hollow circular cannon bore, rendered as a perspective ellipse following the existing barrel axis. Around its heavy circular muzzle collar there are EXACTLY FOUR hinged long spearhead blades opened outward, corresponding to top, bottom, left, right around bore. All four individually discernible in this oblique perspective, separate tips, clear gaps between petals. True four-point mechanical cruciform around a SINGLE unobstructed central aperture. No fifth blade, no trident, no six-hole gatling muzzle, no rotating multi-barrels, no little bullet barrels. Remove the current muzzle flash so the single central bore and four petals are plainly visible. One heavy cannon, elegant detailed gothic proportions, physical hinges, solid steel blades. Male's existing closed long harpoon gun at left remains as reference; at most harmonize its materials, do not change pose or replace it. NO changes to clothing or exposed areas, NO body or face redesign. Local change only to female gun mechanism and removal of video UI. Preserve illustration texture and quality. Wide 16:9.",
+  "status": "completed",
+  "user_correction": "Preserve attached male/female composition; redesign only firearm.",
+  "filename": "08-gunslingers-approved-composition.png",
+  "review": "superseded: only three blades readable",
+  "revision": {
+    "job_id": "1c665097-67c1-4e78-aaff-92f2a209c25e",
+    "prompt": "Edit only the tiny FRONT MUZZLE BLADE ASSEMBLY on the woman's rifle in this exact image. Preserve all other pixels as closely as possible: same two characters, exact faces and costumes, pose, camera, long gun, background, text. Current muzzle reads as THREE blades; correct to EXACTLY FOUR clearly distinguishable individual blades. Looking at the visible elliptical muzzle face, arrange four long narrow solid gothic steel petals at four diagonal clock positions: 1:30 upper-right, 4:30 lower-right, 7:30 lower-left, 10:30 upper-left. This is a four-petal X in screen projection around the ONE central cannon aperture. Four distinct tips, four visible hinge roots, four wide negative-space gaps. Crucially ADD the missing UPPER-LEFT petal: extend it visibly diagonally upper-left from collar ABOVE the barrel silhouette, with its tip separated from barrel; do not hide it behind barrel, combine it with barrel, or merge it with another blade. Make the blade roots long enough to clear barrel body. The other three must remain separately readable. All four blades same ornate slim spearhead design and plausible matched lengths. Central muzzle hole remains single, large, hollow and completely unobstructed. Keep the aperture in the SAME place, with same angled perspective, fixed barrel length and direction. Do not rotate or reframe whole weapon, camera or character. No three-blade propeller, no fifth blade, no extra bore, no muzzle flash. User specifically requires the FOUR petals opening around CENTRAL CANNON. No other changes, 16:9.",
+    "filename": "08-gunslingers-approved-composition-v2.png",
+    "status": "completed",
+    "width": 2688,
+    "height": 1520,
+    "review": "Four separated spear petals and one central cannon bore verified; paired composition retained."
+  }
+}
