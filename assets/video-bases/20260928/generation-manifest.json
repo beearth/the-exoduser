@@ -1,0 +1,150 @@
+{
+  "date": "2026-09-28",
+  "provider": "Higgsfield",
+  "model": "gpt_image_2_5",
+  "quality": "high",
+  "resolution": "2k",
+  "aspect_ratio": "16:9",
+  "project_id": "cec12414-13bc-49e4-b460-5d26f3bee4c7",
+  "estimated_credits_each": 2.75,
+  "images": [
+    {
+      "index": 1,
+      "name": "01-gunslingers-closed",
+      "refs": [
+        "289a0edf-55a1-430c-b7e3-cbc9263535d9",
+        "29ca3ee9-040e-4c20-a316-30040ecd4e9b"
+      ],
+      "prompt": "Create one finished cinematic image-to-video START FRAME, a single uninterrupted 16:9 image, not a poster or sheet. Faithfully preserve the reference characters' faces, hairstyles, clothing, armor material, signature weapon design and dark gothic EXODUSER world. High-end dark fantasy key art with fine realistic metal, leather and fabric texture, controlled chiaroscuro and restrained colored rim light. No text, letters, logo, watermark, border, inset, diagram or layout. Calm moment BEFORE action: grounded balanced stance, visible natural hands, clean readable silhouette, complete weapon and both feet inside frame with generous safe margins. No motion blur, no flying debris, no attacks, no muzzle flash, no huge magic circles, no weapon morphing. Low wind, relaxed trailing cloth, quiet blurred ruined cathedral background with atmospheric depth. Make an attractive production-quality frame suitable for subtle breathing then one deliberate action. Two adult gunslingers from reference 1, silver-haired hooded woman in foreground left and dark-haired bearded male several steps behind on far left, separated silhouettes. Woman three-quarter side view facing right, holding her entire enormous black-bronze six-shot revolver rifle securely with two hands at low-ready, stock at shoulder height, barrel directed diagonally slightly downward toward right. Preserve its long ornate gothic construction, red cloth ties, and ONE barrel with six-shot cylinder behind. Muzzle takes up clear space in right third, away from body and background silhouettes. CRITICAL: reference 2 supplies weapon mechanism ONLY. Its FOUR longitudinal hinged muzzle armor blades are tightly CLOSED together as one slender pointed spear tip along the barrel axis; small visible seams, no open bore, no radial star. Resting locked state. It is NOT a gatling gun. Male's own gun held low clearly separate. Show entire weapon length with room to the right. Distant muted red moon.",
+      "job_id": "7c685fee-4cff-418b-939f-b8606d2e81a6",
+      "filename": "01-gunslingers-closed.png",
+      "status": "completed",
+      "url": "https://d8j0ntlcm91z4.cloudfront.net/user_3G1zto9sz11Uf3iEOhJefE9HdGG/hf_20260928_004659_7c685fee-4cff-418b-939f-b8606d2e81a6.png",
+      "selected": false,
+      "width": 2688,
+      "height": 1520,
+      "review_status": "superseded"
+    },
+    {
+      "index": 2,
+      "name": "02-transmuters-idle",
+      "refs": [
+        "f1a0b70e-aa13-49ea-964e-ea9961e42d92",
+        "0a0fd3e9-b115-4e97-a8a0-6cdaef1dfd61"
+      ],
+      "prompt": "Create one finished cinematic image-to-video START FRAME, a single uninterrupted 16:9 image, not a poster or sheet. Faithfully preserve the reference characters' faces, hairstyles, clothing, armor material, signature weapon design and dark gothic EXODUSER world. High-end dark fantasy key art with fine realistic metal, leather and fabric texture, controlled chiaroscuro and restrained colored rim light. No text, letters, logo, watermark, border, inset, diagram or layout. Calm moment BEFORE action: grounded balanced stance, visible natural hands, clean readable silhouette, complete weapon and both feet inside frame with generous safe margins. No motion blur, no flying debris, no attacks, no muzzle flash, no huge magic circles, no weapon morphing. Low wind, relaxed trailing cloth, quiet blurred ruined cathedral background with atmospheric depth. Make an attractive production-quality frame suitable for subtle breathing then one deliberate action. Two adult transmuters preserve exact reference identity: silver-haired woman wearing tall pointed hood and elaborate dark feathered/spiked armor in foreground left-center, dark-cloaked male on right behind, separated bodies and limbs. She stands with both feet planted, slightly turned right, one ornate claw gauntlet held near waist palm upward, containing only a SMALL dim stable blue core, fingers individually readable. Other hand calmly holds her recognizable dark weapon lowered, no active energy blade extending across body. Male holds his recognizable arcane bow vertically beside him at rest, not drawn, no arrow or energy beam. Preserve the specific arcane armor and weapons rather than generic wizards. Dark cathedral court, subdued cyan rim light, clear room between figures.",
+      "job_id": "f5584e88-f357-47a5-87f1-3d2026c879b4",
+      "filename": "02-transmuters-idle.png",
+      "status": "completed",
+      "url": "https://d8j0ntlcm91z4.cloudfront.net/user_3G1zto9sz11Uf3iEOhJefE9HdGG/hf_20260928_004659_f5584e88-f357-47a5-87f1-3d2026c879b4.png",
+      "selected": true,
+      "width": 2688,
+      "height": 1520,
+      "review_status": "start-frame candidate"
+    },
+    {
+      "index": 3,
+      "name": "03-arcane-lancer-idle",
+      "refs": [
+        "f1b17409-b279-466b-8a1a-2473c056383b",
+        "dad0c21a-b4b9-4d62-b029-983a372b39e1"
+      ],
+      "prompt": "Create one finished cinematic image-to-video START FRAME, a single uninterrupted 16:9 image, not a poster or sheet. Faithfully preserve the reference characters' faces, hairstyles, clothing, armor material, signature weapon design and dark gothic EXODUSER world. High-end dark fantasy key art with fine realistic metal, leather and fabric texture, controlled chiaroscuro and restrained colored rim light. No text, letters, logo, watermark, border, inset, diagram or layout. Calm moment BEFORE action: grounded balanced stance, visible natural hands, clean readable silhouette, complete weapon and both feet inside frame with generous safe margins. No motion blur, no flying debris, no attacks, no muzzle flash, no huge magic circles, no weapon morphing. Low wind, relaxed trailing cloth, quiet blurred ruined cathedral background with atmospheric depth. Make an attractive production-quality frame suitable for subtle breathing then one deliberate action. ONE adult female Arcane Lancer from references, pointed black hood, long silver hair, fitted layered black gothic armor, exact same elegant face and enormous ornate purple-tipped spear. Full body three-quarter view, planted feet shoulder-width, composed anticipatory posture. Hold the long rigid spear with two correctly placed hands diagonally from lower left to upper right across OPEN space beside her, not hiding face or merging with legs, entire tip and shaft in frame with at least 8 percent margin. Spear mostly dark metal with only dim violet etched runes, no active blade flare, no magic ring, no orbiting spears, no summoned copies. Quiet violet eclipse and cathedral arches far behind. Character left of center allowing action space right.",
+      "job_id": "95c406a4-7aee-48e4-8636-8e20aa2efe15",
+      "filename": "03-arcane-lancer-idle.png",
+      "status": "completed",
+      "url": "https://d8j0ntlcm91z4.cloudfront.net/user_3G1zto9sz11Uf3iEOhJefE9HdGG/hf_20260928_004659_95c406a4-7aee-48e4-8636-8e20aa2efe15.png",
+      "selected": false,
+      "width": 2688,
+      "height": 1520,
+      "review_status": "superseded"
+    },
+    {
+      "index": 4,
+      "name": "04-silvertail-idle",
+      "refs": [
+        "6f65b015-66be-411d-b6fe-fb4de2c1c2ec",
+        "91efd03f-ce0f-49a7-95ea-1c2f28041a7b"
+      ],
+      "prompt": "Create one finished cinematic image-to-video START FRAME, a single uninterrupted 16:9 image, not a poster or sheet. Faithfully preserve the reference characters' faces, hairstyles, clothing, armor material, signature weapon design and dark gothic EXODUSER world. High-end dark fantasy key art with fine realistic metal, leather and fabric texture, controlled chiaroscuro and restrained colored rim light. No text, letters, logo, watermark, border, inset, diagram or layout. Calm moment BEFORE action: grounded balanced stance, visible natural hands, clean readable silhouette, complete weapon and both feet inside frame with generous safe margins. No motion blur, no flying debris, no attacks, no muzzle flash, no huge magic circles, no weapon morphing. Low wind, relaxed trailing cloth, quiet blurred ruined cathedral background with atmospheric depth. Make an attractive production-quality frame suitable for subtle breathing then one deliberate action. ONE adult human woman SILVERTAIL, NOT animal or fox: exact same pale face, long white high ponytail, black ornate segmented armor, black and deep crimson torn cloak. Three-quarter REAR view with face turned slightly toward viewer, calm standing ready, both feet planted, arms comfortably lowered and visibly separate from torso. Preserve the second design reference's crucial broad thick engraved steel BACKBLADE attached to a clearly defined circular mechanical hub on her upper back. One enormous rigid broad single sword blade stowed diagonally downward along her right back side, entirely visible from circular mounting hub to tip; hub and sword must be exposed without hair or cape covering them. Blade thickness and width from reference2, NOT a needle, no multiple back swords. Ponytail falls gently to her left, cloak rests mostly behind left leg. Any small hand blades are held lowered naturally and visually separate. No mid-swing pose, no wheel spinning, no energy trail. Grey ruined gothic courtyard, sparse low crimson accents, readable cool silver edge on broad backblade.",
+      "job_id": "03f4b3ac-58e3-4cf8-9e32-2a9b7a357d13",
+      "filename": "04-silvertail-idle.png",
+      "status": "completed",
+      "url": "https://d8j0ntlcm91z4.cloudfront.net/user_3G1zto9sz11Uf3iEOhJefE9HdGG/hf_20260928_004659_03f4b3ac-58e3-4cf8-9e32-2a9b7a357d13.png",
+      "selected": true,
+      "width": 2688,
+      "height": 1520,
+      "review_status": "start-frame candidate"
+    },
+    {
+      "index": 5,
+      "name": "01-gunslingers-closed-v2",
+      "refs": [
+        "7c685fee-4cff-418b-939f-b8606d2e81a6"
+      ],
+      "prompt": "Edit this exact image into a wider establishing START FRAME for image-to-video. Keep identical two characters, faces, hood, colors, gothic armor, long revolver rifle and its CLOSED pointed muzzle structure; do not redesign any object. Pull camera substantially back so BOTH characters' entire bodies and complete boots are visible standing on ground. Female should occupy 65 percent of image height, with 12 percent ground margin beneath both feet and 10 percent sky above head. Entire rifle and pointed closed muzzle remain inside image with at least 12 percent right margin. Place pair in left half, gun extends into right half. Preserve dim cathedral/red moon world but reduce foreground cape wind, let fabric hang gently. Female keeps two-hand steady low-ready grip, no firing. Four muzzle blades remain tightly closed forward along axis into single pointed tip, no radial open parts, no flash. Same detailed painterly realistic dark fantasy finish. No text, no logo, no collage. 16:9 single frame.",
+      "job_id": "271420ec-4510-4771-8ea7-1199fb29d684",
+      "filename": "01-gunslingers-closed-v2.png",
+      "status": "completed",
+      "url": "https://d8j0ntlcm91z4.cloudfront.net/user_3G1zto9sz11Uf3iEOhJefE9HdGG/hf_20260928_004838_271420ec-4510-4771-8ea7-1199fb29d684.png",
+      "selected": true,
+      "width": 2688,
+      "height": 1520,
+      "review_status": "start-frame candidate"
+    },
+    {
+      "index": 6,
+      "name": "03-arcane-lancer-idle-v2",
+      "refs": [
+        "95c406a4-7aee-48e4-8636-8e20aa2efe15"
+      ],
+      "prompt": "Edit exact reference image, preserving same adult female face, hood, silver hair, armor, purple long spear and cathedral world. Create calm animation START FRAME: pull camera back 20 percent so entire spear from left butt to right blade tip is clearly inside canvas with at least 10 percent horizontal safe margin on BOTH ends; entire body and both boots visible with ground below. Relax the spread legs to a grounded shoulder-width ready stance. BOTH hands naturally hold same rigid spear at waist diagonally upward right. No active attack. Crucially wind has stopped: hair settles gently downward, ragged cape hangs downward behind body instead of streaming strongly sideways. Keep beautiful detailed rich gothic look and faint violet runes, but no big glow, no magic ring. No added objects, no typography, no multiple panels. 16:9.",
+      "job_id": "c94f9d6d-85eb-485c-950a-ec5b913647ce",
+      "filename": "03-arcane-lancer-idle-v2.png",
+      "status": "completed",
+      "url": "https://d8j0ntlcm91z4.cloudfront.net/user_3G1zto9sz11Uf3iEOhJefE9HdGG/hf_20260928_004838_c94f9d6d-85eb-485c-950a-ec5b913647ce.png",
+      "selected": true,
+      "width": 2688,
+      "height": 1520,
+      "review_status": "start-frame candidate"
+    },
+    {
+      "index": 7,
+      "name": "05-gunslingers-open",
+      "refs": [
+        "271420ec-4510-4771-8ea7-1199fb29d684"
+      ],
+      "prompt": "Make a surgical localized edit to this exact image. Keep camera, composition, every character's face, pose, hands, clothes, hair, entire scene, background and lighting exactly unchanged. ONLY EDIT THE FOREGROUND WOMAN'S RIFLE MUZZLE at the far right tip of her gun. Transform that currently tightly closed spear-point muzzle to its OPEN pre-firing mechanical state: the SAME four long hinged metal blade petals pivot radially outward from their existing hinge collar, like a four-petal mechanical iris opening into a cruciform. Expose ONE dark round central gun bore aligned with the long existing barrel. The four blades remain attached to collar by visible solid hinge joints; retain their lengths, engraved black bronze surfaces and pointed tips. Their formerly forward-pointing tips fan outward around barrel axis, visibly leaving the central aperture clear. One petal upper, one lower, remaining pair foreshortened in front/back according to exact original three-quarter camera perspective. No new parts, no new central spike, no multiple gun bores, no rotary gatling effect. Do not alter or shorten the fixed barrel, cylinder, stock, or hand grip. Change only this small muzzle region. No flash, smoke, sparks, projectile, glow or recoil; this is the instant AFTER opening but BEFORE firing. No text, no diagrams, no borders, no crop. Output same 16:9 full image, not a closeup.",
+      "job_id": "b9e32282-72f6-4e2c-bf15-71404b7b6a7a",
+      "filename": "05-gunslingers-open.png",
+      "status": "completed",
+      "url": "https://d8j0ntlcm91z4.cloudfront.net/user_3G1zto9sz11Uf3iEOhJefE9HdGG/hf_20260928_005019_b9e32282-72f6-4e2c-bf15-71404b7b6a7a.png",
+      "selected": false,
+      "width": 2688,
+      "height": 1520,
+      "review_status": "RETOUCH - four distinct hinged blades and axial bore perspective not confirmed"
+    },
+    {
+      "index": 8,
+      "name": "05-gunslingers-open-v2",
+      "refs": [
+        "271420ec-4510-4771-8ea7-1199fb29d684",
+        "b9e32282-72f6-4e2c-bf15-71404b7b6a7a"
+      ],
+      "prompt": "Use FIRST image as exact master background, character, framing and gun geometry. Edit only its small pointed muzzle region to correct mechanical OPEN state. Second image is a faulty attempt: do NOT reproduce its three-leaf claw or forward central spear. Foreground rifle has FOUR separate narrow hinged blades originally closed along its forward axis. OPEN ALL FOUR blades outward into a radial four-point cruciform around the same muzzle collar, with gaps around a SINGLE unobstructed barrel mouth. No blade remains pointing forward. View is oblique SIDE view: preserve barrel axis exactly, pointing image-right and slightly down; central bore must be a small foreshortened elliptical aperture at end of existing fixed barrel, NOT a big circular socket facing camera. Two blades angle above and below, front/back pair project diagonally outward in perspective; all four distinct blades and hinge roots should be discernible. Each blade is roughly half width of the original closed spear assembly, not four duplicates of the entire spear. Keep their total material volume consistent with closed image. Exact original character pose, hands, entire barrel length and camera remain unchanged. No firing glow, smoke, particles, text or layout. Only change the muzzle petals; all other pixels should match first image as closely as possible. 16:9 full frame.",
+      "job_id": "ff1520cb-37ca-48ba-9c19-51bcdc4de985",
+      "filename": "05-gunslingers-open-v2.png",
+      "status": "completed",
+      "selected": false,
+      "width": 2688,
+      "height": 1520,
+      "url": "https://d8j0ntlcm91z4.cloudfront.net/user_3G1zto9sz11Uf3iEOhJefE9HdGG/hf_20260928_005140_ff1520cb-37ca-48ba-9c19-51bcdc4de985.png",
+      "review_status": "RETOUCH - four distinct hinged blades and axial bore perspective not confirmed"
+    }
+  ],
+  "estimated_total_credits": 22,
+  "balance_before": 1015.75,
+  "balance_after": 989.75,
+  "observed_balance_delta": 26,
+  "billing_note": "Cost estimate was 2.75 per image (22 for 8); observed workspace balance difference was 26. Per-job actual charge not independently established."
+}
