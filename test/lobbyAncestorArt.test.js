@@ -31,8 +31,8 @@ test('quiet sprite loop stays within its atlas and wraps at the declared duratio
  const ctx=vm.createContext({window:{},document:{readyState:'loading',addEventListener(){}}});
  vm.runInContext(readFileSync(new URL('../lobby-ancestor-sprite.js',import.meta.url),'utf8'),ctx);
  const {frameAt,placement,art}=ctx.window.LobbyAncestorSprite;
- assert.equal(art.frames,48);assert.equal(frameAt(0),0);assert.equal(frameAt(47/12),47);assert.equal(frameAt(48/12),0);
- for(let i=0;i<96;i++)assert.ok(frameAt((i+.001)/12)>=0&&frameAt((i+.001)/12)<48);
+ assert.equal(art.frames,96);assert.equal(art.fps,24);assert.equal(frameAt(0),0);assert.equal(frameAt(95/24),95);assert.equal(frameAt(96/24),0);
+ for(let i=0;i<192;i++)assert.ok(frameAt((i+.001)/24)>=0&&frameAt((i+.001)/24)<96);
  for(const [w,h]of [[1920,1080],[2160,720],[960,540]]){
   const p=placement(w,h);assert.ok(p.left>=0);assert.ok(p.left+p.width<=w*(w<=1100?.55:.65));assert.ok(p.top>=0);assert.ok(p.top+p.height<h);assert.ok(Math.abs(p.top+p.height*art.baseline/art.height-p.footY)<.01);
  }

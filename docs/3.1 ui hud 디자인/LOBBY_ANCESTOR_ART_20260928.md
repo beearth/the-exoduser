@@ -1,6 +1,6 @@
 # 로비 전대 원화 교체 — 2026-09-28
 
-> 2026-09-28 현행: **선대 소환체 · 묘왕 바르칸**, “플레이어가 소환하는 선대의 영체”. 오른쪽 데모 저장 카드는 “플레이어 기록”. 투명48프레임 v2 스프라이트(셀384×624, 8×6, 12fps/4초)와 바닥·구조물을 고정한 독립 배경 영상(v2, 1920×1088, 24fps/12.083333초)을 사용한다. 이전 정적 원화와 v1 전체 신체 영상은 제작 이력이다. [생성·안정화·검수](<../5.0애니메이션파이프라인/LOBBY_VARKAN_SPRITE_VIDEO_20260928.md>).
+> 2026-09-28 현행: **선대 소환체 · 묘왕 바르칸**, “플레이어가 소환하는 선대의 영체”. 오른쪽 데모 저장 카드는 “플레이어 기록”. 호흡·천·유물이 움직이는 투명96프레임 v3 스프라이트(셀384×624, 8×12, 24fps/4초)와 바닥·구조물을 고정한 독립 배경 영상(v2, 1920×1088, 24fps/12.083333초)을 사용한다. 이전 정적 원화와 v1 전체 신체 영상은 제작 이력이다. [생성·안정화·검수](<../5.0애니메이션파이프라인/LOBBY_VARKAN_SPRITE_VIDEO_20260928.md>).
 
 ## 현행 게시 계약: 독립 배경 영상과 묘왕 바르칸 애니메이션
 
@@ -10,16 +10,26 @@
 |---|---|
 | 표시 이름 | `_lobbyAncestorName`: 한국어 묘왕 바르칸 / 그 외 Varkan, the Tomb King. `_lobbyAncestorCaption`: 선대 소환체 / ANCESTRAL SUMMON. 선택 여부와 무관하게 이 이름 유지; 슬롯 선택은 입장 활성 상태에 반영 |
 | 배경 | `assets/lobby/lobby_varkan_crypt_loop_v2.mp4`, muted/autoplay/loop/playsinline, preload metadata. 포스터 `lobby_varkan_crypt_poster_v2.webp`; cover, center 75%, `_curBg=varkan-crypt-v2` |
-| 스프라이트 | `lobby-ancestor-sprite.js`, defer. `assets/lobby/varkan_idle_v2.png`: 셀384×624, 8열×6행, 48프레임, 12fps/4초. frame=floor(max(0,seconds)×12)%48 |
+| 스프라이트 | `lobby-ancestor-sprite.js`, defer. `assets/lobby/varkan_idle_v3.png`: 셀384×624, 8열×12행, 96프레임, 24fps/4초. frame=floor(max(0,seconds)×24)%96 |
 | 기준점 | baseline603.682092555332, heartX182.43863179074447. canvas384×624. 배경 기준1920×1088; 좌측 폭65%, 화면폭1100px 이하55% |
 | 배치 | scale=max(width/bgWidth,height/bgHeight); footY=min(height×0.89,max(height×0.76,bgHeight×scale×0.84+(height−bgHeight×scale)×0.75)); displayHeight=min(height×0.8,footY−28); displayWidth=displayHeight×384/624. footX=max(displayWidth×0.52+12,min(leftWidth−displayWidth×0.48−12,bgWidth×scale×0.33+(width−bgWidth×scale)×0.5)); left=footX−heartX/384×displayWidth; top=footY−baseline/624×displayHeight |
 | 그림자 | footX/footY 위치, 너비displayWidth×0.42, 높이displayHeight×0.045, translate(−50%,−50%) |
 | 재생 수명 | 로비 표시 중이며 document.hidden이 아닐 때만 rAF 및 배경 재생. 숨김/비표시 때 rAF 취소 및 video.pause. ResizeObserver로 배치 갱신 |
 | 최초 언어 갱신 | `_refreshLobbyCardsLanguage()`는 `$` 초기화 전에도 호출되므로 `document.getElementById('charList')` 사용. 카드가 없으면 반환하며 기존 카드 리프/접근성 라벨만 갱신. 초기 TDZ 오류 회귀 검사 및 새 페이지 로그인/로비 진입 확인 |
-| 접근성/폴백 | reduced-motion 시 배경 숨김·일시정지 및 frame0. 스프라이트 실패 시 CSS `varkan_idle_first_v2.png` 유지; 배경 영상 실패 시 영상 숨기고 포스터 유지 |
+| 접근성/폴백 | reduced-motion 시 배경 숨김·일시정지 및 frame0. 스프라이트 실패 시 CSS `varkan_idle_first_v3.png` 유지; 배경 영상 실패 시 영상 숨기고 포스터 유지 |
 | 배포 | 공통 FILES에 `lobby-ancestor-art.css`와 `lobby-ancestor-sprite.js`; 로컬 미디어는 assets 복사. HTML 루트 CSS/JS 참조 회귀 검사로 누락 방지 |
 
-## v2 안정화와 설명 검수
+## 현행 v3 — 화면에서 보이는 대기 호흡
+
+| 항목 | 현행 값 |
+|---|---|
+| 원인 | v2는 천1.2px·핵±4%뿐이고 상체가 정지해 작은 창에서 대기 동작이 보이지 않음. v1의 생성 변형은 재사용하지 않음 |
+| 모션 | 4초 연속 주기의 상체 상승0~4px, 갈비뼈 영역 가로 팽창3.5%, 유물 좌우±3px, 붉은 천 좌우±6px, 핵 밝기±10%. 발 영역 y562~623 고정. 검·가면·견갑은 함께 움직여 형태와 어깨 지지 유지 |
+| 보간/주기 | 96셀/24fps, premultiplied alpha bilinear. 정현파·smoothstep만 사용, 프레임별 생성 변형 없음 |
+| 배경 | v2의 바닥/구조물 고정 영상 유지. 스프라이트 및 CSS/JS 캐시는20260928-idle3 |
+| 검수 | 1920×1080/960×540/2160×720의 실제 재생에서 상체 상승 확인, 발 픽셀 고정, 설명 유지. 숨김/reduced-motion 확인. 관련 회귀13개 통과. 증거 captures/ancestor_grok_review/idle-v3/ |
+
+## 이전 v2 안정화와 설명 검수
 
 | 항목 | 현행 값 |
 |---|---|

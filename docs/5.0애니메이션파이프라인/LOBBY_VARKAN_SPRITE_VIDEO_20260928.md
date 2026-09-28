@@ -1,8 +1,30 @@
 # 선대 소환체 묘왕 바르칸 — 로비 스프라이트와 독립 배경 영상
 
-2026-09-28 사용자 지시: 데모 캐릭터로 오해하지 않도록 이름과 소환체 설명을 표시한다. 전대를 투명 스프라이트로 만들고 배경은 별도 영상으로 합성한다. 후속 검수에서 대기 동작의 떨림과 바닥 움직임을 지적하여 v2로 안정화했다. 전투의 소환 판정·보행 시트 교체 완료를 뜻하지 않는다.
+2026-09-28 사용자 지시: 데모 캐릭터로 오해하지 않도록 이름과 소환체 설명을 표시한다. 전대를 투명 스프라이트로 만들고 배경은 별도 영상으로 합성한다. 후속 검수에서 대기 동작의 떨림과 바닥 움직임을 지적하여 v2로 안정화했고, 대기 동작이 보이지 않는다는 지적으로 v3의 호흡 리그를 추가했다. 전투의 소환 판정·보행 시트 교체 완료를 뜻하지 않는다.
 
-## 현행 v2
+## 현행 v3 — 보이는 호흡과 유물·천 움직임
+
+v2의 전체 자세 고정은 떨림을 없앴지만 대기 동작을 거의 보이지 않게 했다. 사용자 후속 지적으로 상체 호흡을 추가하고 천/유물 움직임을 강화했다. 단일 승인 자세를 일관된 리그로 움직여 생성 영상의 형태 변형을 재사용하지 않는다.
+
+| id / 적용 | 현행 값 |
+|---|---|
+| atlas | assets/lobby/varkan_idle_v3.png, RGBA3072×7488, 8열×12행의96셀, 셀384×624. 24fps / 4초. frame=floor(max(0,seconds)×24)%96 |
+| 기준점 | baseline603.682092555332, heart_x182.43863179074447. 표시 배치 수식은 유지. 셀 경계 잘림 없음 |
+| 주기 | phase=2πi/96, breath=(1−cos(phase))/2. smoothstep(t)=clamp(t,0,1)²×(3−2×clamp(t,0,1)) |
+| 상체 호흡 | sourceY=y+4×breath×upper, upper=1−smoothstep((y−245)/175). 상체0~4px 상승, y420부터0. 검·가면·견갑이 같은 이동을 공유하며 발/바닥은 상승하지 않음 |
+| 흉곽 팽창 | sourceX의 팽창 변위=(x−182.43863179074447)×0.035×breath×chest; chest=exp(−((x−182.43863179074447)/48)^4−((y−196)/53)^4) |
+| 견갑 유물 | 변위=3×sin(phase+0.35)×relics. relics=smoothstep((y−191)/89)×(1−smoothstep((y−268)/14))×smoothstep((x−249)/9)×(1−smoothstep((x−311)/9)) |
+| 붉은 천 | 원본 마스크 R>G×2.0, R>B×1.8, R>0.095, alpha>0.05, y260~552. MaxFilter3/GaussianBlur1 및 범위 밖0. 이전의 넓은 색 마스크가 따뜻한 뼈까지 이동시키는 현상을 제한. 리그로 옮긴 마스크와 이동 마스크의 최대값 합성, 수평 변위6×sin(phase)×sin(clamp((y−260)/293,0,1)×π) |
+| 푸른 핵 | v2의 핵 마스크를 리그 좌표로 이동. RGB 배율1+0.10×(2×breath−1)×posedHeart. alpha 유지 |
+| 샘플링 | premultiplied alpha에서 sourceX/sourceY의 bilinear 보간. sourceX=x−흉곽팽창−유물변위. 천은 그 결과 위에 추가 합성. 랜덤 값·프레임별 크기 보정 없음 |
+| 폴백/검수 이미지 | varkan_idle_first_v3.png384×624, varkan_idle_contact_v3.jpg1152×1404(8프레임 간격12셀), varkan_idle_preview_v3.gif384×624. GIF는42ms 근사 간격; 실제 게임24fps |
+| 배경 | lobby_varkan_crypt_loop_v2.mp4와 고정 바닥/구조물 계약 유지. v3는 별도 배경 영상의 생성/재인코딩 없음 |
+| 로딩 캐시 | 스프라이트 PNG와 first frame, index의 CSS/JS 버전20260928-idle3. 배경 _curBg=varkan-crypt-v2 및 기존 배경 URL 유지 |
+| 수명 | 로비/문서 숨김 때 정지, reduced-motion 때 frame0 유지. 선대 소환체·영체 설명·플레이어 기록 구분 유지 |
+| 검증 | atlas 발 y562~623 RGBA 동일, 상부 alpha top 범위4px. 마지막→첫 프레임 변화가 이웃 프레임 최대 변화보다 작음. 실제3화면 크기의 상체 움직임과 발 고정 확인, pageerror0. 회귀13개 통과 |
+| 증거 | captures/ancestor_grok_review/idle-v3/runtime-report.json, lobby-{width}x{height}-phase0/24/48.png 및 cell-0/24/48.png. 최종 판단은 실제 동작 확인에 따름 |
+
+## 이전 v2 — 바닥 고정과 미세 천 움직임
 
 | id / 파일 | 규격 · 동작 · 적용 위치 |
 |---|---|

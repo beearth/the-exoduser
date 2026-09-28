@@ -358,7 +358,7 @@
   "alpha_zero_ratio": 0.6366862326945335,
   "source_job": "721a6c9b-f8f8-4f17-8c43-8dab6e3334d8",
   "source_selection": "v1 frame0 keyed Grok anchor; full-body generated motion rejected due to temporal shape jitter",
-  "visual_verdict": "PASS: quiet independent animation, clear summon role, three live viewport checks",
+  "visual_verdict": "SUPERSEDED: user found static pose and micro cloth motion unreadable; runtime uses breathing rig v3",
   "canvas_trim_top": 144,
   "display_name_ko": "묘왕 바르칸",
   "display_name_en": "Varkan, the Tomb King",
