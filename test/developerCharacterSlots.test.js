@@ -23,12 +23,12 @@ function lobby({ build = 'full', count = 5, development = false, demoSave = null
   const ctx = vm.createContext({
     _LOBBY_BUILD: build, _testMode: true, _developerSlots: false, _localSlots: [],
     _characterLoadSeq: 0, _selectedSlot: null, _selectedSlotName: null, _lobbyLang: () => 'ko', _TL: s => s, escHtml: s => s,
-    _formatLobbyStageProgress: () => '1층', CHAR_VISUALS: [{ name: '전사' }],
+    _formatLobbyStageProgress: () => '1층', CHAR_VISUALS: [{ name: '전사', bust: 'assets/charselect/portrait_warrior.png?v=1' }],
     _updateCharDisplay(slot) { displayed=slot||null; }, _selectSlot() {}, _addLobbyCardControl() {}, _bindLobbyListNavigation() {}, openVisualSelect() { opened++; },
     $: id => els[id], document: { createElement: element }, localStorage: { getItem: key => key === 'hellsave_demo' ? demoSave : null },
     fetch: async () => ({ ok: true, json: async () => ({ ok: true, slots, development }) }),
   });
-  const ancestorCode=['_lobbyAncestorName','_lobbyAncestorCaption','_lobbyAncestorDetail','_lobbyPlayerRecordName'].map(name=>html.match(new RegExp('function '+name+'[^\\n]+'))[0]).join('\n');
+  const ancestorCode=['_lobbyAncestorName','_lobbyAncestorCaption','_lobbyAncestorDetail','_lobbyDemoCharacterName'].map(name=>html.match(new RegExp('function '+name+'[^\\n]+'))[0]).join('\n');
   vm.runInContext(ancestorCode+'\n'+localCode, ctx);
   return { ctx, els, opened: () => opened, displayed: () => displayed };
 }
@@ -56,7 +56,7 @@ test('demo remains a single fixed character even on a development server', async
   const { ctx, els } = lobby({ build: 'demo', development: true, count: 100 });
   await ctx.loadLocalCharacters();
   assert.equal(els.charList.children.length, 1);
-  assert.match(els.charList.children[0].innerHTML, /플레이어 기록/);
+  assert.match(els.charList.children[0].innerHTML, /대검전사/);
   assert.equal(els.developerSaveNotice.hidden, true);
 });
 

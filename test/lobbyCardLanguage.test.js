@@ -27,7 +27,7 @@ function setup(){
   _refreshStatusLanguage(){},_formatLobbyStageProgress:stage=>(language==='ko'?'층 ':'Stage ')+stage,
   setTimeout(){},fetch(){requests++;throw Error('Changing labels must not fetch or save');}});
  const names=['_applyLobbyLang','_addLobbyCardControl','_refreshLobbyCardsLanguage','_lobbyCardLeaf',
-  '_lobbyCharacterCardLabel','_lobbyDemoCardLabel','_lobbyNewCardLabel','_lobbyAncestorName','_lobbyAncestorCaption','_lobbyAncestorDetail','_lobbyPlayerRecordName'];
+  '_lobbyCharacterCardLabel','_lobbyDemoCardLabel','_lobbyNewCardLabel','_lobbyAncestorName','_lobbyAncestorCaption','_lobbyAncestorDetail','_lobbyDemoCharacterName'];
  vm.runInContext(names.map(n=>functions.get(n)||'').join('\n'),ctx);
  nodes.langSelect={value:'ko'};nodes.charList={querySelectorAll:()=>cards};
  function card({info=true}={}){
@@ -41,13 +41,13 @@ function setup(){
 for(const progress of [null,{lv:46,kills:1795}])test('demo card switches visible and accessible labels without replacing nodes: '+JSON.stringify(progress),()=>{
  const s=setup(),card=s.card();s.ctx._addLobbyCardControl(card,()=>s.ctx._lobbyDemoCardLabel(card,progress),'demo');
  const control=card.control,children=card.children;control.focus();s.change('en');
- assert.equal(card.leaves['.char-name'].textContent,'Player Record');
+ assert.equal(card.leaves['.char-name'].textContent,'Greatsword Warrior');
  assert.ok(card.leaves['.char-info'].textContent.startsWith('Lv.'));
  if(progress){assert.match(card.leaves['.char-info'].textContent,/Lv\.46.*Kills 1,795.*Browser Save/);}
- assert.ok(control.getAttribute('aria-label').startsWith('Player Record · '));
+ assert.ok(control.getAttribute('aria-label').startsWith('Greatsword Warrior · '));
  assert.equal(control.title,control.getAttribute('aria-label'));assert.equal(card.children,children);assert.equal(card.control,control);
  assert.equal(s.document.activeElement,control);assert.equal(s.requests(),0);
- s.change('ko');assert.equal(card.leaves['.char-name'].textContent,'플레이어 기록');assert.ok(control.title.startsWith('플레이어 기록'));
+ s.change('ko');assert.equal(card.leaves['.char-name'].textContent,'대검전사');assert.ok(control.title.startsWith('대검전사'));
 });
 for(const [mode,separator] of [['local',' · '],['online',' | ']])test(mode+' character retains its custom name, level, stage and focus while labels change',()=>{
  const s=setup(),card=s.card();card.leaves['.char-name'].textContent='사용자 이름';

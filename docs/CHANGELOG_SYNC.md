@@ -50724,3 +50724,17 @@ CSS 캐시 ui-refinement.css?v=20260927-4. 신규 이미지/아이템 데이터 
 | 재생/배경 | 캐시20260928-idle3, 배경 영상·바닥 고정v2 유지. 선대 소환체/묘왕 바르칸 설명 유지 |
 | 검수 | 실제1920×1080/960×540/2160×720 동작·발 고정·숨김·reduced-motion 확인, pageerror0, 관련13개 회귀 통과 |
 | 상세 | docs/5.0애니메이션파이프라인/LOBBY_VARKAN_SPRITE_VIDEO_20260928.md v3절 및 tools/stabilize-lobby-varkan.py |
+
+
+## 2026-09-28 오른쪽 대검전사 캐릭터 정보 복구
+
+| id / 적용 위치 | 현행 계약 |
+|---|---|
+| 의도 | 오른쪽은 실제 플레이어 캐릭터 정보를 보여 준다. 소환체 설명을 분리하며 임의로 붙였던 플레이어 기록 표제를 제거 |
+| _lobbyDemoCharacterName / .char-name | 한국어 대검전사, 그 외 Greatsword Warrior. 기존 _lobbyPlayerRecordName 제거. 초기 렌더와 언어 갱신 모두 같은 함수 사용 |
+| .char-thumb img | 고정 데모 charIdx0의 CHAR_VISUALS[0].bust, assets/charselect/portrait_warrior.png?v=1. 소환체 초상화를 이 카드에서 제거. width/height100%, object-fit:cover, object-position:center20%, radius2px 유지 |
+| .char-info | 유효 hellsave_demo는 Lv.{lv} · Stage 1-1 · 처치 {kills} · 브라우저 저장. 언어별 처치/저장 안내 번역 유지. 저장 없으면 Lv.1 START · Stage 1-1 · Lv.100 Cap |
+| 왼쪽 | 선대 소환체 · 묘왕 바르칸 / 플레이어가 소환하는 선대의 영체. v3 대기 스프라이트와 v2 고정 바닥 배경 유지 |
+| 저장/선택 | hellsave_demo, 내부 DEMO CHARACTER, charIdx0, _selectedSlot/_selectedSlotName=demo 유지. 이름 변경으로 저장을 재작성하지 않음 |
+| DOM/언어 | _lobbyCardLeaf는 특정 리프의 children.length===0만 갱신. 선택 제어/이미지 노드/초점 유지. 언어 전환 중 세이브 읽기/쓰기 없음 |
+| 검증 | 기존 언어·데모 슬롯·소환체 회귀와 격리 브라우저의 신규/저장 진행, 한국어/영어, 새로고침 및3크기 확인. 상세 증거 captures/ancestor_grok_review/player-card/runtime-report.json |

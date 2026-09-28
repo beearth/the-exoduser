@@ -20,7 +20,7 @@ v2의 전체 자세 고정은 떨림을 없앴지만 대기 동작을 거의 보
 | 폴백/검수 이미지 | varkan_idle_first_v3.png384×624, varkan_idle_contact_v3.jpg1152×1404(8프레임 간격12셀), varkan_idle_preview_v3.gif384×624. GIF는42ms 근사 간격; 실제 게임24fps |
 | 배경 | lobby_varkan_crypt_loop_v2.mp4와 고정 바닥/구조물 계약 유지. v3는 별도 배경 영상의 생성/재인코딩 없음 |
 | 로딩 캐시 | 스프라이트 PNG와 first frame, index의 CSS/JS 버전20260928-idle3. 배경 _curBg=varkan-crypt-v2 및 기존 배경 URL 유지 |
-| 수명 | 로비/문서 숨김 때 정지, reduced-motion 때 frame0 유지. 선대 소환체·영체 설명·플레이어 기록 구분 유지 |
+| 수명 | 로비/문서 숨김 때 정지, reduced-motion 때 frame0 유지. 선대 소환체·영체 설명과 오른쪽 대검전사 캐릭터 정보 구분 유지 |
 | 검증 | atlas 발 y562~623 RGBA 동일, 상부 alpha top 범위4px. 마지막→첫 프레임 변화가 이웃 프레임 최대 변화보다 작음. 실제3화면 크기의 상체 움직임과 발 고정 확인, pageerror0. 회귀13개 통과 |
 | 증거 | captures/ancestor_grok_review/idle-v3/runtime-report.json, lobby-{width}x{height}-phase0/24/48.png 및 cell-0/24/48.png. 최종 판단은 실제 동작 확인에 따름 |
 
@@ -29,7 +29,7 @@ v2의 전체 자세 고정은 떨림을 없앴지만 대기 동작을 거의 보
 | id / 파일 | 규격 · 동작 · 적용 위치 |
 |---|---|
 | 소환체 표시 | 선대 소환체 / 묘왕 바르칸 / 플레이어가 소환하는 선대의 영체. 비한국어는 ANCESTRAL SUMMON / Varkan, the Tomb King / A spirit summoned by the player. |
-| 플레이어 기록 | 오른쪽 데모 저장 카드는 플레이어 기록 / Player Record. 진행 수치와 입장 선택은 기존 저장 슬롯을 사용. 내부 DEMO CHARACTER 및 hellsave_demo 키는 유지 |
+| 이전 v2 카드 표제 이력 | 당시 오른쪽 데모 저장 카드는 플레이어 기록 / Player Record였으나 사용자 지적으로 현행 대검전사 / Greatsword Warrior로 복구. 진행 수치와 입장 선택은 기존 저장 슬롯을 사용. 내부 DEMO CHARACTER 및 hellsave_demo 키는 유지 |
 | varkan_idle_v2.png | assets/lobby/, RGBA 3072×3744. 8열×6행, 셀384×624, 48프레임. 12fps 순차 루프, floor(max(0,seconds)×12)%48, 4초 |
 | varkan_idle_first_v2.png | RGBA384×624. 시트 실패 시 CSS 폴백 |
 | varkan_idle_v2.json | baseline603.682092555332, heart_x182.43863179074447. v1 원본 첫 셀과 동일 기준점. 바운딩 박스로 프레임별 크기를 보정하지 않음 |
@@ -91,3 +91,6 @@ Animate this EMPTY ancient funerary crypt as a seamless ambient game lobby BACKG
 | 증거 | captures/ancestor_grok_review/varkan-lobby-runtime-report.json 및 varkan-lobby-1920x1080.png, varkan-lobby-2160x720.png, varkan-lobby-960x540.png. 사용자 지적 이전 사본은 jitter-before/ |
 | 범위 | 로비의 소환체 표현·대기 스프라이트·배경 영상 완료. 전투의 보행·소환 스킬 연결은 기존 시스템 범위 |
 
+
+
+현행 오른쪽 카드의 초상화는 CHAR_VISUALS[0].bust의 전사 이미지이며, 소환체 초상화를 사용하지 않는다. 저장 진행·입장 계약은 유지한다. 상세 표제/언어/저장 계약은 로비 문서의 “오른쪽 대검전사 캐릭터 정보 복구” 절을 따른다.

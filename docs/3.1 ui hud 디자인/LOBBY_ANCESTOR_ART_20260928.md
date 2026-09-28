@@ -1,6 +1,6 @@
 # 로비 전대 원화 교체 — 2026-09-28
 
-> 2026-09-28 현행: **선대 소환체 · 묘왕 바르칸**, “플레이어가 소환하는 선대의 영체”. 오른쪽 데모 저장 카드는 “플레이어 기록”. 호흡·천·유물이 움직이는 투명96프레임 v3 스프라이트(셀384×624, 8×12, 24fps/4초)와 바닥·구조물을 고정한 독립 배경 영상(v2, 1920×1088, 24fps/12.083333초)을 사용한다. 이전 정적 원화와 v1 전체 신체 영상은 제작 이력이다. [생성·안정화·검수](<../5.0애니메이션파이프라인/LOBBY_VARKAN_SPRITE_VIDEO_20260928.md>).
+> 2026-09-28 현행: **선대 소환체 · 묘왕 바르칸**, “플레이어가 소환하는 선대의 영체”. 오른쪽은 “대검전사” 캐릭터 정보와 전사 초상화(CHAR_VISUALS[0].bust)를 표시한다. 호흡·천·유물이 움직이는 투명96프레임 v3 스프라이트(셀384×624, 8×12, 24fps/4초)와 바닥·구조물을 고정한 독립 배경 영상(v2, 1920×1088, 24fps/12.083333초)을 사용한다. 이전 정적 원화와 v1 전체 신체 영상은 제작 이력이다. [생성·안정화·검수](<../5.0애니메이션파이프라인/LOBBY_VARKAN_SPRITE_VIDEO_20260928.md>).
 
 ## 현행 게시 계약: 독립 배경 영상과 묘왕 바르칸 애니메이션
 
@@ -33,7 +33,7 @@
 
 | 항목 | 현행 값 |
 |---|---|
-| 소환체 설명 | `_lobbyAncestorDetail`: 플레이어가 소환하는 선대의 영체 / A spirit summoned by the player. `_lobbyPlayerRecordName`: 플레이어 기록 / Player Record. 소환체와 저장 슬롯의 역할을 분리 |
+| 소환체 설명 | `_lobbyAncestorDetail`: 플레이어가 소환하는 선대의 영체 / A spirit summoned by the player. `_lobbyDemoCharacterName`: 대검전사 / Greatsword Warrior. 소환체와 저장 슬롯의 역할을 분리 |
 | 안정화 | 가면·검·몸통·발 고정. 붉은 천만 최대1.2px 수평 변위, 가슴핵 밝기±4%. 배경 y≥0.72 고정; 최종 영상290프레임의 하단 RGB 변화0 |
 | 후속 v2 검수 | 1920×1080/2160×720/960×540 재생 및 배치 확인, 숨김·reduced-motion 확인, pageerror0. 관련 회귀57개 통과. varkan-lobby-runtime-report.json |
 
@@ -70,3 +70,17 @@
 | 이전 검사 정정 | `test/lobbySelectedScene.test.js`의 종전 선택 캐릭터 영상 계약을 현행 전대 원화 유지 계약으로 변경. 전대 이름·소환 표제/입장 상태, 이전 미디어·오류 콜백 제거, 재선택, 선택 해제를 검사 |
 | 증거 | `captures/ancestor_grok_review/lobby-runtime-report.json`, `lobby-1920x1080.png`, `lobby-1280x720.png`, `lobby-960x540.png` |
 | 범위 | 로비 표시 교체 완료. 새 보행의 게임 내 적용 완료를 뜻하지 않음 |
+
+
+## 2026-09-28 오른쪽 대검전사 캐릭터 정보 복구
+
+| id / 적용 위치 | 현행 계약 |
+|---|---|
+| 의도 | 오른쪽은 실제 플레이어 캐릭터 정보를 보여 준다. 소환체 설명을 분리하며 임의로 붙였던 플레이어 기록 표제를 제거 |
+| _lobbyDemoCharacterName / .char-name | 한국어 대검전사, 그 외 Greatsword Warrior. 기존 _lobbyPlayerRecordName 제거. 초기 렌더와 언어 갱신 모두 같은 함수 사용 |
+| .char-thumb img | 고정 데모 charIdx0의 CHAR_VISUALS[0].bust, assets/charselect/portrait_warrior.png?v=1. 소환체 초상화를 이 카드에서 제거. width/height100%, object-fit:cover, object-position:center20%, radius2px 유지 |
+| .char-info | 유효 hellsave_demo는 Lv.{lv} · Stage 1-1 · 처치 {kills} · 브라우저 저장. 언어별 처치/저장 안내 번역 유지. 저장 없으면 Lv.1 START · Stage 1-1 · Lv.100 Cap |
+| 왼쪽 | 선대 소환체 · 묘왕 바르칸 / 플레이어가 소환하는 선대의 영체. v3 대기 스프라이트와 v2 고정 바닥 배경 유지 |
+| 저장/선택 | hellsave_demo, 내부 DEMO CHARACTER, charIdx0, _selectedSlot/_selectedSlotName=demo 유지. 이름 변경으로 저장을 재작성하지 않음 |
+| DOM/언어 | _lobbyCardLeaf는 특정 리프의 children.length===0만 갱신. 선택 제어/이미지 노드/초점 유지. 언어 전환 중 세이브 읽기/쓰기 없음 |
+| 검증 | 기존 언어·데모 슬롯·소환체 회귀와 격리 브라우저의 신규/저장 진행, 한국어/영어, 새로고침 및3크기 확인. 상세 증거 captures/ancestor_grok_review/player-card/runtime-report.json |
