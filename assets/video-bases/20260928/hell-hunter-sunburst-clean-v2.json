@@ -1,0 +1,59 @@
+{
+  "date": "2026-09-28",
+  "character": "Hell Hunter / 헬 헌터",
+  "request": "공유 원화의 점처럼 보이는 노이즈와 배경 십자가를 제거해 다시 제작",
+  "source_share_url": "https://higgsfield.ai/s/eaZMYjkwjeE",
+  "source_job_id": "ef714c44-7858-4346-9d49-8374c538ccea",
+  "source_media_id": "d7802b62-c1d5-4be7-9520-b75ca2c352cc",
+  "source_local": "assets/video-tests/kling-20260928/01-cruciform-source.png",
+  "provider": "Higgsfield",
+  "job_id": "3850ec67-4653-44c3-a08f-abc5477477f8",
+  "status": "completed",
+  "estimated_credits": 15,
+  "balance_before": 729,
+  "params": {
+    "model": "gpt_image_2_5",
+    "variant": "sunburst",
+    "quality": "max",
+    "resolution": "4k",
+    "aspect_ratio": "27:16",
+    "count": 1,
+    "folder_id": "cec12414-13bc-49e4-b460-5d26f3bee4c7",
+    "medias": [
+      {
+        "role": "image_references",
+        "value": "d7802b62-c1d5-4be7-9520-b75ca2c352cc"
+      }
+    ],
+    "prompt": "EDIT the supplied Hell Hunter image, preserving the existing composition and character/weapon design. This is a careful cleanup of the same illustration, not a new scene.\nPRIMARY CHANGES: (1) Remove the excessive dot-like speckles, stippled/pitted noise, tiny isolated bright flecks and grain from the armor, cloth, skin, guns, air, sky and foreground. Re-render these as clean continuous painterly surfaces with coherent larger material details and restrained highlights. Keep genuine engraved lines, armor seams, functional rivets and readable folds; do not turn materials into blurry plastic and do not erase ornamental craftsmanship. No halftone, pointillism, dotted texture, dithering, grain, glitter, floating particles or small white/red glowing dots. (2) Completely remove the conspicuous glowing red Christian cross on the central distant castle tower in front of the red moon, and any other background cross/crucifix ornaments. Replace those cross-bearing details with plain dark Gothic stone, unadorned pointed spires and slender vertical architectural lines, with no horizontal crossbars. No cross-shaped light or silhouette anywhere in the background.\nPRESERVE: the exact foreground adult dark-haired woman's recognizable face, hairstyle and armor, rear adult male character, both characters' positions and two-handed shoulder-supported rifle holds. Preserve both rifles' size, straight barrel geometry, large revolver cylinders, stocks, hand grip positions, collars, red wraps and existing harpoon muzzle assembly. The weapon blades are intentional weapon parts and must NOT be removed along with background crosses. Keep all fingers anatomically coherent and exactly attached to the same grips. Preserve the red moon, huge Gothic castle silhouette, stone stairs, gargoyle statue on the right, dark red/black palette and directional lighting. Keep the existing tip's red light but remove its tiny scattered sparkling dots. Do not add firing, explosions, another weapon, additional people or new decorative elements.\nKeep the upper-right EXODUSER title including its existing round symbol and the HELL LORD subtitle unchanged, crisp and in the same location. Background cross removal does not apply to this logo. Retain the full original 27:16 framing; do not crop the character's boots or either weapon. Clean high-resolution dark fantasy key art with crisp meaningful shapes, smooth tonal transitions and restrained natural surface detail. Maintain the original atmosphere and recognizable identities as closely as possible."
+  },
+  "intent": "Image cleanup only. User confirmation required before a new video from the revised image. Existing image/video preserved.",
+  "output_file": "13-hell-hunter-sunburst-clean-v2.png",
+  "result_url": "https://d8j0ntlcm91z4.cloudfront.net/user_3G1zto9sz11Uf3iEOhJefE9HdGG/hf_20260928_072902_3850ec67-4653-44c3-a08f-abc5477477f8.png",
+  "output": {
+    "width": 3456,
+    "height": 2048,
+    "format": "PNG",
+    "mode": "RGB",
+    "bytes": 10485099
+  },
+  "charged_credits": 15,
+  "balance_after": 679.5,
+  "balance_delta": 49.5,
+  "billing_evidence": {
+    "display_name": "GPT Image 2.5 Sunburst",
+    "credits": -15,
+    "created_at": "2026-09-28T07:29:02.418072Z",
+    "note": "The ledger entry matches this model and generation timestamp. The balance delta also includes two unrelated Grok transactions totaling 34.5 credits; do not attribute the whole delta to this image."
+  },
+  "qa": {
+    "browser": "Local review gallery loaded both original and edited images at 3456x2048 with complete=true. The original-image disclosure opens successfully.",
+    "cross": "Prominent red cross on central tower removed; surrounding visible background spires contain no obvious cross ornaments.",
+    "texture": "Fewer fine bright speckles and pitted dots on armor, gloves, cloth and around weapon light. Continuous surfaces retain seams, engraving, rivets and larger worn details.",
+    "preserved": "Full framing, recognizable characters, shoulder support, two-handed grips, straight rifles, cylinders and muzzle assemblies, moon, stairs, gargoyle and readable EXODUSER / HELL LORD title.",
+    "limitations": "Generative redraw subtly changes faces, armor engraving, cloth folds, background architecture and tip light. Not a pixel-identical localized retouch. Requested 4k; actual output is 3456x2048.",
+    "review_status": "pending_user_image_approval",
+    "new_video_generated": false,
+    "runtime_integrated": false
+  }
+}
