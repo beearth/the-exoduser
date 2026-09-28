@@ -1086,13 +1086,14 @@
     "submitted": false,
     "email_verification": "Single correct business email visibly present with draft saved. Email previously became blank after reload; recheck it immediately before any future submission.",
     "pending": [
-      "debut game",
-      "full-time or alongside work/study",
       "external media use permission",
       "streaming permission",
       "Important Notes agreement",
       "optional Steam App ID banner consent"
-    ]
+    ],
+    "debut_game": "Yes",
+    "development_setup": "Developing the game full-time",
+    "developer_confirmation": "2026-09-28: User confirms full-time business owner and no released games yet. Both form selections and draft saved verified."
   },
   "browser_playback_verification": {
     "date": "2026-09-28",
