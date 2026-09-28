@@ -1,0 +1,61 @@
+{
+  "date": "2026-09-28",
+  "source": "assets/exoduser-grok2-poster-04-20260928.png",
+  "source_user_file": "C:/Users/심도진/Downloads/hf_20260927_235725_7e9bf3a6-9571-4194-89b3-51b0471991ad.png",
+  "source_sha256": "77F4DFF99D94BDEEA3C601B62D026A298A774F3DA11E5011A188A79FCDE498C0",
+  "provider": "Higgsfield",
+  "model": "gpt_image_2_5",
+  "mode": "reference-based image edit",
+  "estimated_credits_each": 2.75,
+  "approval_status": "Image review pending; no video generation authorized for this edited image",
+  "attempts": [
+    {
+      "job_id": "577791f6-f40e-4868-ad1a-018997516a19",
+      "filename": "10-cruciform-male-gun-match.png",
+      "params": {
+        "model": "gpt_image_2_5",
+        "quality": "high",
+        "resolution": "2k",
+        "aspect_ratio": "16:9",
+        "count": 1,
+        "folder_id": "cec12414-13bc-49e4-b460-5d26f3bee4c7",
+        "medias": [
+          {
+            "role": "image",
+            "value": "7e9bf3a6-9571-4194-89b3-51b0471991ad"
+          }
+        ],
+        "prompt": "Precise localized edit of this exact approved EXODUSER poster. CHANGE ONLY THE BACKGROUND MAN'S RIFLE, on the right side in front of the stone gargoyle. The large FOREGROUND WOMAN'S rifle is the exact weapon design reference INSIDE this image. Replace the man's currently thin, malformed rifle with the SAME model as hers, reduced naturally by perspective and correctly rotated to follow his existing grip and aim. Copy her heavy six-chamber revolver cylinder near the receiver, long straight thick blackened-steel barrel, antique bronze Gothic collars, red cloth bindings, and long pointed harpoon muzzle made of four CLOSED blade petals with matching small side fins. The entire weapon must be coherent: stock, cylinder, barrel and pointed nose on ONE straight continuous axis. Match the woman's weapon proportions, material and mechanical design; the man holds a smaller-in-frame version of the SAME gun, NOT a different ordinary rifle, crossbow, lance, bow, gatling or bent thin pipe. Keep the gun fully within the canvas, pointing diagonally down-right in the man's existing pose. Correct perspective and hand contact. His muzzle is closed, not firing, with no new beam or flame. STRICT INVARIANTS: leave the woman and her ENTIRE foreground gun, her face, hair, armor and pose completely unchanged. Leave the man's body, face, hair, costume, pose and hand positions unchanged. Leave the gargoyle, blood moon, castle, stairs, clouds, all background, original red foreground energy effect, dramatic lighting, exact framing and original EXODUSER HELL LORD typography unchanged. Do not recolor, relight, recompose, crop, beautify or redraw the rest of the scene. Produce the same full image with only the background male rifle repaired to match the female rifle. High fidelity to the input."
+      },
+      "status": "completed",
+      "width": 2688,
+      "height": 1520,
+      "review": "RETOUCH: straight thick barrel and closed spear nose appear, but weapon aligns with the forearm like an arm cannon, rear stock/cylinder insufficiently distinct; fine facial texture drift."
+    },
+    {
+      "job_id": "f1feca82-454c-44d6-bfa6-e442740df636",
+      "filename": "10-cruciform-male-gun-match-v2.png",
+      "params": {
+        "model": "gpt_image_2_5",
+        "quality": "high",
+        "resolution": "2k",
+        "aspect_ratio": "16:9",
+        "count": 1,
+        "folder_id": "cec12414-13bc-49e4-b460-5d26f3bee4c7",
+        "medias": [
+          {
+            "role": "image",
+            "value": "7e9bf3a6-9571-4194-89b3-51b0471991ad"
+          }
+        ],
+        "prompt": "Make a minimal localized correction to the BACKGROUND MAN'S RIFLE ONLY in this exact EXODUSER artwork. Preserve the complete original image outside his rifle. The foreground woman's gun is the exact design reference: give the background man the SAME heavy Gothic revolver rifle, scaled down by distance. It needs a clearly visible large SIX-SHOT REVOLVER CYLINDER behind a thick long straight barrel, ornate bronze barrel collars, red cloth ties, and the same closed pointed four-petal HARPOON NOSE with small side fins. MOST IMPORTANT ANATOMY: this is a separate gun that he HOLDS, never an arm cannon or prosthetic. Preserve his visible extended forearm and natural hand, with his fingers wrapping AROUND the top/side of the fore-end. Place the rifle axis BELOW his forearm, NOT inline with his arm. Clearly show a stock and rear receiver extending BACKWARD beyond his gripping hand toward his torso, then the large revolver cylinder beneath his hand, then the barrel extending diagonally down-right. Keep the original grip position and natural arm silhouette. His wrist must NOT turn into the rifle tube. The stock, cylinder, barrel, collar and pointed nose share one straight coherent gun axis. No ordinary thin rifle, no spike replacing the entire gun. His muzzle remains closed and is not firing. Copy the foreground female gun's mechanical proportions and appearance, not her huge near-camera scale. Keep the original man at the same place, same pose, same clothing. Leave the foreground woman, her exact face, lips, hair, anatomy, clothing and her entire gun COMPLETELY UNCHANGED. Leave the castle, blood moon, gargoyle, stairs, red energy on the woman's gun, lighting, colors and EXODUSER HELL LORD lettering COMPLETELY UNCHANGED. No restyling, relighting, face edits, costume edits or compositional change. Only repair the small background man's held rifle."
+      },
+      "status": "completed",
+      "width": 2688,
+      "height": 1520,
+      "selected_for_review": true,
+      "review": "Male rifle now sits below the visible forearm with a rear stock/receiver and thicker cylinder, continuous barrel, bronze collars, red ties and closed pointed harpoon muzzle. Main composition and silhouettes retained. RETOUCH / user review pending: whole-frame generative edit also changes fine female facial/weapon details, especially the foreground muzzle blade size and arrangement; it is not a pixel-exact male-only composite. No video generated.",
+      "result_url": "https://d8j0ntlcm91z4.cloudfront.net/user_3G1zto9sz11Uf3iEOhJefE9HdGG/hf_20260928_020419_f1feca82-454c-44d6-bfa6-e442740df636.png"
+    }
+  ]
+}
