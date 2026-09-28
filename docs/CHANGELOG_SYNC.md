@@ -50770,3 +50770,15 @@ CSS 캐시 ui-refinement.css?v=20260927-4. 신규 이미지/아이템 데이터 
 | 저장/선택 | hellsave_demo, 내부 DEMO CHARACTER, charIdx0, _selectedSlot/_selectedSlotName=demo 유지. 이름 변경으로 저장을 재작성하지 않음 |
 | DOM/언어 | _lobbyCardLeaf는 특정 리프의 children.length===0만 갱신. 선택 제어/이미지 노드/초점 유지. 언어 전환 중 세이브 읽기/쓰기 없음 |
 | 검증 | 기존 언어·데모 슬롯·소환체 회귀와 격리 브라우저의 신규/저장 진행, 한국어/영어, 새로고침 및3크기 확인. 상세 증거 captures/ancestor_grok_review/player-card/runtime-report.json |
+
+
+### PUBLISHER_COMBAT_TEXTURE_WARMUP_20260929
+
+| id / 적용 위치 | 현행 변경·검증 |
+|---|---|
+| 두HTML | `_queueCombatTextureWarmup()` 추가. 물리탄·속성 구체·검기 Image/Canvas·고어·피격·공용 패링/폭발 시트를 몬스터보다 먼저 기존80장 큐에 적재. 실패 이미지 제외·GPU/queued Set·유휴1장·180f 재검사 유지 |
+| 회귀 | 수정 전 누락2FAIL → 새4PASS. 기존 GPU 준비 검사 포함7파일18PASS. 실행 inline각6개 구문PASS |
+| 실제 배포 | 원본 NW.js 스냅샷에 같은 수정만 이식해1600×900/High/60cap 비교. 유효 전면 표본draw max151ms →13ms, 수정 후24초34ms초과공백0. 이동·전체화면 추가검사와 ZIP/커밋 상태는 상세문서에 구분 기록 |
+| SSOT | [전투 텍스처 워밍업](12퍼포먼스·최적화/COMBAT_TEXTURE_WARMUP_20260929.md). 전체맵 VISUAL VERDICT RETOUCH. 원본 ZIP·타 작업staging 보존 |
+
+추가 첫 전투 계측에서 확인한 `_waterBlueFlightImg`(물 파란콩), `_ch1StartMediumImgs`(다안육괴), `void_black`(부활 대기), `_mineTrapWardSheet`(덫), `_corpses`의 첫16개128×128 Canvas도 같은 준비 큐에 포함한다. 최초 부활 시트의43.3ms 업로드와 첫 시체 텍스처 할당을 draw에서 준비 단계로 옮기며, 기존 표현·부활 수치·시체 풀120개·동적 내용 갱신은 유지한다.

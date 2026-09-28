@@ -267,3 +267,13 @@
 - `_addCorpse`(시체+`_addFloorTrace` 핏자국)·`_addGorePiece`(살점/피)·`deathFX`(`death_blood` VFX + 파티클) 로직은 불변, **풀/스로틀 한계치만 상향**.
 - 검증: 70마리 직접 `_addCorpse`/`_addGorePiece` → 활성 시체 60·gore 60 렌더 확인(이전 15/16). 회전참 대량 처치 시 바닥에 시체·피 카펫 유지.
 - `OPT.deathFx=false`(최하 그래픽 티어)면 여전히 시체/gore 미출력 — 티어 로직 불변.
+
+
+## 첫 처치 GPU 준비 (2026-09-29)
+
+| id | 현행 계약 |
+|---|---|
+| `_corpses` | 기존120개 풀 중 첫16개128×128 Canvas를 `_queueCombatTextureWarmup()`의80장 큐에 적재해 GPU 텍스처를 사전 할당. 내용은 기존 사망/동적 Canvas 업로드 경로에서 갱신 |
+| `_goreImgs` / `_diImgs` / `void_black` | 완료 고어·피격·부활 대기 시트를 먼저 제출. 중복 Set·유휴1장·180f 재검사 유지 |
+
+시체 수·크기·수명·피해·고어 원본·부활 수치는 변경하지 않는다. [실측·검증 SSOT](../12퍼포먼스·최적화/COMBAT_TEXTURE_WARMUP_20260929.md).

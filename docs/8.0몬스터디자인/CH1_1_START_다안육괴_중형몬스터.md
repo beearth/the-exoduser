@@ -60,3 +60,12 @@
 | inline JavaScript | `node --test test/gameHtmlInlineSyntax.test.js` PASS |
 | 브라우저 | `http://127.0.0.1:3333/game.html`, `initStage(0)` 후 2마리 alive, `sheet=true`, pageerror 없음; 플레이어 상대 방향에 따라 8방향 행 전환 |
 | 시각 확인 | `captures/ch1_start_medium_8dir_base_20260904.png`: 두 다안 육괴가 서로 다른 대각 방향에서 숫자·배경·이웃 프레임 조각 없이 표시 |
+
+
+## GPU 시트 준비 (2026-09-29)
+
+| id | 현행 준비 |
+|---|---|
+| `_ch1StartMediumImgs` | 완료된 다안육괴 시트를 `_queueCombatTextureWarmup()`가 기존 일반80장 GPU 큐에 먼저 제출. Image complete/naturalWidth 검사·중복 Set·유휴1장 업로드·180f 재검사 유지 |
+
+첫 접근 프레임의 전체 시트 업로드를 줄인다. 몬스터 크기·행동·판정·원본 아트 변경 없음. [실측·검증 SSOT](../12퍼포먼스·최적화/COMBAT_TEXTURE_WARMUP_20260929.md).

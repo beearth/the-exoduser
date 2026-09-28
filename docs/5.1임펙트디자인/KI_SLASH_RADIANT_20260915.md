@@ -32,3 +32,15 @@
 검수 산출물: `output/ki_slash_radiant_20260915/before_after.png`, `all_frames.png`, `in_game.png`, `qa.json`. 브라우저에서 실제 `renderCrescents`, `_playKiSlashHit`를 실행해 3개 팔레트×9프레임, 4프레임 명중광, 원래 피해·속도·반경을 검사한다.
 
 생성 방식과 최종 프롬프트 사양: [KI_SLASH_RADIANT_PROMPTS_20260915.md](KI_SLASH_RADIANT_PROMPTS_20260915.md).
+
+
+## GPU 준비 계약 (2026-09-29)
+
+| id | 적용 |
+|---|---|
+| `_kiSlashRadiant.surfaces` | 원본 Image와 로드 시 생성한 색상 Canvas를 `_queueCombatTextureWarmup()`에서 기존80장 큐에 적재. Image는 complete/naturalWidth, Canvas는 양수 width/height 검사 |
+| `ki_slash_hit_*` | 공용 명중 시트도 같은 큐에서 먼저 제출. 기존 Set으로 중복 제외, 늦은 로드는180f 재검사 |
+
+첫 검기 렌더가 전체 시트 업로드를 떠맡는 누락을 보완한다. 검기 수치·팔레트·합성·프레임 계약은 그대로다. [실측·검증 SSOT](../12퍼포먼스·최적화/COMBAT_TEXTURE_WARMUP_20260929.md).
+
+추가 첫 전투 계측에서 확인한 `_waterBlueFlightImg`(물 파란콩), `_ch1StartMediumImgs`(다안육괴), `void_black`(부활 대기), `_mineTrapWardSheet`(덫), `_corpses`의 첫16개128×128 Canvas도 같은 준비 큐에 포함한다. 최초 부활 시트의43.3ms 업로드와 첫 시체 텍스처 할당을 draw에서 준비 단계로 옮기며, 기존 표현·부활 수치·시체 풀120개·동적 내용 갱신은 유지한다.

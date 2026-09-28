@@ -21597,6 +21597,27 @@ function _queueWarmImage(img,cap){
   if(!img||_wqLen>=cap||_wqGpuImages.has(img)||_wqQueued.has(img))return;
   _wqQueued.add(img);_wqBuf[_wqLen++]=img;
 }
+function _queueCombatTextureWarmup(){
+  // First projectile/kill/ki hits must not upload their full sheets in draw().
+  const ready=img=>{
+    if(!img)return;
+    if(typeof img.complete==='boolean'){if(!img.complete||!img.naturalWidth)return}
+    else if(!(img.width>0&&img.height>0))return;
+    _queueWarmImage(img,80);
+  };
+  if(typeof _physMouthImg!=='undefined')ready(_physMouthImg);
+  if(typeof _elemOrbImg!=='undefined')ready(_elemOrbImg);
+  if(typeof _waterBlueFlightImg!=='undefined')ready(_waterBlueFlightImg);
+  if(typeof _ch1StartMediumImgs!=='undefined')for(const key in _ch1StartMediumImgs)ready(_ch1StartMediumImgs[key]);
+  if(typeof _mineTrapWardSheet!=='undefined')ready(_mineTrapWardSheet);
+  if(typeof _kiSlashRadiant!=='undefined'&&_kiSlashRadiant)for(const img of _kiSlashRadiant.surfaces)ready(img);
+  if(typeof _goreImgs!=='undefined')for(const key in _goreImgs)ready(_goreImgs[key]);
+  if(typeof _diImgs!=='undefined')for(const key in _diImgs)ready(_diImgs[key]);
+  if(typeof _corpses!=='undefined')for(let i=0;i<Math.min(16,_corpses.length);i++)ready(_corpses[i].c);
+  if(typeof _VFX_SHEETS!=='undefined')for(const id in _VFX_SHEETS){
+    if(id.startsWith('parry_impact')||id.startsWith('ki_slash_hit_')||id==='magic_burst'||id==='land_fire'||id==='fire_burst'||id==='ice_slash'||id==='void_black')ready(_VFX_SHEETS[id].img);
+  }
+}
 // 워밍업 큐 적재
 function _warmupEnsAtlas(){
   if(_ensWarmDone||_wqLen>0)return;
@@ -21604,6 +21625,7 @@ function _warmupEnsAtlas(){
   if(_saReady&&!_saWarmDone&&_wqLen<80)_wqBuf[_wqLen++]=_WQ_SHIELD_AURA;
   if(_BONFIRE_BARRIER_IMG.complete&&_BONFIRE_BARRIER_IMG.naturalWidth>0&&!_bonfireBarrierWarmDone&&_wqLen<80)_wqBuf[_wqLen++]=_WQ_BONFIRE_BARRIER;
   if(_atlasP_img&&_atlasP_img.complete&&_atlasP_img.naturalWidth>0&&!_playerAtlasGpuWarmDone&&_wqLen<80)_wqBuf[_wqLen++]=_WQ_PLAYER_ATLAS;
+  _queueCombatTextureWarmup();
   var a8=_ch8Atlas[1];
   var _dks=['south','south-east','east','north-east','north','north-west','west','south-west'];
   if(a8){for(var di=0;di<8;di++){

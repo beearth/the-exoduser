@@ -872,3 +872,17 @@ Ori 수준 대기 깊이감. 광원 근처에서 존재감 나는 미세 입자.
 | 분출 시트·위치 | 기존 `assets/vfx/boss/vfx_lava_erupt.png`, 3×3/9프레임, 셀 768×768을 재사용한다. | `playVFXAng('lava_erupt',x,y−size×.25,size/768,5,0,false,.85)`, `size=min(r×2.5,360)`; 약 45f 동안 바닥에서 위로 솟는다. 로딩 전에는 기존 폭발 파티클이 남는다. |
 
 이 마법진과 분출은 시각 전용이다. 기존 반경·피해·전조 시간·화염비 착탄 후 페이드 및 폭발 SFX를 변경하지 않는다. 회귀 검사는 `test/groundHazardImpact.test.cjs`와 `test/eliteTelegraphVisibility.test.js`를 사용한다.
+
+
+### 첫 전투 GPU 업로드 분산 (2026-09-29)
+
+| 적용 위치 | 현행 렌더 준비 계약 |
+|---|---|
+| 물리탄·속성 구체 | `_physMouthImg`, `_elemOrbImg`, `_waterBlueFlightImg`의 완료 원본을 공용 워밍업 큐에 먼저 적재 |
+| 기검참·피격·고어 | `_kiSlashRadiant.surfaces`(원본·색상 Canvas), `_goreImgs`, `_diImgs` 완료 이미지 적재 |
+| 패링·공용 폭발 | `parry_impact*`, `ki_slash_hit_*`, `magic_burst`, `land_fire`, `fire_burst`, `ice_slash`, `void_black` 시트 적재 |
+| 호출 | `_warmupEnsAtlas()` → `_queueCombatTextureWarmup()`. 기존 일반80장 상한·실제 GPU 제출·중복 Set·유휴1장 처리·180f 지연 로드 재검사 유지 |
+
+시트·색상·프레임·크기·전투 수치는 그대로다. [실측·검증 SSOT](../12퍼포먼스·최적화/COMBAT_TEXTURE_WARMUP_20260929.md).
+
+추가 첫 전투 계측에서 확인한 `_waterBlueFlightImg`(물 파란콩), `_ch1StartMediumImgs`(다안육괴), `void_black`(부활 대기), `_mineTrapWardSheet`(덫), `_corpses`의 첫16개128×128 Canvas도 같은 준비 큐에 포함한다. 최초 부활 시트의43.3ms 업로드와 첫 시체 텍스처 할당을 draw에서 준비 단계로 옮기며, 기존 표현·부활 수치·시체 풀120개·동적 내용 갱신은 유지한다.
