@@ -1,6 +1,6 @@
 {
   "version": "20260916-finish-1",
-  "bakeVersion": "20260928-outer-70",
+  "bakeVersion": "20260928-outer-72",
   "groundMaterials": {
     "mask": "ground-zones.svg",
     "soil": {

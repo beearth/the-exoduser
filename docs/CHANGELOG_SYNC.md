@@ -50690,3 +50690,9 @@ CSS 캐시 ui-refinement.css?v=20260927-4. 신규 이미지/아이템 데이터 
 | 실제 화면 | Node 서버의 실제 페이지에서 시작 타이틀 클릭 후960×540/1920×1080 확인. 실제 Tab/Shift+Tab/Enter/Space/방향키/Home/End/Escape 입력. 초점 전부 창 내부, 출시 잠금 유지, 취소 후 실행 버튼 복귀, 미디어 pause/src 해제. 컨트롤·초점 테두리 화면 내 및 가로 넘침 없음 |
 | 생성 연결 | 실제 생성 버튼으로 기존 이름창 열림과 이름 입력→취소→생성 Tab 순환/역순 및 Escape 취소 확인. 데모에는 생성 카드가 없어 openVisualSelect로 진입. 저장 API 호출0/pageerror0. 실제 사용자 캐릭터 저장·삭제·앱 종료 없음 |
 | 기록·커밋 | tmp/lobby-modal-keyboard/browser-before.json, browser-after-960.json, browser-after-1920.json, red-tests.txt, tests.txt, changes.patch. 관련 문서6개 동기화. 현재 .git 쓰기 제한으로 이 작업의 커밋 실행 불가. 다른 작업의 스테이징을 직접 변경하지 않음 |
+# 2026-09-28 게시 스냅샷의 로비 애니메이션 로더 포함
+
+| 항목 | 변경 및 검증 |
+|---|---|
+| 배포 파일 | 누적 커밋 직전에 추가된 `lobby-ancestor-sprite.js`를 공통 웹/NW `FILES`에 포함. `index.html`의 defer 로더와 `assets/lobby/varkan_idle_v1.png` 연결 유지 |
+| 회귀 검사 | `test/vercelUpload.test.js`의 HTML 루트 참조 검사를 stylesheet와 script 모두로 확장. `lang_` 동적 언어 파일은 별도 복사 계약 유지 |

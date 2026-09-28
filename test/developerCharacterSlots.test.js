@@ -22,13 +22,14 @@ function lobby({ build = 'full', count = 5, development = false, demoSave = null
   const slots = Array.from({ length: count }, (_, i) => ({ name: `character-${i}`, lv: 10, stage: 0, charIdx: 0 }));
   const ctx = vm.createContext({
     _LOBBY_BUILD: build, _testMode: true, _developerSlots: false, _localSlots: [],
-    _characterLoadSeq: 0, _selectedSlot: null, _selectedSlotName: null, _TL: s => s, escHtml: s => s,
+    _characterLoadSeq: 0, _selectedSlot: null, _selectedSlotName: null, _lobbyLang: () => 'ko', _TL: s => s, escHtml: s => s,
     _formatLobbyStageProgress: () => '1층', CHAR_VISUALS: [{ name: '전사' }],
     _updateCharDisplay(slot) { displayed=slot||null; }, _selectSlot() {}, _addLobbyCardControl() {}, _bindLobbyListNavigation() {}, openVisualSelect() { opened++; },
     $: id => els[id], document: { createElement: element }, localStorage: { getItem: key => key === 'hellsave_demo' ? demoSave : null },
     fetch: async () => ({ ok: true, json: async () => ({ ok: true, slots, development }) }),
   });
-  vm.runInContext(localCode, ctx);
+  const ancestorCode=['_lobbyAncestorName','_lobbyAncestorCaption'].map(name=>html.match(new RegExp('function '+name+'[^\\n]+'))[0]).join('\n');
+  vm.runInContext(ancestorCode+'\n'+localCode, ctx);
   return { ctx, els, opened: () => opened, displayed: () => displayed };
 }
 
@@ -55,7 +56,7 @@ test('demo remains a single fixed character even on a development server', async
   const { ctx, els } = lobby({ build: 'demo', development: true, count: 100 });
   await ctx.loadLocalCharacters();
   assert.equal(els.charList.children.length, 1);
-  assert.match(els.charList.children[0].innerHTML, /DEMO CHARACTER/);
+  assert.match(els.charList.children[0].innerHTML, /묘왕 바르칸/);
   assert.equal(els.developerSaveNotice.hidden, true);
 });
 

@@ -2049,6 +2049,7 @@ function _applyLobbyLang(){
     else{const k=pair[0];el.textContent=(tbl&&tbl[k])||_LOBBY_EN[k]||pair[1];}
   }
   _refreshStatusLanguage();
+  _refreshLobbyCardsLanguage();
   const quitBtn=document.getElementById('lobbyQuitBtn');if(quitBtn){const label=lang==='ko'?'게임 종료':(tbl&&tbl['게임 종료'])||_LOBBY_EN['게임 종료']||'Quit Game';quitBtn.setAttribute('aria-label',label);quitBtn.title=label;}
   if(_selectedCharDisplay)_updateCharDisplay(_selectedCharDisplay);
   else{
@@ -2907,10 +2908,14 @@ let _onlineChars=[],_onlineScrollIdx=0;
 function _addLobbyCardControl(card,label,key){
   const control=document.createElement('button');
   control.type='button';control.className='char-select';
-  const info=card.querySelector('.char-info');
-  const detail=info&&info.children.length===0?info.textContent.trim():'';
-  const description=detail?label+' · '+detail:label;
-  control.setAttribute('aria-label',description);control.title=description;control.dataset.cardKey=key;
+  card._refreshLanguage=()=>{
+    const currentLabel=typeof label==='function'?label():label;
+    const info=card.querySelector('.char-info');
+    const detail=info&&info.children.length===0?info.textContent.trim():'';
+    const description=detail?currentLabel+' · '+detail:currentLabel;
+    control.setAttribute('aria-label',description);control.title=description;
+  };
+  card._refreshLanguage();control.dataset.cardKey=key;
   control.addEventListener('click',()=>{
     const focused=document.activeElement===control;
     setTimeout(()=>{
@@ -2921,6 +2926,33 @@ function _addLobbyCardControl(card,label,key){
     },0);
   });
   card.prepend(control);
+}
+
+function _refreshLobbyCardsLanguage(){
+  const list=$('charList');if(!list)return;
+  list.querySelectorAll('.char-item,.char-item-new').forEach(card=>{if(typeof card._refreshLanguage==='function')card._refreshLanguage();});
+}
+function _lobbyCardLeaf(card,selector,text){
+  const el=card.querySelector(selector);if(el&&el.children.length===0)el.textContent=text;
+}
+function _lobbyCharacterCardLabel(card,name,visualIdx,lv,stage,separator=' · '){
+  const visual=CHAR_VISUALS[visualIdx]||CHAR_VISUALS[0],job=_TL((visual&&(visual.job||visual.cls))||'');
+  _lobbyCardLeaf(card,'.char-cls',job);
+  _lobbyCardLeaf(card,'.char-info','Lv.'+lv+separator+_formatLobbyStageProgress(stage,_TL));
+  const del=card.querySelector('.char-del');if(del)del.title=_TL('삭제');
+  return name+' · '+job;
+}
+function _lobbyDemoCardLabel(card,progress){
+  const name=_lobbyAncestorName(),caption=_lobbyAncestorCaption();
+  const info=progress?'Lv.'+progress.lv+' · Stage 1-1 · '+_TL('처치')+' '+progress.kills.toLocaleString()+' · '+_TL('브라우저 저장'):'Lv.1 START · Stage 1-1 · Lv.100 Cap';
+  _lobbyCardLeaf(card,'.char-name',name);_lobbyCardLeaf(card,'.char-info',caption+' · '+info);
+  return caption+' · '+name;
+}
+function _lobbyNewCardLabel(card,canCreate,maxChars){
+  const label=_TL(canCreate?'새 캐릭터':'슬롯 가득참');
+  _lobbyCardLeaf(card,'.char-name',label);
+  if(!canCreate)_lobbyCardLeaf(card,'.char-info',_TL('최대')+' '+maxChars+_TL('개'));
+  return label;
 }
 
 function _bindLobbyListNavigation(up,down,move){
@@ -2960,7 +2992,7 @@ function _renderOnlineSlots(){
       const div=document.createElement('div');div.className='char-item'+(_selectedSlot===ch.id?' active':'');
       div.innerHTML=`<div class="char-thumb"><img src="${(_vi&&(_vi.bust||_vi.portrait))||'assets/lobby/lobby_ancestor_portrait_v4.webp?v=20260928-shoulder-v4'}" style="width:100%;height:100%;object-fit:cover;object-position:${_vi.thumbPos||'center 12%'};border-radius:2px"></div><div class="char-text"><div class="char-name"><span class="char-name-label">${escHtml(ch.name)}</span><span class="char-cls">${escHtml(_TL((_vi&&(_vi.job||_vi.cls))||''))}</span></div><div class="char-info">Lv.${lv} | ${st}</div></div><button class="char-del" title="${_TL('삭제')}">✕</button>`;
       div.querySelector('.char-name-label').title=ch.name;
-      _addLobbyCardControl(div,ch.name+' · '+_TL((_vi&&(_vi.job||_vi.cls))||''),'online:'+ch.id);
+      _addLobbyCardControl(div,()=>_lobbyCharacterCardLabel(div,ch.name,_pci,lv,stage,' | '),'online:'+ch.id);
       div.addEventListener('click',e=>{
         if(e.target.classList.contains('char-del'))return;
         _selectedSlot=ch.id;_selectedSlotName=ch.name;
@@ -2995,8 +3027,8 @@ function _renderOnlineSlots(){
   const MAX_CHARS=5,canCreate=total<MAX_CHARS;
   const newDiv=document.createElement('div');newDiv.className='char-item-new';newDiv.style.marginTop='10px';
   newDiv.innerHTML='<div class="char-thumb"><span class="char-thumb-empty">'+(canCreate?'+':'✕')+'</span></div><div class="char-text"><div class="char-name" style="color:#886644">'+(canCreate?_TL('새 캐릭터'):_TL('슬롯 가득참'))+'</div></div>';
-  if(canCreate){_addLobbyCardControl(newDiv,_TL('새 캐릭터'),'new');newDiv.addEventListener('click',()=>openVisualSelect());}
-  else{newDiv.style.opacity='.35';newDiv.style.cursor='default';newDiv.style.pointerEvents='none'}
+  if(canCreate){_addLobbyCardControl(newDiv,()=>_lobbyNewCardLabel(newDiv,true,MAX_CHARS),'new');newDiv.addEventListener('click',()=>openVisualSelect());}
+  else{newDiv._refreshLanguage=()=>_lobbyNewCardLabel(newDiv,false,MAX_CHARS);newDiv.style.opacity='.35';newDiv.style.cursor='default';newDiv.style.pointerEvents='none'}
   cl.appendChild(newDiv);
   // ── 이벤트 ──
   const btnUp=cl.querySelector('#charNavUpOn'),btnDn=cl.querySelector('#charNavDnOn');
@@ -3303,7 +3335,7 @@ function _renderSlotList(){
       :'Lv.1 START · Stage 1-1 · Lv.100 Cap';
     const div=document.createElement('div');div.className='char-item active';
     div.innerHTML='<div class="char-thumb"><img src="assets/lobby/lobby_ancestor_portrait_v4.webp?v=20260928-shoulder-v4" style="width:100%;height:100%;object-fit:cover;object-position:center 20%;border-radius:2px"></div><div class="char-text"><div class="char-name">'+_lobbyAncestorName()+'</div><div class="char-info" style="color:rgba(200,150,100,.6)">'+_lobbyAncestorCaption()+' · '+demoInfo+'</div></div>';
-    _addLobbyCardControl(div,_lobbyAncestorCaption()+' · '+_lobbyAncestorName(),'demo');
+    _addLobbyCardControl(div,()=>_lobbyDemoCardLabel(div,demoProgress),'demo');
     const demoSlot={name:'DEMO CHARACTER',charIdx:0,stage:0};
     div.addEventListener('click',()=>{_selectedSlot='demo';_selectedSlotName='demo';_updateCharDisplay(demoSlot);});
     cl.appendChild(div);
@@ -3342,7 +3374,7 @@ function _renderSlotList(){
       const div=document.createElement('div');div.className='char-item'+(_selectedSlot===s.name?' active':'');
       div.innerHTML=`<div class="char-thumb"><img src="${(_vi&&(_vi.bust||_vi.portrait))||'assets/lobby/lobby_ancestor_portrait_v4.webp?v=20260928-shoulder-v4'}" style="width:100%;height:100%;object-fit:cover;object-position:${_vi.thumbPos||'center 12%'};border-radius:2px"></div><div class="char-text"><div class="char-name"><span class="char-name-label">${escHtml(s.name)}</span><span class="char-cls">${escHtml(_TL((_vi&&(_vi.job||_vi.cls))||''))}</span></div><div class="char-info">Lv.${s.lv||1} · ${st}</div></div><button class="char-del" title="${_TL('삭제')}">✕</button>`;
       div.querySelector('.char-name-label').title=s.name;
-      _addLobbyCardControl(div,s.name+' · '+_TL((_vi&&(_vi.job||_vi.cls))||''),'local:'+s.name);
+      _addLobbyCardControl(div,()=>_lobbyCharacterCardLabel(div,s.name,s.charIdx||0,s.lv||1,stage),'local:'+s.name);
       div.addEventListener('click',e=>{if(e.target.classList.contains('char-del'))return;_selectSlot(s)});
       div.querySelector('.char-del').addEventListener('click',e=>{
         e.stopPropagation();
@@ -3380,9 +3412,10 @@ function _renderSlotList(){
   const canCreate=total<MAX_CHARS;
   newDiv.innerHTML='<div class="char-thumb"><span class="char-thumb-empty">'+(canCreate?'+':'✕')+'</span></div><div class="char-text"><div class="char-name" style="color:#886644">'+(canCreate?_TL('새 캐릭터'):_TL('슬롯 가득참'))+'</div>'+(canCreate?'':'<div class="char-info">'+_TL('최대')+' '+MAX_CHARS+_TL('개')+'</div>')+'</div>';
   if(canCreate){
-    _addLobbyCardControl(newDiv,_TL('새 캐릭터'),'new');
+    _addLobbyCardControl(newDiv,()=>_lobbyNewCardLabel(newDiv,true,MAX_CHARS),'new');
     newDiv.addEventListener('click',()=>openVisualSelect());
   }else{
+    newDiv._refreshLanguage=()=>_lobbyNewCardLabel(newDiv,false,MAX_CHARS);
     newDiv.style.opacity='.35';newDiv.style.cursor='default';newDiv.style.pointerEvents='none';
   }
   cl.appendChild(newDiv);

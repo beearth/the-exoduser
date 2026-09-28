@@ -5,15 +5,15 @@ import vm from 'node:vm';
 
 const indexHtml = readFileSync(new URL('../index.html', import.meta.url), 'utf8');
 
-test('renders selected character name and job in the lobby display', () => {
+test('renders the summoned ancestor name and caption in the lobby display', () => {
   assert.match(indexHtml, /id="charDispTitle"/);
   assert.match(indexHtml, /id="charDispSub"/);
   assert.match(indexHtml, /<video class="lobby-char-preview" id="lobbyCharPreview" muted loop playsinline><\/video>/);
   assert.match(indexHtml, /empty\.classList\.add\('selected'\)/);
-  assert.match(indexHtml, /title\.textContent=s\.name/);
-  assert.match(indexHtml, /sub\.textContent=_TL\(_vi\.job\|\|_vi\.cls\|\|''\)/);
+  assert.match(indexHtml, /title\.textContent=_lobbyAncestorName\(\)/);
+  assert.match(indexHtml, /sub\.textContent=_lobbyAncestorCaption\(\)/);
   assert.match(indexHtml, /preview\.removeAttribute\('src'\)/);
-  assert.match(indexHtml, /lobby_ancestor_shoulder_v4\.png/);
+  assert.match(indexHtml, /lobby_varkan_crypt_poster_v1\.webp/);
 });
 
 test('updates the lobby display from online and local character slots', () => {

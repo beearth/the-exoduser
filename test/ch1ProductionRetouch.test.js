@@ -27,3 +27,14 @@ test('the production builder applies preserved layers before deriving chunks',as
  assert.ok(src.includes('applyRetouchLayers'),'rebake currently erases approved retouch layers');
  assert.ok(src.indexOf('await applyRetouchLayers')<src.indexOf('for(let y=0;y<8;y++)for(let x=0;x<8;x++)'));
 });
+
+test('production rebake metadata uses the chunk version loaded by the game', async()=>{
+ const html=await fs.readFile(new URL('../game.html',import.meta.url),'utf8');
+ const loader=html.split('\n').find(line=>line.includes('_CH1_START_OUTER.chunks[x'));
+ const version=loader?.match(/:'(\d{8}-[\w-]+)'}/)?.[1];
+ assert.ok(version,'the production chunk loader needs a dated cache version');
+ for(const name of ['retouch-layers.json','composition.json']){
+  const metadata=JSON.parse(await fs.readFile(new URL('../assets/map/ch1/production_finish/'+name,import.meta.url),'utf8'));
+  assert.equal(metadata.bakeVersion,version,name+' must match the loaded production chunks');
+ }
+});

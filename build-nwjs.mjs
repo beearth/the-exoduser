@@ -43,7 +43,7 @@ const FILES = [
   'ui-panels.js',
   'localization-runtime.js', 'localization-data.js', 'localization.css',
   'lobby-stage-info.js', 'character-story-player.js', 'level-up-vfx.js',
-  'lobby-ancestor-art.css',
+  'lobby-ancestor-art.css', 'lobby-ancestor-sprite.js',
   'world-intro-player.js', 'world-intro-subtitles-data.js', 'world-intro-subtitles.js',
   'cin-enter-engraved.css', 'cin-logo-art.js',
   'GLTFLoader.js', 'three.min.js',

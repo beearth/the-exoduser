@@ -37,7 +37,7 @@ test('web staging excludes CH1 master and retouch sources while retaining playab
  }
  assert.equal(isMapAuthoringSource('assets/monsters/outer66_sources/sprite.png'),false);
 });
-test('runtime manifest includes every root stylesheet used by the lobby and game',()=>{
+test('runtime manifest includes every root stylesheet and script used by the lobby and game',()=>{
  const build=readFileSync(new URL('../build-nwjs.mjs',import.meta.url),'utf8');
  const files=new Set([...build.match(/const FILES = \[([\s\S]*?)\];/)[1].matchAll(/'([^']+)'/g)].map(m=>m[1]));
  for(const entry of ['index.html','game.html']){
@@ -46,6 +46,10 @@ test('runtime manifest includes every root stylesheet used by the lobby and game
    if(!/rel=["']stylesheet["']/.test(tag))continue;
    const path=tag.match(/href=["']([^"']+)/)?.[1].split('?')[0];
    if(path&&!path.includes('/'))assert.ok(files.has(path),entry+' stylesheet omitted: '+path);
+  }
+  for(const [,src] of html.matchAll(/<script\b[^>]*\bsrc=["']([^"']+)/g)){
+   const path=src.split('?')[0];
+   if(path&&!path.includes('/')&&!path.startsWith('lang_')&&!path.includes('${'))assert.ok(files.has(path),entry+' script omitted: '+path);
   }
  }
 });
