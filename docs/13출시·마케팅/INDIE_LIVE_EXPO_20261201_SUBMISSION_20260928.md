@@ -82,13 +82,25 @@ No release or demo launch date is confirmed for announcement at INDIE Live Expo.
 
 ### 상세 게임 소개
 
-EXODUSER: HELL LORD is a dark fantasy action RPG built around active, player-controlled combat against large groups of enemies. Its central hook combines the momentum of hack-and-slash battles with parryable bullet patterns: players must read incoming attacks and time their responses while fighting through enemy hordes.
+EXODUSER: HELL LORD is a dark fantasy action RPG for PC (Windows), developed by full-time solo developer FOR DEAR GAMERS (FDG) as the studio's debut release.
 
-Item and skill combinations give players room to shape their own builds, while moment-to-moment movement, positioning, and defensive timing remain central to combat. The goal is to bring satisfying mass combat and deliberate, responsive action together within a dark fantasy world.
+CORE APPEAL AND CURRENT BUILD
+Large-scale hack-and-slash battles meet parryable projectile patterns. Players actively read incoming attacks, reposition, and time their defense while fighting enemy hordes. Item and equipment combinations, active skills, and skill fusion support different builds without removing the importance of player control. Ancestral spirit summons add another combat option. The current playable build and demo focus on the Greatsword Warrior; the submitted gameplay footage is captured from the current build.
 
-Developed by FOR DEAR GAMERS (FDG), the game has a playable build and demo and is preparing for release on Steam for Windows.
+FOUR CHARACTER / CLASS CONCEPTS IN PREPARATION
+Character and weapon design work is also underway for four distinct concepts:
+- Hell Hunter: a heavy-firearm fighter built around a distinctive gothic revolver-rifle design.
+- Transmuter: core gauntlets are the primary weapon, shaping pure-energy weapons such as a giant scythe and bow.
+- Arcane Lancer: a long lance-staff combining spear combat with arcane spellcasting.
+- Silvertail / Blade Dancer: a mobile melee concept centered on a large rotating, back-mounted blade.
+These are in development and are not being presented as four fully playable classes in the submitted demo.
 
-THOSE WHO DEFY THE FALL. EXODUSER.
+BROADER DEVELOPMENT PLANS
+The full-game design targets a seven-chapter journey across 35 areas, with varied enemies and bosses, expanded item-and-skill build options, and repeatable dungeon challenges. These are development targets; content is still being built and refined. Development priorities include combat readability, responsive controls, distinct weapon identities, and reliable saved progression.
+
+The game is preparing for release on Steam. No release date, class release schedule, or demo launch announcement has been confirmed for INDIE Live Expo.
+
+THOSE WHO DEFY THE FALL. EXODUSER. — 추락에 대항하는 자들, 엑소듀서.
 
 ### 100자 미만 방송 소개
 
@@ -100,7 +112,9 @@ The idea behind EXODUSER: HELL LORD is to combine the scale and build variety of
 
 ### 개발 일화 — 입력한 영문
 
-One practical development challenge was making progress in the playable demo persist reliably. Work on the demo included checking saves across reloads and returns to the lobby, preserving existing data, and making the displayed character information reflect the saved progress. Alongside combat and presentation work, this has made the demo a useful test of the full player experience, from fighting and building a character to leaving the game and returning later.
+One memorable part of development has been turning elaborate weapon concepts into clear character identities. During visual prototyping, the Hell Hunter's weapon repeatedly lost the intended relationship between its closed muzzle and its four-part opening for firing. For the Transmuter, we also had to clarify that the gauntlets are the primary weapon and the scythe is formed from pure energy. These iterations made us focus on readable silhouettes, hand placement, and consistent weapon states before committing to larger action sequences. The four new character concepts are still in preparation.
+
+On the playable-build side, another practical challenge was making demo progress persist reliably. Work included checking saves across reloads and returns to the lobby, preserving existing data, and ensuring that the lobby reflected saved character progress. Together, these experiences have kept the project focused on both visual identity and the player's actual experience.
 
 위 두 문단은 확인한 설계·개발 작업에 근거한 편집 초안이며, 개인적 계기나 선정 가능성이 더 높은 일화를 지어내지 않았다. 제출 전 사용자가 본인의 의도와 맞는지 검토한다.
 
@@ -255,3 +269,22 @@ AI 생성 게임플레이를 사용하지 않는다. 체력 보호 등 촬영 �
 | Drive | main.jpg 및 영상 2개를 동일 ID로 갱신. 파일 크기·수정 시각 읽기 확인, 비로그인 폴더 6개 유지 |
 | 신청서 | 게임 강점 설명 마지막 문구 교체, 초안 저장됨 확인. 최종 제출 안 함 |
 | 보존 | 이전 제출용 3개 파일은 before/slogan-20260928에 백업. 원본 그림·영상과 과거 편집 프롬프트는 제작 이력으로 보존 |
+
+
+## 2026-09-28 직업 준비 및 전체 기획 소개 보강
+
+사용자 요청: “형식에 맞게 우리 인포메이션 다 넣었냐 4직업 준비와 여러가지 기획들”. 기존 소개는 핵심 전투 설명에 치우쳐 있었으므로 상세 소개와 실제 개발 일화를 보강했다. 100자 미만 방송용 소개는 기존 핵심 문장(97자)을 유지한다. 일반 소개 칸에는 별도 maxlength가 없고, 방송 대본 작성을 위한 구체적인 특징을 요구한다.
+
+| 구분 | 신청서 반영 내용 | 근거 및 상태 |
+|---|---|---|
+| 현재 빌드 | 대검전사 데모, 대규모 핵앤슬래시, 패링 가능한 탄막, 장비·스킬 조합, 스킬 합체, 선대 소환 | index.html CHAR_VISUALS, game.html CHAR_LIST·FUSE·activateAncestorSummon. 현재 제출 영상은 실제 빌드 촬영 |
+| 헬 헌터 | 고딕 리볼버 라이플 중심의 중화기 캐릭터 | 사용자 최신 명칭, VIDEO_CHARACTER_BASES_20260928.md, HELL_HUNTER_SEEDANCE_IDLE_20260928.md. 원화·무기·영상 준비 단계 |
+| 변성술사 | 코어 장갑이 주무기이며 거대 낫·활은 순수 에너지 무기 형태 | 사용자 정정 및 VIDEO_CHARACTER_BASES_20260928.md. 현재 4종 플레이 가능으로 기재하지 않음 |
+| 아케인 랜서 | 장창·마법봉 결합, 창술과 마법 | 사용자 첨부 설계시트, GROK2_GAME_POSTERS_20260928.md 및 영상 베이스 기록 |
+| 실버테일 / 블레이드 댄서 | 등 회전축의 대형 블레이드와 기동 중심 | 최신 원화·제작 기록. index.html에서 comingSoon:true |
+| 확장 기획 | 7챕터·35에리어, 다양한 적·보스, 빌드 확장, 반복 던전 | 마스터 바이블 월드/엔드게임 구성, 정식 HELL_RELEASE_BUILD_NOTES.md 백로그. 완성 수량·출시 확정 약속이 아닌 목표 |
+| 개발 방향 | 전투 가독성, 반응성, 무기 정체성, 진행 저장 안정성 | 실제 코드·작업 기록 및 사용자 피드백 |
+| 개발 일화 | 헬 헌터 총구 전개, 변성술사 장갑/에너지 무기 관계를 명확히 한 시각 프로토타입 경험 + 데모 저장 개선 | 이 대화와 관련 제작 문서. 가상의 개인 서사는 쓰지 않음 |
+| 회사·출시 상태 | FDG, 대한민국, 전업 1인 개발, 첫 출시작, Steam Windows 출시 준비 | 사용자 확정 정보. 출시일/직업 공개 일정 TBA 유지 |
+
+미확정 가격·출시 날짜·모든 직업의 플레이 가능 여부·전체 콘텐츠 구현 완료를 새로 약속하지 않는다. 자료 6개와 최종 제출 보류 상태는 유지한다.

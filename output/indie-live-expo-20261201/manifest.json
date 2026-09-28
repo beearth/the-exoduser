@@ -1106,7 +1106,18 @@
       "Other text fields for unselected options"
     ],
     "external_media_permission": "Allow (already selected on follow-up live form observation; preserved, not selected by agent)",
-    "slogan": "THOSE WHO DEFY THE FALL. EXODUSER."
+    "slogan": "THOSE WHO DEFY THE FALL. EXODUSER.",
+    "appeal": "EXODUSER: HELL LORD is a dark fantasy action RPG for PC (Windows), developed by full-time solo developer FOR DEAR GAMERS (FDG) as the studio's debut release.\n\nCORE APPEAL AND CURRENT BUILD\nLarge-scale hack-and-slash battles meet parryable projectile patterns. Players actively read incoming attacks, reposition, and time their defense while fighting enemy hordes. Item and equipment combinations, active skills, and skill fusion support different builds without removing the importance of player control. Ancestral spirit summons add another combat option. The current playable build and demo focus on the Greatsword Warrior; the submitted gameplay footage is captured from the current build.\n\nFOUR CHARACTER / CLASS CONCEPTS IN PREPARATION\nCharacter and weapon design work is also underway for four distinct concepts:\n- Hell Hunter: a heavy-firearm fighter built around a distinctive gothic revolver-rifle design.\n- Transmuter: core gauntlets are the primary weapon, shaping pure-energy weapons such as a giant scythe and bow.\n- Arcane Lancer: a long lance-staff combining spear combat with arcane spellcasting.\n- Silvertail / Blade Dancer: a mobile melee concept centered on a large rotating, back-mounted blade.\nThese are in development and are not being presented as four fully playable classes in the submitted demo.\n\nBROADER DEVELOPMENT PLANS\nThe full-game design targets a seven-chapter journey across 35 areas, with varied enemies and bosses, expanded item-and-skill build options, and repeatable dungeon challenges. These are development targets; content is still being built and refined. Development priorities include combat readability, responsive controls, distinct weapon identities, and reliable saved progression.\n\nThe game is preparing for release on Steam. No release date, class release schedule, or demo launch announcement has been confirmed for INDIE Live Expo.\n\nTHOSE WHO DEFY THE FALL. EXODUSER. — 추락에 대항하는 자들, 엑소듀서.",
+    "development_story": "One memorable part of development has been turning elaborate weapon concepts into clear character identities. During visual prototyping, the Hell Hunter's weapon repeatedly lost the intended relationship between its closed muzzle and its four-part opening for firing. For the Transmuter, we also had to clarify that the gauntlets are the primary weapon and the scythe is formed from pure energy. These iterations made us focus on readable silhouettes, hand placement, and consistent weapon states before committing to larger action sequences. The four new character concepts are still in preparation.\n\nOn the playable-build side, another practical challenge was making demo progress persist reliably. Work included checking saves across reloads and returns to the lobby, preserving existing data, and ensuring that the lobby reflected saved character progress. Together, these experiences have kept the project focused on both visual identity and the player's actual experience.",
+    "brief_description": "Parry bullet storms, battle demon hordes, and forge powerful builds in a dark fantasy action RPG.",
+    "brief_description_characters": 97,
+    "character_concepts_in_preparation": [
+      "Hell Hunter",
+      "Transmuter",
+      "Arcane Lancer",
+      "Silvertail / Blade Dancer"
+    ],
+    "roadmap": "Seven chapters / 35 areas, varied enemies and bosses, expanded builds and repeatable dungeons are development targets, not current demo completion claims."
   },
   "browser_playback_verification": {
     "date": "2026-09-28",
