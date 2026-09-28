@@ -19,7 +19,7 @@
 
 | 파일 | 내용 및 검증 |
 |---|---|
-| `EXODUSER_Publishing_Proposal_KO_20260929.pdf` | 한국어 15페이지, 6,493,661바이트. 전체 페이지를 PNG로 렌더링하고 배치·한글·잘림을 직접 확인 |
+| `EXODUSER_Publishing_Proposal_KO_20260929.pdf` | 한국어 15페이지, 6,493,673바이트. 전체 페이지를 PNG로 렌더링하고 배치·한글·잘림을 직접 확인. 전대보석 명칭 수정 후 4페이지를 다시 렌더링하여 확인 |
 | `EXODUSER_Proposal_Editable.html` | 이미지가 포함된 편집용 원본 |
 | `EXODUSER_Proposal_Editable.md`, `proposal-source.json` | 편집 및 생성용 콘텐츠 |
 | `02_EXODUSER_DEMO_WIN64_20260929.zip` | 6,737,897,304바이트. 6,589개 파일의 원본 SHA256 대조 및 전체 ZIP CRC 통과 |
@@ -41,6 +41,16 @@ ZIP SHA256:
 실행 안내 Drive ID: `1yPW9g0-QUFfAY06MJnzQvHIy4-CW16gD`
 
 SHA256 안내 Drive ID: `1uYr_Pw6diz-2TwusVGx1NcfNrevI2yJ6`
+
+### 제출 용어 확정 — 전대보석
+
+| 항목 | 사용자 확정 내용 | 적용 범위 |
+|---|---|---|
+| 성장·장비 설명의 명칭 | 보석 → 전대보석 | 기획서 4페이지의 `보석 관리`를 `전대보석 관리`로 수정 |
+| 편집용 원본 | PDF와 같은 문구 | 생성 원본 JSON, 배포용 JSON·HTML·Markdown에 반영 |
+| Drive 기획서 | 기존 파일의 내용 교체 | 파일 ID와 기존 링크를 유지하여 수정본 업로드 |
+
+이번 수정은 제출 기획서 용어에 적용했다. 게임 코드·UI와 이미 압축한 실행 빌드는 변경하지 않았다.
 
 ## 제출 빌드의 정확한 계약
 
