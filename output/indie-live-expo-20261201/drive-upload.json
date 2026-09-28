@@ -1,0 +1,57 @@
+{
+  "checked_on": "2026-09-28",
+  "folder_id": "1GV8C9EH9SqlPp7m4Ux1kTTGgt9LUzkFg",
+  "folder_url": "https://drive.google.com/drive/folders/1GV8C9EH9SqlPp7m4Ux1kTTGgt9LUzkFg",
+  "access": {
+    "type": "anyone",
+    "role": "reader",
+    "allowFileDiscovery": false,
+    "permission_readback": "verified",
+    "logged_out_folder_listing": "verified in separate IAB with Sign in link and six file rows"
+  },
+  "files": [
+    {
+      "name": "EXODUSER_HELL_LORD.mp4",
+      "id": "1aJBiZNR6XjQbP8BXKRo0coZtklpKHWvi",
+      "bytes": 45428377,
+      "url": "https://drive.google.com/file/d/1aJBiZNR6XjQbP8BXKRo0coZtklpKHWvi/view?usp=drivesdk"
+    },
+    {
+      "name": "ss3.jpg",
+      "id": "1ndgld8WEPbkhN5KEDjR84YTRG6Xq5Pdk",
+      "bytes": 331417,
+      "url": "https://drive.google.com/file/d/1ndgld8WEPbkhN5KEDjR84YTRG6Xq5Pdk/view?usp=drivesdk"
+    },
+    {
+      "name": "ss2.jpg",
+      "id": "1kSYmd634lKbCNEI7XtA6N1sVvfRQsYI3",
+      "bytes": 817904,
+      "url": "https://drive.google.com/file/d/1kSYmd634lKbCNEI7XtA6N1sVvfRQsYI3/view?usp=drivesdk"
+    },
+    {
+      "name": "ss1.jpg",
+      "id": "1jFsvZ0POlpJ39aquMpC5GjvAHUYEJ88K",
+      "bytes": 786245,
+      "url": "https://drive.google.com/file/d/1jFsvZ0POlpJ39aquMpC5GjvAHUYEJ88K/view?usp=drivesdk"
+    },
+    {
+      "name": "EXODUSER_HELL_LORD_full.mp4",
+      "id": "146EfGL_xNa4bLvtyk-ylZmoSUREb5X_L",
+      "bytes": 175905395,
+      "url": "https://drive.google.com/file/d/146EfGL_xNa4bLvtyk-ylZmoSUREb5X_L/view?usp=drivesdk"
+    },
+    {
+      "name": "main.jpg",
+      "id": "1jc1EnL1OutjWLgiOXEeyPc0YngGV3nip",
+      "bytes": 253931,
+      "url": "https://drive.google.com/file/d/1jc1EnL1OutjWLgiOXEeyPc0YngGV3nip/view?usp=drivesdk"
+    }
+  ],
+  "steam_public_access": {
+    "url": "https://store.steampowered.com/app/4749590/EXODUSER_HELL_LORD/",
+    "checked_logged_out": true,
+    "title": "EXODUSER: HELL LORD on Steam",
+    "release_state": "Coming soon"
+  },
+  "form_submitted": false
+}

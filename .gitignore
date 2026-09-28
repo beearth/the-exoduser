@@ -152,3 +152,7 @@ assets/vfx/boss/gen/
 /output/ui_design_*/
 /output/localization_20260922/
 /release/
+
+# INDIE Live Expo delivery copies; originals, recipe, metadata and review page retained.
+/output/indie-live-expo-20261201/submission/
+/output/indie-live-expo-20261201/*-contact.jpg
