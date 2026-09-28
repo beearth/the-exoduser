@@ -1,0 +1,37 @@
+{
+  "date": "2026-09-28",
+  "request": "변성술사 여케무기는 거대 낫으로해라 바꿔봐",
+  "source": "assets/video-tests/hailuo-20260928/07-transmuter-sword-source.png",
+  "source_job_id": "3cd9188f-312f-4332-84e7-34795531fcae",
+  "provider": "Higgsfield",
+  "model": "gpt_image_2_5",
+  "mode": "reference-based image edit",
+  "job_id": "abc456bd-f5c2-4ad4-a04c-4962a52c7822",
+  "filename": "12-transmuter-giant-scythe.png",
+  "status": "completed",
+  "width": 2688,
+  "height": 1520,
+  "bytes": 6804893,
+  "estimated_credits": 2.75,
+  "params": {
+    "model": "gpt_image_2_5",
+    "quality": "high",
+    "resolution": "2k",
+    "aspect_ratio": "16:9",
+    "count": 1,
+    "folder_id": "cec12414-13bc-49e4-b460-5d26f3bee4c7",
+    "medias": [
+      {
+        "role": "image_references",
+        "value": "3cd9188f-312f-4332-84e7-34795531fcae"
+      }
+    ],
+    "prompt": "Use case: precise-object-edit. Edit this exact EXODUSER poster. Replace ONLY the foreground adult female transmuter's straight blue energy sword with ONE enormous, clearly recognizable two-handed REAPER SCYTHE. Preserve the original composition, both character identities, the woman's beautiful face and silver hair, pointed hood, black engraved featherlike armor and costume coverage, and the background male archer with his original blue bow. Preserve the cathedral, lightning, debris, lighting, palette and exact EXODUSER / HELL LORD title in the upper right.\nThe new weapon must unmistakably read as a GIANT SCYTHE at thumbnail size: one very long straight rigid dark-metal pole with blue rune channels, and ONE huge continuous crescent-shaped cutting blade attached TRANSVERSELY near the pole's far end. The blade projects sideways from the shaft then curves into a long hooked point; the broad blade and sharpened inner concave edge are distinct and physically coherent. Ornate blackened steel with restrained electric-blue energy along the cutting edge, matching her existing blue arcane core and armor. Keep the blue spherical core as a restrained detail in the female weapon/gauntlet, not a substitute for the scythe head. The shaft and blade together are larger than her body. NO sword blade extending axially from her fist; NO spear, axe, bow, short sickle, double scythe, floating blade, disconnected pieces, soft energy ribbon or weapon morph.\nStage the long pole diagonally across the lower foreground, replacing the previous sword direction. Place the large crescent head in the open foreground toward the right with a clearly readable silhouette and enough margin to see its complete pointed blade. Keep it visually separated from the background man's bow, both faces and the title. Preserve her torso, face, body position and clothing. Adjust ONLY her forearms and hands as necessary so both gloved hands naturally wrap the same solid shaft at spaced grip points, fingers anatomically correct and wrists aligned; no fused hands or extra digits. The weapon is held in a calm stable ready stance suitable for a future idle animation, without attack trails or motion blur. Keep the two characters and the same wide cinematic scene, no new characters, no layout redesign, no panels or extra text. Highest priority: a complete giant crescent scythe with believable two-hand grip while retaining the original female character and the male archer."
+  },
+  "result_url": "https://d8j0ntlcm91z4.cloudfront.net/user_3G1zto9sz11Uf3iEOhJefE9HdGG/hf_20260928_060843_abc456bd-f5c2-4ad4-a04c-4962a52c7822.png",
+  "review": {
+    "observed": "One long rigid pole held with two spaced gloved hands; a large continuous curved black-metal and electric-blue scythe head in the right foreground; complete crescent blade tips visible. Woman's face, silver hair, pointed hood, dark armor identity, male archer and blue bow, cathedral and EXODUSER / HELL LORD title retained.",
+    "limitations": "Generative editing also adjusted female arms, chest armor ornament, core placement and local clothing details. Not pixel-identical outside the weapon. Small rear decorative pommel reaches the left edge; primary cutting blade fits inside frame.",
+    "approval_status": "Image awaiting user review. No new video generated; no runtime integration."
+  }
+}
