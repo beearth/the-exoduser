@@ -94,3 +94,11 @@ Animate this EMPTY ancient funerary crypt as a seamless ambient game lobby BACKG
 
 
 현행 오른쪽 카드의 초상화는 CHAR_VISUALS[0].bust의 전사 이미지이며, 소환체 초상화를 사용하지 않는다. 저장 진행·입장 계약은 유지한다. 상세 표제/언어/저장 계약은 로비 문서의 “오른쪽 대검전사 캐릭터 정보 복구” 절을 따른다.
+
+## 2026-09-29 로비 선택 상태 재생 수명
+
+| 항목 | 현행 계약 |
+|---|---|
+| 전대 | 미선택에만 스프라이트/그림자/crypt 영상 표시·재생. 캐릭터 선택 중 전대 rAF 취소 및 crypt 영상 pause |
+| 캐릭터 | 기존 CHAR_VISUALS 이미지/아이들 영상 표시. 숨김/모션 감소에서 영상 pause, 모션 감소는 정적 이미지 |
+| 상세 | [상태·배치·미디어 SSOT](<../3.1 ui hud 디자인/LOBBY_ANCESTOR_ART_20260928.md>). 기존96프레임/24fps/4초·셀384×624와 생성 원본 변경 없음 |

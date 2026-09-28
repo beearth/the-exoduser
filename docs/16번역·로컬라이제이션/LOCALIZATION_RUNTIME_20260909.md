@@ -197,9 +197,17 @@
 
 | 리프/함수 | KO / 그 외 |
 |---|---|
-| _lobbyAncestorName / charDispTitle | 묘왕 바르칸 / Varkan, the Tomb King |
-| _lobbyAncestorCaption / charDispSub | 선대 소환체 / ANCESTRAL SUMMON |
-| _lobbyAncestorDetail / charDispDetail | 플레이어가 소환하는 선대의 영체 / A spirit summoned by the player. |
+| 미선택 _lobbyAncestorName / charDispTitle | 묘왕 바르칸 / Varkan, the Tomb King; 선택은 저장 이름 또는 데모 대검전사 / Greatsword Warrior |
+| 미선택 _lobbyAncestorCaption / charDispSub | 선대 소환체 / ANCESTRAL SUMMON; 선택은 _TL(CHAR_VISUALS.job 또는 cls) |
+| 미선택 _lobbyAncestorDetail / charDispDetail | 플레이어가 소환하는 선대의 영체 / A spirit summoned by the player.; 선택은 빈 리프/숨김 |
 | _lobbyDemoCharacterName / 데모 카드 .char-name | 대검전사 / Greatsword Warrior. 이전 _lobbyPlayerRecordName 제거. CHAR_VISUALS[0].bust 전사 초상화는 언어 전환 때 같은 이미지 노드 유지 |
 | 갱신 | 기존 카드/버튼/진행/초점 보존. 데모 .char-info는 진행 수치만, 소환체 표제 중복 없음. 초기 미선택에서도 이름/역할/설명 갱신, delayed $ 없이 직접 리프 접근 |
 | 검수 | 관련6파일57개 회귀 통과. 세 화면 크기 실제 재생 및 설명 표시 확인 |
+
+## 2026-09-29 로비 선택 이미지와 언어 갱신
+
+| 항목 | 현행 계약 |
+|---|---|
+| 표시 | 미선택은 전대 이름/소환 표제/설명, 선택은 캐릭터 이름/번역된 직업. 내부 DEMO CHARACTER는 대검전사 / Greatsword Warrior |
+| 갱신 | _applyLobbyLang의 _updateCharDisplay(_selectedCharDisplay) 경로 유지. 같은 외형의 영상 src·현재 시간·폴백 상태 유지; 카드/이미지 DOM과 저장 원문 유지 |
+| 상세 | [선택 상태 SSOT](<../3.1 ui hud 디자인/LOBBY_ANCESTOR_ART_20260928.md>). 새 번역 키 없음 |

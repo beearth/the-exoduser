@@ -22,7 +22,7 @@ function lobby({ build = 'full', count = 5, development = false, demoSave = null
   const slots = Array.from({ length: count }, (_, i) => ({ name: `character-${i}`, lv: 10, stage: 0, charIdx: 0 }));
   const ctx = vm.createContext({
     _LOBBY_BUILD: build, _testMode: true, _developerSlots: false, _localSlots: [],
-    _characterLoadSeq: 0, _selectedSlot: null, _selectedSlotName: null, _lobbyLang: () => 'ko', _TL: s => s, escHtml: s => s,
+    _characterLoadSeq: 0, _selectedSlot: null, _selectedSlotName: null, _selectedCharDisplay: null, _lobbyLang: () => 'ko', _TL: s => s, escHtml: s => s,
     _formatLobbyStageProgress: () => '1층', CHAR_VISUALS: [{ name: '전사', bust: 'assets/charselect/portrait_warrior.png?v=1' }],
     _updateCharDisplay(slot) { displayed=slot||null; }, _selectSlot() {}, _addLobbyCardControl() {}, _bindLobbyListNavigation() {}, openVisualSelect() { opened++; },
     $: id => els[id], document: { createElement: element }, localStorage: { getItem: key => key === 'hellsave_demo' ? demoSave : null },
@@ -95,9 +95,10 @@ for (const [file, expected] of [['server.cjs', true], ['node-main.js', undefined
   });
 }
 
-for(const fallback of [false,true])test('demo selection remains displayed after '+(fallback?'storage fallback':'server list')+' completes',async()=>{
- const {ctx,displayed}=lobby({build:'demo'});if(fallback)ctx.fetch=async()=>{throw new Error('offline')};
- await ctx.loadLocalCharacters();assert.equal(ctx._selectedSlot,'demo');assert.equal(ctx._selectedSlotName,'demo');assert.equal(displayed()?.name,'DEMO CHARACTER');assert.equal(displayed()?.charIdx,0);
+for(const fallback of [false,true])test('demo shows the default scene until its card is selected after '+(fallback?'storage fallback':'server list')+' completes',async()=>{
+ const {ctx,els,displayed}=lobby({build:'demo'});if(fallback)ctx.fetch=async()=>{throw new Error('offline')};
+ await ctx.loadLocalCharacters();assert.equal(ctx._selectedSlot,null);assert.equal(ctx._selectedSlotName,null);assert.equal(displayed(),null);assert.equal(els.charList.children[0].className,'char-item');
+ els.charList.children[0].events.click();assert.equal(ctx._selectedSlot,'demo');assert.equal(ctx._selectedSlotName,'demo');assert.equal(displayed()?.name,'DEMO CHARACTER');assert.equal(displayed()?.charIdx,0);
 });
 test('full offline list leaves entry unselected after loading',async()=>{
  const {ctx,displayed}=lobby({build:'full'});ctx._selectedSlot='stale';ctx._selectedSlotName='stale';ctx._updateCharDisplay({name:'stale'});

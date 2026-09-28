@@ -1,20 +1,51 @@
 # 로비 전대 원화 교체 — 2026-09-28
 
-> 2026-09-28 현행: **선대 소환체 · 묘왕 바르칸**, “플레이어가 소환하는 선대의 영체”. 오른쪽은 “대검전사” 캐릭터 정보와 전사 초상화(CHAR_VISUALS[0].bust)를 표시한다. 호흡·천·유물이 움직이는 투명96프레임 v3 스프라이트(셀384×624, 8×12, 24fps/4초)와 바닥·구조물을 고정한 독립 배경 영상(v2, 1920×1088, 24fps/12.083333초)을 사용한다. 이전 정적 원화와 v1 전체 신체 영상은 제작 이력이다. [생성·안정화·검수](<../5.0애니메이션파이프라인/LOBBY_VARKAN_SPRITE_VIDEO_20260928.md>).
+> 2026-09-29 현행: **미선택 기본 화면은 선대 소환체 · 묘왕 바르칸**, 캐릭터 카드 선택 후에는 해당 CHAR_VISUALS의 원화/아이들 영상과 이름·직업을 표시한다. 데모도 자동 선택 없이 시작하며 카드 클릭 후 입장을 활성화한다. 선택 해제 시 전대 화면으로 복귀한다. 아래 2026-09-28 제작·검수는 당시 이력이며, 현재 선택 표시 규칙은 [기본 전대 / 선택 캐릭터 전환 SSOT](<../3.1 ui hud 디자인/LOBBY_ANCESTOR_ART_20260928.md>)를 우선한다.
 
-## 현행 게시 계약: 독립 배경 영상과 묘왕 바르칸 애니메이션
+## 2026-09-29 기본 전대 / 선택 캐릭터 전환 — 현행 SSOT
+
+| id / 적용 위치 | 현행 계약 |
+|---|---|
+| LOBBY_DEFAULT / _updateCharDisplay() | 미선택: 묘왕 바르칸 / Varkan, the Tomb King; 선대 소환체 / ANCESTRAL SUMMON; 플레이어가 소환하는 선대의 영체 / A spirit summoned by the player. 전대·그림자·독립 배경 표시, 캐릭터 src/poster/onerror 해제, 입장 disabled=true |
+| LOBBY_SELECTED / _updateCharDisplay(s) | CHAR_VISUALS[s.charIdx ?? 0], 잘못된 인덱스는0으로 폴백. #lobby.has-selected-character로 전대·그림자·ambient video 숨김. 선택 캐릭터 이름과 _TL(job 또는 cls) 표시, 소환체 상세 설명은 빈 리프. 입장 disabled=false |
+| DEMO_SELECTION / _renderSlotList | 최초 미선택, active 카드 없음. 클릭/선택 버튼으로 _selectedSlot/_selectedSlotName=demo, active 추가 및 charIdx0 선택. 내부 DEMO CHARACTER는 화면에서 대검전사 / Greatsword Warrior. 재렌더는 기존 선택만 유지, 자동 선택 없음 |
+| SELECTED_MEDIA | idleVid 재생, idleRate 없으면1. 전사 assets/charselect/idle_warrior_higgsfield_4k.mp4?v=20260913-detail1, playbackRate0.75; poster_idle_warrior_higgsfield_4k.jpg 같은 버전. 실버테일 idle_silvertail.mp4 및 poster_idle_silvertail.jpg, 버전20260927-restored. 공개 comingSoon/생성 제한 변경 없음 |
+| SELECTED_STILL | 정적 이미지 poster → portrait → bust. 영상 실패/재생 거절은 캐릭터의 동일 정적 이미지 유지 및 영상 src/poster 해제. 정적 이미지 실패는 같은 캐릭터 portrait 또는 bust, 이것도 실패하면 이미지 숨김; 컨트롤/이름/배경 유지 |
+| MEDIA_LIFECYCLE | 다른 외형/해제 시 이전 콜백·src/poster 제거 및 pause/load. 이전 실패 콜백은 현재 onerror 함수와 같을 때만 동작. 같은 외형의 이름/언어 갱신은 재로드/재생 시간 초기화 없음 |
+| ANCESTOR_LIFECYCLE / lobby-ancestor-sprite.js | visible = !document.hidden && lobby display≠none && getClientRects.length>0; active=visible && !has-selected-character. 선택 중 전대 rAF 취소 및 ambient video.pause. 선택 영상도 숨김/모션 감소 시 pause; 모션 감소는 정적 이미지, 해제 시 영상 재개 |
+| BACKGROUND | 기본 v2 crypt 포스터/독립 영상 유지. 선택 외형에 scene이 있으면 같은 캐릭터 배경 원화로 교체; 해제 시 _swapLobbyBg(0)로 crypt 복원. 새 이미지 생성/게임 전대 에셋 변경 없음 |
+| SELECTED_LAYOUT / lobby-ancestor-art.css | 선택 영상/정적 원화 폭65%, 화면폭≤1100px는55%; left0/top50%, height:auto/max-height100%, aspect-ratio16/9, object-fit:contain, translateY(-50%). mask-image linear-gradient: 0% transparent / 5% black / 96% black / 100% transparent. 캐릭터 z-index1, 영상2; 바탕 background-position:center |
+| SELECTED_CAPTION | .lobby-left 내부 중앙 left50%(뷰포트 기준32.5%, 화면폭≤1100px는27.5%); bottom3% 기존 유지. 전대 배치 함수는 선택 중 이름 좌표를 덮어쓰지 않음. charDispDetail:empty 숨김 |
+| CACHE | lobby-ancestor-art.css / lobby-ancestor-sprite.js query20260929-slotart1. 기존 미디어 버전/스프라이트96셀·24fps·셀384×624 변경 없음 |
+| SAVE / INPUT | hellsave_demo 등 저장 형식/진행/사용자 원문 보존. 기존 버튼·키보드·패드 선택 경로 유지. 기본 상태에서 입장 전에 카드를 선택 |
+| VALIDATION | 관련 회귀306 PASS, inline script4개 구문 통과. 실제 브라우저의 최종 화면 크기/모션 감소/폴백 검수는 아래 완료 기록 참조 |
+
+
+
+## 2026-09-29 검수 완료
+
+| 검수 | 결과 / 증거 |
+|---|---|
+| 재현 | 수정 전 카드 클릭 후에도 묘왕 바르칸/소환 표제/전대 스프라이트 유지. 42개 재현·관련 검사 중33 PASS/9 FAIL → 수정 후 관련 전체306 PASS. inline script4개 구문 통과 |
+| 실제 데모 | Node server.cjs의 새 Chrome 페이지, 1920×1080 / 1280×720 / 960×540 / 2160×720. 기본 전대/미선택/입장 비활성, 카드 선택 후 대검전사/전사/기존4K 영상/입장 활성. 각 크기 횡넘침0 및 선택 이름의 왼쪽 패널 중앙 오차<1px |
+| 상태 수명 | 선택 중 전대 프레임 고정/crypt 영상 pause 및 캐릭터 영상 시간 증가. EN 전환 후 Greatsword Warrior / Warrior와 재생 시간 유지. 로비 숨김 pause/표시 재개 및 reduced-motion에서 영상 정지·정적 이미지 확인 |
+| 전환·폴백 | 기존 실버테일 charIdx1 매핑으로 이름/직업/이미지 전환, 전사 영상 요청 차단 시 같은 전사 포스터 유지. 선택 해제 시 src/poster·정적 원화 해제 및 전대 복귀. 실버테일은 격리 페이지의 함수 호출 검수이며 공개 생성 잠금 유지 |
+| 저장·오류 | 격리 브라우저에서 API 쓰기0/pageerror0. 슬롯 GET은 격리 대역; 사용자 실제 저장/계정 쓰기 없음. 공개 데모 표시 흐름 검수이며 실제 온라인 인증·실물 패드·NW.js 재패키징은 미검증 |
+| 증거 | tmp/lobby-selected-art-20260929/final-browser.json, final-{1920x1080,1280x720,960x540,2160x720}-{default,warrior}.png, final-silvertail.png, final-fallback.png, tests.txt. 수정 전 파일/스테이징 원문은 before/ 보존 |
+
+## 2026-09-28 게시 계약: 독립 배경 영상과 묘왕 바르칸 애니메이션 (제작 이력)
 
 누적 게시 스냅샷에는 아래 후속 구현이 포함된다. 아래의 정적 어깨 대검 원화 배율 및 과거 검수는 이전 제작 이력이다.
 
 | 항목 | 현행 코드값 |
 |---|---|
-| 표시 이름 | `_lobbyAncestorName`: 한국어 묘왕 바르칸 / 그 외 Varkan, the Tomb King. `_lobbyAncestorCaption`: 선대 소환체 / ANCESTRAL SUMMON. 선택 여부와 무관하게 이 이름 유지; 슬롯 선택은 입장 활성 상태에 반영 |
+| 표시 이름 | `_lobbyAncestorName`: 한국어 묘왕 바르칸 / 그 외 Varkan, the Tomb King. `_lobbyAncestorCaption`: 선대 소환체 / ANCESTRAL SUMMON. 미선택에만 이 이름 표시; 선택 시 저장 이름/데모 대검전사와 CHAR_VISUALS 직업으로 전환 (2026-09-29 갱신) |
 | 배경 | `assets/lobby/lobby_varkan_crypt_loop_v2.mp4`, muted/autoplay/loop/playsinline, preload metadata. 포스터 `lobby_varkan_crypt_poster_v2.webp`; cover, center 75%, `_curBg=varkan-crypt-v2` |
 | 스프라이트 | `lobby-ancestor-sprite.js`, defer. `assets/lobby/varkan_idle_v3.png`: 셀384×624, 8열×12행, 96프레임, 24fps/4초. frame=floor(max(0,seconds)×24)%96 |
 | 기준점 | baseline603.682092555332, heartX182.43863179074447. canvas384×624. 배경 기준1920×1088; 좌측 폭65%, 화면폭1100px 이하55% |
 | 배치 | scale=max(width/bgWidth,height/bgHeight); footY=min(height×0.89,max(height×0.76,bgHeight×scale×0.84+(height−bgHeight×scale)×0.75)); displayHeight=min(height×0.8,footY−28); displayWidth=displayHeight×384/624. footX=max(displayWidth×0.52+12,min(leftWidth−displayWidth×0.48−12,bgWidth×scale×0.33+(width−bgWidth×scale)×0.5)); left=footX−heartX/384×displayWidth; top=footY−baseline/624×displayHeight |
 | 그림자 | footX/footY 위치, 너비displayWidth×0.42, 높이displayHeight×0.045, translate(−50%,−50%) |
-| 재생 수명 | 로비 표시 중이며 document.hidden이 아닐 때만 rAF 및 배경 재생. 숨김/비표시 때 rAF 취소 및 video.pause. ResizeObserver로 배치 갱신 |
+| 재생 수명 | 미선택 로비 표시 중이며 document.hidden이 아닐 때만 rAF 및 배경 재생. 선택/숨김/비표시 때 rAF 취소 및 video.pause. ResizeObserver로 배치 갱신 |
 | 최초 언어 갱신 | `_refreshLobbyCardsLanguage()`는 `$` 초기화 전에도 호출되므로 `document.getElementById('charList')` 사용. 카드가 없으면 반환하며 기존 카드 리프/접근성 라벨만 갱신. 초기 TDZ 오류 회귀 검사 및 새 페이지 로그인/로비 진입 확인 |
 | 접근성/폴백 | reduced-motion 시 배경 숨김·일시정지 및 frame0. 스프라이트 실패 시 CSS `varkan_idle_first_v3.png` 유지; 배경 영상 실패 시 영상 숨기고 포스터 유지 |
 | 배포 | 공통 FILES에 `lobby-ancestor-art.css`와 `lobby-ancestor-sprite.js`; 로컬 미디어는 assets 복사. HTML 루트 CSS/JS 참조 회귀 검사로 누락 방지 |
@@ -80,7 +111,7 @@
 | _lobbyDemoCharacterName / .char-name | 한국어 대검전사, 그 외 Greatsword Warrior. 기존 _lobbyPlayerRecordName 제거. 초기 렌더와 언어 갱신 모두 같은 함수 사용 |
 | .char-thumb img | 고정 데모 charIdx0의 CHAR_VISUALS[0].bust, assets/charselect/portrait_warrior.png?v=1. 소환체 초상화를 이 카드에서 제거. width/height100%, object-fit:cover, object-position:center20%, radius2px 유지 |
 | .char-info | 유효 hellsave_demo는 Lv.{lv} · Stage 1-1 · 처치 {kills} · 브라우저 저장. 언어별 처치/저장 안내 번역 유지. 저장 없으면 Lv.1 START · Stage 1-1 · Lv.100 Cap |
-| 왼쪽 | 선대 소환체 · 묘왕 바르칸 / 플레이어가 소환하는 선대의 영체. v3 대기 스프라이트와 v2 고정 바닥 배경 유지 |
-| 저장/선택 | hellsave_demo, 내부 DEMO CHARACTER, charIdx0, _selectedSlot/_selectedSlotName=demo 유지. 이름 변경으로 저장을 재작성하지 않음 |
+| 왼쪽 | 미선택은 선대 소환체 · 묘왕 바르칸 / 플레이어가 소환하는 선대의 영체 및 v3 스프라이트/v2 배경. 선택 후 해당 캐릭터 이미지/아이들 영상·이름·직업 표시 (2026-09-29 갱신) |
+| 저장/선택 | hellsave_demo, 내부 DEMO CHARACTER, charIdx0 유지. _selectedSlot/_selectedSlotName=demo는 카드 선택 후 설정; 최초 null. 이름 변경으로 저장을 재작성하지 않음 |
 | DOM/언어 | _lobbyCardLeaf는 특정 리프의 children.length===0만 갱신. 선택 제어/이미지 노드/초점 유지. 언어 전환 중 세이브 읽기/쓰기 없음 |
 | 검증 | 기존 언어·데모 슬롯·소환체 회귀와 격리 브라우저의 신규/저장 진행, 한국어/영어, 새로고침 및3크기 확인. 상세 증거 captures/ancestor_grok_review/player-card/runtime-report.json |

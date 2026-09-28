@@ -1,3 +1,18 @@
+## 2026-09-29 — 기본 전대 / 선택 캐릭터 로비 전환
+
+| 항목 | 결과 |
+|---|---|
+| 동작 | 로비 진입은 전대·미선택, 카드 선택 후 해당 캐릭터 원화/아이들 영상·이름·직업·입장 활성, 해제 시 전대 복귀. 데모 자동 선택 제거 |
+| 미디어 | 같은 외형의 언어 갱신은 재생 시간 유지. 영상/정적 이미지 폴백과 이전 오류 콜백 무효화, 숨김/모션 감소 일시정지 |
+| 검증 | 관련 회귀306 PASS, inline script4개 구문 통과. 실제 화면/폴백 검수 상세는 SSOT의 완료 기록 |
+| 상세 | [로비 표시 상태 SSOT](<3.1 ui hud 디자인/LOBBY_ANCESTOR_ART_20260928.md>) |
+
+## 2026-09-29 — 생체 디테일 캐시 제작86차
+
+본편 living module은 **20260929-86**. 캠프손·나무뿌리 첫캐시를 단일 유휴 큐(3ms목표/requestIdle120ms/타이머8ms,mesh32cell·접지8행yield)로 분할했다. 준비/실패중원본sprite폴백,동일이미지중복제작0. 기존애니메이션·PNG·geometry유지;배경cache/bakeVersion20260929-outer-85/21빌드레이어/64청크불변. 본편8뷰60제한59.81~60.00FPS,64적12초59.74FPS,준비후34ms초과0. cold GPU업로드290ms잔여로전체프레임해결은아님. 총60검사PASS·실제Chrome6픽셀표본변경0.
+
+[86차 수치·한계·MAP PRODUCTION REPORT](4.1맵디자인+설정/CH1_ORGANIC_CACHE_BUDGET_PASS86_20260929.md). 아래모듈버전과동기캐시제작표현은당시제작이력이며,현행준비중organic=false 계약은위SSOT를따른다.
+
 ## 2026-09-29 — 생체 디테일 캐시 제작86차
 
 본편 living module은 **20260929-86**. 캠프손·나무뿌리 첫캐시를 단일 유휴 큐(3ms목표/requestIdle120ms/타이머8ms,mesh32cell·접지8행yield)로 분할했다. 준비/실패중원본sprite폴백,동일이미지중복제작0. 기존애니메이션·PNG·geometry유지;배경cache/bakeVersion20260929-outer-85/21빌드레이어/64청크불변. 본편8뷰60제한59.81~60.00FPS,64적12초59.74FPS,준비후34ms초과0. cold GPU업로드290ms잔여로전체프레임해결은아님. 총60검사PASS·실제Chrome6픽셀표본변경0.
@@ -50776,6 +50791,16 @@ CSS 캐시 ui-refinement.css?v=20260927-4. 신규 이미지/아이템 데이터 
 | 저장/선택 | hellsave_demo, 내부 DEMO CHARACTER, charIdx0, _selectedSlot/_selectedSlotName=demo 유지. 이름 변경으로 저장을 재작성하지 않음 |
 | DOM/언어 | _lobbyCardLeaf는 특정 리프의 children.length===0만 갱신. 선택 제어/이미지 노드/초점 유지. 언어 전환 중 세이브 읽기/쓰기 없음 |
 | 검증 | 기존 언어·데모 슬롯·소환체 회귀와 격리 브라우저의 신규/저장 진행, 한국어/영어, 새로고침 및3크기 확인. 상세 증거 captures/ancestor_grok_review/player-card/runtime-report.json |
+
+### 설정 시스템·미리보기 디테일 후속 마감
+
+| 대상 | 최종 변경·검증 |
+|---|---|
+| 버튼·카드 | 시스템/그래픽 버튼44px·15px, 캐릭터 카드220px/미리보기88px/이름17px/설명14px, 커서 카드96×104px. 폭600px 이하 캐릭터100%·버튼14px. 프리셋 제목을 공통 set-label로 통일 |
+| 실제 렌더 결함 | 전역 canvas fixed/top0/left0가 캐릭터·커서 미리보기를 카드 밖으로 옮겼음. 해당 설정 canvas만 static/inset auto/z-index auto로 복원 |
+| 입력·피드백 | ui-panels.js describeSettingsControls: range/select21개 기존 번역 리프·동적 읽기값 참조, 기존 DOM/ID/리스너 보존. saveMsg polite/atomic status |
+| 검증 | 설정 회귀22/22 PASS. 최종 캐시20260929-settings-finish2 새 로드 본편/easy-test6화면×5탭=60건 잘림0/가로 스크롤0/닫기·미리보기 경계PASS. 실제 슬라이더 ArrowRight79→80 및 KO→EN 이름 유지,390×844 휠 스크롤570/max570 확인 |
+| 문서·상태 | docs 전체 검색 후 중복된680px 설정창 표를 현재 화면맞춤 규격으로 동기화. 상세 계약 SETTINGS_UI_WORKSPACE_20260929.md. tmp/settings-finish-20260929에 백업·검수 결과. 코드/문서 저장 완료, 관리형 .git 읽기 전용으로 커밋 미완료, NW.js/Steam 배포 미수행 |
 
 
 ### PUBLISHER_COMBAT_TEXTURE_WARMUP_20260929
