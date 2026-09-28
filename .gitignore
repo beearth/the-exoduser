@@ -156,3 +156,6 @@ assets/vfx/boss/gen/
 # INDIE Live Expo delivery copies; originals, recipe, metadata and review page retained.
 /output/indie-live-expo-20261201/submission/
 /output/indie-live-expo-20261201/*-contact.jpg
+
+# Local company records and source documents; do not publish with source history.
+/docs/13출시·마케팅/private-business/

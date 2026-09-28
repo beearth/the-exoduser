@@ -101,6 +101,8 @@ One practical development challenge was making progress in the playable demo per
 
 ## 비워둔 필수 항목
 
+2026-09-28 후속 제공 자료: 사업자등록증과 명함을 [FDG 회사 자료 안내](FDG_COMPANY_DOCUMENTS.md)에 정리했다. 담당자 이름·업무 이메일·국가 표기는 이제 제공 자료에서 참고할 수 있다. 이번 후속 작업은 로컬 보관이며, 아래 폼 입력 상태 자체는 변경하지 않았다.
+
 | 항목 | 필요한 확인 |
 |---|---|
 | 이메일 | 사용자가 지정/입력. 로그인 계정 주소를 자동 전용하지 않음 |
