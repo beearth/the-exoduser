@@ -1,0 +1,47 @@
+{
+  "date": "2026-09-28",
+  "authorization": "User selected hf_20260927_235745_bc692f3c-389e-436c-b616-f036d62e4c77 (1).png and explicitly requested a new generation and an explanation of the previous order.",
+  "source_asset": "assets/exoduser-grok2-poster-08-20260928.png",
+  "source_dimensions": [
+    2816,
+    1584
+  ],
+  "source_sha256": "C04610944C349DDD8D0F551A512A3BF88E34A75F568CCB892EA76319B335FFD1",
+  "service": "MagicLight",
+  "model": "Hailuo 2.3",
+  "settings": {
+    "resolution": "768p",
+    "duration": "5s"
+  },
+  "prompt": "Use this exact image for a locked-camera 5-second shot. Animate ONLY the FOREGROUND WOMAN'S muzzle mechanism. Her rifle has FOUR RIGID METAL PETALS on FOUR FIXED HINGES. The same four parts move; their lengths, shapes and hinge positions NEVER change. 0-0.8s: keep the original CLOSED pointed harpoon tip. 0.8-1.6s: rotate the four petals outward on their fixed hinges into a cross, uncovering ONE central round cannon bore. 1.6-1.9s: ONE very short cannon flash from that bore and small recoil. The flash is completely OFF by 2s. 2-3.5s: all FOUR petals rotate FORWARD along exactly the same hinge paths to meet tip-to-tip, recreating the EXACT original closed spear silhouette. 3.5-5s: hold that fully CLOSED tip, no exposed bore, no firing. The FINAL muzzle must match the FIRST muzzle. CLOSING IS THE MAIN ACTION: keep the entire closing movement clearly visible. No twisting, rubber bending, stretching, extra blades, rotating barrels, part replacement, dissolving or morphing. No laser, beam or prolonged flame. The rear man's gun stays CLOSED and motionless. Preserve both faces, poses, armor, hands, straight rifle bodies, cliff, city and title. Only gentle natural hair and cape wind throughout, always moving forward in time. No camera movement, cuts, time reversal or new objects.",
+  "credits_before": 81680,
+  "credits_after": 81430,
+  "actual_credits_spent": 250,
+  "status": "completed",
+  "output": "10-cruciform-hinge-retry.mp4",
+  "request_changes": [
+    "Foreground female muzzle only; rear male gun remains closed",
+    "Rigid four parts with fixed lengths, shapes and hinge positions",
+    "Flash completely off before closing",
+    "Closing is the main action; final 1.5 seconds fully closed",
+    "No reverse-time editing requested for this generation"
+  ],
+  "task_id": "7510154291325345792",
+  "output_properties": {
+    "codec": "h264",
+    "width": 1248,
+    "height": 704,
+    "fps": 24,
+    "duration_seconds": 5.041667,
+    "bytes": 7167202,
+    "audio_stream": false
+  },
+  "review": {
+    "verdict": "FAIL_FOR_REQUESTED_MECHANISM",
+    "observed": "Both foreground and rear characters fire. Radial metal blades open, and the flash ceases later in the clip, but the muzzle transforms into a different large spear-shaped assembly instead of restoring the original closed harpoon.",
+    "limitations": "Violates foreground-only action, fixed four-part rigid geometry, exact timing, no beam and final-frame muzzle restoration. This is an unedited generation, not reverse-time processing.",
+    "evidence": ["10-cruciform-hinge-contact.jpg", "10-cruciform-hinge-final.jpg"],
+    "sampling": "10 frames at 0.5-second intervals and the last frame at 5 seconds",
+    "runtime_integration": false
+  }
+}
