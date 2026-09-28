@@ -180,7 +180,7 @@ body{background:#000 center/cover no-repeat;color:#ccaa88;font-family:'Noto Sans
 .char-disp-empty.hidden{opacity:0}
 
 /* 우측 영역 */
-.lobby-right{position:relative;flex:0 0 35%;height:100%;background:linear-gradient(180deg,rgba(8,3,18,0.42) 0%,rgba(4,2,12,0.48) 100%),url('assets/lobby/lobby_bg_new.png?v=20260913-lobby-smooth1') center/cover no-repeat;padding:20px 24px 16px 24px;display:flex;flex-direction:column;border-left:2px solid;border-image:linear-gradient(180deg,#3a1a55 0%,#c44444 50%,#3a1a55 100%) 1}
+.lobby-right{position:relative;flex:0 0 35%;height:100%;background:linear-gradient(180deg,rgba(8,3,18,0.42) 0%,rgba(4,2,12,0.48) 100%);padding:20px 24px 16px 24px;display:flex;flex-direction:column;border-left:2px solid;border-image:linear-gradient(180deg,#3a1a55 0%,#c44444 50%,#3a1a55 100%) 1}
 
 /* 우측 헤더 */
 .lobby-header{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:18px}
@@ -456,6 +456,7 @@ body{background:#000 center/cover no-repeat;color:#ccaa88;font-family:'Noto Sans
 <link rel="stylesheet" href="localization.css?v=20260909">
 <link rel="stylesheet" href="ui-foundation.css?v=20260927-frame-interior">
 <link rel="stylesheet" href="ui-refinement.css?v=20260927-single-lobby-scene">
+<link rel="stylesheet" href="lobby-ancestor-art.css?v=20260928-shoulder-v4">
 </head>
 <body>
 
@@ -2822,7 +2823,7 @@ function _renderOnlineSlots(){
       const st=_formatLobbyStageProgress(stage,_TL);
       const _pci=(ch.charIdx!=null?ch.charIdx:(ch.data&&ch.data.charIdx)||0);const _vi=CHAR_VISUALS[_pci]||CHAR_VISUALS[0];
       const div=document.createElement('div');div.className='char-item'+(_selectedSlot===ch.id?' active':'');
-      div.innerHTML=`<div class="char-thumb"><img src="${(_vi&&(_vi.bust||_vi.portrait))||'assets/lobby/lobby_portrait.png?v=20260913-lobby-smooth1'}" style="width:100%;height:100%;object-fit:cover;object-position:${_vi.thumbPos||'center 12%'};border-radius:2px"></div><div class="char-text"><div class="char-name"><span class="char-name-label">${escHtml(ch.name)}</span><span class="char-cls">${escHtml(_TL((_vi&&(_vi.job||_vi.cls))||''))}</span></div><div class="char-info">Lv.${lv} | ${st}</div></div><button class="char-del" title="${_TL('삭제')}">✕</button>`;
+      div.innerHTML=`<div class="char-thumb"><img src="${(_vi&&(_vi.bust||_vi.portrait))||'assets/lobby/lobby_ancestor_portrait_v4.webp?v=20260928-shoulder-v4'}" style="width:100%;height:100%;object-fit:cover;object-position:${_vi.thumbPos||'center 12%'};border-radius:2px"></div><div class="char-text"><div class="char-name"><span class="char-name-label">${escHtml(ch.name)}</span><span class="char-cls">${escHtml(_TL((_vi&&(_vi.job||_vi.cls))||''))}</span></div><div class="char-info">Lv.${lv} | ${st}</div></div><button class="char-del" title="${_TL('삭제')}">✕</button>`;
       div.querySelector('.char-name-label').title=ch.name;
       _addLobbyCardControl(div,ch.name+' · '+_TL((_vi&&(_vi.job||_vi.cls))||''),'online:'+ch.id);
       div.addEventListener('click',e=>{
@@ -3090,7 +3091,7 @@ function _renderSlotList(){
   // ── DEMO: 슬롯 1개 고정, 생성 버튼 없음 ──
   if(_LOBBY_BUILD==='demo'){
     const div=document.createElement('div');div.className='char-item active';
-    div.innerHTML='<div class="char-thumb"><img src="assets/lobby/lobby_portrait.png?v=20260913-lobby-smooth1" style="width:100%;height:100%;object-fit:cover;object-position:center 20%;border-radius:2px"></div><div class="char-text"><div class="char-name">DEMO CHARACTER</div><div class="char-info" style="color:rgba(200,150,100,.6)">Lv.1 START · Stage 1-1 · Lv.100 Cap</div></div>';
+    div.innerHTML='<div class="char-thumb"><img src="assets/lobby/lobby_ancestor_portrait_v4.webp?v=20260928-shoulder-v4" style="width:100%;height:100%;object-fit:cover;object-position:center 20%;border-radius:2px"></div><div class="char-text"><div class="char-name">DEMO CHARACTER</div><div class="char-info" style="color:rgba(200,150,100,.6)">Lv.1 START · Stage 1-1 · Lv.100 Cap</div></div>';
     _addLobbyCardControl(div,'DEMO CHARACTER','demo');
     const demoSlot={name:'DEMO CHARACTER',charIdx:0,stage:0};
     div.addEventListener('click',()=>{_selectedSlot='demo';_selectedSlotName='demo';_updateCharDisplay(demoSlot);});
@@ -3128,7 +3129,7 @@ function _renderSlotList(){
       const st=_formatLobbyStageProgress(stage,_TL);
       const _vi=CHAR_VISUALS[s.charIdx||0]||CHAR_VISUALS[0];
       const div=document.createElement('div');div.className='char-item'+(_selectedSlot===s.name?' active':'');
-      div.innerHTML=`<div class="char-thumb"><img src="${(_vi&&(_vi.bust||_vi.portrait))||'assets/lobby/lobby_portrait.png?v=20260913-lobby-smooth1'}" style="width:100%;height:100%;object-fit:cover;object-position:${_vi.thumbPos||'center 12%'};border-radius:2px"></div><div class="char-text"><div class="char-name"><span class="char-name-label">${escHtml(s.name)}</span><span class="char-cls">${escHtml(_TL((_vi&&(_vi.job||_vi.cls))||''))}</span></div><div class="char-info">Lv.${s.lv||1} · ${st}</div></div><button class="char-del" title="${_TL('삭제')}">✕</button>`;
+      div.innerHTML=`<div class="char-thumb"><img src="${(_vi&&(_vi.bust||_vi.portrait))||'assets/lobby/lobby_ancestor_portrait_v4.webp?v=20260928-shoulder-v4'}" style="width:100%;height:100%;object-fit:cover;object-position:${_vi.thumbPos||'center 12%'};border-radius:2px"></div><div class="char-text"><div class="char-name"><span class="char-name-label">${escHtml(s.name)}</span><span class="char-cls">${escHtml(_TL((_vi&&(_vi.job||_vi.cls))||''))}</span></div><div class="char-info">Lv.${s.lv||1} · ${st}</div></div><button class="char-del" title="${_TL('삭제')}">✕</button>`;
       div.querySelector('.char-name-label').title=s.name;
       _addLobbyCardControl(div,s.name+' · '+_TL((_vi&&(_vi.job||_vi.cls))||''),'local:'+s.name);
       div.addEventListener('click',e=>{if(e.target.classList.contains('char-del'))return;_selectSlot(s)});
@@ -3201,6 +3202,12 @@ function _updateCharDisplay(s){
   const sub=$('charDispSub');
   const preview=$('lobbyCharPreview');
   const keyart=$('lobbyCharKeyart');
+  const scene=$('lobbyBgImg');if(scene)scene.style.visibility='';
+  // The lobby artwork is the approved ancestor; character identity stays in the slot labels/cards.
+  if(preview){preview.classList.remove('show');preview.pause&&preview.pause();preview.removeAttribute('src');preview.removeAttribute('poster');preview.load&&preview.load();}
+  if(keyart){keyart.classList.remove('show');keyart.removeAttribute('src');}
+  _swapLobbyBg(0);
+  if(preview)preview.onerror=null;
   _selectedCharDisplay=s||null;
   if(!s){
     if(btn) btn.disabled=true;
@@ -3208,7 +3215,7 @@ function _updateCharDisplay(s){
     if(title) title.textContent=_TL('당신은 누구인가');
     if(sub) sub.textContent='';
     if(preview){preview.classList.remove('show');preview.pause&&preview.pause();preview.removeAttribute('src');preview.removeAttribute('poster');preview.load&&preview.load();}
-    if(keyart)keyart.classList.remove('show');
+    if(keyart){keyart.classList.remove('show');keyart.removeAttribute('src');}
     _swapLobbyBg(0);
     return;
   }
@@ -3218,41 +3225,19 @@ function _updateCharDisplay(s){
   if(empty) empty.classList.add('selected');
   if(title) title.textContent=s.name||_TL('당신은 누구인가');
   if(sub) sub.textContent=_TL(_vi.job||_vi.cls||'');
-  if(preview&&_vi.idleVid){
-    if(keyart)keyart.classList.remove('show');
-    const _src=_vi.idleVid.split('?')[0];
-    if(!preview.src.endsWith(_src)){preview.classList.remove('show');preview.poster=_vi.poster||'';preview.src=_vi.idleVid;preview.load&&preview.load();}
-    preview.defaultPlaybackRate=_vi.idleRate||1;preview.playbackRate=preview.defaultPlaybackRate;
-    preview.classList.add('show');
-    const _play=preview.play&&preview.play();if(_play&&_play.catch)_play.catch(()=>{});
-  }else{
-    if(preview){preview.classList.remove('show');preview.pause&&preview.pause();}
-    if(keyart){keyart.src=_vi.portrait||'';keyart.classList.toggle('show',!!_vi.keyart);}
-  }
 }
 
 // 로비 배경 preload (페이지 로드 시 미리 캐시)
 (function _preloadLobbyBgs(){
-  ['frost.png','flame.png','abyss.png'].forEach(f=>{
-    const i=new Image();i.src='assets/lobby/lobby_bg_'+f+'?v=20260913-lobby-detail2';
-  });
+  const i=new Image();i.src='assets/lobby/lobby_ancestor_shoulder_v4.png?v=20260928-shoulder-v4';
 })();
 
 function _swapLobbyBg(stage){
   const bg=$('lobbyBgImg');if(!bg)return;
-  const _bgs=[{k:'frost',e:'.png'},{k:'flame',e:'.png'},{k:'abyss',e:'.png'}];
-  const pick=_bgs[~~(Math.random()*_bgs.length)];
-  if(_curBg===pick.k)return;
-  _curBg=pick.k;
-  const url='assets/lobby/lobby_bg_'+pick.k+pick.e+'?v=20260913-lobby-detail2';
-  bg.style.opacity='0';
-  const tmp=new Image();
-  tmp.onload=()=>{
-    bg.style.backgroundImage="url('"+url+"')";
-    setTimeout(()=>{ bg.style.opacity='1'; },50);
-  };
-  tmp.onerror=()=>{ bg.style.backgroundImage="url('"+url+"')"; bg.style.opacity='1'; };
-  tmp.src=url;
+  const url='assets/lobby/lobby_ancestor_shoulder_v4.png?v=20260928-shoulder-v4';
+  _curBg='ancestor-shoulder-v4';
+  bg.style.backgroundImage="url('"+url+"')";
+  bg.style.opacity='1';
 }
 
 // ── 로비 mid-area 버전 멘트 + 라벨 ──
