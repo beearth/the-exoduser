@@ -1,0 +1,40 @@
+{
+  "date": "2026-09-28",
+  "provider": "Higgsfield",
+  "model": "gpt_image_2_5",
+  "quality": "high",
+  "resolution": "2k",
+  "aspect_ratio": "16:9",
+  "project_id": "cec12414-13bc-49e4-b460-5d26f3bee4c7",
+  "user_requirement": "Four-way harpoon muzzle opens around central cannon bore; front view with undistorted female face.",
+  "original_media_id": "d1b8982c-217e-4b82-a522-f251d81f8c30",
+  "images": [
+    {
+      "id": "da8a3fcf-6803-41b9-89c1-f94d312135b2",
+      "filename": "06-cruciform-front-open.png",
+      "prompt": "Rebuild the composition from scratch as a STRICT FRONT-FACING cinematic game animation reference frame, using the attached original ONLY for the adult female character's identity and gothic black-bronze weapon design. ONE woman only, clearly adult late twenties, long dark brown hair, pale face, red-brown eyes, black ornate plate armor and restrained crimson cloth. Calm focused expression. Her face looks straight at viewer: level eyes, symmetric natural anatomy, clean nose and mouth, both eyes completely visible, no hair covering face, no distorted cheek, no profile. Face large and sharp in upper LEFT third. Opaque armor covers torso. Waist-up/three-quarter portrait to make facial anatomy readable, head not tiny. Eye-level camera, level horizon, normal 70mm portrait perspective, no fisheye or dutch tilt. Her enormous Cruciform Magnum cannon-rifle is braced with both hands across lower torso, aimed DIRECTLY TOWARD CAMERA parallel to optical axis, positioned LOWER RIGHT of face so it NEVER hides her face. Large front-view circular muzzle occupies right-central third. Essential weapon OPEN STATE: EXACTLY FOUR separate solid spearhead blade petals radiate from four visible hinges at 12, 3, 6, 9 o'clock around a thick black-bronze circular collar. A clean PLUS CROSS silhouette, four equally sized narrow long pointed petals, distinct top, right, bottom, left. All four unfold completely outward into the frontal image plane, visible end to end without overlap or occlusion. ONE LARGE HOLLOW CENTRAL CANNON BORE is fully clear, dark circular hole, nested concentric machined rings around hole, subtle inner red ember only. Cannon barrel diameter and heavy construction, not a tiny revolver muzzle. Nothing crosses central hole. Six-shot revolver cylinder sits behind on gun body, not six muzzle holes. Petals are solid mechanical metal blades, not energy. No forward spear remains, no trident, no three petals, no fifth blade. This is the instant just before a powerful cannon shot, NO flash/projectile/smoke obscuring structure. Keep both face and four-petal muzzle sharply defined. Distant dark cathedral and muted red moon, simplified soft background, exquisite realistic gothic game key art. No man behind, no text, no watermark, no panels, no inset. Entire cross fits in canvas with 8% margins. Single wide 16:9 image.",
+      "status": "completed",
+      "review": "Superseded: upper blade/head framing too tight"
+    },
+    {
+      "id": "17e6992c-e2fd-4c30-813b-42d577d485a6",
+      "filename": "06-cruciform-front-open-v2.png",
+      "reference": "da8a3fcf-6803-41b9-89c1-f94d312135b2",
+      "prompt": "Preserve this exact woman, her face, expression, armor, hands, gun and front-facing four-blade cannon muzzle. This is a framing correction ONLY. Pull the camera back by 25 percent / extend the image composition so the COMPLETE TOP OF HER HEAD and the ENTIRE TOP BLADE TIP are visible with at least 8 percent empty safe space above them, the bottom blade tip has 8 percent margin below, and all four cross tips are inside the image. Do not change their shapes, four-blade count, alignment or central cannon bore. Preserve her clear symmetric frontal adult face at large readable size, on left; cannon front aimed straight to viewer on right. Keep the exact SAME four-petal plus cross and unobstructed central bore, with solid hinges at 12,3,6,9 o'clock. Show a little more torso/waist and quiet cathedral background to achieve wider framing, NO additional characters. Reduce hair/cloth wind to a calm pre-action moment, face remains unobstructed. No projectile, no flash, no text, no inset, no new weapon parts. Same detailed gothic painted realism, colors and lighting, wide16:9.",
+      "status": "completed",
+      "width": 2688,
+      "height": 1520,
+      "review": "Four cardinal blades, clear central bore and frontal face; tips inside frame"
+    },
+    {
+      "id": "64e0cf57-970f-4dd7-bbdb-07566bc71f57",
+      "filename": "07-cruciform-front-closed.png",
+      "reference": "17e6992c-e2fd-4c30-813b-42d577d485a6",
+      "prompt": "Precise image edit: preserve this EXACT frontal frame, woman's face, eye direction, hair, armor, hands, gun body, camera, background and lighting with maximal consistency. ONLY transform the four OPEN blade petals around the cannon muzzle into their CLOSED resting configuration. Each of the same FOUR long metal spearhead petals rotates 90 degrees FORWARD on its existing collar hinge, toward the camera along the barrel axis, then their tips converge into ONE long pointed harpoon nose in front of the central bore. Viewed straight down the axis, this is a strongly foreshortened four-sided pointed pyramidal spear nose: FOUR tapering triangular metal faces meet at a single small central pointed tip aimed at viewer, with clear seam lines between the four folded petals. Broad bases attach to the existing top/right/bottom/left hinge collar; there are NO blades extending radially outside the round collar in the closed state. Central cannon bore is completely concealed by the four closed metal petals, not glowing. Keep visible surrounding black-bronze rim and hinges. The front silhouette of the folded nose is compact roughly the diameter of the collar, not a big cross. It must read as a three-dimensional spear tip aimed at camera, not a flat circular shutter, shield, star, black hole, flower or shortened weapon. Use metallic highlights and four planar facets to show depth. Do not add new parts, extra spikes, flash, smoke, typography or panels. Both hands and face stay exactly as reference; wide16:9.",
+      "status": "completed",
+      "width": 2688,
+      "height": 1520,
+      "review": "Four faceted metal surfaces converge into a foreshortened point, bore concealed; frontal face and main composition retained. Animation not tested."
+    }
+  ]
+}

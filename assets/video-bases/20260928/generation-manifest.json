@@ -87,10 +87,10 @@
       "filename": "01-gunslingers-closed-v2.png",
       "status": "completed",
       "url": "https://d8j0ntlcm91z4.cloudfront.net/user_3G1zto9sz11Uf3iEOhJefE9HdGG/hf_20260928_004838_271420ec-4510-4771-8ea7-1199fb29d684.png",
-      "selected": true,
+      "selected": false,
       "width": 2688,
       "height": 1520,
-      "review_status": "start-frame candidate"
+      "review_status": "superseded by frontal composition per user correction"
     },
     {
       "index": 6,
@@ -152,6 +152,11 @@
       "record": "transmuter-sword-revision.json",
       "selected_file": "02-transmuters-sword-v2.png",
       "job_id": "d22709f0-01e1-4153-87e4-934d2d4e4577"
+    },
+    {
+      "record": "cruciform-front-revision.json",
+      "selected_closed": "07-cruciform-front-closed.png",
+      "selected_open": "06-cruciform-front-open-v2.png"
     }
   ]
 }
