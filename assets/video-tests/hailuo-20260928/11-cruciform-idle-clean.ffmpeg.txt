@@ -1,0 +1,4 @@
+[0:v]setpts=PTS-STARTPTS,format=gbrp,split=2[motion][maskbase];
+[maskbase]format=gray,geq=lum='255*max(max(clip(2*(1-pow((X-205)/195,2)-pow((Y-133)/88,2)),0,1),clip(2*(1-pow((X-143)/122,2)-pow((Y-236)/64,2)),0,1)),max(clip(2*(1-pow((X-65)/128,2)-pow((Y-407)/135,2)),0,1),clip(2*(1-pow((X-76)/125,2)-pow((Y-584)/122,2)),0,1)))*pow(sin(PI*T/5),2)'[mask];
+[1:v]scale=1248:704:flags=lanczos,setsar=1,format=gbrp[base];
+[base][motion][mask]maskedmerge=planes=7,format=yuv420p[out]

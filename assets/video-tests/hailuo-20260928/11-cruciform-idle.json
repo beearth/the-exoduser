@@ -1,0 +1,46 @@
+{
+  "date": "2026-09-28",
+  "authorization": "User selected the cliff duo source as best rifle/grip reference and explicitly directed the earlier inexpensive model to make idle only.",
+  "source_asset": "assets/exoduser-grok2-poster-08-20260928.png",
+  "source_user_file": "C:/Users/심도진/Downloads/hf_20260927_235745_bc692f3c-389e-436c-b616-f036d62e4c77 (1).png",
+  "source_sha256": "C04610944C349DDD8D0F551A512A3BF88E34A75F568CCB892EA76319B335FFD1",
+  "source_dimensions": [
+    2816,
+    1584
+  ],
+  "service": "MagicLight",
+  "model": "Hailuo 2.3",
+  "settings": {
+    "resolution": "768p",
+    "duration": "5s"
+  },
+  "prompt": "A quiet 5-second IDLE living illustration of this exact image. Locked camera, identical framing for the whole clip. Both adult characters hold the EXACT starting pose and gaze, feet planted, hands firmly fixed on their rifles. Both rifles remain completely RIGID, CLOSED and stationary: identical barrels, cylinders, pointed muzzle blades and shoulder contact in every frame. Animate ONLY extremely gentle breathing in the upper chest, a few loose hair strands drifting slowly, and the outer tips of the red capes softly fluttering in a light breeze. Minimal motion amplitude; almost a still painting. The castle, ledge and EXODUSER HELL LORD title remain still and sharp. Existing distant city lights may softly shimmer without any new moving streaks. Calm, steady light throughout. No firing, no muzzle flash, no beams, no opening or closing parts, no recoil, no weapon transformation, no hand movement, no walking, no turning, no new gestures, no camera pan, zoom, orbit or cuts. Preserve faces, anatomy, hand grips, costume details and every weapon silhouette. Begin and end in the same resting pose; soft continuous idle motion only.",
+  "prompt_characters": 1138,
+  "credits_before": 81430,
+  "credits_after": 81180,
+  "actual_credits_spent": 250,
+  "status": "completed",
+  "output": "11-cruciform-idle.mp4",
+  "task_id": "7510215402691117056",
+  "remote_output": "https://i2v.magiclight.ai/7510215402691117056/7510215402691117056_f2aea3.mp4",
+  "output_properties": {"codec":"h264","width":1248,"height":704,"fps":24,"duration_seconds":5.041667,"bytes":6081584,"audio_stream":false},
+  "raw_review": "Muzzles remain closed and silhouettes are substantially retained, with cape/hair movement. Raw generation adds corrupted title text and moving tracer/flare effects despite the idle-only prompt, so it is not the final deliverable.",
+  "deliverable": "11-cruciform-idle-clean.mp4",
+  "deliverable_properties": {"codec":"h264","width":1248,"height":704,"fps":24,"frames":121,"duration_seconds":5.041667,"bytes":976959,"audio_stream":false},
+  "cleanup": {
+    "method": "Local ffmpeg compositing: original approved poster is the fixed base. Only four softly feathered hair/cape regions use Hailuo motion. Faces, hands, rifles, title and city remain from the still source.",
+    "filter_file": "11-cruciform-idle-clean.ffmpeg.txt",
+    "mask_regions_xy_rx_ry": [[205,133,195,88],[143,236,122,64],[65,407,128,135],[76,584,125,122]],
+    "time_envelope": "sin(pi*t/5)^2: generated motion blends in and out, returning to the still source at t=0 and t=5 without reversing footage.",
+    "additional_generation_credits": 0,
+    "motion_scope": "Hair and cloth only. Body breathing was intentionally excluded from the final composite to keep hands and weapon placement stable.",
+    "limitations": "Soft feathered boundaries can blend cloth detail; this is a composited idle illustration, not a rigged character animation. User approval and game runtime integration pending."
+  },
+  "evidence": ["11-cruciform-idle-contact.jpg","11-cruciform-idle-final.jpg","11-cruciform-idle-clean-contact.jpg"],
+  "qa": {
+    "sample_frames": [0,60,120],
+    "mean_absolute_pixel_change_0_to_60_out_of_255": {"title":0.0404,"female_gun":0.0352,"male_gun":0.0215,"cape":7.4935},
+    "first_last_mean_absolute_pixel_difference_out_of_255": 0.2415,
+    "browser_playback": "Verified localhost delivery in Chrome; complete 0:05/0:05 playback and intact final poster title/closed rifles observed."
+  }
+}
