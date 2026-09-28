@@ -195,6 +195,12 @@
 
 이후 사용자가 별도 파일 `hf_20260928_010728_3cd9188f-312f-4332-84e7-34795531fcae.png`를 직접 첨부해 검을 옆으로 휘두르는 영상을 요청했다. 이 원화는 `assets/video-tests/hailuo-20260928/07-transmuter-sword-source.png`에 보존하며, 본 폴더의 `02-transmuters-sword-v2.png`로 대체하지 않는다. 영상 07의 제작·검수·비용 기록은 `HAILUO_CHARACTER_VIDEO_TEST_20260928.md`와 `07-transmuter-sword-sweep.json`을 따른다.
 
+### 공유 Sunburst 총사 원화 / Kling 대기 영상
+
+2026-09-28 사용자가 `https://higgsfield.ai/s/eaZMYjkwjeE` 원화를 선택해 추가 영상 제작을 요청했다. 원화 작업은 `ef714c44-7858-4346-9d49-8374c538ccea`이며 GPT Image 2.5 Sunburst / High로 표시된다. 이 원화의 견착·양손 그립·총기 디자인을 유지하는 Kling 3.0 Pro 대기 영상 1편을 제작했다. 새 원화와 영상은 `assets/video-tests/kling-20260928/`에 보존한다.
+
+실제 영상은 1868×1108, 24fps, 5.041667초, 무음이다. 제작비는 견적과 잔액 차이 모두 8.75크레딧이다. 총구 개폐나 발포 없이 머리카락·천과 작은 자세 변화가 있는 사용자 검토용 시안이며 런타임에 연결하지 않았다. 전체 설정·프롬프트·검수·사이트 표시 해상도 차이는 [Kling 제작 기록](KLING_CHARACTER_VIDEO_TEST_20260928.md)을 따른다. 기존 닫힘 시작 이미지의 승인 상태는 그대로다.
+
 ### 공통 항목
 
 - 이미지 안의 글자·로고·분할 패널 제거. 제목은 나중에 별도 편집 레이어로 합성한다.

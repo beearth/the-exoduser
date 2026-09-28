@@ -1,0 +1,70 @@
+{
+  "date": "2026-09-28",
+  "request": "https://higgsfield.ai/s/eaZMYjkwjeE 이것도 만들어보자",
+  "source_share_url": "https://higgsfield.ai/s/eaZMYjkwjeE",
+  "source_job_id": "ef714c44-7858-4346-9d49-8374c538ccea",
+  "source_result_url": "https://d8j0ntlcm91z4.cloudfront.net/user_3G1zto9sz11Uf3iEOhJefE9HdGG/hf_20260928_063712_ef714c44-7858-4346-9d49-8374c538ccea.png",
+  "source_import_media_id": "d7802b62-c1d5-4be7-9520-b75ca2c352cc",
+  "source_file": "01-cruciform-source.png",
+  "source_provider_ui": {
+    "model": "GPT Image 2.5 Sunburst",
+    "quality": "High",
+    "width": 3456,
+    "height": 2048
+  },
+  "provider": "Higgsfield",
+  "model": "kling3_0",
+  "mode": "pro",
+  "job_id": "1f500e4b-e5ef-48fa-969d-e910d1f6005a",
+  "project_id": "cec12414-13bc-49e4-b460-5d26f3bee4c7",
+  "status": "completed",
+  "estimated_credits": 8.75,
+  "balance_before": 737.75,
+  "params": {
+    "model": "kling3_0",
+    "mode": "pro",
+    "sound": "off",
+    "duration": 5,
+    "aspect_ratio": "16:9",
+    "count": 1,
+    "folder_id": "cec12414-13bc-49e4-b460-5d26f3bee4c7",
+    "medias": [
+      {
+        "role": "start_image",
+        "value": "d7802b62-c1d5-4be7-9520-b75ca2c352cc"
+      },
+      {
+        "role": "end_image",
+        "value": "d7802b62-c1d5-4be7-9520-b75ca2c352cc"
+      }
+    ],
+    "prompt": "Create a restrained 5-second cinematic IDLE animation of this exact dark fantasy EXODUSER illustration. Locked camera and unchanged composition, both adult characters hold the exact same shouldered ready stance throughout. Only the ends of the woman's long dark hair, the torn red cloth ribbons, and the edges of both capes move slowly in a gentle breeze. Tiny natural breathing and a subtle blink; hands and weapon contact remain fixed. Ease the secondary motion back toward the initial rest state by the final frame.\nCRITICAL: both oversized Gothic revolver rifles remain perfectly rigid, straight and identical to the reference. Preserve the large six-chamber cylinder, shoulder stock contact, two distinct gripping hands, bronze collars, cloth attachment points, barrel alignment and all existing harpoon-tip blades. Keep the muzzle assembly locked in the exact initial state. No opening, closing, blade rotation, unfolding, bending, gun morphing, trigger pull, firing, recoil, cylinder spin, tracer, projectile or beam. The existing red luminous line at the foreground weapon tip keeps the same location and extent with only a faint steady glow; never extend it or launch it. Never let a hand slip or merge into the barrel.\nPreserve both faces, armor, bodies, gargoyle statue, stairs, castle, red moon and lighting. Keep the top-right EXODUSER / HELL LORD lettering and symbol exactly unchanged, sharp and stationary like a fixed graphic overlay. Add no text, particles, glitter, floating dots, sparks, extra debris, new objects or people. Do not add camera motion, cuts, attacks or dramatic actions. Retain the full original subject framing. Silent video.",
+    "declined_preset_id": "24bae836-2c4a-48e0-89b6-49fcc0b21612"
+  },
+  "intent": "Use the shared rifle image unchanged for a single 5-second idle test. No muzzle mechanism, attack, or new particles. Not game runtime integration.",
+  "source_file_bytes": 11009102,
+  "result_url": "https://d8j0ntlcm91z4.cloudfront.net/user_3G1zto9sz11Uf3iEOhJefE9HdGG/hf_20260928_070934_1f500e4b-e5ef-48fa-969d-e910d1f6005a.mp4",
+  "output_file": "01-cruciform-idle.mp4",
+  "output": {
+    "width": 1868,
+    "height": 1108,
+    "codec": "h264",
+    "fps": 24,
+    "frames": 121,
+    "duration_seconds": 5.041667,
+    "bytes": 4818066,
+    "video_bitrate_bps": 7642229,
+    "audio_streams": 0
+  },
+  "provider_ui_size": "1920x1080",
+  "size_note": "The provider UI labels this 1920x1080, but ffprobe and the browser video element both confirm the actual encoded size is 1868x1108.",
+  "balance_after": 729,
+  "balance_delta": 8.75,
+  "qa": {
+    "frame_review": "One-second contact sheet reviewed. Long barrels, harpoon-tip blades, two-hand grips and shoulder contact remain broadly stable; no new firing, recoil or muzzle mechanism action observed. Hair, cloth and tiny pose changes remain. Existing source red luminous line is retained.",
+    "browser_playback": "Higgsfield result played; readyState 4, 1868x1108, 5.041667 seconds, no media error. Local project preview also loaded and played: currentTime advanced to 0.083358, paused=false, readyState=4, no media error.",
+    "limitations": "Generative motion is not pixel-locked. Small pose/face/texture changes and perfect loop continuity remain user review items.",
+    "review_status": "pending_user_review",
+    "runtime_integrated": false
+  }
+}
