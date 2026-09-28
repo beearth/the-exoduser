@@ -52,7 +52,8 @@
     "texture": "Fewer fine bright speckles and pitted dots on armor, gloves, cloth and around weapon light. Continuous surfaces retain seams, engraving, rivets and larger worn details.",
     "preserved": "Full framing, recognizable characters, shoulder support, two-handed grips, straight rifles, cylinders and muzzle assemblies, moon, stairs, gargoyle and readable EXODUSER / HELL LORD title.",
     "limitations": "Generative redraw subtly changes faces, armor engraving, cloth folds, background architecture and tip light. Not a pixel-identical localized retouch. Requested 4k; actual output is 3456x2048.",
-    "review_status": "pending_user_image_approval",
+    "review_status": "superseded_by_restrained_cloth_v3_pending_review",
+    "review_note": "User found the red fabric excessive and unnatural. Preserved as the pre-cloth-cleanup source; latest candidate is 13-hell-hunter-restrained-cloth-v3.png.",
     "new_video_generated": false,
     "runtime_integrated": false
   }

@@ -1,0 +1,56 @@
+{
+  "date": "2026-09-28",
+  "character": "Hell Hunter / 헬 헌터",
+  "request": "붉은 천 조각이 과도하고 부자연스러워 양과 흐름을 정리",
+  "source_job_id": "3850ec67-4653-44c3-a08f-abc5477477f8",
+  "source_local": "13-hell-hunter-sunburst-clean-v2.png",
+  "provider": "Higgsfield",
+  "job_id": "8947d03a-b872-4899-bd1f-b1877a191ea6",
+  "status": "completed",
+  "estimated_credits": 15,
+  "balance_before": 679.5,
+  "params": {
+    "model": "gpt_image_2_5",
+    "variant": "sunburst",
+    "quality": "max",
+    "resolution": "4k",
+    "aspect_ratio": "27:16",
+    "count": 1,
+    "folder_id": "cec12414-13bc-49e4-b460-5d26f3bee4c7",
+    "medias": [
+      {
+        "role": "image_references",
+        "value": "3850ec67-4653-44c3-a08f-abc5477477f8"
+      }
+    ],
+    "prompt": "Make a localized costume cleanup EDIT of this exact Hell Hunter reference. The only substantial design change is to greatly REDUCE the excessive red fabric strips, and make the surviving cloth behave like believable clothing.\nREMOVE approximately 70-80 percent of the flying shredded crimson ribbons and long red rag strands from both characters and weapons. Remove the ribbon forest around the woman, in front of her thighs, behind her silhouette, between the two people, and along both rifles. No tendrils, tentacles, noodles, branching filaments, floating unattached fabric, radial explosions of cloth, or confetti-like threads. Clear the negative space around the arms, gun barrels and legs.\nKEEP a restrained amount of dark burgundy fabric: ONE coherent, modest cape panel attached clearly at each character's shoulders/back, predominantly charcoal-black with a subdued dark red lining and only a few large readable folds. A short narrow burgundy waist sash may remain visibly secured at the belt. Cape hems can be slightly worn, but do not shred them into dozens of strands. Cloth should hang with believable weight and mostly downward gravity, with a small consistent breeze toward frame-left. No enormous flag-like capes, wings, scarves or train extensions. On each rifle keep at most two small tight dark red fabric bindings around metal collars, trimmed ends only, no dangling long strips. Red is a restrained accent, not the main clothing silhouette. Preserve the existing black plated armor, layered dark skirt/coat, boots and gloves; do not replace armor with fabric or expose more skin.\nLOCK the full original 27:16 framing, camera, both recognizable adult faces and hairstyles, stance, body proportions, hands, fingers, shoulder contact and exact two-handed weapon holds. Keep both rigid straight Gothic revolver rifles and their stock, six-chamber cylinders, barrel lengths, bronze collars and harpoon-blade muzzle structures unchanged. Preserve the red moon, cross-free pointed Gothic castle spires, gargoyle statue, stairs and dark cinematic lighting. Do not add a background cross, dot noise, particles, sparks or speckles. Keep the small existing red weapon-tip glow, and the upper-right EXODUSER title with its round symbol and HELL LORD subtitle unchanged. Do not alter the entire scene's red lighting or moon; simplify only the excessive red cloth. Crisp high-end dark fantasy artwork, clean continuous materials and coherent silhouette."
+  },
+  "output_file": "13-hell-hunter-restrained-cloth-v3.png",
+  "intent": "Reduce excessive red fabric while preserving cleaned cross-free background, characters and rifles. Revised image remains subject to user approval before any new video.",
+  "result_url": "https://d8j0ntlcm91z4.cloudfront.net/user_3G1zto9sz11Uf3iEOhJefE9HdGG/hf_20260928_073756_8947d03a-b872-4899-bd1f-b1877a191ea6.png",
+  "output": {
+    "width": 3456,
+    "height": 2048,
+    "format": "PNG",
+    "mode": "RGB",
+    "bytes": 10286653
+  },
+  "charged_credits": 15,
+  "balance_after": 616.5,
+  "balance_delta": 63,
+  "billing_evidence": {
+    "display_name": "GPT Image 2.5 Sunburst",
+    "credits": -15,
+    "created_at": "2026-09-28T07:37:56.948180Z",
+    "note": "Model and generation timestamp match. The balance delta also includes an unrelated Grok Video 1.5 transaction of 48 credits."
+  },
+  "qa": {
+    "browser": "Local gallery opens the before/after disclosure; both v3 and v2 are complete and decode at 3456x2048.",
+    "cloth": "Long detached-looking ribbons removed around rifles, thighs and between the characters. Capes read as coherent black/burgundy cloth panels, with a short waist accent and short rifle bindings. Requested 70-80 percent reduction is a prompt target, not a measured output percentage.",
+    "preserved": "Character placement, recognizable faces, two-handed shouldering, straight rifle barrels, cylinders, harpoon muzzle structures, red moon, gargoyle, stairs, title and cross-free castle remain recognizable.",
+    "limitations": "Cape shapes and hems were substantially redrawn. Minor face, armor, cloth, gun-wrap and background detail changes are present; not pixel-locked editing. Requested 4k; actual image is 3456x2048.",
+    "review_status": "pending_user_image_approval",
+    "new_video_generated": false,
+    "runtime_integrated": false
+  }
+}
