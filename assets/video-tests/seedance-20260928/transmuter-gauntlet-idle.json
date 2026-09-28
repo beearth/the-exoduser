@@ -1,0 +1,57 @@
+{
+  "date": "2026-09-28",
+  "request": "씨던스 2.5고 최고품질인가 그걸로 한번 생성해봐 힉스필드서",
+  "provider": "Higgsfield",
+  "project_id": "cec12414-13bc-49e4-b460-5d26f3bee4c7",
+  "source_file": "assets/video-bases/20260928/12-transmuter-gauntlet-scythe-v4.png",
+  "source_job_id": "fdf79819-7865-4f38-ad29-c2a58a879d99",
+  "job_id": "610c824d-99e7-4011-90c5-3e84aaeec1a6",
+  "status": "completed",
+  "estimated_credits": 60,
+  "balance_before": 815.25,
+  "params": {
+    "model": "seedance_2_5",
+    "mode": "omni_reference",
+    "duration": 5,
+    "resolution": "1080p",
+    "bitrate_mode": "high",
+    "generate_audio": false,
+    "aspect_ratio": "16:9",
+    "count": 1,
+    "folder_id": "cec12414-13bc-49e4-b460-5d26f3bee4c7",
+    "medias": [
+      {
+        "role": "start_image",
+        "value": "fdf79819-7865-4f38-ad29-c2a58a879d99"
+      },
+      {
+        "role": "end_image",
+        "value": "fdf79819-7865-4f38-ad29-c2a58a879d99"
+      }
+    ],
+    "prompt": "Animate this exact EXODUSER gothic fantasy illustration as a premium cinematic IDLE character portrait, one continuous 5-second shot. Match the supplied first and final frame composition. Locked stationary camera, no cuts, zoom or reframing. The adult silver-haired woman in the foreground maintains the exact pose and calm determined expression. Tiny natural breathing, a subtle natural blink, gentle flowing tips of her silver hair and torn cape. The dark-haired man behind her maintains his existing stance and blue energy bow; his cape moves softly. Preserve both faces and costumes.\nPRIMARY WEAPON IDENTITY MUST REMAIN INTACT: the woman's large physical black claw-shell GAUNTLET and its prominent blue spherical CORE remain fixed to her foreground arm and clearly readable at all times. The long hooked SCYTHE, including the straight shaft, is made entirely of translucent blue energy projected directly from that gauntlet. Preserve the exact existing scythe silhouette, dimensions, straight shaft, connection, hand grip and hook. Only internal blue energy filaments flow slowly and the gauntlet core pulses gently. Keep the solid black gauntlet plates motionless; do not rotate or reconfigure the shell. Do not turn the gauntlet into a shield, ordinary glove or floating orb. Do not turn the scythe into a sword or metal polearm. No swings, attacks, weapon transformations, arrow release, projectiles or explosions. Both characters' feet and hands stay planted, no new limbs or fingers.\nAtmosphere: tiny drifting blue embers, very faint slow background mist; retain the cathedral architecture and existing lighting without strobing. All existing EXODUSER and HELL LORD title lettering remains EXACTLY unchanged, crisp, stationary and fully readable throughout, like a static graphic overlay. No added text, invented symbols, subtitles, logos or watermarks. Subtle believable secondary motion only, stable anatomy and rigid weapon geometry. Gradually return the moving hair and fabric close to the initial resting state at the end. Silent video.",
+    "declined_preset_id": "24bae836-2c4a-48e0-89b6-49fcc0b21612"
+  },
+  "intent": "Single premium model comparison: subtle idle movement, prominent physical gauntlet and fully energy scythe preserved. No attack; no game runtime integration.",
+  "balance_after_submission": 755.25,
+  "observed_credit_delta": 60,
+  "result_url": "https://d8j0ntlcm91z4.cloudfront.net/user_3G1zto9sz11Uf3iEOhJefE9HdGG/hf_20260928_064103_610c824d-99e7-4011-90c5-3e84aaeec1a6.mp4",
+  "file": "01-transmuter-gauntlet-idle.mp4",
+  "output": {
+    "width": 1920,
+    "height": 1080,
+    "codec": "hevc",
+    "fps": 24,
+    "frames": 121,
+    "duration_seconds": 5.041667,
+    "bytes": 19813525,
+    "video_bitrate_bps": 31397079,
+    "audio_streams": 0
+  },
+  "review": {
+    "observed": "Sampled frames show prominent claw gauntlet/core, hooked energy scythe with straight shaft, male archer and bow preserved. Gentle hair/cape movement, energy shimmer and subtle expression changes. Existing title stays readable in sampled frames; no attack or large weapon transformation seen.",
+    "limitations": "Generative frames are not pixel-locked to the source; small facial/expression and energy details vary. Exact seamless loop not established. This idle test does not validate large action or weapon transformation capability.",
+    "browser": "Higgsfield result played successfully; local video loaded at 1920x1080, duration 5.041667, readyState 4, no media error.",
+    "approval_status": "Completed test for user review; no game runtime integration."
+  }
+}
