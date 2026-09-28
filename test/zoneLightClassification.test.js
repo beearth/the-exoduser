@@ -39,10 +39,19 @@ test('nine pillarSpike traps plus nine dark pillars do not stack orange haze',()
  assert.equal(runtime(zones).collect().length,1);
 });
 test('actual fire zones retain preset 7, radius and intensity including untyped flame ground',()=>{
- for(const type of ['fireTrail','assaultFlame','fireAura',undefined]){
+ for(const type of ['fireTrail','fireAura',undefined]){
   const r=runtime([{x:10,y:20,r:100,el:1,type}]);
   assert.deepEqual(r.collect()[1],[10,20,260,.68,255,140,50,7]);
  }
+});
+test('chain flame lighting fades quickly while its stacked damage zone remains active',()=>{
+ const zone={x:10,y:20,r:100,el:1,type:'assaultFlame',t:0,maxT:2700,_afStk:3,dmg:123};
+ const r=runtime([zone]);
+ assert.deepEqual(r.collect()[1],[10,20,135,.24,255,140,50,7]);
+ zone.t=12;assert.equal(r.collect()[1][3],.06);
+ zone.t=23;assert.ok(r.collect()[1][3]<.001);
+ for(const t of [24,300,2699]){zone.t=t;assert.equal(r.collect().length,1);assert.equal(r.s.G._fireZones[0],zone);assert.equal(zone.dmg,123);assert.equal(zone.maxT,2700)}
+ zone.t=0;assert.equal(r.collect()[1][3],.24,'refreshing the stack restarts only the short landing light');
 });
 test('iceStorm retains the existing blue light without needing an element field',()=>{
  const r=runtime([{x:10,y:20,r:100,type:'iceStorm'}]);

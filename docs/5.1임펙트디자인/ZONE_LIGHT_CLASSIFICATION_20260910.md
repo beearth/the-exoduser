@@ -20,11 +20,12 @@
 | 대상 / 판정 | 광원 반경 | 세기 | RGB / 프리셋 |
 |---|---|---|---|
 | `type==='iceStorm'` (el 필드 없어도 적용) | `r*2.4` | `.55` | `[68,200,255]`, 기존 `_colIdx` 선택 |
+| `assaultFlame` + `el===EL.F` | `r*1.35` | `(.24+sin(_gameFrame*.13+_fzL)*.03)*max(0,1-t/24)^2`; 24f부터 미생성 | `[255,140,50]`, `ci=7` |
 | 나머지 중 `el===EL.F` | `r*2.6` | `.68+sin(_gameFrame*.13+_fzL)*.10` | `[255,140,50]`, `ci=7` |
 | `spikeTrap`, `darkPillar`, `holyDome`, `holyPrison`, `weakPhys/Mag/Pj/Rev`, `maliceDome`, `storm`, `boneStorm`, `hellRay`, `vortex`, `iceVortex`, `shockField` 등 비화염 | 생성하지 않음 | — | 각 스킬 고유 VFX만 유지 |
 | 타입 없는 원소 | `el===EL.F`인 불장판만 위 화염 규칙 적용 | 위와 동일 | el 없는 원소는 자동 화염 취급 금지 |
 
-실제 화염 `fireTrail`, `assaultFlame`, `fireAura`, 타입 없는 불장판은 생성부에서 `el:EL.F`를 지정하므로 기존 조명을 유지한다. 프리셋 7 색상·falloff, 실제 화염/얼음 조명의 반경·강도, 모닥불·보스·펫·플레이어 조명은 변경하지 않는다. 가시덫 이미지 `sprites/spike_trap/spike_thorn.png`, 회전·배치·크기·피해·슬로우·지속·쿨다운은 변경하지 않는다.
+실제 화염은 생성부에서 `el:EL.F`를 지정한다. 2026-09-29 사용자 요청에 따라 `assaultFlame`만 24f 착지 잔광으로 제한한다. `fireTrail`, `fireAura`, 타입 없는 불장판·얼음, 프리셋 7 색상·falloff, 모닥불·보스·펫·플레이어 조명은 기존 값을 유지한다. 상세 수치는 [사슬기동 착지 임팩트](사슬기동_착지임팩트_실사시트_20260904.md)의 기동불꽃 광량·잔광 표를 따른다. 가시덫 이미지 `sprites/spike_trap/spike_thorn.png`, 회전·배치·크기·피해·슬로우·지속·쿨다운은 변경하지 않는다.
 
 ## 검증
 

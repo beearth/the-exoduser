@@ -4575,6 +4575,11 @@ function _collectLights(){
    for(var _fzL=0;_fzL<G._fireZones.length;_fzL++){
     var _fz=G._fireZones[_fzL];if(!_fz)continue;
     if(_fz.type==='iceStorm')_pushLight(_fz.x,_fz.y,_fz.r*2.4,.55,68,200,255);
+    else if(_fz.type==='assaultFlame'&&_fz.el===EL.F){
+      // 착지 잔광만 24f 동안 감쇠. 불바닥 DOT/스택 수명은 별도로 유지한다.
+      var _afLightFade=Math.max(0,1-_fz.t/24);
+      if(_afLightFade>0)_pushLight(_fz.x,_fz.y,_fz.r*1.35,(.24+Math.sin(_gameFrame*.13+_fzL)*.03)*_afLightFade*_afLightFade,255,140,50,7);
+    }
     else if(_fz.el===EL.F)_pushLight(_fz.x,_fz.y,_fz.r*2.6,.68+Math.sin(_gameFrame*.13+_fzL)*.10,255,140,50,7); // 공유 장판 배열 중 실제 화염 속성만 프리셋7 광원 생성
    }
   }
@@ -30524,9 +30529,9 @@ function update(){
         }
         playSample('chain_assault_fire',.8,_r(1,.1));{const _ve=['voice_grunt','male_grunt'];playSample(_ve[~~(Math.random()*2)],1,_r(1,.15))}
         const _stTierCol=_stTier>=3?'#ff0000':_stTier>=2?'#ff4400':'#ff8800';
-                shake(_stTier>=3?60:_stTier>=2?35:15);_gpVibrate(_stTier>=3?50:_stTier>=2?25:10,_stTier>=3?400:_stTier>=2?200:100);G.chromaT=_stTier>=3?16:_stTier>=2?10:6;G._flashT=_stTier>=3?14:_stTier>=2?8:4;G._flashCol='#ff4400';
+                shake(_stTier>=3?60:_stTier>=2?35:15);_gpVibrate(_stTier>=3?50:_stTier>=2?25:10,_stTier>=3?400:_stTier>=2?200:100);G.chromaT=_stTier>=3?16:_stTier>=2?10:6;G._flashT=_stTier>=3?1:_stTier>=2?.8:.6;G._flashCol='#ff4400';
         // 용암분출 VFX (스프라이트시트)
-        playVFXAng('chain_assault_impact',P.x,P.y-_stR*0.19,_stR/384,12,0,true);
+        playVFXAng('chain_assault_impact',P.x,P.y-_stR*0.19,_stR/384,4,0,true,.5); // 짧고 절제된 착지 임팩트: 36f, 가산 광량 50%
         // 화염 파티클
         for(let j=0;j<10;j++){const _a=Math.PI*2*j/10;const _d=15+Math.random()*(_stR*.4);
           poolPart(P.x+Math.cos(_a)*_d,P.y+Math.sin(_a)*_d,Math.cos(_a)*3,Math.sin(_a)*3-1,'#ff4400',2+Math.random()*3,12)}

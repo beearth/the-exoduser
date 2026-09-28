@@ -23,5 +23,5 @@ test('Chain Flame and Chain Impact use opaque black additive sheets on the share
   assert.match(gameHtml, /registerVFX\('chain_slam_impact','assets\/vfx\/chain_slam_impact_realistic\.png',418,418,9,3\);/);
   assert.doesNotMatch(gameHtml, /_vfxGLMode&&sh\.blend!=='source-over'&&_queueVfxGL/);
   assert.match(gameHtml, /playVFXAng\('chain_slam_impact',P\.x,P\.y-_csR\*0\.28,_csR\/256,12,0,true\)/);
-  assert.match(gameHtml, /playVFXAng\('chain_assault_impact',P\.x,P\.y-_stR\*0\.19,_stR\/384,12,0,true\)/);
+  assert.match(gameHtml, /playVFXAng\('chain_assault_impact',P\.x,P\.y-_stR\*0\.19,_stR\/384,4,0,true,\.5\)/);
 });
