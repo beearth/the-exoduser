@@ -37,10 +37,10 @@
       "filename": "02-transmuters-idle.png",
       "status": "completed",
       "url": "https://d8j0ntlcm91z4.cloudfront.net/user_3G1zto9sz11Uf3iEOhJefE9HdGG/hf_20260928_004659_f5584e88-f357-47a5-87f1-3d2026c879b4.png",
-      "selected": true,
+      "selected": false,
       "width": 2688,
       "height": 1520,
-      "review_status": "start-frame candidate"
+      "review_status": "superseded by sword revision after user feedback"
     },
     {
       "index": 3,
@@ -146,5 +146,12 @@
   "balance_before": 1015.75,
   "balance_after": 989.75,
   "observed_balance_delta": 26,
-  "billing_note": "Cost estimate was 2.75 per image (22 for 8); observed workspace balance difference was 26. Per-job actual charge not independently established."
+  "billing_note": "Cost estimate was 2.75 per image (22 for 8); observed workspace balance difference was 26. Per-job actual charge not independently established.",
+  "revisions": [
+    {
+      "record": "transmuter-sword-revision.json",
+      "selected_file": "02-transmuters-sword-v2.png",
+      "job_id": "d22709f0-01e1-4153-87e4-934d2d4e4577"
+    }
+  ]
 }

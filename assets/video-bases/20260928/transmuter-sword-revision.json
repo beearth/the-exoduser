@@ -1,0 +1,30 @@
+{
+  "date": "2026-09-28",
+  "model": "gpt_image_2_5",
+  "provider": "Higgsfield",
+  "quality": "high",
+  "resolution": "2k",
+  "aspect_ratio": "16:9",
+  "folder_id": "cec12414-13bc-49e4-b460-5d26f3bee4c7",
+  "reference_job_id": "f5584e88-f357-47a5-87f1-3d2026c879b4",
+  "request": "Make the female transmuter's sword clearly recognizable; preserve the male bow.",
+  "attempts": [
+    {
+      "id": "42ce1d62-486a-4df2-8181-19523dfcff85",
+      "status": "nsfw",
+      "prompt": "Edit this exact cinematic dark fantasy image. Localized correction ONLY to the weapon in the WOMAN'S lowered right hand, which is on the LEFT side of the image. Replace the ambiguous blue spiky artifact completely with ONE immediately recognizable gothic straight steel LONGSWORD. A real continuous solid broad double-edged metal blade, straight central ridge, two clean sharp edges tapering to one pointed tip; clearly separate modest crossguard, leather grip enclosed naturally by her fingers, and pommel. Sword blade approximately 75-85cm long, hand-and-a-half grip, practical proportions. Blackened steel face with bright cold silver cutting bevels and a few very subtle blue engraved runes; do not turn the blade into blue energy, a crystal, staff, thorn cluster, mace or amorphous ornamental mesh. The blade is broad enough to read clearly at thumbnail size. Her relaxed lowered right hand holds the sword with blade pointing down and slightly outward to IMAGE LEFT, in open silhouette outside her left cloak edge; the entire blade and tip visible above ground with a safe border. Make only the minimum wrist adjustment needed for a believable grip. Remove the large glowing orb from that weapon entirely; restrained dark gothic guard ornaments only. Preserve the small blue core in her OTHER raised palm. Preserve BOTH characters' exact faces, hairstyles, hood, black armor, legs, pose and outfit; preserve the MAN AND HIS BLUE BOW on the RIGHT exactly unchanged, including its shape, position and energy. Same framing, full bodies and ground, ruined cathedral, palette, lighting, image quality. No text, no logo, no diagram, no inset, no extra weapons, no swing trail, no camera change."
+    },
+    {
+      "id": "d22709f0-01e1-4153-87e4-934d2d4e4577",
+      "status": "completed",
+      "prompt": "Create a non-sexual cinematic dark fantasy character reference frame using the supplied image for faces, gothic style, composition and the male character's blue bow. Two clearly adult fantasy warriors, both at least 25 years old. The woman wears FULLY COVERING practical black gothic armor: opaque closed breastplate covering chest, opaque black armored trousers covering hips and both legs, gauntlets, boots, hood and feathered cloak, NO exposed cleavage or thighs and NO lingerie elements. Preserve her silver hair, adult face, dark hood and armor motifs. Main requested correction: her lowered right hand on IMAGE LEFT holds ONE unmistakable straight steel LONGSWORD with a solid continuous broad double-edged blade, distinct simple gothic crossguard, wrapped grip and pommel. Blackened steel flat, bright silver bevels, subtle blue engraved rune along central ridge; no glowing orb in the weapon, no thorn mesh, no crystalline staff, no energy-only blade. The sword is angled downward outward to image left, its whole sharp pointed blade plainly visible outside cloak and above the ground. Correct natural closed-finger grip around handle, not blade. Other palm keeps small dim blue core. Man on right keeps the SAME beautiful blue arcane bow, silhouette, clothing, stance, face and hairstyle from reference. Both full bodies and weapons wholly in frame, wide safe margins, stable pre-action poses, same moonlit ruined cathedral, blue-grey palette and highly detailed material finish. No text, no logo, no graphic violence, no sexualization, no new characters. Focus on legible sword design and cinematic game character identity."
+    }
+  ],
+  "output": {
+    "filename": "02-transmuters-sword-v2.png",
+    "width": 2688,
+    "height": 1520,
+    "url": "https://d8j0ntlcm91z4.cloudfront.net/user_3G1zto9sz11Uf3iEOhJefE9HdGG/hf_20260928_005516_d22709f0-01e1-4153-87e4-934d2d4e4577.png",
+    "review": "Distinct continuous steel sword, crossguard and grip visible; male bow identity retained; female outfit changed to covering armor after first provider rejection."
+  }
+}
