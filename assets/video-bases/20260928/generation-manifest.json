@@ -162,7 +162,14 @@
     {
       "record": "pair-gun-revision.json",
       "selected_file": "08-gunslingers-approved-composition-v2.png",
-      "job_id": "1c665097-67c1-4e78-aaff-92f2a209c25e"
+      "job_id": "1c665097-67c1-4e78-aaff-92f2a209c25e",
+      "usage": "open muzzle structure reference only; not start frame"
+    },
+    {
+      "record": "closed-start-revision.json",
+      "selected_start_file": "09-gunslingers-closed-start.png",
+      "job_id": "1eedfd96-22d8-4b34-ab3c-aead5d19e6a8",
+      "approval_status": "awaiting user confirmation before video generation"
     }
   ]
 }
