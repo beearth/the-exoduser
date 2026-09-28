@@ -13,8 +13,11 @@
     {
       "name": "EXODUSER_HELL_LORD.mp4",
       "id": "1aJBiZNR6XjQbP8BXKRo0coZtklpKHWvi",
-      "bytes": 45428377,
-      "url": "https://drive.google.com/file/d/1aJBiZNR6XjQbP8BXKRo0coZtklpKHWvi/view?usp=drivesdk"
+      "bytes": 45003915,
+      "url": "https://drive.google.com/file/d/1aJBiZNR6XjQbP8BXKRo0coZtklpKHWvi/view?usp=drivesdk",
+      "modified_time": "2026-09-28T10:44:47.358Z",
+      "replacement": "September 28 current runtime recording; same Drive ID",
+      "size_readback_verified": true
     },
     {
       "name": "ss3.jpg",
@@ -46,8 +49,11 @@
     {
       "name": "EXODUSER_HELL_LORD_full.mp4",
       "id": "146EfGL_xNa4bLvtyk-ylZmoSUREb5X_L",
-      "bytes": 175905395,
-      "url": "https://drive.google.com/file/d/146EfGL_xNa4bLvtyk-ylZmoSUREb5X_L/view?usp=drivesdk"
+      "bytes": 90619014,
+      "url": "https://drive.google.com/file/d/146EfGL_xNa4bLvtyk-ylZmoSUREb5X_L/view?usp=drivesdk",
+      "modified_time": "2026-09-28T10:45:07.230Z",
+      "replacement": "September 28 current runtime recording; same Drive ID",
+      "size_readback_verified": true
     },
     {
       "name": "main.jpg",
@@ -66,5 +72,15 @@
     "release_state": "Coming soon"
   },
   "form_submitted": false,
-  "images_replaced_on": "2026-09-28"
+  "images_replaced_on": "2026-09-28",
+  "current_video_replacement": {
+    "date": "2026-09-28",
+    "durations": [
+      15,
+      30
+    ],
+    "frame_rate": 30,
+    "file_count": 6,
+    "submitted": false
+  }
 }

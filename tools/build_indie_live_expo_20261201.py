@@ -3,6 +3,12 @@ from pathlib import Path
 import subprocess, json, re, hashlib, shutil, sys
 
 ROOT=Path(r"G:\exoduser")
+# Default deliveries must come from current runtime footage. The September 9
+# recipe remains available only as an explicitly requested historical rebuild.
+if '--images-only' not in sys.argv and '--legacy-september9' not in sys.argv:
+    import runpy
+    runpy.run_path(str(ROOT/'tools/build_indie_live_expo_current_video.py'), run_name='__main__')
+    sys.exit(0)
 OUT=ROOT/"output/indie-live-expo-20261201"
 PACK=OUT/"submission"
 WORK=ROOT/"tmp/indie-live-expo-20261201"
@@ -65,7 +71,7 @@ if "--images-only" in sys.argv:
     manifest["images"]=sources
     manifest["status"]="current_images_verified_locally_pending_drive_replacement_form_not_submitted"
     manifest["notes"]=[n for n in manifest.get("notes",[]) if "September 14" not in n]
-    manifest["notes"].append("Images were recaptured from the current working build on 2026-09-28; the two videos still use the existing September 9 footage.")
+    manifest["notes"].append("Images were recaptured from the current working build on 2026-09-28; this images-only operation does not replace either video.")
     manifest["image_capture"]={"date":"2026-09-28","origin":"http://127.0.0.1:3338","game_viewport":[1280,720],"source_state":"current uncommitted working tree, not a release checkout","staging":"Disposable origin and discarded game API writes; introductory lessons skipped, invulnerability and player position adjusted only in the capture tab; actual existing CH1 enemies and activateGiantSlam were rendered. No compositing or generated imagery.","supplementary_lobby":"current-20260928/lobby-current.jpg","game_source_modified_for_capture":False}
     manifest["source_state_at_packaging"]={p:hashlib.sha256((ROOT/p).read_bytes()).hexdigest() for p in ["game.html","index.html","ui-refinement.css","lobby-ancestor-art.css","lobby-ancestor-sprite.js"]}
     manifest["files"]=[f for f in manifest["files"] if f["file"] not in image_names]

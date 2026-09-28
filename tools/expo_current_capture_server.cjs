@@ -6,6 +6,19 @@ fs.mkdirSync(OUT,{recursive:true});
 const MIME={'.html':'text/html;charset=utf-8','.js':'text/javascript;charset=utf-8','.css':'text/css;charset=utf-8','.json':'application/json','.png':'image/png','.jpg':'image/jpeg','.webp':'image/webp','.mp4':'video/mp4','.mp3':'audio/mpeg','.wav':'audio/wav','.ogg':'audio/ogg','.ttf':'font/ttf','.woff2':'font/woff2'};
 http.createServer((req,res)=>{
   const u=new URL(req.url,'http://127.0.0.1:3338');
+  if(u.pathname==='/__recording'&&req.method==='POST'){
+    const name=u.searchParams.get('name')||'';
+    if(!/^[a-z0-9_-]+\.(webm|json)$/.test(name)){res.writeHead(400).end();return;}
+    const chunks=[];let length=0;
+    req.on('data',c=>{length+=c.length;if(length>200*1024*1024){req.destroy();return;}chunks.push(c)});
+    req.on('end',()=>{try{
+      const b=Buffer.concat(chunks);
+      if(name.endsWith('.webm')&&b.subarray(0,4).toString('hex')!=='1a45dfa3')throw Error('WebM required');
+      if(name.endsWith('.json'))JSON.parse(b.toString('utf8'));
+      fs.writeFileSync(path.join(OUT,name),b);
+      res.writeHead(200,{'Content-Type':'application/json'}).end(JSON.stringify({ok:true,name,bytes:b.length}));
+    }catch{res.writeHead(400).end();}});return;
+  }
   if(u.pathname==='/__capture'&&req.method==='POST'){
     const name=u.searchParams.get('name')||'';
     if(!/^[a-z0-9_-]+\.jpg$/.test(name)){res.writeHead(400).end();return;}

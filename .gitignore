@@ -157,6 +157,9 @@ assets/vfx/boss/gen/
 /output/indie-live-expo-20261201/submission/
 /output/indie-live-expo-20261201/*-contact.jpg
 /output/indie-live-expo-20261201/current-20260928/*.jpg
+/output/indie-live-expo-20261201/current-20260928/*.webm
+/output/indie-live-expo-20261201/current-20260928/*.json
+/output/indie-live-expo-20261201/before/
 
 # Local company records and source documents; do not publish with source history.
 /docs/13출시·마케팅/private-business/

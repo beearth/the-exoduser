@@ -1,7 +1,7 @@
 {
   "event": "INDIE Live Expo 2026.12.1",
   "prepared": "2026-09-28",
-  "status": "current_images_verified_replaced_on_drive_form_draft_not_submitted",
+  "status": "current_runtime_media_uploaded_form_draft_not_submitted",
   "handoff": {
     "drive_metadata": "drive-upload.json",
     "review_page": "index.html",
@@ -23,34 +23,24 @@
     "important_notes_consent_checked": false,
     "form_submitted": false
   },
-  "source_video": "captures\\gameplay_trailer_20260909\\EXODUSER_SKILL_TRAILER_V25_DAMAGE_TEXT_CAPTIONS_58S_1080P60.mp4",
-  "source_video_sha256": "b1b7386a78484252253a2c7f79b31dadba7fb836a0e0014e6689e93379cd2b34",
-  "source_picture": "tmp\\trailer_damage_v25\\edit\\picture.mp4",
+  "source_video": "current-20260928/current-parry.webm + current-slam.webm + current-ice.webm",
+  "source_picture": "tmp\\expo-current-edit\\current-picture.mp4",
   "short_cuts": [
     {
-      "source_start_seconds": 13.4,
-      "duration_seconds": 3,
-      "content": "parry"
+      "source_start_seconds": 1,
+      "duration_seconds": 4
     },
     {
-      "source_start_seconds": 21.85,
-      "duration_seconds": 3,
-      "content": "infernal_slam"
+      "source_start_seconds": 8.5,
+      "duration_seconds": 4
     },
     {
-      "source_start_seconds": 31.85,
-      "duration_seconds": 3,
-      "content": "flame_detonation"
+      "source_start_seconds": 15,
+      "duration_seconds": 4
     },
     {
-      "source_start_seconds": 50.85,
-      "duration_seconds": 3,
-      "content": "bullet_release"
-    },
-    {
-      "source_start_seconds": 55,
-      "duration_seconds": 3,
-      "content": "title"
+      "source_start_seconds": 27,
+      "duration_seconds": 3
     }
   ],
   "images": {
@@ -78,8 +68,8 @@
   "files": [
     {
       "file": "EXODUSER_HELL_LORD.mp4",
-      "bytes": 45428377,
-      "sha256": "1bf7f13b8da370d5e254927c16b44ad362d1f879222082f275b132cec81b418a",
+      "bytes": 45003915,
+      "sha256": "719c5941dddd092e4b48c1802ba4a9d71a0aca6d53a047c054b98cc75e276272",
       "probe": {
         "streams": [
           {
@@ -98,7 +88,7 @@
             "sample_aspect_ratio": "1:1",
             "display_aspect_ratio": "16:9",
             "pix_fmt": "yuv420p",
-            "level": 42,
+            "level": 41,
             "color_range": "tv",
             "color_space": "bt709",
             "color_transfer": "bt709",
@@ -109,16 +99,16 @@
             "is_avc": "true",
             "nal_length_size": "4",
             "id": "0x1",
-            "r_frame_rate": "60/1",
-            "avg_frame_rate": "60/1",
+            "r_frame_rate": "30/1",
+            "avg_frame_rate": "30/1",
             "time_base": "1/15360",
             "start_pts": 0,
             "start_time": "0.000000",
             "duration_ts": 230400,
             "duration": "15.000000",
-            "bit_rate": "23894046",
+            "bit_rate": "23680692",
             "bits_per_raw_sample": "8",
-            "nb_frames": "900",
+            "nb_frames": "450",
             "extradata_size": 61,
             "disposition": {
               "default": 1,
@@ -170,8 +160,8 @@
             "start_time": "0.000000",
             "duration_ts": 720000,
             "duration": "15.000000",
-            "bit_rate": "320565",
-            "nb_frames": "705",
+            "bit_rate": "311409",
+            "nb_frames": "702",
             "extradata_size": 5,
             "disposition": {
               "default": 1,
@@ -210,8 +200,8 @@
           "format_long_name": "QuickTime / MOV",
           "start_time": "0.000000",
           "duration": "15.000000",
-          "size": "45428377",
-          "bit_rate": "24228467",
+          "size": "45003915",
+          "bit_rate": "24002088",
           "probe_score": 100,
           "tags": {
             "major_brand": "isom",
@@ -224,8 +214,8 @@
     },
     {
       "file": "EXODUSER_HELL_LORD_full.mp4",
-      "bytes": 175905395,
-      "sha256": "949df8fb11d19b2f295d5c102a330488efb607f5c5bd0d4aaac093f6bccf280e",
+      "bytes": 90619014,
+      "sha256": "da674512384d56c831c5b1b73bcd9091da7cda81db193613b99253bc6baf3921",
       "probe": {
         "streams": [
           {
@@ -244,7 +234,7 @@
             "sample_aspect_ratio": "1:1",
             "display_aspect_ratio": "16:9",
             "pix_fmt": "yuv420p",
-            "level": 42,
+            "level": 41,
             "color_range": "tv",
             "color_space": "bt709",
             "color_transfer": "bt709",
@@ -255,16 +245,16 @@
             "is_avc": "true",
             "nal_length_size": "4",
             "id": "0x1",
-            "r_frame_rate": "60/1",
-            "avg_frame_rate": "60/1",
+            "r_frame_rate": "30/1",
+            "avg_frame_rate": "30/1",
             "time_base": "1/15360",
             "start_pts": 0,
             "start_time": "0.000000",
-            "duration_ts": 890880,
-            "duration": "58.000000",
-            "bit_rate": "23937649",
+            "duration_ts": 460800,
+            "duration": "30.000000",
+            "bit_rate": "23840506",
             "bits_per_raw_sample": "8",
-            "nb_frames": "3480",
+            "nb_frames": "900",
             "extradata_size": 61,
             "disposition": {
               "default": 1,
@@ -314,10 +304,10 @@
             "time_base": "1/48000",
             "start_pts": 0,
             "start_time": "0.000000",
-            "duration_ts": 2772672,
-            "duration": "57.764000",
-            "bit_rate": "313453",
-            "nb_frames": "2720",
+            "duration_ts": 1440000,
+            "duration": "30.000000",
+            "bit_rate": "315179",
+            "nb_frames": "1407",
             "extradata_size": 5,
             "disposition": {
               "default": 1,
@@ -355,9 +345,9 @@
           "format_name": "mov,mp4,m4a,3gp,3g2,mj2",
           "format_long_name": "QuickTime / MOV",
           "start_time": "0.000000",
-          "duration": "58.000000",
-          "size": "175905395",
-          "bit_rate": "24262813",
+          "duration": "30.000000",
+          "size": "90619014",
+          "bit_rate": "24165070",
           "probe_score": 100,
           "tags": {
             "major_brand": "isom",
@@ -681,7 +671,7 @@
             "sample_aspect_ratio": "1:1",
             "display_aspect_ratio": "16:9",
             "pix_fmt": "yuv420p",
-            "level": 42,
+            "level": 41,
             "color_range": "tv",
             "color_space": "bt709",
             "color_transfer": "bt709",
@@ -692,16 +682,16 @@
             "is_avc": "true",
             "nal_length_size": "4",
             "id": "0x1",
-            "r_frame_rate": "60/1",
-            "avg_frame_rate": "60/1",
+            "r_frame_rate": "30/1",
+            "avg_frame_rate": "30/1",
             "time_base": "1/15360",
             "start_pts": 0,
             "start_time": "0.000000",
             "duration_ts": 230400,
             "duration": "15.000000",
-            "bit_rate": "23894046",
+            "bit_rate": "23680692",
             "bits_per_raw_sample": "8",
-            "nb_frames": "900",
+            "nb_frames": "450",
             "extradata_size": 61,
             "disposition": {
               "default": 1,
@@ -753,8 +743,8 @@
             "start_time": "0.000000",
             "duration_ts": 720000,
             "duration": "15.000000",
-            "bit_rate": "320565",
-            "nb_frames": "705",
+            "bit_rate": "311409",
+            "nb_frames": "702",
             "extradata_size": 5,
             "disposition": {
               "default": 1,
@@ -793,8 +783,8 @@
           "format_long_name": "QuickTime / MOV",
           "start_time": "0.000000",
           "duration": "15.000000",
-          "size": "45428377",
-          "bit_rate": "24228467",
+          "size": "45003915",
+          "bit_rate": "24002088",
           "probe_score": 100,
           "tags": {
             "major_brand": "isom",
@@ -805,16 +795,16 @@
         }
       },
       "loudness": {
-        "input_i": "-15.50",
-        "input_tp": "-7.07",
-        "input_lra": "14.50",
-        "input_thresh": "-26.69",
-        "output_i": "-15.78",
-        "output_tp": "-7.13",
-        "output_lra": "4.90",
-        "output_thresh": "-26.45",
+        "input_i": "-15.51",
+        "input_tp": "-1.94",
+        "input_lra": "10.70",
+        "input_thresh": "-26.23",
+        "output_i": "-17.13",
+        "output_tp": "-3.49",
+        "output_lra": "3.60",
+        "output_thresh": "-27.64",
         "normalization_type": "dynamic",
-        "target_offset": "0.78"
+        "target_offset": "2.13"
       },
       "full_decode": "passed"
     },
@@ -837,7 +827,7 @@
             "sample_aspect_ratio": "1:1",
             "display_aspect_ratio": "16:9",
             "pix_fmt": "yuv420p",
-            "level": 42,
+            "level": 41,
             "color_range": "tv",
             "color_space": "bt709",
             "color_transfer": "bt709",
@@ -848,16 +838,16 @@
             "is_avc": "true",
             "nal_length_size": "4",
             "id": "0x1",
-            "r_frame_rate": "60/1",
-            "avg_frame_rate": "60/1",
+            "r_frame_rate": "30/1",
+            "avg_frame_rate": "30/1",
             "time_base": "1/15360",
             "start_pts": 0,
             "start_time": "0.000000",
-            "duration_ts": 890880,
-            "duration": "58.000000",
-            "bit_rate": "23937649",
+            "duration_ts": 460800,
+            "duration": "30.000000",
+            "bit_rate": "23840506",
             "bits_per_raw_sample": "8",
-            "nb_frames": "3480",
+            "nb_frames": "900",
             "extradata_size": 61,
             "disposition": {
               "default": 1,
@@ -907,10 +897,10 @@
             "time_base": "1/48000",
             "start_pts": 0,
             "start_time": "0.000000",
-            "duration_ts": 2772672,
-            "duration": "57.764000",
-            "bit_rate": "313453",
-            "nb_frames": "2720",
+            "duration_ts": 1440000,
+            "duration": "30.000000",
+            "bit_rate": "315179",
+            "nb_frames": "1407",
             "extradata_size": 5,
             "disposition": {
               "default": 1,
@@ -948,9 +938,9 @@
           "format_name": "mov,mp4,m4a,3gp,3g2,mj2",
           "format_long_name": "QuickTime / MOV",
           "start_time": "0.000000",
-          "duration": "58.000000",
-          "size": "175905395",
-          "bit_rate": "24262813",
+          "duration": "30.000000",
+          "size": "90619014",
+          "bit_rate": "24165070",
           "probe_score": 100,
           "tags": {
             "major_brand": "isom",
@@ -961,26 +951,26 @@
         }
       },
       "loudness": {
-        "input_i": "-15.19",
-        "input_tp": "-1.39",
-        "input_lra": "7.10",
-        "input_thresh": "-25.59",
-        "output_i": "-15.02",
-        "output_tp": "-1.50",
-        "output_lra": "5.60",
-        "output_thresh": "-25.33",
+        "input_i": "-15.18",
+        "input_tp": "-1.44",
+        "input_lra": "8.20",
+        "input_thresh": "-25.60",
+        "output_i": "-16.31",
+        "output_tp": "-2.27",
+        "output_lra": "5.70",
+        "output_thresh": "-26.57",
         "normalization_type": "dynamic",
-        "target_offset": "0.02"
+        "target_offset": "1.31"
       },
       "full_decode": "passed"
     }
   },
   "notes": [
-    "All gameplay comes from existing staged in-engine captures, not generated video.",
-    "English captions replace Korean trailer captions; gameplay content and damage numbers are retained.",
     "24 Mbps delivery encoding cannot restore detail absent from the original footage.",
     "No form submission or rights consent performed.",
-    "Images were recaptured from the current working build on 2026-09-28; the two videos still use the existing September 9 footage."
+    "Both videos now use September 28 current-runtime captures. Previous September 9 edits are backed up locally.",
+    "No generated gameplay footage. Combat records actual game canvas layers without the DOM HUD.",
+    "Form remains unsubmitted; rights consent is still pending."
   ],
   "image_capture": {
     "date": "2026-09-28",
@@ -1001,5 +991,130 @@
     "ui-refinement.css": "ab57f259512c14edf90c64a1626b55a343191cf5213b1ac27551b07ea6dfd689",
     "lobby-ancestor-art.css": "2d19cbc0f4b1e15af8927dd43b468398f76f272359ccd09d98fa626316e336dd",
     "lobby-ancestor-sprite.js": "8584a474a5269185f2e78449ed9ccc1091c269338be90ba035b51c11815f5adb"
+  },
+  "video_capture": {
+    "date": "2026-09-28",
+    "viewport": [
+      1920,
+      1080
+    ],
+    "takes": [
+      {
+        "file": "output\\indie-live-expo-20261201\\current-20260928\\current-parry.webm",
+        "sha256": "62cb28198284e898692da50e475ae97dbaf25ab6f523eae009311c1c743b78ba",
+        "rendered_frames": 478,
+        "first": {
+          "t": 0.016900000005960463,
+          "gameTime": 392083.3333334236,
+          "x": 3740,
+          "y": 6900,
+          "hp": 1000000,
+          "alive": 24,
+          "kills": 132
+        },
+        "last": {
+          "t": 8.00010000000894,
+          "gameTime": 400066.6666667662,
+          "x": 3743.8287235317143,
+          "y": 6888.580623381406,
+          "hp": 1000000,
+          "alive": 31,
+          "kills": 132
+        }
+      },
+      {
+        "file": "output\\indie-live-expo-20261201\\current-20260928\\current-slam.webm",
+        "sha256": "800410a40738fd9c310246e1bc2ffc8ba45a793be29a23a83f1fe6946dde8f43",
+        "rendered_frames": 435,
+        "first": {
+          "t": 0.007,
+          "gameTime": 306516.6666666573,
+          "x": 3740,
+          "y": 6900,
+          "hp": 1000000,
+          "alive": 80,
+          "kills": 56
+        },
+        "last": {
+          "t": 7.993,
+          "gameTime": 313966.666666666,
+          "x": 3726.053891742198,
+          "y": 6903.323373029802,
+          "hp": 1000000,
+          "alive": 46,
+          "kills": 128
+        }
+      },
+      {
+        "file": "output\\indie-live-expo-20261201\\current-20260928\\current-ice.webm",
+        "sha256": "ed43c65107411a62ca36dd4d5c90e8a7a3fc6ae9103c88b0765c36bb1626669f",
+        "rendered_frames": 473,
+        "first": {
+          "t": 0.004200000002980232,
+          "gameTime": 360966.6666667207,
+          "x": 3740,
+          "y": 6900,
+          "hp": 1000000,
+          "alive": 64,
+          "kills": 129
+        },
+        "last": {
+          "t": 8.00020000000298,
+          "gameTime": 368933.33333339664,
+          "x": 3739.3578481409822,
+          "y": 6900.611669556561,
+          "hp": 1000000,
+          "alive": 73,
+          "kills": 131
+        }
+      }
+    ],
+    "staging": "Disposable origin 3338 discards game API writes. Current mkEn creates enemy groups; capture-only health protection, player location, skill access and rage are staged. Actual game AI, attacks, parries and VFX are recorded.",
+    "dom_hud_in_combat_video": false,
+    "audio": "Real current WebAudio SFX plus existing project Bloodsteel Ascension BGM.",
+    "editing": "7s parry + 7s slam + 7s ice + 3s current inventory + 3s current skills + 3s current title; mild gamma/exposure grade on combat only.",
+    "game_source_modified_for_capture": false
+  },
+  "form_update": {
+    "contact": "Dojin Sim",
+    "email": "contact@fordeargamers.com",
+    "country": "Republic of Korea",
+    "announcement_category": "None of the above",
+    "release_timing": "TBA / 1111",
+    "playtime": "Undecided (no finalized duration; older plan spans 30-80h)",
+    "user_schedule_confirmation": "No schedule for announcement",
+    "submitted": false,
+    "email_verification": "Single correct business email visibly present with draft saved. Email previously became blank after reload; recheck it immediately before any future submission.",
+    "pending": [
+      "debut game",
+      "full-time or alongside work/study",
+      "external media use permission",
+      "streaming permission",
+      "Important Notes agreement",
+      "optional Steam App ID banner consent"
+    ]
+  },
+  "browser_playback_verification": {
+    "date": "2026-09-28",
+    "page": "http://localhost:3333/output/indie-live-expo-20261201/index.html",
+    "videos": [
+      {
+        "file": "EXODUSER_HELL_LORD.mp4",
+        "currentTime": 15,
+        "ended": true,
+        "error": null,
+        "videoWidth": 1920,
+        "videoHeight": 1080
+      },
+      {
+        "file": "EXODUSER_HELL_LORD_full.mp4",
+        "currentTime": 30,
+        "ended": true,
+        "error": null,
+        "videoWidth": 1920,
+        "videoHeight": 1080
+      }
+    ],
+    "drive_logged_out_listing": "Refreshed IAB folder shows six files: updated 42.9 MB / 86.4 MB videos and four current images."
   }
 }

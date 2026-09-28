@@ -1,6 +1,6 @@
 # INDIE Live Expo 2026.12.1 참가 신청 초안
 
-확인일: 2026-09-28 (KST). 상태: **필수 자료 6개 제작·검증·Drive 업로드 완료, 공식 Google Form 초안 저장 확인, 미제출**.
+확인일: 2026-09-28 (KST). 상태: **현재 코드로 영상 15초/30초·이미지 4장 제작 및 Drive 교체 완료, 공식 Google Form 초안, 미제출**.
 
 사용자 지시: 가능한 항목을 채우되 연락처·개인정보·법적 동의를 임의 입력하지 않고 최종 Submit/Send를 누르지 않는다. 이 문서는 제출 완료나 참가 선정의 증거가 아니다.
 
@@ -63,15 +63,17 @@
 | 제작 계기 | 핵앤슬래시의 규모·빌드와 플레이어 판단·이동·패링을 결합하려는 디자인 목표. 가상의 개인 경험을 작성하지 않음 |
 | 개발 일화 | 데모 저장 복원·기존 데이터 보존·로비의 저장 진행도 표시를 검증한 실제 작업. `docs/15 세이브+데이터구조/15 세이브+데이터구조.md` 및 이번 대화 근거 |
 | 블록체인 | No. 현재 게임·로비·서버·패키지에 해당 기능/연결을 확인하지 못했고 게임의 실제 구성에 따라 입력 |
+| 담당자 / 이메일 / 국가 | Dojin Sim / contact@fordeargamers.com / Republic of Korea — 사용자 제공 명함 및 후속 답변 |
+| 발표 분류 / 예상 플레이타임 | None of the above / Undecided |
 | 필수 자료 URL | https://drive.google.com/drive/folders/1GV8C9EH9SqlPp7m4Ux1kTTGgt9LUzkFg |
 
 Steam URL은 **별도의 비로그인 IAB에서 EXODUSER: HELL LORD 상점과 Coming soon 표시를 확인**했다. 로그인 링크가 표시된 공개 페이지로 접근 가능하며, 개발자 브라우저의 BETA 표시와 구분하여 검증했다. 공식 사이트 https://www.fordeargamers.com/ 도 정상 확인했다.
 
 기타 지원 언어: French, Italian, German, Spanish (Spain), Greek, Dutch, Norwegian, Danish, Russian, Romanian, Malay, Vietnamese, Bulgarian, Swedish, Arabic, Ukrainian, Indonesian, Czech, Thai, Turkish, Portuguese (Brazil), Polish, Finnish, Hungarian.
 
-### 신규 발표 내용 — 사용자 확인 전 잠정 문구
+### 신규 발표 내용 — 일정 없음 사용자 확인
 
-We would like to showcase EXODUSER: HELL LORD, a dark fantasy action RPG in development for PC (Windows), ahead of its Steam release. A playable build and demo already exist. The presentation would highlight large-scale battles, parryable projectile patterns, and item-and-skill build combinations. No release date announcement is confirmed at this time.
+No release or demo launch date is confirmed for announcement at INDIE Live Expo. We would like to showcase the current playable build of EXODUSER: HELL LORD for PC (Windows), highlighting large-scale enemy battles, parryable projectile patterns, and item-and-skill build combinations. Release timing remains TBA.
 
 독점 발표나 출시일 공개를 약속하지 않았다. 실제 행사에서 발표할 신규 소식이 확정되면 교체한다.
 
@@ -101,19 +103,14 @@ One practical development challenge was making progress in the playable demo per
 
 ## 비워둔 필수 항목
 
-2026-09-28 후속 제공 자료: 사업자등록증과 명함을 [FDG 회사 자료 안내](FDG_COMPANY_DOCUMENTS.md)에 정리했다. 담당자 이름·업무 이메일·국가 표기는 이제 제공 자료에서 참고할 수 있다. 이번 후속 작업은 로컬 보관이며, 아래 폼 입력 상태 자체는 변경하지 않았다.
+2026-09-28 후속 제공 자료: 사업자등록증과 명함을 [FDG 회사 자료 안내](FDG_COMPANY_DOCUMENTS.md)에 정리했다. 담당자 이름·업무 이메일·국가 표기는 이제 제공 자료에서 참고할 수 있다. 후속 답변 “다 알고있잖아 없어 일정”에 따라 확인된 명함의 담당자·이메일·국가를 폼에 입력했다. 발표 분류는 None of the above, 일정은 TBA / 1111, 최종 플레이타임은 미확정이므로 Undecided를 선택했다.
 
 | 항목 | 필요한 확인 |
 |---|---|
-| 이메일 | 사용자가 지정/입력. 로그인 계정 주소를 자동 전용하지 않음 |
 | 첫 작품 여부 | 공식 사이트에 DIROI도 있으므로 임의 판정하지 않음 |
 | 개발 방식 | 전업 / 다른 직장 병행 / 학업 병행 등 |
-| 행사 소개 분류 | 2026-12-01 기준 상태, 월드 프리미어/출시/데모 등 중 실제 해당 항목 |
-| 정식 출시 후 예상 플레이타임 | 선택 구간 확정 필요. 옛 기획의 30–80시간은 여러 선택 구간에 걸쳐 있어 임의 적용하지 않음 |
 | 방송 외 영상 사용 허락 | SNS/웹사이트/광고 및 미디어 파트너 공유 가능성 직접 검토 |
 | 스트리밍/콘텐츠 제작 허락 | Yes / 조건부 / No 중 사용자 결정 |
-| 담당자 성명 | 사용자 직접 확인 |
-| 대표자의 국가/지역 | 사용자 직접 확인 |
 | Important Notes 동의 | 사용자가 권리·계약 및 내용 조건 검토 후 직접 결정 |
 
 ## 비워둔 선택/조건부 항목
@@ -124,58 +121,47 @@ One practical development challenge was making progress in the playable demo per
 - 조건부 스트리밍 이용 규칙: 허락 여부 결정 후 필요 시 작성.
 - 개발·마케팅·홍보 고민: 사용자 의견 없이 임의 작성하지 않음.
 
-## 완성한 제출 파일
+## 완성한 제출 파일 — 현재 코드 촬영본
 
-사용자의 후속 지시 **“다 만들어봐”**에 따라 기존 자료를 선택·편집·규격화하고 업로드했다. 새 게임플레이를 AI로 생성하지 않았다.
-
-로컬 패키지: `G:/exoduser/output/indie-live-expo-20261201/submission/`.
+로컬 패키지: `G:/exoduser/output/indie-live-expo-20261201/submission/`. 영상 2개와 이미지 4개를 같은 Drive ID에 교체했다. 과거 영상은 `before/videos-before-current-20260928/`에 보존하며 현재 제출 대상에서 제외했다.
 
 | 파일 | 실제 규격 | bytes | Drive ID |
 |---|---|---:|---|
-| EXODUSER_HELL_LORD.mp4 | 15.000초, 1920×1080, 60fps, H.264, 영상 23.894Mbps | 45,428,377 | 1aJBiZNR6XjQbP8BXKRo0coZtklpKHWvi |
-| EXODUSER_HELL_LORD_full.mp4 | 58.000초, 1920×1080, 60fps, H.264, 영상 23.938Mbps | 175,905,395 | 146EfGL_xNa4bLvtyk-ylZmoSUREb5X_L |
-| main.jpg | 3086×1262, JPG, 현행 타이틀 실행 화면 | 637,502 | 1jc1EnL1OutjWLgiOXEeyPc0YngGV3nip |
-| ss1.jpg | 1280×720, JPG, 현행 CH1 지옥강타 전투 | 240,465 | 1jFsvZ0POlpJ39aquMpC5GjvAHUYEJ88K |
-| ss2.jpg | 1280×720, JPG, 현행 인벤토리 장비 비교 | 260,988 | 1kSYmd634lKbCNEI7XtA6N1sVvfRQsYI3 |
-| ss3.jpg | 1280×720, JPG, 현행 전투 스킬·합체 설계도 | 249,069 | 1ndgld8WEPbkhN5KEDjR84YTRG6Xq5Pdk |
+| EXODUSER_HELL_LORD.mp4 | 15초, 1920×1080, 30fps, H.264, 약 24Mbps | 45,003,915 | 1aJBiZNR6XjQbP8BXKRo0coZtklpKHWvi |
+| EXODUSER_HELL_LORD_full.mp4 | 30초, 1920×1080, 30fps, H.264, 약 24Mbps | 90,619,014 | 146EfGL_xNa4bLvtyk-ylZmoSUREb5X_L |
+| main.jpg | 3086×1262, 현재 타이틀 화면 | 637,502 | 1jc1EnL1OutjWLgiOXEeyPc0YngGV3nip |
+| ss1.jpg | 1280×720, 현재 CH1 전투 | 240,465 | 1jFsvZ0POlpJ39aquMpC5GjvAHUYEJ88K |
+| ss2.jpg | 1280×720, 현재 인벤토리 | 260,988 | 1kSYmd634lKbCNEI7XtA6N1sVvfRQsYI3 |
+| ss3.jpg | 1280×720, 현재 스킬/합체 | 249,069 | 1ndgld8WEPbkhN5KEDjR84YTRG6Xq5Pdk |
 
-| 오디오 검사 | 15초 | 58초 |
+| 오디오 검사 | 15초 | 30초 |
 |---|---:|---:|
 | 형식 | AAC 48kHz stereo | AAC 48kHz stereo |
 | 인코딩 목표 비트레이트 | 320kbps | 320kbps |
-| 최종 파일 측정 평균 음량 | -15.50 LUFS | -15.19 LUFS |
-| True peak | -7.07dBTP | -1.39dBTP |
+| 평균 음량 | -15.51 LUFS | -15.18 LUFS |
 | 공식 -15±1 범위 | 통과 | 통과 |
-| 전체 파일 FFmpeg 디코딩 | 오류 없음 | 오류 없음 |
+| 전체 FFmpeg 디코딩 | 오류 없음 | 오류 없음 |
 
-LUFS/LKFS 수치 호환 측정으로 검사했으며 별도 방송국 인증을 받았다는 의미는 아니다. 음량 수치는 분석 필터의 `input_i`/`input_tp`이며, 분석 도중 가상 출력 값과 구분한다.
+음량은 최종 파일 `loudnorm` 분석의 `input_i`를 사용한다. LUFS/LKFS 호환 측정이며 별도 방송국 인증이나 전 구간 청취 평가를 주장하지 않는다.
 
-### 원본과 제작 방법
+### 2026-09-28 현재 코드 영상 촬영·편집
 
-| 항목 | 원본 / 처리 |
+| 항목 | 실제 처리 |
 |---|---|
-| 기존 V25 트레일러 | `captures/gameplay_trailer_20260909/EXODUSER_SKILL_TRAILER_V25_DAMAGE_TEXT_CAPTIONS_58S_1080P60.mp4` |
-| 원본 보존 SHA-256 | `b1b7386a78484252253a2c7f79b31dadba7fb836a0e0014e6689e93379cd2b34` |
-| 자막 없는 실제 촬영 편집본 | `tmp/trailer_damage_v25/edit/picture.mp4` |
-| 58초 제작 | 기존 자막 타이밍·스타일·로고 유지, 설명 자막 영문화, V25 오디오 음량 보정, 24Mbps 재출력 |
-| 15초 제작 | 아래 5개 컷 연결, 원본 효과음과 기존 `bgm/1장_썩은숲/Bloodsteel Ascension.mp3` 혼합, 별도 2-pass 음량 보정 |
-| 키아트 | 현행 `index.html` 실행 타이틀 화면 → `current-20260928/main.jpg`. 기존 원화 단독 파일 대신 현재 로고·슬로건·UI 포함 |
-| ss1 | 현행 `game.html` CH1에서 실제 `activateGiantSlam` 전투 프레임 → `current-20260928/ss1.jpg` |
-| ss2 | 현행 인벤토리 장비·가방·비교 UI → `current-20260928/ss2.jpg` |
-| ss3 | 현행 전투 스킬·합체 설계도 UI → `current-20260928/ss3.jpg` |
-| 이미지 처리 | 2026-09-28 브라우저 JPEG 직접 캡처, 원본 바이트 그대로 제출 폴더 복사. 합성·AI 생성 없음 |
-| 제작 스크립트 | `tools/build_indie_live_expo_20261201.py` — Python 표준 라이브러리, FFmpeg/FFprobe 필요. 외부 호출 없이 로컬 제작·검사 |
-| 폰트/오버레이 | `tmp/trailer_damage_v25/fonts/TrailerNotoBlack.ttf`, `tmp/trailer_v2/edit/shade.png` |
+| 촬영 원본 | `current-20260928/current-parry.webm`, `current-slam.webm`, `current-ice.webm` |
+| 렌더 진행 검사 | 8초 테이크별 478 / 435 / 473 게임 렌더 샘플. 각 원본이 7.5초 이상이고 최소 220 렌더 샘플일 때만 편집 허용 |
+| 캡처 규격 | 1920×1080, MediaRecorder VP9/Opus, 비디오 요청 30fps / 30Mbps. 최종 MP4는 고정 30fps |
+| 녹화 레이어 | 실제 `c`, `fogGL`, `burstCvs`, `ct`, `vfx3dCvs`, `boss3dCvs`. DOM HUD는 전투 영상에 포함되지 않음 |
+| 오디오 | 현재 게임 WebAudio `_comp` 출력에서 실제 효과음 녹음 + 기존 프로젝트 `bgm/1장_썩은숲/Bloodsteel Ascension.mp3` |
+| 촬영용 조정 | 별도 출처 3338에서만 플레이어 위치/체력 보호/스킬 접근/분노, 현재 `mkEn`을 사용한 적 배치, 투사체 예고를 조정. 실제 AI·충돌·공격·패링·VFX가 실행됨 |
+| 보존 | 게임 소스 수정 없음. 원래 서버/API 세이브에 쓰지 않음. 실패한 비어 있는 녹화와 밀집 테스트 촬영본은 제출에서 제외 |
+| 색 보정 | 전투 3컷만 gamma 1.12, brightness 0.008, saturation 1.02. 실제 스크린샷 4장은 변경하지 않음 |
+| 30초 편집 | 패링 7초 → 지옥강타 7초 → 얼음보주 7초 → 인벤토리 3초 → 스킬/합체 3초 → 현재 타이틀 3초 |
+| 15초 편집 | 위 편집본의 1–5 / 8.5–12.5 / 15–19 / 27–30초를 연결 |
+| 제작 도구 | `tools/expo_current_capture_server.cjs`, `tools/expo_current_recorder.js`, `tools/build_indie_live_expo_current_video.py` |
+| 기본 제작 진입점 | `tools/build_indie_live_expo_20261201.py` 기본 실행은 현재 영상 제작기로 연결. 옛 9월 9일 레시피는 `--legacy-september9` 명시 시에만 실행 |
 
-| 15초 출력 구간 | 원본 구간 | 내용 |
-|---|---|---|
-| 0–3초 | 13.4–16.4초 | 패링·분노 |
-| 3–6초 | 21.85–24.85초 | 광역 타격 |
-| 6–9초 | 31.85–34.85초 | 화염 폭발 |
-| 9–12초 | 50.85–53.85초 | 탄막 반격 |
-| 12–15초 | 55–58초 | 원본 타이틀 로고 |
-
-기존 실게임 테스트 장면을 촬영한 자료이며 일반 플레이를 새로 녹화했다고 표기하지 않는다. 24Mbps 재인코딩으로 원본에 없는 디테일이 복원되지는 않는다. 이미지 4장은 사용자 지시로 9월 28일 현재 코드 실행 화면으로 교체했다. 두 영상은 여전히 9월 9일 기존 촬영본이며 이번 작업에서 영상을 재촬영한 것은 아니다. 포함 음악·폰트·이미지의 상업적/2차 이용 권한은 최종 참가 동의 전에 사용자 확인이 필요하다.
+AI 생성 게임플레이를 사용하지 않는다. 체력 보호 등 촬영 조건을 조정한 인엔진 촬영이며 무편집 일반 플레이로 표현하지 않는다. 음악·폰트·이미지의 상업적/2차 이용 권리는 최종 참가 동의 전에 사용자가 확인한다.
 
 ### 2026-09-28 현재 코드 이미지 재촬영
 
@@ -194,17 +180,18 @@ LUFS/LKFS 수치 호환 측정으로 검사했으며 별도 방송국 인증을 
 
 - 원본·결과물 해시, FFprobe, 음량, 디코딩 결과: `output/indie-live-expo-20261201/manifest.json`.
 - 검수 페이지: http://localhost:3333/output/indie-live-expo-20261201/index.html . 공식 제출 파일 6개만 있는 `submission/` 폴더와 구분한다.
-- 영상 프레임 모음 `short-contact.jpg`, `full-contact.jpg`에서 장면·영문 자막·로고 확인. Chrome 검수 페이지에서도 15초/58초 모두 끝까지 재생되어 `ended=true`, 영어 자막 표시, 두 영상 1920×1080 및 `error=null` 확인. 오디오 기술 규격 검증과 청취 평가는 구분하며 별도의 전 구간 청취 평가 완료를 주장하지 않는다.
+- 새 영상 프레임 모음 `EXODUSER_HELL_LORD-contact.jpg`, `EXODUSER_HELL_LORD_full-contact.jpg`에서 실제 전투·영문 자막·최신 UI·타이틀을 확인했다. 새 15초/30초 파일은 FFprobe 규격·음량·전체 디코딩 검사를 통과했다. IAB 검수 페이지에서 두 영상을 끝까지 재생하고 각각 `currentTime=15 / 30`, `ended=true`, `error=null`, `videoWidth=1920`, `videoHeight=1080`을 확인했다.
 - Drive 폴더: https://drive.google.com/drive/folders/1GV8C9EH9SqlPp7m4Ux1kTTGgt9LUzkFg . 파일 6개의 이름·바이트 수를 업로드 후 다시 읽어 로컬과 대조했다.
 - 공유 설정 `anyone / reader / allowFileDiscovery=false` 읽기 검증. 별도 비로그인 IAB에서 로그인 링크와 6개 파일 목록 확인. 시크릿 창 자체를 열었다는 의미는 아니다.
-- 100MiB 이상 파일은 Drive 커넥터 입력 제한으로 실패하여, 58초 트레일러를 Chrome의 표준 파일 업로드로 완료했다. 최종 폴더에는 중복 없이 6개 파일만 있다.
+- 새 15초/30초 영상은 Drive 커넥터로 동일 ID 콘텐츠를 교체했다. 수정 시각 10:44:47 / 10:45:07 UTC 및 실제 크기를 다시 읽어 일치 확인했다. 비로그인 IAB 폴더를 새로고침하여 오후 7:44 / 7:45에 교체된 영상 2개와 기존 현재 이미지 4개를 확인했다. 최종 폴더는 중복 없이 6개다. 이전 58초 영상 업로드 이력과 구분한다.
 - Drive 기록: `output/indie-live-expo-20261201/drive-upload.json`. **12월 31일까지 삭제하지 않는다.**
 - 공개 Steam 페이지도 비로그인 접근 확인. 공개 URL 항목에 연결했다.
-- 폼 DOM 재검토에서 게임 소개·개발 일화·기술 정보·Drive 링크 입력, 블록체인 No 선택 및 `초안 저장됨`을 확인했다. 개인정보·권리 동의는 비워 두었다. 마지막 화면에서 Important Notes 체크 해제 상태와 `제출` 버튼이 함께 보이도록 두고 스크린샷으로 확인했으며 버튼은 누르지 않았다.
+- 폼 재검토에서 게임 소개·개발 일화·기술 정보·Drive 링크 입력, 블록체인 No 선택 및 `초안 저장됨`을 확인했다. 업무 연락처·이름·국가, 발표 일정 없음, 플레이타임 미정을 입력했다. 이메일은 접근성/DOM 값이 공백으로 읽히는 문제가 있어 실제 화면에서 `contact@fordeargamers.com` 단일 입력과 `초안 저장됨`을 확인했다. 새로고침하면 이메일 칸이 비었던 이력이 있으므로 후속 제출 직전에 이메일 표시를 다시 확인해야 한다. 권리 동의는 비워 두었고 `제출` 버튼은 누르지 않았다.
+- 마지막 신청 화면의 `Important Notes` 미체크와 주황색 `제출` 버튼을 스크린샷으로 확인하고 후속 작업용 탭으로 보존했다. 검수 페이지와 Drive 폴더도 결과물 탭으로 유지한다.
 - 제작 사본 `submission/`과 프레임 모음은 Git 제외하여 로컬/Drive에 보존한다. 런타임 에셋을 숨긴 것이 아니며, 제작 스크립트·검수 페이지·메타데이터·문서는 추적한다.
 
 ## 다음 진행
 
-1. 사용자 답변으로 첫 작품 여부, 개발 방식, 행사 발표 분류, 플레이타임, 연락처/국가 및 권리 선택을 확정한다. 필수 자료 파일은 추가로 필요하지 않다.
+1. 문서에서 확정되지 않은 첫 작품 여부·전업/병행 개발 여부 2개와 권리 선택을 확정한다. 담당자/이메일/국가, 발표 일정 없음은 반영했다. 플레이타임은 미정. 추가 필수 파일은 없다.
 2. 법인인 경우 연간 게임사업 매출 조건과 음악·폰트·이미지 등의 상업적/2차 이용 권리 및 관계자 계약을 사용자에게 확인받는다.
 3. 최종 제출은 사용자 승인 전 절대 실행하지 않는다. **현재 제출하지 않았고 공식 폼을 후속 입력용으로 유지한다.**
