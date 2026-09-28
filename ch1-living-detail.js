@@ -811,6 +811,39 @@
     c.restore();return true;
   }
   const organicCache={m_c1tree:new WeakMap(),m_c1camp:new WeakMap()};
+  // One queue for both organic props; no expensive mesh work inside a game draw.
+  const organicPending={m_c1tree:new WeakSet(),m_c1camp:new WeakSet()};
+  const organicFailed={m_c1tree:new WeakSet(),m_c1camp:new WeakSet()};
+  const organicJobs=[];
+  function finishBuild(job){let step;do{step=job.next();}while(!step.done);return step.value;}
+  function scheduleOrganicBuild(){
+    if(typeof root.requestIdleCallback==='function')root.requestIdleCallback(tickOrganicBuild,{timeout:120});
+    else root.setTimeout(tickOrganicBuild,8);
+  }
+  function tickOrganicBuild(deadline){
+    const start=root.performance.now();
+    do{
+      const task=organicJobs[0];if(!task)break;
+      try{
+        const step=task.job.next();
+        if(step.done){organicCache[task.type].set(task.img,step.value);organicPending[task.type].delete(task.img);organicJobs.shift();}
+      }catch(error){
+        organicPending[task.type].delete(task.img);organicFailed[task.type].add(task.img);organicJobs.shift();
+        if(root.console)root.console.warn('[CH1 organic cache] using source sprite',error);
+      }
+    }while(organicJobs.length&&root.performance.now()-start<3&&(!deadline||deadline.timeRemaining()>0));
+    if(organicJobs.length)scheduleOrganicBuild();
+  }
+  function organicReady(type,img,build){
+    const cached=organicCache[type].get(img);if(cached)return cached;
+    if(organicPending[type].has(img)||organicFailed[type].has(img))return null;
+    const job=build(img);
+    if(typeof root.requestIdleCallback!=='function'&&typeof root.setTimeout!=='function'){
+      const result=finishBuild(job);organicCache[type].set(img,result);return result;
+    }
+    organicPending[type].add(img);organicJobs.push({type,img,job});
+    if(organicJobs.length===1)scheduleOrganicBuild();return null;
+  }
   // Authored hand silhouettes, in the existing 880 x 663 camp image.
   // Only these three hands articulate; the forearms, stones and spikes stay rigid.
   const campHandRigs=[
@@ -818,13 +851,15 @@
     {wrist:[591,541],axis:[8,18],sign:1,outline:[[581,536],[600,535],[608,545],[622,557],[626,574],[616,587],[596,588],[578,575],[576,556]]},
     {wrist:[580,420],axis:[12,-17],sign:-1,outline:[[569,422],[575,403],[578,383],[601,378],[622,385],[620,405],[617,424],[589,431],[579,427]]}
   ];
-  function campGround(img){
+  function campGround(img){return finishBuild(buildCampGround(img));}
+  function* buildCampGround(img){
     const a=root.document.createElement('canvas');a.width=512;a.height=400;
     const c=a.getContext('2d');c.drawImage(img,36,32,440,331.5);
     const pixels=c.getImageData(0,0,512,400),p=pixels.data,d=new Uint8Array(512*400);
     for(let y=0;y<400;y++)for(let x=0;x<512;x++){
       const i=y*512+x;d[i]=p[i*4+3]>80?0:22;
       if(x)d[i]=Math.min(d[i],d[i-1]+1);if(y)d[i]=Math.min(d[i],d[i-512]+1);
+      if(x===511&&y%8===7)yield;
     }
     for(let y=399;y>=0;y--)for(let x=511;x>=0;x--){
       const i=y*512+x;if(x<511)d[i]=Math.min(d[i],d[i+1]+1);if(y<399)d[i]=Math.min(d[i],d[i+512]+1);
@@ -834,17 +869,18 @@
       p[k]=30+25*ash;p[k+1]=27+23*ash;p[k+2]=26+18*ash;
       p[k+3]=Math.round(255*.46*fade*lower*lower*(3-2*lower)*grain);
       if(!p[k+3])p[k]=p[k+1]=p[k+2]=0;
+      if(x===511&&y%8===0)yield;
     }
     c.putImageData(pixels,0,0);return a;
   }
-  function campHands(c,o,now,meta,img){
-    let cached=organicCache.m_c1camp.get(img);
-    if(!cached){
+  function* buildCamp(img){
       const iw=img.naturalWidth||img.width,ih=img.naturalHeight||img.height,ratio=Math.min(1,880/Math.max(iw,ih));
       const w=Math.round(iw*ratio),h=Math.round(ih*ratio),sx=w/880,sy=h/663;
       const body=root.document.createElement('canvas');body.width=w;body.height=h;
       const b=body.getContext('2d');b.drawImage(img,0,0,w,h);
-      const hands=campHandRigs.map((rig,index)=>{
+      const hands=[];
+      for(let index=0;index<campHandRigs.length;index++){
+        const rig=campHandRigs[index];
         const minX=Math.min(...rig.outline.map(p=>p[0]))-18,minY=Math.min(...rig.outline.map(p=>p[1]))-18;
         const pw=Math.ceil(Math.max(...rig.outline.map(p=>p[0]))-minX+18),ph=Math.ceil(Math.max(...rig.outline.map(p=>p[1]))-minY+18);
         const source=root.document.createElement('canvas');source.width=pw;source.height=ph;
@@ -883,11 +919,13 @@
         }
         // Build geometry once, excluding transparent cells (with a 1px sampling margin).
         const pixels=s.getImageData(0,0,pw,ph).data,mesh=[];
+        let work=0;
         for(let y=0;y<ph;y+=6)for(let x=0;x<pw;x+=6){
           let occupied=false;
           for(let py=Math.max(0,y-1);py<Math.min(ph,y+7)&&!occupied;py++)
             for(let px=Math.max(0,x-1);px<Math.min(pw,x+7);px++)if(pixels[(py*pw+px)*4+3]){occupied=true;break;}
           if(occupied)mesh.push([[x,y],[Math.min(pw,x+6),y],[Math.min(pw,x+6),Math.min(ph,y+6)],[x,Math.min(ph,y+6)]]);
+          if(++work%32===0)yield;
         }
         for(let frame=0;frame<24;frame++){
           const grip=frame/23;
@@ -895,17 +933,20 @@
           for(const vertices of mesh){
             const moved=vertices.map(p=>pose(...p,grip));
             for(const ids of [[0,1,2],[0,2,3]])triangle(ids.map(i=>vertices[i]),ids.map(i=>moved[i]));
+            if(++work%32===0)yield;
           }
           a.restore();
         }
         const blended=root.document.createElement('canvas');blended.width=pw;blended.height=ph;
-        return {atlas,blended,pw,ph,minX,minY,index,key:-1};
-      });
-      cached={body,hands,w,h};organicCache.m_c1camp.set(img,cached);
-    }
+        hands.push({atlas,blended,pw,ph,minX,minY,index,key:-1});
+      }
+      const ground=yield* buildCampGround(img);
+      return {body,hands,w,h,ground};
+  }
+  function campHands(c,o,now,meta,img){
+    const cached=organicReady('m_c1camp',img,buildCamp);if(!cached)return false;
     const size=(meta.sz||400)*(o.scale||1),ar=cached.w/cached.h,dw=size*Math.min(1,ar),dh=size*Math.min(1,1/ar),dx=o.x-dw/2,dy=o.y-dh/2;
     if(o.x===1820&&o.y===4020){
-      if(!cached.ground)cached.ground=campGround(img);
       c.drawImage(cached.ground,dx-36*dw/440,dy-32*dh/331.5,512*dw/440,400*dh/331.5);
     }
     c.drawImage(cached.body,dx,dy,dw,dh);
@@ -943,12 +984,7 @@
       return {tex,x0,y0,ax:rig.anchor[0]*sx,ay:rig.anchor[1]*sy,amp:rig.amp,speed:rig.speed,phase:rig.phase};
     });
   }
-  function organic(c,g,o,now,meta,img){
-    const tree=o.type==='m_c1tree',camp=o.type==='m_c1camp';
-    if(!enabled(g)||(!tree&&!camp)||!img||img.complete===false||!(img.naturalWidth||img.width)||!meta||meta.srcRect)return false;
-    if(camp)return campHands(c,o,now,meta,img);
-    const cache=organicCache[o.type];let cached=cache.get(img);
-    if(!cached){
+  function* buildTree(img){
       const iw=img.naturalWidth||img.width,ih=img.naturalHeight||img.height,max=1024;
       const ratio=Math.min(1,max/Math.max(iw,ih)),w=Math.round(iw*ratio),h=Math.round(ih*ratio);
       const source=root.document.createElement('canvas');source.width=w;source.height=h;source.getContext('2d').drawImage(img,0,0,w,h);
@@ -980,6 +1016,7 @@
         x.save();x.beginPath();x.moveTo(...edge[0]);x.lineTo(...edge[1]);x.lineTo(...edge[2]);x.closePath();x.clip();
         x.transform(A,B,C,D,d[0]-A*p[0]-C*p[1],d[1]-B*p[0]-D*p[1]);x.drawImage(source,0,0);x.restore();
       }
+      let work=0;
       for(let f=0;f<8;f++){
         x.save();x.translate(f%4*w,Math.floor(f/4)*h);x.beginPath();x.rect(0,0,w,h);x.clip();x.drawImage(source,0,0);
         const phase=f/8*Math.PI*2;
@@ -987,8 +1024,9 @@
         for(let y=y0;y<y1;y+=16)for(let px=x0;px<x1;px+=16){
           const right=Math.min(x1,px+16),bottom=Math.min(y1,y+16),vertices=[[px,y],[right,y],[right,bottom],[px,bottom]];
           const moved=vertices.map(p=>pose(...p,phase));
-          if(vertices.every((p,i)=>p[0]===moved[i][0]&&p[1]===moved[i][1])){x.drawImage(source,px,y,right-px,bottom-y,px,y,right-px,bottom-y);continue;}
+          if(vertices.every((p,i)=>p[0]===moved[i][0]&&p[1]===moved[i][1])){x.drawImage(source,px,y,right-px,bottom-y,px,y,right-px,bottom-y);if(++work%32===0)yield;continue;}
           for(const ids of [[0,1,2],[0,2,3]])triangle(ids.map(i=>vertices[i]),ids.map(i=>moved[i]));
+          if(++work%32===0)yield;
         }
         x.restore();
       }
@@ -997,8 +1035,13 @@
       for(let f=0;f<8;f++)p.drawImage(a,f%4*w+x0,Math.floor(f/4)*h+y0,pw,ph,f%4*pw,Math.floor(f/4)*ph,pw,ph);
       source.getContext('2d').clearRect(x0,y0,pw,ph);
       const blended=root.document.createElement('canvas');blended.width=pw;blended.height=ph;
-      cached={a:patch,w:pw,h:ph,fullW:w,fullH:h,x0,y0,staticBody:source,blended,blendKey:-1,hanging};cache.set(img,cached);
-    }
+      return {a:patch,w:pw,h:ph,fullW:w,fullH:h,x0,y0,staticBody:source,blended,blendKey:-1,hanging};
+  }
+  function organic(c,g,o,now,meta,img){
+    const tree=o.type==='m_c1tree',camp=o.type==='m_c1camp';
+    if(!enabled(g)||(!tree&&!camp)||!img||img.complete===false||!(img.naturalWidth||img.width)||!meta||meta.srcRect)return false;
+    if(camp)return campHands(c,o,now,meta,img);
+    const cached=organicReady(o.type,img,buildTree);if(!cached)return false;
     const {a,w,h}=cached,phase=((now*.0008+o.x*.017+o.y*.011)/(Math.PI*2)%1+1)%1*8;
     const blendKey=Math.floor(phase*16),sample=blendKey/16,frame=Math.floor(sample),next=(frame+1)%8,mix=sample-frame;
     const sz=(meta.sz||400)*(o.scale||1),ar=cached.fullW/cached.fullH;
