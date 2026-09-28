@@ -1,0 +1,54 @@
+{
+  "date": "2026-09-28",
+  "request": "썬브루스트 저걸로해 그러니까 GPT",
+  "provider": "Higgsfield",
+  "model": "gpt_image_2_5",
+  "variant": "sunburst",
+  "project_id": "cec12414-13bc-49e4-b460-5d26f3bee4c7",
+  "job_id": "e493699e-9684-4ca3-adae-e7cfc182bb5a",
+  "status": "completed",
+  "source_file": "assets/video-bases/20260928/12-transmuter-gauntlet-scythe-v4.png",
+  "source_job_id": "fdf79819-7865-4f38-ad29-c2a58a879d99",
+  "reuploaded_source_media_id": "d001ba25-17f3-4d46-a515-159f47593825",
+  "estimated_credits": 9,
+  "balance_before": 746.75,
+  "balance_after_submission": 737.75,
+  "observed_credit_delta": 9,
+  "params": {
+    "model": "gpt_image_2_5",
+    "variant": "sunburst",
+    "quality": "max",
+    "resolution": "2k",
+    "aspect_ratio": "16:9",
+    "count": 1,
+    "folder_id": "cec12414-13bc-49e4-b460-5d26f3bee4c7",
+    "medias": [
+      {
+        "role": "image_references",
+        "value": "d001ba25-17f3-4d46-a515-159f47593825"
+      }
+    ],
+    "prompt": "Use case: precise-object-edit. Edit the supplied EXODUSER illustration only to REMOVE VISUAL SPECKLE CLUTTER. This is the exact edit target, not loose inspiration. Preserve its composition and all essential designs.\nRemove the dense scattered tiny white/blue/red dots, glitter, sparkling pinpricks, floating dust, embers, confetti, granular flecks and detached debris throughout the air, sky, background, cape, armor and skin. The current image has a salt-and-pepper speckled appearance; replace that visual noise with clean coherent material surfaces. On black armor keep the actual layered plate construction, engraved shapes and broad controlled edge highlights, but remove fields of decorative white pinpoint reflections. Cloth should read as dark flowing fabric with readable folds, not dotted glitter. Preserve real hair strands and natural facial texture without grain or waxy skin. Maintain sharp clean silhouettes and painterly detail; do not solve this by blurring the image, flattening all detail or oversharpening.\nCRITICAL INVARIANTS: preserve the adult woman's exact face, silver hair, hood, anatomy, pose and black costume. Her large BLACK CLAW-SHELL GAUNTLET with its large spherical BLUE CORE remains her visible primary weapon. Preserve its scale, forearm attachment and shell, with the existing giant hooked scythe emitted directly from this gauntlet. The scythe's curved blade AND straight shaft remain entirely translucent blue ENERGY, with the same exact shape, location, grip and proportions. Retain a few continuous flowing energy filaments WITHIN the core and the scythe surfaces; no detached sparkling dots around them. Keep the background male character, his pose and his blue energy BOW intact. Do not replace, shrink or remove any weapon or character.\nKeep the original blue-black palette, cathedral architecture, existing lightning, depth and restrained atmospheric haze. Keep EXODUSER and HELL LORD typography exactly legible in the same top-right position and design. Change no wording. Same framing. No new objects, labels, panels or effects. The only intended change is visibly cleaner surfaces and air, with concentrated blue weapon glow rather than all-over speckles. Deliver a polished clean still image for approval."
+  },
+  "recovery": {
+    "initial_request": "404 media input not found; no job returned, balance unchanged",
+    "initial_request_id": "38f8e1fe-80a9-4d7b-b35c-06811d88048b",
+    "url_import": "403; recovered by uploading the preserved local v4 source directly to Higgsfield and confirming it",
+    "url_import_request_id": "7a29d1fb-c33f-4b54-b72f-045d3533b7d1"
+  },
+  "approval_status": "Still image for review; no new video requested or generated.",
+  "filename": "12-transmuter-sunburst-clean-v5.png",
+  "result_url": "https://d8j0ntlcm91z4.cloudfront.net/user_3G1zto9sz11Uf3iEOhJefE9HdGG/hf_20260928_065612_e493699e-9684-4ca3-adae-e7cfc182bb5a.png",
+  "output": {
+    "width": 2688,
+    "height": 1520,
+    "mode": "RGB",
+    "format": "PNG",
+    "bytes": 6405466
+  },
+  "review": {
+    "observed": "Detached sky debris and colored particle specks removed. Cape and armor surfaces show coherent broad shading instead of dense pinpoint glitter. Large claw-shell gauntlet/core, energy scythe and straight shaft, female face/hood, male archer and energy bow, cathedral and readable EXODUSER / HELL LORD retained.",
+    "limitations": "Generative cleanup also alters armor microdetails, fabric folds and local highlights; not a pixel-preserving retouch. Internal blue weapon filaments and intentional edge highlights remain.",
+    "provider_ui": "Higgsfield detail confirms GPT Image 2.5 Sunburst, Max, 2688x1520."
+  }
+}
