@@ -1,0 +1,37 @@
+{
+  "date": "2026-09-28",
+  "authorization": "User identified the distorted return of the opened Cruciform muzzle and requested restoration to the prior state.",
+  "source": "06-approved-cruciform-poster.mp4",
+  "output": "09-cruciform-return-edit.mp4",
+  "method": "Local deterministic frame-order edit with ffmpeg; no generation",
+  "additional_generation_credits": 0,
+  "frame_mapping": "0..60 then 59..0 from source, 24fps, 121 output frames",
+  "filter_complex": "[0:v]split=2[a][b];[a]trim=end_frame=61,setpts=PTS-STARTPTS[fwd];[b]trim=end_frame=60,reverse,setpts=PTS-STARTPTS[rev];[fwd][rev]concat=n=2:v=1:a=0,format=yuv420p[out]",
+  "encoding": {
+    "codec": "libx264",
+    "preset": "slow",
+    "crf": 16,
+    "fps": 24,
+    "pixel_format": "yuv420p",
+    "faststart": true
+  },
+  "output_properties": {
+    "width": 1248,
+    "height": 704,
+    "fps": 24,
+    "frames": 121,
+    "duration_seconds": 5.041667,
+    "bytes": 6572652,
+    "audio_stream": false
+  },
+  "review": {
+    "verdict": "RETURN_TO_START_CORRECTED_WITH_REVERSAL_LIMITATIONS",
+    "observed": "Removed the generated late muzzle distortion; open/fire frames reverse along their existing path and end at the initial harpoon-shaped state.",
+    "limitations": "Full-frame return reverses hair, cape, smoke and firing light as well as the muzzle. It does not reconstruct four independently rigged rigid petals, remove existing opening morphs, or correct the continuous-beam source effect.",
+    "evidence": [
+      "09-cruciform-return-contact.jpg",
+      "09-cruciform-return-final.jpg"
+    ],
+    "runtime_integration": false
+  }
+}
