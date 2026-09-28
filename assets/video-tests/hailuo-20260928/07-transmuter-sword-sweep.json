@@ -1,0 +1,40 @@
+{
+  "date": "2026-09-28",
+  "authorization": "User attached hf_20260928_010728_3cd9188f-312f-4332-84e7-34795531fcae.png and requested a sideways sword swing video. This source is approved for one video.",
+  "source_asset": "assets/video-tests/hailuo-20260928/07-transmuter-sword-source.png",
+  "source_dimensions": [
+    2816,
+    1584
+  ],
+  "source_sha256": "D2FC11970C89E922A534C87A358993759F9F928F41B016FDADC269ED0412A0E6",
+  "service": "MagicLight",
+  "model": "Hailuo 2.3",
+  "settings": {
+    "resolution": "768p",
+    "duration": "5s"
+  },
+  "prompt": "Animate this exact EXODUSER image into one continuous 5-second cinematic shot. The foreground silver-haired adult woman performs ONE clear powerful HORIZONTAL SWORD SLASH. 0-1s: brief anticipation, planted feet, shoulders coil slightly while holding the original straight blue sword. 1-2.8s: she turns her hips and shoulders and swings the sword laterally from SCREEN RIGHT across to SCREEN LEFT at chest-to-waist height, in one broad clean horizontal arc. Her hands firmly carry the hilt; the entire straight blade moves as one rigid object with the grip. 2.8-5s: controlled follow-through to screen left, then settle into a strong balanced guard. No repeated attacks, no overhead chop, no spinning body or jumping. The blue trail is a thin brief crescent FOLLOWING the physical sword, fades quickly, never replaces or hides the blade. Preserve her face, silver hair, hood, armor, coverage and identity; keep face visible in three-quarter view, not a full turn away. Preserve sword length, perfectly straight edge, hilt and circular blue core; no bending, splitting, new weapons or arm distortion. The background man holds his original blue bow without firing, stays in place. Keep cathedral, lightning sky, composition and EXODUSER HELL LORD lettering stable. Camera locked, no zoom, pan, cuts or shake. Hair and ribbons react naturally to the single swing. Prioritize a readable lateral sword action and stable anatomy over huge effects.",
+  "credits_before": 82180,
+  "credits_after": 81930,
+  "actual_credits_spent": 250,
+  "status": "completed",
+  "output": "07-transmuter-sword-sweep.mp4",
+  "task_id": "7510147536142880768",
+  "output_properties": {
+    "codec": "h264",
+    "width": 1248,
+    "height": 704,
+    "fps": 24,
+    "duration_seconds": 5.041667,
+    "bytes": 9949364,
+    "audio_stream": false
+  },
+  "review": {
+    "verdict": "RETOUCH",
+    "observed": "A visible lateral sword swing and follow-through occur, with hair and cloak reacting. The background archer and composition remain recognizable.",
+    "limitations": "The large blue core and ornate hilt change shape or disappear during the swing and reappear afterward. Exact rigid weapon identity and all hand anatomy are not preserved or approved.",
+    "evidence": "07-transmuter-sword-contact.jpg",
+    "sampling": "10 frames at 0.5-second intervals",
+    "runtime_integration": false
+  }
+}
