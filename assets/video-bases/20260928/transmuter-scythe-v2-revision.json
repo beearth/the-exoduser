@@ -1,0 +1,38 @@
+{
+  "date": "2026-09-28",
+  "request": "저게 뭐냐 낫이 구리다",
+  "source": "assets/video-tests/hailuo-20260928/07-transmuter-sword-source.png",
+  "source_job_id": "3cd9188f-312f-4332-84e7-34795531fcae",
+  "replaces_rejected": "12-transmuter-giant-scythe.png",
+  "provider": "Higgsfield",
+  "model": "gpt_image_2_5",
+  "mode": "reference-based image edit",
+  "job_id": "ba5ea697-1b92-4a7f-8774-7f91cbf3cd7e",
+  "filename": "12-transmuter-giant-scythe-v2.png",
+  "status": "completed",
+  "width": 2688,
+  "height": 1520,
+  "bytes": 6713284,
+  "estimated_credits": 2.75,
+  "params": {
+    "model": "gpt_image_2_5",
+    "quality": "high",
+    "resolution": "2k",
+    "aspect_ratio": "16:9",
+    "count": 1,
+    "folder_id": "cec12414-13bc-49e4-b460-5d26f3bee4c7",
+    "medias": [
+      {
+        "role": "image_references",
+        "value": "3cd9188f-312f-4332-84e7-34795531fcae"
+      }
+    ],
+    "prompt": "Precisely edit this existing EXODUSER dark gothic poster. Preserve the silver-haired adult woman's exact face, hood, hair, body, black armor design and coverage, the male archer and his blue bow, the cathedral and lightning, and the EXODUSER / HELL LORD title. Replace the woman's straight energy sword and bulky projecting weapon core with ONE elegant terrifying GIANT REAPER SCYTHE. The weapon design is the central change.\nSCYTHE SILHOUETTE: a long, mostly straight slender black steel shaft, longer than the woman is tall, with one SINGLE blade fixed to ONE SIDE of its upper end by a compact forged socket. The blade grows SIDEWAYS at roughly a right angle to the shaft: a long sweeping tapered blade, thick only at its heel and gradually narrowing to ONE extraordinarily long hooked point. Its sharpened edge is the INSIDE of the curve. A graceful asymmetric elongated L / hooked 7 shape, like the iconic Grim Reaper's harvesting scythe enlarged into a deadly gothic polearm. Make it unmistakably a SCYTHE, not an axe. Most of the space between shaft and blade is empty negative space. The blade is long and comparatively narrow, not a fat crescent disc. The blade must reach sideways for approximately the length of her torso plus head. Only ONE cutting point. NO second upward point behind the shaft, no axe-shaped fan, no symmetrical crescent, no two horns, no double blade, no circular ring, no huge spikes or ornate bulbous ornament.\nMATERIAL: sophisticated worn near-black forged steel with fine layered metal texture and a very sharp cold-silver inner cutting bevel. Thin restrained cobalt-blue vein confined near the blade root and faintly along part of the edge, a tiny inset blue core at the socket. The steel silhouette and cutting edge remain clearly visible. No thick neon outline, no electricity covering the weapon, no glowing plastic, no energy-cloud blade. Restrained gothic engraving; expensive lethal weapon design, elegant and austere, not a toy or a fantasy axe. The shaft has two clear dark wrapped grip sections and a simple small end cap.\nCOMPOSITION: reorient the scythe so the upper end of its long pole is high on SCREEN LEFT beside and ABOVE her hood, with the huge slender hooked blade sweeping across the upper-left / upper-middle sky, its entire long point visible with margin. Do not cover either face or the title. The shaft runs diagonally DOWN toward SCREEN RIGHT across her lower chest and waist into the lower foreground. Her TWO hands visibly grasp this same pole at spaced grip sections, anatomically correct fingers and aligned wrists; adjust only arms as needed. Keep her face and torso pose, the man's pose and original blue bow, and the wide scene intact. A stable ready stance, no swing or motion blur, no additional weapons, figures, panels, inset views or text. Prioritize the iconic long thin single-sided hooked scythe silhouette and believable two-handed grip, with minimal ornament and restrained blue magic."
+  },
+  "result_url": "https://d8j0ntlcm91z4.cloudfront.net/user_3G1zto9sz11Uf3iEOhJefE9HdGG/hf_20260928_061534_ba5ea697-1b92-4a7f-8774-7f91cbf3cd7e.png",
+  "review": {
+    "observed": "One long narrow single-sided blade arcs over the woman's hood, with a visible sharpened inner bevel and one main hooked cutting tip. Shaft crosses the torso diagonally down-right and is held in two spaced gloved hands. Dark metal and restrained blue highlights replace the broad neon crescent. Face, hood, silver hair, male archer/bow, architecture and EXODUSER / HELL LORD title remain recognizable.",
+    "limitations": "Arm poses, chest armor and local clothing details changed in the generative edit. The blade root's small rear ornament is close to the left edge. Not a pixel-identical edit outside the weapon.",
+    "approval_status": "Awaiting user image review. No video generated and no runtime integration."
+  }
+}
