@@ -967,10 +967,9 @@
   },
   "notes": [
     "24 Mbps delivery encoding cannot restore detail absent from the original footage.",
-    "No form submission or rights consent performed.",
     "Both videos now use September 28 current-runtime captures. Previous September 9 edits are backed up locally.",
     "No generated gameplay footage. Combat records actual game canvas layers without the DOM HUD.",
-    "Form remains unsubmitted; rights consent is still pending."
+    "Form unsubmitted. Existing external media Allow, streaming Yes and Important Notes checked preserved. Optional Steam event consent remains pending."
   ],
   "image_capture": {
     "date": "2026-09-28",
@@ -1081,20 +1080,31 @@
     "country": "Republic of Korea",
     "announcement_category": "None of the above",
     "release_timing": "TBA / 1111",
-    "playtime": "Undecided (no finalized duration; older plan spans 30-80h)",
+    "playtime": "More than 50 hours (already selected on resumed live form; preserved)",
     "user_schedule_confirmation": "No schedule for announcement",
     "submitted": false,
     "email_verification": "Single correct business email visibly present with draft saved. Email previously became blank after reload; recheck it immediately before any future submission.",
     "pending": [
-      "external media use permission",
-      "streaming permission",
-      "Important Notes agreement",
       "optional Steam App ID banner consent"
     ],
     "debut_game": "Yes",
     "development_setup": "Developing the game full-time",
     "developer_confirmation": "2026-09-28: User confirms full-time business owner and no released games yet. Both form selections and draft saved verified.",
-    "marketing_concerns": "As a full-time solo developer preparing my first release, my main challenge is balancing development and playtesting with effective promotion. I would appreciate advice on clearly communicating the game's large-scale battles and projectile-parrying combat, reaching international action RPG audiences, and connecting with press and content creators. I am also interested in turning demo exposure into Steam wishlists."
+    "marketing_concerns": "As a full-time solo developer preparing my first release, my main challenge is balancing development and playtesting with effective promotion. I would appreciate advice on clearly communicating the game's large-scale battles and projectile-parrying combat, reaching international action RPG audiences, and connecting with press and content creators. I am also interested in turning demo exposure into Steam wishlists.",
+    "pronunciation": {
+      "ja": "エクソデューサー：ヘルロード",
+      "en": "EX-oh-DYOO-ser: Hell Lord",
+      "zh": "Use the original English pronunciation: EX-oh-DYOO-ser: Hell Lord.",
+      "ko": "엑소듀서: 헬 로드"
+    },
+    "streaming_permission": "Yes (already selected on resumed live form; not selected by agent)",
+    "important_notes": "Checked on resumed live form; not checked by agent",
+    "intentional_blank_fields": [
+      "Discount App IDs: no announced discount; form says leave blank",
+      "Conditional streaming rules: unconditional Yes selected",
+      "Other text fields for unselected options"
+    ],
+    "external_media_permission": "Allow (already selected on follow-up live form observation; preserved, not selected by agent)"
   },
   "browser_playback_verification": {
     "date": "2026-09-28",
