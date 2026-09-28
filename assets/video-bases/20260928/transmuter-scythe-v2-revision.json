@@ -33,6 +33,6 @@
   "review": {
     "observed": "One long narrow single-sided blade arcs over the woman's hood, with a visible sharpened inner bevel and one main hooked cutting tip. Shaft crosses the torso diagonally down-right and is held in two spaced gloved hands. Dark metal and restrained blue highlights replace the broad neon crescent. Face, hood, silver hair, male archer/bow, architecture and EXODUSER / HELL LORD title remain recognizable.",
     "limitations": "Arm poses, chest armor and local clothing details changed in the generative edit. The blade root's small rear ornament is close to the left edge. Not a pixel-identical edit outside the weapon.",
-    "approval_status": "Awaiting user image review. No video generated and no runtime integration."
+    "approval_status": "Superseded: user clarified the entire scythe must be energy, not metal. Shape reused for energy material revision 12-transmuter-energy-scythe-v3.png. No video generated or runtime integration."
   }
 }

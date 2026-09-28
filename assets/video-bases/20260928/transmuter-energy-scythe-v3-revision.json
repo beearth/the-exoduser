@@ -1,0 +1,38 @@
+{
+  "date": "2026-09-28",
+  "request": "착각하는데 완전 에너지 낫이야 낫도",
+  "design_contract": "The female transmuter's entire scythe, including blade, shaft, grip sections and end, is formed from blue arcane energy. Physical gloves remain armor. A metal scythe with a blue edge is incorrect.",
+  "source": "assets/video-bases/20260928/12-transmuter-giant-scythe-v2.png",
+  "source_job_id": "ba5ea697-1b92-4a7f-8774-7f91cbf3cd7e",
+  "provider": "Higgsfield",
+  "model": "gpt_image_2_5",
+  "mode": "reference-based material edit",
+  "job_id": "2ae38700-b093-43bf-bf4c-1fc18692f6c0",
+  "filename": "12-transmuter-energy-scythe-v3.png",
+  "status": "completed",
+  "width": 2688,
+  "height": 1520,
+  "bytes": 6623743,
+  "estimated_credits": 2.75,
+  "params": {
+    "model": "gpt_image_2_5",
+    "quality": "high",
+    "resolution": "2k",
+    "aspect_ratio": "16:9",
+    "count": 1,
+    "folder_id": "cec12414-13bc-49e4-b460-5d26f3bee4c7",
+    "medias": [
+      {
+        "role": "image_references",
+        "value": "ba5ea697-1b92-4a7f-8774-7f91cbf3cd7e"
+      }
+    ],
+    "prompt": "Precise localized MATERIAL replacement on the WOMAN'S SCYTHE ONLY. The user explicitly corrects the design: this is a weapon made ENTIRELY OF BLUE ARCANE ENERGY. It is NOT a physical metal scythe with blue decoration. Convert the ENTIRE weapon, including its long shaft, both grip sections, head junction, curved blade and bottom end, into one coherent luminous energy construct. There must be absolutely ZERO metal, wood, leather wraps, mechanical socket, jewel housing, opaque black structural pole or silver steel cutting bevel anywhere on the scythe. The woman's black armored gloves remain physical gloves and are NOT part of the weapon.\nKeep the exact large scythe silhouette and placement from the reference: one elegant long, thin, single-sided hooked blade arching over her hood with one main hooked point; long straight pole diagonal down-right across her torso, held firmly in both spaced hands. Preserve hand positions and believable finger wrap. This is a static material correction, do not redesign the shape into an axe or crescent disc, do not rotate the weapon or alter her pose.\nENERGY APPEARANCE: pure intense cobalt-blue and electric-cyan magical light, semi-transparent depth with the dark environment faintly visible THROUGH the blade and pole. A continuous fine blue-white luminous filament defines the sharp curved cutting edge; layered blue plasma streams and a few fine lightning filaments flow INSIDE the volume of the curved blade and shaft, proving it is conjured power rather than matter. The shaft is a straight coherent rod of translucent arcane energy with a blue-white core and blue halo. Her gauntlets project and grip this energy form at the palms; keep the glow controlled enough to see all fingers. The blade's interior is radiant blue translucent energy with layered depth and taper, never black steel, glass, plastic or solid crystal. Both blade and handle must equally and unambiguously look made from energy. Sparse subtle blue particles at the margins, contained elegant blue radiance, preserve a readable single weapon silhouette. Add only physically consistent localized blue spill light on her hands, nearby armor and hair. No motion trails, no weapon swing, no explosion, no extra big spell circles.\nSTRICT INVARIANTS: preserve the woman's exact face and expression, silver hair, hood, armor and clothing, body and anatomy, the man's identity and pose, his existing blue bow, all architecture, lightning, composition, camera and EXODUSER / HELL LORD title. Keep the scene's existing painterly dark fantasy quality. Do not alter the male weapon. No extra text, objects, arms or fingers. Only the female weapon's substance changes to 100 percent arcane energy plus its subtle nearby illumination."
+  },
+  "result_url": "https://d8j0ntlcm91z4.cloudfront.net/user_3G1zto9sz11Uf3iEOhJefE9HdGG/hf_20260928_062110_2ae38700-b093-43bf-bf4c-1fc18692f6c0.png",
+  "review": {
+    "observed": "Blue luminous energy and branching internal filaments cover the complete curved blade, head junction, straight shaft and bottom point. No opaque black shaft or metallic cutting bevel remains. Two physical armored gloves grip the luminous shaft. Long single-sided curved silhouette, female face/hood/hair, male archer and bow, cathedral and title remain recognizable.",
+    "limitations": "Generative material edit changes local illumination and some surface details; no pixel-identical preservation claim. Angular details inherited from v2 remain as luminous energy contours.",
+    "approval_status": "Material direction corrected to user's explicit energy-only specification. Result image awaiting user review. No video generated or runtime integration."
+  }
+}
