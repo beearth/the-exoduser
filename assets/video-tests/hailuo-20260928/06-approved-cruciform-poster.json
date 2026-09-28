@@ -1,0 +1,36 @@
+{
+  "date": "2026-09-28",
+  "authorization": "User explicitly selected attached hf_20260927_235725_7e9bf3a6-9571-4194-89b3-51b0471991ad.png and requested video production. Approval applies to this source only.",
+  "source_asset": "assets/exoduser-grok2-poster-04-20260928.png",
+  "service": "MagicLight",
+  "model": "Hailuo 2.3",
+  "settings": {
+    "resolution": "768p",
+    "duration": "5s"
+  },
+  "prompt": "Animate this exact approved EXODUSER image as one locked-camera 5-second shot. Preserve the female face, both characters, poses, armor, hair, long rifle, six-shot rear cylinder, cathedral, red moon, gargoyle and all lettering. Essential action: CLOSED > OPEN > ONE CANNON SHOT > CLOSED. 0-1.2s: the foreground muzzle remains a tightly CLOSED pointed harpoon, its four metal blades together along the barrel axis; no shot, the red glow on the tip settles. 1.2-2s: the SAME four rigid metal petals hinge outward in four directions around the central axis, clearly uncovering ONE large central cannon bore. 2-2.4s: ONLY AFTER opening, one short powerful red-orange cannon blast exits that central bore, small controlled recoil; no continuous beam. 2.4-3.6s: all four petals visibly fold forward and meet again into the original CLOSED pointed harpoon. 3.6-5s: hold CLOSED. Do not fire through a closed tip. No gatling rotation, no multiple muzzle holes, no blade growth, no stretching or bending the barrel, no new parts. Only hinge motion. Keep the face and hand anatomy stable; modest hair/ribbon wind, breathing and drifting embers. Background male stays in place without firing. No zoom, pan, cuts or camera shake. Keep existing title absolutely static. Prioritize readable muzzle opening and reclosing over other movement.",
+  "credits_before": 82430,
+  "credits_after": 82180,
+  "actual_credits_spent": 250,
+  "status": "completed",
+  "output": "06-approved-cruciform-poster.mp4",
+  "task_id": "7510144611601498112",
+  "source_sha256": "77F4DFF99D94BDEEA3C601B62D026A298A774F3DA11E5011A188A79FCDE498C0",
+  "output_properties": {
+    "codec": "h264",
+    "width": 1248,
+    "height": 704,
+    "fps": 24,
+    "duration_seconds": 5.041667,
+    "bytes": 8370982,
+    "audio_stream": false
+  },
+  "review": {
+    "verdict": "FAIL_FOR_SPECIFIED_MECHANICAL_CYCLE",
+    "observed": "Muzzle-side blades spread and a central red-orange blast appears; character composition remains recognizable.",
+    "limitations": "The emission persists as a beam. Blade geometry changes, and the petals remain spread in the final frame instead of joining into the original closed harpoon. Four identical rigid hinged petals are not consistently preserved.",
+    "evidence": ["06-approved-cruciform-contact.jpg", "06-approved-cruciform-muzzle.jpg", "06-approved-cruciform-final.jpg"],
+    "sampling": "10 frames at 0.5-second intervals plus the final frame at 5 seconds",
+    "runtime_integration": false
+  }
+}
