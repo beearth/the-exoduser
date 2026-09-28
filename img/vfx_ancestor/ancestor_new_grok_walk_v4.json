@@ -1,0 +1,183 @@
+{
+  "anchor_job": "a3ab54ce-61b8-42f8-9fb3-5100d4a58231",
+  "source_job": "14ba443d-4c4d-4d29-8fc1-6196cff98987",
+  "model": "grok_video_v15",
+  "source_dimensions": [
+    1088,
+    1920
+  ],
+  "source_fps": 24,
+  "start_frame": 36,
+  "cycle_frames": 33,
+  "start_seconds": 1.5,
+  "end_seconds": 2.875,
+  "selected_source_frames": [
+    36,
+    38,
+    40,
+    42,
+    44,
+    46,
+    48,
+    50,
+    52,
+    55,
+    57,
+    59,
+    61,
+    63,
+    65,
+    67
+  ],
+  "output_dimensions": [
+    6144,
+    800
+  ],
+  "cell_dimensions": [
+    384,
+    800
+  ],
+  "columns": 16,
+  "gif_frame_ms": 90,
+  "global_scale_from_half_resolution": 0.6705360616069259,
+  "global_scale_from_source": 0.33526803080346296,
+  "foot_baseline": 738.6589278767862,
+  "heart_x": 194.41213775985517,
+  "loop_difference": 6.306710243225098,
+  "candidate_loops": [
+    [
+      6.306710243225098,
+      36,
+      33
+    ],
+    [
+      6.31105899810791,
+      32,
+      37
+    ],
+    [
+      6.33110237121582,
+      35,
+      34
+    ],
+    [
+      6.339713096618652,
+      33,
+      36
+    ],
+    [
+      6.375199317932129,
+      37,
+      32
+    ]
+  ],
+  "alpha_zero_ratio": 0.743199462890625,
+  "frame_bboxes": [
+    [
+      31,
+      185,
+      331,
+      742
+    ],
+    [
+      31,
+      185,
+      331,
+      743
+    ],
+    [
+      31,
+      184,
+      332,
+      742
+    ],
+    [
+      29,
+      186,
+      335,
+      742
+    ],
+    [
+      27,
+      185,
+      337,
+      742
+    ],
+    [
+      27,
+      182,
+      338,
+      742
+    ],
+    [
+      26,
+      184,
+      337,
+      742
+    ],
+    [
+      25,
+      179,
+      334,
+      742
+    ],
+    [
+      25,
+      176,
+      332,
+      743
+    ],
+    [
+      22,
+      175,
+      333,
+      743
+    ],
+    [
+      21,
+      175,
+      332,
+      742
+    ],
+    [
+      22,
+      177,
+      334,
+      743
+    ],
+    [
+      22,
+      177,
+      336,
+      742
+    ],
+    [
+      21,
+      181,
+      335,
+      743
+    ],
+    [
+      22,
+      181,
+      335,
+      742
+    ],
+    [
+      22,
+      184,
+      334,
+      742
+    ]
+  ],
+  "visual_verdict": "SHOULDER_CARRY_AND_GAIT_REVIEWED; PROTOTYPE_NOT_RUNTIME",
+  "runtime_replaced": false,
+  "visual_checks": {
+    "sword_supported_on_shoulder": true,
+    "sword_ground_contact": false,
+    "mask_and_same_weapon_retained": true,
+    "whole_video_contact_reviewed": true,
+    "transparent_sheet_no_clipping": true,
+    "game_runtime_verified": false
+  }
+}
