@@ -121,7 +121,12 @@ One practical development challenge was making progress in the playable demo per
 - Steam App ID 별도 칸: 값은 4749590이나, **입력 자체가 행사 Steam 페이지 노출 및 해당 게임 상점 배너 게재 동의**로 간주되므로 비워뒀다. 공개 Steam URL 입력과 구분한다.
 - 할인 예정 게임 App IDs: 할인 계획을 확정하지 않음.
 - 조건부 스트리밍 이용 규칙: 허락 여부 결정 후 필요 시 작성.
-- 개발·마케팅·홍보 고민: 사용자 의견 없이 임의 작성하지 않음.
+
+## 개발·마케팅·홍보 고민 — 사용자 요청으로 입력한 영문
+
+As a full-time solo developer preparing my first release, my main challenge is balancing development and playtesting with effective promotion. I would appreciate advice on clearly communicating the game's large-scale battles and projectile-parrying combat, reaching international action RPG audiences, and connecting with press and content creators. I am also interested in turning demo exposure into Steam wishlists.
+
+2026-09-28 사용자가 이 선택 항목에 대략 작성해달라고 요청하여 공식 폼에 위 문단을 입력했다. 전업·첫 출시작이라는 확인된 정보와 게임의 실제 전투 특징을 사용했다. 권리 동의 및 최종 제출은 진행하지 않았다.
 
 ## 완성한 제출 파일 — 현재 코드 촬영본
 
