@@ -9,10 +9,10 @@
 | exoNewCharacters | EXODUSER 아래 첫 아코디언, New Characters / 신규 캐릭터, 기본 펼침,7 works |
 | 대표3장 | 변성술사(파란 구형 코어·변형 무기), 크루시폼 매그넘(의상 정리 버전), 아케인 랜서. 캐릭터 명칭은 기존 제작 문서와 대조 |
 | 나머지4장 | 다른 포스터 보기의 details/summary로 펼침. 변성술사 검의 궤적 및 총사3변형. 사용자7장 모두 공개 갤러리에서 확대 가능 |
-| 기존 Key Art |8→3 works, 기본 접힘. 여성/남성 키아트 및 실버테일 대표 포스터 |
+| 기존 Key Art |8→2 works, 기본 접힘. 여성/남성 가로형 키아트만 각 전체 행으로 표시. 혼자 남은 실버테일 포스터 제거 |
 | World & Stages |6→5 works, 기존 맵 이미지 유지. 실버테일 세계관 설명판 제거 |
 | Artbook — 설정화 |16→12 works. 중복 종합 설정화2장과 사용자 지정 기본3캐릭터/연속 동작 그림 제거 |
-| 합계 | EXODUSER 기존30장 중10장 삭제, 새7장 추가:27장. DIROI8장 및 상단 게임/스튜디오/트레일러 흐름 유지 |
+| 합계 | EXODUSER 기존30장 중11장 삭제, 새7장 추가:26장. DIROI8장 및 상단 게임/스튜디오/트레일러 흐름 유지 |
 | 이미지 비율 | 원본 RGB를 종횡비 유지해 WebP 변환. 큰 보기 최대2400×2400, 목록 최대1200×1200. quality92/90, method6. 원본7장54,403,170bytes → 큰보기+목록14파일5,725,576bytes |
 | 표시 | img width100%, height:auto, aspect-ratio27/16, object-fit:contain. 임의 크롭 없음. 명시 width/height, loading=lazy, decoding=async. button으로 마우스/Enter 확대 |
 | 배치 | 대표 그리드3열·gap14px·padding14px. ≤1000px2열/마지막카드전체행, ≤600px1열·gap/padding12px. 변형그리드2열, ≤600px1열 |
@@ -20,7 +20,7 @@
 | 변형 목록 | margin0 14px14px, 상단1px/#272020. summary padding16px2px/font.82rem. count margin-left10px/font.65rem/spacing.08em. 모바일 margin0 12px12px |
 | 모바일 표제 | 아코디언padding18px16px/gap10px, 제목.82rem/line-height1.5/spacing.08em. 한국어는 별도 줄(.78rem/margin-top4px/keep-all), count nowrap |
 | 동작 | 기존 openLightbox와 toggleAcc 재사용. 신규 아코디언 aria-expanded 초기true, 접기/펼치기 후 실제상태 갱신. reduced-motion 신규카드/리빌 transition:none. 부모 textContent 교체 없음 |
-| 백업/삭제 | 기존 index와 제거 이미지10장을 G:/exoduser/captures/homepage-characters/source-backup/에 보존한 뒤 G:/fdg의 공개 파일 삭제. 파일별 절대경로가 G:/fdg 안인지 검증. 게임 원본 에셋/Downloads/사용자 스크린샷은 유지 |
+| 백업/삭제 | 기존 index와 제거 이미지10장을 G:/exoduser/captures/homepage-characters/source-backup/에 보존한 뒤 G:/fdg의 공개 파일 삭제. 파일별 절대경로가 G:/fdg 안인지 검증. 추가 실버테일 포스터/index/문서 백업은 captures/homepage-characters/remove-silvertail/before/. 게임 원본 에셋/Downloads/사용자 스크린샷은 유지 |
 | 배포 제외 | .vercelignore에 docs/, .git/, .vercel/. 소스/문서는 Git 커밋, 웹사이트 배포에는 공개 런타임 파일만 포함 |
 
 ## 신규 에셋
@@ -49,6 +49,7 @@
 | gallery_exo_base_characters.jpg | 사용자 스크린샷211121:기본 캐릭터3종 설명판 |
 | gallery_exo_poster.png | 사용자 스크린샷211128:붉은 지옥 포스터 |
 | gallery_exo_world_poster.jpg | 구형 종합 설명판·실버테일 반복 |
+| gallery_exo_silvertail_poster.jpg | 사용자 스크린샷212935: Key Art 마지막 행에 혼자 남은 실버테일 포스터 제거 |
 
 ## 검증과 반영 상태
 
@@ -72,3 +73,25 @@
 | 실배포 인터랙션 |4크기·새7장 Enter확대/클릭닫기·아코디언 aria-expanded·가로넘침0·표시개수 일치·pageerror0/이미지HTTP오류0 |
 | 사용자 Chrome | 새로고침 후 신규7/KeyArt3/World5/Artbook12의 실DOM 확인, 사용자 지정4장 제거 확인 |
 | 증거 | captures/homepage-characters/production-report.json, production-hashes.json. updated index SHA256 903806dca9abfed1f698baba4709644ce7e8dd52e75f4d76aad54238d8cadd55 |
+
+
+## 단독 실버테일 포스터 제거 — 2026-09-28
+
+| 항목 | 현행 |
+|---|---|
+| 요청 | 스크린샷212935의 단독 실버테일 포스터 제거 |
+| 구현 | gallery_exo_silvertail_poster.jpg 카드와 공개 파일 삭제, Key Art3→2 works, 각 가로형 원화는 기존 wide 전체 행 배치 유지 |
+| 전체 구성 | 신규 캐릭터7 / Key Art2 / World5 / Artbook12 = EXODUSER26장 |
+| 검증/배포 | 로컬 확인 후 기존 fordeargamers/fdg에 반영. 실제 프로덕션 결과는 아래 기록 |
+
+
+## 단독 포스터 제거 프로덕션 확인 — 2026-09-28T12:41:16.446Z
+
+| 확인 | 결과 |
+|---|---|
+| 소스 커밋 | 8f65d9ef5debb74b900044af709b3e2ea7e0cf6b, index/포스터 삭제/동기화 문서 포함 |
+| 배포 | https://fdg-en846i71g-fordeargamers.vercel.app, 기존 fordeargamers/fdg Production |
+| 공식 도메인 | HTML 및 신규14에셋 HTTP200/해시15개 일치. 삭제11개 HEAD404, 실버테일 포스터 포함 |
+| Key Art |1920×1080/390×844 실제2장 로딩, 전체 행 배치, 가로넘침0, 고아 카드 없음. 다른 섹션7/5/12 유지 |
+| 기존 갤러리 |4크기 및 신규7장 확대/닫기 정상, 페이지/이미지 오류0 |
+| 증거 | captures/homepage-characters/remove-silvertail/production-keyart.json 및 keyart-{width}x{height}.png, production-hashes.json |
