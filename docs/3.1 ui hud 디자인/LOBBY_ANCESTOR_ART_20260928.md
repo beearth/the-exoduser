@@ -13,6 +13,7 @@
 | 배치 | scale=max(width/bgWidth,height/bgHeight); footY=min(height×0.89,max(height×0.76,bgHeight×scale×0.84+(height−bgHeight×scale)×0.75)); displayHeight=min(height×0.8,footY−28); displayWidth=displayHeight×384/624. footX=max(displayWidth×0.52+12,min(leftWidth−displayWidth×0.48−12,bgWidth×scale×0.33+(width−bgWidth×scale)×0.5)); left=footX−heartX/384×displayWidth; top=footY−baseline/624×displayHeight |
 | 그림자 | footX/footY 위치, 너비displayWidth×0.42, 높이displayHeight×0.045, translate(−50%,−50%) |
 | 재생 수명 | 로비 표시 중이며 document.hidden이 아닐 때만 rAF 및 배경 재생. 숨김/비표시 때 rAF 취소 및 video.pause. ResizeObserver로 배치 갱신 |
+| 최초 언어 갱신 | `_refreshLobbyCardsLanguage()`는 `$` 초기화 전에도 호출되므로 `document.getElementById('charList')` 사용. 카드가 없으면 반환하며 기존 카드 리프/접근성 라벨만 갱신. 초기 TDZ 오류 회귀 검사 및 새 페이지 로그인/로비 진입 확인 |
 | 접근성/폴백 | reduced-motion 시 배경 숨김·일시정지 및 frame0. 스프라이트 실패 시 CSS `varkan_idle_first_v1.png` 유지; 배경 영상 실패 시 영상 숨기고 포스터 유지 |
 | 배포 | 공통 FILES에 `lobby-ancestor-art.css`와 `lobby-ancestor-sprite.js`; 로컬 미디어는 assets 복사. HTML 루트 CSS/JS 참조 회귀 검사로 누락 방지 |
 

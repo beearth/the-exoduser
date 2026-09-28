@@ -2,6 +2,10 @@
 
 | 항목 | 현행 결과 |
 |---|---|
+| 로비 최초 언어 적용 | `_refreshLobbyCardsLanguage()`는 늦게 초기화되는 `## 2026-09-28 — CH1-1 남측 시작 경계 부패 목질 72차
+
+| 항목 | 현행 결과 |
+ 대신 `document.getElementById('charList')`를 사용. 초기 `_applyLobbyLang()` 호출 시 TDZ 오류로 스크립트가 중단되던 문제 수정. 실제 새로고침 후 로그인 및 데모 로비 표시 확인 |
 | 원화·배치 | Higgsfield GPT 투명2048²/중심tile129,181. 단일 기존 master의 비보행 외곽에 낮은 수피판·검은 목질 공동 합성 |
 | 배경 | master·3청크/cache20260928-outer-72; 433,965픽셀 변화·보행 픽셀 변경0 |
 | 검수 | 후보 전후7·일반 본편35카메라·오류0·회귀8 PASS. 남측 실제S650ms/W650ms 이동110.71월드px, 끝칸runtime0·G.map동일 |
@@ -50691,6 +50695,7 @@ CSS 캐시 ui-refinement.css?v=20260927-4. 신규 이미지/아이템 데이터 
 | 생성 연결 | 실제 생성 버튼으로 기존 이름창 열림과 이름 입력→취소→생성 Tab 순환/역순 및 Escape 취소 확인. 데모에는 생성 카드가 없어 openVisualSelect로 진입. 저장 API 호출0/pageerror0. 실제 사용자 캐릭터 저장·삭제·앱 종료 없음 |
 | 기록·커밋 | tmp/lobby-modal-keyboard/browser-before.json, browser-after-960.json, browser-after-1920.json, red-tests.txt, tests.txt, changes.patch. 관련 문서6개 동기화. 현재 .git 쓰기 제한으로 이 작업의 커밋 실행 불가. 다른 작업의 스테이징을 직접 변경하지 않음 |
 # 2026-09-28 게시 스냅샷의 로비 애니메이션 로더 포함
+
 
 | 항목 | 변경 및 검증 |
 |---|---|

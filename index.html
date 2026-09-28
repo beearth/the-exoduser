@@ -2929,7 +2929,7 @@ function _addLobbyCardControl(card,label,key){
 }
 
 function _refreshLobbyCardsLanguage(){
-  const list=$('charList');if(!list)return;
+  const list=document.getElementById('charList');if(!list)return;
   list.querySelectorAll('.char-item,.char-item-new').forEach(card=>{if(typeof card._refreshLanguage==='function')card._refreshLanguage();});
 }
 function _lobbyCardLeaf(card,selector,text){

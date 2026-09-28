@@ -37,3 +37,8 @@ test('sprite pingpong stays within the atlas and returns without a pose jump',()
   const p=placement(w,h);assert.ok(p.left>=0);assert.ok(p.left+p.width<=w*(w<=1100?.55:.65));assert.ok(p.top>=0);assert.ok(p.top+p.height<h);assert.ok(Math.abs(p.top+p.height*art.baseline/art.height-p.footY)<.01);
  }
 });
+test('initial language refresh runs before the delayed DOM helper is initialized',()=>{
+ const fn=html.slice(html.indexOf('function _refreshLobbyCardsLanguage()'),html.indexOf('function _lobbyCardLeaf'));
+ const ctx=vm.createContext({document:{getElementById:()=>({querySelectorAll:()=>[]})}});
+ assert.doesNotThrow(()=>vm.runInContext(fn+';_refreshLobbyCardsLanguage();const $=()=>{};',ctx));
+});

@@ -79,7 +79,7 @@ for(const kind of ['demo','character'])test(kind+' refresh preserves unexpected 
  assert.equal(card.leaves['.char-name'].children[0],nameChild);assert.equal(card.leaves['.char-info'].children[0],infoChild);
 });
 test('language application is safe before a list or slot state has initialized',()=>{
- const s=setup();delete s.nodes.charList;s.change('en');assert.equal(s.requests(),0);
+ const s=setup();delete s.nodes.charList;delete s.ctx.$;s.change('en');assert.equal(s.requests(),0);
 });
 test('existing fixed card labels remain compatible with the shared control helper',()=>{
  const s=setup(),card=s.card();card.leaves['.char-info'].textContent='Lv.9';s.ctx._addLobbyCardControl(card,'fixed','saved');
