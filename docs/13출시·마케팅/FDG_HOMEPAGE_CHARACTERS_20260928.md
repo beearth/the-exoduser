@@ -14,8 +14,8 @@
 | Artbook — 설정화 |16→12 works. 중복 종합 설정화2장과 사용자 지정 기본3캐릭터/연속 동작 그림 제거 |
 | 합계 | EXODUSER 기존30장 중11장 삭제, 새7장 추가:26장. DIROI8장 및 상단 게임/스튜디오/트레일러 흐름 유지 |
 | 이미지 비율 | 원본 RGB를 종횡비 유지해 WebP 변환. 큰 보기 최대2400×2400, 목록 최대1200×1200. quality92/90, method6. 원본7장54,403,170bytes → 큰보기+목록14파일5,725,576bytes |
-| 표시 | img width100%, height:auto, aspect-ratio27/16, object-fit:contain. 임의 크롭 없음. 명시 width/height, loading=lazy, decoding=async. button으로 마우스/Enter 확대 |
-| 배치 | 대표 그리드3열·gap14px·padding14px. ≤1000px2열/마지막카드전체행, ≤600px1열·gap/padding12px. 변형그리드2열, ≤600px1열 |
+| 표시 | img width100%, height:auto, object-fit:contain. 강제 aspect-ratio 제거, 각 원본 종횡비 유지. 임의 크롭 없음. 명시 width/height, loading=lazy, decoding=async. button으로 마우스/Enter 확대 |
+| 배치 | gallery-inner width100%, 최대1600px 제한 제거. 대표 그리드2열·마지막카드전체행·gap14px·padding14px. ≤1000px 대표/변형1열, ≤600px gap/padding12px. 변형그리드 기본2열 |
 | 카드 | border1px/#292120, 배경#0d0b0c, hover blood-glow. focus-visible2px gold/offset3px. 메타padding15px16px17px, 하단선1px/#252021. 제목clamp(.95rem,1.2vw,1.18rem)/600/line-height1.4, 부제.72rem/1.6/상단6px. ≤600px메타13px14px |
 | 변형 목록 | margin0 14px14px, 상단1px/#272020. summary padding16px2px/font.82rem. count margin-left10px/font.65rem/spacing.08em. 모바일 margin0 12px12px |
 | 모바일 표제 | 아코디언padding18px16px/gap10px, 제목.82rem/line-height1.5/spacing.08em. 한국어는 별도 줄(.78rem/margin-top4px/keep-all), count nowrap |
@@ -95,3 +95,29 @@
 | Key Art |1920×1080/390×844 실제2장 로딩, 전체 행 배치, 가로넘침0, 고아 카드 없음. 다른 섹션7/5/12 유지 |
 | 기존 갤러리 |4크기 및 신규7장 확대/닫기 정상, 페이지/이미지 오류0 |
 | 증거 | captures/homepage-characters/remove-silvertail/production-keyart.json 및 keyart-{width}x{height}.png, production-hashes.json |
+
+
+## 화면을 채우는 원화 확대 — 2026-09-28
+
+| 항목 | 현행 |
+|---|---|
+| 요청 | 사용자 스크린샷214500: 홈페이지 이미지가 작고 화면을 충분히 채우지 못함 |
+| 원인 | gallery-inner max-width1600px와 대표3열로 큰 화면에서 넓은 좌우 여백·작은 원화 발생 |
+| 갤러리 | width100%, 최대폭 제한 제거. 기존 바깥 padding96px24px, ≤768px60px16px. EXODUSER/DIROI 갤러리에 적용 |
+| 대표/변형 | 대표2열+아케인 랜서전체행, 변형2열. ≤1000px 두그리드1열, ≤600px gap/padding12px·대표 마지막 grid-column:auto |
+| 이미지 | 신규7장 height:auto·원본비율·contain. srcset1200w/2400w. sizes 일반: (max-width:1000px) calc(100vw - 50px), calc((100vw - 78px) / 2); 랜서: calc(100vw - 58px). width/height 및 lazy/async 유지 |
+| 확대 | lightbox max-width96vw/max-height96vh, 종횡비 유지 |
+| 로컬 검수 | 실측1920×1080/1280×720/768×1024/390×844, 가로넘침0·대표3장 로딩.1920px에서894/894/1806px 이미지폭. 새7장 확대/닫기, 첫장Enter, 아코디언false/true 확인 |
+| 자료 | captures/homepage-fill/before.html·site/index.html·prepared.json·local-report.json. 소스/문서 원본 백업 및 해시 대조 후 반영 |
+| 반영 상태 | 수정본 로컬 검수·공식 반영·프로덕션 배포 및 Chrome 검증 완료. 아래 결과 참조 |
+
+
+## 화면 확대 프로덕션 확인 — 2026-09-28T12:51:33.675Z
+
+| 확인 | 결과 |
+|---|---|
+| 소스 커밋 | 03244772a6732fce261b5f88a7bc4011da4fa44c; index와 관련문서 포함 |
+| 배포 | https://fdg-m1p02mn86-fordeargamers.vercel.app; 기존 fordeargamers/fdg Production READY |
+| 공식 도메인 | HTTP200, HTML SHA256 27eac1fac2e7750f82abb737e925b2f6657b8327cf57b851b30a98e64df39455 일치. 사용자 Chrome 새로고침 후 전체폭·대표2열·원본비율·신규7장 확인, 가로넘침0 |
+| 검수 | 로컬4크기·7장확대/닫기·Enter·아코디언false/true. 실배포 Chrome 이미지 로딩 및 확대/닫기 확인 |
+| 증거 | captures/homepage-fill/local-report.json·publication.json·production-browser.json·deployment.txt |
