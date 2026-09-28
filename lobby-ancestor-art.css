@@ -1,13 +1,14 @@
 /* Independent background video and transparent animated ancestor. */
 .lobby{background:radial-gradient(ellipse at 32% 35%,#1c263955 0%,#10131955 38%,#05060700 70%),linear-gradient(145deg,#0c1018,#08090c 65%,#0c070a);}
 .lobby>.lobby-left{background:transparent;}
-.lobby>.lobby-bg-img{z-index:0;inset:0;width:100%;pointer-events:none;animation:none;transform:none;background-image:url('assets/lobby/lobby_varkan_crypt_poster_v1.webp?v=20260928-animated1');background-size:cover;background-position:center 75%;}
+.lobby>.lobby-bg-img{z-index:0;inset:0;width:100%;pointer-events:none;animation:none;transform:none;background-image:url('assets/lobby/lobby_varkan_crypt_poster_v2.webp?v=20260928-stable2');background-size:cover;background-position:center 75%;}
 .lobby>.lobby-bg-img::after{display:none;}
 .lobby-ambient-video{position:absolute;inset:0;z-index:0;width:100%;height:100%;object-fit:cover;object-position:center 75%;pointer-events:none;}
-.lobby-ancestor-sprite{position:absolute;z-index:1;pointer-events:none;background:url('assets/lobby/varkan_idle_first_v1.png?v=20260928-animated1') center/contain no-repeat;}
+.lobby-ancestor-sprite{position:absolute;z-index:1;pointer-events:none;background:url('assets/lobby/varkan_idle_first_v2.png?v=20260928-stable2') center/contain no-repeat;}
 .lobby-ancestor-sprite.sprite-loaded{background:none;}
 .lobby-ancestor-shadow{position:absolute;z-index:1;pointer-events:none;border-radius:50%;background:radial-gradient(ellipse,#0009,transparent 68%);transform:translate(-50%,-50%);}
-.lobby .char-disp-empty{bottom:3%;}
-.lobby .char-disp-sub{height:1.4em;margin-top:6px;opacity:1;}
+.lobby .char-disp-empty{bottom:3%;display:flex;flex-direction:column;align-items:center;gap:4px;max-width:min(500px,50vw);}
+.lobby .char-disp-sub{order:-1;height:auto;margin:0;opacity:1;font-size:13px;letter-spacing:2px;color:#d1bea0;}
+.lobby .char-disp-detail{font-size:12px;line-height:1.4;letter-spacing:.4px;color:#b4ab9c;white-space:normal;}
 .lobby .lobby-char-preview{display:none;}
 @media(prefers-reduced-motion:reduce){.lobby-ambient-video{display:none;}}

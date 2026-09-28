@@ -13,7 +13,7 @@ test('renders the summoned ancestor name and caption in the lobby display', () =
   assert.match(indexHtml, /title\.textContent=_lobbyAncestorName\(\)/);
   assert.match(indexHtml, /sub\.textContent=_lobbyAncestorCaption\(\)/);
   assert.match(indexHtml, /preview\.removeAttribute\('src'\)/);
-  assert.match(indexHtml, /lobby_varkan_crypt_poster_v1\.webp/);
+  assert.match(indexHtml, /lobby_varkan_crypt_poster_v2\.webp/);
 });
 
 test('updates the lobby display from online and local character slots', () => {

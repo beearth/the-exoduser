@@ -493,8 +493,8 @@ body{background:#000 center/cover no-repeat;color:#ccaa88;font-family:'Noto Sans
 <link rel="stylesheet" href="localization.css?v=20260909">
 <link rel="stylesheet" href="ui-foundation.css?v=20260927-enter-responsive">
 <link rel="stylesheet" href="ui-refinement.css?v=20260928-lobby-quit">
-<link rel="stylesheet" href="lobby-ancestor-art.css?v=20260928-animated1">
-<script src="lobby-ancestor-sprite.js?v=20260928-animated1" defer></script>
+<link rel="stylesheet" href="lobby-ancestor-art.css?v=20260928-stable2">
+<script src="lobby-ancestor-sprite.js?v=20260928-stable2" defer></script>
 </head>
 <body>
 
@@ -661,7 +661,7 @@ body{background:#000 center/cover no-repeat;color:#ccaa88;font-family:'Noto Sans
 <div class="lobby" id="lobby" style="display:none">
   <!-- 좌측: 배경 + 안내 -->
   <div class="lobby-bg-img" id="lobbyBgImg"></div>
-  <video class="lobby-ambient-video" id="lobbyAmbientVideo" muted autoplay loop playsinline preload="metadata" poster="assets/lobby/lobby_varkan_crypt_poster_v1.webp?v=20260928-animated1" src="assets/lobby/lobby_varkan_crypt_loop_v1.mp4?v=20260928-animated1" aria-hidden="true"></video>
+  <video class="lobby-ambient-video" id="lobbyAmbientVideo" muted autoplay loop playsinline preload="metadata" poster="assets/lobby/lobby_varkan_crypt_poster_v2.webp?v=20260928-stable2" src="assets/lobby/lobby_varkan_crypt_loop_v2.mp4?v=20260928-stable2" aria-hidden="true"></video>
   <div class="lobby-ancestor-shadow" id="lobbyAncestorShadow" aria-hidden="true"></div>
   <canvas class="lobby-ancestor-sprite" id="lobbyAncestorSprite" width="384" height="624" aria-hidden="true"></canvas>
     <video class="lobby-char-preview" id="lobbyCharPreview" muted loop playsinline></video>
@@ -671,7 +671,8 @@ body{background:#000 center/cover no-repeat;color:#ccaa88;font-family:'Noto Sans
     <div id="lobbyVerOverlay" style="position:absolute;top:12px;left:14px;z-index:10;font-size:.75rem;color:rgba(160,130,90,.5);letter-spacing:.15em;line-height:1.6;pointer-events:none"></div>
   <div class="char-disp-empty" id="charDispEmpty">
    <div class="char-disp-title" id="charDispTitle">묘왕 바르칸</div>
-   <div class="char-disp-sub" id="charDispSub">전대 소환</div>
+    <div class="char-disp-sub" id="charDispSub">선대 소환체</div>
+    <div class="char-disp-detail" id="charDispDetail">플레이어가 소환하는 선대의 영체</div>
   </div>
   </div>
   <!-- 우측: 슬롯 + 버튼 -->
@@ -2054,8 +2055,9 @@ function _applyLobbyLang(){
   if(_selectedCharDisplay)_updateCharDisplay(_selectedCharDisplay);
   else{
     const title=document.getElementById('charDispTitle');const sub=document.getElementById('charDispSub');
-    if(title)title.textContent=_TL('당신은 누구인가');
-    if(sub)sub.textContent='';
+    if(title)title.textContent=_lobbyAncestorName();
+    if(sub)sub.textContent=_lobbyAncestorCaption();
+    const detail=document.getElementById('charDispDetail');if(detail)detail.textContent=_lobbyAncestorDetail();
   }
   const entry=document.getElementById('enterGameBtn');if(entry)entry.setAttribute('aria-label',_TL('입장'));
   // Google 버튼 (SVG 보존)
@@ -2943,10 +2945,10 @@ function _lobbyCharacterCardLabel(card,name,visualIdx,lv,stage,separator=' · ')
   return name+' · '+job;
 }
 function _lobbyDemoCardLabel(card,progress){
-  const name=_lobbyAncestorName(),caption=_lobbyAncestorCaption();
+  const name=_lobbyPlayerRecordName();
   const info=progress?'Lv.'+progress.lv+' · Stage 1-1 · '+_TL('처치')+' '+progress.kills.toLocaleString()+' · '+_TL('브라우저 저장'):'Lv.1 START · Stage 1-1 · Lv.100 Cap';
-  _lobbyCardLeaf(card,'.char-name',name);_lobbyCardLeaf(card,'.char-info',caption+' · '+info);
-  return caption+' · '+name;
+  _lobbyCardLeaf(card,'.char-name',name);_lobbyCardLeaf(card,'.char-info',info);
+  return name;
 }
 function _lobbyNewCardLabel(card,canCreate,maxChars){
   const label=_TL(canCreate?'새 캐릭터':'슬롯 가득참');
@@ -3039,7 +3041,9 @@ function _renderOnlineSlots(){
 // ── 캐릭터 외형 목록 (game.html CHAR_LIST와 동기화) ──
 // index = game.html CHAR_LIST 인덱스와 반드시 일치 (저장 charIdx가 곧 이 인덱스)
 function _lobbyAncestorName(){return _lobbyLang()==='ko'?'묘왕 바르칸':'Varkan, the Tomb King';}
-function _lobbyAncestorCaption(){return _lobbyLang()==='ko'?'전대 소환':'ANCESTRAL SUMMON';}
+function _lobbyAncestorCaption(){return _lobbyLang()==='ko'?'선대 소환체':'ANCESTRAL SUMMON';}
+function _lobbyAncestorDetail(){return _lobbyLang()==='ko'?'플레이어가 소환하는 선대의 영체':'A spirit summoned by the player.';}
+function _lobbyPlayerRecordName(){return _lobbyLang()==='ko'?'플레이어 기록':'Player Record';}
 const CHAR_VISUALS=[
   {id:'exoduser_warrior',name:'엑소듀서 전사',cls:'WARRIOR',desc:'거대검을 휘두르는 흑철의 전사',folder:'img/exoduser_warrior',fw:48,fh:48,portrait:'assets/charselect/warrior_cut.png?v=3',bust:'assets/charselect/portrait_warrior.png?v=1',emblemImg:'assets/charselect/emblem_warrior.png?v=1',aura:'rgba(140,70,190,.55)',scene:'assets/charselect/bg_scene1.png?v=1',sceneVid:'assets/charselect/bg_scene1_loop.mp4?v=2',idleVid:'assets/charselect/idle_warrior_higgsfield_4k.mp4?v=20260913-detail1',idleRate:0.75,poster:'assets/charselect/poster_idle_warrior_higgsfield_4k.jpg?v=20260913-detail1',tab:'전사',job:'전사',
     emblem:'<svg viewBox="0 0 100 100" fill="none" stroke="currentColor" stroke-width="6" stroke-linecap="round" stroke-linejoin="round"><path d="M50 28 L50 82"/><path d="M35 44 L65 44"/><path d="M31 33 C23 25 21 17 23 11 C31 15 34 24 35 32"/><path d="M69 33 C77 25 79 17 77 11 C69 15 66 24 65 32"/></svg>',
@@ -3334,7 +3338,7 @@ function _renderSlotList(){
       ?'Lv.'+demoProgress.lv+' · Stage 1-1 · '+_TL('처치')+' '+demoProgress.kills.toLocaleString()+' · '+_TL('브라우저 저장')
       :'Lv.1 START · Stage 1-1 · Lv.100 Cap';
     const div=document.createElement('div');div.className='char-item active';
-    div.innerHTML='<div class="char-thumb"><img src="assets/lobby/lobby_ancestor_portrait_v4.webp?v=20260928-shoulder-v4" style="width:100%;height:100%;object-fit:cover;object-position:center 20%;border-radius:2px"></div><div class="char-text"><div class="char-name">'+_lobbyAncestorName()+'</div><div class="char-info" style="color:rgba(200,150,100,.6)">'+_lobbyAncestorCaption()+' · '+demoInfo+'</div></div>';
+    div.innerHTML='<div class="char-thumb"><img src="assets/lobby/lobby_ancestor_portrait_v4.webp?v=20260928-shoulder-v4" style="width:100%;height:100%;object-fit:cover;object-position:center 20%;border-radius:2px"></div><div class="char-text"><div class="char-name">'+_lobbyPlayerRecordName()+'</div><div class="char-info" style="color:rgba(200,150,100,.6)">'+demoInfo+'</div></div>';
     _addLobbyCardControl(div,()=>_lobbyDemoCardLabel(div,demoProgress),'demo');
     const demoSlot={name:'DEMO CHARACTER',charIdx:0,stage:0};
     div.addEventListener('click',()=>{_selectedSlot='demo';_selectedSlotName='demo';_updateCharDisplay(demoSlot);});
@@ -3445,6 +3449,7 @@ function _updateCharDisplay(s){
   const empty=$('charDispEmpty');
   const title=$('charDispTitle');
   const sub=$('charDispSub');
+  const detail=$('charDispDetail');if(detail)detail.textContent=_lobbyAncestorDetail();
   const preview=$('lobbyCharPreview');
   const keyart=$('lobbyCharKeyart');
   const scene=$('lobbyBgImg');if(scene)scene.style.visibility='';
@@ -3473,13 +3478,13 @@ function _updateCharDisplay(s){
 
 // 로비 배경 preload (페이지 로드 시 미리 캐시)
 (function _preloadLobbyBgs(){
-  const i=new Image();i.src='assets/lobby/lobby_varkan_crypt_poster_v1.webp?v=20260928-animated1';
+  const i=new Image();i.src='assets/lobby/lobby_varkan_crypt_poster_v2.webp?v=20260928-stable2';
 })();
 
 function _swapLobbyBg(stage){
   const bg=$('lobbyBgImg');if(!bg)return;
-  const url='assets/lobby/lobby_varkan_crypt_poster_v1.webp?v=20260928-animated1';
-  _curBg='varkan-crypt-v1';
+  const url='assets/lobby/lobby_varkan_crypt_poster_v2.webp?v=20260928-stable2';
+  _curBg='varkan-crypt-v2';
   bg.style.backgroundImage="url('"+url+"')";
   bg.style.opacity='1';
 }

@@ -1,7 +1,7 @@
 /* Transparent ancestor frames and ambient video are independent lobby layers. */
 (() => {
-  const art={width:384,height:624,columns:8,frames:24,fps:12,baseline:603.682092555332,heartX:182.43863179074447};
-  function frameAt(seconds){const phase=Math.floor(Math.max(0,seconds)*art.fps)%46;return phase<24?phase:46-phase;}
+  const art={width:384,height:624,columns:8,frames:48,fps:12,baseline:603.682092555332,heartX:182.43863179074447};
+  function frameAt(seconds){return Math.floor(Math.max(0,seconds)*art.fps)%art.frames;}
   function placement(width,height,bgWidth=1920,bgHeight=1088){
     const scale=Math.max(width/bgWidth,height/bgHeight);
     const leftWidth=width*(width<=1100?.55:.65);
@@ -44,7 +44,7 @@
     }
     image.onload=()=>{loaded=true;canvas.classList.add('sprite-loaded');start=performance.now();paint(0);layout();sync();};
     image.onerror=()=>{canvas.dataset.fallback='first-frame';};
-    image.src='assets/lobby/varkan_idle_v1.png?v=20260928-animated1';
+    image.src='assets/lobby/varkan_idle_v2.png?v=20260928-stable2';
     video.addEventListener('loadedmetadata',layout);
     video.addEventListener('error',()=>{video.style.display='none';});
     new MutationObserver(sync).observe(lobby,{attributes:true,attributeFilter:['class','style']});

@@ -191,3 +191,15 @@
 | 경로 | renderOssPanel의 _L(ko,en), 부위 _bonePartName, 등급 _rarName 재사용 |
 | 범위 | 신규 안내는 KO/EN 인라인 제공. 기존 부위/등급 번역 유지. 신규 안내의 다른 언어 전파는 미완료, 기존 _L 폴백 사용 |
 | 은퇴 문구 | 이전 행 툴팁의 지속시간·4부위 수집 안내는 중앙 제단의 진행/해금 문구로 교체, 기존 번역 키는 호환 보존 |
+
+
+## 2026-09-28 소환체와 플레이어 기록 표시 분리
+
+| 리프/함수 | KO / 그 외 |
+|---|---|
+| _lobbyAncestorName / charDispTitle | 묘왕 바르칸 / Varkan, the Tomb King |
+| _lobbyAncestorCaption / charDispSub | 선대 소환체 / ANCESTRAL SUMMON |
+| _lobbyAncestorDetail / charDispDetail | 플레이어가 소환하는 선대의 영체 / A spirit summoned by the player. |
+| _lobbyPlayerRecordName / 데모 카드 .char-name | 플레이어 기록 / Player Record |
+| 갱신 | 기존 카드/버튼/진행/초점 보존. 데모 .char-info는 진행 수치만, 소환체 표제 중복 없음. 초기 미선택에서도 이름/역할/설명 갱신, delayed $ 없이 직접 리프 접근 |
+| 검수 | 관련6파일57개 회귀 통과. 세 화면 크기 실제 재생 및 설명 표시 확인 |

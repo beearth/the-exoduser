@@ -1,6 +1,6 @@
 # UI 구성 개편 — 2026-09-25
 
-> 2026-09-28 현행 로비는 묘왕 바르칸의 투명 24프레임 스프라이트(`varkan_idle_v1.png`, 셀384×624, 12fps 왕복)와 독립 묘실 배경 영상(`lobby_varkan_crypt_loop_v1.mp4`)을 표시한다. 선택 상태와 무관하게 전대 이름/소환 표제를 유지하고 슬롯 선택은 입장 활성 상태에 반영한다. 정적 어깨 대검 원화 및 과거 영상 계약은 제작 이력이다. 현행 규격: [로비 전대 표시](<../3.1 ui hud 디자인/LOBBY_ANCESTOR_ART_20260928.md>).
+> 2026-09-28 현행: **선대 소환체 · 묘왕 바르칸**, “플레이어가 소환하는 선대의 영체”. 오른쪽 데모 저장 카드는 “플레이어 기록”. 투명48프레임 v2 스프라이트(셀384×624, 8×6, 12fps/4초)와 바닥·구조물을 고정한 독립 배경 영상(v2, 1920×1088, 24fps/12.083333초)을 사용한다. 이전 정적 원화와 v1 전체 신체 영상은 제작 이력이다. [생성·안정화·검수](<../5.0애니메이션파이프라인/LOBBY_VARKAN_SPRITE_VIDEO_20260928.md>).
 
 
 ## 2026-09-28 장착 가능한 보석 선택창 — 현행
@@ -2046,7 +2046,7 @@ CSS 캐시 ui-refinement.css?v=20260927-4. 신규 이미지/아이템 데이터 
 |---|---|
 | 원인 | _renderSlotList의 데모 분기가 고정 캐릭터를 선택한 뒤 loadLocalCharacters의 마지막 _updateCharDisplay()가 표시·영상·입장 버튼을 다시 초기화. _selectedSlot=demo와 active 카드만 남아 표시와 불일치 |
 | 초기화 순서 | loadLocalCharacters 시작에서 _selectedSlot/_selectedSlotName=null 및 _updateCharDisplay()로 이전 선택 초기화. 로딩 완료 후 _renderSlotList만 호출하며 뒤의 중복 초기화 제거 |
-| 데모 | _renderSlotList가 _selectedSlot=demo,_selectedSlotName=demo,_updateCharDisplay({name:DEMO CHARACTER,charIdx:0,stage:0})를 적용. 로딩 후 active 카드·이름·전사 미디어·enabled ENTER/점등 유지 |
+| 데모 | _renderSlotList가 _selectedSlot=demo,_selectedSlotName=demo,_updateCharDisplay({name:DEMO CHARACTER,charIdx:0,stage:0})를 적용. 로딩 후 active 플레이어 기록 카드·선대 소환체 이름/설명·독립 스프라이트/배경 영상·enabled ENTER/점등 유지 |
 | 일반 로비 | 자동 선택 추가 없음. full 로컬 목록은 초기화 상태로 렌더하며 사용자가 선택하기 전 입장 disabled/소등 유지. 온라인 동작 변경 없음 |
 | 검증 | 데모 서버 성공/브라우저 저장 폴백2회귀 수정 전 실패→통과 및 full 선택 초기화1건 추가. 개발 슬롯·데모 경로·선택 정보·캐릭터 동기화28개 통과. Chromium960×540 실제 HTML/CSS/함수 격리 실행에서 demo/full×서버 성공/실패4건,선택·제목·배경·ENTER disabled/filter 일치 확인 |
 | 범위·기록 | 사용자 저장 데이터 수정·실제 게임 입장·패키지 갱신/업로드 없음. tmp/lobby-demo-selection/browser-report.json,changes.patch. 기존 Git 쓰기 제한으로 커밋 미완료 |

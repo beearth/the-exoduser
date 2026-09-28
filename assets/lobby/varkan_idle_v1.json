@@ -209,9 +209,14 @@
       604
     ]
   ],
-  "alpha_zero_ratio": 0.7142081084074797,
+  "alpha_zero_ratio": 0.6482561334245904,
   "source_job": "721a6c9b-f8f8-4f17-8c43-8dab6e3334d8",
   "source_selection": "first 2 seconds sampled at 12fps; pingpong avoids discontinuous return",
-  "visual_verdict": "IDLE_CONTACT_REVIEWED; RUNTIME_PENDING",
-  "canvas_trim_top": 144
+  "visual_verdict": "SUPERSEDED: user rejected full-body temporal jitter and moving floor; runtime uses v2",
+  "canvas_trim_top": 144,
+  "display_name_ko": "묘왕 바르칸",
+  "display_name_en": "Varkan, the Tomb King",
+  "model": "grok_video_v15",
+  "source_anchor_job": "a3ab54ce-61b8-42f8-9fb3-5100d4a58231",
+  "runtime_qa": "captures/ancestor_grok_review/varkan-lobby-runtime-report.json"
 }

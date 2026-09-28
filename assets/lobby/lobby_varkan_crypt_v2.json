@@ -1,0 +1,46 @@
+{
+  "source_job": "4e2e475f-7bdc-44ea-a1c5-2ccf4821d5a9",
+  "background_image_job": "aaa88828-bcb4-439a-add6-4d1c30ad550f",
+  "image_model": "grok_image_2_0",
+  "video_model": "grok_video_v15",
+  "width": 1920,
+  "height": 1088,
+  "fps": 24,
+  "source_frames": 145,
+  "loop_frames": 290,
+  "duration": 12.083333333333334,
+  "codec": "h264",
+  "pix_fmt": "yuv420p",
+  "audio": false,
+  "loop_method": "fixed reference architecture and floor; regional generated fire/fog deltas; forward plus reverse",
+  "floor_fixed_from_normalized_y": 0.72,
+  "fire_delta_weight": 0.45,
+  "fog_delta_weight": 0.07,
+  "fire_regions": [
+    [
+      0.094,
+      0.56,
+      0.025,
+      0.09
+    ],
+    [
+      0.236,
+      0.535,
+      0.018,
+      0.055
+    ],
+    [
+      0.461,
+      0.595,
+      0.022,
+      0.065
+    ]
+  ],
+  "source_floor_mean_rgb_delta_max": 22.842871591488276,
+  "fixed_floor_mean_rgb_delta_max": 0,
+  "decoded_floor_max_rgb_delta": 0,
+  "decoded_frames_checked": 290,
+  "postprocess": "tools/stabilize-lobby-crypt.py",
+  "visual_verdict": "PASS: quiet independent animation, clear summon role, three live viewport checks",
+  "runtime_qa": "captures/ancestor_grok_review/varkan-lobby-runtime-report.json"
+}

@@ -11,5 +11,11 @@
       "pix_fmt": "yuv420p"
     }
   ],
-  "duration": 12.084
+  "duration": 12.083333,
+  "background_image_job": "aaa88828-bcb4-439a-add6-4d1c30ad550f",
+  "image_model": "grok_image_2_0",
+  "video_model": "grok_video_v15",
+  "audio": false,
+  "visual_verdict": "SUPERSEDED: user rejected full-body temporal jitter and moving floor; runtime uses v2",
+  "runtime_qa": "captures/ancestor_grok_review/varkan-lobby-runtime-report.json"
 }
