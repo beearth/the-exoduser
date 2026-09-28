@@ -1,7 +1,7 @@
 {
   "event": "INDIE Live Expo 2026.12.1",
   "prepared": "2026-09-28",
-  "status": "current_runtime_media_uploaded_form_draft_not_submitted",
+  "status": "slogan_revised_current_runtime_media_verified_drive_updated_form_not_submitted",
   "handoff": {
     "drive_metadata": "drive-upload.json",
     "review_page": "index.html",
@@ -13,15 +13,16 @@
         "error": null
       },
       "EXODUSER_HELL_LORD_full.mp4": {
-        "duration": 58,
+        "duration": 30,
         "ended": true,
         "error": null
       }
     },
     "form_draft_saved": true,
     "final_submit_button_visible": true,
-    "important_notes_consent_checked": false,
-    "form_submitted": false
+    "important_notes_consent_checked": true,
+    "form_submitted": false,
+    "consent_observation": "Existing checked state observed on form; not selected by agent."
   },
   "source_video": "current-20260928/current-parry.webm + current-slam.webm + current-ice.webm",
   "source_picture": "tmp\\expo-current-edit\\current-picture.mp4",
@@ -46,7 +47,7 @@
   "images": {
     "main.jpg": {
       "source": "output/indie-live-expo-20261201/current-20260928/main.jpg",
-      "source_sha256": "833fa31bf3ddc75166cd3bd6a1314d61963afcc362b5973a79a7ac7a8d76073c",
+      "source_sha256": "4e452472eac44c7a826d34c479868f84af39ed7c9dbfd5e595468d40c49ff632",
       "processing": "Direct JPEG browser capture of the current 2026-09-28 working build; copied byte-for-byte"
     },
     "ss1.jpg": {
@@ -68,8 +69,8 @@
   "files": [
     {
       "file": "EXODUSER_HELL_LORD.mp4",
-      "bytes": 45003915,
-      "sha256": "719c5941dddd092e4b48c1802ba4a9d71a0aca6d53a047c054b98cc75e276272",
+      "bytes": 45003916,
+      "sha256": "1dbca71d0d18079ae6bd9601bd8c96e3d0a91f70115bab1595962689e6bb72a6",
       "probe": {
         "streams": [
           {
@@ -106,7 +107,7 @@
             "start_time": "0.000000",
             "duration_ts": 230400,
             "duration": "15.000000",
-            "bit_rate": "23680692",
+            "bit_rate": "23680693",
             "bits_per_raw_sample": "8",
             "nb_frames": "450",
             "extradata_size": 61,
@@ -200,7 +201,7 @@
           "format_long_name": "QuickTime / MOV",
           "start_time": "0.000000",
           "duration": "15.000000",
-          "size": "45003915",
+          "size": "45003916",
           "bit_rate": "24002088",
           "probe_score": 100,
           "tags": {
@@ -214,8 +215,8 @@
     },
     {
       "file": "EXODUSER_HELL_LORD_full.mp4",
-      "bytes": 90619014,
-      "sha256": "da674512384d56c831c5b1b73bcd9091da7cda81db193613b99253bc6baf3921",
+      "bytes": 90619011,
+      "sha256": "39ff71d27d42b2be81bc3e1e621ab8c9b7fff19ca970f85bc8027e9cbb257bca",
       "probe": {
         "streams": [
           {
@@ -252,7 +253,7 @@
             "start_time": "0.000000",
             "duration_ts": 460800,
             "duration": "30.000000",
-            "bit_rate": "23840506",
+            "bit_rate": "23840505",
             "bits_per_raw_sample": "8",
             "nb_frames": "900",
             "extradata_size": 61,
@@ -346,8 +347,8 @@
           "format_long_name": "QuickTime / MOV",
           "start_time": "0.000000",
           "duration": "30.000000",
-          "size": "90619014",
-          "bit_rate": "24165070",
+          "size": "90619011",
+          "bit_rate": "24165069",
           "probe_score": 100,
           "tags": {
             "major_brand": "isom",
@@ -360,8 +361,8 @@
     },
     {
       "file": "main.jpg",
-      "bytes": 637502,
-      "sha256": "833fa31bf3ddc75166cd3bd6a1314d61963afcc362b5973a79a7ac7a8d76073c",
+      "bytes": 859600,
+      "sha256": "4e452472eac44c7a826d34c479868f84af39ed7c9dbfd5e595468d40c49ff632",
       "probe": {
         "streams": [
           {
@@ -425,8 +426,8 @@
           "format_long_name": "image2 sequence",
           "start_time": "0.000000",
           "duration": "0.040000",
-          "size": "637502",
-          "bit_rate": "127500400",
+          "size": "859600",
+          "bit_rate": "171920000",
           "probe_score": 50
         }
       }
@@ -689,7 +690,7 @@
             "start_time": "0.000000",
             "duration_ts": 230400,
             "duration": "15.000000",
-            "bit_rate": "23680692",
+            "bit_rate": "23680693",
             "bits_per_raw_sample": "8",
             "nb_frames": "450",
             "extradata_size": 61,
@@ -783,7 +784,7 @@
           "format_long_name": "QuickTime / MOV",
           "start_time": "0.000000",
           "duration": "15.000000",
-          "size": "45003915",
+          "size": "45003916",
           "bit_rate": "24002088",
           "probe_score": 100,
           "tags": {
@@ -845,7 +846,7 @@
             "start_time": "0.000000",
             "duration_ts": 460800,
             "duration": "30.000000",
-            "bit_rate": "23840506",
+            "bit_rate": "23840505",
             "bits_per_raw_sample": "8",
             "nb_frames": "900",
             "extradata_size": 61,
@@ -939,8 +940,8 @@
           "format_long_name": "QuickTime / MOV",
           "start_time": "0.000000",
           "duration": "30.000000",
-          "size": "90619014",
-          "bit_rate": "24165070",
+          "size": "90619011",
+          "bit_rate": "24165069",
           "probe_score": 100,
           "tags": {
             "major_brand": "isom",
@@ -967,9 +968,9 @@
   },
   "notes": [
     "24 Mbps delivery encoding cannot restore detail absent from the original footage.",
-    "Both videos now use September 28 current-runtime captures. Previous September 9 edits are backed up locally.",
     "No generated gameplay footage. Combat records actual game canvas layers without the DOM HUD.",
-    "Form unsubmitted. Existing external media Allow, streaming Yes and Important Notes checked preserved. Optional Steam event consent remains pending."
+    "Form unsubmitted. Existing external media Allow, streaming Yes and Important Notes checked preserved. Optional Steam event consent remains pending.",
+    "Both videos now use September 28 current-runtime captures. Previous September 9 edits are backed up locally."
   ],
   "image_capture": {
     "date": "2026-09-28",
@@ -1104,7 +1105,8 @@
       "Conditional streaming rules: unconditional Yes selected",
       "Other text fields for unselected options"
     ],
-    "external_media_permission": "Allow (already selected on follow-up live form observation; preserved, not selected by agent)"
+    "external_media_permission": "Allow (already selected on follow-up live form observation; preserved, not selected by agent)",
+    "slogan": "THOSE WHO DEFY THE FALL. EXODUSER."
   },
   "browser_playback_verification": {
     "date": "2026-09-28",
@@ -1127,6 +1129,37 @@
         "videoHeight": 1080
       }
     ],
-    "drive_logged_out_listing": "Refreshed IAB folder shows six files: updated 42.9 MB / 86.4 MB videos and four current images."
+    "drive_logged_out_listing": "Refreshed IAB folder shows six files: updated 42.9 MB / 86.4 MB videos and four current images.",
+    "slogan_revision_tail_playback": {
+      "short": [
+        12,
+        15
+      ],
+      "full": [
+        27,
+        30
+      ],
+      "ended": true,
+      "error": null
+    }
+  },
+  "title_slogan_revision": {
+    "date": "2026-09-28",
+    "ko": "추락에 대항하는 자들, 엑소듀서.",
+    "en": "THOSE WHO DEFY THE FALL. EXODUSER.",
+    "authority": "User replaces previous unauthorized slogan with the Korean wording above; English is the corresponding translation.",
+    "source": "index.html splashTitleBrand SVG visible text and aria-label",
+    "index_html_sha256": "77196a830bc2b00fd636db17ea8c9c105ac524bd2883afd179daf127983206a6",
+    "main_jpg_sha256": "4e452472eac44c7a826d34c479868f84af39ed7c9dbfd5e595468d40c49ff632",
+    "capture_viewport": [
+      3086,
+      1262
+    ],
+    "capture": "Actual title screen recaptured; original gameplay recordings and three gameplay screenshots retained.",
+    "videos": "Both final three-second title cards rebuilt from the new main.jpg. FFprobe, complete FFmpeg decode and loudness checks passed. Changed title sections played to end in browser, error=null, 1920x1080.",
+    "drive": "Three existing file IDs updated; returned sizes and modification times verified. Logged-out folder still exposes six files.",
+    "form": "Appeal text updated, draft saved observed; Submit not clicked.",
+    "backup": "before/slogan-20260928",
+    "archive": "Original baked source art/video and historical cleanup prompt preserved; current SVG lettering replaces visible normal title slogan."
   }
 }

@@ -88,7 +88,7 @@ Item and skill combinations give players room to shape their own builds, while m
 
 Developed by FOR DEAR GAMERS (FDG), the game has a playable build and demo and is preparing for release on Steam for Windows.
 
-THE WORLD WILL FALL. THE EXODUS WILL RISE.
+THOSE WHO DEFY THE FALL. EXODUSER.
 
 ### 100자 미만 방송 소개
 
@@ -134,9 +134,9 @@ As a full-time solo developer preparing my first release, my main challenge is b
 
 | 파일 | 실제 규격 | bytes | Drive ID |
 |---|---|---:|---|
-| EXODUSER_HELL_LORD.mp4 | 15초, 1920×1080, 30fps, H.264, 약 24Mbps | 45,003,915 | 1aJBiZNR6XjQbP8BXKRo0coZtklpKHWvi |
-| EXODUSER_HELL_LORD_full.mp4 | 30초, 1920×1080, 30fps, H.264, 약 24Mbps | 90,619,014 | 146EfGL_xNa4bLvtyk-ylZmoSUREb5X_L |
-| main.jpg | 3086×1262, 현재 타이틀 화면 | 637,502 | 1jc1EnL1OutjWLgiOXEeyPc0YngGV3nip |
+| EXODUSER_HELL_LORD.mp4 | 15초, 1920×1080, 30fps, H.264, 약 24Mbps | 45,003,916 | 1aJBiZNR6XjQbP8BXKRo0coZtklpKHWvi |
+| EXODUSER_HELL_LORD_full.mp4 | 30초, 1920×1080, 30fps, H.264, 약 24Mbps | 90,619,011 | 146EfGL_xNa4bLvtyk-ylZmoSUREb5X_L |
+| main.jpg | 3086×1262, 현재 타이틀 화면 | 859,600 | 1jc1EnL1OutjWLgiOXEeyPc0YngGV3nip |
 | ss1.jpg | 1280×720, 현재 CH1 전투 | 240,465 | 1jFsvZ0POlpJ39aquMpC5GjvAHUYEJ88K |
 | ss2.jpg | 1280×720, 현재 인벤토리 | 260,988 | 1kSYmd634lKbCNEI7XtA6N1sVvfRQsYI3 |
 | ss3.jpg | 1280×720, 현재 스킬/합체 | 249,069 | 1ndgld8WEPbkhN5KEDjR84YTRG6Xq5Pdk |
@@ -240,3 +240,18 @@ AI 생성 게임플레이를 사용하지 않는다. 체력 보호 등 촬영 �
 출처: https://indie.live-expo.games/en/entry/ , https://indie.live-expo.games/en/27488/ , 본 문서 상단의 공식 Google Form. `event_contents`는 아직 2026년 4월 행사를 설명하므로 그 출연진·소개 게임 수를 12월 행사로 옮기지 않는다.
 
 후속 확인: 발음 안내 작성 후 `초안 저장됨`을 확인했다. 그 시점에 방송 외 영상 사용이 이미 Allow로 변경되어 있어 유지했다. 에이전트가 이 권리 항목을 클릭한 것이 아니며, 현재 남은 선택은 Steam 행사 App ID/배너 동의다. 최종 제출은 하지 않았다.
+
+
+## 2026-09-28 사용자 지정 슬로건 수정
+
+| 항목 | 현행 값 및 검증 |
+|---|---|
+| 한국어 | 추락에 대항하는 자들, 엑소듀서. |
+| 영어 | THOSE WHO DEFY THE FALL. EXODUSER. |
+| 출처 | 사용자가 기존 문구를 본인이 만들지 않았다고 정정하고 새 한국어 문구 지정 |
+| 게임 | index.html splashTitleBrand의 표시 문자와 aria-label 교체. 실제 타이틀에서 확인 |
+| 이미지 | 현재 타이틀 3086×1262 재촬영, main.jpg 859,600 bytes |
+| 영상 | 기존 실제 전투 유지, 15초·30초 영상 마지막 타이틀 3초 재편집. 규격·음량·전체 디코딩 통과. 변경 구간 재생 완료/오류 없음 |
+| Drive | main.jpg 및 영상 2개를 동일 ID로 갱신. 파일 크기·수정 시각 읽기 확인, 비로그인 폴더 6개 유지 |
+| 신청서 | 게임 강점 설명 마지막 문구 교체, 초안 저장됨 확인. 최종 제출 안 함 |
+| 보존 | 이전 제출용 3개 파일은 before/slogan-20260928에 백업. 원본 그림·영상과 과거 편집 프롬프트는 제작 이력으로 보존 |

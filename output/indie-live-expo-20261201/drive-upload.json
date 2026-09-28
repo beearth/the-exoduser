@@ -13,10 +13,10 @@
     {
       "name": "EXODUSER_HELL_LORD.mp4",
       "id": "1aJBiZNR6XjQbP8BXKRo0coZtklpKHWvi",
-      "bytes": 45003915,
+      "bytes": 45003916,
       "url": "https://drive.google.com/file/d/1aJBiZNR6XjQbP8BXKRo0coZtklpKHWvi/view?usp=drivesdk",
-      "modified_time": "2026-09-28T10:44:47.358Z",
-      "replacement": "September 28 current runtime recording; same Drive ID",
+      "modified_time": "2026-09-28T12:03:33.596Z",
+      "replacement": "User-directed slogan revision; same Drive ID",
       "size_readback_verified": true
     },
     {
@@ -49,19 +49,19 @@
     {
       "name": "EXODUSER_HELL_LORD_full.mp4",
       "id": "146EfGL_xNa4bLvtyk-ylZmoSUREb5X_L",
-      "bytes": 90619014,
+      "bytes": 90619011,
       "url": "https://drive.google.com/file/d/146EfGL_xNa4bLvtyk-ylZmoSUREb5X_L/view?usp=drivesdk",
-      "modified_time": "2026-09-28T10:45:07.230Z",
-      "replacement": "September 28 current runtime recording; same Drive ID",
+      "modified_time": "2026-09-28T12:03:58.474Z",
+      "replacement": "User-directed slogan revision; same Drive ID",
       "size_readback_verified": true
     },
     {
       "name": "main.jpg",
       "id": "1jc1EnL1OutjWLgiOXEeyPc0YngGV3nip",
-      "bytes": 637502,
+      "bytes": 859600,
       "url": "https://drive.google.com/file/d/1jc1EnL1OutjWLgiOXEeyPc0YngGV3nip/view?usp=drivesdk",
-      "modified_time": "2026-09-28T10:07:00.454Z",
-      "replacement": "Current working-build browser capture; same Drive ID",
+      "modified_time": "2026-09-28T12:00:21.872Z",
+      "replacement": "User-directed slogan revision; same Drive ID",
       "size_readback_verified": true
     }
   ],
@@ -82,5 +82,16 @@
     "frame_rate": 30,
     "file_count": 6,
     "submitted": false
+  },
+  "slogan_revision": {
+    "date": "2026-09-28",
+    "ko": "추락에 대항하는 자들, 엑소듀서.",
+    "en": "THOSE WHO DEFY THE FALL. EXODUSER.",
+    "updated_files": [
+      "main.jpg",
+      "EXODUSER_HELL_LORD.mp4",
+      "EXODUSER_HELL_LORD_full.mp4"
+    ],
+    "form_submitted": false
   }
 }

@@ -10,7 +10,7 @@
 | 보정 한계 | 기존 승인된 루프의 확대·약한 휘도 선명도 보정. 네이티브 4K 제작/손실 디테일 복원으로 표기하지 않음. 프레임 수·속도·구도·캐릭터 애니메이션 유지 |
 | 미디어 대체 | HD 오류 → `dataset.sdFallback=1` 설정 후 SD 1회 → SD 오류 시 `img/title_art_1.png`. SD 원본 1920×768·2,241,229바이트 보존. 최초 로딩은 정지 아트, 정상 영상 이후 일시 buffering은 마지막 프레임 유지 |
 | 캐시 | HD `v=20260910-clarity1`, SD `v=20260908-loop2` |
-| 로고 요소 | `#splashTitleBrand` SVG viewBox `0 0 1983 793`, role=img 및 전체 브랜드 aria-label. EXODUSER / HELL LORD / THE WORLD WILL FALL. THE EXODUS WILL RISE. |
+| 로고 요소 | `#splashTitleBrand` SVG viewBox `0 0 1983 793`, role=img 및 전체 브랜드 aria-label. EXODUSER / HELL LORD / THOSE WHO DEFY THE FALL. EXODUSER. — 2026-09-28 사용자 지시 “추락에 대항하는 자들, 엑소듀서.” 반영 |
 | 로고 타이포 | Georgia → Times New Roman → serif. EX x224/y404/46px/weight600/textLength89, DUSER x407/y404/46px/weight600/textLength270. 기본색 #f1eee6. HELL LORD x450/y447/18px/자간8/#c44232. 태그라인 x450/y474/11.5px/textLength375/자간2 |
 | 붉은 O·장식 | O 중심365,388/반지름17/선3/#b52e25, 십자 선1.6. 가로선 x207~693/y422/1.4, gradientUnits=userSpaceOnUse. 하단 별 x432~468/y486~516/선1.2/#af392d |
 | 로고 배경 | `img/title_clean_plate_20260910.png`, 1983×793. 원본 정지 아트에서 문자만 지운 배경. 전체 영상을 대체하지 않고 왼쪽 문자 영역만 마스크 합성 |
@@ -43,3 +43,8 @@ Edit target: the attached very wide dark fantasy title illustration. Precise obj
 | 회귀 | worldIntroPlayer/worldIntroHandoff/lobbyCharacterSelectionInfo/lobbyStageInfo 21테스트 PASS. index inline script 4개 구문 파싱 PASS |
 | 증거 | `captures/title_clarity_20260910/before.json`, `report.json`, before/after PNG. 초광폭·고밀도 최종 캡처 직접 검수: 글자 획 선명도 개선·하단 안내 가독성·인물 구도 확인 |
 | 범위 | Chromium 로컬 검증. 실물 게임패드·Steam 설치본·다른 GPU 재생 성능은 이번 검증 범위 밖 |
+
+
+## 2026-09-28 슬로건 정정
+
+사용자 지정 문구는 **추락에 대항하는 자들, 엑소듀서.**, 영어 표기는 **THOSE WHO DEFY THE FALL. EXODUSER.**이다. index.html의 네이티브 SVG 표시 문자와 aria-label을 함께 수정했다. 3086×1262 실제 타이틀 재촬영에서 새 글자와 기존 인물·배경 배치를 확인했고, 출품 이미지와 영상 2개의 마지막 3초에도 반영했다. 증거: `output/indie-live-expo-20261201/submission/main.jpg`, `manifest.json`의 `title_slogan_revision`. 위 배경 제거 프롬프트 속 이전 문구는 과거 편집 기록이며 현행 슬로건이 아니다. 원본 배경/영상의 내장 문자는 정상 로딩 시 clean plate가 가린다. Steam 배포 빌드는 이번 변경 범위 밖이다.
