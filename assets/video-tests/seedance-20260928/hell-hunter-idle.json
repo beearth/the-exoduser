@@ -1,0 +1,86 @@
+{
+  "date": "2026-09-28",
+  "character": "Hell Hunter / 헬 헌터",
+  "provider": "Higgsfield",
+  "source_job_id": "8947d03a-b872-4899-bd1f-b1877a191ea6",
+  "source_local": "../../video-bases/20260928/13-hell-hunter-restrained-cloth-v3.png",
+  "request": "사용자 요청에 따라 최신 붉은 천 정리 v3로 Seedance 아이들 영상 제작",
+  "estimated_credits": 60,
+  "attempts": [
+    {
+      "job_id": "44ec2fea-c255-4a70-9dfe-1a477fc210fb",
+      "status": "failed",
+      "aspect_ratio": "auto",
+      "charged_credits": 60,
+      "refunded_credits": 60,
+      "failure_reason": "not supplied by provider"
+    },
+    {
+      "job_id": "a46d9b8f-e7d4-45b3-a4f7-73705d563b8f",
+      "status": "completed",
+      "aspect_ratio": "16:9",
+      "charged_credits": 60,
+      "refunded_credits": 0
+    }
+  ],
+  "params": {
+    "model": "seedance_2_5",
+    "mode": "omni_reference",
+    "duration": 5,
+    "resolution": "1080p",
+    "bitrate_mode": "high",
+    "generate_audio": false,
+    "aspect_ratio": "16:9",
+    "count": 1,
+    "folder_id": "cec12414-13bc-49e4-b460-5d26f3bee4c7",
+    "medias": [
+      {
+        "role": "start_image",
+        "value": "8947d03a-b872-4899-bd1f-b1877a191ea6"
+      },
+      {
+        "role": "end_image",
+        "value": "8947d03a-b872-4899-bd1f-b1877a191ea6"
+      }
+    ],
+    "prompt": "Create a subtle five-second IDLE living illustration of the two adult Hell Hunters in this exact EXODUSER reference image. Preserve the reference composition and both character identities throughout. Locked-off tripod camera, absolutely no zoom, pan, orbit, shake, reframing or cuts. Both hunters remain planted in their exact starting positions, holding the same rigid straight Gothic revolver rifles in the same two-handed shouldered poses. The hands stay attached to the same grip and fore-end; stocks stay in contact with the shoulders. Keep every barrel, cylinder, muzzle blade and harpoon tip solid, rigid and geometrically unchanged. This is a quiet idle pose: no firing, recoil, weapon transformation, muzzle opening or closing, aiming changes, steps, attacks, turns or gestures. Animate only barely perceptible slow breathing, a delicate low-amplitude breeze through loose hair tips and the edges of the existing coherent heavy black-and-burgundy capes, with minimal distant mist drift. Keep the capes' weight, length and number of folds stable; do not grow red ribbons or new cloth. Faces, eyes, fingers, armor and anatomical proportions remain consistent and calm. Red moon, castle spires, gargoyle, stone steps and all architecture stay stationary. Existing small red weapon glow remains constant; no flashes, energy pulses, projectiles, sparks, particles or dot noise. Preserve the upper-right EXODUSER / HELL LORD logo exactly as static typography: identical letters, shape, location and scale in every frame, never animate or rewrite it. The first and last image are identical composition anchors: gently settle back into the original pose by the final frame for a smooth idle loop. Motion should be restrained, natural and continuous rather than dramatic. Silent video."
+  },
+  "runtime_integrated": false,
+  "status": "completed",
+  "job_id": "a46d9b8f-e7d4-45b3-a4f7-73705d563b8f",
+  "result_url": "https://d8j0ntlcm91z4.cloudfront.net/user_3G1zto9sz11Uf3iEOhJefE9HdGG/hf_20260928_081002_a46d9b8f-e7d4-45b3-a4f7-73705d563b8f.mp4",
+  "output_file": "02-hell-hunter-idle.mp4",
+  "net_charged_credits": 60,
+  "balance_before": 613.75,
+  "balance_after": 553.75,
+  "output": {
+    "width": 1920,
+    "height": 1080,
+    "codec": "hevc",
+    "fps": 24,
+    "frames": 121,
+    "duration_seconds": 5.041667,
+    "bitrate": 20497986,
+    "bytes": 12944658,
+    "audio_streams": 0
+  },
+  "qa": {
+    "contact_sheet": "hell-hunter-contact-sheet.jpg",
+    "sampled_frames": [
+      0,
+      24,
+      48,
+      72,
+      96,
+      120
+    ],
+    "visual": "Six sampled frames preserve recognizable faces, shoulder contacts, grips, rigid rifles and logo. Hair and cape changes remain small. No sampled firing, muzzle transformation, aiming change or large body action.",
+    "limitations": "Fine shading and details change subtly. Not a pixel-locked animation; seamless loop has not been established.",
+    "browser": "Local Chrome player decoded HEVC, readyState 4, 1920x1080, duration 5.041667. After play, currentTime advanced to 1.149583, paused=false, loop=true and no reported media error.",
+    "review_status": "pending_user_video_review",
+    "detail_checks": [
+      "hell-hunter-face-check.jpg",
+      "hell-hunter-logo-check.jpg"
+    ]
+  }
+}
