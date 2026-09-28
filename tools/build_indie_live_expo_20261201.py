@@ -38,16 +38,43 @@ def normalize_filter(m):
 VIDEO=["-r","60","-c:v","libx264","-threads","8","-preset","medium","-b:v","24M","-minrate","24M","-maxrate","24M","-bufsize","48M","-x264-params","nal-hrd=cbr:force-cfr=1","-pix_fmt","yuv420p","-color_range","tv","-colorspace","bt709","-color_primaries","bt709","-color_trc","bt709"]
 AUDIO=["-c:a","aac","-b:a","320k","-ar","48000","-ac","2"]
 sources={}
-for dest,source in {
-    "main.jpg":"img/title_art_1.png",
-    "ss1.jpg":"지스타2026_제출사진_10장/06_불꽃칼날_화염스윙.png",
-    "ss2.jpg":"지스타2026_제출사진_10장/08_보스전_다크드루이드.png",
-    "ss3.jpg":"지스타2026_제출사진_10장/09_성장과빌드_패시브각인.png",
-}.items():
-    src=ROOT/source
-    run(["-i",src,"-frames:v","1","-q:v","2",PACK/dest],dest+".log")
-    sources[dest]={"source":source,"source_sha256":hashlib.sha256(src.read_bytes()).hexdigest(),"processing":"JPEG format conversion only; original composition preserved"}
+image_names=("main.jpg","ss1.jpg","ss2.jpg","ss3.jpg")
+capture_dir=OUT/"current-20260928"
+# Current runtime captures are mandatory. Never fall back to dated press shots.
+for dest in image_names:
+    src=capture_dir/dest
+    if not src.is_file(): raise FileNotFoundError(f"Capture the current build first: {src}")
+    meta=probe(src)
+    stream=meta["streams"][0]
+    if stream["codec_name"]!="mjpeg" or stream["width"]<1000 or stream["height"]<700:
+        raise ValueError(f"Incomplete or invalid current capture: {src}")
+for dest in image_names:
+    src=capture_dir/dest
+    previous=PACK/dest
+    backup=OUT/"before"/"images-before-current-20260928"/dest
+    if previous.exists() and not backup.exists():
+        backup.parent.mkdir(parents=True,exist_ok=True)
+        shutil.copy2(previous,backup)
+    shutil.copy2(src,previous)
+    sources[dest]={"source":src.relative_to(ROOT).as_posix(),"source_sha256":hashlib.sha256(src.read_bytes()).hexdigest(),"processing":"Direct JPEG browser capture of the current 2026-09-28 working build; copied byte-for-byte"}
 print("IMAGES_READY",flush=True)
+
+if "--images-only" in sys.argv:
+    manifest_path=OUT/"manifest.json"
+    manifest=json.loads(manifest_path.read_text(encoding="utf8"))
+    manifest["images"]=sources
+    manifest["status"]="current_images_verified_locally_pending_drive_replacement_form_not_submitted"
+    manifest["notes"]=[n for n in manifest.get("notes",[]) if "September 14" not in n]
+    manifest["notes"].append("Images were recaptured from the current working build on 2026-09-28; the two videos still use the existing September 9 footage.")
+    manifest["image_capture"]={"date":"2026-09-28","origin":"http://127.0.0.1:3338","game_viewport":[1280,720],"source_state":"current uncommitted working tree, not a release checkout","staging":"Disposable origin and discarded game API writes; introductory lessons skipped, invulnerability and player position adjusted only in the capture tab; actual existing CH1 enemies and activateGiantSlam were rendered. No compositing or generated imagery.","supplementary_lobby":"current-20260928/lobby-current.jpg","game_source_modified_for_capture":False}
+    manifest["source_state_at_packaging"]={p:hashlib.sha256((ROOT/p).read_bytes()).hexdigest() for p in ["game.html","index.html","ui-refinement.css","lobby-ancestor-art.css","lobby-ancestor-sprite.js"]}
+    manifest["files"]=[f for f in manifest["files"] if f["file"] not in image_names]
+    for dest in image_names:
+        path=PACK/dest
+        manifest["files"].append({"file":dest,"bytes":path.stat().st_size,"sha256":hashlib.sha256(path.read_bytes()).hexdigest(),"probe":probe(path)})
+    manifest_path.write_text(json.dumps(manifest,ensure_ascii=False,indent=2)+"\n",encoding="utf8")
+    print("CURRENT_IMAGES_READY; videos unchanged",flush=True)
+    sys.exit(0)
 
 caption=(ROOT/"tmp/trailer_damage_v25/edit/captions.ass").read_text(encoding="utf-8-sig")
 translations={
@@ -102,7 +129,7 @@ for path,duration in [(short,15),(full,58)]:
 files=[]
 for path in sorted(PACK.iterdir()):
     files.append({"file":path.name,"bytes":path.stat().st_size,"sha256":hashlib.sha256(path.read_bytes()).hexdigest(),"probe":probe(path)})
-manifest={"event":"INDIE Live Expo 2026.12.1","prepared":"2026-09-28","status":"local_package_built_pending_visual_review_and_upload","source_video":str(TRAILER.relative_to(ROOT)),"source_video_sha256":hashlib.sha256(TRAILER.read_bytes()).hexdigest(),"source_picture":str(PICTURE.relative_to(ROOT)),"short_cuts":[{"source_start_seconds":s,"duration_seconds":d,"content":c} for s,d,c in cuts],"images":sources,"files":files,"checks":checks,"notes":["All gameplay comes from existing staged in-engine captures, not generated video.","English captions replace Korean trailer captions; gameplay content and damage numbers are retained.","24 Mbps delivery encoding cannot restore detail absent from the original footage.","Screenshots are existing September 14 captures and can differ from later development builds.","No form submission or rights consent performed."]}
+manifest={"event":"INDIE Live Expo 2026.12.1","prepared":"2026-09-28","status":"local_package_built_pending_visual_review_and_upload","source_video":str(TRAILER.relative_to(ROOT)),"source_video_sha256":hashlib.sha256(TRAILER.read_bytes()).hexdigest(),"source_picture":str(PICTURE.relative_to(ROOT)),"short_cuts":[{"source_start_seconds":s,"duration_seconds":d,"content":c} for s,d,c in cuts],"images":sources,"files":files,"checks":checks,"notes":["All gameplay comes from existing staged in-engine captures, not generated video.","English captions replace Korean trailer captions; gameplay content and damage numbers are retained.","24 Mbps delivery encoding cannot restore detail absent from the original footage.","Images are direct September 28 current-runtime captures; the videos still use September 9 source footage.","No form submission or rights consent performed."]}
 (OUT/"manifest.json").write_text(json.dumps(manifest,ensure_ascii=False,indent=2),encoding="utf8")
 for path,interval,name in [(short,3,"short-contact.jpg"),(full,6,"full-contact.jpg")]:
     run(["-i",path,"-vf",f"fps=1/{interval},scale=480:-1,tile=3x4","-frames:v","1",OUT/name],name+".log")

@@ -19,20 +19,29 @@
     {
       "name": "ss3.jpg",
       "id": "1ndgld8WEPbkhN5KEDjR84YTRG6Xq5Pdk",
-      "bytes": 331417,
-      "url": "https://drive.google.com/file/d/1ndgld8WEPbkhN5KEDjR84YTRG6Xq5Pdk/view?usp=drivesdk"
+      "bytes": 249069,
+      "url": "https://drive.google.com/file/d/1ndgld8WEPbkhN5KEDjR84YTRG6Xq5Pdk/view?usp=drivesdk",
+      "modified_time": "2026-09-28T10:07:19.064Z",
+      "replacement": "Current working-build browser capture; same Drive ID",
+      "size_readback_verified": true
     },
     {
       "name": "ss2.jpg",
       "id": "1kSYmd634lKbCNEI7XtA6N1sVvfRQsYI3",
-      "bytes": 817904,
-      "url": "https://drive.google.com/file/d/1kSYmd634lKbCNEI7XtA6N1sVvfRQsYI3/view?usp=drivesdk"
+      "bytes": 260988,
+      "url": "https://drive.google.com/file/d/1kSYmd634lKbCNEI7XtA6N1sVvfRQsYI3/view?usp=drivesdk",
+      "modified_time": "2026-09-28T10:07:13.214Z",
+      "replacement": "Current working-build browser capture; same Drive ID",
+      "size_readback_verified": true
     },
     {
       "name": "ss1.jpg",
       "id": "1jFsvZ0POlpJ39aquMpC5GjvAHUYEJ88K",
-      "bytes": 786245,
-      "url": "https://drive.google.com/file/d/1jFsvZ0POlpJ39aquMpC5GjvAHUYEJ88K/view?usp=drivesdk"
+      "bytes": 240465,
+      "url": "https://drive.google.com/file/d/1jFsvZ0POlpJ39aquMpC5GjvAHUYEJ88K/view?usp=drivesdk",
+      "modified_time": "2026-09-28T10:07:06.948Z",
+      "replacement": "Current working-build browser capture; same Drive ID",
+      "size_readback_verified": true
     },
     {
       "name": "EXODUSER_HELL_LORD_full.mp4",
@@ -43,8 +52,11 @@
     {
       "name": "main.jpg",
       "id": "1jc1EnL1OutjWLgiOXEeyPc0YngGV3nip",
-      "bytes": 253931,
-      "url": "https://drive.google.com/file/d/1jc1EnL1OutjWLgiOXEeyPc0YngGV3nip/view?usp=drivesdk"
+      "bytes": 637502,
+      "url": "https://drive.google.com/file/d/1jc1EnL1OutjWLgiOXEeyPc0YngGV3nip/view?usp=drivesdk",
+      "modified_time": "2026-09-28T10:07:00.454Z",
+      "replacement": "Current working-build browser capture; same Drive ID",
+      "size_readback_verified": true
     }
   ],
   "steam_public_access": {
@@ -53,5 +65,6 @@
     "title": "EXODUSER: HELL LORD on Steam",
     "release_state": "Coming soon"
   },
-  "form_submitted": false
+  "form_submitted": false,
+  "images_replaced_on": "2026-09-28"
 }

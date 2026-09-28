@@ -1,14 +1,22 @@
 {
   "event": "INDIE Live Expo 2026.12.1",
   "prepared": "2026-09-28",
-  "status": "media_verified_uploaded_form_draft_not_submitted",
+  "status": "current_images_verified_replaced_on_drive_form_draft_not_submitted",
   "handoff": {
     "drive_metadata": "drive-upload.json",
     "review_page": "index.html",
     "checked_on": "2026-09-28",
     "chrome_playback": {
-      "EXODUSER_HELL_LORD.mp4": {"duration": 15, "ended": true, "error": null},
-      "EXODUSER_HELL_LORD_full.mp4": {"duration": 58, "ended": true, "error": null}
+      "EXODUSER_HELL_LORD.mp4": {
+        "duration": 15,
+        "ended": true,
+        "error": null
+      },
+      "EXODUSER_HELL_LORD_full.mp4": {
+        "duration": 58,
+        "ended": true,
+        "error": null
+      }
     },
     "form_draft_saved": true,
     "final_submit_button_visible": true,
@@ -47,24 +55,24 @@
   ],
   "images": {
     "main.jpg": {
-      "source": "img/title_art_1.png",
-      "source_sha256": "68b0fb7cea9291c0458d0e4e1acad0008d2dfc911eb485e4927c9b4cc5fc28aa",
-      "processing": "JPEG format conversion only; original composition preserved"
+      "source": "output/indie-live-expo-20261201/current-20260928/main.jpg",
+      "source_sha256": "833fa31bf3ddc75166cd3bd6a1314d61963afcc362b5973a79a7ac7a8d76073c",
+      "processing": "Direct JPEG browser capture of the current 2026-09-28 working build; copied byte-for-byte"
     },
     "ss1.jpg": {
-      "source": "지스타2026_제출사진_10장/06_불꽃칼날_화염스윙.png",
-      "source_sha256": "fbac04955c3e36d0dc101c21142fee300e23b6d608658f1cb6f4d544b5358b9b",
-      "processing": "JPEG format conversion only; original composition preserved"
+      "source": "output/indie-live-expo-20261201/current-20260928/ss1.jpg",
+      "source_sha256": "1de08131ce26aaf0fb65be56dd757d8f5d83b244c5a3d200e46c8b052584926a",
+      "processing": "Direct JPEG browser capture of the current 2026-09-28 working build; copied byte-for-byte"
     },
     "ss2.jpg": {
-      "source": "지스타2026_제출사진_10장/08_보스전_다크드루이드.png",
-      "source_sha256": "8db1fe848a986904160101f2c511c096261c4a1ff1969bbc81bbf5505459039c",
-      "processing": "JPEG format conversion only; original composition preserved"
+      "source": "output/indie-live-expo-20261201/current-20260928/ss2.jpg",
+      "source_sha256": "856111f2f34ef3f7037fd0cb45b7a649b388e28e4062e886ed72f43f297b88fb",
+      "processing": "Direct JPEG browser capture of the current 2026-09-28 working build; copied byte-for-byte"
     },
     "ss3.jpg": {
-      "source": "지스타2026_제출사진_10장/09_성장과빌드_패시브각인.png",
-      "source_sha256": "7e75dfc314aec9a3e83ed5f00a66cbb6511db5de8ebf9a586124cde27ef8cf83",
-      "processing": "JPEG format conversion only; original composition preserved"
+      "source": "output/indie-live-expo-20261201/current-20260928/ss3.jpg",
+      "source_sha256": "98edbccf7011cd0a1dca3b4b700585e2e2690f5bc8f8fc6a06acda191425d4e9",
+      "processing": "Direct JPEG browser capture of the current 2026-09-28 working build; copied byte-for-byte"
     }
   },
   "files": [
@@ -362,8 +370,8 @@
     },
     {
       "file": "main.jpg",
-      "bytes": 253931,
-      "sha256": "d22561b2ee00a3a76f5d17b2dd345215fcb90e67ed659093e574803f9dd27156",
+      "bytes": 637502,
+      "sha256": "833fa31bf3ddc75166cd3bd6a1314d61963afcc362b5973a79a7ac7a8d76073c",
       "probe": {
         "streams": [
           {
@@ -374,12 +382,14 @@
             "codec_type": "video",
             "codec_tag_string": "[0][0][0][0]",
             "codec_tag": "0x0000",
-            "width": 1983,
-            "height": 793,
-            "coded_width": 1983,
-            "coded_height": 793,
+            "width": 3086,
+            "height": 1262,
+            "coded_width": 3086,
+            "coded_height": 1262,
             "has_b_frames": 0,
-            "pix_fmt": "yuvj444p",
+            "sample_aspect_ratio": "1:1",
+            "display_aspect_ratio": "1543:631",
+            "pix_fmt": "yuvj420p",
             "level": -99,
             "color_range": "pc",
             "color_space": "bt470bg",
@@ -425,16 +435,16 @@
           "format_long_name": "image2 sequence",
           "start_time": "0.000000",
           "duration": "0.040000",
-          "size": "253931",
-          "bit_rate": "50786200",
+          "size": "637502",
+          "bit_rate": "127500400",
           "probe_score": 50
         }
       }
     },
     {
       "file": "ss1.jpg",
-      "bytes": 786245,
-      "sha256": "74f68ac02a249dc4af7b0d5158cdb0212468106a00f0a0871ab054da37408449",
+      "bytes": 240465,
+      "sha256": "1de08131ce26aaf0fb65be56dd757d8f5d83b244c5a3d200e46c8b052584926a",
       "probe": {
         "streams": [
           {
@@ -445,12 +455,14 @@
             "codec_type": "video",
             "codec_tag_string": "[0][0][0][0]",
             "codec_tag": "0x0000",
-            "width": 1920,
-            "height": 1080,
-            "coded_width": 1920,
-            "coded_height": 1080,
+            "width": 1280,
+            "height": 720,
+            "coded_width": 1280,
+            "coded_height": 720,
             "has_b_frames": 0,
-            "pix_fmt": "yuvj444p",
+            "sample_aspect_ratio": "1:1",
+            "display_aspect_ratio": "16:9",
+            "pix_fmt": "yuvj420p",
             "level": -99,
             "color_range": "pc",
             "color_space": "bt470bg",
@@ -496,16 +508,16 @@
           "format_long_name": "image2 sequence",
           "start_time": "0.000000",
           "duration": "0.040000",
-          "size": "786245",
-          "bit_rate": "157249000",
+          "size": "240465",
+          "bit_rate": "48093000",
           "probe_score": 50
         }
       }
     },
     {
       "file": "ss2.jpg",
-      "bytes": 817904,
-      "sha256": "b3d6112a8ad3635af725ce2e0c8ac628f75517a23d163bd04f9921d29e84ead6",
+      "bytes": 260988,
+      "sha256": "856111f2f34ef3f7037fd0cb45b7a649b388e28e4062e886ed72f43f297b88fb",
       "probe": {
         "streams": [
           {
@@ -516,12 +528,14 @@
             "codec_type": "video",
             "codec_tag_string": "[0][0][0][0]",
             "codec_tag": "0x0000",
-            "width": 1920,
-            "height": 1080,
-            "coded_width": 1920,
-            "coded_height": 1080,
+            "width": 1280,
+            "height": 720,
+            "coded_width": 1280,
+            "coded_height": 720,
             "has_b_frames": 0,
-            "pix_fmt": "yuvj444p",
+            "sample_aspect_ratio": "1:1",
+            "display_aspect_ratio": "16:9",
+            "pix_fmt": "yuvj420p",
             "level": -99,
             "color_range": "pc",
             "color_space": "bt470bg",
@@ -567,16 +581,16 @@
           "format_long_name": "image2 sequence",
           "start_time": "0.000000",
           "duration": "0.040000",
-          "size": "817904",
-          "bit_rate": "163580800",
+          "size": "260988",
+          "bit_rate": "52197600",
           "probe_score": 50
         }
       }
     },
     {
       "file": "ss3.jpg",
-      "bytes": 331417,
-      "sha256": "58970db0395cbe1e2d36804da1c1c9d4ae0ed50d49c49f1e4ea8a9e96955f832",
+      "bytes": 249069,
+      "sha256": "98edbccf7011cd0a1dca3b4b700585e2e2690f5bc8f8fc6a06acda191425d4e9",
       "probe": {
         "streams": [
           {
@@ -587,12 +601,14 @@
             "codec_type": "video",
             "codec_tag_string": "[0][0][0][0]",
             "codec_tag": "0x0000",
-            "width": 1920,
-            "height": 1080,
-            "coded_width": 1920,
-            "coded_height": 1080,
+            "width": 1280,
+            "height": 720,
+            "coded_width": 1280,
+            "coded_height": 720,
             "has_b_frames": 0,
-            "pix_fmt": "yuvj444p",
+            "sample_aspect_ratio": "1:1",
+            "display_aspect_ratio": "16:9",
+            "pix_fmt": "yuvj420p",
             "level": -99,
             "color_range": "pc",
             "color_space": "bt470bg",
@@ -638,8 +654,8 @@
           "format_long_name": "image2 sequence",
           "start_time": "0.000000",
           "duration": "0.040000",
-          "size": "331417",
-          "bit_rate": "66283400",
+          "size": "249069",
+          "bit_rate": "49813800",
           "probe_score": 50
         }
       }
@@ -963,7 +979,27 @@
     "All gameplay comes from existing staged in-engine captures, not generated video.",
     "English captions replace Korean trailer captions; gameplay content and damage numbers are retained.",
     "24 Mbps delivery encoding cannot restore detail absent from the original footage.",
-    "Screenshots are existing September 14 captures and can differ from later development builds.",
-    "No form submission or rights consent performed."
-  ]
+    "No form submission or rights consent performed.",
+    "Images were recaptured from the current working build on 2026-09-28; the two videos still use the existing September 9 footage."
+  ],
+  "image_capture": {
+    "date": "2026-09-28",
+    "origin": "http://127.0.0.1:3338",
+    "game_viewport": [
+      1280,
+      720
+    ],
+    "source_state": "current uncommitted working tree, not a release checkout",
+    "staging": "Disposable origin and discarded game API writes; introductory lessons skipped, invulnerability and player position adjusted only in the capture tab; actual existing CH1 enemies and activateGiantSlam were rendered. No compositing or generated imagery.",
+    "supplementary_lobby": "current-20260928/lobby-current.jpg",
+    "game_source_modified_for_capture": false,
+    "drive_replacement": "Same file IDs; four names, modification times and sizes read back; six files remain in folder"
+  },
+  "source_state_at_packaging": {
+    "game.html": "59063e0ed2fd2f35cd19c106dd6e8ce15c4ae782591aa3bd5e35da7f810a1527",
+    "index.html": "7cfb962ec7e2bcb60be4c30e4d96b4d8e9b7c4485de6dbfbbabcd53a573b0b3d",
+    "ui-refinement.css": "ab57f259512c14edf90c64a1626b55a343191cf5213b1ac27551b07ea6dfd689",
+    "lobby-ancestor-art.css": "2d19cbc0f4b1e15af8927dd43b468398f76f272359ccd09d98fa626316e336dd",
+    "lobby-ancestor-sprite.js": "8584a474a5269185f2e78449ed9ccc1091c269338be90ba035b51c11815f5adb"
+  }
 }

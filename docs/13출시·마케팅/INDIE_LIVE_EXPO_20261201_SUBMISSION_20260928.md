@@ -134,10 +134,10 @@ One practical development challenge was making progress in the playable demo per
 |---|---|---:|---|
 | EXODUSER_HELL_LORD.mp4 | 15.000초, 1920×1080, 60fps, H.264, 영상 23.894Mbps | 45,428,377 | 1aJBiZNR6XjQbP8BXKRo0coZtklpKHWvi |
 | EXODUSER_HELL_LORD_full.mp4 | 58.000초, 1920×1080, 60fps, H.264, 영상 23.938Mbps | 175,905,395 | 146EfGL_xNa4bLvtyk-ylZmoSUREb5X_L |
-| main.jpg | 1983×793, JPG | 253,931 | 1jc1EnL1OutjWLgiOXEeyPc0YngGV3nip |
-| ss1.jpg | 1920×1080, JPG, 화염 전투 | 786,245 | 1jFsvZ0POlpJ39aquMpC5GjvAHUYEJ88K |
-| ss2.jpg | 1920×1080, JPG, 다크 드루이드 보스전 | 817,904 | 1kSYmd634lKbCNEI7XtA6N1sVvfRQsYI3 |
-| ss3.jpg | 1920×1080, JPG, 패시브 각인 빌드 | 331,417 | 1ndgld8WEPbkhN5KEDjR84YTRG6Xq5Pdk |
+| main.jpg | 3086×1262, JPG, 현행 타이틀 실행 화면 | 637,502 | 1jc1EnL1OutjWLgiOXEeyPc0YngGV3nip |
+| ss1.jpg | 1280×720, JPG, 현행 CH1 지옥강타 전투 | 240,465 | 1jFsvZ0POlpJ39aquMpC5GjvAHUYEJ88K |
+| ss2.jpg | 1280×720, JPG, 현행 인벤토리 장비 비교 | 260,988 | 1kSYmd634lKbCNEI7XtA6N1sVvfRQsYI3 |
+| ss3.jpg | 1280×720, JPG, 현행 전투 스킬·합체 설계도 | 249,069 | 1ndgld8WEPbkhN5KEDjR84YTRG6Xq5Pdk |
 
 | 오디오 검사 | 15초 | 58초 |
 |---|---:|---:|
@@ -159,11 +159,11 @@ LUFS/LKFS 수치 호환 측정으로 검사했으며 별도 방송국 인증을 
 | 자막 없는 실제 촬영 편집본 | `tmp/trailer_damage_v25/edit/picture.mp4` |
 | 58초 제작 | 기존 자막 타이밍·스타일·로고 유지, 설명 자막 영문화, V25 오디오 음량 보정, 24Mbps 재출력 |
 | 15초 제작 | 아래 5개 컷 연결, 원본 효과음과 기존 `bgm/1장_썩은숲/Bloodsteel Ascension.mp3` 혼합, 별도 2-pass 음량 보정 |
-| 키아트 | `img/title_art_1.png` → `main.jpg`. 원본 레터박스·구도 유지, 형식만 JPG 변환 |
-| ss1 | `지스타2026_제출사진_10장/06_불꽃칼날_화염스윙.png` |
-| ss2 | `지스타2026_제출사진_10장/08_보스전_다크드루이드.png` |
-| ss3 | `지스타2026_제출사진_10장/09_성장과빌드_패시브각인.png` |
-| 이미지 처리 | 기존 파일 JPG 변환. 내용 생성·변조 없음 |
+| 키아트 | 현행 `index.html` 실행 타이틀 화면 → `current-20260928/main.jpg`. 기존 원화 단독 파일 대신 현재 로고·슬로건·UI 포함 |
+| ss1 | 현행 `game.html` CH1에서 실제 `activateGiantSlam` 전투 프레임 → `current-20260928/ss1.jpg` |
+| ss2 | 현행 인벤토리 장비·가방·비교 UI → `current-20260928/ss2.jpg` |
+| ss3 | 현행 전투 스킬·합체 설계도 UI → `current-20260928/ss3.jpg` |
+| 이미지 처리 | 2026-09-28 브라우저 JPEG 직접 캡처, 원본 바이트 그대로 제출 폴더 복사. 합성·AI 생성 없음 |
 | 제작 스크립트 | `tools/build_indie_live_expo_20261201.py` — Python 표준 라이브러리, FFmpeg/FFprobe 필요. 외부 호출 없이 로컬 제작·검사 |
 | 폰트/오버레이 | `tmp/trailer_damage_v25/fonts/TrailerNotoBlack.ttf`, `tmp/trailer_v2/edit/shade.png` |
 
@@ -175,7 +175,20 @@ LUFS/LKFS 수치 호환 측정으로 검사했으며 별도 방송국 인증을 
 | 9–12초 | 50.85–53.85초 | 탄막 반격 |
 | 12–15초 | 55–58초 | 원본 타이틀 로고 |
 
-기존 실게임 테스트 장면을 촬영한 자료이며 일반 플레이를 새로 녹화했다고 표기하지 않는다. 24Mbps 재인코딩으로 원본에 없는 디테일이 복원되지는 않는다. 스크린샷은 9월 14일 촬영본으로 이후 빌드의 UI와 차이가 있을 수 있다. 포함 음악·폰트·이미지의 상업적/2차 이용 권한은 최종 참가 동의 전에 사용자 확인이 필요하다.
+기존 실게임 테스트 장면을 촬영한 자료이며 일반 플레이를 새로 녹화했다고 표기하지 않는다. 24Mbps 재인코딩으로 원본에 없는 디테일이 복원되지는 않는다. 이미지 4장은 사용자 지시로 9월 28일 현재 코드 실행 화면으로 교체했다. 두 영상은 여전히 9월 9일 기존 촬영본이며 이번 작업에서 영상을 재촬영한 것은 아니다. 포함 음악·폰트·이미지의 상업적/2차 이용 권한은 최종 참가 동의 전에 사용자 확인이 필요하다.
+
+### 2026-09-28 현재 코드 이미지 재촬영
+
+- 사용자 지시: 코드에서 실제 사용하는 현재 인게임 이미지로 교체. 9월 14일 지스타 캡처 재사용 금지.
+- `tools/expo_current_capture_server.cjs`: 현재 작업 트리 파일을 `127.0.0.1:3338`에서 제공하고 게임 `/api/` 쓰기는 저장하지 않는 로컬 촬영용 서버. 기존 `localhost:3333` 세이브와 별도 출처다.
+- 테스트 세션에서 인트로·연습을 건너뛰고 일시적으로 무적/플레이어 위치를 조정했다. 현재 맵에 존재하는 적과 실제 지옥강타 함수로 촬영했으며 게임 소스는 촬영을 위해 수정하지 않았다.
+- 스크린샷 3장은 1280×720. 제목 화면은 당시 브라우저의 3086×1262 전체 화면이다. 캡처마다 전체 구도·누락·검은 화면을 로컬 이미지로 확인했고 실패한 캡처는 제출하지 않았다.
+- `Page.captureScreenshot`의 `captureBeyondViewport:true`가 게임 캔버스 리사이즈를 유발해 검은 화면을 만든 경우가 있어 전투 최종본은 `captureBeyondViewport:false`로 정상 렌더링된 프레임을 캡처했다.
+- 현재 로비도 `current-20260928/lobby-current.jpg`로 추가 검수했다. 바르칸과 납골당 영상은 실제 코드 연결이며 이 참고 이미지는 필수 제출 6개에 추가하지 않았다.
+- `build_indie_live_expo_20261201.py --images-only`는 현재 캡처 4장의 JPEG/최소 크기를 확인하고 복사한다. 누락 시 실패하며 과거 스크린샷으로 폴백하지 않는다. 기존 로컬 이미지는 `before/images-before-current-20260928/`에 보존한다.
+- Drive의 기존 이미지 ID를 유지한 채 콘텐츠를 교체했다. 수정 시간·파일명·바이트 수를 다시 읽어 일치 확인했으며 폴더에는 영상 2개+이미지 4개만 있다. 최종 신청서는 제출하지 않았다.
+- 검수 페이지를 새로고침해 이미지 5개(제출 4장+로비 참고)의 `complete=true`와 실제 크기를 확인했다. 비로그인 Drive에서도 수정된 오후 7:07 이미지 4개와 영상 2개 목록을 확인했다. 촬영 탭·임시 뷰포트 설정을 정리하고 이번 작업의 캡처 서버 프로세스만 종료했다.
+- `manifest.json`에 이미지 원본/결과 해시, 촬영 조건, 패키징 시점 코드 해시를 남겼다. 코드 해시는 패키징 시점 스냅샷이며 커밋된 릴리스 빌드 해시로 표기하지 않는다.
 
 ### 검수·Drive·신청 상태
 
