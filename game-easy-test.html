@@ -43143,13 +43143,67 @@ function _updateChainSlamCleave(w,sp){
   }
 }
 const _chainCleaveImg=new Image();_chainCleaveImg.src='img/vfx/chain_earth_cleave.png';
+const _chainCleaveRubbleImg=new Image();_chainCleaveRubbleImg.src='img/vfx/chain_earth_rubble.png';
+function _chainSlamCleaveLift(t,at){
+  const age=t-at;
+  return age<=0||age>=18?0:Math.sin(age/18*Math.PI);
+}
+function _drawChainSlamCleaveRubble(w,fade){
+  if(!w._cleaveRubble){
+    const pieces=[];
+    for(let arm=-1;arm<=1;arm++){
+      const a=w.ang+arm*Math.PI/7,c=Math.cos(a),s=Math.sin(a);
+      for(let j=1;j<=7;j++)for(let side=-1;side<=1;side+=2){
+        const seed=(j*13+(arm+1)*7+(side+1)*3)%19;
+        const f=j/8+(seed%3-1)*.014,d=w.maxR*f;
+        const bank=w.halfW*(.62+(seed%5)*.09)*side;
+        pieces.push({x:w.x+c*d-s*bank,y:w.y+s*d+c*bank,
+          nx:-s*side,ny:c*side,at:f*10,seed,
+          size:w.halfW*.20+5+(seed%3)*2,hop:w.halfW*.60+8+seed%7});
+      }
+    }
+    w._cleaveRubble=pieces;
+  }
+  if(fade<=0)return;
+  X.save();X.globalCompositeOperation='source-over';
+  for(const r of w._cleaveRubble){
+    const lift=_chainSlamCleaveLift(w.t,r.at);
+    if(lift<=0)continue;
+    const age=w.t-r.at,settle=Math.min(1,(18-age)/5);
+    const x=r.x+r.nx*lift*w.halfW*.34,groundY=r.y+r.ny*lift*w.halfW*.34;
+    const y=groundY-lift*r.hop,z=r.size*(.70+.30*lift),skew=(r.seed%5-2)*.18*z;
+    // 지면 그림자와 솟는 암석을 분리한다. 절차적 폴백은 GL의 4꼭짓점 제한을 지킨다.
+    X.globalAlpha=fade*settle*.28;X.fillStyle='#100c09';
+    X.beginPath();X.moveTo(x-z*1.25,groundY);X.lineTo(x+skew,groundY-z*.28);
+    X.lineTo(x+z*1.25,groundY+z*.08);X.lineTo(x-skew,groundY+z*.36);X.closePath();X.fill();
+    if(_chainCleaveRubbleImg.complete&&_chainCleaveRubbleImg.naturalWidth>0){
+      const cw=_chainCleaveRubbleImg.naturalWidth/4,ch=_chainCleaveRubbleImg.naturalHeight/2;
+      const cell=r.seed%8,rw=z*2.7,rh=rw*ch/cw;
+      X.globalAlpha=fade*settle*.94;
+      X.drawImage(_chainCleaveRubbleImg,(cell%4)*cw,Math.floor(cell/4)*ch,cw,ch,x-rw/2,y-rh/2,rw,rh);
+      continue;
+    }
+    X.globalAlpha=fade*settle*.94;X.fillStyle=r.seed%2?'#776553':'#91806a';
+    X.beginPath();X.moveTo(x-z,y-z*.10);X.lineTo(x+skew,y-z*.55);
+    X.lineTo(x+z,y-z*.06);X.lineTo(x-skew,y+z*.37);X.closePath();X.fill();
+    X.fillStyle=r.seed%2?'#382b21':'#49382a';
+    X.beginPath();X.moveTo(x-z,y-z*.10);X.lineTo(x-skew,y+z*.37);
+    X.lineTo(x-skew,y+z*.76);X.lineTo(x-z,y+z*.22);X.closePath();X.fill();
+    X.fillStyle=r.seed%2?'#574433':'#63523f';
+    X.beginPath();X.moveTo(x-skew,y+z*.37);X.lineTo(x+z,y-z*.06);
+    X.lineTo(x+z,y+z*.24);X.lineTo(x-skew,y+z*.76);X.closePath();X.fill();
+  }
+  X.restore();
+}
+
 function _drawChainSlamCleave(w){
   const travel=Math.min(1,w.t/10),p=w.t/w.maxT;
   const fade=p<.55?1:Math.max(0,(1-p)/.45);
   if(_chainCleaveImg.complete&&_chainCleaveImg.naturalWidth>0){
-    const sw=_chainCleaveImg.naturalWidth,sh=_chainCleaveImg.naturalHeight,h=w.maxR*sh/sw;
+    const sw=_chainCleaveImg.naturalWidth,sh=_chainCleaveImg.naturalHeight;
     X.save();X.globalCompositeOperation='source-over';X.globalAlpha=fade*.92;
     for(let arm=-1;arm<=1;arm++){
+      const lift=_chainSlamCleaveLift(w.t,3),h=w.halfW*(arm===0?10.2:8.8)*(1+.08*lift);
       X.save();X.translate(w.x,w.y);X.rotate(w.ang+arm*Math.PI/7);
       const end=sw*travel,tip=Math.min(end,sw*.06),body=end-tip,scale=w.maxR/sw;
       X.globalAlpha=fade*.92;
@@ -43160,7 +43214,7 @@ function _drawChainSlamCleave(w){
       }
       X.restore();
     }
-    X.restore();return;
+    X.restore();_drawChainSlamCleaveRubble(w,fade);return;
   }
   if(!w.paths){
     w.paths=[];
@@ -43198,6 +43252,7 @@ function _drawChainSlamCleave(w){
     }
   }
   X.restore();
+  _drawChainSlamCleaveRubble(w,fade);
 }
 
 function activateGiantSlam(srcId){

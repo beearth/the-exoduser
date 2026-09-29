@@ -12,6 +12,7 @@ function source(name){
 }
 function wave(ang=0){return {x:0,y:0,ang,maxR:450,halfW:36,dmg:100,el:0,t:0,maxT:32,hits:[]};}
 function geometry(){const s={Math};vm.runInNewContext(source('_chainSlamRayHit'),s);return s._chainSlamRayHit;}
+function renderer(){return ['_chainSlamCleaveLift','_drawChainSlamCleaveRubble','_drawChainSlamCleave'].map(source).join('\n');}
 
 test('earth cleave reaches three forward branches, excluding gaps and rear targets',()=>{
   const hit=geometry(),w=wave();
@@ -44,19 +45,19 @@ test('advancing fissures strike each enemy once even where branches overlap',()=
   assert.equal(near.stunned,300);
 });
 test('chain cleave renderer leaves pillar and radial slam artwork out of its branch',()=>{
-  const s={Math,paths:0,_chainCleaveImg:{complete:false}};
+  const s={Math,paths:0,_chainCleaveImg:{complete:false},_chainCleaveRubbleImg:{complete:false}};
   const ctx={save(){},restore(){},beginPath(){s.paths++;s.points=0;},moveTo(){s.points++;},lineTo(){s.points++;},closePath(){},fill(){assert.ok(s.points<=4,'the live WebGL wrapper fills at most four polygon vertices');},stroke(){},
     drawImage(){assert.fail('cleave must not draw the shared pillar/hero sheet');},arc(){assert.fail('cleave must not draw a radial slam ring');}};
   s.X=ctx;
-  vm.runInNewContext(source('_drawChainSlamCleave'),s);
+  vm.runInNewContext(renderer(),s);
   const w=wave();w.t=8;s._drawChainSlamCleave(w);
   assert.ok(s.paths>=3,'all three fissures must be drawn');
 });
 
 test('API fissure art reveals along each of the three captured directions',()=>{
   const draws=[],angles=[],image={complete:true,naturalWidth:2688,naturalHeight:1152};
-  const s={Math,_chainCleaveImg:image,X:{save(){},restore(){},translate(){},rotate:a=>angles.push(a),drawImage:(...a)=>draws.push(a)}};
-  vm.runInNewContext(source('_drawChainSlamCleave'),s);
+  const s={Math,_chainCleaveImg:image,_chainCleaveRubbleImg:{complete:false},X:{save(){},restore(){},translate(){},rotate:a=>angles.push(a),drawImage:(...a)=>draws.push(a),beginPath(){},moveTo(){},lineTo(){},closePath(){},fill(){}}};
+  vm.runInNewContext(renderer(),s);
   const w=wave(Math.PI/2);w.t=5;s._drawChainSlamCleave(w);
   assert.deepEqual(angles,[Math.PI/2-Math.PI/7,Math.PI/2,Math.PI/2+Math.PI/7]);
   assert.equal(draws.length,21,'each branch has a solid body and six softened leading strips');

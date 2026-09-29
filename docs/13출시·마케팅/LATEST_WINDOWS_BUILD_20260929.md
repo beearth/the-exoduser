@@ -1,5 +1,18 @@
 # 최신 Windows 실행 빌드 — 2026-09-29
 
+## 대지가르기 시각 재검수 패치
+
+| 항목 | 결과 |
+|---|---|
+| 수정 파일 | package.nw/game.html, package.nw/game-easy-test.html, package.nw/img/vfx/chain_earth_rubble.png |
+| 효과 | 균열 폭 halfW*(중앙10.2/좌우8.8), 42개 불규칙 암석 파편의 상승·착지. 상세 수식은 [대지가르기 SSOT](../5.1임펙트디자인/CHAIN_SLAM_FORWARD_CLEAVE_20260929.md) |
+| 반영 방식 | 기존 실행본에 해당 렌더러·로더·신규 PNG만 반영. build-manifest.json의 해당 파일 SHA256 갱신 및 재검증 |
+| 검증 | 개발 서버 WebGL 실제 Shift→좌클릭: 675px/t10/42개 파편, 웨이브 정리0개, 페이지 오류0개. 관련 Node 테스트17 PASS |
+| 실행본 한계 | 이 패치 후 NW 네이티브 플레이 검수는 미실시. 이미 열린 게임은 HTML 재로드 또는 다시 실행해야 새 효과 적용 |
+| 시각 판정 | RETOUCH: 사용자 확인 대기 |
+| 배포 범위 | 위 로컬 실행 폴더 반영. Steam 업로드와 별개 |
+
+
 | 항목 | 결과 |
 |---|---|
 | 출력 | `G:/exoduser/out/EXODUSER-latest-20260929-215218` |
@@ -10,7 +23,7 @@
 | 범위 | 공개 데모: Lv100 상한, CH1-1 종료 |
 | 진입점 | `http://localhost:3338/index.html?demo=1`; 사본의 node-main 서버와 node-remote도3338 |
 | 창/저장 | 원본 전체화면 설정 유지, 프로필 `./userdata`; 서버 슬롯 `%APPDATA%/EXODUSER-HELL/saves` 기존 계약 유지. 기존 사용자 데이터 복사 없음 |
-| 크기 | 6595개 파일, 7235094274bytes (manifest 제외) |
+| 크기 | 6596개 파일, 7240389921bytes (manifest 제외); 대지가르기 재검수 패치 반영 |
 | 복사 검증 | 각 파일 복사 전후 원본 해시 및 출력 SHA256 일치. game/index/easy-test/균열 PNG 원본 최신 해시 대조 통과 |
 | 구문 | 출력 game/index 실행 inline script10개 Acorn 통과 |
 | 실제 실행 | 출력 EXODUSER.exe 시작 및 해당 엔진이 제공하는 game.html 해시 일치 확인 |
