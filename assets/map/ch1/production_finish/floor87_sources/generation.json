@@ -1,0 +1,23 @@
+{
+  "provider": "Higgsfield",
+  "model": "gpt_image_2_5",
+  "job_id": "9d977521-2f4a-419b-aef8-d1f91c1b19e9",
+  "reference_job_id": "8297189f-c4f9-4719-91f1-7cb5df20c1a6",
+  "params": {
+    "model": "gpt_image_2_5",
+    "count": 1,
+    "aspect_ratio": "1:1",
+    "resolution": "2k",
+    "quality": "high",
+    "medias": [
+      {
+        "role": "image",
+        "value": "8297189f-c4f9-4719-91f1-7cb5df20c1a6"
+      }
+    ],
+    "prompt": "Edit this existing game ground material, keeping its dead skin and dark-fantasy identity. Produce one seamless tileable top-down floor material for every CH1-1 combat clearing, a continuous broad corpse-grey brown skin membrane with very restrained warm grey-mauve hue. Make the floor much more even and coherent than the reference: reduce large dark necrotic blotches and the bright patches between them by about 70 percent; close most black torn holes; broad stretched tissue is nearly continuous with sparse shallow folds and tiny diffuse pores. Retain crisp fine painted skin microtexture and occasional very faint short dark-red capillaries, but sparse details and a narrow value range allow tiny moving enemies/projectiles to read. Consistent diffuse ambient illumination across the entire image, no vignetting, no central spotlight. Do not create moss, leaves, green turf, different biomes, roots, trees, props, bone, rocks, organs, intestine tubes, glowing veins, lava, borders, text, hard cracks, obvious repeating motifs or large stains. All four edges must continue the exact same skin material. The reference is a flat texture, not scenery; preserve the art language while rebuilding the skin as a quieter continuous surface."
+  },
+  "estimatedCredits": 2.75,
+  "status": "completed",
+  "result_url": "https://d8j0ntlcm91z4.cloudfront.net/user_3G1zto9sz11Uf3iEOhJefE9HdGG/hf_20260929_002502_9d977521-2f4a-419b-aef8-d1f91c1b19e9.png"
+}

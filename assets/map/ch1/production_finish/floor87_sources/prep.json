@@ -1,0 +1,280 @@
+{
+  "bakeVersion": "20260929-floor-87",
+  "sourceSha256": "0e974eedc1f847aea262767831c36ea9896a6f10180df0479c30c4955483a187",
+  "beforeSha256": "19e4719dc855da64d0fece88c7ad2a9977ea81759fa1d7e3b1071252330d3433",
+  "rawSha256": "a4987da3d5390e93581eed938e24fa49eabcbd0a0717ce63562612988bf13807",
+  "geometryHash": "719b681344bf0ab5dc07ae58cb4c01342ca85fde6386a01753d147a66e6ee78c",
+  "masterSize": [
+    8192,
+    8192
+  ],
+  "opacity": 0.94,
+  "rgbScale": [
+    0.58,
+    0.62,
+    0.67
+  ],
+  "navFeatherPixels": 34,
+  "overlapPixels": 256,
+  "periodPixels": 1792,
+  "rootProtection": [
+    [
+      103,
+      96,
+      11.79375,
+      7.8625
+    ],
+    [
+      78,
+      177,
+      7.215000000000001,
+      4.8100000000000005
+    ],
+    [
+      59,
+      128,
+      6.937499999999999,
+      4.625
+    ],
+    [
+      129,
+      121,
+      6.521249999999999,
+      4.3475
+    ],
+    [
+      75,
+      29,
+      5.8275,
+      3.8849999999999993
+    ],
+    [
+      81,
+      154,
+      5.550000000000001,
+      3.6999999999999997
+    ],
+    [
+      124,
+      153,
+      4.995,
+      3.3299999999999996
+    ],
+    [
+      80,
+      40,
+      5.550000000000001,
+      3.6999999999999997
+    ],
+    [
+      127,
+      45,
+      5.272500000000001,
+      3.515
+    ]
+  ],
+  "rootCoreRadius": 0.72,
+  "rootFeatherRadius": 0.4,
+  "barkHighlightProtection": [
+    72,
+    110
+  ],
+  "changedPixels": 31826023,
+  "nonWalkableChanged": 0,
+  "protectedRootCorePixels": 681744,
+  "protectedRootCoreChanged": 0,
+  "chunks": [
+    "chunk_3_0.png",
+    "chunk_4_0.png",
+    "chunk_1_1.png",
+    "chunk_2_1.png",
+    "chunk_3_1.png",
+    "chunk_4_1.png",
+    "chunk_5_1.png",
+    "chunk_6_1.png",
+    "chunk_7_1.png",
+    "chunk_1_2.png",
+    "chunk_2_2.png",
+    "chunk_3_2.png",
+    "chunk_4_2.png",
+    "chunk_5_2.png",
+    "chunk_6_2.png",
+    "chunk_7_2.png",
+    "chunk_1_3.png",
+    "chunk_2_3.png",
+    "chunk_3_3.png",
+    "chunk_4_3.png",
+    "chunk_5_3.png",
+    "chunk_6_3.png",
+    "chunk_7_3.png",
+    "chunk_1_4.png",
+    "chunk_2_4.png",
+    "chunk_3_4.png",
+    "chunk_4_4.png",
+    "chunk_5_4.png",
+    "chunk_6_4.png",
+    "chunk_7_4.png",
+    "chunk_1_5.png",
+    "chunk_2_5.png",
+    "chunk_3_5.png",
+    "chunk_4_5.png",
+    "chunk_5_5.png",
+    "chunk_6_5.png",
+    "chunk_7_5.png",
+    "chunk_1_6.png",
+    "chunk_2_6.png",
+    "chunk_3_6.png",
+    "chunk_4_6.png",
+    "chunk_5_6.png",
+    "chunk_6_6.png",
+    "chunk_2_7.png",
+    "chunk_3_7.png",
+    "chunk_4_7.png",
+    "chunk_5_7.png"
+  ],
+  "identicalChunks": 17,
+  "chunkBytes": {
+    "before": 130803041,
+    "after": 131728578
+  },
+  "regionProbes": [
+    {
+      "tile": [
+        100,
+        185
+      ],
+      "before": [
+        46.217,
+        37.887,
+        31.804
+      ],
+      "after": [
+        47.694,
+        41.631,
+        41.992
+      ],
+      "n": 60160
+    },
+    {
+      "tile": [
+        100,
+        151
+      ],
+      "before": [
+        46.243,
+        39.11,
+        35.776
+      ],
+      "after": [
+        48.086,
+        42.127,
+        42.837
+      ],
+      "n": 60516
+    },
+    {
+      "tile": [
+        83,
+        125
+      ],
+      "before": [
+        39.71,
+        33.414,
+        31.197
+      ],
+      "after": [
+        45.427,
+        39.527,
+        40.037
+      ],
+      "n": 60513
+    },
+    {
+      "tile": [
+        45,
+        100
+      ],
+      "before": [
+        44.403,
+        37.179,
+        29.773
+      ],
+      "after": [
+        48.163,
+        42.182,
+        42.424
+      ],
+      "n": 60136
+    },
+    {
+      "tile": [
+        84,
+        90
+      ],
+      "before": [
+        43.908,
+        38.834,
+        33.662
+      ],
+      "after": [
+        47.769,
+        42.418,
+        42.859
+      ],
+      "n": 60265
+    },
+    {
+      "tile": [
+        147,
+        97
+      ],
+      "before": [
+        27.87,
+        20,
+        17.212
+      ],
+      "after": [
+        45.506,
+        39.703,
+        40.089
+      ],
+      "n": 60059
+    },
+    {
+      "tile": [
+        100,
+        52
+      ],
+      "before": [
+        45.117,
+        36.703,
+        30.883
+      ],
+      "after": [
+        47.344,
+        41.282,
+        41.781
+      ],
+      "n": 60354
+    },
+    {
+      "tile": [
+        100,
+        22
+      ],
+      "before": [
+        59.682,
+        49.35,
+        40.679
+      ],
+      "after": [
+        50.343,
+        44.138,
+        44.59
+      ],
+      "n": 60203
+    }
+  ],
+  "runtimeDrawsAdded": 0,
+  "collisionChanges": false
+}

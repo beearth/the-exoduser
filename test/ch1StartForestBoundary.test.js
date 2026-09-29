@@ -114,6 +114,13 @@ test('CH1-1 keeps the established north gate and exit after applying forest geom
   assert.deepEqual(result.gateTiles, [{ x: 99, y: 5 }, { x: 100, y: 5 }, { x: 101, y: 5 }]);
   assert.deepEqual(result.exits, [{ x: 99, y: 7 }, { x: 100, y: 7 }, { x: 101, y: 7 }]);
   assert.equal(map[20][100], 0, 'boss approach must remain open up to the fixed north gate');
-  assert.match(GAME, /if\(si===0&&_MAP_COMPOSE\[0\]\.forestBoundary\)\{const _ch1Gate=_applyCh1StartNorthGate/,
-    'generation must apply the CH1-1 gate override after generic boss-room carving');
+  const gateCall=GAME.split('\n').find(line=>line.includes('const _ch1Gate=_applyCh1StartNorthGate(map,mw,mh)'));
+  assert.ok(gateCall,'generation must apply the CH1-1 gate override after generic boss-room carving');
+  const runGate=new Function('si','_MAP_COMPOSE','_DIABLO_FIELD_QA','_applyCh1StartNorthGate',
+    `const map=[],mw=200,mh=200,exits=[];let bossCx=-1,_gateY=-1,_gateTiles=[];${gateCall}\nreturn {bossCx,gateY:_gateY,exits};`);
+  for(const [stage,forest,qa,expected] of [[0,true,false,true],[0,false,true,true],[1,true,true,false],[0,false,false,false]]){
+    const actual=runGate(stage,{0:{forestBoundary:forest}},qa,()=>result);
+    assert.equal(actual.gateY,expected?5:-1,`stage ${stage}, forest ${forest}, QA ${qa}`);
+    assert.equal(actual.exits.length,expected?3:0);
+  }
 });

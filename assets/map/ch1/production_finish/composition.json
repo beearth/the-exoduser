@@ -1,6 +1,6 @@
 {
   "version": "20260916-finish-1",
-  "bakeVersion": "20260929-outer-85",
+  "bakeVersion": "20260929-floor-87",
   "groundMaterials": {
     "mask": "ground-zones.svg",
     "soil": {
@@ -14,7 +14,21 @@
       "brightness": 0.76,
       "saturation": 0.55
     },
-    "collisionChanges": false
+    "collisionChanges": false,
+    "commonSkin": {
+      "file": "floor87_sources/skin_material_generated.png",
+      "mask": "floor87_sources/floor87_mask.png",
+      "retouch": "floor87",
+      "rgbScale": [
+        0.58,
+        0.62,
+        0.67
+      ],
+      "opacity": 0.94,
+      "periodPixels": 1792,
+      "overlapPixels": 256,
+      "navFeatherPixels": 34
+    }
   },
   "alphaFeather": {
     "groundEdge": 0.24,
@@ -45,7 +59,7 @@
         185
       ],
       "role": "arrival",
-      "ground": "worn-earth",
+      "ground": "corpse-skin",
       "transition": "좁은 남측 문턱에서 첫 공터로 벌어짐"
     },
     {
@@ -56,7 +70,7 @@
         151
       ],
       "role": "combat",
-      "ground": "dry-soil",
+      "ground": "corpse-skin",
       "transition": "서쪽 뿌리 통로와 동쪽 웅덩이가 비대칭으로 열림"
     },
     {
@@ -67,7 +81,7 @@
         125
       ],
       "role": "travel",
-      "ground": "leaves-earth",
+      "ground": "corpse-skin",
       "transition": "서쪽 숲이 안으로 돌출되고 야영지로 길이 갈라짐"
     },
     {
@@ -78,7 +92,7 @@
         100
       ],
       "role": "side-combat",
-      "ground": "trampled-earth",
+      "ground": "corpse-skin",
       "transition": "낮고 긴 뿌리 경계와 중앙 공터 연결"
     },
     {
@@ -89,7 +103,7 @@
         90
       ],
       "role": "primary-landmark",
-      "ground": "root-humus",
+      "ground": "corpse-skin",
       "transition": "줄기 양쪽 우회와 넓은 전투 여백"
     },
     {
@@ -100,7 +114,7 @@
         97
       ],
       "role": "optional-high-ground",
-      "ground": "wet-earth",
+      "ground": "corpse-skin",
       "transition": "기존 서측 경사로 유지"
     },
     {
@@ -111,7 +125,7 @@
         52
       ],
       "role": "late-combat",
-      "ground": "damp-leaf",
+      "ground": "corpse-skin",
       "transition": "서쪽 고치와 동쪽 습지 사이에서 북쪽 통로로 수렴"
     },
     {
@@ -122,7 +136,7 @@
         22
       ],
       "role": "exit-approach",
-      "ground": "exposed-soil",
+      "ground": "corpse-skin",
       "transition": "기존 gate y5 / exit y7 접근"
     }
   ],
@@ -1558,6 +1572,14 @@
       "y": 5120,
       "width": 2048,
       "height": 2048
+    },
+    {
+      "id": "floor87",
+      "file": "floor87_sources/floor87_patch.png",
+      "x": 0,
+      "y": 0,
+      "width": 8192,
+      "height": 8192
     }
   ]
 }

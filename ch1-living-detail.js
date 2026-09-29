@@ -19,17 +19,18 @@
     if(regionSkins[variant])return regionSkins[variant];
     const a=root.document.createElement('canvas');a.width=768;a.height=512;
     const c=a.getContext('2d');
-    const palette=variant===4?['#353c2a','#413c36','#342e31']:variant===3?['#302d2c','#47403c','#3a3035']:variant===1?['#343034','#49443c','#303829']:variant===2?['#343034','#494042','#343034']:['#342e31','#4c403e','#342e2f'];
+    // One corpse-grey brown material across the field; folds carry local variation.
+    const palette=['#353032','#3d3535','#353032'];
     const base=variant>=3?c.createLinearGradient(384,0,384,512):variant===1?c.createLinearGradient(0,256,768,256):c.createLinearGradient(0,0,180,512);
     base.addColorStop(0,palette[0]);base.addColorStop(.45,palette[1]);base.addColorStop(1,palette[2]);
     c.fillStyle=base;c.fillRect(0,0,768,512);
     let seed=1397+variant*971;
     function rand(){seed=(Math.imul(seed,1664525)+1013904223)>>>0;return seed/4294967296;}
-    // Broad bruising joins dead wood, skin and damp soil before the fine wrinkles.
-    for(let j=0;j<28;j++){
+    // Restrained bruising supports the shared baked floor without large stain islands.
+    for(let j=0;j<12;j++){
       const x=rand()*768,y=rand()*512,r=35+rand()*100;
       const stain=c.createRadialGradient(x,y,0,x,y,r);
-      stain.addColorStop(0,j%3?'rgba(27,22,26,.23)':'rgba(118,101,84,.14)');
+      stain.addColorStop(0,j%3?'rgba(27,22,26,.06)':'rgba(118,101,84,.04)');
       stain.addColorStop(1,'rgba(40,29,34,0)');c.fillStyle=stain;c.fillRect(x-r,y-r,r*2,r*2);
     }
     for(let j=0;j<9500;j++){
@@ -334,7 +335,7 @@
     if(!surfaceOnly)for(const region of skinRegions){
       const x=(region.tx+.5)*40,y=(region.ty+.5)*40;
       if(Math.abs(x-g.cam.x)>hw+region.w/2||Math.abs(y-g.cam.y)>hh+region.h/2)continue;
-      c.globalAlpha=alpha*(region.variant===0?.82:region.variant===1||region.variant===2?.76:.6);c.drawImage(regionalSkin(region.variant),x-region.w/2,y-region.h/2,region.w,region.h);c.globalAlpha=alpha;
+      c.globalAlpha=alpha*.3;c.drawImage(regionalSkin(region.variant),x-region.w/2,y-region.h/2,region.w,region.h);c.globalAlpha=alpha;
     }
     for(let i=0;i<objects.length+(surfaceOnly?0:ground.length);i++){
       const o=i<objects.length?objects[i]:ground[i-objects.length];

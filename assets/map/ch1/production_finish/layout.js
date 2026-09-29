@@ -27,14 +27,14 @@
     out.push(value,count);return out;
   }
   const regions=[
-    {id:'south_entry',name:'잠식된 진입로',anchor:[100,185],role:'arrival',ground:'worn-earth',transition:'좁은 남측 문턱에서 첫 공터로 벌어짐'},
-    {id:'first_clearing',name:'쓰러진 숲의 공터',anchor:[100,151],role:'combat',ground:'dry-soil',transition:'서쪽 뿌리 통로와 동쪽 웅덩이가 비대칭으로 열림'},
-    {id:'root_bend',name:'뿌리 어깨 숲길',anchor:[83,125],role:'travel',ground:'leaves-earth',transition:'서쪽 숲이 안으로 돌출되고 야영지로 길이 갈라짐'},
-    {id:'west_camp',name:'버려진 야영지',anchor:[45,100],role:'side-combat',ground:'trampled-earth',transition:'낮고 긴 뿌리 경계와 중앙 공터 연결'},
-    {id:'corpse_basin',name:'시체나무 분지',anchor:[102,90],role:'primary-landmark',ground:'root-humus',transition:'줄기 양쪽 우회와 넓은 전투 여백'},
-    {id:'east_terrace',name:'부패한 제단 단구',anchor:[147,97],role:'optional-high-ground',ground:'wet-earth',transition:'기존 서측 경사로 유지'},
-    {id:'north_fork',name:'고치 숲과 썩은 물가',anchor:[100,52],role:'late-combat',ground:'damp-leaf',transition:'서쪽 고치와 동쪽 습지 사이에서 북쪽 통로로 수렴'},
-    {id:'north_exit',name:'숲의 마지막 문턱',anchor:[100,22],role:'exit-approach',ground:'exposed-soil',transition:'기존 gate y5 / exit y7 접근'}
+    {id:'south_entry',name:'잠식된 진입로',anchor:[100,185],role:'arrival',ground:'corpse-skin',transition:'좁은 남측 문턱에서 첫 공터로 벌어짐'},
+    {id:'first_clearing',name:'쓰러진 숲의 공터',anchor:[100,151],role:'combat',ground:'corpse-skin',transition:'서쪽 뿌리 통로와 동쪽 웅덩이가 비대칭으로 열림'},
+    {id:'root_bend',name:'뿌리 어깨 숲길',anchor:[83,125],role:'travel',ground:'corpse-skin',transition:'서쪽 숲이 안으로 돌출되고 야영지로 길이 갈라짐'},
+    {id:'west_camp',name:'버려진 야영지',anchor:[45,100],role:'side-combat',ground:'corpse-skin',transition:'낮고 긴 뿌리 경계와 중앙 공터 연결'},
+    {id:'corpse_basin',name:'시체나무 분지',anchor:[102,90],role:'primary-landmark',ground:'corpse-skin',transition:'줄기 양쪽 우회와 넓은 전투 여백'},
+    {id:'east_terrace',name:'부패한 제단 단구',anchor:[147,97],role:'optional-high-ground',ground:'corpse-skin',transition:'기존 서측 경사로 유지'},
+    {id:'north_fork',name:'고치 숲과 썩은 물가',anchor:[100,52],role:'late-combat',ground:'corpse-skin',transition:'서쪽 고치와 동쪽 습지 사이에서 북쪽 통로로 수렴'},
+    {id:'north_exit',name:'숲의 마지막 문턱',anchor:[100,22],role:'exit-approach',ground:'corpse-skin',transition:'기존 gate y5 / exit y7 접근'}
   ];
   root.CH1_1_PRODUCTION=Object.freeze({version:'20260916-finish-1',stage:0,size:[200,200],tileSize:40,boundary,regions,contains,buildRLE});
 })(globalThis);

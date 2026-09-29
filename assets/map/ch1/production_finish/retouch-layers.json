@@ -1,5 +1,5 @@
 {
-  "bakeVersion": "20260929-outer-85",
+  "bakeVersion": "20260929-floor-87",
   "layers": [
     {
       "id": "skin65",
@@ -168,6 +168,14 @@
       "y": 5120,
       "width": 2048,
       "height": 2048
+    },
+    {
+      "id": "floor87",
+      "file": "floor87_sources/floor87_patch.png",
+      "x": 0,
+      "y": 0,
+      "width": 8192,
+      "height": 8192
     }
   ]
 }
