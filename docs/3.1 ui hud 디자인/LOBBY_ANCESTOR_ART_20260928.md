@@ -14,15 +14,24 @@
 | MEDIA_LIFECYCLE | 다른 외형/해제 시 이전 콜백·src/poster 제거 및 pause/load. 이전 실패 콜백은 현재 onerror 함수와 같을 때만 동작. 같은 외형의 이름/언어 갱신은 재로드/재생 시간 초기화 없음 |
 | ANCESTOR_LIFECYCLE / lobby-ancestor-sprite.js | visible = !document.hidden && lobby display≠none && getClientRects.length>0; active=visible && !has-selected-character. 선택 중 전대 rAF 취소 및 ambient video.pause. 선택 영상도 숨김/모션 감소 시 pause; 모션 감소는 정적 이미지, 해제 시 영상 재개 |
 | BACKGROUND | 기본 v2 crypt 포스터/독립 영상 유지. 선택 외형에 scene이 있으면 같은 캐릭터 배경 원화로 교체; 해제 시 _swapLobbyBg(0)로 crypt 복원. 새 이미지 생성/게임 전대 에셋 변경 없음 |
-| SELECTED_LAYOUT / lobby-ancestor-art.css | 선택 영상/정적 원화 폭65%, 화면폭≤1100px는55%; left0/top50%, height:auto/max-height100%, aspect-ratio16/9, object-fit:contain, translateY(-50%). mask-image linear-gradient: 0% transparent / 5% black / 96% black / 100% transparent. 캐릭터 z-index1, 영상2; 바탕 background-position:center |
+| SELECTED_LAYOUT / lobby-ancestor-art.css | 원래 전체 화면 구도 복원: inset0, width100%, height100%, object-fit:cover, object-position:center center, transform:none, mask-image:none. 원본 종횡비 유지, 창 비율이 다르면 cover의 가장자리 크롭만 적용. 65%/55% 패널 축소·강제 aspect-ratio·마스크 제거. 정적 이미지 z-index1, 영상2; 선택 상태의 좌·우 UI3으로 이름/카드/입장 버튼을 원화 위에 표시 |
 | SELECTED_CAPTION | .lobby-left 내부 중앙 left50%(뷰포트 기준32.5%, 화면폭≤1100px는27.5%); bottom3% 기존 유지. 전대 배치 함수는 선택 중 이름 좌표를 덮어쓰지 않음. charDispDetail:empty 숨김 |
-| CACHE | lobby-ancestor-art.css / lobby-ancestor-sprite.js query20260929-slotart1. 기존 미디어 버전/스프라이트96셀·24fps·셀384×624 변경 없음 |
+| CACHE | lobby-ancestor-art.css / lobby-ancestor-sprite.js query20260929-slotart2. 기존 미디어 버전/스프라이트96셀·24fps·셀384×624 변경 없음 |
 | SAVE / INPUT | hellsave_demo 등 저장 형식/진행/사용자 원문 보존. 기존 버튼·키보드·패드 선택 경로 유지. 기본 상태에서 입장 전에 카드를 선택 |
 | VALIDATION | 관련 회귀306 PASS, inline script4개 구문 통과. 실제 브라우저의 최종 화면 크기/모션 감소/폴백 검수는 아래 완료 기록 참조 |
 
 
 
-## 2026-09-29 검수 완료
+## 2026-09-29 사용자 정정 — 선택 원화 전체 화면 비율 복원
+
+| 항목 | 현행 값 / 검수 |
+|---|---|
+| 원인·수정 | 선택 원화를65%/작은 창55% 왼쪽 패널 안에 contain으로 축소하여 종전 전체 화면 구도를 바꿈. 전체 viewport100%×100%/cover/중앙 배치로 복원, 원본 비율 보존 |
+| 실제 화면 | 1920×1080 / 1280×720 / 960×540 / 2160×720에서 선택 영상 DOM rect x0/y0/width=innerWidth/height=innerHeight 및 objectFit=cover 확인. 기본 전대→카드 선택→대검전사 전환 및 입장 활성 유지. 좌·우 UI가 영상보다 높은 z-index, 카드/입장/언어 버튼의 elementFromPoint 도달 확인; 1920×1080·960×540 캡처 육안 검수 |
+| 상태 검증 | 언어·정적 폴백·선택 해제·숨김·모션 감소·실버테일 매핑 검수 유지, pageerror0/API 쓰기0. 같은 원본3840×2160 재생, AI 생성/리샘플링 없음 |
+| 증거 | tmp/lobby-selected-art-20260929/full-ratio-fixed-browser.json 및 full-ratio-fixed-{1920x1080,1280x720,960x540,2160x720}-warrior.png. 아래 final-*는 패널 축소 상태의 이전 검수 이력 |
+
+## 2026-09-29 선택 전환 검수 이력 (전체 화면 정정 이전)
 
 | 검수 | 결과 / 증거 |
 |---|---|

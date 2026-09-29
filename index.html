@@ -493,8 +493,8 @@ body{background:#000 center/cover no-repeat;color:#ccaa88;font-family:'Noto Sans
 <link rel="stylesheet" href="localization.css?v=20260909">
 <link rel="stylesheet" href="ui-foundation.css?v=20260927-enter-responsive">
 <link rel="stylesheet" href="ui-refinement.css?v=20260928-lobby-quit">
-<link rel="stylesheet" href="lobby-ancestor-art.css?v=20260929-slotart1">
-<script src="lobby-ancestor-sprite.js?v=20260929-slotart1" defer></script>
+<link rel="stylesheet" href="lobby-ancestor-art.css?v=20260929-slotart2">
+<script src="lobby-ancestor-sprite.js?v=20260929-slotart2" defer></script>
 </head>
 <body>
 
@@ -3463,7 +3463,6 @@ function _updateCharDisplay(s){
   if(sub)sub.textContent=s?_TL(visual?.job||visual?.cls||''):_lobbyAncestorCaption();
   if(detail)detail.textContent=s?'':_lobbyAncestorDetail();
   _swapLobbyBg(0);
-  if(scene&&visual?.scene)scene.style.backgroundImage="url('"+visual.scene+"')";
   if(scene&&visual?.scene)scene.style.backgroundImage="url('"+visual.scene+"')";
   // Label/language refreshes keep the current character's playback and fallback state.
   if(visual&&visual===previous)return;

@@ -1,3 +1,12 @@
+## 2026-09-29 — 선택 캐릭터 원화 전체 화면 비율 복원
+
+| 항목 | 결과 |
+|---|---|
+| 비율 | 대검전사 등 선택 원화/아이들 영상은 inset0·width100%·height100%·object-fit:cover·중앙. 원본 비율 유지; 패널65%/55% 축소 및 강제 aspect-ratio/마스크 제거 |
+| 레이어 | 정적 이미지 z-index1·영상2·선택 상태 좌/우 UI3. 이름/카드/입장 버튼은 원화 위에 표시 |
+| 검증 | 1920×1080,1280×720,960×540,2160×720의 실제 브라우저에서 전체 viewport rect/cover, 선택 전환 및 카드/입장/언어 버튼 도달 확인. 실제 캡처 육안 검수, 오류0/사용자 API 쓰기0 |
+| 상세 | [비율·선택 표시 SSOT](<3.1 ui hud 디자인/LOBBY_ANCESTOR_ART_20260928.md>). CSS/JS 캐시20260929-slotart2 |
+
 ## 2026-09-29 — 기본 전대 / 선택 캐릭터 로비 전환
 
 ## 2026-09-29 — 대지가르기 손톱자국 피드백 재검수
@@ -50103,7 +50112,7 @@ CSS 캐시 ui-refinement.css?v=20260927-4. 신규 이미지/아이템 데이터 
 | 실버테일 | 기존 공식 assets/charselect/silvertail_solo.png?v=20260927을 전체 선택 장면으로 사용. 썸네일은 공식 bust 유지. 신규 이미지·영상 생성/변형 없음 |
 | 늦은 응답 | 정적 폴백 콜백에서 _selectedCharDisplay!==s이면 무시. 캐릭터 전환 시 preview.onerror 초기화,선택 해제 시 video src/poster 및 정적 src 제거 |
 | 영상 재사용 | getAttribute(src)의 물음표 앞 경로와 idleVid 경로를 비교하여 같은 영상의 불필요한 reload 방지. 기존 idleRate 유지 |
-| 구도 | 직계 선택 미디어 z-index0,left0,width65%,height100%,object-fit:contain,object-position:center center,transform:none. 폭1100px 이하는 width55%. 원본 전체 표시,우측 패널은 자기 열을 채움(전체화면 잘림 수정 규칙) |
+| 구도 | 선택 미디어는 lobby-ancestor-art.css 현행 오버라이드: inset0,width100%,height100%,object-fit:cover,object-position:center center,transform:none,mask-image:none. 원본 종횡비 보존, 창 비율 차이는 가장자리 크롭. 정적 이미지 z-index1/영상2, 좌·우 UI3; 65%/55% 축소 해제(2026-09-29 사용자 정정) |
 | 캐시 | index.html:ui-refinement.css?v=20260927-selected-scene |
 | 검증 | 신규4회귀(정적 선택/영상 실패/이전 영상 늦은 실패/선택 해제)와 선택정보·동기화 포함16개 통과. 실제 CSS/함수 격리 브라우저1600×900 실버테일 표시 및 전사 영상 오류 후 전사 포스터1개만 표시 확인. 실물 게임패드·실계정 저장 미검증 |
 | 기록 | tmp/lobby-selected-scene/silvertail.png,warrior-fallback.png,report.json,changes.patch. 기존 터미널/.git 제한으로 커밋 미완료 |
@@ -50130,8 +50139,8 @@ CSS 캐시 ui-refinement.css?v=20260927-4. 신규 이미지/아이템 데이터 
 | 항목 | 현행 규격 |
 |---|---|
 | 원인 | 선택 미디어 width135%/145% 및 음수left와 cover가 전체화면에서 원본 글자·머리·목을 잘라냄. 해당 확대 규칙 폐기 |
-| 선택 이미지·영상 | #lobby 직계 .lobby-char-preview: left0,right:auto,width65%,height100%,object-fit:contain,object-position:center center,transform:none. 폭1100px 이하는 width55%. 원본 전체를 좌측 가용 영역 안에 표시 |
-| 비율 | 원본을 변형하거나 자르지 않음. 표시 배율 min(영역폭/원본폭,영역높이/원본높이),남는 공간은 검정 여백. 임의 추가 배경 이미지 없음 |
+| 선택 이미지·영상 | #lobby 직계 .lobby-char-preview: inset0,width100%,height100%,object-fit:cover,object-position:center center,transform:none,mask-image:none. 원본 비율 유지하여 전체 화면 배치. 정적 이미지 z-index1/영상2, 좌·우 UI3(2026-09-29 사용자 정정) |
+| 비율 | 2026-09-29 현행: 원본 종횡비 유지. 표시 배율 max(뷰포트폭/원본폭,뷰포트높이/원본높이), 중앙 cover로 전체 화면 채움. 창과 원본 비율이 다르면 가장자리만 크롭; 임의 추가 배경 이미지 없음 |
 | 우측 패널 | 사용자 대안 수용: .lobby>.lobby-right background:#100d0e!important로 자기 열을 화면 상하·오른쪽 끝까지 채움. 기존 장식 프레임·안쪽 문양·컨트롤 유지. 이전 외곽 투명 계약의 로비 부분은 이 규칙으로 대체 |
 | 캐시 | index.html ui-refinement.css?v=20260927-selected-fit |
 | 검증 | 실제 HTML/CSS 격리 렌더2560×900,1920×1080,1600×900,960×540에서 원본 전체 포함·선택 영역과 우측 패널 겹침 없음·횡넘침 없음. 2560×900 표시1588.35×900/가용1664×900,전체 문구와 머리·발 시각 확인. 기능/저장 변경 없음 |
