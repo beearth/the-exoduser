@@ -1,10 +1,3 @@
-## 2026-09-29 — CH1-1 공통 피부 바닥87차
-
-- 사용자 승인 스크린샷의 촘촘한 피부 결·얕은 주름을 공통 기준으로 보행 바닥31826023px/47청크를 통일. 비보행 외곽0·보호 뿌리681744px0변경;G.map/충돌·동맥·늪 유지.
-- 배경20260929-floor-87/22레이어·모듈20260929-87. region5 공통palette #353032/#3d3535/#353032, 합성 .30, 큰얼룩12개/.06 또는 .04. 추가draw·canvas0.
-- 회귀72PASS·22레이어RGBA재현·64청크전체픽셀/224strip동일·64HTTP정상·전후각8카메라/pageerror0. 실제Edge12초적0표본237~240FPS/34ms초과0;백그라운드Chrome FPS는무효표본으로구분.
-- [MAP PRODUCTION REPORT/출처·한계](4.1맵디자인+설정/CH1_FLOOR_UNIFICATION_PASS87_20260929.md). 바닥VISUAL PASS/전체맵RETOUCH. 바닥관련code·asset·docs만로컬체크포인트;push/deploy0.
-
 ## 2026-09-29 — 데모 Lv1 가시덫 1번 슬롯 누락 수정
 
 | 항목 | 반영 |
@@ -13,6 +6,24 @@
 | 수정 | game.html·game-easy-test.html 신규 데모만 SKILL_SLOTS[0]=spikeTrap. Space giantSlam/F holyDome 및 저장 배치 유지 |
 | 검증 | 관련24건 PASS, 양쪽 실제 페이지 신규 시작/재로드/슬롯 이동 보존/이전 빈칸 저장 복구. 본편 실제 HUD 아이콘 및 숫자 1 시전은 runtime.json·skill1-cast.png |
 | 상세 | [스킬·저장 계약](<2_1 스킬관리+합체시스템+자원/2_1 스킬관리+합체시스템.md>)의 Lv1 기본 가시덫 절 |
+
+## 2026-09-29 — CH1-1 공통 피부 바닥87차
+
+- 사용자 승인 스크린샷의 촘촘한 피부 결·얕은 주름을 공통 기준으로 보행 바닥31826023px/47청크를 통일. 비보행 외곽0·보호 뿌리681744px0변경;G.map/충돌·동맥·늪 유지.
+- 배경20260929-floor-87/22레이어·모듈20260929-87. region5 공통palette #353032/#3d3535/#353032, 합성 .30, 큰얼룩12개/.06 또는 .04. 추가draw·canvas0.
+- 회귀72PASS·22레이어RGBA재현·64청크전체픽셀/224strip동일·64HTTP정상·전후각8카메라/pageerror0. 실제Edge12초적0표본237~240FPS/34ms초과0;백그라운드Chrome FPS는무효표본으로구분.
+- [MAP PRODUCTION REPORT/출처·한계](4.1맵디자인+설정/CH1_FLOOR_UNIFICATION_PASS87_20260929.md). 바닥VISUAL PASS/전체맵RETOUCH. 바닥관련code·asset·docs만로컬체크포인트;push/deploy0.
+
+## 2026-09-29 — Edge 간헐 급락·Codex 콘솔 생성 환경 진단
+
+| 항목 | 실제 확인 / 한계 |
+|---|---|
+| 현행 가상 메모리 | PagingFiles32768/65534MiB,CommitLimit95.761414GiB. 초기미적용이력과구분. 150.518초관측commit34.879601~40.009521GiB,부팅이후2004조회0 |
+| 콘솔 경로 | Codex setup8개/conhost18개신규생성,VS Code→Codex→setup→conhost경로와같은시각정상완료로그확인. 실제창표시/전투급락과인과관계미확정 |
+| Edge | 사용자설정창일시정지45.003초,rAF최대41.7ms/34ms초과15개/포커스변화0. 전투drawFPS·문제해결검증으로대체하지않음 |
+| 사용자 새로고침 | 회복보고후실제Edge전투12초게임FPS237~239/rAF34ms초과0,JS heap213126951→81336897B회수. 페이지상태/자원누적이후보이나원인·장시간누수확정아님 |
+| 작업 범위 | 생산게임코드변경0,관측기종료·브라우저임시계측삭제. 프로세스강제종료·registry변경·재부팅·보안완화·예약작업추가0 |
+| 상세 | [OS·프로세스부모·Edge증거와남은검증](12퍼포먼스·최적화/EDGE_TERMINAL_FRAME_DIAG_20260929.md). MD저장과commit/push/배포상태는별도 |
 
 ## 2026-09-29 — 선택 캐릭터 원화 전체 화면 비율 복원
 
@@ -49,12 +60,6 @@
 
 [86차 수치·한계·MAP PRODUCTION REPORT](4.1맵디자인+설정/CH1_ORGANIC_CACHE_BUDGET_PASS86_20260929.md). 아래모듈버전과동기캐시제작표현은당시제작이력이며,현행준비중organic=false 계약은위SSOT를따른다.
 
-## 2026-09-29 — 생체 디테일 캐시 제작86차
-
-본편 living module은 **20260929-86**. 캠프손·나무뿌리 첫캐시를 단일 유휴 큐(3ms목표/requestIdle120ms/타이머8ms,mesh32cell·접지8행yield)로 분할했다. 준비/실패중원본sprite폴백,동일이미지중복제작0. 기존애니메이션·PNG·geometry유지;배경cache/bakeVersion20260929-outer-85/21빌드레이어/64청크불변. 본편8뷰60제한59.81~60.00FPS,64적12초59.74FPS,준비후34ms초과0. cold GPU업로드290ms잔여로전체프레임해결은아님. 총60검사PASS·실제Chrome6픽셀표본변경0.
-
-[86차 수치·한계·MAP PRODUCTION REPORT](4.1맵디자인+설정/CH1_ORGANIC_CACHE_BUDGET_PASS86_20260929.md). 아래모듈버전과동기캐시제작표현은당시제작이력이며,현행준비중organic=false 계약은위SSOT를따른다.
-
 ## 2026-09-29 — CH1-1 피부–사목 접합85차 적용
 
 현행 cache/bakeVersion은 **20260929-outer-85**, 빌드 레이어는 **21개**다. 서측 하단의 피부 바닥–사목 어깨를 낮은 부패 수피·괴사막으로 연결했다. 비보행101764px만 변경/보행0/고목 핵심 보호3579735px 변경0, 변경chunk1_6 1개·동일63개. 새로고침한 본편8기본 카메라+접합·전투2위치, 이벤트 기반 S/W 이동·24적 공격/Q, 게임error·contextloss0/64청크 응답실패0. 기존 회귀55PASS,21레이어 전체 마스터 재현·224경계 동일. 새 모션0/geometry·충돌 변경0. 전체 **VISUAL VERDICT: RETOUCH**.
@@ -62,6 +67,21 @@
 커밋 가드 보정: 기존 기준 파일과 검사 후 내용이 byte 동일하면 재저장0, 변경·미존재 파일은 저장하며 쓰기 실패·검사 실패 차단을 유지한다. 회귀5PASS(RED4PASS/1FAIL→GREEN5PASS),기존 맵55개와 합계60PASS. [변수·분기 SSOT](13출시·마케팅/GUARD_BASELINE_PERSISTENCE_20260929.md). 기존 master LFS 유지/outer76_81-provenance.zip 정확경로 LFS 추가,푸시·업로드0.
 
 [85차 수치·출처·MAP PRODUCTION REPORT SSOT](4.1맵디자인+설정/CH1_OUTER_CONNECTION_PASS85_20260929.md). 아래84차 이하의 '현행'은 당시 제작 이력이다.84차의 미완료 문구는 저장된 최종 검수로 보정했다.
+
+## 2026-09-29 — CH1-1 고목 접합84차
+
+현행 배경은 cache/bakeVersion **20260929-outer-84**다. 서측 부채꼴 고사리 구역을 낮은 부패 수피·괴사막으로 연결했다. master8192²/world8000²/tile40/64청크(core1024/bleed1/1026²), 변경chunk_1_5 1개·동일63개. 총109465px 변화(보행재질12058/비보행97407), geometry·충돌 변경0. 고목 보호2904814px 변경0; 이전 패치 보호 해제는 crop-local[495,340,835,655] 내부뿐(기존 패치 변화70882/창밖0). 타원밖·zero-mask·crop밖0, 선택crop의 near-black≤12/18/22는17595→17392 /64360→63422 /124323→122945. 재질 채널하한24, ellipse[635,490,260,180]/feather.25/opacity.96/줄기보호MaxFilter25·blur18. skin65→outer66..84 총20레이어, 마지막patch x1024/y5120/2048². 기존61차 생체 모듈·늪·동맥 유지/새모션0. 후보9카메라 오류0/G.map동일. 84차 본편18카메라·24적30초 전투·전체 베이크 재현 검수 완료는 저장된 live/runtime·promotion·로그로 확인했다. 현행85차와 상세 검수는 문서 맨 위 링크를 따른다.
+
+[SSOT](4.1맵디자인+설정/CH1_1_PRODUCTION_FINISH_20260916.md#ch1-1-outer84). 기존 UI·전투·성능의 병행 수정은 보존했다.
+
+## 2026-09-29 — HUD 창 크기·페이지 줌 적응 복원
+
+| 대상 | 현행 동작 | 검증 |
+|---|---|---|
+| UI 자동 배율 | min(innerWidth/1920,innerHeight/1080), 고정0.5~3 상하한 제거; 유한한 양수만 반영 | uiAutoScale8 + HUD 관련6 =14 PASS |
+| HUD 앵커 | 기본 inset·미니맵·상단 상태/자원/시계·하단 바/툴팁도 같은 배율; 시계170px·보스 HP500px 기준 폭 | 두 HTML 실제 DOM/CSS12 viewport 사례 |
+| 실행 페이지 | 저장된 UI 함수/CSS만 hot apply; 게임 on/paused 및2813×1262/DPR1 유지 | 실제 플레이 화면 확인, Chrome 설정 변경 없음 |
+| 범위/상태 | 월드 렌더·카메라·resScale·저장·전투/VFX 로직 변경 없음. Git은 관리형 .git 읽기 전용으로 미커밋 | [상세 계약](3.1 ui hud 디자인/UI_SCALING_20260929.md) |
 
 ## 2026-09-29 — 기동파괴 전방 세 갈래 대지가르기 + 기동불꽃 재발 방지 MD
 
@@ -72,7 +92,36 @@
 | API VFX | Higgsfield GPT Image 2.5 high·2k·transparent; `img/vfx/chain_earth_cleave.png` 2688×1152 RGBA. 전파 끝6%·6스트립 감쇠, 추가 광원 없음 | 실제 WebGL 및 Shift→좌클릭 착지 확인 |
 | 입력 표시 | 기동파괴 기동+좌클/E, 기동불꽃 기동+우클/SP, 지옥강타1 SP/슬롯 | 코드의 현재 입력과 동일 |
 
-## 2026-09-28 — CH1-1 남측 시작 경계 부패 목질 72차
+## 2026-09-29 — CH1-1 검정 빈 공간 감소 83차
+
+사용자 최신 지시: **검정색 빈 공간을 최대한 없앤다.** 기존 외곽 나무 사이의 비보행 검정 공동을 부패 목질·괴사 조직 재질로 채웠다. 현재 본편 배경은 83차이며, 아래 82차 이하의 수치와 검수는 제작 이력이다. [현행 출처·검수 SSOT](4.1맵디자인+설정/CH1_1_PRODUCTION_FINISH_20260916.md#ch1-1-outer83).
+
+| id | 현행 계약 |
+|---|---|
+| OUTER83_RUNTIME | cache/bakeVersion 20260929-outer-83; master8192²/world8000²/tile40; 64청크/core1024/bleed1/1026²; 변경54개/동일10개. geometry·충돌·진행 변경0 |
+| OUTER83_MASK | 원본 maxRGB로 t=clamp((48−maxRGB)/28,0,1), alpha=t²(3−2t), uint8 양자화. authored nav1=보행은 alpha0; maxRGB≥48/zero-mask 픽셀 유지 |
+| OUTER83_MATERIAL | GPT2048² 원본을 256px 중첩·4방향 smoothstep 가중 합성,1792px 주기로 연결. 반전0. paint=clip(tileRGB×.65+[12,8,12],24,255); RGB=uint8(base×(1−alpha)+paint×alpha), 기존 alpha 유지 |
+| OUTER83_PIXELS | 변경23643680px/보행0. 전체 maxRGB≤12:6062519→405110(93.318% 감소); 비보행5657409→0. ≤18:9586314→1266275/비보행8320039→0; ≤22:12597285→2325674/비보행10271611→0. 남은 어두운 픽셀은 보호된 보행 바닥·그림자이며 모든 검정 픽셀 제거를 뜻하지 않음 |
+| OUTER83_LAYERS | skin65→outer66~83 총19레이어; outer83 x0/y0/8192² preblended RGB+binary alpha0/255. 이전18레이어 파일 유지; 이전 패치의 어두운 비보행 픽셀 일부는 최신 지시에 따라 이번 레이어가 덮음 |
+| OUTER83_QA | 최종 후보22/본편18카메라; G.map동일/pageerror·HTTP·crash0; 실제 S/W 이동 108.53worldpx, 24적·30초 공격/Q. 회귀9PASS/19레이어 전체픽셀 동일/64청크·224strip동일 |
+| OUTER83_LIVING | 기존61차 동맥·늪 버블/가스 유지. 신규 생체 모션0/추가 runtime draw·atlas0; 신규 재질은 정적 배경 |
+| OUTER83_STATE | VISUAL VERDICT RETOUCH. 검정 공동 감소는 확인; 다른 식생·반복·밀집VFX 중첩은 잔여. 실제 Radeon GPU2813×1262에서 context loss→restore 뒤 흰 화면1회; 자체 이전QA탭 종료·동일83차 새로고침 후4시점 정상. 원인·해결 미확정 |
+
+## 2026-09-29 — CH1-1 서측 고목 밑 접합82차
+
+현재 본편 배경은82차다. 아래81차 이하의 원화·수치·검수는 제작 이력이다. 상세 출처·보호 계약·검수는 [82차 SSOT](4.1맵디자인+설정/CH1_1_PRODUCTION_FINISH_20260916.md#ch1-1-outer82)를 따른다.
+
+| id | 현행 계약 |
+|---|---|
+| OUTER82_RUNTIME | cache/bakeVersion `20260929-outer-82`; master8192²,world8000²/tile40;64청크/core1024/bleed1/1026²·224strip일치;변경 `chunk_1_5.png`1개/나머지63개유지 |
+| OUTER82_LAYER | skin65→outer66~82 총18레이어;`outer82_sources/outer82_patch.png`,x1024/y5120/2048²,preblended RGB+binary alpha0/255 |
+| OUTER82_MASK | ellipse[740,438,350,320]/feather.30/opacity.92;73mask>12·74~81mask>0 보호2260730px.고목·공동6사각형981440px;전체합3195820px/MaxFilter25/blur18/core alpha0 |
+| OUTER82_PIXELS | 총40513/보행0/비보행40513px.보호·타원밖·zero-mask·crop밖 변경0;geometry/충돌/진행·늪/가스/동맥유지,새모션0 |
+| OUTER82_REFERENCE | 업로드 장애 후 기확인 master80 crop[1024,5120,3072,7168]/media b27be7cc-c007-40e6-b4f3-94f786f857dc 재사용.현재 master81의 비보호 합성 픽셀과 참조의 픽셀일치 assert통과.81차패치 보호 |
+| OUTER82_QA | 전후9시점 및정밀후보9시점/G.map동일/pageerror·HTTP오류0;회귀9PASS.본편 이동·전투·실제Chrome 최종 검수는 아래완료기록 참조 |
+| OUTER82_VERDICT | VISUAL VERDICT RETOUCH;주변식생·반복·밀집VFX/숫자 중첩잔여.기존renderer문제 원인미확정.후속안정성 진단은 본편검수와 별도 기록 |
+
+## 2026-09-29 — CH1-1 서측 피부막 위쪽 접합81차
 ## 기동불꽃 광량·잔광 조정 (2026-09-29)
 
 Shift 사슬기동 중 우클릭/Space 착지의 밝은 섬광과 장판 전체의 지속 조명을 줄인다. 불꽃 장판의 피해·범위·300f 기본 수명·스택 강화·기폭은 유지한다.
@@ -88,6 +137,131 @@ Shift 사슬기동 중 우클릭/Space 착지의 밝은 섬광과 장판 전체�
 
 WebGL 가산 및 Canvas2D 폴백에 동일한 baseAlpha를 전달한다. RGB `[255,140,50]`, 프리셋 7과 다른 화염·얼음·환경 조명은 기존 계약을 따른다. `chainSlam`은 2026-09-29 전방 세 갈래 대지가르기 계약으로 대체됐다.
 
+
+80차 피부 면 위쪽 tile[46,144]의 잎무늬 접합을 실제80차 원화 참조로 편집했다. 낮은 괴사막과 섬유로 기존 피부층을 연결하고, 고목과73~80차 패치·넓은 전투공터를 보호했다. 아래80차는 제작 이력이며 현재 배경 계약은81차다.
+
+| id | 현행 계약 | 값 |
+|---|---|---|
+| OUTER81_SOURCE | 입력·생성 | master80 crop[1024,5120,3072,7168],2048²;Higgsfield GPT gpt_image_2_5/job34551eaf-ba11-466e-8403-c951d280d035;1:1/2k/high/opaque/count1,2.75credits |
+| OUTER81_MASK | 선택·합성 | ellipse[840,840,340,460];q=((x−840)/340)²+((y−840)/460)²;t=clamp((1−q)/.30);region=t²(3−2t).alpha=region×(1−protect)×.92×sourceAlpha;floor(alpha×255)/255;RGB=uint8(base80×(1−alpha)+edited81×alpha),원본alpha유지.경계band없음 |
+| OUTER81_KEEP | 보호 |73mask>12·74~80mask>0;이전합집합2100642픽셀.고목사각형[500,1502,1410,2048]/[760,70,1020,550]/[160,0,590,600],합879660픽셀.전체합2963916/MaxFilter25/GaussianBlur18/core강제alpha0.보호·타원밖·zero-mask·crop밖변경0 |
+| OUTER81_PIXELS | 변화 |총157436/보행123509/비보행33927;geometry·충돌·진행·늪버블·가스·동맥유지,새모션0 |
+| OUTER81_RUNTIME | 본편 |master·chunk_1_5.png/chunk_2_5.png·preview·composition·retouchLayers·game cache20260929-outer-81;64청크/core1024/bleed1/1026²·224strip동일;나머지62청크유지 |
+| OUTER81_REBAKE | 재현 |skin65→outer66~81,17레이어;outer81 x1024/y5120/2048²,preblended RGB+binary alpha0/255;helper전체8192²픽셀동일.검수Sharp concurrency1/cache false.초기동시검증vips메모리오류별도보존;전체builder재실행미실시 |
+| OUTER81_FILES | 소스·보존 |outer81_sources/outer81_patch.png·outer81_mask.png 2파일.76~81차오프라인출처는outer76_81-provenance.zip으로묶음:각pass/input-base.png·edited_connection.png·outerN_crop.png·generation.json·prep.json 총30엔트리+manifest.json=31,모두SHA대조.기존76~80개별ZIP5개는tmp/ch1-source-consolidation81에원본보존.런타임PNG12개변경/삭제0.73~75기존staged출처유지 |
+| OUTER81_QA | 실제 검수 |전후9·본편18카메라를3×6독립세션,이동/전투별도1세션으로확인;최종pageerror/HTTP오류0·본편route교체0·42캡처정상.회귀9PASS;[46.5,144.5] S/W약113.86worldpx·시작점근처복귀(약2.78px오차)/G.map동일,임시24적/적탄6샘플0/9/12/12/16/14·공격/Q.체력50ms/무적63f보정·전체API쓰기차단.후반3세션은종료된로딩화면이미지src만QA컨텍스트에서해제,맵청크교체0/본편소스수정없음 |
+| OUTER81_STABILITY | 검수 한계 |최초before캡처대기1회,연속본편renderer종료2회,동일코드+80차이미지비교에서도JOIN_TOP흰화면1회.분리group1도스크린샷Python MemoryError1회·시작흰화면1회.실패로그/이미지보존.Windows진단snapshot commit72.556GiB/limit79.761GiB/peak79.761GiB,물리여유39.252GiB;동시메모리압박관찰·종료원인단정없음.자체검수잔여descendant0/사용자앱종료0.실행중limit변동.분리검수의정상캡처는장시간안정성통과가아니며원인·해결미확정 |
+| OUTER81_STATE | 판정·Git |VISUAL VERDICT RETOUCH;다른식생·반복·밀집VFX/숫자중첩잔여.81차미커밋:승인된git add도exec provider가WindowsApps pwsh시작전OS317로실패;Git쓰기0/기존staged보존.출처정리후98파일이었으나타작업추가로생성전검사102·통합검수후검사107파일(각시점100제한초과);강제정리없음.저사양/NW.js/장시간성능·무보정종주·클리어미검증 |
+
+[81차 MAP PRODUCTION REPORT](../captures/ch1_outer81/REPORT.md) · [전후·본편 갤러리](../captures/ch1_outer81/index.html).
+
+## 2026-09-28 — CH1-1 서측 피부막 왼쪽 접합80차 기록(81차 이전)
+
+79차 피부 면 왼쪽 tile[36,153]의 잎무늬를 실제79차 원화 참조로 편집했다. 기존 고목과73~79차 패치를 보호하고 낮은 괴사 피부층·섬유로 연결했다. 아래79차 이전 기록은 제작 이력이며 당시 배경 계약은80차다(81차 이전 이력).
+
+| id | 현행 계약 | 값 |
+|---|---|---|
+| OUTER80_SOURCE | 실제 입력·생성 | master79 crop[1024,5632,3072,7680],2048²;Higgsfield GPT gpt_image_2_5/job2b87a734-083f-48ec-b222-e20407f7ae44,1:1/2k/high/opaque/count1 |
+| OUTER80_MASK | 선택·합성 | ellipse[480,620,320,550],q=((x−480)/320)²+((y−620)/550)²;t=clamp((1−q)/.30);region=t²(3−2t).alpha=region×(1−protect)×.92×sourceAlpha;floor(alpha×255)/255;RGB=uint8(base79×(1−alpha)+edited80×alpha),원본alpha 유지. 경계band없음 |
+| OUTER80_KEEP | 보호 |73mask>12·74~79mask>0;이전합집합1617083픽셀.고목사각형[500,990,1410,2048]/962780픽셀;전체합집합2563137/MaxFilter25/GaussianBlur18/core강제alpha0.보호·타원밖·zero-mask·crop밖 변화0 |
+| OUTER80_PIXELS | 변화 |총338768/보행240292/비보행98476;geometry·기존충돌·진행·늪버블·가스·동맥 유지,새모션0 |
+| OUTER80_RUNTIME | 본편 |master·chunk_1_5.png/chunk_1_6.png·preview·composition·retouchLayers·game cache20260928-outer-80.64청크/core1024/bleed1/1026²·224strip동일;나머지62청크유지 |
+| OUTER80_REBAKE | 재현 |skin65→outer66~80,총16레이어;outer80 x1024/y5632/2048²,preblended RGB+binary alpha0/255;helper 전체8192²픽셀동일 |
+| OUTER80_FILES | 소스·보존 |outer80_sources/outer80_patch.png·outer80_mask.png·source-provenance.zip 3파일. ZIP의input-base.png/edited_connection.png/outer80_crop.png/generation.json/prep.json 5엔트리 원본SHA대조.76~79차도patch/mask/출처ZIP 3파일로정리;각ZIP5엔트리·76/77 RAW 및76~79 prep은tmp/ch1-source-consolidation80에별도보존.런타임패치/마스크삭제0 |
+| OUTER80_QA | 실제 검수 |전후9·일반본편18카메라,최종각pageerror/HTTP오류0·본편route교체0;지형5+레이어/버전3+HTML구문1=9PASS.수정부[38.5,153.5] S/W104.79worldpx·복귀/G.map동일,임시24적/적탄6샘플0/5/8/11/12/8·공격/Q.초기기존본편의흰캡처2건은별도진단/제외;원인미확정·해결선언없음 |
+| OUTER80_STATE | 판정·Git |VISUAL VERDICT RETOUCH;전체식생·다른영역반복·밀집VFX/숫자중첩잔여.80차미커밋:일반git add index.lock권한거부/승인된상승재시도provider시작전OS317;Git쓰기0/기존staged보존.저사양/NW.js/장시간성능·무보정종주·클리어미검증 |
+
+[80차보고서](../captures/ch1_outer80/REPORT.md) · [갤러리](../captures/ch1_outer80/index.html).
+
+## 2026-09-28 — CH1-1 서측 잎무늬·괴사 피부 바닥79차
+
+| 항목 | 현행결과 |
+|---|---|
+| 입력·원화 |실제78차crop[1024,5632,3072,7680],2048²;Higgsfield GPT/job6f7dd422-0b18-42ff-8809-f51fb57c5d97,2k/high/opaque |
+| 합성·보존 |타원[860,730,430,360]·feather.30/.92,band없음;73~78mask1270046+고목사각형[500,990,1410,2048]/962780;전체합집합2216100/MaxFilter25/blur18;보호·타원밖·zero-mask·crop밖0 |
+| 본편 |master/3청크[1,5]/[1,6]/[2,6]/cache20260928-outer-79;총341970/보행339996/비보행1974픽셀편집/geometry·충돌·기존모션동일 |
+| QA |후보9/최종서버본편18카메라,오류0/회귀9PASS(첫127.0.0.1 장비4048건별도보존);48청크URL/cache79/route교체0;[47.5,153.5] S/W110.79px·임시24적/적탄샘플1/8/13/17/16/11/공격·Q |
+| 재현 |skin65→outer66~79총15패치helper전체8192²픽셀동일/64청크·224strip동일 |
+| 출처·상태 |source4파일:패치·마스크·prep·source-provenance.zip(입력/생성/crop/generation4엔트리SHA대조).9mapdocs·소유checkpoint;staged62보존·79미커밋/native exec317 |
+| 상세 |captures/ch1_outer79/REPORT.md,MAP PRODUCTION REPORT,VISUAL VERDICT RETOUCH;선택면외곽식생·타지역반복·밀집중첩잔여 |
+
+## 2026-09-28 — CH1-1 서측 잎무늬·괴사 피부 바닥78차
+
+| 항목 | 현행결과 |
+|---|---|
+| 입력·원화 |실제77차crop[1536,5120,3584,7168],2048²;Higgsfield GPT/jobaaa2635d-ce8f-4420-b7e1-1d428a0be258,2k/high/opaque |
+| 합성·보존 |타원[1000,1010,520,500]·feather.30/.92,band없음;73~77mask1219930/MaxFilter25/blur18;보호·타원밖·zero-mask·crop밖0 |
+| 본편 |master/4청크1/2×5/6/cache20260928-outer-78;보행715350픽셀편집/geometry·충돌·기존모션동일 |
+| QA |후보9/본편18카메라,오류0/회귀9PASS;48청크URL/cache78/route교체0;[67.5,149.5] S/W110.26px·임시24적/적탄샘플1/2/9/14/18/23/공격·Q |
+| 재현 |skin65→outer66~78총14패치helper전체8192²픽셀동일/64청크·224strip동일 |
+| 출처·상태 |source4파일:패치·마스크·prep·source-provenance.zip(입력/생성/crop/generation4엔트리SHA대조).9mapdocs·소유checkpoint;staged62보존·78미커밋/native exec317 |
+| 상세 |captures/ch1_outer78/REPORT.md,MAP PRODUCTION REPORT,VISUAL VERDICT RETOUCH;선택면외곽식생·타지역반복·밀집중첩잔여 |
+
+## 2026-09-28 — CH1-1 서측 반복 뿌리·부패 목질 접합77차
+
+| 항목 | 현행 결과 |
+|---|---|
+| 입력·원화 |실제76차 crop[1536,4608,3584,6656],2048². Higgsfield GPT/job7c2f7f3f-4137-4b3c-bf60-1f4db0736f7f,2k/high/opaque |
+| 합성 |타원925/620/470/450·feather.30/.92,band없음.73~76차mask509153+고목사각형165100=674253픽셀보호/MaxFilter25/blur18 |
+| 본편 |master·4청크1/2×4/5·cache20260928-outer-77.총573129/보행368405/비보행204724픽셀변화.보호·타원밖·zero-mask·crop밖0 |
+| QA |후보전후9·본편18시점·오류0·회귀9PASS. 49청크URL/cache77·route교체0. canMv확인[67.5,128.5] S/W112.06px이동·복귀.임시24적·적탄최대20·공격/Q 캡처 |
+| 보존·재현 |geometry/기존충돌/늪버블·가스·동맥동일.skin65→outer66~77총13패치전체8192²helper픽셀재현.64clamped청크/224strip동일 |
+| 상태·자료 |VISUAL VERDICT RETOUCH.기존staged62보존·native exec OS317·77차미커밋.7source/9mapdocs/백업/소유checkpoint ZIP·엔트리SHA대조 |
+| 상세 |captures/ch1_outer77/REPORT.md와맵production SSOT.주변식생·보호부가지·밀집중첩잔여 |
+
+## 2026-09-28 — CH1-1 남서 위쪽 반복 뿌리·보행 표면76차
+
+| 항목 | 현행 결과 |
+|---|---|
+| 입력·원화 | 실제75차 crop[2048,5120,4096,7168],2048² 참조. Higgsfield GPT/job46e35428-d6a6-4420-92a2-cd28efe85ce8,2k/high/opaque |
+| 합성·보존 | 타원[1230,1150,430,425]·feather.30/.92,band 없음.73mask>12·74/75mask>0 합집합301195픽셀보호/MaxFilter25/blur18 |
+| 본편 | master/4청크/cache20260928-outer-76,보행554432픽셀변화. 타원밖·이전보호·zero-mask·crop밖0. geometry/기존 나무충돌/늪버블·가스·동맥유지 |
+| QA | 후보전후9·본편18카메라·오류0·회귀9PASS,48개청크 URL/cache76·route교체0. 기존나무옆[87.5,151.5] S/W 109.00px 이동·복귀. 임시24적·적탄최대21·공격/Q 확인 |
+| 검수 보정 | 초기[80.5,151.5] 기존m_ctree2(colSz66) 내부라 이동0 제외. 최종canMv/r15·아래120px 경로 확인. 이동 캡처는 visibleIds 모두 drawn 대기 후 재촬영 |
+| 재현 | skin65→outer66~76,총12레이어8192² helper 픽셀재현;64clamped청크/224경계strip동일. 상세순서는production SSOT |
+| 상태·자료 | VISUAL VERDICT RETOUCH. 기존 staged62파일 보존·네이티브 exec OS317·76차 미커밋. outer76_sources7파일/docs9/백업/검수/소유 checkpoint ZIP·모든엔트리SHA 대조 |
+| 상세 | captures/ch1_outer76/REPORT.md,맵production SSOT. 전체식생·별도반복root·기존나무표현·밀집중첩잔여 |
+
+## 2026-09-28 — CH1-1 남서 회색 잔뿌리·목질 접합75차
+
+| 항목 | 현행 결과 |
+|---|---|
+| 입력·원화 | 실제74차 master crop2048/6144/2048² 참조, Higgsfield GPT/job bbf05779-74e3-4b4a-ad6b-5e751c41bc09, 실제2048²RGB. 재사용후보잎무늬문제로새부분편집 |
+| 합성·보존 | 타원1220/950/400/480·feather.30/.92,Chebyshev8tile band 축별320world/327.68masterpx,blur20. 고목73 core572420픽셀보호/MaxFilter25/blur18 |
+| 본편 | master/4청크/cache20260928-outer-75; 총384431/선택보행368590픽셀변화,band밖보행·고목core·zero-mask·crop밖0. geometry/collision/늪버블·가스·동맥유지 |
+| QA | 후보전후9/일반본편18카메라/오류0/회귀9PASS,48chunk요청전부cache75·route교체0. 실제S650ms/W650ms 107.87px 이동·복귀/G.map동일,임시24적·적탄최대22·공격/Q 화면확인 |
+| 재현 | skin65→outer66→outer67→outer68→outer69→outer70→outer71→outer72→outer73→outer74→outer75,11패치전체8192²픽셀재현. 64clamped청크/224경계strip동일 |
+| 상태 | VISUAL VERDICT RETOUCH,전체식생·상단반복root·밀집중첩잔여. 승인된git add가exec 시작전OS317로실패·미커밋; index비어있음/end-state.json |
+| 기록 | outer75_sources7파일/프롬프트·입출력정보. tmp/ch1-production-pre75 백업/tmp/ch1-checkpoint75-owned.zip소유·의존·맵cache/CHANGELOG분리patch·docs·검수기록 |
+| 상세 | captures/ch1_outer75/REPORT.md 및 맵production SSOT |
+
+## 2026-09-28 — CH1-1 남서 고목·지면 접합 74차
+
+| 항목 | 현행 결과 |
+|---|---|
+| 입력·원화 | 실제 73차 master crop2048/6144/2048²를 참조 입력으로 제공. Higgsfield GPT/job aa478af7-f0cd-4b02-a870-405d6263937b, 실제2048² RGB; 넓은 전투면과 고목 유지 |
+| 선택·합성 | crop 타원1200/1310/470/600, feather.30/opacity.92, 비보행 Chebyshev2타일 band(축별80월드px/81.92masterpx), blur20. 기존73mask>12 core는572,420픽셀 정확히 보호(MaxFilter25/blur18) |
+| 배경 | master·chunk_2_6/chunk_3_6/chunk_2_7/chunk_3_7, cache20260928-outer-74. 총183,663픽셀·경계 보행 재질121,007픽셀 변화; 안쪽 보행·고목 core·crop 밖 변경0 |
+| 검수 | 후보 전후8·일반 본편16시점·pageerror/HTTP오류0·회귀9 PASS. 경계78.5/174.5 S650ms/W650ms 실제106.25월드px 이동·복귀·G.map동일. 임시24적/적탄 최대25개·마우스공격/Q 시각검수 |
+| 보존 | skin65→outer66→outer67→outer68→outer69→outer70→outer71→outer72→outer73→outer74, 10패치 전체8192² helper 픽셀 재현. master/64청크·224경계 strip 일치. geometry/collision·늪버블·가스·동맥 유지 |
+| 상태 | VISUAL VERDICT RETOUCH. 잔여 잔뿌리·식생·접합·밀집 중첩 개선 필요. 이 보고 작성 시 Git 쓰기/커밋 미수행; 실제 기록 상태는 검수 end-state.json과 분리 |
+| 보존 자료 | tmp/ch1-production-pre74 백업, tmp/ch1-checkpoint74-owned.zip/소유파일·73차 의존파일·맵cache 분리본·관련docs·검수 자료/엔트리SHA 대조 |
+| 상세 | captures/ch1_outer74/REPORT.md 및 맵 production SSOT. 전체 프롬프트·입출력/참조 정보는 outer74_sources/generation.json |
+
+## 2026-09-28 — CH1-1 남서 시작 경계 부패 목질 73차
+
+| 항목 | 현행 결과 |
+|---|---|
+| 원화·배치 | Higgsfield GPT 투명2048²/job a0982929-ab1d-42e1-b230-efa86193c5b0. 중심tile73,180; crop2048/6144/2048², sprite1536²/offset174,461/RGB.70/opacity.84. 기존 비보행 외곽의 꺾인 고목·넓은 뿌리판·검은 공동 |
+| 배경 | master·chunk_2_6/chunk_2_7/chunk_3_7, cache20260928-outer-73; 580,534픽셀 변화·보행 픽셀 변경0 |
+| 검수 | 후보 전후7·본편39시점(첫27+새 페이지12)·pageerror/HTTP오류0·회귀9 PASS. 경계tile78.5,174.5 S650ms/W650ms 실제107.13px 이동·복귀·G.map동일. 기존오브젝트 충돌 속 순간이동83.5,183.5의0변위와 구분 |
+| 보존 | skin65→outer66→outer67→outer68→outer69→outer70→outer71→outer72→outer73 전체8192² helper 재현. 64청크/224경계 strip 동일. 기존 늪버블·가스·동맥·충돌 유지 |
+| metadata 수정 | 기존 runtime72/master72에 JSON label70이 남은 원인은 helper 복사의 하이픈 cache문자열 치환 누락. 신규 버전일치 회귀RED→GREEN 후 정확한cache73 명시. 최종 로더·composition·retouch-layers 모두73 |
+| 상태 | VISUAL VERDICT RETOUCH. 잔여식생·반복가지·밀집중첩 개선 필요. 초기 후반 흰 화면 캡처는 제외·재촬영; 원인·장시간 검증은 남음. 현재 세션73차 Git 쓰기/커밋은 아직 미완료; 기존72는4247b65a1 누적커밋에 포함 확인 |
+| 체크포인트 | tmp/ch1-checkpoint73-owned.zip /73차 소유파일·docs·공유game cache 분리본·검수자료/엔트리SHA 대조 |
+| 상세 | captures/ch1_outer73/REPORT.md 및 맵 production SSOT |
+
+## 2026-09-28 — CH1-1 남측 시작 경계 부패 목질 72차
 
 | 항목 | 현행 결과 |
 |---|---|
@@ -4264,7 +4438,7 @@ mpR = 0.05 + s.int×0.005                                        [NO P.lv×0.001
   - CSS: `:root` 에서 `--ui-user-scale` 변수 삭제, `--ui-scale:calc(...)` → `--ui-scale:var(--ui-auto-scale)` 로 단순화 (기존 `var(--ui-scale)` 참조 20건 그대로 호환)
   - 로드 마이그레이션 추가: `if('uiScale' in OPT)delete OPT.uiScale; if('uiScaleAuto' in OPT)delete OPT.uiScaleAuto;` → 뒤따르는 `saveSettings()` 로 localStorage 영속화
 - 참고: 프로젝트에 Ctrl+휠 핸들러나 uiScale 토스트는 처음부터 존재하지 않았음 (스펙 문구는 일반화)
-- 접근성: 브라우저 레벨 줌(Ctrl+/-) 사용
+- 당시 접근성 안내: 브라우저 레벨 줌(Ctrl+/-) 사용. **현행2026-09-29: HUD는 줌에도 화면 비율을 유지하며 줌을 HUD 크기 조절로 간주하지 않음.**
 - 검증 (최종):
   - `grep "OPT.uiScale"` = 0 (마이그레이션 `delete` 제외)
   - `grep "optUiScale"` = 0
@@ -4309,7 +4483,7 @@ mpR = 0.05 + s.int×0.005                                        [NO P.lv×0.001
 - **구조**: 자동 스케일 × 사용자 스케일 곱연산으로 전환. `uiScaleAuto` 플래그 완전 제거
 - `game.html` 변경:
   - `:root`에 `--ui-auto-scale:1; --ui-user-scale:1; --ui-scale:calc(var(--ui-auto-scale) * var(--ui-user-scale))` 3변수 체계. 기존 `--icon-sm/md/lg` 파생 유지
-  - `function applyUIScale()` 재작성: Match Shortest Side (`min(innerWidth/1920, innerHeight/1080)`), auto clamp `0.5~3.0`, user clamp `0.5~2.0`. 각각 `--ui-auto-scale / --ui-user-scale` 에 `toFixed(4)/(3)` 로 주입. `OPT.uiScale` 은 `parseFloat` + NaN 가드로 숫자만 사용 (`'auto'` 문자열 하위호환)
+  - `function applyUIScale()` 재작성: Match Shortest Side (`min(innerWidth/1920, innerHeight/1080)`), 당시 auto clamp `0.5~3.0`, user clamp `0.5~2.0` (현행2026-09-29: auto 고정 상하한 제거, user 배율은 이미 삭제). 각각 `--ui-auto-scale / --ui-user-scale` 에 `toFixed(4)/(3)` 로 주입. `OPT.uiScale` 은 `parseFloat` + NaN 가드로 숫자만 사용 (`'auto'` 문자열 하위호환)
   - `window.addEventListener('resize', applyUIScale)` 로 **무조건** 재계산 (수동 모드 구분 없음 — auto는 항상 활성)
   - 함수 정의 직후 `try{applyUIScale()}catch(e){}` 로 초기 1회 호출 보장
   - `let OPT` 에서 `uiScaleAuto` 키 제거, `uiScale:'auto'` → `uiScale:1` 로 숫자 통일
@@ -49866,7 +50040,7 @@ CSS 캐시 ui-refinement.css?v=20260927-4. 신규 이미지/아이템 데이터 
 | 창 범위 | .create-modal-inner 및 #delConfirmModal>div min-width0/max-width:calc(100vw - 24px)!important/max-height:calc(100dvh - 24px), overflow-y:auto/overflow-x:hidden/overflow-wrap:anywhere/scroll-padding-block8px. 삭제창 width400px |
 | 작은 화면 | max-width480px 또는 max-height480px에서 두 창 padding24px18px!important |
 | 버튼 | 생성·삭제 버튼행 flex-wrap:wrap, 버튼 flex:1 1 96px/min-width0/min-height44px |
-| 긴 문구 | 생성 제목·안내·삭제 질문 anywhere 줄바꿈. 생성 #status font12px/line-height1.5/max-height140px/overflow-y:auto/anywhere 줄바꿈 |
+| 긴 문구 | 생성 제목·안내·삭제 질문 anywhere 줄바꿈. 생성 #status font12px/line-height1.5/max-height:min(80px,20dvh)/overflow-y:auto/anywhere 줄바꿈. 이름 입력 바로 아래 배치·빈값 숨김·오류 시 입력/안내 노출은 2026-09-28 작은 생성창 이름 오류 즉시 노출 절을 따른다 |
 | 캐시 | index.html의 ui-refinement.css?v=20260927-dialog-layout |
 | 검증 |1280×720,360×480,640×360,320×280×생성/삭제2종=8경우. 긴 오류·삭제 안내로 창 화면 내·가로 넘침 없음·초점 버튼 보임 확인. tmp/lobby-dialog-layout/report.json 및 after.png. 스크립트 비활성 격리 렌더로 실제 저장·삭제 없음 |
 
@@ -50128,7 +50302,7 @@ CSS 캐시 ui-refinement.css?v=20260927-4. 신규 이미지/아이템 데이터 
 | 실버테일 | 기존 공식 assets/charselect/silvertail_solo.png?v=20260927을 전체 선택 장면으로 사용. 썸네일은 공식 bust 유지. 신규 이미지·영상 생성/변형 없음 |
 | 늦은 응답 | 정적 폴백 콜백에서 _selectedCharDisplay!==s이면 무시. 캐릭터 전환 시 preview.onerror 초기화,선택 해제 시 video src/poster 및 정적 src 제거 |
 | 영상 재사용 | getAttribute(src)의 물음표 앞 경로와 idleVid 경로를 비교하여 같은 영상의 불필요한 reload 방지. 기존 idleRate 유지 |
-| 구도 | 선택 미디어는 lobby-ancestor-art.css 현행 오버라이드: inset0,width100%,height100%,object-fit:cover,object-position:center center,transform:none,mask-image:none. 원본 종횡비 보존, 창 비율 차이는 가장자리 크롭. 정적 이미지 z-index1/영상2, 좌·우 UI3; 65%/55% 축소 해제(2026-09-29 사용자 정정) |
+| 구도 | 선택 미디어는 lobby-ancestor-art.css 현행 오버라이드: inset0,width100%,height100%,object-fit:cover,object-position:center center,transform:none,mask-image:none. 원본 종횡비 보존, 창 비율 차이는 가장자리 크롭. 정적 이미지 z-index1/영상2, 좌·우 UI3; 65%/55% 축소 해제(2026-09-29 사용자 정정) |
 | 캐시 | index.html:ui-refinement.css?v=20260927-selected-scene |
 | 검증 | 신규4회귀(정적 선택/영상 실패/이전 영상 늦은 실패/선택 해제)와 선택정보·동기화 포함16개 통과. 실제 CSS/함수 격리 브라우저1600×900 실버테일 표시 및 전사 영상 오류 후 전사 포스터1개만 표시 확인. 실물 게임패드·실계정 저장 미검증 |
 | 기록 | tmp/lobby-selected-scene/silvertail.png,warrior-fallback.png,report.json,changes.patch. 기존 터미널/.git 제한으로 커밋 미완료 |
@@ -50155,8 +50329,8 @@ CSS 캐시 ui-refinement.css?v=20260927-4. 신규 이미지/아이템 데이터 
 | 항목 | 현행 규격 |
 |---|---|
 | 원인 | 선택 미디어 width135%/145% 및 음수left와 cover가 전체화면에서 원본 글자·머리·목을 잘라냄. 해당 확대 규칙 폐기 |
-| 선택 이미지·영상 | #lobby 직계 .lobby-char-preview: inset0,width100%,height100%,object-fit:cover,object-position:center center,transform:none,mask-image:none. 원본 비율 유지하여 전체 화면 배치. 정적 이미지 z-index1/영상2, 좌·우 UI3(2026-09-29 사용자 정정) |
-| 비율 | 2026-09-29 현행: 원본 종횡비 유지. 표시 배율 max(뷰포트폭/원본폭,뷰포트높이/원본높이), 중앙 cover로 전체 화면 채움. 창과 원본 비율이 다르면 가장자리만 크롭; 임의 추가 배경 이미지 없음 |
+| 선택 이미지·영상 | #lobby 직계 .lobby-char-preview: inset0,width100%,height100%,object-fit:cover,object-position:center center,transform:none,mask-image:none. 원본 비율 유지하여 전체 화면 배치. 정적 이미지 z-index1/영상2, 좌·우 UI3(2026-09-29 사용자 정정) |
+| 비율 | 2026-09-29 현행: 원본 종횡비 유지. 표시 배율 max(뷰포트폭/원본폭,뷰포트높이/원본높이), 중앙 cover로 전체 화면 채움. 창과 원본 비율이 다르면 가장자리만 크롭; 임의 추가 배경 이미지 없음 |
 | 우측 패널 | 사용자 대안 수용: .lobby>.lobby-right background:#100d0e!important로 자기 열을 화면 상하·오른쪽 끝까지 채움. 기존 장식 프레임·안쪽 문양·컨트롤 유지. 이전 외곽 투명 계약의 로비 부분은 이 규칙으로 대체 |
 | 캐시 | index.html ui-refinement.css?v=20260927-selected-fit |
 | 검증 | 실제 HTML/CSS 격리 렌더2560×900,1920×1080,1600×900,960×540에서 원본 전체 포함·선택 영역과 우측 패널 겹침 없음·횡넘침 없음. 2560×900 표시1588.35×900/가용1664×900,전체 문구와 머리·발 시각 확인. 기능/저장 변경 없음 |
@@ -50774,8 +50948,8 @@ CSS 캐시 ui-refinement.css?v=20260927-4. 신규 이미지/아이템 데이터 
 | 모달 의미 | #charVisualPop role=dialog/aria-modal=true/aria-labelledby=charVisualTitle. 기존 제목 h2에 charVisualTitle id 추가 |
 | 미리보기 버튼 | openVisualSelect는 .cs-ico를 type=button인 네이티브 button으로 생성. selectVisual에서 .sel 및 aria-pressed=true/false를 함께 갱신. 출시 준비 캐릭터도 미리보기 버튼은 활성, visualCreateBtn만 기존 잠금 유지 |
 | 초기 초점 | 원래 activeElement를 _visualReturnFocus로 보존한 뒤 선택된 .cs-ico.sel에 focus(preventScroll:true). 해당 버튼이 없으면 취소 버튼. 일반 취소는 기존 공용 닫기와 연결된 실행 컨트롤 초점 복귀 |
-| Tab | _visualSelectKeydown: 캐릭터 버튼→취소→생성의 enabled 컨트롤을 순환. Shift+Tab 역순. 현재2종은 일반4개/출시 잠금3개. 초점이 외부에 있으면 정순 첫 항목/역순 마지막 항목으로 복구. preventDefault/stopPropagation으로 배경 이동 차단 |
-| 방향키 | 아이콘에 초점이 있을 때만 ArrowLeft/ArrowRight, Home/End 처리. 현재 인덱스를0~icons.length-1 범위로 제한하고 대상 네이티브 click 후 focus. 선택·설명·영상·생성 잠금·aria-pressed가 동일 캐릭터로 갱신. 취소/생성 버튼의 방향키는 가로채지 않음 |
+| Tab | _visualSelectKeydown: 설명(csLeft)→플레이 방식(csRight)→캐릭터 버튼→취소→생성의 enabled 컨트롤을 순환. Shift+Tab 역순. 현재2종은 일반6개/출시 잠금5개. 외부 초점은 정순 설명/역순 마지막 활성 액션으로 복구. focus(preventScroll:true) 후 정보 영역은 scrollIntoView(block:start)로 제목부터 노출. preventDefault/stopPropagation으로 배경 이동 차단 |
+| 방향키 | 아이콘에 초점이 있을 때만 ArrowLeft/ArrowRight, Home/End 처리. 좌우 step=(ArrowRight?1:-1)×(현재 document.documentElement.dir가rtl?-1:1),next=clamp(index+step,0,icons.length-1)로 화면상 좌우 이동 후 대상 네이티브 click/focus. Home은0,End는마지막 논리 인덱스 유지. 선택·설명·영상·생성 잠금·aria-pressed가 동일 캐릭터로 갱신. 취소/생성 버튼의 방향키는 가로채지 않음 |
 | Enter·Space | 네이티브 버튼 click으로 해당 캐릭터 미리보기 선택. 아이콘 입력으로 이름창/저장 요청을 시작하지 않음. 실제 생성 버튼은 기존 _visualConfirm 경로 유지 |
 | Escape·IME | 열린 창의 일반 Escape는 기본 동작·버블링 차단 후 비반복 입력일 때 visualCancelBtn.click(). isComposing 또는 keyCode229 이벤트 및 숨김 상태는 처리하지 않음. OS IME 실기 검증은 별도 |
 | 버튼 마감 | .cs-ico padding0/border0/background transparent/font inherit로 네이티브 버튼 기본 재질 제거. :focus-visible outline2px solid #ead6a5/offset6px/radius4px. 기존 아이콘·레이아웃·미디어 에셋 유지 |
@@ -50792,6 +50966,44 @@ CSS 캐시 ui-refinement.css?v=20260927-4. 신규 이미지/아이템 데이터 
 | 회귀 검사 | `test/vercelUpload.test.js`의 HTML 루트 참조 검사를 stylesheet와 script 모두로 확장. `lang_` 동적 언어 파일은 별도 복사 계약 유지 |
 
 
+## 2026-09-28 로비 카드 언어 즉시 갱신·DOM 상태 보존
+
+| id / 적용 위치 | 현행 계약 |
+|---|---|
+| 원인 | 로비 언어 선택 후 정적 메뉴와 전대 표제만 갱신, 기존 카드 이름/직업/진행/삭제 안내/aria-label은 이전 언어로 남음 |
+| _applyLobbyLang | 기존 _refreshStatusLanguage 다음에 _refreshLobbyCardsLanguage 호출. charList 안의 .char-item/.char-item-new에 등록한 _refreshLanguage 콜백만 실행. 목록 재조회·재렌더 없음 |
+| 최초 적용 | _refreshLobbyCardsLanguage는 document.getElementById 사용. 초기 언어 적용은 const $ 초기화 전일 수 있으므로 $나 슬롯 상태를 읽지 않음. 리스트가 없으면 반환, 빈 카드/미등록 콜백은 건너뜀 |
+| _addLobbyCardControl | label은 기존 문자열 또는 현재 언어를 계산하는 함수. card._refreshLanguage에서 label 함수 실행 후 .char-info 리프의 trim한 설명을 구분자 · 로 추가해 기존 button.char-select의 aria-label/title 동시 갱신. data-card-key·이벤트·DOM 노드 유지 |
+| _lobbyCardLeaf | 지정한 카드 내부 셀렉터의 children.length===0일 때만 textContent 변경. 부모 컨테이너·이미지·하위 DOM 보존. 삭제 버튼은 title 속성만 갱신 |
+| _lobbyCharacterCardLabel | 기존 CHAR_VISUALS 직업/클래스와 _formatLobbyStageProgress(stage,_TL) 재사용. .char-cls/.char-info/삭제 title 번역. 사용자 저장 이름, charIdx, 레벨, 스테이지 유지. 로컬 구분자 · /온라인 구분자 | 유지 |
+| _lobbyDemoCardLabel | 표시 이름은 KO 묘왕 바르칸 / 그 외 Varkan, the Tomb King, 표제는 전대 소환 / ANCESTRAL SUMMON. 기존 렌더에서 캡처한 진행으로 레벨·Stage 1-1·처치·브라우저 저장 안내 재번역. 초기 Lv.1 START · Stage 1-1 · Lv.100 Cap 유지. 언어 전환 중 세이브 다시 읽기/쓰기 없음 |
+| _lobbyNewCardLabel | 새 캐릭터/슬롯 가득참 및 기존 최대 개수 안내 재번역. 기존 공개5개·개발 Infinity 제한 유지. 가득찬 비활성 카드도 콜백 등록하되 버튼/생성 이벤트를 새로 만들지 않음 |
+| 상태 보존 | 같은 카드·선택 버튼·이미지·초점 유지. _selectedSlot/_selectedSlotName/_slotScrollIdx/_onlineScrollIdx/_characterLoadSeq 변경 없음. 번역 카탈로그 신규 키·전투/저장 형식 변경 없음 |
+| 회귀 | test/lobbyCardLanguage.test.js 신규11건: 데모2·온라인/로컬2·생성/가득참3·중첩 노드2·초기 적용1·기존 문자열 호환1. 원본7실패/4통과→수정 후11통과. $ 없는 초기화 검사도 수정 전1실패/10통과. 관련 통합239건 및 inline script4개 구문 통과 |
+| 기존 검사 보완 | developerCharacterSlots에 실제 _lobbyAncestorName/_lobbyAncestorCaption 함수와 KO 언어 대역 포함. 표시 이름 검사를 승인된 묘왕 바르칸으로 맞춤. DEMO CHARACTER는 기존 슬롯 메타데이터용 내부 이름으로 유지 |
+| 실제 언어 검증 | 960×540/1920×1080에서29언어×데모1·로컬 생성가능/가득참2·온라인 생성가능/가득참2=290조합. 동일 카드/버튼/이미지·선택·스크롤·초점 보존 및 가로 넘침 없음, pageerror0. 생성/삭제 저장 요청0 |
+| 진행·메뉴 검증 | 격리 브라우저 저장 Lv.46/처치1795의 KO→EN 및 실제 언어 메뉴 Enter/Home/ArrowDown/Enter 확인. 레벨·처치·JSON 저장 원문 보존, 원래 select 초점 복귀. 실제 계정/사용자 슬롯 쓰기 없음 |
+| 검증 범위 | 데모는 원본 Node 서버 페이지. 온라인/로컬 전체 슬롯은 별도 격리 페이지에서 _LOBBY_BUILD만 full로 바꾸고 슬롯 메타데이터/API를 대역으로 제공. 인증·서버 저장 종단 검증은 아님. 시각 점검은 번역 갱신/현재 배치 보존 범위 |
+| 기록·커밋 | tmp/lobby-card-language/browser-demo.json, browser-full.json, browser-progress.json, red-tests.txt, initialization-red-tests.txt, tests.txt, changes.patch. 관련 문서8개 동기화. 코드·테스트는 동시 게시 커밋76924fc7b 및 초기화 보완4d7e00efb에서 반영 확인. 추가 문서8개 git add는 승인 뒤 WindowsApps pwsh.exe CreateProcessW 오류 -1073283067/FormatMessage317로 명령 실행 전 실패. 상세 문서 저장·패치 검증 완료, 추가 문서 커밋 미완료 |
+
+
+## 2026-09-28 데모 카드 줄바꿈·입장 버튼 스크롤 분리
+
+| id / 적용 위치 | 현행 계약 |
+|---|---|
+| 원인 | 데모 진행 안내가 일반 카드의 한 줄 ellipsis에 묶여 1280×720에서도 잘림. 내용이 늘어나면 같은 스크롤 안의 입장 버튼도 아래로 밀림 |
+| 데모 카드 | ui-refinement.css의 #lobby .char-item:has(>.char-select[data-card-key="demo"])에 height:auto/min-height:84px. .char-name/.char-info는 white-space:normal/overflow:visible/text-overflow:clip/overflow-wrap:anywhere. .char-info line-height:1.45. 카드 내용만큼 세로로 증가 |
+| 일반 슬롯 | online:id/local:name/new 키는 위 선택자에 해당하지 않음. 기존 높이84px·진행 한 줄 말줄임·삭제 영역 유지. 이전 공통 한 줄/고정 높이 설명에서 데모는 이 절의 예외 |
+| 입장 영역 | index.html의 .lobby-footer를 .lobby-content 뒤, #lobbyStatus 앞의 .lobby-right 직계 자식으로 이동. 기존 flex-shrink:0/padding-bottom:8px 사용. 입장 원화의 비율·점등·disabled·이벤트 유지. 목록/배너만 세로 스크롤하며 입장은 스크롤과 독립 |
+| 캐시 | index.html의 ui-refinement.css?v=20260928-lobby-card-wrap. 기존 lobby-quit 캐시 다음 버전 |
+| 언어·저장 | 기존 _refreshLanguage 리프 갱신·선택 제어·세이브 구조 유지. 격리 Lv.46/처치1795 저장 원문 보존 확인. CSS와 DOM 위치만 변경하며 사용자 저장/계정 요청 없음 |
+| 브라우저 | 실제 Node 서버 데모 페이지:29언어×새 진행/저장 진행2×960×540,1280×720,1920×1080,2560×1080,800×480,640×480,480×360의7크기=406조합. 텍스트 범위 카드 안·가로 넘침 없음·입장 전체 화면 안/중앙 클릭 대상 유지·카드/버튼/이미지 동일 노드. pageerror0/쓰기 요청0 |
+| 짧은 창 | 목록/배너 내용은 세로 스크롤이 필요할 수 있음. 960×540에서 실제 Steam 버튼까지 스크롤한 뒤 클릭 대상 확인, 입장 위치 동일. 실제 Tab으로 Steam→입장→시네마틱→전원 초점 순서 확인. 입장/종료/Steam 외부 동작 자체는 실행하지 않음 |
+| 일반 슬롯 검증 | 격리 원본 HTML의 _LOBBY_BUILD만 full로 전환, API/슬롯 메타데이터 대역. 로컬/온라인×3크기960×540,1280×720,1920×1080=6조합에서 카드84px/nowrap 유지 및 입장 스크롤 독립. 인증·실제 저장 종단 검증은 아님 |
+| 회귀 | 관련 기존105건 및 inline script4개 구문 통과. lobbyStageInfo의 오래된 formatter 호출수2 고정 검사를 온라인/로컬 렌더와 언어 갱신의3함수별 연결 검사로 보완. 원본104통과/1실패→105통과. CSS를 그대로 반복하는 신규 단위 테스트 없음 |
+| 기록·커밋 | tmp/lobby-demo-card-layout/browser-before.json,browser-after.json,browser-full.json,browser-interaction.json,tests.txt,changes.patch. 기존 WindowsApps 런처 오류317 및 .git 쓰기 제한으로 커밋 미완료. 다른 작업의 에셋/맵/스테이징 보존 |
+
+
 ## 2026-09-28 선대 소환체 묘왕 바르칸 v2 — 떨림/바닥 고정과 설명 구분
 
 | 변경 | 현행 |
@@ -50802,6 +51014,41 @@ CSS 캐시 ui-refinement.css?v=20260927-4. 신규 이미지/아이템 데이터 
 | 픽셀 확인 | 최종 배경 전체290프레임에서 하단1920×208,y880 RGB 변화0. 소환체48셀 상부/발 고정 확인 |
 | 런타임/회귀 | 1920×1080/2160×720/960×540 독립 재생·배치·숨김·reduced-motion, pageerror0. 관련57개 통과 |
 | 제작 정보 | docs/5.0애니메이션파이프라인/LOBBY_VARKAN_SPRITE_VIDEO_20260928.md에 모델·job·프롬프트·후처리·규격·증거 기록. 전투 보행/소환 판정은 이번 로비 변경 범위 아님 |
+
+
+## 2026-09-28 짧은 창 Steam 배너·RTL 여백 마감
+
+| id / 적용 위치 | 현행 계약 |
+|---|---|
+| 원인 | 960×540 저장 진행에서 배너 문장이 스크롤 하단에 반쯤 잘리고 Steam 찜 버튼은 아래로 숨음. 작은 창에서 기존 버튼 고정 폭190px가 콘텐츠 폭보다 큼. RTL 패널의 물리 오른쪽 여백은 스크롤바 위치와 맞지 않음 |
+| 짧은 창 | ui-refinement.css @media(max-height:600px). #lobby .lma-txt-group 및 새 .lobby-card-gap 숨김, .lma-banner-inner padding0/gap0. 높이601px 이상에서는 기존 배너 문장/간격을 다시 표시. 전체 슬롯과 데모에 공통 적용 |
+| 찜 버튼 | 짧은 창의 .lma-steam-btn min-width0/max-width100%/min-height44px/display:flex/align-items:center/justify-content:center. 이미지 width:min(190px,100%)로 원본 비율 유지. 아주 좁은 콘텐츠에도 그림을 가로로 자르지 않음 |
+| 데모 카드 | 같은 짧은 창에서 data-card-key=demo 선택 버튼을 직접 가진 .char-item의 padding-top/bottom10px. 기존 높이auto/min-height84px/줄바꿈 유지. 온라인·로컬 일반 카드 높이84px 및 삭제 영역 유지 |
+| RTL 여백 | .lobby-content padding-right:8px를 padding-inline-end:8px로 변경. LTR는 오른쪽8px/왼쪽0, RTL은 왼쪽8px/오른쪽0. 기존 stable 거터·세로 스크롤·가로 넘침 숨김·scroll-padding-block4px 유지. 이전 문서의 물리 오른쪽8px 계약은 이 논리 여백으로 갱신 |
+| 버튼 언어 | index.html의 #lobbyWishlistBtn/type=button. _applyLobbyLang에서 기존 _TL(STEAM 위시리스트 추가)로 aria-label/title 속성만 갱신. 번역 목록 id2841 재사용, 새 키 없음. 이미지 alt는 빈 문자열이며 선택 버튼의 번역된 이름을 사용. 기존 openWishlist onclick/이미지/외부 이동 경로 유지 |
+| 초기화·DOM | document.getElementById 사용, $ 초기화에 의존하지 않음. 버튼·이미지·이벤트 노드 유지, 부모 textContent/innerHTML 교체 없음. 슬롯 선택·생성·삭제·저장 형식 변경 없음 |
+| 캐시 | index.html ui-refinement.css?v=20260928-lobby-banner-compact2. 실제 CSSOM에서 max-width100% 및 padding-inline-end8px 로드 확인. 중간 compact 캐시는 최종 버전으로 대체 |
+| 실제 데모 | Node 서버 실제 페이지29언어×새/저장 진행2×9크기960×540,1280×720,1920×1080,2560×1080,800×480,640×480,480×360,960×600,960×601=522조합. compact 표시 경계·전체 찜 이미지·클릭 대상·입장 표시·동일 버튼/이미지·진행 JSON 원문 확인. 높이600px 이하/폭640px 이상은 초기 스크롤0에서 찜 버튼 전체 표시. 480×360은 세로 스크롤 후 버튼 접근 |
+| 일반 슬롯 | 격리 HTML에서 _LOBBY_BUILD만 full로 바꾸고 API/메타데이터 대역. 로컬/온라인2×크기4×EN/AR2=16조합. 일반 카드84px·배너 버튼 접근·RTL 이미지 경계 확인. 인증/서버 저장의 종단 검증은 아님 |
+| 조작·회귀 | 실제 Enter/Space 각1회 기존 onclick 경로 호출, Tab→입장/Shift+Tab→찜 버튼 복귀. 외부 openWishlist 동작은 계수 대역으로 격리. 기존 관련105건/inline script4개 구문 통과. 새 CSS 반복 단위 테스트 없음. 페이지 오류0/쓰기 요청0 |
+| 기록·커밋 | tmp/lobby-compact-banner/browser-before.json,browser-after.json,browser-full.json,browser-keyboard.json,tests.txt,changes.patch. 코드·관련 문서10개 저장. 기존 WindowsApps 런처 오류317/.git 쓰기 제한으로 커밋 미완료. 동시 전대 아트·표제·테스트 변경은 보존하며 이 배너 패치에서 제외 |
+
+
+## 2026-09-28 언어 메뉴 키 반복·IME 보호와 찜 버튼 초점선
+
+| id / 적용 위치 | 현행 계약 |
+|---|---|
+| 재현 | 언어 select에서 실제 Enter keydown3회: 메뉴 열림→언어 change1회/닫힘→다시 열림. 키 유지의 repeat 이벤트가 다음 입력 단계에서 확정/재열기를 수행함. 작은480×360의 찜 버튼 외부 초점선은 왼쪽5px/하단약5px 잘림 |
+| 메뉴 열기 | loginLangSelect/langSelect/cinLang/lobbyLangSelect의 기존 keydown 연결. isComposing 또는 keyCode229면 처리하지 않음. Enter/공백/ArrowDown/ArrowUp은 기존 preventDefault/stopPropagation 후 repeat=false일 때만 _openLangPop(s) 호출 |
+| 팝업 수명 | _langPopKeydown은 _langPopOpen=false, _langPopSel 없음, isComposing 또는 keyCode229면 즉시 반환. 숨겨진 메뉴의 늦은 키 이벤트가 이전 선택을 확정하거나 null options를 읽지 않음 |
+| 확정·취소 | 열린 메뉴의 Enter/공백 repeat는 기본/버블링 차단 후 확정하지 않음. Escape repeat도 같은 차단 후 닫지 않음. 키를 놓고 새로 누른 Enter/공백은 기존 row.click, 새 Escape는 _closeLangPop으로 취소/원래 select 초점 복귀 |
+| 탐색·Tab | ArrowUp/ArrowDown의 repeat 및 Home/End는 기존 탐색·범위 제한·_hlLangPop 유지. Tab은 메뉴를 닫고 기본 초점 이동 유지. 마우스 row 클릭과 패드 D-pad/A/B 계약 변경 없음 |
+| 찜 초점선 | index.html의 .lobby-right :is(...) :focus-visible 목록에 #lobbyWishlistBtn 추가. 기존 공통 outline2px solid #ead6a5 유지, outline-offset은 바깥3px→안쪽−2px. 버튼/이미지 크기·배너의600px 경계·실행 이벤트 유지 |
+| 회귀 | test/lobbyLanguageKeyboard.test.js 신규24건: 확정2/키 유지2/IME8/숨김1/선택 노드 부재1/Escape1/Tab1/연속 방향키1/경계1/4개 select 연결4/IME 열기2. 원본19실패·5통과→24통과. 관련 통합167건 및 inline script4개 구문 통과 |
+| 실제 키보드 | Node 서버 원본 페이지960×540/1280×720/1920×1080. Enter/Space keydown3회에도 메뉴 유지/change0, release 후 새 확정만 change1/원래 select 초점. 방향키 연속 탐색1→3, 반복 Escape 보호·일반 Escape 취소. IME 두 플래그×Enter/공백/Escape/방향키는 합성 KeyboardEvent로 선택·확정 없음 확인. OS IME 실기 검증은 별도 |
+| 초점·패드 | 찜 버튼 실제 Tab 초점:480×360/640×480/960×540/1280×720/1920×1080에서 offset−2px/전체 테두리·가로 넘침 없음. 원본 HTML 격리 페이지480×360의 +3px 외곽선과 비교. 로비의 원본 lobbyNav 콜백에 버튼 상태 대역을 전달해 D-pad 이동/A 확정/B 취소 보존 확인; 실물 패드는 별도 |
+| 범위·기록 | 버튼 속성·팝업 이벤트만 변경, 부모 DOM/번역키/저장 형식 변경 없음. 사용자 저장/계정·Steam 외부 이동·게임 실행/종료 요청 없음. tmp/lobby-focus-finish/browser-before.json,browser-after.json,browser-keyboard.json,browser-focus-before.json,browser-focus.json,browser-gamepad.json,red-tests.txt,tests.txt,changes.patch |
+| 커밋 | 코드·신규 검사·관련 문서10개 저장 및 이번 범위 검토 패치 보존. 기존 WindowsApps 런처 오류317/.git 쓰기 제한으로 커밋 미완료. 다른 작업의 맵/아트·기존 UI 변경과 스테이징을 직접 변경하지 않음 |
 
 
 ## 2026-09-28 바르칸 v3 — 정지처럼 보이던 대기 동작 복원
@@ -50828,6 +51075,384 @@ CSS 캐시 ui-refinement.css?v=20260927-4. 신규 이미지/아이템 데이터 
 | DOM/언어 | _lobbyCardLeaf는 특정 리프의 children.length===0만 갱신. 선택 제어/이미지 노드/초점 유지. 언어 전환 중 세이브 읽기/쓰기 없음 |
 | 검증 | 기존 언어·데모 슬롯·소환체 회귀와 격리 브라우저의 신규/저장 진행, 한국어/영어, 새로고침 및3크기 확인. 상세 증거 captures/ancestor_grok_review/player-card/runtime-report.json |
 
+
+## 2026-09-28 외형 선택 하단 버튼 폭·줄바꿈 보완
+
+| id / 적용 위치 | 현행 계약 |
+|---|---|
+| 원인 | index.html의 .cs-actions max-width:min(56vw,760px)와 취소/생성 고정 가로 패딩34px/46px가 480px 폭에서 버튼을 압축. KO 취소2줄, 출시 준비 중2줄, EN Coming Soon의 오른쪽이 액션 영역을 초과. 버튼 간격0px |
+| 액션 폭·간격 | .cs-actions width:100%/max-width:760px/margin:0 auto. display:flex/flex-wrap:wrap/gap:12px/align-items:center/justify-content:space-between. 부모 .cs-foot의 기존 가로 패딩min(4vw,64px) 안에서 사용. 480px 액션 폭268.796875px→441.625px |
+| 버튼 공통 | #charVisualPop .cs-actions button: min-width:0/min-height:44px/max-width:100%/overflow-wrap:anywhere. 번역에 필요한 실제 높이는 늘어나며 텍스트·버튼을 잘라 숨기지 않음 |
+| 작은 창 | @media(max-width:700px): #visualCancelBtn padding-inline:16px, #visualCreateBtn padding-inline:20px. 기존 세로 패딩10px/11px 및 700px 초과 가로 패딩34px/46px 유지. 두 버튼이 한 행에 들어가지 않으면 flex-wrap으로 다음 행 배치 |
+| 실제 작은 창 | 480×360 KO 취소/출시 준비 중 모두1줄, 두 버튼 높이44px, 액션/화면 경계 내부, 충분한 간격. disabled 출시 잠금 유지. 원본29언어×잠긴 외형1조건에서 간격·영역·높이 중 적어도1항목 미충족→수정 후 통과 |
+| 전체 배치 검사 | Node 서버 원본 페이지에서29언어×전사0/실버테일1×320×360,480×360,640×480,800×480,960×540,1280×720,1920×1080,2560×1080의8크기=464조건. 버튼·텍스트가 액션/화면 안, 간격8px 이상(실제 CSS 최소12px), 텍스트 최대2줄, 높이44px 이상, 가로 넘침 없음, 실버테일 생성 disabled 유지 |
+| 실제 조작 | 320×360/480×360/960×540/1920×1080에서 Tab·Shift+Tab·Enter로 외형→취소→생성 이동 및 출시 잠금 시 생성 버튼 제외 확인. Escape 닫기, 실제 취소 버튼 클릭 뒤 실행 컨트롤(lobbyWishlistBtn) 초점 복귀. pageerror0/쓰기 요청0. 실제 저장·외부 Steam·앱 종료 실행 없음 |
+| 회귀 | 관련 기존12파일187건 통과, index.html inline script4개 구문 통과. CSS 값을 반복하는 신규 단위 테스트는 추가하지 않음. 실제 브라우저 재현/측정은 tmp/lobby-visual-fit/verify-footer.mjs에 기록 |
+| 검수 범위 | 이 절은 하단 액션 영역 검수 기록. 당시480px에서 설명5.52px였던 후속 과제는 아래 외형 선택 설명 최소 글꼴·반응형 스크롤 절에서 설명 최소13px/플레이 방식 본문 최소12px 및 정보 스크롤로 보완 |
+| 증거·커밋 | tmp/lobby-visual-fit/before-languages.json,after-languages.json,after-desktop.json,interaction.json,tests.txt,changes.patch. 관련 문서7개 동기화. 기존 WindowsApps 실행 오류317 및 현재 .git 쓰기 제한으로 커밋 미완료. 다른 작업의 소스·문서·스테이징 보존 |
+
+
+## 2026-09-28 외형 선택 설명 최소 글꼴·반응형 스크롤
+
+| id / 선택자 | 최소 px | 비례값 | 최댓값 |
+|---|---:|---|---|
+| #charVisualPop h2 | 20 | 3vw | 2.4rem |
+| .cs-sub | 12 | 1.3vw | 1rem |
+| #csClsName | 11 | 1.1vw | .85rem |
+| #csCharName | 22 | 2.6vw | 2.1rem |
+| #csCharDesc | 13 | 1.15vw | .95rem |
+| .cs-right-title | 13 | 1.3vw | 1rem |
+| .cs-trait .tt | 13 | 1.05vw | .92rem |
+| .cs-trait .td | 12 | .95vw | .82rem |
+| .cs-ico .lbl | 12 | 1vw | .82rem |
+| .cs-ico .cs-soon | 11 | .85vw | .72rem |
+| .cs-ico-ring 폭 | 44 | 5.6vw | 70px |
+
+모두 clamp(최소, 비례값, 최댓값). .cs-sub line-height1.4, 설명1.6/플레이 방식 본문1.45 유지.
+
+| id / 적용 위치 | 현행 계약 |
+|---|---|
+| 원인 | 480×360에서 기존 min(vw,rem)은 설명5.52px/특성 제목5.04px/특성 본문4.56px까지 축소. 오른쪽 프레임이 본문 영역의 위·아래로 넘어가며 작은 창 정보를 읽기 어려움. #csThumb만 숨기는900px 이하 규칙은 빈 코너 장식을 남김 |
+| 넓은 창 정보 | .cs-side flex:0 0 min(26vw,340px), justify-content:safe center, gap18px. min-width/min-height0, padding16px 8px, overflow-y:auto/overflow-x:hidden, overscroll-behavior:contain/scroll-padding-block16px/overflow-wrap:anywhere. 높이 부족 시 위에서 시작해 내부 스크롤, 충분하면 가운데 배치. .cs-trait 마지막 텍스트 div min-width0 |
+| 정보 초점 | #csLeft tabindex0/role region/aria-labelledby csCharName. #csRight tabindex0/role region/aria-labelledby csPlaystyleTitle. 기존 .cs-right-title 리프에 해당 id 추가. .cs-side:focus-visible outline2px solid #ead6a5/offset−2px |
+| 폭760px 이하 | .cs-head padding16px 20px 12px, h2의 좌우 장식선 숨김. .cs-body display:grid/columns:minmax(0,1fr)/grid-auto-rows:max-content/align-content:start/gap20px/padding4px 20px 20px. 세로 스크롤·가로 숨김·overscroll contain·stable 거터·scroll-padding-block16px. 헤더와 기존 하단 컨트롤은 이 스크롤 밖에 고정 |
+| 작은 창 정보 카드 | .cs-side min-height:auto/overflow:visible/padding2px/justify-content:flex-start. 왼쪽은 minmax(0,1fr) 64px의2열, gap8px 12px/align-items:start. 직업·이름·설명은1열의1/2/3행, 썸네일은2열의1~3행·width64px/margin0. 이름 margin0/아래선 margin-top6px, 설명 max-width:none |
+| 작은 창 순서·무대 | 왼쪽 설명→2행 플레이 방식→3행 정적 폴백/잠금 무대. 무대 min-height:clamp(200px,calc(34vw + 92px),352px), #csPortrait max-height200px. .cs-frame-box padding26px 16px 16px. 선택된 캐릭터의 기존 영상/초상 경로와 contain 합성 유지 |
+| 중간 폭 썸네일 | 761~900px만 .cs-side flex-basis:min(30vw,220px), .cs-thumb-wrap 전체 display:none. 폭≤760은64px 썸네일, 폭≥901은 기존 min(11vw,150px) 썸네일. 이미지 없는 장식 코너만 남기지 않음 |
+| Tab 순서 | _visualSelectKeydown의 details는 csLeft/csRight, controls는 details→외형 아이콘→취소→생성 중 enabled 항목. 일반6개/출시 잠금5개. 최초 초점은 기존 선택 아이콘 유지. Shift+Tab 역순·순환/외부 초점 복구 유지. 초점은 preventScroll:true 후 정보 영역에만 scrollIntoView(block:start)하여 긴 정보의 제목을 먼저 노출 |
+| 읽기 입력 | 정보 영역의 PageUp/PageDown/Home/End/상하 방향키는 네이티브 스크롤 허용. 외형 아이콘의 좌우/Home/End 미리보기, Escape 취소·IME 무시 유지. Enter로 정보 영역에서 생성 요청을 시작하지 않음. 패드 기존 선택/잠금/취소 경로 유지 |
+| 스크롤 수명 | _resetVisualInfoScroll은 팝업 .cs-body와 csLeft/csRight의 scrollTop을0으로 설정. openVisualSelect는 매번 선택 렌더 뒤 초기화. selectVisual은 기존 _pendingVisualIdx와 ci가 다를 때만 텍스트/특성 갱신 후 초기화. 동일 외형 재선택은 읽던 위치 유지. 저장 필드로 직렬화하지 않음 |
+| 실제 브라우저 | Node 서버 원본 페이지29언어×전사0/실버테일1×320×360,480×360,640×480,600×900,760×540,761×540,900×540,901×540,960×540,1280×720,1920×1080,2560×1080의12크기=696조건 통과. 최소 글꼴·줄의 가로 경계·마지막 특성 줄 접근·헤더/본문/하단 분리·본문 높이40px 이상·썸네일 표시 경계·생성 잠금·가로 넘침 없음 확인 |
+| 실제 입력 | 320×360/480×360/960×540/1920×1080에서 Shift+Tab 정보 초점·제목 노출, PageDown/End, 외형 변경 초기화/동일 외형 보존/재열기 초기화·하단 위치 고정·Escape 초점 복귀 확인. 좁은 KO PageDown 본문 scrollTop97→172, 960×540 오른쪽0→69. 480×360 마우스 휠112px에서 제목·12px 본문 접근 및 하단 고정 확인. pageerror0/쓰기 요청0 |
+| 회귀 | lobbyVisualKeyboard 기존17→25건: 첫 정보 순환21건의4실패/17통과→통과, 제목 노출22건의1실패/21통과→통과, 스크롤 수명25건의2실패/23통과→통과. 관련12파일195건/inline script4개 구문 통과. lobbyCreationOverlayLifecycle 추출 함수 목록에 실제 _resetVisualInfoScroll 포함하여 기존 미디어/전환 검증 유지 |
+| 기록·커밋 | tmp/lobby-visual-readability/browser-before.json,browser-matrix.json,interaction.json,mouse-wheel.json,red-tests.txt,focus-red-tests.txt,scroll-red-tests.txt,tests.txt,changes.patch. 문서7개 동기화. 현재 .git 쓰기 제한 및 기존 WindowsApps 런처 오류317로 커밋 미완료. 다른 작업의 맵/아트·소스·스테이징 보존 |
+
+
+## 2026-09-28 외형 선택 배치 전환의 정보 초점 유지
+
+| id / 적용 위치 | 현행 계약 |
+|---|---|
+| 원인 | 960×540에서 csRight를 End로 읽은 뒤480×360으로 바꾸면 초점은 csRight에 남고 플레이 방식 제목은 본문 밖으로 이동. 반대 전환에서는 이전 패널 scrollTop69가 다시 적용될 수 있음. 기존 열기/외형 변경 초기화만으로는 열린 창의 배치 전환을 처리하지 못함 |
+| 등록 | window.matchMedia('(max-width:760px)').addEventListener('change',_visualInfoLayoutChanged) 1회. CSS의760px 이하 단일 열 /761px 이상 좌우 패널 경계와 동일. 모든 resize에 스크롤 초기화를 연결하지 않음 |
+| _visualInfoLayoutChanged | charVisualPop.style.display가 flex이고 document.activeElement가 csLeft 또는 csRight일 때만 처리. _resetVisualInfoScroll로 본문·양쪽 패널 scrollTop0 후 현재 초점 영역에 scrollIntoView(block:start). 초점 대상·_pendingVisualIdx·생성 잠금·미디어 경로 유지 |
+| 보존·제외 | 같은 배치 안에서 크기 조절은 해당 change 이벤트 없음. 아이콘/액션/외부 초점 및 숨긴 팝업은 스크롤·초점을 변경하지 않음. 기존 열기/다른 외형 선택 초기화, 동일 외형 선택 보존 계약 유지. 새 세이브 필드 없음 |
+| 네이티브 보정 | 그리스어 실버테일480→500px의 본문 scrollTop47→50은 수정 전 HTML 격리 페이지에서도 재현. 브라우저의 레이아웃 스크롤 앵커 보정을 강제로 되돌리지 않음. 같은 배치 검증은 실제 _resetVisualInfoScroll 호출 증가0과 읽기 위치 비초기화·초점 유지로 판정 |
+| 실제 브라우저 | Node 서버 원본29언어×전사0/실버테일1×정보 영역2개×761↔760px 양방향=232조건. 현재 초점 제목 노출·패널 scrollTop0·선택/출시 잠금 유지·헤더/본문/하단 분리·가로 넘침 없음. 같은 배치480→500/960→980px·높이360px는 KO/EN/DE/FR/EL/AR×2외형×2영역×2전환=48조건 |
+| 실제 키보드 | Shift+Tab 정보 초점/End 후960×540↔480×360,1920×1080↔320×360의4조건에서 제목 노출·초점 유지. 리사이즈 후 ArrowRight로 실버테일 잠금/ArrowLeft로 전사 복귀, Escape 후 찜 버튼 초점 복귀와 숨긴 창 리사이즈 보존. pageerror0/쓰기 요청0 |
+| 회귀 | lobbyVisualKeyboard25→31건. 수정 전6실패/25통과→31통과. 양쪽 정보 영역 재노출·아이콘/액션/외부 초점 비간섭·숨긴 창 비간섭 및 실제 MediaQueryList change 등록 검증. 관련12파일201건/inline script4개 구문 통과 |
+| 기록 | tmp/lobby-visual-resize의 browser-before.json,native-anchor-before.json,browser-matrix.json,same-mode.json,interaction.json,summary.json,red-tests.txt,tests.txt,changes.patch. 코드·테스트 및 문서7개를 함께 검토할 수 있도록 패치 준비. 현재 환경의 .git 쓰기 제한으로 커밋 미완료 |
+
+
+## 2026-09-28 외형 재선택 영상 재시작 방지
+
+| id / 적용 위치 | 현행 계약 |
+|---|---|
+| 원인 | selectVisual이 idleVid/sceneVid의 물음표 앞 경로를 src.endsWith로 비교. 실제 src에는 ?v=20260913-detail1 또는 ?v=20260927-restored 등이 남아 같은 캐릭터 재선택도 다른 영상으로 판정. 960×540 전사 영상2초에서 재클릭 후 emptied/loadstart 발생·0.213648초로 재시작 확인 |
+| csIdleVid | idle.getAttribute('src')!==ch.idleVid 또는 idle.error가 있으면 on 클래스 제거·src 지정·load 실행. 동일한 전체 경로·쿼리이며 오류 없으면 기존 영상과 currentTime 유지. _isrc/split('?')/endsWith 비교 제거 |
+| csSceneVid | 정적 초상화+씬 영상 분기의 vid.getAttribute('src')!==ch.sceneVid 또는 vid.error일 때만 src 지정. 동일 버전 재선택은 재로드하지 않음. 분기 내 _src/split('?')/endsWith 비교 제거 |
+| 버전·실패 | 파일 경로가 같아도 쿼리 버전이 바뀌면 영상 교체. MediaError가 있는 같은 주소는 재선택으로 다시 로드하여 정상 복구 가능. 정상 영상만 재사용하며 재시도 경로를 차단하지 않음 |
+| 수명·UI | selectVisual의 _visualPreviewSeq/isCurrent와 기존 오류·180ms 폴백·5000ms 스톨 보호 유지. 닫기에서 src/poster·이벤트·타이머 해제, 재열기에서 선택 영상 재생. 전사0.75배속·실버테일1배속/comingSoon:true·포스터/초상화·contain 비율 및 선택/초점/스크롤 계약 유지. 새 미디어나 세이브 필드 없음 |
+| 실제 재선택 | Node 서버 원본480×360/960×540/1920×1080×2외형×클릭·경계 방향키 유지=12조건. sceneVid 분기는 기존 bg_scene1_loop.mp4?v=2로960×540 클릭/Home의2조건. 총14조건 모두 currentTime 연속 증가·emptied/loadstart0·선택/출시 잠금·속도 보존 |
+| 실제 교체·재시도 | 버전 교체7조건(아이들6/씬1), 캐릭터 교체6조건, 취소·재열기6조건 통과. 아이들/씬 GET를 각각 일시404로 실패시키고 같은 버튼 재선택: MediaError4→null·readyState4·loadstart 확인2조건. pageerror0/쓰기 요청0 |
+| 회귀 | lobbyCreationOverlayLifecycle17→25건. src 속성·대입과 currentTime/load를 반영한 미디어 대역으로 동일 버전 재사용·쿼리 변경·캐릭터 변경/이전 폴백·오류 재시도를 각각2분기 검증. 첫23건2실패/21통과, 재시도25건2실패/23통과→최종25통과. 관련12파일209건/inline script4개 구문 통과 |
+| 기록·범위 | tmp/lobby-preview-reselection의 browser-before.json,browser-matrix.json,lifecycle.json,summary.json,red-tests.txt,retry-red-tests.txt,tests.txt,changes.patch. 코드·테스트와 관련 문서9개를 함께 검토 가능한 패치로 정리. 현재 환경의 .git 쓰기 제한으로 이번 변경 커밋 미완료; 기존 스테이징은 보존 |
+
+
+## 2026-09-28 이름 입력 안내 상시 표시·취소 글자 가독성
+
+| id / 적용 위치 | 현행 계약 |
+|---|---|
+| 원인 | 기존 입력칸 placeholder #443322와 취소 글자 #884433이 어두운 창에서 읽기 어려움. 320×360의 입력 내용 폭220px에서 영어 안내224.733px/일본어220.160px로 끝부분 잘림. 이름 입력 후에는 placeholder 안내가 사라짐 |
+| charNameLabel | index.html에서 charName 바로 앞에 label.name-label/id charNameLabel/for charName 추가. 기존 번역키 캐릭터 이름 (2~8자)를 표시. 입력 중에도 안내·글자 제한 유지, 네이티브 input.labels로 입력 이름 제공. 부모·입력 DOM 교체 없음 |
+| .name-label | display:block/text-align:start/color #bda183/font-size .875rem/line-height1.5/letter-spacing .05em/margin-bottom8px/overflow-wrap:anywhere. 실제16px 루트의 글꼴14px·줄높이21px. RTL은 논리 시작 방향 사용, 긴 번역은 줄바꿈 |
+| charName | placeholder 속성과 기존 .name-input::placeholder 색 규칙 제거. maxlength8·입력 글꼴1rem·입력값/이름2~8자 검증·한글 IME/Enter 반복 보호·가상 키보드·생성/저장 경로 유지 |
+| _applyLobbyLang | charNameLabel을 document.getElementById로 찾아 기존 _TL(캐릭터 이름 (2~8자))를 label 리프 textContent에 갱신. 입력값·초점·새 번역키·저장 형식 변경 없음. 처음 초기화 또는 노드 없는 화면에도 null 가드 유지 |
+| 취소 글자 | 현행 .create-cancel-btn은 #dfceb0 중성 흑철 버튼. 활성 hover brightness1.13/border #c9ab7d, focus-visible2px #ead1a0/offset-4px. 이름·종료·삭제 확인창 흑철 마감 절이 이전 #bda183·붉은 호버를 대체하며 클릭/취소 정책 유지 |
+| 대비 계산 | 계산용 창 배경 상한 RGB(26,17,11)에 새 안내/취소 RGB(189,161,131) 대비7.60846. 이전 취소2.58784, 이전 placeholder는 입력 배경 RGB(16,11,7)에서1.62392. CSS 합성 배경에 대한 계산이며 화면 픽셀 측정값은 아님 |
+| 실제 브라우저 | Node 서버 원본29언어×320×280/320×360/480×360/960×540/1920×1080의5창×가상 키보드 꺼짐/켜짐2=290조건. 안내 전체 줄 경계·label 연결·입력값 이름유지/maxlength8·최소14px·색·팝업/버튼 접근·가로 넘침 없음 확인. pageerror0/쓰기 요청0 |
+| 실제 키보드 | 320×280/480×360/960×540에서 Hero7 입력 후 KO→EN 값/초점 유지. Tab 이름→취소→생성→이름/Shift+Tab 역방향 및 Escape 후 기존 캐릭터 버튼 초점 복귀 확인. 실제 캐릭터 저장 요청 없음 |
+| 회귀 | lobbyCardLanguage 기존11→12건: 안내 번역·동일 label 노드·입력값/빈 placeholder·초점 유지·API 요청0. 수정 전1실패/11통과→12통과. 관련12파일210건/inline script4개 구문 통과 |
+| 기록·커밋 | tmp/lobby-name-detail의 placeholder-before.json,contrast.json,browser-matrix.json,interaction.json,summary.json,red-tests.txt,tests.txt,changes.patch. 코드·테스트 및 문서7개를 검토 패치로 정리. 현재 .git 쓰기 제한으로 이번 변경 커밋 미완료. 기존 스테이징 보존 |
+
+
+## 2026-09-28 종료창 취소 후 키 유지 재열림 방지
+
+| id / 적용 위치 | 현행 계약 |
+|---|---|
+| 원인 | 종료 확인창의 취소에 Enter keydown을 보내면 창 none/초점 lobbyQuitBtn으로 복귀. 같은 키의 repeat keydown이 로비 전원 버튼의 네이티브 click을 실행해 확인창을 다시 flex로 열었음. 기존 delConfirmModal의 반복 차단은 이미 닫힌 창 밖까지 처리하지 못함 |
+| lobbyQuitBtn | 기존 onclick _showLobbyQuit() 옆 onkeydown _lobbyQuitKeydown(event) 연결. SVG·번역된 aria-label/title·전원 터치 영역·초점 표시·레이아웃 유지 |
+| _lobbyQuitKeydown | repeat가 true이고 key가 Enter 또는 공백일 때 preventDefault/stopPropagation. 단일 입력 및 Tab/Escape/좌우 방향키는 소비하지 않음. 키를 놓고 새로 누르는 네이티브 버튼 활성화·마우스/프로그램 click 유지 |
+| 확인창 수명 | 기존 delConfirmModal 내부의 Enter/Space 반복 차단, 기본 취소 초점, Escape/B 취소, Tab 순환, busy 보호와 _showLobbyQuit의 실제 전원 버튼 초점 복귀 정책 유지. 종료 API 우선순위·150ms 브라우저 안내·요청 번호 보호 변경 없음 |
+| 실제 키보드 | Node 서버 원본320×280/480×360/960×540×KO/EN/AR×Enter/Space=18흐름. Enter 취소 후 repeat4회에도 창 닫힘·전원 초점·열기 횟수 불변·종료0회. Space는 초기 키 유지 중 창 닫힘/해제 후1회 열기, 새 입력 취소·재열기 확인. Escape 복귀, 열린 창 경계·가로 넘침 없음 |
+| 클릭·확정 | 각3크기에서 실제 마우스 및 프로그램 click의 열기/취소6흐름 유지. 의도적인 Tab→확인→Enter3흐름은 원래 종료 콜백1회씩 실행. NW App.quit만 카운터 대역으로 대체하여 실제 앱 종료 없음. 실물 패드 검증은 아님. pageerror0/쓰기 요청0 |
+| 회귀 | lobbyConfirmStick7→10건. 새 Enter/Space 취소 복귀 반복 및 다른 탐색 키 비간섭3건은 수정 전3실패/7통과→10통과. 기존 스틱 중립·실행 버튼 복귀·온라인/로컬 삭제 취소 보존. 관련8파일160건/inline script4개 구문 통과 |
+| 기록·커밋 | tmp/lobby-quit-held-key의 browser-before.json,browser-after-smoke.json,browser-matrix.json,confirmation.json,summary.json,red-tests.txt,tests.txt,changes.patch. 코드·테스트 및 문서6개를 함께 검토할 수 있게 정리. 현재 .git 쓰기 제한으로 이번 변경 커밋 미완료. 다른 작업의 스테이징 보존 |
+
+
+## 2026-09-28 작은 생성창 이름 오류 즉시 노출
+
+| id / 적용 위치 | 현행 계약 |
+|---|---|
+| 재현 | 320×280 실제 로비에서 외형 확정 후 1글자 이름을 Enter로 제출. 입력칸149~203px에 초점이 남고 오류는270~304px,생성창 하단268px 밖으로 완전히 가려졌다. |
+| DOM 위치 | index.html의 #status를 #charName 바로 다음,#vkbWrap 및 .create-modal-btns 앞에 배치. role=status/aria-live=polite,입력 aria-describedby=status. 기존 리프와 번역키 사용,부모 내용 교체 없음. |
+| 표시 규격 | ui-refinement.css .create-modal-inner #status: font-size12px/line-height1.5/max-height:min(80px,20dvh)/overflow-y:auto/overflow-wrap:anywhere/margin-bottom12px. 빈 안내는 :empty display:none. 종전 max-height140px를 대체한다. |
+| 오류 노출 | setStatus가 status 리프에 비어 있지 않은 오류를 표시하고 createModal이 show일 때,charName→status 순서로 scrollIntoView(block:nearest). 입력값과 activeElement는 변경하지 않는다. 가상 키보드 OK나 같은 오류 재제출도 창 바깥에 있던 입력칸과 안내를 다시 노출한다. |
+| 읽기 위치 | 새 문구는 기존 scrollTop0,같은 문구의 안내 내부 scrollTop은 유지. 오류 영역 상한을 넘는 서버 원문은 안내 내부에서 스크롤하며,창 버튼은 기존 세로 스크롤·Tab 순서로 접근한다. 빈값/진행 안내/숨은 생성창/자식이 있는 상태 컨테이너에는 새 노출 동작이 없다. |
+| 실패 UI | _showCreateFailure는 버튼 잠금 해제→이름 복원→창 show→입력 focus→setStatus 오류 순서. 온라인 doCreateChar의 오류도 같은 helper를 사용하며23505 중복 안내와 기타 오류 원문을 보존한다. 요청 번호/저장/목록/스토리 후처리는 기존 계약 유지. |
+| 브라우저 | Node 서버 원본 페이지320×280/480×360/960×540×ko/en/ar×가상 키보드 off/on. 길이 오류/특수문자/같은 오류 재제출/긴 서버 오류 총72조건에서 입력·오류 영역 노출 및 횡넘침 없음. 입력값·초점과 같은 긴 오류의 내부 읽기 위치 보존,새 오류 초기화,pageerror0/쓰기 요청0. 서버 실패는 원본 helper 직접 호출이며 실서버 저장 실패를 유발한 검사가 아니다. |
+| 실제 컨트롤 | 320×280의 실제 가상 키보드 OK 마우스 클릭 후 이름·오류 동시 노출,Tab→취소/Shift+Tab→입력/Escape 닫기 확인. 데모에 생성 카드가 없어 openVisualSelect로 진입한 뒤 실제 외형 생성 확정/입력/컨트롤을 사용했다. |
+| 회귀·캐시 | test/characterSync,characterStoryCreation,lobbyCreationResponse,lobbyCreationOverlayLifecycle,lobbyVisualKeyboard,lobbyCardLanguage,lobbyHangulInput,lobbyConfirmStick 총146건 PASS. inline script4개 구문 PASS. CSS 쿼리20260928-lobby-name-error. |
+| 기록·상태 | tmp/lobby-name-error-focus/의 red-browser.txt,browser-matrix.json,summary.json,verify-error.mjs,native-extra.json,after-320-ko.png,after-320-vkb.png,after-320-server.png,tests.txt,changes.patch. 코드2개·문서7개 범위. 현재 .git 쓰기 제한으로 커밋 미완료,기존 타 작업 스테이징 보존. |
+
+
+## 2026-09-28 외형 미리보기 RTL 좌우 입력 정합
+
+| id / 적용 위치 | 현행 계약 |
+|---|---|
+| 재현 | Node 서버 원본960×540·아랍어 dir=rtl. 전사0의 x492.48px,실버테일1의 x413.78px로1이 왼쪽에 있지만0에서 ArrowLeft가0을 유지했다. 패드도 좌=-1/우=+1 고정 인덱스 연산이라 같은 역방향 문제가 있었다. |
+| 표시 방향 | 기존 ExoduserI18n.applyDocumentLanguage가 아랍어만 document.documentElement.dir=rtl,나머지는ltr로 설정한다. #visualGrid의 기존 flex 배치가 이 방향을 상속한다. 배치·아이콘·캐릭터 에셋을 바꾸지 않는다. |
+| 키보드 | _visualSelectKeydown의 step=(ArrowRight?1:-1)×(현재 dir===rtl?-1:1). next=clamp(index+step,0,icons.length-1). 아이콘 초점에서 좌우는 화면상 좌우 이웃으로 이동하고 기존 click/focus(preventScroll:true)를 실행한다. |
+| Home/End·잠금 | Home은 논리 첫 버튼0,End는 마지막 버튼icons.length-1. RTL에서 첫 버튼이 오른쪽이라는 기존 DOM 순서 유지. 선택/초점/aria-pressed/설명·미디어·생성 잠금은 같은 캐릭터로 갱신. 일반 전사0 생성 활성,실버테일1 출시 준비 잠금. |
+| 패드 | 기존 lobbyNav의 외형 팝업 분기에서 step=현재 dir===rtl?-1:1. D-pad14 또는 좌스틱x<-0.5의 새 입력은 clamp(idx-step,0,cards.length-1),D-pad15 또는 x>0.5의 새 입력은 clamp(idx+step,0,cards.length-1). 기존 _viL/_viR 유지 판정·selectVisual·A확정/B취소 유지. |
+| 언어 전환 | 입력 처리 때마다 현재 document.documentElement.dir를 읽는다. 열린 상태에서 en→ar→en으로 전환해도 다음 새 방향 입력이 현재 보이는 순서에 맞는다. 미리보기 재생·저장 순서·캐릭터 id는 바꾸지 않는다. |
+| 보호 범위 | 키보드 Tab/Escape/IME·정보 영역 네이티브 스크롤 및 아이콘 밖 방향키 규칙 유지. 이름 가상 키보드/삭제 확인창 등 다른 패드 분기는 이번 변경 대상이 아니다. |
+| 회귀 | test/lobbyVisualKeyboard.test.js31→37,새6건:RTL 좌우/경계/Home·End/잠금,열린 창 방향 전환,LTR·RTL×D-pad·스틱4조건. 수정 전37건33PASS/4FAIL→수정 후37PASS. 관련9파일155건 PASS,inline script4개 구문 PASS. |
+| 실제 브라우저 | 320×280/960×540/1920×1080×ko/en/ar×키보드/D-pad/스틱=27흐름. 네이티브 키보드9·가상 패드18,선택·잠금·aria-pressed·좌우 끝 경계·취소 후 초점 복귀·횡넘침 없음. 열린 창 en→ar→en 추가 확인,pageerror0/쓰기 요청0. |
+| 검증 범위 | 실제 서버 페이지의 기존 navigator.getGamepads 폴링과 lobbyNav를 사용하되패드 장치 표본만 브라우저 대역으로 주입했다. 실물 패드·진동 검증은 수행하지 않았다. 데모에는 생성 카드가 없어 openVisualSelect로 진입한 뒤 실제 버튼/키보드를 사용했다. |
+| 기록·상태 | tmp/lobby-visual-rtl의 browser-before.json,browser-matrix.json,summary.json,verify-rtl.mjs,after-960-ar.png,red-tests.txt,green-tests.txt,tests.txt,changes.patch. 코드1·테스트1·관련문서8개. 현재 .git 쓰기 제한으로 커밋 미완료,기존 타 작업 스테이징 보존. |
+
+
+## 2026-09-28 이름 입력 혼합 시 한글 조합·초점 보존
+
+| id / 적용 위치 | 현행 계약 |
+|---|---|
+| 재현 | 실제 로비 이름창에서 가상 키ㄱ→ㅏ로가 생성 후 입력칸을 이름으로 교체하고 가상ㄴ 입력:이름→이간으로 마지막 글자를 덮어썼다. 가상 키 span을 실제 클릭하면 초점이 body로 빠져 Escape도 이름창에서 처리되지 않았다. |
+| 조합 상태 | 기존 _hgState의 cho/jung/jong 및 초성/모음/받침·겹받침 규칙 유지. 새 _hgValue=''는 마지막 가상 input 통지 당시 전체 입력값을 보관하는 일시 문자열이며 저장 데이터가 아니다. _hgState가 있을 때만 현재 이름값과 비교한다. |
+| 외부 input | #charName의 input 리스너에서 e._fromVkb가 아니면 _hgState=null로 기존 조합 확정. 실제 타이핑·텍스트 삽입·삭제 및 외부 합성 InputEvent도 적용. 화면 문자열이 같은 외부 입력도 이전 가상 음절을 이어 붙이지 않는다. |
+| 이벤트 없는 교체 | _vkbInput 시작 시 inp.value!==_hgValue이고 _hgState가 있으면 상태를 null로 정리한 뒤 입력 처리. 실패 UI 등 프로그램이 값만 복원해도 새 음절은 복원된 이름 뒤에 추가한다. 현재 값이8글자면 종전 경계 규칙에 따라 그대로 보존한다. |
+| _vkbDispatchInput | 기존 _vkbInput의6곳 input 통지를 공용 helper로 연결. _hgValue=inp.value 후 기존 Event('input')에 _fromVkb=true를 지정해 dispatch한다. 기본 bubbles=false 유지. 자체 input 리스너로 조합이 끊기지 않으며 기존 이벤트 구독자도 통지를 받는다. |
+| 키 입력 초점 | _vkbDispatchInput은 통지 후 inp.focus(preventScroll:true). 문자·공백·백스페이스·8글자 제한 반환에서 이름칸 초점을 유지하며 키보드가 보이는 위치를 초점 이동으로 바꾸지 않는다. _vkbInput의OK도 상태 null→입력 초점 복귀→기존 createBtn.click 순서로 처리해 오류 후 입력·Escape를 계속 받는다. |
+| 보존 | 기존 이름2~8자 검증/maxlength8,키 배열8행,8번째 음절 받침·겹받침 및 백스페이스,여유가 있을 때 받침 분리,생성 잠금·요청 번호·저장·스토리 경로 유지. 부모 DOM 내용 교체나 새 번역키 없음. |
+| 회귀 | test/lobbyHangulInput.test.js6→15건. 외부 교체/삭제/영문 덧붙이기/같은 문자4,이벤트 없는 복원/8글자 보존2,가상 이벤트 보존1,문자 키/OK 초점2 추가. 첫13건 원본6PASS/7FAIL,초점15건 중13PASS/2FAIL→최종15PASS. 관련8파일175건 및 inline script4개 구문 PASS. |
+| 실제 브라우저 | Node 서버 원본320×280/480×360/960×540에서 화면 키를 실제 마우스로 클릭. 네이티브 교체/삭제/영문 입력/텍스트 삽입,같은값 composition InputEvent 대역,이벤트 없는 복원,8글자 보존,내부 받침·백스페이스,교체 후 가상 삭제의9종×3창=27흐름 통과. 이름/maxlength8/초점·횡넘침 확인. |
+| OK·Escape | 각3창에서 실제OK 클릭 후1글자 오류 표시·입력 초점·오류 노출·조합 null과 Escape 닫기 확인3흐름. 총30브라우저 흐름/pageerror0/쓰기 요청0. 실제 Windows OS IME·실물 게임패드·세이브 저장은 검증하지 않았다. 데모에는 생성 카드가 없어 openVisualSelect로 진입한 뒤 실제 컨트롤을 사용했다. |
+| 기록·상태 | tmp/lobby-hangul-mixed의 browser-before.json,browser-matrix.json,summary.json,native-ok.json,verify-mixed.mjs,after-960.png,red-tests.txt,focus-red-tests.txt,focus-red-browser.json,green-tests.txt,tests.txt,changes.patch. 코드1·테스트1·문서7개. 현재 .git 쓰기 제한으로 커밋 미완료,타 작업 스테이징 보존. |
+
+## 2026-09-29 이름·종료·삭제 확인창 흑철 마감 — 기존 크기 보존
+
+사용자 지시: UI 디테일 작업으로 UI 크기를 반복 변경하지 않는다. 2026-09-28 마감이 추가한 패딩·글자·버튼 치수·구분선·테두리 두께 덮어쓰기를 제거하고, 그 직전 크기로 복원했다. 아래 규격이 현행이다.
+
+| id / 적용 위치 | 현행 계약 |
+|---|---|
+| 범위 | 이름창 width440px, 확인창 width400px. 기존 max-width:calc(100vw - 24px)/max-height:calc(100dvh - 24px), 내부 세로 스크롤·가로 숨김·scroll-padding-block8px 유지 |
+| 기본 여백·테두리 | 이름창 padding48px 40px/border1px/radius2px; 확인창 padding24px 32px/border2px/radius8px. 폭≤480px 또는 높이≤480px는 두 창의 기존 padding24px 18px 유지. 공통 padding32px/3px double/radius0 덮어쓰기는 제거 |
+| 글자·간격 | 이름 제목은 기존 Cinzel Decorative/1.5rem/letter-spacing.1em/margin-bottom8px. 설명은 기존 .8rem/.05em/margin-bottom28px, 입력은 기존16px/padding14px 18px/margin-bottom20px/radius2px. 폰트·줄높이·마진·자간을 재질 CSS에서 덮어쓰지 않음 |
+| 버튼 | 기존 flex:1 1 96px/min-width0/min-height44px/줄바꿈 유지. 이름 생성·취소 padding12px 32px/.9rem/radius2px 및 각 버튼 기존 자간·굵기, 확인·취소 padding8px 28px/1rem/700/radius4px 유지. 재질 CSS에서 display·정렬·패딩·font를 덮어쓰지 않음 |
+| 확인 안내 | 기존1rem/margin-bottom20px 및 기존 글꼴·줄높이 유지. 새18px 아래 패딩·구분선과16px/600/1.6 덮어쓰기는 제거 |
+| 재질 | #756247 테두리색, linear-gradient(#131215ee,#0b0b0eef)/iron.png center320px/#111013, shadow0 18px 56px #000c/inset3px #090a0d/inset4px #a68a5433. 내부6px/1px #a68a542b 장식은 absolute/pointer-events:none으로 배치 치수에 영향 없음 |
+| 색상 | 제목·확인문구 #ecd9b7/설명 #c4b69e/label #d3c1a2/입력 #f1e4c9 및 #090a0d. 기본 버튼 #dfceb0/border #74604a/중성 button.webp, 활성 생성·확인 #fff0d1/border #b57b59/가넷 오버레이 유지 |
+| 상태 | 기존 .14s 재질·초점 transition, hover brightness1.13/#c9ab7d, active brightness.96/inset0 3px 7px #000a, focus-visible2px #ead1a0/offset-4px, disabled opacity.7/grayscale1/#aaa08e, reduced-motion transition:none. scrollbar-color만 유지하며 scrollbar-width 덮어쓰기도 제거 |
+| 검수 | 현재 기본 브라우저 viewport2353×1262/scale1에서 KO·EN·AR×이름/확인창6조건. 기존 CSS 백업과 각11요소의 폭·높이·패딩·테두리 두께·font·줄높이·마진·자간·display 등23속성을 비교, 차이0. 이름창 실측 KO440×340/EN440×367/AR440×364, 확인창 KO·EN400×140/AR400×150. 번역에 따른 기존 줄바꿈·높이 차이는 유지 |
+| 검수 경계 | 원본 DOM·CSS를 Node 서버에서 제공하고 앱 스크립트를 제거한 격리 렌더의 치수 대조. 저장·생성·삭제·종료 실행이나 게임패드 검증을 대체하지 않는다. 이전435배치/148회귀는 이전 마감 기록이며 이번 현행 크기의 검수 결과로 재사용하지 않음. 검수 viewport override는 해제하고 화면 크기를 다시 바꾸지 않음 |
+| 회귀 | 관련 로비6개 테스트 파일132건 PASS. 이번 수정은 CSS 치수 복원·캐시 키 변경이며 생성·취소·이름 조합·초점 처리 코드는 변경하지 않음 |
+| 캐시·상태 | index.html의 ui-refinement.css?v=20260929-lobby-size-preserved. tmp/lobby-size-restore-20260929에 백업·검색·검수·patch 보관. .git 읽기 전용으로 커밋 미완료, 타 작업 스테이징 보존 |
+
+## 2026-09-29 발사 경고 문구 프레임 병목·설정 복원
+
+| 항목 | 현행 구현·검수 |
+|---|---|
+| native 글꼴 | 두HTML _buildProxyX의 _syncTextFont: 같은 요청/정규화 실제값이면 setter 생략. Canvas초기화·외부 변경·다른 글꼴은 재적용 |
+| 경고 폭 | 본편 _drawProjectileChargeLabel의 _chargeLabelMetrics 한항목(ctx/label/font/width) 재사용. 렌더러/번역문구/글꼴 변경 및 document.fonts loadingdone/loadingerror에서 재측정. 기존13px·박스폭tw+14/높이20·링60틱·탄종/패링 규칙 유지 |
+| 해상도 복원 | 두HTML 최초 설정과 _loadPreset OPT 복원 뒤 rz(). 저장60%/프리셋70% 실제C/CT/burst 반영, 동일치수no-op |
+| 근거·경계 | 전투 경고의 font/measureText 약29~42ms 스택 확인. 저장본 새로고침100AI/1920×1080/10초 draw p99 4.1ms(직전31.9ms),max44.7ms 잔여2회. 전후CSS창 크기가 달라 평균FPS 개선율 확정하지 않음. 예열20초 연결중단/최종visual·Steam·보스 미검증 |
+| 검사·상태 | 관련57PASS,두HTML실행script각6구문PASS. 기존경고fixture의실제_projectileParryClass 누락복구. 커밋/패키지/Steam업로드미완료,타작업스테이징보존. [상세 계약·실측·검수 경계](12퍼포먼스·최적화/FRAME_DROP_HUD_TEXT_20260928.md) |
+
+
+## 2026-09-29 프레임 최적화 재개: 전면 전투와 표시 지연 구분
+
+| 항목 | 현행 검증 상태 |
+|---|---|
+| FHD 격리100AI(실화면 검증 아님) | render/CSS1920×1080/high/scale100/cap0/10초:237.76FPS,draw p95 2.6ms/p99 3.0ms/max4.8ms,전체loop max5.3ms,34ms초과0회 |
+| cap60 | 같은조건/10초 draw599회(약59.9FPS),draw max6.5ms,전체loop max8.2ms,34ms초과0회. rAF236.76Hz를게임FPS로보고하지않음 |
+| 표시·GPU 제한 | 비전면 반복의1초rAF공백은draw/update의짧은CPU시간과분리. 측정직전Page.bringToFront에서정상화. 실제WebGLloss2회와단발projectile50ms원인미확정;메모리충돌/VRAM초과로단정하지않음 |
+| 검수·회귀 |8방향각2048×1280ready/복구후실제화면확인,8파일57PASS. 이번production코드추가수정없음. 고정카메라100AI범위이며스킬난사/보스/장시간/Steam미검증 |
+| 상세 |[조건·대조실험·근거·남은제약](12퍼포먼스·최적화/FRAME_DROP_HUD_TEXT_20260928.md#2026-09-29-잔여-스파이크와-전면-측정-검증). git커밋/패키지/Steam업로드미완료 |
+
+## 2026-09-29 필살기 미사용 이미지·3D 애니메이션 자원 로딩 수정
+
+| id / 적용 위치 | 현행 계약 및 검증 |
+|---|---|
+| 실제 오류 | localhost 게임 탭의 G._ultImg.lava가 complete=true/naturalWidth0. 같은 로드에서 SFX Failed to fetch·GLTF blob 텍스처 실패·WebGL context lost가 함께 기록됨. PNG는 서버HTTP200/4072255바이트/디스크와 SHA256 동일,1743×1890 RGBA 디코드 약12.57MiB. 호스트 freeRAM 약41.74GiB였으므로 시스템 RAM 부족으로 단정하지 않음 |
+| 미사용 VFX | draw 초기화의 G._ultImg에는 black:new Image() 및 assets/vfx/boss/ult_black_c.png만 보관. ult_holy_c.png·ult_lava_c.png 초기 요청은 제거. 실제 _ultBurst 생성은 kind:black이며 탄막블랙홀 재분출은 기존 원형 보존 반사탄을 사용. 파일 자체·블랙 회전/버스트·신성 필살기의 기존 별도 렌더는 유지 |
+| VFX 수명 | 기존 G._ultImg 가드로 같은 게임 상태에서 한 번만 요청. 로딩 실패 시 이미지 complete/naturalWidth 기존 가드를 사용하며 프레임마다 재요청하지 않음. 새 자동 재시도·추가 이미지·해상도 변경 없음 |
+| _b3loadActions | idle 모델 설치 뒤12개 상태를 src별 Map으로 묶음. walk/aggro/run/hit/chargeWind/charge/multiDashWind/multiDash/spinWind/spin/slamWind/slam. 동일GLB는 한 번만 fetch/parse하고 각 상태에는 AnimationClip.clone() 후 개별 name을 지정해 mixer.clipAction에 등록 |
+| 동시 요청 | 애니메이션 job의 inFlight<2일 때만 시작. idle은 먼저1개 로드하며, 완료 뒤 애니메이션 GLB 최대2개. 성공·실패·동기 load 예외 모두 슬롯을 반환. 실패그룹은 로그 후 나머지 job을 계속 진행하며 무제한 재시도하지 않음 |
+| 임시 자원 | 현재 generation의 성공 GLB도 clip 추출 후 _b3disposeGltf(g2)로 scene의 geometry/material/texture/skeleton을 각 객체별1회 dispose하고 소유 ImageBitmap을 close. stale generation 또는 mixer 불일치도 같은 해제를 사용하며 action 설치 및 다음 대기 job 시작을 차단. 표시 중 idle 모델은 임시해제 대상이 아니며 교체 시 _b3releaseModel에서 해제 |
+| 실제 파일 수 | Vinebound: idle/walking/running/dead/charged_ground_slam의5파일, 기존idle1+상태12=13회 load→5회. Meshy_AI_1 fallback도 idle/Walking/Monster_Walk/Running/Unsteady_Walk의5파일. 상태13개(idle+12),기존 경로·애니메이션 매핑·모델 스케일·위치 유지 |
+| 회귀 | test/resourceLoading.test.js6건:미사용 VFX/GLB중복/동시상한/임시해제/실패후진행/stale가드. 수정 전2PASS·4FAIL→6PASS. 관련 bulletBlackHoleVfx·bulletBlackHoleUltimate·audioBootLoading·bootAssetSlowDiagnostics 포함20PASS. game.html inline/classic/module 스크립트6개 acorn 구문 PASS |
+| 실제 브라우저 | 격리127.0.0.4의 Node 서버 게임에서 실제 Escape→안내 건너뛰기로 G.on=true 진입. black 텍스처1857×1849 complete/naturalWidth 정상,holy/lava resource 요청0. window._b3loadModel(0) 실호출의 신규 네트워크 기록은truncated=false, GLB5파일/동시peak2/실패0/13상태 등록 로그 확인. 새 게임 console error0,기존 Multiple instances of Three.js 경고1은 별도 현행 제약 |
+| 검수 경계 | 새 게임 시작 초기 전체 네트워크 버퍼는truncated이므로 전체 부트의 네트워크 실패0으로 확대 해석하지 않음. 수정 뒤 별도 모델 로드 구간은 유실 없이 수집. 장시간 전투·모든 GPU 환경·WebGL 컨텍스트 소실 예방 전체 해결·3D 모든 공격 모션의 시각 승인은 주장하지 않음. 사용자 기존 게임 탭은 강제 새로고침하지 않고 검수 탭만 정리 |
+| 기록·소스 제어 | tmp/resource-loading-20260929에 game-before.html,docs 전체 검색,red/green 테스트,검수 summary 및 changes.patch. .git 읽기 전용으로 커밋 미완료,타 작업 변경·스테이징 보존. UI 크기·배율은 변경하지 않음 |
+
+
+
+## 2026-09-29 프레임 테스트 실제 화면 정정
+
+| 항목 | 검증 결과 |
+|---|---|
+| 작은화면 원인 |1920×1080 viewport 강제 지정. 사용자 PNG5074×1318과달랐으며 이전237.76FPS는 실화면 결과가 아님 |
+| 동일 렌더 크기 |QA viewport/C backing/CSS rect 모두5074×1318,high100,DPR1.6,687,532px(FHD의3.2251배),전체캡처의오른쪽검은빈공간제거확인. OS창/Steam/사용자저장설정일치까지의인증은아님 |
+| 실제포커스 |도구focus emulation 해제시 focus=false/hidden=true 확인. 전면표시뒤 true/false. 기존 hidden0/blurred0만으로 실전면을 입증하지못함 |
+| cap60 실제전면 |155AI/10초 draw594회(약59.4FPS),draw p95 4.6ms/max6.0ms,loop max13.6ms. 실제hidden0/blurred0. rAF87.7ms지연1회남음;후속무제한측정은실제숨김으로폐기 |
+| 상태 |현소스8파일57PASS,이번production코드추가변경없음. 진단창닫기/viewport원복. 커밋·패키지·Steam업로드미완료. [수치·포커스근거·남은검증](12퍼포먼스·최적화/FRAME_DROP_HUD_TEXT_20260928.md#2026-09-29-사용자-화면-정정-50741318와-실제-포커스) |
+
+## 2026-09-29 안개 WebGL 컨텍스트 소실 보호·복원
+
+| id / 적용 위치 | 현행 계약 및 검증 |
+|---|---|
+| 재현 근거 | 이전 localhost 실제 오류는 Three.js shader 생성의 null.trim 예외 → _fogGLRender → draw. 이번 수정은 이 별도 안개 렌더 경로를 보호하며 WebGL 소실 자체의 원인을 RAM/VRAM 부족으로 확정하지 않음 |
+| _fogGLInit | _fogGLR 또는 _fogThree가 이미 있으면 새 renderer를 생성하지 않음. 컨텍스트 소실 중 _fogGLR=false여도 기존 객체와 resize listener를 유지 |
+| fogGL webglcontextlost | event.preventDefault()로 복원을 허용하고 _fogGLR=false. 메인 C/GL과 UI/CSS 크기·배율은 건드리지 않음. 소실 상태에서 안개 render와 uTime 증가를 건너뜀 |
+| fogGL webglcontextrestored | Three.js 생성자가 먼저 등록한 복원 처리 뒤 renderer.getContext().isContextLost()가 false일 때 _fogGLR=true. 동일 renderer/scene/camera/material/uniform을 재사용 |
+| _fogGLRender 사전 검사 | renderer.getContext()의 isContextLost()가 true이면 _fogGLR=false로 정지하고 즉시 반환. _fogGLTime과 uTime을 증가시키지 않음 |
+| 렌더 도중 소실 | renderer.render의 예외 발생 뒤 context.isContextLost()가 true일 때만 안개를 정지하고 예외를 메인 draw로 전파하지 않음. 컨텍스트가 유효한 다른 render 예외는 그대로 throw. 소실이 사전 검사 뒤 발생한 해당 프레임의 시간 증가를 되감지 않음 |
+| 보존된 시각·플랫폼 계약 | 안개 시간 증가 0.016/호출, 초기 예약 500ms, OPT.fog, IS_MAC&&navigator.gpu 예약 차단, 색상·FBM·alpha0.41·중앙 mix0.50~1.0·smoothstep0.0~0.62 모두 유지. 강제 GPU 복원·자동 renderer 재생성·UI 리사이즈 추가 없음 |
+| 회귀 테스트 | test/resourceLoading.test.js에 안개 사전 소실/소실 이벤트/동일 객체 복원/소실 중 중복 초기화/렌더 중 소실/무관 예외 전파의6행동 테스트 추가. 기존6개 포함 수정 전7PASS·5FAIL →12PASS. 관련4파일 포함26PASS |
+| 실제 게임 소실 검증 | 사용자 게임과 분리한127.0.0.5 게임에서 G.on=true, 검증 메모리에서 OPT.fog=true. 소실 전 draw990/fogrender990/time15.840000000000012 → 소실 중 draw2256/fogrender990/동일 time. lostEvents1/_fogGLR=false/메인 GL.isContextLost=false/window error0 확인. 주입 계측과 설정은 검수 탭 폐쇄로 제거, 사용자 설정과 게임 탭은 수정·새로고침하지 않음 |
+| 실제 GPU 복원 검증 | 동일 소스 _fogGLInit/_fogGLRender와 로컬 three.min.js r128을 사용한 renderer.html에서 이벤트 소실·복원 확인. 복원 전 중앙 RGBA[1,2,1,34] → 복원 후[1,2,1,39], shader programs1/GPU error0. _fogGLR=true/isContextLost=false/restoredEvents1, 동일 renderer/material/2813×1262 canvas,window error0 |
+| 검증 경계 | 실제 전체 게임은 소실 시 메인 렌더 지속을 검증했고, 복원은 동일 안개 코드의 별도 실제 WebGL 화면에서 검증. 전체 게임 장시간 자연 GPU 소실·복원까지 완료했다고 주장하지 않음. 추가 QA에서 소실 이벤트 dispatch 종료 전에 즉시 restoreContext를 호출한 시도는 복원 timeout으로 무효; 별도 호출로 이벤트 종료 후 복원과 GPU 출력을 검증 |
+| Three.js 중복 경고 | 이전 안개 복원 단계에서는 r128+r160이 함께 존재했다. 현행은 아래 로컬 r160 단일 런타임 계약으로 대체(2026-09-29). 컨텍스트 수 감소와 전체 공격 시각·장시간 전투 QA는 별도 |
+| 기록·커밋 | tmp/fog-context-recovery-20260929의 before,red/green,renderer.html,docs-search,browser-summary,changes.patch. .git 읽기 전용이며 커밋 미완료. 타 작업 스테이징·dirty 변경 보존 |
+
+## 2026-09-29 보스 모델 교체 자원 수명 수정
+
+| id / 적용 위치 | 현행 계약·검증 |
+|---|---|
+| 원인 | _b3loadModel의 이전 모델 정리는 scene.remove와 mixer.stopAllAction 및 참조 초기화만 실행하여 geometry/texture/skeleton GPU 자원이 남음. 안개 소실 보호와 별개의 재현된 자원 누적이며 ERR_INSUFFICIENT_RESOURCES 전체의 유일 원인으로 단정하지 않음 |
+| _b3releaseModel | 실제 교체 시작 시 기존 mixer.stopAllAction → 기존 model의 mixer.uncacheRoot → _b3applyFlash(false) → _b3disposeGltf({scene:_b3model}) → scene에서 anchor 제거. anchor/mixer/model/pivot/meshes/origMats/actions 초기화, state=idle,window._b3dbg=null로 이전 모델 디버그 참조 제거 |
+| 공용 피격 재질 | _b3applyFlash(false)로 각 mesh에 원래 material을 복원한 뒤 폐기. 공용 _b3flash는 해제하지 않으며 새 모델의 피격 flash에 계속 사용 |
+| _b3disposeGltf 소유권 | 해당 GLTF scene의 mesh geometry/material/texture/skeleton/ImageBitmap만 해제. 각 종류별 Set으로 동일 객체의 dispose/close를 한 번만 호출. 배열 material,같은 texture를 쓰는 여러 material 속성,여러 mesh가 공유하는 skeleton을 처리 |
+| decoded 이미지 | texture.image가 ImageBitmap이면 bitmap.close()로 디코드 이미지도 해제. 배열 image도 지원. texture.dispose()만으로 CPU 디코드 이미지 해제를 대체하지 않음. 현재 loader의 파일별 소유권 계약을 사용하며 game에서 Three.Cache.enabled=true를 설정하지 않음. 향후 외부 GLTF 사이 texture/bitmap 공유 캐시 도입 시 이 해제 계약도 함께 변경해야 함 |
+| skeleton | skeleton.dispose()로 renderer에 생성된 boneTexture를 해제. geometry/material/texture dispose와 별개이며 중복 skeleton은 1회 처리 |
+| 비동기 안전 | 기존 generation/mixer identity 가드와 GLB src별 중복 제거·현재 generation 애니메이션 job 최대2개는 유지. stale idle/action GLTF에도 동일 자원 해제를 사용. 이미 같은 hell의 ready 모델 재요청은 기존 early return으로 자원과 mixer를 유지 |
+| 보존 계약 | 보스 GLB 경로·13상태 매핑·scaleMul·색상/조명·카메라·UI 크기·resScale·안개 복원 계약 변경 없음. 당시 r128/r160 중복 경고는 아래 로컬 단일 런타임 계약에서 제거(2026-09-29). 컨텍스트 수 감소는 별도 |
+| 자동 회귀 | test/resourceLoading.test.js에 실제 모델 교체/mixer 해제,flash 상태 교체,동일 ready 모델 보존,공유자원 중복 해제 방지의4테스트 추가. 수정 전13PASS·3FAIL →16PASS. 관련4파일을 합쳐30PASS,game.html 실행 스크립트6개 구문 PASS |
+| 실제 GPU 대조 | 같은 실제 r160/GLB/보스 모듈을 추출한 격리 QA에서 수정 전 fallback→hell0→hell1→hell0: renderer.info.memory geometries1→2→3→4,textures2→4→6→8. sceneChildren4/actions13/programs1은 같으므로 장면에서 제거만 해서는 GPU 해제가 되지 않는 경로를 직접 확인 |
+| 수정 후 실제 반복 교체 | fallback 피격 flash→hell0 전환 및 hell1→0→1→0의4추가 교체에서 각 기존 geometry/material/texture/boneTexture의 dispose event1회,기존 bitmap width/height0,이전 mixer stats.actions.total=0/bindings.total=0. renderer geometries1/textures2/programs1,sceneChildren4/actions13 유지. 공용 flash dispose0,window error0,contextLost=false |
+| 시각·검수 경계 | 실제 fallback/Vinebound의 텍스처와 모델 표시를 브라우저에서 확인. QA 전용 확대180·카메라 z1000/far2000은 renderer.html에만 사용하며 production에는 적용하지 않음. 전체 게임 보스 전투·발 위치/전신 구도·모든 공격 모션의 시각 승인·장시간 자연 컨텍스트 소실 예방까지 완료한 것은 아님 |
+| 기록·커밋 | tmp/boss-model-lifetime-20260929의 before,tests-red/green,renderer-before.html/renderer.html,docs-search,browser-summary,changes.patch. UI 파일은 이번 작업에서 수정하지 않음. .git 읽기 전용으로 커밋 미완료,타 작업 staging/dirty 변경 보존 |
+| API 근거 | [Three r160 AnimationMixer uncacheRoot](https://github.com/mrdoob/three.js/blob/r160/src/animation/AnimationMixer.js),[Skeleton.dispose](https://github.com/mrdoob/three.js/blob/r160/src/objects/Skeleton.js),[GLTFLoader ImageBitmap 경로](https://github.com/mrdoob/three.js/blob/r160/examples/jsm/loaders/GLTFLoader.js) |
+
+
+## 2026-09-29 시작 맵 준비 후 공개
+
+| id / 적용 위치 | 현행 계약·검증 |
+|---|---|
+| 두HTML 부트 | _bootLoadActive:show=true/killed=false,hide=false/killed=true. active로딩은 _startLoop/loop 자동숨김에서 보호. _prepareStartMapView를7개부트완료분기에서100%보다먼저await |
+| 맵 준비 | _ch1StartOuterViewIds의현재visible+1이웃만요청,30ms재검사/status=ready(GPUwarm완료)까지98%준비. error또는12000ms면전체selected baked layer안정된지형폴백,_ch1StartOuterBootFallback=true. 새준비/재시작에서false로재시도. 기존GPU lifetime LOCK보존 |
+| 실화면 | CSS/render5074×1318/high100/nativefocus:본편첫프레임16/16,500draw부분표시0(직전부분12회). 정상reload24/24복귀,보조판전면복귀첫16/16. QA청크1차단시fallback진행·차단해제확인 |
+| 프레임 / 한계 | 10초cap60실제109→134AI,draw600=60FPS/최대11.5ms,맵CPU최대.2ms,rAF최대12.5ms. 무제한재측정은실제blur로폐기. 이전87.7ms지연·장시간/Steam/전체visual은미해결·미검증 |
+| 검사·기록 | 신규16PASS/관련11파일54PASS/HTML실행script각6구문PASS. 확대69검사중기존ellipse테스트1FAIL은수정전에도재현. [계약·실측·메모리·MAP PRODUCTION REPORT](12퍼포먼스·최적화/MAP_STARTUP_READY_20260929.md). VISUAL VERDICT RETOUCH. 커밋·배포미완료 |
+
+
+현행 보강 — 숨은 창: _prepareStartMapView의12000ms 제한은 document.hidden=false일 때만 적용하며, visibilitychange로 다시 보이면 deadline=performance.now()+12000으로 재설정한다. 초기청크error는 숨김 여부와 관계없이 안정된폴백으로 진행한다. 성공·실패·stage변경 모든 반환에서 visibility 리스너를 finally로 제거한다. 숨은 Chrome의 타이머 제한을 실제 에셋실패로 잘못 판정하지 않는다. 두HTML 추가2검사 RED2FAIL→GREEN2PASS,신규총18PASS/관련11파일최종56PASS. 앞의16/54 및 확대69검사는 이 보강 전 기록이다.
+
+
+### CH1_HIDDEN_UNDERLAY_20260929 — 현행 바닥 렌더 계약
+
+완성 production_finish 화면이 전체 뷰포트를 불투명 ready청크로 덮으면 _ch1StartOuterCoversView가 가려진 _fillVoidWithFloor·20개 _oriFireflies·기존 맵캐시 분기3그룹을 렌더에서 제외한다. 매 프레임 줌/흔들림/가장자리·1026² ready를 검사하며, 로딩·오류·맵 밖 노출·다른stage/보스아레나/outer·Rootworld·초기폴백은 원래 바닥을 유지한다. ?ch1LegacyUnderlay=1은 비교용. visible 생체/언덕/소품/ATMO·19빌드레이어/이미지·충돌 삭제0. 캐시 메모리 전체해제나FPS개선율을 주장하지 않는다.
+
+현행 공식·수치·검수는 [가려진 레이어 정리 SSOT](4.1맵디자인+설정/CH1_HIDDEN_UNDERLAY_20260929.md)를 따른다. 앞선 날짜별 회귀·FPS·아트 수치는 당시 검수 이력이다.
+
+
+## 2026-09-29 Three.js 로컬 단일 런타임 동기화
+
+| 적용 위치 | 현행 계약·검증 |
+|---|---|
+| main/easy boot·importmap | `three-runtime.js`와 boss/chest import가 `assets/vendor/three-r160/build/three.module.js`의 동일 namespace 공유. r160/0.160.0, 코어 요청1/three.min.js 요청0/CDN Three 요청0 |
+| 안개/VFX 색상 | `_fogGLStart` 기존500ms+공유 Promise 대기. fog/VFX `LinearSRGBColorSpace` 출력 및 `_v3legacyColor` 명시 색공간으로 기존 채널 보존. boss/chest SRGB 출력·카메라·UI 크기·resScale 유지 |
+| 실제 검증 | 관련35PASS/0FAIL, 두 HTML inline6개씩 구문 통과. 두 게임 native 입력으로 G.on=true, 공유 보스 pivot/안개 renderer 및 상자/VFX API 정상, 앱 warn/error0. 안개 및 가시성용 QA VFX GPU 대조 각각131072 bytes/차이0 |
+| QA 경계 | VFX 대조는 기존 mirrored Y+FrontSide culling을 제거하는 QA 전용 DoubleSide fixture. production side/카메라 변경 없음; 전체 공격 가시성·장시간 전투 QA는 별도 |
+| 배포·소스 제어 | NW.js FILES 및 web 필수 목록에 새 boot/로컬 JS 포함. MIT LICENSE·provenance도 함께 추적/배포 필요. .gitignore의 전역 build/ 예외는 assets/vendor/three-r160/build/three.module.js와 상위 디렉터리로 한정. .git 쓰기 제한으로 커밋 미완료, 실제 패키징/업로드 미실행 |
+| 세부 SSOT | [파일·숫자·SHA256·수명·검증 범위](12퍼포먼스·최적화/THREE_LOCAL_SINGLE_RUNTIME_20260929.md) |
+
+
+### FRAME_SYSTEM_COMMIT_20260929 — Windows 가상 메모리 고갈 확인·관리 준비
+
+| id / 적용 위치 | 현행 근거 / 상태 |
+|---|---|
+| SYSTEM2004 | Windows Resource-Exhaustion-Detector의SystemCommitCharge/Limit로반복고갈확인. 09-28T21:31:51.409Z=79.649582/79.761414GiB(99.8598%),GPU loss21:31:52.474Z약1.06초전. 물리여유33.929214GiB. 앞의RAM여유만으로고갈을배제하지 않음. 인과관계·탭귀속미확정 |
+| PAGEFILE | 실제C custom8192/16384MiB(8/16GiB)상한. 사용자관리지시에따라32768/65536MiB(32/64GiB)조정안을준비. C여유256.770447GiB·원래값백업·관리자/설정drift/80GiBreserve검사. 자동재부팅0 |
+| APPLY_STATUS | 승인된실행은exec OS317,관리자PowerShell·reg.exe RunAs는0xc0000142로시작실패. 읽기값8/16GiB그대로/아직미적용. tmp/pagefile-management-20260929의적용·복원REG_MULTI_SZ파일과백업준비. 사용자관리자적용후재부팅·활성commitlimit확인필요 |
+| QA | 현재11파일77PASS/두HTML각6구문PASS. 이번새프레임표본은크기/부트조건오류및브라우저연결timeout으로폐기. 새FPS·88ms해결·VS Code원인·전체GPU수정완료를주장하지 않음. production게임코드추가변경0/타작업보존/커밋미완료 |
+
+상세설정·실제OS이벤트·GPU카운터한계·적용파일·MAP PRODUCTION REPORT는 [Windows 커밋 고갈·페이지 파일 SSOT](12퍼포먼스·최적화/FRAME_SYSTEM_COMMIT_20260929.md)를 따른다. VISUAL VERDICT RETOUCH.
+
+
+## 2026-09-29 세로 리사이즈 하단 필터 경계
+
+환경광 `G._envLightCvs`·동적 비네트 `G._dvgCvs`·저체력 틴트 `G._redTintCvs`가 화면 너비만 확인하던 조건에 각 캐시의 `height!==C.height`를 추가했다. 본편/쉬운 테스트 공통, 높이 변경 직후 재작성·정지 시 캐시 재사용·색과 alpha 유지·신규 캔버스0. 두 파일 12건 RED→신규18+기존17=35 PASS, 본편2805×1206→1256→1006→1256에서 env/dvg 높이1206 고정→현재 main 높이 일치. 이전 Mac 이동/성능 문제의 해결 선언이 아니다. [정확한 계약·MAP PRODUCTION REPORT](12퍼포먼스·최적화/POSTFX_HEIGHT_COVERAGE_20260929.md).
+
+
+## 2026-09-29 인벤토리 정렬·닫기 키보드 조작 마감
+
+| id / 항목 | 현행 계약 |
+|---|---|
+| invClose | div → type=button인 네이티브 button. 기존 ✕ 리프·onclick 유지. aria-label/title은 기존 번역키 '닫기 [ESC]'를 _applyLang에서 갱신. 새 번역키 없음 |
+| invSortBtn | span → type=button인 네이티브 button. 기존 정렬→분해 선택 집합 clear→INV.selected=null→renderInv() 순서 유지 |
+| 키보드 | 기존 #invPanel.on button의 Enter/NumpadEnter/Space/Tab 입력 분기를 그대로 사용. 네이티브 Enter/Space 활성화 및 Tab 이동. 정렬 중 Space가 아이템 쓰레기 표시로 전달되지 않음 |
+| 치수 보존 | 닫기28×28px/padding0/기존 상속 serif·19.2px·900·normal 줄높이. 정렬 최소66×28px/padding0 10px/기존 Noto Sans KR 12px·500·18px 줄높이. 폭·높이·배율·배치 변경 없음 |
+| 조작 상태 | 두 버튼 appearance:none/margin0/radius0. focus-visible outline2px #ead1a0/offset−3px로 안쪽 표시. active brightness.92/inset0 2px 5px #000b. color/box-shadow/filter transition .12s; reduced-motion에서는 none |
+| 적용 | game.html·game-easy-test.html 및 ui-refinement.css. 두 게임 HTML CSS 캐시 20260929-inventory-controls. 로비 HTML 캐시는 유지 |
+| 브라우저 | Node3333 원본 새로고침 후 easy-test에서 수정 전 DIV/SPAN tabIndex−1·focus실패 → BUTTON tabIndex0·focus성공. 두 컨트롤 폭·높이·font·padding 동일. Enter/Space 정렬 각각1회,24개 아이템 id·junk·fav 보존,Enter 닫기 확인 |
+| 본편 검수 | 게임 시작 전 원본 openPanel/renderInv 호출 및 splash만 숨긴 UI 검수. 현재 기본 viewport에서 장비창 표시 확인. Enter/Space 정렬 각각1회,Tab은 아이템 필터 summary로 이동하며 패널 유지,Space 닫기 확인. KO/EN/AR의 닫기 aria-label/title 및 정렬 문구 갱신 확인. 검수 탭 메모리 변경은 종료 시 폐기 |
+| 검사 | uiPanelInitialization3 + crystalPickerNavigation6 PASS. inventoryPaperdollLayout은 HUD 검사1PASS/좌표 bounds0 1FAIL. 동일 좌표 실패를 수정 전 game.html 백업으로 재현,이번 버튼 변경과 분리. 두HTML의 classic inline script 각각4개 구문PASS; 외부/module 스크립트 검사는 이번 범위 밖 |
+| 경계·소스제어 | 실물 패드·NW.js 패키지·Steam 미검증. 기존 다수 dirty/staged 변경 보존. .git 관리형 읽기 전용이므로 커밋 미완료. 백업·docs 전체검색은 tmp/inventory-controls-20260929에 보존 |
+
+
+## 2026-09-29 미획득 배지 HUD 숨김·상태 수치 겹침 수정
+
+| 대상 / id | 현행 구현·검수 |
+|---|---|
+| 사용자 기준 | 획득 배지가 없으면 HUD에 배지0/3·빈 버튼·자리 표시를 남기지 않는다. 지역 처치·악의 수치를 가리지 않는다 |
+| 표시 조건 | tutorial-badges.js의 init에서 button.hidden=true로 시작. render에서 count=Object.keys(earned).length; count===0이면 button/panel hidden=true 및 aria-expanded=false. 1~3개 획득·복원 시 button.hidden=false. 언어 갱신에도 같은 조건 적용 |
+| 모음 열기 | toggle(open)은 button.hidden이면 열기를 거부하며 숨긴 버튼에 focus하지 않는다. 배지가 있으면 기존 닫기 초점/버튼 복귀·aria-expanded·3개 카드 정책 유지 |
+| 위치 | button과 collection을 #mmLvl의 자식으로 연결. 둘 모두 position:absolute/right0/pointer-events:auto; 버튼 top:calc(100% + 8px),모음 top:calc(100% + 46px). 상태창의 기존 크기·UI배율·safe-area 이동을 따라가며 수치 행과 겹치지 않음 |
+| 표시 CSS | button[hidden]/collection[hidden]/toast[hidden]은 display:none!important. 기존 버튼 padding5px10px/border1px/radius3px/font12px/1.5 유지. #mmLvl 미존재 폴백은 body에 연결,button fixed right20px/top180px,collection fixed right20px/top218px/width min(360px,100vw−40px)/max-height calc(100dvh−238px) |
+| 획득·보관 | combat12/resources8/systems7 실제 완료 체크·중복 지급 차단·저장키·3.5초 알림 유지. 알림은 body에 남기며 배지 표시 정책으로 획득 기록이나 저장 데이터를 삭제하지 않음 |
+| 적용·캐시 | tutorial-badges.js/css와 game.html/game-easy-test.html. 두HTML 모두 JS/CSS캐시20260929-earned-hud |
+| 회귀 | 신규 표시·첫획득·복원·HUD연결4건 수정 전FAIL→수정 후PASS,기존 번역1건PASS. tools/test-tutorial-badges.cjs의 지급/중복/저장/슬롯격리/차단폴백/양HTML연결 검사PASS |
+| 원본 브라우저 | Node3333 본편 독립 QA 슬롯에서 수정 전 배지0/3의 상태창 겹침true→수정 후 hidden=true/display:none/rect0. 메모리의 획득1개 상태는 상태창 bottom171.834px/버튼 top180.014px,겹침false. 모의 획득은 저장 API 호출 없이 earned만 변경 |
+| 시각·입력 검수 | 원본 HUD DOM/CSS·배지JS를 분리한 fixture에서0개/1개 스크린샷,배지 모음 실제 클릭→닫기 초점/화면내 배치→닫기→0개 숨김 확인. 브라우저 viewport2534×1262,override없음. fixture는 UI 검수이며 튜토리얼 완료 플레이 검증은 아님 |
+| 현재 게임 | 열린 demo 게임에도 디스크의 render/toggle 함수와 CSS를 hot apply. count0/hiddentrue/displaynone/지역 처치0/168 전체 노출을 실제 플레이 스크린샷으로 확인. 게임 ontrue/pausedfalse 유지; 재시작·저장쓰기·획득기록 수정 없음 |
+| 기록·상태 | tmp/badge-hud-20260929에 before/fixture/docs전체검색/검수계약 보존. 기존 dirty·staged 작업 보존. .git 관리형 읽기 전용으로 커밋 미완료; NW.js패키지·Steam배포 미수행 |
+
+## 2026-09-29 펫 대사·하단 구체 겹침 수정
+
+| 항목 / 적용 위치 | 현행 계약·검증 |
+|---|---|
+| 원인 | petSubtitle의 고정 bottom120px가 UI 배율과 무관해 HP/MP 구체 장식 및 스킬바와 겹쳤음. 본편·easy-test 각6화면×2화자, 수정 전16/24 겹침 |
+| 컨테이너 위치 | game.html/game-easy-test.html의 petSubtitle: position fixed; bottom calc(var(--ui-inset-bottom,0px) + 220px * var(--ui-scale,1) + env(safe-area-inset-bottom,0px)). 기준1920×1080/inset10px에서230px. 창 크기·safe area 변화에 CSS가 즉시 대응 |
+| 하단 경계 | 구체 기준175px/배율scale×.9, glass 장식263px의 상단 돌출44px까지 포함한 경계207.1px×scale보다 대사 하단이22.9px×scale 위. 구체 장식·수치·스킬바를 가리지 않음 |
+| 보존 | 초상화480px·이미지 v4·scale(ui-scale×1.5), 좌/우20px, crow 텍스트92/237/306/51 및 cat122/250/190/42, 글자.92rem·굵기700, opacity 최대.6/지수.6 페이드 유지. 발화·pair·우선순위·쿨다운·음성·패드 키 치환·저장/전투 로직 변경 없음. 사망 화면 듀얼 초상화의 위치는 별도이며 변경 없음 |
+| 브라우저 경계 검사 | 실제 두 HTML에서 HUD DOM/CSS 및 표시 함수를 추출한 iframe. 1920×1080/1280×720/640×360/2560×1080/800×1200/2534×1235, 까마귀/디로이 각1회:24/24 PASS. 대사와 장식 간격7.635~26.194px, 프레임 화면 밖 이탈0 |
+| 실제 게임 | 디스크의 저장된 bottom 속성만 열린 게임에 hot apply. 적용 전후 ontrue/pausedfalse, 발화 t27/mt240/pairtrue 동일. 이후 실제 전투 중 까마귀 대사·HP/MP·스킬바 분리 화면 확인. 사용자 게임 강제 새로고침 없음 |
+| 회귀 | petLanguageRefresh/petGateLockedDialogue/petRageFullDialogue:3/3 PASS. 두 HTML 인라인 스크립트 문법 검증 및 HTTP 원본/디스크 바이트 확인 |
+| 검수 파일 | tmp/pet-hud-20260929/qa.html 및 변경 전 백업. 검수 프레임은 플레이 흐름 전체 검증을 대신하지 않음 |
+| 소스 제어 | 기존 dirty/staged 작업 보존. 이번 위치 변경·문서 동기화 완료, 관리형 .git 읽기 전용으로 커밋 미수행. NW.js 패키징·Steam 배포 미수행 |
+
+
+## 2026-09-29 설정 UI 전체 화면 확장 / 키 변경 조작 마감
+
+| 파일 | 변경 및 검증 |
+|---|---|
+| ui-refinement.css | 설정680px/1000px 제한 제거. 화면맞춤·2열 그룹·기본16px 글자, 본문만 스크롤/닫기 고정. 좁은 창1열/낮은 높이 제목 축소 |
+| ui-panels.js | 화면 효과7행을 기존 ID/리스너 그대로 한 그룹으로 이동, 그래픽 품질과 나란히 배치 |
+| game.html / game-easy-test.html | 키 설정 DIV를 native button으로 전환, 이름/disabled/초점 복원, 반복 활성화 캡처 방지, 버튼 키 이벤트 보호. CSS/구성 JS 캐시20260929-settings-workspace |
+| test/settingsBindingControls.test.js | 두 HTML의 이름/기본·보조 대기/삭제/패드 고정·편집/반복 입력10건. 관련 회귀 포함19/19 PASS, tools/test-chain-input-bindings.cjs 두 HTML PASS |
+| 실제 화면 | 1920×1080·1280×800·960×640·600×720·390×844·1280×540, 5탭 각각 가로 잘림0/본문 가로 스크롤0/닫기 화면 안. 실제 메인 신규 로드도 확인 |
+| 문서 | SETTINGS_UI_WORKSPACE_20260929.md 및 UI_COMPOSITION, UI_SCALING, 3.3, HUD, 패드 호버 문서 동기화. 검증/커밋 상태는 현행 보고서 참조 |
+
 ### 설정 시스템·미리보기 디테일 후속 마감
 
 | 대상 | 최종 변경·검증 |
@@ -50849,3 +51474,22 @@ CSS 캐시 ui-refinement.css?v=20260927-4. 신규 이미지/아이템 데이터 
 | SSOT | [전투 텍스처 워밍업](12퍼포먼스·최적화/COMBAT_TEXTURE_WARMUP_20260929.md). 전체맵 VISUAL VERDICT RETOUCH. 원본 ZIP·타 작업staging 보존 |
 
 추가 첫 전투 계측에서 확인한 `_waterBlueFlightImg`(물 파란콩), `_ch1StartMediumImgs`(다안육괴), `void_black`(부활 대기), `_mineTrapWardSheet`(덫), `_corpses`의 첫16개128×128 Canvas도 같은 준비 큐에 포함한다. 최초 부활 시트의43.3ms 업로드와 첫 시체 텍스처 할당을 draw에서 준비 단계로 옮기며, 기존 표현·부활 수치·시체 풀120개·동적 내용 갱신은 유지한다.
+
+추가 첫 전투 계측에서 확인한 `_waterBlueFlightImg`(물 파란콩), `_ch1StartMediumImgs`(다안육괴), `void_black`(부활 대기)도 같은 준비 큐에 포함한다. 최초 부활 시트의43.3ms 업로드를 draw에서 준비 단계로 옮기며, 기존 표현·부활 수치는 유지한다.
+
+
+## 2026-09-29 설정 캐릭터·커서 선택 조작 마감
+
+| 범위 | 변경·검증 |
+|---|---|
+| 소스 | game.html/game-easy-test.html renderSettings, ui-refinement.css. 캐시20260929-settings-choices |
+| 선택 | 캐릭터·커서 native button type=button/settings-choice. data-settings-choice=character-{ci}/cursor-{ci}, aria-pressed, 번역된 aria-label. 캐릭터 설명 id settings-character-description-{ci}를 aria-describedby로 참조 |
+| DOM·초점 | replaceChildren으로 목록 재구성, _choiceFocus 보존 후 동일 카드 focus preventScroll. 기존 atlas/cursor/저장/폴백 함수를 유지하며 Enter/Space 선택·Tab 이동 지원 |
+| 외형 | 기본/선택 금속 재질·금색 경계, hover/gp-hover 그림자, focus-visible2px/offset3px. 네이티브 버튼 공통 before/after 장식을 카드에서만 제외. 기존 확대 규격 유지, 설명400weight/긴 단어 줄바꿈. 정확 색상·규격·식별자는 SETTINGS_UI_WORKSPACE_20260929.md |
+| 번역 | easy-test ch.name/ch.desc 직접 출력을 기존 _T로 본편과 일치. 이름·설명·선택 표시의 실제 번역 리프와 접근성 참조 일치 |
+| 자동 검증 | 설정 관련31/31 PASS(선택8/키10/캐릭터 번역2/필드 이름3/복원8). 선택 회귀 변경 전6FAIL/2PASS→변경 후8PASS |
+| 실제 조작 | 본편/easy-test Enter 캐릭터0·Space 캐릭터1·Enter 커서1·Space 커서0 선택값/초점 확인. Tab 다음 카드, 설정창 및 일시정지 유지. easy-test KO→EN 이름·설명 확인. 검수 탭 저장쓰기는 버림 |
+| 화면 | 본편 KO/EN×1920×1080·1280×800·960×640·600×720·390×844·1280×540×조작/시스템2탭=24건 가로 잘림·본문 가로 넘침·카드 자식/텍스트 넘침0/닫기 화면 안. easy-test 추가 크기 검사는 도구 시간 초과 및 sandbox helper 시작 실패로 중단, 반환되지 않은 결과는 집계하지 않음 |
+| 파일 검증 | ui-panels.js 및 두 HTML 인라인4개씩 구문PASS, HTML2개/CSS/JS HTTP200 원본과 디스크 바이트 일치. verification.json/status-final.txt 보존. 브라우저 도구 재연결 실패로 QA 임시 viewport 수동 reset·닫기는 미확인, 생성 검수 탭은 턴 종료 자동 정리 대상 |
+| 문서 | docs 전체 키워드 검색 후 UI 현행 계약·UI composition·키바인딩/호버·i18n2문서·Steam 소스 번역 현황·CHANGELOG_SYNC 동기화 |
+| 상태 | 변경 전 백업 tmp/settings-choice-20260929. 기존 dirty/staged 작업 유지, .git 읽기 전용으로 커밋 미완료. 실제 게임패드/NW.js 패키징/Steam 업로드 미검증 |

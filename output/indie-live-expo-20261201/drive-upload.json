@@ -71,7 +71,15 @@
     "title": "EXODUSER: HELL LORD on Steam",
     "release_state": "Coming soon"
   },
-  "form_submitted": false,
+  "form_submitted": true,
+  "submission_confirmation": {
+    "date": "2026-09-28",
+    "steam_app_id": "4749590",
+    "steam_event_promotion_approved": true,
+    "source": "user-provided Google Forms confirmation screenshot",
+    "message": "回答を記録しました",
+    "evidence_file": "submission-confirmation.png"
+  },
   "images_replaced_on": "2026-09-28",
   "current_video_replacement": {
     "date": "2026-09-28",

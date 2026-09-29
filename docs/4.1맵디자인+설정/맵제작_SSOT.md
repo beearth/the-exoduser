@@ -472,3 +472,10 @@ North of the rotten forest, hell gate or ruined chapel silhouette on the horizon
 | `장별_특징_GPT프롬프트.md` | 장 얼굴 한 장 프롬프트 |
 | `맵오브젝트_에셋목록.md` | 기존 prop id |
 | `맵베이스세팅.md` | 런타임 폴백 |
+
+
+### CH1_HIDDEN_UNDERLAY_20260929 — 현행 바닥 렌더 계약
+
+완성 production_finish 화면이 전체 뷰포트를 불투명 ready청크로 덮으면 _ch1StartOuterCoversView가 가려진 _fillVoidWithFloor·20개 _oriFireflies·기존 맵캐시 분기3그룹을 렌더에서 제외한다. 매 프레임 줌/흔들림/가장자리·1026² ready를 검사하며, 로딩·오류·맵 밖 노출·다른stage/보스아레나/outer·Rootworld·초기폴백은 원래 바닥을 유지한다. ?ch1LegacyUnderlay=1은 비교용. visible 생체/언덕/소품/ATMO·19빌드레이어/이미지·충돌 삭제0. 캐시 메모리 전체해제나FPS개선율을 주장하지 않는다.
+
+현행 공식·수치·검수는 [가려진 레이어 정리 SSOT](CH1_HIDDEN_UNDERLAY_20260929.md)를 따른다. 앞선 날짜별 회귀·FPS·아트 수치는 당시 검수 이력이다.

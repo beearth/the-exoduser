@@ -20,9 +20,10 @@
 
 | 항목 | 현행 연출 | 적용 위치 |
 |---|---|---|
-| 주 검기 | 기존 붉은 9프레임 기검참 시트의 첫 행 0~2프레임을 7f 간격으로 순환. 플레이어 몸 중심 `P.x/P.y`에 정렬하고 시전 방향으로 회전. 기본 표시 크기 `78+13×T+4×(충전f mod 60)/60`px, T=0/1/2/3이므로 0/60/120/180f에 78/91/104/117px. 단계 사이 최대 4px 성장 후 다음 1초 경계에서 약 9px 커지며, 맥동 ±3.5%. 외광 alpha `.24+.08×T`, 본체 alpha `.58+.08×T`로 단계별 밝기도 상승. `lighter` 합성으로 2장(외광 0.96배·본체 0.82배)을 겹쳐 몸을 감싼다 | `_drawKiSlashCharge`, 플레이어 스프라이트 직후 |
+| 주 검기 | 기존 붉은 9프레임 기검참 시트의 첫 행 0~2프레임을 7f 간격으로 순환. 플레이어 몸 중심 `P.x/P.y`에 정렬하고 시전 방향으로 회전. 기본 표시 크기 `78+13×T+4×(충전f mod 40)/40`px(`_KI_HOLD_STEP=40`), T=0/1/2/3이므로 0/40/80/120f에 78/91/104/117px. 단계 사이 최대 4px 성장 후 다음 단계 경계(40f)에서 약 9px 커지며, 맥동 ±3.5%. 외광 alpha `.24+.08×T`, 본체 alpha `.58+.08×T`로 단계별 밝기도 상승. `lighter` 합성으로 2장(외광 0.96배·본체 0.82배)을 겹쳐 몸을 감싼다 | `_drawKiSlashCharge`, 플레이어 스프라이트 직후 |
 | 집속 흐름 | 2026-09-27 제거. GPU 래퍼가 `quadraticCurveTo`를 제어점 경유 직선으로 처리해 검기 위아래에 긴 화살표 모양 선 2개가 나타났다. 백열 검기 시트 자체의 잔광만 사용 | `_drawKiSlashCharge`, 양쪽 HTML |
-| 충전 단계 | 검기 아래 대각선 자국 3개가 완료한 60/120/180f 단계에 맞춰 암적색에서 백열색으로 점등. 1초마다 1단, 3초에 최대 3단. 1·2단 충전음과 3단 완료 금속음·섬광으로 단계 차이를 표시하며, 화면에 떠오르는 충전 문구는 사용하지 않는다 | `_kiSlashHoldTier`, `_drawKiSlashCharge`, `_updateKiSlashThirdCharge` |
+| 충전 단계 | 검기 아래 대각선 자국 3개가 완료한 40/80/120f 단계에 맞춰 암적색에서 백열색으로 점등. 약 0.67초(40f)마다 1단, 2초(120f)에 최대 3단(2026-09-29 3초→2초 단축, 배율 불변). 1·2단 충전음과 3단 완료 금속음·섬광으로 단계 차이를 표시하며, 화면에 떠오르는 충전 문구는 사용하지 않는다 | `_kiSlashHoldTier`, `_drawKiSlashCharge`, `_updateKiSlashThirdCharge` |
+| 차지 보존 (2026-09-29) | 3타 홀드 차지(`_isKiCharging()`: `P.s==='wWindup'&&P._kiChargeActive`) 중 **피격 경직 면역** — `hurtP`·덫·근접 3경로 stagger 제외, 포이즈는 정상 감소해 기절(pStun) 시에만 끊김. **전격이동(bladeDash)** 사용 시 kiGather/sDraw와 동일하게 상태를 `bladeDash`로 바꾸지 않고 `_tickBladeDash`로 이동(250px/6f)만 진행 → 충전 유지·계속 누적, 키를 떼면 정상 발사 | `_isKiCharging`, `hurtP`, `activateBladeDash` |
 | 폴백·합성 | 시트 로딩 전에는 같은 전방 위치에 적색 곡선 칼날을 12개 직선 구간으로 근사해 그린다. GPU 래퍼의 `quadraticCurveTo` 직선화에 의존하지 않는다. GPU/WebGL에서는 `_setBlend(true/false)`로 가산 합성, Canvas2D는 `lighter` | `_drawKiSlashCharge` |
 
 검증: `test/kiSlashHoldCharge.test.cjs`가 두 HTML의 단계별 배율·3타 전용 피해/크기·홀드 중 무발사/해제 1회 발사·차징 중 조준 변경과 같은 방향 발사·시트 로드 시 불필요한 화살표 선이 없는지를 실행한다. `test/kiSlashSwingSound.test.js`, `test/kiSlashQCancel.test.js`, `test/basicAttackDamage.test.js`도 함께 확인한다.

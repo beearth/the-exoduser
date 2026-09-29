@@ -46,7 +46,7 @@ const FILES = [
   'lobby-ancestor-art.css', 'lobby-ancestor-sprite.js',
   'world-intro-player.js', 'world-intro-subtitles-data.js', 'world-intro-subtitles.js',
   'cin-enter-engraved.css', 'cin-logo-art.js',
-  'GLTFLoader.js', 'three.min.js',
+  'GLTFLoader.js', 'three.min.js', 'three-runtime.js',
   'maps_data.js', 'lobby_i18n.js',
   'favicon.ico',
   'proj_atlas.png', 'prefabs/registry.json',

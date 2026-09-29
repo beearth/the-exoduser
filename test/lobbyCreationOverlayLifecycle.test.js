@@ -16,7 +16,7 @@ function setup(){
  const document={activeElement:null,createElement:()=>element(),querySelector:()=>element()};
  function element(id=''){
   const classes=new Set(),attributes={};
-  return {id,isConnected:true,style:{},children:[],dataset:{},value:'',src:'',poster:'',paused:true,readyState:0,
+  const el={id,isConnected:true,style:{},children:[],dataset:{},value:'',poster:'',paused:true,readyState:0,currentTime:0,srcWrites:0,loads:0,
    classList:{add(...names){names.forEach(n=>classes.add(n));},remove(...names){names.forEach(n=>classes.delete(n));},
     contains:n=>classes.has(n),toggle(n,on){if(on)classes.add(n);else classes.delete(n);}},
    parentElement:{classList:{toggle(){}}},setAttribute(k,v){attributes[k]=v;},getAttribute:k=>attributes[k]??null,
@@ -26,7 +26,9 @@ function setup(){
    contains(el){return id==='charVisualPop'?el===nodes.visualCancelBtn||el===nodes.visualCreateBtn:
     id==='createModal'?el===nodes.charName||el===nodes.createCancelBtn:el===this;},
    focus(){document.activeElement=this;},blur(){document.activeElement=null;},
-   play(){this.paused=false;return Promise.resolve();},pause(){this.paused=true;},load(){},click(){return this.onclick?.();}};
+   play(){this.paused=false;return Promise.resolve();},pause(){this.paused=true;},load(){this.loads++;this.currentTime=0;},click(){return this.onclick?.();}};
+  Object.defineProperty(el,'src',{get(){return attributes.src??'';},set(value){attributes.src=String(value);this.srcWrites++;this.currentTime=0;}});
+  return el;
  }
  const ctx=vm.createContext({document,$:id=>id==='_langPop'?null:(nodes[id]||(nodes[id]=element(id))),window:{},
   CHAR_VISUALS:[{name:'Warrior',portrait:'warrior.png',idleVid:'warrior.mp4',scene:'warrior-bg.png'},
@@ -41,7 +43,7 @@ function setup(){
   '_clearVidTimers','stopLobbyBgm','playCinematic','_updateCharDisplay','_preloadLoadingImgs'])ctx[name]=()=>{};
  ctx.loadCharacters=ctx.loadLocalCharacters=async()=>{ctx._characterLoadSeq++;};
  for(const id of ['charVisualPop','vkbWrap'])ctx.$(id).style.display='none';
- const names=['stopMediaVideo','selectVisual','openVisualSelect','_visualConfirm','_vkbHide',
+ const names=['stopMediaVideo','selectVisual','openVisualSelect','_resetVisualInfoScroll','_visualConfirm','_vkbHide',
   '_closeVisualSelect','_closeCreationOverlays','_goLogin','_goCinematic','_goLobby','showLobby'];
  vm.runInContext(names.map(n=>functions.get(n)||'').join('\n')+'\n'+
   html.match(/\$\('visualCancelBtn'\)\.onclick=[^\n]+/)[0],ctx);
@@ -103,3 +105,40 @@ for(const route of ['_goLogin','_goCinematic','_goLobby','showLobby']){
   await ctx.initial;
  });
 }
+
+for(const kind of ['idle','scene']){
+ function setupVideo(version='1'){
+  const s=setup(),ch=s.ctx.CHAR_VISUALS[0];
+  if(kind==='idle')ch.idleVid='warrior.mp4?v='+version;
+  else{delete ch.idleVid;ch.sceneVid='warrior-scene.mp4?v='+version;}
+  s.ctx.openVisualSelect();return{...s,video:s.nodes[kind==='idle'?'csIdleVid':'csSceneVid'],ch};
+ }
+ test(kind+' reselecting the same versioned video keeps its playhead and avoids reloading',()=>{
+  const s=setupVideo();s.video.currentTime=2;const before={writes:s.video.srcWrites,loads:s.video.loads};
+  s.ctx.selectVisual(0);
+  assert.equal(s.video.currentTime,2);assert.equal(s.video.srcWrites,before.writes);assert.equal(s.video.loads,before.loads);
+  assert.equal(s.video.paused,false);assert.equal(s.ctx._pendingVisualIdx,0);
+ });
+ test(kind+' a changed query version replaces the media even when the path is unchanged',()=>{
+  const s=setupVideo();s.video.currentTime=2;const before=s.video.srcWrites;
+  s.ch[kind==='idle'?'idleVid':'sceneVid']=kind==='idle'?'warrior.mp4?v=2':'warrior-scene.mp4?v=2';
+  s.ctx.selectVisual(0);
+  assert.equal(s.video.src,s.ch[kind==='idle'?'idleVid':'sceneVid']);assert.equal(s.video.currentTime,0);assert.equal(s.video.srcWrites,before+1);
+  assert.equal(s.video.paused,false);
+ });
+ test(kind+' a different character selects its own video and rejects the previous fallback',()=>{
+  const s=setupVideo(),before=s.video.srcWrites,oldFallback=s.nodes.csIdleVid.onerror;
+  if(kind==='scene'){delete s.ctx.CHAR_VISUALS[1].idleVid;s.ctx.CHAR_VISUALS[1].sceneVid='silver-scene.mp4?v=1';}
+  s.ctx.selectVisual(1);oldFallback?.();
+  assert.equal(s.video.src,kind==='idle'?'silver.mp4':'silver-scene.mp4?v=1');assert.equal(s.video.srcWrites,before+1);
+  assert.equal(s.video.paused,false);assert.equal(s.nodes.visualCreateBtn.disabled,true);
+ });
+}
+
+for(const kind of ['idle','scene'])test(kind+' reselecting a failed source retries its media load',()=>{
+ const s=setup(),ch=s.ctx.CHAR_VISUALS[0];
+ if(kind==='idle')ch.idleVid='warrior.mp4?v=1';else{delete ch.idleVid;ch.sceneVid='warrior-scene.mp4?v=1';}
+ s.ctx.openVisualSelect();const video=s.nodes[kind==='idle'?'csIdleVid':'csSceneVid'],writes=video.srcWrites;
+ video.error={code:2};video.paused=true;s.ctx.selectVisual(0);
+ assert.equal(video.srcWrites,writes+1);assert.equal(video.paused,false);
+});

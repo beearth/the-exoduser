@@ -139,7 +139,7 @@ Gmail 서버에 예약을 완료했고 Codex 자동화가 메일을 새로 보�
 | 데모 시작 / 상한 | 대검전사 Lv.1 / Lv.100 |
 | 구역 | stage 0 = CH1-1. 공개 데모 마지막 구역 `_DEMO_LAST_STAGE=0` |
 | 게임 진입 | 로비 버튼이 `game.html?test=1&slot=demo&demo=1`로 이동. 실제 초기 Lv.1 확인 |
-| 표시 | 1600×900, 최소 1280×720, 창 모드 및 크기 조절 |
+| 최초 검토 사본 표시 | 1600×900, 최소 1280×720, 창 모드 및 크기 조절. 10시 후속 전달본은 사용자 지시에 따라 fullscreen:true로 시작하며 [최신 전달 기록](PUBLISHER_LATEST_BUILD_DELIVERY_20260929.md)을 따름 |
 | 내장 서버 포트 | 3337. 개발 서버 3333과 분리 |
 | 데모 저장 | `hellsave_demo` localStorage, `userdata-publisher-20260929` Chromium 프로필 |
 | 서버 API 저장 | `%APPDATA%/EXODUSER-PUBLISHER-20260929/saves` |

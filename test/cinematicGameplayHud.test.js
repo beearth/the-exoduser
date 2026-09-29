@@ -31,9 +31,9 @@ test('centered resources stay compact while malice uses readable full numbers', 
 test('top resources use the centered lane below the timer so they never overlap the top-left minimap', async () => {
   const game = await readFile(path.join(rootDir, 'game.html'), 'utf8');
 
-  assert.match(game, /\.hud-top\s*\{[\s\S]*top:\s*calc\(var\(--ui-inset-top\) \+ env\(safe-area-inset-top, 0px\) \+ 32px\)[\s\S]*left:\s*50%[\s\S]*transform:\s*translateX\(-50%\) scale\(var\(--ui-scale\)\)[\s\S]*transform-origin:\s*top center/);
-  assert.match(game, /#stageClock\s*\{[\s\S]*top:\s*calc\(var\(--ui-inset-top\) \+ env\(safe-area-inset-top, 0px\) \+ 7px\)/);
-  assert.match(game, /#mmWrap\s*\{[\s\S]*top:\s*8px[\s\S]*left:\s*8px/);
+  assert.match(game, /\.hud-top\s*\{[\s\S]*top:\s*calc\(var\(--ui-inset-top\) \+ env\(safe-area-inset-top, 0px\) \+ 32px \* var\(--ui-scale\)\)[\s\S]*left:\s*50%[\s\S]*transform:\s*translateX\(-50%\) scale\(var\(--ui-scale\)\)[\s\S]*transform-origin:\s*top center/);
+  assert.match(game, /#stageClock\s*\{[\s\S]*top:\s*calc\(var\(--ui-inset-top\) \+ env\(safe-area-inset-top, 0px\) \+ 7px \* var\(--ui-scale\)\)/);
+  assert.match(game, /#mmWrap\s*\{[\s\S]*top:\s*calc\(8px \* var\(--ui-scale\)\)[\s\S]*left:\s*calc\(8px \* var\(--ui-scale\)\)/);
   assert.doesNotMatch(game, /\.hud-top\s*\{[^}]*left:\s*calc\(var\(--ui-inset-top\)/);
 });
 

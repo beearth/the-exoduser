@@ -15,7 +15,7 @@ window._tutorialBadges={
     if(this.ready)return;this.ready=true;
     const slot=new URLSearchParams(location.search).get('slot')||'main';this.storageKey='exoduser:tutorial-badges:v1:'+slot;
     this.earned={};try{const data=JSON.parse(localStorage.getItem(this.storageKey)||'{}');for(const def of this.definitions)if(typeof data?.[def.id]==='string')this.earned[def.id]=data[def.id];}catch{}
-    this.button=this.node('button','배지 0/3');this.button.id='tutorialBadgeButton';this.button.type='button';this.button.setAttribute('aria-expanded','false');this.button.setAttribute('aria-controls','tutorialBadgeCollection');
+    this.button=this.node('button','배지 0/3');this.button.id='tutorialBadgeButton';this.button.type='button';this.button.hidden=true;this.button.setAttribute('aria-expanded','false');this.button.setAttribute('aria-controls','tutorialBadgeCollection');
     this.panel=this.node('section');this.panel.id='tutorialBadgeCollection';this.panel.hidden=true;this.panel.setAttribute('aria-label','튜토리얼 배지 모음');
     const head=this.node('header');this.heading=this.node('span');head.append(this.heading);
     this.close=this.node('button','닫기');this.close.type='button';this.close.onclick=()=>this.toggle(false);head.append(this.close);
@@ -30,9 +30,10 @@ window._tutorialBadges={
     this.toastLabel=this.node('span');this.toastHeading=this.node('small');this.toast.append(this.toastHeading,this.toastLabel);
     this.button.onclick=()=>this.toggle(this.panel.hidden);
     for(const el of [this.button,this.panel])for(const type of ['mousedown','click','pointerdown','wheel','keydown'])el.addEventListener(type,e=>{e.stopPropagation();if(type==='keydown'&&e.code==='Escape'){e.preventDefault();this.toggle(false);}});
-    document.body.append(this.button,this.panel,this.toast);this.render();
+    const hud=document.getElementById?.('mmLvl')||document.body;
+    hud.append(this.button,this.panel);document.body.append(this.toast);this.render();
   },
-  toggle(open){this.panel.hidden=!open;this.button.setAttribute('aria-expanded',String(open));if(open)this.close.focus();else this.button.focus();},
+  toggle(open){open=!!open&&!this.button.hidden;this.panel.hidden=!open;this.button.setAttribute('aria-expanded',String(open));if(open)this.close.focus();else if(!this.button.hidden)this.button.focus();},
   refreshLanguage(){if(this.ready)this.render();},
   render(){
     this.panel.setAttribute('aria-label',this.t('튜토리얼 배지 모음','Tutorial badge collection'));
@@ -43,7 +44,10 @@ window._tutorialBadges={
     this.toastHeading.textContent=this.t('배지 획득','Badge earned');
     const toastDef=this.definitions.find(def=>def.id===this.toastId);
     if(toastDef)this.toastLabel.textContent=this.t(toastDef.name,toastDef.nameEn);
-    this.button.textContent=this.t('배지 {count}/3','Badges {count}/3',{count:Object.keys(this.earned).length});
+    const count=Object.keys(this.earned).length;
+    this.button.hidden=count===0;
+    if(count===0){this.panel.hidden=true;this.button.setAttribute('aria-expanded','false');}
+    this.button.textContent=this.t('배지 {count}/3','Badges {count}/3',{count});
     for(const {def,card,status,title,detail} of this.cards){const earned=!!this.earned[def.id];card.setAttribute('data-earned',String(earned));title.textContent=this.t(def.name,def.nameEn);detail.textContent=this.t(def.detail,def.detailEn);status.textContent=earned?this.t('획득 완료','Earned'):this.t('미획득','Not earned');}
   },
   complete(id,checks){

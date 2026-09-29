@@ -29,7 +29,7 @@ test('workflow audits prebuilt output then uses individual uploads and pinned CL
  assert.match(s,/vercel deploy --prebuilt --prod --logs/);
 });
 test('web staging excludes CH1 master and retouch sources while retaining playable chunks',()=>{
- for(const name of ['CH1_1_PRODUCTION_MASTER.png','outer66_sources/outer_patch66.png','outer71_sources/reuse.json','skin65_sources/ground_layer_skin65.png']){
+ for(const name of ['CH1_1_PRODUCTION_MASTER.png','outer66_sources/outer_patch66.png','outer71_sources/reuse.json','skin65_sources/ground_layer_skin65.png','floor87_sources/floor87_patch.png','floor87_sources/skin_material_generated.png','floor87_sources/prep.json']){
   assert.equal(isMapAuthoringSource('assets/map/ch1/production_finish/'+name),true,name);
  }
  for(const name of ['chunk_0_1.png','layout.js','composition.json','retouch-layers.json']){

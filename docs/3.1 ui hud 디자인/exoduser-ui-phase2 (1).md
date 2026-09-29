@@ -895,7 +895,7 @@ L키(`skillCycle`)로 여는 스킬 슬롯 배정 팝업(`#skSlotPop`, `openSkSl
 
 | 대상 | 현재 계약 |
 |---|---|
-| 설정 | 왼쪽 min(680px,100vw−24px), 게임/화면/사운드/조작/시스템 5탭, 본문만 스크롤, 자동저장/닫기 고정 |
+| 설정 | 화면 중앙 width100vw−24px/height100dvh−24px, 폭600px 이하 각각−12px. 게임/화면/사운드/조작/시스템 5탭, 본문만 스크롤, 자동저장/닫기 고정. 현행 상세: SETTINGS_UI_WORKSPACE_20260929.md |
 | 장비 | 오른쪽 clamp(640px,36vw,780px), 화면폭−24px 상한. 장비/유골함/보석/보관함 탭(보석은 전용 그리드, 나머지는 기존 가방), 필터 접기. 폭≤780은 화면폭−16px. 유골함·보관함 탭은 폭min(980px,100vw−24px)/높이min(680px,94vh),왼쪽 가방·오른쪽 각 전용 패널 동등폭(폭899px 이하 상하) |
 | 스킬/대장간/창고 | 각각 최대1020/980/700px, 화면폭−24px 상한. 스킬 왼쪽, 대장간/창고 중앙 |
 | 성장 | 기존 전체화면/인체 트리 유지, 공통 표면/내비게이션 마감 적용 |
@@ -1026,3 +1026,34 @@ CSS 캐시 ui-refinement.css?v=20260927-3. 신규 이미지/아이템 데이터 
 | 기존 동작 | 호버 미리보기 pointer-events:none 유지. 마우스 이탈 시 정보창 숨김,선택·장착·저장 유지. game-easy-test.html은 기존 비미리보기 상세 구현이므로 preview 안내를 추가하지 않음; 공통 CSS와 가드된 리스너만 로드 |
 | 검증 | 390×844/640×720/900×720/1280×720/1920×1080 ×4탭×필터 열림/닫힘40조합: 표시된 가방의 세로·가로 넘침0,페이지 가로 넘침0. 휠 상세 위/아래 끝 접근,배경 가방 정지,마우스 이탈 숨김,빈 칸 휠 가방 이동 확인. pageerror0 |
 | 회귀·환경 | gameHtmlInlineSyntax 및 uiPanelInitialization 기존 테스트4개 PASS. 저장 API 차단 테스트 캐릭터와 실제 저장 CSS/JS로 검수,canvas만 QA에서 숨김. 전체언어·게임패드·실제 저장 미검증. tmp/inventory-detail-audit/report.json |
+
+
+## 2026-09-28 HUD·텍스트 프레임 드랍 수정
+
+| 적용 위치 | 현행 계약 |
+|---|---|
+| GPU proxy text | _buildProxyX의 font/textAlign/textBaseline setter와 restore는 proxy 상태만 갱신. native fillText 폴백·strokeText·measureText는 _syncTextFont로 요청값/정규화된 실제값 확인 후 필요한 글꼴 지정만 수행 |
+| skSlot1 분노 | _updateActionKeys에서 기본→분노 테두리 왕복 제거. 최종 색·그림자를 한 번 계산, 높이/숫자 span도 _hset으로 변경 시에만 기록. 기존 색/공식/transition 유지 |
+| _hset 캐시 | _h_<prop> 요청값과 실제 DOM을 함께 비교. _hn_<prop>에 정규화된 style값 기록, 외부 변경 시 복구 |
+| 검증 한계 | 관련 회귀35 PASS/두 HTML 인라인 script 각6 parse PASS. 전체 FPS 최종 비교는 화면 전환으로 무효; 완전 해결 판정 보류 |
+
+[원인별 실측·정확한 수치·남은 검증](../12퍼포먼스·최적화/FRAME_DROP_HUD_TEXT_20260928.md).
+
+## 2026-09-28 전투 프레임 후속 검증
+
+| 구분 | 현행 검증 상태 |
+|---|---|
+| 수정·단기 전투 | HUD/proxy 수정 유지,실제 AI100마리·전투 활성6초에서 평균207.75FPS/p95 8.4ms,초기최대83.4ms 1회. 장시간·스킬 난사·보스·Steam 실측은 미완료 |
+| Chrome 확대 | localhost 저장 배율50%가 5626×2524 viewport를 만든 것으로 확인. Steam용 ./userdata와 분리; Steam 화면/FPS가 정상이라고 실측 완료를 주장하지 않음 |
+| 근거 | [유효 측정·중단 제외·배율 경계](../12퍼포먼스·최적화/FRAME_DROP_HUD_TEXT_20260928.md#2026-09-28-후속-전투-실측과-chrome-배율) |
+
+
+## 2026-09-29 발사 경고 문구 프레임 병목·설정 복원
+
+| 항목 | 현행 구현·검수 |
+|---|---|
+| native 글꼴 | 두HTML _buildProxyX의 _syncTextFont: 같은 요청/정규화 실제값이면 setter 생략. Canvas초기화·외부 변경·다른 글꼴은 재적용 |
+| 경고 폭 | 본편 _drawProjectileChargeLabel의 _chargeLabelMetrics 한항목(ctx/label/font/width) 재사용. 렌더러/번역문구/글꼴 변경 및 document.fonts loadingdone/loadingerror에서 재측정. 기존13px·박스폭tw+14/높이20·링60틱·탄종/패링 규칙 유지 |
+| 해상도 복원 | 두HTML 최초 설정과 _loadPreset OPT 복원 뒤 rz(). 저장60%/프리셋70% 실제C/CT/burst 반영, 동일치수no-op |
+| 근거·경계 | 전투 경고의 font/measureText 약29~42ms 스택 확인. 저장본 새로고침100AI/1920×1080/10초 draw p99 4.1ms(직전31.9ms),max44.7ms 잔여2회. 전후CSS창 크기가 달라 평균FPS 개선율 확정하지 않음. 예열20초 연결중단/최종visual·Steam·보스 미검증 |
+| 검사·상태 | 관련57PASS,두HTML실행script각6구문PASS. 기존경고fixture의실제_projectileParryClass 누락복구. 커밋/패키지/Steam업로드미완료,타작업스테이징보존. [상세 계약·실측·검수 경계](../12퍼포먼스·최적화/FRAME_DROP_HUD_TEXT_20260928.md) |

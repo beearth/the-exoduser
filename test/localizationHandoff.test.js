@@ -9,12 +9,14 @@ const game=fs.readFileSync(new URL('../game.html',import.meta.url),'utf8');
 const startup=game.slice(game.indexOf('// 게임 시작 시 자동 불러오기'),game.indexOf("try{_applyCursor()}catch(e){}",game.indexOf('// 게임 시작 시 자동 불러오기')));
 function start(saved,settings){
  const doc={documentElement:{}};
+ const resizeLanguages=[];
  const storage=new Map([['hellLang',saved],['hellcave_settings',settings],['progress-sentinel','unchanged']]);
- const ctx=vm.createContext({OPT:{lang:'ko'},BINDS:{},BINDS2:{},document:doc,localStorage:{getItem:key=>storage.get(key)??null,setItem:(key,value)=>storage.set(key,value)},BGM:{setVol(){}},_repairChainAttackBinds(){},applyUIScale(){}});
+ const ctx=vm.createContext({OPT:{lang:'ko'},BINDS:{},BINDS2:{},document:doc,localStorage:{getItem:key=>storage.get(key)??null,setItem:(key,value)=>storage.set(key,value)},BGM:{setVol(){}},_repairChainAttackBinds(){},applyUIScale(){},rz(){resizeLanguages.push(ctx.OPT.lang)}});
  vm.runInContext(game.match(/function saveSettings\(\)\{[^\n]+/)[0],ctx);
  vm.runInContext(fs.readFileSync(new URL('../localization-runtime.js',import.meta.url),'utf8'),ctx);
  vm.runInContext('function _applyLang(){OPT.lang=ExoduserI18n.resolveLanguage(OPT.lang)||"ko";ExoduserI18n.applyDocumentLanguage(document,OPT.lang)};function syncSettingsUI(){_applyLang()}',ctx);
  vm.runInContext(startup,ctx);
+ assert.deepEqual(resizeLanguages,[ctx.OPT.lang],'Saved render scale is applied once after restoring the selected language');
  assert.equal(storage.get('progress-sentinel'),'unchanged');
  if(settings==='{broken')assert.equal(storage.get('hellcave_settings'),settings,'Do not overwrite unreadable user settings during language recovery');
  return {code:ctx.OPT.lang,dir:doc.documentElement.dir};

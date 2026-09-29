@@ -10,10 +10,10 @@ for(const file of ['game.html','game-easy-test.html']){
   const end=html.indexOf('function _mkProj()',start);
   const vfxStart=html.indexOf('function _drawKiSlashCharge(');
   const vfxEnd=html.indexOf('function renderCrescents(',vfxStart);
-  test(`${file}: held third hit doubles each full second through stage three`,()=>{
+  test(`${file}: held third hit doubles every 40 frames and reaches stage three at two seconds`,()=>{
     assert.ok(start>=0&&end>start,'ki slash charge helpers must exist');
     const m=vm.runInNewContext(html.slice(start,end)+';_kiSlashHoldMultiplier',{Math});
-    assert.deepEqual([0,59,60,119,120,179,180,999].map(m),[1,1,2,2,4,4,8,8]);
+    assert.deepEqual([0,39,40,79,80,119,120,999].map(m),[1,1,2,2,4,4,8,8]);
   });
   test(`${file}: only charged third crescent grows in damage and collision radius`,()=>{
     assert.ok(start>=0&&end>start,'ki slash charge helpers must exist');
@@ -22,14 +22,14 @@ for(const file of ['game.html','game-easy-test.html']){
     const scope={P,Math,_cresStep:2,_cresComboT:0,_cresCd:0,
       _addSkProf(){},_playKiSlashComboSfx(){},meleeRef:()=>10,statStr:()=>1,pAtkMul:()=>1,_skMul:()=>1,
       spawnCrescent:(...args)=>shots.push(args),addTxt(){},_L:(ko)=>ko};
-    vm.runInNewContext(html.slice(start,end)+';_fireKiSlashCrescent(3,60);_fireKiSlashCrescent(3,120);_fireKiSlashCrescent(3,180);_fireKiSlashCrescent(2,180)',scope);
+    vm.runInNewContext(html.slice(start,end)+';_fireKiSlashCrescent(3,40);_fireKiSlashCrescent(3,80);_fireKiSlashCrescent(3,120);_fireKiSlashCrescent(2,120)',scope);
     assert.equal(shots.length,4);
-    assert.equal(shots[0][3],140,'one second should double the normal 70 damage');
+    assert.equal(shots[0][3],140,'first stage (40f) should double the normal 70 damage');
     assert.equal(shots[0][5],3);
     assert.equal(shots[0][7],1.4,'charged third hit should look larger');
-    assert.equal(shots[1][3],280,'two seconds should reach four times the base damage');
+    assert.equal(shots[1][3],280,'second stage (80f) should reach four times the base damage');
     assert.equal(shots[1][7],1.8,'projectile size follows charge tier');
-    assert.equal(shots[2][3],560,'three seconds should reach eight times the base damage');
+    assert.equal(shots[2][3],560,'full charge (120f = 2s) should reach eight times the base damage');
     assert.equal(shots[2][7],2.2,'projectile size remains capped at the third charge tier');
     assert.equal(shots[3][3],70,'the second hit must ignore charge');
     assert.equal(shots[3][7],1);
@@ -41,7 +41,7 @@ for(const file of ['game.html','game-easy-test.html']){
       _addSkProf(){},_playKiSlashComboSfx(){},meleeRef:()=>10,statStr:()=>1,pAtkMul:()=>1,_skMul:()=>1,
       spawnCrescent:(...args)=>fired.push(args),_startSilvertailAttackMotion(){},poolPart(){},addTxt(){},playSample(){},_gameFrame:1};
     const update=vm.runInNewContext(html.slice(start,end)+';_updateKiSlashThirdCharge',scope);
-    update(60);
+    update(40);
     assert.equal(fired.length,0);
     assert.equal(P.s,'wWindup');
     scope.isHeld=()=>false;
@@ -66,7 +66,7 @@ for(const file of ['game.html','game-easy-test.html']){
     assert.equal(shots[0][2],Math.PI/2,'released blade should use the same direction');
   });
   test(`${file}: third charge completion clangs and flashes exactly once`,()=>{
-    const P={x:10,y:20,facing:Math.PI/4,atkArc:0,s:'wWindup',st2:999,_kiChargeActive:true,_kiChargeT:179,skills:{kiSlash:1}};
+    const P={x:10,y:20,facing:Math.PI/4,atkArc:0,s:'wWindup',st2:999,_kiChargeActive:true,_kiChargeT:119,skills:{kiSlash:1}};
     const sounds=[],flashes=[];
     const scope={P,Math,isHeld:()=>true,_L:(ko)=>ko,_cresStep:2,_cresComboT:120,_cresCd:0,
       _addSkProf(){},_playKiSlashComboSfx(){},meleeRef:()=>10,statStr:()=>1,pAtkMul:()=>1,_skMul:()=>1,
@@ -74,7 +74,7 @@ for(const file of ['game.html','game-easy-test.html']){
       playSample:(...args)=>sounds.push(args),playVFXAng:(...args)=>flashes.push(args),
       _VFX_SHEETS:{ki_slash_hit_2:{fw:627}}};
     const update=vm.runInNewContext(html.slice(start,end)+';_updateKiSlashThirdCharge',scope);
-    update(1);update(1);update(60);
+    update(1);update(1);update(40);
     assert.equal(sounds.length,1,'completed third tier should sound once while held');
     assert.equal(sounds[0][0],'sword_parry','full charge should have a metallic clang');
     assert.equal(flashes.length,1,'completed third tier should flash once while held');
@@ -91,29 +91,29 @@ for(const file of ['game.html','game-easy-test.html']){
     let origin,outer;
     const ctx={save(){},restore(){},translate(x,y){origin=[x,y]},rotate(){},beginPath(){},moveTo(){},lineTo(){},quadraticCurveTo(){},stroke(){strokes++}};
     const scope={P:{x:0,y:0,facing:0,atkArc:0,_kiChargeActive:true,_kiChargeT:120},Math,_now:0,_gameFrame:0,
-      C:{},_useGPU:false,_useGL:false,_kiSlashRadiant:{surfaces:[null,null,{}],fw:100,fh:100},
+      C:{},_useGPU:false,_useGL:false,_KI_HOLD_STEP:40,_kiSlashRadiant:{surfaces:[null,null,{}],fw:100,fh:100},
       _kiSlashHoldTier:()=>2,_drawKiSlashFrame:(...args)=>{if(!outer)outer=args.slice(-4)}};
     vm.runInNewContext(html.slice(vfxStart,vfxEnd)+';_drawKiSlashCharge',scope)(ctx);
     assert.equal(strokes,3,'only the three short charge-stage marks should be stroked');
     assert.ok(Math.hypot(origin[0]-scope.P.x,origin[1]-scope.P.y)<=12,'charged blade should wrap the player');
     assert.ok(outer[2]<=115&&outer[3]<=115,'fully charged blade preview should stay close to body size');
   });
-  test(`${file}: charge blade visibly grows at each completed second`,()=>{
+  test(`${file}: charge blade visibly grows at each completed stage`,()=>{
     assert.ok(vfxStart>=0&&vfxEnd>vfxStart);
     const sizes=[];
-    for(const frames of [0,59,60,119,120,179,180]){
+    for(const frames of [0,39,40,79,80,119,120]){
       const P={x:0,y:0,facing:0,atkArc:0,_kiChargeActive:true,_kiChargeT:frames};
       const ctx={save(){},restore(){},translate(){},rotate(){},beginPath(){},moveTo(){},lineTo(){},stroke(){}};
-      const scope={P,Math,_now:0,_gameFrame:0,C:{},_useGPU:false,_useGL:false,
+      const scope={P,Math,_now:0,_gameFrame:0,C:{},_useGPU:false,_useGL:false,_KI_HOLD_STEP:40,
         _kiSlashRadiant:{surfaces:[null,null,{}],fw:100,fh:100},
-        _kiSlashHoldTier:f=>Math.min(3,Math.floor(f/60)),
+        _kiSlashHoldTier:f=>Math.min(3,Math.floor(f/40)),
         _drawKiSlashFrame:(...args)=>{if(!scope.width)scope.width=args[args.length-2]}};
       vm.runInNewContext(html.slice(vfxStart,vfxEnd)+';_drawKiSlashCharge',scope)(ctx);
       sizes.push(scope.width);
     }
-    assert.ok(sizes[2]-sizes[1]>=7,'first full second should visibly enlarge the blade');
-    assert.ok(sizes[4]-sizes[3]>=7,'second full second should visibly enlarge the blade');
-    assert.ok(sizes[6]-sizes[5]>=7,'third full second should visibly enlarge the blade');
+    assert.ok(sizes[2]-sizes[1]>=7,'first stage should visibly enlarge the blade');
+    assert.ok(sizes[4]-sizes[3]>=7,'second stage should visibly enlarge the blade');
+    assert.ok(sizes[6]-sizes[5]>=7,'third stage should visibly enlarge the blade');
     assert.ok(sizes[6]>=sizes[0]*1.4,'maximum charge blade should be distinctly larger than its start');
   });
   test(`${file}: charged third hit scales its impact flash with the attack radius`,()=>{

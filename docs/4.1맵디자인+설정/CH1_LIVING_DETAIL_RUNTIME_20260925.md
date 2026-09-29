@@ -16,6 +16,20 @@
 
 [85차 수치·출처·MAP PRODUCTION REPORT SSOT](CH1_OUTER_CONNECTION_PASS85_20260929.md). 아래84차 이하의 '현행'은 당시 제작 이력이다.84차의 미완료 문구는 저장된 최종 검수로 보정했다.
 
+## 2026-09-29 — CH1-1 고목 접합84차 제작 이력
+
+현행 배경은 cache/bakeVersion **20260929-outer-84**다. 서측 부채꼴 고사리 구역을 낮은 부패 수피·괴사막으로 연결했다. master8192²/world8000²/tile40/64청크(core1024/bleed1/1026²), 변경chunk_1_5 1개·동일63개. 총109465px 변화(보행재질12058/비보행97407), geometry·충돌 변경0. 고목 보호2904814px 변경0; 이전 패치 보호 해제는 crop-local[495,340,835,655] 내부뿐(기존 패치 변화70882/창밖0). 타원밖·zero-mask·crop밖0, 선택crop의 near-black≤12/18/22는17595→17392 /64360→63422 /124323→122945. 재질 채널하한24, ellipse[635,490,260,180]/feather.25/opacity.96/줄기보호MaxFilter25·blur18. skin65→outer66..84 총20레이어, 마지막patch x1024/y5120/2048². 기존61차 생체 모듈·늪·동맥 유지/새모션0. 후보9카메라 오류0/G.map동일. 84차 본편18카메라·24적30초 전투·전체 베이크 재현 검수 완료는 저장된 live/runtime·promotion·로그로 확인했다. 현행85차와 상세 검수는 문서 맨 위 링크를 따른다.
+
+[84차 출처·검수 SSOT](CH1_1_PRODUCTION_FINISH_20260916.md#ch1-1-outer84). 아래83차 이하의 현행 표기는 당시 제작 이력이다. 전체 VISUAL VERDICT: RETOUCH.
+
+> 2026-09-29 배경83차: 검정 비보행 공동 재질/54청크/cache20260929-outer-83. 기존61차 생체 모듈·동맥·늪 버블/가스 유지; 신규 모션0. [현행 MAP REPORT](CH1_1_PRODUCTION_FINISH_20260916.md#ch1-1-outer83).
+
+> 2026-09-29 현행 baked 배경은82차(`20260929-outer-82`)다. 기존61차 Ch1LivingDetail 모듈·geometry·늪/가스/동맥은 그대로이며82차 새모션0. [82차 배경 계약](CH1_1_PRODUCTION_FINISH_20260916.md#ch1-1-outer82). 아래81차 이하의 배경 표기는 제작 이력이다.
+
+> 2026-09-29 배경81차: master/chunk_1_5.png/chunk_2_5.png/cache20260929-outer-81의서측피부위쪽국소접합이다.생체모듈61차·늪버블/가스/동맥·충돌유지,신규움직임0.연속카메라검수종료원인은미확정. [현행배경·MAP PRODUCTION REPORT](CH1_1_PRODUCTION_FINISH_20260916.md).
+
+> 2026-09-28 배경80차 기록(81차 이전): chunk_1_5.png/chunk_1_6.png와master/cache20260928-outer-80을서측피부접합에부분반영했다. 생체모듈61차와늪버블/가스/동맥·충돌은그대로다. 신규움직임0. [현행배경·MAP PRODUCTION REPORT](CH1_1_PRODUCTION_FINISH_20260916.md).
+
 > **2026-09-28 61차 현행:** 큰늪 원화 groundSprite는 가장자리의 밝은 돌 반사만 낮춘다. glare=clamp((L−105)/110)×max(0,1−d/64)×.38, RGB×(1−glare). d≥64인 내부 독액은 이 보정 없음. 60차 비대칭 접지와 캐시·draw 수는 유지. [검수·보고](CH1_SWAMP_SEEP_PASS60.md#61차-밝은-돌-가장자리-완화).
 
 > **2026-09-28 60차 늪 접지 현행:** 큰늪 swampApron 외측폭은 고정28에서 좌하단 중심의 가변18~30캐시px,alpha계수 .48→.58이다. 512²캐시/1MiB 및 swamp최대20draw 유지. [현행 공식·검수](CH1_SWAMP_SEEP_PASS60.md). 아래31차 고정폭 수치는 이력이다.
@@ -1524,3 +1538,10 @@ FILES: stage-owned test/mapAssetRetirement.test.js/archive원화1+manifest/43차
 GIT: staged공유index보존. commit미완료(.git쓰기제한/기존셸오류),push/deploy없음. 시작258→완료264개(동시작업포함). 타작업숨김·삭제·강제커밋없음. 코드+docs동반커밋필요.
 VISUAL VERDICT: RETOUCH — 낙엽소품제거확인. LEAF_SITE상단직선재질경계/전체지면통합잔여.
 NEXT PASS: LEAF_SITE상단직선형재질경계의소스레이어확인. 작은장식추가로덮지말고해당경계의원인부터검토. 공유뼈·시체는다른챕터영향확인전유지.
+
+
+### CH1_HIDDEN_UNDERLAY_20260929 — 현행 바닥 렌더 계약
+
+완성 production_finish 화면이 전체 뷰포트를 불투명 ready청크로 덮으면 _ch1StartOuterCoversView가 가려진 _fillVoidWithFloor·20개 _oriFireflies·기존 맵캐시 분기3그룹을 렌더에서 제외한다. 매 프레임 줌/흔들림/가장자리·1026² ready를 검사하며, 로딩·오류·맵 밖 노출·다른stage/보스아레나/outer·Rootworld·초기폴백은 원래 바닥을 유지한다. ?ch1LegacyUnderlay=1은 비교용. visible 생체/언덕/소품/ATMO·19빌드레이어/이미지·충돌 삭제0. 캐시 메모리 전체해제나FPS개선율을 주장하지 않는다.
+
+현행 공식·수치·검수는 [가려진 레이어 정리 SSOT](CH1_HIDDEN_UNDERLAY_20260929.md)를 따른다. 앞선 날짜별 회귀·FPS·아트 수치는 당시 검수 이력이다.

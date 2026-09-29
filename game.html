@@ -4,8 +4,8 @@
 <script src="player-attack-remaster.js?v=20260915-spin-speed15"></script>
 <script src="warrior-bat-swing.js?v=20260915-speed85"></script>
 <script src="warrior-dash-flight.js?v=20260924-flight1"></script>
-<link rel="stylesheet" href="tutorial-badges.css?v=20260912-1">
-<script src="tutorial-badges.js?v=20260913-area-practice8"></script>
+<link rel="stylesheet" href="tutorial-badges.css?v=20260929-earned-hud">
+<script src="tutorial-badges.js?v=20260929-earned-hud"></script>
 <link rel="stylesheet" href="system-lesson.css?v=20260912-restored4">
 <script src="system-lesson.js?v=20260912-skip-density1"></script>
 <link rel="stylesheet" href="parry-lesson.css?v=20260913-mission-details1">
@@ -56,7 +56,7 @@ window._supabaseReady=new Promise(resolve=>{
   document.head.appendChild(script);
 });
 </script>
-<script src="three.min.js"></script>
+<script src="three-runtime.js"></script>
 <script src="maps_data.js"></script>
 <script src="assets/map/ch1/geometry/ch1_si1_geometry.js"></script>
 <script src="assets/map/ch1/production_finish/layout.js?v=20260916-finish-1"></script>
@@ -111,7 +111,7 @@ window._supabaseReady=new Promise(resolve=>{
   --fs-xs:.75rem;--fs-sm:.85rem;--fs-md:1rem;--fs-lg:1.2rem;--fs-xl:1.6rem;--fs-title:2.2rem;
   /* ══ UI 고정 디자인 시스템 (2026-04-17) ══
      Reference Resolution 1920×1080, Match Shortest Side 방식.
-     사용자 배율 제거 — 순수 자동 스케일만. 접근성은 브라우저 줌(Ctrl+/-)으로 대응.
+     사용자 배율 제거 — 창 크기·페이지 줌에 맞춰 HUD 비율을 자동 유지.
      --ui-auto-scale: 창 크기 기반 자동 배율 (JS에서 주입)
      --ui-scale: var(--ui-auto-scale) 과 동일 (기존 참조 호환용 alias) */
   --ui-auto-scale:1;
@@ -119,9 +119,9 @@ window._supabaseReady=new Promise(resolve=>{
   --icon-sm:calc(32px * var(--ui-scale));
   --icon-md:calc(48px * var(--ui-scale));
   --icon-lg:calc(64px * var(--ui-scale));
-  --ui-inset-top:10px;
-  --ui-inset-right:10px;
-  --ui-inset-bottom:10px
+  --ui-inset-top:calc(10px * var(--ui-scale));
+  --ui-inset-right:calc(10px * var(--ui-scale));
+  --ui-inset-bottom:calc(10px * var(--ui-scale))
 }
 *{margin:0;padding:0;box-sizing:border-box}
 body{background:#000;overflow:hidden;font-family:var(--font);user-select:none;cursor:url(img/cursors/cursor_dark_css.png) 0 0,auto}
@@ -295,7 +295,7 @@ canvas{display:block;position:fixed;inset:0}
 }
 .mini-bar.st .fill { background: linear-gradient(90deg, #114400, #44aa00); }
 .mini-bar.sh .fill { background: linear-gradient(90deg, #002266, #44aaff); }
-#skBar{position:fixed;bottom:calc(var(--ui-inset-bottom) + env(safe-area-inset-bottom, 0px) - 25px);left:50%;transform:translateX(-50%) scale(calc(var(--ui-scale) * .9));z-index:21;pointer-events:none;opacity:0;transition:opacity .5s;transform-origin:bottom center;background:url('img/ui_bar_only.png') no-repeat center/100% 100%;width:820px;height:182px;filter:brightness(0.8);overflow:visible}
+#skBar{position:fixed;bottom:calc(var(--ui-inset-bottom) + env(safe-area-inset-bottom, 0px) - 25px * var(--ui-scale));left:50%;transform:translateX(-50%) scale(calc(var(--ui-scale) * .9));z-index:21;pointer-events:none;opacity:0;transition:opacity .5s;transform-origin:bottom center;background:url('img/ui_bar_only.png') no-repeat center/100% 100%;width:820px;height:182px;filter:brightness(0.8);overflow:visible}
 #skBar.burning::before{content:'';position:absolute;inset:-8px -4px -4px -4px;pointer-events:none;z-index:-1;
   background:linear-gradient(0deg,rgba(255,60,0,calc(.2 + var(--burn-i,.5)*.5)) 0%,rgba(255,120,0,calc(.1 + var(--burn-i,.5)*.3)) 30%,rgba(255,60,0,calc(var(--burn-i,.5)*.15)) 60%,transparent 100%);
   mask-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 820 60'%3E%3Cfilter id='t'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.04,.15' numOctaves='4' seed='2'/%3E%3C/filter%3E%3Crect width='820' height='60' filter='url(%23t)'/%3E%3C/svg%3E");
@@ -310,9 +310,9 @@ canvas{display:block;position:fixed;inset:0}
 .qs{position:absolute!important;flex:none!important}
 #poiseBarWrap{display:none!important}
 #skBar.on{opacity:1}
-.hud-top{position:fixed;top:calc(var(--ui-inset-top) + env(safe-area-inset-top, 0px) + 32px);left:50%;z-index:20;pointer-events:none;display:flex;gap:8px;align-items:center;opacity:0;transition:opacity .5s;transform:translateX(-50%) scale(var(--ui-scale));transform-origin:top center;font-family:var(--font-hell);font-size:.72rem;white-space:nowrap}
+.hud-top{position:fixed;top:calc(var(--ui-inset-top) + env(safe-area-inset-top, 0px) + 32px * var(--ui-scale));left:50%;z-index:20;pointer-events:none;display:flex;gap:8px;align-items:center;opacity:0;transition:opacity .5s;transform:translateX(-50%) scale(var(--ui-scale));transform-origin:top center;font-family:var(--font-hell);font-size:.72rem;white-space:nowrap}
 .hud-top.on{opacity:.58}
-#hudCorner{position:fixed;top:calc(var(--ui-inset-top) + env(safe-area-inset-top, 0px) + 178px);left:calc(var(--ui-inset-left, 0px) + env(safe-area-inset-left, 0px) + 16px);z-index:20;pointer-events:none;display:flex;flex-direction:column;gap:1px;align-items:flex-start;opacity:0;transition:opacity .5s;transform:scale(var(--ui-scale));transform-origin:top left;font-family:'Cinzel',var(--font-hell);font-size:.62rem;letter-spacing:.1em;white-space:nowrap}
+#hudCorner{position:fixed;top:calc(var(--ui-inset-top) + env(safe-area-inset-top, 0px) + 178px * var(--ui-scale));left:calc(var(--ui-inset-left, 0px) + env(safe-area-inset-left, 0px) + 16px * var(--ui-scale));z-index:20;pointer-events:none;display:flex;flex-direction:column;gap:1px;align-items:flex-start;opacity:0;transition:opacity .5s;transform:scale(var(--ui-scale));transform-origin:top left;font-family:'Cinzel',var(--font-hell);font-size:.62rem;letter-spacing:.1em;white-space:nowrap}
 #hudCorner.on{opacity:.48}
 #hudCorner .hud-resource{padding:1px 0;color:rgba(196,187,168,.72);text-shadow:0 1px 3px rgba(0,0,0,.95)}
 .hud-resource{position:relative;padding:3px 7px;color:rgba(205,196,176,.72);letter-spacing:.08em;text-shadow:0 1px 3px rgba(0,0,0,.95)}
@@ -325,7 +325,7 @@ canvas{display:block;position:fixed;inset:0}
 #areaTitleEn{margin-top:5px;color:rgba(168,153,127,.72);font-family:'Cinzel',var(--font-hell);font-size:clamp(.52rem,.72vw,.7rem);letter-spacing:.32em}
 #areaTitle.show{animation:hudAreaTitle 3.1s ease-in-out both}
 @keyframes hudAreaTitle{0%{opacity:0;transform:translate(-50%,-15px);filter:blur(5px) drop-shadow(0 5px 12px #000)}13%,69%{opacity:1;transform:translate(-50%,0);filter:blur(0) drop-shadow(0 5px 12px #000)}100%{opacity:0;transform:translate(-50%,7px);filter:blur(2px) drop-shadow(0 5px 12px #000)}}
-#stageClock{position:fixed;top:calc(var(--ui-inset-top) + env(safe-area-inset-top, 0px) + 7px);left:50%;z-index:20;width:clamp(104px,13vw,170px);pointer-events:none;opacity:0;transform:translateX(-50%) scale(var(--ui-scale));transform-origin:top center;text-align:center;font-family:'Cinzel',var(--font-hell);transition:opacity .5s}
+#stageClock{position:fixed;top:calc(var(--ui-inset-top) + env(safe-area-inset-top, 0px) + 7px * var(--ui-scale));left:50%;z-index:20;width:170px;pointer-events:none;opacity:0;transform:translateX(-50%) scale(var(--ui-scale));transform-origin:top center;text-align:center;font-family:'Cinzel',var(--font-hell);transition:opacity .5s}
 #stageClock.on,.hud-top.on~#stageClock{opacity:.57}
 #stageTimerHud{color:rgba(215,207,189,.78);font-size:.68rem;letter-spacing:.14em;text-shadow:0 1px 3px rgba(0,0,0,.95)}
 #stageProgress{height:2px;margin-top:5px;overflow:hidden;background:rgba(0,0,0,.45);box-shadow:0 1px 2px rgba(0,0,0,.85),inset 0 0 1px rgba(255,255,255,.1)}
@@ -333,7 +333,7 @@ canvas{display:block;position:fixed;inset:0}
 .st-b{color:var(--c-text);font-size:.56rem;font-weight:700}
 
 /* Minimap */
-#mmLvl{position:fixed;top:calc(var(--ui-inset-top) + env(safe-area-inset-top, 0px) + 6px);right:calc(var(--ui-inset-right) + env(safe-area-inset-right, 0px) + 10px);z-index:21;width:auto;pointer-events:none;opacity:0;transition:opacity .5s;transform:scale(var(--ui-scale));transform-origin:top right;display:flex;flex-direction:column;align-items:stretch;min-width:200px;padding:10px 12px;border:1px solid rgba(145,119,76,.45);background:linear-gradient(180deg,rgba(12,13,15,.88),rgba(9,10,12,.76));font-family:var(--font-hell);font-variant-numeric:tabular-nums;text-shadow:0 1px 3px rgba(0,0,0,.95)}
+#mmLvl{position:fixed;top:calc(var(--ui-inset-top) + env(safe-area-inset-top, 0px) + 6px * var(--ui-scale));right:calc(var(--ui-inset-right) + env(safe-area-inset-right, 0px) + 10px * var(--ui-scale));z-index:21;width:auto;pointer-events:none;opacity:0;transition:opacity .5s;transform:scale(var(--ui-scale));transform-origin:top right;display:flex;flex-direction:column;align-items:stretch;min-width:200px;padding:10px 12px;border:1px solid rgba(145,119,76,.45);background:linear-gradient(180deg,rgba(12,13,15,.88),rgba(9,10,12,.76));font-family:var(--font-hell);font-variant-numeric:tabular-nums;text-shadow:0 1px 3px rgba(0,0,0,.95)}
 #mmLvl.on{opacity:1!important}
 .objective-rank{display:flex;align-items:center;justify-content:space-between;gap:20px;color:#f2e6cb;font-size:.94rem;font-weight:700;line-height:1.4}.objective-rank .objective-label{font-size:.75rem;font-weight:400;color:#cbbd9f}
 .objective-frame{display:block;margin-top:7px;padding-top:7px;border-top:1px solid rgba(145,119,76,.3)}
@@ -343,12 +343,12 @@ canvas{display:block;position:fixed;inset:0}
 .objective-row{display:flex;align-items:center;justify-content:space-between;gap:18px;min-height:21px;color:#eee4d4;font-size:.75rem;line-height:1.4;white-space:nowrap}.objective-row+.objective-row{margin-top:3px}.objective-row>span{color:#cbbd9f}.objective-row>div{text-align:right}
 #killCnt.hud-pulse,#matCnt.hud-pulse,#lvLbl.hud-pulse{animation:hudCountPulse .34s ease-out}
 @keyframes hudCountPulse{0%{transform:translateY(1px);opacity:.5}45%{transform:translateY(-1px);color:#d8c49d}100%{transform:translateY(0)}}
-#mmWrap{position:fixed;top:8px;left:8px;z-index:20;pointer-events:none;opacity:0;transition:opacity .5s;transform:scale(calc(var(--ui-scale) * .85));transform-origin:top left;width:166px;height:166px}
+#mmWrap{position:fixed;top:calc(8px * var(--ui-scale));left:calc(8px * var(--ui-scale));z-index:20;pointer-events:none;opacity:0;transition:opacity .5s;transform:scale(calc(var(--ui-scale) * .85));transform-origin:top left;width:166px;height:166px}
 #mmWrap.on{opacity:.7}
 #mm{position:absolute;top:18px;left:18px;z-index:2;border:none;width:130px;height:130px}
 #mmFrame{position:absolute;inset:0;width:100%;height:100%;z-index:3;pointer-events:none}
 
-#bossBar{position:fixed;top:calc(var(--ui-inset-top,0px) + env(safe-area-inset-top, 0px) + 18px);left:50%;transform:translateX(-50%) scale(var(--ui-scale));z-index:22;pointer-events:none;opacity:0;transition:opacity .6s;text-align:center;transform-origin:top center}
+#bossBar{position:fixed;top:calc(var(--ui-inset-top,0px) + env(safe-area-inset-top, 0px) + 18px * var(--ui-scale));left:50%;transform:translateX(-50%) scale(var(--ui-scale));z-index:22;pointer-events:none;opacity:0;transition:opacity .6s;text-align:center;transform-origin:top center}
 #bossBar.on{opacity:1}
 #bossBar.intro .bn{animation:bossNameIn .8s ease-out both}
 #bossBar.intro .bhw{animation:bossBarIn 1.2s ease-out .4s both}
@@ -356,7 +356,7 @@ canvas{display:block;position:fixed;inset:0}
 @keyframes bossNameIn{from{opacity:0;letter-spacing:1em;filter:blur(8px)}to{opacity:1;letter-spacing:.25em;filter:blur(0)}}
 @keyframes bossBarIn{from{opacity:0;transform:scaleX(0)}to{opacity:1;transform:scaleX(1)}}
 .bn{color:#cc4433;font-size:1.6rem;font-weight:900;letter-spacing:.25em;margin-bottom:6px;text-shadow:0 0 20px rgba(200,50,0,.6),0 2px 4px rgba(0,0,0,.8)}
-.bhw{position:relative;width:min(500px,70vw);height:14px;background:rgba(0,0,0,.7);border:1px solid #660000;border-radius:2px;margin:0 auto;box-shadow:0 0 10px rgba(200,0,0,.3);transform-origin:center;overflow:hidden}
+.bhw{position:relative;width:500px;height:14px;background:rgba(0,0,0,.7);border:1px solid #660000;border-radius:2px;margin:0 auto;box-shadow:0 0 10px rgba(200,0,0,.3);transform-origin:center;overflow:hidden}
 .bhf{height:100%;background:linear-gradient(90deg,#770000,#ee2200);transition:none;border-radius:1px}
 #bossPostureBox{display:none}
 #bossPostureBox.on{opacity:1}
@@ -375,8 +375,11 @@ canvas{display:block;position:fixed;inset:0}
 .panel-nav-tab:hover{color:#fff8ee;background:rgba(120,80,50,.08)}
 .panel-nav-tab.active{color:#ffd28a;background:rgba(120,80,50,.15);border-color:rgba(120,80,50,.35)}
 /* ══ PANELS (shared) ══ */
-.panel{position:fixed;inset:0;z-index:30;display:flex;align-items:center;justify-content:center;background:rgba(0,0,0,.88);opacity:0;pointer-events:none;transition:opacity .25s}
+.panel{position:fixed;inset:0;z-index:30;display:flex;align-items:center;justify-content:center;background:rgba(0,0,0,.88);opacity:0;pointer-events:none;transition:opacity .25s,display .25s allow-discrete}
 .panel.on{opacity:1;pointer-events:all}
+/* 닫힌 패널은 display:none — 투명(opacity:0)으로만 남기면 유골함·보관함 DOM(~2000개)이 body:has() 등 :has() 선택자 재평가에 매 프레임 포함돼 231→33fps 급락 (2026-09-29 실측) */
+.panel:not(.on){display:none}
+@starting-style{.panel.on{opacity:0}}
 .panel:not(.on) *{pointer-events:none!important}
 .pbox{position:relative;background:linear-gradient(180deg,rgba(22,10,11,.985),rgba(10,6,7,.992));border:1px solid rgba(120,48,34,.78);border-radius:18px;padding:var(--panel-pad);overflow-y:auto;max-height:90vh;box-sizing:border-box;box-shadow:0 26px 70px rgba(0,0,0,.58),inset 0 0 0 1px rgba(255,150,104,.08),inset 0 24px 40px rgba(255,82,46,.04)}
 .ptitle{font-family:var(--font-display);font-size:calc(var(--fs-xl) + .15rem);color:var(--ui-bone);letter-spacing:.08em;text-align:center;margin-bottom:14px;text-shadow:0 2px 0 rgba(33,12,10,.9),0 0 18px rgba(255,115,64,.3)}
@@ -663,7 +666,7 @@ canvas{display:block;position:fixed;inset:0}
 .qs:active { transform: scale(0.95); }
 .qs:hover { filter: brightness(1.3); }
 /* ═══ 스킬바 호버 툴팁 ═══ */
-#skBarTip{position:fixed;bottom:calc(var(--ui-inset-bottom) + env(safe-area-inset-bottom, 0px) + 130px);left:50%;transform:translateX(-50%);pointer-events:none;z-index:99;padding:6px 12px;border-radius:6px;background:rgba(12,6,4,.94);border:1px solid #6d4330;box-shadow:0 0 12px rgba(0,0,0,.7);color:#e8c89e;font-size:.82rem;white-space:nowrap;opacity:0;transition:opacity .15s}
+#skBarTip{position:fixed;bottom:calc(var(--ui-inset-bottom) + env(safe-area-inset-bottom, 0px) + 130px * var(--ui-scale));left:50%;transform:translateX(-50%);pointer-events:none;z-index:99;padding:6px 12px;border-radius:6px;background:rgba(12,6,4,.94);border:1px solid #6d4330;box-shadow:0 0 12px rgba(0,0,0,.7);color:#e8c89e;font-size:.82rem;white-space:nowrap;opacity:0;transition:opacity .15s}
 #skBarTip.on{opacity:1}
 #skBarTip .sbt-name{color:#ffd080;font-weight:700;margin-right:6px}
 #skBarTip .sbt-desc{color:#b8956e;font-size:.75rem}
@@ -2284,8 +2287,8 @@ canvas{display:block;position:fixed;inset:0}
   .bar.hp{width:120px}
   .bar.st{width:100px}
   .bar.mp{width:80px}
-  .bhw,.bpw{width:min(300px,80vw)}
-  .hud-top{left:8px;right:8px;justify-content:center}
+  /* HUD는 --ui-scale로 이미 창에 맞는다. 별도 축소/재배치는 이중 적용이 된다. */
+  .hud-top{justify-content:center}
   .stage-lbl{font-size:1rem}
   .room-lbl{font-size:.8rem}
 }
@@ -2509,13 +2512,13 @@ body:has(#invPanel.on) #keyGuide{display:none!important}
 <link rel="stylesheet" href="stat-panel-ui.css?v=20260913-smooth-ui">
 <link rel="stylesheet" href="localization.css?v=20260909">
 <link rel="stylesheet" href="ui-foundation.css?v=20260927-frame-interior">
-<link rel="stylesheet" href="ui-refinement.css?v=20260928-equipment-stage3">
+<link rel="stylesheet" href="ui-refinement.css?v=20260929-settings-choices">
 <link rel="stylesheet" href="growth-tree-detail.css?v=20260927-body-art3">
 <link rel="stylesheet" href="knight-portrait.css?v=20260928-equipment-cutout3">
 <script defer src="inventory-paperdoll.js?v=20260928-equipment-cutout3"></script>
 <link rel="stylesheet" href="growth-tree-fixed-background.css?v=20260927-fixed2">
 <link rel="stylesheet" href="growth-tree-information.css?v=20260927-info1">
-<script defer src="ui-panels.js?v=20260927-compare-wheel2"></script>
+<script defer src="ui-panels.js?v=20260929-settings-choices"></script>
 <link rel="stylesheet" href="inventory-gems.css?v=20260927-jewel-finish">
 <link rel="stylesheet" href="inventory-gems-finish.css?v=20260927-square-art2">
 <link rel="stylesheet" href="inventory-space.css?v=20260928-relic-frame1">
@@ -2542,7 +2545,7 @@ body:has(#invPanel.on) #keyGuide{display:none!important}
 </div>
 <div id="mmWrap"><canvas id="mm" width="130" height="130" style="z-index:2"></canvas><img id="mmFrame" src="img/mm_frame.png" alt=""></div>
 
-<div id="petSubtitle" style="position:fixed;bottom:120px;z-index:999;pointer-events:none;opacity:0;transition:opacity .25s;font-family:'Malgun Gothic',sans-serif"><img id="petPortrait" src="" style="display:block;width:480px;height:auto;filter:drop-shadow(0 2px 8px rgba(0,0,0,.7))"><div id="petBubbleTxt" style="position:absolute;display:flex;align-items:center;color:#fff;font-weight:700;line-height:1.25;text-shadow:0 1px 4px rgba(0,0,0,.95),0 0 8px rgba(0,0,0,.85)"></div></div>
+<div id="petSubtitle" style="position:fixed;bottom:calc(var(--ui-inset-bottom, 0px) + 220px * var(--ui-scale, 1) + env(safe-area-inset-bottom, 0px));z-index:999;pointer-events:none;opacity:0;transition:opacity .25s;font-family:'Malgun Gothic',sans-serif"><img id="petPortrait" src="" style="display:block;width:480px;height:auto;filter:drop-shadow(0 2px 8px rgba(0,0,0,.7))"><div id="petBubbleTxt" style="position:absolute;display:flex;align-items:center;color:#fff;font-weight:700;line-height:1.25;text-shadow:0 1px 4px rgba(0,0,0,.95),0 0 8px rgba(0,0,0,.85)"></div></div>
 <div id="skBarTip"></div>
 <div id="skBar">
   <div id="skKeyBar" style="position:absolute;top:121px;left:0;width:100%;height:18px;pointer-events:none;z-index:6;display:none"></div>
@@ -2890,7 +2893,7 @@ body:has(#invPanel.on) #keyGuide{display:none!important}
           <span id="cpBreak" style="color:#776655;font-size:.75rem"></span>
         </div>
         <div id="invResBar" style="padding:2px 10px;font-size:.8rem;color:#887766;background:rgba(0,0,0,.3);border:1px solid #443322;border-radius:3px;white-space:nowrap"></div>
-        <div id="invClose" style="width:28px;height:28px;display:flex;align-items:center;justify-content:center;cursor:pointer;border:1px solid #554433;color:#aa8866;font-size:1.2rem;font-weight:900;background:rgba(0,0,0,.3)" onmouseover="this.style.color='#ff6633';this.style.borderColor='#ff6633'" onmouseout="this.style.color='#aa8866';this.style.borderColor='#554433'">✕</div>
+        <button type="button" id="invClose" aria-label="닫기 [ESC]" title="닫기 [ESC]" style="width:28px;height:28px;display:flex;align-items:center;justify-content:center;cursor:pointer;border:1px solid #554433;color:#aa8866;font-size:1.2rem;font-weight:900;background:rgba(0,0,0,.3)" onmouseover="this.style.color='#ff6633';this.style.borderColor='#ff6633'" onmouseout="this.style.color='#aa8866';this.style.borderColor='#554433'">✕</button>
       </div>
     </div>
     <div class="inv-wrap frame-inner-panel frame-inner-panel-split">
@@ -2933,7 +2936,7 @@ body:has(#invPanel.on) #keyGuide{display:none!important}
         <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:4px">
           <div style="color:#886644;font-size:.95rem;letter-spacing:.1em">가방 (<span id="invCount">0</span>/<span id="invMax">24</span>)</div>
           <div style="display:flex;gap:4px;align-items:center">
-            <span id="invSortBtn" style="font-size:.95rem;padding:1px 8px;cursor:pointer;border:1px solid #554433;color:#aa8866;background:rgba(0,0,0,.2);font-family:'Noto Sans KR'" onclick="_invAutoPlace();_invSalSel.clear();INV.selected=null;renderInv()">↕ 정렬</span>
+            <button type="button" id="invSortBtn" style="font-size:.95rem;padding:1px 8px;cursor:pointer;border:1px solid #554433;color:#aa8866;background:rgba(0,0,0,.2);font-family:'Noto Sans KR'" onclick="_invAutoPlace();_invSalSel.clear();INV.selected=null;renderInv()">↕ 정렬</button>
             <div id="invExpand"></div>
           </div>
         </div>
@@ -5714,6 +5717,11 @@ let _fs='#000',_ss='#000',_ga=1,_lw=1,_font='10px sans-serif',_ta='start',_tb='a
 let _fsc=[0,0,0,1],_ssc=[0,0,0,1];
 let _pathA=[],_pathL=[],_pathR=[],_pathE=[];
 let _sstk=[],_sstkPool=[],_sstkPoolI=0;
+let _txFontRequest=null,_txFontApplied=null;
+function _syncTextFont(){
+  if(_txFontRequest===_font&&_txCtx.font===_txFontApplied)return;
+  _txCtx.font=_font;_txFontRequest=_font;_txFontApplied=_txCtx.font;
+}
 function _uploadCanvasTex(src){
   if(_useGPU){const bg=_getTex(src);_setTex(bg);return}
   if(!_useGL||!GL)return; // WebGL context lost — GL 직접 호출 방지 (restored 시 _initWebGL로 텍스처 자동 재업로드)
@@ -5729,15 +5737,16 @@ get fillStyle(){return _fs},set fillStyle(v){_fs=v;if(typeof v==='string')_fsc=_
 get strokeStyle(){return _ss},set strokeStyle(v){_ss=v;if(typeof v==='string')_ssc=_parseCol(v)},
 get globalAlpha(){return _ga},set globalAlpha(v){_ga=v},
 get lineWidth(){return _lw},set lineWidth(v){_lw=v},
-get font(){return _font},set font(v){_font=v;_txCtx.font=v},
-get textAlign(){return _ta},set textAlign(v){_ta=v;_txCtx.textAlign=v},
-get textBaseline(){return _tb},set textBaseline(v){_tb=v;_txCtx.textBaseline=v},
+// GPU atlas text reads proxy state; native text synchronizes only when drawn/measured.
+get font(){return _font},set font(v){_font=v},
+get textAlign(){return _ta},set textAlign(v){_ta=v},
+get textBaseline(){return _tb},set textBaseline(v){_tb=v},
 get globalCompositeOperation(){return'source-over'},set globalCompositeOperation(v){},
 get shadowBlur(){return 0},set shadowBlur(v){},get shadowColor(){return'#000'},set shadowColor(v){},
 get lineCap(){return'butt'},set lineCap(v){},get lineJoin(){return'miter'},set lineJoin(v){},
 get canvas(){return C},
 save(){_pushMat();let _so=_sstkPool[_sstkPoolI];if(!_so){_so={fs:'',ss:'',ga:0,lw:0,font:'',ta:'',tb:'',ld:[]};_sstkPool[_sstkPoolI]=_so}_sstkPoolI++;_so.fs=_fs;_so.ss=_ss;_so.ga=_ga;_so.lw=_lw;_so.font=_font;_so.ta=_ta;_so.tb=_tb;_so.ld.length=0;for(let _li=0;_li<_ld.length;_li++)_so.ld[_li]=_ld[_li];_sstk.push(_so)},
-restore(){_popMat();const s=_sstk.pop();if(s){_fs=s.fs;_ss=s.ss;_ga=s.ga;_lw=s.lw;_font=s.font;_ta=s.ta;_tb=s.tb;_ld.length=0;for(let _li=0;_li<s.ld.length;_li++)_ld[_li]=s.ld[_li];_txCtx.font=_font;_txCtx.textAlign=_ta;_txCtx.textBaseline=_tb;_sstkPoolI--}},
+restore(){_popMat();const s=_sstk.pop();if(s){_fs=s.fs;_ss=s.ss;_ga=s.ga;_lw=s.lw;_font=s.font;_ta=s.ta;_tb=s.tb;_ld.length=0;for(let _li=0;_li<s.ld.length;_li++)_ld[_li]=s.ld[_li];_sstkPoolI--}},
 translate(x,y){_translateMat(x,y)},
 rotate(a){_rotateMat(a)},
 scale(sx,sy){_scaleMat(sx,sy)},
@@ -5809,7 +5818,7 @@ _quad(m[0]*ax+m[2]*ay+m[4],m[1]*ax+m[3]*ay+m[5],m[0]*dx2+m[2]*dy2+m[4],m[1]*dx2+
 m[0]*cx2+m[2]*cy2+m[4],m[1]*cx2+m[3]*cy2+m[5],m[0]*bx+m[2]*by+m[4],m[1]*bx+m[3]*by+m[5],0,0,1,1,c[0],c[1],c[2],a,0,0,0)}
 px=l.x;py=l.y}}}},
 fillText(t,x,y,mw){if(t===undefined||t===null)return;t=String(t);if(!t)return;
-if(typeof _fs!=='string'){_txCtx.font=_font;_txCtx.textAlign=_ta;_txCtx.textBaseline=_tb;
+if(typeof _fs!=='string'){_syncTextFont();_txCtx.textAlign=_ta;_txCtx.textBaseline=_tb;
 _txCtx.fillStyle=_fs;_txCtx.globalAlpha=_ga;const p=_tp(x,y);_txCtx.fillText(t,p[0],p[1]);return}
 const _uv=_getAtlasTxt(_font,t,_fs);if(!_uv)return;
 _uploadCanvasTex(_txtAtlas);
@@ -5818,10 +5827,10 @@ const _tfs=parseFloat(_font)||14;
 let _tdy=-_uv.h/2;if(_tb==='top')_tdy=0;else if(_tb==='bottom')_tdy=-_uv.h;else if(_tb==='alphabetic')_tdy=-_uv.h*.6;
 _tQuad(x+_tdx,y+_tdy,_uv.w,_uv.h);
 _quad(_tq[0],_tq[1],_tq[2],_tq[3],_tq[4],_tq[5],_tq[6],_tq[7],_uv.u0,_uv.v0,_uv.u1,_uv.v1,1,1,1,_ga,5,0,0)},
-strokeText(t,x,y,mw){_txCtx.font=_font;_txCtx.textAlign=_ta;_txCtx.textBaseline=_tb;
+strokeText(t,x,y,mw){_syncTextFont();_txCtx.textAlign=_ta;_txCtx.textBaseline=_tb;
 _txCtx.strokeStyle=_ss;_txCtx.globalAlpha=_ga;_txCtx.lineWidth=_lw;const p=_tp(x,y);
 if(mw!==undefined)_txCtx.strokeText(t,p[0],p[1],mw);else _txCtx.strokeText(t,p[0],p[1])},
-measureText(t){_txCtx.font=_font;return _txCtx.measureText(t)},
+measureText(t){_syncTextFont();return _txCtx.measureText(t)},
 drawImage(img){
 if(img instanceof HTMLImageElement&&(!img.complete||img.naturalWidth===0))return;
 if(img instanceof HTMLCanvasElement){_uploadCanvasTex(img)}
@@ -8374,7 +8383,7 @@ let _fogGLR=false,_fogGLTime=0;
 let _fogThree=null; // {renderer,scene,camera,mat}
 const _FOG_COLORS=[[0.10,0.18,0.08],[0.08,0.14,0.05],[0.05,0.12,0.20],[0.12,0.05,0.16],[0.16,0.12,0.03],[0.12,0.10,0.07],[0.07,0.03,0.14]];
 function _fogGLInit(){
-  if(_fogGLR)return;
+  if(_fogGLR||_fogThree)return;
   const cv=document.getElementById('fogGL');if(!cv)return;
   if(typeof THREE==='undefined'){console.warn('[THREE-FOG] Three.js 미로드');return;}
   try{
@@ -8382,6 +8391,7 @@ function _fogGLInit(){
     cv.width=W;cv.height=H;
     if(!(()=>{try{const _pc=document.createElement('canvas');return !!(_pc.getContext('webgl2')||_pc.getContext('webgl'));}catch(e){return false}})()){console.warn('[THREE-FOG] WebGL 미지원 — 안개 3D 비활성');return;}
     const renderer=new THREE.WebGLRenderer({canvas:cv,alpha:true,premultipliedAlpha:false,antialias:false});
+    renderer.outputColorSpace=THREE.LinearSRGBColorSpace;
     renderer.setSize(W,H,false);
     renderer.setClearColor(0x000000,0);
     const scene=new THREE.Scene();
@@ -8428,6 +8438,14 @@ function _fogGLInit(){
     scene.add(new THREE.Mesh(geo,mat));
     _fogThree={renderer,scene,camera,mat};
     _fogGLR=true;
+    cv.addEventListener('webglcontextlost',event=>{
+      event.preventDefault();
+      _fogGLR=false;
+    });
+    // Three.js restores its internal GPU resources before this listener runs.
+    cv.addEventListener('webglcontextrestored',()=>{
+      _fogGLR=!renderer.getContext().isContextLost();
+    });
     window.addEventListener('resize',()=>{
       const nw=window.innerWidth,nh=window.innerHeight;
       cv.width=nw;cv.height=nh;
@@ -8439,18 +8457,28 @@ function _fogGLInit(){
 }
 function _fogGLRender(){
   if(!_fogGLR||!_fogThree)return;
+  const context=_fogThree.renderer.getContext();
+  if(context.isContextLost()){_fogGLR=false;return;}
   _fogGLTime+=0.016;
   const hell=SI_TO_HELL[G.stage||0];
   const col=_FOG_COLORS[hell]||[0.1,0.1,0.1];
   const u=_fogThree.mat.uniforms;
   u.uTime.value=_fogGLTime;
   u.uCol.value.set(col[0],col[1],col[2]);
-  _fogThree.renderer.render(_fogThree.scene,_fogThree.camera);
+  try{_fogThree.renderer.render(_fogThree.scene,_fogThree.camera);}
+  catch(error){
+    if(!context.isContextLost())throw error;
+    _fogGLR=false;
+  }
+}
+function _fogGLStart(){
+  if(!window._threeReady)return;
+  return window._threeReady.then(three=>{if(three)_fogGLInit();});
 }
 // 초기화: 게임 시작 시 호출
 // Mac WebGPU에선 Three.js(별도 WebGL 컨텍스트) 안개 비활성 — 같은 페이지 WebGPU+WebGL 동시 사용이
 // Mac Metal에서 불안정. 윈도우(WebGL2)·Mac WebGL2(?webgpu 없이)는 정상 활성. (재활성 검토는 미정)
-if(!(typeof IS_MAC!=='undefined'&&IS_MAC&&typeof navigator!=='undefined'&&navigator.gpu))setTimeout(_fogGLInit,500);
+if(!(typeof IS_MAC!=='undefined'&&IS_MAC&&typeof navigator!=='undefined'&&navigator.gpu))setTimeout(_fogGLStart,500);
 // ── 보스 다리 안개 스탬프 (프리렌더 노이즈 텍스처, 4장 프레임) ──
 const _bossLegFogFrames={};
 const _BOSS_FOG_FRAMES=4; // 프레임 수
@@ -10885,10 +10913,12 @@ const _CH1_START_PHASE=(()=>{if(typeof location==='undefined')return 'smoothing'
 const _CH1_START_ROOT=_DIABLO_FIELD_QA?(_ROOTWORLD_ART_PREVIEW?'assets/map/ch1/rootworld_candidate':'assets/map/ch1/rootworld_outer'):_CH1_START_PHASE==='outer'?'assets/map/ch1/baked_start_outer':'assets/map/ch1/production_finish';
 for(let y=0;y<8;y++)for(let x=0;x<8;x++)_CH1_START_OUTER.chunks[x+','+y]=`${_CH1_START_ROOT}/chunk_${x}_${y}.png?v=${_DIABLO_FIELD_QA?'20260924-blockout-2':_CH1_START_PHASE==='outer'?'20260917-depth-2':'20260929-floor-87'}`;
 const _CH1_START_OUTER_QUERY_ENABLED=typeof location==='undefined'||new URLSearchParams(location.search).get('ch1StartOuter')!=='0';
+const _CH1_LEGACY_UNDERLAY=typeof location!=='undefined'&&new URLSearchParams(location.search).get('ch1LegacyUnderlay')==='1';
 const _ch1StartOuterCache=Object.create(null),_ch1StartOuterWarmQ=[];
-let _ch1StartOuterWarmBusy=false;
-const _ch1StartOuterStats={requests:0,ready:0,errors:0,decodeCount:0,warmCount:0,maxWarmMs:0,drawSamples:0,maxDrawMs:0,visibleIds:[],drawnIds:[]};
+let _ch1StartOuterWarmBusy=false,_ch1StartOuterBootFallback=false;
+const _ch1StartOuterStats={requests:0,ready:0,errors:0,decodeCount:0,warmCount:0,maxWarmMs:0,drawSamples:0,maxDrawMs:0,underlaySkippedFrames:0,underlayFallbackFrames:0,visibleIds:[],drawnIds:[]};
 function _ch1StartOuterEnabled(){
+  if(_ch1StartOuterBootFallback)return false;
   if(typeof G==='undefined'||typeof location==='undefined')return false;
   if(!(G.stage===_CH1_START_OUTER.stage)||G._bossArena)return false;
   return _CH1_START_OUTER_QUERY_ENABLED;
@@ -10935,12 +10965,55 @@ function _requestCh1StartOuter(id){
       if(typeof img.decode==='function')img.decode().then(decoded).catch(()=>{e.status='error';_ch1StartOuterStats.errors++});else decoded()};
     img.onerror=()=>{if(e.status!=='error'){e.status='error';_ch1StartOuterStats.errors++}};img.src=_CH1_START_OUTER.chunks[id];
 }
-function _preloadCh1StartOuter(){
-  if(!_ch1StartOuterEnabled())return;
+function _ch1StartOuterViewIds(){
+  if(!_ch1StartOuterEnabled())return [];
   const cs=_CH1_START_ROOT!=='assets/map/ch1/baked_start_outer'?G.mw*T/8:_CH1_START_OUTER.chunkSize,z=_EDITOR_MODE&&Number.isFinite(G._edZoom)&&G._edZoom>0?G._edZoom:Math.max(.3,G._camZoom||1);
   const cx0=Math.floor((G.cam.x-VW/(2*z))/cs)-1,cx1=Math.floor((G.cam.x+VW/(2*z)-.001)/cs)+1;
   const cy0=Math.floor((G.cam.y-VH/(2*z))/cs)-1,cy1=Math.floor((G.cam.y+VH/(2*z)-.001)/cs)+1;
-  for(let cy=cy0;cy<=cy1;cy++)for(let cx=cx0;cx<=cx1;cx++)_requestCh1StartOuter(cx+','+cy);
+  const ids=[];
+  for(let cy=cy0;cy<=cy1;cy++)for(let cx=cx0;cx<=cx1;cx++){const id=cx+','+cy;if(_CH1_START_OUTER.chunks[id])ids.push(id)}
+  return ids;
+}
+function _preloadCh1StartOuter(){
+  for(const id of _ch1StartOuterViewIds())_requestCh1StartOuter(id);
+}
+async function _prepareStartMapView(){
+  _ch1StartOuterBootFallback=false;
+  if(!_ch1StartOuterEnabled())return;
+  setBootLoading(98,_L('시작 화면 준비 중...','Preparing starting view...'));
+  let deadline=performance.now()+12000;
+  const visibleAgain=()=>{if(!document.hidden)deadline=performance.now()+12000};
+  document.addEventListener('visibilitychange',visibleAgain);
+  try{
+    while(_ch1StartOuterEnabled()){
+      const ids=_ch1StartOuterViewIds();
+      _preloadCh1StartOuter();
+      if(ids.every(id=>_ch1StartOuterCache[id]?.status==='ready'))return;
+      if(ids.some(id=>_ch1StartOuterCache[id]?.status==='error')||(!document.hidden&&performance.now()>=deadline)){
+        _ch1StartOuterBootFallback=true;
+        console.warn('[START MAP] Initial view unavailable; using the stable terrain fallback.');
+        return;
+      }
+      await new Promise(resolve=>setTimeout(resolve,30));
+    }
+  }finally{document.removeEventListener('visibilitychange',visibleAgain)}
+}
+
+// Only the opaque production root may replace the legacy terrain. Recheck every
+// frame so camera movement, zoom, shake and late/error chunks retain fallback.
+function _ch1StartOuterCoversView(){
+  if(_CH1_LEGACY_UNDERLAY||!_ch1StartOuterEnabled()||_CH1_START_PHASE!=='smoothing'||_CH1_START_ROOT!=='assets/map/ch1/production_finish')return false;
+  if(!(G.mw>0)||G.mw!==G.mh)return false;
+  const z=_EDITOR_MODE?(G._edZoom||1):(G._camZoom||1),margin=Math.max(0,G.shake||0)*2+1;
+  if(!Number.isFinite(z)||z<.3)return false;
+  const left=G.cam.x-VW/(2*z)-margin,right=G.cam.x+VW/(2*z)+margin,top=G.cam.y-VH/(2*z)-margin,bottom=G.cam.y+VH/(2*z)+margin,cs=G.mw*T/8;
+  if(!Number.isFinite(left+right+top+bottom)||left<0||top<0||right>G.mw*T||bottom>G.mh*T)return false;
+  const size=_CH1_START_OUTER.chunkSize+_CH1_START_OUTER.bleed*2;
+  for(let cy=Math.floor(top/cs);cy<=Math.floor(bottom/cs);cy++)for(let cx=Math.floor(left/cs);cx<=Math.floor(right/cs);cx++){
+    const id=cx+','+cy,e=_ch1StartOuterCache[id];
+    if(!_CH1_START_OUTER.chunks[id]||!e||e.status!=='ready'||!e.img.complete||e.img.naturalWidth!==size||e.img.naturalHeight!==size)return false;
+  }
+  return true;
 }
 function _drawCh1StartOuter(ctx){
   _ch1StartOuterStats.visibleIds=[];_ch1StartOuterStats.drawnIds=[];if(!_ch1StartOuterEnabled())return;_preloadCh1StartOuter();
@@ -12339,6 +12412,7 @@ addEventListener('keydown',e=>{
     return; // Ctrl 조합은 게임 입력으로 처리하지 않음
   }
   if(listeningBind){
+    if(e.repeat){e.preventDefault();return}
     if(e.code==='Escape'){
       listeningBind=null;_listenAlt=false;renderSettings();
     }else{
@@ -12353,8 +12427,8 @@ addEventListener('keydown',e=>{
   if(e.code==='F8'){e.preventDefault();if(window._v3fx&&P){const _v3keys=['fire','ice','lightning','dark','poison'];window._v3fx(_v3keys[window._v3ti||0],P.x,P.y);addTxt(P.x,P.y-30,'3D: '+_v3keys[window._v3ti||0],'#ffcc44',30);window._v3ti=((window._v3ti||0)+1)%_v3keys.length}else{_tvfx2Spawn()}return}
   if(e.code==='F4'){e.preventDefault();const _nf=!OPT.fog;OPT.fog=_nf;OPT.bossFog=_nf;saveSettings();showPH(_nf?_L('안개 ON','Fog ON'):_L('안개 OFF','Fog OFF'),_nf?'#8899cc':'#888888');return}
   if(window._parryLesson?.active&&!window._parryLesson.allowKey(e.code)){e.preventDefault();return;}
-  // Focused inventory controls own activation and focus traversal keys.
-  if(['Space','Enter','NumpadEnter','Tab'].includes(e.code)&&e.target instanceof Element&&e.target.closest('#invPanel.on button,#crBagPop button'))return;
+  // Focused panel controls own activation and focus traversal keys.
+  if(['Space','Enter','NumpadEnter','Tab'].includes(e.code)&&e.target instanceof Element&&e.target.closest('#invPanel.on button,#crBagPop button,#settings.on button'))return;
   K[e.code]=true;KH[e.code]=true;
   // E(shield) 탭 버퍼: 초고속 탭에서 keyup이 K를 지우기 전에 press 사실을 프레임 스탬프로 보존 (게임패드 synth 키다운도 경유)
   if(!e.repeat&&G&&G.on&&!G.paused&&(e.code===BINDS.shield||e.code===BINDS2.shield))_sdTapBuf=G.frame;
@@ -15617,7 +15691,9 @@ function spawnCrescent(x,y,ang,dmg,el,step,distMul,chargeScale=1){
     return;
   }
 }
-function _kiSlashHoldTier(frames){return Math.min(3,Math.floor(Math.max(0,frames||0)/60))}
+function _kiSlashHoldTier(frames){return Math.min(3,Math.floor(Math.max(0,frames||0)/_KI_HOLD_STEP))}
+// 기검참 3타 홀드: 40f(≈0.67초)마다 1단, 120f(2초)에 풀차지 3단 — 배율 2/4/8배는 동일
+const _KI_HOLD_STEP=40,_KI_HOLD_MAX=_KI_HOLD_STEP*3;
 function _kiSlashHoldMultiplier(frames){return 2**_kiSlashHoldTier(frames)}
 function _fireKiSlashCrescent(step,chargeFrames=0){
   _addSkProf('kiSlash');_cresStep=step;_cresComboT=120;_cresCd=step===3?20:12;
@@ -15629,11 +15705,13 @@ function _fireKiSlashCrescent(step,chargeFrames=0){
   spawnCrescent(P.x,P.y,P.facing,~~(meleeRef()*7.0*statStr()*pAtkMul()*_skMul('kiSlash')*_mul),0,step,_ksDistMul,_scale);
   addTxt(P.x,P.y-40,step+_L('타',' Hit')+(_mul>1?' ×'+_mul:''),step===3?'#ff4444':'#ffcc00',20);
 }
+// 기검참 3타 홀드 차지 중 — 피격 경직 면역(포이즈는 계속 깎여 기절 pStun 시에만 끊김)
+function _isKiCharging(){return P.s==='wWindup'&&!!P._kiChargeActive}
 function _beginKiSlashThirdCharge(){P.s='wWindup';P.st2=999;P._kiChargeActive=true;P._kiChargeT=0;P.atkArc=P.facing}
 function _updateKiSlashThirdCharge(sp){
   P.atkArc=P.facing; // 홀드 중에도 차징 검기·공격 자세가 현재 조준 방향을 따른다.
   const _before=_kiSlashHoldMultiplier(P._kiChargeT);
-  P._kiChargeT=Math.min(180,(P._kiChargeT||0)+sp);P.st2=999;
+  P._kiChargeT=Math.min(_KI_HOLD_MAX,(P._kiChargeT||0)+sp);P.st2=999;
   const _after=_kiSlashHoldMultiplier(P._kiChargeT);
   if(_after>_before){
     if(_after===8){
@@ -17916,7 +17994,7 @@ function _drawRadiantKiSlash(ctx,c){
 function _drawKiSlashCharge(ctx){
   if(!P._kiChargeActive)return;
   const charge=Math.max(0,P._kiChargeT||0),tier=_kiSlashHoldTier(charge);
-  const pulse=1+Math.sin(_now*.025)*.035,size=(78+tier*13+4*(charge%60)/60)*pulse;
+  const pulse=1+Math.sin(_now*.025)*.035,size=(78+tier*13+4*(charge%_KI_HOLD_STEP)/_KI_HOLD_STEP)*pulse;
   const ang=P.atkArc==null?P.facing:P.atkArc;
   const x=P.x,y=P.y;
   const gpu=ctx.canvas===C&&(_useGPU||_useGL);
@@ -22473,11 +22551,22 @@ function _drawDarkSphere(p,fa,sSc){
   X.globalAlpha=fa*.34;X.strokeStyle='#a84fff';X.lineWidth=Math.max(1,r*.55);X.beginPath();X.moveTo(p.x-r*.2*Math.cos(ang),p.y-r*.2*Math.sin(ang));X.lineTo(p.x-p.vx*5,p.y-p.vy*5);X.stroke();
   X.restore();X.globalAlpha=1;
 }
+// Cache stable projectile warning widths; one entry, renewed on font/renderer/language changes.
+const _chargeLabelMetrics={ctx:null,label:null,font:null,width:0};
+if(document.fonts&&document.fonts.addEventListener){
+  const invalidate=()=>{_chargeLabelMetrics.ctx=null};
+  document.fonts.addEventListener('loadingdone',invalidate);
+  document.fonts.addEventListener('loadingerror',invalidate);
+}
 function _drawProjectileChargeLabel(x,y,r,label){
   const cy=y-r-25;
   X.save();X.globalCompositeOperation='source-over';X.globalAlpha=1;
   X.font='bold 13px "Noto Sans KR",sans-serif';X.textAlign='center';X.textBaseline='middle';
-  const tw=X.measureText(label).width,bw=tw+14,bh=20,bx=x-bw/2,by=cy-bh/2;
+  const metrics=_chargeLabelMetrics;
+  if(metrics.ctx!==X||metrics.label!==label||metrics.font!==X.font){
+    metrics.width=X.measureText(label).width;metrics.ctx=X;metrics.label=label;metrics.font=X.font;
+  }
+  const tw=metrics.width,bw=tw+14,bh=20,bx=x-bw/2,by=cy-bh/2;
   X.fillStyle='rgba(5,8,13,.92)';X.strokeStyle='#f4f4f4';X.lineWidth=1.5;
   X.fillRect(bx,by,bw,bh);X.strokeRect(bx,by,bw,bh);
   X.fillStyle='#ffffff';X.fillText(label,x,cy);
@@ -26593,21 +26682,21 @@ function _updateActionKeys(){
       _spStkTxt=`<span style="position:absolute;top:1px;right:2px;font-size:.65rem;font-weight:700;color:${_sStk>0?'#55cc77':'#666'}">${_sStk}</span>`;
       _spIsStk=true;
     }
-    elBow.style.borderColor=_techAim?'#ff8800':(_spOnCd||(_spIsStk&&!_spStkTxt))?'#555':_spSk?'#447788':'#333';
-    elBow.style.boxShadow=_techAim?'inset 0 0 10px rgba(255,136,0,.4)':'none';
+    // Resolve the final rage style once; toggling base→rage every tick dirtied CSS.
+    const _spBorder=_techAim?'#ff8800':(_spOnCd||(_spIsStk&&!_spStkTxt))?'#555':_spSk?'#447788':'#333';
+    _hset(elBow,'borderColor',P.rage>0?(P.rage>=100?'#ff2200':P.rage>=50?'#cc4400':'#884400'):_spBorder);
+    _hset(elBow,'boxShadow',P.rage>=100?'inset 0 0 12px rgba(255,30,0,.6)':_techAim?'inset 0 0 10px rgba(255,136,0,.4)':'none');
     // 쿨다운 오버레이 + 숫자 표시
     if(elBow._skId!==_spSk){elBow._skId=_spSk;elBow.innerHTML=_spSk?(_skIcon(_spSk)||`<span class="sk-opt-emoji">${(_skById(_spSk)||{}).emoji||'🔥'}</span>`):''}
     // ── 분노게이지 오버레이 (빨간색, 아래→위) ──
     let _rageEl=elBow.querySelector('._rageBar');
     if(P.rage>0){
       if(!_rageEl){_rageEl=document.createElement('div');_rageEl.className='_rageBar';_rageEl.style.cssText='position:absolute;bottom:0;left:0;right:0;pointer-events:none;z-index:1;background:rgba(255,20,0,.45);transition:height .15s';elBow.appendChild(_rageEl)}
-      _rageEl.style.height=Math.min(100,P.rage*100/_rageMax())+'%';
+      _hset(_rageEl,'height',Math.min(100,P.rage*100/_rageMax())+'%');
       // 분노 수치 표시
       let _rageTxt=_rageEl.querySelector('span');
       if(!_rageTxt){_rageTxt=document.createElement('span');_rageTxt.style.cssText='position:absolute;top:1px;left:50%;transform:translateX(-50%);font-size:.6rem;font-weight:700;color:#fff;text-shadow:0 0 4px #ff0000';_rageEl.appendChild(_rageTxt)}
-      _rageTxt.textContent=P.rage+'%';
-      elBow.style.borderColor=P.rage>=100?'#ff2200':P.rage>=50?'#cc4400':'#884400';
-      if(P.rage>=100)elBow.style.boxShadow='inset 0 0 12px rgba(255,30,0,.6)';
+      _hset(_rageTxt,'text',P.rage+'%');
     }else if(_rageEl){_rageEl.remove()}
     let _spCdEl=elBow.querySelector('._skCd');
     if(_spSk&&(_spOnCd||_spRecharging)){
@@ -33141,7 +33230,7 @@ function update(){
           P._webSlow=90;addTxt(P.x,P.y-20,_T('🕸둔화!'),'#aaaaaa',30);addParts(P.x,P.y,'#aaaaaa',6);_pHit=true}
         else if(p.trap){// 덫: 데미지 + 0.5초 경직
           _hurtProjectilePlayer(p,~~((p.dmg||10)*elMul(p.el,ar().el)),{dtype:'magic'});
-          if(P.s!=='charge'&&P.s!=='sBlock'&&P.s!=='kiGather'&&P.s!=='sDraw'){P.s='stagger';P.st2=30}
+          if(P.s!=='charge'&&P.s!=='sBlock'&&P.s!=='kiGather'&&P.s!=='sDraw'&&!_isKiCharging()){P.s='stagger';P.st2=30}
           addTxt(P.x,P.y-20,_T('⚠ 덫!'),'#ffcc00',30);addParts(P.x,P.y,'#ffaa00',8);_pHit=true}
         else{const _pjD=~~((p.dmg||10)*elMul(p.el,ar().el));_hurtProjectilePlayer(p,_pjD,{dtype:p.redBean?'parry':'magic',redBean:!!p.redBean,projHit:true,knockback:_normalProjectilePlayerKnockback(p,P.x,P.y)});if(p.fbEnergy||p.fdEnergy)_fbEnergyBoom(p);else if(!p.waterBean&&!_isBitingPhysicalProjectile(p))_projHitFx(p.x,p.y,p.el,!!p.redBean);if(p.el===EL.L)P._elecT=Math.max(P._elecT||0,30);
           // 빨콩 피격 화상 (데미지×3, 10초, 최대10중첩)
@@ -38725,7 +38814,7 @@ function updateE(e,sp){
         addTxt(P.x,P.y-25,_T('⚡패링!'),'#ffdd00',35);doParry(e.atk,e.x,e.y,false,e.el);_poiseHit(e,20)}
       else if(P.s!=='charge'){hurtP(~~(e.atk*1.3*elMul(e.el,ar().el)));eModHitP(e);
         const ang=Math.atan2(P.y-e.y,P.x-e.x);P.kb.x+=Math.cos(ang)*10;P.kb.y+=Math.sin(ang)*10;
-        if(P.s!=='sBlock'&&P.s!=='kiGather'&&P.s!=='sDraw'){
+        if(P.s!=='sBlock'&&P.s!=='kiGather'&&P.s!=='sDraw'&&!_isKiCharging()){
           if(P.s==='whirlwind'&&P.skills.detonate&&_isFused('whirlDet')&&(P.parryBank||0)>0&&(P.parryT||0)>=120){if(_isFused('slamStorm'))_slamStormBlast();else _detonateBlast('강제기폭!',EL.P)}
           P.s='stagger';P.st2=40;addTxt(P.x,P.y-20,_T('경직!'),'#8888ff',30)}}
       e.s='recover';e.st2=30;break}
@@ -41341,7 +41430,7 @@ function hurtP(dmg,opts){
       // ═══ 포이즈 감소 → 기절 (4칸 시스템) ═══ 탄막 1칸, 근접 1칸
       P.poise=Math.max(0,(P.poise||4)-1);P.poiseR=0;
       if(P.poise<=0){P.poise=0;P.s='pStun';P.st2=~~(240*(1-Math.min(.5,_eqAffix('ccRes')+_eqAffix('stunRes'))));SFX.groggy();G.hitStop=~~((_HS.pStun||6)*OPT.hitStop/100);for(let j=0;j<12;j++){const sa=Math.PI*2*j/12;poolPart(P.x,P.y,Math.cos(sa)*5,Math.sin(sa)*5,'#ffcc44',3+Math.random()*3,15+Math.random()*8)}}
-      else if(P.s!=='kiGather'&&P.s!=='sDraw'){P.s='stagger';P.st2=6} // 차징(발도 응축)은 피격 경직 면역 — 포이즈는 계속 깎여 기절(pStun) 시에만 끊김
+      else if(P.s!=='kiGather'&&P.s!=='sDraw'&&!_isKiCharging()){P.s='stagger';P.st2=6} // 차징(발도 응축·기검참 홀드)은 피격 경직 면역 — 포이즈는 계속 깎여 기절(pStun) 시에만 끊김
     }
     if(a>0)addTxt(P.x,P.y-10,'-'+a,'#ff3333',28);
     // ═══ 데미지 비례 넉백: dmg/mhp 비율로 밀림 (최소1, 최대12) ═══
@@ -41917,7 +42006,7 @@ const SKILL_LIST=[
   {id:'magicBlink',name:'사슬기동:화염',cat:'move',desc:'INT 스케일. 이동 경로에 화염길 생성(3초 DOT). 통과 적 화상. MP 소모. 합체 시 착지 폭발',descEn:'INT scale. Fire trail on dash path (3s DOT). Burns passed enemies. MP cost. Fuse: landing explosion',spCost:10,matCost:100,up:true,upSp:5,upMat:0},
   {id:'ghostWalk',name:'뇌전걸음',cat:'def',act:true,emoji:'⚡',desc:'5초간 유령화 — 무적+이동. 통과한 적/탄막 수만큼 종료 시 암전 폭발(+10%/회) + 전기줄기 방사(3회 체인). 카운트 캡=Lv×5(최대50). 쿨 20초. Lv당 뎀+15% 범위+10',descEn:'5s ghost form — invincible+move. Blackout explosion on end (+10%/enemy passed) + lightning arc (3 chains). Count cap=Lv×5 (max 50). CD 20s. Per Lv DMG+15% range+10',spCost:10,matCost:100,cd:1200,up:true,upSp:5,upMat:0},
   {id:'bladeDash',name:'전격이동',cat:'move',desc:'[이동기] 방향키 더블탭으로 발동. 경직/기절 중에도 탈출 가능. 250유닛 순간이동, 무적(15프레임). MP[(10+(Lv-1)×5)×0.7] + 공용 기동게이지 0.7칸(31.5)을 소모한다. 기본 기동게이지 5칸, Shift 사슬과 공유. 착지 시 전류장판(10초+Lv×0.5초): INT 틱뎀 + 방어력↓(1렙10%, 렙당+5%, 캡50%)',descEn:'[Mobility] Double-tap to activate. Escapes stagger/stun. 250-unit blink, invincible 15f. Costs MP[(10+(Lv-1)×5)×0.7] plus 0.7 shared mobility-gauge cells (31.5). Base gauge has 5 cells and is shared with Shift chain. Landing shock field(10s+Lv×0.5s): INT tick DMG + DEF↓(Lv1=10%, +5%/Lv, cap 50%)',spCost:10,matCost:60,up:true,upSp:6,upMat:0},
-  {id:'kiSlash',name:'기검참',cat:'phys',desc:'좌클 스킬: 3단 검기. 3타를 홀드해 1초마다 1단씩 최대 3단 충전. 검기 피해 2/4/8배, 놓으면 발사. ST 10+Lv당2. 거리+15px/Lv',descEn:'LMB skill: 3-hit ki blade. Hold the third hit to charge one stage each second, up to stage 3. Blade damage ×2/×4/×8; release to fire. ST 10+2/Lv; +15px range/Lv',spCost:10,matCost:0,up:true,upSp:5,upMat:0,default:true},
+  {id:'kiSlash',name:'기검참',cat:'phys',desc:'좌클 스킬: 3단 검기. 3타를 홀드해 2초에 걸쳐 최대 3단 충전(약 0.67초당 1단). 검기 피해 2/4/8배, 놓으면 발사. ST 10+Lv당2. 거리+15px/Lv',descEn:'LMB skill: 3-hit ki blade. Hold the third hit to charge up to stage 3 over 2 seconds (one stage every ~0.67s). Blade damage ×2/×4/×8; release to fire. ST 10+2/Lv; +15px range/Lv',spCost:10,matCost:0,up:true,upSp:5,upMat:0,default:true},
   {id:'fireball',name:'악의구',cat:'magic',desc:'[기본: E] 어둠 마법 오브 발사. 범위폭발. 넉백 0.5%. Lv당 크기+50% (뎀은 _skMul 계수 적용)',descEn:'[Default: E] Dark magic orb fired. AoE explosion. Knockback 0.5%. Per Lv size+50% (DMG uses _skMul)',spCost:10,matCost:0,up:true,upSp:5,upMat:0,default:true},
   {id:'whirlwind',name:'회전참',cat:'phys',desc:'무기 홀드 → 전진 회전 공격. 360도 광역, ST 지속소모. Lv당 범위+5 뎀+5%',descEn:'Hold weapon → forward spin attack. 360° AoE, continuous ST drain. Per Lv range+5 DMG+5%',spCost:10,matCost:100,up:true,upSp:5,upMat:0},
   {id:'detonate',name:'기폭팔',cat:'def',desc:'패링 3초 홀드 → 흡수 데미지 광역 폭발. Lv당 범위+15 (1렙150, 10렙285)',descEn:'Parry 3s hold → absorbed DMG AoE explosion. Per Lv range+15 (Lv1: 150, Lv10: 285)',spCost:10,matCost:100,up:true,upSp:5,upMat:0},
@@ -42056,7 +42145,7 @@ const SKILL_SLOT_DEFS={
     info:{giantSlam:{name:'지옥강타 1',nameEn:'Hell Slam I',emoji:'🔨',desc:'Space: 원형 진동파 (ST+악의20, 포이즈 특화, 쿨30초)',descEn:'Space: AoE shockwave (ST+malice20, poise focus, cd 30s)'},
           }},
   lmb:{name:'좌클 스킬',nameEn:'LMB Skill',key:'lmb',skills:['kiSlash','whirlwind'],
-    info:{kiSlash:{name:'기검참',nameEn:'Ki Slash',emoji:'⚔',desc:'좌클 3타 홀드: 1초마다 1단, 최대 3단. 검기 피해 2/4/8배. ST 10+Lv당2',descEn:'Hold 3rd LMB hit: one stage each second, up to 3. Blade damage ×2/×4/×8. ST 10+2/Lv'},
+    info:{kiSlash:{name:'기검참',nameEn:'Ki Slash',emoji:'⚔',desc:'좌클 3타 홀드: 2초에 최대 3단(약 0.67초당 1단). 검기 피해 2/4/8배. ST 10+Lv당2',descEn:'Hold 3rd LMB hit: up to 3 stages over 2 seconds (~0.67s each). Blade damage ×2/×4/×8. ST 10+2/Lv'},
           whirlwind:{name:'회전참',nameEn:'Whirlwind',emoji:'🌀',desc:'좌클 홀드: 회전 베기',descEn:'LMB Hold: Spin attack'}}},
   rmb:{name:'E 스킬',nameEn:'E Skill',key:'rmb',skills:['maliceSwipe'],
     info:{maliceSwipe:{name:'불꽃칼날',nameEn:'Flame Blade',emoji:'🔥',desc:'E: 쿨타임 완료 시 불꽃을 두른 칼날을 크게 휘두릅니다. 일반 마법탄도 반사. 홀드 풀차지 1.5초, 스킬 Lv당 범위 +5%.',descEn:'E: Swing a flaming blade when ready; also reflects ordinary magic shots. Hold for 1.5s full charge. +5% range per skill level.'}}},
@@ -43175,7 +43264,8 @@ function activateBladeDash(dir){
   const _holdStates={'whirlwind':1,'sBlock':1,'beam':1};
   P._preBdState=_holdStates[P.s]?P.s:null;
   P._bdMoveT=6;
-  if(P.s!=='sDraw'&&P.s!=='kiGather'){P.s='bladeDash';P.st2=6}
+  // 차징(발도 응축·기검참 3타 홀드) 중엔 상태 유지 — 이동만 _tickBladeDash로 진행, 충전 보존
+  if(P.s!=='sDraw'&&P.s!=='kiGather'&&!_isKiCharging()){P.s='bladeDash';P.st2=6}
   P.facing=_bdAng;
   P.iframes=Math.max(P.iframes,15);
   SFX.charge();{const _cd=['chain_dash','chain_dash2','chain_dash3','chain_dash4'];playSample(_cd[~~(Math.random()*4)],.6,_r(1,.1))}
@@ -46176,13 +46266,15 @@ function withdrawStorage(idx){
 
 // ═══ SETTINGS RENDER ═══
 function renderSettings(){
+  const _bindFocus=document.activeElement?.closest('#keyBindList [data-bind-control]')?.dataset.bindControl;
+  const _choiceFocus=document.activeElement?.closest('#settings [data-settings-choice]')?.dataset.settingsChoice;
   // 리셋 확인창 강제 숨기기
   const _rcS=$('resetConfirm');if(_rcS)_rcS.style.display='none';
   // ── 커서 선택 그리드 ──
-  const _cg=$('cursorGrid');if(_cg){_cg.innerHTML='';
+  const _cg=$('cursorGrid');if(_cg){_cg.replaceChildren();
     _CURSORS.forEach((cur,ci)=>{
       const sel=ci===(OPT.cursor||0);
-      const card=document.createElement('div');
+      const card=document.createElement('button');card.type='button';card.className='settings-choice settings-cursor-choice';card.dataset.settingsChoice='cursor-'+ci;card.setAttribute('aria-pressed',String(sel));
       card.style.cssText='width:72px;min-width:72px;height:80px;border-radius:6px;cursor:pointer;text-align:center;border:2px solid '+(sel?'#ffcc00':'#443322')+';background:'+(sel?'rgba(80,60,20,.6)':'rgba(20,20,30,.6)')+';display:flex;flex-direction:column;align-items:center;justify-content:center;transition:all .2s;flex-shrink:0';
       card.onmouseenter=()=>{if(!sel)card.style.borderColor='#886633'};
       card.onmouseleave=()=>{if(!sel)card.style.borderColor='#443322'};
@@ -46197,13 +46289,13 @@ function renderSettings(){
         cv.style.cssText='width:48px;height:48px;image-rendering:pixelated';
         cur.draw(cv.getContext('2d'),48);card.appendChild(cv);
       }else{
-        const ic=document.createElement('div');ic.textContent='🖱';ic.style.fontSize='20px';card.appendChild(ic);
+        const ic=document.createElement('span');ic.className='settings-choice-icon';ic.textContent='🖱';ic.style.fontSize='20px';card.appendChild(ic);
       }
-      const nm=document.createElement('div');nm.textContent=_L(cur.name,cur.nameEn||cur.name);
+      const nm=document.createElement('span');nm.className='settings-choice-name';nm.textContent=_L(cur.name,cur.nameEn||cur.name);card.setAttribute('aria-label',nm.textContent);
       nm.style.cssText='color:'+(sel?'#ffcc00':'#aaa')+';font-size:.6rem;margin-top:2px';
       card.appendChild(nm);
       card.onclick=()=>{OPT.cursor=ci;_cursorCache=[];_applyCursor();saveSettings();renderSettings()};
-      _cg.appendChild(card);
+      _cg.appendChild(card);if(_choiceFocus===card.dataset.settingsChoice)card.focus({preventScroll:true});
     });
   }
   // ── 커서 크기 슬라이더 ──
@@ -46211,10 +46303,10 @@ function renderSettings(){
     _csEl.oninput=function(){OPT.cursorSize=+this.value;$('cursorSizeVal').textContent=this.value+'%';_cursorCache=[];_applyCursor();saveSettings()};
   }
   // ── 캐릭터 선택 그리드 ──
-  const csg=$('charSelectGrid');if(csg){csg.innerHTML='';
+  const csg=$('charSelectGrid');if(csg){csg.replaceChildren();
     CHAR_LIST.forEach((ch,ci)=>{
-      const card=document.createElement('div');
-      const sel=ci===_charIdx;
+      const card=document.createElement('button');card.type='button';card.className='settings-choice settings-character-choice';card.dataset.settingsChoice='character-'+ci;
+      const sel=ci===_charIdx;card.setAttribute('aria-pressed',String(sel));card.setAttribute('aria-label',_T(ch.name));
       card.style.cssText='width:120px;padding:8px;border-radius:6px;cursor:pointer;text-align:center;border:2px solid '+(sel?'#ffcc00':'#443322')+';background:'+(sel?'rgba(80,60,20,.6)':'rgba(20,20,30,.6)')+';transition:all .2s';
       card.onmouseenter=()=>{if(ci!==_charIdx)card.style.borderColor='#886633';};
       card.onmouseleave=()=>{if(ci!==_charIdx)card.style.borderColor='#443322';};
@@ -46233,20 +46325,21 @@ function renderSettings(){
         card.appendChild(img);
       }
       // 이름
-      const nm=document.createElement('div');nm.textContent=_T(ch.name);
+      const nm=document.createElement('span');nm.className='settings-choice-name';nm.textContent=_T(ch.name);
       nm.style.cssText='color:'+(sel?'#ffcc00':'#cccccc')+';font-size:.85rem;font-weight:bold;margin-bottom:4px';
       card.appendChild(nm);
       // 설명
-      const ds=document.createElement('div');ds.textContent=_T(ch.desc);
+      const ds=document.createElement('span');ds.className='settings-choice-description';ds.id='settings-character-description-'+ci;ds.textContent=_T(ch.desc);card.setAttribute('aria-describedby',ds.id);
       ds.style.cssText='color:#888888;font-size:.7rem;line-height:1.3';
       card.appendChild(ds);
       // 선택 표시
-      if(sel){const ck=document.createElement('div');ck.textContent=_T('✓ 선택됨');ck.style.cssText='color:#ffcc00;font-size:.75rem;margin-top:4px';card.appendChild(ck);}
+      if(sel){const ck=document.createElement('span');ck.className='settings-choice-selected';ck.textContent=_T('✓ 선택됨');ck.style.cssText='color:#ffcc00;font-size:.75rem;margin-top:4px';card.appendChild(ck);}
       card.onclick=()=>{_loadCharAtlas(ci);renderSettings();};
-      csg.appendChild(card);
+      csg.appendChild(card);if(_choiceFocus===card.dataset.settingsChoice)card.focus({preventScroll:true});
     });
   }
-  const list=$('keyBindList');if(!list)return;list.innerHTML='';
+  const list=$('keyBindList');if(!list)return;list.replaceChildren();
+  const _bindButton=(key)=>{const b=document.createElement('button');b.type='button';b.dataset.bindControl=key;return b;};
   // 리스닝 오버레이 제거
   const oldOv=document.getElementById('bindOverlay');if(oldOv)oldOv.remove();
   // ── 탭: 키보드·마우스 / 게임패드 (기본은 현재 입력모드) ──
@@ -46254,7 +46347,7 @@ function renderSettings(){
   const _tabRow=document.createElement('div');_tabRow.style.cssText='display:flex;gap:6px;margin-bottom:14px';
   [['kbm','⌨ 키보드·마우스','⌨ Keyboard & Mouse'],['pad','🎮 게임패드','🎮 Gamepad']].forEach(function(_t){
     const _tk=_t[0],_on=_bindTab===_tk;
-    const _tb=document.createElement('div');
+    const _tb=_bindButton('mode-'+_tk);_tb.className='bind-mode';_tb.setAttribute('aria-pressed',String(_on));
     _tb.style.cssText='flex:1;text-align:center;padding:8px;cursor:pointer;font-size:.9rem;font-weight:700;letter-spacing:.05em;border-radius:6px;border:1px solid '+(_on?'#ccaa66':'#443322')+';background:'+(_on?'rgba(204,170,102,.18)':'rgba(0,0,0,.25)')+';color:'+(_on?'#ffdd99':'#887766');
     _tb.textContent=_L(_t[1],_t[2]);
     _tb.onclick=function(e){e.stopPropagation();_bindTab=_tk;renderSettings()};
@@ -46266,30 +46359,32 @@ function renderSettings(){
     const row=document.createElement('div');row.className='set-row';
     row.innerHTML=`<span class="set-name">${_bindName(action)}</span>`;
     // 주 키
-    const btn=document.createElement('div');
+    const btn=_bindButton('kbm-'+action+'-main');
     const isL=listeningBind===action&&!_listenAlt;
     btn.className='set-key'+(isL?' listening':'');
     btn.textContent=isL?_T('⟨ 입력 대기... ⟩'):keyName(BINDS[action],true);
+    btn.setAttribute('aria-label',_bindName(action)+' · '+btn.textContent);
     btn.onclick=(e)=>{e.stopPropagation();e.preventDefault();listeningBind=action;_listenAlt=false;renderSettings()};
     row.appendChild(btn);
     // 보조 키
-    const btn2=document.createElement('div');
+    const btn2=_bindButton('kbm-'+action+'-alt');
     const isL2=listeningBind===action&&_listenAlt;
     btn2.className='set-key'+(isL2?' listening':'');
     btn2.style.cssText='margin-left:4px;min-width:56px;font-size:.9rem;opacity:'+(BINDS2[action]?'1':'.5');
     btn2.textContent=isL2?_T('⟨ 대기 ⟩'):(BINDS2[action]?keyName(BINDS2[action],true):_T('보조'));
+    btn2.setAttribute('aria-label',_bindName(action)+' · '+_T('보조')+(isL2||BINDS2[action]?' · '+btn2.textContent:''));
     btn2.onclick=(e)=>{e.stopPropagation();e.preventDefault();listeningBind=action;_listenAlt=true;renderSettings()};
     row.appendChild(btn2);
     // 보조키 삭제
     if(BINDS2[action]){
-      const del=document.createElement('div');del.style.cssText='margin-left:2px;color:#664444;font-size:.8rem;cursor:pointer;padding:2px 4px';del.textContent='✕';
+      const del=_bindButton('kbm-'+action+'-delete');del.className='bind-delete';del.setAttribute('aria-label',_bindName(action)+' · '+_T('보조')+' · '+_T('삭제'));del.style.cssText='margin-left:2px;color:#664444;font-size:.8rem;cursor:pointer;padding:2px 4px';del.textContent='✕';
       del.onclick=(e)=>{e.stopPropagation();BINDS2[action]=null;renderSettings();saveSettings()};
       row.appendChild(del);
     }
     list.appendChild(row);
   });
   // 키바인딩 초기화 버튼
-  const resetBtn=document.createElement('div');
+  const resetBtn=_bindButton('kbm-reset');resetBtn.className='bind-reset';
   resetBtn.style.cssText='text-align:center;margin-top:12px;padding:8px;background:rgba(100,0,0,.2);border:1px solid #663333;color:#ff6666;cursor:pointer;font-size:.95rem;font-weight:700;letter-spacing:.1em';
   resetBtn.textContent=_T('키 설정 초기화 (또는 F5 키)');
   window._resetBinds=()=>{
@@ -46316,10 +46411,10 @@ function renderSettings(){
     const idx=+bi;
     const row=document.createElement('div');row.className='set-row';
     row.innerHTML='<span class="set-name" style="min-width:80px">'+(_gpBtnNames[idx]||'B'+idx)+'</span><span style="color:#887766;font-size:.85rem;min-width:60px">'+(_gpActNames[idx]||'')+'</span>';
-    const keyBtn=document.createElement('div');
+    const keyBtn=_bindButton('pad-'+idx);
     keyBtn.className='set-key';
     if(_gpFixed.has(idx)){
-      keyBtn.textContent=_T('고정');
+      keyBtn.textContent=_T('고정');keyBtn.disabled=true;
       keyBtn.style.opacity='.4';keyBtn.style.cursor='default';
     }else{
       keyBtn.textContent=keyName(_GP_KEY[idx],true);
@@ -46328,8 +46423,9 @@ function renderSettings(){
         // 이전 캡처 리스너 잔류 시 제거 (재클릭/패널 닫힘 후 아무 입력이 바인딩되는 버그 방지)
         if(window._gpBindH){document.removeEventListener('keydown',window._gpBindH.k);document.removeEventListener('mousedown',window._gpBindH.m);window._gpBindH=null}
         keyBtn.className='set-key listening';keyBtn.textContent=_T('⟨ 키 입력... ⟩');
+        keyBtn.setAttribute('aria-label',(_gpBtnNames[i]||'B'+i)+' · '+(_gpActNames[i]||'')+' · '+keyBtn.textContent);
         const _off=function(){document.removeEventListener('keydown',_h);document.removeEventListener('mousedown',_mh);window._gpBindH=null};
-        const _h=function(ev){_off();
+        const _h=function(ev){if(ev.repeat){ev.preventDefault();return}_off();
           if(!keyBtn.isConnected){return} // 설정 패널이 닫히거나 재렌더됨 — 바인딩하지 않고 캡처만 해제
           ev.preventDefault();ev.stopPropagation();
           if(ev.code==='Escape'){renderSettings();return}
@@ -46342,11 +46438,12 @@ function renderSettings(){
         document.addEventListener('keydown',_h);document.addEventListener('mousedown',_mh);
       }})(idx);
     }
+    keyBtn.setAttribute('aria-label',(_gpBtnNames[idx]||'B'+idx)+' · '+(_gpActNames[idx]||'')+' · '+keyBtn.textContent);
     row.appendChild(keyBtn);
     list.appendChild(row);
   }
 
-  const gpResetBtn=document.createElement('div');
+  const gpResetBtn=_bindButton('pad-reset');gpResetBtn.className='bind-reset';
   gpResetBtn.style.cssText='text-align:center;margin-top:8px;padding:6px;background:rgba(100,0,0,.15);border:1px solid #553333;color:#ff6666;cursor:pointer;font-size:.85rem;font-weight:700';
   gpResetBtn.textContent=_T('패드 키 초기화');
   gpResetBtn.onclick=(e)=>{e.stopPropagation();_resetGpKeyMap();notify(_T('패드 키 초기화 완료'));renderSettings()};
@@ -46386,9 +46483,11 @@ function renderSettings(){
   } // ── end 게임패드 탭 ──
 
   // F5키로도 리셋 가능 (마우스 클릭 불가 상황 대비)
-  window._bindResetHandler=function(e){if(e.code==='F5'&&$('settings')&&$('settings').classList.contains('on')){e.preventDefault();window._resetBinds&&window._resetBinds()}};
-  document.removeEventListener('keydown',window._bindResetHandler);
-  document.addEventListener('keydown',window._bindResetHandler);
+  // 1회만 등록 — 매 renderSettings마다 새 함수를 만든 뒤 remove하면 이전 리스너가 안 지워져 누적됨
+  if(!window._bindResetHandler){
+    window._bindResetHandler=function(e){if(e.code==='F5'&&$('settings')&&$('settings').classList.contains('on')){e.preventDefault();window._resetBinds&&window._resetBinds()}};
+    document.addEventListener('keydown',window._bindResetHandler);
+  }
   // 리스닝 모드: 전체화면 투명 오버레이로 모든 마우스 버튼 캡처
   if(listeningBind){
     const hint=document.createElement('div');
@@ -46407,6 +46506,7 @@ function renderSettings(){
     // 클릭으로 리스닝 진입 시 같은 mousedown이 오버레이에 전파되는 것 방지
     setTimeout(()=>{ov.style.pointerEvents='auto'},120);
   }
+  if(_bindFocus)(list.querySelector('[data-bind-control="'+_bindFocus+'"]')||list.querySelector('[data-bind-control="'+_bindFocus.replace(/-delete$/,'-alt')+'"]'))?.focus({preventScroll:true});
 }
 $('setClose').onclick=()=>closePanel('settings');
 if($('showTutorialBtn'))$('showTutorialBtn').onclick=()=>{closePanel('settings');showTutorial()};
@@ -46414,15 +46514,15 @@ if($('showTutorialBtn'))$('showTutorialBtn').onclick=()=>{closePanel('settings')
 function saveSettings(){try{localStorage.setItem('hellcave_settings',JSON.stringify({binds:{...BINDS},binds2:{...BINDS2},opt:{...OPT}}));localStorage.setItem('hellLang',OPT.lang)}catch(e){}}
 
 // ══ 2026-04-17 UI 고정 디자인 시스템 — Reference Resolution 1920×1080 ══
-// 순수 자동 스케일. 접근성은 브라우저 줌(Ctrl+/-)으로 대응.
+// 창 크기·페이지 줌에 맞춰 HUD 비율을 유지하는 순수 자동 스케일.
 function applyUIScale(){
   const dw=1920, dh=1080;
   const sw=window.innerWidth, sh=window.innerHeight;
   // Match Shortest Side: 가로/세로 중 작은 쪽. 16:9보다 넓은 화면(21:9 등)은 가로 여백, UI는 중앙 고정.
   const autoScale=Math.min(sw/dw, sh/dh);
-  // 극단 화면 방어 (0.5 ~ 3.0)
-  const clampedAuto=Math.max(0.5, Math.min(3.0, autoScale));
-  document.documentElement.style.setProperty('--ui-auto-scale', clampedAuto.toFixed(4));
+  // 고정 상하한은 작은 창/줌/8K에서 비율을 깨뜨린다. 유효한 화면 크기는 그대로 반영.
+  if(!Number.isFinite(autoScale)||autoScale<=0)return;
+  document.documentElement.style.setProperty('--ui-auto-scale', autoScale.toFixed(4));
 }
 window.applyUIScale=applyUIScale;
 window.addEventListener('resize', applyUIScale);
@@ -46505,6 +46605,7 @@ function _applyLang(){try{
     const _stTgl=_invP.querySelector('.inv-storage-toggle>span');if(_stTgl&&(_stTgl.textContent.includes('지옥창고')||_stTgl.dataset.ko==='지옥창고')){_stTgl.dataset.ko='지옥창고';_stTgl.textContent=_T('지옥창고')}
     const _bagLbl=_invP.querySelector('#invCenter>div>div');if(_bagLbl&&_bagLbl.firstChild?.nodeType===3)_bagLbl.firstChild.nodeValue=_T('가방')+' (';
     const _sortB=$('invSortBtn');if(_sortB)_sortB.textContent=_T('↕ 정렬');
+    const _invCloseB=$('invClose');if(_invCloseB){const label=_T('닫기 [ESC]');_invCloseB.setAttribute('aria-label',label);_invCloseB.title=label}
     const _jSelB=$('invJunkSelBtn');if(_jSelB)_jSelB.textContent=_T('쓰레기 전체선택');
     const _jBtn=$('invJunkBtn');if(_jBtn)_jBtn.textContent=_T('쓰레기 전부 분해');
   }
@@ -46827,6 +46928,7 @@ function _loadPreset(slot){
     if(data.opt){for(const k in data.opt)OPT[k]=data.opt[k]}
     if(OPT.atmos===undefined)OPT.atmos=2; // ATMOS 구저장본 호환
     _repairChainAttackBinds();
+    rz(); // Apply restored render scale to the actual canvas before updating labels.
     syncSettingsUI();
     renderSettings();saveSettings();
     $('saveMsg').style.color='#6699cc';$('saveMsg').textContent=_L('세팅'+slot+' 불러오기 완료!','Preset '+slot+' loaded!');
@@ -46947,6 +47049,7 @@ try{const _lobbyLang=ExoduserI18n.resolveLanguage(localStorage.getItem('hellLang
 OPT.lang=ExoduserI18n.resolveLanguage(OPT.lang)||'ko';
 // Persist migrations only after restoring the independent, newer lobby choice.
 if(_settingsMigrated)try{saveSettings()}catch(e){}
+rz(); // Apply saved render scale after settings restoration; unchanged size is a no-op.
 syncSettingsUI();
 try{_applyCursor()}catch(e){}
 if($('resetBtn'))$('resetBtn').onclick=()=>{$('resetConfirm').style.display='block'};
@@ -49196,6 +49299,8 @@ function draw(){
   X.translate(Math.round(VW/2-G.cam.x+sx),Math.round(VH/2-G.cam.y+sy));
   const s1=Math.max(0,~~((G.cam.x-VW/2*_vpMul)/T)-1),e1=Math.min(G.mw,Math.ceil((G.cam.x+VW/2*_vpMul)/T)+1);
   const s2=Math.max(0,~~((G.cam.y-VH/2*_vpMul)/T)-1),e2=Math.min(G.mh,Math.ceil((G.cam.y+VH/2*_vpMul)/T)+1);
+  const _ch1CoveredBase=_ch1StartOuterCoversView();
+  if(_ch1StartOuterEnabled())_ch1StartOuterStats[_ch1CoveredBase?'underlaySkippedFrames':'underlayFallbackFrames']++;
   // ── 패럴랙스 배경 레이어 ──
   const _tPara=performance.now();
   var _snapPara=_fc2d?_PERF_PROF._snap():null;
@@ -49232,9 +49337,9 @@ function draw(){
     }
     X.globalAlpha=1;
   }}}
-  if(!_isVistaMap())_fillVoidWithFloor(X);
+  if(!_ch1CoveredBase&&!_isVistaMap())_fillVoidWithFloor(X);
   // ── 반딧불이 파티클 (가벼운 버전 — arc/gradient 없이 fillRect만) ──
-  {if(!_oriInited)_oriInitParticles();
+  {if(!_ch1CoveredBase){if(!_oriInited)_oriInitParticles();
   const _fvl=G.cam.x-VW/2,_fvt=G.cam.y-VH/2,_fvr=G.cam.x+VW/2,_fvb=G.cam.y+VH/2;
   X.save();
   for(let _fi=0;_fi<20;_fi++){
@@ -49246,11 +49351,12 @@ function draw(){
     X.globalAlpha=_fg*.3;X.fillStyle='#88ffaa';X.fillRect(f.x-2,f.y-2,4,4);
     X.globalAlpha=_fg*.7;X.fillStyle='#ccffdd';X.fillRect(f.x-.5,f.y-.5,1,1);
   }
-  X.restore();}
+  X.restore();}}
   // 맵 캐시 drawImage. ?dcprof&dcprofCacheDelay=N은 N프레임 동안 이 blit만 숨겨
   // cache-miss에 per-tile GL fallback이 있는지 검증하는 debug-only fault injection이다.
   let _dcpHideMapCache=false;if(_DCP.on&&_DCP_FAULT_CACHE_DELAY>0&&_dcpCacheDelayLeft>0){_dcpHideMapCache=true;_dcpCacheDelayLeft--}
   _dcpCacheFaultActive=_dcpHideMapCache;
+  if(!_ch1CoveredBase){
   if(_isPlateMap()){
     _drawVistaWorld(X);
   }else{
@@ -49341,6 +49447,7 @@ function draw(){
       const cdw=cx1-cx0,cdh=cy1-cy0;if(cdw<=0||cdh<=0)continue;
       X.drawImage(ch.cvs,cx0-ch.x,cy0-ch.y,cdw+1,cdh+1,cx0,cy0,cdw+1,cdh+1);
     }
+  }
   }
   }
   _drawCh1BakedSpike(X);
@@ -52276,7 +52383,7 @@ function draw(){
     const heartPulse=beatPhase<.15?Math.sin(beatPhase/.15*Math.PI):beatPhase<.3?Math.sin((beatPhase-.15)/.15*Math.PI)*.6:0;
     const pulse=.4+heartPulse*.6;
     // Full screen red tint (캐시 캔버스)
-    if(!G._redTintCvs||G._redTintW!==C.width){
+    if(!G._redTintCvs||G._redTintW!==C.width||G._redTintCvs.height!==C.height){
       if(!G._redTintCvs){G._redTintCvs=document.createElement('canvas');G._redTintCx=G._redTintCvs.getContext('2d')}
       G._redTintCvs.width=C.width;G._redTintCvs.height=C.height;
       G._redTintCx.fillStyle='#880000';G._redTintCx.fillRect(0,0,C.width,C.height);
@@ -52706,7 +52813,7 @@ function draw(){
   {const _elHell=SI_TO_HELL[G.stage||0];
   const _elCol=_ENV_LIGHT[_elHell];
   if(_elCol){
-    if(!G._envLightCvs||G._envLightHell!==_elHell||G._envLightW!==C.width){
+    if(!G._envLightCvs||G._envLightHell!==_elHell||G._envLightW!==C.width||G._envLightCvs.height!==C.height){
       if(!G._envLightCvs){G._envLightCvs=document.createElement('canvas');G._envLightCx=G._envLightCvs.getContext('2d')}
       G._envLightCvs.width=C.width;G._envLightCvs.height=C.height;
       G._envLightCx.fillStyle=_elCol;G._envLightCx.fillRect(0,0,C.width,C.height);
@@ -52717,7 +52824,7 @@ function draw(){
   // ═══ 지옥별 동적 비네팅 (매 프레임 — 교대 렌더 제거, 깜빡임 방지) ═══
   {
   // 비네팅 캐시 캔버스 (스테이지/해상도 변경 시만 리빌드)
-  if(!G._dvgCvs||G._dvgStage!==G.stage||G._dvgW!==C.width){
+  if(!G._dvgCvs||G._dvgStage!==G.stage||G._dvgW!==C.width||G._dvgCvs.height!==C.height){
     const hell=SI_TO_HELL[G.stage];const _vCols=['rgba(20,60,120,','rgba(20,60,15,','rgba(100,20,10,','rgba(50,15,80,','rgba(80,60,10,','rgba(50,40,25,','rgba(30,10,60,'];const vc=_vCols[hell];
     if(!G._dvgCvs){G._dvgCvs=document.createElement('canvas');G._dvgCx=G._dvgCvs.getContext('2d')}
     G._dvgCvs.width=C.width;G._dvgCvs.height=C.height;
@@ -54685,10 +54792,9 @@ function drawP(){
     X.restore();
   }
   // ══ 필살기 신규 이펙트 텍스처 (Higgsfield 생성, 콘텐츠 크롭본) ══
-  if(!G._ultImg){G._ultImg={holy:new Image(),black:new Image(),lava:new Image()};
-    G._ultImg.holy.src='assets/vfx/boss/ult_holy_c.png';
-    G._ultImg.black.src='assets/vfx/boss/ult_black_c.png';
-    G._ultImg.lava.src='assets/vfx/boss/ult_lava_c.png';}
+  // Only blackStar uses this burst texture; retired holy/lava textures must not request resources.
+  if(!G._ultImg){G._ultImg={black:new Image()};
+    G._ultImg.black.src='assets/vfx/boss/ult_black_c.png';}
   // 블랙 — 시전 중 소용돌이(흡인 시각화, 회전)
   {const _bi=G._ultImg.black;
    if(P._bsCasting&&_bi.complete&&_bi.naturalWidth>0){
@@ -57496,7 +57602,7 @@ function _showHudAreaTitle(stage,st){if(_hudAreaStage===stage)return;_hudAreaSta
 // ── HUD 요소 캐시 + 변경분만 기록 (20Hz 호출 대비 스타일 재계산/문자열 churn 절감) ──
 let _hudE=null;
 function _hudRefreshEls(){_hudE={hpLiquid:$('hpLiquid'),hpCur:$('hpCur'),hpMax:$('hpMax'),hpShield:$('hpShield'),shieldRing:$('shieldRing'),mobilityRing:$('mobilityRing'),mobilityRingTicks:$('mobilityRingTicks'),hpGlass:document.querySelector('.hp-globe .globe-glass'),mpGlass:document.querySelector('.mp-globe .globe-glass'),stFill:$('stFill'),mpFill:$('mpFill'),mpCur:$('mpCur'),mpMax:$('mpMax'),stCur:$('stCur'),stMax:$('stMax'),hpPotCd:$('hpPotCd'),expF:$('expF'),expTxt:$('expTxt'),skBar:$('skBar'),skSlot0:$('skSlot0')}}
-function _hset(el,prop,val){if(!el)return;const k='_h_'+prop;if(el[k]===val)return;el[k]=val;if(prop==='text')el.textContent=val;else el.style[prop]=val}
+function _hset(el,prop,val){if(!el)return;const k='_h_'+prop,n='_hn_'+prop;if(el[k]===val&&(prop==='text'?el.textContent===val:el.style[prop]===el[n]))return;el[k]=val;if(prop==='text')el.textContent=val;else{el.style[prop]=val;el[n]=el.style[prop]}}
 function updateHUD(slow){
   // ── 빠른 경로: 구슬 수위 + 원형 링 (매 3프레임 = ~20회/초) ──
   P.mhp=~~P.mhp; // 소수점 방지
@@ -57718,7 +57824,7 @@ let _fOverBudget=false;
 let _perfFrames=0,_perfLast=performance.now();
 const PHYS_STEP=1000/60;
 let _acc=0,_prevTs=0,_gameTime=0;
-function _startLoop(){if(_looping){return}_looping=true;if(!IS_ELECTRON)console.log('[LOOP] start');hideBootLoading();requestAnimationFrame(loop)}
+function _startLoop(){if(_looping){return}_looping=true;if(!IS_ELECTRON)console.log('[LOOP] start');if(!_bootLoadActive)hideBootLoading();requestAnimationFrame(loop)}
 // ═══ [EDITOR] postMessage 리스너 + 맵 직렬화 ═══
 function _serializeMap(){
   const flat=[];for(let y=0;y<G.mh;y++)for(let x=0;x<G.mw;x++)flat.push(G.map[y][x]);
@@ -58593,7 +58699,7 @@ function _atmDrawHud(){
 }
 function loop(timestamp){
   if(_DCP.on)_DCP._entry.raf++;
-  if(!_bootLoadKilled) hideBootLoading();
+  if(!_bootLoadKilled&&!_bootLoadActive) hideBootLoading();
   if(_DEBUG_PERF)_installDebugLongTaskObserver();
   if(!timestamp)timestamp=performance.now();
   // ── FPS 캡: 목표 프레임타임 미달이면 스킵 ──
@@ -58886,6 +58992,7 @@ async function _startDemoTest(){
   startAutoSave();setTimeout(()=>dbSave(),3000);
   _ensWarmDone=false;_wqLen=0;_wqIdx=0;_warmupEnsAtlas();
   if(!(_forceCutscene||(G.stage===0&&!G._cutsceneDone)))BGM.play(BGM.stageKey(G.stage)); // 컷신 예정 시 보류 — 전쟁 서사는 보이스 전용, 스테이지 BGM은 컷신 종료 후 시작 (2026-07-27)
+  await _prepareStartMapView();
   setBootLoading(100,'완료');
   hideBootLoading();
   await new Promise(r=>{
@@ -58995,6 +59102,7 @@ async function _startDemoNew(){
     await _bootMapBuildPromise;
   }
   if(!(_forceCutscene||(G.stage===0&&!G._cutsceneDone)))BGM.play(BGM.stageKey(G.stage)); // 컷신 예정 시 보류 — 전쟁 서사는 보이스 전용, 스테이지 BGM은 컷신 종료 후 시작 (2026-07-27)
+  await _prepareStartMapView();
   setBootLoading(100,'완료');
   hideBootLoading();
   _dbReady=true;
@@ -59084,6 +59192,7 @@ async function _startTestChar(){
   _dbReady=true;
   _ensWarmDone=false;_wqLen=0;_wqIdx=0;_warmupEnsAtlas();
   if(!(_forceCutscene||(G.stage===0&&!G._cutsceneDone)))BGM.play(BGM.stageKey(G.stage)); // 컷신 예정 시 보류 — 전쟁 서사는 보이스 전용, 스테이지 BGM은 컷신 종료 후 시작 (2026-07-27)
+  await _prepareStartMapView();
   setBootLoading(100,'완료');
   hideBootLoading();
   await new Promise(r=>{
@@ -59172,7 +59281,8 @@ async function startGameFromDB(){
   _bootMapBuildDefer=0;
   if(_bossTestReq>=0){
     G._cutsceneDone=true;G.on=true;if(P)P.iframes=300;
-    setBootLoading(100,'완료');hideBootLoading();
+    await _prepareStartMapView();
+  setBootLoading(100,'완료');hideBootLoading();
     _dbReady=true;startAutoSave();
     return;
   }
@@ -59211,7 +59321,8 @@ async function startGameFromDB(){
   startAutoSave();
   // 캐릭터 선택 → 문 열림 후 바로 게임 시작 (스플래시 스킵)
   if(!(_forceCutscene||(G.stage===0&&!G._cutsceneDone)))BGM.play(BGM.stageKey(G.stage)); // 컷신 예정 시 보류 — 전쟁 서사는 보이스 전용, 스테이지 BGM은 컷신 종료 후 시작 (2026-07-27)
-setBootLoading(100,'완료');
+await _prepareStartMapView();
+  setBootLoading(100,'완료');
 hideBootLoading();
   // 로딩 화면이 완전히 사라진 뒤에 게임 시작
   await new Promise(r=>{
@@ -60180,7 +60291,7 @@ $('retryBtn').onclick=async()=>{
 // ═══ 스테이지 전환 로딩 ═══
 const _STAGE_TRANSITION_RD=[];
 let _lastTransitionRd=-1;
-let _bootLoadShownAt=0,_bootLoadKilled=false,_bootRdPicked=false;
+let _bootLoadShownAt=0,_bootLoadKilled=false,_bootLoadActive=false,_bootRdPicked=false;
 function _pickTransitionRd(){
   if(_STAGE_TRANSITION_RD.length<=1) return 0;
   let n=~~(Math.random()*_STAGE_TRANSITION_RD.length);
@@ -60240,6 +60351,7 @@ function showBootLoading(msg){
     _bootPerfStart=_bootNow;_bootPerfLast=_bootNow;
     _bootPerfMarks=['8% '+(msg||_T('불러오는 중...'))+':0.0ms'];
   }
+  _bootLoadActive=true;_bootLoadKilled=false;
   _bootLoadShownAt=Date.now();
   name.textContent=msg||_T('불러오는 중...');
   // 세션 당 한 장만 — 이미 골랐으면 교체 금지
@@ -60265,7 +60377,7 @@ function hideBootLoading(){
   if(!el) return;
   el.style.opacity='0';
   el.style.pointerEvents='none';
-  _bootLoadKilled=true;
+  _bootLoadActive=false;_bootLoadKilled=true;
 }
 
 // ═══ 다음 난관 난이도 선택 (5단계) ═══
@@ -60515,7 +60627,7 @@ if(_EDITOR_MODE){
     initStage(_editorStageReq);
     ens.length=0;for(let _i=0;_i<projs.length;_i++)_recycleProj(projs[_i]);projs.length=0;
     for(let _i=0;_i<pProjs.length;_i++)_recyclePProj(pProjs[_i]);pProjs.length=0;worldItems=[];
-    G.on=true;_fitEditorView();
+    G.on=true;_fitEditorView();hideBootLoading();
     P.x=-9999;P.y=-9999; // 플레이어 화면 밖
     try{parent.postMessage({type:'editorReady',mw:G.mw,mh:G.mh,rooms:JSON.parse(JSON.stringify(G.rooms)),stage:G.stage,
       totalStages:TOTAL_STAGES,
@@ -60676,6 +60788,7 @@ if((_isLocal&&!_charId)||new URLSearchParams(window.location.search).get('test')
       }
     }
     if(!(_forceCutscene||(G.stage===0&&!G._cutsceneDone)))BGM.play(BGM.stageKey(G.stage)); // 컷신 예정 시 보류 — 전쟁 서사는 보이스 전용, 스테이지 BGM은 컷신 종료 후 시작 (2026-07-27)
+  await _prepareStartMapView();
   setBootLoading(100,'완료');
   hideBootLoading();
     _dbReady=true;
@@ -60790,7 +60903,8 @@ if((_isLocal&&!_charId)||new URLSearchParams(window.location.search).get('test')
       await _bootMapBuildPromise;
     }
     if(!(_forceCutscene||(G.stage===0&&!G._cutsceneDone)))BGM.play(BGM.stageKey(G.stage)); // 컷신 예정 시 보류 — 전쟁 서사는 보이스 전용, 스테이지 BGM은 컷신 종료 후 시작 (2026-07-27)
-    setBootLoading(100,'완료');
+    await _prepareStartMapView();
+  setBootLoading(100,'완료');
     hideBootLoading();
     _dbReady=true;
     startAutoSave();
@@ -60802,7 +60916,7 @@ if((_isLocal&&!_charId)||new URLSearchParams(window.location.search).get('test')
   startGameFromDB();
 }
 } // end _EDITOR_MODE else
-})().catch(function(e){console.error('[BOOT] Fatal:',e);if(!X)X=C.getContext('2d');_buildAtlas();_buildAtlasE();_buildAtlasB();_startLoop()});
+})().catch(function(e){console.error('[BOOT] Fatal:',e);hideBootLoading();if(!X)X=C.getContext('2d');_buildAtlas();_buildAtlasE();_buildAtlasB();_startLoop()});
 if(location.search.includes('slotdebug')){
   setTimeout(()=>{
     document.querySelectorAll('.qs').forEach((el,i)=>{
@@ -61545,7 +61659,7 @@ _projectileLabWait();
 <canvas id="vfx3dCvs" style="position:fixed;inset:0;pointer-events:none;z-index:4999"></canvas>
 <canvas id="chest3dCvs" style="position:fixed;pointer-events:none;z-index:4998;display:none"></canvas>
 <script type="importmap">
-{"imports":{"three":"https://unpkg.com/three@0.160.0/build/three.module.js","three/addons/":"https://unpkg.com/three@0.160.0/examples/jsm/"}}
+{"imports":{"three":"./assets/vendor/three-r160/build/three.module.js","three/addons/":"./assets/vendor/three-r160/examples/jsm/"}}
 </script>
 <script type="module">
 import * as THREE from 'three';
@@ -61666,11 +61780,62 @@ const _b3loader=new GLTFLoader();
 
 function _b3disposeGltf(gltf){
   if(!gltf||!gltf.scene)return;
+  const geometries=new Set(),materials=new Set(),textures=new Set(),skeletons=new Set(),bitmaps=new Set();
   gltf.scene.traverse(o=>{if(!o.isMesh)return;
-    if(o.geometry)o.geometry.dispose();
+    if(o.geometry)geometries.add(o.geometry);
+    if(o.skeleton)skeletons.add(o.skeleton);
     const mats=Array.isArray(o.material)?o.material:[o.material];
-    for(const m of mats){if(!m)continue;for(const k in m){const v=m[k];if(v&&v.isTexture)v.dispose()}m.dispose()}
+    for(const m of mats){if(!m||materials.has(m))continue;materials.add(m);
+      for(const k in m){const v=m[k];if(v&&v.isTexture)textures.add(v)}
+    }
   });
+  for(const geometry of geometries)geometry.dispose();
+  for(const material of materials)material.dispose();
+  for(const texture of textures){
+    const images=Array.isArray(texture.image)?texture.image:[texture.image];
+    for(const image of images)if(typeof ImageBitmap!=='undefined'&&image instanceof ImageBitmap)bitmaps.add(image);
+    texture.dispose();
+  }
+  for(const skeleton of skeletons)skeleton.dispose();
+  // GLTFLoader owns these decoded images; Texture.dispose only releases GPU storage.
+  for(const bitmap of bitmaps)bitmap.close();
+}
+
+function _b3releaseModel(){
+  if(_b3mixer){_b3mixer.stopAllAction();if(_b3model)_b3mixer.uncacheRoot(_b3model)}
+  if(_b3model){_b3applyFlash(false);_b3disposeGltf({scene:_b3model})}
+  if(_b3anchor)_b3s.remove(_b3anchor);
+  _b3anchor=null;_b3mixer=null;
+  _b3model=null;_b3pivot=null;_b3meshes=[];_b3origMats=[];_b3actions={};_b3state='idle';
+  window._b3dbg=null;
+}
+
+function _b3loadActions(anims,mixer,loadGeneration){
+  const groups=new Map();
+  for(const st of ['walk','aggro','run','hit','chargeWind','charge','multiDashWind','multiDash','spinWind','spin','slamWind','slam']){
+    const src=anims[st].src;if(!groups.has(src))groups.set(src,[]);groups.get(src).push(st);
+  }
+  const jobs=[...groups.entries()];let next=0,inFlight=0;
+  const current=()=>loadGeneration===_b3loadGeneration&&_b3mixer===mixer;
+  function pump(){
+    if(!current())return;
+    while(inFlight<2&&next<jobs.length){
+      const [src,states]=jobs[next++];inFlight++;let settled=false;
+      const finish=()=>{if(settled)return;settled=true;inFlight--;pump();};
+      const failed=err=>{if(current())console.warn('[BOSS3D] Anim failed:',states.join(','),err);finish();};
+      try{_b3loader.load(src,g2=>{
+        try{
+          if(!current())return;
+          if(g2.animations.length>0)for(const st of states){
+            const clip=g2.animations[0].clone();clip.name=st;
+            _b3actions[st]=mixer.clipAction(clip);
+            console.log('[BOSS3D] Anim loaded:',st);
+          }
+        }finally{try{_b3disposeGltf(g2);}finally{finish();}}
+      },null,failed);}catch(err){failed(err);}
+    }
+  }
+  pump();
 }
 
 // ── 스테이지별 모델 로드 함수 ──
@@ -61682,9 +61847,7 @@ function _b3loadModel(hellIdx){
   _b3curHell=hellIdx;
   _b3ready=false;
   // 기존 모델 정리
-  if(_b3anchor){_b3s.remove(_b3anchor);_b3anchor=null}
-  if(_b3mixer){_b3mixer.stopAllAction();_b3mixer=null}
-  _b3model=null;_b3pivot=null;_b3meshes=[];_b3origMats=[];_b3actions={};_b3state='idle';
+  _b3releaseModel();
   // idle 먼저 로드 → 모델 확정 → 나머지 순차
   _b3loader.load(anims.idle.src,(gltf)=>{
     if(loadGeneration!==_b3loadGeneration){_b3disposeGltf(gltf);console.log('[BOSS3D] Discarded stale model load (hell:'+hellIdx+')');return}
@@ -61712,16 +61875,7 @@ function _b3loadModel(hellIdx){
     _b3ready=true;
     window._b3dbg={size:_b3size,pivot:_b3pivot,sc:()=>_b3sc,floorY:()=>window._b3lastFloorY};
     console.log('[BOSS3D] Model loaded (hell:'+hellIdx+')',_b3size.x.toFixed(1)+'x'+_b3size.y.toFixed(1)+'x'+_b3size.z.toFixed(1));
-    for(const st of ['walk','aggro','run','hit','chargeWind','charge','multiDashWind','multiDash','spinWind','spin','slamWind','slam']){
-      _b3loader.load(anims[st].src,(g2)=>{
-        if(loadGeneration!==_b3loadGeneration||_b3mixer!==mixer){_b3disposeGltf(g2);return}
-        if(g2.animations.length>0){
-          const clip=g2.animations[0];clip.name=st;
-          _b3actions[st]=mixer.clipAction(clip);
-          console.log('[BOSS3D] Anim loaded:',st);
-        }
-      },null,(err)=>{if(loadGeneration===_b3loadGeneration)console.warn('[BOSS3D] Anim failed:',st,err)});
-    }
+    _b3loadActions(anims,mixer,loadGeneration);
   },null,(err)=>{if(loadGeneration===_b3loadGeneration)console.warn('[BOSS3D] GLB failed:',err)});
 }
 // 초기 로드 (기본 폴백 모델)
@@ -61971,6 +62125,8 @@ console.log('[CHEST3D] v8 Meshy GLB');
 </script>
 <!-- ═══ VFX 3D Particle Overlay (Unity 재현) ═══ -->
 <script>
+if(window._threeReady)window._threeReady.then(function(three){
+if(!three)return;
 (function(){
 if(typeof THREE==='undefined'){console.error('[VFX3D] THREE not found');return}
 const _v3cvs=document.getElementById('vfx3dCvs');
@@ -61980,6 +62136,7 @@ console.log('[VFX3D] canvas found, creating renderer...');
 var _v3r;
 try{_v3r=new THREE.WebGLRenderer({canvas:_v3cvs,alpha:true,antialias:false})}
 catch(e){console.error('[VFX3D] WebGL failed:',e.message);return}
+_v3r.outputColorSpace=THREE.LinearSRGBColorSpace;
 _v3r.setPixelRatio(1);
 _v3r.setClearColor(0x000000,0);
 const _v3s=new THREE.Scene();
@@ -62020,6 +62177,13 @@ Object.values(_V3_SHEETS).forEach(function(s){_v3tex(s.src)});
 
 function _v3sizeEase(t){return 0.47+(1-0.47)*t}
 
+function _v3legacyColor(value){
+  const color=new THREE.Color();
+  if(typeof value==='string')return color.setStyle(value,THREE.LinearSRGBColorSpace);
+  if(typeof value==='number')return color.setHex(value,THREE.LinearSRGBColorSpace);
+  return color.set(value);
+}
+
 function _v3addPart(opt){
   if(_v3parts.length>=_V3_MAX)return;
   var t=_v3tex(opt.tex);
@@ -62027,7 +62191,7 @@ function _v3addPart(opt){
   var ct=t.clone();ct.needsUpdate=true;
   if(opt.sheet){ct.repeat.set(1/opt.sheet.c,1/opt.sheet.r);ct.offset.set(0,1-1/opt.sheet.r)}
   var mat=new THREE.SpriteMaterial({map:ct,blending:THREE.AdditiveBlending,transparent:true,depthWrite:false,
-    color:new THREE.Color(opt.col||'#ffffff')});
+    color:_v3legacyColor(opt.col||'#ffffff')});
   var sp=new THREE.Sprite(mat);
   var sc=opt.sc||0.5;
   sp.scale.set(sc,sc,1);sp.position.set(opt.x||0,opt.y||0,opt.z||0);
@@ -62189,6 +62353,7 @@ function _v3tick(){
 _v3tick();
 console.log('[VFX3D] Particle overlay initialized — '+_v3presetKeys.length+' presets, F8 to test');
 })();
+});
 </script>
 </body>
 </html>

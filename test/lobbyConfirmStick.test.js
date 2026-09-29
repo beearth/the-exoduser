@@ -50,3 +50,28 @@ for(const [index,mode] of ['online','local'].entries())test(mode+' delete cancel
  vm.runInContext(prefix+'_showDelConfirm("sample",()=>{});',h.ctx);h.ctx._hideDelConfirm();
  assert.equal(h.document.activeElement,trigger);
 });
+
+for(const key of ['Enter',' '])test('power control ignores a held activation after cancel: '+JSON.stringify(key),()=>{
+ const h=setup(0);h.ctx._hideDelConfirm();
+ const power={isConnected:true,focus(){h.document.activeElement=this;}};h.els.lobbyQuitBtn=power;h.ctx._lobbyLang=()=> 'ko';
+ vm.runInContext(html.slice(html.indexOf('function _showLobbyQuit(){'),html.indexOf('// ── 커스텀 삭제 확인 모달')),h.ctx);
+ h.ctx._showLobbyQuit();h.els.delConfirmNo.click();
+ assert.equal(h.els.delConfirmModal.style.display,'none');assert.equal(h.document.activeElement,power);
+ for(let i=0;i<3;i++){
+  let prevented=false,stopped=false;
+  h.ctx._lobbyQuitKeydown({key,repeat:true,preventDefault(){prevented=true;},stopPropagation(){stopped=true;}});
+  if(!prevented)h.ctx._showLobbyQuit();
+  assert.equal(prevented,true);assert.equal(stopped,true);assert.equal(h.els.delConfirmModal.style.display,'none');
+ }
+ let prevented=false;h.ctx._lobbyQuitKeydown({key,repeat:false,preventDefault(){prevented=true;},stopPropagation(){}});
+ assert.equal(prevented,false);h.ctx._showLobbyQuit();assert.equal(h.els.delConfirmModal.style.display,'flex');
+ assert.equal(h.document.activeElement,h.els.delConfirmNo);assert.equal(h.calls(),0);
+});
+test('power control leaves other navigation keys native',()=>{
+ const h=setup(0);h.els.lobbyQuitBtn={focus(){}};h.ctx._lobbyLang=()=> 'ko';
+ vm.runInContext(html.slice(html.indexOf('function _showLobbyQuit(){'),html.indexOf('// ── 커스텀 삭제 확인 모달')),h.ctx);
+ for(const key of ['Tab','Escape','ArrowLeft','ArrowRight']){
+  let prevented=false,stopped=false;h.ctx._lobbyQuitKeydown({key,repeat:true,preventDefault(){prevented=true;},stopPropagation(){stopped=true;}});
+  assert.equal(prevented,false);assert.equal(stopped,false);
+ }
+});

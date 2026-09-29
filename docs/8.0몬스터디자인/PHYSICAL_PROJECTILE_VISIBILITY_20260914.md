@@ -73,6 +73,17 @@
 | 대조 규칙 | 링은 실제 생성되는 투사체의 `el` 및 `_projectileParryClass`와 같은 공격 단계를 설명해야 한다. 원소 에너지 충전·정예 장식 오오라는 물리탄 경고로 재사용하지 않는다. |
 
 
+## 2026-09-29 발사 경고 문구 프레임 병목·설정 복원
+
+| 항목 | 현행 구현·검수 |
+|---|---|
+| native 글꼴 | 두HTML _buildProxyX의 _syncTextFont: 같은 요청/정규화 실제값이면 setter 생략. Canvas초기화·외부 변경·다른 글꼴은 재적용 |
+| 경고 폭 | 본편 _drawProjectileChargeLabel의 _chargeLabelMetrics 한항목(ctx/label/font/width) 재사용. 렌더러/번역문구/글꼴 변경 및 document.fonts loadingdone/loadingerror에서 재측정. 기존13px·박스폭tw+14/높이20·링60틱·탄종/패링 규칙 유지 |
+| 해상도 복원 | 두HTML 최초 설정과 _loadPreset OPT 복원 뒤 rz(). 저장60%/프리셋70% 실제C/CT/burst 반영, 동일치수no-op |
+| 근거·경계 | 전투 경고의 font/measureText 약29~42ms 스택 확인. 저장본 새로고침100AI/1920×1080/10초 draw p99 4.1ms(직전31.9ms),max44.7ms 잔여2회. 전후CSS창 크기가 달라 평균FPS 개선율 확정하지 않음. 예열20초 연결중단/최종visual·Steam·보스 미검증 |
+| 검사·상태 | 관련57PASS,두HTML실행script각6구문PASS. 기존경고fixture의실제_projectileParryClass 누락복구. 커밋/패키지/Steam업로드미완료,타작업스테이징보존. [상세 계약·실측·검수 경계](../12퍼포먼스·최적화/FRAME_DROP_HUD_TEXT_20260928.md) |
+
+
 ## 첫 표시 GPU 준비 보완 (2026-09-29)
 
 | id | 현행 계약 |

@@ -8,7 +8,8 @@ function setup(){
  assert.ok(a>=0&&b>a,'shared shot warning gate exists');
  const fired=[];const ctx=vm.createContext({G:{},ens:[],_gameFrame:1,EL:{P:0},spawnProj:p=>fired.push(p),_drawShootCharge(){}});
  const prep=html.slice(html.indexOf('function _prepareDarkSphere('),html.indexOf('function _spawnBossProjectile('));
- vm.runInContext(prep+html.slice(a,b),ctx);return {ctx,fired};
+ const classify=html.slice(html.indexOf('function _projectileParryClass('),html.indexOf('function _isEnemyMagicBullet('));
+ vm.runInContext(classify+prep+html.slice(a,b),ctx);return {ctx,fired};
 }
 test('unannounced volley waits 60 frames and preserves every bullet',()=>{
  const {ctx,fired}=setup(),e={alive:true,x:10,y:20,r:12};

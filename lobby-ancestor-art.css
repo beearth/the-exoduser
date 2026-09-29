@@ -18,4 +18,6 @@
 .lobby.has-selected-character>.lobby-left,.lobby.has-selected-character>.lobby-right{z-index:3;}
 .lobby.has-selected-character .char-disp-empty{left:50%!important;}
 .lobby .char-disp-detail:empty{display:none;}
+/* Wider than 16:9 (21:9/32:9): cover would upscale and crop the head; keep full art height instead. */
+@media(min-aspect-ratio:17/9){.lobby.has-selected-character>.lobby-char-preview{object-fit:contain;object-position:left center;mask-image:linear-gradient(90deg,#000 0,#000 calc(100vh*16/9 - 12vh),transparent calc(100vh*16/9));}}
 @media(prefers-reduced-motion:reduce){.lobby-ambient-video{display:none;}.lobby.has-selected-character>.lobby-char-preview{transition:none;}}

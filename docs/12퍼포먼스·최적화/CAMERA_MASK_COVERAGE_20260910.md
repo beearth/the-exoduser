@@ -42,3 +42,8 @@
 | GIT | 수정 `254ef6f7d754acf34c1355705ca6b83b7deda21e` 커밋, main/작업 브랜치 push. `dpl_4TmCKo2h7UzEyE9hbMrH5UEXTr2B` READY, the-exoduser.vercel.app alias. 배포 game SHA256 `da4dc9418562c79e20657925f186180967e0f423edc55570a558952f043ead2e` |
 | VISUAL VERDICT | RETOUCH — Mac 실기 재확인 필요 |
 | NEXT PASS | 동일 Mac에서 빠른 이동·전투 시 필터 경계와 FPS 비교 |
+
+
+## 2026-09-29 세로 리사이즈 하단 필터 경계
+
+환경광 `G._envLightCvs`·동적 비네트 `G._dvgCvs`·저체력 틴트 `G._redTintCvs`가 화면 너비만 확인하던 조건에 각 캐시의 `height!==C.height`를 추가했다. 본편/쉬운 테스트 공통, 높이 변경 직후 재작성·정지 시 캐시 재사용·색과 alpha 유지·신규 캔버스0. 두 파일 12건 RED→신규18+기존17=35 PASS, 본편2805×1206→1256→1006→1256에서 env/dvg 높이1206 고정→현재 main 높이 일치. 이전 Mac 이동/성능 문제의 해결 선언이 아니다. [정확한 계약·MAP PRODUCTION REPORT](POSTFX_HEIGHT_COVERAGE_20260929.md).

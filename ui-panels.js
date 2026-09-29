@@ -45,6 +45,29 @@
       button.tabIndex = active ? 0 : -1;
     }
   }
+  function describeSettingsControls(root) {
+    root.querySelectorAll('.set-range-row input[type="range"],.set-range-row select').forEach(control => {
+      const row = control.closest('.set-range-row');
+      const name = row.querySelector('.set-name');
+      if (!control.id || !name || name.children.length) return;
+      if (!name.id) name.id = 'settings-label-' + control.id;
+      if (!control.hasAttribute('aria-label') && !control.hasAttribute('aria-labelledby')) {
+        control.setAttribute('aria-labelledby', name.id);
+      }
+      const value = row.querySelector('.set-range-val,#cursorSizeVal');
+      if (value && !value.children.length && !control.hasAttribute('aria-describedby')) {
+        if (!value.id) value.id = 'settings-value-' + control.id;
+        control.setAttribute('aria-describedby', value.id);
+      }
+    });
+    const message = root.querySelector('#saveMsg');
+    if (message) {
+      message.setAttribute('role', 'status');
+      message.setAttribute('aria-live', 'polite');
+      message.setAttribute('aria-atomic', 'true');
+    }
+    root.querySelector('#settingsPresetLabel')?.classList.add('set-label');
+  }
   function settings() {
     const root = document.getElementById('settings');
     const box = root?.querySelector('.pbox');
@@ -66,13 +89,16 @@
       pages.forEach((page, name) => { page.hidden = name !== key; });
       content.scrollTop = 0;
     }, 'settings');
-    const moveRow = (id, key) => {
+    const displayTuning = el('div', 'set-section');
+    displayTuning.append(label(el('div', 'set-label'), '화면 효과', 'Screen effects'));
+    pages.get('display').append(displayTuning);
+    const moveRow = (id, key, target = pages.get(key)) => {
       const node = document.getElementById(id);
       const row = node?.closest('.set-range-row');
-      if (row) pages.get(key).append(row);
+      if (row) target.append(row);
     };
     moveRow('optLang','system');
-    ['optShake','optParts','optFps','optResScale','optIrisSz','optBrightness','optIrisGlow'].forEach(id => moveRow(id,'display'));
+    ['optShake','optParts','optFps','optResScale','optIrisSz','optBrightness','optIrisGlow'].forEach(id => moveRow(id,'display',displayTuning));
     ['optSfx','optBgm','optBgmTrack'].forEach(id => moveRow(id,'audio'));
     // Classify whole existing sections by a stable control ID, not translated text.
     const routes = [['keyBindList','controls'],['optScreenSection','display'],['charSelectGrid','system'],['cursorGrid','controls'],['gfxPresetRow','display'],['diagGpu','display'],['saveP1','system'],['toLobbyBtn2','system'],['resetBtn','system'],['quitBtn','system']];
@@ -90,6 +116,7 @@
       const saved = document.getElementById('settingsAutoSaveLabel');
       if (saved) footer.prepend(saved);
     }
+    describeSettingsControls(root);
     root.classList.add('ui-composed');
     nav.children[0].click();
   }

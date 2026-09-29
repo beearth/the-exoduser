@@ -1193,5 +1193,140 @@
     "key": "플레이어 상태",
     "en": "Player status",
     "file": "game.html"
+  },
+  {
+    "key": "헬거너",
+    "en": "Hellgunner",
+    "file": "index.html"
+  },
+  {
+    "key": "변성술사",
+    "en": "Transmuter",
+    "file": "index.html"
+  },
+  {
+    "key": "창법사",
+    "en": "Spearmage",
+    "file": "index.html"
+  },
+  {
+    "key": "창포수",
+    "en": "Lance Gunner",
+    "file": "index.html"
+  },
+  {
+    "key": "사신",
+    "en": "Reaper",
+    "file": "index.html"
+  },
+  {
+    "key": "공허 창술사",
+    "en": "Void Spearmaster",
+    "file": "index.html"
+  },
+  {
+    "key": "자신의 피를 탄환 삼는 혈월의 창포수",
+    "en": "A blood-moon lance gunner who turns his own blood into bullets",
+    "file": "index.html"
+  },
+  {
+    "key": "베어낸 영혼을 먹고 자라는 청염의 낫",
+    "en": "A blue-flame scythe that grows by devouring the souls it reaps",
+    "file": "index.html"
+  },
+  {
+    "key": "룬으로 공간을 봉인하는 공허의 전령",
+    "en": "A herald of the void who seals space with runes",
+    "file": "index.html"
+  },
+  {
+    "key": "혈탄 장전",
+    "en": "Blood Round Loading",
+    "file": "index.html"
+  },
+  {
+    "key": "체력을 소모해 충전한 관통탄을 발사합니다.",
+    "en": "Spend HP to fire charged piercing rounds.",
+    "file": "index.html"
+  },
+  {
+    "key": "관통 창격",
+    "en": "Piercing Lance Strike",
+    "file": "index.html"
+  },
+  {
+    "key": "창포로 일직선상의 적을 모두 꿰뚫습니다.",
+    "en": "Skewer every enemy in a straight line with your lance-cannon.",
+    "file": "index.html"
+  },
+  {
+    "key": "역추진 도약",
+    "en": "Recoil Leap",
+    "file": "index.html"
+  },
+  {
+    "key": "사격 반동을 이용해 뒤로 도약합니다.",
+    "en": "Use the recoil of your shots to leap backward.",
+    "file": "index.html"
+  },
+  {
+    "key": "반월참",
+    "en": "Crescent Slash",
+    "file": "index.html"
+  },
+  {
+    "key": "낫을 크게 휘둘러 전방 반원을 베어냅니다.",
+    "en": "Swing your scythe wide to slash the half-circle ahead.",
+    "file": "index.html"
+  },
+  {
+    "key": "영혼 수확",
+    "en": "Soul Harvest",
+    "file": "index.html"
+  },
+  {
+    "key": "처치한 적의 영혼을 거둬 낫을 강화합니다.",
+    "en": "Reap the souls of slain enemies to empower your scythe.",
+    "file": "index.html"
+  },
+  {
+    "key": "망령 걸음",
+    "en": "Wraith Walk",
+    "file": "index.html"
+  },
+  {
+    "key": "청염으로 흩어졌다 원하는 곳에 다시 나타납니다.",
+    "en": "Scatter into blue flame and reappear where you choose.",
+    "file": "index.html"
+  },
+  {
+    "key": "공허 투창",
+    "en": "Void Javelin",
+    "file": "index.html"
+  },
+  {
+    "key": "공허창을 던져 관통시킨 뒤 다시 회수합니다.",
+    "en": "Hurl your void spear to pierce through, then recall it.",
+    "file": "index.html"
+  },
+  {
+    "key": "룬 각인",
+    "en": "Rune Inscription",
+    "file": "index.html"
+  },
+  {
+    "key": "지면에 봉인 룬을 새겨 적을 묶습니다.",
+    "en": "Carve a sealing rune into the ground to bind enemies.",
+    "file": "index.html"
+  },
+  {
+    "key": "균열 이동",
+    "en": "Rift Step",
+    "file": "index.html"
+  },
+  {
+    "key": "공간을 찢고 룬이 있는 곳으로 이동합니다.",
+    "en": "Tear through space and shift to where your rune lies.",
+    "file": "index.html"
   }
 ]

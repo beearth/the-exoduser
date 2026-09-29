@@ -47,14 +47,17 @@ test('lobby formats the screenshot saves as chapter 3 hell winter floors', async
   assert.equal(formatProgress(13), '3장 지옥의 겨울 4층');
 });
 
-test('online and local lobby slots use the shared canonical formatter', async () => {
+test('online and local lobby slots and language refresh use the shared canonical formatter', async () => {
   const html = await readFile(indexUrl, 'utf8');
   assert.match(html, /<script src="lobby-stage-info\.js"><\/script>/);
-  assert.equal(
-    (html.match(/_formatLobbyStageProgress\(stage,_TL\)/g) || []).length,
-    2,
-    'online and local slot renderers must use the same formatter'
-  );
+  for (const name of ['_renderOnlineSlots', '_renderSlotList', '_lobbyCharacterCardLabel']) {
+    const start = html.indexOf('function ' + name + '(');
+    assert.notEqual(start, -1, name + ' must exist');
+    const body = html.slice(start);
+    const next = body.slice(1).search(/\n(?:async )?function /);
+    const source = next === -1 ? body : body.slice(0, next + 1);
+    assert.match(source, /_formatLobbyStageProgress\(stage,_TL\)/, name + ' must use the canonical formatter');
+  }
   assert.doesNotMatch(html, /~~\(stage\/10\)|stage%10\+1/);
   assert.doesNotMatch(html, /\['얼음지옥','독충지옥','화염지옥'/);
 });

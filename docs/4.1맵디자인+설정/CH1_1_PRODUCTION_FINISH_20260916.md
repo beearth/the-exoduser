@@ -16,6 +16,696 @@
 
 [85차 수치·출처·MAP PRODUCTION REPORT SSOT](CH1_OUTER_CONNECTION_PASS85_20260929.md). 아래84차 이하의 '현행'은 당시 제작 이력이다.84차의 미완료 문구는 저장된 최종 검수로 보정했다.
 
+<a id="ch1-1-outer84"></a>
+
+## 2026-09-29 — CH1-1 고목 접합84차 제작 이력
+
+현행 배경은 cache/bakeVersion **20260929-outer-84**다. 서측 부채꼴 고사리 구역을 낮은 부패 수피·괴사막으로 연결했다. master8192²/world8000²/tile40/64청크(core1024/bleed1/1026²), 변경chunk_1_5 1개·동일63개. 총109465px 변화(보행재질12058/비보행97407), geometry·충돌 변경0. 고목 보호2904814px 변경0; 이전 패치 보호 해제는 crop-local[495,340,835,655] 내부뿐(기존 패치 변화70882/창밖0). 타원밖·zero-mask·crop밖0, 선택crop의 near-black≤12/18/22는17595→17392 /64360→63422 /124323→122945. 재질 채널하한24, ellipse[635,490,260,180]/feather.25/opacity.96/줄기보호MaxFilter25·blur18. skin65→outer66..84 총20레이어, 마지막patch x1024/y5120/2048². 기존61차 생체 모듈·늪·동맥 유지/새모션0. 후보9카메라 오류0/G.map동일. 84차 본편18카메라·24적30초 전투·전체 베이크 재현 검수 완료는 저장된 live/runtime·promotion·로그로 확인했다. 현행85차와 상세 검수는 문서 맨 위 링크를 따른다.
+
+[84차 출처·검수 SSOT](CH1_1_PRODUCTION_FINISH_20260916.md#ch1-1-outer84). 아래83차 이하의 현행 표기는 당시 제작 이력이다. 전체 VISUAL VERDICT: RETOUCH.
+
+## 2026-09-29 — CH1-1 검정 빈 공간 감소 83차
+
+사용자 최신 지시: **검정색 빈 공간을 최대한 없앤다.** 기존 외곽 나무 사이의 비보행 검정 공동을 부패 목질·괴사 조직 재질로 채웠다. 현재 본편 배경은 83차이며, 아래 82차 이하의 수치와 검수는 제작 이력이다. [현행 출처·검수 SSOT](CH1_1_PRODUCTION_FINISH_20260916.md#ch1-1-outer83).
+
+| id | 현행 계약 |
+|---|---|
+| OUTER83_RUNTIME | cache/bakeVersion 20260929-outer-83; master8192²/world8000²/tile40; 64청크/core1024/bleed1/1026²; 변경54개/동일10개. geometry·충돌·진행 변경0 |
+| OUTER83_MASK | 원본 maxRGB로 t=clamp((48−maxRGB)/28,0,1), alpha=t²(3−2t), uint8 양자화. authored nav1=보행은 alpha0; maxRGB≥48/zero-mask 픽셀 유지 |
+| OUTER83_MATERIAL | GPT2048² 원본을 256px 중첩·4방향 smoothstep 가중 합성,1792px 주기로 연결. 반전0. paint=clip(tileRGB×.65+[12,8,12],24,255); RGB=uint8(base×(1−alpha)+paint×alpha), 기존 alpha 유지 |
+| OUTER83_PIXELS | 변경23643680px/보행0. 전체 maxRGB≤12:6062519→405110(93.318% 감소); 비보행5657409→0. ≤18:9586314→1266275/비보행8320039→0; ≤22:12597285→2325674/비보행10271611→0. 남은 어두운 픽셀은 보호된 보행 바닥·그림자이며 모든 검정 픽셀 제거를 뜻하지 않음 |
+| OUTER83_LAYERS | skin65→outer66~83 총19레이어; outer83 x0/y0/8192² preblended RGB+binary alpha0/255. 이전18레이어 파일 유지; 이전 패치의 어두운 비보행 픽셀 일부는 최신 지시에 따라 이번 레이어가 덮음 |
+| OUTER83_QA | 최종 후보22/본편18카메라; G.map동일/pageerror·HTTP·crash0; 실제 S/W 이동 108.53worldpx, 24적·30초 공격/Q. 회귀9PASS/19레이어 전체픽셀 동일/64청크·224strip동일 |
+| OUTER83_LIVING | 기존61차 동맥·늪 버블/가스 유지. 신규 생체 모션0/추가 runtime draw·atlas0; 신규 재질은 정적 배경 |
+| OUTER83_STATE | VISUAL VERDICT RETOUCH. 검정 공동 감소는 확인; 다른 식생·반복·밀집VFX 중첩은 잔여. 실제 Radeon GPU2813×1262에서 context loss→restore 뒤 흰 화면1회; 자체 이전QA탭 종료·동일83차 새로고침 후4시점 정상. 원인·해결 미확정 |
+
+<a id="ch1-1-outer83"></a>
+
+## MAP PRODUCTION REPORT — 83차
+
+STAGE: CH1-1/stage0. 제작가이드v0.9 전체·맵디테일·SSOT를 적용. 최신 지시에 따라 LARGE OUTER MASS의 검정 공동 연결→GROUND→PLAYABLE/COMBAT→CAMERA QA→TECH QA.
+
+| 구분 | 항목 | 결과 |
+|---|---|---|
+| MASTER | silhouette / regions | 기존200² 타일/8구역과 배치 유지; geometry 변경0 |
+| MASTER | main route / side spaces | 6시 START→12시 EXIT·상단 통로·우회·넓은 전투공간 유지 |
+| OUTER MASS | LEFT / RIGHT / TOP / SOUTH | 네 외곽 전체에 저대비 부패 목질 연결. 큰 나무의 밝은 윤곽과 기존 배치 유지 |
+| OUTER MASS | major holes | 비보행 maxRGB≤22 픽셀10271611→0. 보행 그림자는 유지 |
+| LARGE | source assets / composites / overlap | Higgsfield GPT 재질1장, 선택 마스크 합성1레이어; 원본 프레임 재생성0 |
+| LARGE | repeated silhouette | 초기 미러 후보의 대칭 경계를 카메라에서 발견→반전 없는256px 중첩으로 보정. 기존 나무/식생 반복 잔여 |
+| MEDIUM | connections / remaining holes | 나무 뒤 공동을 연속 목질로 연결. 인식 가능한 구조의 maxRGB≥48 픽셀 유지 |
+| GROUND | shadow / contamination | 짙은 회자주 목질·괴사 조직, 저대비 접촉 그림자. 신규 발광/피해/경고0 |
+| GROUND | structure integration | 변경23643680 비보행 픽셀. 기존 보행 바닥 변경0; 새로운 scatter/충돌 오브젝트0 |
+| PLAYABLE | main arenas / travel space | 보행면 전체 픽셀 동일. tile[46,144] S650ms/W650ms 실제 이동108.53worldpx·시작 근처 복귀 |
+| PLAYABLE | breathing space / threat space | 중앙 공터·시작 여백·우회·기존 위협 공간 유지 |
+| PLAYABLE | combat readability | 기존AI24적/etype0·1·4·6·7·8, 2ring×12/거리250·390/각도+.17. 30초 공격/Q. 숫자·VFX 밀집 중첩은 잔여 |
+| LANDMARK | primary / secondary / tertiary | 기존 생체나무/늪·야영지·제단/출구·뼈아치 유지; 추가0 |
+| CAMERA QA | START / EARLY / ARENA | [100,185]·[100,180]/[100,157]/[100,120],1280×720 |
+| CAMERA QA | SIDE L / SIDE R / LANDMARK | [49,151]/[151,136]/[102,90] |
+| CAMERA QA | LATE / EXIT | [100,48]/[100,15] |
+| CAMERA QA | 추가 외곽 | 후보 LEFT_OUTER[20,100]/RIGHT_OUTER[180,100]/TOP_OUTER[100,5]/BOTTOM_OUTER[100,195] 및 서측 접합6·외곽3. 후보22/본편18 |
+| TECH QA | route / collision | G.map SHA8a5dfe9f1a6c5a283be293a85cedb49509d1db5d317e063fde0b2cd5ff6c65a1 동일; 지형 회귀5PASS. 무보정 종주·보스 클리어·1-2 진입 미검증 |
+| TECH QA | pageerror / 404 | headless 최종 후보/본편 각0; 본편 crash0/context loss0. 실제 Chrome2813×1262에서는 context loss→restore 뒤 흰 화면1회. 새로고침 후4시점 정상이나 원인·해결 미확정 |
+| TECH QA | seam / loading | 64청크가 master clamped픽셀과 동일;224strip 동일. visibleIds⊂drawnIds 대기, 본편 청크 교체0/cache83 |
+| TECH QA | performance | 정적54청크 교체, 추가 runtime draw·atlas0. PNG54개108887616→113532157바이트. headless SwiftShader; 실제Chrome AMD Radeon RX9070XT/ANGLE D3D11. 저사양/NW.js/FPS·장시간 안정성 승인 없음 |
+| TECH QA | regression / rebake | 9PASS/0FAIL; pre65→19레이어 helper 전체8192² 픽셀 동일. Sharp concurrency1/cache false. 전체 builder 재실행은 하지 않음 |
+| FILES | stage-owned | master/54청크/preview/메타2/outer83 patch·mask·출처ZIP/game맵cache1줄/9mapdocs·생체참조·CHANGELOG. pre83 원본·54청크·문서 백업 |
+| FILES | concurrent touched | 공유 game/CHANGELOG는 맵 관련 부분만 수정; 기존 다른 staged·UI·자원·성능 작업 보존 |
+| FILES | unrelated touched | 이번 작업0; rollback/실제 소스 숨김/예약 자동정리 등록0 |
+| GIT | staged / commit | 이번 작업 Git 쓰기0/미커밋. exec provider가 WindowsApps pwsh 시작 전 OS317로 실패. 변경170개; 다른 작업을 숨기거나 강제 커밋하지 않음. 검증 ZIP 체크포인트 보존 |
+| GIT | push / deploy | 수행0 |
+
+**VISUAL VERDICT: RETOUCH** — 검정 빈틈을 실제 재질로 채웠고 전투 여백과 보행 바닥을 보존했다. 전체 환경의 다른 식생·기존 반복·밀집 효과 중첩까지 완성됐다는 판정은 아니다. 실제GPU 최초 흰 화면·복구 후 잔류는 별도 기술 검수 미해결 항목이다.
+
+NEXT PASS: 다른 식생의 부패 재질 일관성과 고목 접합을 보정한다. 검정 빈 공간을 다시 만들지 않고, 넓은 전투공간·기존 동맥/늪·충돌을 유지한다. 과거 renderer/흰 화면 문제는 원인 진단을 계속한다.
+
+검수 조건: 독립 Playwright 컨텍스트/새 QA slot/API POST·PUT·PATCH·DELETE 차단/HP50ms 보충·무적63f. 시각·충돌 검수이며 무보정 밸런스나 클리어 검증을 뜻하지 않는다. 종료된 로딩 이미지 src는 해제하지 않았다.
+
+| 출처·파일 | 값 |
+|---|---|
+| 모델/job | Higgsfield GPT gpt_image_2_5/841b4589-3f9a-4a82-a83c-90c5059c8a09; text-only/1:1/2k/high/opaque/count1 |
+| 생성 원본 SHA256 | 010fa66a92b36ae75361a7663c68a96d2f6e6b1452188aa6a925e522bb460e3b |
+| 입력 master82 SHA256 | ddc87472eed94a705c1a9e4deb02b8f8e50979425a67bbe796562a4bb1197aaa |
+| 최종 master83 SHA256 | 86112ba27b190a5783be12f0ea0561c139416d947ae762c7cf95c0c28b2ad97c |
+| rawRGBA SHA256 | 29c5a89ccf77e8e70fe42d86bb04d9909f2d3d0cf654067536a07baaacb4c160 |
+| 소스 묶음 | outer83_sources/source-provenance.zip: generated-material.png/generation.json/prep.json/manifest.json 4엔트리 SHA검사. 입력 master82는 tmp/ch1-production-pre83에 원본 보존 |
+| 초기 후보 | captures/ch1_outer83_initial_mirror:22카메라/G.map동일/오류0지만 대칭 접합 때문에 미반영. 초기23,648,468px; 최종23,643,680px |
+| 네트워크 | 터미널 외부 전송 불가/승인 재시도도 provider 시작 전 실패. 생성 파일은 허용된 CUA 일반 브라우저 다운로드→프로젝트 저장/파일 SHA검사 |
+
+생성 프롬프트:
+
+Create a seamless top-down dark fantasy game environment MATERIAL PLATE, 2048x2048, to fill empty black gaps UNDER an existing rotten-forest map. Fill the entire square with compact interlocked decayed bark laminae, crushed grey wood, low woven dead roots and dry muted mauve necrotic connective tissue. This is dense NON-WALKABLE outer forest mass, a quiet recessed material backing with believable volume and fine varied fibres. Desaturated corpse-grey / charcoal brown / muted mauve, diffuse dim light, restrained small contact shadows. No broad empty gaps, no solid-black patches, no open center, no sky or horizon, no perspective camera, no prominent tree trunk or repeated hero silhouette. Avoid healthy foliage, green plants, grass, flowers, bright glowing veins, wet blood pools, scatter props, animals, characters, labels, symbols or grid. Uniform natural detail scale across the square; irregular layered knots and broken contours, rich but low-contrast texture. All edges should tile naturally with no frame, border, vignette, or dark perimeter. We will apply it only through a selective mask in existing non-walkable black voids, preserving all playable floor and the authored trees.
+
+실제 GPU 검수: API 전체 차단·별도127.0.0.7 origin/QA slot/임시HP·무적 보정. 첫로드21:31:52.474Z context lost→21:31:53.570Z restored. GL.isContextLost=false/getError0/_useGL=true, 맵30청크 ready/오류0/visible=drawn10에도 넓은 화면이 흰색으로 남음. 부팅 이미지 정상1672×941/전환 overlay opacity0·pointerEventsnone. 당시 시스템commit75.383438GiB/limit78.835209GiB/물리여유34.182293GiB; 메모리나 map83 원인으로 단정하지 않음. 자체 이전82QA탭만 닫고 동일83차 새로고침 후 JOIN_TOP/START_ACTUAL/ARENA/EXIT2813×1262 정상. 최종52청크ready/오류0/visible=drawn12/lostfalse/getError0·새손실경고0. WebGL 코드 변경0/사용자 앱 종료0. 일반 CUA 스크린샷으로 검수했고 Page.captureScreenshot 별도파일 export는3초·30초 timeout으로 실패; 다운로드된 GPU 캡처 파일이 있다고 보고하지 않음. QA탭은종료했다.
+
+검수 증거: [전후·실제 카메라 갤러리](../../captures/ch1_outer83/index.html), [후보22](../../captures/ch1_outer83/visible-refined/runtime.json), [본편18·이동·전투](../../captures/ch1_outer83/live/runtime.json), [GPU첫로드](../../captures/ch1_outer83/chrome-first-run.json), [GPU재시작](../../captures/ch1_outer83/chrome-reload.json), [최종 상태](../../captures/ch1_outer83/final-state.json).
+
+82차 완료 이력: 서측 고목 밑40,513px/보행0,chunk_1_5 한 개,18레이어 rawSHA8453b013378efbeceb75d52e0fa075da4ccc06eb392187a83708d048b992a4af 재현/회귀9PASS. 연속18카메라+30초24적 전투의 pageerror·HTTP·crash·흰화면0/G.map동일. 사전81차 안정성123.2869초/36카메라+30초 전투도 오류0, 두 검수 모두 SwiftShader. 성공 재현은 과거 renderer 문제의 해결 선언이 아니다. [82차 로그](../../captures/ch1_outer82/live/runtime.json)·[사전 안정성](../../captures/ch1_stability82/runtime.json).
+
+## 2026-09-29 — CH1-1 서측 고목 밑 접합82차 기록(83차 이전)
+
+82차 당시 본편 배경이다. 아래81차 이하의 원화·수치·검수는 제작 이력이다. 상세 출처·보호 계약·검수는 [82차 SSOT](CH1_1_PRODUCTION_FINISH_20260916.md#ch1-1-outer82)를 따른다.
+
+| id | 현행 계약 |
+|---|---|
+| OUTER82_RUNTIME | cache/bakeVersion `20260929-outer-82`; master8192²,world8000²/tile40;64청크/core1024/bleed1/1026²·224strip일치;변경 `chunk_1_5.png`1개/나머지63개유지 |
+| OUTER82_LAYER | skin65→outer66~82 총18레이어;`outer82_sources/outer82_patch.png`,x1024/y5120/2048²,preblended RGB+binary alpha0/255 |
+| OUTER82_MASK | ellipse[740,438,350,320]/feather.30/opacity.92;73mask>12·74~81mask>0 보호2260730px.고목·공동6사각형981440px;전체합3195820px/MaxFilter25/blur18/core alpha0 |
+| OUTER82_PIXELS | 총40513/보행0/비보행40513px.보호·타원밖·zero-mask·crop밖 변경0;geometry/충돌/진행·늪/가스/동맥유지,새모션0 |
+| OUTER82_REFERENCE | 업로드 장애 후 기확인 master80 crop[1024,5120,3072,7168]/media b27be7cc-c007-40e6-b4f3-94f786f857dc 재사용.현재 master81의 비보호 합성 픽셀과 참조의 픽셀일치 assert통과.81차패치 보호 |
+| OUTER82_QA | 전후9시점 및정밀후보9시점/G.map동일/pageerror·HTTP오류0;회귀9PASS.본편 이동·전투·실제Chrome 최종 검수는 아래완료기록 참조 |
+| OUTER82_VERDICT | VISUAL VERDICT RETOUCH;주변식생·반복·밀집VFX/숫자 중첩잔여.기존renderer문제 원인미확정.후속안정성 진단은 본편검수와 별도 기록 |
+
+<a id="ch1-1-outer82"></a>
+
+### 82차 생성·합성 상세
+
+| 항목 | 값 |
+|---|---|
+| 생성 | Higgsfield GPT `gpt_image_2_5`;job `9dad40eb-73f6-4754-914a-be6233d18c51`;1:1/2k/high/opaque/count1,2.75credits;실제2048²RGBA |
+| 참조SHA256 | 7d7d3bf56aab30c75479f115f9e731b14b8ae2441e6e221cc270fd2b3d2f0168 |
+| 합성베이스81 SHA256 | 74c5a1239af48b6cc7b158f5c3a63908d9de38bd0ac9d6c0b4e6c27b4780aac4 |
+| 생성SHA256 | c3a827a2882826377f2f8c4d29913350a13fa19301330940364b1408fd717b73 |
+| 최종master SHA256 | ddc87472eed94a705c1a9e4deb02b8f8e50979425a67bbe796562a4bb1197aaa |
+| 고목·공동 보호사각형 | [[500,1502,1410,2048],[840,130,1040,550],[1030,340,1140,550],[780,380,850,485],[160,0,590,600],[540,0,1100,288]] |
+| 선택식 | q=((x−740)/350)²+((y−438)/320)²;t=clamp((1−q)/.30);region=t²(3−2t).alpha=region×(1−protect)×.92×sourceAlpha;core alpha0;floor(alpha×255)/255 |
+| 합성식 | RGB=uint8(base81×(1−alpha)+edited82×alpha);기존alpha유지.보호합집합 MaxFilter25→GaussianBlur18/core강제0 |
+| 초기후보 | 34277px/2청크.카메라에서 보호사각형이 잎무늬를 넓게 남기는 문제확인→고목보호사각형분리.초기QA·prep/불필요후보2_5 청크는 captures에보존,최종본편미사용 |
+| 네트워크 | curl 업로드실패/Node fetch EACCES;승인된curl 재시도도exec provider WindowsApps pwsh 시작전OS317.추가업로드미확인.생성원화는허용된CUA 일반브라우저다운로드 후프로젝트저장/경로SHA검사 |
+
+생성 프롬프트:
+
+Edit the supplied CH1-1 top-down dark-fantasy ground crop in place, same 2048x2048 framing. This is a LOCAL GROUND CONNECTION edit. Preserve exact camera, scale, existing large pale trunks, short dead snag, black hollow cavities, rocky shelf and established necrotic skin plates. In the narrow dull olive fern/leaf-litter band just BELOW the black cavity and LEFT of the short pale snag, centered near pixel (740,438), join the rotten tree base into existing corpse-grey muted mauve skin ground with low torn dried skin sheets and a few subdued burgundy tendon fibres embedded in cracked bark. Keep all ground low and quiet, match existing texture scale, desaturated palette, dim diffuse light, moist dark contact shadows. Restrict editing to ellipse cx740 cy438 rx350 ry320; preserve the pale snag around x760..1020,y70..550, large trunk x160..590,y0..600, and black cavity above y288. Continue into existing lower skin without adding a new focal point. No extra trees, raised obstacles, bright accents, green plants, lush forest, grass, flowers, gore puddles, decorative scatter, text, logos or grids. Preserve everything outside this one contact zone as closely as possible.
+
+## 2026-09-29 — CH1-1 서측 피부막 위쪽 접합81차 기록(82차 이전)
+
+80차 피부 면 위쪽 tile[46,144]의 잎무늬 접합을 실제80차 원화 참조로 편집했다. 낮은 괴사막과 섬유로 기존 피부층을 연결하고, 고목과73~80차 패치·넓은 전투공터를 보호했다. 아래80차는 제작 이력이며 현재 배경 계약은81차다.
+
+| id | 현행 계약 | 값 |
+|---|---|---|
+| OUTER81_SOURCE | 입력·생성 | master80 crop[1024,5120,3072,7168],2048²;Higgsfield GPT gpt_image_2_5/job34551eaf-ba11-466e-8403-c951d280d035;1:1/2k/high/opaque/count1,2.75credits |
+| OUTER81_MASK | 선택·합성 | ellipse[840,840,340,460];q=((x−840)/340)²+((y−840)/460)²;t=clamp((1−q)/.30);region=t²(3−2t).alpha=region×(1−protect)×.92×sourceAlpha;floor(alpha×255)/255;RGB=uint8(base80×(1−alpha)+edited81×alpha),원본alpha유지.경계band없음 |
+| OUTER81_KEEP | 보호 |73mask>12·74~80mask>0;이전합집합2100642픽셀.고목사각형[500,1502,1410,2048]/[760,70,1020,550]/[160,0,590,600],합879660픽셀.전체합2963916/MaxFilter25/GaussianBlur18/core강제alpha0.보호·타원밖·zero-mask·crop밖변경0 |
+| OUTER81_PIXELS | 변화 |총157436/보행123509/비보행33927;geometry·충돌·진행·늪버블·가스·동맥유지,새모션0 |
+| OUTER81_RUNTIME | 본편 |master·chunk_1_5.png/chunk_2_5.png·preview·composition·retouchLayers·game cache20260929-outer-81;64청크/core1024/bleed1/1026²·224strip동일;나머지62청크유지 |
+| OUTER81_REBAKE | 재현 |skin65→outer66~81,17레이어;outer81 x1024/y5120/2048²,preblended RGB+binary alpha0/255;helper전체8192²픽셀동일.검수Sharp concurrency1/cache false.초기동시검증vips메모리오류별도보존;전체builder재실행미실시 |
+| OUTER81_FILES | 소스·보존 |outer81_sources/outer81_patch.png·outer81_mask.png 2파일.76~81차오프라인출처는outer76_81-provenance.zip으로묶음:각pass/input-base.png·edited_connection.png·outerN_crop.png·generation.json·prep.json 총30엔트리+manifest.json=31,모두SHA대조.기존76~80개별ZIP5개는tmp/ch1-source-consolidation81에원본보존.런타임PNG12개변경/삭제0.73~75기존staged출처유지 |
+| OUTER81_QA | 실제 검수 |전후9·본편18카메라를3×6독립세션,이동/전투별도1세션으로확인;최종pageerror/HTTP오류0·본편route교체0·42캡처정상.회귀9PASS;[46.5,144.5] S/W약113.86worldpx·시작점근처복귀(약2.78px오차)/G.map동일,임시24적/적탄6샘플0/9/12/12/16/14·공격/Q.체력50ms/무적63f보정·전체API쓰기차단.후반3세션은종료된로딩화면이미지src만QA컨텍스트에서해제,맵청크교체0/본편소스수정없음 |
+| OUTER81_STABILITY | 검수 한계 |최초before캡처대기1회,연속본편renderer종료2회,동일코드+80차이미지비교에서도JOIN_TOP흰화면1회.분리group1도스크린샷Python MemoryError1회·시작흰화면1회.실패로그/이미지보존.Windows진단snapshot commit72.556GiB/limit79.761GiB/peak79.761GiB,물리여유39.252GiB;동시메모리압박관찰·종료원인단정없음.자체검수잔여descendant0/사용자앱종료0.실행중limit변동.분리검수의정상캡처는장시간안정성통과가아니며원인·해결미확정 |
+| OUTER81_STATE | 판정·Git |VISUAL VERDICT RETOUCH;다른식생·반복·밀집VFX/숫자중첩잔여.81차미커밋:승인된git add도exec provider가WindowsApps pwsh시작전OS317로실패;Git쓰기0/기존staged보존.출처정리후98파일이었으나타작업추가로생성전검사102·통합검수후검사107파일(각시점100제한초과);강제정리없음.저사양/NW.js/장시간성능·무보정종주·클리어미검증 |
+
+[81차 MAP PRODUCTION REPORT](../../captures/ch1_outer81/REPORT.md) · [전후·본편 갤러리](../../captures/ch1_outer81/index.html).
+
+## MAP PRODUCTION REPORT —81차
+
+STAGE: CH1-1/stage0. 공통 제작가이드v0.9 전체와 맵디테일·SSOT를 적용한 GROUND CONNECTION→PLAYABLE/COMBAT 국소보정.
+
+| 구분 | 항목 | 결과 |
+|---|---|---|
+| MASTER | silhouette / regions |200²타일/53점경계/8구역유지;geometry변경0 |
+| MASTER | main route / side spaces |6시START→12시EXIT·상단통로·우회·넓은공터유지 |
+| OUTER MASS | LEFT / RIGHT / TOP / SOUTH |기존66~80질량유지;새큰오브젝트0 |
+| OUTER MASS | major holes |새큰hole0;타구역식생잔여 |
+| LARGE | source assets / composites / overlap |실제80차crop참조GPT부분편집;고목·보호부유지 |
+| LARGE | repeated silhouette |선택잎반복일부교체;타지역식생·고목반복보정잔여 |
+| MEDIUM | connections / remaining holes |80차피부위쪽을낮은찢어진막·섬유로연결;고목앞과다른접합잔여 |
+| GROUND | shadow / contamination |기존조명+시체회자주막·국소검붉은섬유;신규발광/피해/경고0 |
+| GROUND | structure integration |보행123509/비보행33927픽셀정적재질;기존오브젝트충돌유지 |
+| PLAYABLE | main arenas / travel space |canMv[46.5,144.5] S650ms/W650ms 약113.86px이동·시작점근처복귀(약2.78px오차);끝칸0/G.map동일.관찰용순간이동과구분 |
+| PLAYABLE | breathing / threat space |중앙공터·시작여백·우회·기존위협유지 |
+| PLAYABLE | combat readability |기존AI임시24적/etype0·1·4·6·7·8;적탄0/9/12/12/16/14,공격/Q실제화면확인.밀집숫자·VFX중첩잔여 |
+| LANDMARK | primary / secondary / tertiary |생체나무·늪·야영지·제단·출구·서측뼈아치유지;추가0 |
+| CAMERA QA | START / EARLY / ARENA |[100,180]/[100,157]/[100,120],1280×720 |
+| CAMERA QA | SIDE L / SIDE R / LANDMARK |[49,151]/[151,136]/[102,90] |
+| CAMERA QA | LATE / EXIT |[100,48]/[100,15] |
+| CAMERA QA | 본편18좌표 |JOIN_MAIN[46,144], JOIN_TOP[46,138], JOIN_LOWER[46,151], JOIN_LEFT[39,144], JOIN_RIGHT[53,144], SKIN80[36,153], START_ACTUAL[100,185], START[100,180], EARLY[100,157], ARENA[100,120], SIDE_L[49,151], SIDE_R[151,136], LANDMARK[102,90], LATE[100,48], EXIT[100,15], L_MASS[73,180], WEST_JOIN[72,117], S_JOIN[121,184] |
+| TECH QA | route / collision |지형회귀5PASS/G.map SHA8a5dfe9f1a6c5a283be293a85cedb49509d1db5d317e063fde0b2cd5ff6c65a1동일;무보정종주·보스클리어·1-2진입미검증 |
+| TECH QA | pageerror /404 |최종전후9·분리본편18+이동/전투는0.연속renderer종료2회와80차비교흰화면을별도보존;안정성원인미확정 |
+| TECH QA | seam / loading |64청크master픽셀동일/224strip동일·본편48청크URLcache81·route교체0;visibleIds⊂drawnIds대기 |
+| TECH QA | performance |정적2청크교체;추가runtime draw/atlas0.장시간연속QA실패·저사양GPU/NW.js/FPS미검증 |
+| TECH QA | regression / rebake |9PASS0FAIL;17레이어helper전체8192²픽셀동일;초기vips메모리오류후concurrency1/cache false로검증 |
+| FILES | stage-owned |master/2청크/preview/메타2/source2/출처묶음1/game맵cache1줄/9mapdocs/생체현행참조/CHANGELOG;tmp/ch1-production-pre81백업 |
+| FILES | concurrent touched |공유game/CHANGELOG의맵부분만수정;다른staged·로비/UI/출품자료보존 |
+| FILES | unrelated touched |이번작업없음;rollback/런타임숨김/자동정리작업등록없음 |
+| GIT | staged / commit |Git쓰기0;81차미커밋.exec provider시작전OS−1073283067/317;별도도구로.git쓰기우회없음 |
+| GIT | push / deploy |수행없음 |
+
+**VISUAL VERDICT: RETOUCH** — 선택면은 기존 피부층과 연결됐고 넓은 공터와 플레이어·탄의 구분을 유지한다. 타구역 식생·반복·밀집중첩은 남아 있다. 연속 검수의 renderer 종료 및 80차 비교 흰 화면 원인은 미확정이다. 회귀검사와 분리 촬영 성공을 전체 시각 완성·장시간 안정성으로 대체하지 않는다.
+
+NEXT PASS: 연속 카메라 전환의 흰 화면/renderer 종료를 먼저 진단한다. 그 다음 고목 앞의 남은 식생 접합을 보정한다. 외곽질량·넓은공터·기존충돌·73~81차·늪/동맥을 보호한다.
+
+검수조건:독립컨텍스트/전체API POST·PUT·PATCH·DELETE차단/체력50ms보충·무적63f보정. 임시24적2ring×12/거리250·390/둘째각도+.17;3초후6샘플500ms/공격1600ms/Q150ms. 시각검수이며무보정밸런스·클리어·성능검수가아니다.
+
+생성출력SHA bfbec8c43d93b86f3eec7f9cf836ae6b00da8f38a167938838b10e66a4eecbaa;마스터SHA 74c5a1239af48b6cc7b158f5c3a63908d9de38bd0ac9d6c0b4e6c27b4780aac4;rawRGBA SHA a972831cc2278b73b07f168a46fafd0f2b5a072a62d1a2394434bc25f6034187.입력·프롬프트·media/job UUID·URL은출처묶음의outer81_sources/generation.json에보존했다.
+
+메모리 계측은 [Microsoft PERFORMANCE_INFORMATION](https://learn.microsoft.com/en-us/windows/win32/api/psapi/ns-psapi-performance_information)와 [PROCESS_MEMORY_COUNTERS_EX](https://learn.microsoft.com/en-us/windows/win32/api/psapi/ns-psapi-process_memory_counters_ex) 계약을 따랐다.값은현행Windows의실제진단결과이며실행중변동한다.로딩이미지src해제는QA격리컨텍스트에서만수행했다;메모리설정이나사용자앱은수정하지않았다.
+
+실패기록: visibleqa-initial-stall.log / liveqa-initial-crash.log / liveqa-sequential-crash.log / baseline80.log / baseline80/after/JOIN_TOP.png / liveqa-group1-memory-error.log / liveqa-group1-white.log / liveqa-group1-START_ACTUAL-white.png / memory-diagnostic.json / process-memory-diagnostic.json / rebake-proof-initial-error.log. 최종18본편은live/runtime-group0..3.json에서합친독립4세션이며단일연속세션통과가아니다.
+
+## 2026-09-28 — CH1-1 서측 피부막 왼쪽 접합80차 기록(81차 이전)
+
+79차 피부 면 왼쪽 tile[36,153]의 잎무늬를 실제79차 원화 참조로 편집했다. 기존 고목과73~79차 패치를 보호하고 낮은 괴사 피부층·섬유로 연결했다. 아래79차 이전 기록은 제작 이력이며 당시 배경 계약은80차다(81차 이전 이력).
+
+| id | 80차 당시 계약 | 값 |
+|---|---|---|
+| OUTER80_SOURCE | 실제 입력·생성 | master79 crop[1024,5632,3072,7680],2048²;Higgsfield GPT gpt_image_2_5/job2b87a734-083f-48ec-b222-e20407f7ae44,1:1/2k/high/opaque/count1 |
+| OUTER80_MASK | 선택·합성 | ellipse[480,620,320,550],q=((x−480)/320)²+((y−620)/550)²;t=clamp((1−q)/.30);region=t²(3−2t).alpha=region×(1−protect)×.92×sourceAlpha;floor(alpha×255)/255;RGB=uint8(base79×(1−alpha)+edited80×alpha),원본alpha 유지. 경계band없음 |
+| OUTER80_KEEP | 보호 |73mask>12·74~79mask>0;이전합집합1617083픽셀.고목사각형[500,990,1410,2048]/962780픽셀;전체합집합2563137/MaxFilter25/GaussianBlur18/core강제alpha0.보호·타원밖·zero-mask·crop밖 변화0 |
+| OUTER80_PIXELS | 변화 |총338768/보행240292/비보행98476;geometry·기존충돌·진행·늪버블·가스·동맥 유지,새모션0 |
+| OUTER80_RUNTIME | 본편 |master·chunk_1_5.png/chunk_1_6.png·preview·composition·retouchLayers·game cache20260928-outer-80.64청크/core1024/bleed1/1026²·224strip동일;나머지62청크유지 |
+| OUTER80_REBAKE | 재현 |skin65→outer66~80,총16레이어;outer80 x1024/y5632/2048²,preblended RGB+binary alpha0/255;helper 전체8192²픽셀동일 |
+| OUTER80_FILES | 소스·보존 |outer80_sources/outer80_patch.png·outer80_mask.png·source-provenance.zip 3파일. ZIP의input-base.png/edited_connection.png/outer80_crop.png/generation.json/prep.json 5엔트리 원본SHA대조.76~79차도patch/mask/출처ZIP 3파일로정리;각ZIP5엔트리·76/77 RAW 및76~79 prep은tmp/ch1-source-consolidation80에별도보존.런타임패치/마스크삭제0 |
+| OUTER80_QA | 실제 검수 |전후9·일반본편18카메라,최종각pageerror/HTTP오류0·본편route교체0;지형5+레이어/버전3+HTML구문1=9PASS.수정부[38.5,153.5] S/W104.79worldpx·복귀/G.map동일,임시24적/적탄6샘플0/5/8/11/12/8·공격/Q.초기기존본편의흰캡처2건은별도진단/제외;원인미확정·해결선언없음 |
+| OUTER80_STATE | 판정·Git |VISUAL VERDICT RETOUCH;전체식생·다른영역반복·밀집VFX/숫자중첩잔여.80차미커밋:일반git add index.lock권한거부/승인된상승재시도provider시작전OS317;Git쓰기0/기존staged보존.저사양/NW.js/장시간성능·무보정종주·클리어미검증 |
+
+[80차 MAP PRODUCTION REPORT](../../captures/ch1_outer80/REPORT.md) · [전후·본편 갤러리](../../captures/ch1_outer80/index.html).
+
+# CH1-1 서측 잎무늬 바닥과 괴사 피부 연결 — 79차
+
+서측78차 피부 왼쪽 tile[47,159] 부근의 넓은 잎무늬 면을 실제78차 원화 참조로 부분 편집했다. 낮은 회자주 괴사 피부와 얕은 균열이 기존 썩은 목질로 이어진다. 이번 변경 총341970픽셀 중 보행339996·비보행1974픽셀이며, geometry와 기존 오브젝트 충돌은 유지한다. 이전73~78차 패치와 주변 고목을 보존했다. 신규 생체 모션은 없다.
+
+| id | 항목 | 현행 값·공식 |
+|---|---|---|
+| INPUT79 | 입력 | master78 crop[1024,5632,3072,7680],2048²; SHAa5412ab89ac09c6750e8cc2ef0958b598ec6af36bd8b148633a621a6183652f2,mediae248f508-b554-4f32-99c7-b84d80375045 |
+| SOURCE79 | 생성 | Higgsfield GPT gpt_image_2_5/job6f7dd422-0b18-42ff-8809-f51fb57c5d97;1:1/2k/high/opaque/count1,실제2048²; SHA9cbbb414665b8cfe1771d0fea8aa2fea92e80d3e6466d893ec06a01d7559bffe |
+| REGION79 | 국소 선택 | 중심[860,730],반경[430,360];q=((x−860)/430)²+((y−730)/360)²;t=clamp((1−q)/.30,0,1);region=t²(3−2t);경계band없음 |
+| PROTECT79 | 이전 작업 |73mask>12,74/75/76/77/78mask>0을 각 레이어 실제x/y로 교차매핑;합집합1270046픽셀/변경0;MaxFilter25/GaussianBlur18,core alpha강제0. 고목사각형[500,990,1410,2048] 962780픽셀보호; 이전레이어와사각형의전체합집합2216100픽셀/변경0 |
+| BLEND79 | 공식 |alpha=region×(1−protect)×.92×sourceAlpha;floor(alpha×255)/255;RGB=uint8(base78×(1−alpha)+edited79×alpha);원본alpha유지 |
+| PIXELS79 | 변화·보존 |총341970/보행339996/비보행1974;보호·타원밖·zero-mask·crop밖각각0 |
+| CHUNKS79 | 본편 |chunk_1_5.png/chunk_1_6.png/chunk_2_6.png;8192² master→64 clamped청크/core1024/bleed1/실제1026²;기존61청크유지,224경계strip동일 |
+| CACHE79 | 버전 |game production loader·composition·retouch-layers=20260928-outer-79;legacy비교와생체모듈유지 |
+| REBAKE79 | 레이어 |skin65→outer66~79,총15;outer79 x1024/y5632/2048²,preblended RGB+binary alpha0/255;pre65+15패치 전체8192²픽셀동일 |
+| PROOF79 | 해시 |mastera4b971e689d715d1c03f5c9e4550946042ea893a6db64a4dcf70159a483408ab;rawRGBA0fd8b7f372c6d5cce0dd5f71ed04af3cd5873cf2b758dfb7c0d6029a906bb104 |
+| FILES79 | source4파일 |outer79_sources/outer79_patch.png·outer79_mask.png·prep.json·source-provenance.zip. ZIP내 input-base.png·edited_connection.png·outer79_crop.png·generation.json 4엔트리 원본SHA대조. raw원본과 전체프롬프트/UUID/URL은 ZIP에 무손실보존;패치·마스크·prep은직접참조 |
+| TRANSPORT79 | 업로드·다운로드 |native exec 실패 후 브라우저 파일선택·승인된 Higgsfield presigned PUT HTTP200→media_confirm. 관찰된 원본pageAssets bundle수신 |
+
+## MAP PRODUCTION REPORT
+
+STAGE: CH1-1/stage0, GROUND CONNECTION → PLAYABLE/COMBAT 국소 보정. 공통 제작 가이드v0.9 전체1048줄을 이전77차부터 읽고 적용한 연속 작업이며79차 동일SHA607e36a49a99205be61c0aeedb438da06bffaf13370360acc99fe86be751e80b 확인. 맵디테일·SSOT·지면 계약의 넓은 전투공간/피부/동맥/부패 생체나무 콘셉트 유지.
+
+| 구분 | 항목 | 결과 |
+|---|---|---|
+| MASTER | silhouette / regions |200² 공간·기존 구역 경계 유지,geometry불변 |
+| MASTER | main route / side spaces |시작6시→출구12시·상단통로·우회·넓은 공터 유지 |
+| OUTER MASS | LEFT / RIGHT / TOP / SOUTH |기존66~78차 대형질량 유지,새질량0 |
+| OUTER MASS | major holes |새독립나무·큰검은hole0;주변 건강한 식생 잔여 |
+| LARGE | source assets / composites / overlap |대형나무·scatter추가0;이전73~78차 1270046픽셀보호 |
+| LARGE | repeated silhouette |낮은 잎반복을피부·얕은균열로 국소교체;기존고목·주변식생·타지역반복잔여 |
+| MEDIUM | connections / remaining holes |78차피부 왼쪽막→기존고목 접지 연결;선택면 외곽 식생 추가RETOUCH |
+| GROUND | shadow / contamination |회자주괴사피부·낮은찢김·기존조명;새발광·피해·경고0 |
+| GROUND | structure integration |보행339996픽셀 정적재질편집;타원밖0;타일/기존오브젝트충돌불변 |
+| PLAYABLE | main arenas / travel space |G.map동일;canMv확인[47.5,153.5]에서S/W 110.79월드px 이동·복귀 |
+| PLAYABLE | breathing space / threat space |넓은 중앙·오른쪽 공터,시작여백·우회·기존위협 유지 |
+| PLAYABLE | combat readability |수정부에서기존AI 임시24적/6etype,적탄6샘플1/8/13/17/16/11;실제공격/Q캡처. 밀집캐릭터·숫자·VFX중첩잔여 |
+| LANDMARK | primary / secondary / tertiary |생체나무·늪·야영지·제단·출구 유지;신규0 |
+| CAMERA QA | START / EARLY / ARENA |[100,180]/[100,157]/[100,120],본편1280×720 |
+| CAMERA QA | SIDE L / SIDE R / LANDMARK |[49,151]/[151,136]/[102,90],본편 |
+| CAMERA QA | LATE / EXIT |[100,48]/[100,15],본편 |
+| CAMERA QA | 전후 / 전체맵 |후보전후9·일반본편18시점·필수8camera-board·전체맵전후. SKIN_MAIN[47,159]은보행바닥관찰이며다른외곽관찰순간이동은실제이동검수와구분 |
+| CAMERA QA | 본편18좌표 |SKIN_MAIN[47,159], SKIN_TOP[47,151], SKIN_LOWER[47,167], SKIN_LEFT[40,159], SKIN_RIGHT[55,159], JOIN78[62,150], START_ACTUAL[100,185], START[100,180], EARLY[100,157], ARENA[100,120], SIDE_L[49,151], SIDE_R[151,136], LANDMARK[102,90], LATE[100,48], EXIT[100,15], L_MASS[73,180], WEST_JOIN[72,117], S_JOIN[121,184] |
+| TECH QA | route / collision |지형5PASS·G.map SHA8a5dfe9f1a6c5a283be293a85cedb49509d1db5d317e063fde0b2cd5ff6c65a1동일. 전체무보정종주·보스클리어·1-2진입미검증 |
+| TECH QA | 실제입력 |[47.5,153.5] S650ms/W650ms,아래110.79px·복귀,끝칸runtime0;canMv(r15)/아래0·30·60·90·120px확인. 밀집검수도동일좌표재진입 |
+| TECH QA | pageerror / 404 |후보/본편각0,HTTP>=400각0 |
+| TECH QA | seam / loading |64청크master동일·224strip동일;본편48청크URL/cache79·route교체0;각카메라·이동캡처visibleIds⊂drawnIds대기 |
+| TECH QA | whitespace | 기존index/작업본메타CRLF유지. blank-at-eol·blank-at-eof·space-before-tab·cr-at-eol을명령에만지정한Git diff --check PASS/gitconfig쓰기0;기본check의CR경고는별도이력보존 |
+| TECH QA | performance |정적3청크교체·새runtime draw/atlas0;저사양GPU/NW.js/장시간FPS미검증 |
+| TECH QA | regression / rebake |지형5+레이어/버전3+HTML구문1=9PASS0FAIL;15패치helper전체픽셀재현,전체builder재실행미실시 |
+| FILES | stage-owned |master/3청크/preview/source4/메타2/game맵cache한줄/9mapdocs/CHANGELOG맵항목. tmp/ch1-production-pre79백업 |
+| FILES | concurrent touched |공유game/CHANGELOG는맵부분만수정;기존staged62·타에이전트작업보존 |
+| FILES | unrelated touched |이작업없음;롤백·삭제·runtime에셋숨김없음. raw출처를ZIP4엔트리로무손실보관 |
+| GIT | staged / commit |Git쓰기0·79차미커밋. systemPowerShell지정에도provider WindowsApps pwsh프로세스생성전 OS−1073283067/FormatMessage317. 이번실패는git status 실행전이며승인된터미널경로로Git명령을시작할수없음. 기존index보존,대체도구로.git쓰기우회없음 |
+| GIT | push / deploy |수행없음 |
+
+**VISUAL VERDICT: RETOUCH** — 수정부카메라에서 잎반복이낮은회자주피부와얕은균열로바뀌며캐릭터·청록적탄·기존나무가구분된다. 선택면외곽의남은잎무늬와타지역원화반복·밀집숫자/VFX중첩은추가보정이필요하다. 자동검사PASS는시각PASS로대체하지않는다.
+
+NEXT PASS: 이번피부면의왼쪽/아래에남은 잎무늬를더얇은피부섬유로연결. 넓은공터·기존충돌·고목·73~79차완성부·늪버블/가스/동맥보존. 소스제어100파일미만을지켜후속작업전현재변경누적재확인.
+
+검수조건: 독립컨텍스트·API전체쓰기차단(POST/PUT/PATCH/DELETE),체력50ms보충·무적63f를50ms마다보정. 임시기존적24/etype0·1·4·6·7·8,2ring×12/거리250·390/둘째ring angle+.17,3초대기후적탄6샘플500ms,마우스공격1600ms/Q후150ms캡처. 이동·밀집검수전수정좌표재설정및500ms청크대기. 시각검수이며밸런스·무보정클리어·전체성능검증과구분. 새생체모션0,ch1-living-detail.js SHA47af23fb8dd096e5112e29a7b298f8b78f03b409e81d967362a047193c182beb동일.
+
+서버 구분 검수 이력: 첫18시점은127.0.0.1:3333에서 pageerror0·맵청크오류0이나전리품컷아웃8URL의404를관찰했다. 14장비파일모두로컬존재/첫서버404를별도HTTP대조했다. netstat에서0.0.0.0:3333 PID31172와127.0.0.1:3333 PID49528의두리스너를확인. 127.0.0.2:3333으로일반리스너에접속하면갑옷PNG200/디스크바이트동일·game.html200/작업본바이트동일이다. 현재18시점·이동·밀집검수는127.0.0.2에서다시수행하고,첫자료를live-specific-loopback/runtime.json과liveqa-specific-loopback.log에보존했다. CIM/tasklist프로세스실행파일조회는접근거부되어실행파일종류는단정하지않으며앱종료·서버코드변경0. 첫404관찰을최종서버0과구분한다.
+
+자료: captures/ch1_outer79/index.html,REPORT.md,visible/runtime.json,live/runtime.json,prep/promotion/generation/final-state JSON,tests/rebake-proof.log,capture-integrity.json. tmp/ch1-checkpoint79-owned.zip은소유결과·이전73~78차소스/청크의존·docs·검수·공유파일분리patch를보존하고모든엔트리SHA대조한다. 공유파일전체스냅샷은타작업복원/스테이징명령으로사용하지않는다.
+
+---
+
+## 78차 이하 보존 기록
+
+# CH1-1 서측 잎무늬 바닥과 괴사 피부 연결 — 78차
+
+서측77차 뿌리 아래 tile[62,150] 부근의 넓은 잎무늬 면을 실제77차 원화 참조로 부분 편집했다. 낮은 회자주 괴사 피부와 얕은 균열이 기존 썩은 목질로 이어진다. 이번 변경 715350픽셀은 layout 기준 모두 보행면이며, geometry와 기존 오브젝트 충돌은 유지한다. 이전73~77차 패치와 주변 고목을 보존했다. 신규 생체 모션은 없다.
+
+| id | 항목 | 현행 값·공식 |
+|---|---|---|
+| INPUT78 | 입력 | master77 crop[1536,5120,3584,7168],2048²; SHA5c3d38c1d44facd769f2ce10b3defc6780ae88f9d912d702077d356a8dc6249c,media660f7875-9567-4af1-b9ae-c0af204d28dc |
+| SOURCE78 | 생성 | Higgsfield GPT gpt_image_2_5/jobaaa2635d-ce8f-4420-b7e1-1d428a0be258;1:1/2k/high/opaque/count1,실제2048²; SHA438b91a9e5eed762dfa8c3ac42286dae5422605d7c4c0a3755053a19f847f9f7 |
+| REGION78 | 국소 선택 | 중심[1000,1010],반경[520,500];q=((x−1000)/520)²+((y−1010)/500)²;t=clamp((1−q)/.30,0,1);region=t²(3−2t);경계band없음 |
+| PROTECT78 | 이전 작업 |73mask>12,74/75/76/77mask>0을 각 레이어 실제x/y로 교차매핑;합집합1219930픽셀/변경0;MaxFilter25/GaussianBlur18,core alpha강제0. 추가 사각형0 |
+| BLEND78 | 공식 |alpha=region×(1−protect)×.92×sourceAlpha;floor(alpha×255)/255;RGB=uint8(base77×(1−alpha)+edited78×alpha);원본alpha유지 |
+| PIXELS78 | 변화·보존 |총715350/보행715350/비보행0;보호·타원밖·zero-mask·crop밖각각0 |
+| CHUNKS78 | 본편 |chunk_1_5.png/chunk_1_6.png/chunk_2_5.png/chunk_2_6.png;8192² master→64 clamped청크/core1024/bleed1/실제1026²;기존60청크유지,224경계strip동일 |
+| CACHE78 | 버전 |game production loader·composition·retouch-layers=20260928-outer-78;legacy비교와생체모듈유지 |
+| REBAKE78 | 레이어 |skin65→outer66~78,총14;outer78 x1536/y5120/2048²,preblended RGB+binary alpha0/255;pre65+14패치 전체8192²픽셀동일 |
+| PROOF78 | 해시 |master66834b040221b42c1e81f0b7fbe2f6667cc33f8399db193af06abe260ae37c12;rawRGBA7ef1c003bfadc4e642589eaa33a27936bf8613d21d1717007ddd22f26a73c2b1 |
+| FILES78 | source4파일 |outer78_sources/outer78_patch.png·outer78_mask.png·prep.json·source-provenance.zip. ZIP내 input-base.png·edited_connection.png·outer78_crop.png·generation.json 4엔트리 원본SHA대조. raw원본과 전체프롬프트/UUID/URL은 ZIP에 무손실보존;패치·마스크·prep은직접참조 |
+| TRANSPORT78 | 업로드·다운로드 |native exec와Node fetch 실패 후 브라우저 파일선택·승인된 Higgsfield presigned PUT HTTP200→media_confirm. 관찰된 원본pageAssets bundle수신 |
+
+## MAP PRODUCTION REPORT
+
+STAGE: CH1-1/stage0, GROUND CONNECTION → PLAYABLE/COMBAT 국소 보정. 공통 제작 가이드v0.9 전체1048줄을 이전77차부터 읽고 적용한 연속 작업이며78차 동일SHA607e36a49a99205be61c0aeedb438da06bffaf13370360acc99fe86be751e80b 확인. 맵디테일·SSOT·지면 계약의 넓은 전투공간/피부/동맥/부패 생체나무 콘셉트 유지.
+
+| 구분 | 항목 | 결과 |
+|---|---|---|
+| MASTER | silhouette / regions |200² 공간·기존 구역 경계 유지,geometry불변 |
+| MASTER | main route / side spaces |시작6시→출구12시·상단통로·우회·넓은 공터 유지 |
+| OUTER MASS | LEFT / RIGHT / TOP / SOUTH |기존66~77차 대형질량 유지,새질량0 |
+| OUTER MASS | major holes |새독립나무·큰검은hole0;주변 건강한 식생 잔여 |
+| LARGE | source assets / composites / overlap |대형나무·scatter추가0;이전73~77차 1219930픽셀보호 |
+| LARGE | repeated silhouette |낮은 잎반복을피부·얕은균열로 국소교체;기존고목·주변식생·타지역반복잔여 |
+| MEDIUM | connections / remaining holes |77차뿌리 아래 피부면→기존76차 목질 연결;선택면 외곽 식생 추가RETOUCH |
+| GROUND | shadow / contamination |회자주괴사피부·낮은찢김·기존조명;새발광·피해·경고0 |
+| GROUND | structure integration |보행715350픽셀 정적재질편집;타원밖0;타일/기존오브젝트충돌불변 |
+| PLAYABLE | main arenas / travel space |G.map동일;canMv확인[67.5,149.5]에서S/W 110.26월드px 이동·복귀 |
+| PLAYABLE | breathing space / threat space |넓은 중앙·오른쪽 공터,시작여백·우회·기존위협 유지 |
+| PLAYABLE | combat readability |수정부에서기존AI 임시24적/6etype,적탄6샘플1/2/9/14/18/23;실제공격/Q캡처. 밀집캐릭터·숫자·VFX중첩잔여 |
+| LANDMARK | primary / secondary / tertiary |생체나무·늪·야영지·제단·출구 유지;신규0 |
+| CAMERA QA | START / EARLY / ARENA |[100,180]/[100,157]/[100,120],본편1280×720 |
+| CAMERA QA | SIDE L / SIDE R / LANDMARK |[49,151]/[151,136]/[102,90],본편 |
+| CAMERA QA | LATE / EXIT |[100,48]/[100,15],본편 |
+| CAMERA QA | 전후 / 전체맵 |후보전후9·일반본편18시점·필수8camera-board·전체맵전후. SKIN_MAIN[62,150]은보행바닥관찰이며다른외곽관찰순간이동은실제이동검수와구분 |
+| CAMERA QA | 본편18좌표 |SKIN_MAIN[62,150], SKIN_TOP[62,142], SKIN_LOWER[62,158], SKIN_LEFT[54,150], SKIN_RIGHT[70,150], JOIN76[80,151], START_ACTUAL[100,185], START[100,180], EARLY[100,157], ARENA[100,120], SIDE_L[49,151], SIDE_R[151,136], LANDMARK[102,90], LATE[100,48], EXIT[100,15], L_MASS[73,180], WEST_JOIN[72,117], S_JOIN[121,184] |
+| TECH QA | route / collision |지형5PASS·G.map SHA8a5dfe9f1a6c5a283be293a85cedb49509d1db5d317e063fde0b2cd5ff6c65a1동일. 전체무보정종주·보스클리어·1-2진입미검증 |
+| TECH QA | 실제입력 |[67.5,149.5] S650ms/W650ms,아래110.26px·복귀,끝칸runtime0;canMv(r15)/아래0·30·60·90·120px확인. 밀집검수도동일좌표재진입 |
+| TECH QA | pageerror / 404 |후보/본편각0,HTTP>=400각0 |
+| TECH QA | seam / loading |64청크master동일·224strip동일;본편48청크URL/cache78·route교체0;각카메라·이동캡처visibleIds⊂drawnIds대기 |
+| TECH QA | performance |정적4청크교체·새runtime draw/atlas0;저사양GPU/NW.js/장시간FPS미검증 |
+| TECH QA | regression / rebake |지형5+레이어/버전3+HTML구문1=9PASS0FAIL;14패치helper전체픽셀재현,전체builder재실행미실시 |
+| FILES | stage-owned |master/4청크/preview/source4/메타2/game맵cache한줄/9mapdocs/CHANGELOG맵항목. tmp/ch1-production-pre78백업 |
+| FILES | concurrent touched |공유game/CHANGELOG는맵부분만수정;기존staged62·타에이전트작업보존 |
+| FILES | unrelated touched |이작업없음;롤백·삭제·runtime에셋숨김없음. raw출처를ZIP4엔트리로무손실보관 |
+| GIT | staged / commit |Git쓰기0·78차미커밋. systemPowerShell지정에도provider WindowsApps pwsh프로세스생성전 OS−1073283067/FormatMessage317. 이번실패는curl실행전이며Git명령도시작할수없는같은경로. 기존index보존,대체도구로.git쓰기우회없음 |
+| GIT | push / deploy |수행없음 |
+
+**VISUAL VERDICT: RETOUCH** — 수정부카메라에서 잎반복이낮은회자주피부와얕은균열로바뀌며캐릭터·청록적탄·기존나무가구분된다. 선택면외곽의남은잎무늬와타지역원화반복·밀집숫자/VFX중첩은추가보정이필요하다. 자동검사PASS는시각PASS로대체하지않는다.
+
+NEXT PASS: 이번피부면의왼쪽/아래에남은 잎무늬를더얇은피부섬유로연결. 넓은공터·기존충돌·고목·73~78차완성부·늪버블/가스/동맥보존. 소스제어100파일미만을지켜후속작업전현재변경누적재확인.
+
+검수조건: 독립컨텍스트·API slots쓰기차단,체력50ms보충·무적63f를50ms마다보정. 임시기존적24/etype0·1·4·6·7·8,2ring×12/거리250·390/둘째ring angle+.17,3초대기후적탄6샘플500ms,마우스공격1600ms/Q후150ms캡처. 이동·밀집검수전수정좌표재설정및500ms청크대기. 시각검수이며밸런스·무보정클리어·전체성능검증과구분. 새생체모션0,ch1-living-detail.js SHA47af23fb8dd096e5112e29a7b298f8b78f03b409e81d967362a047193c182beb동일.
+
+자료: captures/ch1_outer78/index.html,REPORT.md,visible/runtime.json,live/runtime.json,prep/promotion/generation/final-state JSON,tests/rebake-proof.log,capture-integrity.json. tmp/ch1-checkpoint78-owned.zip은소유결과·이전73~77차소스/청크의존·docs·검수·공유파일분리patch를보존하고모든엔트리SHA대조한다. 공유파일전체스냅샷은타작업복원/스테이징명령으로사용하지않는다.
+
+---
+
+## 77차 이하 보존 기록
+
+# CH1-1 서측 반복 뿌리와 부패 목질 접합 — 77차
+
+76차보다 위쪽인 tile[61,128] 부근의 회색 부채꼴 baked 뿌리를 실제76차 베이스 참조로 부분 편집했다. 균일한 방사형 뿌리 대신 낮은 깨진 수피판·괴사 피부·썩은 섬유가 공터로 이어진다. 수정 영역에는 비보행 숲과 보행 가장자리가 모두 포함되며, 기존 충돌을 시각 편집으로 바꾸지 않는다. 오른쪽 넓은 공터, 왼쪽 두 고목, 아래쪽73~76차 작업을 보호했다. 새 runtime 모션은 추가하지 않았다.
+
+| id | 항목 | 현행 값·공식 |
+|---|---|---|
+| INPUT77 | 입력 | master76 crop[1536,4608,3584,6656],2048². SHA2bd2e51aeab7cce09073b4061ba779b803c3faaafaaeda847114d5cff7d1eec1; mediaf9bd362e-7efd-4423-a535-fecfc1e55f94 |
+| SOURCE77 | 생성 | Higgsfield GPT gpt_image_2_5/job7c2f7f3f-4137-4b3c-bf60-1f4db0736f7f;1:1/2k/high/opaque 요청,실제2048². SHA4549728529e66a05e92d18b84cc9b64cea00c3cd8cbab35fe63cd1268c5e51df. 전체 프롬프트·URL·입출력은 generation.json |
+| REGION77 | 국소 선택 | 로컬 중심[925,620],반경[470,450]. q=((x−925)/470)²+((y−620)/450)²; t=clamp((1−q)/.30),region=t²(3−2t). 경계 band 없음 |
+| PRIOR77 | 이전 레이어 보호 |73mask>12,74/75/76mask>0을 각 레이어의 실제x/y로 새crop에 교차 매핑. 합집합509153픽셀·변경0 |
+| SNAG77 | 두 고목 보호 |crop 로컬 사각형[560,240,730,590],[290,590,530,1030].165100픽셀·변경0 |
+| PROTECT77 | 합성 보호 |이전mask와 두 사각형 합집합674253픽셀. MaxFilter25/GaussianBlur18,core강제alpha0 |
+| BLEND77 | 공식 |alpha=region×(1−protect)×.92×sourceAlpha, floor(alpha×255)/255. RGB=uint8(master76×(1−alpha)+edited77×alpha),master76 원본alpha 보존 |
+| PIXELS77 | 변화·보존 |총573129픽셀;보행368405/비보행204724. 이전 보호·고목 보호·선택 타원 밖·zero-mask·crop 밖 각각변경0 |
+| CHUNKS77 | 본편 |chunk_1_4/chunk_2_4/chunk_1_5/chunk_2_5. master8192²→64clamped청크(core1024/bleed1/실제1026²). 나머지60청크 유지·224경계strip 동일 |
+| CACHE77 | 버전 |game production loader·composition·retouch-layers 모두20260928-outer-77. legacy 비교 cache·생체 모듈 유지 |
+| REBAKE77 | 보존 순서 |skin65→outer66→outer67→outer68→outer69→outer70→outer71→outer72→outer73→outer74→outer75→outer76→outer77,총13. outer77 x1536/y4608/2048²,preblended RGB+binary alpha0/255 |
+| PROOF77 | 전체 재현 |master SHA982e0a43ad891f7a2d464da3814b28eb0a148423e05cbdb9ec747ee1070229b7;rawRGBA19e6d0ed8d860f5e4e907be949c5e53d3f052402386adff18679ec766c21daef. pre65 master+13패치 helper 전체8192² 픽셀 동일 |
+| FILES77 | 원본 |outer77_sources/input-base·edited_connection·outer77_crop·outer77_patch·outer77_mask·prep·generation,7파일. 브라우저에 관찰된 원본 이미지를pageAssets로 수신 |
+
+## MAP PRODUCTION REPORT
+
+STAGE: CH1-1/stage0, MEDIUM CONNECTION → GROUND CONNECTION의 국소 보정. 공통 제작 가이드v0.9 전체1048줄과 맵디테일·SSOT·지면 계약을 읽고 적용했다. 가이드SHA607e36a49a99205be61c0aeedb438da06bffaf13370360acc99fe86be751e80b. 기존 대형 외곽 질량을 보존한 뒤 반복 접합을 다듬었다.
+
+| 구분 | 항목 | 결과 |
+|---|---|---|
+| MASTER | silhouette / regions |200² 공간과 기존 구역 경계 유지,geometry불변 |
+| MASTER | main route / side spaces |시작6시→출구12시,상단통로·우회·공터 유지 |
+| OUTER MASS | LEFT / RIGHT / TOP / SOUTH |기존66~76차 질량 유지. 서측 숲과 공터 사이의 baked 연결만 편집 |
+| OUTER MASS | major holes |새 독립나무·큰 검은 hole0. 주변 건강한 잎무늬 면·반복 형상은 잔여 |
+| LARGE | source assets / composites / overlap |대형나무·scatter 추가0. 이전 레이어509153픽셀과 두 고목165100픽셀 보호 |
+| LARGE | repeated silhouette |회색 fan의 중심·오른쪽 방사형 무늬를 비대칭 낮은 수피판·괴사조직으로 보강. 보호한 고목 옆 가지와 주변 식생은 잔여 |
+| MEDIUM | connections / remaining holes |수피판→썩은 섬유→피부 재질. 주변 식생 면·보호부 경계 추가RETOUCH |
+| GROUND | shadow / contamination |기존 조명에 맞춘 목질 암부·회자주 피부. 새 발광·피해·경고0 |
+| GROUND | structure integration |타원 밖 변경0. 보행368405픽셀을 낮은 재질로 편집했으며 기존 타일/오브젝트 충돌 불변 |
+| PLAYABLE | main arenas / travel space |G.map동일. 숲 옆 canMv 확인 지점[67.5,128.5]에서 S/W 112.06월드px 이동·복귀 |
+| PLAYABLE | breathing space / threat space |오른쪽 넓은 공터·중앙 전투면·시작 여백·우회·기존 위협 유지 |
+| PLAYABLE | combat readability |해당 숲 옆에서 기존AI 임시24적/6etype,적탄6샘플0/5/7/13/20/20. 실제 마우스공격·Q 캡처. 중앙 캐릭터·숫자·VFX 중첩 잔여 |
+| LANDMARK | primary / secondary / tertiary |생체나무·늪·야영지·제단·출구 유지;신규0 |
+| CAMERA QA | START / EARLY / ARENA |[100,180]/[100,157]/[100,120],본편1280×720 |
+| CAMERA QA | SIDE L / SIDE R / LANDMARK |[49,151]/[151,136]/[102,90],본편 |
+| CAMERA QA | LATE / EXIT |[100,48]/[100,15],본편 |
+| CAMERA QA | 수정부·추가 관찰 |ROOT_MAIN[61,128],TOP[60,120],LOWER[61,136],LEFT[54,128],RIGHT[69,128],JOIN76[80,151],실제START[100,185],L_MASS[73,180],WEST_JOIN[72,117],S_JOIN[121,184] |
+| CAMERA QA | 전후 / 전체맵 |후보전후9·일반본편18카메라·필수8camera-board·전체맵 전후. ROOT_MAIN/LEFT와L_MASS는 비보행 질량을 포함한 원화 관찰용 순간이동. 실제 이동은 검증된 보행 지점에서 별도 수행 |
+| TECH QA | route / collision |지형회귀5PASS·G.map SHA8a5dfe9f1a6c5a283be293a85cedb49509d1db5d317e063fde0b2cd5ff6c65a1 동일. 전체 무보정종주·보스클리어·1-2진입 미검증 |
+| TECH QA | 실제 입력 |[67.5,128.5]부터S650ms/W650ms,아래112.06월드px 이동·복귀,끝칸runtime0·map동일. canMv(r15)와 아래0/30/60/90/120월드px 모두 열린 지점 선택 |
+| TECH QA | pageerror / 404 |후보/본편각각0,HTTP>=400도0 |
+| TECH QA | seam / loading |64청크 master동일·224경계strip 동일. 본편49개 청크URL 모두cache77·route교체0. 각 카메라·최종 이동 캡처 visibleIds⊂drawnIds 대기 |
+| TECH QA | performance |정적4청크 교체·새 runtime draw/atlas0. 저사양GPU/NW.js/장시간FPS 미검증 |
+| TECH QA | regression / rebake |지형5+레이어/버전3+HTML구문1=9PASS0FAIL.13레이어helper전체 픽셀재현;전체builder 재실행 미실시 |
+| FILES | stage-owned |master·4청크·preview·source7·composition·retouch·game cache한줄·mapdocs9·CHANGELOG 맵항목. tmp/ch1-production-pre77 백업 |
+| FILES | concurrent touched |공유 game/CHANGELOG 맵부분만 변경. 시작 시 기존 staged62파일·로비·저장·성능 타작업 보존 |
+| FILES | unrelated touched |이 작업 없음. 롤백·삭제·숨김 없음 |
+| GIT | staged / commit |이 세션 Git쓰기0. 지정 system PowerShell을 provider가 WindowsApps pwsh로 바꾸고 프로세스생성 전 OS−1073283067/FormatMessage317 실패. 기존index보존·77차 미커밋. 다른 도구로 .git 권한 우회하지 않음 |
+| GIT | push / deploy |이 세션 수행 없음 |
+
+**VISUAL VERDICT: RETOUCH** — ROOT_MAIN 전후에서 회색 fan 중심이 넓은 깨진 수피판과 부패 조직으로 연결된다. 큰 공터·기존 고목·76차 접합을 유지했다. 전체 건강한 식생·보호부 가지·다른 반복 원화·밀집 숫자/VFX 중첩이 남아 있어 전체 시각 PASS로 보고하지 않는다.
+
+NEXT PASS: 이 서측 접합 아래쪽의 넓은 잎무늬 면을 괴사 피부·낮은 목질로 연결한다. 공터·기존 충돌·원본 고목·완성한73~77차 부분·늪 버블/가스/동맥은 보호한다.
+
+검수 조건: 독립 컨텍스트·API slots쓰기 차단,체력50ms 보충·무적63f를50ms마다 보정. 임시 기존적24마리/etype0,1,4,6,7,8·ring별12마리·거리250/390·둘째ring angle+.17,3초 대기 후 적탄6샘플/500ms·마우스공격1600ms·Q 후150ms 캡처. 시각검수이며 밸런스·전체성능·무보정클리어 검증과 구분한다. 새생체모션0,ch1-living-detail.js SHA47af23fb8dd096e5112e29a7b298f8b78f03b409e81d967362a047193c182beb 동일.
+
+자료: captures/ch1_outer77/index.html,REPORT.md,visible/runtime.json,live/runtime.json,prep/promotion/generation/final-state JSON,tests.log,rebake-proof.log,capture-integrity.json. tmp/ch1-checkpoint77-owned.zip에 결과물·이전73~76차 소스/청크 의존·관련docs·맵cache/CHANGELOG분리patch·검수자료를 보존하고 엔트리SHA 대조. 공유파일 전체스냅샷을 타작업 복원·스테이징 명령으로 사용하지 않는다.
+
+밀집 검수 이력: 첫18카메라 세션의 임시 적 전투는 중앙 공터에서 수행했으며 runtime-central.json과 central-review에 보존했다. 최종 수정부 전투는 숲 옆[67.5,128.5]에 다시 진입해 모든 visible 청크가 drawn인 상태에서 별도 검수했다. dense-local.log와 live/runtime.json의 denseLocalRetry로 좌표·적탄·오류를 분리 기록한다. 중앙 공터의 첫 전투를 수정부 전투 완료로 세지 않았다.
+
+---
+
+## 이전76차 기록
+
+# CH1-1 남서 위쪽 반복 뿌리의 낮은 목질·피부 바닥 — 76차
+
+실제75차 마스터에서 tile[80,151] 부근의 반복 회색 부채꼴 뿌리를 새 Higgsfield GPT 원화로 부분 편집했다. 이 뿌리는 타일 충돌 경계보다15타일 이상 안쪽의 보행 바닥에 구워져 있으므로 이번에는 경계 band를 쓰지 않는다. 낮은 목질과 피부 주름으로만 바꾸고 기존 나무 오브젝트·동선·충돌을 유지했다. 선택 영역의 보행 바닥 픽셀은 바뀌었으며 전체 안쪽 전투면을 픽셀 그대로 보존했다고 주장하지 않는다.
+
+| id | 항목 | 현행 값·공식 |
+|---|---|---|
+| INPUT76 | 실제 입력 | master75 crop[2048,5120,4096,7168],2048². 입력 SHA 7f5e21800d92f5a6770b837da35dac0106c5ea7f2efcadc454899148beb21f2f; media9edaf20f-c6dd-4ca0-8793-b65877e13050 |
+| SOURCE76 | 생성·규격 | Higgsfield GPT gpt_image_2_5/job46e35428-d6a6-4420-92a2-cd28efe85ce8. 1:1/2k/high/opaque 요청, 실제2048². SHA336674ac9ae7fc8f1f5c04fb6ccd2f35f232800e3091d7a973899acc13de69ff. 프롬프트·출처는 generation.json |
+| REGION76 | 선택 | 로컬 중심[1230,1150], 반경[430,425]. q=((x−1230)/430)²+((y−1150)/425)²; t=clamp((1−q)/.30), region=t²(3−2t) |
+| FLOOR76 | 보행 표면 | ellipse 안의 낮은 baked 재질만 편집. edgeBandTiles=null, band/forest blur 없음. geometry/collision·새 scatter·runtime 오브젝트 추가0 |
+| PROTECT76 | 이전 작업 보호 | 새 crop 하단1024행에 이전 crop 상단1024행을 매핑. outer73_mask>12 및 outer74_mask>0 및 outer75_mask>0의 합집합301195픽셀. MaxFilter25/GaussianBlur18; core 강제alpha0. 보호 영역 변경0 |
+| BLEND76 | 합성 | alpha=region×(1−protect)×.92×sourceAlpha; floor(alpha×255)/255. RGB=uint8(master75×(1−alpha)+edited76×alpha), 원본 master75 alpha 보존 |
+| PIXELS76 | 변화·보존 | 총554432픽셀·선택 보행554432픽셀 변화. 선택 타원 밖/이전 보호 영역/zero-mask/crop 밖 각각 변경0 |
+| CHUNKS76 | 본편 | chunk_2_5/chunk_3_5/chunk_2_6/chunk_3_6. master8192²에서64개 clamped core1024/bleed1/실제1026². 나머지60청크 유지,224경계 strip 동일 |
+| CACHE76 | 버전 | game production loader·composition·retouch-layers 모두 20260928-outer-76. legacy 비교 cache와 기존 생체 모듈 유지 |
+| REBAKE76 | 레이어 | skin65→outer66→outer67→outer68→outer69→outer70→outer71→outer72→outer73→outer74→outer75→outer76, 총12. outer76 x2048/y5120/2048², preblended RGB와 binary alpha0/255 |
+| PROOF76 | 정확한 재현 | master SHA 48cd9bbb0b5e499bd6818402d57a2fb60021f7bdee9b1c0cf4728b7ee3e43ef1; rawRGBA 2238bf224f6a7cba99de9c6bfc708a027aa5d7353e01d246719d909817f58bd0. pre65 master+12패치 helper 전체8192² 픽셀 동일 |
+| FILES76 | 제작 자료 | outer76_sources/input-base·edited_connection·outer76_crop·outer76_patch·outer76_mask·prep·generation,7파일. 관찰된 브라우저 이미지의 pageAssets 원본 수신 |
+
+## MAP PRODUCTION REPORT
+
+STAGE: CH1-1/stage0. MEDIUM CONNECTION → GROUND CONNECTION 국소 보정. 공통 제작 가이드v0.9 전체1048줄, 맵디테일·SSOT·지면 계약 확인. 가이드SHA607e36a49a99205be61c0aeedb438da06bffaf13370360acc99fe86be751e80b. 기존 큰 외곽 질량을 보존한 상태에서 반복 바닥 무늬만 편집했다.
+
+| 구분 | 항목 | 결과 |
+|---|---|---|
+| MASTER | silhouette / regions | 현행200² 구조와 구역 경계 유지; geometry 불변 |
+| MASTER | main route / side spaces | 시작6시→출구12시, 상단 통로·우회·공터 유지 |
+| OUTER MASS | LEFT / RIGHT / TOP / SOUTH | 기존66~75차 큰 질량 유지. 남서 위쪽 보행 바닥의 국소 재질만 수정 |
+| OUTER MASS | major holes | 신규 독립 나무·큰 검은 구멍0. 주변 건강한 식생과 반복 무늬는 잔여 |
+| LARGE | source assets / composites / overlap | 새 대형 나무·scatter0. 기존73~75차 겹침 보호 영역301195픽셀 변경0 |
+| LARGE | repeated silhouette | 해당 baked 회색 fan root를 비대칭 낮은 수피판·피부 주름으로 치환. 별도의 위쪽 반복 root와 runtime 나무는 유지 |
+| MEDIUM | connections / remaining holes | 수피판→썩은 섬유→피부 재질. 주변 넓은 잎무늬 면과 접합 추가 RETOUCH |
+| GROUND | shadow / contamination | 조명에 맞춘 낮은 목질 암부·주름. 새 발광·피해·위험 경고0 |
+| GROUND | structure integration | 선택 타원 밖 변경0. 경계 band 사용하지 않음. 편집된 보행 픽셀554432이며 기존 runtime 나무 충돌은 남아 있음 |
+| PLAYABLE | main arenas / travel space | G.map 동일. 낮은 표면에 충돌 추가0; 나무 옆 실제 S/W 이동 109.00월드px |
+| PLAYABLE | breathing space / threat space | 중앙 넓은 전투공간·시작 여백·우회·기존 위협 배치 유지 |
+| PLAYABLE | combat readability | 수정 바닥 옆 tile[87.5,151.5]에서 기존AI 임시24적/6etype, 적탄6샘플 0/2/5/9/19/21. 실제 마우스 공격·Q 캡처. 중앙 숫자·캐릭터·VFX 중첩은 잔여 |
+| LANDMARK | primary / secondary / tertiary | 생체나무·늪·야영지·제단·출구 유지. 신규0 |
+| CAMERA QA | START / EARLY / ARENA | [100,180]/[100,157]/[100,120],본편1280×720 |
+| CAMERA QA | SIDE L / SIDE R / LANDMARK | [49,151]/[151,136]/[102,90],본편 |
+| CAMERA QA | LATE / EXIT | [100,48]/[100,15],본편 |
+| CAMERA QA | 수정부·이전 작업 | ROOT_MAIN[80,151],TOP[80,145],LOWER[81,158],LEFT[74,150],RIGHT[87,152],JOIN75[78,174],실제START[100,185],L_MASS[73,180],S_JOIN[121,184],SE_NORTH[171,141]. MASS는 비보행 원화 관찰용 순간이동 |
+| CAMERA QA | 전후 / 전체맵 | 후보 전후9·일반 본편18카메라·필수8camera-board·전체맵 전후. 카메라 순간이동을 종주 검수로 대체하지 않음 |
+| TECH QA | route / collision | 지형회귀5PASS. G.map SHA8a5dfe9f1a6c5a283be293a85cedb49509d1db5d317e063fde0b2cd5ff6c65a1 동일. 무보정 전체 종주·보스 클리어·1-2 진입은 미검증 |
+| TECH QA | 실제 입력 | tile[87.5,151.5] S650ms/W650ms, 아래 109.00월드px 이동·복귀; 끝칸runtime0·map 동일. 초기[80.5,151.5]은 기존 m_ctree2(3220,6020,colSz66) 내부 canMv=false로 이동0이어서 성공 근거에서 제외 |
+| TECH QA | pageerror / 404 | 후보·본편·이동 재검수 각각0. HTTP>=400도0 |
+| TECH QA | seam / loading | 64청크 master 동일·224경계 strip 동일. 본편48개 청크 URL 전부 cache76·route 교체0. 최종 이동 캡처도 visibleIds⊂drawnIds 확인 |
+| TECH QA | performance | 정적4청크 교체·새 runtime draw/atlas0. 저사양GPU·NW.js·장시간 FPS 미검증 |
+| TECH QA | regression / rebake | 지형5+레이어/버전3+HTML구문1=9PASS0FAIL. 12레이어 helper 전체 픽셀 재현; 전체 builder 재실행은 미실시 |
+| FILES | stage-owned | master·4청크·preview·source7·composition·retouch·game cache한줄·관련 mapdocs9·CHANGELOG 맵 항목. tmp/ch1-production-pre76 백업 |
+| FILES | concurrent touched | game/CHANGELOG의 맵 부분만 변경. 외부 에이전트의 기존 staged62파일과 로비·저장·성능 작업 보존 |
+| FILES | unrelated touched | 이 작업 없음. 타 작업 롤백·삭제·숨김 없음 |
+| GIT | staged / commit | 이 세션 Git 쓰기0. 기존 staged62파일 보존. 네이티브 exec가 지정한 system PowerShell을 WindowsApps pwsh로 바꾸고 프로세스 생성 전 OS−1073283067/FormatMessage317 실패. 다른 경로로 .git 쓰기 권한 우회하지 않음. 76차 미커밋 |
+| GIT | push / deploy | 이 세션 수행 없음 |
+
+**VISUAL VERDICT: RETOUCH** — 실제 ROOT_MAIN 전후에서 회색 fan 무늬가 줄고 낮은 부패 목질·피부 주름으로 이어진다. 넓은 공터와 이전 접합은 유지했다. 전체 식생·또 다른 반복 뿌리·기존 runtime 나무 표현·밀집 숫자/VFX 중첩은 남아 있다. 자동 PASS를 전체 시각 PASS로 바꾸지 않는다.
+
+NEXT PASS: 더 위쪽의 별도 반복 뿌리와 넓은 잎무늬 면을 낮은 생체 재질로 접합한다. 보행 공간·기존 충돌·완성한 목질·늪 버블/가스/동맥을 유지한다.
+
+검수 조건: 체력50ms 보충·무적63f를50ms마다 보정. 임시 기존적24마리/etype0,1,4,6,7,8·ring별12마리·거리250/390·2번째ring angle+.17을 사용하는 시각 QA이며 밸런스·성능 검증과 구분한다. API slots 쓰기 차단·독립 컨텍스트. 새 생체 모션 추가0; ch1-living-detail.js SHA47af23fb8dd096e5112e29a7b298f8b78f03b409e81d967362a047193c182beb 동일.
+
+검수 보정 이력: 최초 이동점은 타일floor0이지만 기존 나무 collider 내부라 canMv=false였고 hill=false였다. 충돌 코드를 바꾸지 않고 canMv(r15)와 아래120월드px 경로가 모두 열린87.5/151.5로 시작점만 변경했다. 첫 이동 재촬영의 위쪽 청크 로딩 중 화면은 L_WALK_loading.png로 분리·성공 근거에서 제외하고, 최종은 모든 visible 청크 drawn을 기다려 캡처했다. dense 화면은 별도 준비 완료 상태에서 검수했다.
+
+자료: captures/ch1_outer76/index.html, REPORT.md, prep/promotion/final-state/generation JSON, visible/runtime.json, live/runtime.json, runtime-initial.json, movement-retry/ready 로그, capture-integrity.json, tests.log, rebake-proof.log. tmp/ch1-checkpoint76-owned.zip에 소유 결과물·이전 소스 의존·관련docs·맵cache/CHANGELOG 분리patch·검수 기록을 보존하고 모든 엔트리SHA를 대조한다. 공유파일 전체 스냅샷을 복원 명령으로 사용하지 않는다.
+
+---
+
+## 이전 75차 기록
+
+# CH1-1 남서 회색 잔뿌리와 목질·피부 접합 — 75차
+
+남서73차 고목 위쪽에 남아 있던 회색 부채꼴 잔뿌리와 잎 무늬를 실제74차 master crop 입력으로 부분 편집했다. 최종은 Higgsfield GPT의 새75차 원화이며, 초기74차 원화 재사용 후보는 잎 무늬가 크게 남아 적용하지 않았다. 넓은 전투공간·고목 core·collision·기존 생체 모션을 보존한다. 선택 영역의 낮은 보행 재질은 변경했으며 새 장애물이나 runtime 오브젝트는 추가하지 않았다.
+
+| id | 항목 | 현행 값·공식 |
+|---|---|---|
+| INPUT75 | 실제 입력 | master74 crop[2048,6144,4096,8192],2048²; SHA f0af874df9ddd714d567e232aa730fc6a54b38a6159a18ea38fe6f3d01f26fc5; media5bc83eb3-93f6-4022-9e98-26d4dc613684 |
+| SOURCE75 | 생성·규격 | Higgsfield GPT gpt_image_2_5/job bbf05779-74e3-4b4a-ad6b-5e751c41bc09; 1:1/2k/high/opaque 요청, 실제2048² RGB; SHA e4e39f9331d7add613fa94018ea1775c6971e333d4a5480fee7ed281df21a627 |
+| REGION75 | 선택 | crop 로컬 중심[1220,950],반경[400,480]. q=((x−1220)/400)²+((y−950)/480)²; t=clamp((1−q)/.30), region=t²(3−2t) |
+| BAND75 | 낮은 지면 범위 | layout200² 비보행 셀의 Chebyshev8타일 이웃, 축별320월드px/327.68masterpx. blur20. 선택 타원과 band의 교집합만 사용; band밖 보행 alpha0. 74차2타일보다 안쪽의 기존 회색 root까지 낮은 재질 편집; collision 확대 없음 |
+| TRUNK75 | 기존 고목 보호 | outer73_mask>12인572420픽셀 변경0. MaxFilter25/GaussianBlur18 보호 alpha; core는 강제alpha0 |
+| BLEND75 | 합성 | alpha=region×bandBlur×(1−protect)×.92×sourceAlpha, floor(alpha×255)/255; RGB=uint8(master74×(1−alpha)+edited75×alpha). master74 alpha 보존. 초기 재사용 후보의 누적max 방식은 최종에 사용하지 않음 |
+| PIXELS75 | 변화·보존 | 총384431픽셀, 선택 범위 보행368590픽셀 변화. band밖 보행/고목 core/zero-mask/crop밖 변경 각각0 |
+| CHUNKS75 | 본편 | chunk_2_6/chunk_3_6/chunk_2_7/chunk_3_7; 단일8192² master에서64개clamped core1024/bleed1/실제1026². 나머지60청크 유지 |
+| CACHE75 | 버전 | game production loader·composition·retouch-layers 모두20260928-outer-75. 기존 생체 모듈61 및 legacy 비교cache 유지 |
+| REBAKE75 | 순서·레이어 | skin65→outer66→outer67→outer68→outer69→outer70→outer71→outer72→outer73→outer74→outer75; 총11. outer75 x2048/y6144/2048², preblended RGB+binary alpha0/255 |
+| PROOF75 | 정확한 재현 | master 17a1e4c381605b5ef593e0094abf49c175493d7dc789b0d2f447d0733b038844; rawRGBA baa619b3a5c3c7df036e0c69b9fec321a488e403371c655a304235f3ffd8e305. pre65 master+11패치 helper 전체8192² 일치 |
+| FILES75 | 제작 원본 | outer75_sources의 input-base/edited_connection/outer75_crop/outer75_patch/outer75_mask/prep/generation 7파일. 프롬프트·입력/출력 정보 generation.json. 현재 원화는 별도브라우저 source페이지의관찰이미지를pageAssets로원본수신 |
+
+## MAP PRODUCTION REPORT
+
+STAGE: CH1-1/stage0. GATE3 MEDIUM CONNECTION→GATE4 GROUND CONNECTION의 국소 보정. 제작 가이드v0.9 전체1048줄과맵디테일·SSOT·지면계약 확인. 가이드SHA 607e36a49a99205be61c0aeedb438da06bffaf13370360acc99fe86be751e80b. 외곽우선·넓은공터 유지.
+
+| 구분 | 항목 | 결과 |
+|---|---|---|
+| MASTER | silhouette / regions | 현행200²·8구역·53점경계 유지. geometry/collision 불변 |
+| MASTER | main route / side spaces | 시작6시→출구12시·상단통로·양쪽우회·공터 유지 |
+| OUTER MASS | LEFT / RIGHT / TOP / SOUTH | 기존66~74차 큰 질량 유지. 남서 고목 옆 낮은 접합만 편집 |
+| OUTER MASS | major holes | 독립나무·새검은빈hole 추가0. 건강한식생/반복가지 전체잔여 |
+| LARGE | source assets / composites / overlap | 기존73 고목core572420픽셀 그대로. 새대형나무·랜드마크·scatter0 |
+| LARGE | repeated silhouette | 해당 회색 부채꼴 root 줄이고 비대칭 낮은 목질로 접합. 별도의 위쪽grayroot 및 주변숲은잔여 |
+| MEDIUM | connections / remaining holes | 수피판→괴사섬유→피부주름. 바깥식생과주변접합 추가RETOUCH |
+| GROUND | shadow / contamination | 기존 조명에 맞춘 국소 목질암부·낮은피부주름. 새발광·위험피해·경고없음 |
+| GROUND | structure integration | 타원+8타일band+blur·고목보호. band밖보행바닥 픽셀변경0; 74차2타일band전체를보호했다고하지않음 |
+| PLAYABLE | main arenas / travel space | G.map전후/본편동일. 새재질은낮은통과가능표면이며충돌추가0 |
+| PLAYABLE | breathing space / threat space | 중앙전투면·시작여백·우회·기존위험공간보존 |
+| PLAYABLE | combat readability | 기존AI 임시24적/6etype추가, 실제 적탄6샘플 0/0/7/11/19/22. 마우스공격·Q 확인. 밀집캐릭터/숫자/VFX 중앙중첩잔여 |
+| LANDMARK | primary / secondary / tertiary | 생체나무·늪·야영지·제단·출구 유지; 신규0 |
+| CAMERA QA | START / EARLY / ARENA | [100,180]/[100,157]/[100,120] 본편1280×720 |
+| CAMERA QA | SIDE L / SIDE R / LANDMARK | [49,151]/[151,136]/[102,90] 본편 |
+| CAMERA QA | LATE / EXIT | [100,48]/[100,15] 본편 |
+| CAMERA QA | 수정부·추가관찰 | NORTH[78,169],CROWN[80,172],EDGE[78,174],JOIN[82,182],LOWER[87,190],FOLD[78,179],MASS[73,180],실제START[100,185],S_JOIN[121,184],SE_NORTH[171,141]. MASS는비보행원화관찰용 순간이동 |
+| CAMERA QA | 전후 / 전체맵 | 후보전후9·route교체없는일반본편18카메라, 전체맵 전후 및 필수8camera-board. 순간이동캡처를종주완료로해석하지않음 |
+| TECH QA | route / collision | 지형회귀5 PASS 및 G.map SHA 8a5dfe9f1a6c5a283be293a85cedb49509d1db5d317e063fde0b2cd5ff6c65a1 동일. 무보정전체종주/보스클리어/1-2진입 미검증 |
+| TECH QA | 실제입력 | tile[78.5,174.5]에서S650ms/W650ms, 아래107.87월드px이동·복귀. 끝칸runtime0, G.map동일 |
+| TECH QA | pageerror / 404 | 후보/본편각각0; HTTP>=400도0 |
+| TECH QA | seam / loading | 64청크master동일·224경계strip동일. 본편48청크요청전부cache75,visibleIds⊂drawnIds,본편route교체0 |
+| TECH QA | performance | 정적4청크교체·추가runtime draw/상주atlas0. 저사양GPU/NW.js/장시간FPS 미검증 |
+| TECH QA | regression / rebake | 지형5+레이어/버전3+HTML구문1=9PASS0FAIL; 11레이어helper전체픽셀재현. 전체builder재실행미실시 |
+| FILES | stage-owned | master·4청크·preview·source7·composition·retouch·game cache한줄·관련mapdocs9. tmp/ch1-production-pre75 백업 |
+| FILES | concurrent touched | 공유game/CHANGELOG의맵부분만변경. 로비·프레임저하·출품타작업보존 |
+| FILES | unrelated touched | 없음. 타작업롤백·삭제·숨김없음 |
+| GIT | staged / commit | 보고작성시이세션Git쓰기없음. 실제최종HEAD/index/승인된Git실행결과는end-state.json에분리기록. .git읽기전용권한을우회하지않음 |
+| GIT | push / deploy | 이세션수행없음 |
+
+**VISUAL VERDICT: RETOUCH** — 본편 L_EDGE에서 기존 회색 fan이 낮은부패목질과피부주름으로이어지고 플레이어·적/탄을확인했다. 전체건강한식생·또다른grayroot·주변접합·밀집효과중앙중첩이남아있다. 자동PASS를전체시각PASS로바꾸지않는다.
+
+NEXT PASS: 남서 시작 경계의 더위쪽 반복root와 식생접합을 정리한다. 넓은전투면/동선/고목원본/늪버블·가스·동맥을유지한다.
+
+검수조건: 체력50ms·무적63f를50ms마다보정, 임시기존적24마리의시각QA. 실제AI/적탄/공격/Q를사용하며밸런스·성능검증과구분한다. API slots쓰기차단·독립컨텍스트. 기존생체모듈SHA 47af23fb8dd096e5112e29a7b298f8b78f03b409e81d967362a047193c182beb 유지, 신규모션추가없음.
+
+초기후보이력: 2타일band 재사용후보12429픽셀변화는실제grayroot가4~8타일안쪽이어서너무좁았다. 8타일band의74원화누적max후보322772픽셀변화는커진잎무늬가남아미적용(attempt2). 최종은실제74베이스참조의새GPT원화와위BLEND75이며초기후보를본편완료로세지않는다.
+
+자료: captures/ch1_outer75/index.html, REPORT.md, visible/runtime.json, live/runtime.json, prep.json, promotion.json, tests.log, rebake-proof.log, capture-integrity.json. tmp/ch1-checkpoint75-owned.zip에는맵소유파일·이전미커밋소스의존·맵cache/CHANGELOG분리patch·관련docs·검수기록을보존하고엔트리SHA를검증한다.
+
+실제 Git 최종 확인: 승인된git add가exec 프로세스생성전 OS -1073283067/FormatMessage317로실패했다. index는비어있고커밋은미완료다. 다른실행경로로읽기전용.git권한을우회하지않았다. 맵적용·QA·docs는완료했고소유체크포인트로보존한다.
+
+---
+
+## 74차 이하 제작 이력
+
+# CH1-1 남서 고목과 지면 접합 — 74차
+
+기존 남서 고목 오른쪽·아래의 반복 잔뿌리와 수풀 일부를 낮은 부패 목질·괴사 조직으로 연결했다. 73차의 실제 master crop을 Higgsfield GPT 편집 입력으로 제공했다. 생성 결과 전체를 덮어쓰지 않고 국소 마스크로 반영했다. 기존 고목의 보호 영역과 경계 안쪽 전투 바닥은 그대로다. 보행 경계의 낮은 재질은 편집했으며 지형·충돌·이동·밸런스·생체 애니메이션은 변경하지 않았다.
+
+| id | 항목 | 실제 계약 |
+|---|---|---|
+| INPUT74 | 실제 베이스 | master crop [2048,6144,4096,8192], 2048². input-base.png SHA256 fee0f47941a83bcdd7640e306c7cee6b77ec72a44ce7ce6a607b8da7fed1f905; 업로드 media 1f960bf0-1945-4140-92f2-bd134fddecbe |
+| SOURCE74 | 편집 모델·규격 | Higgsfield GPT gpt_image_2_5 / job aa478af7-f0cd-4b02-a870-405d6263937b. 1:1/2k/high/opaque 요청, 실제 2048² RGB. 생성 원본 SHA256 7d4071594a377e04e12d584474a1c446397a167f107dbab2df0c6799730cf6fc |
+| REGION74 | 부분 편집 | crop 로컬 타원 중심 [1200,1310], 반경 [470,600]. q=((x−1200)/470)²+((y−1310)/600)²; t=clamp((1−q)/.30); region=t²(3−2t), 합성계수 .92 |
+| BAND74 | 경계 보행 재질 | 현행 200² layout grid에서 비보행 셀의 Chebyshev 2타일 이웃. 축별 최대80월드px/81.92master px. GaussianBlur20, 보행 중 band 밖 alpha0. 충돌 면적 확대 없음 |
+| TRUNK74 | 73차 고목 보호 | outer73_mask>12인 572,420픽셀 변경0. 보호 alpha는 MaxFilter25/GaussianBlur18로 부드럽게 확장하고 core는 강제로 alpha0 |
+| BLEND74 | 픽셀 합성 | alpha=region×bandBlur×(1−trunkProtect)×.92×sourceAlpha. 양자화 floor(alpha×255)/255; RGB=uint8(base×(1−alpha)+edited×alpha), 베이스 alpha 보존 |
+| PIXELS74 | 실제 변화 | 총 183,663픽셀, 경계 보행 재질 121,007픽셀. band 밖 보행/고목 보호 core/alpha0/crop 밖 변화 각각0 |
+| CHUNKS74 | 본편 | chunk_2_6.png, chunk_3_6.png, chunk_2_7.png, chunk_3_7.png. 단일8192² master→64 clamped 청크, core1024/bleed1/실제1026². 다른60청크 보존 |
+| CACHE74 | 로더·메타데이터 | game production loader, composition.bakeVersion, retouch-layers.bakeVersion 모두 20260928-outer-74. 생체 모듈 cache61·legacy 비교cache 유지 |
+| REBAKE74 | 레이어 순서 | skin65→outer66→outer67→outer68→outer69→outer70→outer71→outer72→outer73→outer74. 마지막x2048/y6144/2048², preblended RGB+binary alpha0/255 |
+| PROOF74 | 재현 해시 | master 3b05ccc2c022f32c327acf4e96eceb6a9db2ca5d79a715bd74253923412c844c; 전체 RGBA f2574c440e1eaa3f52e1d4f489162ba1b37053fea635461ceb0684c4a0d69b1f. pre65 master+10패치 helper 재현, 전체8192² 픽셀 동일 |
+| FILES74 | 제작 원본 | outer74_sources의 input-base/edited_connection/outer74_crop/outer74_patch/outer74_mask/prep/generation 7파일. 전체 프롬프트·참조 입력·출력 규격을 generation.json에 기록 |
+
+## MAP PRODUCTION REPORT
+
+STAGE: CH1-1 / stage0. GATE3 MEDIUM CONNECTION→GATE4 GROUND CONNECTION의 국소 보정. 제작 가이드 v0.9 1048줄 전체와 맵디테일·SSOT·지면 계약을 확인했다. 외곽 우선, 넓은 전투공간, 중앙 추가장식 없음.
+
+| 구분 | 항목 | 결과 |
+|---|---|---|
+| MASTER | silhouette / regions | 현행200²·8구역 유지. geometry·collision 불변 |
+| MASTER | main route / side spaces | 시작6시→출구12시·상단route·양쪽 우회·넓은 공터 보존 |
+| OUTER MASS | LEFT / RIGHT / TOP / SOUTH | 66~73차 대형 고목 질량 보존. 남서73 고목의 접합만 편집 |
+| OUTER MASS | major holes | 새 검은 빈 구멍·독립 structure 없음. 건강한 식생과 반복 가지는 전체 맵에 남음 |
+| LARGE | source assets / composites / overlap | 새 대형 나무·랜드마크·scatter0. 기존 고목 core 572420픽셀 정확히 보존 |
+| LARGE | repeated silhouette | 기존 fan-shaped 잔뿌리의 접합 일부를 낮은 목질로 완화. 위쪽·안쪽 잔뿌리는 남음 |
+| MEDIUM | connections / remaining holes | 고목 수피판→낮은 목질·괴사 조직→기존 지면. 주변 수풀·잔가지 접합은 후속 보정 필요 |
+| GROUND | shadow / contamination | 생성 crop의 국소 접촉 암부·어두운 섬유질. 새 발광·피해·경고 효과 없음 |
+| GROUND | structure integration | 타원 선택·2타일 경계 band·blur·고목 보호 합성. 넓은 안쪽 전투 바닥은 픽셀 변경0 |
+| PLAYABLE | main arenas / travel space | G.map 전후·본편 동일. 원화의 낮은 재질은 그대로 통과 가능; 기존 gameplay 장애물 보존 |
+| PLAYABLE | breathing space / threat space | 시작 여백·중앙 전투면·우회 유지. 경계 재질을 새 충돌 벽으로 바꾸지 않음 |
+| PLAYABLE | combat readability | 기존AI 임시24적/6etype, 실제 적탄6샘플 0/2/11/12/21/25개. 공격·Q 화면 확인. 캐릭터·숫자·VFX 중앙중첩 잔여 |
+| LANDMARK | primary / secondary / tertiary | 생체나무·큰늪·야영지·제단·출구 유지; 신규 랜드마크0 |
+| CAMERA QA | START / EARLY / ARENA | [100,180]/[100,157]/[100,120] 본편 |
+| CAMERA QA | SIDE L / SIDE R / LANDMARK | [49,151]/[151,136]/[102,90] 본편 |
+| CAMERA QA | LATE / EXIT | [100,48]/[100,15] 본편 |
+| CAMERA QA | 수정 경계 | MASS[73,180]은 비보행 원화 관찰용 순간이동. EDGE[78,174]/JOIN[82,182]/LOWER[87,190]/FOLD[78,179] 및 실제시작[100,185] |
+| CAMERA QA | 전체 비교 | 후보 전후8시점, route 교체없는 본편16시점1280×720, 전체맵 전후. 순간이동 캡처는 종주 검수와 구분 |
+| TECH QA | route / collision | 지형 회귀5검사 PASS·후보전후/실제 입력/밀집QA G.map 동일. 무보정 전체 종주 미검증 |
+| TECH QA | 경계 이동 | [78.5,174.5]에서 S650ms/W650ms, 실제 아래 106.25월드px 이동·복귀, 끝칸runtime0. 기존 collision 그대로 |
+| TECH QA | pageerror / 404 | 후보와 본편 각각0, HTTP>=400도0 |
+| TECH QA | seam / loading | master/64청크 동일·224경계 strip 일치. 본편48청크요청 모두cache74, visibleIds⊂drawnIds, 후보 교체만 사용·본편 교체0 |
+| TECH QA | performance | 정적4청크 교체, 추가 runtime draw/상주 atlas0. 저사양GPU·NW.js·장시간FPS 미검증 |
+| TECH QA | regression / rebake | 지형5+레이어·버전3+HTML구문1=9PASS. helper 전체 픽셀 재현; fullbuilder 전체 실행은 미실시 |
+| FILES | stage-owned | master·4청크·preview·source7·composition·retouch·game cache 한줄·관련 맵docs. tmp/ch1-production-pre74 백업 |
+| FILES | concurrent touched | 공유 game.html/CHANGELOG 최신본의 맵 범위만 변경. 로비·출품·캐릭터 타작업 보존 |
+| FILES | unrelated touched | 없음. 타작업 삭제·숨김·롤백 없음 |
+| GIT | staged / commit | 보고 작성 시 이 세션 Git 쓰기 없음. 최근 정상 exec가 PowerShell 생성 단계 OS317로 실패; 실제 기록 상태는 end-state.json으로 별도 확인 |
+| GIT | push / deploy | 이번 세션 수행하지 않음 |
+
+**VISUAL VERDICT: RETOUCH** — 실제 플레이 화면에서 기존 고목과 낮은 목질이 더 이어진다. 잔여 회색 뿌리·건강한 식생·주변 접합과 밀집 전투 중첩은 추가 보정이 필요하다. 자동 검사 PASS를 전체 시각 PASS로 바꾸지 않는다.
+
+NEXT PASS: 남서 경계의 위쪽 잔뿌리와 잎·가지 접합을 더 줄인다. 넓은 전투면, 기존 남측 양쪽 고목, 북쪽route, 늪 버블·가스·동맥을 유지한다.
+
+검수 조건: 체력50ms·무적63f를50ms마다 보정한 임시24적 시각QA. 실제 AI·적탄·마우스 공격·Q를 사용했으며 밸런스·성능 검증과 구분한다. API slots 쓰기를 차단한 독립 QA 컨텍스트이다. 기존 생체 모듈 SHA256 47af23fb8dd096e5112e29a7b298f8b78f03b409e81d967362a047193c182beb 그대로이며 새 생체 움직임을 추가하지 않았다.
+
+이력: 비보행만 허용한 첫 마스크는 총60,105픽셀·보행0변화였으나 잔뿌리가 대부분 남아 시각 보정했다. 최종은 위 BAND74 경계 재질 편집이며 첫 마스크와 구분한다. generation.json에는 실제 베이스 참조가 있고, 다른 crop·전체맵을 신규 생성하지 않았다.
+
+자료: captures/ch1_outer74/index.html / visible/runtime.json / live/runtime.json / prep.json / promotion.json / tests.log / rebake-proof.log. 맵 소유 파일·73차 참조 의존파일·맵 cache 분리본·관련docs·검수 자료는 tmp/ch1-checkpoint74-owned.zip에 보존하고 엔트리 SHA256을 대조한다.
+
+---
+
+> 이하 73차 이전 기록. 현행 계약은 위 74차 보고를 따른다.
+
+# CH1-1 남서 시작 경계 부패 목질 — 73차
+
+시작 구역 왼쪽의 수풀·가는 가지 반복 일부를 비틀려 꺾인 고목 단면과 넓은 뿌리판으로 연결했다. 전체 베이스를 다시 생성하지 않고 기존 master의 비보행 배경에만 새 투명 원화를 합성했다. 생성 원화는 기존 crop을 참조 입력으로 전달하지 않은 standalone 환경 레이어다. 실제 본편 master 위 합성·카메라 검수로 연결을 확인했다. 정적 원화이며 새 생체 움직임을 추가한 작업은 아니다.
+
+| id | 계약 | 실제 값 |
+|---|---|---|
+| SOURCE73 | 생성 | Higgsfield GPT gpt_image_2_5 / joba0982929-ab1d-42e1-b230-efa86193c5b0. 1:1/2k/high/transparent 요청, 실제2048² RGBA, alpha0..254, alpha0픽셀2,945,977 |
+| PLACE73 | 좌표 | master crop[2048,6144,4096,8192] 2048², 중심tile[73,180], sprite1536²/scale.75, crop offset[174,461] |
+| MASK73 | 합성·보호 | RGB×.70/opacity.84; 현행200² layout grid 전체 대조, 비보행 MinFilter49/GaussianBlur20, 보행alpha 강제0·8bit alpha 양자화 |
+| PIXELS73 | 변화 | 580,534픽셀; 보행0/alpha0영역0/crop 밖0. 원화 투명 영역의 베이스 보존 |
+| CHUNKS73 | 본편 | chunk_2_6.png, chunk_2_7.png, chunk_3_7.png; core1024/bleed1/1026². 단일master에서 clamped crop, 나머지청크 보존 |
+| METADATA73 | 버전 일치 | 착수시 runtime72/master72인데 retouch·composition label70을 재현(새 회귀RED). 원인은 보정helper 복사시 파일/id의 outer70 치환만 수행하고 cache의 outer-70 문자열을 남긴 것. 두 label만72로 수정하여GREEN, helper의정확한cache문자열도73으로수정, 최종 원화반영·cache·두metadata73 동일. 72차 마스터/LFS oid가 HEAD4247b65a1에 포함된 것도 확인 |
+| CACHE73 | 로더 | 20260928-outer-73; 생체모듈61차·legacy 비교cache 유지 |
+| REBAKE73 | 보존 순서 | skin65→outer66→outer67→outer68→outer69→outer70→outer71→outer72→outer73. 마지막x2048/y6144/2048²; preblended RGB+binary alpha0/255 |
+| PROOF73 | 해시 | master c39583e44b046747952db5e2df5f088f950d90e86f9c73113d17cd11d06dcea6; rawRGBA f09c0064866415647b3a98fcf9187aabf33bedec76ff6826e3593cda834e28e2. pre65+9patch helper 전체8192² 픽셀 동일 |
+| FILES73 | 재현 | outer73_sources의원화/crop/patch/mask/prep/generation 6파일. 원본SHA dd48da6d3738e7051d396421b526db3e9cd6247df75b764c89751aec78c0c985, 전체prompt와 실제alpha 기록 |
+
+## MAP PRODUCTION REPORT
+
+STAGE: CH1-1/stage0. GATE2~4 남측 LARGE OUTER MASS 부분 리터치. 앞서 전체 읽은 제작가이드1048줄이 현재도 동일함을 확인하고 맵디테일·production SSOT를 재확인했다.
+
+| 구분 | 항목 | 결과 |
+|---|---|---|
+| MASTER | silhouette / regions | 현행200² 지형·8구역 유지. geometry·collision 변경 없음 |
+| MASTER | main route / side spaces | 시작6시→출구12시·상단통로·넓은공터·양쪽우회 보존 |
+| OUTER MASS | LEFT / RIGHT | 서쪽66·북서67·동쪽69·남동71·남측오른쪽72 보존 |
+| OUTER MASS | TOP / SOUTH | 북쪽68 유지. 남측 시작 왼쪽 외곽에 낮은 목질 공동 연결 |
+| OUTER MASS | major holes | 선택영역 반복수풀 일부를 큰수피판·심재 공동으로 정리. 전체 녹색식생·가는가지 반복은 남아 있음 |
+| LARGE | source assets / composites | 신규Higgsfield GPT 투명 원화 한 개; 기존base 위 부분 합성. small scatter 추가0 |
+| LARGE | overlap / repeated silhouette | 높은고목·부채꼴뿌리와 구별되는 비틀린 줄기→갈라진 단면→넓은 뿌리판. 비보행 계층만 합성 |
+| MEDIUM | connections / remaining holes | 수피판→검은심재→국소힘줄→짧은뿌리 연결. 주변고사리·잔여식생은 추가리터치 필요 |
+| GROUND | shadow / contamination | 원화 하부 접촉 암부·국소 괴사 조직. 새보행오염 없음 |
+| GROUND | structure integration | 실제보행경계 마스크 feather, 피부65·기존동맥 보존. crop 외부 픽셀0변화 |
+| PLAYABLE | main arenas / travel space | 넓은시작공간·중앙공터·동측우회·상단route 보존; 후보전후/본편 G.map 동일 |
+| PLAYABLE | breathing space / threat space | 보행픽셀0변화·충돌·적·어택티켓·밸런스 변경 없음 |
+| PLAYABLE | combat readability | 기존AI 임시24적, 적탄6샘플 0/1/2/7/18/23개. 캐릭터 중앙중첩 남아 있어 전체 전투PASS 아님 |
+| LANDMARK | primary / secondary / tertiary | 생체나무·큰늪·캠프·제단·출구 유지. 새 주요랜드마크 없음 |
+| CAMERA QA | START / EARLY | [100,180]/[100,157], 실제시작칸 [100,185] 보행화면 추가 |
+| CAMERA QA | ARENA / SIDE L / SIDE R | [100,120]/[49,151]/[151,136] 본편경로 |
+| CAMERA QA | LANDMARK / LATE / EXIT | [102,90]/[100,48]/[100,15] 본편경로 |
+| CAMERA QA | 남측 경계 | EDGE[78,174]·JOIN[82,182]·LOWER[87,190] 보행화면. MASS[73,180]은 비보행 원화 관찰용 순간이동 |
+| CAMERA QA | 전후 / 본편 | 후보전후7카메라·route교체없는 본편39카메라1280×720 및 전체맵전후. 본편은 첫27개+재검수12개 결합; 순간이동은 종주검증과 구분 |
+| TECH QA | route / collision | 현행layout 연결성검사·실제WASD 후G.map동일. 무보정전체종주 미검증 |
+| TECH QA | 남측 실제 이동 | [78.5,174.5]에서 실제S650ms/W650ms, 아래로107.13월드px, 끝칸runtime G.map0·복귀·map동일. 보정없는종주와 구분 |
+| TECH QA | pageerror / 404 | 후보·본편 각각0, HTTP>=400도0 |
+| TECH QA | seam / loading | master/64청크 동일·224경계strip 동일, 본편62청크요청 모두cache73·visibleIds⊂drawnIds·교체0 |
+| TECH QA | performance | 정적3청크교체·추가runtime draw0. 저사양GPU·NW.js·장시간FPS 미검증 |
+| TECH QA | regression / rebake | 지형5+레이어보존3+HTML구문1=9PASS. helper 전체재현, fullbuilder전체실행과 구분 |
+| TECH QA | metadata regression | 신규 production rebake metadata uses the chunk version loaded by the game 검사. 실제 두JSON과 로딩cache 대조; RED→GREEN 기록 metadata-red/green.log |
+| FILES | stage-owned | master·3청크·preview·source6·manifest·composition·game cache 한줄·test/ch1ProductionRetouch.test.js 버전일치검사·맵docs·검수. 반영전tmp/ch1-production-pre73 백업 |
+| FILES | concurrent touched | 공유game.html·CHANGELOG 최신본의 맵 관련 범위만 변경. 동시작업Git staging에는 직접쓰기 없음 |
+| FILES | unrelated touched | 없음. 타작업 삭제·숨김·롤백 없음 |
+| GIT | staged / commit | 73차 쓰기·커밋 수행안함. 이 세션 .git 읽기전용·exec시작 장애로 허용된Git쓰기경로 미확보. 다른에이전트의누적커밋상태와 구분 |
+| GIT | source-control limit | 최종git상태·73차체크포인트 검증기록 참조. 실제런타임에셋 숨김·삭제 없음 |
+| GIT | push / deploy | 이 세션73차는 수행하지 않음 |
+
+**VISUAL VERDICT: RETOUCH** — 남측 왼쪽 경계의 큰 수피판·검은 공동이 실제보행화면에서 읽힌다. 전체 건강한 식생·반복가지·주변 접합·밀집캐릭터 중첩은 추가수정 필요하다. 자동검사PASS를 전체visualPASS로 대체하지 않는다.
+
+NEXT PASS: 남측 양쪽 외곽에 남아 있는 녹색 식생·가지 접합을 다듬고 큰 목질 사이 지면 연결을 개선한다. 넓은 시작공간·북쪽route·기존 늪버블/가스/동맥 보존.
+
+초기 QA의 late 화면 일부가 흰 화면으로 캡처되어 이를 visual PASS 근거에서 제외하고 12시점과 전투를 새 페이지로 재검수했다. 원인 확정·장시간 재현 검증은 남아 있다. 첫 경계 순간이동[83.5,183.5]는 기존 오브젝트 충돌로 변위0; canMv 검사 후[78.5,174.5]에서 실제 이동을 확인했다. 기존 collision 변경 없음.
+
+검수: captures/ch1_outer73/index.html·visible/runtime.json·live/runtime.json·prep.json·promotion.json·tests.log·rebake-proof.log. 체력50ms/50ms 무적고정63f 및 기존 무적점멸이 캐릭터를 가리는 캡처를 피한 임시24적 시각QA로 성능·밸런스 검증은 아니다.
+
+보존: 73차소유파일·관련docs·검수자료를 tmp/ch1-checkpoint73-owned.zip에 묶고 엔트리SHA256을 검증한다. 공유game 전체스냅샷과 cache만 분리한검토본을 구분하며 .git 직접쓰기 없음.
+
+---
+
+> 이하 72차 이전 기록. 현행 계약은 위 73차 보고를 따른다.
+
 # CH1-1 남측 시작 경계 부패 목질 — 72차
 
 시작 구역 오른쪽의 수풀·가는 가지 반복 일부를 낮고 넓은 수피판과 썩은 목질 공동으로 연결했다. 전체 베이스를 다시 생성하지 않고 기존 master의 비보행 배경에만 새 투명 원화를 합성했다. 생성 원화는 기존 crop을 참조 입력으로 전달하지 않은 standalone 환경 레이어다. 실제 본편 master 위 합성·카메라 검수로 연결을 확인했다. 정적 원화이며 새 생체 움직임을 추가한 작업은 아니다.
@@ -1141,3 +1831,10 @@ opacity는 alpha feather/지면×.7 적용 전 값이다. runtime props와 다�
 ## Git 체크포인트 상태
 
 Git쓰기승인후체크포인트실행을시도했으나승격실행기의WindowsApps pwsh프로세스생성317/-1073283067로시작되지않음.커밋/추가staging없음;자동승인리뷰거절아님.맵소유95파일+공유game맵분기2개·CHANGELOG맵이력은독립자료로보존.타작업staging2개유지;최종변경수는별도상태기록.코드+docs커밋필수단계미완료.
+
+
+### CH1_HIDDEN_UNDERLAY_20260929 — 현행 바닥 렌더 계약
+
+완성 production_finish 화면이 전체 뷰포트를 불투명 ready청크로 덮으면 _ch1StartOuterCoversView가 가려진 _fillVoidWithFloor·20개 _oriFireflies·기존 맵캐시 분기3그룹을 렌더에서 제외한다. 매 프레임 줌/흔들림/가장자리·1026² ready를 검사하며, 로딩·오류·맵 밖 노출·다른stage/보스아레나/outer·Rootworld·초기폴백은 원래 바닥을 유지한다. ?ch1LegacyUnderlay=1은 비교용. visible 생체/언덕/소품/ATMO·19빌드레이어/이미지·충돌 삭제0. 캐시 메모리 전체해제나FPS개선율을 주장하지 않는다.
+
+현행 공식·수치·검수는 [가려진 레이어 정리 SSOT](CH1_HIDDEN_UNDERLAY_20260929.md)를 따른다. 앞선 날짜별 회귀·FPS·아트 수치는 당시 검수 이력이다.

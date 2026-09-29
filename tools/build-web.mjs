@@ -14,7 +14,10 @@ const files=new Set(extract('FILES')),dirs=extract('DIRS');
 const tracked=execFileSync('git',['ls-files','-z'],{maxBuffer:16*1024*1024}).toString().split('\0').filter(Boolean);
 const selected=tracked.filter(p=>(files.has(p)||/^(lang_[^/]+\.js|atlas_[^/]+)$/.test(p)||dirs.some(d=>p.startsWith(d+'/')))
   &&!p.includes('/_unity_preview/')&&!p.includes('/_p11_candidates/')&&!isMapAuthoringSource(p)&&!/\.(zip|blend|psd|kra)$/i.test(p)&&existsSync(resolve(root,p)));
-for(const p of ['index.html','game.html','stat-panel-ui.js','localization-runtime.js','video/title_motion_hd.mp4']){
+for(const p of ['index.html','game.html','stat-panel-ui.js','localization-runtime.js','video/title_motion_hd.mp4',
+  'three-runtime.js','assets/vendor/three-r160/build/three.module.js',
+  'assets/vendor/three-r160/examples/jsm/loaders/GLTFLoader.js',
+  'assets/vendor/three-r160/examples/jsm/utils/BufferGeometryUtils.js']){
   if(!selected.includes(p))throw new Error('Missing required runtime file: '+p);
 }
 mkdirSync(out,{recursive:true});let bytes=0;

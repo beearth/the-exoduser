@@ -76,6 +76,11 @@ docs/ 폴더는 게임의 **모든 기획·수치·공식·시스템 설계**를
 
 ### 터미널 시작 실패 시 대체 작업 경로 (2026-09-27)
 
+- **2026-09-29 사용자 확정: PowerShell은 필수 도구가 아니다.** PowerShell 시작 실패만으로 작업을 중단하거나 사용자에게 서버 실행·환경 복구를 떠넘기지 않는다. 아래 대체 경로를 실제 확인하고, 가능한 경로로 원래 작업을 계속한다.
+- **우선 전환:** `exec_command`에 `shell: 'C:\\Windows\\System32\\cmd.exe'`, `tty: false`, `login: false`를 지정해 `echo shell_probe` 같은 짧은 명령을 실행한다. 성공하면 CMD에서 파일 읽기·검색·Git을 진행하고, Node 작업은 `C:\nvm4w\nodejs\node.exe` 전체 경로로 실행한다. PowerShell 전용 문법을 CMD에 그대로 전달하지 않는다.
+- **추가 대안:** PowerShell이 꼭 필요한 명령은 실행 가능한 Node 경로에서 시스템 `powershell.exe`를 `spawnSync`/`execFileSync`로 호출한다. 인수는 배열로 전달하고 `-NoProfile`, `-NonInteractive`, `-WindowStyle Hidden`, `windowsHide:true`를 적용한다. 동일한 WindowsApps 시작 오류를 반복 재시도하지 않는다.
+- **중단 판단:** CMD·Node·직접 패치 등 허용된 독립 경로까지 확인한 뒤 실제로 불가능한 단계만 보고한다. 연결 거부는 서버가 응답하지 않는 증거이며 파일 작업 전체가 불가능한 증거가 아니다. 서버 시작이 필요하면 허용된 실행 경로로 `server.cjs`를 숨김 실행하고 HTTP 응답을 검증한다. 권한 거부는 대체 실행으로 우회하지 않는다.
+- **보고 정확성:** 한 번 실행됐다고 영구 복구를 선언하지 않는다. 2026-09-29에는 시스템 PowerShell 성공 후 같은 호출 경로의 WindowsApps 시작 오류가 재발했지만 CMD 파일 읽기·Git 조회는 성공했다.
 - `exec_command`가 명령 실행 전 `CreateProcessW`, `pwsh.exe`, `OS Error -1073283067`로 실패하면 파일 작업 전체가 불가능하다고 단정하지 않는다. 이 세션에서는 지정한 Windows PowerShell 대신 WindowsApps의 PowerShell 7 경로가 오류에 나타났으며, 권한 상승 재시도도 실패했다.
 - **검증된 대안:** `functions.exec` 안에서 `tools.apply_patch(...)`로 `G:/exoduser/` 안의 파일을 직접 수정하고, 이미 실행 중인 `http://localhost:3333`의 정적 파일 응답으로 디스크 내용을 다시 읽어 검증한다. 터미널과 직접 패치 도구는 독립적으로 확인한다.
 - 상세 절차·예제·제약: [터미널 장애 대체 작업 가이드](docs/13출시·마케팅/TERMINAL_FAILURE_FALLBACK_20260927.md). 브라우저/CDP는 먼저 해당 도구 문서를 읽고 로컬 개발 작업에만 사용한다.
@@ -87,6 +92,7 @@ docs/ 폴더는 게임의 **모든 기획·수치·공식·시스템 설계**를
 - 사용자 작업·채팅을 가리는 PowerShell/Git 콘솔 팝업을 만들지 않는다. 기본 터미널을 Windows 콘솔 호스트로 바꾸는 것만으로는 해결되지 않았다.
 - Windows에서 `exec_command`는 `shell: 'C:\\Windows\\System32\\WindowsPowerShell\\v1.0\\powershell.exe'`, `tty: true`, `login: false`를 사용한다. 이 조합으로 실행한 PowerShell 자체의 `MainWindowHandle=0`을 두 번 확인했다. 이것은 해당 실행의 검증이며 다른 세션·앱의 모든 팝업 해결을 의미하지 않는다.
 - 백그라운드 도구의 `Start-Process`에는 `-WindowStyle Hidden`을 지정한다. 창 숨김 목적으로 실행 중인 Codex·Git·사용자 터미널 프로세스를 강제 종료하지 않는다.
+- 위 PowerShell 설정은 정상 실행 시 기본값이다. 시작 실패 시에는 앞 절의 CMD·Node 대체 설정을 사용하며, PowerShell만 고집하지 않는다.
 - `ExoduserAutoCleanup50` 예약 작업은 사용자 지시로 삭제되었으며 재등록하지 않는다.
 
 ### 1. docs/ 동기화 (최우선 — 절대 규칙)

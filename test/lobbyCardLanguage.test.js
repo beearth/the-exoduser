@@ -19,7 +19,7 @@ function setup(){
    focus(){document.activeElement=this;}};
  }
  const dictionary={'전사':'Warrior','궁수':'Ranger','처치':'Kills','브라우저 저장':'Browser Save',
-  '삭제':'Delete','새 캐릭터':'New Character','슬롯 가득참':'Slots Full','최대':'Max','개':' characters'};
+  '삭제':'Delete','새 캐릭터':'New Character','슬롯 가득참':'Slots Full','최대':'Max','개':' characters','캐릭터 이름 (2~8자)':'Character Name (2-8 chars)'};
  const ctx=vm.createContext({document,$:id=>nodes[id]||null,console,
   _lobbyLang:()=>language,_TL:s=>language==='ko'?s:dictionary[s]||s,
   _LOBBY_BUILD:'demo',_LOBBY_TABLES:{},_LOBBY_EN:dictionary,_selectedCharDisplay:null,
@@ -84,4 +84,13 @@ test('language application is safe before a list or slot state has initialized',
 test('existing fixed card labels remain compatible with the shared control helper',()=>{
  const s=setup(),card=s.card();card.leaves['.char-info'].textContent='Lv.9';s.ctx._addLobbyCardControl(card,'fixed','saved');
  assert.equal(card.control.title,'fixed · Lv.9');assert.equal(card.control.dataset.cardKey,'saved');
+});
+
+test('the persistent name label translates without changing the typed name or focus',()=>{
+ const s=setup(),label={children:[],textContent:'캐릭터 이름 (2~8자)'},input={value:'입력한이름',placeholder:''};
+ s.nodes.charNameLabel=label;s.nodes.charName=input;s.document.activeElement=input;
+ s.change('en');assert.equal(label.textContent,'Character Name (2-8 chars)');
+ assert.equal(s.nodes.charNameLabel,label);assert.equal(input.value,'입력한이름');assert.equal(input.placeholder,'');
+ assert.equal(s.document.activeElement,input);assert.equal(s.requests(),0);
+ s.change('ko');assert.equal(label.textContent,'캐릭터 이름 (2~8자)');assert.equal(input.value,'입력한이름');
 });

@@ -1,0 +1,31 @@
+{
+  "package": "three",
+  "version": "0.160.0",
+  "license": "MIT",
+  "files": [
+    {
+      "file": "build/three.module.js",
+      "url": "https://unpkg.com/three@0.160.0/build/three.module.js",
+      "bytes": 1272972,
+      "sha256": "76dea8151bc9352aef3528b4262e249b2604f62543828328db978d060d61a495"
+    },
+    {
+      "file": "examples/jsm/loaders/GLTFLoader.js",
+      "url": "https://unpkg.com/three@0.160.0/examples/jsm/loaders/GLTFLoader.js",
+      "bytes": 108522,
+      "sha256": "d073b438e6a07e1359741dd5d6c76c953420cc0d4fd84eb1bdde94315540e6a3"
+    },
+    {
+      "file": "examples/jsm/utils/BufferGeometryUtils.js",
+      "url": "https://unpkg.com/three@0.160.0/examples/jsm/utils/BufferGeometryUtils.js",
+      "bytes": 31906,
+      "sha256": "9be041e96308775d00e2695cc607645b9a9b64fd7c0e759dd8f7c00a8d92becb"
+    },
+    {
+      "file": "LICENSE",
+      "url": "https://unpkg.com/three@0.160.0/LICENSE",
+      "bytes": 1081,
+      "sha256": "852e0e8699169bf9f6fdc6bda3e682d078dcbc738b5d33e74df594721bff271d"
+    }
+  ]
+}

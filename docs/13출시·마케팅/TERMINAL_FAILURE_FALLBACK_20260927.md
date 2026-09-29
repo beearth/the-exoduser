@@ -32,6 +32,26 @@
 
 ## 실제 사용 절차
 
+### 2026-09-29 우선 절차 — PowerShell 실패로 작업 중단 금지
+
+사용자 확정: PowerShell은 필수가 아니다. 실행 가능한 대안을 확인하기 전에 사용자에게 서버 실행이나 환경 복구를 떠넘기지 않는다.
+
+| 순서 | 실행 경로 | 검증 및 다음 행동 |
+|---|---|---|
+| 1 | `exec_command`: `shell:'C:\\Windows\\System32\\cmd.exe'`, `tty:false`, `login:false` | `echo shell_probe`로 시작 확인 후 `type`, `rg`, `git` 등 CMD에 맞는 명령으로 계속 작업 |
+| 2 | CMD에서 `C:\nvm4w\nodejs\node.exe` 전체 경로 실행 | 파일 처리·테스트·서버 실행에 사용. 깨진 기본 `node` shim 사용 금지 |
+| 3 | PowerShell 전용 작업만 Node `spawnSync`/`execFileSync`로 시스템 `powershell.exe` 호출 | 인수 배열, `-NoProfile`, `-NonInteractive`, `-WindowStyle Hidden`, `windowsHide:true` 사용 |
+| 4 | 허용된 직접 `apply_patch` 및 실행 중인 로컬 서버 읽기 | 셸과 독립적으로 확인. 현재 도구 문서와 보안 정책이 허용하는 API만 사용 |
+| 5 | 실제로 필요한 단계가 모든 허용 경로에서 불가능한 경우 | 오류와 미완료 단계만 구체적으로 보고. 권한 거부 우회 금지 |
+
+2026-09-29 실제 확인: CMD `echo shell_probe`, `git status --short --untracked-files=all`, `type AGENTS.md` 성공. 시스템 PowerShell 5.1 실행과 `MainWindowHandle=0` 확인 후에도 같은 설정에서 WindowsApps `pwsh.exe` 시작 오류가 재발했다. 따라서 영구 복구 완료로 보고하지 않고 CMD 경로로 문서 작업을 계속했다.
+
+로컬 서버 연결 거부만으로 파일 작업 불가를 단정하지 않는다. 필요하면 허용된 실행 경로에서 `server.cjs`를 창 숨김으로 시작하고 `/` 및 `/api/slots` 응답을 확인한다. 시작 시도만으로 서버 기동 성공을 보고하지 않는다. 이 절차는 새 파일 접근 API나 명령 실행 엔드포인트를 만드는 허가가 아니다.
+
+### 셸 대안도 사용할 수 없을 때 — 기존 서버를 통한 작업
+
+아래는 당시 도구에서 검증한 절차다. 현재 도구가 해당 API를 제공하지 않거나 브라우저 정책이 차단하면 사용하지 않는다.
+
 1. `cua.getState()`로 실행 중인 게임 탭을 확인한다. 임의로 다른 사용자의 탭을 선택하지 않는다.
 2. `cua.getTab(확인한ID, {browser:확인한브라우저ID})`로 연결하고 반환된 API 문서를 읽는다. 브라우저 런타임의 `agent.browsers.get()`와 `browser.tabs.get()`을 쓸 경우 해당 문서에 명시된 방법만 사용한다.
 3. `local-web-development` 문서와 `tab.capabilities.get('cdp').documentation()`을 읽는다. CDP의 원시 명령은 해당 로컬 개발 출처 안에서만 사용한다.

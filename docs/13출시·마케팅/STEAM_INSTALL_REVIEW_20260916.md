@@ -8,7 +8,7 @@ AppID **4749590** / 반려 BuildID **25202408**. 이전 로컬 대응 보고서�
 
 | 화면 / 근거 | 판정 | 플레이 영향 / 처리 |
 |---|---|---|
-| `game.html` `renderSettings`의 `charSelectGrid` | 기존 `_EN`에 `Exoduser Warrior`, `Dark fantasy warrior. Greatsword + Black armor`가 있으나 ch.name/ch.desc 직접 출력 | 이름·설명 리프 두 곳을 기존 `_T`에 연결. 번역을 새로 작성하지 않음. 회귀 검사는 수정 전 실패, 수정 후 EN→KO 표시 성공 |
+| `game.html` `renderSettings`의 `charSelectGrid` | 기존 `_EN`에 `Exoduser Warrior`, `Dark fantasy warrior. Greatsword + Black armor`가 있으나 ch.name/ch.desc 직접 출력 | 이름·설명 리프 두 곳을 기존 `_T`에 연결. 번역을 새로 작성하지 않음. 회귀 검사는 수정 전 실패, 수정 후 EN→KO 표시 성공. 2026-09-29 현행 소스는 game-easy-test.html도 같은 조회로 보완; 두 HTML 회귀 및 KO/EN 카드 실화면 확인. 새 Steam 패키지 검증은 미수행 |
 | 캐릭터 선택 `index.html` CHAR_VISUALS → selectVisual → `_TL` | 조회·갱신은 호출하지만 신규 키가 `_LOBBY_EN`에 없음 | `거대검을 휘두르는 흑철의 전사`, `근접 화신`, `흑철의 방어`, `파멸의 일격`과 설명이 영어에서도 한국어. 영문 스크린샷 `character-en.png`에 실제 표시됨. 플레이 스타일 이해에 영향 |
 | 기초 실습 `parry-lesson.js` build/render | 한국어 리터럴 후보116개 중 기존 정확 EN 키5개. render가 textContent에 한국어 직접 대입 | `먼저 움직여보세요`, `마우스로 조준하고 좌클릭 기본공격 기검참으로 적 3마리를 처치하세요.`, `W / A / S / D 또는 클릭하여 시작`, 홀딩·회피·패링 지시 등이 남음. 실습 성공 조건 이해에 직접 영향 |
 | 자원 실습 `resource-practice.js` | 후보86개, 기존 정확 EN 키0개 | MP/ST·정신력·그로기 탈출·자원 회복 설명 미번역. 버튼 이름만의 문제가 아님 |

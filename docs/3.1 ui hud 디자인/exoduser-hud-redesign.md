@@ -747,7 +747,7 @@ const HUD_ICON = {
 
 | 위치 | DOM/표현 | 표시 규칙 | 갱신 원본 | 적용 위치 |
 |---|---|---|---|---|
-| 상단 중앙 2행 | `#spCnt` → `✦ {SP}` | `SP` 라벨 제거. AP가 있을 때만 `+{AP}` 보조 수치. `#stageClock` 아래 `+32px`에 중앙 정렬해 좌측 미니맵을 비움. 테두리·배경·구분선 없음 | `P.sp`, `P.ap` | `updateHUD(true)` |
+| 상단 중앙 2행 | `#spCnt` → `✦ {SP}` | `SP` 라벨 제거. AP가 있을 때만 `+{AP}` 보조 수치. `#stageClock` 아래 기준 `+32px×--ui-scale`에 중앙 정렬해 좌측 미니맵을 비움. 테두리·배경·구분선 없음 | `P.sp`, `P.ap` | `updateHUD(true)` |
 | 상단 중앙 2행 | `#cpHud` → `◇ {CP}` | 지옥/층 접두어 및 `CP` 라벨 제거. SP·콤보와 동일한 **텍스트 전용** 보조 정보 묶음 | `calcCP().total` | `updateHUD(true)` |
 | 상단 중앙 | `#stageTimerHud` → `MM:SS` | `TIME`, `CLEAR`, `TOTAL`, BEST 표기를 플레이 중 숨김 | `G.stageTime / 60` | `updateHUD(true)` |
 | 상단 중앙 | `#stageProgressFill` | 숫자 없이 2px 진행선만 표시 | `G._stageKills / G._totalSpawned × 100` | `updateHUD(true)`, width `.6s ease-out` |
@@ -864,7 +864,7 @@ grep "hud.*::before" game.html  # 2개
 
 | 요소 | 변경 전 | 변경 후 |
 |---|---|---|
-| ✦SP/◇CP 자원 | `#hudTop` 상단 중앙 (시계 아래 나열) | 신설 `#hudCorner` 좌측 상단(미니맵 아래 y≈178px), Cinzel .62rem, opacity **.48** |
+| ✦SP/◇CP 자원 | `#hudTop` 상단 중앙 (시계 아래 나열) | 신설 `#hudCorner` 좌측 상단(미니맵 아래 top=`188px×--ui-scale + safe-area-top`), Cinzel .62rem, opacity **.48** |
 | 우측 목표 프레임 `.objective-frame` | `display:none` (킬/악의 숨김) | 2026-09-10: `#mmLvl` 전체를 하나의 패널로 묶고 `.objective-frame`은 상단 구분선만 표시. 지역 처치/악의 라벨 추가 |
 | `#killCnt` | JS가 `☠ 0 / 0` 기록 (아이콘 span과 중복) | 2026-09-10: `지역 처치` 라벨 + 천단위 쉼표 숫자 `0 / 1,100` |
 | `#expF` 경험치 라인 | 밝은 골드 그라디언트 | 뮤트 브론즈 rgba(122,101,72,.55)→rgba(196,171,124,.85), 2px 룬 라인 |
@@ -948,7 +948,7 @@ dirty ivory `rgba(214,205,187)` / aged silver `rgba(196,187,168)` / dark iron `r
 
 | 대상 | 현재 계약 |
 |---|---|
-| 설정 | 왼쪽 min(680px,100vw−24px), 게임/화면/사운드/조작/시스템 5탭, 본문만 스크롤, 자동저장/닫기 고정 |
+| 설정 | 화면 중앙 width100vw−24px/height100dvh−24px, 폭600px 이하 각각−12px. 게임/화면/사운드/조작/시스템 5탭, 본문만 스크롤, 자동저장/닫기 고정. 현행 상세: SETTINGS_UI_WORKSPACE_20260929.md |
 | 장비 | 오른쪽 clamp(640px,36vw,780px), 화면폭−24px 상한. 장비/유골함/보석/보관함 탭(보석은 전용 그리드, 나머지는 기존 가방), 필터 접기. 폭≤780은 화면폭−16px. 유골함·보관함 탭은 폭min(980px,100vw−24px)/높이min(680px,94vh),왼쪽 가방·오른쪽 각 전용 패널 동등폭(폭899px 이하 상하) |
 | 스킬/대장간/창고 | 각각 최대1020/980/700px, 화면폭−24px 상한. 스킬 왼쪽, 대장간/창고 중앙 |
 | 성장 | 기존 전체화면/인체 트리 유지, 공통 표면/내비게이션 마감 적용 |
@@ -1003,3 +1003,66 @@ dirty ivory `rgba(214,205,187)` / aged silver `rgba(196,187,168)` / dark iron `r
 CSS 캐시 ui-refinement.css?v=20260927-3. 신규 이미지/아이템 데이터 변경/자동 테스트 추가·실행 없음.
 
 정확한 CSS는 UI_COMPOSITION_20260925.md의 같은 절을 따른다.
+
+
+## 2026-09-28 HUD·텍스트 프레임 드랍 수정
+
+| 적용 위치 | 현행 계약 |
+|---|---|
+| GPU proxy text | _buildProxyX의 font/textAlign/textBaseline setter와 restore는 proxy 상태만 갱신. native fillText 폴백·strokeText·measureText는 _syncTextFont로 요청값/정규화된 실제값 확인 후 필요한 글꼴 지정만 수행 |
+| skSlot1 분노 | _updateActionKeys에서 기본→분노 테두리 왕복 제거. 최종 색·그림자를 한 번 계산, 높이/숫자 span도 _hset으로 변경 시에만 기록. 기존 색/공식/transition 유지 |
+| _hset 캐시 | _h_<prop> 요청값과 실제 DOM을 함께 비교. _hn_<prop>에 정규화된 style값 기록, 외부 변경 시 복구 |
+| 검증 한계 | 관련 회귀35 PASS/두 HTML 인라인 script 각6 parse PASS. 전체 FPS 최종 비교는 화면 전환으로 무효; 완전 해결 판정 보류 |
+
+[원인별 실측·정확한 수치·남은 검증](../12퍼포먼스·최적화/FRAME_DROP_HUD_TEXT_20260928.md).
+
+## 2026-09-28 전투 프레임 후속 검증
+
+| 구분 | 현행 검증 상태 |
+|---|---|
+| 수정·단기 전투 | HUD/proxy 수정 유지,실제 AI100마리·전투 활성6초에서 평균207.75FPS/p95 8.4ms,초기최대83.4ms 1회. 장시간·스킬 난사·보스·Steam 실측은 미완료 |
+| Chrome 확대 | localhost 저장 배율50%가 5626×2524 viewport를 만든 것으로 확인. Steam용 ./userdata와 분리; Steam 화면/FPS가 정상이라고 실측 완료를 주장하지 않음 |
+| 근거 | [유효 측정·중단 제외·배율 경계](../12퍼포먼스·최적화/FRAME_DROP_HUD_TEXT_20260928.md#2026-09-28-후속-전투-실측과-chrome-배율) |
+
+
+## 2026-09-29 발사 경고 문구 프레임 병목·설정 복원
+
+| 항목 | 현행 구현·검수 |
+|---|---|
+| native 글꼴 | 두HTML _buildProxyX의 _syncTextFont: 같은 요청/정규화 실제값이면 setter 생략. Canvas초기화·외부 변경·다른 글꼴은 재적용 |
+| 경고 폭 | 본편 _drawProjectileChargeLabel의 _chargeLabelMetrics 한항목(ctx/label/font/width) 재사용. 렌더러/번역문구/글꼴 변경 및 document.fonts loadingdone/loadingerror에서 재측정. 기존13px·박스폭tw+14/높이20·링60틱·탄종/패링 규칙 유지 |
+| 해상도 복원 | 두HTML 최초 설정과 _loadPreset OPT 복원 뒤 rz(). 저장60%/프리셋70% 실제C/CT/burst 반영, 동일치수no-op |
+| 근거·경계 | 전투 경고의 font/measureText 약29~42ms 스택 확인. 저장본 새로고침100AI/1920×1080/10초 draw p99 4.1ms(직전31.9ms),max44.7ms 잔여2회. 전후CSS창 크기가 달라 평균FPS 개선율 확정하지 않음. 예열20초 연결중단/최종visual·Steam·보스 미검증 |
+| 검사·상태 | 관련57PASS,두HTML실행script각6구문PASS. 기존경고fixture의실제_projectileParryClass 누락복구. 커밋/패키지/Steam업로드미완료,타작업스테이징보존. [상세 계약·실측·검수 경계](../12퍼포먼스·최적화/FRAME_DROP_HUD_TEXT_20260928.md) |
+
+
+## 2026-09-29 — HUD 창 크기·페이지 줌 적응
+
+자동 배율의 0.5~3.0 고정 상하한을 제거하고 HUD 가장자리 여백을 같은 디자인 배율로 맞췄다. 1920×1080 기준 배치·구체175px·스킬바820×182px·구체/바 배율0.9·미니맵166×166px/0.85는 유지한다. 시계는 기준 폭170px에 자동 배율을 한 번 적용한다. 세부 여백·회귀 검증·범위는 [현행 계약](UI_SCALING_20260929.md)을 따른다.
+
+
+## 2026-09-29 미획득 배지 HUD 숨김·상태 수치 겹침 수정
+
+| 대상 / id | 현행 구현·검수 |
+|---|---|
+| 사용자 기준 | 획득 배지가 없으면 HUD에 배지0/3·빈 버튼·자리 표시를 남기지 않는다. 지역 처치·악의 수치를 가리지 않는다 |
+| 표시 조건 | tutorial-badges.js의 init에서 button.hidden=true로 시작. render에서 count=Object.keys(earned).length; count===0이면 button/panel hidden=true 및 aria-expanded=false. 1~3개 획득·복원 시 button.hidden=false. 언어 갱신에도 같은 조건 적용 |
+| 모음 열기 | toggle(open)은 button.hidden이면 열기를 거부하며 숨긴 버튼에 focus하지 않는다. 배지가 있으면 기존 닫기 초점/버튼 복귀·aria-expanded·3개 카드 정책 유지 |
+| 위치 | button과 collection을 #mmLvl의 자식으로 연결. 둘 모두 position:absolute/right0/pointer-events:auto; 버튼 top:calc(100% + 8px),모음 top:calc(100% + 46px). 상태창의 기존 크기·UI배율·safe-area 이동을 따라가며 수치 행과 겹치지 않음 |
+| 표시 CSS | button[hidden]/collection[hidden]/toast[hidden]은 display:none!important. 기존 버튼 padding5px10px/border1px/radius3px/font12px/1.5 유지. #mmLvl 미존재 폴백은 body에 연결,button fixed right20px/top180px,collection fixed right20px/top218px/width min(360px,100vw−40px)/max-height calc(100dvh−238px) |
+| 획득·보관 | combat12/resources8/systems7 실제 완료 체크·중복 지급 차단·저장키·3.5초 알림 유지. 알림은 body에 남기며 배지 표시 정책으로 획득 기록이나 저장 데이터를 삭제하지 않음 |
+| 적용·캐시 | tutorial-badges.js/css와 game.html/game-easy-test.html. 두HTML 모두 JS/CSS캐시20260929-earned-hud |
+| 회귀 | 신규 표시·첫획득·복원·HUD연결4건 수정 전FAIL→수정 후PASS,기존 번역1건PASS. tools/test-tutorial-badges.cjs의 지급/중복/저장/슬롯격리/차단폴백/양HTML연결 검사PASS |
+| 원본 브라우저 | Node3333 본편 독립 QA 슬롯에서 수정 전 배지0/3의 상태창 겹침true→수정 후 hidden=true/display:none/rect0. 메모리의 획득1개 상태는 상태창 bottom171.834px/버튼 top180.014px,겹침false. 모의 획득은 저장 API 호출 없이 earned만 변경 |
+| 시각·입력 검수 | 원본 HUD DOM/CSS·배지JS를 분리한 fixture에서0개/1개 스크린샷,배지 모음 실제 클릭→닫기 초점/화면내 배치→닫기→0개 숨김 확인. 브라우저 viewport2534×1262,override없음. fixture는 UI 검수이며 튜토리얼 완료 플레이 검증은 아님 |
+| 현재 게임 | 열린 demo 게임에도 디스크의 render/toggle 함수와 CSS를 hot apply. count0/hiddentrue/displaynone/지역 처치0/168 전체 노출을 실제 플레이 스크린샷으로 확인. 게임 ontrue/pausedfalse 유지; 재시작·저장쓰기·획득기록 수정 없음 |
+| 기록·상태 | tmp/badge-hud-20260929에 before/fixture/docs전체검색/검수계약 보존. 기존 dirty·staged 작업 보존. .git 관리형 읽기 전용으로 커밋 미완료; NW.js패키지·Steam배포 미수행 |
+
+
+## 2026-09-29 설정창 가독성 확장
+
+| 대상 | 현행 규칙 |
+|---|---|
+| 설정창 | 고정680px 폭 제거, 화면 여백12px(폭600px 이하6px), 본문 그룹2열/작은 화면1열 |
+| 가독성 | 기본 설정명16px·키캡14px, 행60px·키캡42px 이상, 제목80px로 압축. 전체 값/선택자는 SETTINGS_UI_WORKSPACE_20260929.md 참조 |
+| 검수 | 메인/쉬운 테스트 실제 설정 화면, 6개 화면 크기×5탭에서 가로 잘림 없음·닫기 고정 확인 |

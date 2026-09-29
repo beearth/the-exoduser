@@ -1,7 +1,7 @@
 {
   "event": "INDIE Live Expo 2026.12.1",
   "prepared": "2026-09-28",
-  "status": "slogan_revised_current_runtime_media_verified_drive_updated_form_not_submitted",
+  "status": "form_submitted_with_steam_event_promotion_user_confirmation_screenshot_verified",
   "handoff": {
     "drive_metadata": "drive-upload.json",
     "review_page": "index.html",
@@ -21,7 +21,7 @@
     "form_draft_saved": true,
     "final_submit_button_visible": true,
     "important_notes_consent_checked": true,
-    "form_submitted": false,
+    "form_submitted": true,
     "consent_observation": "Existing checked state observed on form; not selected by agent."
   },
   "source_video": "current-20260928/current-parry.webm + current-slam.webm + current-ice.webm",
@@ -969,7 +969,7 @@
   "notes": [
     "24 Mbps delivery encoding cannot restore detail absent from the original footage.",
     "No generated gameplay footage. Combat records actual game canvas layers without the DOM HUD.",
-    "Form unsubmitted. Existing external media Allow, streaming Yes and Important Notes checked preserved. Optional Steam event consent remains pending.",
+    "Form submission confirmed from user-provided Google Forms receipt screenshot. Steam App ID 4749590 was entered after approval for Steam event promotion. Selection result is pending.",
     "Both videos now use September 28 current-runtime captures. Previous September 9 edits are backed up locally."
   ],
   "image_capture": {
@@ -1083,11 +1083,20 @@
     "release_timing": "TBA / 1111",
     "playtime": "More than 50 hours (already selected on resumed live form; preserved)",
     "user_schedule_confirmation": "No schedule for announcement",
-    "submitted": false,
+    "submitted": true,
+    "submitted_on": "2026-09-28",
+    "steam_app_id": "4749590",
+    "steam_event_promotion_approved": true,
+    "submission_confirmation": {
+      "source": "user-provided Google Forms confirmation screenshot",
+      "message": "回答を記録しました",
+      "response_edit_link_visible": true,
+      "evidence_file": "submission-confirmation.png",
+      "live_browser_readback": "timed out; receipt verified from user screenshot",
+      "selection_result": "pending"
+    },
     "email_verification": "Single correct business email visibly present with draft saved. Email previously became blank after reload; recheck it immediately before any future submission.",
-    "pending": [
-      "optional Steam App ID banner consent"
-    ],
+    "pending": [],
     "debut_game": "Yes",
     "development_setup": "Developing the game full-time",
     "developer_confirmation": "2026-09-28: User confirms full-time business owner and no released games yet. Both form selections and draft saved verified.",

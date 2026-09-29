@@ -18,3 +18,9 @@
 | 한계 | 창 생성 자체를 차단하는 근본 수정이 아니다. 표시 이벤트를 처리하기 전 순간 노출·포커스 이동 가능성이 남는다. 숨김 호출 기록만으로 사용자 체감 해결을 확정하지 않는다 |
 
 중지하려면 PowerShell에서 `New-Item -ItemType File -Path G:\exoduser\tmp\terminal-settings\guard.stop -Force`를 실행한다. 다시 실행하려면 보조 도구가 정지했는지 확인 후 중지 파일을 제거하고 명시적으로 시작한다.
+
+## 2026-09-29 재발 진단
+
+Edge에서도터미널깜빡임과간헐프레임급락이보고됐다. 150.518초관측에서setup8개/conhost18개신규생성,setup7개의부모Codex31780과VS Code경로확인. `.sandbox/sandbox.2026-09-28.log`에서도같은시각setup refresh·정상완료를확인했다. 창생성개수는실제표시된창개수가아니며,Edge설정화면일시정지표본에서는포커스변화0이었다. 심한전투급락과인과관계·팝업수정완료미확정.
+
+ExoduserAutoCleanup50단독조회는지정경로없음(exit1),재등록0. 기존8시간guard의현재실행/효과를확정하지않고재실행하지않았다. 상세근거·관측부하·현행32GiB페이지파일은 [Edge·터미널환경진단](../12퍼포먼스·최적화/EDGE_TERMINAL_FRAME_DIAG_20260929.md)을따른다. PowerShell provider는지정시스템shell에도WindowsApps pwsh를시작하려다OS317로실패했고,CMD/직접패치/파일읽기는작동했다. 별도.ps1실행정책거부를우회하거나보안설정을완화하지않았다.

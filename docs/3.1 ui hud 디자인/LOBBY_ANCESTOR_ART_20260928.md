@@ -9,18 +9,35 @@
 | LOBBY_DEFAULT / _updateCharDisplay() | 미선택: 묘왕 바르칸 / Varkan, the Tomb King; 선대 소환체 / ANCESTRAL SUMMON; 플레이어가 소환하는 선대의 영체 / A spirit summoned by the player. 전대·그림자·독립 배경 표시, 캐릭터 src/poster/onerror 해제, 입장 disabled=true |
 | LOBBY_SELECTED / _updateCharDisplay(s) | CHAR_VISUALS[s.charIdx ?? 0], 잘못된 인덱스는0으로 폴백. #lobby.has-selected-character로 전대·그림자·ambient video 숨김. 선택 캐릭터 이름과 _TL(job 또는 cls) 표시, 소환체 상세 설명은 빈 리프. 입장 disabled=false |
 | DEMO_SELECTION / _renderSlotList | 최초 미선택, active 카드 없음. 클릭/선택 버튼으로 _selectedSlot/_selectedSlotName=demo, active 추가 및 charIdx0 선택. 내부 DEMO CHARACTER는 화면에서 대검전사 / Greatsword Warrior. 재렌더는 기존 선택만 유지, 자동 선택 없음 |
-| SELECTED_MEDIA | idleVid 재생, idleRate 없으면1. 전사 assets/charselect/idle_warrior_higgsfield_4k.mp4?v=20260913-detail1, playbackRate0.75; poster_idle_warrior_higgsfield_4k.jpg 같은 버전. 실버테일 idle_silvertail.mp4 및 poster_idle_silvertail.jpg, 버전20260927-restored. 공개 comingSoon/생성 제한 변경 없음 |
+| SELECTED_MEDIA | idleVid 재생, idleRate 없으면1. 전사 assets/charselect/idle_warrior_cs3_4k.mp4?v=20260929-cs3, playbackRate0.75; poster_idle_warrior_cs3_4k.jpg 같은 버전 (2026-09-29 CS3.0 재생성, 아래 §전사 아이들 재생성 참조; 구 idle_warrior_higgsfield_4k.* 파일은 미참조로 보존). 실버테일 idle_silvertail.mp4 및 poster_idle_silvertail.jpg, 버전20260927-restored. 공개 comingSoon/생성 제한 변경 없음 |
 | SELECTED_STILL | 정적 이미지 poster → portrait → bust. 영상 실패/재생 거절은 캐릭터의 동일 정적 이미지 유지 및 영상 src/poster 해제. 정적 이미지 실패는 같은 캐릭터 portrait 또는 bust, 이것도 실패하면 이미지 숨김; 컨트롤/이름/배경 유지 |
 | MEDIA_LIFECYCLE | 다른 외형/해제 시 이전 콜백·src/poster 제거 및 pause/load. 이전 실패 콜백은 현재 onerror 함수와 같을 때만 동작. 같은 외형의 이름/언어 갱신은 재로드/재생 시간 초기화 없음 |
 | ANCESTOR_LIFECYCLE / lobby-ancestor-sprite.js | visible = !document.hidden && lobby display≠none && getClientRects.length>0; active=visible && !has-selected-character. 선택 중 전대 rAF 취소 및 ambient video.pause. 선택 영상도 숨김/모션 감소 시 pause; 모션 감소는 정적 이미지, 해제 시 영상 재개 |
 | BACKGROUND | 기본 v2 crypt 포스터/독립 영상 유지. 선택 외형에 scene이 있으면 같은 캐릭터 배경 원화로 교체; 해제 시 _swapLobbyBg(0)로 crypt 복원. 새 이미지 생성/게임 전대 에셋 변경 없음 |
-| SELECTED_LAYOUT / lobby-ancestor-art.css | 원래 전체 화면 구도 복원: inset0, width100%, height100%, object-fit:cover, object-position:center center, transform:none, mask-image:none. 원본 종횡비 유지, 창 비율이 다르면 cover의 가장자리 크롭만 적용. 65%/55% 패널 축소·강제 aspect-ratio·마스크 제거. 정적 이미지 z-index1, 영상2; 선택 상태의 좌·우 UI3으로 이름/카드/입장 버튼을 원화 위에 표시 |
+| SELECTED_LAYOUT / lobby-ancestor-art.css | 원래 전체 화면 구도 복원: inset0, width100%, height100%, object-fit:cover, object-position:center center, transform:none, mask-image:none. 원본 종횡비 유지, 창 비율이 다르면 cover의 가장자리 크롭만 적용. 65%/55% 패널 축소·강제 aspect-ratio·마스크 제거. 정적 이미지 z-index1, 영상2; 선택 상태의 좌·우 UI3으로 이름/카드/입장 버튼을 원화 위에 표시. **초광폭 예외**: `@media(min-aspect-ratio:17/9)`에서 object-fit:contain, object-position:left center, mask-image 우측 페이드(원화 폭 `100vh*16/9`의 마지막 12vh를 투명으로) — 21:9/32:9에서 cover가 16:9 원화를 최대 2배 확대해 머리가 잘리던 문제 수정 |
 | SELECTED_CAPTION | .lobby-left 내부 중앙 left50%(뷰포트 기준32.5%, 화면폭≤1100px는27.5%); bottom3% 기존 유지. 전대 배치 함수는 선택 중 이름 좌표를 덮어쓰지 않음. charDispDetail:empty 숨김 |
-| CACHE | lobby-ancestor-art.css / lobby-ancestor-sprite.js query20260929-slotart2. 기존 미디어 버전/스프라이트96셀·24fps·셀384×624 변경 없음 |
+| CACHE | lobby-ancestor-art.css query20260929-slotart3 (초광폭 예외 추가), lobby-ancestor-sprite.js query20260929-slotart2. 기존 미디어 버전/스프라이트96셀·24fps·셀384×624 변경 없음 |
 | SAVE / INPUT | hellsave_demo 등 저장 형식/진행/사용자 원문 보존. 기존 버튼·키보드·패드 선택 경로 유지. 기본 상태에서 입장 전에 카드를 선택 |
 | VALIDATION | 관련 회귀306 PASS, inline script4개 구문 통과. 실제 브라우저의 최종 화면 크기/모션 감소/폴백 검수는 아래 완료 기록 참조 |
 
 
+
+## 2026-09-29 전사 아이들 재생성 + 초광폭 크롭 수정
+
+| 항목 | 값 / 근거 |
+|---|---|
+| 발단 | 사용자 5119×1439(≈32:9) 모니터 F11 전체화면에서 선택 원화가 크게 확대되고 머리가 잘림. 원인=SELECTED_LAYOUT의 object-fit:cover가 16:9 원화를 가로에 맞춰 약2배 확대 |
+| CSS 수정 | lobby-ancestor-art.css `@media(min-aspect-ratio:17/9)` contain+좌측정렬+우측 페이드. 16:9 이하는 기존 cover 전체화면 유지 |
+| 원화 | Higgsfield GPT Image 2.5 **sunburst** (사용자 직접 생성, job 90882b0d), 레퍼런스=구 poster_idle_warrior_higgsfield_4k.jpg, 3456×2048(27:16). 같은 구도·디자인 유지, 고해상 재묘사 |
+| 영상 모델 | Higgsfield **Cinema Studio Video 3.0** (최상위, 4K), 16:9, 8초, 오디오 off, start_image=end_image=원화(루프). job 3c17b51e. 원본 HEVC 3840×2160 24fps 33Mbps |
+| 비교 폐기 (Kling) | Kling 3.0 4K mode(job 695db6a0, 48크레딧): H.264 3740×2216(원화 27:16 유지) 3.8Mbps, 루프 SSIM 0.983(최고)이나 1:1 얼굴·갑옷 비교에서 CS3 대비 뚜렷이 흐리고 대비 약함 → CS3 유지 |
+| 비교 폐기 | Seedance 2.0 4K high bitrate(job 2259e692) — 카메라 고정·품질 양호했으나 루프 이음매 SSIM 0.848 < CS3 0.864로 CS3 채택. 21:9 flare 후보 2장(5315dc4a/76711264)은 sunburst 원화로 대체되어 미사용 |
+| 인코딩 | NW.js Chromium HEVC 재생 불확실 → libx264 High@5.1, yuv420p, 18M VBR(max24M), +faststart, 무음. 결과 idle_warrior_cs3_4k.mp4 14.1MB, 8.04s |
+| 포스터 | poster_idle_warrior_cs3_4k.jpg = 영상 0프레임(q2) → 영상 로딩 전/실패 시 동일 구도 |
+| 루프 | 첫/끝 프레임 SSIM 0.864, 프레임0 vs 96 구도·스케일 동일(카메라 무이동) |
+| 재생 속도 | idleRate 0.75 기존값 유지 (8.04s → 체감 10.7s) |
+| 브라우저 검수 | Edge(Playwright) 1920×1080: cover, rect 0,0,1920,1080 / 3440×1440·5120×1440: contain·0% 50%, readyState4, videoWidth3840. 5120×1440에서 전신 표시+배경 페이드, 1920×1080 기존 전체화면 유지 육안 확인 |
+| 크레딧 | 이미지 flare 4.25 + Seedance 176 + CS3 192 (sunburst 원화는 사용자 생성) |
 
 ## 2026-09-29 사용자 정정 — 선택 원화 전체 화면 비율 복원
 
@@ -110,6 +127,60 @@
 | 이전 검사 정정 | `test/lobbySelectedScene.test.js`의 종전 선택 캐릭터 영상 계약을 현행 전대 원화 유지 계약으로 변경. 전대 이름·소환 표제/입장 상태, 이전 미디어·오류 콜백 제거, 재선택, 선택 해제를 검사 |
 | 증거 | `captures/ancestor_grok_review/lobby-runtime-report.json`, `lobby-1920x1080.png`, `lobby-1280x720.png`, `lobby-960x540.png` |
 | 범위 | 로비 표시 교체 완료. 새 보행의 게임 내 적용 완료를 뜻하지 않음 |
+
+
+## 2026-09-28 로비 카드 언어 즉시 갱신·DOM 상태 보존
+
+| id / 적용 위치 | 현행 계약 |
+|---|---|
+| _applyLobbyLang | 기존 _refreshStatusLanguage 다음에 _refreshLobbyCardsLanguage 호출. charList 안의 .char-item/.char-item-new에 등록한 _refreshLanguage 콜백만 실행. 목록 재조회·재렌더 없음 |
+| 최초 적용 | _refreshLobbyCardsLanguage는 document.getElementById 사용. 초기 언어 적용은 const $ 초기화 전일 수 있으므로 $나 슬롯 상태를 읽지 않음. 리스트가 없으면 반환, 빈 카드/미등록 콜백은 건너뜀 |
+| _addLobbyCardControl | label은 기존 문자열 또는 현재 언어를 계산하는 함수. card._refreshLanguage에서 label 함수 실행 후 .char-info 리프의 trim한 설명을 구분자 · 로 추가해 기존 button.char-select의 aria-label/title 동시 갱신. data-card-key·이벤트·DOM 노드 유지 |
+| _lobbyCardLeaf | 지정한 카드 내부 셀렉터의 children.length===0일 때만 textContent 변경. 부모 컨테이너·이미지·하위 DOM 보존. 삭제 버튼은 title 속성만 갱신 |
+| _lobbyCharacterCardLabel | 기존 CHAR_VISUALS 직업/클래스와 _formatLobbyStageProgress(stage,_TL) 재사용. .char-cls/.char-info/삭제 title 번역. 사용자 저장 이름, charIdx, 레벨, 스테이지 유지. 로컬 구분자 · /온라인 구분자 | 유지 |
+| _lobbyDemoCardLabel | 표시 이름은 KO 대검전사 / 그 외 Greatsword Warrior. 초상화는 CHAR_VISUALS[0].bust. 소환체 이름·역할·영체 설명은 왼쪽 독립 표시. 기존 렌더에서 캡처한 진행으로 레벨·Stage 1-1·처치·브라우저 저장 안내 재번역. 초기 Lv.1 START · Stage 1-1 · Lv.100 Cap 유지. 언어 전환 중 세이브 다시 읽기/쓰기 없음 |
+| _lobbyNewCardLabel | 새 캐릭터/슬롯 가득참 및 기존 최대 개수 안내 재번역. 기존 공개5개·개발 Infinity 제한 유지. 가득찬 비활성 카드도 콜백 등록하되 버튼/생성 이벤트를 새로 만들지 않음 |
+| 상태 보존 | 같은 카드·선택 버튼·이미지·초점 유지. _selectedSlot/_selectedSlotName/_slotScrollIdx/_onlineScrollIdx/_characterLoadSeq 변경 없음. 번역 카탈로그 신규 키·전투/저장 형식 변경 없음 |
+| 회귀 | test/lobbyCardLanguage.test.js 신규11건: 데모2·온라인/로컬2·생성/가득참3·중첩 노드2·초기 적용1·기존 문자열 호환1. 원본7실패/4통과→수정 후11통과. $ 없는 초기화 검사도 수정 전1실패/10통과. 관련 통합239건 및 inline script4개 구문 통과 |
+| 실제 언어 검증 | 960×540/1920×1080에서29언어×데모1·로컬 생성가능/가득참2·온라인 생성가능/가득참2=290조합. 동일 카드/버튼/이미지·선택·스크롤·초점 보존 및 가로 넘침 없음, pageerror0. 생성/삭제 저장 요청0 |
+| 상세 계약·증거 | [언어 런타임](../16번역·로컬라이제이션/LOCALIZATION_RUNTIME_20260909.md)의 동명 절. 문서8개 동기화. Lv.46/처치1795 저장 원문 보존, 실제 언어 메뉴와 새 페이지 초기화 확인 |
+
+
+## 2026-09-28 데모 카드 줄바꿈·입장 버튼 스크롤 분리
+
+| id / 적용 위치 | 현행 계약 |
+|---|---|
+| 원인 | 데모 진행 안내가 일반 카드의 한 줄 ellipsis에 묶여 1280×720에서도 잘림. 내용이 늘어나면 같은 스크롤 안의 입장 버튼도 아래로 밀림 |
+| 데모 카드 | ui-refinement.css의 #lobby .char-item:has(>.char-select[data-card-key="demo"])에 height:auto/min-height:84px. .char-name/.char-info는 white-space:normal/overflow:visible/text-overflow:clip/overflow-wrap:anywhere. .char-info line-height:1.45. 카드 내용만큼 세로로 증가 |
+| 일반 슬롯 | online:id/local:name/new 키는 위 선택자에 해당하지 않음. 기존 높이84px·진행 한 줄 말줄임·삭제 영역 유지. 이전 공통 한 줄/고정 높이 설명에서 데모는 이 절의 예외 |
+| 입장 영역 | index.html의 .lobby-footer를 .lobby-content 뒤, #lobbyStatus 앞의 .lobby-right 직계 자식으로 이동. 기존 flex-shrink:0/padding-bottom:8px 사용. 입장 원화의 비율·점등·disabled·이벤트 유지. 목록/배너만 세로 스크롤하며 입장은 스크롤과 독립 |
+| 캐시 | index.html의 ui-refinement.css?v=20260928-lobby-card-wrap. 기존 lobby-quit 캐시 다음 버전 |
+| 언어·저장 | 기존 _refreshLanguage 리프 갱신·선택 제어·세이브 구조 유지. 격리 Lv.46/처치1795 저장 원문 보존 확인. CSS와 DOM 위치만 변경하며 사용자 저장/계정 요청 없음 |
+| 브라우저 | 실제 Node 서버 데모 페이지:29언어×새 진행/저장 진행2×960×540,1280×720,1920×1080,2560×1080,800×480,640×480,480×360의7크기=406조합. 텍스트 범위 카드 안·가로 넘침 없음·입장 전체 화면 안/중앙 클릭 대상 유지·카드/버튼/이미지 동일 노드. pageerror0/쓰기 요청0 |
+| 짧은 창 | 목록/배너 내용은 세로 스크롤이 필요할 수 있음. 960×540에서 실제 Steam 버튼까지 스크롤한 뒤 클릭 대상 확인, 입장 위치 동일. 실제 Tab으로 Steam→입장→시네마틱→전원 초점 순서 확인. 입장/종료/Steam 외부 동작 자체는 실행하지 않음 |
+| 일반 슬롯 검증 | 격리 원본 HTML의 _LOBBY_BUILD만 full로 전환, API/슬롯 메타데이터 대역. 로컬/온라인×3크기960×540,1280×720,1920×1080=6조합에서 카드84px/nowrap 유지 및 입장 스크롤 독립. 인증·실제 저장 종단 검증은 아님 |
+| 회귀 | 관련 기존105건 및 inline script4개 구문 통과. lobbyStageInfo의 오래된 formatter 호출수2 고정 검사를 온라인/로컬 렌더와 언어 갱신의3함수별 연결 검사로 보완. 원본104통과/1실패→105통과. CSS를 그대로 반복하는 신규 단위 테스트 없음 |
+| 기록·커밋 | tmp/lobby-demo-card-layout/browser-before.json,browser-after.json,browser-full.json,browser-interaction.json,tests.txt,changes.patch. 기존 WindowsApps 런처 오류317 및 .git 쓰기 제한으로 커밋 미완료. 다른 작업의 에셋/맵/스테이징 보존 |
+
+
+## 2026-09-28 짧은 창 Steam 배너·RTL 여백 마감
+
+| 항목 | 현행 계약 |
+|---|---|
+| 짧은 창 | 높이≤600px는 배너 문장/.lobby-card-gap 숨김, 배너 내부padding0/gap0. 찜 버튼 최소높이44px/최대폭100%, 이미지 최대190px. 데모 카드 세로padding10px·최소높이84px. 높이≥601px는 기존 문장·간격 표시 |
+| RTL·언어 | .lobby-content의 여백은 padding-inline-end8px. #lobbyWishlistBtn aria-label/title은 기존 번역키 STEAM 위시리스트 추가(id2841)로 즉시 갱신, 이미지 alt 빈값. 부모 DOM 교체·새 번역키·저장 형식 변경 없음 |
+| 검증·캐시 | 실제29언어×진행2×화면9=522조합, 일반 슬롯 대역16조합, 기존105회귀/inline4구문 통과. 가로 이미지 잘림/페이지 오류/쓰기 요청0. CSS 캐시20260928-lobby-banner-compact2 |
+| 상세 | [배너·논리 여백 현행 계약](lobby_full_patch.md). 기존 padding-right8px와 데모 카드 간격 설명은 이 절을 우선. 아주 작은480×360에서는 세로 스크롤 후 찜 버튼 접근. 동시 전대 아트·표제 변경 보존 |
+
+
+## 2026-09-28 언어 메뉴 키 반복·IME 보호와 찜 버튼 초점선
+
+| 항목 | 현행 계약 |
+|---|---|
+| 언어 메뉴 | 4개 select의 반복 열기와 팝업의 Enter/공백/Escape 반복 확정·취소 차단. isComposing/keyCode229 및 숨김·선택 노드 없는 메뉴는 처리하지 않음. 방향키 반복/Home/End/Tab·마우스·패드 경로 유지 |
+| 찜 버튼 | #lobbyWishlistBtn도 기존 로비 focus-visible outline-offset−2px 적용. 공통2px/#ead6a5 테두리·버튼 크기·600px 배너 경계·언어·저장 계약 유지 |
+| 검증 | 신규24건 원본19실패→통과, 관련167건/inline4구문 통과. 실제 키보드3크기·초점5크기 및 원본 패드 콜백 대역 확인. IME는 합성 이벤트/실물 패드·OS IME 검증 별도 |
+| 상세 | [언어 키 입력·초점 현행 계약](../3.3%20키바인딩+설정/게임패드_호버_상호작용.md). 기존 언어 팝업 계약에 키 유지와 IME 보호 추가. 새 번역키/부모 DOM 교체/사용자 저장 요청 없음 |
 
 
 ## 2026-09-28 오른쪽 대검전사 캐릭터 정보 복구
