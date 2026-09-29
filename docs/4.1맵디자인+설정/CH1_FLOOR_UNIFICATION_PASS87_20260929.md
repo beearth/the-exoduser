@@ -81,6 +81,86 @@ STAGE: CH1-1 / stage0. 공통 제작가이드v0.9 전체→맵디테일→SSOT�
 | FILES | master·47청크·preview·layoutground명·meta2·floor87source5·livingpalette4곳·mainquery2곳·builder메타·바닥bake도구·관련docs.공유game/CHANGELOG의타작업변경보존 |
 | GIT | 바닥code/asset/docs만범위별로컬체크포인트.실제해시·index보존결과는 captures/ch1_floor87/completion.json 기준.기존100개초과타작업changes를숨기거나강제커밋하지않음. push/deploy0 |
 
+```text
+================= MAP PRODUCTION REPORT =================
+STAGE: CH1-1 / stage0 / 공통 피부 바닥87차
+
+MASTER
+- silhouette: 기존53점 경계 유지; 변경0
+- regions: 기존8구역, ground 이름만 corpse-skin으로 통일
+- main route: 6시START→12시EXIT 및 상단 통로 유지
+- side spaces: 기존 좌우 우회·POI 접근 유지
+
+OUTER MASS
+- LEFT: 기존85차 외곽 보존
+- RIGHT: 기존85차 외곽 보존
+- TOP: 기존85차 외곽 보존
+- SOUTH: 기존85차 외곽 보존
+- major holes: 비보행 픽셀 변경0; 바닥 수정으로 새 외곽 공동 생성0
+
+LARGE
+- source assets: 사용자 승인 공통 피부2048² 1장; 기존나무·뿌리·돌 유지
+- composites: floor87 preblended8192² patch를22번째 retouch로 적용
+- overlap: texture양축256px 중첩/1792px 주기; 큰 구조물 배치 유지
+- repeated silhouette: 바닥 구역색 차이 감소; 기존식생 실루엣 반복은 후속RETOUCH
+
+MEDIUM
+- connections: 기존 나무–뿌리 연결 유지;9root core681744px·밝은 수피 보호
+- remaining holes: 이번 범위에서 외곽 holes 추가0; 전체 식생 연결 품질 후속RETOUCH
+
+GROUND
+- shadow: 기존 접촉 그림자 보존; runtime조명 추가0
+- contamination: 큰 얼룩12개/.06 또는 .04; 공통 palette/frame alpha .30
+- structure integration: 보행마스크34px feather·root .72/.40·밝은수피72..110 보호
+
+PLAYABLE
+- main arenas: 기존 넓은 전투공간 유지; 지형 변경0
+- travel space: 기존 START/EXIT·side routes 유지; G.map 전후 동일
+- breathing space: 기존 여백 유지; 중심 scatter/장애물 추가0
+- threat space: 기존 동맥·늪·소환굴·랜드마크 위치와 효과 유지
+- combat readability: 8뷰의 player/동맥/소환굴/제단 구분 및 사용자 공격 화면 질감 확인; 고밀도 전투 추가검수 미실시
+
+LANDMARK
+- primary: 기존 시체나무 유지
+- secondary: 기존 제단·늪·야영지 유지
+- tertiary: 기존 뼈아치·출구 유지
+
+CAMERA QA
+- START: [100,185]
+- EARLY: [100,157]
+- ARENA: [100,120]
+- SIDE L: [49,151]
+- SIDE R: [151,136]
+- LANDMARK: [102,90]
+- LATE: [100,48]
+- EXIT: [100,15]
+- 전후 각8뷰 저장; viewport/조명차이 때문에 스크린샷 픽셀차이는 성능·재질 수치로 사용하지 않음
+
+TECH QA
+- route: 자동 회귀PASS; 실제 무보정 종주·1-2진입 미검수
+- collision: geometry SHA/G.map 동일; 충돌 변경0
+- pageerror: 검수 페이지0
+- 404: 64청크HEAD 모두200; 다른 전체 리소스의 404가 없다는 선언은 아님
+- seam: 64청크의 모든 RGBA/224경계strip이master와동일
+- loading: ready57/visible=drawn12,decode/requesterror0; coldGPUwarm 최대186.7ms 잔여
+- performance: Edge12.0014초/적0/237~240FPS/34ms초과0; 장시간·밀집전투·노트북/NW.js 미검증; 백그라운드Chrome측정무효
+
+FILES
+- stage-owned: 바닥code/asset/docs106개; 전체 목록 tmp/ch1-floor87/checkpoint-plan.json
+- concurrent touched: game.html·CHANGELOG·관련공유docs의 바닥 버전/현재계약만 커밋; 기존동시수정 보존
+- unrelated touched: 다른게임·UI·환경작업을 이번 art commit에 포함0; 기존dirty114개 유지
+
+GIT
+- staged: 바닥 art commit 이후 자체대기0; 기존34개 staged path/각공유staged blob·타indexentry 보존 검증
+- commit: art f41bc3adf5610601b4499c06f9534c4394e28065; 보고서 최종체크포인트 해시는 captures/ch1_floor87/completion.json
+- push: 미실행
+- deploy: 미실행
+
+VISUAL VERDICT: PASS (사용자 승인 바닥 질감·일관성 범위) / 전체 맵 RETOUCH
+
+NEXT PASS: 승인 바닥 결 유지; 기존 식생·부패재질·반복 실루엣 후속정비
+```
+
 **VISUAL VERDICT: PASS — 사용자승인바닥질감과구역재질일관성범위. 전체 맵의식생·반복실루엣·고밀도VFX까지완성됐다는판정은아니며전체맵은RETOUCH.**
 
 NEXT PASS: 이번승인바닥결을유지하고외곽식생·나무의부패재질일관성을별도범위에서다듬는다. 바닥을다시얼룩진서로다른biome으로나누지않는다.
