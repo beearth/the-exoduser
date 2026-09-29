@@ -57792,7 +57792,7 @@ async function _startDemoNew(){
     INV.bag.push(mkItem('cape',0,EL.F,1));INV.bag.push(mkItem('bow',0,EL.F,1,'crossbow'));
     P.skills.giantSlam=1;SKILL_SLOTS[4]='giantSlam';
     P.skills.holyDome=1;SKILL_SLOTS[5]='holyDome';
-    P.skills.spikeTrap=1; // 물리 탭의 일반 슬롯에 배정
+    P.skills.spikeTrap=1;SKILL_SLOTS[0]='spikeTrap'; // Lv1 기본 스킬: 숫자 1번 슬롯
   }
   recalcSt();
   setBootLoading(50,'몬스터 스킨 로딩...');

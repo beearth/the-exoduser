@@ -1,3 +1,12 @@
+## 2026-09-29 — 데모 Lv1 가시덫 1번 슬롯 누락 수정
+
+| 항목 | 반영 |
+|---|---|
+| 원인 | _startDemoNew의 신규 분기가 spikeTrap Lv1만 습득하고 SKILL_SLOTS[0] 배정을 생략해 숫자 1번이 빈칸으로 시작 |
+| 수정 | game.html·game-easy-test.html 신규 데모만 SKILL_SLOTS[0]=spikeTrap. Space giantSlam/F holyDome 및 저장 배치 유지 |
+| 검증 | 관련24건 PASS, 양쪽 실제 페이지 신규 시작/재로드/슬롯 이동 보존/이전 빈칸 저장 복구. 본편 실제 HUD 아이콘 및 숫자 1 시전은 runtime.json·skill1-cast.png |
+| 상세 | [스킬·저장 계약](<2_1 스킬관리+합체시스템+자원/2_1 스킬관리+합체시스템.md>)의 Lv1 기본 가시덫 절 |
+
 ## 2026-09-29 — 선택 캐릭터 원화 전체 화면 비율 복원
 
 | 항목 | 결과 |
