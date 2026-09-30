@@ -11,7 +11,7 @@
 | 기본 | 제목 높이 `80px`, 왼쪽 패딩 `50px`, 아래 패딩 `9px`, 글자 `24px/28px`, `align-items:flex-end`; 장식 `140×80px`, 배경 `182×182px center -45px` |
 | 폭 `600px` 이하 | 제목 높이 `64px`, 왼쪽 `30px`, 아래 `5px`, 글자 `20px/24px`; 장식 `90×64px`, 배경 `146×146px center -36px` |
 | 높이 `650px` 이하 | 제목 높이 `52px`, 왼쪽 `30px`, 아래 `0`, 글자 `18px/24px`; 장식 `90×52px`, 배경 `120×120px center -30px` |
-| 캐시·검수 | 명패 수정 당시 `game.html`, `game-easy-test.html`, `index.html`의 `ui-refinement.css` 쿼리 `20260930-settings-title-plaque`. 실제 로컬 게임 설정창에서 `1688×1262`, `390×844`, `1280×540` 명패 안 제목을 확인. CSS 캐시 때문에 쿼리 변경 전 새 스타일이 적용되지 않던 현상도 재현했다. 후속 게임 설정·HUD 현행 CSS 캐시는 `20261001-settings-nav16`, JS 캐시는 `20261001-settings-nav17`; 상세 규격은 [후속 디테일 계약](SETTINGS_HUD_DETAIL_20260930.md)을 따른다. 다른 탭 기능·NW.js 패키지·Steam 빌드는 당시 검수 범위 밖 |
+| 캐시·검수 | 명패 수정 당시 `game.html`, `game-easy-test.html`, `index.html`의 `ui-refinement.css` 쿼리 `20260930-settings-title-plaque`. 실제 로컬 게임 설정창에서 `1688×1262`, `390×844`, `1280×540` 명패 안 제목을 확인. CSS 캐시 때문에 쿼리 변경 전 새 스타일이 적용되지 않던 현상도 재현했다. 후속 게임 설정·HUD 현행 CSS 캐시는 `20261001-settings-nav18`, JS 캐시는 `20261001-settings-nav17`; 상세 규격은 [후속 디테일 계약](SETTINGS_HUD_DETAIL_20260930.md)을 따른다. 다른 탭 기능·NW.js 패키지·Steam 빌드는 당시 검수 범위 밖 |
 
 ## 레이아웃 계약
 
@@ -58,7 +58,7 @@
 | 초점 | renderSettings 재구성 전 식별자를 보존, 같은 버튼 focus preventScroll. 보조 삭제 후 해당 alt로 복원 |
 | 대기 | 시작 시 저장/매핑 변경 없음. repeat keydown 무시. 새 키는 기존 등록/충돌 정책으로 처리하고 Escape 취소 |
 | 버튼 입력 | 설정 내 버튼의 Space/Enter/NumpadEnter/Tab을 게임 단축키로 전달하지 않음. 키 캡처 분기가 먼저이므로 대기 중 새 Space/Enter/Tab 등록은 가능 |
-| 캐시 | 당시 `game.html`·`game-easy-test.html`의 ui-refinement.css는 `20260930-settings-title-plaque`, ui-panels.js는 `20260929-settings-choices`. 현재 게임 두 HTML의 CSS는 `20261001-settings-nav16`, JS는 `20261001-settings-nav17`이고 `index.html`은 명패 캐시를 유지한다. |
+| 캐시 | 당시 `game.html`·`game-easy-test.html`의 ui-refinement.css는 `20260930-settings-title-plaque`, ui-panels.js는 `20260929-settings-choices`. 현재 게임 두 HTML의 CSS는 `20261001-settings-nav18`, JS는 `20261001-settings-nav17`이고 `index.html`은 명패 캐시를 유지한다. |
 
 ## 검증 및 상태
 
