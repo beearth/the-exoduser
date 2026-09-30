@@ -1,3 +1,7 @@
+## 2026-10-01 — CH1-1 2.5D 깊이 슬라이스 2차 (경계 전경 오버행, ?borderFg — 기본 OFF)
+
+MAP-003+MAP-004: 신규 ch1-border-foreground.js — 구운 청크는 그대로 두고 경계 나무 9+군락 4를 같은 원본·좌표·밝기로 런타임 덧그림(엔티티 위 전경 / 군락 3은 밑동 기준 앞뒤 분할). 굽기에서 tree_fade로 잘린 수관이 캐릭터를 덮는 오버행으로 복원. 가림=수관 영역만 .62 페이드+플레이어 고스트(1차 공유·프레임 1회 가드), 밑동·뿌리 겹침은 가리지 않음. 착수 확인(§8.4 지시)으로 인너 나무 T1 T10 T31~T35는 베이크 완전 소거+무충돌 확인 → 보류(MAP-003b 제안). GPU 프록시 filter 무시 → variant·flip당 오프스크린 1회 굽기(텍스처 45.1MB 실측). game.html 태그+호출 2줄, easy-test 호출만, build-nwjs 1줄. 테스트 신규 8/8(placements.json 일치 잠금)+회귀 84/84, pageerror 0, FPS OFF/ON 차 ≤0.4%(64적 포함). 촬영 captures/depth_slice2/(recon 포함). 기본 ON 전환은 팀장 판정 후 DEFAULT_ON 한 줄. [SSOT](4.1맵디자인+설정/DEPTH_SLICE2_20261001.md).
+
 ## 2026-10-01 — CH1-1 제단 독액 도랑 + 깊이 슬라이스 1차 기본 ON + CH1 어둠 .38
 
 - 제단 도랑(MAP-017): 신규 `ch1-altar-moat.js`(game.html 스크립트 태그 `?v=20261001-3`, `_drawCh1Hill(X)` 직후 draw, `_buildStaticLights` 끝에서 광원 10개). 막힌 띠 `_CH1_HILL` 수치·충돌 불변, 액체는 충돌 띠보다 최대 .024 넓음. `build-nwjs.mjs` 복사 목록 추가. 테스트 `test/ch1AltarMoat.test.js` 5/5. 문서 `docs/4.1맵디자인+설정/CH1_ALTAR_MOAT_20261001.md`.

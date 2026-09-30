@@ -16769,6 +16769,7 @@ function _dsDrawPlayerGhost(){
   // GPU 프록시에서 스텐실/필터 불가 → 현재 아틀라스 프레임을 알파 .55로 한 번 더 그리는 엑스레이 방식.
   // SpriteAnimator.draw는 렌더 전용(프레임 전진 없음 — update와 분리)이라 재호출이 안전하다.
   if(!_dsPSnap.on||!P||P.hp<=0||!P._sa)return;
+  if(_dsPSnap.gN===_now)return;_dsPSnap.gN=_now; // [DEPTH-SLICE2] 프레임당 1회 (1차 프런트 패스와 2차 경계 전경이 공유)
   X.save();
   X.globalAlpha=_DS_GHOST_A;
   X.translate(P.x,P.y+_dsPSnap.lift);
@@ -48629,6 +48630,7 @@ function draw(){
   _drawCh1BakedSpike(X);
   _drawCh1Hill(X);
   if(globalThis.Ch1AltarMoat)Ch1AltarMoat.draw(X,G,_now,_CH1_HILL,T,VW,VH); // 제단 둘레 막힌 띠를 독액 도랑으로 표시 (시각 전용)
+  if(globalThis.Ch1BorderForeground)Ch1BorderForeground.drawBack(X,G,_now,VW,VH); // [DEPTH-SLICE2] 분할 군락 백 패스(플레이어가 밑동 남쪽일 때 수관 복원)
   const _tMap=performance.now();
   if(_fc2d){var _dPara=_PERF_PROF._delta(_snapPara);_PERF_PROF._para_di=_dPara.di}
   if(_DCP.on){_DCP._mark('bg');_DCP._setSource(_DCP_SRC.TILE_FALLBACK)} // [DCPROF] 배경(패럴랙스+검정오버레이+반딧불이) 구간 종료
@@ -51087,6 +51089,7 @@ function draw(){
   _levelUpVfx.draw(X,P,G.stage,false,IS_MOBILE||OPT.quality==='low');
   drawP();
   if(_dsOn&&_dsFrontObjs.length)_dsDrawFrontPass(); // [DEPTH-SLICE] 플레이어 앞(남쪽 밑동) tall 오브젝트 + 캐노피 가림 페이드
+  if(globalThis.Ch1BorderForeground)Ch1BorderForeground.drawFront(X,G,_now,VW,VH); // [DEPTH-SLICE2] 경계 전경 오버행(나무 9+군락) — 엔티티 위
   _drawPhysicalBites();
   _levelUpVfx.draw(X,P,G.stage,true,IS_MOBILE||OPT.quality==='low');
   _levelUpVfx.drawLabel(X,P,G.stage);
