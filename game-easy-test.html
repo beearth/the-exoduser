@@ -4360,6 +4360,7 @@ function _buildStaticLights(){
   else if(t==='m_penta_circle'||t==='m_skull_altar'||t==='m_obelisk')_slArr.push({x:o.x,y:o.y,r:310,a:.46,cr:255,cg:72,cb:44,f:.6});
   else if(t==='m_eye_tree'||t==='m_flesh_maw'||t==='m_flesh_ball')_slArr.push({x:o.x,y:o.y,r:270,a:.38,cr:255,cg:72,cb:44,f:.4});
  }
+ if(G.stage===0&&!G._bossArena&&globalThis.Ch1AltarMoat)Ch1AltarMoat.lights(_slArr,_CH1_HILL,T); // 독액 도랑 녹색 광원 10개
 }
 function _collectLights(){
   _lightCnt=0;
@@ -48627,6 +48628,7 @@ function draw(){
   }
   _drawCh1BakedSpike(X);
   _drawCh1Hill(X);
+  if(globalThis.Ch1AltarMoat)Ch1AltarMoat.draw(X,G,_now,_CH1_HILL,T,VW,VH); // 제단 둘레 막힌 띠를 독액 도랑으로 표시 (시각 전용)
   const _tMap=performance.now();
   if(_fc2d){var _dPara=_PERF_PROF._delta(_snapPara);_PERF_PROF._para_di=_dPara.di}
   if(_DCP.on){_DCP._mark('bg');_DCP._setSource(_DCP_SRC.TILE_FALLBACK)} // [DCPROF] 배경(패럴랙스+검정오버레이+반딧불이) 구간 종료

@@ -29,6 +29,7 @@ const FILES = [
   'ch1-living-detail.js',
   'ch1-forest-sway.js',
   'ch1-face-life.js',
+  'ch1-altar-moat.js',
   'parry-lesson.js', 'parry-lesson.css', 'resource-practice.js',
   'system-lesson.js', 'system-lesson.css',
   'tutorial-badges.js', 'tutorial-badges.css',

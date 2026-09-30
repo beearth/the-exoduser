@@ -1,3 +1,9 @@
+## 2026-10-01 — CH1-1 제단 독액 도랑 + 깊이 슬라이스 1차 기본 ON + CH1 어둠 .38
+
+- 제단 도랑(MAP-017): 신규 `ch1-altar-moat.js`(game.html 스크립트 태그 `?v=20261001-3`, `_drawCh1Hill(X)` 직후 draw, `_buildStaticLights` 끝에서 광원 10개). 막힌 띠 `_CH1_HILL` 수치·충돌 불변, 액체는 충돌 띠보다 최대 .024 넓음. `build-nwjs.mjs` 복사 목록 추가. 테스트 `test/ch1AltarMoat.test.js` 5/5. 문서 `docs/4.1맵디자인+설정/CH1_ALTAR_MOAT_20261001.md`.
+- 깊이 슬라이스 1차: `_DS_DEFAULT=true`, 끄기 `?depthSlice=0` (커밋 `3f4e3712b`).
+- CH1 어둠: `_HELL_AMBIENT[0]=[6,16,9,.38]` (커밋 `b76ff8806`).
+
 ## 2026-10-01 — CH1-1 2.5D 깊이 슬라이스 1차 (depthSlice 플래그, 기본 OFF)
 
 MAP-001/002/005·012·013(부분): 손배치 나무 m_ctree13~20+시체나무에 밑동(footY) 피벗을 주고, 밑동이 플레이어보다 남쪽인 나무를 drawP() 뒤 프런트 패스로 재드로우 — 캐릭터가 처음으로 나무 뒤로 들어간다. 가림 시 나무 알파 1→.62 lerp(≈150ms)+가려진 플레이어 엑스레이 고스트 α.55(현재 아틀라스 프레임 재드로우), 접지 그림자 소프트 스탬프(플레이어 .38/적 .30, SE 오프셋), 적 인스턴싱 y 큐잉(버킷 내). **월드 키라이트 SSOT=북서(NW)·그림자 남동(SE) 확정(MAP-012)**. 시체나무는 몸통 기준선(footYF -.058)이라 뿌리 치마 위 보행은 가리지 않고, 아치 나무는 고리 안 예외(단일 스프라이트 한계). MAP_OBJS 루프 본문은 _drawMapObjOne으로 추출(OFF 경로 동일·테스트 잠금). game.html+game-easy-test.html 미러, 신규 test/depthSlice.test.js 10/10·관련 70/70, pageerror/404 0, FPS 차 ≤0.3%(64적 30초 지속 스파이크 0). 스크린샷 captures/depth_slice1/(어둠 .38 기준 전후·나무별 4방향·뿌리/몸통·고리·그림자 페어·QA 4캠). 기본 ON 전환은 팀장 승인 후 _DS_DEFAULT 한 줄. [SSOT](4.1맵디자인+설정/DEPTH_SLICE1_20261001.md).

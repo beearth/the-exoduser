@@ -1,5 +1,9 @@
 > 진행 프로젝트: [MAP_IMPROVEMENT_PROJECT.md](MAP_IMPROVEMENT_PROJECT.md) · 2.5D 깊이 기준: [DEPTH_2_5D_BENCHMARK_20260930.md](DEPTH_2_5D_BENCHMARK_20260930.md)
 
+## 2026-10-01 — CH1-1 제단 독액 도랑
+
+제단 둘레의 막힌 타원 띠(`_CH1_HILL` inner .84~outer 1.04)를 `ch1-altar-moat.js`가 뿌리 둑이 있는 독액 도랑으로 그린다. 서쪽 경사로는 땅 다리. 시각 전용·충돌 불변·새 이미지 0(`prop_pool.png` 재사용)·녹색 광원 10개·기포 20개. 기본값으로 켜져 있는 깊이 슬라이스 1차(`?depthSlice=0`으로 끔)와 함께 현행. [CH1_ALTAR_MOAT_20261001.md](CH1_ALTAR_MOAT_20261001.md)
+
 ## 2026-10-01 — CH1-1 2.5D 깊이 슬라이스 1차 (플래그 OFF 기본)
 
 `?depthSlice=1`/`G._depthSlice` 뒤에서 손배치 나무 8그루+시체나무 밑동 피벗 y정렬 교차(MAP-001), 캐노피 가림 페이드 .62+플레이어 엑스레이 고스트 α.55(MAP-002), 접지 그림자 강화 α.38/.30(MAP-005 일부), 적 인스턴싱 y정렬 버킷 내(MAP-013 부분)를 구현했다. **월드 키라이트 SSOT = 북서(NW)·그림자 남동(SE) 결정(MAP-012)**. 시체나무는 몸통 기준선(-.058)으로 뿌리 위 보행 시 가리지 않고, 아치(m_ctree15/18)는 고리 안 예외. 베이크·충돌·타 스테이지 무변, OFF 경로 보존 테스트 잠금, 테스트 70/70, FPS 차 ≤0.3%. [수치·검증·게이트·잔여 SSOT](DEPTH_SLICE1_20261001.md) · draw order 변경=[MAP_RUNTIME_ARCHITECTURE.md](MAP_RUNTIME_ARCHITECTURE.md) 상단.
