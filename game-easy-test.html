@@ -42504,7 +42504,7 @@ function activateBladeShot(){
 // ═══ 폭산탄 발동 ═══
 function activateBlastShot(){
   const _bsStC=1+~~((P.skills.blastShot||1)/2); // 밸런스: ST 하향
-  if(G.mats<_malCost(8)||P.st<_bsStC||(P._bsCd2||0)>0)return;
+  if(G.mats<_malCost(5)||P.st<_bsStC||(P._bsCd2||0)>0)return; // [SKILL-02] 게이트 원가 8→5 정렬: 차감(_malCost(5))·T라우터(_malCost(5))·확정원가5와 일치. 게이트만 옛 8이라 악의3(정확한 실비)에도 발동 거부되던 결함 수정
   _addSkProf('blastShot');
   G.mats-=_malCost(5);P.st-=_bsStC;P._bsCd2=30; // 밸런스: 악의 8→5
   const slv=P.skills.blastShot||1;
