@@ -1,5 +1,9 @@
 > 진행 프로젝트: [MAP_IMPROVEMENT_PROJECT.md](MAP_IMPROVEMENT_PROJECT.md) · 2.5D 깊이 기준: [DEPTH_2_5D_BENCHMARK_20260930.md](DEPTH_2_5D_BENCHMARK_20260930.md)
 
+## 2026-10-01 — CH1-1 2.5D 깊이 슬라이스 1차 (플래그 OFF 기본)
+
+`?depthSlice=1`/`G._depthSlice` 뒤에서 손배치 나무 8그루+시체나무 밑동 피벗 y정렬 교차(MAP-001), 캐노피 가림 페이드 .62+플레이어 엑스레이 고스트 α.55(MAP-002), 접지 그림자 강화 α.38/.30(MAP-005 일부), 적 인스턴싱 y정렬 버킷 내(MAP-013 부분)를 구현했다. **월드 키라이트 SSOT = 북서(NW)·그림자 남동(SE) 결정(MAP-012)**. 시체나무는 몸통 기준선(-.058)으로 뿌리 위 보행 시 가리지 않고, 아치(m_ctree15/18)는 고리 안 예외. 베이크·충돌·타 스테이지 무변, OFF 경로 보존 테스트 잠금, 테스트 70/70, FPS 차 ≤0.3%. [수치·검증·게이트·잔여 SSOT](DEPTH_SLICE1_20261001.md) · draw order 변경=[MAP_RUNTIME_ARCHITECTURE.md](MAP_RUNTIME_ARCHITECTURE.md) 상단.
+
 ## 2026-10-01 — CH1-1 생체나무 얼굴 애니메이션 97차 현행
 
 베이크 무변(bake `20260930-rotforest-96`/cache `20260930-rotforest-97`). 신규 `ch1-face-life.js`가 face-anchors.json 163앵커(eye68·mouth25·tumor70, 가림·퇴색·비가시 88개 필터)에 비동기 눈꺼풀 블링크·턱 호흡·종양 박동을 런타임 오버레이로 그린다(패치=청크 픽셀 파생, 유휴 빌드·LRU40·draw 평균 ≤0.02ms·할당 0, sway displacement 공식 테스트 잠금). 테스트 10/10·pageerror 0. 체감: 플레이어 광원 내 명확, 광원 밖 미묘. [수치·검증·MAP PRODUCTION REPORT](CH1_ROTTEN_FOREST_FACE_LIFE_PASS97_20260930.md). 96차 베이크 가독성은 맵 리드 재검에서 플레이 화면 비지각으로 **RETOUCH 확정, 베이크 튜닝 종료** — 근본 해결은 2.5D 깊이 패스로 이관.

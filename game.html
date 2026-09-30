@@ -5020,8 +5020,16 @@ function _prepEnemyInstanced(_vl,_vr,_vt,_vb,_now,_E_RMAX){
   for(let _egi=0;_egi<ens.length;_egi++)if(ens[_egi])ens[_egi]._ensGLMode=0;
   if(!_useGL||!GL||!_ensGLProg)return 0;
   const _t0=performance.now();
+  // [DEPTH-SLICE][MAP-013] 화면 y 순서로 큐잉 — 같은 인스턴싱 버킷 안에서만 앞뒤가 보정됨(버킷 간 순서는 잔여)
+  const _dsOn2=_dsEnabled();
+  let _eIter=ens;
+  if(_dsOn2){
+    _dsEnsOrder.length=0;
+    for(let _dsi=0;_dsi<ens.length;_dsi++){const e=ens[_dsi];if(e&&e.alive&&e.x>=_vl&&e.x<=_vr&&e.y>=_vt&&e.y<=_vb)_dsEnsOrder.push(e)}
+    _dsEnsOrder.sort(_dsCmpY);_eIter=_dsEnsOrder;
+  }
   let _eRCnt2=0;
-  for(let _eri2=0;_eri2<ens.length;_eri2++){const e=ens[_eri2];
+  for(let _eri2=0;_eri2<_eIter.length;_eri2++){const e=_eIter[_eri2];
     if(!e||!e.alive)continue;
     if(e.x<_vl||e.x>_vr||e.y<_vt||e.y>_vb)continue;
     _eRCnt2++;
@@ -5049,7 +5057,7 @@ function _prepEnemyInstanced(_vl,_vr,_vt,_vb,_now,_E_RMAX){
             if(_mW&&_mW.ready)_queueEnemy8DirInstanced(8+_bucket,_mW.img,(e._mob8Col*_mwf+_mwFr)*_cell,e._mob8Row*_cell,_cell,_cell,VW*.5+(e.x-G.cam.x),VH*.5+(e.y-G.cam.y),_baseSz,_baseSz,sa);
           }
           e._ensGLMode=1;
-          if(e.alive&&sa>0.1){X.globalAlpha=sa*.18;X.fillStyle='#000000';X.beginPath();X.ellipse(e.x,e.y+e.r*.35,e.r*.85,e.r*.25,0,0,Math.PI*2);X.fill();X.globalAlpha=sa}
+          if(e.alive&&sa>0.1){if(_dsOn2)_dsBlob(X,e.x,e.y+e.r*.35,e.r*.95,e.r*.28,sa*.3);else{X.globalAlpha=sa*.18;X.fillStyle='#000000';X.beginPath();X.ellipse(e.x,e.y+e.r*.35,e.r*.85,e.r*.25,0,0,Math.PI*2);X.fill()}X.globalAlpha=sa}
           _drawEliteAuraTelegraph(X,e,sa,_now);
           if(e.s==='eChargeWind'&&e._chgAimMax>0){_drawChargeTele(X,e,sa);}
           continue;
@@ -5068,7 +5076,9 @@ function _prepEnemyInstanced(_vl,_vr,_vt,_vb,_now,_E_RMAX){
     if(!_queueEnemyInstanced(euv,VW*.5+(e.x-G.cam.x),VH*.5+(e.y-G.cam.y),_dw,_dh,e.facing,sa))continue;
     e._ensGLMode=1;
     if(e.alive&&sa>0.1){
-      X.globalAlpha=sa*.18;X.fillStyle='#000000';X.beginPath();X.ellipse(e.x,e.y+e.r*.35,e.r*.85,e.r*.25,0,0,Math.PI*2);X.fill();X.globalAlpha=sa;
+      if(_dsOn2)_dsBlob(X,e.x,e.y+e.r*.35,e.r*.95,e.r*.28,sa*.3);
+      else{X.globalAlpha=sa*.18;X.fillStyle='#000000';X.beginPath();X.ellipse(e.x,e.y+e.r*.35,e.r*.85,e.r*.25,0,0,Math.PI*2);X.fill()}
+      X.globalAlpha=sa;
     }
     if(e.alive&&sa>0.1&&e.etype>=0&&e.etype<=99){
       const _aRgb=_ENT_AURA_RGB[e.etype];
@@ -15568,6 +15578,12 @@ const _DEMO_LV_CAP=100;
 const _DEMO_LAST_STAGE=0; // 1-1(stage 0) 클리어 뒤 데모 종료
 const _DEMO_FUSE_ALLOWED=new Set(['dimBreach','dimSlam','sixFuse','elemFuse','whirlDet','slamStorm','bladeFuse','bladeEcho','plagueFuse','plagueVenom','boneStorm','elecRepent','shieldFuse','holyFuse','holyIce','iceMortar','pillarSpike','pillarSlam','infernoSlam','thunderGhost','dualScarecrow','siegeGhost']);
 const _DEMO_AFFIX_BANNED=new Set(['sharpAtk','brutalAtk','ruinAtk','overkilDmg','staggerExplosion','parryExplosion','elemConvert']);
+// ── [DEPTH-SLICE] 2.5D 깊이 슬라이스 1차 (CH1-1 전용, DEPTH_2_5D_BENCHMARK §6.1) ──
+// 기본 OFF. 팀장 승인 후 아래 _DS_DEFAULT 한 줄만 true로 바꾸면 기본 활성.
+// URL ?depthSlice=1 또는 런타임 G._depthSlice=true/false 로 A/B 전환.
+const _DS_DEFAULT=false;
+const _dsFlag=_DS_DEFAULT||/[?&]depthSlice=1/.test(location.search);
+function _dsEnabled(){const g=typeof G!=='undefined'?G:null;if(!g)return false;const on=g._depthSlice!==undefined?g._depthSlice:_dsFlag;return !!on&&g.stage===0&&!g._bossArena}
 // ──────────────────────────────────────────────────────
 const SI_TO_HELL=new Uint8Array(TOTAL_STAGES);
 const SI_TO_FLOOR=new Uint8Array(TOTAL_STAGES);
@@ -17380,6 +17396,87 @@ for(const[ch,list]of Object.entries(_CH_DECO)){
 // 용 해골 직접 프리로드 (img/ 경로)
 {const _dsImg=new Image();_dsImg.onload=function(){_OBJ_SPR['m_dragon_skeleton']=_lumaKeySpr(this,16,80)};_dsImg.src='img/map_dragon_skeleton.png';_OBJ_SPR['m_dragon_skeleton']=_dsImg;_OBJ_SPR_MAP['m_dragon_skeleton']='img/map_dragon_skeleton.png'}
 {const _d3Img=new Image();_d3Img.src='img/map_dragon_3d.png';_OBJ_SPR['m_dragon_3d']=_d3Img;_OBJ_SPR_MAP['m_dragon_3d']='img/map_dragon_3d.png'}
+
+// ═══ [DEPTH-SLICE] 2.5D 깊이 슬라이스 1차 헬퍼 (CH1-1) ═══
+// 밑동(trunk-base) 피벗: footY = y + sz*scale*footYF. footYF는 ch1-living-detail.js 접지그림자 foot 값과 동일 기준
+// (m_ctree*: size*.45 / m_c1tree: size*.2016). 월드 키라이트 SSOT = 북서(NW) → 그림자 남동(SE) 오프셋.
+// footYF = 전후 분할 기준선. m_ctree*: 시각 밑동(size*.45, ch1-living-detail 접지그림자 동일). m_c1tree: 뿌리 치마는
+// 바닥이므로 몸통(트렁크)이 뿌리에서 솟는 선(원화 63% 지점 → 피벗.72 환산 -.058) — 뿌리 위를 걷는 플레이어는 가리지 않는다.
+// ring=1(부러진 아치 rotforest_tree_04): 고리 안에 서 있으면 가림 없음(단일 스프라이트라 앞뒤 분리 불가 — 예외 처리).
+{const _dsOccFoot={m_ctree13:.45,m_ctree14:.45,m_ctree15:.45,m_ctree16:.45,m_ctree17:.45,m_ctree18:.45,m_ctree19:.45,m_ctree20:.45,m_c1tree:-.058};
+ for(const _k in _dsOccFoot)if(_OBJ_META[_k]){_OBJ_META[_k].occ=1;_OBJ_META[_k].footYF=_dsOccFoot[_k]}
+ if(_OBJ_META.m_ctree15)_OBJ_META.m_ctree15.ring=1;
+ if(_OBJ_META.m_ctree18)_OBJ_META.m_ctree18.ring=1;}
+const _dsFrontObjs=[];      // 이번 프레임에 플레이어 앞(남쪽 밑동)으로 분류된 tall 오브젝트 — 프레임마다 재사용(할당 0)
+let _dsFadeMul=1;           // 프런트 패스 가림 페이드 승수 (백 패스/플래그 OFF에서는 항상 1)
+const _DS_FADE_MIN=.62;     // 캐노피 가림 시 목표 알파 (팀장 판정: .45는 랜드마크가 유령화 — .62 + 플레이어 고스트로 가독성 확보)
+const _DS_FADE_K=.22;       // 프레임당 lerp 계수 (60fps 기준 약 150ms에 90% 수렴)
+const _DS_GHOST_A=.55;      // 가려진 플레이어 엑스레이 고스트 알파
+const _DS_P_HW=40,_DS_P_HEAD=96,_DS_P_FOOT=28; // 플레이어 월드 AABB 근사(스프라이트 2배 스케일 기준)
+function _dsFootY(mo,m){return mo.y+(m.sz||400)*(mo.scale||1)*(m.footYF!==undefined?m.footYF:.45)}
+function _dsRingInside(mo,m){ // 아치 고리 개구부(원화 실측: 폭 ±.15s, 세로 -.33s~+.27s) 안 = 플레이어가 위
+  const s=(m.sz||400)*(mo.scale||1);
+  return Math.abs(P.x-mo.x)<s*.15&&P.y>mo.y-s*.33&&P.y<mo.y+s*.27;
+}
+function _dsIsFrontObj(mo){const m=_OBJ_META[mo.type];if(!(m&&m.occ)||_dsFootY(mo,m)<=P.y)return false;return !(m.ring&&_dsRingInside(mo,m))}
+function _dsOverlapsPlayer(mo){
+  const m=_OBJ_META[mo.type],s=(m.sz||400)*(mo.scale||1)*(mo.type==='m_c1tree'?.72:1);
+  const hw=s*.5,foot=_dsFootY(mo,m),top=foot-s;
+  return P.x+_DS_P_HW>mo.x-hw&&P.x-_DS_P_HW<mo.x+hw&&P.y+_DS_P_FOOT>top&&P.y-_DS_P_HEAD<foot;
+}
+function _dsCmpFootY(a,b){return _dsFootY(a,_OBJ_META[a.type])-_dsFootY(b,_OBJ_META[b.type])}
+function _dsCmpY(a,b){return a.y-b.y}
+const _dsEnsOrder=[];       // [MAP-013] 적 인스턴싱 y정렬용 재사용 배열
+let _drawMapObjOne=null;    // draw()가 매 프레임 할당하는 MAP_OBJS 단일 오브젝트 렌더 함수 (백/프런트 패스 공유)
+// 소프트 블롭 그림자 스탬프 (사전 베이크 radial — GPU 프록시에서 filter/blur 불가하므로 텍스처 1장)
+let _dsBlobTex=null;
+function _dsBlobStamp(){
+  if(_dsBlobTex)return _dsBlobTex;
+  const c=document.createElement('canvas');c.width=128;c.height=128;
+  const x=c.getContext('2d');
+  const g=x.createRadialGradient(64,64,4,64,64,62);
+  g.addColorStop(0,'rgba(0,0,0,1)');g.addColorStop(.55,'rgba(0,0,0,.62)');g.addColorStop(1,'rgba(0,0,0,0)');
+  x.fillStyle=g;x.beginPath();x.arc(64,64,62,0,Math.PI*2);x.fill();
+  c._glVer=1;_dsBlobTex=c;return c;
+}
+// 접지 그림자: NW 키라이트 → 중심을 SE(+x,+y)로 살짝 밀어 그림자 방향 통일
+function _dsBlob(c,cx,cy,rx,ry,alpha){
+  const t=_dsBlobStamp();
+  c.globalAlpha=alpha;
+  c.drawImage(t,cx-rx*1.15+rx*.12,cy-ry*1.15+ry*.18,rx*2.3,ry*2.3);
+}
+// 프런트 패스: 플레이어보다 밑동이 남쪽인 tall 오브젝트를 drawP() 뒤에 footY 순서로 그림.
+// 캐노피 AABB가 플레이어를 덮으면 알파를 _DS_FADE_MIN까지 lerp + 플레이어 엑스레이 고스트 재드로우 (MAP-002).
+const _dsPSnap={on:0,flip:false,dir:null,lift:0,silv:1,sc:2}; // drawP가 매 프레임 채우는 고스트용 본체 스냅샷 (할당 0)
+function _dsDrawPlayerGhost(){
+  // GPU 프록시에서 스텐실/필터 불가 → 현재 아틀라스 프레임을 알파 .55로 한 번 더 그리는 엑스레이 방식.
+  // SpriteAnimator.draw는 렌더 전용(프레임 전진 없음 — update와 분리)이라 재호출이 안전하다.
+  if(!_dsPSnap.on||!P||P.hp<=0||!P._sa)return;
+  X.save();
+  X.globalAlpha=_DS_GHOST_A;
+  X.translate(P.x,P.y+_dsPSnap.lift);
+  if(_dsPSnap.silv!==1)X.scale(_dsPSnap.silv,_dsPSnap.silv);
+  X.scale(_dsPSnap.sc,_dsPSnap.sc);
+  try{SpriteAnimator.draw(P._sa,X,0,0,_dsPSnap.flip,_dsPSnap.dir)}catch(e){}
+  X.restore();X.globalAlpha=1;
+}
+function _dsDrawFrontPass(){
+  const arr=_dsFrontObjs;
+  if(arr.length>1)arr.sort(_dsCmpFootY);
+  let _hit=0;
+  for(let i=0;i<arr.length;i++){
+    const mo=arr[i];
+    const target=_dsOverlapsPlayer(mo)?_DS_FADE_MIN:1;
+    if(target<1)_hit=1;
+    let a=mo._dsA===undefined?1:mo._dsA;
+    a+=(target-a)*_DS_FADE_K;if(Math.abs(target-a)<.01)a=target;
+    mo._dsA=a;_dsFadeMul=a;
+    _drawMapObjOne(mo,false);
+    _dsFadeMul=1;
+  }
+  if(_hit)_dsDrawPlayerGhost(); // 가려진 프레임에만 1회 추가 드로우
+  arr.length=0;X.globalAlpha=1;
+}
 
 // ═══ RAM 최적화 시스템 ═══
 
@@ -49972,18 +50069,15 @@ function draw(){
   if(_fc2d){var _dTile=_PERF_PROF._delta(_snapTile);_PERF_PROF._tile_di=_dTile.di}
   if(_DCP.on){_DCP._mark('map');_DCP._entry.world++;_DCP._setSource(_DCP_SRC.WORLD_OBJECT)} // [DCPROF] 맵/지형(타일 캐시+포탈+출구+데코) 구간 종료
   var _snapMobj=_fc2d?_PERF_PROF._snap():null;
+  _dsFrontObjs.length=0;const _dsOn=_dsEnabled()&&!_EDITOR_MODE; // [DEPTH-SLICE] 프레임 시작: 프런트 목록 리셋 + 활성 판정 1회
   const _moCull=_mapObjectCullBounds(G.cam.x,G.cam.y,VW,VH,_EDITOR_MODE?G._edZoom:1);
   if(!_EDITOR_MODE&&_ch1StartOuterEnabled()&&G._camZoom&&G._camZoom!==1)Object.assign(_moCull,_mapObjectCullBounds(G.cam.x,G.cam.y,VW,VH,G._camZoom));
   const _wvl=_moCull.left,_wvr=_moCull.right,_wvt=_moCull.top,_wvb=_moCull.bottom;
   const _hellWinterTone=G.stage===10;
   if(_hellWinterTone){X.save();X.filter='brightness(.46) contrast(1.34) saturate(.18)'}
-  for(let _moi=0;_moi<MAP_OBJS.length;_moi++){const mo=MAP_OBJS[_moi];
-    if(_RETIRED_MAP_OBJECT_TYPES.has(mo.type))continue;
-    if(_ch1ShouldSuppressSouthVisualProp(mo))continue;
-    if(mo.type==='breakable'&&!mo.alive)continue;
-    if(mo.type==='trap'&&!mo.active)continue;
-    {const _moM=(_OBJ_META[mo.type]&&_OBJ_META[mo.type].sz>200)?_OBJ_META[mo.type].sz:0;
-    if(mo.x<_wvl-_moM||mo.x>_wvr+_moM||mo.y<_wvt-_moM||mo.y>_wvb+_moM)continue;}
+  // [DEPTH-SLICE] MAP_OBJS 루프 본문을 프레임-로컬 함수로 추출 — 백 패스(기존 위치)와 프런트 패스(drawP 뒤)가
+  // 완전히 동일한 렌더 경로를 공유한다. 플래그 OFF에서는 기존과 같은 순서로 전 오브젝트가 이 함수로 그려진다.
+  _drawMapObjOne=function(mo,_hellWinterTone){
     const b=Math.sin(_now/300+mo.x)*2;X.textAlign='center';
     switch(mo.type){
       case 'bonfire':{
@@ -50064,7 +50158,7 @@ function draw(){
         const _metaFilter=_meta&&_meta.filter&&!_meta._filterBaked?_meta.filter:'';
         const _drawFilter=_ch1Tone&&_metaFilter?_metaFilter+' '+_ch1Tone:_ch1Tone||_metaFilter;
         const _spriteFx=_drawFilter||(_meta&&_meta.blend);if(_spriteFx){X.save();if(_drawFilter)X.filter=_drawFilter;if(_meta&&_meta.blend)X.globalCompositeOperation=_meta.blend}
-        const _moAlpha=(_meta&&_meta.alpha!==undefined?_meta.alpha:1)*_ch1StartOuterPropAlpha(mo);X.globalAlpha=_moAlpha;
+        const _moAlpha=(_meta&&_meta.alpha!==undefined?_meta.alpha:1)*_ch1StartOuterPropAlpha(mo)*_dsFadeMul;X.globalAlpha=_moAlpha; // [DEPTH-SLICE] _dsFadeMul: 프런트 패스 가림 페이드(OFF/백 패스=1)
         const _swayActive=_diabloNatureSway(X,mo,_meta,(_meta?_meta.sz||32:32)*(mo.scale||1),_now);
         const _ch1TissueActive=globalThis.Ch1LivingDetail&&Ch1LivingDetail.deform(X,G,mo,_now,_meta);
         if(_spr&&_spr.complete&&_spr.naturalWidth>1){
@@ -50149,6 +50243,17 @@ function draw(){
     }
     if(G._fieldRebuildQA&&mo.type==='diablo_hell_torch')_drawDiabloTorchFrame(X,mo.x,mo.y,_now,mo.x*.13+mo.y*.07,mo.scale);
     X.globalAlpha=1;
+  };
+  for(let _moi=0;_moi<MAP_OBJS.length;_moi++){const mo=MAP_OBJS[_moi];
+    if(_RETIRED_MAP_OBJECT_TYPES.has(mo.type))continue;
+    if(_ch1ShouldSuppressSouthVisualProp(mo))continue;
+    if(mo.type==='breakable'&&!mo.alive)continue;
+    if(mo.type==='trap'&&!mo.active)continue;
+    {const _moM=(_OBJ_META[mo.type]&&_OBJ_META[mo.type].sz>200)?_OBJ_META[mo.type].sz:0;
+    if(mo.x<_wvl-_moM||mo.x>_wvr+_moM||mo.y<_wvt-_moM||mo.y>_wvb+_moM)continue;}
+    // [DEPTH-SLICE] 밑동이 플레이어보다 남쪽인 tall 오브젝트는 엔티티 뒤 프런트 패스로 이월 (MAP-001)
+    if(_dsOn&&_dsIsFrontObj(mo)){_dsFrontObjs.push(mo);continue}
+    _drawMapObjOne(mo,_hellWinterTone);
   }
   if(_hellWinterTone)X.restore();
   if(globalThis.Ch1LivingDetail)Ch1LivingDetail.draw(X,G,MAP_OBJS,_now,VW,VH,true);
@@ -51162,11 +51267,14 @@ function draw(){
       X.globalAlpha=sa}}
     // ═══ 바닥 그림자 (save/restore 제거) ═══
     if(!_ensGLQueued&&e.alive&&sa>0.1) {
+      if(_dsOn){_dsBlob(X,e.x,e.y+e.r*.35,e.r*.95,e.r*.28,sa*.3)} // [DEPTH-SLICE] 소프트 접지 그림자 (NW 키라이트)
+      else{
       X.globalAlpha = sa * 0.18;
       X.fillStyle = '#000000';
       X.beginPath();
       X.ellipse(e.x, e.y + e.r * 0.35, e.r * 0.85, e.r * 0.25, 0, 0, Math.PI * 2);
       X.fill();
+      }
       X.globalAlpha = sa;
     }
     // ═══ 몬스터 오라 글로우 제거됨 (스프라이트 위 원형 겹침 방지) ═══
@@ -52121,6 +52229,7 @@ function draw(){
   const _tDP0=performance.now();
   _levelUpVfx.draw(X,P,G.stage,false,IS_MOBILE||OPT.quality==='low');
   drawP();
+  if(_dsOn&&_dsFrontObjs.length)_dsDrawFrontPass(); // [DEPTH-SLICE] 플레이어 앞(남쪽 밑동) tall 오브젝트 + 캐노피 가림 페이드
   _drawPhysicalBites();
   _levelUpVfx.draw(X,P,G.stage,true,IS_MOBILE||OPT.quality==='low');
   _levelUpVfx.drawLabel(X,P,G.stage);
@@ -53073,6 +53182,7 @@ function drawP(){
   const fl=P.iframes>0&&~~(P.iframes/3)%2;if(fl)X.globalAlpha=.3;
   const t=_now;
   const _pScale=2,_pR=P.r*_pScale; // 캐릭터 비주얼 2배
+  _dsPSnap.on=0; // [DEPTH-SLICE] 아틀라스 본체 브랜치에서만 고스트 스냅샷 채움
   if(P._bladeEchoRun)_drawBladeEchoVfx(X,P._bladeEchoRun,P.x,P.y,t);
   else if(P._bladeEchoAfterglow&&P._bladeEchoAfterglow.until>t)_drawBladeEchoVfx(X,P._bladeEchoAfterglow,P.x,P.y,t,(P._bladeEchoAfterglow.until-t)/180);
 
@@ -56059,7 +56169,8 @@ function drawP(){
   const isBash=P.s==='sBash'||P.s==='sRecover';
   // Shadow (동적 크기) — 캐릭터 2배 스케일
   const shW=isCharge?_pR+6:_pR+2;
-  X.fillStyle='rgba(0,0,0,.25)';X.beginPath();X.ellipse(_px,_py+_pR+12,shW,_pR*.35,0,0,Math.PI*2);X.fill();
+  if(_dsEnabled()){_dsBlob(X,_px,_py+_pR+12,shW,_pR*.35,.38);X.globalAlpha=1} // [DEPTH-SLICE] 플레이어 소프트 접지 그림자 α.38 (NW 키라이트)
+  else{X.fillStyle='rgba(0,0,0,.25)';X.beginPath();X.ellipse(_px,_py+_pR+12,shW,_pR*.35,0,0,Math.PI*2);X.fill()}
   X.globalAlpha=fl?.3:1;
   // ══ 뇌전걸음: 전기구체 변신 (카운트 비례 스케일) ══
   if(P._gwActive&&!isDead){
@@ -56276,6 +56387,7 @@ function drawP(){
       P._sa.f=Math.min(_silvAtkN-1,~~(_silvBodyProgress*_silvAtkN));
     }
     const _pFlip=!_apHasDir&&Math.abs(_fa)>Math.PI/2,_pDk=_apHasDir?(_silvAtk?_silvAtk.spriteDir:_apDir):null;
+    if(_dsEnabled()){_dsPSnap.on=1;_dsPSnap.flip=_pFlip;_dsPSnap.dir=_pDk;_dsPSnap.lift=_skillAnimLift+_dashFlightLift;_dsPSnap.silv=_charIdx===1?.65:1;_dsPSnap.sc=_pScale} // [DEPTH-SLICE] 고스트 스냅샷
     // ── [잔상] 이동기술 중 현재 스냅샷 기록 (월드좌표+프레임); 비활성 시 버퍼 비움 ──
     if(P._gwActive||P.s==='bladeDash'||_harpActive||_dashActive||(_apAnim&&_apAnim.indexOf('dash')===0)){
       (P._aiTrail||(P._aiTrail=[])).push({x:_px,y:_py,dir:_pDk,flip:_pFlip,anim:P._sa.anim,f:P._sa.f,sc:_pScale,lift:_skillAnimLift});

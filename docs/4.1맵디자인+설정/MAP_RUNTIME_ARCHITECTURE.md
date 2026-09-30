@@ -1,3 +1,16 @@
+## 2026-10-01 — [DEPTH-SLICE] CH1-1 draw order 분할 (플래그 OFF 기본)
+
+`?depthSlice=1`(또는 `G._depthSlice=true`, CH1-1 한정) 활성 시 draw order가 다음처럼 바뀐다. **OFF(기본)에서는 기존 순서·수치와 동일**하며, MAP_OBJS 루프 본문이 `_drawMapObjOne(mo,_hellWinterTone)` 함수로 추출되어 호출되는 형태 차이만 있다(실행 경로 동일, test/depthSlice.test.js 잠금).
+
+| 변경점 | 내용 |
+|---|---|
+| MAP_OBJS 패스(벤치마크 §2 순서 14) | `occ:1` tall 오브젝트(`m_ctree13~20`+`m_c1tree`) 중 분할선 `footY=y+sz×scale×footYF > P.y`인 것을 건너뛰고 `_dsFrontObjs`로 이월. footYF: m_ctree*=.45(시각 밑동), m_c1tree=-.058(몸통 기준선 — 뿌리 치마 위는 가리지 않음). 아치(m_ctree15/18)는 고리 안 플레이어 시 예외(가림 없음) |
+| `drawP()` 직후(순서 21) | `_dsDrawFrontPass()`: 프런트 오브젝트를 footY 오름차순으로 재드로우. 플레이어 AABB와 겹치면 알파 1→.62 lerp(≈150ms) + 플레이어 현재 아틀라스 프레임 α.55 엑스레이 고스트 1회 |
+| 적 인스턴싱(순서 18) | `_prepEnemyInstanced`가 화면 내 적을 y 오름차순 큐잉(같은 버킷 안에서만 유효, 배치 분할 없음) |
+| 접지 그림자 | 플레이어 α.25→.38 소프트 스탬프, 적 α.18→.30, 전부 SE 오프셋 — **월드 키라이트 SSOT = 북서(NW), 그림자 남동(SE)** (PLAYER_RELIEF·ch1-living-detail skew와 일치, MAP-012 결정) |
+
+수치·검증·게이트·잔여는 [DEPTH_SLICE1_20261001.md](DEPTH_SLICE1_20261001.md)가 SSOT다.
+
 ## 2026-09-29 — CH1-1 공통 피부 바닥87차
 
 사용자 최신 지시: 바닥의 구역별 얼룩·색 차이를 줄이고, 사용자 스크린샷 `2026-09-29 093252`의 촘촘한 피부 결·얕은 주름을 공통 기준으로 유지한다. 현행 배경 cache/bakeVersion **20260929-floor-87**, living module **20260929-87**, retouch **22레이어**다. 기존53점 경계·8구역·8192² master/8000² world·64청크(core1024/bleed1/1026²)는 유지한다. 보행 바닥31826023px/47청크 변경, 비보행 외곽 변경0, 보호한 뿌리 중심681744px 변경0. 구역별 정적 피부막5종은 공통 palette #353032/#3d3535/#353032와 frame alpha .30; 큰 얼룩12개/alpha .06 또는 .04, 미세입자9500개·얕은 주름23개 유지. 추가 runtime draw·상주 canvas0/geometry·충돌 변경0.
