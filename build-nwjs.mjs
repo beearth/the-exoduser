@@ -6,8 +6,20 @@ import { cpSync, existsSync, mkdirSync, rmSync, readdirSync, readFileSync, write
 import { dirname } from 'path';
 import { createHash } from 'crypto';
 
-const DIST = 'dist';
-const OUT  = 'out/EXODUSER-win64';
+// An integration build uses fresh, isolated paths so existing releases and profiles survive.
+const integrationArg = process.argv.slice(2).find(arg => arg.startsWith('--integration-id='));
+if (process.argv.length > 2 && (process.argv.length !== 3 || !integrationArg)) {
+  throw new Error('Usage: node build-nwjs.mjs [--integration-id=YYYYMMDD-HHMMSS]');
+}
+const integrationId = integrationArg?.slice('--integration-id='.length);
+if (integrationArg && !/^\d{8}-\d{6}$/.test(integrationId)) {
+  throw new Error('Integration ID must be YYYYMMDD-HHMMSS');
+}
+const DIST = integrationId ? `dist-integration-${integrationId}` : 'dist';
+const OUT = integrationId ? `out/EXODUSER-integration-${integrationId}` : 'out/EXODUSER-win64';
+if (integrationId && (existsSync(DIST) || existsSync(OUT))) {
+  throw new Error(`Integration paths already exist: ${DIST}, ${OUT}`);
+}
 const CODEC_DLL = 'vendor/nwjs-ffmpeg/0.111.2/ffmpeg.dll';
 const CODEC_SHA256 = 'be2504fbca75c5e3282a79481b5188167b43292cb378ec093ae8ca203ef30500';
 if (createHash('sha256').update(readFileSync(CODEC_DLL)).digest('hex') !== CODEC_SHA256) {
@@ -16,7 +28,7 @@ if (createHash('sha256').update(readFileSync(CODEC_DLL)).digest('hex') !== CODEC
 
 // ── 1. dist/ 스테이징 폴더 초기화 ──────────────────────────────────────────
 console.log('[build] dist/ 초기화...');
-if (existsSync(DIST)) rmSync(DIST, { recursive: true, force: true });
+if (!integrationId && existsSync(DIST)) rmSync(DIST, { recursive: true, force: true });
 mkdirSync(DIST, { recursive: true });
 
 // ── 2. 단일 파일 복사 ────────────────────────────────────────────────────────
@@ -57,11 +69,13 @@ const FILES = [
   'output/fdg_reference_1280x720.png',
   'output/imagegen/forge-icon-sheet-v1.png', 'output/imagegen/forge-icon-sheet-v3.png',
 ];
+const OPTIONAL_FILES = new Set(['credits.html']);
 for (const f of FILES) {
   if (existsSync(f)) {
     mkdirSync(dirname(`${DIST}/${f}`), { recursive: true });
     cpSync(f, `${DIST}/${f}`);
   }
+  else if (integrationId && !OPTIONAL_FILES.has(f)) throw new Error(`Required build file missing: ${f}`);
   else console.warn(`[build] 파일 없음 (건너뜀): ${f}`);
 }
 
@@ -77,6 +91,14 @@ for (const f of FILES) {
     window: pkg.window,
     'chromium-args': pkg['chromium-args'],
   };
+  if (integrationId) {
+    if (!nwPkg.main.includes('localhost:3333') || !nwPkg['chromium-args'].includes('--user-data-dir=./userdata')) {
+      throw new Error('Integration package isolation patch failed');
+    }
+    nwPkg.main = nwPkg.main.replace('localhost:3333', 'localhost:3347');
+    nwPkg['node-remote'] = ['http://127.0.0.1:3347', 'http://localhost:3347'];
+    nwPkg['chromium-args'] = nwPkg['chromium-args'].replace('--user-data-dir=./userdata', `--user-data-dir=./userdata-integration-${integrationId}`);
+  }
   writeFileSync(`${DIST}/package.json`, JSON.stringify(nwPkg, null, 2), 'utf8');
   console.log('[build] package.json 정리 완료 (type:module 제거)');
 }
@@ -94,18 +116,31 @@ for (const f of readdirSync('.').filter(f => f.startsWith('atlas_'))) {
 // ── 5. node-main.js 복사 ────────────────────────────────────────────────────
 if (existsSync('node-main.js')) {
   cpSync('node-main.js', `${DIST}/node-main.js`);
+  if (integrationId) {
+    const isolatedServer = readFileSync(`${DIST}/node-main.js`, 'utf8')
+      .replace('const PORT = 3333;', 'const PORT = 3347;')
+      .replace("path.join(APPDATA, 'EXODUSER-HELL', 'saves')", `path.join(APPDATA, 'EXODUSER-INTEGRATION-${integrationId}', 'saves')`);
+    if (!isolatedServer.includes('const PORT = 3347;') || !isolatedServer.includes(`EXODUSER-INTEGRATION-${integrationId}`)) {
+      throw new Error('Integration server isolation patch failed');
+    }
+    writeFileSync(`${DIST}/node-main.js`, isolatedServer, 'utf8');
+  }
   console.log('[build] node-main.js 포함');
 } else {
+  if (integrationId) throw new Error('Required build file missing: node-main.js');
   console.warn('[build] node-main.js 없음!');
 }
 
 // ── 6. 에셋 폴더 복사 ────────────────────────────────────────────────────────
 const DIRS = ['assets', 'img', 'sprites', 'bgm', 'sfx', 'video', 'localization',
   'output/imagegen/item-skins', 'output/imagegen/forge-tabs-v3', 'output/imagegen/forge-tabs-v4'];
+const OPTIONAL_DIRS = new Set(['output/imagegen/forge-tabs-v3']);
 for (const d of DIRS) {
   if (existsSync(d)) {
     console.log(`[build] ${d}/ 복사 중...`);
     cpSync(d, `${DIST}/${d}`, { recursive: true });
+  } else if (integrationId && !OPTIONAL_DIRS.has(d)) {
+    throw new Error(`Required build directory missing: ${d}`);
   } else {
     console.warn(`[build] 폴더 없음 (건너뜀): ${d}/`);
   }
@@ -113,7 +148,7 @@ for (const d of DIRS) {
 
 // ── 7. nwbuild ────────────────────────────────────────────────────────────────
 let useTemp = false;
-if (existsSync(OUT)) {
+if (!integrationId && existsSync(OUT)) {
   try {
     rmSync(OUT, { recursive: true, force: true });
   } catch {

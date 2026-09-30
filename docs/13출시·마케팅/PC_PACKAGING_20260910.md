@@ -27,6 +27,21 @@
 | 2026-09-12 튜토리얼 | `parry-lesson.js/css`, `resource-practice.js`, `system-lesson.js/css`, `tutorial-badges.js/css`를 FILES에 포함 | 전투1단 → 자원2단 → 시스템 안내 및 배지. 자원 실습은 기본 자동 연결 |
 | 추가 진입 파일 | `game-easy-test.html`, `game-guide.html` 포함. 기본 진입점은 기존 `index.html` 유지 | `build-nwjs.mjs` |
 | 튜토리얼 아트 | `assets/ui/tutorial/`는 기존 assets 전체 복사에 포함 | `build-nwjs.mjs` |
+
+### 2026-10-01 PM-002 로컬 통합 빌드 경로
+
+| 항목 | 값 / 동작 | 적용 위치 |
+|---|---|---|
+| 별도 빌드 실행 | `C:\nvm4w\nodejs\node.exe build-nwjs.mjs --integration-id=YYYYMMDD-HHMMSS` | `build-nwjs.mjs` 인수 |
+| 별도 스테이징 | `dist-integration-ID/` | 신설 경로만 허용, 이미 존재하면 중단 |
+| 별도 출력 | `out/EXODUSER-integration-ID/` | 신설 경로만 허용, 기존 배포본·`userdata` 보존 |
+| 검수 서버 | 패키지 복사본의 `node-main.js`만 3347 포트, `package.json`의 진입점·원격 허용 주소도 3347 | 현재 3333 개발 서버와 충돌 방지 |
+| 검수 저장 | `./userdata-integration-ID`, `%APPDATA%/EXODUSER-INTEGRATION-ID/saves` | 데모 localStorage·설정과 서버 슬롯/재료를 기존 사용자 데이터와 분리 |
+| 소스/산출물 기록 | `tools/integration-build-record.mjs before ID` → 빌드 → `after ID` | 전후 HEAD·Git 변경·주요 소스 SHA-256·복사 입력의 파일 크기/수정시각 목록 해시, 실제 `package.nw` 파일 트리·자산 분류별 파일 수/용량과 EXE·코덱 SHA-256을 `out/integration-records/`에 저장. `assets`·`img`·`sprites`·`bgm`·`sfx`·`video`·`localization`이 비면 실패 |
+| 누락 파일 처리 | 별도 통합 빌드에서 `credits.html`과 `output/imagegen/forge-tabs-v3/`만 선택적; 나머지 명시된 `FILES`·`DIRS` 및 `node-main.js` 누락 시 실패 | 기존 기본 빌드의 경고 후 진행 동작은 유지 |
+| 기본 실행 | 인수 없는 기존 `dist/`·`out/EXODUSER-win64/` | 기존 삭제/잠금 시 `package.nw` 교체 동작 유지. PM-002에는 사용 금지 |
+
+로컬 통합 빌드는 `main` 커밋과 별도로 빌드 시점의 미커밋 파일을 포함한다. 산출물 표기에는 빌드 전후 변경 상태와 실제 파일 해시를 함께 기록한다. 검수 실행에서는 출력 폴더를 작업 디렉터리로 고정하고 별도 프로필·서버 저장 공간을 사용하여 기존 사용자 데이터를 보존한다. 결과 기록은 [통합·빌드팀 대장](INTEGRATION_BUILD_TEAM_MASTER.md)을 따른다.
 | 웹·Steam 공개 데모 범위 | Lv.1 시작, Lv.100 상한, 1-1(`stage=0`) 클리어 후 종료 | 웹 기본 로비·`game.html` 직접 진입·`package.json` 모두 데모 고정 |
 
 구형 패키징 경로·전용 설정·프록시 안내는 작업 지침, 기획 문서 및 과거 문서 사본에서 제거했다. 게임 코드와 빌드 결과물은 이번 문서 정리에서 변경하지 않았다.
