@@ -32634,7 +32634,17 @@ function update(){
           const _wa0=_wd0*Math.PI/4,_wx0=e.x+Math.cos(_wa0)*T*_wr0,_wy0=e.y+Math.sin(_wa0)*T*_wr0;
           const _rtx0=~~(_wx0/T),_rty0=~~(_wy0/T);
           if(_rtx0>=0&&_rty0>=0&&_rtx0<G.mw&&_rty0<G.mh&&G.map[_rty0][_rtx0]!==1){e.x=_wx0;e.y=_wy0;e.kb.x=0;e.kb.y=0;_rescued0=true;break}}}
-        if(!_rescued0){e.hp=0;e.alive=false;e.s='dead';rollDrop(e);addExp(e.exp||1);G.kills++;G._stageKills=(G._stageKills||0)+1;_regKill(e);continue}
+        if(!_rescued0){
+          if(e.ib){
+            // 보스 즉사 금지: 넓은 링(6~12타일) 재배치 → 실패 시 플레이어 위치 → 그래도 실패면 제자리 유지(다음 프레임 재시도). 보스가 전리품과 함께 무료로 사라지는 사고 방지
+            let _brescued0=false;
+            for(let _wr1=6;_wr1<=12&&!_brescued0;_wr1++){for(let _wd1=0;_wd1<8;_wd1++){
+              const _wa1=_wd1*Math.PI/4,_wx1=e.x+Math.cos(_wa1)*T*_wr1,_wy1=e.y+Math.sin(_wa1)*T*_wr1;
+              const _rtx1=~~(_wx1/T),_rty1=~~(_wy1/T);
+              if(_rtx1>=0&&_rty1>=0&&_rtx1<G.mw&&_rty1<G.mh&&G.map[_rty1][_rtx1]!==1){e.x=_wx1;e.y=_wy1;e.kb.x=0;e.kb.y=0;_brescued0=true;break}}}
+            if(!_brescued0&&canMv(P.x,P.y,e.r)){e.x=P.x;e.y=P.y;e.kb.x=0;e.kb.y=0}
+          }else{e.hp=0;e.alive=false;e.s='dead';rollDrop(e);addExp(e.exp||1);G.kills++;G._stageKills=(G._stageKills||0)+1;_regKill(e);continue}
+        }
       }}
       // ── 타이머 감소 (컬링/짝홀 상관없이 항상 실행) ──
       if(e._spawnT>0)e._spawnT--;
