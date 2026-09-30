@@ -50,12 +50,19 @@ test('early field elites and the four required angler bosses have proportionate 
   assert.equal(c._fdHp(10),13250);
 });
 test('kiSlash fired from a bow recovery hits as hard as the ordinary combo',()=>{
-  const lines=html.split('\n').filter(l=>l.includes('spawnCrescent(P.x')&&l.includes("_skMul('kiSlash')"));
-  assert.equal(lines.length,2);
+  const call="_fireKiSlashCrescent((_cresStep%3)+1)";
+  const ordinary=html.slice(html.indexOf("else if(isAct('weapon')&&useStPct('weapon'))"),html.indexOf("else if(isJust('shield')||_sdTapOk())"));
+  const recovery=html.slice(html.indexOf("else if(P.s==='bowRecover'){"),html.indexOf('// ── 사슬 발사 (bowRecover 캔슬)'));
+  assert.ok(ordinary.includes(call),'ordinary attack must use the shared emitter');
+  assert.ok(recovery.includes(call),'bow recovery must use the shared emitter');
   for(const step of [1,2,3]){
     const hits=[];
-    const c=vm.createContext({P:{x:0,y:0,facing:0},meleeRef:()=>100,statStr:()=>1,pAtkMul:()=>.7,_skMul:()=>12,_cresStep:step,_ksDistMul:0,spawnCrescent:(x,y,a,d)=>hits.push(d)});
-    for(const line of lines)vm.runInContext(line,c);
+    const c=vm.createContext({P:{x:0,y:0,facing:0,skills:{kiSlash:1}},meleeRef:()=>100,statStr:()=>1,pAtkMul:()=>.5,_skMul:()=>12,
+      _cresStep:step-1,_cresComboT:0,_cresCd:0,_KI_HOLD_STEP:40,_addSkProf(){},_playKiSlashComboSfx(){},addTxt(){},_L:s=>s,
+      spawnCrescent:(x,y,a,d)=>hits.push(d)});
+    vm.runInContext(fn('_kiSlashHoldTier')+'\n'+fn('_kiSlashHoldMultiplier')+'\n'+fn('_fireKiSlashCrescent'),c);
+    for(const state of ['idle','bowRecover']){c.P.s=state;c._cresStep=step-1;vm.runInContext(call,c);}
+    assert.equal(hits[0],4200,`combo ${step} changes the uncharged damage contract`);
     assert.equal(hits[0],hits[1],`combo ${step} weakens after bow fire`);
   }
 });

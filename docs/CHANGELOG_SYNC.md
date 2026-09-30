@@ -1,3 +1,7 @@
+## 2026-10-01 — Mac 전투·드롭 추가 검수와 기존 회귀 검사 갱신
+
+실제 전투 3처치·불꽃 반지 획득/데모 저장·사망/재시작 확인. 콘솔 권한 오류는 Monica 확장 실행 컨텍스트로 분류. 게임 변경 없이 demoSaveRoute의 슬롯 활성화 stub과 earlyCombatBalance의 공용 공격 함수 검사를 현행 구조에 맞춤. 관련 32개 검사 통과. [Mac 인수서](13출시·마케팅/MAC_ENVIRONMENT_HANDOFF_20261001.md) 추가 검수 참조.
+
 ## 2026-10-01 — Mac 개발 환경 설치 및 실행 격리
 
 인수 SHA `955a2758fa2f1865a9c1c5d3900418d543f3a3d3` 별도 Mac 체크아웃에 Node 24.15.0 arm64·PowerShell 7.6.6·Antigravity 및 필수 편집기 도구 설치. server.cjs에 검증된 PORT·HOST·EXODUSER_SAVE_DIR 선택 지원(기존 기본값 유지), serve:map을 PATH의 node로 이식. 격리 저장/불러오기·재시작 영속성 및 HTML 응답 검사 통과. 기존 저장소·3333 서버 보존. 상세: [Mac 인수서](13출시·마케팅/MAC_ENVIRONMENT_HANDOFF_20261001.md).

@@ -1,5 +1,12 @@
 # Mac 개발 환경 재현 인수서 — 2026-10-01
 
+## 추가 검수 — 2026-10-01
+
+- Chrome 콘솔의 `403 / permission error`와 Promise 예외 3개는 CDP executionContextId를 대조해 Monica 확장(`ofpnmcalabcbjgholdjcjblkibolbppb`)에서 발생한 것으로 확인했다. 페이지 URL로 표시된 두 예외도 같은 확장 컨텍스트였다. 게임 권한이나 Mac 보안 설정을 변경하지 않았다.
+- 검수 캐릭터 `맥검수`로 일반 난이도에서 실제 키보드 이동·좌클릭/우클릭 전투, 적 3마리 처치, `일반 불꽃 반지 획득!`, 사망·재시작을 확인했다. 로컬 데모 저장에는 kills=3, mats=1009와 인벤토리의 불꽃 반지가 기록됐다. 로비 복귀 후 재입장에서도 `_dbReady=true`, `G.kills=3`, `G.mats=1009`, `INV`의 불꽃 반지 복원을 확인했다. 검수 캐릭터 난이도는 일반(5)로 저장했다. 사용자 기존 캐릭터/세이브와는 별도 origin이다.
+- 전투·데모 생성/저장·일시정지·아이템/물약 드롭 관련 기존 Node 검사 32개 중 초기 2개 실패는 테스트의 오래된 의존성/함수 추출 문제였다. demoSaveRoute의 `_demoActivateSlot` stub과 활성화 슬롯 검증을 보완하고, earlyCombatBalance를 공용 `_fireKiSlashCrescent` 호출과 동일 피해 계약 검증으로 갱신했다. 런타임 게임 코드와 밸런스는 변경하지 않았다. 갱신 후 32/32 통과.
+- Claude 공식 `claude auth login` 흐름을 시작했으며 본인 로그인을 기다린다. 비Git ZIP은 Downloads/Desktop/Codex/Projects에서 발견되지 않았다. 해당 두 항목을 완료로 표시하지 않는다.
+
 ## Mac 설치 실행 결과 — 2026-10-01 (권한 변경 후)
 
 - 실제 설치 대상: `/Users/fordeargamers/Projects/exoduser-migration-20261001`, 브랜치 `codex/mac-environment-20261001`. 인수 SHA `955a2758fa2f1865a9c1c5d3900418d543f3a3d3`와 대조 완료. 아래 03:10의 읽기 전용·미설치 기록은 이력이다.
