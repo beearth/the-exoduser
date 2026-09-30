@@ -1,3 +1,17 @@
+## 2026-10-01 몹 피격 플래시 복원 (ANIMVFX / PM-014)
+
+일반 몹 피격 시각 피드백이 죽어 있었다. `hurtE`가 `e._hitFlash=6`(일반)/`=4`(회전참)로 타이머만 세팅하고, 렌더는 `if(e._hitFlash>0){e._hitFlash-=1}`로 감소만 하고 아무것도 그리지 않았다(과거 붉은 원 제거 후 대체 미구현). 히트 시 **해당 몹의 8방향 아틀라스 셀을 가산 1장 덧그려 스프라이트 실루엣을 밝게 팝**시키도록 복원했다(신규 에셋·텍스처·VRAM 0).
+
+| 항목 | 값 |
+|---|---|
+| 대상 | 일반 몹(`!e.ib`). CH1 8방향 아틀라스(`_ch8Atlas`) 몹. 보스 제외 |
+| 강도·페이드 | `_hfT=min(1,e._hitFlash/6)` 1→0, 알파 `_hfT*0.8`(2D는 ×sa), 크기 `max(e.r*7,80)*(1+0.05*_hfT)` |
+| 렌더 경로 | GL 인스턴싱: `_prepEnemyInstanced`에서 `_drawEnemy8DirInstanced()` 직후 `_ensGLMode===1`&`_hitFlash>0` 몹만 additive 덧그림+감소. 2D 폴백: 기존 "피격 플래시" 블록에서 `!_ensGLQueued` 몹만 덧그림+감소 |
+| 이중 방지 | GL 몹=GL 경로, 2D 몹=2D 경로에서만 처리(각각 `_ensGLMode`/`_ensGLQueued` 게이트) |
+| 합성 | additive. GPU 프록시는 `_setBlend(true/false)`, Canvas2D 폴백은 `globalCompositeOperation='lighter'` 병행 지정 |
+| 불변 | 피해·쿨다운·판정·넉백·히트스톱·자원·에셋 불변. `hurtE`의 `_hitFlash` 세팅값(6/4) 그대로 |
+| 검수 | 인라인 JS 구문 PASS. 2D 폴백 경로 실화면 A/B(OFF 어두움→ON 밝기 팝) 확인. GL 인스턴싱 경로는 정규 풀부팅 실화면 대기(하니스 제약) |
+
 ## 2026-09-13 불꽃칼날 이름·불꽃 스윙
 
 ## 2026-09-29 기동파괴 재검수
