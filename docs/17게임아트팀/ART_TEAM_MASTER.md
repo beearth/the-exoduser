@@ -117,6 +117,15 @@
 | 캐릭터 선택 실버테일(`portrait_silvertail.png`·`silvertail_cut.png`)·배경(`bg_scene1/2.png`)·로비 포스터·엠블럼 | ✅ 점검(2026-10-01): 잔점 없음 |
 | 출시 예정 3종 `portrait_/poster_idle_` spearmage·hellgunner·transmuter (JPG 96~213KB) | ⚠ 압축으로 흐릿함 — 디자인 확정 후 고화질 재제작 필요 |
 
+### 4.4 배포·동기화 상태 (2026-10-01 실측, 조회 시점 기준)
+
+| 대상 | 상태 | 근거 |
+|---|---|---|
+| Git 원격 `origin/main` | ✅ 반영 | 아트 커밋 `b2acb28c1`·`29b5a0623`·`069f598ac`·`9a15f4208`·`0febafe05` 모두 origin/main 조상. 조회 시 로컬 HEAD=origin/main=`76a3bc0b2` |
+| 웹(Vercel `the-exoduser.vercel.app`) | ⏳ 미반영 | 라이브 game.html 컷신 캐시 `intro-lock3`, 재생기 쿼리 없음, 초상 `?v=1` → 구버전. GitHub Actions Deploy 2건 in_progress (약 40분 소요) |
+| `G:/exoduser-DEMO`, `G:/exoduser-ea` | ✅ 이미지·캐시 일치 | 컷신 7·로딩 9·전사 초상 바이트 비교 일치, 컷신 캐시 `intro-lock6`, 로딩 `loading-remaster5`, 초상 `eyefix`. 두 폴더에는 `video/`·`character-story-player.js`가 없어 스토리 영상은 대상 아님. game.html은 마지막 동기화 시점 사본(이후 타 팀 미커밋 변경 미포함) |
+| Steam `G:/exoduser-steam/content/windows` | ❌ 미반영 | package.nw/game.html 2026-09-29 22:00, 컷신 캐시 `20260913-intro-detail2`. 기본 빌드 25202408 그대로. 재빌드·스모크·업로드 필요(BUILD 팀 소관, 업로드는 사용자 Steam 계정) |
+
 ---
 
 ## 5. 백로그 (우선순위)
@@ -129,7 +138,7 @@
 | ✅ | 로딩 rd1·rd6·rd17·4~19 점검 → 유지 판정 (2026-10-01) | 무료 |
 | P2 | 출시 예정 3종(창술사·총잡이·연금술사) 초상·포스터 고화질화 — **디자인 확정(LOCK) 선행 필요** | GPT 200×6 |
 | P3 | 로딩 16·18 중복 1장 교체 | Seedream 100 |
-| P2 | 대검전사 영상 0~5초·81~84초 전사 구간을 로딩 rd13·rd8 신 그림 기반으로 교체 | Hailuo 450×2 |
+| 진행 중 | 대검전사 영상 0~5초·81~84초 전사 구간을 로딩 rd13·rd8 신 그림 기반으로 교체 (2026-10-01 Hailuo 2개 제출) | Hailuo 250×2 |
 | P3 | 구 전쟁 인트로 정지 이미지 잔점/신원 점검 | 점검 무료 |
 | P3 | 맵 오브젝트 양산 (맵 담당과 배치 협의) | Seedream 100/개 |
 
@@ -142,7 +151,7 @@
 | 2026-09-30 | 인트로 21컷 전면 교체, 네메시아 디자인 시트 확정, 로딩 12장 교체, 킬루 신원 복구, 전사 눈 색 수정, Seedream 파이프라인 확정, 아트팀 문서 신설 | MagicLight 약 12,000+ (세트 표정 복제·거부된 호출 실행 등 낭비 포함) |
 
 | 2026-10-01 | 디로이·핵터 DESIGN LOCK, 전사 bust 교체, 로딩 2·3 펫 재생성 | MagicLight 600 |
-| 2026-10-01 | 대검전사 스토리 영상 네메시아 구간 v24 교체 (그림 2 + Hailuo 영상 2) | MagicLight 1,300 |
+| 2026-10-01 | 대검전사 스토리 영상 네메시아 구간 v24 교체 (그림 2 + Hailuo 영상 2), 실제 재생기 검수 | MagicLight 900 |
 
 ### 사고 기록 (재발 방지)
 

@@ -7,7 +7,7 @@ for(const language of ['ko','en'])test('warrior movie selects '+language+' timed
  const document=new El();document.body=new El();document.activeElement=new El();document.createElement=()=>new El();
  const ctx=vm.createContext({document,console,setTimeout,clearTimeout});vm.runInContext(fs.readFileSync('character-story-player.js','utf8'),ctx);
  const promise=ctx.ExoduserCharacterStory.play({language});const video=document.body.children[0].children[0];
- assert.equal(video.src,'video/warrior_story_v23_clean.mp4?v=20261001-nemesia');
+ assert.equal(video.src,'video/warrior_story_v23_clean.mp4?v=20261001-v25');
  const track=video.children.find(c=>c.kind==='subtitles');assert.ok(track);assert.equal(track.srclang,language);assert.equal(track.default,true);
  assert.equal(track.src,`video/subtitles/warrior_story_v23_${language}.vtt`);
  track.dispatchEvent(new Event('load'));assert.equal(track.track.mode,'showing');

@@ -18,7 +18,7 @@
       overlay.setAttribute('role','dialog');overlay.setAttribute('aria-modal','true');overlay.setAttribute('aria-label',controls[3]);overlay.lang=({zht:'zh-Hant',ptbr:'pt-BR'})[code]||code;overlay.dir=code==='ar'?'rtl':'ltr';
       overlay.style.cssText='position:fixed;inset:0;z-index:2147483647;background:#000;display:flex;align-items:center;justify-content:center';
       const video=document.createElement('video');video.id='characterStoryVideo';
-      video.src='video/warrior_story_v23_clean.mp4?v=20261001-nemesia';video.preload='auto';video.playsInline=true;video.controls=false;
+      video.src='video/warrior_story_v23_clean.mp4?v=20261001-v25';video.preload='auto';video.playsInline=true;video.controls=false;
       video.disablePictureInPicture=true;video.disableRemotePlayback=true;video.tabIndex=-1;
       video.muted=false;video.volume=1;video.style.cssText='width:100%;height:100%;object-fit:contain;pointer-events:none';
       const captions=document.createElement('track');captions.kind='subtitles';captions.srclang=({zht:'zh-Hant',ptbr:'pt-BR'})[code]||code;

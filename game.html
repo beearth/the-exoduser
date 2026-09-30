@@ -10,7 +10,7 @@
 <script src="system-lesson.js?v=20260912-skip-density1"></script>
 <link rel="stylesheet" href="parry-lesson.css?v=20260913-mission-details1">
 <script src="resource-practice.js?v=20260916-recovery2"></script>
-<script src="parry-lesson.js?v=20260913-area-practice8"></script>
+<script src="parry-lesson.js?v=20261001-kislash-2sec"></script>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>HELL: EXODUSER</title>
@@ -63,6 +63,7 @@ window._supabaseReady=new Promise(resolve=>{
 <script src="ch1-living-detail.js?v=20260929-87"></script>
 <script src="ch1-forest-sway.js?v=20260930-90"></script>
 <script src="ch1-face-life.js?v=20260930-97"></script>
+<script src="ch1-altar-moat.js?v=20261001-3"></script>
 <script src="lang_zh.js"></script>
 <script src="lang_ja.js"></script>
 <script src="lang_es.js"></script>
@@ -3577,6 +3578,12 @@ async function dbLoad(){
 }
 
 // ═══ Restore state from saved data ═══
+function _restoreExpProgress(pd){
+  const maxExp=pd.maxExp||15;
+  if((pd.lv||1)<1000||(Number.isFinite(maxExp)&&maxExp>0))return{exp:pd.exp||0,maxExp};
+  // 구버전 초월 필요 경험치의 32비트 오버플로 값만 복구한다.
+  return{exp:Math.max(0,Number(pd.exp)||0),maxExp:_calcMaxExp(pd.lv)};
+}
 function dbRestore(d){
   if(!d)return false;
   // 생성 직후에는 player 없이 charIdx만 저장된다. 이전 캐릭터 캐시보다 슬롯이 우선이다.
@@ -3585,7 +3592,7 @@ function dbRestore(d){
   if(!d.player)return false;
   // Player
   const pd=d.player;
-  P.lv=pd.lv||1; P.exp=pd.exp||0; P.maxExp=pd.maxExp||15;
+  P.lv=pd.lv||1; const _xpRestore=_restoreExpProgress(pd); P.exp=_xpRestore.exp; P.maxExp=_xpRestore.maxExp;
   P._transLvDate=pd.transLvDate||null; P._transLvCount=pd.transLvCount||0; P._apBossCleared=pd.apBossCleared||[]; P._goddessGift=pd.goddessGift||[];
   // SP/AP: 저장된 값 그대로 복원 (재계산 폐지 — 보스+10SP 등 보너스 누락, 합체 비용 오산 등 버그 다수)
   P.sp=pd.sp||0;
@@ -4587,6 +4594,7 @@ function _buildStaticLights(){
   else if(t==='m_penta_circle'||t==='m_skull_altar'||t==='m_obelisk')_slArr.push({x:o.x,y:o.y,r:310,a:.46,cr:255,cg:72,cb:44,f:.6});
   else if(t==='m_eye_tree'||t==='m_flesh_maw'||t==='m_flesh_ball')_slArr.push({x:o.x,y:o.y,r:270,a:.38,cr:255,cg:72,cb:44,f:.4});
  }
+ if(G.stage===0&&!G._bossArena&&globalThis.Ch1AltarMoat)Ch1AltarMoat.lights(_slArr,_CH1_HILL,T); // 독액 도랑 녹색 광원 10개
 }
 function _collectLights(){
   _lightCnt=0;
@@ -4699,6 +4707,89 @@ const _texUploaded=new WeakMap();
 const _texGCQueue=[];        // 종료 대기 중인 old map WebGLTexture (프레임말 _glFlush 직후 drain)
 let _mapTexDelTotal=0;       // 계측: 누적 deleteTexture 호출 수 (검증용)
 let _freeMapTex=function(){}; // _initWebGL WebGL 분기에서 할당 — 캐시된 map 텍스처를 queue로 이관
+// ═══ [PM-001] 텍스처 비동기 프리워밍 — 첫 사용 디코드+업로드 끊김 제거 (2026-10-01, QA·성능팀) ═══
+//   문제: _getTex의 texImage2D(HTMLImageElement)는 PNG/WebP 디코드까지 메인 스레드에서 동기 수행한다
+//         (실측 2304² 38~79ms, 1254² 11~30ms). 스킬·드롭을 처음 쓰는 프레임마다 게임 전체가 멈춘다.
+//   해결: fetch→Blob→createImageBitmap(premultiplyAlpha:'none')로 메인 스레드 밖에서 디코드한 뒤
+//         프레임말에 1장씩 업로드(실측 1~6ms). 결과는 URL 키(_texBySrc)로 보관하고, 같은 URL의 Image가
+//         처음 그려질 때 _getTex가 그 텍스처를 채택한다.
+//   대상: 이전 세션에 동기 업로드가 발생했던 큰 이미지(localStorage hell_texhot_v1 학습 목록) + 기본 시드.
+//   무손실: HTMLImageElement 업로드와 픽셀 동일(실측 diff 0). 프리워밍이 아직 안 끝난 이미지는 기존 동기
+//           경로로 그대로 그린다 — 화면·판정·수치·몹 수 변화 없음. WebGL2 경로 전용(WebGPU/2D 폴백 무변경).
+const _TEXHOT_KEY='hell_texhot_v1';
+const _TEXHOT_MAX=96;          // 학습 목록 최대 항목 (최근 사용순)
+const _TEXHOT_MIN_PX=250000;   // 이보다 작은 이미지는 동기 업로드 비용이 작아 기록하지 않는다
+const _TEXHOT_BUDGET_PX=64e6;  // 프리워밍 총 픽셀 상한 (RGBA 약 256MB)
+const _TEXHOT_INFLIGHT=2;      // 동시 디코드 수
+const _TEXHOT_QMAX=4;          // 업로드 대기 비트맵 상한 (디코드 역압)
+// 기본 시드 [상대 URL, 픽셀 수] — 첫 세션(학습 목록 없음)에서 CH1 초반 전투가 반드시 쓰는 큰 시트
+const _TEXHOT_SEED=(function(){
+  const s=[];
+  for(const b of ['armor','axe','belt','boots','bracelet','cape','crossbow','earring','gloves','helmet','necklace','pants','shield','sword'])s.push(['/img/ui/item-cutouts/'+b+'_phys_cutout.png',1254*1254]);
+  s.push(['/sprites/spike_trap/spike_thorn.png',1254*1254],['/sprites/spike_trap/vortex.png',1254*1254],
+    ['/assets/vfx/inferno_slam_impact_sheet.png',1024*1024],['/assets/vfx/giant_slam_impact_sheet.png',1024*1024],
+    ['/img/proj_firedevil_orb.png',1254*1254],['/img/fieldboss_firedevil_walk_1.png',1448*1086],
+    ['/assets/vfx/lightning_burst_sheet.png',3012*439],['/assets/vfx/ground_crack_sheet.png',1960*245]);
+  return s;
+})();
+let _texBySrc=null;            // Map<절대 URL,{tex,w,h}> — _initWebGL이 컨텍스트마다 새로 만든다
+let _texAdoptBitmap=null;      // (절대 URL, ImageBitmap) 업로드 — _initWebGL에서 할당
+let _texHot=null,_texHotDirty=false,_texHotScanned=false;
+const _texPreQ=[],_texPreWait=[],_texPreSeen=new Set();
+let _texPreBusy=0,_texPrePx=0;
+function _texHotLoad(){
+  if(_texHot)return _texHot;
+  _texHot=new Map();
+  try{const a=JSON.parse(localStorage.getItem(_TEXHOT_KEY)||'[]');
+    if(Array.isArray(a))for(const e of a)if(e&&typeof e[0]==='string'&&e[1]>0)_texHot.set(e[0],{px:+e[1],t:+e[2]||0});
+  }catch(e){}
+  return _texHot;
+}
+// 큰 이미지가 실제로 그려졌다는 기록(동기 업로드·프리워밍 채택 공통) → 다음 세션 프리워밍 대상
+function _texHotNote(abs,w,h){
+  if(w*h<_TEXHOT_MIN_PX||abs.lastIndexOf('http',0)!==0)return;
+  // 맵 청크·맵 오브젝트는 학습하지 않는다 — 스테이지마다 수십 장(1026²)이라 목록·예산을 잠식한다(청크 스트리밍 쪽에서 별도 처리).
+  if(abs.indexOf('/assets/map/')>=0)return;
+  const o=location.origin;
+  _texHotLoad().set(abs.lastIndexOf(o,0)===0?abs.slice(o.length):abs,{px:w*h,t:Date.now()});_texHotDirty=true;
+}
+function _texHotSave(){
+  if(!_texHotDirty||!_texHot)return;
+  _texHotDirty=false;
+  try{localStorage.setItem(_TEXHOT_KEY,JSON.stringify([..._texHot.entries()].sort((x,y)=>y[1].t-x[1].t).slice(0,_TEXHOT_MAX).map(e=>[e[0],e[1].px,e[1].t])))}catch(e){}
+}
+function _texPrePump(){
+  while(_texPreBusy<_TEXHOT_INFLIGHT&&_texPreWait.length&&_texPreQ.length<_TEXHOT_QMAX){
+    const abs=_texPreWait.shift();_texPreBusy++;
+    fetch(abs).then(r=>{if(!r.ok)throw 0;return r.blob()}).then(b=>createImageBitmap(b,{premultiplyAlpha:'none'}))
+      .then(bmp=>{_texPreQ.push({src:abs,bmp:bmp})},()=>{})
+      .then(()=>{_texPreBusy--;_texPrePump()});
+  }
+}
+function _texPrewarmSrc(rel,px){
+  if(!_useGL||!_texBySrc||!_texAdoptBitmap||typeof createImageBitmap!=='function'||typeof fetch!=='function')return;
+  let abs;try{abs=new URL(rel,location.href).href}catch(e){return}
+  if(abs.lastIndexOf('http',0)!==0||_texPreSeen.has(abs)||_texBySrc.has(abs))return;
+  if(_texPrePx+px>_TEXHOT_BUDGET_PX)return;
+  _texPreSeen.add(abs);_texPrePx+=px;_texPreWait.push(abs);_texPrePump();
+}
+// 세션(또는 컨텍스트 복구)마다 1회 목록을 읽어 프리워밍을 건다. 이후 호출은 학습 목록 저장만 한다.
+function _texPrewarmHot(){
+  _texHotSave();
+  if(_texHotScanned||!_useGL||!_texBySrc)return;
+  _texHotScanned=true;
+  const a=[..._texHotLoad().entries()].sort((x,y)=>y[1].t-x[1].t);
+  for(let i=0;i<a.length&&i<_TEXHOT_MAX;i++)_texPrewarmSrc(a[i][0],a[i][1].px);
+  for(let i=0;i<_TEXHOT_SEED.length;i++)_texPrewarmSrc(_TEXHOT_SEED[i][0],_TEXHOT_SEED[i][1]);
+}
+// 프레임말 1장 업로드. 그 사이 동기 경로가 같은 URL을 먼저 올렸으면 비트맵만 버린다.
+function _texPreDrain(){
+  if(!_texPreQ.length)return;
+  const j=_texPreQ.shift();
+  try{if(_useGL&&_texBySrc&&_texAdoptBitmap&&!_texBySrc.has(j.src))_texAdoptBitmap(j.src,j.bmp)}catch(e){}
+  try{j.bmp.close()}catch(e){}
+  if(_texPreWait.length)_texPrePump();
+}
 function _drainTexGCQueue(){  // 프레임말(현재 frame 마지막 GL flush 완료 뒤) 결정적 삭제
   if(!_texGCQueue.length)return;
   if(typeof GL!=='undefined'&&GL&&GL.deleteTexture){
@@ -5096,6 +5187,29 @@ function _prepEnemyInstanced(_vl,_vr,_vt,_vb,_now,_E_RMAX){
   }
   const _ens8Drawn=_drawEnemy8DirInstanced();
   if(_ensGLCount>0)_drawEnemyInstanced();
+  // ═══ 피격 플래시(GL 경로) — hurtE가 세팅한 e._hitFlash를 스프라이트 실루엣 가산 발광으로 덧그리고 감소 ═══
+  // GL 인스턴싱 스트라이드에는 tint가 없어(알파만) 셰이더 hot-path를 건드리지 않고, GL 스프라이트 위에 원본 셀을 additive로 1장 덧그린다.
+  let _anyHF8=false;
+  for(let _hi=0;_hi<_eIter.length;_hi++){const e=_eIter[_hi];if(e&&e._hitFlash>0&&e._ensGLMode===1){_anyHF8=true;break}}
+  if(_anyHF8){
+    X.save();X.globalCompositeOperation='lighter';_setBlend(true);X.imageSmoothingEnabled=false;
+    for(let _hi=0;_hi<_eIter.length;_hi++){const e=_eIter[_hi];
+      if(!e||!e.alive||!(e._hitFlash>0)||e._ensGLMode!==1)continue;
+      if(e._mob8dir&&e._mobCh){
+        const _a8=_ch8Atlas[e._mobCh]||_ch8Atlas[1];
+        if(_a8&&_a8.meta){
+          const _dk8=_mobFacingDir8(e.facing);let _da8=_a8.dirs[_dk8];if(!_da8||!_da8.ready)_da8=_a8.dirs.south;
+          if(_da8&&_da8.ready){
+            const _cell=_a8.meta.cell||256,_t=Math.min(1,e._hitFlash/6),_sz=Math.max(e.r*7,80)*(1+.05*_t);
+            X.globalAlpha=_t*.8;
+            X.drawImage(_da8.img,e._mob8Col*_cell,e._mob8Row*_cell,_cell,_cell,e.x-_sz/2,e.y-_sz/2,_sz,_sz);
+          }
+        }
+      }
+      e._hitFlash--;
+    }
+    _setBlend(false);X.globalCompositeOperation='source-over';X.globalAlpha=1;X.restore();
+  }
   X.globalAlpha=1;_dbgEnsGL=performance.now()-_t0;_dbgEns8GL=_ens8Drawn;
   return _ensGLCount+_ens8Drawn
 }
@@ -5569,9 +5683,24 @@ oC=c;}`;
   // [Track D] 명시적 ownership 종료: map canvas의 캐시된 텍스처를 삭제 큐로 이관 + 캐시 슬롯 제거.
   //   호출측(buildMapCache/_finalizeBMC)에서 old map 텍스처를 rebuild 직전에 넘긴다.
   _freeMapTex=function(src){const e=src&&_texCache.get(src);if(e&&e.tex){_texGCQueue.push(e.tex);_texCache.delete(src);}};
+  // [PM-001] URL 공유 텍스처 + 비동기 프리워밍 업로드 (컨텍스트마다 초기화 → 복구 후 다시 프리워밍)
+  _texBySrc=new Map();_texPreSeen.clear();_texPrePx=0;_texHotScanned=false;
+  _texAdoptBitmap=function(abs,bmp){
+    const t=GL.createTexture();GL.bindTexture(GL.TEXTURE_2D,t);
+    GL.texParameteri(GL.TEXTURE_2D,GL.TEXTURE_MIN_FILTER,GL.LINEAR);
+    GL.texParameteri(GL.TEXTURE_2D,GL.TEXTURE_MAG_FILTER,GL.LINEAR);
+    GL.texParameteri(GL.TEXTURE_2D,GL.TEXTURE_WRAP_S,GL.CLAMP_TO_EDGE);
+    GL.texParameteri(GL.TEXTURE_2D,GL.TEXTURE_WRAP_T,GL.CLAMP_TO_EDGE);
+    GL.texImage2D(GL.TEXTURE_2D,0,GL.RGBA,GL.RGBA,GL.UNSIGNED_BYTE,bmp);
+    GL.bindTexture(GL.TEXTURE_2D,_curTex);
+    _texBySrc.set(abs,{tex:t,w:bmp.width,h:bmp.height});
+  };
 
   _getTex=function(src,_nearestHint){let e=_texCache.get(src);if(e&&e.v===(src._glVer||0))return e.tex;
     const sw=src.width||src.naturalWidth||0,sh=src.height||src.naturalHeight||0;
+    // [PM-001] 같은 URL이 이미 GPU에 있으면(프리워밍 또는 다른 Image 객체의 업로드) 그 텍스처를 채택 — LINEAR Image 경로 전용
+    if(!e&&!_nearestHint&&_texBySrc.size&&src instanceof HTMLImageElement){const _pu=src.src,_ps=_pu.length<600?_texBySrc.get(_pu):null;
+      if(_ps&&_ps.w===sw&&_ps.h===sh){_texCache.set(src,{tex:_ps.tex,v:src._glVer||0,w:sw,h:sh});_texHotNote(_pu,sw,sh);return _ps.tex}}
     // [Track D] map 텍스처만: 버전 불일치로 캐시 덮어쓰기 직전, 구 텍스처를 프레임말 삭제 큐로.
     //   (invariant #1: 구 map 텍스처는 이후 frame에서 미사용 — 이 캐시 슬롯이 유일 참조였음)
     if(e&&e.tex&&src._mapTex){_texGCQueue.push(e.tex);e=null}
@@ -5588,6 +5717,8 @@ oC=c;}`;
     GL.texParameteri(GL.TEXTURE_2D,GL.TEXTURE_WRAP_T,GL.CLAMP_TO_EDGE);
     if(sw>0&&sh>0&&sw<=_glMaxTex&&sh<=_glMaxTex){try{GL.texImage2D(GL.TEXTURE_2D,0,GL.RGBA,GL.RGBA,GL.UNSIGNED_BYTE,src)}catch(e){GL.texImage2D(GL.TEXTURE_2D,0,GL.RGBA,1,1,0,GL.RGBA,GL.UNSIGNED_BYTE,new Uint8Array([0,0,0,0]))}}
     else{GL.texImage2D(GL.TEXTURE_2D,0,GL.RGBA,1,1,0,GL.RGBA,GL.UNSIGNED_BYTE,new Uint8Array([0,0,0,0]))}
+    // [PM-001] 큰 Image의 동기 업로드: URL 공유 등록(같은 URL 중복 업로드 방지) + 다음 세션 프리워밍 학습
+    if(!_isCanvas&&sw*sh>=_TEXHOT_MIN_PX&&sw<=_glMaxTex&&sh<=_glMaxTex&&src instanceof HTMLImageElement){const _pu=src.src;if(_pu.length<600&&!_texBySrc.has(_pu)){_texBySrc.set(_pu,{tex:t,w:sw,h:sh});_texHotNote(_pu,sw,sh)}}
     GL.bindTexture(GL.TEXTURE_2D,_curTex);_texCache.set(src,{tex:t,v:src._glVer||0,w:sw,h:sh});return t};
 
   // ★ WebGL은 즉시 모드: flush마다 그리고 리셋
@@ -5644,6 +5775,7 @@ oC=c;}`;
       _qCnt=0;_bufOff=0;
       // [Track D] context lost → 큐의 텍스처 핸들은 컨텍스트와 함께 무효화. 큐 비우고 free는 no-op.
       _texGCQueue.length=0;_freeMapTex=function(){};
+      _texBySrc=null;_texAdoptBitmap=null; // [PM-001] 손실 컨텍스트의 URL 텍스처 무효화 — 대기 비트맵은 _texPreDrain이 닫는다
       _resetEnemyInstanced();_resetVfxInstanced();
       _flush=function(){_qCnt=0;_bufOff=0};_setTex=function(){};_getTex=function(){return null};
       _setBlend=function(){};_glFlush=function(){_qCnt=0;_bufOff=0};_clearFrame=function(){_qCnt=0;_bufOff=0};
@@ -21835,6 +21967,7 @@ function _queueCombatTextureWarmup(){
 }
 // 워밍업 큐 적재
 function _warmupEnsAtlas(){
+  _texPrewarmHot(); // [PM-001] 학습·시드 목록 비동기 프리워밍(세션 1회) + 학습 목록 저장
   if(_ensWarmDone||_wqLen>0)return;
   _wqLen=0;_wqIdx=0;_wqQueued=new Set();
   if(_saReady&&!_saWarmDone&&_wqLen<80)_wqBuf[_wqLen++]=_WQ_SHIELD_AURA;
@@ -41246,7 +41379,7 @@ function _calcMaxExp(lv){
   if(lv<1000)return ~~((15+lv*2.5+lv*lv*.05)*Math.pow(1.001,lv)); // 올드공식 × 0.1%복리 (초반 유지, 후반 도전적)
   // 초월: 500만 + (초월렙)² × 10000
   const t=lv-999;
-  return ~~(5000000+t*t*10000);
+  return Math.floor(5000000+t*t*10000);
 }
 function addExp(v,trans){
   // trans=true: 초월 고정값, /3 스킵
@@ -45231,7 +45364,7 @@ function _skillBatchUp(){
     if(_slv<1)continue; // 미습득 제외
     while(_slv<_skMaxLv&&_slv<_skLvLock){
       const _cost=_skillUpSpCost(_slv);
-      const _matGate=_malCost(sk.upMat||100); // canUp 게이트와 동일
+      const _matGate=_malCost(sk.upMat||0); // 실제 강화 차감과 동일
       const _matChg=_malCost(sk.upMat||0);    // apply 차감과 동일
       if(P.sp<_cost||G.mats<_matGate)break;
       P.skills[sk.id]++;P.sp-=_cost;G.mats-=_matChg;_slv++;_total++;
@@ -45774,7 +45907,7 @@ function _renderSkillRow(sk,grid){
       _fuseCanUp=_fLv2<_skMaxLv&&P.sp>=_fuseUpSp;
     }
     const _singleUpSp=_skillUpSpCost(slv,false);
-    const canUp=(learned&&sk.up&&slv<_skMaxLv&&slv<_skLvLock&&P.sp>=_singleUpSp&&G.mats>=_malCost(sk.upMat||100)&&!_isFuseUp)||(_fuseCanUp&&slv<_skLvLock);
+    const canUp=(learned&&sk.up&&slv<_skMaxLv&&slv<_skLvLock&&P.sp>=_singleUpSp&&G.mats>=_malCost(sk.upMat||0)&&!_isFuseUp)||(_fuseCanUp&&slv<_skLvLock);
     const d=document.createElement('div');
     d.dataset.skId=sk.id; // 라인 연결용 식별자
     // 합체 보석 그룹 — 습득된 스킬은 항상 그룹색 글로우
@@ -49716,6 +49849,7 @@ function draw(){
   if(globalThis.Ch1ForestSway)Ch1ForestSway.draw(X,G,_now,_ch1StartOuterCache,_ch1StartOuterStats.drawnIds,G.mw*T/8,_CH1_START_ROOT,VW,VH);
   if(globalThis.Ch1FaceLife)Ch1FaceLife.draw(X,G,_now,_ch1StartOuterCache,_ch1StartOuterStats.drawnIds,G.mw*T/8,_CH1_START_ROOT,VW,VH);
   _drawCh1Hill(X);
+  if(globalThis.Ch1AltarMoat)Ch1AltarMoat.draw(X,G,_now,_CH1_HILL,T,VW,VH); // 제단 둘레 막힌 띠를 독액 도랑으로 표시 (시각 전용)
   if(globalThis.Ch1LivingDetail?.shadows)Ch1LivingDetail.shadows(X,G,MAP_OBJS,_OBJ_SPR,_OBJ_META,_now,VW,VH);
   if(globalThis.Ch1LivingDetail)Ch1LivingDetail.draw(X,G,MAP_OBJS,_now,VW,VH);
   const _tMap=performance.now();
@@ -51437,8 +51571,27 @@ function draw(){
       X.fillText('❗',e.x,e.y-e.r-8);
       X.globalAlpha=sa;
     }
-    // ═══ 피격 플래시 (타이머만 감소, 원형 제거) ═══
-    if(e._hitFlash > 0) {
+    // ═══ 피격 플래시 — 히트 시 스프라이트 가산 발광(흑철 지옥 톤 유지, 타격 피드백) ═══
+    // GL 인스턴싱으로 그려진 몹(_ensGLQueued)은 GL 경로 플래시(_prepEnemyInstanced)에서 처리하므로 2D 폴백에선 건너뛴다(이중 방지).
+    if(e._hitFlash > 0 && !_ensGLQueued) {
+      if(!e.ib && e._mob8Col!==undefined && e._mob8Col!==null){
+        const _hfA8=_ch8Atlas[1];
+        if(_hfA8){
+          const _hfDk=_mobFacingDir8(e.facing);
+          let _hfDa=_hfA8.dirs[_hfDk]; if(!_hfDa||!_hfDa.ready)_hfDa=_hfA8.dirs['south'];
+          if(_hfDa&&_hfDa.ready){
+            const _hfC8=(_hfA8.meta?_hfA8.meta.cell:256);
+            const _hfT=Math.min(1,e._hitFlash/6);        // 1→0 페이드
+            const _hfSz=Math.max(e.r*7,80)*(1+.05*_hfT); // 히트 순간 살짝 팝
+            const _hfA=_hfT*.8*sa;
+            X.save();X.translate(e.x,e.y);X.imageSmoothingEnabled=false;
+            X.globalAlpha=_hfA;X.globalCompositeOperation='lighter';_setBlend(true);
+            X.drawImage(_hfDa.img,e._mob8Col*_hfC8,e._mob8Row*_hfC8,_hfC8,_hfC8,-_hfSz/2,-_hfSz/2,_hfSz,_hfSz);
+            _setBlend(false);X.globalCompositeOperation='source-over';X.globalAlpha=sa;
+            X.restore();
+          }
+        }
+      }
       e._hitFlash -= 1;
     }
     // ═══ 가시덫 슬로우 비주얼 — 발밑 초록 원 ═══
@@ -59425,6 +59578,7 @@ function loop(timestamp){
   if(G.mats!==_matsPrev){_matsPrev=G.mats;_matsDirty()}
   }catch(_loopErr){console.error('[LOOP CRASH]',_loopErr.message,_loopErr.stack);document.title='ERR: '+_loopErr.message+' @'+(_loopErr.stack||'').match(/:(\d+):/)?.[1]}
   _perfFrameTick();
+  _texPreDrain(); // [PM-001] 디코드가 끝난 프리워밍 텍스처를 프레임말에 1장 업로드
   if(_BOOTH_MODE)_boothDraw();
   if(_ATM_TUNE)_atmDrawHud();
   requestAnimationFrame(loop);
