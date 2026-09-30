@@ -16765,13 +16765,13 @@ function _dsBlob(c,cx,cy,rx,ry,alpha){
 // 프런트 패스: 플레이어보다 밑동이 남쪽인 tall 오브젝트를 drawP() 뒤에 footY 순서로 그림.
 // 캐노피 AABB가 플레이어를 덮으면 알파를 _DS_FADE_MIN까지 lerp + 플레이어 엑스레이 고스트 재드로우 (MAP-002).
 const _dsPSnap={on:0,flip:false,dir:null,lift:0,silv:1,sc:2}; // drawP가 매 프레임 채우는 고스트용 본체 스냅샷 (할당 0)
-function _dsDrawPlayerGhost(){
+function _dsDrawPlayerGhost(_ga){ // _ga: 호출자 지정 알파 (2차 경계 전경=.75, 미지정=1차 기본 _DS_GHOST_A)
   // GPU 프록시에서 스텐실/필터 불가 → 현재 아틀라스 프레임을 알파 .55로 한 번 더 그리는 엑스레이 방식.
   // SpriteAnimator.draw는 렌더 전용(프레임 전진 없음 — update와 분리)이라 재호출이 안전하다.
   if(!_dsPSnap.on||!P||P.hp<=0||!P._sa)return;
   if(_dsPSnap.gN===_now)return;_dsPSnap.gN=_now; // [DEPTH-SLICE2] 프레임당 1회 (1차 프런트 패스와 2차 경계 전경이 공유)
   X.save();
-  X.globalAlpha=_DS_GHOST_A;
+  X.globalAlpha=_ga||_DS_GHOST_A;
   X.translate(P.x,P.y+_dsPSnap.lift);
   if(_dsPSnap.silv!==1)X.scale(_dsPSnap.silv,_dsPSnap.silv);
   X.scale(_dsPSnap.sc,_dsPSnap.sc);

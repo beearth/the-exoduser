@@ -21,6 +21,35 @@ test('borderFg: 모듈이 로드되고 기본 OFF 상수·플래그 스위치가
   assert.match(moduleSrc, /\[?\?&\]?borderFg=0/, '2차만 끄기 ?borderFg=0');
   assert.match(moduleSrc, /\[?\?&\]?borderFg=1/, '시험용 ?borderFg=1');
   assert.match(moduleSrc, /_dsEnabled/, '?depthSlice=0 이면 1·2차 모두 꺼짐 (1차 게이트 연동)');
+  // RETOUCH v2 값 계약
+  assert.match(moduleSrc, /const BAND=170;/, '띠 깊이 170px (팀장 지시 140~200 내 확정)');
+  assert.match(moduleSrc, /const FADE_MIN=\.5,/, '가림 시 띠 알파 .5 (1차 .62 불변)');
+  assert.match(moduleSrc, /const GHOST_A=\.75;/, '2차 고스트 .75 (1차 .55 불변)');
+  assert.match(moduleSrc, /_dsDrawPlayerGhost\(GHOST_A\)/, '고스트 호출에 2차 알파 전달');
+});
+
+test('borderFg: 경계 polygon 53점이 layout.js boundary와 동일하다', () => {
+  const layoutSrc = readFileSync(new URL('../assets/map/ch1/production_finish/layout.js', import.meta.url), 'utf8');
+  const m = layoutSrc.match(/const boundary=\[([\s\S]*?)\];/);
+  assert.ok(m, 'layout.js boundary');
+  const pts = JSON.parse('[' + m[1].replace(/,\s*$/, '') + ']');
+  assert.equal(pts.length, 53);
+  assert.deepEqual(BFG._boundary, pts, '내장 polygon == layout.js');
+});
+
+test('borderFg: 띠 마스크 수식 — polygon 밖=1, 경계에서 안쪽 170px까지 smoothstep 감쇠', () => {
+  // 맵 중앙(전투 바닥 한복판) = 0
+  assert.equal(BFG._pip(4000, 4000), true, '중앙은 polygon 안');
+  assert.equal(BFG._bandAlpha(4000, 4000), 0, '깊숙한 안쪽은 알파 0');
+  // polygon 밖(숲 깊은 곳) = 1
+  assert.equal(BFG._pip(400, 400), false, 'NW 숲은 polygon 밖');
+  assert.equal(BFG._bandAlpha(400, 400), 1, '밖은 알파 1');
+  // 북문 통로 서쪽 세그먼트 x=88타일(3520px), y=600 지점(다른 세그먼트와 충분히 떨어짐)
+  const q = { x: 3520 + 85, y: 600 };
+  assert.equal(BFG._pip(q.x, q.y), true);
+  assert.ok(Math.abs(BFG._distB(q.x, q.y) - 85) < 1e-6, '경계 거리 85px');
+  assert.ok(Math.abs(BFG._bandAlpha(q.x, q.y) - .5) < 1e-6, '85px 지점 알파 .5 (smoothstep)');
+  assert.equal(BFG._bandAlpha(3520 + 171, 600), 0, '170px 안쪽에서 0');
 });
 
 test('borderFg: 내장 표가 placements.json과 일치한다 (index·좌표·variant·scale/width·flip)', () => {
@@ -83,12 +112,24 @@ test('borderFg: 가림 판정 — 수관 영역만, 밑동·뿌리 아래는 제
   assert.equal(BFG._overlapsCanopy(it, { x: it.x - 200, y: it.y + it.h * .3 }), false, '수평 밖');
 });
 
+test('borderFg: 적이 띠(수관) 아래에 있으면 해당 항목 알파 .5 규칙 (전역 ens 스텁)', () => {
+  const it = BFG._layout().find(i => i.id === 'T18');
+  const cx = it.x + it.w / 2;
+  globalThis.ens = [{ alive: true, x: cx, y: it.y + it.h * .3, r: 14 }];
+  assert.equal(BFG._enemyUnderCanopy(it), true, '수관 안 적 → 참');
+  globalThis.ens = [{ alive: true, x: it.x - 500, y: it.y, r: 14 }, null, { alive: false, x: cx, y: it.y + it.h * .3, r: 14 }];
+  assert.equal(BFG._enemyUnderCanopy(it), false, '밖/사망 적 → 거짓');
+  delete globalThis.ens;
+});
+
 test('borderFg: 배선 — game.html 태그+호출 2줄 / easy-test 호출 2줄만 / build-nwjs 복사 1줄 / 고스트 프레임 1회 가드', () => {
   assert.match(gameSrc, /<script src="ch1-border-foreground\.js\?v=[^"]+"><\/script>/, 'game.html 스크립트 태그');
   for (const s of [gameSrc, easySrc]) {
     assert.match(s, /Ch1BorderForeground\)Ch1BorderForeground\.drawBack\(X,G,_now,VW,VH\)/, '백 패스 호출');
     assert.match(s, /_dsDrawFrontPass\(\);[^\n]*\n\s*if\(globalThis\.Ch1BorderForeground\)Ch1BorderForeground\.drawFront\(X,G,_now,VW,VH\)/, '프런트 패스 호출 위치(1차 직후)');
     assert.match(s, /if\(_dsPSnap\.gN===_now\)return;_dsPSnap\.gN=_now;/, '고스트 프레임당 1회 가드');
+    assert.match(s, /function _dsDrawPlayerGhost\(_ga\)/, '고스트 알파 파라미터(2차 .75 / 1차 기본 .55)');
+    assert.match(s, /X\.globalAlpha=_ga\|\|_DS_GHOST_A;/, '기본값 폴백');
   }
   assert.doesNotMatch(easySrc, /<script src="ch1-border-foreground/, 'easy-test는 호출 줄만 (다른 CH1 런타임과 동일)');
   assert.match(buildSrc, /'ch1-border-foreground\.js',/, 'NW.js 패키징 복사 목록');
