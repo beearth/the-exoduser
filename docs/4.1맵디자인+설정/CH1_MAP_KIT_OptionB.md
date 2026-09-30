@@ -172,7 +172,7 @@ v2 룩(갈흑 흙, 독녹 늪, 검은 뿌리, 외곽 철창/제단)에 **거의 
 | id / 파일 | 그룹 | 이유 |
 |---|---|---|
 | `ground_dark_soil.png` | GROUND | 본편 흙. 색이 v2 charcoal에 가장 가까움 |
-| `m_ctree1`~`12` | PROP / EDGE | 저주나무 512. 림 프레임 |
+| `m_ctree1`~`12` | PROP / EDGE | 기존 저주나무 512. 다른 CH1 stage용 등록 유지; 현행 1-1 손 배치는 [Sunburst `m_ctree13~20`](CH1_SUNBURST_TREE_PASS88_20260930.md) |
 | `m_rotten_tree` | PROP | 메타만 있음. **파일 64px → modify** |
 | `m_hang_cage` | PROP / LANDMARK | 교수대+새장. v2 철창 |
 | `m_cage_gate` | PROP | 철창 문 |

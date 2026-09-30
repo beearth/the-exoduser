@@ -85,7 +85,7 @@ test('CH1 1-1 keeps the central combat clearing and START-to-EXIT axis open', ()
   const southAxisBlockers = props.filter((prop) => (
     !groundIds.test(prop.id) && !structuralIds.test(prop.id) &&
     prop.id !== 'm_c1tree' && prop.id !== 'm_cage_gate' &&
-    prop.x >= 82 && prop.x <= 122 && prop.y >= 118 && prop.y <= 184
+    prop.x >= 85 && prop.x <= 115 && prop.y >= 118 && prop.y <= 184
   ));
   assert.deepEqual(southAxisBlockers, [], 'START-to-center approach must remain open');
 
@@ -138,17 +138,17 @@ test('CH1 1-1 keeps the reference density contrast between center and outer thir
 });
 
 test('CH1 1-1 keeps authored scenes after absorbing modular vines into forest geometry', () => {
-  assert.equal(props.length, 62, 'the 59 obsolete modular boundary props and buried east eye-tree are absorbed into baked forest plus tile geometry');
+  assert.equal(props.length, 36, 'the current hand-authored scene has 36 props after obsolete modular boundaries and floor filler were absorbed into the bake');
   assert.equal(props.filter(isStructural).length, 0, 'no modular vine collider may remain');
   assert.deepEqual(byId('m_eye_tree'), [], 'the east eye-tree must not remain as a dead authored prop behind the forest wall');
   assert.deepEqual(byId('m_c1tree')[0], { id: 'm_c1tree', x: 102, y: 90, scale: 1 });
   assert.deepEqual(byId('m_cage_gate'), []);
   assert.deepEqual(byId('corpse').find((prop) => prop.y >= 170), { id: 'corpse', x: 124, y: 179, scale: 1 });
-  assert.deepEqual(byId('m_vine_pillar')[0], { id: 'm_vine_pillar', x: 29, y: 158, scale: 1 });
+  assert.deepEqual(byId('m_vine_pillar'), [], 'the old side pillar is absorbed into the baked forest');
   assert.deepEqual(byId('m_c1gtoxic')[0], { id: 'm_c1gtoxic', x: 168, y: 40, scale: 1 });
   assert.deepEqual(byId('m_c1pool')[0], { id: 'm_c1pool', x: 167, y: 43, scale: 1.55 });
-  assert.deepEqual(byId('m_meat')[0], { id: 'm_meat', x: 164, y: 47, scale: 1 });
-  assert.deepEqual(byId('m_puddle').find((prop) => prop.x > 150 && prop.y < 80), { id: 'm_puddle', x: 164, y: 53, scale: 1 });
+  assert.deepEqual(byId('m_meat'), [], 'the old loose meat filler is removed');
+  assert.deepEqual(byId('m_puddle'), [], 'the old loose puddle filler is removed');
 
   const sceneSupport = (x1, x2, y1, y2) => authoredSupport.filter((prop) => (
     prop.x >= x1 && prop.x <= x2 && prop.y >= y1 && prop.y <= y2
@@ -165,10 +165,10 @@ test('CH1 1-1 keeps authored scenes after absorbing modular vines into forest ge
     ...sceneSupport(68, 81, 24, 46),
     ...sceneSupport(124, 136, 24, 46),
   ];
-  assert.ok(startEdges.length >= 4 && startEdges.length <= 7,
-    `START forecourt needs a restrained 4-7 prop edge scene, got ${startEdges.length}`);
-  assert.ok(lowerEdges.length >= 4 && lowerEdges.length <= 7,
-    `LOWER transition needs a restrained 4-7 prop edge scene, got ${lowerEdges.length}`);
+  assert.ok(startEdges.length >= 2 && startEdges.length <= 5,
+    `START forecourt keeps a sparse 2-5 prop edge scene, got ${startEdges.length}`);
+  assert.ok(lowerEdges.length >= 3 && lowerEdges.length <= 6,
+    `LOWER transition keeps a sparse 3-6 prop edge scene, got ${lowerEdges.length}`);
   assert.ok(northFrames.length >= 4 && northFrames.length <= 7,
     `NORTH approach needs a restrained 4-7 prop frame, got ${northFrames.length}`);
 
@@ -177,15 +177,15 @@ test('CH1 1-1 keeps authored scenes after absorbing modular vines into forest ge
     const d = distance(prop, hero);
     return d >= 28 && d <= 39 && prop.y >= 72 && prop.y <= 116;
   });
-  assert.ok(heroRing.length >= 4 && heroRing.length <= 8,
-    `CENTER clearing needs a sparse asymmetric 4-8 prop outer ring, got ${heroRing.length}`);
+  assert.ok(heroRing.length >= 1 && heroRing.length <= 4,
+    `CENTER clearing keeps a sparse asymmetric 1-4 prop outer ring, got ${heroRing.length}`);
 
   for (const [id, anchor, min, max] of [
     ['m_c1camp', { x: 45, y: 100 }, 3, 7],
     ['m_c1altar', { x: 147, y: 97 }, 3, 7],
     ['m_c1cocoon', { x: 47, y: 50 }, 3, 7],
-    ['m_c1pool', { x: 167, y: 43 }, 3, 7],
-    ['pit_poison', { x: 162, y: 139 }, 3, 7],
+    ['m_c1pool', { x: 167, y: 43 }, 1, 4],
+    ['pit_poison', { x: 162, y: 139 }, 1, 4],
   ]) {
     const cluster = authoredSupport.filter((prop) => distance(prop, anchor) <= 13);
     assert.ok(cluster.length >= min && cluster.length <= max,

@@ -16403,6 +16403,15 @@ const _CH_DECO={
     {id:'m_ctree10',file:'cursed_tree_10.png',sz:400,large:1,dir:'collision',colSz:60,hardAlpha:1},
     {id:'m_ctree11',file:'cursed_tree_11.png',sz:400,large:1,dir:'collision',hardAlpha:1},
     {id:'m_ctree12',file:'cursed_tree_12.png',sz:400,large:1,dir:'collision',hardAlpha:1},
+    // CH1-1 Sunburst cutouts: four source silhouettes, eight authored colliders; legacy trees remain for later stages.
+    {id:'m_ctree13',file:'sunburst_tree_01.png',sz:400,large:1,col:1,dir:'collision',colSz:60,sharedAtlas:1,stageMax:0,authoredOnly:1},
+    {id:'m_ctree14',file:'sunburst_tree_02.png',sz:400,large:1,col:1,dir:'collision',colSz:60,sharedAtlas:1,stageMax:0,authoredOnly:1},
+    {id:'m_ctree15',file:'sunburst_tree_04.png',sz:400,large:1,col:1,dir:'collision',colSz:60,sharedAtlas:1,stageMax:0,authoredOnly:1},
+    {id:'m_ctree16',file:'sunburst_tree_03.png',sz:400,large:1,col:1,dir:'collision',colSz:60,sharedAtlas:1,stageMax:0,authoredOnly:1},
+    {id:'m_ctree17',file:'sunburst_tree_03.png',sz:400,large:1,col:1,dir:'collision',colSz:60,sharedAtlas:1,stageMax:0,authoredOnly:1},
+    {id:'m_ctree18',file:'sunburst_tree_04.png',sz:400,large:1,col:1,dir:'collision',colSz:60,sharedAtlas:1,stageMax:0,authoredOnly:1},
+    {id:'m_ctree19',file:'sunburst_tree_02.png',sz:400,large:1,col:1,dir:'collision',sharedAtlas:1,stageMax:0,authoredOnly:1},
+    {id:'m_ctree20',file:'sunburst_tree_01.png',sz:400,large:1,col:1,dir:'collision',sharedAtlas:1,stageMax:0,authoredOnly:1},
     {id:'m_atree1',file:'anim_tree_01.png',sz:400,large:1,dir:'collision',hardAlpha:1},
     {id:'m_cage_gate',file:'cage_gate.png',sz:300,large:1,dir:'collision'},
     {id:'m_sword_pile',file:'sword_pile.png',sz:200,large:1,dir:'collision'},
@@ -16984,9 +16993,9 @@ const _MAP_COMPOSE={
     handProps:[
       // All former perimeter and side-shoulder dash/L modules are absorbed into the continuous baked forest.
       // One semantic tile mask owns the forest collision for player, enemies, flowfield, spawn, and minimap.
-      // 저주나무는 외곽 벽과 POI에 붙인 8개만 사용한다. 서로 다른 scale로 반복 실루엣을 끊어 Layer 3 숲 덩어리를 만든다.
-      {id:'m_ctree1',x:84,y:184,scale:.85},{id:'m_ctree2',x:80,y:150,scale:1.1},{id:'m_ctree3',x:30,y:96,scale:.95},{id:'m_ctree4',x:80,y:36,scale:1.15},
-      {id:'m_ctree9',x:124,y:31,scale:.9},{id:'m_ctree10',x:176,y:96,scale:1.12},{id:'m_ctree11',x:124,y:149,scale:.88},{id:'m_ctree12',x:124,y:179,scale:1.08},
+      // 1-1 전용 부패 고목 8개: 이전 충돌 앵커와 scale을 유지하고 네 가지 나무 실루엣을 비대칭 배치한다.
+      {id:'m_ctree13',x:84,y:184,scale:.85},{id:'m_ctree14',x:80,y:150,scale:1.1},{id:'m_ctree15',x:30,y:96,scale:.95},{id:'m_ctree16',x:80,y:36,scale:1.15},
+      {id:'m_ctree17',x:124,y:31,scale:.9},{id:'m_ctree18',x:176,y:96,scale:1.12},{id:'m_ctree19',x:124,y:149,scale:.88},{id:'m_ctree20',x:124,y:179,scale:1.08},
       // START FORECOURT / 감염된 성문: 문 전면은 깨끗하게, 좌우 shoulder에만 무너진 진입 흔적을 둔다.
       {id:'m_fbones',x:82,y:180},{id:'corpse',x:124,y:179},
       
@@ -24158,7 +24167,7 @@ function initMapObjects(){
   // ── 챕터별 맵 장식 자동 배치 ──
   function _dcFloorOK(m,x,y){var v=m[y][x];return v===0||v===4}
   const _chDecoRaw=G._testbed?null:_CH_DECO[hell];
-  const _chDeco=_chDecoRaw?.filter(d=>(!d.stageMin||G.stage>=d.stageMin)&&(!d.stageMax||G.stage<=d.stageMax))||[];
+  const _chDeco=_chDecoRaw?.filter(d=>(d.stageMin===undefined||G.stage>=d.stageMin)&&(d.stageMax===undefined||G.stage<=d.stageMax))||[];
   if(_chDeco&&_chDeco.length>0){
     const _dcSeed=_tseed(G.stage*13+7,hell*97+3);
     // 바닥 타일 수집

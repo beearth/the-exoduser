@@ -1,3 +1,7 @@
+## 2026-09-30 — CH1-1 Sunburst 부패 생체나무 88차
+
+MagicLight Toolbox `GPT Image 2.5 sunburst`로 생체나무 4종을 생성하고 1024×1024 RGBA로 정리했다. `game.html`·`game-easy-test.html`의 1-1 손 배치 나무 8개를 `m_ctree13~20`으로 교체했다. 좌표·scale·충돌 메타 및 87차 피부 바닥을 유지하고 전용 stage/scatter 범위를 지정했다. 실제 게임 8개 배치·4장 로딩·카메라 구역·오류 로그와 Node 51/51 검사 확인. 외곽 식생 재질은 후속 정비 대상으로 **전체 맵 VISUAL VERDICT: RETOUCH**. [ID별 수치·생성·검수·MAP PRODUCTION REPORT](4.1맵디자인+설정/CH1_SUNBURST_TREE_PASS88_20260930.md).
+
 ## 2026-09-30 — 바탕화면 빌드 패널 렉 재검수
 
 | 항목 | 확인 결과 |
