@@ -9771,74 +9771,7 @@ async function _loadAudioBuffers(){
   })().catch(e=>console.warn('[SFX] preload failed:',e.message));
   return _audioPreloadTask;
 }
-// ── SFX_MAP: 프로시저럴/파일 라우팅 (DAY 10) ──
-const SFX_MAP={
-  hit_sword:{type:'procedural',fn:'slash'},
-  hit_magic:{type:'procedural',fn:'magic'},
-  hit_enemy:{type:'procedural',fn:'hit'},
-  hurt_player:{type:'procedural',fn:'hurt'},
-  parry:{type:'procedural',fn:'parry'},
-  charge:{type:'procedural',fn:'charge'},
-  die:{type:'procedural',fn:'die'},
-  levelup:{type:'procedural',fn:'levelup'},
-  pickup:{type:'procedural',fn:'pickup'},
-  potion:{type:'procedural',fn:'potion'},
-  victory:{type:'procedural',fn:'victory'},
-  skill_whirlwind:{type:'file',src:'sfx/sk_whirl.mp3'},
-  skill_ghostwalk:{type:'file',src:'sfx/sk_ghost.mp3'},
-  skill_iceorb:{type:'file',src:'sfx/sk_iceorb.mp3'},
-  skill_omnibeam:{type:'file',src:'sfx/sk_omni.mp3'},
-  skill_blackstar:{type:'file',src:'sfx/sk_bstar.mp3'},
-  boss_intro:{type:'file',src:'sfx/boss_intro.mp3'},
-  boss_die:{type:'file',src:'sfx/boss_die.mp3'}
-};
-const _sfxFileCache={};
-// ── BGM_MAP: 지옥별 탐색/보스 트랙 + 크로스페이드 (DAY 10) ──
-const BGM_MAP={
-  title:'bgm/title.mp3',
-  0:{explore:'bgm/h0_explore.mp3',boss:'bgm/h0_boss.mp3'},
-  1:{explore:'bgm/h1_explore.mp3',boss:'bgm/h1_boss.mp3'},
-  2:{explore:'bgm/h2_explore.mp3',boss:'bgm/h2_boss.mp3'},
-  3:{explore:'bgm/h3_explore.mp3',boss:'bgm/h3_boss.mp3'},
-  4:{explore:'bgm/h4_explore.mp3',boss:'bgm/h4_boss.mp3'},
-  5:{explore:'bgm/h5_explore.mp3',boss:'bgm/h5_boss.mp3'},
-  6:{explore:'bgm/h6_explore.mp3',boss:'bgm/h6_boss.mp3'}
-};
-let _bgmCtx=null,_bgmGainA=null,_bgmGainB=null,_bgmSrcA=null,_bgmSrcB=null,_bgmCurSlot='A',_bgmCurKey='';
-const _bgmBufCache={};
-function _bgmGetCtx(){if(!_bgmCtx)try{_bgmCtx=new(window.AudioContext||window.webkitAudioContext)()}catch(e){}return _bgmCtx;}
-async function bgmPlay(key){
-  if(key===_bgmCurKey)return;
-  let src=null;
-  if(typeof key==='string'){src=BGM_MAP[key]}
-  else if(typeof key==='object'&&key!==null&&key.hell!=null){
-    const hd=BGM_MAP[key.hell];
-    if(hd)src=key.boss?hd.boss:hd.explore;
-  }
-  if(!src||typeof src!=='string')return;
-  const c=_bgmGetCtx();if(!c)return;
-  let buf=_bgmBufCache[src];
-  if(!buf){
-    try{const r=await fetch(src);const ab=await r.arrayBuffer();buf=await c.decodeAudioData(ab);_bgmBufCache[src]=buf}
-    catch(e){return;}
-  }
-  _bgmCurKey=key;
-  if(!_bgmGainA){_bgmGainA=c.createGain();_bgmGainA.connect(c.destination)}
-  if(!_bgmGainB){_bgmGainB=c.createGain();_bgmGainB.connect(c.destination)}
-  const t=c.currentTime,fadeDur=2;
-  const newSlot=_bgmCurSlot==='A'?'B':'A';
-  const newGain=newSlot==='A'?_bgmGainA:_bgmGainB;
-  const oldGain=_bgmCurSlot==='A'?_bgmGainA:_bgmGainB;
-  const oldSrc=_bgmCurSlot==='A'?_bgmSrcA:_bgmSrcB;
-  const ns=c.createBufferSource();ns.buffer=buf;ns.loop=true;
-  ns.connect(newGain);
-  newGain.gain.setValueAtTime(0,t);newGain.gain.linearRampToValueAtTime(BGM._vol,t+fadeDur);
-  ns.start(t);
-  if(oldSrc){oldGain.gain.setValueAtTime(oldGain.gain.value,t);oldGain.gain.linearRampToValueAtTime(0,t+fadeDur);
-    const os=oldSrc;setTimeout(()=>{try{os.stop()}catch(e){}},fadeDur*1000+100);}
-  if(newSlot==='A')_bgmSrcA=ns;else _bgmSrcB=ns;
-  _bgmCurSlot=newSlot;
-}
+let _bgmCtx=null,_bgmGainA=null,_bgmGainB=null,_bgmSrcA=null,_bgmSrcB=null,_bgmCurSlot='A',_bgmCurKey=''; // DAY 10 크로스페이드 잔재 — BGM.setVol/페이드가 null 체크로만 참조 (레거시 SFX_MAP·BGM_MAP·bgmPlay 삭제 2026-09-30, S-03)
 // ── SpriteAnimator (아틀라스 기반 범용 스프라이트 애니메이터) ──
 const SpriteAnimator={
   create(img,frameMap,defAnim){return{img,fm:frameMap,anim:defAnim,f:0,t:0,spd:8,loop:true,done:false};},

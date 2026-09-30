@@ -2161,6 +2161,8 @@ MAP_BG_LAYERS = {
 ```
 
 ### DAY 10: 사운드 뼈대
+> **2026-09-30 사운드팀 (S-03):** 아래 DAY 10 `SFX_MAP`·`BGM_MAP`·`bgmPlay()`는 호출처 0인 죽은 코드였고 참조 파일(`sfx/sk_*.mp3`, `bgm/h0~h6_*.mp3`, `bgm/title.mp3`)도 없어 `game.html`에서 삭제했다. 현재 BGM은 `BGM.tracks`(HTMLAudio), SFX는 `SFX` 레지스트리 + `playSample()`이 담당한다 — [SOUND_TEAM_LEAD.md](../6사운드디자인/SOUND_TEAM_LEAD.md).
+
 ```javascript
 // SFX_MAP: 프로시저럴 기본 + 파일 있으면 교체
 // 'hit_sword': {type:'procedural', fn: sfxHitSword}
