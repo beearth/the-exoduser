@@ -1,6 +1,17 @@
 # Mac 개발 환경 재현 인수서 — 2026-10-01
 
-## 최신 상태 — 2026-10-01 03:10 KST
+## 최신 완료 상태 — 2026-10-01 06:43 KST
+
+설치·개발 실행과 비Git 자료 인수를 완료했다. 아래 03:10 및 초기 조사 표는 이력이며 읽기 전용·전송 대기는 해소됐다.
+
+- Mac 별도 프로젝트: `/Users/fordeargamers/Projects/exoduser-migration-20261001`. 기존 저장소·세이브·3333 서버 보존, 개발 검수 서버 3340.
+- Mac 현장 보고: Node 24.15.0 / npm 11.12.1 / PowerShell 7.6.6 / Antigravity·개발 도구 및 Claude Google 로그인 완료. 실제 전투 3처치·불꽃 반지 획득·재접속 복원, 관련 검사 32/32.
+- ZIP 수신·검증 명령 출력 확인: 151,030,223바이트, SHA-256 `8282d037704cee13ff21ec35932a840f67aabef2812a9a56ebed7bbdf6b27ee2`, CRC PASS, PC 인벤토리와 80개 파일 크기·해시 일치. Mac 프로젝트 `tmp/mac-migration-20261001/` 아래 ZIP·`verified-evidence/`·`verified-receipt.json` 보존.
+- Mac 마감 GitHub 백업: `codex/mac-environment-20261001` / `dd4c12b94b4ce90afc14bee15809b70c1a541863`. Mac 일반 push 보고와 총괄 원격 ref 재조회 일치. PC WIP 입력 `955a2758fa2f1865a9c1c5d3900418d543f3a3d3`도 별도 보존.
+- 설치 완료와 전체 콘텐츠 장시간 QA·성능 개선·Mac 패키지·독립 SOUND 병합은 구분한다. 뒤의 항목은 미실시이며 팀/자동화 재개도 하지 않았다. 관리 자동화 `exoduser`는 PAUSED, 사용자 재개 지시를 기다린다.
+- PC 기존 LAN 서버만 사용했다. 새 전송 서버·공유·방화벽·PC 전원·GUI 변경 없음. 실제 인수 명령·완료 턴은 [총괄 §17.3](../0마스터플랜/PROJECT_MANAGEMENT_MASTER.md#173-mac-설치자료-인수-완료-2026-10-01-0640-kst)와 로컬 복구 영수증에 기록했다.
+
+## 설치 전 상태 — 2026-10-01 03:10 KST
 
 - 사용자가 Mac 실제 환경 구성을 승인했고 정확히 식별한 Mac 채팅에 설치 지시를 전달했다. 아래 초기 표의 승인 대기·Mac 미확인 표기는 당시 이력이며 현재 상태는 이 절이 우선한다.
 - Mac 현장 보고: macOS 26.6.2 / arm64 / M5 Pro / RAM 24GB / 여유 공간 약 823GiB. 기존 `/Users/fordeargamers/the-exoduser`는 main `a5537745ca6a9785f704887bc1b4f9d7c80f703f`, 수정 21개·미추적 1개·staging 0개. 기존 서버가 3333을 사용 중이다. 이 파일·세이브·서버는 보존한다.
@@ -77,5 +88,5 @@
 ## 완료 판정
 
 - 연결 확인, 소스 복구, 도구 설치, 개발 실행, 저장 호환 검수, Mac 패키지, 팀 운영 전환을 각각 구분한다.
-- 현재 완료된 것은 PC 환경 조사와 인수 지시서 준비다. Mac에서 실행한 증거가 없는 단계는 완료로 표기하지 않는다.
+- 설치·개발 실행·비Git 인수와 원격 백업의 최신 완료 근거는 문서 상단을 따른다. Mac 실행 패키지·장시간 QA·팀 운영 전환은 별도 미실시다.
 - 총괄 기준 문서: [노트북 이전 체크리스트](LAPTOP_MIGRATION_CHECKLIST_20261001.md), [빌드 백업 규칙](BUILD_BACKUP_POLICY_20261001.md), [총괄 마스터](../0마스터플랜/PROJECT_MANAGEMENT_MASTER.md).
