@@ -1,3 +1,7 @@
+## 2026-09-30 — CH1-1 썩은 숲 재질 경계 95차 현행
+
+현행 생산 배경은 bakeVersion `20260930-rotforest-95`, 청크 cache key `20260930-rotforest-96`, 23 retouch 레이어·64청크다. 36개 나무+큰 군락 6개+뿌리 bridge 1개를 비충돌 외곽에 굽고, `floor_transition93.png`의 18px 유기적 시각 전이로 길과 숲의 직선 절단면을 없앴다. 89차 ±5px 움직임은 청크 가장자리 4 mask 샘플에서 감쇠한다. 53점 경계·충돌·피부 바닥 중심·남북 통로는 유지한다. [현행 원인·수치·검수·MAP PRODUCTION REPORT](CH1_ROTTEN_FOREST_BOUNDARY_PASS95_20260930.md). 아래 90차의 현행 표기는 당시 제작 이력이다. **VISUAL VERDICT: RETOUCH.**
+
 ## 2026-09-30 — [REGION] 4분면 지역 클리어 + 지역 기반 지옥문 개방
 
 오픈필드 맵을 타일 중점 4분면(북서/북동/남서/남동, CH1-1은 앵글러 속성 테마명)으로 나누고, 지옥문 개방 조건을 구 "전역 처치 80%+`_fbDone`"에서 **4지역 전부 클리어**(지역별 처치 80% + 게이트 지역 문지기 보너스 10% + CH1-1 담당 앵글러 사망)로 교체했다. 지역 입장 배너·클리어 배너·미니맵 십자선/딤/자물쇠/앵글러 마커·화면 가장자리 방향 화살표·HUD 현재지역 카운터 포함. 소형 맵(한 변 180타일 미만 — 던전·소환굴·보스아레나)은 구 규칙 폴백. `game.html`+`game-easy-test.html` 동일 반영, `test/regionClearGate.test.js` 7건 PASS. [SSOT](REGION_CLEAR_GATE_20260930.md). 갱신된 문서: MAP_RUNTIME_ARCHITECTURE §8/§9, LEVEL_DESIGN_RULES_SSOT §9, MAP_IMPLEMENTATION_ROADMAP PHASE 5/6, MAP_QA_GATES §2, CH1_VERTICAL_SLICE, CH1_1_BLOCKOUT_MASTER, BOSS_CANONICAL_MAPPING, GIANT_BOSS_PRESENCE_LADDER, STAGE_SPATIAL_GRAMMAR, WORLD_STRUCTURE_SSOT, 맵구성_1장, 맵디자인_벤치마크, 맵유형_확장기획, 2게임디자인레벨디자인, 3.1 HUD, 2_4 펫 대사, 16번역 No.3073~3087.

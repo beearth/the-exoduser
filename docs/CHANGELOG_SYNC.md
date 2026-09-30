@@ -1,3 +1,7 @@
+## 2026-09-30 — CH1-1 썩은 숲과 길의 직선 경계 수정
+
+사용자 `125145` 캡처의 대각선은 53점 geometry를 그대로 숲/바닥 재질 마스크로 쓴 결과였다. 충돌·중앙 전투 바닥·남북 통로는 유지하고 1024² `floor_transition93.png`의 18px/±10px 시각 전이로 유기적 경계를 만들었다. 외곽 36개 나무에 MagicLight Sunburst 대형 생체나무 군락 6개와 뿌리 연결 1개를 더해 master/64청크를 재베이크했다. bakeVersion `20260930-rotforest-95`, cache key `20260930-rotforest-96`, 23레이어. 숲 흔들림은 ±5px을 유지하며 청크 끝 4 mask 샘플에서 감쇠한다. 신고 위치 crop 비교, 청크 core 불일치 0, geometry hash 동일, 보호 전투 바닥 변경 0, 관련 Node 테스트 4/4 통과. [원인·배치·수치·실게임 검수·MAP PRODUCTION REPORT](4.1맵디자인+설정/CH1_ROTTEN_FOREST_BOUNDARY_PASS95_20260930.md). **VISUAL VERDICT: RETOUCH.** 아래 90차 값은 제작 당시 기록이다.
+
 ## 2026-09-30 — [REGION] 4분면 지역 클리어 가이드 + 지역 기반 지옥문 개방
 
 | 범위 | 변경·검증 |

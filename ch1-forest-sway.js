@@ -28,7 +28,10 @@
       for(let x=0;x<SAMPLES;x++){
         const wx=(cx+(x+.5)/SAMPLES)*1000,wy=(cy+(y+.5)/SAMPLES)*1000;
         const tx=Math.floor(wx/40),ty=Math.floor(wy/40),fx=wx/40-tx,fy=wy/40-ty;
-        const alpha=maskAlpha(map,tx,ty,fx,fy),k=(y*SAMPLES+x)*4;
+        // Adjacent chunks shift independently. Fade the overlay at every chunk
+        // edge so a displaced strip cannot expose a straight chunk seam.
+        const edge=smooth(Math.min(x,y,SAMPLES-1-x,SAMPLES-1-y)/4);
+        const alpha=maskAlpha(map,tx,ty,fx,fy)*edge,k=(y*SAMPLES+x)*4;
         data[k]=data[k+1]=data[k+2]=255;data[k+3]=Math.round(255*alpha);
         if(alpha>.1)coverage++;
       }

@@ -57,6 +57,9 @@ test('forest overlay mask leaves the combat floor transparent',()=>{
   const alpha=(x,y)=>pixels.data[(y*64+x)*4+3];
   assert.equal(alpha(31,32),0,'walkable tile band stays fixed');
   assert.ok(alpha(10,32)>0,'forest behind the path receives motion');
+  assert.equal(alpha(0,32),0,'left chunk edge stays static when the overlay shifts');
+  assert.equal(alpha(10,0),0,'top chunk edge stays static when the overlay shifts');
+  assert.ok(alpha(10,2)<alpha(10,6),'forest motion fades in away from the chunk edge');
   assert.equal(alpha(63,32),0,'deep background outside the near-forest band stays fixed');
   assert.equal(h.forest.qa().pending,0);
 });

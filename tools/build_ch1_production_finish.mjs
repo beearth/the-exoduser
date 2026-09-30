@@ -15,7 +15,8 @@ const depth=JSON.parse(fs.readFileSync(path.join(OUT,'depth/composition.json'),'
 sharp.concurrency(2);sharp.cache({memory:128,files:20,items:30});
 const svg=(body,size=SIZE)=>Buffer.from(`<svg xmlns="http://www.w3.org/2000/svg" width="${size}" height="${size}" viewBox="0 0 200 200">${body}</svg>`);
 const polygon=layout.boundary.map(p=>p.join(',')).join(' ');
-const floorMask=await sharp(svg(`<polygon points="${polygon}" fill="white" stroke="white" stroke-width="1.8" stroke-linejoin="round"/>`)).blur(18).png().toBuffer();
+// Visual material edge uses a deterministic, organic mask. Geometry still comes from layout.js.
+const floorMask=await sharp(path.join(OUT,'floor_transition93.png')).resize(SIZE,SIZE).png().toBuffer();
 const forestMask=await sharp({create:{width:SIZE,height:SIZE,channels:4,background:'white'}}).composite([{input:floorMask,blend:'dest-out'}]).png().toBuffer();
 console.log('region masks complete');
 const source=f=>path.join(ROOT,'assets/map/ch1',f);
