@@ -86,7 +86,7 @@
 | `_EN['흑요염 파괴자']` | `Obsidian Flame Destroyer` |
 | `STG[0].be` | `EL.F` |
 | `_BOSS_MOVESET[0]` | 기존 si0 Set 유지 |
-| `_BOSS_SFX[0]` | `boss_howl/0.7`, `death_boss/0.7`, `boss_hit/0.7`, `monster_hurt/0.7` |
+| `_BOSS_SFX[0]` | `boss_howl/0.7`, `death_boss/0.7`, `boss_hit/0.7`, `monster_hurt/0.7` — `hit`·`hurt` 필드는 코드에서 읽지 않음, 보스 피격음은 etype 공용 (2026-09-30 사운드팀 S-12) |
 
 ## 6. 후속 제작 계획
 

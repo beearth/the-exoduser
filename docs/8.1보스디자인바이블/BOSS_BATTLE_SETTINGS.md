@@ -62,8 +62,14 @@
     4. 플레이어를 entryX, entryY로 이동
     5. mkEn() 으로 보스 스폰 (ib=true, _isLargeBoss=true when si===0)
     6. G._bossArena=true, G.bossSealed=true 설정
-    7. 봉인 파티클 32개 + 보스 포효 SFX
+    7. 봉인 파티클 32개 + "봉인됨!" 텍스트 + 셰이크
+       포효 SFX(SFX.groggy + _bossSfx(si).howl)는 G._bossLoadPhase!==2일 때만
+       (재도전 _enterBossArena(true)·?bosstest 직행) — 보스문 입장은 아래 페이즈 4가 포효 담당
+  → G._bossLoadPhase=3 (페이드 인 50f)
+  → G._bossLoadPhase=4 (보스 입장 연출 100f) — 파티클·블래스트 라이트 + 보스 포효 SFX 1회
 ```
+
+> 2026-09-30 사운드팀 S-11: 이전에는 7번과 페이즈 4에서 포효가 모두 나서 보스문 입장 1회에 같은 포효가 약 3초 간격으로 2회 재생됐다. 7번의 사운드만 조건부로 바꿨고 파티클·텍스트·셰이크·전투 판정은 그대로다. 상세: `docs/6사운드디자인/6사운드디자인.md` 보스 사운드 프로필 절.
 
 ---
 

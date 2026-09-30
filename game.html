@@ -28996,7 +28996,8 @@ function _enterBossArena(retry=false){
   for(let k=0;k<16;k++){const a=Math.random()*Math.PI*2;const v=2+Math.random()*3;
     poolPart(P.x+Math.cos(a)*10,P.y+Math.sin(a)*10,Math.cos(a)*v,Math.sin(a)*v,_sCol,1.5+Math.random()*2,15+Math.random()*10)}
   G.shake=8*OPT.shake/100;
-  SFX.groggy();const _bsf=_bossSfx(si);if(_bsf)playSample(_bsf.howl,.6,_r(_bsf.howlP,.15));else playSample(Math.random()<.5?'boss_howl':'boss_howl1',.6,_r(.8,.15)); // 보스 포효
+  // 보스문 입장(로드 페이즈 2 = 검은 네임카드)이면 페이즈 4 등장 연출이 포효를 맡는다 — 같은 포효 3초 간격 2회 방지 (S-11, 2026-09-30). 재도전·테스트 진입은 여기서 1회.
+  if(G._bossLoadPhase!==2){SFX.groggy();const _bsf=_bossSfx(si);if(_bsf)playSample(_bsf.howl,.6,_r(_bsf.howlP,.15));else playSample(Math.random()<.5?'boss_howl':'boss_howl1',.6,_r(.8,.15))} // 보스 포효
   addTxt(P.x,P.y-50,'\u26A0 '+_T('봉인됨!'),_sCol,70);
 }
 
