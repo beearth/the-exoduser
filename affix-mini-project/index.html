@@ -1,0 +1,48 @@
+<!doctype html>
+<html lang="ko">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#151715">
+  <title>EXODUSER · 유니크 어픽스 공방</title>
+  <link rel="stylesheet" href="./styles.css">
+  <script type="module" src="./app.js"></script>
+</head>
+<body>
+  <div class="shell">
+    <aside class="rail" aria-label="프로젝트 정보와 계열 필터">
+      <div class="brand"><span class="brand-mark" aria-hidden="true">✣</span><span>HELL ROAD<br><small>EXODUSER / LAB 05</small></span></div>
+      <div class="rail-intro"><p class="eyebrow">DESIGN EXPERIMENT / 2026.09</p><h1>유니크<br><em>어픽스</em> 공방</h1><p>전투의 숫자가 아닌, 전투의 순서를 바꾸는 장비 효과를 고르는 실험실.</p></div>
+      <div class="rail-divider"></div>
+      <p class="nav-label">계열 선택 <span id="group-count">08</span></p>
+      <nav id="group-list" class="group-list" aria-label="어픽스 계열"></nav>
+      <div class="rail-bottom"><span class="status-dot" aria-hidden="true"></span><span>기획 후보 · 본게임 미구현</span></div>
+    </aside>
+
+    <main class="workspace">
+      <header class="workspace-head"><div><p class="eyebrow">ARCHIVE / UNIQUE / RARITY 05</p><h2>빌드를 바꾸는 <em>22가지</em> 가능성</h2><p>후보를 고르고 옵션을 굴려 전투 루프를 조합해 보세요.</p></div><div class="head-seal" aria-hidden="true"><span>U</span><small>05</small></div></header>
+      <section class="toolbar" aria-label="후보 검색 및 정렬"><label class="search"><span aria-hidden="true">⌕</span><span class="sr-only">후보 검색</span><input id="search" type="search" placeholder="스킬 · 효과 · U-D 번호 검색" autocomplete="off"></label><button id="top-filter" class="filter-button" type="button" aria-pressed="false">★ 우선 제작 8</button><span id="visible-count" class="visible-count" aria-live="polite">22 / 22</span></section>
+      <div class="column-head"><span>후보 목록</span><span>선택하면 효과와 롤 범위를 확인할 수 있습니다</span></div>
+      <div id="candidate-list" class="candidate-list" aria-live="polite"></div>
+      <div id="empty-state" class="empty-state" hidden>조건에 맞는 후보가 없습니다. 검색어나 계열을 바꿔 보세요.</div>
+    </main>
+
+    <aside class="inspector" aria-label="선택한 어픽스의 상세 정보">
+      <div class="inspector-top"><p class="eyebrow">AFFIX DOSSIER</p><span id="detail-id" class="id-stamp">U-D01</span></div>
+      <div class="emblem" aria-hidden="true"><span id="emblem-number">01</span><i></i></div>
+      <p id="detail-family" class="detail-family">Q → 악의구</p>
+      <h2 id="detail-name" class="detail-name">반향</h2>
+      <p id="detail-effect" class="detail-effect"></p>
+      <div class="detail-rule"></div>
+      <div class="roll-head"><span>옵션 롤링</span><span id="roll-range"></span></div>
+      <div class="roll-track" aria-hidden="true"><span>하옵</span><span>중옵</span><span>상옵</span></div>
+      <div class="roll-actions"><button id="roll-button" class="primary-button" type="button">옵션 굴리기 <span aria-hidden="true">↗</span></button><div id="roll-result" class="roll-result" role="status" aria-live="polite"><strong>—</strong><small>굴리기 전</small></div></div>
+      <button id="build-button" class="build-button" type="button">+ 빌드에 담기</button>
+      <details class="detail-notes"><summary>설계 근거 · 위험 요소</summary><h3>상호작용</h3><p id="detail-interaction"></p><h3>밸런스</h3><p id="detail-balance"></p><h3>구현 위험</h3><p id="detail-risk"></p><h3>제안 코드 훅</h3><p id="detail-hook"></p></details>
+      <div class="build-panel"><div class="build-heading"><span>빌드 조합</span><strong id="build-count">0 / 3</strong></div><ol id="build-list" class="build-list"></ol><p>효과는 설계 미리보기입니다. 장착 부위와 실제 전투 적용은 미정입니다.</p></div>
+      <div class="source-line">원본: <a href="../docs/7아이템디자인/유니크_어픽스_리스트.md" target="_blank" rel="noopener">유니크_어픽스_리스트.md ↗</a></div>
+    </aside>
+  </div>
+  <div id="load-error" class="load-error" hidden><strong>설계 문서를 읽지 못했습니다.</strong><span>프로젝트 서버의 3333 포트에서 열거나 문서 파일을 직접 선택해 주세요.</span><label class="file-label">문서 선택<input id="document-file" type="file" accept=".md,text/markdown,text/plain"></label></div>
+</body>
+</html>
