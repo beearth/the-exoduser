@@ -1,5 +1,9 @@
 # Mac 개발 환경 재현 인수서 — 2026-10-01
 
+## Claude 로그인 완료 — 2026-10-01
+
+사용자가 Google 방식을 지정했고 공식 로그인 흐름으로 Claude Code 연결 완료. 공식 성공 화면과 `claude auth status`의 `loggedIn=true`, `authMethod=claude.ai`, `apiProvider=firstParty` 확인. 인증정보 복사 없이 완료했으며 아래 로그인 대기 기록은 이력이다. 남은 자료 인수는 비Git 검수 ZIP 수신이다.
+
 ## 추가 검수 — 2026-10-01
 
 - Chrome 콘솔의 `403 / permission error`와 Promise 예외 3개는 CDP executionContextId를 대조해 Monica 확장(`ofpnmcalabcbjgholdjcjblkibolbppb`)에서 발생한 것으로 확인했다. 페이지 URL로 표시된 두 예외도 같은 확장 컨텍스트였다. 게임 권한이나 Mac 보안 설정을 변경하지 않았다.

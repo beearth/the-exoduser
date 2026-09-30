@@ -1,3 +1,7 @@
+## 2026-10-01 — Mac Claude Code Google 로그인 완료
+
+공식 Google 로그인으로 Mac Claude Code 연결 완료. 성공 화면 및 CLI 로그인 상태 확인. 계정 비밀값은 기록하지 않음. [Mac 인수서](13출시·마케팅/MAC_ENVIRONMENT_HANDOFF_20261001.md) 갱신. 비Git ZIP 수신은 대기.
+
 ## 2026-10-01 — Mac 전투·드롭 추가 검수와 기존 회귀 검사 갱신
 
 실제 전투 3처치·불꽃 반지 획득/데모 저장·사망/재시작 확인. 콘솔 권한 오류는 Monica 확장 실행 컨텍스트로 분류. 게임 변경 없이 demoSaveRoute의 슬롯 활성화 stub과 earlyCombatBalance의 공용 공격 함수 검사를 현행 구조에 맞춤. 관련 32개 검사 통과. [Mac 인수서](13출시·마케팅/MAC_ENVIRONMENT_HANDOFF_20261001.md) 추가 검수 참조.
