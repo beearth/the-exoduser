@@ -2790,6 +2790,7 @@ function _enterOffline(){
     $('createBtn').disabled=true;setStatus(_TL('생성 중...'));
     $('createModal').classList.remove('show');
     try{
+      if(_LOBBY_BUILD==='demo')throw new Error('demo local');
       const chk=await fetch('/api/load/'+encodeURIComponent(name));
       if(request!==_characterLoadSeq)return;
       if(chk.ok){const j=await chk.json();if(request!==_characterLoadSeq)return;if(j.ok){_showCreateFailure(name,_TL('이미 같은 이름의 캐릭터가 있습니다.'));return}}
