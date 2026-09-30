@@ -15,9 +15,9 @@ const placements = JSON.parse(readFileSync(new URL('../assets/map/ch1/production
 (0, eval)(moduleSrc);
 const BFG = globalThis.Ch1BorderForeground;
 
-test('borderFg: 모듈이 로드되고 기본 OFF 상수·플래그 스위치가 존재한다', () => {
+test('borderFg: 모듈이 로드되고 기본 ON 상수·플래그 스위치가 존재한다', () => {
   assert.ok(BFG, 'Ch1BorderForeground 정의');
-  assert.match(moduleSrc, /const DEFAULT_ON=false;/, '기본 OFF (팀장 판정 후 한 줄 전환)');
+  assert.match(moduleSrc, /const DEFAULT_ON=true;/, '기본 ON (2026-10-01 팀장 판정 PASS, 끄기 ?borderFg=0)');
   assert.match(moduleSrc, /\[?\?&\]?borderFg=0/, '2차만 끄기 ?borderFg=0');
   assert.match(moduleSrc, /\[?\?&\]?borderFg=1/, '시험용 ?borderFg=1');
   assert.match(moduleSrc, /_dsEnabled/, '?depthSlice=0 이면 1·2차 모두 꺼짐 (1차 게이트 연동)');

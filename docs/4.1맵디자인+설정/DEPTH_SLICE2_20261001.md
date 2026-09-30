@@ -1,7 +1,7 @@
 # CH1-1 2.5D 깊이 슬라이스 2차 (BORDER FOREGROUND) — 2026-10-01
 
 > 스펙: [MAP_IMPROVEMENT_PROJECT.md](MAP_IMPROVEMENT_PROJECT.md) §8(설계·분류표 8.4) — MAP-003 + MAP-004 + MAP-020(확인만). 1차 = [DEPTH_SLICE1_20261001.md](DEPTH_SLICE1_20261001.md).
-> 상태: **RETOUCH v2 반영 완료·2차 기본 OFF**(`ch1-border-foreground.js`의 `DEFAULT_ON=false` 한 줄로 전환). 시험 `?borderFg=1`/`G._borderFg=true`, 2차만 끄기 `?borderFg=0`, `?depthSlice=0`이면 1·2차 모두 꺼짐.
+> 상태: **v2 팀장 VISUAL VERDICT PASS → 기본 ON (2026-10-01)** (`ch1-border-foreground.js` `DEFAULT_ON=true`, 스크립트 태그 `?v=20261001-3`). 끄기 `?borderFg=0`(2차만) / `?depthSlice=0`(1·2차 전체). 팀장 근거(`captures/depth_slice2/v2/` 직접 확인): 공터가 열리고 남쪽 나무가 플레이어 앞에 서며(qa_report_on), 띠 아래에서도 플레이어 판독(M1_north_on_crop), 이음매 없음(seam_T4_on). 약점: polygon 밖 걸을 수 있는 주머니(M5 남동)에서는 군락이 알파 1로 덮여 플레이어가 어둡게 보임 — 사용자 체감 확인 후 조정. 시험 `?borderFg=1`/`G._borderFg=true`, 2차만 끄기 `?borderFg=0`, `?depthSlice=0`이면 1·2차 모두 꺼짐.
 
 ## 0. RETOUCH v2 (2026-10-01 팀장 판정 "구조 PASS / 시각 RETOUCH" 반영)
 

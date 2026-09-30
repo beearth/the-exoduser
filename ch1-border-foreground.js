@@ -14,7 +14,7 @@
    중앙/세로 74%·×.9 / 군락 폭 width bake px·세로 72%·×.70·flip / bake px=값×8192/200, 월드=bake×1000/1024. */
 (function(root){
   'use strict';
-  const DEFAULT_ON=false; // ← 팀장 판정 후 이 한 줄만 true (2차만 끄기 ?borderFg=0 / 켜기 ?borderFg=1 / 런타임 G._borderFg)
+  const DEFAULT_ON=true; // 2026-10-01 맵 팀장 판정 PASS(v2 띠 170px) → 기본 ON (2차만 끄기 ?borderFg=0 / 켜기 ?borderFg=1 / 런타임 G._borderFg)
   const SIZE=8192,GRID=200,B2W=1000/1024,MAX_DRAWS=12;
   const BAND=170;          // 경계 안쪽으로 드리우는 띠 깊이(월드 px, smoothstep 0 지점) — 팀장 지시 140~200 범위에서 확정
   const MASS_W=2048,MASS_H=1152;
