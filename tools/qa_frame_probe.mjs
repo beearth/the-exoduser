@@ -12,6 +12,10 @@
 //         --res=WxH|fullscreen  --scen=IDLE,MOVE,COMBAT,PANELS,POST  --enemies=120  --query="depthSlice=1"
 //         --gpu=0 (GPU timer query 끔)  --gl=1 (느린 GL 호출 기록)  --secs=1 (구간 길이 배율)
 //         --profile=1 (CPU 샘플링 프로파일 — 측정 오버헤드가 있으므로 전후 비교용 수치는 profile 없이 잰다)
+//         --seed=N --maxload=60 --origin=http://127.0.0.1:PORT --expectsha=<sha256 앞자리>
+//         --enemy=1 (적 루프 타임버짓 break·updateE 비용 계측 — 서빙 본문에 계수 코드가 들어가므로 진단 전용)
+//         --tracesave=1 (트레이스 원본 저장 — 10초에 약 400MB)
+//         --trace=COMBAT2,MOVE (구간 CDP 트레이싱: JS가 짧은 긴 간격을 GPU/컴포지터 스레드 이벤트로 귀속 — 진단 전용)
 //         --inject=<js파일> (부트 후 페이지에 주입할 실험 패치 — 소스 수정 전 A/B용)
 import { chromium } from 'playwright';
 import { execFileSync } from 'node:child_process';
@@ -36,7 +40,12 @@ const SECS = Number(ARG.get('secs') || 1);
 const INJECT = ARG.get('inject') || '';
 const OUT_DIR = path.resolve(ROOT, ARG.get('out') || 'tmp/qa-perf-20261001');
 const CHROME = ARG.get('chrome') || 'C:/Program Files/Google/Chrome/Application/chrome.exe';
-const ORIGIN = 'http://127.0.0.1:3333';
+const ORIGIN = (ARG.get('origin') || 'http://127.0.0.1:3333').replace(/\/$/, ''); // --origin: 패키지 사본을 다른 포트로 서빙해 대조할 때
+const EXPECT_SHA = (ARG.get('expectsha') || '').toLowerCase();   // --expectsha: 측정 대상 game.html SHA-256(앞자리 일부 가능)이 다르면 실행 거부
+const SEED = Number(ARG.get('seed') || 20261001);                // QA 추가 스폰 위치 난수 시드(실행 간 동일 배치)
+const MAXLOAD = Number(ARG.get('maxload') || 60);                // 시작 전 시스템 CPU(%) 상한. 넘으면 최대 90초 대기 후 loadOk=false 표시
+const USE_ENEMY = ARG.get('enemy') === '1';                      // 적 루프 계측: 타임버짓 break 횟수·인덱스, updateE 호출 비용, 거리 티어 분포
+const TRACE_SEGS = (ARG.get('trace') || '').split(',').map(x => x.trim().toUpperCase()).filter(Boolean); // --trace=COMBAT2
 const sleep = ms => new Promise(r => setTimeout(r, ms));
 const r1 = v => Math.round(v * 10) / 10, r2 = v => Math.round(v * 100) / 100;
 
@@ -69,7 +78,7 @@ const INIT = `(() => {
   window.addEventListener('webglcontextlost', () => ev('glLost'), true); window.addEventListener('webglcontextrestored', () => ev('glRestored'), true);
   setInterval(() => {
     if (!Q.on) return; const m = { t: performance.now(), heap: performance.memory ? performance.memory.usedJSHeapSize : 0, nodes: document.getElementsByTagName('*').length };
-    try { m.paused = !!G.paused; m.on = !!G.on; let a = 0; for (let i = 0; i < ens.length; i++) if (ens[i] && ens[i].alive) a++; m.ens = a; m.projs = projs.length; m.pProjs = pProjs.length; m.px = P.x; m.py = P.y; } catch (e) {}
+    try { m.paused = !!G.paused; m.on = !!G.on; let a = 0; for (let i = 0; i < ens.length; i++) if (ens[i] && ens[i].alive) a++; m.ens = a; m.projs = projs.length; m.pProjs = pProjs.length; m.px = P.x; m.py = P.y; if (Q.en) { let t1 = 0, t2 = 0, t3 = 0, t4 = 0; for (let i = 0; i < ens.length; i++) { const e = ens[i]; if (!e || !e.alive) continue; const dx = e.x - P.x, dy = e.y - P.y, d2 = dx * dx + dy * dy; if (d2 < 22500) t1++; else if (d2 < 122500) t2++; else if (d2 < 490000) t3++; else t4++; } m.tiers = [t1, t2, t3, t4]; } } catch (e) {}
     Q.mem.push(m);
   }, 500);
 })();`;
@@ -131,15 +140,40 @@ function analyzeProfile(profile, syncT, windows) {
   return out;
 }
 
+// ── CDP 트레이스 분석: JS가 짧은데 간격이 긴 프레임의 [JS 종료, 다음 프레임 JS 시작] 구간을 스레드별 이벤트로 귀속 ──
+function analyzeTrace(events, syncT, windows) {
+  const pname = new Map(), tname = new Map(); let off = null;
+  for (const e of events) {
+    if (e.ph === 'M' && e.name === 'process_name') pname.set(e.pid, e.args && e.args.name);
+    else if (e.ph === 'M' && e.name === 'thread_name') tname.set(e.pid + ':' + e.tid, e.args && e.args.name);
+    else if (off == null && e.name === 'qaSync') off = e.ts - syncT * 1000;
+  }
+  const out = { events: events.length, syncOk: off != null, windows: [] };
+  if (off == null) return out;
+  const X = events.filter(e => e.ph === 'X' && e.dur > 500);
+  for (const w of windows) {
+    const from = w.st * 1000 + off, to = w.en * 1000 + off; const m = new Map();
+    for (const e of X) { const a = Math.max(from, e.ts), b = Math.min(to, e.ts + e.dur); if (b <= a) continue; const k = (pname.get(e.pid) || e.pid) + '/' + (tname.get(e.pid + ':' + e.tid) || e.tid) + ' ' + e.name; const o = m.get(k) || { ov: 0, n: 0, max: 0 }; o.ov += (b - a) / 1000; o.n++; o.max = Math.max(o.max, e.dur / 1000); m.set(k, o); }
+    out.windows.push({ label: w.label, ms: r1(w.en - w.st), top: [...m.entries()].sort((a, b) => b[1].ov - a[1].ov).slice(0, 14).map(e => r1(e[1].ov) + 'ms n' + e[1].n + ' max' + r1(e[1].max) + ' ' + e[0]) });
+  }
+  return out;
+}
+
 async function main() {
   mkdirSync(OUT_DIR, { recursive: true });
-  try { const res = await fetch(ORIGIN + '/game.html', { method: 'HEAD' }); if (!res.ok) throw 0; } catch { console.error('서버(3333) 미응답'); process.exit(2); }
+  try { const res = await fetch(ORIGIN + '/game.html', { method: 'HEAD' }); if (!res.ok) throw 0; } catch { console.error('서버 미응답: ' + ORIGIN); process.exit(2); }
   const diskHtml = readFileSync(path.join(ROOT, 'game.html'));
   const servedHtml = Buffer.from(await (await fetch(ORIGIN + '/game.html')).arrayBuffer());
   const sha = b => createHash('sha256').update(b).digest('hex');
   let variantBody = null, variantSha = sha(servedHtml);
   if (VARIANT === 'head') { variantBody = execFileSync('git', ['show', 'HEAD:game.html'], { cwd: ROOT, maxBuffer: 64 * 1024 * 1024 }); variantSha = sha(variantBody); }
   else if (VARIANT !== 'disk') { variantBody = readFileSync(path.resolve(ROOT, VARIANT)); variantSha = sha(variantBody); }
+  if (EXPECT_SHA && !variantSha.startsWith(EXPECT_SHA)) { console.error('측정 대상 SHA 불일치: 기대 ' + EXPECT_SHA + ' / 실제 ' + variantSha); process.exit(4); }
+  // --enemy=1: 타임버짓 break 지점에 계수 코드 삽입(디스크 무변경, 브라우저에 서빙하는 본문만)
+  let enemyPatched = false;
+  if (USE_ENEMY) { const sig = '>(IS_MOBILE?8:12))break;'; let body = (variantBody || servedHtml).toString('utf8'); const n = body.split(sig).length - 1;
+    if (n === 1) { body = body.replace(sig, '>(IS_MOBILE?8:12)){(window.__qaEB||(window.__qaEB=[])).push(_ei,ens.length);break}'); variantBody = Buffer.from(body, 'utf8'); enemyPatched = true; }
+    else console.error('[enemy] break 시그니처 ' + n + '곳 — 계수 삽입 생략(updateE 계측만 수행)'); }
 
   const env = {
     label: LABEL, startedAt: new Date().toISOString(), root: ROOT, url: null, char: CHAR, variant: VARIANT,
@@ -147,10 +181,14 @@ async function main() {
     gitDirty: git(['status', '--short', '--untracked-files=no']).split('\n').filter(Boolean),
     gameHtmlSha256: { disk: sha(diskHtml), served: sha(servedHtml), measured: variantSha, servedEqualsDisk: sha(diskHtml) === sha(servedHtml) },
     host: { cpu: os.cpus()[0].model, logical: os.cpus().length, ramGB: r1(os.totalmem() / 2 ** 30), freeGB: r1(os.freemem() / 2 ** 30), platform: os.platform() + ' ' + os.release() },
+    origin: ORIGIN, seed: SEED, enemyProbe: USE_ENEMY, enemyBreakPatched: enemyPatched, traceSegs: TRACE_SEGS,
     chromePath: CHROME, res: RES, scen: SCEN, enemiesTarget: ENEMIES, query: QUERY, inject: INJECT,
     qaOnly: ['god(HP refill 250ms)', 'mkEn top-up to enemiesTarget in COMBAT', 'save writes intercepted', '--mute-audio'],
   };
 
+  // 시작 전 동시 부하 확인: 3초 평균 시스템 CPU가 상한 아래로 내려올 때까지 최대 90초 대기
+  { let pct = 100, waited = 0; for (;;) { const a = cpuSnap(); await sleep(3000); const b = cpuSnap(); pct = r1(100 * (1 - (b.idle - a.idle) / Math.max(1, b.total - a.total))); if (pct <= MAXLOAD || waited >= 90) break; waited += 3; if (waited % 15 === 3) console.log('[' + LABEL + '] 시작 전 시스템 CPU ' + pct + '% > ' + MAXLOAD + '% — 대기'); }
+    env.preLoad = { sysCpuPct: pct, waitedS: waited, limit: MAXLOAD, loadOk: pct <= MAXLOAD }; if (!env.preLoad.loadOk) console.log('[' + LABEL + '] 경고: 부하 ' + pct + '% 상태로 시작 — 이 실행은 비교 제외 대상'); }
   // --userdir=<폴더>: 프로필을 유지해 '두 번째 세션'(localStorage 학습 목록 등)을 재현. 없으면 실행마다 새 임시 프로필.
   const profile = ARG.get('userdir') ? path.resolve(ROOT, ARG.get('userdir')) : mkdtempSync(path.join(os.tmpdir(), 'exo-qa-prof-'));
   mkdirSync(profile, { recursive: true }); env.userdir = ARG.get('userdir') || '(temp)';
@@ -217,6 +255,13 @@ async function main() {
   const wrapInfo = await page.evaluate(POST_BOOT);
   if (INJECT) { const r = await page.evaluate(readFileSync(path.resolve(ROOT, INJECT), 'utf8')); env.injectResult = r; }
   env.wrap = wrapInfo;
+  await page.evaluate((seed) => { let a = seed | 0; window.__qaRnd = function () { a |= 0; a = a + 0x6D2B79F5 | 0; let t = Math.imul(a ^ a >>> 15, 1 | a); t = t + Math.imul(t ^ t >>> 7, 61 | t) ^ t; return ((t ^ t >>> 14) >>> 0) / 4294967296; }; }, SEED);
+  if (USE_ENEMY) env.enemyWrap = await page.evaluate(() => { try {
+    const Q = window.__qa; Q.en = { calls: 0, us: 0, max: 0, ticks: 0, perTick: [], big: 0 }; window.__qaEB = [];
+    const _ue = window.updateE; let tickCalls = 0, tickUs = 0;
+    window.updateE = function (e, sp) { const t = performance.now(); const r = _ue(e, sp); const d = (performance.now() - t) * 1000; if (Q.on) { Q.en.calls++; Q.en.us += d; if (d > Q.en.max) Q.en.max = d; if (d > 500) Q.en.big++; tickCalls++; tickUs += d; } return r; };
+    const _u2 = window.update; window.update = function () { tickCalls = 0; tickUs = 0; const r = _u2.apply(this, arguments); if (Q.on) { Q.en.ticks++; if (Q.en.perTick.length < 40000) Q.en.perTick.push(tickCalls, tickUs); } return r; };
+    return true; } catch (e) { return String(e); } });
   env.page = await page.evaluate(() => {
     const o = { inner: [innerWidth, innerHeight], outer: [outerWidth, outerHeight], dpr: devicePixelRatio, screen: [screen.width, screen.height], ua: navigator.userAgent, hidden: document.hidden, focus: document.hasFocus() };
     try { o.canvas = [C.width, C.height]; o.cssCanvas = [C.clientWidth, C.clientHeight]; o.VW = VW; o.VH = VH; } catch (e) {}
@@ -244,13 +289,21 @@ async function main() {
     await cdp.send('Page.bringToFront');
     await page.evaluate(() => { const Q = window.__qa; Q.frames = []; Q.loaf = []; Q.lt = []; Q.ev = []; Q.mem = []; Q.marks = []; Q.slowGL = []; Q.gpu = []; Q.on = true; });
     let syncT = 0; if (USE_PROFILE) { await cdp.send('Profiler.enable'); await cdp.send('Profiler.setSamplingInterval', { interval: 200 }); await cdp.send('Profiler.start'); syncT = await page.evaluate('(function __qaSyncMark(){const t=performance.now();while(performance.now()-t<5){}return t})()'); }
+    const doTrace = bcdp && TRACE_SEGS.includes(name); let traceEv = null, traceSync = 0;
+    if (doTrace) { traceEv = []; bcdp.on('Tracing.dataCollected', d => { for (const e of d.value) traceEv.push(e); });
+      await bcdp.send('Tracing.start', { traceConfig: { recordMode: 'recordUntilFull', includedCategories: ['toplevel', 'gpu', 'viz', 'cc', 'blink.user_timing', 'devtools.timeline', 'disabled-by-default-devtools.timeline', 'disabled-by-default-gpu.service'] } });
+      traceSync = await page.evaluate(() => { performance.mark('qaSync'); return performance.now(); }); }
+    if (USE_ENEMY) await page.evaluate(() => { const Q = window.__qa; if (Q.en) { Q.en.calls = 0; Q.en.us = 0; Q.en.max = 0; Q.en.ticks = 0; Q.en.perTick = []; Q.en.big = 0; } window.__qaEB = []; });
     const m0 = await perfMetrics(), g0 = await gpuProcCpu(), c0 = cpuSnap(), t0 = Date.now();
     let actionInfo = null;
     try { actionInfo = await action(secs); } catch (e) { actionInfo = { error: String(e).slice(0, 300) }; }
     const remain = secs * 1000 - (Date.now() - t0); if (remain > 0) await sleep(remain);
     const wall = (Date.now() - t0) / 1000;
+    await page.evaluate(() => { window.__qa.on = false; });
     const m1 = await perfMetrics(), g1 = await gpuProcCpu(), c1 = cpuSnap();
     let profile = null; if (USE_PROFILE) { profile = (await cdp.send('Profiler.stop')).profile; }
+    if (doTrace) { const done = new Promise(r => bcdp.once('Tracing.tracingComplete', r)); await bcdp.send('Tracing.end'); await Promise.race([done, sleep(20000)]); bcdp.removeAllListeners('Tracing.dataCollected'); }
+    const enemyRaw = USE_ENEMY ? await page.evaluate(() => ({ en: window.__qa.en, eb: window.__qaEB || [] })) : null;
     const raw = await page.evaluate(() => { const Q = window.__qa; Q.on = false; return { frames: Q.frames.map(f => [f.ts, f.js, f.u, f.d, f.nu, f.st, f.en]), loaf: Q.loaf, lt: Q.lt, ev: Q.ev, mem: Q.mem, marks: Q.marks, slowGL: Q.slowGL, gpu: Q.gpu, hidden: document.hidden, focus: document.hasFocus() }; });
     await page.screenshot({ path: path.join(OUT_DIR, `${LABEL}-${name}.png`) }).catch(() => {});
     const fr = raw.frames; const iv = []; for (let i = 1; i < fr.length; i++) iv.push(fr[i][0] - fr[i - 1][0]);
@@ -284,10 +337,23 @@ async function main() {
       worst: fr.slice(0, -1).map((f, i) => ({ iv: fr[i + 1][0] - f[0], js: f[1], u: f[2], d: f[3], nu: f[4], at: r1((f[0] - fr[0][0]) / 1000) })).sort((a, b) => b.iv - a.iv).slice(0, 10).map(w => ({ iv: r1(w.iv), js: r1(w.js), u: r1(w.u), d: r1(w.d), nu: w.nu, atS: w.at })),
       _iv: iv.map(r1),
     };
+    if (doTrace && traceEv) { // JS 비중이 30% 미만인 긴 간격 상위 6개: [프레임 JS 종료, 다음 프레임 JS 시작]
+      const wins = []; for (let i = 0; i < fr.length - 1; i++) { const ivv = fr[i + 1][0] - fr[i][0]; if (ivv > 50 && fr[i][1] < ivv * 0.3) wins.push({ iv: ivv, label: 'gap@' + r1((fr[i][0] - fr[0][0]) / 1000) + 's iv' + r1(ivv) + ' js' + r1(fr[i][1]), st: fr[i][6], en: fr[i + 1][5] }); }
+      wins.sort((a, b) => b.iv - a.iv); res.trace = analyzeTrace(traceEv, traceSync, wins.slice(0, 6)); res.trace.candidates = wins.length;
+      if (ARG.get('tracesave') === '1') { try { writeFileSync(path.join(OUT_DIR, LABEL + '-' + name + '-trace.json'), JSON.stringify({ traceEvents: traceEv })); } catch (e) {} } }
+    if (enemyRaw && enemyRaw.en) { const en = enemyRaw.en; const tc = [], tu = []; for (let i = 0; i < en.perTick.length; i += 2) { tc.push(en.perTick[i]); tu.push(en.perTick[i + 1] / 1000); }
+      const brIdx = [], brLen = []; for (let i = 0; i < enemyRaw.eb.length; i += 2) { brIdx.push(enemyRaw.eb[i]); brLen.push(enemyRaw.eb[i + 1]); }
+      const tiers = raw.mem.filter(m => m.tiers).map(m => m.tiers); const tmax = k => tiers.length ? Math.max(...tiers.map(t => t[k])) : null, tavg = k => tiers.length ? r1(tiers.reduce((a, t) => a + t[k], 0) / tiers.length) : null;
+      res.enemy = { ticks: en.ticks, updateECalls: en.calls, usPerCall: en.calls ? r1(en.us / en.calls) : 0, usMaxCall: r1(en.max), callsOver500us: en.big, callsPerTick: dist(tc), updateEMsPerTick: dist(tu), ticksOver12ms: tu.filter(x => x > 12).length, ticksOver6ms: tu.filter(x => x > 6).length,
+        budgetBreaks: brIdx.length, breakPatched: enemyPatched, breakIdx: brIdx.length ? dist(brIdx) : null, starvedPerBreak: brIdx.length ? dist(brIdx.map((v, i) => brLen[i] - v)) : null,
+        tierAvg: { t1: tavg(0), t2: tavg(1), t3: tavg(2), t4: tavg(3) }, tierMax: { t1: tmax(0), t2: tmax(1), t3: tmax(2), t4: tmax(3) } }; }
+    if (actionInfo && actionInfo.invalidReason) { res.valid = false; res.invalidReason = actionInfo.invalidReason; }
     if (profile) { const wins = fr.slice().sort((a, b) => b[1] - a[1]).slice(0, 6).filter(f => f[1] > 8).map(f => ({ label: 'frame@' + r1((f[0] - fr[0][0]) / 1000) + 's js' + r1(f[1]), st: f[5], en: f[6] }));
       for (const o of (actionInfo && actionInfo.ops) || []) if (o.ms > 40) wins.push({ label: 'op ' + o.label, st: o.t0, en: o.t1 });
       res.profile = analyzeProfile(profile, syncT, wins); }
     results.push(res);
+    if (res.enemy) console.log('[' + LABEL + '] ' + name.padEnd(8) + ' enemy: ticks ' + res.enemy.ticks + ' updateE ' + res.enemy.usPerCall + 'µs/call (max ' + res.enemy.usMaxCall + ') calls/tick p50 ' + res.enemy.callsPerTick.p50 + ' p95 ' + res.enemy.callsPerTick.p95 + ' | updateE ms/tick p95 ' + res.enemy.updateEMsPerTick.p95 + ' max ' + res.enemy.updateEMsPerTick.max + ' | >12ms ticks ' + res.enemy.ticksOver12ms + ' | budget breaks ' + res.enemy.budgetBreaks + ' | T1 avg ' + res.enemy.tierAvg.t1 + ' max ' + res.enemy.tierMax.t1);
+    if (res.trace) console.log('[' + LABEL + '] ' + name.padEnd(8) + ' trace: events ' + res.trace.events + ' sync ' + res.trace.syncOk + ' gap 후보 ' + res.trace.candidates);
     const g = res.gpuMs ? ` gpu p50 ${res.gpuMs.p50} p95 ${res.gpuMs.p95} max ${res.gpuMs.max}` : '';
     console.log(`[${LABEL}] ${name.padEnd(8)} ${res.valid ? 'OK ' : 'INVALID'} fps ${res.drawFps} | iv p50 ${res.interval.p50} p95 ${res.interval.p95} p99 ${res.interval.p99} max ${res.interval.max} | >16.7:${res.over['16.7']} >33:${res.over['33.4']} >50:${res.over['50']} >100:${res.over['100']} | js p50 ${res.js.p50} p95 ${res.js.p95} p99 ${res.js.p99} max ${res.js.max} | U p95 ${res.update.p95} D p95 ${res.draw.p95}${g} | style ${res.cdp.styleS}s layout ${res.cdp.layoutS}s | LoAF ${res.loaf.n} | heap ${res.heapMB?.start}→${res.heapMB?.end}MB | ens ${res.ens?.min}~${res.ens?.max} | sysCPU ${res.sysCpuPct}%`);
     return res;
@@ -299,7 +365,7 @@ async function main() {
       for (let i = 0; i < ens.length; i++) { const e = ens[i]; if (e && e.alive) { alive++; if (!e.ib && kinds.length < 24) kinds.push([e.etype, e.el]); } }
       if (!kinds.length) kinds.push([0, 0]);
       let made = 0, guard = 0;
-      while (alive < n && guard < n * 4) { guard++; const a = Math.random() * Math.PI * 2, d = 140 + Math.random() * 420; const x = P.x + Math.cos(a) * d, y = P.y + Math.sin(a) * d;
+      while (alive < n && guard < n * 4) { guard++; const rnd = window.__qaRnd || Math.random; const a = rnd() * Math.PI * 2, d = 140 + rnd() * 420; const x = P.x + Math.cos(a) * d, y = P.y + Math.sin(a) * d;
         if (typeof isW === 'function' && isW(x, y)) continue; const k = kinds[guard % kinds.length]; const e = mkEn(x, y, G.stage, k[0], false, k[1], -1); if (e) { e.alive = true; ens.push(e); alive++; made++; } }
       return { alive, made };
     } catch (e) { return { err: String(e) }; }
@@ -334,15 +400,23 @@ async function main() {
     else if (s === 'PANELS') await segment('PANELS', 24, async () => {
       const ops = [];
       const op = async (label, fn, settle = 1200) => { const pm0 = await perfMetrics(); const t = await page.evaluate(() => performance.now()); await fn(); const st = await page.evaluate(() => new Promise(r => requestAnimationFrame(() => requestAnimationFrame(() => r({ t: performance.now(), inv: document.getElementById('invPanel')?.classList.contains('on'), set: document.getElementById('settings')?.classList.contains('on'), page: document.getElementById('invPanel')?.dataset.inventoryPage, nodes: document.getElementsByTagName('*').length }))))); const pm1 = await perfMetrics(); const dd = k => r1(((pm1[k] || 0) - (pm0[k] || 0)) * 1000); ops.push({ label, ms: r1(st.t - t), t0: t, t1: st.t, inv: st.inv, set: st.set, page: st.page, nodes: st.nodes, scriptMs: dd('ScriptDuration'), styleMs: dd('RecalcStyleDuration'), layoutMs: dd('LayoutDuration') }); await sleep(settle); };
+      // 입력이 실제로 반영됐는지 확인한다. 미반영이면 0.6초 뒤 1회 재시도, 그래도 아니면 구간 무효(수치를 패널 비용으로 쓰지 않는다).
+      const failures = [];
+      const expect = async (label, fn, want, settle) => { await op(label, fn, settle); let o = ops[ops.length - 1];
+        if (want(o)) return true;
+        const diag = await page.evaluate(() => { try { return { paused: !!G.paused, on: !!G.on, ps: P && P.s, panels: [...document.querySelectorAll('.panel.on')].map(n => n.id), active: document.activeElement && (document.activeElement.id || document.activeElement.tagName), lesson: !!document.querySelector('.lesson-skip') }; } catch (e) { return { err: String(e) }; } });
+        o.retry = true; o.diag = diag; await sleep(600); await op(label + ' (재시도)', fn, settle); o = ops[ops.length - 1];
+        if (want(o)) return true; failures.push(label); await page.screenshot({ path: path.join(OUT_DIR, LABEL + '-PANELS-fail-' + failures.length + '.png') }).catch(() => {}); return false; };
+      await page.mouse.up().catch(() => {}); await page.mouse.move(cx, cy - 200); await sleep(300);
       for (let rep = 0; rep < 2; rep++) {
-        await op('Tab 열기', () => page.keyboard.press('Tab'));
-        for (const pg of ['ossuary', 'crystals', 'storage', 'equipment']) await op('탭 ' + pg, () => page.evaluate(pg => { const b = document.querySelector('#invPanel button[data-page="' + pg + '"]'); if (b) b.click(); return !!b; }, pg), 900);
-        await op('Tab 닫기', () => page.keyboard.press('Tab'), 900);
-        await op('Esc 설정 열기', () => page.keyboard.press('Escape'));
-        await op('Esc 설정 닫기', () => page.keyboard.press('Escape'), 900);
+        if (!await expect('Tab 열기', () => page.keyboard.press('Tab', { delay: 70 }), o => o.inv === true)) break;
+        for (const pg of ['ossuary', 'crystals', 'storage', 'equipment']) await expect('탭 ' + pg, () => page.evaluate(pg => { const b = document.querySelector('#invPanel button[data-page="' + pg + '"]'); if (b) b.click(); return !!b; }, pg), o => o.page === pg, 900);
+        if (!await expect('Tab 닫기', () => page.keyboard.press('Tab', { delay: 70 }), o => o.inv === false, 900)) break;
+        if (!await expect('Esc 설정 열기', () => page.keyboard.press('Escape', { delay: 70 }), o => o.set === true)) break;
+        if (!await expect('Esc 설정 닫기', () => page.keyboard.press('Escape', { delay: 70 }), o => o.set === false, 900)) break;
       }
       await page.evaluate(() => { try { if (G.paused) closeAllPanels(); } catch (e) {} });
-      return { ops };
+      return failures.length ? { ops, invalidReason: '패널 입력 미반영: ' + failures.join(', ') } : { ops };
     });
     else if (s === 'POST') { await topUp(Math.min(ENEMIES, 60)); await segment('POST', 12, async () => null); }
   }

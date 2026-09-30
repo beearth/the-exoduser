@@ -1,0 +1,73 @@
+<!doctype html>
+<html lang="ko">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>EXODUSER 고유아이템 원화 비교</title>
+  <style>
+    :root { color-scheme: dark; font-family: system-ui, sans-serif; background: #111017; color: #eee8f5; }
+    body { margin: 0; padding: 24px; }
+    header { max-width: 1400px; margin: 0 auto 20px; }
+    h1 { margin: 0 0 8px; font-size: 24px; }
+    p { margin: 0 0 12px; color: #c8bed3; line-height: 1.5; }
+    button { padding: 8px 14px; margin-right: 8px; border: 1px solid #9771ba; border-radius: 6px; background: #241a32; color: #fff; cursor: pointer; }
+    button[aria-pressed="true"] { background: #67478c; }
+    main { max-width: 1400px; margin: auto; display: grid; grid-template-columns: repeat(auto-fill, minmax(var(--card-width), 1fr)); gap: 12px; }
+    body[data-size="64"] { --image-size: 64px; --card-width: 230px; }
+    body[data-size="160"] { --image-size: 160px; --card-width: 380px; }
+    article { padding: 12px; border: 1px solid #453451; border-radius: 8px; background: #1b1622; }
+    h2 { margin: 0 0 9px; font-size: 15px; color: #d9b6f4; }
+    .pair { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px; }
+    figure { margin: 0; min-width: 0; }
+    figcaption { margin-bottom: 5px; font-size: 12px; color: #c9bdcf; }
+    img { width: var(--image-size); height: var(--image-size); max-width: 100%; display: block; object-fit: contain; image-rendering: auto; border: 1px solid #594566; background: #151019; }
+    footer { max-width: 1400px; margin: 20px auto; color: #b8a9c4; font-size: 13px; }
+  </style>
+</head>
+<body data-size="64">
+  <header>
+    <h1>고유아이템 원화 비교 · UI-01~22</h1>
+    <p>왼쪽은 기존 원화, 오른쪽은 MagicLight Seedream 후보입니다. 64px은 슬롯 가독성, 160px은 구조와 재질 확인용입니다. 후보는 아직 게임에 적용되지 않았습니다.</p>
+    <button type="button" data-target="64" aria-pressed="true">64px 슬롯</button>
+    <button type="button" data-target="160" aria-pressed="false">160px 구조</button>
+  </header>
+  <main id="items"></main>
+  <footer>원본 보존 경로: assets/unique-items/. 배경이 포함된 RGB 원화이므로 투명 아이콘·월드 드롭에 바로 쓰지 않습니다.</footer>
+  <script>
+    const names = [
+      '반향의 장막','독심의 봉환','삼획의 맹세','빙편을 거두는 손','귀환자의 잔보','되감긴 고리',
+      '셋째 사슬의 고삐','혈흔을 따르는 날','쌍극의 회로','꺼지지 않는 심갑','체간을 깨는 추',
+      '성역의 숨결','번지는 뿌리의 띠','폭심의 씨앗','독을 기억하는 석궁','철거자의 명령',
+      '무중력의 왕관','흡성의 목걸이','증기 단조의 손','파열을 품은 견갑','돌아온 자의 흉갑','균열을 보는 눈'
+    ];
+    const main = document.getElementById('items');
+    for (let i = 1; i <= names.length; i++) {
+      const id = String(i).padStart(2, '0');
+      const article = document.createElement('article');
+      const heading = document.createElement('h2');
+      heading.textContent = `UI-${id} · ${names[i - 1]}`;
+      const pair = document.createElement('div');
+      pair.className = 'pair';
+      for (const [label, suffix] of [['기존 원화', ''], ['Seedream 후보', '-seedream-candidate']]) {
+        const figure = document.createElement('figure');
+        const caption = document.createElement('figcaption');
+        caption.textContent = label;
+        const img = document.createElement('img');
+        img.src = `../assets/unique-items/ui-${id}${suffix}.png`;
+        img.alt = `UI-${id} ${label}`;
+        img.loading = 'lazy';
+        figure.append(caption, img);
+        pair.append(figure);
+      }
+      article.append(heading, pair);
+      main.append(article);
+    }
+    for (const button of document.querySelectorAll('button[data-target]')) {
+      button.addEventListener('click', () => {
+        document.body.dataset.size = button.dataset.target;
+        for (const other of document.querySelectorAll('button[data-target]')) other.setAttribute('aria-pressed', String(other === button));
+      });
+    }
+  </script>
+</body>
+</html>
