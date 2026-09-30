@@ -81,7 +81,9 @@
       page.id = 'settings-page-' + key;
       page.setAttribute('role','tabpanel');
       page.setAttribute('aria-labelledby','settings-tab-' + key);
-      const heading = label(el('h3', 'ui-section-heading'), ko, en);
+      const heading = el('h3', 'ui-section-heading');
+      if (key === 'game') heading.append(label(el('span'), '게임 · 시스템', 'Game · System'));
+      else label(heading, ko, en);
       page.append(heading); pages.set(key, page); content.append(page);
     }
     const nav = tabBar(entries, key => {
@@ -111,7 +113,29 @@
       if (section) (['charSelectGrid','saveP1','toLobbyBtn2','resetBtn','quitBtn'].includes(id) ? systemGroup : pages.get(key)).append(section);
     });
     // Includes future controls added to the original game section.
+    const gameSection = document.getElementById('optDiff')?.closest('.set-section');
     old.querySelectorAll('.set-section').forEach(section => pages.get('game').append(section));
+    if (gameSection) {
+      systemGroup.id = 'settings-system-options';
+      gameSection.id = 'settings-game-options';
+      const jumpNav = el('div', 'settings-jump-nav');
+      const jumpTo = (section, heading) => {
+        const top = section.getBoundingClientRect().top - content.getBoundingClientRect().top + content.scrollTop - 12;
+        content.scrollTop = Math.max(0, Math.round(top));
+        heading.focus({preventScroll:true});
+      };
+      [[systemGroup, systemGroup.querySelector('h4'), '시스템', 'System'],
+       [gameSection, gameSection.querySelector('.set-label'), '게임 설정', 'Game options']].forEach(([section, heading, ko, en]) => {
+        if (!heading) return;
+        heading.tabIndex = -1;
+        const button = label(el('button', 'settings-jump-button'), ko, en);
+        button.type = 'button';
+        button.setAttribute('aria-controls', section.id);
+        button.addEventListener('click', () => jumpTo(section, heading));
+        jumpNav.append(button);
+      });
+      pages.get('game').querySelector('.ui-section-heading').append(jumpNav);
+    }
     box.insertBefore(nav, old); box.insertBefore(content, old); old.remove();
     const footer = document.getElementById('setClose')?.parentElement;
     if (footer) {
@@ -121,6 +145,11 @@
     }
     describeSettingsControls(root);
     root.classList.add('ui-composed');
+    new MutationObserver(changes => {
+      if (root.classList.contains('on') && changes.some(change => !/(^|\s)on(\s|$)/.test(change.oldValue || ''))) {
+        content.scrollTop = 0;
+      }
+    }).observe(root, {attributes:true, attributeOldValue:true, attributeFilter:['class']});
     nav.children[0].click();
   }
   function inventory() {

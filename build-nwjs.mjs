@@ -28,6 +28,7 @@ const FILES = [
   'warrior-dash-flight.js',
   'ch1-living-detail.js',
   'ch1-forest-sway.js',
+  'ch1-face-life.js',
   'parry-lesson.js', 'parry-lesson.css', 'resource-practice.js',
   'system-lesson.js', 'system-lesson.css',
   'tutorial-badges.js', 'tutorial-badges.css',

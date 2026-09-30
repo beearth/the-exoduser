@@ -10,7 +10,7 @@
 | 천 | 찢어진 암적색 스카프·망토 |
 | 무기 | 거대한 대검 |
 
-- `assets/charselect/portrait_warrior.png`(bust)는 보라 안광·흉터가 있는 보조 이미지 — **디자인 기준으로 쓰지 않는다.**
+- `assets/charselect/portrait_warrior.png`(bust)는 2026-09-30 평범한 눈으로 교체됨. 이전 보라 안광 버전은 `output/charselect_remaster_20260930/original/`.
 - 악당 **킬루**(붉은 눈·넘긴 흑발·흰 모피 칼라)와 혼동 금지: `assets/killu_identity_ref.png`.
 
 ## 얼굴 고정 방법 (2026-09-30)

@@ -62,6 +62,7 @@ window._supabaseReady=new Promise(resolve=>{
 <script src="assets/map/ch1/production_finish/layout.js?v=20260916-finish-1"></script>
 <script src="ch1-living-detail.js?v=20260929-87"></script>
 <script src="ch1-forest-sway.js?v=20260930-90"></script>
+<script src="ch1-face-life.js?v=20260930-97"></script>
 <script src="lang_zh.js"></script>
 <script src="lang_ja.js"></script>
 <script src="lang_es.js"></script>
@@ -2537,13 +2538,13 @@ body:has(#invPanel.on) #keyGuide{display:none!important}
 <link rel="stylesheet" href="stat-panel-ui.css?v=20260913-smooth-ui">
 <link rel="stylesheet" href="localization.css?v=20260909">
 <link rel="stylesheet" href="ui-foundation.css?v=20260930-lesson-translucent">
-<link rel="stylesheet" href="ui-refinement.css?v=20260930-settings-merged12">
+<link rel="stylesheet" href="ui-refinement.css?v=20260930-settings-nav13">
 <link rel="stylesheet" href="growth-tree-detail.css?v=20260927-body-art3">
 <link rel="stylesheet" href="knight-portrait.css?v=20260928-equipment-cutout3">
 <script defer src="inventory-paperdoll.js?v=20260928-equipment-cutout3"></script>
 <link rel="stylesheet" href="growth-tree-fixed-background.css?v=20260927-fixed2">
 <link rel="stylesheet" href="growth-tree-information.css?v=20260927-info1">
-<script defer src="ui-panels.js?v=20260930-settings-merged12"></script>
+<script defer src="ui-panels.js?v=20260930-settings-nav13"></script>
 <link rel="stylesheet" href="inventory-gems.css?v=20260927-jewel-finish">
 <link rel="stylesheet" href="inventory-gems-finish.css?v=20260927-square-art2">
 <link rel="stylesheet" href="inventory-space.css?v=20260928-relic-frame1">
@@ -49606,6 +49607,7 @@ function draw(){
   }
   _drawCh1BakedSpike(X);
   if(globalThis.Ch1ForestSway)Ch1ForestSway.draw(X,G,_now,_ch1StartOuterCache,_ch1StartOuterStats.drawnIds,G.mw*T/8,_CH1_START_ROOT,VW,VH);
+  if(globalThis.Ch1FaceLife)Ch1FaceLife.draw(X,G,_now,_ch1StartOuterCache,_ch1StartOuterStats.drawnIds,G.mw*T/8,_CH1_START_ROOT,VW,VH);
   _drawCh1Hill(X);
   if(globalThis.Ch1LivingDetail?.shadows)Ch1LivingDetail.shadows(X,G,MAP_OBJS,_OBJ_SPR,_OBJ_META,_now,VW,VH);
   if(globalThis.Ch1LivingDetail)Ch1LivingDetail.draw(X,G,MAP_OBJS,_now,VW,VH);

@@ -103,7 +103,7 @@
 | 대상 | 상태 |
 |---|---|
 | 구 전쟁 인트로 `assets/cutscene/warintro/` (미리보기 전용) + 전쟁 인트로 영상 | ⬜ 미점검 (킬루·주인공 등장 — 영상과 연동 주의) |
-| 캐릭터 선택 `portrait_warrior.png`(bust, 보라 눈) | ⚠ 디자인 불일치 — 교체 검토 |
+| 캐릭터 선택 `portrait_warrior.png`(bust — 로비 캐릭터 썸네일·선택창 초상) | ✅ 2026-09-30 평범한 눈으로 교체 (`?v=20260930-eyefix`, 원본 `output/charselect_remaster_20260930/original/`) |
 | 맵 오브젝트 | 🧪 시험 1개 `output/mapobj_seedream_test_20260930/` (미배치) |
 
 ---
@@ -114,7 +114,7 @@
 |---|---|---|
 | ✅ | 디로이·핵터 DESIGN LOCK 문서 + 기준 이미지 (2026-09-30) | 무료 |
 | P1 | 로딩 `2.png`(핵터 사슬 없음)·`3.png`(디로이 목걸이 다름)를 PETS LOCK으로 재생성 | GPT 400 |
-| P1 | `portrait_warrior.png` bust를 전사 LOCK(평범한 눈)으로 교체 여부 결정 | GPT 200 |
+| ✅ | `portrait_warrior.png` bust 전사 LOCK으로 교체 (2026-09-30) | GPT 200 |
 | P2 | 로딩 rd1·rd6·rd17 중복 정리/교체 | Seedream 300 |
 | P2 | 구 전쟁 인트로·영상 잔점/신원 점검 | 점검 무료 |
 | P3 | 맵 오브젝트 양산 (맵 담당과 배치 협의) | Seedream 100/개 |
