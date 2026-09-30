@@ -106,6 +106,7 @@ function renderBuild() {
 function renderDetail() {
   const candidate = selectedCandidate();
   if (!candidate) return;
+  byId('sim-launch').href = `./sandbox.html?affix=${TOP_IDS.has(candidate.id) ? candidate.id : 'U-D03'}`;
   setLeaf('detail-id', candidate.id);
   setLeaf('emblem-number', candidate.id.slice(-2));
   setLeaf('detail-family', candidate.family);
