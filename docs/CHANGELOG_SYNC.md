@@ -1,3 +1,7 @@
+## 2026-10-01 — PC 비Git 검수 자료 Mac 인수 완료
+
+기존 LAN 서버로 non-git-evidence.zip 151,030,223바이트 수신. 원본 SHA256·ZIP CRC·80파일 및 PC manifest의 파일별 크기/해시 전부 일치. 별도 verified-evidence 폴더 추출, 설치/자료 인수 완료 기록. [Mac 인수서](13출시·마케팅/MAC_ENVIRONMENT_HANDOFF_20261001.md), [PC 이전 자료](13출시·마케팅/PC_TRANSFER_READY_20261001.md) 갱신.
+
 ## 2026-10-01 — Mac Claude Code Google 로그인 완료
 
 공식 Google 로그인으로 Mac Claude Code 연결 완료. 성공 화면 및 CLI 로그인 상태 확인. 계정 비밀값은 기록하지 않음. [Mac 인수서](13출시·마케팅/MAC_ENVIRONMENT_HANDOFF_20261001.md) 갱신. 비Git ZIP 수신은 대기.

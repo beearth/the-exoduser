@@ -1,5 +1,11 @@
 # Mac 개발 환경 재현 인수서 — 2026-10-01
 
+## Mac 이전 인수 완료 — 2026-10-01
+
+PC의 기존 LAN 게임 서버에서 비Git 검수 ZIP을 직접 수신했다. 새 서버/제3자 업로드/방화벽 변경 없이 진행. 크기 151,030,223바이트, SHA256 `8282d037704cee13ff21ec35932a840f67aabef2812a9a56ebed7bbdf6b27ee2`, ZIP CRC, 파일 80개 및 PC transfer-manifest의 모든 개별 크기/해시가 일치한다. Mac 저장 위치는 `tmp/mac-migration-20261001/non-git-evidence.zip`, 별도 추출 위치는 `tmp/mac-migration-20261001/verified-evidence/`, 검증 영수증은 같은 디렉터리의 `verified-receipt.json`이다. 기존 자료 덮어쓰기 없이 인수 완료했다.
+
+Node/의존성/개발 도구 설치, Claude Google 로그인, 실제 전투 3처치·불꽃 반지 획득과 재접속 복원, 관련 회귀 검사 32/32까지 완료했다. 기존 Mac 저장소 수정 22개 파일 해시와 HEAD를 다시 확인해 보존했다. 설치/자료 인수 범위는 완료이며 장시간 전체 콘텐츠 QA·Mac 배포 패키지·독립 SOUND 병합은 수행하지 않았다. 팀/자동화는 재개하지 않는다. 아래의 미수신·설치 대기 표기는 이전 이력이다.
+
 ## Claude 로그인 완료 — 2026-10-01
 
 사용자가 Google 방식을 지정했고 공식 로그인 흐름으로 Claude Code 연결 완료. 공식 성공 화면과 `claude auth status`의 `loggedIn=true`, `authMethod=claude.ai`, `apiProvider=firstParty` 확인. 인증정보 복사 없이 완료했으며 아래 로그인 대기 기록은 이력이다. 남은 자료 인수는 비Git 검수 ZIP 수신이다.
