@@ -1231,7 +1231,7 @@
 #settings.panel .pbox .settings-footer{margin-top:14px!important;padding-top:12px!important;}
 #settings.panel .pbox .settings-footer .pclose{min-height:44px!important;min-width:180px;font-size:15px!important;}
 #settings.panel .pbox #settingsAutoSaveLabel{font-size:14px!important;}
-@media(min-width:1600px){
+@media(min-width:1200px){
  #settings.panel .pbox #settings-page-display>.set-section:has(#gfxPresetRow){display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:4px 20px;}
  #settings.panel .pbox #settings-page-display>.set-section:has(#gfxPresetRow)>.set-label,#settings.panel .pbox #gfxPresetRow{grid-column:1/-1;}
 }
@@ -1319,4 +1319,15 @@
  #settings.panel .pbox #settings-page-controls #keyBindList{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:4px 28px;}
  #settings.panel .pbox #settings-page-controls #keyBindList .set-row{min-height:52px!important;padding:5px 8px!important;gap:10px!important;}
  #settings.panel .pbox #settings-page-controls #keyBindList>div:not(.set-row),#settings.panel .pbox #settings-page-controls #keyBindList>.bind-reset{grid-column:1/-1;}
+}
+
+/* Display: keep hardware diagnostics readable across the full settings workspace. */
+@media (min-width:1200px){
+ #settings.panel .pbox #gfxPresetRow button{flex-basis:80px!important;}
+ #settings.panel .pbox #settings-page-display>.set-section:has(#diagGpu){grid-column:1/-1;display:grid;grid-template-columns:minmax(0,1fr) 190px;align-items:stretch;gap:12px 16px;}
+ #settings.panel .pbox #settings-page-display>.set-section:has(#diagGpu)>.set-label{grid-column:1/-1;margin-bottom:0!important;}
+ #settings.panel .pbox #settings-page-display>.set-section:has(#diagGpu)>div:has(#diagGpu){display:grid;grid-template-columns:minmax(0,2fr) repeat(3,minmax(0,1fr));align-items:center;gap:0;padding:12px!important;min-width:0;}
+ #settings.panel .pbox #settings-page-display>.set-section:has(#diagGpu)>div:has(#diagGpu)>div{display:flex;flex-direction:column;justify-content:center;gap:3px;min-width:0;min-height:68px;padding:4px 14px;border-left:1px solid rgba(164,127,82,.2);overflow-wrap:anywhere;}
+ #settings.panel .pbox #settings-page-display>.set-section:has(#diagGpu)>div:has(#diagGpu)>div:first-child{border-left:0;padding-left:4px;}
+ #settings.panel .pbox #settings-page-display #btnRedetect{width:auto!important;min-height:76px;margin:0!important;align-self:stretch;background:linear-gradient(180deg,#342d23,#191713)!important;border:1px solid #8f7c55!important;color:#dfc99d!important;font-size:15px!important;}
 }
