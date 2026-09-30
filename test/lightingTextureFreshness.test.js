@@ -30,6 +30,8 @@ function runtime(backend){
     HTMLCanvasElement:Canvas,ImageBitmap:class {},_glMaxTex:16384,
     _useGPU:backend==='WebGPU',_useGL:backend==='WebGL2',
     _tc:new WeakMap(),_texCache:new WeakMap(),_texUploaded:new WeakMap(),_texGCQueue:[],
+    // [PM-001] _getTex가 참조하는 URL 공유 텍스처·학습 전역 (이 테스트는 캔버스 경로만 검증)
+    _texBySrc:new Map(),HTMLImageElement:class {},_TEXHOT_MIN_PX:250000,_texHotNote(){},
     _curTex:{},whiteBG:{},GPUTextureUsage:{TEXTURE_BINDING:1,COPY_DST:2,RENDER_ATTACHMENT:4},
     mkBG:t=>t,_flush(){},
     GPU:{createTexture(){allocated++;return {};},queue:{copyExternalImageToTexture({source},{texture}){copy(source,texture);}}},

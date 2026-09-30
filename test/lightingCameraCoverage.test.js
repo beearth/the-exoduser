@@ -64,6 +64,7 @@ for(const backend of ['WebGL2','WebGPU']){
     const copy=(src,t)=>{t.pixels=pixels(src);copies++;};
     Object.assign(s,{HTMLCanvasElement:Canvas,ImageBitmap:class {},_glMaxTex:16384,
       _useGPU:backend==='WebGPU',_useGL:backend==='WebGL2',_tc:new WeakMap(),_texCache:new WeakMap(),
+      _texBySrc:new Map(),HTMLImageElement:class {},_TEXHOT_MIN_PX:250000,_texHotNote(){}, // [PM-001] _getTex 참조 전역
       _texUploaded:new WeakMap(),_texGCQueue:[],_curTex:{},whiteBG:{},
       GPUTextureUsage:{TEXTURE_BINDING:1,COPY_DST:2,RENDER_ATTACHMENT:4},mkBG:t=>t,_flush(){},
       GPU:{createTexture:()=>({}),queue:{copyExternalImageToTexture({source},{texture}){copy(source,texture);}}},
