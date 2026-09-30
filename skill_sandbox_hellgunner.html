@@ -18,6 +18,19 @@ canvas{display:block;width:100%;height:100%;background:radial-gradient(ellipse a
 #help kbd{display:inline-block;min-width:34px;padding:1px 6px;border:1px solid #76634b;border-bottom:2px solid #40362b;border-radius:2px;background:linear-gradient(#35302b,#171518);color:#dfd0b4;font:700 11px monospace;text-align:center}
 #title{position:fixed;left:50%;bottom:14px;transform:translateX(-50%);font-family:'Cinzel Decorative','Nanum Myeongjo',serif;letter-spacing:.28em;color:#c89a4a;font-size:14px;text-shadow:0 2px 4px #000;pointer-events:none}
 #chargeLbl{position:fixed;left:50%;top:46%;transform:translate(-50%,-50%);font:700 22px 'Cinzel Decorative',serif;color:#ff6a7a;text-shadow:0 0 12px #c4353a,0 2px 4px #000;pointer-events:none;opacity:0;letter-spacing:.1em}
+#tip{position:fixed;left:50%;bottom:42px;transform:translateX(-50%);color:#b7a488;font-size:12.5px;text-shadow:0 1px 2px #000;pointer-events:none;letter-spacing:.02em;text-align:center;line-height:1.5}
+#tip b{color:#ff9a6a}
+#intro{position:fixed;inset:0;z-index:50;background:radial-gradient(ellipse at 50% 35%,#1a0e10ee,#08070af5);display:flex;align-items:center;justify-content:center;cursor:pointer}
+#intro .card{max-width:600px;padding:34px 40px;border:1px solid #6c4a3a;border-top:2px solid #c4353a;background:linear-gradient(#181013,#0c0a0e);box-shadow:0 20px 60px #000c}
+#intro h1{font-family:'Cinzel Decorative','Nanum Myeongjo',serif;color:#f2e6cc;font-size:22px;letter-spacing:.1em;margin-bottom:2px}
+#intro .sub{color:#c89a4a;font-size:13px;letter-spacing:.14em;margin-bottom:16px}
+#intro p{color:#c4b69e;font-size:13.5px;line-height:1.75;margin-bottom:14px}
+#intro .sk{display:flex;gap:12px;align-items:flex-start;margin:9px 0}
+#intro .sk .key{flex:0 0 92px;color:#dfd0b4;font:700 12px monospace;border:1px solid #76634b;border-bottom:2px solid #40362b;border-radius:2px;padding:4px 6px;text-align:center;background:linear-gradient(#35302b,#171518)}
+#intro .sk b{color:#ff9a6a;font-size:13.5px}
+#intro .sk span{color:#9b8c72;font-size:12.5px}
+#intro .go{margin-top:20px;text-align:center;color:#ffcf8a;font-size:13px;letter-spacing:.1em;animation:pulse 1.4s infinite}
+@keyframes pulse{50%{opacity:.5}}
 </style></head>
 <body>
 <div id="wrap"><canvas id="cv"></canvas></div>
@@ -29,13 +42,23 @@ canvas{display:block;width:100%;height:100%;background:radial-gradient(ellipse a
 </div>
 <div id="help">
  <div><kbd>WASD</kbd> 이동</div>
- <div><kbd>좌클릭</kbd> 관통 창격</div>
- <div><kbd>우클릭</kbd> 홀드: 혈탄 장전(HP↓)</div>
- <div><kbd>Space</kbd> 역추진 도약</div>
- <div><kbd>R</kbd> 리셋 · <kbd>E</kbd> 적 소환</div>
+ <div><kbd>좌클릭</kbd> 관통 창격 — 일직선 관통탄(연사)</div>
+ <div><kbd>우클릭 홀드</kbd> 혈탄 장전 — HP를 탄약으로 충전 → 놓으면 대구경 관통탄</div>
+ <div><kbd>Space</kbd> 역추진 도약 — 커서 반대로 도약+무적</div>
+ <div style="margin-top:4px;color:#8a7c64"><kbd>E</kbd> 적 소환 · <kbd>R</kbd> 리셋</div>
 </div>
 <div id="chargeLbl"></div>
+<div id="tip">시험장 · 정해진 목표 없음 — 훈련 적을 3스킬로 쏴보며 <b>헬거너 손맛</b>을 봐주세요.<br>추천 콤보: <b>좌클릭 연사</b>로 견제 → 위험하면 <b>Space</b>로 이탈 → 여유 있을 때 <b>우클릭 홀드</b>로 혈탄 한 방</div>
 <div id="title">HELLGUNNER · 창포수</div>
+<div id="intro"><div class="card">
+ <h1>HELLGUNNER</h1><div class="sub">창포수 · 스킬 시험장 (프로토타입)</div>
+ <p>신규 캐릭터 <b style="color:#ff9a6a">헬거너</b>의 3스킬을 게임에 넣기 전에 <b style="color:#ff9a6a">손맛·데미지·연출</b>을 미리 시험하는 곳입니다. 정해진 목표는 없어요 — 훈련용 적을 마음껏 쏴보세요.</p>
+ <div class="sk"><span class="key">좌클릭</span><div><b>관통 창격</b> <span>— 일직선상의 적을 전부 꿰뚫는 관통탄. 계속 눌러 연사.</span></div></div>
+ <div class="sk"><span class="key">우클릭 홀드</span><div><b>혈탄 장전</b> <span>— HP를 탄약으로 소모하며 충전(1~3단). 놓으면 강력한 대구경 관통탄. 저체력 리스크·고화력.</span></div></div>
+ <div class="sk"><span class="key">Space</span><div><b>역추진 도약</b> <span>— 커서 반대 방향으로 도약 + 짧은 무적. 적이 붙으면 이탈용.</span></div></div>
+ <p style="margin:14px 0 0;color:#9b8c72;font-size:12.5px">이동 <b style="color:#dfd0b4">WASD</b> · 적 소환 <b style="color:#dfd0b4">E</b> · 리셋 <b style="color:#dfd0b4">R</b></p>
+ <div class="go">▼ 아무 키나 누르거나 클릭해서 시작 ▼</div>
+</div></div>
 <script>
 'use strict';
 const cv=document.getElementById('cv'),X=cv.getContext('2d');
@@ -72,6 +95,11 @@ addEventListener('keydown',e=>{keys[e.code]=true;
   if(e.code==='KeyE')spawnRing(6);
 });
 addEventListener('keyup',e=>{keys[e.code]=false;});
+// ── 인트로 오버레이: 아무 키/클릭으로 닫기 (닫히기 전엔 게임 입력 차단) ──
+let introUp=true;const introEl=document.getElementById('intro');
+function dismissIntro(){if(!introUp)return;introUp=false;introEl.style.display='none';mouse.down=false;mouse.rdown=false;}
+introEl.addEventListener('mousedown',e=>{e.stopPropagation();dismissIntro();});
+addEventListener('keydown',e=>{if(introUp){dismissIntro();e.preventDefault();e.stopPropagation();}},true);
 
 // ── 유틸 ──
 const dst=(a,b,c,d)=>Math.hypot(a-c,b-d);
@@ -144,6 +172,7 @@ function reset(){P.x=0;P.y=0;P.hp=P.hpMax;P.st=P.stMax;P.mp=P.mpMax;P.charging=f
 
 // ── 업데이트 ──
 function update(dt){
+  if(introUp)return; // 인트로 중 게임 정지
   _now+=dt;
   // 이동
   let mx=(keys.KeyD?1:0)-(keys.KeyA?1:0),my=(keys.KeyS?1:0)-(keys.KeyW?1:0);
