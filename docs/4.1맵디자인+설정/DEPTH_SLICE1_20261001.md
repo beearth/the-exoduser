@@ -1,7 +1,8 @@
 # CH1-1 2.5D 깊이 슬라이스 1차 (DEPTH SLICE 1) — 2026-10-01
 
 > 스펙: [DEPTH_2_5D_BENCHMARK_20260930.md](DEPTH_2_5D_BENCHMARK_20260930.md) §6.1 첫 구현 슬라이스. 백로그 MAP-001(밑동 y정렬 교차), MAP-002(가림 페이드+가려진 플레이어 가독성), MAP-005/012 일부(접지 그림자 강화+월드 광원 통일), MAP-013(적 인스턴싱 y정렬 — 부분).
-> 상태: **구현 완료·플래그 OFF 기본**. `?depthSlice=1` 또는 런타임 `G._depthSlice=true`로 A/B. 기본 ON 전환은 팀장 승인 후 `_DS_DEFAULT=false→true` 한 줄.
+> 상태: **구현 완료·기본 ON (2026-10-01 맵 팀장 VISUAL VERDICT PASS)**. 끄기 = `?depthSlice=0`, 강제 켜기 = `?depthSlice=1` 또는 런타임 `G._depthSlice=true`. 플래그 식: `_dsFlag=(_DS_DEFAULT&&!/[?&]depthSlice=0/.test(location.search))||/[?&]depthSlice=1/.test(location.search)`.
+> 팀장 판정 근거(`captures/depth_slice1/` 직접 확인): G1 아치 나무·그루터기 뒤에 서면 나무가 플레이어 앞에 그려짐 / G2 시체나무 몸통 뒤에서도 플레이어 판독 / G3 최소 알파 .62로 랜드마크 유지 / G6 테스트 10/10 / G7 FPS 차이 ≤0.3%. 남은 약점: 접지 그림자가 1x에서 약함(후속 조정 후보).
 > 적용 파일: `game.html` + `game-easy-test.html` (동일 미러). 다른 스테이지/보스아레나/에디터에서는 게이트로 완전 비활성.
 
 ## 1. 무엇이 바뀌나 (플래그 ON, CH1-1 한정)
@@ -30,7 +31,7 @@
 
 | 식별자 | 값·역할 |
 |---|---|
-| `_DS_DEFAULT` | `false`. 승인 후 이 한 줄만 true로 |
+| `_DS_DEFAULT` | `true` (2026-10-01 팀장 승인). `?depthSlice=0`으로 끔 |
 | `_dsFlag` / `_dsEnabled()` | URL `?depthSlice=1` ∥ `G._depthSlice`(런타임 토글, undefined면 URL값) AND `G.stage===0 && !G._bossArena` |
 | `_dsOn` (draw 로컬) | `_dsEnabled() && !_EDITOR_MODE` — 프레임 1회 판정 |
 | `occ` / `footYF` | 분할 기준선 = `mo.y + sz×scale×footYF`. `m_ctree13~20: .45`(시각 밑동, ch1-living-detail 접지그림자 foot과 동일), **`m_c1tree: -.058`**(뿌리 치마는 바닥 — 몸통이 뿌리에서 솟는 선, 원화 세로 63% 지점을 피벗 .72 기준으로 환산). 뿌리 위를 걷는 플레이어는 가리지 않는다 |
@@ -46,7 +47,7 @@
 ## 4. 검증
 
 ### 테스트
-- 신규 `test/depthSlice.test.js` **10/10 PASS** (두 HTML 대상): 기본 OFF 게이트 / occ·ring 메타 / footY 공식(실코드 추출 실행) / 프런트·백 분할 / 시체나무 뿌리 예외 / 아치 링 예외 / 가림 AABB / 페이드 lerp 수렴 / 고스트 계약 / **플래그 OFF 경로 보존(기존 그림자 수치·단일 루프 호출·승수 1)**
+- 신규 `test/depthSlice.test.js` **10/10 PASS** (두 HTML 대상): 기본 ON 게이트·끄기 스위치 / occ·ring 메타 / footY 공식(실코드 추출 실행) / 프런트·백 분할 / 시체나무 뿌리 예외 / 아치 링 예외 / 가림 AABB / 페이드 lerp 수렴 / 고스트 계약 / **플래그 OFF 경로 보존(기존 그림자 수치·단일 루프 호출·승수 1)**
 - 기존 회귀: ch1SunburstTrees + ch1LivingDetail + ch1ForestSway + regionClearGate + ch1HandDecor 포함 **70/70 PASS**. 스크립트 블록 구문검사 전블록 OK(기존과 동일), pageerror/404 0
 
 ### 스크린샷 (captures/depth_slice1/, 1600×900 + 500px 1x 크롭, 어둠값 .38 재촬영본, 펫 대사·지역 배너·지역 타이틀 숨김)

@@ -24,10 +24,11 @@ function buildApi(src) {
   return (meta, P) => new Function('_OBJ_META', 'P', '_DS_P_HW', '_DS_P_HEAD', '_DS_P_FOOT', code)(meta, P, 40, 96, 28);
 }
 
-test('depthSlice: 기본 OFF 플래그와 게이트가 두 빌드에 존재한다', () => {
+test('depthSlice: 기본 ON 플래그·끄기 스위치·게이트가 두 빌드에 존재한다', () => {
   for (const f of files) {
     const s = sources[f];
-    assert.match(s, /const _DS_DEFAULT=false;/, `${f}: 기본값 OFF`);
+    assert.match(s, /const _DS_DEFAULT=true;/, `${f}: 기본값 ON (2026-10-01 팀장 PASS)`);
+    assert.match(s, /depthSlice=0/, `${f}: 끄기 스위치`);
     assert.match(s, /depthSlice=1/, `${f}: URL 플래그`);
     assert.match(s, /g\.stage===0&&!g\._bossArena/, `${f}: CH1-1 한정 게이트`);
     assert.match(s, /const _dsOn=_dsEnabled\(\)&&!_EDITOR_MODE/, `${f}: draw 프레임 게이트`);

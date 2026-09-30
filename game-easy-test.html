@@ -14926,10 +14926,10 @@ const _DEMO_LAST_STAGE=3; // ACT1(hell:0) 마지막 스테이지 인덱스
 const _DEMO_FUSE_ALLOWED=new Set(['dimBreach','dimSlam','sixFuse','elemFuse','whirlDet','slamStorm','bladeFuse','plagueFuse','plagueVenom','boneStorm','elecRepent','shieldFuse','holyFuse','holyIce','iceMortar','pillarSpike','pillarSlam','infernoSlam','thunderGhost','dualScarecrow','siegeGhost']);
 const _DEMO_AFFIX_BANNED=new Set(['sharpAtk','brutalAtk','ruinAtk','overkilDmg','staggerExplosion','parryExplosion','elemConvert']);
 // ── [DEPTH-SLICE] 2.5D 깊이 슬라이스 1차 (CH1-1 전용, DEPTH_2_5D_BENCHMARK §6.1) ──
-// 기본 OFF. 팀장 승인 후 아래 _DS_DEFAULT 한 줄만 true로 바꾸면 기본 활성.
+// 기본 ON (2026-10-01 맵 팀장 판정 PASS). 비교·회귀 확인용으로 ?depthSlice=0 이면 끈다.
 // URL ?depthSlice=1 또는 런타임 G._depthSlice=true/false 로 A/B 전환.
-const _DS_DEFAULT=false;
-const _dsFlag=_DS_DEFAULT||/[?&]depthSlice=1/.test(location.search);
+const _DS_DEFAULT=true;
+const _dsFlag=(_DS_DEFAULT&&!/[?&]depthSlice=0/.test(location.search))||/[?&]depthSlice=1/.test(location.search);
 function _dsEnabled(){const g=typeof G!=='undefined'?G:null;if(!g)return false;const on=g._depthSlice!==undefined?g._depthSlice:_dsFlag;return !!on&&g.stage===0&&!g._bossArena}
 // ──────────────────────────────────────────────────────
 const SI_TO_HELL=new Uint8Array(TOTAL_STAGES);
