@@ -113,3 +113,7 @@
 
 - 사이드포켓·상승통로 미니맵 마커(PHASE 6 잔여).
 - 지역별 보상(클리어 보너스 드랍 등) — 기획 미확정.
+
+## git provenance
+
+- 이 문서의 REGION 시스템·CLEAR-RESULT·Hell Gothic 디자인 재작업(4차) 전체는 2026-09-30 타세션 커밋 `a8d275507`("art(intro): remaster goddess and warrior intro cutscenes … sync pending session work")에 번들되어 main에 반영됐다. 전용 커밋 없음 — history rewrite 금지 규칙에 따라 재분리하지 않고 사실만 기록.
