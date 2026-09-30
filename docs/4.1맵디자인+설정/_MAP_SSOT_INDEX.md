@@ -1,6 +1,12 @@
+> 진행 프로젝트: [MAP_IMPROVEMENT_PROJECT.md](MAP_IMPROVEMENT_PROJECT.md) · 2.5D 깊이 기준: [DEPTH_2_5D_BENCHMARK_20260930.md](DEPTH_2_5D_BENCHMARK_20260930.md)
+
+## 2026-10-01 — CH1-1 생체나무 얼굴 애니메이션 97차 현행
+
+베이크 무변(bake `20260930-rotforest-96`/cache `20260930-rotforest-97`). 신규 `ch1-face-life.js`가 face-anchors.json 163앵커(eye68·mouth25·tumor70, 가림·퇴색·비가시 88개 필터)에 비동기 눈꺼풀 블링크·턱 호흡·종양 박동을 런타임 오버레이로 그린다(패치=청크 픽셀 파생, 유휴 빌드·LRU40·draw 평균 ≤0.02ms·할당 0, sway displacement 공식 테스트 잠금). 테스트 10/10·pageerror 0. 체감: 플레이어 광원 내 명확, 광원 밖 미묘. [수치·검증·MAP PRODUCTION REPORT](CH1_ROTTEN_FOREST_FACE_LIFE_PASS97_20260930.md). 96차 베이크 가독성은 맵 리드 재검에서 플레이 화면 비지각으로 **RETOUCH 확정, 베이크 튜닝 종료** — 근본 해결은 2.5D 깊이 패스로 이관.
+
 ## 2026-09-30 — CH1-1 외곽 군락 가독성 96차 현행
 
-현행 생산 배경은 bakeVersion `20260930-rotforest-96`, 청크 cache key `20260930-rotforest-97`, 23 retouch 레이어·64청크다. 95차 RETOUCH의 "외곽 군락 뭉침"을 대기 안개 헤일로·엠버 림라이트·3단 깊이 헤이즈·눈 글린트·나무 밝기 변주로 해소했다(배치·geometry·충돌·보호 바닥 불변, 신규 생성 0크레딧). 얼굴 앵커 SSOT `outer90_sources/features.json`(43앵커)이 이번에 신설되어 97차 애니메이션과 공유된다. [현행 수치·검수·MAP PRODUCTION REPORT](CH1_ROTTEN_FOREST_MASS_READ_PASS96_20260930.md). **VISUAL VERDICT: 군락 가독성 PASS / 전체 맵 RETOUCH(97차 애니메이션 진행).**
+현행 생산 배경은 bakeVersion `20260930-rotforest-96`, 청크 cache key `20260930-rotforest-97`, 23 retouch 레이어·64청크다. 95차 RETOUCH의 "외곽 군락 뭉침"을 대기 안개 헤일로·엠버 림라이트·3단 깊이 헤이즈·눈 글린트·나무 밝기 변주로 해소했다(배치·geometry·충돌·보호 바닥 불변, 신규 생성 0크레딧). 얼굴 앵커 SSOT `outer90_sources/features.json`(43앵커)이 이번에 신설되어 97차 애니메이션과 공유된다. [현행 수치·검수·MAP PRODUCTION REPORT](CH1_ROTTEN_FOREST_MASS_READ_PASS96_20260930.md). **VISUAL VERDICT: RETOUCH(맵 리드 재검 — 플레이 화면 비지각, 베이크 가독성 튜닝 종료).**
 
 ## 2026-09-30 — CH1-1 썩은 숲 재질 경계 95차 이력
 

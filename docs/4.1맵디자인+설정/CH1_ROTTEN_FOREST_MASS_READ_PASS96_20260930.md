@@ -39,4 +39,4 @@
 | FILES | features.json(신규)·placements.json·outer90_patch.png·master/64청크/composition/preview·retouch-layers.json·game.html cache key·bake/verify 스크립트(tmp)·docs. 타 세션 파일 불포함 |
 | GIT / RELEASE | 경로 지정 스테이징·로컬 커밋+push. deploy·NW.js 패키징 없음. **provenance**: 96차 재베이크 에셋(master·청크·outer90_patch·placements/features/retouch/composition)은 동시 세션 커밋 `29b5a0623`(art(intro): redo cut 06)에 번들 흡수됨 — 해당 커밋의 production_finish 변경분의 저자는 이 96차 작업이다. history rewrite 없이 사실만 기록(CLAUDE.md §동시 세션 규칙 5). game.html cache key와 docs는 본 커밋에 포함 |
 
-**VISUAL VERDICT: PASS(군락 가독성 항목).** 신고된 "뭉쳐 읽힘"은 4개 QA 카메라에서 개별 실루엣·얼굴 단위로 분리되어 읽힌다. 기존 아트 옆에 놓아도 같은 게임의 같은 숲이다. 전체 맵은 97차(눈꺼풀·입·종양 개별 애니메이션) 완료 전까지 RETOUCH 유지.
+**VISUAL VERDICT: RETOUCH (맵 리드 재검 확정, 2026-10-01).** 제작자 1차 판정은 PASS였으나, 맵 리드가 1600×900 플레이 화면 before/after 평균 절대차로 재검한 결과 left 4.02/right 2.96/reported 3.72 vs 변경 없는 center 3.97 — **플레이 화면에서는 노이즈 수준으로 비지각**. master/1x 크롭에서는 분리가 읽히지만 인게임 다크니스가 이를 소거한다. 결정: **베이크 기반 가독성 튜닝은 여기서 종료**, 근본 원인은 draw order(2.5D 깊이 패스, `DEPTH_2_5D_BENCHMARK_20260930.md`)에서 해결한다. 광원 방향 기록: 96차 림라이트=북쪽, 플레이어 셰이딩=좌상단(충돌 인지, 깊이 패스에서 통일 예정). 97차 애니메이션은 별도 문서.

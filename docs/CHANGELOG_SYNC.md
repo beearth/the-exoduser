@@ -1,3 +1,7 @@
+## 2026-10-01 — CH1-1 생체나무 얼굴 개별 애니메이션 97차 + 96차 리드 재검
+
+97차: 베이크 무변, 신규 `ch1-face-life.js`(?v=20260930-97) 런타임 오버레이 — face-anchors.json 163앵커(placements×features 변환, 가림 25점 커버리지·경계 fade·master 가시성 필터)에 비동기 눈꺼풀 블링크(110/65/125ms·14% 더블)·턱 호흡(1−0.07p²)·종양 박동(1+0.06p²). 패치는 청크 픽셀에서 파생(무이음), 유휴 큐 3ms·LRU40·프레임 할당 0·draw 평균 ≤0.02ms·fps 동일(238), sway displacement 공식 테스트 잠금·swayK 결합. 테스트 신규 6건 포함 10/10, pageerror 0. ON/OFF 버스트 국소 프레임차로 인과 증명(광원 내 peak 34~50 vs 주변광 ~8). 96차 재검: 맵 리드 측정으로 플레이 화면 비지각 → RETOUCH 확정·베이크 가독성 튜닝 종료, 2.5D 깊이 패스(DEPTH_2_5D_BENCHMARK)로 이관. 광원 방향 기록(96 림=북, 셰이딩=좌상, 97은 무방향). [97차 SSOT](4.1맵디자인+설정/CH1_ROTTEN_FOREST_FACE_LIFE_PASS97_20260930.md).
+
 ## 2026-09-30 — CH1-1 외곽 생체나무 군락 가독성 96차
 
 95차 RETOUCH 잔여 "군락이 어두운 장면에서 뭉쳐 읽힘"을 재베이크로 해소했다. 대기 안개 헤일로(군락 사이 음영 간격)·엠버 림라이트(지옥 하늘 방향)·북→남 3단 깊이 헤이즈·features.json 43앵커 눈 글린트·36나무 밝기 .84~.94 변주. 배치·geometry·충돌·보호 전투 바닥(변경 0px)·89차 흔들림·95차 시각 전이는 불변, 신규 이미지 생성 0크레딧. bakeVersion `20260930-rotforest-96`, cache key `20260930-rotforest-97`, 변경 15,691,026px, 청크 core 불일치 0, geometry hash 동일, 테스트 4/4, 4개 QA 카메라 before/after+1x 크롭 pageerror 0. [수치·검수·MAP PRODUCTION REPORT](4.1맵디자인+설정/CH1_ROTTEN_FOREST_MASS_READ_PASS96_20260930.md). **군락 가독성 PASS / 전체 맵 RETOUCH(97차 애니메이션 대기).**
