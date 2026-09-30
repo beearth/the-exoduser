@@ -167,3 +167,4 @@
 | 전사 보라 눈 | 보조 bust 이미지를 기준으로 사용 | 메인 컷 `warrior_cut.png` 기준 |
 | 06 얼굴·배경 불일치 | 전신 기준만 첨부(얼굴 작음) | 얼굴 크롭 기준 + 배경 명시 |
 | 생성 후 인게임 미적용 | 채택 판정 누락 | 현황표로 추적 |
+| 커밋 `ac79dd5e5`에 BUILD 팀 스테이징 파일 4개 번들 | 공유 인덱스에서 경로 미지정 `git commit` | `git commit --only <경로>` 사용, 커밋 전 `--cached --stat` 파일 수 확인. 기록: `docs/GIT_PROVENANCE_NOTES.md` |
