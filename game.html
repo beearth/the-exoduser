@@ -59540,6 +59540,9 @@ async function _startDemoNew(){
     P.skills.holyDome=1;SKILL_SLOTS[5]='holyDome';
     P.skills.spikeTrap=1;SKILL_SLOTS[0]='spikeTrap'; // Lv1 기본 스킬: 숫자 1번 슬롯
   }
+  // 얼음보주: 난이도·데모 무관 항상 지급 (2_1 문서 계약). 새 캐릭 또는 Ctrl 스킬 미습득 세이브면 Ctrl에 장착
+  if(!P.skills.iceOrb)P.skills.iceOrb=1;
+  if(!_demoLoaded||!(P.skills[P.activeCtSk]>=1))P.activeCtSk='iceOrb';
   recalcSt();
   setBootLoading(50,'몬스터 스킨 로딩...');
   if(!_mobAtlas.ready)await new Promise(r=>{const _ci=setInterval(()=>{if(_mobAtlas.ready){clearInterval(_ci);r()}},50);setTimeout(()=>{clearInterval(_ci);r()},5000)});
@@ -60754,7 +60757,7 @@ function _pickTransitionRd(){
   return n;
 }
 // 1~19.png 랜덤 로딩 이미지
-for(let i=1;i<=19;i++)_STAGE_TRANSITION_RD.push('img/lording/'+i+'.png?v=20260913-intro-detail2');
+for(let i=1;i<=19;i++)_STAGE_TRANSITION_RD.push('img/lording/'+i+'.png?v=20260930-loading-remaster');
 // 프리로드 제거 — 스테이지 전환 시 lazy load (배포 초기 로딩 최적화)
 function showStageTransition(callback){
   const el=$('stageTransition'),bar=$('stLoadBar'),name=$('stNextName'),img=$('stRndImg'),info=$('stFloorInfo');

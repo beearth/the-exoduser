@@ -1,0 +1,41 @@
+<!doctype html>
+<html lang="ko">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#100d16">
+  <title>EXODUSER — 자수정 유물 도감</title>
+  <link rel="stylesheet" href="./styles.css">
+  <script type="module" src="./app.js"></script>
+</head>
+<body>
+  <div class="shell">
+    <aside class="rail" aria-label="도감 안내">
+      <a class="brand" href="../affix-mini-project/"><span class="brand-symbol" aria-hidden="true">✣</span><span>HELL ROAD<small>EXODUSER / RELIQUARY</small></span></a>
+      <div class="rail-line"></div>
+      <p class="rail-kicker">UNIQUE / RARITY 05</p>
+      <h1>자수정<br><em>유물</em> 도감</h1>
+      <p class="rail-copy">전투의 순서를 바꾸는 22개의 고유 장비. 각각의 형태와 능력은 하나의 이야기에서 태어났다.</p>
+      <div class="rail-index" aria-hidden="true"><span>05</span><i></i><span>22</span></div>
+      <div class="rail-foot"><b class="live-pin" aria-hidden="true"></b><span>시각·효과 설계안<br>본게임 미구현</span></div>
+    </aside>
+
+    <main class="main">
+      <header class="hero">
+        <div class="hero-copy"><p class="eyebrow">THE AMETHYST RELIQUARY <span>／ 2026.09</span></p><h2>죽음에서<br>건져 올린 <em>이름들</em></h2><p>같은 보라색이라도 같은 운명은 없다. 무기에는 베는 방향을, 방어구에는 버티는 방식을, 장신구에는 다음 행동의 이유를 새겼다.</p><div class="hero-meta"><span><strong>22</strong> ORIGINAL RELICS</span><span><strong>01:01</strong> AFFIX PAIRING</span></div></div>
+        <div class="hero-art" aria-hidden="true"><div class="hero-art-frame"><img src="../assets/unique-items/ui-03.png" alt=""></div><span class="hero-art-caption">PLATE 03 — 삼획의 맹세</span></div>
+      </header>
+
+      <section class="collection" aria-labelledby="collection-title">
+        <div class="section-head"><div><p class="eyebrow">CATALOGUE / 001—022</p><h2 id="collection-title">고유 장비 <span id="result-count">22</span></h2></div><p>카드를 선택해 능력과 원화를 살펴보세요.</p></div>
+        <div class="controls"><div class="filters" role="group" aria-label="장비 종류"><button type="button" data-kind="전체" aria-pressed="true">전체 <small>22</small></button><button type="button" data-kind="무기" aria-pressed="false">무기</button><button type="button" data-kind="방어구" aria-pressed="false">방어구</button><button type="button" data-kind="장신구" aria-pressed="false">장신구</button></div><label class="search"><span class="sr-only">아이템 검색</span><span aria-hidden="true">⌕</span><input id="search" type="search" placeholder="이름 · 스킬 · UI 번호" autocomplete="off"></label></div>
+        <div id="item-grid" class="item-grid" aria-live="polite"></div>
+        <p id="empty-state" class="empty-state" hidden>조건에 맞는 장비가 없습니다.</p>
+      </section>
+      <footer class="main-foot">효과 수치와 하·중·상옵은 <a href="../docs/7아이템디자인/유니크_어픽스_리스트.md">유니크 어픽스 원본 문서</a>를 따릅니다. 이 도감은 실제 드롭·장착 상태가 아닙니다.</footer>
+    </main>
+
+    <aside class="detail" aria-label="선택한 아이템 상세"><div class="detail-top"><span>RELIC DOSSIER</span><span id="detail-id">UI-03</span></div><div class="detail-art"><img id="detail-img" src="../assets/unique-items/ui-03.png" alt=""></div><div class="detail-header"><span id="detail-kind">무기 / 대검</span><span class="detail-rarity">✦ 고유 05</span></div><h2 id="detail-name">삼획의 맹세</h2><p id="detail-lore" class="detail-lore"></p><div class="detail-rule"><span>고유 각인</span><i></i><span id="detail-affix">U-D03</span></div><p id="detail-effect" class="detail-effect"></p><div class="detail-motif"><span>형태와 재질</span><p id="detail-motif"></p></div><p class="detail-note">형태·부위는 제안입니다. 수치 및 전투 적용은 아직 설계 상태입니다.</p><a class="detail-link" href="../docs/7아이템디자인/보라색_고유아이템_카탈로그_20260930.md">전체 설계 문서 ↗</a></aside>
+  </div>
+</body>
+</html>
