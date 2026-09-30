@@ -1,0 +1,78 @@
+[
+  {
+    "tool": "Glob",
+    "input": {
+      "pattern": "docs/0마스터플랜/mac-resume-20261001/BUILD-SOUND-*.md"
+    }
+  },
+  {
+    "tool": "Glob",
+    "input": {
+      "pattern": "docs/6사운드디자인/**/*.md"
+    }
+  },
+  {
+    "tool": "Read",
+    "input": {
+      "file_path": "/Users/fordeargamers/Projects/exoduser-migration-20261001/docs/0마스터플랜/mac-resume-20261001/BUILD-SOUND-잔여팀-인수검토.md"
+    }
+  },
+  {
+    "tool": "Glob",
+    "input": {
+      "pattern": "**/SOUND_TEAM*.md"
+    }
+  },
+  {
+    "tool": "Grep",
+    "input": {
+      "pattern": "S-02|S-01|audio_review|후보9|대표3",
+      "path": "docs/6사운드디자인",
+      "output_mode": "files_with_matches"
+    }
+  },
+  {
+    "tool": "Grep",
+    "input": {
+      "pattern": "S-02|audio_review|SOUND_TEAM|후보9|대표3곡|Ashes Under|흰눈의 맹세|네메시아의 강림2",
+      "path": "docs",
+      "output_mode": "files_with_matches"
+    }
+  },
+  {
+    "tool": "Glob",
+    "input": {
+      "pattern": "**/audio_review/**"
+    }
+  },
+  {
+    "tool": "Grep",
+    "input": {
+      "pattern": "S-02|S-01|audio_review|후보|대표3곡|Ashes|흰눈의 맹세|네메시아의 강림2|MP3|OGG|Opus|루프|청취",
+      "path": "docs/6사운드디자인/6사운드디자인.md",
+      "output_mode": "content",
+      "-n": true,
+      "-C": 2
+    }
+  },
+  {
+    "tool": "Grep",
+    "input": {
+      "pattern": "S-02|S02|audio_review|256k|q6|160k|끝 무음|샘플수|루프 경계|대표3",
+      "path": "docs/CHANGELOG_SYNC.md",
+      "output_mode": "content",
+      "-n": true,
+      "-C": 2
+    }
+  },
+  {
+    "tool": "Grep",
+    "input": {
+      "pattern": "S-02|S02|audio_review|256k|q6|160k|대표3곡|청취|후보9",
+      "path": "docs/0마스터플랜/PROJECT_MANAGEMENT_MASTER.md",
+      "output_mode": "content",
+      "-n": true,
+      "-C": 2
+    }
+  }
+]

@@ -1,0 +1,21 @@
+{
+  "ref": "49851bd893c74b502259cf49f6a6457919767465",
+  "files": [
+    "audio_review/S-02/Ashes Under the Banner (Remastered).mp3_256k.mp3",
+    "audio_review/S-02/Ashes Under the Banner (Remastered).ogg_q6.ogg",
+    "audio_review/S-02/Ashes Under the Banner (Remastered).opus_160k.opus",
+    "audio_review/S-02/README.md",
+    "audio_review/S-02/measure_chromium.jsonl",
+    "audio_review/S-02/measure_ffmpeg.jsonl",
+    "audio_review/S-02/survey_17wav.jsonl",
+    "audio_review/S-02/네메시아의 강림2 (Remastered).mp3_256k.mp3",
+    "audio_review/S-02/네메시아의 강림2 (Remastered).ogg_q6.ogg",
+    "audio_review/S-02/네메시아의 강림2 (Remastered).opus_160k.opus",
+    "audio_review/S-02/흰눈의 맹세 (Remastered).mp3_256k.mp3",
+    "audio_review/S-02/흰눈의 맹세 (Remastered).ogg_q6.ogg",
+    "audio_review/S-02/흰눈의 맹세 (Remastered).opus_160k.opus"
+  ],
+  "candidates": 9,
+  "listening_performed": false,
+  "qa_measurement_ended": true
+}

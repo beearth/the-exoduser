@@ -1,0 +1,37 @@
+{
+  "cam": {
+    "x": 6734,
+    "y": 6212
+  },
+  "fixtures": [
+    {
+      "etype": 0,
+      "hp": 174768256,
+      "x": 6666.3633340000015,
+      "y": 6163.577420000001
+    },
+    {
+      "etype": 0,
+      "hp": 174768256,
+      "x": 6586.3633340000015,
+      "y": 6143.577420000001
+    }
+  ],
+  "foreground": {
+    "band": 170,
+    "builds": 6,
+    "defaultOn": true,
+    "flag": true,
+    "ghostFrames": 9977,
+    "instances": 13,
+    "lastDrawsBack": 0,
+    "lastDrawsFront": 2,
+    "pending": 0,
+    "sliceMsMax": 12.5,
+    "texBytes": 21449952
+  },
+  "p": {
+    "x": 6746.3633340000015,
+    "y": 6223.577420000001
+  }
+}

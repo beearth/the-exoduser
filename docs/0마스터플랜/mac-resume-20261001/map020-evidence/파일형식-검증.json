@@ -1,0 +1,192 @@
+{
+  "json_files_checked": 37,
+  "checks": [
+    {
+      "file": "/Users/fordeargamers/Documents/Codex/2026-10-01/dho/outputs/map020-20261001/walk-input-raw.json",
+      "valid": true,
+      "literal_backslash_n_tail": false
+    },
+    {
+      "file": "/Users/fordeargamers/Documents/Codex/2026-10-01/dho/outputs/map020-20261001/south-shots.json",
+      "valid": true,
+      "literal_backslash_n_tail": false
+    },
+    {
+      "file": "/Users/fordeargamers/Documents/Codex/2026-10-01/dho/outputs/map020-20261001/finish-checks.json",
+      "valid": true,
+      "literal_backslash_n_tail": false
+    },
+    {
+      "file": "/Users/fordeargamers/Documents/Codex/2026-10-01/dho/outputs/map020-20261001/SOUND-읽기근거.json",
+      "valid": true,
+      "literal_backslash_n_tail": false
+    },
+    {
+      "file": "/Users/fordeargamers/Documents/Codex/2026-10-01/dho/outputs/map020-20261001/BALANCE-읽기근거.json",
+      "valid": true,
+      "literal_backslash_n_tail": false
+    },
+    {
+      "file": "/Users/fordeargamers/Documents/Codex/2026-10-01/dho/outputs/map020-20261001/m5-enemies.json",
+      "valid": true,
+      "literal_backslash_n_tail": false
+    },
+    {
+      "file": "/Users/fordeargamers/Documents/Codex/2026-10-01/dho/outputs/map020-20261001/before-map-collision.json",
+      "valid": true,
+      "literal_backslash_n_tail": false
+    },
+    {
+      "file": "/Users/fordeargamers/Documents/Codex/2026-10-01/dho/outputs/map020-20261001/browser-console.json",
+      "valid": true,
+      "literal_backslash_n_tail": false
+    },
+    {
+      "file": "/Users/fordeargamers/Documents/Codex/2026-10-01/dho/outputs/map020-20261001/after-map-collision.json",
+      "valid": true,
+      "literal_backslash_n_tail": false
+    },
+    {
+      "file": "/Users/fordeargamers/Documents/Codex/2026-10-01/dho/outputs/map020-20261001/ITEM-읽기근거.json",
+      "valid": true,
+      "literal_backslash_n_tail": false
+    },
+    {
+      "file": "/Users/fordeargamers/Documents/Codex/2026-10-01/dho/outputs/map020-20261001/MAP-읽기근거.json",
+      "valid": true,
+      "literal_backslash_n_tail": false
+    },
+    {
+      "file": "/Users/fordeargamers/Documents/Codex/2026-10-01/dho/outputs/map020-20261001/SOUND-후보경로.json",
+      "valid": true,
+      "literal_backslash_n_tail": false
+    },
+    {
+      "file": "/Users/fordeargamers/Documents/Codex/2026-10-01/dho/outputs/map020-20261001/item-render-sizes.json",
+      "valid": true,
+      "literal_backslash_n_tail": false
+    },
+    {
+      "file": "/Users/fordeargamers/Documents/Codex/2026-10-01/dho/outputs/map020-20261001/contract-checks.json",
+      "valid": true,
+      "literal_backslash_n_tail": false
+    },
+    {
+      "file": "/Users/fordeargamers/Documents/Codex/2026-10-01/dho/outputs/map020-20261001/팀실행-영수증.json",
+      "valid": true,
+      "literal_backslash_n_tail": false
+    },
+    {
+      "file": "/Users/fordeargamers/Projects/exoduser-migration-20261001/docs/0마스터플랜/mac-resume-20261001/map020-evidence/walk-input-raw.json",
+      "valid": true,
+      "literal_backslash_n_tail": false
+    },
+    {
+      "file": "/Users/fordeargamers/Projects/exoduser-migration-20261001/docs/0마스터플랜/mac-resume-20261001/map020-evidence/south-shots.json",
+      "valid": true,
+      "literal_backslash_n_tail": false
+    },
+    {
+      "file": "/Users/fordeargamers/Projects/exoduser-migration-20261001/docs/0마스터플랜/mac-resume-20261001/map020-evidence/finish-checks.json",
+      "valid": true,
+      "literal_backslash_n_tail": false
+    },
+    {
+      "file": "/Users/fordeargamers/Projects/exoduser-migration-20261001/docs/0마스터플랜/mac-resume-20261001/map020-evidence/SOUND-읽기근거.json",
+      "valid": true,
+      "literal_backslash_n_tail": false
+    },
+    {
+      "file": "/Users/fordeargamers/Projects/exoduser-migration-20261001/docs/0마스터플랜/mac-resume-20261001/map020-evidence/BALANCE-읽기근거.json",
+      "valid": true,
+      "literal_backslash_n_tail": false
+    },
+    {
+      "file": "/Users/fordeargamers/Projects/exoduser-migration-20261001/docs/0마스터플랜/mac-resume-20261001/map020-evidence/m5-enemies.json",
+      "valid": true,
+      "literal_backslash_n_tail": false
+    },
+    {
+      "file": "/Users/fordeargamers/Projects/exoduser-migration-20261001/docs/0마스터플랜/mac-resume-20261001/map020-evidence/before-map-collision.json",
+      "valid": true,
+      "literal_backslash_n_tail": false
+    },
+    {
+      "file": "/Users/fordeargamers/Projects/exoduser-migration-20261001/docs/0마스터플랜/mac-resume-20261001/map020-evidence/browser-console.json",
+      "valid": true,
+      "literal_backslash_n_tail": false
+    },
+    {
+      "file": "/Users/fordeargamers/Projects/exoduser-migration-20261001/docs/0마스터플랜/mac-resume-20261001/map020-evidence/after-map-collision.json",
+      "valid": true,
+      "literal_backslash_n_tail": false
+    },
+    {
+      "file": "/Users/fordeargamers/Projects/exoduser-migration-20261001/docs/0마스터플랜/mac-resume-20261001/map020-evidence/ITEM-읽기근거.json",
+      "valid": true,
+      "literal_backslash_n_tail": false
+    },
+    {
+      "file": "/Users/fordeargamers/Projects/exoduser-migration-20261001/docs/0마스터플랜/mac-resume-20261001/map020-evidence/MAP-읽기근거.json",
+      "valid": true,
+      "literal_backslash_n_tail": false
+    },
+    {
+      "file": "/Users/fordeargamers/Projects/exoduser-migration-20261001/docs/0마스터플랜/mac-resume-20261001/map020-evidence/SOUND-후보경로.json",
+      "valid": true,
+      "literal_backslash_n_tail": false
+    },
+    {
+      "file": "/Users/fordeargamers/Projects/exoduser-migration-20261001/docs/0마스터플랜/mac-resume-20261001/map020-evidence/item-render-sizes.json",
+      "valid": true,
+      "literal_backslash_n_tail": false
+    },
+    {
+      "file": "/Users/fordeargamers/Projects/exoduser-migration-20261001/docs/0마스터플랜/mac-resume-20261001/map020-evidence/contract-checks.json",
+      "valid": true,
+      "literal_backslash_n_tail": false
+    },
+    {
+      "file": "/Users/fordeargamers/Projects/exoduser-migration-20261001/docs/0마스터플랜/mac-resume-20261001/map020-evidence/팀실행-영수증.json",
+      "valid": true,
+      "literal_backslash_n_tail": false
+    },
+    {
+      "file": "/Users/fordeargamers/Documents/Codex/2026-10-01/dho/outputs/mac-performance-20261001/summary.json",
+      "valid": true,
+      "literal_backslash_n_tail": false
+    },
+    {
+      "file": "/Users/fordeargamers/Documents/Codex/2026-10-01/dho/outputs/mac-performance-20261001/checkpoint.json",
+      "valid": true,
+      "literal_backslash_n_tail": false
+    },
+    {
+      "file": "/Users/fordeargamers/Documents/Codex/2026-10-01/dho/outputs/mac-performance-20261001/dense-baseline-raw.json",
+      "valid": true,
+      "literal_backslash_n_tail": false
+    },
+    {
+      "file": "/Users/fordeargamers/Documents/Codex/2026-10-01/dho/outputs/mac-performance-20261001/manifest.json",
+      "valid": true,
+      "literal_backslash_n_tail": false
+    },
+    {
+      "file": "/Users/fordeargamers/Documents/Codex/2026-10-01/dho/outputs/mac-performance-20261001/first-kill-raw.json",
+      "valid": true,
+      "literal_backslash_n_tail": false
+    },
+    {
+      "file": "/Users/fordeargamers/Projects/exoduser-migration-20261001/docs/0마스터플랜/mac-resume-20261001/Mac-실측-summary.json",
+      "valid": true,
+      "literal_backslash_n_tail": false
+    },
+    {
+      "file": "/Users/fordeargamers/Projects/exoduser-migration-20261001/docs/0마스터플랜/mac-resume-20261001/Mac-실측-manifest.json",
+      "valid": true,
+      "literal_backslash_n_tail": false
+    }
+  ],
+  "literal_backslash_n_tails": 0,
+  "preserve_mixed_line_endings": true
+}

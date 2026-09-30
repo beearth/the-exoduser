@@ -1,0 +1,352 @@
+{
+  "checked_at": "2026-09-30T22:29:20.935989+00:00",
+  "new_sessions": 0,
+  "max_active_workers_including_coordinator": 4,
+  "teams": [
+    {
+      "team": "MAP",
+      "session": "44508f89",
+      "delivery_evidence": [
+        {
+          "phase": "delivered",
+          "timestamp": "2026-09-30T22:23:53.696Z",
+          "text": "MAP 실제 화면 독립 검토 배정. /Users/fordeargamers/Documents/Codex/2026-10-01/dho/outputs/map020-20261001/ 의 south-z1-b.png, south-z0.62-0.png, south-z0.62-a.png, south-z0.62-b.png, south-approach.png, south-blocked.png를 Read로 직접 보고 south-shots.json/walk-input-raw.json/before-map-collision.json 대조하세요. 실제줌1→.62, 같은cam2420,6600/1280x800/어둠.38. A/B 원거리 캡처에서 x194~1086,y102~698 사각 그림자 절단 관찰, draw cull이 VW/2+80 고정(zoom무반영)인지 정적원인 검토. M5문서7000,6900은 G.map[172][175]=1,isWtrue; bake환산6835.94,6738.28도벽. 안→입구 경로를 허위PASS하지 않음. 실제보행6660,6140부터 S2초→y6304.37막힘, W1초→6137.21, D.5초→6746.36, S2초→y6223.58막힘.110개50ms표본/키hold 전부true,원본맵보존. 보이는 가독성·뿌리반복·줌절단·M5좌표결함의 독립판정과 VISUAL VERDICT를 근거와 함께 답변. 기존 buildRim 변주만 수정후보로 제시하되, 새줌결함은 별도범위로 분리. 수정/새실행/다른팀금지."
+        },
+        {
+          "phase": "started_read",
+          "timestamp": "2026-09-30T22:23:56.433Z",
+          "tool": "Read",
+          "path": "/Users/fordeargamers/Documents/Codex/2026-10-01/dho/outputs/map020-20261001/south-z1-b.png"
+        },
+        {
+          "phase": "started_read",
+          "timestamp": "2026-09-30T22:23:57.121Z",
+          "tool": "Read",
+          "path": "/Users/fordeargamers/Documents/Codex/2026-10-01/dho/outputs/map020-20261001/south-z0.62-0.png"
+        },
+        {
+          "phase": "started_read",
+          "timestamp": "2026-09-30T22:23:57.873Z",
+          "tool": "Read",
+          "path": "/Users/fordeargamers/Documents/Codex/2026-10-01/dho/outputs/map020-20261001/south-z0.62-a.png"
+        },
+        {
+          "phase": "started_read",
+          "timestamp": "2026-09-30T22:23:58.623Z",
+          "tool": "Read",
+          "path": "/Users/fordeargamers/Documents/Codex/2026-10-01/dho/outputs/map020-20261001/south-z0.62-b.png"
+        },
+        {
+          "phase": "started_read",
+          "timestamp": "2026-09-30T22:23:59.310Z",
+          "tool": "Read",
+          "path": "/Users/fordeargamers/Documents/Codex/2026-10-01/dho/outputs/map020-20261001/south-approach.png"
+        },
+        {
+          "phase": "started_read",
+          "timestamp": "2026-09-30T22:24:00.061Z",
+          "tool": "Read",
+          "path": "/Users/fordeargamers/Documents/Codex/2026-10-01/dho/outputs/map020-20261001/south-blocked.png"
+        },
+        {
+          "phase": "started_read",
+          "timestamp": "2026-09-30T22:24:00.748Z",
+          "tool": "Read",
+          "path": "/Users/fordeargamers/Documents/Codex/2026-10-01/dho/outputs/map020-20261001/south-shots.json"
+        },
+        {
+          "phase": "started_read",
+          "timestamp": "2026-09-30T22:24:01.501Z",
+          "tool": "Read",
+          "path": "/Users/fordeargamers/Documents/Codex/2026-10-01/dho/outputs/map020-20261001/walk-input-raw.json"
+        },
+        {
+          "phase": "started_read",
+          "timestamp": "2026-09-30T22:24:02.110Z",
+          "tool": "Read",
+          "path": "/Users/fordeargamers/Documents/Codex/2026-10-01/dho/outputs/map020-20261001/before-map-collision.json"
+        }
+      ],
+      "result_text": "MAP-020 독립 화면 검토 완료 — 총괄이 생성한 캡처 6장·`south-shots.json`·`walk-input-raw.json`·`before-map-collision.json`을 직접 열람한 결과입니다(본인 브라우저 실행 아님).\n\n## 조건 대조 (실측 아님, 캡처 메타 확인)\n- `south-shots.json`: 6장 모두 cam=player 2420,6600, ambient `[6,16,9,0.38]`(어둠 .38), `mapUnchanged:true`, roots 305/buildMs 14.7/texPx 640000(800×800). 줌1 viewWorld `[1280,800]`, 줌.62 viewWorld `[2064.52,1290.32]` — **줌 1→.62 실적용 확인**(설정값이 아니라 런타임 view 범위가 실제로 넓어짐). mode 0/a/b의 boundary lastDraws 0/1/16으로 3종 분기도 실동작.\n- 좌표 검증(`coordinateCheck`): approach `[6660,6140]` isWall **false**, bake환산 `[6835.94,6738.28]` isWall **true**, 문서 `[7000,6900]` isWall **true**(tile=1). 지시하신 값과 100% 일치.\n- 보행(`walk-input-raw`): 4구간·총 110표본, 전부 `held:true`·`paused:false`·`on:true`·`mapUnchanged:true`. 워프 없음.\n\n## 1) 가독성 — 조건부 PASS\n정상 줌(`south-z1-b`)·M5 두 컷(`south-approach`/`south-blocked`)에서 플레이어(붉은 실루엣)와 적·포탈이 읽힘. 단 줌.62에서는 플레이어가 과소해지고, M5 컷은 오버행 아래 단일 프레임 판정이라 밀집 전투 가독성은 미검증. foreground band 170/instances 13/lastDrawsFront 2는 전경이 실제로 그려졌음을 뒷받침.\n\n## 2) 뿌리 반복 — RETOUCH (기존 약점 잔존)\n`south-z1-b`·`south-z0.62-b`의 좌측 접지 경계에 갈고리형 뿌리 마디가 같은 모양으로 이어져 **\"밧줄\" 반복감이 여전히 관찰**됨. mode a(그림자만)·0(끔) 대비 b에서만 이 띠가 두드러지므로 원인은 `buildRim` 뿌리 인스턴싱. 승인 문서 1차판이 명시한 약점이 해소되지 않음.\n\n## 3) 줌 절단 — **신규 결함(별도 범위)**\n줌.62의 0·A·B 세 장 모두에서 x≈194~1086, y≈102~698 구간에 **직선 모서리의 사각 그림자 절단**이 관찰됨. 줌1에는 없음. draw cull 반경이 `VW/2+80` 고정(줌 미반영)이라, view가 2064×1290로 넓어지면 경계 그림자 텍스처가 1x 기준 사각형에서 하드컷되는 정적 원인으로 판단. 이는 `buildRim`이 아니라 **cull/그리기 경로 결함**이므로 뿌리 반복과 분리.\n\n## 4) M5 좌표 결함 — 문서 오기 확정\n문서 `[7000,6900]`은 벽 타일(1)이라 보행 주머니가 아님. 실제 걷는 주머니 진입은 `[6660,6140]`(비벽). 남진 정지선이 x6660→y6304.37, x6746→y6223.58로 **동쪽일수록 북상**해 막힌 남측 경계가 곡선/사선임을 실제 이동으로 확인. `wall` 플래그는 계속 false지만 좌표가 flatline(클램프)으로 정지 → 워프가 아닌 실보행 차단. (부수: 전 구간 `pState:\"idle\"` 유지 — 정지 판정엔 영향 없으나 상태 텔레메트리 확인 필요.)\n\n## VISUAL VERDICT: **RETOUCH**\n근거: (2) 뿌리 반복 미해소 + (3) 줌아웃 신규 사각 절단. 두 결함이 남아 원거리 PASS 불가. 정상 줌·보행 차단·좌표 정합은 확인됨.\n\n## 수정 후보 (분리)\n- **맵팀 범위**: `ch1-boundary-edge.js` `buildRim`의 뿌리 변주만 — 기존 `prop_pool.png` 다른 테두리 2~3구간 크롭으로 반복 해소, 위치 앵커·법선·씨드·92px 간격·충돌 보존, 총괄 검토 후 적용.\n- **별도 범위(맵팀 아님)**: 줌 미반영 `VW/2+80` cull 사각 절단 — 그리기/cull 경로 소유팀에 이관 권고. buildRim 변주와 같은 커밋에 묶지 않음.\n- **문서 정정 대상**: `CH1_BOUNDARY_EDGE_MAP020_20261001.md`의 CAMERA QA M5 좌표 `(7000,6900)` → 실보행 진입 `(6660,6140)`. (이번엔 판정만, 수정 미실시.)\n\n## 마감\n소스 수정·새 실행·타팀 작업 0. 본 답변은 총괄 캡처·로그 기반 독립 판정이며, 채택 전 정상 전투·탄·패링·드롭 가독성 및 경계/깊이/도랑 회귀와 성능 동일조건 재측정이 남아 있음. **화면 검수는 RETOUCH로 종결, 후속 후보 적용 대기.**",
+      "status": "review_complete"
+    },
+    {
+      "team": "SOUND",
+      "session": "aa3ac0ed",
+      "delivery_evidence": [
+        {
+          "phase": "delivered",
+          "timestamp": "2026-09-30T22:20:33.923Z",
+          "text": "SOUND 실제 착수 배정(기존 대기 해제). 새 팀/게임/인코딩/파일변경 없이 Read/Glob/Grep으로 수행하세요. 최신 SOUND 팀 MD와 docs/0마스터플랜/mac-resume-20261001/BUILD-SOUND-잔여팀-인수검토.md를 먼저 읽고 완료된 BGM71/참조76 감사는 반복하지 않습니다. 독립 후보49851bd·S02 기존9개 압축파일의 남은 청취 인수조건 한 건: 원본/후보 경로, 3곡×3포맷, 볼륨정합·루프경계·왜곡·A/B 청취·패키지 조건, 통과 기준과 미실시를 근거와 함께 정리하세요. 직접 청취/병합/삭제/재인코딩 금지. 수신 후 실제 문서 읽기와 구체 보고까지 끝내고 한국어로 답변. 총괄이 결과를 저장합니다."
+        },
+        {
+          "phase": "started_read",
+          "timestamp": "2026-09-30T22:20:37.705Z",
+          "tool": "Glob",
+          "path": null
+        },
+        {
+          "phase": "started_read",
+          "timestamp": "2026-09-30T22:20:38.199Z",
+          "tool": "Glob",
+          "path": null
+        },
+        {
+          "phase": "started_read",
+          "timestamp": "2026-09-30T22:20:40.826Z",
+          "tool": "Read",
+          "path": "/Users/fordeargamers/Projects/exoduser-migration-20261001/docs/0마스터플랜/mac-resume-20261001/BUILD-SOUND-잔여팀-인수검토.md"
+        },
+        {
+          "phase": "started_read",
+          "timestamp": "2026-09-30T22:20:45.108Z",
+          "tool": "Glob",
+          "path": null
+        },
+        {
+          "phase": "started_read",
+          "timestamp": "2026-09-30T22:20:46.274Z",
+          "tool": "Grep",
+          "path": null
+        },
+        {
+          "phase": "started_read",
+          "timestamp": "2026-09-30T22:20:49.787Z",
+          "tool": "Grep",
+          "path": null
+        },
+        {
+          "phase": "started_read",
+          "timestamp": "2026-09-30T22:20:50.156Z",
+          "tool": "Glob",
+          "path": null
+        },
+        {
+          "phase": "started_read",
+          "timestamp": "2026-09-30T22:20:56.210Z",
+          "tool": "Grep",
+          "path": null
+        },
+        {
+          "phase": "started_read",
+          "timestamp": "2026-09-30T22:21:13.372Z",
+          "tool": "Grep",
+          "path": null
+        },
+        {
+          "phase": "started_read",
+          "timestamp": "2026-09-30T22:21:14.990Z",
+          "tool": "Grep",
+          "path": null
+        }
+      ],
+      "result_text": "SOUND 실착수 완료. 문서 읽기(인수검토 §\"SOUND 통합 후보 검수 조건\"·§\"SOUND Git 원본 추가 검증 완료\", `6사운드디자인.md:192–283`, PM 마스터 PM-010·§인계표)를 마쳤습니다. BGM71/참조76 감사는 이미 통과이므로 반복하지 않고, 요청하신 **독립 후보 `49851bd`·S-02 기존 9개 압축본의 남은 청취 인수조건 한 건**만 근거와 함께 정리합니다. 직접 청취·병합·삭제·재인코딩은 하지 않았습니다.\n\n---\n\n## S-02 압축 후보 청취 인수조건 (미실시 1건)\n\n### 1. 대상 위치 (경로)\n- **후보 격리 위치**: 별도 브랜치 `claude/admiring-albattani-dvaosd`, SHA `49851bd893c74b502259cf49f6a6457919767465`의 `audio_review/S-02/` — **현재 Mac 작업트리에는 없음**(Glob `**/audio_review/**` 결과 0). 청취하려면 총괄이 해당 blob을 격리 조회/체크아웃해야 함.\n  - 근거: 인수검토 §46–59, PM 마스터 `:320` (`49851bd` 원격 재대조 일치), `:357`.\n- **원본 WAV(보존·삭제 금지)** — 대표 3곡, `6사운드디자인.md` 기준:\n  | 곡 | 원본 Remastered WAV | 위치 | 특성 |\n  |---|---|---|---|\n  | Ashes Under the Banner | `Ashes Under the Banner (Remastered).wav` | `bgm/1장_썩은숲/` (`:206`) | 심벌/기타 **고역** |\n  | 흰눈의 맹세 | `흰눈의 맹세 (Remastered).wav` | `bgm/3장_얼음굴/` (`:204`) | **합창·잔향** |\n  | 네메시아의 강림2 | `네메시아의 강림2 (Remastered).wav` | `bgm/공통/` Remastered (`:194`) | **루프 반복 경계** |\n- **런타임 참조 포맷**: 게임은 `t:bgm/....mp3` 경로로 재생(`:248–283`) — 후보 비교는 이 재생 계약(mp3)과의 정합까지 봐야 함.\n\n### 2. 후보 구성 (3곡 × 3포맷 = 9개)\n- 대표 3곡 각각 **MP3 256k / OGG q6 / Opus 160k** = **후보 9개**, 추가로 **측정 파일 3개 + README** 존재.\n  - 근거: 인수검토 `:59`, `:65`, PM 마스터 `:371`(\"대표3곡×3포맷의 압축 후보9개가 이미 있어 중복 인코딩 불필요\").\n\n### 3. 청취/검수 조건 (각 항목별 통과 기준)\n| 항목 | 검수 조건 | 통과 기준 |\n|---|---|---|\n| **볼륨 정합** | 원본 WAV ↔ 3포맷 후보를 **동일 출력장치·볼륨·구간**에서 대조 | 체감 음량차 없음, 클리핑/피크 초과 없음 |\n| **루프 경계** | 특히 네메시아의 강림2 반복 이음부, 재생 길이·시작/끝 | 이음부 튐·무음 갭 없이 연속 |\n| **왜곡** | 고역(Ashes 심벌·기타), 합창 잔향(흰눈의 맹세) 손실·아티팩트 | 원본 대비 가청 열화 없음 |\n| **A/B 청취** | 원본→MP3→OGG→Opus 같은 구간 교차 청취 | 포맷 간 우열·결함 판정 근거 확보 |\n| **전환 중복** | 전환/셔플 시 중복 재생·이중 페이드 | 중복 재생 없음(정상 BGM 셔플 계약 `:246–284` 유지) |\n| **패키지 반영** | 채택 포맷의 실행 패키지(mp3 경로) 반영·사용자 `t:경로` 설정 저장 보존 | 사용자 BGM 설정·정상 사본 유지 |\n\n### 4. 근거 있는 기존 측정 vs 청취 상태\n- 기존 **Chromium 정적 측정**: OGG 끝 무음 **+4~15ms**, MP3/Opus 샘플수 일치 (근거: 인수검토 `:65`).\n  - ⚠️ 이는 **파형 측정이지 청취 검수 아님** — 이 수치를 Mac 청취 결과로 표기 금지(인수검토 `:65` 명시).\n- **미실시 사유**: ① `audio_review/S-02/`가 Mac 작업트리 미존재(격리 조회 필요), ② 실청취는 **QA 실측 종료 후** 동일 장치·볼륨·구간에서 수행하는 것이 계약(인수검토 `:44`), ③ 병합·삭제·재인코딩 금지 범위. → 현재는 **인수조건 정리까지만** 완료, 청취 미실시.\n\n### 5. 통과 판정 시 후속(별도 배정 대기)\n- 채택 포맷 결정 → 실행 패키지 mp3 경로 반영은 **별도 배정 뒤**(인수검토 `:44` \"새 인코딩/대량 처리는 별도 배정 뒤\"). 원본 17곡 전체 인코딩은 미실행 유지(`:65`).\n\n---\n\n**요약 판정**: 후보 9개 구성·경로·검수 조건·통과 기준은 확정. 실청취는 (a) `49851bd` 격리 조회, (b) QA 실측 종료, 두 의존성 미충족으로 **미실시**. 총괄의 격리 조회 제공 및 QA 종료 신호 후 청취 배정 대기합니다. 결과 저장은 총괄이 수행.",
+      "status": "review_complete"
+    },
+    {
+      "team": "ITEM",
+      "session": "a1c26e3a",
+      "delivery_evidence": [
+        {
+          "phase": "delivered",
+          "timestamp": "2026-09-30T22:20:36.138Z",
+          "text": "ITEM 실제 착수 배정(기존 대기 해제). 최신 docs/7아이템디자인/ITEM_TEAM_MASTER.md 및 UNIQUE_ITEM_GAME_INTEGRATION_CONTRACT_20261001.md 먼저 읽고, UI07/20/21 기존후보의64/160px 비교와 런타임연결/폴백 점검 한 건을 Read/Glob/Grep만으로 진행하세요. 기존 후보이미지를 Read로 볼 수 있으면 실물크기 가독성 비교, 없으면 정확한 경로/필요크기/누락을 보고하여 총괄이 크기별보드를 제공합니다. 소스수정·수치·저장·드롭·게임실행·새생성 금지. 직접 못 본 후보를 채택 선언하지 마세요. 수신/읽기착수/최종검토결과를 구분해 한국어 보고. 총괄이 결과를 저장합니다."
+        },
+        {
+          "phase": "started_read",
+          "timestamp": "2026-09-30T22:20:40.565Z",
+          "tool": "Glob",
+          "path": null
+        },
+        {
+          "phase": "started_read",
+          "timestamp": "2026-09-30T22:20:41.696Z",
+          "tool": "Read",
+          "path": "/Users/fordeargamers/Projects/exoduser-migration-20261001/docs/7아이템디자인/ITEM_TEAM_MASTER.md"
+        },
+        {
+          "phase": "started_read",
+          "timestamp": "2026-09-30T22:20:42.493Z",
+          "tool": "Read",
+          "path": "/Users/fordeargamers/Projects/exoduser-migration-20261001/docs/7아이템디자인/UNIQUE_ITEM_GAME_INTEGRATION_CONTRACT_20261001.md"
+        },
+        {
+          "phase": "started_read",
+          "timestamp": "2026-09-30T22:20:47.982Z",
+          "tool": "Glob",
+          "path": null
+        },
+        {
+          "phase": "started_read",
+          "timestamp": "2026-09-30T22:20:48.487Z",
+          "tool": "Glob",
+          "path": null
+        },
+        {
+          "phase": "started_read",
+          "timestamp": "2026-09-30T22:20:48.994Z",
+          "tool": "Glob",
+          "path": null
+        },
+        {
+          "phase": "started_read",
+          "timestamp": "2026-09-30T22:20:49.272Z",
+          "tool": "Glob",
+          "path": null
+        },
+        {
+          "phase": "started_read",
+          "timestamp": "2026-09-30T22:20:57.844Z",
+          "tool": "Read",
+          "path": "/Users/fordeargamers/Projects/exoduser-migration-20261001/assets/unique-items/ui-07.png"
+        },
+        {
+          "phase": "started_read",
+          "timestamp": "2026-09-30T22:20:58.596Z",
+          "tool": "Read",
+          "path": "/Users/fordeargamers/Projects/exoduser-migration-20261001/assets/unique-items/ui-07-seedream-candidate.png"
+        },
+        {
+          "phase": "started_read",
+          "timestamp": "2026-09-30T22:20:59.223Z",
+          "tool": "Read",
+          "path": "/Users/fordeargamers/Projects/exoduser-migration-20261001/assets/unique-items/ui-20.png"
+        },
+        {
+          "phase": "started_read",
+          "timestamp": "2026-09-30T22:20:59.975Z",
+          "tool": "Read",
+          "path": "/Users/fordeargamers/Projects/exoduser-migration-20261001/assets/unique-items/ui-20-seedream-candidate.png"
+        },
+        {
+          "phase": "started_read",
+          "timestamp": "2026-09-30T22:21:00.666Z",
+          "tool": "Read",
+          "path": "/Users/fordeargamers/Projects/exoduser-migration-20261001/assets/unique-items/ui-21.png"
+        },
+        {
+          "phase": "started_read",
+          "timestamp": "2026-09-30T22:21:01.351Z",
+          "tool": "Read",
+          "path": "/Users/fordeargamers/Projects/exoduser-migration-20261001/assets/unique-items/ui-21-seedream-candidate.png"
+        },
+        {
+          "phase": "started_read",
+          "timestamp": "2026-09-30T22:21:02.729Z",
+          "tool": "Grep",
+          "path": null
+        },
+        {
+          "phase": "started_read",
+          "timestamp": "2026-09-30T22:21:03.971Z",
+          "tool": "Grep",
+          "path": null
+        },
+        {
+          "phase": "started_read",
+          "timestamp": "2026-09-30T22:21:47.538Z",
+          "tool": "Grep",
+          "path": null
+        },
+        {
+          "phase": "delivered",
+          "timestamp": "2026-09-30T22:25:35.416Z",
+          "text": "추가 증거 제공 및 기존 판독 1건 정정 요청. 총괄이 기존 review.html에서 UI07/20/21만 임시 표시하여 실제64px/160px(각6장CSS크기와naturalWidth 확인) 캡처했습니다. /Users/fordeargamers/Documents/Codex/2026-10-01/dho/outputs/map020-20261001/item-64.png, item-160.png, item-render-sizes.json을 Read로 확인하고 최종검토를 보완하세요. UI20은 현재 캡처 왼쪽 기존원화가 옆모습 견갑, 오른쪽Seedream후보가 중앙 자수정 방패형입니다. 직전 보고에서 이 두 파일의 역할이 뒤바뀌었습니다. 실제 파일명·캡션과 구조를 재대조해 UI20판독을 정정하고, 원화채택/게임연결은 여전히 하지 않습니다. 07/21과연결미구현 검토는 반복 실행하지말고 새실물크기 근거만 보완하세요."
+        },
+        {
+          "phase": "started_read",
+          "timestamp": "2026-09-30T22:25:39.351Z",
+          "tool": "Read",
+          "path": "/Users/fordeargamers/Documents/Codex/2026-10-01/dho/outputs/map020-20261001/item-render-sizes.json"
+        },
+        {
+          "phase": "started_read",
+          "timestamp": "2026-09-30T22:25:40.039Z",
+          "tool": "Read",
+          "path": "/Users/fordeargamers/Documents/Codex/2026-10-01/dho/outputs/map020-20261001/item-64.png"
+        },
+        {
+          "phase": "started_read",
+          "timestamp": "2026-09-30T22:25:40.637Z",
+          "tool": "Read",
+          "path": "/Users/fordeargamers/Documents/Codex/2026-10-01/dho/outputs/map020-20261001/item-160.png"
+        }
+      ],
+      "result_text": "[재대조] 새 캡처 3파일 확인. `item-render-sizes.json`의 `src`+`naturalWidth`가 객관적 판별자입니다 — 기존 원화 = **1024×1024**(ui-XX.png), Seedream 후보 = **1920×1920**(candidate). ITEM 대장 기재와 일치.\n\n**UI-20 재대조 결과 (JSON src+natural 기준):**\n- `ui-20.png` (기존 원화, natural [1024,1024]) = **왼쪽 = 옆모습 견갑(pauldron)** — 골격+버클끈, 어둡고 상단 치우침\n- `ui-20-seedream-candidate.png` (Seedream 후보, natural [1920,1920]) = **오른쪽 = 중앙 자수정 방패형** — 대비 높은 중앙 발광\n\n[정정] **직전 보고에서 UI-20 두 파일의 역할을 뒤바꿔 기술했습니다.** 이전 보고는 \"중앙 방패형=기존원화, 견갑=후보\"라 했으나, 권위 근거(review.html의 확정 src + naturalWidth)로는 **반대**입니다. 정정합니다:\n\n| UI-20 | 정정 전(오류) | 정정 후(확정) |\n|---|---|---|\n| 기존 원화 ui-20.png(1024) | 중앙 방패형 | **옆모습 견갑(pauldron)** |\n| Seedream 후보 candidate(1920) | 견갑 | **중앙 자수정 방패형** |\n\n**정정에 따른 UI-20 가독성 판정 역전:**\n- 64px/160px 실물 캡처에서 **후보(중앙 자수정 방패형)가 더 우수** — 중앙 배치·높은 대비·밝은 보라 발광이 64px에서도 비컨으로 판독됨. 기존 원화(옆모습 견갑)는 어두운 각진 덩어리로 저대비·비중심이라 64px 판독 약함.\n- 즉 UI-20은 앞서 \"가독성=원본\"이라 한 결론을 **\"가독성=후보(중앙 방패형)\"로 정정**. (채택 선언 아님)\n\n**UI-07 / UI-21 — 새 실물크기 근거 보완만 (재실행 없음):**\n- UI-07: 160px에서 기존 원화(갈색 3사슬 벨트)가 3사슬 실루엣 명확, 후보(근흑색 벨트)는 몸체가 어두워 64px에서 보라 보석 점만 읽힘 → **원본 우세** 유지 확인.\n- UI-21: 160px에서 기존 원화(인체 흉갑)가 종류 즉시 판독, 후보(하트형 철창)는 64px에서 어두운 하트 덩어리 → **원본 우세** 유지 확인.\n\n원화채택·게임연결 없음, 연결미구현 검토 재실행 없음. UI-20 판독 정정과 07/21 실물크기 근거만 보완했습니다. 결과 저장은 총괄에 위임합니다.",
+      "status": "review_complete"
+    },
+    {
+      "team": "BALANCE",
+      "session": "1fd751d8",
+      "delivery_evidence": [
+        {
+          "phase": "delivered",
+          "timestamp": "2026-09-30T22:20:38.336Z",
+          "text": "BALANCE 실제 착수 배정(기존 대기 해제). 최신 docs/14밸런스+수치테이블/BALANCE_ECONOMY_TEAM_MASTER.md와 해당 승인 백로그부터 읽으세요. 아직 미완료인 수치·공식·docs 일치 검토 한 건을 선정해 Read/Glob/Grep으로 실제 소스와 문서를 대조하고, 파일/줄/공식 및 수정후보·미검수 경계를 한국어로 보고하세요. 완료 XP/강화8검사 반복·새테스트·전투보호설계·수치/파일/저장변경·게임실행 금지. 다른 writer 건드리지 말고 근거 기반 후보만. 수신과 읽기착수/완료를 구분. 총괄이 결과를 저장합니다."
+        },
+        {
+          "phase": "started_read",
+          "timestamp": "2026-09-30T22:20:42.756Z",
+          "tool": "Read",
+          "path": "/Users/fordeargamers/Projects/exoduser-migration-20261001/docs/14밸런스+수치테이블/BALANCE_ECONOMY_TEAM_MASTER.md"
+        },
+        {
+          "phase": "started_read",
+          "timestamp": "2026-09-30T22:20:57.526Z",
+          "tool": "Grep",
+          "path": null
+        },
+        {
+          "phase": "started_read",
+          "timestamp": "2026-09-30T22:20:57.956Z",
+          "tool": "Glob",
+          "path": null
+        },
+        {
+          "phase": "started_read",
+          "timestamp": "2026-09-30T22:21:05.653Z",
+          "tool": "Read",
+          "path": "/Users/fordeargamers/.claude/projects/-Users-fordeargamers-Projects-exoduser-migration-20261001/1fd751d8-1b6b-4685-a68f-fc5579022217/tool-results/toolu_01WMaGy7GxeMdNj679KZuKHD.txt"
+        },
+        {
+          "phase": "started_read",
+          "timestamp": "2026-09-30T22:21:20.198Z",
+          "tool": "Read",
+          "path": "/Users/fordeargamers/Projects/exoduser-migration-20261001/docs/2_1 스킬관리+합체시스템+자원/SKILL_자원게이트_감사_20261001.md"
+        },
+        {
+          "phase": "started_read",
+          "timestamp": "2026-09-30T22:21:43.366Z",
+          "tool": "Grep",
+          "path": null
+        },
+        {
+          "phase": "started_read",
+          "timestamp": "2026-09-30T22:22:11.362Z",
+          "tool": "Read",
+          "path": "/Users/fordeargamers/Projects/exoduser-migration-20261001/game.html"
+        },
+        {
+          "phase": "started_read",
+          "timestamp": "2026-09-30T22:22:42.164Z",
+          "tool": "Grep",
+          "path": null
+        },
+        {
+          "phase": "started_read",
+          "timestamp": "2026-09-30T22:22:44.343Z",
+          "tool": "Grep",
+          "path": null
+        },
+        {
+          "phase": "started_read",
+          "timestamp": "2026-09-30T22:23:06.233Z",
+          "tool": "Read",
+          "path": "/Users/fordeargamers/Projects/exoduser-migration-20261001/game.html"
+        }
+      ],
+      "result_text": "BALANCE 읽기·대조 **완료**. 소유 범위(무료/유료 강화 패널 경계)에서 미검수 1건을 선정해 실소스와 docs를 대조한 결과입니다. **파일/저장/수치 무변경, 환수식 미변경.**\n\n---\n\n## 선정 항목\n장비 **강화 비용식 + 환수식(salvageVal)** 의 docs ↔ 코드 일치 검토 (유료 강화 패널의 핵심 경계, 마스터 문서 공통계산행 「강화 지출」 + ECON-01/PM-013-D).\n\n## 대조 결과\n\n**① 강화 비용식 — docs 일치 확인 (검산 완료)**\n- 코드: `game.html:26592~26606` (`enhRate`, `_malCost`, `enhCostRaw`, `enhCost`)\n  - `enhRate(n)=max(0.5, 99×0.99^n)%`\n  - `_malCost(v)=v≤0?0:max(1, ceil(v×0.5))`\n  - `enhCostRaw(n)=max(20000, ceil((20000+n×3500)×1.5))`\n  - `enhCost`: 등급배율 `[0.5,0.7,1.0,1.3,1.8][_itemEconomyRarity(rarity)]`, 실비 `_malCost(ceil(raw×배율))`\n- 검산: 0강 희귀 **15,000** / 100강 **277,500** / 1000강 **2,640,000** → 마스터 `BALANCE_ECONOMY_TEAM_MASTER.md:28`, SSOT `14밸런스+수치테이블.md:94~102` 와 **100% 일치**.\n- 등급 매핑: `_itemEconomyRarity(r)` (`game.html:26700`) = `min(r,4)` → 유니크(5)→전설(4). 마스터 \"유니크는 경제상 전설\" **일치**.\n\n**② 불일치 후보 #1 — 코드 주석 오기 (경미, 주석만)**\n- `game.html:26602` 주석: `1000강=533만`\n- 실제 공식값: `(20000+1000×3500)×1.5 = 5,280,000` = **528만**\n- docs SSOT(`14밸런스+수치테이블.md:102`)는 **5,280,000**으로 정확 → **코드 주석만 오기**.\n- 수정후보: 주석 `533만`→`528만` (공식·수치 무변경, 주석 텍스트만). *총괄 승인 시 반영.*\n\n**③ 불일치 후보 #2 — 환수식 ≠ 강화지출식 (설계 대기, 변경금지 준수)**\n- `salvageVal` (`game.html:26708`) 및 강화이전 `_enhRefund` (`game.html:15472`): 옛 단위누적식 `ceil((1+i×0.15)×1.5)×배율` 사용.\n- 현행 강화 지출: `enhCostRaw(n)=max(20000, ceil((20000+n×3500)×1.5))` — **서로 다른 식**.\n- `game.html:26703` 주석 \"실제 강화 비용 누적합의 절반\"과 실제 환수 **불일치**: 희귀 +10 검산 → 누적지출 268,125 대비 강화분 환수 **15**(≈0.006%). 마스터 PM-013-D 실측(268,125 / 15)과 재확인 일치.\n- docs는 이미 사실 명시: `14밸런스+수치테이블.md:94`(\"기존 `(1+n×0.15)×1.5` 표기는 현행 강화 비용식이 아니다\"), 마스터 PM-013-D \"설계 결정 대기\".\n\n## 미검수 경계\n- **환수 목표(%)** 미확정 → ITEM·총괄 설계 결정 필요. **환수식 변경 금지 지시 준수, 근거만 보고.**\n- 후보 #1(주석)·#2(환수식) 모두 **본편 도달 빌드 실플레이 미실시** (현행 데모 Lv100 경계). 정상 성장 장비 실전 환수 표본 없음.\n- 다른 writer(SKILL 라우터 팬텀 MP 게이트 등) 미접촉.\n\n수신/읽기착수와 구분하여 **읽기·대조 완료** 보고입니다. 결과 저장·docs 반영은 총괄 처리 대기합니다.",
+      "status": "review_complete"
+    }
+  ]
+}

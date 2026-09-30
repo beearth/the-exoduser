@@ -1,0 +1,78 @@
+[
+  {
+    "tool": "Read",
+    "input": {
+      "file_path": "/Users/fordeargamers/Projects/exoduser-migration-20261001/docs/0마스터플랜/mac-resume-20261001/MAP-ART-인수검토.md"
+    }
+  },
+  {
+    "tool": "Read",
+    "input": {
+      "file_path": "/Users/fordeargamers/Documents/Codex/2026-10-01/dho/outputs/mac-performance-20261001/측정결과.md"
+    }
+  },
+  {
+    "tool": "Grep",
+    "input": {
+      "pattern": "MAP-020|edgeShade|줌아웃|줌 아웃|원거리|M5|buildRim|\\.38|기본 ?B",
+      "path": "/Users/fordeargamers/Projects/exoduser-migration-20261001/docs/4.1맵디자인+설정/CH1_BOUNDARY_EDGE_MAP020_20261001.md",
+      "output_mode": "content",
+      "-n": true,
+      "head_limit": 40
+    }
+  },
+  {
+    "tool": "Read",
+    "input": {
+      "file_path": "/Users/fordeargamers/Documents/Codex/2026-10-01/dho/outputs/map020-20261001/south-z1-b.png"
+    }
+  },
+  {
+    "tool": "Read",
+    "input": {
+      "file_path": "/Users/fordeargamers/Documents/Codex/2026-10-01/dho/outputs/map020-20261001/south-z0.62-0.png"
+    }
+  },
+  {
+    "tool": "Read",
+    "input": {
+      "file_path": "/Users/fordeargamers/Documents/Codex/2026-10-01/dho/outputs/map020-20261001/south-z0.62-a.png"
+    }
+  },
+  {
+    "tool": "Read",
+    "input": {
+      "file_path": "/Users/fordeargamers/Documents/Codex/2026-10-01/dho/outputs/map020-20261001/south-z0.62-b.png"
+    }
+  },
+  {
+    "tool": "Read",
+    "input": {
+      "file_path": "/Users/fordeargamers/Documents/Codex/2026-10-01/dho/outputs/map020-20261001/south-approach.png"
+    }
+  },
+  {
+    "tool": "Read",
+    "input": {
+      "file_path": "/Users/fordeargamers/Documents/Codex/2026-10-01/dho/outputs/map020-20261001/south-blocked.png"
+    }
+  },
+  {
+    "tool": "Read",
+    "input": {
+      "file_path": "/Users/fordeargamers/Documents/Codex/2026-10-01/dho/outputs/map020-20261001/south-shots.json"
+    }
+  },
+  {
+    "tool": "Read",
+    "input": {
+      "file_path": "/Users/fordeargamers/Documents/Codex/2026-10-01/dho/outputs/map020-20261001/walk-input-raw.json"
+    }
+  },
+  {
+    "tool": "Read",
+    "input": {
+      "file_path": "/Users/fordeargamers/Documents/Codex/2026-10-01/dho/outputs/map020-20261001/before-map-collision.json"
+    }
+  }
+]

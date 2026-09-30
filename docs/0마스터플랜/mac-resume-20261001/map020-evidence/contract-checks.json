@@ -1,0 +1,30 @@
+{
+  "map_sha256_before": "8a5dfe9f1a6c5a283be293a85cedb49509d1db5d317e063fde0b2cd5ff6c65a1",
+  "map_sha256_after": "8a5dfe9f1a6c5a283be293a85cedb49509d1db5d317e063fde0b2cd5ff6c65a1",
+  "collision_sha256_before": "a1f9b68480c128c995a0f42733ccac63cf6b349baf829898ebbe59b55a440729",
+  "collision_sha256_after": "a1f9b68480c128c995a0f42733ccac63cf6b349baf829898ebbe59b55a440729",
+  "game_sha256": "775237034c6fec4c9de26b56c771b5ed03bc1037353cc292c4bec187d0f53967",
+  "source_sha": "6cbeb664dfcd75a3b890be275562d27e95415c9e",
+  "remote_sha": "6cbeb664dfcd75a3b890be275562d27e95415c9e",
+  "coordinate_check": {
+    "approach": [
+      6660,
+      6140
+    ],
+    "approachIsWall": false,
+    "bakeConversion": [
+      6835.9375,
+      6738.28125
+    ],
+    "bakeConversionIsWall": true,
+    "document": [
+      7000,
+      6900
+    ],
+    "documentIsWall": true,
+    "documentTile": 1
+  },
+  "walk_sample_count": 110,
+  "viewport_restored": true,
+  "game_execution_stopped": true
+}

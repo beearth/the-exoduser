@@ -1,0 +1,135 @@
+{
+  "measured_source": "6cbeb664dfcd75a3b890be275562d27e95415c9e",
+  "verdict": "RETOUCH; far-zoom render FAIL",
+  "raw_evidence_backed_up": true,
+  "files": {
+    "m5-enemies-ready.png": {
+      "bytes": 106768,
+      "sha256": "1d9ee931a76039ade44f46d10fb745f1100167b9b83c4166c7694f40c24615e8"
+    },
+    "east-entry.png": {
+      "bytes": 107753,
+      "sha256": "c471f4eb2b4f8aa4e39421aefd6ec52d67d39e68e754b04df4a72d7e232d4e19"
+    },
+    "m5-enemies.png": {
+      "bytes": 106215,
+      "sha256": "2dab0d7dd2789703dd24658be2f68fcbde5606ed1ba0cab6d066dee11400d200"
+    },
+    "item-64.png": {
+      "bytes": 45948,
+      "sha256": "9c97afa55a64c8e525c1a3dbe89d9fa182e17e0df795b54185d5e3028ef34a48"
+    },
+    "north-return.png": {
+      "bytes": 109275,
+      "sha256": "f964dddcbe67d639c5105d365b2157f8f8736ff600c69c67a9aef5a194380a9c"
+    },
+    "south-approach.png": {
+      "bytes": 112241,
+      "sha256": "76ed7594efb96909483c992247632daeae122e3a6fdca31a9cc052e743d3595f"
+    },
+    "walk-input-raw.json": {
+      "bytes": 28692,
+      "sha256": "0a7d8f6cf6248e4818e53ea7beb2d34f949894e2d1f22e93f5bee98a482239db"
+    },
+    "south-shots.json": {
+      "bytes": 2836,
+      "sha256": "5440b76da7e30b3769c5b0af6073bbc21879d9957ea2615616b1b271710323ec"
+    },
+    "finish-checks.json": {
+      "bytes": 149,
+      "sha256": "f56fadcb5fab0048cea0143d3a3941a4dd11411f00cdf4880b9ac168b0474e33"
+    },
+    "SOUND-읽기근거.json": {
+      "bytes": 1874,
+      "sha256": "88d7b07823ca801a473dc914b379c2f2d0d04d31c5235b89c556ddcba480c0a7"
+    },
+    "south-blocked.png": {
+      "bytes": 107191,
+      "sha256": "72403755200433f303d5a009003dff41fe6a8f758f7af3bb4960a62f4e3a29dd"
+    },
+    "item-160.png": {
+      "bytes": 63122,
+      "sha256": "0b001fa7482059bd2a4e28f51206f3d23cdbbcb639068bd319333f30c95bad24"
+    },
+    "south-z1-b.png": {
+      "bytes": 117670,
+      "sha256": "4b6fb1d351cc45816a45499bd08a1185cce709fce3a66cbdf7fc56f76b1fcfda"
+    },
+    "south-z0.62-0.png": {
+      "bytes": 134510,
+      "sha256": "103234815e51ff5aaab0e6cb21cbb1c622284d250076b7a8d3fac7d82caf2812"
+    },
+    "BALANCE-읽기근거.json": {
+      "bytes": 2266,
+      "sha256": "4145033b25631d68422ae91dc935d4da4b8e63933c46fbfc55aa949ee385b451"
+    },
+    "south-z1-a.png": {
+      "bytes": 113944,
+      "sha256": "ec79b8afda539361a9145e9e320fb6368364f0cea07dd0e9d3931fc96681bdbe"
+    },
+    "m5-enemies.json": {
+      "bytes": 625,
+      "sha256": "94ae6721db581bbf3edd9a0ae3cc112047adaefec6a33bd4a1feb5276767370e"
+    },
+    "before-map-collision.json": {
+      "bytes": 81869,
+      "sha256": "2516912f9dc5671e64abf9ddfb53da419aa7324178513713d93c7fe301c9639c"
+    },
+    "browser-console.json": {
+      "bytes": 2541,
+      "sha256": "8086eb1949bdd89d8d07e066bfe7198fa033177246bd831a1d320b5f5548ce74"
+    },
+    "after-map-collision.json": {
+      "bytes": 82392,
+      "sha256": "d72db878b2f5221a986d719b16d8c2008a6b05e84e7146f8e5524280bfc75dea"
+    },
+    "south-z0.62-a.png": {
+      "bytes": 127555,
+      "sha256": "83f4915e363bde0ad780903443444d4329bf784a64c18eaa4f0c01cd7370a184"
+    },
+    "ITEM-읽기근거.json": {
+      "bytes": 3113,
+      "sha256": "60d6c0af4e43f77dcc6498e01c15a88dc76718dad49ad0d64d29516cc58306dc"
+    },
+    "south-z0.62-b.png": {
+      "bytes": 129605,
+      "sha256": "800dfac08be48b3a14a1d1bf4764e9e379bebef49b25c0edda8a55b70ccd4ca8"
+    },
+    "south-z1-0.png": {
+      "bytes": 120744,
+      "sha256": "13c479085fe0f3cd0db782f7c716e6f881e4e368b7cfe99d73248c08623d626a"
+    },
+    "MAP-읽기근거.json": {
+      "bytes": 2222,
+      "sha256": "133e93b4e66ea23ef4911cec3ef88109ec416dcb39e8695b91b6bdf76eb8edfb"
+    },
+    "파일형식-검증.json": {
+      "bytes": 7794,
+      "sha256": "6be1b5f213d725185e1211ee0b62744fefb108d8b9a168ce9bdf0d0abd0b3849"
+    },
+    "SOUND-후보경로.json": {
+      "bytes": 980,
+      "sha256": "77779601de186d6c5651a512abda824f2437fdfb3f10d6468377e7056776962e"
+    },
+    "SOUND-원본README.txt": {
+      "bytes": 954,
+      "sha256": "51434f90aae41649de0123e5dc60115e98513a854633919dea5c3e78a6c6321a"
+    },
+    "item-render-sizes.json": {
+      "bytes": 2498,
+      "sha256": "86606618930ae199037b37f28507e65bf31b1a8597f1c9f5f1665c373d7eb1d9"
+    },
+    "contract-checks.json": {
+      "bytes": 976,
+      "sha256": "4a476e16a301a879fe7662a70b32cf9e6ec2e2864b757fab13723f911aea4670"
+    },
+    "m5-approach-before.png": {
+      "bytes": 127047,
+      "sha256": "d1530d8d8e446954534fcbb4f94a6af550f5e5ff8a67cb74e7aac425cd8cf098"
+    },
+    "팀실행-영수증.json": {
+      "bytes": 29262,
+      "sha256": "8a1f2febd378d78c3dc8be084f42f17f05257a192112a2117692b9ab8dcdb68b"
+    }
+  }
+}

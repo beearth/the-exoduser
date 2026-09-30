@@ -1,0 +1,127 @@
+[
+  {
+    "tool": "Glob",
+    "input": {
+      "pattern": "docs/7아이템디자인/**/*.md"
+    }
+  },
+  {
+    "tool": "Read",
+    "input": {
+      "file_path": "/Users/fordeargamers/Projects/exoduser-migration-20261001/docs/7아이템디자인/ITEM_TEAM_MASTER.md"
+    }
+  },
+  {
+    "tool": "Read",
+    "input": {
+      "file_path": "/Users/fordeargamers/Projects/exoduser-migration-20261001/docs/7아이템디자인/UNIQUE_ITEM_GAME_INTEGRATION_CONTRACT_20261001.md"
+    }
+  },
+  {
+    "tool": "Glob",
+    "input": {
+      "pattern": "assets/unique-items/ui-0[7]*.png"
+    }
+  },
+  {
+    "tool": "Glob",
+    "input": {
+      "pattern": "assets/unique-items/ui-2[01]*.png"
+    }
+  },
+  {
+    "tool": "Glob",
+    "input": {
+      "pattern": "**/review.html"
+    }
+  },
+  {
+    "tool": "Glob",
+    "input": {
+      "pattern": "assets/unique-items/*.png"
+    }
+  },
+  {
+    "tool": "Read",
+    "input": {
+      "file_path": "/Users/fordeargamers/Projects/exoduser-migration-20261001/assets/unique-items/ui-07.png"
+    }
+  },
+  {
+    "tool": "Read",
+    "input": {
+      "file_path": "/Users/fordeargamers/Projects/exoduser-migration-20261001/assets/unique-items/ui-07-seedream-candidate.png"
+    }
+  },
+  {
+    "tool": "Read",
+    "input": {
+      "file_path": "/Users/fordeargamers/Projects/exoduser-migration-20261001/assets/unique-items/ui-20.png"
+    }
+  },
+  {
+    "tool": "Read",
+    "input": {
+      "file_path": "/Users/fordeargamers/Projects/exoduser-migration-20261001/assets/unique-items/ui-20-seedream-candidate.png"
+    }
+  },
+  {
+    "tool": "Read",
+    "input": {
+      "file_path": "/Users/fordeargamers/Projects/exoduser-migration-20261001/assets/unique-items/ui-21.png"
+    }
+  },
+  {
+    "tool": "Read",
+    "input": {
+      "file_path": "/Users/fordeargamers/Projects/exoduser-migration-20261001/assets/unique-items/ui-21-seedream-candidate.png"
+    }
+  },
+  {
+    "tool": "Grep",
+    "input": {
+      "pattern": "img/ui/unique-items|unique-items/ui-",
+      "path": "/Users/fordeargamers/Projects/exoduser-migration-20261001/game.html",
+      "output_mode": "content",
+      "-n": true
+    }
+  },
+  {
+    "tool": "Grep",
+    "input": {
+      "pattern": "uniqueId",
+      "path": "/Users/fordeargamers/Projects/exoduser-migration-20261001/game.html",
+      "output_mode": "content",
+      "-n": true,
+      "head_limit": 20
+    }
+  },
+  {
+    "tool": "Grep",
+    "input": {
+      "pattern": "_itemSkin|_worldItemSkin|UNIQUE_SPECIAL",
+      "path": "/Users/fordeargamers/Projects/exoduser-migration-20261001/game.html",
+      "output_mode": "content",
+      "-n": true,
+      "head_limit": 12
+    }
+  },
+  {
+    "tool": "Read",
+    "input": {
+      "file_path": "/Users/fordeargamers/Documents/Codex/2026-10-01/dho/outputs/map020-20261001/item-render-sizes.json"
+    }
+  },
+  {
+    "tool": "Read",
+    "input": {
+      "file_path": "/Users/fordeargamers/Documents/Codex/2026-10-01/dho/outputs/map020-20261001/item-64.png"
+    }
+  },
+  {
+    "tool": "Read",
+    "input": {
+      "file_path": "/Users/fordeargamers/Documents/Codex/2026-10-01/dho/outputs/map020-20261001/item-160.png"
+    }
+  }
+]

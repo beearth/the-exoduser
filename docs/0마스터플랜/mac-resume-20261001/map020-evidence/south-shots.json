@@ -1,0 +1,188 @@
+[
+  {
+    "filename": "south-z1-0.png",
+    "ambient": [
+      6,
+      16,
+      9,
+      0.38
+    ],
+    "boundary": {
+      "buildMs": 14.7,
+      "built": true,
+      "lastDraws": 0,
+      "mode": "0",
+      "roots": 305,
+      "texPx": 640000
+    },
+    "cam": {
+      "x": 2420,
+      "y": 6600
+    },
+    "mapUnchanged": true,
+    "player": {
+      "x": 2420,
+      "y": 6600
+    },
+    "viewWorld": [
+      1280,
+      800
+    ],
+    "zoom": 1
+  },
+  {
+    "filename": "south-z1-a.png",
+    "ambient": [
+      6,
+      16,
+      9,
+      0.38
+    ],
+    "boundary": {
+      "buildMs": 14.7,
+      "built": true,
+      "lastDraws": 1,
+      "mode": "a",
+      "roots": 305,
+      "texPx": 640000
+    },
+    "cam": {
+      "x": 2420,
+      "y": 6600
+    },
+    "mapUnchanged": true,
+    "player": {
+      "x": 2420,
+      "y": 6600
+    },
+    "viewWorld": [
+      1280,
+      800
+    ],
+    "zoom": 1
+  },
+  {
+    "filename": "south-z1-b.png",
+    "ambient": [
+      6,
+      16,
+      9,
+      0.38
+    ],
+    "boundary": {
+      "buildMs": 14.7,
+      "built": true,
+      "lastDraws": 16,
+      "mode": "b",
+      "roots": 305,
+      "texPx": 640000
+    },
+    "cam": {
+      "x": 2420,
+      "y": 6600
+    },
+    "mapUnchanged": true,
+    "player": {
+      "x": 2420,
+      "y": 6600
+    },
+    "viewWorld": [
+      1280,
+      800
+    ],
+    "zoom": 1
+  },
+  {
+    "filename": "south-z0.62-0.png",
+    "ambient": [
+      6,
+      16,
+      9,
+      0.38
+    ],
+    "boundary": {
+      "buildMs": 14.7,
+      "built": true,
+      "lastDraws": 0,
+      "mode": "0",
+      "roots": 305,
+      "texPx": 640000
+    },
+    "cam": {
+      "x": 2420,
+      "y": 6600
+    },
+    "mapUnchanged": true,
+    "player": {
+      "x": 2420,
+      "y": 6600
+    },
+    "viewWorld": [
+      2064.516129032258,
+      1290.3225806451612
+    ],
+    "zoom": 0.62
+  },
+  {
+    "filename": "south-z0.62-a.png",
+    "ambient": [
+      6,
+      16,
+      9,
+      0.38
+    ],
+    "boundary": {
+      "buildMs": 14.7,
+      "built": true,
+      "lastDraws": 1,
+      "mode": "a",
+      "roots": 305,
+      "texPx": 640000
+    },
+    "cam": {
+      "x": 2420,
+      "y": 6600
+    },
+    "mapUnchanged": true,
+    "player": {
+      "x": 2420,
+      "y": 6600
+    },
+    "viewWorld": [
+      2064.516129032258,
+      1290.3225806451612
+    ],
+    "zoom": 0.62
+  },
+  {
+    "filename": "south-z0.62-b.png",
+    "ambient": [
+      6,
+      16,
+      9,
+      0.38
+    ],
+    "boundary": {
+      "buildMs": 14.7,
+      "built": true,
+      "lastDraws": 16,
+      "mode": "b",
+      "roots": 305,
+      "texPx": 640000
+    },
+    "cam": {
+      "x": 2420,
+      "y": 6600
+    },
+    "mapUnchanged": true,
+    "player": {
+      "x": 2420,
+      "y": 6600
+    },
+    "viewWorld": [
+      2064.516129032258,
+      1290.3225806451612
+    ],
+    "zoom": 0.62
+  }
+]

@@ -1,0 +1,132 @@
+{
+  "px64": [
+    {
+      "alt": "UI-07 기존 원화",
+      "complete": true,
+      "height": "64px",
+      "natural": [
+        1024,
+        1024
+      ],
+      "src": "../assets/unique-items/ui-07.png",
+      "width": "64px"
+    },
+    {
+      "alt": "UI-07 Seedream 후보",
+      "complete": true,
+      "height": "64px",
+      "natural": [
+        1920,
+        1920
+      ],
+      "src": "../assets/unique-items/ui-07-seedream-candidate.png",
+      "width": "64px"
+    },
+    {
+      "alt": "UI-20 기존 원화",
+      "complete": true,
+      "height": "64px",
+      "natural": [
+        1024,
+        1024
+      ],
+      "src": "../assets/unique-items/ui-20.png",
+      "width": "64px"
+    },
+    {
+      "alt": "UI-20 Seedream 후보",
+      "complete": true,
+      "height": "64px",
+      "natural": [
+        1920,
+        1920
+      ],
+      "src": "../assets/unique-items/ui-20-seedream-candidate.png",
+      "width": "64px"
+    },
+    {
+      "alt": "UI-21 기존 원화",
+      "complete": true,
+      "height": "64px",
+      "natural": [
+        1024,
+        1024
+      ],
+      "src": "../assets/unique-items/ui-21.png",
+      "width": "64px"
+    },
+    {
+      "alt": "UI-21 Seedream 후보",
+      "complete": true,
+      "height": "64px",
+      "natural": [
+        1920,
+        1920
+      ],
+      "src": "../assets/unique-items/ui-21-seedream-candidate.png",
+      "width": "64px"
+    }
+  ],
+  "px160": [
+    {
+      "alt": "UI-07 기존 원화",
+      "complete": true,
+      "height": "160px",
+      "natural": [
+        1024,
+        1024
+      ],
+      "width": "160px"
+    },
+    {
+      "alt": "UI-07 Seedream 후보",
+      "complete": true,
+      "height": "160px",
+      "natural": [
+        1920,
+        1920
+      ],
+      "width": "160px"
+    },
+    {
+      "alt": "UI-20 기존 원화",
+      "complete": true,
+      "height": "160px",
+      "natural": [
+        1024,
+        1024
+      ],
+      "width": "160px"
+    },
+    {
+      "alt": "UI-20 Seedream 후보",
+      "complete": true,
+      "height": "160px",
+      "natural": [
+        1920,
+        1920
+      ],
+      "width": "160px"
+    },
+    {
+      "alt": "UI-21 기존 원화",
+      "complete": true,
+      "height": "160px",
+      "natural": [
+        1024,
+        1024
+      ],
+      "width": "160px"
+    },
+    {
+      "alt": "UI-21 Seedream 후보",
+      "complete": true,
+      "height": "160px",
+      "natural": [
+        1920,
+        1920
+      ],
+      "width": "160px"
+    }
+  ]
+}

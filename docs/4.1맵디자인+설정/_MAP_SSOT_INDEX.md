@@ -1,3 +1,7 @@
+## 2026-10-01 — MAP-020 Mac 원거리·보행 재검수
+
+기본B·어둠.38·맵/충돌 보존. 실제 줌1/.62의 남쪽0/A/B6장과 입력110표본 확인. **RETOUCH / 원거리 shade 사각 절단 FAIL**, 뿌리 반복 잔여. M5문서7000,6900은 현재벽이며 주머니 보행 승인보류. [재검수 §6](CH1_BOUNDARY_EDGE_MAP020_20261001.md#6-mac-실화면-재검수--2026-10-01). 아래1차PASS는 당시판정.
+
 > 진행 프로젝트: [MAP_IMPROVEMENT_PROJECT.md](MAP_IMPROVEMENT_PROJECT.md) · 2.5D 깊이 기준: [DEPTH_2_5D_BENCHMARK_20260930.md](DEPTH_2_5D_BENCHMARK_20260930.md)
 
 ## 2026-10-01 — CH1-1 경계 가독성 MAP-020

@@ -1,0 +1,44 @@
+[
+  {
+    "level": "error",
+    "message": "Object",
+    "timestamp": "2026-09-30T22:21:02.454Z",
+    "url": "chrome-extension://ofpnmcalabcbjgholdjcjblkibolbppb/content.js"
+  },
+  {
+    "level": "error",
+    "message": "Object",
+    "timestamp": "2026-09-30T22:21:02.543Z",
+    "url": "http://localhost:3340/game.html?test=1&qaMap=1"
+  },
+  {
+    "level": "error",
+    "message": "Object",
+    "timestamp": "2026-09-30T22:21:02.543Z",
+    "url": "http://localhost:3340/game.html?test=1&qaMap=1"
+  },
+  {
+    "level": "error",
+    "message": "Error: Untrusted event\n    at q7n.ensureTrustedEvent (chrome-extension://ofpnmcalabcbjgholdjcjblkibolbppb/content.js:3994:4090)\n    at aZt.handleKeyDown (chrome-extension://ofpnmcalabcbjgholdjcjblkibolbppb/content.js:7377:63987)\n    at HTMLDocument.<anonymous> (chrome-extension://ofpnmcalabcbjgholdjcjblkibolbppb/content.js:7377:63682)",
+    "timestamp": "2026-09-30T22:23:00.158Z",
+    "url": "chrome-extension://ofpnmcalabcbjgholdjcjblkibolbppb/content.js"
+  },
+  {
+    "level": "error",
+    "message": "Error: Untrusted event\n    at q7n.ensureTrustedEvent (chrome-extension://ofpnmcalabcbjgholdjcjblkibolbppb/content.js:3994:4090)\n    at aZt.handleKeyDown (chrome-extension://ofpnmcalabcbjgholdjcjblkibolbppb/content.js:7377:63987)\n    at HTMLDocument.<anonymous> (chrome-extension://ofpnmcalabcbjgholdjcjblkibolbppb/content.js:7377:63682)",
+    "timestamp": "2026-09-30T22:23:02.216Z",
+    "url": "chrome-extension://ofpnmcalabcbjgholdjcjblkibolbppb/content.js"
+  },
+  {
+    "level": "error",
+    "message": "Error: Untrusted event\n    at q7n.ensureTrustedEvent (chrome-extension://ofpnmcalabcbjgholdjcjblkibolbppb/content.js:3994:4090)\n    at aZt.handleKeyDown (chrome-extension://ofpnmcalabcbjgholdjcjblkibolbppb/content.js:7377:63987)\n    at HTMLDocument.<anonymous> (chrome-extension://ofpnmcalabcbjgholdjcjblkibolbppb/content.js:7377:63682)",
+    "timestamp": "2026-09-30T22:23:03.264Z",
+    "url": "chrome-extension://ofpnmcalabcbjgholdjcjblkibolbppb/content.js"
+  },
+  {
+    "level": "error",
+    "message": "Error: Untrusted event\n    at q7n.ensureTrustedEvent (chrome-extension://ofpnmcalabcbjgholdjcjblkibolbppb/content.js:3994:4090)\n    at aZt.handleKeyDown (chrome-extension://ofpnmcalabcbjgholdjcjblkibolbppb/content.js:7377:63987)\n    at HTMLDocument.<anonymous> (chrome-extension://ofpnmcalabcbjgholdjcjblkibolbppb/content.js:7377:63682)",
+    "timestamp": "2026-09-30T22:23:03.816Z",
+    "url": "chrome-extension://ofpnmcalabcbjgholdjcjblkibolbppb/content.js"
+  }
+]
