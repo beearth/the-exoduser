@@ -37,6 +37,7 @@
 | 행동 버튼 | 시작 최소44px, 붉은 CSS 버튼/글자 #fff0df. 건너뛰기 최소36px, 선 #665044·배경 #1d1413·글자 #dccbb6. 하단 여백/진행바 margin-top12px |
 | 상태/진행 | 1·2단 실제 통과 조건·단계·키바인딩·세이브·자동 진행 유지. 장식은 성공 판정에 관여하지 않는다 |
 | 시스템 안내/배지 | systemLesson·tutorialBadgeCollection opacity1, #281413f5→#100d0ef5, 선 #805443. 시스템 버튼 최소36px, #351011 배경. 뒤쪽 parryLessonBackdrop opacity.5 유지 |
+| 시스템 안내 반투명 (2026-09-30 사용자 지시) | 게임 중 `#systemLesson`은 전투를 가리지 않도록 **반투명 + 클릭 통과**: 배경 `#2814138c→#100d0e80`(약 55/50%), 선 `#80544399`, 그림자 `0 8px 22px #0005`, 패널 `pointer-events:none`·버튼/링크만 `auto`(버튼 배경 `#351011b3`), 가독성용 text-shadow `0 1px 3px #000d, 0 0 6px #0008`. `backdrop-filter`는 캔버스 위 매 프레임 비용 때문에 미사용. `tutorialBadgeCollection`은 기존 불투명 유지. ui-foundation.css `?v=20260930-lesson-translucent` |
 
 ## 에셋과 생성 정보
 

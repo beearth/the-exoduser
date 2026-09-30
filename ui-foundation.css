@@ -228,6 +228,11 @@ body:has(:is(#settings,#invPanel,#forge,#skillPanel,#storagePanel,#statPanel).on
 #systemLesson h2{color:#f1d9bd;}
 #systemLesson button{border:1px solid #855044;background:#351011;color:#f0dfcd;min-height:36px;}
 #systemLesson li[data-current="true"]{color:#ffd6bb;}
+/* 2026-09-30: 게임 중 시스템 안내는 반투명 + 클릭 통과 — 전투 화면을 가리거나 마우스 입력을 막지 않는다.
+   재질(흑철 그라디언트·적동 헤어라인)은 유지하고 알파만 낮춤. backdrop-filter는 캔버스 위 매 프레임 비용이라 미사용. */
+#systemLesson{background:linear-gradient(135deg,#2814138c,#100d0e80);border-color:#80544399;box-shadow:0 8px 22px #0005;pointer-events:none;text-shadow:0 1px 3px #000d,0 0 6px #0008;}
+#systemLesson button,#systemLesson a,#systemLesson [tabindex]{pointer-events:auto;}
+#systemLesson button{background:#351011b3;border-color:#855044b3;}
 #tutorialBadgeButton{background:#1d1111ed;border-color:#875044;color:#edd9bf;}
 
 /* Keep health, magic, mobility and shield colours and all existing HUD geometry. */

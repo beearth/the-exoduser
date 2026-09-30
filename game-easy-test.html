@@ -2323,7 +2323,7 @@ canvas{display:block;position:fixed;inset:0}
 </style>
 <link rel="stylesheet" href="stat-panel-ui.css?v=20260910-fullscreen-readable-v1">
 <link rel="stylesheet" href="localization.css?v=20260909">
-<link rel="stylesheet" href="ui-foundation.css?v=20260927-frame-interior">
+<link rel="stylesheet" href="ui-foundation.css?v=20260930-lesson-translucent">
 <link rel="stylesheet" href="ui-refinement.css?v=20260930-settings-display11">
 <link rel="stylesheet" href="inventory-oss-balance.css?v=20260928-ossuary-fit5">
 <script defer src="ui-panels.js?v=20260929-settings-choices"></script>
@@ -58863,7 +58863,7 @@ function _getCutsceneImg(filename){
   if(!filename)return null;
   if(_cutsceneImgCache[filename])return _cutsceneImgCache[filename];
   const img=new Image();
-  img.src=filename.indexOf('/')>=0?'assets/cutscene/'+filename:'assets/cutscene/images/'+filename+'?v=20260930-intro-lock3';
+  img.src=filename.indexOf('/')>=0?'assets/cutscene/'+filename:'assets/cutscene/images/'+filename+'?v=20260930-intro-lock4';
   if(img.decode)img.decode().catch(()=>{}); // 첫 drawImage 디코딩 스파이크 제거 (2026-07-27)
   _cutsceneImgCache[filename]=img;
   return img;

@@ -2536,7 +2536,7 @@ body:has(#invPanel.on) #keyGuide{display:none!important}
 </style>
 <link rel="stylesheet" href="stat-panel-ui.css?v=20260913-smooth-ui">
 <link rel="stylesheet" href="localization.css?v=20260909">
-<link rel="stylesheet" href="ui-foundation.css?v=20260927-frame-interior">
+<link rel="stylesheet" href="ui-foundation.css?v=20260930-lesson-translucent">
 <link rel="stylesheet" href="ui-refinement.css?v=20260930-settings-display11">
 <link rel="stylesheet" href="growth-tree-detail.css?v=20260927-body-art3">
 <link rel="stylesheet" href="knight-portrait.css?v=20260928-equipment-cutout3">
@@ -56189,7 +56189,9 @@ function drawP(){
     }else{SpriteAnimator.update(P._sa,_dtSp,_apHasDir?_apDir:null);}
     // Ori 영혼 글로우 제거
     // 스프라이트 그리기 (죽음 시 쓰러짐 연출)
-    X.globalAlpha=1; // 무적 깜빡임과 무관하게 스프라이트는 풀 알파
+    // 뇌전걸음(전류변신): 본체 스프라이트를 크게 흐려 전기구체 변신이 드러나게 (스프라이트 경로 누락분 복원). 벡터 폴백은 .5 사용.
+    const _gwA=P._gwActive?0.28:1;
+    X.globalAlpha=_gwA; // 그 외엔 풀 알파(무적 깜빡임 무관)
     const _skillAnimLift=(_apAnim==='gSlam1'||_apAnim==='gSlam2'||_apAnim==='gSlamRecover'||_apAnim==='chain')?-18:0;
     const _silvAtk=_silvertailAttackPose();
     if(_charIdx===1&&!_apDead&&(P.s==='wWindup'||P.s==='wSwing'||P.s==='wRecover')&&typeof SilvertailAttackRemaster!=='undefined'){
@@ -56253,14 +56255,14 @@ function drawP(){
     // ── 외곽선: 4방향만 (성능 최적화) ──
     if(OPT.outline&&_atlasP_outline&&!_apDead){
       const _olSa={img:_atlasP_outline,fm:P._sa.fm,anim:P._sa.anim,f:P._sa.f,t:0,spd:8,loop:true,done:false};
-      X.globalAlpha=.8;
+      X.globalAlpha=.8*_gwA;
       X.save();X.translate(1,0);SpriteAnimator.draw(_olSa,X,0,0,_pFlip,_pDk);X.restore();
       X.save();X.translate(-1,0);SpriteAnimator.draw(_olSa,X,0,0,_pFlip,_pDk);X.restore();
       X.save();X.translate(0,1);SpriteAnimator.draw(_olSa,X,0,0,_pFlip,_pDk);X.restore();
       X.save();X.translate(0,-1);SpriteAnimator.draw(_olSa,X,0,0,_pFlip,_pDk);X.restore();
     }
     // ── 본체: 밝은 아틀라스 1회 + 원본 1회 ──
-    X.globalAlpha=_apDead?X.globalAlpha:1;
+    X.globalAlpha=_apDead?X.globalAlpha:_gwA;
     if(_atlasP_bright&&!_apDead){
       const _brSa={img:_atlasP_bright,fm:P._sa.fm,anim:P._sa.anim,f:P._sa.f,t:0,spd:8,loop:true,done:false};
       SpriteAnimator.draw(_brSa,X,0,0,_pFlip,_pDk);
@@ -60102,7 +60104,7 @@ function _getCutsceneImg(filename){
   if(!filename)return null;
   if(_cutsceneImgCache[filename])return _cutsceneImgCache[filename];
   const img=new Image();
-  img.src=filename.indexOf('/')>=0?'assets/cutscene/'+filename:'assets/cutscene/images/'+filename+'?v=20260930-intro-lock3';
+  img.src=filename.indexOf('/')>=0?'assets/cutscene/'+filename:'assets/cutscene/images/'+filename+'?v=20260930-intro-lock4';
   if(img.decode)img.decode().catch(()=>{}); // 첫 drawImage 디코딩 스파이크 제거 (2026-07-27)
   _cutsceneImgCache[filename]=img;
   return img;
