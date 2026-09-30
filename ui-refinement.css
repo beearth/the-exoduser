@@ -1303,4 +1303,7 @@
 #stageClock.on,.hud-top.on~#stageClock{opacity:.9;}
 #stageClock{padding:5px 12px 8px;border-top:1px solid rgba(179,143,93,.38);background:linear-gradient(180deg,rgba(12,13,16,.72),rgba(12,13,16,0));box-sizing:border-box;}
 #stageTimerHud{font-size:.75rem;letter-spacing:.18em;color:rgba(240,226,197,.92);}
-#hudCorner.on{opacity:.68;}
+#hudCorner{gap:3px;padding:7px 10px 8px;border-top:1px solid rgba(178,140,86,.4);border-left:2px solid rgba(184,141,81,.64);background:linear-gradient(115deg,rgba(21,19,18,.9),rgba(13,15,17,.84));box-shadow:0 5px 20px rgba(0,0,0,.48),inset 0 1px rgba(241,198,125,.06);}
+#hudCorner.on{opacity:.94;}
+#hudCorner .hud-resource{min-width:86px;padding:1px 0;color:rgba(238,222,194,.93);font-size:.7rem;line-height:1.4;letter-spacing:.05em;text-shadow:0 1px 4px #000;}
+#hudCorner .hud-resource+.hud-resource{padding-top:4px;border-top:1px solid rgba(164,127,82,.2);}
