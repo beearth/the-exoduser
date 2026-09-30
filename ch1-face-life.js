@@ -165,9 +165,10 @@
         if(!a.nextBlink)a.nextBlink=now+900+rand(a)*4600;
         if(now>=a.nextBlink&&a.blinkStart<0){a.blinkStart=now;a.nextBlink=now+(rand(a)<.14?430:2300+rand(a)*4900);}
         if(a.blinkStart>=0){
+          const hold=a.dbgHold||65; // dbgHold: QA screenshot aid only
           const t=now-a.blinkStart;
           let alpha=0;
-          if(t<110)alpha=t/110;else if(t<175)alpha=1;else if(t<300)alpha=1-(t-175)/125;else a.blinkStart=-1;
+          if(t<110)alpha=t/110;else if(t<110+hold)alpha=1;else if(t<235+hold)alpha=1-(t-110-hold)/125;else{a.blinkStart=-1;a.dbgHold=0;}
           if(a.blinkStart>=0&&alpha>0){
             c.globalAlpha=alpha;
             c.drawImage(a.closed,dxw,dyw,dw,dh);
@@ -198,5 +199,9 @@
   function debugAnchors(){
     return anchors.map(function(a){return{i:a.i,k:a.k,wx:a.wx,wy:a.wy,status:a.status,swayK:a.swayK,blinking:a.blinkStart>=0};});
   }
-  root.Ch1FaceLife=Object.freeze({draw:draw,qa:qa,debugAnchors:debugAnchors});
+  function debugBlink(i,hold){ // QA helper: schedule an immediate blink on anchor i
+    const a=anchors[i];if(!a||a.k!=='e')return false;
+    a.nextBlink=1;a.blinkStart=-1;a.dbgHold=hold||0;return true;
+  }
+  root.Ch1FaceLife=Object.freeze({draw:draw,qa:qa,debugAnchors:debugAnchors,debugBlink:debugBlink});
 })(globalThis);

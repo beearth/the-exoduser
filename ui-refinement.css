@@ -1220,7 +1220,7 @@
 #settings.panel .pbox .settings-system-group>.settings-group-heading{grid-column:1/-1;margin:0;padding:7px 4px 10px;border-bottom:1px solid rgba(178,142,93,.42);font:600 17px/1.5 'Noto Sans KR',sans-serif;color:#d9c29c;letter-spacing:.08em;}
 #settings.panel .pbox .settings-system-group>.set-section{margin:0!important;min-width:0;}
 #settings.panel .pbox #settings-page-game>.set-section>.set-label{margin-top:0!important;}
-#settings.panel .pbox #settings-page-game>.ui-section-heading{justify-content:space-between;gap:10px;}
+#settings.panel .pbox #settings-page-game>.ui-section-heading{position:sticky;top:0;z-index:4;justify-content:space-between;gap:10px;background:linear-gradient(90deg,rgba(28,23,20,.97),rgba(13,13,16,.97)),var(--info-plate) center/100% 100% no-repeat!important;box-shadow:0 5px 14px rgba(0,0,0,.55)!important;}
 #settings.panel .pbox .settings-jump-nav{display:flex;align-items:center;justify-content:flex-end;flex-wrap:wrap;gap:6px;}
 #settings.panel .pbox .settings-jump-button{appearance:none;min-height:32px!important;padding:4px 11px!important;border:1px solid rgba(172,136,87,.55)!important;border-radius:2px;background:linear-gradient(180deg,rgba(76,61,43,.55),rgba(24,23,24,.88))!important;box-shadow:inset 0 1px rgba(230,194,135,.14);color:#e1cda8!important;font:600 12px/1.3 'Noto Sans KR',sans-serif!important;white-space:nowrap;cursor:pointer;}
 #settings.panel .pbox .settings-jump-button:hover{border-color:#c39c66!important;background:linear-gradient(180deg,rgba(106,77,48,.74),rgba(39,29,25,.92))!important;}

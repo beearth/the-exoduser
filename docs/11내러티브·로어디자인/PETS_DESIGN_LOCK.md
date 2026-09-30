@@ -12,4 +12,4 @@
 | 프롬프트 | `the same black cat as image 2: violet glowing eyes, multi-strand silver chain necklace with violet diamond pendant` | `the same raven as image 2: amber eyes, multi-strand silver chain with violet diamond pendant` |
 
 - 두 펫 모두 **같은 은 사슬 + 보라 다이아 펜던트**를 공유한다(동료 표식).
-- 불일치 현황: 로딩 `img/lording/3.png`(고양이 작은 단일 펜던트 목걸이), `2.png`(까마귀 사슬 없음) → 교체 대상.
+- 로딩 `img/lording/2.png`(핵터)·`3.png`(디로이)는 2026-10-01 이 LOCK 기준으로 재생성 완료.

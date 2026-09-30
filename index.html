@@ -1133,7 +1133,7 @@ function _gpDot(on){
 </script>
 <script>
 // ═══ 로비 배경: 트랜지션 이미지 중 랜덤 1장 ═══
-(function(){const n=~~(Math.random()*19)+1;const _base='img/lording/';const img=new Image();img.onload=function(){document.body.style.backgroundImage='linear-gradient(rgba(0,0,0,.55),rgba(0,0,0,.55)),url('+img.src+')'};img.src=_base+n+'.png?v=20260930-loading-remaster4'})();
+(function(){const n=~~(Math.random()*19)+1;const _base='img/lording/';const img=new Image();img.onload=function(){document.body.style.backgroundImage='linear-gradient(rgba(0,0,0,.55),rgba(0,0,0,.55)),url('+img.src+')'};img.src=_base+n+'.png?v=20260930-loading-remaster5'})();
 // 브라우저 줌 차단
 addEventListener('wheel',e=>{if(e.ctrlKey||e.metaKey)e.preventDefault()},{passive:false});
 // ── 빌드 버전 (demo.html → 'demo', ea.html → 'ea') ──
@@ -2625,15 +2625,15 @@ const _RD_IMGS=[
   'rd12.png','rd13.png','rd14.png','rd15.png','rd16.png','rd17.png'
 ];
 function pickRandomLoadingImage(){
-  return 'img/lording/'+_RD_IMGS[~~(Math.random()*_RD_IMGS.length)]+'?v=20260930-loading-remaster4';
+  return 'img/lording/'+_RD_IMGS[~~(Math.random()*_RD_IMGS.length)]+'?v=20260930-loading-remaster5';
 }
 
 // 로비 진입 시 로딩 이미지 프리로드
 // - rd 계열 16장: rd3 제외, rd11.jpg 외 PNG (로딩 후보 preload)
 // - 1~19.png 19장 (game.html 부트 로딩 배경)
 function _preloadLoadingImgs(){
-  _RD_IMGS.forEach(f=>{const i=new Image();i.src='img/lording/'+f+'?v=20260930-loading-remaster4';});
-  for(let n=1;n<=19;n++){const i=new Image();i.src='img/lording/'+n+'.png?v=20260930-loading-remaster4';}
+  _RD_IMGS.forEach(f=>{const i=new Image();i.src='img/lording/'+f+'?v=20260930-loading-remaster5';});
+  for(let n=1;n<=19;n++){const i=new Image();i.src='img/lording/'+n+'.png?v=20260930-loading-remaster5';}
 }
 
 function showLoading(msg){

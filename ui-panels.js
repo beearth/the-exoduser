@@ -82,7 +82,12 @@
       page.setAttribute('role','tabpanel');
       page.setAttribute('aria-labelledby','settings-tab-' + key);
       const heading = el('h3', 'ui-section-heading');
-      if (key === 'game') heading.append(label(el('span'), '게임 · 시스템', 'Game · System'));
+      if (key === 'game') {
+        const title = label(el('span'), '게임 · 시스템', 'Game · System');
+        title.id = 'settings-game-heading-text';
+        heading.setAttribute('aria-labelledby', title.id);
+        heading.append(title);
+      }
       else label(heading, ko, en);
       page.append(heading); pages.set(key, page); content.append(page);
     }
@@ -118,9 +123,10 @@
     if (gameSection) {
       systemGroup.id = 'settings-system-options';
       gameSection.id = 'settings-game-options';
-      const jumpNav = el('div', 'settings-jump-nav');
+      const pageHeading = pages.get('game').querySelector('.ui-section-heading');
+      const jumpNav = el('span', 'settings-jump-nav');
       const jumpTo = (section, heading) => {
-        const top = section.getBoundingClientRect().top - content.getBoundingClientRect().top + content.scrollTop - 12;
+        const top = section.getBoundingClientRect().top - content.getBoundingClientRect().top + content.scrollTop - pageHeading.getBoundingClientRect().height - 12;
         content.scrollTop = Math.max(0, Math.round(top));
         heading.focus({preventScroll:true});
       };
@@ -128,13 +134,17 @@
        [gameSection, gameSection.querySelector('.set-label'), '게임 설정', 'Game options']].forEach(([section, heading, ko, en]) => {
         if (!heading) return;
         heading.tabIndex = -1;
+        if (section === gameSection) {
+          heading.setAttribute('role', 'heading');
+          heading.setAttribute('aria-level', '4');
+        }
         const button = label(el('button', 'settings-jump-button'), ko, en);
         button.type = 'button';
         button.setAttribute('aria-controls', section.id);
         button.addEventListener('click', () => jumpTo(section, heading));
         jumpNav.append(button);
       });
-      pages.get('game').querySelector('.ui-section-heading').append(jumpNav);
+      pageHeading.append(jumpNav);
     }
     box.insertBefore(nav, old); box.insertBefore(content, old); old.remove();
     const footer = document.getElementById('setClose')?.parentElement;
