@@ -10,7 +10,7 @@
 <script src="system-lesson.js?v=20260912-skip-density1"></script>
 <link rel="stylesheet" href="parry-lesson.css?v=20260913-mission-details1">
 <script src="resource-practice.js?v=20260916-recovery2"></script>
-<script src="parry-lesson.js?v=20260913-area-practice8"></script>
+<script src="parry-lesson.js?v=20261001-kislash-2sec"></script>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>HELL: EXODUSER</title>
@@ -2324,7 +2324,7 @@ canvas{display:block;position:fixed;inset:0}
 <link rel="stylesheet" href="stat-panel-ui.css?v=20260910-fullscreen-readable-v1">
 <link rel="stylesheet" href="localization.css?v=20260909">
 <link rel="stylesheet" href="ui-foundation.css?v=20260930-lesson-translucent">
-<link rel="stylesheet" href="ui-refinement.css?v=20261001-settings-nav16">
+<link rel="stylesheet" href="ui-refinement.css?v=20261001-settings-nav18">
 <link rel="stylesheet" href="inventory-oss-balance.css?v=20260928-ossuary-fit5">
 <script defer src="ui-panels.js?v=20261001-settings-nav17"></script>
 <script src="stat-panel-ui.js?v=20260909-constellation-v3"></script>
@@ -3353,6 +3353,12 @@ async function dbLoad(){
 }
 
 // ═══ Restore state from saved data ═══
+function _restoreExpProgress(pd){
+  const maxExp=pd.maxExp||15;
+  if((pd.lv||1)<1000||(Number.isFinite(maxExp)&&maxExp>0))return{exp:pd.exp||0,maxExp};
+  // 구버전 초월 필요 경험치의 32비트 오버플로 값만 복구한다.
+  return{exp:Math.max(0,Number(pd.exp)||0),maxExp:_calcMaxExp(pd.lv)};
+}
 function dbRestore(d){
   if(!d)return false;
   // 생성 직후에는 player 없이 charIdx만 저장된다. 이전 캐릭터 캐시보다 슬롯이 우선이다.
@@ -3361,7 +3367,7 @@ function dbRestore(d){
   if(!d.player)return false;
   // Player
   const pd=d.player;
-  P.lv=pd.lv||1; P.exp=pd.exp||0; P.maxExp=pd.maxExp||15;
+  P.lv=pd.lv||1; const _xpRestore=_restoreExpProgress(pd); P.exp=_xpRestore.exp; P.maxExp=_xpRestore.maxExp;
   P._transLvDate=pd.transLvDate||null; P._transLvCount=pd.transLvCount||0; P._apBossCleared=pd.apBossCleared||[]; P._goddessGift=pd.goddessGift||[];
   // SP/AP: 저장된 값 그대로 복원 (재계산 폐지 — 보스+10SP 등 보너스 누락, 합체 비용 오산 등 버그 다수)
   P.sp=pd.sp||0;
@@ -12096,7 +12102,7 @@ addEventListener('keydown',e=>{
   if(e.code==='F4'){e.preventDefault();const _nf=!OPT.fog;OPT.fog=_nf;OPT.bossFog=_nf;saveSettings();showPH(_nf?_L('안개 ON','Fog ON'):_L('안개 OFF','Fog OFF'),_nf?'#8899cc':'#888888');return}
   if(window._parryLesson?.active&&!window._parryLesson.allowKey(e.code)){e.preventDefault();return;}
   // Focused panel controls own activation and focus traversal keys.
-  if(['Space','Enter','NumpadEnter','Tab'].includes(e.code)&&e.target instanceof Element&&e.target.closest('#invPanel.on button,#crBagPop button,#settings.on button'))return;
+  if(['Space','Enter','NumpadEnter','Tab'].includes(e.code)&&e.target instanceof Element&&e.target.closest('#invPanel.on button,#crBagPop button,#settings.on button,#settings.on input,#settings.on select'))return;
   K[e.code]=true;KH[e.code]=true;
   // E(shield) 탭 버퍼: 초고속 탭에서 keyup이 K를 지우기 전에 press 사실을 프레임 스탬프로 보존 (게임패드 synth 키다운도 경유)
   if(!e.repeat&&G&&G.on&&!G.paused&&(e.code===BINDS.shield||e.code===BINDS2.shield))_sdTapBuf=G.frame;
@@ -16769,6 +16775,7 @@ function _dsDrawPlayerGhost(){
   // GPU 프록시에서 스텐실/필터 불가 → 현재 아틀라스 프레임을 알파 .55로 한 번 더 그리는 엑스레이 방식.
   // SpriteAnimator.draw는 렌더 전용(프레임 전진 없음 — update와 분리)이라 재호출이 안전하다.
   if(!_dsPSnap.on||!P||P.hp<=0||!P._sa)return;
+  if(_dsPSnap.gN===_now)return;_dsPSnap.gN=_now; // [DEPTH-SLICE2] 프레임당 1회 (1차 프런트 패스와 2차 경계 전경이 공유)
   X.save();
   X.globalAlpha=_DS_GHOST_A;
   X.translate(P.x,P.y+_dsPSnap.lift);
@@ -40433,7 +40440,7 @@ function _calcMaxExp(lv){
   if(lv<1000)return ~~((15+lv*2.5+lv*lv*.05)*Math.pow(1.001,lv)); // 올드공식 × 0.1%복리 (초반 유지, 후반 도전적)
   // 초월: 500만 + (초월렙)² × 10000
   const t=lv-999;
-  return ~~(5000000+t*t*10000);
+  return Math.floor(5000000+t*t*10000);
 }
 function addExp(v,trans){
   // trans=true: 초월 고정값, /3 스킵
@@ -44263,7 +44270,7 @@ function _skillBatchUp(){
     if(_slv<1)continue; // 미습득 제외
     while(_slv<_skMaxLv&&_slv<_skLvLock){
       const _cost=_skillUpSpCost(_slv);
-      const _matGate=_malCost(sk.upMat||100); // canUp 게이트와 동일
+      const _matGate=_malCost(sk.upMat||0); // 실제 강화 차감과 동일
       const _matChg=_malCost(sk.upMat||0);    // apply 차감과 동일
       if(P.sp<_cost||G.mats<_matGate)break;
       P.skills[sk.id]++;P.sp-=_cost;G.mats-=_matChg;_slv++;_total++;
@@ -44765,7 +44772,7 @@ function _renderSkillRow(sk,grid){
       _fuseCanUp=_fLv2<_skMaxLv&&P.sp>=_fuseUpSp;
     }
     const _singleUpSp=_skillUpSpCost(slv,false);
-    const canUp=(learned&&sk.up&&slv<_skMaxLv&&slv<_skLvLock&&P.sp>=_singleUpSp&&G.mats>=_malCost(sk.upMat||100)&&!_isFuseUp)||(_fuseCanUp&&slv<_skLvLock);
+    const canUp=(learned&&sk.up&&slv<_skMaxLv&&slv<_skLvLock&&P.sp>=_singleUpSp&&G.mats>=_malCost(sk.upMat||0)&&!_isFuseUp)||(_fuseCanUp&&slv<_skLvLock);
     const d=document.createElement('div');
     d.dataset.skId=sk.id; // 라인 연결용 식별자
     // 합체 보석 그룹 — 습득된 스킬은 항상 그룹색 글로우
@@ -48629,6 +48636,7 @@ function draw(){
   _drawCh1BakedSpike(X);
   _drawCh1Hill(X);
   if(globalThis.Ch1AltarMoat)Ch1AltarMoat.draw(X,G,_now,_CH1_HILL,T,VW,VH); // 제단 둘레 막힌 띠를 독액 도랑으로 표시 (시각 전용)
+  if(globalThis.Ch1BorderForeground)Ch1BorderForeground.drawBack(X,G,_now,VW,VH); // [DEPTH-SLICE2] 분할 군락 백 패스(플레이어가 밑동 남쪽일 때 수관 복원)
   const _tMap=performance.now();
   if(_fc2d){var _dPara=_PERF_PROF._delta(_snapPara);_PERF_PROF._para_di=_dPara.di}
   if(_DCP.on){_DCP._mark('bg');_DCP._setSource(_DCP_SRC.TILE_FALLBACK)} // [DCPROF] 배경(패럴랙스+검정오버레이+반딧불이) 구간 종료
@@ -51087,6 +51095,7 @@ function draw(){
   _levelUpVfx.draw(X,P,G.stage,false,IS_MOBILE||OPT.quality==='low');
   drawP();
   if(_dsOn&&_dsFrontObjs.length)_dsDrawFrontPass(); // [DEPTH-SLICE] 플레이어 앞(남쪽 밑동) tall 오브젝트 + 캐노피 가림 페이드
+  if(globalThis.Ch1BorderForeground)Ch1BorderForeground.drawFront(X,G,_now,VW,VH); // [DEPTH-SLICE2] 경계 전경 오버행(나무 9+군락) — 엔티티 위
   _drawPhysicalBites();
   _levelUpVfx.draw(X,P,G.stage,true,IS_MOBILE||OPT.quality==='low');
   _levelUpVfx.drawLabel(X,P,G.stage);
