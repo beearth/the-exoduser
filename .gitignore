@@ -167,3 +167,4 @@ assets/vfx/boss/gen/
 # Local Three.js runtime is a shipped vendor source, not generated build output.
 !/assets/vendor/three-r160/build/
 !/assets/vendor/three-r160/build/three.module.js
+/output/warrior_story_remaster_20261001/
