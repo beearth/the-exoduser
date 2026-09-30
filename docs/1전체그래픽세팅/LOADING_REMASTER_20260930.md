@@ -14,7 +14,7 @@
 
 - 생성: MagicLight GPT Image 2.5 sunburst, 레퍼런스1=원본 640×360 블러5(구도), 레퍼런스2=네메시아 디자인 시트 / 전사 초상화 크롭. 1장 200크레딧.
 - 원본 백업: `output/loading_remaster_20260930/original/`
-- 캐시: `?v=20260930-loading-remaster3` (index.html 4곳, game.html·game-easy-test.html 1~19 경로)
+- 캐시: `?v=20260930-loading-remaster4` (index.html 4곳, game.html·game-easy-test.html 1~19 경로)
 
 ## 남은 후보 (미교체)
 

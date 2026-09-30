@@ -11,7 +11,7 @@
 | 기본 | 제목 높이 `80px`, 왼쪽 패딩 `50px`, 아래 패딩 `9px`, 글자 `24px/28px`, `align-items:flex-end`; 장식 `140×80px`, 배경 `182×182px center -45px` |
 | 폭 `600px` 이하 | 제목 높이 `64px`, 왼쪽 `30px`, 아래 `5px`, 글자 `20px/24px`; 장식 `90×64px`, 배경 `146×146px center -36px` |
 | 높이 `650px` 이하 | 제목 높이 `52px`, 왼쪽 `30px`, 아래 `0`, 글자 `18px/24px`; 장식 `90×52px`, 배경 `120×120px center -30px` |
-| 캐시·검수 | 명패 수정 당시 `game.html`, `game-easy-test.html`, `index.html`의 `ui-refinement.css` 쿼리 `20260930-settings-title-plaque`. 실제 로컬 게임 설정창에서 `1688×1262`, `390×844`, `1280×540` 명패 안 제목을 확인. CSS 캐시 때문에 쿼리 변경 전 새 스타일이 적용되지 않던 현상도 재현했다. 후속 게임 설정·HUD 현행 캐시는 `20260930-settings-display11`; 상세 규격은 [후속 디테일 계약](SETTINGS_HUD_DETAIL_20260930.md)을 따른다. 다른 탭 기능·NW.js 패키지·Steam 빌드는 당시 검수 범위 밖 |
+| 캐시·검수 | 명패 수정 당시 `game.html`, `game-easy-test.html`, `index.html`의 `ui-refinement.css` 쿼리 `20260930-settings-title-plaque`. 실제 로컬 게임 설정창에서 `1688×1262`, `390×844`, `1280×540` 명패 안 제목을 확인. CSS 캐시 때문에 쿼리 변경 전 새 스타일이 적용되지 않던 현상도 재현했다. 후속 게임 설정·HUD 현행 CSS/JS 캐시는 `20260930-settings-merged12`; 상세 규격은 [후속 디테일 계약](SETTINGS_HUD_DETAIL_20260930.md)을 따른다. 다른 탭 기능·NW.js 패키지·Steam 빌드는 당시 검수 범위 밖 |
 
 ## 레이아웃 계약
 
@@ -32,7 +32,7 @@
 | `.set-name` | 글자16px/줄높이1.6, 기본 폭·flex-basis38%. 체크박스 label 내부는 기존 유연한 폭 유지 |
 | `.set-range-val` | 글자14px/고정112px, white-space normal |
 | select / range / checkbox | select 최소40px/글자15px/padding6px 10px. range min-width0. checkbox24×24px/flex-basis24px. select가 있는 label은 정방향 |
-| 게임 탭 | 기존 게임 섹션을 전체 열에 배치, 내부2열/gap8px 32px |
+| 게임 탭 | 시스템 구역을 먼저 배치하고 기존 게임 섹션을 전체 열에 배치, 내부2열/gap8px 32px. 현행 통합 규격은 `SETTINGS_HUD_DETAIL_20260930.md` 참조 |
 | 화면 탭 | ui-panels.js에서 optShake/optParts/optFps/optResScale/optIrisSz/optBrightness/optIrisGlow 7행을 기존 ID·리스너 그대로 화면 효과 그룹으로 이동. KO 화면 효과 / EN Screen effects |
 | 사운드 탭 | 두 볼륨행2열. BGM 선택행 전체 열/최대1100px |
 | 조작 탭 | minmax(0,2fr) / minmax(300px,1fr). 커서 섹션 sticky top0. cursorGrid flex-wrap/gap10px/overflow visible |
@@ -58,7 +58,7 @@
 | 초점 | renderSettings 재구성 전 식별자를 보존, 같은 버튼 focus preventScroll. 보조 삭제 후 해당 alt로 복원 |
 | 대기 | 시작 시 저장/매핑 변경 없음. repeat keydown 무시. 새 키는 기존 등록/충돌 정책으로 처리하고 Escape 취소 |
 | 버튼 입력 | 설정 내 버튼의 Space/Enter/NumpadEnter/Tab을 게임 단축키로 전달하지 않음. 키 캡처 분기가 먼저이므로 대기 중 새 Space/Enter/Tab 등록은 가능 |
-| 캐시 | 당시 `game.html`·`game-easy-test.html`의 ui-refinement.css는 `20260930-settings-title-plaque`, ui-panels.js는 `20260929-settings-choices`. 현재 게임 두 HTML의 CSS는 `20260930-settings-display11`이고 `index.html`은 명패 캐시를 유지한다. |
+| 캐시 | 당시 `game.html`·`game-easy-test.html`의 ui-refinement.css는 `20260930-settings-title-plaque`, ui-panels.js는 `20260929-settings-choices`. 현재 게임 두 HTML의 CSS/JS는 `20260930-settings-merged12`이고 `index.html`은 명패 캐시를 유지한다. |
 
 ## 검증 및 상태
 
@@ -78,7 +78,7 @@
 
 | 대상 / id | 현행 계약 |
 |---|---|
-| 시스템·그래픽 버튼 | `#settings-page-system button`, `#gfxPresetRow button`: 최소44px, padding10px 14px, 글자15px/줄높이1.5, 긴 이름 줄바꿈. 폭600px 이하 글자14px/padding10px 8px |
+| 시스템·그래픽 버튼 | `.settings-system-group button`, `#gfxPresetRow button`: 최소44px, padding10px 14px, 글자15px/줄높이1.5, 긴 이름 줄바꿈. 폭600px 이하 글자14px/padding10px 8px |
 | 프리셋 제목·메시지 | `describeSettingsControls(root)`가 `settingsPresetLabel`에 set-label 추가. 제목#dcc9a6/왼쪽 정렬/아래1px #8f7c553b. saveMsg 최소24px/margin-top10px/14px/1.5, role=status·aria-live=polite·aria-atomic=true |
 | 그래픽 프리셋 | gfxPresetRow flex-wrap/gap8px, 버튼 flex1 1 100px/min-width0. 기존5단계 값·저장 정책 유지 |
 | 캐릭터 카드 | charSelectGrid 왼쪽 정렬/행 높이 동등/gap14px. 카드 폭220px/최대100%/최소높이200px/padding16px, 내용에 따라 높이 증가. 세로 flex. 기존 미리보기88×88px/margin-bottom12px, 이름17px/1.5/아래8px, 설명14px/1.6/#c0b8a9, 선택표시14px/상단padding10px·아래 정렬. 폭600px 이하 카드100%/gap10px |

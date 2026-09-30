@@ -73,7 +73,7 @@
     const box = root?.querySelector('.pbox');
     const old = root?.querySelector('.frame-inner-panel-split');
     if (!old || !box) return;
-    const entries = [['game','게임','Game'],['display','화면','Display'],['audio','사운드','Audio'],['controls','조작','Controls'],['system','시스템','System']];
+    const entries = [['game','게임','Game'],['display','화면','Display'],['audio','사운드','Audio'],['controls','조작','Controls']];
     const pages = new Map();
     const content = el('div', 'settings-pages frame-inner-panel');
     for (const [key, ko, en] of entries) {
@@ -89,6 +89,9 @@
       pages.forEach((page, name) => { page.hidden = name !== key; });
       content.scrollTop = 0;
     }, 'settings');
+    const systemGroup = el('div', 'settings-system-group');
+    systemGroup.append(label(el('h4', 'settings-group-heading'), '시스템', 'System'));
+    pages.get('game').append(systemGroup);
     const displayTuning = el('div', 'set-section');
     displayTuning.append(label(el('div', 'set-label'), '화면 효과', 'Screen effects'));
     pages.get('display').append(displayTuning);
@@ -97,15 +100,15 @@
       const row = node?.closest('.set-range-row');
       if (row) target.append(row);
     };
-    moveRow('optLang','system');
+    moveRow('optLang','game',systemGroup);
     ['optShake','optParts','optFps','optResScale','optIrisSz','optBrightness','optIrisGlow'].forEach(id => moveRow(id,'display',displayTuning));
     ['optSfx','optBgm','optBgmTrack'].forEach(id => moveRow(id,'audio'));
     // Classify whole existing sections by a stable control ID, not translated text.
-    const routes = [['keyBindList','controls'],['optScreenSection','display'],['charSelectGrid','system'],['cursorGrid','controls'],['gfxPresetRow','display'],['diagGpu','display'],['saveP1','system'],['toLobbyBtn2','system'],['resetBtn','system'],['quitBtn','system']];
+    const routes = [['keyBindList','controls'],['optScreenSection','display'],['charSelectGrid','game'],['cursorGrid','controls'],['gfxPresetRow','display'],['diagGpu','display'],['saveP1','game'],['toLobbyBtn2','game'],['resetBtn','game'],['quitBtn','game']];
     routes.forEach(([id,key]) => {
       const node = document.getElementById(id);
       const section = node?.classList.contains('set-section') ? node : node?.closest('.set-section');
-      if (section) pages.get(key).append(section);
+      if (section) (['charSelectGrid','saveP1','toLobbyBtn2','resetBtn','quitBtn'].includes(id) ? systemGroup : pages.get(key)).append(section);
     });
     // Includes future controls added to the original game section.
     old.querySelectorAll('.set-section').forEach(section => pages.get('game').append(section));

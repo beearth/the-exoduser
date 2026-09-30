@@ -60,7 +60,7 @@
 #settings.ui-composed .settings-pages{display:block!important;flex:1 1 auto!important;min-height:0;overflow:auto!important;padding:16px!important;scrollbar-color:#84704f #10110f;}
 #settings .settings-page[hidden]{display:none!important;}
 #settings .set-section{padding:0!important;margin:18px 0 0!important;border:0!important;}
-#settings #settings-page-game>.set-section>.set-label{display:none!important;}
+#settings #settings-page-game>.set-section>.set-label{display:block!important;}
 #settings .set-section:first-of-type{margin-top:0!important;}
 #settings .set-label{font:600 14px 'Noto Sans KR',sans-serif!important;text-align:left!important;padding:8px 0!important;margin:10px 0 6px!important;border-bottom:1px solid #494136!important;color:#c8b58f!important;}
 #settings :is(.set-range-row,.set-row){min-height:42px;margin:0!important;padding:8px 4px!important;gap:10px;border-bottom:1px solid #b1a27d12!important;box-sizing:border-box;}
@@ -1167,7 +1167,7 @@
 
 /* Settings uses the viewport as a workspace, with readable rows in each category. */
 /* System actions and character previews share the enlarged workspace scale. */
-#settings.panel .pbox #settings-page-system button,#settings.panel .pbox #gfxPresetRow button{min-height:44px!important;padding:10px 14px!important;font-size:15px!important;line-height:1.5!important;white-space:normal;overflow-wrap:anywhere;}
+#settings.panel .pbox .settings-system-group button,#settings.panel .pbox #gfxPresetRow button{min-height:44px!important;padding:10px 14px!important;font-size:15px!important;line-height:1.5!important;white-space:normal;overflow-wrap:anywhere;}
 #settings.panel .pbox #settingsPresetLabel{color:#dcc9a6!important;text-align:left!important;border-bottom:1px solid #8f7c553b;}
 #settings.panel .pbox #saveMsg{min-height:24px;margin-top:10px!important;font-size:14px!important;line-height:1.5;}
 #settings.panel .pbox #gfxPresetRow{flex-wrap:wrap;gap:8px!important;}
@@ -1191,7 +1191,7 @@
 @media(max-width:600px){
  #settings.panel .pbox #charSelectGrid{gap:10px!important;}
  #settings.panel .pbox #charSelectGrid>.settings-choice{width:100%!important;}
- #settings.panel .pbox #settings-page-system button,#settings.panel .pbox #gfxPresetRow button{font-size:14px!important;padding:10px 8px!important;}
+ #settings.panel .pbox .settings-system-group button,#settings.panel .pbox #gfxPresetRow button{font-size:14px!important;padding:10px 8px!important;}
 }
 #settings.panel{padding:12px!important;align-items:center!important;box-sizing:border-box;background:#050507c9!important;}
 #settings.panel .pbox{box-sizing:border-box;margin:0!important;padding:20px 28px!important;max-width:none!important;max-height:none!important;min-width:0!important;min-height:0!important;overflow:hidden!important;}
@@ -1216,6 +1216,10 @@
 #settings.panel .pbox .set-range-row>label:has(select){flex-direction:row;}
 #settings.panel .pbox #settings-page-game>.set-section{grid-column:1/-1;display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px 32px;}
 #settings.panel .pbox #settings-page-game .set-label{grid-column:1/-1;}
+#settings.panel .pbox .settings-system-group{grid-column:1/-1;display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px 32px;min-width:0;align-items:start;}
+#settings.panel .pbox .settings-system-group>.settings-group-heading{grid-column:1/-1;margin:0;padding:7px 4px 10px;border-bottom:1px solid rgba(178,142,93,.42);font:600 17px/1.5 'Noto Sans KR',sans-serif;color:#d9c29c;letter-spacing:.08em;}
+#settings.panel .pbox .settings-system-group>.set-section{margin:0!important;min-width:0;}
+#settings.panel .pbox #settings-page-game>.set-section>.set-label{margin-top:0!important;}
 #settings.panel .pbox #settings-page-audio>.set-range-row:has(#optBgmTrack){grid-column:1/-1;max-width:1100px;width:100%;}
 #settings.panel .pbox #settings-page-controls{grid-template-columns:minmax(0,2fr) minmax(300px,1fr);}
 #settings.panel .pbox #settings-page-controls>.set-section:has(#cursorGrid){position:sticky;top:0;}
@@ -1245,6 +1249,7 @@
  #settings.panel .pbox .settings-page,#settings.panel .pbox #settings-page-controls{grid-template-columns:minmax(0,1fr);gap:16px;}
  #settings.panel .pbox #settings-page-controls>.set-section:has(#cursorGrid){position:static;}
  #settings.panel .pbox #settings-page-game>.set-section{grid-template-columns:minmax(0,1fr);}
+ #settings.panel .pbox .settings-system-group{grid-template-columns:minmax(0,1fr);gap:12px;}
 }
 @media(max-width:600px){
  #settings.panel{padding:6px!important;}
@@ -1274,17 +1279,16 @@
  #settings.panel .pbox .settings-footer{margin-top:8px!important;padding-top:8px!important;}
 }
 
-/* Compact the short settings pages while retaining the full-height controls/display canvas. */
+/* The merged Game page starts with system actions, then gameplay options. */
 @media (min-width:1101px) and (min-height:760px){
- #settings.panel .pbox:has(#settings-page-game:not([hidden])){width:min(1180px,calc(100vw - 32px))!important;height:min(850px,calc(100dvh - 32px))!important;}
+ #settings.panel .pbox:has(#settings-page-game:not([hidden])){width:min(1360px,calc(100vw - 32px))!important;height:min(1010px,calc(100dvh - 32px))!important;}
  #settings.panel .pbox:has(#settings-page-audio:not([hidden])){width:min(980px,calc(100vw - 32px))!important;height:min(620px,calc(100dvh - 32px))!important;}
- #settings.panel .pbox:has(#settings-page-system:not([hidden])){width:min(1360px,calc(100vw - 32px))!important;height:min(1010px,calc(100dvh - 32px))!important;}
- #settings.panel .pbox #settings-page-system>.set-range-row{grid-column:1;grid-row:2;}
- #settings.panel .pbox #settings-page-system>.set-section:has(#charSelectGrid){grid-column:2;grid-row:2/span 2;}
- #settings.panel .pbox #settings-page-system>.set-section:has(#settingsPresetLabel){grid-column:1;grid-row:3;}
- #settings.panel .pbox #settings-page-system>.set-section:has(button[onclick="toggleFullscreen()"]){grid-column:1;grid-row:4;}
- #settings.panel .pbox #settings-page-system>.set-section:has(#resetBtn){grid-column:1;grid-row:5;}
- #settings.panel .pbox #settings-page-system>.set-section:has(#quitBtn){grid-column:2;grid-row:5;}
+ #settings.panel .pbox .settings-system-group>.set-range-row{grid-column:1;grid-row:2;}
+ #settings.panel .pbox .settings-system-group>.set-section:has(#charSelectGrid){grid-column:2;grid-row:2/span 3;}
+ #settings.panel .pbox .settings-system-group>.set-section:has(#settingsPresetLabel){grid-column:1;grid-row:3;}
+ #settings.panel .pbox .settings-system-group>.set-section:has(button[onclick="toggleFullscreen()"]){grid-column:1;grid-row:4;}
+ #settings.panel .pbox .settings-system-group>.set-section:has(#resetBtn){grid-column:1;grid-row:5;}
+ #settings.panel .pbox .settings-system-group>.set-section:has(#quitBtn){grid-column:2;grid-row:5;}
 }
 #settings.panel .pbox #settings-page-game>.set-section{position:relative;background:radial-gradient(ellipse at 50% 0,rgba(144,104,60,.075),transparent 64%),linear-gradient(135deg,rgba(30,26,24,.54),rgba(11,12,13,.32))!important;box-shadow:inset 0 1px rgba(226,188,130,.07),inset 0 -18px 26px rgba(0,0,0,.2);}
 #settings.panel .pbox #settings-page-game>.set-section::before{content:'';position:absolute;left:50%;top:18px;bottom:18px;width:1px;background:linear-gradient(transparent,rgba(162,132,92,.34) 14%,rgba(162,132,92,.22) 86%,transparent);pointer-events:none;}
