@@ -1,5 +1,15 @@
 # Mac 개발 환경 재현 인수서 — 2026-10-01
 
+## Mac 설치 실행 결과 — 2026-10-01 (권한 변경 후)
+
+- 실제 설치 대상: `/Users/fordeargamers/Projects/exoduser-migration-20261001`, 브랜치 `codex/mac-environment-20261001`. 인수 SHA `955a2758fa2f1865a9c1c5d3900418d543f3a3d3`와 대조 완료. 아래 03:10의 읽기 전용·미설치 기록은 이력이다.
+- Node 24.15.0 arm64 / npm 11.12.1, PowerShell 7.6.6 arm64 설치 및 셸 PATH 적용. 기존 Node 22 보존. Antigravity 2.18.1을 `/Applications`에 설치하고 서명 확인. VS Code `code` 명령과 필수 확장 설치. `npm ci` 성공(173 packages, lockfile 유지).
+- `server.cjs`는 PORT(1~65535), HOST, EXODUSER_SAVE_DIR 환경변수를 지원한다. 미지정 기본값은 기존 3333·기본 listen 주소·프로젝트 saves를 유지한다. Mac 검수는 `PORT=3340 HOST=127.0.0.1 EXODUSER_SAVE_DIR="$PWD/tmp/mac-migration-runtime/saves" node server.cjs`로 실행한다. 기존 3333 서버·세이브와 분리한다.
+- `npm run serve:map`의 Windows 절대 Node 경로를 `node`로 변경. 기존 docs hook의 `powershell` 명령은 Mac에 설치한 pwsh 호환 실행기로 지원한다. `.githooks/pre-commit`에 Unix 실행 권한을 부여하고 core.hooksPath를 설정했다. `npm run docs:check` 통과, map 테스트 서버 3341의 / 및 /map/0 HTTP 200을 확인 후 해당 검수 서버만 종료했다.
+- 정적 HTML 응답 해시, 격리 저장/불러오기, 서버 재시작 후 저장 유지 통합 검사 통과. Chrome에서 한국어 시작 영상·로비·캐릭터 생성(맥검수)·전사 이야기·1-1 게임 렌더링·설정·인벤토리·로비 복귀 후 캐릭터 보존을 확인했다. 기본 유골함 획득·자동 장착 표시도 확인. 전체 전투 밸런스·처치 후 드롭 획득·장시간 플레이는 미검증이다. 콘솔에는 확장프로그램 출처 및 상세 미확인 Object 오류가 있어 무오류 판정은 하지 않는다.
+- macOS 파일명 정규화 충돌 중 내용이 다른 21쌍은 모두 과거 `docs_backup_before_normalize_20260726` 안에 있다. 42개 blob 원본을 `tmp/mac-unicode-variants/`와 manifest로 보존했다. 런타임 자산 충돌은 동일 blob이며, 새 clone의 해당 문서 변경 표시를 사용자 변경으로 오인해 복구하지 않는다.
+- Claude Code는 설치됐으나 사용자 로그인 미완료. 비Git 검수 ZIP은 미수신. 별도 SOUND 브랜치는 미병합. Windows 전용 NW.js 빌드는 Mac 검증 대상으로 실행하지 않았다. 팀 작업·자동화 재개는 하지 않는다.
+
 ## 최신 상태 — 2026-10-01 03:10 KST
 
 - 사용자가 Mac 실제 환경 구성을 승인했고 정확히 식별한 Mac 채팅에 설치 지시를 전달했다. 아래 초기 표의 승인 대기·Mac 미확인 표기는 당시 이력이며 현재 상태는 이 절이 우선한다.

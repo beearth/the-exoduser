@@ -1,3 +1,7 @@
+## 2026-10-01 — Mac 개발 환경 설치 및 실행 격리
+
+인수 SHA `955a2758fa2f1865a9c1c5d3900418d543f3a3d3` 별도 Mac 체크아웃에 Node 24.15.0 arm64·PowerShell 7.6.6·Antigravity 및 필수 편집기 도구 설치. server.cjs에 검증된 PORT·HOST·EXODUSER_SAVE_DIR 선택 지원(기존 기본값 유지), serve:map을 PATH의 node로 이식. 격리 저장/불러오기·재시작 영속성 및 HTML 응답 검사 통과. 기존 저장소·3333 서버 보존. 상세: [Mac 인수서](13출시·마케팅/MAC_ENVIRONMENT_HANDOFF_20261001.md).
+
 ## 2026-10-01 — CH1-1 경계 가독성 MAP-020 (접지 그림자 + 뿌리 둑)
 
 신규 `ch1-boundary-edge.js`(game.html 태그 `?v=20261001-3`, `Ch1BorderForeground.drawBack` 직후 draw), `build-nwjs.mjs` 목록 추가, 테스트 `test/ch1BoundaryEdge.test.js` 4/4. 끄기 `?edgeShade=0`, 그림자만 `?edgeShade=a`. 문서 `docs/4.1맵디자인+설정/CH1_BOUNDARY_EDGE_MAP020_20261001.md`.

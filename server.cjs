@@ -34,9 +34,15 @@ if (fs.existsSync(_envPath)) {
   });
 }
 
-const PORT = 3333;
+const PORT = Number(process.env.PORT || 3333);
+if (!Number.isInteger(PORT) || PORT < 1 || PORT > 65535) {
+  throw new Error('PORT must be an integer between 1 and 65535');
+}
+const HOST = process.env.HOST || undefined;
 const ROOT = __dirname;
-const SAVE_DIR = path.join(ROOT, 'saves');
+const SAVE_DIR = process.env.EXODUSER_SAVE_DIR
+  ? path.resolve(process.env.EXODUSER_SAVE_DIR)
+  : path.join(ROOT, 'saves');
 const FAVICON_ICO_PATH = path.join(ROOT, 'favicon.ico');
 const FAVICON_PNG_PATH = path.join(ROOT, 'img', 'icon-256.png');
 if (!fs.existsSync(SAVE_DIR)) fs.mkdirSync(SAVE_DIR, { recursive: true });
@@ -327,6 +333,6 @@ const server = http.createServer(async (req, res) => {
   }
 });
 
-server.listen(PORT, () => {
+server.listen(PORT, HOST, () => {
   console.log(`Server on ${PORT} (no-cache)`);
 });
