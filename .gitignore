@@ -6,6 +6,8 @@ test_*
 check_*
 *.pyc
 dist/
+# Unique local integration staging copies produced by build-nwjs.mjs.
+/dist-integration-*/
 out/
 .env
 server.err.log
