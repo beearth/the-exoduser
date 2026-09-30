@@ -2324,7 +2324,7 @@ canvas{display:block;position:fixed;inset:0}
 <link rel="stylesheet" href="stat-panel-ui.css?v=20260910-fullscreen-readable-v1">
 <link rel="stylesheet" href="localization.css?v=20260909">
 <link rel="stylesheet" href="ui-foundation.css?v=20260930-lesson-translucent">
-<link rel="stylesheet" href="ui-refinement.css?v=20261001-settings-nav16">
+<link rel="stylesheet" href="ui-refinement.css?v=20261001-settings-nav18">
 <link rel="stylesheet" href="inventory-oss-balance.css?v=20260928-ossuary-fit5">
 <script defer src="ui-panels.js?v=20261001-settings-nav17"></script>
 <script src="stat-panel-ui.js?v=20260909-constellation-v3"></script>
@@ -12096,7 +12096,7 @@ addEventListener('keydown',e=>{
   if(e.code==='F4'){e.preventDefault();const _nf=!OPT.fog;OPT.fog=_nf;OPT.bossFog=_nf;saveSettings();showPH(_nf?_L('안개 ON','Fog ON'):_L('안개 OFF','Fog OFF'),_nf?'#8899cc':'#888888');return}
   if(window._parryLesson?.active&&!window._parryLesson.allowKey(e.code)){e.preventDefault();return;}
   // Focused panel controls own activation and focus traversal keys.
-  if(['Space','Enter','NumpadEnter','Tab'].includes(e.code)&&e.target instanceof Element&&e.target.closest('#invPanel.on button,#crBagPop button,#settings.on button'))return;
+  if(['Space','Enter','NumpadEnter','Tab'].includes(e.code)&&e.target instanceof Element&&e.target.closest('#invPanel.on button,#crBagPop button,#settings.on button,#settings.on input,#settings.on select'))return;
   K[e.code]=true;KH[e.code]=true;
   // E(shield) 탭 버퍼: 초고속 탭에서 keyup이 K를 지우기 전에 press 사실을 프레임 스탬프로 보존 (게임패드 synth 키다운도 경유)
   if(!e.repeat&&G&&G.on&&!G.paused&&(e.code===BINDS.shield||e.code===BINDS2.shield))_sdTapBuf=G.frame;

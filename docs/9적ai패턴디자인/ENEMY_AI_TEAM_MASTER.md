@@ -227,7 +227,11 @@ CH1에도 등장 가능. 대표: 90 방랑기사(3연 콤보 st2 18/12/10, d<60 
 
 ④ **레어몹 수치 stale(P2) — 완료(2026-10-01):** `RARE_ETYPE`(`game.html:29441`)가 SSOT. `9_적AI §8`의 etype 95~99가 stale(99 HP160→1600·poise60→999, 95 spd.45→.15 등)이라 코드값으로 정정. 90~94는 이미 일치. `8.2레어몹디자인`은 수치 미포함·이름 일치라 변경 없음.
 
-⑤ **보스 HP/ATK 배율 레이어(참고):** `BOSS_BATTLE_SETTINGS`(HP_MULT=8/ATK_MULT=3, base60/8) vs `공격시스템`(보스=×24, ATK `(75+lv×2.9)×0.6`). 코드는 `mkEn`에서 HP ×24 확인. 문서 레이어 표기 정리 필요.
+⑤ **보스 HP/ATK 배율 레이어 감사 — 완료(2026-10-01, 문서만 정정):** 결정적 하니스 `test/bossHpAtkLayerAudit.test.js`로 소스 추적.
+- **출처/적용순서 (live, `game.html` `mkEn`):** HP = `floor( floor(기본커브(29632)·_enemyHpPacing(29607)·_bossMul(29633=24)·dm·et.hpMul)·(1+si·0.02) )`(29634). ATK = `floor( ((ib?75:50)+monLv·(ib?2.9:1.95))·0.6·dm·et.atkMul )`(29638-39). si3 데모/bic 피날레만 `_druidFinaleHp`(29636).
+- **dead 상수 확정:** `MON_BASE_HP=60·MON_BASE_ATK=8·BOSS_HP_MULT=8·BOSS_ATK_MULT=3·FINALBOSS_HP_MULT=15·FINALBOSS_ATK_MULT=5`(13743-13745)는 **정의만·전체 1회 등장=미참조 dead**. 실제 보스 HP/ATK와 무관.
+- **현행값(dm=1·et=1·si=0):** 보스 HP Lv1 21,017 / Lv100 19,656,000 / Lv500 2,344,661,280. 보스 ATK Lv1 46 / Lv100 219 / Lv500 915. (일반몹 HP Lv1 875 = 공격시스템 문서 일치.)
+- **정정:** `공격시스템 §HP/§ATK`=코드 일치(SSOT). `BOSS_BATTLE_SETTINGS §3`=stale(dead 상수 8/3/60/8/15/5를 live로 표기)→실제 공식·현행값 표로 정정, 라인14 'HP×8'→'실제 ×24'. **코드·전투수치·상수 정의 불변**(dead 상수 삭제도 안 함, 문서만).
 
 ⑥ **손상 티어 표 병존(참고):** 탄막총정리에 ×1.2/1.5/2.0(2026-04-17)과 ×1.0/1.2/1.5(2026-04-21) 두 스케일 공존 → 현행 코드값 기준 단일화 필요.
 
