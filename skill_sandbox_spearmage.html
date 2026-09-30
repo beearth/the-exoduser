@@ -1,0 +1,268 @@
+<!doctype html><html lang="ko"><head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Skill Sandbox — 창법사</title>
+<style>
+:root{--bone:#dfd6c2;--gold:rgba(164,147,115,.5);--void:#9b4dff;--ac:#9b4dff;--ac2:#cfa6ff}
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{height:100%;background:#08060c;color:var(--bone);font-family:'Nanum Myeongjo','Noto Serif KR',serif;overflow:hidden}
+#wrap{position:fixed;inset:0}
+canvas{display:block;width:100%;height:100%;background:radial-gradient(ellipse at 50% 40%,#150e1f,#08060c 70%)}
+#hud{position:fixed;left:16px;top:14px;font-size:13px;line-height:1.7;text-shadow:0 1px 2px #000;pointer-events:none;letter-spacing:.02em}
+#hud b{color:#d8bfff;font-weight:700}
+.bar{display:inline-block;width:150px;height:9px;border:1px solid var(--gold);background:#0a080e;vertical-align:middle;margin-left:6px;position:relative}
+.bar>i{display:block;height:100%;transition:width .08s}
+#hpb>i{background:linear-gradient(90deg,#7a1518,#c4353a)}
+#mpb>i{background:linear-gradient(90deg,#3a1a5a,#9b4dff)}
+#rune{margin-top:5px;color:#cfa6ff;letter-spacing:.06em}
+#rune .pip{display:inline-block;width:13px;height:13px;margin:0 2px;border:1px solid #6a3aa0;background:#100a18;vertical-align:middle;transform:rotate(45deg)}
+#rune .pip.on{background:radial-gradient(circle,#e6d0ff,#9b4dff);border-color:#cfa6ff;box-shadow:0 0 7px #9b4dff}
+#help{position:fixed;right:16px;top:14px;text-align:right;font-size:12px;color:#b0a0c8;line-height:1.8}
+#help kbd{display:inline-block;min-width:34px;padding:1px 6px;border:1px solid #5a4b6b;border-bottom:2px solid #362b40;border-radius:2px;background:linear-gradient(#322b3b,#181420);color:#e0d0f0;font:700 11px monospace;text-align:center}
+#title{position:fixed;left:50%;bottom:14px;transform:translateX(-50%);font-family:'Cinzel Decorative','Nanum Myeongjo',serif;letter-spacing:.28em;color:#9b6bd4;font-size:14px;text-shadow:0 2px 4px #000;pointer-events:none}
+#tip{position:fixed;left:50%;bottom:42px;transform:translateX(-50%);color:#b0a0c8;font-size:12.5px;text-shadow:0 1px 2px #000;pointer-events:none;letter-spacing:.02em;text-align:center;line-height:1.5}
+#tip b{color:#cfa6ff}
+#collapseLbl{position:fixed;left:50%;top:44%;transform:translate(-50%,-50%);font:700 24px 'Cinzel Decorative',serif;color:#e6d0ff;text-shadow:0 0 16px #9b4dff,0 2px 4px #000;pointer-events:none;opacity:0;letter-spacing:.12em}
+#intro{position:fixed;inset:0;z-index:50;background:radial-gradient(ellipse at 50% 35%,#120a1eee,#08060cf5);display:flex;align-items:center;justify-content:center;cursor:pointer}
+#intro .card{max-width:610px;padding:34px 40px;border:1px solid #5a3a7a;border-top:2px solid #9b4dff;background:linear-gradient(#150e22,#0a0712);box-shadow:0 20px 60px #000c}
+#intro h1{font-family:'Cinzel Decorative','Nanum Myeongjo',serif;color:#e0d0f5;font-size:22px;letter-spacing:.1em;margin-bottom:2px}
+#intro .sub{color:#9b6bd4;font-size:13px;letter-spacing:.14em;margin-bottom:16px}
+#intro p{color:#c0b0d4;font-size:13.5px;line-height:1.75;margin-bottom:14px}
+#intro .sk{display:flex;gap:12px;align-items:flex-start;margin:9px 0}
+#intro .sk .key{flex:0 0 92px;color:#e0d0f0;font:700 12px monospace;border:1px solid #5a4b6b;border-bottom:2px solid #362b40;border-radius:2px;padding:4px 6px;text-align:center;background:linear-gradient(#322b3b,#181420)}
+#intro .sk b{color:#cfa6ff;font-size:13.5px}
+#intro .sk span{color:#8a7aa4;font-size:12.5px}
+#intro .go{margin-top:20px;text-align:center;color:#e6d0ff;font-size:13px;letter-spacing:.1em;animation:pulse 1.4s infinite}
+@keyframes pulse{50%{opacity:.5}}
+</style></head>
+<body>
+<div id="wrap"><canvas id="cv"></canvas></div>
+<div id="hud">
+ <div>HP <span class="bar" id="hpb"><i></i></span> <b id="hpv"></b></div>
+ <div>MP <span class="bar" id="mpb"><i></i></span> <b id="mpv"></b></div>
+ <div id="rune">룬 <span id="runePips"></span> <b id="runev">0</b>/3 <span style="color:#8a7aa4">← 3개 = 현실붕괴</span></div>
+ <div style="margin-top:6px">처치 <b id="kills">0</b> · DPS <b id="dps">0</b></div>
+</div>
+<div id="help">
+ <div><kbd>WASD</kbd> 이동</div>
+ <div><kbd>좌클릭</kbd> 공허 투창 — 관통 후 부메랑 회수(왕복 2히트)</div>
+ <div><kbd>우클릭</kbd> 룬 각인 — 커서에 봉인 룬 설치(속박·장판). 3개째 = 연쇄폭발</div>
+ <div><kbd>Space</kbd> 균열 이동 — 가장 가까운 룬으로 순간이동+무적</div>
+ <div style="margin-top:4px;color:#7a6a90"><kbd>E</kbd> 적 소환 · <kbd>R</kbd> 리셋</div>
+</div>
+<div id="collapseLbl"></div>
+<div id="tip">시험장 · 정해진 목표 없음 — 훈련 적으로 <b>창법사 손맛</b>을 봐주세요.<br>추천 흐름: <b>우클릭</b>으로 룬 3개 깔아 <b>연쇄폭발</b> → <b>좌클릭</b> 투창으로 견제 → <b>Space</b>로 룬 위치 순간이동해 재배치·이탈</div>
+<div id="title">SPEARMAGE · 공허 창술사</div>
+<div id="intro"><div class="card">
+ <h1>SPEARMAGE</h1><div class="sub">공허 창술사 · 스킬 시험장 (프로토타입)</div>
+ <p>신규 캐릭터 <b style="color:#cfa6ff">창법사</b>의 3스킬을 게임에 넣기 전에 <b style="color:#cfa6ff">손맛·데미지·연출</b>을 미리 시험하는 곳입니다. 정해진 목표는 없어요 — 룬을 깔고 공허를 터뜨려 보세요.</p>
+ <div class="sk"><span class="key">좌클릭</span><div><b>공허 투창</b> <span>— 공허창을 던져 일직선을 관통시킨 뒤 다시 회수한다(나갈 때·돌아올 때 2번 타격).</span></div></div>
+ <div class="sk"><span class="key">우클릭</span><div><b>룬 각인</b> <span>— 커서 지면에 봉인 룬 설치(주변 적 속박·장판 피해). 최대 3개, <b>3개째를 놓는 순간 현실이 무너져 연쇄폭발</b>.</span></div></div>
+ <div class="sk"><span class="key">Space</span><div><b>균열 이동</b> <span>— 공간을 찢고 가장 가까운 룬 위치로 순간이동 + 짧은 무적. 룬이 없으면 짧은 대시.</span></div></div>
+ <p style="margin:14px 0 0;color:#8a7aa4;font-size:12.5px">이동 <b style="color:#e0d0f0">WASD</b> · 적 소환 <b style="color:#e0d0f0">E</b> · 리셋 <b style="color:#e0d0f0">R</b></p>
+ <div class="go">▼ 아무 키나 누르거나 클릭해서 시작 ▼</div>
+</div></div>
+<script>
+'use strict';
+const cv=document.getElementById('cv'),X=cv.getContext('2d');
+let W,H;function resize(){W=cv.width=innerWidth*devicePixelRatio;H=cv.height=innerHeight*devicePixelRatio;X.setTransform(devicePixelRatio,0,0,devicePixelRatio,0,0);}
+addEventListener('resize',resize);resize();
+const VW=()=>innerWidth,VH=()=>innerHeight;
+
+const P={x:0,y:0,r:15,facing:0,hp:100,hpMax:100,mp:100,mpMax:100,int:1,
+  iframe:0, atkCd:0,runeCd:0,blinkCd:0, _hitFlash:0};
+let mouse={x:0,y:0,down:false,rdown:false};
+const keys={};
+const ens=[],parts=[],txts=[],spears=[],runes=[],fx=[];
+let kills=0,_dmgWindow=[],_now=0,_shake=0;
+const RUNE_MAX=3,RUNE_R=95,RUNE_DOT=8;
+
+addEventListener('mousemove',e=>{mouse.x=e.clientX;mouse.y=e.clientY;});
+addEventListener('mousedown',e=>{if(e.button===0){mouse.down=true;voidSpear();}if(e.button===2){mouse.rdown=true;placeRune();}});
+addEventListener('mouseup',e=>{if(e.button===0)mouse.down=false;if(e.button===2)mouse.rdown=false;});
+addEventListener('contextmenu',e=>e.preventDefault());
+addEventListener('keydown',e=>{keys[e.code]=true;
+  if(e.code==='Space'){e.preventDefault();riftStep();}
+  if(e.code==='KeyR')reset();
+  if(e.code==='KeyE')spawnRing(6);
+});
+addEventListener('keyup',e=>{keys[e.code]=false;});
+let introUp=true;const introEl=document.getElementById('intro');
+function dismissIntro(){if(!introUp)return;introUp=false;introEl.style.display='none';mouse.down=false;mouse.rdown=false;}
+introEl.addEventListener('mousedown',e=>{e.stopPropagation();dismissIntro();});
+addEventListener('keydown',e=>{if(introUp){dismissIntro();e.preventDefault();e.stopPropagation();}},true);
+
+const dst=(a,b,c,d)=>Math.hypot(a-c,b-d);
+function part(x,y,vx,vy,col,r,life){parts.push({x,y,vx,vy,col,r,life,max:life});}
+function txt(x,y,s,col,sz){txts.push({x,y,s,col,sz:sz||16,life:40});}
+function toWorld(mx,my){return{x:mx-VW()/2+P.x,y:my-VH()/2+P.y};}
+function pushDmg(d){_dmgWindow.push({t:_now,d});}
+
+// ── 스킬 1: 공허 투창 (LMB, magic/projectile, INT) — 관통+부메랑 회수 ──
+function voidSpear(){
+  if(introUp||P.atkCd>0||P.mp<6)return;
+  P.atkCd=8; P.mp-=6;
+  const m=toWorld(mouse.x,mouse.y);const a=Math.atan2(m.y-P.y,m.x-P.x);P.facing=a;
+  const dmg=Math.round(30*P.int);
+  const range=Math.min(420,Math.max(160,dst(P.x,P.y,m.x,m.y)));
+  spears.push({x:P.x+Math.cos(a)*20,y:P.y+Math.sin(a)*20,a,sp:15,dmg,r:6,phase:'out',range,traveled:0,hitOut:new Set(),hitBack:new Set(),col:'#b06aff'});
+  for(let i=0;i<5;i++)part(P.x+Math.cos(a)*20,P.y+Math.sin(a)*20,Math.cos(a)*3,Math.sin(a)*3,Math.random()>.4?'#9b4dff':'#cfa6ff',2+Math.random()*2,10);
+}
+// ── 스킬 2: 룬 각인 (RMB, summon/설치) — 3개째 연쇄폭발 ──
+function placeRune(){
+  if(introUp||P.runeCd>0||P.mp<10)return;
+  P.runeCd=18; P.mp-=10;
+  const m=toWorld(mouse.x,mouse.y);
+  let dx=m.x-P.x,dy=m.y-P.y,d=Math.hypot(dx,dy)||1; const cap=340; if(d>cap){dx=dx/d*cap;dy=dy/d*cap;}
+  const rx=P.x+dx, ry=P.y+dy;
+  runes.push({x:rx,y:ry,t:0,dotCd:0});
+  for(let i=0;i<10;i++){const a=Math.random()*6.28;part(rx+Math.cos(a)*10,ry+Math.sin(a)*10,-Math.cos(a)*1.5,-Math.sin(a)*1.5,'#9b4dff',2,16);}
+  txt(rx,ry-18,'룬 '+runes.length+'/3','#cfa6ff',15);
+  if(runes.length>=RUNE_MAX)collapse();
+}
+function collapse(){
+  // 현실붕괴: 룬들을 잇는 연쇄폭발 (룬 위치 + 중심 AoE)
+  const rs=runes.slice(); runes.length=0;
+  let cx=0,cy=0; for(const r of rs){cx+=r.x;cy+=r.y;} cx/=rs.length;cy/=rs.length;
+  const dmg=Math.round(150*P.int);
+  // 각 룬 위치 + 중심에서 광역 피해
+  const points=rs.concat([{x:cx,y:cy}]);
+  const hit=new Set();
+  for(const pt of points){for(const e of ens){if(e.dead||hit.has(e))continue;if(dst(pt.x,pt.y,e.x,e.y)<130){e.hp-=dmg;pushDmg(dmg);txt(e.x,e.y-16,dmg,'#e6d0ff',19);hitEnemy(e);hit.add(e);}}}
+  // VFX: 룬 간 연결선 + 폭발
+  fx.push({type:'collapse',pts:rs,cx,cy,t:0,max:28});
+  for(let i=0;i<40;i++){const a=Math.random()*6.28,sp=4+Math.random()*10;part(cx,cy,Math.cos(a)*sp,Math.sin(a)*sp,Math.random()>.4?'#9b4dff':'#e6d0ff',3+Math.random()*4,22+Math.random()*12);}
+  const cl=document.getElementById('collapseLbl');cl.style.opacity=1;cl.textContent='현실 붕괴';setTimeout(()=>cl.style.opacity=0,600);
+  _shake=14;
+}
+// ── 스킬 3: 균열 이동 (SPACE, blink to rune) ──
+function riftStep(){
+  if(introUp||P.blinkCd>0||P.mp<10)return;
+  P.mp-=10; P.blinkCd=32; P.iframe=16;
+  let tx,ty;
+  if(runes.length>0){ // 가장 가까운 룬
+    let best=runes[0],bd=1e9; for(const r of runes){const d=dst(P.x,P.y,r.x,r.y);if(d<bd){bd=d;best=r;}}
+    tx=best.x;ty=best.y;
+  }else{ // 룬 없으면 커서로 짧은 대시
+    const m=toWorld(mouse.x,mouse.y);let dx=m.x-P.x,dy=m.y-P.y,d=Math.hypot(dx,dy)||1;const md=200;if(d>md){dx=dx/d*md;dy=dy/d*md;}tx=P.x+dx;ty=P.y+dy;
+  }
+  for(let i=0;i<12;i++)part(P.x,P.y,(Math.random()-.5)*4,(Math.random()-.5)*4,'#9b4dff',2,16);
+  fx.push({type:'rift',x:P.x,y:P.y,tx,ty,t:0,max:14});
+  P.x=tx;P.y=ty;
+  for(let i=0;i<12;i++)part(P.x,P.y,(Math.random()-.5)*4,(Math.random()-.5)*4,'#cfa6ff',2,16);
+}
+
+function spawnEnemy(x,y){ens.push({x,y,r:14,hp:110,max:110,dead:false,flash:0,rooted:0});}
+function spawnRing(n){for(let i=0;i<n;i++){const a=i/n*6.28,d=180+Math.random()*80;spawnEnemy(P.x+Math.cos(a)*d,P.y+Math.sin(a)*d);}}
+function hitEnemy(e){e.flash=6;for(let i=0;i<4;i++)part(e.x,e.y,(Math.random()-.5)*3,(Math.random()-.5)*3,'#9b4dff',2,10);
+  if(e.hp<=0&&!e.dead){e.dead=true;kills++;for(let i=0;i<12;i++)part(e.x,e.y,(Math.random()-.5)*5,(Math.random()-.5)*5,Math.random()>.5?'#9b4dff':'#2a0a55',2+Math.random()*3,20);txt(e.x,e.y-20,'소멸','#cfa6ff',15);}}
+
+function reset(){P.x=0;P.y=0;P.hp=P.hpMax;P.mp=P.mpMax;P.iframe=0;ens.length=0;parts.length=0;txts.length=0;spears.length=0;runes.length=0;fx.length=0;kills=0;_dmgWindow.length=0;spawnRing(6);}
+
+function update(dt){
+  if(introUp)return;
+  _now+=dt;
+  let mx=(keys.KeyD?1:0)-(keys.KeyA?1:0),my=(keys.KeyS?1:0)-(keys.KeyW?1:0);
+  const sp=4.1;if(mx||my){const l=Math.hypot(mx,my);P.x+=mx/l*sp*dt;P.y+=my/l*sp*dt;}
+  if(P.iframe>0)P.iframe-=dt;
+  P.mp=Math.min(P.mpMax,P.mp+0.32*dt);
+  P.hp=Math.min(P.hpMax,P.hp+0.05*dt);
+  if(P.atkCd>0)P.atkCd-=dt; if(P.runeCd>0)P.runeCd-=dt; if(P.blinkCd>0)P.blinkCd-=dt;
+  if(P._hitFlash>0)P._hitFlash-=dt;
+  if(mouse.down)voidSpear();
+  const m=toWorld(mouse.x,mouse.y);P.facing=Math.atan2(m.y-P.y,m.x-P.x);
+  // 창 (관통+부메랑)
+  for(let i=spears.length-1;i>=0;i--){const s=spears[i];
+    if(s.phase==='out'){s.x+=Math.cos(s.a)*s.sp*dt;s.y+=Math.sin(s.a)*s.sp*dt;s.traveled+=s.sp*dt;if(s.traveled>=s.range)s.phase='back';}
+    else{const a=Math.atan2(P.y-s.y,P.x-s.x);s.x+=Math.cos(a)*s.sp*1.2*dt;s.y+=Math.sin(a)*s.sp*1.2*dt;if(dst(s.x,s.y,P.x,P.y)<24){spears.splice(i,1);continue;}}
+    if(Math.random()>.5)part(s.x,s.y,(Math.random()-.5)*1.5,(Math.random()-.5)*1.5,'#9b4dff',2,8);
+    const set=s.phase==='out'?s.hitOut:s.hitBack;
+    for(const e of ens){if(e.dead||set.has(e))continue;if(dst(s.x,s.y,e.x,e.y)<e.r+s.r){set.add(e);e.hp-=s.dmg;pushDmg(s.dmg);txt(e.x,e.y-14,s.dmg,'#cfa6ff',14);hitEnemy(e);}}
+  }
+  // 룬 장판 (DoT + 속박)
+  for(const r of runes){r.t+=dt;r.dotCd-=dt;
+    if(r.dotCd<=0){r.dotCd=RUNE_DOT;for(const e of ens){if(e.dead)continue;if(dst(r.x,r.y,e.x,e.y)<RUNE_R){const dd=Math.round(8*P.int);e.hp-=dd;pushDmg(dd);hitEnemy(e);e.rooted=10;}}}
+  }
+  // 적
+  for(const e of ens){if(e.dead)continue;if(e.rooted>0){e.rooted-=dt;}else{const a=Math.atan2(P.y-e.y,P.x-e.x);e.x+=Math.cos(a)*0.8*dt;e.y+=Math.sin(a)*0.8*dt;}if(e.flash>0)e.flash-=dt;
+    if(dst(e.x,e.y,P.x,P.y)<e.r+P.r&&P.iframe<=0){P.hp-=0.4*dt;P._hitFlash=4;}}
+  for(let i=ens.length-1;i>=0;i--)if(ens[i].dead&&((ens[i].flash=(ens[i].flash||0)-dt)<-14))ens.splice(i,1);
+  {const _alive=ens.filter(e=>!e.dead).length; if(_alive<3&&Math.random()<0.05){const a=Math.random()*6.28,d=260+Math.random()*120;spawnEnemy(P.x+Math.cos(a)*d,P.y+Math.sin(a)*d);}}
+  for(let i=parts.length-1;i>=0;i--){const p=parts[i];p.x+=p.vx*dt;p.y+=p.vy*dt;p.vx*=.92;p.vy*=.92;p.life-=dt;if(p.life<=0)parts.splice(i,1);}
+  for(let i=txts.length-1;i>=0;i--){const t=txts[i];t.y-=0.6*dt;t.life-=dt;if(t.life<=0)txts.splice(i,1);}
+  for(let i=fx.length-1;i>=0;i--){fx[i].t+=dt;if(fx[i].t>=fx[i].max)fx.splice(i,1);}
+  if(P.hp<=0){txt(P.x,P.y-30,'사망 — R로 리셋','#c4353a',22);P.hp=0.01;P.iframe=30;}
+  if(_shake>0)_shake*=0.85;
+  _dmgWindow=_dmgWindow.filter(d=>_now-d.t<60);
+}
+
+function draw(){
+  X.clearRect(0,0,VW(),VH());X.save();
+  const shx=(Math.random()-.5)*_shake,shy=(Math.random()-.5)*_shake;
+  X.translate(VW()/2-P.x+shx,VH()/2-P.y+shy);
+  X.strokeStyle='rgba(120,90,160,.06)';X.lineWidth=1;
+  const g=80,x0=Math.floor((P.x-VW()/2)/g)*g,y0=Math.floor((P.y-VH()/2)/g)*g;
+  for(let x=x0;x<P.x+VW()/2;x+=g){X.beginPath();X.moveTo(x,P.y-VH()/2);X.lineTo(x,P.y+VH()/2);X.stroke();}
+  for(let y=y0;y<P.y+VH()/2;y+=g){X.beginPath();X.moveTo(P.x-VW()/2,y);X.lineTo(P.x+VW()/2,y);X.stroke();}
+  // 룬 장판
+  for(const r of runes){const pulse=.5+.3*Math.sin(_now*.1+r.t*.1);
+    X.globalAlpha=.12*pulse;X.fillStyle='#9b4dff';X.beginPath();X.arc(r.x,r.y,RUNE_R,0,6.28);X.fill();
+    X.globalAlpha=.6;X.strokeStyle='#cfa6ff';X.lineWidth=2;X.beginPath();X.arc(r.x,r.y,RUNE_R,0,6.28);X.stroke();
+    X.save();X.translate(r.x,r.y);X.rotate(r.t*.03);X.globalAlpha=.9;X.strokeStyle='#e6d0ff';X.lineWidth=2.5;
+    X.beginPath();for(let k=0;k<3;k++){const a=k/3*6.28;X.moveTo(0,0);X.lineTo(Math.cos(a)*14,Math.sin(a)*14);}X.stroke();
+    X.beginPath();X.arc(0,0,9,0,6.28);X.stroke();X.restore();X.globalAlpha=1;}
+  // 적
+  for(const e of ens){X.globalAlpha=e.dead?Math.max(0,((e.flash||0)+14)/28):1;
+    X.fillStyle=e.flash>0?'#ffffff':(e.rooted>0?'#3a2550':'#2a2535');X.strokeStyle=e.rooted>0?'#9b4dff':'#4a3560';X.lineWidth=2;
+    X.beginPath();X.arc(e.x,e.y,e.r,0,6.28);X.fill();X.stroke();
+    if(!e.dead){X.fillStyle='#0a080e';X.fillRect(e.x-16,e.y-e.r-9,32,4);X.fillStyle='#9b4dff';X.fillRect(e.x-16,e.y-e.r-9,32*Math.max(0,e.hp/e.max),4);}
+    X.globalAlpha=1;}
+  // fx: 붕괴 연결선 / 균열
+  for(const f of fx){const k=f.t/f.max;
+    if(f.type==='collapse'){X.globalAlpha=(1-k)*.8;X.strokeStyle='#e6d0ff';X.lineWidth=2+(1-k)*3;X.shadowColor='#9b4dff';X.shadowBlur=12;
+      X.beginPath();for(let i=0;i<f.pts.length;i++){const a=f.pts[i],b=f.pts[(i+1)%f.pts.length];X.moveTo(a.x,a.y);X.lineTo(b.x,b.y);}X.stroke();
+      X.globalAlpha=(1-k)*.4;X.fillStyle='#9b4dff';X.beginPath();X.arc(f.cx,f.cy,130*k,0,6.28);X.fill();X.shadowBlur=0;}
+    else if(f.type==='rift'){X.globalAlpha=(1-k)*.7;X.strokeStyle='#cfa6ff';X.lineWidth=3;X.beginPath();X.moveTo(f.x,f.y);X.lineTo(f.tx,f.ty);X.stroke();}
+    X.globalAlpha=1;}
+  // 창
+  for(const s of spears){X.save();X.translate(s.x,s.y);X.rotate(Math.atan2(s.phase==='out'?Math.sin(s.a):P.y-s.y,s.phase==='out'?Math.cos(s.a):P.x-s.x));
+    X.globalAlpha=.95;X.fillStyle=s.col;X.shadowColor='#9b4dff';X.shadowBlur=8;
+    X.fillRect(-16,-2,26,4);X.beginPath();X.moveTo(10,-4);X.lineTo(18,0);X.lineTo(10,4);X.closePath();X.fill();
+    X.restore();X.shadowBlur=0;X.globalAlpha=1;}
+  // 파티클
+  for(const p of parts){X.globalAlpha=Math.max(0,p.life/p.max);X.fillStyle=p.col;X.beginPath();X.arc(p.x,p.y,p.r*(p.life/p.max),0,6.28);X.fill();}
+  X.globalAlpha=1;
+  // 플레이어
+  X.save();X.translate(P.x,P.y);
+  if(P.iframe>0)X.globalAlpha=.5+.3*Math.sin(_now*.6);
+  X.fillStyle='rgba(0,0,0,.3)';X.beginPath();X.ellipse(0,P.r+8,P.r,P.r*.4,0,0,6.28);X.fill();
+  X.rotate(P.facing);
+  X.fillStyle=P._hitFlash>0?'#ff8888':'#2a2334';X.strokeStyle='#9b4dff';X.lineWidth=2;
+  X.beginPath();X.arc(0,0,P.r,0,6.28);X.fill();X.stroke();
+  // 창 (전방)
+  X.strokeStyle='#cfa6ff';X.lineWidth=2.5;X.shadowColor='#9b4dff';X.shadowBlur=6;
+  X.beginPath();X.moveTo(P.r*.2,0);X.lineTo(P.r*1.8,0);X.stroke();X.shadowBlur=0;
+  X.globalAlpha=1;X.restore();
+  for(const t of txts){X.globalAlpha=Math.min(1,t.life/20);X.font='700 '+t.sz+'px "Nanum Myeongjo",serif';X.textAlign='center';X.fillStyle='#000';X.fillText(t.s,t.x+1,t.y+1);X.fillStyle=t.col;X.fillText(t.s,t.x,t.y);}
+  X.globalAlpha=1;X.textAlign='left';
+  X.restore();
+  X.strokeStyle='rgba(207,166,255,.4)';X.lineWidth=1;X.beginPath();X.moveTo(VW()/2,VH()/2);X.lineTo(mouse.x,mouse.y);X.stroke();
+  X.strokeStyle='rgba(207,166,255,.7)';X.beginPath();X.arc(mouse.x,mouse.y,7,0,6.28);X.stroke();
+}
+
+function hud(){
+  const set=(id,v,mx)=>{const el=document.querySelector('#'+id+'>i');if(el)el.style.width=Math.max(0,v/mx*100)+'%';};
+  set('hpb',P.hp,P.hpMax);set('mpb',P.mp,P.mpMax);
+  document.getElementById('hpv').textContent=Math.ceil(P.hp);
+  document.getElementById('mpv').textContent=Math.ceil(P.mp);
+  document.getElementById('runev').textContent=runes.length;
+  const pips=document.getElementById('runePips');
+  if(pips.children.length!==RUNE_MAX){pips.innerHTML='';for(let i=0;i<RUNE_MAX;i++){const s=document.createElement('span');s.className='pip';pips.appendChild(s);}}
+  for(let i=0;i<RUNE_MAX;i++)pips.children[i].classList.toggle('on',i<runes.length);
+  document.getElementById('kills').textContent=kills;
+  {let s=0;for(const d of _dmgWindow)s+=d.d;document.getElementById('dps').textContent=Math.round(s);}
+}
+
+let last=performance.now();
+function loop(t){requestAnimationFrame(loop);const dt=Math.min(3,(t-last)/16.67);last=t;update(dt);draw();hud();}
+reset();requestAnimationFrame(loop);
+</script></body></html>
