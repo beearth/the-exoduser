@@ -8317,7 +8317,9 @@ function detectTier(){
 }
 function _benchTick(){
   if(_benchDone)return;
+  if(document.hidden){_benchFrames.length=0;_benchStart=0;return}
   const now=performance.now();
+  if(_benchFrames.length&&now-_benchStart>250){_benchFrames.length=0;_benchStart=now;return}
   if(_benchFrames.length>0){
     _benchFrames.push(now-_benchStart);
   }
@@ -46039,10 +46041,12 @@ function _updateDiagUI(){
   $('diagGpu').textContent=_hwGPU;
   $('diagGL').textContent=_useGPU?_T('WebGPU 활성'):_useGL?_T('WebGL2 활성'):'Canvas 2D';
   if(_benchDone){
-    const deltas=_benchFrames.slice(1);
-    const avg=deltas.reduce((a,b)=>a+b,0)/deltas.length;
-    const avgFps=avg>0?~~(1000/avg):0;
-    $('diagBenchFps').textContent=avgFps+' FPS '+_L('(120프레임 평균)','(120-frame avg)');
+    if(_benchFrames.length>1){
+      const deltas=_benchFrames.slice(1);
+      const avg=deltas.reduce((a,b)=>a+b,0)/deltas.length;
+      const avgFps=avg>0?~~(1000/avg):0;
+      $('diagBenchFps').textContent=avgFps+' FPS '+_L('(120프레임 평균)','(120-frame avg)');
+    }else $('diagBenchFps').textContent=_L('벤치 미실시','Benchmark skipped');
     const tierCol={S:'#ff4444',A:'#ffaa44',B:'#44aaff',C:'#888888'};
     const tierDesc={S:_L('최고 품질','Ultra'),A:_L('고품질','High'),B:_L('중간 품질','Medium'),C:_L('저사양 모드','Low')};
     $('diagTier').textContent=_hwTier;
