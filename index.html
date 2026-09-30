@@ -804,6 +804,8 @@ body{background:#000 center/cover no-repeat;color:#ccaa88;font-family:'Noto Sans
     .cs-trait .ti{flex:0 0 34px;height:34px;border-radius:6px;display:flex;align-items:center;justify-content:center;
       font-size:1.05rem;background:radial-gradient(circle at 40% 30%,rgba(120,80,40,.55),rgba(30,18,10,.6));
       border:1px solid rgba(160,120,70,.5);box-shadow:inset 0 0 10px rgba(0,0,0,.5)}
+    /* Hell Gothic tone: harmonize trait glyph icons to the bronze palette so full-colour emoji (💥🩸🔮 etc.) stop clashing with the bone/iron UI. Bespoke vector icons remain the proper follow-up (CLAUDE.md UI rule 3). */
+    .cs-trait .ti .ti-g{filter:grayscale(.85) sepia(.85) saturate(1.12) brightness(.96) hue-rotate(-6deg)}
     .cs-trait>div:last-child{min-width:0}
     .cs-trait .tt{color:#e2cfa6;font-size:clamp(13px,1.05vw,.92rem);font-weight:700;letter-spacing:.02em}
     .cs-trait .td{color:#8f8068;font-size:clamp(12px,.95vw,.82rem);line-height:1.45;margin-top:2px}
@@ -3202,7 +3204,7 @@ function selectVisual(ci){
   // 우측 플레이 방식
   const tr=$('csTraits');
   if(tr){tr.innerHTML=(ch.traits||[]).map(t=>
-    '<div class="cs-trait"><div class="ti">'+t[0]+'</div><div><div class="tt">'+escHtml(_TL(t[1]))
+    '<div class="cs-trait"><div class="ti"><span class="ti-g">'+t[0]+'</span></div><div><div class="tt">'+escHtml(_TL(t[1]))
     +'</div><div class="td">'+escHtml(_TL(t[2]))+'</div></div></div>').join('');}
   // 아이콘 레일 선택 표시
   const grid=$('visualGrid');if(grid)grid.querySelectorAll('.cs-ico').forEach((c,i)=>{c.classList.toggle('sel',i===ci);c.setAttribute('aria-pressed',String(i===ci));});
