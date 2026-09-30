@@ -5,7 +5,7 @@
 >
 > - 담당: 사운드 팀장 (Claude)
 > - 최초 작성: 2026-09-30
-> - 전수조사 도구: `python3 tools/sound_audit.py` (`--list`로 전체 경로 출력) · BGM 측정: `tools/bgm_compress_eval.py`, `tools/bgm_browser_check.cjs`
+> - 전수조사 도구: `python3 tools/sound_audit.py` (`--list`로 전체 경로 출력) · SFX README 생성: `tools/sfx_readme_gen.py` · BGM 측정: `tools/bgm_compress_eval.py`, `tools/bgm_browser_check.cjs`
 > - 갱신 규칙: 사운드 작업이 끝날 때마다 §3 현황 수치, §4 이슈 상태, §5 백로그, §8 인계, §9 작업 로그를 갱신한다.
 
 ---
@@ -33,6 +33,7 @@
 
 ### 2.2 팀장 체크 루틴 (사운드 작업마다)
 - [ ] `python3 tools/sound_audit.py` 실행 → 누락(missing)이 늘지 않았는가
+- [ ] `sfx/` 파일이나 `_sampleFiles`를 바꿨으면 `python3 tools/sfx_readme_gen.py` 실행 (`--check`가 up to date여야 함)
 - [ ] 새 파일이 NFC(완성형) 한글 이름인가 (§4 S-01 참고)
 - [ ] 새 BGM이 WAV가 아니라 규격 포맷인가 (§6)
 - [ ] 새 텍스트(보이스 자막 등)가 있으면 `번역대상_전체목록.md` 등록
@@ -51,6 +52,9 @@
 | NFD 중복 BGM | 0 (제거 전 71개 / 1.16GB) | S-01 완료 2026-09-30 |
 | 게임이 로드하는 WAV | BGM 17곡 / **869MB** + SFX 2개 | 압축 후보 준비됨, 청취 대기 (S-02) |
 | 공용 풀 안 바이트 동일 쌍 | 2쌍 / 105.4MB | S-09 |
+| SFX 파일 / 레지스트리 로드 / 미참조 | 319 / 218 / 101 | `sfx/SFX_README.md` 자동 생성 (S-07) |
+| 등록됐지만 재생 호출 없는 키 | 12 | S-12 |
+| 보유 보이스 | 83개 / 217.3초 | S-08 |
 
 ### 3.1 에셋 구성
 
@@ -77,10 +81,13 @@
 | S-04 | 중간 | **펫 경고 보이스 10개 미연결** — 까마귀/고양이 × `warn_hp50·crisis_hp30·hp_critical·boss_aoe·boss_groggy`. 파일은 있으나 `_petSayUrgent`는 말풍선만 띄움 | `sfx/pet/`, `game.html` 8849·8932·8958 | `SFX`에 `pet_<who>_<id>` 등록 → `_petSayUrgent`에서 id 매칭 시 재생, VOICE 등급. **총괄 결정 필요**: 음성이 한국어뿐이다 — 영어 등 다른 로케일에서 (a) 한국어 음성 그대로 재생 (b) 무음·말풍선만 (c) 로케일별 음성 추가 제작 중 선택. 결정 전 코드 연결 보류 | 🟠 |
 | S-05 | 낮음 | 구버전·후보 파일 잔존 — `sfx/death/` 루트 48개(ACE로 교체됨), `_english_backup/` 5, `drop/_cand_legend2`, `hit/impact_hitxxxxxxxx…`, `weapon/bow_hit1333…` 등 | `sound_audit.py --list` | `_archive`로 이동 또는 삭제. 청취 가치 있는 것만 남김 | ⚪ |
 | S-06 | 중간 | 미연결이지만 쓸 만한 에셋 — `voice_wakeup_ko/en`, `silvertail_parry_fail1~4`, `spike_trap_deploy/hit`, `boss_grab/slash`, `repentance` | 같은 목록 | 각 트리거 존재 여부 확인 후 연결 or 폐기 결정 | 🔴 |
-| S-07 | 낮음 | `sfx/SFX_README.md`가 실제 폴더와 불일치 (`chain/` 등 없는 폴더, `death/ACE`·`pet/`·`storm/` 누락) | README vs 폴더 | 이 문서 §3.1로 대체하고 README는 링크만 | 🔴 |
-| S-08 | 낮음 | `6사운드디자인.md` "예정 항목"의 ElevenLabs 보이스 목록·포맷 규칙이 비어 있음 | 해당 문서 519행 | §6 규격을 옮기고, 보이스 ID 표 작성 | 🔴 |
+| S-07 | 낮음 | `sfx/SFX_README.md`가 실제 폴더와 불일치 (`chain/` 등 없는 폴더, `death/ACE`·`pet/`·`storm/` 누락) | README vs 폴더 | 이 문서 §3.1로 대체하고 README는 링크만. **2026-09-30 완료**: 대조 결과 README 파일 행 18개가 디스크에 없음, 레지스트리 파일 153개 누락, 없는 `chain/` 기재, 실제 폴더 9개(`boss death drop equipment pet pickup skillsound spike_trap storm`) 누락. `tools/sfx_readme_gen.py`가 `_sampleFiles` 레지스트리+코드 주석에서 README를 생성하도록 교체(파일 319·로드 218·미참조 101). `--check`로 낡음 검사 | 🟢 |
+| S-08 | 낮음 | `6사운드디자인.md` "예정 항목"의 ElevenLabs 보이스 목록·포맷 규칙이 비어 있음 | 해당 문서 519행 | §6 규격을 옮기고, 보이스 ID 표 작성. **2026-09-30 조사 완료**: 보이스 83개(공용 전사 25·실버테일 42·펫 10·영어 백업 5·인트로 1, 합계 217.3초) → [VOICE_INVENTORY_20260930.md](VOICE_INVENTORY_20260930.md). 문서화된 보이스 ID는 실버테일 Sarah `EXAVITQu4vr4xnSDxMaL`, 시네마틱 내레이터 `WS6naCm8T4gbyzsLnOjK` 2개뿐. **공용 전사 음성은 대사·보이스 ID 미기록** — 로컬 생성 기록 확인 필요 | 🟡 |
 | S-09 | 중간 | **공용 풀에 바이트 동일 파일 2쌍** — `흰눈의 맹세 (Remastered).wav` = `흰눈의 맹세2 (Remastered).wav`(66.7MB), `Coronam Ferro (Remastered).wav` = `Coronam Ferro2(Remastered).wav`(38.7MB). MD5 동일, Suno ID도 같음. 자동 재생에서 이 두 곡이 다른 곡보다 2배 자주 나오고, 드롭다운에 같은 곡이 두 번 보임 | `md5sum`, `survey_17wav.jsonl` | **총괄 결정 필요**: "2"가 원래 다른 테이크였다면 올바른 파일을 다시 내보내 교체, 아니면 "2" 항목을 풀·드롭다운·파일에서 제거(105.4MB 절감). S-02 변환 전에 정하면 변환 대상도 15곡으로 준다 | 🟠 |
 | S-10 | 낮음 | **원본 WAV의 반복 이음새** — 드롭다운으로 한 곡 고정(`loop=true`) 시 끝→처음 전환 단차: `네메시아의 강림2` −12.9dBFS(들릴 수 있는 수준), `Neon Hellfire Protocol` 1·2 −31dBFS. 끝 무음이 긴 곡(`고개 하나만` 2.9초, `Wrath of the Golden Age` 2.1초, `Cathedral of Steel` 1.9초, `Just One More Hill` 1.6초)은 반복 때 그만큼 공백. 자동 모드(`onended`→다음 곡)에는 영향 없음 | `survey_17wav.jsonl` `seam_jump_dbfs`·`trail_silence_ms` | 청취로 실제 거슬리는지 확인 → 거슬리면 `BGM.playTrack`에 반복 경계 짧은 페이드 추가, 또는 변환 시 끝 무음 트림 | 🔴 |
+| S-11 | 중간 | **보스문 입장 1회에 같은 포효 2회** — 페이즈 2(검은 네임카드) 중 `_enterBossArena()` 봉인 연출 포효 + 약 3초 뒤 페이즈 4 등장 포효. 봉인 파티클은 검은 화면 뒤라 보이지도 않음 | 헤드리스 Chromium 재현 2회: `?bosstest=1` 후 `G._bossLoadPhase=1` → 66f·247f에 `boss_howl` 2회 | **2026-09-30 수정**: 봉인 연출의 사운드(`SFX.groggy()`+포효)만 `G._bossLoadPhase!==2` 조건으로 제한. 파티클·셰이크·텍스트·전투 판정 불변. 검증: 보스문 입장 포효 1회(페이즈 4), 재도전·직행 각 1회(si1 `boss_howl`, si4 폴백 `boss_howl1`), pageerror 0 | 🟢 |
+| S-12 | 낮음 | **등록됐지만 재생 호출이 없는 키 12개** — `boss_hit`, `monster_hurt`(보스 프로필 `hit`/`hurt` 필드도 미사용), `sword_slash`, `spear_thrust`, `greatsword_swing`, `melee_hit`, `q_start`, `q_end`, `silvertail_wakeup`, `die_human`, `die_boss`, `death_heavy3`. 부팅 때 로드만 됨 | 레지스트리 키 문자열 전수 검색 + 동적 조합(`_silvertailVariantKey`, `_pickDeathVar`) 확인. 2026-05-15 자동저장본도 동일 | 보스 피격음 연결은 사운드 설계 결정(청취 필요). 나머지는 연결 또는 레지스트리 정리 — 결함 아님 | 🔴 |
+| S-13 | 낮음 | **`_startLoop` 이름 중복 선언** — 11762행 사운드 반복 헬퍼 `_startLoop(key,vol)`와 57955행 게임 루프 시작 `_startLoop()`가 같은 스크립트 블록(3223~62065행)에 있어 뒤 선언이 앞을 덮음. 인자 있는 호출 0건, `P._blueLpSrc`에 값 넣는 곳 0건이라 현재 증상 없음 | `grep _startLoop(` | 누군가 반복 사운드에 `_startLoop('키')`를 쓰면 게임 루프 함수가 불려 소리가 안 남 → 사운드 헬퍼를 다른 이름으로 바꾸거나 삭제 권장. 공용 루프 함수는 건드리지 않음 | 🔴 |
 
 ## 5. 백로그 (우선순위 순)
 
@@ -91,11 +98,14 @@
 | 3 | 펫 경고 보이스 연결 | S-04 | 🟠 총괄 결정: 비한국어 로케일 정책 |
 | ~~4~~ | ~~레거시 SFX_MAP/BGM_MAP 제거~~ — 완료 2026-09-30 | S-03 | — |
 | 5 | 미연결 에셋 연결/폐기 판정 | S-05, S-06 | 사용자 청취 |
-| 6 | 보스 19종 사운드 프로필 커버리지 점검 (`_BOSS_SFX`) | — | 보스 바이블 대조 |
+| 6 | 보스 사운드 프로필 확장 — 점검 완료: 전용 프로필은 1장 si 0~3뿐, si 4~34(2~7장)는 공용 폴백. 사용 필드는 `howl`·`die`만 | — | si별 포효·사망 피치 설계 + 청취 (필요 시 신규 포효 생성) |
 | 7 | 7장 BGM 곡 수 균형 (1장 25곡 vs 2·5·6장 각 2곡) | — | Suno 추가 생성 |
 | 8 | 라우드니스 일괄 측정·정규화 — WAV 17곡 측정 완료(−16.3~−14.6 LUFS, TP −3.6~−2.4 dBTP), MP3 59곡 미측정 | §6 | `bgm_compress_eval.py` 확장 |
 | 9 | 공용 풀 바이트 동일 2쌍 정리 | S-09 | 🟠 총괄 결정 |
 | 10 | 반복 이음새·끝 무음 청취 확인 | S-10 | 청취 |
+| 11 | 미사용 키 12개 연결/정리 | S-12 | 보스 피격음은 청취 결정 |
+| 12 | `_startLoop` 사운드 헬퍼 이름 변경 | S-13 | — |
+| 13 | 공용 전사 음성 대사·보이스 ID 확보 | S-08 | 로컬 ElevenLabs 기록 |
 
 ## 6. 에셋 규격
 
@@ -119,14 +129,15 @@
 | [PROJECTILE_HIT_CANDIDATES_20260910.md](./PROJECTILE_HIT_CANDIDATES_20260910.md), [PROJECTILE_PLAYER_HIT_20260910.md](./PROJECTILE_PLAYER_HIT_20260910.md) | 투사체 피격음 후보·채택 |
 | [TRAILER_CHARACTER_VOICE_FIX_20260909.md](./TRAILER_CHARACTER_VOICE_FIX_20260909.md) | 트레일러 보이스 교정 |
 | [보석_장착음_20260927.md](./보석_장착음_20260927.md) | 보석 장착음 |
-| `sfx/SFX_README.md` | 구 폴더 설명 (S-07: 불일치) |
+| `sfx/SFX_README.md` | SFX 폴더 안내 — `tools/sfx_readme_gen.py` 자동 생성 (S-07) |
+| [VOICE_INVENTORY_20260930.md](./VOICE_INVENTORY_20260930.md) | 보유 보이스 83개 목록 (S-08) |
 | [S02_BGM_COMPRESSION_20260930.md](./S02_BGM_COMPRESSION_20260930.md) | S-02 WAV 압축 후보 비교 (용량·길이·루프·메타데이터·Chromium 실측) |
 
 ## 8. 인계 — 로컬 PC·통합 빌드팀
 
 브랜치: `claude/admiring-albattani-dvaosd` (클라우드 세션 작업). **`main`에는 아직 병합되지 않았다.** `main`은 이 브랜치 분기 후 다른 팀 커밋이 쌓여 있으나(분기점 `577cf11`), 겹치는 파일 구간은 없다(`game.html` 변경 위치가 서로 다름, 마스터 바이블은 `main`이 첫 줄 부근만 수정).
 
-### 9.1 커밋
+### 8.1 커밋
 
 | 커밋 (전체 SHA) | 내용 | 변경 파일 |
 |---|---|---|
@@ -134,6 +145,10 @@
 | `d9c3ae0193065eaf17c09732292cc983de528973` | **S-01** NFD 중복 BGM 71개 삭제 | D 71개 (아래 표), M `SOUND_TEAM_LEAD.md` |
 | `cdde059b8771ab01758361086dab3b18faf0773d` | **S-03** 레거시 `SFX_MAP`·`BGM_MAP`·`bgmPlay` 삭제 | M `game.html` (−68/+1행), M 마스터 바이블·AI 파이프라인 v3.1 (삭제 기록 주석) |
 | `1c2a4089c3276bd0705f5be5a4a041d0898191f8` | **S-02** 압축 후보·측정 도구 | A `audio_review/S-02/` (후보 9·측정 3·README), A `tools/bgm_compress_eval.py`, A `tools/bgm_browser_check.cjs`, A `S02_BGM_COMPRESSION_20260930.md`, M `6사운드디자인.md`, M `.vercelignore` (+`audio_review/`) |
+| `af35bb938aa53db1dbc4c59d79857a524265ed7a` | 1차 인계 문서 | M `SOUND_TEAM_LEAD.md`, M `tools/sound_audit.py` |
+| `1dd1325b698f4e35c443620181c0b187ea08484f` | **S-11** 보스문 입장 포효 2회 → 1회 | M `game.html` (28999행 부근 +2/−1, 사운드 조건만), M `6사운드디자인.md` 보스 프로필 절, M `8.1보스디자인바이블/BOSS_BATTLE_SETTINGS.md` 진입 흐름, M `BOSS_00_…OBSIDIAN_FLAME_DESTROYER.md` 프로필 행 |
+| `550de581d8c91cc57f836b6a5f4552ecd54578f8` | **S-07** SFX README 자동 생성 | A `tools/sfx_readme_gen.py`, M `sfx/SFX_README.md` (전면 재생성) |
+| (이 표를 담은 커밋 — 브랜치 최신) | **S-08** 보이스 목록, 허브 갱신 | A `VOICE_INVENTORY_20260930.md`, M `SOUND_TEAM_LEAD.md` |
 
 S-01 삭제 파일 내역 (전부 자모 분리형 NFD 경로, 같은 이름의 NFC 경로 파일은 유지):
 
@@ -146,7 +161,7 @@ S-01 삭제 파일 내역 (전부 자모 분리형 NFD 경로, 같은 이름의 
 | `bgm/2장_벌레굴/`, `bgm/5장_지옥군단/`, `bgm/6장_사도마굴/` | 각 2 |
 | **합계** | **71 (1.16 GB)** |
 
-### 9.2 S-01 검증 결과 (이 브랜치 HEAD 기준, 클라우드에서 확인)
+### 8.2 S-01 검증 결과 (이 브랜치 HEAD 기준, 클라우드에서 확인)
 
 | 검증 | 결과 |
 |---|---|
@@ -158,7 +173,19 @@ S-01 삭제 파일 내역 (전부 자모 분리형 NFD 경로, 같은 이름의 
 | 실행 확인 | 헤드리스 Chromium, `node server.cjs`로 `game.html` 로드: pageerror 0, 오디오 404 0, 로비 BGM 재생 (S-03 반영 상태에서 측정) |
 | git 저장소 용량 | 두 벌이 같은 blob을 공유했으므로 **저장소 기록 용량은 거의 줄지 않음**. 줄어드는 곳은 체크아웃 작업 폴더와 빌드 산출물 |
 
-### 9.3 미확인 — 로컬·패키지 반영
+### 8.3 2차 배정 검수 결과 (2026-09-30, 클라우드)
+
+| 항목 | 방법 | 결과 |
+|---|---|---|
+| S-11 재현 | 헤드리스 Chromium, `game.html?bosstest=1` → `G._bossLoadPhase=1`로 보스문 입장 재현, `playSample`·`SFX.groggy` 호출 기록 | 수정 전 2회 재현(66f·247f `boss_howl`), 수정 후 1회(247f) |
+| S-11 회귀 | 같은 방법으로 `_enterBossArena(true)`(재도전), `G._bossLoadPhase=0`+`_enterBossArena()`(직행), si 1·4 | 각 포효 1회 유지, si4는 프로필 없음 → `boss_howl1` 폴백 |
+| 전체 로드 | 인라인 스크립트 6개 `node --check`, 헤드리스 로드 | 문법 오류 0, pageerror 0, 오디오 404 0, 로비 BGM 재생 |
+| `main` 병합 시험 | `git merge-tree --write-tree HEAD origin/main` (S-11 커밋 전 HEAD) + `main`의 `game.html` 변경 구간 대조 | 충돌 없음. `main`의 `game.html` 변경은 28000~30000행에 없고, `main`에 사운드 문서·`sfx/` 변경 커밋 없음 |
+| 보스 해제 경로 | 코드 검토: 보스 사운드 5종 길이(2.2~4.3초), 반복 재생 여부, 노드 해제(`onended`+타이머) | 반복 보스 사운드 없음, 전부 단발 자동 해제. 페이즈 전환 포효는 페이즈당 1회(`_bp<=e._bossPhase` 가드) |
+| 보스 사망 중복 | `deathFX` 보스 호출 경로 전수 | 사망음 1회 + 부활 판정 후 `boss_final_death` 1회 — 의도된 2단계, 중복 아님 |
+| 청취 | — | **미실시**. S-11은 호출 횟수만 검증했고 소리 자체는 바꾸지 않음 |
+
+### 8.4 미확인 — 로컬·패키지 반영
 
 아래는 클라우드에서 확인할 수 없어 **미확인**이다. 확인한 사람이 날짜와 함께 이 표를 갱신한다.
 
@@ -166,7 +193,7 @@ S-01 삭제 파일 내역 (전부 자모 분리형 NFD 경로, 같은 이름의 
 |---|---|---|
 | `main` 병합 | 미확인 (미병합) | 총괄 승인 후 PR/병합. 병합 전까지 `main`·Vercel에는 NFD 사본이 남아 있음 |
 | `G:\exoduser` 로컬 반영 | 미확인 | pull 후 `bgm\` 안에 같은 이름처럼 보이는 폴더가 두 개면 NFD 쪽 삭제. `python tools/sound_audit.py` 실행 → `NFD duplicate files: 0`, `missing: 0` |
-| `G:\exoduser-DEMO`, `G:\exoduser-ea` | 미확인 | 두 폴더의 `bgm\`에도 중복 폴더가 복사돼 있을 수 있음 → 같은 방법으로 정리. S-03은 `game.html` 변경이므로 CLAUDE.md DEMO/EA 동기화 절차 전체 실행 필요 |
+| `G:\exoduser-DEMO`, `G:\exoduser-ea` | 미확인 | 두 폴더의 `bgm\`에도 중복 폴더가 복사돼 있을 수 있음 → 같은 방법으로 정리. S-03·S-11은 `game.html` 변경이므로 CLAUDE.md DEMO/EA 동기화 절차 전체 실행 필요 |
 | NW.js·itch·Steam 패키지 | 미확인 | 다음 빌드에서 `bgm/` 용량이 약 1.16 GB 줄었는지, 게임 내 BGM 재생 정상인지 |
 | Vercel 웹 | 미확인 | 병합·배포 후 BGM 재생·404 확인 |
 | macOS에서 커밋하는 PC | 미확인 | `git config core.precomposeunicode true` 설정 여부 |
@@ -180,3 +207,6 @@ S-01 삭제 파일 내역 (전부 자모 분리형 NFD 경로, 같은 이름의 
 | 2026-09-30 | S-03 레거시 사운드 코드 삭제 (`cdde059`) | 누락 경로 22→0, 헤드리스 로드 pageerror 0 |
 | 2026-09-30 | S-02 WAV 17곡 측정 + 대표 3곡 압축 후보 9개 (`1c2a408`) | 잠정 권고 MP3 256k, **청취 미검수**. 신규 이슈 S-09(바이트 동일 2쌍)·S-10(반복 이음새) 등록 |
 | 2026-09-30 | 인계 섹션(§8) 작성, S-04를 총괄 결정 필요로 전환 | 로컬·패키지 반영은 미확인으로 구분 |
+| 2026-09-30 | S-11 보스문 입장 포효 중복 수정 (`1dd1325`) | 재현 2회 → 수정 후 1회, 재도전·직행 1회 유지, pageerror 0 |
+| 2026-09-30 | S-07 SFX README 자동 생성 (`550de58`) | 파일 319·로드 218·미참조 101 |
+| 2026-09-30 | S-08 보유 보이스 83개 조사, 보스 사운드 전수 검수 | 신규 S-12(미사용 키 12개)·S-13(`_startLoop` 중복 선언) 등록. 공용 전사 음성 대사·ID 미기록 확인 |
