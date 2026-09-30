@@ -1,0 +1,59 @@
+{
+  "version": "20260930-rotforest-96",
+  "comment": "Art-local feature anchors for CH1-1 rotten bio-trees. Coordinates are source-art pixels (cx,cy) with ellipse radii (rx,ry). Used by the pass-96 bake (eye glints) and the pass-97 runtime face-life animation (blink/mouth/tumor). tree_XX are 1024x1024, mass_XX are 2048x1152.",
+  "tree_01": [
+    {"kind":"eye","cx":440,"cy":315,"rx":50,"ry":44},
+    {"kind":"mouth","cx":525,"cy":420,"rx":58,"ry":118},
+    {"kind":"tumor","cx":378,"cy":556,"rx":76,"ry":70},
+    {"kind":"tumor","cx":746,"cy":566,"rx":46,"ry":42}
+  ],
+  "tree_02": [
+    {"kind":"eye","cx":396,"cy":456,"rx":44,"ry":40},
+    {"kind":"eye","cx":830,"cy":556,"rx":40,"ry":36},
+    {"kind":"mouth","cx":640,"cy":470,"rx":175,"ry":105},
+    {"kind":"tumor","cx":268,"cy":414,"rx":56,"ry":52},
+    {"kind":"tumor","cx":256,"cy":600,"rx":66,"ry":62},
+    {"kind":"tumor","cx":566,"cy":714,"rx":70,"ry":64}
+  ],
+  "tree_03": [
+    {"kind":"eye","cx":510,"cy":360,"rx":36,"ry":34},
+    {"kind":"eye","cx":370,"cy":540,"rx":34,"ry":30},
+    {"kind":"eye","cx":565,"cy":770,"rx":44,"ry":36},
+    {"kind":"tumor","cx":498,"cy":520,"rx":48,"ry":46},
+    {"kind":"tumor","cx":330,"cy":716,"rx":70,"ry":64}
+  ],
+  "tree_04": [
+    {"kind":"eye","cx":320,"cy":406,"rx":32,"ry":28},
+    {"kind":"mouth","cx":776,"cy":490,"rx":58,"ry":112},
+    {"kind":"tumor","cx":744,"cy":300,"rx":56,"ry":52},
+    {"kind":"tumor","cx":214,"cy":640,"rx":70,"ry":66},
+    {"kind":"tumor","cx":856,"cy":744,"rx":60,"ry":56}
+  ],
+  "mass_01": [
+    {"kind":"eye","cx":396,"cy":374,"rx":42,"ry":38},
+    {"kind":"eye","cx":311,"cy":474,"rx":30,"ry":26},
+    {"kind":"mouth","cx":330,"cy":600,"rx":86,"ry":72},
+    {"kind":"eye","cx":842,"cy":316,"rx":24,"ry":22},
+    {"kind":"eye","cx":898,"cy":444,"rx":26,"ry":24},
+    {"kind":"mouth","cx":770,"cy":566,"rx":52,"ry":96},
+    {"kind":"tumor","cx":893,"cy":597,"rx":82,"ry":76},
+    {"kind":"tumor","cx":612,"cy":530,"rx":48,"ry":44},
+    {"kind":"eye","cx":1127,"cy":581,"rx":26,"ry":24},
+    {"kind":"eye","cx":1403,"cy":648,"rx":30,"ry":26},
+    {"kind":"eye","cx":1758,"cy":436,"rx":28,"ry":26},
+    {"kind":"eye","cx":1856,"cy":500,"rx":24,"ry":22},
+    {"kind":"mouth","cx":1765,"cy":663,"rx":62,"ry":76},
+    {"kind":"tumor","cx":1895,"cy":608,"rx":86,"ry":80}
+  ],
+  "mass_02": [
+    {"kind":"eye","cx":457,"cy":296,"rx":26,"ry":22},
+    {"kind":"mouth","cx":541,"cy":597,"rx":66,"ry":86},
+    {"kind":"tumor","cx":564,"cy":398,"rx":48,"ry":44},
+    {"kind":"tumor","cx":296,"cy":760,"rx":56,"ry":52},
+    {"kind":"eye","cx":1051,"cy":520,"rx":30,"ry":26},
+    {"kind":"mouth","cx":1127,"cy":622,"rx":70,"ry":86},
+    {"kind":"tumor","cx":908,"cy":694,"rx":42,"ry":40},
+    {"kind":"tumor","cx":1250,"cy":581,"rx":70,"ry":64},
+    {"kind":"tumor","cx":1346,"cy":898,"rx":36,"ry":34}
+  ]
+}
