@@ -1,3 +1,23 @@
+## 2026-09-30 — [REGION] 4분면 지역 클리어 가이드 + 지역 기반 지옥문 개방
+
+| 범위 | 변경·검증 |
+|---|---|
+| 소스 | game.html / game-easy-test.html (동일 반영). 신규 `[REGION]` 블록(앵글러 섹션 직전) + 인라인 훅: `_regionInit`(initStage)/`_regionTick`(update)/`_drawRegionArrow`(draw)/`_regKill`(킬 사이트 8곳)/게이트 개방·봉인 문구·포탈 라벨·HUD·미니맵 분기 |
+| 규칙 | 지옥문 개방 = **4분면 지역 4곳 전부 클리어** (구 전역 80%+`_fbDone` 대체). 지역 클리어 = 지역 kills/total≥0.8(+게이트 지역 한정 문지기 +0.10, 1e-9 보정) AND CH1-1 담당 앵글러 사망. 지역 total=분면 소환굴 스폰량 합(`_totalSpawned` 기준 동일), kills=스폰위치(`_homeX/_homeY`) 귀속. 빈 지역 자동 클리어(소프트락 0). 소형 맵(한 변<180타일)=구 규칙 폴백. 타임어택 90% 불변 |
+| UI | 지역 입장 배너(showPH, 히스테리시스 1.5타일+5s 쿨다운)·클리어 배너 `{지역명} 클리어! (N/4)`·`지역 처치` HUD=현재 지역·진행바=지역 N/4·봉인 문구 `지옥문이 봉인됨 — 지역 클리어 N/4`·포탈 라벨 `지옥문 봉인 (지역 N/4)`·미니맵(십자선 정적캐시+클리어 딤+🔒/🔓+앵글러 속성색 마커)·화면 가장자리 방향 화살표(잔존몹 centroid/앵글러→개방 후 게이트, 20프레임 재계산·무할당). 신규 DOM 0 |
+| 지역명 | CH1-1: 북서 · 어둠/북동 · 번개/남서 · 물/남동 · 불(`_FB_SITES` 속성 매핑). 기타: 방위명 |
+| 번역 | 신규 15키 No.3073~3087, `_EN`+27개 lang_*.js 전파(28언어). 펫 대사 `tut_gate_locked` 교체+`region_clear` 신규 |
+| 테스트 | `test/regionClearGate.test.js` 7/7 PASS(귀속/임계/앵글러/빈지역/문지기보너스/개방규칙). 관련 기존 테스트 diabloFieldMap/mapTestServer/parryMagicTracking/diabloFieldStagePlan/ch1Gate5 PASS. fieldBossSpawnEmerge 1건 FAIL은 sBlock 패링 반경 기대 코드 불일치로 **본 작업 이전부터 존재(HEAD 동일)** |
+| 문서 | SSOT `4.1맵디자인+설정/REGION_CLEAR_GATE_20260930.md` 신설 + 게이트 80% 서술 문서 16곳 동기화(_MAP_SSOT_INDEX 참조) |
+
+## 2026-09-30 — CH1-1 살아 움직이는 썩은숲 90차
+
+사용자 `2026-09-30 105738` 콘셉트 스크린샷을 기준으로 MagicLight GPT Image 2.5 Sunburst에서 눈·입·종양·부종이 있는 부패 나무 4종을 생성했다. `m_ctree13~20` 8개를 이 1024² RGBA로 교체하고 외곽 생산 청크에 큰 실루엣 6개+연결 군락 30개를 비충돌로 합성했다. bakeVersion `20260930-rotforest-90`/청크 cache key `20260930-rotforest-91`/23 retouch 레이어/64청크, forest-only 색 보정과 흐린 접합 마스크를 적용했다. 89차 숲 흔들림은 유지하며 피부 바닥·53점 geometry·기존 충돌 앵커·남북 통로는 보호한다. [생성·수치·검수·MAP PRODUCTION REPORT](4.1맵디자인+설정/CH1_ROTTEN_FOREST_PASS90_20260930.md). **VISUAL VERDICT: RETOUCH.** 아래 89/88차 기록은 제작 당시의 원화·청크 상태다.
+
+## 2026-09-30 — CH1-1 음산한 숲 배경 움직임 89차
+
+88차는 정적 숲 청크가 움직이지 않는 결함이 있었다. `ch1-forest-sway.js`를 본편 배경 렌더와 NW.js 패키징 목록에 연결해 외곽 숲의 비보행 재질을 8띠·최대 ±5월드픽셀로 느리게 흔들리도록 했다. 바닥·접지·충돌·원본 청크는 유지. Node 회귀 2/2, 본편 Chrome 8카메라 캡처, 좌우 외곽 overlay 동작·오류0·신규 JS 200 확인. 전체 맵 **VISUAL VERDICT: RETOUCH**. [구현·검수·MAP PRODUCTION REPORT](4.1맵디자인+설정/CH1_FOREST_SWAY_PASS89_20260930.md).
+
 ## 2026-09-30 — CH1-1 Sunburst 부패 생체나무 88차
 
 MagicLight Toolbox `GPT Image 2.5 sunburst`로 생체나무 4종을 생성하고 1024×1024 RGBA로 정리했다. `game.html`·`game-easy-test.html`의 1-1 손 배치 나무 8개를 `m_ctree13~20`으로 교체했다. 좌표·scale·충돌 메타 및 87차 피부 바닥을 유지하고 전용 stage/scatter 범위를 지정했다. 실제 게임 8개 배치·4장 로딩·카메라 구역·오류 로그와 Node 51/51 검사 확인. 외곽 식생 재질은 후속 정비 대상으로 **전체 맵 VISUAL VERDICT: RETOUCH**. [ID별 수치·생성·검수·MAP PRODUCTION REPORT](4.1맵디자인+설정/CH1_SUNBURST_TREE_PASS88_20260930.md).

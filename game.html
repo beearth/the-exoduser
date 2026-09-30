@@ -61,6 +61,7 @@ window._supabaseReady=new Promise(resolve=>{
 <script src="assets/map/ch1/geometry/ch1_si1_geometry.js"></script>
 <script src="assets/map/ch1/production_finish/layout.js?v=20260916-finish-1"></script>
 <script src="ch1-living-detail.js?v=20260929-87"></script>
+<script src="ch1-forest-sway.js?v=20260930-90"></script>
 <script src="lang_zh.js"></script>
 <script src="lang_ja.js"></script>
 <script src="lang_es.js"></script>
@@ -10911,7 +10912,7 @@ function _drawMapPaintWorld(ctx,x0,y0,x1,y1){
 const _CH1_START_OUTER={stage:0,chunkSize:_ROOTWORLD_ART_PREVIEW?256:1024,bleed:1,chunks:{}};
 const _CH1_START_PHASE=(()=>{if(typeof location==='undefined')return 'smoothing';const phase=new URLSearchParams(location.search).get('ch1StartPhase');return phase==='outer'?'outer':'smoothing'})();
 const _CH1_START_ROOT=_DIABLO_FIELD_QA?(_ROOTWORLD_ART_PREVIEW?'assets/map/ch1/rootworld_candidate':'assets/map/ch1/rootworld_outer'):_CH1_START_PHASE==='outer'?'assets/map/ch1/baked_start_outer':'assets/map/ch1/production_finish';
-for(let y=0;y<8;y++)for(let x=0;x<8;x++)_CH1_START_OUTER.chunks[x+','+y]=`${_CH1_START_ROOT}/chunk_${x}_${y}.png?v=${_DIABLO_FIELD_QA?'20260924-blockout-2':_CH1_START_PHASE==='outer'?'20260917-depth-2':'20260929-floor-87'}`;
+for(let y=0;y<8;y++)for(let x=0;x<8;x++)_CH1_START_OUTER.chunks[x+','+y]=`${_CH1_START_ROOT}/chunk_${x}_${y}.png?v=${_DIABLO_FIELD_QA?'20260924-blockout-2':_CH1_START_PHASE==='outer'?'20260917-depth-2':'20260930-rotforest-91'}`;
 const _CH1_START_OUTER_QUERY_ENABLED=typeof location==='undefined'||new URLSearchParams(location.search).get('ch1StartOuter')!=='0';
 const _CH1_LEGACY_UNDERLAY=typeof location!=='undefined'&&new URLSearchParams(location.search).get('ch1LegacyUnderlay')==='1';
 const _ch1StartOuterCache=Object.create(null),_ch1StartOuterWarmQ=[];
@@ -16404,14 +16405,14 @@ const _CH_DECO={
     {id:'m_ctree11',file:'cursed_tree_11.png',sz:400,large:1,dir:'collision',hardAlpha:1},
     {id:'m_ctree12',file:'cursed_tree_12.png',sz:400,large:1,dir:'collision',hardAlpha:1},
     // CH1-1 Sunburst cutouts: four source silhouettes, eight authored colliders; legacy trees remain for later stages.
-    {id:'m_ctree13',file:'sunburst_tree_01.png',sz:400,large:1,col:1,dir:'collision',colSz:60,sharedAtlas:1,stageMax:0,authoredOnly:1},
-    {id:'m_ctree14',file:'sunburst_tree_02.png',sz:400,large:1,col:1,dir:'collision',colSz:60,sharedAtlas:1,stageMax:0,authoredOnly:1},
-    {id:'m_ctree15',file:'sunburst_tree_04.png',sz:400,large:1,col:1,dir:'collision',colSz:60,sharedAtlas:1,stageMax:0,authoredOnly:1},
-    {id:'m_ctree16',file:'sunburst_tree_03.png',sz:400,large:1,col:1,dir:'collision',colSz:60,sharedAtlas:1,stageMax:0,authoredOnly:1},
-    {id:'m_ctree17',file:'sunburst_tree_03.png',sz:400,large:1,col:1,dir:'collision',colSz:60,sharedAtlas:1,stageMax:0,authoredOnly:1},
-    {id:'m_ctree18',file:'sunburst_tree_04.png',sz:400,large:1,col:1,dir:'collision',colSz:60,sharedAtlas:1,stageMax:0,authoredOnly:1},
-    {id:'m_ctree19',file:'sunburst_tree_02.png',sz:400,large:1,col:1,dir:'collision',sharedAtlas:1,stageMax:0,authoredOnly:1},
-    {id:'m_ctree20',file:'sunburst_tree_01.png',sz:400,large:1,col:1,dir:'collision',sharedAtlas:1,stageMax:0,authoredOnly:1},
+    {id:'m_ctree13',file:'rotforest_tree_01.png',sz:400,large:1,col:1,dir:'collision',colSz:60,sharedAtlas:1,stageMax:0,authoredOnly:1},
+    {id:'m_ctree14',file:'rotforest_tree_02.png',sz:400,large:1,col:1,dir:'collision',colSz:60,sharedAtlas:1,stageMax:0,authoredOnly:1},
+    {id:'m_ctree15',file:'rotforest_tree_04.png',sz:400,large:1,col:1,dir:'collision',colSz:60,sharedAtlas:1,stageMax:0,authoredOnly:1},
+    {id:'m_ctree16',file:'rotforest_tree_03.png',sz:400,large:1,col:1,dir:'collision',colSz:60,sharedAtlas:1,stageMax:0,authoredOnly:1},
+    {id:'m_ctree17',file:'rotforest_tree_03.png',sz:400,large:1,col:1,dir:'collision',colSz:60,sharedAtlas:1,stageMax:0,authoredOnly:1},
+    {id:'m_ctree18',file:'rotforest_tree_04.png',sz:400,large:1,col:1,dir:'collision',colSz:60,sharedAtlas:1,stageMax:0,authoredOnly:1},
+    {id:'m_ctree19',file:'rotforest_tree_02.png',sz:400,large:1,col:1,dir:'collision',sharedAtlas:1,stageMax:0,authoredOnly:1},
+    {id:'m_ctree20',file:'rotforest_tree_01.png',sz:400,large:1,col:1,dir:'collision',sharedAtlas:1,stageMax:0,authoredOnly:1},
     {id:'m_atree1',file:'anim_tree_01.png',sz:400,large:1,dir:'collision',hardAlpha:1},
     {id:'m_cage_gate',file:'cage_gate.png',sz:300,large:1,dir:'collision'},
     {id:'m_sword_pile',file:'sword_pile.png',sz:200,large:1,dir:'collision'},
@@ -49460,6 +49461,7 @@ function draw(){
   }
   }
   _drawCh1BakedSpike(X);
+  if(globalThis.Ch1ForestSway)Ch1ForestSway.draw(X,G,_now,_ch1StartOuterCache,_ch1StartOuterStats.drawnIds,G.mw*T/8,_CH1_START_ROOT,VW,VH);
   _drawCh1Hill(X);
   if(globalThis.Ch1LivingDetail?.shadows)Ch1LivingDetail.shadows(X,G,MAP_OBJS,_OBJ_SPR,_OBJ_META,_now,VW,VH);
   if(globalThis.Ch1LivingDetail)Ch1LivingDetail.draw(X,G,MAP_OBJS,_now,VW,VH);

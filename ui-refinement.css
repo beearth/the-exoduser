@@ -1195,7 +1195,7 @@
 }
 #settings.panel{padding:12px!important;align-items:center!important;box-sizing:border-box;background:#050507c9!important;}
 #settings.panel .pbox{box-sizing:border-box;margin:0!important;padding:20px 28px!important;max-width:none!important;max-height:none!important;min-width:0!important;min-height:0!important;overflow:hidden!important;}
-#settings.panel .pbox .ptitle{height:80px!important;min-height:80px!important;padding:0 16px 0 154px!important;justify-content:flex-start!important;font-size:30px!important;margin-bottom:14px!important;}
+#settings.panel .pbox .ptitle{height:80px!important;min-height:80px!important;padding:0 16px 9px 50px!important;justify-content:flex-start!important;align-items:flex-end!important;font-size:24px!important;line-height:28px!important;margin-bottom:14px!important;}
 #settings.panel .pbox .ptitle::before{left:4px!important;right:auto!important;top:0!important;transform:none!important;width:140px!important;height:80px!important;background-size:182px 182px!important;background-position:center -45px!important;}
 #settings.panel .pbox .panel-nav{gap:6px!important;margin-bottom:10px!important;}
 #settings.panel .pbox .panel-nav-tab{min-height:40px!important;font-size:14px!important;}
@@ -1249,7 +1249,7 @@
 @media(max-width:600px){
  #settings.panel{padding:6px!important;}
  #settings.panel .pbox{width:calc(100vw - 12px)!important;height:calc(100dvh - 12px)!important;padding:12px!important;}
- #settings.panel .pbox .ptitle{padding-left:104px!important;height:64px!important;min-height:64px!important;font-size:24px!important;}
+ #settings.panel .pbox .ptitle{padding-left:30px!important;padding-bottom:5px!important;height:64px!important;min-height:64px!important;font-size:20px!important;line-height:24px!important;}
  #settings.panel .pbox .ptitle::before{width:90px!important;height:64px!important;background-size:146px 146px!important;background-position:center -36px!important;}
  #settings.panel .pbox .ui-section-tabs{gap:2px!important;}
  #settings.panel .pbox .ui-section-tab{font-size:12px!important;padding:8px 3px!important;min-height:40px!important;}
@@ -1265,7 +1265,7 @@
  #settings.panel .pbox #settingsAutoSaveLabel{font-size:12px!important;}
 }
 @media(max-height:650px){
- #settings.panel .pbox .ptitle{height:52px!important;min-height:52px!important;padding-left:106px!important;margin-bottom:8px!important;font-size:24px!important;}
+ #settings.panel .pbox .ptitle{height:52px!important;min-height:52px!important;padding-left:30px!important;padding-bottom:0!important;margin-bottom:8px!important;font-size:18px!important;line-height:24px!important;}
  #settings.panel .pbox .ptitle::before{width:90px!important;height:52px!important;background-size:120px 120px!important;background-position:center -30px!important;}
  #settings.panel .pbox .panel-nav{margin-bottom:6px!important;}
  #settings.panel .pbox .panel-nav-tab{min-height:32px!important;font-size:12px!important;}

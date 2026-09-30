@@ -1,3 +1,15 @@
+## 2026-09-30 — [REGION] 4분면 지역 클리어 + 지역 기반 지옥문 개방
+
+오픈필드 맵을 타일 중점 4분면(북서/북동/남서/남동, CH1-1은 앵글러 속성 테마명)으로 나누고, 지옥문 개방 조건을 구 "전역 처치 80%+`_fbDone`"에서 **4지역 전부 클리어**(지역별 처치 80% + 게이트 지역 문지기 보너스 10% + CH1-1 담당 앵글러 사망)로 교체했다. 지역 입장 배너·클리어 배너·미니맵 십자선/딤/자물쇠/앵글러 마커·화면 가장자리 방향 화살표·HUD 현재지역 카운터 포함. 소형 맵(한 변 180타일 미만 — 던전·소환굴·보스아레나)은 구 규칙 폴백. `game.html`+`game-easy-test.html` 동일 반영, `test/regionClearGate.test.js` 7건 PASS. [SSOT](REGION_CLEAR_GATE_20260930.md). 갱신된 문서: MAP_RUNTIME_ARCHITECTURE §8/§9, LEVEL_DESIGN_RULES_SSOT §9, MAP_IMPLEMENTATION_ROADMAP PHASE 5/6, MAP_QA_GATES §2, CH1_VERTICAL_SLICE, CH1_1_BLOCKOUT_MASTER, BOSS_CANONICAL_MAPPING, GIANT_BOSS_PRESENCE_LADDER, STAGE_SPATIAL_GRAMMAR, WORLD_STRUCTURE_SSOT, 맵구성_1장, 맵디자인_벤치마크, 맵유형_확장기획, 2게임디자인레벨디자인, 3.1 HUD, 2_4 펫 대사, 16번역 No.3073~3087.
+
+## 2026-09-30 — CH1-1 살아 움직이는 썩은숲 90차 현행
+
+사용자 참조 스크린샷 `2026-09-30 105738`의 피부 바닥·썩은 목질·동맥 연결을 기준으로 외곽을 재제작했다. MagicLight GPT Image 2.5 Sunburst 생체나무 4종(눈·입·종양·부종)을 8개 손 배치에 교체하고, 비충돌 외곽 배경에 36개(큰 실루엣 6개)를 합성했다. 배경 bakeVersion은 `20260930-rotforest-90`, 청크 cache key는 `20260930-rotforest-91`, retouch 23레이어, 64청크다. 89차 ±5월드픽셀 숲 흔들림과 87차 피부 바닥, 53점 경계·8구역·충돌은 유지한다. [현행 생성·수치·검수·MAP PRODUCTION REPORT](CH1_ROTTEN_FOREST_PASS90_20260930.md). 아래 89/88/87차의 '현행' 표현은 각각 제작 당시 이력이다. **VISUAL VERDICT: RETOUCH**.
+
+## 2026-09-30 — CH1-1 외곽 숲 배경 흔들림 89차
+
+정적 production 숲 청크의 보행 경계 뒤 1~9타일만 최대 ±5월드픽셀로 천천히 흔들리는 `Ch1ForestSway` 레이어를 본편에 연결했다. 피부 바닥·충돌·64청크 원본·88차 나무 배치는 그대로다. [구현 수치·검수·MAP PRODUCTION REPORT](CH1_FOREST_SWAY_PASS89_20260930.md). 전체 맵 **VISUAL VERDICT: RETOUCH**.
+
 ## 2026-09-30 — CH1-1 Sunburst 부패 생체나무 88차
 
 1-1 손 배치 나무 8개는 `m_ctree13~20`/Sunburst RGBA 4종으로 교체했다. 기존 위치·scale·충돌, 87차 피부 바닥·경계·배경·living module은 유지한다. [현재 나무 ID·원화·좌표·검수·MAP PRODUCTION REPORT](CH1_SUNBURST_TREE_PASS88_20260930.md). 전체 맵 **VISUAL VERDICT: RETOUCH**.

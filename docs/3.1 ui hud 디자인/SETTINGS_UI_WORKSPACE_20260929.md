@@ -2,13 +2,24 @@
 
 사용자 지시: 설정 UI만 작고 답답하므로 크기를 확장한다. 기존 왼쪽 `min(680px,100vw−24px)`·최대 높이1000px 제한을 제거하고, 화면 크기에 맞춰 내용도 재배치했다. 이 문서가 앞선 날짜의 설정 창/제목/행/키캡 크기보다 우선한다. 기존 금속 프레임·제목 아트·버튼 에셋을 사용한다.
 
+## 2026-09-30 설정 제목 명패 정렬
+
+`img/ui/blackiron/header.png`에는 글자가 없는 명패가 들어 있다. 기존 `#settings .ptitle`의 왼쪽 패딩 `154px`(작은 폭 `104px`, 낮은 높이 `106px`)이 제목 글자를 명패 오른쪽으로 밀어 빈 명패와 분리했다. 설정 제목에만 글자를 명패 안으로 옮겼다. 다른 패널의 제목, 원본 아트, 설정 값과 동작은 유지한다.
+
+| 조건 | 제목 글자 / 장식 / 검수 |
+|---|---|
+| 기본 | 제목 높이 `80px`, 왼쪽 패딩 `50px`, 아래 패딩 `9px`, 글자 `24px/28px`, `align-items:flex-end`; 장식 `140×80px`, 배경 `182×182px center -45px` |
+| 폭 `600px` 이하 | 제목 높이 `64px`, 왼쪽 `30px`, 아래 `5px`, 글자 `20px/24px`; 장식 `90×64px`, 배경 `146×146px center -36px` |
+| 높이 `650px` 이하 | 제목 높이 `52px`, 왼쪽 `30px`, 아래 `0`, 글자 `18px/24px`; 장식 `90×52px`, 배경 `120×120px center -30px` |
+| 캐시·검수 | `game.html`, `game-easy-test.html`, `index.html`의 `ui-refinement.css` 쿼리 `20260930-settings-title-plaque`. 실제 로컬 게임 설정창에서 `1688×1262`, `390×844`, `1280×540` 명패 안 제목을 확인. CSS 캐시 때문에 쿼리 변경 전 새 스타일이 적용되지 않던 현상도 재현했다. 다른 탭 기능·NW.js 패키지·Steam 빌드는 이번 검수 범위 밖 |
+
 ## 레이아웃 계약
 
 | 대상 / 선택자 | 현행 값 / 동작 |
 |---|---|
 | `#settings.panel` | 중앙 정렬, padding12px, border-box, 배경#050507c9 |
 | `.pbox` | width100vw−24px / height100dvh−24px, max-width/max-height none, min-width/min-height0, margin0, padding20px 28px, overflow hidden |
-| `.ptitle` | height/min-height80px, padding0 16px 0 154px, 왼쪽 정렬, 글자30px, margin-bottom14px |
+| `.ptitle` | height/min-height80px, padding0 16px 9px 50px, 왼쪽·아래 정렬, 글자24px/28px, margin-bottom14px |
 | 제목 `::before` | left4px/top0, transform none, 140×80px, 기존 info-header 크기182×182px/위치center −45px |
 | `.panel-nav` | gap6px/margin-bottom10px. 탭 최소40px/글자14px |
 | `.ui-section-tabs` | gap8px/margin-bottom14px. 탭 최소48px/padding10px 16px/글자16px |
@@ -33,8 +44,8 @@
 | 폭1600px 이상 | 그래픽 품질 섹션 내부2열/gap4px 20px. 제목·gfxPresetRow는 전체 열 |
 | 폭1800px 이상 | keyBindList 내부2열/gap6px 24px. 모드/안내/초기화는 전체 열 |
 | 폭1100px 이하 | pbox padding16px 20px/본문16px. 페이지·조작·게임 섹션1열/gap16px. 커서 sticky 해제 |
-| 폭600px 이하 | 패널 여백6px, pbox100vw−12px/100dvh−12px/padding12px, 제목64px/24px/padding-left104px. 제목 아트90×64px/146²/center−36px. 탭gap2px/최소40px/글자12px/padding8px 3px. 본문10px/섹션8px. 행padding10px 4px/gap8px. 이름14px/값82px·12px. 키 행 minmax(70px,1fr) / minmax(50px,.8fr) / minmax(46px,.7fr) / 20px (패드 행은 위3칸 유지), gap5px/padding6px 2px. 키명/캡12px, 캡padding5px 3px. 닫기 최소폭120px/자동저장12px |
-| 높이650px 이하 | 제목52px/24px/padding-left106px/margin-bottom8px. 아트90×52px/120²/center−30px. 공통 패널 탭 최소32px/12px/margin-bottom6px. 설정 탭 최소36px/padding6px/margin-bottom8px. footer margin/padding-top8px |
+| 폭600px 이하 | 패널 여백6px, pbox100vw−12px/100dvh−12px/padding12px, 제목64px/20px/24px·왼쪽30px·아래5px. 제목 아트90×64px/146²/center−36px. 탭gap2px/최소40px/글자12px/padding8px 3px. 본문10px/섹션8px. 행padding10px 4px/gap8px. 이름14px/값82px·12px. 키 행 minmax(70px,1fr) / minmax(50px,.8fr) / minmax(46px,.7fr) / 20px (패드 행은 위3칸 유지), gap5px/padding6px 2px. 키명/캡12px, 캡padding5px 3px. 닫기 최소폭120px/자동저장12px |
+| 높이650px 이하 | 제목52px/18px/24px·왼쪽30px·아래0/margin-bottom8px. 아트90×52px/120²/center−30px. 공통 패널 탭 최소32px/12px/margin-bottom6px. 설정 탭 최소36px/padding6px/margin-bottom8px. footer margin/padding-top8px |
 
 ## 입력 및 DOM 계약
 
@@ -47,7 +58,7 @@
 | 초점 | renderSettings 재구성 전 식별자를 보존, 같은 버튼 focus preventScroll. 보조 삭제 후 해당 alt로 복원 |
 | 대기 | 시작 시 저장/매핑 변경 없음. repeat keydown 무시. 새 키는 기존 등록/충돌 정책으로 처리하고 Escape 취소 |
 | 버튼 입력 | 설정 내 버튼의 Space/Enter/NumpadEnter/Tab을 게임 단축키로 전달하지 않음. 키 캡처 분기가 먼저이므로 대기 중 새 Space/Enter/Tab 등록은 가능 |
-| 캐시 | 두 HTML에서 ui-refinement.css/ui-panels.js 모두 v=20260929-settings-choices |
+| 캐시 | `game.html`·`game-easy-test.html`의 ui-refinement.css는 `20260930-settings-title-plaque`, ui-panels.js는 `20260929-settings-choices`. `index.html`의 공용 CSS도 새 쿼리 사용 |
 
 ## 검증 및 상태
 

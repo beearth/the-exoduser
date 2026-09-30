@@ -15,22 +15,22 @@ function handTrees(source) {
     .map(([, id, x, y, scale]) => ({ id, x: +x, y: +y, scale: +scale }));
 }
 
-test('CH1-1 uses eight Sunburst trees at the preserved anchors in both builds', () => {
+test('CH1-1 uses eight infected trees at the preserved anchors in both builds', () => {
   for (const name of ['game.html', 'game-easy-test.html']) {
     const source = readFileSync(new URL(`../${name}`, import.meta.url), 'utf8');
     const trees = handTrees(source);
     assert.deepEqual(trees.map(({id,x,y}) => [id,x,y]), ids.map((id,i) => [id,...positions[i]]), name);
     assert.ok(new Set(trees.map(tree => tree.scale)).size >= 6, 'varied scales avoid repeated silhouettes');
     for (let i = 0; i < ids.length; i++) {
-      const file = `sunburst_tree_0${variants[i]}.png`;
+      const file = `rotforest_tree_0${variants[i]}.png`;
       assert.match(source, new RegExp(`\\{id:'${ids[i]}',file:'${file}',[^\\n]*stageMax:0[^\\n]*authoredOnly:1`), `${name}: ${ids[i]} is CH1-1 only`);
     }
   }
 });
 
-test('all four production tree assets have real alpha, including transparent corners', async () => {
+test('all four infected tree assets have real alpha, including transparent corners', async () => {
   for (let variant = 1; variant <= 4; variant++) {
-    const path = fileURLToPath(new URL(`../assets/map/ch1/collision/sunburst_tree_0${variant}.png`, import.meta.url));
+    const path = fileURLToPath(new URL(`../assets/map/ch1/collision/rotforest_tree_0${variant}.png`, import.meta.url));
     assert.ok(existsSync(path), `missing ${path}`);
     const image = await loadImage(path);
     assert.ok(image.width >= 1024 && image.height >= 1024, 'game-scale source retains 2x resolution');

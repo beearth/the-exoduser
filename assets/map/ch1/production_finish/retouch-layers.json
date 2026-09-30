@@ -1,5 +1,5 @@
 {
-  "bakeVersion": "20260929-floor-87",
+  "bakeVersion": "20260930-rotforest-90",
   "layers": [
     {
       "id": "skin65",
@@ -172,6 +172,14 @@
     {
       "id": "floor87",
       "file": "floor87_sources/floor87_patch.png",
+      "x": 0,
+      "y": 0,
+      "width": 8192,
+      "height": 8192
+    },
+    {
+      "id": "outer90",
+      "file": "outer90_sources/outer90_patch.png",
       "x": 0,
       "y": 0,
       "width": 8192,
