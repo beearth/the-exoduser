@@ -1,0 +1,58 @@
+{
+  "measured_source_commit": "9dbcd0ad5a70118cc189f770f0ab04e60a168329",
+  "remote_match": true,
+  "game_sha256": "775237034c6fec4c9de26b56c771b5ed03bc1037353cc292c4bec187d0f53967",
+  "date": "2026-09-30T22:17:01.956178+00:00",
+  "origin": "http://localhost:3340",
+  "isolation": "Dedicated QA origin localStorage and server tmp/mac-migration-runtime/saves; not an OS-level fresh Chrome profile",
+  "renderer": "WebGPU",
+  "viewport": [
+    1280,
+    800
+  ],
+  "quality": "high",
+  "fps_cap": 0,
+  "runs": 2,
+  "repeats_per_scenario": 1,
+  "measurement_stopped": true,
+  "viewport_restored": true,
+  "qa_tab_navigated_blank": true,
+  "files": {
+    "summary.json": {
+      "bytes": 6090,
+      "sha256": "f8bd4facae4bea0096ee9da74167891412faf1b26cc4ae446a0684fc046581fa"
+    },
+    "MAP-검토로그.txt": {
+      "bytes": 44346,
+      "sha256": "716d7ff4556f4c4ccb1f5d2d493bd4851f59332465adf2d43e3ed7d8592919c8"
+    },
+    "QA-검토로그.txt": {
+      "bytes": 63573,
+      "sha256": "0f960d13d3bbcca630cf273141520fb51758df7d1ba7689b64b143893535ccba"
+    },
+    "dense-combat.png": {
+      "bytes": 133810,
+      "sha256": "d83d39580f9d13664ed4947a86ea45a8191ab9e054408d5ebc66ff5f2fad9d35"
+    },
+    "dense-baseline-raw.json": {
+      "bytes": 253602,
+      "sha256": "3d0be8b485f8782b7fdc199ad5d89e2b828e8f1a9622020d31675d2c371fba8e"
+    },
+    "first-kill.cpuprofile": {
+      "bytes": 927707,
+      "sha256": "83f1c7b0bb0bacf4c1642f4dfd321c70be69513ceb101dde56848c4827d73e8f"
+    },
+    "first-kill.png": {
+      "bytes": 83528,
+      "sha256": "e27e08d8985c3d988bdf694d461973577363eb4db6289ea1fa664ebdacca7c07"
+    },
+    "측정결과.md": {
+      "bytes": 4675,
+      "sha256": "6e9a15a3bf95932df80af6b2addc2be590beab2e093ee9fe3707c0726817e1be"
+    },
+    "first-kill-raw.json": {
+      "bytes": 1420961,
+      "sha256": "2be16492d58649d26dce8ab3726b2c6238c5f2136155983330a95547675cfd44"
+    }
+  }
+}
