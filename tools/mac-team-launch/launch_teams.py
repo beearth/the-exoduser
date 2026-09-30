@@ -22,12 +22,12 @@ for team in manifest['teams']:
  found=matches(team,items)
  if len(found)>1: raise RuntimeError(team['team']+': multiple existing matches; manual review required')
  if found:
-  state['sessions'][team['team']]={'state':'existing-verified','session_id':team['session_id'],'name':team['name']};save();print(team['team']+': existing, skipped');continue
+  state['sessions'][team['team']]={'state':'existing-verified','session_id':found[0].get('sessionId',team['session_id']),'name':team['name']};save();print(team['team']+': existing, skipped');continue
  if team['team'] in state['sessions']:
   print(team['team']+': previous attempt exists; inspect before retry');continue
  if not args.launch:
   print(team['team']+': prepared, not launched');continue
- command=[manifest['cli'],'--bg','--name',team['name'],'--session-id',team['session_id'],'--tools','Read,Glob,Grep',(base / team['prompt_file']).read_text()]
+ command=[manifest['cli'],'--bg','--name',team['name'],'--session-id',team['session_id'],'--tools','Read,Glob,Grep','--',(base / team['prompt_file']).read_text()]
  state['sessions'][team['team']]={'state':'launching','session_id':team['session_id'],'name':team['name']};save()
  try:p=subprocess.run(command,capture_output=True,text=True,cwd=manifest['repo'],timeout=60)
  except subprocess.TimeoutExpired:
@@ -36,6 +36,8 @@ for team in manifest['teams']:
  if p.returncode:
   state['sessions'][team['team']]['state']='blocked';save();print(p.stdout+p.stderr);raise SystemExit(p.returncode)
  items=inventory()
+ verified=matches(team,items)
+ if verified: state['sessions'][team['team']]['session_id']=verified[0].get('sessionId',team['session_id'])
  state['sessions'][team['team']]['state']='opened-inventory-verified' if matches(team,items) else 'launch-returned-verification-pending'
  save();print(team['team']+': '+state['sessions'][team['team']]['state'])
  if not matches(team,items): raise SystemExit('Inventory confirmation missing; stopped to avoid duplicates.')
