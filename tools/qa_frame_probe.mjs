@@ -424,10 +424,20 @@ async function main() {
     else if (s === 'POST') { await topUp(Math.min(ENEMIES, 60)); await segment('POST', 12, async () => null); }
   }
   clearInterval(god);
+  // Segment frame recording has stopped: diagnostic serialization is outside timings.
+  const firstKill = await page.evaluate(() => {
+    const probe = window.__qaFirstKill;
+    if (!probe) return null;
+    const records = probe.stop();
+    return { records, missing: probe.missing, startedAt: probe.startedAt, endedAt: probe.endedAt,
+      totalCalls: probe.totalCalls, skippedFast2d: probe.skippedFast2d,
+      droppedCount: probe.droppedCount, truncated: probe.truncated,
+      firstDeathCandidateAt: probe.firstDeathCandidateAt, stopped: probe.stopped };
+  }).catch(error => ({ captureError: String(error) }));
   env.texhotEnd = await page.evaluate(() => { try { _texHotSave(); return { manifest: JSON.parse(localStorage.getItem('hell_texhot_v1') || '[]').map(e => e[0]), bySrc: _texBySrc ? _texBySrc.size : null }; } catch (e) { return null; } }).catch(() => null);
   env.finishedAt = new Date().toISOString(); env.blockedWrites = blocked.length; env.errors = errors.slice(0, 20); env.warns = warns.slice(0, 20);
   const out = path.join(OUT_DIR, LABEL + '.json');
-  writeFileSync(out, JSON.stringify({ env, results }, null, 1));
+  writeFileSync(out, JSON.stringify({ env, results, firstKill }, null, 1));
   console.log(`[${LABEL}] saved ${out} | blocked writes ${blocked.length} | pageerrors ${errors.length}`);
   await ctx.close();
 }

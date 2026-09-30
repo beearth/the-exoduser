@@ -1,6 +1,26 @@
 # 첫 처치 긴 프레임 CPU 경로 조사
 
-## Mac 이전 인계·정지
+## Mac 재개 — 계측 기록 보강 (2026-10-01)
+
+사용자의 Mac 재개 지시를 인수해 QA 도구만 보강했다. `game.html`·생산 사망/보상·공용 루프는 수정하지 않았다. 실제 게임 측정은 총괄의 단독 실행으로 분리한다. 아래 Mac 이전 정지 절은 당시 이력이다.
+
+| 변경 | 현재 계약 |
+|---|---|
+| 기록 한도 | 최근 **20,000개**를 순환 보관한다. 한도를 넘으면 오래된 기록을 덮어쓰고 `droppedCount`·`truncated=true`를 남긴다. 포화된 표본으로 첫 처치 전체 비용을 확정하지 않는다. `records`/`stop()`은 호출 완료 순서의 사본을 반환한다. |
+| 일반 2D 호출 | 대상 함수 바깥의 **2ms 미만** 호출은 `skippedFast2d` 집계만 남긴다. 대상 함수 안쪽 2D 호출·2ms 이상 2D·모든 GL 업로드는 상세 보관한다. 다음 draw의 업로드도 대상이다. 이는 진단 필터이며 실제 게임 시간·효과를 바꾸지 않는다. |
+| 시각·호출 수 | `startedAt`, `endedAt`, `totalCalls`, `firstDeathCandidateAt`을 기록한다. 마지막 값은 `_fmDeathFx`/`_addCorpse`/`_addHeadGib`의 첫 호출 시각으로, 실제 kill·보상의 직접 증명이 아니다. |
+| 이미지 식별 | `2d.drawImage`의 첫 인수 `currentSrc/src`를 보관한다. GL은 마지막 source 인수의 URL만 보관하고 픽셀 버퍼는 저장하지 않는다. |
+| 복구 | `stop()`은 멱등 복구한다. 재주입 전 기존 프로브를 먼저 stop한다. 없는 Canvas/WebGL2 생성자는 예외 대신 missing에 남긴다. |
+| 하니스 회수 | `qa_frame_probe.mjs`가 구간 측정 종료 뒤, 최종 JSON 저장 전에 stop한다. 기존 `env/results`를 유지하고 `firstKill` 필드에 records·메타데이터를 추가한다. 프로브가 없으면 null, 회수 실패 시 captureError. 조기 실패로 최종 저장까지 도달하지 못한 실행은 이 경로의 회수 보장이 없다. |
+| 수치 해석 | selfMs는 감싼 자식만 제외한 경과 시간이다. GL API 반환 시간은 GPU 실행 시간 자체가 아니다. 래퍼 실행은 기본 성능 비교 표본과 구분한다. |
+
+필수 검증: Node **24.15.0**으로 `node --test test/qaFirstKillProbe.test.js` **5/5 PASS**. 실제 프로브를 VM에서 실행해 20,001개 일반 draw 뒤 사망 캡처·중첩 self 시간/이미지 식별·20,005개 업로드의 순환 보관/누락 수·예외 전파·재설치·원본 함수 복구·생성자 부재·실제 하니스 최종 블록의 records 직렬화/회수 실패 표기를 검증했다. 실제 Mac 브라우저 설치/회수·프레임 측정은 아직 미수행이다.
+
+수신 원본 `tmp/mac-migration-20261001/verified-evidence/tmp/qa-perf-20261001/vfx/vfx-cap0.json`의 `seqs[0]`(death-0)에서 deathAt=3, rows[4].dt=**329.4ms**, rows[5].dt=**100.1ms**를 재대조했다. 소스 SHA는 `392fd13cf510290c2f4f5c0a3d380e76b1c2da5ad9258fb557edcdca4a159475`. 같은 간격을 담은 death-1/2를 독립 사건 3회로 합산하지 않는다. 표본의 존재만 확인했으며 CPU/GPU 원인 귀속·개선 판정은 없다.
+
+다음 실제 실행은 Mac `127.0.0.1:3340`의 정확한 소스 SHA·해상도·옵션·FPS캡·전경 상태·프로필/저장 격리를 고정한다. 정상 가시 부팅 후 짧은 첫 처치 진단을 끝내고 즉시 records를 회수한다. 기본 p95/p99/긴 프레임 표본은 래퍼 없는 실행으로 따로 기록한다. 게임 수정은 직접 귀속과 총괄 검토 이후 판단한다.
+
+## Mac 이전 인계·정지 (보강 전 이력)
 
 사용자 최신 정지 지시에 따라 이 조사 한 건을 계측 준비·구문 검사까지 마무리하고 정지한다. 자동 연속 진행, 새 측정, M2 패키지 대조는 시작하지 않는다.
 
@@ -12,11 +32,11 @@
 | 검증 | Node `--check tools/qa_first_kill_cpu_probe.js` exit 0. 실게임 실행 0 |
 | 원격 WIP 백업 | 총괄 인수값 `codex/backup-20261001-020248`, `5ea53a92d0c5a2c9bb1cc1c69b5ae2bc93477f45`; 본 조사에서 독립 원격 대조는 수행하지 않음 |
 
-Mac에서 이어갈 한 건: 가시 headed 정규 부팅에서 첫 처치 한 번의 CPU 귀속을 확인한다. 서버는 `node server.cjs`; 기존 프로브에는 `--chrome=/Applications/Google Chrome.app/Contents/MacOS/Google Chrome --char=new --scen=COMBAT --inject=tools/qa_first_kill_cpu_probe.js --profile=1`을 사용한다. 실행 전 Mac 경로 처리·의존성·세이브 차단·정상 visibility를 검증하고 CPU/GPU 결과를 Windows와 직접 성능 비교하지 않는다. 종료 직전 `page.evaluate(() => window.__qaFirstKill.stop())` 결과를 JSON에 저장하도록 하니스 회수 지점을 먼저 보강해야 한다. 현재 프로브는 해당 records를 자동 회수하지 않는다.
+이전 인계의 다음 건은 가시 headed 정규 부팅에서 첫 처치 한 번의 CPU 귀속을 확인하는 것이었다. 서버는 `node server.cjs`; 당시 계획 인수는 `--chrome=/Applications/Google Chrome.app/Contents/MacOS/Google Chrome --char=new --scen=COMBAT --inject=tools/qa_first_kill_cpu_probe.js --profile=1`이었다. 실행 전 Mac 경로 처리·의존성·세이브 차단·정상 visibility를 검증하고 CPU/GPU 결과를 Windows와 직접 성능 비교하지 않는다. 당시 하니스는 종료 records 자동 회수가 없었으며, 위 Mac 재개 절에서 보강했다. 실제 실행 경로는 현재 지원되는 브라우저 도구 규칙을 따른다.
 
 미검증: 주입 래퍼의 정규 런타임 설치/회수, 329ms 원본 재대조, 사망 종류별 분리, Mac 정상 부팅, 패키지 SHA 대조. 성능 개선 선언 없음. 생산 게임·ENEMY/VFX 소유 구역·세이브 수정 없음.
 
-총괄 후속 인계의 329ms는 원본 표본 재대조 전 보고값이다. 이번 작업은 코드 조사·계측 준비이며 새 게임 측정을 수행하지 않았다. 생산 코드 변경 없음.
+당시 총괄 후속 인계의 329ms는 원본 표본 재대조 전 보고값이었다. Mac 재개 절에서 원본 간격만 확인했다. 생산 코드 변경 없음.
 
 | 경로 | 확인한 코드 | 분리할 비용 / 가설 |
 |---|---|---|
@@ -26,8 +46,8 @@ Mac에서 이어갈 한 건: 가시 headed 정규 부팅에서 첫 처치 한 �
 | `_worldDropFxTile` → `_maskWorldDropBlack` | 캐시 미스 때 512² 타일 생성, draw → getImageData → 픽셀 루프 → putImageData | 첫 드롭 시 읽기백 대기와 픽셀 변환 분리. 캐시 히트와 미스 구분 |
 | GL texImage2D | 시체/드롭 첫 draw와 별도 시점에 수행 가능 | CPU API 대기 시간이며 GPU 실행 시간 자체로 해석 금지 |
 
-`tools/qa_first_kill_cpu_probe.js`는 정상 부트 후 `--inject`로 설치하는 임시 래퍼다. 포함 시간·계측된 자식 제외 시간·호출 시각·부모·캔버스 크기를 기록한다. 미존재 함수는 missing으로 남긴다. 생산 사망 판정·보상·VFX 플래시 구역을 편집하지 않는다. `__qaFirstKill.stop()`은 래퍼를 복구한다. 최대 20,000개 기록 이후 표본은 누락되므로 짧은 진단에만 사용한다.
+`tools/qa_first_kill_cpu_probe.js`는 정상 부트 후 설치하는 임시 래퍼다. 포함 시간·계측된 자식 제외 시간·호출 시각·부모·캔버스 크기를 기록한다. 미존재 함수는 missing으로 남긴다. 생산 사망 판정·보상·VFX 플래시 구역을 편집하지 않는다. `__qaFirstKill.stop()`은 래퍼를 복구한다. 이전 버전은 선착순 20,000개 이후 기록을 버렸으며, 현재 한도·필터·포화 표기는 위 Mac 재개 절을 따른다.
 
-다음 조율된 진단에서는 첫 처치 전부터 프레임/CPU 프로파일과 함께 기록하고, 처치 직후 update와 다음 draw까지 동일 시간축으로 대조한다. 원래 프로브의 최종 JSON 회수에 records를 포함해야 한다(현재 inject 반환값만으로 이후 기록을 자동 저장하지 않음). 래퍼 오버헤드 때문에 ABAB 성능 본표에 합치지 않는다. deathFx를 끄는 실험은 진단용 조건으로만 명시하며 해결 결과로 보고하지 않는다.
+다음 조율된 진단에서는 첫 처치 전부터 프레임/CPU 프로파일과 함께 기록하고, 처치 직후 update와 다음 draw까지 동일 시간축으로 대조한다. 보강한 최종 JSON의 firstKill.records 및 누락 수를 확인한다. 래퍼 오버헤드 때문에 ABAB 성능 본표에 합치지 않는다. deathFx를 끄는 실험은 진단용 조건으로만 명시하며 해결 결과로 보고하지 않는다.
 
 ENEMY에는 실제 사망 종류·최초 kill 시각·보상 경로 호출 정보를 요청할 인계 지점을 남긴다. VFX에는 시체/고어 렌더 첫 업로드와 플래시 종료를 같은 프레임에서 확인할 지점을 남긴다. 생산 수정은 329ms의 직접 귀속 이후 판단한다. 패키지 대조는 정확한 패키지 SHA 수신 후 별도 수행한다.

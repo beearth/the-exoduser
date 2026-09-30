@@ -1,0 +1,94 @@
+{
+  "repo": "/Users/fordeargamers/Projects/exoduser-migration-20261001",
+  "cli": "/Users/fordeargamers/.local/bin/claude",
+  "teams": [
+    {
+      "team": "ART",
+      "name": "EXODUSER-Mac-ART",
+      "session_id": "0d8a0200-041f-42d7-9d13-fe0853b85502",
+      "prompt_file": "ART.txt",
+      "next_task": "기존 승인 컷신 4장 인수",
+      "document": "docs/17게임아트팀/ART_TEAM_MASTER.md"
+    },
+    {
+      "team": "MAP",
+      "name": "EXODUSER-Mac-MAP",
+      "session_id": "4dada3c4-57fc-480d-b454-0f0472b30769",
+      "prompt_file": "MAP.txt",
+      "next_task": "MAP020 반복 패턴·원거리 카메라·보행 경계",
+      "document": "docs/4.1맵디자인+설정/CH1_BOUNDARY_EDGE_MAP020_20261001.md"
+    },
+    {
+      "team": "SKILL",
+      "name": "EXODUSER-Mac-SKILL",
+      "session_id": "6c0d91e8-0e08-49b6-a65c-cd1cc8a8c21c",
+      "prompt_file": "SKILL.txt",
+      "next_task": "SKILL03 설치 확정 자원 검수",
+      "document": "docs/2_1 스킬관리+합체시스템+자원/SKILL03_설치확정_자원검수_20261001.md"
+    },
+    {
+      "team": "UIUX",
+      "name": "EXODUSER-Mac-UIUX",
+      "session_id": "5509aced-78a6-45ac-8d15-1e5560193b5c",
+      "prompt_file": "UIUX.txt",
+      "next_task": "UI02 검수 인수",
+      "document": "docs/3.1 ui hud 디자인/UI_UX_IMPROVEMENT_PROJECT_20260930.md"
+    },
+    {
+      "team": "ITEM",
+      "name": "EXODUSER-Mac-ITEM",
+      "session_id": "d1201a1c-4e52-4674-ac57-70dec78a35d5",
+      "prompt_file": "ITEM.txt",
+      "next_task": "22원화와 64px 가독성 검수 인수",
+      "document": "docs/7아이템디자인/ITEM_TEAM_MASTER.md"
+    },
+    {
+      "team": "SOUND",
+      "name": "EXODUSER-Mac-SOUND",
+      "session_id": "e43e2bb4-99a8-4004-8512-38f42e178952",
+      "prompt_file": "SOUND.txt",
+      "next_task": "49851bd 통합 후보 정상 BGM 보존·청취 조건",
+      "document": "docs/0마스터플랜/TEAM_CONTINUATION_POLICY_20261001.md"
+    },
+    {
+      "team": "QA",
+      "name": "EXODUSER-Mac-QA",
+      "session_id": "e60660a6-fb98-41a3-acc1-32828edd1be6",
+      "prompt_file": "QA.txt",
+      "next_task": "첫 처치 CPU 계측 보강 및 실측",
+      "document": "docs/12퍼포먼스·최적화/FIRST_KILL_CPU_INVESTIGATION_20261001.md"
+    },
+    {
+      "team": "ENEMY",
+      "name": "EXODUSER-Mac-ENEMY",
+      "session_id": "4b364d6e-c859-44b1-8f0d-31d8d0631a8d",
+      "prompt_file": "ENEMY.txt",
+      "next_task": "F05/F06 계약과 QA 인수",
+      "document": "docs/9적ai패턴디자인/ENEMY_AI_TEAM_MASTER.md"
+    },
+    {
+      "team": "BUILD",
+      "name": "EXODUSER-Mac-BUILD",
+      "session_id": "3f5a21be-5010-46a5-8224-d5cfdbdf44aa",
+      "prompt_file": "BUILD.txt",
+      "next_task": "Mac 포트·저장·패키지 계약",
+      "document": "docs/13출시·마케팅/INTEGRATION_BUILD_TEAM_MASTER.md"
+    },
+    {
+      "team": "BALANCE",
+      "name": "EXODUSER-Mac-BALANCE",
+      "session_id": "76c8ed2d-8bea-4c1a-8dca-88e64912ca50",
+      "prompt_file": "BALANCE.txt",
+      "next_task": "XP·강화 수식 WIP 검수 인수",
+      "document": "docs/14밸런스+수치테이블/BALANCE_ECONOMY_TEAM_MASTER.md"
+    },
+    {
+      "team": "ANIMVFX",
+      "name": "EXODUSER-Mac-ANIMVFX",
+      "session_id": "e70fa961-6d05-4f1e-915a-7d441a37b2a0",
+      "prompt_file": "ANIMVFX.txt",
+      "next_task": "피격 플래시 고정 업데이트·부활 GL 검수",
+      "document": "docs/5.1임펙트디자인/ANIMATION_VFX_TEAM_MASTER.md"
+    }
+  ]
+}

@@ -1,3 +1,9 @@
+## 2026-10-01 — Mac 11팀 재개 인수와 첫 처치 계측 보강
+
+Mac 재개 지시를 AGENTS·연속 정책·총괄 §18에 반영. 지원 하위 담당3명 수신·착수와 11팀 역할/소유 범위/다음1건을 기록했다. Claude 팀 CLI는 작업공간 신뢰 확인으로 0/11이며, 공식 --bg 기반 중복 확인·고정 UUID·실행 후 inventory 검증 실행기를 tools/mac-team-launch에 준비했다. 사용자 신뢰 승인을 대행하거나 권한 설정을 변경하지 않았다. 11팀 준비 점검과 Python/zsh 구문 검증 통과; 실제 등록은 미실행.
+
+QA 도구의 선착순 기록 포화를 최근20,000개 순환/누락표시와 빠른 일반2D 집계로 보강하고 최종 JSON에 firstKill records를 회수한다. Node24.15.0으로 의미 있는5개 검증 통과. 생산 game.html 변경0, Mac 새 실측0, 329.4ms 원인 미확정. 관련 FIRST_KILL_CPU_INVESTIGATION 문서 동기화. 인수 보고서3개에 PC 원본·MAP 반복띠·SOUND71개 정상짝/참조76개 및 실제 검수 잔여 기록. 소스/문서 원격 체크포인트와 실제 11세션/게임 성능 완료를 구분한다.
+
 ## 2026-10-01 — PC 비Git 검수 자료 Mac 인수 완료
 
 기존 LAN 서버로 non-git-evidence.zip 151,030,223바이트 수신. 원본 SHA256·ZIP CRC·80파일 및 PC manifest의 파일별 크기/해시 전부 일치. 별도 verified-evidence 폴더 추출, 설치/자료 인수 완료 기록. [Mac 인수서](13출시·마케팅/MAC_ENVIRONMENT_HANDOFF_20261001.md), [PC 이전 자료](13출시·마케팅/PC_TRANSFER_READY_20261001.md) 갱신.
