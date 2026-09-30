@@ -1,0 +1,253 @@
+<!doctype html><html lang="ko"><head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Skill Sandbox — 헬거너</title>
+<style>
+:root{--bone:#dfd6c2;--gold:rgba(164,147,115,.5);--blood:#c4353a;--ac:#e0203a;--ac2:#ff6a7a}
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{height:100%;background:#08070a;color:var(--bone);font-family:'Nanum Myeongjo','Noto Serif KR',serif;overflow:hidden}
+#wrap{position:fixed;inset:0}
+canvas{display:block;width:100%;height:100%;background:radial-gradient(ellipse at 50% 40%,#171015,#08070a 70%)}
+#hud{position:fixed;left:16px;top:14px;font-size:13px;line-height:1.7;text-shadow:0 1px 2px #000;pointer-events:none;letter-spacing:.02em}
+#hud b{color:#ffcf8a;font-weight:700}
+.bar{display:inline-block;width:150px;height:9px;border:1px solid var(--gold);background:#0a0808;vertical-align:middle;margin-left:6px;position:relative}
+.bar>i{display:block;height:100%;transition:width .08s}
+#hpb>i{background:linear-gradient(90deg,#7a1518,#c4353a)}
+#stb>i{background:linear-gradient(90deg,#3a5a1a,#8bd14a)}
+#mpb>i{background:linear-gradient(90deg,#1a3a5a,#4a9bd1)}
+#help{position:fixed;right:16px;top:14px;text-align:right;font-size:12px;color:#b7a488;line-height:1.8}
+#help kbd{display:inline-block;min-width:34px;padding:1px 6px;border:1px solid #76634b;border-bottom:2px solid #40362b;border-radius:2px;background:linear-gradient(#35302b,#171518);color:#dfd0b4;font:700 11px monospace;text-align:center}
+#title{position:fixed;left:50%;bottom:14px;transform:translateX(-50%);font-family:'Cinzel Decorative','Nanum Myeongjo',serif;letter-spacing:.28em;color:#c89a4a;font-size:14px;text-shadow:0 2px 4px #000;pointer-events:none}
+#chargeLbl{position:fixed;left:50%;top:46%;transform:translate(-50%,-50%);font:700 22px 'Cinzel Decorative',serif;color:#ff6a7a;text-shadow:0 0 12px #c4353a,0 2px 4px #000;pointer-events:none;opacity:0;letter-spacing:.1em}
+</style></head>
+<body>
+<div id="wrap"><canvas id="cv"></canvas></div>
+<div id="hud">
+ <div>HP <span class="bar" id="hpb"><i></i></span> <b id="hpv"></b> <span style="color:#c4353a">← 혈탄 탄약</span></div>
+ <div>ST <span class="bar" id="stb"><i></i></span> <b id="stv"></b></div>
+ <div>MP <span class="bar" id="mpb"><i></i></span> <b id="mpv"></b></div>
+ <div style="margin-top:6px">처치 <b id="kills">0</b> · DPS <b id="dps">0</b></div>
+</div>
+<div id="help">
+ <div><kbd>WASD</kbd> 이동</div>
+ <div><kbd>좌클릭</kbd> 관통 창격</div>
+ <div><kbd>우클릭</kbd> 홀드: 혈탄 장전(HP↓)</div>
+ <div><kbd>Space</kbd> 역추진 도약</div>
+ <div><kbd>R</kbd> 리셋 · <kbd>E</kbd> 적 소환</div>
+</div>
+<div id="chargeLbl"></div>
+<div id="title">HELLGUNNER · 창포수</div>
+<script>
+'use strict';
+const cv=document.getElementById('cv'),X=cv.getContext('2d');
+let W,H;function resize(){W=cv.width=innerWidth*devicePixelRatio;H=cv.height=innerHeight*devicePixelRatio;X.setTransform(devicePixelRatio,0,0,devicePixelRatio,0,0);}
+addEventListener('resize',resize);resize();
+const VW=()=>innerWidth,VH=()=>innerHeight;
+
+// ── 상태 ──
+const P={x:0,y:0,r:15,facing:0,vx:0,vy:0,
+  hp:100,hpMax:100,st:100,stMax:100,mp:100,mpMax:100,
+  dex:1, // 스케일 스탯 (샌드박스 고정)
+  // 혈탄 차지
+  charging:false,chargeT:0,chargeTier:0,
+  // 대시
+  dashT:0,dashVX:0,dashVY:0,iframe:0,
+  atkCd:0,dashCd:0,
+  _hitFlash:0};
+let mouse={x:0,y:0,down:false,rdown:false};
+const keys={};
+const bolts=[]; // 투사체
+const ens=[];   // 적
+const parts=[]; // 파티클
+const txts=[];  // 플로팅 텍스트
+let kills=0,_dmgWindow=[],_now=0;
+
+// ── 입력 ──
+addEventListener('mousemove',e=>{mouse.x=e.clientX;mouse.y=e.clientY;});
+addEventListener('mousedown',e=>{if(e.button===0)mouse.down=true;if(e.button===2){mouse.rdown=true;}});
+addEventListener('mouseup',e=>{if(e.button===0)mouse.down=false;if(e.button===2){releaseBlood();mouse.rdown=false;}});
+addEventListener('contextmenu',e=>e.preventDefault());
+addEventListener('keydown',e=>{keys[e.code]=true;
+  if(e.code==='Space'){e.preventDefault();recoilLeap();}
+  if(e.code==='KeyR')reset();
+  if(e.code==='KeyE')spawnRing(6);
+});
+addEventListener('keyup',e=>{keys[e.code]=false;});
+
+// ── 유틸 ──
+const dst=(a,b,c,d)=>Math.hypot(a-c,b-d);
+function part(x,y,vx,vy,col,r,life){parts.push({x,y,vx,vy,col,r,life,max:life});}
+function txt(x,y,s,col,sz){txts.push({x,y,s,col,sz:sz||16,life:40});}
+function toWorld(mx,my){return{x:mx-VW()/2+P.x,y:my-VH()/2+P.y};} // 카메라=플레이어 중심
+
+// ── 스킬 1: 관통 창격 (LMB, bow/projectile, DEX) ──
+function pierceShot(){
+  if(P.atkCd>0||P.st<6)return;
+  P.atkCd=9; P.st-=6;
+  const m=toWorld(mouse.x,mouse.y);const a=Math.atan2(m.y-P.y,m.x-P.x);P.facing=a;
+  const dmg=Math.round(28*P.dex);
+  bolts.push({x:P.x+Math.cos(a)*22,y:P.y+Math.sin(a)*22,a,sp:16,dmg,r:5,pierce:99,big:false,hitSet:new Set(),life:60,col:'#ff8a4a'});
+  // 총구 화염
+  for(let i=0;i<5;i++)part(P.x+Math.cos(a)*22,P.y+Math.sin(a)*22,Math.cos(a)*(3+Math.random()*3)+(Math.random()-.5)*2,Math.sin(a)*(3+Math.random()*3)+(Math.random()-.5)*2,Math.random()>.5?'#ffcf6a':'#ff6a3a',2+Math.random()*2,10);
+  _kick(a,3);
+}
+// ── 스킬 2: 혈탄 장전 (RMB hold, bow/channel, HP+MP) ──
+function tickCharge(dt){
+  if(mouse.rdown){
+    if(!P.charging){if(P.mp<10||P.hp<=18)return; P.charging=true;P.chargeT=0;P.chargeTier=0;}
+    P.chargeT+=dt;
+    // HP를 탄약으로 소모 (틱당), 최소 HP 게이트
+    if(P.hp>12){P.hp-=0.22*dt;} else {P.chargeT=Math.max(P.chargeT,0);} // 저체력이면 충전만 유지
+    const tiers=[24,52,84]; // 프레임 임계 (0.4/0.87/1.4s)
+    let tier=0;for(let i=0;i<tiers.length;i++)if(P.chargeT>=tiers[i])tier=i+1;
+    if(tier!==P.chargeTier&&tier>0){P.chargeTier=tier;txt(P.x,P.y-30,'혈탄 '+tier+'단','#ff6a7a',18);}
+    // 차지 이펙트
+    if(Math.random()>.4){const aa=Math.random()*6.28,rr=P.r+6+P.chargeTier*4;part(P.x+Math.cos(aa)*rr,P.y+Math.sin(aa)*rr,-Math.cos(aa)*2,-Math.sin(aa)*2,'#c4353a',2+P.chargeTier,12);}
+  }
+}
+function releaseBlood(){
+  if(!P.charging)return; P.charging=false;
+  const tier=P.chargeTier; P.chargeTier=0;
+  if(tier===0){return;} // 최소단 미달=불발
+  if(P.mp<10){txt(P.x,P.y-30,'MP 부족','#4a9bd1',16);return;}
+  P.mp-=10;
+  const m=toWorld(mouse.x,mouse.y);const a=Math.atan2(m.y-P.y,m.x-P.x);P.facing=a;
+  const dmg=Math.round((70+70*tier)*P.dex); // 1단210 2단280 3단350 (×dex)
+  const r=6+tier*3;
+  bolts.push({x:P.x+Math.cos(a)*24,y:P.y+Math.sin(a)*24,a,sp:20,dmg,r,pierce:99,big:true,tier,hitSet:new Set(),life:70,col:'#ff3a4a'});
+  for(let i=0;i<10+tier*4;i++)part(P.x+Math.cos(a)*24,P.y+Math.sin(a)*24,Math.cos(a)*(4+Math.random()*5)+(Math.random()-.5)*3,Math.sin(a)*(4+Math.random()*5)+(Math.random()-.5)*3,Math.random()>.4?'#ff3a4a':'#ffcf6a',2+Math.random()*3,14);
+  _kick(a,6+tier*2);
+}
+// ── 스킬 3: 역추진 도약 (SPACE, move/dash) ──
+function recoilLeap(){
+  if(P.dashCd>0||P.st<18)return;
+  P.dashCd=42; P.st-=18;
+  const m=toWorld(mouse.x,mouse.y);const a=Math.atan2(m.y-P.y,m.x-P.x);P.facing=a;
+  // 조준 반대(후방)로 도약
+  const back=a+Math.PI, pw=15;
+  P.dashVX=Math.cos(back)*pw; P.dashVY=Math.sin(back)*pw;
+  P.dashT=12; P.iframe=16;
+  // 발사 반동뎀(전방 근접 적)
+  for(const e of ens){if(e.dead)continue;if(dst(P.x,P.y,e.x,e.y)<60){const dd=Math.round(20*P.dex);e.hp-=dd;txt(e.x,e.y-14,dd,'#ffaa66',15);hitEnemy(e);}}
+  for(let i=0;i<12;i++)part(P.x,P.y,Math.cos(a)*(3+Math.random()*4),Math.sin(a)*(3+Math.random()*4),Math.random()>.5?'#ffcf6a':'#ff6a3a',2+Math.random()*2,14);
+  _kick(back,-4);
+}
+let _shake=0,_shx=0,_shy=0;
+function _kick(a,amt){_shake=Math.min(10,_shake+Math.abs(amt));}
+
+// ── 적 ──
+function spawnEnemy(x,y){ens.push({x,y,r:14,hp:120,max:120,dead:false,flash:0,vx:0,vy:0});}
+function spawnRing(n){for(let i=0;i<n;i++){const a=i/n*6.28,d=200+Math.random()*80;spawnEnemy(P.x+Math.cos(a)*d,P.y+Math.sin(a)*d);}}
+function hitEnemy(e){e.flash=6;for(let i=0;i<4;i++)part(e.x,e.y,(Math.random()-.5)*3,(Math.random()-.5)*3,'#c4353a',2,10);
+  if(e.hp<=0&&!e.dead){e.dead=true;kills++;for(let i=0;i<14;i++)part(e.x,e.y,(Math.random()-.5)*5,(Math.random()-.5)*5,Math.random()>.5?'#c4353a':'#661015',2+Math.random()*3,20);txt(e.x,e.y-20,'처치','#ff6a7a',16);}}
+
+function reset(){P.x=0;P.y=0;P.hp=P.hpMax;P.st=P.stMax;P.mp=P.mpMax;P.charging=false;P.chargeTier=0;P.dashT=0;bolts.length=0;ens.length=0;parts.length=0;txts.length=0;kills=0;spawnRing(6);}
+
+// ── 업데이트 ──
+function update(dt){
+  _now+=dt;
+  // 이동
+  let mx=(keys.KeyD?1:0)-(keys.KeyA?1:0),my=(keys.KeyS?1:0)-(keys.KeyW?1:0);
+  if(P.dashT>0){P.dashT-=dt;P.x+=P.dashVX*dt;P.y+=P.dashVY*dt;P.dashVX*=0.86;P.dashVY*=0.86;}
+  else{const sp=4.2;if(mx||my){const l=Math.hypot(mx,my);P.x+=mx/l*sp*dt;P.y+=my/l*sp*dt;}}
+  if(P.iframe>0)P.iframe-=dt;
+  // 자원 리젠
+  if(!P.charging){P.st=Math.min(P.stMax,P.st+0.5*dt);}
+  P.mp=Math.min(P.mpMax,P.mp+0.18*dt);
+  P.hp=Math.min(P.hpMax,P.hp+0.05*dt); // 소폭 자연회복
+  if(P.atkCd>0)P.atkCd-=dt; if(P.dashCd>0)P.dashCd-=dt;
+  if(P._hitFlash>0)P._hitFlash-=dt;
+  // 좌클릭 연사
+  if(mouse.down)pierceShot();
+  tickCharge(dt);
+  // 조준 방향
+  const m=toWorld(mouse.x,mouse.y);if(!P.dashT>0)P.facing=Math.atan2(m.y-P.y,m.x-P.x);
+  // 투사체
+  for(let i=bolts.length-1;i>=0;i--){const b=bolts[i];b.x+=Math.cos(b.a)*b.sp*dt;b.y+=Math.sin(b.a)*b.sp*dt;b.life-=dt;
+    if(b.big&&Math.random()>.5)part(b.x,b.y,(Math.random()-.5)*2,(Math.random()-.5)*2,'#ff6a4a',2,8);
+    for(const e of ens){if(e.dead||b.hitSet.has(e))continue;if(dst(b.x,b.y,e.x,e.y)<e.r+b.r){b.hitSet.add(e);e.hp-=b.dmg;txt(e.x,e.y-14,b.dmg,b.big?'#ff3a4a':'#ffcf6a',b.big?18:14);hitEnemy(e);b.pierce--;if(b.pierce<=0){b.life=0;break;}}}
+    if(b.life<=0)bolts.splice(i,1);
+  }
+  // 적 (느리게 추적)
+  for(const e of ens){if(e.dead)continue;const a=Math.atan2(P.y-e.y,P.x-e.x);e.x+=Math.cos(a)*0.7*dt;e.y+=Math.sin(a)*0.7*dt;if(e.flash>0)e.flash-=dt;
+    if(dst(e.x,e.y,P.x,P.y)<e.r+P.r&&P.iframe<=0){P.hp-=0.4*dt;P._hitFlash=4;}}
+  for(let i=ens.length-1;i>=0;i--)if(ens[i].dead&&(ens[i].flash-=dt)<-14)ens.splice(i,1);
+  if(ens.filter(e=>!e.dead).length===0&&Math.random()<0.02)spawnRing(6);
+  // 파티클/텍스트
+  for(let i=parts.length-1;i>=0;i--){const p=parts[i];p.x+=p.vx*dt;p.y+=p.vy*dt;p.vx*=.92;p.vy*=.92;p.life-=dt;if(p.life<=0)parts.splice(i,1);}
+  for(let i=txts.length-1;i>=0;i--){const t=txts[i];t.y-=0.6*dt;t.life-=dt;if(t.life<=0)txts.splice(i,1);}
+  if(P.hp<=0){txt(P.x,P.y-30,'사망 — R로 리셋','#c4353a',22);P.hp=0.01;P.iframe=30;}
+  if(_shake>0)_shake*=0.85;
+  // DPS 창
+  _dmgWindow=_dmgWindow.filter(d=>_now-d.t<60);
+}
+function pushDmg(d){_dmgWindow.push({t:_now,d});}
+
+// ── 렌더 ──
+function draw(){
+  X.clearRect(0,0,VW(),VH());
+  X.save();
+  _shx=(Math.random()-.5)*_shake;_shy=(Math.random()-.5)*_shake;
+  X.translate(VW()/2-P.x+_shx,VH()/2-P.y+_shy);
+  // 바닥 그리드
+  X.strokeStyle='rgba(120,100,80,.06)';X.lineWidth=1;
+  const g=80,x0=Math.floor((P.x-VW()/2)/g)*g,y0=Math.floor((P.y-VH()/2)/g)*g;
+  for(let x=x0;x<P.x+VW()/2;x+=g){X.beginPath();X.moveTo(x,P.y-VH()/2);X.lineTo(x,P.y+VH()/2);X.stroke();}
+  for(let y=y0;y<P.y+VH()/2;y+=g){X.beginPath();X.moveTo(P.x-VW()/2,y);X.lineTo(P.x+VW()/2,y);X.stroke();}
+  // 적
+  for(const e of ens){if(e.dead){X.globalAlpha=Math.max(0,(e.flash+14)/28);}else X.globalAlpha=1;
+    X.fillStyle=e.flash>0?'#ffffff':'#4a2530';X.strokeStyle='#7a3540';X.lineWidth=2;
+    X.beginPath();X.arc(e.x,e.y,e.r,0,6.28);X.fill();X.stroke();
+    if(!e.dead){X.fillStyle='#0a0808';X.fillRect(e.x-16,e.y-e.r-9,32,4);X.fillStyle='#c4353a';X.fillRect(e.x-16,e.y-e.r-9,32*Math.max(0,e.hp/e.max),4);}
+    X.globalAlpha=1;}
+  // 투사체
+  for(const b of bolts){X.save();X.translate(b.x,b.y);X.rotate(b.a);
+    X.globalAlpha=.9;X.fillStyle=b.col;X.shadowColor=b.col;X.shadowBlur=b.big?16:8;
+    const len=b.big?22+b.tier*4:14;X.fillRect(-len,-b.r*.4,len,b.r*.8);
+    X.beginPath();X.moveTo(0,-b.r*.5);X.lineTo(b.r*1.4,0);X.lineTo(0,b.r*.5);X.closePath();X.fill();
+    X.restore();X.shadowBlur=0;X.globalAlpha=1;}
+  // 파티클
+  for(const p of parts){X.globalAlpha=Math.max(0,p.life/p.max);X.fillStyle=p.col;X.beginPath();X.arc(p.x,p.y,p.r*(p.life/p.max),0,6.28);X.fill();}
+  X.globalAlpha=1;
+  // 플레이어 (플레이스홀더 벡터 — 창포수)
+  X.save();X.translate(P.x,P.y);
+  // 도약 잔상
+  if(P.dashT>0){for(let i=1;i<=3;i++){X.globalAlpha=.1/i;X.beginPath();X.arc(-P.dashVX*i*1.2,-P.dashVY*i*1.2,P.r*.9,0,6.28);X.fillStyle='#ff6a3a';X.fill();}X.globalAlpha=1;}
+  // 그림자
+  X.fillStyle='rgba(0,0,0,.3)';X.beginPath();X.ellipse(0,P.r+8,P.r,P.r*.4,0,0,6.28);X.fill();
+  // 몸
+  X.rotate(P.facing);
+  if(P.iframe>0)X.globalAlpha=.5+.3*Math.sin(_now*.6);
+  X.fillStyle=P._hitFlash>0?'#ff8888':'#3a2a2e';X.strokeStyle='#c4353a';X.lineWidth=2;
+  X.beginPath();X.arc(0,0,P.r,0,6.28);X.fill();X.stroke();
+  // 창포(총) — 전방 배럴
+  X.fillStyle='#5a4a3a';X.fillRect(P.r*.4,-3,P.r*1.7,6);
+  X.fillStyle='#8a1a20';X.fillRect(P.r*.4,-3,6,6); // 붉은 약실
+  // 차지 오라
+  if(P.charging){X.rotate(-P.facing);X.globalAlpha=.4+.2*Math.sin(_now*.4);X.strokeStyle='#c4353a';X.lineWidth=2+P.chargeTier;X.beginPath();X.arc(0,0,P.r+8+P.chargeTier*4,0,6.28);X.stroke();}
+  X.globalAlpha=1;X.restore();
+  // 플로팅 텍스트
+  for(const t of txts){X.globalAlpha=Math.min(1,t.life/20);X.font='700 '+t.sz+'px "Nanum Myeongjo",serif';X.textAlign='center';X.fillStyle='#000';X.fillText(t.s,t.x+1,t.y+1);X.fillStyle=t.col;X.fillText(t.s,t.x,t.y);}
+  X.globalAlpha=1;X.textAlign='left';
+  X.restore();
+  // 조준선
+  X.strokeStyle='rgba(255,106,122,.4)';X.lineWidth=1;X.beginPath();X.moveTo(VW()/2,VH()/2);X.lineTo(mouse.x,mouse.y);X.stroke();
+  X.strokeStyle='rgba(255,106,122,.7)';X.beginPath();X.arc(mouse.x,mouse.y,7,0,6.28);X.stroke();
+}
+
+// ── HUD ──
+function hud(){
+  const set=(id,v,mx)=>{const el=document.querySelector('#'+id+'>i');if(el)el.style.width=Math.max(0,v/mx*100)+'%';};
+  set('hpb',P.hp,P.hpMax);set('stb',P.st,P.stMax);set('mpb',P.mp,P.mpMax);
+  document.getElementById('hpv').textContent=Math.ceil(P.hp);
+  document.getElementById('stv').textContent=Math.ceil(P.st);
+  document.getElementById('mpv').textContent=Math.ceil(P.mp);
+  document.getElementById('kills').textContent=kills;
+  const cl=document.getElementById('chargeLbl');
+  if(P.charging&&P.chargeTier>0){cl.style.opacity=1;cl.textContent='혈탄 '+P.chargeTier+'단 장전';}else cl.style.opacity=0;
+}
+
+// ── 루프 ──
+let last=performance.now();
+function loop(t){requestAnimationFrame(loop);const dt=Math.min(3,(t-last)/16.67);last=t;update(dt);draw();hud();}
+reset();requestAnimationFrame(loop);
+</script></body></html>
