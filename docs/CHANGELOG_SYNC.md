@@ -1,3 +1,7 @@
+## 2026-09-30 — CH1-1 외곽 생체나무 군락 가독성 96차
+
+95차 RETOUCH 잔여 "군락이 어두운 장면에서 뭉쳐 읽힘"을 재베이크로 해소했다. 대기 안개 헤일로(군락 사이 음영 간격)·엠버 림라이트(지옥 하늘 방향)·북→남 3단 깊이 헤이즈·features.json 43앵커 눈 글린트·36나무 밝기 .84~.94 변주. 배치·geometry·충돌·보호 전투 바닥(변경 0px)·89차 흔들림·95차 시각 전이는 불변, 신규 이미지 생성 0크레딧. bakeVersion `20260930-rotforest-96`, cache key `20260930-rotforest-97`, 변경 15,691,026px, 청크 core 불일치 0, geometry hash 동일, 테스트 4/4, 4개 QA 카메라 before/after+1x 크롭 pageerror 0. [수치·검수·MAP PRODUCTION REPORT](4.1맵디자인+설정/CH1_ROTTEN_FOREST_MASS_READ_PASS96_20260930.md). **군락 가독성 PASS / 전체 맵 RETOUCH(97차 애니메이션 대기).**
+
 ## 2026-09-30 — [REGION/CLEAR-RESULT] Hell Gothic 재디자인 (3차)
 
 | 범위 | 변경·검증 |

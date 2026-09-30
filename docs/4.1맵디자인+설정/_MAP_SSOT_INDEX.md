@@ -1,6 +1,10 @@
-## 2026-09-30 — CH1-1 썩은 숲 재질 경계 95차 현행
+## 2026-09-30 — CH1-1 외곽 군락 가독성 96차 현행
 
-현행 생산 배경은 bakeVersion `20260930-rotforest-95`, 청크 cache key `20260930-rotforest-96`, 23 retouch 레이어·64청크다. 36개 나무+큰 군락 6개+뿌리 bridge 1개를 비충돌 외곽에 굽고, `floor_transition93.png`의 18px 유기적 시각 전이로 길과 숲의 직선 절단면을 없앴다. 89차 ±5px 움직임은 청크 가장자리 4 mask 샘플에서 감쇠한다. 53점 경계·충돌·피부 바닥 중심·남북 통로는 유지한다. [현행 원인·수치·검수·MAP PRODUCTION REPORT](CH1_ROTTEN_FOREST_BOUNDARY_PASS95_20260930.md). 아래 90차의 현행 표기는 당시 제작 이력이다. **VISUAL VERDICT: RETOUCH.**
+현행 생산 배경은 bakeVersion `20260930-rotforest-96`, 청크 cache key `20260930-rotforest-97`, 23 retouch 레이어·64청크다. 95차 RETOUCH의 "외곽 군락 뭉침"을 대기 안개 헤일로·엠버 림라이트·3단 깊이 헤이즈·눈 글린트·나무 밝기 변주로 해소했다(배치·geometry·충돌·보호 바닥 불변, 신규 생성 0크레딧). 얼굴 앵커 SSOT `outer90_sources/features.json`(43앵커)이 이번에 신설되어 97차 애니메이션과 공유된다. [현행 수치·검수·MAP PRODUCTION REPORT](CH1_ROTTEN_FOREST_MASS_READ_PASS96_20260930.md). **VISUAL VERDICT: 군락 가독성 PASS / 전체 맵 RETOUCH(97차 애니메이션 진행).**
+
+## 2026-09-30 — CH1-1 썩은 숲 재질 경계 95차 이력
+
+95차 생산 배경은 bakeVersion `20260930-rotforest-95`, 청크 cache key `20260930-rotforest-96`, 23 retouch 레이어·64청크다. 36개 나무+큰 군락 6개+뿌리 bridge 1개를 비충돌 외곽에 굽고, `floor_transition93.png`의 18px 유기적 시각 전이로 길과 숲의 직선 절단면을 없앴다. 89차 ±5px 움직임은 청크 가장자리 4 mask 샘플에서 감쇠한다. 53점 경계·충돌·피부 바닥 중심·남북 통로는 유지한다. [현행 원인·수치·검수·MAP PRODUCTION REPORT](CH1_ROTTEN_FOREST_BOUNDARY_PASS95_20260930.md). 아래 90차의 현행 표기는 당시 제작 이력이다. **VISUAL VERDICT: RETOUCH.**
 
 ## 2026-09-30 — [REGION] 4분면 지역 클리어 + 지역 기반 지옥문 개방
 
