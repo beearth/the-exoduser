@@ -155,7 +155,7 @@ function recoilLeap(){
   P.dashVX=Math.cos(back)*pw; P.dashVY=Math.sin(back)*pw;
   P.dashT=12; P.iframe=16;
   // 발사 반동뎀(전방 근접 적)
-  for(const e of ens){if(e.dead)continue;if(dst(P.x,P.y,e.x,e.y)<60){const dd=Math.round(20*P.dex);e.hp-=dd;txt(e.x,e.y-14,dd,'#ffaa66',15);hitEnemy(e);}}
+  for(const e of ens){if(e.dead)continue;if(dst(P.x,P.y,e.x,e.y)<60){const dd=Math.round(20*P.dex);e.hp-=dd;pushDmg(dd);txt(e.x,e.y-14,dd,'#ffaa66',15);hitEnemy(e);}}
   for(let i=0;i<12;i++)part(P.x,P.y,Math.cos(a)*(3+Math.random()*4),Math.sin(a)*(3+Math.random()*4),Math.random()>.5?'#ffcf6a':'#ff6a3a',2+Math.random()*2,14);
   _kick(back,-4);
 }
@@ -189,18 +189,19 @@ function update(dt){
   if(mouse.down)pierceShot();
   tickCharge(dt);
   // 조준 방향
-  const m=toWorld(mouse.x,mouse.y);if(!P.dashT>0)P.facing=Math.atan2(m.y-P.y,m.x-P.x);
+  const m=toWorld(mouse.x,mouse.y);if(P.dashT<=0)P.facing=Math.atan2(m.y-P.y,m.x-P.x);
   // 투사체
   for(let i=bolts.length-1;i>=0;i--){const b=bolts[i];b.x+=Math.cos(b.a)*b.sp*dt;b.y+=Math.sin(b.a)*b.sp*dt;b.life-=dt;
     if(b.big&&Math.random()>.5)part(b.x,b.y,(Math.random()-.5)*2,(Math.random()-.5)*2,'#ff6a4a',2,8);
-    for(const e of ens){if(e.dead||b.hitSet.has(e))continue;if(dst(b.x,b.y,e.x,e.y)<e.r+b.r){b.hitSet.add(e);e.hp-=b.dmg;txt(e.x,e.y-14,b.dmg,b.big?'#ff3a4a':'#ffcf6a',b.big?18:14);hitEnemy(e);b.pierce--;if(b.pierce<=0){b.life=0;break;}}}
+    for(const e of ens){if(e.dead||b.hitSet.has(e))continue;if(dst(b.x,b.y,e.x,e.y)<e.r+b.r){b.hitSet.add(e);e.hp-=b.dmg;pushDmg(b.dmg);txt(e.x,e.y-14,b.dmg,b.big?'#ff3a4a':'#ffcf6a',b.big?18:14);hitEnemy(e);b.pierce--;if(b.pierce<=0){b.life=0;break;}}}
     if(b.life<=0)bolts.splice(i,1);
   }
   // 적 (느리게 추적)
   for(const e of ens){if(e.dead)continue;const a=Math.atan2(P.y-e.y,P.x-e.x);e.x+=Math.cos(a)*0.7*dt;e.y+=Math.sin(a)*0.7*dt;if(e.flash>0)e.flash-=dt;
     if(dst(e.x,e.y,P.x,P.y)<e.r+P.r&&P.iframe<=0){P.hp-=0.4*dt;P._hitFlash=4;}}
   for(let i=ens.length-1;i>=0;i--)if(ens[i].dead&&(ens[i].flash-=dt)<-14)ens.splice(i,1);
-  if(ens.filter(e=>!e.dead).length===0&&Math.random()<0.02)spawnRing(6);
+  // 시험장 표적 상시 공급: 생존 적이 3 미만이면 가장자리에서 한 마리씩 리스폰 (지속 DPS 측정용)
+  {const _alive=ens.filter(e=>!e.dead).length; if(_alive<3&&Math.random()<0.05){const a=Math.random()*6.28,d=260+Math.random()*120;spawnEnemy(P.x+Math.cos(a)*d,P.y+Math.sin(a)*d);}};
   // 파티클/텍스트
   for(let i=parts.length-1;i>=0;i--){const p=parts[i];p.x+=p.vx*dt;p.y+=p.vy*dt;p.vx*=.92;p.vy*=.92;p.life-=dt;if(p.life<=0)parts.splice(i,1);}
   for(let i=txts.length-1;i>=0;i--){const t=txts[i];t.y-=0.6*dt;t.life-=dt;if(t.life<=0)txts.splice(i,1);}
@@ -271,6 +272,7 @@ function hud(){
   document.getElementById('stv').textContent=Math.ceil(P.st);
   document.getElementById('mpv').textContent=Math.ceil(P.mp);
   document.getElementById('kills').textContent=kills;
+  {let s=0;for(const d of _dmgWindow)s+=d.d;document.getElementById('dps').textContent=Math.round(s);} // 최근 1초(60f) 누적 = 초당 피해
   const cl=document.getElementById('chargeLbl');
   if(P.charging&&P.chargeTier>0){cl.style.opacity=1;cl.textContent='혈탄 '+P.chargeTier+'단 장전';}else cl.style.opacity=0;
 }
