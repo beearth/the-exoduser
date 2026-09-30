@@ -10,11 +10,11 @@
 | `img/lording/rd4.png` | 로비→게임 진입 로딩(_RD_IMGS) | 구 네메시아 | 디자인 시트 네메시아 전신 |
 | `img/lording/rd8.png` | 〃 | 구 전쟁인트로 HDR, 전사 디자인 불일치 | 뿔 악마와 이마 맞대기, 현 전사 디자인 |
 | `img/lording/rd13.png` | 〃 | 〃 | 대검 쥐고 한쪽 무릎 |
-| `img/lording/rd14.png` | 〃 | 〃 | 금화 위 옥좌 + 악마 호위 |
+| `img/lording/rd14.png` | 〃 | 구 전쟁인트로 `cin_throne`(악당 **킬루**) 잔점 | **킬루 원본 얼굴·의상 유지**(넘긴 흑발·붉은 눈·흰 모피칼라 가죽코트·붉은 잔·금 옥좌), 잔점 제거. 기준 `docs/11내러티브·로어디자인/assets/killu_identity_ref.png` |
 
 - 생성: MagicLight GPT Image 2.5 sunburst, 레퍼런스1=원본 640×360 블러5(구도), 레퍼런스2=네메시아 디자인 시트 / 전사 초상화 크롭. 1장 200크레딧.
 - 원본 백업: `output/loading_remaster_20260930/original/`
-- 캐시: `?v=20260930-loading-remaster` (index.html 4곳, game.html·game-easy-test.html 1~19 경로)
+- 캐시: `?v=20260930-loading-remaster2` (index.html 4곳, game.html·game-easy-test.html 1~19 경로)
 
 ## 남은 후보 (미교체)
 
@@ -23,3 +23,7 @@
 | 2 | `rd2`, `rd5`, `rd12`, `rd16` | 주황 HDR 과보정 |
 | 2 | `rd1`, `rd6`, `rd17` | 같은 구도 색만 바꾼 중복 |
 | 유지 | `4~19.png`, `rd7`, `rd9`, `rd10`, `rd11`, `rd15` | 배경 키아트, 무난 |
+
+## 주의 — 인물 구분 (2026-09-30 사고)
+
+rd14 옥좌의 남자는 주인공이 아니라 악당 **킬루**(wa06 "이웃이자 친구였던 킬루가 그의 가문을 짓밟았다.")다. 1차 교체 때 전사 기준을 붙여 주인공 얼굴로 잘못 생성했고, 킬루 원본 크롭을 기준으로 재생성했다. 킬루는 전쟁 인트로 영상에도 나오므로 **얼굴·의상을 원본에서 바꾸지 않는다**(바꾸면 인트로 영상도 재제작 필요). 이미지 교체 전 해당 이미지가 어느 대사·인물인지 PROLOGUE_LINES/INTRO_CUTSCENE_LINES에서 먼저 확인한다.

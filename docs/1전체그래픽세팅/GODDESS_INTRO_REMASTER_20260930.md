@@ -15,7 +15,7 @@
 
 - 원본 백업: `output/cutscene_remaster_20260930/original/` (assets 안에 두지 않음 — Steam 빌드 동봉 방지)
 - 렌더: `_renderIntroCutscene`는 `naturalWidth/naturalHeight` 비율로 cover 채움 → 16:9 유지 시 해상도 차이 무관.
-- 캐시: `_getCutsceneImg` 쿼리 `?v=20260930-intro-lock3` (game.html, game-easy-test.html). 로딩 이미지 `img/lording/`은 `20260930-loading-remaster`.
+- 캐시: `_getCutsceneImg` 쿼리 `?v=20260930-intro-lock3` (game.html, game-easy-test.html). 로딩 이미지 `img/lording/`은 `20260930-loading-remaster2`.
 
 ## 생성 방식
 
