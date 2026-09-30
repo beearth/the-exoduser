@@ -3835,3 +3835,12 @@ Object.assign(_DA,{
 Object.assign(_DA_PFX,{"백골":"Knogle"});
 Object.assign(_DA_BASE,{"유골함":"Knogleurne"});
 Object.assign(_DA,{"천공쇄기":"Himmelknuser","🪨 천공쇄기!":"🪨 Himmelknuser!"});
+
+// [REGION] 4분면 지역 클리어 시스템 문자열 (2026-09-30, No.3073~3087)
+Object.assign(_DA,{"북서":"Nordvest","북동":"Nordøst","남서":"Sydvest","남동":"Sydøst","북서 · 어둠":"Nordvest · Mørke","북동 · 번개":"Nordøst · Lyn","남서 · 물":"Sydvest · Vand","남동 · 불":"Sydøst · Ild","클리어!":"Ryddet!","클리어됨":"Ryddet","앵글러 생존":"Havtaske i live","지옥문이 봉인됨 — 지역 클리어 ":"Helvedesporten forseglet — ryddede områder ","지옥문 봉인 (지역 ":"Porten forseglet (områder ","지역 네 곳을 모두 클리어하면 지옥문이 열릴 거야.":"Ryd alle fire områder, så åbner Helvedesporten sig.","한 지역 클리어! 미니맵에서 다음 지역을 확인해.":"Et område ryddet! Tjek minikortet for det næste."});
+// [REGION] 화살표 타겟 라벨 문자열 (2026-09-30, No.3088~3093)
+Object.assign(_DA,{"앵글러":"Havtaske","지옥문":"Helvedesporten","어둠":"Mørke","번개":"Lyn","물":"Vand","불":"Ild"});
+// [CLEAR-RESULT] 보스 클리어 결과 화면 문자열 (2026-09-30, No.3094~3104)
+Object.assign(_DA,{"클리어 타임":"Tid","기준":"Norm","점수":"Point","신기록!":"Ny rekord!","지역 클리어":"Ryddede områder","보스 처치":"Boss besejret","시간 보너스":"Tidsbonus","무사망":"Uden død","무피격":"Uden skade","베스트":"Bedste","랭크":"Rang"});
+// [REGION/CLEAR-RESULT] 2차 디자인 문자열 (2026-09-30, No.3105~3107)
+Object.assign(_DA,{"정화":"Renset","지역 정화":"Rensede områder","사망 감점":"Dødsfradrag"});

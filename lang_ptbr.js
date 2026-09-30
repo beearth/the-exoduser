@@ -3833,3 +3833,12 @@ Object.assign(_PTBR,{
 Object.assign(_PTBR_PFX,{"백골":"Ósseo"});
 Object.assign(_PTBR_BASE,{"유골함":"Ossuário"});
 Object.assign(_PTBR,{"천공쇄기":"Esmagador Celestial","🪨 천공쇄기!":"🪨 Esmagador Celestial!"});
+
+// [REGION] 4분면 지역 클리어 시스템 문자열 (2026-09-30, No.3073~3087)
+Object.assign(_PTBR,{"북서":"Noroeste","북동":"Nordeste","남서":"Sudoeste","남동":"Sudeste","북서 · 어둠":"Noroeste · Escuridão","북동 · 번개":"Nordeste · Raio","남서 · 물":"Sudoeste · Água","남동 · 불":"Sudeste · Fogo","클리어!":"Limpo!","클리어됨":"Limpo","앵글러 생존":"Tamboril vivo","지옥문이 봉인됨 — 지역 클리어 ":"Portão do Inferno selado — áreas limpas ","지옥문 봉인 (지역 ":"Portão selado (áreas ","지역 네 곳을 모두 클리어하면 지옥문이 열릴 거야.":"Limpe as quatro áreas e o Portão do Inferno vai abrir.","한 지역 클리어! 미니맵에서 다음 지역을 확인해.":"Uma área limpa! Veja o minimapa para achar a próxima."});
+// [REGION] 화살표 타겟 라벨 문자열 (2026-09-30, No.3088~3093)
+Object.assign(_PTBR,{"앵글러":"Tamboril","지옥문":"Portão do Inferno","어둠":"Escuridão","번개":"Raio","물":"Água","불":"Fogo"});
+// [CLEAR-RESULT] 보스 클리어 결과 화면 문자열 (2026-09-30, No.3094~3104)
+Object.assign(_PTBR,{"클리어 타임":"Tempo","기준":"Referência","점수":"Pontuação","신기록!":"Novo recorde!","지역 클리어":"Áreas limpas","보스 처치":"Chefe morto","시간 보너스":"Bônus de tempo","무사망":"Sem mortes","무피격":"Sem dano","베스트":"Melhor","랭크":"Classe"});
+// [REGION/CLEAR-RESULT] 2차 디자인 문자열 (2026-09-30, No.3105~3107)
+Object.assign(_PTBR,{"정화":"Purificada","지역 정화":"Áreas purificadas","사망 감점":"Penalidade por morte"});

@@ -3288,3 +3288,12 @@ Object.assign(_DE,{
 Object.assign(_DE_PFX,{"백골":"Knochen"});
 Object.assign(_DE_BASE,{"유골함":"Knochenurne"});
 Object.assign(_DE,{"천공쇄기":"Himmelsbrecher","🪨 천공쇄기!":"🪨 Himmelsbrecher!"});
+
+// [REGION] 4분면 지역 클리어 시스템 문자열 (2026-09-30, No.3073~3087)
+Object.assign(_DE,{"북서":"Nordwesten","북동":"Nordosten","남서":"Südwesten","남동":"Südosten","북서 · 어둠":"Nordwesten · Dunkelheit","북동 · 번개":"Nordosten · Blitz","남서 · 물":"Südwesten · Wasser","남동 · 불":"Südosten · Feuer","클리어!":"Gesäubert!","클리어됨":"Gesäubert","앵글러 생존":"Anglerfisch lebt","지옥문이 봉인됨 — 지역 클리어 ":"Höllentor versiegelt — Gebiete gesäubert ","지옥문 봉인 (지역 ":"Höllentor versiegelt (Gebiete ","지역 네 곳을 모두 클리어하면 지옥문이 열릴 거야.":"Säubere alle vier Gebiete, dann öffnet sich das Höllentor.","한 지역 클리어! 미니맵에서 다음 지역을 확인해.":"Ein Gebiet gesäubert! Schau auf die Minikarte für das nächste."});
+// [REGION] 화살표 타겟 라벨 문자열 (2026-09-30, No.3088~3093)
+Object.assign(_DE,{"앵글러":"Anglerfisch","지옥문":"Höllentor","어둠":"Dunkelheit","번개":"Blitz","물":"Wasser","불":"Feuer"});
+// [CLEAR-RESULT] 보스 클리어 결과 화면 문자열 (2026-09-30, No.3094~3104)
+Object.assign(_DE,{"클리어 타임":"Zeit","기준":"Richtzeit","점수":"Punkte","신기록!":"Neuer Rekord!","지역 클리어":"Gebiete gesäubert","보스 처치":"Boss besiegt","시간 보너스":"Zeitbonus","무사망":"Ohne Tod","무피격":"Ohne Treffer","베스트":"Bestwert","랭크":"Rang"});
+// [REGION/CLEAR-RESULT] 2차 디자인 문자열 (2026-09-30, No.3105~3107)
+Object.assign(_DE,{"정화":"Gereinigt","지역 정화":"Gebiete gereinigt","사망 감점":"Todesabzug"});

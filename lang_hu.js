@@ -2690,3 +2690,12 @@ Object.assign(_HU,{
 Object.assign(_HU_PFX,{"백골":"Csont"});
 Object.assign(_HU_BASE,{"유골함":"Csonturna"});
 Object.assign(_HU,{"천공쇄기":"Égi Zúzó","🪨 천공쇄기!":"🪨 Égi Zúzó!"});
+
+// [REGION] 4분면 지역 클리어 시스템 문자열 (2026-09-30, No.3073~3087)
+Object.assign(_HU,{"북서":"Északnyugat","북동":"Északkelet","남서":"Délnyugat","남동":"Délkelet","북서 · 어둠":"Északnyugat · Sötétség","북동 · 번개":"Északkelet · Villám","남서 · 물":"Délnyugat · Víz","남동 · 불":"Délkelet · Tűz","클리어!":"Megtisztítva!","클리어됨":"Megtisztítva","앵글러 생존":"Ördöghal él","지옥문이 봉인됨 — 지역 클리어 ":"A Pokolkapu lepecsételve — megtisztított területek ","지옥문 봉인 (지역 ":"Kapu lepecsételve (területek ","지역 네 곳을 모두 클리어하면 지옥문이 열릴 거야.":"Tisztítsd meg mind a négy területet, és kinyílik a Pokolkapu.","한 지역 클리어! 미니맵에서 다음 지역을 확인해.":"Egy terület megtisztítva! Nézd a minitérképet a következőhöz."});
+// [REGION] 화살표 타겟 라벨 문자열 (2026-09-30, No.3088~3093)
+Object.assign(_HU,{"앵글러":"Ördöghal","지옥문":"Pokolkapu","어둠":"Sötétség","번개":"Villám","물":"Víz","불":"Tűz"});
+// [CLEAR-RESULT] 보스 클리어 결과 화면 문자열 (2026-09-30, No.3094~3104)
+Object.assign(_HU,{"클리어 타임":"Idő","기준":"Referencia","점수":"Pontszám","신기록!":"Új rekord!","지역 클리어":"Megtisztított területek","보스 처치":"Főellenség legyőzve","시간 보너스":"Időbónusz","무사망":"Halál nélkül","무피격":"Sérülés nélkül","베스트":"Legjobb","랭크":"Rang"});
+// [REGION/CLEAR-RESULT] 2차 디자인 문자열 (2026-09-30, No.3105~3107)
+Object.assign(_HU,{"정화":"Megtisztult","지역 정화":"Megtisztított területek","사망 감점":"Halál levonás"});

@@ -2688,3 +2688,12 @@ Object.assign(_ID,{
 Object.assign(_ID_PFX,{"백골":"Tulang Putih"});
 Object.assign(_ID_BASE,{"유골함":"Guci Tulang"});
 Object.assign(_ID,{"천공쇄기":"Penghancur Langit","🪨 천공쇄기!":"🪨 Penghancur Langit!"});
+
+// [REGION] 4분면 지역 클리어 시스템 문자열 (2026-09-30, No.3073~3087)
+Object.assign(_ID,{"북서":"Barat Laut","북동":"Timur Laut","남서":"Barat Daya","남동":"Tenggara","북서 · 어둠":"Barat Laut · Kegelapan","북동 · 번개":"Timur Laut · Petir","남서 · 물":"Barat Daya · Air","남동 · 불":"Tenggara · Api","클리어!":"Tuntas!","클리어됨":"Tuntas","앵글러 생존":"Angler masih hidup","지옥문이 봉인됨 — 지역 클리어 ":"Gerbang Neraka tersegel — wilayah tuntas ","지옥문 봉인 (지역 ":"Gerbang tersegel (wilayah ","지역 네 곳을 모두 클리어하면 지옥문이 열릴 거야.":"Bersihkan keempat wilayah dan Gerbang Neraka akan terbuka.","한 지역 클리어! 미니맵에서 다음 지역을 확인해.":"Satu wilayah tuntas! Cek minimap untuk wilayah berikutnya."});
+// [REGION] 화살표 타겟 라벨 문자열 (2026-09-30, No.3088~3093)
+Object.assign(_ID,{"앵글러":"Angler","지옥문":"Gerbang Neraka","어둠":"Kegelapan","번개":"Petir","물":"Air","불":"Api"});
+// [CLEAR-RESULT] 보스 클리어 결과 화면 문자열 (2026-09-30, No.3094~3104)
+Object.assign(_ID,{"클리어 타임":"Waktu","기준":"Patokan","점수":"Skor","신기록!":"Rekor baru!","지역 클리어":"Wilayah tuntas","보스 처치":"Bos dikalahkan","시간 보너스":"Bonus waktu","무사망":"Tanpa mati","무피격":"Tanpa terkena","베스트":"Terbaik","랭크":"Peringkat"});
+// [REGION/CLEAR-RESULT] 2차 디자인 문자열 (2026-09-30, No.3105~3107)
+Object.assign(_ID,{"정화":"Dimurnikan","지역 정화":"Wilayah dimurnikan","사망 감점":"Penalti kematian"});

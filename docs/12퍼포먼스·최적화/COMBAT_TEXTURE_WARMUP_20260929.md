@@ -75,3 +75,4 @@ AMD Radeon RX 9070 XT / WebGL2 / NW.js 0.111.2 / Chromium148 / 1600×900 / High 
 | 근거 | `archive-verification-r2.json`, `delivery-patch.json`, `commit-verification.json` |
 
 QA용 독립 런타임 PID28212의 실행 경로를 확인한 뒤 종료했다. 사용자 게임·브라우저 프로세스는 종료하지 않았다. 전체 worktree 변경110개는 타 작업을 포함하며, 자동 정리·타 파일 강제 커밋을 수행하지 않았다.
+ㅇㅇㅇ

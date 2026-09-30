@@ -3840,3 +3840,12 @@ Object.assign(_NL,{
 Object.assign(_NL_PFX,{"백골":"Beender"});
 Object.assign(_NL_BASE,{"유골함":"Beenderurn"});
 Object.assign(_NL,{"천공쇄기":"Hemelbreker","🪨 천공쇄기!":"🪨 Hemelbreker!"});
+
+// [REGION] 4분면 지역 클리어 시스템 문자열 (2026-09-30, No.3073~3087)
+Object.assign(_NL,{"북서":"Noordwest","북동":"Noordoost","남서":"Zuidwest","남동":"Zuidoost","북서 · 어둠":"Noordwest · Duisternis","북동 · 번개":"Noordoost · Bliksem","남서 · 물":"Zuidwest · Water","남동 · 불":"Zuidoost · Vuur","클리어!":"Gezuiverd!","클리어됨":"Gezuiverd","앵글러 생존":"Zeeduivel leeft","지옥문이 봉인됨 — 지역 클리어 ":"Hellepoort verzegeld — gezuiverde gebieden ","지옥문 봉인 (지역 ":"Poort verzegeld (gebieden ","지역 네 곳을 모두 클리어하면 지옥문이 열릴 거야.":"Zuiver alle vier de gebieden en de Hellepoort gaat open.","한 지역 클리어! 미니맵에서 다음 지역을 확인해.":"Eén gebied gezuiverd! Kijk op de minimap voor het volgende."});
+// [REGION] 화살표 타겟 라벨 문자열 (2026-09-30, No.3088~3093)
+Object.assign(_NL,{"앵글러":"Zeeduivel","지옥문":"Hellepoort","어둠":"Duisternis","번개":"Bliksem","물":"Water","불":"Vuur"});
+// [CLEAR-RESULT] 보스 클리어 결과 화면 문자열 (2026-09-30, No.3094~3104)
+Object.assign(_NL,{"클리어 타임":"Tijd","기준":"Richttijd","점수":"Score","신기록!":"Nieuw record!","지역 클리어":"Gezuiverde gebieden","보스 처치":"Baas verslagen","시간 보너스":"Tijdbonus","무사망":"Zonder dood","무피격":"Zonder schade","베스트":"Beste","랭크":"Rang"});
+// [REGION/CLEAR-RESULT] 2차 디자인 문자열 (2026-09-30, No.3105~3107)
+Object.assign(_NL,{"정화":"Gezuiverd","지역 정화":"Gezuiverde gebieden","사망 감점":"Doodsaftrek"});

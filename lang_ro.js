@@ -2693,3 +2693,12 @@ Object.assign(_RO,{
 Object.assign(_RO_PFX,{"백골":"Osos"});
 Object.assign(_RO_BASE,{"유골함":"Osuar"});
 Object.assign(_RO,{"천공쇄기":"Zdrobitorul Ceresc","🪨 천공쇄기!":"🪨 Zdrobitorul Ceresc!"});
+
+// [REGION] 4분면 지역 클리어 시스템 문자열 (2026-09-30, No.3073~3087)
+Object.assign(_RO,{"북서":"Nord-vest","북동":"Nord-est","남서":"Sud-vest","남동":"Sud-est","북서 · 어둠":"Nord-vest · Întuneric","북동 · 번개":"Nord-est · Fulger","남서 · 물":"Sud-vest · Apă","남동 · 불":"Sud-est · Foc","클리어!":"Curățat!","클리어됨":"Curățat","앵글러 생존":"Pescarul trăiește","지옥문이 봉인됨 — 지역 클리어 ":"Poarta Iadului sigilată — zone curățate ","지옥문 봉인 (지역 ":"Poartă sigilată (zone ","지역 네 곳을 모두 클리어하면 지옥문이 열릴 거야.":"Curăță toate cele patru zone și Poarta Iadului se va deschide.","한 지역 클리어! 미니맵에서 다음 지역을 확인해.":"O zonă curățată! Vezi minimapa pentru următoarea."});
+// [REGION] 화살표 타겟 라벨 문자열 (2026-09-30, No.3088~3093)
+Object.assign(_RO,{"앵글러":"Pescar","지옥문":"Poarta Iadului","어둠":"Întuneric","번개":"Fulger","물":"Apă","불":"Foc"});
+// [CLEAR-RESULT] 보스 클리어 결과 화면 문자열 (2026-09-30, No.3094~3104)
+Object.assign(_RO,{"클리어 타임":"Timp","기준":"Reper","점수":"Scor","신기록!":"Record nou!","지역 클리어":"Zone curățate","보스 처치":"Boss învins","시간 보너스":"Bonus de timp","무사망":"Fără moarte","무피격":"Fără lovituri","베스트":"Cel mai bun","랭크":"Rang"});
+// [REGION/CLEAR-RESULT] 2차 디자인 문자열 (2026-09-30, No.3105~3107)
+Object.assign(_RO,{"정화":"Purificată","지역 정화":"Zone purificate","사망 감점":"Penalizare deces"});

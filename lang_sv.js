@@ -3328,3 +3328,12 @@ Object.assign(_SV,{
 Object.assign(_SV_PFX,{"백골":"Ben"});
 Object.assign(_SV_BASE,{"유골함":"Benurna"});
 Object.assign(_SV,{"천공쇄기":"Himmelknusare","🪨 천공쇄기!":"🪨 Himmelknusare!"});
+
+// [REGION] 4분면 지역 클리어 시스템 문자열 (2026-09-30, No.3073~3087)
+Object.assign(_SV,{"북서":"Nordväst","북동":"Nordost","남서":"Sydväst","남동":"Sydost","북서 · 어둠":"Nordväst · Mörker","북동 · 번개":"Nordost · Blixt","남서 · 물":"Sydväst · Vatten","남동 · 불":"Sydost · Eld","클리어!":"Rensat!","클리어됨":"Rensat","앵글러 생존":"Marulk vid liv","지옥문이 봉인됨 — 지역 클리어 ":"Helvetesporten förseglad — rensade områden ","지옥문 봉인 (지역 ":"Porten förseglad (områden ","지역 네 곳을 모두 클리어하면 지옥문이 열릴 거야.":"Rensa alla fyra områden så öppnas Helvetesporten.","한 지역 클리어! 미니맵에서 다음 지역을 확인해.":"Ett område rensat! Kolla minikartan för nästa."});
+// [REGION] 화살표 타겟 라벨 문자열 (2026-09-30, No.3088~3093)
+Object.assign(_SV,{"앵글러":"Marulk","지옥문":"Helvetesporten","어둠":"Mörker","번개":"Blixt","물":"Vatten","불":"Eld"});
+// [CLEAR-RESULT] 보스 클리어 결과 화면 문자열 (2026-09-30, No.3094~3104)
+Object.assign(_SV,{"클리어 타임":"Tid","기준":"Riktmärke","점수":"Poäng","신기록!":"Nytt rekord!","지역 클리어":"Rensade områden","보스 처치":"Boss besegrad","시간 보너스":"Tidsbonus","무사망":"Utan död","무피격":"Utan träff","베스트":"Bästa","랭크":"Rang"});
+// [REGION/CLEAR-RESULT] 2차 디자인 문자열 (2026-09-30, No.3105~3107)
+Object.assign(_SV,{"정화":"Renad","지역 정화":"Renade områden","사망 감점":"Dödsavdrag"});

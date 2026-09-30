@@ -3326,3 +3326,12 @@ Object.assign(_FR,{
 Object.assign(_FR_PFX,{"백골":"Osseux"});
 Object.assign(_FR_BASE,{"유골함":"Ossuaire"});
 Object.assign(_FR,{"천공쇄기":"Broyeur Céleste","🪨 천공쇄기!":"🪨 Broyeur Céleste!"});
+
+// [REGION] 4분면 지역 클리어 시스템 문자열 (2026-09-30, No.3073~3087)
+Object.assign(_FR,{"북서":"Nord-Ouest","북동":"Nord-Est","남서":"Sud-Ouest","남동":"Sud-Est","북서 · 어둠":"Nord-Ouest · Ténèbres","북동 · 번개":"Nord-Est · Foudre","남서 · 물":"Sud-Ouest · Eau","남동 · 불":"Sud-Est · Feu","클리어!":"Nettoyé !","클리어됨":"Nettoyé","앵글러 생존":"Baudroie en vie","지옥문이 봉인됨 — 지역 클리어 ":"Porte des Enfers scellée — zones nettoyées ","지옥문 봉인 (지역 ":"Porte scellée (zones ","지역 네 곳을 모두 클리어하면 지옥문이 열릴 거야.":"Nettoie les quatre zones et la Porte des Enfers s'ouvrira.","한 지역 클리어! 미니맵에서 다음 지역을 확인해.":"Une zone nettoyée ! Regarde la minicarte pour la suivante."});
+// [REGION] 화살표 타겟 라벨 문자열 (2026-09-30, No.3088~3093)
+Object.assign(_FR,{"앵글러":"Baudroie","지옥문":"Porte des Enfers","어둠":"Ténèbres","번개":"Foudre","물":"Eau","불":"Feu"});
+// [CLEAR-RESULT] 보스 클리어 결과 화면 문자열 (2026-09-30, No.3094~3104)
+Object.assign(_FR,{"클리어 타임":"Temps","기준":"Référence","점수":"Score","신기록!":"Nouveau record !","지역 클리어":"Zones nettoyées","보스 처치":"Boss vaincu","시간 보너스":"Bonus de temps","무사망":"Sans mort","무피격":"Sans dégât","베스트":"Meilleur","랭크":"Rang"});
+// [REGION/CLEAR-RESULT] 2차 디자인 문자열 (2026-09-30, No.3105~3107)
+Object.assign(_FR,{"정화":"Purifiée","지역 정화":"Zones purifiées","사망 감점":"Pénalité de mort"});

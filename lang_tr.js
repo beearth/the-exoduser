@@ -2706,3 +2706,12 @@ Object.assign(_TR,{
 Object.assign(_TR_PFX,{"백골":"Kemik"});
 Object.assign(_TR_BASE,{"유골함":"Kemiklik"});
 Object.assign(_TR,{"천공쇄기":"Gök Ezici","🪨 천공쇄기!":"🪨 Gök Ezici!"});
+
+// [REGION] 4분면 지역 클리어 시스템 문자열 (2026-09-30, No.3073~3087)
+Object.assign(_TR,{"북서":"Kuzeybatı","북동":"Kuzeydoğu","남서":"Güneybatı","남동":"Güneydoğu","북서 · 어둠":"Kuzeybatı · Karanlık","북동 · 번개":"Kuzeydoğu · Yıldırım","남서 · 물":"Güneybatı · Su","남동 · 불":"Güneydoğu · Ateş","클리어!":"Temizlendi!","클리어됨":"Temizlendi","앵글러 생존":"Fenerbalığı hayatta","지옥문이 봉인됨 — 지역 클리어 ":"Cehennem Kapısı mühürlü — temizlenen bölge ","지옥문 봉인 (지역 ":"Kapı mühürlü (bölge ","지역 네 곳을 모두 클리어하면 지옥문이 열릴 거야.":"Dört bölgeyi de temizlersen Cehennem Kapısı açılır.","한 지역 클리어! 미니맵에서 다음 지역을 확인해.":"Bir bölge temizlendi! Sıradaki için mini haritaya bak."});
+// [REGION] 화살표 타겟 라벨 문자열 (2026-09-30, No.3088~3093)
+Object.assign(_TR,{"앵글러":"Fenerbalığı","지옥문":"Cehennem Kapısı","어둠":"Karanlık","번개":"Yıldırım","물":"Su","불":"Ateş"});
+// [CLEAR-RESULT] 보스 클리어 결과 화면 문자열 (2026-09-30, No.3094~3104)
+Object.assign(_TR,{"클리어 타임":"Süre","기준":"Referans","점수":"Puan","신기록!":"Yeni rekor!","지역 클리어":"Temizlenen bölgeler","보스 처치":"Boss öldürüldü","시간 보너스":"Süre bonusu","무사망":"Ölümsüz","무피격":"Hasarsız","베스트":"En iyi","랭크":"Derece"});
+// [REGION/CLEAR-RESULT] 2차 디자인 문자열 (2026-09-30, No.3105~3107)
+Object.assign(_TR,{"정화":"Arındırıldı","지역 정화":"Arındırılan bölgeler","사망 감점":"Ölüm cezası"});

@@ -2711,3 +2711,12 @@ Object.assign(_IT,{
 Object.assign(_IT_PFX,{"백골":"Osseo"});
 Object.assign(_IT_BASE,{"유골함":"Ossario"});
 Object.assign(_IT,{"천공쇄기":"Frantumatore Celeste","🪨 천공쇄기!":"🪨 Frantumatore Celeste!"});
+
+// [REGION] 4분면 지역 클리어 시스템 문자열 (2026-09-30, No.3073~3087)
+Object.assign(_IT,{"북서":"Nord-ovest","북동":"Nord-est","남서":"Sud-ovest","남동":"Sud-est","북서 · 어둠":"Nord-ovest · Oscurità","북동 · 번개":"Nord-est · Fulmine","남서 · 물":"Sud-ovest · Acqua","남동 · 불":"Sud-est · Fuoco","클리어!":"Ripulito!","클리어됨":"Ripulito","앵글러 생존":"Rana pescatrice viva","지옥문이 봉인됨 — 지역 클리어 ":"Porta dell'Inferno sigillata — zone ripulite ","지옥문 봉인 (지역 ":"Porta sigillata (zone ","지역 네 곳을 모두 클리어하면 지옥문이 열릴 거야.":"Ripulisci tutte e quattro le zone e la Porta dell'Inferno si aprirà.","한 지역 클리어! 미니맵에서 다음 지역을 확인해.":"Una zona ripulita! Controlla la minimappa per la prossima."});
+// [REGION] 화살표 타겟 라벨 문자열 (2026-09-30, No.3088~3093)
+Object.assign(_IT,{"앵글러":"Rana pescatrice","지옥문":"Porta dell'Inferno","어둠":"Oscurità","번개":"Fulmine","물":"Acqua","불":"Fuoco"});
+// [CLEAR-RESULT] 보스 클리어 결과 화면 문자열 (2026-09-30, No.3094~3104)
+Object.assign(_IT,{"클리어 타임":"Tempo","기준":"Riferimento","점수":"Punteggio","신기록!":"Nuovo record!","지역 클리어":"Zone ripulite","보스 처치":"Boss ucciso","시간 보너스":"Bonus tempo","무사망":"Nessuna morte","무피격":"Nessun danno","베스트":"Migliore","랭크":"Rango"});
+// [REGION/CLEAR-RESULT] 2차 디자인 문자열 (2026-09-30, No.3105~3107)
+Object.assign(_IT,{"정화":"Purificata","지역 정화":"Zone purificate","사망 감점":"Penalità morte"});

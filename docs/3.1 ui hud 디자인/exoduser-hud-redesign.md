@@ -758,9 +758,36 @@ const HUD_ICON = {
 
 > **[2026-08-18 correctness fix] 처치 카운터 분자 stale (game.html:50934)**
 > - **버그**: `#killCnt`가 `G.kills`(런 전체 누적) / `G._totalSpawned`(스테이지별 스폰) 조합이라, 2번째 지역부터 분자>분모(예: `150 / 92`)로 100% 초과 표시. 바로 아래 진행바(`#stageProgressFill`)는 `G._stageKills/_totalSpawned`로 정상 → 카운터만 어긋남.
-> - **canonical**: 스테이지 진행 지표는 `G._stageKills`(initStage에서 0 리셋, 킬마다 `G.kills`와 동시 증가). 게이트 해금(80%)·진행바 모두 `_stageKills` 사용.
+> - **canonical**: 스테이지 진행 지표는 `G._stageKills`(initStage에서 0 리셋, 킬마다 `G.kills`와 동시 증가). ([REGION] 2026-09-30부터 게이트 해금=4지역 클리어·`#killCnt`=현재 지역 kills/total·진행바=지역 N/4 — 아래 §REGION HUD 참조. `_stageKills`는 타임어택/폴백 유지)
 > - **수정**: 분자를 `G.kills`→`G._stageKills`로 교체(`_hudPulse`도 `_stageK` 기준). 밸런스/기능 변경 없음(표시값만 정정).
 > - **검증**: 라이브 시뮬(kills=150,stageKills=20,total=92) `150/92`→`20/92`, 진행바 21.7%와 일치. 스테이지 전환 3회 매번 per-stage 리셋(`1/650`→`1/1000`→`1/1100`), 누적 `G.kills`는 유지. pageerror 0.
+
+### §REGION HUD — 4분면 지역 클리어 가이드 (2026-09-30, SSOT=`docs/4.1맵디자인+설정/REGION_CLEAR_GATE_20260930.md`)
+
+오픈필드 맵을 4분면 지역(북서/북동/남서/남동, CH1-1은 속성 테마명)으로 나누고 게이트 개방을 "4지역 전부 클리어"로 바꾼 개편의 HUD/UI 반영분.
+
+| 요소 | 값 | 구현 |
+|---|---|---|
+| `#killCnt` (지역 처치 X / Y) | **현재 지역**(`G._regCurIdx`) `min(kills,total) / total`. 지역 없는 맵(한 변<180타일 소형 맵)은 기존 `_stageKills/_totalSpawned` 폴백 | `updateHUD` slow 경로 인라인 분기 |
+| `#stageProgressFill` | **지역 클리어 N/4** 비율(0/25/50/75/100%). 게이트 조건이 지역 단위라 킬 비율보다 명확 — 채택 근거 문서화 | 동일 지점 분기 |
+| 지역 입장 배너 [3차 디자인] | 전용 `#regionBanner`(#areaTitle 계열, top 28% — areaTitle/펫대사/구슬 비충돌): KR 지역명 --font-hell-title ls.16em 뼈색 + 양옆 속성색(채도 완화) 다이아 젬 + 금 헤어라인 / EN 대문자 Cinzel ls.32em / 상태줄 `처치 k / t (· 앵글러 생존)` --font-hell 13~15px rgba(219,208,190,.92)(4차 가독성), 정화 지역 재진입 시 `정화`. blur-in/out `regionBanner` 2.7s. 이모지·원색 없음 | `_regionBannerShow(idx,false)` ← `_regionTick` (15프레임 스로틀, 히스테리시스 1.5타일, 쿨다운 5s) |
+| 지역 정화 배너 [3차 디자인] | purge 모드: KR `{지역명} — 정화`(금-뼈색) / EN `REGION PURGED · N / 4` + 금 젬 + 지옥불 플레어(`regionFlare` 1.4s) + `SFX.magic`. N=4는 지옥문 개방 연출에 인계(배너 생략). 구 showPH 초록 토스트/addTxt 제거 | `_regionBannerShow(idx,true)` ← `_regionCheckClears` |
+| 화면 가장자리 방향 화살표 [3차 디자인] | 고딕 창날(미늘+꼬리 홈)+흑철 외곽+드롭섀도+내부 엠버 코어(타겟색 글로우), 절제 펄스. 라벨: 이름 명조 700 14px 뼈색 / 거리 Cinzel 600 12px 금-은은(이름 바로 아래 +16px), 42px 근접 오프셋. 창날 4차 20% 확대(선단 32px), fillText 8방향 오프셋 그림자(GPU 프록시 strokeText 금지). 타겟별 색(채도 완화): 지역=금-앰버 #d8b778·앵글러=_raDesat(ELC)·지옥문=_raDesat(#66ccff). HUD 세이프존(타이머 아래·스킬바/구슬 위·미니맵/스탯/펫대사 박스 회피, DOM rect 90프레임 캐시). 타겟 화면 안이면 숨김. 아레나/컷신/일시정지/튜토리얼 숨김 — **펫 대사 중에는 표시 유지**. 20프레임 타겟 재계산·per-frame 할당 0 | `_drawRegionArrow`+`_raMeasureSafe` (drawMM 직전) |
+| 미니맵 마커 | 4분면 십자선(정적 캐시) + 클리어 지역 **바닥 한정 틴트 오버레이**(`_mmRegOvlEnsure`, 클리어셋 변경 시만 리빌드 ≤4회/스테이지) + **벡터 자물쇠**(`_mmDrawLock`, 봉인 빨강/개방 파랑, 이모지 제거) + CH1-1 앵글러 속성색 원 r3+외곽 1px(생존만) | `_mmTickBuild`/`drawMM` |
+| 봉인 안내문 | `지옥문이 봉인됨 — 지역 클리어 N/4`(addTxt) / 포탈 라벨 `▼ 지옥문 봉인 (지역 N/4) ▼` | 기존 지점 분기 |
+| DOM 안전 | 신규 DOM 요소 0 (기존 `#ph`/`#killCnt`/`#stageProgressFill` 리프만 갱신, 컨테이너 교체 없음) | — |
+
+### §CLEAR-RESULT — 보스 클리어 결과 블록 (2026-09-30, SSOT=`docs/2게임디자인레벨디자인/클리어결과_점수랭크_20260930.md`)
+
+**[2026-09-30 3차 디자인]** `#stageClear` 패널의 `#clearResult` 리프(`#clearSub`↔`#clearStats` 사이), Hell Gothic 마감(이모지 전면 금지):
+- **컨테이너**: 흑철 그라디언트 배경(rgba(18,11,8,.92)→rgba(8,5,4,.94)) + 보더 rgba(102,94,80,.5) + 내부 그림자, max-width 560px, 상단 금 헤어라인.
+- **랭크 크레스트**: 68px 회전 다이아 이중 프레임(금 헤어라인+흑철면+랭크색 글로우) 안 랭크 레터 --font-hell-title 1.85rem. 랭크색 저채도: S #e3c27a / A #a9c8a4 / B #9db8cc / C #c2b6a9 / D #8d7c65 (`_RANK_COL`).
+- **2열 행**: 라벨 --font-hell ls.2em #c2b6a9 / 수치 Cinzel #e6d6b9(점수 1.18rem 강조), 기준(par) #8d7c65 소자.
+- **breakdown**: 2열 그리드, 항목별 라벨 좌(#9a8a72 명조)/수치 우(Cinzel #c9bda6, 감점 −표기 #a8776a), 점선 리더(rgba(164,147,115,.16)). 항목: 처치/지역 정화/보스 처치/시간 보너스/(무사망)/(무피격)/최대콤보/(사망 감점).
+- **베스트 행**: 상단 헤어라인 구분, `베스트 t · s · r`(랭크 레터는 랭크색 제목체). **신기록 씰**: 금 보더 소형 태그(rgba(216,183,120,.6) 보더, #d8b778, ls.2em) — 이모지 아님.
+- **[4차] 헤더/버튼**: `#clearTitle` #areaTitle 계열(제목체 1.3rem+금 헤어라인)+`#clearTitleEn`(Cinzel 영문 장식줄 ZONE CLEARED/HELL ESCAPED, 항상 영어), `#clearSub` 명조 뼈-은은, `#nextBtn` UI_COMPOSITION 표준 암적색 행동 버튼 마감(min 44px, 기능·id·리스너 무변). 본행/breakdown/베스트 라벨 13px(#cfc3b0/#c5b8a3), par 12px, 타임 1.12rem/점수 1.3rem.
+- **하위 `#clearStats`**: 이모지·원색 제거, 명조 #9a8a72/#bcab90 저채도 톤 + `·` 구분자(데이터·의미 무변, 뱃지 텍스트만 유지).
+클리어 타임=보스 사망 시점 `G.stageTime` 스냅샷(일시정지/튜토리얼/시네마틱 자동 제외). DOM 안전: 전용 리프 innerHTML만. 데모에선 demoEnd 이전에 표시. nextBtn 진행 흐름 무변경.
 
 ### 지역 진입 연출
 

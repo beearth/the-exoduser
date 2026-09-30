@@ -3309,3 +3309,12 @@ Object.assign(_ES,{
 Object.assign(_ES_PFX,{"백골":"Óseo"});
 Object.assign(_ES_BASE,{"유골함":"Osario"});
 Object.assign(_ES,{"천공쇄기":"Triturador Celestial","🪨 천공쇄기!":"🪨 Triturador Celestial!"});
+
+// [REGION] 4분면 지역 클리어 시스템 문자열 (2026-09-30, No.3073~3087)
+Object.assign(_ES,{"북서":"Noroeste","북동":"Noreste","남서":"Suroeste","남동":"Sureste","북서 · 어둠":"Noroeste · Oscuridad","북동 · 번개":"Noreste · Rayo","남서 · 물":"Suroeste · Agua","남동 · 불":"Sureste · Fuego","클리어!":"¡Despejado!","클리어됨":"Despejado","앵글러 생존":"Rape vivo","지옥문이 봉인됨 — 지역 클리어 ":"Puerta del Infierno sellada — zonas despejadas ","지옥문 봉인 (지역 ":"Puerta sellada (zonas ","지역 네 곳을 모두 클리어하면 지옥문이 열릴 거야.":"¡Despeja las cuatro zonas y se abrirá la Puerta del Infierno!","한 지역 클리어! 미니맵에서 다음 지역을 확인해.":"¡Una zona despejada! Mira el minimapa para la siguiente."});
+// [REGION] 화살표 타겟 라벨 문자열 (2026-09-30, No.3088~3093)
+Object.assign(_ES,{"앵글러":"Rape","지옥문":"Puerta del Infierno","어둠":"Oscuridad","번개":"Rayo","물":"Agua","불":"Fuego"});
+// [CLEAR-RESULT] 보스 클리어 결과 화면 문자열 (2026-09-30, No.3094~3104)
+Object.assign(_ES,{"클리어 타임":"Tiempo","기준":"Referencia","점수":"Puntuación","신기록!":"¡Nuevo récord!","지역 클리어":"Zonas despejadas","보스 처치":"Jefe abatido","시간 보너스":"Bonus de tiempo","무사망":"Sin muertes","무피격":"Sin daño","베스트":"Mejor","랭크":"Rango"});
+// [REGION/CLEAR-RESULT] 2차 디자인 문자열 (2026-09-30, No.3105~3107)
+Object.assign(_ES,{"정화":"Purificada","지역 정화":"Zonas purificadas","사망 감점":"Penalización por muerte"});

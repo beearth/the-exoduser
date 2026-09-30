@@ -3743,3 +3743,12 @@ Object.assign(_CS,{
 Object.assign(_CS_PFX,{"백골":"Kostěná"});
 Object.assign(_CS_BASE,{"유골함":"Kostnice"});
 Object.assign(_CS,{"천공쇄기":"Nebeský drtič","🪨 천공쇄기!":"🪨 Nebeský drtič!"});
+
+// [REGION] 4분면 지역 클리어 시스템 문자열 (2026-09-30, No.3073~3087)
+Object.assign(_CS,{"북서":"Severozápad","북동":"Severovýchod","남서":"Jihozápad","남동":"Jihovýchod","북서 · 어둠":"Severozápad · Temnota","북동 · 번개":"Severovýchod · Blesk","남서 · 물":"Jihozápad · Voda","남동 · 불":"Jihovýchod · Oheň","클리어!":"Vyčištěno!","클리어됨":"Vyčištěno","앵글러 생존":"Ďas naživu","지옥문이 봉인됨 — 지역 클리어 ":"Pekelná brána zapečetěna — vyčištěné oblasti ","지옥문 봉인 (지역 ":"Brána zapečetěna (oblasti ","지역 네 곳을 모두 클리어하면 지옥문이 열릴 거야.":"Vyčisti všechny čtyři oblasti a Pekelná brána se otevře.","한 지역 클리어! 미니맵에서 다음 지역을 확인해.":"Jedna oblast vyčištěna! Mrkni na minimapu, kde je další."});
+// [REGION] 화살표 타겟 라벨 문자열 (2026-09-30, No.3088~3093)
+Object.assign(_CS,{"앵글러":"Ďas","지옥문":"Pekelná brána","어둠":"Temnota","번개":"Blesk","물":"Voda","불":"Oheň"});
+// [CLEAR-RESULT] 보스 클리어 결과 화면 문자열 (2026-09-30, No.3094~3104)
+Object.assign(_CS,{"클리어 타임":"Čas","기준":"Norma","점수":"Skóre","신기록!":"Nový rekord!","지역 클리어":"Vyčištěné oblasti","보스 처치":"Boss poražen","시간 보너스":"Časový bonus","무사망":"Bez smrti","무피격":"Bez zásahu","베스트":"Nejlepší","랭크":"Hodnocení"});
+// [REGION/CLEAR-RESULT] 2차 디자인 문자열 (2026-09-30, No.3105~3107)
+Object.assign(_CS,{"정화":"Očištěna","지역 정화":"Očištěné oblasti","사망 감점":"Postih za smrt"});

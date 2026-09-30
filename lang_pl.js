@@ -3833,3 +3833,12 @@ Object.assign(_PL,{
 Object.assign(_PL_PFX,{"백골":"Kościane"});
 Object.assign(_PL_BASE,{"유골함":"Ossuarium"});
 Object.assign(_PL,{"천공쇄기":"Niebiański Miażdżyciel","🪨 천공쇄기!":"🪨 Niebiański Miażdżyciel!"});
+
+// [REGION] 4분면 지역 클리어 시스템 문자열 (2026-09-30, No.3073~3087)
+Object.assign(_PL,{"북서":"Północny zachód","북동":"Północny wschód","남서":"Południowy zachód","남동":"Południowy wschód","북서 · 어둠":"Północny zachód · Mrok","북동 · 번개":"Północny wschód · Błyskawica","남서 · 물":"Południowy zachód · Woda","남동 · 불":"Południowy wschód · Ogień","클리어!":"Oczyszczono!","클리어됨":"Oczyszczono","앵글러 생존":"Żabnica żyje","지옥문이 봉인됨 — 지역 클리어 ":"Brama Piekieł zapieczętowana — oczyszczone regiony ","지옥문 봉인 (지역 ":"Brama zapieczętowana (regiony ","지역 네 곳을 모두 클리어하면 지옥문이 열릴 거야.":"Oczyść wszystkie cztery regiony, a Brama Piekieł się otworzy.","한 지역 클리어! 미니맵에서 다음 지역을 확인해.":"Jeden region oczyszczony! Sprawdź minimapę, gdzie następny."});
+// [REGION] 화살표 타겟 라벨 문자열 (2026-09-30, No.3088~3093)
+Object.assign(_PL,{"앵글러":"Żabnica","지옥문":"Brama Piekieł","어둠":"Mrok","번개":"Błyskawica","물":"Woda","불":"Ogień"});
+// [CLEAR-RESULT] 보스 클리어 결과 화면 문자열 (2026-09-30, No.3094~3104)
+Object.assign(_PL,{"클리어 타임":"Czas","기준":"Norma","점수":"Wynik","신기록!":"Nowy rekord!","지역 클리어":"Oczyszczone regiony","보스 처치":"Boss pokonany","시간 보너스":"Premia czasowa","무사망":"Bez śmierci","무피격":"Bez obrażeń","베스트":"Najlepszy","랭크":"Ranga"});
+// [REGION/CLEAR-RESULT] 2차 디자인 문자열 (2026-09-30, No.3105~3107)
+Object.assign(_PL,{"정화":"Oczyszczona","지역 정화":"Oczyszczone regiony","사망 감점":"Kara za śmierć"});

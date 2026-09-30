@@ -2822,3 +2822,12 @@ const _MS_BASE={
   "분노게이지 꽉 찼어! 스페이스로 폭발시첨!": "Tolok amarah sudah penuh! Cetuskan letupan dengan Space!",
   "유골함": "Guci Tulang"
 };
+
+// [REGION] 4분면 지역 클리어 시스템 문자열 (2026-09-30, No.3073~3087)
+Object.assign(_MS,{"북서":"Barat Laut","북동":"Timur Laut","남서":"Barat Daya","남동":"Tenggara","북서 · 어둠":"Barat Laut · Kegelapan","북동 · 번개":"Timur Laut · Petir","남서 · 물":"Barat Daya · Air","남동 · 불":"Tenggara · Api","클리어!":"Selesai!","클리어됨":"Selesai","앵글러 생존":"Angler masih hidup","지옥문이 봉인됨 — 지역 클리어 ":"Gerbang Neraka termeterai — wilayah selesai ","지옥문 봉인 (지역 ":"Gerbang termeterai (wilayah ","지역 네 곳을 모두 클리어하면 지옥문이 열릴 거야.":"Bersihkan keempat-empat wilayah dan Gerbang Neraka akan terbuka.","한 지역 클리어! 미니맵에서 다음 지역을 확인해.":"Satu wilayah selesai! Semak peta mini untuk yang seterusnya."});
+// [REGION] 화살표 타겟 라벨 문자열 (2026-09-30, No.3088~3093)
+Object.assign(_MS,{"앵글러":"Angler","지옥문":"Gerbang Neraka","어둠":"Kegelapan","번개":"Petir","물":"Air","불":"Api"});
+// [CLEAR-RESULT] 보스 클리어 결과 화면 문자열 (2026-09-30, No.3094~3104)
+Object.assign(_MS,{"클리어 타임":"Masa","기준":"Penanda aras","점수":"Skor","신기록!":"Rekod baharu!","지역 클리어":"Wilayah selesai","보스 처치":"Bos ditewaskan","시간 보너스":"Bonus masa","무사망":"Tanpa mati","무피격":"Tanpa terkena","베스트":"Terbaik","랭크":"Pangkat"});
+// [REGION/CLEAR-RESULT] 2차 디자인 문자열 (2026-09-30, No.3105~3107)
+Object.assign(_MS,{"정화":"Disucikan","지역 정화":"Wilayah disucikan","사망 감점":"Penalti kematian"});

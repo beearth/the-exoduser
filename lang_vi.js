@@ -2689,3 +2689,12 @@ Object.assign(_VI,{
 Object.assign(_VI_PFX,{"백골":"Xương Trắng"});
 Object.assign(_VI_BASE,{"유골함":"Bình Hài Cốt"});
 Object.assign(_VI,{"천공쇄기":"Nghiền Nát Thiên Không","🪨 천공쇄기!":"🪨 Nghiền Nát Thiên Không!"});
+
+// [REGION] 4분면 지역 클리어 시스템 문자열 (2026-09-30, No.3073~3087)
+Object.assign(_VI,{"북서":"Tây Bắc","북동":"Đông Bắc","남서":"Tây Nam","남동":"Đông Nam","북서 · 어둠":"Tây Bắc · Bóng Tối","북동 · 번개":"Đông Bắc · Sấm Sét","남서 · 물":"Tây Nam · Nước","남동 · 불":"Đông Nam · Lửa","클리어!":"Đã dọn sạch!","클리어됨":"Đã dọn sạch","앵글러 생존":"Cá Vực Thẳm còn sống","지옥문이 봉인됨 — 지역 클리어 ":"Cổng Địa Ngục bị phong ấn — khu vực đã dọn ","지옥문 봉인 (지역 ":"Cổng phong ấn (khu vực ","지역 네 곳을 모두 클리어하면 지옥문이 열릴 거야.":"Dọn sạch cả bốn khu vực thì Cổng Địa Ngục sẽ mở.","한 지역 클리어! 미니맵에서 다음 지역을 확인해.":"Đã dọn xong một khu vực! Xem bản đồ nhỏ để tìm khu tiếp theo."});
+// [REGION] 화살표 타겟 라벨 문자열 (2026-09-30, No.3088~3093)
+Object.assign(_VI,{"앵글러":"Cá Vực Thẳm","지옥문":"Cổng Địa Ngục","어둠":"Bóng Tối","번개":"Sấm Sét","물":"Nước","불":"Lửa"});
+// [CLEAR-RESULT] 보스 클리어 결과 화면 문자열 (2026-09-30, No.3094~3104)
+Object.assign(_VI,{"클리어 타임":"Thời gian","기준":"Chuẩn","점수":"Điểm","신기록!":"Kỷ lục mới!","지역 클리어":"Khu vực đã dọn","보스 처치":"Hạ boss","시간 보너스":"Thưởng thời gian","무사망":"Không chết","무피격":"Không trúng đòn","베스트":"Tốt nhất","랭크":"Hạng"});
+// [REGION/CLEAR-RESULT] 2차 디자인 문자열 (2026-09-30, No.3105~3107)
+Object.assign(_VI,{"정화":"Thanh tẩy","지역 정화":"Khu vực thanh tẩy","사망 감점":"Trừ điểm tử vong"});

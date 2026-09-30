@@ -93,7 +93,7 @@ P12 Regression / QA
 
 ## PHASE 5 — Combat zone lifecycle
 - **GOAL**: COMBAT 존 진입→전투→클리어 리듬(선택적 봉인/개방).
-- **INPUT**: P3/P4, 기존 게이트(80% 처치) 로직.
+- **INPUT**: P3/P4, 기존 게이트 로직(2026-09-30부터 [REGION] 4지역 클리어 규칙 — 지역별 80%; 구 전역 80%는 소형 맵(한 변<180타일) 폴백).
 - **CODE SCOPE**: 존 진입 트리거 + (선택) 임시 봉인. 기존 stageClear/게이트 미변경.
 - **NON-GOALS**: 보스, 미니맵.
 - **IMPLEMENTATION IDEA**: 존 진입 시 이벤트 훅(적 활성/사이드 개방). 기존 `checkRooms` 흐름 재사용.
@@ -104,6 +104,7 @@ P12 Regression / QA
 - **NEXT GATE**: 리듬 승인.
 
 ## PHASE 6 — Minimap integration
+> **부분 완료 (2026-09-30 [REGION])**: 4분면 경계 십자선(정적 캐시 베이크) + 클리어 지역 딤 + 지옥문 자물쇠(🔒/🔓) + CH1-1 앵글러 속성색 마커가 `drawMM`에 들어감(`REGION_CLEAR_GATE_20260930.md §미니맵`). 잔여 = 사이드포켓/상승통로 마커.
 - **GOAL**: 미니맵에 보스게이트/이벤트/사이드포켓/상승통로 마커 추가(세계 가독성).
 - **INPUT**: `drawMM`(51400), 존 데이터, `G.exits`/`bossGate`.
 - **CODE SCOPE**: `drawMM` 마커 레이어 확장. `_mmCache` 정합.

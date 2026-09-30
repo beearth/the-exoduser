@@ -1,3 +1,29 @@
+## 2026-09-30 — [REGION/CLEAR-RESULT] Hell Gothic 재디자인 (3차)
+
+| 범위 | 변경·검증 |
+|---|---|
+| 배경 | 유저 디자인 리젝 — 기능 유지, 시각만 CLAUDE.md §작업물 퀄리티·디자인 + UI_FOUNDATION/UI_COMPOSITION Hell Gothic 기준으로 재작업 |
+| 지역 배너 | showPH 초록/노랑 토스트 → 전용 #regionBanner(#areaTitle 계열, top28%): KR 명조 제목체+속성색(채도완화) 다이아 젬+금 헤어라인 / EN 대문자 Cinzel / 상태줄 명조 뼈색. 정화(purge) 모드= — 정화 / REGION PURGED · N/4 + 금 젬+지옥불 플레어. blur-in/out 2.7s. 4/4은 지옥문 개방 연출 인계 |
+| 화살표 | 디버그 삼각형 → 고딕 창날(미늘+꼬리 홈)+흑철 외곽+드롭섀도+엠버 코어(타겟색 글로우), 절제 펄스. 라벨=명조 13px 뼈색 이름+Cinzel 11px 거리, fillText 8방향 오프셋 그림자(GPU 프록시 strokeText 금지). 색 전부 채도완화: 지역 #d8b778/앵글러 _raDesat(ELC)/게이트 _raDesat(#66ccff) |
+| 결과 패널 | 이모지·원색 제거 → 흑철 컨테이너+금 헤어라인, 랭크 다이아 크레스트(제목체+저채도 랭크색 S#e3c27a~D#8d7c65), 2열 라벨(명조)/수치(Cinzel) 행, breakdown 2열 점선 리더(지역 정화/사망 감점 표기), 베스트 행+금 보더 신기록 씰. 하위 #clearStats 이모지·원색 제거 저채도 명조 톤(데이터 무변) |
+| HUD 지역 처치 | 기존 objective-row 공용 스타일 그대로 — 이상 없음 확인(변경 없음) |
+| 번역 | 신규 3키 No.3105~3107(정화/지역 정화/사망 감점) 28언어. 클리어!/클리어됨/지역 클리어 미사용 전환 |
+| 4차 폴리시(같은 날) | 스테이지 클리어 헤더 통일(#clearTitle=areaTitle 계열+#clearTitleEn 영문 장식줄 ZONE CLEARED/HELL ESCAPED, #clearSub 명조, #nextBtn=UI_COMPOSITION 표준 암적색 행동버튼 마감·기능 무변, 지옥보스 글리프 #d8b778) + 결과박스 1x 가독성(라벨 13px #cfc3b0/#c5b8a3·par 12px·타임 1.12rem/점수 1.3rem) + 화살표 20% 확대·라벨 42px 근접(이름 14px/거리 12px) + 배너 상태줄 13~15px 대비 상승·헤어라인 areaTitle 비례(21%). 31_* 스크린샷 재검수, 비데모 버튼은 강제 렌더로 확인 |
+| 검증 | regionClearGate 7/7(배너 DOM 스텁으로 갱신)+clearResultScore 6/6 PASS. msedge 1600/1920 pageerror 0, 30_* 스크린샷(배너/화살표/결과 1x 크롭 포함) — 기존 areaTitle·HUD 옆 톤 일치 판정 |
+
+## 2026-09-30 — [CLEAR-RESULT] 보스 클리어 결과(타임·점수·랭크) + [REGION] 마감
+
+| 범위 | 변경·검증 |
+|---|---|
+| 소스 | game.html / game-easy-test.html (동일 반영). 신규 [CLEAR-RESULT] 블록(checkRooms~HURT_E 사이) + #clearResult 패널 리프 + 보스사망 스냅샷 + 세이브 4곳/복원 1곳 + _regionInit 리셋 |
+| 결과 화면 | 보스 사망 시 G._bossClearT 스냅샷(stageTime=일시정지/튜토리얼/시네마틱 자동 제외) → 아레나 출구에서 #stageClear 패널 상단에 랭크 레터+클리어 타임(기준 대비)+점수(천단위)+breakdown+베스트/신기록. 데모는 demoEnd 이전 표시, nextBtn 흐름 무변경 |
+| 공식 | 점수=처치×10+지역×500+보스1000+시간보너스 max(0,par−t)×10+무사망500+무피격500+콤보×5−사망×300(하한0). par=90+스폰×2.5초(1-1=8:30, 추정 근거 문서화). parScore=스폰×10+3500. 랭크 rp=시간(≤0.7par→3/≤1.0→2/≤1.5→1)+점수(≥par→2/≥60%→1)+무사망1 → ≥6 S/≥4 A/≥3 B/≥2 C/D |
+| 세이브 | game.clearRecords={si:{t,s,r}} 필드별 베스트(_clearRecordMerge). 구세이브 결측=기록없음(마이그레이션 불필요). 15 세이브+데이터구조.md 동기화 |
+| [REGION] 마감 | 미니맵 4분면 십자선 source-atop으로 바닥 픽셀 한정(오프맵 회색 침범 제거). 화살표는 타겟이 화면 안이면 숨김 설계 — 앵글러만 남은 지역은 원거리에서 속성색 앵글러 · X Nm 라벨 표시(브라우저 재검증) |
+| 번역 | 신규 11키 No.3094~3104, _EN+27개 lang_*.js 전파(28언어). 기존 처치/사망/최대콤보 재사용 |
+| 테스트 | test/clearResultScore.test.js 6건(공식/par/랭크 경계/기록 병합/포맷/배선) + regionClearGate 7건 PASS |
+| 문서 | SSOT 2게임디자인레벨디자인/클리어결과_점수랭크_20260930.md 신설, 3.1 HUD §CLEAR-RESULT, REGION_CLEAR_GATE §6 갱신 |
+
 ## 2026-09-30 — CH1-1 썩은 숲과 길의 직선 경계 수정
 
 사용자 `125145` 캡처의 대각선은 53점 geometry를 그대로 숲/바닥 재질 마스크로 쓴 결과였다. 충돌·중앙 전투 바닥·남북 통로는 유지하고 1024² `floor_transition93.png`의 18px/±10px 시각 전이로 유기적 경계를 만들었다. 외곽 36개 나무에 MagicLight Sunburst 대형 생체나무 군락 6개와 뿌리 연결 1개를 더해 master/64청크를 재베이크했다. bakeVersion `20260930-rotforest-95`, cache key `20260930-rotforest-96`, 23레이어. 숲 흔들림은 ±5px을 유지하며 청크 끝 4 mask 샘플에서 감쇠한다. 신고 위치 crop 비교, 청크 core 불일치 0, geometry hash 동일, 보호 전투 바닥 변경 0, 관련 Node 테스트 4/4 통과. [원인·배치·수치·실게임 검수·MAP PRODUCTION REPORT](4.1맵디자인+설정/CH1_ROTTEN_FOREST_BOUNDARY_PASS95_20260930.md). **VISUAL VERDICT: RETOUCH.** 아래 90차 값은 제작 당시 기록이다.
@@ -13,6 +39,7 @@
 | 번역 | 신규 15키 No.3073~3087, `_EN`+27개 lang_*.js 전파(28언어). 펫 대사 `tut_gate_locked` 교체+`region_clear` 신규 |
 | 테스트 | `test/regionClearGate.test.js` 7/7 PASS(귀속/임계/앵글러/빈지역/문지기보너스/개방규칙). 관련 기존 테스트 diabloFieldMap/mapTestServer/parryMagicTracking/diabloFieldStagePlan/ch1Gate5 PASS. fieldBossSpawnEmerge 1건 FAIL은 sBlock 패링 반경 기대 코드 불일치로 **본 작업 이전부터 존재(HEAD 동일)** |
 | 문서 | SSOT `4.1맵디자인+설정/REGION_CLEAR_GATE_20260930.md` 신설 + 게이트 80% 서술 문서 16곳 동기화(_MAP_SSOT_INDEX 참조) |
+| 폴리시(같은 날 2차) | 화살표 1.5x+글로우+검정외곽·라벨 `{타겟명} {n}m` 13px(타겟별 색: 지역 앰버/앵글러 속성색/게이트 파랑)·HUD 세이프존(타이머·스킬바·구슬·미니맵·스탯·펫대사 rect 90프레임 캐시 회피)·튜토리얼 중 숨김(펫 대사 중 표시 유지). 미니맵: 이모지 자물쇠→벡터 `_mmDrawLock`(봉인 빨강/개방 파랑), 클리어 틴트 바닥 타일 한정 오버레이(`_mmRegOvlEnsure`, 클리어셋 변경 시만 리빌드), 앵글러 점 외곽 1px. 번역 6키 추가(No.3088~3093, 28언어) |
 
 ## 2026-09-30 — CH1-1 살아 움직이는 썩은숲 90차
 

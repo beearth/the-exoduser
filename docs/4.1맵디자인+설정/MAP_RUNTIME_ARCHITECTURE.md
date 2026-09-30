@@ -194,7 +194,7 @@ kit builders (24417~24507)   ─┘        │
 ## 8. 보스 스폰 / 아레나 (Q9 관련)
 
 - `findBoss()` 15379 → `G._bossRef`. 게이트 상태: `G.bossGate`(타일배열)/`bossGateOpen`/`bossSealed`/`_gateY`/`_bossCx/_bossCy`/`_bossUnlocked`/`_gateGuardKilled`.
-- **게이트 개방**: `checkRooms` — `_stageKills/_totalSpawned + 0.10(가드보너스) >= 0.8` (80%). CH1-1(`G.stage===0`)은 **추가로** 앵글러 4마리 전멸(`G._fbDone`). 추적스폰 0이어도 CH1-1은 `_fbDone` 필수.
+- **게이트 개방 (2026-09-30 [REGION] 규칙 교체)**: 오픈필드 맵은 **4분면 지역 4곳 전부 클리어** 시 개방 (`G._regions` + `_regionClearedCount()>=4`). 지역 클리어 = 지역 kills/total ≥ 0.8 (+문지기 처치 시 **게이트 지역 한정** +0.10) AND (CH1-1) 담당 앵글러 사망. CH1-1 `_fbDone`(`_krakenOk`)은 이중 안전망으로 유지. **소형 맵(한 변 180타일 미만 — 던전·소환굴·보스아레나) 폴백 = 구 규칙**: `_stageKills/_totalSpawned + 0.10(가드보너스) >= 0.8` (80%). 상세 = `REGION_CLEAR_GATE_20260930.md`.
 - **보스 로드 스테이트머신**: `_bossLoadPhase` 1=페이드아웃→`_enterBossArena()`(35514), 2=네임카드, 3=페이드인, 4=보스등장. 트리거 = 출구타일 밟기(`bossAlive && !_bossArena && _bossUnlocked`, 35606).
 - `_enterBossArena()` 25111: `_preArenaBackup`로 던전 백업(25113) → 생존몹 kills 전환 → 풀 클리어 → `G.map=arena.map`(25130) → 보스 mkEn(ib=true, 25139) → 캐시 재빌드.
 - **1-1 필드몹/보스 아레나 분리 (2026-09-28):** `si0` 아레나 진입 시 `G._fieldBoss`, `G._fieldBosses`, `G._fireDevils`을 비우고 `G._worms=[]`로 초기화한다. `_fbTick`·`_fdTick`은 `G._bossArena && G.stage===0`이면 저장 배열을 비우고 스폰 전에 반환한다. `_wmTick`도 같은 조건에서 곰치 배열을 비우고 반환한다. 탐험 필드의 4각 위치·HP·탄막·게이트 조건 `G._fbDone`은 유지하며, 기존 데모 si3 피날레 곰치 차단도 유지한다.
@@ -208,7 +208,7 @@ kit builders (24417~24507)   ─┘        │
 - **읽는 데이터**: `G.map` 타일(캐시 `_mmCache`, `_mmTickBuild` 51315) + `G.spawnHoles`(51431) + `ens`(60캡, 30프레임 갱신) + 플레이어 `P.x/P.y/P.facing`.
 - **읽지 않는 것**: `G.rooms`, `G.exits` (미니맵 렌더에서 미사용).
 - 플레이어 마커 `_mmDrawPlayerMarker` 51366–51398 (초상 `_mmPortraitImgs`, 방향삼각형, 이중링). 20프레임 캐시.
-- **보스/이벤트/게이트/존 마커 = NOT FOUND.** → **Q5 답 + 갭**: 미니맵은 타일+스폰홀+적+플레이어만. 세계 구조(상승통로/보스/사이드포켓) 가독성 마커 없음 → `MAP_IMPLEMENTATION_ROADMAP.md PHASE 6`에서 추가.
+- **[REGION] 마커 추가 (2026-09-30, 구 "게이트/존 마커 NOT FOUND" 갭 해소)**: ① 4분면 경계 십자선(정적 캐시 `_mmTickBuild` 완료 블록, `rgba(255,255,255,.14)`) ② 클리어 지역 딤 오버레이(`rgba(30,60,30,.42)` fillRect, 동적) ③ 지옥문 자물쇠(봉인=빨강 🔒 / 개방=파랑 🔓, `G._bossCx/G._gateY` 위치) ④ CH1-1 앵글러 속성색 원형 마커(생존만 표시, 사망 시 제거; 미스폰 시 `_FB_SITES` 사이트 위치). 동적 마커는 캐시 리빌드 없이 drawMM(20프레임 스로틀)에서 직접 그림. 잔여 갭: 보스방 외 사이드포켓 마커.
 
 ---
 
@@ -237,7 +237,7 @@ kit builders (24417~24507)   ─┘        │
 ## 12. 진행 / 클리어 조건 (Q10 관련)
 
 - `G._stageKills`(리셋 25870) / `G._totalSpawned`(24987, 소환굴 용량합).
-- 게이트 개방 80%(35598, +10% 가드), 스테이지 클리어 = **보스 처치 후 아레나 출구 도달**(35626, kill-all 아님), 타임어택 90%(35631).
+- 게이트 개방([REGION] 2026-09-30)=4지역 클리어(§8, 소형 맵(한 변<180타일) 폴백=80%+10% 가드), 스테이지 클리어 = **보스 처치 후 아레나 출구 도달**(35626, kill-all 아님), 타임어택 90%(35631, [REGION] 무관 — 기존 유지).
 - HUD `killCnt = _stageKills / _totalSpawned` (51529).
 
 ---

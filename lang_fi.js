@@ -2688,3 +2688,12 @@ Object.assign(_FI,{
 Object.assign(_FI_PFX,{"백골":"Luinen"});
 Object.assign(_FI_BASE,{"유골함":"Luu-uurna"});
 Object.assign(_FI,{"천공쇄기":"Taivaanmurskaaja","🪨 천공쇄기!":"🪨 Taivaanmurskaaja!"});
+
+// [REGION] 4분면 지역 클리어 시스템 문자열 (2026-09-30, No.3073~3087)
+Object.assign(_FI,{"북서":"Luode","북동":"Koillinen","남서":"Lounas","남동":"Kaakko","북서 · 어둠":"Luode · Pimeys","북동 · 번개":"Koillinen · Salama","남서 · 물":"Lounas · Vesi","남동 · 불":"Kaakko · Tuli","클리어!":"Puhdistettu!","클리어됨":"Puhdistettu","앵글러 생존":"Merikrotti elossa","지옥문이 봉인됨 — 지역 클리어 ":"Helvetin portti sinetöity — alueita puhdistettu ","지옥문 봉인 (지역 ":"Portti sinetöity (alueet ","지역 네 곳을 모두 클리어하면 지옥문이 열릴 거야.":"Puhdista kaikki neljä aluetta, niin Helvetin portti aukeaa.","한 지역 클리어! 미니맵에서 다음 지역을 확인해.":"Yksi alue puhdistettu! Katso minikartasta seuraava."});
+// [REGION] 화살표 타겟 라벨 문자열 (2026-09-30, No.3088~3093)
+Object.assign(_FI,{"앵글러":"Merikrotti","지옥문":"Helvetin portti","어둠":"Pimeys","번개":"Salama","물":"Vesi","불":"Tuli"});
+// [CLEAR-RESULT] 보스 클리어 결과 화면 문자열 (2026-09-30, No.3094~3104)
+Object.assign(_FI,{"클리어 타임":"Aika","기준":"Tavoiteaika","점수":"Pisteet","신기록!":"Uusi ennätys!","지역 클리어":"Puhdistetut alueet","보스 처치":"Pomo kukistettu","시간 보너스":"Aikabonus","무사망":"Ei kuolemia","무피격":"Ei osumia","베스트":"Paras","랭크":"Arvosana"});
+// [REGION/CLEAR-RESULT] 2차 디자인 문자열 (2026-09-30, No.3105~3107)
+Object.assign(_FI,{"정화":"Puhdistettu","지역 정화":"Puhdistetut alueet","사망 감점":"Kuolemasakko"});
