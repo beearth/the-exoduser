@@ -1,3 +1,19 @@
+## 2026-10-01 몹 피격 플래시 복원 (ANIMVFX / PM-014)
+
+일반 몹 피격 시각 피드백이 죽어 있었다. `hurtE`가 `e._hitFlash=6`(일반)/`=4`(회전참)로 타이머만 세팅하고, 렌더는 `if(e._hitFlash>0){e._hitFlash-=1}`로 감소만 하고 아무것도 그리지 않았다(과거 붉은 원 제거 후 대체 미구현). 히트 시 **해당 몹의 8방향 아틀라스 셀을 가산 1장 덧그려 스프라이트 실루엣을 밝게 팝**시키도록 복원했다(신규 에셋·텍스처·VRAM 0).
+
+| 항목 | 값 |
+|---|---|
+| 대상 | 일반 몹(`!e.ib`). CH1 8방향 아틀라스(`_ch8Atlas`) 몹. 보스 제외 |
+| 강도·페이드 | `_hfT=min(1,e._hitFlash/6)` 1→0, 알파 `_hfT*0.8`(2D는 ×sa), 크기 `max(e.r*7,80)*(1+0.05*_hfT)` |
+| 렌더 경로(그리기) | GL 인스턴싱: `_prepEnemyInstanced`에서 `_drawEnemy8DirInstanced()` 직후 `_ensGLMode===1`&`_hitFlash>0` 몹만 additive 덧그림. 2D 폴백: "피격 플래시" 블록에서 `!_ensGLQueued` 몹만 덧그림. **render는 그리기만(감소 없음)** |
+| 수명(감쇠) | **고정스텝 update에서 감쇠**(`_hitStun-=sp` 옆, `if(e._hitFlash>0)e._hitFlash=Math.max(0,e._hitFlash-sp)`). update는 실시간 60Hz(`while(_acc>=PHYS_STEP)`)라 **주사율 독립 ≈100ms**(60fps 6틱). 이전 draw당 -1은 240Hz에서 25ms로 단축되던 버그(QA 발견 1). slowmo/hitstop·뷰 밖도 `sp`로 기존 타이머와 동일 |
+| 부활 잔상 | 2D 사망 분기(`if(!e.alive){`) 진입부 `if(e._hitFlash)e._hitFlash=0` — 죽은 몹 잔여값 즉시 소거(모든 사망 enemy 매 프레임 단일 처리점) → 부활(구울/보스) 첫 프레임 잔상 차단(QA 발견 2) |
+| 이중 방지 | 그리기 상호배타(GL `_ensGLMode` / 2D `_ensGLQueued`), 감쇠는 update 단일 지점 → 프레임당 정확히 1회. 이중 감소/이중 그리기 없음 |
+| 합성 | additive. GPU 프록시는 `_setBlend(true/false)`, Canvas2D 폴백은 `globalCompositeOperation='lighter'` 병행 지정 |
+| 불변 | 피해·쿨다운·판정·넉백·히트스톱(`_hitStun` 별도)·자원·보상·death/alive·시체 수·에셋 불변. `hurtE`의 `_hitFlash` 세팅값(6/4) 그대로 |
+| 검수 | 인라인 JS 구문 PASS. 2D 경로 실화면 A/B(밝기 팝). **GL 경로 코드 동작=QA 정규 런타임 확인**(`_ensGLMode=1` 22,877샘플). 수명 주사율 독립은 루프 누산기 Node 재현으로 60/144/240/30Hz≈100ms 검증. 가독성(기검참 VFX·데미지 숫자 가림)·수정본 GL 실화면·부활 실캡처는 QA 재캡처/후속 |
+
 ## 2026-09-13 불꽃칼날 이름·불꽃 스윙
 
 ## 2026-09-29 기동파괴 재검수
