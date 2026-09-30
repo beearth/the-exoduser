@@ -49,17 +49,17 @@
 | 채택 근거 | 전체+1x 크롭(달·여인·우리 영역) 직접 비교: ① 구도 4요소(아이 셋·여인·우리 속 두 노인·무릎 꿇은 전사 뒷모습) 위치 유지 ② 불티·입자 잔점 없음 ③ 전사 LOCK(짧은 흑발·흑철 판금·암적 망토) 일치, 신규 인물 없음 ④ 좌 화염/우 달빛 대비 유지로 대사 의미 보존 |
 | 차이 | 3:2→16:9(컷신 cover 렌더라 무관, 상하 잘림 감소). 배경에 폐허 실루엣이 추가됨. 아이 실루엣이 원본보다 또렷함 |
 | 원본 백업 | `output/cutscene_remaster_20260930/original_warintro/cin_remember.jpg` |
-| 미검수 | `?cutscene=1` 미리보기 실제 재생 검수 — QA 고정 소스 M2 측정과 겹치지 않도록 게임 실행 보류. 이 검수 전에는 나머지 10장 착수하지 않음 |
+| 미리보기 검수 | ✅ 2026-10-01 QA M2 묶음1 종료(01:59) 후 수행. `game.html?test=1&cutscene=1` PRO 시퀀스에서 wa22·wa23 줄로 이동해 실제 렌더 확인: 요청 `cutscene/warintro/cin_remember.jpg?v=20261001-warstills1` 200(당시 키), 2048×1152, 자막 "기억하라." / "그리고 지옥에서도 후회하라." 가독, cover 채움 정상, pageerror 0. 게임 창 1개만 실행, 인코딩 없음 |
 
 ## warintro 경로 캐시 누락 수정 (2026-10-01)
 
 | 항목 | 내용 |
 |---|---|
 | 원인 | `_getCutsceneImg`는 파일명에 `/`가 있으면 `assets/cutscene/<경로>`만 쓰고 버전 쿼리를 붙이지 않았다. `warintro/…` 12장이 해당 |
-| 수정 | game.html L60406, game-easy-test.html L58993: `/` 분기에 `+'?v=20261001-warstills1'` 추가. 숫자 컷(`images/NN.png`) 분기 `?v=20260930-intro-lock7`은 그대로 |
+| 수정 | game.html L60406, game-easy-test.html L58993: `/` 분기에 `+'?v=20261001-warstills1'` 추가 → 3차 재사용 4장 교체로 `warstills2`로 갱신(2026-10-01). 숫자 컷(`images/NN.png`) 분기 `?v=20260930-intro-lock7`은 그대로 |
 | 범위 | 각 1줄, ART 소유 컷신 이미지 로더에 한정. 빌드 도구(`tools/build-web.mjs` 등)에는 이 경로 문자열 의존 없음(검색 확인). 타 팀 hunk는 패치 스테이징으로 보존 |
 | 규칙 | warintro 정지 이미지를 교체할 때마다 이 쿼리 값을 올린다 |
-| 미검수 | 브라우저에서 새 쿼리 로드 확인은 미리보기 검수와 함께 수행 예정 |
+| 브라우저 확인 | ✅ 위 미리보기 검수에서 새 쿼리 요청 200 확인 |
 
 ## 구 PNG 참조 조사 (삭제하지 않음)
 
@@ -70,3 +70,24 @@
 | `assets/cutscene/images/cin_nemesia_appear1.png` | `tools/verify_image_texture_cleanup.py` 목록 1건 |
 
 조사 범위: 루트 html/js/mjs/cjs/json/css, tools/, test/. 패키지 산출물(`out/`, `web-dist/`, DEMO/EA 폴더)과 런타임 동적 조합 경로는 미조사 — 삭제 판단은 BUILD 확인 후.
+
+## 3차 — 나머지 10장 (2026-10-01, 총괄 승인 후 한 장씩)
+
+기준: 구도·신원(전사/킬루 LOCK)·대사 의미 보존, 원본 `output/cutscene_remaster_20260930/original_warintro/` 백업. **같은 장면의 승인된 신 그림이 있으면 재사용(크레딧 0)**, 없으면 MagicLight GPT Image 2.5 sunburst(200/장, 블러 구도 레퍼런스).
+
+| 파일 | 대사(ko) | 방식 | 근거 | 상태 |
+|---|---|---|---|---|
+| `cin_war.jpg` | 전쟁에서 살아 돌아온 한 남자. | 재사용 `img/lording/rd13.png` | 같은 장면(대검 무릎·깃발·불바다), 전사 LOCK, 영상 v25 0~5초와 동일 그림 | 적용 |
+| `cin_throne.jpg` | 킬루가 그의 가문을 짓밟았다 외 4줄 | 재사용 `img/lording/rd14.png` | 같은 구도(옥좌·양옆 악마 호위·금화·붉은 잔), 킬루 원본 신원 유지본 | 적용 |
+| `cin_demonbattle.jpg` | 지옥의 미로에는 매일 새로운 영혼이 떨어진다. | 재사용 `rd8` 좌우 반전 | 원본과 같은 방향(악마 좌·전사 우), 영상 v25 81~84초와 동일 그림 | 적용 |
+| `cin_fallhell_custom.jpg` | 그리고 지옥에 떨어진다. | 재사용 `img/lording/rd12.png` | 같은 구도(두 탑 사이 계단을 걸어 불꽃 눈 포털로), 2560×1440 | 적용 |
+| `emg1.jpg` | …셀 수 없는 복수자 중 하나의 이야기일 뿐. | GPT Image | 동일 장면 신 그림 없음 | **미채택·원본 유지.** 1차 후보(200): 잔점은 없으나 다른 복수자(번개·녹색 마법사, 불화살 궁수)가 혼령 줄기로 바뀌어 대사 의미 약화 → 불채택. 2차 재시도(200, 복수자 명시) 제출 후 Mac 이전 중지 지시 — 결과만 회수·보존, 미검수 |
+| `cin_bloodbath.jpg` | 그날 밤, 킬루 가문을 모두 죽였다. | GPT Image | 〃 | 대기 |
+| `cin_torture.jpg` | 칼로 킬루의 팔다리를 자르고 / 불로 지혈… | GPT Image + 킬루 기준 | 〃 | 대기 |
+| `cin_ruins.jpg` | 하지만 집은 모두 불타 사라졌다. | GPT Image | 〃 | 대기 |
+| `cin_bystanders.jpg` | 킬루 가문의 모두가 알고 있었다. / 31명이… | GPT Image | 〃 | 대기 |
+| `cin_demonfight.jpg` | 분노로 가득 찬 자, 억울함에 미친 자… | GPT Image | 〃 | 대기 |
+
+포인트: 시작 시점 59,940 → emg1 1차 후 59,740 (조회 시점 기준).
+
+**2026-10-01 Mac 이전 마감 지시로 중지.** 적용: nemesia_hd·remember·war·throne·demonbattle·fallhell_custom 6장. 미착수: bloodbath·torture·ruins·bystanders·demonfight 5장(제출 안 함). emg1은 원본 유지, 후보만 `output/`에 보존.

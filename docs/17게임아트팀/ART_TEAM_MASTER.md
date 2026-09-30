@@ -111,7 +111,7 @@
 | 대상 | 상태 |
 |---|---|
 | 대검전사 스토리 영상 `video/warrior_story_v23_clean.mp4` (신규 캐릭터 생성 직후 재생) | ✅ 2026-10-01 v25: 네메시아 2컷(87.5~92.9초) + 전사 2컷(0~5초, 81~84초) 교체, 재생기 검수 완료. 나머지 전사 컷은 원본 유지. NW.js 패키지 실기 재생 미검수 — `docs/cinematic/WARINTRO_NEMESIA_V24_20261001.md` |
-| 구 전쟁 인트로 정지 이미지 `assets/cutscene/warintro/` 12장 (`?cutscene=1` 미리보기 전용) | 🟡 2026-10-01: `cin_nemesia_hd.jpg` 교체(크레딧 0), `cin_remember.jpg` 보정 후보 채택·적용(200, 미리보기 검수 대기). 나머지 10장은 미리보기 검수 후 같은 기준으로 진행. warintro 캐시 쿼리 `?v=20261001-warstills1` 추가 — `docs/cinematic/WARINTRO_STILLS_AUDIT_20261001.md` |
+| 구 전쟁 인트로 정지 이미지 `assets/cutscene/warintro/` 12장 (`?cutscene=1` 미리보기 전용) | 🟡 2026-10-01 마감: 12장 중 6장 교체(nemesia_hd·remember·war·throne·demonbattle·fallhell_custom), emg1 원본 유지(후보만 보존), 5장 미착수. 캐시 `?v=20261001-warstills2` — `docs/cinematic/WARINTRO_STILLS_AUDIT_20261001.md` |
 | 캐릭터 선택 `portrait_warrior.png`(bust — 로비 캐릭터 썸네일·선택창 초상) | ✅ 2026-09-30 평범한 눈으로 교체 (`?v=20260930-eyefix`, 원본 `output/charselect_remaster_20260930/original/`) |
 | 맵 오브젝트 | 🧪 시험 1개 `output/mapobj_seedream_test_20260930/` (미배치) |
 | 캐릭터 선택 실버테일(`portrait_silvertail.png`·`silvertail_cut.png`)·배경(`bg_scene1/2.png`)·로비 포스터·엠블럼 | ✅ 점검(2026-10-01): 잔점 없음 |
@@ -142,7 +142,7 @@
 | ✅ | 컷신 캐시 키 `intro-lock6`→`intro-lock7` (game.html L60406, game-easy-test.html L58993 각 1줄). 총괄 배정(2026-10-01)으로 ART가 본인 hunk만 패치 스테이징(`git apply --cached`)해 분리 커밋 | 0 |
 | 닫음 | 인트로 02번 1672×941 — 1x 확대 점검 결과 결함 없음, 컷신 cover 스케일에서 해상도 차 비가시 → 재생성 안 함 | 0 |
 | ✅ | 구 전쟁 인트로 정지 이미지 12장 신원·잔점 검수, `cin_nemesia_hd.jpg` 교체 (2026-10-01) | 0 |
-| 진행 중 | 구 전쟁 인트로 잔점·신원 보정: `cin_remember` 1장 완료(정지 검수 PASS). **다음 = `?cutscene=1` 미리보기 실제 재생 검수(QA M2 측정 종료 후)** → 통과 시 나머지 10장 같은 기준(구도 보존·블러 레퍼런스·MagicLight GPT Image 200/장) | 200 사용, 잔여 약 2,000 |
+| 중지(Mac 이전) | 구 전쟁 인트로 잔점·신원 보정: 6장 적용 완료, emg1 후보 검토·5장 생성은 재개 지시 대기 | 사용 600 |
 | BUILD 인계 | NW.js 패키지에서 스토리 영상 v25·컷신 `intro-lock7` 실기 재생 검수, DEMO/EA `game.html` 재동기화(ART는 타 팀 WIP가 섞인 작업본을 복사하지 않음), Steam 재빌드 | — |
 | LOCK 선행 | 출시 예정 3종(창술사·총잡이·연금술사) 초상·포스터 고화질화 — 디자인 LOCK 확정 전 착수 금지(총괄 지시 2026-10-01) | — |
 | P3 | 맵 오브젝트 양산 (맵 담당과 배치 협의) | Seedream 100/개 |
@@ -182,3 +182,54 @@
 | 06 얼굴·배경 불일치 | 전신 기준만 첨부(얼굴 작음) | 얼굴 크롭 기준 + 배경 명시 |
 | 생성 후 인게임 미적용 | 채택 판정 누락 | 현황표로 추적 |
 | 커밋 `ac79dd5e5`에 BUILD 팀 스테이징 파일 4개 번들 | 공유 인덱스에서 경로 미지정 `git commit` | `git commit --only <경로>` 사용, 커밋 전 `--cached --stat` 파일 수 확인. 기록: `docs/GIT_PROVENANCE_NOTES.md` |
+
+---
+
+## 8. Mac 이전 인계 (2026-10-01 마감, ART)
+
+사용자 최신 지시: "잠깐 다 멈추고 맥북으로 옮긴다. 이미 시킨 작업까지만 마무리하고 대기." 추가 백로그 자동 진행 중지. 재개 지시 전 새 생성·새 백로그 착수 금지.
+
+### 8.1 SHA
+
+| 항목 | 값 |
+|---|---|
+| 마감 직전 원격 `origin/main` | `97d7179f0` (로컬 HEAD와 일치, 조회 시점) |
+| ART 마감 체크포인트 커밋 | 이 문서를 포함한 커밋 — `git log -1 --format=%H -- docs/17게임아트팀/ART_TEAM_MASTER.md`로 확인. **원격 푸시 여부는 푸시 권한 보유자가 확인**(ART 세션은 push 권한 없음) |
+| 총괄 원격 복구 브랜치 | `codex/backup-20261001-020248` = `5ea53a92d0c5…` (원격 확인) |
+
+### 8.2 ART 체크포인트에 포함된 변경
+
+| 파일 | 내용 |
+|---|---|
+| `assets/cutscene/warintro/cin_war.jpg`·`cin_throne.jpg`·`cin_demonbattle.jpg`·`cin_fallhell_custom.jpg` | 승인 신 그림 재사용(rd13·rd14·rd8 반전·rd12), 원본 `output/cutscene_remaster_20260930/original_warintro/` |
+| `game.html`·`game-easy-test.html` | warintro 로더 쿼리 `warstills1→warstills2` 각 1줄(본인 hunk만, 타 팀 working-tree diff 보존) |
+| `docs/cinematic/WARINTRO_STILLS_AUDIT_20261001.md` | 3차 진행표·마감 상태 |
+| `output/cutscene_remaster_20260930/warintro_candidates_unreviewed/emg1_candidate1_rejected.jpg`, `emg1_candidate2_retry.jpg` | 회수한 생성 결과(미적용). 1차는 불채택, 2차는 미검수 |
+
+### 8.3 미검증
+
+| 항목 | 상태 |
+|---|---|
+| 재사용 4장(war·throne·demonbattle·fallhell_custom)의 `?cutscene=1` 실제 컷신 렌더·`warstills2` 요청 | 미검수 (정지 파일 검증만: JPEG 정상, 2048×1152/2560×1440, 백업 존재) |
+| emg1 2차 후보 품질 | 미검수 |
+| 대검전사 스토리 영상 v25·컷신 `intro-lock7`의 NW.js 패키지 실기 재생 | BUILD 인계, 미검수 |
+| 웹(Vercel) 반영 | 마지막 조회 시 구버전 — 재확인 필요 |
+| DEMO/EA `game.html` 캐시 키 | `intro-lock6`·warintro 쿼리 없음 상태(타 팀 WIP 섞인 작업본 미복사) — BUILD 재동기화 필요 |
+| Steam 패키지 | 9월 29일 빌드, 미반영 |
+
+### 8.4 남은 이미지 목록
+
+| 파일 | 상태 | 다음 조치 |
+|---|---|---|
+| `warintro/emg1.jpg` | 원본(잔점 심함) | 2차 후보 검수 → 채택 시 적용, 아니면 재생성(200) |
+| `warintro/cin_bloodbath.jpg` | 원본(잔점) | GPT Image 200, 프롬프트 초안 scratchpad `war_prompts.json`(로컬) — 본 문서 3차 표의 대사 기준으로 재작성 가능 |
+| `warintro/cin_torture.jpg` | 원본(잔점) | GPT Image + `killu_identity_ref.png` |
+| `warintro/cin_ruins.jpg` | 원본(잔점) | GPT Image 200 |
+| `warintro/cin_bystanders.jpg` | 원본(잔점) | GPT Image 200 |
+| `warintro/cin_demonfight.jpg` | 원본(잔점) | GPT Image 200 (영상 84~87.5초 같은 장면도 구 그림) |
+| 출시 예정 3종 초상·포스터 | 흐림 | 디자인 LOCK 선행 전 착수 금지 |
+| 구 PNG `img/cin_nemesia_hd.png`, `warintro/cin_nemesia_hd.png` | 보존 | 참조 조사 결과는 감사 문서 참조, 삭제는 BUILD 확인 후 |
+
+### 8.5 포인트
+
+MagicLight 마지막 조회 59,540 (2026-10-01, emg1 2차 후). 이번 마감 구간 ART 사용: cin_remember 200 + emg1 200×2 = 600. 다른 세션 사용분이 섞일 수 있음.
