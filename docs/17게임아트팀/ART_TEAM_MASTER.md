@@ -80,14 +80,14 @@
 
 ## 4. 에셋 현황표
 
-### 4.1 신규 인트로 컷신 `assets/cutscene/images/` (캐시 `20260930-intro-lock6`)
+### 4.1 신규 인트로 컷신 `assets/cutscene/images/` (캐시 `20260930-intro-lock7`)
 
 | 컷 | 인물/내용 | 상태 | 비고 |
 |---|---|---|---|
 | 00·01·02·03·08·09 | 네메시아 | ✅ 디자인 시트 기준 | 02만 1672×941 |
 | 04 | 목마 | ✅ | |
 | 05·19·20 | 전사(눈 안 보임) | ✅ | 초기 전사 기준(보라 눈 bust)으로 생성됐으나 눈 비노출 |
-| 06·07 | 전사(얼굴) | ✅ 평범한 눈 | 06은 07 얼굴 크롭 기준, 2026-10-01 건틀릿 포함 재생성(2048×1152). ⚠ 캐시 키는 `intro-lock6` 그대로 — game.html이 타 팀 편집 중이라 미변경 |
+| 06·07 | 전사(얼굴) | ✅ 평범한 눈 | 06은 07 얼굴 크롭 기준, 2026-10-01 건틀릿 포함 재생성(2048×1152). 캐시 키 `intro-lock7`로 갱신(2026-10-01) |
 | 10·12·14·15 | 디로이 | ✅ 점 없음 | |
 | 11·13·16 | 핵터 | ✅ 점 없음 | |
 | 17·18 | 무구·악의띠 | ✅ | |
@@ -123,7 +123,7 @@
 |---|---|---|
 | Git 원격 `origin/main` | ✅ 반영 | 아트 커밋 `b2acb28c1`·`29b5a0623`·`069f598ac`·`9a15f4208`·`0febafe05` 모두 origin/main 조상. 조회 시 로컬 HEAD=origin/main=`76a3bc0b2` |
 | 웹(Vercel `the-exoduser.vercel.app`) | ⏳ 미반영 | 라이브 game.html 컷신 캐시 `intro-lock3`, 재생기 쿼리 없음, 초상 `?v=1` → 구버전. GitHub Actions Deploy 2건 in_progress (약 40분 소요) |
-| `G:/exoduser-DEMO`, `G:/exoduser-ea` | ✅ 이미지·캐시 일치 | 컷신 7·로딩 9·전사 초상 바이트 비교 일치, 컷신 캐시 `intro-lock6`, 로딩 `loading-remaster5`, 초상 `eyefix`. 두 폴더에는 `video/`·`character-story-player.js`가 없어 스토리 영상은 대상 아님. game.html은 마지막 동기화 시점 사본(이후 타 팀 미커밋 변경 미포함) |
+| `G:/exoduser-DEMO`, `G:/exoduser-ea` | ✅ 이미지·캐시 일치 | 컷신 7·로딩 9·전사 초상 바이트 비교 일치, 컷신 캐시 `intro-lock7`(2026-10-01 갱신 후 재동기화 필요 여부는 아래 로그 참조), 로딩 `loading-remaster5`, 초상 `eyefix`. 두 폴더에는 `video/`·`character-story-player.js`가 없어 스토리 영상은 대상 아님. game.html은 마지막 동기화 시점 사본(이후 타 팀 미커밋 변경 미포함) |
 | Steam `G:/exoduser-steam/content/windows` | ❌ 미반영 | package.nw/game.html 2026-09-29 22:00, 컷신 캐시 `20260913-intro-detail2`. 기본 빌드 25202408 그대로. 재빌드·스모크·업로드 필요(BUILD 팀 소관, 업로드는 사용자 Steam 계정) |
 
 ---
@@ -140,7 +140,7 @@
 | P3 | 로딩 16·18 중복 1장 교체 | Seedream 100 |
 | ✅ | 대검전사 영상 0~5초·81~84초 전사 구간 교체 (v25, 2026-10-01) | Hailuo 250×2 |
 | ✅ | 인트로 06번 건틀릿 누락 재생성·적용 (2026-10-01) | GPT 200 |
-| 대기 | 컷신 캐시 키 `intro-lock6`→`intro-lock7` (game.html·game-easy-test.html 각 1줄). game.html에 타 팀 미커밋 변경이 있어 ART가 단독 커밋 불가 — game.html 소유 팀의 다음 커밋에 포함 요청. 그전까지 06을 이미 캐시한 브라우저는 강력 새로고침 필요 | 0 |
+| ✅ | 컷신 캐시 키 `intro-lock6`→`intro-lock7` (game.html L60406, game-easy-test.html L58993 각 1줄). 총괄 배정(2026-10-01)으로 ART가 본인 hunk만 패치 스테이징(`git apply --cached`)해 분리 커밋 | 0 |
 | 닫음 | 인트로 02번 1672×941 — 1x 확대 점검 결과 결함 없음, 컷신 cover 스케일에서 해상도 차 비가시 → 재생성 안 함 | 0 |
 | P3 | 구 전쟁 인트로 정지 이미지 잔점/신원 점검 | 점검 무료 |
 | P3 | 맵 오브젝트 양산 (맵 담당과 배치 협의) | Seedream 100/개 |

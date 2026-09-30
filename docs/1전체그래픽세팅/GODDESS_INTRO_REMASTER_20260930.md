@@ -15,7 +15,7 @@
 
 - 원본 백업: `output/cutscene_remaster_20260930/original/` (assets 안에 두지 않음 — Steam 빌드 동봉 방지)
 - 렌더: `_renderIntroCutscene`는 `naturalWidth/naturalHeight` 비율로 cover 채움 → 16:9 유지 시 해상도 차이 무관.
-- 캐시: `_getCutsceneImg` 쿼리 `?v=20260930-intro-lock6` (game.html, game-easy-test.html). 로딩 이미지 `img/lording/`은 `20260930-loading-remaster5`.
+- 캐시: `_getCutsceneImg` 쿼리 `?v=20260930-intro-lock7` (game.html, game-easy-test.html). 로딩 이미지 `img/lording/`은 `20260930-loading-remaster5`.
 
 ## 생성 방식
 
@@ -52,8 +52,8 @@
 | 여신 00·01·02·03·08·09 | 레퍼런스1=블러 구도, 레퍼런스2=`nemesia_design_sheet.png` | 문신·귀걸이·칼라 보석·가슴 보석·해골 견갑 전 컷 동일. 02만 1672×941, 나머지 2048×1152 |
 | 전사 05·06·07·19·20 | 레퍼런스1=블러 구도, 레퍼런스2=전사 초상화(`assets/charselect/portrait_warrior.png`) 머리·흉터·갑옷 크롭 | 잔점 제거, 짧은 흑발·왼눈썹 흉터·보라 눈·가시 흑갑옷·암적색 망토 통일. 컷별 상황(쓰러짐·깨어남·손뻗기·목마 안기·기절) 반영 |
 | 백업 | 원본 `original/`, v1 `v1_unlocked/`, v2 `v2_tattoo_lock/` | |
-| 캐시 | `?v=20260930-intro-lock6` | |
+| 캐시 | `?v=20260930-intro-lock7` | |
 
 | 04·10~18 (목마·디로이·핵터·무구) | 오전 20장 배치 결과(원본 레퍼런스, GPT Image 2.5 sunburst) 채택. 1:1 확대로 잔점 없음 확인 | 2026-09-30 22:50 적용 |
 
-인트로 00~20 전 컷 교체 완료. 캐시 `?v=20260930-intro-lock6`.
+인트로 00~20 전 컷 교체 완료. 캐시 `?v=20260930-intro-lock7`.
