@@ -1307,3 +1307,16 @@
 #hudCorner.on{opacity:.94;}
 #hudCorner .hud-resource{min-width:86px;padding:1px 0;color:rgba(238,222,194,.93);font-size:.7rem;line-height:1.4;letter-spacing:.05em;text-shadow:0 1px 4px #000;}
 #hudCorner .hud-resource+.hud-resource{padding-top:4px;border-top:1px solid rgba(164,127,82,.2);}
+
+/* Controls: put the compact cursor choices above a full-width, paired key list. */
+@media (min-width:1200px){
+ #settings.panel .pbox #settings-page-controls{grid-template-columns:minmax(0,1fr);}
+ #settings.panel .pbox #settings-page-controls>.set-section:has(#cursorGrid){grid-row:2;position:static;display:grid;grid-template-columns:minmax(150px,.4fr) minmax(240px,1fr) minmax(320px,.9fr);align-items:center;gap:18px;padding:12px 20px!important;}
+ #settings.panel .pbox #settings-page-controls>.set-section:has(#cursorGrid)>.set-label{margin:0!important;border-bottom:0!important;padding:0!important;}
+ #settings.panel .pbox #settings-page-controls #cursorGrid{padding-bottom:0!important;}
+ #settings.panel .pbox #settings-page-controls>.set-section:has(#cursorGrid)>.set-range-row{margin-top:0!important;}
+ #settings.panel .pbox #settings-page-controls>.set-section:has(#keyBindList){grid-row:3;}
+ #settings.panel .pbox #settings-page-controls #keyBindList{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:4px 28px;}
+ #settings.panel .pbox #settings-page-controls #keyBindList .set-row{min-height:52px!important;padding:5px 8px!important;gap:10px!important;}
+ #settings.panel .pbox #settings-page-controls #keyBindList>div:not(.set-row),#settings.panel .pbox #settings-page-controls #keyBindList>.bind-reset{grid-column:1/-1;}
+}
