@@ -56206,6 +56206,14 @@ function drawP(){
       }
     }
     const _dashFlightLift=_dashFlightPose&&_dashActive?-12*Math.sin(Math.PI*Math.max(0,Math.min(1,_dashLeft/(_HARP_PULL_DUR[_harpTier]||1)))):0;
+    // ── [잔상] 이동기술 궤적 실루엣 (ghostWalk/bladeDash/dash): 저장된 월드 스냅샷을 오래된 것부터 흐리게, 본체 뒤에 렌더 ──
+    if(P._aiTrail&&P._aiTrail.length>1){const _aiN=P._aiTrail.length,_aiBr=(P._gwActive||P.s==='bladeDash')&&_atlasP_bright?_atlasP_bright:_atlasP_img;
+      for(let _ai=0;_ai<_aiN-1;_ai++){const s=P._aiTrail[_ai];
+        X.save();X.globalAlpha=(0.05+0.15*(_ai/_aiN))*(P._gwActive?1:.85);
+        X.translate(s.x,s.y+(s.lift||0));if(_charIdx===1)X.scale(.65,.65);X.scale(s.sc,s.sc);
+        try{SpriteAnimator.draw({img:_aiBr,fm:P._sa.fm,anim:s.anim,f:s.f,t:0,spd:8,loop:true,done:false},X,0,0,s.flip,s.dir)}catch(_e){}
+        X.restore();}
+      X.globalAlpha=1;}
     X.save();X.translate(_px,_py+_skillAnimLift+_dashFlightLift);
     // 정면 실루엣 높이: 전사 29px / 실버테일 45px → 본체 크기 정렬.
     if(_charIdx===1)X.scale(.65,.65);
@@ -56256,6 +56264,11 @@ function drawP(){
       P._sa.f=Math.min(_silvAtkN-1,~~(_silvBodyProgress*_silvAtkN));
     }
     const _pFlip=!_apHasDir&&Math.abs(_fa)>Math.PI/2,_pDk=_apHasDir?(_silvAtk?_silvAtk.spriteDir:_apDir):null;
+    // ── [잔상] 이동기술 중 현재 스냅샷 기록 (월드좌표+프레임); 비활성 시 버퍼 비움 ──
+    if(P._gwActive||P.s==='bladeDash'||_harpActive||_dashActive||(_apAnim&&_apAnim.indexOf('dash')===0)){
+      (P._aiTrail||(P._aiTrail=[])).push({x:_px,y:_py,dir:_pDk,flip:_pFlip,anim:P._sa.anim,f:P._sa.f,sc:_pScale,lift:_skillAnimLift});
+      if(P._aiTrail.length>8)P._aiTrail.shift();
+    }else if(P._aiTrail&&P._aiTrail.length){P._aiTrail.length=0}
     // ── 외곽선: 4방향만 (성능 최적화) ──
     if(OPT.outline&&_atlasP_outline&&!_apDead){
       const _olSa={img:_atlasP_outline,fm:P._sa.fm,anim:P._sa.anim,f:P._sa.f,t:0,spd:8,loop:true,done:false};
