@@ -2,7 +2,7 @@
 
 > 팀장: Claude (Antigravity Terminal 1). 총괄: Codex — [PROJECT_MANAGEMENT_MASTER.md](../0마스터플랜/PROJECT_MANAGEMENT_MASTER.md) PM-001.
 > 공통 규칙: `AGENTS.md`, [TEAM_START_COMMANDS_20261001.md](../0마스터플랜/TEAM_START_COMMANDS_20261001.md), [TEAM_CONTINUATION_POLICY_20261001.md](../0마스터플랜/TEAM_CONTINUATION_POLICY_20261001.md).
-> 최종 갱신: 2026-10-01 01:20 KST.
+> 최종 갱신: 2026-10-01 01:16 KST.
 
 ## 0. 총괄에 먼저 전달할 것
 
@@ -206,7 +206,7 @@ D2는 처치 수가 474(D0 1242, D1 1259)로 교전 양상이 달랐다. E1은 �
 
 새 시스템·확정 수치 변경·범위 확장은 여기에 넣지 않고 총괄 결정으로 남긴다.
 
-### 7.1 QA-B01 사전 조사 (2026-10-01 01:25, 빈 페이지 실험 — 게임 미실행)
+### 7.1 QA-B01 사전 조사 (2026-10-01 01:15, 빈 페이지 실험 — 게임 미실행)
 
 `tmp/qa-perf-20261001/exp-wrf.mjs`: 같은 가공 함수를 기존 방식(GPU 가속 2D 캔버스)과 CPU 캔버스(`getContext('2d',{willReadFrequently:true})`)로 돌려 GL 업로드 뒤 픽셀을 비교했다.
 
