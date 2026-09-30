@@ -1,5 +1,9 @@
 > 진행 프로젝트: [MAP_IMPROVEMENT_PROJECT.md](MAP_IMPROVEMENT_PROJECT.md) · 2.5D 깊이 기준: [DEPTH_2_5D_BENCHMARK_20260930.md](DEPTH_2_5D_BENCHMARK_20260930.md)
 
+## 2026-10-01 — CH1-1 경계 가독성 MAP-020
+
+신규 `ch1-boundary-edge.js`(기본 ON, 끄기 `?edgeShade=0`): `G.map` 경계 전체에 접지 그림자(바닥 AO .30·숲 recess .70)와 `prop_pool.png` 테두리 뿌리 둑. 충돌·베이크 불변, 새 그림 0. [CH1_BOUNDARY_EDGE_MAP020_20261001.md](CH1_BOUNDARY_EDGE_MAP020_20261001.md)
+
 ## 2026-10-01 — CH1-1 제단 독액 도랑
 
 제단 둘레의 막힌 타원 띠(`_CH1_HILL` inner .84~outer 1.04)를 `ch1-altar-moat.js`가 뿌리 둑이 있는 독액 도랑으로 그린다. 서쪽 경사로는 땅 다리. 시각 전용·충돌 불변·새 이미지 0(`prop_pool.png` 재사용)·녹색 광원 10개·기포 20개. 기본값으로 켜져 있는 깊이 슬라이스 1차(`?depthSlice=0`으로 끔)와 함께 현행. [CH1_ALTAR_MOAT_20261001.md](CH1_ALTAR_MOAT_20261001.md)

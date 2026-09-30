@@ -1,3 +1,7 @@
+## 2026-10-01 — CH1-1 경계 가독성 MAP-020 (접지 그림자 + 뿌리 둑)
+
+신규 `ch1-boundary-edge.js`(game.html 태그 `?v=20261001-3`, `Ch1BorderForeground.drawBack` 직후 draw), `build-nwjs.mjs` 목록 추가, 테스트 `test/ch1BoundaryEdge.test.js` 4/4. 끄기 `?edgeShade=0`, 그림자만 `?edgeShade=a`. 문서 `docs/4.1맵디자인+설정/CH1_BOUNDARY_EDGE_MAP020_20261001.md`.
+
 ## 2026-10-01 — 깊이 슬라이스 2차 RETOUCH v2 — 경계 띠 170px (지붕→가장자리 장식)
 
 팀장 판정(시각 RETOUCH) 반영: 덧그림 수관을 경계 polygon(53점, layout.js 일치 테스트 잠금) 안쪽 170px 띠로 제한(smoothstep, 밖=1). 인스턴스별 1회 사전 굽기+bbox 크롭을 3ms 유휴 슬라이스로 분할(86차 계약, 슬라이스 최대 8.6ms). 가림 시 띠 .5+고스트 .75(2차 전용, 1차 .62/.55 불변), 적이 띠 아래면 해당 항목 .5 규칙 추가. 실측: 보행 도달 19,538타일 중 알파>0.2 = 2.72%(목표 3% 이하, v1 ~10%), 텍스처 59.18MB(≤64MB), FPS 차 ≤0.3%. 테스트 12/12+회귀 38/38, 재촬영 captures/depth_slice2/v2/. 기본 OFF 유지. [SSOT](4.1맵디자인+설정/DEPTH_SLICE2_20261001.md §0).
