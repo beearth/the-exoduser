@@ -5,11 +5,11 @@
 | 항목 | 코드·수치 | 적용 위치 |
 |---|---|---|
 | 입력 | `P.activeLMBSk==='kiSlash'`, `_cresStep===2`, `_cresComboT>0`에서 좌클릭 3타 입력 시 `wWindup`; `isHeld('weapon')`인 동안 대기, 해제 시 `wSwing`·발사 | `game.html`, `game-easy-test.html`의 idle 및 bowRecover 취소 경로 |
-| 충전 시간 | `_kiChargeT += sp`, 60f=1초, 180f에서 상한. 연속 홀드 시 더 기다릴 수 있지만 배율은 더 늘지 않음 | `_updateKiSlashThirdCharge` |
-| 검기 피해 | `floor(meleeRef × 7 × statStr × pAtkMul × _skMul('kiSlash') × M)`; 충전 단계 `T=min(3,floor(chargeFrames/60))`, `M=2^T`. 0~59f=1배, 60~119f=2배, 120~179f=4배, 180f 이상=8배. 무충전·1·2타는 1배 | `_kiSlashHoldTier`, `_kiSlashHoldMultiplier`, `_fireKiSlashCrescent` → `spawnCrescent` |
+| 충전 시간 | `_kiChargeT += sp`. **`_KI_HOLD_STEP=40`(단계 간격), `_KI_HOLD_MAX=120`(=2초) 상한** (2026-10-01 정정: 구 60/180f→40/120f, 풀차징 3초→**2초**). 연속 홀드 시 더 기다릴 수 있지만 배율은 더 늘지 않음 | `_updateKiSlashThirdCharge`, `_KI_HOLD_STEP`, `_KI_HOLD_MAX` |
+| 검기 피해 | `floor(meleeRef × 7 × statStr × pAtkMul × _skMul('kiSlash') × M)`; 충전 단계 `T=min(3,floor(chargeFrames/_KI_HOLD_STEP))`=`floor(f/40)`, `M=2^T`. 0~39f=1배, 40~79f=2배, 80~119f=4배, **120f 이상=8배(=2초 풀차징)**. 무충전·1·2타는 1배 | `_kiSlashHoldTier`, `_kiSlashHoldMultiplier`, `_fireKiSlashCrescent` → `spawnCrescent` |
 | 검기 크기·판정 | 피해 배율과 별개로 `chargeScale=1+T×0.4`; 기본 반경120px → 120/168/216/264px. 기본 비행폭252px → 252/352.8/453.6/554.4px. 1·2타 반경55px·비행폭192px 유지 | `spawnCrescent`, `_drawRadiantKiSlash`, `renderCrescents` 폴백 |
 | 명중 섬광 | 3타 명중 시 627px 원본 프레임을 `184×chargeScale/627`로 재생. 단계별 표시폭 184/257.6/331.2/404.8px, 4프레임×3f. 시트 로딩 실패 시 `ice_slash` 크기 `1.25×chargeScale`. 1·2타 명중광은 140px, 폴백 크기 0.9 유지 | `_playKiSlashHit` |
-| 3단 완료 신호 | 충전값이 180f에 처음 도달할 때 `sword_parry` 금속 충돌음 1회(`vol=.72`, `rate=1.08`)와 캐릭터 중심 `ki_slash_hit_2` 백열 섬광 1회(`scale=.26`, `frameTime=2`, 4프레임·8f)를 동시에 재생. 명중 시트 미로드 시 `parry_impact`(`scale=.85`, `frameTime=1`) 폴백. 1·2단에는 기존 `scarecrow_charge`(`vol=.35`, `rate=1`)를 유지. 180f 상한으로 계속 홀드해도 반복하지 않으며 해제 발사음은 별도 | `_updateKiSlashThirdCharge`, `playSample`, `playVFXAng` |
+| 3단 완료 신호 | 충전값이 120f(2초)에 처음 도달할 때 `sword_parry` 금속 충돌음 1회(`vol=.72`, `rate=1.08`)와 캐릭터 중심 `ki_slash_hit_2` 백열 섬광 1회(`scale=.26`, `frameTime=2`, 4프레임·8f)를 동시에 재생. 명중 시트 미로드 시 `parry_impact`(`scale=.85`, `frameTime=1`) 폴백. 1·2단에는 기존 `scarecrow_charge`(`vol=.35`, `rate=1`)를 유지. 120f 상한으로 계속 홀드해도 반복하지 않으며 해제 발사음은 별도 | `_updateKiSlashThirdCharge`, `playSample`, `playVFXAng` |
 | 비용·거리·소리 | ST10+(Lv−1)×2를 3타 입력 시 한 번 소모. 기본 이동거리350px+레벨당15px, 비행속도14px/f 유지. 3타 검격음은 해제 발사 때 한 번 재생 | `useStPct('weapon')`, `_fireKiSlashCrescent` |
 | 충전 중 방향 | 홀드 중 매 업데이트 `P.atkArc=P.facing`. 마우스 조준 또는 게임패드 스틱으로 바뀐 방향을 차징 검기·공격 자세에 즉시 반영하고, 해제 시 같은 방향으로 3타 검기를 발사 | 양쪽 HTML의 `_updateKiSlashThirdCharge`, `_drawKiSlashCharge`, `_fireKiSlashCrescent` |
 | 취소·중단 | 충전 중 Q 보호막 진입 시 충전값·콤보 초기화. 다른 상태에서 idle로 복귀할 때 남은 충전값 초기화. 발사된 검기는 유지 | 공격 상태·idle 처리 |
@@ -32,7 +32,7 @@
 
 화살표 모양 선 수정 후 로컬 GPU 게임 화면을 새로고침해 2단·최대 3단 홀드를 확인했다. 백열 검기 시트와 단계 표시만 남고 검기 위아래로 뻗던 긴 분홍·흰 선은 표시되지 않았다.
 
-몸 밀착·피해 재조정 후 로컬 GPU 화면에서 3단 180f를 유지해 차징 검기가 몸 주변에 놓이는 것을 확인했다. 브라우저 런타임의 0/60/120/180f 단계는 0/1/2/3, 피해 배율은 1/2/4/8이었다. 해제 후 충전 상태가 종료됨을 확인했다. 실제 적 대상 최대 단계 명중 피해 수치 계측은 별도 검수가 필요하다.
+몸 밀착·피해 재조정 후 로컬 GPU 화면에서 3단 120f(2초)를 유지해 차징 검기가 몸 주변에 놓이는 것을 확인했다. 브라우저 런타임의 0/40/80/120f 단계는 0/1/2/3, 피해 배율은 1/2/4/8이었다. (2026-09-27 검수 당시는 0/60/120/180f였고, 이후 단계 간격이 40f로 단축돼 풀차징이 2초가 되었다.) 해제 후 충전 상태가 종료됨을 확인했다. 실제 적 대상 최대 단계 명중 피해 수치 계측은 별도 검수가 필요하다.
 
 단계별 크기 조정 후 두 HTML의 테스트에서 60/120/180f 경계마다 차징 검기가 뚜렷하게 커지고 0→3단 표시 크기가 1.4배 이상인지 확인한다.
 

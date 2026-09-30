@@ -157,7 +157,7 @@ window._parryLesson = {
       this.title.textContent=[this.t("먼저 움직여보세요","Try moving first"),this.t("무기를 휘둘러보세요","Try swinging your weapon"),this.t("마법을 발사해보세요","Try casting magic")][i];
       this.hint.textContent=[
         this.t("W 위 · A 왼쪽 · S 아래 · D 오른쪽. WASD 또는 방향키로 조금 걸어보세요. 이후 모든 실습에서도 이동할 수 있습니다.","W up · A left · S down · D right. Walk a short distance using WASD or the arrow keys. You can also move during all later exercises."),
-        this.t("마우스로 조준해 기검참으로 적 10마리를 처치하세요. 1·2타 뒤 3타를 3초 누르고 떼어 검기로 적도 처치해 보세요.","Aim with the mouse and defeat 10 enemies with Ki Slash. After hits 1 and 2, hold the third hit for 3 seconds, then release it to defeat an enemy."),
+        this.t("마우스로 조준해 기검참으로 적 10마리를 처치하세요. 1·2타 뒤 3타를 2초 누르고 떼어 검기로 적도 처치해 보세요.","Aim with the mouse and defeat 10 enemies with Ki Slash. After hits 1 and 2, hold the third hit for 2 seconds, then release it to defeat an enemy."),
         this.t("마우스로 조준하고 우클릭 마법탄으로 적 5마리를 처치하세요.","Aim with the mouse and defeat 5 enemies using right-click magic projectiles.")
       ][i];
       if(this.step===-2||this.step===-1)this.updateAttackPractice();
@@ -249,10 +249,10 @@ window._parryLesson = {
     const left=this.step===-2,count=left?this.leftKills:this.rightKills;
     if(left){
       this.title.textContent=this.t("기검참으로 적 10마리를 처치하세요","Defeat 10 enemies with Ki Slash");
-      this.hint.textContent=this.t("1·2타 뒤 3타에서 좌클릭을 3초 누르고 떼어 검기로 적을 처치하세요.\n처치 {p0}/10 · 3단 차징 검기 처치 {p1}/1","After hits 1 and 2, hold the third left click for 3 seconds, then release it to defeat an enemy with the sword wave.\nDefeated {p0}/10 · Tier 3 sword-wave defeat {p1}/1",{p0:Math.min(10,count||0),p1:this.leftFullChargeKill?1:0});
+      this.hint.textContent=this.t("1·2타 뒤 3타에서 좌클릭을 2초 누르고 떼어 검기로 적을 처치하세요.\n처치 {p0}/10 · 3단 차징 검기 처치 {p1}/1","After hits 1 and 2, hold the third left click for 2 seconds, then release it to defeat an enemy with the sword wave.\nDefeated {p0}/10 · Tier 3 sword-wave defeat {p1}/1",{p0:Math.min(10,count||0),p1:this.leftFullChargeKill?1:0});
       this.holdBox.hidden=false;
-      this.holdMeter.value=Math.min(100,Math.max(0,P._kiChargeT||0)/180*100);
-      this.holdLabel.textContent=this.leftFullChargeKill?this.t("3단 차징 검기 처치 완료","Tier 3 sword-wave defeat complete"):P._kiChargeActive?this.t("3타 차징 {p0}/3단 · 3초까지 유지","Third-hit charge Tier {p0}/3 · Hold for 3 seconds",{p0:Math.min(3,Math.floor((P._kiChargeT||0)/60))}):this.t("1·2타 뒤 3타를 3초 누르세요","After hits 1 and 2, hold the third hit for 3 seconds");
+      this.holdMeter.value=Math.min(100,Math.max(0,P._kiChargeT||0)/120*100);
+      this.holdLabel.textContent=this.leftFullChargeKill?this.t("3단 차징 검기 처치 완료","Tier 3 sword-wave defeat complete"):P._kiChargeActive?this.t("3타 차징 {p0}/3단 · 2초까지 유지","Third-hit charge Tier {p0}/3 · Hold for 2 seconds",{p0:Math.min(3,Math.floor((P._kiChargeT||0)/40))}):this.t("1·2타 뒤 3타를 2초 누르세요","After hits 1 and 2, hold the third hit for 2 seconds");
     }else{
       this.title.textContent=this.t("마법으로 적 5마리를 처치하세요","Defeat 5 enemies with magic");
       this.hint.textContent=this.t("적을 마우스로 조준하고 우클릭으로 마법탄을 발사하세요.\n처치 {p0}/5 · 실제로 처치해야 완료됩니다.","Aim at an enemy with the mouse and right-click to fire a magic projectile.\nDefeated {p0}/5 · Only actual defeats count.",{p0:count||0});
