@@ -7,7 +7,7 @@
 | 단계 | 내용 |
 |---|---|
 | 1. 스타일 레퍼런스 | 같은 챕터의 기존 확정 오브젝트(예: `assets/map/ch1/production_finish/outer90_sources/rotforest_mass_01.png`)를 회색(128) 배경에 합성해 1024×576으로 첨부 (Image 1) |
-| 2. 도구·모델 | MagicLight Toolbox Image → **Seedream 5.0 Pro**, 16:9, 1장 100크레딧, 결과 2560×1440 |
+| 2. 도구·모델 | **1순위 Higgsfield `seedream_v5_pro`** (연결 도구, 2K, 2.5크레딧/장, `image_references`로 스타일 레퍼런스 첨부, `remove_bg` 배경 제거·`is_inpaint` 편집 옵션). 크레딧 부족 시 MagicLight Toolbox Image → **Seedream 5.0 Pro**, 16:9, 1장 100크레딧, 결과 2560×1440 |
 | 3. 프롬프트 골격 | `2D ARPG map object: one single <대상> in the exact art style and colors of image 1 (<특징>). Isolated, whole object fully visible and centered, slight top-down 3/4 view, on a perfectly flat plain mid-gray background, no ground, no shadow, no other objects. Painterly, clean render, no speckles, no dots, no text.` (500자 이하) |
 | 4. 배경 제거 | 네 모서리 평균색을 배경으로 보고 색거리 기반 알파(거리-18)×12 → bbox 크롭 → RGBA PNG |
 | 5. 검수 | 어두운 바닥색 위에 합성해 가장자리 회색 테두리·잔점 확인(1x 확대). 점 금지 규칙(CLAUDE.md 작업물 퀄리티 8항) 적용 |

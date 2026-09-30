@@ -1,5 +1,18 @@
 # 이미지 생성 서비스 우선순위 — 2026-09-30 갱신
 
+## 현행 (2026-09-30 야간, 사용자 지시 "이미지 쓰드림 5.0 쓰고 MD에도 넣어놔라") — 아래 이전 규칙보다 우선
+
+| 항목 | 현행 규칙 |
+|---|---|
+| 기본 모델 | **Seedream 5.0 Pro** — 맵 오브젝트·배경·텍스처·지형 패치·일반 이미지 |
+| 1순위 경로 | 연결된 Higgsfield `seedream_v5_pro`: 해상도 1k/1.5k/2k(기본 2k), 16:9·21:9 등, 참조 이미지(`image_references`), `is_inpaint`(편집), `remove_bg`(배경 제거). **2K 1장 2.5크레딧** (2026-09-30 get_cost 실측) |
+| 2순위 경로 | Higgsfield 크레딧 부족 시 MagicLight Toolbox Image → Seedream 5.0 Pro, 16:9, 1장 100 MagicLight 크레딧, 결과 2560×1440 (로그인 브라우저 필요) |
+| 예외 | 디자인 LOCK 캐릭터(네메시아·전사·킬루·디로이·핵터 등)·스토리 소품은 GPT Image 2.5 sunburst 유지 — Seedream은 소품 세부 일관성이 약함 |
+| 절차 | 스타일 레퍼런스 첨부 → 프롬프트 골격 → 배경 제거 → 1x 검수(점·회색 테두리) → 배치는 맵 담당 작업에서. 상세: [MAP_OBJECT_SEEDREAM_PIPELINE_20260930.md](../4.1맵디자인+설정/MAP_OBJECT_SEEDREAM_PIPELINE_20260930.md) |
+| 절약 | 생성 전 잔액·get_cost 보고, 대상당 1장 (메모리 higgsfield-credit-frugal) |
+
+## 이전 규칙 (2026-09-30 주간) — 서비스 전환 순서 기록
+
 사용자 최신 지시(2026-09-30): `https://magiclight.ai/videos/`를 지정하며 힉스필드 토큰을 다 쓰면 여기서 이미지 생성하도록 요청했다. 기존 2026-09-25의 Higgsfield → OpenAI GPT Image API 순서를 아래 순서로 대체한다. 과거 제작 기록의 서비스·모델 정보는 그대로 보존한다.
 
 | 항목 | 현행 규칙 |
