@@ -16,8 +16,6 @@ AUDIO_EXT = re.compile(r"\.(mp3|ogg|wav|m4a)$", re.I)
 REF_RE = re.compile(r"(?:sfx|bgm)/[^'\"`<>\n]+?\.(?:mp3|ogg|wav|m4a)")
 CODE_FILES = ["game.html", "index.html", "lobby_i18n.js", "maps_data.js"] + sorted(
     os.path.basename(p) for p in glob.glob(os.path.join(ROOT, "lang_*.js")))
-# Tables defined in game.html that no code calls (DAY 10 legacy); their paths never load.
-DEAD_TABLES = ("SFX_MAP", "BGM_MAP")
 
 
 def nfc(s):
@@ -61,7 +59,6 @@ def main():
             print(f"\n## {title}")
             for r in rows:
                 print("  " + r)
-    print(f"\nnote: missing paths inside {', '.join(DEAD_TABLES)} are dead code, not runtime 404s.")
 
 
 if __name__ == "__main__":
