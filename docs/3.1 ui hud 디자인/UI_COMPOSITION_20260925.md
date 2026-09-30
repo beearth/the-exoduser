@@ -151,7 +151,7 @@ CSS만 변경. 기존 필터·정렬·용량 동작과 DOM 보존. 새 에셋·�
 | 게임 | 난이도·자동물약·줍기·결정 자동처리·석궁/버스트루프/칼날개·기존 보스 디버그 |
 | 화면 | optShake/optParts/optFps/optResScale/optIrisSz/optBrightness/optIrisGlow, optScreenSection, gfxPresetRow 섹션, diagGpu 섹션 |
 | 사운드 | optSfx/optBgm/optBgmTrack |
-| 조작 | keyBindList 섹션, cursorGrid 섹션 |
+| 조작 | cursorGrid 섹션, keyBindList 섹션. 2026-10-01부터 DOM·Tab 이동 순서를 데스크톱 시각 순서와 일치시킴 |
 | 시스템 | optLang, charSelectGrid 섹션, saveP1 프리셋 섹션, toLobbyBtn2 섹션, resetBtn/quitBtn 섹션 |
 | 고정 하단 | settingsAutoSaveLabel와 기존setClose, 본문만 스크롤 |
 | 행 | 최소42px, 패딩8px4px, 간격10px. 이름폭43%/13px, 수치72px/12px, 선택창최소30px/12px |

@@ -111,7 +111,7 @@
     ['optShake','optParts','optFps','optResScale','optIrisSz','optBrightness','optIrisGlow'].forEach(id => moveRow(id,'display',displayTuning));
     ['optSfx','optBgm','optBgmTrack'].forEach(id => moveRow(id,'audio'));
     // Classify whole existing sections by a stable control ID, not translated text.
-    const routes = [['keyBindList','controls'],['optScreenSection','display'],['charSelectGrid','game'],['cursorGrid','controls'],['gfxPresetRow','display'],['diagGpu','display'],['saveP1','game'],['toLobbyBtn2','game'],['resetBtn','game'],['quitBtn','game']];
+    const routes = [['cursorGrid','controls'],['keyBindList','controls'],['optScreenSection','display'],['charSelectGrid','game'],['gfxPresetRow','display'],['diagGpu','display'],['saveP1','game'],['toLobbyBtn2','game'],['resetBtn','game'],['quitBtn','game']];
     routes.forEach(([id,key]) => {
       const node = document.getElementById(id);
       const section = node?.classList.contains('set-section') ? node : node?.closest('.set-section');
