@@ -1,0 +1,41 @@
+{
+  "at": "2026-10-01T18:53:31.855475+00:00",
+  "files": {
+    "tools/team-followup-20261001/UIUX/ossuary-production-acceptance-result.md": {
+      "sha256": "d6f177a4c5fd4a90f83ab521010a1c21533eb59328e82aba9b279e77d10ec92c",
+      "bytes": 4967
+    },
+    "tools/team-followup-20261001/UIUX/ossuary-production-acceptance-validation.txt": {
+      "sha256": "6eeae39de44a12e8487d1a55edba71b0a1cf340e4888a94188b8e58ba3846c0e",
+      "bytes": 1432
+    },
+    "tools/team-followup-20261001/UIUX/ossuary-production-acceptance-harness.mjs": {
+      "sha256": "837e6bdf674a94b6a918e94d2029afcb554710c19c8511a8d8fc46d31903f938",
+      "bytes": 3142
+    },
+    "tools/team-followup-20261001/UIUX/ossuary-production-acceptance-receipt.json": {
+      "sha256": "94afd66ce26801521435fcf6d369625e7dcd9fc753e2725ba22a4ac394eb61ed",
+      "bytes": 2147
+    },
+    "tools/team-followup-20261001/UIUX/ossuary-production-acceptance-evidence.json": {
+      "sha256": "486566d208921fab0b926d9338854bd3813f95b68b6c35b5c1fa4d78666c2bf3",
+      "bytes": 2694
+    },
+    "tools/team-followup-20261001/UIUX/ossuary-production-acceptance.test.mjs": {
+      "sha256": "a787862579f5e18aa84020d9ac5f31719c34befaa79315d55afc620d294c683a",
+      "bytes": 6857
+    },
+    "tools/team-followup-20261001/UIUX/ossuary-production-acceptance-task.md": {
+      "sha256": "e9a2ebd0481cb97c4789741f0aaf67d7e245bcc8cdcff943ab632551d60cb3be",
+      "bytes": 1377
+    },
+    "tools/team-followup-20261001/UIUX/ossuary-production-acceptance-read.json": {
+      "sha256": "b1027dbb1b91695914f9978652391e5bd54cd77a4b9d97dfc81a335ed1c0340f",
+      "bytes": 60310
+    },
+    "tools/team-followup-20261001/UIUX/ossuary-production-acceptance-final-hashes.json": {
+      "sha256": "8d3bbf3d8587173dfd6e8cbd342b777fc58610301e08b913b8b644bc78c74ba0",
+      "bytes": 1845
+    }
+  }
+}

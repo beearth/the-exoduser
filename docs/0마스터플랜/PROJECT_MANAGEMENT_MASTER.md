@@ -729,3 +729,5 @@ D17 이전 결함2건 재현 후 새30+이전28, QA독립20, SKILL 실제확정�
 ### 2026-10-02 Mac 네 팀 후속 인수 기록
 
 BUILD INM 소스 통합84검사와 UIUX 유골함 초점 양쪽HTML 통합66검사 후 기존 담당 세션에 각1회 독립 생산소스 인수를 배정했고 실제 task Read를 확인했다. ITEM 콜백 경계 수정은 root 독립2반례 및13+19 PASS, BALANCE 실제 합성 파일14 PASS를 root 재검사했다. ITEM/BALANCE는 후보 미적용이다. 실제 화면·패드·HTTP 검수는 미완료, 다른7팀 native 지시 전달은 보류 상태다. 현재 과제/완료 상태는 TEAM_UTILIZATION_20261001.json, 세부 근거는 FOUR-CANDIDATE-ACCEPTANCE-20261002.md와 outputs/team-review-20261002/four-candidate-acceptance/에 기록한다.
+
+2026-10-02 독립 후속 인수 완료: UIUX 현행 factory/renderOssPanel과 승인 후보 byte 일치, 보호 저장10함수 SHA 동일, 담당 독립15 PASS를 root가 하니스·원자료로 검토했다. 기존 root34+32와 구분하며 생산 추가 수정0·native/패드/레이아웃 미검수다. BUILD 후속13도 완료했고 네 Codex 팀 모두 현재 배정의 실제 Read·완료를 확인했다. 다른7팀은 전달0/Read0 보류다. GitHub 601a0574 체크포인트 SHA를 재확인했으며 이 최종 기록의 원격 확인은 다음 checkpoint로 수행한다.

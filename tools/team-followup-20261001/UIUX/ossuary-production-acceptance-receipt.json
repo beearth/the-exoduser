@@ -1,0 +1,43 @@
+{
+  "작업": "UIUX 유골함 초점 생산 통합 독립 인수",
+  "수신": "사용자 지시 UTC 미제공, 첫 실제 Read 이전 수신",
+  "첫ReadUTC": "2026-10-01T18:49:30Z",
+  "첫Read": "담당 task.md·AGENTS·root ui/filter 생산 인수 JSON·현행 SSOT",
+  "중복": "동일 prefix에는 task.md만 존재, 동일 수신/진행/대기 기록 없음",
+  "시작count": 38,
+  "80/100": "시작80 미만; Git쓰기 금지, 임계 도달 시 root에 한정 checkpoint 인계",
+  "상태": "독립15PASS, current 생산/후보 exact byte·저장10함수 SHA 인수, root 인계",
+  "생산서버HTTPUI빌드Git권한쓰기실행": 0,
+  "첫EditUTC": "2026-10-01T18:51:14Z",
+  "첫Edit근거": "harness.mjs birthtime UTC/apply_patch",
+  "중간count": 71,
+  "완료count": 32,
+  "검사UTC": "2026-10-01T18:52:20Z",
+  "완료UTC": "2026-10-01T18:52:47.028Z",
+  "임계판정": "완료80 미만; 공용 count 변화는 다른 담당 진행과 구분",
+  "현재원소스SHA": {
+    "game.html": {
+      "read": "30ae8544524d7cd710383ebd10f4911bea3247e90b18a46c51c253e73ce9ba3f",
+      "final": "30ae8544524d7cd710383ebd10f4911bea3247e90b18a46c51c253e73ce9ba3f",
+      "factory": "d29c0d8a9cdfac122a1f65d272d24fc75c2be0ea35b02d47468f9c5c0a6261b5"
+    },
+    "game-easy-test.html": {
+      "read": "9c7c25c131f6175a464cffe2e981e946cf2a0af70ed04b969cc5292403799af8",
+      "final": "9c7c25c131f6175a464cffe2e981e946cf2a0af70ed04b969cc5292403799af8",
+      "factory": "d29c0d8a9cdfac122a1f65d272d24fc75c2be0ea35b02d47468f9c5c0a6261b5"
+    }
+  },
+  "기존자료보존수": 318,
+  "실제검사": 15,
+  "실제명령": [
+    "node --test tools/team-followup-20261001/UIUX/ossuary-production-acceptance.test.mjs",
+    "node --check ossuary-production-acceptance-harness.mjs",
+    "git status --short --untracked-files=all 시작/중간/완료 읽기",
+    "rg docs 전체 관련21문서"
+  ],
+  "한계": [
+    "current renderOssPanel 실제 실행; 합성 상태 후조건만",
+    "mkF 실제 block만, 전체 renderInv/filter 경제 경로 재실행 없음",
+    "native key/패드/레이아웃/실게임/실저장/portrait 미검수"
+  ]
+}

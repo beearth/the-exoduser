@@ -1,5 +1,5 @@
 {
-  "checkedAt": "2026-10-01T18:51:48.009737+00:00",
+  "checkedAt": "2026-10-01T18:53:31.855475+00:00",
   "kind": "observed_followup_activity_and_delivery_blockers",
   "teams": [
     {
@@ -18,7 +18,7 @@
       "nextGate": "Native window/input state must be verifiable before pasting; 0 dispatch, no clone",
       "productionApplied": false,
       "currentlyRunning": false,
-      "rootAcceptance": "Root independently ran 20 groups PASS; prior 2 defects reproduced and new candidate suppresses both",
+      "rootAcceptance": null,
       "nativeSessionLocation": "VS Code Terminal1",
       "previousTaskStatus": "completed_source_accepted",
       "priorCompletedTask": {
@@ -61,7 +61,8 @@
       },
       "actualReadConfirmed": false,
       "actualEditConfirmed": false,
-      "currentTaskReceipt": null
+      "currentTaskReceipt": null,
+      "rootAcceptance": null
     },
     {
       "team": "SKILL",
@@ -79,7 +80,7 @@
       "nextGate": "Native window/input state must be verifiable before pasting; 0 dispatch, no clone",
       "productionApplied": false,
       "currentlyRunning": false,
-      "rootAcceptance": "Root19 PASS on actual aim/confirm/fire slices; fixture environment. Existing MP guard candidate retained, production0",
+      "rootAcceptance": null,
       "nativeSessionLocation": "VS Code Terminal6",
       "previousTaskStatus": "completed_source_accepted",
       "priorCompletedTask": {
@@ -122,7 +123,8 @@
       },
       "actualReadConfirmed": false,
       "actualEditConfirmed": false,
-      "currentTaskReceipt": null
+      "currentTaskReceipt": null,
+      "rootAcceptance": null
     },
     {
       "team": "ART",
@@ -152,7 +154,8 @@
       },
       "actualReadConfirmed": false,
       "actualEditConfirmed": false,
-      "currentTaskReceipt": null
+      "currentTaskReceipt": null,
+      "rootAcceptance": null
     },
     {
       "team": "ANIMVFX",
@@ -170,7 +173,7 @@
       "nextGate": "Native window/input state must be verifiable before pasting; 0 dispatch, no clone",
       "productionApplied": false,
       "currentlyRunning": false,
-      "rootAcceptance": "Owner manual model insufficient; root actual source extraction12 PASS and patch check exit0. Helper internals/pixels not executed",
+      "rootAcceptance": null,
       "nativeSessionLocation": "VS Code Terminal8",
       "previousTaskStatus": "completed_with_root_supplement",
       "priorCompletedTask": {
@@ -211,7 +214,7 @@
       "currentlyRunning": false,
       "nativeSessionLocation": "VS Code Terminal10",
       "previousTaskStatus": "see priorCompletedTask",
-      "executionStateNote": "read_thread transient interrupted/notLoaded does not establish stopped execution; actual commands captured",
+      "executionStateNote": "Official completed turn and actual Read/command/Edit evidence verified",
       "lastObservedCommandCount": 8,
       "firstReadAt": null,
       "queueId": "01a0f8cc-c9d6-7022-9fc2-8c1e508c43e0",
@@ -342,24 +345,49 @@
       "task": "ossuary-production-acceptance",
       "instruction": "tools/team-followup-20261001/UIUX/ossuary-production-acceptance-task.md",
       "receivedAt": "2026-10-01T18:49:25+00:00",
-      "completedAt": null,
-      "status": "execution_observed_completion_unconfirmed",
+      "completedAt": "2026-10-01T18:52:51+00:00",
+      "status": "completed_production_source_accepted_runtime_pending",
       "timestampSource": "Official read_thread turn start/end; exact first event timestamps unavailable",
       "actualReadConfirmed": true,
-      "actualEditConfirmed": false,
-      "nextGate": "Complete independent current-source acceptance; native runtime remains unverified",
+      "actualEditConfirmed": true,
+      "nextGate": "QA exclusive native keyboard/gamepad/layout acceptance remains pending; no duplicate source task",
       "productionApplied": true,
-      "currentTaskReceipt": null,
-      "rootAcceptance": "Prior production integration accepted; independent owner acceptance in progress",
-      "currentlyRunning": null,
+      "currentTaskReceipt": "tools/team-followup-20261001/UIUX/ossuary-production-acceptance-receipt.json",
+      "rootAcceptance": "Root production34+filter32 plus reviewed owner independent15 PASS; native unverified",
+      "currentlyRunning": false,
       "nativeSessionLocation": "VS Code Terminal4",
       "previousTaskStatus": "see priorCompletedTask",
-      "executionStateNote": "read_thread transient interrupted/notLoaded does not establish stopped execution; actual commands captured",
-      "lastObservedCommandCount": 3,
+      "executionStateNote": "Official completed turn and actual Read/command/Edit evidence verified",
+      "lastObservedCommandCount": 7,
       "firstReadAt": null,
       "queueId": "01a0f8cc-ca20-7330-a4ea-e977d245d78e",
       "turnId": "01a0f8cc-ca21-7832-9ea8-36d3a45cba63",
-      "observedEditFiles": [],
+      "observedEditFiles": [
+        {
+          "path": "/Users/fordeargamers/Projects/exoduser-migration-20261001/tools/team-followup-20261001/UIUX/ossuary-production-acceptance-harness.mjs",
+          "kind": {
+            "type": "add"
+          }
+        },
+        {
+          "path": "/Users/fordeargamers/Projects/exoduser-migration-20261001/tools/team-followup-20261001/UIUX/ossuary-production-acceptance-receipt.json",
+          "kind": {
+            "type": "add"
+          }
+        },
+        {
+          "path": "/Users/fordeargamers/Projects/exoduser-migration-20261001/tools/team-followup-20261001/UIUX/ossuary-production-acceptance.test.mjs",
+          "kind": {
+            "type": "add"
+          }
+        },
+        {
+          "path": "/Users/fordeargamers/Projects/exoduser-migration-20261001/tools/team-followup-20261001/UIUX/ossuary-production-acceptance-result.md",
+          "kind": {
+            "type": "add"
+          }
+        }
+      ],
       "priorCompletedTask": {
         "task": "ossuary-focus",
         "instruction": "tools/team-followup-20261001/UIUX/ossuary-focus-task.md",
@@ -397,6 +425,42 @@
           "status": "completed",
           "exitCode": 0,
           "durationMs": 0
+        },
+        {
+          "type": "commandExecution",
+          "id": "exec-13e86bd2-bfc4-4420-85ec-991e45f46600",
+          "command": "/bin/zsh -lc \"node --test tools/team-followup-20261001/UIUX/ossuary-production-acceptance.test.mjs > tools/team-followup-20261001/UIUX/ossuary-production-acceptance-validation.txt; tail -12 tools/team-followup-20261001/UIUX/ossuary-production-acceptance-validation.txt; git status --short --untracked-files=all | wc -l; TZ=UTC stat -f '%SB' -t '%Y-%m-%dT%H:%M:%SZ' tools/team-followup-20261001/UIUX/ossuary-production-acceptance-harness.mjs; date -u '+%Y-%m-%dT%H:%M:%SZ'\"",
+          "cwd": "/Users/fordeargamers/Projects/exoduser-migration-20261001",
+          "status": "completed",
+          "exitCode": 0,
+          "durationMs": 397
+        },
+        {
+          "type": "commandExecution",
+          "id": "exec-b52f55fb-94ce-4e1c-b1e6-a7851184c61c",
+          "command": "/bin/zsh -lc \"rg -l 'UI-04|releaseOssuaryAction|renderOssPanel|유골함.*초점|비활성.*초점' docs | wc -l; node --input-type=module <<'NODE'\nimport fs from 'node:fs';const record=JSON.parse(fs.readFileSync('tools/team-followup-20261001/UIUX/ossuary-production-acceptance-read.json'));console.log(JSON.stringify({sources:Object.fromEntries(Object.entries(record.sources).map(([path,row])=>[path,{source:row.wholeSha256,factory:row.factorySha256,renderOssPanel:row.functions.find(func=>func.name==='renderOssPanel').currentSha256,saveHashes:row.functions.filter(func=>['dbSaveNow','_drainPendingSaveNow','dbSaveForce','_saveSharedMats','saveSettings'].includes(func.name))}])),preserved:Object.keys(record.preserved).length},null,2));\nNODE\"",
+          "cwd": "/Users/fordeargamers/Projects/exoduser-migration-20261001",
+          "status": "completed",
+          "exitCode": 0,
+          "durationMs": 0
+        },
+        {
+          "type": "commandExecution",
+          "id": "exec-91097ac2-9ec7-4ecc-b598-bc13bc450ee0",
+          "command": "/bin/zsh -lc \"node --test tools/team-followup-20261001/UIUX/ossuary-production-acceptance.test.mjs > tools/team-followup-20261001/UIUX/ossuary-production-acceptance-validation.txt; tail -8 tools/team-followup-20261001/UIUX/ossuary-production-acceptance-validation.txt; node --check tools/team-followup-20261001/UIUX/ossuary-production-acceptance-harness.mjs; git status --short --untracked-files=all | wc -l; date -u '+%Y-%m-%dT%H:%M:%SZ'\"",
+          "cwd": "/Users/fordeargamers/Projects/exoduser-migration-20261001",
+          "status": "completed",
+          "exitCode": 0,
+          "durationMs": 370
+        },
+        {
+          "type": "commandExecution",
+          "id": "exec-120a06b1-d76b-4a80-b095-bfbb8dce5910",
+          "command": "/bin/zsh -lc \"node --input-type=module <<'NODE'\nimport fs from 'node:fs';import {createHash} from 'node:crypto';import {spawnSync} from 'node:child_process';const base='tools/team-followup-20261001/UIUX/',sha=path=>createHash('sha256').update(fs.readFileSync(path)).digest('hex'),read=JSON.parse(fs.readFileSync(base+'ossuary-production-acceptance-read.json')),receipt=JSON.parse(fs.readFileSync(base+'ossuary-production-acceptance-receipt.json'));\nfor(const [path,expected]of Object.entries({...read.preserved,...read.evidence}))if(sha(path)\"'!==expected)throw new Error('\"'읽기 자료 변화: '+path);for(const [path,row]of Object.entries(read.sources))if(sha(path)\"'!==row.wholeSha256)throw new Error('\"'생산 변화: '+path);\nconst final=base+'ossuary-production-acceptance-final-hashes.json';fs.writeFileSync(final,'{}\\\\n');const count=spawnSync('git',['status','--short','--untracked-files=all'],{encoding:'utf8',env:{...process.env,GIT_OPTIONAL_LOCKS:'0'}});if(count.status\"'!==0)throw new Error('\"'count 조회 실패');const finalCount=count.stdout.split('\\\\n').filter(Boolean).length;\nreceipt.첫EditUTC='2026-10-01T18:51:14Z';receipt.첫Edit근거='harness.mjs birthtime UTC/apply_patch';receipt.중간count=71;receipt.완료count=finalCount;receipt.검사UTC='2026-10-01T18:52:20Z';receipt.완료UTC=new Date().toISOString();receipt.상태='독립15PASS, current 생산/후보 exact byte·저장10함수 SHA 인수, root 인계';receipt.임계판정=finalCount>=80?'80 이상: 담당 Git쓰기 금지, root 한정 checkpoint 필요': '완료80 미만; 공용 count 변화는 다른 담당 진행과 구분';receipt.현재원소스SHA=Object.fromEntries(Object.entries(read.sources).map(([path,row])=>[path,{read:row.wholeSha256,final:sha(path),factory:row.factorySha256}]));receipt.기존자료보존수=Object.keys(read.preserved).length;receipt.실제검사=15;receipt.실제명령=['node --test tools/team-followup-20261001/UIUX/ossuary-production-acceptance.test.mjs','node --check ossuary-production-acceptance-harness.mjs','git status --short --untracked-files=all 시작/중간/완료 읽기','rg docs 전체 관련21문서'];receipt.한계=['current renderOssPanel 실제 실행; 합성 상태 후조건만','mkF 실제 block만, 전체 renderInv/filter 경제 경로 재실행 없음','native key/패드/레이아웃/실게임/실저장/portrait 미검수'];fs.writeFileSync(base+'ossuary-production-acceptance-receipt.json',JSON.stringify(receipt,null,2)+'\\\\n');const files={};for(const name of fs.readdirSync(base).filter(name=>name.startsWith('ossuary-production-acceptance')&&name\"'!=='\"'ossuary-production-acceptance-final-hashes.json'))files[base+name]=sha(base+name);fs.writeFileSync(final,JSON.stringify({at:new Date().toISOString(),currentSources:receipt.현재원소스SHA,files},null,2)+'\\\\n');console.log(JSON.stringify({complete:receipt.완료UTC,tests:15,count:{start:38,middle:71,final:finalCount},oldFilesUnchanged:receipt.기존자료보존수}));\nNODE\"",
+          "cwd": "/Users/fordeargamers/Projects/exoduser-migration-20261001",
+          "status": "completed",
+          "exitCode": 0,
+          "durationMs": 53
         }
       ]
     },
@@ -426,7 +490,7 @@
       "currentlyRunning": false,
       "nativeSessionLocation": "VS Code Terminal9",
       "previousTaskStatus": "see priorCompletedTask",
-      "executionStateNote": "read_thread transient interrupted/notLoaded does not establish stopped execution; actual commands captured",
+      "executionStateNote": "Official completed turn and actual Read/command/Edit evidence verified",
       "lastObservedCommandCount": 9,
       "firstReadAt": "2026-10-01T18:14:17Z",
       "queueId": "01a0f8ac-80c9-75f1-b556-65a2d4ae5f93",
@@ -593,7 +657,7 @@
       "currentlyRunning": false,
       "nativeSessionLocation": "VS Code Terminal11",
       "previousTaskStatus": "see priorCompletedTask",
-      "executionStateNote": "read_thread transient interrupted/notLoaded does not establish stopped execution; actual commands captured",
+      "executionStateNote": "Official completed turn and actual Read/command/Edit evidence verified",
       "lastObservedCommandCount": 3,
       "firstReadAt": "2026-10-01T18:14:13Z",
       "queueId": "01a0f8ac-808c-7142-8007-4facb8bcc880",
@@ -683,7 +747,7 @@
       "firstCodeEditAt": null,
       "timestampSource": "Actual existing Claude JSONL events; owner report clock claims superseded",
       "currentlyRunning": false,
-      "rootAcceptance": "Source read only; mkItem is stubbed in proposal, full RNG0 unproven",
+      "rootAcceptance": null,
       "nativeSessionLocation": "VS Code existing separate window 2.1.286 Terminal5",
       "previousTaskStatus": "submitted_read_only_unexecuted",
       "priorCompletedTask": {

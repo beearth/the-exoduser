@@ -1,0 +1,118 @@
+{
+  "at": "2026-10-01T18:52:20.049Z",
+  "scope": "현재 factory/renderOssPanel 원문·Node retain/blur; current mkF block 경계만, native/전체 renderInv/저장 미실행",
+  "results": [
+    {
+      "path": "game.html",
+      "language": "ko",
+      "blur": false,
+      "action": "oss-withdraw",
+      "focus": "invClose→opener"
+    },
+    {
+      "path": "game.html",
+      "language": "ko",
+      "blur": false,
+      "action": "oss-unequip",
+      "focus": "invClose→opener"
+    },
+    {
+      "path": "game.html",
+      "language": "ko",
+      "blur": true,
+      "action": "oss-withdraw",
+      "focus": "invClose→opener"
+    },
+    {
+      "path": "game.html",
+      "language": "ko",
+      "blur": true,
+      "action": "oss-unequip",
+      "focus": "invClose→opener"
+    },
+    {
+      "path": "game.html",
+      "language": "en",
+      "blur": false,
+      "action": "oss-withdraw",
+      "focus": "invClose→opener"
+    },
+    {
+      "path": "game.html",
+      "language": "en",
+      "blur": false,
+      "action": "oss-unequip",
+      "focus": "invClose→opener"
+    },
+    {
+      "path": "game.html",
+      "language": "en",
+      "blur": true,
+      "action": "oss-withdraw",
+      "focus": "invClose→opener"
+    },
+    {
+      "path": "game.html",
+      "language": "en",
+      "blur": true,
+      "action": "oss-unequip",
+      "focus": "invClose→opener"
+    },
+    {
+      "path": "game-easy-test.html",
+      "language": "ko",
+      "blur": false,
+      "action": "oss-withdraw",
+      "focus": "invClose→opener"
+    },
+    {
+      "path": "game-easy-test.html",
+      "language": "ko",
+      "blur": false,
+      "action": "oss-unequip",
+      "focus": "invClose→opener"
+    },
+    {
+      "path": "game-easy-test.html",
+      "language": "ko",
+      "blur": true,
+      "action": "oss-withdraw",
+      "focus": "invClose→opener"
+    },
+    {
+      "path": "game-easy-test.html",
+      "language": "ko",
+      "blur": true,
+      "action": "oss-unequip",
+      "focus": "invClose→opener"
+    },
+    {
+      "path": "game-easy-test.html",
+      "language": "en",
+      "blur": false,
+      "action": "oss-withdraw",
+      "focus": "invClose→opener"
+    },
+    {
+      "path": "game-easy-test.html",
+      "language": "en",
+      "blur": false,
+      "action": "oss-unequip",
+      "focus": "invClose→opener"
+    },
+    {
+      "path": "game-easy-test.html",
+      "language": "en",
+      "blur": true,
+      "action": "oss-withdraw",
+      "focus": "invClose→opener"
+    },
+    {
+      "path": "game-easy-test.html",
+      "language": "en",
+      "blur": true,
+      "action": "oss-unequip",
+      "focus": "invClose→opener"
+    }
+  ]
+}

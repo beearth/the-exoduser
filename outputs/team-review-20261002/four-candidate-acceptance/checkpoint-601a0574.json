@@ -1,0 +1,25 @@
+{
+  "at": "2026-10-01T18:52:33.765253+00:00",
+  "verifiedCheckpoint": "601a05741e294047ae34b070bd7d7be87383f8f6",
+  "remoteRef": "refs/heads/codex/mac-environment-20261001",
+  "remoteSha": "601a05741e294047ae34b070bd7d7be87383f8f6",
+  "statusCount": 30,
+  "stagedCount": 0,
+  "productionHashes": {
+    "server.cjs": "18cf9aa806d5715788f360debbc2a45c2574a76db952f101b524e2ff77fd517d",
+    "node-main.js": "01b0c1d51f77f500ee0a59185458bf0294edce12544482d6cf7abce4262c91ce",
+    "game.html": "30ae8544524d7cd710383ebd10f4911bea3247e90b18a46c51c253e73ce9ba3f",
+    "game-easy-test.html": "9c7c25c131f6175a464cffe2e981e946cf2a0af70ed04b969cc5292403799af8",
+    "ui-panels.js": "b22c4a31141672304a15adfae3a5050cb9fde3b96601507c8f10de3ea63f4cb5"
+  },
+  "completed": {
+    "ITEM": "2 independent boundary cases, rerun13+19 PASS, candidate only",
+    "BALANCE": "root actual-file14 PASS, candidate only",
+    "BUILD": "root84 plus reviewed owner13, source integrated"
+  },
+  "UIUX": "root66 plus owner15 reported, formal final pending",
+  "nativeSeven": "delivery0/read0; unchanged, no retries",
+  "preservation": "22 old Unicode backup differences and BUILD runtime config draft preserved",
+  "whitespaceCheck": "New source passes; raw rg evidence retains source CRLF/Markdown trailing spaces, intentionally not normalized",
+  "scope": "No server/listen/HTTP/browser/app/build/save access"
+}

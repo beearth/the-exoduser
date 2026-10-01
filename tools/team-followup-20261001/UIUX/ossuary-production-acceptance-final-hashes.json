@@ -1,0 +1,25 @@
+{
+  "at": "2026-10-01T18:52:47.033Z",
+  "currentSources": {
+    "game.html": {
+      "read": "30ae8544524d7cd710383ebd10f4911bea3247e90b18a46c51c253e73ce9ba3f",
+      "final": "30ae8544524d7cd710383ebd10f4911bea3247e90b18a46c51c253e73ce9ba3f",
+      "factory": "d29c0d8a9cdfac122a1f65d272d24fc75c2be0ea35b02d47468f9c5c0a6261b5"
+    },
+    "game-easy-test.html": {
+      "read": "9c7c25c131f6175a464cffe2e981e946cf2a0af70ed04b969cc5292403799af8",
+      "final": "9c7c25c131f6175a464cffe2e981e946cf2a0af70ed04b969cc5292403799af8",
+      "factory": "d29c0d8a9cdfac122a1f65d272d24fc75c2be0ea35b02d47468f9c5c0a6261b5"
+    }
+  },
+  "files": {
+    "tools/team-followup-20261001/UIUX/ossuary-production-acceptance-evidence.json": "486566d208921fab0b926d9338854bd3813f95b68b6c35b5c1fa4d78666c2bf3",
+    "tools/team-followup-20261001/UIUX/ossuary-production-acceptance-harness.mjs": "837e6bdf674a94b6a918e94d2029afcb554710c19c8511a8d8fc46d31903f938",
+    "tools/team-followup-20261001/UIUX/ossuary-production-acceptance-read.json": "b1027dbb1b91695914f9978652391e5bd54cd77a4b9d97dfc81a335ed1c0340f",
+    "tools/team-followup-20261001/UIUX/ossuary-production-acceptance-receipt.json": "94afd66ce26801521435fcf6d369625e7dcd9fc753e2725ba22a4ac394eb61ed",
+    "tools/team-followup-20261001/UIUX/ossuary-production-acceptance-result.md": "d6f177a4c5fd4a90f83ab521010a1c21533eb59328e82aba9b279e77d10ec92c",
+    "tools/team-followup-20261001/UIUX/ossuary-production-acceptance-task.md": "e9a2ebd0481cb97c4789741f0aaf67d7e245bcc8cdcff943ab632551d60cb3be",
+    "tools/team-followup-20261001/UIUX/ossuary-production-acceptance-validation.txt": "6eeae39de44a12e8487d1a55edba71b0a1cf340e4888a94188b8e58ba3846c0e",
+    "tools/team-followup-20261001/UIUX/ossuary-production-acceptance.test.mjs": "a787862579f5e18aa84020d9ac5f31719c34befaa79315d55afc620d294c683a"
+  }
+}

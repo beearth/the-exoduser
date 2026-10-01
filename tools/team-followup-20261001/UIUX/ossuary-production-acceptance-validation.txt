@@ -1,0 +1,23 @@
+✔ game.html: actual factory/renderOssPanel·변경 구역·저장 SHA 대조 (10.90775ms)
+✔ game.html/ko: current real render disabled이전활성→닫기 복귀 (18.682417ms)
+✔ game.html/ko: 숨긴닫기·외부/다른활성·닫힌패널 강탈0 (4.558583ms)
+✔ game.html/ko: current mkF block·filter identity 유지 (4.480125ms)
+✔ game.html/en: current real render disabled이전활성→닫기 복귀 (16.891459ms)
+✔ game.html/en: 숨긴닫기·외부/다른활성·닫힌패널 강탈0 (4.190584ms)
+✔ game.html/en: current mkF block·filter identity 유지 (4.089833ms)
+✔ game-easy-test.html: actual factory/renderOssPanel·변경 구역·저장 SHA 대조 (10.479833ms)
+✔ game-easy-test.html/ko: current real render disabled이전활성→닫기 복귀 (16.876917ms)
+✔ game-easy-test.html/ko: 숨긴닫기·외부/다른활성·닫힌패널 강탈0 (4.68775ms)
+✔ game-easy-test.html/ko: current mkF block·filter identity 유지 (3.945958ms)
+✔ game-easy-test.html/en: current real render disabled이전활성→닫기 복귀 (16.12025ms)
+✔ game-easy-test.html/en: 숨긴닫기·외부/다른활성·닫힌패널 강탈0 (4.079209ms)
+✔ game-easy-test.html/en: current mkF block·filter identity 유지 (3.8765ms)
+✔ 생산·root 원자료·이전 제출 byte 보존 (33.220625ms)
+ℹ tests 15
+ℹ suites 0
+ℹ pass 15
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 396.089417
