@@ -57,3 +57,8 @@
 ### 2026-10-01 MAP020 병행 후보 실행 인수
 
 실제정적도구25PASS2WARN0FAIL. 수정후입력SHA재수집. Windows패키지미실행. 기존CLI는읽기검토,지원에이전트와root가실제파일작성/실행했다. [실행근거·제약·다음게이트](../0마스터플랜/mac-resume-20261001/11팀-MAP020-실행검수.md). 이전UI03후보미실행상태는당시이력이다.
+
+
+### 2026-10-01 R 입력·GL·11팀 신규 후속 인수
+
+새 build-assets.py로 assets/unique-items44 + assets/map/ch1 907 + ch1-* FILES6 =957파일, 2,078,759,459바이트 SHA를 읽었다. LFS 포인터3개로 exit1/3FAIL을 보존한다. 제작 원본2개(CH1_1_PRODUCTION_MASTER.png, outer90_sources/outer90_patch.png)·출처zip1개(outer76_81-provenance.zip)이며 직접 참조 조사상 런타임 필수 누락 근거는 찾지 못했다. 실제 패키지 생성/로드/화면은 미검수이며 무영향을 단정하지 않는다. [관측 원자료·진단 범위·한계](../0마스터플랜/mac-resume-20261001/R-입력과-GL-후속검수.md)

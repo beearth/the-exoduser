@@ -1,0 +1,170 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>S-02 네메시아 — 루프 접점 A/B</title>
+<style>
+:root{color-scheme:dark;font-family:system-ui,sans-serif;background:#13171b;color:#e6edf2}
+*{box-sizing:border-box}body{max-width:1080px;margin:auto;padding:28px 20px 60px;line-height:1.6}
+h1{font-size:26px;line-height:1.35;margin:0 0 10px}h2{font-size:18px;margin:0 0 14px}
+p{margin:8px 0}.muted{color:#acbcc8;font-size:14px}.badge{display:inline-block;padding:4px 10px;border:1px solid #b89951;color:#efce86;border-radius:30px;font-size:13px}
+section{margin-top:22px;padding:22px;background:#1c232a;border:1px solid #364551;border-radius:12px}
+.tracks{display:grid;grid-template-columns:1fr 1fr;gap:12px}.track{padding:16px;background:#131a20;border:1px solid #405262;border-radius:8px;min-width:0}
+.track strong{display:block;margin-bottom:8px}.track p{overflow-wrap:anywhere}.ready{color:#9fddbb}.error{color:#ffaea5}
+input,select,textarea,button{font:inherit}input[type=file]{width:100%;font-size:13px}input[type=number]{width:85px}input[type=number],input[type=text],select,textarea{padding:8px;background:#10171d;border:1px solid #607484;border-radius:5px;color:inherit}
+input[type=range]{width:180px;vertical-align:middle}button{padding:11px 18px;border:1px solid #668698;border-radius:6px;background:#263d4b;color:inherit;cursor:pointer}button:hover:not(:disabled){background:#365a6d}button:disabled{opacity:.45;cursor:not-allowed}button.stop{background:#54322d;border-color:#b57766}
+.row{display:flex;align-items:center;flex-wrap:wrap;gap:14px;margin-top:14px}.row label{display:inline-flex;align-items:center;gap:8px}button:focus-visible,input:focus-visible,select:focus-visible,textarea:focus-visible{outline:3px solid #eac879;outline-offset:3px}
+#status{min-height:28px;color:#cfdfeb}#clock{font-variant-numeric:tabular-nums;font-size:22px}textarea{width:100%;min-height:110px;resize:vertical}details{margin-top:14px}summary{cursor:pointer}code{overflow-wrap:anywhere}
+@media(max-width:620px){body{padding:20px 12px}.tracks{grid-template-columns:1fr}section{padding:16px}.row button{flex:1 1 100%}h1{font-size:23px}}
+</style>
+</head>
+<body>
+<header>
+<span class="badge">S-02 · 실제 청취 미검수</span>
+<h1>네메시아의 강림2<br>끝→시작 루프 접점 비교</h1>
+<p class="muted">원본과 후보를 선택하고 같은 장치·볼륨으로 A, B를 차례로 들어보세요. 파일 선택만으로 소리가 나지 않습니다.</p>
+</header>
+<section aria-labelledby="files-title">
+<h2 id="files-title">1. 원본과 비교할 후보 선택</h2>
+<p class="muted">선택 파일은 이 브라우저에서만 읽습니다. 업로드·복사·변환하지 않습니다. 원본과 후보 한 개만 선택해도 비교할 수 있습니다.</p>
+<div class="tracks" id="tracks"></div>
+<details><summary>선택할 파일과 위치 안내</summary>
+<p>원본: <code>네메시아의 강림2 (Remastered).wav</code> — 저장소의 <code>bgm/공통/</code> 폴더.</p>
+<p>후보: 같은 제목 뒤에 <code>.mp3_256k.mp3</code>, <code>.ogg_q6.ogg</code>, <code>.opus_160k.opus</code>가 붙은 기존 파일.</p>
+<p class="muted">후보 폴더: <code>outputs/map020-variants-20261001/build-item-sound/sound-receipt-01/</code>. Finder 파일 선택에서 실제 이름을 선택하세요. 한글 파일명의 정규화 차이가 있어도 주소를 직접 입력할 필요가 없습니다.</p>
+</details>
+</section>
+<section aria-labelledby="listen-title">
+<h2 id="listen-title">2. 같은 구간과 볼륨으로 듣기</h2>
+<div class="row">
+<label for="pre">끝 전 <input id="pre" type="number" min="0.2" max="10" step="0.1" value="2">초</label>
+<label for="post">시작 후 <input id="post" type="number" min="0.2" max="10" step="0.1" value="2">초</label>
+<label for="volume">공통 볼륨 <input id="volume" type="range" min="0" max="1" step="0.01" value="0.8"><output id="volume-value">0.80</output></label>
+</div>
+<p class="muted">재생 중에는 구간·볼륨이 고정됩니다. 같은 재생 게인을 적용하며 음량 정규화나 피크 보정은 하지 않습니다. 각 파일의 실제 끝에서 같은 초 수만큼 되감아 비교합니다.</p>
+<div class="row">
+<label for="candidate">후보 B <select id="candidate"><option value="mp3">MP3 256k</option><option value="ogg">OGG q6</option><option value="opus">Opus 160k</option></select></label>
+<button id="play-a" disabled>A · 원본 끝→시작</button>
+<button id="play-b" disabled>B · 후보 끝→시작</button>
+<button id="stop" class="stop" disabled>정지</button>
+</div>
+<p id="status" role="status" aria-live="polite">원본과 후보 파일을 선택해 주세요.</p>
+<p id="clock">0.000 / 0.000 초</p>
+<p id="segment" class="muted">재생 구간: —</p>
+<p class="muted">끝→시작은 브라우저 오디오의 loop 재생입니다. 장치·브라우저의 디코딩/버퍼링도 접점에 영향을 줄 수 있으므로 코덱 자체의 무손실·무간격 재생을 자동 판정하지 않습니다. 다른 탭으로 이동하면 정지합니다.</p>
+</section>
+<section aria-labelledby="record-title">
+<h2 id="record-title">3. 실제 청취 후 기록</h2>
+<p class="muted">페이지 열기나 재생 완료는 청취·음질 PASS의 증거가 아닙니다. 들은 사람이 접점의 끊김·클릭음·왜곡을 직접 기록하세요. 기존 디코딩 수치를 이 페이지에서 재검사하지 않습니다.</p>
+<div class="row"><label for="listener">청취자 <input id="listener" type="text" placeholder="이름"></label><label for="device">장치·시스템 볼륨 <input id="device" type="text" placeholder="헤드폰 / 시스템 50%"></label></div>
+<p><label for="notes">원본/후보별 들은 점과 비교 의견</label></p>
+<textarea id="notes" placeholder="예: WAV → Opus, 끝 2초 → 시작 2초 / 접점에서 들린 현상 / 같은 장치·볼륨 유지 여부"></textarea>
+<div class="row"><button id="save">기록 JSON 저장</button><button id="clear">파일 해제·정리</button></div>
+<p class="muted">선택 파일명·크기·실제 길이·설정·재생 이력과 작성한 의견을 저장합니다. 페이지를 닫거나 파일을 교체하면 재생을 중단하고 파일 접근용 URL을 해제합니다.</p>
+</section>
+<script>
+'use strict';
+const $=id=>document.getElementById(id);
+const definitions=[['wav','A · 원본 WAV','.wav,audio/wav'],['mp3','B · MP3 256k','.mp3,audio/mpeg'],['ogg','B · OGG q6','.ogg,audio/ogg'],['opus','B · Opus 160k','.opus,audio/ogg']];
+const tracks=new Map(), history=[], downloads=new Set();
+let active=null, frame=0, serial=0;
+function say(message){$('status').textContent=message}
+function ready(key){const t=tracks.get(key);return !!(t?.audio&&Number.isFinite(t.audio.duration)&&t.audio.duration>0&&t.ready)}
+function refresh(){
+  $('play-a').disabled=!ready('wav');$('play-b').disabled=!ready($('candidate').value);
+  $('stop').disabled=!active;
+  for(const id of ['pre','post','volume'])$(id).disabled=!!active;
+}
+function finish(reason){
+  serial++;cancelAnimationFrame(frame);frame=0;
+  if(active){
+    active.track.audio.pause();active.track.audio.loop=false;
+    active.record.stopReason=reason;active.record.endPosition=active.track.audio.currentTime;
+    active.record.stoppedAt=new Date().toISOString();active=null;
+  }
+  refresh();
+}
+function release(t){
+  if(active?.track===t)finish('파일 교체/해제');
+  if(t.audio){t.audio.onloadedmetadata=null;t.audio.onerror=null;t.audio.pause();t.audio.removeAttribute('src');t.audio.load();t.audio=null}
+  if(t.url){URL.revokeObjectURL(t.url);t.url=null}
+  t.file=null;t.ready=false;t.info.textContent='선택 안 됨';t.info.className='muted';
+}
+for(const [key,label,accept] of definitions){
+  const card=document.createElement('div');card.className='track';
+  const name=document.createElement('strong');name.textContent=label;
+  const input=document.createElement('input');input.type='file';input.accept=accept;input.id='file-'+key;input.setAttribute('aria-label',label+' 파일 선택');
+  const info=document.createElement('p');info.className='muted';info.textContent='선택 안 됨';
+  card.append(name,input,info);$('tracks').append(card);
+  const t={key,label,input,info,file:null,url:null,audio:null,ready:false};tracks.set(key,t);
+  input.addEventListener('change',()=>{
+    const file=input.files?.[0];if(!file)return;
+    release(t);t.file=file;t.url=URL.createObjectURL(file);
+    const a=new Audio();t.audio=a;a.preload='metadata';a.volume=Number($('volume').value);
+    info.textContent=file.name+' · 길이 확인 중';
+    a.onloadedmetadata=()=>{
+      if(t.audio!==a)return;
+      t.ready=Number.isFinite(a.duration)&&a.duration>0;
+      info.textContent=file.name+' · '+(file.size/1024/1024).toFixed(2)+' MiB · '+(t.ready?a.duration.toFixed(3)+'초':'길이 확인 불가');
+      info.className=t.ready?'muted ready':'muted error';
+      if(t.ready)say(t.label+' 준비됨. 재생 버튼을 눌러 비교하세요.');refresh();
+    };
+    a.onerror=()=>{
+      if(t.audio!==a)return;
+      if(active?.track===t)finish('미디어 오류');t.ready=false;
+      info.textContent=file.name+' · 재생 불가 (미디어 오류 '+(a.error?.code??'알 수 없음')+')';info.className='muted error';
+      say('선택 파일 또는 브라우저의 오디오 형식 지원을 확인해 주세요.');refresh();
+    };
+    a.src=t.url;a.load();refresh();
+  });
+}
+async function play(key){
+  finish('A/B 전환 또는 다시 듣기');
+  const t=tracks.get(key);if(!ready(key)){say('선택 음원이 아직 준비되지 않았습니다.');return}
+  const pre=Number($('pre').value),post=Number($('post').value),volume=Number($('volume').value),a=t.audio;
+  if(!Number.isFinite(pre)||!Number.isFinite(post)||pre<.2||post<.2||pre>10||post>10||pre+post>=a.duration){say('구간은 각각 0.2~10초이며, 합계가 음원 길이보다 짧아야 합니다.');return}
+  const ticket=serial;
+  const record={file:t.file.name,format:t.label,duration:a.duration,preSeconds:pre,postSeconds:post,volume,startedAt:new Date().toISOString(),wrapObserved:false};
+  history.push(record);active={track:t,record};
+  a.volume=volume;a.loop=true;
+  refresh();
+  try{a.currentTime=a.duration-pre;await a.play()}
+  catch(error){if(ticket===serial){finish('재생 실패');say('재생 실패: '+error.message)}return}
+  if(ticket!==serial)return;
+  let previous=a.currentTime,wrapped=false;
+  $('segment').textContent=t.label+' · '+t.file.name+' · '+(a.duration-pre).toFixed(3)+'→'+a.duration.toFixed(3)+'초, 0→'+post.toFixed(3)+'초 · 볼륨 '+volume.toFixed(2);
+  say(t.label+' 재생 중 · 끝부분');refresh();
+  function tick(){
+    if(ticket!==serial||!active)return;
+    const now=a.currentTime;$('clock').textContent=now.toFixed(3)+' / '+a.duration.toFixed(3)+' 초';
+    if(!a.seeking&&previous-now>.2){wrapped=true;record.wrapObserved=true;say(t.label+' 재생 중 · 시작부분')}
+    if(wrapped&&now>=post){finish('접점 구간 완료');say(t.label+' 구간 재생 종료. 실제 들은 점을 기록하세요.');return}
+    previous=now;frame=requestAnimationFrame(tick);
+  }
+  frame=requestAnimationFrame(tick);
+}
+$('play-a').addEventListener('click',()=>play('wav'));
+$('play-b').addEventListener('click',()=>play($('candidate').value));
+$('stop').addEventListener('click',()=>{finish('사용자 정지');say('정지했습니다.');});
+$('candidate').addEventListener('change',()=>{finish('후보 선택 변경');say('후보 B를 선택했습니다. 재생 버튼을 눌러 주세요.');refresh()});
+$('volume').addEventListener('input',()=>{$('volume-value').textContent=Number($('volume').value).toFixed(2)});
+document.addEventListener('visibilitychange',()=>{if(document.hidden&&active){finish('탭이 숨겨짐');say('탭이 숨겨져 재생을 정지했습니다. 다시 재생 버튼을 눌러 주세요.')}});
+function cleanup(){finish('페이지 닫기/파일 해제');for(const t of tracks.values()){release(t);t.input.value=''}for(const url of downloads)URL.revokeObjectURL(url);downloads.clear();refresh()}
+$('clear').addEventListener('click',()=>{cleanup();$('clock').textContent='0.000 / 0.000 초';$('segment').textContent='재생 구간: —';say('파일과 접근 URL을 해제했습니다. 청취 메모는 유지됩니다.')});
+window.addEventListener('pagehide',cleanup);
+window.addEventListener('pageshow',e=>{if(e.persisted)say('페이지 복귀: 파일을 다시 선택해 주세요. 자동재생은 하지 않습니다.')});
+$('save').addEventListener('click',()=>{
+  const data={title:'S-02 네메시아 끝→시작 A/B',exportedAt:new Date().toISOString(),automaticQualityVerdict:'미검수 — 자동 음질 판정 없음',
+    listener:$('listener').value,deviceAndSystemVolume:$('device').value,notes:$('notes').value,
+    settings:{preSeconds:Number($('pre').value),postSeconds:Number($('post').value),volume:Number($('volume').value)},
+    files:[...tracks.values()].filter(t=>t.file).map(t=>({role:t.label,name:t.file.name,size:t.file.size,type:t.file.type,lastModified:t.file.lastModified,duration:t.ready?t.audio.duration:null})),history};
+  const url=URL.createObjectURL(new Blob([JSON.stringify(data,null,2)],{type:'application/json'}));
+  downloads.add(url);
+  const link=document.createElement('a');link.href=url;link.download='S02-loop-listening-notes.json';link.click();
+  setTimeout(()=>{URL.revokeObjectURL(url);downloads.delete(url)},1000);
+});
+refresh();
+</script>
+</body>
+</html>

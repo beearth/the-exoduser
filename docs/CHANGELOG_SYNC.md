@@ -51650,3 +51650,8 @@ CSS 캐시 ui-refinement.css?v=20260927-4. 신규 이미지/아이템 데이터 
 ### 2026-10-01 ITEM 월드 폴백 마스킹 수정
 
 본편 `_worldItemSkin`이 최초 컷아웃의 정규화된 img.src를 `_worldDropCutoutSrc`에 저장하고 실제 현재 src가 같을 때만 마스킹을 우회한다. 물리 PNG 폴백은 기존24/72 마스크 1회 캐시·onload 무효화. 쉬운판·원화·DOM·드롭 확률/경제/전투/저장 불변. 감사26/26·회귀9/9·관측기15/15, 실제 단일브라우저 검은박스 해소·양쪽실패null·R키획득 확인. 전종가독성/패키지/CPU329ms 해결 아님. [증거](0마스터플랜/mac-resume-20261001/ITEM-폴백마스킹-검수.md).
+
+
+### 2026-10-01 R 입력·정규 GL 관측과 검수 도구
+
+생산 HTML 수정0. R28시행·GL 부활5건·BUILD957파일·BALANCE 실제36적중 근거를 보존했다. R 수동 진단16만족/10미충족, BUILD LFS3FAIL, BALANCE8PASS/2SKIP(MISSING_HOOK)를 구분한다. SOUND 비교 페이지·에이전트 상태판 추가. [상세](0마스터플랜/mac-resume-20261001/R-입력과-GL-후속검수.md).

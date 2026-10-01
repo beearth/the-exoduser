@@ -88,3 +88,8 @@ PM-013 수정 소유 구역: `game.html`과 `game-easy-test.html`의 `_calcMaxEx
 ### 2026-10-01 MAP020 병행 후보 실행 인수
 
 실제경계10검사PASS. 양쪽HTML주석533→528만및레거시환수설명4곳적용,경제식불변. 총35검사재통과. PM013D환수설계대기유지. 기존CLI는읽기검토,지원에이전트와root가실제파일작성/실행했다. [실행근거·제약·다음게이트](../0마스터플랜/mac-resume-20261001/11팀-MAP020-실행검수.md). 이전UI03후보미실행상태는당시이력이다.
+
+
+### 2026-10-01 R 입력·GL·11팀 신규 후속 인수
+
+test/onHitFireballStack.test.js가 양쪽 실제 _eqAffix/hurtE를 추출하여36적중을 실행했다. 8PASS/2SKIP/0FAIL은 onHitFireball 조회0·투사체0인 MISSING_HOOK 상태를 확인한 결과다. 재귀는 NOT_REACHED라 SKIP이며 효과 완성이 아니다. 4/7/11/16/22% 데이터·실제 fireOnHit·경제식은 변경하지 않았다. 정상 무기 롤과 강제 복수 장착 fixture를 구분했다. [관측 원자료·진단 범위·한계](../0마스터플랜/mac-resume-20261001/R-입력과-GL-후속검수.md)
