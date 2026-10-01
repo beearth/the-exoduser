@@ -1,0 +1,14 @@
+{
+  "taskId": "BALANCE-FIREBALL-HOOK-CANDIDATE",
+  "sessionId": "01a0f6e6-5303-7392-81ba-94c42e349ffc",
+  "sessionIdSource": "NEXT_TASK.md 배정, 런타임 독립 확인 아님",
+  "cli": "Codex",
+  "model": null,
+  "receivedAt": "2026-10-01T11:45:16Z",
+  "startedAt": "2026-10-01T11:45:16Z",
+  "status": "completed_independent_candidate",
+  "firstAction": "NEXT_TASK.md·직전 결과·팀 MD·ITEM SSOT 실제 읽기 완료; 후보 파일 없음 확인",
+  "ownedPaths": ["tools/team-followup-20261001/BALANCE/", "docs/0마스터플랜/mac-resume-20261001/vscode-dispatch/BALANCE-next-result.md", "docs/0마스터플랜/mac-resume-20261001/vscode-dispatch/BALANCE-next-receipt.json"],
+  "nextAction": "총괄에 독립 후보13PASS와 계약 확정·메타 전파·생산 연결 잔여 게이트 인계",
+  "blocker": "독립 후보 완료. 실제 효과는 피해/자원/피해원/중첩 정책 확정 및 생산 소유권 배정 전 미연결"
+}
