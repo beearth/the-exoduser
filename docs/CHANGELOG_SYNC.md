@@ -52030,3 +52030,7 @@ Git 실제 변경439→30(tracked21/untracked9/staged0). 완료410파일의 원�
 ### 2026-10-02 기존7팀 전달 복구 시도
 
 최신 native 앱 조회는 잠금 오류 없이 성공했으나 QA Terminal1 선택 중 noWindowsAvailable 오류가 발생했다. 기존 VS Code를 다시 연결해 접근성에서 Terminal1 선택·Accessible View는 확인했지만 스크린샷은 이전7분할 화면 그대로이고 입력 후 상태 확인이 불안정했다. 실제 초안/프롬프트를 검증할 수 없어 전송0, 수신0, 새 Read0. 기존7세션 idle/이전완료 로그와 미전달을 구분했다. 새세션/복제/보안 우회0. 다음 한 건7지시서를 native-recovery/에 준비했다. BUILD40·BALANCE16·UIUX34·ITEM19는 담당 완료/독립 인수 대기이며 반복 지시0. 상세 NATIVE-RECOVERY-20261002.md.
+
+### 2026-10-02 INM weak/list/wildcard 생산 인수
+
+matchesIfNoneMatch helper와 조건식1곳만 반영했다. exact 후보 byte 일치 및 현재 생산 INM40+조건부Range31+저장13=84그룹 PASS. If-Range 전부 전체응답·HTML정책·gzip·HEAD·atomicSaveJSON/저장경계 유지. RFC9110 §13.1.2의 약한 비교·별표·목록을 따르되 malformed전체무시/빈member32개 정책을 기록했다. validator강도·실HTTP·HEAD wire는 미검수, 서버 재시작0. UIUX 후보34는 반영 전 통과이며 별도 순차 통합한다. docs/0마스터플랜/mac-resume-20261001/vscode-dispatch/FOUR-CANDIDATE-ACCEPTANCE-20261002.md 참조.

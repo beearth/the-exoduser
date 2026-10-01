@@ -1,0 +1,35 @@
+--- a/server.cjs
++++ b/server.cjs
+@@ -182 +182 @@
+-      fs.writeFileSync(MATS_FILE, JSON.stringify({ mats: n, ts: Date.now() }), 'utf8');
++      atomicSaveJSON(fs, MATS_FILE, { mats: n, ts: Date.now() }, process.pid);
+--- a/node-main.js
++++ b/node-main.js
+@@ -6,0 +7,24 @@
++let atomicSaveSequence = 0;
++function atomicSaveJSON(fs, file, data, processId) {
++  const serialized = JSON.stringify(data, null, 2);
++  const temporary = file + '.tmp-' + processId + '-' + (++atomicSaveSequence);
++  let descriptor;
++  let owned = false;
++  try {
++    descriptor = fs.openSync(temporary, 'wx');
++    owned = true;
++    fs.writeFileSync(descriptor, serialized, 'utf8');
++    fs.closeSync(descriptor);
++    descriptor = undefined;
++    fs.renameSync(temporary, file);
++    owned = false;
++  } finally {
++    if (descriptor !== undefined) {
++      try { fs.closeSync(descriptor); } catch {}
++    }
++    if (owned) {
++      try { fs.unlinkSync(temporary); } catch {}
++    }
++  }
++}
++
+@@ -162 +186 @@
+-    fs.writeFileSync(MATS_FILE, JSON.stringify({ mats: n, ts: Date.now() }), 'utf8');
++    atomicSaveJSON(fs, MATS_FILE, { mats: n, ts: Date.now() }, process.pid);

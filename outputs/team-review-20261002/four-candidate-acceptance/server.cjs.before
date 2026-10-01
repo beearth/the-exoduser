@@ -5,28 +5,6 @@ const path = require('path');
 const zlib = require('zlib');
 
 // gzip 대상 (텍스트/코드만 — 이미지·오디오는 이미 압축됨)
-function matchesIfNoneMatch(value,currentTag){
-  if(typeof value!=='string'||typeof currentTag!=='string')return false;
-  if(value.replace(/^[ \t]+|[ \t]+$/g,'')==='*')return true;
-  const current=/^(?:W\/)?("[\x21\x23-\x7e\x80-\xff]*")$/.exec(currentTag);
-  if(!current)return false;
-  const tag=/(?:W\/)?("[\x21\x23-\x7e\x80-\xff]*")/y;
-  let position=0,matched=false,seen=false,emptyMembers=0;
-  while(position<value.length){
-    while(value[position]===' '||value[position]==='\t')position++;
-    if(position===value.length)break;
-    if(value[position]===','){if(++emptyMembers>32)return false;position++;continue;}
-    tag.lastIndex=position;
-    const member=tag.exec(value);if(!member)return false;
-    seen=true;matched=matched||member[1]===current[1];position=tag.lastIndex;
-    while(value[position]===' '||value[position]==='\t')position++;
-    if(position===value.length)break;
-    if(value[position]!==',')return false;
-    position++;
-  }
-  return seen&&matched;
-}
-
 const COMPRESSIBLE = new Set(['.html', '.js', '.css', '.json', '.svg', '.gltf']);
 // 반복 진입 시 대형 HTML을 매번 gzip 하지 않도록 파일 버전별 압축 결과를 보관한다.
 // size/mtime이 바뀌면 새 Promise로 교체되므로 코드 수정은 다음 요청에 바로 반영된다.
@@ -293,7 +271,7 @@ const server = http.createServer(async (req, res) => {
         ? 'no-cache, no-store, must-revalidate'
         : 'public, max-age=3600';
       const _etag='"'+stat.size.toString(16)+'-'+Math.floor(stat.mtimeMs).toString(16)+'"';
-      if (!_isHtml && (req.method === 'GET' || req.method === 'HEAD') && matchesIfNoneMatch(req.headers['if-none-match'], _etag)) {
+      if (!_isHtml && (req.method === 'GET' || req.method === 'HEAD') && req.headers['if-none-match'] === _etag) {
         res.writeHead(304, { 'Cache-Control': _cache, 'ETag': _etag });
         return res.end();
       }

@@ -1,0 +1,78 @@
+{
+  "completedAt": "2026-10-01T18:38:58.123Z",
+  "passed": 16,
+  "checks": [
+    "server.cjs 原RED: 부분 쓰기 뒤 GET0",
+    "server.cjs 후보 write 실패: 이전bytes/GET/ACK0/temp정리",
+    "server.cjs 후보 rename 실패: 이전bytes/GET/ACK0/temp정리",
+    "server.cjs 후보 정상 신규/교체 true",
+    "server.cjs 후보 정상 신규/교체 false",
+    "server.cjs clamp/schema/ACK 동일 10입력",
+    "server.cjs GET 없음/손상 형태 불변",
+    "server.cjs 밑줄 슬롯 제외 원식",
+    "node-main.js 原RED: 부분 쓰기 뒤 GET0",
+    "node-main.js 후보 write 실패: 이전bytes/GET/ACK0/temp정리",
+    "node-main.js 후보 rename 실패: 이전bytes/GET/ACK0/temp정리",
+    "node-main.js 후보 정상 신규/교체 true",
+    "node-main.js 후보 정상 신규/교체 false",
+    "node-main.js clamp/schema/ACK 동일 10입력",
+    "node-main.js GET 없음/손상 형태 불변",
+    "node-main.js 밑줄 슬롯 제외 원식"
+  ],
+  "counterexamples": [
+    {
+      "sourceFile": "server.cjs",
+      "input": {
+        "previousMats": 4567,
+        "postMats": 100,
+        "failure": "write 8 chars then injected EIO"
+      },
+      "originalBytes": "{\"mats\":",
+      "originalGet": {
+        "ok": true,
+        "mats": 0
+      },
+      "candidateGet": {
+        "ok": true,
+        "mats": 4567
+      }
+    },
+    {
+      "sourceFile": "node-main.js",
+      "input": {
+        "previousMats": 4567,
+        "postMats": 100,
+        "failure": "write 8 chars then injected EIO"
+      },
+      "originalBytes": "{\"mats\":",
+      "originalGet": {
+        "ok": true,
+        "mats": 0
+      },
+      "candidateGet": {
+        "ok": true,
+        "mats": 4567
+      }
+    }
+  ],
+  "hashes": {
+    "server.cjs": {
+      "source": "441bacbd8a5e0f7ae883e5c9a0a2e0368bf5190f50d2cb0246b89a4e6771bb6d",
+      "get": "721cf522bb88ac56820e28026a7d63d32ca4e2efe9d9e46d9040afbd2dda76f7",
+      "post": "da16f804c862dda894083674eb33456b5f945a06db22e86fc832bb9b539f0116",
+      "helper": "3dc865c85002dcc58e2986d0bcbb069e47f6663d6c4c4ed5555370d7a1b5684a"
+    },
+    "node-main.js": {
+      "source": "01b0c1d51f77f500ee0a59185458bf0294edce12544482d6cf7abce4262c91ce",
+      "get": "478234c1293b3ce91701ea507f81f61f66246ff99af21e167bcdb65b72352b4d",
+      "post": "a08ce9307b630417013062564f0f4b7fdb1a7c1cc19973a4f1d7016b8eeacee2",
+      "helper": "3dc865c85002dcc58e2986d0bcbb069e47f6663d6c4c4ed5555370d7a1b5684a"
+    }
+  },
+  "sourceHashesAfter": {
+    "server.cjs": "441bacbd8a5e0f7ae883e5c9a0a2e0368bf5190f50d2cb0246b89a4e6771bb6d",
+    "node-main.js": "01b0c1d51f77f500ee0a59185458bf0294edce12544482d6cf7abce4262c91ce"
+  },
+  "productionUnchanged": true,
+  "limits": "합성 메모리 fs/고정 clock, EIO 주입. 실제 OS/디스크/HTTP/fsync/크래시/Windows 미검수"
+}

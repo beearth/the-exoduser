@@ -1,0 +1,386 @@
+{
+  "sourceSHA": "6a7c1083ac10b105cca3624c8fd0e919d14a59b32774612ff0a00cb881be8538",
+  "red": [
+    {
+      "name": "INM-before-range",
+      "input": {
+        "headers": {
+          "range": "bytes=0-9",
+          "if-none-match": "\"2710-1\""
+        }
+      },
+      "expected": 304,
+      "original": {
+        "status": 206,
+        "headers": {
+          "Content-Range": "bytes 0-9/10000",
+          "Accept-Ranges": "bytes",
+          "Content-Length": 10,
+          "Content-Type": "fixture/mime",
+          "Access-Control-Allow-Origin": "*"
+        },
+        "calls": [
+          {
+            "stream": {
+              "start": 0,
+              "end": 9
+            }
+          },
+          "pipe"
+        ]
+      },
+      "candidate": {
+        "status": 304,
+        "headers": {
+          "Cache-Control": "public, max-age=3600",
+          "ETag": "\"2710-1\""
+        },
+        "calls": [
+          {
+            "endBytes": 0
+          }
+        ]
+      }
+    },
+    {
+      "name": "INM-before-unsatisfiable",
+      "input": {
+        "headers": {
+          "range": "bytes=20000-",
+          "if-none-match": "\"2710-1\""
+        }
+      },
+      "expected": 304,
+      "original": {
+        "status": 416,
+        "headers": {
+          "Content-Range": "bytes */10000",
+          "Access-Control-Allow-Origin": "*"
+        },
+        "calls": [
+          {
+            "endBytes": 0
+          }
+        ]
+      },
+      "candidate": {
+        "status": 304,
+        "headers": {
+          "Cache-Control": "public, max-age=3600",
+          "ETag": "\"2710-1\""
+        },
+        "calls": [
+          {
+            "endBytes": 0
+          }
+        ]
+      }
+    },
+    {
+      "name": "IfRange-mismatch",
+      "input": {
+        "headers": {
+          "range": "bytes=0-9",
+          "if-range": "\"other\""
+        }
+      },
+      "expected": 200,
+      "original": {
+        "status": 206,
+        "headers": {
+          "Content-Range": "bytes 0-9/10000",
+          "Accept-Ranges": "bytes",
+          "Content-Length": 10,
+          "Content-Type": "fixture/mime",
+          "Access-Control-Allow-Origin": "*"
+        },
+        "calls": [
+          {
+            "stream": {
+              "start": 0,
+              "end": 9
+            }
+          },
+          "pipe"
+        ]
+      },
+      "candidate": {
+        "status": 200,
+        "headers": {
+          "Content-Type": "fixture/mime",
+          "Cache-Control": "public, max-age=3600",
+          "ETag": "\"2710-1\"",
+          "Content-Length": 10000
+        },
+        "calls": [
+          {
+            "stream": null
+          },
+          "pipe"
+        ]
+      }
+    },
+    {
+      "name": "IfRange-same-conservative",
+      "input": {
+        "headers": {
+          "range": "bytes=0-9",
+          "if-range": "\"2710-1\""
+        }
+      },
+      "expected": 200,
+      "original": {
+        "status": 206,
+        "headers": {
+          "Content-Range": "bytes 0-9/10000",
+          "Accept-Ranges": "bytes",
+          "Content-Length": 10,
+          "Content-Type": "fixture/mime",
+          "Access-Control-Allow-Origin": "*"
+        },
+        "calls": [
+          {
+            "stream": {
+              "start": 0,
+              "end": 9
+            }
+          },
+          "pipe"
+        ]
+      },
+      "candidate": {
+        "status": 200,
+        "headers": {
+          "Content-Type": "fixture/mime",
+          "Cache-Control": "public, max-age=3600",
+          "ETag": "\"2710-1\"",
+          "Content-Length": 10000
+        },
+        "calls": [
+          {
+            "stream": null
+          },
+          "pipe"
+        ]
+      }
+    },
+    {
+      "name": "IfRange-weak",
+      "input": {
+        "headers": {
+          "range": "bytes=0-9",
+          "if-range": "W/\"2710-1\""
+        }
+      },
+      "expected": 200,
+      "original": {
+        "status": 206,
+        "headers": {
+          "Content-Range": "bytes 0-9/10000",
+          "Accept-Ranges": "bytes",
+          "Content-Length": 10,
+          "Content-Type": "fixture/mime",
+          "Access-Control-Allow-Origin": "*"
+        },
+        "calls": [
+          {
+            "stream": {
+              "start": 0,
+              "end": 9
+            }
+          },
+          "pipe"
+        ]
+      },
+      "candidate": {
+        "status": 200,
+        "headers": {
+          "Content-Type": "fixture/mime",
+          "Cache-Control": "public, max-age=3600",
+          "ETag": "\"2710-1\"",
+          "Content-Length": 10000
+        },
+        "calls": [
+          {
+            "stream": null
+          },
+          "pipe"
+        ]
+      }
+    },
+    {
+      "name": "IfRange-date",
+      "input": {
+        "headers": {
+          "range": "bytes=0-9",
+          "if-range": "Thu, 01 Jan 1970 00:00:00 GMT"
+        }
+      },
+      "expected": 200,
+      "original": {
+        "status": 206,
+        "headers": {
+          "Content-Range": "bytes 0-9/10000",
+          "Accept-Ranges": "bytes",
+          "Content-Length": 10,
+          "Content-Type": "fixture/mime",
+          "Access-Control-Allow-Origin": "*"
+        },
+        "calls": [
+          {
+            "stream": {
+              "start": 0,
+              "end": 9
+            }
+          },
+          "pipe"
+        ]
+      },
+      "candidate": {
+        "status": 200,
+        "headers": {
+          "Content-Type": "fixture/mime",
+          "Cache-Control": "public, max-age=3600",
+          "ETag": "\"2710-1\"",
+          "Content-Length": 10000
+        },
+        "calls": [
+          {
+            "stream": null
+          },
+          "pipe"
+        ]
+      }
+    },
+    {
+      "name": "IfRange-invalid",
+      "input": {
+        "headers": {
+          "range": "bytes=0-9",
+          "if-range": "invalid"
+        }
+      },
+      "expected": 200,
+      "original": {
+        "status": 206,
+        "headers": {
+          "Content-Range": "bytes 0-9/10000",
+          "Accept-Ranges": "bytes",
+          "Content-Length": 10,
+          "Content-Type": "fixture/mime",
+          "Access-Control-Allow-Origin": "*"
+        },
+        "calls": [
+          {
+            "stream": {
+              "start": 0,
+              "end": 9
+            }
+          },
+          "pipe"
+        ]
+      },
+      "candidate": {
+        "status": 200,
+        "headers": {
+          "Content-Type": "fixture/mime",
+          "Cache-Control": "public, max-age=3600",
+          "ETag": "\"2710-1\"",
+          "Content-Length": 10000
+        },
+        "calls": [
+          {
+            "stream": null
+          },
+          "pipe"
+        ]
+      }
+    },
+    {
+      "name": "IfRange-empty",
+      "input": {
+        "headers": {
+          "range": "bytes=0-9",
+          "if-range": ""
+        }
+      },
+      "expected": 200,
+      "original": {
+        "status": 206,
+        "headers": {
+          "Content-Range": "bytes 0-9/10000",
+          "Accept-Ranges": "bytes",
+          "Content-Length": 10,
+          "Content-Type": "fixture/mime",
+          "Access-Control-Allow-Origin": "*"
+        },
+        "calls": [
+          {
+            "stream": {
+              "start": 0,
+              "end": 9
+            }
+          },
+          "pipe"
+        ]
+      },
+      "candidate": {
+        "status": 200,
+        "headers": {
+          "Content-Type": "fixture/mime",
+          "Cache-Control": "public, max-age=3600",
+          "ETag": "\"2710-1\"",
+          "Content-Length": 10000
+        },
+        "calls": [
+          {
+            "stream": null
+          },
+          "pipe"
+        ]
+      }
+    },
+    {
+      "name": "INM-precedes-IfRange",
+      "input": {
+        "headers": {
+          "range": "bytes=0-9",
+          "if-range": "\"other\"",
+          "if-none-match": "\"2710-1\""
+        }
+      },
+      "expected": 304,
+      "original": {
+        "status": 206,
+        "headers": {
+          "Content-Range": "bytes 0-9/10000",
+          "Accept-Ranges": "bytes",
+          "Content-Length": 10,
+          "Content-Type": "fixture/mime",
+          "Access-Control-Allow-Origin": "*"
+        },
+        "calls": [
+          {
+            "stream": {
+              "start": 0,
+              "end": 9
+            }
+          },
+          "pipe"
+        ]
+      },
+      "candidate": {
+        "status": 304,
+        "headers": {
+          "Cache-Control": "public, max-age=3600",
+          "ETag": "\"2710-1\""
+        },
+        "calls": [
+          {
+            "endBytes": 0
+          }
+        ]
+      }
+    }
+  ]
+}

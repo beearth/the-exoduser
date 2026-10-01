@@ -1,0 +1,14 @@
+[
+  {
+    "mode": "clear",
+    "callbacksAfterTransition": 2,
+    "expected": 1,
+    "reproduced": true
+  },
+  {
+    "mode": "replace",
+    "callbacksAfterTransition": 2,
+    "expected": 1,
+    "reproduced": true
+  }
+]

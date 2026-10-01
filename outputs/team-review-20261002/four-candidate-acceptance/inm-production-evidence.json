@@ -1,0 +1,1163 @@
+{
+  "startedAt": "2026-10-01T18:42:20.552Z",
+  "completedAt": "2026-10-01T18:42:20.639Z",
+  "sourceSHA": "441bacbd8a5e0f7ae883e5c9a0a2e0368bf5190f50d2cb0246b89a4e6771bb6d",
+  "candidateSHA": "18cf9aa806d5715788f360debbc2a45c2574a76db952f101b524e2ff77fd517d",
+  "originalBranchSHA": "e68025f11d3624408b713b266911ba75ef89c420d1a3da207da7ba9912630f04",
+  "candidateBranchSHA": "1c0c420201d3713c1992385fe201f30320955b6912c5c563bc0a6a71c7c9186c",
+  "helperSHA": "799d937e089e613f34379436eea48b6594ad732791a794eedd9a682d26b4dd5b",
+  "tests": 40,
+  "red": [
+    {
+      "name": "weak",
+      "header": "W/\"2710-1\"",
+      "expectedMatch": true,
+      "original": {
+        "status": 206,
+        "headers": {
+          "Content-Range": "bytes 0-9/10000",
+          "Accept-Ranges": "bytes",
+          "Content-Length": 10,
+          "Content-Type": "fixture",
+          "Access-Control-Allow-Origin": "*"
+        },
+        "calls": [
+          {
+            "stream": {
+              "start": 0,
+              "end": 9
+            }
+          },
+          "pipe"
+        ]
+      },
+      "candidate": {
+        "status": 304,
+        "headers": {
+          "Cache-Control": "public, max-age=3600",
+          "ETag": "\"2710-1\""
+        },
+        "calls": [
+          {
+            "end": 0
+          }
+        ]
+      }
+    },
+    {
+      "name": "wildcard",
+      "header": "*",
+      "expectedMatch": true,
+      "original": {
+        "status": 206,
+        "headers": {
+          "Content-Range": "bytes 0-9/10000",
+          "Accept-Ranges": "bytes",
+          "Content-Length": 10,
+          "Content-Type": "fixture",
+          "Access-Control-Allow-Origin": "*"
+        },
+        "calls": [
+          {
+            "stream": {
+              "start": 0,
+              "end": 9
+            }
+          },
+          "pipe"
+        ]
+      },
+      "candidate": {
+        "status": 304,
+        "headers": {
+          "Cache-Control": "public, max-age=3600",
+          "ETag": "\"2710-1\""
+        },
+        "calls": [
+          {
+            "end": 0
+          }
+        ]
+      }
+    },
+    {
+      "name": "wildcard-ows",
+      "header": " \t*\t ",
+      "expectedMatch": true,
+      "original": {
+        "status": 206,
+        "headers": {
+          "Content-Range": "bytes 0-9/10000",
+          "Accept-Ranges": "bytes",
+          "Content-Length": 10,
+          "Content-Type": "fixture",
+          "Access-Control-Allow-Origin": "*"
+        },
+        "calls": [
+          {
+            "stream": {
+              "start": 0,
+              "end": 9
+            }
+          },
+          "pipe"
+        ]
+      },
+      "candidate": {
+        "status": 304,
+        "headers": {
+          "Cache-Control": "public, max-age=3600",
+          "ETag": "\"2710-1\""
+        },
+        "calls": [
+          {
+            "end": 0
+          }
+        ]
+      }
+    },
+    {
+      "name": "list",
+      "header": "\"other\", W/\"2710-1\"",
+      "expectedMatch": true,
+      "original": {
+        "status": 206,
+        "headers": {
+          "Content-Range": "bytes 0-9/10000",
+          "Accept-Ranges": "bytes",
+          "Content-Length": 10,
+          "Content-Type": "fixture",
+          "Access-Control-Allow-Origin": "*"
+        },
+        "calls": [
+          {
+            "stream": {
+              "start": 0,
+              "end": 9
+            }
+          },
+          "pipe"
+        ]
+      },
+      "candidate": {
+        "status": 304,
+        "headers": {
+          "Cache-Control": "public, max-age=3600",
+          "ETag": "\"2710-1\""
+        },
+        "calls": [
+          {
+            "end": 0
+          }
+        ]
+      }
+    },
+    {
+      "name": "quoted-comma",
+      "header": "\"other,tag\", \"2710-1\"",
+      "expectedMatch": true,
+      "original": {
+        "status": 206,
+        "headers": {
+          "Content-Range": "bytes 0-9/10000",
+          "Accept-Ranges": "bytes",
+          "Content-Length": 10,
+          "Content-Type": "fixture",
+          "Access-Control-Allow-Origin": "*"
+        },
+        "calls": [
+          {
+            "stream": {
+              "start": 0,
+              "end": 9
+            }
+          },
+          "pipe"
+        ]
+      },
+      "candidate": {
+        "status": 304,
+        "headers": {
+          "Cache-Control": "public, max-age=3600",
+          "ETag": "\"2710-1\""
+        },
+        "calls": [
+          {
+            "end": 0
+          }
+        ]
+      }
+    },
+    {
+      "name": "OWS",
+      "header": " \tW/\"2710-1\"\t ",
+      "expectedMatch": true,
+      "original": {
+        "status": 206,
+        "headers": {
+          "Content-Range": "bytes 0-9/10000",
+          "Accept-Ranges": "bytes",
+          "Content-Length": 10,
+          "Content-Type": "fixture",
+          "Access-Control-Allow-Origin": "*"
+        },
+        "calls": [
+          {
+            "stream": {
+              "start": 0,
+              "end": 9
+            }
+          },
+          "pipe"
+        ]
+      },
+      "candidate": {
+        "status": 304,
+        "headers": {
+          "Cache-Control": "public, max-age=3600",
+          "ETag": "\"2710-1\""
+        },
+        "calls": [
+          {
+            "end": 0
+          }
+        ]
+      }
+    },
+    {
+      "name": "empty-members",
+      "header": ",,\"other\",,W/\"2710-1\",",
+      "expectedMatch": true,
+      "original": {
+        "status": 206,
+        "headers": {
+          "Content-Range": "bytes 0-9/10000",
+          "Accept-Ranges": "bytes",
+          "Content-Length": 10,
+          "Content-Type": "fixture",
+          "Access-Control-Allow-Origin": "*"
+        },
+        "calls": [
+          {
+            "stream": {
+              "start": 0,
+              "end": 9
+            }
+          },
+          "pipe"
+        ]
+      },
+      "candidate": {
+        "status": 304,
+        "headers": {
+          "Cache-Control": "public, max-age=3600",
+          "ETag": "\"2710-1\""
+        },
+        "calls": [
+          {
+            "end": 0
+          }
+        ]
+      }
+    },
+    {
+      "name": "strong",
+      "header": "\"2710-1\"",
+      "expectedMatch": true,
+      "original": {
+        "status": 304,
+        "headers": {
+          "Cache-Control": "public, max-age=3600",
+          "ETag": "\"2710-1\""
+        },
+        "calls": [
+          {
+            "end": 0
+          }
+        ]
+      },
+      "candidate": {
+        "status": 304,
+        "headers": {
+          "Cache-Control": "public, max-age=3600",
+          "ETag": "\"2710-1\""
+        },
+        "calls": [
+          {
+            "end": 0
+          }
+        ]
+      }
+    },
+    {
+      "name": "mismatch",
+      "header": "\"other\"",
+      "expectedMatch": false,
+      "original": {
+        "status": 206,
+        "headers": {
+          "Content-Range": "bytes 0-9/10000",
+          "Accept-Ranges": "bytes",
+          "Content-Length": 10,
+          "Content-Type": "fixture",
+          "Access-Control-Allow-Origin": "*"
+        },
+        "calls": [
+          {
+            "stream": {
+              "start": 0,
+              "end": 9
+            }
+          },
+          "pipe"
+        ]
+      },
+      "candidate": {
+        "status": 206,
+        "headers": {
+          "Content-Range": "bytes 0-9/10000",
+          "Accept-Ranges": "bytes",
+          "Content-Length": 10,
+          "Content-Type": "fixture",
+          "Access-Control-Allow-Origin": "*"
+        },
+        "calls": [
+          {
+            "stream": {
+              "start": 0,
+              "end": 9
+            }
+          },
+          "pipe"
+        ]
+      }
+    },
+    {
+      "name": "comma-only",
+      "header": ",,,",
+      "expectedMatch": false,
+      "original": {
+        "status": 206,
+        "headers": {
+          "Content-Range": "bytes 0-9/10000",
+          "Accept-Ranges": "bytes",
+          "Content-Length": 10,
+          "Content-Type": "fixture",
+          "Access-Control-Allow-Origin": "*"
+        },
+        "calls": [
+          {
+            "stream": {
+              "start": 0,
+              "end": 9
+            }
+          },
+          "pipe"
+        ]
+      },
+      "candidate": {
+        "status": 206,
+        "headers": {
+          "Content-Range": "bytes 0-9/10000",
+          "Accept-Ranges": "bytes",
+          "Content-Length": 10,
+          "Content-Type": "fixture",
+          "Access-Control-Allow-Origin": "*"
+        },
+        "calls": [
+          {
+            "stream": {
+              "start": 0,
+              "end": 9
+            }
+          },
+          "pipe"
+        ]
+      }
+    },
+    {
+      "name": "malformed-tail",
+      "header": "\"2710-1\",bad",
+      "expectedMatch": false,
+      "original": {
+        "status": 206,
+        "headers": {
+          "Content-Range": "bytes 0-9/10000",
+          "Accept-Ranges": "bytes",
+          "Content-Length": 10,
+          "Content-Type": "fixture",
+          "Access-Control-Allow-Origin": "*"
+        },
+        "calls": [
+          {
+            "stream": {
+              "start": 0,
+              "end": 9
+            }
+          },
+          "pipe"
+        ]
+      },
+      "candidate": {
+        "status": 206,
+        "headers": {
+          "Content-Range": "bytes 0-9/10000",
+          "Accept-Ranges": "bytes",
+          "Content-Length": 10,
+          "Content-Type": "fixture",
+          "Access-Control-Allow-Origin": "*"
+        },
+        "calls": [
+          {
+            "stream": {
+              "start": 0,
+              "end": 9
+            }
+          },
+          "pipe"
+        ]
+      }
+    },
+    {
+      "name": "malformed-quote",
+      "header": "\"2710-1",
+      "expectedMatch": false,
+      "original": {
+        "status": 206,
+        "headers": {
+          "Content-Range": "bytes 0-9/10000",
+          "Accept-Ranges": "bytes",
+          "Content-Length": 10,
+          "Content-Type": "fixture",
+          "Access-Control-Allow-Origin": "*"
+        },
+        "calls": [
+          {
+            "stream": {
+              "start": 0,
+              "end": 9
+            }
+          },
+          "pipe"
+        ]
+      },
+      "candidate": {
+        "status": 206,
+        "headers": {
+          "Content-Range": "bytes 0-9/10000",
+          "Accept-Ranges": "bytes",
+          "Content-Length": 10,
+          "Content-Type": "fixture",
+          "Access-Control-Allow-Origin": "*"
+        },
+        "calls": [
+          {
+            "stream": {
+              "start": 0,
+              "end": 9
+            }
+          },
+          "pipe"
+        ]
+      }
+    },
+    {
+      "name": "space-in-tag",
+      "header": "\"2710-1 \"",
+      "expectedMatch": false,
+      "original": {
+        "status": 206,
+        "headers": {
+          "Content-Range": "bytes 0-9/10000",
+          "Accept-Ranges": "bytes",
+          "Content-Length": 10,
+          "Content-Type": "fixture",
+          "Access-Control-Allow-Origin": "*"
+        },
+        "calls": [
+          {
+            "stream": {
+              "start": 0,
+              "end": 9
+            }
+          },
+          "pipe"
+        ]
+      },
+      "candidate": {
+        "status": 206,
+        "headers": {
+          "Content-Range": "bytes 0-9/10000",
+          "Accept-Ranges": "bytes",
+          "Content-Length": 10,
+          "Content-Type": "fixture",
+          "Access-Control-Allow-Origin": "*"
+        },
+        "calls": [
+          {
+            "stream": {
+              "start": 0,
+              "end": 9
+            }
+          },
+          "pipe"
+        ]
+      }
+    },
+    {
+      "name": "lowercase-weak",
+      "header": "w/\"2710-1\"",
+      "expectedMatch": false,
+      "original": {
+        "status": 206,
+        "headers": {
+          "Content-Range": "bytes 0-9/10000",
+          "Accept-Ranges": "bytes",
+          "Content-Length": 10,
+          "Content-Type": "fixture",
+          "Access-Control-Allow-Origin": "*"
+        },
+        "calls": [
+          {
+            "stream": {
+              "start": 0,
+              "end": 9
+            }
+          },
+          "pipe"
+        ]
+      },
+      "candidate": {
+        "status": 206,
+        "headers": {
+          "Content-Range": "bytes 0-9/10000",
+          "Accept-Ranges": "bytes",
+          "Content-Length": 10,
+          "Content-Type": "fixture",
+          "Access-Control-Allow-Origin": "*"
+        },
+        "calls": [
+          {
+            "stream": {
+              "start": 0,
+              "end": 9
+            }
+          },
+          "pipe"
+        ]
+      }
+    },
+    {
+      "name": "star-list",
+      "header": "*,\"2710-1\"",
+      "expectedMatch": false,
+      "original": {
+        "status": 206,
+        "headers": {
+          "Content-Range": "bytes 0-9/10000",
+          "Accept-Ranges": "bytes",
+          "Content-Length": 10,
+          "Content-Type": "fixture",
+          "Access-Control-Allow-Origin": "*"
+        },
+        "calls": [
+          {
+            "stream": {
+              "start": 0,
+              "end": 9
+            }
+          },
+          "pipe"
+        ]
+      },
+      "candidate": {
+        "status": 206,
+        "headers": {
+          "Content-Range": "bytes 0-9/10000",
+          "Accept-Ranges": "bytes",
+          "Content-Length": 10,
+          "Content-Type": "fixture",
+          "Access-Control-Allow-Origin": "*"
+        },
+        "calls": [
+          {
+            "stream": {
+              "start": 0,
+              "end": 9
+            }
+          },
+          "pipe"
+        ]
+      }
+    },
+    {
+      "name": "adjacent-tags",
+      "header": "\"other\" \"2710-1\"",
+      "expectedMatch": false,
+      "original": {
+        "status": 206,
+        "headers": {
+          "Content-Range": "bytes 0-9/10000",
+          "Accept-Ranges": "bytes",
+          "Content-Length": 10,
+          "Content-Type": "fixture",
+          "Access-Control-Allow-Origin": "*"
+        },
+        "calls": [
+          {
+            "stream": {
+              "start": 0,
+              "end": 9
+            }
+          },
+          "pipe"
+        ]
+      },
+      "candidate": {
+        "status": 206,
+        "headers": {
+          "Content-Range": "bytes 0-9/10000",
+          "Accept-Ranges": "bytes",
+          "Content-Length": 10,
+          "Content-Type": "fixture",
+          "Access-Control-Allow-Origin": "*"
+        },
+        "calls": [
+          {
+            "stream": {
+              "start": 0,
+              "end": 9
+            }
+          },
+          "pipe"
+        ]
+      }
+    },
+    {
+      "name": "control",
+      "header": "\"2710-1\"\r",
+      "expectedMatch": false,
+      "original": {
+        "status": 206,
+        "headers": {
+          "Content-Range": "bytes 0-9/10000",
+          "Accept-Ranges": "bytes",
+          "Content-Length": 10,
+          "Content-Type": "fixture",
+          "Access-Control-Allow-Origin": "*"
+        },
+        "calls": [
+          {
+            "stream": {
+              "start": 0,
+              "end": 9
+            }
+          },
+          "pipe"
+        ]
+      },
+      "candidate": {
+        "status": 206,
+        "headers": {
+          "Content-Range": "bytes 0-9/10000",
+          "Accept-Ranges": "bytes",
+          "Content-Length": 10,
+          "Content-Type": "fixture",
+          "Access-Control-Allow-Origin": "*"
+        },
+        "calls": [
+          {
+            "stream": {
+              "start": 0,
+              "end": 9
+            }
+          },
+          "pipe"
+        ]
+      }
+    },
+    {
+      "name": "missing",
+      "expectedMatch": false,
+      "original": {
+        "status": 206,
+        "headers": {
+          "Content-Range": "bytes 0-9/10000",
+          "Accept-Ranges": "bytes",
+          "Content-Length": 10,
+          "Content-Type": "fixture",
+          "Access-Control-Allow-Origin": "*"
+        },
+        "calls": [
+          {
+            "stream": {
+              "start": 0,
+              "end": 9
+            }
+          },
+          "pipe"
+        ]
+      },
+      "candidate": {
+        "status": 206,
+        "headers": {
+          "Content-Range": "bytes 0-9/10000",
+          "Accept-Ranges": "bytes",
+          "Content-Length": 10,
+          "Content-Type": "fixture",
+          "Access-Control-Allow-Origin": "*"
+        },
+        "calls": [
+          {
+            "stream": {
+              "start": 0,
+              "end": 9
+            }
+          },
+          "pipe"
+        ]
+      }
+    },
+    {
+      "name": "array",
+      "header": [
+        "\"2710-1\""
+      ],
+      "expectedMatch": false,
+      "original": {
+        "status": 206,
+        "headers": {
+          "Content-Range": "bytes 0-9/10000",
+          "Accept-Ranges": "bytes",
+          "Content-Length": 10,
+          "Content-Type": "fixture",
+          "Access-Control-Allow-Origin": "*"
+        },
+        "calls": [
+          {
+            "stream": {
+              "start": 0,
+              "end": 9
+            }
+          },
+          "pipe"
+        ]
+      },
+      "candidate": {
+        "status": 206,
+        "headers": {
+          "Content-Range": "bytes 0-9/10000",
+          "Accept-Ranges": "bytes",
+          "Content-Length": 10,
+          "Content-Type": "fixture",
+          "Access-Control-Allow-Origin": "*"
+        },
+        "calls": [
+          {
+            "stream": {
+              "start": 0,
+              "end": 9
+            }
+          },
+          "pipe"
+        ]
+      }
+    },
+    {
+      "name": "empty",
+      "header": "",
+      "expectedMatch": false,
+      "original": {
+        "status": 206,
+        "headers": {
+          "Content-Range": "bytes 0-9/10000",
+          "Accept-Ranges": "bytes",
+          "Content-Length": 10,
+          "Content-Type": "fixture",
+          "Access-Control-Allow-Origin": "*"
+        },
+        "calls": [
+          {
+            "stream": {
+              "start": 0,
+              "end": 9
+            }
+          },
+          "pipe"
+        ]
+      },
+      "candidate": {
+        "status": 206,
+        "headers": {
+          "Content-Range": "bytes 0-9/10000",
+          "Accept-Ranges": "bytes",
+          "Content-Length": 10,
+          "Content-Type": "fixture",
+          "Access-Control-Allow-Origin": "*"
+        },
+        "calls": [
+          {
+            "stream": {
+              "start": 0,
+              "end": 9
+            }
+          },
+          "pipe"
+        ]
+      }
+    },
+    {
+      "name": "excess-empty",
+      "header": ",,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,\"2710-1\"",
+      "expectedMatch": false,
+      "original": {
+        "status": 206,
+        "headers": {
+          "Content-Range": "bytes 0-9/10000",
+          "Accept-Ranges": "bytes",
+          "Content-Length": 10,
+          "Content-Type": "fixture",
+          "Access-Control-Allow-Origin": "*"
+        },
+        "calls": [
+          {
+            "stream": {
+              "start": 0,
+              "end": 9
+            }
+          },
+          "pipe"
+        ]
+      },
+      "candidate": {
+        "status": 206,
+        "headers": {
+          "Content-Range": "bytes 0-9/10000",
+          "Accept-Ranges": "bytes",
+          "Content-Length": 10,
+          "Content-Type": "fixture",
+          "Access-Control-Allow-Origin": "*"
+        },
+        "calls": [
+          {
+            "stream": {
+              "start": 0,
+              "end": 9
+            }
+          },
+          "pipe"
+        ]
+      }
+    }
+  ],
+  "preserved": [
+    {
+      "headers": {
+        "range": "bytes=-500"
+      },
+      "method": "GET",
+      "ext": ".mp4",
+      "size": 10000,
+      "result": {
+        "status": 206,
+        "headers": {
+          "Content-Range": "bytes 9500-9999/10000",
+          "Accept-Ranges": "bytes",
+          "Content-Length": 500,
+          "Content-Type": "fixture",
+          "Access-Control-Allow-Origin": "*"
+        },
+        "calls": [
+          {
+            "stream": {
+              "start": 9500,
+              "end": 9999
+            }
+          },
+          "pipe"
+        ]
+      }
+    },
+    {
+      "headers": {
+        "range": "bytes=9500-"
+      },
+      "method": "GET",
+      "ext": ".mp4",
+      "size": 10000,
+      "result": {
+        "status": 206,
+        "headers": {
+          "Content-Range": "bytes 9500-9999/10000",
+          "Accept-Ranges": "bytes",
+          "Content-Length": 500,
+          "Content-Type": "fixture",
+          "Access-Control-Allow-Origin": "*"
+        },
+        "calls": [
+          {
+            "stream": {
+              "start": 9500,
+              "end": 9999
+            }
+          },
+          "pipe"
+        ]
+      }
+    },
+    {
+      "headers": {
+        "range": "bytes=0-9999999999999999999"
+      },
+      "method": "GET",
+      "ext": ".mp4",
+      "size": 10000,
+      "result": {
+        "status": 206,
+        "headers": {
+          "Content-Range": "bytes 0-9999/10000",
+          "Accept-Ranges": "bytes",
+          "Content-Length": 10000,
+          "Content-Type": "fixture",
+          "Access-Control-Allow-Origin": "*"
+        },
+        "calls": [
+          {
+            "stream": {
+              "start": 0,
+              "end": 9999
+            }
+          },
+          "pipe"
+        ]
+      }
+    },
+    {
+      "headers": {
+        "range": "bytes=1x-9"
+      },
+      "method": "GET",
+      "ext": ".mp4",
+      "size": 10000,
+      "result": {
+        "status": 200,
+        "headers": {
+          "Content-Type": "fixture",
+          "Cache-Control": "public, max-age=3600",
+          "ETag": "\"2710-1\"",
+          "Content-Length": 10000
+        },
+        "calls": [
+          {
+            "stream": null
+          },
+          "pipe"
+        ]
+      }
+    },
+    {
+      "headers": {
+        "range": "bytes=0-9",
+        "if-range": "\"2710-1\""
+      },
+      "method": "GET",
+      "ext": ".mp4",
+      "size": 10000,
+      "result": {
+        "status": 200,
+        "headers": {
+          "Content-Type": "fixture",
+          "Cache-Control": "public, max-age=3600",
+          "ETag": "\"2710-1\"",
+          "Content-Length": 10000
+        },
+        "calls": [
+          {
+            "stream": null
+          },
+          "pipe"
+        ]
+      }
+    },
+    {
+      "headers": {
+        "range": "bytes=0-9"
+      },
+      "method": "HEAD",
+      "ext": ".mp4",
+      "size": 10000,
+      "result": {
+        "status": 200,
+        "headers": {
+          "Content-Type": "fixture",
+          "Cache-Control": "public, max-age=3600",
+          "ETag": "\"2710-1\"",
+          "Content-Length": 10000
+        },
+        "calls": [
+          {
+            "stream": null
+          },
+          "pipe"
+        ]
+      }
+    },
+    {
+      "headers": {
+        "accept-encoding": "gzip"
+      },
+      "method": "GET",
+      "ext": ".html",
+      "size": 10000,
+      "result": {
+        "status": 200,
+        "headers": {
+          "Content-Type": "fixture",
+          "Cache-Control": "no-cache, no-store, must-revalidate",
+          "ETag": "\"2710-1\"",
+          "Pragma": "no-cache",
+          "Expires": "0",
+          "Content-Encoding": "gzip",
+          "Vary": "Accept-Encoding",
+          "Content-Length": 10
+        },
+        "calls": [
+          {
+            "end": 10
+          }
+        ]
+      }
+    },
+    {
+      "headers": {
+        "accept-encoding": "gzip"
+      },
+      "method": "GET",
+      "ext": ".js",
+      "size": 10000,
+      "result": {
+        "status": 200,
+        "headers": {
+          "Content-Type": "fixture",
+          "Cache-Control": "public, max-age=3600",
+          "ETag": "\"2710-1\"",
+          "Content-Encoding": "gzip",
+          "Vary": "Accept-Encoding"
+        },
+        "calls": [
+          {
+            "stream": null
+          },
+          "pipe",
+          "pipe"
+        ]
+      }
+    },
+    {
+      "headers": {},
+      "method": "GET",
+      "ext": ".mp4",
+      "size": 10000,
+      "result": {
+        "status": 200,
+        "headers": {
+          "Content-Type": "fixture",
+          "Cache-Control": "public, max-age=3600",
+          "ETag": "\"2710-1\"",
+          "Content-Length": 10000
+        },
+        "calls": [
+          {
+            "stream": null
+          },
+          "pipe"
+        ]
+      }
+    },
+    {
+      "headers": {
+        "if-none-match": "*"
+      },
+      "method": "GET",
+      "ext": ".html",
+      "size": 10000,
+      "result": {
+        "status": 200,
+        "headers": {
+          "Content-Type": "fixture",
+          "Cache-Control": "no-cache, no-store, must-revalidate",
+          "ETag": "\"2710-1\"",
+          "Pragma": "no-cache",
+          "Expires": "0",
+          "Content-Length": 10000
+        },
+        "calls": [
+          {
+            "stream": null
+          },
+          "pipe"
+        ]
+      }
+    },
+    {
+      "headers": {
+        "range": "bytes=-500"
+      },
+      "method": "GET",
+      "ext": ".mp4",
+      "size": 0,
+      "result": {
+        "status": 200,
+        "headers": {
+          "Content-Type": "fixture",
+          "Cache-Control": "public, max-age=3600",
+          "ETag": "\"0-1\"",
+          "Content-Length": 0
+        },
+        "calls": [
+          {
+            "stream": null
+          },
+          "pipe"
+        ]
+      }
+    },
+    {
+      "headers": {
+        "if-none-match": "\"2710-1\""
+      },
+      "method": "POST",
+      "ext": ".mp4",
+      "size": 10000,
+      "result": {
+        "status": 200,
+        "headers": {
+          "Content-Type": "fixture",
+          "Cache-Control": "public, max-age=3600",
+          "ETag": "\"2710-1\"",
+          "Content-Length": 10000
+        },
+        "calls": [
+          {
+            "stream": null
+          },
+          "pipe"
+        ]
+      }
+    }
+  ],
+  "head": {
+    "status": 304,
+    "headers": {
+      "Cache-Control": "public, max-age=3600",
+      "ETag": "\"2710-1\""
+    },
+    "calls": [
+      {
+        "end": 0
+      }
+    ]
+  },
+  "onlyTwoChanges": true,
+  "limits": "malformed INM 전체 무시·빈 list member32개 제한; IMS/IfMatch/validator강도/실HTTP 미검수"
+}

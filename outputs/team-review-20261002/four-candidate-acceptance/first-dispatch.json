@@ -1,0 +1,69 @@
+[
+  {
+    "team": "ITEM",
+    "sessionId": "01a0f6e6-1fbe-7df0-8d02-a9c2d9df3750",
+    "turnId": "01a0f8c3-979b-75e1-8fa4-cafa4312faf6",
+    "status": "interrupted",
+    "receivedAt": "2026-10-01T18:39:23.000Z",
+    "completedAt": null,
+    "actualReadConfirmed": true,
+    "commands": [
+      {
+        "command": "/bin/zsh -lc 'date -u +%Y-%m-%dT%H:%M:%SZ; cat tools/team-followup-20261001/ITEM/d13-callback-boundary-task.md; ls tools/team-followup-20261001/ITEM/d13-callback-boundary-*; cat tools/team-followup-20261001/ITEM/d13-deferred-contract-candidate.mjs; find tools -name AGENTS.md'",
+        "status": "completed",
+        "exitCode": 0
+      },
+      {
+        "command": "/bin/zsh -lc \"cat outputs/team-review-20261002/four-candidate-acceptance/item-callback-red.json; cat outputs/team-review-20261002/four-candidate-acceptance/before.json | head -35; tail -18 docs/7아이템디자인/ITEM_TEAM_MASTER.md; sed -n '17,24p' docs/7아이템디자인/UNIQUE_TOP8_HOOK_REVIEW_20261001.md; date -u +%Y-%m-%dT%H:%M:%SZ; GIT_OPTIONAL_LOCKS=0 git status --short --untracked-files=all | wc -l\"",
+        "status": "completed",
+        "exitCode": 0
+      },
+      {
+        "command": "/bin/zsh -lc 'node tools/team-followup-20261001/ITEM/d13-callback-boundary-check.mjs --red-current; date -u +%Y-%m-%dT%H:%M:%SZ'",
+        "status": "completed",
+        "exitCode": 0
+      },
+      {
+        "command": "/bin/zsh -lc \"node tools/team-followup-20261001/ITEM/d13-callback-boundary-check.mjs; date -u +%Y-%m-%dT%H:%M:%SZ; GIT_OPTIONAL_LOCKS=0 git status --short --untracked-files=all | wc -l; rg -l 'U-D13|_uTrapOffshoot|자식 덫' docs/\"",
+        "status": "completed",
+        "exitCode": 0
+      },
+      {
+        "command": "/bin/zsh -lc 'node tools/team-followup-20261001/ITEM/d13-deferred-contract-check.mjs'",
+        "status": "completed",
+        "exitCode": 0
+      },
+      {
+        "command": "/bin/zsh -lc 'date -u +%Y-%m-%dT%H:%M:%SZ; GIT_OPTIONAL_LOCKS=0 git status --short --untracked-files=all | wc -l'",
+        "status": "completed",
+        "exitCode": 0
+      }
+    ]
+  },
+  {
+    "team": "BALANCE",
+    "sessionId": "01a0f6e6-5303-7392-81ba-94c42e349ffc",
+    "turnId": "01a0f8c3-97dd-7c01-9c0c-af2a7ab37ac6",
+    "status": "completed",
+    "receivedAt": "2026-10-01T18:39:23.000Z",
+    "completedAt": "2026-10-01T18:40:47.000Z",
+    "actualReadConfirmed": true,
+    "commands": [
+      {
+        "command": "/bin/zsh -lc \"date -u '+%Y-%m-%dT%H:%M:%SZ'; cat tools/team-followup-20261001/BALANCE/shared-mats-file-task.md; rg --files tools/team-followup-20261001/BALANCE | rg 'shared-mats-file'; rg --files -g AGENTS.md; cat AGENTS.md >/dev/null\"",
+        "status": "completed",
+        "exitCode": 0
+      },
+      {
+        "command": "/bin/zsh -lc \"cat tools/team-followup-20261001/BALANCE/shared-mats-atomic-candidate.mjs; cat outputs/team-review-20261002/four-candidate-acceptance/balance-memory16.json | head -22; head -12 docs/14밸런스+수치테이블/BALANCE_ECONOMY_TEAM_MASTER.md; sed -n '220,226p' 'docs/15 세이브+데이터구조/15 세이브+데이터구조.md'; shasum -a 256 server.cjs node-main.js tools/team-followup-20261001/BALANCE/shared-mats-atomic-*\"",
+        "status": "completed",
+        "exitCode": 0
+      },
+      {
+        "command": "/bin/zsh -lc \"node tools/team-followup-20261001/BALANCE/shared-mats-file-test.mjs > tools/team-followup-20261001/BALANCE/shared-mats-file-tests.txt 2>&1; node -e \\\"const r=require('./tools/team-followup-20261001/BALANCE/shared-mats-file-evidence.json');console.log(JSON.stringify({status:r.status,checks:r.checks.length,output:r.output,preserved:r.preserved,failure:r.failure,completedAt:r.completedAt}));\\\"; node --check tools/team-followup-20261001/BALANCE/shared-mats-file-test.mjs; rg -n 'sharedMats|공유 악의|atomicSaveJSON|/api/mats|fsync' docs/ > tools/team-followup-20261001/BALANCE/shared-mats-file-doc-search.txt; TZ=UTC stat -f '%Sm' -t '%Y-%m-%dT%H:%M:%SZ' tools/team-followup-20261001/BALANCE/shared-mats-file-test.mjs; shasum -a 256 tools/team-followup-20261001/BALANCE/shared-mats-file-test.mjs; git status --short --untracked-files=all | wc -l; date -u '+%Y-%m-%dT%H:%M:%SZ'\"",
+        "status": "completed",
+        "exitCode": 0
+      }
+    ]
+  }
+]

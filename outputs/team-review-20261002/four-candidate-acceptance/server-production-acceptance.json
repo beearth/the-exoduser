@@ -1,0 +1,12 @@
+{
+  "at": "2026-10-01T18:42:20.807Z",
+  "before": "441bacbd8a5e0f7ae883e5c9a0a2e0368bf5190f50d2cb0246b89a4e6771bb6d",
+  "candidate": "18cf9aa806d5715788f360debbc2a45c2574a76db952f101b524e2ff77fd517d",
+  "current": "18cf9aa806d5715788f360debbc2a45c2574a76db952f101b524e2ff77fd517d",
+  "inmGroups": 40,
+  "conditionalGroups": 31,
+  "saveGroups": 13,
+  "exactCandidate": true,
+  "limits": "Source VM/stream doubles only; no HTTP/server/runtime. Existing conservative If-Range policy unchanged.",
+  "totalGroups": 84
+}

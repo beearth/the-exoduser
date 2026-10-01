@@ -102,3 +102,7 @@ BUILD suffix 처리와 BALANCE 임시파일 교체 후보를 root가 server.cjs�
 
 ### 2026-10-02 조건부 Range 및 실제 합성 파일 I/O 인수
 root가 정확단일INM304 우선·If-Range 전체응답 후보를 server.cjs에 반영했다. 현재 조건부31+이전소스40+전용 합성 실제파일7=78그룹 PASS, 완료 owner24파일 보존. INM weak/list/wildcard·IMS·ETag 강도·HEAD wire·실HTTP·미디어·앱 재실행은 미검수다. 파일 검수의 write/rename EIO는 주입, ENOENT/EEXIST는 실제OS이며 크래시/fsync/Windows 검수와 다르다. 기존 EPERM을 우회하지 않았다. [인수](../0마스터플랜/mac-resume-20261001/vscode-dispatch/CONDITIONAL-ATOMIC-INTEGRATION-20261002.md).
+
+### 2026-10-02 INM weak/list/wildcard 생산 인수
+
+matchesIfNoneMatch helper와 조건식1곳만 반영했다. exact 후보 byte 일치 및 현재 생산 INM40+조건부Range31+저장13=84그룹 PASS. If-Range 전부 전체응답·HTML정책·gzip·HEAD·atomicSaveJSON/저장경계 유지. RFC9110 §13.1.2의 약한 비교·별표·목록을 따르되 malformed전체무시/빈member32개 정책을 기록했다. validator강도·실HTTP·HEAD wire는 미검수, 서버 재시작0. UIUX 후보34는 반영 전 통과이며 별도 순차 통합한다. docs/0마스터플랜/mac-resume-20261001/vscode-dispatch/FOUR-CANDIDATE-ACCEPTANCE-20261002.md 참조.
