@@ -51950,3 +51950,7 @@ QA의 완료 작업을 가리키는 미전송 초안은 그대로 보존했다. 
 - server 정확단일INM304를 Range보다 우선 처리하고 If-Range는 보수적 전체응답. 기존suffix·gzip·저장helper 보존.
 - 생산31+기존소스40+합성 실제파일7=78그룹 PASS, 원RED/owner24파일 보존. 실제 OS 오류와 주입 EIO 구분.
 - weak/list/wildcard·IMS·HEAD wire·HTTP/앱·크래시/fsync는 미완료. fresh CUA 잠금 지속, 기존7팀 미전달 및 진행2팀 보존.
+
+### 조건부 Range 인수·후속 전달 2026-10-01T18:24:53.974780+00:00
+
+생산 수정+78검사 근거를 c2420b0e797b4c7f116ed60c37353c4fbed8cdf1로 push하고 원격 ref 일치 확인. BUILD inm-matching, BALANCE shared-mats-atomic은 기존 세션 각1회 큐 전달 뒤 실제 task Read/명령 확인. UIUX34·ITEM19는 담당 완료/독립 인수 대기. 최신 CUA는 잠금 오류 없이 정상 앱 목록 반환, 네이티브7팀 다음 과제는 아직 미전달. 실행 중인 사용자 게임과 세이브는 미조작.

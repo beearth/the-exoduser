@@ -1,5 +1,5 @@
 {
-  "checkedAt": "2026-10-01T18:23:48.911812+00:00",
+  "checkedAt": "2026-10-01T18:24:53.974780+00:00",
   "kind": "observed_followup_activity_and_delivery_blockers",
   "teams": [
     {
@@ -122,36 +122,48 @@
     {
       "team": "BUILD",
       "sessionId": "01a0f6e6-2e4c-7322-92d7-3aa309857856",
-      "task": "conditional-range",
-      "instruction": "tools/team-followup-20261001/BUILD/conditional-range-task.md",
-      "receivedAt": "2026-10-01T18:14:09+00:00",
-      "completedAt": "2026-10-01T18:16:08Z",
-      "status": "completed_source_accepted",
+      "task": "inm-matching",
+      "instruction": "tools/team-followup-20261001/BUILD/inm-matching-task.md",
+      "receivedAt": "2026-10-01T18:24:14.000Z",
+      "completedAt": null,
+      "status": "received_work_observed",
       "timestampSource": "official read_thread turn timestamps; first command/edit existence confirmed, precise event time unavailable",
       "actualReadConfirmed": true,
-      "actualEditConfirmed": true,
-      "nextGate": "선정된 다음 한 건 기존 세션 전달 예정",
-      "productionApplied": true,
+      "actualEditConfirmed": false,
+      "nextGate": "최소 미적용 후보 완료 후 독립 인수",
+      "productionApplied": false,
       "priorAcceptance": "Profile argument fix committed179813c2; root43PASS and new package created",
-      "currentTaskReceipt": "tools/team-followup-20261001/BUILD/integrated-mac-build-receipt.json",
-      "rootAcceptance": "독립 인수 31+40+7=78 PASS; conditional-integration/acceptance.json",
+      "currentTaskReceipt": null,
+      "rootAcceptance": "새 과제 실제 지시서 Read 확인; 아직 검수 전",
       "priorAcceptedTask": {
-        "task": "mac-character-media",
-        "completedAt": "2026-10-01T16:49:38.000Z",
+        "task": "conditional-range",
+        "completedAt": "2026-10-01T18:16:08Z",
         "status": "completed_source_accepted",
-        "productionApplied": false,
-        "currentTaskReceipt": "tools/team-followup-20261001/BUILD/mac-character-media-receipt.json",
-        "rootAcceptance": "4 assets × 2 apps and input manifest evidence consistency checked; cause UNKNOWN"
+        "productionApplied": true,
+        "rootAcceptance": "독립 인수 31+40+7=78 PASS; conditional-integration/acceptance.json"
       },
-      "currentlyRunning": false,
+      "currentlyRunning": null,
       "nativeSessionLocation": "VS Code Terminal10",
       "previousTaskStatus": "production_source_integrated_runtime_pending",
       "executionStateNote": "Official latest turn interrupted label with new command/Edit evidence; ongoing activity observed, continuous liveness not guaranteed",
       "lastObservedCommandCount": 2,
       "firstReadAt": "2026-10-01T18:14:13Z",
       "queueId": "01a0f8ac-8002-77b2-b1e5-3fb06e200bbc",
-      "turnId": "01a0f8ac-8002-77b2-b1e5-3fd011762ef1",
-      "observedEditFiles": []
+      "turnId": "01a0f8b5-ba5b-79c2-ae08-acc28e28d6c6",
+      "observedEditFiles": [],
+      "commands": [
+        {
+          "command": "/bin/zsh -lc \"date -u +%Y-%m-%dT%H:%M:%SZ; cat tools/team-followup-20261001/BUILD/inm-matching-task.md; rg --files tools/team-followup-20261001/BUILD | rg 'inm-matching'; rg -n 'if-none-match|_etag|if-range' server.cjs; rg --files outputs/team-review-20261002 | rg 'conditional|remote' | tail -12\"",
+          "status": "completed",
+          "exitCode": 0
+        },
+        {
+          "command": "/bin/zsh -lc \"ls outputs/team-review-20261002/conditional-integration; cat outputs/team-review-20261002/conditional-integration/remote-checkpoint-final.json; tail -8 outputs/team-review-20261002/conditional-integration/conditional-source31.txt; head -15 AGENTS.md; head -10 docs/13출시·마케팅/INTEGRATION_BUILD_TEAM_MASTER.md; GIT_OPTIONAL_LOCKS=0 git rev-parse HEAD; shasum -a 256 server.cjs; sed -n '265,284p' server.cjs\"",
+          "status": "completed",
+          "exitCode": 0
+        }
+      ],
+      "observedTurnStatus": "interrupted"
     },
     {
       "team": "UIUX",
@@ -214,38 +226,45 @@
     {
       "team": "BALANCE",
       "sessionId": "01a0f6e6-5303-7392-81ba-94c42e349ffc",
-      "task": "atomic-file",
-      "instruction": "tools/team-followup-20261001/BALANCE/atomic-file-task.md",
-      "receivedAt": "2026-10-01T18:14:09+00:00",
-      "completedAt": "2026-10-01T18:15:27Z",
-      "status": "completed_source_accepted",
+      "task": "shared-mats-atomic",
+      "instruction": "tools/team-followup-20261001/BALANCE/shared-mats-atomic-task.md",
+      "receivedAt": "2026-10-01T18:24:20.000Z",
+      "completedAt": null,
+      "status": "received_work_observed",
       "timestampSource": "official read_thread turn timestamps; first command/edit existence confirmed, precise event time unavailable",
       "actualReadConfirmed": true,
-      "actualEditConfirmed": true,
-      "nextGate": "선정된 다음 한 건 기존 세션 전달 예정",
+      "actualEditConfirmed": false,
+      "nextGate": "최소 미적용 후보 완료 후 독립 인수",
       "productionApplied": false,
-      "rootAcceptance": "독립 인수 31+40+7=78 PASS; conditional-integration/acceptance.json",
-      "currentTaskReceipt": "tools/team-followup-20261001/BALANCE/disk-save-restart-receipt.json",
+      "rootAcceptance": "새 과제 실제 지시서 Read 확인; 아직 검수 전",
+      "currentTaskReceipt": null,
       "priorAcceptedTask": {
-        "task": "production-integration",
-        "completedAt": "2026-10-01T17:07:51.000Z",
+        "task": "atomic-file",
+        "completedAt": "2026-10-01T18:15:27Z",
         "status": "completed_source_accepted",
-        "productionApplied": true,
-        "rootAcceptance": "Root production 22 PASS; 8 timing traces; 12 inline scripts; combined source equality; checkpoint pending",
-        "currentTaskReceipt": "tools/team-followup-20261001/BALANCE/production-integration-receipt.json"
+        "productionApplied": false,
+        "rootAcceptance": "독립 인수 31+40+7=78 PASS; conditional-integration/acceptance.json"
       },
-      "currentlyRunning": false,
+      "currentlyRunning": null,
       "nativeSessionLocation": "VS Code Terminal11",
       "previousTaskStatus": "production_source_integrated_runtime_pending",
       "executionStateNote": "Official latest turn interrupted label with new command/Edit evidence; ongoing activity observed, continuous liveness not guaranteed",
       "lastObservedCommandCount": 3,
       "firstReadAt": "2026-10-01T18:14:13Z",
       "queueId": "01a0f8ac-808c-7142-8007-4facb8bcc880",
-      "turnId": "01a0f8ac-808d-7ad2-b026-699cff457e80",
+      "turnId": "01a0f8b5-d1dc-7ec1-9b32-dd618e21b5d1",
       "observedEditFiles": [
         "/Users/fordeargamers/Projects/exoduser-migration-20261001/tools/team-followup-20261001/BALANCE/atomic-file-receipt.json",
         "/Users/fordeargamers/Projects/exoduser-migration-20261001/tools/team-followup-20261001/BALANCE/atomic-file-test.mjs"
-      ]
+      ],
+      "commands": [
+        {
+          "command": "/bin/zsh -lc \"date -u '+%Y-%m-%dT%H:%M:%SZ'; cat tools/team-followup-20261001/BALANCE/shared-mats-atomic-task.md; rg --files tools/team-followup-20261001/BALANCE | rg 'shared-mats-atomic'; rg --files -g AGENTS.md; rg -n 'MATS_FILE|api/mats|writeFileSync|atomicSaveJSON' server.cjs node-main.js\"",
+          "status": "completed",
+          "exitCode": 0
+        }
+      ],
+      "observedTurnStatus": "interrupted"
     },
     {
       "team": "SOUND",
@@ -274,12 +293,12 @@
     }
   ],
   "counts": {
-    "completed_source_accepted": 2,
+    "next_delivery_pending_native": 7,
     "completed_pending_root_acceptance": 2,
-    "next_delivery_pending_native": 7
+    "received_work_observed": 2
   },
-  "remoteCheckpoint": "49eaec385cc97cfb260217a7676ffb897512774c",
-  "remoteCheckpointVerifiedAt": "2026-10-01T18:08:20.148306+00:00",
+  "remoteCheckpoint": "c2420b0e797b4c7f116ed60c37353c4fbed8cdf1",
+  "remoteCheckpointVerifiedAt": "2026-10-01T18:24:53.974780+00:00",
   "remoteRef": "refs/heads/codex/mac-environment-20261001",
   "history": {
     "path": "outputs/team-review-20261002/conditional-integration/team-utilization-history-63d48d943868.json",
@@ -357,7 +376,8 @@
     "outputs/team-review-20261002/followup-dispatch/receipts.json",
     "outputs/team-review-20261002/followup-dispatch/source-baseline.json",
     "docs/0마스터플랜/mac-resume-20261001/vscode-dispatch/FOUR-TEAM-FOLLOWUP-20261002.md",
-    "outputs/team-review-20261002/conditional-integration/acceptance.json"
+    "outputs/team-review-20261002/conditional-integration/acceptance.json",
+    "outputs/team-review-20261002/conditional-integration/next-receipts.json"
   ],
   "unassignedTerminal": {
     "number": 12,
@@ -366,5 +386,5 @@
     "countedAsTeam": false,
     "evidence": "outputs/team-review-20261002/async-boundary/terminal12-audit.json"
   },
-  "remoteCheckpointNote": "Exact ref before filter integration commit; new remote verification is separate receipt."
+  "remoteCheckpointNote": "조건부 Range 통합의 정확 원격 ref 검증. 후속 receipt 커밋은 별도."
 }

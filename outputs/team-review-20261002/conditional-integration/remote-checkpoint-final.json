@@ -1,0 +1,9 @@
+{
+  "checkedAt": "2026-10-01T18:24:53.974780+00:00",
+  "localHEAD": "c2420b0e797b4c7f116ed60c37353c4fbed8cdf1",
+  "remoteSHA": "c2420b0e797b4c7f116ed60c37353c4fbed8cdf1",
+  "remoteRef": "refs/heads/codex/mac-environment-20261001",
+  "serverSHA256": "441bacbd8a5e0f7ae883e5c9a0a2e0368bf5190f50d2cb0246b89a4e6771bb6d",
+  "indexEmpty": true,
+  "scope": "accepted conditional Range source, 78 test groups and evidence; no runtime/build"
+}

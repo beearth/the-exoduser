@@ -1,0 +1,39 @@
+[
+  {
+    "team": "BUILD",
+    "sessionId": "01a0f6e6-2e4c-7322-92d7-3aa309857856",
+    "turnId": "01a0f8b5-ba5b-79c2-ae08-acc28e28d6c6",
+    "receivedAt": "2026-10-01T18:24:14.000Z",
+    "actualReadConfirmed": true,
+    "commands": [
+      {
+        "command": "/bin/zsh -lc \"date -u +%Y-%m-%dT%H:%M:%SZ; cat tools/team-followup-20261001/BUILD/inm-matching-task.md; rg --files tools/team-followup-20261001/BUILD | rg 'inm-matching'; rg -n 'if-none-match|_etag|if-range' server.cjs; rg --files outputs/team-review-20261002 | rg 'conditional|remote' | tail -12\"",
+        "status": "completed",
+        "exitCode": 0
+      },
+      {
+        "command": "/bin/zsh -lc \"ls outputs/team-review-20261002/conditional-integration; cat outputs/team-review-20261002/conditional-integration/remote-checkpoint-final.json; tail -8 outputs/team-review-20261002/conditional-integration/conditional-source31.txt; head -15 AGENTS.md; head -10 docs/13출시·마케팅/INTEGRATION_BUILD_TEAM_MASTER.md; GIT_OPTIONAL_LOCKS=0 git rev-parse HEAD; shasum -a 256 server.cjs; sed -n '265,284p' server.cjs\"",
+        "status": "completed",
+        "exitCode": 0
+      }
+    ],
+    "observedTurnStatus": "interrupted",
+    "currentlyRunning": null
+  },
+  {
+    "team": "BALANCE",
+    "sessionId": "01a0f6e6-5303-7392-81ba-94c42e349ffc",
+    "turnId": "01a0f8b5-d1dc-7ec1-9b32-dd618e21b5d1",
+    "receivedAt": "2026-10-01T18:24:20.000Z",
+    "actualReadConfirmed": true,
+    "commands": [
+      {
+        "command": "/bin/zsh -lc \"date -u '+%Y-%m-%dT%H:%M:%SZ'; cat tools/team-followup-20261001/BALANCE/shared-mats-atomic-task.md; rg --files tools/team-followup-20261001/BALANCE | rg 'shared-mats-atomic'; rg --files -g AGENTS.md; rg -n 'MATS_FILE|api/mats|writeFileSync|atomicSaveJSON' server.cjs node-main.js\"",
+        "status": "completed",
+        "exitCode": 0
+      }
+    ],
+    "observedTurnStatus": "interrupted",
+    "currentlyRunning": null
+  }
+]
