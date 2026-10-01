@@ -1,0 +1,57 @@
+{
+  "작업": "UIUX 생산 반영 — 단독 HTML 소유권",
+  "수신": "사용자 승인 메시지 UTC 미제공; 첫 실제 Read 이전 수신",
+  "첫ReadUTC": "2026-10-01T16:54:58Z",
+  "첫Read": "production-integration-task.md·root native matrix·승인 combined patch·AGENTS·UIUX/인벤토리 SSOT",
+  "중복": "production-integration prefix에는 task.md만 존재; 생산 _inventoryFocus 미적용",
+  "root복구HEAD": "35ddea9d41ecf776e4ddf781566d3ff5dad53017",
+  "상태": "생산 반영·101PASS·docs 동기화 완료, 두 HTML 소유권 root 반환",
+  "금지실행": "Git 쓰기/게임/브라우저/서버/빌드/인코딩/새세션/하위에이전트 0",
+  "첫EditUTC": "2026-10-01T16:56:10Z",
+  "생산Edit확인UTC": "2026-10-01T16:56:18.209Z",
+  "검수UTC": "2026-10-01T17:00:19Z",
+  "완료UTC": "2026-10-01T17:00:58.120Z",
+  "실제검수": {
+    "production": 23,
+    "legacy": 69,
+    "adjacent": 9,
+    "total": 101,
+    "classicPerHTML": 4,
+    "modulePerHTML": 2,
+    "importmapPerHTML": 1
+  },
+  "남은게이트": [
+    "생산 실게임·OS 입력·레이아웃·긴 비교/필터/유골함·물리 패드",
+    "저장 실전 부작용·전체 투자용 빌드 검수",
+    "Git 원격 checkpoint root 담당"
+  ],
+  "보존파일수": 256,
+  "공유HEAD변화": {
+    "start": "35ddea9d41ecf776e4ddf781566d3ff5dad53017",
+    "observed": "375aa9e4944fe7fa54fb0404493045e6a3a1d982",
+    "담당Git쓰기": 0,
+    "원인": "미확정·공용 진행 관측"
+  },
+  "공유index관측": {
+    "start": "5d6db3830c55bede2a7eea8ea77af67f37e3a5482be33cae0ce6b65f239d399c",
+    "intermediate": "c4555a0efb99e6d76070a4e52f353298bdba677c7ee2a582a21c714cc42fb11d",
+    "cachedNamesAtFinalRead": []
+  },
+  "변경파일": [
+    "game.html",
+    "game-easy-test.html",
+    "docs/3.1 ui hud 디자인/UI_UX_IMPROVEMENT_PROJECT_20260930.md",
+    "docs/3.1 ui hud 디자인/UI_COMPOSITION_20260925.md",
+    "docs/2_7 인벤토리+장비시스템/INVENTORY_KEYBOARD_FOCUS_20261002.md"
+  ],
+  "생산SHA": {
+    "game.html": {
+      "before": "7631f5a083672124624e0b8dc22b0716d10c8815dbb1e6aee98a5e2e51299993",
+      "after": "a17a1cc8be0e4e75f9ba0baec12fc0f093b73948e03a4c7a4033b64137f38ed7"
+    },
+    "game-easy-test.html": {
+      "before": "7d68b80afab131562266c39ea7d5631716d12861dbe7e7e2e4477550c15ec6a4",
+      "after": "74e24f71d855bb6d022686ac359126ce8e3d0587ae155a273e58f08b94c90f61"
+    }
+  }
+}

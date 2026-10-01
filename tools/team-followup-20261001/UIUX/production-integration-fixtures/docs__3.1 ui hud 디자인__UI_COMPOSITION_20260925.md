@@ -2678,17 +2678,3 @@ CSS 캐시 ui-refinement.css?v=20260927-4. 신규 이미지/아이템 데이터 
 | 선택 카드 마감 | 캐릭터·커서 native button `settings-choice`, aria-pressed·번역된 aria-label, 캐릭터 aria-describedby. data-settings-choice로 재구성 전/후 초점 보존(preventScroll), Enter/Space 선택·Tab 이동. 기존 미리보기·저장·atlas/cursor 함수 유지 |
 | 카드 재질·번역 | 일반/선택 배경·금색 경계, hover/gp-hover와 focus-visible2px/offset3px 분리. button 공통 before/after 장식 제외, 설명400weight·긴 단어 줄바꿈. easy-test 이름·설명도 본편과 같은 기존 _T 조회. 정확 수치·식별자: SETTINGS_UI_WORKSPACE_20260929.md의 선택 카드 절 |
 | 선택 카드 검증 | 설정 회귀31/31 PASS. 두 HTML의 실제 Enter/Space 선택·초점·Tab 이동/설정창 유지 확인. 본편 KO/EN×6크기×조작/시스템=24건 잘림·가로 넘침0. easy-test 추가 크기 검사는 브라우저 도구 중단으로 미완료; 물리 패드 미검증 |
-
-## 2026-10-02 UI-04 인벤토리 키보드 상세·소멸 초점 생산 반영
-
-| id / 호출 위치 | 현행 계약 |
-|---|---|
-| _inventoryFocus / 카드 bind | 두 HTML에 동일 승인 factory. 가방/장착 카드의 role=button·tabIndex=0·기존 _T(item.name) 접근성 이름. 정상 마우스/데이터 액션은 유지 |
-| 카드 Enter/Space/Tab | Enter/NumpadEnter 반복 제외, Space keyup 1회·blur 취소·ctrl/meta/alt 제외. 전역 keydown의 인벤토리 카드 예외는 게임 입력 전달을 막고 Tab 기본 이동은 유지 |
-| _invRenderDetail / missing | 빈 bag/eq/st는 상세·액션 자식 replaceChildren, KO/EN 리프 role=status, 비교 상태/떠 있는 비교 제거. 부모 textContent/innerHTML 전체교체 추가 없음 |
-| _invClearHover / keepsDetail | 현재 등록 카드가 연결·가시·같은 live item이고 상세/행동 버튼에 키보드 초점이 있을 때만 기존 hover 숨김을 생략. 마우스 preview와 기존 선택 행동 계약은 유지 |
-| renderInv / beforeRender·afterRender | 소멸 전 등록 카드 identity와 상세/행동 소유권 token 보존. 재렌더 후 살아 있는 현재 카드로 복귀, 없거나 숨긴 카드면 invClose. computed visible만으로 소멸 아이템을 살아 있다고 판정하지 않음 |
-| openPanel/togglePanel/closeAllPanels/closePanel | invPanel 열기 전에 외부 opener 보존, 열기 동안 중간 close에서 복귀 상태 보존, 실제 닫기 후 연결·가시 opener 복귀. 다른 패널의 기존 동작 유지 |
-| 보호 범위 | CSS·치수·원화·save·장착/분해·RNG·전투 변경 없음. 기존 전체 UI 시각 인수를 이번 초점 검사의 근거로 재사용하지 않음 |
-| 검수 | root 독립 native host8조합 인수, 생산 추출23+before 기존69+인접9=101 PASS. 양쪽 classic4/module2/importmap1씩 구문/JSON 검사. 생산 실게임·OS 입력·레이아웃·물리 패드 미검수 |
-| 상세 SSOT | ../2_7 인벤토리+장비시스템/INVENTORY_KEYBOARD_FOCUS_20261002.md 및 tools/team-followup-20261001/UIUX/production-integration-result.md |

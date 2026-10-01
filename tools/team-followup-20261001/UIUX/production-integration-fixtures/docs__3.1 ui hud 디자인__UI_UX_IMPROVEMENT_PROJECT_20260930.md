@@ -34,7 +34,7 @@
 | UI-01 | P0 | 설정 · 게임/시스템 | 합친 페이지를 아래로 읽은 뒤 닫고 다시 열면 이전 스크롤 위치가 남는다. 1324×982에서는 첫 화면에 게임 설정이 보이지 않아 이동 단서가 필요하다. | 완료 | 2026-10-01 본편 1324×982·390×844, 쉬운판 실화면에서 구역 이동·재진입 위치·초점·가로 넘침을 확인. 상세 계약은 `SETTINGS_HUD_DETAIL_20260930.md`. |
 | UI-02 | P1 | 설정 · 화면/사운드/조작 | 긴 설정과 짧은 설정의 밀도, 위험 동작의 구분, 키보드 이동을 같은 규칙으로 검수한다. | 완료 | 조작 DOM·Tab 순서, 슬라이더 뒤 초점 이동, 두 키 초기화 버튼의 경고색을 수정. 본편 1754×1262·1324×982·390×844와 쉬운판 1754×1262·390×844에서 세 탭의 가로 넘침·스크롤·닫기 노출 확인. 상세 수치는 `SETTINGS_HUD_DETAIL_20260930.md`. |
 | UI-03 | P1 | 전투 HUD | 밝고 밀집한 VFX 중 레벨·목표·자원·상태 글자가 계속 읽히는지 확인한다. | 부분 완료 | 상단 COMBO/TIMER/DPS/MAX HIT 대비·390px·설정 재진입 완료. 레벨·목표·자원 전체는 대기. 성능 별도. |
-| UI-04 | P1 | 인벤토리/장비/유골함 | 아이템 비교, 긴 설명, 필터, 키보드/패드 이동과 작은 화면의 정보 우선순위를 검수한다. | 부분 완료 | 2026-10-02 양쪽 HTML 빈 상세·키보드 진입·카드 소멸/재렌더/닫기 초점 반영. 생산 추출23+기존69+인접9검사. native 독립 host8조합 root 인수와 생산 전체게임/패드/시각 게이트는 구분. |
+| UI-04 | P1 | 인벤토리/장비/유골함 | 아이템 비교, 긴 설명, 필터, 키보드/패드 이동과 작은 화면의 정보 우선순위를 검수한다. | 대기 | `UI_COMPOSITION_20260925.md`와 인벤토리 SSOT 읽고 흐름별 검사. |
 | UI-05 | P2 | 로비/캐릭터 선택 | 시작·슬롯·설정 진입의 안내, 비활성 상태, 번역 길이를 검수한다. | 대기 | 현행 로비와 실제 빌드의 차이를 먼저 확인. |
 
 ## 완료 패스: UI-01
@@ -85,15 +85,4 @@
 
 ### 2026-10-02 UI-04 빈 상세 후보 root 검수
 
-빈 bag/eq/st 선택 뒤 이전 상세·비교·행동 잔류를 양쪽 실제 함수에서 재현하고 후보21+기존3/6=30검사 및 양쪽 inline 구문을 확인했다. 당시 생산 미반영. 실제 renderInv 재구성·_invClearHover 숨김·키보드 상세/삭제 후 초점 복귀를 inventory-dom 후속으로 기존 UIUX에 배정했다. 신규 DOM-only host는 실게임/패드/전체 UI-04 시각 완료를 뜻하지 않는다. [인수·후속](../0마스터플랜/mac-resume-20261001/vscode-dispatch/FOUR-SUBMISSIONS-HELLRAY-20261002.md).
-
-### 2026-10-02 UI-04 키보드 상세·카드 소멸 초점 생산 반영
-
-| 항목 | 현행 구현·검수 경계 |
-|---|---|
-| 적용 | root의 단독 인벤토리 구역 승인으로 game.html/game-easy-test.html에 card-removal-focus 합본을 정확 byte 반영. 저장·레이아웃·CSS·아이템 수치·RNG·전투 변경 없음 |
-| 입력 | bag/장착 카드 role=button·tabIndex=0·기존 이름 aria-label. Enter/NumpadEnter는 반복 제외 keydown, Space는 단일 keyup 활성화. ctrl/meta/alt와 타깃·blur 경계 유지, Tab 기본 이동을 가로채지 않음 |
-| 상세·복귀 | 빈 bag/eq/st의 이전 상세·행동·비교 제거, KO/EN 리프 상태. keyboard item이 실제 살아 있고 상세/행동에 초점이 있을 때 hover 종료는 상세 유지. renderInv 등록 카드 identity token으로 재구성 후 현재 카드→없거나 숨기면 invClose, 닫으면 연결된 외부 opener 복귀 |
-| 증거 | root native 독립 host 양쪽×KO/EN×CSS off/on 8조합 인수. 반영 후 생산 함수 추출23, before fixture 기존21/18/12/18, 인접9=101 PASS. 양쪽 classic4/module2/importmap1씩 구문/JSON 검사 |
-| 미검수 | 생산 전체게임·실제 입력·CSS 레이아웃·긴 설명·필터·유골함·실물 패드·저장 부작용 실전 검수는 별도 대기. UI-04 전체 완료 아님 |
-| SSOT·재현 | [현행 인벤토리 키보드 계약](../2_7%20인벤토리+장비시스템/INVENTORY_KEYBOARD_FOCUS_20261002.md), tools/team-followup-20261001/UIUX/production-integration-result.md. 기존 RED 회귀·후보·원자료는 byte 보존 |
+빈 bag/eq/st 선택 뒤 이전 상세·비교·행동 잔류를 양쪽 실제 함수에서 재현하고 후보21+기존3/6=30검사 및 양쪽 inline 구문을 확인했다. 생산 미반영. 실제 renderInv 재구성·_invClearHover 숨김·키보드 상세/삭제 후 초점 복귀를 inventory-dom 후속으로 기존 UIUX에 배정했다. 신규 DOM-only host는 실게임/패드/전체 UI-04 시각 완료를 뜻하지 않는다. [인수·후속](../0마스터플랜/mac-resume-20261001/vscode-dispatch/FOUR-SUBMISSIONS-HELLRAY-20261002.md).

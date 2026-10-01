@@ -1,0 +1,26 @@
+✔ game.html/ko/CSS-false: 실제 렌더 카드 소멸 RED→GREEN (4.641583ms)
+✔ game.html/ko/CSS-false: Space·Tab계약·직접상세삭제·현재카드 identity (2.110292ms)
+✔ game.html/ko/CSS-true: 실제 렌더 카드 소멸 RED→GREEN (2.425042ms)
+✔ game.html/ko/CSS-true: Space·Tab계약·직접상세삭제·현재카드 identity (0.941209ms)
+✔ game.html/en/CSS-false: 실제 렌더 카드 소멸 RED→GREEN (1.124917ms)
+✔ game.html/en/CSS-false: Space·Tab계약·직접상세삭제·현재카드 identity (0.601625ms)
+✔ game.html/en/CSS-true: 실제 렌더 카드 소멸 RED→GREEN (1.241583ms)
+✔ game.html/en/CSS-true: Space·Tab계약·직접상세삭제·현재카드 identity (0.5305ms)
+✔ game-easy-test.html/ko/CSS-false: 실제 렌더 카드 소멸 RED→GREEN (2.951584ms)
+✔ game-easy-test.html/ko/CSS-false: Space·Tab계약·직접상세삭제·현재카드 identity (1.881458ms)
+✔ game-easy-test.html/ko/CSS-true: 실제 렌더 카드 소멸 RED→GREEN (1.646084ms)
+✔ game-easy-test.html/ko/CSS-true: Space·Tab계약·직접상세삭제·현재카드 identity (0.383459ms)
+✔ game-easy-test.html/en/CSS-false: 실제 렌더 카드 소멸 RED→GREEN (0.917209ms)
+✔ game-easy-test.html/en/CSS-false: Space·Tab계약·직접상세삭제·현재카드 identity (0.382667ms)
+✔ game-easy-test.html/en/CSS-true: 실제 렌더 카드 소멸 RED→GREEN (0.605334ms)
+✔ game-easy-test.html/en/CSS-true: Space·Tab계약·직접상세삭제·현재카드 identity (0.339ms)
+✔ 원본 byte·함수 19개 SHA·root 증거 보존 (28.128167ms)
+✔ 로컬 .js 체인·CSS 경로·초기 닫힘·데이터 액션 차단 (0.652708ms)
+ℹ tests 18
+ℹ suites 0
+ℹ pass 18
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 89.009667

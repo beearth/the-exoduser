@@ -1,0 +1,29 @@
+✔ game.html: bag 빈 상세 원식 RED → 후보 GREEN (18.298958ms)
+✔ game.html: eq 빈 상세 원식 RED → 후보 GREEN (19.229542ms)
+✔ game.html: st 빈 상세 원식 RED → 후보 GREEN (16.195459ms)
+✔ game.html: 장착 선택 소멸 복원 호출 실제 추출 (17.5005ms)
+✔ game.html: 호출 연결·중복 거부·추출 구문 (19.840459ms)
+✔ game.html: 정상 실제 상세/비교 함수 보존 false (15.173542ms)
+✔ game.html: 정상 실제 상세/비교 함수 보존 true (14.983125ms)
+✔ game.html: 실제 open/close 호출·재열기·이미 열린 패널 갱신 (14.613708ms)
+✔ game-easy-test.html: bag 빈 상세 원식 RED → 후보 GREEN (14.925042ms)
+✔ game-easy-test.html: eq 빈 상세 원식 RED → 후보 GREEN (14.275667ms)
+✔ game-easy-test.html: st 빈 상세 원식 RED → 후보 GREEN (14.642ms)
+✔ game-easy-test.html: 장착 선택 소멸 복원 호출 실제 추출 (15.620791ms)
+✔ game-easy-test.html: 호출 연결·중복 거부·추출 구문 (19.200417ms)
+✔ game-easy-test.html: 정상 실제 상세/비교 함수 보존 false (18.041209ms)
+✔ game-easy-test.html: 정상 실제 상세/비교 함수 보존 true (14.423833ms)
+✔ game-easy-test.html: 실제 open/close 호출·재열기·이미 열린 패널 갱신 (16.051709ms)
+✔ Enter/Space 각1회, 반복·수정키 차단·Tab 네이티브 유지 (0.192375ms)
+✔ 빈 진입·삭제 anchor·오류 후 안전한 닫기 초점 (0.061875ms)
+✔ 연결된 anchor 복귀, 마우스 누락은 초점 강탈0 (0.062583ms)
+✔ 닫기/재열기 외부 opener 복귀, 삭제 opener에 focus0 (0.059125ms)
+✔ KO/EN 리프·자식만 갱신, save/아이템 데이터 참조 변경0 (0.060708ms)
+ℹ tests 21
+ℹ suites 0
+ℹ pass 21
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 314.681

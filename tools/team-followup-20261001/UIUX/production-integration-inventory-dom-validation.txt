@@ -1,0 +1,26 @@
+✔ game.html/ko: 실제 renderInv→Enter→mouseleave 원후보 RED·파생 GREEN (4.070583ms)
+✔ game.html/ko: 실제 renderInv 행동버튼 제거→현재 카드/삭제→닫기 복귀 (3.502041ms)
+✔ game.html/ko: 숨긴 상세 focus 거부·Space/Enter 중복·수정키·Tab (0.591417ms)
+✔ game.html/ko: 장착 카드 해제 fixture→실제 renderInv→닫기 복귀 (0.650042ms)
+✔ game.html/en: 실제 renderInv→Enter→mouseleave 원후보 RED·파생 GREEN (0.639459ms)
+✔ game.html/en: 실제 renderInv 행동버튼 제거→현재 카드/삭제→닫기 복귀 (1.243708ms)
+✔ game.html/en: 숨긴 상세 focus 거부·Space/Enter 중복·수정키·Tab (1.035542ms)
+✔ game.html/en: 장착 카드 해제 fixture→실제 renderInv→닫기 복귀 (0.342041ms)
+✔ game-easy-test.html/ko: 실제 renderInv→Enter→mouseleave 원후보 RED·파생 GREEN (2.569167ms)
+✔ game-easy-test.html/ko: 실제 renderInv 행동버튼 제거→현재 카드/삭제→닫기 복귀 (2.666791ms)
+✔ game-easy-test.html/ko: 숨긴 상세 focus 거부·Space/Enter 중복·수정키·Tab (0.624292ms)
+✔ game-easy-test.html/ko: 장착 카드 해제 fixture→실제 renderInv→닫기 복귀 (0.3505ms)
+✔ game-easy-test.html/en: 실제 renderInv→Enter→mouseleave 원후보 RED·파생 GREEN (0.779625ms)
+✔ game-easy-test.html/en: 실제 renderInv 행동버튼 제거→현재 카드/삭제→닫기 복귀 (0.751458ms)
+✔ game-easy-test.html/en: 숨긴 상세 focus 거부·Space/Enter 중복·수정키·Tab (0.282666ms)
+✔ game-easy-test.html/en: 장착 카드 해제 fixture→실제 renderInv→닫기 복귀 (0.233875ms)
+✔ 원 후보 코드/patch 불변·증거 시각과 payload 분리 대조 (9.593209ms)
+✔ 재렌더 이전 아이템 소멸→실제 hover 종료에서 숨긴 상세 focus 잔류0 (1.566708ms)
+ℹ tests 18
+ℹ suites 0
+ℹ pass 18
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 67.469833

@@ -1,0 +1,31 @@
+✔ game.html: 승인 인벤토리 함수·factory 일치 / 재적용 거부 (66.379875ms)
+✔ game.html: 모든 inline script 구문 (77.679458ms)
+✔ game.html/ko/false: 생산 추출 카드삭제 RED→GREEN·hover·재렌더·실제 opener 닫기 (9.855541ms)
+✔ game.html/ko/false: 빈 bag/eq/st·Space/Tab·수정키/반복·소멸 eq·쓰기0 (4.327834ms)
+✔ game.html/ko/true: 생산 추출 카드삭제 RED→GREEN·hover·재렌더·실제 opener 닫기 (7.777542ms)
+✔ game.html/ko/true: 빈 bag/eq/st·Space/Tab·수정키/반복·소멸 eq·쓰기0 (3.218208ms)
+✔ game.html/en/false: 생산 추출 카드삭제 RED→GREEN·hover·재렌더·실제 opener 닫기 (5.915542ms)
+✔ game.html/en/false: 빈 bag/eq/st·Space/Tab·수정키/반복·소멸 eq·쓰기0 (2.812667ms)
+✔ game.html/en/true: 생산 추출 카드삭제 RED→GREEN·hover·재렌더·실제 opener 닫기 (5.977ms)
+✔ game.html/en/true: 빈 bag/eq/st·Space/Tab·수정키/반복·소멸 eq·쓰기0 (2.943417ms)
+✔ game.html: keydown 예외·장비 함수 및 승인 fixture 보존 (40.848375ms)
+✔ game-easy-test.html: 승인 인벤토리 함수·factory 일치 / 재적용 거부 (53.848166ms)
+✔ game-easy-test.html: 모든 inline script 구문 (71.213625ms)
+✔ game-easy-test.html/ko/false: 생산 추출 카드삭제 RED→GREEN·hover·재렌더·실제 opener 닫기 (8.502666ms)
+✔ game-easy-test.html/ko/false: 빈 bag/eq/st·Space/Tab·수정키/반복·소멸 eq·쓰기0 (4.303292ms)
+✔ game-easy-test.html/ko/true: 생산 추출 카드삭제 RED→GREEN·hover·재렌더·실제 opener 닫기 (6.754292ms)
+✔ game-easy-test.html/ko/true: 빈 bag/eq/st·Space/Tab·수정키/반복·소멸 eq·쓰기0 (2.998917ms)
+✔ game-easy-test.html/en/false: 생산 추출 카드삭제 RED→GREEN·hover·재렌더·실제 opener 닫기 (5.616583ms)
+✔ game-easy-test.html/en/false: 빈 bag/eq/st·Space/Tab·수정키/반복·소멸 eq·쓰기0 (2.641167ms)
+✔ game-easy-test.html/en/true: 생산 추출 카드삭제 RED→GREEN·hover·재렌더·실제 opener 닫기 (5.507875ms)
+✔ game-easy-test.html/en/true: 빈 bag/eq/st·Space/Tab·수정키/반복·소멸 eq·쓰기0 (2.667125ms)
+✔ game-easy-test.html: keydown 예외·장비 함수 및 승인 fixture 보존 (40.548ms)
+✔ 승인 전 원본 fixture·CSS·원화·native 증거 보존 (5.038708ms)
+ℹ tests 23
+ℹ suites 0
+ℹ pass 23
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 503.4885

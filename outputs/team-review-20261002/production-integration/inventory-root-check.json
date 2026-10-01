@@ -1,0 +1,72 @@
+{
+  "at": "2026-10-01T16:57:09.618Z",
+  "base": "35ddea9d41ecf776e4ddf781566d3ff5dad53017",
+  "phase": "inventory",
+  "rows": [
+    {
+      "file": "game.html",
+      "beforeSha256": "7631f5a083672124624e0b8dc22b0716d10c8815dbb1e6aee98a5e2e51299993",
+      "afterSha256": "a17a1cc8be0e4e75f9ba0baec12fc0f093b73948e03a4c7a4033b64137f38ed7",
+      "exactReviewedChanges": true,
+      "scripts": [
+        {
+          "index": 7,
+          "sourceType": "script"
+        },
+        {
+          "index": 8,
+          "sourceType": "script"
+        },
+        {
+          "index": 52,
+          "sourceType": "script"
+        },
+        {
+          "index": 54,
+          "sourceType": "module"
+        },
+        {
+          "index": 55,
+          "sourceType": "module"
+        },
+        {
+          "index": 56,
+          "sourceType": "script"
+        }
+      ]
+    },
+    {
+      "file": "game-easy-test.html",
+      "beforeSha256": "7d68b80afab131562266c39ea7d5631716d12861dbe7e7e2e4477550c15ec6a4",
+      "afterSha256": "74e24f71d855bb6d022686ac359126ce8e3d0587ae155a273e58f08b94c90f61",
+      "exactReviewedChanges": true,
+      "scripts": [
+        {
+          "index": 7,
+          "sourceType": "script"
+        },
+        {
+          "index": 8,
+          "sourceType": "script"
+        },
+        {
+          "index": 44,
+          "sourceType": "script"
+        },
+        {
+          "index": 46,
+          "sourceType": "module"
+        },
+        {
+          "index": 47,
+          "sourceType": "module"
+        },
+        {
+          "index": 48,
+          "sourceType": "script"
+        }
+      ]
+    }
+  ],
+  "limits": "Source equality and syntax only. Native game/layout/gamepad/save/relaunch remain separate gates."
+}

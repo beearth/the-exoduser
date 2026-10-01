@@ -1,0 +1,134 @@
+{
+  "at": "2026-10-01T17:00:18.853Z",
+  "scope": "생산 실제 함수 추출·Node DOM/CSS 최소 모델; 실게임/실화면/패드 아님",
+  "evidence": [
+    {
+      "path": "game.html",
+      "inlineScriptCounts": {
+        "classic": 4,
+        "module": 2,
+        "importmap": 1
+      }
+    },
+    {
+      "path": "game.html",
+      "language": "ko",
+      "cssModel": false,
+      "version": "baseline",
+      "removedFocus": "BODY"
+    },
+    {
+      "path": "game.html",
+      "language": "ko",
+      "cssModel": false,
+      "version": "candidate",
+      "removedFocus": "invClose"
+    },
+    {
+      "path": "game.html",
+      "language": "ko",
+      "cssModel": true,
+      "version": "baseline",
+      "removedFocus": "BODY"
+    },
+    {
+      "path": "game.html",
+      "language": "ko",
+      "cssModel": true,
+      "version": "candidate",
+      "removedFocus": "invClose"
+    },
+    {
+      "path": "game.html",
+      "language": "en",
+      "cssModel": false,
+      "version": "baseline",
+      "removedFocus": "BODY"
+    },
+    {
+      "path": "game.html",
+      "language": "en",
+      "cssModel": false,
+      "version": "candidate",
+      "removedFocus": "invClose"
+    },
+    {
+      "path": "game.html",
+      "language": "en",
+      "cssModel": true,
+      "version": "baseline",
+      "removedFocus": "BODY"
+    },
+    {
+      "path": "game.html",
+      "language": "en",
+      "cssModel": true,
+      "version": "candidate",
+      "removedFocus": "invClose"
+    },
+    {
+      "path": "game-easy-test.html",
+      "inlineScriptCounts": {
+        "classic": 4,
+        "module": 2,
+        "importmap": 1
+      }
+    },
+    {
+      "path": "game-easy-test.html",
+      "language": "ko",
+      "cssModel": false,
+      "version": "baseline",
+      "removedFocus": "BODY"
+    },
+    {
+      "path": "game-easy-test.html",
+      "language": "ko",
+      "cssModel": false,
+      "version": "candidate",
+      "removedFocus": "invClose"
+    },
+    {
+      "path": "game-easy-test.html",
+      "language": "ko",
+      "cssModel": true,
+      "version": "baseline",
+      "removedFocus": "BODY"
+    },
+    {
+      "path": "game-easy-test.html",
+      "language": "ko",
+      "cssModel": true,
+      "version": "candidate",
+      "removedFocus": "invClose"
+    },
+    {
+      "path": "game-easy-test.html",
+      "language": "en",
+      "cssModel": false,
+      "version": "baseline",
+      "removedFocus": "BODY"
+    },
+    {
+      "path": "game-easy-test.html",
+      "language": "en",
+      "cssModel": false,
+      "version": "candidate",
+      "removedFocus": "invClose"
+    },
+    {
+      "path": "game-easy-test.html",
+      "language": "en",
+      "cssModel": true,
+      "version": "baseline",
+      "removedFocus": "BODY"
+    },
+    {
+      "path": "game-easy-test.html",
+      "language": "en",
+      "cssModel": true,
+      "version": "candidate",
+      "removedFocus": "invClose"
+    }
+  ]
+}

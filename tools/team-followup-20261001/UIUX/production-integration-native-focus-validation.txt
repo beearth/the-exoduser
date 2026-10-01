@@ -1,0 +1,20 @@
+✔ game.html/ko: js 연결 실제 렌더·키보드·hover 원식 대조 (4.060042ms)
+✔ game.html/ko: js 실제 재구성·삭제·닫기 연결 (3.62025ms)
+✔ game.html/en: js 연결 실제 렌더·키보드·hover 원식 대조 (2.549416ms)
+✔ game.html/en: js 실제 재구성·삭제·닫기 연결 (1.522333ms)
+✔ game-easy-test.html/ko: js 연결 실제 렌더·키보드·hover 원식 대조 (3.090625ms)
+✔ game-easy-test.html/ko: js 실제 재구성·삭제·닫기 연결 (2.799084ms)
+✔ game-easy-test.html/en: js 연결 실제 렌더·키보드·hover 원식 대조 (2.159667ms)
+✔ game-easy-test.html/en: js 실제 재구성·삭제·닫기 연결 (1.017875ms)
+✔ 함수별 원문/SHA 동일, whole-file 변화는 기록만 (22.790125ms)
+✔ before 원파일 byte 보존 (1.073208ms)
+✔ browser 전이 import는 로컬 js 3개만, mjs/CDN/Node 없음 (0.741292ms)
+✔ 실제 CSS 경로·pbox·기본 미연결·inline 액션 capture 차단 (0.128833ms)
+ℹ tests 12
+ℹ suites 0
+ℹ pass 12
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 81.952625
