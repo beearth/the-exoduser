@@ -1,6 +1,6 @@
 {
-  "at": "2026-10-01T13:36:11.967911+00:00",
-  "root": "PM-009 22-row definition module and existing audit consumer integrated; runtime activation disabled",
+  "at": "2026-10-01T13:52:52.484305+00:00",
+  "root": "PM-009 roll audit and review consumer integrated: 101 PASS; actual3340 22 cards/44 images; runtime inactive",
   "teams": [
     {
       "team": "QA",
@@ -33,13 +33,13 @@
       "exists": true,
       "receivedAt": null,
       "startedAt": null,
-      "blocker": "13:09Z Mac locked explicitly reported; manual unlock required",
-      "status": "new task not received; current native check locked",
+      "blocker": "13:44Z native input noWindowsAvailable; lock state UNKNOWN; follow-up not received",
+      "status": "new task not received; native input unavailable, lock unknown",
       "cliState": "existing Claude session idle verified this cycle",
       "pendingRepair": {
         "dispatch": "not_received",
         "instruction": "/Users/fordeargamers/Projects/exoduser-migration-20261001/tools/team-followup-20261001/ENEMY/NEXT_TASK.md",
-        "blocker": "13:09Z new native query: Mac locked, no further input attempts"
+        "blocker": "13:44Z native input noWindowsAvailable; lock state UNKNOWN; follow-up not received"
       }
     },
     {
@@ -97,7 +97,7 @@
       "pendingRepair": {
         "dispatch": "not_received",
         "instruction": "/Users/fordeargamers/Projects/exoduser-migration-20261001/tools/team-followup-20261001/ART/FIX_TASK.md",
-        "blocker": "13:09Z new native query: Mac locked, no further input attempts"
+        "blocker": "13:44Z native input noWindowsAvailable; lock state UNKNOWN; follow-up not received"
       }
     },
     {
@@ -127,7 +127,7 @@
       "pendingRepair": {
         "dispatch": "not_received",
         "instruction": "/Users/fordeargamers/Projects/exoduser-migration-20261001/tools/team-followup-20261001/SKILL/FIX_TASK.md",
-        "blocker": "13:09Z new native query: Mac locked, no further input attempts"
+        "blocker": "13:44Z native input noWindowsAvailable; lock state UNKNOWN; follow-up not received"
       }
     },
     {
@@ -211,17 +211,17 @@
       "team": "UIUX",
       "sessionId": "01a0f6e5-8653-7ae2-8b2b-314e275c215c",
       "location": "T4",
-      "task": "UIUX-DEMO-SCOPE-REGRESSION-REPAIR",
-      "instruction": "/Users/fordeargamers/Projects/exoduser-migration-20261001/tools/team-followup-20261001/UIUX/DEMO_SCOPE_TASK.md",
+      "task": "UIUX-PM009-REVIEW-CONSUMER",
+      "instruction": "/Users/fordeargamers/Projects/exoduser-migration-20261001/tools/team-followup-20261001/UIUX/REVIEW_CONSUMER_TASK.md",
       "stateBefore": "idle/completed verified",
       "dispatch": "received",
       "exists": true,
-      "receivedAt": "2026-10-01T12:59:44Z",
+      "receivedAt": null,
       "startedAt": null,
-      "status": "shared demo test integrated; root23 PASS and three negative controls; no product UI change",
-      "startEvidence": "NEXT_TASK 첫 Read exit0, 이전 완료 산출과 현재 draw 경로·팀 MD 읽기 exit0. 중복 진행 산출 없음",
-      "receipt": "/Users/fordeargamers/Projects/exoduser-migration-20261001/docs/0마스터플랜/mac-resume-20261001/vscode-dispatch/UIUX-demo-scope-receipt.json",
-      "waitReason": null,
+      "status": "root integrated; 101 PASS; roll audit and actual browser verified; runtime disabled",
+      "startEvidence": "본 영수증 및 review.html 소비 구현 apply_patch",
+      "receipt": "/Users/fordeargamers/Projects/exoduser-migration-20261001/docs/0마스터플랜/mac-resume-20261001/vscode-dispatch/UIUX-review-receipt.json",
+      "waitReason": "Effect/art/translation/game/package gates remain",
       "previous": {
         "task": "UIUX-COORDINATE-HOTPATH-CANDIDATE",
         "previous": {
@@ -240,24 +240,26 @@
         "status": "15 groups + 6 VM pass; independent overflow timeout reproduced; acceptance withheld",
         "remoteSnapshot": "b3ab5be7f0c7a57ec1892cca1d65825549f54d72"
       },
-      "queueMessageId": "01a0f78c-a452-7e60-a082-d953d5f78e90",
+      "queueMessageId": "01a0f7b5-1ac9-7cb3-8148-0f04ae940163",
       "queuedAt": null,
       "receivedAtBasis": "read_thread new user turn startedAt, not exact command timestamp",
       "firstActualAction": {
-        "readRecordedAt": "2026-10-01T12:59:55Z",
-        "tool": "source Read"
+        "readRecordedAt": "2026-10-01T13:44:03Z",
+        "tool": "Read; followed by owned source edits"
       },
-      "completedAt": "2026-10-01T13:03:53Z",
+      "completedAt": "2026-10-01T13:47:01Z",
       "completedAtBasis": "read_thread latest turn completedAt",
-      "cliState": "candidate completed",
+      "cliState": "submission completed; root reviewed",
       "previousTaskSnapshot": {
-        "task": "UIUX-HOTPATH-BOUNDARY-FIX",
-        "status": "bounded candidate static accepted: 30 boundary/recovery/embedded + 15 groups/6VM + root600 comparisons; production/visual/FPS pending",
-        "completedAt": "2026-10-01T12:45:56Z",
-        "receipt": "/Users/fordeargamers/Projects/exoduser-migration-20261001/docs/0마스터플랜/mac-resume-20261001/vscode-dispatch/UIUX-boundary-receipt.json"
+        "task": "UIUX-DEMO-SCOPE-REGRESSION-REPAIR",
+        "status": "shared demo test integrated; root23 PASS and three negative controls; no product UI change",
+        "completedAt": "2026-10-01T13:03:53Z",
+        "receipt": "/Users/fordeargamers/Projects/exoduser-migration-20261001/docs/0마스터플랜/mac-resume-20261001/vscode-dispatch/UIUX-demo-scope-receipt.json",
+        "queueMessageId": "01a0f78c-a452-7e60-a082-d953d5f78e90"
       },
       "backlogReevaluatedAt": "2026-10-01T13:10:02.202545+00:00",
-      "backlogDecision": "Demo regression integrated. Bounded coordinate candidate still needs real viewport/zoom/dense performance acceptance."
+      "backlogDecision": "Demo regression integrated. Bounded coordinate candidate still needs real viewport/zoom/dense performance acceptance.",
+      "rootReview": "docs/0마스터플랜/mac-resume-20261001/vscode-dispatch/PM009-roll-review-root.md"
     },
     {
       "team": "ITEM",
@@ -301,32 +303,39 @@
       "team": "BALANCE",
       "sessionId": "01a0f6e6-5303-7392-81ba-94c42e349ffc",
       "location": "T11",
-      "task": "BALANCE-LEGACY-REFUND-OVERFLOW-CANDIDATE",
-      "instruction": "/Users/fordeargamers/Projects/exoduser-migration-20261001/tools/team-followup-20261001/BALANCE/REFUND_OVERFLOW_TASK.md",
+      "task": "BALANCE-PM009-ROLL-UNITS",
+      "instruction": "/Users/fordeargamers/Projects/exoduser-migration-20261001/tools/team-followup-20261001/BALANCE/ROLL_UNITS_TASK.md",
       "stateBefore": "idle/completed verified",
       "dispatch": "received",
       "exists": true,
-      "receivedAt": "2026-10-01T12:56:22Z",
+      "receivedAt": "2026-10-01T13:44:06Z",
       "startedAt": null,
-      "status": "candidate independently verified and integrated into both HTML files; related18 PASS",
-      "startEvidence": "NEXT_TASK.md·직전 결과·팀 MD·ITEM SSOT 실제 읽기 완료; 후보 파일 없음 확인",
-      "receipt": "/Users/fordeargamers/Projects/exoduser-migration-20261001/docs/0마스터플랜/mac-resume-20261001/vscode-dispatch/BALANCE-refund-overflow-receipt.json",
-      "waitReason": null,
+      "status": "root integrated; 101 PASS; roll audit and actual browser verified; runtime disabled",
+      "startEvidence": "배정·팀 최신 MD·정의 모듈·적용 계약·D절22행 실제 읽기",
+      "receipt": "/Users/fordeargamers/Projects/exoduser-migration-20261001/docs/0마스터플랜/mac-resume-20261001/vscode-dispatch/BALANCE-roll-receipt.json",
+      "waitReason": "Effect/art/translation/game/package gates remain",
       "currentDependencyReview": "See ITEM-BALANCE-integration-result.md; original unrelated visual/proc gates remain.",
-      "cliState": "completed",
+      "cliState": "submission completed; root reviewed",
       "previous": {
         "task": "BALANCE-FIREBALL-HOOK-CANDIDATE",
         "status": "CLI completed; explicit integration dependency; no new task queued"
       },
-      "queueMessageId": "01a0f789-8e68-74f0-8403-5cdf63f541a3",
-      "completedAt": "2026-10-01T12:58:36Z",
+      "queueMessageId": "01a0f7b5-1aae-74f1-955a-08c46740d157",
+      "completedAt": "2026-10-01T13:45:41Z",
       "firstActualAction": {
-        "turnId": "01a0f789-8e6a-7403-82f1-52554f0e8e93",
-        "readRecordedAt": "2026-10-01T12:56:31Z",
-        "exitCode": 0
+        "readRecordedAt": "2026-10-01T13:44:06Z",
+        "tool": "Read; followed by owned source edits"
       },
       "backlogReevaluatedAt": "2026-10-01T13:10:02.202545+00:00",
-      "backlogDecision": "Overflow fixed. Refund policy and proc integration decisions remain; no duplicate blastShot or formula change."
+      "backlogDecision": "Overflow fixed. Refund policy and proc integration decisions remain; no duplicate blastShot or formula change.",
+      "previousTaskSnapshot": {
+        "task": "BALANCE-LEGACY-REFUND-OVERFLOW-CANDIDATE",
+        "status": "candidate independently verified and integrated into both HTML files; related18 PASS",
+        "completedAt": "2026-10-01T12:58:36Z",
+        "receipt": "/Users/fordeargamers/Projects/exoduser-migration-20261001/docs/0마스터플랜/mac-resume-20261001/vscode-dispatch/BALANCE-refund-overflow-receipt.json",
+        "queueMessageId": "01a0f789-8e68-74f0-8403-5cdf63f541a3"
+      },
+      "rootReview": "docs/0마스터플랜/mac-resume-20261001/vscode-dispatch/PM009-roll-review-root.md"
     },
     {
       "team": "SOUND",
@@ -366,9 +375,10 @@
     }
   ],
   "remoteCheckpoint": {
-    "sha": "d9bb0901dd4f0eb416b94b37709a2df128c91072",
+    "sha": "cddb83f504f93cf3270ebe56ee8b98d6d0941234",
     "branch": "codex/mac-environment-20261001",
-    "verified": true
+    "verified": true,
+    "scope": "prior definition checkpoint; final PM009 commit recorded in output checkpoint after push"
   },
   "wipRecovery": {
     "sha": "3921dfc98085ee856accdd1795b5efd9a7589e19",
@@ -382,11 +392,11 @@
     "scope": "includes BUILD denied loopback and SOUND dedup; later RNG and v2 changes not in this snapshot"
   },
   "nativeCheck": {
-    "atApprox": "2026-10-01T13:28:00Z",
+    "atApprox": "2026-10-01T13:44:00Z",
     "inventoryAccessible": true,
     "lockState": "unknown",
     "error": "noWindowsAvailable",
-    "note": "No new native attempt during independent PM-009 implementation"
+    "note": "No further native input; later IAB success does not establish native input recovery"
   },
   "uiuxSubmissionRecovery": {
     "sha": "b3ab5be7f0c7a57ec1892cca1d65825549f54d72",
@@ -407,5 +417,13 @@
   "itemEconomyRecovery": {
     "sha": "d9dd5151825d1a04fe429f78b578c8b3d0c3f897",
     "remoteVerified": true
+  },
+  "reviewBrowser": {
+    "at": "2026-10-01T13:51:29Z",
+    "cards": 22,
+    "loadedImages": 44,
+    "httpMime": "application/javascript",
+    "source": "definitions.js",
+    "runtimeReady": false
   }
 }

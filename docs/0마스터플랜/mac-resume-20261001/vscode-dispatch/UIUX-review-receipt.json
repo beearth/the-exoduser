@@ -1,0 +1,20 @@
+{
+  "taskId": "UIUX-PM009-REVIEW-CONSUMER",
+  "status": "completed_with_pending_gates",
+  "receivedReadRecordedAt": null,
+  "receivedReadCompletedBefore": "2026-10-01T13:44:03Z",
+  "firstSourceReadRecordedAt": "2026-10-01T13:44:03Z",
+  "timeBasis": "첫 소스 Read 명령 내 UTC 표식. 지시문 Read는 그 이전 완료. 정확한 메시지 수신·첫 Edit 시작 초는 UNKNOWN",
+  "duplicateCheck": "review 전용 산출·영수증·테스트 없음. 현재 review는 하드코딩 소비 이전 상태",
+  "reviewBeforeSha256": "4a47d3bb11242e3b42b59abae0d27073728d0abc8071cf611ebf857a7721664a",
+  "definitionsSha256": "3f04bcc5ac90b039454f32dc9323e60bbe44dda27be7fd439a97633d1f25118a",
+  "firstEditEvidence": "본 영수증 및 review.html 소비 구현 apply_patch",
+  "firstEditTimeWindow": {"after": "2026-10-01T13:44:08Z", "before": "2026-10-01T13:44:52Z"},
+  "completedRecordedAt": "2026-10-01T13:47:01Z",
+  "validation": {"focused": "8PASS0FAIL/exit0", "combined": "28PASS1FAIL/exit1", "remainingFailure": "공유 uniqueDefinitions.test.js:25 인라인 이름 assertion root 이관 대기", "definitionAuditExit": 0, "artAuditExit": 0, "cards": 22, "images": 44},
+  "reviewAfterSha256": "9c412a0f77afd9bd71653e9946f4ad57c5026fd43f88788e5766f93e23afbafc",
+  "definitionsUnchanged": true,
+  "ownedPaths": ["unique-item-project/review.html", "test/uniqueItemReview.test.js", "tools/team-followup-20261001/UIUX/review-*", "docs/0마스터플랜/mac-resume-20261001/vscode-dispatch/UIUX-review-result.md", "docs/0마스터플랜/mac-resume-20261001/vscode-dispatch/UIUX-review-receipt.json"],
+  "nextAction": "root 공유 문자열 assertion 이관·docs 대장 반영, 별도 실제 브라우저/키보드/시각 인수",
+  "visualVerdict": "UNKNOWN"
+}

@@ -604,3 +604,8 @@ SOUND 제출을 root 실행하여 후보 인자 오류1건을 교정하고 실�
 ### 18.35 PM-009 정의 계층 실제 구현·소비 연결
 
 기존 ITEM13:31:32Z Read 후22종 제안 데이터/검증 구현, root가 정의 모듈과 기존 원화 감사 소비 경로에 인수했다.23영구회귀·문서변이3종검출·44PNG감사 통과. 활성0/runtimeReady=false/110차단이며 새 효과·드롭은 미구현이다. 앱activewriter미전달 뒤 공식기존queue1회, 새세션0/native재시도0. [인수·원실패·한계](mac-resume-20261001/vscode-dispatch/ITEM-definition-root-review.md).
+
+
+### 18.36 PM-009 롤 감사·원화 검토 실제 소비 인수
+
+기존 BALANCE/UIUX의 새 구현을 root가 통합하여22종/698정수 롤과 정의 기반22카드/44원화 비교를 연결했다. 통합101PASS·문서변이7종 검출. 실행 중3340의 .mjs MIME 결함은 정의를 동일내용 .js로 이동해 해결했으며 서버파일/프로세스 수정0. 실제HTTP200 JavaScript MIME/디스크동일SHA·브라우저44이미지로드·64/160·Tab/Enter/Space 확인. 활성0/채택0/효과미구현 유지.13:44Z native noWindowsAvailable/잠금UNKNOWN으로 정정, ENEMY/ART/SKILL 미수신. [근거와 남은 게이트](mac-resume-20261001/vscode-dispatch/PM009-roll-review-root.md).

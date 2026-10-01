@@ -1,0 +1,52 @@
+✔ real definition audit distinguishes valid proposals from runtime readiness (47.535541ms)
+✔ audit catches document drift instead of trusting a copied definition table (7.2945ms)
+✖ actual 22 names/effect IDs/stats match catalog and D document, not runtime implementation (1.842167ms)
+✔ every slot and weapon/bow type matches contract section3 independently (0.405959ms)
+✔ all 44 source files exist but 22 rows remain valid proposals, never active (0.326ms)
+✔ definition and item lookups preserve frozen data and original instances without RNG (0.299041ms)
+✔ unknown/empty/invalid ID, legacy slot unique and ossuary use null fallback (0.068958ms)
+✔ duplicate uniqueId (0.191709ms)
+✔ duplicate effectId (0.155875ms)
+✔ wrong effect reference (0.137667ms)
+✔ missing definition (0.145416ms)
+✔ unknown ID (0.189583ms)
+✔ helmet to earring (0.133ms)
+✔ missing second ring slot (0.122292ms)
+✔ sword to dagger (0.133208ms)
+✔ bow type missing (0.329708ms)
+✔ activation attempted (0.138459ms)
+✔ art accepted without gate (0.117375ms)
+✔ invented name key (0.115ms)
+✔ null injected row (0.097125ms)
+✔ duplicate/missing/undocumented/stat-mismatched effect registries fail independently (0.142333ms)
+✔ missing source/runtime art and unaccepted status are explicit activation blockers (0.070917ms)
+✔ module is browser ES module with no imports/Node dependencies or mutation/random operations (4.12075ms)
+ℹ tests 23
+ℹ suites 0
+ℹ pass 22
+ℹ fail 1
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 86.16375
+
+✖ failing tests:
+
+test at test/uniqueDefinitions.test.js:17:1
+✖ actual 22 names/effect IDs/stats match catalog and D document, not runtime implementation (1.842167ms)
+  AssertionError [ERR_ASSERTION]: The expression evaluated to a falsy value:
+  
+    assert.ok(review.includes(`'${name.trim()}'`))
+  
+      at TestContext.<anonymous> (file:///Users/fordeargamers/Projects/exoduser-migration-20261001/test/uniqueDefinitions.test.js:25:12)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1201:25)
+      at Test.start (node:internal/test_runner/test:1096:17)
+      at startSubtestAfterBootstrap (node:internal/test_runner/harness:385:17) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: false,
+    expected: true,
+    operator: '==',
+    diff: 'simple'
+  }

@@ -1,0 +1,451 @@
+{
+  "definitions": 22,
+  "structurallyValid": true,
+  "runtimeReady": false,
+  "activeDefinitions": 0,
+  "sourceArtFound": 44,
+  "documentErrors": [],
+  "issues": [],
+  "blockers": [
+    {
+      "code": "effect_unimplemented",
+      "uniqueId": "UI-01"
+    },
+    {
+      "code": "translation_unregistered",
+      "uniqueId": "UI-01"
+    },
+    {
+      "code": "missing_runtime_art",
+      "uniqueId": "UI-01"
+    },
+    {
+      "code": "art_unaccepted",
+      "uniqueId": "UI-01"
+    },
+    {
+      "code": "proposal_not_activatable",
+      "uniqueId": "UI-01"
+    },
+    {
+      "code": "effect_unimplemented",
+      "uniqueId": "UI-02"
+    },
+    {
+      "code": "translation_unregistered",
+      "uniqueId": "UI-02"
+    },
+    {
+      "code": "missing_runtime_art",
+      "uniqueId": "UI-02"
+    },
+    {
+      "code": "art_unaccepted",
+      "uniqueId": "UI-02"
+    },
+    {
+      "code": "proposal_not_activatable",
+      "uniqueId": "UI-02"
+    },
+    {
+      "code": "effect_unimplemented",
+      "uniqueId": "UI-03"
+    },
+    {
+      "code": "translation_unregistered",
+      "uniqueId": "UI-03"
+    },
+    {
+      "code": "missing_runtime_art",
+      "uniqueId": "UI-03"
+    },
+    {
+      "code": "art_unaccepted",
+      "uniqueId": "UI-03"
+    },
+    {
+      "code": "proposal_not_activatable",
+      "uniqueId": "UI-03"
+    },
+    {
+      "code": "effect_unimplemented",
+      "uniqueId": "UI-04"
+    },
+    {
+      "code": "translation_unregistered",
+      "uniqueId": "UI-04"
+    },
+    {
+      "code": "missing_runtime_art",
+      "uniqueId": "UI-04"
+    },
+    {
+      "code": "art_unaccepted",
+      "uniqueId": "UI-04"
+    },
+    {
+      "code": "proposal_not_activatable",
+      "uniqueId": "UI-04"
+    },
+    {
+      "code": "effect_unimplemented",
+      "uniqueId": "UI-05"
+    },
+    {
+      "code": "translation_unregistered",
+      "uniqueId": "UI-05"
+    },
+    {
+      "code": "missing_runtime_art",
+      "uniqueId": "UI-05"
+    },
+    {
+      "code": "art_unaccepted",
+      "uniqueId": "UI-05"
+    },
+    {
+      "code": "proposal_not_activatable",
+      "uniqueId": "UI-05"
+    },
+    {
+      "code": "effect_unimplemented",
+      "uniqueId": "UI-06"
+    },
+    {
+      "code": "translation_unregistered",
+      "uniqueId": "UI-06"
+    },
+    {
+      "code": "missing_runtime_art",
+      "uniqueId": "UI-06"
+    },
+    {
+      "code": "art_unaccepted",
+      "uniqueId": "UI-06"
+    },
+    {
+      "code": "proposal_not_activatable",
+      "uniqueId": "UI-06"
+    },
+    {
+      "code": "effect_unimplemented",
+      "uniqueId": "UI-07"
+    },
+    {
+      "code": "translation_unregistered",
+      "uniqueId": "UI-07"
+    },
+    {
+      "code": "missing_runtime_art",
+      "uniqueId": "UI-07"
+    },
+    {
+      "code": "art_unaccepted",
+      "uniqueId": "UI-07"
+    },
+    {
+      "code": "proposal_not_activatable",
+      "uniqueId": "UI-07"
+    },
+    {
+      "code": "effect_unimplemented",
+      "uniqueId": "UI-08"
+    },
+    {
+      "code": "translation_unregistered",
+      "uniqueId": "UI-08"
+    },
+    {
+      "code": "missing_runtime_art",
+      "uniqueId": "UI-08"
+    },
+    {
+      "code": "art_unaccepted",
+      "uniqueId": "UI-08"
+    },
+    {
+      "code": "proposal_not_activatable",
+      "uniqueId": "UI-08"
+    },
+    {
+      "code": "effect_unimplemented",
+      "uniqueId": "UI-09"
+    },
+    {
+      "code": "translation_unregistered",
+      "uniqueId": "UI-09"
+    },
+    {
+      "code": "missing_runtime_art",
+      "uniqueId": "UI-09"
+    },
+    {
+      "code": "art_unaccepted",
+      "uniqueId": "UI-09"
+    },
+    {
+      "code": "proposal_not_activatable",
+      "uniqueId": "UI-09"
+    },
+    {
+      "code": "effect_unimplemented",
+      "uniqueId": "UI-10"
+    },
+    {
+      "code": "translation_unregistered",
+      "uniqueId": "UI-10"
+    },
+    {
+      "code": "missing_runtime_art",
+      "uniqueId": "UI-10"
+    },
+    {
+      "code": "art_unaccepted",
+      "uniqueId": "UI-10"
+    },
+    {
+      "code": "proposal_not_activatable",
+      "uniqueId": "UI-10"
+    },
+    {
+      "code": "effect_unimplemented",
+      "uniqueId": "UI-11"
+    },
+    {
+      "code": "translation_unregistered",
+      "uniqueId": "UI-11"
+    },
+    {
+      "code": "missing_runtime_art",
+      "uniqueId": "UI-11"
+    },
+    {
+      "code": "art_unaccepted",
+      "uniqueId": "UI-11"
+    },
+    {
+      "code": "proposal_not_activatable",
+      "uniqueId": "UI-11"
+    },
+    {
+      "code": "effect_unimplemented",
+      "uniqueId": "UI-12"
+    },
+    {
+      "code": "translation_unregistered",
+      "uniqueId": "UI-12"
+    },
+    {
+      "code": "missing_runtime_art",
+      "uniqueId": "UI-12"
+    },
+    {
+      "code": "art_unaccepted",
+      "uniqueId": "UI-12"
+    },
+    {
+      "code": "proposal_not_activatable",
+      "uniqueId": "UI-12"
+    },
+    {
+      "code": "effect_unimplemented",
+      "uniqueId": "UI-13"
+    },
+    {
+      "code": "translation_unregistered",
+      "uniqueId": "UI-13"
+    },
+    {
+      "code": "missing_runtime_art",
+      "uniqueId": "UI-13"
+    },
+    {
+      "code": "art_unaccepted",
+      "uniqueId": "UI-13"
+    },
+    {
+      "code": "proposal_not_activatable",
+      "uniqueId": "UI-13"
+    },
+    {
+      "code": "effect_unimplemented",
+      "uniqueId": "UI-14"
+    },
+    {
+      "code": "translation_unregistered",
+      "uniqueId": "UI-14"
+    },
+    {
+      "code": "missing_runtime_art",
+      "uniqueId": "UI-14"
+    },
+    {
+      "code": "art_unaccepted",
+      "uniqueId": "UI-14"
+    },
+    {
+      "code": "proposal_not_activatable",
+      "uniqueId": "UI-14"
+    },
+    {
+      "code": "effect_unimplemented",
+      "uniqueId": "UI-15"
+    },
+    {
+      "code": "translation_unregistered",
+      "uniqueId": "UI-15"
+    },
+    {
+      "code": "missing_runtime_art",
+      "uniqueId": "UI-15"
+    },
+    {
+      "code": "art_unaccepted",
+      "uniqueId": "UI-15"
+    },
+    {
+      "code": "proposal_not_activatable",
+      "uniqueId": "UI-15"
+    },
+    {
+      "code": "effect_unimplemented",
+      "uniqueId": "UI-16"
+    },
+    {
+      "code": "translation_unregistered",
+      "uniqueId": "UI-16"
+    },
+    {
+      "code": "missing_runtime_art",
+      "uniqueId": "UI-16"
+    },
+    {
+      "code": "art_unaccepted",
+      "uniqueId": "UI-16"
+    },
+    {
+      "code": "proposal_not_activatable",
+      "uniqueId": "UI-16"
+    },
+    {
+      "code": "effect_unimplemented",
+      "uniqueId": "UI-17"
+    },
+    {
+      "code": "translation_unregistered",
+      "uniqueId": "UI-17"
+    },
+    {
+      "code": "missing_runtime_art",
+      "uniqueId": "UI-17"
+    },
+    {
+      "code": "art_unaccepted",
+      "uniqueId": "UI-17"
+    },
+    {
+      "code": "proposal_not_activatable",
+      "uniqueId": "UI-17"
+    },
+    {
+      "code": "effect_unimplemented",
+      "uniqueId": "UI-18"
+    },
+    {
+      "code": "translation_unregistered",
+      "uniqueId": "UI-18"
+    },
+    {
+      "code": "missing_runtime_art",
+      "uniqueId": "UI-18"
+    },
+    {
+      "code": "art_unaccepted",
+      "uniqueId": "UI-18"
+    },
+    {
+      "code": "proposal_not_activatable",
+      "uniqueId": "UI-18"
+    },
+    {
+      "code": "effect_unimplemented",
+      "uniqueId": "UI-19"
+    },
+    {
+      "code": "translation_unregistered",
+      "uniqueId": "UI-19"
+    },
+    {
+      "code": "missing_runtime_art",
+      "uniqueId": "UI-19"
+    },
+    {
+      "code": "art_unaccepted",
+      "uniqueId": "UI-19"
+    },
+    {
+      "code": "proposal_not_activatable",
+      "uniqueId": "UI-19"
+    },
+    {
+      "code": "effect_unimplemented",
+      "uniqueId": "UI-20"
+    },
+    {
+      "code": "translation_unregistered",
+      "uniqueId": "UI-20"
+    },
+    {
+      "code": "missing_runtime_art",
+      "uniqueId": "UI-20"
+    },
+    {
+      "code": "art_unaccepted",
+      "uniqueId": "UI-20"
+    },
+    {
+      "code": "proposal_not_activatable",
+      "uniqueId": "UI-20"
+    },
+    {
+      "code": "effect_unimplemented",
+      "uniqueId": "UI-21"
+    },
+    {
+      "code": "translation_unregistered",
+      "uniqueId": "UI-21"
+    },
+    {
+      "code": "missing_runtime_art",
+      "uniqueId": "UI-21"
+    },
+    {
+      "code": "art_unaccepted",
+      "uniqueId": "UI-21"
+    },
+    {
+      "code": "proposal_not_activatable",
+      "uniqueId": "UI-21"
+    },
+    {
+      "code": "effect_unimplemented",
+      "uniqueId": "UI-22"
+    },
+    {
+      "code": "translation_unregistered",
+      "uniqueId": "UI-22"
+    },
+    {
+      "code": "missing_runtime_art",
+      "uniqueId": "UI-22"
+    },
+    {
+      "code": "art_unaccepted",
+      "uniqueId": "UI-22"
+    },
+    {
+      "code": "proposal_not_activatable",
+      "uniqueId": "UI-22"
+    }
+  ]
+}

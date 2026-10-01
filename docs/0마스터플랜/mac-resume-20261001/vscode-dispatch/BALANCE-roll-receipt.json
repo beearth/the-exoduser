@@ -1,0 +1,13 @@
+{
+  "taskId": "BALANCE-PM009-ROLL-UNITS",
+  "receivedAt": "2026-10-01T13:44:06Z",
+  "firstRead": "배정·팀 최신 MD·정의 모듈·적용 계약·D절22행 실제 읽기",
+  "duplicateCheck": "roll-values.mjs/전용 test/소유 roll 증거 및 전용 영수증 없음",
+  "firstEdit": "전용 영수증 작성",
+  "status": "completed_module_only",
+  "completedAt": "2026-10-01T13:45:41Z",
+  "firstCodeEdit": "roll-values.mjs와 uniqueRollValues.test.js 구현",
+  "result": "22종/698정수 왕복 및 모든 경계 부정회귀69PASS; 기존 인접 검사22PASS1FAIL(review 리터럴 기대)",
+  "nextAction": "root audit 소비 연결 및 공유 docs 인수; 효과/드롭/실제저장 활성은 별도 게이트",
+  "runtimeReady": false
+}

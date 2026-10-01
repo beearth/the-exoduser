@@ -2,7 +2,7 @@ import test from 'node:test';
 import assert from 'node:assert/strict';
 import fs from 'node:fs';
 import {parse} from 'acorn';
-import {UNIQUE_DEFINITIONS,EFFECT_PROPOSALS,lookupDefinition,lookupItemProposal,lookupActiveItemDefinition,validateDefinitions} from '../unique-item-project/definitions.mjs';
+import {UNIQUE_DEFINITIONS,EFFECT_PROPOSALS,lookupDefinition,lookupItemProposal,lookupActiveItemDefinition,validateDefinitions} from '../unique-item-project/definitions.js';
 
 const root=new URL('../',import.meta.url);
 const read=path=>fs.readFileSync(new URL(path,root),'utf8');
@@ -10,7 +10,6 @@ const clone=value=>JSON.parse(JSON.stringify(value));
 const contract=read('docs/7아이템디자인/UNIQUE_ITEM_GAME_INTEGRATION_CONTRACT_20261001.md');
 const catalog=read('docs/7아이템디자인/보라색_고유아이템_카탈로그_20260930.md');
 const affixes=read('docs/7아이템디자인/유니크_어픽스_리스트.md');
-const review=read('unique-item-project/review.html');
 const artPaths=UNIQUE_DEFINITIONS.flatMap(definition=>[definition.art.originalPath,definition.art.candidatePath]).filter(path=>fs.existsSync(new URL(path,root)));
 const codes=result=>result.issues.map(issue=>issue.code);
 
@@ -22,7 +21,6 @@ test('actual 22 names/effect IDs/stats match catalog and D document, not runtime
   assert.equal(effectRows.length,22);
   for(const [,id,name,effectId] of entries){
     const definition=lookupDefinition(id);assert.equal(definition.catalogName,name.trim());assert.equal(definition.effectId,effectId);
-    assert.ok(review.includes(`'${name.trim()}'`));
     const effect=EFFECT_PROPOSALS.find(entry=>entry.effectId===effectId);
     assert.equal(effect.proposalStat,effectRows.find(entry=>entry[1]===effectId)[2]);
     assert.equal(effect.documented,true);assert.equal(effect.implemented,false);
@@ -102,7 +100,7 @@ test('missing source/runtime art and unaccepted status are explicit activation b
   assert.equal(validateDefinitions(undefined,{effects:null}).valid,false);
 });
 test('module is browser ES module with no imports/Node dependencies or mutation/random operations',()=>{
-  const source=read('unique-item-project/definitions.mjs');
+  const source=read('unique-item-project/definitions.js');
   const ast=parse(source,{ecmaVersion:'latest',sourceType:'module'});
   assert.equal(ast.body.filter(node=>node.type==='ImportDeclaration').length,0);
   assert.doesNotMatch(source,/Math\.random|mkItem\(|localStorage|document\.|window\.|process\.|fetch\(/);

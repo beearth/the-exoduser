@@ -100,3 +100,8 @@ QA 실측 중에는 별도 게임 장면·대형 빌드를 중복 실행하지 �
 ## 2026-10-01 PM-009 제안 정의 조회·유효성 구현
 
 기존 ITEM 담당이22종 실데이터 모듈/조회/검증을 구현했고 root가 unique-item-project/definitions.mjs 및 기존 원화 감사의 소비 경로로 연결했다. 영구23회귀 통과, 문서변이3종 검출. 원화44개 존재와 별개로 활성0/채택0, 효과·번역·런타임 PNG 준비 미완료를110개 차단 사유로 표시한다. 새 드롭/효과/색/저장 정책은 미구현 유지. [독립 인수·한계](../0마스터플랜/mac-resume-20261001/vscode-dispatch/ITEM-definition-root-review.md).
+
+
+## 2026-10-01 PM-009 롤·검토 화면 인수
+
+정의 데이터는 동일 SHA의 definitions.js로 이동하여 기존 서버의 올바른 JavaScript MIME으로 소비한다. BALANCE22종/698정수 롤 모듈을 감사에 연결하고 UIUX22카드/44원화 화면을 실제3340에서 확인했다. 통합101PASS, 활성0/원화채택0. [최종 근거·한계](../0마스터플랜/mac-resume-20261001/vscode-dispatch/PM009-roll-review-root.md).

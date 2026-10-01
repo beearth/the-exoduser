@@ -1,0 +1,60 @@
+✔ real definition audit distinguishes valid proposals from runtime readiness (51.331167ms)
+✔ audit catches document drift instead of trusting a copied definition table (6.835583ms)
+✖ actual 22 names/effect IDs/stats match catalog and D document, not runtime implementation (1.836542ms)
+✔ every slot and weapon/bow type matches contract section3 independently (0.41225ms)
+✔ all 44 source files exist but 22 rows remain valid proposals, never active (0.328208ms)
+✔ definition and item lookups preserve frozen data and original instances without RNG (0.302083ms)
+✔ unknown/empty/invalid ID, legacy slot unique and ossuary use null fallback (0.076208ms)
+✔ duplicate uniqueId (0.206542ms)
+✔ duplicate effectId (0.154791ms)
+✔ wrong effect reference (0.135167ms)
+✔ missing definition (0.1495ms)
+✔ unknown ID (0.191166ms)
+✔ helmet to earring (0.133041ms)
+✔ missing second ring slot (0.119708ms)
+✔ sword to dagger (0.120042ms)
+✔ bow type missing (0.270666ms)
+✔ activation attempted (0.112625ms)
+✔ art accepted without gate (0.104959ms)
+✔ invented name key (0.102416ms)
+✔ null injected row (0.098875ms)
+✔ duplicate/missing/undocumented/stat-mismatched effect registries fail independently (0.136458ms)
+✔ missing source/runtime art and unaccepted status are explicit activation blockers (0.075125ms)
+✔ module is browser ES module with no imports/Node dependencies or mutation/random operations (4.09625ms)
+(node:20273) ExperimentalWarning: vm.USE_MAIN_CONTEXT_DEFAULT_LOADER is an experimental feature and might change at any time
+(Use `node --trace-warnings ...` to show where the warning was created)
+✔ review dynamically imports the real definition module without catalog or path copies (0.343375ms)
+✔ actual definitions render 22 cards and all 44 exact lazy image paths (1.082625ms)
+✔ all equipment mappings use contract Korean slot names and SSOT weapon types (0.605458ms)
+✔ definition changes flow to names IDs equipment effect state and image paths (0.604292ms)
+✔ 64/160 CSS and native buttons retain focus/keyboard semantics and ARIA toggle (0.399709ms)
+✔ module loading failure displays actionable alert without disabling size controls (0.272042ms)
+ℹ tests 29
+ℹ suites 0
+ℹ pass 28
+ℹ fail 1
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 88.521042
+
+✖ failing tests:
+
+test at test/uniqueDefinitions.test.js:17:1
+✖ actual 22 names/effect IDs/stats match catalog and D document, not runtime implementation (1.836542ms)
+  AssertionError [ERR_ASSERTION]: The expression evaluated to a falsy value:
+  
+    assert.ok(review.includes(`'${name.trim()}'`))
+  
+      at TestContext.<anonymous> (file:///Users/fordeargamers/Projects/exoduser-migration-20261001/test/uniqueDefinitions.test.js:25:12)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1201:25)
+      at Test.start (node:internal/test_runner/test:1096:17)
+      at startSubtestAfterBootstrap (node:internal/test_runner/harness:385:17) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: false,
+    expected: true,
+    operator: '==',
+    diff: 'simple'
+  }

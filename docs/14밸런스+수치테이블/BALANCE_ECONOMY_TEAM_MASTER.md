@@ -98,3 +98,8 @@ test/onHitFireballStack.test.js가 양쪽 실제 _eqAffix/hurtE를 추출하여3
 ## 2026-10-01 PM-013 레거시 환수 정수 경계 통합
 
 환수정책 결정과 별개로 현행 누적식의 signed32 오버플로만 수정했다. 본편/easy salvageVal·equipItem _enhRefund의 ~~를Math.floor로 교체했다. 6등급 최초경계직전/직후·일반값96표본 및 legacy기록48표본 통과. root는 전체equipItem의 이전비용차감/부족거부/장착/저장스냅샷과 JSON후dropItem 분해 지급을 실행해 검수했다. rarity4 enh145627의 강화분2147506212 및 rarity4 enh200000 최종4050427500. 실제지출50%환수 전환·강화상한·기존음수저장추정복구0, PM013D정책대기는 유지한다. 실제UI/사용자저장/패키지는 별도다.
+
+
+## 2026-10-01 PM-009 롤 단위 모듈 인수
+
+기존 BALANCE가 D절22종/698정수에 대해 균등 정수 선택·명시 하중상·저장/표시 모듈을 구현했고 root가 실제 감사 소비로 연결했다. D10 10–13/14–16/17–20 유지, percent raw/100·나머지 정수, frame은60fps 변환 표시. 잘못된 입력/저장값 거부,69전용 및101통합 검사 PASS. 수치 정책·효과/드롭 활성 변경 없음. [인수·검수](../0마스터플랜/mac-resume-20261001/vscode-dispatch/PM009-roll-review-root.md).

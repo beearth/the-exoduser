@@ -51788,3 +51788,12 @@ FIRE 독립8검사와 URL query17검사 인수, SOUND root canonical 관측기18
 ## 2026-10-01 PM-009 정의 조회·유효성 계층
 
 22종 UI/U-D·슬롯/타입·카탈로그명·효과stat의 비활성 제안 모듈 구현, 원문 감사와 기존 audit-art 연결.23검사 통과·문서변이3종검출, 구조유효/활성불가 분리·110차단 명시. 실제 게임/드롭/효과/색/저장 무변경. 관련 docs 전체 검색·계약/ITEM대장/README/총괄 동기화.
+
+
+## 2026-10-01 PM-009 롤·원화 검토 소비 통합
+
+- definitions.mjs → definitions.js 동일내용 이동: 기존 서버 MIME 지원, 서버·포트·저장 경로 변경0.
+- D절22종/698정수의 roll-values 모듈 구현·audit-definitions 소비 연결. 명시구간·단위·저장·표시 대조, 활성0.
+- review.html은 정의의22카드·44경로를 import. 한국어슬롯·효과ID·제안/미채택/비활성 표시, 원화채택0.
+- 통합101PASS, 실제3340 HTTP/44이미지·64/160px·Tab/Enter/Space 확인. 게임/easy/index·사용자저장 미변경.
+- 상세: docs/0마스터플랜/mac-resume-20261001/vscode-dispatch/PM009-roll-review-root.md.

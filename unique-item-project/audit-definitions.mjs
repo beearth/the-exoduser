@@ -1,7 +1,8 @@
 import { readFile, access } from 'node:fs/promises';
 import path from 'node:path';
 import { pathToFileURL } from 'node:url';
-import { UNIQUE_DEFINITIONS, EFFECT_PROPOSALS, validateDefinitions } from './definitions.mjs';
+import { UNIQUE_DEFINITIONS, EFFECT_PROPOSALS, validateDefinitions } from './definitions.js';
+import { ROLL_PROPOSALS, rollValue, toStoredValue, fromStoredValue, describeRoll } from './roll-values.mjs';
 
 const projectRoot = path.resolve(import.meta.dirname, '..');
 
@@ -29,6 +30,7 @@ export async function auditDefinitions(root = projectRoot) {
   if (expected.size !== 22) documentErrors.push('contract_count:' + expected.size);
   const names = new Map([...catalog.matchAll(/^\| (UI-\d{2}) \| ([^|]+) \|[^\n]*?\| U-D\d{2} /gm)].map(match => [match[1], match[2].trim()]));
   const effectRows = new Map([...effectsDoc.matchAll(/^\| \*\*(U-D\d{2})\*\*.*$/gm)].map(match => [match[1], match[0]]));
+  if (effectRows.size !== 22) documentErrors.push('effect_count:' + effectRows.size);
   for (const definition of UNIQUE_DEFINITIONS) {
     const actualFamily = definition.wtype ? 'weapon/' + definition.wtype : definition.btype ? 'bow/' + definition.btype : definition.slots.join('/');
     const expectedRow = expected.get(definition.uniqueId);
@@ -37,6 +39,29 @@ export async function auditDefinitions(root = projectRoot) {
   }
   for (const effect of EFFECT_PROPOSALS) {
     if (!effectRows.get(effect.effectId)?.includes('`' + effect.proposalStat + '`')) documentErrors.push('effect_reference_mismatch:' + effect.effectId);
+  }
+  const rollRows = [];
+  let checkedValues = 0;
+  for (const proposal of ROLL_PROPOSALS) {
+    const cell = effectRows.get(proposal.effectId)?.split('|')[3] || '';
+    const range = cell.match(/\*\*[^*]*?(\d+)~(\d+)[^*]*\*\*/);
+    const bands = cell.match(/하(\d+)(?:~(\d+))?\/중(\d+)(?:~(\d+))?\/상(\d+)(?:~(\d+))?/);
+    const storedRange = cell.match(/저장 `([\d.]+)~([\d.]+)`/);
+    const unit = cell.includes('저장 정수 f') ? 'frame' : /저장 정수 (발|개)/.test(cell) ? 'count' : cell.includes('저장 정수 분노') ? 'rage' : storedRange && cell.includes('%') ? 'percent' : null;
+    if (!range || Number(range[1]) !== proposal.min || Number(range[2]) !== proposal.max) documentErrors.push('roll_range_mismatch:' + proposal.effectId);
+    if (!bands || proposal.bands.some((band, i) => band.min !== Number(bands[i * 2 + 1]) || band.max !== Number(bands[i * 2 + 2] || bands[i * 2 + 1]))) documentErrors.push('roll_bands_mismatch:' + proposal.effectId);
+    if (unit !== proposal.unit) documentErrors.push('roll_unit_mismatch:' + proposal.effectId);
+    if (unit === 'percent' && (Number(storedRange[1]) !== toStoredValue(proposal.uniqueId, proposal.min) || Number(storedRange[2]) !== toStoredValue(proposal.uniqueId, proposal.max))) documentErrors.push('roll_storage_mismatch:' + proposal.effectId);
+    const first = rollValue(proposal.uniqueId, () => 0);
+    const last = rollValue(proposal.uniqueId, () => 1 - Number.EPSILON / 2);
+    if (first.raw !== proposal.min || last.raw !== proposal.max) documentErrors.push('roll_endpoint_mismatch:' + proposal.effectId);
+    for (let raw = proposal.min; raw <= proposal.max; raw++) {
+      const stored = JSON.parse(JSON.stringify(toStoredValue(proposal.uniqueId, raw)));
+      const description = describeRoll(proposal.uniqueId, raw);
+      if (fromStoredValue(proposal.uniqueId, stored) !== raw || description.stored !== stored || description.status !== 'proposal' || description.runtimeReady !== false) documentErrors.push('roll_roundtrip_mismatch:' + proposal.effectId + ':' + raw);
+      checkedValues++;
+    }
+    rollRows.push({ uniqueId: proposal.uniqueId, effectId: proposal.effectId, unit: proposal.unit, min: first.raw, max: last.raw, storedMin: first.stored, storedMax: last.stored, displayMin: first.text, displayMax: last.text });
   }
   const paths = UNIQUE_DEFINITIONS.flatMap(definition => [definition.art.originalPath, definition.art.candidatePath]);
   const artPaths = (await Promise.all(paths.map(async filename => {
@@ -50,6 +75,7 @@ export async function auditDefinitions(root = projectRoot) {
     runtimeReady: validation.canActivate,
     activeDefinitions: UNIQUE_DEFINITIONS.filter(definition => definition.enabled).length,
     sourceArtFound: artPaths.length,
+    rolls: { proposals: rollRows.length, checkedValues, rows: rollRows },
     documentErrors,
     issues: validation.issues,
     blockers: validation.blockers,

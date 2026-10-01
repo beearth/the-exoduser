@@ -1,0 +1,9 @@
+{
+  "at": "2026-10-01T13:51:29.969824+00:00",
+  "url": "http://127.0.0.1:3340/unique-item-project/definitions.js",
+  "status": 200,
+  "contentType": "application/javascript",
+  "bytes": 6908,
+  "httpSHA256": "3f04bcc5ac90b039454f32dc9323e60bbe44dda27be7fd439a97633d1f25118a",
+  "diskSHA256": "3f04bcc5ac90b039454f32dc9323e60bbe44dda27be7fd439a97633d1f25118a"
+}

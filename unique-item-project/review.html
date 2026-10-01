@@ -31,35 +31,43 @@
     <button type="button" data-target="64" aria-pressed="true">64px 슬롯</button>
     <button type="button" data-target="160" aria-pressed="false">160px 구조</button>
   </header>
-  <main id="items"></main>
+  <p id="review-status" role="status">정의를 불러오는 중입니다. 표시되지 않으면 HTTP로 이 개발 검토 화면을 열고 definitions.js 경로를 확인하세요.</p>
+  <main id="items" aria-busy="true"></main>
   <footer>원본 보존 경로: assets/unique-items/. 배경이 포함된 RGB 원화이므로 투명 아이콘·월드 드롭에 바로 쓰지 않습니다.</footer>
   <script>
-    const names = [
-      '반향의 장막','독심의 봉환','삼획의 맹세','빙편을 거두는 손','귀환자의 잔보','되감긴 고리',
-      '셋째 사슬의 고삐','혈흔을 따르는 날','쌍극의 회로','꺼지지 않는 심갑','체간을 깨는 추',
-      '성역의 숨결','번지는 뿌리의 띠','폭심의 씨앗','독을 기억하는 석궁','철거자의 명령',
-      '무중력의 왕관','흡성의 목걸이','증기 단조의 손','파열을 품은 견갑','돌아온 자의 흉갑','균열을 보는 눈'
-    ];
     const main = document.getElementById('items');
-    for (let i = 1; i <= names.length; i++) {
-      const id = String(i).padStart(2, '0');
+    const status = document.getElementById('review-status');
+    const slotNames = { cape: '망토', ring1: '반지 1', ring2: '반지 2', weapon: '무기', gloves: '장갑', boots: '장화', helmet: '투구', belt: '허리띠', bracelet: '팔찌', armor: '흉갑', shield: '견갑', necklace: '목걸이', bow: '활', headband: '귀걸이 1', headband2: '귀걸이 2' };
+    const weaponNames = { sword: '검', dagger: '단검', hammer: '해머', crossbow: '석궁' };
+    function appendDefinition(definition) {
       const article = document.createElement('article');
+      article.dataset.uniqueId = definition.uniqueId;
       const heading = document.createElement('h2');
-      heading.textContent = `UI-${id} · ${names[i - 1]}`;
+      heading.textContent = `${definition.uniqueId} · ${definition.catalogName}`;
+      const equipment = document.createElement('p');
+      equipment.className = 'equipment';
+      const type = definition.wtype || definition.btype;
+      equipment.textContent = `장착: ${definition.slots.map(slot => slotNames[slot] || slot).join(' / ')}${type ? ' · ' + (weaponNames[type] || type) : ''}`;
+      const effect = document.createElement('p');
+      effect.className = 'effect';
+      effect.textContent = `효과 제안: ${definition.effectId} · ${definition.effectStatus === 'unimplemented' ? '미구현' : definition.effectStatus}`;
+      const state = document.createElement('p');
+      state.className = 'proposal-state';
+      state.textContent = `정의: ${definition.status === 'proposal' ? '제안·미채택' : definition.status} · ${definition.enabled ? '활성' : '비활성'} · 원화: ${definition.art.accepted ? '채택' : '미채택'}`;
       const pair = document.createElement('div');
       pair.className = 'pair';
-      for (const [label, suffix] of [['기존 원화', ''], ['Seedream 후보', '-seedream-candidate']]) {
+      for (const [label, path] of [['기존 원화', definition.art.originalPath], ['Seedream 후보', definition.art.candidatePath]]) {
         const figure = document.createElement('figure');
         const caption = document.createElement('figcaption');
         caption.textContent = label;
         const img = document.createElement('img');
-        img.src = `../assets/unique-items/ui-${id}${suffix}.png`;
-        img.alt = `UI-${id} ${label}`;
+        img.src = `../${path}`;
+        img.alt = `${definition.uniqueId} ${definition.catalogName} ${label}`;
         img.loading = 'lazy';
         figure.append(caption, img);
         pair.append(figure);
       }
-      article.append(heading, pair);
+      article.append(heading, equipment, effect, state, pair);
       main.append(article);
     }
     for (const button of document.querySelectorAll('button[data-target]')) {
@@ -68,6 +76,15 @@
         for (const other of document.querySelectorAll('button[data-target]')) other.setAttribute('aria-pressed', String(other === button));
       });
     }
+    import('./definitions.js').then(({ UNIQUE_DEFINITIONS }) => {
+      for (const definition of UNIQUE_DEFINITIONS) appendDefinition(definition);
+      status.textContent = `${UNIQUE_DEFINITIONS.length}종 정의 · 개발 검토용입니다. 게임 등록·아트 채택 판정이 아닙니다.`;
+    }).catch(() => {
+      status.textContent = '정의를 불러오지 못했습니다. HTTP로 화면을 열고 definitions.js 경로와 모듈 응답을 확인하세요. 게임 적용이나 채택은 수행하지 않았습니다.';
+      status.setAttribute('role', 'alert');
+    }).finally(() => {
+      main.setAttribute('aria-busy', 'false');
+    });
   </script>
 </body>
 </html>

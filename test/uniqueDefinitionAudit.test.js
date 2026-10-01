@@ -13,6 +13,9 @@ test('real definition audit distinguishes valid proposals from runtime readiness
   assert.equal(result.structurallyValid, true);
   assert.equal(result.runtimeReady, false);
   assert.equal(result.activeDefinitions, 0);
+  assert.equal(result.rolls.proposals, 22);
+  assert.equal(result.rolls.checkedValues, 698);
+  assert.deepEqual(result.rolls.rows.find(row => row.uniqueId === 'UI-18'), { uniqueId: 'UI-18', effectId: 'U-D18', unit: 'percent', min: 1, max: 3, storedMin: .01, storedMax: .03, displayMin: '1%', displayMax: '3%' });
   assert.equal(result.blockers.length, 110);
   const file = new URL('../unique-item-project/audit-definitions.mjs', import.meta.url);
   for (const [args, exit] of [[[], 0], [['--require-ready'], 1]]) {
@@ -38,6 +41,10 @@ test('audit catches document drift instead of trusting a copied definition table
       [0, '| `weapon/sword` | UI-03', '| `weapon/dagger` | UI-03', 'contract_mismatch:UI-03'],
       [1, '| UI-01 | 반향의 장막 |', '| UI-01 | changed |', 'catalog_mismatch:UI-01'],
       [2, '`_uParryOrbEcho`', '`_uWrongReference`', 'effect_reference_mismatch:U-D01'],
+      [2, '**각 20~40%**', '**각 21~40%**', 'roll_range_mismatch:U-D01'],
+      [2, '하10~13/중14~16/상17~20%', '하10~12/중13~16/상17~20%', 'roll_bands_mismatch:U-D10'],
+      [2, '저장 `0.20~0.40`', '저장 `20~40`', 'roll_storage_mismatch:U-D01'],
+      [2, '저장 정수 f', '저장 정수 분노', 'roll_unit_mismatch:U-D03'],
     ]) {
       assert.ok(originals[i].includes(from));
       await writeFile(path.join(folder, names[i]), originals[i].replace(from, to));

@@ -1,0 +1,699 @@
+{
+  "definitions": 22,
+  "structurallyValid": true,
+  "runtimeReady": false,
+  "activeDefinitions": 0,
+  "sourceArtFound": 44,
+  "rolls": {
+    "proposals": 22,
+    "checkedValues": 698,
+    "rows": [
+      {
+        "uniqueId": "UI-01",
+        "effectId": "U-D01",
+        "unit": "percent",
+        "min": 20,
+        "max": 40,
+        "storedMin": 0.2,
+        "storedMax": 0.4,
+        "displayMin": "20%",
+        "displayMax": "40%"
+      },
+      {
+        "uniqueId": "UI-02",
+        "effectId": "U-D02",
+        "unit": "percent",
+        "min": 30,
+        "max": 50,
+        "storedMin": 0.3,
+        "storedMax": 0.5,
+        "displayMin": "30%",
+        "displayMax": "50%"
+      },
+      {
+        "uniqueId": "UI-03",
+        "effectId": "U-D03",
+        "unit": "frame",
+        "min": 20,
+        "max": 40,
+        "storedMin": 20,
+        "storedMax": 40,
+        "displayMin": "0.33초",
+        "displayMax": "0.67초"
+      },
+      {
+        "uniqueId": "UI-04",
+        "effectId": "U-D04",
+        "unit": "frame",
+        "min": 60,
+        "max": 180,
+        "storedMin": 60,
+        "storedMax": 180,
+        "displayMin": "1초",
+        "displayMax": "3초"
+      },
+      {
+        "uniqueId": "UI-05",
+        "effectId": "U-D05",
+        "unit": "percent",
+        "min": 10,
+        "max": 30,
+        "storedMin": 0.1,
+        "storedMax": 0.3,
+        "displayMin": "10%",
+        "displayMax": "30%"
+      },
+      {
+        "uniqueId": "UI-06",
+        "effectId": "U-D06",
+        "unit": "percent",
+        "min": 10,
+        "max": 30,
+        "storedMin": 0.1,
+        "storedMax": 0.3,
+        "displayMin": "10%",
+        "displayMax": "30%"
+      },
+      {
+        "uniqueId": "UI-07",
+        "effectId": "U-D07",
+        "unit": "percent",
+        "min": 20,
+        "max": 40,
+        "storedMin": 0.2,
+        "storedMax": 0.4,
+        "displayMin": "20%",
+        "displayMax": "40%"
+      },
+      {
+        "uniqueId": "UI-08",
+        "effectId": "U-D08",
+        "unit": "percent",
+        "min": 25,
+        "max": 45,
+        "storedMin": 0.25,
+        "storedMax": 0.45,
+        "displayMin": "25%",
+        "displayMax": "45%"
+      },
+      {
+        "uniqueId": "UI-09",
+        "effectId": "U-D09",
+        "unit": "percent",
+        "min": 20,
+        "max": 40,
+        "storedMin": 0.2,
+        "storedMax": 0.4,
+        "displayMin": "20%",
+        "displayMax": "40%"
+      },
+      {
+        "uniqueId": "UI-10",
+        "effectId": "U-D10",
+        "unit": "percent",
+        "min": 10,
+        "max": 20,
+        "storedMin": 0.1,
+        "storedMax": 0.2,
+        "displayMin": "10%",
+        "displayMax": "20%"
+      },
+      {
+        "uniqueId": "UI-11",
+        "effectId": "U-D11",
+        "unit": "frame",
+        "min": 120,
+        "max": 300,
+        "storedMin": 120,
+        "storedMax": 300,
+        "displayMin": "2초",
+        "displayMax": "5초"
+      },
+      {
+        "uniqueId": "UI-12",
+        "effectId": "U-D12",
+        "unit": "frame",
+        "min": 60,
+        "max": 120,
+        "storedMin": 60,
+        "storedMax": 120,
+        "displayMin": "1초",
+        "displayMax": "2초"
+      },
+      {
+        "uniqueId": "UI-13",
+        "effectId": "U-D13",
+        "unit": "percent",
+        "min": 20,
+        "max": 40,
+        "storedMin": 0.2,
+        "storedMax": 0.4,
+        "displayMin": "20%",
+        "displayMax": "40%"
+      },
+      {
+        "uniqueId": "UI-14",
+        "effectId": "U-D14",
+        "unit": "percent",
+        "min": 20,
+        "max": 40,
+        "storedMin": 0.2,
+        "storedMax": 0.4,
+        "displayMin": "20%",
+        "displayMax": "40%"
+      },
+      {
+        "uniqueId": "UI-15",
+        "effectId": "U-D15",
+        "unit": "percent",
+        "min": 25,
+        "max": 45,
+        "storedMin": 0.25,
+        "storedMax": 0.45,
+        "displayMin": "25%",
+        "displayMax": "45%"
+      },
+      {
+        "uniqueId": "UI-16",
+        "effectId": "U-D16",
+        "unit": "count",
+        "min": 2,
+        "max": 4,
+        "storedMin": 2,
+        "storedMax": 4,
+        "displayMin": "2발",
+        "displayMax": "4발"
+      },
+      {
+        "uniqueId": "UI-17",
+        "effectId": "U-D17",
+        "unit": "count",
+        "min": 1,
+        "max": 3,
+        "storedMin": 1,
+        "storedMax": 3,
+        "displayMin": "1개",
+        "displayMax": "3개"
+      },
+      {
+        "uniqueId": "UI-18",
+        "effectId": "U-D18",
+        "unit": "percent",
+        "min": 1,
+        "max": 3,
+        "storedMin": 0.01,
+        "storedMax": 0.03,
+        "displayMin": "1%",
+        "displayMax": "3%"
+      },
+      {
+        "uniqueId": "UI-19",
+        "effectId": "U-D19",
+        "unit": "percent",
+        "min": 20,
+        "max": 40,
+        "storedMin": 0.2,
+        "storedMax": 0.4,
+        "displayMin": "20%",
+        "displayMax": "40%"
+      },
+      {
+        "uniqueId": "UI-20",
+        "effectId": "U-D20",
+        "unit": "percent",
+        "min": 20,
+        "max": 40,
+        "storedMin": 0.2,
+        "storedMax": 0.4,
+        "displayMin": "20%",
+        "displayMax": "40%"
+      },
+      {
+        "uniqueId": "UI-21",
+        "effectId": "U-D21",
+        "unit": "rage",
+        "min": 20,
+        "max": 40,
+        "storedMin": 20,
+        "storedMax": 40,
+        "displayMin": "20분노",
+        "displayMax": "40분노"
+      },
+      {
+        "uniqueId": "UI-22",
+        "effectId": "U-D22",
+        "unit": "percent",
+        "min": 20,
+        "max": 40,
+        "storedMin": 0.2,
+        "storedMax": 0.4,
+        "displayMin": "20%",
+        "displayMax": "40%"
+      }
+    ]
+  },
+  "documentErrors": [],
+  "issues": [],
+  "blockers": [
+    {
+      "code": "effect_unimplemented",
+      "uniqueId": "UI-01"
+    },
+    {
+      "code": "translation_unregistered",
+      "uniqueId": "UI-01"
+    },
+    {
+      "code": "missing_runtime_art",
+      "uniqueId": "UI-01"
+    },
+    {
+      "code": "art_unaccepted",
+      "uniqueId": "UI-01"
+    },
+    {
+      "code": "proposal_not_activatable",
+      "uniqueId": "UI-01"
+    },
+    {
+      "code": "effect_unimplemented",
+      "uniqueId": "UI-02"
+    },
+    {
+      "code": "translation_unregistered",
+      "uniqueId": "UI-02"
+    },
+    {
+      "code": "missing_runtime_art",
+      "uniqueId": "UI-02"
+    },
+    {
+      "code": "art_unaccepted",
+      "uniqueId": "UI-02"
+    },
+    {
+      "code": "proposal_not_activatable",
+      "uniqueId": "UI-02"
+    },
+    {
+      "code": "effect_unimplemented",
+      "uniqueId": "UI-03"
+    },
+    {
+      "code": "translation_unregistered",
+      "uniqueId": "UI-03"
+    },
+    {
+      "code": "missing_runtime_art",
+      "uniqueId": "UI-03"
+    },
+    {
+      "code": "art_unaccepted",
+      "uniqueId": "UI-03"
+    },
+    {
+      "code": "proposal_not_activatable",
+      "uniqueId": "UI-03"
+    },
+    {
+      "code": "effect_unimplemented",
+      "uniqueId": "UI-04"
+    },
+    {
+      "code": "translation_unregistered",
+      "uniqueId": "UI-04"
+    },
+    {
+      "code": "missing_runtime_art",
+      "uniqueId": "UI-04"
+    },
+    {
+      "code": "art_unaccepted",
+      "uniqueId": "UI-04"
+    },
+    {
+      "code": "proposal_not_activatable",
+      "uniqueId": "UI-04"
+    },
+    {
+      "code": "effect_unimplemented",
+      "uniqueId": "UI-05"
+    },
+    {
+      "code": "translation_unregistered",
+      "uniqueId": "UI-05"
+    },
+    {
+      "code": "missing_runtime_art",
+      "uniqueId": "UI-05"
+    },
+    {
+      "code": "art_unaccepted",
+      "uniqueId": "UI-05"
+    },
+    {
+      "code": "proposal_not_activatable",
+      "uniqueId": "UI-05"
+    },
+    {
+      "code": "effect_unimplemented",
+      "uniqueId": "UI-06"
+    },
+    {
+      "code": "translation_unregistered",
+      "uniqueId": "UI-06"
+    },
+    {
+      "code": "missing_runtime_art",
+      "uniqueId": "UI-06"
+    },
+    {
+      "code": "art_unaccepted",
+      "uniqueId": "UI-06"
+    },
+    {
+      "code": "proposal_not_activatable",
+      "uniqueId": "UI-06"
+    },
+    {
+      "code": "effect_unimplemented",
+      "uniqueId": "UI-07"
+    },
+    {
+      "code": "translation_unregistered",
+      "uniqueId": "UI-07"
+    },
+    {
+      "code": "missing_runtime_art",
+      "uniqueId": "UI-07"
+    },
+    {
+      "code": "art_unaccepted",
+      "uniqueId": "UI-07"
+    },
+    {
+      "code": "proposal_not_activatable",
+      "uniqueId": "UI-07"
+    },
+    {
+      "code": "effect_unimplemented",
+      "uniqueId": "UI-08"
+    },
+    {
+      "code": "translation_unregistered",
+      "uniqueId": "UI-08"
+    },
+    {
+      "code": "missing_runtime_art",
+      "uniqueId": "UI-08"
+    },
+    {
+      "code": "art_unaccepted",
+      "uniqueId": "UI-08"
+    },
+    {
+      "code": "proposal_not_activatable",
+      "uniqueId": "UI-08"
+    },
+    {
+      "code": "effect_unimplemented",
+      "uniqueId": "UI-09"
+    },
+    {
+      "code": "translation_unregistered",
+      "uniqueId": "UI-09"
+    },
+    {
+      "code": "missing_runtime_art",
+      "uniqueId": "UI-09"
+    },
+    {
+      "code": "art_unaccepted",
+      "uniqueId": "UI-09"
+    },
+    {
+      "code": "proposal_not_activatable",
+      "uniqueId": "UI-09"
+    },
+    {
+      "code": "effect_unimplemented",
+      "uniqueId": "UI-10"
+    },
+    {
+      "code": "translation_unregistered",
+      "uniqueId": "UI-10"
+    },
+    {
+      "code": "missing_runtime_art",
+      "uniqueId": "UI-10"
+    },
+    {
+      "code": "art_unaccepted",
+      "uniqueId": "UI-10"
+    },
+    {
+      "code": "proposal_not_activatable",
+      "uniqueId": "UI-10"
+    },
+    {
+      "code": "effect_unimplemented",
+      "uniqueId": "UI-11"
+    },
+    {
+      "code": "translation_unregistered",
+      "uniqueId": "UI-11"
+    },
+    {
+      "code": "missing_runtime_art",
+      "uniqueId": "UI-11"
+    },
+    {
+      "code": "art_unaccepted",
+      "uniqueId": "UI-11"
+    },
+    {
+      "code": "proposal_not_activatable",
+      "uniqueId": "UI-11"
+    },
+    {
+      "code": "effect_unimplemented",
+      "uniqueId": "UI-12"
+    },
+    {
+      "code": "translation_unregistered",
+      "uniqueId": "UI-12"
+    },
+    {
+      "code": "missing_runtime_art",
+      "uniqueId": "UI-12"
+    },
+    {
+      "code": "art_unaccepted",
+      "uniqueId": "UI-12"
+    },
+    {
+      "code": "proposal_not_activatable",
+      "uniqueId": "UI-12"
+    },
+    {
+      "code": "effect_unimplemented",
+      "uniqueId": "UI-13"
+    },
+    {
+      "code": "translation_unregistered",
+      "uniqueId": "UI-13"
+    },
+    {
+      "code": "missing_runtime_art",
+      "uniqueId": "UI-13"
+    },
+    {
+      "code": "art_unaccepted",
+      "uniqueId": "UI-13"
+    },
+    {
+      "code": "proposal_not_activatable",
+      "uniqueId": "UI-13"
+    },
+    {
+      "code": "effect_unimplemented",
+      "uniqueId": "UI-14"
+    },
+    {
+      "code": "translation_unregistered",
+      "uniqueId": "UI-14"
+    },
+    {
+      "code": "missing_runtime_art",
+      "uniqueId": "UI-14"
+    },
+    {
+      "code": "art_unaccepted",
+      "uniqueId": "UI-14"
+    },
+    {
+      "code": "proposal_not_activatable",
+      "uniqueId": "UI-14"
+    },
+    {
+      "code": "effect_unimplemented",
+      "uniqueId": "UI-15"
+    },
+    {
+      "code": "translation_unregistered",
+      "uniqueId": "UI-15"
+    },
+    {
+      "code": "missing_runtime_art",
+      "uniqueId": "UI-15"
+    },
+    {
+      "code": "art_unaccepted",
+      "uniqueId": "UI-15"
+    },
+    {
+      "code": "proposal_not_activatable",
+      "uniqueId": "UI-15"
+    },
+    {
+      "code": "effect_unimplemented",
+      "uniqueId": "UI-16"
+    },
+    {
+      "code": "translation_unregistered",
+      "uniqueId": "UI-16"
+    },
+    {
+      "code": "missing_runtime_art",
+      "uniqueId": "UI-16"
+    },
+    {
+      "code": "art_unaccepted",
+      "uniqueId": "UI-16"
+    },
+    {
+      "code": "proposal_not_activatable",
+      "uniqueId": "UI-16"
+    },
+    {
+      "code": "effect_unimplemented",
+      "uniqueId": "UI-17"
+    },
+    {
+      "code": "translation_unregistered",
+      "uniqueId": "UI-17"
+    },
+    {
+      "code": "missing_runtime_art",
+      "uniqueId": "UI-17"
+    },
+    {
+      "code": "art_unaccepted",
+      "uniqueId": "UI-17"
+    },
+    {
+      "code": "proposal_not_activatable",
+      "uniqueId": "UI-17"
+    },
+    {
+      "code": "effect_unimplemented",
+      "uniqueId": "UI-18"
+    },
+    {
+      "code": "translation_unregistered",
+      "uniqueId": "UI-18"
+    },
+    {
+      "code": "missing_runtime_art",
+      "uniqueId": "UI-18"
+    },
+    {
+      "code": "art_unaccepted",
+      "uniqueId": "UI-18"
+    },
+    {
+      "code": "proposal_not_activatable",
+      "uniqueId": "UI-18"
+    },
+    {
+      "code": "effect_unimplemented",
+      "uniqueId": "UI-19"
+    },
+    {
+      "code": "translation_unregistered",
+      "uniqueId": "UI-19"
+    },
+    {
+      "code": "missing_runtime_art",
+      "uniqueId": "UI-19"
+    },
+    {
+      "code": "art_unaccepted",
+      "uniqueId": "UI-19"
+    },
+    {
+      "code": "proposal_not_activatable",
+      "uniqueId": "UI-19"
+    },
+    {
+      "code": "effect_unimplemented",
+      "uniqueId": "UI-20"
+    },
+    {
+      "code": "translation_unregistered",
+      "uniqueId": "UI-20"
+    },
+    {
+      "code": "missing_runtime_art",
+      "uniqueId": "UI-20"
+    },
+    {
+      "code": "art_unaccepted",
+      "uniqueId": "UI-20"
+    },
+    {
+      "code": "proposal_not_activatable",
+      "uniqueId": "UI-20"
+    },
+    {
+      "code": "effect_unimplemented",
+      "uniqueId": "UI-21"
+    },
+    {
+      "code": "translation_unregistered",
+      "uniqueId": "UI-21"
+    },
+    {
+      "code": "missing_runtime_art",
+      "uniqueId": "UI-21"
+    },
+    {
+      "code": "art_unaccepted",
+      "uniqueId": "UI-21"
+    },
+    {
+      "code": "proposal_not_activatable",
+      "uniqueId": "UI-21"
+    },
+    {
+      "code": "effect_unimplemented",
+      "uniqueId": "UI-22"
+    },
+    {
+      "code": "translation_unregistered",
+      "uniqueId": "UI-22"
+    },
+    {
+      "code": "missing_runtime_art",
+      "uniqueId": "UI-22"
+    },
+    {
+      "code": "art_unaccepted",
+      "uniqueId": "UI-22"
+    },
+    {
+      "code": "proposal_not_activatable",
+      "uniqueId": "UI-22"
+    }
+  ]
+}

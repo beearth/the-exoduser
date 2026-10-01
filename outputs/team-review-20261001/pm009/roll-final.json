@@ -1,0 +1,3291 @@
+{
+  "runtimeReady": false,
+  "status": "proposal",
+  "hashes": {
+    "unique-item-project/roll-values.mjs": "103d0460c738c117840586780eaaed7be7ebe0aba61fa50464db9d004b094975",
+    "unique-item-project/definitions.js": "3f04bcc5ac90b039454f32dc9323e60bbe44dda27be7fd439a97633d1f25118a",
+    "test/uniqueRollValues.test.js": "8a0079a0afa487b4d0f3b6e79dd83a10b91f21b80f532dd775eef2afe5090268",
+    "docs/7아이템디자인/유니크_어픽스_리스트.md": "345c7b89f3b7f92e8fdd93c2c86ec1bf05e74416d1c98567f3494814657cbc08"
+  },
+  "integerValues": 698,
+  "proposals": [
+    {
+      "uniqueId": "UI-01",
+      "effectId": "U-D01",
+      "stat": "_uParryOrbEcho",
+      "unit": "percent",
+      "min": 20,
+      "max": 40,
+      "status": "proposal",
+      "runtimeReady": false,
+      "bands": [
+        {
+          "label": "하옵",
+          "min": 20,
+          "max": 26
+        },
+        {
+          "label": "중옵",
+          "min": 27,
+          "max": 33
+        },
+        {
+          "label": "상옵",
+          "min": 34,
+          "max": 40
+        }
+      ],
+      "examples": [
+        {
+          "first": {
+            "uniqueId": "UI-01",
+            "effectId": "U-D01",
+            "stat": "_uParryOrbEcho",
+            "raw": 20,
+            "stored": 0.2,
+            "unit": "percent",
+            "band": "하옵",
+            "displayValue": 20,
+            "displayUnit": "%",
+            "text": "20%",
+            "exactDisplay": {
+              "numerator": 20,
+              "denominator": 1
+            },
+            "displayRule": "정수 원값",
+            "status": "proposal",
+            "runtimeReady": false
+          },
+          "last": {
+            "uniqueId": "UI-01",
+            "effectId": "U-D01",
+            "stat": "_uParryOrbEcho",
+            "raw": 26,
+            "stored": 0.26,
+            "unit": "percent",
+            "band": "하옵",
+            "displayValue": 26,
+            "displayUnit": "%",
+            "text": "26%",
+            "exactDisplay": {
+              "numerator": 26,
+              "denominator": 1
+            },
+            "displayRule": "정수 원값",
+            "status": "proposal",
+            "runtimeReady": false
+          }
+        },
+        {
+          "first": {
+            "uniqueId": "UI-01",
+            "effectId": "U-D01",
+            "stat": "_uParryOrbEcho",
+            "raw": 27,
+            "stored": 0.27,
+            "unit": "percent",
+            "band": "중옵",
+            "displayValue": 27,
+            "displayUnit": "%",
+            "text": "27%",
+            "exactDisplay": {
+              "numerator": 27,
+              "denominator": 1
+            },
+            "displayRule": "정수 원값",
+            "status": "proposal",
+            "runtimeReady": false
+          },
+          "last": {
+            "uniqueId": "UI-01",
+            "effectId": "U-D01",
+            "stat": "_uParryOrbEcho",
+            "raw": 33,
+            "stored": 0.33,
+            "unit": "percent",
+            "band": "중옵",
+            "displayValue": 33,
+            "displayUnit": "%",
+            "text": "33%",
+            "exactDisplay": {
+              "numerator": 33,
+              "denominator": 1
+            },
+            "displayRule": "정수 원값",
+            "status": "proposal",
+            "runtimeReady": false
+          }
+        },
+        {
+          "first": {
+            "uniqueId": "UI-01",
+            "effectId": "U-D01",
+            "stat": "_uParryOrbEcho",
+            "raw": 34,
+            "stored": 0.34,
+            "unit": "percent",
+            "band": "상옵",
+            "displayValue": 34,
+            "displayUnit": "%",
+            "text": "34%",
+            "exactDisplay": {
+              "numerator": 34,
+              "denominator": 1
+            },
+            "displayRule": "정수 원값",
+            "status": "proposal",
+            "runtimeReady": false
+          },
+          "last": {
+            "uniqueId": "UI-01",
+            "effectId": "U-D01",
+            "stat": "_uParryOrbEcho",
+            "raw": 40,
+            "stored": 0.4,
+            "unit": "percent",
+            "band": "상옵",
+            "displayValue": 40,
+            "displayUnit": "%",
+            "text": "40%",
+            "exactDisplay": {
+              "numerator": 40,
+              "denominator": 1
+            },
+            "displayRule": "정수 원값",
+            "status": "proposal",
+            "runtimeReady": false
+          }
+        }
+      ]
+    },
+    {
+      "uniqueId": "UI-02",
+      "effectId": "U-D02",
+      "stat": "_uOrbPoisonBurst",
+      "unit": "percent",
+      "min": 30,
+      "max": 50,
+      "status": "proposal",
+      "runtimeReady": false,
+      "bands": [
+        {
+          "label": "하옵",
+          "min": 30,
+          "max": 36
+        },
+        {
+          "label": "중옵",
+          "min": 37,
+          "max": 43
+        },
+        {
+          "label": "상옵",
+          "min": 44,
+          "max": 50
+        }
+      ],
+      "examples": [
+        {
+          "first": {
+            "uniqueId": "UI-02",
+            "effectId": "U-D02",
+            "stat": "_uOrbPoisonBurst",
+            "raw": 30,
+            "stored": 0.3,
+            "unit": "percent",
+            "band": "하옵",
+            "displayValue": 30,
+            "displayUnit": "%",
+            "text": "30%",
+            "exactDisplay": {
+              "numerator": 30,
+              "denominator": 1
+            },
+            "displayRule": "정수 원값",
+            "status": "proposal",
+            "runtimeReady": false
+          },
+          "last": {
+            "uniqueId": "UI-02",
+            "effectId": "U-D02",
+            "stat": "_uOrbPoisonBurst",
+            "raw": 36,
+            "stored": 0.36,
+            "unit": "percent",
+            "band": "하옵",
+            "displayValue": 36,
+            "displayUnit": "%",
+            "text": "36%",
+            "exactDisplay": {
+              "numerator": 36,
+              "denominator": 1
+            },
+            "displayRule": "정수 원값",
+            "status": "proposal",
+            "runtimeReady": false
+          }
+        },
+        {
+          "first": {
+            "uniqueId": "UI-02",
+            "effectId": "U-D02",
+            "stat": "_uOrbPoisonBurst",
+            "raw": 37,
+            "stored": 0.37,
+            "unit": "percent",
+            "band": "중옵",
+            "displayValue": 37,
+            "displayUnit": "%",
+            "text": "37%",
+            "exactDisplay": {
+              "numerator": 37,
+              "denominator": 1
+            },
+            "displayRule": "정수 원값",
+            "status": "proposal",
+            "runtimeReady": false
+          },
+          "last": {
+            "uniqueId": "UI-02",
+            "effectId": "U-D02",
+            "stat": "_uOrbPoisonBurst",
+            "raw": 43,
+            "stored": 0.43,
+            "unit": "percent",
+            "band": "중옵",
+            "displayValue": 43,
+            "displayUnit": "%",
+            "text": "43%",
+            "exactDisplay": {
+              "numerator": 43,
+              "denominator": 1
+            },
+            "displayRule": "정수 원값",
+            "status": "proposal",
+            "runtimeReady": false
+          }
+        },
+        {
+          "first": {
+            "uniqueId": "UI-02",
+            "effectId": "U-D02",
+            "stat": "_uOrbPoisonBurst",
+            "raw": 44,
+            "stored": 0.44,
+            "unit": "percent",
+            "band": "상옵",
+            "displayValue": 44,
+            "displayUnit": "%",
+            "text": "44%",
+            "exactDisplay": {
+              "numerator": 44,
+              "denominator": 1
+            },
+            "displayRule": "정수 원값",
+            "status": "proposal",
+            "runtimeReady": false
+          },
+          "last": {
+            "uniqueId": "UI-02",
+            "effectId": "U-D02",
+            "stat": "_uOrbPoisonBurst",
+            "raw": 50,
+            "stored": 0.5,
+            "unit": "percent",
+            "band": "상옵",
+            "displayValue": 50,
+            "displayUnit": "%",
+            "text": "50%",
+            "exactDisplay": {
+              "numerator": 50,
+              "denominator": 1
+            },
+            "displayRule": "정수 원값",
+            "status": "proposal",
+            "runtimeReady": false
+          }
+        }
+      ]
+    },
+    {
+      "uniqueId": "UI-03",
+      "effectId": "U-D03",
+      "stat": "_uKiPrecharge",
+      "unit": "frame",
+      "min": 20,
+      "max": 40,
+      "status": "proposal",
+      "runtimeReady": false,
+      "bands": [
+        {
+          "label": "하옵",
+          "min": 20,
+          "max": 26
+        },
+        {
+          "label": "중옵",
+          "min": 27,
+          "max": 33
+        },
+        {
+          "label": "상옵",
+          "min": 34,
+          "max": 40
+        }
+      ],
+      "examples": [
+        {
+          "first": {
+            "uniqueId": "UI-03",
+            "effectId": "U-D03",
+            "stat": "_uKiPrecharge",
+            "raw": 20,
+            "stored": 20,
+            "unit": "frame",
+            "band": "하옵",
+            "displayValue": 0.33,
+            "displayUnit": "초",
+            "text": "0.33초",
+            "exactDisplay": {
+              "numerator": 20,
+              "denominator": 60
+            },
+            "displayRule": "raw/60.toFixed(2), 끝자리0 생략; JS 이진부동소수 반올림",
+            "status": "proposal",
+            "runtimeReady": false
+          },
+          "last": {
+            "uniqueId": "UI-03",
+            "effectId": "U-D03",
+            "stat": "_uKiPrecharge",
+            "raw": 26,
+            "stored": 26,
+            "unit": "frame",
+            "band": "하옵",
+            "displayValue": 0.43,
+            "displayUnit": "초",
+            "text": "0.43초",
+            "exactDisplay": {
+              "numerator": 26,
+              "denominator": 60
+            },
+            "displayRule": "raw/60.toFixed(2), 끝자리0 생략; JS 이진부동소수 반올림",
+            "status": "proposal",
+            "runtimeReady": false
+          }
+        },
+        {
+          "first": {
+            "uniqueId": "UI-03",
+            "effectId": "U-D03",
+            "stat": "_uKiPrecharge",
+            "raw": 27,
+            "stored": 27,
+            "unit": "frame",
+            "band": "중옵",
+            "displayValue": 0.45,
+            "displayUnit": "초",
+            "text": "0.45초",
+            "exactDisplay": {
+              "numerator": 27,
+              "denominator": 60
+            },
+            "displayRule": "raw/60.toFixed(2), 끝자리0 생략; JS 이진부동소수 반올림",
+            "status": "proposal",
+            "runtimeReady": false
+          },
+          "last": {
+            "uniqueId": "UI-03",
+            "effectId": "U-D03",
+            "stat": "_uKiPrecharge",
+            "raw": 33,
+            "stored": 33,
+            "unit": "frame",
+            "band": "중옵",
+            "displayValue": 0.55,
+            "displayUnit": "초",
+            "text": "0.55초",
+            "exactDisplay": {
+              "numerator": 33,
+              "denominator": 60
+            },
+            "displayRule": "raw/60.toFixed(2), 끝자리0 생략; JS 이진부동소수 반올림",
+            "status": "proposal",
+            "runtimeReady": false
+          }
+        },
+        {
+          "first": {
+            "uniqueId": "UI-03",
+            "effectId": "U-D03",
+            "stat": "_uKiPrecharge",
+            "raw": 34,
+            "stored": 34,
+            "unit": "frame",
+            "band": "상옵",
+            "displayValue": 0.57,
+            "displayUnit": "초",
+            "text": "0.57초",
+            "exactDisplay": {
+              "numerator": 34,
+              "denominator": 60
+            },
+            "displayRule": "raw/60.toFixed(2), 끝자리0 생략; JS 이진부동소수 반올림",
+            "status": "proposal",
+            "runtimeReady": false
+          },
+          "last": {
+            "uniqueId": "UI-03",
+            "effectId": "U-D03",
+            "stat": "_uKiPrecharge",
+            "raw": 40,
+            "stored": 40,
+            "unit": "frame",
+            "band": "상옵",
+            "displayValue": 0.67,
+            "displayUnit": "초",
+            "text": "0.67초",
+            "exactDisplay": {
+              "numerator": 40,
+              "denominator": 60
+            },
+            "displayRule": "raw/60.toFixed(2), 끝자리0 생략; JS 이진부동소수 반올림",
+            "status": "proposal",
+            "runtimeReady": false
+          }
+        }
+      ]
+    },
+    {
+      "uniqueId": "UI-04",
+      "effectId": "U-D04",
+      "stat": "_uIceShatterRefund",
+      "unit": "frame",
+      "min": 60,
+      "max": 180,
+      "status": "proposal",
+      "runtimeReady": false,
+      "bands": [
+        {
+          "label": "하옵",
+          "min": 60,
+          "max": 100
+        },
+        {
+          "label": "중옵",
+          "min": 101,
+          "max": 140
+        },
+        {
+          "label": "상옵",
+          "min": 141,
+          "max": 180
+        }
+      ],
+      "examples": [
+        {
+          "first": {
+            "uniqueId": "UI-04",
+            "effectId": "U-D04",
+            "stat": "_uIceShatterRefund",
+            "raw": 60,
+            "stored": 60,
+            "unit": "frame",
+            "band": "하옵",
+            "displayValue": 1,
+            "displayUnit": "초",
+            "text": "1초",
+            "exactDisplay": {
+              "numerator": 60,
+              "denominator": 60
+            },
+            "displayRule": "raw/60.toFixed(2), 끝자리0 생략; JS 이진부동소수 반올림",
+            "status": "proposal",
+            "runtimeReady": false
+          },
+          "last": {
+            "uniqueId": "UI-04",
+            "effectId": "U-D04",
+            "stat": "_uIceShatterRefund",
+            "raw": 100,
+            "stored": 100,
+            "unit": "frame",
+            "band": "하옵",
+            "displayValue": 1.67,
+            "displayUnit": "초",
+            "text": "1.67초",
+            "exactDisplay": {
+              "numerator": 100,
+              "denominator": 60
+            },
+            "displayRule": "raw/60.toFixed(2), 끝자리0 생략; JS 이진부동소수 반올림",
+            "status": "proposal",
+            "runtimeReady": false
+          }
+        },
+        {
+          "first": {
+            "uniqueId": "UI-04",
+            "effectId": "U-D04",
+            "stat": "_uIceShatterRefund",
+            "raw": 101,
+            "stored": 101,
+            "unit": "frame",
+            "band": "중옵",
+            "displayValue": 1.68,
+            "displayUnit": "초",
+            "text": "1.68초",
+            "exactDisplay": {
+              "numerator": 101,
+              "denominator": 60
+            },
+            "displayRule": "raw/60.toFixed(2), 끝자리0 생략; JS 이진부동소수 반올림",
+            "status": "proposal",
+            "runtimeReady": false
+          },
+          "last": {
+            "uniqueId": "UI-04",
+            "effectId": "U-D04",
+            "stat": "_uIceShatterRefund",
+            "raw": 140,
+            "stored": 140,
+            "unit": "frame",
+            "band": "중옵",
+            "displayValue": 2.33,
+            "displayUnit": "초",
+            "text": "2.33초",
+            "exactDisplay": {
+              "numerator": 140,
+              "denominator": 60
+            },
+            "displayRule": "raw/60.toFixed(2), 끝자리0 생략; JS 이진부동소수 반올림",
+            "status": "proposal",
+            "runtimeReady": false
+          }
+        },
+        {
+          "first": {
+            "uniqueId": "UI-04",
+            "effectId": "U-D04",
+            "stat": "_uIceShatterRefund",
+            "raw": 141,
+            "stored": 141,
+            "unit": "frame",
+            "band": "상옵",
+            "displayValue": 2.35,
+            "displayUnit": "초",
+            "text": "2.35초",
+            "exactDisplay": {
+              "numerator": 141,
+              "denominator": 60
+            },
+            "displayRule": "raw/60.toFixed(2), 끝자리0 생략; JS 이진부동소수 반올림",
+            "status": "proposal",
+            "runtimeReady": false
+          },
+          "last": {
+            "uniqueId": "UI-04",
+            "effectId": "U-D04",
+            "stat": "_uIceShatterRefund",
+            "raw": 180,
+            "stored": 180,
+            "unit": "frame",
+            "band": "상옵",
+            "displayValue": 3,
+            "displayUnit": "초",
+            "text": "3초",
+            "exactDisplay": {
+              "numerator": 180,
+              "denominator": 60
+            },
+            "displayRule": "raw/60.toFixed(2), 끝자리0 생략; JS 이진부동소수 반올림",
+            "status": "proposal",
+            "runtimeReady": false
+          }
+        }
+      ]
+    },
+    {
+      "uniqueId": "UI-05",
+      "effectId": "U-D05",
+      "stat": "_uGhostFuel",
+      "unit": "percent",
+      "min": 10,
+      "max": 30,
+      "status": "proposal",
+      "runtimeReady": false,
+      "bands": [
+        {
+          "label": "하옵",
+          "min": 10,
+          "max": 16
+        },
+        {
+          "label": "중옵",
+          "min": 17,
+          "max": 23
+        },
+        {
+          "label": "상옵",
+          "min": 24,
+          "max": 30
+        }
+      ],
+      "examples": [
+        {
+          "first": {
+            "uniqueId": "UI-05",
+            "effectId": "U-D05",
+            "stat": "_uGhostFuel",
+            "raw": 10,
+            "stored": 0.1,
+            "unit": "percent",
+            "band": "하옵",
+            "displayValue": 10,
+            "displayUnit": "%",
+            "text": "10%",
+            "exactDisplay": {
+              "numerator": 10,
+              "denominator": 1
+            },
+            "displayRule": "정수 원값",
+            "status": "proposal",
+            "runtimeReady": false
+          },
+          "last": {
+            "uniqueId": "UI-05",
+            "effectId": "U-D05",
+            "stat": "_uGhostFuel",
+            "raw": 16,
+            "stored": 0.16,
+            "unit": "percent",
+            "band": "하옵",
+            "displayValue": 16,
+            "displayUnit": "%",
+            "text": "16%",
+            "exactDisplay": {
+              "numerator": 16,
+              "denominator": 1
+            },
+            "displayRule": "정수 원값",
+            "status": "proposal",
+            "runtimeReady": false
+          }
+        },
+        {
+          "first": {
+            "uniqueId": "UI-05",
+            "effectId": "U-D05",
+            "stat": "_uGhostFuel",
+            "raw": 17,
+            "stored": 0.17,
+            "unit": "percent",
+            "band": "중옵",
+            "displayValue": 17,
+            "displayUnit": "%",
+            "text": "17%",
+            "exactDisplay": {
+              "numerator": 17,
+              "denominator": 1
+            },
+            "displayRule": "정수 원값",
+            "status": "proposal",
+            "runtimeReady": false
+          },
+          "last": {
+            "uniqueId": "UI-05",
+            "effectId": "U-D05",
+            "stat": "_uGhostFuel",
+            "raw": 23,
+            "stored": 0.23,
+            "unit": "percent",
+            "band": "중옵",
+            "displayValue": 23,
+            "displayUnit": "%",
+            "text": "23%",
+            "exactDisplay": {
+              "numerator": 23,
+              "denominator": 1
+            },
+            "displayRule": "정수 원값",
+            "status": "proposal",
+            "runtimeReady": false
+          }
+        },
+        {
+          "first": {
+            "uniqueId": "UI-05",
+            "effectId": "U-D05",
+            "stat": "_uGhostFuel",
+            "raw": 24,
+            "stored": 0.24,
+            "unit": "percent",
+            "band": "상옵",
+            "displayValue": 24,
+            "displayUnit": "%",
+            "text": "24%",
+            "exactDisplay": {
+              "numerator": 24,
+              "denominator": 1
+            },
+            "displayRule": "정수 원값",
+            "status": "proposal",
+            "runtimeReady": false
+          },
+          "last": {
+            "uniqueId": "UI-05",
+            "effectId": "U-D05",
+            "stat": "_uGhostFuel",
+            "raw": 30,
+            "stored": 0.3,
+            "unit": "percent",
+            "band": "상옵",
+            "displayValue": 30,
+            "displayUnit": "%",
+            "text": "30%",
+            "exactDisplay": {
+              "numerator": 30,
+              "denominator": 1
+            },
+            "displayRule": "정수 원값",
+            "status": "proposal",
+            "runtimeReady": false
+          }
+        }
+      ]
+    },
+    {
+      "uniqueId": "UI-06",
+      "effectId": "U-D06",
+      "stat": "_uWarpStepRefund",
+      "unit": "percent",
+      "min": 10,
+      "max": 30,
+      "status": "proposal",
+      "runtimeReady": false,
+      "bands": [
+        {
+          "label": "하옵",
+          "min": 10,
+          "max": 16
+        },
+        {
+          "label": "중옵",
+          "min": 17,
+          "max": 23
+        },
+        {
+          "label": "상옵",
+          "min": 24,
+          "max": 30
+        }
+      ],
+      "examples": [
+        {
+          "first": {
+            "uniqueId": "UI-06",
+            "effectId": "U-D06",
+            "stat": "_uWarpStepRefund",
+            "raw": 10,
+            "stored": 0.1,
+            "unit": "percent",
+            "band": "하옵",
+            "displayValue": 10,
+            "displayUnit": "%",
+            "text": "10%",
+            "exactDisplay": {
+              "numerator": 10,
+              "denominator": 1
+            },
+            "displayRule": "정수 원값",
+            "status": "proposal",
+            "runtimeReady": false
+          },
+          "last": {
+            "uniqueId": "UI-06",
+            "effectId": "U-D06",
+            "stat": "_uWarpStepRefund",
+            "raw": 16,
+            "stored": 0.16,
+            "unit": "percent",
+            "band": "하옵",
+            "displayValue": 16,
+            "displayUnit": "%",
+            "text": "16%",
+            "exactDisplay": {
+              "numerator": 16,
+              "denominator": 1
+            },
+            "displayRule": "정수 원값",
+            "status": "proposal",
+            "runtimeReady": false
+          }
+        },
+        {
+          "first": {
+            "uniqueId": "UI-06",
+            "effectId": "U-D06",
+            "stat": "_uWarpStepRefund",
+            "raw": 17,
+            "stored": 0.17,
+            "unit": "percent",
+            "band": "중옵",
+            "displayValue": 17,
+            "displayUnit": "%",
+            "text": "17%",
+            "exactDisplay": {
+              "numerator": 17,
+              "denominator": 1
+            },
+            "displayRule": "정수 원값",
+            "status": "proposal",
+            "runtimeReady": false
+          },
+          "last": {
+            "uniqueId": "UI-06",
+            "effectId": "U-D06",
+            "stat": "_uWarpStepRefund",
+            "raw": 23,
+            "stored": 0.23,
+            "unit": "percent",
+            "band": "중옵",
+            "displayValue": 23,
+            "displayUnit": "%",
+            "text": "23%",
+            "exactDisplay": {
+              "numerator": 23,
+              "denominator": 1
+            },
+            "displayRule": "정수 원값",
+            "status": "proposal",
+            "runtimeReady": false
+          }
+        },
+        {
+          "first": {
+            "uniqueId": "UI-06",
+            "effectId": "U-D06",
+            "stat": "_uWarpStepRefund",
+            "raw": 24,
+            "stored": 0.24,
+            "unit": "percent",
+            "band": "상옵",
+            "displayValue": 24,
+            "displayUnit": "%",
+            "text": "24%",
+            "exactDisplay": {
+              "numerator": 24,
+              "denominator": 1
+            },
+            "displayRule": "정수 원값",
+            "status": "proposal",
+            "runtimeReady": false
+          },
+          "last": {
+            "uniqueId": "UI-06",
+            "effectId": "U-D06",
+            "stat": "_uWarpStepRefund",
+            "raw": 30,
+            "stored": 0.3,
+            "unit": "percent",
+            "band": "상옵",
+            "displayValue": 30,
+            "displayUnit": "%",
+            "text": "30%",
+            "exactDisplay": {
+              "numerator": 30,
+              "denominator": 1
+            },
+            "displayRule": "정수 원값",
+            "status": "proposal",
+            "runtimeReady": false
+          }
+        }
+      ]
+    },
+    {
+      "uniqueId": "UI-07",
+      "effectId": "U-D07",
+      "stat": "_uChainCrowdRefund",
+      "unit": "percent",
+      "min": 20,
+      "max": 40,
+      "status": "proposal",
+      "runtimeReady": false,
+      "bands": [
+        {
+          "label": "하옵",
+          "min": 20,
+          "max": 26
+        },
+        {
+          "label": "중옵",
+          "min": 27,
+          "max": 33
+        },
+        {
+          "label": "상옵",
+          "min": 34,
+          "max": 40
+        }
+      ],
+      "examples": [
+        {
+          "first": {
+            "uniqueId": "UI-07",
+            "effectId": "U-D07",
+            "stat": "_uChainCrowdRefund",
+            "raw": 20,
+            "stored": 0.2,
+            "unit": "percent",
+            "band": "하옵",
+            "displayValue": 20,
+            "displayUnit": "%",
+            "text": "20%",
+            "exactDisplay": {
+              "numerator": 20,
+              "denominator": 1
+            },
+            "displayRule": "정수 원값",
+            "status": "proposal",
+            "runtimeReady": false
+          },
+          "last": {
+            "uniqueId": "UI-07",
+            "effectId": "U-D07",
+            "stat": "_uChainCrowdRefund",
+            "raw": 26,
+            "stored": 0.26,
+            "unit": "percent",
+            "band": "하옵",
+            "displayValue": 26,
+            "displayUnit": "%",
+            "text": "26%",
+            "exactDisplay": {
+              "numerator": 26,
+              "denominator": 1
+            },
+            "displayRule": "정수 원값",
+            "status": "proposal",
+            "runtimeReady": false
+          }
+        },
+        {
+          "first": {
+            "uniqueId": "UI-07",
+            "effectId": "U-D07",
+            "stat": "_uChainCrowdRefund",
+            "raw": 27,
+            "stored": 0.27,
+            "unit": "percent",
+            "band": "중옵",
+            "displayValue": 27,
+            "displayUnit": "%",
+            "text": "27%",
+            "exactDisplay": {
+              "numerator": 27,
+              "denominator": 1
+            },
+            "displayRule": "정수 원값",
+            "status": "proposal",
+            "runtimeReady": false
+          },
+          "last": {
+            "uniqueId": "UI-07",
+            "effectId": "U-D07",
+            "stat": "_uChainCrowdRefund",
+            "raw": 33,
+            "stored": 0.33,
+            "unit": "percent",
+            "band": "중옵",
+            "displayValue": 33,
+            "displayUnit": "%",
+            "text": "33%",
+            "exactDisplay": {
+              "numerator": 33,
+              "denominator": 1
+            },
+            "displayRule": "정수 원값",
+            "status": "proposal",
+            "runtimeReady": false
+          }
+        },
+        {
+          "first": {
+            "uniqueId": "UI-07",
+            "effectId": "U-D07",
+            "stat": "_uChainCrowdRefund",
+            "raw": 34,
+            "stored": 0.34,
+            "unit": "percent",
+            "band": "상옵",
+            "displayValue": 34,
+            "displayUnit": "%",
+            "text": "34%",
+            "exactDisplay": {
+              "numerator": 34,
+              "denominator": 1
+            },
+            "displayRule": "정수 원값",
+            "status": "proposal",
+            "runtimeReady": false
+          },
+          "last": {
+            "uniqueId": "UI-07",
+            "effectId": "U-D07",
+            "stat": "_uChainCrowdRefund",
+            "raw": 40,
+            "stored": 0.4,
+            "unit": "percent",
+            "band": "상옵",
+            "displayValue": 40,
+            "displayUnit": "%",
+            "text": "40%",
+            "exactDisplay": {
+              "numerator": 40,
+              "denominator": 1
+            },
+            "displayRule": "정수 원값",
+            "status": "proposal",
+            "runtimeReady": false
+          }
+        }
+      ]
+    },
+    {
+      "uniqueId": "UI-08",
+      "effectId": "U-D08",
+      "stat": "_uChainBleedEcho",
+      "unit": "percent",
+      "min": 25,
+      "max": 45,
+      "status": "proposal",
+      "runtimeReady": false,
+      "bands": [
+        {
+          "label": "하옵",
+          "min": 25,
+          "max": 31
+        },
+        {
+          "label": "중옵",
+          "min": 32,
+          "max": 38
+        },
+        {
+          "label": "상옵",
+          "min": 39,
+          "max": 45
+        }
+      ],
+      "examples": [
+        {
+          "first": {
+            "uniqueId": "UI-08",
+            "effectId": "U-D08",
+            "stat": "_uChainBleedEcho",
+            "raw": 25,
+            "stored": 0.25,
+            "unit": "percent",
+            "band": "하옵",
+            "displayValue": 25,
+            "displayUnit": "%",
+            "text": "25%",
+            "exactDisplay": {
+              "numerator": 25,
+              "denominator": 1
+            },
+            "displayRule": "정수 원값",
+            "status": "proposal",
+            "runtimeReady": false
+          },
+          "last": {
+            "uniqueId": "UI-08",
+            "effectId": "U-D08",
+            "stat": "_uChainBleedEcho",
+            "raw": 31,
+            "stored": 0.31,
+            "unit": "percent",
+            "band": "하옵",
+            "displayValue": 31,
+            "displayUnit": "%",
+            "text": "31%",
+            "exactDisplay": {
+              "numerator": 31,
+              "denominator": 1
+            },
+            "displayRule": "정수 원값",
+            "status": "proposal",
+            "runtimeReady": false
+          }
+        },
+        {
+          "first": {
+            "uniqueId": "UI-08",
+            "effectId": "U-D08",
+            "stat": "_uChainBleedEcho",
+            "raw": 32,
+            "stored": 0.32,
+            "unit": "percent",
+            "band": "중옵",
+            "displayValue": 32,
+            "displayUnit": "%",
+            "text": "32%",
+            "exactDisplay": {
+              "numerator": 32,
+              "denominator": 1
+            },
+            "displayRule": "정수 원값",
+            "status": "proposal",
+            "runtimeReady": false
+          },
+          "last": {
+            "uniqueId": "UI-08",
+            "effectId": "U-D08",
+            "stat": "_uChainBleedEcho",
+            "raw": 38,
+            "stored": 0.38,
+            "unit": "percent",
+            "band": "중옵",
+            "displayValue": 38,
+            "displayUnit": "%",
+            "text": "38%",
+            "exactDisplay": {
+              "numerator": 38,
+              "denominator": 1
+            },
+            "displayRule": "정수 원값",
+            "status": "proposal",
+            "runtimeReady": false
+          }
+        },
+        {
+          "first": {
+            "uniqueId": "UI-08",
+            "effectId": "U-D08",
+            "stat": "_uChainBleedEcho",
+            "raw": 39,
+            "stored": 0.39,
+            "unit": "percent",
+            "band": "상옵",
+            "displayValue": 39,
+            "displayUnit": "%",
+            "text": "39%",
+            "exactDisplay": {
+              "numerator": 39,
+              "denominator": 1
+            },
+            "displayRule": "정수 원값",
+            "status": "proposal",
+            "runtimeReady": false
+          },
+          "last": {
+            "uniqueId": "UI-08",
+            "effectId": "U-D08",
+            "stat": "_uChainBleedEcho",
+            "raw": 45,
+            "stored": 0.45,
+            "unit": "percent",
+            "band": "상옵",
+            "displayValue": 45,
+            "displayUnit": "%",
+            "text": "45%",
+            "exactDisplay": {
+              "numerator": 45,
+              "denominator": 1
+            },
+            "displayRule": "정수 원값",
+            "status": "proposal",
+            "runtimeReady": false
+          }
+        }
+      ]
+    },
+    {
+      "uniqueId": "UI-09",
+      "effectId": "U-D09",
+      "stat": "_uDashCircuit",
+      "unit": "percent",
+      "min": 20,
+      "max": 40,
+      "status": "proposal",
+      "runtimeReady": false,
+      "bands": [
+        {
+          "label": "하옵",
+          "min": 20,
+          "max": 26
+        },
+        {
+          "label": "중옵",
+          "min": 27,
+          "max": 33
+        },
+        {
+          "label": "상옵",
+          "min": 34,
+          "max": 40
+        }
+      ],
+      "examples": [
+        {
+          "first": {
+            "uniqueId": "UI-09",
+            "effectId": "U-D09",
+            "stat": "_uDashCircuit",
+            "raw": 20,
+            "stored": 0.2,
+            "unit": "percent",
+            "band": "하옵",
+            "displayValue": 20,
+            "displayUnit": "%",
+            "text": "20%",
+            "exactDisplay": {
+              "numerator": 20,
+              "denominator": 1
+            },
+            "displayRule": "정수 원값",
+            "status": "proposal",
+            "runtimeReady": false
+          },
+          "last": {
+            "uniqueId": "UI-09",
+            "effectId": "U-D09",
+            "stat": "_uDashCircuit",
+            "raw": 26,
+            "stored": 0.26,
+            "unit": "percent",
+            "band": "하옵",
+            "displayValue": 26,
+            "displayUnit": "%",
+            "text": "26%",
+            "exactDisplay": {
+              "numerator": 26,
+              "denominator": 1
+            },
+            "displayRule": "정수 원값",
+            "status": "proposal",
+            "runtimeReady": false
+          }
+        },
+        {
+          "first": {
+            "uniqueId": "UI-09",
+            "effectId": "U-D09",
+            "stat": "_uDashCircuit",
+            "raw": 27,
+            "stored": 0.27,
+            "unit": "percent",
+            "band": "중옵",
+            "displayValue": 27,
+            "displayUnit": "%",
+            "text": "27%",
+            "exactDisplay": {
+              "numerator": 27,
+              "denominator": 1
+            },
+            "displayRule": "정수 원값",
+            "status": "proposal",
+            "runtimeReady": false
+          },
+          "last": {
+            "uniqueId": "UI-09",
+            "effectId": "U-D09",
+            "stat": "_uDashCircuit",
+            "raw": 33,
+            "stored": 0.33,
+            "unit": "percent",
+            "band": "중옵",
+            "displayValue": 33,
+            "displayUnit": "%",
+            "text": "33%",
+            "exactDisplay": {
+              "numerator": 33,
+              "denominator": 1
+            },
+            "displayRule": "정수 원값",
+            "status": "proposal",
+            "runtimeReady": false
+          }
+        },
+        {
+          "first": {
+            "uniqueId": "UI-09",
+            "effectId": "U-D09",
+            "stat": "_uDashCircuit",
+            "raw": 34,
+            "stored": 0.34,
+            "unit": "percent",
+            "band": "상옵",
+            "displayValue": 34,
+            "displayUnit": "%",
+            "text": "34%",
+            "exactDisplay": {
+              "numerator": 34,
+              "denominator": 1
+            },
+            "displayRule": "정수 원값",
+            "status": "proposal",
+            "runtimeReady": false
+          },
+          "last": {
+            "uniqueId": "UI-09",
+            "effectId": "U-D09",
+            "stat": "_uDashCircuit",
+            "raw": 40,
+            "stored": 0.4,
+            "unit": "percent",
+            "band": "상옵",
+            "displayValue": 40,
+            "displayUnit": "%",
+            "text": "40%",
+            "exactDisplay": {
+              "numerator": 40,
+              "denominator": 1
+            },
+            "displayRule": "정수 원값",
+            "status": "proposal",
+            "runtimeReady": false
+          }
+        }
+      ]
+    },
+    {
+      "uniqueId": "UI-10",
+      "effectId": "U-D10",
+      "stat": "_uSlamEmberRage",
+      "unit": "percent",
+      "min": 10,
+      "max": 20,
+      "status": "proposal",
+      "runtimeReady": false,
+      "bands": [
+        {
+          "label": "하옵",
+          "min": 10,
+          "max": 13
+        },
+        {
+          "label": "중옵",
+          "min": 14,
+          "max": 16
+        },
+        {
+          "label": "상옵",
+          "min": 17,
+          "max": 20
+        }
+      ],
+      "examples": [
+        {
+          "first": {
+            "uniqueId": "UI-10",
+            "effectId": "U-D10",
+            "stat": "_uSlamEmberRage",
+            "raw": 10,
+            "stored": 0.1,
+            "unit": "percent",
+            "band": "하옵",
+            "displayValue": 10,
+            "displayUnit": "%",
+            "text": "10%",
+            "exactDisplay": {
+              "numerator": 10,
+              "denominator": 1
+            },
+            "displayRule": "정수 원값",
+            "status": "proposal",
+            "runtimeReady": false
+          },
+          "last": {
+            "uniqueId": "UI-10",
+            "effectId": "U-D10",
+            "stat": "_uSlamEmberRage",
+            "raw": 13,
+            "stored": 0.13,
+            "unit": "percent",
+            "band": "하옵",
+            "displayValue": 13,
+            "displayUnit": "%",
+            "text": "13%",
+            "exactDisplay": {
+              "numerator": 13,
+              "denominator": 1
+            },
+            "displayRule": "정수 원값",
+            "status": "proposal",
+            "runtimeReady": false
+          }
+        },
+        {
+          "first": {
+            "uniqueId": "UI-10",
+            "effectId": "U-D10",
+            "stat": "_uSlamEmberRage",
+            "raw": 14,
+            "stored": 0.14,
+            "unit": "percent",
+            "band": "중옵",
+            "displayValue": 14,
+            "displayUnit": "%",
+            "text": "14%",
+            "exactDisplay": {
+              "numerator": 14,
+              "denominator": 1
+            },
+            "displayRule": "정수 원값",
+            "status": "proposal",
+            "runtimeReady": false
+          },
+          "last": {
+            "uniqueId": "UI-10",
+            "effectId": "U-D10",
+            "stat": "_uSlamEmberRage",
+            "raw": 16,
+            "stored": 0.16,
+            "unit": "percent",
+            "band": "중옵",
+            "displayValue": 16,
+            "displayUnit": "%",
+            "text": "16%",
+            "exactDisplay": {
+              "numerator": 16,
+              "denominator": 1
+            },
+            "displayRule": "정수 원값",
+            "status": "proposal",
+            "runtimeReady": false
+          }
+        },
+        {
+          "first": {
+            "uniqueId": "UI-10",
+            "effectId": "U-D10",
+            "stat": "_uSlamEmberRage",
+            "raw": 17,
+            "stored": 0.17,
+            "unit": "percent",
+            "band": "상옵",
+            "displayValue": 17,
+            "displayUnit": "%",
+            "text": "17%",
+            "exactDisplay": {
+              "numerator": 17,
+              "denominator": 1
+            },
+            "displayRule": "정수 원값",
+            "status": "proposal",
+            "runtimeReady": false
+          },
+          "last": {
+            "uniqueId": "UI-10",
+            "effectId": "U-D10",
+            "stat": "_uSlamEmberRage",
+            "raw": 20,
+            "stored": 0.2,
+            "unit": "percent",
+            "band": "상옵",
+            "displayValue": 20,
+            "displayUnit": "%",
+            "text": "20%",
+            "exactDisplay": {
+              "numerator": 20,
+              "denominator": 1
+            },
+            "displayRule": "정수 원값",
+            "status": "proposal",
+            "runtimeReady": false
+          }
+        }
+      ]
+    },
+    {
+      "uniqueId": "UI-11",
+      "effectId": "U-D11",
+      "stat": "_uSkyPoiseRefund",
+      "unit": "frame",
+      "min": 120,
+      "max": 300,
+      "status": "proposal",
+      "runtimeReady": false,
+      "bands": [
+        {
+          "label": "하옵",
+          "min": 120,
+          "max": 180
+        },
+        {
+          "label": "중옵",
+          "min": 181,
+          "max": 240
+        },
+        {
+          "label": "상옵",
+          "min": 241,
+          "max": 300
+        }
+      ],
+      "examples": [
+        {
+          "first": {
+            "uniqueId": "UI-11",
+            "effectId": "U-D11",
+            "stat": "_uSkyPoiseRefund",
+            "raw": 120,
+            "stored": 120,
+            "unit": "frame",
+            "band": "하옵",
+            "displayValue": 2,
+            "displayUnit": "초",
+            "text": "2초",
+            "exactDisplay": {
+              "numerator": 120,
+              "denominator": 60
+            },
+            "displayRule": "raw/60.toFixed(2), 끝자리0 생략; JS 이진부동소수 반올림",
+            "status": "proposal",
+            "runtimeReady": false
+          },
+          "last": {
+            "uniqueId": "UI-11",
+            "effectId": "U-D11",
+            "stat": "_uSkyPoiseRefund",
+            "raw": 180,
+            "stored": 180,
+            "unit": "frame",
+            "band": "하옵",
+            "displayValue": 3,
+            "displayUnit": "초",
+            "text": "3초",
+            "exactDisplay": {
+              "numerator": 180,
+              "denominator": 60
+            },
+            "displayRule": "raw/60.toFixed(2), 끝자리0 생략; JS 이진부동소수 반올림",
+            "status": "proposal",
+            "runtimeReady": false
+          }
+        },
+        {
+          "first": {
+            "uniqueId": "UI-11",
+            "effectId": "U-D11",
+            "stat": "_uSkyPoiseRefund",
+            "raw": 181,
+            "stored": 181,
+            "unit": "frame",
+            "band": "중옵",
+            "displayValue": 3.02,
+            "displayUnit": "초",
+            "text": "3.02초",
+            "exactDisplay": {
+              "numerator": 181,
+              "denominator": 60
+            },
+            "displayRule": "raw/60.toFixed(2), 끝자리0 생략; JS 이진부동소수 반올림",
+            "status": "proposal",
+            "runtimeReady": false
+          },
+          "last": {
+            "uniqueId": "UI-11",
+            "effectId": "U-D11",
+            "stat": "_uSkyPoiseRefund",
+            "raw": 240,
+            "stored": 240,
+            "unit": "frame",
+            "band": "중옵",
+            "displayValue": 4,
+            "displayUnit": "초",
+            "text": "4초",
+            "exactDisplay": {
+              "numerator": 240,
+              "denominator": 60
+            },
+            "displayRule": "raw/60.toFixed(2), 끝자리0 생략; JS 이진부동소수 반올림",
+            "status": "proposal",
+            "runtimeReady": false
+          }
+        },
+        {
+          "first": {
+            "uniqueId": "UI-11",
+            "effectId": "U-D11",
+            "stat": "_uSkyPoiseRefund",
+            "raw": 241,
+            "stored": 241,
+            "unit": "frame",
+            "band": "상옵",
+            "displayValue": 4.02,
+            "displayUnit": "초",
+            "text": "4.02초",
+            "exactDisplay": {
+              "numerator": 241,
+              "denominator": 60
+            },
+            "displayRule": "raw/60.toFixed(2), 끝자리0 생략; JS 이진부동소수 반올림",
+            "status": "proposal",
+            "runtimeReady": false
+          },
+          "last": {
+            "uniqueId": "UI-11",
+            "effectId": "U-D11",
+            "stat": "_uSkyPoiseRefund",
+            "raw": 300,
+            "stored": 300,
+            "unit": "frame",
+            "band": "상옵",
+            "displayValue": 5,
+            "displayUnit": "초",
+            "text": "5초",
+            "exactDisplay": {
+              "numerator": 300,
+              "denominator": 60
+            },
+            "displayRule": "raw/60.toFixed(2), 끝자리0 생략; JS 이진부동소수 반올림",
+            "status": "proposal",
+            "runtimeReady": false
+          }
+        }
+      ]
+    },
+    {
+      "uniqueId": "UI-12",
+      "effectId": "U-D12",
+      "stat": "_uHolyParryCd",
+      "unit": "frame",
+      "min": 60,
+      "max": 120,
+      "status": "proposal",
+      "runtimeReady": false,
+      "bands": [
+        {
+          "label": "하옵",
+          "min": 60,
+          "max": 80
+        },
+        {
+          "label": "중옵",
+          "min": 81,
+          "max": 100
+        },
+        {
+          "label": "상옵",
+          "min": 101,
+          "max": 120
+        }
+      ],
+      "examples": [
+        {
+          "first": {
+            "uniqueId": "UI-12",
+            "effectId": "U-D12",
+            "stat": "_uHolyParryCd",
+            "raw": 60,
+            "stored": 60,
+            "unit": "frame",
+            "band": "하옵",
+            "displayValue": 1,
+            "displayUnit": "초",
+            "text": "1초",
+            "exactDisplay": {
+              "numerator": 60,
+              "denominator": 60
+            },
+            "displayRule": "raw/60.toFixed(2), 끝자리0 생략; JS 이진부동소수 반올림",
+            "status": "proposal",
+            "runtimeReady": false
+          },
+          "last": {
+            "uniqueId": "UI-12",
+            "effectId": "U-D12",
+            "stat": "_uHolyParryCd",
+            "raw": 80,
+            "stored": 80,
+            "unit": "frame",
+            "band": "하옵",
+            "displayValue": 1.33,
+            "displayUnit": "초",
+            "text": "1.33초",
+            "exactDisplay": {
+              "numerator": 80,
+              "denominator": 60
+            },
+            "displayRule": "raw/60.toFixed(2), 끝자리0 생략; JS 이진부동소수 반올림",
+            "status": "proposal",
+            "runtimeReady": false
+          }
+        },
+        {
+          "first": {
+            "uniqueId": "UI-12",
+            "effectId": "U-D12",
+            "stat": "_uHolyParryCd",
+            "raw": 81,
+            "stored": 81,
+            "unit": "frame",
+            "band": "중옵",
+            "displayValue": 1.35,
+            "displayUnit": "초",
+            "text": "1.35초",
+            "exactDisplay": {
+              "numerator": 81,
+              "denominator": 60
+            },
+            "displayRule": "raw/60.toFixed(2), 끝자리0 생략; JS 이진부동소수 반올림",
+            "status": "proposal",
+            "runtimeReady": false
+          },
+          "last": {
+            "uniqueId": "UI-12",
+            "effectId": "U-D12",
+            "stat": "_uHolyParryCd",
+            "raw": 100,
+            "stored": 100,
+            "unit": "frame",
+            "band": "중옵",
+            "displayValue": 1.67,
+            "displayUnit": "초",
+            "text": "1.67초",
+            "exactDisplay": {
+              "numerator": 100,
+              "denominator": 60
+            },
+            "displayRule": "raw/60.toFixed(2), 끝자리0 생략; JS 이진부동소수 반올림",
+            "status": "proposal",
+            "runtimeReady": false
+          }
+        },
+        {
+          "first": {
+            "uniqueId": "UI-12",
+            "effectId": "U-D12",
+            "stat": "_uHolyParryCd",
+            "raw": 101,
+            "stored": 101,
+            "unit": "frame",
+            "band": "상옵",
+            "displayValue": 1.68,
+            "displayUnit": "초",
+            "text": "1.68초",
+            "exactDisplay": {
+              "numerator": 101,
+              "denominator": 60
+            },
+            "displayRule": "raw/60.toFixed(2), 끝자리0 생략; JS 이진부동소수 반올림",
+            "status": "proposal",
+            "runtimeReady": false
+          },
+          "last": {
+            "uniqueId": "UI-12",
+            "effectId": "U-D12",
+            "stat": "_uHolyParryCd",
+            "raw": 120,
+            "stored": 120,
+            "unit": "frame",
+            "band": "상옵",
+            "displayValue": 2,
+            "displayUnit": "초",
+            "text": "2초",
+            "exactDisplay": {
+              "numerator": 120,
+              "denominator": 60
+            },
+            "displayRule": "raw/60.toFixed(2), 끝자리0 생략; JS 이진부동소수 반올림",
+            "status": "proposal",
+            "runtimeReady": false
+          }
+        }
+      ]
+    },
+    {
+      "uniqueId": "UI-13",
+      "effectId": "U-D13",
+      "stat": "_uTrapOffshoot",
+      "unit": "percent",
+      "min": 20,
+      "max": 40,
+      "status": "proposal",
+      "runtimeReady": false,
+      "bands": [
+        {
+          "label": "하옵",
+          "min": 20,
+          "max": 26
+        },
+        {
+          "label": "중옵",
+          "min": 27,
+          "max": 33
+        },
+        {
+          "label": "상옵",
+          "min": 34,
+          "max": 40
+        }
+      ],
+      "examples": [
+        {
+          "first": {
+            "uniqueId": "UI-13",
+            "effectId": "U-D13",
+            "stat": "_uTrapOffshoot",
+            "raw": 20,
+            "stored": 0.2,
+            "unit": "percent",
+            "band": "하옵",
+            "displayValue": 20,
+            "displayUnit": "%",
+            "text": "20%",
+            "exactDisplay": {
+              "numerator": 20,
+              "denominator": 1
+            },
+            "displayRule": "정수 원값",
+            "status": "proposal",
+            "runtimeReady": false
+          },
+          "last": {
+            "uniqueId": "UI-13",
+            "effectId": "U-D13",
+            "stat": "_uTrapOffshoot",
+            "raw": 26,
+            "stored": 0.26,
+            "unit": "percent",
+            "band": "하옵",
+            "displayValue": 26,
+            "displayUnit": "%",
+            "text": "26%",
+            "exactDisplay": {
+              "numerator": 26,
+              "denominator": 1
+            },
+            "displayRule": "정수 원값",
+            "status": "proposal",
+            "runtimeReady": false
+          }
+        },
+        {
+          "first": {
+            "uniqueId": "UI-13",
+            "effectId": "U-D13",
+            "stat": "_uTrapOffshoot",
+            "raw": 27,
+            "stored": 0.27,
+            "unit": "percent",
+            "band": "중옵",
+            "displayValue": 27,
+            "displayUnit": "%",
+            "text": "27%",
+            "exactDisplay": {
+              "numerator": 27,
+              "denominator": 1
+            },
+            "displayRule": "정수 원값",
+            "status": "proposal",
+            "runtimeReady": false
+          },
+          "last": {
+            "uniqueId": "UI-13",
+            "effectId": "U-D13",
+            "stat": "_uTrapOffshoot",
+            "raw": 33,
+            "stored": 0.33,
+            "unit": "percent",
+            "band": "중옵",
+            "displayValue": 33,
+            "displayUnit": "%",
+            "text": "33%",
+            "exactDisplay": {
+              "numerator": 33,
+              "denominator": 1
+            },
+            "displayRule": "정수 원값",
+            "status": "proposal",
+            "runtimeReady": false
+          }
+        },
+        {
+          "first": {
+            "uniqueId": "UI-13",
+            "effectId": "U-D13",
+            "stat": "_uTrapOffshoot",
+            "raw": 34,
+            "stored": 0.34,
+            "unit": "percent",
+            "band": "상옵",
+            "displayValue": 34,
+            "displayUnit": "%",
+            "text": "34%",
+            "exactDisplay": {
+              "numerator": 34,
+              "denominator": 1
+            },
+            "displayRule": "정수 원값",
+            "status": "proposal",
+            "runtimeReady": false
+          },
+          "last": {
+            "uniqueId": "UI-13",
+            "effectId": "U-D13",
+            "stat": "_uTrapOffshoot",
+            "raw": 40,
+            "stored": 0.4,
+            "unit": "percent",
+            "band": "상옵",
+            "displayValue": 40,
+            "displayUnit": "%",
+            "text": "40%",
+            "exactDisplay": {
+              "numerator": 40,
+              "denominator": 1
+            },
+            "displayRule": "정수 원값",
+            "status": "proposal",
+            "runtimeReady": false
+          }
+        }
+      ]
+    },
+    {
+      "uniqueId": "UI-14",
+      "effectId": "U-D14",
+      "stat": "_uVortexOrbPulse",
+      "unit": "percent",
+      "min": 20,
+      "max": 40,
+      "status": "proposal",
+      "runtimeReady": false,
+      "bands": [
+        {
+          "label": "하옵",
+          "min": 20,
+          "max": 26
+        },
+        {
+          "label": "중옵",
+          "min": 27,
+          "max": 33
+        },
+        {
+          "label": "상옵",
+          "min": 34,
+          "max": 40
+        }
+      ],
+      "examples": [
+        {
+          "first": {
+            "uniqueId": "UI-14",
+            "effectId": "U-D14",
+            "stat": "_uVortexOrbPulse",
+            "raw": 20,
+            "stored": 0.2,
+            "unit": "percent",
+            "band": "하옵",
+            "displayValue": 20,
+            "displayUnit": "%",
+            "text": "20%",
+            "exactDisplay": {
+              "numerator": 20,
+              "denominator": 1
+            },
+            "displayRule": "정수 원값",
+            "status": "proposal",
+            "runtimeReady": false
+          },
+          "last": {
+            "uniqueId": "UI-14",
+            "effectId": "U-D14",
+            "stat": "_uVortexOrbPulse",
+            "raw": 26,
+            "stored": 0.26,
+            "unit": "percent",
+            "band": "하옵",
+            "displayValue": 26,
+            "displayUnit": "%",
+            "text": "26%",
+            "exactDisplay": {
+              "numerator": 26,
+              "denominator": 1
+            },
+            "displayRule": "정수 원값",
+            "status": "proposal",
+            "runtimeReady": false
+          }
+        },
+        {
+          "first": {
+            "uniqueId": "UI-14",
+            "effectId": "U-D14",
+            "stat": "_uVortexOrbPulse",
+            "raw": 27,
+            "stored": 0.27,
+            "unit": "percent",
+            "band": "중옵",
+            "displayValue": 27,
+            "displayUnit": "%",
+            "text": "27%",
+            "exactDisplay": {
+              "numerator": 27,
+              "denominator": 1
+            },
+            "displayRule": "정수 원값",
+            "status": "proposal",
+            "runtimeReady": false
+          },
+          "last": {
+            "uniqueId": "UI-14",
+            "effectId": "U-D14",
+            "stat": "_uVortexOrbPulse",
+            "raw": 33,
+            "stored": 0.33,
+            "unit": "percent",
+            "band": "중옵",
+            "displayValue": 33,
+            "displayUnit": "%",
+            "text": "33%",
+            "exactDisplay": {
+              "numerator": 33,
+              "denominator": 1
+            },
+            "displayRule": "정수 원값",
+            "status": "proposal",
+            "runtimeReady": false
+          }
+        },
+        {
+          "first": {
+            "uniqueId": "UI-14",
+            "effectId": "U-D14",
+            "stat": "_uVortexOrbPulse",
+            "raw": 34,
+            "stored": 0.34,
+            "unit": "percent",
+            "band": "상옵",
+            "displayValue": 34,
+            "displayUnit": "%",
+            "text": "34%",
+            "exactDisplay": {
+              "numerator": 34,
+              "denominator": 1
+            },
+            "displayRule": "정수 원값",
+            "status": "proposal",
+            "runtimeReady": false
+          },
+          "last": {
+            "uniqueId": "UI-14",
+            "effectId": "U-D14",
+            "stat": "_uVortexOrbPulse",
+            "raw": 40,
+            "stored": 0.4,
+            "unit": "percent",
+            "band": "상옵",
+            "displayValue": 40,
+            "displayUnit": "%",
+            "text": "40%",
+            "exactDisplay": {
+              "numerator": 40,
+              "denominator": 1
+            },
+            "displayRule": "정수 원값",
+            "status": "proposal",
+            "runtimeReady": false
+          }
+        }
+      ]
+    },
+    {
+      "uniqueId": "UI-15",
+      "effectId": "U-D15",
+      "stat": "_uBowPoisonRicochet",
+      "unit": "percent",
+      "min": 25,
+      "max": 45,
+      "status": "proposal",
+      "runtimeReady": false,
+      "bands": [
+        {
+          "label": "하옵",
+          "min": 25,
+          "max": 31
+        },
+        {
+          "label": "중옵",
+          "min": 32,
+          "max": 38
+        },
+        {
+          "label": "상옵",
+          "min": 39,
+          "max": 45
+        }
+      ],
+      "examples": [
+        {
+          "first": {
+            "uniqueId": "UI-15",
+            "effectId": "U-D15",
+            "stat": "_uBowPoisonRicochet",
+            "raw": 25,
+            "stored": 0.25,
+            "unit": "percent",
+            "band": "하옵",
+            "displayValue": 25,
+            "displayUnit": "%",
+            "text": "25%",
+            "exactDisplay": {
+              "numerator": 25,
+              "denominator": 1
+            },
+            "displayRule": "정수 원값",
+            "status": "proposal",
+            "runtimeReady": false
+          },
+          "last": {
+            "uniqueId": "UI-15",
+            "effectId": "U-D15",
+            "stat": "_uBowPoisonRicochet",
+            "raw": 31,
+            "stored": 0.31,
+            "unit": "percent",
+            "band": "하옵",
+            "displayValue": 31,
+            "displayUnit": "%",
+            "text": "31%",
+            "exactDisplay": {
+              "numerator": 31,
+              "denominator": 1
+            },
+            "displayRule": "정수 원값",
+            "status": "proposal",
+            "runtimeReady": false
+          }
+        },
+        {
+          "first": {
+            "uniqueId": "UI-15",
+            "effectId": "U-D15",
+            "stat": "_uBowPoisonRicochet",
+            "raw": 32,
+            "stored": 0.32,
+            "unit": "percent",
+            "band": "중옵",
+            "displayValue": 32,
+            "displayUnit": "%",
+            "text": "32%",
+            "exactDisplay": {
+              "numerator": 32,
+              "denominator": 1
+            },
+            "displayRule": "정수 원값",
+            "status": "proposal",
+            "runtimeReady": false
+          },
+          "last": {
+            "uniqueId": "UI-15",
+            "effectId": "U-D15",
+            "stat": "_uBowPoisonRicochet",
+            "raw": 38,
+            "stored": 0.38,
+            "unit": "percent",
+            "band": "중옵",
+            "displayValue": 38,
+            "displayUnit": "%",
+            "text": "38%",
+            "exactDisplay": {
+              "numerator": 38,
+              "denominator": 1
+            },
+            "displayRule": "정수 원값",
+            "status": "proposal",
+            "runtimeReady": false
+          }
+        },
+        {
+          "first": {
+            "uniqueId": "UI-15",
+            "effectId": "U-D15",
+            "stat": "_uBowPoisonRicochet",
+            "raw": 39,
+            "stored": 0.39,
+            "unit": "percent",
+            "band": "상옵",
+            "displayValue": 39,
+            "displayUnit": "%",
+            "text": "39%",
+            "exactDisplay": {
+              "numerator": 39,
+              "denominator": 1
+            },
+            "displayRule": "정수 원값",
+            "status": "proposal",
+            "runtimeReady": false
+          },
+          "last": {
+            "uniqueId": "UI-15",
+            "effectId": "U-D15",
+            "stat": "_uBowPoisonRicochet",
+            "raw": 45,
+            "stored": 0.45,
+            "unit": "percent",
+            "band": "상옵",
+            "displayValue": 45,
+            "displayUnit": "%",
+            "text": "45%",
+            "exactDisplay": {
+              "numerator": 45,
+              "denominator": 1
+            },
+            "displayRule": "정수 원값",
+            "status": "proposal",
+            "runtimeReady": false
+          }
+        }
+      ]
+    },
+    {
+      "uniqueId": "UI-16",
+      "effectId": "U-D16",
+      "stat": "_uTurretSalvo",
+      "unit": "count",
+      "min": 2,
+      "max": 4,
+      "status": "proposal",
+      "runtimeReady": false,
+      "bands": [
+        {
+          "label": "하옵",
+          "min": 2,
+          "max": 2
+        },
+        {
+          "label": "중옵",
+          "min": 3,
+          "max": 3
+        },
+        {
+          "label": "상옵",
+          "min": 4,
+          "max": 4
+        }
+      ],
+      "examples": [
+        {
+          "first": {
+            "uniqueId": "UI-16",
+            "effectId": "U-D16",
+            "stat": "_uTurretSalvo",
+            "raw": 2,
+            "stored": 2,
+            "unit": "count",
+            "band": "하옵",
+            "displayValue": 2,
+            "displayUnit": "발",
+            "text": "2발",
+            "exactDisplay": {
+              "numerator": 2,
+              "denominator": 1
+            },
+            "displayRule": "정수 원값",
+            "status": "proposal",
+            "runtimeReady": false
+          },
+          "last": {
+            "uniqueId": "UI-16",
+            "effectId": "U-D16",
+            "stat": "_uTurretSalvo",
+            "raw": 2,
+            "stored": 2,
+            "unit": "count",
+            "band": "하옵",
+            "displayValue": 2,
+            "displayUnit": "발",
+            "text": "2발",
+            "exactDisplay": {
+              "numerator": 2,
+              "denominator": 1
+            },
+            "displayRule": "정수 원값",
+            "status": "proposal",
+            "runtimeReady": false
+          }
+        },
+        {
+          "first": {
+            "uniqueId": "UI-16",
+            "effectId": "U-D16",
+            "stat": "_uTurretSalvo",
+            "raw": 3,
+            "stored": 3,
+            "unit": "count",
+            "band": "중옵",
+            "displayValue": 3,
+            "displayUnit": "발",
+            "text": "3발",
+            "exactDisplay": {
+              "numerator": 3,
+              "denominator": 1
+            },
+            "displayRule": "정수 원값",
+            "status": "proposal",
+            "runtimeReady": false
+          },
+          "last": {
+            "uniqueId": "UI-16",
+            "effectId": "U-D16",
+            "stat": "_uTurretSalvo",
+            "raw": 3,
+            "stored": 3,
+            "unit": "count",
+            "band": "중옵",
+            "displayValue": 3,
+            "displayUnit": "발",
+            "text": "3발",
+            "exactDisplay": {
+              "numerator": 3,
+              "denominator": 1
+            },
+            "displayRule": "정수 원값",
+            "status": "proposal",
+            "runtimeReady": false
+          }
+        },
+        {
+          "first": {
+            "uniqueId": "UI-16",
+            "effectId": "U-D16",
+            "stat": "_uTurretSalvo",
+            "raw": 4,
+            "stored": 4,
+            "unit": "count",
+            "band": "상옵",
+            "displayValue": 4,
+            "displayUnit": "발",
+            "text": "4발",
+            "exactDisplay": {
+              "numerator": 4,
+              "denominator": 1
+            },
+            "displayRule": "정수 원값",
+            "status": "proposal",
+            "runtimeReady": false
+          },
+          "last": {
+            "uniqueId": "UI-16",
+            "effectId": "U-D16",
+            "stat": "_uTurretSalvo",
+            "raw": 4,
+            "stored": 4,
+            "unit": "count",
+            "band": "상옵",
+            "displayValue": 4,
+            "displayUnit": "발",
+            "text": "4발",
+            "exactDisplay": {
+              "numerator": 4,
+              "denominator": 1
+            },
+            "displayRule": "정수 원값",
+            "status": "proposal",
+            "runtimeReady": false
+          }
+        }
+      ]
+    },
+    {
+      "uniqueId": "UI-17",
+      "effectId": "U-D17",
+      "stat": "_uBlackZoneGather",
+      "unit": "count",
+      "min": 1,
+      "max": 3,
+      "status": "proposal",
+      "runtimeReady": false,
+      "bands": [
+        {
+          "label": "하옵",
+          "min": 1,
+          "max": 1
+        },
+        {
+          "label": "중옵",
+          "min": 2,
+          "max": 2
+        },
+        {
+          "label": "상옵",
+          "min": 3,
+          "max": 3
+        }
+      ],
+      "examples": [
+        {
+          "first": {
+            "uniqueId": "UI-17",
+            "effectId": "U-D17",
+            "stat": "_uBlackZoneGather",
+            "raw": 1,
+            "stored": 1,
+            "unit": "count",
+            "band": "하옵",
+            "displayValue": 1,
+            "displayUnit": "개",
+            "text": "1개",
+            "exactDisplay": {
+              "numerator": 1,
+              "denominator": 1
+            },
+            "displayRule": "정수 원값",
+            "status": "proposal",
+            "runtimeReady": false
+          },
+          "last": {
+            "uniqueId": "UI-17",
+            "effectId": "U-D17",
+            "stat": "_uBlackZoneGather",
+            "raw": 1,
+            "stored": 1,
+            "unit": "count",
+            "band": "하옵",
+            "displayValue": 1,
+            "displayUnit": "개",
+            "text": "1개",
+            "exactDisplay": {
+              "numerator": 1,
+              "denominator": 1
+            },
+            "displayRule": "정수 원값",
+            "status": "proposal",
+            "runtimeReady": false
+          }
+        },
+        {
+          "first": {
+            "uniqueId": "UI-17",
+            "effectId": "U-D17",
+            "stat": "_uBlackZoneGather",
+            "raw": 2,
+            "stored": 2,
+            "unit": "count",
+            "band": "중옵",
+            "displayValue": 2,
+            "displayUnit": "개",
+            "text": "2개",
+            "exactDisplay": {
+              "numerator": 2,
+              "denominator": 1
+            },
+            "displayRule": "정수 원값",
+            "status": "proposal",
+            "runtimeReady": false
+          },
+          "last": {
+            "uniqueId": "UI-17",
+            "effectId": "U-D17",
+            "stat": "_uBlackZoneGather",
+            "raw": 2,
+            "stored": 2,
+            "unit": "count",
+            "band": "중옵",
+            "displayValue": 2,
+            "displayUnit": "개",
+            "text": "2개",
+            "exactDisplay": {
+              "numerator": 2,
+              "denominator": 1
+            },
+            "displayRule": "정수 원값",
+            "status": "proposal",
+            "runtimeReady": false
+          }
+        },
+        {
+          "first": {
+            "uniqueId": "UI-17",
+            "effectId": "U-D17",
+            "stat": "_uBlackZoneGather",
+            "raw": 3,
+            "stored": 3,
+            "unit": "count",
+            "band": "상옵",
+            "displayValue": 3,
+            "displayUnit": "개",
+            "text": "3개",
+            "exactDisplay": {
+              "numerator": 3,
+              "denominator": 1
+            },
+            "displayRule": "정수 원값",
+            "status": "proposal",
+            "runtimeReady": false
+          },
+          "last": {
+            "uniqueId": "UI-17",
+            "effectId": "U-D17",
+            "stat": "_uBlackZoneGather",
+            "raw": 3,
+            "stored": 3,
+            "unit": "count",
+            "band": "상옵",
+            "displayValue": 3,
+            "displayUnit": "개",
+            "text": "3개",
+            "exactDisplay": {
+              "numerator": 3,
+              "denominator": 1
+            },
+            "displayRule": "정수 원값",
+            "status": "proposal",
+            "runtimeReady": false
+          }
+        }
+      ]
+    },
+    {
+      "uniqueId": "UI-18",
+      "effectId": "U-D18",
+      "stat": "_uBlackholeManaReturn",
+      "unit": "percent",
+      "min": 1,
+      "max": 3,
+      "status": "proposal",
+      "runtimeReady": false,
+      "bands": [
+        {
+          "label": "하옵",
+          "min": 1,
+          "max": 1
+        },
+        {
+          "label": "중옵",
+          "min": 2,
+          "max": 2
+        },
+        {
+          "label": "상옵",
+          "min": 3,
+          "max": 3
+        }
+      ],
+      "examples": [
+        {
+          "first": {
+            "uniqueId": "UI-18",
+            "effectId": "U-D18",
+            "stat": "_uBlackholeManaReturn",
+            "raw": 1,
+            "stored": 0.01,
+            "unit": "percent",
+            "band": "하옵",
+            "displayValue": 1,
+            "displayUnit": "%",
+            "text": "1%",
+            "exactDisplay": {
+              "numerator": 1,
+              "denominator": 1
+            },
+            "displayRule": "정수 원값",
+            "status": "proposal",
+            "runtimeReady": false
+          },
+          "last": {
+            "uniqueId": "UI-18",
+            "effectId": "U-D18",
+            "stat": "_uBlackholeManaReturn",
+            "raw": 1,
+            "stored": 0.01,
+            "unit": "percent",
+            "band": "하옵",
+            "displayValue": 1,
+            "displayUnit": "%",
+            "text": "1%",
+            "exactDisplay": {
+              "numerator": 1,
+              "denominator": 1
+            },
+            "displayRule": "정수 원값",
+            "status": "proposal",
+            "runtimeReady": false
+          }
+        },
+        {
+          "first": {
+            "uniqueId": "UI-18",
+            "effectId": "U-D18",
+            "stat": "_uBlackholeManaReturn",
+            "raw": 2,
+            "stored": 0.02,
+            "unit": "percent",
+            "band": "중옵",
+            "displayValue": 2,
+            "displayUnit": "%",
+            "text": "2%",
+            "exactDisplay": {
+              "numerator": 2,
+              "denominator": 1
+            },
+            "displayRule": "정수 원값",
+            "status": "proposal",
+            "runtimeReady": false
+          },
+          "last": {
+            "uniqueId": "UI-18",
+            "effectId": "U-D18",
+            "stat": "_uBlackholeManaReturn",
+            "raw": 2,
+            "stored": 0.02,
+            "unit": "percent",
+            "band": "중옵",
+            "displayValue": 2,
+            "displayUnit": "%",
+            "text": "2%",
+            "exactDisplay": {
+              "numerator": 2,
+              "denominator": 1
+            },
+            "displayRule": "정수 원값",
+            "status": "proposal",
+            "runtimeReady": false
+          }
+        },
+        {
+          "first": {
+            "uniqueId": "UI-18",
+            "effectId": "U-D18",
+            "stat": "_uBlackholeManaReturn",
+            "raw": 3,
+            "stored": 0.03,
+            "unit": "percent",
+            "band": "상옵",
+            "displayValue": 3,
+            "displayUnit": "%",
+            "text": "3%",
+            "exactDisplay": {
+              "numerator": 3,
+              "denominator": 1
+            },
+            "displayRule": "정수 원값",
+            "status": "proposal",
+            "runtimeReady": false
+          },
+          "last": {
+            "uniqueId": "UI-18",
+            "effectId": "U-D18",
+            "stat": "_uBlackholeManaReturn",
+            "raw": 3,
+            "stored": 0.03,
+            "unit": "percent",
+            "band": "상옵",
+            "displayValue": 3,
+            "displayUnit": "%",
+            "text": "3%",
+            "exactDisplay": {
+              "numerator": 3,
+              "denominator": 1
+            },
+            "displayRule": "정수 원값",
+            "status": "proposal",
+            "runtimeReady": false
+          }
+        }
+      ]
+    },
+    {
+      "uniqueId": "UI-19",
+      "effectId": "U-D19",
+      "stat": "_uSteamBreak",
+      "unit": "percent",
+      "min": 20,
+      "max": 40,
+      "status": "proposal",
+      "runtimeReady": false,
+      "bands": [
+        {
+          "label": "하옵",
+          "min": 20,
+          "max": 26
+        },
+        {
+          "label": "중옵",
+          "min": 27,
+          "max": 33
+        },
+        {
+          "label": "상옵",
+          "min": 34,
+          "max": 40
+        }
+      ],
+      "examples": [
+        {
+          "first": {
+            "uniqueId": "UI-19",
+            "effectId": "U-D19",
+            "stat": "_uSteamBreak",
+            "raw": 20,
+            "stored": 0.2,
+            "unit": "percent",
+            "band": "하옵",
+            "displayValue": 20,
+            "displayUnit": "%",
+            "text": "20%",
+            "exactDisplay": {
+              "numerator": 20,
+              "denominator": 1
+            },
+            "displayRule": "정수 원값",
+            "status": "proposal",
+            "runtimeReady": false
+          },
+          "last": {
+            "uniqueId": "UI-19",
+            "effectId": "U-D19",
+            "stat": "_uSteamBreak",
+            "raw": 26,
+            "stored": 0.26,
+            "unit": "percent",
+            "band": "하옵",
+            "displayValue": 26,
+            "displayUnit": "%",
+            "text": "26%",
+            "exactDisplay": {
+              "numerator": 26,
+              "denominator": 1
+            },
+            "displayRule": "정수 원값",
+            "status": "proposal",
+            "runtimeReady": false
+          }
+        },
+        {
+          "first": {
+            "uniqueId": "UI-19",
+            "effectId": "U-D19",
+            "stat": "_uSteamBreak",
+            "raw": 27,
+            "stored": 0.27,
+            "unit": "percent",
+            "band": "중옵",
+            "displayValue": 27,
+            "displayUnit": "%",
+            "text": "27%",
+            "exactDisplay": {
+              "numerator": 27,
+              "denominator": 1
+            },
+            "displayRule": "정수 원값",
+            "status": "proposal",
+            "runtimeReady": false
+          },
+          "last": {
+            "uniqueId": "UI-19",
+            "effectId": "U-D19",
+            "stat": "_uSteamBreak",
+            "raw": 33,
+            "stored": 0.33,
+            "unit": "percent",
+            "band": "중옵",
+            "displayValue": 33,
+            "displayUnit": "%",
+            "text": "33%",
+            "exactDisplay": {
+              "numerator": 33,
+              "denominator": 1
+            },
+            "displayRule": "정수 원값",
+            "status": "proposal",
+            "runtimeReady": false
+          }
+        },
+        {
+          "first": {
+            "uniqueId": "UI-19",
+            "effectId": "U-D19",
+            "stat": "_uSteamBreak",
+            "raw": 34,
+            "stored": 0.34,
+            "unit": "percent",
+            "band": "상옵",
+            "displayValue": 34,
+            "displayUnit": "%",
+            "text": "34%",
+            "exactDisplay": {
+              "numerator": 34,
+              "denominator": 1
+            },
+            "displayRule": "정수 원값",
+            "status": "proposal",
+            "runtimeReady": false
+          },
+          "last": {
+            "uniqueId": "UI-19",
+            "effectId": "U-D19",
+            "stat": "_uSteamBreak",
+            "raw": 40,
+            "stored": 0.4,
+            "unit": "percent",
+            "band": "상옵",
+            "displayValue": 40,
+            "displayUnit": "%",
+            "text": "40%",
+            "exactDisplay": {
+              "numerator": 40,
+              "denominator": 1
+            },
+            "displayRule": "정수 원값",
+            "status": "proposal",
+            "runtimeReady": false
+          }
+        }
+      ]
+    },
+    {
+      "uniqueId": "UI-20",
+      "effectId": "U-D20",
+      "stat": "_uShieldBreakBank",
+      "unit": "percent",
+      "min": 20,
+      "max": 40,
+      "status": "proposal",
+      "runtimeReady": false,
+      "bands": [
+        {
+          "label": "하옵",
+          "min": 20,
+          "max": 26
+        },
+        {
+          "label": "중옵",
+          "min": 27,
+          "max": 33
+        },
+        {
+          "label": "상옵",
+          "min": 34,
+          "max": 40
+        }
+      ],
+      "examples": [
+        {
+          "first": {
+            "uniqueId": "UI-20",
+            "effectId": "U-D20",
+            "stat": "_uShieldBreakBank",
+            "raw": 20,
+            "stored": 0.2,
+            "unit": "percent",
+            "band": "하옵",
+            "displayValue": 20,
+            "displayUnit": "%",
+            "text": "20%",
+            "exactDisplay": {
+              "numerator": 20,
+              "denominator": 1
+            },
+            "displayRule": "정수 원값",
+            "status": "proposal",
+            "runtimeReady": false
+          },
+          "last": {
+            "uniqueId": "UI-20",
+            "effectId": "U-D20",
+            "stat": "_uShieldBreakBank",
+            "raw": 26,
+            "stored": 0.26,
+            "unit": "percent",
+            "band": "하옵",
+            "displayValue": 26,
+            "displayUnit": "%",
+            "text": "26%",
+            "exactDisplay": {
+              "numerator": 26,
+              "denominator": 1
+            },
+            "displayRule": "정수 원값",
+            "status": "proposal",
+            "runtimeReady": false
+          }
+        },
+        {
+          "first": {
+            "uniqueId": "UI-20",
+            "effectId": "U-D20",
+            "stat": "_uShieldBreakBank",
+            "raw": 27,
+            "stored": 0.27,
+            "unit": "percent",
+            "band": "중옵",
+            "displayValue": 27,
+            "displayUnit": "%",
+            "text": "27%",
+            "exactDisplay": {
+              "numerator": 27,
+              "denominator": 1
+            },
+            "displayRule": "정수 원값",
+            "status": "proposal",
+            "runtimeReady": false
+          },
+          "last": {
+            "uniqueId": "UI-20",
+            "effectId": "U-D20",
+            "stat": "_uShieldBreakBank",
+            "raw": 33,
+            "stored": 0.33,
+            "unit": "percent",
+            "band": "중옵",
+            "displayValue": 33,
+            "displayUnit": "%",
+            "text": "33%",
+            "exactDisplay": {
+              "numerator": 33,
+              "denominator": 1
+            },
+            "displayRule": "정수 원값",
+            "status": "proposal",
+            "runtimeReady": false
+          }
+        },
+        {
+          "first": {
+            "uniqueId": "UI-20",
+            "effectId": "U-D20",
+            "stat": "_uShieldBreakBank",
+            "raw": 34,
+            "stored": 0.34,
+            "unit": "percent",
+            "band": "상옵",
+            "displayValue": 34,
+            "displayUnit": "%",
+            "text": "34%",
+            "exactDisplay": {
+              "numerator": 34,
+              "denominator": 1
+            },
+            "displayRule": "정수 원값",
+            "status": "proposal",
+            "runtimeReady": false
+          },
+          "last": {
+            "uniqueId": "UI-20",
+            "effectId": "U-D20",
+            "stat": "_uShieldBreakBank",
+            "raw": 40,
+            "stored": 0.4,
+            "unit": "percent",
+            "band": "상옵",
+            "displayValue": 40,
+            "displayUnit": "%",
+            "text": "40%",
+            "exactDisplay": {
+              "numerator": 40,
+              "denominator": 1
+            },
+            "displayRule": "정수 원값",
+            "status": "proposal",
+            "runtimeReady": false
+          }
+        }
+      ]
+    },
+    {
+      "uniqueId": "UI-21",
+      "effectId": "U-D21",
+      "stat": "_uDemonRekindle",
+      "unit": "rage",
+      "min": 20,
+      "max": 40,
+      "status": "proposal",
+      "runtimeReady": false,
+      "bands": [
+        {
+          "label": "하옵",
+          "min": 20,
+          "max": 26
+        },
+        {
+          "label": "중옵",
+          "min": 27,
+          "max": 33
+        },
+        {
+          "label": "상옵",
+          "min": 34,
+          "max": 40
+        }
+      ],
+      "examples": [
+        {
+          "first": {
+            "uniqueId": "UI-21",
+            "effectId": "U-D21",
+            "stat": "_uDemonRekindle",
+            "raw": 20,
+            "stored": 20,
+            "unit": "rage",
+            "band": "하옵",
+            "displayValue": 20,
+            "displayUnit": "분노",
+            "text": "20분노",
+            "exactDisplay": {
+              "numerator": 20,
+              "denominator": 1
+            },
+            "displayRule": "정수 원값",
+            "status": "proposal",
+            "runtimeReady": false
+          },
+          "last": {
+            "uniqueId": "UI-21",
+            "effectId": "U-D21",
+            "stat": "_uDemonRekindle",
+            "raw": 26,
+            "stored": 26,
+            "unit": "rage",
+            "band": "하옵",
+            "displayValue": 26,
+            "displayUnit": "분노",
+            "text": "26분노",
+            "exactDisplay": {
+              "numerator": 26,
+              "denominator": 1
+            },
+            "displayRule": "정수 원값",
+            "status": "proposal",
+            "runtimeReady": false
+          }
+        },
+        {
+          "first": {
+            "uniqueId": "UI-21",
+            "effectId": "U-D21",
+            "stat": "_uDemonRekindle",
+            "raw": 27,
+            "stored": 27,
+            "unit": "rage",
+            "band": "중옵",
+            "displayValue": 27,
+            "displayUnit": "분노",
+            "text": "27분노",
+            "exactDisplay": {
+              "numerator": 27,
+              "denominator": 1
+            },
+            "displayRule": "정수 원값",
+            "status": "proposal",
+            "runtimeReady": false
+          },
+          "last": {
+            "uniqueId": "UI-21",
+            "effectId": "U-D21",
+            "stat": "_uDemonRekindle",
+            "raw": 33,
+            "stored": 33,
+            "unit": "rage",
+            "band": "중옵",
+            "displayValue": 33,
+            "displayUnit": "분노",
+            "text": "33분노",
+            "exactDisplay": {
+              "numerator": 33,
+              "denominator": 1
+            },
+            "displayRule": "정수 원값",
+            "status": "proposal",
+            "runtimeReady": false
+          }
+        },
+        {
+          "first": {
+            "uniqueId": "UI-21",
+            "effectId": "U-D21",
+            "stat": "_uDemonRekindle",
+            "raw": 34,
+            "stored": 34,
+            "unit": "rage",
+            "band": "상옵",
+            "displayValue": 34,
+            "displayUnit": "분노",
+            "text": "34분노",
+            "exactDisplay": {
+              "numerator": 34,
+              "denominator": 1
+            },
+            "displayRule": "정수 원값",
+            "status": "proposal",
+            "runtimeReady": false
+          },
+          "last": {
+            "uniqueId": "UI-21",
+            "effectId": "U-D21",
+            "stat": "_uDemonRekindle",
+            "raw": 40,
+            "stored": 40,
+            "unit": "rage",
+            "band": "상옵",
+            "displayValue": 40,
+            "displayUnit": "분노",
+            "text": "40분노",
+            "exactDisplay": {
+              "numerator": 40,
+              "denominator": 1
+            },
+            "displayRule": "정수 원값",
+            "status": "proposal",
+            "runtimeReady": false
+          }
+        }
+      ]
+    },
+    {
+      "uniqueId": "UI-22",
+      "effectId": "U-D22",
+      "stat": "_uPoiseOrbFracture",
+      "unit": "percent",
+      "min": 20,
+      "max": 40,
+      "status": "proposal",
+      "runtimeReady": false,
+      "bands": [
+        {
+          "label": "하옵",
+          "min": 20,
+          "max": 26
+        },
+        {
+          "label": "중옵",
+          "min": 27,
+          "max": 33
+        },
+        {
+          "label": "상옵",
+          "min": 34,
+          "max": 40
+        }
+      ],
+      "examples": [
+        {
+          "first": {
+            "uniqueId": "UI-22",
+            "effectId": "U-D22",
+            "stat": "_uPoiseOrbFracture",
+            "raw": 20,
+            "stored": 0.2,
+            "unit": "percent",
+            "band": "하옵",
+            "displayValue": 20,
+            "displayUnit": "%",
+            "text": "20%",
+            "exactDisplay": {
+              "numerator": 20,
+              "denominator": 1
+            },
+            "displayRule": "정수 원값",
+            "status": "proposal",
+            "runtimeReady": false
+          },
+          "last": {
+            "uniqueId": "UI-22",
+            "effectId": "U-D22",
+            "stat": "_uPoiseOrbFracture",
+            "raw": 26,
+            "stored": 0.26,
+            "unit": "percent",
+            "band": "하옵",
+            "displayValue": 26,
+            "displayUnit": "%",
+            "text": "26%",
+            "exactDisplay": {
+              "numerator": 26,
+              "denominator": 1
+            },
+            "displayRule": "정수 원값",
+            "status": "proposal",
+            "runtimeReady": false
+          }
+        },
+        {
+          "first": {
+            "uniqueId": "UI-22",
+            "effectId": "U-D22",
+            "stat": "_uPoiseOrbFracture",
+            "raw": 27,
+            "stored": 0.27,
+            "unit": "percent",
+            "band": "중옵",
+            "displayValue": 27,
+            "displayUnit": "%",
+            "text": "27%",
+            "exactDisplay": {
+              "numerator": 27,
+              "denominator": 1
+            },
+            "displayRule": "정수 원값",
+            "status": "proposal",
+            "runtimeReady": false
+          },
+          "last": {
+            "uniqueId": "UI-22",
+            "effectId": "U-D22",
+            "stat": "_uPoiseOrbFracture",
+            "raw": 33,
+            "stored": 0.33,
+            "unit": "percent",
+            "band": "중옵",
+            "displayValue": 33,
+            "displayUnit": "%",
+            "text": "33%",
+            "exactDisplay": {
+              "numerator": 33,
+              "denominator": 1
+            },
+            "displayRule": "정수 원값",
+            "status": "proposal",
+            "runtimeReady": false
+          }
+        },
+        {
+          "first": {
+            "uniqueId": "UI-22",
+            "effectId": "U-D22",
+            "stat": "_uPoiseOrbFracture",
+            "raw": 34,
+            "stored": 0.34,
+            "unit": "percent",
+            "band": "상옵",
+            "displayValue": 34,
+            "displayUnit": "%",
+            "text": "34%",
+            "exactDisplay": {
+              "numerator": 34,
+              "denominator": 1
+            },
+            "displayRule": "정수 원값",
+            "status": "proposal",
+            "runtimeReady": false
+          },
+          "last": {
+            "uniqueId": "UI-22",
+            "effectId": "U-D22",
+            "stat": "_uPoiseOrbFracture",
+            "raw": 40,
+            "stored": 0.4,
+            "unit": "percent",
+            "band": "상옵",
+            "displayValue": 40,
+            "displayUnit": "%",
+            "text": "40%",
+            "exactDisplay": {
+              "numerator": 40,
+              "denominator": 1
+            },
+            "displayRule": "정수 원값",
+            "status": "proposal",
+            "runtimeReady": false
+          }
+        }
+      ]
+    }
+  ]
+}

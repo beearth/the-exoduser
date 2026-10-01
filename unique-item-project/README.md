@@ -23,10 +23,19 @@
 
 ## 고유아이템 정의 감사
 
-`definitions.mjs`는 계약§3의22종 제안 데이터를 제공하며 기존 원화 감사에서도 사용한다. 게임 등록은 전종 비활성이다.
+`definitions.js`는 계약§3의22종 제안 데이터를 제공하며 기존 원화 감사에서도 사용한다. 게임 등록은 전종 비활성이다.
 
 - `node unique-item-project/audit-definitions.mjs`: 정의·원문 대응 검증. 구조가 맞으면 exit0이며, 결과의 runtimeReady=false/activeDefinitions=0 및 차단 사유를 함께 확인한다.
 - `node unique-item-project/audit-definitions.mjs --require-ready`: 실제 활성 준비가 안 되었으면 exit1. 현재22종 모두 미준비다.
 - `node --test test/uniqueDefinitions.test.js test/uniqueDefinitionAudit.test.js`: 조회·기존 폴백·부정 등록·원문 변경 검출23검사.
 
 이 검사는 실게임 플레이·아트 채택·효과 구현의 완료 판정이 아니다. 미등록 ID/기존 UNIQUE_SPECIAL/유골함은 활성 정의 조회에서 null로 반환되어 기존 경로를 유지한다.
+
+
+## 2026-10-01 롤·화면 소비 인수
+
+`roll-values.mjs`는 D절22종의 명시 구간과 저장/표시를 구현한다. `audit-definitions.mjs`가 문서의 범위·단위·하중상·% 저장범위와698개 정수 JSON 왕복을 검사하고 rolls에 결과를 기록한다. RNG는 명시 주입하며 잘못된 ID/값/RNG를 거부한다. 효과 실행은 아직 미구현이다.
+
+`review.html`은 `definitions.js`의22종을 실제 import해44원화·한국어 슬롯·효과ID·제안/비활성 상태를 표시한다. 기존 서버의 JavaScript MIME 지원을 위해 정의 파일 확장자만 .mjs에서 .js로 옮겼으며 데이터는 동일하다. 서버 재시작 없이 실제3340에서 로딩·64/160px·Tab/Enter/Space를 검증했다.
+
+롤69+정의21+감사2+화면6+서버1+기존캐시2=101검사 PASS. [최종 인수와 범위](../docs/0마스터플랜/mac-resume-20261001/vscode-dispatch/PM009-roll-review-root.md). 원화채택·게임효과·드롭·실제 저장 활성은 별도 게이트다.

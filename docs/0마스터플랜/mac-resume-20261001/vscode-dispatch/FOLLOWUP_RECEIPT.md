@@ -111,3 +111,8 @@ ITEM 12:57:36Z, BALANCE 12:58:36Z 제출 완료. root 독립 검수·사전 원�
 ## PM-009 정의 조회·검증 구현 인수
 
 앱activewriter 오류 뒤 공식queue01a0f7a9-af0f-7990-b525-79cb5637f359 수락·기존 ITEM 새턴 실제Read/Edit 확인.13:31:32Z 수신/Read,13:33:44Z 담당완료. root 소비 연결·23회귀·실제 원화 감사 완료, 정의 유효/게임 활성불가 분리. 기존 이름수리·환수·데모·사운드 반복0.
+
+
+## PM-009 BALANCE/UIUX 실제 구현 통합
+
+BALANCE13:44:06Z Read·13:45:41Z 담당완료, UIUX13:44:03Z 소스Read·13:47:01Z 최종검사. root가 롤 감사 소비 및 review 연결을 통합하고101PASS, 실제3340의22카드44원화와 두크기·키보드를 확인했다. definitions는 같은바이트 .js로 이동해 MIME을 해결했으며 서버를 변경/재시작하지 않았다.13:44Z native 입력 noWindowsAvailable/잠금UNKNOWN, ENEMY/ART/SKILL 새후속미수신 유지. [원자료·이력·한계](PM009-roll-review-root.md).
