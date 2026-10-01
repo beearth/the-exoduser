@@ -63,3 +63,18 @@
 
 
 Node 후보 연결과 root 보강 회귀61PASS. 게임 생성/드롭/저장라우터·실제UI·패키지 연결은 미완료이며 활성0을 유지한다. 기존 소켓누락 마이그레이션 RNG·affixes 보충은 그대로다. [실제 검수·반례·제한](../0마스터플랜/mac-resume-20261001/vscode-dispatch/BINDING-root-review.md).
+
+
+### 2026-10-02 U-D17 실제 소스 어댑터 검토 인수
+
+`tools/team-followup-20261001/ITEM/d17-source-adapter-callsite.mjs`는 실제 `fireBlackStar` 종료와 원본 `activateSpikeTrap` 생성 함수를 감싸는 검토 호출 집합이다. 고정 오라·폭풍은 검증된 생성 지점에만 별도 등록하며 private WeakMap으로 실제 객체 출처를 유지한다. 기본 `enabled=false`, `reviewOnly=false`, `runtimeReady=false`이고 생산 호출부에는 연결하지 않았다.
+
+| 항목 | 현재 계약·근거 |
+|---|---|
+| 선택 | 기존 600px 이내, 저장 정수 롤 1~3. 최근접·배열 순 동률 처리는 검토 정책이며 확정 채택 아님 |
+| 이동 | 원 객체 identity와 좌표 외 필드 보존, 선택 객체 x/y 쓰기 가능 여부 선검사. 추적형·불명 출처·보스·U-D13 자식 등록 경로 없음 |
+| 종료·초기화 | 실제 casting true→false 뒤 1회, 중복 종료 거부. clear로 출처/token 폐기. 생산 clear 호출부는 미연결 |
+| 검수 | root 실제 소스 추출 13그룹 재실행 PASS, 공개 호출 집합의 비활성/활성·원함수 반환값·identity 별도 검사 PASS |
+| 남은 게이트 | 실제 caller/clear 수명주기·D17 저장롤 공급·브라우저·적별 중첩 피해 검수. 효과·드롭·장착·경제·생산 적용 완료 아님 |
+
+원본 함수/literal SHA와 범위는 `d17-source-adapter-result.md`, root 근거는 `outputs/team-review-20261002/production-integration/item-root-check.json`에 기록했다.

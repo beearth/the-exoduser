@@ -144,3 +144,18 @@ Node 후보 연결과 root 보강 회귀61PASS. 게임 생성/드롭/저장라�
 root가 명시 reviewOnly 설치/해제 후보23그룹을 실제 port·양쪽 mkItem/저장/복원으로 재검수했다. 신규 D10 RNG1/복원0, proposal/inactive/runtimeReady=false, 원 property/타주체 교체 보존. 생산 drop/effect/DB 라우터 연결0. 현재3340의 .mjs 응답은 application/octet-stream이고 .js는 application/javascript여서 전이 .js+독립 host 구현을 기존 ITEM에 배정·실제 Read/Edit 확인했다. [인수 기록](../0마스터플랜/mac-resume-20261001/vscode-dispatch/FOUR-SUBMISSIONS-HELLRAY-20261002.md).
 
 - 2026-10-02 추가: ITEM 검토 host root12검사 및 실제 독립 브라우저 import/생성/JSON복원/해제 인수. 초기 inline-style CSP 진단은 미해결, production 비활성 유지. 상세 `FOUR-SUBMISSIONS-HELLRAY-20261002.md` 및 팀 활용표 참조.
+
+
+### 2026-10-02 U-D17 실제 소스 어댑터 검토 인수
+
+`tools/team-followup-20261001/ITEM/d17-source-adapter-callsite.mjs`는 실제 `fireBlackStar` 종료와 원본 `activateSpikeTrap` 생성 함수를 감싸는 검토 호출 집합이다. 고정 오라·폭풍은 검증된 생성 지점에만 별도 등록하며 private WeakMap으로 실제 객체 출처를 유지한다. 기본 `enabled=false`, `reviewOnly=false`, `runtimeReady=false`이고 생산 호출부에는 연결하지 않았다.
+
+| 항목 | 현재 계약·근거 |
+|---|---|
+| 선택 | 기존 600px 이내, 저장 정수 롤 1~3. 최근접·배열 순 동률 처리는 검토 정책이며 확정 채택 아님 |
+| 이동 | 원 객체 identity와 좌표 외 필드 보존, 선택 객체 x/y 쓰기 가능 여부 선검사. 추적형·불명 출처·보스·U-D13 자식 등록 경로 없음 |
+| 종료·초기화 | 실제 casting true→false 뒤 1회, 중복 종료 거부. clear로 출처/token 폐기. 생산 clear 호출부는 미연결 |
+| 검수 | root 실제 소스 추출 13그룹 재실행 PASS, 공개 호출 집합의 비활성/활성·원함수 반환값·identity 별도 검사 PASS |
+| 남은 게이트 | 실제 caller/clear 수명주기·D17 저장롤 공급·브라우저·적별 중첩 피해 검수. 효과·드롭·장착·경제·생산 적용 완료 아님 |
+
+원본 함수/literal SHA와 범위는 `d17-source-adapter-result.md`, root 근거는 `outputs/team-review-20261002/production-integration/item-root-check.json`에 기록했다.
