@@ -1,0 +1,141 @@
+docs/4.1맵디자인+설정/MAP_TEST_SERVER.md:63:| 렌더 해상도 | 일반 게임과 QA 모두 _ssaa=1. 창 크기×OPT.resScale를 짝수 픽셀로 정렬; DPR 추가 배율 없음. DPR2/창1920×1080/100%이면 logical=backing=1920×1080 |
+docs/4.1맵디자인+설정/REGION_CLEAR_GATE_20260930.md:82:- draw() 말미(미니맵 직전), 화면공간(`X.setTransform(_ssaa,...)` — 논리px=CSS px, DPR은 _ssaa 백킹으로 대응).
+docs/12퍼포먼스·최적화/12퍼포먼스·최적화.md:812:| 경고 폭 | 본편 _drawProjectileChargeLabel의 _chargeLabelMetrics 한항목(ctx/label/font/width) 재사용. 렌더러/번역문구/글꼴 변경 및 document.fonts loadingdone/loadingerror에서 재측정. 기존13px·박스폭tw+14/높이20·링60틱·탄종/패링 규칙 유지 |
+docs/3.3 키바인딩+설정/3.3 키바인딩+설정.md:332:- **DPR 논리 시야 고정 (현행, 2026-09-24)**: `_dpr=1`, `_ssaa=1`을 일반 게임과 `mapqa=1`에 공통 적용한다. 창 크기 또는 `_renderRes`에 `OPT.resScale/100`을 곱해 짝수 픽셀로 정렬한 `VW/VH`가 메인 캔버스 백킹과 같다. DPR2/창1920×1080/100%는 logical=backing=1920×1080이며 CSS는 창 크기를 유지한다.
+docs/3.3 키바인딩+설정/3.3 키바인딩+설정.md:340:- **현행 적용 범위**: 일반 게임과 mapqa 모두 `_ssaa=1`. 레거시 `OPT.ssaa`는 호환용이며 `rz()` 렌더 배율을 바꾸지 않는다. 이전 QA 전용 DPR 최대2x는 2026-09-24 사용자 지시로 폐기했다.
+docs/3.3 키바인딩+설정/3.3 키바인딩+설정.md:345:- **월드 변환** `_xWorld()`(game.html:3761): `X.setTransform(ss,0,0,ss,(VW/2-cam.x)×ss,(VH/2-cam.y)×ss)`. draw() 진입부(game.html:40985)에서 `if(_ssaa!==1)X.scale(_ssaa,_ssaa)` → **이후 모든 월드 렌더는 논리좌표(it.x,it.y) 그대로 → 자동 ss배 백킹 확대**
+docs/3.3 키바인딩+설정/3.3 키바인딩+설정.md:349:- **산소방울(o2bubble) 렌더 경로 수정 (2026-06-29)**: 기존엔 `update()` 루프에서 백킹좌표(`C.width/2` 오프셋, 변환 없음)로 직접 그려 → draw()의 `clearRect`로 매 프레임 덮여 사실상 미표시 + SSAA 미적용 상태였음. → draw()의 worldItems 렌더 루프(game.html:41604)로 이동, 다른 월드아이템과 동일하게 월드좌표(it.x,it.y)로 그려 `_ssaa` 변환 자동 적용. update()측 죽은 렌더 제거
+docs/12퍼포먼스·최적화/FRAME_DROP_HUD_TEXT_20260928.md:84:| WARNING_WIDTH / game.html _drawProjectileChargeLabel | _chargeLabelMetrics의 ctx/label/font/width 한 항목만 재사용. X 객체·문구(번역 포함)·글꼴이 바뀌면 새 폭 측정. document.fonts의 loadingdone/loadingerror에서 ctx=null로 무효화. easy-test에는 이 경고 함수가 없어 경고 기능을 새로 추가하지 않는다. |
+docs/12퍼포먼스·최적화/FRAME_DROP_HUD_TEXT_20260928.md:86:| SETTINGS_RESTORE / 두 HTML | 최초 hellcave_settings의 OPT 복원 및 _loadPreset(slot) 옵션 복원 뒤 UI 동기화 전에 rz() 호출. 저장된 60%/프리셋70%가 실제 C/CT/burst 및 VW/VH에 적용된다. 창·_renderRes 기준×resScale/100을 짝수 픽셀로 정렬; _dpr=1/_ssaa=1. 동일 크기면 기존 rz no-op 유지. |
+docs/4.1맵디자인+설정/CH1_BOUNDARY_EDGE_MAP020_20261001.md:24:| 호출 | game.html `Ch1BorderForeground.drawBack(...)` 직후 `Ch1BoundaryEdge.draw(X,G,_now,VW,VH,_tzoom)` — 바닥 레이어(엔티티 아래). 스크립트 태그 `ch1-boundary-edge.js?v=20261001-5` |
+docs/4.1맵디자인+설정/CH1_BOUNDARY_EDGE_MAP020_20261001.md:70:§6의 사각 절단은 수정·실화면 재검수 완료했다. 현행 범위는 `VW*.5/z+80`, `VH*.5/z+80`이며 z는 양쪽 HTML의 월드 변환 `_tzoom=_ez*_cz`다. 유한한 양수만 사용하고 생략/무효 값은 1배다. 기존 80월드px 여유·뿌리90 여유·305앵커·시드·crop·기본B·어둠.38·맵/충돌/베이크는 유지한다. 1배 모듈 래스터 RGBA 차이0, 실제 .62의 0/A/B 재촬영에서 잘림 해소, draw16→25(보이는 뿌리9개 복구). 준비된 정지 장면 5초씩 6구간에서 평균 약8.33ms, 50ms초과0. 관련37검사 PASS, 최소 .04 및 합성 줌 범위 검사 PASS.
+docs/4.1맵디자인+설정/_MAP_SSOT_INDEX.md:7:실제 `_tzoom`으로 경계 shade/root 월드 범위를 계산한다. 남쪽1/.62의 0/A/B 재검수에서 사각 절단 해소, 1배 경계 픽셀 동일, 관련37검사 PASS. 이번 결함 PASS이며 전체 MAP-020은 반복감·M5 경로 미확인으로 RETOUCH다. [현행 §7](CH1_BOUNDARY_EDGE_MAP020_20261001.md#7-실제-줌-drawcull-수정--2026-10-01). 아래 내용은 각 시점 이력이다.
+docs/0마스터플랜/PROJECT_MANAGEMENT_MASTER.md:404:총괄 인수 ad77f308 원격 확인 후, 현장 총괄 소유로 boundary shade/root 범위에 실제 `_tzoom`을 전달했다. 두 HTML은 호출/캐시 키의 최소 바이트 치환만 했다. 실제 줌1/.62 × 0/A/B 6장, 이전 소스 사각 절단 재현, 수정 후 연속성, 1배 경계 래스터 RGBA 차이0, 305앵커 변환·G.map/정적 충돌 SHA 불변을 확인했다. 기본B·어둠.38·buildRim·베이크·전투·저장 공식 보존. 관련37검사 PASS와 이전 소스 음성 대조2FAIL로 회귀 검사 효용을 확인했다. 최소 .04/복합 줌은 실제 캐시의 draw 범위 검사이며 편집 모드 전체 플레이 PASS가 아니다.
+docs/0마스터플랜/PROJECT_MANAGEMENT_MASTER.md:566:기존 UIUX 완료·동일 작업 부재 확인 뒤 공식 대기열로 UIUX-HUD-COORDINATE-ADAPTER를 한 번 전달했다. 12:17:38Z 새 턴 수신과 지시 파일 읽기 명령 exit0을 확인했다. 실제 카메라/줌/SSAA/DPR 및 charge/drawNumStr bbox 연결을 소유 경로의 독립 후보로 구현하며 생산·게임 실행은 금지한다. 새 세션 없이 기존 담당자가 진행한다. [수신과 실제 명령 근거](mac-resume-20261001/vscode-dispatch/FOLLOWUP_RECEIPT.md).
+docs/8.0몬스터디자인/PHYSICAL_PROJECTILE_VISIBILITY_20260914.md:81:| 경고 폭 | 본편 _drawProjectileChargeLabel의 _chargeLabelMetrics 한항목(ctx/label/font/width) 재사용. 렌더러/번역문구/글꼴 변경 및 document.fonts loadingdone/loadingerror에서 재측정. 기존13px·박스폭tw+14/높이20·링60틱·탄종/패링 규칙 유지 |
+docs/CHANGELOG_SYNC.md:4052:- 당시 적용(2026-08-30 이력; 2026-09-24 폐기): `mapqa=1`에서만 `_ssaa=clamp(devicePixelRatio,1,2)`를 적용했다. 현행은 사용자 지시로 일반 게임과 QA 모두 backing1x이며 MAP_TEST_SERVER.md를 따른다.
+docs/CHANGELOG_SYNC.md:38979:- _autosave/game_20260629_003144_pre_ssaa.html
+docs/CHANGELOG_SYNC.md:39143:- _autosave/game_20260629_003144_pre_ssaa.html
+docs/CHANGELOG_SYNC.md:39296:- _autosave/game_20260629_003144_pre_ssaa.html
+docs/CHANGELOG_SYNC.md:39480:- _autosave/game_20260629_003144_pre_ssaa.html
+docs/CHANGELOG_SYNC.md:39664:- _autosave/game_20260629_003144_pre_ssaa.html
+docs/CHANGELOG_SYNC.md:39848:- _autosave/game_20260629_003144_pre_ssaa.html
+docs/CHANGELOG_SYNC.md:40032:- _autosave/game_20260629_003144_pre_ssaa.html
+docs/CHANGELOG_SYNC.md:40217:- _autosave/game_20260629_003144_pre_ssaa.html
+docs/CHANGELOG_SYNC.md:40437:- _autosave/game_20260629_003144_pre_ssaa.html
+docs/CHANGELOG_SYNC.md:40441:- _autosave/game_20260629_084722_pre_ssaa_port.html
+docs/CHANGELOG_SYNC.md:40442:- _autosave/game_20260629_091254_pre_ssaa_realport.html
+docs/CHANGELOG_SYNC.md:40674:- _autosave/game_20260629_003144_pre_ssaa.html
+docs/CHANGELOG_SYNC.md:40678:- _autosave/game_20260629_084722_pre_ssaa_port.html
+docs/CHANGELOG_SYNC.md:40679:- _autosave/game_20260629_091254_pre_ssaa_realport.html
+docs/CHANGELOG_SYNC.md:40911:- _autosave/game_20260629_003144_pre_ssaa.html
+docs/CHANGELOG_SYNC.md:40915:- _autosave/game_20260629_084722_pre_ssaa_port.html
+docs/CHANGELOG_SYNC.md:40916:- _autosave/game_20260629_091254_pre_ssaa_realport.html
+docs/CHANGELOG_SYNC.md:41153:- _autosave/game_20260629_003144_pre_ssaa.html
+docs/CHANGELOG_SYNC.md:41157:- _autosave/game_20260629_084722_pre_ssaa_port.html
+docs/CHANGELOG_SYNC.md:41158:- _autosave/game_20260629_091254_pre_ssaa_realport.html
+docs/CHANGELOG_SYNC.md:41160:- _autosave/game_20260629_162423_pre_o2_ssaa.html
+docs/CHANGELOG_SYNC.md:41430:- _autosave/game_20260629_003144_pre_ssaa.html
+docs/CHANGELOG_SYNC.md:41434:- _autosave/game_20260629_084722_pre_ssaa_port.html
+docs/CHANGELOG_SYNC.md:41435:- _autosave/game_20260629_091254_pre_ssaa_realport.html
+docs/CHANGELOG_SYNC.md:41437:- _autosave/game_20260629_162423_pre_o2_ssaa.html
+docs/CHANGELOG_SYNC.md:41713:- _autosave/game_20260629_003144_pre_ssaa.html
+docs/CHANGELOG_SYNC.md:41717:- _autosave/game_20260629_084722_pre_ssaa_port.html
+docs/CHANGELOG_SYNC.md:41718:- _autosave/game_20260629_091254_pre_ssaa_realport.html
+docs/CHANGELOG_SYNC.md:41720:- _autosave/game_20260629_162423_pre_o2_ssaa.html
+docs/CHANGELOG_SYNC.md:41997:- _autosave/game_20260629_003144_pre_ssaa.html
+docs/CHANGELOG_SYNC.md:42001:- _autosave/game_20260629_084722_pre_ssaa_port.html
+docs/CHANGELOG_SYNC.md:42002:- _autosave/game_20260629_091254_pre_ssaa_realport.html
+docs/CHANGELOG_SYNC.md:42004:- _autosave/game_20260629_162423_pre_o2_ssaa.html
+docs/CHANGELOG_SYNC.md:42283:- _autosave/game_20260629_003144_pre_ssaa.html
+docs/CHANGELOG_SYNC.md:42287:- _autosave/game_20260629_084722_pre_ssaa_port.html
+docs/CHANGELOG_SYNC.md:42288:- _autosave/game_20260629_091254_pre_ssaa_realport.html
+docs/CHANGELOG_SYNC.md:42290:- _autosave/game_20260629_162423_pre_o2_ssaa.html
+docs/CHANGELOG_SYNC.md:42572:- _autosave/game_20260629_003144_pre_ssaa.html
+docs/CHANGELOG_SYNC.md:42576:- _autosave/game_20260629_084722_pre_ssaa_port.html
+docs/CHANGELOG_SYNC.md:42577:- _autosave/game_20260629_091254_pre_ssaa_realport.html
+docs/CHANGELOG_SYNC.md:42579:- _autosave/game_20260629_162423_pre_o2_ssaa.html
+docs/CHANGELOG_SYNC.md:42866:- _autosave/game_20260629_003144_pre_ssaa.html
+docs/CHANGELOG_SYNC.md:42870:- _autosave/game_20260629_084722_pre_ssaa_port.html
+docs/CHANGELOG_SYNC.md:42871:- _autosave/game_20260629_091254_pre_ssaa_realport.html
+docs/CHANGELOG_SYNC.md:42873:- _autosave/game_20260629_162423_pre_o2_ssaa.html
+docs/CHANGELOG_SYNC.md:43160:- _autosave/game_20260629_003144_pre_ssaa.html
+docs/CHANGELOG_SYNC.md:43164:- _autosave/game_20260629_084722_pre_ssaa_port.html
+docs/CHANGELOG_SYNC.md:43165:- _autosave/game_20260629_091254_pre_ssaa_realport.html
+docs/CHANGELOG_SYNC.md:43167:- _autosave/game_20260629_162423_pre_o2_ssaa.html
+docs/CHANGELOG_SYNC.md:43454:- _autosave/game_20260629_003144_pre_ssaa.html
+docs/CHANGELOG_SYNC.md:43458:- _autosave/game_20260629_084722_pre_ssaa_port.html
+docs/CHANGELOG_SYNC.md:43459:- _autosave/game_20260629_091254_pre_ssaa_realport.html
+docs/CHANGELOG_SYNC.md:43461:- _autosave/game_20260629_162423_pre_o2_ssaa.html
+docs/CHANGELOG_SYNC.md:43748:- _autosave/game_20260629_003144_pre_ssaa.html
+docs/CHANGELOG_SYNC.md:43752:- _autosave/game_20260629_084722_pre_ssaa_port.html
+docs/CHANGELOG_SYNC.md:43753:- _autosave/game_20260629_091254_pre_ssaa_realport.html
+docs/CHANGELOG_SYNC.md:43755:- _autosave/game_20260629_162423_pre_o2_ssaa.html
+docs/CHANGELOG_SYNC.md:44042:- _autosave/game_20260629_003144_pre_ssaa.html
+docs/CHANGELOG_SYNC.md:44046:- _autosave/game_20260629_084722_pre_ssaa_port.html
+docs/CHANGELOG_SYNC.md:44047:- _autosave/game_20260629_091254_pre_ssaa_realport.html
+docs/CHANGELOG_SYNC.md:44049:- _autosave/game_20260629_162423_pre_o2_ssaa.html
+docs/CHANGELOG_SYNC.md:44336:- _autosave/game_20260629_003144_pre_ssaa.html
+docs/CHANGELOG_SYNC.md:44340:- _autosave/game_20260629_084722_pre_ssaa_port.html
+docs/CHANGELOG_SYNC.md:44341:- _autosave/game_20260629_091254_pre_ssaa_realport.html
+docs/CHANGELOG_SYNC.md:44343:- _autosave/game_20260629_162423_pre_o2_ssaa.html
+docs/CHANGELOG_SYNC.md:44630:- _autosave/game_20260629_003144_pre_ssaa.html
+docs/CHANGELOG_SYNC.md:44634:- _autosave/game_20260629_084722_pre_ssaa_port.html
+docs/CHANGELOG_SYNC.md:44635:- _autosave/game_20260629_091254_pre_ssaa_realport.html
+docs/CHANGELOG_SYNC.md:44637:- _autosave/game_20260629_162423_pre_o2_ssaa.html
+docs/CHANGELOG_SYNC.md:44924:- _autosave/game_20260629_003144_pre_ssaa.html
+docs/CHANGELOG_SYNC.md:44928:- _autosave/game_20260629_084722_pre_ssaa_port.html
+docs/CHANGELOG_SYNC.md:44929:- _autosave/game_20260629_091254_pre_ssaa_realport.html
+docs/CHANGELOG_SYNC.md:44931:- _autosave/game_20260629_162423_pre_o2_ssaa.html
+docs/CHANGELOG_SYNC.md:45218:- _autosave/game_20260629_003144_pre_ssaa.html
+docs/CHANGELOG_SYNC.md:45222:- _autosave/game_20260629_084722_pre_ssaa_port.html
+docs/CHANGELOG_SYNC.md:45223:- _autosave/game_20260629_091254_pre_ssaa_realport.html
+docs/CHANGELOG_SYNC.md:45225:- _autosave/game_20260629_162423_pre_o2_ssaa.html
+docs/CHANGELOG_SYNC.md:45512:- _autosave/game_20260629_003144_pre_ssaa.html
+docs/CHANGELOG_SYNC.md:45516:- _autosave/game_20260629_084722_pre_ssaa_port.html
+docs/CHANGELOG_SYNC.md:45517:- _autosave/game_20260629_091254_pre_ssaa_realport.html
+docs/CHANGELOG_SYNC.md:45519:- _autosave/game_20260629_162423_pre_o2_ssaa.html
+docs/CHANGELOG_SYNC.md:45806:- _autosave/game_20260629_003144_pre_ssaa.html
+docs/CHANGELOG_SYNC.md:45810:- _autosave/game_20260629_084722_pre_ssaa_port.html
+docs/CHANGELOG_SYNC.md:45811:- _autosave/game_20260629_091254_pre_ssaa_realport.html
+docs/CHANGELOG_SYNC.md:45813:- _autosave/game_20260629_162423_pre_o2_ssaa.html
+docs/CHANGELOG_SYNC.md:46104:- _autosave/game_20260629_003144_pre_ssaa.html
+docs/CHANGELOG_SYNC.md:46108:- _autosave/game_20260629_084722_pre_ssaa_port.html
+docs/CHANGELOG_SYNC.md:46109:- _autosave/game_20260629_091254_pre_ssaa_realport.html
+docs/CHANGELOG_SYNC.md:46111:- _autosave/game_20260629_162423_pre_o2_ssaa.html
+docs/CHANGELOG_SYNC.md:46428:- _autosave/game_20260629_003144_pre_ssaa.html
+docs/CHANGELOG_SYNC.md:46432:- _autosave/game_20260629_084722_pre_ssaa_port.html
+docs/CHANGELOG_SYNC.md:46433:- _autosave/game_20260629_091254_pre_ssaa_realport.html
+docs/CHANGELOG_SYNC.md:46435:- _autosave/game_20260629_162423_pre_o2_ssaa.html
+docs/CHANGELOG_SYNC.md:51424:| 경고 폭 | 본편 _drawProjectileChargeLabel의 _chargeLabelMetrics 한항목(ctx/label/font/width) 재사용. 렌더러/번역문구/글꼴 변경 및 document.fonts loadingdone/loadingerror에서 재측정. 기존13px·박스폭tw+14/높이20·링60틱·탄종/패링 규칙 유지 |
+docs/0마스터플랜/mac-resume-20261001/map020-zoomfix-evidence/UIUX-팀검토.md:17:- *부수 관찰(별건)*: 화면 중앙 플로팅 피해숫자·"LV.4"·"LEVEL UP!"·적 네임플레이트("레어…(e0) 11/3726")의 상호 가림 — 단, 이는 캔버스 전투 렌더 영역으로 총괄/VFX/ENEMY 소유와 겹쳐 UIUX 단독 소유 아님 → 이번 후보에서 분리.
+docs/3.1 ui hud 디자인/exoduser-ui-phase2 (1).md:1058:| 경고 폭 | 본편 _drawProjectileChargeLabel의 _chargeLabelMetrics 한항목(ctx/label/font/width) 재사용. 렌더러/번역문구/글꼴 변경 및 document.fonts loadingdone/loadingerror에서 재측정. 기존13px·박스폭tw+14/높이20·링60틱·탄종/패링 규칙 유지 |
+docs/0마스터플랜/mac-resume-20261001/vscode-dispatch/UIUX-next-result.md:5:NEXT_TASK를 읽고 이전 UIUX-result 및 팀 MD의 부분 완료 상태를 확인했다. 이 과제의 중복 실행 산출은 없었다. 같은 기존 대화에서 현 소스 `_drawEnemyShotWarnings` → 투사체/VFX → 피해숫자 → world restore 경로를 읽고 후보 작성·작은 Node 회귀를 실행했다. 실제 model/session ID는 도구에서 확인하지 못했으므로 receipt의 실제 ID는 null, 배정 문서 ID는 별도 필드로 기록했다. 생산 파일·공용 테스트·총괄 MD·타팀 파일은 편집하지 않았다.
+docs/0마스터플랜/mac-resume-20261001/vscode-dispatch/UIUX-next-result.md:13:현 소스는 경고 링/라벨을 적 본체 뒤·탄막 앞에서 그린다. 이후 투사체와 VFX가 있으므로 라벨이 뒤에서 덮일 수 있는 경로는 확인됐지만 특정 PNG의 가림 원인이 모두 이 순서라고 확정하지 않는다. 피해숫자는 뒤쪽 별도 패스이나 서로 겹치거나 이후 효과/페이드에 묻힐 수 있다. CSS 변경으로 canvas 내부 문제를 해결하지 않는다.
+docs/0마스터플랜/mac-resume-20261001/vscode-dispatch/UIUX-next-result.md:17:| P1 draw 우선순위 독립 hunk | `tools/team-followup-20261001/UIUX/charge-priority.candidate.diff` — `_drawProjectileChargeLabel` 호출을 프레임 큐로 저장, 기존 그리기를 `_paintProjectileChargeLabel`로 분리. draw 시작에 큐를 비우고 기존 damage 패스 종료 뒤 world restore 직전에 flush | 미적용. 기존 링은 원래 위치/시점 유지, 텍스트/좌표/13px/배경.92/20px/폭캐시 유지. 라벨이 피해숫자를 다시 덮을 위험이 있어 이것만 단독 채택하지 말 것. 후처리 atmosphere/나중 패스/GL batching은 별도 검수 |
+docs/0마스터플랜/mac-resume-20261001/vscode-dispatch/UIUX-next-result.md:32:| 보호 | t.x/y/life/ml·치명타/피해 수치·원래 알파 계산과 drawNumStr는 변경하지 않음. 화면 이동은 그리기용 translate 또는 복사한 좌표에만 사용 |
+docs/0마스터플랜/mac-resume-20261001/vscode-dispatch/UIUX-next-result.md:36:실제 damage 측정은 `drawNumStr`의 비트맵 gap/폭·bounce/흔들림과 일반 텍스트의 실제 폰트/외곽선을 포함해야 한다. label은 기존 `_chargeLabelMetrics` 캐시(ctx/label/font + font 로드 무효화)를 유지한다. 실제 transform은 world translate의 Math.round/카메라 shake, `_tzoom`, SSAA/DPR, 논리VW/VH와 CSS 표시크기 차이를 모두 포함해야 하며 X.getTransform 지원을 GL/WebGPU에 가정하지 않는다. 이 연결이 미확정이라 P2를 생산 hunk에 억지로 넣지 않았다.
+docs/0마스터플랜/mac-resume-20261001/vscode-dispatch/UIUX-next-result.md:48:| docs 전체 검색 | `rg -n 'UI-03|_drawEnemyShotWarnings|_drawProjectileChargeLabel|_FLOAT_TEXT_ENABLED|피해숫자' docs/ --glob '*.md'`: exit0. 원본 매칭 `next-doc-matches.txt` |
+docs/0마스터플랜/mac-resume-20261001/vscode-dispatch/UIUX-next-result.md:57:| 390×844 / KO·EN | 실제 측정 긴 예고 문구 폭/피해숫자 bounce/좌우 모서리. 글꼴 축소/클립/예고 삭제로 PASS 만들지 않음. oversized/unresolved는 RETOUCH |
+docs/3.1 ui hud 디자인/exoduser-hud-redesign.md:1062:| 경고 폭 | 본편 _drawProjectileChargeLabel의 _chargeLabelMetrics 한항목(ctx/label/font/width) 재사용. 렌더러/번역문구/글꼴 변경 및 document.fonts loadingdone/loadingerror에서 재측정. 기존13px·박스폭tw+14/높이20·링60틱·탄종/패링 규칙 유지 |
+docs/0마스터플랜/mac-resume-20261001/vscode-dispatch/UIUX-coordinate-result.md:33:| world→논리 | lx=VW/2 + zoom×(wx+tx−VW/2), ly=VH/2 + zoom×(wy+ty−VH/2). zoom은 실제 `_ez*_cz`인 `_tzoom`. clamp된 `_vpMul`은 culling 값이므로 좌표 배율로 쓰지 않음 |
+docs/0마스터플랜/mac-resume-20261001/vscode-dispatch/UIUX-coordinate-result.md:38:| DPR | 현재 rz()는 `_dpr=1`, `_ssaa=1`을 강제한다. devicePixelRatio를 다시 곱하지 않는다. 어댑터 dpr는 관측 metadata이며 실제 viewport/백킹 입력이 변환을 결정. SSAA1.5/2·DPR1.5/2 검사는 합성 조합이지 현재 게임에서 활성화한 사실이 아님 |
+docs/0마스터플랜/mac-resume-20261001/vscode-dispatch/UIUX-coordinate-result.md:46:| drawNumStr | 숫자 입력의 String(~~num), scale||1, dw=~~(48×scale),dh=~~(56×scale),gap=~~(18×scale),tw=s.length×gap,ox=x−tw/2. 숫자 이외 문자 위치도 gap을 소비하지만 glyph는 건너뜀. 각 실제 destination=(~~(ox+i×gap),~~y,dw,dh)의 union |
+docs/0마스터플랜/mac-resume-20261001/vscode-dispatch/UIUX-coordinate-result.md:57:3. 실제 sx/sy·_tzoom이 계산된 직후 VW/VH·cam·shake·SSAA·C.width/height·CSS rect·_dpr를 snapshot한다. 변환 뒤에 새 random/shake를 계산하지 않는다.
+docs/0마스터플랜/mac-resume-20261001/vscode-dispatch/UIUX-coordinate-result.md:71:| 실제 drawNumStr 셀 대조 | 숫자/긴 숫자/소수접미문구/음수문구/빈문구/number 입력×scale0/.62/1/1.5=24조합. 원 함수 drawImage destination과 bbox 셀 동일 |
+docs/0마스터플랜/mac-resume-20261001/vscode-dispatch/UIUX-coordinate-result.md:74:| docs 검색 | `rg -n '_tzoom|drawNumStr|_ssaa|_dpr|_chargeLabelMetrics|피해숫자' docs/ --glob '*.md'` exit0. 원자료 coordinate-doc-matches.txt |
+docs/0마스터플랜/mac-resume-20261001/vscode-dispatch/UIUX-coordinate-result.md:94:팀 완료 후 root가 원 draw transform·charge·drawNumStr·damage 분기와 후보 연결 코드를 직접 대조했다. 좌표91검사와 실제 import 의존 P2의14검사를 재실행하여 exit0을 확인했고, 원식5본문의 현재 파일 유일 위치·행·SHA를 별도로 검증했다. 전체 후보 hash는 `f90799726bd1a3b949d7a73056ff1c10c882176561f811127cb5e8ada9842110`이다.
+docs/8.1보스디자인바이블/BOSS_BATTLE_SETTINGS.md:489:const _tzoom = _ez * _cz;
+docs/8.1보스디자인바이블/BOSS_BATTLE_SETTINGS.md:490:if(_tzoom !== 1){
+docs/8.1보스디자인바이블/BOSS_BATTLE_SETTINGS.md:492:  X.scale(_tzoom, _tzoom);
+docs/0마스터플랜/mac-resume-20261001/vscode-dispatch/UIUX-result.md:15:| D02 | 중앙 x500~810/y275~490, 피해숫자/플레이어 | 붉은/보라 VFX·가시 실루엣에 작은 숫자가 묻힘. 플레이어 중심의 청색 점은 보이지만 몸 실루엣과 대상 관계는 가려짐. 중앙 텍스트의 정확한 값/수명은 PNG만으로 복원 불가 | `game.html:52845` 텍스트/비트맵 숫자 경로·알파/외곽선 이미 존재. 충돌 원인을 draw 순서로 확정하지 않음. 영상 및 좌표/수명 증거 필요 |
+docs/0마스터플랜/mac-resume-20261001/vscode-dispatch/UIUX-result.md:38:docs 전체 `rg -n 'UI03|UI-03|hudTop|stageClock|피해숫자|이름표|가시덫' docs/ --glob '*.md'` 실행 exit0. 펫 시스템 opacity/페이드 검색도 실행했다. 생산 코드 변경은0, 검사 도구만 추가했다. 소유권 밖 문서는 수정하지 않고 필요한 정정을 아래로 인계한다.
+docs/0마스터플랜/mac-resume-20261001/UI03-상단전투정보-검수.md:3:상단 COMBO / MAX COMBO / TIMER / DPS / MAX HIT의 대비·작은 화면 배치를 수정했다. 본편 실제 공격과 새로고침, 본편·쉬운판 390×844 및 설정 재진입을 확인했다. UI03 전체 중 이 상태 표시만 완료 범위이며 레벨·목표·자원 및 중앙 피해숫자 가림은 별도다.
+docs/0마스터플랜/mac-resume-20261001/UI03-상단전투정보-검수.md:39:독립 UIUX 판정은 ui03-evidence/UIUX-팀검토.md에 인수한다. 전체 UI03, 중앙 피해숫자/적 이름표 겹침, 매우 긴 자릿수·보스바 동시 표시·다국어 전체·게임패드·NW.js 패키지 검수와 성능 측정은 이번 PASS에 포함하지 않는다. 게임 로직/저장 변경 없이 상단 가독성 한 건을 마감한다.
+docs/0마스터플랜/mac-resume-20261001/MAP020-줌수정-검수.md:7:기준 커밋 `ad77f30870b84c29bc56651dbaf6a61eb1f3d2ca`는 시작 전에 원격과 대조했다. 게임의 월드 변환은 `_tzoom=_ez*_cz`를 적용하지만 모듈은 `VW/2+80`, `VH/2+80`의 1배 월드 범위로 잘랐다. .62에서 기존 1440×960월드px의 그림자가 892.8×595.2화면px 사각형으로 드러난 원인이다.
+docs/0마스터플랜/mac-resume-20261001/MAP020-줌수정-검수.md:11:| 호출 | 두 HTML 모두 `Ch1BoundaryEdge.draw(X,G,_now,VW,VH,_tzoom)` |
+docs/0마스터플랜/mac-resume-20261001/MAP020-줌수정-검수.md:48:관련 37/37 PASS: boundary8(신규4 포함), altar5, foreground11, hill2, 본편 inline syntax1, depth10. 두 HTML의 실행 가능한 inline script는 각각4개 구문 검사, 모듈 구문 검사도 통과했다. 신규 coverage/root 회귀 두 개를 **이전 모듈**에 적용한 음성 대조에서는 둘 다 실패해 실제 결함을 잡는지 확인했다. 양쪽 호출부의 `_tzoom` 배선도 잠갔다. 파일별 전후 SHA와 HTTP/디스크 일치는 증거 JSON에 있다. docs 전체 관련 키워드를 검색하여 현재 계약과 작업 행을 갱신했다. 과거 판정은 날짜별 이력으로 유지했다.
+docs/0마스터플랜/mac-resume-20261001/vscode-dispatch/FOLLOWUP_RECEIPT.md:43:작업은 `UIUX-HUD-COORDINATE-ADAPTER`: P2 배치와 실제 world↔논리화면·카메라 round/shake·줌·SSAA/DPR·charge/drawNumStr bbox 연결 코드 및 미적용 hunk다. 소유 UIUX 도구와 coordinate-result/receipt만 수정한다. 생산·게임 실행은 금지하고 문구/개수/수명/알파/전투/저장을 보존한다. **수신·첫 명령 착수 확인이며 구현 완료나 시각·밀집 성능 합격이 아니다.**
+docs/13출시·마케팅/SKILL_TRAILER_V24_DAMAGE_TEXT_20260910.md:13:| 숫자 | 실제 `addTxt` → `G.txts` → `drawNumStr`. 피해량·크기·색·수명·40칸 링 버퍼 변경 없음. 촬영 컨텍스트에서 `_FLOAT_TEXT_ENABLED=true` |
+docs/13출시·마케팅/SKILL_TRAILER_V24_DAMAGE_TEXT_20260910.md:16:| 증거 | 각 take JSON의 samples에 누적 `numberDraws`와 `lastNumber` 기록. 실제 `drawNumStr` 호출만 집계; 고유 타격 수가 아님 |
+docs/13출시·마케팅/SKILL_TRAILER_V25_DAMAGE_TEXT_20260910.md:11:| 숫자 | V24의 `__rt.damageText=true` 및 원래 게임 `drawNumStr` 사용. 숫자 수치·크기·색·수명 변경 없음 |

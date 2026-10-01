@@ -1,0 +1,587 @@
+{
+  "observedAt": "2026-10-01T12:45:16.928Z",
+  "originalSha256": "12431de4435ab27b8b5d5f5aae676464a6ce217f5af4a362d131cb32432e7fd8",
+  "boundedSha256": "37e5abc5ba1ac85ef7a0956705d8bcf7db6ff877679529ca4bea3af87ab01f8d",
+  "originalFailure": "ERR_SCRIPT_EXECUTION_TIMEOUT",
+  "originalTimeoutMs": 25,
+  "boundedTimeoutMs": 250,
+  "caseCount": 30,
+  "embeddedChecks": 30,
+  "observations": [
+    {
+      "name": "overflow",
+      "verdict": "PASS",
+      "error": {
+        "name": "TypeError",
+        "message": "invalid reading"
+      },
+      "boundedStats": {
+        "intersectionTests": 0,
+        "binVisits": 0,
+        "candidateAttempts": 0,
+        "sortCalls": 0,
+        "mapConstructions": 0,
+        "freshRecords": 1,
+        "linearFallbacks": 0,
+        "wideRegistrations": 0,
+        "validationFallbacks": 1,
+        "registeredBands": 0
+      }
+    },
+    {
+      "name": "finite enormous y",
+      "verdict": "PASS",
+      "error": null,
+      "boundedStats": {
+        "intersectionTests": 0,
+        "binVisits": 0,
+        "candidateAttempts": 5,
+        "sortCalls": 0,
+        "mapConstructions": 0,
+        "freshRecords": 0,
+        "linearFallbacks": 0,
+        "wideRegistrations": 1,
+        "validationFallbacks": 0,
+        "registeredBands": 0
+      }
+    },
+    {
+      "name": "finite enormous height",
+      "verdict": "PASS",
+      "error": null,
+      "boundedStats": {
+        "intersectionTests": 0,
+        "binVisits": 0,
+        "candidateAttempts": 5,
+        "sortCalls": 0,
+        "mapConstructions": 0,
+        "freshRecords": 0,
+        "linearFallbacks": 0,
+        "wideRegistrations": 1,
+        "validationFallbacks": 0,
+        "registeredBands": 0
+      }
+    },
+    {
+      "name": "sum overflow accepted endpoint",
+      "verdict": "PASS",
+      "error": null,
+      "boundedStats": {
+        "intersectionTests": 0,
+        "binVisits": 0,
+        "candidateAttempts": 5,
+        "sortCalls": 0,
+        "mapConstructions": 0,
+        "freshRecords": 0,
+        "linearFallbacks": 0,
+        "wideRegistrations": 1,
+        "validationFallbacks": 0,
+        "registeredBands": 0
+      }
+    },
+    {
+      "name": "band increment precision stall",
+      "verdict": "PASS",
+      "error": null,
+      "boundedStats": {
+        "intersectionTests": 0,
+        "binVisits": 0,
+        "candidateAttempts": 1,
+        "sortCalls": 0,
+        "mapConstructions": 0,
+        "freshRecords": 0,
+        "linearFallbacks": 1,
+        "wideRegistrations": 1,
+        "validationFallbacks": 0,
+        "registeredBands": 0
+      }
+    },
+    {
+      "name": "huge finite gap query",
+      "verdict": "PASS",
+      "error": null,
+      "boundedStats": {
+        "intersectionTests": 1,
+        "binVisits": 0,
+        "candidateAttempts": 6,
+        "sortCalls": 0,
+        "mapConstructions": 0,
+        "freshRecords": 4,
+        "linearFallbacks": 2,
+        "wideRegistrations": 0,
+        "validationFallbacks": 0,
+        "registeredBands": 4
+      }
+    },
+    {
+      "name": "query endpoint overflow",
+      "verdict": "PASS",
+      "error": null,
+      "boundedStats": {
+        "intersectionTests": 0,
+        "binVisits": 0,
+        "candidateAttempts": 1,
+        "sortCalls": 0,
+        "mapConstructions": 0,
+        "freshRecords": 0,
+        "linearFallbacks": 1,
+        "wideRegistrations": 1,
+        "validationFallbacks": 0,
+        "registeredBands": 0
+      }
+    },
+    {
+      "name": "wide obstacle collision",
+      "verdict": "PASS",
+      "error": null,
+      "boundedStats": {
+        "intersectionTests": 13,
+        "binVisits": 19,
+        "candidateAttempts": 10,
+        "sortCalls": 0,
+        "mapConstructions": 0,
+        "freshRecords": 0,
+        "linearFallbacks": 0,
+        "wideRegistrations": 1,
+        "validationFallbacks": 0,
+        "registeredBands": 4
+      }
+    },
+    {
+      "name": "negative huge obstacle",
+      "verdict": "PASS",
+      "error": null,
+      "boundedStats": {
+        "intersectionTests": 1,
+        "binVisits": 2,
+        "candidateAttempts": 1,
+        "sortCalls": 0,
+        "mapConstructions": 0,
+        "freshRecords": 0,
+        "linearFallbacks": 0,
+        "wideRegistrations": 1,
+        "validationFallbacks": 0,
+        "registeredBands": 2
+      }
+    },
+    {
+      "name": "zero width",
+      "verdict": "PASS",
+      "error": {
+        "name": "TypeError",
+        "message": "invalid reading"
+      },
+      "boundedStats": {
+        "intersectionTests": 0,
+        "binVisits": 0,
+        "candidateAttempts": 0,
+        "sortCalls": 0,
+        "mapConstructions": 0,
+        "freshRecords": 0,
+        "linearFallbacks": 0,
+        "wideRegistrations": 0,
+        "validationFallbacks": 1,
+        "registeredBands": 0
+      }
+    },
+    {
+      "name": "negative height",
+      "verdict": "PASS",
+      "error": {
+        "name": "TypeError",
+        "message": "invalid reading"
+      },
+      "boundedStats": {
+        "intersectionTests": 0,
+        "binVisits": 0,
+        "candidateAttempts": 0,
+        "sortCalls": 0,
+        "mapConstructions": 0,
+        "freshRecords": 0,
+        "linearFallbacks": 0,
+        "wideRegistrations": 0,
+        "validationFallbacks": 1,
+        "registeredBands": 0
+      }
+    },
+    {
+      "name": "NaN x",
+      "verdict": "PASS",
+      "error": {
+        "name": "TypeError",
+        "message": "invalid reading"
+      },
+      "boundedStats": {
+        "intersectionTests": 0,
+        "binVisits": 0,
+        "candidateAttempts": 0,
+        "sortCalls": 0,
+        "mapConstructions": 0,
+        "freshRecords": 0,
+        "linearFallbacks": 0,
+        "wideRegistrations": 0,
+        "validationFallbacks": 1,
+        "registeredBands": 0
+      }
+    },
+    {
+      "name": "Infinity y",
+      "verdict": "PASS",
+      "error": {
+        "name": "TypeError",
+        "message": "invalid reading"
+      },
+      "boundedStats": {
+        "intersectionTests": 0,
+        "binVisits": 0,
+        "candidateAttempts": 0,
+        "sortCalls": 0,
+        "mapConstructions": 0,
+        "freshRecords": 0,
+        "linearFallbacks": 0,
+        "wideRegistrations": 0,
+        "validationFallbacks": 1,
+        "registeredBands": 0
+      }
+    },
+    {
+      "name": "duplicate id",
+      "verdict": "PASS",
+      "error": {
+        "name": "TypeError",
+        "message": "invalid reading"
+      },
+      "boundedStats": {
+        "intersectionTests": 0,
+        "binVisits": 0,
+        "candidateAttempts": 0,
+        "sortCalls": 0,
+        "mapConstructions": 0,
+        "freshRecords": 0,
+        "linearFallbacks": 0,
+        "wideRegistrations": 0,
+        "validationFallbacks": 1,
+        "registeredBands": 0
+      }
+    },
+    {
+      "name": "invalid kind",
+      "verdict": "PASS",
+      "error": {
+        "name": "TypeError",
+        "message": "invalid reading"
+      },
+      "boundedStats": {
+        "intersectionTests": 0,
+        "binVisits": 0,
+        "candidateAttempts": 0,
+        "sortCalls": 0,
+        "mapConstructions": 0,
+        "freshRecords": 0,
+        "linearFallbacks": 0,
+        "wideRegistrations": 0,
+        "validationFallbacks": 1,
+        "registeredBands": 0
+      }
+    },
+    {
+      "name": "invalid obstacle precedes reading",
+      "verdict": "PASS",
+      "error": {
+        "name": "TypeError",
+        "message": "invalid geometry"
+      },
+      "boundedStats": {
+        "intersectionTests": 0,
+        "binVisits": 0,
+        "candidateAttempts": 0,
+        "sortCalls": 0,
+        "mapConstructions": 0,
+        "freshRecords": 0,
+        "linearFallbacks": 0,
+        "wideRegistrations": 0,
+        "validationFallbacks": 1,
+        "registeredBands": 0
+      }
+    },
+    {
+      "name": "viewport division overflow",
+      "verdict": "PASS",
+      "error": {
+        "name": "TypeError",
+        "message": "invalid geometry"
+      },
+      "boundedStats": {
+        "intersectionTests": 0,
+        "binVisits": 0,
+        "candidateAttempts": 0,
+        "sortCalls": 0,
+        "mapConstructions": 0,
+        "freshRecords": 0,
+        "linearFallbacks": 0,
+        "wideRegistrations": 0,
+        "validationFallbacks": 1,
+        "registeredBands": 0
+      }
+    },
+    {
+      "name": "viewport division underflow",
+      "verdict": "PASS",
+      "error": {
+        "name": "TypeError",
+        "message": "invalid geometry"
+      },
+      "boundedStats": {
+        "intersectionTests": 0,
+        "binVisits": 0,
+        "candidateAttempts": 0,
+        "sortCalls": 0,
+        "mapConstructions": 0,
+        "freshRecords": 0,
+        "linearFallbacks": 0,
+        "wideRegistrations": 0,
+        "validationFallbacks": 1,
+        "registeredBands": 0
+      }
+    },
+    {
+      "name": "gap division overflow",
+      "verdict": "PASS",
+      "error": {
+        "name": "TypeError",
+        "message": "invalid geometry"
+      },
+      "boundedStats": {
+        "intersectionTests": 0,
+        "binVisits": 0,
+        "candidateAttempts": 0,
+        "sortCalls": 0,
+        "mapConstructions": 0,
+        "freshRecords": 0,
+        "linearFallbacks": 0,
+        "wideRegistrations": 0,
+        "validationFallbacks": 1,
+        "registeredBands": 0
+      }
+    },
+    {
+      "name": "zero times ratio Infinity",
+      "verdict": "PASS",
+      "error": {
+        "name": "TypeError",
+        "message": "invalid geometry"
+      },
+      "boundedStats": {
+        "intersectionTests": 0,
+        "binVisits": 0,
+        "candidateAttempts": 0,
+        "sortCalls": 0,
+        "mapConstructions": 0,
+        "freshRecords": 0,
+        "linearFallbacks": 0,
+        "wideRegistrations": 0,
+        "validationFallbacks": 1,
+        "registeredBands": 0
+      }
+    },
+    {
+      "name": "camera arithmetic overflow",
+      "verdict": "PASS",
+      "error": {
+        "name": "TypeError",
+        "message": "invalid reading"
+      },
+      "boundedStats": {
+        "intersectionTests": 0,
+        "binVisits": 0,
+        "candidateAttempts": 0,
+        "sortCalls": 0,
+        "mapConstructions": 0,
+        "freshRecords": 0,
+        "linearFallbacks": 0,
+        "wideRegistrations": 0,
+        "validationFallbacks": 1,
+        "registeredBands": 0
+      }
+    },
+    {
+      "name": "mapped width overflow",
+      "verdict": "PASS",
+      "error": {
+        "name": "TypeError",
+        "message": "invalid reading"
+      },
+      "boundedStats": {
+        "intersectionTests": 0,
+        "binVisits": 0,
+        "candidateAttempts": 0,
+        "sortCalls": 0,
+        "mapConstructions": 0,
+        "freshRecords": 0,
+        "linearFallbacks": 0,
+        "wideRegistrations": 0,
+        "validationFallbacks": 1,
+        "registeredBands": 0
+      }
+    },
+    {
+      "name": "mapped height underflow",
+      "verdict": "PASS",
+      "error": {
+        "name": "TypeError",
+        "message": "invalid reading"
+      },
+      "boundedStats": {
+        "intersectionTests": 0,
+        "binVisits": 0,
+        "candidateAttempts": 0,
+        "sortCalls": 0,
+        "mapConstructions": 0,
+        "freshRecords": 0,
+        "linearFallbacks": 0,
+        "wideRegistrations": 0,
+        "validationFallbacks": 1,
+        "registeredBands": 0
+      }
+    },
+    {
+      "name": "NaN gap",
+      "verdict": "PASS",
+      "error": {
+        "name": "TypeError",
+        "message": "invalid geometry"
+      },
+      "boundedStats": {
+        "intersectionTests": 0,
+        "binVisits": 0,
+        "candidateAttempts": 0,
+        "sortCalls": 0,
+        "mapConstructions": 0,
+        "freshRecords": 0,
+        "linearFallbacks": 0,
+        "wideRegistrations": 0,
+        "validationFallbacks": 1,
+        "registeredBands": 0
+      }
+    },
+    {
+      "name": "negative gap",
+      "verdict": "PASS",
+      "error": {
+        "name": "TypeError",
+        "message": "invalid geometry"
+      },
+      "boundedStats": {
+        "intersectionTests": 0,
+        "binVisits": 0,
+        "candidateAttempts": 0,
+        "sortCalls": 0,
+        "mapConstructions": 0,
+        "freshRecords": 0,
+        "linearFallbacks": 0,
+        "wideRegistrations": 0,
+        "validationFallbacks": 1,
+        "registeredBands": 0
+      }
+    },
+    {
+      "name": "invalid frame",
+      "verdict": "PASS",
+      "error": {
+        "name": "TypeError",
+        "message": "UNKNOWN coordinate input"
+      },
+      "boundedStats": {
+        "intersectionTests": 0,
+        "binVisits": 0,
+        "candidateAttempts": 0,
+        "sortCalls": 0,
+        "mapConstructions": 0,
+        "freshRecords": 0,
+        "linearFallbacks": 0,
+        "wideRegistrations": 0,
+        "validationFallbacks": 1,
+        "registeredBands": 0
+      }
+    },
+    {
+      "name": "empty invalid frame preserves v1 rejection",
+      "verdict": "PASS",
+      "error": {
+        "name": "TypeError",
+        "message": "Cannot destructure property 'width' of 'frame' as it is null."
+      },
+      "boundedStats": {
+        "intersectionTests": 0,
+        "binVisits": 0,
+        "candidateAttempts": 0,
+        "sortCalls": 0,
+        "mapConstructions": 0,
+        "freshRecords": 0,
+        "linearFallbacks": 0,
+        "wideRegistrations": 0,
+        "validationFallbacks": 1,
+        "registeredBands": 0
+      }
+    },
+    {
+      "name": "empty valid frame",
+      "verdict": "PASS",
+      "error": null,
+      "boundedStats": {
+        "intersectionTests": 0,
+        "binVisits": 0,
+        "candidateAttempts": 0,
+        "sortCalls": 0,
+        "mapConstructions": 0,
+        "freshRecords": 0,
+        "linearFallbacks": 0,
+        "wideRegistrations": 0,
+        "validationFallbacks": 0,
+        "registeredBands": 0
+      }
+    },
+    {
+      "name": "null box",
+      "verdict": "PASS",
+      "error": {
+        "name": "TypeError",
+        "message": "Cannot read properties of null (reading 'x')"
+      },
+      "boundedStats": {
+        "intersectionTests": 0,
+        "binVisits": 0,
+        "candidateAttempts": 0,
+        "sortCalls": 0,
+        "mapConstructions": 0,
+        "freshRecords": 0,
+        "linearFallbacks": 0,
+        "wideRegistrations": 0,
+        "validationFallbacks": 1,
+        "registeredBands": 0
+      }
+    },
+    {
+      "name": "missing id",
+      "verdict": "PASS",
+      "error": {
+        "name": "TypeError",
+        "message": "invalid reading"
+      },
+      "boundedStats": {
+        "intersectionTests": 0,
+        "binVisits": 0,
+        "candidateAttempts": 0,
+        "sortCalls": 0,
+        "mapConstructions": 0,
+        "freshRecords": 0,
+        "linearFallbacks": 0,
+        "wideRegistrations": 0,
+        "validationFallbacks": 1,
+        "registeredBands": 0
+      }
+    }
+  ],
+  "visualVerdict": "UNKNOWN",
+  "performanceVerdict": "UNKNOWN"
+}

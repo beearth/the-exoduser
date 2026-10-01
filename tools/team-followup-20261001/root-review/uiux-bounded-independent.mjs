@@ -1,0 +1,34 @@
+import fs from 'node:fs';
+import vm from 'node:vm';
+import assert from 'node:assert/strict';
+import { planReadings } from '../UIUX/coordinate-adapter.mjs';
+import { createWorkspaceV2 } from '../UIUX/coordinate-hotpath-v2.mjs';
+const folder = new URL('../UIUX/', import.meta.url);
+const source = fs.readFileSync(new URL('coordinate-bounded-v2.mjs', folder), 'utf8');
+const workspace = createWorkspaceV2();
+const ctx = vm.createContext({ referencePlanReadings: planReadings, workspace });
+vm.runInContext(source.replace(/^import .*\n/, '').replace(/^export \{.*\n/m, '').replaceAll('export function ', 'function '),ctx);
+const base={width:1280,height:800,cameraX:0,cameraY:0,shakeX:0,shakeY:0,zoom:1,ssaa:1,backingWidth:1280,backingHeight:800,cssWidth:1280,cssHeight:800,cssLeft:0,cssTop:0,dpr:1};
+const outcome=fn=>{try{return {output:structuredClone(fn())};}catch(e){return {error:{name:e.name,message:e.message}};}};
+let seed=0x4102026;
+const random=()=>{seed=(Math.imul(seed,1664525)+1013904223)>>>0;return seed/4294967296;};
+const pick=a=>a[Math.floor(random()*a.length)];
+const values=[-1e308,-1e200,-1e20,-2048,-64,-32,-0,0,1e-308,31.999999999999996,32,32.00000000000001,64,400,1e20,1e200,1e308];
+const sizes=[Number.MIN_VALUE,1e-200,0.25,10,32,2047,2048,2049,1e20,1e308];
+let fallbacks=0;
+for(let i=0;i<600;i++){
+ const extreme=i%2===0;
+ const frame={...base,zoom:extreme?pick([Number.MIN_VALUE,0.5,1,2,1e200]):pick([0.5,1,1.5,2]),cameraY:extreme?pick(values):Math.floor(random()*50)};
+ const readings=Array.from({length:1+Math.floor(random()*10)},(_,j)=>({id:String(j),kind:j%2?'charge':'damage',box:{x:extreme?pick(values):Math.floor(random()*300)-100,y:extreme?pick(values):Math.floor(random()*500)-250,w:extreme?pick(sizes):10+Math.floor(random()*70),h:extreme?pick(sizes):10+Math.floor(random()*40)}}));
+ const obstacles=Array.from({length:Math.floor(random()*5)},()=>({x:extreme?pick(values):Math.floor(random()*1200),y:extreme?pick(values):Math.floor(random()*800),w:extreme?pick(sizes):50,h:extreme?pick(sizes):80}));
+ const gap=extreme?pick([0,4,32,1e200,1e308]):4;
+ if(i%50===0)workspace.token=Number.MAX_SAFE_INTEGER-1;
+ Object.assign(ctx,{readings,frame,obstacles,gap});
+ const expected=outcome(()=>planReadings(readings,frame,obstacles,gap));
+ const actual=outcome(()=>vm.runInContext('planReadingsV2(readings,frame,workspace,obstacles,gap)',ctx,{timeout:250}));
+ assert.deepEqual(actual,expected,`seeded mixed case ${i}`);
+ assert.ok(workspace.stats.registeredBands<=64*(readings.length+obstacles.length));
+ assert.ok(workspace.stats.binVisits<=64*workspace.stats.candidateAttempts);
+ fallbacks+=workspace.stats.linearFallbacks+workspace.stats.wideRegistrations+workspace.stats.validationFallbacks;
+}
+console.log(JSON.stringify({cases:600,seed:'0x4102026',perCallTimeoutMs:250,workspaceReused:true,tokenNearLimitInjected:true,fallbackEvents:fallbacks,verdict:'PASS',productionApplied:false,visualFPS:'UNKNOWN'}));

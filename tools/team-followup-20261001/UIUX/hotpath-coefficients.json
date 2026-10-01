@@ -1,0 +1,300 @@
+{
+  "observedAt": "2026-10-01T12:37:54.158Z",
+  "coefficientScope": "instrumented-source call counters + named literal/returned-array structural estimates; NOT heap profiler/hidden allocation or game FPS",
+  "gameSha256": "e5518842324d17fb63da44457e6092af138b4fcfbaf49c1cb03ef791431dc115",
+  "v1AdapterSha256": "b0e7298d83c2ae7fb9565096316b006d75401e874e4a033bc08251e27b748422",
+  "v1LayoutSha256": "736d4d0deca0b0e269b3fd28463dad5762f4ed90f2a8185f07ef52ad71f0e20c",
+  "checks": 15,
+  "coefficients": [
+    {
+      "fixture": "spread",
+      "count": 0,
+      "v1": {
+        "intersectionTests": 0,
+        "candidateAttempts": 0,
+        "sortCalls": 3,
+        "mapCalls": 6,
+        "mapConstructions": 1,
+        "namedPlanObjectLiterals": 2,
+        "bboxObjectLiterals": 0,
+        "bboxArrayReturns": 0,
+        "rectCalls": 1
+      },
+      "v2Cold": {
+        "intersectionTests": 0,
+        "binVisits": 0,
+        "candidateAttempts": 0,
+        "sortCalls": 0,
+        "mapConstructions": 0,
+        "freshRecords": 0,
+        "bboxPoolGrowth": 0
+      },
+      "v2Warm": {
+        "intersectionTests": 0,
+        "binVisits": 0,
+        "candidateAttempts": 0,
+        "sortCalls": 0,
+        "mapConstructions": 0,
+        "freshRecords": 0,
+        "bboxPoolGrowth": 0,
+        "bboxArrayReturns": 0,
+        "rectCalls": 0
+      },
+      "unresolved": 0
+    },
+    {
+      "fixture": "spread",
+      "count": 1,
+      "v1": {
+        "intersectionTests": 0,
+        "candidateAttempts": 1,
+        "sortCalls": 3,
+        "mapCalls": 6,
+        "mapConstructions": 1,
+        "namedPlanObjectLiterals": 11,
+        "bboxObjectLiterals": 0,
+        "bboxArrayReturns": 0,
+        "rectCalls": 1
+      },
+      "v2Cold": {
+        "intersectionTests": 0,
+        "binVisits": 1,
+        "candidateAttempts": 1,
+        "sortCalls": 0,
+        "mapConstructions": 0,
+        "freshRecords": 5,
+        "bboxPoolGrowth": 0
+      },
+      "v2Warm": {
+        "intersectionTests": 0,
+        "binVisits": 1,
+        "candidateAttempts": 1,
+        "sortCalls": 0,
+        "mapConstructions": 0,
+        "freshRecords": 0,
+        "bboxPoolGrowth": 0,
+        "bboxArrayReturns": 0,
+        "rectCalls": 1
+      },
+      "unresolved": 0
+    },
+    {
+      "fixture": "spread",
+      "count": 30,
+      "v1": {
+        "intersectionTests": 591,
+        "candidateAttempts": 48,
+        "sortCalls": 3,
+        "mapCalls": 6,
+        "mapConstructions": 1,
+        "namedPlanObjectLiterals": 305,
+        "bboxObjectLiterals": 120,
+        "bboxArrayReturns": 100,
+        "rectCalls": 1
+      },
+      "v2Cold": {
+        "intersectionTests": 232,
+        "binVisits": 78,
+        "candidateAttempts": 48,
+        "sortCalls": 0,
+        "mapConstructions": 0,
+        "freshRecords": 163,
+        "bboxPoolGrowth": 20
+      },
+      "v2Warm": {
+        "intersectionTests": 232,
+        "binVisits": 78,
+        "candidateAttempts": 48,
+        "sortCalls": 0,
+        "mapConstructions": 0,
+        "freshRecords": 0,
+        "bboxPoolGrowth": 0,
+        "bboxArrayReturns": 0,
+        "rectCalls": 1
+      },
+      "unresolved": 3
+    },
+    {
+      "fixture": "spread",
+      "count": 120,
+      "v1": {
+        "intersectionTests": 8214,
+        "candidateAttempts": 222,
+        "sortCalls": 3,
+        "mapCalls": 6,
+        "mapConstructions": 1,
+        "namedPlanObjectLiterals": 1256,
+        "bboxObjectLiterals": 480,
+        "bboxArrayReturns": 400,
+        "rectCalls": 1
+      },
+      "v2Cold": {
+        "intersectionTests": 1251,
+        "binVisits": 332,
+        "candidateAttempts": 222,
+        "sortCalls": 0,
+        "mapConstructions": 0,
+        "freshRecords": 626,
+        "bboxPoolGrowth": 80
+      },
+      "v2Warm": {
+        "intersectionTests": 1251,
+        "binVisits": 332,
+        "candidateAttempts": 222,
+        "sortCalls": 0,
+        "mapConstructions": 0,
+        "freshRecords": 0,
+        "bboxPoolGrowth": 0,
+        "bboxArrayReturns": 0,
+        "rectCalls": 1
+      },
+      "unresolved": 30
+    },
+    {
+      "fixture": "dense",
+      "count": 0,
+      "v1": {
+        "intersectionTests": 0,
+        "candidateAttempts": 0,
+        "sortCalls": 3,
+        "mapCalls": 6,
+        "mapConstructions": 1,
+        "namedPlanObjectLiterals": 2,
+        "bboxObjectLiterals": 0,
+        "bboxArrayReturns": 0,
+        "rectCalls": 1
+      },
+      "v2Cold": {
+        "intersectionTests": 0,
+        "binVisits": 0,
+        "candidateAttempts": 0,
+        "sortCalls": 0,
+        "mapConstructions": 0,
+        "freshRecords": 0,
+        "bboxPoolGrowth": 0
+      },
+      "v2Warm": {
+        "intersectionTests": 0,
+        "binVisits": 0,
+        "candidateAttempts": 0,
+        "sortCalls": 0,
+        "mapConstructions": 0,
+        "freshRecords": 0,
+        "bboxPoolGrowth": 0,
+        "bboxArrayReturns": 0,
+        "rectCalls": 0
+      },
+      "unresolved": 0
+    },
+    {
+      "fixture": "dense",
+      "count": 1,
+      "v1": {
+        "intersectionTests": 0,
+        "candidateAttempts": 1,
+        "sortCalls": 3,
+        "mapCalls": 6,
+        "mapConstructions": 1,
+        "namedPlanObjectLiterals": 11,
+        "bboxObjectLiterals": 0,
+        "bboxArrayReturns": 0,
+        "rectCalls": 1
+      },
+      "v2Cold": {
+        "intersectionTests": 0,
+        "binVisits": 2,
+        "candidateAttempts": 1,
+        "sortCalls": 0,
+        "mapConstructions": 0,
+        "freshRecords": 5,
+        "bboxPoolGrowth": 0
+      },
+      "v2Warm": {
+        "intersectionTests": 0,
+        "binVisits": 2,
+        "candidateAttempts": 1,
+        "sortCalls": 0,
+        "mapConstructions": 0,
+        "freshRecords": 0,
+        "bboxPoolGrowth": 0,
+        "bboxArrayReturns": 0,
+        "rectCalls": 1
+      },
+      "unresolved": 0
+    },
+    {
+      "fixture": "dense",
+      "count": 30,
+      "v1": {
+        "intersectionTests": 403,
+        "candidateAttempts": 99,
+        "sortCalls": 3,
+        "mapCalls": 6,
+        "mapConstructions": 1,
+        "namedPlanObjectLiterals": 370,
+        "bboxObjectLiterals": 120,
+        "bboxArrayReturns": 100,
+        "rectCalls": 1
+      },
+      "v2Cold": {
+        "intersectionTests": 143,
+        "binVisits": 114,
+        "candidateAttempts": 99,
+        "sortCalls": 0,
+        "mapConstructions": 0,
+        "freshRecords": 141,
+        "bboxPoolGrowth": 20
+      },
+      "v2Warm": {
+        "intersectionTests": 143,
+        "binVisits": 114,
+        "candidateAttempts": 99,
+        "sortCalls": 0,
+        "mapConstructions": 0,
+        "freshRecords": 0,
+        "bboxPoolGrowth": 0,
+        "bboxArrayReturns": 0,
+        "rectCalls": 1
+      },
+      "unresolved": 24
+    },
+    {
+      "fixture": "dense",
+      "count": 120,
+      "v1": {
+        "intersectionTests": 4153,
+        "candidateAttempts": 429,
+        "sortCalls": 3,
+        "mapCalls": 6,
+        "mapConstructions": 1,
+        "namedPlanObjectLiterals": 1510,
+        "bboxObjectLiterals": 480,
+        "bboxArrayReturns": 400,
+        "rectCalls": 1
+      },
+      "v2Cold": {
+        "intersectionTests": 653,
+        "binVisits": 474,
+        "candidateAttempts": 429,
+        "sortCalls": 0,
+        "mapConstructions": 0,
+        "freshRecords": 501,
+        "bboxPoolGrowth": 80
+      },
+      "v2Warm": {
+        "intersectionTests": 653,
+        "binVisits": 474,
+        "candidateAttempts": 429,
+        "sortCalls": 0,
+        "mapConstructions": 0,
+        "freshRecords": 0,
+        "bboxPoolGrowth": 0,
+        "bboxArrayReturns": 0,
+        "rectCalls": 1
+      },
+      "unresolved": 114
+    }
+  ],
+  "visualVerdict": "UNKNOWN",
+  "performanceVerdict": "UNKNOWN"
+}

@@ -1,0 +1,32 @@
+PASS 원 v2 overflow timeout25ms 재현
+PASS overflow / workspace 재사용
+PASS finite enormous y / workspace 재사용
+PASS finite enormous height / workspace 재사용
+PASS sum overflow accepted endpoint / workspace 재사용
+PASS band increment precision stall / workspace 재사용
+PASS huge finite gap query / workspace 재사용
+PASS query endpoint overflow / workspace 재사용
+PASS wide obstacle collision / workspace 재사용
+PASS negative huge obstacle / workspace 재사용
+PASS zero width / workspace 재사용
+PASS negative height / workspace 재사용
+PASS NaN x / workspace 재사용
+PASS Infinity y / workspace 재사용
+PASS duplicate id / workspace 재사용
+PASS invalid kind / workspace 재사용
+PASS invalid obstacle precedes reading / workspace 재사용
+PASS viewport division overflow / workspace 재사용
+PASS viewport division underflow / workspace 재사용
+PASS gap division overflow / workspace 재사용
+PASS zero times ratio Infinity / workspace 재사용
+PASS camera arithmetic overflow / workspace 재사용
+PASS mapped width overflow / workspace 재사용
+PASS mapped height underflow / workspace 재사용
+PASS NaN gap / workspace 재사용
+PASS negative gap / workspace 재사용
+PASS invalid frame / workspace 재사용
+PASS empty invalid frame preserves v1 rejection / workspace 재사용
+PASS empty valid frame / workspace 재사용
+PASS null box / workspace 재사용
+PASS missing id / workspace 재사용
+{"boundaryCases":30,"workspaceRecoveries":30,"originalPreserved":true}

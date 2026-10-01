@@ -1,0 +1,308 @@
+const _uiuxCoordinateCandidate=(()=>{
+
+const coordinateKeysV2 = ['width', 'height', 'cameraX', 'cameraY', 'shakeX', 'shakeY', 'zoom', 'ssaa', 'backingWidth', 'backingHeight', 'cssWidth', 'cssHeight', 'cssLeft', 'cssTop', 'dpr'];
+const positiveKeysV2 = ['width', 'height', 'zoom', 'ssaa', 'backingWidth', 'backingHeight', 'cssWidth', 'cssHeight', 'dpr'];
+const layoutKindsV2 = ['charge', 'damage'];
+const paintKindsV2 = ['damage', 'charge'];
+
+function createWorkspaceV2() {
+  return { output: [], records: [], accepted: [], bins: new Map(), binPool: [], usedBins: 0, seen: [], token: 0, ids: new Set(), logical: [], stats: {} };
+}
+
+function numberBoxV2(num, x, y, scale, numberWidth = 48, numberHeight = 56, target = {}) {
+  if (!Number.isFinite(x) || !Number.isFinite(y) || !Number.isFinite(scale) || !Number.isFinite(numberWidth) || !Number.isFinite(numberHeight) || scale < 0 || numberWidth <= 0 || numberHeight <= 0) throw new TypeError('UNKNOWN number metrics');
+  const text = typeof num === 'number' ? String(~~num) : num;
+  if (typeof text !== 'string') throw new TypeError('UNKNOWN number string');
+  const actualScale = scale || 1;
+  const width = ~~(numberWidth * actualScale);
+  const height = ~~(numberHeight * actualScale);
+  const gap = ~~((numberWidth - 30) * actualScale);
+  const origin = x - text.length * gap / 2;
+  let left = Infinity;
+  let right = -Infinity;
+  for (let index = 0; index < text.length; index++) {
+    const digit = text.charCodeAt(index) - 48;
+    if (digit < 0 || digit > 9 || width <= 0 || height <= 0) continue;
+    const horizontal = ~~(origin + index * gap);
+    if (horizontal < left) left = horizontal;
+    if (horizontal + width > right) right = horizontal + width;
+  }
+  if (left === Infinity) return null;
+  target.x = left; target.y = ~~y; target.w = right - left; target.h = height;
+  return target;
+}
+
+function createSnapshotV2() {
+  let frame = null;
+  let serial = 0;
+  const snapshot = {};
+  return {
+    begin(values) {
+      for (const key of coordinateKeysV2) snapshot[key] = values[key];
+      frame = snapshot; serial++;
+    },
+    get(readRect) {
+      if (!frame) throw new TypeError('UNKNOWN coordinate snapshot');
+      if (frame.rectSerial !== serial) {
+        const rect = readRect();
+        frame.cssWidth = rect.width; frame.cssHeight = rect.height; frame.cssLeft = rect.left; frame.cssTop = rect.top; frame.rectSerial = serial;
+      }
+      return frame;
+    },
+    clear() { frame = null; }
+  };
+}
+
+
+const boundedCoordinateKeys = ['width', 'height', 'cameraX', 'cameraY', 'shakeX', 'shakeY', 'zoom', 'ssaa', 'backingWidth', 'backingHeight', 'cssWidth', 'cssHeight', 'cssLeft', 'cssTop', 'dpr'];
+const boundedPositiveKeys = ['width', 'height', 'zoom', 'ssaa', 'backingWidth', 'backingHeight', 'cssWidth', 'cssHeight', 'dpr'];
+const boundedKinds = ['charge', 'damage'];
+const maximumBucketBands = 64;
+
+function planReadingsV2(readings, frame, workspace, obstacles = [], gapCSS = 4) {
+  const stats = workspace.stats;
+  stats.intersectionTests = 0; stats.binVisits = 0; stats.candidateAttempts = 0;
+  stats.sortCalls = 0; stats.mapConstructions = 0; stats.freshRecords = 0;
+  stats.linearFallbacks = 0; stats.wideRegistrations = 0; stats.validationFallbacks = 0;
+  stats.registeredBands = 0;
+  const reference = () => { stats.validationFallbacks++; return referencePlanReadings(readings, frame, obstacles, gapCSS); };
+  for (const key of boundedCoordinateKeys) if (!frame || !Number.isFinite(frame[key])) return reference();
+  for (const key of boundedPositiveKeys) if (frame[key] <= 0) return reference();
+  const translateX = Math.round(frame.width / 2 - frame.cameraX + frame.shakeX);
+  const translateY = Math.round(frame.height / 2 - frame.cameraY + frame.shakeY);
+  const viewportWidth = frame.backingWidth / frame.ssaa;
+  const viewportHeight = frame.backingHeight / frame.ssaa;
+  const gap = gapCSS * Math.max(frame.backingWidth / frame.cssWidth, frame.backingHeight / frame.cssHeight) / frame.ssaa;
+  if (!Number.isFinite(viewportWidth) || !Number.isFinite(viewportHeight) || viewportWidth <= 0 || viewportHeight <= 0 || !Number.isFinite(gap) || gap < 0) return reference();
+  const validBox = box => box && Number.isFinite(box.x) && Number.isFinite(box.y) && Number.isFinite(box.w) && Number.isFinite(box.h) && box.w > 0 && box.h > 0;
+  for (const obstacle of obstacles) if (!validBox(obstacle)) return reference();
+  workspace.ids.clear();
+  for (let index = 0; index < readings.length; index++) {
+    const reading = readings[index];
+    if (!reading || typeof reading.id !== 'string' || workspace.ids.has(reading.id) || !validBox(reading.box) || (reading.kind !== 'charge' && reading.kind !== 'damage')) return reference();
+    workspace.ids.add(reading.id);
+    let logical = workspace.logical[index];
+    if (!logical) { logical = {}; workspace.logical[index] = logical; stats.freshRecords++; }
+    logical.x = frame.width / 2 + frame.zoom * (reading.box.x + translateX - frame.width / 2);
+    logical.y = frame.height / 2 + frame.zoom * (reading.box.y + translateY - frame.height / 2);
+    logical.w = reading.box.w * frame.zoom; logical.h = reading.box.h * frame.zoom;
+    if (!validBox(logical)) return reference();
+  }
+  const output = workspace.output;
+  if (readings.length === 0) { output.length = 0; return output; }
+  const binHeight = 32;
+  const accepted = workspace.accepted;
+  const wide = workspace.wide || (workspace.wide = []);
+  accepted.length = 0; wide.length = 0; workspace.bins.clear(); workspace.usedBins = 0;
+  const boundedRange = (start, end) => Number.isSafeInteger(start) && Number.isSafeInteger(end) && end >= start && end - start + 1 <= maximumBucketBands;
+  const insert = box => {
+    const acceptedIndex = accepted.length;
+    accepted.push(box);
+    const start = Math.floor(box.y / binHeight);
+    const end = Math.floor((box.y + box.h) / binHeight);
+    if (!boundedRange(start, end)) { wide.push(acceptedIndex); stats.wideRegistrations++; return; }
+    for (let offset = 0; offset <= end - start; offset++) {
+      stats.registeredBands++;
+      const band = start + offset;
+      let bucket = workspace.bins.get(band);
+      if (!bucket) {
+        bucket = workspace.binPool[workspace.usedBins];
+        if (!bucket) { bucket = []; workspace.binPool[workspace.usedBins] = bucket; stats.freshRecords++; }
+        workspace.usedBins++; bucket.length = 0; workspace.bins.set(band, bucket);
+      }
+      bucket.push(acceptedIndex);
+    }
+  };
+  for (const obstacle of obstacles) insert(obstacle);
+  const intersects = (horizontal, vertical, width, height, acceptedIndex) => {
+    stats.intersectionTests++;
+    const other = accepted[acceptedIndex];
+    return horizontal < other.x + other.w + gap && other.x < horizontal + width + gap && vertical < other.y + other.h + gap && other.y < vertical + height + gap;
+  };
+  const collides = (horizontal, vertical, width, height) => {
+    const start = Math.floor((vertical - gap) / binHeight);
+    const end = Math.floor((vertical + height + gap) / binHeight);
+    if (!boundedRange(start, end)) {
+      stats.linearFallbacks++;
+      for (let index = 0; index < accepted.length; index++) if (intersects(horizontal, vertical, width, height, index)) return true;
+      return false;
+    }
+    workspace.token++;
+    if (workspace.token >= Number.MAX_SAFE_INTEGER) { workspace.seen.length = 0; workspace.token = 1; }
+    for (let offset = 0; offset <= end - start; offset++) {
+      stats.binVisits++;
+      const bucket = workspace.bins.get(start + offset);
+      if (!bucket) continue;
+      for (const acceptedIndex of bucket) {
+        if (workspace.seen[acceptedIndex] === workspace.token) continue;
+        workspace.seen[acceptedIndex] = workspace.token;
+        if (intersects(horizontal, vertical, width, height, acceptedIndex)) return true;
+      }
+    }
+    for (const acceptedIndex of wide) if (intersects(horizontal, vertical, width, height, acceptedIndex)) return true;
+    return false;
+  };
+  for (const kind of boundedKinds) for (let index = 0; index < readings.length; index++) {
+    const reading = readings[index];
+    if (reading.kind !== kind) continue;
+    const logical = workspace.logical[index];
+    let result = workspace.records[index];
+    if (!result) { result = { box: {}, worldDelta: {}, leader: null }; workspace.records[index] = result; stats.freshRecords += 3; }
+    output[index] = result;
+    const step = logical.h + gap;
+    let vertical = logical.y;
+    let resolved = false;
+    const attempts = kind === 'charge' ? 5 : 3;
+    for (let attempt = 0; attempt < attempts; attempt++) {
+      stats.candidateAttempts++;
+      const offset = kind === 'charge' ? (attempt === 0 ? 0 : (attempt % 2 === 1 ? -1 : 1) * Math.ceil(attempt / 2) * step) : (attempt === 0 ? 0 : attempt === 1 ? step : -step);
+      const proposed = logical.y + offset;
+      if (logical.x >= 0 && proposed >= 0 && logical.x + logical.w <= viewportWidth && proposed + logical.h <= viewportHeight && !collides(logical.x, proposed, logical.w, logical.h)) { vertical = proposed; resolved = true; break; }
+    }
+    const box = result.box;
+    box.x = logical.x; box.y = vertical; box.w = logical.w; box.h = logical.h;
+    result.id = reading.id; result.kind = kind; result.index = index; result.deltaY = box.y - logical.y; result.unresolved = !resolved;
+    result.worldDelta.x = 0; result.worldDelta.y = result.deltaY / frame.zoom;
+    if (resolved && box.y !== logical.y) {
+      let leader = result.cachedLeader;
+      if (!leader) { leader = { from: [0, 0], to: [0, 0] }; Object.defineProperty(result, 'cachedLeader', { value: leader }); stats.freshRecords += 3; }
+      leader.from[0] = logical.x + logical.w / 2; leader.from[1] = logical.y + logical.h / 2;
+      leader.to[0] = box.x + box.w / 2; leader.to[1] = box.y + box.h / 2; result.leader = leader;
+    } else result.leader = null;
+    insert(box);
+  }
+  output.length = readings.length;
+  return output;
+}
+function paintReadingsV2(context, readings, planned) {
+  for (const kind of paintKindsV2) for (let index = 0; index < readings.length; index++) {
+    const reading = readings[index];
+    if (reading.kind !== kind) continue;
+    const placement = planned[index];
+    if (!placement || placement.id !== reading.id) throw new TypeError('UNKNOWN placement');
+    context.save();
+    try { context.translate(placement.worldDelta.x, placement.worldDelta.y); reading.paint(context); }
+    finally { context.restore(); }
+  }
+}
+function intersects(first, second, gap = 0) {
+  return first.x < second.x + second.w + gap && second.x < first.x + first.w + gap && first.y < second.y + second.h + gap && second.y < first.y + first.h + gap;
+}
+
+function layoutReadings(readings, viewport, obstacles = [], gap = 4) {
+  const ids = new Set();
+  const validBox = box => [box.x, box.y, box.w, box.h].every(Number.isFinite) && box.w > 0 && box.h > 0;
+  if (!validBox(viewport) || !Number.isFinite(gap) || gap < 0 || !obstacles.every(validBox)) throw new TypeError('invalid geometry');
+  for (const reading of readings) {
+    if (typeof reading.id !== 'string' || ids.has(reading.id) || !validBox(reading) || !['charge', 'damage'].includes(reading.kind)) throw new TypeError('invalid reading');
+    ids.add(reading.id);
+  }
+  const accepted = obstacles.map(box => ({ ...box }));
+  const ordered = readings.map((reading, index) => ({ ...reading, index })).sort((first, second) => Number(second.kind === 'charge') - Number(first.kind === 'charge') || first.index - second.index);
+  const output = ordered.map(reading => {
+    const step = reading.h + gap;
+    const offsets = reading.kind === 'charge' ? [0, -step, step, -2 * step, 2 * step] : [0, step, -step];
+    const inside = box => box.x >= viewport.x && box.y >= viewport.y && box.x + box.w <= viewport.x + viewport.w && box.y + box.h <= viewport.y + viewport.h;
+    let selected = null;
+    for (const offset of offsets) {
+      const box = { x: reading.x, y: reading.y + offset, w: reading.w, h: reading.h };
+      if (inside(box) && !accepted.some(other => intersects(box, other, gap))) {
+        selected = box;
+        break;
+      }
+    }
+    const box = selected || { x: reading.x, y: reading.y, w: reading.w, h: reading.h };
+    accepted.push(box);
+    return { id: reading.id, kind: reading.kind, index: reading.index, box, deltaY: box.y - reading.y, unresolved: selected === null, leader: selected !== null && box.y !== reading.y ? { from: [reading.x + reading.w / 2, reading.y + reading.h / 2], to: [box.x + box.w / 2, box.y + box.h / 2] } : null };
+  });
+  return output.sort((first, second) => first.index - second.index);
+}
+function createCoordinates(frame) {
+  const { width, height, cameraX, cameraY, shakeX, shakeY, zoom, ssaa, backingWidth, backingHeight, cssWidth, cssHeight, cssLeft, cssTop, dpr } = frame;
+  if (![width, height, cameraX, cameraY, shakeX, shakeY, zoom, ssaa, backingWidth, backingHeight, cssWidth, cssHeight, cssLeft, cssTop, dpr].every(Number.isFinite) || [width, height, zoom, ssaa, backingWidth, backingHeight, cssWidth, cssHeight, dpr].some(value => value <= 0)) throw new TypeError('UNKNOWN coordinate input');
+  const translateX = Math.round(width / 2 - cameraX + shakeX);
+  const translateY = Math.round(height / 2 - cameraY + shakeY);
+  const worldToLogical = point => ({ x: width / 2 + zoom * (point.x + translateX - width / 2), y: height / 2 + zoom * (point.y + translateY - height / 2) });
+  const logicalToWorld = point => ({ x: (point.x - width / 2) / zoom + width / 2 - translateX, y: (point.y - height / 2) / zoom + height / 2 - translateY });
+  const logicalToBacking = point => ({ x: point.x * ssaa, y: point.y * ssaa });
+  const backingToLogical = point => ({ x: point.x / ssaa, y: point.y / ssaa });
+  const backingToCSS = point => ({ x: cssLeft + point.x * cssWidth / backingWidth, y: cssTop + point.y * cssHeight / backingHeight });
+  const cssToBacking = point => ({ x: (point.x - cssLeft) * backingWidth / cssWidth, y: (point.y - cssTop) * backingHeight / cssHeight });
+  const worldBoxToLogical = box => ({ ...worldToLogical(box), w: box.w * zoom, h: box.h * zoom });
+  return { worldToLogical, logicalToWorld, logicalToBacking, backingToLogical, backingToCSS, cssToBacking, worldBoxToLogical, logicalDeltaToWorld: delta => ({ x: delta.x / zoom, y: delta.y / zoom }), cssGapToLogical: gap => gap * Math.max(backingWidth / cssWidth, backingHeight / cssHeight) / ssaa, viewport: { x: 0, y: 0, w: backingWidth / ssaa, h: backingHeight / ssaa }, dprMetadata: dpr };
+}
+
+function referencePlanReadings(readings, frame, obstacles = [], gapCSS = 4) {
+  const coordinates = createCoordinates(frame);
+  const logical = readings.map(reading => ({ ...reading, ...coordinates.worldBoxToLogical(reading.box) }));
+  const planned = layoutReadings(logical, coordinates.viewport, obstacles, coordinates.cssGapToLogical(gapCSS));
+  return planned.map(reading => ({ ...reading, worldDelta: coordinates.logicalDeltaToWorld({ x: 0, y: reading.deltaY }) }));
+}
+
+
+function chargeBox(x, y, radius, measuredWidth) {
+  if (![x, y, radius, measuredWidth].every(Number.isFinite) || radius < 0 || measuredWidth < 0) throw new TypeError('UNKNOWN charge metrics');
+  return { x: x - (measuredWidth + 14) / 2 - 0.75, y: y - radius - 25 - 10 - 0.75, w: measuredWidth + 15.5, h: 21.5 };
+}
+
+
+return {chargeBox,createWorkspaceV2,numberBoxV2,createSnapshotV2,planReadingsV2,paintReadingsV2};
+})();
+const _uiuxCoordinateJobs=[];
+const _uiuxV2JobPool=[];
+const _uiuxV2Measurable=[];
+const _uiuxV2Workspace=_uiuxCoordinateCandidate.createWorkspaceV2();
+const _uiuxV2Snapshot=_uiuxCoordinateCandidate.createSnapshotV2();
+const _uiuxV2DrawFrame={};
+const _uiuxV2ReadRect=()=>C.getBoundingClientRect();
+let _uiuxCoordinateFrame=null;
+const _uiuxCoordinateStatus={status:'UNKNOWN'};
+function _uiuxV2Job(kind){
+  const index=_uiuxCoordinateJobs.length;
+  let job=_uiuxV2JobPool[index];
+  if(!job){job={bounds:{}};job.paint=context=>{if(job.kind==='damage'){context.globalAlpha=job.alpha;drawNumStr(context,job.num,job.x,job.y,job.color,job.scale)}else _uiuxPaintChargeLabel(job.x,job.y,job.radius,job.label)};_uiuxV2JobPool[index]=job}
+  job.kind=kind;job.id=kind+'-'+index;_uiuxCoordinateJobs.push(job);return job;
+}
+function _uiuxQueueNumber(num,x,y,color,scale,alpha){
+  const job=_uiuxV2Job('damage');job.num=num;job.x=x;job.y=y;job.color=color;job.scale=scale;job.alpha=alpha;
+  job.box=_uiuxCoordinateCandidate.numberBoxV2(num,x,y,scale,_NUM_W,_NUM_H,job.bounds);
+}
+function _uiuxFlushCoordinates(){
+  try{
+    if(_uiuxCoordinateJobs.length===0){_uiuxCoordinateStatus.status='EMPTY';return}
+    for(const job of _uiuxCoordinateJobs)if(job.box)_uiuxV2Measurable.push(job);
+    if(_uiuxV2Measurable.length===0){for(const job of _uiuxCoordinateJobs){X.save();try{job.paint(X)}finally{X.restore()}}_uiuxCoordinateStatus.status='UNKNOWN';return}
+    let planned;
+    try{_uiuxCoordinateFrame=_uiuxV2Snapshot.get(_uiuxV2ReadRect);planned=_uiuxCoordinateCandidate.planReadingsV2(_uiuxV2Measurable,_uiuxCoordinateFrame,_uiuxV2Workspace)}catch(error){
+      if(!(error instanceof TypeError))throw error;
+      _uiuxCoordinateStatus.status='UNKNOWN';_uiuxCoordinateStatus.reason=error.message;
+      for(const job of _uiuxCoordinateJobs){X.save();try{job.paint(X)}finally{X.restore()}}return;
+    }
+    _uiuxCoordinateCandidate.paintReadingsV2(X,_uiuxV2Measurable,planned);
+    for(const job of _uiuxCoordinateJobs)if(!job.box){X.save();try{job.paint(X)}finally{X.restore()}}
+    let unresolved=0;for(const reading of planned)if(reading.unresolved)unresolved++;
+    _uiuxCoordinateStatus.status='STATIC_CANDIDATE';_uiuxCoordinateStatus.unresolved=unresolved;_uiuxCoordinateStatus.ordinaryText='UNKNOWN';_uiuxCoordinateStatus.leaderPainting='UNKNOWN';
+  }finally{_uiuxCoordinateJobs.length=0;_uiuxV2Measurable.length=0;_uiuxCoordinateFrame=null;_uiuxV2Snapshot.clear()}
+}
+function _drawProjectileChargeLabel(x,y,r,label){
+  X.save();X.font='bold 13px "Noto Sans KR",sans-serif';
+  const metrics=_chargeLabelMetrics;
+  if(metrics.ctx!==X||metrics.label!==label||metrics.font!==X.font){metrics.width=X.measureText(label).width;metrics.ctx=X;metrics.label=label;metrics.font=X.font}
+  const job=_uiuxV2Job('charge');job.x=x;job.y=y;job.radius=r;job.label=label;
+  const bounds=job.bounds;bounds.x=x-(metrics.width+14)/2-.75;bounds.y=y-r-25-10-.75;bounds.w=metrics.width+15.5;bounds.h=21.5;job.box=bounds;
+  X.restore();
+}
+function _uiuxPaintChargeLabel(x,y,r,label){
+  const cy=y-r-25;
+  X.save();X.globalCompositeOperation='source-over';X.globalAlpha=1;
+  X.font='bold 13px "Noto Sans KR",sans-serif';X.textAlign='center';X.textBaseline='middle';
+  const metrics=_chargeLabelMetrics;
+  if(metrics.ctx!==X||metrics.label!==label||metrics.font!==X.font){
+    metrics.width=X.measureText(label).width;metrics.ctx=X;metrics.label=label;metrics.font=X.font;
+  }
+  const tw=metrics.width,bw=tw+14,bh=20,bx=x-bw/2,by=cy-bh/2;
+  X.fillStyle='rgba(5,8,13,.92)';X.strokeStyle='#f4f4f4';X.lineWidth=1.5;
+  X.fillRect(bx,by,bw,bh);X.strokeRect(bx,by,bw,bh);
+  X.fillStyle='#ffffff';X.fillText(label,x,cy);
+  X.restore();
+}

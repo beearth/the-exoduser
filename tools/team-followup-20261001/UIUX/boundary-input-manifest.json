@@ -1,0 +1,25 @@
+{
+  "observedAt": "2026-10-01T12:45:16.864Z",
+  "originals": {
+    "coordinate-hotpath-v2.mjs": "12431de4435ab27b8b5d5f5aae676464a6ce217f5af4a362d131cb32432e7fd8",
+    "build-hotpath-v2.mjs": "1f4f400bb0b3308f38c66b2ae8bc1fe07ed9ab7c1acb88f35ab7af18f2c9e881",
+    "hotpath-equivalence.test.mjs": "7346430a08c87bae24edb467337f74c8135d2d95d6de6531eafefcca50706d86",
+    "hotpath-runtime.test.mjs": "ee839c78265ea8ad925cac324f45cd61240562a0d8ba6eafa438b684e99e6f74",
+    "hotpath-coefficients.json": "fdcf159247d04c346be4b2eb8337f936d139e871a620b42c54f38ee55758bb8d",
+    "hotpath-runtime-validation.json": "5f194e5a68ad537635259ceb3d57b03f33dd654a48f5af7444ebf30a834d79d3",
+    "hotpath-v2-runtime-fixture.js": "a9569050ea1ba13f782947a1f9e75aacdd7e4c95d02e53b2cba782f6bc685777",
+    "hotpath-v2-source-evidence.json": "c165c60dab53b76b6b96c3d569282de20f9dfd616dc05a02e3cd3df37f6461c5",
+    "hotpath-v2.with-context.diff": "da6d1cb8efa94af03afcbac5b3898e94018f35e76f0ef29f6e025e8c8df469b5",
+    "hotpath-v2.zero-context.diff": "19cd39cd28bcbcb2b90b1ec1f09b81dccc37b2171cb10e42ed7114bfe5695adb",
+    "hotpath-validation.txt": "46020f9deaad4c40d4e7547e17ee59070fafc68f263586fc4d4140ed0581c276",
+    "coordinate-adapter.mjs": "b0e7298d83c2ae7fb9565096316b006d75401e874e4a033bc08251e27b748422",
+    "layout-candidate.mjs": "736d4d0deca0b0e269b3fd28463dad5762f4ed90f2a8185f07ef52ad71f0e20c",
+    "coordinate.candidate.diff": "85495d75fea222f4c4f06ec71e02244c70668d58850089cab9dd163c868211c1",
+    "coordinate-source-evidence.json": "fe7c64f93a0044f83970ef498e3cb1c0e44fc744508d9475a4ee86502751c3bc"
+  },
+  "localOriginalsUnchanged": true,
+  "gameSha256": "e5518842324d17fb63da44457e6092af138b4fcfbaf49c1cb03ef791431dc115",
+  "boundedModuleSha256": "37e5abc5ba1ac85ef7a0956705d8bcf7db6ff877679529ca4bea3af87ab01f8d",
+  "originalRemoteBackupUserReported": "codex/backup-uiux-v2-review-20261001-213938 / b3ab5be7f0c7a57ec1892cca1d65825549f54d72",
+  "remoteVerifiedThisTurn": false
+}

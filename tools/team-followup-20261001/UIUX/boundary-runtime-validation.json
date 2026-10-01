@@ -1,0 +1,49 @@
+{
+  "scope": "VM mock drawing operations/rect calls; not browser or game profile",
+  "observations": [
+    {
+      "count": 0,
+      "v1RectCalls": 1,
+      "v2RectCalls": 0,
+      "paintCalls": 0,
+      "equivalence": "PASS"
+    },
+    {
+      "count": 1,
+      "v1RectCalls": 1,
+      "v2RectCalls": 1,
+      "paintCalls": 2,
+      "equivalence": "PASS"
+    },
+    {
+      "count": 30,
+      "v1RectCalls": 1,
+      "v2RectCalls": 1,
+      "paintCalls": 120,
+      "equivalence": "PASS"
+    },
+    {
+      "count": 120,
+      "v1RectCalls": 1,
+      "v2RectCalls": 1,
+      "paintCalls": 480,
+      "equivalence": "PASS"
+    },
+    {
+      "count": 0,
+      "v1RectCalls": 1,
+      "v2RectCalls": 0,
+      "paintCalls": 0,
+      "equivalence": "PASS"
+    },
+    {
+      "count": 1,
+      "v1RectCalls": 1,
+      "v2RectCalls": 1,
+      "paintCalls": 2,
+      "equivalence": "PASS"
+    }
+  ],
+  "visualVerdict": "UNKNOWN",
+  "performanceVerdict": "UNKNOWN"
+}

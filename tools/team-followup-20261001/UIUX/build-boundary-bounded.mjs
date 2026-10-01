@@ -1,0 +1,26 @@
+import fs from 'node:fs';
+import crypto from 'node:crypto';
+import assert from 'node:assert/strict';
+
+const folder = 'tools/team-followup-20261001/UIUX';
+const files = ['coordinate-hotpath-v2.mjs', 'build-hotpath-v2.mjs', 'hotpath-equivalence.test.mjs', 'hotpath-runtime.test.mjs', 'hotpath-coefficients.json', 'hotpath-runtime-validation.json', 'hotpath-v2-runtime-fixture.js', 'hotpath-v2-source-evidence.json', 'hotpath-v2.with-context.diff', 'hotpath-v2.zero-context.diff', 'hotpath-validation.txt', 'coordinate-adapter.mjs', 'layout-candidate.mjs', 'coordinate.candidate.diff', 'coordinate-source-evidence.json'];
+const hashFile = filename => crypto.createHash('sha256').update(fs.readFileSync(filename)).digest('hex');
+const before = Object.fromEntries(files.map(filename => [filename, hashFile(`${folder}/${filename}`)]));
+const original = fs.readFileSync(`${folder}/coordinate-hotpath-v2.mjs`, 'utf8');
+const bounded = fs.readFileSync(`${folder}/coordinate-bounded-v2.mjs`, 'utf8').replace(/^import .*\n/, '').replace(/^export \{.*\n/m, '');
+const layout = fs.readFileSync(`${folder}/layout-candidate.mjs`, 'utf8');
+const adapter = fs.readFileSync(`${folder}/coordinate-adapter.mjs`, 'utf8');
+const referenceCoordinates = adapter.slice(adapter.indexOf('export function createCoordinates('), adapter.indexOf('export function chargeBox('));
+const referencePlan = adapter.slice(adapter.indexOf('export function planReadings('), adapter.indexOf('export function paintReadings(')).replace('function planReadings(', 'function referencePlanReadings(');
+const start = original.indexOf('export function planReadingsV2(');
+const end = original.indexOf('export function paintReadingsV2(', start);
+assert.ok(start >= 0 && end > start);
+const combined = (original.slice(0, start) + bounded + original.slice(end) + layout + referenceCoordinates + referencePlan).replaceAll('export function ', 'function ');
+let builder = fs.readFileSync(`${folder}/build-hotpath-v2.mjs`, 'utf8');
+const oldModuleLine = "const moduleBody = fs.readFileSync(`${folder}/coordinate-hotpath-v2.mjs`, 'utf8').replaceAll('export function ', 'function ');";
+assert.equal(builder.split(oldModuleLine).length - 1, 1);
+builder = builder.replace(oldModuleLine, `const moduleBody = ${JSON.stringify(combined)};`).replaceAll('hotpath-v2', 'boundary-bounded');
+await import('data:text/javascript;base64,' + Buffer.from(builder).toString('base64'));
+for (const filename of files) assert.equal(hashFile(`${folder}/${filename}`), before[filename], filename);
+fs.writeFileSync(`${folder}/boundary-input-manifest.json`, JSON.stringify({ observedAt: new Date().toISOString(), originals: before, localOriginalsUnchanged: true, gameSha256: hashFile('game.html'), boundedModuleSha256: hashFile(`${folder}/coordinate-bounded-v2.mjs`), originalRemoteBackupUserReported: 'codex/backup-uiux-v2-review-20261001-213938 / b3ab5be7f0c7a57ec1892cca1d65825549f54d72', remoteVerifiedThisTurn: false }, null, 2) + '\n');
+console.log(JSON.stringify({ boundedCandidate: 'boundary-bounded.with-context.diff', originalsPreserved: files.length }));

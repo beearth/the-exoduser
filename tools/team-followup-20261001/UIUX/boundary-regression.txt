@@ -1,0 +1,18 @@
+PASS v1/v2 출력·계수 spread 0
+PASS v1/v2 출력·계수 spread 1
+PASS v1/v2 출력·계수 spread 30
+PASS v1/v2 출력·계수 spread 120
+PASS v1/v2 출력·계수 dense 0
+PASS v1/v2 출력·계수 dense 1
+PASS v1/v2 출력·계수 dense 30
+PASS v1/v2 출력·계수 dense 120
+PASS 0→120→0→30→120 풀/leader/순서 보존
+PASS 줌/카메라/음수/해상도/SSAA/DPR/obstacle 동등성
+PASS glyph union 24조합 원형보존
+PASS seed 고정 공간 버킷/다중 band/음수/간극 경계60조합
+PASS 빈 snapshot: rect 호출0/UNKNOWN frame 불필요
+PASS 매 occupied frame CSS/resize/zoom snapshot 갱신·입력불변
+PASS v1/생산 파일 보존
+{"checks":15,"fixturePairs":8,"visualVerdict":"UNKNOWN"}
+{"runtimeSequences":6,"equivalence":"PASS","emptyFrameRectCalls":0}
+{"previousGroups":15,"runtimeSequences":6,"coefficientPairsUnchanged":8,"emptyInvalidFrameContract":"v1 TypeError restored"}

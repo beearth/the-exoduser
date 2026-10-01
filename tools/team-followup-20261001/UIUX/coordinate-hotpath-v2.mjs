@@ -1,0 +1,161 @@
+const coordinateKeysV2 = ['width', 'height', 'cameraX', 'cameraY', 'shakeX', 'shakeY', 'zoom', 'ssaa', 'backingWidth', 'backingHeight', 'cssWidth', 'cssHeight', 'cssLeft', 'cssTop', 'dpr'];
+const positiveKeysV2 = ['width', 'height', 'zoom', 'ssaa', 'backingWidth', 'backingHeight', 'cssWidth', 'cssHeight', 'dpr'];
+const layoutKindsV2 = ['charge', 'damage'];
+const paintKindsV2 = ['damage', 'charge'];
+
+export function createWorkspaceV2() {
+  return { output: [], records: [], accepted: [], bins: new Map(), binPool: [], usedBins: 0, seen: [], token: 0, ids: new Set(), logical: [], stats: {} };
+}
+
+export function numberBoxV2(num, x, y, scale, numberWidth = 48, numberHeight = 56, target = {}) {
+  if (!Number.isFinite(x) || !Number.isFinite(y) || !Number.isFinite(scale) || !Number.isFinite(numberWidth) || !Number.isFinite(numberHeight) || scale < 0 || numberWidth <= 0 || numberHeight <= 0) throw new TypeError('UNKNOWN number metrics');
+  const text = typeof num === 'number' ? String(~~num) : num;
+  if (typeof text !== 'string') throw new TypeError('UNKNOWN number string');
+  const actualScale = scale || 1;
+  const width = ~~(numberWidth * actualScale);
+  const height = ~~(numberHeight * actualScale);
+  const gap = ~~((numberWidth - 30) * actualScale);
+  const origin = x - text.length * gap / 2;
+  let left = Infinity;
+  let right = -Infinity;
+  for (let index = 0; index < text.length; index++) {
+    const digit = text.charCodeAt(index) - 48;
+    if (digit < 0 || digit > 9 || width <= 0 || height <= 0) continue;
+    const horizontal = ~~(origin + index * gap);
+    if (horizontal < left) left = horizontal;
+    if (horizontal + width > right) right = horizontal + width;
+  }
+  if (left === Infinity) return null;
+  target.x = left; target.y = ~~y; target.w = right - left; target.h = height;
+  return target;
+}
+
+export function createSnapshotV2() {
+  let frame = null;
+  let serial = 0;
+  const snapshot = {};
+  return {
+    begin(values) {
+      for (const key of coordinateKeysV2) snapshot[key] = values[key];
+      frame = snapshot; serial++;
+    },
+    get(readRect) {
+      if (!frame) throw new TypeError('UNKNOWN coordinate snapshot');
+      if (frame.rectSerial !== serial) {
+        const rect = readRect();
+        frame.cssWidth = rect.width; frame.cssHeight = rect.height; frame.cssLeft = rect.left; frame.cssTop = rect.top; frame.rectSerial = serial;
+      }
+      return frame;
+    },
+    clear() { frame = null; }
+  };
+}
+
+export function planReadingsV2(readings, frame, workspace, obstacles = [], gapCSS = 4) {
+  const stats = workspace.stats;
+  stats.intersectionTests = 0; stats.binVisits = 0; stats.candidateAttempts = 0;
+  stats.sortCalls = 0; stats.mapConstructions = 0; stats.freshRecords = 0;
+  const output = workspace.output;
+  if (readings.length === 0 && obstacles.length === 0) { output.length = 0; return output; }
+  for (const key of coordinateKeysV2) if (!frame || !Number.isFinite(frame[key])) throw new TypeError('UNKNOWN coordinate input');
+  for (const key of positiveKeysV2) if (frame[key] <= 0) throw new TypeError('UNKNOWN coordinate input');
+  if (!Number.isFinite(gapCSS) || gapCSS < 0) throw new TypeError('invalid geometry');
+  const translateX = Math.round(frame.width / 2 - frame.cameraX + frame.shakeX);
+  const translateY = Math.round(frame.height / 2 - frame.cameraY + frame.shakeY);
+  const viewportWidth = frame.backingWidth / frame.ssaa;
+  const viewportHeight = frame.backingHeight / frame.ssaa;
+  const gap = gapCSS * Math.max(frame.backingWidth / frame.cssWidth, frame.backingHeight / frame.cssHeight) / frame.ssaa;
+  const binHeight = 32;
+  const accepted = workspace.accepted;
+  accepted.length = 0;
+  workspace.bins.clear();
+  workspace.usedBins = 0;
+  workspace.ids.clear();
+  const validBox = box => box && Number.isFinite(box.x) && Number.isFinite(box.y) && Number.isFinite(box.w) && Number.isFinite(box.h) && box.w > 0 && box.h > 0;
+  const insert = box => {
+    const acceptedIndex = accepted.length;
+    accepted.push(box);
+    for (let band = Math.floor(box.y / binHeight); band <= Math.floor((box.y + box.h) / binHeight); band++) {
+      let bucket = workspace.bins.get(band);
+      if (!bucket) {
+        bucket = workspace.binPool[workspace.usedBins];
+        if (!bucket) { bucket = []; workspace.binPool[workspace.usedBins] = bucket; stats.freshRecords++; }
+        workspace.usedBins++; bucket.length = 0; workspace.bins.set(band, bucket);
+      }
+      bucket.push(acceptedIndex);
+    }
+  };
+  for (const obstacle of obstacles) { if (!validBox(obstacle)) throw new TypeError('invalid geometry'); insert(obstacle); }
+  for (let index = 0; index < readings.length; index++) {
+    const reading = readings[index];
+    if (typeof reading.id !== 'string' || workspace.ids.has(reading.id) || !validBox(reading.box) || (reading.kind !== 'charge' && reading.kind !== 'damage')) throw new TypeError('invalid reading');
+    workspace.ids.add(reading.id);
+    let logical = workspace.logical[index];
+    if (!logical) { logical = {}; workspace.logical[index] = logical; stats.freshRecords++; }
+    logical.x = frame.width / 2 + frame.zoom * (reading.box.x + translateX - frame.width / 2);
+    logical.y = frame.height / 2 + frame.zoom * (reading.box.y + translateY - frame.height / 2);
+    logical.w = reading.box.w * frame.zoom; logical.h = reading.box.h * frame.zoom;
+  }
+  const collides = (horizontal, vertical, width, height) => {
+    workspace.token++;
+    if (workspace.token >= Number.MAX_SAFE_INTEGER) { workspace.seen.length = 0; workspace.token = 1; }
+    for (let band = Math.floor((vertical - gap) / binHeight); band <= Math.floor((vertical + height + gap) / binHeight); band++) {
+      stats.binVisits++;
+      const bucket = workspace.bins.get(band);
+      if (!bucket) continue;
+      for (const acceptedIndex of bucket) {
+        if (workspace.seen[acceptedIndex] === workspace.token) continue;
+        workspace.seen[acceptedIndex] = workspace.token;
+        stats.intersectionTests++;
+        const other = accepted[acceptedIndex];
+        if (horizontal < other.x + other.w + gap && other.x < horizontal + width + gap && vertical < other.y + other.h + gap && other.y < vertical + height + gap) return true;
+      }
+    }
+    return false;
+  };
+  for (const kind of layoutKindsV2) {
+    for (let index = 0; index < readings.length; index++) {
+      const reading = readings[index];
+      if (reading.kind !== kind) continue;
+      const logical = workspace.logical[index];
+      let result = workspace.records[index];
+      if (!result) { result = { box: {}, worldDelta: {}, leader: null }; workspace.records[index] = result; stats.freshRecords += 3; }
+      output[index] = result;
+      const step = logical.h + gap;
+      let vertical = logical.y;
+      let resolved = false;
+      const attempts = kind === 'charge' ? 5 : 3;
+      for (let attempt = 0; attempt < attempts; attempt++) {
+        stats.candidateAttempts++;
+        const offset = kind === 'charge' ? (attempt === 0 ? 0 : (attempt % 2 === 1 ? -1 : 1) * Math.ceil(attempt / 2) * step) : (attempt === 0 ? 0 : attempt === 1 ? step : -step);
+        const proposed = logical.y + offset;
+        if (logical.x >= 0 && proposed >= 0 && logical.x + logical.w <= viewportWidth && proposed + logical.h <= viewportHeight && !collides(logical.x, proposed, logical.w, logical.h)) { vertical = proposed; resolved = true; break; }
+      }
+      const box = result.box;
+      box.x = logical.x; box.y = vertical; box.w = logical.w; box.h = logical.h;
+      result.id = reading.id; result.kind = kind; result.index = index; result.deltaY = box.y - logical.y; result.unresolved = !resolved;
+      result.worldDelta.x = 0; result.worldDelta.y = result.deltaY / frame.zoom;
+      if (resolved && box.y !== logical.y) {
+        let leader = result.cachedLeader;
+        if (!leader) { leader = { from: [0, 0], to: [0, 0] }; Object.defineProperty(result, 'cachedLeader', { value: leader }); stats.freshRecords += 3; }
+        leader.from[0] = logical.x + logical.w / 2; leader.from[1] = logical.y + logical.h / 2;
+        leader.to[0] = box.x + box.w / 2; leader.to[1] = box.y + box.h / 2; result.leader = leader;
+      } else result.leader = null;
+      insert(box);
+    }
+  }
+  output.length = readings.length;
+  return output;
+}
+
+export function paintReadingsV2(context, readings, planned) {
+  for (const kind of paintKindsV2) for (let index = 0; index < readings.length; index++) {
+    const reading = readings[index];
+    if (reading.kind !== kind) continue;
+    const placement = planned[index];
+    if (!placement || placement.id !== reading.id) throw new TypeError('UNKNOWN placement');
+    context.save();
+    try { context.translate(placement.worldDelta.x, placement.worldDelta.y); reading.paint(context); }
+    finally { context.restore(); }
+  }
+}

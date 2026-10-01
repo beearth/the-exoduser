@@ -576,3 +576,7 @@ SOUND 원 제출5·root16 정적검사 완료, 본편/easy 최소후보 회수. 
 ### 18.29 SOUND 난수 계약 검수와 UIUX 경계 결함 수정
 
 SOUND 원 제출을 보존하고 테스트 조립/patch 형식을 정정한 뒤8+6그룹·288조합·실제 시퀀스8개 및 patch2개를 검증했다. 생산/오디오 인수는 남는다. UIUX v2는15+6검사 통과 뒤 독립 overflow timeout이 발견돼 인수 보류, 원 제출15파일을 원격b3ab5be7로 보존했다. 기존 담당이12:40:16Z 수정 지시 수신, 지시/소스 Read exit0을 확인했다. 새 팀/중복전송/잠금재시도0. [실제 수신·원 실패·검증 범위](mac-resume-20261001/vscode-dispatch/FOLLOWUP_RECEIPT.md).
+
+### 18.30 UIUX bounded 후보 정적 인수 / Mac 응답 확인
+
+기존 UIUX가12:45:56Z 완료한 별도후보를 root가30경계/재사용/embedded·15그룹/6VM·600혼합사례 및patch/원본보존으로검수했다. 실제시각·밀집성능은대기.12:47:42Z Mac 새명령응답·AC전원확인, native잠금1회·물리화면전원UNKNOWN.11팀현재idle/완료와게이트를분리갱신했다. [인수·제한·소스근거](mac-resume-20261001/vscode-dispatch/UIUX-boundary-root-review.md).

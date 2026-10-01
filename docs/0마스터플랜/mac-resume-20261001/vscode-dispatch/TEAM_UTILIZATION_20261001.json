@@ -1,6 +1,6 @@
 {
-  "at": "2026-10-01T12:43:34.607081+00:00",
-  "root": "SOUND submitted/static verified; UIUX boundary repair actually started; runtime gates remain",
+  "at": "2026-10-01T12:49:23.994875+00:00",
+  "root": "UIUX bounded root static acceptance complete; all 11 latest session states checked; runtime and delivery gates remain",
   "teams": [
     {
       "team": "QA",
@@ -20,7 +20,7 @@
       },
       "status": "independent8/root17 PASS; report timing and query/late claims corrected in root receipt",
       "completedAt": "2026-10-01T11:58:36.004Z",
-      "cliState": "previous task completed; no active implementation verified"
+      "cliState": "existing Claude session idle verified this cycle"
     },
     {
       "team": "ENEMY",
@@ -35,7 +35,7 @@
       "startedAt": null,
       "blocker": "Native tool explicitly reported Mac locked; manual unlock required. No new session/hidden IPC used.",
       "status": "blocked by locked Mac",
-      "cliState": "previous task completed; no active implementation verified"
+      "cliState": "existing Claude session idle verified this cycle"
     },
     {
       "team": "MAP",
@@ -62,7 +62,7 @@
         "tools/team-followup-20261001/MAP/_source-candidate-MAP.js": "ee72db6d3efae293680a35781ca96e995b59bade995a93f936909bea3d2ca27f",
         "tools/team-followup-20261001/MAP/m5-evidence-gate.test.cjs": "71acfe4b499360c9bbc672cec4a7cd64c71f1dcdda04ac73bf9cf3093f3d96d0"
       },
-      "cliState": "previous task completed; no active implementation verified"
+      "cliState": "existing Claude session idle verified this cycle"
     },
     {
       "team": "ART",
@@ -88,7 +88,7 @@
         "tools/team-followup-20261001/ART/wa24-observer.cjs": "a7134b053786c0c976ecb65832c20ab7380d4addd6e1341445e3d80567f0b7b3",
         "tools/team-followup-20261001/ART/wa24-observer.test.mjs": "17aba27f029995856ee0dc23651cb46b063ad5b51018477f0f79a3ffdf2664bd"
       },
-      "cliState": "previous task completed; no active implementation verified"
+      "cliState": "existing Claude session idle verified this cycle"
     },
     {
       "team": "SKILL",
@@ -113,7 +113,7 @@
         "tools/team-followup-20261001/SKILL/ice-cancel-probe.safe.js": "ae7c8e8ad6e874e565c3ee0cb8b635130cefa234c5628bd0ba2922da96481d1b",
         "tools/team-followup-20261001/SKILL/_source-candidate-SKILL.js": "aeded94120a1186da3983a4975efd06ed7c610644bab2ba0c3a11f0a4f756b1f"
       },
-      "cliState": "previous task completed; no active implementation verified"
+      "cliState": "existing Claude session idle verified this cycle"
     },
     {
       "team": "ANIMVFX",
@@ -138,7 +138,7 @@
         "tools/team-followup-20261001/ANIMVFX/animvfx_highhz_lifetime_gate.mjs": "3309238f04d51ccf65af92b90c9aade9edb034e0632a81119d17efa198dfcfd7",
         "tools/team-followup-20261001/ANIMVFX/animvfx_gl_probe.js": "b7ca9939f44f59dca4a67f1853327b61480c61e112d9e88d2df65c55a041ec7c"
       },
-      "cliState": "previous task completed; no active implementation verified"
+      "cliState": "existing Claude session idle verified this cycle"
     },
     {
       "team": "BUILD",
@@ -190,7 +190,7 @@
         "saveWrites": 0,
         "fixtureCleaned": true
       },
-      "cliState": "previous task completed; no active implementation verified"
+      "cliState": "latest Codex turn completed verified this cycle"
     },
     {
       "team": "UIUX",
@@ -203,10 +203,10 @@
       "exists": true,
       "receivedAt": "2026-10-01T12:40:16Z",
       "startedAt": null,
-      "status": "actual instruction/source Read verified; bounded candidate implementation started",
+      "status": "bounded candidate static accepted: 30 boundary/recovery/embedded + 15 groups/6VM + root600 comparisons; production/visual/FPS pending",
       "startEvidence": "NEXT_TASK 첫 Read exit0, 이전 완료 산출과 현재 draw 경로·팀 MD 읽기 exit0. 중복 진행 산출 없음",
       "receipt": "/Users/fordeargamers/Projects/exoduser-migration-20261001/docs/0마스터플랜/mac-resume-20261001/vscode-dispatch/UIUX-boundary-receipt.json",
-      "waitReason": "Root boundary review after submission; visual/FPS unknown",
+      "waitReason": "QA actual visual and dense performance gate; Mac locked",
       "previous": {
         "task": "UIUX-COORDINATE-HOTPATH-CANDIDATE",
         "previous": {
@@ -236,9 +236,9 @@
         "sourceReadRecordedAt": "2026-10-01T12:40:25Z",
         "exactCommandStartedAt": null
       },
-      "completedAt": null,
-      "completedAtBasis": "owner final UTC query; not exact final message timestamp",
-      "cliState": "implementation active verified"
+      "completedAt": "2026-10-01T12:45:56Z",
+      "completedAtBasis": "read_thread latest turn completedAt",
+      "cliState": "completed verified"
     },
     {
       "team": "ITEM",
@@ -261,7 +261,7 @@
       "queueMessageId": "01a0f74e-77b9-7bd3-ae28-d54aa6e46cf2",
       "firstAction": "기존 native Canvas 검사 소스 읽기; 동일 SHA PNG decode와 단계별 비교 설계",
       "currentDependencyReview": "Latest team MD/result/thread read: native RGB attribution completed. Target Chrome backend validation and production integration required; no new independent defect established.",
-      "cliState": "previous task completed; no active implementation verified"
+      "cliState": "latest Codex turn completed verified this cycle"
     },
     {
       "team": "BALANCE",
@@ -279,7 +279,7 @@
       "receipt": "/Users/fordeargamers/Projects/exoduser-migration-20261001/docs/0마스터플랜/mac-resume-20261001/vscode-dispatch/BALANCE-next-receipt.json",
       "waitReason": "damage/source/stack/resource policy not fixed; no fabricated numerical implementation",
       "currentDependencyReview": "Latest MD/result/thread read: proc damage/resource/source/stack policy missing. Previously listed blastShot gate already uses malCost(5) in both current HTML files; no duplicate repair assigned.",
-      "cliState": "previous task completed; no active implementation verified"
+      "cliState": "latest Codex turn completed verified this cycle"
     },
     {
       "team": "SOUND",
@@ -309,11 +309,11 @@
       "receipt": "/Users/fordeargamers/Projects/exoduser-migration-20261001/docs/0마스터플랜/mac-resume-20261001/vscode-dispatch/SOUND-rng-receipt.json",
       "waitReason": "Actual audio and boss entry runtime acceptance pending",
       "instruction": "/Users/fordeargamers/Projects/exoduser-migration-20261001/tools/team-followup-20261001/SOUND/RNG_TASK.md",
-      "cliState": "submission completed; no new task sent"
+      "cliState": "existing Claude session idle verified this cycle; done"
     }
   ],
   "remoteCheckpoint": {
-    "sha": "49e78c5c38594b93b2ebcaf321842f7051d750dc",
+    "sha": "d2e3c4bfa924e3da62d6e5b05719281b4b8ce159",
     "branch": "codex/mac-environment-20261001",
     "verified": true
   },
@@ -329,10 +329,9 @@
     "scope": "includes BUILD denied loopback and SOUND dedup; later RNG and v2 changes not in this snapshot"
   },
   "nativeCheck": {
-    "atApprox": "2026-10-01T12:36:00Z",
+    "atApprox": "2026-10-01T12:47:43Z",
     "locked": true,
-    "attemptsThisCycle": 1,
-    "newAttemptAfterCompaction": false
+    "attemptsThisCycle": 1
   },
   "uiuxSubmissionRecovery": {
     "sha": "b3ab5be7f0c7a57ec1892cca1d65825549f54d72",
@@ -340,5 +339,14 @@
     "files": 15,
     "remoteVerified": true,
     "scope": "original v2 with known overflow defect; not production acceptance"
+  },
+  "powerCheck": {
+    "at": "2026-10-01T12:47:42Z",
+    "freshOSResponse": true,
+    "power": "AC",
+    "batteryPercent": 100,
+    "idleSystemSleepPrevented": true,
+    "physicalDisplayPower": "UNKNOWN",
+    "settingsChanged": false
   }
 }
