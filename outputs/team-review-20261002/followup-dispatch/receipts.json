@@ -1,0 +1,217 @@
+{
+  "checkedAt": "2026-10-01T18:14:50.916Z",
+  "note": "Official queue sent once per existing completed session. No pending-list capability; latest completed turn and absence of duplicate prefix checked. UI drafts left intact.",
+  "rows": [
+    {
+      "team": "BUILD",
+      "id": "01a0f6e6-2e4c-7322-92d7-3aa309857856",
+      "queueId": "01a0f8ac-8002-77b2-b1e5-3fb06e200bbc",
+      "prefix": "conditional-range",
+      "turnId": "01a0f8ac-8002-77b2-b1e5-3fd011762ef1",
+      "status": "interrupted",
+      "startedAt": 1790878449,
+      "completedAt": null,
+      "userMessage": {
+        "type": "userMessage",
+        "id": "01a0f8ac-8066-7d50-93e3-f72ebede2a23",
+        "content": [
+          {
+            "type": "text",
+            "text": "tools/team-followup-20261001/BUILD/conditional-range-task.md를 읽고 기존 세션의 다음 한 건을 진행하세요. 같은 과제가 진행·대기 중이면 중복하지 말고 초안을 보존하세요. 공유 checkout의 다른 담당 변경을 되돌리지 않으며 소유 prefix에서만 작업합니다."
+          }
+        ]
+      },
+      "commands": [
+        {
+          "command": "/bin/zsh -lc \"date -u +%Y-%m-%dT%H:%M:%SZ; cat tools/team-followup-20261001/BUILD/conditional-range-task.md; rg --files tools/team-followup-20261001/BUILD | rg 'conditional-range'; rg --files tools -g AGENTS.md\"",
+          "status": "failed",
+          "exitCode": 1,
+          "output": "2026-10-01T18:14:13Z\n# BUILD-CONDITIONAL-RANGE\n\n기존 BUILD 세션의 다음 한 건. 기준 HEAD/원격8e4ed4e446329c863ed4d2d556d386c37f3ae310, server SHA6a7c1083ac10b105cca3624c8fd0e919d14a59b32774612ff0a00cb881be8538. 이전 suffix 후보는 root가 생산에 통합하고 합본40검사를 마쳤다. 동일 과제 진행/대기·초안을 먼저 확인하고 중복이면 추가 실행하지 않는다.\n\n이전 media-range 결과에 남은 If-Range 및 조건부 GET/Range 순서를 한 건으로 조사한다. 현재 실제 분기/handler를 추출해 RFC9110의 조건부 요청 우선순위와 If-Range 불일치 시 전체응답 계약을 대조한다. 실제 반례가 있으면 기존 RED를 보존하고 최소 미적용 패치·회귀를 BUILD/conditional-range-*에 작성한다. 가능한 것만 좁게 고치고 HTTP 전반을 재작성하지 않는다. 기존 suffix/fixed/large/invalid 범위, GET 캐시·gzip·HEAD와 저장 helper/route를 보존한다. 실제 source SHA·함수 SHA·원자료 및 남은 한계를 적는다.\n\n다른 담당과 같은 checkout을 공유한다. 소유는 새 prefix와 BUILD MD 본인 추가구역만, server/HTML/공유docs는 읽기 전용. 타팀 변경·stage·초안·기존 자료를 되돌리지 않는다. 서버 전체 실행/listen/HTTP/포트/앱/브라우저/빌드/에셋/권한변경/Git쓰기/새세션·팀·에이전트0. 기존 EPERM 우회0. QA 실제UI 슬롯과 사용자게임1573846373·세이브 보존. 한국어 receipt/result에 실제 수신/Read/Edit/명령 시각과 gate를 구분한다.\ntools/team-followup-2026100"
+        },
+        {
+          "command": "/bin/zsh -lc \"sed -n '238,338p' server.cjs; head -16 AGENTS.md; head -14 docs/13출시·마케팅/INTEGRATION_BUILD_TEAM_MASTER.md; shasum -a 256 server.cjs; rg -n 'writeSave|save|route|If-Range|ETag' server.cjs | head -14\"",
+          "status": "completed",
+          "exitCode": 0,
+          "output": "      console.log('[GPT-IMG] Generated', saved.length, 'images for:', prompt.slice(0, 50));\n      return sendJSON(res, 200, { ok: true, images: saved });\n    }\n\n    if (pathname.startsWith('/api/save/') && req.method === 'DELETE') {\n      const slot = sanitizeSlot(decodeURIComponent(pathname.slice(10)));\n      const fp = path.join(SAVE_DIR, slot + '.json');\n      if (fs.existsSync(fp)) fs.unlinkSync(fp);\n      return sendJSON(res, 200, { ok: true });\n    }\n\n    // 탄종을 한 발씩 실전 Q/E 판정으로 확인하는 독립 시험장.\n    if (pathname === '/projectile-lab') {\n      res.writeHead(302, { Location: '/game.html?test=1&testchar=1&projectilelab=1' });\n      return res.end();\n    }\n\n    let filePath;\n    if (pathname === '/') filePath = path.join(ROOT, 'index.html');\n    else if (pathname === '/game' || pathname === '/game.html') filePath = path.join(ROOT, 'game.html');\n    else filePath = path.join(ROOT, decodeURIComponent(pathname).replace(/\\.\\./g, ''));\n\n    //"
+        }
+      ],
+      "edits": [],
+      "lastMessage": [
+        {
+          "type": "agentMessage",
+          "id": "msg_039848e5f8333ca5016abea309916c87d082d0628c623511fd",
+          "text": "조건부 GET이 Range보다 뒤에 있습니다. 보수적 If-Range 폴백 후보를 검증하겠습니다.\n",
+          "phase": "commentary"
+        }
+      ]
+    },
+    {
+      "team": "UIUX",
+      "id": "01a0f6e5-8653-7ae2-8b2b-314e275c215c",
+      "queueId": "01a0f8ac-804d-71f3-b98b-3154d1b2527c",
+      "prefix": "ossuary-focus",
+      "turnId": "01a0f8ac-804e-7cc2-89e1-6ca88614ee82",
+      "status": "interrupted",
+      "startedAt": 1790878449,
+      "completedAt": null,
+      "userMessage": {
+        "type": "userMessage",
+        "id": "01a0f8ac-8098-71f1-b5f6-e3de762b1dd2",
+        "content": [
+          {
+            "type": "text",
+            "text": "tools/team-followup-20261001/UIUX/ossuary-focus-task.md를 읽고 기존 세션의 다음 한 건을 진행하세요. 같은 과제가 진행·대기 중이면 중복하지 말고 초안을 보존하세요. 공유 checkout의 다른 담당 변경을 되돌리지 않으며 소유 prefix에서만 작업합니다."
+          }
+        ]
+      },
+      "commands": [
+        {
+          "command": "/bin/zsh -lc \"date -u '+%Y-%m-%dT%H:%M:%SZ'; cat tools/team-followup-20261001/UIUX/ossuary-focus-task.md; rg --files tools/team-followup-20261001/UIUX | rg 'ossuary-focus'; sed -n '1,23p' AGENTS.md; cat tools/team-followup-20261001/UIUX/filter-focus-result.md\"",
+          "status": "completed",
+          "exitCode": 0,
+          "output": "2026-10-01T18:14:14Z\n# UIUX-OSSUARY-FOCUS\n\n기존 UIUX 세션의 다음 한 건. 기준8e4ed4e446329c863ed4d2d556d386c37f3ae310. 이전 filter-focus는 root가 두 HTML에 반영, 현재소스32+인접23=55검사와 백업 완료. 동일 과제 진행/대기 및 기존 초안 확인 후 중복 실행하지 않는다.\n\nfilter-focus 결과의 미검수 renderOssPanel 경계를 조사한다. 실제 renderOssPanel 및 관련 선택/수집/해제 함수를 읽고 가능한 실제 원문을 추출해 인벤토리↔유골함 전환, 선택 대상 소멸/재렌더/닫기 복귀의 초점 계약을 검수한다. 핵심 renderOssPanel을 no-op으로 바꿔 성공을 만들지 않는다. Node DOM에서 필요한 비관련 시각/저장 부작용은 대역과 한계를 명시하고 합성 가방/유골 데이터만 쓴다. 실제 수집/해제 함수가 필요한 경우 fixture 경제·아이템 변경을 격리하고 생산이나 사용자 저장을 쓰지 않는다. 실제 소스 결함이 재현될 때만 최소 미적용 후보와 RED/GREEN 회귀를 만든다. 결함 없음도 실행한 경계에 한정한다. OS키/패드/CSS 레이아웃/전체유골함 PASS로 확대하지 않는다.\n\n다른 담당과 같은 checkout을 공유한다. 소유는 UIUX/ossuary-focus-* 및 팀 MD 본인 추가구역만. 생산 HTML/ui-panels.js/CSS/공유SSOT는 읽기 전용. 아이템/유골 수치·설계·저장·키설정 변경0. 타팀 변경·stage·초안·자료를 되돌리지 않는다. 실제UI QA단독; 게임탭1573846373/앱/세이브/서버/listen/HTTP/빌드/권한변경/Git쓰기/새팀·세션·에이전트0. 한국어 receipt/result에 source/함수 SHA, 수신/Read/Edit/명령·제한을 기록한다.\ntools/team-followup-202610"
+        },
+        {
+          "command": "/bin/zsh -lc \"sed -n '48320,48520p' game.html; rg -n 'function (registerBonePart|withdrawBonePart|unequipItem|equipItem)|_BONE_PARTS|ANC_ROSTER' game.html | head -22; cat 'docs/2_7 인벤토리+장비시스템/INVENTORY_KEYBOARD_FOCUS_20261002.md' | tail -24; sed -n '105,145p' 'docs/2_7 인벤토리+장비시스템/2_7 인벤토리+장비시스템.md'; rg -n 'ossuary-focus|유골함|UI-04' 'docs/3.1 ui hud 디자인/UI_UX_IMPROVEMENT_PROJECT_20260930.md' | tail -8; rg --files -g AGENTS.md tools docs\"",
+          "status": "failed",
+          "exitCode": 1,
+          "output": "    +'</div>':'';\n  const eqHtml='<div style=\"border-bottom:1px solid #332211;padding-bottom:8px;margin-bottom:8px\"><div style=\"background:rgba(0,0,0,.2);border:1px solid #332211;padding:8px;border-radius:3px\"><div style=\"height:3px;background:'+RARITY_C[curEq.rarity]+';margin:-8px -8px 6px -8px;border-radius:3px 3px 0 0\"></div><div style=\"font-size:.75rem;color:#666\">'+(_L('현재 장착','Currently Equipped'))+'</div><div style=\"color:'+RARITY_C[curEq.rarity]+';font-size:.95rem;font-weight:700\">'+_T(curEq.name)+(curEq.enh?' <span style=\"color:'+enhColor(curEq.enh)+'\">+'+curEq.enh+'</span>':'')+'</div><div class=\"id-stats\" style=\"font-size:.8rem\">'+_invCardFields(curEq)+'</div></div></div>';\n  return {diffs:diffsHtml,eqCard:eqHtml};\n}\n// ═══ 인벤토리 드래그 시스템 ═══\nlet _invDrag=null,_invDragMoved=false;\nlet _GC_SZ=48;\nlet _invGridResizeObserver=null,_invGridParentWidth=0;\ndocument.addEventListener('mousemove',function(ev){\n  if(!_invDrag)return;\n  _i"
+        },
+        {
+          "command": "/bin/zsh -lc \"sed -n '48438,48498p' game.html; sed -n '22610,22735p' game.html; rg -n '\"'^function (registerBonePart|withdrawBonePart|_ossSetComplete|_bonePartName|mkBonePart|_grantOssuaryIfNeeded|_ossEnsurePlace)'\"' game.html; rg -n '\"'^function (registerBonePart|withdrawBonePart|unequipItem)'\"' game-easy-test.html; git rev-parse HEAD; git status --short --untracked-files=all | wc -l; rg -n '유골함|ossuary-focus' docs/0마스터플랜/PROJECT_MANAGEMENT_MASTER.md | tail -4\"",
+          "status": "completed",
+          "exitCode": 0,
+          "output": "  label('oss-collection-title',_L('선대의 유골 콜렉션','Ancestral Bone Collection'));\n  label('oss-collection-count',_L('수집 ','Collected ')+collected+' / '+_BONE_PARTS.length);\n  label('oss-urn-label',_L('유골함','Ossuary'));\n  label('oss-ancestor-name',_L(R.ko,R.en));\n  label('oss-unlock-state',ready?_L('소환 해금','Summon unlocked'):complete?_L('유골함 장착 필요','Equip an ossuary'):_L('유골 수집 중','Collection incomplete'));\n  label('oss-collection-hint',ready?_L('전대 소환 스킬로 불러낼 수 있습니다.','Use Ancestral Summon to call the ancestor.'):_L('네 부위를 모두 모으면 소환이 해금됩니다.','Collect all four parts to unlock summoning.'));\n  const roles={skull:_L('치명 · 위력','Critical · Power'),torso:_L('최대 HP','Maximum HP'),arms:_L('공격 위력','Attack power'),legs:_L('크기 · 이동속도','Size · Movement speed')};\n  for(const part of _BONE_PARTS){\n    const node=pn.querySelector('[data-part=\"'+part+'\"]'),c=INV.ossCollect[R.id+'_'+part];\n    node.classList.toggle('collected',!!c);\n    node.classList.toggl"
+        },
+        {
+          "command": "/bin/zsh -lc \"sed -n '44266,44289p' game.html; sed -n '44332,44380p' game.html; sed -n '16098,16135p' game.html; rg -n '\"'^function unequipItem'\"' game.html; sed -n '48495,48512p' game.html; sed -n '42972,43008p' game-easy-test.html; sed -n '14751,14785p' game-easy-test.html\"",
+          "status": "completed",
+          "exitCode": 0,
+          "output": "  else if(kind==='plant'){body=.55;foot=.87;}\n  else if(kind==='emerge'){body=.65;foot=.86;}\n  const scale=big||1,h=230*scale/body,w=h*fw/fh;\n  return {w:w,h:h,centerY:56*scale+h*(.5-foot)};\n}\nconst _BONE_PARTS=['skull','torso','arms','legs'];\nconst _BONE_PART_KO={skull:'두개골',torso:'몸통',arms:'팔',legs:'다리'};\nconst _BONE_PART_EN={skull:'Skull',torso:'Torso',arms:'Arms',legs:'Legs'};\nfunction _bonePartName(pt){return _L(_BONE_PART_KO[pt]||pt,_BONE_PART_EN[pt]||pt)}\n// 유골 부위 아이템 생성 — slot='bonePart' (1×1), 페이퍼돌 장착 불가, 도감 등록 전용\nfunction mkBonePart(ancIdx,part,tier,rarity){\n  const R=ANC_ROSTER[ancIdx];if(!R||_BONE_PARTS.indexOf(part)<0)return null;\n  tier=Math.max(0,Math.min(4,~~(tier||0)));rarity=Math.max(0,Math.min(5,~~(rarity||0)));\n  return {id:Date.now()+Math.random(),slot:'bonePart',anc:R.id,part:part,el:0,rarity:rarity,tier:tier,\n    name:R.ko+'의 '+(_BONE_PART_KO[part]||part),emoji:'🦴',\n    itemLv:Math.min(900,Math.floor((P&&P.lv?P.l"
+        },
+        {
+          "command": "/bin/zsh -lc \"sed -n '44302,44335p' game.html; sed -n '15644,15661p' game.html; sed -n '48492,48503p' game.html; sed -n '47875,47939p' game.html; cat tools/team-followup-20261001/UIUX/card-removal-focus/host/harness.js\"",
+          "status": "completed",
+          "exitCode": 0,
+          "output": "  const partPts=sk+to+ar2+le;\n  const base=magicRef()*statInt()*pMagicMul()*_skMul('ancestorSummon')*_fuseMul('ancestorSummon');\n  const pow=1+((oss&&oss.ancPow)||0)+(_eqAffix('ancDmg')||0)+(_eqImplicit('_iAncPow')||0)*.01;\n  const dmg=Math.max(1,~~(base*(1+ar2*0.08+sk*0.04)*pow*(1+~~((slv-1)/5)*0.25)));\n  const crit=Math.min(60,5+sk*3)/100;\n  // `ancDur`는 시간제였던 구세이브 호환용 ID다. 현재는 값 1초당 최대HP +30%로 읽어 기존 유골함(+3)을 +90% HP로 보존한다.\n  const hpAffix=Math.max(_eqAffix('ancHP')||0,Math.min(1.5,(_eqAffix('ancDur')||0)*.30));\n  const hp=~~(600*(1+to*0.5)*(1+slv*0.06)*(1+hpAffix));\n  const bigSz=1+Math.min(0.9,0.15+le*0.06+partPts*0.01);\n  const spd=1+le*0.04;\n  return {ai:ai,dmg:dmg,crit:crit,hp:hp,bigSz:bigSz,spd:spd,partPts:partPts};\n}\n// 도감 등록 — 더 높은 포인트(r+t)만 교체. 성공 true / 기존이 같거나 우위면 false(가방행)\nfunction _boneRegister(item){\n  if(!item||item.slot!=='bonePart')return false;\n  if(!INV.ossCollect||typeof INV.ossCollect!=='object')INV.ossCollect={}"
+        }
+      ],
+      "edits": [],
+      "lastMessage": [
+        {
+          "type": "agentMessage",
+          "id": "msg_06cf962afd8696c6016abea2f473b087d0b4483b960b1706c3",
+          "text": "담당 문서와 중복 상태를 확인하고, 소유 prefix에서만 진행하겠습니다.\n",
+          "phase": "commentary"
+        }
+      ]
+    },
+    {
+      "team": "BALANCE",
+      "id": "01a0f6e6-5303-7392-81ba-94c42e349ffc",
+      "queueId": "01a0f8ac-808c-7142-8007-4facb8bcc880",
+      "prefix": "atomic-file",
+      "turnId": "01a0f8ac-808d-7ad2-b026-699cff457e80",
+      "status": "interrupted",
+      "startedAt": 1790878449,
+      "completedAt": null,
+      "userMessage": {
+        "type": "userMessage",
+        "id": "01a0f8ac-80dc-7b60-a916-1b21227dbb2a",
+        "content": [
+          {
+            "type": "text",
+            "text": "tools/team-followup-20261001/BALANCE/atomic-file-task.md를 읽고 기존 세션의 다음 한 건을 진행하세요. 같은 과제가 진행·대기 중이면 중복하지 말고 초안을 보존하세요. 공유 checkout의 다른 담당 변경을 되돌리지 않으며 소유 prefix에서만 작업합니다."
+          }
+        ]
+      },
+      "commands": [
+        {
+          "command": "/bin/zsh -lc \"date -u '+%Y-%m-%dT%H:%M:%SZ'; cat tools/team-followup-20261001/BALANCE/atomic-file-task.md; rg --files tools/team-followup-20261001/BALANCE | rg 'atomic-file'; rg --files -g AGENTS.md\"",
+          "status": "completed",
+          "exitCode": 0,
+          "output": "2026-10-01T18:14:13Z\n# BALANCE-ATOMIC-FILE\n\n기존 BALANCE 세션의 다음 한 건. 기준8e4ed4e446329c863ed4d2d556d386c37f3ae310, server SHA6a7c1083ac10b105cca3624c8fd0e919d14a59b32774612ff0a00cb881be8538. root가 atomicSaveJSON을 생산에 반영, 합본40 소스검사/백업 완료. 동일 과제 진행/대기와 기존 초안 확인 후 중복 실행하지 않는다.\n\n실제 production atomicSaveJSON과 sequence 선언만 AST로 추출하여 소유 전용 tools/team-followup-20261001/BALANCE/atomic-file-fixtures/<고유실행ID>/ 안의 합성 JSON 슬롯으로 작은 실제 파일 I/O 검수를 수행한다. 서버 파일 전체 import/실행 금지. 신규/기존 교체/반복 저장과 쓰기·rename 실패 시 이전 bytes 보존, 임시파일 정리를 확인한다. 실패 주입은 특정 fs 메서드 대역으로 명시하되 나머지는 실제 소유 디렉터리의 fs를 써 실제 파일 bytes를 대조한다. 플랫폼에서 안전하게 재현 가능한 오류만 다루며 전원손실/크래시/fsync/Windows PASS로 확대하지 않는다. 런타임 환경·함수SHA·생성파일목록·실제/주입 오류를 분리한다. 파일 충돌 시 기존것을 지우거나 덮지 않고 고유 디렉터리로 한정한다.\n\n이것은 이전 EPERM HTTP/서버 작업의 재시도·대체 실행이 아니다. 그 미완료 gate는 유지하고 listen/포트/네트워크/API/실서버/앱/사용자세이브는 접근하지 않는다. 파일 I/O 자체가 거절되면 다른 도구/권한 경로로 우회하지 않고 그 단계를 기록한다. 다른 담당과 checkout 공유: 소유 atomic-file-*와 전용 fixtures, 팀MD 본인구역만. server/H"
+        },
+        {
+          "command": "/bin/zsh -lc \"cat AGENTS.md >/dev/null; head -25 docs/14밸런스+수치테이블/BALANCE_ECONOMY_TEAM_MASTER.md; sed -n '145,160p' 'docs/15 세이브+데이터구조/15 세이브+데이터구조.md'; rg -n 'atomicSave|sequence|Sequence|acorn' server.cjs package.json tools/team-followup-20261001/root-review/* | head -30; sed -n '55,100p' server.cjs; node -e \\\"console.log(require.resolve('acorn'))\\\"\"",
+          "status": "completed",
+          "exitCode": 0,
+          "output": "# BALANCE 전투 밸런스·성장 경제팀 운영 대장\n\n## BALANCE 본인 추가: SAVE-WRITE-FAILURE 미적용 후보 (2026-10-02)\n\n| 범위 | 근거·현재 상태 | 남은 게이트 |\n|---|---|---|\n| server.cjs POST /api/save 읽기 전용 | 원문 추출·메모리 fs 부분쓰기 EIO로 기존 JSON 손상 재현. 같은 디렉터리 wx 임시쓰기/close/rename 후보와 실패/정리/호환 13 PASS | 생산 미적용. 실제 디스크/OS 교체/크래시/fsync/HTTP 미검수 |\n| 소유 산출 | tools/team-followup-20261001/BALANCE/save-write-failure-* 전용 후보/patch/검사/evidence/receipt/result | root 함수 SHA 검수 후 통합 판단. 이전 disk-save-restart EPERM 미완료 유지 |\n\n상세 근거: [전용 결과](../../tools/team-followup-20261001/BALANCE/save-write-failure-result.md). 사용자 저장·공유 악의·강화수치 변경0, 서버/네트워크 실행0. 기존 팀 기록과 타팀 초안은 보존했다.\n\n## 2026-10-02 저장 보류분 생산 통합\n\n| 대상 | 현재 상태·계약 | 검수·남은 인수 |\n|---|---|---|\n| 본편/easy 저장 구역 | dbSaveNow 컨텍스트 보류와 _drainPendingSaveNow, 세 _saving=false 종료 호출을 생산 반영(각 HTML 4hunk). 일반500ms/force5초/비용/RNG/schema 불변 | 생산 추출22 PASS, 양쪽 inline6개 구문검수, 승인범위 밖 전체byte·인벤토리 및 기존후보/증거 보존 |\n| 보류분 처리 | 같은 charId/idx/P/dbSave와 DB준비 확인, pending 먼저 소비한 "
+        },
+        {
+          "command": "/bin/zsh -lc \"node tools/team-followup-20261001/BALANCE/atomic-file-test.mjs > tools/team-followup-20261001/BALANCE/atomic-file-tests.txt 2>&1; cat tools/team-followup-20261001/BALANCE/atomic-file-tests.txt; rg -n 'atomicSaveJSON|원자|fsync|writeFileSync' docs/ > tools/team-followup-20261001/BALANCE/atomic-file-doc-search.txt; TZ=UTC stat -f '%Sm' -t '%Y-%m-%dT%H:%M:%SZ' tools/team-followup-20261001/BALANCE/atomic-file-test.mjs; shasum -a 256 tools/team-followup-20261001/BALANCE/atomic-file-test.mjs\"",
+          "status": "completed",
+          "exitCode": 0,
+          "output": "{\n  \"startedAt\": \"2026-10-01T18:14:48.107Z\",\n  \"output\": \"/Users/fordeargamers/Projects/exoduser-migration-20261001/tools/team-followup-20261001/BALANCE/atomic-file-fixtures/run-0bH7Wj\",\n  \"runtime\": {\n    \"node\": \"v24.15.0\",\n    \"platform\": \"darwin\",\n    \"arch\": \"arm64\"\n  },\n  \"sourceSha256\": \"6a7c1083ac10b105cca3624c8fd0e919d14a59b32774612ff0a00cb881be8538\",\n  \"functionSha256\": \"ae903a49526f7607a4132772a44b75a6ce9960be8cfaa96bdb51c1b932cd27ea\",\n  \"sequenceSha256\": \"a722c9ef4449068b807e3092eaab5e5b7e963efa216a049910670367336c1fd8\",\n  \"checks\": [\n    \"신규 실제 파일 생성\",\n    \"기존 실제 파일 교체\",\n    \"반복 저장 정확한 bytes\",\n    \"주입 write 실패: 실제 이전 bytes 보존·temp 정리\",\n    \"주입 rename 실패: 실제 이전 bytes 보존·temp 정리\",\n    \"실제 ENOENT: 없는 부모 디렉터리\",\n    \"실제 wx 충돌: 외부 파일 보존\"\n  ],\n  \"errors\": [\n    {\n      \"mode\": \"write\",\n      \"kind\": \"injected\",\n      \"code\": \"EIO\",\n      \"message\": \"injected partial write\"\n    },\n    {\n      \"mode\": \"rename\",\n      \"kind\": \"inject"
+        }
+      ],
+      "edits": [
+        "/Users/fordeargamers/Projects/exoduser-migration-20261001/tools/team-followup-20261001/BALANCE/atomic-file-receipt.json",
+        "/Users/fordeargamers/Projects/exoduser-migration-20261001/tools/team-followup-20261001/BALANCE/atomic-file-test.mjs"
+      ],
+      "lastMessage": [
+        {
+          "type": "agentMessage",
+          "id": "msg_0070df5b0b729229016abea2f36d1c87d0bab48b2c0f615fcf",
+          "text": "새 과제와 중복 여부를 확인하고 소유 범위에서만 진행하겠습니다.\n",
+          "phase": "commentary"
+        }
+      ]
+    },
+    {
+      "team": "ITEM",
+      "id": "01a0f6e6-1fbe-7df0-8d02-a9c2d9df3750",
+      "queueId": "01a0f8ac-80c9-75f1-b556-65a2d4ae5f93",
+      "prefix": "d13-deferred-contract",
+      "turnId": "01a0f8ac-80ca-7840-9259-84ad0bf9ac16",
+      "status": "interrupted",
+      "startedAt": 1790878449,
+      "completedAt": null,
+      "userMessage": {
+        "type": "userMessage",
+        "id": "01a0f8ac-8111-7861-9e3f-a13107035e4e",
+        "content": [
+          {
+            "type": "text",
+            "text": "tools/team-followup-20261001/ITEM/d13-deferred-contract-task.md를 읽고 기존 세션의 다음 한 건을 진행하세요. 같은 과제가 진행·대기 중이면 중복하지 말고 초안을 보존하세요. 공유 checkout의 다른 담당 변경을 되돌리지 않으며 소유 prefix에서만 작업합니다."
+          }
+        ]
+      },
+      "commands": [
+        {
+          "command": "/bin/zsh -lc 'date -u +%Y-%m-%dT%H:%M:%SZ; cat tools/team-followup-20261001/ITEM/d13-deferred-contract-task.md; ls tools/team-followup-20261001/ITEM/d13-deferred-contract*; find tools -name AGENTS.md; tail -10 docs/7아이템디자인/ITEM_TEAM_MASTER.md'",
+          "status": "completed",
+          "exitCode": 0,
+          "output": "2026-10-01T18:14:17Z\n# ITEM-D13-DEFERRED-CONTRACT\n\n기존 ITEM 세션의 다음 독립 한 건. 기준8e4ed4e446329c863ed4d2d556d386c37f3ae310. 중복 진행/대기·기존 초안을 먼저 확인한다. ITEM_TEAM_MASTER 승인 TOP8 및 UNIQUE_TOP8_HOOK_REVIEW의 U-D13 '원본 덫 처치 출처/장판 갱신 종료 후 생성큐'는 정적 간극만 기록되어 있고 실제 소스 실행 계약이 미검수다. D17 async/CSP 반복 검사는 제외한다.\n\n작업명은 'U-D13 원본 덫 출처와 지연 생성 경계 검증 후보'. 인수조건: 실제 activateSpikeTrap, spikeTrap DOT→hurtE 사망, G._fireZones 제자리 압축 루프의 원문 경계를 사용하여 루프 중 즉시 push가 같은 tick에 처리되는지 재현하고, 원본/합체/자식의 출처를 구분할 수 있는 명시 검토 포트와 루프 종료 뒤에만 콜백을 실행하는 작은 미적용 후보를 검증한다. 재현된 경계만 다루고 기존 정적 진단을 새 실행 증거로 포장하지 않는다. 실제 핵심 루프를 가짜 축약 루프로 대체하지 않는다. source/함수 SHA와 대역을 적는다.\n\n새 효과 활성화나 생산 구현이 아니다. 기본 비활성·명시 reviewOnly, 합성 fixture/콜백에 한정한다. 자식 피해/슬로우/출혈 수치, 전역 활성 cap·중첩정책·저장롤 스키마는 미결 그대로이며 임의 결정하지 않는다. 자식 덫 실전 밸런스/성능 PASS를 주장하지 않는다. 새 payload를 생산에 쓰지 않고 원 피해/배열 정체성/기존 순서와 RNG 부작용을 조사한다. source로 안전하게 좁힐 수 없으면 정확한 의존 경계만 기록하고 임의 로직을 늘리지 않는다.\n\n다른 담당과 checkout을 공유한다. ITEM/d13-deferred-contract-*와 팀MD 본인추가구역"
+        },
+        {
+          "command": "/bin/zsh -lc \"cat docs/7아이템디자인/UNIQUE_TOP8_HOOK_REVIEW_20261001.md | head -35; rg -n 'U-D13|자식 덫|전역' docs/7아이템디자인/유니크_어픽스_리스트.md docs/7아이템디자인/고유아이템_모델_어픽스_밸런싱_프로젝트_20260930.md; rg -n 'function (activateSpikeTrap|hurtE|update)|_fzW|fz.type===.spikeTrap|_stHitCap' game.html | head -30; sed -n '35845,35875p' game.html; sed -n '36100,36155p' game.html; rg -n 'e.alive=false|e.hp<=0' game.html | tail -15\"",
+          "status": "completed",
+          "exitCode": 0,
+          "output": "# 고유 어픽스 TOP 8 전투 훅 검토 — 2026-10-01\n\n> [D절](유니크_어픽스_리스트.md)의 **미구현 후보** 8개를 현재 `game.html`에 읽기 전용으로 대조한 정적 검토다. 수치·쿨다운·보호 설계와 게임 코드는 변경하지 않았다. D절의 옛 줄 번호는 다른 팀의 동시 편집으로 이동할 수 있으므로 구현 시 함수/타입명으로 다시 찾는다. 실전 발동률·성능·밸런스 판정은 별도다.\n\n| 우선 | 효과 | 사건·상태 연결 | 구현 전 검수 핵심 |\n|---:|---|---|---|\n| 1 | U-D03 | 처내기 완충전과 실제 적/탄막 적중 → 기검참 3타 진입 전 1회 토큰 | 비적중 완충전·1/2타·합체 빔이 토큰을 소비하지 않는지, 300f 만료와 세이브/맵 전환 초기화 |\n| 2 | U-D10 | 지옥강타의 소모 전 분노 스냅샷 → 원래 피해 계산·분노 소모 후 잔여 복원 | 상옵 분노100 소모 시 잔여20, 최대30; 충만 이벤트/U-N01을 복원 과정에서 다시 발동시키지 않기 |\n| 3 | U-D12 | 본인이 설치한 `holyDome` 안 Q 성공 사건 → `_hdCd` 회수 | 영역별 누계 최대300f, 동일 Q 성공 1회, 여러 영역 중 하나만 선택; 기존 영역 안 쿨 감소와 이중 회수 여부 측정 |\n| 4 | U-D05 | 뇌전걸음 표식 출처·귀환 시점 → 300f 안 적 사망 → 기동게이지 회수 | 적마다 1회, 시전 총 27 유닛, 보스 1명, 스테이지 전환·사망 시 임시 표식 제거 |\n| 5 | U-D14 | 악의구 원 폭발 좌표와 살아 있는 `vortex/iceVortex` 좌표 → 해당 소용돌이 충격파 | 소용돌이별 120f, 폭발 1건의 다중 소용돌이 중복 제한, 추가파가 또 악의구/중독/흡인 트리거가 되지 않기 |\n| 6 | U-D13 | **원본** `spikeTrap` DOT에 의한 처치 → 피해·슬로우·출혈이 제한된 자"
+        },
+        {
+          "command": "/bin/zsh -lc \"sed -n '40710,40790p' game.html; sed -n '40990,41085p' game.html; sed -n '41220,41278p' game.html; sed -n '35849,35866p' game.html; sed -n '36048,36085p' game.html; sed -n '36188,36222p' game.html; rg -n 'G._fireZones.length=_fzW|function hurtE|function activateSpikeTrap' game.html; sed -n '153,160p' docs/7아이템디ザイン/유니크_어픽스_리스트.md 2>/dev/null; date -u +%Y-%m-%dT%H:%M:%SZ\"",
+          "status": "completed",
+          "exitCode": 0,
+          "output": "    '</div>';\n}\n// ─── [S16i] HURT_E — 적 피격 (방어/속성/사망) ───\nfunction hurtE(e,dmg,ang,noSound,opts,atkEl=0){\n  if(window._parryLesson?.active){window._parryLesson.hurtEnemy(e,dmg,ang,opts);return;}\n  if(!e||!e.alive)return;\n  if(e.hp<=0)return; // 2026-04-17 이미 죽은 적 이중 처리 방지 (alive 플래그 지연 케이스)\n  if(window._btDmgLog)window._btDmgLog.push({t:_now,src:'player',dmg:dmg});\n  _shBufI++; // ═══ shQuery 버퍼 보호: 내부 shQuery 호출이 호출자의 결과를 오염시키지 않도록 ═══\n  try{\n  _petOnAtk();\n  const isDot=opts&&opts.dot;\n  // 부활 무적 (캡 90, 피격마다 감소)\n  if(e.reviveIframes>90)e.reviveIframes=90;\n  if(e.reviveIframes>0&&!isDot){e.reviveIframes=Math.max(0,e.reviveIframes-1);return}\n  // 거울방어 중: 공격하면 카운터\n  if(e.ib&&e._mgActive&&e.s==='bossMirrorGuard'){\n    e._mgActive=false;const _mgDmg=~~(e.atk*2*elMul(e.el,ar().el));\n    hurtP(_mgDmg);addTxt(P.x,P.y-25,_T('🪞 반격!'),'#ff2200',55);\n    void 0;shake(15);doHitFlash('#00ccff',0.3);P.iframes=15;\n    e.s='recover';e.st2=30;return;"
+        },
+        {
+          "command": "/bin/zsh -lc \"sed -n '40790,40865p' game.html; sed -n '40865,40935p' game.html; sed -n '41065,41105p' game.html; sed -n '41235,41338p' game.html; sed -n '36224,36240p' game.html; sed -n '154,157p' docs/7아이템디자인/유니크_어픽스_리스트.md\"",
+          "status": "completed",
+          "exitCode": 0,
+          "output": "  if(e._aDefM&&e._aDefM<1)dmg=~~(dmg*e._aDefM);\n  // M22 동료불사: 근처 M22 아군이 있으면 33% 감소\n  if(e.mods&&!e.ib){const _m22n=shQuery(e.x,e.y,120);for(let _m22i=0;_m22i<_m22n.length;_m22i++){const _oe=_m22n[_m22i];if(_oe!==e&&_oe.mods&&_oe.mods.includes('M22')){dmg=~~(dmg*.67);addTxt(e.x,e.y-8,_T('불사 보호'),'#ff66aa',15);break}}}\n  // ── 몬스터 피격음 (etype별 분류, 쿨다운으로 과다 재생 방지) ──\n  if(!isDot&&_hitSfxCd<=0){\n    _hitSfxCd=8;\n    const _hs=_hitSfxForEtype(e.etype);\n    playSample(_hs.key,.3,_hs.pitch);\n  }\n  // ═══ 감전(Shock) — 스택당 받는 뎀 +5%, 최대 10스택(+50%) ═══\n  if((e._shockStk||0)>0)dmg=~~(dmg*(1+e._shockStk*0.05));\n  // ═══ 번개 속성 피격 → 감전 부여 (마비 + 스택) ═══\n  if(atkEl===EL.L&&!isDot){\n    e._shockT=Math.max(e._shockT||0,300); // 5초\n    e._shockStk=Math.min(10,(e._shockStk||0)+1);\n    if(!e.ib&&e._shockStk>=3&&!e.stunned&&!(opts&&opts.noStun)){e.stunned=Math.max(e.stunned||0,18);addTxt(e.x,e.y-25,'⚡','#44ddff',15)} // 3스택 이상: 0.3초 마비\n  }\n  // ═══ 어픽스: darkC"
+        }
+      ],
+      "edits": [],
+      "lastMessage": [
+        {
+          "type": "agentMessage",
+          "id": "msg_0b9abcfc267a1f0c016abea2f6b09c87d0a78267e21d4e45d0",
+          "text": "배정 문서와 중복 여부를 확인하고 소유 prefix에서만 진행하겠습니다.\n",
+          "phase": "commentary"
+        }
+      ]
+    }
+  ]
+}
