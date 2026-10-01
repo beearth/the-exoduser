@@ -315,7 +315,7 @@ canvas{display:block;position:fixed;inset:0}
 .qs{position:absolute!important;flex:none!important}
 #poiseBarWrap{display:none!important}
 #skBar.on{opacity:1}
-.hud-top{position:fixed;top:calc(var(--ui-inset-top) + env(safe-area-inset-top, 0px) + 32px * var(--ui-scale));left:50%;z-index:20;pointer-events:none;display:flex;gap:8px;align-items:center;opacity:0;transition:opacity .5s;transform:translateX(-50%) scale(var(--ui-scale));transform-origin:top center;font-family:var(--font-hell);font-size:.72rem;white-space:nowrap}
+.hud-top{position:fixed;top:calc(var(--ui-inset-top) + env(safe-area-inset-top, 0px) + 48px * var(--ui-scale));left:50%;z-index:20;pointer-events:none;display:flex;gap:8px;align-items:center;opacity:0;transition:opacity .5s;transform:translateX(-50%) scale(var(--ui-scale));transform-origin:top center;font-family:var(--font-hell);font-size:.72rem;white-space:nowrap}
 .hud-top.on{opacity:.58}
 #hudCorner{position:fixed;top:calc(var(--ui-inset-top) + env(safe-area-inset-top, 0px) + 178px * var(--ui-scale));left:calc(var(--ui-inset-left, 0px) + env(safe-area-inset-left, 0px) + 16px * var(--ui-scale));z-index:20;pointer-events:none;display:flex;flex-direction:column;gap:1px;align-items:flex-start;opacity:0;transition:opacity .5s;transform:scale(var(--ui-scale));transform-origin:top left;font-family:'Cinzel',var(--font-hell);font-size:.62rem;letter-spacing:.1em;white-space:nowrap}
 #hudCorner.on{opacity:.48}
@@ -2541,7 +2541,7 @@ body:has(#invPanel.on) #keyGuide{display:none!important}
 <link rel="stylesheet" href="stat-panel-ui.css?v=20260913-smooth-ui">
 <link rel="stylesheet" href="localization.css?v=20260909">
 <link rel="stylesheet" href="ui-foundation.css?v=20260930-lesson-translucent">
-<link rel="stylesheet" href="ui-refinement.css?v=20261001-settings-nav18">
+<link rel="stylesheet" href="ui-refinement.css?v=20261001-combat-status22">
 <link rel="stylesheet" href="growth-tree-detail.css?v=20260927-body-art3">
 <link rel="stylesheet" href="knight-portrait.css?v=20260928-equipment-cutout3">
 <script defer src="inventory-paperdoll.js?v=20260928-equipment-cutout3"></script>
@@ -58163,17 +58163,17 @@ function updateHUD(slow){
   const _regCur=(G._regions&&G._regCurIdx>=0)?G._regions[G._regCurIdx]:null;
   const _killTotal=_regCur?_regCur.total:(G._totalSpawned||0);const _stageK=_regCur?Math.min(_regCur.kills,_regCur.total):(G._stageKills||0);_hudPulse('killCnt',_stageK);$('killCnt').textContent=`${_hudReadableNumber(_stageK)} / ${_hudReadableNumber(_killTotal)}`;
   _hudPulse('matCnt',G.mats);$('matCnt').textContent=_hudReadableNumber(G.mats);
-  {const _cr=$('comboRecord');if(_cr){if(G.comboMax>0&&G.combo>=2){_cr.style.display='';_cr.textContent='MAX COMBO '+G.comboMax;_cr.style.color=G.comboMax>=100?'rgba(196,80,52,.9)':G.comboMax>=50?'rgba(200,120,64,.88)':'rgba(186,140,88,.85)'}else{_cr.style.display='none'}}}
+  {const _cr=$('comboRecord');if(_cr){if(G.comboMax>0&&G.combo>=2){_cr.style.display='';_cr.textContent='MAX COMBO '+G.comboMax;_cr.style.color=G.comboMax>=100?'var(--combat-hot)':G.comboMax>=50?'var(--combat-ember)':'var(--combat-bone)'}else{_cr.style.display='none'}}}
   _hudPulse('lvLbl',P.lv);$('lvLbl').textContent=_hudReadableNumber(P.lv);$('spCnt').textContent=`✦ ${P.sp}${P.ap?` +${P.ap}`:''}`;{const _cpV=calcCP().total;$('cpHud').textContent=`◇ ${_cpV>=1e5?_hudCompactNumber(_cpV):_cpV.toLocaleString('en-US')}`;}
   const _charHud=$('charNameHud');if(_charName&&_charHud)_charHud.textContent=_charName;
   // 콤보 HUD
-  const _cH=$('comboHud');if(_cH){if(G.combo>=2){_cH.style.display='';_cH.textContent='COMBO '+G.combo+(G.comboMax>G.combo?' (MAX:'+G.comboMax+')':'');_cH.style.color=G.combo>=50?'rgba(196,74,48,.92)':G.combo>=20?'rgba(202,118,58,.9)':G.combo>=10?'rgba(203,152,88,.88)':'rgba(201,168,110,.85)';_cH.style.fontSize=Math.min(1.1,0.82+G.combo*0.004)+'rem'}else{_cH.style.display='none'}}
+  const _cH=$('comboHud');if(_cH){if(G.combo>=2){_cH.style.display='';_cH.textContent='COMBO '+G.combo+(G.comboMax>G.combo?' (MAX:'+G.comboMax+')':'');_cH.style.color=G.combo>=50?'var(--combat-hot)':G.combo>=20?'var(--combat-ember)':G.combo>=10?'var(--combat-gold)':'var(--combat-bone)';_cH.style.fontSize=Math.min(1.1,0.82+G.combo*0.004)+'rem'}else{_cH.style.display='none'}}
   // 5초 최고 데미지 HUD
-  const _dpH=$('dmgPeakHud');if(_dpH){if(G._dmgPeak&&G._dmgPeak.val>0){_dpH.style.display='';const _dpV=G._dmgPeak.val;const _dpStr=_dpV>=1e9?(_dpV/1e9).toFixed(2)+'B':_dpV>=1e6?(_dpV/1e6).toFixed(1)+'M':_dpV>=1e3?(_dpV/1e3).toFixed(1)+'K':_dpV+'';_dpH.textContent='MAX HIT '+_dpStr;_dpH.style.color=_dpV>=1e7?'rgba(196,74,48,.9)':_dpV>=1e6?'rgba(200,118,70,.88)':_dpV>=1e5?'rgba(198,152,92,.85)':'rgba(190,166,120,.82)'}else{_dpH.style.display='none'}}
+  const _dpH=$('dmgPeakHud');if(_dpH){if(G._dmgPeak&&G._dmgPeak.val>0){_dpH.style.display='';const _dpV=G._dmgPeak.val;const _dpStr=_dpV>=1e9?(_dpV/1e9).toFixed(2)+'B':_dpV>=1e6?(_dpV/1e6).toFixed(1)+'M':_dpV>=1e3?(_dpV/1e3).toFixed(1)+'K':_dpV+'';_dpH.textContent='MAX HIT '+_dpStr;_dpH.style.color=_dpV>=1e7?'var(--combat-hot)':_dpV>=1e6?'var(--combat-ember)':_dpV>=1e5?'var(--combat-gold)':'var(--combat-bone)'}else{_dpH.style.display='none'}}
   // 콤보 타이머 카운트다운
-  const _ctH=$('comboTimerHud');if(_ctH){if(G.combo>=1&&G.comboTimer>0){const _ctSec=(G.comboTimer/60).toFixed(1);_ctH.style.display='';_ctH.textContent='TIMER '+_ctSec+'s';_ctH.style.color=G.comboTimer<300?'#ff4444':G.comboTimer<600?'#ff8844':'#ffcc44'}else{_ctH.style.display='none'}}
+  const _ctH=$('comboTimerHud');if(_ctH){if(G.combo>=1&&G.comboTimer>0){const _ctSec=(G.comboTimer/60).toFixed(1);_ctH.style.display='';_ctH.textContent='TIMER '+_ctSec+'s';_ctH.style.color=G.comboTimer<300?'var(--combat-hot)':G.comboTimer<600?'var(--combat-ember)':'var(--combat-gold)'}else{_ctH.style.display='none'}}
   // DPS HUD
-  {const _dH=$('dpsHud');if(_dH){if(_dpsVal>0){_dH.style.display='';const _dv=_dpsVal;const _ds=_dv>=1e9?(_dv/1e9).toFixed(1)+'B':_dv>=1e6?(_dv/1e6).toFixed(1)+'M':_dv>=1e3?(_dv/1e3).toFixed(1)+'K':String(_dv);_dH.textContent='DPS '+_ds;_dH.style.fontSize=_dv>=1e6?'1.05rem':_dv>=1e5?'.98rem':'.92rem';_dH.style.color=_dv>=1e6?'rgba(200,104,62,.9)':_dv>=1e5?'rgba(200,132,80,.88)':'rgba(199,154,101,.85)'}else{_dH.style.display='none'}}}
+  {const _dH=$('dpsHud');if(_dH){if(_dpsVal>0){_dH.style.display='';const _dv=_dpsVal;const _ds=_dv>=1e9?(_dv/1e9).toFixed(1)+'B':_dv>=1e6?(_dv/1e6).toFixed(1)+'M':_dv>=1e3?(_dv/1e3).toFixed(1)+'K':String(_dv);_dH.textContent='DPS '+_ds;_dH.style.fontSize=_dv>=1e6?'1.05rem':_dv>=1e5?'.98rem':'.92rem';_dH.style.color=_dv>=1e6?'var(--combat-hot)':_dv>=1e5?'var(--combat-ember)':'var(--combat-gold)'}else{_dH.style.display='none'}}}
   // 스테이지 타임어택 — 플레이 중에는 현재 경과 시간과 무명 진행선만 유지한다.
   const _stH=$('stageTimerHud');if(_stH){const _stSec=~~((G.stageTime||0)/60);const _stM=~~(_stSec/60),_stS=_stSec%60;const _taT=G._totalSpawned||0,_taK=G._stageKills||0;_stH.textContent=((_stM<10?'0':'')+_stM)+':'+((_stS<10?'0':'')+_stS);const _progress=$('stageProgressFill');if(_progress)_progress.style.width=(G._regions?_regionClearedCount()/4*100:(_taT>0?Math.min(100,_taK/_taT*100):0))+'%'} // [REGION] 진행바 = 지역 클리어 N/4
   // 포이즈 빨간 눈알 업데이트 (기존 skull-eye 4개 재활용)

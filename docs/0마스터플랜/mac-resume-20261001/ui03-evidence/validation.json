@@ -1,0 +1,98 @@
+{
+  "game.html": {
+    "only_hud_colors_top_and_css_cache_changed": true,
+    "sha256": "a7a1b45fb1188e7650459c9998b552dad02b75a0618f88eae59324690ac9d402"
+  },
+  "game-easy-test.html": {
+    "only_hud_colors_top_and_css_cache_changed": true,
+    "sha256": "2e133bda6b2b6cf69a45ae35c8cba9e6c0dbf7a827a6fffe6edb2a7253909a0c"
+  },
+  "narrow-layout.json": {
+    "overflow": 0,
+    "visible": 5,
+    "item_overlap": [],
+    "neighbor_overlap": [],
+    "hits": [
+      "c",
+      "c",
+      "c",
+      "c",
+      "c"
+    ],
+    "minimum_effective_font_px": 10.99999755
+  },
+  "easy-layout.json": {
+    "overflow": 0,
+    "visible": 5,
+    "item_overlap": [],
+    "neighbor_overlap": [],
+    "hits": null,
+    "minimum_effective_font_px": 10.99999755
+  },
+  "dense": {
+    "samples": 20,
+    "enemies": [
+      71,
+      101
+    ],
+    "combo": [
+      46,
+      54
+    ],
+    "all_focused": true,
+    "errors": []
+  },
+  "timer": {
+    "samples": 25,
+    "color_states": [
+      "rgb(255, 146, 144)",
+      "rgb(255, 177, 122)",
+      "rgb(255, 218, 135)"
+    ],
+    "timer_first_last": [
+      615,
+      254
+    ]
+  },
+  "regression_tests": {
+    "passed": 54,
+    "failed": 0,
+    "node": "24.15.0",
+    "files": [
+      "cinematicGameplayHud",
+      "actionHudUpdates",
+      "persistentHudLanguage",
+      "uiAutoScale",
+      "uiPanelInitialization",
+      "settingsBindingControls",
+      "settingsChoiceControls",
+      "renderSettingsRestore",
+      "settingsControlLabels",
+      "settingsCharacterLanguage",
+      "gameHtmlInlineSyntax"
+    ]
+  },
+  "syntax_easy": {
+    "scripts": 4,
+    "result": "PASS"
+  },
+  "final_top48": {
+    "samples": 20,
+    "overlap": 0,
+    "overflow": 0,
+    "enemies": [
+      102,
+      133
+    ],
+    "combo": [
+      8,
+      18
+    ],
+    "clock_gap_px": 2.6680374145507812,
+    "easy_wide_narrow_checked": true,
+    "regression_repeated_after_position_change": {
+      "passed": 5,
+      "failed": 0
+    }
+  }
+}

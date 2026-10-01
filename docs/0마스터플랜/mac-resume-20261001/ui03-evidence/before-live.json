@@ -1,0 +1,67 @@
+{
+  "box": {
+    "h": 14.000701904296877,
+    "w": 359.945068359375,
+    "x": 460.0274658203125,
+    "y": 28
+  },
+  "combo": 59,
+  "enemies": 147,
+  "focus": true,
+  "fps": 0,
+  "gpu": true,
+  "items": [
+    {
+      "color": "rgba(196, 74, 48, 0.92)",
+      "display": "block",
+      "font": "16.896px",
+      "id": "comboHud",
+      "shadow": "rgba(0, 0, 0, 0.9) 0px 1px 3px, rgba(190, 110, 50, 0.22) 0px 0px 6px",
+      "text": "COMBO 59 (MAX:76)"
+    },
+    {
+      "color": "rgba(200, 120, 64, 0.88)",
+      "display": "block",
+      "font": "12.8px",
+      "id": "comboRecord",
+      "shadow": "rgba(0, 0, 0, 0.9) 0px 1px 3px",
+      "text": "MAX COMBO 76"
+    },
+    {
+      "color": "rgb(255, 204, 68)",
+      "display": "block",
+      "font": "12.8px",
+      "id": "comboTimerHud",
+      "shadow": "none",
+      "text": "TIMER 15.9s"
+    },
+    {
+      "color": "rgba(199, 154, 101, 0.85)",
+      "display": "block",
+      "font": "14.72px",
+      "id": "dpsHud",
+      "shadow": "rgba(0, 0, 0, 0.92) 0px 1px 3px",
+      "text": "DPS 387"
+    },
+    {
+      "color": "rgba(190, 166, 120, 0.82)",
+      "display": "block",
+      "font": "12.48px",
+      "id": "dmgPeakHud",
+      "shadow": "rgba(0, 0, 0, 0.9) 0px 1px 3px",
+      "text": "MAX HIT 1.1K"
+    }
+  ],
+  "kills": 148,
+  "on": true,
+  "opacity": "0.58",
+  "paused": true,
+  "pointer": "none",
+  "quality": "high",
+  "scale": "0.6667",
+  "timer": 949,
+  "viewport": [
+    1280,
+    800
+  ]
+}

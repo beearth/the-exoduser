@@ -1,0 +1,9 @@
+{
+  "sha": "e58e6e6d4ffe072173f8955f10a81606a40f49b6",
+  "remote_verified": true,
+  "files": {
+    "game.html": "03d5be2240d23e7b6848be1264870ce440e32b8f26a9ce503b23d8e685ab59fc",
+    "game-easy-test.html": "35a1ddd7841c45925d4a2a9ed83ace2286faf7563802eef478108e90523d84f3",
+    "ui-refinement.css": "5b59bbe8e87e2258fef11dd0d5ded4b31031a42ed15a8a53e37717693d56cbb2"
+  }
+}

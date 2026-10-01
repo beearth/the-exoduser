@@ -1,0 +1,132 @@
+[
+  {
+    "pid": 26669,
+    "cwd": "/Users/fordeargamers/Projects/exoduser-migration-20261001",
+    "kind": "interactive",
+    "startedAt": 1790805527902,
+    "sessionId": "c79046b7-dc57-4f1d-9ac8-f44f88039fe7",
+    "name": "exoduser-migration-20261001-ff",
+    "status": "idle"
+  },
+  {
+    "pid": 32523,
+    "id": "b9eeea10",
+    "cwd": "/Users/fordeargamers/Projects/exoduser-migration-20261001",
+    "kind": "background",
+    "startedAt": 1790833515776,
+    "sessionId": "b9eeea10-895d-46cf-9039-1bbcb95bcb5d",
+    "name": "EXODUSER-Mac-SKILL",
+    "status": "idle",
+    "state": "done"
+  },
+  {
+    "pid": 32536,
+    "id": "4b78d932",
+    "cwd": "/Users/fordeargamers/Projects/exoduser-migration-20261001",
+    "kind": "background",
+    "startedAt": 1790833516057,
+    "sessionId": "4b78d932-aeb6-492a-ad5f-ce0524ade4ce",
+    "name": "EXODUSER-Mac-UIUX",
+    "status": "idle",
+    "state": "done"
+  },
+  {
+    "pid": 32596,
+    "id": "720a6335",
+    "cwd": "/Users/fordeargamers/Projects/exoduser-migration-20261001",
+    "kind": "background",
+    "startedAt": 1790833517144,
+    "sessionId": "720a6335-3dcb-4912-a3d5-91899f01d887",
+    "name": "EXODUSER-Mac-ANIMVFX",
+    "status": "idle",
+    "state": "done"
+  },
+  {
+    "pid": 32653,
+    "id": "44508f89",
+    "cwd": "/Users/fordeargamers/Projects/exoduser-migration-20261001",
+    "kind": "background",
+    "startedAt": 1790834198867,
+    "sessionId": "44508f89-4549-4a99-a1f0-30c048997c44",
+    "name": "EXODUSER-Mac-MAP",
+    "status": "idle",
+    "state": "done"
+  },
+  {
+    "pid": 33470,
+    "id": "92f20335",
+    "cwd": "/Users/fordeargamers/Projects/exoduser-migration-20261001",
+    "kind": "background",
+    "startedAt": 1790834200066,
+    "sessionId": "92f20335-1a88-4ed7-9b57-32a7441609c4",
+    "name": "EXODUSER-Mac-ART",
+    "status": "idle",
+    "state": "done"
+  },
+  {
+    "pid": 33534,
+    "id": "70f84406",
+    "cwd": "/Users/fordeargamers/Projects/exoduser-migration-20261001",
+    "kind": "background",
+    "startedAt": 1790834201285,
+    "sessionId": "70f84406-7599-4186-ae73-48ee7c2a55d3",
+    "name": "EXODUSER-Mac-BUILD",
+    "status": "idle",
+    "state": "done"
+  },
+  {
+    "pid": 33596,
+    "id": "a1c26e3a",
+    "cwd": "/Users/fordeargamers/Projects/exoduser-migration-20261001",
+    "kind": "background",
+    "startedAt": 1790834778434,
+    "sessionId": "a1c26e3a-5431-41aa-9c8d-db10ada69680",
+    "name": "EXODUSER-Mac-ITEM",
+    "status": "idle",
+    "state": "done"
+  },
+  {
+    "pid": 34122,
+    "id": "aa3ac0ed",
+    "cwd": "/Users/fordeargamers/Projects/exoduser-migration-20261001",
+    "kind": "background",
+    "startedAt": 1790834779516,
+    "sessionId": "aa3ac0ed-f4e5-44ad-a0b2-d4d2da045b84",
+    "name": "EXODUSER-Mac-SOUND",
+    "status": "idle",
+    "state": "done"
+  },
+  {
+    "pid": 34195,
+    "id": "f63e19c0",
+    "cwd": "/Users/fordeargamers/Projects/exoduser-migration-20261001",
+    "kind": "background",
+    "startedAt": 1790834780729,
+    "sessionId": "f63e19c0-babb-4773-8307-2a7d89cd317c",
+    "name": "EXODUSER-Mac-QA",
+    "status": "idle",
+    "state": "done"
+  },
+  {
+    "pid": 34266,
+    "id": "02420005",
+    "cwd": "/Users/fordeargamers/Projects/exoduser-migration-20261001",
+    "kind": "background",
+    "startedAt": 1790834781962,
+    "sessionId": "02420005-fd8a-43d6-8457-6c4ea6b7be1d",
+    "name": "EXODUSER-Mac-ENEMY",
+    "status": "idle",
+    "state": "done"
+  },
+  {
+    "pid": 34340,
+    "id": "1fd751d8",
+    "cwd": "/Users/fordeargamers/Projects/exoduser-migration-20261001",
+    "kind": "background",
+    "startedAt": 1790834783071,
+    "sessionId": "1fd751d8-1b6b-4685-a68f-fc5579022217",
+    "name": "EXODUSER-Mac-BALANCE",
+    "status": "idle",
+    "state": "done"
+  }
+]

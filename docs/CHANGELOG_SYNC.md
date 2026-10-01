@@ -1,3 +1,7 @@
+## 2026-10-01 — UI03 상단 전투 정보 대비·작은 화면 개선
+
+상태5개 색토큰·리프 배경·외곽선·최소11px, 600px 이하2행 배치. 라벨/계산/조건/입력/저장 불변. 본편 실제 밀집·일반 공격과 타이머3색, 양쪽390px/설정재진입, 54회귀+쉬운판4inline 구문 PASS. [검수·한계](0마스터플랜/mac-resume-20261001/UI03-상단전투정보-검수.md). UI03 전체는 부분 완료.
+
 ## 2026-10-01 — MAP-020 실제 줌 경계 잘림 수정·Mac 검수
 
 boundary shade/root 범위를 전체 월드 줌에 맞췄다. 두 HTML 최소 호출 변경, 모듈 캐시 키 -4. 실제1/.62 0/A/B·1배 픽셀 동일·맵/충돌/305앵커 불변·관련37검사 확인. .62 draw16→25, 짧은 정지 렌더 평균 약8.33ms. 이번 결함 PASS / 전체 RETOUCH·M5 경로 보류 유지. SKILL/UIUX/ANIMVFX 기존 세션 읽기 후속 각1건 완료. [상세](0마스터플랜/mac-resume-20261001/MAP020-줌수정-검수.md).
@@ -38,7 +42,7 @@ QA 도구의 선착순 기록 포화를 최근20,000개 순환/누락표시와 �
 
 ## 2026-10-01 — CH1-1 경계 가독성 MAP-020 (접지 그림자 + 뿌리 둑)
 
-신규 `ch1-boundary-edge.js`(game.html 태그 `?v=20261001-3`, `Ch1BorderForeground.drawBack` 직후 draw), `build-nwjs.mjs` 목록 추가, 테스트 `test/ch1BoundaryEdge.test.js` 4/4. 끄기 `?edgeShade=0`, 그림자만 `?edgeShade=a`. 문서 `docs/4.1맵디자인+설정/CH1_BOUNDARY_EDGE_MAP020_20261001.md`.
+신규 `ch1-boundary-edge.js`(최초 도입 당시 game.html 태그 `?v=20261001-3`; 현재 줌 수정 후 `-4`, `Ch1BorderForeground.drawBack` 직후 draw), `build-nwjs.mjs` 목록 추가, 테스트 `test/ch1BoundaryEdge.test.js` 4/4. 끄기 `?edgeShade=0`, 그림자만 `?edgeShade=a`. 문서 `docs/4.1맵디자인+설정/CH1_BOUNDARY_EDGE_MAP020_20261001.md`.
 
 ## 2026-10-01 — 깊이 슬라이스 2차 RETOUCH v2 — 경계 띠 170px (지붕→가장자리 장식)
 

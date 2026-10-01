@@ -15,7 +15,7 @@
 | HP/MP | 기준 구체175px, transform scale(scale×0.9), 아래10px×scale | .hp-globe / .mp-globe |
 | 스킬바 | 기준820×182px, transform scale(scale×0.9), 아래(10−25)px×scale=−15px×scale | #skBar |
 | 스킬 툴팁 | 아래(10+130)px×scale=140px×scale; 기존 폭/글꼴 별도 계약 유지 | #skBarTip |
-| 상단 HUD | 위(10+32)px×scale=42px×scale; 중앙 앵커 | .hud-top |
+| 상단 HUD | 기본58px×scale, 600px 이하190px×scale (+safe-area); 중앙 앵커. 상태 글자만 최소11px, 리프 여백/행간은 화면 px 유지 | #hudTop, ui-refinement.css |
 | 자원 | 위(10+178)px×scale=188px×scale, 왼쪽16px×scale | #hudCorner |
 | 시계 | 위(10+7)px×scale=17px×scale; 기준 폭170px | #stageClock |
 | 상태 | 위(10+6)px×scale=16px×scale; 오른쪽(10+10)px×scale=20px×scale | #mmLvl |
@@ -77,3 +77,6 @@ CSS 크기 제한과 transform 자동 배율을 중복 적용하지 않는다. �
 |---|---|
 | #settings.panel .pbox | CSS viewport 기준 100vw−24px / 100dvh−24px, max-width/max-height none. 폭600px 이하 −12px. 전체 HUD ui-scale과 별개로 읽을 수 있는 설정명16px/키캡14px을 기본으로 사용 |
 | 반응형 | 폭1100px 이하 그룹1열, 폭600px 이하 설정명14px/키캡12px. 높이650px 이하 제목52px로 축소. 상세 SETTINGS_UI_WORKSPACE_20260929.md |
+
+
+2026-10-01 UI03: 상단 상태 표시만 작은 창 판독을 위해 자동 축소에 최소11px 예외를 둔다. width/max-width는 transform 전 scale 역산으로 이중 축소를 피한다. [수치·실화면 검수](../0마스터플랜/mac-resume-20261001/UI03-상단전투정보-검수.md). 나머지 HUD 자동 배율 계약은 유지한다.
