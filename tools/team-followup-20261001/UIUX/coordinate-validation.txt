@@ -1,0 +1,92 @@
+PASS 원 draw matrix/왕복 1280 zoom1 ss1 dpr1
+PASS 원 draw matrix/왕복 1280 zoom1 ss1 dpr1.5
+PASS 원 draw matrix/왕복 1280 zoom1 ss1 dpr2
+PASS 원 draw matrix/왕복 1280 zoom1 ss1.5 dpr1
+PASS 원 draw matrix/왕복 1280 zoom1 ss1.5 dpr1.5
+PASS 원 draw matrix/왕복 1280 zoom1 ss1.5 dpr2
+PASS 원 draw matrix/왕복 1280 zoom1 ss2 dpr1
+PASS 원 draw matrix/왕복 1280 zoom1 ss2 dpr1.5
+PASS 원 draw matrix/왕복 1280 zoom1 ss2 dpr2
+PASS 원 draw matrix/왕복 1280 zoom0.62 ss1 dpr1
+PASS 원 draw matrix/왕복 1280 zoom0.62 ss1 dpr1.5
+PASS 원 draw matrix/왕복 1280 zoom0.62 ss1 dpr2
+PASS 원 draw matrix/왕복 1280 zoom0.62 ss1.5 dpr1
+PASS 원 draw matrix/왕복 1280 zoom0.62 ss1.5 dpr1.5
+PASS 원 draw matrix/왕복 1280 zoom0.62 ss1.5 dpr2
+PASS 원 draw matrix/왕복 1280 zoom0.62 ss2 dpr1
+PASS 원 draw matrix/왕복 1280 zoom0.62 ss2 dpr1.5
+PASS 원 draw matrix/왕복 1280 zoom0.62 ss2 dpr2
+PASS 원 draw matrix/왕복 1324 zoom1 ss1 dpr1
+PASS 원 draw matrix/왕복 1324 zoom1 ss1 dpr1.5
+PASS 원 draw matrix/왕복 1324 zoom1 ss1 dpr2
+PASS 원 draw matrix/왕복 1324 zoom1 ss1.5 dpr1
+PASS 원 draw matrix/왕복 1324 zoom1 ss1.5 dpr1.5
+PASS 원 draw matrix/왕복 1324 zoom1 ss1.5 dpr2
+PASS 원 draw matrix/왕복 1324 zoom1 ss2 dpr1
+PASS 원 draw matrix/왕복 1324 zoom1 ss2 dpr1.5
+PASS 원 draw matrix/왕복 1324 zoom1 ss2 dpr2
+PASS 원 draw matrix/왕복 1324 zoom0.62 ss1 dpr1
+PASS 원 draw matrix/왕복 1324 zoom0.62 ss1 dpr1.5
+PASS 원 draw matrix/왕복 1324 zoom0.62 ss1 dpr2
+PASS 원 draw matrix/왕복 1324 zoom0.62 ss1.5 dpr1
+PASS 원 draw matrix/왕복 1324 zoom0.62 ss1.5 dpr1.5
+PASS 원 draw matrix/왕복 1324 zoom0.62 ss1.5 dpr2
+PASS 원 draw matrix/왕복 1324 zoom0.62 ss2 dpr1
+PASS 원 draw matrix/왕복 1324 zoom0.62 ss2 dpr1.5
+PASS 원 draw matrix/왕복 1324 zoom0.62 ss2 dpr2
+PASS 원 draw matrix/왕복 390 zoom1 ss1 dpr1
+PASS 원 draw matrix/왕복 390 zoom1 ss1 dpr1.5
+PASS 원 draw matrix/왕복 390 zoom1 ss1 dpr2
+PASS 원 draw matrix/왕복 390 zoom1 ss1.5 dpr1
+PASS 원 draw matrix/왕복 390 zoom1 ss1.5 dpr1.5
+PASS 원 draw matrix/왕복 390 zoom1 ss1.5 dpr2
+PASS 원 draw matrix/왕복 390 zoom1 ss2 dpr1
+PASS 원 draw matrix/왕복 390 zoom1 ss2 dpr1.5
+PASS 원 draw matrix/왕복 390 zoom1 ss2 dpr2
+PASS 원 draw matrix/왕복 390 zoom0.62 ss1 dpr1
+PASS 원 draw matrix/왕복 390 zoom0.62 ss1 dpr1.5
+PASS 원 draw matrix/왕복 390 zoom0.62 ss1 dpr2
+PASS 원 draw matrix/왕복 390 zoom0.62 ss1.5 dpr1
+PASS 원 draw matrix/왕복 390 zoom0.62 ss1.5 dpr1.5
+PASS 원 draw matrix/왕복 390 zoom0.62 ss1.5 dpr2
+PASS 원 draw matrix/왕복 390 zoom0.62 ss2 dpr1
+PASS 원 draw matrix/왕복 390 zoom0.62 ss2 dpr1.5
+PASS 원 draw matrix/왕복 390 zoom0.62 ss2 dpr2
+PASS DPR 이중곱 없음
+PASS 음수 Math.round/trunc 구분
+PASS drawNumStr 실제 셀 12345 scale0
+PASS drawNumStr 실제 셀 12345 scale0.62
+PASS drawNumStr 실제 셀 12345 scale1
+PASS drawNumStr 실제 셀 12345 scale1.5
+PASS drawNumStr 실제 셀 1.2K scale0
+PASS drawNumStr 실제 셀 1.2K scale0.62
+PASS drawNumStr 실제 셀 1.2K scale1
+PASS drawNumStr 실제 셀 1.2K scale1.5
+PASS drawNumStr 실제 셀 -12 scale0
+PASS drawNumStr 실제 셀 -12 scale0.62
+PASS drawNumStr 실제 셀 -12 scale1
+PASS drawNumStr 실제 셀 -12 scale1.5
+PASS drawNumStr 실제 셀 000 scale0
+PASS drawNumStr 실제 셀 000 scale0.62
+PASS drawNumStr 실제 셀 000 scale1
+PASS drawNumStr 실제 셀 000 scale1.5
+PASS drawNumStr 실제 셀  scale0
+PASS drawNumStr 실제 셀  scale0.62
+PASS drawNumStr 실제 셀  scale1
+PASS drawNumStr 실제 셀  scale1.5
+PASS drawNumStr 실제 셀 123.8 scale0
+PASS drawNumStr 실제 셀 123.8 scale0.62
+PASS drawNumStr 실제 셀 123.8 scale1
+PASS drawNumStr 실제 셀 123.8 scale1.5
+PASS charge 원 painter bbox/테두리
+PASS bounce/alpha/shake 원식
+PASS 역이동은 원 glyph trunc 좌표 유지
+PASS paint 큐 damage→charge 및 save/restore
+PASS UNKNOWN 입력 거절
+PASS zero CSS 크기 거절
+PASS 실연결 hunk 큐/원 glyph 좌표/알파/회수
+PASS 비균등 CSS 스케일 간격 최소값
+PASS 실연결 UNKNOWN frame 원위치 fallback
+PASS paint 예외도 transform restore
+PASS 소스 불변
+{"checks":91,"gameSha256":"e5518842324d17fb63da44457e6092af138b4fcfbaf49c1cb03ef791431dc115","visualVerdict":"UNKNOWN","performanceVerdict":"UNKNOWN"}

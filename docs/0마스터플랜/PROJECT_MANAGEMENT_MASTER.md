@@ -564,3 +564,7 @@ ART38/SKILL66/MAP26/ANIMVFX11 검사를 재실행해 exit0을 확인했다. 독�
 ### 18.27 UIUX 좌표 어댑터 실제 착수
 
 기존 UIUX 완료·동일 작업 부재 확인 뒤 공식 대기열로 UIUX-HUD-COORDINATE-ADAPTER를 한 번 전달했다. 12:17:38Z 새 턴 수신과 지시 파일 읽기 명령 exit0을 확인했다. 실제 카메라/줌/SSAA/DPR 및 charge/drawNumStr bbox 연결을 소유 경로의 독립 후보로 구현하며 생산·게임 실행은 금지한다. 새 세션 없이 기존 담당자가 진행한다. [수신과 실제 명령 근거](mac-resume-20261001/vscode-dispatch/FOLLOWUP_RECEIPT.md).
+
+### 18.28 UIUX 정적 후보 인수·SOUND/BUILD 독립 작업 재개
+
+UIUX 실제 좌표/bbox 연결5hunk·91회귀를 제출받아 root 재실행·의존14검사·원식5본문 대조 완료. 주변 context 없는 원 patch를 보존하고 같은 후보의 기본 git apply 검사 통과판을 추가했다. 실제 화면/밀집성능·생산반영 미완료. Mac 잠금은 한 번 확인 후 UI반복 없이 기존 SOUND HOWL 중복 최소후보와 BUILD Node loopback 계약 검증을 각각 배정해12:23Z 실제 Read/명령 시작을 확인했다. [정확한 인수·수신·제약](mac-resume-20261001/vscode-dispatch/FOLLOWUP_RECEIPT.md).

@@ -41,3 +41,15 @@ QA 독립8검사는 예약/예산만 검증한다. 팀의 'query' 항목은 URL 
 새 턴 `01a0f766-1980-7a62-be96-b03620367404`에서 사용자 지시 수신과 ‘좌표 어댑터 지시와 중복 여부를 확인한 뒤 착수하겠습니다’ 응답, 해당 지시 파일 `cat`·소유 폴더 조회·AGENTS 검색 명령의 exit0을 확인했다. 턴 시작은12:17:38Z이며 명령 자체의 정확한 시작 초를 뜻하지 않는다. 앱 상태가 notLoaded/interrupted여도 이 실제 CLI 명령 증거를 우선하며 재전송하지 않는다.
 
 작업은 `UIUX-HUD-COORDINATE-ADAPTER`: P2 배치와 실제 world↔논리화면·카메라 round/shake·줌·SSAA/DPR·charge/drawNumStr bbox 연결 코드 및 미적용 hunk다. 소유 UIUX 도구와 coordinate-result/receipt만 수정한다. 생산·게임 실행은 금지하고 문구/개수/수명/알파/전투/저장을 보존한다. **수신·첫 명령 착수 확인이며 구현 완료나 시각·밀집 성능 합격이 아니다.**
+
+## 21:22 이후 후속 검수와 기존 담당 재개
+
+11팀 최신 영수증을 한 번 대조했다. ART/SKILL 등의 자기기록 시각 오류는 기존 root JSONL 정정을 유지한다. native 도구 한 번 조회에서 Mac locked가 명시돼 추가 UI/게임 입력·해제 대행·동일 질문 반복0. ENEMY 미전달 및 ART/SKILL 수정 지시 미전달 상태를 보존했다.
+
+- UIUX는12:22:55Z 최종 검사 시각으로 후보를 제출했다. root가91검사·의존14검사 재실행, 원식5본문 해시/위치 대조, 동일 후보의 context patch 검사까지 완료했다. 생산·실화면·성능은 미완료. [독립 인수](UIUX-coordinate-result.md).
+- SOUND 기존 aa3ac0ed idle/done 및 동일 후속 부재 확인 뒤 공식 attach로 S-11-HOWL-DEDUP-CANDIDATE를 한 번 전달했다. JSONL12:23:14.159Z 수신·12:23:17.784Z DEDUP_TASK Read 확인. attach는 Ctrl-Z로 정상 분리했다. 관측기 재작성이 아닌 본편/easy 최소 미적용 수정과 원 소스 회귀를 요청했으며 청취/생산 적용은 금지했다.
+- BUILD 기존 도움말 조사 완료 및 같은 과제 부재 확인 뒤 공식 queue `01a0f76b-3c7f-72f2-bee7-f94bd2bccefe`로 BUILD-NODE-LOOPBACK-CONTRACT 전달. 새 턴12:23:15Z 수신과 지시/인수묶음 읽기·listen 포트 조회의 두 명령 exit0을 확인했다. 고유 임시 경로와 본인 loopback fixture만 허용하고3333/3340·기존 프로세스·사용자 세이브를 보존한다. NW 동일객체/GUI 인수는 별도다.
+
+새 세션·중복 전달0. 실제 Read 시작과 결과 제출/생산 인수를 구분한다. 미완료 후보를 일반 게임 코드에 섞지 않는다.
+
+BUILD 후속 결과:12:24:21Z 명령 반환 exit1, 첫 `127.0.0.1:0` listen에서 EPERM. 실제 HTTP/충돌/저장 assertion은 도달하지 못해0PASS/1FAIL이며 통합 성공이 아니다. 고유 fixture 정리·저장 쓰기0, 기존3333/3340 PID 보존을 보고했다. root는 하니스 소스를 읽었으며 권한 거부를 우회하거나 다른 포트/도구로 재시도하지 않았다. [실패 원자료와 잔여 게이트](BUILD-loopback-result.md). SOUND 최소수정 후보는 이 기록 시점에 최신 본편/easy Read 진행 중이다.

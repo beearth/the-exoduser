@@ -1,6 +1,6 @@
 {
-  "at": "2026-10-01T12:18:17.310058+00:00",
-  "root": "UIUX coordinate adapter dispatched to existing owner; first command exit0 verified",
+  "at": "2026-10-01T12:24:35.602696+00:00",
+  "root": "native checked once: locked; no UI retry. UIUX static candidate reviewed; SOUND/BUILD started existing owners",
   "teams": [
     {
       "team": "QA",
@@ -138,19 +138,19 @@
       "team": "BUILD",
       "sessionId": "01a0f6e6-2e4c-7322-92d7-3aa309857856",
       "location": "T10",
-      "task": "BUILD-CLAUDE-CONTROL-DISCOVERY",
+      "task": "BUILD-NODE-LOOPBACK-CONTRACT",
       "instruction": "/Users/fordeargamers/Projects/exoduser-migration-20261001/tools/team-followup-20261001/BUILD/NEXT_TASK.md",
       "stateBefore": "idle/completed verified",
       "dispatch": "received",
       "exists": true,
-      "status": "도움말 조사 완료 / interactive 전달 지원 미확인",
+      "status": "harness submitted; actual listen EPERM, 0 pass/1 failure; integration incomplete",
       "startEvidence": "기존 완료result/receipt/NEXT_TASK 읽기; 동일 조사 산출 부재 확인; Claude 경로 조회",
       "receipt": "/Users/fordeargamers/Projects/exoduser-migration-20261001/docs/0마스터플랜/mac-resume-20261001/vscode-dispatch/BUILD-next-receipt.json",
-      "waitReason": "NW runtime absent in bounded lookup; actual package context validation pending",
+      "waitReason": "Execution environment denied loopback listen; no bypass/retry. NW gate separate",
       "previousTask": "BUILD-NW-HANDOFF-BUNDLE",
-      "receivedAt": "2026-10-01T12:03:08Z",
-      "startedAt": "2026-10-01T12:03:08Z",
-      "completedAt": "2026-10-01T12:03:18Z",
+      "receivedAt": "2026-10-01T12:23:15Z",
+      "startedAt": null,
+      "completedAt": null,
       "commands": [
         {
           "command": "/Users/fordeargamers/.local/bin/claude --help",
@@ -165,7 +165,25 @@
           "exitCode": 0
         }
       ],
-      "finding": "attach는background전용 설명; agents --json은interactive조회 포함. 기존interactive에 새세션/새writer 없이 메시지 전송 명령은 조사 도움말에 미명시"
+      "finding": "attach는background전용 설명; agents --json은interactive조회 포함. 기존interactive에 새세션/새writer 없이 메시지 전송 명령은 조사 도움말에 미명시",
+      "previous": {
+        "task": "BUILD-CLAUDE-CONTROL-DISCOVERY",
+        "status": "도움말 조사 완료 / interactive 전달 지원 미확인"
+      },
+      "queueMessageId": "01a0f76b-3c7f-72f2-bee7-f94bd2bccefe",
+      "firstActualAction": {
+        "command": "Read LOOPBACK_TASK, prior receipt and source bundle; list listening ports",
+        "exitCode": 0,
+        "turnId": "01a0f76b-3c80-77f1-92c2-a345c7100673",
+        "exactCommandStartedAt": null
+      },
+      "handoffAt": "2026-10-01T12:24:59Z",
+      "execution": {
+        "exit": 1,
+        "error": "listen EPERM 127.0.0.1:0",
+        "saveWrites": 0,
+        "fixtureCleaned": true
+      }
     },
     {
       "team": "UIUX",
@@ -178,7 +196,7 @@
       "exists": true,
       "receivedAt": "2026-10-01T12:17:38+00:00",
       "startedAt": null,
-      "status": "received and first source/instruction read completed; adapter implementation in progress",
+      "status": "candidate accepted for static handoff; root91+dependency14 pass; production/visual/performance pending",
       "startEvidence": "NEXT_TASK 첫 Read exit0, 이전 완료 산출과 현재 draw 경로·팀 MD 읽기 exit0. 중복 진행 산출 없음",
       "receipt": "/Users/fordeargamers/Projects/exoduser-migration-20261001/docs/0마스터플랜/mac-resume-20261001/vscode-dispatch/UIUX-coordinate-receipt.json",
       "waitReason": "No static implementation blocker; real visual and dense performance QA remain later gates",
@@ -197,7 +215,15 @@
         "observedAt": "2026-10-01T12:18:17.309987+00:00",
         "source": "read_thread turn 01a0f766-1980-7a62-be96-b03620367404"
       },
-      "completedAt": null
+      "completedAt": "2026-10-01T12:22:55Z",
+      "completedAtBasis": "owner final UTC query; not exact final message timestamp",
+      "rootValidation": {
+        "checks": 91,
+        "dependencyChecks": 14,
+        "sourceSnippets": 5,
+        "contextPatchCheck": true,
+        "productionApplied": false
+      }
     },
     {
       "team": "ITEM",
@@ -239,24 +265,22 @@
     {
       "team": "SOUND",
       "sessionId": "aa3ac0ed-f4e5-44ad-a0b2-d4d2da045b84",
-      "task": "S-11-HOWL-OBSERVER-FIX",
+      "task": "S-11-HOWL-DEDUP-CANDIDATE",
       "dispatch": "received",
       "firstFileReadAt": "2026-10-01T11:40:49.363Z",
       "exists": true,
       "previous": {
-        "task": "S-11-HOWL-OBSERVE-PREP",
-        "status": "submitted; root four boundary tests failed"
+        "task": "S-11-HOWL-OBSERVER-FIX",
+        "status": "corrected submission reviewed; root canonical 18 tests pass; runtime not installed"
       },
-      "receivedAt": "2026-10-01T11:51:34.241Z",
+      "receivedAt": "2026-10-01T12:23:14.159Z",
       "firstActualAction": {
-        "at": "2026-10-01T11:51:38.480Z",
+        "at": "2026-10-01T12:23:17.784Z",
         "tool": "Read",
-        "input": {
-          "file_path": "/Users/fordeargamers/Projects/exoduser-migration-20261001/tools/team-followup-20261001/SOUND/howl-submission-0.js"
-        }
+        "path": "tools/team-followup-20261001/SOUND/DEDUP_TASK.md"
       },
-      "status": "corrected submission reviewed; root canonical 18 tests pass; runtime not installed",
-      "completedAt": "2026-10-01T11:54:39.815Z"
+      "status": "received and first Read verified; read-only candidate preparation",
+      "completedAt": null
     }
   ],
   "remoteCheckpoint": {
@@ -275,5 +299,10 @@
       "docs/0마스터플랜/mac-resume-20261001/vscode-dispatch/BUILD-next-result.md",
       "tools/team-followup-20261001/ITEM/rgb-result.md"
     ]
+  },
+  "nativeCheck": {
+    "atApprox": "2026-10-01T12:22:20Z",
+    "locked": true,
+    "attemptsThisCycle": 1
   }
 }

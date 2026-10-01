@@ -1,0 +1,164 @@
+const _uiuxCoordinateCandidate=(()=>{
+function intersects(first, second, gap = 0) {
+  return first.x < second.x + second.w + gap && second.x < first.x + first.w + gap && first.y < second.y + second.h + gap && second.y < first.y + first.h + gap;
+}
+
+function layoutReadings(readings, viewport, obstacles = [], gap = 4) {
+  const ids = new Set();
+  const validBox = box => [box.x, box.y, box.w, box.h].every(Number.isFinite) && box.w > 0 && box.h > 0;
+  if (!validBox(viewport) || !Number.isFinite(gap) || gap < 0 || !obstacles.every(validBox)) throw new TypeError('invalid geometry');
+  for (const reading of readings) {
+    if (typeof reading.id !== 'string' || ids.has(reading.id) || !validBox(reading) || !['charge', 'damage'].includes(reading.kind)) throw new TypeError('invalid reading');
+    ids.add(reading.id);
+  }
+  const accepted = obstacles.map(box => ({ ...box }));
+  const ordered = readings.map((reading, index) => ({ ...reading, index })).sort((first, second) => Number(second.kind === 'charge') - Number(first.kind === 'charge') || first.index - second.index);
+  const output = ordered.map(reading => {
+    const step = reading.h + gap;
+    const offsets = reading.kind === 'charge' ? [0, -step, step, -2 * step, 2 * step] : [0, step, -step];
+    const inside = box => box.x >= viewport.x && box.y >= viewport.y && box.x + box.w <= viewport.x + viewport.w && box.y + box.h <= viewport.y + viewport.h;
+    let selected = null;
+    for (const offset of offsets) {
+      const box = { x: reading.x, y: reading.y + offset, w: reading.w, h: reading.h };
+      if (inside(box) && !accepted.some(other => intersects(box, other, gap))) {
+        selected = box;
+        break;
+      }
+    }
+    const box = selected || { x: reading.x, y: reading.y, w: reading.w, h: reading.h };
+    accepted.push(box);
+    return { id: reading.id, kind: reading.kind, index: reading.index, box, deltaY: box.y - reading.y, unresolved: selected === null, leader: selected !== null && box.y !== reading.y ? { from: [reading.x + reading.w / 2, reading.y + reading.h / 2], to: [box.x + box.w / 2, box.y + box.h / 2] } : null };
+  });
+  return output.sort((first, second) => first.index - second.index);
+}
+
+
+function createCoordinates(frame) {
+  const { width, height, cameraX, cameraY, shakeX, shakeY, zoom, ssaa, backingWidth, backingHeight, cssWidth, cssHeight, cssLeft, cssTop, dpr } = frame;
+  if (![width, height, cameraX, cameraY, shakeX, shakeY, zoom, ssaa, backingWidth, backingHeight, cssWidth, cssHeight, cssLeft, cssTop, dpr].every(Number.isFinite) || [width, height, zoom, ssaa, backingWidth, backingHeight, cssWidth, cssHeight, dpr].some(value => value <= 0)) throw new TypeError('UNKNOWN coordinate input');
+  const translateX = Math.round(width / 2 - cameraX + shakeX);
+  const translateY = Math.round(height / 2 - cameraY + shakeY);
+  const worldToLogical = point => ({ x: width / 2 + zoom * (point.x + translateX - width / 2), y: height / 2 + zoom * (point.y + translateY - height / 2) });
+  const logicalToWorld = point => ({ x: (point.x - width / 2) / zoom + width / 2 - translateX, y: (point.y - height / 2) / zoom + height / 2 - translateY });
+  const logicalToBacking = point => ({ x: point.x * ssaa, y: point.y * ssaa });
+  const backingToLogical = point => ({ x: point.x / ssaa, y: point.y / ssaa });
+  const backingToCSS = point => ({ x: cssLeft + point.x * cssWidth / backingWidth, y: cssTop + point.y * cssHeight / backingHeight });
+  const cssToBacking = point => ({ x: (point.x - cssLeft) * backingWidth / cssWidth, y: (point.y - cssTop) * backingHeight / cssHeight });
+  const worldBoxToLogical = box => ({ ...worldToLogical(box), w: box.w * zoom, h: box.h * zoom });
+  return { worldToLogical, logicalToWorld, logicalToBacking, backingToLogical, backingToCSS, cssToBacking, worldBoxToLogical, logicalDeltaToWorld: delta => ({ x: delta.x / zoom, y: delta.y / zoom }), cssGapToLogical: gap => gap * Math.max(backingWidth / cssWidth, backingHeight / cssHeight) / ssaa, viewport: { x: 0, y: 0, w: backingWidth / ssaa, h: backingHeight / ssaa }, dprMetadata: dpr };
+}
+
+function chargeBox(x, y, radius, measuredWidth) {
+  if (![x, y, radius, measuredWidth].every(Number.isFinite) || radius < 0 || measuredWidth < 0) throw new TypeError('UNKNOWN charge metrics');
+  return { x: x - (measuredWidth + 14) / 2 - 0.75, y: y - radius - 25 - 10 - 0.75, w: measuredWidth + 15.5, h: 21.5 };
+}
+
+function numberGlyphBoxes(num, x, y, scale, numberWidth = 48, numberHeight = 56) {
+  if (![x, y, scale, numberWidth, numberHeight].every(Number.isFinite) || scale < 0 || numberWidth <= 0 || numberHeight <= 0) throw new TypeError('UNKNOWN number metrics');
+  const text = typeof num === 'number' ? String(~~num) : num;
+  if (typeof text !== 'string') throw new TypeError('UNKNOWN number string');
+  const actualScale = scale || 1;
+  const glyphWidth = ~~(numberWidth * actualScale);
+  const glyphHeight = ~~(numberHeight * actualScale);
+  const gap = ~~((numberWidth - 30) * actualScale);
+  const origin = x - text.length * gap / 2;
+  const boxes = [];
+  for (let index = 0; index < text.length; index++) {
+    const digit = text.charCodeAt(index) - 48;
+    if (digit < 0 || digit > 9) continue;
+    if (glyphWidth > 0 && glyphHeight > 0) boxes.push({ x: ~~(origin + index * gap), y: ~~y, w: glyphWidth, h: glyphHeight });
+  }
+  return boxes;
+}
+
+function unionBoxes(boxes) {
+  if (!boxes.length) return null;
+  const left = Math.min(...boxes.map(box => box.x));
+  const top = Math.min(...boxes.map(box => box.y));
+  return { x: left, y: top, w: Math.max(...boxes.map(box => box.x + box.w)) - left, h: Math.max(...boxes.map(box => box.y + box.h)) - top };
+}
+
+function damageState(text) {
+  if (![text.x, text.y, text.life, text.ml, text.sz].every(Number.isFinite) || text.ml <= 0 || text.life <= 0) throw new TypeError('UNKNOWN damage state');
+  const raw = text.life / text.ml;
+  const age = 1 - raw;
+  const size = text.sz || 22;
+  const alpha = raw > 0.2 ? 1 : raw * 5;
+  const progress = Math.min(1, age * 5);
+  const bounce = progress < 1 ? 1 + 0.5 * (1 - progress) * (1 - progress) * Math.cos(progress * Math.PI * 2) : 1;
+  const shake = size >= 36 && age < 0.3 ? Math.sin(age * 80) * (1 - age * 3.3) * 3 : 0;
+  const scale = size / 48 * bounce;
+  return { alpha, scale, x: text.x + shake, y: text.y - 56 * scale / 2 };
+}
+
+function planReadings(readings, frame, obstacles = [], gapCSS = 4) {
+  const coordinates = createCoordinates(frame);
+  const logical = readings.map(reading => ({ ...reading, ...coordinates.worldBoxToLogical(reading.box) }));
+  const planned = layoutReadings(logical, coordinates.viewport, obstacles, coordinates.cssGapToLogical(gapCSS));
+  return planned.map(reading => ({ ...reading, worldDelta: coordinates.logicalDeltaToWorld({ x: 0, y: reading.deltaY }) }));
+}
+
+function paintReadings(context, readings, planned) {
+  const byId = new Map(planned.map(reading => [reading.id, reading]));
+  const ordered = [...readings].sort((first, second) => Number(first.kind === 'charge') - Number(second.kind === 'charge'));
+  for (const reading of ordered) {
+    const placement = byId.get(reading.id);
+    if (!placement) throw new TypeError('UNKNOWN placement');
+    context.save();
+    try {
+      context.translate(placement.worldDelta.x, placement.worldDelta.y);
+      reading.paint(context);
+    } finally {
+      context.restore();
+    }
+  }
+}
+
+return {chargeBox,numberGlyphBoxes,unionBoxes,planReadings,paintReadings};
+})();
+const _uiuxCoordinateJobs=[];
+let _uiuxCoordinateFrame=null;
+let _uiuxCoordinateStatus={status:'UNKNOWN'};
+function _uiuxQueueNumber(num,x,y,color,scale,alpha){
+  const box=_uiuxCoordinateCandidate.unionBoxes(_uiuxCoordinateCandidate.numberGlyphBoxes(num,x,y,scale,_NUM_W,_NUM_H));
+  _uiuxCoordinateJobs.push({id:'damage-'+_uiuxCoordinateJobs.length,kind:'damage',box,paint:context=>{context.globalAlpha=alpha;drawNumStr(context,num,x,y,color,scale)}});
+}
+function _uiuxFlushCoordinates(){
+  const measurable=_uiuxCoordinateJobs.filter(job=>job.box);
+  try{
+    let planned;
+    try{planned=_uiuxCoordinateCandidate.planReadings(measurable,_uiuxCoordinateFrame)}catch(error){
+      if(!(error instanceof TypeError))throw error;
+      _uiuxCoordinateStatus={status:'UNKNOWN',reason:error.message};
+      for(const job of _uiuxCoordinateJobs){X.save();try{job.paint(X)}finally{X.restore()}}
+      return;
+    }
+    _uiuxCoordinateCandidate.paintReadings(X,measurable,planned);
+    for(const job of _uiuxCoordinateJobs)if(!job.box){X.save();try{job.paint(X)}finally{X.restore()}}
+    _uiuxCoordinateStatus={status:'STATIC_CANDIDATE',unresolved:planned.filter(reading=>reading.unresolved).length,ordinaryText:'UNKNOWN',leaderPainting:'UNKNOWN'};
+  }finally{_uiuxCoordinateJobs.length=0;_uiuxCoordinateFrame=null}
+}
+function _drawProjectileChargeLabel(x,y,r,label){
+  X.save();X.font='bold 13px "Noto Sans KR",sans-serif';
+  const metrics=_chargeLabelMetrics;
+  if(metrics.ctx!==X||metrics.label!==label||metrics.font!==X.font){
+    metrics.width=X.measureText(label).width;metrics.ctx=X;metrics.label=label;metrics.font=X.font;
+  }
+  const box=_uiuxCoordinateCandidate.chargeBox(x,y,r,metrics.width);
+  X.restore();
+  _uiuxCoordinateJobs.push({id:'charge-'+_uiuxCoordinateJobs.length,kind:'charge',box,paint:()=>_uiuxPaintChargeLabel(x,y,r,label)});
+}
+function _uiuxPaintChargeLabel(x,y,r,label){
+  const cy=y-r-25;
+  X.save();X.globalCompositeOperation='source-over';X.globalAlpha=1;
+  X.font='bold 13px "Noto Sans KR",sans-serif';X.textAlign='center';X.textBaseline='middle';
+  const metrics=_chargeLabelMetrics;
+  if(metrics.ctx!==X||metrics.label!==label||metrics.font!==X.font){
+    metrics.width=X.measureText(label).width;metrics.ctx=X;metrics.label=label;metrics.font=X.font;
+  }
+  const tw=metrics.width,bw=tw+14,bh=20,bx=x-bw/2,by=cy-bh/2;
+  X.fillStyle='rgba(5,8,13,.92)';X.strokeStyle='#f4f4f4';X.lineWidth=1.5;
+  X.fillRect(bx,by,bw,bh);X.strokeRect(bx,by,bw,bh);
+  X.fillStyle='#ffffff';X.fillText(label,x,cy);
+  X.restore();
+}

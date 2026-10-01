@@ -1,0 +1,15 @@
+{
+  "rootChecks": {
+    "coordinateChecks": 91,
+    "layoutDependencyChecks": 14,
+    "sourceSnippetsVerified": 5,
+    "gitApplyCheckWithUnidiffZero": true,
+    "standardContextPatchCheck": true
+  },
+  "gameSha256": "e5518842324d17fb63da44457e6092af138b4fcfbaf49c1cb03ef791431dc115",
+  "visual": "UNKNOWN",
+  "performance": "UNKNOWN",
+  "productionApplied": false,
+  "patchNote": "Original zero-context diff needs --unidiff-zero. Root coordinate.with-context.diff passes standard git apply --check and yields identical candidate bytes. Both remain unapplied.",
+  "contextPatchCandidateSha256": "f90799726bd1a3b949d7a73056ff1c10c882176561f811127cb5e8ada9842110"
+}
