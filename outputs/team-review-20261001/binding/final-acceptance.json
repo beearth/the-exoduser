@@ -1,0 +1,17 @@
+{
+  "at": "2026-10-01T14:31:49.655139+00:00",
+  "nodeTests": 61,
+  "independentBuildAssertions": 24,
+  "buildSourceHashesMatch": true,
+  "productionDiffEmpty": true,
+  "supportStatus": {
+    "binding": "completed Node candidate,61 tests/BUILD24 assertions",
+    "supportTasks": "3 actual Read/code writes verified; reports are candidate submissions, root acceptance pending",
+    "originalClaudeTeamsIdle": 7,
+    "nativeInput": "blocked: fresh Mac locked",
+    "pendingQueueAndDrafts": "UNKNOWN; no duplicates",
+    "gameMeasurementRunning": false,
+    "productionD10Active": false,
+    "simultaneouslyRunningCount": "UNKNOWN for external CLI; use actual actions and receipts rather than interrupted app flag"
+  }
+}

@@ -1,0 +1,15 @@
+{
+  "taskId": "BUILD-BINDING-HARDENED-INDEPENDENT-ACCEPTANCE",
+  "receivedAt": "2026-10-01T14:27:57Z",
+  "firstReadAt": "2026-10-01T14:27:57Z",
+  "validationAt": "2026-10-01T14:30:01Z",
+  "completedAt": "2026-10-01T14:30:01Z",
+  "firstRead": "보강된binding-d10/ports 및 실제양쪽dbSave/dbRestore/harness",
+  "status": "원C2-C7수정확인 / N1-N2계약게이트 / 전체인수보류",
+  "validation": "실제import·source VM 20PASS2FAIL exit1; storage realm반례2건",
+  "ownedPaths": "tools/team-followup-20261001/BUILD/continuation-binding-hardened-*",
+  "nextAction": "root에nested hook 지원범위/realm호환검토 인계; root코드수정0",
+  "outgoingQueue": 0,
+  "otherTeamWrites": 0,
+  "newSessions": 0
+}

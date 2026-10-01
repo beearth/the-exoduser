@@ -1,0 +1,14 @@
+✔ 실제 저장표현/복원대입·공유창고 함수: legacy 전체객체 왕복 보존 (214.902ms)
+✔ 검증기는 누락 API·생성 재롤0·암묵 RNG 반례를 검출 (0.785917ms)
+✔ BALANCE 실제 ITEM adapter 직접실행42행·생성RNG6/로드0 (242.359375ms)
+✔ schema/version/unit/stat/effect/value 부정입력은 실제저장왕복 뒤 정상roll 오인0 (488.4595ms)
+✔ 신규생성 input 보존·core/ports 중복생성 거부·RNG추가0 (0.260833ms)
+✔ restore/read 재롤0 및 실제 bound consumer 비활성/활성 소비 차등 (0.163416ms)
+ℹ tests 6
+ℹ suites 0
+ℹ pass 6
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 771.218708

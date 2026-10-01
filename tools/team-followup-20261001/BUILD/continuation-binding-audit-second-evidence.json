@@ -1,0 +1,183 @@
+{
+  "startedAt": "2026-10-01T14:25:32.208Z",
+  "completedAt": "2026-10-01T14:25:32.556Z",
+  "kind": "independent-contract-counterexamples-and-current-source-VM",
+  "rows": [
+    {
+      "name": "port converts preexisting missing-binding identity with RNG",
+      "status": "PASS"
+    },
+    {
+      "name": "serialization injects legacy fields after guard",
+      "status": "PASS"
+    },
+    {
+      "name": "inherited schema accepted then lost across JSON",
+      "status": "PASS"
+    },
+    {
+      "name": "own nonenumerable binding accepted then disappears",
+      "status": "PASS"
+    },
+    {
+      "name": "throwing accessor escapes inspect instead of invalid result",
+      "status": "PASS"
+    },
+    {
+      "name": "inspect can call external RNG accessor",
+      "status": "PASS"
+    },
+    {
+      "name": "inherited UI10 creation identity accepted by port",
+      "status": "PASS"
+    },
+    {
+      "name": "plain restore never creates or alters missing/invalid/legacy",
+      "status": "PASS"
+    },
+    {
+      "name": "game.html bag",
+      "status": "FAIL",
+      "error": "AssertionError [ERR_ASSERTION]: Expected values to be strictly deep-equal:\n+ actual - expected\n... Skipped lines\n\n  [\n    {\n+     affixes: [],\n      crystals: [],\n      extra: {\n        preserve: [\n          1,\n          2\n...\n    {\n+     affixes: [],\n      crystals: [],\n      id: 8,\n      name: 'missing',\n      slot: 'armor',\n      socketCount: 0,\n...\n    {\n+     affixes: [],\n      crystals: [],\n      id: 9,\n      name: 'fixture',\n      slot: 'armor',\n      socketCount: 0,\n\n    at file:///Users/fordeargamers/Projects/exoduser-migration-20261001/tools/team-followup-20261001/BUILD/continuation-binding-audit-check.mjs:71:14"
+    },
+    {
+      "name": "game.html equipped",
+      "status": "FAIL",
+      "error": "AssertionError [ERR_ASSERTION]: Expected values to be strictly deep-equal:\n+ actual - expected\n... Skipped lines\n\n  [\n    {\n+     affixes: [],\n      crystals: [],\n      extra: {\n        preserve: [\n          1,\n          2\n...\n    {\n+     affixes: [],\n      crystals: [],\n      id: 8,\n      name: 'missing',\n      slot: 'armor',\n      socketCount: 0,\n...\n    {\n+     affixes: [],\n      crystals: [],\n      id: 9,\n      name: 'fixture',\n      slot: 'armor',\n      socketCount: 0,\n\n    at file:///Users/fordeargamers/Projects/exoduser-migration-20261001/tools/team-followup-20261001/BUILD/continuation-binding-audit-check.mjs:71:14"
+    },
+    {
+      "name": "game.html storage opaque legacy/missing/unknown schema preserve",
+      "status": "PASS"
+    },
+    {
+      "name": "game.html source compatibility: missing socket schema invokes existing restore RNG",
+      "status": "PASS"
+    },
+    {
+      "name": "game-easy-test.html bag",
+      "status": "FAIL",
+      "error": "AssertionError [ERR_ASSERTION]: Expected values to be strictly deep-equal:\n+ actual - expected\n... Skipped lines\n\n  [\n    {\n+     affixes: [],\n      crystals: [],\n      extra: {\n        preserve: [\n          1,\n          2\n...\n    {\n+     affixes: [],\n      crystals: [],\n      id: 8,\n      name: 'missing',\n      slot: 'armor',\n      socketCount: 0,\n...\n    {\n+     affixes: [],\n      crystals: [],\n      id: 9,\n      name: 'fixture',\n      slot: 'armor',\n      socketCount: 0,\n\n    at file:///Users/fordeargamers/Projects/exoduser-migration-20261001/tools/team-followup-20261001/BUILD/continuation-binding-audit-check.mjs:71:14"
+    },
+    {
+      "name": "game-easy-test.html equipped",
+      "status": "FAIL",
+      "error": "AssertionError [ERR_ASSERTION]: Expected values to be strictly deep-equal:\n+ actual - expected\n... Skipped lines\n\n  [\n    {\n+     affixes: [],\n      crystals: [],\n      extra: {\n        preserve: [\n          1,\n          2\n...\n    {\n+     affixes: [],\n      crystals: [],\n      id: 8,\n      name: 'missing',\n      slot: 'armor',\n      socketCount: 0,\n...\n    {\n+     affixes: [],\n      crystals: [],\n      id: 9,\n      name: 'fixture',\n      slot: 'armor',\n      socketCount: 0,\n\n    at file:///Users/fordeargamers/Projects/exoduser-migration-20261001/tools/team-followup-20261001/BUILD/continuation-binding-audit-check.mjs:71:14"
+    },
+    {
+      "name": "game-easy-test.html storage opaque legacy/missing/unknown schema preserve",
+      "status": "PASS"
+    },
+    {
+      "name": "game-easy-test.html source compatibility: missing socket schema invokes existing restore RNG",
+      "status": "PASS"
+    }
+  ],
+  "counterexamples": [
+    {
+      "id": "C1",
+      "contract": "new-only identity boundary",
+      "observed": "existing missing UI-10 upgraded by create port with same id and one RNG",
+      "risk": "caller must prove fresh creation; current API has no freshness proof",
+      "scope": "not proof restore calls create"
+    },
+    {
+      "id": "C2",
+      "contract": "creation rejects legacy fields before RNG",
+      "observed": "toJSON output is not revalidated; legacy unique fields survive alongside valid D10 binding",
+      "scope": "non-plain creator input, not plain parsed-save exploit"
+    },
+    {
+      "id": "C3",
+      "contract": "valid schema must persist equivalently",
+      "observed": "required binding fields may be inherited/nonserialized; valid becomes invalid after JSON",
+      "scope": "exotic runtime objects; plain saved JSON unaffected"
+    },
+    {
+      "id": "C4",
+      "contract": "own property is not sufficient JSON schema validation",
+      "observed": "nonenumerable uniqueRoll is valid before save but missing after save"
+    },
+    {
+      "id": "C5",
+      "contract": "invalid object inspection returns result, not uncaught exception",
+      "observed": "uniqueRoll accessor throw outside try; consumer fail-closed depends on caller catch",
+      "scope": "exotic object; JSON cannot encode getter"
+    },
+    {
+      "id": "C6",
+      "contract": "read/load no implicit RNG and single deterministic stored read",
+      "observed": "storedValue accessor is read repeatedly (2); it may invoke external RNG",
+      "scope": "not a production Math.random call in binding module"
+    },
+    {
+      "id": "C7",
+      "contract": "explicit creation identity should be own enumerable data",
+      "observed": "port accepts inherited uniqueId; destructuring masks identity origin"
+    },
+    {
+      "id": "C8-game.html",
+      "contract": "load RNG scope and legacy preservation",
+      "observed": "dbRestore _fixCr invokes RNG when socketCount missing, before binding read",
+      "scope": "existing crystal migration, not D10 roll reroll; zero-RNG whole-restore claim requires canonical socket fields"
+    },
+    {
+      "id": "C8-game-easy-test.html",
+      "contract": "load RNG scope and legacy preservation",
+      "observed": "dbRestore _fixCr invokes RNG when socketCount missing, before binding read",
+      "scope": "existing crystal migration, not D10 roll reroll; zero-RNG whole-restore claim requires canonical socket fields"
+    }
+  ],
+  "hashes": [
+    {
+      "file": "game.html",
+      "sha256": "8ebc3b7b52a651c1a3bc5e8c285b00d186c6dacc18429ada7499781acc72b0b9",
+      "dbSave": "2152c5b37d34f6deb0d1fc4a8a06be6744c205bd93ada63157a31ee392bfa0a9",
+      "dbRestore": "63385633575b51647ab02b9e27f6d840e036dc35f9cd595b1cc65063e1133c35"
+    },
+    {
+      "file": "game-easy-test.html",
+      "sha256": "4c408f1e7b57210900ddfa8a0646502f91b6a0bbc798a24338eb159cb613d874",
+      "dbSave": "19eb6a0a97937ed20d2c3d7afcdf7ac7c4cb1bbc7d3c8a025ca408944eb68a48",
+      "dbRestore": "2785fd6138a7325f64bbf2c27cde281e270caa85f517b7a7c52801ad9726d274"
+    },
+    {
+      "file": "tools/team-followup-20261001/ITEM/binding-d10.mjs",
+      "sha256": "1511e771a2f44e877a0b1ffd46dddc1a5c06d3d510340419982117b5033f4507"
+    },
+    {
+      "file": "tools/team-followup-20261001/ITEM/binding-ports.mjs",
+      "sha256": "0adc51835eba68b1cc693267cb08e616b81a4b78c55e8368260b545f91b80e0c"
+    },
+    {
+      "file": "tools/team-followup-20261001/ITEM/binding-save-harness.mjs",
+      "sha256": "cbaf2bd4c4067ce95f793a823e222bddda7d385597ddbc1163eac9ed92c1dc48"
+    },
+    {
+      "file": "unique-item-project/definitions.js",
+      "sha256": "3f04bcc5ac90b039454f32dc9323e60bbe44dda27be7fd439a97633d1f25118a"
+    },
+    {
+      "file": "unique-item-project/roll-values.js",
+      "sha256": "103d0460c738c117840586780eaaed7be7ebe0aba61fa50464db9d004b094975"
+    },
+    {
+      "file": "tools/team-followup-20261001/ART/wa24-delta-probe.cjs",
+      "sha256": "79193e10228007bfce1935c633156a208b719d6540b4b3b45b4889d32a1936e9"
+    },
+    {
+      "file": "tools/team-followup-20261001/SKILL/ice-cancel-probe.safe.js",
+      "sha256": "ae7c8e8ad6e874e565c3ee0cb8b635130cefa234c5628bd0ba2922da96481d1b"
+    },
+    {
+      "file": "tools/team-followup-20261001/ENEMY/et3-probe.fixed.js",
+      "sha256": "1bf68b094b792998abe5a9e0ca1f6c57534ef4ec6d9dbbd28c792450cbfdf489"
+    }
+  ],
+  "pass": 12,
+  "fail": 4,
+  "limits": [
+    "counterexample PASS confirms issue reproduction, not contract acceptance",
+    "db dependencies use actual functions plus memory/noop harness; no real user save",
+    "no production integration, browser, socket or NW execution"
+  ]
+}

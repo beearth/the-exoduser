@@ -1,0 +1,30 @@
+{
+  "taskId": "BALANCE-D10-BINDING",
+  "receivedAt": "2026-10-01T14:16:15Z",
+  "firstReadAt": "2026-10-01T14:16:15Z",
+  "firstRead": "BUILD dispatch·AGENTS·최신 D10 결과/SSOT·실제 dbSave/dbRestore 및 ITEM consumer 읽기",
+  "duplicateCheck": "BALANCE binding 산출과 ITEM binding API 없음",
+  "firstEdit": "전용 영수증 생성",
+  "status": "completed_actual_binding_review",
+  "resumeReceivedAt": "2026-10-01T14:23:29Z",
+  "dependencyActualReadAt": "2026-10-01T14:23:29Z",
+  "firstCodeEdit": "binding-independent.mjs/test/runner 실제 구현",
+  "validatedAt": "2026-10-01T14:24:16Z",
+  "actualBindingEdit": "BALANCE binding-item-adapter.mjs에서 실제 ITEM ports import 및 실제후보 전용 회귀 구현",
+  "validation": "BALANCE 직접 실행42행/RNG생성6로드0/부정schema90표본/중복생성거부 등6그룹PASS, 반례0",
+  "dependencyCheckedAt": "2026-10-01T14:17:52Z",
+  "dependencyAcceptedAt": "2026-10-01T14:23:29Z",
+  "dependencyState": "binding-d10.mjs/binding-ports.mjs 실제 Read 완료; 이전 대기 종료",
+  "dependencyInitialHashes": {
+    "binding-d10.mjs": "1511e771a2f44e877a0b1ffd46dddc1a5c06d3d510340419982117b5033f4507",
+    "binding-ports.mjs": "0adc51835eba68b1cc693267cb08e616b81a4b78c55e8368260b545f91b80e0c"
+  },
+  "dependencyFinalHashes": {
+    "binding-d10.mjs": "1511e771a2f44e877a0b1ffd46dddc1a5c06d3d510340419982117b5033f4507",
+    "binding-ports.mjs": "0adc51835eba68b1cc693267cb08e616b81a4b78c55e8368260b545f91b80e0c"
+  },
+  "dependencyChanged": false,
+  "nextAction": "root 공유docs/체크포인트 인수 및 별도 다음 배정; 임의 새범위 시작0",
+  "runtimeReady": false,
+  "forbiddenActions": 0
+}

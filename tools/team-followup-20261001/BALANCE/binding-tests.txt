@@ -1,0 +1,10 @@
+✔ 실제 저장표현/복원대입·공유창고 함수: legacy 전체객체 왕복 보존 (190.396792ms)
+✔ 검증기는 누락 API·생성 재롤0·암묵 RNG 반례를 검출 (3.0295ms)
+ℹ tests 2
+ℹ suites 0
+ℹ pass 2
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 226.636125

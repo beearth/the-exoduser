@@ -1,0 +1,42 @@
+✔ 실제 저장표현/복원대입·공유창고 함수: legacy 전체객체 왕복 보존 (228.469708ms)
+✔ 검증기는 누락 API·생성 재롤0·암묵 RNG 반례를 검출 (0.966542ms)
+✔ new instance integer roll 10, one RNG; inspect/read/JSON/tooltip no RNG (1.079333ms)
+✔ new instance integer roll 11, one RNG; inspect/read/JSON/tooltip no RNG (0.158625ms)
+✔ new instance integer roll 12, one RNG; inspect/read/JSON/tooltip no RNG (0.110084ms)
+✔ new instance integer roll 13, one RNG; inspect/read/JSON/tooltip no RNG (0.08275ms)
+✔ new instance integer roll 14, one RNG; inspect/read/JSON/tooltip no RNG (0.099ms)
+✔ new instance integer roll 15, one RNG; inspect/read/JSON/tooltip no RNG (0.075042ms)
+✔ new instance integer roll 16, one RNG; inspect/read/JSON/tooltip no RNG (0.0715ms)
+✔ new instance integer roll 17, one RNG; inspect/read/JSON/tooltip no RNG (0.072209ms)
+✔ new instance integer roll 18, one RNG; inspect/read/JSON/tooltip no RNG (0.106542ms)
+✔ new instance integer roll 19, one RNG; inspect/read/JSON/tooltip no RNG (0.118666ms)
+✔ new instance integer roll 20, one RNG; inspect/read/JSON/tooltip no RNG (0.098375ms)
+✔ invalid new inputs never invoke RNG or mutate existing legacy (0.561416ms)
+✔ legacy/missing/invalid remain untouched and never become valid effects (0.670792ms)
+✔ real D10 consumer reads the loaded binding, opt-in only, no reroll (0.098458ms)
+✔ new RNG endpoints are single-call and fresh mutable snapshots are detached (0.05825ms)
+✔ game.html real save/restore bag retains new binding and legacy without RNG (45.930334ms)
+✔ game.html real save/restore equipped retains new binding and legacy without RNG (44.060625ms)
+✔ game.html real save/restore storage retains new binding and legacy without RNG (42.826ms)
+✔ game-easy-test.html real save/restore bag retains new binding and legacy without RNG (42.030417ms)
+✔ game-easy-test.html real save/restore equipped retains new binding and legacy without RNG (39.458ms)
+✔ game-easy-test.html real save/restore storage retains new binding and legacy without RNG (39.543166ms)
+✔ source evidence is emitted for root/UIUX/BALANCE; no production enable (0.545834ms)
+✔ actual UIUX readBinding port consumes loaded proposal and rejects fallbacks (0.162208ms)
+✔ actual BALANCE independent verifier consumes explicit new create/read/restore ports (258.260916ms)
+✔ opaque instance reader port consumes stored values and reuses real D10 tooltip without choosing save fields (1.185792ms)
+✔ missing dependency has explicit pending status and never falls back to default midpoint 15 (0.178583ms)
+✔ legacy and malformed instances never call binding reader or display normal D10 effect (0.095666ms)
+✔ reader missing/invalid/legacy statuses and invalid descriptors are fail-closed (0.136625ms)
+✔ noncanonical stored values and values missing from binding cannot become a default normal roll (0.139625ms)
+✔ JSON roundtrip fixture consumes unchanged instance without RNG, mutation or save field inference (0.07075ms)
+✔ leaf consumer includes inactive proposal disclaimer and does not replace parent DOM (0.11525ms)
+✔ unsupported language is rejected explicitly (0.036333ms)
+ℹ tests 34
+ℹ suites 0
+ℹ pass 34
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 588.491125

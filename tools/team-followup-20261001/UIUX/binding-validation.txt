@@ -1,0 +1,16 @@
+✔ opaque instance reader port consumes stored values and reuses real D10 tooltip without choosing save fields (1.026334ms)
+✔ missing dependency has explicit pending status and never falls back to default midpoint 15 (0.158834ms)
+✔ legacy and malformed instances never call binding reader or display normal D10 effect (0.086541ms)
+✔ reader missing/invalid/legacy statuses and invalid descriptors are fail-closed (0.111417ms)
+✔ noncanonical stored values and values missing from binding cannot become a default normal roll (0.129209ms)
+✔ JSON roundtrip fixture consumes unchanged instance without RNG, mutation or save field inference (0.058166ms)
+✔ leaf consumer includes inactive proposal disclaimer and does not replace parent DOM (0.094625ms)
+✔ unsupported language is rejected explicitly (0.033042ms)
+ℹ tests 8
+ℹ suites 0
+ℹ pass 8
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 34.227458

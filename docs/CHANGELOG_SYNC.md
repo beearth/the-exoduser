@@ -51803,3 +51803,9 @@ FIRE 독립8검사와 URL query17검사 인수, SOUND root canonical 관측기18
 - UI10흉갑/U-D10 지옥강타 소비후10~20%·최대30,성공실제소모>=100 독립후보.75전투+8독립그룹(148입력) 및통합188PASS. 생산활성0.
 - roll-values.mjs→동일바이트.js;감사/회귀/증거import갱신. 한영10/15/20%검토UI·D10넓은배치,실HTTP/44로드/키보드/160px검수;최종12PASS.
 - QA정상전투5표본제외(INCONCLUSIVE),첫처치포착·동일조건실측미완료. BUILD조율환경readonly 실패와root의기존공식전송구분. 관련SSOT·팀대장·master18.37 동기화. 세이브/게임/서버변경0.
+
+
+## 2026-10-01 D10 저장 binding 후보 연결
+- uniqueRoll version1/effectId U-D10/stat _uSlamEmberRage/unit fraction/storedValue .10~.20,신규주입RNG1회/읽기로드재롤0. plain JSON 생성과own enumerable data 조회,특수직렬화/접근자거부. 기존legacy/missing자동변환0.
+- ITEM24/UIUX23/BALANCE6/root경계8=61PASS. 실제함수메모리왕복과실계정저장/생산연결구분. BUILD반례원자료/최종보강증거보존. 관련아이템/세이브/UI/밸런스SSOT·총괄18.38동기화.
+- 기존담당3팀을ENEMY/ART/SKILL별도지원후보로전환,원담당파일보존. BUILD readonly queue권한변경0.

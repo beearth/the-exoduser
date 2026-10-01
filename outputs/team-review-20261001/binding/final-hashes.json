@@ -1,0 +1,33 @@
+{
+  "at": "2026-10-01T14:30:51.962407+00:00",
+  "files": [
+    {
+      "path": "tools/team-followup-20261001/ITEM/binding-d10.mjs",
+      "sha256": "b16bb29314e64cc2161f4eadd921678af2303a164e95080fdf879042fa4303f1"
+    },
+    {
+      "path": "tools/team-followup-20261001/ITEM/binding-ports.mjs",
+      "sha256": "2b6bf07a42edc0336d976105015d2886fd4ef342aa6766131c29fdaf561a49a4"
+    },
+    {
+      "path": "tools/team-followup-20261001/root-review/binding-boundaries.test.mjs",
+      "sha256": "82bdd0f5bf3c4f87d587b95d38258131e611fe71b9c8624307043b2ddae6f697"
+    },
+    {
+      "path": "game.html",
+      "sha256": "8ebc3b7b52a651c1a3bc5e8c285b00d186c6dacc18429ada7499781acc72b0b9"
+    },
+    {
+      "path": "game-easy-test.html",
+      "sha256": "4c408f1e7b57210900ddfa8a0646502f91b6a0bbc798a24338eb159cb613d874"
+    },
+    {
+      "path": "index.html",
+      "sha256": "38f4e0e97ed63014e86ec48a14d9d0a677472ef57b99916f9a48b7b3395e66c8"
+    },
+    {
+      "path": "server.cjs",
+      "sha256": "339fad6ab51cba92f6ca7a386c8aeb251f68cdb58cdfa55c109f57b1758a42ad"
+    }
+  ]
+}

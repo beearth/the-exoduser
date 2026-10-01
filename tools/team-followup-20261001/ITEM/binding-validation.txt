@@ -1,0 +1,34 @@
+명령: node --test tools/team-followup-20261001/ITEM/binding-d10.test.mjs
+exit: 0
+✔ new instance integer roll 10, one RNG; inspect/read/JSON/tooltip no RNG (0.990958ms)
+✔ new instance integer roll 11, one RNG; inspect/read/JSON/tooltip no RNG (0.146083ms)
+✔ new instance integer roll 12, one RNG; inspect/read/JSON/tooltip no RNG (0.107875ms)
+✔ new instance integer roll 13, one RNG; inspect/read/JSON/tooltip no RNG (0.07525ms)
+✔ new instance integer roll 14, one RNG; inspect/read/JSON/tooltip no RNG (0.099041ms)
+✔ new instance integer roll 15, one RNG; inspect/read/JSON/tooltip no RNG (0.071541ms)
+✔ new instance integer roll 16, one RNG; inspect/read/JSON/tooltip no RNG (0.068ms)
+✔ new instance integer roll 17, one RNG; inspect/read/JSON/tooltip no RNG (0.0665ms)
+✔ new instance integer roll 18, one RNG; inspect/read/JSON/tooltip no RNG (0.097542ms)
+✔ new instance integer roll 19, one RNG; inspect/read/JSON/tooltip no RNG (0.113459ms)
+✔ new instance integer roll 20, one RNG; inspect/read/JSON/tooltip no RNG (0.083541ms)
+✔ invalid new inputs never invoke RNG or mutate existing legacy (0.286125ms)
+✔ legacy/missing/invalid remain untouched and never become valid effects (0.541834ms)
+✔ real D10 consumer reads the loaded binding, opt-in only, no reroll (0.082916ms)
+✔ new RNG endpoints are single-call and fresh mutable snapshots are detached (0.047667ms)
+✔ game.html real save/restore bag retains new binding and legacy without RNG (41.996125ms)
+✔ game.html real save/restore equipped retains new binding and legacy without RNG (40.718208ms)
+✔ game.html real save/restore storage retains new binding and legacy without RNG (39.121042ms)
+✔ game-easy-test.html real save/restore bag retains new binding and legacy without RNG (38.448167ms)
+✔ game-easy-test.html real save/restore equipped retains new binding and legacy without RNG (36.692166ms)
+✔ game-easy-test.html real save/restore storage retains new binding and legacy without RNG (36.908458ms)
+✔ source evidence is emitted for root/UIUX/BALANCE; no production enable (0.517917ms)
+✔ actual UIUX readBinding port consumes loaded proposal and rejects fallbacks (0.135792ms)
+✔ actual BALANCE independent verifier consumes explicit new create/read/restore ports (214.394917ms)
+ℹ tests 24
+ℹ suites 0
+ℹ pass 24
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 514.398208

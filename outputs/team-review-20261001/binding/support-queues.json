@@ -1,0 +1,16 @@
+[
+  {
+    "team": "UIUX",
+    "at": "2026-10-01T14:25:37.242633+00:00",
+    "exit": 0,
+    "receipt": "Queued message 01a0f7db-43d2-7620-bafb-ed164b150d89 for thread 01a0f6e5-8653-7ae2-8b2b-314e275c215c.\n",
+    "error": ""
+  },
+  {
+    "team": "BALANCE",
+    "at": "2026-10-01T14:25:37.270657+00:00",
+    "exit": 0,
+    "receipt": "Queued message 01a0f7db-43ee-7f50-82d9-e2eb2c667fdb for thread 01a0f6e6-5303-7392-81ba-94c42e349ffc.\n",
+    "error": ""
+  }
+]

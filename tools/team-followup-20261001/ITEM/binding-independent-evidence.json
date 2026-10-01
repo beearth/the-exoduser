@@ -1,0 +1,1201 @@
+{
+  "status": "actual_binding_checked",
+  "runtimeReady": false,
+  "creationRngCalls": 6,
+  "rows": [
+    {
+      "file": "game.html",
+      "location": "bag",
+      "input": {
+        "uniqueId": "UI-10",
+        "slot": "armor",
+        "rarity": 5,
+        "name": "새 제안 fixture",
+        "enh": 7,
+        "tier": 2,
+        "socketCount": 0,
+        "affixes": [],
+        "custom": {
+          "preserve": true
+        }
+      },
+      "created": {
+        "slot": "armor",
+        "rarity": 5,
+        "name": "새 제안 fixture",
+        "enh": 7,
+        "tier": 2,
+        "socketCount": 0,
+        "affixes": [],
+        "custom": {
+          "preserve": true
+        },
+        "uniqueId": "UI-10",
+        "uniqueRoll": {
+          "version": 1,
+          "effectId": "U-D10",
+          "stat": "_uSlamEmberRage",
+          "unit": "fraction",
+          "storedValue": 0.15
+        }
+      },
+      "restored": {
+        "slot": "armor",
+        "rarity": 5,
+        "name": "새 제안 fixture",
+        "enh": 7,
+        "tier": 2,
+        "socketCount": 0,
+        "affixes": [],
+        "custom": {
+          "preserve": true
+        },
+        "uniqueId": "UI-10",
+        "uniqueRoll": {
+          "version": 1,
+          "effectId": "U-D10",
+          "stat": "_uSlamEmberRage",
+          "unit": "fraction",
+          "storedValue": 0.15
+        }
+      },
+      "storedValue": 0.15,
+      "rngCalls": 1
+    },
+    {
+      "file": "game.html",
+      "location": "bag",
+      "legacy": {
+        "slot": "armor",
+        "rarity": 2,
+        "name": "기존 갑옷",
+        "enh": 10,
+        "affixes": [],
+        "socketCount": 0
+      },
+      "restored": {
+        "slot": "armor",
+        "rarity": 2,
+        "name": "기존 갑옷",
+        "enh": 10,
+        "affixes": [],
+        "socketCount": 0
+      },
+      "rngCalls": 0
+    },
+    {
+      "file": "game.html",
+      "location": "bag",
+      "legacy": {
+        "slot": "armor",
+        "rarity": 5,
+        "name": "기존 유니크",
+        "uniqueSpecial": {
+          "stat": "_uArmorRage",
+          "val": 0.25,
+          "secs": 0
+        },
+        "_uArmorRage": 0.25,
+        "socketCount": 0
+      },
+      "restored": {
+        "slot": "armor",
+        "rarity": 5,
+        "name": "기존 유니크",
+        "uniqueSpecial": {
+          "stat": "_uArmorRage",
+          "val": 0.25,
+          "secs": 0
+        },
+        "_uArmorRage": 0.25,
+        "socketCount": 0
+      },
+      "rngCalls": 0
+    },
+    {
+      "file": "game.html",
+      "location": "bag",
+      "legacy": {
+        "slot": "ossuary",
+        "rarity": 5,
+        "unique": true,
+        "uniqueSpecial": null,
+        "socketCount": 0
+      },
+      "restored": {
+        "slot": "ossuary",
+        "rarity": 5,
+        "unique": true,
+        "uniqueSpecial": null,
+        "socketCount": 0
+      },
+      "rngCalls": 0
+    },
+    {
+      "file": "game.html",
+      "location": "bag",
+      "legacy": {
+        "slot": "armor",
+        "rarity": 5,
+        "uniqueId": "unknown-id",
+        "name": "미등록 보존",
+        "custom": {
+          "raw": 20
+        },
+        "socketCount": 0
+      },
+      "restored": {
+        "slot": "armor",
+        "rarity": 5,
+        "uniqueId": "unknown-id",
+        "name": "미등록 보존",
+        "custom": {
+          "raw": 20
+        },
+        "socketCount": 0
+      },
+      "rngCalls": 0
+    },
+    {
+      "file": "game.html",
+      "location": "bag",
+      "legacy": {
+        "slot": "armor",
+        "rarity": 5,
+        "uniqueId": "UI-10",
+        "_uSlamEmberRage": 20,
+        "uniqueSpecial": {
+          "stat": "_uSlamEmberRage",
+          "val": 20
+        },
+        "socketCount": 0
+      },
+      "restored": {
+        "slot": "armor",
+        "rarity": 5,
+        "uniqueId": "UI-10",
+        "_uSlamEmberRage": 20,
+        "uniqueSpecial": {
+          "stat": "_uSlamEmberRage",
+          "val": 20
+        },
+        "socketCount": 0
+      },
+      "rngCalls": 0
+    },
+    {
+      "file": "game.html",
+      "location": "bag",
+      "legacy": {
+        "slot": "armor",
+        "rarity": 5,
+        "uniqueId": "UI-10",
+        "name": "binding 누락",
+        "socketCount": 0
+      },
+      "restored": {
+        "slot": "armor",
+        "rarity": 5,
+        "uniqueId": "UI-10",
+        "name": "binding 누락",
+        "socketCount": 0
+      },
+      "rngCalls": 0
+    },
+    {
+      "file": "game.html",
+      "location": "equipped",
+      "input": {
+        "uniqueId": "UI-10",
+        "slot": "armor",
+        "rarity": 5,
+        "name": "새 제안 fixture",
+        "enh": 7,
+        "tier": 2,
+        "socketCount": 0,
+        "affixes": [],
+        "custom": {
+          "preserve": true
+        }
+      },
+      "created": {
+        "slot": "armor",
+        "rarity": 5,
+        "name": "새 제안 fixture",
+        "enh": 7,
+        "tier": 2,
+        "socketCount": 0,
+        "affixes": [],
+        "custom": {
+          "preserve": true
+        },
+        "uniqueId": "UI-10",
+        "uniqueRoll": {
+          "version": 1,
+          "effectId": "U-D10",
+          "stat": "_uSlamEmberRage",
+          "unit": "fraction",
+          "storedValue": 0.15
+        }
+      },
+      "restored": {
+        "slot": "armor",
+        "rarity": 5,
+        "name": "새 제안 fixture",
+        "enh": 7,
+        "tier": 2,
+        "socketCount": 0,
+        "affixes": [],
+        "custom": {
+          "preserve": true
+        },
+        "uniqueId": "UI-10",
+        "uniqueRoll": {
+          "version": 1,
+          "effectId": "U-D10",
+          "stat": "_uSlamEmberRage",
+          "unit": "fraction",
+          "storedValue": 0.15
+        }
+      },
+      "storedValue": 0.15,
+      "rngCalls": 1
+    },
+    {
+      "file": "game.html",
+      "location": "equipped",
+      "legacy": {
+        "slot": "armor",
+        "rarity": 2,
+        "name": "기존 갑옷",
+        "enh": 10,
+        "affixes": [],
+        "socketCount": 0
+      },
+      "restored": {
+        "slot": "armor",
+        "rarity": 2,
+        "name": "기존 갑옷",
+        "enh": 10,
+        "affixes": [],
+        "socketCount": 0
+      },
+      "rngCalls": 0
+    },
+    {
+      "file": "game.html",
+      "location": "equipped",
+      "legacy": {
+        "slot": "armor",
+        "rarity": 5,
+        "name": "기존 유니크",
+        "uniqueSpecial": {
+          "stat": "_uArmorRage",
+          "val": 0.25,
+          "secs": 0
+        },
+        "_uArmorRage": 0.25,
+        "socketCount": 0
+      },
+      "restored": {
+        "slot": "armor",
+        "rarity": 5,
+        "name": "기존 유니크",
+        "uniqueSpecial": {
+          "stat": "_uArmorRage",
+          "val": 0.25,
+          "secs": 0
+        },
+        "_uArmorRage": 0.25,
+        "socketCount": 0
+      },
+      "rngCalls": 0
+    },
+    {
+      "file": "game.html",
+      "location": "equipped",
+      "legacy": {
+        "slot": "ossuary",
+        "rarity": 5,
+        "unique": true,
+        "uniqueSpecial": null,
+        "socketCount": 0
+      },
+      "restored": {
+        "slot": "ossuary",
+        "rarity": 5,
+        "unique": true,
+        "uniqueSpecial": null,
+        "socketCount": 0
+      },
+      "rngCalls": 0
+    },
+    {
+      "file": "game.html",
+      "location": "equipped",
+      "legacy": {
+        "slot": "armor",
+        "rarity": 5,
+        "uniqueId": "unknown-id",
+        "name": "미등록 보존",
+        "custom": {
+          "raw": 20
+        },
+        "socketCount": 0
+      },
+      "restored": {
+        "slot": "armor",
+        "rarity": 5,
+        "uniqueId": "unknown-id",
+        "name": "미등록 보존",
+        "custom": {
+          "raw": 20
+        },
+        "socketCount": 0
+      },
+      "rngCalls": 0
+    },
+    {
+      "file": "game.html",
+      "location": "equipped",
+      "legacy": {
+        "slot": "armor",
+        "rarity": 5,
+        "uniqueId": "UI-10",
+        "_uSlamEmberRage": 20,
+        "uniqueSpecial": {
+          "stat": "_uSlamEmberRage",
+          "val": 20
+        },
+        "socketCount": 0
+      },
+      "restored": {
+        "slot": "armor",
+        "rarity": 5,
+        "uniqueId": "UI-10",
+        "_uSlamEmberRage": 20,
+        "uniqueSpecial": {
+          "stat": "_uSlamEmberRage",
+          "val": 20
+        },
+        "socketCount": 0
+      },
+      "rngCalls": 0
+    },
+    {
+      "file": "game.html",
+      "location": "equipped",
+      "legacy": {
+        "slot": "armor",
+        "rarity": 5,
+        "uniqueId": "UI-10",
+        "name": "binding 누락",
+        "socketCount": 0
+      },
+      "restored": {
+        "slot": "armor",
+        "rarity": 5,
+        "uniqueId": "UI-10",
+        "name": "binding 누락",
+        "socketCount": 0
+      },
+      "rngCalls": 0
+    },
+    {
+      "file": "game.html",
+      "location": "storage",
+      "input": {
+        "uniqueId": "UI-10",
+        "slot": "armor",
+        "rarity": 5,
+        "name": "새 제안 fixture",
+        "enh": 7,
+        "tier": 2,
+        "socketCount": 0,
+        "affixes": [],
+        "custom": {
+          "preserve": true
+        }
+      },
+      "created": {
+        "slot": "armor",
+        "rarity": 5,
+        "name": "새 제안 fixture",
+        "enh": 7,
+        "tier": 2,
+        "socketCount": 0,
+        "affixes": [],
+        "custom": {
+          "preserve": true
+        },
+        "uniqueId": "UI-10",
+        "uniqueRoll": {
+          "version": 1,
+          "effectId": "U-D10",
+          "stat": "_uSlamEmberRage",
+          "unit": "fraction",
+          "storedValue": 0.15
+        }
+      },
+      "restored": {
+        "slot": "armor",
+        "rarity": 5,
+        "name": "새 제안 fixture",
+        "enh": 7,
+        "tier": 2,
+        "socketCount": 0,
+        "affixes": [],
+        "custom": {
+          "preserve": true
+        },
+        "uniqueId": "UI-10",
+        "uniqueRoll": {
+          "version": 1,
+          "effectId": "U-D10",
+          "stat": "_uSlamEmberRage",
+          "unit": "fraction",
+          "storedValue": 0.15
+        }
+      },
+      "storedValue": 0.15,
+      "rngCalls": 1
+    },
+    {
+      "file": "game.html",
+      "location": "storage",
+      "legacy": {
+        "slot": "armor",
+        "rarity": 2,
+        "name": "기존 갑옷",
+        "enh": 10,
+        "affixes": [],
+        "socketCount": 0
+      },
+      "restored": {
+        "slot": "armor",
+        "rarity": 2,
+        "name": "기존 갑옷",
+        "enh": 10,
+        "affixes": [],
+        "socketCount": 0
+      },
+      "rngCalls": 0
+    },
+    {
+      "file": "game.html",
+      "location": "storage",
+      "legacy": {
+        "slot": "armor",
+        "rarity": 5,
+        "name": "기존 유니크",
+        "uniqueSpecial": {
+          "stat": "_uArmorRage",
+          "val": 0.25,
+          "secs": 0
+        },
+        "_uArmorRage": 0.25,
+        "socketCount": 0
+      },
+      "restored": {
+        "slot": "armor",
+        "rarity": 5,
+        "name": "기존 유니크",
+        "uniqueSpecial": {
+          "stat": "_uArmorRage",
+          "val": 0.25,
+          "secs": 0
+        },
+        "_uArmorRage": 0.25,
+        "socketCount": 0
+      },
+      "rngCalls": 0
+    },
+    {
+      "file": "game.html",
+      "location": "storage",
+      "legacy": {
+        "slot": "ossuary",
+        "rarity": 5,
+        "unique": true,
+        "uniqueSpecial": null,
+        "socketCount": 0
+      },
+      "restored": {
+        "slot": "ossuary",
+        "rarity": 5,
+        "unique": true,
+        "uniqueSpecial": null,
+        "socketCount": 0
+      },
+      "rngCalls": 0
+    },
+    {
+      "file": "game.html",
+      "location": "storage",
+      "legacy": {
+        "slot": "armor",
+        "rarity": 5,
+        "uniqueId": "unknown-id",
+        "name": "미등록 보존",
+        "custom": {
+          "raw": 20
+        },
+        "socketCount": 0
+      },
+      "restored": {
+        "slot": "armor",
+        "rarity": 5,
+        "uniqueId": "unknown-id",
+        "name": "미등록 보존",
+        "custom": {
+          "raw": 20
+        },
+        "socketCount": 0
+      },
+      "rngCalls": 0
+    },
+    {
+      "file": "game.html",
+      "location": "storage",
+      "legacy": {
+        "slot": "armor",
+        "rarity": 5,
+        "uniqueId": "UI-10",
+        "_uSlamEmberRage": 20,
+        "uniqueSpecial": {
+          "stat": "_uSlamEmberRage",
+          "val": 20
+        },
+        "socketCount": 0
+      },
+      "restored": {
+        "slot": "armor",
+        "rarity": 5,
+        "uniqueId": "UI-10",
+        "_uSlamEmberRage": 20,
+        "uniqueSpecial": {
+          "stat": "_uSlamEmberRage",
+          "val": 20
+        },
+        "socketCount": 0
+      },
+      "rngCalls": 0
+    },
+    {
+      "file": "game.html",
+      "location": "storage",
+      "legacy": {
+        "slot": "armor",
+        "rarity": 5,
+        "uniqueId": "UI-10",
+        "name": "binding 누락",
+        "socketCount": 0
+      },
+      "restored": {
+        "slot": "armor",
+        "rarity": 5,
+        "uniqueId": "UI-10",
+        "name": "binding 누락",
+        "socketCount": 0
+      },
+      "rngCalls": 0
+    },
+    {
+      "file": "game-easy-test.html",
+      "location": "bag",
+      "input": {
+        "uniqueId": "UI-10",
+        "slot": "armor",
+        "rarity": 5,
+        "name": "새 제안 fixture",
+        "enh": 7,
+        "tier": 2,
+        "socketCount": 0,
+        "affixes": [],
+        "custom": {
+          "preserve": true
+        }
+      },
+      "created": {
+        "slot": "armor",
+        "rarity": 5,
+        "name": "새 제안 fixture",
+        "enh": 7,
+        "tier": 2,
+        "socketCount": 0,
+        "affixes": [],
+        "custom": {
+          "preserve": true
+        },
+        "uniqueId": "UI-10",
+        "uniqueRoll": {
+          "version": 1,
+          "effectId": "U-D10",
+          "stat": "_uSlamEmberRage",
+          "unit": "fraction",
+          "storedValue": 0.15
+        }
+      },
+      "restored": {
+        "slot": "armor",
+        "rarity": 5,
+        "name": "새 제안 fixture",
+        "enh": 7,
+        "tier": 2,
+        "socketCount": 0,
+        "affixes": [],
+        "custom": {
+          "preserve": true
+        },
+        "uniqueId": "UI-10",
+        "uniqueRoll": {
+          "version": 1,
+          "effectId": "U-D10",
+          "stat": "_uSlamEmberRage",
+          "unit": "fraction",
+          "storedValue": 0.15
+        }
+      },
+      "storedValue": 0.15,
+      "rngCalls": 1
+    },
+    {
+      "file": "game-easy-test.html",
+      "location": "bag",
+      "legacy": {
+        "slot": "armor",
+        "rarity": 2,
+        "name": "기존 갑옷",
+        "enh": 10,
+        "affixes": [],
+        "socketCount": 0
+      },
+      "restored": {
+        "slot": "armor",
+        "rarity": 2,
+        "name": "기존 갑옷",
+        "enh": 10,
+        "affixes": [],
+        "socketCount": 0
+      },
+      "rngCalls": 0
+    },
+    {
+      "file": "game-easy-test.html",
+      "location": "bag",
+      "legacy": {
+        "slot": "armor",
+        "rarity": 5,
+        "name": "기존 유니크",
+        "uniqueSpecial": {
+          "stat": "_uArmorRage",
+          "val": 0.25,
+          "secs": 0
+        },
+        "_uArmorRage": 0.25,
+        "socketCount": 0
+      },
+      "restored": {
+        "slot": "armor",
+        "rarity": 5,
+        "name": "기존 유니크",
+        "uniqueSpecial": {
+          "stat": "_uArmorRage",
+          "val": 0.25,
+          "secs": 0
+        },
+        "_uArmorRage": 0.25,
+        "socketCount": 0
+      },
+      "rngCalls": 0
+    },
+    {
+      "file": "game-easy-test.html",
+      "location": "bag",
+      "legacy": {
+        "slot": "ossuary",
+        "rarity": 5,
+        "unique": true,
+        "uniqueSpecial": null,
+        "socketCount": 0
+      },
+      "restored": {
+        "slot": "ossuary",
+        "rarity": 5,
+        "unique": true,
+        "uniqueSpecial": null,
+        "socketCount": 0
+      },
+      "rngCalls": 0
+    },
+    {
+      "file": "game-easy-test.html",
+      "location": "bag",
+      "legacy": {
+        "slot": "armor",
+        "rarity": 5,
+        "uniqueId": "unknown-id",
+        "name": "미등록 보존",
+        "custom": {
+          "raw": 20
+        },
+        "socketCount": 0
+      },
+      "restored": {
+        "slot": "armor",
+        "rarity": 5,
+        "uniqueId": "unknown-id",
+        "name": "미등록 보존",
+        "custom": {
+          "raw": 20
+        },
+        "socketCount": 0
+      },
+      "rngCalls": 0
+    },
+    {
+      "file": "game-easy-test.html",
+      "location": "bag",
+      "legacy": {
+        "slot": "armor",
+        "rarity": 5,
+        "uniqueId": "UI-10",
+        "_uSlamEmberRage": 20,
+        "uniqueSpecial": {
+          "stat": "_uSlamEmberRage",
+          "val": 20
+        },
+        "socketCount": 0
+      },
+      "restored": {
+        "slot": "armor",
+        "rarity": 5,
+        "uniqueId": "UI-10",
+        "_uSlamEmberRage": 20,
+        "uniqueSpecial": {
+          "stat": "_uSlamEmberRage",
+          "val": 20
+        },
+        "socketCount": 0
+      },
+      "rngCalls": 0
+    },
+    {
+      "file": "game-easy-test.html",
+      "location": "bag",
+      "legacy": {
+        "slot": "armor",
+        "rarity": 5,
+        "uniqueId": "UI-10",
+        "name": "binding 누락",
+        "socketCount": 0
+      },
+      "restored": {
+        "slot": "armor",
+        "rarity": 5,
+        "uniqueId": "UI-10",
+        "name": "binding 누락",
+        "socketCount": 0
+      },
+      "rngCalls": 0
+    },
+    {
+      "file": "game-easy-test.html",
+      "location": "equipped",
+      "input": {
+        "uniqueId": "UI-10",
+        "slot": "armor",
+        "rarity": 5,
+        "name": "새 제안 fixture",
+        "enh": 7,
+        "tier": 2,
+        "socketCount": 0,
+        "affixes": [],
+        "custom": {
+          "preserve": true
+        }
+      },
+      "created": {
+        "slot": "armor",
+        "rarity": 5,
+        "name": "새 제안 fixture",
+        "enh": 7,
+        "tier": 2,
+        "socketCount": 0,
+        "affixes": [],
+        "custom": {
+          "preserve": true
+        },
+        "uniqueId": "UI-10",
+        "uniqueRoll": {
+          "version": 1,
+          "effectId": "U-D10",
+          "stat": "_uSlamEmberRage",
+          "unit": "fraction",
+          "storedValue": 0.15
+        }
+      },
+      "restored": {
+        "slot": "armor",
+        "rarity": 5,
+        "name": "새 제안 fixture",
+        "enh": 7,
+        "tier": 2,
+        "socketCount": 0,
+        "affixes": [],
+        "custom": {
+          "preserve": true
+        },
+        "uniqueId": "UI-10",
+        "uniqueRoll": {
+          "version": 1,
+          "effectId": "U-D10",
+          "stat": "_uSlamEmberRage",
+          "unit": "fraction",
+          "storedValue": 0.15
+        }
+      },
+      "storedValue": 0.15,
+      "rngCalls": 1
+    },
+    {
+      "file": "game-easy-test.html",
+      "location": "equipped",
+      "legacy": {
+        "slot": "armor",
+        "rarity": 2,
+        "name": "기존 갑옷",
+        "enh": 10,
+        "affixes": [],
+        "socketCount": 0
+      },
+      "restored": {
+        "slot": "armor",
+        "rarity": 2,
+        "name": "기존 갑옷",
+        "enh": 10,
+        "affixes": [],
+        "socketCount": 0
+      },
+      "rngCalls": 0
+    },
+    {
+      "file": "game-easy-test.html",
+      "location": "equipped",
+      "legacy": {
+        "slot": "armor",
+        "rarity": 5,
+        "name": "기존 유니크",
+        "uniqueSpecial": {
+          "stat": "_uArmorRage",
+          "val": 0.25,
+          "secs": 0
+        },
+        "_uArmorRage": 0.25,
+        "socketCount": 0
+      },
+      "restored": {
+        "slot": "armor",
+        "rarity": 5,
+        "name": "기존 유니크",
+        "uniqueSpecial": {
+          "stat": "_uArmorRage",
+          "val": 0.25,
+          "secs": 0
+        },
+        "_uArmorRage": 0.25,
+        "socketCount": 0
+      },
+      "rngCalls": 0
+    },
+    {
+      "file": "game-easy-test.html",
+      "location": "equipped",
+      "legacy": {
+        "slot": "ossuary",
+        "rarity": 5,
+        "unique": true,
+        "uniqueSpecial": null,
+        "socketCount": 0
+      },
+      "restored": {
+        "slot": "ossuary",
+        "rarity": 5,
+        "unique": true,
+        "uniqueSpecial": null,
+        "socketCount": 0
+      },
+      "rngCalls": 0
+    },
+    {
+      "file": "game-easy-test.html",
+      "location": "equipped",
+      "legacy": {
+        "slot": "armor",
+        "rarity": 5,
+        "uniqueId": "unknown-id",
+        "name": "미등록 보존",
+        "custom": {
+          "raw": 20
+        },
+        "socketCount": 0
+      },
+      "restored": {
+        "slot": "armor",
+        "rarity": 5,
+        "uniqueId": "unknown-id",
+        "name": "미등록 보존",
+        "custom": {
+          "raw": 20
+        },
+        "socketCount": 0
+      },
+      "rngCalls": 0
+    },
+    {
+      "file": "game-easy-test.html",
+      "location": "equipped",
+      "legacy": {
+        "slot": "armor",
+        "rarity": 5,
+        "uniqueId": "UI-10",
+        "_uSlamEmberRage": 20,
+        "uniqueSpecial": {
+          "stat": "_uSlamEmberRage",
+          "val": 20
+        },
+        "socketCount": 0
+      },
+      "restored": {
+        "slot": "armor",
+        "rarity": 5,
+        "uniqueId": "UI-10",
+        "_uSlamEmberRage": 20,
+        "uniqueSpecial": {
+          "stat": "_uSlamEmberRage",
+          "val": 20
+        },
+        "socketCount": 0
+      },
+      "rngCalls": 0
+    },
+    {
+      "file": "game-easy-test.html",
+      "location": "equipped",
+      "legacy": {
+        "slot": "armor",
+        "rarity": 5,
+        "uniqueId": "UI-10",
+        "name": "binding 누락",
+        "socketCount": 0
+      },
+      "restored": {
+        "slot": "armor",
+        "rarity": 5,
+        "uniqueId": "UI-10",
+        "name": "binding 누락",
+        "socketCount": 0
+      },
+      "rngCalls": 0
+    },
+    {
+      "file": "game-easy-test.html",
+      "location": "storage",
+      "input": {
+        "uniqueId": "UI-10",
+        "slot": "armor",
+        "rarity": 5,
+        "name": "새 제안 fixture",
+        "enh": 7,
+        "tier": 2,
+        "socketCount": 0,
+        "affixes": [],
+        "custom": {
+          "preserve": true
+        }
+      },
+      "created": {
+        "slot": "armor",
+        "rarity": 5,
+        "name": "새 제안 fixture",
+        "enh": 7,
+        "tier": 2,
+        "socketCount": 0,
+        "affixes": [],
+        "custom": {
+          "preserve": true
+        },
+        "uniqueId": "UI-10",
+        "uniqueRoll": {
+          "version": 1,
+          "effectId": "U-D10",
+          "stat": "_uSlamEmberRage",
+          "unit": "fraction",
+          "storedValue": 0.15
+        }
+      },
+      "restored": {
+        "slot": "armor",
+        "rarity": 5,
+        "name": "새 제안 fixture",
+        "enh": 7,
+        "tier": 2,
+        "socketCount": 0,
+        "affixes": [],
+        "custom": {
+          "preserve": true
+        },
+        "uniqueId": "UI-10",
+        "uniqueRoll": {
+          "version": 1,
+          "effectId": "U-D10",
+          "stat": "_uSlamEmberRage",
+          "unit": "fraction",
+          "storedValue": 0.15
+        }
+      },
+      "storedValue": 0.15,
+      "rngCalls": 1
+    },
+    {
+      "file": "game-easy-test.html",
+      "location": "storage",
+      "legacy": {
+        "slot": "armor",
+        "rarity": 2,
+        "name": "기존 갑옷",
+        "enh": 10,
+        "affixes": [],
+        "socketCount": 0
+      },
+      "restored": {
+        "slot": "armor",
+        "rarity": 2,
+        "name": "기존 갑옷",
+        "enh": 10,
+        "affixes": [],
+        "socketCount": 0
+      },
+      "rngCalls": 0
+    },
+    {
+      "file": "game-easy-test.html",
+      "location": "storage",
+      "legacy": {
+        "slot": "armor",
+        "rarity": 5,
+        "name": "기존 유니크",
+        "uniqueSpecial": {
+          "stat": "_uArmorRage",
+          "val": 0.25,
+          "secs": 0
+        },
+        "_uArmorRage": 0.25,
+        "socketCount": 0
+      },
+      "restored": {
+        "slot": "armor",
+        "rarity": 5,
+        "name": "기존 유니크",
+        "uniqueSpecial": {
+          "stat": "_uArmorRage",
+          "val": 0.25,
+          "secs": 0
+        },
+        "_uArmorRage": 0.25,
+        "socketCount": 0
+      },
+      "rngCalls": 0
+    },
+    {
+      "file": "game-easy-test.html",
+      "location": "storage",
+      "legacy": {
+        "slot": "ossuary",
+        "rarity": 5,
+        "unique": true,
+        "uniqueSpecial": null,
+        "socketCount": 0
+      },
+      "restored": {
+        "slot": "ossuary",
+        "rarity": 5,
+        "unique": true,
+        "uniqueSpecial": null,
+        "socketCount": 0
+      },
+      "rngCalls": 0
+    },
+    {
+      "file": "game-easy-test.html",
+      "location": "storage",
+      "legacy": {
+        "slot": "armor",
+        "rarity": 5,
+        "uniqueId": "unknown-id",
+        "name": "미등록 보존",
+        "custom": {
+          "raw": 20
+        },
+        "socketCount": 0
+      },
+      "restored": {
+        "slot": "armor",
+        "rarity": 5,
+        "uniqueId": "unknown-id",
+        "name": "미등록 보존",
+        "custom": {
+          "raw": 20
+        },
+        "socketCount": 0
+      },
+      "rngCalls": 0
+    },
+    {
+      "file": "game-easy-test.html",
+      "location": "storage",
+      "legacy": {
+        "slot": "armor",
+        "rarity": 5,
+        "uniqueId": "UI-10",
+        "_uSlamEmberRage": 20,
+        "uniqueSpecial": {
+          "stat": "_uSlamEmberRage",
+          "val": 20
+        },
+        "socketCount": 0
+      },
+      "restored": {
+        "slot": "armor",
+        "rarity": 5,
+        "uniqueId": "UI-10",
+        "_uSlamEmberRage": 20,
+        "uniqueSpecial": {
+          "stat": "_uSlamEmberRage",
+          "val": 20
+        },
+        "socketCount": 0
+      },
+      "rngCalls": 0
+    },
+    {
+      "file": "game-easy-test.html",
+      "location": "storage",
+      "legacy": {
+        "slot": "armor",
+        "rarity": 5,
+        "uniqueId": "UI-10",
+        "name": "binding 누락",
+        "socketCount": 0
+      },
+      "restored": {
+        "slot": "armor",
+        "rarity": 5,
+        "uniqueId": "UI-10",
+        "name": "binding 누락",
+        "socketCount": 0
+      },
+      "rngCalls": 0
+    }
+  ]
+}

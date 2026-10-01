@@ -1,0 +1,31 @@
+✔ actual ITEM create -> JSON -> restore -> read -> tooltip: roll 10, KO/EN, RNG1 (1.328583ms)
+✔ actual ITEM create -> JSON -> restore -> read -> tooltip: roll 11, KO/EN, RNG1 (0.287916ms)
+✔ actual ITEM create -> JSON -> restore -> read -> tooltip: roll 12, KO/EN, RNG1 (0.144375ms)
+✔ actual ITEM create -> JSON -> restore -> read -> tooltip: roll 13, KO/EN, RNG1 (0.097625ms)
+✔ actual ITEM create -> JSON -> restore -> read -> tooltip: roll 14, KO/EN, RNG1 (0.1065ms)
+✔ actual ITEM create -> JSON -> restore -> read -> tooltip: roll 15, KO/EN, RNG1 (0.084959ms)
+✔ actual ITEM create -> JSON -> restore -> read -> tooltip: roll 16, KO/EN, RNG1 (0.094458ms)
+✔ actual ITEM create -> JSON -> restore -> read -> tooltip: roll 17, KO/EN, RNG1 (0.108583ms)
+✔ actual ITEM create -> JSON -> restore -> read -> tooltip: roll 18, KO/EN, RNG1 (0.09575ms)
+✔ actual ITEM create -> JSON -> restore -> read -> tooltip: roll 19, KO/EN, RNG1 (0.117667ms)
+✔ actual ITEM create -> JSON -> restore -> read -> tooltip: roll 20, KO/EN, RNG1 (0.080792ms)
+✔ actual ITEM reader classifies legacy/missing instances; tooltip never invents a midpoint roll (0.228042ms)
+✔ actual API rejects schema version/unit/status-shape violations without showing a normal effect (0.165917ms)
+✔ actual API rejects invalid stored values/identity/slot and does not mutate legacy saves (0.362667ms)
+✔ production adapter directly imports ITEM API with no persistence/schema inference or enabling (1.701333ms)
+✔ opaque instance reader port consumes stored values and reuses real D10 tooltip without choosing save fields (1.118917ms)
+✔ missing dependency has explicit pending status and never falls back to default midpoint 15 (0.251792ms)
+✔ legacy and malformed instances never call binding reader or display normal D10 effect (0.16ms)
+✔ reader missing/invalid/legacy statuses and invalid descriptors are fail-closed (0.129791ms)
+✔ noncanonical stored values and values missing from binding cannot become a default normal roll (0.15725ms)
+✔ JSON roundtrip fixture consumes unchanged instance without RNG, mutation or save field inference (0.067375ms)
+✔ leaf consumer includes inactive proposal disclaimer and does not replace parent DOM (0.116833ms)
+✔ unsupported language is rejected explicitly (0.037166ms)
+ℹ tests 23
+ℹ suites 0
+ℹ pass 23
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 42.303708

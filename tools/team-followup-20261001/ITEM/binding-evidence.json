@@ -1,0 +1,166 @@
+{
+  "schema": {
+    "field": "uniqueRoll",
+    "version": 1,
+    "uniqueId": "UI-10",
+    "effectId": "U-D10",
+    "unit": "fraction",
+    "status": "proposal",
+    "runtimeReady": false
+  },
+  "sources": [
+    {
+      "file": "game.html",
+      "dbSaveSha256": "2152c5b37d34f6deb0d1fc4a8a06be6744c205bd93ada63157a31ee392bfa0a9",
+      "dbRestoreSha256": "63385633575b51647ab02b9e27f6d840e036dc35f9cd595b1cc65063e1133c35"
+    },
+    {
+      "file": "game-easy-test.html",
+      "dbSaveSha256": "19eb6a0a97937ed20d2c3d7afcdf7ac7c4cb1bbc7d3c8a025ca408944eb68a48",
+      "dbRestoreSha256": "2785fd6138a7325f64bbf2c27cde281e270caa85f517b7a7c52801ad9726d274"
+    }
+  ],
+  "comparisons": [
+    {
+      "raw": 10,
+      "stored": 0.1,
+      "creationRngCalls": 1,
+      "loadReadRngCalls": 0
+    },
+    {
+      "raw": 11,
+      "stored": 0.11,
+      "creationRngCalls": 1,
+      "loadReadRngCalls": 0
+    },
+    {
+      "raw": 12,
+      "stored": 0.12,
+      "creationRngCalls": 1,
+      "loadReadRngCalls": 0
+    },
+    {
+      "raw": 13,
+      "stored": 0.13,
+      "creationRngCalls": 1,
+      "loadReadRngCalls": 0
+    },
+    {
+      "raw": 14,
+      "stored": 0.14,
+      "creationRngCalls": 1,
+      "loadReadRngCalls": 0
+    },
+    {
+      "raw": 15,
+      "stored": 0.15,
+      "creationRngCalls": 1,
+      "loadReadRngCalls": 0
+    },
+    {
+      "raw": 16,
+      "stored": 0.16,
+      "creationRngCalls": 1,
+      "loadReadRngCalls": 0
+    },
+    {
+      "raw": 17,
+      "stored": 0.17,
+      "creationRngCalls": 1,
+      "loadReadRngCalls": 0
+    },
+    {
+      "raw": 18,
+      "stored": 0.18,
+      "creationRngCalls": 1,
+      "loadReadRngCalls": 0
+    },
+    {
+      "raw": 19,
+      "stored": 0.19,
+      "creationRngCalls": 1,
+      "loadReadRngCalls": 0
+    },
+    {
+      "raw": 20,
+      "stored": 0.2,
+      "creationRngCalls": 1,
+      "loadReadRngCalls": 0
+    },
+    {
+      "file": "game.html",
+      "path": "bag",
+      "saveRestoreCycles": 3,
+      "creationRngCalls": 1,
+      "restoreRngCalls": 0,
+      "legacyUnchanged": true
+    },
+    {
+      "file": "game.html",
+      "path": "equipped",
+      "saveRestoreCycles": 3,
+      "creationRngCalls": 1,
+      "restoreRngCalls": 0,
+      "legacyUnchanged": true
+    },
+    {
+      "file": "game.html",
+      "path": "storage",
+      "saveRestoreCycles": 3,
+      "creationRngCalls": 1,
+      "restoreRngCalls": 0,
+      "legacyUnchanged": true
+    },
+    {
+      "file": "game-easy-test.html",
+      "path": "bag",
+      "saveRestoreCycles": 3,
+      "creationRngCalls": 1,
+      "restoreRngCalls": 0,
+      "legacyUnchanged": true
+    },
+    {
+      "file": "game-easy-test.html",
+      "path": "equipped",
+      "saveRestoreCycles": 3,
+      "creationRngCalls": 1,
+      "restoreRngCalls": 0,
+      "legacyUnchanged": true
+    },
+    {
+      "file": "game-easy-test.html",
+      "path": "storage",
+      "saveRestoreCycles": 3,
+      "creationRngCalls": 1,
+      "restoreRngCalls": 0,
+      "legacyUnchanged": true
+    }
+  ],
+  "dependencies": [
+    {
+      "path": "unique-item-project/definitions.js",
+      "sha256": "3f04bcc5ac90b039454f32dc9323e60bbe44dda27be7fd439a97633d1f25118a"
+    },
+    {
+      "path": "unique-item-project/roll-values.js",
+      "sha256": "103d0460c738c117840586780eaaed7be7ebe0aba61fa50464db9d004b094975"
+    },
+    {
+      "path": "unique-item-project/d10-tooltip.js",
+      "sha256": "d35c86f6369ebda346c1c300519c131a96fb34000ff41192e511d61f9f62dcc2"
+    },
+    {
+      "path": "tools/team-followup-20261001/ITEM/d10-consumer.mjs",
+      "sha256": "6045326868bea6f7c5b1026d9472a02bdba5756cac41a110165e050ba9d4e7fb"
+    },
+    {
+      "path": "tools/team-followup-20261001/UIUX/binding-tooltip.mjs",
+      "sha256": "f183139128aa9bfb9514ba9ed4f970cc28abd4ae980a7d39b911acce4cfa2b60"
+    },
+    {
+      "path": "tools/team-followup-20261001/BALANCE/binding-independent.mjs",
+      "sha256": "a2367f90f82be3659f13bbc43fe09193fdd46a0ed1be63df7620cd12779e4ef3"
+    }
+  ],
+  "productionModified": false
+}

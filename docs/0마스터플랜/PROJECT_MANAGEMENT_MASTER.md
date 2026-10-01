@@ -614,3 +614,8 @@ SOUND 제출을 root 실행하여 후보 인자 오류1건을 교정하고 실�
 ### 18.37 D10 후보·툴팁 인수와 QA 정직한 제외
 
 ITEM/BALANCE/UIUX 실제후보를 root가검수:관련188PASS,독립148입력불일치0,실제44원화·한영10/15/20%·키보드·Chrome160px화면확인. D10만전체너비검토영역으로보강,roll-values 동일바이트.js이동. 생산game/easy/index/server수정0·효과비활성. QA5표본은처치관측누락/0처치/옵션변화로전부INCONCLUSIVE,성능통과0. BUILD부총괄Read/배정안완료후자체queue readonly실패;권한변경0. root의기존공식CLI로14:16:08Z binding3건각1회전송,수신·첫Read/Edit는최신상태표로분리. [검수·환경·남은게이트](mac-resume-20261001/vscode-dispatch/D10-root-review.md).
+
+
+### 18.38 D10 저장후보 연결·독립반례 보강·지원 역할 조정
+
+ITEM 실제binding 및 UIUX/BALANCE 의존연결을 인수, BUILD가 특수객체 생성/조회 경계 반례를 제공해 root가 plain JSON 생성·own enumerable data 읽기로 보강했다. 관련61PASS, 기존 세이브 소켓RNG/affixes 보충과 D10 재롤0을 구분한다. 게임생산/드롭/사용자세이브/실제UI 변경0. native는새Mac locked/기존Claude7idle이며초안·큐UNKNOWN. 원담당읽기전용을유지하고 기존ITEM→ENEMY tick, UIUX→ART최종crop, BALANCE→SKILL충전/예외수정 지원을각1회배정, 실제Read/Edit 확인. BUILD는 독립감사/보강검수,root는공식전송/최종인수. [후보계약·실패/검수·소유권](mac-resume-20261001/vscode-dispatch/BINDING-root-review.md).

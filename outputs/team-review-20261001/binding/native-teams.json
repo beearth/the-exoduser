@@ -1,0 +1,72 @@
+{
+  "at": "2026-10-01T14:23:01.054611+00:00",
+  "native": "fresh CUA getApp Mac locked, no input/unlock/permissions changed",
+  "teams": [
+    {
+      "pid": 51163,
+      "cwd": "/Users/fordeargamers/Projects/exoduser-migration-20261001",
+      "kind": "interactive",
+      "startedAt": 1790848592687,
+      "sessionId": "88c3f903-ece5-4640-8b0c-86feaaca0e53",
+      "name": "exoduser-migration-20261001-cd",
+      "status": "idle"
+    },
+    {
+      "pid": 51300,
+      "cwd": "/Users/fordeargamers/Projects/exoduser-migration-20261001",
+      "kind": "interactive",
+      "startedAt": 1790848610686,
+      "sessionId": "a489cbeb-92d9-449a-a2b7-ba0e2871322f",
+      "name": "exoduser-migration-20261001-1d",
+      "status": "idle"
+    },
+    {
+      "pid": 51363,
+      "cwd": "/Users/fordeargamers/Projects/exoduser-migration-20261001",
+      "kind": "interactive",
+      "startedAt": 1790848613660,
+      "sessionId": "d447a49d-ecaa-4b5f-bc56-da5353ebb668",
+      "name": "exoduser-migration-20261001-55",
+      "status": "idle"
+    },
+    {
+      "pid": 52159,
+      "cwd": "/Users/fordeargamers/Projects/exoduser-migration-20261001",
+      "kind": "interactive",
+      "startedAt": 1790848656503,
+      "sessionId": "203377cc-64c4-47ea-af27-95b66ae829fa",
+      "name": "exoduser-migration-20261001-df",
+      "status": "idle"
+    },
+    {
+      "pid": 52230,
+      "cwd": "/Users/fordeargamers/Projects/exoduser-migration-20261001",
+      "kind": "interactive",
+      "startedAt": 1790848662063,
+      "sessionId": "ddbd64be-975a-458e-a020-c09749281f5b",
+      "name": "exoduser-migration-20261001-4b",
+      "status": "idle"
+    },
+    {
+      "pid": 52299,
+      "cwd": "/Users/fordeargamers/Projects/exoduser-migration-20261001",
+      "kind": "interactive",
+      "startedAt": 1790848666827,
+      "sessionId": "1d2a7253-478c-43aa-8c6f-766a02270432",
+      "name": "exoduser-migration-20261001-58",
+      "status": "idle"
+    },
+    {
+      "pid": 55890,
+      "id": "aa3ac0ed",
+      "cwd": "/Users/fordeargamers/Projects/exoduser-migration-20261001",
+      "kind": "background",
+      "startedAt": 1790849234519,
+      "sessionId": "aa3ac0ed-f4e5-44ad-a0b2-d4d2da045b84",
+      "name": "EXODUSER-Mac-SOUND",
+      "status": "idle",
+      "state": "done"
+    }
+  ],
+  "draftAndQueue": "UNKNOWN: native locked; no pending-repair receipt found; originals will remain read-only if support assigned"
+}

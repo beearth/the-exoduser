@@ -1,0 +1,218 @@
+{
+  "startedAt": "2026-10-01T14:30:00.871Z",
+  "completedAt": "2026-10-01T14:30:01.222Z",
+  "kind": "hardened-real-import-and-current-source-VM",
+  "sources": [
+    {
+      "file": "tools/team-followup-20261001/ITEM/binding-d10.mjs",
+      "sha256": "2f24f057a1fbffb6534e60f4dcc31c80c7fb9e6ee56c010bf2327a3fbc0e7cb4"
+    },
+    {
+      "file": "tools/team-followup-20261001/ITEM/binding-ports.mjs",
+      "sha256": "2b6bf07a42edc0336d976105015d2886fd4ef342aa6766131c29fdaf561a49a4"
+    },
+    {
+      "file": "tools/team-followup-20261001/ITEM/binding-save-harness.mjs",
+      "sha256": "cbaf2bd4c4067ce95f793a823e222bddda7d385597ddbc1163eac9ed92c1dc48"
+    },
+    {
+      "file": "game.html",
+      "sha256": "8ebc3b7b52a651c1a3bc5e8c285b00d186c6dacc18429ada7499781acc72b0b9"
+    },
+    {
+      "file": "game-easy-test.html",
+      "sha256": "4c408f1e7b57210900ddfa8a0646502f91b6a0bbc798a24338eb159cb613d874"
+    }
+  ],
+  "rows": [
+    {
+      "name": "C2 toJSON rejected before hook/RNG",
+      "status": "PASS"
+    },
+    {
+      "name": "C3 inherited schema fails closed",
+      "status": "PASS"
+    },
+    {
+      "name": "C4 nonenumerable own binding fails closed",
+      "status": "PASS"
+    },
+    {
+      "name": "C5 throwing binding getter never runs",
+      "status": "PASS"
+    },
+    {
+      "name": "C6 stored getter never runs",
+      "status": "PASS"
+    },
+    {
+      "name": "C7 inherited identity rejected before RNG",
+      "status": "PASS"
+    },
+    {
+      "name": "all required own data descriptors checked",
+      "status": "PASS"
+    },
+    {
+      "name": "recursive creation refuses sparse/cycles/hooks and preserves null records",
+      "status": "PASS"
+    },
+    {
+      "name": "C1 caller-only creation; actual read/restore never supplies missing roll",
+      "status": "PASS"
+    },
+    {
+      "name": "AST read/restore paths contain no creation or rollValue",
+      "status": "PASS"
+    },
+    {
+      "name": "conditional new boundary: nested serialization hook still permitted by inspector",
+      "status": "PASS"
+    },
+    {
+      "name": "game.html bag preserve good/missing/legacy without D10 reroll",
+      "status": "PASS"
+    },
+    {
+      "name": "game.html equipped preserve good/missing/legacy without D10 reroll",
+      "status": "PASS"
+    },
+    {
+      "name": "game.html storage",
+      "status": "FAIL",
+      "error": "AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:\n+ actual - expected\n\n+ 'invalid'\n- 'missing'\n\n    at file:///Users/fordeargamers/Projects/exoduser-migration-20261001/tools/team-followup-20261001/BUILD/continuation-binding-hardened-check.mjs:85:14"
+    },
+    {
+      "name": "game.html C8 existing socket migration RNG distinguished",
+      "status": "PASS"
+    },
+    {
+      "name": "game.html actual save/restore source no D10 creation calls",
+      "status": "PASS"
+    },
+    {
+      "name": "game-easy-test.html bag preserve good/missing/legacy without D10 reroll",
+      "status": "PASS"
+    },
+    {
+      "name": "game-easy-test.html equipped preserve good/missing/legacy without D10 reroll",
+      "status": "PASS"
+    },
+    {
+      "name": "game-easy-test.html storage",
+      "status": "FAIL",
+      "error": "AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:\n+ actual - expected\n\n+ 'invalid'\n- 'missing'\n\n    at file:///Users/fordeargamers/Projects/exoduser-migration-20261001/tools/team-followup-20261001/BUILD/continuation-binding-hardened-check.mjs:85:14"
+    },
+    {
+      "name": "game-easy-test.html C8 existing socket migration RNG distinguished",
+      "status": "PASS"
+    },
+    {
+      "name": "game-easy-test.html actual save/restore source no D10 creation calls",
+      "status": "PASS"
+    },
+    {
+      "name": "inputs unchanged during audit",
+      "status": "PASS"
+    }
+  ],
+  "observations": [
+    {
+      "id": "C1",
+      "classification": "explicit creation caller contract, not proof of history",
+      "readRestoreMutation": false,
+      "explicitCreateRng": 1
+    },
+    {
+      "function": "inspectD10Binding",
+      "calls": [
+        "plainRecord",
+        "owns",
+        "owns",
+        "lookupItemProposal",
+        "ownData",
+        "ownData",
+        "owns",
+        "ownData",
+        "lookupRoll",
+        "plainRecord",
+        "owns",
+        "ownData",
+        "ownData",
+        "ownData",
+        "ownData",
+        "ownData",
+        "fromStoredValue"
+      ]
+    },
+    {
+      "function": "readStoredRoll",
+      "calls": [
+        "lookupRoll",
+        "inspectD10Binding"
+      ]
+    },
+    {
+      "function": "readD10Binding",
+      "calls": [
+        "inspectD10Binding"
+      ]
+    },
+    {
+      "function": "restoreD10Instance",
+      "calls": []
+    },
+    {
+      "id": "N1",
+      "input": "plain top-level item; nested extra.toJSON mutates parent uniqueRoll from .15 to .2 during JSON",
+      "result": {
+        "before": 0.15,
+        "after": 0.2,
+        "hooks": 1
+      },
+      "classification": "exotic external runtime object only; creator rejects this object; JSON parsed loads cannot carry hook",
+      "recommendation": "scope valid to required schema, or enforce deep plain-data at persistence boundary; not a production save exploit claim"
+    },
+    {
+      "id": "N2",
+      "file": "game.html",
+      "input": "actual _loadSharedStorage JSON.parse inside save VM; canonical own enumerable data",
+      "sameObjectPrototype": false,
+      "validBefore": "valid",
+      "validAfter": "invalid",
+      "missingAfter": "invalid",
+      "outerJsonCloneStatus": "valid",
+      "reason": "invalid_item",
+      "classification": "cross-realm prototype identity rejects JSON record; actual browser/NW untested"
+    },
+    {
+      "id": "C8",
+      "file": "game.html",
+      "classification": "existing _fixCr socket RNG, not D10 roll generation"
+    },
+    {
+      "id": "N2",
+      "file": "game-easy-test.html",
+      "input": "actual _loadSharedStorage JSON.parse inside save VM; canonical own enumerable data",
+      "sameObjectPrototype": false,
+      "validBefore": "valid",
+      "validAfter": "invalid",
+      "missingAfter": "invalid",
+      "outerJsonCloneStatus": "valid",
+      "reason": "invalid_item",
+      "classification": "cross-realm prototype identity rejects JSON record; actual browser/NW untested"
+    },
+    {
+      "id": "C8",
+      "file": "game-easy-test.html",
+      "classification": "existing _fixCr socket RNG, not D10 roll generation"
+    }
+  ],
+  "pass": 20,
+  "fail": 2,
+  "limits": [
+    "N1 is exotic runtime input; creation already refuses it",
+    "actual save functions with memory/noop harness, not browser or account",
+    "module support remains Node-only candidate; no activation"
+  ]
+}

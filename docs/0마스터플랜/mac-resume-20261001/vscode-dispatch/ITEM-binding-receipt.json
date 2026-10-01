@@ -1,0 +1,16 @@
+{
+  "taskId": "ITEM-D10-BINDING",
+  "status": "completed_binding_pending_root_acceptance",
+  "receivedAt": "2026-10-01T14:16:19Z",
+  "firstReadAt": "2026-10-01T14:16:19Z",
+  "duplicateCheck": "ITEM binding-* 산출 없음; D10/root 체크포인트와 별개인 신규저장binding 과제",
+  "firstRead": "BUILD continuation-dispatch-plan·AGENTS·최신D10/SSOT·실제dbSave직렬화·d10-consumer·tooltip 읽기",
+  "firstEdit": "전용영수증작성 후 binding 모듈/저장회귀 작성착수",
+  "dependencyAcceptedAt": "2026-10-01T14:16:44Z",
+  "crossTeamApiReadAt": "2026-10-01T14:20:11Z",
+  "dependency": "현 D10/definitions/roll/tooltip 인수 및 실제UIUX readBinding/BALANCE verifyBinding import연동PASS; 팀최종승인은별도",
+  "validation": "최종node --test exit0/24PASS; 실제DB함수6경로×3회저장로드, BALANCE42행/생성RNG6회·로드0회",
+  "completedAt": "2026-10-01T14:21:44Z",
+  "nextAction": "root/UIUX/BALANCE에uniqueRoll version1후보와생성/read/restore포트인계; 생산미채택/defaultdisabled 유지",
+  "blocker": null
+}
