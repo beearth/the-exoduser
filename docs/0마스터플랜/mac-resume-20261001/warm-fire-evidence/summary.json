@@ -1,0 +1,333 @@
+{
+  "task": "QA-WARM-FIRE-02",
+  "status": "implemented; pixel/prewarm checked; normal-kill and independent review pending",
+  "observedGameSHA": "1fc7ac9a31eb516535bda52d300f1958bf5240f5620afbd4038d4ba7b36ecff5",
+  "finalGameSHA": "e5518842324d17fb63da44457e6092af138b4fcfbaf49c1cb03ef791431dc115",
+  "postMeasurementGameChange": "comment only",
+  "calls": 337,
+  "dropped": 0,
+  "restored": {
+    "next": true,
+    "image": true,
+    "admit": true,
+    "upload": true
+  },
+  "inputAtObserver": null,
+  "targets": {
+    "http://qa-warm-fire-after-20261001.localhost:3340/assets/vfx/vfx_magic_burst.png": [
+      {
+        "name": "admit",
+        "duration": 0,
+        "start": 19897.400000095367,
+        "before": null,
+        "after": "pending"
+      },
+      {
+        "name": "upload",
+        "duration": 109.89999997615814,
+        "start": 21575.100000023842,
+        "before": "decoded",
+        "after": "decoded"
+      },
+      {
+        "name": "admit",
+        "duration": 0,
+        "start": 24370.800000071526,
+        "before": "ready",
+        "after": "ready"
+      },
+      {
+        "name": "image",
+        "duration": 0.10000002384185791,
+        "start": 24370.800000071526,
+        "before": "ready",
+        "after": "ready"
+      },
+      {
+        "name": "next",
+        "duration": 0.10000002384185791,
+        "start": 24370.800000071526,
+        "before": "ready",
+        "after": null
+      }
+    ],
+    "http://qa-warm-fire-after-20261001.localhost:3340/assets/vfx/boss/vfx_void_black.png": [
+      {
+        "name": "admit",
+        "duration": 0,
+        "start": 19897.400000095367,
+        "before": null,
+        "after": "pending"
+      },
+      {
+        "name": "upload",
+        "duration": 32.299999952316284,
+        "start": 21733.800000071526,
+        "before": "decoded",
+        "after": "decoded"
+      },
+      {
+        "name": "admit",
+        "duration": 0,
+        "start": 24778.300000071526,
+        "before": "ready",
+        "after": "ready"
+      },
+      {
+        "name": "image",
+        "duration": 0,
+        "start": 24778.300000071526,
+        "before": "ready",
+        "after": "ready"
+      },
+      {
+        "name": "next",
+        "duration": 0,
+        "start": 24778.300000071526,
+        "before": "ready",
+        "after": null
+      }
+    ],
+    "http://qa-warm-fire-after-20261001.localhost:3340/assets/vfx/vfx_peace_shield.png": [
+      {
+        "name": "admit",
+        "duration": 0,
+        "start": 19897.400000095367,
+        "before": null,
+        "after": "pending"
+      },
+      {
+        "name": "upload",
+        "duration": 35.800000071525574,
+        "start": 21687.5,
+        "before": "decoded",
+        "after": "decoded"
+      },
+      {
+        "name": "admit",
+        "duration": 0,
+        "start": 24842.700000047684,
+        "before": "ready",
+        "after": "ready"
+      },
+      {
+        "name": "image",
+        "duration": 0,
+        "start": 24842.700000047684,
+        "before": "ready",
+        "after": "ready"
+      },
+      {
+        "name": "next",
+        "duration": 0,
+        "start": 24842.700000047684,
+        "before": "ready",
+        "after": null
+      }
+    ],
+    "http://qa-warm-fire-after-20261001.localhost:3340/assets/vfx/fire_burst_radial.webp": [
+      {
+        "name": "admit",
+        "duration": 0,
+        "start": 19897.600000023842,
+        "before": null,
+        "after": "pending"
+      },
+      {
+        "name": "upload",
+        "duration": 73.69999992847443,
+        "start": 21886.300000071526,
+        "before": "decoded",
+        "after": "decoded"
+      },
+      {
+        "name": "admit",
+        "duration": 0,
+        "start": 24402.800000071526,
+        "before": "ready",
+        "after": "ready"
+      },
+      {
+        "name": "image",
+        "duration": 0,
+        "start": 24402.800000071526,
+        "before": "ready",
+        "after": "ready"
+      },
+      {
+        "name": "next",
+        "duration": 0,
+        "start": 24402.800000071526,
+        "before": "ready",
+        "after": null
+      }
+    ]
+  },
+  "end": {
+    "at": 36898.200000047684,
+    "url": null,
+    "type": "object",
+    "width": 0,
+    "height": 0,
+    "naturalWidth": 0,
+    "naturalHeight": 0,
+    "complete": null,
+    "index": 0,
+    "length": 0,
+    "on": true,
+    "paused": false,
+    "kills": 0,
+    "hp": 529,
+    "focus": true,
+    "hidden": false,
+    "gl": true,
+    "gpu": false,
+    "budgetUsed": 61683832,
+    "budgetMax": 64000000,
+    "busy": 0,
+    "uploadQueue": 0,
+    "waiting": 0,
+    "seen": false,
+    "waitingIndex": -1,
+    "decoded": false,
+    "cached": null,
+    "jobStatus": null
+  },
+  "options": {
+    "shake": 80,
+    "hitStop": 0,
+    "parts": 100,
+    "sfxVol": 60,
+    "bgmVol": 60,
+    "diff": 5,
+    "minPickRar": 0,
+    "minPickLvTier": 0,
+    "fpsCap": 0,
+    "petAuto": true,
+    "bossDebug": false,
+    "bloom": true,
+    "trail": true,
+    "slash": true,
+    "postfx": true,
+    "deathFx": true,
+    "lighting": true,
+    "torch": true,
+    "ambPart": true,
+    "fog": true,
+    "bossFog": true,
+    "grain": true,
+    "autoPotThr": 0.99,
+    "cursor": 0,
+    "cursorSize": 50,
+    "quality": "high",
+    "resScale": 100,
+    "ssaa": 1,
+    "outline": true,
+    "bgmTrack": "auto",
+    "lang": "ko",
+    "crAutoFuse": -1,
+    "crAutoEnh": -1,
+    "showFps": false,
+    "atmos": 2
+  },
+  "finalOptions": {
+    "shake": 80,
+    "hitStop": 0,
+    "parts": 100,
+    "sfxVol": 60,
+    "bgmVol": 60,
+    "diff": 5,
+    "minPickRar": 0,
+    "minPickLvTier": 0,
+    "fpsCap": 0,
+    "petAuto": true,
+    "bossDebug": false,
+    "bloom": true,
+    "trail": true,
+    "slash": true,
+    "postfx": true,
+    "deathFx": true,
+    "lighting": true,
+    "torch": true,
+    "ambPart": true,
+    "fog": true,
+    "bossFog": true,
+    "grain": true,
+    "autoPotThr": 0.99,
+    "cursor": 0,
+    "cursorSize": 50,
+    "quality": "high",
+    "resScale": 100,
+    "ssaa": 1,
+    "outline": true,
+    "bgmTrack": "auto",
+    "lang": "ko",
+    "crAutoFuse": -1,
+    "crAutoEnh": -1,
+    "showFps": false,
+    "atmos": 1
+  },
+  "normal": {
+    "at": 62029.700000047684,
+    "on": false,
+    "paused": false,
+    "hp": 0,
+    "kills": 0,
+    "ens": 44,
+    "budget": 61683832,
+    "busy": 0,
+    "q": 0,
+    "focus": true,
+    "hidden": false,
+    "restored": {
+      "next": true,
+      "image": true,
+      "admit": true,
+      "upload": true
+    }
+  },
+  "normalGate": "0 kills, no gameplay completion claim",
+  "gpu": {
+    "admittedPixels": 6193152,
+    "bitmapQueue": 0,
+    "busy": 0,
+    "ended": 1790854930939,
+    "errors": [],
+    "jsHeapAfter": 129908481,
+    "jsHeapBefore": 80275874,
+    "pass": true,
+    "renderer": "ANGLE (Apple, ANGLE Metal Renderer: Apple M5 Pro, Unspecified Version)",
+    "rows": [
+      {
+        "bitmapUploadMs": 10.299999952316284,
+        "comparedBytes": 24772608,
+        "decodeWallMs": 118.60000002384186,
+        "differentBytes": 0,
+        "directUploadMs": 107.70000004768372,
+        "filters": [
+          9729,
+          9729,
+          33071,
+          33071
+        ],
+        "firstUseMs": 0,
+        "glError": 0,
+        "h": 1728,
+        "loadMs": 6.5,
+        "maxDelta": 0,
+        "path": "/assets/vfx/fire_burst_radial.webp",
+        "sameTexture": true,
+        "w": 3584
+      }
+    ],
+    "sourceSHA": "1fc7ac9a31eb516535bda52d300f1958bf5240f5620afbd4038d4ba7b36ecff5",
+    "started": 1790854930498
+  },
+  "tests": {
+    "beforeComment": 69,
+    "afterCommentFocused": 58,
+    "guard": "PASS; 6 inline scripts",
+    "normalCombatKills": 0,
+    "independentQA": "not delivered"
+  }
+}

@@ -5810,7 +5810,7 @@ oC=c;}`;
       // [Track D] context lost → 큐의 텍스처 핸들은 컨텍스트와 함께 무효화. 큐 비우고 free는 no-op.
       _texGCQueue.length=0;_freeMapTex=function(){};
       _texBySrc=null;_texAdoptBitmap=null;_texPreContextLost=true;_texPreReset();
-      // Only the three new general-Image handoffs need a fresh warm attempt after restoration.
+      // The explicitly targeted general-Image handoffs need a fresh warm attempt after restoration.
       if(_wqGpuImages)for(const img of _wqGpuImages)if(_warmAsyncTarget(img))_wqGpuImages.delete(img);
       _resetEnemyInstanced();_resetVfxInstanced();
       _flush=function(){_qCnt=0;_bufOff=0};_setTex=function(){};_getTex=function(){return null};
@@ -21977,17 +21977,33 @@ function _queuePlayerAtlasGpuWarmup(){
   if(_playerAtlasGpuWarmDone||_playerAtlasGpuWarmQueued||!X||!_atlasP_img||!_atlasP_img.complete||_atlasP_img.naturalWidth===0)return;
   _playerAtlasGpuWarmQueued=true;_scheduleGpuWarm(()=>{_playerAtlasGpuWarmQueued=false;_warmPlayerAtlasGpu()});
 }
-// QA-WARM-IDLE-01: only the three measured >100ms general Image uploads.
+// QA-WARM-IDLE-01 primary images; FIRE-02 is admitted only after their reservations.
 const _WQ_ASYNC_PATHS=new Set(['/assets/vfx/vfx_magic_burst.png','/assets/vfx/boss/vfx_void_black.png','/assets/vfx/vfx_peace_shield.png']);
+const _WQ_ASYNC_FIRE_PATH='/assets/vfx/fire_burst_radial.webp';
 const _WQ_ASYNC_WAIT_MS=2000;
 var _wqAsyncWait=null;
 function _warmAsyncTarget(img){
   if(!(img instanceof HTMLImageElement)||!img.complete||!img.naturalWidth||!img.naturalHeight)return false;
-  try{const u=new URL(img.src,location.href);return u.origin===location.origin&&_WQ_ASYNC_PATHS.has(u.pathname)}catch(e){return false}
+  try{const u=new URL(img.src,location.href);return u.origin===location.origin&&(_WQ_ASYNC_PATHS.has(u.pathname)||u.pathname===_WQ_ASYNC_FIRE_PATH)}catch(e){return false}
 }
 function _warmAsyncJob(img){
   if(!_warmAsyncTarget(img))return;
+  if(new URL(img.src,location.href).pathname===_WQ_ASYNC_FIRE_PATH){
+    if(!_texBySrc)return;
+    // A late/absent primary image must keep its chance to use the remaining budget.
+    for(const path of _WQ_ASYNC_PATHS){
+      const abs=new URL(path,location.href).href,j=_texPreJobs.get(abs);
+      if(!_texBySrc.has(abs)&&(!j||j.context!==_texBySrc||j.status==='stale'))return;
+    }
+  }
   return _texPrewarmSrc(img.src,img.naturalWidth*img.naturalHeight);
+}
+function _queueWarmFireAsync(){
+  // Collection order can put fire before a primary image. Retry only after the full bounded pass.
+  for(let i=0;i<_wqLen;i++){
+    const img=_wqBuf[i];
+    if(_warmAsyncTarget(img)&&new URL(img.src,location.href).pathname===_WQ_ASYNC_FIRE_PATH){_warmAsyncJob(img);break}
+  }
 }
 function _waitWarmAsync(img){
   const j=_warmAsyncJob(img);
@@ -22059,6 +22075,7 @@ function _warmupEnsAtlas(){
   // 속성별 임팩트 시트 워밍업
   for(var ei in _impElSpr){if(_impElSpr[ei]&&_impElSpr[ei].complete&&_impElSpr[ei].naturalWidth>0)_queueWarmImage(_impElSpr[ei],80)}
   for(var ei in _impElBossSpr){if(_impElBossSpr[ei]&&_impElBossSpr[ei].complete&&_impElBossSpr[ei].naturalWidth>0)_queueWarmImage(_impElBossSpr[ei],80)}
+  _queueWarmFireAsync();
   _wqTotal=_wqLen;
   if(_wqLen===0){_ensWarmDone=true;_wqQueued=null;return}
   // setTimeout 체인으로 1장씩 백그라운드 워밍업 (게임 루프 밖)

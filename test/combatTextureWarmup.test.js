@@ -25,7 +25,7 @@ function fixture(file) {
     _diImgs: { hit: impact }, _kiSlashRadiant: { surfaces: [ki, tint] },
     _VFX_SHEETS: { parry_impact: { img: parry }, ki_slash_hit_0: { img: tint },
       magic_burst: { img: impact }, void_black: { img: revival }, unrelated_boss: { img: image(true) } },
-    _warmupNext() {}, _warmAsyncJob() {}, // Async handoff lifecycle is exercised separately.
+    _warmupNext() {}, _warmAsyncJob() {}, _queueWarmFireAsync() {}, // Async handoff lifecycle is exercised separately.
   };
   const queueStart = html.indexOf('function _queueWarmImage(img,cap){');
   vm.runInNewContext(html.slice(queueStart, start) + html.slice(start, end), sandbox);

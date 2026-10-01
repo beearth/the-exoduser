@@ -5,8 +5,9 @@ function block(start){let i=html.indexOf('{',start),d=0;for(;i<html.length;i++){
 const f=n=>block(html.indexOf('function '+n+'('));
 const assignments=['_texAdoptBitmap','_getTex'].map(n=>block(html.indexOf(n==='\u005fgetTex'?'_getTex=function(src,_nearestHint)':n+'=function('))+';').join('\n');
 const helpers=['_texPreClose','_texPreReset','_texPrePump','_texPrewarmSrc','_texPreDrain'].map(f).join('\n');
-const target='tmp/warm-idle-20261001/gpu-fixture.html';
-fs.mkdirSync('tmp/warm-idle-20261001',{recursive:true});
+const fire=process.argv[2]==='fire';
+const target=fire?'tmp/warm-fire-20261001/gpu-fixture.html':'tmp/warm-idle-20261001/gpu-fixture.html';
+fs.mkdirSync(fire?'tmp/warm-fire-20261001':'tmp/warm-idle-20261001',{recursive:true});
 const js=`
 const sourceSHA=${JSON.stringify(crypto.createHash('sha256').update(html).digest('hex'))};
 let GL=document.querySelector('canvas').getContext('webgl2',{alpha:true,antialias:false});
@@ -18,7 +19,7 @@ const _texPreQ=[],_texPreWait=[],_texPreSeen=new Set(),_texPreJobs=new Map();let
 function _texHotNote(){}
 ${assignments}
 ${helpers}
-const paths=['/assets/vfx/vfx_magic_burst.png','/assets/vfx/boss/vfx_void_black.png','/assets/vfx/vfx_peace_shield.png'];
+const paths=${JSON.stringify(fire?['/assets/vfx/fire_burst_radial.webp']:['/assets/vfx/vfx_magic_burst.png','/assets/vfx/boss/vfx_void_black.png','/assets/vfx/vfx_peace_shield.png'])};
 const pause=()=>new Promise(r=>requestAnimationFrame(r));
 function pixels(t,w,h){const f=GL.createFramebuffer();GL.bindFramebuffer(GL.FRAMEBUFFER,f);GL.framebufferTexture2D(GL.FRAMEBUFFER,GL.COLOR_ATTACHMENT0,GL.TEXTURE_2D,t,0);if(GL.checkFramebufferStatus(GL.FRAMEBUFFER)!==GL.FRAMEBUFFER_COMPLETE)throw Error('incomplete');const out=new Uint8Array(w*h*4);GL.readPixels(0,0,w,h,GL.RGBA,GL.UNSIGNED_BYTE,out);GL.bindFramebuffer(GL.FRAMEBUFFER,null);GL.deleteFramebuffer(f);return out}
 async function run(){
@@ -38,11 +39,11 @@ async function run(){
   t=performance.now();const adopted=_getTex(img);row.firstUseMs=performance.now()-t;row.sameTexture=adopted===prepared;
   GL.bindTexture(GL.TEXTURE_2D,prepared);row.filters=[GL.getTexParameter(GL.TEXTURE_2D,GL.TEXTURE_MIN_FILTER),GL.getTexParameter(GL.TEXTURE_2D,GL.TEXTURE_MAG_FILTER),GL.getTexParameter(GL.TEXTURE_2D,GL.TEXTURE_WRAP_S),GL.getTexParameter(GL.TEXTURE_2D,GL.TEXTURE_WRAP_T)];row.glError=GL.getError();GL.deleteTexture(prepared);result.rows.push(row);
  }
- result.pass=result.rows.length===3&&result.rows.every(r=>r.differentBytes===0&&r.sameTexture&&r.glError===0);result.admittedPixels=_texPrePx;result.bitmapQueue=_texPreQ.length;result.busy=_texPreBusy;
+ result.pass=result.rows.length===paths.length&&result.rows.every(r=>r.differentBytes===0&&r.sameTexture&&r.glError===0);result.admittedPixels=_texPrePx;result.bitmapQueue=_texPreQ.length;result.busy=_texPreBusy;
  }catch(e){result.errors.push(String(e));result.pass=false}
  result.jsHeapAfter=performance.memory?.usedJSHeapSize;result.ended=Date.now();document.querySelector('pre').textContent=JSON.stringify(result,null,2);
 }
 document.querySelector('button').onclick=run;
 `;
-fs.writeFileSync(target,'<!doctype html><meta charset="utf-8"><title>Warm image GPU verification</title><style>body{background:#18202c;color:#eef;font:16px monospace;padding:30px}button{padding:16px}canvas{display:none}</style><h1>실제 GPU · 이미지 3장 전체 RGBA 비교</h1><button>검사 실행</button><canvas width="1" height="1"></canvas><pre>대기</pre><script>'+js+'</script>');
+fs.writeFileSync(target,'<!doctype html><meta charset="utf-8"><title>Warm image GPU verification</title><style>body{background:#18202c;color:#eef;font:16px monospace;padding:30px}button{padding:16px}canvas{display:none}</style><h1>실제 GPU · 전체 RGBA 비교</h1><button>검사 실행</button><canvas width="1" height="1"></canvas><pre>대기</pre><script>'+js+'</script>');
 console.log(target);

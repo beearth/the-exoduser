@@ -75,3 +75,8 @@ QA·성능팀 첫 수정. 운영 현황·전체 측정표는 [QA_PERFORMANCE_TEA
 `_texPrewarmSrc`가 컨텍스트별 job을 반환한다. pending/decoded/ready/failed/stale 상태로 준비를 알리고 중복URL은 같은 job을 쓴다. `_texPreReset`은 대기와 완료 bitmap을 정리하되 진행 중 busy는 실제 종료까지 유지한다. `_texPrePump`는 Q+busy<4로 예약하며 drain은 bitmap을 정확히1회 닫는다. 일반 큐의 대상3장만 제출·최대2000ms optional 대기 뒤 원래 warm으로 진행하고 실제 draw는 언제나 기존 동기 폴백이다. GPU 복구 때 이3장의 warm 완료 표시를 지운다. 시드·예산·필터·전투·저장 불변. 메인만 적용, easy 미적용.
 
 3장93,143,040 RGBA바이트 차이0, 실제 준비 호출0~0.1ms, 실제게임5처치/자연사 확인. 다른 불꽃146.9ms 잔여, FPS/전체무끊김/장기메모리 판정 아님. [정확한 계약·실행 근거·제한](../0마스터플랜/mac-resume-20261001/Mac-일반이미지-비동기준비.md).
+
+
+## 2026-10-01 QA-WARM-FIRE-02 제한적 체크포인트
+
+기존3장 예약을 우선한 뒤 fire_burst_radial 6,193,152px를 같은64MP 안에서 준비한다. 실제 총61,683,832px. 전수 RGBA24,772,608바이트0diff, 실제 기존warm146.9→0.0ms이나 별도bitmap업로드73.7ms가 남는다. 관련69검사 및 주석정정 뒤 집중58검사/guard PASS. 관측4wrapper 정상입력 전 원복; 이번0처치 자연사로 정상처치·독립QA·전체FPS 인수는 미완료다. easy/패키지 미적용. [FIRE-02 계약·실측·미완료 게이트](../0마스터플랜/mac-resume-20261001/Mac-불꽃-비동기준비.md).

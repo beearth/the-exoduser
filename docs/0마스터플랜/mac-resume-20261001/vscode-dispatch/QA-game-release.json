@@ -1,14 +1,14 @@
 {
   "released": false,
   "owner": "Mac root 01a0f32f-a350-7430-85a4-fb71f336d5c7",
-  "at": "2026-10-01T19:58:19.959118+09:00",
-  "scope": "light-normal diagnostic only; no other team game execution",
-  "head": "db09c0b76146af3757abcc40421c55738a3c5ff7",
-  "gameSHA": "593a7a9d84c78402f04c50c94ae169e237e49751ad58d8640e78e672850728f2",
+  "at": "2026-10-01T11:49:24.775189+00:00",
+  "scope": "QA-WARM-FIRE-02 root-only validation",
+  "head": "fe85bb0866b895b91adf82da54dfe48bb7f89f7f",
+  "gameSHA": "1fc7ac9a31eb516535bda52d300f1958bf5240f5620afbd4038d4ba7b36ecff5",
   "port": 3340,
   "serverPID": 40609,
   "savedir": "tmp/mac-migration-runtime/saves",
-  "origin": "http://qa-light-20261001.localhost:3340",
+  "origin": "http://qa-warm-fire-after-20261001.localhost:3340",
   "profile": "connected Chrome existing profile; new origin isolation only, NOT separate user-data-dir",
   "maxRuns": 2,
   "CPUProfiler": false,
@@ -17,11 +17,11 @@
   "heavyParallelTasksAllowed": false,
   "comparisonEligible": false,
   "expectedStop": "25s after normal input or natural death/focus loss",
-  "status": "finished-gap-attribution-one-run",
-  "finishedAt": "2026-10-01T11:15:59.194286+00:00",
-  "runs": 2,
+  "status": "finished-fire-diagnostic-normal-kill-gate-pending",
+  "finishedAt": "2026-10-01T11:52:55.489434+00:00",
+  "runs": 1,
   "gameClosed": true,
-  "result": "../Mac-정상전투-경량관측.md",
+  "result": "../Mac-불꽃-비동기준비.md",
   "latestDiagnostic": {
     "runs": 1,
     "profiler": true,
@@ -29,5 +29,12 @@
     "result": "../Mac-긴간격-루프밖-귀속.md",
     "forcedState": false,
     "comparisonEligible": false
+  },
+  "previousRun": {
+    "head": "db09c0b76146af3757abcc40421c55738a3c5ff7",
+    "gameSHA": "593a7a9d84c78402f04c50c94ae169e237e49751ad58d8640e78e672850728f2",
+    "status": "finished-gap-attribution-one-run",
+    "origin": "http://qa-light-20261001.localhost:3340",
+    "result": "../Mac-정상전투-경량관측.md"
   }
 }

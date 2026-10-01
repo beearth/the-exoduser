@@ -55,3 +55,6 @@ Apple M5 Pro / ANGLE Metal / Chrome, GPU fixture는 실제 game.html의 WebGL `_
 ## MAP PRODUCTION REPORT
 
 STAGE CH1-1 전투 QA. geometry/아트/충돌/배치 변경0. START와 정상 입력 전투·사망 화면 확인, 전체8뷰 검수 아님. TECH QA는 위61검사·실제3장 전수 픽셀·수명 검수. **VISUAL VERDICT: RETOUCH** — 맵 전체 품질 PASS 아님. NEXT PASS는 남은 불꽃/atlas 지연을 별도 식별·예산 검토 후 한 건씩 다룬다.
+
+
+후속 상태: 위3장 결과는 당시 측정 이력이다. FIRE-02는 기존3장 우선예약을 유지하면서 불꽃을 추가했다. [현재4장 계약·별도73.7ms 비용·미완료 게이트](Mac-불꽃-비동기준비.md)를 따른다.
