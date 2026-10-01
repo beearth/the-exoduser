@@ -1,0 +1,13 @@
+{
+  "taskId": "BUILD-NW-HANDOFF-BUNDLE",
+  "sessionId": "01a0f6e6-2e4c-7322-92d7-3aa309857856",
+  "receivedAt": "2026-10-01T11:45:12Z",
+  "startedAt": "2026-10-01T11:45:12Z",
+  "completedAt": "2026-10-01T11:46:19Z",
+  "status": "자기완결 인수묶음 완료 / 실제NW 미검증",
+  "validation": "자기 inputs 기반 모의19/19·작은 fixture 계약6/6, 각exit0",
+  "ownedPaths": ["tools/team-followup-20261001/BUILD/", "docs/0마스터플랜/mac-resume-20261001/vscode-dispatch/BUILD-next-result.md", "docs/0마스터플랜/mac-resume-20261001/vscode-dispatch/BUILD-next-receipt.json"],
+  "startEvidence": "NEXT_TASK·직전rootReview·최신팀MD 읽기; 한정 runtime find 실행. 이전 준비 완료/실행 게이트 대기 확인, 중복 실환경 실행 없음",
+  "nextAction": "root 실환경 인수 게이트 및 다음 승인 지시 대기",
+  "blocker": "한정 범위 NW runtime 미발견; 실제 실행 미승인"
+}
