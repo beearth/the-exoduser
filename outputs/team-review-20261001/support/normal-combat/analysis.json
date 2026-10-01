@@ -1,0 +1,193 @@
+{
+  "kind": "single normal-play observation, not A/B improvement",
+  "eligible": true,
+  "exclusions": [],
+  "at": "2026-10-01T14:44:28.651Z",
+  "environment": {
+    "url": "http://qa-fire-valid-20261001.localhost:3340/game.html?webgpu=0",
+    "ua": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/152.0.0.0 Safari/537.36",
+    "timeOrigin": 1790865823468.1,
+    "viewport": [
+      1352,
+      666
+    ],
+    "dpr": 2,
+    "canvas": [
+      1352,
+      666
+    ],
+    "profiler": false,
+    "gpuTiming": false,
+    "instrumentation": "one pass-through draw wrapper + rAF state/options snapshots; no update/Canvas/WebGL wrappers; overhead not independently measured"
+  },
+  "options": {
+    "quality": "high",
+    "resScale": 100,
+    "ssaa": 1,
+    "fpsCap": 0,
+    "parts": 80,
+    "diff": 5,
+    "atmos": 1,
+    "bloom": true,
+    "lighting": true,
+    "postfx": true,
+    "fog": true,
+    "grain": true
+  },
+  "kills": 15,
+  "initialHP": 528,
+  "endHP": 528,
+  "maxEnemies": 41,
+  "firstObservedKill": {
+    "delayAfterFirstInputMs": 76.10000002384186,
+    "killsInFirstObservedBatch": 2,
+    "precision": "rAF observation, not exact death-event timestamp"
+  },
+  "full": {
+    "start": 45217.59999990463,
+    "end": 70237.39999997616,
+    "durationMs": 25019.800000071526,
+    "rafTimestampIntervals": {
+      "n": 692,
+      "p50": 33.400000000001455,
+      "p95": 42.5,
+      "p99": 50.19999999999709,
+      "max": 133.40000000000146,
+      "over50": 11,
+      "over100": 2
+    },
+    "snapshotWallIntervals": {
+      "n": 692,
+      "p50": 35.699999928474426,
+      "p95": 45.5,
+      "p99": 49.299999952316284,
+      "max": 155.60000002384186,
+      "over50": 5,
+      "over100": 3
+    },
+    "drawStartIntervals": {
+      "n": 692,
+      "p50": 35.699999928474426,
+      "p95": 45.39999997615814,
+      "p99": 49.700000047683716,
+      "max": 132.79999995231628,
+      "over50": 6,
+      "over100": 3
+    },
+    "synchronousDrawCPU": {
+      "n": 693,
+      "p50": 0.5,
+      "p95": 1.7999999523162842,
+      "p99": 6,
+      "max": 129.79999995231628,
+      "over50": 3,
+      "over100": 2
+    }
+  },
+  "firstKillWindow": {
+    "start": 45217.59999990463,
+    "end": 47293.699999928474,
+    "durationMs": 2076.100000023842,
+    "rafTimestampIntervals": {
+      "n": 52,
+      "p50": 41.599999999998545,
+      "p95": 42.5,
+      "p99": 133.40000000000146,
+      "max": 133.40000000000146,
+      "over50": 1,
+      "over100": 1
+    },
+    "snapshotWallIntervals": {
+      "n": 52,
+      "p50": 38.39999997615814,
+      "p95": 44.60000002384186,
+      "p99": 155.60000002384186,
+      "max": 155.60000002384186,
+      "over50": 1,
+      "over100": 1
+    },
+    "drawStartIntervals": {
+      "n": 52,
+      "p50": 38.200000047683716,
+      "p95": 43.700000047683716,
+      "p99": 132.79999995231628,
+      "max": 132.79999995231628,
+      "over50": 1,
+      "over100": 1
+    },
+    "synchronousDrawCPU": {
+      "n": 53,
+      "p50": 0.6000000238418579,
+      "p95": 6.700000047683716,
+      "p99": 129.79999995231628,
+      "max": 129.79999995231628,
+      "over50": 1,
+      "over100": 1
+    }
+  },
+  "denseSegments": [
+    {
+      "start": 58797.39999997616,
+      "end": 70237.19999992847,
+      "rows": 314
+    }
+  ],
+  "denseLongest": {
+    "start": 58797.39999997616,
+    "end": 70237.19999992847,
+    "durationMs": 11439.799999952316,
+    "rafTimestampIntervals": {
+      "n": 313,
+      "p50": 33.400000000001455,
+      "p95": 50,
+      "p99": 50.19999999999709,
+      "max": 50.69999999999709,
+      "over50": 8,
+      "over100": 0
+    },
+    "snapshotWallIntervals": {
+      "n": 313,
+      "p50": 36.10000002384186,
+      "p95": 47.60000002384186,
+      "p99": 49.299999952316284,
+      "max": 52.200000047683716,
+      "over50": 2,
+      "over100": 0
+    },
+    "drawStartIntervals": {
+      "n": 312,
+      "p50": 36,
+      "p95": 47.40000009536743,
+      "p99": 49.700000047683716,
+      "max": 52.200000047683716,
+      "over50": 3,
+      "over100": 0
+    },
+    "synchronousDrawCPU": {
+      "n": 313,
+      "p50": 0.5999999046325684,
+      "p95": 0.8999999761581421,
+      "p99": 2.899999976158142,
+      "max": 11.200000047683716,
+      "over50": 0,
+      "over100": 0
+    }
+  },
+  "inputs": {
+    "count": 796,
+    "trusted": true,
+    "mechanism": "normal CUA key/click events; no held-key timing guarantee"
+  },
+  "cleanup": {
+    "draw": true,
+    "listeners": true
+  },
+  "limits": [
+    "GL/GPU cost unmeasured",
+    "observer overhead not independently measured",
+    "existing Chrome profile; cache state unknown",
+    "first-kill prehistory is only from first input; first observed batch contains two kills",
+    "post-run screenshot is later than measured endpoint; HUD regional counter differs from total G.kills",
+    "no comparison or PC329ms resolution claim"
+  ]
+}

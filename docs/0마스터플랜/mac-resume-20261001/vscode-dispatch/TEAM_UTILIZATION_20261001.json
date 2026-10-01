@@ -18,7 +18,7 @@
         "tool": "Read",
         "input": "{'file_path': '/Users/fordeargamers/Projects/exoduser-migration-20261001/tools/team-followup-20261001/QA/NEXT_TASK.md'}"
       },
-      "status": "root preparing single normal combat observation",
+      "status": "root 정상25초·15처치·밀집11.44초 관측완료; 성능개선은 미확정",
       "completedAt": "2026-10-01T11:58:36.004Z",
       "cliState": "idle in fresh seven-Claude inventory; previous evidence retained",
       "rootFollowup": {
@@ -27,7 +27,8 @@
         "status": "INCONCLUSIVE;5excluded samples; all game tabs closed",
         "evidence": "outputs/team-review-20261001/d10/qa-verdict.json"
       },
-      "nextAction": "first-kill and dense uninterrupted sample after remote checkpoint"
+      "nextAction": "동기draw129.8/108.3/99.4ms 별도 원인귀속1회",
+      "measurementRunning": false
     },
     {
       "team": "ENEMY",
@@ -257,7 +258,7 @@
       "exists": true,
       "receivedAt": "2026-10-01T14:25:37Z",
       "startedAt": "2026-10-01T14:25:37Z",
-      "status": "support submitted and root candidate accepted; actual game/trace/pixels pending",
+      "status": "지원 후보 제출·root 인수 완료; 실제 tick/trace/픽셀 게이트는 별도",
       "startEvidence": "본 영수증 및 review.html 소비 구현 apply_patch",
       "receipt": "/Users/fordeargamers/Projects/exoduser-migration-20261001/docs/0마스터플랜/mac-resume-20261001/vscode-dispatch/UIUX-review-receipt.json",
       "waitReason": "Effect/art/translation/game/package gates remain",
@@ -381,7 +382,7 @@
       "exists": true,
       "receivedAt": "2026-10-01T14:25:02Z",
       "startedAt": "2026-10-01T14:25:02Z",
-      "status": "support submitted and root candidate accepted; actual game/trace/pixels pending",
+      "status": "지원 후보 제출·root 인수 완료; 실제 tick/trace/픽셀 게이트는 별도",
       "startEvidence": "NEXT_TASK.md와 기존 ITEM 결과·후보·현재 생산 함수 읽기",
       "receipt": "/Users/fordeargamers/Projects/exoduser-migration-20261001/docs/0마스터플랜/mac-resume-20261001/vscode-dispatch/ITEM-definition-receipt.json",
       "previous": {
@@ -453,7 +454,7 @@
       "exists": true,
       "receivedAt": "2026-10-01T14:25:37Z",
       "startedAt": "2026-10-01T14:25:37Z",
-      "status": "support submitted and root candidate accepted; actual game/trace/pixels pending",
+      "status": "지원 후보 제출·root 인수 완료; 실제 tick/trace/픽셀 게이트는 별도",
       "startEvidence": "배정·팀 최신 MD·정의 모듈·적용 계약·D절22행 실제 읽기",
       "receipt": "/Users/fordeargamers/Projects/exoduser-migration-20261001/docs/0마스터플랜/mac-resume-20261001/vscode-dispatch/BALANCE-roll-receipt.json",
       "waitReason": "Effect/art/translation/game/package gates remain",
@@ -558,10 +559,10 @@
     }
   ],
   "remoteCheckpoint": {
-    "sha": "8d221540594cddebcb9f73fd785f3f82df631268",
+    "sha": "36a66f0e23ea6c1376049fab23864a41308d2859",
     "branch": "codex/mac-environment-20261001",
     "verified": true,
-    "scope": "prior binding checkpoint; new support checkpoint recorded after push"
+    "scope": "support3 checkpoint; QA evidence commit follows"
   },
   "wipRecovery": {
     "sha": "3921dfc98085ee856accdd1795b5efd9a7589e19",
@@ -617,7 +618,9 @@
     "pendingQueueAndDrafts": "UNKNOWN; no duplicates",
     "gameMeasurementRunning": false,
     "productionD10Active": false,
-    "simultaneouslyRunningCount": "UNKNOWN for external CLI; use actual actions and receipts rather than interrupted app flag"
+    "simultaneouslyRunningCount": "UNKNOWN for external CLI; use actual actions and receipts rather than interrupted app flag",
+    "normalCombat": "eligible single observation:25.020s/15kills/max41/dense11.440s; CPU draw129.8ms remains",
+    "nextAction": "separate draw cause attribution; no improvement claim"
   },
-  "updatedAt": "2026-10-01T14:42:47.470361+00:00"
+  "updatedAt": "2026-10-01T14:46:38.177039+00:00"
 }

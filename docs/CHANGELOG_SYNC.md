@@ -51814,3 +51814,8 @@ FIRE 독립8검사와 URL query17검사 인수, SOUND root canonical 관측기18
 ## 2026-10-01 지원 관측 후보 3건 인수
 
 ENEMY 물리tick, ART 최종crop, SKILL 충전증거/예외정리 후보 검수. BUILD 반례2건을 root가 보강해 독립33PASS. 원 실패와 원담당 파일 보존; game/easy/index/server 변경0. 상세: docs/0마스터플랜/mac-resume-20261001/vscode-dispatch/SUPPORT-root-review.md.
+
+
+## 2026-10-01 정상 전투 연속 관측
+
+원격36a66f0e/기본품질/단독25.020초,15처치·생존적41·연속밀집11.440초. 전체RAF p99 50.2ms, CPUdraw최대129.8ms 잔여. GL/개선율미확정, 게임탭/관측기정리완료. 생산변경0. 상세 SUPPORT-normal-combat.md 및 raw/analysis 보존.

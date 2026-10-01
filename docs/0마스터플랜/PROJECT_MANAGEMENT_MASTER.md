@@ -624,3 +624,8 @@ ITEM 실제binding 및 UIUX/BALANCE 의존연결을 인수, BUILD가 특수객�
 ### 18.39 지원3후보 인수·SKILL 정리 경계 보강
 
 ITEM→ENEMY tick, UIUX→ART 최종crop, BALANCE→SKILL 충전증거 후보를 인수했다. BUILD 독립31PASS/2FAIL의 취소ID·getter처리 반례를 root가 지원 후보에서 수정, 동일 독립검사33PASS. 원실패·원담당소스 보존, 생산변경0. 세지원 제출완료이며 실제 tick/trace/픽셀은 미검수. 다음은 첫처치·밀집 정상전투 단독측정. [근거·운영상태](mac-resume-20261001/vscode-dispatch/SUPPORT-root-review.md).
+
+
+### 18.40 정상 전투 첫 처치·밀집 연속 관측
+
+기본품질 고정·단일게임25.020초/15처치/생존적최대41·연속밀집11.440초 확보. 관측/옵션/전경 게이트충족, 첫처치묶음2를첫입력+76.1ms 관측. 전체RAF p99 50.2/max133.4ms, CPUdraw최대129.8ms 잔여. GL미측정·개선율미확정. draw/listener원복·게임탭종료. 다음은동기draw129.8/108.3/99.4ms 원인귀속1회이며 아직원인확정/생산수정아님. [원자료·환경·한계](mac-resume-20261001/vscode-dispatch/SUPPORT-normal-combat.md).

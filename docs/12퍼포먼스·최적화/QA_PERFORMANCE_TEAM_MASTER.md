@@ -475,3 +475,8 @@ QA-WARM-IDLE-01 한정 구현 인수: 일반Image3장 전수픽셀동일/61회�
 ### 2026-10-01 FIRE 정상전투 재측정: INCONCLUSIVE
 
 root가 기존3340의 격리origin에서 정상입력으로 시도했지만 튜토리얼/0처치/첫처치 관측누락/옵션변화가 있어5표본모두성능인수에서제외. 실제새병목/개선율/PC329ms해결주장0. CPU draw와RAF진단은구분,GL비용미측정·observer부하미독립측정. 게임탭닫기·draw/listener원복,측정종료. [환경·표본·실패단계](../0마스터플랜/mac-resume-20261001/vscode-dispatch/D10-root-review.md).
+
+
+### 2026-10-01 정상 전투 단일 관측 자격 확보
+
+36a66f0e 원격 백업 후 기존3340·격리origin·Chrome152에서25.020초/15처치/생존적최대41, 연속밀집11.440초를 기록했다. 옵션/포커스변경0, cleanup완료·게임종료. 전체RAF p99 50.2ms/max133.4ms, CPUdraw max129.8ms. 밀집RAF p99 50.2/max50.7ms. GPU/GL미측정·관측부하미독립측정·비교개선미확정. 다음은129.8/108.3/99.4ms draw 별도원인귀속1회. [환경·전체결과](../0마스터플랜/mac-resume-20261001/vscode-dispatch/SUPPORT-normal-combat.md).

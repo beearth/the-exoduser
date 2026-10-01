@@ -1,0 +1,13 @@
+{
+  "at": "2026-10-01T14:43:39.370066+00:00",
+  "head": "36a66f0e23ea6c1376049fab23864a41308d2859",
+  "gameSha256": "8ebc3b7b52a651c1a3bc5e8c285b00d186c6dacc18429ada7499781acc72b0b9",
+  "port": 3340,
+  "serverPid": 40609,
+  "saveDirectory": "tmp/mac-migration-runtime/saves",
+  "url": "http://qa-fire-valid-20261001.localhost:3340/game.html?webgpu=0",
+  "profile": "existing Chrome; fresh isolated origin, not separate profile",
+  "cache": "UNKNOWN",
+  "gameInstances": 1,
+  "otherTeamLoad": "Claude7 idle; BUILD audit completed; no new tasks or builds during measurement"
+}
