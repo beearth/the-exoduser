@@ -26398,10 +26398,10 @@ function _worldItemSkin(it){
     img=new Image();
     img.onload=()=>{img._worldDropMasked=null;};
     if(renderSrc!==fallback)img.onerror=()=>{img.onerror=null;img._worldDropMasked=null;img.src=fallback;};
-    img.src=renderSrc;_worldItemSkinCache.set(renderSrc,img);
+    img.src=renderSrc;img._worldDropCutoutSrc=cutoutSrc?img.src:'';_worldItemSkinCache.set(renderSrc,img);
   }
   if(!img.complete||!img.naturalWidth)return null;
-  if(cutoutSrc)return img; // 알파가 보존된 투명 원화는 검정 마스킹을 다시 적용하지 않는다.
+  if(cutoutSrc&&img.src===img._worldDropCutoutSrc)return img; // 실제 컷아웃 로드 성공만 우회; phys 폴백은 마스킹한다.
   if(!img._worldDropMasked){
     const canvas=document.createElement('canvas');canvas.width=img.naturalWidth;canvas.height=img.naturalHeight;
     canvas.getContext('2d').drawImage(img,0,0);

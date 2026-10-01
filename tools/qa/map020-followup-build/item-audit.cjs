@@ -39,7 +39,7 @@ for(const file of ['game.html','game-easy-test.html']){
  check(file+' DOM second failure removes image, retains SVG sibling',mock.removed&&html.includes('<svg'));
  check(file+' no Seedream/unique render integration',!p.source.includes('seedream-candidate')&&!p.source.includes('img/ui/unique-items/'));
  // Cutout successful: no mask. Failed cutout with successful physical fallback:
- // current code still branches on original cutoutSrc; report defect, do not fix game.
+ // Verify the loaded physical source is masked even when the initial request was a cutout.
  const world=setup(file);world.api._worldItemSkin(it);const image=world.images[0];
  check(file+' world loading -> null',world.api._worldItemSkin(it)===null);
  image.succeed();const successful=world.api._worldItemSkin(it);

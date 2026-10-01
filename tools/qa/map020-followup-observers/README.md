@@ -51,7 +51,7 @@ typeof __map020Observers // 'undefined'
 | 마스크 self | 픽셀 변환뿐 아니라 getContext/JS/워퍼 잔여 비용이 포함된다. **순수 픽셀 루프 시간으로 표기 금지** |
 | Canvas2D | 드롭 훅 안의 drawImage/getImageData/putImageData만 계측. 메인 스레드 호출 경과시간이며 GPU 시간 아님 |
 | 빔 캐시 | frame/tile별 hit/miss/notready/oob. 실제 asset 경로도 기록 |
-| 아이템 캐시 | 이미지 객체 asset-hit/miss와 마스크 hit/miss를 구분. 투명 cutout은 마스킹을 우회하므로 cutout-bypass로 분리. key와 실제 fallback src를 함께 기록 |
+| 아이템 캐시 | 이미지 객체 asset-hit/miss와 마스크 hit/miss를 구분. `cutout`은 요청 분류, `loadedCutout`은 준비된 이미지의 실제 src 판정이다. 실제 cutout 이미지를 그대로 반환한 경우만 cutout-bypass. 물리 fallback의 실제 마스크 반환은 miss/hit, 이전 함수의 마스크 없는 원본 반환은 raw-fallback-unmasked. key와 실제 fallback src를 함께 기록 |
 | 실제 바인딩 | 식별자 getter/setter로 기존함수를 감싸고 identity를 확인. Node classic-script에서 실제 드롭 원문 내부 mask 호출 포착을 확인. 실제 브라우저 설치는 아직 미실행 |
 | 후보의 lexical 주장 | 함수가 lexical이라는 이유로 외부 계측 불가능하다는 단정은 사용하지 않음. `parent:null`은 미포착 경로만 뜻하며 원인은 trace·실제 설치 결과로 판단 |
 | VFX update | 실제 update 호출 전/후 관측. `_gameTime` 증가로 호출 수를 추정하지 않음. early-return update도 호출 수에 들어가므로 gameplay tick 진행은 gameTime·paused·on 등과 함께 확인 |
@@ -69,7 +69,13 @@ VFX는 전체 적을 update/draw 전후 읽으므로 상당한 진단 비용이 
 /Users/fordeargamers/.local/node-runtime/node-v24.15.0-darwin-arm64/bin/node tools/qa/map020-followup-observers/smoke.mjs
 ```
 
-12개 통과. QA는 현재 game.html의 드롭 함수 원문을 추출하여 모의 Canvas2D로 내부 호출·중복시간·캐시를 검증했다. VFX는 작은 모의 update/draw로 훅·카운터·사망/부활 첫 draw·백그라운드 게이트·재설치·부분실패 롤백·타 도구 교체 보존을 검증했다. 추가로 GL 미정의/null/메서드 없음, 조회 예외, 비불리언 반환, 실제 true/false 반환을 구분하고 미확인 상태의 GL PASS 거부를 검증했다. 실제 GPU/GL 렌더/게임 부팅/성능/시각 검수는 하지 않았다.
+15개 통과. QA는 현재 game.html의 드롭 함수 원문을 추출하여 모의 Canvas2D로 내부 호출·중복시간·캐시를 검증했다. ITEM 회귀는 추출 원문으로 이전/수정 함수를 메모리에서 구성하여 cutout 오류→물리 fallback→마스크 miss/hit, 이전 함수의 마스크 누락, 절대 URL, 같은 Image의 src 재교체를 확인했다. easy 원문은 별도 VM에서만 검사하여 cutout 전역 집합이 없어도 실제 key/마스크 분류를 확인했다. VFX는 작은 모의 update/draw로 훅·카운터·사망/부활 첫 draw·백그라운드 게이트·재설치·부분실패 롤백·타 도구 교체 보존을 검증했다. GL 미정의/null/메서드 없음, 조회 예외, 비불리언 반환, 실제 true/false 반환을 구분하고 미확인 상태의 GL PASS 거부를 검증했다. 실제 GPU/GL 렌더/게임 부팅/성능/시각 검수는 하지 않았다.
+
+### ITEM 분류와 호환 범위
+
+설치 시 원본 `_worldItemSkin`의 cutout 정책과 headband2 별칭 존재를 읽는다. 현재 main/easy 원문의 차이를 처리하는 진단이며 임의의 제3자 래퍼·축소/변형 함수까지 자동 해석하는 도구는 아니다. 다른 진단 래퍼는 먼저 정리한다. 실제 이미지 주소는 `currentSrc || src`, cutout 기준은 새 `_worldDropCutoutSrc`를 우선 사용하고 이전 함수에는 요청 key를 절대 URL로 정규화하여 비교한다. 게임 이미지·캐시 필드는 쓰지 않는다.
+
+`cacheBefore`는 호출 전 상태일 뿐이다. 최종 `cache`는 실제 반환 객체가 원본 이미지인지 `_worldDropMasked`인지까지 확인하므로 base가 cutout 집합에 있어도 물리 fallback을 성공한 cutout으로 판정하지 않는다. 알려진 두 반환 객체가 아니면 `unknown-return`으로 남긴다. 이전 관측기의 `cutout-bypass`는 base 집합만으로 기록했으므로 과거 raw에서 실제 cutout 로드나 마스크 누락 여부를 증명하지 못한다. 기존 raw는 변경하지 않는다. 수정 파일을 적용하려면 기존 관리자 dispose 후 다시 평가한다.
 
 ### 기존 raw 해석 정정
 

@@ -36,6 +36,18 @@
   function installDrop(options = {}) {
     const s = session('drop', options), stack = [];
     let callId = 0;
+    // Main and easy have different request keys/aliases. Read the installed function,
+    // not merely the existence of a global set; never write image or cache state.
+    const itemSource = safe(() => Function.prototype.toString.call(_worldItemSkin), '');
+    const itemUsesCutouts = itemSource.includes('_ITEM_CUTOUT_BASES');
+    const itemHasHeadband2 = itemSource.includes('headband2');
+    function loadedItem(img, meta) {
+      const actualSrc = img?.currentSrc || img?.src || null;
+      const ready = !!(img?.complete && img.naturalWidth);
+      const normalize = value => safe(() => new URL(value, document.baseURI || root.location?.href).href, value);
+      const cutoutSrc = img?._worldDropCutoutSrc ?? (meta.cutout ? meta.assetKey : '');
+      return { actualSrc, loadedCutout: ready && !!cutoutSrc && normalize(actualSrc) === normalize(cutoutSrc) };
+    }
     function timed(label, original, before, after) {
       return function (...args) {
         const meta = safe(() => before?.(args), {}), parent = stack.at(-1);
@@ -56,12 +68,13 @@
       const it = args[0]; if (!it) return { cache: 'no-item' };
       let base = it.wtype || it.btype || it.slot || '';
       if (it.slot === 'bonePart') base = 'bone_' + (it.part || 'skull');
-      base = ({ ring1: 'ring', ring2: 'ring', headband: 'earring', headband2: 'earring' })[base] || base;
-      const cutout = _ITEM_CUTOUT_BASES.has(base);
+      base = ({ ring1: 'ring', ring2: 'ring', headband: 'earring', ...(itemHasHeadband2 ? { headband2: 'earring' } : {}) })[base] || base;
+      const cutout = itemUsesCutouts && safe(() => _ITEM_CUTOUT_BASES.has(base), false);
       const assetKey = cutout ? 'img/ui/item-cutouts/' + base + '_phys_cutout.png' : _itemSkinSrc(base, _ELKEY[it.el || 0] || 'phys');
       const img = _worldItemSkinCache.get(assetKey);
-      return { assetKey, actualSrc: img?.currentSrc || img?.src || null, assetCache: img ? 'hit' : 'miss', cutout, maskCachedBefore: !!img?._worldDropMasked,
-        cache: !img || !img.complete || !img.naturalWidth ? 'notready' : cutout ? 'cutout-bypass' : img._worldDropMasked ? 'hit' : 'miss' };
+      const loaded = loadedItem(img, { assetKey, cutout });
+      return { assetKey, ...loaded, assetCache: img ? 'hit' : 'miss', cutout, maskCachedBefore: !!img?._worldDropMasked,
+        cache: !img || !img.complete || !img.naturalWidth ? 'notready' : loaded.loadedCutout ? 'cutout-bypass' : img._worldDropMasked ? 'hit' : 'miss' };
     }
     try {
       patch(s, '_maskWorldDropBlack', () => _maskWorldDropBlack, v => { _maskWorldDropBlack = v; },
@@ -74,9 +87,14 @@
         return { frame, tile, assetKey: img?.src || null, cache: !ready ? 'notready' : cached ? 'hit' : Math.trunc(tile / _WORLD_DROP_FX_COLS) >= rows ? 'oob' : 'miss' };
       }));
       patch(s, '_worldItemSkin', () => _worldItemSkin, v => { _worldItemSkin = v; }, f => timed('itemSkin', f, itemMeta,
-        (a, result, meta) => ({ returned: !!result, cacheBefore: meta.cache,
-          cache: !result ? 'notready-or-null' : meta.cutout ? 'cutout-bypass' : meta.maskCachedBefore ? 'hit' : 'miss',
-          actualSrc: safe(() => { const img = _worldItemSkinCache.get(meta.assetKey); return img?.currentSrc || img?.src || null; }) })));
+        (a, result, meta) => {
+          const img = _worldItemSkinCache.get(meta.assetKey), loaded = loadedItem(img, meta);
+          return { returned: !!result, cacheBefore: meta.cache, ...loaded,
+            cache: !result ? 'notready-or-null'
+              : result === img ? loaded.loadedCutout ? 'cutout-bypass' : 'raw-fallback-unmasked'
+              : result === img?._worldDropMasked ? meta.maskCachedBefore ? 'hit' : 'miss'
+              : 'unknown-return' };
+        }));
       for (const method of ['drawImage', 'getImageData', 'putImageData']) {
         const p = CanvasRenderingContext2D.prototype;
         patch(s, '2d.' + method, () => p[method], v => { p[method] = v; }, original => {

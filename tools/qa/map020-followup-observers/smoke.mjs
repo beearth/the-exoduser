@@ -2,7 +2,7 @@ import assert from 'node:assert/strict';
 import fs from 'node:fs';
 import vm from 'node:vm';
 import { createHash } from 'node:crypto';
-const src = fs.readFileSync(new URL('./observer.js', import.meta.url), 'utf8');
+const src = fs.readFileSync(process.argv[2] || new URL('./observer.js', import.meta.url), 'utf8');
 const html = fs.readFileSync(new URL('../../../game.html', import.meta.url), 'utf8');
 const begin = html.indexOf('const _worldItemSkinCache=new Map();');
 const end = html.indexOf('const STAT_SVG=', begin);
@@ -93,6 +93,56 @@ test('partial install failure restores earlier binding and removes pending timer
   vm.runInContext(src,c);run('draw=null');assert.throws(()=>run('__map020Observers.installVfx()'),/Missing callable/);
   assert.equal(run('update===originalUpdate'),true);assert.equal(run('timers.size'),0);run('__map020Observers.dispose()');
 });
+test('loaded phys fallback is mask miss/hit even when base has a cutout; old raw bug is explicit',()=>{
+  const section=html.slice(begin,end);
+  const oldSection=section.replace(/img\._worldDropCutoutSrc\s*=\s*cutoutSrc\s*\?\s*img\.src\s*:\s*['"]['"]\s*;/g,'')
+    .replace(/if\(cutoutSrc\s*&&\s*img\.src\s*===\s*img\._worldDropCutoutSrc\)return img;/,'if(cutoutSrc)return img;');
+  assert(oldSection.includes('if(cutoutSrc)return img;'));
+  const fixed=oldSection.replace('img.src=renderSrc;','img.src=renderSrc;img._worldDropCutoutSrc=cutoutSrc?img.src:"";')
+    .replace('if(cutoutSrc)return img;','if(cutoutSrc&&img.src===img._worldDropCutoutSrc)return img;');
+  for(const [body,expected] of [[fixed,['miss','hit']],[oldSection,['raw-fallback-unmasked','raw-fallback-unmasked']]]) {
+    const x=vm.createContext({URL});vm.runInContext(fixture+body,x);vm.runInContext(src,x);
+    vm.runInContext('__map020Observers.installDrop();_worldItemSkin({slot:"ring1"});const im=_worldItemSkinCache.get("img/ui/item-cutouts/ring_phys_cutout.png");im.onerror();im.onload();_worldItemSkin({slot:"ring1"});_worldItemSkin({slot:"ring1"})',x);
+    const rows=vm.runInContext('__map020Observers.report("drop").records.filter(r=>r.label==="itemSkin")',x);
+    assert.deepEqual(Array.from(rows.slice(-2),r=>r.cache),expected);
+    assert(rows.slice(-2).every(r=>r.actualSrc==='ring_phys.png'&&r.loadedCutout===false));
+    vm.runInContext('__map020Observers.dispose()',x);
+  }
+});
+test('absolute loaded URL and same Image source changes preserve cutout/mask distinction',()=>{
+  const section=html.slice(begin,end)
+    .replace(/img\._worldDropCutoutSrc\s*=\s*cutoutSrc\s*\?\s*img\.src\s*:\s*['"]['"]\s*;/g,'')
+    .replace(/if\(cutoutSrc\s*&&\s*img\.src\s*===\s*img\._worldDropCutoutSrc\)return img;/,'if(cutoutSrc)return img;');
+  const fixed=section.replace('img.src=renderSrc;','img.src=renderSrc;img._worldDropCutoutSrc=cutoutSrc?img.src:"";')
+    .replace('if(cutoutSrc)return img;','if(cutoutSrc&&img.src===img._worldDropCutoutSrc)return img;');
+  const x=vm.createContext({URL});
+  const absoluteFixture=fixture.replace("class Image{constructor(){this.complete=true;this.naturalWidth=1024;this.naturalHeight=2560;this.src=''}}",
+    'document.baseURI="http://localhost:3340/game.html";class Image{constructor(){this.complete=true;this.naturalWidth=1024;this.naturalHeight=2560;this._src=""}set src(v){this._src=new URL(v,document.baseURI).href}get src(){return this._src}get currentSrc(){return this._src}}');
+  vm.runInContext(absoluteFixture+fixed,x);vm.runInContext(src,x);
+  vm.runInContext('__map020Observers.installDrop();_worldItemSkin({slot:"ring1"});const im=_worldItemSkinCache.get("img/ui/item-cutouts/ring_phys_cutout.png");im.onerror();im.onload();_worldItemSkin({slot:"ring1"});_worldItemSkin({slot:"ring1"});im.src=im._worldDropCutoutSrc;im.onload();_worldItemSkin({slot:"ring1"});im.src="ring_phys.png";im.onload();_worldItemSkin({slot:"ring1"})',x);
+  const rows=vm.runInContext('__map020Observers.report("drop").records.filter(r=>r.label==="itemSkin")',x);
+  assert.deepEqual(Array.from(rows,r=>r.cache),['cutout-bypass','miss','hit','cutout-bypass','miss']);
+  assert.deepEqual(Array.from(rows,r=>r.loadedCutout),[true,false,false,true,false]);
+  assert(rows.every(r=>r.actualSrc.startsWith('http://localhost:3340/')));
+  assert.equal(vm.runInContext('__map020Observers.report("drop").byLabel.mask.calls',x),2);
+  // Old functions have no marker: normalize the request URL instead of guessing
+  // from base membership. This is read-only observer fallback, not a game fix.
+  vm.runInContext('im.src="img/ui/item-cutouts/ring_phys_cutout.png";im.onload();delete im._worldDropCutoutSrc;_worldItemSkin({slot:"ring1"})',x);
+  const last=vm.runInContext('__map020Observers.report("drop").records.filter(r=>r.label==="itemSkin").at(-1)',x);
+  assert.equal(last.loadedCutout,true);assert.equal(last.cache,'miss'); // fixed game masks without its required marker
+  vm.runInContext('__map020Observers.dispose()',x);
+});
+test('easy source without cutout policy reports actual asset and mask reuse',()=>{
+  const easy=fs.readFileSync(new URL('../../../game-easy-test.html',import.meta.url),'utf8');
+  const a=easy.indexOf('const _worldItemSkinCache=new Map();'),b=easy.indexOf('const STAT_SVG=',a);assert(a>0&&b>a);
+  const x=vm.createContext({URL});vm.runInContext(fixture.replace("const _ITEM_CUTOUT_BASES=new Set(['ring']),_ELKEY=","const _ELKEY=")+easy.slice(a,b),x);vm.runInContext(src,x);
+  vm.runInContext('__map020Observers.installDrop();_worldItemSkin({slot:"ring1",el:1});const im=_worldItemSkinCache.get("ring_fire.png");im.onerror();im.onload();_worldItemSkin({slot:"ring1",el:1});_worldItemSkin({slot:"ring1",el:1})',x);
+  const rows=vm.runInContext('__map020Observers.report("drop").records.filter(r=>r.label==="itemSkin")',x);
+  assert.deepEqual(Array.from(rows.slice(-2),r=>r.cache),['miss','hit']);
+  assert(rows.every(r=>r.assetKey==='ring_fire.png'&&r.loadedCutout===false));
+  assert(rows.slice(-2).every(r=>r.actualSrc==='ring_phys.png'));
+  vm.runInContext('__map020Observers.dispose()',x);
+});
 test('missing/null GL reports unavailable and unknown loss; refuses GL gate',()=>{
   for(const declaration of ['',',GL=null',',GL={}']) {
     const isolated=vm.createContext({});
@@ -116,5 +166,6 @@ test('GL query failure is unknown; genuine true/false loss distinguished strictl
   }
 });
 console.log(JSON.stringify({status:'PASS',checks:checks.length,names:checks,
+  observerSHA256:createHash('sha256').update(src).digest('hex'),
   gameSHA256:createHash('sha256').update(html).digest('hex'),
   scope:'Node vm: actual extracted game drop functions with mock canvas; synthetic update/draw. No browser/GPU/gameplay performance or visual validation.'},null,2));
