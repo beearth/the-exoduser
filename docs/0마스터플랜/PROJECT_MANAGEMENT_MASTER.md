@@ -450,4 +450,16 @@ UI03은 실제 공격으로 상단 저대비를 재현한 뒤 공통 토큰/리�
 
 ### 18.12 R 원인 분리·정규 GL 관측·상태판 인수
 
-R28시행에서 초단 자동화와 update 타이밍을 분리했고 일반 사용자 결함은 미입증으로 생산 코드 변경0. 정규 WebGL에서 피격8/사망8/동일 객체 부활5건을 관측했으나 실제draw30Hz로 고주사율 미충족. BUILD957파일 LFS3FAIL·BALANCE8PASS2SKIP(MISSING_HOOK)·SOUND 페이지 기본UI를 별도 인수했다. [종합 검수](mac-resume-20261001/R-입력과-GL-후속검수.md). 기존11CLI와 지원3명 산출 완료, 상태판의실제모델은 Claude Opus4.8/Codex세부미확인. VS Code 프로젝트·상태판을 실제 열었으며11팀attach는 Workspace Trust 승인 대기다.
+2026-10-01T16:35:36+09:00 조회 시점 소스 HEAD와 원격 refs/heads/codex/mac-environment-20261001은 모두 `738308e135267ea7209316329dda37bfd5d7410b`로 일치했다. 이 기준은 R/GL 검수 도구·증거·상태판23파일 체크포인트다. 본편/easy의 기존 SHA, 정규화22경로·빈 인덱스를 확인했고 PC·원래 Mac3333·사용자 저장을 보존했다. 이번 후속은 기존 산출의 인수 정리이며 새 측정/빌드/게임 실행은 없다.
+
+| 인수 대상 | 확인 결과·판정 범위 |
+|---|---|
+| R | 28시행·3317이벤트. native 도구 초단0.6–0.9ms9누락은 사이 update0, DOM20/50/100ms12/12획득. 일반 사용자 결함 미입증으로 생산 코드 변경0 |
+| 수동 진단 | 16만족/10미충족·exit1 유지. update 없는 입력8개와 repeat가정2개다. 일반 CI GREEN·문제 해결로 표기하지 않음 |
+| GL | 정규 webgpu=0 부팅, mkEn/hurtE·적HP/방어막·플레이어무적을 통제한 fixture. 자연조우/사용자 공격 검수가 아님. 감쇠8/사망소거8/동일객체부활5건 확인, 구울3제외 |
+| GL 한계 | 실제draw30~31Hz로 고주사율 미충족. glDrawEvidence는 관측 조합이고 객체별 GPU 제출/픽셀 검사는 아님 |
+| 기존 후속 | BUILD957파일 LFS3FAIL·BALANCE8PASS2SKIP(MISSING_HOOK)·SOUND 기본UI 인수. 새 실행·효과구현·실제음질 PASS로 확대하지 않음 |
+| 팀 현황 | 최신 CLI11/11 idle/done·end_turn·PID존재·claude-opus-4-8. Codex지원3완료, 세부모델미확인. root만 문서 정리 |
+| 실제 VS Code 연결 | 16:29 KST UI영수증: 이번 팀터미널 개설0/11·attach0/11·신뢰승인대기11/11. Finder/프로젝트탐색기/상태판은 열림. 이번 후속에서 창 재개설·태스크 재실행·승인 질문 중복0 |
+
+[종합 검수](mac-resume-20261001/R-입력과-GL-후속검수.md), [최신 상태판](MAC_AGENT_DASHBOARD.md), [조회·기존 증거 SHA 영수증](mac-resume-20261001/r-input-evidence/handoff-audit.json)을 함께 인수한다. 기존 신뢰 승인 질문을 유지한다. 남은 게이트는 VS Code 작업공간 신뢰, SOUND 파일 접근·실제 재생/청취, GL 고주사율/자연전투, 후보5개 실행 전 수정, Windows 패키지다.

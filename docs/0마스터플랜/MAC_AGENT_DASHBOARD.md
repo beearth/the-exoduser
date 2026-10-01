@@ -1,12 +1,12 @@
 # Mac 에이전트 작업 상태판
 
-조회 시각: **2026-10-01T16:20:44+09:00 (KST)**. 이 문서는 조회 시점 스냅샷이며 실시간 자동 갱신 화면이 아닙니다.
+조회 시각: **2026-10-01T16:35:36+09:00 (KST)**. 이 문서는 조회 시점 스냅샷이며 실시간 자동 갱신 화면이 아닙니다.
 
-조회 당시 코드 HEAD: `dd3bdc1888e506ec4c418d3679461f0491823728`
+조회 당시 코드 HEAD: `738308e135267ea7209316329dda37bfd5d7410b`
 
-조회 당시 원격: `dd3bdc1888e506ec4c418d3679461f0491823728	refs/heads/codex/mac-environment-20261001`
+조회 당시 원격: `738308e135267ea7209316329dda37bfd5d7410b	refs/heads/codex/mac-environment-20261001`
 
-현재 실제 작업: **Codex 총괄이 사운드 페이지 UI 검수·검수 문서 동기화·GitHub 체크포인트 진행**.
+현재 실제 작업: **Codex 총괄이 완료된 R/GL 근거와 팀 현황 문서만 인수 정리 중**. 새 측정·빌드·게임 실행은 없다.
 
 실행 중 1명(Codex 총괄), 산출 완료 14명(Claude 11 + Codex 지원 3). Claude 11팀은 모두 `idle/done`이며 마지막 응답 `end_turn`; 아래 후속 의존성 때문에 현재 추가 추론/도구를 실행 중이라고 세지 않습니다. 프로세스 존재와 실제 작업 실행은 다릅니다.
 
@@ -21,7 +21,7 @@
 | EXODUSER-Mac-ART<br>claude-opus-4-8<br>ID `92f20335` · PID 33470 (ps 확인) | ART / wa24 타임라인 후보 | 이번 검토 제출 완료 | idle/done · end_turn<br>2026-10-01T07:09:17.148Z (UTC) | [산출](/Users/fordeargamers/Documents/Codex/2026-10-01/dho/outputs/r-input-20261001/teams/ART.md)<br>타이머 정리·표본 판정 수정 선행 |
 | EXODUSER-Mac-BUILD<br>claude-opus-4-8<br>ID `70f84406` · PID 33534 (ps 확인) | BUILD / 에셋 매니페스트·LFS 분류 | 이번 검토 제출 완료 | idle/done · end_turn<br>2026-10-01T07:12:26.213Z (UTC) | [산출](/Users/fordeargamers/Documents/Codex/2026-10-01/dho/outputs/r-input-20261001/teams/BUILD.md)<br>제작 원본 포인터3건, 패키지 검수 대기 |
 | EXODUSER-Mac-ITEM<br>claude-opus-4-8<br>ID `a1c26e3a` · PID 33596 (ps 확인) | ITEM / 획득 조건 | 이번 검토 제출 완료 | idle/done · end_turn<br>2026-10-01T07:09:47.107Z (UTC) | [산출](/Users/fordeargamers/Documents/Codex/2026-10-01/dho/outputs/r-input-20261001/teams/ITEM.md)<br>R 입력 조사 인수 완료 |
-| EXODUSER-Mac-SOUND<br>claude-opus-4-8<br>ID `aa3ac0ed` · PID 34122 (ps 확인) | SOUND / 루프 A/B 초안 | 이번 검토 제출 완료 | idle/done · end_turn<br>2026-10-01T07:09:35.303Z (UTC) | [산출](/Users/fordeargamers/Documents/Codex/2026-10-01/dho/outputs/r-input-20261001/teams/SOUND.md)<br>실제 HTML 구현 완료, UI 검수 진행 |
+| EXODUSER-Mac-SOUND<br>claude-opus-4-8<br>ID `aa3ac0ed` · PID 34122 (ps 확인) | SOUND / 루프 A/B 초안 | 이번 검토 제출 완료 | idle/done · end_turn<br>2026-10-01T07:09:35.303Z (UTC) | [산출](/Users/fordeargamers/Documents/Codex/2026-10-01/dho/outputs/r-input-20261001/teams/SOUND.md)<br>기본 UI 검수 완료, 파일 권한·재생·청취 대기 |
 | EXODUSER-Mac-QA<br>claude-opus-4-8<br>ID `f63e19c0` · PID 34195 (ps 확인) | QA / 입력 타임라인·GL 판정 | 이번 검토 제출 완료 | idle/done · end_turn<br>2026-10-01T07:10:15.117Z (UTC) | [산출](/Users/fordeargamers/Documents/Codex/2026-10-01/dho/outputs/r-input-20261001/teams/QA.md)<br>고주사율 검수 대기 |
 | EXODUSER-Mac-ENEMY<br>claude-opus-4-8<br>ID `02420005` · PID 34266 (ps 확인) | ENEMY / type3 자연 발사 후보 | 이번 검토 제출 완료 | idle/done · end_turn<br>2026-10-01T07:11:05.413Z (UTC) | [산출](/Users/fordeargamers/Documents/Codex/2026-10-01/dho/outputs/r-input-20261001/teams/ENEMY.md)<br>전역 접근·발사 시점 수정 선행 |
 | EXODUSER-Mac-BALANCE<br>claude-opus-4-8<br>ID `1fd751d8` · PID 34340 (ps 확인) | BALANCE / onHitFireball 훅 진단 | 이번 검토 제출 완료 | idle/done · end_turn<br>2026-10-01T07:09:40.897Z (UTC) | [산출](/Users/fordeargamers/Documents/Codex/2026-10-01/dho/outputs/r-input-20261001/teams/BALANCE.md)<br>실제 효과 훅 부재, 구현 별도 |
@@ -32,15 +32,37 @@
 
 | 실제 에이전트·모델 | 팀/담당 | 현재 작업 | 상태·최근 활동 | 결과/다음 |
 |---|---|---|---|---|
-| /root<br>Codex / 모델 미확인 | 단일 게임 검수·생산 파일·Git 소유 | 단일 게임 검수·생산 파일·Git 소유 | 실행 중 · 조회 시점 목록 확인 | [결과](/Users/fordeargamers/Documents/Codex/2026-10-01/dho/outputs/r-input-20261001/qa/검수.md)<br>SOUND UI·문서·백업 |
+| /root<br>Codex / 모델 미확인 | 단일 게임 검수·생산 파일·Git 소유 | 단일 게임 검수·생산 파일·Git 소유 | 실행 중 · 조회 시점 목록 확인 | [결과](/Users/fordeargamers/Documents/Codex/2026-10-01/dho/outputs/r-input-20261001/qa/검수.md)<br>기존 근거·문서 인수 마감 |
 | /root/build_backlog_review<br>Codex / 모델 미확인 | BUILD 도구 실행·후보5개 정적 검토 | BUILD 도구 실행·후보5개 정적 검토 | 완료 · 조회 시점 목록 확인 | [결과](/Users/fordeargamers/Documents/Codex/2026-10-01/dho/outputs/r-input-20261001/candidates/검증결과.md)<br>후보 실행 전 결함 수정 필요 |
-| /root/map_art_review<br>Codex / 모델 미확인 | BALANCE 하니스·SOUND HTML 구현 | BALANCE 하니스·SOUND HTML 구현 | 완료 · 조회 시점 목록 확인 | [결과](/Users/fordeargamers/Documents/Codex/2026-10-01/dho/outputs/r-input-20261001/sound/페이지-인수.md)<br>총괄 UI 인수 |
+| /root/map_art_review<br>Codex / 모델 미확인 | BALANCE 하니스·SOUND HTML 구현 | BALANCE 하니스·SOUND HTML 구현 | 완료 · 조회 시점 목록 확인 | [결과](/Users/fordeargamers/Documents/Codex/2026-10-01/dho/outputs/r-input-20261001/sound/페이지-인수.md)<br>기본 UI 인수 완료, 재생·청취 별도 |
 | /root/qa_review<br>Codex / 모델 미확인 | R 진단·GL 원자료 독립 판정 | R 진단·GL 원자료 독립 판정 | 완료 · 조회 시점 목록 확인 | [결과](/Users/fordeargamers/Documents/Codex/2026-10-01/dho/outputs/r-input-20261001/qa/검수.md)<br>고주사율 조건 별도 |
 
-[실제 목록·PID·모델 근거](/Users/fordeargamers/Documents/Codex/2026-10-01/dho/outputs/r-input-20261001/dashboard-inventory.json) · [R/GL 종합 검수](/Users/fordeargamers/Projects/exoduser-migration-20261001/docs/0마스터플랜/mac-resume-20261001/R-입력과-GL-후속검수.md)
+[실제 목록·PID·모델 근거](/Users/fordeargamers/Documents/Codex/2026-10-01/dho/outputs/r-input-20261001/handoff-audit.json) · [R/GL 종합 검수](/Users/fordeargamers/Projects/exoduser-migration-20261001/docs/0마스터플랜/mac-resume-20261001/R-입력과-GL-후속검수.md)
 
 CLI 조회: `claude agents --json --all --cwd /Users/fordeargamers/Projects/exoduser-migration-20261001`. 기존 세션 열기는 `claude attach <위 표의 짧은 ID>`이며 새 팀을 생성하지 않습니다. 별도 대화형 Claude 1개는 idle이고 11팀 집계에서 제외했습니다.
 
 ## VS Code UI 후속 확인
 
-별도 EXODUSER-11팀 (Workspace) 창에 EXODUSER Mac 탐색기와 상태판 미리보기를 실제 열었다. 기존 창과 초안 보존. 기존11팀 attach 작업은 준비했으나 VS Code의 Trust Workspace & Continue 승인 대기다. 현재 VS Code 연결0/11, 백그라운드 세션11/11 idle/done. 총괄은 독립적인 문서·백업을 진행한다. 승인 후 작업명은 EXODUSER · 기존 11팀 연결이며 새 에이전트/게임/빌드는 생성하지 않는다.
+마지막 UI 근거는 2026-10-01 16:29 KST의 [창·폴더·미리보기 영수증](/Users/fordeargamers/Documents/Codex/2026-10-01/dho/outputs/r-input-20261001/vscode-ui-receipt.json)과 화면이다. 이후 창 재개설·새 attach·승인 대행은 하지 않았다. Finder의 exoduser-migration-20261001 폴더와 VS Code의 EXODUSER-11팀 (Workspace) → EXODUSER Mac 탐색기·상태판 미리보기를 확인했다.
+
+| 구분 | 확인 수 | 의미 |
+|---|---:|---|
+| VS Code에 개설된 이번 팀 터미널 | 0/11 | attach 태스크 실행 전 신뢰 확인에서 중단 |
+| VS Code에서 연결 완료한 기존 팀 | 0/11 | 프로세스11개와 별개 |
+| VS Code 연결 승인 대기 | 11/11 | 기존 승인 질문 유지, 중복 요청 없음 |
+| Claude 백그라운드 세션·PID | 11/11 | 최신 CLI idle/done·end_turn 및 ps 존재 확인; 현재 추론0 |
+| Codex 지원 | 완료3 | 새 작업 배정 없음; 총괄만 이 문서 정리 |
+
+작업공간 헬퍼는 [EXODUSER-11팀.code-workspace](/Users/fordeargamers/Documents/Codex/2026-10-01/dho/outputs/EXODUSER-11팀.code-workspace)다. 신뢰 승인 후 실행할 작업명은 EXODUSER · 기존 11팀 연결이다. 새 에이전트/게임/빌드를 만드는 작업이 아니다. 앞선 신뢰 창은 승인하지 않고 닫아 탐색기를 보이게 했으며 제한 모드를 유지한다.
+
+## 완료된 검수의 의미와 보호 범위
+
+| 항목 | 인수 근거와 한계 |
+|---|---|
+| R 수동 진단 | diagnostic.tap의16만족/10미충족·exit1 유지. 8개는 update 없는0/20/50/100ms 가정,2개는 repeat 가정. 일반 CI GREEN이나 사용자 결함 해결을 뜻하지 않음 |
+| R 실제 기록 | 28시행·3317이벤트. native 도구12회 중9누락은0.6–0.9ms·update0, DOM20/50/100ms12/12획득. trusted도 사람 물리 입력이 아니며 일반 사용자 결함 미입증 |
+| GL | 실제 hurtE/update/draw를 쓰되 mkEn type0·방어막0·HP/피해·플레이어무적을 통제한 fixture. 자연조우/사용자 공격 검수와 구분 |
+| GL 인수 범위 | 피격6update감쇠8/8·사망소거8/8·동일객체부활 첫 draw hf0 5/5, 새 구울3건 제외. 실제draw30~31Hz로 고주사율 미충족. GL 관측 플래그는 객체별 GPU 제출/픽셀 readback 검사가 아님 |
+| 소스·백업 | 위 조회 시점 HEAD와 원격이 일치. 이전23파일 체크포인트 완료. 본편/easy SHA 보존, 기존22경로 상태·빈 인덱스 확인. 새 게임 측정/빌드/PC 조작 없음 |
+
+[체크포인트](/Users/fordeargamers/Documents/Codex/2026-10-01/dho/outputs/r-input-20261001/checkpoint.json) · [R 진단 인수](/Users/fordeargamers/Documents/Codex/2026-10-01/dho/outputs/r-input-20261001/qa/진단-최종인수.md) · [GL 독립 검수](/Users/fordeargamers/Documents/Codex/2026-10-01/dho/outputs/r-input-20261001/qa/검수.md).
