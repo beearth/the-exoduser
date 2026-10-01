@@ -1,0 +1,105 @@
+--- a/game-easy-test.html+inventory-focus
++++ b/game-easy-test.html+inventory-dom
+@@ -46386,10 +46386,14 @@
+ // _invRenderDetail: 우측 패널에 비교+아이템상세 렌더 (호버/선택 공용)
+ const _inventoryFocus=(function createInventoryFocus({document, get, label}) {
+   let anchor = null;
++  let keyboardItem = null;
++  const currentCards = new Map();
++  const currentResolvers = new WeakMap();
+   let opener = null;
+   const inside = () => get('invPanel')?.classList.contains('on');
+   function usable(node) {
+-    return !!node?.isConnected && !node.disabled && !node.closest('[hidden],[aria-hidden="true"]');
++    const computed = node && document.defaultView?.getComputedStyle(node);
++    return !!node?.isConnected && !node.disabled && !node.closest('[hidden],[aria-hidden="true"]') && computed?.visibility !== 'hidden' && computed?.display !== 'none';
+   }
+   function focus(node) {
+     if (!usable(node)) return false;
+@@ -46398,8 +46402,10 @@
+   }
+   function restore() {
+     if (!inside()) return;
+-    if (!focus(anchor)) focus(get('invClose'));
++    const current = currentCards.get(keyboardItem);
++    if (!focus(current && currentResolvers.get(current)?.() === keyboardItem ? current : null)) focus(get('invClose'));
+     anchor = null;
++    keyboardItem = null;
+   }
+   function missing() {
+     const detail = get('invRight');
+@@ -46425,11 +46431,15 @@
+     node.dataset.inventoryDetailTrigger = '1';
+     node.setAttribute('role','button');
+     node.setAttribute('aria-label',name);
++    const boundItem = resolve();
++    if (boundItem) currentCards.set(boundItem,node);
++    currentResolvers.set(node,resolve);
+     let spaceHeld = false;
+     function enter() {
+       if (!inside()) return;
+       anchor = node;
+-      if (!resolve()) { missing(); return; }
++      keyboardItem = resolve();
++      if (!keyboardItem) { missing(); return; }
+       activate();
+       const detail = get('invRight');
+       if (detail && inside()) { detail.tabIndex = -1; focus(detail); }
+@@ -46453,11 +46463,32 @@
+     };
+     node.onblur = () => { spaceHeld = false; };
+   }
+-  return Object.freeze({bind, missing, begin() {
++  function keepsDetail() {
++    const current = currentCards.get(keyboardItem);
++    return !!keyboardItem && inside() && usable(current) && currentResolvers.get(current)?.() === keyboardItem &&
++      (get('invRight')?.contains(document.activeElement) || get('invActionBtns')?.contains(document.activeElement));
++  }
++  function beforeRender() {
++    const active = document.activeElement;
++    const owned = !!keyboardItem && (get('invRight')?.contains(active) || get('invActionBtns')?.contains(active));
++    currentCards.clear();
++    return {active,owned};
++  }
++  function afterRender(token) {
++    if (!token.owned || !inside()) return;
++    if (document.activeElement === token.active && usable(token.active)) return;
++    const current = currentCards.get(keyboardItem);
++    if (!focus(current)) { focus(get('invClose')); keyboardItem = null; }
++    anchor = current || null;
++  }
++  return Object.freeze({bind, missing, keepsDetail, beforeRender, afterRender, begin() {
+     if (!get('invPanel')?.contains(document.activeElement) && usable(document.activeElement)) opener = document.activeElement;
+     anchor = null;
++    keyboardItem = null;
+   }, close() {
+     anchor = null;
++    keyboardItem = null;
++    currentCards.clear();
+     if (!inside()) {
+       if (!focus(opener) && get('invPanel')?.contains(document.activeElement)) document.activeElement?.blur();
+       opener = null;
+@@ -46537,6 +46568,7 @@
+   }
+ }
+ function _invClearHover(){
++  if(_inventoryFocus.keepsDetail())return;
+   _invRestoreSelectedActions();
+   const rp=$('invRight');if(rp)rp.style.visibility='hidden';
+   const inline=$('invOssInfo');if(inline)inline.classList.remove('has-detail','has-bone');
+@@ -46953,6 +46985,7 @@
+     ||before.eq.some((item,i)=>item!==after.eq[i]);
+ }
+ function renderInv(){
++  const inventoryFocusToken=_inventoryFocus.beforeRender();
+   _invPlaceDetail();
+   const _placementBefore=_invPlacement();
+   const _placementMoved=_invPlacementChanged(_invLastPlacement,_placementBefore);
+@@ -47287,6 +47320,7 @@
+   }
+   _invLastPlacement=_invPlacement();
+   if(_placementMoved)_invClearHover();
++  _inventoryFocus.afterRender(inventoryFocusToken);
+ }
+ $('invClose').onclick=()=>{_invSalSel.clear();$('invCompareFloat').style.display='none';closePanel('invPanel')};
+ 

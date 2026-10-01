@@ -1,0 +1,205 @@
+--- a/game-easy-test.html
++++ b/game-easy-test.html
+@@ -12102,7 +12102,7 @@
+   if(e.code==='F4'){e.preventDefault();const _nf=!OPT.fog;OPT.fog=_nf;OPT.bossFog=_nf;saveSettings();showPH(_nf?_L('안개 ON','Fog ON'):_L('안개 OFF','Fog OFF'),_nf?'#8899cc':'#888888');return}
+   if(window._parryLesson?.active&&!window._parryLesson.allowKey(e.code)){e.preventDefault();return;}
+   // Focused panel controls own activation and focus traversal keys.
+-  if(['Space','Enter','NumpadEnter','Tab'].includes(e.code)&&e.target instanceof Element&&e.target.closest('#invPanel.on button,#crBagPop button,#settings.on button,#settings.on input,#settings.on select'))return;
++  if(['Space','Enter','NumpadEnter','Tab'].includes(e.code)&&e.target instanceof Element&&e.target.closest('#invPanel.on button,#invPanel.on [data-inventory-detail-trigger],#crBagPop button,#settings.on button,#settings.on input,#settings.on select'))return;
+   K[e.code]=true;KH[e.code]=true;
+   // E(shield) 탭 버퍼: 초고속 탭에서 keyup이 K를 지우기 전에 press 사실을 프레임 스탬프로 보존 (게임패드 synth 키다운도 경유)
+   if(!e.repeat&&G&&G.on&&!G.paused&&(e.code===BINDS.shield||e.code===BINDS2.shield))_sdTapBuf=G.frame;
+@@ -41349,8 +41349,8 @@
+     pbox.insertBefore(nav,pbox.firstChild);
+   });
+ }
+-function togglePanel(id){const el=$(id);const isOn=el.classList.contains('on');closeAllPanels();const _rc=$('resetConfirm');if(_rc)_rc.style.display='none';if(!isOn){el.classList.add('on');G.paused=true;_injectPanelNav(id);if(id==='invPanel')renderInv();if(id==='settings'){const _rc2=$('resetConfirm');if(_rc2)_rc2.style.display='none';renderSettings();}if(id==='statPanel')renderStatPanel();if(id==='skillPanel')renderSkillPanel()}}
+-function openPanel(id){closeAllPanels();$(id).classList.add('on');G.paused=true;_injectPanelNav(id);if(id==='invPanel')renderInv();if(id==='settings')renderSettings();if(id==='forge')renderForge();if(id==='statPanel')renderStatPanel();if(id==='skillPanel')renderSkillPanel()}
++function togglePanel(id){if(id==='invPanel'&&!$('invPanel').classList.contains('on'))_inventoryFocus.begin();const el=$(id);const isOn=el.classList.contains('on');closeAllPanels(id==='invPanel'&&!isOn);const _rc=$('resetConfirm');if(_rc)_rc.style.display='none';if(!isOn){el.classList.add('on');G.paused=true;_injectPanelNav(id);if(id==='invPanel')renderInv();if(id==='settings'){const _rc2=$('resetConfirm');if(_rc2)_rc2.style.display='none';renderSettings();}if(id==='statPanel')renderStatPanel();if(id==='skillPanel')renderSkillPanel()}}
++function openPanel(id){if(id==='invPanel')_inventoryFocus.begin();closeAllPanels(id==='invPanel');$(id).classList.add('on');G.paused=true;_injectPanelNav(id);if(id==='invPanel')renderInv();if(id==='settings')renderSettings();if(id==='forge')renderForge();if(id==='statPanel')renderStatPanel();if(id==='skillPanel')renderSkillPanel()}
+ function openInventoryStorage(){
+   const panel=$('invPanel');
+   if(panel.classList.contains('on')&&panel.dataset.inventoryPage==='storage'){closeAllPanels();return}
+@@ -41378,8 +41378,8 @@
+   if($('settings')&&$('settings').classList.contains('on')){closePanel('settings');return true}
+   return false
+ }
+-function closePanel(id){$(id).classList.remove('on');G.paused=false}
+-function closeAllPanels(){$('resetConfirm')&&($('resetConfirm').style.display='none');['settings','invPanel','forge','statPanel','skillPanel'].forEach(id=>{$(id).classList.remove('on')});G.paused=false;_skPopOwnsPause=false;if(G.forgeOpen)BGM.play(BGM.stageKey(G.stage));G.forgeOpen=false;_fuseSelId=null;_skExpandedId=null;const _sp=$('skSlotPop');if(_sp)_sp.style.display='none';const _cf=$('invCompareFloat');if(_cf)_cf.style.display='none';const _rc=$('resetConfirm');if(_rc)_rc.style.display='none';/* 패드 UI 잔류 정리 */for(let i=0;i<16;i++){const el=$('qs'+i);if(el)el.classList.remove('sk-drop-hover')}const _uc=$('ultSlot');if(_uc){_uc.classList.remove('sk-drop-hover');_uc.style.outline='';_uc.style.outlineOffset=''}document.querySelectorAll('[style*="outline"]').forEach(el=>{if(el.style.outline){el.style.outline='';el.style.outlineOffset=''}})}
++function closePanel(id){$(id).classList.remove('on');G.paused=false;if(id==='invPanel')_inventoryFocus.close();}
++function closeAllPanels(preserveInventoryFocus=false){const inventoryWasOpen=$('invPanel')?.classList.contains('on');$('resetConfirm')&&($('resetConfirm').style.display='none');['settings','invPanel','forge','statPanel','skillPanel'].forEach(id=>{$(id).classList.remove('on')});G.paused=false;_skPopOwnsPause=false;if(G.forgeOpen)BGM.play(BGM.stageKey(G.stage));G.forgeOpen=false;_fuseSelId=null;_skExpandedId=null;const _sp=$('skSlotPop');if(_sp)_sp.style.display='none';const _cf=$('invCompareFloat');if(_cf)_cf.style.display='none';const _rc=$('resetConfirm');if(_rc)_rc.style.display='none';if(inventoryWasOpen&&!preserveInventoryFocus)_inventoryFocus.close();/* 패드 UI 잔류 정리 */for(let i=0;i<16;i++){const el=$('qs'+i);if(el)el.classList.remove('sk-drop-hover')}const _uc=$('ultSlot');if(_uc){_uc.classList.remove('sk-drop-hover');_uc.style.outline='';_uc.style.outlineOffset=''}document.querySelectorAll('[style*="outline"]').forEach(el=>{if(el.style.outline){el.style.outline='';el.style.outlineOffset=''}})}
+ 
+ // ═══ 스킬 패널 ═══
+ const SKILL_CATS=[
+@@ -46385,9 +46385,121 @@
+   if(parent!==host)host.classList.remove('has-detail','has-bone');
+ }
+ // _invRenderDetail: 우측 패널에 비교+아이템상세 렌더 (호버/선택 공용)
++const _inventoryFocus=(function createInventoryFocus({document, get, label}) {
++  let anchor = null;
++  let keyboardItem = null;
++  const currentCards = new Map();
++  const currentResolvers = new WeakMap();
++  let opener = null;
++  const inside = () => get('invPanel')?.classList.contains('on');
++  function usable(node) {
++    const computed = node && document.defaultView?.getComputedStyle(node);
++    return !!node?.isConnected && !node.disabled && !node.closest('[hidden],[aria-hidden="true"]') && computed?.visibility !== 'hidden' && computed?.display !== 'none';
++  }
++  function focus(node) {
++    if (!usable(node)) return false;
++    node.focus({preventScroll:true});
++    return document.activeElement === node;
++  }
++  function restore() {
++    if (!inside()) return;
++    const current = currentCards.get(keyboardItem);
++    if (!focus(current && currentResolvers.get(current)?.() === keyboardItem ? current : null)) focus(get('invClose'));
++    anchor = null;
++    keyboardItem = null;
++  }
++  function missing() {
++    const detail = get('invRight');
++    const actions = get('invActionBtns');
++    const ownsFocus = detail?.contains(document.activeElement) || actions?.contains(document.activeElement);
++    if (detail) {
++      detail._detailItem = null;
++      detail._detailSource = null;
++      detail.classList.remove('inv-side-compare','inv-hover-preview');
++      const hint = document.createElement('p');
++      hint.textContent = label('선택한 아이템이 없습니다.','Selected item is unavailable.');
++      hint.setAttribute('role','status');
++      detail.replaceChildren(hint);
++    }
++    actions?.replaceChildren();
++    get('invOssInfo')?.classList.remove('has-detail','has-bone');
++    const floating = get('invCompareFloat');
++    if (floating) floating.style.display = 'none';
++    if (ownsFocus || anchor) restore();
++  }
++  function bind(node, resolve, activate, name) {
++    node.tabIndex = 0;
++    node.dataset.inventoryDetailTrigger = '1';
++    node.setAttribute('role','button');
++    node.setAttribute('aria-label',name);
++    const boundItem = resolve();
++    if (boundItem) currentCards.set(boundItem,node);
++    currentResolvers.set(node,resolve);
++    let spaceHeld = false;
++    function enter() {
++      if (!inside()) return;
++      anchor = node;
++      keyboardItem = resolve();
++      if (!keyboardItem) { missing(); return; }
++      activate();
++      const detail = get('invRight');
++      if (detail && inside()) { detail.tabIndex = -1; focus(detail); }
++    }
++    node.onkeydown = event => {
++      if (event.ctrlKey || event.metaKey || event.altKey || event.target !== node) return;
++      if (event.code === 'Enter' || event.code === 'NumpadEnter') {
++        event.preventDefault();
++        if (!event.repeat) enter();
++      } else if (event.code === 'Space') {
++        event.preventDefault();
++        if (!event.repeat) spaceHeld = true;
++      }
++    };
++    node.onkeyup = event => {
++      if (event.code !== 'Space' || event.target !== node) return;
++      event.preventDefault();
++      const activateSpace = spaceHeld && !event.ctrlKey && !event.metaKey && !event.altKey;
++      spaceHeld = false;
++      if (activateSpace) enter();
++    };
++    node.onblur = () => { spaceHeld = false; };
++  }
++  function keepsDetail() {
++    const current = currentCards.get(keyboardItem);
++    return !!keyboardItem && inside() && usable(current) && currentResolvers.get(current)?.() === keyboardItem &&
++      (get('invRight')?.contains(document.activeElement) || get('invActionBtns')?.contains(document.activeElement));
++  }
++  function beforeRender() {
++    const active = document.activeElement;
++    const activeItem = [...currentCards].find(([,card]) => card === active)?.[0];
++    const owned = !!activeItem || (!!keyboardItem && (get('invRight')?.contains(active) || get('invActionBtns')?.contains(active)));
++    currentCards.clear();
++    return {active,owned,item:activeItem || keyboardItem};
++  }
++  function afterRender(token) {
++    if (!token.owned || !inside()) return;
++    if (currentCards.has(token.item) && document.activeElement === token.active && usable(token.active)) return;
++    const current = currentCards.get(token.item);
++    if (!focus(current)) { focus(get('invClose')); keyboardItem = null; }
++    anchor = current || null;
++  }
++  return Object.freeze({bind, missing, keepsDetail, beforeRender, afterRender, begin() {
++    if (!get('invPanel')?.contains(document.activeElement) && usable(document.activeElement)) opener = document.activeElement;
++    anchor = null;
++    keyboardItem = null;
++  }, close() {
++    anchor = null;
++    keyboardItem = null;
++    currentCards.clear();
++    if (!inside()) {
++      if (!focus(opener) && get('invPanel')?.contains(document.activeElement)) document.activeElement?.blur();
++      opener = null;
++    }
++  }});
++})({document,get:$,label:_L});
+ function _invRenderDetail(idx,source,preview=false){
+   const it=source==='eq'?INV.equipped[idx]:source==='st'?(_getStore()[idx]||null):INV.bag[idx];
+-  if(!it)return;
++  if(!it){_inventoryFocus.missing();return;}
+   const rp=$('invRight');if(!rp)return;
+   rp.style.visibility='visible';
+   rp.classList.toggle('inv-hover-preview',preview);
+@@ -46458,6 +46570,7 @@
+   }
+ }
+ function _invClearHover(){
++  if(_inventoryFocus.keepsDetail())return;
+   _invRestoreSelectedActions();
+   const rp=$('invRight');if(rp)rp.style.visibility='hidden';
+   const inline=$('invOssInfo');if(inline)inline.classList.remove('has-detail','has-bone');
+@@ -46471,7 +46584,7 @@
+   }
+   // 장착 아이템 선택 유지 ('eq:weapon' 등)
+   if(INV.selected!==null&&typeof INV.selected==='string'&&INV.selected.startsWith('eq:')){
+-    const _eqS=INV.selected.slice(3);if(INV.equipped[_eqS])_invRenderDetail(_eqS,'eq');return;
++    const _eqS=INV.selected.slice(3);_invRenderDetail(_eqS,'eq');return;
+   }
+   const rp=$('invRight');if(rp)rp.innerHTML='<div style="color:#554433;font-size:.85rem;text-align:center;padding:30px 10px">'+_T('아이템에 마우스를 올리거나 좌클릭으로 선택하세요')+'</div>';
+   const _actB=$('invActionBtns');if(_actB)_actB.innerHTML='';
+@@ -46874,6 +46987,7 @@
+     ||before.eq.some((item,i)=>item!==after.eq[i]);
+ }
+ function renderInv(){
++  const inventoryFocusToken=_inventoryFocus.beforeRender();
+   _invPlaceDetail();
+   const _placementBefore=_invPlacement();
+   const _placementMoved=_invPlacementChanged(_invLastPlacement,_placementBefore);
+@@ -46922,6 +47036,7 @@
+       // 우클릭 → 해제
+       if(item){unequipItem(slot);applyStats();renderInv();return}
+     };
++    if(item)_inventoryFocus.bind(div,()=>INV.equipped[slot]===item?item:null,()=>{INV.selected='eq:'+slot;renderInv();_invRenderDetail(slot,'eq');},_T(item.name));
+     eqGrid.appendChild(div);
+   });
+ 
+@@ -47145,6 +47260,7 @@
+     };
+     div.onmouseover=()=>{if(_invHover===i)return;_invHover=i;_invRenderDetail(i,'bag',true)};
+     div.onmouseleave=()=>_invClearHover();
++    _inventoryFocus.bind(div,()=>INV.bag.includes(item)?item:null,()=>{const current=INV.bag.indexOf(item);INV.selected=current;renderInv();_invRenderDetail(current,'bag');},_T(item.name));
+     grid.appendChild(div);
+   }
+ 
+@@ -47206,6 +47322,7 @@
+   }
+   _invLastPlacement=_invPlacement();
+   if(_placementMoved)_invClearHover();
++  _inventoryFocus.afterRender(inventoryFocusToken);
+ }
+ $('invClose').onclick=()=>{_invSalSel.clear();$('invCompareFloat').style.display='none';closePanel('invPanel')};
+ 

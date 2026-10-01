@@ -1,0 +1,22 @@
+--- a/game.html
++++ b/game.html
+@@ -47877,14 +47877,15 @@
+   }
+   function beforeRender() {
+     const active = document.activeElement;
+-    const owned = !!keyboardItem && (get('invRight')?.contains(active) || get('invActionBtns')?.contains(active));
++    const activeItem = [...currentCards].find(([,card]) => card === active)?.[0];
++    const owned = !!activeItem || (!!keyboardItem && (get('invRight')?.contains(active) || get('invActionBtns')?.contains(active)));
+     currentCards.clear();
+-    return {active,owned};
++    return {active,owned,item:activeItem || keyboardItem};
+   }
+   function afterRender(token) {
+     if (!token.owned || !inside()) return;
+-    if (document.activeElement === token.active && usable(token.active)) return;
+-    const current = currentCards.get(keyboardItem);
++    if (currentCards.has(token.item) && document.activeElement === token.active && usable(token.active)) return;
++    const current = currentCards.get(token.item);
+     if (!focus(current)) { focus(get('invClose')); keyboardItem = null; }
+     anchor = current || null;
+   }

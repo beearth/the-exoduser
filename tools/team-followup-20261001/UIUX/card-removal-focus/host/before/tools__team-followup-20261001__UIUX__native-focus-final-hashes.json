@@ -1,0 +1,32 @@
+{
+  "at": "2026-10-01T16:16:17.056Z",
+  "files": {
+    "tools/team-followup-20261001/UIUX/native-focus-doc-matches.txt": "b4ed0ebc0e7a629dce1adebefcc2ce9a6f447b6de0c4635bff73fbac744a1e55",
+    "tools/team-followup-20261001/UIUX/native-focus-easy-combined.patch": "84399a6ecbed928d30b327cc209319f960cc435c05733bfa9892ea720b90a0ad",
+    "tools/team-followup-20261001/UIUX/native-focus-easy-focus.patch": "80abc54d6d9aa447969bdefa87caea16bfd7d2b50e716d0efad0101a8bd0e5a1",
+    "tools/team-followup-20261001/UIUX/native-focus-generate.mjs": "a0d3ceb314d9b2d1313cdb4bfb90f5734f303d7a4efbe0aedf1b2aabf1f6e0de",
+    "tools/team-followup-20261001/UIUX/native-focus-http.json": "f7d6700945cb7477738929add22b106bc50582823b15678e6aca58f16f6c5673",
+    "tools/team-followup-20261001/UIUX/native-focus-main-combined.patch": "29943cec3ad12abe3784edde1d9494a3684e77717f95bf880f53eb1f022b5ec3",
+    "tools/team-followup-20261001/UIUX/native-focus-main-focus.patch": "2d042acca890963cf450911197e30da73374251d42908bb8f7b4c269655f4aa3",
+    "tools/team-followup-20261001/UIUX/native-focus-manifest.json": "c24c4a6326f3bdcdd28e22863f49dfa8d019cbd5e15048a741c96cd3990d62b4",
+    "tools/team-followup-20261001/UIUX/native-focus-receipt.json": "cc54b1fe0683528b5446dc00a242c3176035ba5b8845952e4034deb252e4d92d",
+    "tools/team-followup-20261001/UIUX/native-focus-result.md": "6b4844fc9fca71f05e507bacab630304d8b0336fced0dfb0989031d85879effe",
+    "tools/team-followup-20261001/UIUX/native-focus-task.md": "6d30bf35ddb82149d6debe36f9f4de75fe5c983bf199ff3903cd9b9c81173cf1",
+    "tools/team-followup-20261001/UIUX/native-focus-validation.txt": "df66556abf9c87a3d3e52a012a17ec5a1671610bc6205545116b9f0a99e85828",
+    "tools/team-followup-20261001/UIUX/native-focus/before/inventory-dom-candidate.mjs": "3e46ee1493f08b238d85f40ebd455f8c7a9908c6c0eacd4feecab6b448773e46",
+    "tools/team-followup-20261001/UIUX/native-focus/before/inventory-dom-easy-minimal.patch": "413d957909c9db1a90f2b2b64807dd7658918cb29d3160a96769963324836a55",
+    "tools/team-followup-20261001/UIUX/native-focus/before/inventory-dom-main-minimal.patch": "2148e2be09bd97f21eb4c2cd54253ed9f88981d8575cf4ceb551f434ace3c4e8",
+    "tools/team-followup-20261001/UIUX/native-focus/before/inventory-dom-provenance.json": "417d780c21cedf2ceeccfe73c17fd883ff8d40979f7aed863cdbb5a8323cfe1b",
+    "tools/team-followup-20261001/UIUX/native-focus/before/inventory-dom__harness.mjs": "2c2b73b41c33f4f5b8320bab77daf1c050bc02444ba44e7a937de2486ad21acd",
+    "tools/team-followup-20261001/UIUX/native-focus/before/inventory-dom__host.html": "c088f0836f3acf5dca83884adcd80c550dc50b317a084938674a2f0a36114aa4",
+    "tools/team-followup-20261001/UIUX/native-focus/before/inventory-dom__source-data.mjs": "a5244bd382f01ad3802f8e5d282ceed6e5cb1fc2c6f0edebd46ae133bf139037",
+    "tools/team-followup-20261001/UIUX/native-focus/before/inventory-focus-candidate.mjs": "324f41ee802f8487cc81dc2d0cfd75f8c70f1cefed2f62d06a109b93bfcc6f56",
+    "tools/team-followup-20261001/UIUX/native-focus/before/inventory-focus-easy.patch": "afd4711efd5c0010ffc3c2e779ef08a86723875387d4e7aa222c78848b75f60a",
+    "tools/team-followup-20261001/UIUX/native-focus/before/inventory-focus-main.patch": "3f80f9a41e3733e8336b9950ef506b10d8972b1bca987b6e8ca62af21df7f43e",
+    "tools/team-followup-20261001/UIUX/native-focus/controller.js": "4b9f95ad6d76dfab768efc1b21ad4488164da0e9b3deb52fc189613f1cf5239a",
+    "tools/team-followup-20261001/UIUX/native-focus/current-function-text.json": "906a7e31bb165f3175f6741a59217c64d5e47c54a2ca9124168f9f56dfd11761",
+    "tools/team-followup-20261001/UIUX/native-focus/harness.js": "e4d54af66f321940fda896c9c9b9ee3f44d889fa304d6ae9d9ff1a7fef45946e",
+    "tools/team-followup-20261001/UIUX/native-focus/host.html": "84f9aff3409d09653af794cc07a63d1f352ce142278a2fc995422a0222904f63",
+    "tools/team-followup-20261001/UIUX/native-focus/source-data.js": "821522cff17e558bd04b0cbcef561eb674bb3aea32fbe7bc9e6a3f428e590296"
+  }
+}

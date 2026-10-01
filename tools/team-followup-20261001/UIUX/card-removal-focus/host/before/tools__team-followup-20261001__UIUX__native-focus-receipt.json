@@ -1,0 +1,29 @@
+{
+  "작업": "UIUX-20261002-NATIVE-FOCUS",
+  "수신": "사용자 지시 수신, 메시지 자체 UTC 미제공; 첫 명령 기록 2026-10-01T16:11:10Z 이전",
+  "첫ReadUTC": "2026-10-01T16:11:10Z",
+  "실제Read": "담당MD·최신 AGENTS·DOM 보존 계약·원 후보/provenance/host/harness·실제 CSS·서버 MIME 선언",
+  "중복": "소유 prefix에는 task.md만 존재. 원 후보는 읽기 전용 import·before 보존",
+  "첫EditUTC": "2026-10-01T16:13:13Z",
+  "첫Edit근거": "native-focus-generate.mjs 파일 birthtime UTC; apply_patch로 생성",
+  "상태": "12PASS; 재기반 후보/JS host 완료, root native 검수 인계",
+  "브라우저게임서버실행": 0,
+  "생산공유원파일쓰기": 0,
+  "검수UTC": "2026-10-01T16:15:40Z",
+  "완료UTC": "2026-10-01T16:16:17.051Z",
+  "원본19함수동일": true,
+  "before10보존": true,
+  "원소스최종SHA": {
+    "game.html": "7631f5a083672124624e0b8dc22b0716d10c8815dbb1e6aee98a5e2e51299993",
+    "game-easy-test.html": "7d68b80afab131562266c39ea7d5631716d12861dbe7e7e2e4477550c15ec6a4"
+  },
+  "전체SHA최종변화": {
+    "game.html": false,
+    "game-easy-test.html": false
+  },
+  "한계": [
+    "HTTP HEAD 5건 fetch failed, MIME 실측 미검수",
+    "Node DOM/정적 12PASS는 native/실화면/패드 PASS 아님",
+    "생산 미적용, root CSS off/on native 인수 필요"
+  ]
+}

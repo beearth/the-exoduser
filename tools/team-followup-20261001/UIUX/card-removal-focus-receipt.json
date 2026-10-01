@@ -1,0 +1,35 @@
+{
+  "작업": "UIUX native 카드 소멸 초점 반례",
+  "수신": "최신 사용자 메시지; 메시지 UTC 미제공, 첫 명령 이전 수신",
+  "첫ReadUTC": "2026-10-01T16:25:17Z",
+  "첫Read": "root 실제 native JSON·원 DOM 후보; 이어 JPG 시각 읽기·AGENTS·담당 MD",
+  "중복": "소유 prefix에는 담당 task.md만 존재, 기존 native 완료와 별도 반례 한 건",
+  "첫EditUTC": "2026-10-01T16:26:10Z",
+  "상태": "18PASS; 반례8개 BODY RED→invClose GREEN; root native 인계",
+  "생산공유Git게임브라우저쓰기실행": 0,
+  "검수UTC": "2026-10-01T16:27:59Z",
+  "완료UTC": "2026-10-01T16:28:12.744Z",
+  "실제검수범위": "실제 소스 추출+Node DOM 대역, CSS important 최소 모델·정적 전이계약",
+  "원본보존파일수": 42,
+  "인계전원본SHA불변": true,
+  "함수19SHA대조": true,
+  "원자료SHA": {
+    "outputs/team-review-20261002/persistence/uiux-native-focus.json": "bac9fab2834286e6fa7ed0deb8483d662bccbd2c8fd69c475b60d634fb721ef8",
+    "outputs/team-review-20261002/persistence/uiux-native-focus.jpg": "a856aea1dfdde99516d0abfdd7bb22f8918b0c87340359d908bcec436e12fb8d"
+  },
+  "현재소스SHA": {
+    "game.html": {
+      "read": "7631f5a083672124624e0b8dc22b0716d10c8815dbb1e6aee98a5e2e51299993",
+      "final": "7631f5a083672124624e0b8dc22b0716d10c8815dbb1e6aee98a5e2e51299993"
+    },
+    "game-easy-test.html": {
+      "read": "7d68b80afab131562266c39ea7d5631716d12861dbe7e7e2e4477550c15ec6a4",
+      "final": "7d68b80afab131562266c39ea7d5631716d12861dbe7e7e2e4477550c15ec6a4"
+    }
+  },
+  "남은게이트": [
+    "root 새후보 native 실제 Tab/CSS off on/MIME 검수",
+    "실화면/픽셀/물리 패드 미검수",
+    "생산 미적용"
+  ]
+}

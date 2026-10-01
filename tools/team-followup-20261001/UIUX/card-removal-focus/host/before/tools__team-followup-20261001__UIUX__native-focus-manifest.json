@@ -1,0 +1,206 @@
+{
+  "readAt": "2026-10-01T16:13:14.330Z",
+  "before": {
+    "inventory-focus-candidate.mjs": {
+      "sha256": "324f41ee802f8487cc81dc2d0cfd75f8c70f1cefed2f62d06a109b93bfcc6f56",
+      "snapshotSha256": "324f41ee802f8487cc81dc2d0cfd75f8c70f1cefed2f62d06a109b93bfcc6f56"
+    },
+    "inventory-focus-main.patch": {
+      "sha256": "3f80f9a41e3733e8336b9950ef506b10d8972b1bca987b6e8ca62af21df7f43e",
+      "snapshotSha256": "3f80f9a41e3733e8336b9950ef506b10d8972b1bca987b6e8ca62af21df7f43e"
+    },
+    "inventory-focus-easy.patch": {
+      "sha256": "afd4711efd5c0010ffc3c2e779ef08a86723875387d4e7aa222c78848b75f60a",
+      "snapshotSha256": "afd4711efd5c0010ffc3c2e779ef08a86723875387d4e7aa222c78848b75f60a"
+    },
+    "inventory-dom-candidate.mjs": {
+      "sha256": "3e46ee1493f08b238d85f40ebd455f8c7a9908c6c0eacd4feecab6b448773e46",
+      "snapshotSha256": "3e46ee1493f08b238d85f40ebd455f8c7a9908c6c0eacd4feecab6b448773e46"
+    },
+    "inventory-dom-provenance.json": {
+      "sha256": "417d780c21cedf2ceeccfe73c17fd883ff8d40979f7aed863cdbb5a8323cfe1b",
+      "snapshotSha256": "417d780c21cedf2ceeccfe73c17fd883ff8d40979f7aed863cdbb5a8323cfe1b"
+    },
+    "inventory-dom-main-minimal.patch": {
+      "sha256": "2148e2be09bd97f21eb4c2cd54253ed9f88981d8575cf4ceb551f434ace3c4e8",
+      "snapshotSha256": "2148e2be09bd97f21eb4c2cd54253ed9f88981d8575cf4ceb551f434ace3c4e8"
+    },
+    "inventory-dom-easy-minimal.patch": {
+      "sha256": "413d957909c9db1a90f2b2b64807dd7658918cb29d3160a96769963324836a55",
+      "snapshotSha256": "413d957909c9db1a90f2b2b64807dd7658918cb29d3160a96769963324836a55"
+    },
+    "inventory-dom/harness.mjs": {
+      "sha256": "2c2b73b41c33f4f5b8320bab77daf1c050bc02444ba44e7a937de2486ad21acd",
+      "snapshotSha256": "2c2b73b41c33f4f5b8320bab77daf1c050bc02444ba44e7a937de2486ad21acd"
+    },
+    "inventory-dom/host.html": {
+      "sha256": "c088f0836f3acf5dca83884adcd80c550dc50b317a084938674a2f0a36114aa4",
+      "snapshotSha256": "c088f0836f3acf5dca83884adcd80c550dc50b317a084938674a2f0a36114aa4"
+    },
+    "inventory-dom/source-data.mjs": {
+      "sha256": "a5244bd382f01ad3802f8e5d282ceed6e5cb1fc2c6f0edebd46ae133bf139037",
+      "snapshotSha256": "a5244bd382f01ad3802f8e5d282ceed6e5cb1fc2c6f0edebd46ae133bf139037"
+    }
+  },
+  "comparison": {
+    "game.html": {
+      "previousWholeSha256": "f7212ac287665f831975c47523783967374db4c1219b898e57bca5f97cfa1649",
+      "currentWholeSha256": "7631f5a083672124624e0b8dc22b0716d10c8815dbb1e6aee98a5e2e51299993",
+      "functions": [
+        {
+          "name": "_invPlaceDetail",
+          "line1": 47782,
+          "oldSha256": "f6da18a101abc3c9680f0319b0c15337594c01b7bb26e73819892eddd19b5abb",
+          "currentSha256": "f6da18a101abc3c9680f0319b0c15337594c01b7bb26e73819892eddd19b5abb",
+          "same": true
+        },
+        {
+          "name": "_invRenderDetail",
+          "line1": 47794,
+          "oldSha256": "397f76a096e3ec61c71a4c13835a7405dd78ef395a551473d45ff3349c9c489c",
+          "currentSha256": "397f76a096e3ec61c71a4c13835a7405dd78ef395a551473d45ff3349c9c489c",
+          "same": true
+        },
+        {
+          "name": "_invClearHover",
+          "line1": 47968,
+          "oldSha256": "26f4b80f5883a3dc0b5d8890dda3bff58c10da37e81c24bad6069b810757b156",
+          "currentSha256": "26f4b80f5883a3dc0b5d8890dda3bff58c10da37e81c24bad6069b810757b156",
+          "same": true
+        },
+        {
+          "name": "_invRestoreSelectedActions",
+          "line1": 47974,
+          "oldSha256": "5f2171efe2b1ddff197a318d7c89b779e796ff5b3c7d9fcb3e19c729fa3ba887",
+          "currentSha256": "5f2171efe2b1ddff197a318d7c89b779e796ff5b3c7d9fcb3e19c729fa3ba887",
+          "same": true
+        },
+        {
+          "name": "_invCategoryMatches",
+          "line1": 48363,
+          "oldSha256": "bf6f1ec41adb83e63f2e35d8596c546da2270bb74e936a6aebb9a2030c18d9f7",
+          "currentSha256": "bf6f1ec41adb83e63f2e35d8596c546da2270bb74e936a6aebb9a2030c18d9f7",
+          "same": true
+        },
+        {
+          "name": "_invPlacement",
+          "line1": 48376,
+          "oldSha256": "879d8a804ff8c3394f4aab7251ede02e41acb2a6e0783e91db7d7c549d327389",
+          "currentSha256": "879d8a804ff8c3394f4aab7251ede02e41acb2a6e0783e91db7d7c549d327389",
+          "same": true
+        },
+        {
+          "name": "_invPlacementChanged",
+          "line1": 48379,
+          "oldSha256": "42242a0857c46616150aa572945a78eb4c68caec058e9576f78d670a19994a54",
+          "currentSha256": "42242a0857c46616150aa572945a78eb4c68caec058e9576f78d670a19994a54",
+          "same": true
+        },
+        {
+          "name": "renderInv",
+          "line1": 48385,
+          "oldSha256": "b93c963fe8ef4876ec0b9ba319e22eceb29bac2decf01e3c0607981095be1cbd",
+          "currentSha256": "b93c963fe8ef4876ec0b9ba319e22eceb29bac2decf01e3c0607981095be1cbd",
+          "same": true
+        },
+        {
+          "name": "closePanel",
+          "line1": 42584,
+          "oldSha256": "f8451b2f938e927e0c07b6bc51157c6f4613ed875ddbdd53cf6ff52adfa71531",
+          "currentSha256": "f8451b2f938e927e0c07b6bc51157c6f4613ed875ddbdd53cf6ff52adfa71531",
+          "same": true
+        },
+        {
+          "name": "_invRenderEmptyDetail",
+          "line1": 47923,
+          "oldSha256": "ed79b99a87f9d1860d861391b9c4833d932de40a442971fd7ecaa7c591cf47ac",
+          "currentSha256": "ed79b99a87f9d1860d861391b9c4833d932de40a442971fd7ecaa7c591cf47ac",
+          "same": true
+        }
+      ],
+      "baselineTextEqual": true,
+      "candidateTextEqual": true
+    },
+    "game-easy-test.html": {
+      "previousWholeSha256": "34ffa8ae1ff4a4509e695f921eef53e0a236aff63184459d13a915f37434bd04",
+      "currentWholeSha256": "7d68b80afab131562266c39ea7d5631716d12861dbe7e7e2e4477550c15ec6a4",
+      "functions": [
+        {
+          "name": "_invPlaceDetail",
+          "line1": 46376,
+          "oldSha256": "f6da18a101abc3c9680f0319b0c15337594c01b7bb26e73819892eddd19b5abb",
+          "currentSha256": "f6da18a101abc3c9680f0319b0c15337594c01b7bb26e73819892eddd19b5abb",
+          "same": true
+        },
+        {
+          "name": "_invRenderDetail",
+          "line1": 46388,
+          "oldSha256": "5945cb37d12d9019d355af95bdddb6eb1500e10d71745a20af7bf2e04a07485b",
+          "currentSha256": "5945cb37d12d9019d355af95bdddb6eb1500e10d71745a20af7bf2e04a07485b",
+          "same": true
+        },
+        {
+          "name": "_invClearHover",
+          "line1": 46460,
+          "oldSha256": "26f4b80f5883a3dc0b5d8890dda3bff58c10da37e81c24bad6069b810757b156",
+          "currentSha256": "26f4b80f5883a3dc0b5d8890dda3bff58c10da37e81c24bad6069b810757b156",
+          "same": true
+        },
+        {
+          "name": "_invRestoreSelectedActions",
+          "line1": 46466,
+          "oldSha256": "ca7794b79eac59952bd691054efbb14af4aaa8a8dabbca36254f5aebb858fc64",
+          "currentSha256": "ca7794b79eac59952bd691054efbb14af4aaa8a8dabbca36254f5aebb858fc64",
+          "same": true
+        },
+        {
+          "name": "_invCategoryMatches",
+          "line1": 46855,
+          "oldSha256": "f337c7995d2da57d084269483cf27e265a49c4875e6c9155b311a84334dfcefa",
+          "currentSha256": "f337c7995d2da57d084269483cf27e265a49c4875e6c9155b311a84334dfcefa",
+          "same": true
+        },
+        {
+          "name": "_invPlacement",
+          "line1": 46867,
+          "oldSha256": "879d8a804ff8c3394f4aab7251ede02e41acb2a6e0783e91db7d7c549d327389",
+          "currentSha256": "879d8a804ff8c3394f4aab7251ede02e41acb2a6e0783e91db7d7c549d327389",
+          "same": true
+        },
+        {
+          "name": "_invPlacementChanged",
+          "line1": 46870,
+          "oldSha256": "42242a0857c46616150aa572945a78eb4c68caec058e9576f78d670a19994a54",
+          "currentSha256": "42242a0857c46616150aa572945a78eb4c68caec058e9576f78d670a19994a54",
+          "same": true
+        },
+        {
+          "name": "renderInv",
+          "line1": 46876,
+          "oldSha256": "32dcc3ae5139db17de7edc84762a30bf1c841d34da2afa40a201117d546ec1fe",
+          "currentSha256": "32dcc3ae5139db17de7edc84762a30bf1c841d34da2afa40a201117d546ec1fe",
+          "same": true
+        },
+        {
+          "name": "closePanel",
+          "line1": 41381,
+          "oldSha256": "f8451b2f938e927e0c07b6bc51157c6f4613ed875ddbdd53cf6ff52adfa71531",
+          "currentSha256": "f8451b2f938e927e0c07b6bc51157c6f4613ed875ddbdd53cf6ff52adfa71531",
+          "same": true
+        }
+      ],
+      "baselineTextEqual": true,
+      "candidateTextEqual": true
+    }
+  },
+  "css": {
+    "path": "inventory-space.css",
+    "sha256": "dc6f6f4e6db2cbe8f7c94093427f6d28695184081c42f2033cb0f22d0876e650"
+  },
+  "mimeEvidence": {
+    "serverPath": "server.cjs",
+    "sha256": "339fad6ab51cba92f6ca7a386c8aeb251f68cdb58cdfa55c109f57b1758a42ad",
+    "js": "application/javascript",
+    "mjs": "application/octet-stream 기본값; HTTP 실측 미실시"
+  }
+}

@@ -1,0 +1,862 @@
+docs/7아이템디자인/SEEDREAM_UNIQUE_ART_BATCH_20261001.md:36:18개 작업 id가 MagicLight의 완성 이미지에 대응함을 확인했고, 18개 PNG를 프로젝트 경로에서 모두 열었다. UI-04 장갑, UI-17 왕관, UI-22 머리띠는 원본 크기에서 종류와 주된 보라 구조를 눈으로 확인했다. 이는 전종 시각 품질 판정이 아니다.
+docs/7아이템디자인/보라색_고유아이템_카탈로그_20260930.md:21:| UI-04 | 빙편을 거두는 손 | 장갑 | 손등에 펼쳐진 얼음 부채, 관절마다 흑철 고리 | U-D04 얼음 파쇄 쿨 회수 | Higgsfield 원화 `assets/unique-items/ui-04.png` |
+docs/7아이템디자인/보라색_고유아이템_카탈로그_20260930.md:57:| UI-04 | `ui-04.png` | `7421385d-4834-446b-8a2d-e3d57b48e017` |
+docs/14밸런스+수치테이블/14밸런스+수치테이블.md:263:전체 메뉴와 로비의 최신 재질·제목·문양·선택·초점·스크롤 스타일은 UI_COMPOSITION_20260925.md의 **2026-09-26 유니크 분해 NaN 수정과 상세창 마감 절**을 따른다.
+docs/7아이템디자인/UNIQUE_ITEM_GAME_INTEGRATION_CONTRACT_20261001.md:39:| `gloves` | UI-04, UI-16, UI-19 | U-D04, U-D16, U-D19 | 같은 장갑 슬롯의 서로 다른 정의 |
+docs/3.1 ui hud 디자인/LOBBY_ANCESTOR_ART_20260928.md:143:| 상태 보존 | 같은 카드·선택 버튼·이미지·초점 유지. _selectedSlot/_selectedSlotName/_slotScrollIdx/_onlineScrollIdx/_characterLoadSeq 변경 없음. 번역 카탈로그 신규 키·전투/저장 형식 변경 없음 |
+docs/3.1 ui hud 디자인/LOBBY_ANCESTOR_ART_20260928.md:145:| 실제 언어 검증 | 960×540/1920×1080에서29언어×데모1·로컬 생성가능/가득참2·온라인 생성가능/가득참2=290조합. 동일 카드/버튼/이미지·선택·스크롤·초점 보존 및 가로 넘침 없음, pageerror0. 생성/삭제 저장 요청0 |
+docs/3.1 ui hud 디자인/LOBBY_ANCESTOR_ART_20260928.md:160:| 짧은 창 | 목록/배너 내용은 세로 스크롤이 필요할 수 있음. 960×540에서 실제 Steam 버튼까지 스크롤한 뒤 클릭 대상 확인, 입장 위치 동일. 실제 Tab으로 Steam→입장→시네마틱→전원 초점 순서 확인. 입장/종료/Steam 외부 동작 자체는 실행하지 않음 |
+docs/3.1 ui hud 디자인/LOBBY_ANCESTOR_ART_20260928.md:176:## 2026-09-28 언어 메뉴 키 반복·IME 보호와 찜 버튼 초점선
+docs/3.1 ui hud 디자인/LOBBY_ANCESTOR_ART_20260928.md:182:| 검증 | 신규24건 원본19실패→통과, 관련167건/inline4구문 통과. 실제 키보드3크기·초점5크기 및 원본 패드 콜백 대역 확인. IME는 합성 이벤트/실물 패드·OS IME 검증 별도 |
+docs/3.1 ui hud 디자인/LOBBY_ANCESTOR_ART_20260928.md:183:| 상세 | [언어 키 입력·초점 현행 계약](../3.3%20키바인딩+설정/게임패드_호버_상호작용.md). 기존 언어 팝업 계약에 키 유지와 IME 보호 추가. 새 번역키/부모 DOM 교체/사용자 저장 요청 없음 |
+docs/3.1 ui hud 디자인/LOBBY_ANCESTOR_ART_20260928.md:196:| DOM/언어 | _lobbyCardLeaf는 특정 리프의 children.length===0만 갱신. 선택 제어/이미지 노드/초점 유지. 언어 전환 중 세이브 읽기/쓰기 없음 |
+docs/7아이템디자인/고유아이템_모델_어픽스_밸런싱_프로젝트_20260930.md:35:| UI-04 / U-D04 | 얼음 부채 장갑 | 빙결 무리에서 파쇄 | 대상별 1회·360f 회수 상한 | Seedream 비교 시안 |
+docs/7아이템디자인/고유아이템_모델_어픽스_밸런싱_프로젝트_20260930.md:94:UI-04~08·10~22의 작업 id, 원본 프롬프트와 저장 경로는 [18종 생성 이력](SEEDREAM_UNIQUE_ART_BATCH_20261001.md)에 기록했다. 2026-10-01 현재 총 22/22종 Seedream 후보가 있으나 채택 판정은 하지 않았다.
+docs/3.1 ui hud 디자인/UI_UX_IMPROVEMENT_PROJECT_20260930.md:26:| 접근성 | 버튼에 이름과 초점 표시가 있고, 탭/섹션 관계와 상태를 읽을 수 있다. 언어 전환 뒤 이름이 갱신된다. |
+docs/3.1 ui hud 디자인/UI_UX_IMPROVEMENT_PROJECT_20260930.md:34:| UI-01 | P0 | 설정 · 게임/시스템 | 합친 페이지를 아래로 읽은 뒤 닫고 다시 열면 이전 스크롤 위치가 남는다. 1324×982에서는 첫 화면에 게임 설정이 보이지 않아 이동 단서가 필요하다. | 완료 | 2026-10-01 본편 1324×982·390×844, 쉬운판 실화면에서 구역 이동·재진입 위치·초점·가로 넘침을 확인. 상세 계약은 `SETTINGS_HUD_DETAIL_20260930.md`. |
+docs/3.1 ui hud 디자인/UI_UX_IMPROVEMENT_PROJECT_20260930.md:35:| UI-02 | P1 | 설정 · 화면/사운드/조작 | 긴 설정과 짧은 설정의 밀도, 위험 동작의 구분, 키보드 이동을 같은 규칙으로 검수한다. | 완료 | 조작 DOM·Tab 순서, 슬라이더 뒤 초점 이동, 두 키 초기화 버튼의 경고색을 수정. 본편 1754×1262·1324×982·390×844와 쉬운판 1754×1262·390×844에서 세 탭의 가로 넘침·스크롤·닫기 노출 확인. 상세 수치는 `SETTINGS_HUD_DETAIL_20260930.md`. |
+docs/3.1 ui hud 디자인/UI_UX_IMPROVEMENT_PROJECT_20260930.md:37:| UI-04 | P1 | 인벤토리/장비/유골함 | 아이템 비교, 긴 설명, 필터, 키보드/패드 이동과 작은 화면의 정보 우선순위를 검수한다. | 대기 | `UI_COMPOSITION_20260925.md`와 인벤토리 SSOT 읽고 흐름별 검사. |
+docs/3.1 ui hud 디자인/UI_UX_IMPROVEMENT_PROJECT_20260930.md:45:| 수정 방향 | 설정 재진입 때 현재 탭 내용의 시작으로 돌아간다. 게임 탭 상단에 시스템·게임 설정 구역 이동을 제공하고 섹션 제목에 초점을 연결한다. |
+docs/3.1 ui hud 디자인/UI_UX_IMPROVEMENT_PROJECT_20260930.md:47:| 판정 | 본편에서 재진입 시 현재 탭을 유지하며 본문 스크롤 0으로 복귀했다. 본편 390×844에서 두 이동 버튼이 해당 제목에 초점을 주고 고정 이동 바 아래로 맞췄으며 가로 넘침이 없었다. 쉬운판에서도 게임 설정 이동과 가로 넘침 없음을 확인했다. 본편에서 게임 설정 버튼의 Enter 활성화·제목 초점 이동을 확인했다. 새 버튼의 언어 전환 후 문구는 다음 검수에서 확인한다. |
+docs/3.1 ui hud 디자인/UI_UX_IMPROVEMENT_PROJECT_20260930.md:51:화면·사운드·조작 탭에서 긴 설정의 탐색과 초점 흐름을 실제 화면으로 확인한다. 위험 동작은 설정 게임 탭의 액션 카드까지 포함해 정보 위계와 조작 피드백을 다시 본다. 검수 후 발견한 문제만 수정하고 각 화면 크기와 입력 방식의 증거를 여기에 기록한다.
+docs/3.1 ui hud 디자인/UI_UX_IMPROVEMENT_PROJECT_20260930.md:55:| 소유 파일·함수 | `ui-panels.js`의 `settings` 섹션 이동 순서, `ui-refinement.css`의 `#settings-page-controls .bind-reset`, 두 HTML의 설정 입력 초점 예외와 공통 캐시 연결. 타 팀이 편집 중인 두 HTML의 게임·맵 코드와 옵션값은 보존했다. |
+docs/3.1 ui hud 디자인/UI_UX_IMPROVEMENT_PROJECT_20260930.md:56:| 정적 기준선 | 상위 탭 4개는 화살표·Home·End로 이동하고 선택 탭만 `tabIndex=0`; 페이지 전환은 본문 스크롤을 0으로 돌린다. 조작 모드 버튼은 `renderSettings` 재구성 뒤 `data-bind-control`로 초점을 복원한다. 사운드 슬라이더·선택 목록은 기존 ID와 자동 저장을 유지한다. |
+docs/3.1 ui hud 디자인/UI_UX_IMPROVEMENT_PROJECT_20260930.md:57:| 실화면 게이트 | 본편 1754×1262·1324×982·390×844와 쉬운판 1754×1262·390×844에서 화면·사운드·조작의 가로 넘침 0px과 본문 스크롤·닫기 노출을 확인했다. Tab·Home·End와 조작 모드 전환 초점, 두 초기화 버튼 경고색도 확인했다. 하드웨어 재진단·키 초기화·볼륨 변경·저장·리셋은 실행하지 않았다. |
+docs/3.1 ui hud 디자인/UI_UX_IMPROVEMENT_PROJECT_20260930.md:65:| 2026-10-01 | UI-01 | 게임 탭 고정 구역 이동 바와 재진입 스크롤 초기화. 본편·쉬운판 캐시 갱신 | 본편 1324×982·390×844와 쉬운판 실화면에서 위치·초점·가로 넘침 확인 | 완료 |
+docs/3.1 ui hud 디자인/UI_UX_IMPROVEMENT_PROJECT_20260930.md:66:| 2026-10-01 | UI-01 | 구역 이동 뒤 제목의 기본 흰색 윤곽을 3px 청동 초점선으로 정리, CSS 캐시 갱신 | 본편·쉬운판 새로고침 후 실제 화면과 계산 스타일에서 초점선·가로 넘침 없음 확인 | 완료 |
+docs/3.1 ui hud 디자인/UI_UX_IMPROVEMENT_PROJECT_20260930.md:67:| 2026-10-01 | UI-02 | 화면·사운드·조작 탐색 및 초점 흐름 착수. 연속 진행 규칙 확인, Git 상태·설정 SSOT·구성 코드 조사 | 정적 기준선 확인. QA팀 프레임 측정 때문에 새 게임 탭 실화면 검수는 아직 시작하지 않음 | 진행 중 |
+docs/3.1 ui hud 디자인/UI_UX_IMPROVEMENT_PROJECT_20260930.md:70:| 2026-10-01 | UI-02 | 설정 `input`·`select`에서 Tab을 게임 공통 키 입력기가 가로채던 문제 수정 | 본편·쉬운판 실화면에서 커서 크기 → 키 설정 모드 초점 이동 확인. 본편 3개 크기·쉬운판 2개 크기에서 세 탭 넘침 0px·스크롤·닫기 확인 | 완료 |
+docs/3.1 ui hud 디자인/UI_UX_IMPROVEMENT_PROJECT_20260930.md:86:### 2026-10-02 UI-04 빈 상세 후보 root 검수
+docs/3.1 ui hud 디자인/UI_UX_IMPROVEMENT_PROJECT_20260930.md:88:빈 bag/eq/st 선택 뒤 이전 상세·비교·행동 잔류를 양쪽 실제 함수에서 재현하고 후보21+기존3/6=30검사 및 양쪽 inline 구문을 확인했다. 생산 미반영. 실제 renderInv 재구성·_invClearHover 숨김·키보드 상세/삭제 후 초점 복귀를 inventory-dom 후속으로 기존 UIUX에 배정했다. 신규 DOM-only host는 실게임/패드/전체 UI-04 시각 완료를 뜻하지 않는다. [인수·후속](../0마스터플랜/mac-resume-20261001/vscode-dispatch/FOUR-SUBMISSIONS-HELLRAY-20261002.md).
+docs/3.1 ui hud 디자인/exoduser-hud-redesign.md:1012:전체 메뉴와 로비의 최신 재질·제목·문양·선택·초점·스크롤 스타일은 UI_COMPOSITION_20260925.md의 **2026-09-26 전체 메뉴 마감 절**을 따른다.
+docs/3.1 ui hud 디자인/exoduser-hud-redesign.md:1014:전체 메뉴와 로비의 최신 재질·제목·문양·선택·초점·스크롤 스타일은 UI_COMPOSITION_20260925.md의 **2026-09-26 슬롯과 상호작용 마감 절**을 따른다.
+docs/3.1 ui hud 디자인/exoduser-hud-redesign.md:1016:전체 메뉴와 로비의 최신 재질·제목·문양·선택·초점·스크롤 스타일은 UI_COMPOSITION_20260925.md의 **2026-09-26 유니크 분해 NaN 수정과 상세창 마감 절**을 따른다.
+docs/3.1 ui hud 디자인/exoduser-hud-redesign.md:1018:전체 메뉴와 로비의 최신 재질·제목·문양·선택·초점·스크롤 스타일은 UI_COMPOSITION_20260925.md의 **2026-09-26 창고와 상세 스크롤 마감 절**을 따른다.
+docs/3.1 ui hud 디자인/exoduser-hud-redesign.md:1079:| 모음 열기 | toggle(open)은 button.hidden이면 열기를 거부하며 숨긴 버튼에 focus하지 않는다. 배지가 있으면 기존 닫기 초점/버튼 복귀·aria-expanded·3개 카드 정책 유지 |
+docs/3.1 ui hud 디자인/exoduser-hud-redesign.md:1086:| 시각·입력 검수 | 원본 HUD DOM/CSS·배지JS를 분리한 fixture에서0개/1개 스크린샷,배지 모음 실제 클릭→닫기 초점/화면내 배치→닫기→0개 숨김 확인. 브라우저 viewport2534×1262,override없음. fixture는 UI 검수이며 튜토리얼 완료 플레이 검증은 아님 |
+docs/15 세이브+데이터구조/15 세이브+데이터구조.md:113:| 삭제 확인 / `_delConfirmBusy` | 같은 화면에서는 콜백 완료까지 확인창 유지, 확인·취소 버튼 비활성화, 중복 콜백 및 닫기 방지. 화면 전환은 창/콜백/복귀 초점을 해제하되 이미 제출한 요청의 busy 잠금은 완료까지 유지. 완료/예외 후 잠금 해제. 기존 마우스·패드 확인 경로 공통 |
+docs/15 세이브+데이터구조/15 세이브+데이터구조.md:447:| 원자적 이동 | BAG_MAX 및 _invFindSpace(1,1,신규가방index) 검사. 임시push 후 공간이 없으면pop하고 등록 유지. 공간 성공 시 _gx/_gy 지정→등록 키 delete→선택 부위·아이템 선택 초기화→dbSaveForce→renderInv→_invClearHover→이동 안내 |
+docs/15 세이브+데이터구조/15 세이브+데이터구조.md:463:| 유골 부위 | 성공 시 선택 부위와 INV.selected를 비우고 renderInv 뒤 _invClearHover 호출. 등록·미수집 소켓의 기본 title 제거, aria-label 설명 유지. 등록 소켓은 자체 정보 팝업 표시 |
+docs/15 세이브+데이터구조/15 세이브+데이터구조.md:464:| 유골함 | unequipItem('ossuary') 성공 확인 후 INV.selected를 비우고 renderInv 뒤 _invClearHover. 빈 유골함은 title 제거, aria-label 유지. 공간 부족으로 해제 실패하면 기존 상태 유지 |
+docs/15 세이브+데이터구조/15 세이브+데이터구조.md:475:| 호버 해제 | registerBonePart 성공 후 가방 아이템 삭제·선택 초기화·저장·renderInv 다음 _invClearHover를 호출하여 이전 가방 정보가 즉시 닫힘. 등록 실패 시 아이템과 정보 유지 |
+docs/15 세이브+데이터구조/15 세이브+데이터구조.md:484:## 2026-09-27 삭제 확인창 키보드 초점·취소 보완
+docs/15 세이브+데이터구조/15 세이브+데이터구조.md:489:| 열기 | _delConfirmReturnFocus에 호출 전 activeElement 저장, 기본 취소 버튼에 실제 focus(preventScroll:true). 기존 게임패드 선택 테두리와 초점 동기화 |
+docs/15 세이브+데이터구조/15 세이브+데이터구조.md:491:| 처리 중 | 기존 _delConfirmBusy 및 두 버튼 disabled 유지. 모달 컨테이너에 초점, Tab은 이동 차단, Escape도 busy 잠금으로 닫히지 않음. 화면 전환은 창과 초점을 해제하며 요청 잠금은 완료까지 유지 |
+docs/15 세이브+데이터구조/15 세이브+데이터구조.md:494:| 검증 | 실제 모달 함수 격리 실행: 취소 최초 초점,Tab/Shift+Tab 순환,Escape 취소와 원래 초점 복귀,콜백0회. 비동기 처리 중 Tab/Escape 잠금·콜백1회,모의 실패 후 오류 표시·대체 카드 초점 확인. characterSync8개·inline4개 구문 통과. tmp/lobby-delete-focus/report.json. 실제 삭제·계정·저장 요청 없음 |
+docs/15 세이브+데이터구조/15 세이브+데이터구조.md:506:| 회귀 | characterStoryCreation.test.js에 네트워크 rejection/중복 이름/인증 없음의 버튼 해제·이름 보존·창 복원·초점·스토리 미진입3건, 대기 요청 중복 차단1건 추가. 수정 전4건 실패→수정 후통과 |
+docs/15 세이브+데이터구조/15 세이브+데이터구조.md:515:| 공통 실패 UI | 현재 요청 번호일 때만 _showCreateFailure(name,message) 호출:버튼 잠금 해제,이름 보존,setStatus 오류,생성창 show,이름 입력 초점 |
+docs/15 세이브+데이터구조/15 세이브+데이터구조.md:643:| 원인 | 종료·삭제 공용 확인창이 로그인/시네마틱/로비 갱신 후에도 남아 이전 콜백과 초점을 유지. 제출한 요청의 늦은 완료가 새 목록 요청 또는 이전 오류 안내를 시작할 수도 있었음 |
+docs/15 세이브+데이터구조/15 세이브+데이터구조.md:645:| _hideDelConfirm | fromTransition 기본 false. 일반 취소는 기존 busy 잠금 및 열린 창의 원래 버튼 초점 복귀 유지. 전환은 busy 중에도 창을 숨기고 _delConfirmCb/_delConfirmReturnFocus를 null로 정리하며, 창 내부 초점을 blur. 이전 로비 버튼으로 초점을 돌리지 않음 |
+docs/15 세이브+데이터구조/15 세이브+데이터구조.md:651:| 브라우저 | Node 서버 실제 페이지960×540에서 전환4경로 전후 확인: flex/콜백 유지 → none/콜백 및 복귀 참조 null. 지연 성공/실패 대역에서도 전환 즉시 닫힘·busy 완료 후 해제·새 화면 초점 유지·공용 이전 오류 없음. 원본 삭제 콜백에 API/목록 대역만 주입한 전후8조건에서 이전 목록 재조회1회 → 0회, 로컬 실패의 저장 조회5회/오류 안내 → 0회/안내 없음. 데스크톱 종료 실패의 늦은 안내도 제거 |
+docs/15 세이브+데이터구조/15 세이브+데이터구조.md:652:| 화면·범위 | 960×540/1920×1080에서 종료창 Escape 취소 후 전원 버튼 초점 복귀, 로비 표시·가로 넘침 없음, pageerror0. 실계정 세션 종료/저장 삭제·앱 종료·실물 패드는 실행하지 않음. 실제 전환 함수와 콜백의 대역 검증이며 인증 서버의 종단 검증은 아님 |
+docs/15 세이브+데이터구조/15 세이브+데이터구조.md:660:| 재현 | 외형 취소 뒤 #csIdleVid가 숨은 채 계속 재생. 로그인/시네마틱/로비 전환4경로에 외형창 또는 이름창·가상 키보드·내부 초점이 남음. 실버테일 선택 뒤 전사 영상의 늦은 실패 콜백이 실버테일 영상을 멈추고 전사 초상화를 표시할 수 있었음 |
+docs/15 세이브+데이터구조/15 세이브+데이터구조.md:663:| _closeVisualSelect | restoreFocus 기본false. 열린 외형창만 정리하고 번호 증가·내부 초점 blur·display none. csIdleVid/csSceneVid의 _csT clear/null, onerror/oncanplay null, stopMediaVideo, on 클래스 제거, src/poster 제거, load 실행. 숨김 상태 재호출은 상태를 바꾸지 않음 |
+docs/15 세이브+데이터구조/15 세이브+데이터구조.md:664:| _visualReturnFocus | 초기null. openVisualSelect에서 기존 document.activeElement 캡처. 닫을 때 참조를 null로 해제. visualCancelBtn은 restoreFocus:true로 연결된 실행 컨트롤에 focus({preventScroll:true}); 이름 확정·화면 전환은 이전 로비 초점 복원하지 않음 |
+docs/15 세이브+데이터구조/15 세이브+데이터구조.md:665:| 이름 확정 | _visualConfirm은 기존 comingSoon 차단 후 _closeVisualSelect 사용. createModal show, 이름/안내 초기화, 기존50ms 조건부 이름 초점 유지. 캐릭터 생성 요청·저장·스토리 경로 변경 없음 |
+docs/15 세이브+데이터구조/15 세이브+데이터구조.md:666:| _closeCreationOverlays | 외형창 공용 닫기 후 열린 createModal의 내부 초점 blur·show 제거·_vkbHide. 이름창이 숨겨져도 vkbWrap이 block이면 키보드 정리. _goLogin/_goCinematic/_goLobby/showLobby에서 사용 가능한 이 함수를 호출. 초기 숨김 상태에는 나중에 선언한 팝업/키보드 let 상태를 접근하지 않음. 이름창 show 또는 createBtn.disabled이면 생성 안내 초기화, 활성 생성 스토리는 skip()으로 종료. |
+docs/15 세이브+데이터구조/15 세이브+데이터구조.md:669:| 회귀 | test/lobbyCreationOverlayLifecycle.test.js 신규17건: 닫기·재열기·이름 확정·이전 폴백·일반 취소 초점·전환4경로의 외형/이름/초기화 안전. 원본 코드에서13실패/4통과 → 수정 후17통과. 관련 생성·한글·패드·확인창·언어·목록 통합187건, inline script4개 구문 통과 |
+docs/15 세이브+데이터구조/15 세이브+데이터구조.md:670:| 실제 화면 | Node 서버 원본 페이지960×540에서 전환8조건: 외형 flex/재생 true 및 이름 show/키보드 block → 외형 none/paused true/src·poster·타이머 null, 이름 show false/키보드 none/active false/조합 null/숨은 초점 없음. 페이지 오류0 |
+docs/15 세이브+데이터구조/15 세이브+데이터구조.md:672:| 취소·재열기 | 960×540/1920×1080 실제 취소 버튼으로 미디어 해제·연결된 실행 컨트롤 초점 복귀, 재열기 후 전사 영상 재생, 이름창 Escape 취소·횡넘침 없음 확인. 가상 키보드 DOM8행 → 전환 후 자식0개 확인 |
+docs/15 세이브+데이터구조/15 세이브+데이터구조.md:690:| 같은 화면 | 중복 이름·저장 오류는 기존 이름 보존/재입력 초점, 성공은 기존 스토리/입장 유지. comingSoon, 이름2~8글자, 폴백5슬롯 및 기존 세이브 형식 유지 |
+docs/15 세이브+데이터구조/15 세이브+데이터구조.md:693:| 실제 브라우저 | Node 서버 실제 페이지960×540, 시작 타이틀 실제 클릭 후 직접/버튼×성공/오류/네트워크 실패6조건: 로그인 유지·생성창 숨김·안내 빈값·현재 초점 유지·스토리/입장0회·추가 폴백 저장0회·버튼 해제. 실제 재생 중 스토리도 전환 즉시 종료, 이전 입장0회 |
+docs/15 세이브+데이터구조/15 세이브+데이터구조.md:694:| 정상 흐름 검증 | 같은 화면에서 실제 플레이어 성공1회/입장 콜백1회, 실패는 이름창 show·charName 초점·오류 안내. pageerror0. 인증 서버·실제 슬롯 쓰기는 대역으로 격리하며 game.html 진입 콜백은 계수 대역 |
+docs/15 세이브+데이터구조/15 세이브+데이터구조.md:699:## 2026-09-28 외형 선택창 키보드 조작·초점 격리
+docs/15 세이브+데이터구조/15 세이브+데이터구조.md:705:| 초기 초점 | 원래 activeElement를 _visualReturnFocus로 보존한 뒤 선택된 .cs-ico.sel에 focus(preventScroll:true). 해당 버튼이 없으면 취소 버튼. 일반 취소는 기존 공용 닫기와 연결된 실행 컨트롤 초점 복귀 |
+docs/15 세이브+데이터구조/15 세이브+데이터구조.md:706:| Tab | _visualSelectKeydown: 설명(csLeft)→플레이 방식(csRight)→캐릭터 버튼→취소→생성의 enabled 컨트롤을 순환. Shift+Tab 역순. 현재2종은 일반6개/출시 잠금5개. 외부 초점은 정순 설명/역순 마지막 활성 액션으로 복구. focus(preventScroll:true) 후 정보 영역은 scrollIntoView(block:start)로 제목부터 노출. preventDefault/stopPropagation으로 배경 이동 차단 |
+docs/15 세이브+데이터구조/15 세이브+데이터구조.md:707:| 방향키 | 아이콘에 초점이 있을 때만 ArrowLeft/ArrowRight, Home/End 처리. 좌우 step=(ArrowRight?1:-1)×(현재 document.documentElement.dir가rtl?-1:1),next=clamp(index+step,0,icons.length-1)로 화면상 좌우 이동 후 대상 네이티브 click/focus. Home은0,End는마지막 논리 인덱스 유지. 선택·설명·영상·생성 잠금·aria-pressed가 동일 캐릭터로 갱신. 취소/생성 버튼의 방향키는 가로채지 않음 |
+docs/15 세이브+데이터구조/15 세이브+데이터구조.md:710:| 회귀 | test/lobbyVisualKeyboard.test.js 신규17건: 열기/선택 상태, 양방향 Tab, 잠금, 외부 초점 복구, 방향키, Escape 정리, IME6조건, 숨김/클릭 경로. 원본16실패/1통과→수정 후17통과. 관련 로비·생성·패드·울트라와이드 통합228건 및 inline script4개 구문 통과 |
+docs/15 세이브+데이터구조/15 세이브+데이터구조.md:711:| 실제 화면 | Node 서버의 실제 페이지에서 시작 타이틀 클릭 후960×540/1920×1080 확인. 실제 Tab/Shift+Tab/Enter/Space/방향키/Home/End/Escape 입력. 초점 전부 창 내부, 출시 잠금 유지, 취소 후 실행 버튼 복귀, 미디어 pause/src 해제. 컨트롤·초점 테두리 화면 내 및 가로 넘침 없음 |
+docs/15 세이브+데이터구조/15 세이브+데이터구조.md:726:| 상태 보존 | 같은 카드·선택 버튼·이미지·초점 유지. _selectedSlot/_selectedSlotName/_slotScrollIdx/_onlineScrollIdx/_characterLoadSeq 변경 없음. 번역 카탈로그 신규 키·전투/저장 형식 변경 없음 |
+docs/15 세이브+데이터구조/15 세이브+데이터구조.md:728:| 실제 언어 검증 | 960×540/1920×1080에서29언어×데모1·로컬 생성가능/가득참2·온라인 생성가능/가득참2=290조합. 동일 카드/버튼/이미지·선택·스크롤·초점 보존 및 가로 넘침 없음, pageerror0. 생성/삭제 저장 요청0 |
+docs/15 세이브+데이터구조/15 세이브+데이터구조.md:738:| 검증 | 실제 데모29언어×진행2×화면7=406조합 및 일반 슬롯 대역6조합. 텍스트/입장 경계·초점 순서·저장 원문 보존, 가로 넘침/페이지 오류/쓰기 요청0. 기존105회귀+inline4구문 통과 |
+docs/15 세이브+데이터구조/15 세이브+데이터구조.md:752:## 2026-09-28 언어 메뉴 키 반복·IME 보호와 찜 버튼 초점선
+docs/15 세이브+데이터구조/15 세이브+데이터구조.md:758:| 검증 | 신규24건 원본19실패→통과, 관련167건/inline4구문 통과. 실제 키보드3크기·초점5크기 및 원본 패드 콜백 대역 확인. IME는 합성 이벤트/실물 패드·OS IME 검증 별도 |
+docs/15 세이브+데이터구조/15 세이브+데이터구조.md:759:| 상세 | [언어 키 입력·초점 현행 계약](../3.3%20키바인딩+설정/게임패드_호버_상호작용.md). 기존 언어 팝업 계약에 키 유지와 IME 보호 추가. 새 번역키/부모 DOM 교체/사용자 저장 요청 없음 |
+docs/15 세이브+데이터구조/15 세이브+데이터구조.md:781:| 키보드·수명 | csLeft/csRight도 tabindex0 지역으로 Tab 순환에 포함, 일반6개/출시 잠금5개. 정보 초점은 제목부터 노출하고 읽기 키는 네이티브 스크롤 허용. _resetVisualInfoScroll로 열기/다른 외형 선택의 본문·패널 위치0, 동일 외형은 보존. 저장 형식 변경 없음 |
+docs/15 세이브+데이터구조/15 세이브+데이터구조.md:786:## 2026-09-28 외형 선택 배치 전환의 정보 초점 유지
+docs/15 세이브+데이터구조/15 세이브+데이터구조.md:790:| 원인 | 960×540에서 csRight를 End로 읽은 뒤480×360으로 바꾸면 초점은 csRight에 남고 플레이 방식 제목은 본문 밖으로 이동. 반대 전환에서는 이전 패널 scrollTop69가 다시 적용될 수 있음. 기존 열기/외형 변경 초기화만으로는 열린 창의 배치 전환을 처리하지 못함 |
+docs/15 세이브+데이터구조/15 세이브+데이터구조.md:792:| _visualInfoLayoutChanged | charVisualPop.style.display가 flex이고 document.activeElement가 csLeft 또는 csRight일 때만 처리. _resetVisualInfoScroll로 본문·양쪽 패널 scrollTop0 후 현재 초점 영역에 scrollIntoView(block:start). 초점 대상·_pendingVisualIdx·생성 잠금·미디어 경로 유지 |
+docs/15 세이브+데이터구조/15 세이브+데이터구조.md:793:| 보존·제외 | 같은 배치 안에서 크기 조절은 해당 change 이벤트 없음. 아이콘/액션/외부 초점 및 숨긴 팝업은 스크롤·초점을 변경하지 않음. 기존 열기/다른 외형 선택 초기화, 동일 외형 선택 보존 계약 유지. 새 세이브 필드 없음 |
+docs/15 세이브+데이터구조/15 세이브+데이터구조.md:794:| 네이티브 보정 | 그리스어 실버테일480→500px의 본문 scrollTop47→50은 수정 전 HTML 격리 페이지에서도 재현. 브라우저의 레이아웃 스크롤 앵커 보정을 강제로 되돌리지 않음. 같은 배치 검증은 실제 _resetVisualInfoScroll 호출 증가0과 읽기 위치 비초기화·초점 유지로 판정 |
+docs/15 세이브+데이터구조/15 세이브+데이터구조.md:795:| 실제 브라우저 | Node 서버 원본29언어×전사0/실버테일1×정보 영역2개×761↔760px 양방향=232조건. 현재 초점 제목 노출·패널 scrollTop0·선택/출시 잠금 유지·헤더/본문/하단 분리·가로 넘침 없음. 같은 배치480→500/960→980px·높이360px는 KO/EN/DE/FR/EL/AR×2외형×2영역×2전환=48조건 |
+docs/15 세이브+데이터구조/15 세이브+데이터구조.md:796:| 실제 키보드 | Shift+Tab 정보 초점/End 후960×540↔480×360,1920×1080↔320×360의4조건에서 제목 노출·초점 유지. 리사이즈 후 ArrowRight로 실버테일 잠금/ArrowLeft로 전사 복귀, Escape 후 찜 버튼 초점 복귀와 숨긴 창 리사이즈 보존. pageerror0/쓰기 요청0 |
+docs/15 세이브+데이터구조/15 세이브+데이터구조.md:797:| 회귀 | lobbyVisualKeyboard25→31건. 수정 전6실패/25통과→31통과. 양쪽 정보 영역 재노출·아이콘/액션/외부 초점 비간섭·숨긴 창 비간섭 및 실제 MediaQueryList change 등록 검증. 관련12파일201건/inline script4개 구문 통과 |
+docs/15 세이브+데이터구조/15 세이브+데이터구조.md:809:| 수명·UI | selectVisual의 _visualPreviewSeq/isCurrent와 기존 오류·180ms 폴백·5000ms 스톨 보호 유지. 닫기에서 src/poster·이벤트·타이머 해제, 재열기에서 선택 영상 재생. 전사0.75배속·실버테일1배속/comingSoon:true·포스터/초상화·contain 비율 및 선택/초점/스크롤 계약 유지. 새 미디어나 세이브 필드 없음 |
+docs/15 세이브+데이터구조/15 세이브+데이터구조.md:820:| 재현 | 320×280 실제 로비에서 외형 확정 후 1글자 이름을 Enter로 제출. 입력칸149~203px에 초점이 남고 오류는270~304px,생성창 하단268px 밖으로 완전히 가려졌다. |
+docs/15 세이브+데이터구조/15 세이브+데이터구조.md:826:| 브라우저 | Node 서버 원본 페이지320×280/480×360/960×540×ko/en/ar×가상 키보드 off/on. 길이 오류/특수문자/같은 오류 재제출/긴 서버 오류 총72조건에서 입력·오류 영역 노출 및 횡넘침 없음. 입력값·초점과 같은 긴 오류의 내부 읽기 위치 보존,새 오류 초기화,pageerror0/쓰기 요청0. 서버 실패는 원본 helper 직접 호출이며 실서버 저장 실패를 유발한 검사가 아니다. |
+docs/15 세이브+데이터구조/15 세이브+데이터구조.md:838:| 키보드 | _visualSelectKeydown의 step=(ArrowRight?1:-1)×(현재 dir===rtl?-1:1). next=clamp(index+step,0,icons.length-1). 아이콘 초점에서 좌우는 화면상 좌우 이웃으로 이동하고 기존 click/focus(preventScroll:true)를 실행한다. |
+docs/15 세이브+데이터구조/15 세이브+데이터구조.md:839:| Home/End·잠금 | Home은 논리 첫 버튼0,End는 마지막 버튼icons.length-1. RTL에서 첫 버튼이 오른쪽이라는 기존 DOM 순서 유지. 선택/초점/aria-pressed/설명·미디어·생성 잠금은 같은 캐릭터로 갱신. 일반 전사0 생성 활성,실버테일1 출시 준비 잠금. |
+docs/15 세이브+데이터구조/15 세이브+데이터구조.md:844:| 실제 브라우저 | 320×280/960×540/1920×1080×ko/en/ar×키보드/D-pad/스틱=27흐름. 네이티브 키보드9·가상 패드18,선택·잠금·aria-pressed·좌우 끝 경계·취소 후 초점 복귀·횡넘침 없음. 열린 창 en→ar→en 추가 확인,pageerror0/쓰기 요청0. |
+docs/15 세이브+데이터구조/15 세이브+데이터구조.md:849:## 2026-09-28 이름 입력 혼합 시 한글 조합·초점 보존
+docs/15 세이브+데이터구조/15 세이브+데이터구조.md:853:| 재현 | 실제 로비 이름창에서 가상 키ㄱ→ㅏ로가 생성 후 입력칸을 이름으로 교체하고 가상ㄴ 입력:이름→이간으로 마지막 글자를 덮어썼다. 가상 키 span을 실제 클릭하면 초점이 body로 빠져 Escape도 이름창에서 처리되지 않았다. |
+docs/15 세이브+데이터구조/15 세이브+데이터구조.md:858:| 키 입력 초점 | _vkbDispatchInput은 통지 후 inp.focus(preventScroll:true). 문자·공백·백스페이스·8글자 제한 반환에서 이름칸 초점을 유지하며 키보드가 보이는 위치를 초점 이동으로 바꾸지 않는다. _vkbInput의OK도 상태 null→입력 초점 복귀→기존 createBtn.click 순서로 처리해 오류 후 입력·Escape를 계속 받는다. |
+docs/15 세이브+데이터구조/15 세이브+데이터구조.md:860:| 회귀 | test/lobbyHangulInput.test.js6→15건. 외부 교체/삭제/영문 덧붙이기/같은 문자4,이벤트 없는 복원/8글자 보존2,가상 이벤트 보존1,문자 키/OK 초점2 추가. 첫13건 원본6PASS/7FAIL,초점15건 중13PASS/2FAIL→최종15PASS. 관련8파일175건 및 inline script4개 구문 PASS. |
+docs/15 세이브+데이터구조/15 세이브+데이터구조.md:861:| 실제 브라우저 | Node 서버 원본320×280/480×360/960×540에서 화면 키를 실제 마우스로 클릭. 네이티브 교체/삭제/영문 입력/텍스트 삽입,같은값 composition InputEvent 대역,이벤트 없는 복원,8글자 보존,내부 받침·백스페이스,교체 후 가상 삭제의9종×3창=27흐름 통과. 이름/maxlength8/초점·횡넘침 확인. |
+docs/15 세이브+데이터구조/15 세이브+데이터구조.md:862:| OK·Escape | 각3창에서 실제OK 클릭 후1글자 오류 표시·입력 초점·오류 노출·조합 null과 Escape 닫기 확인3흐름. 총30브라우저 흐름/pageerror0/쓰기 요청0. 실제 Windows OS IME·실물 게임패드·세이브 저장은 검증하지 않았다. 데모에는 생성 카드가 없어 openVisualSelect로 진입한 뒤 실제 컨트롤을 사용했다. |
+docs/3.1 ui hud 디자인/UI_FOUNDATION_20260924.md:90:전체 메뉴와 로비의 최신 재질·제목·문양·선택·초점·스크롤 스타일은 UI_COMPOSITION_20260925.md의 **2026-09-26 전체 메뉴 마감 절**을 따른다.
+docs/3.1 ui hud 디자인/UI_FOUNDATION_20260924.md:92:전체 메뉴와 로비의 최신 재질·제목·문양·선택·초점·스크롤 스타일은 UI_COMPOSITION_20260925.md의 **2026-09-26 슬롯과 상호작용 마감 절**을 따른다.
+docs/3.1 ui hud 디자인/UI_FOUNDATION_20260924.md:94:전체 메뉴와 로비의 최신 재질·제목·문양·선택·초점·스크롤 스타일은 UI_COMPOSITION_20260925.md의 **2026-09-26 유니크 분해 NaN 수정과 상세창 마감 절**을 따른다.
+docs/3.1 ui hud 디자인/UI_FOUNDATION_20260924.md:96:전체 메뉴와 로비의 최신 재질·제목·문양·선택·초점·스크롤 스타일은 UI_COMPOSITION_20260925.md의 **2026-09-26 창고와 상세 스크롤 마감 절**을 따른다.
+docs/3.1 ui hud 디자인/SETTINGS_HUD_DETAIL_20260930.md:45:| `.settings-jump-nav`, `.settings-jump-button` | 게임 페이지 상단 제목 안의 `시스템`, `게임 설정` 버튼. 이동 대상과 `aria-controls` 연결 | 본문 스크롤 중에도 제목 바가 상단에 남고, 대상 제목이 바 아래에 보이며 초점이 옮겨진다. |
+docs/3.1 ui hud 디자인/SETTINGS_HUD_DETAIL_20260930.md:46:| `settings-system-options`, `settings-game-options` | 각 구역의 안정적인 대상 ID | 시스템 h4와 게임 구역 제목은 프로그래밍 초점을 받는다. |
+docs/3.1 ui hud 디자인/SETTINGS_HUD_DETAIL_20260930.md:48:| 구역 제목 초점 표시 | `.settings-group-heading`, `.set-label[role="heading"]` | 이동 후 기본 흰색 전체 윤곽 대신 왼쪽 3px 청동 강조선과 어두운 배경으로 초점 위치를 보인다. |
+docs/3.1 ui hud 디자인/SETTINGS_HUD_DETAIL_20260930.md:50:본편 실화면 390×844에서 `게임 설정` 이동 후 본문 `scrollTop=1152px`, 제목 상단 332px·고정 바 하단 322px, 다시 `시스템` 이동 후 `scrollTop=15px`, 제목 상단 323px·바 하단 322px였다. 두 경우 모두 대상 제목에 초점이 가고 가로 넘침이 없었다. 본편 1324×982에서 화면 탭을 아래로 스크롤해 `scrollTop=283px`로 만든 뒤 닫고 다시 열었을 때 화면 탭을 유지하며 `scrollTop=0`으로 돌아왔다. 같은 본편 화면에서 `게임 설정` 버튼에 Enter를 눌러 제목 초점 이동과 가로 넘침 없음을 확인했다. 쉬운판 실화면에서도 4탭과 게임 설정 이동·가로 넘침 없음을 확인했다. 제목 초점선은 CSS `nav16`을 적용한 본편·쉬운판 새로고침 후 흰색 윤곽이 사라지고 왼쪽 청동선이 보이는 실제 화면과 계산 스타일로 재확인했다. 설정 저장·리셋·종료 및 언어 변경은 이 검수에서 실행하지 않았다. `node --check ui-panels.js`, 설정 관련 테스트 23/23, `git diff --check`가 통과했다.
+docs/3.1 ui hud 디자인/SETTINGS_HUD_DETAIL_20260930.md:58:본편·쉬운판의 게임 공통 `keydown`은 `Space`·`Enter`·`NumpadEnter`·`Tab`에 대해 설정의 버튼을 게임 입력 처리에서 제외했으나, 설정 `input`·`select`는 제외하지 않았다. 그래서 `#optCursorSize`에 초점을 둔 채 Tab을 누르면 게임의 `preventDefault()`가 브라우저 초점 이동을 막았다. 두 HTML에서 이 네 키의 예외 대상을 `#settings.on input`·`#settings.on select`까지 넓혔다. 설정 패널 밖 게임 단축키와 `Escape` 닫기 동작은 그대로 둔다. 실제 본편·쉬운판에서 `#optCursorSize` 다음 Tab 초점이 `data-bind-control="mode-kbm"`으로 넘어갔다.
+docs/3.1 ui hud 디자인/SETTINGS_HUD_DETAIL_20260930.md:62:| 본편 1754×1262 | 화면 본문 904/904px, 사운드 286/286px, 조작 1024/904px 스크롤. 조작 DOM과 시각 순서는 커서 → 키 설정. 상위 탭 Home/End 이동과 키보드·패드 전환 후 초점 복원 확인. |
+docs/3.1 ui hud 디자인/SETTINGS_HUD_DETAIL_20260930.md:63:| 본편 1324×982 | 화면 907/624px, 사운드 286/286px, 조작 1125/624px 스크롤. 세 탭 가로 넘침 0px. 조작 모드 전환 뒤 `mode-kbm` 초점 복원 확인. |
+docs/3.1 ui hud 디자인/SETTINGS_HUD_DETAIL_20260930.md:64:| 본편 390×844 | 화면 1886/492px, 사운드 492/492px, 조작 패드 모드 1716/492px 스크롤. 세 탭 가로 넘침 0px, 고정 닫기 노출. 패드 초기화 버튼과 하단 가이드는 본문 스크롤·키보드 초점으로 접근 가능. |
+docs/3.1 ui hud 디자인/SETTINGS_HUD_DETAIL_20260930.md:65:| 쉬운판 1754×1262·390×844 | 조작 DOM 순서 커서 → 키 설정, 두 크기에서 `#optCursorSize` 다음 Tab 초점이 `mode-kbm`. 390×844의 화면 1886/492px, 사운드 492/492px, 조작 키보드 모드 1679/492px 스크롤이며 세 탭 가로 넘침 0px·고정 닫기 노출. |
+docs/3.1 ui hud 디자인/lobby_full_patch.md:208:전체 메뉴와 로비의 최신 재질·제목·문양·선택·초점·스크롤 스타일은 UI_COMPOSITION_20260925.md의 **2026-09-26 전체 메뉴 마감 절**을 따른다.
+docs/3.1 ui hud 디자인/lobby_full_patch.md:210:전체 메뉴와 로비의 최신 재질·제목·문양·선택·초점·스크롤 스타일은 UI_COMPOSITION_20260925.md의 **2026-09-26 슬롯과 상호작용 마감 절**을 따른다.
+docs/3.1 ui hud 디자인/lobby_full_patch.md:212:전체 메뉴와 로비의 최신 재질·제목·문양·선택·초점·스크롤 스타일은 UI_COMPOSITION_20260925.md의 **2026-09-26 유니크 분해 NaN 수정과 상세창 마감 절**을 따른다.
+docs/3.1 ui hud 디자인/lobby_full_patch.md:214:전체 메뉴와 로비의 최신 재질·제목·문양·선택·초점·스크롤 스타일은 UI_COMPOSITION_20260925.md의 **2026-09-26 창고와 상세 스크롤 마감 절**을 따른다.
+docs/3.1 ui hud 디자인/lobby_full_patch.md:292:| 검증 | 온라인·로컬 실제 카드 템플릿을 격리 페이지에 렌더. 화면폭800/1280/1920에서 직업 배지 영역 내·삭제 간격10px·이름 말줄임 및 전체 이름 title 확인. 삭제 키보드 초점 opacity1. 로비 회귀7개 및 인라인 스크립트4개 구문 통과. tmp/lobby-card-details/after.png 및 report.json. 실제 캐릭터 선택·삭제·세이브 요청 없음 |
+docs/3.1 ui hud 디자인/lobby_full_patch.md:303:| 초점 복원 | 클릭 시작 시 초점 여부 저장, setTimeout 0으로 이벤트 버블링·목록 재생성 이후 처리. 기존 버튼이 제거되고 activeElement가 body일 때 동일 data-card-key 버튼에 focus(preventScroll:true). 다른 초점은 빼앗지 않음 |
+docs/3.1 ui hud 디자인/lobby_full_patch.md:304:| 초점 표시 | outline2px solid #ead6a5, outline-offset:-3px로 카드 내부에 표시 |
+docs/3.1 ui hud 디자인/lobby_full_patch.md:307:| 검증 | 실제 온라인/로컬 렌더러·선택 함수 추출, 격리된 선택·생성·삭제 확인 콜백 사용. Enter/Space 각각 선택1회, 재렌더 후 초점 유지, 삭제 Enter는 선택 없이 확인1회, 생성 Space1회. 로비 회귀8개 통과 및 inline4개 구문 확인. tmp/lobby-card-keyboard/report.json 및 after.png. 실제 계정·저장·삭제 API 호출 없음 |
+docs/3.1 ui hud 디자인/lobby_full_patch.md:310:## 2026-09-27 목록 이동 초점·온라인 오른쪽 스틱 수정
+docs/3.1 ui hud 디자인/lobby_full_patch.md:314:| 재현 | 목록 이동 버튼 클릭이 렌더러를 재실행하여 활성 버튼을 제거, 키보드 초점이 body로 유실. 오른쪽 스틱은 로컬 ID만 조회하여 온라인 목록 미동작 |
+docs/3.1 ui hud 디자인/lobby_full_patch.md:316:| 초점 유지 | 클릭 전 활성 버튼이었다면 재렌더 후 동일 ID의 활성 버튼에 focus(preventScroll:true). 마지막/첫 페이지에서 해당 버튼이 disabled이면 반대 방향 버튼으로 초점 이동. 이미 다른 요소로 이동한 초점은 보존 |
+docs/3.1 ui hud 디자인/lobby_full_patch.md:318:| 검증 | 온라인/로컬 실제 렌더러로 Enter3회:2-3→3-4→4-5/5, 끝에서 위 버튼 초점, Space로3-4/5 복귀. 실제 스틱 처리 코드에1,1,0,1,-1 입력:2-3,2-3,2-3,3-4,2-3/5로 두 모드 일치. 실제 게임패드 하드웨어 검증은 아님 |
+docs/3.1 ui hud 디자인/lobby_full_patch.md:330:| 초점·호버 | 목록 내비 align-items:center. 화살표 focus-visible outline-offset:-2px. 활성 화살표 hover/gp-hover 색#ffd6bb,배경#6b38282e |
+docs/3.1 ui hud 디자인/lobby_full_patch.md:332:| 검증 | 온라인 실제 렌더러,1920/1280/800×720에서 화살표32px·삭제28px·간격10px·가로 넘침 없음·footer 화면 내. 키보드 이동 후 초점 유지. Chromium hasTouch 입력 에뮬레이션에서44×44px 및 간격10px 확인, 실제 터치 기기 검증은 아님. tmp/lobby-control-targets/report.json,desktop.png,touch.png |
+docs/3.1 ui hud 디자인/lobby_full_patch.md:345:| 검증 | 격리 로비 카드3개 고정 높이로1280×720/1024×600/960×540/800×480 검수. 낮은 화면에서 ENTER 초점 시 내부 스크롤196/256/316px, 버튼 화면 내·가로 넘침 없음. 실제 휠 핸들러 상하 경계/이동/0 입력 확인. 로비 회귀8개·inline4개 구문 통과. tmp/lobby-short-height/after.png,report.json,wheel-report.json |
+docs/3.1 ui hud 디자인/lobby_full_patch.md:366:| 닫기 | Escape는 선택값 유지하고 원래 select로 초점 복귀,Tab은 닫은 후 기본 이동. 바깥 pointerdown 및 화면 전환(_goLogin/_goCinematic/_goLobby/showLobby)은 초점을 강제로 되돌리지 않고 닫기 |
+docs/3.1 ui hud 디자인/lobby_full_patch.md:369:| 검증 | 실제 팝업 코드 격리 실행,360×480/1280×720/640×360/320×280 우하단 배치 모두 화면내. 방향키 선택change1회,Escape취소 값 유지·초점복귀,바깥 클릭닫기 확인. 로비 회귀5개·inline4개 구문 통과. tmp/lobby-language-popup/report.json 및 after.png. 언어 저장은 검수용 change 계수로 대체 |
+docs/3.1 ui hud 디자인/lobby_full_patch.md:379:| 창 크기 변경 | 기존 배치 수식을 _positionLangPop(pop,sel)로 분리. 열린 상태의 window resize에서 위치·최대높이 재계산 후 선택 행을 내부 스크롤로 노출,행 재생성·언어 확정·키보드 초점 이동 없음 |
+docs/3.1 ui hud 디자인/lobby_full_patch.md:421:| 유지 | 내용이 패널 높이를 넘지 않으면 스크롤하지 않음. 실제 DOM 초점·언어 선택·캐릭터 선택/삭제 동작은 변경 없음. 중립 프레임은 같은 인덱스·동일 요소에서 스크롤하지 않음 |
+docs/3.1 ui hud 디자인/lobby_full_patch.md:572:| 확인 | _showLobbyQuit → 기존 확인창 _showDelConfirm의 선택적 message 인수 사용. 기본 취소,Escape/B 취소,Tab 초점 순환 및 닫은 뒤 원래 버튼 초점 복원. 기존 삭제 기본 문구·동작 유지 |
+docs/3.1 ui hud 디자인/lobby_full_patch.md:575:| 검증 | 실제 확인창 코드 격리 실행:취소 기본/Escape 복귀/취소 시 종료0회,NW·Electron·브라우저 각 stub1회. 1920×1080,1280×720,960×540에서 하단 버튼 전체 표시 및 초점offset -2px. 실제 앱 종료·실물패드·실계정 저장은 실행하지 않음 |
+docs/3.1 ui hud 디자인/lobby_full_patch.md:596:| 범위 | 종료·캐릭터 삭제 공용 확인창. 기존 Tab 초점 순환/Escape 취소,게임패드,비동기 중복 제출 방지 유지 |
+docs/3.1 ui hud 디자인/lobby_full_patch.md:597:| 검증 | 신규 Enter/Space 회귀2개는 수정 전 실패 후 통과. 관련20개 테스트 통과. Chromium 실제 키 입력으로 Enter 반복2회에도 확인창 유지·취소 초점·종료0회,해제 후 Tab/Enter는 종료 stub1회 확인. 실제 앱 종료·삭제 미실행 |
+docs/3.1 ui hud 디자인/lobby_full_patch.md:626:## 2026-09-28 종료 확인창 초점 복귀 일치
+docs/3.1 ui hud 디자인/lobby_full_patch.md:630:| 재현 | 패드의 programmatic click은 DOM 초점을 옮기지 않아 종료창 취소 후 이전 언어 select로 초점이 복귀함 |
+docs/3.1 ui hud 디자인/lobby_full_patch.md:633:| 검증 | 신규 회귀 수정 전 실패 후 통과,확인창·캐릭터 동기화13개 통과. Chromium에서 언어 select 초점→프로그램 클릭→Escape 후 lobbyQuitBtn 복귀/종료0회 확인. 확인창960×540,640×360,360×280 모두 화면 내 |
+docs/3.1 ui hud 디자인/lobby_full_patch.md:733:| 재현 | 패드 X가 삭제 버튼 click을 프로그램으로 실행하면 기존 DOM 초점이 언어 메뉴 등에 남아 취소 후 엉뚱한 메뉴로 복귀 |
+docs/3.1 ui hud 디자인/lobby_full_patch.md:735:| 유지 | 삭제 요청·확정·취소·버튼 크기·키보드/패드 행동 유지. 초점 이동 자체로 스크롤을 바꾸지 않음 |
+docs/3.1 ui hud 디자인/lobby_full_patch.md:736:| 검증 | 신규 온라인/로컬 회귀2개 수정 전 실패→통과. 실제 이벤트 앞부분 및 확인창을 Chromium에 격리 실행,언어 select 초점에서 프로그램 클릭→Escape 후 각 삭제 버튼 복귀/삭제 콜백0회. 확인창·캐릭터 동기화·패드26개 통과 |
+docs/3.1 ui hud 디자인/lobby_full_patch.md:851:| 닫기 | 기존 함수의 display:none,_langPopOpen=false,원래 select aria-expanded=false 사용. restore=false로 숨겨질 select에 초점 복귀하지 않음. 탐색 인덱스를 언어 선택값으로 확정하지 않으며 change 호출 없음 |
+docs/3.1 ui hud 디자인/lobby_full_patch.md:954:| 화면 QA | 데모 로비 960×540, 1280×720, 1920×1080에서 가로 넘침 없음. 캐릭터 카드·입장·종료·확인/취소 버튼 모두 화면 안. 종료 팝업 기본 취소 초점과 Escape 후 종료 버튼 초점 복귀 확인. |
+docs/3.1 ui hud 디자인/lobby_full_patch.md:966:| 실제 런타임 | Node 서버의 원본 로비와 getGamepads 대역으로 패드 A 열기/B 취소를 확인했다. 이동 없는 마우스 클릭 후100ms active=false, cursor 복원, KBM, 배경 강조 제거와 취소 초점 확인. Escape 후 종료 버튼 복귀와 종료 호출0회 확인. touch/pen PointerEvent 전달 뒤70ms에도 active=false와 강조0 확인. 실물 패드·터치펜 검증은 별도다. |
+docs/3.1 ui hud 디자인/lobby_full_patch.md:978:| 실제 런타임 | Node 서버의 원본 로비에서 getGamepads와 playEffect만 대역으로 교체했다. 거부 반복 요청은 수정 전130ms 동안 오류5회, 수정 후3회 요청에서 오류0회였다. 같은 페이지에서 원본 문 열림 예약 코드8단계를 실행해 거부8회·오류0회 확인. 종료창 열기·Escape 취소 후 버튼 초점 복귀 정상. 실물 패드 진동 검증은 별도다. |
+docs/3.1 ui hud 디자인/lobby_full_patch.md:987:| 원인 | 종료·삭제 공용 확인창이 로그인/시네마틱/로비 갱신 후에도 남아 이전 콜백과 초점을 유지. 제출한 요청의 늦은 완료가 새 목록 요청 또는 이전 오류 안내를 시작할 수도 있었음 |
+docs/3.1 ui hud 디자인/lobby_full_patch.md:989:| _hideDelConfirm | fromTransition 기본 false. 일반 취소는 기존 busy 잠금 및 열린 창의 원래 버튼 초점 복귀 유지. 전환은 busy 중에도 창을 숨기고 _delConfirmCb/_delConfirmReturnFocus를 null로 정리하며, 창 내부 초점을 blur. 이전 로비 버튼으로 초점을 돌리지 않음 |
+docs/3.1 ui hud 디자인/lobby_full_patch.md:995:| 브라우저 | Node 서버 실제 페이지960×540에서 전환4경로 전후 확인: flex/콜백 유지 → none/콜백 및 복귀 참조 null. 지연 성공/실패 대역에서도 전환 즉시 닫힘·busy 완료 후 해제·새 화면 초점 유지·공용 이전 오류 없음. 원본 삭제 콜백에 API/목록 대역만 주입한 전후8조건에서 이전 목록 재조회1회 → 0회, 로컬 실패의 저장 조회5회/오류 안내 → 0회/안내 없음. 데스크톱 종료 실패의 늦은 안내도 제거 |
+docs/3.1 ui hud 디자인/lobby_full_patch.md:996:| 화면·범위 | 960×540/1920×1080에서 종료창 Escape 취소 후 전원 버튼 초점 복귀, 로비 표시·가로 넘침 없음, pageerror0. 실계정 세션 종료/저장 삭제·앱 종료·실물 패드는 실행하지 않음. 실제 전환 함수와 콜백의 대역 검증이며 인증 서버의 종단 검증은 아님 |
+docs/3.1 ui hud 디자인/lobby_full_patch.md:1004:| 재현 | 외형 취소 뒤 #csIdleVid가 숨은 채 계속 재생. 로그인/시네마틱/로비 전환4경로에 외형창 또는 이름창·가상 키보드·내부 초점이 남음. 실버테일 선택 뒤 전사 영상의 늦은 실패 콜백이 실버테일 영상을 멈추고 전사 초상화를 표시할 수 있었음 |
+docs/3.1 ui hud 디자인/lobby_full_patch.md:1007:| _closeVisualSelect | restoreFocus 기본false. 열린 외형창만 정리하고 번호 증가·내부 초점 blur·display none. csIdleVid/csSceneVid의 _csT clear/null, onerror/oncanplay null, stopMediaVideo, on 클래스 제거, src/poster 제거, load 실행. 숨김 상태 재호출은 상태를 바꾸지 않음 |
+docs/3.1 ui hud 디자인/lobby_full_patch.md:1008:| _visualReturnFocus | 초기null. openVisualSelect에서 기존 document.activeElement 캡처. 닫을 때 참조를 null로 해제. visualCancelBtn은 restoreFocus:true로 연결된 실행 컨트롤에 focus({preventScroll:true}); 이름 확정·화면 전환은 이전 로비 초점 복원하지 않음 |
+docs/3.1 ui hud 디자인/lobby_full_patch.md:1009:| 이름 확정 | _visualConfirm은 기존 comingSoon 차단 후 _closeVisualSelect 사용. createModal show, 이름/안내 초기화, 기존50ms 조건부 이름 초점 유지. 캐릭터 생성 요청·저장·스토리 경로 변경 없음 |
+docs/3.1 ui hud 디자인/lobby_full_patch.md:1010:| _closeCreationOverlays | 외형창 공용 닫기 후 열린 createModal의 내부 초점 blur·show 제거·_vkbHide. 이름창이 숨겨져도 vkbWrap이 block이면 키보드 정리. _goLogin/_goCinematic/_goLobby/showLobby에서 사용 가능한 이 함수를 호출. 초기 숨김 상태에는 나중에 선언한 팝업/키보드 let 상태를 접근하지 않음. 이름창 show 또는 createBtn.disabled이면 생성 안내 초기화, 활성 생성 스토리는 skip()으로 종료. |
+docs/3.1 ui hud 디자인/lobby_full_patch.md:1013:| 회귀 | test/lobbyCreationOverlayLifecycle.test.js 신규17건: 닫기·재열기·이름 확정·이전 폴백·일반 취소 초점·전환4경로의 외형/이름/초기화 안전. 원본 코드에서13실패/4통과 → 수정 후17통과. 관련 생성·한글·패드·확인창·언어·목록 통합187건, inline script4개 구문 통과 |
+docs/3.1 ui hud 디자인/lobby_full_patch.md:1014:| 실제 화면 | Node 서버 원본 페이지960×540에서 전환8조건: 외형 flex/재생 true 및 이름 show/키보드 block → 외형 none/paused true/src·poster·타이머 null, 이름 show false/키보드 none/active false/조합 null/숨은 초점 없음. 페이지 오류0 |
+docs/3.1 ui hud 디자인/lobby_full_patch.md:1016:| 취소·재열기 | 960×540/1920×1080 실제 취소 버튼으로 미디어 해제·연결된 실행 컨트롤 초점 복귀, 재열기 후 전사 영상 재생, 이름창 Escape 취소·횡넘침 없음 확인. 가상 키보드 DOM8행 → 전환 후 자식0개 확인 |
+docs/3.1 ui hud 디자인/lobby_full_patch.md:1031:| 실제 브라우저 | Node 서버 실제 페이지960×540, 시작 타이틀 실제 클릭 후 직접/버튼×성공/오류/네트워크 실패6조건: 로그인 유지·생성창 숨김·안내 빈값·현재 초점 유지·스토리/입장0회·추가 폴백 저장0회·버튼 해제. 실제 재생 중 스토리도 전환 즉시 종료, 이전 입장0회 |
+docs/3.1 ui hud 디자인/lobby_full_patch.md:1035:## 2026-09-28 외형 선택창 키보드 조작·초점 격리
+docs/3.1 ui hud 디자인/lobby_full_patch.md:1041:| 초기 초점 | 원래 activeElement를 _visualReturnFocus로 보존한 뒤 선택된 .cs-ico.sel에 focus(preventScroll:true). 해당 버튼이 없으면 취소 버튼. 일반 취소는 기존 공용 닫기와 연결된 실행 컨트롤 초점 복귀 |
+docs/3.1 ui hud 디자인/lobby_full_patch.md:1042:| Tab | _visualSelectKeydown: 설명(csLeft)→플레이 방식(csRight)→캐릭터 버튼→취소→생성의 enabled 컨트롤을 순환. Shift+Tab 역순. 현재2종은 일반6개/출시 잠금5개. 외부 초점은 정순 설명/역순 마지막 활성 액션으로 복구. focus(preventScroll:true) 후 정보 영역은 scrollIntoView(block:start)로 제목부터 노출. preventDefault/stopPropagation으로 배경 이동 차단 |
+docs/3.1 ui hud 디자인/lobby_full_patch.md:1043:| 방향키 | 아이콘에 초점이 있을 때만 ArrowLeft/ArrowRight, Home/End 처리. 좌우 step=(ArrowRight?1:-1)×(현재 document.documentElement.dir가rtl?-1:1),next=clamp(index+step,0,icons.length-1)로 화면상 좌우 이동 후 대상 네이티브 click/focus. Home은0,End는마지막 논리 인덱스 유지. 선택·설명·영상·생성 잠금·aria-pressed가 동일 캐릭터로 갱신. 취소/생성 버튼의 방향키는 가로채지 않음 |
+docs/3.1 ui hud 디자인/lobby_full_patch.md:1046:| 회귀 | test/lobbyVisualKeyboard.test.js 신규17건: 열기/선택 상태, 양방향 Tab, 잠금, 외부 초점 복구, 방향키, Escape 정리, IME6조건, 숨김/클릭 경로. 원본16실패/1통과→수정 후17통과. 관련 로비·생성·패드·울트라와이드 통합228건 및 inline script4개 구문 통과 |
+docs/3.1 ui hud 디자인/lobby_full_patch.md:1047:| 실제 화면 | Node 서버의 실제 페이지에서 시작 타이틀 클릭 후960×540/1920×1080 확인. 실제 Tab/Shift+Tab/Enter/Space/방향키/Home/End/Escape 입력. 초점 전부 창 내부, 출시 잠금 유지, 취소 후 실행 버튼 복귀, 미디어 pause/src 해제. 컨트롤·초점 테두리 화면 내 및 가로 넘침 없음 |
+docs/3.1 ui hud 디자인/lobby_full_patch.md:1062:| 상태 보존 | 같은 카드·선택 버튼·이미지·초점 유지. _selectedSlot/_selectedSlotName/_slotScrollIdx/_onlineScrollIdx/_characterLoadSeq 변경 없음. 번역 카탈로그 신규 키·전투/저장 형식 변경 없음 |
+docs/3.1 ui hud 디자인/lobby_full_patch.md:1064:| 실제 언어 검증 | 960×540/1920×1080에서29언어×데모1·로컬 생성가능/가득참2·온라인 생성가능/가득참2=290조합. 동일 카드/버튼/이미지·선택·스크롤·초점 보존 및 가로 넘침 없음, pageerror0. 생성/삭제 저장 요청0 |
+docs/3.1 ui hud 디자인/lobby_full_patch.md:1074:| 검증 | 실제 데모29언어×진행2×화면7=406조합 및 일반 슬롯 대역6조합. 텍스트/입장 경계·초점 순서·저장 원문 보존, 가로 넘침/페이지 오류/쓰기 요청0. 기존105회귀+inline4구문 통과 |
+docs/3.1 ui hud 디자인/lobby_full_patch.md:1096:## 2026-09-28 언어 메뉴 키 반복·IME 보호와 찜 버튼 초점선
+docs/3.1 ui hud 디자인/lobby_full_patch.md:1102:| 검증 | 신규24건 원본19실패→통과, 관련167건/inline4구문 통과. 실제 키보드3크기·초점5크기 및 원본 패드 콜백 대역 확인. IME는 합성 이벤트/실물 패드·OS IME 검증 별도 |
+docs/3.1 ui hud 디자인/lobby_full_patch.md:1103:| 상세 | [언어 키 입력·초점 현행 계약](../3.3%20키바인딩+설정/게임패드_호버_상호작용.md). 기존 언어 팝업 계약에 키 유지와 IME 보호 추가. 새 번역키/부모 DOM 교체/사용자 저장 요청 없음 |
+docs/3.1 ui hud 디자인/lobby_full_patch.md:1116:| 실제 조작 | 320×360/480×360/960×540/1920×1080에서 Tab·Shift+Tab·Enter로 외형→취소→생성 이동 및 출시 잠금 시 생성 버튼 제외 확인. Escape 닫기, 실제 취소 버튼 클릭 뒤 실행 컨트롤(lobbyWishlistBtn) 초점 복귀. pageerror0/쓰기 요청0. 실제 저장·외부 Steam·앱 종료 실행 없음 |
+docs/3.1 ui hud 디자인/lobby_full_patch.md:1144:| 정보 초점 | #csLeft tabindex0/role region/aria-labelledby csCharName. #csRight tabindex0/role region/aria-labelledby csPlaystyleTitle. 기존 .cs-right-title 리프에 해당 id 추가. .cs-side:focus-visible outline2px solid #ead6a5/offset−2px |
+docs/3.1 ui hud 디자인/lobby_full_patch.md:1149:| Tab 순서 | _visualSelectKeydown의 details는 csLeft/csRight, controls는 details→외형 아이콘→취소→생성 중 enabled 항목. 일반6개/출시 잠금5개. 최초 초점은 기존 선택 아이콘 유지. Shift+Tab 역순·순환/외부 초점 복구 유지. 초점은 preventScroll:true 후 정보 영역에만 scrollIntoView(block:start)하여 긴 정보의 제목을 먼저 노출 |
+docs/3.1 ui hud 디자인/lobby_full_patch.md:1153:| 실제 입력 | 320×360/480×360/960×540/1920×1080에서 Shift+Tab 정보 초점·제목 노출, PageDown/End, 외형 변경 초기화/동일 외형 보존/재열기 초기화·하단 위치 고정·Escape 초점 복귀 확인. 좁은 KO PageDown 본문 scrollTop97→172, 960×540 오른쪽0→69. 480×360 마우스 휠112px에서 제목·12px 본문 접근 및 하단 고정 확인. pageerror0/쓰기 요청0 |
+docs/3.1 ui hud 디자인/lobby_full_patch.md:1158:## 2026-09-28 외형 선택 배치 전환의 정보 초점 유지
+docs/3.1 ui hud 디자인/lobby_full_patch.md:1162:| 원인 | 960×540에서 csRight를 End로 읽은 뒤480×360으로 바꾸면 초점은 csRight에 남고 플레이 방식 제목은 본문 밖으로 이동. 반대 전환에서는 이전 패널 scrollTop69가 다시 적용될 수 있음. 기존 열기/외형 변경 초기화만으로는 열린 창의 배치 전환을 처리하지 못함 |
+docs/3.1 ui hud 디자인/lobby_full_patch.md:1164:| _visualInfoLayoutChanged | charVisualPop.style.display가 flex이고 document.activeElement가 csLeft 또는 csRight일 때만 처리. _resetVisualInfoScroll로 본문·양쪽 패널 scrollTop0 후 현재 초점 영역에 scrollIntoView(block:start). 초점 대상·_pendingVisualIdx·생성 잠금·미디어 경로 유지 |
+docs/3.1 ui hud 디자인/lobby_full_patch.md:1165:| 보존·제외 | 같은 배치 안에서 크기 조절은 해당 change 이벤트 없음. 아이콘/액션/외부 초점 및 숨긴 팝업은 스크롤·초점을 변경하지 않음. 기존 열기/다른 외형 선택 초기화, 동일 외형 선택 보존 계약 유지. 새 세이브 필드 없음 |
+docs/3.1 ui hud 디자인/lobby_full_patch.md:1166:| 네이티브 보정 | 그리스어 실버테일480→500px의 본문 scrollTop47→50은 수정 전 HTML 격리 페이지에서도 재현. 브라우저의 레이아웃 스크롤 앵커 보정을 강제로 되돌리지 않음. 같은 배치 검증은 실제 _resetVisualInfoScroll 호출 증가0과 읽기 위치 비초기화·초점 유지로 판정 |
+docs/3.1 ui hud 디자인/lobby_full_patch.md:1167:| 실제 브라우저 | Node 서버 원본29언어×전사0/실버테일1×정보 영역2개×761↔760px 양방향=232조건. 현재 초점 제목 노출·패널 scrollTop0·선택/출시 잠금 유지·헤더/본문/하단 분리·가로 넘침 없음. 같은 배치480→500/960→980px·높이360px는 KO/EN/DE/FR/EL/AR×2외형×2영역×2전환=48조건 |
+docs/3.1 ui hud 디자인/lobby_full_patch.md:1168:| 실제 키보드 | Shift+Tab 정보 초점/End 후960×540↔480×360,1920×1080↔320×360의4조건에서 제목 노출·초점 유지. 리사이즈 후 ArrowRight로 실버테일 잠금/ArrowLeft로 전사 복귀, Escape 후 찜 버튼 초점 복귀와 숨긴 창 리사이즈 보존. pageerror0/쓰기 요청0 |
+docs/3.1 ui hud 디자인/lobby_full_patch.md:1169:| 회귀 | lobbyVisualKeyboard25→31건. 수정 전6실패/25통과→31통과. 양쪽 정보 영역 재노출·아이콘/액션/외부 초점 비간섭·숨긴 창 비간섭 및 실제 MediaQueryList change 등록 검증. 관련12파일201건/inline script4개 구문 통과 |
+docs/3.1 ui hud 디자인/lobby_full_patch.md:1181:| 수명·UI | selectVisual의 _visualPreviewSeq/isCurrent와 기존 오류·180ms 폴백·5000ms 스톨 보호 유지. 닫기에서 src/poster·이벤트·타이머 해제, 재열기에서 선택 영상 재생. 전사0.75배속·실버테일1배속/comingSoon:true·포스터/초상화·contain 비율 및 선택/초점/스크롤 계약 유지. 새 미디어나 세이브 필드 없음 |
+docs/3.1 ui hud 디자인/lobby_full_patch.md:1196:| _applyLobbyLang | charNameLabel을 document.getElementById로 찾아 기존 _TL(캐릭터 이름 (2~8자))를 label 리프 textContent에 갱신. 입력값·초점·새 번역키·저장 형식 변경 없음. 처음 초기화 또는 노드 없는 화면에도 null 가드 유지 |
+docs/3.1 ui hud 디자인/lobby_full_patch.md:1200:| 실제 키보드 | 320×280/480×360/960×540에서 Hero7 입력 후 KO→EN 값/초점 유지. Tab 이름→취소→생성→이름/Shift+Tab 역방향 및 Escape 후 기존 캐릭터 버튼 초점 복귀 확인. 실제 캐릭터 저장 요청 없음 |
+docs/3.1 ui hud 디자인/lobby_full_patch.md:1201:| 회귀 | lobbyCardLanguage 기존11→12건: 안내 번역·동일 label 노드·입력값/빈 placeholder·초점 유지·API 요청0. 수정 전1실패/11통과→12통과. 관련12파일210건/inline script4개 구문 통과 |
+docs/3.1 ui hud 디자인/lobby_full_patch.md:1209:| 원인 | 종료 확인창의 취소에 Enter keydown을 보내면 창 none/초점 lobbyQuitBtn으로 복귀. 같은 키의 repeat keydown이 로비 전원 버튼의 네이티브 click을 실행해 확인창을 다시 flex로 열었음. 기존 delConfirmModal의 반복 차단은 이미 닫힌 창 밖까지 처리하지 못함 |
+docs/3.1 ui hud 디자인/lobby_full_patch.md:1210:| lobbyQuitBtn | 기존 onclick _showLobbyQuit() 옆 onkeydown _lobbyQuitKeydown(event) 연결. SVG·번역된 aria-label/title·전원 터치 영역·초점 표시·레이아웃 유지 |
+docs/3.1 ui hud 디자인/lobby_full_patch.md:1212:| 확인창 수명 | 기존 delConfirmModal 내부의 Enter/Space 반복 차단, 기본 취소 초점, Escape/B 취소, Tab 순환, busy 보호와 _showLobbyQuit의 실제 전원 버튼 초점 복귀 정책 유지. 종료 API 우선순위·150ms 브라우저 안내·요청 번호 보호 변경 없음 |
+docs/3.1 ui hud 디자인/lobby_full_patch.md:1213:| 실제 키보드 | Node 서버 원본320×280/480×360/960×540×KO/EN/AR×Enter/Space=18흐름. Enter 취소 후 repeat4회에도 창 닫힘·전원 초점·열기 횟수 불변·종료0회. Space는 초기 키 유지 중 창 닫힘/해제 후1회 열기, 새 입력 취소·재열기 확인. Escape 복귀, 열린 창 경계·가로 넘침 없음 |
+docs/3.1 ui hud 디자인/lobby_full_patch.md:1223:| 재현 | 320×280 실제 로비에서 외형 확정 후 1글자 이름을 Enter로 제출. 입력칸149~203px에 초점이 남고 오류는270~304px,생성창 하단268px 밖으로 완전히 가려졌다. |
+docs/3.1 ui hud 디자인/lobby_full_patch.md:1229:| 브라우저 | Node 서버 원본 페이지320×280/480×360/960×540×ko/en/ar×가상 키보드 off/on. 길이 오류/특수문자/같은 오류 재제출/긴 서버 오류 총72조건에서 입력·오류 영역 노출 및 횡넘침 없음. 입력값·초점과 같은 긴 오류의 내부 읽기 위치 보존,새 오류 초기화,pageerror0/쓰기 요청0. 서버 실패는 원본 helper 직접 호출이며 실서버 저장 실패를 유발한 검사가 아니다. |
+docs/3.1 ui hud 디자인/lobby_full_patch.md:1241:| 키보드 | _visualSelectKeydown의 step=(ArrowRight?1:-1)×(현재 dir===rtl?-1:1). next=clamp(index+step,0,icons.length-1). 아이콘 초점에서 좌우는 화면상 좌우 이웃으로 이동하고 기존 click/focus(preventScroll:true)를 실행한다. |
+docs/3.1 ui hud 디자인/lobby_full_patch.md:1242:| Home/End·잠금 | Home은 논리 첫 버튼0,End는 마지막 버튼icons.length-1. RTL에서 첫 버튼이 오른쪽이라는 기존 DOM 순서 유지. 선택/초점/aria-pressed/설명·미디어·생성 잠금은 같은 캐릭터로 갱신. 일반 전사0 생성 활성,실버테일1 출시 준비 잠금. |
+docs/3.1 ui hud 디자인/lobby_full_patch.md:1247:| 실제 브라우저 | 320×280/960×540/1920×1080×ko/en/ar×키보드/D-pad/스틱=27흐름. 네이티브 키보드9·가상 패드18,선택·잠금·aria-pressed·좌우 끝 경계·취소 후 초점 복귀·횡넘침 없음. 열린 창 en→ar→en 추가 확인,pageerror0/쓰기 요청0. |
+docs/3.1 ui hud 디자인/lobby_full_patch.md:1252:## 2026-09-28 이름 입력 혼합 시 한글 조합·초점 보존
+docs/3.1 ui hud 디자인/lobby_full_patch.md:1256:| 재현 | 실제 로비 이름창에서 가상 키ㄱ→ㅏ로가 생성 후 입력칸을 이름으로 교체하고 가상ㄴ 입력:이름→이간으로 마지막 글자를 덮어썼다. 가상 키 span을 실제 클릭하면 초점이 body로 빠져 Escape도 이름창에서 처리되지 않았다. |
+docs/3.1 ui hud 디자인/lobby_full_patch.md:1261:| 키 입력 초점 | _vkbDispatchInput은 통지 후 inp.focus(preventScroll:true). 문자·공백·백스페이스·8글자 제한 반환에서 이름칸 초점을 유지하며 키보드가 보이는 위치를 초점 이동으로 바꾸지 않는다. _vkbInput의OK도 상태 null→입력 초점 복귀→기존 createBtn.click 순서로 처리해 오류 후 입력·Escape를 계속 받는다. |
+docs/3.1 ui hud 디자인/lobby_full_patch.md:1263:| 회귀 | test/lobbyHangulInput.test.js6→15건. 외부 교체/삭제/영문 덧붙이기/같은 문자4,이벤트 없는 복원/8글자 보존2,가상 이벤트 보존1,문자 키/OK 초점2 추가. 첫13건 원본6PASS/7FAIL,초점15건 중13PASS/2FAIL→최종15PASS. 관련8파일175건 및 inline script4개 구문 PASS. |
+docs/3.1 ui hud 디자인/lobby_full_patch.md:1264:| 실제 브라우저 | Node 서버 원본320×280/480×360/960×540에서 화면 키를 실제 마우스로 클릭. 네이티브 교체/삭제/영문 입력/텍스트 삽입,같은값 composition InputEvent 대역,이벤트 없는 복원,8글자 보존,내부 받침·백스페이스,교체 후 가상 삭제의9종×3창=27흐름 통과. 이름/maxlength8/초점·횡넘침 확인. |
+docs/3.1 ui hud 디자인/lobby_full_patch.md:1265:| OK·Escape | 각3창에서 실제OK 클릭 후1글자 오류 표시·입력 초점·오류 노출·조합 null과 Escape 닫기 확인3흐름. 총30브라우저 흐름/pageerror0/쓰기 요청0. 실제 Windows OS IME·실물 게임패드·세이브 저장은 검증하지 않았다. 데모에는 생성 카드가 없어 openVisualSelect로 진입한 뒤 실제 컨트롤을 사용했다. |
+docs/3.1 ui hud 디자인/lobby_full_patch.md:1281:| 상태 | 기존 .14s 재질·초점 transition, hover brightness1.13/#c9ab7d, active brightness.96/inset0 3px 7px #000a, focus-visible2px #ead1a0/offset-4px, disabled opacity.7/grayscale1/#aaa08e, reduced-motion transition:none. scrollbar-color만 유지하며 scrollbar-width 덮어쓰기도 제거 |
+docs/3.1 ui hud 디자인/lobby_full_patch.md:1284:| 회귀 | 관련 로비6개 테스트 파일132건 PASS. 이번 수정은 CSS 치수 복원·캐시 키 변경이며 생성·취소·이름 조합·초점 처리 코드는 변경하지 않음 |
+docs/14밸런스+수치테이블/스킬별_DPS_자원소비표.md:273:전체 메뉴와 로비의 최신 재질·제목·문양·선택·초점·스크롤 스타일은 UI_COMPOSITION_20260925.md의 **2026-09-26 유니크 분해 NaN 수정과 상세창 마감 절**을 따른다.
+docs/3.1 ui hud 디자인/UI_COMPOSITION_20260925.md:104:| 호버/키보드 초점 | 호버 선#b2986b/글자#f0dfbd. focus-visible outline2px #ead1a0/offset−3px |
+docs/3.1 ui hud 디자인/UI_COMPOSITION_20260925.md:476:| 초점·스크롤 마감 차이 | 여섯 메뉴2px 황동 초점선,얇은 철색 스크롤. 기존 disabled와 게임 상태 유지 |
+docs/3.1 ui hud 디자인/UI_COMPOSITION_20260925.md:569:| 접근성 | prefers-reduced-motion은 이번 전환 제거. 기존 키보드/게임패드 초점 경로 유지 |
+docs/3.1 ui hud 디자인/UI_COMPOSITION_20260925.md:706:| 키보드 초점 | 필터/상세 버튼/비교 닫기: 2px #ead1a0 안쪽 outline, offset -3px |
+docs/3.1 ui hud 디자인/UI_COMPOSITION_20260925.md:751:| 원인 | _invClearHover가 이전 선택 아이템의 상세를 다시 렌더하여 마우스를 뗀 후에도 정보창이 남음 |
+docs/3.1 ui hud 디자인/UI_COMPOSITION_20260925.md:752:| 종료 | 기존 선택 복원 처리를 _invRestoreSelectedActions로 분리. _invClearHover는 이를 호출한 뒤 invRight visibility:hidden, invCompareFloat display:none |
+docs/3.1 ui hud 디자인/UI_COMPOSITION_20260925.md:787:| DOM | renderOssPanel이 최초 1회 createElement/append로 구성. 이후 기존 노드·초점·핸들러 보존, 특정 리프 textContent만 갱신. 부모 innerHTML 교체 없음 |
+docs/3.1 ui hud 디자인/UI_COMPOSITION_20260925.md:894:| 조작 | 호버 상세, 클릭/키보드 초점 선택, 호환 장착 장비 빈 홈 선택 → attachCrystal → dbSaveNow. 객체 인덱스·장비 동일성·빈 홈 재확인 |
+docs/3.1 ui hud 디자인/UI_COMPOSITION_20260925.md:921:| 접근성 | 버튼·aria·초점은 기존 유지. prefers-reduced-motion에서 전환과 hover 이동 제거 |
+docs/3.1 ui hud 디자인/UI_COMPOSITION_20260925.md:1190:| 원자적 이동 | BAG_MAX 및 _invFindSpace(1,1,신규가방index) 검사. 임시push 후 공간이 없으면pop하고 등록 유지. 공간 성공 시 _gx/_gy 지정→등록 키 delete→선택 부위·아이템 선택 초기화→dbSaveForce→renderInv→_invClearHover→이동 안내 |
+docs/3.1 ui hud 디자인/UI_COMPOSITION_20260925.md:1248:| 유골 부위 | 성공 시 선택 부위와 INV.selected를 비우고 renderInv 뒤 _invClearHover 호출. 등록·미수집 소켓의 기본 title 제거, aria-label 설명 유지. 등록 소켓은 자체 정보 팝업 표시 |
+docs/3.1 ui hud 디자인/UI_COMPOSITION_20260925.md:1249:| 유골함 | unequipItem('ossuary') 성공 확인 후 INV.selected를 비우고 renderInv 뒤 _invClearHover. 빈 유골함은 title 제거, aria-label 유지. 공간 부족으로 해제 실패하면 기존 상태 유지 |
+docs/3.1 ui hud 디자인/UI_COMPOSITION_20260925.md:1262:| 전역 키 예외 | K/KH 입력 등록 전에 초점 대상이 #invPanel.on button 또는 #crBagPop button이고 code가 Space/Enter/NumpadEnter/Tab이면 게임 키 핸들러 return. preventDefault 없이 브라우저 기본 입력 사용. 버튼 밖 기존 Space 쓰레기·Tab 메뉴 동작 유지 |
+docs/3.1 ui hud 디자인/UI_COMPOSITION_20260925.md:1263:| 초점 표시 | 피커 필터/목록 focus-visible outline2px #ead1a0/offset−3px,상속폰트/색·왼쪽정렬. 기존 하단 버튼 초점 표시 유지 |
+docs/3.1 ui hud 디자인/UI_COMPOSITION_20260925.md:1264:| 하단 초점 노출 | ui-panels.js inventory focusin에서 .inv-actions button 경계를 측정. 오른쪽 또는 왼쪽 이탈분만큼 rail.scrollLeft 조정. 본문 세로 위치·가방 높이 변경 없음 |
+docs/3.1 ui hud 디자인/UI_COMPOSITION_20260925.md:1265:| 검증 | 실제 Space로 필터 변경·보석 선택·장착·해제 성공. Space 후 junk=false 보존. Tab/Shift+Tab 이동·필터 초점 유지 확인.320/390/640/1280px에서 실제 Tab 이동 후 마지막 하단 버튼 전체 노출. pageerror0 |
+docs/3.1 ui hud 디자인/UI_COMPOSITION_20260925.md:1274:| 호버 해제 | registerBonePart 성공 후 가방 아이템 삭제·선택 초기화·저장·renderInv 다음 _invClearHover를 호출하여 이전 가방 정보가 즉시 닫힘. 등록 실패 시 아이템과 정보 유지 |
+docs/3.1 ui hud 디자인/UI_COMPOSITION_20260925.md:1283:## 2026-09-27 보석 피커 진입·복귀 초점 연결
+docs/3.1 ui hud 디자인/UI_COMPOSITION_20260925.md:1293:| 검증 | Enter 진입 후 첫 보석 초점,Tab/Shift+Tab 양끝 순환,Escape 복귀·부모 창 유지,Space 장착 후 armor 홈0의 새 버튼 복귀 확인. 빈 피커→all 필터→Escape→armor 홈1,탭 이탈 후 equipment 활성탭 복귀 확인 |
+docs/3.1 ui hud 디자인/UI_COMPOSITION_20260925.md:1305:| 자동 회귀 | test/crystalPickerNavigation.test.js 추가: 일반/쉬운게임 각각 목록축소 후A선택,빈 목록 무선택,D-pad 초점·스크롤·A 일치 총6개. 기존 결정관리12개+구문1개+패널초기화3개 포함 총22개PASS |
+docs/3.1 ui hud 디자인/UI_COMPOSITION_20260925.md:1306:| 기존 테스트 보완 | crystalForgeManagement.test.js의 간이 DOM에 HTMLButtonElement/activeElement/querySelector/querySelectorAll 모형 보충. 앞선 초점 API 도입에 따른 테스트 환경 누락 수정. 기존 검증 조건 유지 |
+docs/3.1 ui hud 디자인/UI_COMPOSITION_20260925.md:1307:| 브라우저 | 실제 디스크 코드에서18→6행 필터 변경 후index0,키보드focus행3→index3,마우스행1→index1,D-pad 아래→행2초점,A→cr_ward_stone 선택·팝업닫힘 확인. pageerror0 |
+docs/3.1 ui hud 디자인/UI_COMPOSITION_20260925.md:1332:| 원인 | 스크롤에 따른 mouseenter까지 선택 변경으로 처리. 60행 목록에서 index30에 초점/스크롤 후 index25,휠 후28로 덮어써짐 |
+docs/3.1 ui hud 디자인/UI_COMPOSITION_20260925.md:1334:| 쉬운게임 보완 | renderCrystalBag 말미의 목록 이벤트 연결과 재렌더 필터 초점 복원 누락을 보완. 생성 영역은 createContextualFragment + replaceChildren으로 갱신. 기존 쉬운게임 분류·아이템 수치 유지 |
+docs/3.1 ui hud 디자인/UI_COMPOSITION_20260925.md:1335:| 브라우저 재현 | 디스크 renderCrystalBag 함수를 격리 게임 페이지에 반영해 동일 포인터 위치에서 재현. 수정 후 index30/초점30이 자동 스크롤과 휠 뒤에도 유지,실제 포인터를32행에 이동하면 index32. 마지막 index59/초점59/목록끝 일치 |
+docs/3.1 ui hud 디자인/UI_COMPOSITION_20260925.md:1336:| 이벤트 회귀 | test/crystalPickerPointer.browser.js: 양쪽 실제 렌더러를 독립 DOM에서 실행. 행생성/초점/포인터진입/0거리이동/실제이동/필터축소 각6개,총12개PASS. 앱 데이터·저장 변경 없음 |
+docs/3.1 ui hud 디자인/UI_COMPOSITION_20260925.md:1428:| 검증 | 온라인·로컬 실제 카드 템플릿을 격리 페이지에 렌더. 화면폭800/1280/1920에서 직업 배지 영역 내·삭제 간격10px·이름 말줄임 및 전체 이름 title 확인. 삭제 키보드 초점 opacity1. 로비 회귀7개 및 인라인 스크립트4개 구문 통과. tmp/lobby-card-details/after.png 및 report.json. 실제 캐릭터 선택·삭제·세이브 요청 없음 |
+docs/3.1 ui hud 디자인/UI_COMPOSITION_20260925.md:1439:| 초점 복원 | 클릭 시작 시 초점 여부 저장, setTimeout 0으로 이벤트 버블링·목록 재생성 이후 처리. 기존 버튼이 제거되고 activeElement가 body일 때 동일 data-card-key 버튼에 focus(preventScroll:true). 다른 초점은 빼앗지 않음 |
+docs/3.1 ui hud 디자인/UI_COMPOSITION_20260925.md:1440:| 초점 표시 | outline2px solid #ead6a5, outline-offset:-3px로 카드 내부에 표시 |
+docs/3.1 ui hud 디자인/UI_COMPOSITION_20260925.md:1443:| 검증 | 실제 온라인/로컬 렌더러·선택 함수 추출, 격리된 선택·생성·삭제 확인 콜백 사용. Enter/Space 각각 선택1회, 재렌더 후 초점 유지, 삭제 Enter는 선택 없이 확인1회, 생성 Space1회. 로비 회귀8개 통과 및 inline4개 구문 확인. tmp/lobby-card-keyboard/report.json 및 after.png. 실제 계정·저장·삭제 API 호출 없음 |
+docs/3.1 ui hud 디자인/UI_COMPOSITION_20260925.md:1446:## 2026-09-27 목록 이동 초점·온라인 오른쪽 스틱 수정
+docs/3.1 ui hud 디자인/UI_COMPOSITION_20260925.md:1450:| 재현 | 목록 이동 버튼 클릭이 렌더러를 재실행하여 활성 버튼을 제거, 키보드 초점이 body로 유실. 오른쪽 스틱은 로컬 ID만 조회하여 온라인 목록 미동작 |
+docs/3.1 ui hud 디자인/UI_COMPOSITION_20260925.md:1452:| 초점 유지 | 클릭 전 활성 버튼이었다면 재렌더 후 동일 ID의 활성 버튼에 focus(preventScroll:true). 마지막/첫 페이지에서 해당 버튼이 disabled이면 반대 방향 버튼으로 초점 이동. 이미 다른 요소로 이동한 초점은 보존 |
+docs/3.1 ui hud 디자인/UI_COMPOSITION_20260925.md:1454:| 검증 | 온라인/로컬 실제 렌더러로 Enter3회:2-3→3-4→4-5/5, 끝에서 위 버튼 초점, Space로3-4/5 복귀. 실제 스틱 처리 코드에1,1,0,1,-1 입력:2-3,2-3,2-3,3-4,2-3/5로 두 모드 일치. 실제 게임패드 하드웨어 검증은 아님 |
+docs/3.1 ui hud 디자인/UI_COMPOSITION_20260925.md:1475:| 초점·호버 | 목록 내비 align-items:center. 화살표 focus-visible outline-offset:-2px. 활성 화살표 hover/gp-hover 색#ffd6bb,배경#6b38282e |
+docs/3.1 ui hud 디자인/UI_COMPOSITION_20260925.md:1477:| 검증 | 온라인 실제 렌더러,1920/1280/800×720에서 화살표32px·삭제28px·간격10px·가로 넘침 없음·footer 화면 내. 키보드 이동 후 초점 유지. Chromium hasTouch 입력 에뮬레이션에서44×44px 및 간격10px 확인, 실제 터치 기기 검증은 아님. tmp/lobby-control-targets/report.json,desktop.png,touch.png |
+docs/3.1 ui hud 디자인/UI_COMPOSITION_20260925.md:1490:| 검증 | 격리 로비 카드3개 고정 높이로1280×720/1024×600/960×540/800×480 검수. 낮은 화면에서 ENTER 초점 시 내부 스크롤196/256/316px, 버튼 화면 내·가로 넘침 없음. 실제 휠 핸들러 상하 경계/이동/0 입력 확인. 로비 회귀8개·inline4개 구문 통과. tmp/lobby-short-height/after.png,report.json,wheel-report.json |
+docs/3.1 ui hud 디자인/UI_COMPOSITION_20260925.md:1493:## 2026-09-27 삭제 확인창 키보드 초점·취소 보완
+docs/3.1 ui hud 디자인/UI_COMPOSITION_20260925.md:1498:| 열기 | _delConfirmReturnFocus에 호출 전 activeElement 저장, 기본 취소 버튼에 실제 focus(preventScroll:true). 기존 게임패드 선택 테두리와 초점 동기화 |
+docs/3.1 ui hud 디자인/UI_COMPOSITION_20260925.md:1500:| 처리 중 | 기존 _delConfirmBusy 및 두 버튼 disabled 유지. 모달 컨테이너에 초점, Tab은 이동 차단, Escape도 busy 잠금으로 닫히지 않음. 화면 전환은 창과 초점을 해제하며 요청 잠금은 완료까지 유지 |
+docs/3.1 ui hud 디자인/UI_COMPOSITION_20260925.md:1503:| 검증 | 실제 모달 함수 격리 실행: 취소 최초 초점,Tab/Shift+Tab 순환,Escape 취소와 원래 초점 복귀,콜백0회. 비동기 처리 중 Tab/Escape 잠금·콜백1회,모의 실패 후 오류 표시·대체 카드 초점 확인. characterSync8개·inline4개 구문 통과. tmp/lobby-delete-focus/report.json. 실제 삭제·계정·저장 요청 없음 |
+docs/3.1 ui hud 디자인/UI_COMPOSITION_20260925.md:1512:| 열기 | _visualConfirm에서 이름 초기화와 setStatus 공백으로 이전 오류 제거. 기존50ms 입력 초점은 모달이 여전히 show일 때만 실행 |
+docs/3.1 ui hud 디자인/UI_COMPOSITION_20260925.md:1515:| 검증 | 실제 입력 핸들러 격리 실행: composing Enter/keyCode229/repeat 각각 생성0회, 단일 Enter1회. Tab 순환·조합 Escape 유지·일반 Escape 닫힘·카드 초점 복귀·가상 키보드 정리 확인. 브라우저 합성 입력 검증이며 OS IME 실기 테스트는 아님. 생성/삭제/스토리 회귀27개,inline4개 구문 통과. tmp/lobby-create-input/report.json. 실제 캐릭터 생성·삭제 없음 |
+docs/3.1 ui hud 디자인/UI_COMPOSITION_20260925.md:1527:| 회귀 | characterStoryCreation.test.js에 네트워크 rejection/중복 이름/인증 없음의 버튼 해제·이름 보존·창 복원·초점·스토리 미진입3건, 대기 요청 중복 차단1건 추가. 수정 전4건 실패→수정 후통과 |
+docs/3.1 ui hud 디자인/UI_COMPOSITION_20260925.md:1536:| 공통 실패 UI | 현재 요청 번호일 때만 _showCreateFailure(name,message) 호출:버튼 잠금 해제,이름 보존,setStatus 오류,생성창 show,이름 입력 초점 |
+docs/3.1 ui hud 디자인/UI_COMPOSITION_20260925.md:1553:| 소스 | `game.html`, `inventory-space.css?v=20260927-three-columns11`, `build-nwjs.mjs`. 장비 시스템 세부 수치와 반응형 행 값은 `docs/2_7 인벤토리+장비시스템/2_7 인벤토리+장비시스템.md` 참조 |
+docs/3.1 ui hud 디자인/UI_COMPOSITION_20260925.md:1568:| 검증 |1280×720,360×480,640×360,320×280×생성/삭제2종=8경우. 긴 오류·삭제 안내로 창 화면 내·가로 넘침 없음·초점 버튼 보임 확인. tmp/lobby-dialog-layout/report.json 및 after.png. 스크립트 비활성 격리 렌더로 실제 저장·삭제 없음 |
+docs/3.1 ui hud 디자인/UI_COMPOSITION_20260925.md:1577:| 이동 | 선택 키가 위/아래 경계를 넘을 때 필요한 거리만 panel.scrollTop 보정. 이미 보이면 스크롤하지 않음. 문서·로비 및 실제 입력 초점은 이동하지 않음 |
+docs/3.1 ui hud 디자인/UI_COMPOSITION_20260925.md:1600:| 닫기 | Escape는 선택값 유지하고 원래 select로 초점 복귀,Tab은 닫은 후 기본 이동. 바깥 pointerdown 및 화면 전환(_goLogin/_goCinematic/_goLobby/showLobby)은 초점을 강제로 되돌리지 않고 닫기 |
+docs/3.1 ui hud 디자인/UI_COMPOSITION_20260925.md:1603:| 검증 | 실제 팝업 코드 격리 실행,360×480/1280×720/640×360/320×280 우하단 배치 모두 화면내. 방향키 선택change1회,Escape취소 값 유지·초점복귀,바깥 클릭닫기 확인. 로비 회귀5개·inline4개 구문 통과. tmp/lobby-language-popup/report.json 및 after.png. 언어 저장은 검수용 change 계수로 대체 |
+docs/3.1 ui hud 디자인/UI_COMPOSITION_20260925.md:1613:| 창 크기 변경 | 기존 배치 수식을 _positionLangPop(pop,sel)로 분리. 열린 상태의 window resize에서 위치·최대높이 재계산 후 선택 행을 내부 스크롤로 노출,행 재생성·언어 확정·키보드 초점 이동 없음 |
+docs/3.1 ui hud 디자인/UI_COMPOSITION_20260925.md:1667:| 유지 | 내용이 패널 높이를 넘지 않으면 스크롤하지 않음. 실제 DOM 초점·언어 선택·캐릭터 선택/삭제 동작은 변경 없음. 중립 프레임은 같은 인덱스·동일 요소에서 스크롤하지 않음 |
+docs/3.1 ui hud 디자인/UI_COMPOSITION_20260925.md:1700:| CSS | `inventory-gems-balance.css?v=20260927-half`를 `inventory-space.css`·`inventory-gems-finish.css` 뒤에 로드한다. 열 1:1은 폭900px 이상, 행 1:1은 폭701px 이상·높이600px 이상에 적용한다. 행은 `auto minmax(120px,1fr) minmax(160px,1fr)`, 간격12px이다. 폭700px 이하/높이600px 미만의 기존 세로 배치는 유지한다. |
+docs/3.1 ui hud 디자인/UI_COMPOSITION_20260925.md:1757:| 연결 | `inventory-space.css?v=20260927-aligned12`, `inventory-oss-balance.css?v=20260927-scale2`를 `game.html`에 로드한다. NW.js 목록에는 유골함·보석함 균형 CSS를 포함한다. 아이템 장착/해제·호버·저장 데이터 변경 없음. |
+docs/3.1 ui hud 디자인/UI_COMPOSITION_20260925.md:1849:| 확인 | _showLobbyQuit → 기존 확인창 _showDelConfirm의 선택적 message 인수 사용. 기본 취소,Escape/B 취소,Tab 초점 순환 및 닫은 뒤 원래 버튼 초점 복원. 기존 삭제 기본 문구·동작 유지 |
+docs/3.1 ui hud 디자인/UI_COMPOSITION_20260925.md:1852:| 검증 | 실제 확인창 코드 격리 실행:취소 기본/Escape 복귀/취소 시 종료0회,NW·Electron·브라우저 각 stub1회. 1920×1080,1280×720,960×540에서 하단 버튼 전체 표시 및 초점offset -2px. 실제 앱 종료·실물패드·실계정 저장은 실행하지 않음 |
+docs/3.1 ui hud 디자인/UI_COMPOSITION_20260925.md:1873:| 범위 | 종료·캐릭터 삭제 공용 확인창. 기존 Tab 초점 순환/Escape 취소,게임패드,비동기 중복 제출 방지 유지 |
+docs/3.1 ui hud 디자인/UI_COMPOSITION_20260925.md:1874:| 검증 | 신규 Enter/Space 회귀2개는 수정 전 실패 후 통과. 관련20개 테스트 통과. Chromium 실제 키 입력으로 Enter 반복2회에도 확인창 유지·취소 초점·종료0회,해제 후 Tab/Enter는 종료 stub1회 확인. 실제 앱 종료·삭제 미실행 |
+docs/3.1 ui hud 디자인/UI_COMPOSITION_20260925.md:1903:## 2026-09-28 종료 확인창 초점 복귀 일치
+docs/3.1 ui hud 디자인/UI_COMPOSITION_20260925.md:1907:| 재현 | 패드의 programmatic click은 DOM 초점을 옮기지 않아 종료창 취소 후 이전 언어 select로 초점이 복귀함 |
+docs/3.1 ui hud 디자인/UI_COMPOSITION_20260925.md:1910:| 검증 | 신규 회귀 수정 전 실패 후 통과,확인창·캐릭터 동기화13개 통과. Chromium에서 언어 select 초점→프로그램 클릭→Escape 후 lobbyQuitBtn 복귀/종료0회 확인. 확인창960×540,640×360,360×280 모두 화면 내 |
+docs/3.1 ui hud 디자인/UI_COMPOSITION_20260925.md:2010:| 재현 | 패드 X가 삭제 버튼 click을 프로그램으로 실행하면 기존 DOM 초점이 언어 메뉴 등에 남아 취소 후 엉뚱한 메뉴로 복귀 |
+docs/3.1 ui hud 디자인/UI_COMPOSITION_20260925.md:2012:| 유지 | 삭제 요청·확정·취소·버튼 크기·키보드/패드 행동 유지. 초점 이동 자체로 스크롤을 바꾸지 않음 |
+docs/3.1 ui hud 디자인/UI_COMPOSITION_20260925.md:2013:| 검증 | 신규 온라인/로컬 회귀2개 수정 전 실패→통과. 실제 이벤트 앞부분 및 확인창을 Chromium에 격리 실행,언어 select 초점에서 프로그램 클릭→Escape 후 각 삭제 버튼 복귀/삭제 콜백0회. 확인창·캐릭터 동기화·패드26개 통과 |
+docs/3.1 ui hud 디자인/UI_COMPOSITION_20260925.md:2038:| 캐시·빌드 | game.html: ui-refinement.css?v=20260928-equipment-stage3, inventory-space.css?v=20260928-relic-frame1, inventory-paperdoll.js?v=20260928-equipment-cutout3. NW.js FILES에 inventory-paperdoll.js·knight-portrait.css 추가 |
+docs/3.1 ui hud 디자인/UI_COMPOSITION_20260925.md:2142:| 닫기 | 기존 함수의 display:none,_langPopOpen=false,원래 select aria-expanded=false 사용. restore=false로 숨겨질 select에 초점 복귀하지 않음. 탐색 인덱스를 언어 선택값으로 확정하지 않으며 change 호출 없음 |
+docs/3.1 ui hud 디자인/UI_COMPOSITION_20260925.md:2245:| 화면 QA | 데모 로비 960×540, 1280×720, 1920×1080에서 가로 넘침 없음. 캐릭터 카드·입장·종료·확인/취소 버튼 모두 화면 안. 종료 팝업 기본 취소 초점과 Escape 후 종료 버튼 초점 복귀 확인. |
+docs/3.1 ui hud 디자인/UI_COMPOSITION_20260925.md:2257:| 실제 런타임 | Node 서버의 원본 로비와 getGamepads 대역으로 패드 A 열기/B 취소를 확인했다. 이동 없는 마우스 클릭 후100ms active=false, cursor 복원, KBM, 배경 강조 제거와 취소 초점 확인. Escape 후 종료 버튼 복귀와 종료 호출0회 확인. touch/pen PointerEvent 전달 뒤70ms에도 active=false와 강조0 확인. 실물 패드·터치펜 검증은 별도다. |
+docs/3.1 ui hud 디자인/UI_COMPOSITION_20260925.md:2269:| 실제 런타임 | Node 서버의 원본 로비에서 getGamepads와 playEffect만 대역으로 교체했다. 거부 반복 요청은 수정 전130ms 동안 오류5회, 수정 후3회 요청에서 오류0회였다. 같은 페이지에서 원본 문 열림 예약 코드8단계를 실행해 거부8회·오류0회 확인. 종료창 열기·Escape 취소 후 버튼 초점 복귀 정상. 실물 패드 진동 검증은 별도다. |
+docs/3.1 ui hud 디자인/UI_COMPOSITION_20260925.md:2278:| 원인 | 종료·삭제 공용 확인창이 로그인/시네마틱/로비 갱신 후에도 남아 이전 콜백과 초점을 유지. 제출한 요청의 늦은 완료가 새 목록 요청 또는 이전 오류 안내를 시작할 수도 있었음 |
+docs/3.1 ui hud 디자인/UI_COMPOSITION_20260925.md:2280:| _hideDelConfirm | fromTransition 기본 false. 일반 취소는 기존 busy 잠금 및 열린 창의 원래 버튼 초점 복귀 유지. 전환은 busy 중에도 창을 숨기고 _delConfirmCb/_delConfirmReturnFocus를 null로 정리하며, 창 내부 초점을 blur. 이전 로비 버튼으로 초점을 돌리지 않음 |
+docs/3.1 ui hud 디자인/UI_COMPOSITION_20260925.md:2286:| 브라우저 | Node 서버 실제 페이지960×540에서 전환4경로 전후 확인: flex/콜백 유지 → none/콜백 및 복귀 참조 null. 지연 성공/실패 대역에서도 전환 즉시 닫힘·busy 완료 후 해제·새 화면 초점 유지·공용 이전 오류 없음. 원본 삭제 콜백에 API/목록 대역만 주입한 전후8조건에서 이전 목록 재조회1회 → 0회, 로컬 실패의 저장 조회5회/오류 안내 → 0회/안내 없음. 데스크톱 종료 실패의 늦은 안내도 제거 |
+docs/3.1 ui hud 디자인/UI_COMPOSITION_20260925.md:2287:| 화면·범위 | 960×540/1920×1080에서 종료창 Escape 취소 후 전원 버튼 초점 복귀, 로비 표시·가로 넘침 없음, pageerror0. 실계정 세션 종료/저장 삭제·앱 종료·실물 패드는 실행하지 않음. 실제 전환 함수와 콜백의 대역 검증이며 인증 서버의 종단 검증은 아님 |
+docs/3.1 ui hud 디자인/UI_COMPOSITION_20260925.md:2298:| 재현 | 외형 취소 뒤 #csIdleVid가 숨은 채 계속 재생. 로그인/시네마틱/로비 전환4경로에 외형창 또는 이름창·가상 키보드·내부 초점이 남음. 실버테일 선택 뒤 전사 영상의 늦은 실패 콜백이 실버테일 영상을 멈추고 전사 초상화를 표시할 수 있었음 |
+docs/3.1 ui hud 디자인/UI_COMPOSITION_20260925.md:2301:| _closeVisualSelect | restoreFocus 기본false. 열린 외형창만 정리하고 번호 증가·내부 초점 blur·display none. csIdleVid/csSceneVid의 _csT clear/null, onerror/oncanplay null, stopMediaVideo, on 클래스 제거, src/poster 제거, load 실행. 숨김 상태 재호출은 상태를 바꾸지 않음 |
+docs/3.1 ui hud 디자인/UI_COMPOSITION_20260925.md:2302:| _visualReturnFocus | 초기null. openVisualSelect에서 기존 document.activeElement 캡처. 닫을 때 참조를 null로 해제. visualCancelBtn은 restoreFocus:true로 연결된 실행 컨트롤에 focus({preventScroll:true}); 이름 확정·화면 전환은 이전 로비 초점 복원하지 않음 |
+docs/3.1 ui hud 디자인/UI_COMPOSITION_20260925.md:2303:| 이름 확정 | _visualConfirm은 기존 comingSoon 차단 후 _closeVisualSelect 사용. createModal show, 이름/안내 초기화, 기존50ms 조건부 이름 초점 유지. 캐릭터 생성 요청·저장·스토리 경로 변경 없음 |
+docs/3.1 ui hud 디자인/UI_COMPOSITION_20260925.md:2304:| _closeCreationOverlays | 외형창 공용 닫기 후 열린 createModal의 내부 초점 blur·show 제거·_vkbHide. 이름창이 숨겨져도 vkbWrap이 block이면 키보드 정리. _goLogin/_goCinematic/_goLobby/showLobby에서 사용 가능한 이 함수를 호출. 초기 숨김 상태에는 나중에 선언한 팝업/키보드 let 상태를 접근하지 않음. 이름창 show 또는 createBtn.disabled이면 생성 안내 초기화, 활성 생성 스토리는 skip()으로 종료. |
+docs/3.1 ui hud 디자인/UI_COMPOSITION_20260925.md:2307:| 회귀 | test/lobbyCreationOverlayLifecycle.test.js 신규17건: 닫기·재열기·이름 확정·이전 폴백·일반 취소 초점·전환4경로의 외형/이름/초기화 안전. 원본 코드에서13실패/4통과 → 수정 후17통과. 관련 생성·한글·패드·확인창·언어·목록 통합187건, inline script4개 구문 통과 |
+docs/3.1 ui hud 디자인/UI_COMPOSITION_20260925.md:2308:| 실제 화면 | Node 서버 원본 페이지960×540에서 전환8조건: 외형 flex/재생 true 및 이름 show/키보드 block → 외형 none/paused true/src·poster·타이머 null, 이름 show false/키보드 none/active false/조합 null/숨은 초점 없음. 페이지 오류0 |
+docs/3.1 ui hud 디자인/UI_COMPOSITION_20260925.md:2310:| 취소·재열기 | 960×540/1920×1080 실제 취소 버튼으로 미디어 해제·연결된 실행 컨트롤 초점 복귀, 재열기 후 전사 영상 재생, 이름창 Escape 취소·횡넘침 없음 확인. 가상 키보드 DOM8행 → 전환 후 자식0개 확인 |
+docs/3.1 ui hud 디자인/UI_COMPOSITION_20260925.md:2325:| 실제 브라우저 | Node 서버 실제 페이지960×540, 시작 타이틀 실제 클릭 후 직접/버튼×성공/오류/네트워크 실패6조건: 로그인 유지·생성창 숨김·안내 빈값·현재 초점 유지·스토리/입장0회·추가 폴백 저장0회·버튼 해제. 실제 재생 중 스토리도 전환 즉시 종료, 이전 입장0회 |
+docs/3.1 ui hud 디자인/UI_COMPOSITION_20260925.md:2329:## 2026-09-28 외형 선택창 키보드 조작·초점 격리
+docs/3.1 ui hud 디자인/UI_COMPOSITION_20260925.md:2335:| 초기 초점 | 원래 activeElement를 _visualReturnFocus로 보존한 뒤 선택된 .cs-ico.sel에 focus(preventScroll:true). 해당 버튼이 없으면 취소 버튼. 일반 취소는 기존 공용 닫기와 연결된 실행 컨트롤 초점 복귀 |
+docs/3.1 ui hud 디자인/UI_COMPOSITION_20260925.md:2336:| Tab | _visualSelectKeydown: 설명(csLeft)→플레이 방식(csRight)→캐릭터 버튼→취소→생성의 enabled 컨트롤을 순환. Shift+Tab 역순. 현재2종은 일반6개/출시 잠금5개. 외부 초점은 정순 설명/역순 마지막 활성 액션으로 복구. focus(preventScroll:true) 후 정보 영역은 scrollIntoView(block:start)로 제목부터 노출. preventDefault/stopPropagation으로 배경 이동 차단 |
+docs/3.1 ui hud 디자인/UI_COMPOSITION_20260925.md:2337:| 방향키 | 아이콘에 초점이 있을 때만 ArrowLeft/ArrowRight, Home/End 처리. 좌우 step=(ArrowRight?1:-1)×(현재 document.documentElement.dir가rtl?-1:1),next=clamp(index+step,0,icons.length-1)로 화면상 좌우 이동 후 대상 네이티브 click/focus. Home은0,End는마지막 논리 인덱스 유지. 선택·설명·영상·생성 잠금·aria-pressed가 동일 캐릭터로 갱신. 취소/생성 버튼의 방향키는 가로채지 않음 |
+docs/3.1 ui hud 디자인/UI_COMPOSITION_20260925.md:2340:| 회귀 | test/lobbyVisualKeyboard.test.js 신규17건: 열기/선택 상태, 양방향 Tab, 잠금, 외부 초점 복구, 방향키, Escape 정리, IME6조건, 숨김/클릭 경로. 원본16실패/1통과→수정 후17통과. 관련 로비·생성·패드·울트라와이드 통합228건 및 inline script4개 구문 통과 |
+docs/3.1 ui hud 디자인/UI_COMPOSITION_20260925.md:2341:| 실제 화면 | Node 서버의 실제 페이지에서 시작 타이틀 클릭 후960×540/1920×1080 확인. 실제 Tab/Shift+Tab/Enter/Space/방향키/Home/End/Escape 입력. 초점 전부 창 내부, 출시 잠금 유지, 취소 후 실행 버튼 복귀, 미디어 pause/src 해제. 컨트롤·초점 테두리 화면 내 및 가로 넘침 없음 |
+docs/3.1 ui hud 디자인/UI_COMPOSITION_20260925.md:2356:| 상태 보존 | 같은 카드·선택 버튼·이미지·초점 유지. _selectedSlot/_selectedSlotName/_slotScrollIdx/_onlineScrollIdx/_characterLoadSeq 변경 없음. 번역 카탈로그 신규 키·전투/저장 형식 변경 없음 |
+docs/3.1 ui hud 디자인/UI_COMPOSITION_20260925.md:2358:| 실제 언어 검증 | 960×540/1920×1080에서29언어×데모1·로컬 생성가능/가득참2·온라인 생성가능/가득참2=290조합. 동일 카드/버튼/이미지·선택·스크롤·초점 보존 및 가로 넘침 없음, pageerror0. 생성/삭제 저장 요청0 |
+docs/3.1 ui hud 디자인/UI_COMPOSITION_20260925.md:2368:| 검증 | 실제 데모29언어×진행2×화면7=406조합 및 일반 슬롯 대역6조합. 텍스트/입장 경계·초점 순서·저장 원문 보존, 가로 넘침/페이지 오류/쓰기 요청0. 기존105회귀+inline4구문 통과 |
+docs/3.1 ui hud 디자인/UI_COMPOSITION_20260925.md:2382:## 2026-09-28 언어 메뉴 키 반복·IME 보호와 찜 버튼 초점선
+docs/3.1 ui hud 디자인/UI_COMPOSITION_20260925.md:2388:| 검증 | 신규24건 원본19실패→통과, 관련167건/inline4구문 통과. 실제 키보드3크기·초점5크기 및 원본 패드 콜백 대역 확인. IME는 합성 이벤트/실물 패드·OS IME 검증 별도 |
+docs/3.1 ui hud 디자인/UI_COMPOSITION_20260925.md:2389:| 상세 | [언어 키 입력·초점 현행 계약](../3.3%20키바인딩+설정/게임패드_호버_상호작용.md). 기존 언어 팝업 계약에 키 유지와 IME 보호 추가. 새 번역키/부모 DOM 교체/사용자 저장 요청 없음 |
+docs/3.1 ui hud 디자인/UI_COMPOSITION_20260925.md:2402:| 실제 조작 | 320×360/480×360/960×540/1920×1080에서 Tab·Shift+Tab·Enter로 외형→취소→생성 이동 및 출시 잠금 시 생성 버튼 제외 확인. Escape 닫기, 실제 취소 버튼 클릭 뒤 실행 컨트롤(lobbyWishlistBtn) 초점 복귀. pageerror0/쓰기 요청0. 실제 저장·외부 Steam·앱 종료 실행 없음 |
+docs/3.1 ui hud 디자인/UI_COMPOSITION_20260925.md:2430:| 정보 초점 | #csLeft tabindex0/role region/aria-labelledby csCharName. #csRight tabindex0/role region/aria-labelledby csPlaystyleTitle. 기존 .cs-right-title 리프에 해당 id 추가. .cs-side:focus-visible outline2px solid #ead6a5/offset−2px |
+docs/3.1 ui hud 디자인/UI_COMPOSITION_20260925.md:2435:| Tab 순서 | _visualSelectKeydown의 details는 csLeft/csRight, controls는 details→외형 아이콘→취소→생성 중 enabled 항목. 일반6개/출시 잠금5개. 최초 초점은 기존 선택 아이콘 유지. Shift+Tab 역순·순환/외부 초점 복구 유지. 초점은 preventScroll:true 후 정보 영역에만 scrollIntoView(block:start)하여 긴 정보의 제목을 먼저 노출 |
+docs/3.1 ui hud 디자인/UI_COMPOSITION_20260925.md:2439:| 실제 입력 | 320×360/480×360/960×540/1920×1080에서 Shift+Tab 정보 초점·제목 노출, PageDown/End, 외형 변경 초기화/동일 외형 보존/재열기 초기화·하단 위치 고정·Escape 초점 복귀 확인. 좁은 KO PageDown 본문 scrollTop97→172, 960×540 오른쪽0→69. 480×360 마우스 휠112px에서 제목·12px 본문 접근 및 하단 고정 확인. pageerror0/쓰기 요청0 |
+docs/3.1 ui hud 디자인/UI_COMPOSITION_20260925.md:2444:## 2026-09-28 외형 선택 배치 전환의 정보 초점 유지
+docs/3.1 ui hud 디자인/UI_COMPOSITION_20260925.md:2448:| 원인 | 960×540에서 csRight를 End로 읽은 뒤480×360으로 바꾸면 초점은 csRight에 남고 플레이 방식 제목은 본문 밖으로 이동. 반대 전환에서는 이전 패널 scrollTop69가 다시 적용될 수 있음. 기존 열기/외형 변경 초기화만으로는 열린 창의 배치 전환을 처리하지 못함 |
+docs/3.1 ui hud 디자인/UI_COMPOSITION_20260925.md:2450:| _visualInfoLayoutChanged | charVisualPop.style.display가 flex이고 document.activeElement가 csLeft 또는 csRight일 때만 처리. _resetVisualInfoScroll로 본문·양쪽 패널 scrollTop0 후 현재 초점 영역에 scrollIntoView(block:start). 초점 대상·_pendingVisualIdx·생성 잠금·미디어 경로 유지 |
+docs/3.1 ui hud 디자인/UI_COMPOSITION_20260925.md:2451:| 보존·제외 | 같은 배치 안에서 크기 조절은 해당 change 이벤트 없음. 아이콘/액션/외부 초점 및 숨긴 팝업은 스크롤·초점을 변경하지 않음. 기존 열기/다른 외형 선택 초기화, 동일 외형 선택 보존 계약 유지. 새 세이브 필드 없음 |
+docs/3.1 ui hud 디자인/UI_COMPOSITION_20260925.md:2452:| 네이티브 보정 | 그리스어 실버테일480→500px의 본문 scrollTop47→50은 수정 전 HTML 격리 페이지에서도 재현. 브라우저의 레이아웃 스크롤 앵커 보정을 강제로 되돌리지 않음. 같은 배치 검증은 실제 _resetVisualInfoScroll 호출 증가0과 읽기 위치 비초기화·초점 유지로 판정 |
+docs/3.1 ui hud 디자인/UI_COMPOSITION_20260925.md:2453:| 실제 브라우저 | Node 서버 원본29언어×전사0/실버테일1×정보 영역2개×761↔760px 양방향=232조건. 현재 초점 제목 노출·패널 scrollTop0·선택/출시 잠금 유지·헤더/본문/하단 분리·가로 넘침 없음. 같은 배치480→500/960→980px·높이360px는 KO/EN/DE/FR/EL/AR×2외형×2영역×2전환=48조건 |
+docs/3.1 ui hud 디자인/UI_COMPOSITION_20260925.md:2454:| 실제 키보드 | Shift+Tab 정보 초점/End 후960×540↔480×360,1920×1080↔320×360의4조건에서 제목 노출·초점 유지. 리사이즈 후 ArrowRight로 실버테일 잠금/ArrowLeft로 전사 복귀, Escape 후 찜 버튼 초점 복귀와 숨긴 창 리사이즈 보존. pageerror0/쓰기 요청0 |
+docs/3.1 ui hud 디자인/UI_COMPOSITION_20260925.md:2455:| 회귀 | lobbyVisualKeyboard25→31건. 수정 전6실패/25통과→31통과. 양쪽 정보 영역 재노출·아이콘/액션/외부 초점 비간섭·숨긴 창 비간섭 및 실제 MediaQueryList change 등록 검증. 관련12파일201건/inline script4개 구문 통과 |
+docs/3.1 ui hud 디자인/UI_COMPOSITION_20260925.md:2467:| 수명·UI | selectVisual의 _visualPreviewSeq/isCurrent와 기존 오류·180ms 폴백·5000ms 스톨 보호 유지. 닫기에서 src/poster·이벤트·타이머 해제, 재열기에서 선택 영상 재생. 전사0.75배속·실버테일1배속/comingSoon:true·포스터/초상화·contain 비율 및 선택/초점/스크롤 계약 유지. 새 미디어나 세이브 필드 없음 |
+docs/3.1 ui hud 디자인/UI_COMPOSITION_20260925.md:2482:| _applyLobbyLang | charNameLabel을 document.getElementById로 찾아 기존 _TL(캐릭터 이름 (2~8자))를 label 리프 textContent에 갱신. 입력값·초점·새 번역키·저장 형식 변경 없음. 처음 초기화 또는 노드 없는 화면에도 null 가드 유지 |
+docs/3.1 ui hud 디자인/UI_COMPOSITION_20260925.md:2486:| 실제 키보드 | 320×280/480×360/960×540에서 Hero7 입력 후 KO→EN 값/초점 유지. Tab 이름→취소→생성→이름/Shift+Tab 역방향 및 Escape 후 기존 캐릭터 버튼 초점 복귀 확인. 실제 캐릭터 저장 요청 없음 |
+docs/3.1 ui hud 디자인/UI_COMPOSITION_20260925.md:2487:| 회귀 | lobbyCardLanguage 기존11→12건: 안내 번역·동일 label 노드·입력값/빈 placeholder·초점 유지·API 요청0. 수정 전1실패/11통과→12통과. 관련12파일210건/inline script4개 구문 통과 |
+docs/3.1 ui hud 디자인/UI_COMPOSITION_20260925.md:2495:| 원인 | 종료 확인창의 취소에 Enter keydown을 보내면 창 none/초점 lobbyQuitBtn으로 복귀. 같은 키의 repeat keydown이 로비 전원 버튼의 네이티브 click을 실행해 확인창을 다시 flex로 열었음. 기존 delConfirmModal의 반복 차단은 이미 닫힌 창 밖까지 처리하지 못함 |
+docs/3.1 ui hud 디자인/UI_COMPOSITION_20260925.md:2496:| lobbyQuitBtn | 기존 onclick _showLobbyQuit() 옆 onkeydown _lobbyQuitKeydown(event) 연결. SVG·번역된 aria-label/title·전원 터치 영역·초점 표시·레이아웃 유지 |
+docs/3.1 ui hud 디자인/UI_COMPOSITION_20260925.md:2498:| 확인창 수명 | 기존 delConfirmModal 내부의 Enter/Space 반복 차단, 기본 취소 초점, Escape/B 취소, Tab 순환, busy 보호와 _showLobbyQuit의 실제 전원 버튼 초점 복귀 정책 유지. 종료 API 우선순위·150ms 브라우저 안내·요청 번호 보호 변경 없음 |
+docs/3.1 ui hud 디자인/UI_COMPOSITION_20260925.md:2499:| 실제 키보드 | Node 서버 원본320×280/480×360/960×540×KO/EN/AR×Enter/Space=18흐름. Enter 취소 후 repeat4회에도 창 닫힘·전원 초점·열기 횟수 불변·종료0회. Space는 초기 키 유지 중 창 닫힘/해제 후1회 열기, 새 입력 취소·재열기 확인. Escape 복귀, 열린 창 경계·가로 넘침 없음 |
+docs/3.1 ui hud 디자인/UI_COMPOSITION_20260925.md:2509:| 재현 | 320×280 실제 로비에서 외형 확정 후 1글자 이름을 Enter로 제출. 입력칸149~203px에 초점이 남고 오류는270~304px,생성창 하단268px 밖으로 완전히 가려졌다. |
+docs/3.1 ui hud 디자인/UI_COMPOSITION_20260925.md:2515:| 브라우저 | Node 서버 원본 페이지320×280/480×360/960×540×ko/en/ar×가상 키보드 off/on. 길이 오류/특수문자/같은 오류 재제출/긴 서버 오류 총72조건에서 입력·오류 영역 노출 및 횡넘침 없음. 입력값·초점과 같은 긴 오류의 내부 읽기 위치 보존,새 오류 초기화,pageerror0/쓰기 요청0. 서버 실패는 원본 helper 직접 호출이며 실서버 저장 실패를 유발한 검사가 아니다. |
+docs/3.1 ui hud 디자인/UI_COMPOSITION_20260925.md:2527:| 키보드 | _visualSelectKeydown의 step=(ArrowRight?1:-1)×(현재 dir===rtl?-1:1). next=clamp(index+step,0,icons.length-1). 아이콘 초점에서 좌우는 화면상 좌우 이웃으로 이동하고 기존 click/focus(preventScroll:true)를 실행한다. |
+docs/3.1 ui hud 디자인/UI_COMPOSITION_20260925.md:2528:| Home/End·잠금 | Home은 논리 첫 버튼0,End는 마지막 버튼icons.length-1. RTL에서 첫 버튼이 오른쪽이라는 기존 DOM 순서 유지. 선택/초점/aria-pressed/설명·미디어·생성 잠금은 같은 캐릭터로 갱신. 일반 전사0 생성 활성,실버테일1 출시 준비 잠금. |
+docs/3.1 ui hud 디자인/UI_COMPOSITION_20260925.md:2533:| 실제 브라우저 | 320×280/960×540/1920×1080×ko/en/ar×키보드/D-pad/스틱=27흐름. 네이티브 키보드9·가상 패드18,선택·잠금·aria-pressed·좌우 끝 경계·취소 후 초점 복귀·횡넘침 없음. 열린 창 en→ar→en 추가 확인,pageerror0/쓰기 요청0. |
+docs/3.1 ui hud 디자인/UI_COMPOSITION_20260925.md:2538:## 2026-09-28 이름 입력 혼합 시 한글 조합·초점 보존
+docs/3.1 ui hud 디자인/UI_COMPOSITION_20260925.md:2542:| 재현 | 실제 로비 이름창에서 가상 키ㄱ→ㅏ로가 생성 후 입력칸을 이름으로 교체하고 가상ㄴ 입력:이름→이간으로 마지막 글자를 덮어썼다. 가상 키 span을 실제 클릭하면 초점이 body로 빠져 Escape도 이름창에서 처리되지 않았다. |
+docs/3.1 ui hud 디자인/UI_COMPOSITION_20260925.md:2547:| 키 입력 초점 | _vkbDispatchInput은 통지 후 inp.focus(preventScroll:true). 문자·공백·백스페이스·8글자 제한 반환에서 이름칸 초점을 유지하며 키보드가 보이는 위치를 초점 이동으로 바꾸지 않는다. _vkbInput의OK도 상태 null→입력 초점 복귀→기존 createBtn.click 순서로 처리해 오류 후 입력·Escape를 계속 받는다. |
+docs/3.1 ui hud 디자인/UI_COMPOSITION_20260925.md:2549:| 회귀 | test/lobbyHangulInput.test.js6→15건. 외부 교체/삭제/영문 덧붙이기/같은 문자4,이벤트 없는 복원/8글자 보존2,가상 이벤트 보존1,문자 키/OK 초점2 추가. 첫13건 원본6PASS/7FAIL,초점15건 중13PASS/2FAIL→최종15PASS. 관련8파일175건 및 inline script4개 구문 PASS. |
+docs/3.1 ui hud 디자인/UI_COMPOSITION_20260925.md:2550:| 실제 브라우저 | Node 서버 원본320×280/480×360/960×540에서 화면 키를 실제 마우스로 클릭. 네이티브 교체/삭제/영문 입력/텍스트 삽입,같은값 composition InputEvent 대역,이벤트 없는 복원,8글자 보존,내부 받침·백스페이스,교체 후 가상 삭제의9종×3창=27흐름 통과. 이름/maxlength8/초점·횡넘침 확인. |
+docs/3.1 ui hud 디자인/UI_COMPOSITION_20260925.md:2551:| OK·Escape | 각3창에서 실제OK 클릭 후1글자 오류 표시·입력 초점·오류 노출·조합 null과 Escape 닫기 확인3흐름. 총30브라우저 흐름/pageerror0/쓰기 요청0. 실제 Windows OS IME·실물 게임패드·세이브 저장은 검증하지 않았다. 데모에는 생성 카드가 없어 openVisualSelect로 진입한 뒤 실제 컨트롤을 사용했다. |
+docs/3.1 ui hud 디자인/UI_COMPOSITION_20260925.md:2567:| 상태 | 기존 .14s 재질·초점 transition, hover brightness1.13/#c9ab7d, active brightness.96/inset0 3px 7px #000a, focus-visible2px #ead1a0/offset-4px, disabled opacity.7/grayscale1/#aaa08e, reduced-motion transition:none. scrollbar-color만 유지하며 scrollbar-width 덮어쓰기도 제거 |
+docs/3.1 ui hud 디자인/UI_COMPOSITION_20260925.md:2570:| 회귀 | 관련 로비6개 테스트 파일132건 PASS. 이번 수정은 CSS 치수 복원·캐시 키 변경이며 생성·취소·이름 조합·초점 처리 코드는 변경하지 않음 |
+docs/3.1 ui hud 디자인/UI_COMPOSITION_20260925.md:2639:| 모음 열기 | toggle(open)은 button.hidden이면 열기를 거부하며 숨긴 버튼에 focus하지 않는다. 배지가 있으면 기존 닫기 초점/버튼 복귀·aria-expanded·3개 카드 정책 유지 |
+docs/3.1 ui hud 디자인/UI_COMPOSITION_20260925.md:2646:| 시각·입력 검수 | 원본 HUD DOM/CSS·배지JS를 분리한 fixture에서0개/1개 스크린샷,배지 모음 실제 클릭→닫기 초점/화면내 배치→닫기→0개 숨김 확인. 브라우저 viewport2534×1262,override없음. fixture는 UI 검수이며 튜토리얼 완료 플레이 검증은 아님 |
+docs/3.1 ui hud 디자인/UI_COMPOSITION_20260925.md:2673:| 키 입력 | 기본/보조/삭제/모드/초기화 native button, 접근성 이름·초점 복원. 반복 활성화 키는 캡처하지 않음 |
+docs/3.1 ui hud 디자인/UI_COMPOSITION_20260925.md:2678:| 선택 카드 마감 | 캐릭터·커서 native button `settings-choice`, aria-pressed·번역된 aria-label, 캐릭터 aria-describedby. data-settings-choice로 재구성 전/후 초점 보존(preventScroll), Enter/Space 선택·Tab 이동. 기존 미리보기·저장·atlas/cursor 함수 유지 |
+docs/3.1 ui hud 디자인/UI_COMPOSITION_20260925.md:2680:| 선택 카드 검증 | 설정 회귀31/31 PASS. 두 HTML의 실제 Enter/Space 선택·초점·Tab 이동/설정창 유지 확인. 본편 KO/EN×6크기×조작/시스템=24건 잘림·가로 넘침0. easy-test 추가 크기 검사는 브라우저 도구 중단으로 미완료; 물리 패드 미검증 |
+docs/3.1 ui hud 디자인/GEM_ATELIER_20260927.md:9:| 필터 | 전체/공격/방어/자원과 1~5성 버튼에 **현재 홈에 호환되는 보석 수**를 각각 표시한다. 0개 버튼은 흐리게, 활성 버튼은 금색 금속판으로 구별한다. 빈 결과는 유물 홈 문양·원인 설명을 담은 패널이다. 호환 보석은 있지만 선택한 분류에 없을 때는 `전체 호환 보석 보기`로 복귀하며 첫 후보에 초점을 둔다. 홈 자체에 호환 보석이 0개면 다른 홈 선택·획득을 안내한다 |
+docs/3.1 ui hud 디자인/GEM_ATELIER_20260927.md:10:| 조작·범위 | 후보 클릭은 기존 `attachCrystal`→저장→재렌더 경로를 그대로 사용한다. 취소·Escape·키보드 초점 복귀·비호환 검증 유지. `game.html`, `game-easy-test.html`, `ui-refinement.css?v=20260928-storage-icon-gem-picker2` |
+docs/3.1 ui hud 디자인/GEM_ATELIER_20260927.md:64:기존 클릭 장착·클릭 탈착·키보드 초점 선택은 유지한다. 드래그 대상은 빈 홈만 받으며 채워진 홈에 떨어뜨려 탈착시키지 않는다. 적용 CSS 캐시는 `inventory-gems-finish.css?v=20260927-gem-drag1`. 실제 브라우저에서 이전에 가려졌던 `밤의 씨앗` 칸 중앙 hover가 정확히 해당 보석을 가리키는지, `순교자의 눈물`을 견갑 홈에 드래그해 보유 13→12 및 해당 홈 장착, 비호환 `밤의 씨앗`을 견갑에 놓아 보유/장착 무변경을 확인했다. 테스트 탭은 `_dbReady=false`로 세이브를 차단했다.
+docs/3.1 ui hud 디자인/GEM_ATELIER_20260927.md:151:| 창 | 공통 인벤토리 창 `inventory-space.css`: 폭 `100vw−24px`, 높이 `100dvh−24px`, 폭 620px 이하 양쪽 8px 여백. 이전 `min(1280px,100vw−24px)`/`min(860px,96vh)` 상한보다 최신 규칙 |
+docs/3.1 ui hud 디자인/GEM_ATELIER_20260927.md:167:| CSS 로딩 | `inventory-gems.css` → `inventory-gems-finish.css?v=20260927-square-art2` → 공통 창 규격 `inventory-space.css?v=20260927-three-columns7` 순서 |
+docs/3.1 ui hud 디자인/GEM_ATELIER_20260927.md:168:| Windows 패키징 | `build-nwjs.mjs`의 `FILES`에 `inventory-gems-finish.css`와 `inventory-space.css` 포함. 실제 패키지 빌드는 미실행 |
+docs/3.1 ui hud 디자인/남전사_로비_아이들_모션_20260908.md:106:| 수명·UI | selectVisual의 _visualPreviewSeq/isCurrent와 기존 오류·180ms 폴백·5000ms 스톨 보호 유지. 닫기에서 src/poster·이벤트·타이머 해제, 재열기에서 선택 영상 재생. 전사0.75배속·실버테일1배속/comingSoon:true·포스터/초상화·contain 비율 및 선택/초점/스크롤 계약 유지. 새 미디어나 세이브 필드 없음 |
+docs/3.1 ui hud 디자인/PASSIVE_BODY_TREE_UI_20260909.md:139:전체 메뉴와 로비의 최신 재질·제목·문양·선택·초점·스크롤 스타일은 UI_COMPOSITION_20260925.md의 **2026-09-26 전체 메뉴 마감 절**을 따른다.
+docs/3.1 ui hud 디자인/PASSIVE_BODY_TREE_UI_20260909.md:141:전체 메뉴와 로비의 최신 재질·제목·문양·선택·초점·스크롤 스타일은 UI_COMPOSITION_20260925.md의 **2026-09-26 슬롯과 상호작용 마감 절**을 따른다.
+docs/3.1 ui hud 디자인/PASSIVE_BODY_TREE_UI_20260909.md:143:전체 메뉴와 로비의 최신 재질·제목·문양·선택·초점·스크롤 스타일은 UI_COMPOSITION_20260925.md의 **2026-09-26 유니크 분해 NaN 수정과 상세창 마감 절**을 따른다.
+docs/3.1 ui hud 디자인/PASSIVE_BODY_TREE_UI_20260909.md:145:전체 메뉴와 로비의 최신 재질·제목·문양·선택·초점·스크롤 스타일은 UI_COMPOSITION_20260925.md의 **2026-09-26 창고와 상세 스크롤 마감 절**을 따른다.
+docs/CHANGELOG_SYNC.md:499:| 원화·연결 | 유골함 전용이던 `img/ui/ossuary_socket_hf_v2.png`를 장비 슬롯16개에도 적용. `inventory-space.css?v=20260928-relic-frame1` |
+docs/CHANGELOG_SYNC.md:532:| 연결 | game.html의 기사 src는 로컬 PNG. inventory-space.css 캐시20260928-relic-frame1, inventory-paperdoll.js·knight-portrait.css 캐시20260928-equipment-cutout3. img/ 재귀 복사로 NW.js 패키지 포함 |
+docs/CHANGELOG_SYNC.md:49333:전체 메뉴와 로비의 최신 재질·제목·문양·선택·초점·스크롤 스타일은 UI_COMPOSITION_20260925.md의 **2026-09-26 전체 메뉴 마감 절**을 따른다.
+docs/CHANGELOG_SYNC.md:49344:전체 메뉴와 로비의 최신 재질·제목·문양·선택·초점·스크롤 스타일은 UI_COMPOSITION_20260925.md의 **2026-09-26 슬롯과 상호작용 마감 절**을 따른다.
+docs/CHANGELOG_SYNC.md:49355:전체 메뉴와 로비의 최신 재질·제목·문양·선택·초점·스크롤 스타일은 UI_COMPOSITION_20260925.md의 **2026-09-26 유니크 분해 NaN 수정과 상세창 마감 절**을 따른다.
+docs/CHANGELOG_SYNC.md:49357:전체 메뉴와 로비의 최신 재질·제목·문양·선택·초점·스크롤 스타일은 UI_COMPOSITION_20260925.md의 **2026-09-26 창고와 상세 스크롤 마감 절**을 따른다.
+docs/CHANGELOG_SYNC.md:49396:| 원인 | _invClearHover가 이전 선택 아이템의 상세를 다시 렌더하여 마우스를 뗀 후에도 정보창이 남음 |
+docs/CHANGELOG_SYNC.md:49397:| 종료 | 기존 선택 복원 처리를 _invRestoreSelectedActions로 분리. _invClearHover는 이를 호출한 뒤 invRight visibility:hidden, invCompareFloat display:none |
+docs/CHANGELOG_SYNC.md:49433:| DOM | renderOssPanel이 최초 1회 createElement/append로 구성. 이후 기존 노드·초점·핸들러 보존, 특정 리프 textContent만 갱신. 부모 innerHTML 교체 없음 |
+docs/CHANGELOG_SYNC.md:49463:| 조작 | 호버 상세, 클릭/키보드 초점 선택, 호환 장착 장비 빈 홈 선택 → attachCrystal → dbSaveNow. 객체 인덱스·장비 동일성·빈 홈 재확인 |
+docs/CHANGELOG_SYNC.md:49650:| 원자적 이동 | BAG_MAX 및 _invFindSpace(1,1,신규가방index) 검사. 임시push 후 공간이 없으면pop하고 등록 유지. 공간 성공 시 _gx/_gy 지정→등록 키 delete→선택 부위·아이템 선택 초기화→dbSaveForce→renderInv→_invClearHover→이동 안내 |
+docs/CHANGELOG_SYNC.md:49749:| 유골 부위 | 성공 시 선택 부위와 INV.selected를 비우고 renderInv 뒤 _invClearHover 호출. 등록·미수집 소켓의 기본 title 제거, aria-label 설명 유지. 등록 소켓은 자체 정보 팝업 표시 |
+docs/CHANGELOG_SYNC.md:49750:| 유골함 | unequipItem('ossuary') 성공 확인 후 INV.selected를 비우고 renderInv 뒤 _invClearHover. 빈 유골함은 title 제거, aria-label 유지. 공간 부족으로 해제 실패하면 기존 상태 유지 |
+docs/CHANGELOG_SYNC.md:49780:| 전역 키 예외 | K/KH 입력 등록 전에 초점 대상이 #invPanel.on button 또는 #crBagPop button이고 code가 Space/Enter/NumpadEnter/Tab이면 게임 키 핸들러 return. preventDefault 없이 브라우저 기본 입력 사용. 버튼 밖 기존 Space 쓰레기·Tab 메뉴 동작 유지 |
+docs/CHANGELOG_SYNC.md:49781:| 초점 표시 | 피커 필터/목록 focus-visible outline2px #ead1a0/offset−3px,상속폰트/색·왼쪽정렬. 기존 하단 버튼 초점 표시 유지 |
+docs/CHANGELOG_SYNC.md:49782:| 하단 초점 노출 | ui-panels.js inventory focusin에서 .inv-actions button 경계를 측정. 오른쪽 또는 왼쪽 이탈분만큼 rail.scrollLeft 조정. 본문 세로 위치·가방 높이 변경 없음 |
+docs/CHANGELOG_SYNC.md:49783:| 검증 | 실제 Space로 필터 변경·보석 선택·장착·해제 성공. Space 후 junk=false 보존. Tab/Shift+Tab 이동·필터 초점 유지 확인.320/390/640/1280px에서 실제 Tab 이동 후 마지막 하단 버튼 전체 노출. pageerror0 |
+docs/CHANGELOG_SYNC.md:49792:| 호버 해제 | registerBonePart 성공 후 가방 아이템 삭제·선택 초기화·저장·renderInv 다음 _invClearHover를 호출하여 이전 가방 정보가 즉시 닫힘. 등록 실패 시 아이템과 정보 유지 |
+docs/CHANGELOG_SYNC.md:49801:## 2026-09-27 보석 피커 진입·복귀 초점 연결
+docs/CHANGELOG_SYNC.md:49811:| 검증 | Enter 진입 후 첫 보석 초점,Tab/Shift+Tab 양끝 순환,Escape 복귀·부모 창 유지,Space 장착 후 armor 홈0의 새 버튼 복귀 확인. 빈 피커→all 필터→Escape→armor 홈1,탭 이탈 후 equipment 활성탭 복귀 확인 |
+docs/CHANGELOG_SYNC.md:49833:| 자동 회귀 | test/crystalPickerNavigation.test.js 추가: 일반/쉬운게임 각각 목록축소 후A선택,빈 목록 무선택,D-pad 초점·스크롤·A 일치 총6개. 기존 결정관리12개+구문1개+패널초기화3개 포함 총22개PASS |
+docs/CHANGELOG_SYNC.md:49834:| 기존 테스트 보완 | crystalForgeManagement.test.js의 간이 DOM에 HTMLButtonElement/activeElement/querySelector/querySelectorAll 모형 보충. 앞선 초점 API 도입에 따른 테스트 환경 누락 수정. 기존 검증 조건 유지 |
+docs/CHANGELOG_SYNC.md:49835:| 브라우저 | 실제 디스크 코드에서18→6행 필터 변경 후index0,키보드focus행3→index3,마우스행1→index1,D-pad 아래→행2초점,A→cr_ward_stone 선택·팝업닫힘 확인. pageerror0 |
+docs/CHANGELOG_SYNC.md:49870:| 원인 | 스크롤에 따른 mouseenter까지 선택 변경으로 처리. 60행 목록에서 index30에 초점/스크롤 후 index25,휠 후28로 덮어써짐 |
+docs/CHANGELOG_SYNC.md:49872:| 쉬운게임 보완 | renderCrystalBag 말미의 목록 이벤트 연결과 재렌더 필터 초점 복원 누락을 보완. 생성 영역은 createContextualFragment + replaceChildren으로 갱신. 기존 쉬운게임 분류·아이템 수치 유지 |
+docs/CHANGELOG_SYNC.md:49873:| 브라우저 재현 | 디스크 renderCrystalBag 함수를 격리 게임 페이지에 반영해 동일 포인터 위치에서 재현. 수정 후 index30/초점30이 자동 스크롤과 휠 뒤에도 유지,실제 포인터를32행에 이동하면 index32. 마지막 index59/초점59/목록끝 일치 |
+docs/CHANGELOG_SYNC.md:49874:| 이벤트 회귀 | test/crystalPickerPointer.browser.js: 양쪽 실제 렌더러를 독립 DOM에서 실행. 행생성/초점/포인터진입/0거리이동/실제이동/필터축소 각6개,총12개PASS. 앱 데이터·저장 변경 없음 |
+docs/CHANGELOG_SYNC.md:50017:| 검증 | 온라인·로컬 실제 카드 템플릿을 격리 페이지에 렌더. 화면폭800/1280/1920에서 직업 배지 영역 내·삭제 간격10px·이름 말줄임 및 전체 이름 title 확인. 삭제 키보드 초점 opacity1. 로비 회귀7개 및 인라인 스크립트4개 구문 통과. tmp/lobby-card-details/after.png 및 report.json. 실제 캐릭터 선택·삭제·세이브 요청 없음 |
+docs/CHANGELOG_SYNC.md:50028:| 초점 복원 | 클릭 시작 시 초점 여부 저장, setTimeout 0으로 이벤트 버블링·목록 재생성 이후 처리. 기존 버튼이 제거되고 activeElement가 body일 때 동일 data-card-key 버튼에 focus(preventScroll:true). 다른 초점은 빼앗지 않음 |
+docs/CHANGELOG_SYNC.md:50029:| 초점 표시 | outline2px solid #ead6a5, outline-offset:-3px로 카드 내부에 표시 |
+docs/CHANGELOG_SYNC.md:50032:| 검증 | 실제 온라인/로컬 렌더러·선택 함수 추출, 격리된 선택·생성·삭제 확인 콜백 사용. Enter/Space 각각 선택1회, 재렌더 후 초점 유지, 삭제 Enter는 선택 없이 확인1회, 생성 Space1회. 로비 회귀8개 통과 및 inline4개 구문 확인. tmp/lobby-card-keyboard/report.json 및 after.png. 실제 계정·저장·삭제 API 호출 없음 |
+docs/CHANGELOG_SYNC.md:50045:## 2026-09-27 목록 이동 초점·온라인 오른쪽 스틱 수정
+docs/CHANGELOG_SYNC.md:50049:| 재현 | 목록 이동 버튼 클릭이 렌더러를 재실행하여 활성 버튼을 제거, 키보드 초점이 body로 유실. 오른쪽 스틱은 로컬 ID만 조회하여 온라인 목록 미동작 |
+docs/CHANGELOG_SYNC.md:50051:| 초점 유지 | 클릭 전 활성 버튼이었다면 재렌더 후 동일 ID의 활성 버튼에 focus(preventScroll:true). 마지막/첫 페이지에서 해당 버튼이 disabled이면 반대 방향 버튼으로 초점 이동. 이미 다른 요소로 이동한 초점은 보존 |
+docs/CHANGELOG_SYNC.md:50053:| 검증 | 온라인/로컬 실제 렌더러로 Enter3회:2-3→3-4→4-5/5, 끝에서 위 버튼 초점, Space로3-4/5 복귀. 실제 스틱 처리 코드에1,1,0,1,-1 입력:2-3,2-3,2-3,3-4,2-3/5로 두 모드 일치. 실제 게임패드 하드웨어 검증은 아님 |
+docs/CHANGELOG_SYNC.md:50065:| 초점·호버 | 목록 내비 align-items:center. 화살표 focus-visible outline-offset:-2px. 활성 화살표 hover/gp-hover 색#ffd6bb,배경#6b38282e |
+docs/CHANGELOG_SYNC.md:50067:| 검증 | 온라인 실제 렌더러,1920/1280/800×720에서 화살표32px·삭제28px·간격10px·가로 넘침 없음·footer 화면 내. 키보드 이동 후 초점 유지. Chromium hasTouch 입력 에뮬레이션에서44×44px 및 간격10px 확인, 실제 터치 기기 검증은 아님. tmp/lobby-control-targets/report.json,desktop.png,touch.png |
+docs/CHANGELOG_SYNC.md:50074:| 후속 화면 균형 (2026-09-27) | 900px 이상에서 가방 격자와 고정 정보판이 왼쪽 세로 공간을 1:1로 사용하도록 `inventory-oss-balance.css`를 마지막에 연결했다. 원인인 `inventory-space.css`의 전체 화면형 외곽은 유지하며 유골함 탭에만 적용한다. 2500×1200에서 격자407px·정보판409px, 1280×720에서 167px·169px; 725×550/390×844 기존 배치 유지. 저장 데이터 변경 없음 |
+docs/CHANGELOG_SYNC.md:50100:| 검증 | 격리 로비 카드3개 고정 높이로1280×720/1024×600/960×540/800×480 검수. 낮은 화면에서 ENTER 초점 시 내부 스크롤196/256/316px, 버튼 화면 내·가로 넘침 없음. 실제 휠 핸들러 상하 경계/이동/0 입력 확인. 로비 회귀8개·inline4개 구문 통과. tmp/lobby-short-height/after.png,report.json,wheel-report.json |
+docs/CHANGELOG_SYNC.md:50121:## 2026-09-27 삭제 확인창 키보드 초점·취소 보완
+docs/CHANGELOG_SYNC.md:50126:| 열기 | _delConfirmReturnFocus에 호출 전 activeElement 저장, 기본 취소 버튼에 실제 focus(preventScroll:true). 기존 게임패드 선택 테두리와 초점 동기화 |
+docs/CHANGELOG_SYNC.md:50128:| 처리 중 | 기존 _delConfirmBusy 및 두 버튼 disabled 유지. 모달 컨테이너에 초점, Tab은 이동 차단, Escape도 busy 잠금으로 닫히지 않음. 화면 전환은 창과 초점을 해제하며 요청 잠금은 완료까지 유지 |
+docs/CHANGELOG_SYNC.md:50131:| 검증 | 실제 모달 함수 격리 실행: 취소 최초 초점,Tab/Shift+Tab 순환,Escape 취소와 원래 초점 복귀,콜백0회. 비동기 처리 중 Tab/Escape 잠금·콜백1회,모의 실패 후 오류 표시·대체 카드 초점 확인. characterSync8개·inline4개 구문 통과. tmp/lobby-delete-focus/report.json. 실제 삭제·계정·저장 요청 없음 |
+docs/CHANGELOG_SYNC.md:50144:| 열기 | _visualConfirm에서 이름 초기화와 setStatus 공백으로 이전 오류 제거. 기존50ms 입력 초점은 모달이 여전히 show일 때만 실행 |
+docs/CHANGELOG_SYNC.md:50147:| 검증 | 실제 입력 핸들러 격리 실행: composing Enter/keyCode229/repeat 각각 생성0회, 단일 Enter1회. Tab 순환·조합 Escape 유지·일반 Escape 닫힘·카드 초점 복귀·가상 키보드 정리 확인. 브라우저 합성 입력 검증이며 OS IME 실기 테스트는 아님. 생성/삭제/스토리 회귀27개,inline4개 구문 통과. tmp/lobby-create-input/report.json. 실제 캐릭터 생성·삭제 없음 |
+docs/CHANGELOG_SYNC.md:50163:| 회귀 | characterStoryCreation.test.js에 네트워크 rejection/중복 이름/인증 없음의 버튼 해제·이름 보존·창 복원·초점·스토리 미진입3건, 대기 요청 중복 차단1건 추가. 수정 전4건 실패→수정 후통과 |
+docs/CHANGELOG_SYNC.md:50182:| 공통 실패 UI | 현재 요청 번호일 때만 _showCreateFailure(name,message) 호출:버튼 잠금 해제,이름 보존,setStatus 오류,생성창 show,이름 입력 초점 |
+docs/CHANGELOG_SYNC.md:50204:| 검증 |1280×720,360×480,640×360,320×280×생성/삭제2종=8경우. 긴 오류·삭제 안내로 창 화면 내·가로 넘침 없음·초점 버튼 보임 확인. tmp/lobby-dialog-layout/report.json 및 after.png. 스크립트 비활성 격리 렌더로 실제 저장·삭제 없음 |
+docs/CHANGELOG_SYNC.md:50217:| 이동 | 선택 키가 위/아래 경계를 넘을 때 필요한 거리만 panel.scrollTop 보정. 이미 보이면 스크롤하지 않음. 문서·로비 및 실제 입력 초점은 이동하지 않음 |
+docs/CHANGELOG_SYNC.md:50229:| 소스 | `game.html`, 새 `inventory-space.css?v=20260927-three-columns7`, `build-nwjs.mjs` 파일 목록. 세부 규격은 `2_7 인벤토리+장비시스템/2_7 인벤토리+장비시스템.md`의 최신 절 참조 |
+docs/CHANGELOG_SYNC.md:50255:| 닫기 | Escape는 선택값 유지하고 원래 select로 초점 복귀,Tab은 닫은 후 기본 이동. 바깥 pointerdown 및 화면 전환(_goLogin/_goCinematic/_goLobby/showLobby)은 초점을 강제로 되돌리지 않고 닫기 |
+docs/CHANGELOG_SYNC.md:50258:| 검증 | 실제 팝업 코드 격리 실행,360×480/1280×720/640×360/320×280 우하단 배치 모두 화면내. 방향키 선택change1회,Escape취소 값 유지·초점복귀,바깥 클릭닫기 확인. 로비 회귀5개·inline4개 구문 통과. tmp/lobby-language-popup/report.json 및 after.png. 언어 저장은 검수용 change 계수로 대체 |
+docs/CHANGELOG_SYNC.md:50268:| 창 크기 변경 | 기존 배치 수식을 _positionLangPop(pop,sel)로 분리. 열린 상태의 window resize에서 위치·최대높이 재계산 후 선택 행을 내부 스크롤로 노출,행 재생성·언어 확정·키보드 초점 이동 없음 |
+docs/CHANGELOG_SYNC.md:50313:| 적용 | `game.html`, `inventory-space.css?v=20260927-three-columns9`, 인벤토리·UI·사운드·번역 관련 문서. 테스트 브라우저 오류 로그 0, 저장 파일 변경 없이 검증 |
+docs/CHANGELOG_SYNC.md:50352:| 적용 | `game.html`, `inventory-space.css?v=20260927-three-columns11`, 인벤토리/공통 UI 관련 docs 동기화 |
+docs/CHANGELOG_SYNC.md:50362:| 유지 | 내용이 패널 높이를 넘지 않으면 스크롤하지 않음. 실제 DOM 초점·언어 선택·캐릭터 선택/삭제 동작은 변경 없음. 중립 프레임은 같은 인덱스·동일 요소에서 스크롤하지 않음 |
+docs/CHANGELOG_SYNC.md:50403:| CSS | `inventory-gems-balance.css?v=20260927-half`를 `inventory-space.css`·`inventory-gems-finish.css` 뒤에 로드한다. 열 1:1은 폭900px 이상, 행 1:1은 폭701px 이상·높이600px 이상에 적용한다. 행은 `auto minmax(120px,1fr) minmax(160px,1fr)`, 간격12px이다. 폭700px 이하/높이600px 미만의 기존 세로 배치는 유지한다. |
+docs/CHANGELOG_SYNC.md:50483:| 연결 | `inventory-space.css?v=20260927-aligned12`, `inventory-oss-balance.css?v=20260927-scale2`를 `game.html`에 로드한다. NW.js 목록에는 유골함·보석함 균형 CSS를 포함한다. 아이템 장착/해제·호버·저장 데이터 변경 없음. |
+docs/CHANGELOG_SYNC.md:50589:| 확인 | _showLobbyQuit → 기존 확인창 _showDelConfirm의 선택적 message 인수 사용. 기본 취소,Escape/B 취소,Tab 초점 순환 및 닫은 뒤 원래 버튼 초점 복원. 기존 삭제 기본 문구·동작 유지 |
+docs/CHANGELOG_SYNC.md:50592:| 검증 | 실제 확인창 코드 격리 실행:취소 기본/Escape 복귀/취소 시 종료0회,NW·Electron·브라우저 각 stub1회. 1920×1080,1280×720,960×540에서 하단 버튼 전체 표시 및 초점offset -2px. 실제 앱 종료·실물패드·실계정 저장은 실행하지 않음 |
+docs/CHANGELOG_SYNC.md:50620:| 범위 | 종료·캐릭터 삭제 공용 확인창. 기존 Tab 초점 순환/Escape 취소,게임패드,비동기 중복 제출 방지 유지 |
+docs/CHANGELOG_SYNC.md:50621:| 검증 | 신규 Enter/Space 회귀2개는 수정 전 실패 후 통과. 관련20개 테스트 통과. Chromium 실제 키 입력으로 Enter 반복2회에도 확인창 유지·취소 초점·종료0회,해제 후 Tab/Enter는 종료 stub1회 확인. 실제 앱 종료·삭제 미실행 |
+docs/CHANGELOG_SYNC.md:50664:## 2026-09-28 종료 확인창 초점 복귀 일치
+docs/CHANGELOG_SYNC.md:50668:| 재현 | 패드의 programmatic click은 DOM 초점을 옮기지 않아 종료창 취소 후 이전 언어 select로 초점이 복귀함 |
+docs/CHANGELOG_SYNC.md:50671:| 검증 | 신규 회귀 수정 전 실패 후 통과,확인창·캐릭터 동기화13개 통과. Chromium에서 언어 select 초점→프로그램 클릭→Escape 후 lobbyQuitBtn 복귀/종료0회 확인. 확인창960×540,640×360,360×280 모두 화면 내 |
+docs/CHANGELOG_SYNC.md:50781:| 재현 | 패드 X가 삭제 버튼 click을 프로그램으로 실행하면 기존 DOM 초점이 언어 메뉴 등에 남아 취소 후 엉뚱한 메뉴로 복귀 |
+docs/CHANGELOG_SYNC.md:50783:| 유지 | 삭제 요청·확정·취소·버튼 크기·키보드/패드 행동 유지. 초점 이동 자체로 스크롤을 바꾸지 않음 |
+docs/CHANGELOG_SYNC.md:50784:| 검증 | 신규 온라인/로컬 회귀2개 수정 전 실패→통과. 실제 이벤트 앞부분 및 확인창을 Chromium에 격리 실행,언어 select 초점에서 프로그램 클릭→Escape 후 각 삭제 버튼 복귀/삭제 콜백0회. 확인창·캐릭터 동기화·패드26개 통과 |
+docs/CHANGELOG_SYNC.md:50899:| 닫기 | 기존 함수의 display:none,_langPopOpen=false,원래 select aria-expanded=false 사용. restore=false로 숨겨질 select에 초점 복귀하지 않음. 탐색 인덱스를 언어 선택값으로 확정하지 않으며 change 호출 없음 |
+docs/CHANGELOG_SYNC.md:51002:| 화면 QA | 데모 로비 960×540, 1280×720, 1920×1080에서 가로 넘침 없음. 캐릭터 카드·입장·종료·확인/취소 버튼 모두 화면 안. 종료 팝업 기본 취소 초점과 Escape 후 종료 버튼 초점 복귀 확인. |
+docs/CHANGELOG_SYNC.md:51014:| 실제 런타임 | Node 서버의 원본 로비와 getGamepads 대역으로 패드 A 열기/B 취소를 확인했다. 이동 없는 마우스 클릭 후100ms active=false, cursor 복원, KBM, 배경 강조 제거와 취소 초점 확인. Escape 후 종료 버튼 복귀와 종료 호출0회 확인. touch/pen PointerEvent 전달 뒤70ms에도 active=false와 강조0 확인. 실물 패드·터치펜 검증은 별도다. |
+docs/CHANGELOG_SYNC.md:51026:| 실제 런타임 | Node 서버의 원본 로비에서 getGamepads와 playEffect만 대역으로 교체했다. 거부 반복 요청은 수정 전130ms 동안 오류5회, 수정 후3회 요청에서 오류0회였다. 같은 페이지에서 원본 문 열림 예약 코드8단계를 실행해 거부8회·오류0회 확인. 종료창 열기·Escape 취소 후 버튼 초점 복귀 정상. 실물 패드 진동 검증은 별도다. |
+docs/CHANGELOG_SYNC.md:51036:| 원인 | 종료·삭제 공용 확인창이 로그인/시네마틱/로비 갱신 후에도 남아 이전 콜백과 초점을 유지. 제출한 요청의 늦은 완료가 새 목록 요청 또는 이전 오류 안내를 시작할 수도 있었음 |
+docs/CHANGELOG_SYNC.md:51038:| _hideDelConfirm | fromTransition 기본 false. 일반 취소는 기존 busy 잠금 및 열린 창의 원래 버튼 초점 복귀 유지. 전환은 busy 중에도 창을 숨기고 _delConfirmCb/_delConfirmReturnFocus를 null로 정리하며, 창 내부 초점을 blur. 이전 로비 버튼으로 초점을 돌리지 않음 |
+docs/CHANGELOG_SYNC.md:51044:| 브라우저 | Node 서버 실제 페이지960×540에서 전환4경로 전후 확인: flex/콜백 유지 → none/콜백 및 복귀 참조 null. 지연 성공/실패 대역에서도 전환 즉시 닫힘·busy 완료 후 해제·새 화면 초점 유지·공용 이전 오류 없음. 원본 삭제 콜백에 API/목록 대역만 주입한 전후8조건에서 이전 목록 재조회1회 → 0회, 로컬 실패의 저장 조회5회/오류 안내 → 0회/안내 없음. 데스크톱 종료 실패의 늦은 안내도 제거 |
+docs/CHANGELOG_SYNC.md:51045:| 화면·범위 | 960×540/1920×1080에서 종료창 Escape 취소 후 전원 버튼 초점 복귀, 로비 표시·가로 넘침 없음, pageerror0. 실계정 세션 종료/저장 삭제·앱 종료·실물 패드는 실행하지 않음. 실제 전환 함수와 콜백의 대역 검증이며 인증 서버의 종단 검증은 아님 |
+docs/CHANGELOG_SYNC.md:51063:| 재현 | 외형 취소 뒤 #csIdleVid가 숨은 채 계속 재생. 로그인/시네마틱/로비 전환4경로에 외형창 또는 이름창·가상 키보드·내부 초점이 남음. 실버테일 선택 뒤 전사 영상의 늦은 실패 콜백이 실버테일 영상을 멈추고 전사 초상화를 표시할 수 있었음 |
+docs/CHANGELOG_SYNC.md:51066:| _closeVisualSelect | restoreFocus 기본false. 열린 외형창만 정리하고 번호 증가·내부 초점 blur·display none. csIdleVid/csSceneVid의 _csT clear/null, onerror/oncanplay null, stopMediaVideo, on 클래스 제거, src/poster 제거, load 실행. 숨김 상태 재호출은 상태를 바꾸지 않음 |
+docs/CHANGELOG_SYNC.md:51067:| _visualReturnFocus | 초기null. openVisualSelect에서 기존 document.activeElement 캡처. 닫을 때 참조를 null로 해제. visualCancelBtn은 restoreFocus:true로 연결된 실행 컨트롤에 focus({preventScroll:true}); 이름 확정·화면 전환은 이전 로비 초점 복원하지 않음 |
+docs/CHANGELOG_SYNC.md:51068:| 이름 확정 | _visualConfirm은 기존 comingSoon 차단 후 _closeVisualSelect 사용. createModal show, 이름/안내 초기화, 기존50ms 조건부 이름 초점 유지. 캐릭터 생성 요청·저장·스토리 경로 변경 없음 |
+docs/CHANGELOG_SYNC.md:51069:| _closeCreationOverlays | 외형창 공용 닫기 후 열린 createModal의 내부 초점 blur·show 제거·_vkbHide. 이름창이 숨겨져도 vkbWrap이 block이면 키보드 정리. _goLogin/_goCinematic/_goLobby/showLobby에서 사용 가능한 이 함수를 호출. 초기 숨김 상태에는 나중에 선언한 팝업/키보드 let 상태를 접근하지 않음. 이름창 show 또는 createBtn.disabled이면 생성 안내 초기화, 활성 생성 스토리는 skip()으로 종료. |
+docs/CHANGELOG_SYNC.md:51072:| 회귀 | test/lobbyCreationOverlayLifecycle.test.js 신규17건: 닫기·재열기·이름 확정·이전 폴백·일반 취소 초점·전환4경로의 외형/이름/초기화 안전. 원본 코드에서13실패/4통과 → 수정 후17통과. 관련 생성·한글·패드·확인창·언어·목록 통합187건, inline script4개 구문 통과 |
+docs/CHANGELOG_SYNC.md:51073:| 실제 화면 | Node 서버 원본 페이지960×540에서 전환8조건: 외형 flex/재생 true 및 이름 show/키보드 block → 외형 none/paused true/src·poster·타이머 null, 이름 show false/키보드 none/active false/조합 null/숨은 초점 없음. 페이지 오류0 |
+docs/CHANGELOG_SYNC.md:51075:| 취소·재열기 | 960×540/1920×1080 실제 취소 버튼으로 미디어 해제·연결된 실행 컨트롤 초점 복귀, 재열기 후 전사 영상 재생, 이름창 Escape 취소·횡넘침 없음 확인. 가상 키보드 DOM8행 → 전환 후 자식0개 확인 |
+docs/CHANGELOG_SYNC.md:51093:| 같은 화면 | 중복 이름·저장 오류는 기존 이름 보존/재입력 초점, 성공은 기존 스토리/입장 유지. comingSoon, 이름2~8글자, 폴백5슬롯 및 기존 세이브 형식 유지 |
+docs/CHANGELOG_SYNC.md:51096:| 실제 브라우저 | Node 서버 실제 페이지960×540, 시작 타이틀 실제 클릭 후 직접/버튼×성공/오류/네트워크 실패6조건: 로그인 유지·생성창 숨김·안내 빈값·현재 초점 유지·스토리/입장0회·추가 폴백 저장0회·버튼 해제. 실제 재생 중 스토리도 전환 즉시 종료, 이전 입장0회 |
+docs/CHANGELOG_SYNC.md:51097:| 정상 흐름 검증 | 같은 화면에서 실제 플레이어 성공1회/입장 콜백1회, 실패는 이름창 show·charName 초점·오류 안내. pageerror0. 인증 서버·실제 슬롯 쓰기는 대역으로 격리하며 game.html 진입 콜백은 계수 대역 |
+docs/CHANGELOG_SYNC.md:51102:## 2026-09-28 외형 선택창 키보드 조작·초점 격리
+docs/CHANGELOG_SYNC.md:51106:| 원인 | 외형창을 열어도 뒤 로비 초점 유지, Tab이 배경으로 이동, Escape 취소 미동작. div.cs-ico는 키보드 선택 불가 |
+docs/CHANGELOG_SYNC.md:51109:| 초기 초점 | 원래 activeElement를 _visualReturnFocus로 보존한 뒤 선택된 .cs-ico.sel에 focus(preventScroll:true). 해당 버튼이 없으면 취소 버튼. 일반 취소는 기존 공용 닫기와 연결된 실행 컨트롤 초점 복귀 |
+docs/CHANGELOG_SYNC.md:51110:| Tab | _visualSelectKeydown: 설명(csLeft)→플레이 방식(csRight)→캐릭터 버튼→취소→생성의 enabled 컨트롤을 순환. Shift+Tab 역순. 현재2종은 일반6개/출시 잠금5개. 외부 초점은 정순 설명/역순 마지막 활성 액션으로 복구. focus(preventScroll:true) 후 정보 영역은 scrollIntoView(block:start)로 제목부터 노출. preventDefault/stopPropagation으로 배경 이동 차단 |
+docs/CHANGELOG_SYNC.md:51111:| 방향키 | 아이콘에 초점이 있을 때만 ArrowLeft/ArrowRight, Home/End 처리. 좌우 step=(ArrowRight?1:-1)×(현재 document.documentElement.dir가rtl?-1:1),next=clamp(index+step,0,icons.length-1)로 화면상 좌우 이동 후 대상 네이티브 click/focus. Home은0,End는마지막 논리 인덱스 유지. 선택·설명·영상·생성 잠금·aria-pressed가 동일 캐릭터로 갱신. 취소/생성 버튼의 방향키는 가로채지 않음 |
+docs/CHANGELOG_SYNC.md:51115:| 회귀 | test/lobbyVisualKeyboard.test.js 신규17건: 열기/선택 상태, 양방향 Tab, 잠금, 외부 초점 복구, 방향키, Escape 정리, IME6조건, 숨김/클릭 경로. 원본16실패/1통과→수정 후17통과. 관련 로비·생성·패드·울트라와이드 통합228건 및 inline script4개 구문 통과 |
+docs/CHANGELOG_SYNC.md:51116:| 실제 화면 | Node 서버의 실제 페이지에서 시작 타이틀 클릭 후960×540/1920×1080 확인. 실제 Tab/Shift+Tab/Enter/Space/방향키/Home/End/Escape 입력. 초점 전부 창 내부, 출시 잠금 유지, 취소 후 실행 버튼 복귀, 미디어 pause/src 해제. 컨트롤·초점 테두리 화면 내 및 가로 넘침 없음 |
+docs/CHANGELOG_SYNC.md:51140:| 상태 보존 | 같은 카드·선택 버튼·이미지·초점 유지. _selectedSlot/_selectedSlotName/_slotScrollIdx/_onlineScrollIdx/_characterLoadSeq 변경 없음. 번역 카탈로그 신규 키·전투/저장 형식 변경 없음 |
+docs/CHANGELOG_SYNC.md:51143:| 실제 언어 검증 | 960×540/1920×1080에서29언어×데모1·로컬 생성가능/가득참2·온라인 생성가능/가득참2=290조합. 동일 카드/버튼/이미지·선택·스크롤·초점 보존 및 가로 넘침 없음, pageerror0. 생성/삭제 저장 요청0 |
+docs/CHANGELOG_SYNC.md:51144:| 진행·메뉴 검증 | 격리 브라우저 저장 Lv.46/처치1795의 KO→EN 및 실제 언어 메뉴 Enter/Home/ArrowDown/Enter 확인. 레벨·처치·JSON 저장 원문 보존, 원래 select 초점 복귀. 실제 계정/사용자 슬롯 쓰기 없음 |
+docs/CHANGELOG_SYNC.md:51160:| 짧은 창 | 목록/배너 내용은 세로 스크롤이 필요할 수 있음. 960×540에서 실제 Steam 버튼까지 스크롤한 뒤 클릭 대상 확인, 입장 위치 동일. 실제 Tab으로 Steam→입장→시네마틱→전원 초점 순서 확인. 입장/종료/Steam 외부 동작 자체는 실행하지 않음 |
+docs/CHANGELOG_SYNC.md:51196:## 2026-09-28 언어 메뉴 키 반복·IME 보호와 찜 버튼 초점선
+docs/CHANGELOG_SYNC.md:51200:| 재현 | 언어 select에서 실제 Enter keydown3회: 메뉴 열림→언어 change1회/닫힘→다시 열림. 키 유지의 repeat 이벤트가 다음 입력 단계에서 확정/재열기를 수행함. 작은480×360의 찜 버튼 외부 초점선은 왼쪽5px/하단약5px 잘림 |
+docs/CHANGELOG_SYNC.md:51203:| 확정·취소 | 열린 메뉴의 Enter/공백 repeat는 기본/버블링 차단 후 확정하지 않음. Escape repeat도 같은 차단 후 닫지 않음. 키를 놓고 새로 누른 Enter/공백은 기존 row.click, 새 Escape는 _closeLangPop으로 취소/원래 select 초점 복귀 |
+docs/CHANGELOG_SYNC.md:51204:| 탐색·Tab | ArrowUp/ArrowDown의 repeat 및 Home/End는 기존 탐색·범위 제한·_hlLangPop 유지. Tab은 메뉴를 닫고 기본 초점 이동 유지. 마우스 row 클릭과 패드 D-pad/A/B 계약 변경 없음 |
+docs/CHANGELOG_SYNC.md:51205:| 찜 초점선 | index.html의 .lobby-right :is(...) :focus-visible 목록에 #lobbyWishlistBtn 추가. 기존 공통 outline2px solid #ead6a5 유지, outline-offset은 바깥3px→안쪽−2px. 버튼/이미지 크기·배너의600px 경계·실행 이벤트 유지 |
+docs/CHANGELOG_SYNC.md:51207:| 실제 키보드 | Node 서버 원본 페이지960×540/1280×720/1920×1080. Enter/Space keydown3회에도 메뉴 유지/change0, release 후 새 확정만 change1/원래 select 초점. 방향키 연속 탐색1→3, 반복 Escape 보호·일반 Escape 취소. IME 두 플래그×Enter/공백/Escape/방향키는 합성 KeyboardEvent로 선택·확정 없음 확인. OS IME 실기 검증은 별도 |
+docs/CHANGELOG_SYNC.md:51208:| 초점·패드 | 찜 버튼 실제 Tab 초점:480×360/640×480/960×540/1280×720/1920×1080에서 offset−2px/전체 테두리·가로 넘침 없음. 원본 HTML 격리 페이지480×360의 +3px 외곽선과 비교. 로비의 원본 lobbyNav 콜백에 버튼 상태 대역을 전달해 D-pad 이동/A 확정/B 취소 보존 확인; 실물 패드는 별도 |
+docs/CHANGELOG_SYNC.md:51234:| DOM/언어 | _lobbyCardLeaf는 특정 리프의 children.length===0만 갱신. 선택 제어/이미지 노드/초점 유지. 언어 전환 중 세이브 읽기/쓰기 없음 |
+docs/CHANGELOG_SYNC.md:51248:| 실제 조작 | 320×360/480×360/960×540/1920×1080에서 Tab·Shift+Tab·Enter로 외형→취소→생성 이동 및 출시 잠금 시 생성 버튼 제외 확인. Escape 닫기, 실제 취소 버튼 클릭 뒤 실행 컨트롤(lobbyWishlistBtn) 초점 복귀. pageerror0/쓰기 요청0. 실제 저장·외부 Steam·앱 종료 실행 없음 |
+docs/CHANGELOG_SYNC.md:51276:| 정보 초점 | #csLeft tabindex0/role region/aria-labelledby csCharName. #csRight tabindex0/role region/aria-labelledby csPlaystyleTitle. 기존 .cs-right-title 리프에 해당 id 추가. .cs-side:focus-visible outline2px solid #ead6a5/offset−2px |
+docs/CHANGELOG_SYNC.md:51281:| Tab 순서 | _visualSelectKeydown의 details는 csLeft/csRight, controls는 details→외형 아이콘→취소→생성 중 enabled 항목. 일반6개/출시 잠금5개. 최초 초점은 기존 선택 아이콘 유지. Shift+Tab 역순·순환/외부 초점 복구 유지. 초점은 preventScroll:true 후 정보 영역에만 scrollIntoView(block:start)하여 긴 정보의 제목을 먼저 노출 |
+docs/CHANGELOG_SYNC.md:51285:| 실제 입력 | 320×360/480×360/960×540/1920×1080에서 Shift+Tab 정보 초점·제목 노출, PageDown/End, 외형 변경 초기화/동일 외형 보존/재열기 초기화·하단 위치 고정·Escape 초점 복귀 확인. 좁은 KO PageDown 본문 scrollTop97→172, 960×540 오른쪽0→69. 480×360 마우스 휠112px에서 제목·12px 본문 접근 및 하단 고정 확인. pageerror0/쓰기 요청0 |
+docs/CHANGELOG_SYNC.md:51290:## 2026-09-28 외형 선택 배치 전환의 정보 초점 유지
+docs/CHANGELOG_SYNC.md:51294:| 원인 | 960×540에서 csRight를 End로 읽은 뒤480×360으로 바꾸면 초점은 csRight에 남고 플레이 방식 제목은 본문 밖으로 이동. 반대 전환에서는 이전 패널 scrollTop69가 다시 적용될 수 있음. 기존 열기/외형 변경 초기화만으로는 열린 창의 배치 전환을 처리하지 못함 |
+docs/CHANGELOG_SYNC.md:51296:| _visualInfoLayoutChanged | charVisualPop.style.display가 flex이고 document.activeElement가 csLeft 또는 csRight일 때만 처리. _resetVisualInfoScroll로 본문·양쪽 패널 scrollTop0 후 현재 초점 영역에 scrollIntoView(block:start). 초점 대상·_pendingVisualIdx·생성 잠금·미디어 경로 유지 |
+docs/CHANGELOG_SYNC.md:51297:| 보존·제외 | 같은 배치 안에서 크기 조절은 해당 change 이벤트 없음. 아이콘/액션/외부 초점 및 숨긴 팝업은 스크롤·초점을 변경하지 않음. 기존 열기/다른 외형 선택 초기화, 동일 외형 선택 보존 계약 유지. 새 세이브 필드 없음 |
+docs/CHANGELOG_SYNC.md:51298:| 네이티브 보정 | 그리스어 실버테일480→500px의 본문 scrollTop47→50은 수정 전 HTML 격리 페이지에서도 재현. 브라우저의 레이아웃 스크롤 앵커 보정을 강제로 되돌리지 않음. 같은 배치 검증은 실제 _resetVisualInfoScroll 호출 증가0과 읽기 위치 비초기화·초점 유지로 판정 |
+docs/CHANGELOG_SYNC.md:51299:| 실제 브라우저 | Node 서버 원본29언어×전사0/실버테일1×정보 영역2개×761↔760px 양방향=232조건. 현재 초점 제목 노출·패널 scrollTop0·선택/출시 잠금 유지·헤더/본문/하단 분리·가로 넘침 없음. 같은 배치480→500/960→980px·높이360px는 KO/EN/DE/FR/EL/AR×2외형×2영역×2전환=48조건 |
+docs/CHANGELOG_SYNC.md:51300:| 실제 키보드 | Shift+Tab 정보 초점/End 후960×540↔480×360,1920×1080↔320×360의4조건에서 제목 노출·초점 유지. 리사이즈 후 ArrowRight로 실버테일 잠금/ArrowLeft로 전사 복귀, Escape 후 찜 버튼 초점 복귀와 숨긴 창 리사이즈 보존. pageerror0/쓰기 요청0 |
+docs/CHANGELOG_SYNC.md:51301:| 회귀 | lobbyVisualKeyboard25→31건. 수정 전6실패/25통과→31통과. 양쪽 정보 영역 재노출·아이콘/액션/외부 초점 비간섭·숨긴 창 비간섭 및 실제 MediaQueryList change 등록 검증. 관련12파일201건/inline script4개 구문 통과 |
+docs/CHANGELOG_SYNC.md:51313:| 수명·UI | selectVisual의 _visualPreviewSeq/isCurrent와 기존 오류·180ms 폴백·5000ms 스톨 보호 유지. 닫기에서 src/poster·이벤트·타이머 해제, 재열기에서 선택 영상 재생. 전사0.75배속·실버테일1배속/comingSoon:true·포스터/초상화·contain 비율 및 선택/초점/스크롤 계약 유지. 새 미디어나 세이브 필드 없음 |
+docs/CHANGELOG_SYNC.md:51328:| _applyLobbyLang | charNameLabel을 document.getElementById로 찾아 기존 _TL(캐릭터 이름 (2~8자))를 label 리프 textContent에 갱신. 입력값·초점·새 번역키·저장 형식 변경 없음. 처음 초기화 또는 노드 없는 화면에도 null 가드 유지 |
+docs/CHANGELOG_SYNC.md:51332:| 실제 키보드 | 320×280/480×360/960×540에서 Hero7 입력 후 KO→EN 값/초점 유지. Tab 이름→취소→생성→이름/Shift+Tab 역방향 및 Escape 후 기존 캐릭터 버튼 초점 복귀 확인. 실제 캐릭터 저장 요청 없음 |
+docs/CHANGELOG_SYNC.md:51333:| 회귀 | lobbyCardLanguage 기존11→12건: 안내 번역·동일 label 노드·입력값/빈 placeholder·초점 유지·API 요청0. 수정 전1실패/11통과→12통과. 관련12파일210건/inline script4개 구문 통과 |
+docs/CHANGELOG_SYNC.md:51341:| 원인 | 종료 확인창의 취소에 Enter keydown을 보내면 창 none/초점 lobbyQuitBtn으로 복귀. 같은 키의 repeat keydown이 로비 전원 버튼의 네이티브 click을 실행해 확인창을 다시 flex로 열었음. 기존 delConfirmModal의 반복 차단은 이미 닫힌 창 밖까지 처리하지 못함 |
+docs/CHANGELOG_SYNC.md:51342:| lobbyQuitBtn | 기존 onclick _showLobbyQuit() 옆 onkeydown _lobbyQuitKeydown(event) 연결. SVG·번역된 aria-label/title·전원 터치 영역·초점 표시·레이아웃 유지 |
+docs/CHANGELOG_SYNC.md:51344:| 확인창 수명 | 기존 delConfirmModal 내부의 Enter/Space 반복 차단, 기본 취소 초점, Escape/B 취소, Tab 순환, busy 보호와 _showLobbyQuit의 실제 전원 버튼 초점 복귀 정책 유지. 종료 API 우선순위·150ms 브라우저 안내·요청 번호 보호 변경 없음 |
+docs/CHANGELOG_SYNC.md:51345:| 실제 키보드 | Node 서버 원본320×280/480×360/960×540×KO/EN/AR×Enter/Space=18흐름. Enter 취소 후 repeat4회에도 창 닫힘·전원 초점·열기 횟수 불변·종료0회. Space는 초기 키 유지 중 창 닫힘/해제 후1회 열기, 새 입력 취소·재열기 확인. Escape 복귀, 열린 창 경계·가로 넘침 없음 |
+docs/CHANGELOG_SYNC.md:51355:| 재현 | 320×280 실제 로비에서 외형 확정 후 1글자 이름을 Enter로 제출. 입력칸149~203px에 초점이 남고 오류는270~304px,생성창 하단268px 밖으로 완전히 가려졌다. |
+docs/CHANGELOG_SYNC.md:51361:| 브라우저 | Node 서버 원본 페이지320×280/480×360/960×540×ko/en/ar×가상 키보드 off/on. 길이 오류/특수문자/같은 오류 재제출/긴 서버 오류 총72조건에서 입력·오류 영역 노출 및 횡넘침 없음. 입력값·초점과 같은 긴 오류의 내부 읽기 위치 보존,새 오류 초기화,pageerror0/쓰기 요청0. 서버 실패는 원본 helper 직접 호출이며 실서버 저장 실패를 유발한 검사가 아니다. |
+docs/CHANGELOG_SYNC.md:51373:| 키보드 | _visualSelectKeydown의 step=(ArrowRight?1:-1)×(현재 dir===rtl?-1:1). next=clamp(index+step,0,icons.length-1). 아이콘 초점에서 좌우는 화면상 좌우 이웃으로 이동하고 기존 click/focus(preventScroll:true)를 실행한다. |
+docs/CHANGELOG_SYNC.md:51374:| Home/End·잠금 | Home은 논리 첫 버튼0,End는 마지막 버튼icons.length-1. RTL에서 첫 버튼이 오른쪽이라는 기존 DOM 순서 유지. 선택/초점/aria-pressed/설명·미디어·생성 잠금은 같은 캐릭터로 갱신. 일반 전사0 생성 활성,실버테일1 출시 준비 잠금. |
+docs/CHANGELOG_SYNC.md:51379:| 실제 브라우저 | 320×280/960×540/1920×1080×ko/en/ar×키보드/D-pad/스틱=27흐름. 네이티브 키보드9·가상 패드18,선택·잠금·aria-pressed·좌우 끝 경계·취소 후 초점 복귀·횡넘침 없음. 열린 창 en→ar→en 추가 확인,pageerror0/쓰기 요청0. |
+docs/CHANGELOG_SYNC.md:51384:## 2026-09-28 이름 입력 혼합 시 한글 조합·초점 보존
+docs/CHANGELOG_SYNC.md:51388:| 재현 | 실제 로비 이름창에서 가상 키ㄱ→ㅏ로가 생성 후 입력칸을 이름으로 교체하고 가상ㄴ 입력:이름→이간으로 마지막 글자를 덮어썼다. 가상 키 span을 실제 클릭하면 초점이 body로 빠져 Escape도 이름창에서 처리되지 않았다. |
+docs/CHANGELOG_SYNC.md:51393:| 키 입력 초점 | _vkbDispatchInput은 통지 후 inp.focus(preventScroll:true). 문자·공백·백스페이스·8글자 제한 반환에서 이름칸 초점을 유지하며 키보드가 보이는 위치를 초점 이동으로 바꾸지 않는다. _vkbInput의OK도 상태 null→입력 초점 복귀→기존 createBtn.click 순서로 처리해 오류 후 입력·Escape를 계속 받는다. |
+docs/CHANGELOG_SYNC.md:51395:| 회귀 | test/lobbyHangulInput.test.js6→15건. 외부 교체/삭제/영문 덧붙이기/같은 문자4,이벤트 없는 복원/8글자 보존2,가상 이벤트 보존1,문자 키/OK 초점2 추가. 첫13건 원본6PASS/7FAIL,초점15건 중13PASS/2FAIL→최종15PASS. 관련8파일175건 및 inline script4개 구문 PASS. |
+docs/CHANGELOG_SYNC.md:51396:| 실제 브라우저 | Node 서버 원본320×280/480×360/960×540에서 화면 키를 실제 마우스로 클릭. 네이티브 교체/삭제/영문 입력/텍스트 삽입,같은값 composition InputEvent 대역,이벤트 없는 복원,8글자 보존,내부 받침·백스페이스,교체 후 가상 삭제의9종×3창=27흐름 통과. 이름/maxlength8/초점·횡넘침 확인. |
+docs/CHANGELOG_SYNC.md:51397:| OK·Escape | 각3창에서 실제OK 클릭 후1글자 오류 표시·입력 초점·오류 노출·조합 null과 Escape 닫기 확인3흐름. 총30브라우저 흐름/pageerror0/쓰기 요청0. 실제 Windows OS IME·실물 게임패드·세이브 저장은 검증하지 않았다. 데모에는 생성 카드가 없어 openVisualSelect로 진입한 뒤 실제 컨트롤을 사용했다. |
+docs/CHANGELOG_SYNC.md:51413:| 상태 | 기존 .14s 재질·초점 transition, hover brightness1.13/#c9ab7d, active brightness.96/inset0 3px 7px #000a, focus-visible2px #ead1a0/offset-4px, disabled opacity.7/grayscale1/#aaa08e, reduced-motion transition:none. scrollbar-color만 유지하며 scrollbar-width 덮어쓰기도 제거 |
+docs/CHANGELOG_SYNC.md:51416:| 회귀 | 관련 로비6개 테스트 파일132건 PASS. 이번 수정은 CSS 치수 복원·캐시 키 변경이며 생성·취소·이름 조합·초점 처리 코드는 변경하지 않음 |
+docs/CHANGELOG_SYNC.md:51578:| 모음 열기 | toggle(open)은 button.hidden이면 열기를 거부하며 숨긴 버튼에 focus하지 않는다. 배지가 있으면 기존 닫기 초점/버튼 복귀·aria-expanded·3개 카드 정책 유지 |
+docs/CHANGELOG_SYNC.md:51585:| 시각·입력 검수 | 원본 HUD DOM/CSS·배지JS를 분리한 fixture에서0개/1개 스크린샷,배지 모음 실제 클릭→닫기 초점/화면내 배치→닫기→0개 숨김 확인. 브라우저 viewport2534×1262,override없음. fixture는 UI 검수이며 튜토리얼 완료 플레이 검증은 아님 |
+docs/CHANGELOG_SYNC.md:51610:| game.html / game-easy-test.html | 키 설정 DIV를 native button으로 전환, 이름/disabled/초점 복원, 반복 활성화 캡처 방지, 버튼 키 이벤트 보호. CSS/구성 JS 캐시20260929-settings-workspace |
+docs/CHANGELOG_SYNC.md:51646:| DOM·초점 | replaceChildren으로 목록 재구성, _choiceFocus 보존 후 동일 카드 focus preventScroll. 기존 atlas/cursor/저장/폴백 함수를 유지하며 Enter/Space 선택·Tab 이동 지원 |
+docs/CHANGELOG_SYNC.md:51650:| 실제 조작 | 본편/easy-test Enter 캐릭터0·Space 캐릭터1·Enter 커서1·Space 커서0 선택값/초점 확인. Tab 다음 카드, 설정창 및 일시정지 유지. easy-test KO→EN 이름·설명 확인. 검수 탭 저장쓰기는 버림 |
+docs/CHANGELOG_SYNC.md:51859:- ITEM/BUILD/UIUX/BALANCE 완료 turn 확인 후 기존 세션에 검토 bootstrap·Mac 패키지 사전검사·UI-04 초점 오류·강화 자원 계약을 한 건씩 배정했다. queue 성공과 실제 Read/코드 Edit를 구분해 증거를 기록한다.
+docs/3.1 ui hud 디자인/exoduser-ui-phase2 (1).md:932:전체 메뉴와 로비의 최신 재질·제목·문양·선택·초점·스크롤 스타일은 UI_COMPOSITION_20260925.md의 **2026-09-26 전체 메뉴 마감 절**을 따른다.
+docs/3.1 ui hud 디자인/exoduser-ui-phase2 (1).md:934:전체 메뉴와 로비의 최신 재질·제목·문양·선택·초점·스크롤 스타일은 UI_COMPOSITION_20260925.md의 **2026-09-26 슬롯과 상호작용 마감 절**을 따른다.
+docs/3.1 ui hud 디자인/exoduser-ui-phase2 (1).md:936:전체 메뉴와 로비의 최신 재질·제목·문양·선택·초점·스크롤 스타일은 UI_COMPOSITION_20260925.md의 **2026-09-26 유니크 분해 NaN 수정과 상세창 마감 절**을 따른다.
+docs/3.1 ui hud 디자인/exoduser-ui-phase2 (1).md:938:전체 메뉴와 로비의 최신 재질·제목·문양·선택·초점·스크롤 스타일은 UI_COMPOSITION_20260925.md의 **2026-09-26 창고와 상세 스크롤 마감 절**을 따른다.
+docs/3.1 ui hud 디자인/exoduser-ui-phase2 (1).md:961:| 원인 | _invClearHover가 이전 선택 아이템의 상세를 다시 렌더하여 마우스를 뗀 후에도 정보창이 남음 |
+docs/3.1 ui hud 디자인/exoduser-ui-phase2 (1).md:962:| 종료 | 기존 선택 복원 처리를 _invRestoreSelectedActions로 분리. _invClearHover는 이를 호출한 뒤 invRight visibility:hidden, invCompareFloat display:none |
+docs/3.1 ui hud 디자인/exoduser-ui-phase2 (1).md:984:| 조작 | 호버 상세, 클릭/키보드 초점 선택, 호환 장착 장비 빈 홈 선택 → attachCrystal → dbSaveNow. 객체 인덱스·장비 동일성·빈 홈 재확인 |
+docs/3.1 ui hud 디자인/SETTINGS_UI_WORKSPACE_20260929.md:58:| 초점 | renderSettings 재구성 전 식별자를 보존, 같은 버튼 focus preventScroll. 보조 삭제 후 해당 alt로 복원 |
+docs/3.1 ui hud 디자인/SETTINGS_UI_WORKSPACE_20260929.md:70:| 키보드 실동작 | 기본/보조 등록, 보조 삭제 후 초점, Enter/Space 대기, Escape 취소, 반복 활성화 무시, 패드 편집 대기 및 KO/EN 키 이름 검수. 메인 새 로드에서도 Enter 대기→Escape 취소·초점/설정창 유지 확인 |
+docs/3.1 ui hud 디자인/SETTINGS_UI_WORKSPACE_20260929.md:88:| 번역·조작 | 이름/값을 복제하지 않고 실제 번역 리프와 갱신되는 값 노드를 참조. 본편 KO→EN에서21개 이름 유지, 실제 ArrowRight로 효과음79→80/읽기값80%/초점 optSfx 확인. 검수 탭 저장쓰기는 버림 |
+docs/3.1 ui hud 디자인/SETTINGS_UI_WORKSPACE_20260929.md:102:| 재구성·초점 | charSelectGrid/cursorGrid의 replaceChildren 사용. renderSettings 시작 시 activeElement의 가장 가까운 `#settings [data-settings-choice]`에서 `_choiceFocus` 보존. 같은 식별자를 가진 새 카드 append 후 focus({preventScroll:true}). 선택 후 Tab은 다음 카드로 이동 |
+docs/3.1 ui hud 디자인/SETTINGS_UI_WORKSPACE_20260929.md:105:| 선택·호버·초점 | aria-pressed=true: border#ccaa66, 배경 radial50% 5%/#b58c3c33/transparent80% + linear145deg/#3c3021/#211c17. hover 및 gp-hover: border#d1b27d, 그림자 inset0 1px #f0d5a430 + 0 3px 12px #0006. focus-visible: outline2px #f0cd8a/offset3px. 공통 버튼의 before/after 장식은 카드에만 display:none |
+docs/3.1 ui hud 디자인/SETTINGS_UI_WORKSPACE_20260929.md:109:| 실동작 | 본편·easy-test에서 Enter 캐릭터0/Space 캐릭터1, Enter 커서1/Space 커서0의 실제 선택값·aria-pressed·초점 복원 확인. Tab으로 다음 커서 이동, 설정창 유지/G.paused=true. easy-test KO→EN 이름·설명 확인. 새 슬롯 QA 탭에서 저장쓰기를 기록 후 버림 |
+docs/6사운드디자인/6사운드디자인.md:780:| 실제 런타임 | Node 서버의 원본 로비에서 getGamepads와 playEffect만 대역으로 교체했다. 거부 반복 요청은 수정 전130ms 동안 오류5회, 수정 후3회 요청에서 오류0회였다. 같은 페이지에서 원본 문 열림 예약 코드8단계를 실행해 거부8회·오류0회 확인. 종료창 열기·Escape 취소 후 버튼 초점 복귀 정상. 실물 패드 진동 검증은 별도다. |
+docs/3.1 ui hud 디자인/능력치_패시브_개편_20260909.md:140:전체 메뉴와 로비의 최신 재질·제목·문양·선택·초점·스크롤 스타일은 UI_COMPOSITION_20260925.md의 **2026-09-26 전체 메뉴 마감 절**을 따른다.
+docs/3.1 ui hud 디자인/능력치_패시브_개편_20260909.md:142:전체 메뉴와 로비의 최신 재질·제목·문양·선택·초점·스크롤 스타일은 UI_COMPOSITION_20260925.md의 **2026-09-26 슬롯과 상호작용 마감 절**을 따른다.
+docs/3.1 ui hud 디자인/능력치_패시브_개편_20260909.md:144:전체 메뉴와 로비의 최신 재질·제목·문양·선택·초점·스크롤 스타일은 UI_COMPOSITION_20260925.md의 **2026-09-26 유니크 분해 NaN 수정과 상세창 마감 절**을 따른다.
+docs/3.1 ui hud 디자인/능력치_패시브_개편_20260909.md:146:전체 메뉴와 로비의 최신 재질·제목·문양·선택·초점·스크롤 스타일은 UI_COMPOSITION_20260925.md의 **2026-09-26 창고와 상세 스크롤 마감 절**을 따른다.
+docs/3.1 ui hud 디자인/캐릭터선택_리모델링_기획서.md:388:전체 메뉴와 로비의 최신 재질·제목·문양·선택·초점·스크롤 스타일은 UI_COMPOSITION_20260925.md의 **2026-09-26 전체 메뉴 마감 절**을 따른다.
+docs/3.1 ui hud 디자인/캐릭터선택_리모델링_기획서.md:390:전체 메뉴와 로비의 최신 재질·제목·문양·선택·초점·스크롤 스타일은 UI_COMPOSITION_20260925.md의 **2026-09-26 슬롯과 상호작용 마감 절**을 따른다.
+docs/3.1 ui hud 디자인/캐릭터선택_리모델링_기획서.md:392:전체 메뉴와 로비의 최신 재질·제목·문양·선택·초점·스크롤 스타일은 UI_COMPOSITION_20260925.md의 **2026-09-26 유니크 분해 NaN 수정과 상세창 마감 절**을 따른다.
+docs/3.1 ui hud 디자인/캐릭터선택_리모델링_기획서.md:394:전체 메뉴와 로비의 최신 재질·제목·문양·선택·초점·스크롤 스타일은 UI_COMPOSITION_20260925.md의 **2026-09-26 창고와 상세 스크롤 마감 절**을 따른다.
+docs/3.1 ui hud 디자인/캐릭터선택_리모델링_기획서.md:413:## 2026-09-27 삭제 확인창 키보드 초점·취소 보완
+docs/3.1 ui hud 디자인/캐릭터선택_리모델링_기획서.md:418:| 열기 | _delConfirmReturnFocus에 호출 전 activeElement 저장, 기본 취소 버튼에 실제 focus(preventScroll:true). 기존 게임패드 선택 테두리와 초점 동기화 |
+docs/3.1 ui hud 디자인/캐릭터선택_리모델링_기획서.md:420:| 처리 중 | 기존 _delConfirmBusy 및 두 버튼 disabled 유지. 모달 컨테이너에 초점, Tab은 이동 차단, Escape도 busy 잠금으로 닫히지 않음. 화면 전환은 창과 초점을 해제하며 요청 잠금은 완료까지 유지 |
+docs/3.1 ui hud 디자인/캐릭터선택_리모델링_기획서.md:423:| 검증 | 실제 모달 함수 격리 실행: 취소 최초 초점,Tab/Shift+Tab 순환,Escape 취소와 원래 초점 복귀,콜백0회. 비동기 처리 중 Tab/Escape 잠금·콜백1회,모의 실패 후 오류 표시·대체 카드 초점 확인. characterSync8개·inline4개 구문 통과. tmp/lobby-delete-focus/report.json. 실제 삭제·계정·저장 요청 없음 |
+docs/3.1 ui hud 디자인/캐릭터선택_리모델링_기획서.md:432:| 열기 | _visualConfirm에서 이름 초기화와 setStatus 공백으로 이전 오류 제거. 기존50ms 입력 초점은 모달이 여전히 show일 때만 실행 |
+docs/3.1 ui hud 디자인/캐릭터선택_리모델링_기획서.md:435:| 검증 | 실제 입력 핸들러 격리 실행: composing Enter/keyCode229/repeat 각각 생성0회, 단일 Enter1회. Tab 순환·조합 Escape 유지·일반 Escape 닫힘·카드 초점 복귀·가상 키보드 정리 확인. 브라우저 합성 입력 검증이며 OS IME 실기 테스트는 아님. 생성/삭제/스토리 회귀27개,inline4개 구문 통과. tmp/lobby-create-input/report.json. 실제 캐릭터 생성·삭제 없음 |
+docs/3.1 ui hud 디자인/캐릭터선택_리모델링_기획서.md:447:| 회귀 | characterStoryCreation.test.js에 네트워크 rejection/중복 이름/인증 없음의 버튼 해제·이름 보존·창 복원·초점·스토리 미진입3건, 대기 요청 중복 차단1건 추가. 수정 전4건 실패→수정 후통과 |
+docs/3.1 ui hud 디자인/캐릭터선택_리모델링_기획서.md:456:| 공통 실패 UI | 현재 요청 번호일 때만 _showCreateFailure(name,message) 호출:버튼 잠금 해제,이름 보존,setStatus 오류,생성창 show,이름 입력 초점 |
+docs/3.1 ui hud 디자인/캐릭터선택_리모델링_기획서.md:474:| 검증 |1280×720,360×480,640×360,320×280×생성/삭제2종=8경우. 긴 오류·삭제 안내로 창 화면 내·가로 넘침 없음·초점 버튼 보임 확인. tmp/lobby-dialog-layout/report.json 및 after.png. 스크립트 비활성 격리 렌더로 실제 저장·삭제 없음 |
+docs/3.1 ui hud 디자인/캐릭터선택_리모델링_기획서.md:483:| 이동 | 선택 키가 위/아래 경계를 넘을 때 필요한 거리만 panel.scrollTop 보정. 이미 보이면 스크롤하지 않음. 문서·로비 및 실제 입력 초점은 이동하지 않음 |
+docs/3.1 ui hud 디자인/캐릭터선택_리모델링_기획서.md:598:| 원인 | 종료·삭제 공용 확인창이 로그인/시네마틱/로비 갱신 후에도 남아 이전 콜백과 초점을 유지. 제출한 요청의 늦은 완료가 새 목록 요청 또는 이전 오류 안내를 시작할 수도 있었음 |
+docs/3.1 ui hud 디자인/캐릭터선택_리모델링_기획서.md:600:| _hideDelConfirm | fromTransition 기본 false. 일반 취소는 기존 busy 잠금 및 열린 창의 원래 버튼 초점 복귀 유지. 전환은 busy 중에도 창을 숨기고 _delConfirmCb/_delConfirmReturnFocus를 null로 정리하며, 창 내부 초점을 blur. 이전 로비 버튼으로 초점을 돌리지 않음 |
+docs/3.1 ui hud 디자인/캐릭터선택_리모델링_기획서.md:606:| 브라우저 | Node 서버 실제 페이지960×540에서 전환4경로 전후 확인: flex/콜백 유지 → none/콜백 및 복귀 참조 null. 지연 성공/실패 대역에서도 전환 즉시 닫힘·busy 완료 후 해제·새 화면 초점 유지·공용 이전 오류 없음. 원본 삭제 콜백에 API/목록 대역만 주입한 전후8조건에서 이전 목록 재조회1회 → 0회, 로컬 실패의 저장 조회5회/오류 안내 → 0회/안내 없음. 데스크톱 종료 실패의 늦은 안내도 제거 |
+docs/3.1 ui hud 디자인/캐릭터선택_리모델링_기획서.md:607:| 화면·범위 | 960×540/1920×1080에서 종료창 Escape 취소 후 전원 버튼 초점 복귀, 로비 표시·가로 넘침 없음, pageerror0. 실계정 세션 종료/저장 삭제·앱 종료·실물 패드는 실행하지 않음. 실제 전환 함수와 콜백의 대역 검증이며 인증 서버의 종단 검증은 아님 |
+docs/3.1 ui hud 디자인/캐릭터선택_리모델링_기획서.md:615:| 재현 | 외형 취소 뒤 #csIdleVid가 숨은 채 계속 재생. 로그인/시네마틱/로비 전환4경로에 외형창 또는 이름창·가상 키보드·내부 초점이 남음. 실버테일 선택 뒤 전사 영상의 늦은 실패 콜백이 실버테일 영상을 멈추고 전사 초상화를 표시할 수 있었음 |
+docs/3.1 ui hud 디자인/캐릭터선택_리모델링_기획서.md:618:| _closeVisualSelect | restoreFocus 기본false. 열린 외형창만 정리하고 번호 증가·내부 초점 blur·display none. csIdleVid/csSceneVid의 _csT clear/null, onerror/oncanplay null, stopMediaVideo, on 클래스 제거, src/poster 제거, load 실행. 숨김 상태 재호출은 상태를 바꾸지 않음 |
+docs/3.1 ui hud 디자인/캐릭터선택_리모델링_기획서.md:619:| _visualReturnFocus | 초기null. openVisualSelect에서 기존 document.activeElement 캡처. 닫을 때 참조를 null로 해제. visualCancelBtn은 restoreFocus:true로 연결된 실행 컨트롤에 focus({preventScroll:true}); 이름 확정·화면 전환은 이전 로비 초점 복원하지 않음 |
+docs/3.1 ui hud 디자인/캐릭터선택_리모델링_기획서.md:620:| 이름 확정 | _visualConfirm은 기존 comingSoon 차단 후 _closeVisualSelect 사용. createModal show, 이름/안내 초기화, 기존50ms 조건부 이름 초점 유지. 캐릭터 생성 요청·저장·스토리 경로 변경 없음 |
+docs/3.1 ui hud 디자인/캐릭터선택_리모델링_기획서.md:621:| _closeCreationOverlays | 외형창 공용 닫기 후 열린 createModal의 내부 초점 blur·show 제거·_vkbHide. 이름창이 숨겨져도 vkbWrap이 block이면 키보드 정리. _goLogin/_goCinematic/_goLobby/showLobby에서 사용 가능한 이 함수를 호출. 초기 숨김 상태에는 나중에 선언한 팝업/키보드 let 상태를 접근하지 않음. 이름창 show 또는 createBtn.disabled이면 생성 안내 초기화, 활성 생성 스토리는 skip()으로 종료. |
+docs/3.1 ui hud 디자인/캐릭터선택_리모델링_기획서.md:624:| 회귀 | test/lobbyCreationOverlayLifecycle.test.js 신규17건: 닫기·재열기·이름 확정·이전 폴백·일반 취소 초점·전환4경로의 외형/이름/초기화 안전. 원본 코드에서13실패/4통과 → 수정 후17통과. 관련 생성·한글·패드·확인창·언어·목록 통합187건, inline script4개 구문 통과 |
+docs/3.1 ui hud 디자인/캐릭터선택_리모델링_기획서.md:625:| 실제 화면 | Node 서버 원본 페이지960×540에서 전환8조건: 외형 flex/재생 true 및 이름 show/키보드 block → 외형 none/paused true/src·poster·타이머 null, 이름 show false/키보드 none/active false/조합 null/숨은 초점 없음. 페이지 오류0 |
+docs/3.1 ui hud 디자인/캐릭터선택_리모델링_기획서.md:627:| 취소·재열기 | 960×540/1920×1080 실제 취소 버튼으로 미디어 해제·연결된 실행 컨트롤 초점 복귀, 재열기 후 전사 영상 재생, 이름창 Escape 취소·횡넘침 없음 확인. 가상 키보드 DOM8행 → 전환 후 자식0개 확인 |
+docs/3.1 ui hud 디자인/캐릭터선택_리모델링_기획서.md:642:| 실제 브라우저 | Node 서버 실제 페이지960×540, 시작 타이틀 실제 클릭 후 직접/버튼×성공/오류/네트워크 실패6조건: 로그인 유지·생성창 숨김·안내 빈값·현재 초점 유지·스토리/입장0회·추가 폴백 저장0회·버튼 해제. 실제 재생 중 스토리도 전환 즉시 종료, 이전 입장0회 |
+docs/3.1 ui hud 디자인/캐릭터선택_리모델링_기획서.md:646:## 2026-09-28 외형 선택창 키보드 조작·초점 격리
+docs/3.1 ui hud 디자인/캐릭터선택_리모델링_기획서.md:650:| 원인 | 외형창을 열어도 뒤 로비 초점 유지, Tab이 배경으로 이동, Escape 취소 미동작. div.cs-ico는 키보드 선택 불가 |
+docs/3.1 ui hud 디자인/캐릭터선택_리모델링_기획서.md:653:| 초기 초점 | 원래 activeElement를 _visualReturnFocus로 보존한 뒤 선택된 .cs-ico.sel에 focus(preventScroll:true). 해당 버튼이 없으면 취소 버튼. 일반 취소는 기존 공용 닫기와 연결된 실행 컨트롤 초점 복귀 |
+docs/3.1 ui hud 디자인/캐릭터선택_리모델링_기획서.md:654:| Tab | _visualSelectKeydown: 설명(csLeft)→플레이 방식(csRight)→캐릭터 버튼→취소→생성의 enabled 컨트롤을 순환. Shift+Tab 역순. 현재2종은 일반6개/출시 잠금5개. 외부 초점은 정순 설명/역순 마지막 활성 액션으로 복구. focus(preventScroll:true) 후 정보 영역은 scrollIntoView(block:start)로 제목부터 노출. preventDefault/stopPropagation으로 배경 이동 차단 |
+docs/3.1 ui hud 디자인/캐릭터선택_리모델링_기획서.md:655:| 방향키 | 아이콘에 초점이 있을 때만 ArrowLeft/ArrowRight, Home/End 처리. 좌우 step=(ArrowRight?1:-1)×(현재 document.documentElement.dir가rtl?-1:1),next=clamp(index+step,0,icons.length-1)로 화면상 좌우 이동 후 대상 네이티브 click/focus. Home은0,End는마지막 논리 인덱스 유지. 선택·설명·영상·생성 잠금·aria-pressed가 동일 캐릭터로 갱신. 취소/생성 버튼의 방향키는 가로채지 않음 |
+docs/3.1 ui hud 디자인/캐릭터선택_리모델링_기획서.md:659:| 회귀 | test/lobbyVisualKeyboard.test.js 신규17건: 열기/선택 상태, 양방향 Tab, 잠금, 외부 초점 복구, 방향키, Escape 정리, IME6조건, 숨김/클릭 경로. 원본16실패/1통과→수정 후17통과. 관련 로비·생성·패드·울트라와이드 통합228건 및 inline script4개 구문 통과 |
+docs/3.1 ui hud 디자인/캐릭터선택_리모델링_기획서.md:660:| 실제 화면 | Node 서버의 실제 페이지에서 시작 타이틀 클릭 후960×540/1920×1080 확인. 실제 Tab/Shift+Tab/Enter/Space/방향키/Home/End/Escape 입력. 초점 전부 창 내부, 출시 잠금 유지, 취소 후 실행 버튼 복귀, 미디어 pause/src 해제. 컨트롤·초점 테두리 화면 내 및 가로 넘침 없음 |
+docs/3.1 ui hud 디자인/캐릭터선택_리모델링_기획서.md:676:| 상태 보존 | 같은 카드·선택 버튼·이미지·초점 유지. _selectedSlot/_selectedSlotName/_slotScrollIdx/_onlineScrollIdx/_characterLoadSeq 변경 없음. 번역 카탈로그 신규 키·전투/저장 형식 변경 없음 |
+docs/3.1 ui hud 디자인/캐릭터선택_리모델링_기획서.md:678:| 실제 언어 검증 | 960×540/1920×1080에서29언어×데모1·로컬 생성가능/가득참2·온라인 생성가능/가득참2=290조합. 동일 카드/버튼/이미지·선택·스크롤·초점 보존 및 가로 넘침 없음, pageerror0. 생성/삭제 저장 요청0 |
+docs/3.1 ui hud 디자인/캐릭터선택_리모델링_기획서.md:688:| 검증 | 실제 데모29언어×진행2×화면7=406조합 및 일반 슬롯 대역6조합. 텍스트/입장 경계·초점 순서·저장 원문 보존, 가로 넘침/페이지 오류/쓰기 요청0. 기존105회귀+inline4구문 통과 |
+docs/3.1 ui hud 디자인/캐릭터선택_리모델링_기획서.md:702:## 2026-09-28 언어 메뉴 키 반복·IME 보호와 찜 버튼 초점선
+docs/3.1 ui hud 디자인/캐릭터선택_리모델링_기획서.md:708:| 검증 | 신규24건 원본19실패→통과, 관련167건/inline4구문 통과. 실제 키보드3크기·초점5크기 및 원본 패드 콜백 대역 확인. IME는 합성 이벤트/실물 패드·OS IME 검증 별도 |
+docs/3.1 ui hud 디자인/캐릭터선택_리모델링_기획서.md:709:| 상세 | [언어 키 입력·초점 현행 계약](../3.3%20키바인딩+설정/게임패드_호버_상호작용.md). 기존 언어 팝업 계약에 키 유지와 IME 보호 추가. 새 번역키/부모 DOM 교체/사용자 저장 요청 없음 |
+docs/3.1 ui hud 디자인/캐릭터선택_리모델링_기획서.md:722:| 실제 조작 | 320×360/480×360/960×540/1920×1080에서 Tab·Shift+Tab·Enter로 외형→취소→생성 이동 및 출시 잠금 시 생성 버튼 제외 확인. Escape 닫기, 실제 취소 버튼 클릭 뒤 실행 컨트롤(lobbyWishlistBtn) 초점 복귀. pageerror0/쓰기 요청0. 실제 저장·외부 Steam·앱 종료 실행 없음 |
+docs/3.1 ui hud 디자인/캐릭터선택_리모델링_기획서.md:750:| 정보 초점 | #csLeft tabindex0/role region/aria-labelledby csCharName. #csRight tabindex0/role region/aria-labelledby csPlaystyleTitle. 기존 .cs-right-title 리프에 해당 id 추가. .cs-side:focus-visible outline2px solid #ead6a5/offset−2px |
+docs/3.1 ui hud 디자인/캐릭터선택_리모델링_기획서.md:755:| Tab 순서 | _visualSelectKeydown의 details는 csLeft/csRight, controls는 details→외형 아이콘→취소→생성 중 enabled 항목. 일반6개/출시 잠금5개. 최초 초점은 기존 선택 아이콘 유지. Shift+Tab 역순·순환/외부 초점 복구 유지. 초점은 preventScroll:true 후 정보 영역에만 scrollIntoView(block:start)하여 긴 정보의 제목을 먼저 노출 |
+docs/3.1 ui hud 디자인/캐릭터선택_리모델링_기획서.md:759:| 실제 입력 | 320×360/480×360/960×540/1920×1080에서 Shift+Tab 정보 초점·제목 노출, PageDown/End, 외형 변경 초기화/동일 외형 보존/재열기 초기화·하단 위치 고정·Escape 초점 복귀 확인. 좁은 KO PageDown 본문 scrollTop97→172, 960×540 오른쪽0→69. 480×360 마우스 휠112px에서 제목·12px 본문 접근 및 하단 고정 확인. pageerror0/쓰기 요청0 |
+docs/3.1 ui hud 디자인/캐릭터선택_리모델링_기획서.md:764:## 2026-09-28 외형 선택 배치 전환의 정보 초점 유지
+docs/3.1 ui hud 디자인/캐릭터선택_리모델링_기획서.md:768:| 원인 | 960×540에서 csRight를 End로 읽은 뒤480×360으로 바꾸면 초점은 csRight에 남고 플레이 방식 제목은 본문 밖으로 이동. 반대 전환에서는 이전 패널 scrollTop69가 다시 적용될 수 있음. 기존 열기/외형 변경 초기화만으로는 열린 창의 배치 전환을 처리하지 못함 |
+docs/3.1 ui hud 디자인/캐릭터선택_리모델링_기획서.md:770:| _visualInfoLayoutChanged | charVisualPop.style.display가 flex이고 document.activeElement가 csLeft 또는 csRight일 때만 처리. _resetVisualInfoScroll로 본문·양쪽 패널 scrollTop0 후 현재 초점 영역에 scrollIntoView(block:start). 초점 대상·_pendingVisualIdx·생성 잠금·미디어 경로 유지 |
+docs/3.1 ui hud 디자인/캐릭터선택_리모델링_기획서.md:771:| 보존·제외 | 같은 배치 안에서 크기 조절은 해당 change 이벤트 없음. 아이콘/액션/외부 초점 및 숨긴 팝업은 스크롤·초점을 변경하지 않음. 기존 열기/다른 외형 선택 초기화, 동일 외형 선택 보존 계약 유지. 새 세이브 필드 없음 |
+docs/3.1 ui hud 디자인/캐릭터선택_리모델링_기획서.md:772:| 네이티브 보정 | 그리스어 실버테일480→500px의 본문 scrollTop47→50은 수정 전 HTML 격리 페이지에서도 재현. 브라우저의 레이아웃 스크롤 앵커 보정을 강제로 되돌리지 않음. 같은 배치 검증은 실제 _resetVisualInfoScroll 호출 증가0과 읽기 위치 비초기화·초점 유지로 판정 |
+docs/3.1 ui hud 디자인/캐릭터선택_리모델링_기획서.md:773:| 실제 브라우저 | Node 서버 원본29언어×전사0/실버테일1×정보 영역2개×761↔760px 양방향=232조건. 현재 초점 제목 노출·패널 scrollTop0·선택/출시 잠금 유지·헤더/본문/하단 분리·가로 넘침 없음. 같은 배치480→500/960→980px·높이360px는 KO/EN/DE/FR/EL/AR×2외형×2영역×2전환=48조건 |
+docs/3.1 ui hud 디자인/캐릭터선택_리모델링_기획서.md:774:| 실제 키보드 | Shift+Tab 정보 초점/End 후960×540↔480×360,1920×1080↔320×360의4조건에서 제목 노출·초점 유지. 리사이즈 후 ArrowRight로 실버테일 잠금/ArrowLeft로 전사 복귀, Escape 후 찜 버튼 초점 복귀와 숨긴 창 리사이즈 보존. pageerror0/쓰기 요청0 |
+docs/3.1 ui hud 디자인/캐릭터선택_리모델링_기획서.md:775:| 회귀 | lobbyVisualKeyboard25→31건. 수정 전6실패/25통과→31통과. 양쪽 정보 영역 재노출·아이콘/액션/외부 초점 비간섭·숨긴 창 비간섭 및 실제 MediaQueryList change 등록 검증. 관련12파일201건/inline script4개 구문 통과 |
+docs/3.1 ui hud 디자인/캐릭터선택_리모델링_기획서.md:787:| 수명·UI | selectVisual의 _visualPreviewSeq/isCurrent와 기존 오류·180ms 폴백·5000ms 스톨 보호 유지. 닫기에서 src/poster·이벤트·타이머 해제, 재열기에서 선택 영상 재생. 전사0.75배속·실버테일1배속/comingSoon:true·포스터/초상화·contain 비율 및 선택/초점/스크롤 계약 유지. 새 미디어나 세이브 필드 없음 |
+docs/3.1 ui hud 디자인/캐릭터선택_리모델링_기획서.md:802:| _applyLobbyLang | charNameLabel을 document.getElementById로 찾아 기존 _TL(캐릭터 이름 (2~8자))를 label 리프 textContent에 갱신. 입력값·초점·새 번역키·저장 형식 변경 없음. 처음 초기화 또는 노드 없는 화면에도 null 가드 유지 |
+docs/3.1 ui hud 디자인/캐릭터선택_리모델링_기획서.md:806:| 실제 키보드 | 320×280/480×360/960×540에서 Hero7 입력 후 KO→EN 값/초점 유지. Tab 이름→취소→생성→이름/Shift+Tab 역방향 및 Escape 후 기존 캐릭터 버튼 초점 복귀 확인. 실제 캐릭터 저장 요청 없음 |
+docs/3.1 ui hud 디자인/캐릭터선택_리모델링_기획서.md:807:| 회귀 | lobbyCardLanguage 기존11→12건: 안내 번역·동일 label 노드·입력값/빈 placeholder·초점 유지·API 요청0. 수정 전1실패/11통과→12통과. 관련12파일210건/inline script4개 구문 통과 |
+docs/3.1 ui hud 디자인/캐릭터선택_리모델링_기획서.md:815:| 원인 | 종료 확인창의 취소에 Enter keydown을 보내면 창 none/초점 lobbyQuitBtn으로 복귀. 같은 키의 repeat keydown이 로비 전원 버튼의 네이티브 click을 실행해 확인창을 다시 flex로 열었음. 기존 delConfirmModal의 반복 차단은 이미 닫힌 창 밖까지 처리하지 못함 |
+docs/3.1 ui hud 디자인/캐릭터선택_리모델링_기획서.md:816:| lobbyQuitBtn | 기존 onclick _showLobbyQuit() 옆 onkeydown _lobbyQuitKeydown(event) 연결. SVG·번역된 aria-label/title·전원 터치 영역·초점 표시·레이아웃 유지 |
+docs/3.1 ui hud 디자인/캐릭터선택_리모델링_기획서.md:818:| 확인창 수명 | 기존 delConfirmModal 내부의 Enter/Space 반복 차단, 기본 취소 초점, Escape/B 취소, Tab 순환, busy 보호와 _showLobbyQuit의 실제 전원 버튼 초점 복귀 정책 유지. 종료 API 우선순위·150ms 브라우저 안내·요청 번호 보호 변경 없음 |
+docs/3.1 ui hud 디자인/캐릭터선택_리모델링_기획서.md:819:| 실제 키보드 | Node 서버 원본320×280/480×360/960×540×KO/EN/AR×Enter/Space=18흐름. Enter 취소 후 repeat4회에도 창 닫힘·전원 초점·열기 횟수 불변·종료0회. Space는 초기 키 유지 중 창 닫힘/해제 후1회 열기, 새 입력 취소·재열기 확인. Escape 복귀, 열린 창 경계·가로 넘침 없음 |
+docs/3.1 ui hud 디자인/캐릭터선택_리모델링_기획서.md:829:| 재현 | 320×280 실제 로비에서 외형 확정 후 1글자 이름을 Enter로 제출. 입력칸149~203px에 초점이 남고 오류는270~304px,생성창 하단268px 밖으로 완전히 가려졌다. |
+docs/3.1 ui hud 디자인/캐릭터선택_리모델링_기획서.md:835:| 브라우저 | Node 서버 원본 페이지320×280/480×360/960×540×ko/en/ar×가상 키보드 off/on. 길이 오류/특수문자/같은 오류 재제출/긴 서버 오류 총72조건에서 입력·오류 영역 노출 및 횡넘침 없음. 입력값·초점과 같은 긴 오류의 내부 읽기 위치 보존,새 오류 초기화,pageerror0/쓰기 요청0. 서버 실패는 원본 helper 직접 호출이며 실서버 저장 실패를 유발한 검사가 아니다. |
+docs/3.1 ui hud 디자인/캐릭터선택_리모델링_기획서.md:847:| 키보드 | _visualSelectKeydown의 step=(ArrowRight?1:-1)×(현재 dir===rtl?-1:1). next=clamp(index+step,0,icons.length-1). 아이콘 초점에서 좌우는 화면상 좌우 이웃으로 이동하고 기존 click/focus(preventScroll:true)를 실행한다. |
+docs/3.1 ui hud 디자인/캐릭터선택_리모델링_기획서.md:848:| Home/End·잠금 | Home은 논리 첫 버튼0,End는 마지막 버튼icons.length-1. RTL에서 첫 버튼이 오른쪽이라는 기존 DOM 순서 유지. 선택/초점/aria-pressed/설명·미디어·생성 잠금은 같은 캐릭터로 갱신. 일반 전사0 생성 활성,실버테일1 출시 준비 잠금. |
+docs/3.1 ui hud 디자인/캐릭터선택_리모델링_기획서.md:853:| 실제 브라우저 | 320×280/960×540/1920×1080×ko/en/ar×키보드/D-pad/스틱=27흐름. 네이티브 키보드9·가상 패드18,선택·잠금·aria-pressed·좌우 끝 경계·취소 후 초점 복귀·횡넘침 없음. 열린 창 en→ar→en 추가 확인,pageerror0/쓰기 요청0. |
+docs/3.1 ui hud 디자인/캐릭터선택_리모델링_기획서.md:858:## 2026-09-28 이름 입력 혼합 시 한글 조합·초점 보존
+docs/3.1 ui hud 디자인/캐릭터선택_리모델링_기획서.md:862:| 재현 | 실제 로비 이름창에서 가상 키ㄱ→ㅏ로가 생성 후 입력칸을 이름으로 교체하고 가상ㄴ 입력:이름→이간으로 마지막 글자를 덮어썼다. 가상 키 span을 실제 클릭하면 초점이 body로 빠져 Escape도 이름창에서 처리되지 않았다. |
+docs/3.1 ui hud 디자인/캐릭터선택_리모델링_기획서.md:867:| 키 입력 초점 | _vkbDispatchInput은 통지 후 inp.focus(preventScroll:true). 문자·공백·백스페이스·8글자 제한 반환에서 이름칸 초점을 유지하며 키보드가 보이는 위치를 초점 이동으로 바꾸지 않는다. _vkbInput의OK도 상태 null→입력 초점 복귀→기존 createBtn.click 순서로 처리해 오류 후 입력·Escape를 계속 받는다. |
+docs/3.1 ui hud 디자인/캐릭터선택_리모델링_기획서.md:869:| 회귀 | test/lobbyHangulInput.test.js6→15건. 외부 교체/삭제/영문 덧붙이기/같은 문자4,이벤트 없는 복원/8글자 보존2,가상 이벤트 보존1,문자 키/OK 초점2 추가. 첫13건 원본6PASS/7FAIL,초점15건 중13PASS/2FAIL→최종15PASS. 관련8파일175건 및 inline script4개 구문 PASS. |
+docs/3.1 ui hud 디자인/캐릭터선택_리모델링_기획서.md:870:| 실제 브라우저 | Node 서버 원본320×280/480×360/960×540에서 화면 키를 실제 마우스로 클릭. 네이티브 교체/삭제/영문 입력/텍스트 삽입,같은값 composition InputEvent 대역,이벤트 없는 복원,8글자 보존,내부 받침·백스페이스,교체 후 가상 삭제의9종×3창=27흐름 통과. 이름/maxlength8/초점·횡넘침 확인. |
+docs/3.1 ui hud 디자인/캐릭터선택_리모델링_기획서.md:871:| OK·Escape | 각3창에서 실제OK 클릭 후1글자 오류 표시·입력 초점·오류 노출·조합 null과 Escape 닫기 확인3흐름. 총30브라우저 흐름/pageerror0/쓰기 요청0. 실제 Windows OS IME·실물 게임패드·세이브 저장은 검증하지 않았다. 데모에는 생성 카드가 없어 openVisualSelect로 진입한 뒤 실제 컨트롤을 사용했다. |
+docs/3.1 ui hud 디자인/캐릭터선택_리모델링_기획서.md:887:| 상태 | 기존 .14s 재질·초점 transition, hover brightness1.13/#c9ab7d, active brightness.96/inset0 3px 7px #000a, focus-visible2px #ead1a0/offset-4px, disabled opacity.7/grayscale1/#aaa08e, reduced-motion transition:none. scrollbar-color만 유지하며 scrollbar-width 덮어쓰기도 제거 |
+docs/3.1 ui hud 디자인/캐릭터선택_리모델링_기획서.md:890:| 회귀 | 관련 로비6개 테스트 파일132건 PASS. 이번 수정은 CSS 치수 복원·캐시 키 변경이며 생성·취소·이름 조합·초점 처리 코드는 변경하지 않음 |
+docs/CHANGELOG_DAILY_20260520.md:115:| 이동 | 선택 키가 위/아래 경계를 넘을 때 필요한 거리만 panel.scrollTop 보정. 이미 보이면 스크롤하지 않음. 문서·로비 및 실제 입력 초점은 이동하지 않음 |
+docs/CHANGELOG_DAILY_20260520.md:162:| 검증 | 실제 데모29언어×진행2×화면7=406조합 및 일반 슬롯 대역6조합. 텍스트/입장 경계·초점 순서·저장 원문 보존, 가로 넘침/페이지 오류/쓰기 요청0. 기존105회귀+inline4구문 통과 |
+docs/CHANGELOG_DAILY_20260520.md:176:## 2026-09-28 언어 메뉴 키 반복·IME 보호와 찜 버튼 초점선
+docs/CHANGELOG_DAILY_20260520.md:182:| 검증 | 신규24건 원본19실패→통과, 관련167건/inline4구문 통과. 실제 키보드3크기·초점5크기 및 원본 패드 콜백 대역 확인. IME는 합성 이벤트/실물 패드·OS IME 검증 별도 |
+docs/CHANGELOG_DAILY_20260520.md:183:| 상세 | [언어 키 입력·초점 현행 계약](3.3%20키바인딩+설정/게임패드_호버_상호작용.md). 기존 언어 팝업 계약에 키 유지와 IME 보호 추가. 새 번역키/부모 DOM 교체/사용자 저장 요청 없음 |
+docs/CHANGELOG_DAILY_20260520.md:200:| 키보드·수명 | csLeft/csRight도 tabindex0 지역으로 Tab 순환에 포함, 일반6개/출시 잠금5개. 정보 초점은 제목부터 노출하고 읽기 키는 네이티브 스크롤 허용. _resetVisualInfoScroll로 열기/다른 외형 선택의 본문·패널 위치0, 동일 외형은 보존. 저장 형식 변경 없음 |
+docs/CHANGELOG_DAILY_20260520.md:205:## 2026-09-28 외형 선택 배치 전환의 정보 초점 유지
+docs/CHANGELOG_DAILY_20260520.md:209:| 원인 | 960×540에서 csRight를 End로 읽은 뒤480×360으로 바꾸면 초점은 csRight에 남고 플레이 방식 제목은 본문 밖으로 이동. 반대 전환에서는 이전 패널 scrollTop69가 다시 적용될 수 있음. 기존 열기/외형 변경 초기화만으로는 열린 창의 배치 전환을 처리하지 못함 |
+docs/CHANGELOG_DAILY_20260520.md:211:| _visualInfoLayoutChanged | charVisualPop.style.display가 flex이고 document.activeElement가 csLeft 또는 csRight일 때만 처리. _resetVisualInfoScroll로 본문·양쪽 패널 scrollTop0 후 현재 초점 영역에 scrollIntoView(block:start). 초점 대상·_pendingVisualIdx·생성 잠금·미디어 경로 유지 |
+docs/CHANGELOG_DAILY_20260520.md:212:| 보존·제외 | 같은 배치 안에서 크기 조절은 해당 change 이벤트 없음. 아이콘/액션/외부 초점 및 숨긴 팝업은 스크롤·초점을 변경하지 않음. 기존 열기/다른 외형 선택 초기화, 동일 외형 선택 보존 계약 유지. 새 세이브 필드 없음 |
+docs/CHANGELOG_DAILY_20260520.md:213:| 네이티브 보정 | 그리스어 실버테일480→500px의 본문 scrollTop47→50은 수정 전 HTML 격리 페이지에서도 재현. 브라우저의 레이아웃 스크롤 앵커 보정을 강제로 되돌리지 않음. 같은 배치 검증은 실제 _resetVisualInfoScroll 호출 증가0과 읽기 위치 비초기화·초점 유지로 판정 |
+docs/CHANGELOG_DAILY_20260520.md:214:| 실제 브라우저 | Node 서버 원본29언어×전사0/실버테일1×정보 영역2개×761↔760px 양방향=232조건. 현재 초점 제목 노출·패널 scrollTop0·선택/출시 잠금 유지·헤더/본문/하단 분리·가로 넘침 없음. 같은 배치480→500/960→980px·높이360px는 KO/EN/DE/FR/EL/AR×2외형×2영역×2전환=48조건 |
+docs/CHANGELOG_DAILY_20260520.md:215:| 실제 키보드 | Shift+Tab 정보 초점/End 후960×540↔480×360,1920×1080↔320×360의4조건에서 제목 노출·초점 유지. 리사이즈 후 ArrowRight로 실버테일 잠금/ArrowLeft로 전사 복귀, Escape 후 찜 버튼 초점 복귀와 숨긴 창 리사이즈 보존. pageerror0/쓰기 요청0 |
+docs/CHANGELOG_DAILY_20260520.md:216:| 회귀 | lobbyVisualKeyboard25→31건. 수정 전6실패/25통과→31통과. 양쪽 정보 영역 재노출·아이콘/액션/외부 초점 비간섭·숨긴 창 비간섭 및 실제 MediaQueryList change 등록 검증. 관련12파일201건/inline script4개 구문 통과 |
+docs/CHANGELOG_DAILY_20260520.md:228:| 수명·UI | selectVisual의 _visualPreviewSeq/isCurrent와 기존 오류·180ms 폴백·5000ms 스톨 보호 유지. 닫기에서 src/poster·이벤트·타이머 해제, 재열기에서 선택 영상 재생. 전사0.75배속·실버테일1배속/comingSoon:true·포스터/초상화·contain 비율 및 선택/초점/스크롤 계약 유지. 새 미디어나 세이브 필드 없음 |
+docs/CHANGELOG_DAILY_20260520.md:243:| _applyLobbyLang | charNameLabel을 document.getElementById로 찾아 기존 _TL(캐릭터 이름 (2~8자))를 label 리프 textContent에 갱신. 입력값·초점·새 번역키·저장 형식 변경 없음. 처음 초기화 또는 노드 없는 화면에도 null 가드 유지 |
+docs/CHANGELOG_DAILY_20260520.md:247:| 실제 키보드 | 320×280/480×360/960×540에서 Hero7 입력 후 KO→EN 값/초점 유지. Tab 이름→취소→생성→이름/Shift+Tab 역방향 및 Escape 후 기존 캐릭터 버튼 초점 복귀 확인. 실제 캐릭터 저장 요청 없음 |
+docs/CHANGELOG_DAILY_20260520.md:248:| 회귀 | lobbyCardLanguage 기존11→12건: 안내 번역·동일 label 노드·입력값/빈 placeholder·초점 유지·API 요청0. 수정 전1실패/11통과→12통과. 관련12파일210건/inline script4개 구문 통과 |
+docs/CHANGELOG_DAILY_20260520.md:256:| 원인 | 종료 확인창의 취소에 Enter keydown을 보내면 창 none/초점 lobbyQuitBtn으로 복귀. 같은 키의 repeat keydown이 로비 전원 버튼의 네이티브 click을 실행해 확인창을 다시 flex로 열었음. 기존 delConfirmModal의 반복 차단은 이미 닫힌 창 밖까지 처리하지 못함 |
+docs/CHANGELOG_DAILY_20260520.md:257:| lobbyQuitBtn | 기존 onclick _showLobbyQuit() 옆 onkeydown _lobbyQuitKeydown(event) 연결. SVG·번역된 aria-label/title·전원 터치 영역·초점 표시·레이아웃 유지 |
+docs/CHANGELOG_DAILY_20260520.md:259:| 확인창 수명 | 기존 delConfirmModal 내부의 Enter/Space 반복 차단, 기본 취소 초점, Escape/B 취소, Tab 순환, busy 보호와 _showLobbyQuit의 실제 전원 버튼 초점 복귀 정책 유지. 종료 API 우선순위·150ms 브라우저 안내·요청 번호 보호 변경 없음 |
+docs/CHANGELOG_DAILY_20260520.md:260:| 실제 키보드 | Node 서버 원본320×280/480×360/960×540×KO/EN/AR×Enter/Space=18흐름. Enter 취소 후 repeat4회에도 창 닫힘·전원 초점·열기 횟수 불변·종료0회. Space는 초기 키 유지 중 창 닫힘/해제 후1회 열기, 새 입력 취소·재열기 확인. Escape 복귀, 열린 창 경계·가로 넘침 없음 |
+docs/CHANGELOG_DAILY_20260520.md:270:| 재현 | 320×280 실제 로비에서 외형 확정 후 1글자 이름을 Enter로 제출. 입력칸149~203px에 초점이 남고 오류는270~304px,생성창 하단268px 밖으로 완전히 가려졌다. |
+docs/CHANGELOG_DAILY_20260520.md:276:| 브라우저 | Node 서버 원본 페이지320×280/480×360/960×540×ko/en/ar×가상 키보드 off/on. 길이 오류/특수문자/같은 오류 재제출/긴 서버 오류 총72조건에서 입력·오류 영역 노출 및 횡넘침 없음. 입력값·초점과 같은 긴 오류의 내부 읽기 위치 보존,새 오류 초기화,pageerror0/쓰기 요청0. 서버 실패는 원본 helper 직접 호출이며 실서버 저장 실패를 유발한 검사가 아니다. |
+docs/CHANGELOG_DAILY_20260520.md:288:| 키보드 | _visualSelectKeydown의 step=(ArrowRight?1:-1)×(현재 dir===rtl?-1:1). next=clamp(index+step,0,icons.length-1). 아이콘 초점에서 좌우는 화면상 좌우 이웃으로 이동하고 기존 click/focus(preventScroll:true)를 실행한다. |
+docs/CHANGELOG_DAILY_20260520.md:289:| Home/End·잠금 | Home은 논리 첫 버튼0,End는 마지막 버튼icons.length-1. RTL에서 첫 버튼이 오른쪽이라는 기존 DOM 순서 유지. 선택/초점/aria-pressed/설명·미디어·생성 잠금은 같은 캐릭터로 갱신. 일반 전사0 생성 활성,실버테일1 출시 준비 잠금. |
+docs/CHANGELOG_DAILY_20260520.md:294:| 실제 브라우저 | 320×280/960×540/1920×1080×ko/en/ar×키보드/D-pad/스틱=27흐름. 네이티브 키보드9·가상 패드18,선택·잠금·aria-pressed·좌우 끝 경계·취소 후 초점 복귀·횡넘침 없음. 열린 창 en→ar→en 추가 확인,pageerror0/쓰기 요청0. |
+docs/CHANGELOG_DAILY_20260520.md:299:## 2026-09-28 이름 입력 혼합 시 한글 조합·초점 보존
+docs/CHANGELOG_DAILY_20260520.md:303:| 재현 | 실제 로비 이름창에서 가상 키ㄱ→ㅏ로가 생성 후 입력칸을 이름으로 교체하고 가상ㄴ 입력:이름→이간으로 마지막 글자를 덮어썼다. 가상 키 span을 실제 클릭하면 초점이 body로 빠져 Escape도 이름창에서 처리되지 않았다. |
+docs/CHANGELOG_DAILY_20260520.md:308:| 키 입력 초점 | _vkbDispatchInput은 통지 후 inp.focus(preventScroll:true). 문자·공백·백스페이스·8글자 제한 반환에서 이름칸 초점을 유지하며 키보드가 보이는 위치를 초점 이동으로 바꾸지 않는다. _vkbInput의OK도 상태 null→입력 초점 복귀→기존 createBtn.click 순서로 처리해 오류 후 입력·Escape를 계속 받는다. |
+docs/CHANGELOG_DAILY_20260520.md:310:| 회귀 | test/lobbyHangulInput.test.js6→15건. 외부 교체/삭제/영문 덧붙이기/같은 문자4,이벤트 없는 복원/8글자 보존2,가상 이벤트 보존1,문자 키/OK 초점2 추가. 첫13건 원본6PASS/7FAIL,초점15건 중13PASS/2FAIL→최종15PASS. 관련8파일175건 및 inline script4개 구문 PASS. |
+docs/CHANGELOG_DAILY_20260520.md:311:| 실제 브라우저 | Node 서버 원본320×280/480×360/960×540에서 화면 키를 실제 마우스로 클릭. 네이티브 교체/삭제/영문 입력/텍스트 삽입,같은값 composition InputEvent 대역,이벤트 없는 복원,8글자 보존,내부 받침·백스페이스,교체 후 가상 삭제의9종×3창=27흐름 통과. 이름/maxlength8/초점·횡넘침 확인. |
+docs/CHANGELOG_DAILY_20260520.md:312:| OK·Escape | 각3창에서 실제OK 클릭 후1글자 오류 표시·입력 초점·오류 노출·조합 null과 Escape 닫기 확인3흐름. 총30브라우저 흐름/pageerror0/쓰기 요청0. 실제 Windows OS IME·실물 게임패드·세이브 저장은 검증하지 않았다. 데모에는 생성 카드가 없어 openVisualSelect로 진입한 뒤 실제 컨트롤을 사용했다. |
+docs/CHANGELOG_DAILY_20260520.md:328:| 상태 | 기존 .14s 재질·초점 transition, hover brightness1.13/#c9ab7d, active brightness.96/inset0 3px 7px #000a, focus-visible2px #ead1a0/offset-4px, disabled opacity.7/grayscale1/#aaa08e, reduced-motion transition:none. scrollbar-color만 유지하며 scrollbar-width 덮어쓰기도 제거 |
+docs/CHANGELOG_DAILY_20260520.md:331:| 회귀 | 관련 로비6개 테스트 파일132건 PASS. 이번 수정은 CSS 치수 복원·캐시 키 변경이며 생성·취소·이름 조합·초점 처리 코드는 변경하지 않음 |
+docs/2_8 퀵슬롯+물약시스템/2_8 퀵슬롯+물약시스템.md:66:전체 메뉴와 로비의 최신 재질·제목·문양·선택·초점·스크롤 스타일은 UI_COMPOSITION_20260925.md의 **2026-09-26 유니크 분해 NaN 수정과 상세창 마감 절**을 따른다.
+docs/3.1 ui hud 디자인/EQUIPMENT_CABINET_20260928.md:11:| 연결 | `inventory-space.css?v=20260928-relic-frame1`, `inventory-paperdoll.js?v=20260928-equipment-cutout3`. 갑옷 픽셀을 보존한 로컬 컷아웃·로드 폴백·선택·호버·우클릭 해제·저장 형식 유지. |
+docs/3.1 ui hud 디자인/EQUIPMENT_CABINET_20260928.md:24:| 연결 | game.html의 기사 src는 로컬 PNG. inventory-space.css 캐시20260928-relic-frame1, inventory-paperdoll.js·knight-portrait.css 캐시20260928-equipment-cutout3. img/ 재귀 복사로 NW.js 패키지 포함 |
+docs/3.1 ui hud 디자인/EQUIPMENT_CABINET_20260928.md:33:| 적용 | 장비 탭의 `.inv-eq-slot` 16개. `inventory-space.css`의 마지막 장비창 규칙이 프레임을 표시 |
+docs/3.1 ui hud 디자인/EQUIPMENT_CABINET_20260928.md:40:| 연결 | `game.html`의 `inventory-space.css?v=20260928-relic-frame1`. 기존 img/ 패키징 경로 재사용 |
+docs/1전체그래픽세팅/IMAGE_TEXTURE_RUNTIME_20260913.md:101:전체 메뉴와 로비의 최신 재질·제목·문양·선택·초점·스크롤 스타일은 UI_COMPOSITION_20260925.md의 **2026-09-26 전체 메뉴 마감 절**을 따른다.
+docs/1전체그래픽세팅/IMAGE_TEXTURE_RUNTIME_20260913.md:103:전체 메뉴와 로비의 최신 재질·제목·문양·선택·초점·스크롤 스타일은 UI_COMPOSITION_20260925.md의 **2026-09-26 슬롯과 상호작용 마감 절**을 따른다.
+docs/1전체그래픽세팅/IMAGE_TEXTURE_RUNTIME_20260913.md:105:전체 메뉴와 로비의 최신 재질·제목·문양·선택·초점·스크롤 스타일은 UI_COMPOSITION_20260925.md의 **2026-09-26 유니크 분해 NaN 수정과 상세창 마감 절**을 따른다.
+docs/1전체그래픽세팅/IMAGE_TEXTURE_RUNTIME_20260913.md:107:전체 메뉴와 로비의 최신 재질·제목·문양·선택·초점·스크롤 스타일은 UI_COMPOSITION_20260925.md의 **2026-09-26 창고와 상세 스크롤 마감 절**을 따른다.
+docs/2_7 인벤토리+장비시스템/2_7 인벤토리+장비시스템.md:7:2026-09-27 일반 장비 픽업 현행: `pickupItem`은 빈 장착 슬롯이 있어도 아이템을 `INV.bag`에 넣고 10열 가방 좌표를 배정한다. 장착은 아이템창에서 명시적으로 한다. 첫 유골 부위의 유골함 지급/등록과 대장간 제작 직후 빈 슬롯 장착은 별도 경로로 유지한다. 장비 탭 1200px 초과 본문은 장비판/10열 가방/정보판 `1.28fr / clamp(400px,30vw,600px) / 1fr`이며, 정보판은 격자 바로 옆의 남는 공간을 쓴다. CSS 캐시는 `inventory-space.css?v=20260927-aligned12`.
+docs/2_7 인벤토리+장비시스템/2_7 인벤토리+장비시스템.md:25:2026-09-27 가방 도구줄 마감: 필터 펼침 줄 최소32px, 열림/닫힘 화살표와 키보드 초점 표시 추가. 보유 수량·최대 용량 대비와 정렬 호버 강조 보강. 동작·용량 값 변경 없음. 정확한 스타일 수치는 `docs/3.1 ui hud 디자인/UI_COMPOSITION_20260925.md`의 **가방 도구줄 디테일** 절을 따른다.
+docs/2_7 인벤토리+장비시스템/2_7 인벤토리+장비시스템.md:495:전체 메뉴와 로비의 최신 재질·제목·문양·선택·초점·스크롤 스타일은 UI_COMPOSITION_20260925.md의 **2026-09-26 전체 메뉴 마감 절**을 따른다.
+docs/2_7 인벤토리+장비시스템/2_7 인벤토리+장비시스템.md:497:전체 메뉴와 로비의 최신 재질·제목·문양·선택·초점·스크롤 스타일은 UI_COMPOSITION_20260925.md의 **2026-09-26 슬롯과 상호작용 마감 절**을 따른다.
+docs/2_7 인벤토리+장비시스템/2_7 인벤토리+장비시스템.md:499:전체 메뉴와 로비의 최신 재질·제목·문양·선택·초점·스크롤 스타일은 UI_COMPOSITION_20260925.md의 **2026-09-26 유니크 분해 NaN 수정과 상세창 마감 절**을 따른다.
+docs/2_7 인벤토리+장비시스템/2_7 인벤토리+장비시스템.md:501:전체 메뉴와 로비의 최신 재질·제목·문양·선택·초점·스크롤 스타일은 UI_COMPOSITION_20260925.md의 **2026-09-26 창고와 상세 스크롤 마감 절**을 따른다.
+docs/2_7 인벤토리+장비시스템/2_7 인벤토리+장비시스템.md:529:| 원인 | _invClearHover가 이전 선택 아이템의 상세를 다시 렌더하여 마우스를 뗀 후에도 정보창이 남음 |
+docs/2_7 인벤토리+장비시스템/2_7 인벤토리+장비시스템.md:530:| 종료 | 기존 선택 복원 처리를 _invRestoreSelectedActions로 분리. _invClearHover는 이를 호출한 뒤 invRight visibility:hidden, invCompareFloat display:none |
+docs/2_7 인벤토리+장비시스템/2_7 인벤토리+장비시스템.md:565:| DOM | renderOssPanel이 최초 1회 createElement/append로 구성. 이후 기존 노드·초점·핸들러 보존, 특정 리프 textContent만 갱신. 부모 innerHTML 교체 없음 |
+docs/2_7 인벤토리+장비시스템/2_7 인벤토리+장비시스템.md:592:| 조작 | 호버 상세, 클릭/키보드 초점 선택, 호환 장착 장비 빈 홈 선택 → attachCrystal → dbSaveNow. 객체 인덱스·장비 동일성·빈 홈 재확인 |
+docs/2_7 인벤토리+장비시스템/2_7 인벤토리+장비시스템.md:685:| 원자적 이동 | BAG_MAX 및 _invFindSpace(1,1,신규가방index) 검사. 임시push 후 공간이 없으면pop하고 등록 유지. 공간 성공 시 _gx/_gy 지정→등록 키 delete→선택 부위·아이템 선택 초기화→dbSaveForce→renderInv→_invClearHover→이동 안내 |
+docs/2_7 인벤토리+장비시스템/2_7 인벤토리+장비시스템.md:741:| 유골 부위 | 성공 시 선택 부위와 INV.selected를 비우고 renderInv 뒤 _invClearHover 호출. 등록·미수집 소켓의 기본 title 제거, aria-label 설명 유지. 등록 소켓은 자체 정보 팝업 표시 |
+docs/2_7 인벤토리+장비시스템/2_7 인벤토리+장비시스템.md:742:| 유골함 | unequipItem('ossuary') 성공 확인 후 INV.selected를 비우고 renderInv 뒤 _invClearHover. 빈 유골함은 title 제거, aria-label 유지. 공간 부족으로 해제 실패하면 기존 상태 유지 |
+docs/2_7 인벤토리+장비시스템/2_7 인벤토리+장비시스템.md:755:| 전역 키 예외 | K/KH 입력 등록 전에 초점 대상이 #invPanel.on button 또는 #crBagPop button이고 code가 Space/Enter/NumpadEnter/Tab이면 게임 키 핸들러 return. preventDefault 없이 브라우저 기본 입력 사용. 버튼 밖 기존 Space 쓰레기·Tab 메뉴 동작 유지 |
+docs/2_7 인벤토리+장비시스템/2_7 인벤토리+장비시스템.md:756:| 초점 표시 | 피커 필터/목록 focus-visible outline2px #ead1a0/offset−3px,상속폰트/색·왼쪽정렬. 기존 하단 버튼 초점 표시 유지 |
+docs/2_7 인벤토리+장비시스템/2_7 인벤토리+장비시스템.md:757:| 하단 초점 노출 | ui-panels.js inventory focusin에서 .inv-actions button 경계를 측정. 오른쪽 또는 왼쪽 이탈분만큼 rail.scrollLeft 조정. 본문 세로 위치·가방 높이 변경 없음 |
+docs/2_7 인벤토리+장비시스템/2_7 인벤토리+장비시스템.md:758:| 검증 | 실제 Space로 필터 변경·보석 선택·장착·해제 성공. Space 후 junk=false 보존. Tab/Shift+Tab 이동·필터 초점 유지 확인.320/390/640/1280px에서 실제 Tab 이동 후 마지막 하단 버튼 전체 노출. pageerror0 |
+docs/2_7 인벤토리+장비시스템/2_7 인벤토리+장비시스템.md:767:| 호버 해제 | registerBonePart 성공 후 가방 아이템 삭제·선택 초기화·저장·renderInv 다음 _invClearHover를 호출하여 이전 가방 정보가 즉시 닫힘. 등록 실패 시 아이템과 정보 유지 |
+docs/2_7 인벤토리+장비시스템/2_7 인벤토리+장비시스템.md:776:## 2026-09-27 보석 피커 진입·복귀 초점 연결
+docs/2_7 인벤토리+장비시스템/2_7 인벤토리+장비시스템.md:786:| 검증 | Enter 진입 후 첫 보석 초점,Tab/Shift+Tab 양끝 순환,Escape 복귀·부모 창 유지,Space 장착 후 armor 홈0의 새 버튼 복귀 확인. 빈 피커→all 필터→Escape→armor 홈1,탭 이탈 후 equipment 활성탭 복귀 확인 |
+docs/2_7 인벤토리+장비시스템/2_7 인벤토리+장비시스템.md:798:| 자동 회귀 | test/crystalPickerNavigation.test.js 추가: 일반/쉬운게임 각각 목록축소 후A선택,빈 목록 무선택,D-pad 초점·스크롤·A 일치 총6개. 기존 결정관리12개+구문1개+패널초기화3개 포함 총22개PASS |
+docs/2_7 인벤토리+장비시스템/2_7 인벤토리+장비시스템.md:799:| 기존 테스트 보완 | crystalForgeManagement.test.js의 간이 DOM에 HTMLButtonElement/activeElement/querySelector/querySelectorAll 모형 보충. 앞선 초점 API 도입에 따른 테스트 환경 누락 수정. 기존 검증 조건 유지 |
+docs/2_7 인벤토리+장비시스템/2_7 인벤토리+장비시스템.md:800:| 브라우저 | 실제 디스크 코드에서18→6행 필터 변경 후index0,키보드focus행3→index3,마우스행1→index1,D-pad 아래→행2초점,A→cr_ward_stone 선택·팝업닫힘 확인. pageerror0 |
+docs/2_7 인벤토리+장비시스템/2_7 인벤토리+장비시스템.md:808:| 위치 판정 | `renderInv`가 이전 렌더의 가방 아이템 참조·격자 좌표와 `SLOT_NAMES`별 장착 아이템 참조를 비교한다. 가방 재배치·장착·해제·보관함 이동 등 위치 변경 시 `INV.selected=null`, `_invHover=-1`, `_invClearHover()`로 우측 상세와 비교창을 즉시 닫는다. 위치가 그대로인 단순 재렌더에서는 클릭 선택을 유지한다 |
+docs/2_7 인벤토리+장비시스템/2_7 인벤토리+장비시스템.md:838:| 원인 | 스크롤에 따른 mouseenter까지 선택 변경으로 처리. 60행 목록에서 index30에 초점/스크롤 후 index25,휠 후28로 덮어써짐 |
+docs/2_7 인벤토리+장비시스템/2_7 인벤토리+장비시스템.md:840:| 쉬운게임 보완 | renderCrystalBag 말미의 목록 이벤트 연결과 재렌더 필터 초점 복원 누락을 보완. 생성 영역은 createContextualFragment + replaceChildren으로 갱신. 기존 쉬운게임 분류·아이템 수치 유지 |
+docs/2_7 인벤토리+장비시스템/2_7 인벤토리+장비시스템.md:841:| 브라우저 재현 | 디스크 renderCrystalBag 함수를 격리 게임 페이지에 반영해 동일 포인터 위치에서 재현. 수정 후 index30/초점30이 자동 스크롤과 휠 뒤에도 유지,실제 포인터를32행에 이동하면 index32. 마지막 index59/초점59/목록끝 일치 |
+docs/2_7 인벤토리+장비시스템/2_7 인벤토리+장비시스템.md:842:| 이벤트 회귀 | test/crystalPickerPointer.browser.js: 양쪽 실제 렌더러를 독립 DOM에서 실행. 행생성/초점/포인터진입/0거리이동/실제이동/필터축소 각6개,총12개PASS. 앱 데이터·저장 변경 없음 |
+docs/2_7 인벤토리+장비시스템/2_7 인벤토리+장비시스템.md:858:| 코드·패키지 | `game.html`, `inventory-space.css?v=20260927-three-columns11`, `build-nwjs.mjs`의 `FILES` 목록에 CSS 포함. 가방 `BAG_MAX=300`과 저장 데이터 구조 변경 없음. 바닥 장비 픽업은 가방 우선 |
+docs/2_7 인벤토리+장비시스템/2_7 인벤토리+장비시스템.md:880:| 연결 | `inventory-space.css?v=20260927-aligned12`, `inventory-oss-balance.css?v=20260927-scale2`를 `game.html`에 로드한다. NW.js 목록에는 유골함·보석함 균형 CSS를 포함한다. 아이템 장착/해제·호버·저장 데이터 변경 없음. |
+docs/archetypes/silvertail/SILVERTAIL_KEYART_CANON_20260927.md:84:| 수명·UI | selectVisual의 _visualPreviewSeq/isCurrent와 기존 오류·180ms 폴백·5000ms 스톨 보호 유지. 닫기에서 src/poster·이벤트·타이머 해제, 재열기에서 선택 영상 재생. 전사0.75배속·실버테일1배속/comingSoon:true·포스터/초상화·contain 비율 및 선택/초점/스크롤 계약 유지. 새 미디어나 세이브 필드 없음 |
+docs/2_5 부활+에너지쉴드시스템/2_5 부활+에너지쉴드시스템.md:249:전체 메뉴와 로비의 최신 재질·제목·문양·선택·초점·스크롤 스타일은 UI_COMPOSITION_20260925.md의 **2026-09-26 유니크 분해 NaN 수정과 상세창 마감 절**을 따른다.
+docs/2_9 결정슬롯시스템/2_9 결정슬롯시스템.md:44:채워진 장비 홈에 마우스가 들어가거나 키보드 초점이 오면 그 홈의 **장착 보석 자체**를 왼쪽 감정판에 잠시 표시한다. 이름·성급·강화·2~3개 실효 옵션·설정 문구는 보유 보석과 같은 렌더를 사용하며 성급 행에 `장착 중: <부위>` / `Equipped: <slot>`을 추가한다. 홈을 벗어나거나 초점을 잃으면 기존 선택 보유 보석의 감정판으로 복귀한다. 미리보기는 주머니·장착 상태·저장을 수정하지 않는다.
+docs/2_9 결정슬롯시스템/2_9 결정슬롯시스템.md:84:| 크기 | 공통 인벤토리 창 폭 `100vw−24px`·높이 `100dvh−24px`(620px 이하 사방 4px 여백). `inventory-space.css?v=20260927-three-columns11`가 이전 보석함 상한을 덮는다 |
+docs/2_9 결정슬롯시스템/2_9 결정슬롯시스템.md:139:| 선택·설명 | `_invCrSelected`는 실제 결정 객체 참조. 호버 미리보기, 클릭/키보드 초점으로 선택. 상세에 이름·성급·강화·실효 수치·효과·장착 가능 부위 표시 |
+docs/2_9 결정슬롯시스템/2_9 결정슬롯시스템.md:476:전체 메뉴와 로비의 최신 재질·제목·문양·선택·초점·스크롤 스타일은 UI_COMPOSITION_20260925.md의 **2026-09-26 전체 메뉴 마감 절**을 따른다.
+docs/2_9 결정슬롯시스템/2_9 결정슬롯시스템.md:478:전체 메뉴와 로비의 최신 재질·제목·문양·선택·초점·스크롤 스타일은 UI_COMPOSITION_20260925.md의 **2026-09-26 슬롯과 상호작용 마감 절**을 따른다.
+docs/2_9 결정슬롯시스템/2_9 결정슬롯시스템.md:480:전체 메뉴와 로비의 최신 재질·제목·문양·선택·초점·스크롤 스타일은 UI_COMPOSITION_20260925.md의 **2026-09-26 유니크 분해 NaN 수정과 상세창 마감 절**을 따른다.
+docs/2_9 결정슬롯시스템/2_9 결정슬롯시스템.md:482:전체 메뉴와 로비의 최신 재질·제목·문양·선택·초점·스크롤 스타일은 UI_COMPOSITION_20260925.md의 **2026-09-26 창고와 상세 스크롤 마감 절**을 따른다.
+docs/2_9 결정슬롯시스템/2_9 결정슬롯시스템.md:507:| 전역 키 예외 | K/KH 입력 등록 전에 초점 대상이 #invPanel.on button 또는 #crBagPop button이고 code가 Space/Enter/NumpadEnter/Tab이면 게임 키 핸들러 return. preventDefault 없이 브라우저 기본 입력 사용. 버튼 밖 기존 Space 쓰레기·Tab 메뉴 동작 유지 |
+docs/2_9 결정슬롯시스템/2_9 결정슬롯시스템.md:508:| 초점 표시 | 피커 필터/목록 focus-visible outline2px #ead1a0/offset−3px,상속폰트/색·왼쪽정렬. 기존 하단 버튼 초점 표시 유지 |
+docs/2_9 결정슬롯시스템/2_9 결정슬롯시스템.md:509:| 하단 초점 노출 | ui-panels.js inventory focusin에서 .inv-actions button 경계를 측정. 오른쪽 또는 왼쪽 이탈분만큼 rail.scrollLeft 조정. 본문 세로 위치·가방 높이 변경 없음 |
+docs/2_9 결정슬롯시스템/2_9 결정슬롯시스템.md:510:| 검증 | 실제 Space로 필터 변경·보석 선택·장착·해제 성공. Space 후 junk=false 보존. Tab/Shift+Tab 이동·필터 초점 유지 확인.320/390/640/1280px에서 실제 Tab 이동 후 마지막 하단 버튼 전체 노출. pageerror0 |
+docs/2_9 결정슬롯시스템/2_9 결정슬롯시스템.md:514:## 2026-09-27 보석 피커 진입·복귀 초점 연결
+docs/2_9 결정슬롯시스템/2_9 결정슬롯시스템.md:524:| 검증 | Enter 진입 후 첫 보석 초점,Tab/Shift+Tab 양끝 순환,Escape 복귀·부모 창 유지,Space 장착 후 armor 홈0의 새 버튼 복귀 확인. 빈 피커→all 필터→Escape→armor 홈1,탭 이탈 후 equipment 활성탭 복귀 확인 |
+docs/2_9 결정슬롯시스템/2_9 결정슬롯시스템.md:536:| 자동 회귀 | test/crystalPickerNavigation.test.js 추가: 일반/쉬운게임 각각 목록축소 후A선택,빈 목록 무선택,D-pad 초점·스크롤·A 일치 총6개. 기존 결정관리12개+구문1개+패널초기화3개 포함 총22개PASS |
+docs/2_9 결정슬롯시스템/2_9 결정슬롯시스템.md:537:| 기존 테스트 보완 | crystalForgeManagement.test.js의 간이 DOM에 HTMLButtonElement/activeElement/querySelector/querySelectorAll 모형 보충. 앞선 초점 API 도입에 따른 테스트 환경 누락 수정. 기존 검증 조건 유지 |
+docs/2_9 결정슬롯시스템/2_9 결정슬롯시스템.md:538:| 브라우저 | 실제 디스크 코드에서18→6행 필터 변경 후index0,키보드focus행3→index3,마우스행1→index1,D-pad 아래→행2초점,A→cr_ward_stone 선택·팝업닫힘 확인. pageerror0 |
+docs/2_9 결정슬롯시스템/2_9 결정슬롯시스템.md:546:| 원인 | 스크롤에 따른 mouseenter까지 선택 변경으로 처리. 60행 목록에서 index30에 초점/스크롤 후 index25,휠 후28로 덮어써짐 |
+docs/2_9 결정슬롯시스템/2_9 결정슬롯시스템.md:548:| 쉬운게임 보완 | renderCrystalBag 말미의 목록 이벤트 연결과 재렌더 필터 초점 복원 누락을 보완. 생성 영역은 createContextualFragment + replaceChildren으로 갱신. 기존 쉬운게임 분류·아이템 수치 유지 |
+docs/2_9 결정슬롯시스템/2_9 결정슬롯시스템.md:549:| 브라우저 재현 | 디스크 renderCrystalBag 함수를 격리 게임 페이지에 반영해 동일 포인터 위치에서 재현. 수정 후 index30/초점30이 자동 스크롤과 휠 뒤에도 유지,실제 포인터를32행에 이동하면 index32. 마지막 index59/초점59/목록끝 일치 |
+docs/2_9 결정슬롯시스템/2_9 결정슬롯시스템.md:550:| 이벤트 회귀 | test/crystalPickerPointer.browser.js: 양쪽 실제 렌더러를 독립 DOM에서 실행. 행생성/초점/포인터진입/0거리이동/실제이동/필터축소 각6개,총12개PASS. 앱 데이터·저장 변경 없음 |
+docs/2_9 결정슬롯시스템/2_9 결정슬롯시스템.md:559:| CSS | `inventory-gems-balance.css?v=20260927-half`를 `inventory-space.css`·`inventory-gems-finish.css` 뒤에 로드한다. 열 1:1은 폭900px 이상, 행 1:1은 폭701px 이상·높이600px 이상에 적용한다. 행은 `auto minmax(120px,1fr) minmax(160px,1fr)`, 간격12px이다. 폭700px 이하/높이600px 미만의 기존 세로 배치는 유지한다. |
+docs/16번역·로컬라이제이션/ENGLISH_CHARACTER_BADGE_HUD_20260922.md:46:| 모음 열기 | toggle(open)은 button.hidden이면 열기를 거부하며 숨긴 버튼에 focus하지 않는다. 배지가 있으면 기존 닫기 초점/버튼 복귀·aria-expanded·3개 카드 정책 유지 |
+docs/16번역·로컬라이제이션/ENGLISH_CHARACTER_BADGE_HUD_20260922.md:53:| 시각·입력 검수 | 원본 HUD DOM/CSS·배지JS를 분리한 fixture에서0개/1개 스크린샷,배지 모음 실제 클릭→닫기 초점/화면내 배치→닫기→0개 숨김 확인. 브라우저 viewport2534×1262,override없음. fixture는 UI 검수이며 튜토리얼 완료 플레이 검증은 아님 |
+docs/2게임디자인레벨디자인/TUTORIAL_BADGES_20260912.md:42:| 모음 열기 | toggle(open)은 button.hidden이면 열기를 거부하며 숨긴 버튼에 focus하지 않는다. 배지가 있으면 기존 닫기 초점/버튼 복귀·aria-expanded·3개 카드 정책 유지 |
+docs/2게임디자인레벨디자인/TUTORIAL_BADGES_20260912.md:49:| 시각·입력 검수 | 원본 HUD DOM/CSS·배지JS를 분리한 fixture에서0개/1개 스크린샷,배지 모음 실제 클릭→닫기 초점/화면내 배치→닫기→0개 숨김 확인. 브라우저 viewport2534×1262,override없음. fixture는 UI 검수이며 튜토리얼 완료 플레이 검증은 아님 |
+docs/16번역·로컬라이제이션/STEAM_LANGUAGE_RESUME_20260921.md:112:전체 메뉴와 로비의 최신 재질·제목·문양·선택·초점·스크롤 스타일은 UI_COMPOSITION_20260925.md의 **2026-09-26 유니크 분해 NaN 수정과 상세창 마감 절**을 따른다.
+docs/16번역·로컬라이제이션/번역대상_전체목록.md:3701:## 2026-09-28 언어 메뉴 키 반복·IME 보호와 찜 버튼 초점선
+docs/16번역·로컬라이제이션/번역대상_전체목록.md:3707:| 검증 | 신규24건 원본19실패→통과, 관련167건/inline4구문 통과. 실제 키보드3크기·초점5크기 및 원본 패드 콜백 대역 확인. IME는 합성 이벤트/실물 패드·OS IME 검증 별도 |
+docs/16번역·로컬라이제이션/번역대상_전체목록.md:3708:| 상세 | [언어 키 입력·초점 현행 계약](../3.3%20키바인딩+설정/게임패드_호버_상호작용.md). 기존 언어 팝업 계약에 키 유지와 IME 보호 추가. 새 번역키/부모 DOM 교체/사용자 저장 요청 없음 |
+docs/16번역·로컬라이제이션/번역대상_전체목록.md:3723:| 상태 | 기존 .14s 재질·초점 transition, hover brightness1.13/#c9ab7d, active brightness.96/inset0 3px 7px #000a, focus-visible2px #ead1a0/offset-4px, disabled opacity.7/grayscale1/#aaa08e, reduced-motion transition:none. scrollbar-color만 유지하며 scrollbar-width 덮어쓰기도 제거 |
+docs/16번역·로컬라이제이션/번역대상_전체목록.md:3726:| 회귀 | 관련 로비6개 테스트 파일132건 PASS. 이번 수정은 CSS 치수 복원·캐시 키 변경이며 생성·취소·이름 조합·초점 처리 코드는 변경하지 않음 |
+docs/16번역·로컬라이제이션/번역대상_전체목록.md:3752:| 모음 열기 | toggle(open)은 button.hidden이면 열기를 거부하며 숨긴 버튼에 focus하지 않는다. 배지가 있으면 기존 닫기 초점/버튼 복귀·aria-expanded·3개 카드 정책 유지 |
+docs/16번역·로컬라이제이션/번역대상_전체목록.md:3759:| 시각·입력 검수 | 원본 HUD DOM/CSS·배지JS를 분리한 fixture에서0개/1개 스크린샷,배지 모음 실제 클릭→닫기 초점/화면내 배치→닫기→0개 숨김 확인. 브라우저 viewport2534×1262,override없음. fixture는 UI 검수이며 튜토리얼 완료 플레이 검증은 아님 |
+docs/1전체그래픽세팅/CHARSELECT_VIDEO_QUALITY_20260913.md:69:| 수명·UI | selectVisual의 _visualPreviewSeq/isCurrent와 기존 오류·180ms 폴백·5000ms 스톨 보호 유지. 닫기에서 src/poster·이벤트·타이머 해제, 재열기에서 선택 영상 재생. 전사0.75배속·실버테일1배속/comingSoon:true·포스터/초상화·contain 비율 및 선택/초점/스크롤 계약 유지. 새 미디어나 세이브 필드 없음 |
+docs/16번역·로컬라이제이션/LOCALIZATION_RUNTIME_20260909.md:208:| 상태 보존 | 같은 카드·선택 버튼·이미지·초점 유지. _selectedSlot/_selectedSlotName/_slotScrollIdx/_onlineScrollIdx/_characterLoadSeq 변경 없음. 번역 카탈로그 신규 키·전투/저장 형식 변경 없음 |
+docs/16번역·로컬라이제이션/LOCALIZATION_RUNTIME_20260909.md:211:| 실제 언어 검증 | 960×540/1920×1080에서29언어×데모1·로컬 생성가능/가득참2·온라인 생성가능/가득참2=290조합. 동일 카드/버튼/이미지·선택·스크롤·초점 보존 및 가로 넘침 없음, pageerror0. 생성/삭제 저장 요청0 |
+docs/16번역·로컬라이제이션/LOCALIZATION_RUNTIME_20260909.md:212:| 진행·메뉴 검증 | 격리 브라우저 저장 Lv.46/처치1795의 KO→EN 및 실제 언어 메뉴 Enter/Home/ArrowDown/Enter 확인. 레벨·처치·JSON 저장 원문 보존, 원래 select 초점 복귀. 실제 계정/사용자 슬롯 쓰기 없음 |
+docs/16번역·로컬라이제이션/LOCALIZATION_RUNTIME_20260909.md:223:| 검증 | 실제 데모29언어×진행2×화면7=406조합 및 일반 슬롯 대역6조합. 텍스트/입장 경계·초점 순서·저장 원문 보존, 가로 넘침/페이지 오류/쓰기 요청0. 기존105회귀+inline4구문 통과 |
+docs/16번역·로컬라이제이션/LOCALIZATION_RUNTIME_20260909.md:235:| 갱신 | 기존 카드/버튼/진행/초점 보존. 데모 .char-info는 진행 수치만, 소환체 표제 중복 없음. 초기 미선택에서도 이름/역할/설명 갱신, delayed $ 없이 직접 리프 접근 |
+docs/16번역·로컬라이제이션/LOCALIZATION_RUNTIME_20260909.md:249:## 2026-09-28 언어 메뉴 키 반복·IME 보호와 찜 버튼 초점선
+docs/16번역·로컬라이제이션/LOCALIZATION_RUNTIME_20260909.md:255:| 검증 | 신규24건 원본19실패→통과, 관련167건/inline4구문 통과. 실제 키보드3크기·초점5크기 및 원본 패드 콜백 대역 확인. IME는 합성 이벤트/실물 패드·OS IME 검증 별도 |
+docs/16번역·로컬라이제이션/LOCALIZATION_RUNTIME_20260909.md:256:| 상세 | [언어 키 입력·초점 현행 계약](../3.3%20키바인딩+설정/게임패드_호버_상호작용.md). 기존 언어 팝업 계약에 키 유지와 IME 보호 추가. 새 번역키/부모 DOM 교체/사용자 저장 요청 없음 |
+docs/16번역·로컬라이제이션/LOCALIZATION_RUNTIME_20260909.md:267:| _applyLobbyLang | charNameLabel을 document.getElementById로 찾아 기존 _TL(캐릭터 이름 (2~8자))를 label 리프 textContent에 갱신. 입력값·초점·새 번역키·저장 형식 변경 없음. 처음 초기화 또는 노드 없는 화면에도 null 가드 유지 |
+docs/16번역·로컬라이제이션/LOCALIZATION_RUNTIME_20260909.md:271:| 실제 키보드 | 320×280/480×360/960×540에서 Hero7 입력 후 KO→EN 값/초점 유지. Tab 이름→취소→생성→이름/Shift+Tab 역방향 및 Escape 후 기존 캐릭터 버튼 초점 복귀 확인. 실제 캐릭터 저장 요청 없음 |
+docs/16번역·로컬라이제이션/LOCALIZATION_RUNTIME_20260909.md:272:| 회귀 | lobbyCardLanguage 기존11→12건: 안내 번역·동일 label 노드·입력값/빈 placeholder·초점 유지·API 요청0. 수정 전1실패/11통과→12통과. 관련12파일210건/inline script4개 구문 통과 |
+docs/16번역·로컬라이제이션/LOCALIZATION_RUNTIME_20260909.md:282:| 키보드 | _visualSelectKeydown의 step=(ArrowRight?1:-1)×(현재 dir===rtl?-1:1). next=clamp(index+step,0,icons.length-1). 아이콘 초점에서 좌우는 화면상 좌우 이웃으로 이동하고 기존 click/focus(preventScroll:true)를 실행한다. |
+docs/16번역·로컬라이제이션/LOCALIZATION_RUNTIME_20260909.md:283:| Home/End·잠금 | Home은 논리 첫 버튼0,End는 마지막 버튼icons.length-1. RTL에서 첫 버튼이 오른쪽이라는 기존 DOM 순서 유지. 선택/초점/aria-pressed/설명·미디어·생성 잠금은 같은 캐릭터로 갱신. 일반 전사0 생성 활성,실버테일1 출시 준비 잠금. |
+docs/16번역·로컬라이제이션/LOCALIZATION_RUNTIME_20260909.md:288:| 실제 브라우저 | 320×280/960×540/1920×1080×ko/en/ar×키보드/D-pad/스틱=27흐름. 네이티브 키보드9·가상 패드18,선택·잠금·aria-pressed·좌우 끝 경계·취소 후 초점 복귀·횡넘침 없음. 열린 창 en→ar→en 추가 확인,pageerror0/쓰기 요청0. |
+docs/16번역·로컬라이제이션/LOCALIZATION_RUNTIME_20260909.md:305:| 상태 | 기존 .14s 재질·초점 transition, hover brightness1.13/#c9ab7d, active brightness.96/inset0 3px 7px #000a, focus-visible2px #ead1a0/offset-4px, disabled opacity.7/grayscale1/#aaa08e, reduced-motion transition:none. scrollbar-color만 유지하며 scrollbar-width 덮어쓰기도 제거 |
+docs/16번역·로컬라이제이션/LOCALIZATION_RUNTIME_20260909.md:308:| 회귀 | 관련 로비6개 테스트 파일132건 PASS. 이번 수정은 CSS 치수 복원·캐시 키 변경이며 생성·취소·이름 조합·초점 처리 코드는 변경하지 않음 |
+docs/16번역·로컬라이제이션/RESUME_LANGUAGE_INTEGRATION_20260923.md:277:전체 메뉴와 로비의 최신 재질·제목·문양·선택·초점·스크롤 스타일은 UI_COMPOSITION_20260925.md의 **2026-09-26 유니크 분해 NaN 수정과 상세창 마감 절**을 따른다.
+docs/3.3 키바인딩+설정/3.3 키바인딩+설정.md:506:전체 메뉴와 로비의 최신 재질·제목·문양·선택·초점·스크롤 스타일은 UI_COMPOSITION_20260925.md의 **2026-09-26 전체 메뉴 마감 절**을 따른다.
+docs/3.3 키바인딩+설정/3.3 키바인딩+설정.md:508:전체 메뉴와 로비의 최신 재질·제목·문양·선택·초점·스크롤 스타일은 UI_COMPOSITION_20260925.md의 **2026-09-26 슬롯과 상호작용 마감 절**을 따른다.
+docs/3.3 키바인딩+설정/3.3 키바인딩+설정.md:510:전체 메뉴와 로비의 최신 재질·제목·문양·선택·초점·스크롤 스타일은 UI_COMPOSITION_20260925.md의 **2026-09-26 유니크 분해 NaN 수정과 상세창 마감 절**을 따른다.
+docs/3.3 키바인딩+설정/3.3 키바인딩+설정.md:512:전체 메뉴와 로비의 최신 재질·제목·문양·선택·초점·스크롤 스타일은 UI_COMPOSITION_20260925.md의 **2026-09-26 창고와 상세 스크롤 마감 절**을 따른다.
+docs/3.3 키바인딩+설정/3.3 키바인딩+설정.md:538:| 전역 키 예외 | K/KH 입력 등록 전에 초점 대상이 #invPanel.on button 또는 #crBagPop button이고 code가 Space/Enter/NumpadEnter/Tab이면 게임 키 핸들러 return. preventDefault 없이 브라우저 기본 입력 사용. 버튼 밖 기존 Space 쓰레기·Tab 메뉴 동작 유지 |
+docs/3.3 키바인딩+설정/3.3 키바인딩+설정.md:539:| 초점 표시 | 피커 필터/목록 focus-visible outline2px #ead1a0/offset−3px,상속폰트/색·왼쪽정렬. 기존 하단 버튼 초점 표시 유지 |
+docs/3.3 키바인딩+설정/3.3 키바인딩+설정.md:540:| 하단 초점 노출 | ui-panels.js inventory focusin에서 .inv-actions button 경계를 측정. 오른쪽 또는 왼쪽 이탈분만큼 rail.scrollLeft 조정. 본문 세로 위치·가방 높이 변경 없음 |
+docs/3.3 키바인딩+설정/3.3 키바인딩+설정.md:541:| 검증 | 실제 Space로 필터 변경·보석 선택·장착·해제 성공. Space 후 junk=false 보존. Tab/Shift+Tab 이동·필터 초점 유지 확인.320/390/640/1280px에서 실제 Tab 이동 후 마지막 하단 버튼 전체 노출. pageerror0 |
+docs/3.3 키바인딩+설정/3.3 키바인딩+설정.md:545:## 2026-09-27 보석 피커 진입·복귀 초점 연결
+docs/3.3 키바인딩+설정/3.3 키바인딩+설정.md:555:| 검증 | Enter 진입 후 첫 보석 초점,Tab/Shift+Tab 양끝 순환,Escape 복귀·부모 창 유지,Space 장착 후 armor 홈0의 새 버튼 복귀 확인. 빈 피커→all 필터→Escape→armor 홈1,탭 이탈 후 equipment 활성탭 복귀 확인 |
+docs/3.3 키바인딩+설정/3.3 키바인딩+설정.md:573:2026-09-29 디테일 마감: 시스템/그래픽 버튼 최소44px·15px, 캐릭터 카드220px·미리보기88px·이름17px·설명14px, 커서 카드96×104px로 확대했다. 폭600px 이하 캐릭터 카드는100%이며 버튼14px이다. 설정 미리보기 canvas는 position:static/inset:auto로 전역 게임 fixed 스타일과 분리했다. range/select21개는 기존 번역 리프와 값 노드를 aria-labelledby/aria-describedby로 참조하고 saveMsg는 polite/atomic status이다. 캐시20260929-settings-choices, 상세 수치·검증은 위 현행 계약의 시스템 탭·미리보기 및 선택 카드 절을 따른다. 캐릭터·커서 카드는 native button type=button/settings-choice이며 data-settings-choice로 선택 후 초점을 보존(preventScroll), Enter/Space 선택과 Tab 이동을 사용한다. aria-pressed와 번역된 이름·설명을 연결하고 기존 저장/로더 동작을 유지한다. 카드 선택·초점과 번역을 포함한 설정 회귀31/31 PASS. 실제 패드 입력 미검증.
+docs/3.3 키바인딩+설정/3.3 키바인딩+설정.md:577:| BINDS / BINDS2 | `data-bind-control=kbm-{action}-main/alt/delete`, 이름은 액션·기본/보조 키 또는 삭제. 삭제 후 초점은 해당 보조 키로 이동 |
+docs/3.3 키바인딩+설정/3.3 키바인딩+설정.md:582:| DOM | 목록만 replaceChildren으로 재구성. `data-bind-control`로 초점 복원, 부모 textContent 교체 없음 |
+docs/3.3 키바인딩+설정/3.3 키바인딩+설정.md:585:2026-10-01 UI-02 후속 실화면: 본편·쉬운판 모두 조작 탭 `#optCursorSize`에서 Tab을 누르면 `data-bind-control="mode-kbm"`에 초점이 이동했다. 본편 1754×1262·1324×982·390×844와 쉬운판 1754×1262·390×844의 화면·사운드·조작 탭에서 가로 넘침은 0px이었다. 초점·스크롤·시각 수치는 [설정 창 밀도와 HUD 마감](../3.1%20ui%20hud%20디자인/SETTINGS_HUD_DETAIL_20260930.md)의 UI-02 절을 따른다. 키 초기화·설정값 변경·물리 게임패드 입력은 실행하지 않았다.
+docs/10ai에셋프롬프트모음/UI_프레임_배경_생성프롬프트.md:170:전체 메뉴와 로비의 최신 재질·제목·문양·선택·초점·스크롤 스타일은 UI_COMPOSITION_20260925.md의 **2026-09-26 전체 메뉴 마감 절**을 따른다.
+docs/10ai에셋프롬프트모음/UI_프레임_배경_생성프롬프트.md:172:전체 메뉴와 로비의 최신 재질·제목·문양·선택·초점·스크롤 스타일은 UI_COMPOSITION_20260925.md의 **2026-09-26 슬롯과 상호작용 마감 절**을 따른다.
+docs/10ai에셋프롬프트모음/UI_프레임_배경_생성프롬프트.md:174:전체 메뉴와 로비의 최신 재질·제목·문양·선택·초점·스크롤 스타일은 UI_COMPOSITION_20260925.md의 **2026-09-26 유니크 분해 NaN 수정과 상세창 마감 절**을 따른다.
+docs/10ai에셋프롬프트모음/UI_프레임_배경_생성프롬프트.md:176:전체 메뉴와 로비의 최신 재질·제목·문양·선택·초점·스크롤 스타일은 UI_COMPOSITION_20260925.md의 **2026-09-26 창고와 상세 스크롤 마감 절**을 따른다.
+docs/3.3 키바인딩+설정/게임패드_매핑표.md:242:| 자동 회귀 | test/crystalPickerNavigation.test.js 추가: 일반/쉬운게임 각각 목록축소 후A선택,빈 목록 무선택,D-pad 초점·스크롤·A 일치 총6개. 기존 결정관리12개+구문1개+패널초기화3개 포함 총22개PASS |
+docs/3.3 키바인딩+설정/게임패드_매핑표.md:243:| 기존 테스트 보완 | crystalForgeManagement.test.js의 간이 DOM에 HTMLButtonElement/activeElement/querySelector/querySelectorAll 모형 보충. 앞선 초점 API 도입에 따른 테스트 환경 누락 수정. 기존 검증 조건 유지 |
+docs/3.3 키바인딩+설정/게임패드_매핑표.md:244:| 브라우저 | 실제 디스크 코드에서18→6행 필터 변경 후index0,키보드focus행3→index3,마우스행1→index1,D-pad 아래→행2초점,A→cr_ward_stone 선택·팝업닫힘 확인. pageerror0 |
+docs/3.3 키바인딩+설정/게임패드_매핑표.md:252:| 원인 | 스크롤에 따른 mouseenter까지 선택 변경으로 처리. 60행 목록에서 index30에 초점/스크롤 후 index25,휠 후28로 덮어써짐 |
+docs/3.3 키바인딩+설정/게임패드_매핑표.md:254:| 쉬운게임 보완 | renderCrystalBag 말미의 목록 이벤트 연결과 재렌더 필터 초점 복원 누락을 보완. 생성 영역은 createContextualFragment + replaceChildren으로 갱신. 기존 쉬운게임 분류·아이템 수치 유지 |
+docs/3.3 키바인딩+설정/게임패드_매핑표.md:255:| 브라우저 재현 | 디스크 renderCrystalBag 함수를 격리 게임 페이지에 반영해 동일 포인터 위치에서 재현. 수정 후 index30/초점30이 자동 스크롤과 휠 뒤에도 유지,실제 포인터를32행에 이동하면 index32. 마지막 index59/초점59/목록끝 일치 |
+docs/3.3 키바인딩+설정/게임패드_매핑표.md:256:| 이벤트 회귀 | test/crystalPickerPointer.browser.js: 양쪽 실제 렌더러를 독립 DOM에서 실행. 행생성/초점/포인터진입/0거리이동/실제이동/필터축소 각6개,총12개PASS. 앱 데이터·저장 변경 없음 |
+docs/3.3 키바인딩+설정/게임패드_트러블슈팅.md:179:| 화면 QA | 데모 로비 960×540, 1280×720, 1920×1080에서 가로 넘침 없음. 캐릭터 카드·입장·종료·확인/취소 버튼 모두 화면 안. 종료 팝업 기본 취소 초점과 Escape 후 종료 버튼 초점 복귀 확인. |
+docs/3.3 키바인딩+설정/게임패드_트러블슈팅.md:191:| 실제 런타임 | Node 서버의 원본 로비와 getGamepads 대역으로 패드 A 열기/B 취소를 확인했다. 이동 없는 마우스 클릭 후100ms active=false, cursor 복원, KBM, 배경 강조 제거와 취소 초점 확인. Escape 후 종료 버튼 복귀와 종료 호출0회 확인. touch/pen PointerEvent 전달 뒤70ms에도 active=false와 강조0 확인. 실물 패드·터치펜 검증은 별도다. |
+docs/3.3 키바인딩+설정/게임패드_트러블슈팅.md:203:| 실제 런타임 | Node 서버의 원본 로비에서 getGamepads와 playEffect만 대역으로 교체했다. 거부 반복 요청은 수정 전130ms 동안 오류5회, 수정 후3회 요청에서 오류0회였다. 같은 페이지에서 원본 문 열림 예약 코드8단계를 실행해 거부8회·오류0회 확인. 종료창 열기·Escape 취소 후 버튼 초점 복귀 정상. 실물 패드 진동 검증은 별도다. |
+docs/cinematic/WARINTRO_CREATION_RUNTIME_20260910.md:164:| 실제 브라우저 | Node 서버 실제 페이지960×540, 시작 타이틀 실제 클릭 후 직접/버튼×성공/오류/네트워크 실패6조건: 로그인 유지·생성창 숨김·안내 빈값·현재 초점 유지·스토리/입장0회·추가 폴백 저장0회·버튼 해제. 실제 재생 중 스토리도 전환 즉시 종료, 이전 입장0회 |
+docs/cinematic/B04_V3_DEMON_DUELS_20260907.md:36:| 편집 방향 | 독립된 능력 소개 두 비트, 초점은 능력자와 악마의 접촉·반응. 짧은 충격 후 자세 유지, 대사 사이 하드컷, 마지막에는 기존 구덩이 컷으로 연결 |
+docs/0마스터플랜/TEAM_CONTINUATION_POLICY_20261001.md:89:| UIUX | UI-02 착수 및 QA 측정과 다른 탭에서 조율하겠다는 한국어 응답 확인 | 실제 설정 탐색·초점·언어 검수 인수 |
+docs/3.3 키바인딩+설정/게임패드_호버_상호작용.md:33:| 스크롤 화살표 | `.char-nav-btn` | ✅ | ✅ | 색상·배경 | 기본32px, pointer:coarse 44px, 내부 초점선 |
+docs/3.3 키바인딩+설정/게임패드_호버_상호작용.md:43:| 설정 캐릭터·커서 카드 | `#charSelectGrid>.settings-choice`, `#cursorGrid>.settings-choice` | CSS 병기, 실제 패드 미검증 | hover/gp-hover 금색 경계·그림자, 키보드 focus-visible2px/offset3px. 네이티브 button·aria-pressed·번역 이름, 선택 후 초점 복원 및 Tab/Enter/Space. 정확 계약: SETTINGS_UI_WORKSPACE_20260929.md |
+docs/3.3 키바인딩+설정/게임패드_호버_상호작용.md:77:전체 메뉴와 로비의 최신 재질·제목·문양·선택·초점·스크롤 스타일은 UI_COMPOSITION_20260925.md의 **2026-09-26 전체 메뉴 마감 절**을 따른다.
+docs/3.3 키바인딩+설정/게임패드_호버_상호작용.md:79:전체 메뉴와 로비의 최신 재질·제목·문양·선택·초점·스크롤 스타일은 UI_COMPOSITION_20260925.md의 **2026-09-26 슬롯과 상호작용 마감 절**을 따른다.
+docs/3.3 키바인딩+설정/게임패드_호버_상호작용.md:81:전체 메뉴와 로비의 최신 재질·제목·문양·선택·초점·스크롤 스타일은 UI_COMPOSITION_20260925.md의 **2026-09-26 유니크 분해 NaN 수정과 상세창 마감 절**을 따른다.
+docs/3.3 키바인딩+설정/게임패드_호버_상호작용.md:83:전체 메뉴와 로비의 최신 재질·제목·문양·선택·초점·스크롤 스타일은 UI_COMPOSITION_20260925.md의 **2026-09-26 창고와 상세 스크롤 마감 절**을 따른다.
+docs/3.3 키바인딩+설정/게임패드_호버_상호작용.md:108:| 초점 복원 | 클릭 시작 시 초점 여부 저장, setTimeout 0으로 이벤트 버블링·목록 재생성 이후 처리. 기존 버튼이 제거되고 activeElement가 body일 때 동일 data-card-key 버튼에 focus(preventScroll:true). 다른 초점은 빼앗지 않음 |
+docs/3.3 키바인딩+설정/게임패드_호버_상호작용.md:109:| 초점 표시 | outline2px solid #ead6a5, outline-offset:-3px로 카드 내부에 표시 |
+docs/3.3 키바인딩+설정/게임패드_호버_상호작용.md:112:| 검증 | 실제 온라인/로컬 렌더러·선택 함수 추출, 격리된 선택·생성·삭제 확인 콜백 사용. Enter/Space 각각 선택1회, 재렌더 후 초점 유지, 삭제 Enter는 선택 없이 확인1회, 생성 Space1회. 로비 회귀8개 통과 및 inline4개 구문 확인. tmp/lobby-card-keyboard/report.json 및 after.png. 실제 계정·저장·삭제 API 호출 없음 |
+docs/3.3 키바인딩+설정/게임패드_호버_상호작용.md:115:## 2026-09-27 목록 이동 초점·온라인 오른쪽 스틱 수정
+docs/3.3 키바인딩+설정/게임패드_호버_상호작용.md:119:| 재현 | 목록 이동 버튼 클릭이 렌더러를 재실행하여 활성 버튼을 제거, 키보드 초점이 body로 유실. 오른쪽 스틱은 로컬 ID만 조회하여 온라인 목록 미동작 |
+docs/3.3 키바인딩+설정/게임패드_호버_상호작용.md:121:| 초점 유지 | 클릭 전 활성 버튼이었다면 재렌더 후 동일 ID의 활성 버튼에 focus(preventScroll:true). 마지막/첫 페이지에서 해당 버튼이 disabled이면 반대 방향 버튼으로 초점 이동. 이미 다른 요소로 이동한 초점은 보존 |
+docs/3.3 키바인딩+설정/게임패드_호버_상호작용.md:123:| 검증 | 온라인/로컬 실제 렌더러로 Enter3회:2-3→3-4→4-5/5, 끝에서 위 버튼 초점, Space로3-4/5 복귀. 실제 스틱 처리 코드에1,1,0,1,-1 입력:2-3,2-3,2-3,3-4,2-3/5로 두 모드 일치. 실제 게임패드 하드웨어 검증은 아님 |
+docs/3.3 키바인딩+설정/게임패드_호버_상호작용.md:135:| 초점·호버 | 목록 내비 align-items:center. 화살표 focus-visible outline-offset:-2px. 활성 화살표 hover/gp-hover 색#ffd6bb,배경#6b38282e |
+docs/3.3 키바인딩+설정/게임패드_호버_상호작용.md:137:| 검증 | 온라인 실제 렌더러,1920/1280/800×720에서 화살표32px·삭제28px·간격10px·가로 넘침 없음·footer 화면 내. 키보드 이동 후 초점 유지. Chromium hasTouch 입력 에뮬레이션에서44×44px 및 간격10px 확인, 실제 터치 기기 검증은 아님. tmp/lobby-control-targets/report.json,desktop.png,touch.png |
+docs/3.3 키바인딩+설정/게임패드_호버_상호작용.md:147:| 닫기 | Escape는 선택값 유지하고 원래 select로 초점 복귀,Tab은 닫은 후 기본 이동. 바깥 pointerdown 및 화면 전환(_goLogin/_goCinematic/_goLobby/showLobby)은 초점을 강제로 되돌리지 않고 닫기 |
+docs/3.3 키바인딩+설정/게임패드_호버_상호작용.md:150:| 검증 | 실제 팝업 코드 격리 실행,360×480/1280×720/640×360/320×280 우하단 배치 모두 화면내. 방향키 선택change1회,Escape취소 값 유지·초점복귀,바깥 클릭닫기 확인. 로비 회귀5개·inline4개 구문 통과. tmp/lobby-language-popup/report.json 및 after.png. 언어 저장은 검수용 change 계수로 대체 |
+docs/3.3 키바인딩+설정/게임패드_호버_상호작용.md:160:| 창 크기 변경 | 기존 배치 수식을 _positionLangPop(pop,sel)로 분리. 열린 상태의 window resize에서 위치·최대높이 재계산 후 선택 행을 내부 스크롤로 노출,행 재생성·언어 확정·키보드 초점 이동 없음 |
+docs/3.3 키바인딩+설정/게임패드_호버_상호작용.md:192:| 유지 | 내용이 패널 높이를 넘지 않으면 스크롤하지 않음. 실제 DOM 초점·언어 선택·캐릭터 선택/삭제 동작은 변경 없음. 중립 프레임은 같은 인덱스·동일 요소에서 스크롤하지 않음 |
+docs/3.3 키바인딩+설정/게임패드_호버_상호작용.md:238:| 범위 | 종료·캐릭터 삭제 공용 확인창. 기존 Tab 초점 순환/Escape 취소,게임패드,비동기 중복 제출 방지 유지 |
+docs/3.3 키바인딩+설정/게임패드_호버_상호작용.md:239:| 검증 | 신규 Enter/Space 회귀2개는 수정 전 실패 후 통과. 관련20개 테스트 통과. Chromium 실제 키 입력으로 Enter 반복2회에도 확인창 유지·취소 초점·종료0회,해제 후 Tab/Enter는 종료 stub1회 확인. 실제 앱 종료·삭제 미실행 |
+docs/3.3 키바인딩+설정/게임패드_호버_상호작용.md:255:## 2026-09-28 종료 확인창 초점 복귀 일치
+docs/3.3 키바인딩+설정/게임패드_호버_상호작용.md:259:| 재현 | 패드의 programmatic click은 DOM 초점을 옮기지 않아 종료창 취소 후 이전 언어 select로 초점이 복귀함 |
+docs/3.3 키바인딩+설정/게임패드_호버_상호작용.md:262:| 검증 | 신규 회귀 수정 전 실패 후 통과,확인창·캐릭터 동기화13개 통과. Chromium에서 언어 select 초점→프로그램 클릭→Escape 후 lobbyQuitBtn 복귀/종료0회 확인. 확인창960×540,640×360,360×280 모두 화면 내 |
+docs/3.3 키바인딩+설정/게임패드_호버_상호작용.md:270:| 재현 | 패드 X가 삭제 버튼 click을 프로그램으로 실행하면 기존 DOM 초점이 언어 메뉴 등에 남아 취소 후 엉뚱한 메뉴로 복귀 |
+docs/3.3 키바인딩+설정/게임패드_호버_상호작용.md:272:| 유지 | 삭제 요청·확정·취소·버튼 크기·키보드/패드 행동 유지. 초점 이동 자체로 스크롤을 바꾸지 않음 |
+docs/3.3 키바인딩+설정/게임패드_호버_상호작용.md:273:| 검증 | 신규 온라인/로컬 회귀2개 수정 전 실패→통과. 실제 이벤트 앞부분 및 확인창을 Chromium에 격리 실행,언어 select 초점에서 프로그램 클릭→Escape 후 각 삭제 버튼 복귀/삭제 콜백0회. 확인창·캐릭터 동기화·패드26개 통과 |
+docs/3.3 키바인딩+설정/게임패드_호버_상호작용.md:307:| 닫기 | 기존 함수의 display:none,_langPopOpen=false,원래 select aria-expanded=false 사용. restore=false로 숨겨질 select에 초점 복귀하지 않음. 탐색 인덱스를 언어 선택값으로 확정하지 않으며 change 호출 없음 |
+docs/3.3 키바인딩+설정/게임패드_호버_상호작용.md:410:| 화면 QA | 데모 로비 960×540, 1280×720, 1920×1080에서 가로 넘침 없음. 캐릭터 카드·입장·종료·확인/취소 버튼 모두 화면 안. 종료 팝업 기본 취소 초점과 Escape 후 종료 버튼 초점 복귀 확인. |
+docs/3.3 키바인딩+설정/게임패드_호버_상호작용.md:422:| 실제 런타임 | Node 서버의 원본 로비와 getGamepads 대역으로 패드 A 열기/B 취소를 확인했다. 이동 없는 마우스 클릭 후100ms active=false, cursor 복원, KBM, 배경 강조 제거와 취소 초점 확인. Escape 후 종료 버튼 복귀와 종료 호출0회 확인. touch/pen PointerEvent 전달 뒤70ms에도 active=false와 강조0 확인. 실물 패드·터치펜 검증은 별도다. |
+docs/3.3 키바인딩+설정/게임패드_호버_상호작용.md:434:| 실제 런타임 | Node 서버의 원본 로비에서 getGamepads와 playEffect만 대역으로 교체했다. 거부 반복 요청은 수정 전130ms 동안 오류5회, 수정 후3회 요청에서 오류0회였다. 같은 페이지에서 원본 문 열림 예약 코드8단계를 실행해 거부8회·오류0회 확인. 종료창 열기·Escape 취소 후 버튼 초점 복귀 정상. 실물 패드 진동 검증은 별도다. |
+docs/3.3 키바인딩+설정/게임패드_호버_상호작용.md:443:| 원인 | 종료·삭제 공용 확인창이 로그인/시네마틱/로비 갱신 후에도 남아 이전 콜백과 초점을 유지. 제출한 요청의 늦은 완료가 새 목록 요청 또는 이전 오류 안내를 시작할 수도 있었음 |
+docs/3.3 키바인딩+설정/게임패드_호버_상호작용.md:445:| _hideDelConfirm | fromTransition 기본 false. 일반 취소는 기존 busy 잠금 및 열린 창의 원래 버튼 초점 복귀 유지. 전환은 busy 중에도 창을 숨기고 _delConfirmCb/_delConfirmReturnFocus를 null로 정리하며, 창 내부 초점을 blur. 이전 로비 버튼으로 초점을 돌리지 않음 |
+docs/3.3 키바인딩+설정/게임패드_호버_상호작용.md:451:| 브라우저 | Node 서버 실제 페이지960×540에서 전환4경로 전후 확인: flex/콜백 유지 → none/콜백 및 복귀 참조 null. 지연 성공/실패 대역에서도 전환 즉시 닫힘·busy 완료 후 해제·새 화면 초점 유지·공용 이전 오류 없음. 원본 삭제 콜백에 API/목록 대역만 주입한 전후8조건에서 이전 목록 재조회1회 → 0회, 로컬 실패의 저장 조회5회/오류 안내 → 0회/안내 없음. 데스크톱 종료 실패의 늦은 안내도 제거 |
+docs/3.3 키바인딩+설정/게임패드_호버_상호작용.md:452:| 화면·범위 | 960×540/1920×1080에서 종료창 Escape 취소 후 전원 버튼 초점 복귀, 로비 표시·가로 넘침 없음, pageerror0. 실계정 세션 종료/저장 삭제·앱 종료·실물 패드는 실행하지 않음. 실제 전환 함수와 콜백의 대역 검증이며 인증 서버의 종단 검증은 아님 |
+docs/3.3 키바인딩+설정/게임패드_호버_상호작용.md:460:| 재현 | 외형 취소 뒤 #csIdleVid가 숨은 채 계속 재생. 로그인/시네마틱/로비 전환4경로에 외형창 또는 이름창·가상 키보드·내부 초점이 남음. 실버테일 선택 뒤 전사 영상의 늦은 실패 콜백이 실버테일 영상을 멈추고 전사 초상화를 표시할 수 있었음 |
+docs/3.3 키바인딩+설정/게임패드_호버_상호작용.md:463:| _closeVisualSelect | restoreFocus 기본false. 열린 외형창만 정리하고 번호 증가·내부 초점 blur·display none. csIdleVid/csSceneVid의 _csT clear/null, onerror/oncanplay null, stopMediaVideo, on 클래스 제거, src/poster 제거, load 실행. 숨김 상태 재호출은 상태를 바꾸지 않음 |
+docs/3.3 키바인딩+설정/게임패드_호버_상호작용.md:464:| _visualReturnFocus | 초기null. openVisualSelect에서 기존 document.activeElement 캡처. 닫을 때 참조를 null로 해제. visualCancelBtn은 restoreFocus:true로 연결된 실행 컨트롤에 focus({preventScroll:true}); 이름 확정·화면 전환은 이전 로비 초점 복원하지 않음 |
+docs/3.3 키바인딩+설정/게임패드_호버_상호작용.md:465:| 이름 확정 | _visualConfirm은 기존 comingSoon 차단 후 _closeVisualSelect 사용. createModal show, 이름/안내 초기화, 기존50ms 조건부 이름 초점 유지. 캐릭터 생성 요청·저장·스토리 경로 변경 없음 |
+docs/3.3 키바인딩+설정/게임패드_호버_상호작용.md:466:| _closeCreationOverlays | 외형창 공용 닫기 후 열린 createModal의 내부 초점 blur·show 제거·_vkbHide. 이름창이 숨겨져도 vkbWrap이 block이면 키보드 정리. _goLogin/_goCinematic/_goLobby/showLobby에서 사용 가능한 이 함수를 호출. 초기 숨김 상태에는 나중에 선언한 팝업/키보드 let 상태를 접근하지 않음. 이름창 show 또는 createBtn.disabled이면 생성 안내 초기화, 활성 생성 스토리는 skip()으로 종료. |
+docs/3.3 키바인딩+설정/게임패드_호버_상호작용.md:469:| 회귀 | test/lobbyCreationOverlayLifecycle.test.js 신규17건: 닫기·재열기·이름 확정·이전 폴백·일반 취소 초점·전환4경로의 외형/이름/초기화 안전. 원본 코드에서13실패/4통과 → 수정 후17통과. 관련 생성·한글·패드·확인창·언어·목록 통합187건, inline script4개 구문 통과 |
+docs/3.3 키바인딩+설정/게임패드_호버_상호작용.md:470:| 실제 화면 | Node 서버 원본 페이지960×540에서 전환8조건: 외형 flex/재생 true 및 이름 show/키보드 block → 외형 none/paused true/src·poster·타이머 null, 이름 show false/키보드 none/active false/조합 null/숨은 초점 없음. 페이지 오류0 |
+docs/3.3 키바인딩+설정/게임패드_호버_상호작용.md:472:| 취소·재열기 | 960×540/1920×1080 실제 취소 버튼으로 미디어 해제·연결된 실행 컨트롤 초점 복귀, 재열기 후 전사 영상 재생, 이름창 Escape 취소·횡넘침 없음 확인. 가상 키보드 DOM8행 → 전환 후 자식0개 확인 |
+docs/3.3 키바인딩+설정/게임패드_호버_상호작용.md:487:| 실제 브라우저 | Node 서버 실제 페이지960×540, 시작 타이틀 실제 클릭 후 직접/버튼×성공/오류/네트워크 실패6조건: 로그인 유지·생성창 숨김·안내 빈값·현재 초점 유지·스토리/입장0회·추가 폴백 저장0회·버튼 해제. 실제 재생 중 스토리도 전환 즉시 종료, 이전 입장0회 |
+docs/3.3 키바인딩+설정/게임패드_호버_상호작용.md:491:## 2026-09-28 외형 선택창 키보드 조작·초점 격리
+docs/3.3 키바인딩+설정/게임패드_호버_상호작용.md:497:| 초기 초점 | 원래 activeElement를 _visualReturnFocus로 보존한 뒤 선택된 .cs-ico.sel에 focus(preventScroll:true). 해당 버튼이 없으면 취소 버튼. 일반 취소는 기존 공용 닫기와 연결된 실행 컨트롤 초점 복귀 |
+docs/3.3 키바인딩+설정/게임패드_호버_상호작용.md:498:| Tab | _visualSelectKeydown: 설명(csLeft)→플레이 방식(csRight)→캐릭터 버튼→취소→생성의 enabled 컨트롤을 순환. Shift+Tab 역순. 현재2종은 일반6개/출시 잠금5개. 외부 초점은 정순 설명/역순 마지막 활성 액션으로 복구. focus(preventScroll:true) 후 정보 영역은 scrollIntoView(block:start)로 제목부터 노출. preventDefault/stopPropagation으로 배경 이동 차단 |
+docs/3.3 키바인딩+설정/게임패드_호버_상호작용.md:499:| 방향키 | 아이콘에 초점이 있을 때만 ArrowLeft/ArrowRight, Home/End 처리. 좌우 step=(ArrowRight?1:-1)×(현재 document.documentElement.dir가rtl?-1:1),next=clamp(index+step,0,icons.length-1)로 화면상 좌우 이동 후 대상 네이티브 click/focus. Home은0,End는마지막 논리 인덱스 유지. 선택·설명·영상·생성 잠금·aria-pressed가 동일 캐릭터로 갱신. 취소/생성 버튼의 방향키는 가로채지 않음 |
+docs/3.3 키바인딩+설정/게임패드_호버_상호작용.md:502:| 회귀 | test/lobbyVisualKeyboard.test.js 신규17건: 열기/선택 상태, 양방향 Tab, 잠금, 외부 초점 복구, 방향키, Escape 정리, IME6조건, 숨김/클릭 경로. 원본16실패/1통과→수정 후17통과. 관련 로비·생성·패드·울트라와이드 통합228건 및 inline script4개 구문 통과 |
+docs/3.3 키바인딩+설정/게임패드_호버_상호작용.md:503:| 실제 화면 | Node 서버의 실제 페이지에서 시작 타이틀 클릭 후960×540/1920×1080 확인. 실제 Tab/Shift+Tab/Enter/Space/방향키/Home/End/Escape 입력. 초점 전부 창 내부, 출시 잠금 유지, 취소 후 실행 버튼 복귀, 미디어 pause/src 해제. 컨트롤·초점 테두리 화면 내 및 가로 넘침 없음 |
+docs/3.3 키바인딩+설정/게임패드_호버_상호작용.md:518:| 상태 보존 | 같은 카드·선택 버튼·이미지·초점 유지. _selectedSlot/_selectedSlotName/_slotScrollIdx/_onlineScrollIdx/_characterLoadSeq 변경 없음. 번역 카탈로그 신규 키·전투/저장 형식 변경 없음 |
+docs/3.3 키바인딩+설정/게임패드_호버_상호작용.md:520:| 실제 언어 검증 | 960×540/1920×1080에서29언어×데모1·로컬 생성가능/가득참2·온라인 생성가능/가득참2=290조합. 동일 카드/버튼/이미지·선택·스크롤·초점 보존 및 가로 넘침 없음, pageerror0. 생성/삭제 저장 요청0 |
+docs/3.3 키바인딩+설정/게임패드_호버_상호작용.md:530:| 검증 | 실제 데모29언어×진행2×화면7=406조합 및 일반 슬롯 대역6조합. 텍스트/입장 경계·초점 순서·저장 원문 보존, 가로 넘침/페이지 오류/쓰기 요청0. 기존105회귀+inline4구문 통과 |
+docs/3.3 키바인딩+설정/게임패드_호버_상호작용.md:544:## 2026-09-28 언어 메뉴 키 반복·IME 보호와 찜 버튼 초점선
+docs/3.3 키바인딩+설정/게임패드_호버_상호작용.md:548:| 재현 | 언어 select에서 실제 Enter keydown3회: 메뉴 열림→언어 change1회/닫힘→다시 열림. 키 유지의 repeat 이벤트가 다음 입력 단계에서 확정/재열기를 수행함. 작은480×360의 찜 버튼 외부 초점선은 왼쪽5px/하단약5px 잘림 |
+docs/3.3 키바인딩+설정/게임패드_호버_상호작용.md:551:| 확정·취소 | 열린 메뉴의 Enter/공백 repeat는 기본/버블링 차단 후 확정하지 않음. Escape repeat도 같은 차단 후 닫지 않음. 키를 놓고 새로 누른 Enter/공백은 기존 row.click, 새 Escape는 _closeLangPop으로 취소/원래 select 초점 복귀 |
+docs/3.3 키바인딩+설정/게임패드_호버_상호작용.md:552:| 탐색·Tab | ArrowUp/ArrowDown의 repeat 및 Home/End는 기존 탐색·범위 제한·_hlLangPop 유지. Tab은 메뉴를 닫고 기본 초점 이동 유지. 마우스 row 클릭과 패드 D-pad/A/B 계약 변경 없음 |
+docs/3.3 키바인딩+설정/게임패드_호버_상호작용.md:553:| 찜 초점선 | index.html의 .lobby-right :is(...) :focus-visible 목록에 #lobbyWishlistBtn 추가. 기존 공통 outline2px solid #ead6a5 유지, outline-offset은 바깥3px→안쪽−2px. 버튼/이미지 크기·배너의600px 경계·실행 이벤트 유지 |
+docs/3.3 키바인딩+설정/게임패드_호버_상호작용.md:555:| 실제 키보드 | Node 서버 원본 페이지960×540/1280×720/1920×1080. Enter/Space keydown3회에도 메뉴 유지/change0, release 후 새 확정만 change1/원래 select 초점. 방향키 연속 탐색1→3, 반복 Escape 보호·일반 Escape 취소. IME 두 플래그×Enter/공백/Escape/방향키는 합성 KeyboardEvent로 선택·확정 없음 확인. OS IME 실기 검증은 별도 |
+docs/3.3 키바인딩+설정/게임패드_호버_상호작용.md:556:| 초점·패드 | 찜 버튼 실제 Tab 초점:480×360/640×480/960×540/1280×720/1920×1080에서 offset−2px/전체 테두리·가로 넘침 없음. 원본 HTML 격리 페이지480×360의 +3px 외곽선과 비교. 로비의 원본 lobbyNav 콜백에 버튼 상태 대역을 전달해 D-pad 이동/A 확정/B 취소 보존 확인; 실물 패드는 별도 |
+docs/3.3 키바인딩+설정/게임패드_호버_상호작용.md:575:| 키보드·수명 | csLeft/csRight도 tabindex0 지역으로 Tab 순환에 포함, 일반6개/출시 잠금5개. 정보 초점은 제목부터 노출하고 읽기 키는 네이티브 스크롤 허용. _resetVisualInfoScroll로 열기/다른 외형 선택의 본문·패널 위치0, 동일 외형은 보존. 저장 형식 변경 없음 |
+docs/3.3 키바인딩+설정/게임패드_호버_상호작용.md:580:## 2026-09-28 외형 선택 배치 전환의 정보 초점 유지
+docs/3.3 키바인딩+설정/게임패드_호버_상호작용.md:584:| 원인 | 960×540에서 csRight를 End로 읽은 뒤480×360으로 바꾸면 초점은 csRight에 남고 플레이 방식 제목은 본문 밖으로 이동. 반대 전환에서는 이전 패널 scrollTop69가 다시 적용될 수 있음. 기존 열기/외형 변경 초기화만으로는 열린 창의 배치 전환을 처리하지 못함 |
+docs/3.3 키바인딩+설정/게임패드_호버_상호작용.md:586:| _visualInfoLayoutChanged | charVisualPop.style.display가 flex이고 document.activeElement가 csLeft 또는 csRight일 때만 처리. _resetVisualInfoScroll로 본문·양쪽 패널 scrollTop0 후 현재 초점 영역에 scrollIntoView(block:start). 초점 대상·_pendingVisualIdx·생성 잠금·미디어 경로 유지 |
+docs/3.3 키바인딩+설정/게임패드_호버_상호작용.md:587:| 보존·제외 | 같은 배치 안에서 크기 조절은 해당 change 이벤트 없음. 아이콘/액션/외부 초점 및 숨긴 팝업은 스크롤·초점을 변경하지 않음. 기존 열기/다른 외형 선택 초기화, 동일 외형 선택 보존 계약 유지. 새 세이브 필드 없음 |
+docs/3.3 키바인딩+설정/게임패드_호버_상호작용.md:588:| 네이티브 보정 | 그리스어 실버테일480→500px의 본문 scrollTop47→50은 수정 전 HTML 격리 페이지에서도 재현. 브라우저의 레이아웃 스크롤 앵커 보정을 강제로 되돌리지 않음. 같은 배치 검증은 실제 _resetVisualInfoScroll 호출 증가0과 읽기 위치 비초기화·초점 유지로 판정 |
+docs/3.3 키바인딩+설정/게임패드_호버_상호작용.md:589:| 실제 브라우저 | Node 서버 원본29언어×전사0/실버테일1×정보 영역2개×761↔760px 양방향=232조건. 현재 초점 제목 노출·패널 scrollTop0·선택/출시 잠금 유지·헤더/본문/하단 분리·가로 넘침 없음. 같은 배치480→500/960→980px·높이360px는 KO/EN/DE/FR/EL/AR×2외형×2영역×2전환=48조건 |
+docs/3.3 키바인딩+설정/게임패드_호버_상호작용.md:590:| 실제 키보드 | Shift+Tab 정보 초점/End 후960×540↔480×360,1920×1080↔320×360의4조건에서 제목 노출·초점 유지. 리사이즈 후 ArrowRight로 실버테일 잠금/ArrowLeft로 전사 복귀, Escape 후 찜 버튼 초점 복귀와 숨긴 창 리사이즈 보존. pageerror0/쓰기 요청0 |
+docs/3.3 키바인딩+설정/게임패드_호버_상호작용.md:591:| 회귀 | lobbyVisualKeyboard25→31건. 수정 전6실패/25통과→31통과. 양쪽 정보 영역 재노출·아이콘/액션/외부 초점 비간섭·숨긴 창 비간섭 및 실제 MediaQueryList change 등록 검증. 관련12파일201건/inline script4개 구문 통과 |
+docs/3.3 키바인딩+설정/게임패드_호버_상호작용.md:603:| _applyLobbyLang | charNameLabel을 document.getElementById로 찾아 기존 _TL(캐릭터 이름 (2~8자))를 label 리프 textContent에 갱신. 입력값·초점·새 번역키·저장 형식 변경 없음. 처음 초기화 또는 노드 없는 화면에도 null 가드 유지 |
+docs/3.3 키바인딩+설정/게임패드_호버_상호작용.md:607:| 실제 키보드 | 320×280/480×360/960×540에서 Hero7 입력 후 KO→EN 값/초점 유지. Tab 이름→취소→생성→이름/Shift+Tab 역방향 및 Escape 후 기존 캐릭터 버튼 초점 복귀 확인. 실제 캐릭터 저장 요청 없음 |
+docs/3.3 키바인딩+설정/게임패드_호버_상호작용.md:608:| 회귀 | lobbyCardLanguage 기존11→12건: 안내 번역·동일 label 노드·입력값/빈 placeholder·초점 유지·API 요청0. 수정 전1실패/11통과→12통과. 관련12파일210건/inline script4개 구문 통과 |
+docs/3.3 키바인딩+설정/게임패드_호버_상호작용.md:616:| 원인 | 종료 확인창의 취소에 Enter keydown을 보내면 창 none/초점 lobbyQuitBtn으로 복귀. 같은 키의 repeat keydown이 로비 전원 버튼의 네이티브 click을 실행해 확인창을 다시 flex로 열었음. 기존 delConfirmModal의 반복 차단은 이미 닫힌 창 밖까지 처리하지 못함 |
+docs/3.3 키바인딩+설정/게임패드_호버_상호작용.md:617:| lobbyQuitBtn | 기존 onclick _showLobbyQuit() 옆 onkeydown _lobbyQuitKeydown(event) 연결. SVG·번역된 aria-label/title·전원 터치 영역·초점 표시·레이아웃 유지 |
+docs/3.3 키바인딩+설정/게임패드_호버_상호작용.md:619:| 확인창 수명 | 기존 delConfirmModal 내부의 Enter/Space 반복 차단, 기본 취소 초점, Escape/B 취소, Tab 순환, busy 보호와 _showLobbyQuit의 실제 전원 버튼 초점 복귀 정책 유지. 종료 API 우선순위·150ms 브라우저 안내·요청 번호 보호 변경 없음 |
+docs/3.3 키바인딩+설정/게임패드_호버_상호작용.md:620:| 실제 키보드 | Node 서버 원본320×280/480×360/960×540×KO/EN/AR×Enter/Space=18흐름. Enter 취소 후 repeat4회에도 창 닫힘·전원 초점·열기 횟수 불변·종료0회. Space는 초기 키 유지 중 창 닫힘/해제 후1회 열기, 새 입력 취소·재열기 확인. Escape 복귀, 열린 창 경계·가로 넘침 없음 |
+docs/3.3 키바인딩+설정/게임패드_호버_상호작용.md:630:| 재현 | 320×280 실제 로비에서 외형 확정 후 1글자 이름을 Enter로 제출. 입력칸149~203px에 초점이 남고 오류는270~304px,생성창 하단268px 밖으로 완전히 가려졌다. |
+docs/3.3 키바인딩+설정/게임패드_호버_상호작용.md:636:| 브라우저 | Node 서버 원본 페이지320×280/480×360/960×540×ko/en/ar×가상 키보드 off/on. 길이 오류/특수문자/같은 오류 재제출/긴 서버 오류 총72조건에서 입력·오류 영역 노출 및 횡넘침 없음. 입력값·초점과 같은 긴 오류의 내부 읽기 위치 보존,새 오류 초기화,pageerror0/쓰기 요청0. 서버 실패는 원본 helper 직접 호출이며 실서버 저장 실패를 유발한 검사가 아니다. |
+docs/3.3 키바인딩+설정/게임패드_호버_상호작용.md:648:| 키보드 | _visualSelectKeydown의 step=(ArrowRight?1:-1)×(현재 dir===rtl?-1:1). next=clamp(index+step,0,icons.length-1). 아이콘 초점에서 좌우는 화면상 좌우 이웃으로 이동하고 기존 click/focus(preventScroll:true)를 실행한다. |
+docs/3.3 키바인딩+설정/게임패드_호버_상호작용.md:649:| Home/End·잠금 | Home은 논리 첫 버튼0,End는 마지막 버튼icons.length-1. RTL에서 첫 버튼이 오른쪽이라는 기존 DOM 순서 유지. 선택/초점/aria-pressed/설명·미디어·생성 잠금은 같은 캐릭터로 갱신. 일반 전사0 생성 활성,실버테일1 출시 준비 잠금. |
+docs/3.3 키바인딩+설정/게임패드_호버_상호작용.md:654:| 실제 브라우저 | 320×280/960×540/1920×1080×ko/en/ar×키보드/D-pad/스틱=27흐름. 네이티브 키보드9·가상 패드18,선택·잠금·aria-pressed·좌우 끝 경계·취소 후 초점 복귀·횡넘침 없음. 열린 창 en→ar→en 추가 확인,pageerror0/쓰기 요청0. |
+docs/3.3 키바인딩+설정/게임패드_호버_상호작용.md:659:## 2026-09-28 이름 입력 혼합 시 한글 조합·초점 보존
+docs/3.3 키바인딩+설정/게임패드_호버_상호작용.md:663:| 재현 | 실제 로비 이름창에서 가상 키ㄱ→ㅏ로가 생성 후 입력칸을 이름으로 교체하고 가상ㄴ 입력:이름→이간으로 마지막 글자를 덮어썼다. 가상 키 span을 실제 클릭하면 초점이 body로 빠져 Escape도 이름창에서 처리되지 않았다. |
+docs/3.3 키바인딩+설정/게임패드_호버_상호작용.md:668:| 키 입력 초점 | _vkbDispatchInput은 통지 후 inp.focus(preventScroll:true). 문자·공백·백스페이스·8글자 제한 반환에서 이름칸 초점을 유지하며 키보드가 보이는 위치를 초점 이동으로 바꾸지 않는다. _vkbInput의OK도 상태 null→입력 초점 복귀→기존 createBtn.click 순서로 처리해 오류 후 입력·Escape를 계속 받는다. |
+docs/3.3 키바인딩+설정/게임패드_호버_상호작용.md:670:| 회귀 | test/lobbyHangulInput.test.js6→15건. 외부 교체/삭제/영문 덧붙이기/같은 문자4,이벤트 없는 복원/8글자 보존2,가상 이벤트 보존1,문자 키/OK 초점2 추가. 첫13건 원본6PASS/7FAIL,초점15건 중13PASS/2FAIL→최종15PASS. 관련8파일175건 및 inline script4개 구문 PASS. |
+docs/3.3 키바인딩+설정/게임패드_호버_상호작용.md:671:| 실제 브라우저 | Node 서버 원본320×280/480×360/960×540에서 화면 키를 실제 마우스로 클릭. 네이티브 교체/삭제/영문 입력/텍스트 삽입,같은값 composition InputEvent 대역,이벤트 없는 복원,8글자 보존,내부 받침·백스페이스,교체 후 가상 삭제의9종×3창=27흐름 통과. 이름/maxlength8/초점·횡넘침 확인. |
+docs/3.3 키바인딩+설정/게임패드_호버_상호작용.md:672:| OK·Escape | 각3창에서 실제OK 클릭 후1글자 오류 표시·입력 초점·오류 노출·조합 null과 Escape 닫기 확인3흐름. 총30브라우저 흐름/pageerror0/쓰기 요청0. 실제 Windows OS IME·실물 게임패드·세이브 저장은 검증하지 않았다. 데모에는 생성 카드가 없어 openVisualSelect로 진입한 뒤 실제 컨트롤을 사용했다. |
+docs/3.3 키바인딩+설정/게임패드_호버_상호작용.md:688:| 상태 | 기존 .14s 재질·초점 transition, hover brightness1.13/#c9ab7d, active brightness.96/inset0 3px 7px #000a, focus-visible2px #ead1a0/offset-4px, disabled opacity.7/grayscale1/#aaa08e, reduced-motion transition:none. scrollbar-color만 유지하며 scrollbar-width 덮어쓰기도 제거 |
+docs/3.3 키바인딩+설정/게임패드_호버_상호작용.md:691:| 회귀 | 관련 로비6개 테스트 파일132건 PASS. 이번 수정은 CSS 치수 복원·캐시 키 변경이며 생성·취소·이름 조합·초점 처리 코드는 변경하지 않음 |
+docs/cinematic/WORLD_INTRO_FULL_REVIEW_20260906.md:67:- A06의 자신의 파괴적 에너지 형상화와 기존 잔류의 법칙은 표현 초점이 다르다. 본 인트로는 사용자 최신 해석을 우선하고 외부 에너지 주입으로 바꾸지 않는다.
+docs/cinematic/ENDING_EXODUSER_BATTLE_REVISION_20260907.md:11:- EXODUSER를 자아 없는 모든 괴물의 자동 명칭으로 확대하지 않는다. 탈출 의지와 추락에 대한 저항이 결말의 초점이다.
+docs/cinematic/PROLOGUE_PROMPTS_GPT.md:36:> 읽히도록 파편을 **세계(구체)** 로 구체화, 깊이·성운·초점을 명시.
+docs/cinematic/PROLOGUE_PROMPTS_GPT.md:60:> v1 문제: 수렴 방향과 균열 초점이 흐릿해 컨셉이 안 읽힘. 소용돌이 깔때기 + 중심의 진홍 균열을
+docs/cinematic/PROLOGUE_PROMPTS_GPT.md:61:> 명확한 단일 초점으로 지시.
+docs/cinematic/WARINTRO_RECUT_V3_20260909.md:29:| 컷 | 시작(초) | 종료(초) | 길이(초) | 초점 | crop x,y,w,h | 영상 소스 시작(초) |
+docs/cinematic/WARINTRO_RECUT_V3_20260909.md:50:위 crop은1280×720 무자막 v2 영상 좌표이며1280×720로 출력한다. 최초 구도 표본에서 W10-C 얼굴 여백, W14-B 확대 비율, W15-A 얼굴 초점, W16-B 뒷모습 확대를 조정했다. 최종 출력의18개 중간 표본과36개 경계 프레임, 전체 음성 PCM, 전체 디코딩을 검사한다. 실시간 청취 승인은 별도다.
+docs/0마스터플랜/PROJECT_MANAGEMENT_MASTER.md:223:| UI·아이템 | 로비부터 설정·인벤토리·스킬·획득까지 입력·초점·표시·가독성과 실제 데이터 일치 |
+docs/0마스터플랜/PROJECT_MANAGEMENT_MASTER.md:678:원격 `1c7cdb453c8a9ddaaac401020beb72ac87a74353` 대조 뒤 완료한 기존 네 팀에 15:26:13Z 한 건씩 전달했다. ITEM은 검토 전용 D10 포트 설치/해제와 UI 호출부, BUILD는 Mac runtime/고유 출력/소스 SHA/save 보존 사전검사 CLI, UIUX는 UI-04 빈 아이템 상세와 초점 오류, BALANCE는 장비 강화 게이트·차감·저장 경계 검수다. 각 독립 prefix에만 구현하며 생산·새 게임·빌드·설치 변경0. 전달과 실제 Read/코드 Edit는 분리 기록한다.
+docs/0마스터플랜/PROJECT_MANAGEMENT_MASTER.md:700:본편/easy 소비 후 저장예약 한 줄씩을 반영하고 root32·QA독립10 PASS를 확인했다. 500ms 이전 종료와 저장진행중 재시도는 별도 미해결이다. 공식 arm64 NW.js 런타임 확보·SHA 일치, 앱 입력7925개 스캔 완료. LFS 포인터/제작 ZIP/동적 참조 게이트가 남아 실제 앱은 미완료다. UIUX native 카드 소멸 초점 반례로 후보 생산 적용을 보류했다. [상세 인수·팀별 단계](mac-resume-20261001/vscode-dispatch/PERSISTENCE-MAC-PACKAGE-20261002.md).
+docs/0마스터플랜/mac-resume-20261001/vscode-dispatch/TEAM_UTILIZATION_20261001.json:235:        "실제Read": "지시서·UI-04·인벤토리 SSOT·원 inventory-focus 후보·actual renderInv/_invClearHover/선택복원·DOM 계약",
+docs/0마스터플랜/mac-resume-20261001/BUILD-SOUND-잔여팀-인수검토.md:29:- `ui-refinement.css:1241–1242`: 키 초기화 버튼 경고색이 존재한다. 실제 프레임·초점·작은 화면에 대한 재검수 완료 증거는 아니다.
+docs/0마스터플랜/mac-resume-20261001/vscode-dispatch/PM009-roll-review-root.md:22:- 기존3340을 사용하는 IAB 실화면: **22카드·44/44 이미지 로드**, 원본1024²/후보1920², 1280×720에서 가로넘침 없음. CSS 내용64/160px, 테두리 포함66/162px. Enter로160, Space로64, Tab으로 다음 버튼 초점, aria-pressed 상호전환 확인.
+docs/0마스터플랜/mac-resume-20261001/vscode-dispatch/PERSISTENCE-MAC-PACKAGE-20261002.md:9:native-focus 후보의 .js import와 실제 inventory-space.css 연결을 확인했다. 본편/한국어에서 Enter·Space로 상세 초점 이동, Tab으로 행동 버튼 진입, hover 종료 시 초점 유지, 재렌더 후 새 카드 복귀를 확인했다. 그러나 카드에 초점이 있는 상태에서 fixture 아이템을 삭제하면 activeElement가 BODY로 떨어진다. CSS on에서는 inline hidden과 computed visible도 다르다. 후보 전체 인수와 생산 적용은 보류한다. easy/영어/패드/전체 게임 CSS 검수는 완료하지 않았다. JSON과 스크린샷: outputs/team-review-20261002/persistence/uiux-native-focus.*. 사용자 게임 탭은 보존했다.
+docs/0마스터플랜/mac-resume-20261001/vscode-dispatch/PERSISTENCE-MAC-PACKAGE-20261002.md:34:3. UIUX 카드 소멸 초점 반례를 수정·재검수한 뒤 생산 적용을 결정한다.
+docs/0마스터플랜/mac-resume-20261001/vscode-dispatch/confirm-inventory-review-result.md:44:| B3 | 실제 소스에 `_invClearHover`(L47967)·`renderInv`(L48384)·`_invRenderDetail`·`closeAllPanels` 존재 | PASS |
+docs/0마스터플랜/mac-resume-20261001/vscode-dispatch/confirm-inventory-review-receipt.json:33:      "_invClearHover L47967 / renderInv L48384 / _invRenderDetail / closeAllPanels"
+docs/2_1 스킬관리+합체시스템+자원/추천빌드_SKILL_REC_PATH.md:95:전체 메뉴와 로비의 최신 재질·제목·문양·선택·초점·스크롤 스타일은 UI_COMPOSITION_20260925.md의 **2026-09-26 전체 메뉴 마감 절**을 따른다.
+docs/2_1 스킬관리+합체시스템+자원/추천빌드_SKILL_REC_PATH.md:97:전체 메뉴와 로비의 최신 재질·제목·문양·선택·초점·스크롤 스타일은 UI_COMPOSITION_20260925.md의 **2026-09-26 슬롯과 상호작용 마감 절**을 따른다.
+docs/2_1 스킬관리+합체시스템+자원/추천빌드_SKILL_REC_PATH.md:99:전체 메뉴와 로비의 최신 재질·제목·문양·선택·초점·스크롤 스타일은 UI_COMPOSITION_20260925.md의 **2026-09-26 유니크 분해 NaN 수정과 상세창 마감 절**을 따른다.
+docs/2_1 스킬관리+합체시스템+자원/추천빌드_SKILL_REC_PATH.md:101:전체 메뉴와 로비의 최신 재질·제목·문양·선택·초점·스크롤 스타일은 UI_COMPOSITION_20260925.md의 **2026-09-26 창고와 상세 스크롤 마감 절**을 따른다.
+docs/0마스터플랜/mac-resume-20261001/vscode-dispatch/UIUX-review-result.md:19:| UI-04 | 빙편을 거두는 손 | 장갑 | U-D04 |
+docs/0마스터플랜/mac-resume-20261001/vscode-dispatch/UIUX-review-result.md:47:| 로딩·접근성 | lazy 유지. native type=button·초점 가능·click 리스너·aria-pressed 상호 전환 유지 |
+docs/2_4 펫시스템/2_4 펫시스템.md:196:전체 메뉴와 로비의 최신 재질·제목·문양·선택·초점·스크롤 스타일은 UI_COMPOSITION_20260925.md의 **2026-09-26 전체 메뉴 마감 절**을 따른다.
+docs/2_4 펫시스템/2_4 펫시스템.md:198:전체 메뉴와 로비의 최신 재질·제목·문양·선택·초점·스크롤 스타일은 UI_COMPOSITION_20260925.md의 **2026-09-26 슬롯과 상호작용 마감 절**을 따른다.
+docs/2_4 펫시스템/2_4 펫시스템.md:200:전체 메뉴와 로비의 최신 재질·제목·문양·선택·초점·스크롤 스타일은 UI_COMPOSITION_20260925.md의 **2026-09-26 유니크 분해 NaN 수정과 상세창 마감 절**을 따른다.
+docs/2_4 펫시스템/2_4 펫시스템.md:202:전체 메뉴와 로비의 최신 재질·제목·문양·선택·초점·스크롤 스타일은 UI_COMPOSITION_20260925.md의 **2026-09-26 창고와 상세 스크롤 마감 절**을 따른다.
+docs/2_1 스킬관리+합체시스템+자원/2_1 스킬관리+합체시스템.md:1520:전체 메뉴와 로비의 최신 재질·제목·문양·선택·초점·스크롤 스타일은 UI_COMPOSITION_20260925.md의 **2026-09-26 전체 메뉴 마감 절**을 따른다.
+docs/2_1 스킬관리+합체시스템+자원/2_1 스킬관리+합체시스템.md:1522:전체 메뉴와 로비의 최신 재질·제목·문양·선택·초점·스크롤 스타일은 UI_COMPOSITION_20260925.md의 **2026-09-26 슬롯과 상호작용 마감 절**을 따른다.
+docs/2_1 스킬관리+합체시스템+자원/2_1 스킬관리+합체시스템.md:1524:전체 메뉴와 로비의 최신 재질·제목·문양·선택·초점·스크롤 스타일은 UI_COMPOSITION_20260925.md의 **2026-09-26 유니크 분해 NaN 수정과 상세창 마감 절**을 따른다.
+docs/2_1 스킬관리+합체시스템+자원/2_1 스킬관리+합체시스템.md:1526:전체 메뉴와 로비의 최신 재질·제목·문양·선택·초점·스크롤 스타일은 UI_COMPOSITION_20260925.md의 **2026-09-26 창고와 상세 스크롤 마감 절**을 따른다.
+docs/2_1 스킬관리+합체시스템+자원/2_1 스킬관리+합체시스템.md:1552:| 원자적 이동 | BAG_MAX 및 _invFindSpace(1,1,신규가방index) 검사. 임시push 후 공간이 없으면pop하고 등록 유지. 공간 성공 시 _gx/_gy 지정→등록 키 delete→선택 부위·아이템 선택 초기화→dbSaveForce→renderInv→_invClearHover→이동 안내 |
+docs/0마스터플랜/mac-resume-20261001/vscode-dispatch/FOUR-SUBMISSIONS-HELLRAY-20261002.md:16:| UIUX | 신규21 + 기존 panel3/기존 picker6 =30 PASS, 양쪽 후보 inline 구문 확인 | 빈 상세·비교·행동 잔류6경로 재현. 전체 keyboard 후보는 `renderInv` 재구성과 `_invClearHover`의 숨김/초점 연결을 더 검수하며 **생산 미반영** |
+docs/0마스터플랜/mac-resume-20261001/vscode-dispatch/FOUR-SUBMISSIONS-HELLRAY-20261002.md:29:| UIUX4 | 실제 DOM/hover 종료·재렌더·삭제 후 초점 복귀 재현→수정 후보 | UIUX/inventory-dom-* 및 inventory-dom/ |
+docs/0마스터플랜/mac-resume-20261001/vscode-dispatch/FOUR-NEXT-20261002.md:15:| UIUX | UIUX-20261002-INVENTORY-FOCUS | UIUX/inventory-focus-* | 승인 UI-04 상세/비교 진입·닫기의 실제 오류 재현, 최소 후보/회귀. 실화면 판정은 별도 |
+docs/0마스터플랜/mac-resume-20261001/vscode-dispatch/ITEM-definition-result.md:18:|UI-04|빙편을 거두는 손|gloves|U-D04|

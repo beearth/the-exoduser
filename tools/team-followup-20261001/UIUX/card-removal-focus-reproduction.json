@@ -1,0 +1,62 @@
+{
+  "at": "2026-10-01T16:27:58.956Z",
+  "scope": "Node DOM 대역; 실제 CSS/Tab 이동/native 재검수 아님",
+  "reproduction": [
+    {
+      "path": "game.html",
+      "language": "ko",
+      "cssModel": "미연결",
+      "baseline": "BODY",
+      "candidate": "invClose"
+    },
+    {
+      "path": "game.html",
+      "language": "ko",
+      "cssModel": "visibility important 최소 대역",
+      "baseline": "BODY",
+      "candidate": "invClose"
+    },
+    {
+      "path": "game.html",
+      "language": "en",
+      "cssModel": "미연결",
+      "baseline": "BODY",
+      "candidate": "invClose"
+    },
+    {
+      "path": "game.html",
+      "language": "en",
+      "cssModel": "visibility important 최소 대역",
+      "baseline": "BODY",
+      "candidate": "invClose"
+    },
+    {
+      "path": "game-easy-test.html",
+      "language": "ko",
+      "cssModel": "미연결",
+      "baseline": "BODY",
+      "candidate": "invClose"
+    },
+    {
+      "path": "game-easy-test.html",
+      "language": "ko",
+      "cssModel": "visibility important 최소 대역",
+      "baseline": "BODY",
+      "candidate": "invClose"
+    },
+    {
+      "path": "game-easy-test.html",
+      "language": "en",
+      "cssModel": "미연결",
+      "baseline": "BODY",
+      "candidate": "invClose"
+    },
+    {
+      "path": "game-easy-test.html",
+      "language": "en",
+      "cssModel": "visibility important 최소 대역",
+      "baseline": "BODY",
+      "candidate": "invClose"
+    }
+  ]
+}

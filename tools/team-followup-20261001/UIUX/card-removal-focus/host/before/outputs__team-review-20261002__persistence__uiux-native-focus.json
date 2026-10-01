@@ -1,0 +1,98 @@
+[
+  {
+    "step": "space",
+    "status": {
+      "scope": "DOM-only, 게임/레이아웃/패드 PASS 아님",
+      "source": "game.html",
+      "sha256": "7631f5a083672124624e0b8dc22b0716d10c8815dbb1e6aee98a5e2e51299993",
+      "version": "candidate",
+      "language": "ko",
+      "css": "미연결",
+      "active": "invRight",
+      "activeConnected": true,
+      "inlineVisibility": "visible",
+      "computedVisibility": "visible",
+      "blockedActions": 0
+    }
+  },
+  {
+    "step": "remove",
+    "status": {
+      "scope": "DOM-only, 게임/레이아웃/패드 PASS 아님",
+      "source": "game.html",
+      "sha256": "7631f5a083672124624e0b8dc22b0716d10c8815dbb1e6aee98a5e2e51299993",
+      "version": "candidate",
+      "language": "ko",
+      "css": "미연결",
+      "active": "invClose",
+      "activeConnected": true,
+      "inlineVisibility": "hidden",
+      "computedVisibility": "hidden",
+      "blockedActions": 0
+    }
+  },
+  {
+    "step": "close",
+    "status": {
+      "scope": "DOM-only, 게임/레이아웃/패드 PASS 아님",
+      "source": "game.html",
+      "sha256": "7631f5a083672124624e0b8dc22b0716d10c8815dbb1e6aee98a5e2e51299993",
+      "version": "candidate",
+      "language": "ko",
+      "css": "미연결",
+      "active": "invClose",
+      "activeConnected": true,
+      "inlineVisibility": "hidden",
+      "computedVisibility": "hidden",
+      "blockedActions": 0
+    }
+  },
+  {
+    "step": "css-on-enter-tab-hover",
+    "status": {
+      "scope": "DOM-only, 게임/레이아웃/패드 PASS 아님",
+      "source": "game.html",
+      "sha256": "7631f5a083672124624e0b8dc22b0716d10c8815dbb1e6aee98a5e2e51299993",
+      "version": "candidate",
+      "language": "ko",
+      "css": "연결",
+      "active": "id-btn equip",
+      "activeConnected": true,
+      "inlineVisibility": "visible",
+      "computedVisibility": "visible",
+      "blockedActions": 0
+    }
+  },
+  {
+    "step": "css-on-rerender",
+    "status": {
+      "scope": "DOM-only, 게임/레이아웃/패드 PASS 아님",
+      "source": "game.html",
+      "sha256": "7631f5a083672124624e0b8dc22b0716d10c8815dbb1e6aee98a5e2e51299993",
+      "version": "candidate",
+      "language": "ko",
+      "css": "연결",
+      "active": "inv-item",
+      "activeConnected": true,
+      "inlineVisibility": "visible",
+      "computedVisibility": "visible",
+      "blockedActions": 0
+    }
+  },
+  {
+    "step": "css-on-remove",
+    "status": {
+      "scope": "DOM-only, 게임/레이아웃/패드 PASS 아님",
+      "source": "game.html",
+      "sha256": "7631f5a083672124624e0b8dc22b0716d10c8815dbb1e6aee98a5e2e51299993",
+      "version": "candidate",
+      "language": "ko",
+      "css": "연결",
+      "active": "BODY",
+      "activeConnected": true,
+      "inlineVisibility": "hidden",
+      "computedVisibility": "visible",
+      "blockedActions": 0
+    }
+  }
+]

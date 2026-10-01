@@ -1,0 +1,27 @@
+{
+  "at": "2026-10-01T16:15:40.559Z",
+  "method": "HEAD",
+  "scope": "기존 서버 정적 파일 헤더만; 브라우저/게임 실행 없음",
+  "results": [
+    {
+      "path": "/tools/team-followup-20261001/UIUX/native-focus/host.html",
+      "error": "fetch failed"
+    },
+    {
+      "path": "/tools/team-followup-20261001/UIUX/native-focus/controller.js",
+      "error": "fetch failed"
+    },
+    {
+      "path": "/tools/team-followup-20261001/UIUX/native-focus/harness.js",
+      "error": "fetch failed"
+    },
+    {
+      "path": "/tools/team-followup-20261001/UIUX/native-focus/source-data.js",
+      "error": "fetch failed"
+    },
+    {
+      "path": "/inventory-space.css",
+      "error": "fetch failed"
+    }
+  ]
+}
