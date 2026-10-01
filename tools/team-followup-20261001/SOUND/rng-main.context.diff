@@ -1,0 +1,28 @@
+--- a/game.html
++++ b/game.html
+@@ -11814,7 +11814,7 @@
+ const _SKILL_SFX_KEYS=new Set(['shield_activate','shield_hit','shield_end','heavy_hit','bow_shot','bow_release','fire_magic1','fire_magic2','fireball','crossbow_shot','electric_storm','electric_storm2','electric_storm3','electric_storm4','repentance','chain_throw','chain_fly','chain_land','chain_land2','chain_stick','chain_dash','chain_dash2','chain_dash3','chain_dash4','skull_summon','blue_hit','beam_fire','q_parry','sword_parry']);
+ function _isSkillSfx(key){return _SKILL_SFX_KEYS.has(key)||key.startsWith('chain_')||key.startsWith('electric_storm')||key.startsWith('fire_magic')||key.startsWith('sword_swing')}
+ const _sfxLastT={};
+-function playSample(key,vol,rate,pri){
++function playSample(key,vol,rate,pri,_noEnq){
+   key=_silvertailVoiceKey(key);
+   if(!key)return;
+   if(_gxVolMul<1){vol*=_gxVolMul;if(vol<0.01)return;}
+@@ -11823,6 +11823,7 @@
+   if(!_isPri){const _now=performance.now(),_lt=_sfxLastT[key]||0;if(_now-_lt<30)return;_sfxLastT[key]=_now;}
+   if(!rate)rate=1;
+   rate=rate*(0.92+Math.random()*0.16);
++  if(_noEnq)return; // Preserve all preparation and suppress only the final enqueue.
+   if(_isPri)_sfxQueue.unshift({key,vol,rate,pri:1});
+   else _sfxQueue.push({key,vol,rate});
+   return;
+@@ -29488,7 +29489,7 @@
+   for(let k=0;k<16;k++){const a=Math.random()*Math.PI*2;const v=2+Math.random()*3;
+     poolPart(P.x+Math.cos(a)*10,P.y+Math.sin(a)*10,Math.cos(a)*v,Math.sin(a)*v,_sCol,1.5+Math.random()*2,15+Math.random()*10)}
+   G.shake=8*OPT.shake/100;
+-  SFX.groggy();const _bsf=_bossSfx(si);if(_bsf)playSample(_bsf.howl,.6,_r(_bsf.howlP,.15));else playSample(Math.random()<.5?'boss_howl':'boss_howl1',.6,_r(.8,.15)); // 보스 포효
++  SFX.groggy();const _bsf=_bossSfx(si);const _nq=G._bossLoadPhase===2;if(_bsf)playSample(_bsf.howl,.6,_r(_bsf.howlP,.15),0,_nq);else playSample(Math.random()<.5?'boss_howl':'boss_howl1',.6,_r(.8,.15),0,_nq); // 보스 포효
+   addTxt(P.x,P.y-50,'\u26A0 '+_T('봉인됨!'),_sCol,70);
+ }
+ 

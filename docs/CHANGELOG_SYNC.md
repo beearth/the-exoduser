@@ -51753,3 +51753,8 @@ FIRE 독립8검사와 URL query17검사 인수, SOUND root canonical 관측기18
 - Recovered SOUND source patches/tests; submission5 + root16 static checks pass. Explicit key/pitch random draws preserved in root candidate; internal playSample RNG remains an acceptance gate. No production application. BUILD listen EPERM retained without bypass. UIUX v2 hotpath instruction received and source read verified; ITEM/BALANCE dependencies reviewed without duplicate work. Shared records synchronized.
 
 - Follow-up recovery149 paths remotely verified at3921dfc9, excludes live UIUX v2 outputs. Existing SOUND RNG-preserving candidate received12:30:59Z and source Read verified12:31:04Z; no production/audio execution.
+
+
+## 2026-10-01 SOUND 난수 보존 후보 정적 검수 / UIUX 경계 수정 인계
+- SOUND 원 diff/테스트 보존, 주석 줄 조립 정정 후8+6그룹·patch2개 PASS. 실제 playSample/_r 상태 및 RNG 비교; 생산/청취 미적용.
+- UIUX v2 overflow timeout 독립 재현, 원 제출 원격b3ab5be7 보존 및 기존 담당 boundary 작업 실제 Read 확인.

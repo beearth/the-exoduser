@@ -1,6 +1,6 @@
 {
-  "at": "2026-10-01T12:31:48.759160+00:00",
-  "root": "SOUND recovery complete; new RNG and UIUX v2 owners actually started; BUILD permission gate preserved",
+  "at": "2026-10-01T12:43:34.607081+00:00",
+  "root": "SOUND submitted/static verified; UIUX boundary repair actually started; runtime gates remain",
   "teams": [
     {
       "team": "QA",
@@ -196,41 +196,49 @@
       "team": "UIUX",
       "sessionId": "01a0f6e5-8653-7ae2-8b2b-314e275c215c",
       "location": "T4",
-      "task": "UIUX-COORDINATE-HOTPATH-CANDIDATE",
-      "instruction": "/Users/fordeargamers/Projects/exoduser-migration-20261001/tools/team-followup-20261001/UIUX/HOTPATH_TASK.md",
+      "task": "UIUX-HOTPATH-BOUNDARY-FIX",
+      "instruction": "/Users/fordeargamers/Projects/exoduser-migration-20261001/tools/team-followup-20261001/UIUX/BOUNDARY_TASK.md",
       "stateBefore": "idle/completed verified",
       "dispatch": "received",
       "exists": true,
-      "receivedAt": "2026-10-01T12:28:17+00:00",
+      "receivedAt": "2026-10-01T12:40:16Z",
       "startedAt": null,
-      "status": "received; instruction and v1 sources read exit0; v2 implementation in progress",
+      "status": "actual instruction/source Read verified; bounded candidate implementation started",
       "startEvidence": "NEXT_TASK 첫 Read exit0, 이전 완료 산출과 현재 draw 경로·팀 MD 읽기 exit0. 중복 진행 산출 없음",
-      "receipt": "/Users/fordeargamers/Projects/exoduser-migration-20261001/docs/0마스터플랜/mac-resume-20261001/vscode-dispatch/UIUX-hotpath-receipt.json",
-      "waitReason": "No static implementation blocker; real visual and dense performance QA remain later gates",
+      "receipt": "/Users/fordeargamers/Projects/exoduser-migration-20261001/docs/0마스터플랜/mac-resume-20261001/vscode-dispatch/UIUX-boundary-receipt.json",
+      "waitReason": "Root boundary review after submission; visual/FPS unknown",
       "previous": {
-        "task": "UIUX-HUD-COORDINATE-ADAPTER",
-        "status": "candidate accepted for static handoff; root91+dependency14 pass; production/visual/performance pending",
-        "completedAt": "2026-10-01T12:22:55Z",
-        "rootValidation": {
-          "checks": 91,
-          "dependencyChecks": 14,
-          "sourceSnippets": 5,
-          "contextPatchCheck": true,
-          "productionApplied": false
-        }
+        "task": "UIUX-COORDINATE-HOTPATH-CANDIDATE",
+        "previous": {
+          "task": "UIUX-HUD-COORDINATE-ADAPTER",
+          "status": "candidate accepted for static handoff; root91+dependency14 pass; production/visual/performance pending",
+          "completedAt": "2026-10-01T12:22:55Z",
+          "rootValidation": {
+            "checks": 91,
+            "dependencyChecks": 14,
+            "sourceSnippets": 5,
+            "contextPatchCheck": true,
+            "productionApplied": false
+          }
+        },
+        "completedAt": "2026-10-01T12:36:17Z",
+        "status": "15 groups + 6 VM pass; independent overflow timeout reproduced; acceptance withheld",
+        "remoteSnapshot": "b3ab5be7f0c7a57ec1892cca1d65825549f54d72"
       },
-      "queueMessageId": "01a0f76f-d79c-7720-abcf-412eba0d2eba",
-      "queuedAt": "2026-10-01T12:17:38.698597+00:00",
+      "queueMessageId": "01a0f77a-d0fa-70f3-ae18-e7600ab6b88f",
+      "queuedAt": null,
       "receivedAtBasis": "read_thread new user turn startedAt, not exact command timestamp",
       "firstActualAction": {
-        "command": "Read HOTPATH_TASK and v1 sources, duplicate search, source hashes",
+        "command": "Read BOUNDARY_TASK then v1/v2 sources and input hashes",
         "exitCode": 0,
-        "turnId": "01a0f76f-d79d-70a1-8150-d317eff84291",
+        "turnId": "01a0f77a-d0fa-70f3-ae18-e788e4f952ec",
+        "readRecordedAt": "2026-10-01T12:40:19Z",
+        "sourceReadRecordedAt": "2026-10-01T12:40:25Z",
         "exactCommandStartedAt": null
       },
       "completedAt": null,
       "completedAtBasis": "owner final UTC query; not exact final message timestamp",
-      "cliState": "active verified"
+      "cliState": "implementation active verified"
     },
     {
       "team": "ITEM",
@@ -296,16 +304,16 @@
         "tool": "Read",
         "path": "tools/team-followup-20261001/SOUND/RNG_TASK.md"
       },
-      "status": "received; RNG task and actual playSample read verified; independent candidate in progress",
-      "completedAt": null,
+      "status": "submitted; corrected8 + independent6 PASS, both context patches valid; production/audio pending",
+      "completedAt": "2026-10-01T12:35:18.112Z",
       "receipt": "/Users/fordeargamers/Projects/exoduser-migration-20261001/docs/0마스터플랜/mac-resume-20261001/vscode-dispatch/SOUND-rng-receipt.json",
-      "waitReason": "Candidate implementation active; production/audio/NW acceptance remains later",
+      "waitReason": "Actual audio and boss entry runtime acceptance pending",
       "instruction": "/Users/fordeargamers/Projects/exoduser-migration-20261001/tools/team-followup-20261001/SOUND/RNG_TASK.md",
-      "cliState": "active verified"
+      "cliState": "submission completed; no new task sent"
     }
   ],
   "remoteCheckpoint": {
-    "sha": "1bb973d016a4975745db1ed743be0352a080830c",
+    "sha": "49e78c5c38594b93b2ebcaf321842f7051d750dc",
     "branch": "codex/mac-environment-20261001",
     "verified": true
   },
@@ -321,8 +329,16 @@
     "scope": "includes BUILD denied loopback and SOUND dedup; later RNG and v2 changes not in this snapshot"
   },
   "nativeCheck": {
-    "atApprox": "2026-10-01T12:22:20Z",
+    "atApprox": "2026-10-01T12:36:00Z",
     "locked": true,
-    "attemptsThisCycle": 1
+    "attemptsThisCycle": 1,
+    "newAttemptAfterCompaction": false
+  },
+  "uiuxSubmissionRecovery": {
+    "sha": "b3ab5be7f0c7a57ec1892cca1d65825549f54d72",
+    "branch": "codex/backup-uiux-v2-review-20261001-213938",
+    "files": 15,
+    "remoteVerified": true,
+    "scope": "original v2 with known overflow defect; not production acceptance"
   }
 }

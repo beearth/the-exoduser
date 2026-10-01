@@ -1,0 +1,21 @@
+--- a/game-easy-test.html
++++ b/game-easy-test.html
+@@ -11290,11 +11290,12 @@ (playSample 본문, 본편과 동일)
+-function playSample(key,vol,rate,pri){
++function playSample(key,vol,rate,pri,_noEnq){
+   key=_silvertailVoiceKey(key);
+   if(!key)return;
+   if(_gxVolMul<1){vol*=_gxVolMul;if(vol<0.01)return;}
+   // 30ms 중복 방지 (스킬 사운드 제외)
+   const _isPri=pri||_isSkillSfx(key)||_isFootstepSfx(key);
+   if(!_isPri){const _now=performance.now(),_lt=_sfxLastT[key]||0;if(_now-_lt<30)return;_sfxLastT[key]=_now;}
+   if(!rate)rate=1;
+   rate=rate*(0.92+Math.random()*0.16);
++  if(_noEnq)return; // RNG/timestamp/dedupe/priority·_sfxLastT 갱신 뒤 큐 삽입만 억제(미전달=기존 동작, 호환)
+   if(_isPri)_sfxQueue.unshift({key,vol,rate,pri:1});
+   else _sfxQueue.push({key,vol,rate});
+   return;
+ }
+@@ -28391 +28391 @@ (_enterBossArena seal 호출)
+-  SFX.groggy();const _bsf=_bossSfx(si);if(_bsf)playSample(_bsf.howl,.6,_r(_bsf.howlP,.15));else playSample(Math.random()<.5?'boss_howl':'boss_howl1',.6,_r(.8,.15)); // 보스 포효
++  SFX.groggy();const _bsf=_bossSfx(si);const _nq=G._bossLoadPhase===2;if(_bsf)playSample(_bsf.howl,.6,_r(_bsf.howlP,.15),0,_nq);else playSample(Math.random()<.5?'boss_howl':'boss_howl1',.6,_r(.8,.15),0,_nq); // 보스 포효

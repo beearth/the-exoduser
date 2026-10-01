@@ -1,0 +1,14 @@
+✔ game.html: full player state/return/queue at key, volume, priority and 30ms boundaries (72.136667ms)
+✔ game.html: actual pitch randomizer and seal -> entrance -> phase-up preserve future state (31.046167ms)
+✔ game.html: sound loading absent is not invented as a new player gate (1.071833ms)
+✔ game-easy-test.html: full player state/return/queue at key, volume, priority and 30ms boundaries (63.503958ms)
+✔ game-easy-test.html: actual pitch randomizer and seal -> entrance -> phase-up preserve future state (27.546334ms)
+✔ game-easy-test.html: sound loading absent is not invented as a new player gate (0.788208ms)
+ℹ tests 6
+ℹ suites 0
+ℹ pass 6
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 208.729042

@@ -1,0 +1,74 @@
+game.html: playSample sha=4305df5cdb884bda, seal L29491 sha=439ed1be7ce7ea78
+game-easy-test.html: playSample sha=4305df5cdb884bda, seal L28391 sha=439ed1be7ce7ea78
+✔ 증거: 추출 위치·해시 + 본편/easy 동일 (30.439708ms)
+✔ patch 범위: playSample은 시그니처+1줄, seal은 _nq선언+인수만 (24.891791ms)
+✖ phase2 seal: RNG/now/_sfxLastT 보존, enqueue만 억제 (13.275625ms)
+✖ 대조: 기존 DEDUP(호출 전체 skip)은 RNG/now/_sfxLastT 가 갈라짐 (11.499958ms)
+✖ direct/retry(phase≠2): patched 가 orig 와 완전 동등(enqueue 포함) (12.01275ms)
+✔ phase-up/일반 SFX(4인수 호출): 기존 호출 호환 (15.926917ms)
+✔ 30ms dedupe 직전/동일/직후 + null/volume early-return 동등 (11.980291ms)
+✔ priority 경로: _noEnq 로 unshift 억제, rate 난수는 소비 (11.43725ms)
+ℹ tests 8
+ℹ suites 0
+ℹ pass 5
+ℹ fail 3
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 165.92725
+
+✖ failing tests:
+
+test at tools/team-followup-20261001/SOUND/rng-preserving-regression.cjs:86:1
+✖ phase2 seal: RNG/now/_sfxLastT 보존, enqueue만 억제 (13.275625ms)
+  evalmachine.<anonymous>:14
+  (function(){   SFX.groggy();const _bsf=_bossSfx(si);if(_bsf)playSample(_bsf.howl,.6,_r(_bsf.howlP,.15));else playSample(Math.random()<.5?'boss_howl':'boss_howl1',.6,_r(.8,.15)); // 보스 포효 })();
+                                                                                                                                                                                                  
+  
+  SyntaxError: Unexpected end of input
+      at new Script (node:vm:117:7)
+      at createScript (node:vm:269:10)
+      at Object.runInContext (node:vm:300:10)
+      at run (/Users/fordeargamers/Projects/exoduser-migration-20261001/tools/team-followup-20261001/SOUND/rng-preserving-regression.cjs:59:6)
+      at TestContext.<anonymous> (/Users/fordeargamers/Projects/exoduser-migration-20261001/tools/team-followup-20261001/SOUND/rng-preserving-regression.cjs:88:13)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1201:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:831:18)
+      at Test.postRun (node:internal/test_runner/test:1330:19)
+      at Test.run (node:internal/test_runner/test:1258:12)
+
+test at tools/team-followup-20261001/SOUND/rng-preserving-regression.cjs:97:1
+✖ 대조: 기존 DEDUP(호출 전체 skip)은 RNG/now/_sfxLastT 가 갈라짐 (11.499958ms)
+  evalmachine.<anonymous>:14
+  (function(){   SFX.groggy();const _bsf=_bossSfx(si);if(_bsf)playSample(_bsf.howl,.6,_r(_bsf.howlP,.15));else playSample(Math.random()<.5?'boss_howl':'boss_howl1',.6,_r(.8,.15)); // 보스 포효 })();
+                                                                                                                                                                                                  
+  
+  SyntaxError: Unexpected end of input
+      at new Script (node:vm:117:7)
+      at createScript (node:vm:269:10)
+      at Object.runInContext (node:vm:300:10)
+      at run (/Users/fordeargamers/Projects/exoduser-migration-20261001/tools/team-followup-20261001/SOUND/rng-preserving-regression.cjs:59:6)
+      at TestContext.<anonymous> (/Users/fordeargamers/Projects/exoduser-migration-20261001/tools/team-followup-20261001/SOUND/rng-preserving-regression.cjs:99:13)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1201:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:831:18)
+      at Test.postRun (node:internal/test_runner/test:1330:19)
+      at Test.run (node:internal/test_runner/test:1258:12)
+
+test at tools/team-followup-20261001/SOUND/rng-preserving-regression.cjs:108:1
+✖ direct/retry(phase≠2): patched 가 orig 와 완전 동등(enqueue 포함) (12.01275ms)
+  evalmachine.<anonymous>:14
+  (function(){   SFX.groggy();const _bsf=_bossSfx(si);if(_bsf)playSample(_bsf.howl,.6,_r(_bsf.howlP,.15));else playSample(Math.random()<.5?'boss_howl':'boss_howl1',.6,_r(.8,.15)); // 보스 포효 })();
+                                                                                                                                                                                                  
+  
+  SyntaxError: Unexpected end of input
+      at new Script (node:vm:117:7)
+      at createScript (node:vm:269:10)
+      at Object.runInContext (node:vm:300:10)
+      at run (/Users/fordeargamers/Projects/exoduser-migration-20261001/tools/team-followup-20261001/SOUND/rng-preserving-regression.cjs:59:6)
+      at TestContext.<anonymous> (/Users/fordeargamers/Projects/exoduser-migration-20261001/tools/team-followup-20261001/SOUND/rng-preserving-regression.cjs:111:15)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1201:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:831:18)
+      at Test.postRun (node:internal/test_runner/test:1330:19)
+      at Test.run (node:internal/test_runner/test:1258:12)

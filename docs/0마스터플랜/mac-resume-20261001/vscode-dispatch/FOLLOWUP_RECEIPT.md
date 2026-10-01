@@ -69,3 +69,11 @@ ITEM/BALANCE 최신 팀 MD·완료 결과·최근 실제 채팅을 한 번 읽�
 149경로·4,938,292바이트를 별도 인덱스 WIP `codex/backup-followup-wip-20261001-213023` / `3921dfc98085ee856accdd1795b5efd9a7589e19`로 push하고 원격 SHA를 대조했다. 기준1bb973d0, BUILD loopback 하니스/EPERM 증거/인수 의존 파일과 SOUND 원 제출/root 후보를 포함했다. 캡처 중 파일·HEAD·공용 인덱스 불변 확인. 진행 중 UIUX hotpath/v2 산출2경로는 제외했으며 이후의 편집도 이 시점 백업에 포함되지 않는다. manifest는 `tmp/github-backups/followup-wip-20261001-213023/manifest.json`이다. 빌드/생산 인수 완료가 아닌 복구 사본이다.
 
 그 뒤 기존 SOUND idle/done와 새 RNG 과제 부재를 확인하고 S-11-HOWL-RNG-PRESERVING-CANDIDATE를 공식 attach로 한 번 전달했다.12:30:59.837Z 수신·12:31:04.694Z RNG_TASK Read·12:31:05.498Z 본편 playSample Read를 확인하고 attach를 정상 분리했다. 전체 key/volume/dedupe/timestamp/priority/RNG 실행 순서는 원본과 같고 phase2 seal의 최종 enqueue만 억제하는 별도 후보를 요청했다. 현재 실제 구현 담당은 **UIUX v2와 SOUND RNG 후보**이며 기존 자료는 보존한다. 생산·청취 미완료, BUILD 권한 제한은 유지한다.
+
+## 21:40 이후 제출 검수와 경계 수정 실제 착수
+
+SOUND12:35:18.112Z 제출을 회수했다. 원 테스트의 주석/닫는 코드 줄 결합 오류와 원 patch의 hunk 줄 수 오류를 구분해 보존하고, 수정8검사·실제 playSample/_r를 사용한 독립6그룹(본편/easy 총288조합 및 실제 시퀀스8개)·표준 patch2개 검사를 통과했다. 생산·청취는 미실행이다. [원 실패와 최종 검수](SOUND-rng-result.md).
+
+UIUX v2의15그룹/6VM은 통과했으나 변환 후 Infinity 좌표에서25ms VM timeout을 독립 재현했다. 현행 생산 오류 주장이 아니다. 원 제출15파일을 codex/backup-uiux-v2-review-20261001-213938 / b3ab5be7f0c7a57ec1892cca1d65825549f54d72로 push·원격 대조하고 같은 담당에게 BOUNDARY_TASK를 한 번 배정했다. queue01a0f77a-d0fa-70f3-ae18-e7600ab6b88f, 새 턴12:40:16Z·지시 Read 기록12:40:19Z·원식 Read 기록12:40:25Z exit0 확인. 거대 유한 bucket/정밀도 정체까지 포함해 v1 출력·오류 계약을 유지하는 별도 bounded 후보를 작성 중이다. 재전송0.
+
+이번 주기 native 조회는 잠금 확인 한 번으로 끝냈다. ART/SKILL 수정 지시·ENEMY 미전달, BUILD EPERM, ITEM Chrome 인수·BALANCE 정책 의존성을 유지한다. ITEM ring 후보와 BALANCE contract를 한정 점검했으나 새 독립 결함을 확정하지 않아 반복 과제를 만들지 않았다. 실화면·오디오·처치·FPS는 정적 통과로 완료 처리하지 않는다.

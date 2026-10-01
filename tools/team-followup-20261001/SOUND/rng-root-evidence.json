@@ -1,0 +1,41 @@
+{
+  "at": "2026-10-01T12:42:50.649521+00:00",
+  "tests": [
+    {
+      "file": "rng-preserving-regression.cjs",
+      "exit": 0,
+      "tail": "al L29491 sha=439ed1be7ce7ea78\ngame-easy-test.html: playSample sha=4305df5cdb884bda, seal L28391 sha=439ed1be7ce7ea78\n✔ 증거: 추출 위치·해시 + 본편/easy 동일 (26.840667ms)\n✔ patch 범위: playSample은 시그니처+1줄, seal은 _nq선언+인수만 (23.178583ms)\n✔ phase2 seal: RNG/now/_sfxLastT 보존, enqueue만 억제 (12.764834ms)\n✔ 대조: 기존 DEDUP(호출 전체 skip)은 RNG/now/_sfxLastT 가 갈라짐 (11.182167ms)\n✔ direct/retry(phase≠2): patched 가 orig 와 완전 동등(enqueue 포함) (15.545333ms)\n✔ phase-up/일반 SFX(4인수 호출): 기존 호출 호환 (11.344167ms)\n✔ 30ms dedupe 직전/동일/직후 + null/volume early-return 동등 (11.843ms)\n✔ priority 경로: _noEnq 로 unshift 억제, rate 난수는 소비 (11.25375ms)\nℹ tests 8\nℹ suites 0\nℹ pass 8\nℹ fail 0\nℹ cancelled 0\nℹ skipped 0\nℹ todo 0\nℹ duration_ms 126.951625\n"
+    },
+    {
+      "file": "rng-root-boundary.test.cjs",
+      "exit": 0,
+      "tail": "ll player state/return/queue at key, volume, priority and 30ms boundaries (72.136667ms)\n✔ game.html: actual pitch randomizer and seal -> entrance -> phase-up preserve future state (31.046167ms)\n✔ game.html: sound loading absent is not invented as a new player gate (1.071833ms)\n✔ game-easy-test.html: full player state/return/queue at key, volume, priority and 30ms boundaries (63.503958ms)\n✔ game-easy-test.html: actual pitch randomizer and seal -> entrance -> phase-up preserve future state (27.546334ms)\n✔ game-easy-test.html: sound loading absent is not invented as a new player gate (0.788208ms)\nℹ tests 6\nℹ suites 0\nℹ pass 6\nℹ fail 0\nℹ cancelled 0\nℹ skipped 0\nℹ todo 0\nℹ duration_ms 208.729042\n"
+    },
+    {
+      "patch": "rng-main.context.diff",
+      "exit": 0
+    },
+    {
+      "patch": "rng-easy.context.diff",
+      "exit": 0
+    }
+  ],
+  "hashes": {
+    "game.html": "e5518842324d17fb63da44457e6092af138b4fcfbaf49c1cb03ef791431dc115",
+    "game-easy-test.html": "269411143e093319926948dce42740d83617b2a0e1305cc1180a59a6ecb75e58",
+    "tools/team-followup-20261001/SOUND/rng-corrected-validation.txt": "96abbb8436b4cd23c48bdb34a825a394ca528e48a00eca626ceb96ee33dc41d9",
+    "tools/team-followup-20261001/SOUND/rng-easy.context.diff": "363e33316d250198a58dcd22438b5060f533bba9494db5807566073674beeb35",
+    "tools/team-followup-20261001/SOUND/rng-easy.submitted.diff": "951de82840d090fc3287e7738350e2a6b3a65e6fea25cb064a5ee3b2f3f7c159",
+    "tools/team-followup-20261001/SOUND/rng-main.context.diff": "01fae14cd63473e893c9136e4b4b2fe248d98a837c8f370914134f29f2f081d8",
+    "tools/team-followup-20261001/SOUND/rng-main.submitted.diff": "dce95b19a803db712662484486d24bf465c9577c8e1da2e7c425c26cc4a4d433",
+    "tools/team-followup-20261001/SOUND/rng-preserving-regression.cjs": "c817def3c11ec646920669bb843fa706b0fd0ef2a8266e04633a3d02095a7e8c",
+    "tools/team-followup-20261001/SOUND/rng-preserving-regression.submitted.cjs": "30721c3f2e46656219d44158e61b10a3e666c8da3f2b3c8ddb84945cb2581943",
+    "tools/team-followup-20261001/SOUND/rng-root-boundary.test.cjs": "64e1d19a705724616400abbe374312bd55151a9cf24b629c25c6aa1e7c085f8c",
+    "tools/team-followup-20261001/SOUND/rng-root-validation.txt": "acc6dcd3c5355bb99a9728ef991d686c2e82b044eb7417b70178bc96066d4b25",
+    "tools/team-followup-20261001/SOUND/rng-submission-validation.txt": "8aff80dff690c071c355c32443501f790a15ac008b29895e2a236c17ec438ef6",
+    "tools/team-followup-20261001/SOUND/rng-submission.md": "3a95f11e02916bfd6c16b7b69eb3d5f3ea342e7429c9ad8bf7988f2fae2e6edc"
+  },
+  "productionApplied": false,
+  "runtimeAudioVerdict": "UNKNOWN",
+  "sourceBehaviorScope": "actual playSample and _r; voice/priority dependencies stubbed equally; full arena not executed"
+}

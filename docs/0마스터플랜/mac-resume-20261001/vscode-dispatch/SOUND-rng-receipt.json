@@ -1,0 +1,19 @@
+{
+  "taskId": "S-11-HOWL-RNG-PRESERVING-CANDIDATE",
+  "status": "submitted_root_static_verified_runtime_pending",
+  "receivedAt": "2026-10-01T12:30:59.837Z",
+  "firstReadAt": "2026-10-01T12:31:04.694Z",
+  "completedAt": "2026-10-01T12:35:18.112Z",
+  "timeBasis": "Claude JSONL user/Read/final; root extraction",
+  "rootReviewedAt": "2026-10-01T12:43:34.607081+00:00",
+  "tests": {
+    "correctedSubmission": 8,
+    "independentGroups": 6,
+    "combinations": 288,
+    "sourceSequences": 8,
+    "patchChecks": 2
+  },
+  "originalFailuresPreserved": true,
+  "productionApplied": false,
+  "audioVerdict": "UNKNOWN"
+}

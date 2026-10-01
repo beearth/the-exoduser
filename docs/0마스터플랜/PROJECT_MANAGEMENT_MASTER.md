@@ -572,3 +572,7 @@ UIUX 실제 좌표/bbox 연결5hunk·91회귀를 제출받아 root 재실행·�
 SOUND 원 제출5·root16 정적검사 완료, 본편/easy 최소후보 회수. 내부 재생 RNG/시각 상태·청취가 남아 생산 인수 보류. BUILD 실제 listen EPERM으로0PASS/1FAIL·격리 정리, 우회 재시도0. UIUX v1 원격1bb973d0 인수 후 기존 담당이12:28:17Z v2 hotpath 지시를 받아 실제 읽기 시작했다. ITEM은 Chrome, BALANCE는 프록 정책 의존성을 확인하고 이미 수정된 폭산탄 오류를 중복 배정하지 않았다. 상세 단계는 같은 영수증과 상태표를 따른다.
 
 추가 복구149경로는 원격3921dfc9 대조 완료(진행 중 UIUX v2 제외). 이후 기존 SOUND에 전체 playSample 실행순서·난수를 보존하는 후보를 배정해12:30:59Z 수신/12:31:04Z Read 확인. 실제 진행은 UIUX v2/SOUND이며 나머지 팀은 완료·미전달·명시 게이트를 각각 유지한다.
+
+### 18.29 SOUND 난수 계약 검수와 UIUX 경계 결함 수정
+
+SOUND 원 제출을 보존하고 테스트 조립/patch 형식을 정정한 뒤8+6그룹·288조합·실제 시퀀스8개 및 patch2개를 검증했다. 생산/오디오 인수는 남는다. UIUX v2는15+6검사 통과 뒤 독립 overflow timeout이 발견돼 인수 보류, 원 제출15파일을 원격b3ab5be7로 보존했다. 기존 담당이12:40:16Z 수정 지시 수신, 지시/소스 Read exit0을 확인했다. 새 팀/중복전송/잠금재시도0. [실제 수신·원 실패·검증 범위](mac-resume-20261001/vscode-dispatch/FOLLOWUP_RECEIPT.md).
