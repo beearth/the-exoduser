@@ -19,3 +19,11 @@ ITEM: 실제 d13-deferred-contract-candidate import로 callback1의 clear/배열
 양쪽 HTML의 focus factory에 releaseOssuaryAction을 추가하고 renderOssPanel 시작의 활성요소 포착 및 take/remove 갱신 뒤 호출만 반영했다. 선택 유골·유골함 해제로 활성 행동이 disabled가 되면 invClose로 이동하고, 숨긴 닫기로 복귀할 수 없으면 내부 disabled 잔류만 blur한다. 외부/다른 활성 컨트롤 초점은 강탈하지 않는다. 저장·유골 생성/등록/해제·장착·경제·RNG·CSS/ui-panels 원문은 보존했다.
 
 현재 생산 실제 함수/조합 검수34+기존filter32=66그룹 PASS, 전체 inline12개/importmap2 구문 통과. 유골함34는 renderOssPanel 원문을 실행했고 filter32의 renderOssPanel 대역 한계를 분리한다. 실제 키보드·패드·픽셀·전체게임·실저장은 미검수로 UI-04 전체 완료가 아니다. 과거 filter-only exact-byte 표는 이력이며 현재는 connectOssuary(connectFilter(original))와 정확 일치. root-review/four-candidate-acceptance.mjs ui --production 및 four-filter-adjacent.mjs --production으로 재현한다.
+
+## 후속 배정 및 후보 수정 인수
+
+BUILD queue 01a0f8cc-c9d6-7022-9fc2-8c1e508c43e0, UIUX queue 01a0f8cc-ca20-7330-a4ea-e977d245d78e: 기존 세션에 각1회 배정 후 실제 task cat·소스 읽기 명령 확인. 전송 성공만으로 실행·완료를 대체하지 않는다. followup-dispatch.json에 official turn/명령 증거를 남겼다.
+
+ITEM 담당 완료 후 root 독립 합성 하니스로 두 stale 반례 before2/current1을 확인하고 담당13+인접19를 재실행했다. BALANCE 담당 실제 파일14 하니스를 별도 출력 경로로 파생해 현행 source에서14 PASS, 원본 증거·생산 SHA 보존을 확인했다. 두 후보 모두 생산 미적용이다. BUILD 서버84, UIUX 통합66 검수는 앞 절의 소스 검수이며 native 검수0을 유지한다. 7팀 native 지시 전달0·Read0 상태를 바꾸지 않는다.
+
+2026-10-02 BUILD 후속 완료: 승인 후보와 현행 server.cjs byte 일치, 실제 정적 분기 추출 독립13 PASS를 root가 하니스·증거로 검토했다. root84와 구분하며 추가 생산 수정0, 실제 HTTP/UI 미검수. 근거 production-inm-acceptance-result.md 및 build-owner-final.json.

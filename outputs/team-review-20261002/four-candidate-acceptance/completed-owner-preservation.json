@@ -1,0 +1,106 @@
+{
+  "at": "2026-10-01T18:51:25.609153+00:00",
+  "files": {
+    "tools/team-followup-20261001/BALANCE/shared-mats-file-doc-search.txt": {
+      "sha256": "877d4e70b61d0a902f0ac90c191aa7e1593159d49cf92f3b424b3e5d43363fb1",
+      "bytes": 15038
+    },
+    "tools/team-followup-20261001/BALANCE/shared-mats-file-evidence.json": {
+      "sha256": "5fa1d112a1844f6a9cf9f5f59fd7283f87f1f0a00bedc4e5e6a9a8a09116359a",
+      "bytes": 6963
+    },
+    "tools/team-followup-20261001/BALANCE/shared-mats-file-fixtures/run-H3VR4I/node-main-js/_redMats.json": {
+      "sha256": "8dab2dffea7b00a78f2bc279f81784407ed0ce13282c8d249d65d375ac286138",
+      "bytes": 8
+    },
+    "tools/team-followup-20261001/BALANCE/shared-mats-file-fixtures/run-H3VR4I/node-main-js/_sharedMats.json": {
+      "sha256": "08d6ba4a165d7543c51c84aba09847421d45518652a453a37bb8af0a96bab853",
+      "bytes": 34
+    },
+    "tools/team-followup-20261001/BALANCE/shared-mats-file-fixtures/run-H3VR4I/server-cjs/_redMats.json": {
+      "sha256": "8dab2dffea7b00a78f2bc279f81784407ed0ce13282c8d249d65d375ac286138",
+      "bytes": 8
+    },
+    "tools/team-followup-20261001/BALANCE/shared-mats-file-fixtures/run-H3VR4I/server-cjs/_sharedMats.json": {
+      "sha256": "08d6ba4a165d7543c51c84aba09847421d45518652a453a37bb8af0a96bab853",
+      "bytes": 34
+    },
+    "tools/team-followup-20261001/BALANCE/shared-mats-file-receipt.json": {
+      "sha256": "14ba170886cafa8a70bf22edab8b99553afbf91fba442da90c78005540b98603",
+      "bytes": 841
+    },
+    "tools/team-followup-20261001/BALANCE/shared-mats-file-result.md": {
+      "sha256": "ac73554a7597b55b64be24011137210ff7fe6ae4a5d6c62648f02ee38968fca7",
+      "bytes": 3627
+    },
+    "tools/team-followup-20261001/BALANCE/shared-mats-file-task.md": {
+      "sha256": "ae8be4bcbc8ea042c1379ee2775dd9cb6896dada70b12c360ffee3858f6c81b6",
+      "bytes": 1823
+    },
+    "tools/team-followup-20261001/BALANCE/shared-mats-file-test.mjs": {
+      "sha256": "dd7a7ffbe54b3505095f6fca6a223e7f437bd8a788c6507d780291a4a90dfd46",
+      "bytes": 7013
+    },
+    "tools/team-followup-20261001/BALANCE/shared-mats-file-tests.txt": {
+      "sha256": "5fa1d112a1844f6a9cf9f5f59fd7283f87f1f0a00bedc4e5e6a9a8a09116359a",
+      "bytes": 6963
+    },
+    "tools/team-followup-20261001/BUILD/production-inm-acceptance-check.mjs": {
+      "sha256": "80775a7d0cd7f88792d792ee266b5191805ed8214dd6327828d9a5db7ee543f3",
+      "bytes": 5002
+    },
+    "tools/team-followup-20261001/BUILD/production-inm-acceptance-docs-search.txt": {
+      "sha256": "972f02ddc27038fcdf26575512b877e7d03ddd6a067a89def4918b95a6029d9e",
+      "bytes": 45573
+    },
+    "tools/team-followup-20261001/BUILD/production-inm-acceptance-evidence.json": {
+      "sha256": "993b1546cefa5d849bd74a00b2d618ecd26ce35fa1566a1614e9822ecf9aeb39",
+      "bytes": 5990
+    },
+    "tools/team-followup-20261001/BUILD/production-inm-acceptance-receipt.json": {
+      "sha256": "b3ae01e7fa91ce3a46bc77d9f03bbdf36f5dd705c5d5b300e0b56b1b248af22c",
+      "bytes": 1131
+    },
+    "tools/team-followup-20261001/BUILD/production-inm-acceptance-result.md": {
+      "sha256": "f8d6044273cf8e2d218a37145b8277b14a9f02458a2d5f9d3ef848a4d1cb425c",
+      "bytes": 3253
+    },
+    "tools/team-followup-20261001/BUILD/production-inm-acceptance-status-proof.txt": {
+      "sha256": "96690ae3d0580f7a486ca3656435e5e0dda6aed53ddbb4628d499e8bfc167570",
+      "bytes": 538
+    },
+    "tools/team-followup-20261001/BUILD/production-inm-acceptance-task.md": {
+      "sha256": "3e2ef69bf23ef3d79bf4c2124c602c5bc6903899eb338e37de7b9fd89ff3d8de",
+      "bytes": 1391
+    },
+    "tools/team-followup-20261001/BUILD/production-inm-acceptance-tests.txt": {
+      "sha256": "077cdbea34f1402f160b3430aed14e35f90ad89aac12a566bdd18759dc621b94",
+      "bytes": 155
+    },
+    "tools/team-followup-20261001/ITEM/d13-callback-boundary-check.mjs": {
+      "sha256": "e3627a5f681e60443f1c863e3312959de519ac5d8c0df69df956fb9d4dd71268",
+      "bytes": 7844
+    },
+    "tools/team-followup-20261001/ITEM/d13-callback-boundary-evidence.json": {
+      "sha256": "d2d3b1e496bb83a3105fed08a87368c9b636ac78f2bd928a334798bfb116d2aa",
+      "bytes": 7218
+    },
+    "tools/team-followup-20261001/ITEM/d13-callback-boundary-receipt.json": {
+      "sha256": "90e330514812236251b18b77ecf38834a898da0fa3c16bd328a78a5311eb698d",
+      "bytes": 1747
+    },
+    "tools/team-followup-20261001/ITEM/d13-callback-boundary-result.md": {
+      "sha256": "6ab562c02f1c81d76af2c47867b0b07ad9bf11089e66964d0dd12ccb1f2c27ce",
+      "bytes": 1875
+    },
+    "tools/team-followup-20261001/ITEM/d13-callback-boundary-task.md": {
+      "sha256": "70bc6ad768adcf11c43aedcd9658e2ab128cc95f1541fe1d0eb11a720f29a682",
+      "bytes": 1879
+    },
+    "tools/team-followup-20261001/ITEM/d13-deferred-contract-candidate.mjs": {
+      "sha256": "89ad082ac6c1b62159b0cceeabbd378367e589feff7ccbce1fd08e5035c4a632",
+      "bytes": 3174
+    }
+  },
+  "status": "Completed candidate artifacts; ITEM/BALANCE production unapplied, BUILD source acceptance only"
+}

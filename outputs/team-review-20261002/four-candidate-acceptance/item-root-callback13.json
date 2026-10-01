@@ -1,0 +1,121 @@
+{
+  "utc": "2026-10-01T18:49:39.331Z",
+  "beforeImportRed": [
+    {
+      "mode": "clear",
+      "callbacks": 2,
+      "expected": 1,
+      "kills": 2
+    },
+    {
+      "mode": "replace",
+      "callbacks": 2,
+      "expected": 1,
+      "kills": 2
+    }
+  ],
+  "currentPass": 13,
+  "fail": 0,
+  "rows": [
+    {
+      "name": "root before 고정 반례/current 두 전환 PASS",
+      "status": "PASS"
+    },
+    {
+      "name": "clear 후 새 등록 상태 보존",
+      "status": "PASS"
+    },
+    {
+      "name": "replace 후 새 등록 상태 보존",
+      "status": "PASS"
+    },
+    {
+      "name": "같은 배열 callback 신규 등록은 삭제0/다음 pass 소비",
+      "status": "PASS"
+    },
+    {
+      "name": "callback 재진입은 원 pass 실행 전 거부/외부큐 보존",
+      "status": "PASS"
+    },
+    {
+      "name": "callback 예외만 있으면 기존 FIFO 계속/예외 식별",
+      "status": "PASS"
+    },
+    {
+      "name": "clear 후 callback 예외는 stale 중단",
+      "status": "PASS"
+    },
+    {
+      "name": "replace 후 callback 예외는 stale 중단",
+      "status": "PASS"
+    },
+    {
+      "name": "원 pass 안 clear→새 등록을 종료 guard가 지우지 않음",
+      "status": "PASS"
+    },
+    {
+      "name": "원 pass 배열 교체→새 등록을 종료 guard가 지우지 않음",
+      "status": "PASS"
+    },
+    {
+      "name": "before/current 원 피해/상태·순서·RNG 동일",
+      "status": "PASS"
+    },
+    {
+      "name": "동기 this/인수/반환/원 예외·호출1 보존",
+      "status": "PASS"
+    },
+    {
+      "name": "기본 비활성 원 pass만 실행/callback0",
+      "status": "PASS"
+    }
+  ],
+  "beforePath": "outputs/team-review-20261002/four-candidate-acceptance/d13-deferred-contract-candidate.mjs.before",
+  "beforeSha256": "43ed003c5270621601306512f85d45025f540ede7252eb55bdb67556c288dd75",
+  "currentSha256": "89ad082ac6c1b62159b0cceeabbd378367e589feff7ccbce1fd08e5035c4a632",
+  "sourceEvidence": {
+    "gameSha256": "30ae8544524d7cd710383ebd10f4911bea3247e90b18a46c51c253e73ce9ba3f",
+    "functions": [
+      {
+        "name": "activateSpikeTrap",
+        "sha256": "f5d9f41ee12c8f51a0d8a1b116588a6133a3bc801aec73bb0532d3c02fc2dd19",
+        "line": 43997
+      },
+      {
+        "name": "hurtE",
+        "sha256": "a8578d764819733816dce0ed677f5d2e2d4bae35040425c9f1762b7fd69771f2",
+        "line": 40713
+      },
+      {
+        "name": "update",
+        "sha256": "c37aa75077f5670d8f4af076f2570f75471d7f0bf5c32b6c1b43185749045a1c",
+        "line": 30857
+      },
+      {
+        "name": "checkRooms",
+        "sha256": "98bf9b1a8b413c7f4354964c03df8929433e1f5af1e0f508b97408341a79dab0",
+        "line": 40379
+      }
+    ],
+    "zoneBlock": {
+      "sha256": "a78c383ab58ccdd9bf67893ed3b742cdcd3c82a21f94b539486a2a075c868c11",
+      "bytes": 22471,
+      "line": 35851
+    },
+    "callsite": {
+      "original": "hurtE(e,fz.dmg,Math.atan2(e.y-fz.y,e.x-fz.x),true,{dot:true,shieldHit:true,_lessonAttack:'spikeTrap'},EL.P)",
+      "replacement": "review.invokeDot(fz,hurtE,undefined,[e,fz.dmg,Math.atan2(e.y-fz.y,e.x-fz.x),true,{dot:true,shieldHit:true,_lessonAttack:'spikeTrap'},EL.P])",
+      "unchangedArgumentExpressions": [
+        "e",
+        "fz.dmg",
+        "Math.atan2(e.y-fz.y,e.x-fz.x)",
+        "true",
+        "{dot:true,shieldHit:true,_lessonAttack:'spikeTrap'}",
+        "EL.P"
+      ],
+      "sha256": "52e3481541923fcced1e047d7c2dac8cac90ab859615b3909e576b633e72fc93"
+    }
+  },
+  "productionApplied": false,
+  "fixtureScope": "기존 실제 full hurtE/장판블록 fixture 재사용. 새 child payload/밸런스 결정0"
+}

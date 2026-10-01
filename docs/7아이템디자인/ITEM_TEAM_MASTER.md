@@ -203,3 +203,7 @@ root가 명시 reviewOnly 설치/해제 후보23그룹을 실제 port·양쪽 mk
 | 미결 | 자식 피해/슬로우/출혈 구현·전역 cap·겹침·저장롤 스키마·실제 전환/연쇄/보스·성능·생산 연결 미확정 |
 
 소유 근거 `d13-deferred-contract-evidence.json`에 원블록/호출부 원문과4함수 SHA, 재실행 `d13-deferred-contract-check.mjs`, 한계 `d13-deferred-contract-result.md`. D17/CSP 반복0, 타팀 checkout/초안 보존. root 독립검수·백업 대기다.
+
+### 2026-10-02 D13 callback 경계 root 인수
+
+첫 callback의 clear()/배열 교체 뒤 두 번째 stale callback이 실행되는 두 반례를 root가 실제 후보 import로 독립 재현했다. callback마다 epoch·배열 identity를 재검사하고 drain 재진입을 막는 담당 최소 수정 후 두 반례는 callbacks 2→1이다. 담당 13+기존19 검사를 root도 재실행해 32 PASS를 확인했다. 전환 뒤 신규 등록 보존, 원 피해·RNG·기본 비활성은 유지한다. 생산 연결0, 자식 수치/cap/중첩/저장 계약 및 native 검수는 여전히 미결이다. 근거: outputs/team-review-20261002/four-candidate-acceptance/item-root-independent.json, item-root-callback13.json, item-root-adjacent19.json.

@@ -1,0 +1,32 @@
+{
+  "at": "2026-10-01T18:49:59.288Z",
+  "rows": [
+    {
+      "name": "before",
+      "transition": "clear",
+      "callbacks": 2,
+      "expected": 2
+    },
+    {
+      "name": "before",
+      "transition": "replace",
+      "callbacks": 2,
+      "expected": 2
+    },
+    {
+      "name": "current",
+      "transition": "clear",
+      "callbacks": 1,
+      "expected": 1
+    },
+    {
+      "name": "current",
+      "transition": "replace",
+      "callbacks": 1,
+      "expected": 1
+    }
+  ],
+  "beforeSha256": "43ed003c5270621601306512f85d45025f540ede7252eb55bdb67556c288dd75",
+  "currentSha256": "89ad082ac6c1b62159b0cceeabbd378367e589feff7ccbce1fd08e5035c4a632",
+  "scope": "Independent synthetic callback boundary, actual candidate import; production0"
+}

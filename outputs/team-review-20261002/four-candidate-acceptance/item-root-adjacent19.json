@@ -1,0 +1,159 @@
+{
+  "utc": "2026-10-01T18:49:59.663Z",
+  "pass": 19,
+  "fail": 0,
+  "rows": [
+    {
+      "name": "즉시 push 실제 전체 루프 같은 tick 처리 재현",
+      "status": "PASS"
+    },
+    {
+      "name": "지연 callback 압축 종료후/같은 tick child 미처리",
+      "status": "PASS"
+    },
+    {
+      "name": "원 피해·배열·순서·RNG 추가0 대조",
+      "status": "PASS"
+    },
+    {
+      "name": "기본/한쪽 opt-in callback0",
+      "status": "PASS"
+    },
+    {
+      "name": "기본/한쪽 opt-in callback0",
+      "status": "PASS"
+    },
+    {
+      "name": "기본/한쪽 opt-in callback0",
+      "status": "PASS"
+    },
+    {
+      "name": "실제 합체 literal/원본태그 거부",
+      "status": "PASS"
+    },
+    {
+      "name": "자식/불명/직접 DOT 불발",
+      "status": "PASS"
+    },
+    {
+      "name": "출처 재분류/합체후 변형 차단",
+      "status": "PASS"
+    },
+    {
+      "name": "동일 원본 시전 다수 처치 최대1/FIFO 신규시전",
+      "status": "PASS"
+    },
+    {
+      "name": "실제 압축 만료·원배열 identity·기존순서",
+      "status": "PASS"
+    },
+    {
+      "name": "hurtE 실패/전체 pass 실패시 callback0",
+      "status": "PASS"
+    },
+    {
+      "name": "callback 실패는 원 damage/반환에 영향0",
+      "status": "PASS"
+    },
+    {
+      "name": "실제 death 의존 checkRooms 대역에서 clear/배열교체 폐기",
+      "status": "PASS"
+    },
+    {
+      "name": "생성/피해/pass this 인수 반환·예외·1회",
+      "status": "PASS"
+    },
+    {
+      "name": "소스 루프 전체와 단1개 호출부 치환",
+      "status": "PASS"
+    },
+    {
+      "name": "실제 비처치/쉴드흡수/부활은 callback0",
+      "status": "PASS"
+    },
+    {
+      "name": "원본2시전 실제 거리분리/FIFO 후속 callback",
+      "status": "PASS"
+    },
+    {
+      "name": "큐등록 후 실제 루프 particle 실패면 callback 폐기",
+      "status": "PASS"
+    }
+  ],
+  "observations": {
+    "immediate": {
+      "childT": 1,
+      "childTickTimer": 1,
+      "rngCalls": 9,
+      "damageCalls": 1,
+      "hp": -9,
+      "arrayIdentity": true,
+      "claim": "같은 tick 순회·타이머/RNG 처리. 자식 틱피해 발생 주장은 아님"
+    },
+    "deferred": {
+      "childT": 0,
+      "childTickTimer": 0,
+      "rngCalls": 8,
+      "hp": -9,
+      "arrayIdentity": true
+    },
+    "noPayload": {
+      "rngCalls": 8,
+      "hp": -9,
+      "kills": 1,
+      "callbackCount": 1
+    }
+  },
+  "sourceEvidence": {
+    "gameSha256": "30ae8544524d7cd710383ebd10f4911bea3247e90b18a46c51c253e73ce9ba3f",
+    "functions": [
+      {
+        "name": "activateSpikeTrap",
+        "sha256": "f5d9f41ee12c8f51a0d8a1b116588a6133a3bc801aec73bb0532d3c02fc2dd19",
+        "line": 43997
+      },
+      {
+        "name": "hurtE",
+        "sha256": "a8578d764819733816dce0ed677f5d2e2d4bae35040425c9f1762b7fd69771f2",
+        "line": 40713
+      },
+      {
+        "name": "update",
+        "sha256": "c37aa75077f5670d8f4af076f2570f75471d7f0bf5c32b6c1b43185749045a1c",
+        "line": 30857
+      },
+      {
+        "name": "checkRooms",
+        "sha256": "98bf9b1a8b413c7f4354964c03df8929433e1f5af1e0f508b97408341a79dab0",
+        "line": 40379
+      }
+    ],
+    "zoneBlock": {
+      "sha256": "a78c383ab58ccdd9bf67893ed3b742cdcd3c82a21f94b539486a2a075c868c11",
+      "bytes": 22471,
+      "line": 35851,
+      "text": "if(G._fireZones&&G._fireZones.length>0){\n    // 겹침 캡 리셋: darkPillar/spikeTrap 장판이 실재할 때만 전 적 카운터 초기화 (O(적수) 매프레임 낭비 제거)\n    let _hasCapZone=false;\n    for(let _czi=0;_czi<G._fireZones.length;_czi++){const _ct=G._fireZones[_czi].type;if(_ct==='darkPillar'||_ct==='spikeTrap'){_hasCapZone=true;break}}\n    if(_hasCapZone){for(let _ri=0;_ri<ens.length;_ri++){ens[_ri]._dpHitCap=0;ens[_ri]._stHitCap=0}}\n    let _fzW=0;for(let _fzi=0;_fzi<G._fireZones.length;_fzi++){\n      const fz=G._fireZones[_fzi];\n      fz.t+=sp;\n      // ═══ 부활의 영역 — 플레이어 버프 (부활력 체크는 사망 시) ═══\n      if(fz.type==='weakRev'){\n        if(fz.t>=fz.maxT){continue}\n        if(Math.random()>.75){\n          const _wa=Math.random()*Math.PI*2,_wd=Math.random()*fz.r;\n          poolPart(fz.x+Math.cos(_wa)*_wd,fz.y+Math.sin(_wa)*_wd,\n            (Math.random()-.5)*.5,-0.6-Math.random()*1,\n            Math.random()>.5?'#ff4488':'#ff88aa',1+Math.random()*1.5,10+Math.random()*8);\n        }\n        G._fireZones[_fzW++]=fz;continue;\n      }\n      // ═══ 디버프 영역 (파쇄/침식/관통) — 적 디버프 적용 ═══\n      if(fz.type==='weakPhys'||fz.type==='weakMag'||fz.type==='weakPj'){\n        if(fz.t>=fz.maxT){continue}\n        // 6프레임마다 범위 내 적에게 디버프 태그\n        fz._wTick=(fz._wTick||0)+sp;\n        if(fz._wTick>=6){fz._wTick=0;\n          const _wNe=shQuery(fz.x,fz.y,fz.r);\n          const _wPct=0.10+((fz.lv||1)-1)*0.01; // 10% + Lv당 1%\n          for(let _wi=0;_wi<_wNe.length;_wi++){\n            const e=_wNe[_wi];if(!e.alive)continue;\n            if(dst(fz.x,fz.y,e.x,e.y)>fz.r)continue;\n            if(fz.type==='weakPhys')e._weakPhys=Math.max(e._weakPhys||0,_wPct);\n            else if(fz.type==='weakMag')e._weakMag=Math.max(e._weakMag||0,_wPct);\n            else e._weakPj=Math.max(e._weakPj||0,_wPct);\n            e._weakT=12; // 12프레임(0.2초) 후 자동 해제\n          }\n        }\n        // 파티클\n        if(Math.random()>.7){\n          const _wa=Math.random()*Math.PI*2,_wd=Math.random()*fz.r;\n          const _wCol=fz.type==='weakPhys'?'#ff6644':fz.type==='weakMag'?'#aa66ff':'#44aaff';\n          poolPart(fz.x+Math.cos(_wa)*_wd,fz.y+Math.sin(_wa)*_wd,\n            (Math.random()-.5)*.6,-0.5-Math.random()*1,\n            _wCol,1+Math.random()*1.5,10+Math.random()*8);\n        }\n        G._fireZones[_fzW++]=fz;continue;\n      }\n      // ═══ 신의영역: 보호돔 (밖→안 차단) + 탄막 무효 ═══\n      if(fz.type==='maliceDome'){\n        if(fz.t>=fz.maxT){continue}\n        // 적 강제 밀어내기 (보스 무시) — 좌표 즉시 경계 밖으로 + 속도 초기화\n        const _mdNe=shQuery(fz.x,fz.y,fz.r+40);\n        for(let _mi=0;_mi<_mdNe.length;_mi++){const e=_mdNe[_mi];if(!e.alive)continue;\n          if(e.ib)continue;\n          const _ed=dst(e.x,e.y,fz.x,fz.y);if(_ed>=fz.r)continue;\n          const _ea=Math.atan2(e.y-fz.y,e.x-fz.x);\n          e.x=fz.x+Math.cos(_ea)*(fz.r+8);e.y=fz.y+Math.sin(_ea)*(fz.r+8);\n          e.vx=0;e.vy=0;e.kb.x=Math.cos(_ea)*6;e.kb.y=Math.sin(_ea)*6;\n        }\n        // 파티클 (금색)\n        if(Math.random()>.7){const _mda=Math.random()*Math.PI*2;\n          poolPart(fz.x+Math.cos(_mda)*fz.r,fz.y+Math.sin(_mda)*fz.r,(Math.random()-.5)*.5,-0.5-Math.random(),'#ffd700',1.5+Math.random()*2,10+Math.random()*8)}\n        G._fireZones[_fzW++]=fz;continue}\n      if(fz.type==='holyDome'||fz.type==='holyPrison'){\n        if(fz.t>=fz.maxT){continue}else if(fz.type==='holyDome'&&Math.random()>.75){\n          const _hda=Math.random()*Math.PI*2,_hdd=Math.random()*fz.r;\n          poolPart(fz.x+Math.cos(_hda)*_hdd,fz.y+Math.sin(_hda)*_hdd,\n            (Math.random()-.5)*.8,-0.8-Math.random()*1.2,\n            '#b6ff54',1+Math.random()*2,12+Math.random()*10);\n        }G._fireZones[_fzW++]=fz;continue} // 돔/감옥은 DOT 없음\n      // ═══ 아이스스톰: 빙결 저항 -50% + 빙결 게이지 급속 축적 ═══\n      if(fz.type==='iceStorm'){\n        fz._iceTick=(fz._iceTick||0)+sp;\n        if(fz._iceTick>=6){fz._iceTick=0;\n          const _isNe=shQuery(fz.x,fz.y,fz.r);\n          const _isLv=fz.lv||1;\n          for(let _isi=0;_isi<_isNe.length;_isi++){\n            const e=_isNe[_isi];if(!e.alive)continue;\n            if(dst(fz.x,fz.y,e.x,e.y)>fz.r)continue;\n            // 빙결 저항 디버프\n            e._iceResDown=Math.max(e._iceResDown||0,30);\n            // 빙결 게이지 강제 축적\n            if((e._frozen||0)<=0&&(e._frozenImmune||0)<=0){\n              if(!e._freezeMax)e._freezeMax=e.ib?500:100;\n              if(!e._freezeGauge)e._freezeGauge=0;\n              const _isAdd=e.ib?(15+_isLv*2):(35+_isLv*4);\n              e._freezeGauge=Math.min(e._freezeMax,e._freezeGauge+_isAdd);\n              if(e._freezeGauge>=e._freezeMax){\n                e._frozen=180;e._freezeGauge=0;\n                addTxt(e.x,e.y-25,_T('❄프리즌!'),'#44ddff',50);\n                addParts(e.x,e.y,'#88eeff',12);void 0;\n              }\n            }\n            // 감속\n            e._webSlow=Math.max(e._webSlow||0,25);\n            e.flashT=4;\n          }\n        }\n        // 파티클 (간헐적 눈/얼음)\n        if(Math.random()>.6){\n          const _isa=Math.random()*Math.PI*2,_isd=Math.random()*fz.r;\n          poolPart(fz.x+Math.cos(_isa)*_isd,fz.y+Math.sin(_isa)*_isd,\n            (Math.random()-.5)*2,-1-Math.random()*2,\n            Math.random()>.5?'#aaeeff':'#ffffff',1+Math.random()*2,8+Math.random()*6);\n        }\n        if(fz.t>=fz.maxT){continue};G._fireZones[_fzW++]=fz;continue;\n      }\n      // ═══ 폭풍소환 소용돌이: 적 흡인 + DOT ═══\n      if(fz.type==='vortex'||fz.type==='iceVortex'){\n        const _vtLv=fz.lv||1;\n        const _vtPullBase=2.0+_vtLv*0.1; // lv1=2.1, lv20=4.0 (+0.1/lv)\n        // 매 프레임 흡인 (중심에 가까울수록 강하게)\n        const _vtNe=shQuery(fz.x,fz.y,fz.r+30);\n        for(let _vi=0;_vi<_vtNe.length;_vi++){\n          const e=_vtNe[_vi];if(!e.alive)continue;\n          const d=dst(fz.x,fz.y,e.x,e.y);if(d>fz.r||d<5)continue;\n          const ang=Math.atan2(fz.y-e.y,fz.x-e.x);\n          const pullMul=(1-d/fz.r*0.6)*_vtPullBase*sp;\n          e.x+=Math.cos(ang)*pullMul;e.y+=Math.sin(ang)*pullMul;\n          e._webSlow=Math.max(e._webSlow||0,15);\n        }\n        // DOT 틱 (15프레임마다)\n        if(~~(fz.t)%15<~~(sp)+1){\n          for(let _vi=0;_vi<_vtNe.length;_vi++){\n            const e=_vtNe[_vi];if(!e.alive)continue;\n            if(dst(fz.x,fz.y,e.x,e.y)>fz.r)continue;\n            if(fz.type==='iceVortex'){\n              hurtE(e,~~(fz.dmg*.15),Math.atan2(e.y-fz.y,e.x-fz.x),true,{dot:true,shieldHit:true},EL.I);\n              e._webSlow=Math.max(e._webSlow||0,25);\n              if((e._frozen||0)<=0&&(e._frozenImmune||0)<=0){\n                if(!e._freezeMax)e._freezeMax=e.ib?500:100;\n                if(!e._freezeGauge)e._freezeGauge=0;\n                e._freezeGauge=Math.min(e._freezeMax,e._freezeGauge+(e.ib?10:25));\n                if(e._freezeGauge>=e._freezeMax){e._frozen=180;e._freezeGauge=0;\n                  addTxt(e.x,e.y-25,_T('❄프리즌!'),'#44ddff',50);addParts(e.x,e.y,'#88eeff',12);void 0}\n              }\n            }else{\n              hurtE(e,~~(fz.dmg*.15),Math.atan2(e.y-fz.y,e.x-fz.x),true,{dot:true,shieldHit:true},EL.D);\n              e._webSlow=Math.max(e._webSlow||0,20);\n            }\n          }\n        }\n        // 소용돌이 파티클 (회전하며 중심으로 수렴)\n        if(Math.random()>.4){\n          const _vta=Math.random()*Math.PI*2,_vtd=Math.random()*fz.r;\n          const _vtIce=fz.type==='iceVortex';\n          const _vtCol=_vtIce?(Math.random()>.5?'#aaeeff':'#66ccff'):(Math.random()>.5?'#cc88ff':'#8844dd');\n          const _tanAng=_vta+Math.PI/2;const _radAng=_vta+Math.PI;\n          poolPart(fz.x+Math.cos(_vta)*_vtd,fz.y+Math.sin(_vta)*_vtd,\n            Math.cos(_tanAng)*3+Math.cos(_radAng)*1.5,Math.sin(_tanAng)*3+Math.sin(_radAng)*1.5,\n            _vtCol,1.5+Math.random()*2.5,10+Math.random()*8);\n          // 상승 파티클\n          if(Math.random()>.6){\n            poolPart(fz.x+(Math.random()-.5)*fz.r*.6,fz.y+(Math.random()-.5)*fz.r*.6,\n              (Math.random()-.5)*2,-2-Math.random()*3,\n              _vtIce?'#ddf4ff':'#eeddff',1+Math.random()*1.5,5+Math.random()*5);\n          }\n        }\n        if(fz.t>=fz.maxT){continue};G._fireZones[_fzW++]=fz;continue;\n      }\n      // ═══ 지옥진: 플레이어 추적 화염오라 + 화상 DOT ═══\n      if(fz.type==='fireAura'){\n        if(fz.follow){fz.x=P.x;fz.y=P.y}\n        if(fz.t>=fz.maxT){continue}\n        fz._tickCd=(fz._tickCd||0)+sp;\n        if(fz._tickCd>=12){\n          fz._tickCd=0;\n          const _faNe=shQuery(fz.x,fz.y,fz.r+20);\n          for(let _fi=0;_fi<_faNe.length;_fi++){\n            const e=_faNe[_fi];if(!e.alive)continue;\n            if(dst(fz.x,fz.y,e.x,e.y)>fz.r+e.r)continue;\n            const ang=Math.atan2(e.y-fz.y,e.x-fz.x);\n            hurtE(e,~~(fz.dmg*0.02),ang,true,{dot:true,shieldHit:true},EL.F); // 틱당 2%\n            // 화상 부여 (5초)\n            e.burn=1;e.burnT=Math.max(e.burnT||0,300);e.burnStk=Math.min(5,(e.burnStk||0)+1);\n            if((e.burnStk||0)<10)e._burnPool=(e._burnPool||0)+pDotPool()*fz.dmg*0.01;\n          }\n        }\n        if(Math.random()>.5){\n          const _fpa=Math.random()*Math.PI*2,_fpd=Math.random()*fz.r;\n          poolPart(fz.x+Math.cos(_fpa)*_fpd,fz.y+Math.sin(_fpa)*_fpd,\n            (Math.random()-.5)*2,-1-Math.random()*2,\n            Math.random()>.5?'#ff6600':'#ffaa00',2+Math.random()*2,8+Math.random()*6);\n        }\n        G._fireZones[_fzW++]=fz;continue;\n      }\n      // ═══ 참회: 8방향 마법진 회전 쐐기 데미지 ═══\n      if(fz.type==='hellRay'){\n        fz.ang=(fz.ang||0)+Math.PI*2/fz.maxT*sp; // 지속시간에 1회전\n        // 8방향 팔 판정 — 45도 간격, 폭 40px\n        if(~~(fz.t)%10<~~(sp)+1){\n          const _hrNe=shQuery(fz.x,fz.y,fz.r+20);\n          for(let _hi=0;_hi<_hrNe.length;_hi++){\n            const e=_hrNe[_hi];if(!e.alive||e._hrHitT===~~(fz.t))continue;\n            const _dx=e.x-fz.x,_dy=e.y-fz.y;\n            const _ed=Math.sqrt(_dx*_dx+_dy*_dy);\n            if(_ed>fz.r+e.r)continue;\n            // 8팔 중 하나와 정렬되면 히트\n            let _hrHit=false;\n            for(let _ai=0;_ai<4;_ai++){\n              const _a=fz.ang+_ai*Math.PI*.25;\n              const _c=Math.cos(_a),_s=Math.sin(_a);\n              const _perp=Math.abs(-_dx*_s+_dy*_c);\n              if(_perp<=40+e.r){_hrHit=true;break}\n            }\n            if(!_hrHit)continue;\n            e._hrHitT=~~(fz.t);\n            hurtE(e,fz.dmg,0,true,{shieldHit:true,noKB:true},fz.el);\n          }\n        }\n        // 쐐기 팔 파티클\n        if(Math.random()>.5){\n          const _ai=~~(Math.random()*2);const _a=fz.ang+_ai*Math.PI*.5;\n          const _hrd=(Math.random()*2-1)*fz.r;\n          poolPart(fz.x+Math.cos(_a)*_hrd,fz.y+Math.sin(_a)*_hrd,\n            (Math.random()-.5)*2,-1-Math.random()*2,\n            Math.random()>.5?'#ffd700':'#fff8dc',1.5+Math.random()*2,8+Math.random()*6);\n        }\n        if(fz.t>=fz.maxT){continue};G._fireZones[_fzW++]=fz;continue;\n      }\n      // DOT 틱 — 타이머 기반 (fps 무관, 정확한 간격)\n      const _fzTick=fz.type==='dim'?60:fz.type==='dimPoison'?20:fz.type==='dimLightning'?20:fz.type==='shockField'?20:fz.type==='spikeTrap'?25:(fz.type==='storm'||fz.type==='boneStorm')?18:fz.type==='darkPillar'?30:fz.type==='assaultFlame'?20:fz.type==='fireTrail'?15:30;\n      if(!fz._tickTimer)fz._tickTimer=0;\n      fz._tickTimer+=sp;\n      if(fz._tickTimer>=_fzTick){fz._tickTimer-=_fzTick;\n        // 동일 타입 존 겹침 캡: darkPillar/spikeTrap은 적당 최대 2존까지만 히트\n        const _fzCapType=fz.type==='darkPillar'||fz.type==='spikeTrap';\n        const _fzNe=shQuery(fz.x,fz.y,fz.r); // 깊이 버퍼 — .slice() 제거\n        _shBufI++;\n        for(let _fei=0;_fei<_fzNe.length;_fei++){\n          const e=_fzNe[_fei];if(!e.alive)continue;\n          const _fed=dst(fz.x,fz.y,e.x,e.y);if(_fed>fz.r)continue;\n          // 겹침 캡 체크: 이번 틱에 이 적이 같은 타입 존에서 이미 2회 피격됐으면 스킵\n          if(_fzCapType){\n            const _capKey=fz.type==='darkPillar'?'_dpHitCap':'_stHitCap';\n            if(!e[_capKey])e[_capKey]=0;\n            if(e[_capKey]>=1)continue;\n            e[_capKey]++;\n          }\n          if(fz.type==='dim'){\n            const _dimDot=~~(e.mhp*(fz.hpPct||0.05));\n            e.hp-=Math.max(1,_dimDot);\n            e.bleedT=Math.max(e.bleedT||0,300);e.bleedStk=Math.min(10,(e.bleedStk||0)+1);if((e.bleedStk||0)<10)e._bleedPool=(e._bleedPool||0)+pDotPool()*_dimDot*0.10;\n            e.poisonT=Math.max(e.poisonT||0,300);e.poisonStk=Math.min(10,(e.poisonStk||0)+1);if((e.poisonStk||0)<10)e._poisonPool=(e._poisonPool||0)+pDotPool()*_dimDot*0.10;\n            e.bleed=1;e.poison=1;\n            e.flashT=6;\n            if(e.hp<=0){e.hp=0;atkTicketRelease(e);e.alive=false;G.kills++;G._stageKills=(G._stageKills||0)+1;_regKill(e);e.deathAng=Math.atan2(e.y-fz.y,e.x-fz.x);deathFX(e.x,e.y,e.r,e.col,!!e.ib,false,e.etype);_addCorpse(e,e.deathAng,2)}\n          }else if(fz.type==='dimPoison'){\n            hurtE(e,fz.dmg,Math.atan2(e.y-fz.y,e.x-fz.x),true,{dot:true,shieldHit:true},EL.D);\n            e.poisonT=Math.max(e.poisonT||0,300);e.poisonStk=Math.min(10,(e.poisonStk||0)+1);if((e.poisonStk||0)<10)e._poisonPool=(e._poisonPool||0)+pDotPool()*fz.dmg*0.10;e.poison=1;\n            e._webSlow=Math.max(e._webSlow||0,15);\n          }else if(fz.type==='storm'){\n            // 악의폭풍: 번개 마법 DOT + 감속 (쉴드 적용)\n            hurtE(e,fz.dmg,Math.atan2(e.y-fz.y,e.x-fz.x),true,{dot:true,shieldHit:true},fz.el||EL.L);\n            e._webSlow=Math.max(e._webSlow||0,20);\n          }else if(fz.type==='darkPillar'){\n            // 악의기둥: 암흑 마법 DOT + 감속 (쉴드 적용)\n            hurtE(e,fz.dmg,Math.atan2(e.y-fz.y,e.x-fz.x),true,{dot:true,shieldHit:true},EL.D);\n            e._webSlow=Math.max(e._webSlow||0,25);\n          }else if(fz.type==='boneStorm'){\n            // 해골번개: 암흑 마법 DOT + 감속 (쉴드 적용)\n            hurtE(e,fz.dmg,Math.atan2(e.y-fz.y,e.x-fz.x),true,{dot:true,shieldHit:true},EL.D);\n            e._webSlow=Math.max(e._webSlow||0,25);\n          }else if(fz.type==='dimLightning'){\n            // 사슬이동:강화 번개길: 번개 마법 DOT + 감전 (쉴드 적용)\n            hurtE(e,fz.dmg,Math.atan2(e.y-fz.y,e.x-fz.x),true,{dot:true,shieldHit:true},EL.L);\n            e.shockT=Math.max(e.shockT||0,60);\n          }else if(fz.type==='shockField'){\n            // 전격이동 전류장판: 번개 틱뎀 + 전류 방어력 감소 (마법기반 — 에너지쉴드 적용)\n            hurtE(e,fz.dmg,Math.atan2(e.y-fz.y,e.x-fz.x),true,{dot:true,shieldHit:true},EL.L);\n            e._shockDR=Math.max(e._shockDR||0,fz.defRed||.10); // 방어력 감소 디버프\n            e._shockDRT=60; // 장판 밖으로 나가도 1초 유지\n          }else if(fz.type==='spikeTrap'){\n            // 가시덫: 물리 DOT + 슬로우(기본 91%, Lv당+2%p, 최대95%) + 출혈\n            if(Math.random()<.3)playSampleAt('melee_hit1',.25,_r(1.2,.15),e.x,e.y);\n            hurtE(e,fz.dmg,Math.atan2(e.y-fz.y,e.x-fz.x),true,{dot:true,shieldHit:true,_lessonAttack:'spikeTrap'},EL.P);\n            e.bleedT=Math.max(e.bleedT||0,300);e.bleedStk=Math.min(10,(e.bleedStk||0)+1);if((e.bleedStk||0)<10)e._bleedPool=(e._bleedPool||0)+pDotPool()*fz.dmg*0.10;e.bleed=1;\n            if(!e._spikeSlow||e._spikeSlow<=0)addTxt(e.x,e.y-15,'🌿'+~~(_spikeTrapSlowPct(fz.lv)*100)+'%','#66aa44',25);\n            e._spikeSlow=Math.max(e._spikeSlow||0,90); // 1.5초 갱신\n            e._spikeSlowLv=fz.lv||1;\n          }else if(fz.type==='assaultFlame'){\n            // 기동칼날개 불바닥: 화염 마법 DOT + 화상 (쉴드 적용)\n            hurtE(e,fz.dmg,Math.atan2(e.y-fz.y,e.x-fz.x),true,{dot:true,shieldHit:true},EL.F);\n            e.burnT=180;e.burnStk=Math.min(10,(e.burnStk||0)+1);if((e.burnStk||0)<10)e._burnPool=(e._burnPool||0)+pDotPool()*fz.dmg*0.10;\n          }else if(fz.type==='fireTrail'){\n            // 사슬기동:화염 경로 불길: 화염 마법 DOT + 화상 + 감속 (쉴드 적용)\n            hurtE(e,fz.dmg,Math.atan2(e.y-fz.y,e.x-fz.x),true,{dot:true,shieldHit:true},EL.F);\n            e.burnT=Math.max(e.burnT||0,180);e.burnStk=Math.min(10,(e.burnStk||0)+1);if((e.burnStk||0)<10)e._burnPool=(e._burnPool||0)+pDotPool()*fz.dmg*0.10;\n            e._webSlow=Math.max(e._webSlow||0,20);\n          }else{\n            hurtE(e,fz.dmg,Math.atan2(e.y-fz.y,e.x-fz.x),false,{},EL.F);\n            e.burnT=180;e.burnStk=Math.min(10,(e.burnStk||0)+1);if((e.burnStk||0)<10)e._burnPool=(e._burnPool||0)+pDotPool()*fz.dmg*0.10;\n          }\n        }\n        _shBufI--;\n      }\n      // 파티클 (간헐적)\n      if(Math.random()>.7){\n        const _fza=Math.random()*Math.PI*2;const _fzd=Math.random()*fz.r;\n        if(fz.type==='dim'){\n          poolPart(fz.x+Math.cos(_fza)*_fzd,fz.y+Math.sin(_fza)*_fzd,\n            (Math.random()-.5)*1.5,-0.5-Math.random()*1.5,\n            Math.random()>.6?'#8844ff':Math.random()>.5?'#44cc00':'#cc2222',2+Math.random()*3,10+Math.random()*8);\n        }else if(fz.type==='dimPoison'){\n          poolPart(fz.x+Math.cos(_fza)*_fzd,fz.y+Math.sin(_fza)*_fzd,\n            (Math.random()-.5)*1,-0.3-Math.random()*1,\n            Math.random()>.5?'#44cc00':'#88ff44',1+Math.random()*2,8+Math.random()*6);\n        }else if(fz.type==='storm'){\n          // 악의폭풍 파티클 — 번개+전기 스파크\n          poolPart(fz.x+Math.cos(_fza)*_fzd,fz.y+Math.sin(_fza)*_fzd,\n            (Math.random()-.5)*5,-2-Math.random()*4,\n            Math.random()>.6?'#66ddff':Math.random()>.3?'#3399ff':'#ffffff',2+Math.random()*3,6+Math.random()*8);\n          // 추가 상승 스파크\n          if(Math.random()>.5){\n            poolPart(fz.x+(Math.random()-.5)*fz.r,fz.y+(Math.random()-.5)*fz.r,\n              (Math.random()-.5)*3,-3-Math.random()*5,\n              '#aaeeff',1+Math.random()*2,4+Math.random()*6);\n          }\n        }else if(fz.type==='darkPillar'){\n          // 불기둥 외형 — 주황 불티 상승 (피해 속성은 기존 EL.D)\n          poolPart(fz.x+Math.cos(_fza)*_fzd*.4,fz.y+Math.sin(_fza)*_fzd*.4,\n            (Math.random()-.5)*2,-3-Math.random()*5,\n            Math.random()>.5?'#ff9933':'#dd4411',2+Math.random()*3,8+Math.random()*10);\n          if(Math.random()>.4){\n            poolPart(fz.x+(Math.random()-.5)*fz.r*.3,fz.y+(Math.random()-.5)*fz.r*.3,\n              (Math.random()-.5)*1,-4-Math.random()*6,\n              '#ffcc66',1+Math.random()*2,5+Math.random()*7);\n          }\n        }else if(fz.type==='boneStorm'){\n          // 해골번개 파티클 — 뼈 파편 + 암흑 스파크\n          poolPart(fz.x+Math.cos(_fza)*_fzd,fz.y+Math.sin(_fza)*_fzd,\n            (Math.random()-.5)*3,-1-Math.random()*3,\n            Math.random()>.6?'#bbaa66':Math.random()>.3?'#886633':'#ddccaa',2+Math.random()*3,8+Math.random()*8);\n          if(Math.random()>.5){\n            poolPart(fz.x+(Math.random()-.5)*fz.r,fz.y+(Math.random()-.5)*fz.r,\n              (Math.random()-.5)*2,-2-Math.random()*3,\n              Math.random()>.5?'#6644aa':'#443366',1+Math.random()*2,5+Math.random()*6);\n          }\n        }else if(fz.type==='dimLightning'){\n          // 사슬이동:강화 번개길 파티클 — 노란 전기 스파크\n          poolPart(fz.x+Math.cos(_fza)*_fzd,fz.y+Math.sin(_fza)*_fzd,\n            (Math.random()-.5)*3,-1-Math.random()*2,\n            Math.random()>.5?'#eeff00':'#ffffff',1+Math.random()*2,6+Math.random()*6);\n        }else if(fz.type==='shockField'){\n          // 전격이동 전류장판 파티클 — 시안 전기 스파크\n          poolPart(fz.x+Math.cos(_fza)*_fzd,fz.y+Math.sin(_fza)*_fzd,\n            (Math.random()-.5)*3,-1-Math.random()*2,\n            Math.random()>.5?'#44ddff':'#88eeff',1+Math.random()*2,6+Math.random()*6);\n          if(Math.random()>.6){poolPart(fz.x+(Math.random()-.5)*fz.r,fz.y+(Math.random()-.5)*fz.r,\n            (Math.random()-.5)*2,-2-Math.random()*3,\n            '#ffffff',1+Math.random(),4+Math.random()*5)}\n        }else if(fz.type==='spikeTrap'){\n          // 가시덫 파티클 — 갈색/초록 가시 튀어오름\n          poolPart(fz.x+Math.cos(_fza)*_fzd,fz.y+Math.sin(_fza)*_fzd,\n            (Math.random()-.5)*.8,-.3-Math.random()*.5,\n            Math.random()>.5?'#886633':'#667744',1+Math.random()*2,8+Math.random()*6);\n          if(Math.random()>.7){\n            poolPart(fz.x+(Math.random()-.5)*fz.r,fz.y+(Math.random()-.5)*fz.r,\n              0,-0.5-Math.random()*.8,\n              '#aa4422',1+Math.random(),6+Math.random()*4);\n          }\n        }else if(fz.type==='assaultFlame'){\n          // 기동불꽃 불바닥 파티클 — 3중폭 스택별 강화\n          const _afPs=fz._afStk||0;\n          const _afCol=_afPs>=3?'#ff1100':_afPs>=2?'#ff3300':_afPs>=1?'#ff4400':'#ff6600';\n          const _afCol2=_afPs>=3?'#ffcc00':_afPs>=2?'#ff8800':_afPs>=1?'#ffaa00':'#ff8800';\n          poolPart(fz.x+Math.cos(_fza)*_fzd,fz.y+Math.sin(_fza)*_fzd,\n            (Math.random()-.5)*(2+_afPs),-1.5-Math.random()*(3+_afPs),\n            Math.random()>.5?_afCol:_afCol2,2+Math.random()*3+_afPs,10+Math.random()*8+_afPs*3);\n          if(Math.random()>.6-_afPs*.1){\n            poolPart(fz.x+(Math.random()-.5)*fz.r,fz.y+(Math.random()-.5)*fz.r,\n              (Math.random()-.5)*(1+_afPs),-2-Math.random()*(2+_afPs*1.5),\n              Math.random()>.5?_afCol2:'#ffffff',1+Math.random()*2+_afPs*.5,6+Math.random()*5+_afPs*2);\n          }\n        }else if(fz.type==='fireTrail'){\n          // 사슬기동:화염 경로 불길 파티클 — 낮은 불꽃\n          poolPart(fz.x+Math.cos(_fza)*_fzd,fz.y+Math.sin(_fza)*_fzd,\n            (Math.random()-.5)*1.5,-0.8-Math.random()*1.5,\n            Math.random()>.5?'#ff5500':'#ff8800',1.5+Math.random()*2,8+Math.random()*6);\n        }else{\n          poolPart(fz.x+Math.cos(_fza)*_fzd,fz.y+Math.sin(_fza)*_fzd,\n            (Math.random()-.5)*2,-1-Math.random()*2,\n            Math.random()>.5?'#ff4400':'#ff8800',2+Math.random()*3,10+Math.random()*8);\n        }\n      }\n      if(fz.t<fz.maxT)G._fireZones[_fzW++]=fz;\n    }G._fireZones.length=_fzW;\n  }"
+    },
+    "callsite": {
+      "original": "hurtE(e,fz.dmg,Math.atan2(e.y-fz.y,e.x-fz.x),true,{dot:true,shieldHit:true,_lessonAttack:'spikeTrap'},EL.P)",
+      "replacement": "review.invokeDot(fz,hurtE,undefined,[e,fz.dmg,Math.atan2(e.y-fz.y,e.x-fz.x),true,{dot:true,shieldHit:true,_lessonAttack:'spikeTrap'},EL.P])",
+      "unchangedArgumentExpressions": [
+        "e",
+        "fz.dmg",
+        "Math.atan2(e.y-fz.y,e.x-fz.x)",
+        "true",
+        "{dot:true,shieldHit:true,_lessonAttack:'spikeTrap'}",
+        "EL.P"
+      ],
+      "sha256": "52e3481541923fcced1e047d7c2dac8cac90ab859615b3909e576b633e72fc93"
+    },
+    "fusionLiteral": {
+      "text": "{x:p.x,y:p.y,r:_stR,t:0,maxT:600,dmg:_stDmg,el:EL.P,lv:_stLv,type:'spikeTrap',_pillarSpike:true}",
+      "sha256": "0f061ec226722098127b4c16b35ee3ab82acab82d87d7972a04bb6d4a2fd3085",
+      "line": 44787
+    }
+  },
+  "fixtureScope": "일반 etype0·중립 어픽스/방어·고정RNG. 전체 activateSpikeTrap/hurtE 및 전체 장판 if블록 실행; 외부query/시각/SFX/loot/XP/potion/checkRooms 대역. 합성 child는 순회 증명용 복사object이며 D13 피해/지속/반경 정책이 아님.",
+  "actualBrowser": "UNKNOWN: 실행0",
+  "productionApplied": false
+}

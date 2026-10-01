@@ -725,3 +725,7 @@ D17 이전 결함2건 재현 후 새30+이전28, QA독립20, SKILL 실제확정�
 완료 미적용 후보는 후보·미검수 상태를 명시한 보존 커밋으로 분리하며 생산 인수로 간주하지 않는다. 실제 코드·런타임 에셋·필수 재현 fixture를 숫자만 줄이려고 ignore/삭제하지 않는다. 검수 캐시·재생성 사본의 제외는 용도를 확인하고 로컬 보존한다. 진행 중 파일·사용자 초안·한글 정규화 차이는 보존하며 해당 담당의 다음 체크포인트에서 완료 범위만 정리한다.
 
 기존 5분 점검과 작업 단위 자율 체크포인트로 운영한다. ExoduserAutoCleanup50과 1분/로그온 예약 정리는 재등록하지 않는다. 별도 WIP backup ref는 복구용이며 Changes 감소와 구분한다. 총괄은 전후 개수·남은 소유/사유·커밋 목록·원격 SHA를 기록한다.
+
+### 2026-10-02 Mac 네 팀 후속 인수 기록
+
+BUILD INM 소스 통합84검사와 UIUX 유골함 초점 양쪽HTML 통합66검사 후 기존 담당 세션에 각1회 독립 생산소스 인수를 배정했고 실제 task Read를 확인했다. ITEM 콜백 경계 수정은 root 독립2반례 및13+19 PASS, BALANCE 실제 합성 파일14 PASS를 root 재검사했다. ITEM/BALANCE는 후보 미적용이다. 실제 화면·패드·HTTP 검수는 미완료, 다른7팀 native 지시 전달은 보류 상태다. 현재 과제/완료 상태는 TEAM_UTILIZATION_20261001.json, 세부 근거는 FOUR-CANDIDATE-ACCEPTANCE-20261002.md와 outputs/team-review-20261002/four-candidate-acceptance/에 기록한다.

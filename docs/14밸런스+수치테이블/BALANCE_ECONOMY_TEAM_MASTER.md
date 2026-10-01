@@ -171,3 +171,7 @@ BUILD suffix 처리와 BALANCE 임시파일 교체 후보를 root가 server.cjs�
 
 ### 2026-10-02 조건부 Range 및 실제 합성 파일 I/O 인수
 root가 정확단일INM304 우선·If-Range 전체응답 후보를 server.cjs에 반영했다. 현재 조건부31+이전소스40+전용 합성 실제파일7=78그룹 PASS, 완료 owner24파일 보존. INM weak/list/wildcard·IMS·ETag 강도·HEAD wire·실HTTP·미디어·앱 재실행은 미검수다. 파일 검수의 write/rename EIO는 주입, ENOENT/EEXIST는 실제OS이며 크래시/fsync/Windows 검수와 다르다. 기존 EPERM을 우회하지 않았다. [인수](../0마스터플랜/mac-resume-20261001/vscode-dispatch/CONDITIONAL-ATOMIC-INTEGRATION-20261002.md).
+
+### 2026-10-02 공유 악의 실제 파일 후보 인수
+
+shared-mats-atomic 미적용 후보의 담당 실제 파일14 검사를 root가 출력 경로를 분리한 하니스로 현행 server.cjs/node-main.js에서 재실행하여 14 PASS를 확인했다. 양쪽 GET/POST/helper 추출, 신규/교체/반복·clamp/schema, 부분 write·rename EIO 주입 후 기존 bytes 보존, 실제 ENOENT 및 원문 손상 RED를 구분한다. 기존 memory16과 별개이며 생산 반영0이다. fsync·전원손실·동시 writer·Windows·HTTP·앱은 미검수. 근거: outputs/team-review-20261002/four-candidate-acceptance/balance-root-file14.json. 담당 증거는 덮어쓰지 않았다.

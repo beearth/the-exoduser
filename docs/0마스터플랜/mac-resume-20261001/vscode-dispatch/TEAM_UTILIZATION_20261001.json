@@ -1,5 +1,5 @@
 {
-  "checkedAt": "2026-10-01T18:43:36.132628+00:00",
+  "checkedAt": "2026-10-01T18:51:48.009737+00:00",
   "kind": "observed_followup_activity_and_delivery_blockers",
   "teams": [
     {
@@ -188,19 +188,19 @@
     {
       "team": "BUILD",
       "sessionId": "01a0f6e6-2e4c-7322-92d7-3aa309857856",
-      "task": "inm-matching",
-      "instruction": "tools/team-followup-20261001/BUILD/inm-matching-task.md",
-      "receivedAt": "2026-10-01T18:24:14.000Z",
-      "completedAt": "2026-10-01T18:26:09.000Z",
-      "status": "production_source_integrated_runtime_pending",
-      "timestampSource": "official read_thread turn timestamps; first command/edit existence confirmed, precise event time unavailable",
+      "task": "production-inm-acceptance",
+      "instruction": "tools/team-followup-20261001/BUILD/production-inm-acceptance-task.md",
+      "receivedAt": "2026-10-01T18:49:25+00:00",
+      "completedAt": "2026-10-01T18:51:03+00:00",
+      "status": "completed_production_source_accepted_runtime_pending",
+      "timestampSource": "Official read_thread turn start/end; exact first event timestamps unavailable",
       "actualReadConfirmed": true,
-      "actualEditConfirmed": false,
-      "nextGate": "Independent candidate acceptance; no repeated dispatch",
+      "actualEditConfirmed": true,
+      "nextGate": "QA exclusive native/HTTP acceptance remains blocked; no repeated source task",
       "productionApplied": true,
       "priorAcceptance": "Profile argument fix committed179813c2; root43PASS and new package created",
-      "currentTaskReceipt": null,
-      "rootAcceptance": "Current production84 source groups PASS; runtime unverified",
+      "currentTaskReceipt": "tools/team-followup-20261001/BUILD/production-inm-acceptance-receipt.json",
+      "rootAcceptance": "Root84 plus owner independent production insertion/source13 PASS; owner harness reviewed, native unverified",
       "priorAcceptedTask": {
         "task": "conditional-range",
         "completedAt": "2026-10-01T18:16:08Z",
@@ -210,67 +210,211 @@
       },
       "currentlyRunning": false,
       "nativeSessionLocation": "VS Code Terminal10",
-      "previousTaskStatus": "production_source_integrated_runtime_pending",
-      "executionStateNote": "Latest official turn completed; owner test claims are not root acceptance",
-      "lastObservedCommandCount": 2,
-      "firstReadAt": "2026-10-01T18:14:13Z",
-      "queueId": "01a0f8ac-8002-77b2-b1e5-3fb06e200bbc",
-      "turnId": "01a0f8b5-ba5b-79c2-ae08-acc28e28d6c6",
-      "observedEditFiles": [],
-      "commands": [
+      "previousTaskStatus": "see priorCompletedTask",
+      "executionStateNote": "read_thread transient interrupted/notLoaded does not establish stopped execution; actual commands captured",
+      "lastObservedCommandCount": 8,
+      "firstReadAt": null,
+      "queueId": "01a0f8cc-c9d6-7022-9fc2-8c1e508c43e0",
+      "turnId": "01a0f8cc-c9d8-7de2-a658-a572314bfbad",
+      "observedEditFiles": [
         {
-          "command": "/bin/zsh -lc \"date -u +%Y-%m-%dT%H:%M:%SZ; cat tools/team-followup-20261001/BUILD/inm-matching-task.md; rg --files tools/team-followup-20261001/BUILD | rg 'inm-matching'; rg -n 'if-none-match|_etag|if-range' server.cjs; rg --files outputs/team-review-20261002 | rg 'conditional|remote' | tail -12\"",
-          "status": "completed",
-          "exitCode": 0
+          "path": "/Users/fordeargamers/Projects/exoduser-migration-20261001/tools/team-followup-20261001/BUILD/production-inm-acceptance-check.mjs",
+          "kind": {
+            "type": "add"
+          }
         },
         {
-          "command": "/bin/zsh -lc \"ls outputs/team-review-20261002/conditional-integration; cat outputs/team-review-20261002/conditional-integration/remote-checkpoint-final.json; tail -8 outputs/team-review-20261002/conditional-integration/conditional-source31.txt; head -15 AGENTS.md; head -10 docs/13출시·마케팅/INTEGRATION_BUILD_TEAM_MASTER.md; GIT_OPTIONAL_LOCKS=0 git rev-parse HEAD; shasum -a 256 server.cjs; sed -n '265,284p' server.cjs\"",
-          "status": "completed",
-          "exitCode": 0
+          "path": "/Users/fordeargamers/Projects/exoduser-migration-20261001/tools/team-followup-20261001/BUILD/production-inm-acceptance-receipt.json",
+          "kind": {
+            "type": "add"
+          }
+        },
+        {
+          "path": "/Users/fordeargamers/Projects/exoduser-migration-20261001/tools/team-followup-20261001/BUILD/production-inm-acceptance-result.md",
+          "kind": {
+            "type": "add"
+          }
+        },
+        {
+          "path": "/Users/fordeargamers/Projects/exoduser-migration-20261001/tools/team-followup-20261001/BUILD/production-inm-acceptance-receipt.json",
+          "kind": {
+            "type": "update",
+            "move_path": null
+          }
+        },
+        {
+          "path": "/Users/fordeargamers/Projects/exoduser-migration-20261001/tools/team-followup-20261001/BUILD/production-inm-acceptance-receipt.json",
+          "kind": {
+            "type": "update",
+            "move_path": null
+          }
         }
       ],
-      "observedTurnStatus": "interrupted"
+      "commands": [
+        {
+          "type": "commandExecution",
+          "id": "exec-3c365310-b4d7-4ec1-9040-d05ded3f9f48",
+          "command": "/bin/zsh -lc \"date -u +%Y-%m-%dT%H:%M:%SZ; cat tools/team-followup-20261001/BUILD/production-inm-acceptance-task.md; rg --files tools/team-followup-20261001/BUILD | rg 'production-inm-acceptance'; rg -n 'matchesIfNoneMatch|if-none-match' server.cjs\"",
+          "cwd": "/Users/fordeargamers/Projects/exoduser-migration-20261001",
+          "status": "completed",
+          "exitCode": 0,
+          "durationMs": 0
+        },
+        {
+          "type": "commandExecution",
+          "id": "exec-53bab6d5-0fcb-4f86-b804-7e5e9dfcf2c8",
+          "command": "/bin/zsh -lc \"cat outputs/team-review-20261002/four-candidate-acceptance/server-production-acceptance.json | head -65; ls outputs/team-review-20261002/four-candidate-acceptance | head -20; GIT_OPTIONAL_LOCKS=0 git status --short --untracked-files=all | wc -l; GIT_OPTIONAL_LOCKS=0 git status --short --untracked-files=all | head -10; head -14 AGENTS.md; head -8 docs/13출시·마케팅/INTEGRATION_BUILD_TEAM_MASTER.md; rg -n '80|100|production-inm' .gitignore | tail -8\"",
+          "cwd": "/Users/fordeargamers/Projects/exoduser-migration-20261001",
+          "status": "completed",
+          "exitCode": 0,
+          "durationMs": 0
+        },
+        {
+          "type": "commandExecution",
+          "id": "exec-ec05df4b-da85-4e0e-81e6-922586887ba2",
+          "command": "/bin/zsh -lc \"ls outputs/team-review-20261002/four-candidate-acceptance | rg 'server|before|inm'; sed -n '1,33p' server.cjs; rg -n '80|100' docs/0마스터플랜/TEAM_CONTINUATION_POLICY_20261001.md AGENTS.md | tail -8; sed -n '177,191p' .gitignore\"",
+          "cwd": "/Users/fordeargamers/Projects/exoduser-migration-20261001",
+          "status": "completed",
+          "exitCode": 0,
+          "durationMs": 0
+        },
+        {
+          "type": "commandExecution",
+          "id": "exec-ce15dba9-5432-4fb0-ac5c-3d72bfcfed43",
+          "command": "/bin/zsh -lc \"node tools/team-followup-20261001/BUILD/production-inm-acceptance-check.mjs > tools/team-followup-20261001/BUILD/production-inm-acceptance-tests.txt 2>&1; cat tools/team-followup-20261001/BUILD/production-inm-acceptance-tests.txt; GIT_OPTIONAL_LOCKS=0 git status --short --untracked-files=all | wc -l; GIT_OPTIONAL_LOCKS=0 git status --short --untracked-files=all -- 'tools/team-followup-20261001/BUILD/production-inm-acceptance-*'; GIT_OPTIONAL_LOCKS=0 git check-ignore -v tools/team-followup-20261001/BUILD/production-inm-acceptance-check.mjs tools/team-followup-20261001/BUILD/production-inm-acceptance-receipt.json; date -u +%Y-%m-%dT%H:%M:%SZ\"",
+          "cwd": "/Users/fordeargamers/Projects/exoduser-migration-20261001",
+          "status": "completed",
+          "exitCode": 0,
+          "durationMs": 0
+        },
+        {
+          "type": "commandExecution",
+          "id": "exec-cc194238-9b35-41e2-9eee-adfd922c24fe",
+          "command": "/bin/zsh -lc \"stat -f '%N %SB' -t '%Y-%m-%dT%H:%M:%S%z' tools/team-followup-20261001/BUILD/production-inm-acceptance-{receipt.json,check.mjs}; rg -n 'If-None-Match|INM|조건부' docs > tools/team-followup-20261001/BUILD/production-inm-acceptance-docs-search.txt; node --check tools/team-followup-20261001/BUILD/production-inm-acceptance-check.mjs\"",
+          "cwd": "/Users/fordeargamers/Projects/exoduser-migration-20261001",
+          "status": "completed",
+          "exitCode": 0,
+          "durationMs": 0
+        },
+        {
+          "type": "commandExecution",
+          "id": "exec-091963d6-aea9-4eac-8d88-7288665a5771",
+          "command": "/bin/zsh -lc \"date -u +%Y-%m-%dT%H:%M:%SZ; GIT_OPTIONAL_LOCKS=0 git status --short --untracked-files=all | wc -l; GIT_OPTIONAL_LOCKS=0 git status --short --untracked-files=all -- 'tools/team-followup-20261001/BUILD/production-inm-acceptance-*' > tools/team-followup-20261001/BUILD/production-inm-acceptance-status-proof.txt; cat tools/team-followup-20261001/BUILD/production-inm-acceptance-status-proof.txt\"",
+          "cwd": "/Users/fordeargamers/Projects/exoduser-migration-20261001",
+          "status": "completed",
+          "exitCode": 0,
+          "durationMs": 0
+        },
+        {
+          "type": "commandExecution",
+          "id": "exec-b84dfd29-17dd-4749-95f1-6a8f6d0281f6",
+          "command": "/bin/zsh -lc 'GIT_OPTIONAL_LOCKS=0 git status --short --untracked-files=all | wc -l; date -u +%Y-%m-%dT%H:%M:%SZ; shasum -a 256 server.cjs'",
+          "cwd": "/Users/fordeargamers/Projects/exoduser-migration-20261001",
+          "status": "completed",
+          "exitCode": 0,
+          "durationMs": 0
+        },
+        {
+          "type": "commandExecution",
+          "id": "exec-fd7dd568-b9e4-4dcf-a36b-4993765328dc",
+          "command": "/bin/zsh -lc 'cat tools/team-followup-20261001/BUILD/production-inm-acceptance-receipt.json'",
+          "cwd": "/Users/fordeargamers/Projects/exoduser-migration-20261001",
+          "status": "completed",
+          "exitCode": 0,
+          "durationMs": 0
+        }
+      ],
+      "observedTurnStatus": "interrupted",
+      "priorCompletedTask": {
+        "task": "inm-matching",
+        "instruction": "tools/team-followup-20261001/BUILD/inm-matching-task.md",
+        "completedAt": "2026-10-01T18:26:09.000Z",
+        "rootAcceptance": "Current production84 source groups PASS; runtime unverified",
+        "productionApplied": true
+      },
+      "firstCommandAt": null,
+      "firstArtifactWriteAt": null,
+      "firstCodeEditAt": null
     },
     {
       "team": "UIUX",
       "sessionId": "01a0f6e5-8653-7ae2-8b2b-314e275c215c",
-      "task": "ossuary-focus",
-      "instruction": "tools/team-followup-20261001/UIUX/ossuary-focus-task.md",
-      "receivedAt": "2026-10-01T18:14:09+00:00",
-      "completedAt": "2026-10-01T18:20:30.000Z",
-      "status": "completed_pending_root_acceptance",
-      "timestampSource": "official read_thread turn timestamps; first command/edit existence confirmed, precise event time unavailable",
+      "task": "ossuary-production-acceptance",
+      "instruction": "tools/team-followup-20261001/UIUX/ossuary-production-acceptance-task.md",
+      "receivedAt": "2026-10-01T18:49:25+00:00",
+      "completedAt": null,
+      "status": "execution_observed_completion_unconfirmed",
+      "timestampSource": "Official read_thread turn start/end; exact first event timestamps unavailable",
       "actualReadConfirmed": true,
-      "actualEditConfirmed": true,
-      "nextGate": "Independent candidate acceptance; no repeated dispatch",
-      "productionApplied": false,
-      "currentTaskReceipt": "tools/team-followup-20261001/UIUX/production-integration-receipt.json",
-      "rootAcceptance": "Current candidate not independently accepted",
-      "currentlyRunning": false,
+      "actualEditConfirmed": false,
+      "nextGate": "Complete independent current-source acceptance; native runtime remains unverified",
+      "productionApplied": true,
+      "currentTaskReceipt": null,
+      "rootAcceptance": "Prior production integration accepted; independent owner acceptance in progress",
+      "currentlyRunning": null,
       "nativeSessionLocation": "VS Code Terminal4",
-      "previousTaskStatus": "production_source_integrated_runtime_pending",
-      "executionStateNote": "Latest official turn completed; owner test claims are not root acceptance",
-      "lastObservedCommandCount": 5,
-      "firstReadAt": "2026-10-01T18:14:14Z",
-      "queueId": "01a0f8ac-804d-71f3-b98b-3154d1b2527c",
-      "turnId": "01a0f8ac-804e-7cc2-89e1-6ca88614ee82",
-      "observedEditFiles": []
+      "previousTaskStatus": "see priorCompletedTask",
+      "executionStateNote": "read_thread transient interrupted/notLoaded does not establish stopped execution; actual commands captured",
+      "lastObservedCommandCount": 3,
+      "firstReadAt": null,
+      "queueId": "01a0f8cc-ca20-7330-a4ea-e977d245d78e",
+      "turnId": "01a0f8cc-ca21-7832-9ea8-36d3a45cba63",
+      "observedEditFiles": [],
+      "priorCompletedTask": {
+        "task": "ossuary-focus",
+        "instruction": "tools/team-followup-20261001/UIUX/ossuary-focus-task.md",
+        "completedAt": "2026-10-01T18:20:30.000Z",
+        "rootAcceptance": "Current production ossuary34 + adjacent filter32 PASS; native unverified",
+        "productionApplied": true
+      },
+      "firstCommandAt": null,
+      "firstArtifactWriteAt": null,
+      "firstCodeEditAt": null,
+      "commands": [
+        {
+          "type": "commandExecution",
+          "id": "exec-562ae963-d924-416b-84d5-e84438a1346c",
+          "command": "/bin/zsh -lc \"date -u '+%Y-%m-%dT%H:%M:%SZ'; cat tools/team-followup-20261001/UIUX/ossuary-production-acceptance-task.md; rg --files tools/team-followup-20261001/UIUX | rg 'ossuary-production-acceptance'; sed -n '1,24p' AGENTS.md\"",
+          "cwd": "/Users/fordeargamers/Projects/exoduser-migration-20261001",
+          "status": "completed",
+          "exitCode": 0,
+          "durationMs": 0
+        },
+        {
+          "type": "commandExecution",
+          "id": "exec-b4e14ca1-2899-4940-b4f1-b1515935fdf0",
+          "command": "/bin/zsh -lc \"cat outputs/team-review-20261002/four-candidate-acceptance/ui-production-acceptance.json; cat outputs/team-review-20261002/four-candidate-acceptance/filter-production-result.json; tail -28 'docs/2_7 인벤토리+장비시스템/INVENTORY_KEYBOARD_FOCUS_20261002.md'; rg -n '80|100|count' AGENTS.md; git status --short --untracked-files=all | wc -l; cat tools/team-followup-20261001/UIUX/ossuary-focus-candidate.mjs; rg -n '\"'^function (dbSave|save|_.*Save)'\"' game.html | head -15; rg --files -g AGENTS.md tools outputs\"",
+          "cwd": "/Users/fordeargamers/Projects/exoduser-migration-20261001",
+          "status": "failed",
+          "exitCode": 1,
+          "durationMs": 0
+        },
+        {
+          "type": "commandExecution",
+          "id": "exec-67490d46-61a3-4af2-aa78-f0c6d66575a6",
+          "command": "/bin/zsh -lc \"sed -n '227,236p' AGENTS.md; sed -n '48389,48511p' game.html | tail -24; rg -n '\"'^function _bonePartName|''^function _ossSetComplete|''^function _ossHideBoneInfo|''^function renderOssPanel'\"' game.html; sed -n '47905,47928p' game.html; git rev-parse HEAD; git diff --cached --stat; rg -n '유골함|独立|독립' docs/0마스터플랜/PROJECT_MANAGEMENT_MASTER.md | tail -4\"",
+          "cwd": "/Users/fordeargamers/Projects/exoduser-migration-20261001",
+          "status": "completed",
+          "exitCode": 0,
+          "durationMs": 0
+        }
+      ]
     },
     {
       "team": "ITEM",
       "sessionId": "01a0f6e6-1fbe-7df0-8d02-a9c2d9df3750",
       "task": "d13-callback-boundary",
       "instruction": "tools/team-followup-20261001/ITEM/d13-callback-boundary-task.md",
-      "receivedAt": "2026-10-01T18:39:23.000Z",
-      "completedAt": null,
-      "status": "received_work_observed",
-      "timestampSource": "official read_thread turn timestamps; first command/edit existence confirmed, precise event time unavailable",
+      "receivedAt": "2026-10-01T18:39:23+00:00",
+      "completedAt": "2026-10-01T18:44:04+00:00",
+      "status": "completed_source_accepted_candidate_unapplied",
+      "timestampSource": "Official read_thread turn start/end; exact first event timestamps unavailable",
       "actualReadConfirmed": true,
       "actualEditConfirmed": true,
-      "nextGate": "Current candidate independent review; no repeated dispatch",
+      "nextGate": "Separate production-integration decision and unresolved gameplay contracts; no native verification",
       "productionApplied": false,
       "currentTaskReceipt": "tools/team-followup-20261001/ITEM/d13-callback-boundary-receipt.json",
-      "rootAcceptance": "Current candidate not independently accepted",
+      "rootAcceptance": "Root independent 2 RED-to-GREEN boundary cases + owner13 and adjacent19 rerun PASS; production0",
       "priorAcceptedTask": {
         "task": "d17-source-adapter",
         "completedAt": "2026-10-01T16:57:22.000Z",
@@ -279,36 +423,165 @@
         "currentTaskReceipt": "tools/team-followup-20261001/ITEM/d17-source-adapter-receipt.json",
         "rootAcceptance": "Root 13 groups plus public callsite disabled/enabled/identity checks PASS; remote 375aa9e4"
       },
-      "currentlyRunning": null,
+      "currentlyRunning": false,
       "nativeSessionLocation": "VS Code Terminal9",
-      "previousTaskStatus": "completed_source_accepted_runtime_pending",
-      "executionStateNote": "Latest official turn completed; owner test claims are not root acceptance",
-      "lastObservedCommandCount": 4,
+      "previousTaskStatus": "see priorCompletedTask",
+      "executionStateNote": "read_thread transient interrupted/notLoaded does not establish stopped execution; actual commands captured",
+      "lastObservedCommandCount": 9,
       "firstReadAt": "2026-10-01T18:14:17Z",
       "queueId": "01a0f8ac-80c9-75f1-b556-65a2d4ae5f93",
       "turnId": "01a0f8c3-979b-75e1-8fa4-cafa4312faf6",
-      "observedEditFiles": [],
+      "observedEditFiles": [
+        {
+          "path": "/Users/fordeargamers/Projects/exoduser-migration-20261001/tools/team-followup-20261001/ITEM/d13-callback-boundary-check.mjs",
+          "kind": {
+            "type": "add"
+          }
+        },
+        {
+          "path": "/Users/fordeargamers/Projects/exoduser-migration-20261001/tools/team-followup-20261001/ITEM/d13-callback-boundary-receipt.json",
+          "kind": {
+            "type": "add"
+          }
+        },
+        {
+          "path": "/Users/fordeargamers/Projects/exoduser-migration-20261001/tools/team-followup-20261001/ITEM/d13-deferred-contract-candidate.mjs",
+          "kind": {
+            "type": "update",
+            "move_path": null
+          }
+        },
+        {
+          "path": "/Users/fordeargamers/Projects/exoduser-migration-20261001/tools/team-followup-20261001/ITEM/d13-callback-boundary-evidence.json",
+          "kind": {
+            "type": "add"
+          }
+        },
+        {
+          "path": "/Users/fordeargamers/Projects/exoduser-migration-20261001/tools/team-followup-20261001/ITEM/d13-callback-boundary-result.md",
+          "kind": {
+            "type": "add"
+          }
+        },
+        {
+          "path": "/Users/fordeargamers/Projects/exoduser-migration-20261001/tools/team-followup-20261001/ITEM/d13-callback-boundary-receipt.json",
+          "kind": {
+            "type": "update",
+            "move_path": null
+          }
+        },
+        {
+          "path": "/Users/fordeargamers/Projects/exoduser-migration-20261001/tools/team-followup-20261001/ITEM/d13-callback-boundary-result.md",
+          "kind": {
+            "type": "update",
+            "move_path": null
+          }
+        }
+      ],
       "priorCompletedTask": {
         "task": "d13-deferred-contract",
         "instruction": "tools/team-followup-20261001/ITEM/d13-deferred-contract-task.md",
         "completedAt": "2026-10-01T18:21:08.000Z",
         "status": "completed_pending_root_acceptance"
-      }
+      },
+      "commands": [
+        {
+          "type": "commandExecution",
+          "id": "exec-713018b9-6eae-4308-b67d-fd212274a43e",
+          "command": "/bin/zsh -lc 'date -u +%Y-%m-%dT%H:%M:%SZ; cat tools/team-followup-20261001/ITEM/d13-callback-boundary-task.md; ls tools/team-followup-20261001/ITEM/d13-callback-boundary-*; cat tools/team-followup-20261001/ITEM/d13-deferred-contract-candidate.mjs; find tools -name AGENTS.md'",
+          "cwd": "/Users/fordeargamers/Projects/exoduser-migration-20261001",
+          "status": "completed",
+          "exitCode": 0,
+          "durationMs": 0
+        },
+        {
+          "type": "commandExecution",
+          "id": "exec-e456d415-b74f-4d78-8885-c2fb12b439b4",
+          "command": "/bin/zsh -lc \"cat outputs/team-review-20261002/four-candidate-acceptance/item-callback-red.json; cat outputs/team-review-20261002/four-candidate-acceptance/before.json | head -35; tail -18 docs/7아이템디자인/ITEM_TEAM_MASTER.md; sed -n '17,24p' docs/7아이템디자인/UNIQUE_TOP8_HOOK_REVIEW_20261001.md; date -u +%Y-%m-%dT%H:%M:%SZ; GIT_OPTIONAL_LOCKS=0 git status --short --untracked-files=all | wc -l\"",
+          "cwd": "/Users/fordeargamers/Projects/exoduser-migration-20261001",
+          "status": "completed",
+          "exitCode": 0,
+          "durationMs": 0
+        },
+        {
+          "type": "commandExecution",
+          "id": "exec-89a86efc-0df8-4cab-8e1d-2908d05d104d",
+          "command": "/bin/zsh -lc 'node tools/team-followup-20261001/ITEM/d13-callback-boundary-check.mjs --red-current; date -u +%Y-%m-%dT%H:%M:%SZ'",
+          "cwd": "/Users/fordeargamers/Projects/exoduser-migration-20261001",
+          "status": "completed",
+          "exitCode": 0,
+          "durationMs": 88
+        },
+        {
+          "type": "commandExecution",
+          "id": "exec-e7bc10c5-ebf2-4002-975b-dcdb5c5be7d2",
+          "command": "/bin/zsh -lc \"node tools/team-followup-20261001/ITEM/d13-callback-boundary-check.mjs; date -u +%Y-%m-%dT%H:%M:%SZ; GIT_OPTIONAL_LOCKS=0 git status --short --untracked-files=all | wc -l; rg -l 'U-D13|_uTrapOffshoot|자식 덫' docs/\"",
+          "cwd": "/Users/fordeargamers/Projects/exoduser-migration-20261001",
+          "status": "completed",
+          "exitCode": 0,
+          "durationMs": 461
+        },
+        {
+          "type": "commandExecution",
+          "id": "exec-75a73da1-5d71-4290-b72f-9d9fa9fc5fc4",
+          "command": "/bin/zsh -lc 'node tools/team-followup-20261001/ITEM/d13-deferred-contract-check.mjs'",
+          "cwd": "/Users/fordeargamers/Projects/exoduser-migration-20261001",
+          "status": "completed",
+          "exitCode": 0,
+          "durationMs": 281
+        },
+        {
+          "type": "commandExecution",
+          "id": "exec-aeb657ff-8919-4004-b7c6-30e4907ff98b",
+          "command": "/bin/zsh -lc 'date -u +%Y-%m-%dT%H:%M:%SZ; GIT_OPTIONAL_LOCKS=0 git status --short --untracked-files=all | wc -l'",
+          "cwd": "/Users/fordeargamers/Projects/exoduser-migration-20261001",
+          "status": "completed",
+          "exitCode": 0,
+          "durationMs": 0
+        },
+        {
+          "type": "commandExecution",
+          "id": "exec-39240ca8-e719-42fd-872c-03167d1c8347",
+          "command": "/bin/zsh -lc \"date -u '+%Y-%m-%dT%H:%M:%SZ'; GIT_OPTIONAL_LOCKS=0 git status --short --untracked-files=all | wc -l\"",
+          "cwd": "/Users/fordeargamers/Projects/exoduser-migration-20261001",
+          "status": "completed",
+          "exitCode": 0,
+          "durationMs": 0
+        },
+        {
+          "type": "commandExecution",
+          "id": "exec-34967a67-4103-415a-9748-114be4ee7a7d",
+          "command": "/bin/zsh -lc 'cat tools/team-followup-20261001/ITEM/d13-callback-boundary-task.md'",
+          "cwd": "/Users/fordeargamers/Projects/exoduser-migration-20261001",
+          "status": "completed",
+          "exitCode": 0,
+          "durationMs": 0
+        },
+        {
+          "type": "commandExecution",
+          "id": "exec-54e85a1f-e70f-40d8-8cd2-f2f646877798",
+          "command": "/bin/zsh -lc \"date -u '+%Y-%m-%dT%H:%M:%SZ'; GIT_OPTIONAL_LOCKS=0 git status --short --untracked-files=all | wc -l; cat tools/team-followup-20261001/ITEM/d13-callback-boundary-receipt.json\"",
+          "cwd": "/Users/fordeargamers/Projects/exoduser-migration-20261001",
+          "status": "completed",
+          "exitCode": 0,
+          "durationMs": 0
+        }
+      ]
     },
     {
       "team": "BALANCE",
       "sessionId": "01a0f6e6-5303-7392-81ba-94c42e349ffc",
       "task": "shared-mats-file",
       "instruction": "tools/team-followup-20261001/BALANCE/shared-mats-file-task.md",
-      "receivedAt": "2026-10-01T18:39:23.000Z",
-      "completedAt": "2026-10-01T18:40:47.000Z",
-      "status": "completed_pending_root_acceptance",
-      "timestampSource": "official read_thread turn timestamps; first command/edit existence confirmed, precise event time unavailable",
+      "receivedAt": "2026-10-01T18:39:23+00:00",
+      "completedAt": "2026-10-01T18:40:47+00:00",
+      "status": "completed_source_accepted_candidate_unapplied",
+      "timestampSource": "Official read_thread turn start/end; exact first event timestamps unavailable",
       "actualReadConfirmed": true,
-      "actualEditConfirmed": false,
-      "nextGate": "Current candidate independent review; no repeated dispatch",
+      "actualEditConfirmed": true,
+      "nextGate": "Separate production-integration acceptance; HTTP/crash/fsync/concurrency/Windows unverified",
       "productionApplied": false,
-      "rootAcceptance": "Current candidate not independently accepted",
+      "rootAcceptance": "Root reran owner-derived actual-file14 against current sources; earlier memory16 PASS; production0",
       "currentTaskReceipt": "tools/team-followup-20261001/BALANCE/shared-mats-file-receipt.json",
       "priorAcceptedTask": {
         "task": "atomic-file",
@@ -319,21 +592,66 @@
       },
       "currentlyRunning": false,
       "nativeSessionLocation": "VS Code Terminal11",
-      "previousTaskStatus": "production_source_integrated_runtime_pending",
-      "executionStateNote": "Latest official turn completed; owner test claims are not root acceptance",
+      "previousTaskStatus": "see priorCompletedTask",
+      "executionStateNote": "read_thread transient interrupted/notLoaded does not establish stopped execution; actual commands captured",
       "lastObservedCommandCount": 3,
       "firstReadAt": "2026-10-01T18:14:13Z",
       "queueId": "01a0f8ac-808c-7142-8007-4facb8bcc880",
       "turnId": "01a0f8c3-97dd-7c01-9c0c-af2a7ab37ac6",
       "observedEditFiles": [
-        "/Users/fordeargamers/Projects/exoduser-migration-20261001/tools/team-followup-20261001/BALANCE/atomic-file-receipt.json",
-        "/Users/fordeargamers/Projects/exoduser-migration-20261001/tools/team-followup-20261001/BALANCE/atomic-file-test.mjs"
+        {
+          "path": "/Users/fordeargamers/Projects/exoduser-migration-20261001/tools/team-followup-20261001/BALANCE/shared-mats-file-receipt.json",
+          "kind": {
+            "type": "add"
+          }
+        },
+        {
+          "path": "/Users/fordeargamers/Projects/exoduser-migration-20261001/tools/team-followup-20261001/BALANCE/shared-mats-file-test.mjs",
+          "kind": {
+            "type": "add"
+          }
+        },
+        {
+          "path": "/Users/fordeargamers/Projects/exoduser-migration-20261001/tools/team-followup-20261001/BALANCE/shared-mats-file-receipt.json",
+          "kind": {
+            "type": "update",
+            "move_path": null
+          }
+        },
+        {
+          "path": "/Users/fordeargamers/Projects/exoduser-migration-20261001/tools/team-followup-20261001/BALANCE/shared-mats-file-result.md",
+          "kind": {
+            "type": "add"
+          }
+        }
       ],
       "commands": [
         {
-          "command": "/bin/zsh -lc \"date -u '+%Y-%m-%dT%H:%M:%SZ'; cat tools/team-followup-20261001/BALANCE/shared-mats-atomic-task.md; rg --files tools/team-followup-20261001/BALANCE | rg 'shared-mats-atomic'; rg --files -g AGENTS.md; rg -n 'MATS_FILE|api/mats|writeFileSync|atomicSaveJSON' server.cjs node-main.js\"",
+          "type": "commandExecution",
+          "id": "exec-36b1428c-0441-4ec9-b0ac-89620257cb05",
+          "command": "/bin/zsh -lc \"date -u '+%Y-%m-%dT%H:%M:%SZ'; cat tools/team-followup-20261001/BALANCE/shared-mats-file-task.md; rg --files tools/team-followup-20261001/BALANCE | rg 'shared-mats-file'; rg --files -g AGENTS.md; cat AGENTS.md >/dev/null\"",
+          "cwd": "/Users/fordeargamers/Projects/exoduser-migration-20261001",
           "status": "completed",
-          "exitCode": 0
+          "exitCode": 0,
+          "durationMs": 0
+        },
+        {
+          "type": "commandExecution",
+          "id": "exec-2f65cd40-db9d-431b-b3f7-1a599b3b4c3e",
+          "command": "/bin/zsh -lc \"cat tools/team-followup-20261001/BALANCE/shared-mats-atomic-candidate.mjs; cat outputs/team-review-20261002/four-candidate-acceptance/balance-memory16.json | head -22; head -12 docs/14밸런스+수치테이블/BALANCE_ECONOMY_TEAM_MASTER.md; sed -n '220,226p' 'docs/15 세이브+데이터구조/15 세이브+데이터구조.md'; shasum -a 256 server.cjs node-main.js tools/team-followup-20261001/BALANCE/shared-mats-atomic-*\"",
+          "cwd": "/Users/fordeargamers/Projects/exoduser-migration-20261001",
+          "status": "completed",
+          "exitCode": 0,
+          "durationMs": 0
+        },
+        {
+          "type": "commandExecution",
+          "id": "exec-e9832430-24a7-48ca-b048-88a2d91126ba",
+          "command": "/bin/zsh -lc \"node tools/team-followup-20261001/BALANCE/shared-mats-file-test.mjs > tools/team-followup-20261001/BALANCE/shared-mats-file-tests.txt 2>&1; node -e \\\"const r=require('./tools/team-followup-20261001/BALANCE/shared-mats-file-evidence.json');console.log(JSON.stringify({status:r.status,checks:r.checks.length,output:r.output,preserved:r.preserved,failure:r.failure,completedAt:r.completedAt}));\\\"; node --check tools/team-followup-20261001/BALANCE/shared-mats-file-test.mjs; rg -n 'sharedMats|공유 악의|atomicSaveJSON|/api/mats|fsync' docs/ > tools/team-followup-20261001/BALANCE/shared-mats-file-doc-search.txt; TZ=UTC stat -f '%Sm' -t '%Y-%m-%dT%H:%M:%SZ' tools/team-followup-20261001/BALANCE/shared-mats-file-test.mjs; shasum -a 256 tools/team-followup-20261001/BALANCE/shared-mats-file-test.mjs; git status --short --untracked-files=all | wc -l; date -u '+%Y-%m-%dT%H:%M:%SZ'\"",
+          "cwd": "/Users/fordeargamers/Projects/exoduser-migration-20261001",
+          "status": "completed",
+          "exitCode": 0,
+          "durationMs": 104
         }
       ],
       "observedTurnStatus": "interrupted",

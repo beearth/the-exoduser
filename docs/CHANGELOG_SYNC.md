@@ -52044,3 +52044,10 @@ Mac core.ignorecase=true에서 기존 build/ 규칙이 tools/team-followup-20261
 양쪽 HTML의 focus factory에 releaseOssuaryAction을 추가하고 renderOssPanel 시작의 활성요소 포착 및 take/remove 갱신 뒤 호출만 반영했다. 선택 유골·유골함 해제로 활성 행동이 disabled가 되면 invClose로 이동하고, 숨긴 닫기로 복귀할 수 없으면 내부 disabled 잔류만 blur한다. 외부/다른 활성 컨트롤 초점은 강탈하지 않는다. 저장·유골 생성/등록/해제·장착·경제·RNG·CSS/ui-panels 원문은 보존했다.
 
 현재 생산 실제 함수/조합 검수34+기존filter32=66그룹 PASS, 전체 inline12개/importmap2 구문 통과. 유골함34는 renderOssPanel 원문을 실행했고 filter32의 renderOssPanel 대역 한계를 분리한다. 실제 키보드·패드·픽셀·전체게임·실저장은 미검수로 UI-04 전체 완료가 아니다. 과거 filter-only exact-byte 표는 이력이며 현재는 connectOssuary(connectFilter(original))와 정확 일치. root-review/four-candidate-acceptance.mjs ui --production 및 four-filter-adjacent.mjs --production으로 재현한다.
+
+### 2026-10-02 네 팀 후보 후속 인수
+
+- ITEM D13 clear/배열교체 stale callback 두 반례를 root 독립 재현·수정 확인, 담당13+인접19 재실행32 PASS. 후보만 보존, 생산0.
+- BALANCE 현행 양쪽 source 추출 실제 합성 파일14 PASS를 root 별도 출력으로 재검사. 기존 memory16과 구분, 생산0.
+- BUILD production-inm-acceptance / UIUX ossuary-production-acceptance를 기존 세션에 각1회 배정했고 실제 task Read·명령을 확인했다. 실제 UI 검수와7팀 native 전달 보류는 유지한다.
+- 출력·팀 문서·canonical 상태를 동기화한다. 원격 확인 전 백업 완료로 주장하지 않는다.

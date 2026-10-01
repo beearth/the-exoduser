@@ -1,0 +1,250 @@
+{
+  "historicalCurrentImportRed": {
+    "utc": "2026-10-01T18:40:38.412Z",
+    "sha256": "43ed003c5270621601306512f85d45025f540ede7252eb55bdb67556c288dd75",
+    "cases": [
+      {
+        "mode": "clear",
+        "callbacks": 2,
+        "expected": 1,
+        "kills": 2
+      },
+      {
+        "mode": "replace",
+        "callbacks": 2,
+        "expected": 1,
+        "kills": 2
+      }
+    ],
+    "command": "node tools/team-followup-20261001/ITEM/d13-callback-boundary-check.mjs --red-current"
+  },
+  "fixed": {
+    "utc": "2026-10-01T18:40:58.005Z",
+    "beforeImportRed": [
+      {
+        "mode": "clear",
+        "callbacks": 2,
+        "expected": 1,
+        "kills": 2
+      },
+      {
+        "mode": "replace",
+        "callbacks": 2,
+        "expected": 1,
+        "kills": 2
+      }
+    ],
+    "currentPass": 13,
+    "fail": 0,
+    "rows": [
+      {
+        "name": "root before 고정 반례/current 두 전환 PASS",
+        "status": "PASS"
+      },
+      {
+        "name": "clear 후 새 등록 상태 보존",
+        "status": "PASS"
+      },
+      {
+        "name": "replace 후 새 등록 상태 보존",
+        "status": "PASS"
+      },
+      {
+        "name": "같은 배열 callback 신규 등록은 삭제0/다음 pass 소비",
+        "status": "PASS"
+      },
+      {
+        "name": "callback 재진입은 원 pass 실행 전 거부/외부큐 보존",
+        "status": "PASS"
+      },
+      {
+        "name": "callback 예외만 있으면 기존 FIFO 계속/예외 식별",
+        "status": "PASS"
+      },
+      {
+        "name": "clear 후 callback 예외는 stale 중단",
+        "status": "PASS"
+      },
+      {
+        "name": "replace 후 callback 예외는 stale 중단",
+        "status": "PASS"
+      },
+      {
+        "name": "원 pass 안 clear→새 등록을 종료 guard가 지우지 않음",
+        "status": "PASS"
+      },
+      {
+        "name": "원 pass 배열 교체→새 등록을 종료 guard가 지우지 않음",
+        "status": "PASS"
+      },
+      {
+        "name": "before/current 원 피해/상태·순서·RNG 동일",
+        "status": "PASS"
+      },
+      {
+        "name": "동기 this/인수/반환/원 예외·호출1 보존",
+        "status": "PASS"
+      },
+      {
+        "name": "기본 비활성 원 pass만 실행/callback0",
+        "status": "PASS"
+      }
+    ],
+    "beforePath": "outputs/team-review-20261002/four-candidate-acceptance/d13-deferred-contract-candidate.mjs.before",
+    "beforeSha256": "43ed003c5270621601306512f85d45025f540ede7252eb55bdb67556c288dd75",
+    "currentSha256": "89ad082ac6c1b62159b0cceeabbd378367e589feff7ccbce1fd08e5035c4a632",
+    "sourceEvidence": {
+      "gameSha256": "6a8b523a4c91fdeaa300e85c3e5cfe25eb51cd8be705c395f5112d0771f6065b",
+      "functions": [
+        {
+          "name": "activateSpikeTrap",
+          "sha256": "f5d9f41ee12c8f51a0d8a1b116588a6133a3bc801aec73bb0532d3c02fc2dd19",
+          "line": 43997
+        },
+        {
+          "name": "hurtE",
+          "sha256": "a8578d764819733816dce0ed677f5d2e2d4bae35040425c9f1762b7fd69771f2",
+          "line": 40713
+        },
+        {
+          "name": "update",
+          "sha256": "c37aa75077f5670d8f4af076f2570f75471d7f0bf5c32b6c1b43185749045a1c",
+          "line": 30857
+        },
+        {
+          "name": "checkRooms",
+          "sha256": "98bf9b1a8b413c7f4354964c03df8929433e1f5af1e0f508b97408341a79dab0",
+          "line": 40379
+        }
+      ],
+      "zoneBlock": {
+        "sha256": "a78c383ab58ccdd9bf67893ed3b742cdcd3c82a21f94b539486a2a075c868c11",
+        "bytes": 22471,
+        "line": 35851
+      },
+      "callsite": {
+        "original": "hurtE(e,fz.dmg,Math.atan2(e.y-fz.y,e.x-fz.x),true,{dot:true,shieldHit:true,_lessonAttack:'spikeTrap'},EL.P)",
+        "replacement": "review.invokeDot(fz,hurtE,undefined,[e,fz.dmg,Math.atan2(e.y-fz.y,e.x-fz.x),true,{dot:true,shieldHit:true,_lessonAttack:'spikeTrap'},EL.P])",
+        "unchangedArgumentExpressions": [
+          "e",
+          "fz.dmg",
+          "Math.atan2(e.y-fz.y,e.x-fz.x)",
+          "true",
+          "{dot:true,shieldHit:true,_lessonAttack:'spikeTrap'}",
+          "EL.P"
+        ],
+        "sha256": "52e3481541923fcced1e047d7c2dac8cac90ab859615b3909e576b633e72fc93"
+      }
+    },
+    "productionApplied": false,
+    "fixtureScope": "기존 실제 full hurtE/장판블록 fixture 재사용. 새 child payload/밸런스 결정0"
+  },
+  "adjacent": {
+    "utc": "2026-10-01T18:41:54.702Z",
+    "pass": 19,
+    "fail": 0,
+    "observations": {
+      "immediate": {
+        "childT": 1,
+        "childTickTimer": 1,
+        "rngCalls": 9,
+        "damageCalls": 1,
+        "hp": -9,
+        "arrayIdentity": true,
+        "claim": "같은 tick 순회·타이머/RNG 처리. 자식 틱피해 발생 주장은 아님"
+      },
+      "deferred": {
+        "childT": 0,
+        "childTickTimer": 0,
+        "rngCalls": 8,
+        "hp": -9,
+        "arrayIdentity": true
+      },
+      "noPayload": {
+        "rngCalls": 8,
+        "hp": -9,
+        "kills": 1,
+        "callbackCount": 1
+      }
+    },
+    "rows": [
+      {
+        "name": "즉시 push 실제 전체 루프 같은 tick 처리 재현",
+        "status": "PASS"
+      },
+      {
+        "name": "지연 callback 압축 종료후/같은 tick child 미처리",
+        "status": "PASS"
+      },
+      {
+        "name": "원 피해·배열·순서·RNG 추가0 대조",
+        "status": "PASS"
+      },
+      {
+        "name": "기본/한쪽 opt-in callback0",
+        "status": "PASS"
+      },
+      {
+        "name": "기본/한쪽 opt-in callback0",
+        "status": "PASS"
+      },
+      {
+        "name": "기본/한쪽 opt-in callback0",
+        "status": "PASS"
+      },
+      {
+        "name": "실제 합체 literal/원본태그 거부",
+        "status": "PASS"
+      },
+      {
+        "name": "자식/불명/직접 DOT 불발",
+        "status": "PASS"
+      },
+      {
+        "name": "출처 재분류/합체후 변형 차단",
+        "status": "PASS"
+      },
+      {
+        "name": "동일 원본 시전 다수 처치 최대1/FIFO 신규시전",
+        "status": "PASS"
+      },
+      {
+        "name": "실제 압축 만료·원배열 identity·기존순서",
+        "status": "PASS"
+      },
+      {
+        "name": "hurtE 실패/전체 pass 실패시 callback0",
+        "status": "PASS"
+      },
+      {
+        "name": "callback 실패는 원 damage/반환에 영향0",
+        "status": "PASS"
+      },
+      {
+        "name": "실제 death 의존 checkRooms 대역에서 clear/배열교체 폐기",
+        "status": "PASS"
+      },
+      {
+        "name": "생성/피해/pass this 인수 반환·예외·1회",
+        "status": "PASS"
+      },
+      {
+        "name": "소스 루프 전체와 단1개 호출부 치환",
+        "status": "PASS"
+      },
+      {
+        "name": "실제 비처치/쉴드흡수/부활은 callback0",
+        "status": "PASS"
+      },
+      {
+        "name": "원본2시전 실제 거리분리/FIFO 후속 callback",
+        "status": "PASS"
+      },
+      {
+        "name": "큐등록 후 실제 루프 particle 실패면 callback 폐기",
+        "status": "PASS"
+      }
+    ],
+    "originalEvidenceOverwritten": false
+  }
+}

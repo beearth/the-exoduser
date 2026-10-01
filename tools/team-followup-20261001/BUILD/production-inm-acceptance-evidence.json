@@ -1,0 +1,243 @@
+{
+  "startedAt": "2026-10-01T18:50:14.269Z",
+  "completedAt": "2026-10-01T18:50:14.280Z",
+  "sourceSHA": "18cf9aa806d5715788f360debbc2a45c2574a76db952f101b524e2ff77fd517d",
+  "beforeSHA": "441bacbd8a5e0f7ae883e5c9a0a2e0368bf5190f50d2cb0246b89a4e6771bb6d",
+  "helperSHA": "799d937e089e613f34379436eea48b6594ad732791a794eedd9a682d26b4dd5b",
+  "staticBranchSHA": "e22f37ee5f698015250b76cbd72a2c23fb1d4d61fa0139377e09953e0a433f89",
+  "candidateExact": true,
+  "outsideTwoChangesPreserved": true,
+  "root84ObservedAt": "2026-10-01T18:42:20.807Z",
+  "tests": 13,
+  "results": [
+    {
+      "input": {
+        "name": "생산stat값 weak + out-of-range보다304우선",
+        "headers": {
+          "if-none-match": "W/\"1000-100\"",
+          "range": "bytes=4096-"
+        },
+        "expected": 304
+      },
+      "result": {
+        "status": 304,
+        "headers": {
+          "Cache-Control": "public, max-age=3600",
+          "ETag": "\"1000-100\""
+        },
+        "calls": [
+          "end"
+        ]
+      }
+    },
+    {
+      "input": {
+        "name": "HEAD wildcard + IfRange불일치보다304",
+        "method": "HEAD",
+        "headers": {
+          "if-none-match": "*",
+          "if-range": "\"stale\"",
+          "range": "bytes=0-1"
+        },
+        "expected": 304
+      },
+      "result": {
+        "status": 304,
+        "headers": {
+          "Cache-Control": "public, max-age=3600",
+          "ETag": "\"1000-100\""
+        },
+        "calls": [
+          "end"
+        ]
+      }
+    },
+    {
+      "input": {
+        "name": "opaque 쉼표를현재tag로오인하지않음",
+        "headers": {
+          "if-none-match": "\"1000-100,other\"",
+          "range": "bytes=-17"
+        },
+        "expected": 206,
+        "range": "bytes 4079-4095/4096"
+      },
+      "result": {
+        "status": 206,
+        "headers": {
+          "Content-Range": "bytes 4079-4095/4096",
+          "Accept-Ranges": "bytes",
+          "Content-Length": 17,
+          "Content-Type": "video/mp4",
+          "Access-Control-Allow-Origin": "*"
+        },
+        "calls": [
+          {
+            "stream": {
+              "start": 4079,
+              "end": 4095
+            }
+          },
+          "pipe"
+        ]
+      }
+    },
+    {
+      "input": {
+        "name": "인용쉼표목록뒤weak매치",
+        "headers": {
+          "if-none-match": "\"x,y\", W/\"1000-100\"",
+          "range": "bytes=0-1"
+        },
+        "expected": 304
+      },
+      "result": {
+        "status": 304,
+        "headers": {
+          "Cache-Control": "public, max-age=3600",
+          "ETag": "\"1000-100\""
+        },
+        "calls": [
+          "end"
+        ]
+      }
+    },
+    {
+      "input": {
+        "name": "matching앞부분+malformed끝은304금지",
+        "headers": {
+          "if-none-match": "\"1000-100\", garbage",
+          "range": "bytes=0-1"
+        },
+        "expected": 206,
+        "range": "bytes 0-1/4096"
+      },
+      "result": {
+        "status": 206,
+        "headers": {
+          "Content-Range": "bytes 0-1/4096",
+          "Accept-Ranges": "bytes",
+          "Content-Length": 2,
+          "Content-Type": "video/mp4",
+          "Access-Control-Allow-Origin": "*"
+        },
+        "calls": [
+          {
+            "stream": {
+              "start": 0,
+              "end": 1
+            }
+          },
+          "pipe"
+        ]
+      }
+    },
+    {
+      "input": {
+        "name": "불일치INM+sameIfRange는보수적전체",
+        "headers": {
+          "if-none-match": "\"miss\"",
+          "if-range": "\"1000-100\"",
+          "range": "bytes=-17"
+        },
+        "expected": 200
+      },
+      "result": {
+        "status": 200,
+        "headers": {
+          "Content-Type": "video/mp4",
+          "Cache-Control": "public, max-age=3600",
+          "ETag": "\"1000-100\"",
+          "Content-Length": 4096
+        },
+        "calls": [
+          {
+            "stream": null
+          },
+          "pipe"
+        ]
+      }
+    },
+    {
+      "input": {
+        "name": "HTML wildcard는기존정책과gzip보존",
+        "ext": ".html",
+        "headers": {
+          "if-none-match": "*",
+          "range": "items=0-2",
+          "accept-encoding": "gzip"
+        },
+        "expected": 200
+      },
+      "result": {
+        "status": 200,
+        "headers": {
+          "Content-Type": "text/html",
+          "Cache-Control": "no-cache, no-store, must-revalidate",
+          "ETag": "\"1000-100\"",
+          "Pragma": "no-cache",
+          "Expires": "0",
+          "Content-Encoding": "gzip",
+          "Vary": "Accept-Encoding",
+          "Content-Length": 9
+        },
+        "calls": [
+          "end"
+        ]
+      }
+    },
+    {
+      "input": {
+        "name": "POST INM wildcard가정적304를만들지않음",
+        "method": "POST",
+        "headers": {
+          "if-none-match": "*",
+          "range": "bytes=0-1"
+        },
+        "expected": 200
+      },
+      "result": {
+        "status": 200,
+        "headers": {
+          "Content-Type": "video/mp4",
+          "Cache-Control": "public, max-age=3600",
+          "ETag": "\"1000-100\"",
+          "Content-Length": 4096
+        },
+        "calls": [
+          {
+            "stream": null
+          },
+          "pipe"
+        ]
+      }
+    },
+    {
+      "input": {
+        "name": "HEAD 불일치는full200",
+        "method": "HEAD",
+        "headers": {
+          "if-none-match": "W/\"miss\"",
+          "range": "bytes=0-1"
+        },
+        "expected": 200
+      },
+      "result": {
+        "status": 200,
+        "headers": {
+          "Content-Type": "video/mp4",
+          "Cache-Control": "public, max-age=3600",
+          "ETag": "\"1000-100\"",
+          "Content-Length": 4096
+        },
+        "calls": [
+          {
+            "stream": null
+          },
+          "pipe"
+        ]
+      }
+    }
+  ],
+  "limits": "실제정적존재/stat/MIME/INM/Range분기대역;서버전체실행/실HTTP/실UI/strongvalidator검수0"
+}

@@ -106,3 +106,5 @@ root가 정확단일INM304 우선·If-Range 전체응답 후보를 server.cjs에
 ### 2026-10-02 INM weak/list/wildcard 생산 인수
 
 matchesIfNoneMatch helper와 조건식1곳만 반영했다. exact 후보 byte 일치 및 현재 생산 INM40+조건부Range31+저장13=84그룹 PASS. If-Range 전부 전체응답·HTML정책·gzip·HEAD·atomicSaveJSON/저장경계 유지. RFC9110 §13.1.2의 약한 비교·별표·목록을 따르되 malformed전체무시/빈member32개 정책을 기록했다. validator강도·실HTTP·HEAD wire는 미검수, 서버 재시작0. UIUX 후보34는 반영 전 통과이며 별도 순차 통합한다. docs/0마스터플랜/mac-resume-20261001/vscode-dispatch/FOUR-CANDIDATE-ACCEPTANCE-20261002.md 참조.
+
+2026-10-02 BUILD 후속 완료: 승인 후보와 현행 server.cjs byte 일치, 실제 정적 분기 추출 독립13 PASS를 root가 하니스·증거로 검토했다. root84와 구분하며 추가 생산 수정0, 실제 HTTP/UI 미검수. 근거 production-inm-acceptance-result.md 및 build-owner-final.json.

@@ -1,6 +1,6 @@
 export function createD13DeferredReview({enabled=false,reviewOnly=false,onOriginalTrapKill=()=>{}}={}) {
   const permitted=enabled === true && reviewOnly === true;
-  let sources=new WeakMap(),usedCasts=new Set(),pending=[],inPass=false,epoch=0;
+  let sources=new WeakMap(),usedCasts=new Set(),pending=[],inPass=false,flushing=false,epoch=0;
   const callbackErrors=[];
   function record(zone,kind,castToken) {
     if(!permitted || !zone || zone.type !== 'spikeTrap' || sources.has(zone))return false;
@@ -30,14 +30,20 @@ export function createD13DeferredReview({enabled=false,reviewOnly=false,onOrigin
     if(permitted && typeof getZones !== 'function')throw new TypeError('검토 루프 배열 참조 공급 필요');
     return function(...args) {
       if(!permitted)return Reflect.apply(original,this,args);
-      if(inPass)throw new Error('review zone pass 재진입 미지원');
+      if(inPass || flushing)throw new Error('review zone pass 재진입 미지원');
       const passZones=getZones(),passEpoch=epoch;
       inPass=true;let value,success=false;
       try {value=Reflect.apply(original,this,args);success=true;}
       finally {inPass=false;if(!success)pending=[];}
-      if(epoch !== passEpoch || getZones() !== passZones){clear();return value;}
+      if(epoch !== passEpoch || getZones() !== passZones){pending=[];return value;}
       const callbacks=pending;pending=[];
-      for(const event of callbacks)try {onOriginalTrapKill(event);}catch(error){callbackErrors.push(error);}
+      flushing=true;
+      try {
+        for(const event of callbacks){
+          if(epoch !== passEpoch || getZones() !== passZones)break;
+          try {onOriginalTrapKill(event);}catch(error){callbackErrors.push(error);}
+        }
+      } finally {flushing=false;}
       return value;
     };
   }
