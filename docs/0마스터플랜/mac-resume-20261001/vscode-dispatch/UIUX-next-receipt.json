@@ -1,0 +1,20 @@
+{
+  "taskId": "UIUX-HUD-OCCLUSION-CANDIDATE",
+  "cli": "Codex",
+  "sessionId": null,
+  "assignedExistingSessionId": "01a0f6e5-8653-7ae2-8b2b-314e275c215c",
+  "model": null,
+  "receivedAt": "2026-10-01T11:45:21Z",
+  "startedAt": "2026-10-01T11:45:21Z",
+  "timeNote": "최초 UTC 조회 시점 기록. 수신 후 NEXT_TASK 및 이전 결과·팀 MD 읽기 실행을 확인했으며 정확한 최초 수신 초는 미계측",
+  "status": "completed_with_pending_gates",
+  "startEvidence": "NEXT_TASK 첫 Read exit0, 이전 완료 산출과 현재 draw 경로·팀 MD 읽기 exit0. 중복 진행 산출 없음",
+  "ownedPaths": ["tools/team-followup-20261001/UIUX/", "docs/0마스터플랜/mac-resume-20261001/vscode-dispatch/UIUX-next-result.md", "docs/0마스터플랜/mac-resume-20261001/vscode-dispatch/UIUX-next-receipt.json"],
+  "nextAction": "총괄에 P1 미적용 hunk/P2 순수 배치 함수 인계. bbox/안정 ID/변환 연결 확정 뒤 QA 단독 시각·성능 검수",
+  "blocker": "지정 후보 산출 차단 없음. 생산 적용 및 게임 검수는 금지되어 미완료 게이트로 인계",
+  "completedAt": "2026-10-01T11:48:40Z",
+  "resultPath": "docs/0마스터플랜/mac-resume-20261001/vscode-dispatch/UIUX-next-result.md",
+  "validation": { "layoutChecks": 14, "layoutPassed": 14, "candidateInlineSyntax": 4, "patchReplay": "PASS", "productionSourceUnchanged": true },
+  "productionApplied": false,
+  "newLiveValidation": false
+}

@@ -1,0 +1,202 @@
+{
+  "taskId": "ITEM-RING-RGB-ATTRIBUTION",
+  "backend": {
+    "canvas": "3.2.3",
+    "cairo": "1.18.4",
+    "node": "v24.15.0"
+  },
+  "inputs": {
+    "rawSha256": "2f3a05692db24dbd36562681921ac72613fd97e44c3210083a4324805355137e",
+    "evidenceSha256": "812b47358d293d3dc2c154ab5989470add22eb3f1bb7f2edf9f78cde16da0a96",
+    "maskSha256": "1a8a563ba924b94577e1c53164c373ffadc371c039ed6ab93ff37bb853ab226f"
+  },
+  "rows": [
+    {
+      "stage": "raw file RGBA → native decode/draw/read",
+      "rgbDiff": 0,
+      "alphaDiff": 0,
+      "rgbaDiff": 0,
+      "maxRgbDelta": 0,
+      "maxAlphaDelta": 0,
+      "partialRgbDiff": 0,
+      "opaqueRgbDiff": 0,
+      "zeroRgbDiff": 0
+    },
+    {
+      "stage": "exact24/72 before Canvas put → evidence file RGBA",
+      "rgbDiff": 150721,
+      "alphaDiff": 0,
+      "rgbaDiff": 150721,
+      "maxRgbDelta": 25,
+      "maxAlphaDelta": 0,
+      "partialRgbDiff": 141901,
+      "opaqueRgbDiff": 0,
+      "zeroRgbDiff": 8820
+    },
+    {
+      "stage": "mask exact array → native put/read",
+      "rgbDiff": 178916,
+      "alphaDiff": 0,
+      "rgbaDiff": 178916,
+      "maxRgbDelta": 25,
+      "maxAlphaDelta": 0,
+      "partialRgbDiff": 170096,
+      "opaqueRgbDiff": 0,
+      "zeroRgbDiff": 8820
+    },
+    {
+      "stage": "evidence file RGBA → native decode/draw/read",
+      "rgbDiff": 47621,
+      "alphaDiff": 0,
+      "rgbaDiff": 47621,
+      "maxRgbDelta": 1,
+      "maxAlphaDelta": 0,
+      "partialRgbDiff": 47621,
+      "opaqueRgbDiff": 0,
+      "zeroRgbDiff": 0
+    },
+    {
+      "stage": "native masked Canvas → evidence decoded Canvas",
+      "rgbDiff": 93204,
+      "alphaDiff": 0,
+      "rgbaDiff": 93204,
+      "maxRgbDelta": 23,
+      "maxAlphaDelta": 0,
+      "partialRgbDiff": 93204,
+      "opaqueRgbDiff": 0,
+      "zeroRgbDiff": 0
+    },
+    {
+      "stage": "native masked Canvas → same-size Canvas draw",
+      "rgbDiff": 0,
+      "alphaDiff": 0,
+      "rgbaDiff": 0,
+      "maxRgbDelta": 0,
+      "maxAlphaDelta": 0,
+      "partialRgbDiff": 0,
+      "opaqueRgbDiff": 0,
+      "zeroRgbDiff": 0
+    },
+    {
+      "stage": "native masked read → native PNG encoded RGBA",
+      "rgbDiff": 85836,
+      "alphaDiff": 0,
+      "rgbaDiff": 85836,
+      "maxRgbDelta": 1,
+      "maxAlphaDelta": 0,
+      "partialRgbDiff": 85836,
+      "opaqueRgbDiff": 0,
+      "zeroRgbDiff": 0
+    },
+    {
+      "stage": "native masked Canvas → own PNG decode/draw/read",
+      "rgbDiff": 0,
+      "alphaDiff": 0,
+      "rgbaDiff": 0,
+      "maxRgbDelta": 0,
+      "maxAlphaDelta": 0,
+      "partialRgbDiff": 0,
+      "opaqueRgbDiff": 0,
+      "zeroRgbDiff": 0
+    },
+    {
+      "stage": "own native PNG file → evidence PNG file",
+      "rgbDiff": 93221,
+      "alphaDiff": 0,
+      "rgbaDiff": 93221,
+      "maxRgbDelta": 23,
+      "maxAlphaDelta": 0,
+      "partialRgbDiff": 93221,
+      "opaqueRgbDiff": 0,
+      "zeroRgbDiff": 0
+    },
+    {
+      "stage": "34px native mask resize → evidence decode resize",
+      "rgbDiff": 1667,
+      "alphaDiff": 0,
+      "rgbaDiff": 1667,
+      "maxRgbDelta": 36,
+      "maxAlphaDelta": 0,
+      "partialRgbDiff": 1665,
+      "opaqueRgbDiff": 2,
+      "zeroRgbDiff": 0
+    },
+    {
+      "stage": "34px native mask resize → own PNG roundtrip resize",
+      "rgbDiff": 0,
+      "alphaDiff": 0,
+      "rgbaDiff": 0,
+      "maxRgbDelta": 0,
+      "maxAlphaDelta": 0,
+      "partialRgbDiff": 0,
+      "opaqueRgbDiff": 0,
+      "zeroRgbDiff": 0
+    },
+    {
+      "stage": "premultiplied native BGRA surfaces mask → evidence",
+      "rgbDiff": 93204,
+      "alphaDiff": 0,
+      "rgbaDiff": 93204,
+      "maxRgbDelta": 1,
+      "maxAlphaDelta": 0,
+      "partialRgbDiff": 93204,
+      "opaqueRgbDiff": 0,
+      "zeroRgbDiff": 0
+    }
+  ],
+  "hypotheses": [
+    {
+      "mode": "floor",
+      "versusNativeMask": {
+        "rgbDiff": 0,
+        "alphaDiff": 0,
+        "rgbaDiff": 0,
+        "maxRgbDelta": 0,
+        "maxAlphaDelta": 0,
+        "partialRgbDiff": 0,
+        "opaqueRgbDiff": 0,
+        "zeroRgbDiff": 0
+      },
+      "versusEvidenceDecoded": {
+        "rgbDiff": 93204,
+        "alphaDiff": 0,
+        "rgbaDiff": 93204,
+        "maxRgbDelta": 23,
+        "maxAlphaDelta": 0,
+        "partialRgbDiff": 93204,
+        "opaqueRgbDiff": 0,
+        "zeroRgbDiff": 0
+      }
+    },
+    {
+      "mode": "round",
+      "versusNativeMask": {
+        "rgbDiff": 93204,
+        "alphaDiff": 0,
+        "rgbaDiff": 93204,
+        "maxRgbDelta": 23,
+        "maxAlphaDelta": 0,
+        "partialRgbDiff": 93204,
+        "opaqueRgbDiff": 0,
+        "zeroRgbDiff": 0
+      },
+      "versusEvidenceDecoded": {
+        "rgbDiff": 0,
+        "alphaDiff": 0,
+        "rgbaDiff": 0,
+        "maxRgbDelta": 0,
+        "maxAlphaDelta": 0,
+        "partialRgbDiff": 0,
+        "opaqueRgbDiff": 0,
+        "zeroRgbDiff": 0
+      }
+    }
+  ],
+  "derived": {
+    "file": "ring_phys_native_roundtrip.png",
+    "bytes": 60427,
+    "sha256": "268e264a5df8c0c00f63c5c13412640c53d5f33fef6fb726d12bf5043b802831"
+  },
+  "ownRoundtripExact": true,
+  "scope": "offline native Canvas and lossless PNG file decode; no Chrome/game/GPU test"
+}

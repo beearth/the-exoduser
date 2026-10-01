@@ -1,0 +1,140 @@
+{
+  "status": "KNOWN_DEFECTS_REPRODUCED_NOT_ACCEPTANCE",
+  "sourceSha256": "e5518842324d17fb63da44457e6092af138b4fcfbaf49c1cb03ef791431dc115",
+  "crop": [
+    {
+      "w": 1920,
+      "h": 1080,
+      "elapsed": 400,
+      "zoom": 1.067777777777778,
+      "baseVerdict": "OK_FULLFRAME",
+      "topFraction": 0.03260492542490472,
+      "bottomFraction": 0.03087062088102682,
+      "combinedVerticalFraction": 0.06347554630593154
+    },
+    {
+      "w": 1920,
+      "h": 1080,
+      "elapsed": 1200,
+      "zoom": 1.05,
+      "baseVerdict": "OK_FULLFRAME",
+      "topFraction": 0.02292768959435626,
+      "bottomFraction": 0.024691358024691357,
+      "combinedVerticalFraction": 0.047619047619047616
+    },
+    {
+      "w": 1920,
+      "h": 1080,
+      "elapsed": 2399,
+      "zoom": 1.0400000069444444,
+      "baseVerdict": "OK_FULLFRAME",
+      "topFraction": 0.019230772441033776,
+      "bottomFraction": 0.019230772441033675,
+      "combinedVerticalFraction": 0.03846154488206745
+    },
+    {
+      "w": 2560,
+      "h": 1080,
+      "elapsed": 400,
+      "zoom": 1.067777777777778,
+      "baseVerdict": "OK_FULLFRAME",
+      "topFraction": 0.03260492542490472,
+      "bottomFraction": 0.03087062088102682,
+      "combinedVerticalFraction": 0.06347554630593154
+    },
+    {
+      "w": 2560,
+      "h": 1080,
+      "elapsed": 1200,
+      "zoom": 1.05,
+      "baseVerdict": "OK_FULLFRAME",
+      "topFraction": 0.02292768959435626,
+      "bottomFraction": 0.024691358024691357,
+      "combinedVerticalFraction": 0.047619047619047616
+    },
+    {
+      "w": 2560,
+      "h": 1080,
+      "elapsed": 2399,
+      "zoom": 1.0400000069444444,
+      "baseVerdict": "OK_FULLFRAME",
+      "topFraction": 0.019230772441033776,
+      "bottomFraction": 0.019230772441033675,
+      "combinedVerticalFraction": 0.03846154488206745
+    },
+    {
+      "w": 1920,
+      "h": 1200,
+      "elapsed": 400,
+      "zoom": 1.067777777777778,
+      "baseVerdict": "CROP_SIDE_MINOR",
+      "topFraction": 0.03251821019771077,
+      "bottomFraction": 0.03095733610822066,
+      "combinedVerticalFraction": 0.06347554630593143
+    },
+    {
+      "w": 1920,
+      "h": 1200,
+      "elapsed": 1200,
+      "zoom": 1.05,
+      "baseVerdict": "CROP_SIDE_MINOR",
+      "topFraction": 0.023015873015873017,
+      "bottomFraction": 0.024603174603174603,
+      "combinedVerticalFraction": 0.047619047619047616
+    },
+    {
+      "w": 1920,
+      "h": 1200,
+      "elapsed": 2399,
+      "zoom": 1.0400000069444444,
+      "baseVerdict": "CROP_SIDE_MINOR",
+      "topFraction": 0.019230772441033786,
+      "bottomFraction": 0.019230772441033876,
+      "combinedVerticalFraction": 0.03846154488206766
+    },
+    {
+      "w": 1024,
+      "h": 768,
+      "elapsed": 400,
+      "zoom": 1.067777777777778,
+      "baseVerdict": "CROP_SIDE_MAJOR",
+      "topFraction": 0.03295720603537992,
+      "bottomFraction": 0.03051834027055161,
+      "combinedVerticalFraction": 0.06347554630593152
+    },
+    {
+      "w": 1024,
+      "h": 768,
+      "elapsed": 1200,
+      "zoom": 1.05,
+      "baseVerdict": "CROP_SIDE_MAJOR",
+      "topFraction": 0.0225694444444445,
+      "bottomFraction": 0.025049603174603228,
+      "combinedVerticalFraction": 0.04761904761904773
+    },
+    {
+      "w": 1024,
+      "h": 768,
+      "elapsed": 2399,
+      "zoom": 1.0400000069444444,
+      "baseVerdict": "CROP_SIDE_MAJOR",
+      "topFraction": 0.019230772441033845,
+      "bottomFraction": 0.019230772441033845,
+      "combinedVerticalFraction": 0.03846154488206769
+    }
+  ],
+  "skill": {
+    "falseRecharge": {
+      "install": 0,
+      "otherMp": 0,
+      "residualStk": 0,
+      "delayed": 0,
+      "rechargeTicks": 1,
+      "stkRefund": 0,
+      "cancel": 1,
+      "cancelSideEffect": 0
+    },
+    "failedInstallListeners": 3
+  },
+  "limits": "Static source execution and synthetic fixtures; no game, pixel or real-input verdict."
+}

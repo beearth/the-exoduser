@@ -1,0 +1,50 @@
+{
+  "taskId": "ANIM-HIGHHZ-LIFETIME-GATE",
+  "title": "고주사율>=90Hz·무표본·수명종료 계약 독립 GL probe 완성",
+  "team": "ANIMVFX",
+  "continuesSession": "1d2a7253-478c-43aa-8c6f-766a02270432",
+  "terminal": "VS Code 기존 터미널 8 (ANIMVFX)",
+  "cli": "Claude Code",
+  "model": "claude-opus-4-8",
+  "sessionId": "1d2a7253-478c-43aa-8c6f-766a02270432",
+  "sessionIdSource": "scratchpad 경로의 세션 UUID로 추정. CLI가 직접 보고한 값 아님",
+  "receivedAt": "2026-10-01T21:01:00+09:00",
+  "startedAt": "2026-10-01T21:01:20+09:00",
+  "firstRead": "2026-10-01T21:02 — NEXT_TASK.md·선행 산출·실 raw(gl-revive-valid/60/raw) hf/update/draw 타임라인",
+  "commandStart": "2026-10-01T21:05 — animvfx_highhz_lifetime_gate.mjs 구현 후 node --check·fixture·raw 분류",
+  "completedAt": "2026-10-01T21:08:54+09:00",
+  "status": "completed_with_pending_gates",
+  "head": "30a204a7aa348a88b90bdc922862c610a7da938f",
+  "duplicateCheck": "ANIMVFX-next-result.md/receipt 부재 확인 후 신규 착수 — 중복/진행중 아님",
+  "ownedPaths": [
+    "tools/team-followup-20261001/ANIMVFX/",
+    "docs/0마스터플랜/mac-resume-20261001/vscode-dispatch/ANIMVFX-next-result.md",
+    "docs/0마스터플랜/mac-resume-20261001/vscode-dispatch/ANIMVFX-next-receipt.json"
+  ],
+  "completed": {
+    "gate": "tools/team-followup-20261001/ANIMVFX/animvfx_highhz_lifetime_gate.mjs",
+    "contracts": "C1표본수 C2시계무결 C3일시정지 C4배경 C5감쇠모델(update-tick vs draw-frame) C6수명종료 C7고주사율>=90Hz C8부활/구울",
+    "verdictVocab": "PASS/FAIL/REJECT/UNKNOWN — 근거부족은 PASS 승격 금지(UNKNOWN)",
+    "staticChecks": {
+      "nodeCheck": 0,
+      "negativeRegressionFixtures": "11/11 (exit 0)",
+      "priorValidatorRegression": "mock 9/9 유지(exit 0)",
+      "realRawGate": "gl-revive-valid=비치명4 감쇠 PASS(update-tick 구동)·고주사율 UNKNOWN·부활 3/구울 1 · gl-revive-60=감쇠 PASS·UNKNOWN·부활 2/구울 2 · gl-revive-raw=에피소드0 UNKNOWN"
+    },
+    "node": "v24.15.0"
+  },
+  "keyFinding": "비치명 플래시 감쇠가 update-tick 구동(주사율 독립)임을 저주사율 raw로 확인(6감소=6updateTick, draw 3프레임). 단 실제 >=90Hz 수명은 미실측 → UNKNOWN(PASS 아님).",
+  "gate": {
+    "highRefreshActual": "NOT-MEASURED",
+    "reason": "현존 raw의 자연감쇠 drawHz ~36-38Hz. 고주사율 실화면 raw 없음. 게임/브라우저 실행은 QA 단독",
+    "pending": [
+      "QA/총괄: 정규 GL 120/240Hz 디스플레이에서 probe install->피격/사망/부활->dispose raw 확보 시 본 게이트가 C7 자동 판정",
+      "자연 조우·사용자 공격 입력 수명, 부활 잔상0 정규 GL 실화면, 가독성(가림) 판정"
+    ]
+  },
+  "productionChange": 0,
+  "git": "add/commit/push 0",
+  "sharedDocEdit": "0 (ANIMATION_VFX_TEAM_MASTER §11 한 줄 인덱스는 result §6 후보로만, 총괄 통합)",
+  "nextAction": "고주사율 실화면 raw는 QA 단독 캡처로 인계. 총괄: 공용 문서 통합·원격 체크포인트",
+  "blocker": null
+}

@@ -1,0 +1,37 @@
+{
+  "taskId": "SKILL-ICE-CANCEL-EDGE",
+  "title": "iceStorm 취소·리젠 경계 자원 정합성 관측 보강",
+  "team": "SKILL",
+  "terminal": 6,
+  "cli": "claude-code",
+  "model": "claude-opus-4-8",
+  "sessionId": "203377cc-64c4-47ea-af27-95b66ae829fa",
+  "receivedAt": "2026-10-01T11:02:00Z",
+  "startedAt": "2026-10-01T11:04:00Z",
+  "status": "done_pending_live",
+  "completedAt": "2026-10-01T11:22:00Z",
+  "head": "30a204a7aa348a88b90bdc922862c610a7da938f",
+  "duplicateCheck": "SKILL-next-result/receipt 없음, R-입력-작업대장 SKILL 행은 관측기 본문만 기록. 중복 대기/진행 아님 → 신규 착수.",
+  "selectedBoundary": "취소/리젠 경계 — 적법 리젠 완료(dStk=+1, prev.rech>0)와 부적법 스택 환급(STK_REFUND)·취소 프레임 부작용(CANCEL_SIDE_EFFECT) 분리. 3팀-후속검토의 '실입력·리젠 경계 미실시' 및 SKILL03 '조준 시작 이후 자원 변경 재검사' 잔여게이트에 대응.",
+  "ownedPaths": [
+    "docs/0마스터플랜/mac-resume-20261001/vscode-dispatch/SKILL-next-result.md",
+    "docs/0마스터플랜/mac-resume-20261001/vscode-dispatch/SKILL-next-receipt.json",
+    "tools/team-followup-20261001/SKILL/ice-cancel-probe.safe.js",
+    "tools/team-followup-20261001/SKILL/ice-cancel-probe.selftest.mjs"
+  ],
+  "artifacts": {
+    "observer": "tools/team-followup-20261001/SKILL/ice-cancel-probe.safe.js",
+    "selftest": "tools/team-followup-20261001/SKILL/ice-cancel-probe.selftest.mjs",
+    "syntaxCheck": "node --check → OK (exit0)",
+    "selftestResult": "66 PASS / 0 FAIL (exit0, 기존38 + 신규28)"
+  },
+  "nextAction": "QA 종료 인계 후 실게임에서 리젠 중 확정·취소 실측. 다음 SKILL 후보: 예외 경계(readRaw throw 시 rAF 루프 사망·리스너 누수, dispose removeEventListener 개별 try).",
+  "blocker": null,
+  "incomplete": [
+    "실브라우저 입력·리젠 중 확정·취소 실측(QA 종료 인계 전 보류)",
+    "예외 경계(주입형 readRaw throw·dispose 개별 try) 미착수 — 다음 한 건 후보",
+    "무기공격 2차확인·패드·합체 holyIce 범위 밖"
+  ],
+  "handoff": "game.html:35052 인라인 주석 '15초/1충전'이 실제 _isRech=1500(25초)·SSOT와 불일치. game.html 수정 금지라 미반영, 총괄/소유팀에 주석 정정 권고.",
+  "notes": "리젠 세만틱 game.html:35052-35061, 확정/취소 블록 35063-35090 읽기 대조(타 세션 working-tree 편집으로 앞선 작업 대비 줄 이동 확인). game.html/easy/총괄MD/공용 test/타팀 파일 무수정. 게임/서버/브라우저/Git 조작 없음."
+}

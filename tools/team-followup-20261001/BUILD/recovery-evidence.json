@@ -1,0 +1,127 @@
+{
+  "kind": "mock-http-real-fixture-no-listen",
+  "at": "2026-10-01T10:51:28.406Z",
+  "node": "v24.15.0",
+  "sources": {
+    "server.cjs": "339fad6ab51cba92f6ca7a386c8aeb251f68cdb58cdfa55c109f57b1758a42ad",
+    "node-main.js": "01b0c1d51f77f500ee0a59185458bf0294edce12544482d6cf7abce4262c91ce",
+    "build-nwjs.mjs": "567a4b2d6761974b8763abe03ac3c50fc5b973c36be6324c7200ac27b445a78f",
+    "game.html": "593a7a9d84c78402f04c50c94ae169e237e49751ad58d8640e78e672850728f2",
+    "game-easy-test.html": "269411143e093319926948dce42740d83617b2a0e1305cc1180a59a6ecb75e58"
+  },
+  "rows": [
+    {
+      "name": "builder isolation replacements still present",
+      "status": "PASS"
+    },
+    {
+      "name": "development port and loopback",
+      "status": "PASS"
+    },
+    {
+      "name": "development sanitized slot confined",
+      "status": "PASS"
+    },
+    {
+      "name": "development save/load roundtrip",
+      "status": "PASS"
+    },
+    {
+      "name": "development negative mats clamp",
+      "status": "PASS"
+    },
+    {
+      "name": "development underscore-prefixed sanitized slot hidden (observed gap)",
+      "status": "PASS"
+    },
+    {
+      "name": "development normal slot visible / shared mats excluded",
+      "status": "PASS"
+    },
+    {
+      "name": "development VM restart retains fixture save",
+      "status": "PASS"
+    },
+    {
+      "name": "development port collision handler absent (observed gap)",
+      "status": "PASS"
+    },
+    {
+      "name": "package-copy port and loopback",
+      "status": "PASS"
+    },
+    {
+      "name": "package-copy sanitized slot confined",
+      "status": "PASS"
+    },
+    {
+      "name": "package-copy save/load roundtrip",
+      "status": "PASS"
+    },
+    {
+      "name": "package-copy negative mats clamp",
+      "status": "PASS"
+    },
+    {
+      "name": "package-copy underscore-prefixed sanitized slot hidden (observed gap)",
+      "status": "PASS"
+    },
+    {
+      "name": "package-copy normal slot visible / shared mats excluded",
+      "status": "PASS"
+    },
+    {
+      "name": "package-copy VM restart retains fixture save",
+      "status": "PASS"
+    },
+    {
+      "name": "package-copy port collision handler absent (observed gap)",
+      "status": "PASS"
+    },
+    {
+      "name": "reject invalid PORT 0",
+      "status": "PASS"
+    },
+    {
+      "name": "reject invalid PORT 65536",
+      "status": "PASS"
+    },
+    {
+      "name": "reject invalid PORT NaN",
+      "status": "PASS"
+    },
+    {
+      "name": "reject invalid PORT 3.5",
+      "status": "PASS"
+    },
+    {
+      "name": "save path existing file fails boot",
+      "status": "PASS"
+    },
+    {
+      "name": "game.html blur clears input and holds",
+      "status": "PASS"
+    },
+    {
+      "name": "game.html hidden visibility clears / visible preserves",
+      "status": "PASS"
+    },
+    {
+      "name": "game-easy-test.html blur clears input and holds",
+      "status": "PASS"
+    },
+    {
+      "name": "game-easy-test.html hidden visibility clears / visible preserves",
+      "status": "PASS"
+    }
+  ],
+  "counts": {
+    "pass": 26,
+    "fail": 0
+  },
+  "limits": [
+    "No real socket, browser, package execution or process crash test.",
+    "Port error handler absence is a gap observation, not collision recovery PASS.",
+    "No atomic-write/interrupted-write durability proof."
+  ]
+}

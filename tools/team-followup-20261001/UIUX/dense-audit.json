@@ -1,0 +1,41 @@
+{
+  "scope": "기존 증거 정합성·현 소스 계약 검사; 새 실화면 PASS 아님",
+  "assets": [
+    {
+      "filename": "before-dense.png",
+      "bytes": 152056,
+      "sha256": "3942cd34ff4257a5381b85d393339f503b0c068f669e8021c9ca30148e011c49"
+    },
+    {
+      "filename": "after-dense.png",
+      "bytes": 153649,
+      "sha256": "3a5c52de6554e8d641ab1c30dcbcf463538696e7cfbd5bff38e289811e3b57ef"
+    },
+    {
+      "filename": "final-dense.png",
+      "bytes": 163466,
+      "sha256": "06e8d9876bc943ba1d3b38ee2194a9de756b26f0fca01e229b95037af5deeb8e"
+    },
+    {
+      "filename": "final-dense-live.json",
+      "bytes": 59825,
+      "sha256": "4ad2abcbb2284684be3ca3450649f0c8d18de1ccc1a45f6710885d7cace7c6d3"
+    }
+  ],
+  "sourceHashes": {
+    "game.html": "593a7a9d84c78402f04c50c94ae169e237e49751ad58d8640e78e672850728f2",
+    "game-easy-test.html": "269411143e093319926948dce42740d83617b2a0e1305cc1180a59a6ecb75e58",
+    "ui-refinement.css": "9a02e776d7de264ae5e20d5d05fa78258c89ca73ac23cf4dfe0b2fd4c041fbc9"
+  },
+  "samples": 20,
+  "visibleSamples": 19,
+  "hiddenSamples": 1,
+  "minimumClockGap": 2.6680374145507812,
+  "maximumClockGap": 2.6680374145507812,
+  "enemies": {
+    "minimum": 102,
+    "maximum": 133
+  },
+  "zeroOverflow": true,
+  "capturedErrors": 0
+}

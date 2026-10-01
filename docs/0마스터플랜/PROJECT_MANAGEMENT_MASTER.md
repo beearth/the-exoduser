@@ -555,3 +555,8 @@ QA 분류34/34 및 관측기5검사, 정상 전투2회 기록·release 종료. �
 ### 18.25 기존 팀 실제 재개와 잠금으로 남은 ENEMY
 
 JSONL 교차확인으로 QA/ART/SKILL/MAP/ANIMVFX 후속 수신과 실제 Read를 확인했다. 기존 Codex4/SOUND까지10팀의 후속 실제착수 증거가 있으며 동시실행10팀을 뜻하지 않는다. ENEMY는 새 수신 없음이며 원격 도구가 Mac locked를 명시해 직접 잠금해제를 요청했다. SOUND 후보18검사 PASS·실제설치미실행, ITEM native RGB차이귀속 완료·Chrome미인수, QA 독립8 및 URL 보강 root17 PASS. BUILD는 공식도움말 경로 조사 후속을 지원CLI 대기열에 전달·12:03:08Z 실제착수 확인했다. 원격 FIRE 체크포인트 b19b9105 SHA 대조 완료. [팀별 실제시각·남은단계·정정 영수증](mac-resume-20261001/vscode-dispatch/FOLLOWUP_RECEIPT.md).
+
+
+### 18.26 Root submission boundary review
+
+ART38/SKILL66/MAP26/ANIMVFX11 checks exited0. Independent source/fixture review reproduced omitted camera crop, false recharge classification and failed-install listener leakage. Production unchanged. Actual JSONL timing and current file hashes supersede stale submission metadata. See [review evidence and pending dispatch](mac-resume-20261001/vscode-dispatch/ROOT_NEXT_REVIEW.md).
