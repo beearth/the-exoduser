@@ -1,0 +1,5 @@
+{
+  "status": "BLOCKED",
+  "error": "ENOENT: no such file or directory, lstat '/Users/fordeargamers/Projects/exoduser-migration-20261001/outputs/mac-package-ready'",
+  "packageCreated": false
+}

@@ -1,0 +1,21 @@
+{
+  "beforeExisting": 37,
+  "newVisible": 47,
+  "countBeforeCommit": 90,
+  "normalStatusProof": "?? tools/team-followup-20261001/BUILD/checkpoint-visibility-proof.md\n",
+  "ignoredPathsVerified": [
+    "tools/team-followup-20261001/BUILD/cache/sample.json",
+    "tools/team-followup-20261001/BUILD/profile/Preferences",
+    "tools/team-followup-20261001/BUILD/saves/slot.json",
+    "tools/team-followup-20261001/BUILD/runtime.nw",
+    "tools/team-followup-20261001/BUILD/package.app/Contents/MacOS/app",
+    "tools/team-followup-20261001/BUILD/_sharedMats.json",
+    "tools/team-followup-20261001/BUILD/profile.json",
+    "build/sample.mjs"
+  ],
+  "preservedHistoricalTextFiles": 46,
+  "uncommittedDraft": [
+    "tools/team-followup-20261001/BUILD/runtime-acquire-config-draft.json"
+  ],
+  "noProductionAdoption": true
+}

@@ -1,0 +1,4 @@
+# BUILD 정확 실행 입력 확정
+직전 package-ready 완료를 확인했다. root 원격 체크포인트는 ae230e74f7bbcacd523dae987370086046457f5e이며 두 HTML이 포함됐다. outputs/team-review-20261002/persistence/remote-checkpoint.json을 읽고 기존 package-ready 전체목록의 현재 SHA/HEAD와 대조하라.
+LFS pointer3경로와 provenance ZIP5경로의 HTML/JS/CSS/manifest 및 동적 경로 의존성을 확인하라. 제작 원본으로 실행 미사용이면 원본은 그대로 두고 inputRoots를 정확한 파일 allowlist로 구성해 해당 파일만 제외하며 경로별 근거를 남겨라. 필요한 LFS는 다운로드하지 말고 정확 oid/크기를 root에 즉시 보고하라. 기존 runtime/cache/release/보호규칙을 재사용하고 완화하지 않는다. 코드의 비활성 atlas·sound fallback·맵 chunk524 상태도 필수/폴백/UNKNOWN으로 나눈다. 새 config는 root용으로 outputRoot=outputs/mac-package-ready, port3381, inputs/backup.inputs/remote SHA를 정확하게 작성한다. 원격증거의 실제시각과 제공출처를 구분. 파생 package/server/profile/save 격리계약 검수도 포함하라.
+소유 package-input-resolution-*만 쓰기. 기존 source/원본/provenance/task/타팀/Git 쓰기/네트워크/앱생성·실행/게임/저장/새세션 금지. 수신/첫Read/Edit/명령/완료 UTC와 작은 결과요약 기록 후 인계. 미완료 게이트를 숨기지 말 것. root가 이후 정식 plan/execute를 한다.

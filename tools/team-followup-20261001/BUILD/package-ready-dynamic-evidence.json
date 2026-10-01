@@ -1,0 +1,4218 @@
+{
+  "at": "2026-10-01T16:19:43.616Z",
+  "locks": {
+    "gameSHA": "7631f5a083672124624e0b8dc22b0716d10c8815dbb1e6aee98a5e2e51299993",
+    "easySHA": "7d68b80afab131562266c39ea7d5631716d12861dbe7e7e2e4477550c15ec6a4",
+    "loop8x8": true,
+    "mainRootsKnown": true,
+    "easyRootsKnown": true,
+    "phaseSetKnown": true
+  },
+  "expandedCount": 524,
+  "checks": [
+    {
+      "path": "assets/map/ch1/production_finish/chunk_0_0.png",
+      "category": "source-bounded8x8-all-mode-map",
+      "exists": true,
+      "inManifest": true,
+      "lfsPointer": false,
+      "sha256": "c09ef8fecc2f753e539183abf3cc52068e3e27e4004ae36f7624f2a7d98e4390"
+    },
+    {
+      "path": "assets/map/ch1/production_finish/chunk_1_0.png",
+      "category": "source-bounded8x8-all-mode-map",
+      "exists": true,
+      "inManifest": true,
+      "lfsPointer": false,
+      "sha256": "17c3177456e2f3e89c12d3a8ef926e831436b1c9abd074bf9c9b7b2c8cca2cbe"
+    },
+    {
+      "path": "assets/map/ch1/production_finish/chunk_2_0.png",
+      "category": "source-bounded8x8-all-mode-map",
+      "exists": true,
+      "inManifest": true,
+      "lfsPointer": false,
+      "sha256": "51cbd12aae46a424a3df1a04168eff1ffa1c7ae81b2d179b400cc92134851975"
+    },
+    {
+      "path": "assets/map/ch1/production_finish/chunk_3_0.png",
+      "category": "source-bounded8x8-all-mode-map",
+      "exists": true,
+      "inManifest": true,
+      "lfsPointer": false,
+      "sha256": "02a097552da48d7b3cd67e0baddb134c8b1844fe3f6a7a626e8eb9d8a263984c"
+    },
+    {
+      "path": "assets/map/ch1/production_finish/chunk_4_0.png",
+      "category": "source-bounded8x8-all-mode-map",
+      "exists": true,
+      "inManifest": true,
+      "lfsPointer": false,
+      "sha256": "8cbed03ec60687349e80097649e6970641af4027c85ccc94b4f04c2ca2dd64e2"
+    },
+    {
+      "path": "assets/map/ch1/production_finish/chunk_5_0.png",
+      "category": "source-bounded8x8-all-mode-map",
+      "exists": true,
+      "inManifest": true,
+      "lfsPointer": false,
+      "sha256": "7b5fc498c98bd7fa665e22feab70cc84a1a2a992d9f80d47856c59536cafb47a"
+    },
+    {
+      "path": "assets/map/ch1/production_finish/chunk_6_0.png",
+      "category": "source-bounded8x8-all-mode-map",
+      "exists": true,
+      "inManifest": true,
+      "lfsPointer": false,
+      "sha256": "eb5296d597bb02dc8409b1ee6dd90e4ddeec4a041e8470125f6f2a6eaebdab72"
+    },
+    {
+      "path": "assets/map/ch1/production_finish/chunk_7_0.png",
+      "category": "source-bounded8x8-all-mode-map",
+      "exists": true,
+      "inManifest": true,
+      "lfsPointer": false,
+      "sha256": "332dc58292a8df4885f82da25b02c31d25e67c7b1c9dc256cd35655a079572b3"
+    },
+    {
+      "path": "assets/map/ch1/production_finish/chunk_0_1.png",
+      "category": "source-bounded8x8-all-mode-map",
+      "exists": true,
+      "inManifest": true,
+      "lfsPointer": false,
+      "sha256": "9f63c0a8abad95cd0eb81f30c488ea8b4a7a02dc673c87be61e7231753050884"
+    },
+    {
+      "path": "assets/map/ch1/production_finish/chunk_1_1.png",
+      "category": "source-bounded8x8-all-mode-map",
+      "exists": true,
+      "inManifest": true,
+      "lfsPointer": false,
+      "sha256": "5ba4ee529da67817db10df7fb5738d58029b0c40333728c84c6ce246c766a7f1"
+    },
+    {
+      "path": "assets/map/ch1/production_finish/chunk_2_1.png",
+      "category": "source-bounded8x8-all-mode-map",
+      "exists": true,
+      "inManifest": true,
+      "lfsPointer": false,
+      "sha256": "c0f4eec555bd873b8737c7924c3a5f9f85ab372ec76250909a58d77233446044"
+    },
+    {
+      "path": "assets/map/ch1/production_finish/chunk_3_1.png",
+      "category": "source-bounded8x8-all-mode-map",
+      "exists": true,
+      "inManifest": true,
+      "lfsPointer": false,
+      "sha256": "34b76851c27450eb2e430fe4787b8e4c31a0dea8ed6dca4d87b62d555d2a1e26"
+    },
+    {
+      "path": "assets/map/ch1/production_finish/chunk_4_1.png",
+      "category": "source-bounded8x8-all-mode-map",
+      "exists": true,
+      "inManifest": true,
+      "lfsPointer": false,
+      "sha256": "e0d153eb1275a7ef613bab38e759ff13ed429091d41ffe5cb678d367b5ae2056"
+    },
+    {
+      "path": "assets/map/ch1/production_finish/chunk_5_1.png",
+      "category": "source-bounded8x8-all-mode-map",
+      "exists": true,
+      "inManifest": true,
+      "lfsPointer": false,
+      "sha256": "324bb7ff361766562f7adc5ab5f25e5a53343f6eabbfe9765a2be5231b25aaaf"
+    },
+    {
+      "path": "assets/map/ch1/production_finish/chunk_6_1.png",
+      "category": "source-bounded8x8-all-mode-map",
+      "exists": true,
+      "inManifest": true,
+      "lfsPointer": false,
+      "sha256": "767a27ee7b956f2558a609640408f5e4d0276e9fd642eaa2508e386d8c8f40f3"
+    },
+    {
+      "path": "assets/map/ch1/production_finish/chunk_7_1.png",
+      "category": "source-bounded8x8-all-mode-map",
+      "exists": true,
+      "inManifest": true,
+      "lfsPointer": false,
+      "sha256": "790e33b874c72268215bb5d6e510e931c2b5e376a6c67aa49d99ee1820b7a65e"
+    },
+    {
+      "path": "assets/map/ch1/production_finish/chunk_0_2.png",
+      "category": "source-bounded8x8-all-mode-map",
+      "exists": true,
+      "inManifest": true,
+      "lfsPointer": false,
+      "sha256": "d8a5d31ade208a237f58b3739733b86cd9cab04c1a77b9361ff37adc9a79c2fb"
+    },
+    {
+      "path": "assets/map/ch1/production_finish/chunk_1_2.png",
+      "category": "source-bounded8x8-all-mode-map",
+      "exists": true,
+      "inManifest": true,
+      "lfsPointer": false,
+      "sha256": "435c6351740e7ac7ac096424ac15aa9fb6e8fe4c2c0c33dcad8cb4cd1c3c7726"
+    },
+    {
+      "path": "assets/map/ch1/production_finish/chunk_2_2.png",
+      "category": "source-bounded8x8-all-mode-map",
+      "exists": true,
+      "inManifest": true,
+      "lfsPointer": false,
+      "sha256": "c6b449b3bdb6644fe65015893af1d9625320f0b5ead2f3f67b013e040506c962"
+    },
+    {
+      "path": "assets/map/ch1/production_finish/chunk_3_2.png",
+      "category": "source-bounded8x8-all-mode-map",
+      "exists": true,
+      "inManifest": true,
+      "lfsPointer": false,
+      "sha256": "5f5d22151cb3496bacca65b583c72bbb96437854dccec24465b529fbc16e166c"
+    },
+    {
+      "path": "assets/map/ch1/production_finish/chunk_4_2.png",
+      "category": "source-bounded8x8-all-mode-map",
+      "exists": true,
+      "inManifest": true,
+      "lfsPointer": false,
+      "sha256": "e56929cf0c1923a8ee851a29adeb5571cdc99d2816a3a8de8b3d80a6620cc45d"
+    },
+    {
+      "path": "assets/map/ch1/production_finish/chunk_5_2.png",
+      "category": "source-bounded8x8-all-mode-map",
+      "exists": true,
+      "inManifest": true,
+      "lfsPointer": false,
+      "sha256": "2e52cc93a43b64fd4ef02d443e412f185fb4aa4bbd42070cf1a057a159d1722e"
+    },
+    {
+      "path": "assets/map/ch1/production_finish/chunk_6_2.png",
+      "category": "source-bounded8x8-all-mode-map",
+      "exists": true,
+      "inManifest": true,
+      "lfsPointer": false,
+      "sha256": "96302d5496f9f8bbb90b7b6d2ef5993e038e5f00eee75218b5d6a8b5f11f11d1"
+    },
+    {
+      "path": "assets/map/ch1/production_finish/chunk_7_2.png",
+      "category": "source-bounded8x8-all-mode-map",
+      "exists": true,
+      "inManifest": true,
+      "lfsPointer": false,
+      "sha256": "41091316e05ac4e1eb64267c700daadfd857d9479b5ad4e241b31d4b5752748e"
+    },
+    {
+      "path": "assets/map/ch1/production_finish/chunk_0_3.png",
+      "category": "source-bounded8x8-all-mode-map",
+      "exists": true,
+      "inManifest": true,
+      "lfsPointer": false,
+      "sha256": "b37a30a0e491df553133fd79c7200b72ac4eec8215ca592728692e92d64fc4ae"
+    },
+    {
+      "path": "assets/map/ch1/production_finish/chunk_1_3.png",
+      "category": "source-bounded8x8-all-mode-map",
+      "exists": true,
+      "inManifest": true,
+      "lfsPointer": false,
+      "sha256": "0b21ba13241b142002a6b76cab76b74c262167d403ceb583fb1ce01a07bc89b0"
+    },
+    {
+      "path": "assets/map/ch1/production_finish/chunk_2_3.png",
+      "category": "source-bounded8x8-all-mode-map",
+      "exists": true,
+      "inManifest": true,
+      "lfsPointer": false,
+      "sha256": "fd9520b6061b930699955d45509b395d3798d25bbb2bcd15436d0456148bcea5"
+    },
+    {
+      "path": "assets/map/ch1/production_finish/chunk_3_3.png",
+      "category": "source-bounded8x8-all-mode-map",
+      "exists": true,
+      "inManifest": true,
+      "lfsPointer": false,
+      "sha256": "12c05a382f66f324b0dd1edd19699091e5c79b08f8696eb6576ab784d17f007a"
+    },
+    {
+      "path": "assets/map/ch1/production_finish/chunk_4_3.png",
+      "category": "source-bounded8x8-all-mode-map",
+      "exists": true,
+      "inManifest": true,
+      "lfsPointer": false,
+      "sha256": "db9ec72289972319882ccf584ac3bc4e0622fe6b5c06fb884fe9625918c4080f"
+    },
+    {
+      "path": "assets/map/ch1/production_finish/chunk_5_3.png",
+      "category": "source-bounded8x8-all-mode-map",
+      "exists": true,
+      "inManifest": true,
+      "lfsPointer": false,
+      "sha256": "2879fb43b7885fe839566467649cf982fd6f6159b8836dc1d4f91c9daa27d878"
+    },
+    {
+      "path": "assets/map/ch1/production_finish/chunk_6_3.png",
+      "category": "source-bounded8x8-all-mode-map",
+      "exists": true,
+      "inManifest": true,
+      "lfsPointer": false,
+      "sha256": "602e7992ea4b52f00befb4c278a034313dc759b5c05c78f4891b4befd1b52c84"
+    },
+    {
+      "path": "assets/map/ch1/production_finish/chunk_7_3.png",
+      "category": "source-bounded8x8-all-mode-map",
+      "exists": true,
+      "inManifest": true,
+      "lfsPointer": false,
+      "sha256": "e81fe0181db1507588880a62bc1e0198a4c42d177c8903552f92711494d1d7a4"
+    },
+    {
+      "path": "assets/map/ch1/production_finish/chunk_0_4.png",
+      "category": "source-bounded8x8-all-mode-map",
+      "exists": true,
+      "inManifest": true,
+      "lfsPointer": false,
+      "sha256": "f388b6a2535dde7ee79ca57e4efb5d76e3d9992753b358f221365a0ce60f71a3"
+    },
+    {
+      "path": "assets/map/ch1/production_finish/chunk_1_4.png",
+      "category": "source-bounded8x8-all-mode-map",
+      "exists": true,
+      "inManifest": true,
+      "lfsPointer": false,
+      "sha256": "71caa3f5769ba0321a0409746b8203d865eb9b42da7012f2003ba4bd364b47dd"
+    },
+    {
+      "path": "assets/map/ch1/production_finish/chunk_2_4.png",
+      "category": "source-bounded8x8-all-mode-map",
+      "exists": true,
+      "inManifest": true,
+      "lfsPointer": false,
+      "sha256": "f9b3ee5465e0531460267886157146c86900ac61f56f8cbd3c8e108f5499a5ac"
+    },
+    {
+      "path": "assets/map/ch1/production_finish/chunk_3_4.png",
+      "category": "source-bounded8x8-all-mode-map",
+      "exists": true,
+      "inManifest": true,
+      "lfsPointer": false,
+      "sha256": "865cd4a6cac744b98db78d5c0bed5d4a0dfed4a3c62273c1cecf98762d01182d"
+    },
+    {
+      "path": "assets/map/ch1/production_finish/chunk_4_4.png",
+      "category": "source-bounded8x8-all-mode-map",
+      "exists": true,
+      "inManifest": true,
+      "lfsPointer": false,
+      "sha256": "efd8251d0eea7853d1c714238a52ad868b9f4a1f91c6b2c00aa3a354abf326a9"
+    },
+    {
+      "path": "assets/map/ch1/production_finish/chunk_5_4.png",
+      "category": "source-bounded8x8-all-mode-map",
+      "exists": true,
+      "inManifest": true,
+      "lfsPointer": false,
+      "sha256": "851f41dfeb65b2186e9b753ae8e4764ed9e2b63d83aae031aa561656b14ff0fd"
+    },
+    {
+      "path": "assets/map/ch1/production_finish/chunk_6_4.png",
+      "category": "source-bounded8x8-all-mode-map",
+      "exists": true,
+      "inManifest": true,
+      "lfsPointer": false,
+      "sha256": "a5e9b2f533effcdf2febfef15c83530e548108770be2b73653ff4b898599ab49"
+    },
+    {
+      "path": "assets/map/ch1/production_finish/chunk_7_4.png",
+      "category": "source-bounded8x8-all-mode-map",
+      "exists": true,
+      "inManifest": true,
+      "lfsPointer": false,
+      "sha256": "90e811ba43ef0879d3122876822a9960a1423414832b2c38aa32e3052f59fcb7"
+    },
+    {
+      "path": "assets/map/ch1/production_finish/chunk_0_5.png",
+      "category": "source-bounded8x8-all-mode-map",
+      "exists": true,
+      "inManifest": true,
+      "lfsPointer": false,
+      "sha256": "e8504f48c18a7bd00631055f99ed98eb79b6fe469526def40e6c83b19d889c29"
+    },
+    {
+      "path": "assets/map/ch1/production_finish/chunk_1_5.png",
+      "category": "source-bounded8x8-all-mode-map",
+      "exists": true,
+      "inManifest": true,
+      "lfsPointer": false,
+      "sha256": "6489701bd92a5f23c2227975a0578432383b49e2f8e3ee60f17c6b83cf579d8a"
+    },
+    {
+      "path": "assets/map/ch1/production_finish/chunk_2_5.png",
+      "category": "source-bounded8x8-all-mode-map",
+      "exists": true,
+      "inManifest": true,
+      "lfsPointer": false,
+      "sha256": "c11edb9c9094fcc700df048934dd0404d4a312c1eed0252105415a34af735b73"
+    },
+    {
+      "path": "assets/map/ch1/production_finish/chunk_3_5.png",
+      "category": "source-bounded8x8-all-mode-map",
+      "exists": true,
+      "inManifest": true,
+      "lfsPointer": false,
+      "sha256": "df2cb18b357923326a5be761b0390ad625689247e3066ae9acd35c2e5a9701ab"
+    },
+    {
+      "path": "assets/map/ch1/production_finish/chunk_4_5.png",
+      "category": "source-bounded8x8-all-mode-map",
+      "exists": true,
+      "inManifest": true,
+      "lfsPointer": false,
+      "sha256": "b5cb5e015768bc05b6d1acbc598b1a686b4197af026a30af9b08e6cda6d664d5"
+    },
+    {
+      "path": "assets/map/ch1/production_finish/chunk_5_5.png",
+      "category": "source-bounded8x8-all-mode-map",
+      "exists": true,
+      "inManifest": true,
+      "lfsPointer": false,
+      "sha256": "f19dec4ab01a114c0e618082ec814900a3d8a62eede8abe4f16287dc3bcbdcaa"
+    },
+    {
+      "path": "assets/map/ch1/production_finish/chunk_6_5.png",
+      "category": "source-bounded8x8-all-mode-map",
+      "exists": true,
+      "inManifest": true,
+      "lfsPointer": false,
+      "sha256": "d3aa49f571f26932aaab80d5107021a9493463c58ee802bb7f830e7c0c6f30a4"
+    },
+    {
+      "path": "assets/map/ch1/production_finish/chunk_7_5.png",
+      "category": "source-bounded8x8-all-mode-map",
+      "exists": true,
+      "inManifest": true,
+      "lfsPointer": false,
+      "sha256": "b3ef6e99b2a780d700aa2dd2fff84bd21f8909a76cfaf6da943a9c2138721aa2"
+    },
+    {
+      "path": "assets/map/ch1/production_finish/chunk_0_6.png",
+      "category": "source-bounded8x8-all-mode-map",
+      "exists": true,
+      "inManifest": true,
+      "lfsPointer": false,
+      "sha256": "409786f0443bfba9f39808ab19b9fbb654fcdfef67b0c98943feca1de98c3557"
+    },
+    {
+      "path": "assets/map/ch1/production_finish/chunk_1_6.png",
+      "category": "source-bounded8x8-all-mode-map",
+      "exists": true,
+      "inManifest": true,
+      "lfsPointer": false,
+      "sha256": "5b543996d306246f9f8b08b4c7c7d309f069d1b16ce90bb7f3cedf5279c2f37d"
+    },
+    {
+      "path": "assets/map/ch1/production_finish/chunk_2_6.png",
+      "category": "source-bounded8x8-all-mode-map",
+      "exists": true,
+      "inManifest": true,
+      "lfsPointer": false,
+      "sha256": "1db13f2a6a655d9cb0e3cc39a3b9068ed73d6bedb4a012aabecf8a92f95069d1"
+    },
+    {
+      "path": "assets/map/ch1/production_finish/chunk_3_6.png",
+      "category": "source-bounded8x8-all-mode-map",
+      "exists": true,
+      "inManifest": true,
+      "lfsPointer": false,
+      "sha256": "8c74f1a860b289008b895709a7deb679f30dc87601cda779b529b3e850606817"
+    },
+    {
+      "path": "assets/map/ch1/production_finish/chunk_4_6.png",
+      "category": "source-bounded8x8-all-mode-map",
+      "exists": true,
+      "inManifest": true,
+      "lfsPointer": false,
+      "sha256": "39958400755ea462b05b5fa97b969bf195ed764c3ed49224cd57825cc82d8752"
+    },
+    {
+      "path": "assets/map/ch1/production_finish/chunk_5_6.png",
+      "category": "source-bounded8x8-all-mode-map",
+      "exists": true,
+      "inManifest": true,
+      "lfsPointer": false,
+      "sha256": "9a902f772652f9b0d1b4aa2c583c59ba4198288c3db5c1801f6d9d5edbb35906"
+    },
+    {
+      "path": "assets/map/ch1/production_finish/chunk_6_6.png",
+      "category": "source-bounded8x8-all-mode-map",
+      "exists": true,
+      "inManifest": true,
+      "lfsPointer": false,
+      "sha256": "25e89955143350e6953d56c5f7bf1ac87abb905d9423fbfb5bdbd4b2a2226ec8"
+    },
+    {
+      "path": "assets/map/ch1/production_finish/chunk_7_6.png",
+      "category": "source-bounded8x8-all-mode-map",
+      "exists": true,
+      "inManifest": true,
+      "lfsPointer": false,
+      "sha256": "f0069921a7d59f259f9c56b2cf1f6e33c59127dfe0822f0bc924390c6c430cfa"
+    },
+    {
+      "path": "assets/map/ch1/production_finish/chunk_0_7.png",
+      "category": "source-bounded8x8-all-mode-map",
+      "exists": true,
+      "inManifest": true,
+      "lfsPointer": false,
+      "sha256": "32343cf79521b2815a3a5ca2fab37894b0d62c5323780042bc1ecfe92fe49205"
+    },
+    {
+      "path": "assets/map/ch1/production_finish/chunk_1_7.png",
+      "category": "source-bounded8x8-all-mode-map",
+      "exists": true,
+      "inManifest": true,
+      "lfsPointer": false,
+      "sha256": "394a32554994a5481d9b4e8e443fc65e267ab03b02f90c69bef47cfccb931821"
+    },
+    {
+      "path": "assets/map/ch1/production_finish/chunk_2_7.png",
+      "category": "source-bounded8x8-all-mode-map",
+      "exists": true,
+      "inManifest": true,
+      "lfsPointer": false,
+      "sha256": "7e001cb620654946fbfe86ba0906e73962518f52c7ef0f0ad0f865cd6372c667"
+    },
+    {
+      "path": "assets/map/ch1/production_finish/chunk_3_7.png",
+      "category": "source-bounded8x8-all-mode-map",
+      "exists": true,
+      "inManifest": true,
+      "lfsPointer": false,
+      "sha256": "2fa76afbb08489f1fc6bee73f89da7d818a0cb25ff79ae2d54267f9054b18e36"
+    },
+    {
+      "path": "assets/map/ch1/production_finish/chunk_4_7.png",
+      "category": "source-bounded8x8-all-mode-map",
+      "exists": true,
+      "inManifest": true,
+      "lfsPointer": false,
+      "sha256": "d36b21bd7603fe7a77660264bd3eea3c4cf6a82b54c2b77f013728b97d91a600"
+    },
+    {
+      "path": "assets/map/ch1/production_finish/chunk_5_7.png",
+      "category": "source-bounded8x8-all-mode-map",
+      "exists": true,
+      "inManifest": true,
+      "lfsPointer": false,
+      "sha256": "d6f2b1cb4a8231139e1e0052949bc0471bf8cd9fdd4217b0c150bf955cad12cf"
+    },
+    {
+      "path": "assets/map/ch1/production_finish/chunk_6_7.png",
+      "category": "source-bounded8x8-all-mode-map",
+      "exists": true,
+      "inManifest": true,
+      "lfsPointer": false,
+      "sha256": "27beaeeb0f1931e07837c3f85cffe4f80ed6c2313055654e77f46fda810793b5"
+    },
+    {
+      "path": "assets/map/ch1/production_finish/chunk_7_7.png",
+      "category": "source-bounded8x8-all-mode-map",
+      "exists": true,
+      "inManifest": true,
+      "lfsPointer": false,
+      "sha256": "8e4b4e6f31c7297fb0d231c6368b1dd89da91fea5211347d30cb7dc120cc8a11"
+    },
+    {
+      "path": "assets/map/ch1/baked_start_outer/chunk_0_0.png",
+      "category": "source-bounded8x8-all-mode-map",
+      "exists": true,
+      "inManifest": true,
+      "lfsPointer": false,
+      "sha256": "b29abffeed93d0d9b0b21ec839096dd2b9a4e156cc72661f1280d13f70d44c71"
+    },
+    {
+      "path": "assets/map/ch1/baked_start_outer/chunk_1_0.png",
+      "category": "source-bounded8x8-all-mode-map",
+      "exists": true,
+      "inManifest": true,
+      "lfsPointer": false,
+      "sha256": "fa22c773cd9963c4c097313945edee51ca4fa9f25616508cf477638185240d50"
+    },
+    {
+      "path": "assets/map/ch1/baked_start_outer/chunk_2_0.png",
+      "category": "source-bounded8x8-all-mode-map",
+      "exists": true,
+      "inManifest": true,
+      "lfsPointer": false,
+      "sha256": "775d6f384104ca8bfe9ba093860eb99372759ed431c83ec6da0046a391d78e76"
+    },
+    {
+      "path": "assets/map/ch1/baked_start_outer/chunk_3_0.png",
+      "category": "source-bounded8x8-all-mode-map",
+      "exists": true,
+      "inManifest": true,
+      "lfsPointer": false,
+      "sha256": "e15ff9040644860a081fc32fae6fe903655cbaee46a3bae37c86348cd85f8cf5"
+    },
+    {
+      "path": "assets/map/ch1/baked_start_outer/chunk_4_0.png",
+      "category": "source-bounded8x8-all-mode-map",
+      "exists": true,
+      "inManifest": true,
+      "lfsPointer": false,
+      "sha256": "97c37fbfc5adc42e87bfdc3d0ff1a77307f4e12a929f77dac494ac3e2d951a7e"
+    },
+    {
+      "path": "assets/map/ch1/baked_start_outer/chunk_5_0.png",
+      "category": "source-bounded8x8-all-mode-map",
+      "exists": true,
+      "inManifest": true,
+      "lfsPointer": false,
+      "sha256": "e4c6aba175c7d52703f4e72c2778c1c51946eb4f77531a5ad819cb8d24f00c01"
+    },
+    {
+      "path": "assets/map/ch1/baked_start_outer/chunk_6_0.png",
+      "category": "source-bounded8x8-all-mode-map",
+      "exists": true,
+      "inManifest": true,
+      "lfsPointer": false,
+      "sha256": "8ba3ef5402bf6dfed7d36be6f20b2be65773484041dd380c74b05aa3d7576d3f"
+    },
+    {
+      "path": "assets/map/ch1/baked_start_outer/chunk_7_0.png",
+      "category": "source-bounded8x8-all-mode-map",
+      "exists": true,
+      "inManifest": true,
+      "lfsPointer": false,
+      "sha256": "da4f540076b9a1b1fc1d2f64e2dae7d23f9bf378dcc1ac7822f6707fe94b12e3"
+    },
+    {
+      "path": "assets/map/ch1/baked_start_outer/chunk_0_1.png",
+      "category": "source-bounded8x8-all-mode-map",
+      "exists": true,
+      "inManifest": true,
+      "lfsPointer": false,
+      "sha256": "631e0182bc55cded2ba709da8dea50768e37b805dda7379c482bf6f126cfe8a2"
+    },
+    {
+      "path": "assets/map/ch1/baked_start_outer/chunk_1_1.png",
+      "category": "source-bounded8x8-all-mode-map",
+      "exists": true,
+      "inManifest": true,
+      "lfsPointer": false,
+      "sha256": "9733ba7f50e19c26be0b6ba1f6089d82ad33f68d95853d7be697bfa057dd3747"
+    },
+    {
+      "path": "assets/map/ch1/baked_start_outer/chunk_2_1.png",
+      "category": "source-bounded8x8-all-mode-map",
+      "exists": true,
+      "inManifest": true,
+      "lfsPointer": false,
+      "sha256": "03829ac1f9f4ebecad189e5a7708c97d3d4a5633560a35ba732e672f00055b1c"
+    },
+    {
+      "path": "assets/map/ch1/baked_start_outer/chunk_3_1.png",
+      "category": "source-bounded8x8-all-mode-map",
+      "exists": true,
+      "inManifest": true,
+      "lfsPointer": false,
+      "sha256": "9e21bd14a43eae40e225f740991c3c656997c71b73092318e3b4f508c5cd7d05"
+    },
+    {
+      "path": "assets/map/ch1/baked_start_outer/chunk_4_1.png",
+      "category": "source-bounded8x8-all-mode-map",
+      "exists": true,
+      "inManifest": true,
+      "lfsPointer": false,
+      "sha256": "0443b0f75f9b20fbaf7ac6220475b1c4e2dca9c1961f337680303c53723d2a45"
+    },
+    {
+      "path": "assets/map/ch1/baked_start_outer/chunk_5_1.png",
+      "category": "source-bounded8x8-all-mode-map",
+      "exists": true,
+      "inManifest": true,
+      "lfsPointer": false,
+      "sha256": "9301c3a0cd2a1cf7bfaf6ed4e9ce50b798ec04094312d461ac955856edf57d72"
+    },
+    {
+      "path": "assets/map/ch1/baked_start_outer/chunk_6_1.png",
+      "category": "source-bounded8x8-all-mode-map",
+      "exists": true,
+      "inManifest": true,
+      "lfsPointer": false,
+      "sha256": "6a4e8e5ea42091425ff5f6871320a5ffebd964b14e6eee373e15684a36c1ded4"
+    },
+    {
+      "path": "assets/map/ch1/baked_start_outer/chunk_7_1.png",
+      "category": "source-bounded8x8-all-mode-map",
+      "exists": true,
+      "inManifest": true,
+      "lfsPointer": false,
+      "sha256": "27215f7c036e40e965973a377c25fab43fbb4520ef38daa764c8a71075fad624"
+    },
+    {
+      "path": "assets/map/ch1/baked_start_outer/chunk_0_2.png",
+      "category": "source-bounded8x8-all-mode-map",
+      "exists": true,
+      "inManifest": true,
+      "lfsPointer": false,
+      "sha256": "9cd74cbaf637402d77eca4a6e48a7d540bfb7ed3f87dbc91fb5471e879369069"
+    },
+    {
+      "path": "assets/map/ch1/baked_start_outer/chunk_1_2.png",
+      "category": "source-bounded8x8-all-mode-map",
+      "exists": true,
+      "inManifest": true,
+      "lfsPointer": false,
+      "sha256": "d3d31eefa1dd833c67e2b12d5e64ddf2842f7e41133e103eea4c5af38718548b"
+    },
+    {
+      "path": "assets/map/ch1/baked_start_outer/chunk_2_2.png",
+      "category": "source-bounded8x8-all-mode-map",
+      "exists": true,
+      "inManifest": true,
+      "lfsPointer": false,
+      "sha256": "0443b0f75f9b20fbaf7ac6220475b1c4e2dca9c1961f337680303c53723d2a45"
+    },
+    {
+      "path": "assets/map/ch1/baked_start_outer/chunk_3_2.png",
+      "category": "source-bounded8x8-all-mode-map",
+      "exists": true,
+      "inManifest": true,
+      "lfsPointer": false,
+      "sha256": "0443b0f75f9b20fbaf7ac6220475b1c4e2dca9c1961f337680303c53723d2a45"
+    },
+    {
+      "path": "assets/map/ch1/baked_start_outer/chunk_4_2.png",
+      "category": "source-bounded8x8-all-mode-map",
+      "exists": true,
+      "inManifest": true,
+      "lfsPointer": false,
+      "sha256": "0443b0f75f9b20fbaf7ac6220475b1c4e2dca9c1961f337680303c53723d2a45"
+    },
+    {
+      "path": "assets/map/ch1/baked_start_outer/chunk_5_2.png",
+      "category": "source-bounded8x8-all-mode-map",
+      "exists": true,
+      "inManifest": true,
+      "lfsPointer": false,
+      "sha256": "0443b0f75f9b20fbaf7ac6220475b1c4e2dca9c1961f337680303c53723d2a45"
+    },
+    {
+      "path": "assets/map/ch1/baked_start_outer/chunk_6_2.png",
+      "category": "source-bounded8x8-all-mode-map",
+      "exists": true,
+      "inManifest": true,
+      "lfsPointer": false,
+      "sha256": "dc7a9d2f05a1bb65e9769cb9a1546cb26c94b1d995934a8231ec60685bb8e04e"
+    },
+    {
+      "path": "assets/map/ch1/baked_start_outer/chunk_7_2.png",
+      "category": "source-bounded8x8-all-mode-map",
+      "exists": true,
+      "inManifest": true,
+      "lfsPointer": false,
+      "sha256": "c94787e79dade4ac769fd05c07d2df61e5be743e880f4510559b4abf74c57ca8"
+    },
+    {
+      "path": "assets/map/ch1/baked_start_outer/chunk_0_3.png",
+      "category": "source-bounded8x8-all-mode-map",
+      "exists": true,
+      "inManifest": true,
+      "lfsPointer": false,
+      "sha256": "370cdf7076d39082f776662ae9837249fe71ba341b1619f18a908934f3f66af2"
+    },
+    {
+      "path": "assets/map/ch1/baked_start_outer/chunk_1_3.png",
+      "category": "source-bounded8x8-all-mode-map",
+      "exists": true,
+      "inManifest": true,
+      "lfsPointer": false,
+      "sha256": "6394622ca0c92238a51352695c4ecbd60cbf5b18c90908ffab8fdd1bd5dd599d"
+    },
+    {
+      "path": "assets/map/ch1/baked_start_outer/chunk_2_3.png",
+      "category": "source-bounded8x8-all-mode-map",
+      "exists": true,
+      "inManifest": true,
+      "lfsPointer": false,
+      "sha256": "0443b0f75f9b20fbaf7ac6220475b1c4e2dca9c1961f337680303c53723d2a45"
+    },
+    {
+      "path": "assets/map/ch1/baked_start_outer/chunk_3_3.png",
+      "category": "source-bounded8x8-all-mode-map",
+      "exists": true,
+      "inManifest": true,
+      "lfsPointer": false,
+      "sha256": "0443b0f75f9b20fbaf7ac6220475b1c4e2dca9c1961f337680303c53723d2a45"
+    },
+    {
+      "path": "assets/map/ch1/baked_start_outer/chunk_4_3.png",
+      "category": "source-bounded8x8-all-mode-map",
+      "exists": true,
+      "inManifest": true,
+      "lfsPointer": false,
+      "sha256": "0443b0f75f9b20fbaf7ac6220475b1c4e2dca9c1961f337680303c53723d2a45"
+    },
+    {
+      "path": "assets/map/ch1/baked_start_outer/chunk_5_3.png",
+      "category": "source-bounded8x8-all-mode-map",
+      "exists": true,
+      "inManifest": true,
+      "lfsPointer": false,
+      "sha256": "0443b0f75f9b20fbaf7ac6220475b1c4e2dca9c1961f337680303c53723d2a45"
+    },
+    {
+      "path": "assets/map/ch1/baked_start_outer/chunk_6_3.png",
+      "category": "source-bounded8x8-all-mode-map",
+      "exists": true,
+      "inManifest": true,
+      "lfsPointer": false,
+      "sha256": "9bf56fa27e2f24fd55c558a366916957faa557fe4df7cfa6df161761b8a99461"
+    },
+    {
+      "path": "assets/map/ch1/baked_start_outer/chunk_7_3.png",
+      "category": "source-bounded8x8-all-mode-map",
+      "exists": true,
+      "inManifest": true,
+      "lfsPointer": false,
+      "sha256": "f620e9a3ce3bebc8a4fdd4e498832dfe2aee3ab6304a7dc8163f3c1b2cfb6901"
+    },
+    {
+      "path": "assets/map/ch1/baked_start_outer/chunk_0_4.png",
+      "category": "source-bounded8x8-all-mode-map",
+      "exists": true,
+      "inManifest": true,
+      "lfsPointer": false,
+      "sha256": "91c35d39068a0b17dc5378026b46f6decdf845a83267db348528862aa08d1a5e"
+    },
+    {
+      "path": "assets/map/ch1/baked_start_outer/chunk_1_4.png",
+      "category": "source-bounded8x8-all-mode-map",
+      "exists": true,
+      "inManifest": true,
+      "lfsPointer": false,
+      "sha256": "1666a75336c50f30c2f4d4dbf78ae063e4ed9268d4593de28e6b4646282aafb7"
+    },
+    {
+      "path": "assets/map/ch1/baked_start_outer/chunk_2_4.png",
+      "category": "source-bounded8x8-all-mode-map",
+      "exists": true,
+      "inManifest": true,
+      "lfsPointer": false,
+      "sha256": "0443b0f75f9b20fbaf7ac6220475b1c4e2dca9c1961f337680303c53723d2a45"
+    },
+    {
+      "path": "assets/map/ch1/baked_start_outer/chunk_3_4.png",
+      "category": "source-bounded8x8-all-mode-map",
+      "exists": true,
+      "inManifest": true,
+      "lfsPointer": false,
+      "sha256": "0443b0f75f9b20fbaf7ac6220475b1c4e2dca9c1961f337680303c53723d2a45"
+    },
+    {
+      "path": "assets/map/ch1/baked_start_outer/chunk_4_4.png",
+      "category": "source-bounded8x8-all-mode-map",
+      "exists": true,
+      "inManifest": true,
+      "lfsPointer": false,
+      "sha256": "0443b0f75f9b20fbaf7ac6220475b1c4e2dca9c1961f337680303c53723d2a45"
+    },
+    {
+      "path": "assets/map/ch1/baked_start_outer/chunk_5_4.png",
+      "category": "source-bounded8x8-all-mode-map",
+      "exists": true,
+      "inManifest": true,
+      "lfsPointer": false,
+      "sha256": "0443b0f75f9b20fbaf7ac6220475b1c4e2dca9c1961f337680303c53723d2a45"
+    },
+    {
+      "path": "assets/map/ch1/baked_start_outer/chunk_6_4.png",
+      "category": "source-bounded8x8-all-mode-map",
+      "exists": true,
+      "inManifest": true,
+      "lfsPointer": false,
+      "sha256": "ff11e9204d9bcc079deb07f45bb59c5b80c362077ca5f7b718626d9242577fb5"
+    },
+    {
+      "path": "assets/map/ch1/baked_start_outer/chunk_7_4.png",
+      "category": "source-bounded8x8-all-mode-map",
+      "exists": true,
+      "inManifest": true,
+      "lfsPointer": false,
+      "sha256": "78e26ac5a87faf774c328816816f6d5582fead2301499a53c52ff07f09f24915"
+    },
+    {
+      "path": "assets/map/ch1/baked_start_outer/chunk_0_5.png",
+      "category": "source-bounded8x8-all-mode-map",
+      "exists": true,
+      "inManifest": true,
+      "lfsPointer": false,
+      "sha256": "603b6a5e90dc61b3aa9a82bf5d321582f6f0249f502ab4d596a4bf1cbaa4adb6"
+    },
+    {
+      "path": "assets/map/ch1/baked_start_outer/chunk_1_5.png",
+      "category": "source-bounded8x8-all-mode-map",
+      "exists": true,
+      "inManifest": true,
+      "lfsPointer": false,
+      "sha256": "61054e6f547d3a144be4c6d8248b2a99f5159ae0623e99ead8091770a406cbd1"
+    },
+    {
+      "path": "assets/map/ch1/baked_start_outer/chunk_2_5.png",
+      "category": "source-bounded8x8-all-mode-map",
+      "exists": true,
+      "inManifest": true,
+      "lfsPointer": false,
+      "sha256": "0443b0f75f9b20fbaf7ac6220475b1c4e2dca9c1961f337680303c53723d2a45"
+    },
+    {
+      "path": "assets/map/ch1/baked_start_outer/chunk_3_5.png",
+      "category": "source-bounded8x8-all-mode-map",
+      "exists": true,
+      "inManifest": true,
+      "lfsPointer": false,
+      "sha256": "0443b0f75f9b20fbaf7ac6220475b1c4e2dca9c1961f337680303c53723d2a45"
+    },
+    {
+      "path": "assets/map/ch1/baked_start_outer/chunk_4_5.png",
+      "category": "source-bounded8x8-all-mode-map",
+      "exists": true,
+      "inManifest": true,
+      "lfsPointer": false,
+      "sha256": "0443b0f75f9b20fbaf7ac6220475b1c4e2dca9c1961f337680303c53723d2a45"
+    },
+    {
+      "path": "assets/map/ch1/baked_start_outer/chunk_5_5.png",
+      "category": "source-bounded8x8-all-mode-map",
+      "exists": true,
+      "inManifest": true,
+      "lfsPointer": false,
+      "sha256": "0443b0f75f9b20fbaf7ac6220475b1c4e2dca9c1961f337680303c53723d2a45"
+    },
+    {
+      "path": "assets/map/ch1/baked_start_outer/chunk_6_5.png",
+      "category": "source-bounded8x8-all-mode-map",
+      "exists": true,
+      "inManifest": true,
+      "lfsPointer": false,
+      "sha256": "f81800e003c43b5378da490fdd959f7aa8306667243747422f0ce656e4fb4b7f"
+    },
+    {
+      "path": "assets/map/ch1/baked_start_outer/chunk_7_5.png",
+      "category": "source-bounded8x8-all-mode-map",
+      "exists": true,
+      "inManifest": true,
+      "lfsPointer": false,
+      "sha256": "26e9649c6639a722104ff00ba45cc035c35a25e13ebc67bfe3dd9748c56a755f"
+    },
+    {
+      "path": "assets/map/ch1/baked_start_outer/chunk_0_6.png",
+      "category": "source-bounded8x8-all-mode-map",
+      "exists": true,
+      "inManifest": true,
+      "lfsPointer": false,
+      "sha256": "d47ece9133c905272ad6ef163932bd8eee3985a21d8052d2118be1a4ceed2da2"
+    },
+    {
+      "path": "assets/map/ch1/baked_start_outer/chunk_1_6.png",
+      "category": "source-bounded8x8-all-mode-map",
+      "exists": true,
+      "inManifest": true,
+      "lfsPointer": false,
+      "sha256": "5d290bc7045077a9c8918b82358388731aed262bafabd327e9773806e9303d3e"
+    },
+    {
+      "path": "assets/map/ch1/baked_start_outer/chunk_2_6.png",
+      "category": "source-bounded8x8-all-mode-map",
+      "exists": true,
+      "inManifest": true,
+      "lfsPointer": false,
+      "sha256": "ef3591cf4a131ebce3e9db0ab4dbdb1e1db0b6764a4fa0bc4e9b62492558aadb"
+    },
+    {
+      "path": "assets/map/ch1/baked_start_outer/chunk_3_6.png",
+      "category": "source-bounded8x8-all-mode-map",
+      "exists": true,
+      "inManifest": true,
+      "lfsPointer": false,
+      "sha256": "fb19c20d34d23f61cb4fbc8b817fc98d101535815020ded359588b154cd4b305"
+    },
+    {
+      "path": "assets/map/ch1/baked_start_outer/chunk_4_6.png",
+      "category": "source-bounded8x8-all-mode-map",
+      "exists": true,
+      "inManifest": true,
+      "lfsPointer": false,
+      "sha256": "0443b0f75f9b20fbaf7ac6220475b1c4e2dca9c1961f337680303c53723d2a45"
+    },
+    {
+      "path": "assets/map/ch1/baked_start_outer/chunk_5_6.png",
+      "category": "source-bounded8x8-all-mode-map",
+      "exists": true,
+      "inManifest": true,
+      "lfsPointer": false,
+      "sha256": "41ad3f4529eeacf9e086337881eb3107791649fd211039c8640b45e797b7c135"
+    },
+    {
+      "path": "assets/map/ch1/baked_start_outer/chunk_6_6.png",
+      "category": "source-bounded8x8-all-mode-map",
+      "exists": true,
+      "inManifest": true,
+      "lfsPointer": false,
+      "sha256": "160680a688cb08d9a6bec016a0f362dea1b8688780ce441a46e394d7c35474d8"
+    },
+    {
+      "path": "assets/map/ch1/baked_start_outer/chunk_7_6.png",
+      "category": "source-bounded8x8-all-mode-map",
+      "exists": true,
+      "inManifest": true,
+      "lfsPointer": false,
+      "sha256": "97fbdc82606208a1b605cb2422612b8c0e16a998e3d11b60037753d4f66ae88f"
+    },
+    {
+      "path": "assets/map/ch1/baked_start_outer/chunk_0_7.png",
+      "category": "source-bounded8x8-all-mode-map",
+      "exists": true,
+      "inManifest": true,
+      "lfsPointer": false,
+      "sha256": "1bac7fb09314c356dd3d873f2490e985bb35c10dd9559d6a1302e13922f31cd7"
+    },
+    {
+      "path": "assets/map/ch1/baked_start_outer/chunk_1_7.png",
+      "category": "source-bounded8x8-all-mode-map",
+      "exists": true,
+      "inManifest": true,
+      "lfsPointer": false,
+      "sha256": "fa61a7d93326b99ee5ec291925c32068b9a7b47bae44449cf8a930d6ea83a65e"
+    },
+    {
+      "path": "assets/map/ch1/baked_start_outer/chunk_2_7.png",
+      "category": "source-bounded8x8-all-mode-map",
+      "exists": true,
+      "inManifest": true,
+      "lfsPointer": false,
+      "sha256": "7747231cf6f2dd453f2d64f357edca149231f4c721af8dcbdec5c221b770df6f"
+    },
+    {
+      "path": "assets/map/ch1/baked_start_outer/chunk_3_7.png",
+      "category": "source-bounded8x8-all-mode-map",
+      "exists": true,
+      "inManifest": true,
+      "lfsPointer": false,
+      "sha256": "ffa0d64a2e912de151496d49a48643badde93c919658996a6f9e81c1beb38630"
+    },
+    {
+      "path": "assets/map/ch1/baked_start_outer/chunk_4_7.png",
+      "category": "source-bounded8x8-all-mode-map",
+      "exists": true,
+      "inManifest": true,
+      "lfsPointer": false,
+      "sha256": "165ada272f2a9320ca0d2a0f1be0dd69adda4e597a955154de7d3bda401608a5"
+    },
+    {
+      "path": "assets/map/ch1/baked_start_outer/chunk_5_7.png",
+      "category": "source-bounded8x8-all-mode-map",
+      "exists": true,
+      "inManifest": true,
+      "lfsPointer": false,
+      "sha256": "23660a727e88a5305ca1163f1fb98938fe59712fac51e1ca99e90f2a05105afa"
+    },
+    {
+      "path": "assets/map/ch1/baked_start_outer/chunk_6_7.png",
+      "category": "source-bounded8x8-all-mode-map",
+      "exists": true,
+      "inManifest": true,
+      "lfsPointer": false,
+      "sha256": "916a1986338b97840041f6ac153c6d97ca049a7781f7a249777c80af18b0a262"
+    },
+    {
+      "path": "assets/map/ch1/baked_start_outer/chunk_7_7.png",
+      "category": "source-bounded8x8-all-mode-map",
+      "exists": true,
+      "inManifest": true,
+      "lfsPointer": false,
+      "sha256": "8d3dff03000aeeeb51deeadc623137cf1429db2fff8714812b069a1fb73c6714"
+    },
+    {
+      "path": "assets/map/ch1/baked_start_smoothing/chunk_0_0.png",
+      "category": "source-bounded8x8-all-mode-map",
+      "exists": true,
+      "inManifest": true,
+      "lfsPointer": false,
+      "sha256": "e6e92215e52f190b931a817e58a2d55051e6651f1c649ba107e86d732739c248"
+    },
+    {
+      "path": "assets/map/ch1/baked_start_smoothing/chunk_1_0.png",
+      "category": "source-bounded8x8-all-mode-map",
+      "exists": true,
+      "inManifest": true,
+      "lfsPointer": false,
+      "sha256": "8b14ae1f5e2eb3849d2dd280dfaf13ea0a5aa7c3d5a52a090a33f376c6c0b8db"
+    },
+    {
+      "path": "assets/map/ch1/baked_start_smoothing/chunk_2_0.png",
+      "category": "source-bounded8x8-all-mode-map",
+      "exists": true,
+      "inManifest": true,
+      "lfsPointer": false,
+      "sha256": "e480c6f00949356175a76fa227e70942aaeaf27aa7d83f526a59578ea509c33c"
+    },
+    {
+      "path": "assets/map/ch1/baked_start_smoothing/chunk_3_0.png",
+      "category": "source-bounded8x8-all-mode-map",
+      "exists": true,
+      "inManifest": true,
+      "lfsPointer": false,
+      "sha256": "5e6a3e8a99be71d0095616dc1e8a1c100d5ecd540a09f1a095b35b2affddb8c6"
+    },
+    {
+      "path": "assets/map/ch1/baked_start_smoothing/chunk_4_0.png",
+      "category": "source-bounded8x8-all-mode-map",
+      "exists": true,
+      "inManifest": true,
+      "lfsPointer": false,
+      "sha256": "60903b1d42a00e05fd8f05124b7e84b74094ef241d008f3eda355abc07bfa15f"
+    },
+    {
+      "path": "assets/map/ch1/baked_start_smoothing/chunk_5_0.png",
+      "category": "source-bounded8x8-all-mode-map",
+      "exists": true,
+      "inManifest": true,
+      "lfsPointer": false,
+      "sha256": "d1423af49ad40636c824362927ba4a498d5ba45ea971d5520675cc3f0ac30d58"
+    },
+    {
+      "path": "assets/map/ch1/baked_start_smoothing/chunk_6_0.png",
+      "category": "source-bounded8x8-all-mode-map",
+      "exists": true,
+      "inManifest": true,
+      "lfsPointer": false,
+      "sha256": "6f7f5ec700d2345e960a8215d0001706408f6c0fa917158ecb3a412d5bb0e0c4"
+    },
+    {
+      "path": "assets/map/ch1/baked_start_smoothing/chunk_7_0.png",
+      "category": "source-bounded8x8-all-mode-map",
+      "exists": true,
+      "inManifest": true,
+      "lfsPointer": false,
+      "sha256": "b53942aacf4372830b214845bb17e15bfcb6a7a46000a7e0775afd007396f586"
+    },
+    {
+      "path": "assets/map/ch1/baked_start_smoothing/chunk_0_1.png",
+      "category": "source-bounded8x8-all-mode-map",
+      "exists": true,
+      "inManifest": true,
+      "lfsPointer": false,
+      "sha256": "cdca2418cb85edbe441afd1247d223e4a8d1235400e50e9f618f0976c3e7111e"
+    },
+    {
+      "path": "assets/map/ch1/baked_start_smoothing/chunk_1_1.png",
+      "category": "source-bounded8x8-all-mode-map",
+      "exists": true,
+      "inManifest": true,
+      "lfsPointer": false,
+      "sha256": "1b864dccaf9bc2697cf9a1ad257fe8147a8ed8f64669f8bc019286e910b740f8"
+    },
+    {
+      "path": "assets/map/ch1/baked_start_smoothing/chunk_2_1.png",
+      "category": "source-bounded8x8-all-mode-map",
+      "exists": true,
+      "inManifest": true,
+      "lfsPointer": false,
+      "sha256": "74797ff106ec51b2c074a4174cbbd3e7c116abc80d96bd7dd4f4a790036e88e5"
+    },
+    {
+      "path": "assets/map/ch1/baked_start_smoothing/chunk_3_1.png",
+      "category": "source-bounded8x8-all-mode-map",
+      "exists": true,
+      "inManifest": true,
+      "lfsPointer": false,
+      "sha256": "9e21bd14a43eae40e225f740991c3c656997c71b73092318e3b4f508c5cd7d05"
+    },
+    {
+      "path": "assets/map/ch1/baked_start_smoothing/chunk_4_1.png",
+      "category": "source-bounded8x8-all-mode-map",
+      "exists": true,
+      "inManifest": true,
+      "lfsPointer": false,
+      "sha256": "1408381683a94efe1ff28900f4b65e637f7785326694a421057c592793817596"
+    },
+    {
+      "path": "assets/map/ch1/baked_start_smoothing/chunk_5_1.png",
+      "category": "source-bounded8x8-all-mode-map",
+      "exists": true,
+      "inManifest": true,
+      "lfsPointer": false,
+      "sha256": "8d17625d07e37d8ebb97233c30f7d2dcb4fffc372301c8142945356f6b451098"
+    },
+    {
+      "path": "assets/map/ch1/baked_start_smoothing/chunk_6_1.png",
+      "category": "source-bounded8x8-all-mode-map",
+      "exists": true,
+      "inManifest": true,
+      "lfsPointer": false,
+      "sha256": "37b7a9fb65237f4136184253169c7e870729bfc90ab894b9fdf0747d3e4e302f"
+    },
+    {
+      "path": "assets/map/ch1/baked_start_smoothing/chunk_7_1.png",
+      "category": "source-bounded8x8-all-mode-map",
+      "exists": true,
+      "inManifest": true,
+      "lfsPointer": false,
+      "sha256": "984006a295f6c65863d56c37f0e28fd3ff1427e5ea4b427e8f4f3d293dee2b63"
+    },
+    {
+      "path": "assets/map/ch1/baked_start_smoothing/chunk_0_2.png",
+      "category": "source-bounded8x8-all-mode-map",
+      "exists": true,
+      "inManifest": true,
+      "lfsPointer": false,
+      "sha256": "4f01af939725802ec43c1ff7f0a65791282da3816e7c8397f7dd2b6a4fa6a390"
+    },
+    {
+      "path": "assets/map/ch1/baked_start_smoothing/chunk_1_2.png",
+      "category": "source-bounded8x8-all-mode-map",
+      "exists": true,
+      "inManifest": true,
+      "lfsPointer": false,
+      "sha256": "74c15628c5b27b3bd662747236e8dccfddd569a3d25056811b2c74067678b1aa"
+    },
+    {
+      "path": "assets/map/ch1/baked_start_smoothing/chunk_2_2.png",
+      "category": "source-bounded8x8-all-mode-map",
+      "exists": true,
+      "inManifest": true,
+      "lfsPointer": false,
+      "sha256": "59d5b5fa5eec3985b0965e5ed771ba86166515e4ae09a6c0d5269c641f070cbd"
+    },
+    {
+      "path": "assets/map/ch1/baked_start_smoothing/chunk_3_2.png",
+      "category": "source-bounded8x8-all-mode-map",
+      "exists": true,
+      "inManifest": true,
+      "lfsPointer": false,
+      "sha256": "0443b0f75f9b20fbaf7ac6220475b1c4e2dca9c1961f337680303c53723d2a45"
+    },
+    {
+      "path": "assets/map/ch1/baked_start_smoothing/chunk_4_2.png",
+      "category": "source-bounded8x8-all-mode-map",
+      "exists": true,
+      "inManifest": true,
+      "lfsPointer": false,
+      "sha256": "6582f41d1dab089a98fa4971ee41d1b2645f33929df4489f5caddac766ea4b33"
+    },
+    {
+      "path": "assets/map/ch1/baked_start_smoothing/chunk_5_2.png",
+      "category": "source-bounded8x8-all-mode-map",
+      "exists": true,
+      "inManifest": true,
+      "lfsPointer": false,
+      "sha256": "da2b9bbdcb89926e65a952086eb98404e2f8e9370c138939535bcb2036ed1012"
+    },
+    {
+      "path": "assets/map/ch1/baked_start_smoothing/chunk_6_2.png",
+      "category": "source-bounded8x8-all-mode-map",
+      "exists": true,
+      "inManifest": true,
+      "lfsPointer": false,
+      "sha256": "2395bb540cdd39ce672f61631cf78b9759a75de1e9d53eec583187b9af47ccfd"
+    },
+    {
+      "path": "assets/map/ch1/baked_start_smoothing/chunk_7_2.png",
+      "category": "source-bounded8x8-all-mode-map",
+      "exists": true,
+      "inManifest": true,
+      "lfsPointer": false,
+      "sha256": "ced9c7531efd88a5619607b2a67f0b843bae962ee6d68b2dfb9f5fd1fa4a2a5f"
+    },
+    {
+      "path": "assets/map/ch1/baked_start_smoothing/chunk_0_3.png",
+      "category": "source-bounded8x8-all-mode-map",
+      "exists": true,
+      "inManifest": true,
+      "lfsPointer": false,
+      "sha256": "4fba6e8d5652595e762ea18b00c5b9814efcc9dd8c14a9c25d82f8f1ec857649"
+    },
+    {
+      "path": "assets/map/ch1/baked_start_smoothing/chunk_1_3.png",
+      "category": "source-bounded8x8-all-mode-map",
+      "exists": true,
+      "inManifest": true,
+      "lfsPointer": false,
+      "sha256": "02a3617419c8a0a271baac7e18b8a7502a8e83a91fd8c710e8b6becfad60a735"
+    },
+    {
+      "path": "assets/map/ch1/baked_start_smoothing/chunk_2_3.png",
+      "category": "source-bounded8x8-all-mode-map",
+      "exists": true,
+      "inManifest": true,
+      "lfsPointer": false,
+      "sha256": "3dfc80a18c8b53a5c83bb22de859420f67c5e144e823f4b8937323c2a0730b2a"
+    },
+    {
+      "path": "assets/map/ch1/baked_start_smoothing/chunk_3_3.png",
+      "category": "source-bounded8x8-all-mode-map",
+      "exists": true,
+      "inManifest": true,
+      "lfsPointer": false,
+      "sha256": "4557606fbfaeb282af16940bd8fa2672283d9e6d032fa9e0e5eb34d2757d181e"
+    },
+    {
+      "path": "assets/map/ch1/baked_start_smoothing/chunk_4_3.png",
+      "category": "source-bounded8x8-all-mode-map",
+      "exists": true,
+      "inManifest": true,
+      "lfsPointer": false,
+      "sha256": "47b37774ed73a1192458acfac86c34acfd4df96ab0ba3503dbb45285f71c7c83"
+    },
+    {
+      "path": "assets/map/ch1/baked_start_smoothing/chunk_5_3.png",
+      "category": "source-bounded8x8-all-mode-map",
+      "exists": true,
+      "inManifest": true,
+      "lfsPointer": false,
+      "sha256": "be3f6af9785d262dfb42016efd8745589d870d3fe0f22656996e51b845c2eaf5"
+    },
+    {
+      "path": "assets/map/ch1/baked_start_smoothing/chunk_6_3.png",
+      "category": "source-bounded8x8-all-mode-map",
+      "exists": true,
+      "inManifest": true,
+      "lfsPointer": false,
+      "sha256": "dd851c3ff27e564396210462cd101a36f1d857aa5586978684f7e7e5cbcb6894"
+    },
+    {
+      "path": "assets/map/ch1/baked_start_smoothing/chunk_7_3.png",
+      "category": "source-bounded8x8-all-mode-map",
+      "exists": true,
+      "inManifest": true,
+      "lfsPointer": false,
+      "sha256": "6201cfe077aef0afba0818543012bac07b60cbe2065bcfda393e61f828535c03"
+    },
+    {
+      "path": "assets/map/ch1/baked_start_smoothing/chunk_0_4.png",
+      "category": "source-bounded8x8-all-mode-map",
+      "exists": true,
+      "inManifest": true,
+      "lfsPointer": false,
+      "sha256": "1086643b61d9eca6557fc863fbfa8d1865e3cf1063596e49fdedcba92981c434"
+    },
+    {
+      "path": "assets/map/ch1/baked_start_smoothing/chunk_1_4.png",
+      "category": "source-bounded8x8-all-mode-map",
+      "exists": true,
+      "inManifest": true,
+      "lfsPointer": false,
+      "sha256": "f95f68cbcd6769b7a4136396100b7da40dc4be701a87f20306f705492e11d5ab"
+    },
+    {
+      "path": "assets/map/ch1/baked_start_smoothing/chunk_2_4.png",
+      "category": "source-bounded8x8-all-mode-map",
+      "exists": true,
+      "inManifest": true,
+      "lfsPointer": false,
+      "sha256": "fa0f7538fa884faf6a39f87e57fdc30030bf948bb12182d35d0a1a8e9da7fd6b"
+    },
+    {
+      "path": "assets/map/ch1/baked_start_smoothing/chunk_3_4.png",
+      "category": "source-bounded8x8-all-mode-map",
+      "exists": true,
+      "inManifest": true,
+      "lfsPointer": false,
+      "sha256": "568459b6284a82cddee663f3845d93d31921abe00349e1df7cb948dcbe50070b"
+    },
+    {
+      "path": "assets/map/ch1/baked_start_smoothing/chunk_4_4.png",
+      "category": "source-bounded8x8-all-mode-map",
+      "exists": true,
+      "inManifest": true,
+      "lfsPointer": false,
+      "sha256": "8a45d6e6f856836fa28b7838656ee8a9cd70f6c017657c5deb1cb7707c99e59a"
+    },
+    {
+      "path": "assets/map/ch1/baked_start_smoothing/chunk_5_4.png",
+      "category": "source-bounded8x8-all-mode-map",
+      "exists": true,
+      "inManifest": true,
+      "lfsPointer": false,
+      "sha256": "d54fe0e89b7ce0c870dfd244885403e13871846138927318b80a8731cfe37318"
+    },
+    {
+      "path": "assets/map/ch1/baked_start_smoothing/chunk_6_4.png",
+      "category": "source-bounded8x8-all-mode-map",
+      "exists": true,
+      "inManifest": true,
+      "lfsPointer": false,
+      "sha256": "9a6f08983c5c028d40537d7763eb375abee267d0fa53e6c0b889444c75696379"
+    },
+    {
+      "path": "assets/map/ch1/baked_start_smoothing/chunk_7_4.png",
+      "category": "source-bounded8x8-all-mode-map",
+      "exists": true,
+      "inManifest": true,
+      "lfsPointer": false,
+      "sha256": "78e26ac5a87faf774c328816816f6d5582fead2301499a53c52ff07f09f24915"
+    },
+    {
+      "path": "assets/map/ch1/baked_start_smoothing/chunk_0_5.png",
+      "category": "source-bounded8x8-all-mode-map",
+      "exists": true,
+      "inManifest": true,
+      "lfsPointer": false,
+      "sha256": "04b40706f45ab9daae6f0943c536f8bf6ad604a8a5627a0b68adf5a1d6223420"
+    },
+    {
+      "path": "assets/map/ch1/baked_start_smoothing/chunk_1_5.png",
+      "category": "source-bounded8x8-all-mode-map",
+      "exists": true,
+      "inManifest": true,
+      "lfsPointer": false,
+      "sha256": "ac6118bd5afde50fb97282a6e041374070a93f16b060cf2f849e724f56c08e2f"
+    },
+    {
+      "path": "assets/map/ch1/baked_start_smoothing/chunk_2_5.png",
+      "category": "source-bounded8x8-all-mode-map",
+      "exists": true,
+      "inManifest": true,
+      "lfsPointer": false,
+      "sha256": "17ba1de2d5ea6be63912381f0a4cfd8725983a59f69740072a7c5acbcabd5981"
+    },
+    {
+      "path": "assets/map/ch1/baked_start_smoothing/chunk_3_5.png",
+      "category": "source-bounded8x8-all-mode-map",
+      "exists": true,
+      "inManifest": true,
+      "lfsPointer": false,
+      "sha256": "cdfc01884cecfd9654c114bb416b298ffb3fcc6a1c9ca16d3f948904a2dfe6f8"
+    },
+    {
+      "path": "assets/map/ch1/baked_start_smoothing/chunk_4_5.png",
+      "category": "source-bounded8x8-all-mode-map",
+      "exists": true,
+      "inManifest": true,
+      "lfsPointer": false,
+      "sha256": "287c61e33a153fa7c9a19da446e35554a4f646a6708e96074efa3377230bd660"
+    },
+    {
+      "path": "assets/map/ch1/baked_start_smoothing/chunk_5_5.png",
+      "category": "source-bounded8x8-all-mode-map",
+      "exists": true,
+      "inManifest": true,
+      "lfsPointer": false,
+      "sha256": "a76540911b2d5e7bf00e0188b50337b3528fb4d37805ae157adec4eac8f9fee9"
+    },
+    {
+      "path": "assets/map/ch1/baked_start_smoothing/chunk_6_5.png",
+      "category": "source-bounded8x8-all-mode-map",
+      "exists": true,
+      "inManifest": true,
+      "lfsPointer": false,
+      "sha256": "e170afe38f67ab10ca304964f5248ef30354c0c1c2653978467dccfd4bbdb3bc"
+    },
+    {
+      "path": "assets/map/ch1/baked_start_smoothing/chunk_7_5.png",
+      "category": "source-bounded8x8-all-mode-map",
+      "exists": true,
+      "inManifest": true,
+      "lfsPointer": false,
+      "sha256": "e7c048bbaf2f7c024e9255d6ddc110b085b386fa66f05f2c15b622f7d131240c"
+    },
+    {
+      "path": "assets/map/ch1/baked_start_smoothing/chunk_0_6.png",
+      "category": "source-bounded8x8-all-mode-map",
+      "exists": true,
+      "inManifest": true,
+      "lfsPointer": false,
+      "sha256": "12589d3d1cc87c99232066bd4509684facd396a605bc68c256fec075357fd6bc"
+    },
+    {
+      "path": "assets/map/ch1/baked_start_smoothing/chunk_1_6.png",
+      "category": "source-bounded8x8-all-mode-map",
+      "exists": true,
+      "inManifest": true,
+      "lfsPointer": false,
+      "sha256": "a405a4c9dfb95d2c4ecb2496b70d7dea457ef68cf3dba818066465f82e18ec58"
+    },
+    {
+      "path": "assets/map/ch1/baked_start_smoothing/chunk_2_6.png",
+      "category": "source-bounded8x8-all-mode-map",
+      "exists": true,
+      "inManifest": true,
+      "lfsPointer": false,
+      "sha256": "0361e2aa75f14bb9aed2cba0ca0fc27bd29eaacde257a25894129b5b52d2610d"
+    },
+    {
+      "path": "assets/map/ch1/baked_start_smoothing/chunk_3_6.png",
+      "category": "source-bounded8x8-all-mode-map",
+      "exists": true,
+      "inManifest": true,
+      "lfsPointer": false,
+      "sha256": "8e64da60b8d41208fa283faf011ad1811c08b8b889ab8c07dbf44770a16a0132"
+    },
+    {
+      "path": "assets/map/ch1/baked_start_smoothing/chunk_4_6.png",
+      "category": "source-bounded8x8-all-mode-map",
+      "exists": true,
+      "inManifest": true,
+      "lfsPointer": false,
+      "sha256": "0443b0f75f9b20fbaf7ac6220475b1c4e2dca9c1961f337680303c53723d2a45"
+    },
+    {
+      "path": "assets/map/ch1/baked_start_smoothing/chunk_5_6.png",
+      "category": "source-bounded8x8-all-mode-map",
+      "exists": true,
+      "inManifest": true,
+      "lfsPointer": false,
+      "sha256": "df6564add31e425bd07766e339592ed50b9ef0d06c5c480cc4cb230093042afa"
+    },
+    {
+      "path": "assets/map/ch1/baked_start_smoothing/chunk_6_6.png",
+      "category": "source-bounded8x8-all-mode-map",
+      "exists": true,
+      "inManifest": true,
+      "lfsPointer": false,
+      "sha256": "ef4c194550bd0c70e5df1fc79c9c5f4298a5356c64fa33f72997faf837052a10"
+    },
+    {
+      "path": "assets/map/ch1/baked_start_smoothing/chunk_7_6.png",
+      "category": "source-bounded8x8-all-mode-map",
+      "exists": true,
+      "inManifest": true,
+      "lfsPointer": false,
+      "sha256": "bf14162e73b7f843464359737a668a7c19b52be5f45c9a52b24d62a2f3bee798"
+    },
+    {
+      "path": "assets/map/ch1/baked_start_smoothing/chunk_0_7.png",
+      "category": "source-bounded8x8-all-mode-map",
+      "exists": true,
+      "inManifest": true,
+      "lfsPointer": false,
+      "sha256": "086a2f50ca9a66004d9005c3faed94581b5bd5b33db3ba4959695a2335cc78f6"
+    },
+    {
+      "path": "assets/map/ch1/baked_start_smoothing/chunk_1_7.png",
+      "category": "source-bounded8x8-all-mode-map",
+      "exists": true,
+      "inManifest": true,
+      "lfsPointer": false,
+      "sha256": "c8e0fcfd5e394b3d84c7c8c514e5c8a9dc5486adfe9027b9713789c3ebed1238"
+    },
+    {
+      "path": "assets/map/ch1/baked_start_smoothing/chunk_2_7.png",
+      "category": "source-bounded8x8-all-mode-map",
+      "exists": true,
+      "inManifest": true,
+      "lfsPointer": false,
+      "sha256": "a3423f63d57336e72584c4300499c3590d9caf04e81daceaddb7062fec82be31"
+    },
+    {
+      "path": "assets/map/ch1/baked_start_smoothing/chunk_3_7.png",
+      "category": "source-bounded8x8-all-mode-map",
+      "exists": true,
+      "inManifest": true,
+      "lfsPointer": false,
+      "sha256": "7ea5d56388f08975cc3112713372c7002e2a35268c94169c052d334104e5e14b"
+    },
+    {
+      "path": "assets/map/ch1/baked_start_smoothing/chunk_4_7.png",
+      "category": "source-bounded8x8-all-mode-map",
+      "exists": true,
+      "inManifest": true,
+      "lfsPointer": false,
+      "sha256": "1cce0fe210dd1106f7190c4bfa4b5aa20433475cb06b65d69e4d260f80d5d6fc"
+    },
+    {
+      "path": "assets/map/ch1/baked_start_smoothing/chunk_5_7.png",
+      "category": "source-bounded8x8-all-mode-map",
+      "exists": true,
+      "inManifest": true,
+      "lfsPointer": false,
+      "sha256": "c1ef926984c8c56ba137e8ab39e62cdbb3f5ca739492d054916d9e1c0465875b"
+    },
+    {
+      "path": "assets/map/ch1/baked_start_smoothing/chunk_6_7.png",
+      "category": "source-bounded8x8-all-mode-map",
+      "exists": true,
+      "inManifest": true,
+      "lfsPointer": false,
+      "sha256": "478439e3a31891231c0e918b1ac40df662c7458a2d7f79a54c0946dfeb2cdc8b"
+    },
+    {
+      "path": "assets/map/ch1/baked_start_smoothing/chunk_7_7.png",
+      "category": "source-bounded8x8-all-mode-map",
+      "exists": true,
+      "inManifest": true,
+      "lfsPointer": false,
+      "sha256": "8a0bef742f1c1ed930228ac00b414e408072d93f990082de6d4413ed3399d050"
+    },
+    {
+      "path": "assets/map/ch1/rootworld_candidate/chunk_0_0.png",
+      "category": "source-bounded8x8-all-mode-map",
+      "exists": true,
+      "inManifest": true,
+      "lfsPointer": false,
+      "sha256": "fc8dcabfaa30d473bdf13d22ea9b60705e92af6d6d3b24220a4de9b48776cd11"
+    },
+    {
+      "path": "assets/map/ch1/rootworld_candidate/chunk_1_0.png",
+      "category": "source-bounded8x8-all-mode-map",
+      "exists": true,
+      "inManifest": true,
+      "lfsPointer": false,
+      "sha256": "bdbe15272b2489f459b0d5cfe8cceac7b96078e296037bee1a7a7c9f328e957b"
+    },
+    {
+      "path": "assets/map/ch1/rootworld_candidate/chunk_2_0.png",
+      "category": "source-bounded8x8-all-mode-map",
+      "exists": true,
+      "inManifest": true,
+      "lfsPointer": false,
+      "sha256": "1f657e267ed0571aac30587967ff01d077c345f0c33d88ff368c1959f0229b15"
+    },
+    {
+      "path": "assets/map/ch1/rootworld_candidate/chunk_3_0.png",
+      "category": "source-bounded8x8-all-mode-map",
+      "exists": true,
+      "inManifest": true,
+      "lfsPointer": false,
+      "sha256": "bab42923f61940719ee32c5cf98ba3493800d4a03a7ee75a5769a01360d0a82e"
+    },
+    {
+      "path": "assets/map/ch1/rootworld_candidate/chunk_4_0.png",
+      "category": "source-bounded8x8-all-mode-map",
+      "exists": true,
+      "inManifest": true,
+      "lfsPointer": false,
+      "sha256": "641505b7ccde009bfbaf3bf2237f712792dc59aa91cbfb98cf6fdcd295740cbb"
+    },
+    {
+      "path": "assets/map/ch1/rootworld_candidate/chunk_5_0.png",
+      "category": "source-bounded8x8-all-mode-map",
+      "exists": true,
+      "inManifest": true,
+      "lfsPointer": false,
+      "sha256": "1f7c6214aab6a6b3c2a29f44d27ce78bbf68885715073bbb4405b49c78450a52"
+    },
+    {
+      "path": "assets/map/ch1/rootworld_candidate/chunk_6_0.png",
+      "category": "source-bounded8x8-all-mode-map",
+      "exists": true,
+      "inManifest": true,
+      "lfsPointer": false,
+      "sha256": "788e74e1855944cb3423109a7021f52c5d9f514dd93509090fea43e866d86354"
+    },
+    {
+      "path": "assets/map/ch1/rootworld_candidate/chunk_7_0.png",
+      "category": "source-bounded8x8-all-mode-map",
+      "exists": true,
+      "inManifest": true,
+      "lfsPointer": false,
+      "sha256": "5ffe557fad837332f5d88a9395bd3de476fea6ec46b7c57fcadb4cf5ba197ade"
+    },
+    {
+      "path": "assets/map/ch1/rootworld_candidate/chunk_0_1.png",
+      "category": "source-bounded8x8-all-mode-map",
+      "exists": true,
+      "inManifest": true,
+      "lfsPointer": false,
+      "sha256": "1ed6c0c5c868907ec1fd8a45f2fc9c8cfaef724966e2d946ca975c23badff7d0"
+    },
+    {
+      "path": "assets/map/ch1/rootworld_candidate/chunk_1_1.png",
+      "category": "source-bounded8x8-all-mode-map",
+      "exists": true,
+      "inManifest": true,
+      "lfsPointer": false,
+      "sha256": "b6c48fcb15bbca6c3987b1ea9d5ff033190facc71c8275d83f187345822a0c41"
+    },
+    {
+      "path": "assets/map/ch1/rootworld_candidate/chunk_2_1.png",
+      "category": "source-bounded8x8-all-mode-map",
+      "exists": true,
+      "inManifest": true,
+      "lfsPointer": false,
+      "sha256": "3a956b1551a0e345156f8795cae4920523088018c55ee48b659d2dff637b1e9d"
+    },
+    {
+      "path": "assets/map/ch1/rootworld_candidate/chunk_3_1.png",
+      "category": "source-bounded8x8-all-mode-map",
+      "exists": true,
+      "inManifest": true,
+      "lfsPointer": false,
+      "sha256": "d083e3e0e9b345b1c760d138241bbe5fd7618ee5778e672ed1b31276d93bcd67"
+    },
+    {
+      "path": "assets/map/ch1/rootworld_candidate/chunk_4_1.png",
+      "category": "source-bounded8x8-all-mode-map",
+      "exists": true,
+      "inManifest": true,
+      "lfsPointer": false,
+      "sha256": "670dc8a2415150cc39aa7a6b8ca690c97961671f3b521d0c485a2e01a7ec3b75"
+    },
+    {
+      "path": "assets/map/ch1/rootworld_candidate/chunk_5_1.png",
+      "category": "source-bounded8x8-all-mode-map",
+      "exists": true,
+      "inManifest": true,
+      "lfsPointer": false,
+      "sha256": "1095010848399152b99183c23ab27150f1003c5cc1eda9b9386de92020861eab"
+    },
+    {
+      "path": "assets/map/ch1/rootworld_candidate/chunk_6_1.png",
+      "category": "source-bounded8x8-all-mode-map",
+      "exists": true,
+      "inManifest": true,
+      "lfsPointer": false,
+      "sha256": "834f9adc1d695c7926aa257f4e45747d4f5cf1c52ce9bb27bcd557b0a0b5368f"
+    },
+    {
+      "path": "assets/map/ch1/rootworld_candidate/chunk_7_1.png",
+      "category": "source-bounded8x8-all-mode-map",
+      "exists": true,
+      "inManifest": true,
+      "lfsPointer": false,
+      "sha256": "eadbb44f286046711a0afafe5f3f4d8f1da1748262d39c276c1860a75526d634"
+    },
+    {
+      "path": "assets/map/ch1/rootworld_candidate/chunk_0_2.png",
+      "category": "source-bounded8x8-all-mode-map",
+      "exists": true,
+      "inManifest": true,
+      "lfsPointer": false,
+      "sha256": "d3f11b9083a956745fdbc1330c964830caabbf75a85fa690cf48ce960bbe5277"
+    },
+    {
+      "path": "assets/map/ch1/rootworld_candidate/chunk_1_2.png",
+      "category": "source-bounded8x8-all-mode-map",
+      "exists": true,
+      "inManifest": true,
+      "lfsPointer": false,
+      "sha256": "2f1dc903b53dfad87dfee93ec4c40b304bf345b4223ca42b4e2fcb6e21df8870"
+    },
+    {
+      "path": "assets/map/ch1/rootworld_candidate/chunk_2_2.png",
+      "category": "source-bounded8x8-all-mode-map",
+      "exists": true,
+      "inManifest": true,
+      "lfsPointer": false,
+      "sha256": "9cff9208414c7476433775f280a85f89a81cbee0d2e779b1f903f6a2021ee7af"
+    },
+    {
+      "path": "assets/map/ch1/rootworld_candidate/chunk_3_2.png",
+      "category": "source-bounded8x8-all-mode-map",
+      "exists": true,
+      "inManifest": true,
+      "lfsPointer": false,
+      "sha256": "6a07ae2471c6f9e1ae67f9fe07cbb738f758899b6dfd04fa93c2707cb753f60e"
+    },
+    {
+      "path": "assets/map/ch1/rootworld_candidate/chunk_4_2.png",
+      "category": "source-bounded8x8-all-mode-map",
+      "exists": true,
+      "inManifest": true,
+      "lfsPointer": false,
+      "sha256": "72732b22f3d930f3180c1c0bfa37e67a594775f4e04f00c525e06b21e06ec997"
+    },
+    {
+      "path": "assets/map/ch1/rootworld_candidate/chunk_5_2.png",
+      "category": "source-bounded8x8-all-mode-map",
+      "exists": true,
+      "inManifest": true,
+      "lfsPointer": false,
+      "sha256": "56cb7d603c2c4395a175f208130c198b639f439e21d744e5124bb08523ba0a38"
+    },
+    {
+      "path": "assets/map/ch1/rootworld_candidate/chunk_6_2.png",
+      "category": "source-bounded8x8-all-mode-map",
+      "exists": true,
+      "inManifest": true,
+      "lfsPointer": false,
+      "sha256": "1b3cfc961c659de3815207e54e451abe7ed883415b1409253d1c135e197f9989"
+    },
+    {
+      "path": "assets/map/ch1/rootworld_candidate/chunk_7_2.png",
+      "category": "source-bounded8x8-all-mode-map",
+      "exists": true,
+      "inManifest": true,
+      "lfsPointer": false,
+      "sha256": "0233c4e217dc6f47c598a9cd70148f2b19ddbd2208ffc03617b7b8472c20a734"
+    },
+    {
+      "path": "assets/map/ch1/rootworld_candidate/chunk_0_3.png",
+      "category": "source-bounded8x8-all-mode-map",
+      "exists": true,
+      "inManifest": true,
+      "lfsPointer": false,
+      "sha256": "5bdc5fb72198a15dc271a3605632eb1343156af249e21c2caa78820a2f769cc9"
+    },
+    {
+      "path": "assets/map/ch1/rootworld_candidate/chunk_1_3.png",
+      "category": "source-bounded8x8-all-mode-map",
+      "exists": true,
+      "inManifest": true,
+      "lfsPointer": false,
+      "sha256": "d5f490030000afbdb2c62589771c5cee2cfdcf5ddc6465185bfdbedc9e922d95"
+    },
+    {
+      "path": "assets/map/ch1/rootworld_candidate/chunk_2_3.png",
+      "category": "source-bounded8x8-all-mode-map",
+      "exists": true,
+      "inManifest": true,
+      "lfsPointer": false,
+      "sha256": "712d01a0f50ae4e5739b4fe5dfb3fcd417f601bfd8083a1cfd4baccb7f7b4820"
+    },
+    {
+      "path": "assets/map/ch1/rootworld_candidate/chunk_3_3.png",
+      "category": "source-bounded8x8-all-mode-map",
+      "exists": true,
+      "inManifest": true,
+      "lfsPointer": false,
+      "sha256": "6bead94e3a5a90ed9b128bf2edf12c4a902d0759f347aa9de4b9f7c518e9d277"
+    },
+    {
+      "path": "assets/map/ch1/rootworld_candidate/chunk_4_3.png",
+      "category": "source-bounded8x8-all-mode-map",
+      "exists": true,
+      "inManifest": true,
+      "lfsPointer": false,
+      "sha256": "9922137230b11a5253a9ae896c48b922b8f2cf2977d3aafba25a4b5e32cba2bb"
+    },
+    {
+      "path": "assets/map/ch1/rootworld_candidate/chunk_5_3.png",
+      "category": "source-bounded8x8-all-mode-map",
+      "exists": true,
+      "inManifest": true,
+      "lfsPointer": false,
+      "sha256": "f318a6e33f6e4f9d4a6525a2de4a48d020cb4e558ab975aa7fb051edd55c26a9"
+    },
+    {
+      "path": "assets/map/ch1/rootworld_candidate/chunk_6_3.png",
+      "category": "source-bounded8x8-all-mode-map",
+      "exists": true,
+      "inManifest": true,
+      "lfsPointer": false,
+      "sha256": "f15712747c8ad266a128d938ef5a5585fa7e355b00af6e15116f7046c6ddadb2"
+    },
+    {
+      "path": "assets/map/ch1/rootworld_candidate/chunk_7_3.png",
+      "category": "source-bounded8x8-all-mode-map",
+      "exists": true,
+      "inManifest": true,
+      "lfsPointer": false,
+      "sha256": "45893267ea78020f7737e9b6bf0f045e047528e61a51bb00119c0093aada91f8"
+    },
+    {
+      "path": "assets/map/ch1/rootworld_candidate/chunk_0_4.png",
+      "category": "source-bounded8x8-all-mode-map",
+      "exists": true,
+      "inManifest": true,
+      "lfsPointer": false,
+      "sha256": "cd53215a1c44e20b80f77c918fb1a12bd2c64af966e12a215e97663e1b277542"
+    },
+    {
+      "path": "assets/map/ch1/rootworld_candidate/chunk_1_4.png",
+      "category": "source-bounded8x8-all-mode-map",
+      "exists": true,
+      "inManifest": true,
+      "lfsPointer": false,
+      "sha256": "d80bd85b591820d0722202fc34036b224e281e3a5397b0fe8e3dfbdec40267b5"
+    },
+    {
+      "path": "assets/map/ch1/rootworld_candidate/chunk_2_4.png",
+      "category": "source-bounded8x8-all-mode-map",
+      "exists": true,
+      "inManifest": true,
+      "lfsPointer": false,
+      "sha256": "740fd7cb5916cc444102ea8889108f52bc093e316a272b901113a28fa55e070a"
+    },
+    {
+      "path": "assets/map/ch1/rootworld_candidate/chunk_3_4.png",
+      "category": "source-bounded8x8-all-mode-map",
+      "exists": true,
+      "inManifest": true,
+      "lfsPointer": false,
+      "sha256": "765f453a78f0b1647628752152e7bb6aa9d3a20ff0e129fa642227536afbf60a"
+    },
+    {
+      "path": "assets/map/ch1/rootworld_candidate/chunk_4_4.png",
+      "category": "source-bounded8x8-all-mode-map",
+      "exists": true,
+      "inManifest": true,
+      "lfsPointer": false,
+      "sha256": "df5f8fcf2ce192e27f076e73cd7d7b118ff702fa254b02c74cf2fbc58d98d8fc"
+    },
+    {
+      "path": "assets/map/ch1/rootworld_candidate/chunk_5_4.png",
+      "category": "source-bounded8x8-all-mode-map",
+      "exists": true,
+      "inManifest": true,
+      "lfsPointer": false,
+      "sha256": "798fd9b007e6abb5b336083d69d920aae791983013d144021b900ce8797b98d0"
+    },
+    {
+      "path": "assets/map/ch1/rootworld_candidate/chunk_6_4.png",
+      "category": "source-bounded8x8-all-mode-map",
+      "exists": true,
+      "inManifest": true,
+      "lfsPointer": false,
+      "sha256": "b058e0706ac6b8e2aac8bc3b8833f25ddfd0ede3c29ded3d366095c0a60c7f00"
+    },
+    {
+      "path": "assets/map/ch1/rootworld_candidate/chunk_7_4.png",
+      "category": "source-bounded8x8-all-mode-map",
+      "exists": true,
+      "inManifest": true,
+      "lfsPointer": false,
+      "sha256": "f6f22803a921b0f448da3005296f6af7558ac0ade487876d80942ea6ab7f25e4"
+    },
+    {
+      "path": "assets/map/ch1/rootworld_candidate/chunk_0_5.png",
+      "category": "source-bounded8x8-all-mode-map",
+      "exists": true,
+      "inManifest": true,
+      "lfsPointer": false,
+      "sha256": "36d46c23b29dc4ae96f84b620f6d92a082335ca0cd914ccac23a5733dcebcbd2"
+    },
+    {
+      "path": "assets/map/ch1/rootworld_candidate/chunk_1_5.png",
+      "category": "source-bounded8x8-all-mode-map",
+      "exists": true,
+      "inManifest": true,
+      "lfsPointer": false,
+      "sha256": "61ed4b6ad3d877819d5a00f6608eae29d8a1b0c5e265fc88c4143288364eb34f"
+    },
+    {
+      "path": "assets/map/ch1/rootworld_candidate/chunk_2_5.png",
+      "category": "source-bounded8x8-all-mode-map",
+      "exists": true,
+      "inManifest": true,
+      "lfsPointer": false,
+      "sha256": "46a98534bc188f3460d1c41eb4411415298733d9280702e1ef5b6edc87307880"
+    },
+    {
+      "path": "assets/map/ch1/rootworld_candidate/chunk_3_5.png",
+      "category": "source-bounded8x8-all-mode-map",
+      "exists": true,
+      "inManifest": true,
+      "lfsPointer": false,
+      "sha256": "519ed36a4e0a05be70f48d70d8fab991f31db47cad23bcc66bf8027e4c81d002"
+    },
+    {
+      "path": "assets/map/ch1/rootworld_candidate/chunk_4_5.png",
+      "category": "source-bounded8x8-all-mode-map",
+      "exists": true,
+      "inManifest": true,
+      "lfsPointer": false,
+      "sha256": "1948f5d8513855911471cb68a18eec7a3eb08433c4ed21259a71e15d757bbb16"
+    },
+    {
+      "path": "assets/map/ch1/rootworld_candidate/chunk_5_5.png",
+      "category": "source-bounded8x8-all-mode-map",
+      "exists": true,
+      "inManifest": true,
+      "lfsPointer": false,
+      "sha256": "2b18c3eb95e64a88b285de52e49250ff300bd6736a1ec57a000b69d01660bb7e"
+    },
+    {
+      "path": "assets/map/ch1/rootworld_candidate/chunk_6_5.png",
+      "category": "source-bounded8x8-all-mode-map",
+      "exists": true,
+      "inManifest": true,
+      "lfsPointer": false,
+      "sha256": "a6d3d03e2b41d7bde53a75e8aa95e4b0208c4d7f58b095bd838ab6781a4eee34"
+    },
+    {
+      "path": "assets/map/ch1/rootworld_candidate/chunk_7_5.png",
+      "category": "source-bounded8x8-all-mode-map",
+      "exists": true,
+      "inManifest": true,
+      "lfsPointer": false,
+      "sha256": "a661c6c02117d6c74f11be15d273803fb780d77bc4dcd5b7f0e5b86e33f9bfb0"
+    },
+    {
+      "path": "assets/map/ch1/rootworld_candidate/chunk_0_6.png",
+      "category": "source-bounded8x8-all-mode-map",
+      "exists": true,
+      "inManifest": true,
+      "lfsPointer": false,
+      "sha256": "e8731b70145d67abf2a2c8a516813764129deac6689037e22e2d5749bb074fd9"
+    },
+    {
+      "path": "assets/map/ch1/rootworld_candidate/chunk_1_6.png",
+      "category": "source-bounded8x8-all-mode-map",
+      "exists": true,
+      "inManifest": true,
+      "lfsPointer": false,
+      "sha256": "88f8e2aa72a7a8dd6c3d536d27534740f8244a3a67073a5bd17586cbda848768"
+    },
+    {
+      "path": "assets/map/ch1/rootworld_candidate/chunk_2_6.png",
+      "category": "source-bounded8x8-all-mode-map",
+      "exists": true,
+      "inManifest": true,
+      "lfsPointer": false,
+      "sha256": "546d25c2791e899223b756ecdaafb9c15a0f9c8b1f4e2284201da8b6d827328a"
+    },
+    {
+      "path": "assets/map/ch1/rootworld_candidate/chunk_3_6.png",
+      "category": "source-bounded8x8-all-mode-map",
+      "exists": true,
+      "inManifest": true,
+      "lfsPointer": false,
+      "sha256": "99e4b68a27a5ed45863edd805785b6aa3f48458f8f79a769967edda8d73adb50"
+    },
+    {
+      "path": "assets/map/ch1/rootworld_candidate/chunk_4_6.png",
+      "category": "source-bounded8x8-all-mode-map",
+      "exists": true,
+      "inManifest": true,
+      "lfsPointer": false,
+      "sha256": "b09ac62c5edbbcdca5694eec07729840b01eed2f8bd0b11ebe096cd946c07d84"
+    },
+    {
+      "path": "assets/map/ch1/rootworld_candidate/chunk_5_6.png",
+      "category": "source-bounded8x8-all-mode-map",
+      "exists": true,
+      "inManifest": true,
+      "lfsPointer": false,
+      "sha256": "d0404b78eb37396027e28b7861f9f1c8bf27ebe91432f2723eeaaae7365e6af7"
+    },
+    {
+      "path": "assets/map/ch1/rootworld_candidate/chunk_6_6.png",
+      "category": "source-bounded8x8-all-mode-map",
+      "exists": true,
+      "inManifest": true,
+      "lfsPointer": false,
+      "sha256": "51f9315575737b7159e550f354e344ef128c00d6423d932f528759e9ff40c00b"
+    },
+    {
+      "path": "assets/map/ch1/rootworld_candidate/chunk_7_6.png",
+      "category": "source-bounded8x8-all-mode-map",
+      "exists": true,
+      "inManifest": true,
+      "lfsPointer": false,
+      "sha256": "5cf426a5e46b3c98ec831c4426a6920526d2b6a068512aa3ae93849cf3acdfd1"
+    },
+    {
+      "path": "assets/map/ch1/rootworld_candidate/chunk_0_7.png",
+      "category": "source-bounded8x8-all-mode-map",
+      "exists": true,
+      "inManifest": true,
+      "lfsPointer": false,
+      "sha256": "b44ce9bcaea3b8bd94b8b2185e720860a473cf67cbc5fea882807192d8ba4276"
+    },
+    {
+      "path": "assets/map/ch1/rootworld_candidate/chunk_1_7.png",
+      "category": "source-bounded8x8-all-mode-map",
+      "exists": true,
+      "inManifest": true,
+      "lfsPointer": false,
+      "sha256": "d1117ffe9b1fa9c5ea22cb8861d81387ef61c5986b5532246d04670059d2db26"
+    },
+    {
+      "path": "assets/map/ch1/rootworld_candidate/chunk_2_7.png",
+      "category": "source-bounded8x8-all-mode-map",
+      "exists": true,
+      "inManifest": true,
+      "lfsPointer": false,
+      "sha256": "059ea46b33f646de344ad97179aa83caf06e0ba614b980ceb409ca6ab95e3df6"
+    },
+    {
+      "path": "assets/map/ch1/rootworld_candidate/chunk_3_7.png",
+      "category": "source-bounded8x8-all-mode-map",
+      "exists": true,
+      "inManifest": true,
+      "lfsPointer": false,
+      "sha256": "308bd6840a770d6c612398560cbf4451e8b78985f3b19f8cef5b94b436f121a6"
+    },
+    {
+      "path": "assets/map/ch1/rootworld_candidate/chunk_4_7.png",
+      "category": "source-bounded8x8-all-mode-map",
+      "exists": true,
+      "inManifest": true,
+      "lfsPointer": false,
+      "sha256": "b511c6bac2fff07c120405ed1968e74d2924bffdaede75ebf6fb31017caf7fe1"
+    },
+    {
+      "path": "assets/map/ch1/rootworld_candidate/chunk_5_7.png",
+      "category": "source-bounded8x8-all-mode-map",
+      "exists": true,
+      "inManifest": true,
+      "lfsPointer": false,
+      "sha256": "9812900333d6cb34f2eb9e6aef118bcd453e31f4035a1eb40e8b27633e1a1b4f"
+    },
+    {
+      "path": "assets/map/ch1/rootworld_candidate/chunk_6_7.png",
+      "category": "source-bounded8x8-all-mode-map",
+      "exists": true,
+      "inManifest": true,
+      "lfsPointer": false,
+      "sha256": "6e7de1e32e3b98500b4af47ffcb04769f03602e497d63237e6239a0228d7e2fb"
+    },
+    {
+      "path": "assets/map/ch1/rootworld_candidate/chunk_7_7.png",
+      "category": "source-bounded8x8-all-mode-map",
+      "exists": true,
+      "inManifest": true,
+      "lfsPointer": false,
+      "sha256": "6ff6ac9c862f6df6b9424889b86ff9425ffde0a41ed24fd5c3352854f5f9021a"
+    },
+    {
+      "path": "assets/map/ch1/rootworld_outer/chunk_0_0.png",
+      "category": "source-bounded8x8-all-mode-map",
+      "exists": true,
+      "inManifest": true,
+      "lfsPointer": false,
+      "sha256": "9aae372f6cf36b613dca35fd2c3c5d0534dbe5efd94b5541ca3eb56fa776c4f3"
+    },
+    {
+      "path": "assets/map/ch1/rootworld_outer/chunk_1_0.png",
+      "category": "source-bounded8x8-all-mode-map",
+      "exists": true,
+      "inManifest": true,
+      "lfsPointer": false,
+      "sha256": "15d5bc85943fea52c51bd55e455c97c60c4ff91f020158b67c75ec9f04f3a9bd"
+    },
+    {
+      "path": "assets/map/ch1/rootworld_outer/chunk_2_0.png",
+      "category": "source-bounded8x8-all-mode-map",
+      "exists": true,
+      "inManifest": true,
+      "lfsPointer": false,
+      "sha256": "0cc2e9ea5639157f0abb4db36a754f0aaee5c94c94fe3c93975961c77111849f"
+    },
+    {
+      "path": "assets/map/ch1/rootworld_outer/chunk_3_0.png",
+      "category": "source-bounded8x8-all-mode-map",
+      "exists": true,
+      "inManifest": true,
+      "lfsPointer": false,
+      "sha256": "a043ccdc385aee50fd4c3cbbe67c83664c4e2801473b3384307b53d8fb394e43"
+    },
+    {
+      "path": "assets/map/ch1/rootworld_outer/chunk_4_0.png",
+      "category": "source-bounded8x8-all-mode-map",
+      "exists": true,
+      "inManifest": true,
+      "lfsPointer": false,
+      "sha256": "ca2911c40b0abbd0171a28c6851ddb49a704094f889def5087cd922358dba21c"
+    },
+    {
+      "path": "assets/map/ch1/rootworld_outer/chunk_5_0.png",
+      "category": "source-bounded8x8-all-mode-map",
+      "exists": true,
+      "inManifest": true,
+      "lfsPointer": false,
+      "sha256": "4e642f026d587dca63c2ff46459348530fcbfdff874ed55e255b7479ac54a44e"
+    },
+    {
+      "path": "assets/map/ch1/rootworld_outer/chunk_6_0.png",
+      "category": "source-bounded8x8-all-mode-map",
+      "exists": true,
+      "inManifest": true,
+      "lfsPointer": false,
+      "sha256": "df5ea18afd3710087080397e76505891da00047f657412bd8f99b7fe54a61813"
+    },
+    {
+      "path": "assets/map/ch1/rootworld_outer/chunk_7_0.png",
+      "category": "source-bounded8x8-all-mode-map",
+      "exists": true,
+      "inManifest": true,
+      "lfsPointer": false,
+      "sha256": "2a51091fcb3c624282649d47579d1f41cbee93f8ec543ac7597faf62a4e8e152"
+    },
+    {
+      "path": "assets/map/ch1/rootworld_outer/chunk_0_1.png",
+      "category": "source-bounded8x8-all-mode-map",
+      "exists": true,
+      "inManifest": true,
+      "lfsPointer": false,
+      "sha256": "d3fe6f99b57ffab6db34a9b53a3fe85384f113a00682a7247e94387ca6fc88ed"
+    },
+    {
+      "path": "assets/map/ch1/rootworld_outer/chunk_1_1.png",
+      "category": "source-bounded8x8-all-mode-map",
+      "exists": true,
+      "inManifest": true,
+      "lfsPointer": false,
+      "sha256": "a0fa46e6173da138bc0d307bc8ed9dcd1fb267d30604975afb0506a0aa18078d"
+    },
+    {
+      "path": "assets/map/ch1/rootworld_outer/chunk_2_1.png",
+      "category": "source-bounded8x8-all-mode-map",
+      "exists": true,
+      "inManifest": true,
+      "lfsPointer": false,
+      "sha256": "9424d0893893932887a36f0b276e6665796ca833c478182c31f37dd6a11c71bd"
+    },
+    {
+      "path": "assets/map/ch1/rootworld_outer/chunk_3_1.png",
+      "category": "source-bounded8x8-all-mode-map",
+      "exists": true,
+      "inManifest": true,
+      "lfsPointer": false,
+      "sha256": "84a8c1bcd1075a75538dc76eda794b11e9610513bb2196103f882033793c9238"
+    },
+    {
+      "path": "assets/map/ch1/rootworld_outer/chunk_4_1.png",
+      "category": "source-bounded8x8-all-mode-map",
+      "exists": true,
+      "inManifest": true,
+      "lfsPointer": false,
+      "sha256": "8bc51d3738cfe305a8c5f961a35d3b19256b153b07c18186b4cf5b58d9f8993a"
+    },
+    {
+      "path": "assets/map/ch1/rootworld_outer/chunk_5_1.png",
+      "category": "source-bounded8x8-all-mode-map",
+      "exists": true,
+      "inManifest": true,
+      "lfsPointer": false,
+      "sha256": "ca01f42cab34475665b5b9693d4d083c4c771280311bebfe4af8d852161f5d7c"
+    },
+    {
+      "path": "assets/map/ch1/rootworld_outer/chunk_6_1.png",
+      "category": "source-bounded8x8-all-mode-map",
+      "exists": true,
+      "inManifest": true,
+      "lfsPointer": false,
+      "sha256": "7d7d15ba99a37c481be9607d1f97b8a542d87f6776bb92ab1790b785269d210a"
+    },
+    {
+      "path": "assets/map/ch1/rootworld_outer/chunk_7_1.png",
+      "category": "source-bounded8x8-all-mode-map",
+      "exists": true,
+      "inManifest": true,
+      "lfsPointer": false,
+      "sha256": "18a22096b1e89dddba0efe19ff1b9b69f391b640c6aac0fa4e4fb18e44548a3f"
+    },
+    {
+      "path": "assets/map/ch1/rootworld_outer/chunk_0_2.png",
+      "category": "source-bounded8x8-all-mode-map",
+      "exists": true,
+      "inManifest": true,
+      "lfsPointer": false,
+      "sha256": "c989d5973156d0a3e4de22162821484787630c399c7671f2c5c4da9f28720d38"
+    },
+    {
+      "path": "assets/map/ch1/rootworld_outer/chunk_1_2.png",
+      "category": "source-bounded8x8-all-mode-map",
+      "exists": true,
+      "inManifest": true,
+      "lfsPointer": false,
+      "sha256": "491570e2ef474701f72899d5f6408c5cca1427a97783e4403e21e30687a7b876"
+    },
+    {
+      "path": "assets/map/ch1/rootworld_outer/chunk_2_2.png",
+      "category": "source-bounded8x8-all-mode-map",
+      "exists": true,
+      "inManifest": true,
+      "lfsPointer": false,
+      "sha256": "2bb13d1bd859b7c49b6f4e5d298c7c642be6c7693a7acf90bc572db93eb38b0d"
+    },
+    {
+      "path": "assets/map/ch1/rootworld_outer/chunk_3_2.png",
+      "category": "source-bounded8x8-all-mode-map",
+      "exists": true,
+      "inManifest": true,
+      "lfsPointer": false,
+      "sha256": "bca7c507d14cd2a56ce41bb6ab0fb09b000fa159b9f3a3bf4de8b0d2c23ef263"
+    },
+    {
+      "path": "assets/map/ch1/rootworld_outer/chunk_4_2.png",
+      "category": "source-bounded8x8-all-mode-map",
+      "exists": true,
+      "inManifest": true,
+      "lfsPointer": false,
+      "sha256": "bca7c507d14cd2a56ce41bb6ab0fb09b000fa159b9f3a3bf4de8b0d2c23ef263"
+    },
+    {
+      "path": "assets/map/ch1/rootworld_outer/chunk_5_2.png",
+      "category": "source-bounded8x8-all-mode-map",
+      "exists": true,
+      "inManifest": true,
+      "lfsPointer": false,
+      "sha256": "843ef153d30458a2820823d699175a5e131494fa88bc90b6e5c986916b737e38"
+    },
+    {
+      "path": "assets/map/ch1/rootworld_outer/chunk_6_2.png",
+      "category": "source-bounded8x8-all-mode-map",
+      "exists": true,
+      "inManifest": true,
+      "lfsPointer": false,
+      "sha256": "f2013882357980be6647318516d2e6d172c1be7eef03c6b0d018ab3265b13017"
+    },
+    {
+      "path": "assets/map/ch1/rootworld_outer/chunk_7_2.png",
+      "category": "source-bounded8x8-all-mode-map",
+      "exists": true,
+      "inManifest": true,
+      "lfsPointer": false,
+      "sha256": "3e3bde262e40e0740293983efc55bf1547ccaa9ffaf9690ef37ca812952a1fb5"
+    },
+    {
+      "path": "assets/map/ch1/rootworld_outer/chunk_0_3.png",
+      "category": "source-bounded8x8-all-mode-map",
+      "exists": true,
+      "inManifest": true,
+      "lfsPointer": false,
+      "sha256": "9d9cdc54d4e239dfcea4cd25e2a4200b6e75f840148206bba5e70fa0d9a1efc9"
+    },
+    {
+      "path": "assets/map/ch1/rootworld_outer/chunk_1_3.png",
+      "category": "source-bounded8x8-all-mode-map",
+      "exists": true,
+      "inManifest": true,
+      "lfsPointer": false,
+      "sha256": "f75190dbbb859c358d0445c0f062adc491e117f91cfc6c274ae6b31d8830a9de"
+    },
+    {
+      "path": "assets/map/ch1/rootworld_outer/chunk_2_3.png",
+      "category": "source-bounded8x8-all-mode-map",
+      "exists": true,
+      "inManifest": true,
+      "lfsPointer": false,
+      "sha256": "28fef12edc007840d3d9b30e537cf68acccd232a5a702c09a2cc49e2cc1d12d3"
+    },
+    {
+      "path": "assets/map/ch1/rootworld_outer/chunk_3_3.png",
+      "category": "source-bounded8x8-all-mode-map",
+      "exists": true,
+      "inManifest": true,
+      "lfsPointer": false,
+      "sha256": "536d1b256c284ce44cbd837c71114e814e99d1efa5dc8744f7536907b39f8f7a"
+    },
+    {
+      "path": "assets/map/ch1/rootworld_outer/chunk_4_3.png",
+      "category": "source-bounded8x8-all-mode-map",
+      "exists": true,
+      "inManifest": true,
+      "lfsPointer": false,
+      "sha256": "e57167d46730097187459134b112d76c33346f22dd425198b3661a601e881ee3"
+    },
+    {
+      "path": "assets/map/ch1/rootworld_outer/chunk_5_3.png",
+      "category": "source-bounded8x8-all-mode-map",
+      "exists": true,
+      "inManifest": true,
+      "lfsPointer": false,
+      "sha256": "e4e11376b9b01cb2097762efa91e3c43d9e96d8b1c1d64d83e9455b4334a58da"
+    },
+    {
+      "path": "assets/map/ch1/rootworld_outer/chunk_6_3.png",
+      "category": "source-bounded8x8-all-mode-map",
+      "exists": true,
+      "inManifest": true,
+      "lfsPointer": false,
+      "sha256": "99c94a69bb20f09a3757ea8502f64bccf0e9dbc85bd8103a5ecf9c88475ca92d"
+    },
+    {
+      "path": "assets/map/ch1/rootworld_outer/chunk_7_3.png",
+      "category": "source-bounded8x8-all-mode-map",
+      "exists": true,
+      "inManifest": true,
+      "lfsPointer": false,
+      "sha256": "9813cb61e62e1203a335f4f693ba5804ddc2ddd578ca998cbaed73569de4867f"
+    },
+    {
+      "path": "assets/map/ch1/rootworld_outer/chunk_0_4.png",
+      "category": "source-bounded8x8-all-mode-map",
+      "exists": true,
+      "inManifest": true,
+      "lfsPointer": false,
+      "sha256": "f5cb68835a73fc59208bfa39926f3f0541f4a65593055b0b7878283b07887f94"
+    },
+    {
+      "path": "assets/map/ch1/rootworld_outer/chunk_1_4.png",
+      "category": "source-bounded8x8-all-mode-map",
+      "exists": true,
+      "inManifest": true,
+      "lfsPointer": false,
+      "sha256": "76aa47d73e50d7d77c9b9ff7d92d55aeab95edd61b4a346348e6e46c187e5853"
+    },
+    {
+      "path": "assets/map/ch1/rootworld_outer/chunk_2_4.png",
+      "category": "source-bounded8x8-all-mode-map",
+      "exists": true,
+      "inManifest": true,
+      "lfsPointer": false,
+      "sha256": "5aaeb67975243998a4c404e65b161714b36e464aee7462796460bc19d9e1f229"
+    },
+    {
+      "path": "assets/map/ch1/rootworld_outer/chunk_3_4.png",
+      "category": "source-bounded8x8-all-mode-map",
+      "exists": true,
+      "inManifest": true,
+      "lfsPointer": false,
+      "sha256": "2508054e3af5e4659965c8d7db731b3fb9c489d957992dbf16b714382b203632"
+    },
+    {
+      "path": "assets/map/ch1/rootworld_outer/chunk_4_4.png",
+      "category": "source-bounded8x8-all-mode-map",
+      "exists": true,
+      "inManifest": true,
+      "lfsPointer": false,
+      "sha256": "26d7a9eefdc5b8f536fa3ca0733322f5949770d8cf8f941ba0fddb47552dd98c"
+    },
+    {
+      "path": "assets/map/ch1/rootworld_outer/chunk_5_4.png",
+      "category": "source-bounded8x8-all-mode-map",
+      "exists": true,
+      "inManifest": true,
+      "lfsPointer": false,
+      "sha256": "bca7c507d14cd2a56ce41bb6ab0fb09b000fa159b9f3a3bf4de8b0d2c23ef263"
+    },
+    {
+      "path": "assets/map/ch1/rootworld_outer/chunk_6_4.png",
+      "category": "source-bounded8x8-all-mode-map",
+      "exists": true,
+      "inManifest": true,
+      "lfsPointer": false,
+      "sha256": "7f1d2b0028d4644e5d50b17026fac32d3ff23b445b75b73ae6b5ed2a96b903a6"
+    },
+    {
+      "path": "assets/map/ch1/rootworld_outer/chunk_7_4.png",
+      "category": "source-bounded8x8-all-mode-map",
+      "exists": true,
+      "inManifest": true,
+      "lfsPointer": false,
+      "sha256": "942025abb120e1de10f2b60952868cf81753ed2790d577662902001c74445ab6"
+    },
+    {
+      "path": "assets/map/ch1/rootworld_outer/chunk_0_5.png",
+      "category": "source-bounded8x8-all-mode-map",
+      "exists": true,
+      "inManifest": true,
+      "lfsPointer": false,
+      "sha256": "f79ca540b13bbd54a47441bf5b2403efe946638f27edeac5ec16d2e6a59ffa6d"
+    },
+    {
+      "path": "assets/map/ch1/rootworld_outer/chunk_1_5.png",
+      "category": "source-bounded8x8-all-mode-map",
+      "exists": true,
+      "inManifest": true,
+      "lfsPointer": false,
+      "sha256": "8ed92b5c1d25d4adbb743a4a3dff87bc9ea73c4a0e77c505ccdd472e0b32a2ea"
+    },
+    {
+      "path": "assets/map/ch1/rootworld_outer/chunk_2_5.png",
+      "category": "source-bounded8x8-all-mode-map",
+      "exists": true,
+      "inManifest": true,
+      "lfsPointer": false,
+      "sha256": "f814dfb5ce06c613b4621b23ab5955433f4e04fc20d5969fec9a266a4e4ea242"
+    },
+    {
+      "path": "assets/map/ch1/rootworld_outer/chunk_3_5.png",
+      "category": "source-bounded8x8-all-mode-map",
+      "exists": true,
+      "inManifest": true,
+      "lfsPointer": false,
+      "sha256": "146ec93ec68a20d4677d3d71275701e7f6c078630b566ddfeed8f0fa641fe50e"
+    },
+    {
+      "path": "assets/map/ch1/rootworld_outer/chunk_4_5.png",
+      "category": "source-bounded8x8-all-mode-map",
+      "exists": true,
+      "inManifest": true,
+      "lfsPointer": false,
+      "sha256": "9a3ebfc354383e4c6a1330d877e69a37ef162e368ea7eea85c02bc62feabb8bd"
+    },
+    {
+      "path": "assets/map/ch1/rootworld_outer/chunk_5_5.png",
+      "category": "source-bounded8x8-all-mode-map",
+      "exists": true,
+      "inManifest": true,
+      "lfsPointer": false,
+      "sha256": "9894012a80e1f01b579fc4e70eb687b93d31995461517e0600d25199782d3d6f"
+    },
+    {
+      "path": "assets/map/ch1/rootworld_outer/chunk_6_5.png",
+      "category": "source-bounded8x8-all-mode-map",
+      "exists": true,
+      "inManifest": true,
+      "lfsPointer": false,
+      "sha256": "0e06c2d01405da36d2be797e8e93c694149389260ae37744d81e0b3a88a6b4b2"
+    },
+    {
+      "path": "assets/map/ch1/rootworld_outer/chunk_7_5.png",
+      "category": "source-bounded8x8-all-mode-map",
+      "exists": true,
+      "inManifest": true,
+      "lfsPointer": false,
+      "sha256": "d7080969cfc3b99cb2e432e3ac13731a1d1de0891e3a839d6846c7ff315623f2"
+    },
+    {
+      "path": "assets/map/ch1/rootworld_outer/chunk_0_6.png",
+      "category": "source-bounded8x8-all-mode-map",
+      "exists": true,
+      "inManifest": true,
+      "lfsPointer": false,
+      "sha256": "363bc70cf10c775c8c5bf27d7ff84dacad06bf8757793e6ac7ac472a8eea6a2e"
+    },
+    {
+      "path": "assets/map/ch1/rootworld_outer/chunk_1_6.png",
+      "category": "source-bounded8x8-all-mode-map",
+      "exists": true,
+      "inManifest": true,
+      "lfsPointer": false,
+      "sha256": "59bfc1ae4bb04493b2322e2933cf1fc97bb1ddcff2d7efc946b1034e96a0cfd1"
+    },
+    {
+      "path": "assets/map/ch1/rootworld_outer/chunk_2_6.png",
+      "category": "source-bounded8x8-all-mode-map",
+      "exists": true,
+      "inManifest": true,
+      "lfsPointer": false,
+      "sha256": "735dbef649028d63e23b7e4d722bb24123d3d8b9925578790bb2161f6dc328a6"
+    },
+    {
+      "path": "assets/map/ch1/rootworld_outer/chunk_3_6.png",
+      "category": "source-bounded8x8-all-mode-map",
+      "exists": true,
+      "inManifest": true,
+      "lfsPointer": false,
+      "sha256": "d0ac280a479573f4bdf09a1df04d814c046cdc0b4c89ebcc5ea8e5f607edf4a9"
+    },
+    {
+      "path": "assets/map/ch1/rootworld_outer/chunk_4_6.png",
+      "category": "source-bounded8x8-all-mode-map",
+      "exists": true,
+      "inManifest": true,
+      "lfsPointer": false,
+      "sha256": "790baccf1552e65fc617663b284f64a3085311892ce6883759207b45d0fc2fbb"
+    },
+    {
+      "path": "assets/map/ch1/rootworld_outer/chunk_5_6.png",
+      "category": "source-bounded8x8-all-mode-map",
+      "exists": true,
+      "inManifest": true,
+      "lfsPointer": false,
+      "sha256": "fe621e4b3071a9dfa7fd19756311ce4c1c265d39fb2963fec6b3c9af3ad33355"
+    },
+    {
+      "path": "assets/map/ch1/rootworld_outer/chunk_6_6.png",
+      "category": "source-bounded8x8-all-mode-map",
+      "exists": true,
+      "inManifest": true,
+      "lfsPointer": false,
+      "sha256": "f81a77e9af6e1ebbd02f1beeb88f0462587983f0fd93752b3f59d6b2f198f692"
+    },
+    {
+      "path": "assets/map/ch1/rootworld_outer/chunk_7_6.png",
+      "category": "source-bounded8x8-all-mode-map",
+      "exists": true,
+      "inManifest": true,
+      "lfsPointer": false,
+      "sha256": "9fd45bf3448c54c9cae5a01a6eaadac2ac56819fede850961df22107609a4515"
+    },
+    {
+      "path": "assets/map/ch1/rootworld_outer/chunk_0_7.png",
+      "category": "source-bounded8x8-all-mode-map",
+      "exists": true,
+      "inManifest": true,
+      "lfsPointer": false,
+      "sha256": "5a1bd6312a42e51e98ac016e814d7aa5f0dfc0412f55afb6c0e724bca3a923fe"
+    },
+    {
+      "path": "assets/map/ch1/rootworld_outer/chunk_1_7.png",
+      "category": "source-bounded8x8-all-mode-map",
+      "exists": true,
+      "inManifest": true,
+      "lfsPointer": false,
+      "sha256": "2a5be8f2d9ce1d47083786d67b0798ee17fd3628122e009e3bcfd6fa4c9a3060"
+    },
+    {
+      "path": "assets/map/ch1/rootworld_outer/chunk_2_7.png",
+      "category": "source-bounded8x8-all-mode-map",
+      "exists": true,
+      "inManifest": true,
+      "lfsPointer": false,
+      "sha256": "9ea3118a5bec91f91dbb69dc1de197f21af6aa5f0311a863daec2df589af1853"
+    },
+    {
+      "path": "assets/map/ch1/rootworld_outer/chunk_3_7.png",
+      "category": "source-bounded8x8-all-mode-map",
+      "exists": true,
+      "inManifest": true,
+      "lfsPointer": false,
+      "sha256": "b7965dab83e6477684ef72abe119dd3630f7aded3ffc013965b5aed10262d9f8"
+    },
+    {
+      "path": "assets/map/ch1/rootworld_outer/chunk_4_7.png",
+      "category": "source-bounded8x8-all-mode-map",
+      "exists": true,
+      "inManifest": true,
+      "lfsPointer": false,
+      "sha256": "b4da7ca5212c9ef2a019bb4891ec500813f8d6654d40f63a1a4c541d8aac315f"
+    },
+    {
+      "path": "assets/map/ch1/rootworld_outer/chunk_5_7.png",
+      "category": "source-bounded8x8-all-mode-map",
+      "exists": true,
+      "inManifest": true,
+      "lfsPointer": false,
+      "sha256": "2ad79594b62d7a1ccf5f69df3470dde7778660d5788159b79691bf140a2d3136"
+    },
+    {
+      "path": "assets/map/ch1/rootworld_outer/chunk_6_7.png",
+      "category": "source-bounded8x8-all-mode-map",
+      "exists": true,
+      "inManifest": true,
+      "lfsPointer": false,
+      "sha256": "c3925af87b2a765ffbd49ffcc49be10d03c99c6dc9680130b58881f806181065"
+    },
+    {
+      "path": "assets/map/ch1/rootworld_outer/chunk_7_7.png",
+      "category": "source-bounded8x8-all-mode-map",
+      "exists": true,
+      "inManifest": true,
+      "lfsPointer": false,
+      "sha256": "84b531834a0788d56848a710d2109d609d2213a720c46853dfdcdce773e2d5db"
+    },
+    {
+      "path": "assets/map/ch1/baked_spike/outer_mass/large/chunk_0_0.png",
+      "category": "source-bounded8x8-all-mode-map",
+      "exists": true,
+      "inManifest": true,
+      "lfsPointer": false,
+      "sha256": "fea90329c2a079ea498b906918d1cdd0bc4384c3a0f28920fd9be41ae8317fb6"
+    },
+    {
+      "path": "assets/map/ch1/baked_spike/outer_mass/large/chunk_1_0.png",
+      "category": "source-bounded8x8-all-mode-map",
+      "exists": true,
+      "inManifest": true,
+      "lfsPointer": false,
+      "sha256": "2e3b3be768c651dd3d1394d669a6496157c17e58c3595b7719bd16865f58734c"
+    },
+    {
+      "path": "assets/map/ch1/baked_spike/outer_mass/large/chunk_2_0.png",
+      "category": "source-bounded8x8-all-mode-map",
+      "exists": true,
+      "inManifest": true,
+      "lfsPointer": false,
+      "sha256": "d97a4ee6298cbda7b2797715e265280f36ff9dffa225560b21a5384918bc9a92"
+    },
+    {
+      "path": "assets/map/ch1/baked_spike/outer_mass/large/chunk_3_0.png",
+      "category": "source-bounded8x8-all-mode-map",
+      "exists": true,
+      "inManifest": true,
+      "lfsPointer": false,
+      "sha256": "acc6ad5eabf06cf96f1254053a91e490ec07cdbb76a20a670a93121764baa7dd"
+    },
+    {
+      "path": "assets/map/ch1/baked_spike/outer_mass/large/chunk_4_0.png",
+      "category": "source-bounded8x8-all-mode-map",
+      "exists": true,
+      "inManifest": true,
+      "lfsPointer": false,
+      "sha256": "d3f674ed30afb73ae0eaa7e54fdcdb553f2bb79db9d7f497b19bb13dc0dee5be"
+    },
+    {
+      "path": "assets/map/ch1/baked_spike/outer_mass/large/chunk_5_0.png",
+      "category": "source-bounded8x8-all-mode-map",
+      "exists": true,
+      "inManifest": true,
+      "lfsPointer": false,
+      "sha256": "f3c251d9c312e170fcfaf055d9e500f007c28cd1546c197fc966d38923bcf8a4"
+    },
+    {
+      "path": "assets/map/ch1/baked_spike/outer_mass/large/chunk_6_0.png",
+      "category": "source-bounded8x8-all-mode-map",
+      "exists": true,
+      "inManifest": true,
+      "lfsPointer": false,
+      "sha256": "e03277190ba5997f5ae92e826b0a76c8510e00951267d54c31eb08b8734d1f08"
+    },
+    {
+      "path": "assets/map/ch1/baked_spike/outer_mass/large/chunk_7_0.png",
+      "category": "source-bounded8x8-all-mode-map",
+      "exists": true,
+      "inManifest": true,
+      "lfsPointer": false,
+      "sha256": "a74a6054ec8257b3478f6680d6ce3a2d100a68ce19f12b901a500f493c3750dd"
+    },
+    {
+      "path": "assets/map/ch1/baked_spike/outer_mass/large/chunk_0_1.png",
+      "category": "source-bounded8x8-all-mode-map",
+      "exists": true,
+      "inManifest": true,
+      "lfsPointer": false,
+      "sha256": "a3b0d56ca4c36edfed0eac41946acd2868cda0cd1311b33cd4bb6bdbdb7b2a88"
+    },
+    {
+      "path": "assets/map/ch1/baked_spike/outer_mass/large/chunk_1_1.png",
+      "category": "source-bounded8x8-all-mode-map",
+      "exists": true,
+      "inManifest": true,
+      "lfsPointer": false,
+      "sha256": "8242807b86b0447fe718543f0696bb1ecbb45cfb1b381606cd9fb0555bcf9540"
+    },
+    {
+      "path": "assets/map/ch1/baked_spike/outer_mass/large/chunk_2_1.png",
+      "category": "source-bounded8x8-all-mode-map",
+      "exists": true,
+      "inManifest": true,
+      "lfsPointer": false,
+      "sha256": "d222207686e748256b3dbac1a53c3f83b322afb33782311873a5473b968f9097"
+    },
+    {
+      "path": "assets/map/ch1/baked_spike/outer_mass/large/chunk_3_1.png",
+      "category": "source-bounded8x8-all-mode-map",
+      "exists": true,
+      "inManifest": true,
+      "lfsPointer": false,
+      "sha256": "37d37f17f8382a55bec5e73b4288732931ce7766dba54ae69f85ac0bb5b33517"
+    },
+    {
+      "path": "assets/map/ch1/baked_spike/outer_mass/large/chunk_4_1.png",
+      "category": "source-bounded8x8-all-mode-map",
+      "exists": true,
+      "inManifest": true,
+      "lfsPointer": false,
+      "sha256": "9a655618a976d766256a7584c5a6bbe75f4599d3770c8b0d1d5a2786205e06dc"
+    },
+    {
+      "path": "assets/map/ch1/baked_spike/outer_mass/large/chunk_5_1.png",
+      "category": "source-bounded8x8-all-mode-map",
+      "exists": true,
+      "inManifest": true,
+      "lfsPointer": false,
+      "sha256": "36b9d4ba5b4493e8d5db72de4619491ec0584dab22c84fe0f72657dd8c75fded"
+    },
+    {
+      "path": "assets/map/ch1/baked_spike/outer_mass/large/chunk_6_1.png",
+      "category": "source-bounded8x8-all-mode-map",
+      "exists": true,
+      "inManifest": true,
+      "lfsPointer": false,
+      "sha256": "a60c253e888ece0e5369ff00e7c751a5c3295e157e7c695acd69a6719ca42cce"
+    },
+    {
+      "path": "assets/map/ch1/baked_spike/outer_mass/large/chunk_7_1.png",
+      "category": "source-bounded8x8-all-mode-map",
+      "exists": true,
+      "inManifest": true,
+      "lfsPointer": false,
+      "sha256": "eaaa3f3bee1dc62b16de747b6b68cfcfc791244fa52bafc79fdcf124354ffd51"
+    },
+    {
+      "path": "assets/map/ch1/baked_spike/outer_mass/large/chunk_0_2.png",
+      "category": "source-bounded8x8-all-mode-map",
+      "exists": true,
+      "inManifest": true,
+      "lfsPointer": false,
+      "sha256": "cf88674d86bfbe669cec7f61db61e8338fb90d52cba0f3b37644fc42ceeafa69"
+    },
+    {
+      "path": "assets/map/ch1/baked_spike/outer_mass/large/chunk_1_2.png",
+      "category": "source-bounded8x8-all-mode-map",
+      "exists": true,
+      "inManifest": true,
+      "lfsPointer": false,
+      "sha256": "7cac03c89c9696d9470fd6cd843d080620ff0d95de53330c5b79c23f7c1f3aba"
+    },
+    {
+      "path": "assets/map/ch1/baked_spike/outer_mass/large/chunk_2_2.png",
+      "category": "source-bounded8x8-all-mode-map",
+      "exists": true,
+      "inManifest": true,
+      "lfsPointer": false,
+      "sha256": "a7ea57046f9899f108e2be61d3f21aca895619f88622a8054d6646ec61b2e29a"
+    },
+    {
+      "path": "assets/map/ch1/baked_spike/outer_mass/large/chunk_3_2.png",
+      "category": "source-bounded8x8-all-mode-map",
+      "exists": true,
+      "inManifest": true,
+      "lfsPointer": false,
+      "sha256": "a3e7e9a53a4dabbf555a2c13faca68c029992e8b33634f4fb6cc1e2fdb9b3ff7"
+    },
+    {
+      "path": "assets/map/ch1/baked_spike/outer_mass/large/chunk_4_2.png",
+      "category": "source-bounded8x8-all-mode-map",
+      "exists": true,
+      "inManifest": true,
+      "lfsPointer": false,
+      "sha256": "215bf31255451fa61194c4e1e7faf440baa70a274add4f2b31456f813cefdad6"
+    },
+    {
+      "path": "assets/map/ch1/baked_spike/outer_mass/large/chunk_5_2.png",
+      "category": "source-bounded8x8-all-mode-map",
+      "exists": true,
+      "inManifest": true,
+      "lfsPointer": false,
+      "sha256": "49ccd5b17ba853b340bff77d31856e63ee508ba0db945b7789cdaef910a1a1cf"
+    },
+    {
+      "path": "assets/map/ch1/baked_spike/outer_mass/large/chunk_6_2.png",
+      "category": "source-bounded8x8-all-mode-map",
+      "exists": true,
+      "inManifest": true,
+      "lfsPointer": false,
+      "sha256": "165fce55d0412ed50c1d0c824ea2cb8f3ff78f0b62dfd4ba744b3b6c22ba8e20"
+    },
+    {
+      "path": "assets/map/ch1/baked_spike/outer_mass/large/chunk_7_2.png",
+      "category": "source-bounded8x8-all-mode-map",
+      "exists": true,
+      "inManifest": true,
+      "lfsPointer": false,
+      "sha256": "cbdfc0c93ccc6b4d2c8b2463f1e7496bda2b4c0d3b2c181cc243632f9b328f1c"
+    },
+    {
+      "path": "assets/map/ch1/baked_spike/outer_mass/large/chunk_0_3.png",
+      "category": "source-bounded8x8-all-mode-map",
+      "exists": true,
+      "inManifest": true,
+      "lfsPointer": false,
+      "sha256": "3c522fb60256983d3008a70979f8b9b8bd106f09da766b59d2e60f9697f09876"
+    },
+    {
+      "path": "assets/map/ch1/baked_spike/outer_mass/large/chunk_1_3.png",
+      "category": "source-bounded8x8-all-mode-map",
+      "exists": true,
+      "inManifest": true,
+      "lfsPointer": false,
+      "sha256": "61ea65aa721f6c3bcf0f45f7fc74a022b0c284cc973c722fdbe980646357b51d"
+    },
+    {
+      "path": "assets/map/ch1/baked_spike/outer_mass/large/chunk_2_3.png",
+      "category": "source-bounded8x8-all-mode-map",
+      "exists": true,
+      "inManifest": true,
+      "lfsPointer": false,
+      "sha256": "29d7f294f040083c6684cf579e33a27c9ec430bc26ddb4d4381fc93e42e51540"
+    },
+    {
+      "path": "assets/map/ch1/baked_spike/outer_mass/large/chunk_3_3.png",
+      "category": "source-bounded8x8-all-mode-map",
+      "exists": true,
+      "inManifest": true,
+      "lfsPointer": false,
+      "sha256": "0443b0f75f9b20fbaf7ac6220475b1c4e2dca9c1961f337680303c53723d2a45"
+    },
+    {
+      "path": "assets/map/ch1/baked_spike/outer_mass/large/chunk_4_3.png",
+      "category": "source-bounded8x8-all-mode-map",
+      "exists": true,
+      "inManifest": true,
+      "lfsPointer": false,
+      "sha256": "376952e907e1df757f789de7dad7195f328b265735deabd62c96d86b1545b555"
+    },
+    {
+      "path": "assets/map/ch1/baked_spike/outer_mass/large/chunk_5_3.png",
+      "category": "source-bounded8x8-all-mode-map",
+      "exists": true,
+      "inManifest": true,
+      "lfsPointer": false,
+      "sha256": "baaeab52e0341881b14f069e6cc886ac7afafad67eb8d99ee774a95c8c5d62fc"
+    },
+    {
+      "path": "assets/map/ch1/baked_spike/outer_mass/large/chunk_6_3.png",
+      "category": "source-bounded8x8-all-mode-map",
+      "exists": true,
+      "inManifest": true,
+      "lfsPointer": false,
+      "sha256": "680d20684574e5b2121c5c39b3eec023b6f18fa9d51d911c5dd2e1a107bb9d14"
+    },
+    {
+      "path": "assets/map/ch1/baked_spike/outer_mass/large/chunk_7_3.png",
+      "category": "source-bounded8x8-all-mode-map",
+      "exists": true,
+      "inManifest": true,
+      "lfsPointer": false,
+      "sha256": "bc4e7db2e1fbc3d8ebf61ca0ea305818e66c082851ab13955907af271c893cd3"
+    },
+    {
+      "path": "assets/map/ch1/baked_spike/outer_mass/large/chunk_0_4.png",
+      "category": "source-bounded8x8-all-mode-map",
+      "exists": true,
+      "inManifest": true,
+      "lfsPointer": false,
+      "sha256": "476b5365042efafa4b8fa532d582e6fc1be6ad2c863fa87b17b3984cd8da60a9"
+    },
+    {
+      "path": "assets/map/ch1/baked_spike/outer_mass/large/chunk_1_4.png",
+      "category": "source-bounded8x8-all-mode-map",
+      "exists": true,
+      "inManifest": true,
+      "lfsPointer": false,
+      "sha256": "f21f2380b45a812d90cb1bb183025a3cf95b2bfbd7633c8ac14fb18d2b1f2a6a"
+    },
+    {
+      "path": "assets/map/ch1/baked_spike/outer_mass/large/chunk_2_4.png",
+      "category": "source-bounded8x8-all-mode-map",
+      "exists": true,
+      "inManifest": true,
+      "lfsPointer": false,
+      "sha256": "a12b3f996b72503e983c36b1af8d7bf064bbb90d723952b1bfd6e030cd05a8ac"
+    },
+    {
+      "path": "assets/map/ch1/baked_spike/outer_mass/large/chunk_3_4.png",
+      "category": "source-bounded8x8-all-mode-map",
+      "exists": true,
+      "inManifest": true,
+      "lfsPointer": false,
+      "sha256": "615ede512683fc9b519f2930324f581f6e86baec43fce08fbbf071197ec79d76"
+    },
+    {
+      "path": "assets/map/ch1/baked_spike/outer_mass/large/chunk_4_4.png",
+      "category": "source-bounded8x8-all-mode-map",
+      "exists": true,
+      "inManifest": true,
+      "lfsPointer": false,
+      "sha256": "28a46e6de544cc50cbc2ec9cb6a0dd3dc24cc77b020443df44e8f23bc363b86e"
+    },
+    {
+      "path": "assets/map/ch1/baked_spike/outer_mass/large/chunk_5_4.png",
+      "category": "source-bounded8x8-all-mode-map",
+      "exists": true,
+      "inManifest": true,
+      "lfsPointer": false,
+      "sha256": "ceb65130da7de600afc576f6d1297f27ee9b4156be7c36b3266da60c04b5f8f3"
+    },
+    {
+      "path": "assets/map/ch1/baked_spike/outer_mass/large/chunk_6_4.png",
+      "category": "source-bounded8x8-all-mode-map",
+      "exists": true,
+      "inManifest": true,
+      "lfsPointer": false,
+      "sha256": "a9260713d5c3a2926d44a9fda06788a3f5fea387bb73d0c748290eacbedccd54"
+    },
+    {
+      "path": "assets/map/ch1/baked_spike/outer_mass/large/chunk_7_4.png",
+      "category": "source-bounded8x8-all-mode-map",
+      "exists": true,
+      "inManifest": true,
+      "lfsPointer": false,
+      "sha256": "0700303acf280178cba2f44e384f2ae9304847ccf206afebf7d42304e0fa0bb7"
+    },
+    {
+      "path": "assets/map/ch1/baked_spike/outer_mass/large/chunk_0_5.png",
+      "category": "source-bounded8x8-all-mode-map",
+      "exists": true,
+      "inManifest": true,
+      "lfsPointer": false,
+      "sha256": "3e03a8d82fceed9df8b0dac20cda41a3ac875dd6798594bb43fce72a76dffee0"
+    },
+    {
+      "path": "assets/map/ch1/baked_spike/outer_mass/large/chunk_1_5.png",
+      "category": "source-bounded8x8-all-mode-map",
+      "exists": true,
+      "inManifest": true,
+      "lfsPointer": false,
+      "sha256": "01109c4dc29827c0c1a5461e41087f7724f902699ea64e7a4d329eab243debcd"
+    },
+    {
+      "path": "assets/map/ch1/baked_spike/outer_mass/large/chunk_2_5.png",
+      "category": "source-bounded8x8-all-mode-map",
+      "exists": true,
+      "inManifest": true,
+      "lfsPointer": false,
+      "sha256": "88d7ad0edcdafcb2abcaf404857ea9e44175f8263e2164b8006bf58e51e00a23"
+    },
+    {
+      "path": "assets/map/ch1/baked_spike/outer_mass/large/chunk_3_5.png",
+      "category": "source-bounded8x8-all-mode-map",
+      "exists": true,
+      "inManifest": true,
+      "lfsPointer": false,
+      "sha256": "3e11f5368a3c2f12e74533705e12e177fce54f88feeb64fae690b91cb5d5b855"
+    },
+    {
+      "path": "assets/map/ch1/baked_spike/outer_mass/large/chunk_4_5.png",
+      "category": "source-bounded8x8-all-mode-map",
+      "exists": true,
+      "inManifest": true,
+      "lfsPointer": false,
+      "sha256": "77681d036b3fb96ab55fb1cf1fec8981d2ba592aa61bcdbd35a481c7267b6e8b"
+    },
+    {
+      "path": "assets/map/ch1/baked_spike/outer_mass/large/chunk_5_5.png",
+      "category": "source-bounded8x8-all-mode-map",
+      "exists": true,
+      "inManifest": true,
+      "lfsPointer": false,
+      "sha256": "0443b0f75f9b20fbaf7ac6220475b1c4e2dca9c1961f337680303c53723d2a45"
+    },
+    {
+      "path": "assets/map/ch1/baked_spike/outer_mass/large/chunk_6_5.png",
+      "category": "source-bounded8x8-all-mode-map",
+      "exists": true,
+      "inManifest": true,
+      "lfsPointer": false,
+      "sha256": "326f8db986a2ce17401372b39dccbd2f8542e0a060d45b7e7d2f46bb7d47a428"
+    },
+    {
+      "path": "assets/map/ch1/baked_spike/outer_mass/large/chunk_7_5.png",
+      "category": "source-bounded8x8-all-mode-map",
+      "exists": true,
+      "inManifest": true,
+      "lfsPointer": false,
+      "sha256": "6c33b0bc30b9733184844b9474bbef47121fef9685a47d51b83866746f683884"
+    },
+    {
+      "path": "assets/map/ch1/baked_spike/outer_mass/large/chunk_0_6.png",
+      "category": "source-bounded8x8-all-mode-map",
+      "exists": true,
+      "inManifest": true,
+      "lfsPointer": false,
+      "sha256": "1d96ce00a4ec4e4c3e85ada15d03d748313fa442618bbc6a488cad5727082891"
+    },
+    {
+      "path": "assets/map/ch1/baked_spike/outer_mass/large/chunk_1_6.png",
+      "category": "source-bounded8x8-all-mode-map",
+      "exists": true,
+      "inManifest": true,
+      "lfsPointer": false,
+      "sha256": "add69fd7e79d02c1ebf10756858598b63dcc86c9bbb7c30e072ad5bff779e9f0"
+    },
+    {
+      "path": "assets/map/ch1/baked_spike/outer_mass/large/chunk_2_6.png",
+      "category": "source-bounded8x8-all-mode-map",
+      "exists": true,
+      "inManifest": true,
+      "lfsPointer": false,
+      "sha256": "ced16798f0108646404318bb86274fbaf4e70876026f0ec67fe28dbc6b46e8fa"
+    },
+    {
+      "path": "assets/map/ch1/baked_spike/outer_mass/large/chunk_3_6.png",
+      "category": "source-bounded8x8-all-mode-map",
+      "exists": true,
+      "inManifest": true,
+      "lfsPointer": false,
+      "sha256": "9919c890420af252da09da47f62a4d5168b56ae449517a276b3d09054c654739"
+    },
+    {
+      "path": "assets/map/ch1/baked_spike/outer_mass/large/chunk_4_6.png",
+      "category": "source-bounded8x8-all-mode-map",
+      "exists": true,
+      "inManifest": true,
+      "lfsPointer": false,
+      "sha256": "218180760b9329ad6b1b987fe610511f8c619442435ac0f4dd0930b40daa9044"
+    },
+    {
+      "path": "assets/map/ch1/baked_spike/outer_mass/large/chunk_5_6.png",
+      "category": "source-bounded8x8-all-mode-map",
+      "exists": true,
+      "inManifest": true,
+      "lfsPointer": false,
+      "sha256": "b91af6e5ac93c2f8de8813ac45170166cd742d2873bfda497d6b1b8e20e4be60"
+    },
+    {
+      "path": "assets/map/ch1/baked_spike/outer_mass/large/chunk_6_6.png",
+      "category": "source-bounded8x8-all-mode-map",
+      "exists": true,
+      "inManifest": true,
+      "lfsPointer": false,
+      "sha256": "f1f88f1399aa36915b011414cfff68025b9a4a736a73f10dd7cd23d63a35adb5"
+    },
+    {
+      "path": "assets/map/ch1/baked_spike/outer_mass/large/chunk_7_6.png",
+      "category": "source-bounded8x8-all-mode-map",
+      "exists": true,
+      "inManifest": true,
+      "lfsPointer": false,
+      "sha256": "7cd2b2f369d604932ae85f48388d5530a5ff39a1ae03f84366bad2339b769bff"
+    },
+    {
+      "path": "assets/map/ch1/baked_spike/outer_mass/large/chunk_0_7.png",
+      "category": "source-bounded8x8-all-mode-map",
+      "exists": true,
+      "inManifest": true,
+      "lfsPointer": false,
+      "sha256": "fe7409540040b27ed255ddc54f59003cab41323598fdeed316c03672b605a2ff"
+    },
+    {
+      "path": "assets/map/ch1/baked_spike/outer_mass/large/chunk_1_7.png",
+      "category": "source-bounded8x8-all-mode-map",
+      "exists": true,
+      "inManifest": true,
+      "lfsPointer": false,
+      "sha256": "74f2acf83d6518a2f9c8ea9bd0301a408c17a764c90b8d1b09a94efa090af8d0"
+    },
+    {
+      "path": "assets/map/ch1/baked_spike/outer_mass/large/chunk_2_7.png",
+      "category": "source-bounded8x8-all-mode-map",
+      "exists": true,
+      "inManifest": true,
+      "lfsPointer": false,
+      "sha256": "8fa83983d1b079bf24a0a95699545fa9935c2cc6df7a94db8b1360d2fdbfe604"
+    },
+    {
+      "path": "assets/map/ch1/baked_spike/outer_mass/large/chunk_3_7.png",
+      "category": "source-bounded8x8-all-mode-map",
+      "exists": true,
+      "inManifest": true,
+      "lfsPointer": false,
+      "sha256": "52ba7f53650cea6499add3ca2e3b38af55ddcb6cb0c466ceac2f3a60885c64f4"
+    },
+    {
+      "path": "assets/map/ch1/baked_spike/outer_mass/large/chunk_4_7.png",
+      "category": "source-bounded8x8-all-mode-map",
+      "exists": true,
+      "inManifest": true,
+      "lfsPointer": false,
+      "sha256": "5f27c8447cdbdc0397cc501ab31f912a6537d10118cf3d6a6dc64adcc499edbe"
+    },
+    {
+      "path": "assets/map/ch1/baked_spike/outer_mass/large/chunk_5_7.png",
+      "category": "source-bounded8x8-all-mode-map",
+      "exists": true,
+      "inManifest": true,
+      "lfsPointer": false,
+      "sha256": "e352e6828b3a8da1bd2cc986d63803df8567d921f455276508a7ae4f9887f903"
+    },
+    {
+      "path": "assets/map/ch1/baked_spike/outer_mass/large/chunk_6_7.png",
+      "category": "source-bounded8x8-all-mode-map",
+      "exists": true,
+      "inManifest": true,
+      "lfsPointer": false,
+      "sha256": "9394c2d44eddc13701c79d5ae19816254350abae44857c9cbc821b65dd22bff5"
+    },
+    {
+      "path": "assets/map/ch1/baked_spike/outer_mass/large/chunk_7_7.png",
+      "category": "source-bounded8x8-all-mode-map",
+      "exists": true,
+      "inManifest": true,
+      "lfsPointer": false,
+      "sha256": "5fab0b61c8a51f2ffa762bb3a919d94cdb07fad0a6216156474cdd510d4e695a"
+    },
+    {
+      "path": "assets/map/ch1/baked_spike/outer_mass/large_medium/chunk_0_0.png",
+      "category": "source-bounded8x8-all-mode-map",
+      "exists": true,
+      "inManifest": true,
+      "lfsPointer": false,
+      "sha256": "fea90329c2a079ea498b906918d1cdd0bc4384c3a0f28920fd9be41ae8317fb6"
+    },
+    {
+      "path": "assets/map/ch1/baked_spike/outer_mass/large_medium/chunk_1_0.png",
+      "category": "source-bounded8x8-all-mode-map",
+      "exists": true,
+      "inManifest": true,
+      "lfsPointer": false,
+      "sha256": "5fbed919811ca91e6321913dab6dd8974e7345634065274d11bd4b0e111b8918"
+    },
+    {
+      "path": "assets/map/ch1/baked_spike/outer_mass/large_medium/chunk_2_0.png",
+      "category": "source-bounded8x8-all-mode-map",
+      "exists": true,
+      "inManifest": true,
+      "lfsPointer": false,
+      "sha256": "100a4f0208bb0f2ca0155bbd750f65b0f6f7340464bdb2e7c344fc0bd2dc9d6e"
+    },
+    {
+      "path": "assets/map/ch1/baked_spike/outer_mass/large_medium/chunk_3_0.png",
+      "category": "source-bounded8x8-all-mode-map",
+      "exists": true,
+      "inManifest": true,
+      "lfsPointer": false,
+      "sha256": "ac31afb1f514286dfda003ad0adaafeffc189a8014727818a1e13e9615f298c2"
+    },
+    {
+      "path": "assets/map/ch1/baked_spike/outer_mass/large_medium/chunk_4_0.png",
+      "category": "source-bounded8x8-all-mode-map",
+      "exists": true,
+      "inManifest": true,
+      "lfsPointer": false,
+      "sha256": "2eba4ba77608312117041bb0f82351de30593440bfea50b103b1426e50ed6886"
+    },
+    {
+      "path": "assets/map/ch1/baked_spike/outer_mass/large_medium/chunk_5_0.png",
+      "category": "source-bounded8x8-all-mode-map",
+      "exists": true,
+      "inManifest": true,
+      "lfsPointer": false,
+      "sha256": "48a5d39fd964464460142eb77d9de879d5d0d620659018c00db3a1ecc3ff12aa"
+    },
+    {
+      "path": "assets/map/ch1/baked_spike/outer_mass/large_medium/chunk_6_0.png",
+      "category": "source-bounded8x8-all-mode-map",
+      "exists": true,
+      "inManifest": true,
+      "lfsPointer": false,
+      "sha256": "b3b9a8f374cf0c571881732a0a1e9ad8f12076d3c7697a795474d3694d157053"
+    },
+    {
+      "path": "assets/map/ch1/baked_spike/outer_mass/large_medium/chunk_7_0.png",
+      "category": "source-bounded8x8-all-mode-map",
+      "exists": true,
+      "inManifest": true,
+      "lfsPointer": false,
+      "sha256": "a74a6054ec8257b3478f6680d6ce3a2d100a68ce19f12b901a500f493c3750dd"
+    },
+    {
+      "path": "assets/map/ch1/baked_spike/outer_mass/large_medium/chunk_0_1.png",
+      "category": "source-bounded8x8-all-mode-map",
+      "exists": true,
+      "inManifest": true,
+      "lfsPointer": false,
+      "sha256": "a3b0d56ca4c36edfed0eac41946acd2868cda0cd1311b33cd4bb6bdbdb7b2a88"
+    },
+    {
+      "path": "assets/map/ch1/baked_spike/outer_mass/large_medium/chunk_1_1.png",
+      "category": "source-bounded8x8-all-mode-map",
+      "exists": true,
+      "inManifest": true,
+      "lfsPointer": false,
+      "sha256": "103b06eb5dc798489967534530d28e6e5c869ce340ed8512ffa1107fa2306ffe"
+    },
+    {
+      "path": "assets/map/ch1/baked_spike/outer_mass/large_medium/chunk_2_1.png",
+      "category": "source-bounded8x8-all-mode-map",
+      "exists": true,
+      "inManifest": true,
+      "lfsPointer": false,
+      "sha256": "7d97e8ab85c587c665bdfc38695e3f67717536527c55ae949bdc5bbda6566385"
+    },
+    {
+      "path": "assets/map/ch1/baked_spike/outer_mass/large_medium/chunk_3_1.png",
+      "category": "source-bounded8x8-all-mode-map",
+      "exists": true,
+      "inManifest": true,
+      "lfsPointer": false,
+      "sha256": "887eacb32f594a9a3f1583c10be529cd5a579b1156b65c89be5a5762f927fdec"
+    },
+    {
+      "path": "assets/map/ch1/baked_spike/outer_mass/large_medium/chunk_4_1.png",
+      "category": "source-bounded8x8-all-mode-map",
+      "exists": true,
+      "inManifest": true,
+      "lfsPointer": false,
+      "sha256": "09d274b0cb72327d52de53b7d200cfff9e46404f1f8e0136e389d8375457e4d7"
+    },
+    {
+      "path": "assets/map/ch1/baked_spike/outer_mass/large_medium/chunk_5_1.png",
+      "category": "source-bounded8x8-all-mode-map",
+      "exists": true,
+      "inManifest": true,
+      "lfsPointer": false,
+      "sha256": "a35c858771e601482b5a45117468f0274c42ea2c1a0744ddc95cc0dec7ca0c02"
+    },
+    {
+      "path": "assets/map/ch1/baked_spike/outer_mass/large_medium/chunk_6_1.png",
+      "category": "source-bounded8x8-all-mode-map",
+      "exists": true,
+      "inManifest": true,
+      "lfsPointer": false,
+      "sha256": "ac4b7253d20fadd908a18eef775e093ec24e274f1bb32b9efe283d89837c6df3"
+    },
+    {
+      "path": "assets/map/ch1/baked_spike/outer_mass/large_medium/chunk_7_1.png",
+      "category": "source-bounded8x8-all-mode-map",
+      "exists": true,
+      "inManifest": true,
+      "lfsPointer": false,
+      "sha256": "eaaa3f3bee1dc62b16de747b6b68cfcfc791244fa52bafc79fdcf124354ffd51"
+    },
+    {
+      "path": "assets/map/ch1/baked_spike/outer_mass/large_medium/chunk_0_2.png",
+      "category": "source-bounded8x8-all-mode-map",
+      "exists": true,
+      "inManifest": true,
+      "lfsPointer": false,
+      "sha256": "cf88674d86bfbe669cec7f61db61e8338fb90d52cba0f3b37644fc42ceeafa69"
+    },
+    {
+      "path": "assets/map/ch1/baked_spike/outer_mass/large_medium/chunk_1_2.png",
+      "category": "source-bounded8x8-all-mode-map",
+      "exists": true,
+      "inManifest": true,
+      "lfsPointer": false,
+      "sha256": "03914aaa0c33a9be5bcfe19016a42a46681234839a3aaa2bbb3ecd2daba75f02"
+    },
+    {
+      "path": "assets/map/ch1/baked_spike/outer_mass/large_medium/chunk_2_2.png",
+      "category": "source-bounded8x8-all-mode-map",
+      "exists": true,
+      "inManifest": true,
+      "lfsPointer": false,
+      "sha256": "06feb31c99298c5a8205ed80eb7035221cfc6bb655ed1e233fead9872a367bd1"
+    },
+    {
+      "path": "assets/map/ch1/baked_spike/outer_mass/large_medium/chunk_3_2.png",
+      "category": "source-bounded8x8-all-mode-map",
+      "exists": true,
+      "inManifest": true,
+      "lfsPointer": false,
+      "sha256": "a3e7e9a53a4dabbf555a2c13faca68c029992e8b33634f4fb6cc1e2fdb9b3ff7"
+    },
+    {
+      "path": "assets/map/ch1/baked_spike/outer_mass/large_medium/chunk_4_2.png",
+      "category": "source-bounded8x8-all-mode-map",
+      "exists": true,
+      "inManifest": true,
+      "lfsPointer": false,
+      "sha256": "215bf31255451fa61194c4e1e7faf440baa70a274add4f2b31456f813cefdad6"
+    },
+    {
+      "path": "assets/map/ch1/baked_spike/outer_mass/large_medium/chunk_5_2.png",
+      "category": "source-bounded8x8-all-mode-map",
+      "exists": true,
+      "inManifest": true,
+      "lfsPointer": false,
+      "sha256": "647703439511f7013334ecfa96ecefc024059ade95bd0401858d6aa571728d4d"
+    },
+    {
+      "path": "assets/map/ch1/baked_spike/outer_mass/large_medium/chunk_6_2.png",
+      "category": "source-bounded8x8-all-mode-map",
+      "exists": true,
+      "inManifest": true,
+      "lfsPointer": false,
+      "sha256": "2caed1fe4612dd9898d8127d84a192b817bfcb93c9d3786d0b5e1ac105931670"
+    },
+    {
+      "path": "assets/map/ch1/baked_spike/outer_mass/large_medium/chunk_7_2.png",
+      "category": "source-bounded8x8-all-mode-map",
+      "exists": true,
+      "inManifest": true,
+      "lfsPointer": false,
+      "sha256": "2b993c1cf63caa5c06d2a4ca87a3905d630c7aaa61f5ef342f21eab5873dfb49"
+    },
+    {
+      "path": "assets/map/ch1/baked_spike/outer_mass/large_medium/chunk_0_3.png",
+      "category": "source-bounded8x8-all-mode-map",
+      "exists": true,
+      "inManifest": true,
+      "lfsPointer": false,
+      "sha256": "3c522fb60256983d3008a70979f8b9b8bd106f09da766b59d2e60f9697f09876"
+    },
+    {
+      "path": "assets/map/ch1/baked_spike/outer_mass/large_medium/chunk_1_3.png",
+      "category": "source-bounded8x8-all-mode-map",
+      "exists": true,
+      "inManifest": true,
+      "lfsPointer": false,
+      "sha256": "ad5729509a56ac9eec17c6e6e3db073e610f6f9132e3b5ecf372dc58c53adb7d"
+    },
+    {
+      "path": "assets/map/ch1/baked_spike/outer_mass/large_medium/chunk_2_3.png",
+      "category": "source-bounded8x8-all-mode-map",
+      "exists": true,
+      "inManifest": true,
+      "lfsPointer": false,
+      "sha256": "ccd9051ef3c3cebfbfb74851afb6b209e23074b5ed2cc5adc714d8af4029adba"
+    },
+    {
+      "path": "assets/map/ch1/baked_spike/outer_mass/large_medium/chunk_3_3.png",
+      "category": "source-bounded8x8-all-mode-map",
+      "exists": true,
+      "inManifest": true,
+      "lfsPointer": false,
+      "sha256": "0443b0f75f9b20fbaf7ac6220475b1c4e2dca9c1961f337680303c53723d2a45"
+    },
+    {
+      "path": "assets/map/ch1/baked_spike/outer_mass/large_medium/chunk_4_3.png",
+      "category": "source-bounded8x8-all-mode-map",
+      "exists": true,
+      "inManifest": true,
+      "lfsPointer": false,
+      "sha256": "376952e907e1df757f789de7dad7195f328b265735deabd62c96d86b1545b555"
+    },
+    {
+      "path": "assets/map/ch1/baked_spike/outer_mass/large_medium/chunk_5_3.png",
+      "category": "source-bounded8x8-all-mode-map",
+      "exists": true,
+      "inManifest": true,
+      "lfsPointer": false,
+      "sha256": "baaeab52e0341881b14f069e6cc886ac7afafad67eb8d99ee774a95c8c5d62fc"
+    },
+    {
+      "path": "assets/map/ch1/baked_spike/outer_mass/large_medium/chunk_6_3.png",
+      "category": "source-bounded8x8-all-mode-map",
+      "exists": true,
+      "inManifest": true,
+      "lfsPointer": false,
+      "sha256": "46a61d43e3792f33c4704a450d835368d556ab583a0e9c40b514100977cfa86d"
+    },
+    {
+      "path": "assets/map/ch1/baked_spike/outer_mass/large_medium/chunk_7_3.png",
+      "category": "source-bounded8x8-all-mode-map",
+      "exists": true,
+      "inManifest": true,
+      "lfsPointer": false,
+      "sha256": "73e076f4f4c6b14e9cff7f3cd5e3c95f1a69d11d84f78d6cbaed5a78b740112d"
+    },
+    {
+      "path": "assets/map/ch1/baked_spike/outer_mass/large_medium/chunk_0_4.png",
+      "category": "source-bounded8x8-all-mode-map",
+      "exists": true,
+      "inManifest": true,
+      "lfsPointer": false,
+      "sha256": "28f3636ec92c12ba3ed1b9d72a951bf0b12cd11a6a3d5e115d6ee42eda6eda44"
+    },
+    {
+      "path": "assets/map/ch1/baked_spike/outer_mass/large_medium/chunk_1_4.png",
+      "category": "source-bounded8x8-all-mode-map",
+      "exists": true,
+      "inManifest": true,
+      "lfsPointer": false,
+      "sha256": "53d4e1ffba8b722cfa81f508a97c47413fdb979ec78936bfe7f5f3d8ade210a8"
+    },
+    {
+      "path": "assets/map/ch1/baked_spike/outer_mass/large_medium/chunk_2_4.png",
+      "category": "source-bounded8x8-all-mode-map",
+      "exists": true,
+      "inManifest": true,
+      "lfsPointer": false,
+      "sha256": "a12b3f996b72503e983c36b1af8d7bf064bbb90d723952b1bfd6e030cd05a8ac"
+    },
+    {
+      "path": "assets/map/ch1/baked_spike/outer_mass/large_medium/chunk_3_4.png",
+      "category": "source-bounded8x8-all-mode-map",
+      "exists": true,
+      "inManifest": true,
+      "lfsPointer": false,
+      "sha256": "615ede512683fc9b519f2930324f581f6e86baec43fce08fbbf071197ec79d76"
+    },
+    {
+      "path": "assets/map/ch1/baked_spike/outer_mass/large_medium/chunk_4_4.png",
+      "category": "source-bounded8x8-all-mode-map",
+      "exists": true,
+      "inManifest": true,
+      "lfsPointer": false,
+      "sha256": "28a46e6de544cc50cbc2ec9cb6a0dd3dc24cc77b020443df44e8f23bc363b86e"
+    },
+    {
+      "path": "assets/map/ch1/baked_spike/outer_mass/large_medium/chunk_5_4.png",
+      "category": "source-bounded8x8-all-mode-map",
+      "exists": true,
+      "inManifest": true,
+      "lfsPointer": false,
+      "sha256": "1dbd71289288a3625da2f275b0675ad1dcc110be3f83f328d7fa4b5c8f31c909"
+    },
+    {
+      "path": "assets/map/ch1/baked_spike/outer_mass/large_medium/chunk_6_4.png",
+      "category": "source-bounded8x8-all-mode-map",
+      "exists": true,
+      "inManifest": true,
+      "lfsPointer": false,
+      "sha256": "c790674bd2caf9c52e972deae45b595497b0cf2aabc39f4a3042ee93e61861ea"
+    },
+    {
+      "path": "assets/map/ch1/baked_spike/outer_mass/large_medium/chunk_7_4.png",
+      "category": "source-bounded8x8-all-mode-map",
+      "exists": true,
+      "inManifest": true,
+      "lfsPointer": false,
+      "sha256": "b49138e806482659e5f002650a42a8bfdd356ccdac9573ddb7641fc554a6146b"
+    },
+    {
+      "path": "assets/map/ch1/baked_spike/outer_mass/large_medium/chunk_0_5.png",
+      "category": "source-bounded8x8-all-mode-map",
+      "exists": true,
+      "inManifest": true,
+      "lfsPointer": false,
+      "sha256": "81b917e397a18e9d254551efa363ebaaeb4912550db6df1e2d6077c47894c338"
+    },
+    {
+      "path": "assets/map/ch1/baked_spike/outer_mass/large_medium/chunk_1_5.png",
+      "category": "source-bounded8x8-all-mode-map",
+      "exists": true,
+      "inManifest": true,
+      "lfsPointer": false,
+      "sha256": "a64350fd239f9da76ec0f3df78dbbbdd85958d05cbaa30cf695868a304db044d"
+    },
+    {
+      "path": "assets/map/ch1/baked_spike/outer_mass/large_medium/chunk_2_5.png",
+      "category": "source-bounded8x8-all-mode-map",
+      "exists": true,
+      "inManifest": true,
+      "lfsPointer": false,
+      "sha256": "db9f20c8583047f03279e3e4c8c9711e572f63cb7d2f9f0b2e53642cbe03e347"
+    },
+    {
+      "path": "assets/map/ch1/baked_spike/outer_mass/large_medium/chunk_3_5.png",
+      "category": "source-bounded8x8-all-mode-map",
+      "exists": true,
+      "inManifest": true,
+      "lfsPointer": false,
+      "sha256": "3e11f5368a3c2f12e74533705e12e177fce54f88feeb64fae690b91cb5d5b855"
+    },
+    {
+      "path": "assets/map/ch1/baked_spike/outer_mass/large_medium/chunk_4_5.png",
+      "category": "source-bounded8x8-all-mode-map",
+      "exists": true,
+      "inManifest": true,
+      "lfsPointer": false,
+      "sha256": "77681d036b3fb96ab55fb1cf1fec8981d2ba592aa61bcdbd35a481c7267b6e8b"
+    },
+    {
+      "path": "assets/map/ch1/baked_spike/outer_mass/large_medium/chunk_5_5.png",
+      "category": "source-bounded8x8-all-mode-map",
+      "exists": true,
+      "inManifest": true,
+      "lfsPointer": false,
+      "sha256": "0443b0f75f9b20fbaf7ac6220475b1c4e2dca9c1961f337680303c53723d2a45"
+    },
+    {
+      "path": "assets/map/ch1/baked_spike/outer_mass/large_medium/chunk_6_5.png",
+      "category": "source-bounded8x8-all-mode-map",
+      "exists": true,
+      "inManifest": true,
+      "lfsPointer": false,
+      "sha256": "7f7795b2b67710258904627aa781696198ed483ce4c3c5687956d29ae7bf0f20"
+    },
+    {
+      "path": "assets/map/ch1/baked_spike/outer_mass/large_medium/chunk_7_5.png",
+      "category": "source-bounded8x8-all-mode-map",
+      "exists": true,
+      "inManifest": true,
+      "lfsPointer": false,
+      "sha256": "94ab659759e8b683630f9d11ccd83534c2b5ebde7ec1e465480eb54fdd250e5e"
+    },
+    {
+      "path": "assets/map/ch1/baked_spike/outer_mass/large_medium/chunk_0_6.png",
+      "category": "source-bounded8x8-all-mode-map",
+      "exists": true,
+      "inManifest": true,
+      "lfsPointer": false,
+      "sha256": "1d96ce00a4ec4e4c3e85ada15d03d748313fa442618bbc6a488cad5727082891"
+    },
+    {
+      "path": "assets/map/ch1/baked_spike/outer_mass/large_medium/chunk_1_6.png",
+      "category": "source-bounded8x8-all-mode-map",
+      "exists": true,
+      "inManifest": true,
+      "lfsPointer": false,
+      "sha256": "94e3fec5be3858a8f49841de78d8a193219b31b0cdf61cbc231eb26f434800c9"
+    },
+    {
+      "path": "assets/map/ch1/baked_spike/outer_mass/large_medium/chunk_2_6.png",
+      "category": "source-bounded8x8-all-mode-map",
+      "exists": true,
+      "inManifest": true,
+      "lfsPointer": false,
+      "sha256": "042dd13d3e841fec486d8d8cca1effb485b6ea0e64bacf01a55ab55cdc3379b8"
+    },
+    {
+      "path": "assets/map/ch1/baked_spike/outer_mass/large_medium/chunk_3_6.png",
+      "category": "source-bounded8x8-all-mode-map",
+      "exists": true,
+      "inManifest": true,
+      "lfsPointer": false,
+      "sha256": "30ed7e5a490029e4d516586877a5e3b693473dbb2ff305056956b219ddba8e9d"
+    },
+    {
+      "path": "assets/map/ch1/baked_spike/outer_mass/large_medium/chunk_4_6.png",
+      "category": "source-bounded8x8-all-mode-map",
+      "exists": true,
+      "inManifest": true,
+      "lfsPointer": false,
+      "sha256": "1433ad3c4f27f80a38ce38256bd7786236a079a77c465f27a1927fc2483029ab"
+    },
+    {
+      "path": "assets/map/ch1/baked_spike/outer_mass/large_medium/chunk_5_6.png",
+      "category": "source-bounded8x8-all-mode-map",
+      "exists": true,
+      "inManifest": true,
+      "lfsPointer": false,
+      "sha256": "7d4cce0f1231da657c14fd72dcbdad5bef13b8dc9dc3752bbfc5e2b65a6cdbc5"
+    },
+    {
+      "path": "assets/map/ch1/baked_spike/outer_mass/large_medium/chunk_6_6.png",
+      "category": "source-bounded8x8-all-mode-map",
+      "exists": true,
+      "inManifest": true,
+      "lfsPointer": false,
+      "sha256": "33ccaeb3c10ddbbcfe9e5da8ba2e57439fd61ddfad0be45c8292813466bf863c"
+    },
+    {
+      "path": "assets/map/ch1/baked_spike/outer_mass/large_medium/chunk_7_6.png",
+      "category": "source-bounded8x8-all-mode-map",
+      "exists": true,
+      "inManifest": true,
+      "lfsPointer": false,
+      "sha256": "206cbbf693709ffa32a19d1a0233e29b913705510a4a73014e7b571999817e30"
+    },
+    {
+      "path": "assets/map/ch1/baked_spike/outer_mass/large_medium/chunk_0_7.png",
+      "category": "source-bounded8x8-all-mode-map",
+      "exists": true,
+      "inManifest": true,
+      "lfsPointer": false,
+      "sha256": "fe7409540040b27ed255ddc54f59003cab41323598fdeed316c03672b605a2ff"
+    },
+    {
+      "path": "assets/map/ch1/baked_spike/outer_mass/large_medium/chunk_1_7.png",
+      "category": "source-bounded8x8-all-mode-map",
+      "exists": true,
+      "inManifest": true,
+      "lfsPointer": false,
+      "sha256": "554ab21f36b0efb646af59f732b0ecf01f8b11b0464d2faad647f34221e1d251"
+    },
+    {
+      "path": "assets/map/ch1/baked_spike/outer_mass/large_medium/chunk_2_7.png",
+      "category": "source-bounded8x8-all-mode-map",
+      "exists": true,
+      "inManifest": true,
+      "lfsPointer": false,
+      "sha256": "8788e2329773cbcaeddaacd559a806eaf4df5a227b5255dfd1838dea571b9d1d"
+    },
+    {
+      "path": "assets/map/ch1/baked_spike/outer_mass/large_medium/chunk_3_7.png",
+      "category": "source-bounded8x8-all-mode-map",
+      "exists": true,
+      "inManifest": true,
+      "lfsPointer": false,
+      "sha256": "20d013fcccb4970525d9967b11befb65b2b6248110f122d6326c71cbe5b83617"
+    },
+    {
+      "path": "assets/map/ch1/baked_spike/outer_mass/large_medium/chunk_4_7.png",
+      "category": "source-bounded8x8-all-mode-map",
+      "exists": true,
+      "inManifest": true,
+      "lfsPointer": false,
+      "sha256": "6e1c7d57c02f15417f1bf4d49fcc6bf46ece8e01e28fe0a528cdc3330d6bea27"
+    },
+    {
+      "path": "assets/map/ch1/baked_spike/outer_mass/large_medium/chunk_5_7.png",
+      "category": "source-bounded8x8-all-mode-map",
+      "exists": true,
+      "inManifest": true,
+      "lfsPointer": false,
+      "sha256": "736e4d11d645db78fd932c53e12751c39b5afc3cdbdeef261b036831ebbd178b"
+    },
+    {
+      "path": "assets/map/ch1/baked_spike/outer_mass/large_medium/chunk_6_7.png",
+      "category": "source-bounded8x8-all-mode-map",
+      "exists": true,
+      "inManifest": true,
+      "lfsPointer": false,
+      "sha256": "0ca2c7523ea452338ce0094f7fd77e5aa612d1d3ac0e7068321b4cbc65a27079"
+    },
+    {
+      "path": "assets/map/ch1/baked_spike/outer_mass/large_medium/chunk_7_7.png",
+      "category": "source-bounded8x8-all-mode-map",
+      "exists": true,
+      "inManifest": true,
+      "lfsPointer": false,
+      "sha256": "5fab0b61c8a51f2ffa762bb3a919d94cdb07fad0a6216156474cdd510d4e695a"
+    },
+    {
+      "path": "assets/map/ch1/baked_spike/outer_mass/landmark_center/chunk_0_0.png",
+      "category": "source-bounded8x8-all-mode-map",
+      "exists": true,
+      "inManifest": true,
+      "lfsPointer": false,
+      "sha256": "fea90329c2a079ea498b906918d1cdd0bc4384c3a0f28920fd9be41ae8317fb6"
+    },
+    {
+      "path": "assets/map/ch1/baked_spike/outer_mass/landmark_center/chunk_1_0.png",
+      "category": "source-bounded8x8-all-mode-map",
+      "exists": true,
+      "inManifest": true,
+      "lfsPointer": false,
+      "sha256": "5fbed919811ca91e6321913dab6dd8974e7345634065274d11bd4b0e111b8918"
+    },
+    {
+      "path": "assets/map/ch1/baked_spike/outer_mass/landmark_center/chunk_2_0.png",
+      "category": "source-bounded8x8-all-mode-map",
+      "exists": true,
+      "inManifest": true,
+      "lfsPointer": false,
+      "sha256": "100a4f0208bb0f2ca0155bbd750f65b0f6f7340464bdb2e7c344fc0bd2dc9d6e"
+    },
+    {
+      "path": "assets/map/ch1/baked_spike/outer_mass/landmark_center/chunk_3_0.png",
+      "category": "source-bounded8x8-all-mode-map",
+      "exists": true,
+      "inManifest": true,
+      "lfsPointer": false,
+      "sha256": "b8d40ca655d965d9064adf271356d405961d910f441f14ddda22a376f963ff33"
+    },
+    {
+      "path": "assets/map/ch1/baked_spike/outer_mass/landmark_center/chunk_4_0.png",
+      "category": "source-bounded8x8-all-mode-map",
+      "exists": true,
+      "inManifest": true,
+      "lfsPointer": false,
+      "sha256": "b775e81183cfdc48371078ab5498860d144d624d556b53a0eda5a085e9fb8350"
+    },
+    {
+      "path": "assets/map/ch1/baked_spike/outer_mass/landmark_center/chunk_5_0.png",
+      "category": "source-bounded8x8-all-mode-map",
+      "exists": true,
+      "inManifest": true,
+      "lfsPointer": false,
+      "sha256": "48a5d39fd964464460142eb77d9de879d5d0d620659018c00db3a1ecc3ff12aa"
+    },
+    {
+      "path": "assets/map/ch1/baked_spike/outer_mass/landmark_center/chunk_6_0.png",
+      "category": "source-bounded8x8-all-mode-map",
+      "exists": true,
+      "inManifest": true,
+      "lfsPointer": false,
+      "sha256": "b3b9a8f374cf0c571881732a0a1e9ad8f12076d3c7697a795474d3694d157053"
+    },
+    {
+      "path": "assets/map/ch1/baked_spike/outer_mass/landmark_center/chunk_7_0.png",
+      "category": "source-bounded8x8-all-mode-map",
+      "exists": true,
+      "inManifest": true,
+      "lfsPointer": false,
+      "sha256": "a74a6054ec8257b3478f6680d6ce3a2d100a68ce19f12b901a500f493c3750dd"
+    },
+    {
+      "path": "assets/map/ch1/baked_spike/outer_mass/landmark_center/chunk_0_1.png",
+      "category": "source-bounded8x8-all-mode-map",
+      "exists": true,
+      "inManifest": true,
+      "lfsPointer": false,
+      "sha256": "a3b0d56ca4c36edfed0eac41946acd2868cda0cd1311b33cd4bb6bdbdb7b2a88"
+    },
+    {
+      "path": "assets/map/ch1/baked_spike/outer_mass/landmark_center/chunk_1_1.png",
+      "category": "source-bounded8x8-all-mode-map",
+      "exists": true,
+      "inManifest": true,
+      "lfsPointer": false,
+      "sha256": "103b06eb5dc798489967534530d28e6e5c869ce340ed8512ffa1107fa2306ffe"
+    },
+    {
+      "path": "assets/map/ch1/baked_spike/outer_mass/landmark_center/chunk_2_1.png",
+      "category": "source-bounded8x8-all-mode-map",
+      "exists": true,
+      "inManifest": true,
+      "lfsPointer": false,
+      "sha256": "7d97e8ab85c587c665bdfc38695e3f67717536527c55ae949bdc5bbda6566385"
+    },
+    {
+      "path": "assets/map/ch1/baked_spike/outer_mass/landmark_center/chunk_3_1.png",
+      "category": "source-bounded8x8-all-mode-map",
+      "exists": true,
+      "inManifest": true,
+      "lfsPointer": false,
+      "sha256": "771dd9ff1091a31412aa9c27158e2a357bd5e3da659884486501f23daa7c19f9"
+    },
+    {
+      "path": "assets/map/ch1/baked_spike/outer_mass/landmark_center/chunk_4_1.png",
+      "category": "source-bounded8x8-all-mode-map",
+      "exists": true,
+      "inManifest": true,
+      "lfsPointer": false,
+      "sha256": "7c86ec1b1b70caca3eaf1249040b7d01558805bb18105e7193cdb5095cfc9a33"
+    },
+    {
+      "path": "assets/map/ch1/baked_spike/outer_mass/landmark_center/chunk_5_1.png",
+      "category": "source-bounded8x8-all-mode-map",
+      "exists": true,
+      "inManifest": true,
+      "lfsPointer": false,
+      "sha256": "2aed38743fe23615de607137da8efdcbb858641a8da9971bb1d88c9c43fa873e"
+    },
+    {
+      "path": "assets/map/ch1/baked_spike/outer_mass/landmark_center/chunk_6_1.png",
+      "category": "source-bounded8x8-all-mode-map",
+      "exists": true,
+      "inManifest": true,
+      "lfsPointer": false,
+      "sha256": "ac4b7253d20fadd908a18eef775e093ec24e274f1bb32b9efe283d89837c6df3"
+    },
+    {
+      "path": "assets/map/ch1/baked_spike/outer_mass/landmark_center/chunk_7_1.png",
+      "category": "source-bounded8x8-all-mode-map",
+      "exists": true,
+      "inManifest": true,
+      "lfsPointer": false,
+      "sha256": "eaaa3f3bee1dc62b16de747b6b68cfcfc791244fa52bafc79fdcf124354ffd51"
+    },
+    {
+      "path": "assets/map/ch1/baked_spike/outer_mass/landmark_center/chunk_0_2.png",
+      "category": "source-bounded8x8-all-mode-map",
+      "exists": true,
+      "inManifest": true,
+      "lfsPointer": false,
+      "sha256": "cf88674d86bfbe669cec7f61db61e8338fb90d52cba0f3b37644fc42ceeafa69"
+    },
+    {
+      "path": "assets/map/ch1/baked_spike/outer_mass/landmark_center/chunk_1_2.png",
+      "category": "source-bounded8x8-all-mode-map",
+      "exists": true,
+      "inManifest": true,
+      "lfsPointer": false,
+      "sha256": "03914aaa0c33a9be5bcfe19016a42a46681234839a3aaa2bbb3ecd2daba75f02"
+    },
+    {
+      "path": "assets/map/ch1/baked_spike/outer_mass/landmark_center/chunk_2_2.png",
+      "category": "source-bounded8x8-all-mode-map",
+      "exists": true,
+      "inManifest": true,
+      "lfsPointer": false,
+      "sha256": "86b696d675303ab7cb5f9dc9387937f6fe29894e2de79e74c8461b70a8c5136e"
+    },
+    {
+      "path": "assets/map/ch1/baked_spike/outer_mass/landmark_center/chunk_3_2.png",
+      "category": "source-bounded8x8-all-mode-map",
+      "exists": true,
+      "inManifest": true,
+      "lfsPointer": false,
+      "sha256": "ad5b37bb7fc6adf47ead50bccb60e6dfeed8e9f9251b8146d6bf14bb57eeee72"
+    },
+    {
+      "path": "assets/map/ch1/baked_spike/outer_mass/landmark_center/chunk_4_2.png",
+      "category": "source-bounded8x8-all-mode-map",
+      "exists": true,
+      "inManifest": true,
+      "lfsPointer": false,
+      "sha256": "b91b4b32bfdc0b334ef1b7c38543e45a2a8507133ba1e9f567da54201575724e"
+    },
+    {
+      "path": "assets/map/ch1/baked_spike/outer_mass/landmark_center/chunk_5_2.png",
+      "category": "source-bounded8x8-all-mode-map",
+      "exists": true,
+      "inManifest": true,
+      "lfsPointer": false,
+      "sha256": "6647310ea62c7303f091db6da457f31b03335523ee9c566a5f4ebede7ceb6572"
+    },
+    {
+      "path": "assets/map/ch1/baked_spike/outer_mass/landmark_center/chunk_6_2.png",
+      "category": "source-bounded8x8-all-mode-map",
+      "exists": true,
+      "inManifest": true,
+      "lfsPointer": false,
+      "sha256": "71197e9a33acc72f638151842fb691494d6cd32989ef283d32be5b58661ed992"
+    },
+    {
+      "path": "assets/map/ch1/baked_spike/outer_mass/landmark_center/chunk_7_2.png",
+      "category": "source-bounded8x8-all-mode-map",
+      "exists": true,
+      "inManifest": true,
+      "lfsPointer": false,
+      "sha256": "2b993c1cf63caa5c06d2a4ca87a3905d630c7aaa61f5ef342f21eab5873dfb49"
+    },
+    {
+      "path": "assets/map/ch1/baked_spike/outer_mass/landmark_center/chunk_0_3.png",
+      "category": "source-bounded8x8-all-mode-map",
+      "exists": true,
+      "inManifest": true,
+      "lfsPointer": false,
+      "sha256": "3c522fb60256983d3008a70979f8b9b8bd106f09da766b59d2e60f9697f09876"
+    },
+    {
+      "path": "assets/map/ch1/baked_spike/outer_mass/landmark_center/chunk_1_3.png",
+      "category": "source-bounded8x8-all-mode-map",
+      "exists": true,
+      "inManifest": true,
+      "lfsPointer": false,
+      "sha256": "ad5729509a56ac9eec17c6e6e3db073e610f6f9132e3b5ecf372dc58c53adb7d"
+    },
+    {
+      "path": "assets/map/ch1/baked_spike/outer_mass/landmark_center/chunk_2_3.png",
+      "category": "source-bounded8x8-all-mode-map",
+      "exists": true,
+      "inManifest": true,
+      "lfsPointer": false,
+      "sha256": "14095a0417a654ea9ca972754fa3c5f4e9e27dc49746b4bd4c6e510b1d5cda1c"
+    },
+    {
+      "path": "assets/map/ch1/baked_spike/outer_mass/landmark_center/chunk_3_3.png",
+      "category": "source-bounded8x8-all-mode-map",
+      "exists": true,
+      "inManifest": true,
+      "lfsPointer": false,
+      "sha256": "ceb1dee021463c61f5519d7655e27f39fcb82be6d5593ec186b3e71512c6ea02"
+    },
+    {
+      "path": "assets/map/ch1/baked_spike/outer_mass/landmark_center/chunk_4_3.png",
+      "category": "source-bounded8x8-all-mode-map",
+      "exists": true,
+      "inManifest": true,
+      "lfsPointer": false,
+      "sha256": "997e008c59f90e4b7890b4ef0e679660514cfe0582fde48ea8c7dbf6f0db8133"
+    },
+    {
+      "path": "assets/map/ch1/baked_spike/outer_mass/landmark_center/chunk_5_3.png",
+      "category": "source-bounded8x8-all-mode-map",
+      "exists": true,
+      "inManifest": true,
+      "lfsPointer": false,
+      "sha256": "8bdb4b1d8af0dce4cc186b56c47c47f2bc31ec94dc46b3233b386b21dcfbf843"
+    },
+    {
+      "path": "assets/map/ch1/baked_spike/outer_mass/landmark_center/chunk_6_3.png",
+      "category": "source-bounded8x8-all-mode-map",
+      "exists": true,
+      "inManifest": true,
+      "lfsPointer": false,
+      "sha256": "2296bed109289e18f2fa5babe7e5f3af26ce0e7dbae168bf9763d0cbe0672805"
+    },
+    {
+      "path": "assets/map/ch1/baked_spike/outer_mass/landmark_center/chunk_7_3.png",
+      "category": "source-bounded8x8-all-mode-map",
+      "exists": true,
+      "inManifest": true,
+      "lfsPointer": false,
+      "sha256": "73e076f4f4c6b14e9cff7f3cd5e3c95f1a69d11d84f78d6cbaed5a78b740112d"
+    },
+    {
+      "path": "assets/map/ch1/baked_spike/outer_mass/landmark_center/chunk_0_4.png",
+      "category": "source-bounded8x8-all-mode-map",
+      "exists": true,
+      "inManifest": true,
+      "lfsPointer": false,
+      "sha256": "28f3636ec92c12ba3ed1b9d72a951bf0b12cd11a6a3d5e115d6ee42eda6eda44"
+    },
+    {
+      "path": "assets/map/ch1/baked_spike/outer_mass/landmark_center/chunk_1_4.png",
+      "category": "source-bounded8x8-all-mode-map",
+      "exists": true,
+      "inManifest": true,
+      "lfsPointer": false,
+      "sha256": "5653c38edd119deabf5f385aa5e188f8431c8f42f8ecb078bf11b61d53913739"
+    },
+    {
+      "path": "assets/map/ch1/baked_spike/outer_mass/landmark_center/chunk_2_4.png",
+      "category": "source-bounded8x8-all-mode-map",
+      "exists": true,
+      "inManifest": true,
+      "lfsPointer": false,
+      "sha256": "50b62828c67e76f0916c6db77ad2b47610083fbca226d134dc49d3be4b1a5d85"
+    },
+    {
+      "path": "assets/map/ch1/baked_spike/outer_mass/landmark_center/chunk_3_4.png",
+      "category": "source-bounded8x8-all-mode-map",
+      "exists": true,
+      "inManifest": true,
+      "lfsPointer": false,
+      "sha256": "615ede512683fc9b519f2930324f581f6e86baec43fce08fbbf071197ec79d76"
+    },
+    {
+      "path": "assets/map/ch1/baked_spike/outer_mass/landmark_center/chunk_4_4.png",
+      "category": "source-bounded8x8-all-mode-map",
+      "exists": true,
+      "inManifest": true,
+      "lfsPointer": false,
+      "sha256": "adcdacbc280eb409469eee23fffb5e99fb30c630db00bb1602f8f72fd2eeef97"
+    },
+    {
+      "path": "assets/map/ch1/baked_spike/outer_mass/landmark_center/chunk_5_4.png",
+      "category": "source-bounded8x8-all-mode-map",
+      "exists": true,
+      "inManifest": true,
+      "lfsPointer": false,
+      "sha256": "68bbb458db666924eebb042b5d437d09c5315f22f1e3b3192b98dc5f8562a083"
+    },
+    {
+      "path": "assets/map/ch1/baked_spike/outer_mass/landmark_center/chunk_6_4.png",
+      "category": "source-bounded8x8-all-mode-map",
+      "exists": true,
+      "inManifest": true,
+      "lfsPointer": false,
+      "sha256": "5efb30bbd78565c0021d75cc9712702da50b4b634408b6d5fe1142992b1994ff"
+    },
+    {
+      "path": "assets/map/ch1/baked_spike/outer_mass/landmark_center/chunk_7_4.png",
+      "category": "source-bounded8x8-all-mode-map",
+      "exists": true,
+      "inManifest": true,
+      "lfsPointer": false,
+      "sha256": "b49138e806482659e5f002650a42a8bfdd356ccdac9573ddb7641fc554a6146b"
+    },
+    {
+      "path": "assets/map/ch1/baked_spike/outer_mass/landmark_center/chunk_0_5.png",
+      "category": "source-bounded8x8-all-mode-map",
+      "exists": true,
+      "inManifest": true,
+      "lfsPointer": false,
+      "sha256": "81b917e397a18e9d254551efa363ebaaeb4912550db6df1e2d6077c47894c338"
+    },
+    {
+      "path": "assets/map/ch1/baked_spike/outer_mass/landmark_center/chunk_1_5.png",
+      "category": "source-bounded8x8-all-mode-map",
+      "exists": true,
+      "inManifest": true,
+      "lfsPointer": false,
+      "sha256": "caa006affd34d55c466a66838e066c66e2f79d4e8881f32c8c4c449d5e54cafb"
+    },
+    {
+      "path": "assets/map/ch1/baked_spike/outer_mass/landmark_center/chunk_2_5.png",
+      "category": "source-bounded8x8-all-mode-map",
+      "exists": true,
+      "inManifest": true,
+      "lfsPointer": false,
+      "sha256": "2440a47235c3e4c783c7071430fb009e51ff3dbfe3f514e898dfcd330c308329"
+    },
+    {
+      "path": "assets/map/ch1/baked_spike/outer_mass/landmark_center/chunk_3_5.png",
+      "category": "source-bounded8x8-all-mode-map",
+      "exists": true,
+      "inManifest": true,
+      "lfsPointer": false,
+      "sha256": "31440f77df35bf8f2c81bfbdf0b35e2e25426ac11e7af676e85fdb598ee0bdfb"
+    },
+    {
+      "path": "assets/map/ch1/baked_spike/outer_mass/landmark_center/chunk_4_5.png",
+      "category": "source-bounded8x8-all-mode-map",
+      "exists": true,
+      "inManifest": true,
+      "lfsPointer": false,
+      "sha256": "77681d036b3fb96ab55fb1cf1fec8981d2ba592aa61bcdbd35a481c7267b6e8b"
+    },
+    {
+      "path": "assets/map/ch1/baked_spike/outer_mass/landmark_center/chunk_5_5.png",
+      "category": "source-bounded8x8-all-mode-map",
+      "exists": true,
+      "inManifest": true,
+      "lfsPointer": false,
+      "sha256": "c065b9c3f249f07fb5050831eabb4c44328c0b0ae516731e6cf7995e3ed5c05f"
+    },
+    {
+      "path": "assets/map/ch1/baked_spike/outer_mass/landmark_center/chunk_6_5.png",
+      "category": "source-bounded8x8-all-mode-map",
+      "exists": true,
+      "inManifest": true,
+      "lfsPointer": false,
+      "sha256": "06829821df1c34661ff9a7a44098c83bee6aa9097f644741ce7919acfeca2ec9"
+    },
+    {
+      "path": "assets/map/ch1/baked_spike/outer_mass/landmark_center/chunk_7_5.png",
+      "category": "source-bounded8x8-all-mode-map",
+      "exists": true,
+      "inManifest": true,
+      "lfsPointer": false,
+      "sha256": "94ab659759e8b683630f9d11ccd83534c2b5ebde7ec1e465480eb54fdd250e5e"
+    },
+    {
+      "path": "assets/map/ch1/baked_spike/outer_mass/landmark_center/chunk_0_6.png",
+      "category": "source-bounded8x8-all-mode-map",
+      "exists": true,
+      "inManifest": true,
+      "lfsPointer": false,
+      "sha256": "1d96ce00a4ec4e4c3e85ada15d03d748313fa442618bbc6a488cad5727082891"
+    },
+    {
+      "path": "assets/map/ch1/baked_spike/outer_mass/landmark_center/chunk_1_6.png",
+      "category": "source-bounded8x8-all-mode-map",
+      "exists": true,
+      "inManifest": true,
+      "lfsPointer": false,
+      "sha256": "d9ae213c6faca29404887c3769b70ba02a6a8fc57516bf621039799ff161a2a4"
+    },
+    {
+      "path": "assets/map/ch1/baked_spike/outer_mass/landmark_center/chunk_2_6.png",
+      "category": "source-bounded8x8-all-mode-map",
+      "exists": true,
+      "inManifest": true,
+      "lfsPointer": false,
+      "sha256": "1bf3dbff1d943db30131044ea62cc271593975997d7883fd8cf540f77cc740c8"
+    },
+    {
+      "path": "assets/map/ch1/baked_spike/outer_mass/landmark_center/chunk_3_6.png",
+      "category": "source-bounded8x8-all-mode-map",
+      "exists": true,
+      "inManifest": true,
+      "lfsPointer": false,
+      "sha256": "f099fa9081321efbc9c3ef76bf85462b890934df036717e029252f481729a94b"
+    },
+    {
+      "path": "assets/map/ch1/baked_spike/outer_mass/landmark_center/chunk_4_6.png",
+      "category": "source-bounded8x8-all-mode-map",
+      "exists": true,
+      "inManifest": true,
+      "lfsPointer": false,
+      "sha256": "f9dff225eb1608847e6315b033f7deca342067af1fd8ee272d36d5dcedf792ba"
+    },
+    {
+      "path": "assets/map/ch1/baked_spike/outer_mass/landmark_center/chunk_5_6.png",
+      "category": "source-bounded8x8-all-mode-map",
+      "exists": true,
+      "inManifest": true,
+      "lfsPointer": false,
+      "sha256": "54ba7db7d3c132d7d8917499468e30173fae28f332d25edd9568d560fd0d3a26"
+    },
+    {
+      "path": "assets/map/ch1/baked_spike/outer_mass/landmark_center/chunk_6_6.png",
+      "category": "source-bounded8x8-all-mode-map",
+      "exists": true,
+      "inManifest": true,
+      "lfsPointer": false,
+      "sha256": "64737de3ec59eaac6b5cd2a6e4b062c3380a9cda71fb470f85cc96ab3bc399cd"
+    },
+    {
+      "path": "assets/map/ch1/baked_spike/outer_mass/landmark_center/chunk_7_6.png",
+      "category": "source-bounded8x8-all-mode-map",
+      "exists": true,
+      "inManifest": true,
+      "lfsPointer": false,
+      "sha256": "206cbbf693709ffa32a19d1a0233e29b913705510a4a73014e7b571999817e30"
+    },
+    {
+      "path": "assets/map/ch1/baked_spike/outer_mass/landmark_center/chunk_0_7.png",
+      "category": "source-bounded8x8-all-mode-map",
+      "exists": true,
+      "inManifest": true,
+      "lfsPointer": false,
+      "sha256": "fe7409540040b27ed255ddc54f59003cab41323598fdeed316c03672b605a2ff"
+    },
+    {
+      "path": "assets/map/ch1/baked_spike/outer_mass/landmark_center/chunk_1_7.png",
+      "category": "source-bounded8x8-all-mode-map",
+      "exists": true,
+      "inManifest": true,
+      "lfsPointer": false,
+      "sha256": "554ab21f36b0efb646af59f732b0ecf01f8b11b0464d2faad647f34221e1d251"
+    },
+    {
+      "path": "assets/map/ch1/baked_spike/outer_mass/landmark_center/chunk_2_7.png",
+      "category": "source-bounded8x8-all-mode-map",
+      "exists": true,
+      "inManifest": true,
+      "lfsPointer": false,
+      "sha256": "8788e2329773cbcaeddaacd559a806eaf4df5a227b5255dfd1838dea571b9d1d"
+    },
+    {
+      "path": "assets/map/ch1/baked_spike/outer_mass/landmark_center/chunk_3_7.png",
+      "category": "source-bounded8x8-all-mode-map",
+      "exists": true,
+      "inManifest": true,
+      "lfsPointer": false,
+      "sha256": "211869509bf31fd172774c5cc8c3122640fee65979d6789e1e7b21f57d6dad73"
+    },
+    {
+      "path": "assets/map/ch1/baked_spike/outer_mass/landmark_center/chunk_4_7.png",
+      "category": "source-bounded8x8-all-mode-map",
+      "exists": true,
+      "inManifest": true,
+      "lfsPointer": false,
+      "sha256": "f6f8c60e0005e101f98da74b743d18ea761464f33edd2a6d817cb9f1e6f222cb"
+    },
+    {
+      "path": "assets/map/ch1/baked_spike/outer_mass/landmark_center/chunk_5_7.png",
+      "category": "source-bounded8x8-all-mode-map",
+      "exists": true,
+      "inManifest": true,
+      "lfsPointer": false,
+      "sha256": "46ebe6b412697f5a97f8cae041d43e1782c305ce0cff80f2828ee9c7d7b34e23"
+    },
+    {
+      "path": "assets/map/ch1/baked_spike/outer_mass/landmark_center/chunk_6_7.png",
+      "category": "source-bounded8x8-all-mode-map",
+      "exists": true,
+      "inManifest": true,
+      "lfsPointer": false,
+      "sha256": "0ca2c7523ea452338ce0094f7fd77e5aa612d1d3ac0e7068321b4cbc65a27079"
+    },
+    {
+      "path": "assets/map/ch1/baked_spike/outer_mass/landmark_center/chunk_7_7.png",
+      "category": "source-bounded8x8-all-mode-map",
+      "exists": true,
+      "inManifest": true,
+      "lfsPointer": false,
+      "sha256": "5fab0b61c8a51f2ffa762bb3a919d94cdb07fad0a6216156474cdd510d4e695a"
+    },
+    {
+      "path": "img/balls/proj_shard_dark.png",
+      "category": "active-projectile-loader",
+      "exists": true,
+      "inManifest": true,
+      "lfsPointer": false,
+      "sha256": "26b604109532c492874128ca1d1037effefafc3caea5a65983de72f413952515"
+    },
+    {
+      "path": "img/balls/proj_shard_fire.png",
+      "category": "active-projectile-loader",
+      "exists": true,
+      "inManifest": true,
+      "lfsPointer": false,
+      "sha256": "1a1b565786a345f47ffca94161fc9079d5f108ee69b822b7f5361d3bad9bc13d"
+    },
+    {
+      "path": "img/balls/proj_shard_dark.png",
+      "category": "active-projectile-loader",
+      "exists": true,
+      "inManifest": true,
+      "lfsPointer": false,
+      "sha256": "26b604109532c492874128ca1d1037effefafc3caea5a65983de72f413952515"
+    },
+    {
+      "path": "img/balls/proj_shard_holy.png",
+      "category": "active-projectile-loader",
+      "exists": true,
+      "inManifest": true,
+      "lfsPointer": false,
+      "sha256": "6a1524d1077559a67267c42b134ebaf07b995266dec1dc63ff4331fa19149188"
+    },
+    {
+      "path": "img/balls/proj_bolt_phys.png",
+      "category": "active-projectile-loader",
+      "exists": true,
+      "inManifest": true,
+      "lfsPointer": false,
+      "sha256": "2bc1bdf29cb6e02551fd4bfd71d5a1483c8f6a3ef80601e4dd63579c989abbb3"
+    },
+    {
+      "path": "img/balls/proj_bolt_fire.png",
+      "category": "active-projectile-loader",
+      "exists": true,
+      "inManifest": true,
+      "lfsPointer": false,
+      "sha256": "872f465471bcc0673dfd58632de61e6af07b10f568b82d3313698c6825af2efb"
+    },
+    {
+      "path": "img/balls/proj_bolt_ice.png",
+      "category": "active-projectile-loader",
+      "exists": true,
+      "inManifest": true,
+      "lfsPointer": false,
+      "sha256": "74ee8bc99e233a3c5f5eb4a50868ac7f976203e87777a11a389cade6c89e48ab"
+    },
+    {
+      "path": "img/balls/proj_bolt_dark.png",
+      "category": "active-projectile-loader",
+      "exists": true,
+      "inManifest": true,
+      "lfsPointer": false,
+      "sha256": "2f7f217f5cb943707960814b653700cb07328e5be7a48017e314a6990f06e713"
+    },
+    {
+      "path": "img/balls/proj_bolt_ltn.png",
+      "category": "active-projectile-loader",
+      "exists": true,
+      "inManifest": true,
+      "lfsPointer": false,
+      "sha256": "d1e3e63fa9ab94ced8ccf1f8afdbe0a94557b271d0e6df9c7825c6743f742847"
+    },
+    {
+      "path": "img/balls/proj_bolt_holy.png",
+      "category": "active-projectile-loader",
+      "exists": true,
+      "inManifest": true,
+      "lfsPointer": false,
+      "sha256": "d6b9db7f1eb706b8c5b3841d608446c03604f5bc840f771490e88ca1110b015c"
+    },
+    {
+      "path": "img/balls/proj_blackbean.png",
+      "category": "active-special-projectile-loader",
+      "exists": true,
+      "inManifest": true,
+      "lfsPointer": false,
+      "sha256": "96d0528415d16ec3c24aaf2e312b99ae0ed568c049ff76c3914f68e091cebf45"
+    },
+    {
+      "path": "img/balls/proj_bluebean.png",
+      "category": "active-special-projectile-loader",
+      "exists": true,
+      "inManifest": true,
+      "lfsPointer": false,
+      "sha256": "9e077b4342bf48316a05ce6f2bfd16da134c217408a4966476f6c7e57b6b6651"
+    }
+  ],
+  "missing": [],
+  "inactiveEvidence": {
+    "externalEnemyAtlas": true,
+    "arrowOverridesNotLoaded": true,
+    "soundTablesDirectUses": {
+      "sfxIdentifierCount": 2,
+      "bgmPlayCallOrDefinitionCount": 1
+    },
+    "limits": "SFX/BGM직접호출부재는동적외부접근/글로벌인수까지없다는보장이아님"
+  },
+  "verdict": "CHECKED_BOUNDED_DYNAMIC_SETS_PASS",
+  "limits": "게임전체실행없이원소스의유한8x8/phase/projectile집합을대조;모든임의동적JS참조완전성은UNKNOWN"
+}

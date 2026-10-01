@@ -1,0 +1,20 @@
+{
+ "taskId":"BUILD-20261002-MAC-PACKAGER",
+ "receivedAt":"2026-10-01T15:51:27Z",
+ "firstReadAt":"2026-10-01T15:51:27Z",
+ "firstCodeEditAt":"2026-10-01T15:53:35Z",
+ "validationCompletedAt":"2026-10-01T15:57:09Z",
+ "completedAt":"2026-10-01T15:58:35Z",
+ "duplicateCheck":"소유경로task만존재;동일완료없음",
+ "status":"후보구현·fixture34PASS완료;실제runtime BLOCKED/.app미생성",
+ "actualRead":"AGENTS/BUILD/백업정책/build/package/node-main/설치index/bld/osx/util",
+ "command":"node --test tools/team-followup-20261001/BUILD/mac-packager/test.mjs",
+ "validation":{"pass":34,"fail":0,"firstRunPass":30,"firstRunFail":1,"firstFailure":"Node로더open도차단한하니스오류;원로그보존"},
+ "adapter":"설치nw-builder4.17.10 src/bld.js 고정SHA·지연import;최상위getter호출0",
+ "actualPlan":{"status":"BLOCKED","error":"MAC_RUNTIME_MISSING","exit":2},
+ "actualDefaultAdapterCalls":0,
+ "packageCreated":false,
+ "backupHandoffSha":"98aedab7dd3df41a57c2311bfc4cf79731057e60",
+ "backupLimit":"정확입력별원격보존미확인;이후변경에사용불가",
+ "constraints":"실제runtime없음BLOCKED;이번fixture주입만;공유/게임/Git/다운로드0"
+}

@@ -173,3 +173,19 @@ assets/vfx/boss/gen/
 
 # Isolated Mac app build output and temporary profile/save
 /outputs/mac-package-ready/
+
+# Expose only top-level BUILD team source and review text; keep outputs/private state ignored.
+!/tools/team-followup-20261001/BUILD/
+/tools/team-followup-20261001/BUILD/*
+!/tools/team-followup-20261001/BUILD/*.mjs
+!/tools/team-followup-20261001/BUILD/*.cjs
+!/tools/team-followup-20261001/BUILD/*.js
+!/tools/team-followup-20261001/BUILD/*.md
+!/tools/team-followup-20261001/BUILD/*.json
+!/tools/team-followup-20261001/BUILD/*.patch
+!/tools/team-followup-20261001/BUILD/*.diff
+!/tools/team-followup-20261001/BUILD/*.txt
+!/tools/team-followup-20261001/BUILD/*.html
+!/tools/team-followup-20261001/BUILD/*.css
+/tools/team-followup-20261001/BUILD/_sharedMats.json
+/tools/team-followup-20261001/BUILD/profile.json

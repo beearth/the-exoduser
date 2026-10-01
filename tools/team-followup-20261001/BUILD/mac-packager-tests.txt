@@ -1,0 +1,80 @@
+{"libraryEvidence":{"entry":"/Users/fordeargamers/Projects/exoduser-migration-20261001/node_modules/nw-builder/src/index.js","buildEntry":"/Users/fordeargamers/Projects/exoduser-migration-20261001/node_modules/nw-builder/src/bld.js","version":"4.17.10","files":[{"name":"index.js","sha256":"75e7a65f378bdc33677eb50d53bf9f6ccb90fceb639cdc9abd81205faeffa03d"},{"name":"bld.js","sha256":"9a52b68223e5dc1b3f59ed504db50dc888c6a4c23708b3307a300e48395f29f9"},{"name":"util.js","sha256":"0e35bc436cdfd26e0ba771748688825bfd6b46a6968915b6e12d3d1d23235844"},{"name":"bld/osx.js","sha256":"9db9b472d4eea79776076d187d5329107de73177d82628f88f006e3eb281968a"}]}}
+✔ 설치라이브러리shape/고정hash index→getter, bld→osx 확인 (4.128708ms)
+✖ import만으로sync I/O/adapter실행0 (23.996375ms)
+✔ 기본plan 읽기전용·실제spy build 인자·최소파생·원본보존 (34.752042ms)
+✔ 승인없으면예약/호출0 (7.848709ms)
+✔ runtime없음 BLOCKED·execute호출0 (8.275125ms)
+✔ cache없음 BLOCKED·execute호출0 (8.465417ms)
+✔ 출력충돌 BLOCKED·execute호출0 (9.198917ms)
+✔ 입력SHA변경 BLOCKED·execute호출0 (9.079958ms)
+✔ 원격입력SHA다름 BLOCKED·execute호출0 (9.556875ms)
+✔ 원격commit다름 BLOCKED·execute호출0 (7.869791ms)
+✔ 원격ref없음 BLOCKED·execute호출0 (7.703333ms)
+✔ 파일누락 BLOCKED·execute호출0 (8.771709ms)
+✔ 명시목록누락 BLOCKED·execute호출0 (8.984333ms)
+✔ 목록밖asset추가 BLOCKED·execute호출0 (8.441542ms)
+✔ save포함 BLOCKED·execute호출0 (7.194292ms)
+✔ profile포함 BLOCKED·execute호출0 (8.10025ms)
+✔ 기존dist포함 BLOCKED·execute호출0 (9.928292ms)
+✔ 기존app포함 BLOCKED·execute호출0 (8.203416ms)
+✔ 입력탈출 BLOCKED·execute호출0 (7.9055ms)
+✔ 입력symlink BLOCKED·execute호출0 (8.630042ms)
+✔ 출력부모symlink BLOCKED·execute호출0 (8.044958ms)
+✔ runtime탈출symlink BLOCKED·execute호출0 (14.09125ms)
+✔ runtimeSHA변경 BLOCKED·execute호출0 (10.925083ms)
+✔ releaseInfo변경 BLOCKED·execute호출0 (7.746583ms)
+✔ arch다름 BLOCKED·execute호출0 (8.020833ms)
+✔ 기존3333 BLOCKED·execute호출0 (7.601584ms)
+✔ 현재3340 BLOCKED·execute호출0 (8.478959ms)
+✔ 파생치환원문변경 BLOCKED·execute호출0 (11.730042ms)
+✔ adapter실패는소유job만정리·기존marker보존 (14.102542ms)
+✔ 라이브러리osx가오류삼켜도출력검증실패·정리 (14.176625ms)
+✔ 두execute충돌·기존job삭제0 (23.132167ms)
+ℹ tests 31
+ℹ suites 0
+ℹ pass 30
+ℹ fail 1
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 378.172125
+
+✖ failing tests:
+
+test at tools/team-followup-20261001/BUILD/mac-packager/test.mjs:38:1
+✖ import만으로sync I/O/adapter실행0 (23.996375ms)
+  AssertionError [ERR_ASSERTION]: file:///Users/fordeargamers/Projects/exoduser-migration-20261001/[eval1]:1
+  import fs from 'node:fs';for(const key of ['readFileSync','writeFileSync','mkdirSync','rmSync','lstatSync','readdirSync','openSync'])fs[key]=()=>{throw Error('unexpected I/O '+key)};await import("file:///Users/fordeargamers/Projects/exoduser-migration-20261001/tools/team-followup-20261001/BUILD/mac-packager-cli.mjs");console.log('IMPORT_ONLY_PASS');
+                                                                                                                                                          ^
+  
+  Error: unexpected I/O openSync
+      at fs.<computed> [as openSync] (file:///Users/fordeargamers/Projects/exoduser-migration-20261001/[eval1]:1:153)
+      at readFileSync (node:fs:445:35)
+      at getSourceSync (node:internal/modules/esm/load:37:14)
+      at defaultLoadSync (node:internal/modules/esm/load:153:34)
+      at #loadAndMaybeBlockOnLoaderThread (node:internal/modules/esm/loader:776:12)
+      at #loadSync (node:internal/modules/esm/loader:796:49)
+      at ModuleLoader.load (node:internal/modules/esm/loader:762:26)
+      at ModuleLoader.loadAndTranslate (node:internal/modules/esm/loader:504:31)
+      at #getOrCreateModuleJobAfterResolve (node:internal/modules/esm/loader:555:36)
+      at afterResolve (node:internal/modules/esm/loader:603:52)
+  
+  Node.js v24.15.0
+  
+  
+  1 !== 0
+  
+      at TestContext.<anonymous> (file:///Users/fordeargamers/Projects/exoduser-migration-20261001/tools/team-followup-20261001/BUILD/mac-packager/test.mjs:38:468)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1201:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:831:18)
+      at Test.postRun (node:internal/test_runner/test:1330:19)
+      at Test.run (node:internal/test_runner/test:1258:12)
+      at async startSubtestAfterBootstrap (node:internal/test_runner/harness:385:3) {
+    generatedMessage: false,
+    code: 'ERR_ASSERTION',
+    actual: 1,
+    expected: 0,
+    operator: 'strictEqual',
+    diff: 'simple'
+  }

@@ -1,0 +1,23 @@
+{
+  "taskId": "BUILD-20261002-PACKAGE-READY",
+  "receivedAt": "2026-10-01T16:14:21Z",
+  "firstReadAt": "2026-10-01T16:14:21Z",
+  "firstCodeEditAt": "2026-10-01T16:15:43Z",
+  "completedAt": "2026-10-01T16:22:46Z",
+  "duplicateCheck": "소유 prefix의 작업 지시만 존재; 동일 완료 없음",
+  "status": "독립 읽기 검수 완료·실행 전 BLOCKED·root 인계",
+  "firstCommand": "UTC/중복검색/root 증거/AGENTS/BUILD/git rev-parse HEAD",
+  "commands": ["node package-ready-scan.mjs", "node package-ready-finalize.mjs", "node package-ready-dynamic-gates.mjs", "node mac-packager-cli.mjs package-ready-config.json: exit2 BLOCKED", "node --check 검수 도구3개: PASS", "로컬 Git HEAD/ls-tree/cat-file/diff 읽기 및 SHA256 대조"],
+  "head": "7cb8485de65b2afdf6d3da726aab44bb33c7516f",
+  "inputRoots": 108,
+  "inputFiles": 7925,
+  "inputBytes": 6701632473,
+  "localHeadContentMatches": 7923,
+  "unbacked": ["game.html", "game-easy-test.html"],
+  "runtimeFilesAndLinks": 340,
+  "runtimeBytes": 398307271,
+  "boundedDynamicChecks": "524 PASS; 전체 동적 참조 보증 아님",
+  "gates": "두 HTML 미백업·정확 원격 SHA 미확인·LFS3·거부 ZIP5·outputRoot 부재·실행 승인 없음",
+  "constraints": "Git 로컬 읽기만; network/queue/execute/앱/게임/세이브/외부쓰기/새세션/에이전트0",
+  "evidence": ["package-ready-evidence.json", "package-ready-final-evidence.json", "package-ready-dynamic-evidence.json", "package-ready-plan.json", "package-ready-config.json", "package-ready-result.md"]
+}

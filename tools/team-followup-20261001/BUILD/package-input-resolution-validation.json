@@ -1,0 +1,40 @@
+{
+  "at": "2026-10-01T16:27:13.787Z",
+  "checks": {
+    "allowlistEqualsInventory": true,
+    "backupExact": true,
+    "unique": true,
+    "noProtected": true,
+    "noLFS": true,
+    "remoteExact": true,
+    "sourceStable": true,
+    "runtimeStable": true,
+    "bounded524": true,
+    "releaseSHA": true
+  },
+  "pass": true,
+  "library": {
+    "entry": "/Users/fordeargamers/Projects/exoduser-migration-20261001/node_modules/nw-builder/src/index.js",
+    "buildEntry": "/Users/fordeargamers/Projects/exoduser-migration-20261001/node_modules/nw-builder/src/bld.js",
+    "version": "4.17.10",
+    "files": [
+      {
+        "name": "index.js",
+        "sha256": "75e7a65f378bdc33677eb50d53bf9f6ccb90fceb639cdc9abd81205faeffa03d"
+      },
+      {
+        "name": "bld.js",
+        "sha256": "9a52b68223e5dc1b3f59ed504db50dc888c6a4c23708b3307a300e48395f29f9"
+      },
+      {
+        "name": "util.js",
+        "sha256": "0e35bc436cdfd26e0ba771748688825bfd6b46a6968915b6e12d3d1d23235844"
+      },
+      {
+        "name": "bld/osx.js",
+        "sha256": "9db9b472d4eea79776076d187d5329107de73177d82628f88f006e3eb281968a"
+      }
+    ]
+  },
+  "configSHA": "4c7417f4ca178ad4f908983897ab36ae93d07defae9089bd67a685ca54e90e3f"
+}

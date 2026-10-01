@@ -1,0 +1,50 @@
+{
+  "name": "hell-exoduser-release",
+  "private": true,
+  "version": "1.0.0",
+  "type": "module",
+  "main": "http://localhost:3333/index.html?demo=1",
+  "node-main": "node-main.js",
+  "node-remote": [
+    "http://127.0.0.1:3333",
+    "http://localhost:3333"
+  ],
+  "window": {
+    "title": "EXODUSER: HELL LORD",
+    "width": 1920,
+    "height": 1080,
+    "min_width": 1280,
+    "min_height": 720,
+    "fullscreen": true,
+    "resizable": true,
+    "frame": false,
+    "toolbar": false
+  },
+  "chromium-args": "--disable-features=CrossOriginOpenerPolicy,CrossOriginEmbedderPolicy,IsolateOrigins,SitePerProcess,SkiaGraphite --disable-site-isolation-trials --disable-web-security --no-sandbox --ignore-gpu-blocklist --enable-gpu-rasterization --allow-running-insecure-content --autoplay-policy=no-user-gesture-required --enable-features=SharedArrayBuffer --user-data-dir=./userdata",
+  "scripts": {
+    "serve:map": "node tools/map-test-server.mjs",
+    "serve:test": "node tools/local-static-server.mjs",
+    "pixellab:request": "node tools/pixellab_request.mjs",
+    "pixellab:silvertail:sync": "node tools/sync_silvertail_pixellab.mjs",
+    "pixellab:ch1:8dir": "node tools/complete_ch1_8dir.mjs",
+    "pixellab:ch1:atlas-sync": "node tools/sync_ch1_monster_atlas_sources.mjs",
+    "elevenlabs:tts": "node tools/elevenlabs_tts.mjs",
+    "docs:check": "powershell -ExecutionPolicy Bypass -File tools/docs-sync-check.ps1",
+    "docs:check:staged": "powershell -ExecutionPolicy Bypass -File tools/docs-sync-check.ps1 -Staged",
+    "hooks:install": "git config core.hooksPath .githooks",
+    "auto:sync": "powershell -ExecutionPolicy Bypass -File auto_commit.ps1",
+    "auto:task:install": "powershell -ExecutionPolicy Bypass -File tools/install-auto-sync-task.ps1",
+    "build:nwjs": "node build-nwjs.mjs"
+  },
+  "devDependencies": {
+    "sharp": "^0.34.5"
+  },
+  "dependencies": {
+    "acorn": "^8.16.0",
+    "canvas": "^3.2.3",
+    "nw-builder": "^4.17.10",
+    "omggif": "^1.0.10",
+    "playwright": "^1.58.2",
+    "pngjs": "^7.0.0"
+  }
+}

@@ -1,0 +1,7 @@
+function _physicalImpactSheet(img){
+  const cache=_physicalImpactSheet.cache||(_physicalImpactSheet.cache=new WeakMap());
+  let sheet=cache.get(img);
+  if(!sheet){sheet=_tintHolyDome(img,255,255,255);cache.set(img,sheet)}
+  return sheet;
+}
+// QA: one measured 512x512 physical impact sheet, before renderer; original lazy cache/fallback.

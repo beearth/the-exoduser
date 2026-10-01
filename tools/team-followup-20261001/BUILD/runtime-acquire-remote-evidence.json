@@ -1,0 +1,10 @@
+{
+ "checkedAt":"2026-10-01T16:09:50Z",
+ "metadata":{"url":"https://nwjs.io/versions.json","via":"web읽기","version":"v0.111.2","osxArm64Listed":true,"osxX64Listed":true,"localFullMetadataDownload":false,"releaseInfo":"공식응답의해당행만직접전사;전체원문다운로드본아님"},
+ "directory":{"url":"https://dl.nwjs.io/v0.111.2/","via":"web","result":"404"},
+ "archive":{"url":"https://dl.nwjs.io/v0.111.2/nwjs-v0.111.2-osx-arm64.zip","webResult":"not accessible via tool","curlExit":6,"curlError":"Could not resolve host: dl.nwjs.io","downloaded":false},
+ "checksum":{"url":"https://dl.nwjs.io/v0.111.2/SHASUMS256.txt","webResult":"not accessible via tool","curlExit":6,"curlError":"Could not resolve host: dl.nwjs.io","verified":false},
+ "commands":["curl --proto '=https' --max-time 30 --silent --show-error --fail https://nwjs.io/versions.json -o tools/team-followup-20261001/BUILD/runtime-acquire-versions.json","curl --proto '=https' --max-time 30 --silent --show-error --head https://dl.nwjs.io/v0.111.2/nwjs-v0.111.2-osx-arm64.zip","curl --proto '=https' --max-time 30 --silent --show-error --head https://dl.nwjs.io/v0.111.2/SHASUMS256.txt"],
+ "status":"BLOCKED_ACQUISITION_NETWORK_DNS;공식배포부재로단정하지않음",
+ "limits":"DNS/프록시/권한변경/동일경로재시도0;zip/checksum미취득·압축해제/MachO/framework미검사"
+}

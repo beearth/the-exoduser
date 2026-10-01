@@ -1,0 +1,19 @@
+{
+ "taskId":"BUILD-20261002-RUNTIME-ACQUIRE",
+ "receivedAt":"2026-10-01T16:09:12Z",
+ "firstReadAt":"2026-10-01T16:09:12Z",
+ "firstEditAt":"2026-10-01T16:09:20Z",
+ "firstCodeEditAt":"2026-10-01T16:10:47Z",
+ "validationCompletedAt":"2026-10-01T16:11:13.881Z",
+ "completedAt":"2026-10-01T16:12:34Z",
+ "duplicateCheck":"task만존재;신규runtime경로미존재",
+ "status":"원격조회/전체선택config안완료;실제runtime확보BLOCKED_NETWORK_DNS",
+ "process":{"platform":"darwin","arch":"arm64"},
+ "actualCommands":"공식web읽기/curl GET1+HEAD2(exit6)/node runtime-acquire-config-review.mjs",
+ "metadata":"공식v0.111.2 osx-arm64열거확인;공식아카이브/checksum접근미확인",
+ "validation":{"inputRoots":108,"missingRequiredRoots":0,"missingOptionalRoots":2,"sourceChangedDuringRead":0,"jsonSyntaxPass":3},
+ "runtime":{"downloaded":false,"extracted":false,"checksumVerified":false,"machOInspected":false,"frameworkInspected":false,"appExecuted":false},
+ "newRuntimePath":"허용쓰기루트밖;쓰기/권한변경시도0",
+ "actualExecuteCalls":0,
+ "constraints":"사용자tab1573846373조작0;앱실행/생산패키지복사/빌드/Git/queue0"
+}

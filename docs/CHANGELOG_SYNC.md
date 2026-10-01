@@ -52034,3 +52034,7 @@ Git 실제 변경439→30(tracked21/untracked9/staged0). 완료410파일의 원�
 ### 2026-10-02 INM weak/list/wildcard 생산 인수
 
 matchesIfNoneMatch helper와 조건식1곳만 반영했다. exact 후보 byte 일치 및 현재 생산 INM40+조건부Range31+저장13=84그룹 PASS. If-Range 전부 전체응답·HTML정책·gzip·HEAD·atomicSaveJSON/저장경계 유지. RFC9110 §13.1.2의 약한 비교·별표·목록을 따르되 malformed전체무시/빈member32개 정책을 기록했다. validator강도·실HTTP·HEAD wire는 미검수, 서버 재시작0. UIUX 후보34는 반영 전 통과이며 별도 순차 통합한다. docs/0마스터플랜/mac-resume-20261001/vscode-dispatch/FOUR-CANDIDATE-ACCEPTANCE-20261002.md 참조.
+
+### BUILD 소스 누락 방지 (2026-10-02)
+
+Mac core.ignorecase=true에서 기존 build/ 규칙이 tools/team-followup-20261001/BUILD 담당 폴더까지 가렸다. 이 정확 디렉터리의 최상위 소스·보고서·fixture 텍스트 확장자만 예외로 공개한다. 하위 폴더·프로필·세이브·캐시·바이너리와 기존 build/ 산출 무시는 유지한다. 새 하위 fixture가 필요하면 용도를 확인해 별도 좁은 예외를 검수한다. Changes 개수만으로 백업을 판단하지 않고 담당 필수 경로의 git ls-files와 git check-ignore -v를 함께 확인한다. 기존 config-draft는 사용자 초안으로 커밋하지 않고 목록에 보존한다.

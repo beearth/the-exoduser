@@ -1,0 +1,4340 @@
+{
+  "startedAt": "2026-10-01T16:11:13.839Z",
+  "completedAt": "2026-10-01T16:11:13.881Z",
+  "before": [
+    {
+      "file": "build-nwjs.mjs",
+      "sha256": "567a4b2d6761974b8763abe03ac3c50fc5b973c36be6324c7200ac27b445a78f"
+    },
+    {
+      "file": "package.json",
+      "sha256": "58d101ca053f29d36d0f9bd8d63639753fde807064d3c957e0bb6db17d4be0e8"
+    },
+    {
+      "file": "node-main.js",
+      "sha256": "01b0c1d51f77f500ee0a59185458bf0294edce12544482d6cf7abce4262c91ce"
+    },
+    {
+      "file": "game.html",
+      "sha256": "7631f5a083672124624e0b8dc22b0716d10c8815dbb1e6aee98a5e2e51299993"
+    },
+    {
+      "file": "game-easy-test.html",
+      "sha256": "7d68b80afab131562266c39ea7d5631716d12861dbe7e7e2e4477550c15ec6a4"
+    },
+    {
+      "file": "index.html",
+      "sha256": "38f4e0e97ed63014e86ec48a14d9d0a677472ef57b99916f9a48b7b3395e66c8"
+    }
+  ],
+  "after": [
+    {
+      "file": "build-nwjs.mjs",
+      "sha256": "567a4b2d6761974b8763abe03ac3c50fc5b973c36be6324c7200ac27b445a78f"
+    },
+    {
+      "file": "package.json",
+      "sha256": "58d101ca053f29d36d0f9bd8d63639753fde807064d3c957e0bb6db17d4be0e8"
+    },
+    {
+      "file": "node-main.js",
+      "sha256": "01b0c1d51f77f500ee0a59185458bf0294edce12544482d6cf7abce4262c91ce"
+    },
+    {
+      "file": "game.html",
+      "sha256": "7631f5a083672124624e0b8dc22b0716d10c8815dbb1e6aee98a5e2e51299993"
+    },
+    {
+      "file": "game-easy-test.html",
+      "sha256": "7d68b80afab131562266c39ea7d5631716d12861dbe7e7e2e4477550c15ec6a4"
+    },
+    {
+      "file": "index.html",
+      "sha256": "38f4e0e97ed63014e86ec48a14d9d0a677472ef57b99916f9a48b7b3395e66c8"
+    }
+  ],
+  "changedDuringRead": [],
+  "functionSlices": {
+    "_preparePhysicalImpactSheet": {
+      "sha256": "b19e2b152c4d8745f69f98bb34d83c9d8a4125bc6474f65b957282b1ece942be",
+      "startLine": 8546
+    },
+    "_physicalImpactSheet": {
+      "sha256": "093101fa84ff4256dd6b3c1e5e1595637d78129992e08e765b119d45306623ea",
+      "startLine": 8539
+    },
+    "_tintHolyDome": {
+      "sha256": "9315c1821002f0af5dbe670809994667842e1f70cf96cb3f1b760acc0c76af51",
+      "startLine": 8806
+    }
+  },
+  "observations": [
+    {
+      "path": "index.html",
+      "exists": true,
+      "kind": "file",
+      "optional": false
+    },
+    {
+      "path": "game.html",
+      "exists": true,
+      "kind": "file",
+      "optional": false
+    },
+    {
+      "path": "credits.html",
+      "exists": false,
+      "error": "ENOENT",
+      "optional": true
+    },
+    {
+      "path": "game-easy-test.html",
+      "exists": true,
+      "kind": "file",
+      "optional": false
+    },
+    {
+      "path": "game-guide.html",
+      "exists": true,
+      "kind": "file",
+      "optional": false
+    },
+    {
+      "path": "player-attack-remaster.js",
+      "exists": true,
+      "kind": "file",
+      "optional": false
+    },
+    {
+      "path": "warrior-bat-swing.js",
+      "exists": true,
+      "kind": "file",
+      "optional": false
+    },
+    {
+      "path": "warrior-dash-flight.js",
+      "exists": true,
+      "kind": "file",
+      "optional": false
+    },
+    {
+      "path": "ch1-living-detail.js",
+      "exists": true,
+      "kind": "file",
+      "optional": false
+    },
+    {
+      "path": "ch1-forest-sway.js",
+      "exists": true,
+      "kind": "file",
+      "optional": false
+    },
+    {
+      "path": "ch1-face-life.js",
+      "exists": true,
+      "kind": "file",
+      "optional": false
+    },
+    {
+      "path": "ch1-altar-moat.js",
+      "exists": true,
+      "kind": "file",
+      "optional": false
+    },
+    {
+      "path": "ch1-border-foreground.js",
+      "exists": true,
+      "kind": "file",
+      "optional": false
+    },
+    {
+      "path": "ch1-boundary-edge.js",
+      "exists": true,
+      "kind": "file",
+      "optional": false
+    },
+    {
+      "path": "parry-lesson.js",
+      "exists": true,
+      "kind": "file",
+      "optional": false
+    },
+    {
+      "path": "parry-lesson.css",
+      "exists": true,
+      "kind": "file",
+      "optional": false
+    },
+    {
+      "path": "resource-practice.js",
+      "exists": true,
+      "kind": "file",
+      "optional": false
+    },
+    {
+      "path": "system-lesson.js",
+      "exists": true,
+      "kind": "file",
+      "optional": false
+    },
+    {
+      "path": "system-lesson.css",
+      "exists": true,
+      "kind": "file",
+      "optional": false
+    },
+    {
+      "path": "tutorial-badges.js",
+      "exists": true,
+      "kind": "file",
+      "optional": false
+    },
+    {
+      "path": "tutorial-badges.css",
+      "exists": true,
+      "kind": "file",
+      "optional": false
+    },
+    {
+      "path": "stat-panel-ui.js",
+      "exists": true,
+      "kind": "file",
+      "optional": false
+    },
+    {
+      "path": "stat-panel-ui.css",
+      "exists": true,
+      "kind": "file",
+      "optional": false
+    },
+    {
+      "path": "growth-tree-detail.css",
+      "exists": true,
+      "kind": "file",
+      "optional": false
+    },
+    {
+      "path": "growth-tree-fixed-background.css",
+      "exists": true,
+      "kind": "file",
+      "optional": false
+    },
+    {
+      "path": "growth-tree-information.css",
+      "exists": true,
+      "kind": "file",
+      "optional": false
+    },
+    {
+      "path": "ui-foundation.css",
+      "exists": true,
+      "kind": "file",
+      "optional": false
+    },
+    {
+      "path": "ui-refinement.css",
+      "exists": true,
+      "kind": "file",
+      "optional": false
+    },
+    {
+      "path": "inventory-gems.css",
+      "exists": true,
+      "kind": "file",
+      "optional": false
+    },
+    {
+      "path": "inventory-gems-finish.css",
+      "exists": true,
+      "kind": "file",
+      "optional": false
+    },
+    {
+      "path": "inventory-space.css",
+      "exists": true,
+      "kind": "file",
+      "optional": false
+    },
+    {
+      "path": "inventory-paperdoll.js",
+      "exists": true,
+      "kind": "file",
+      "optional": false
+    },
+    {
+      "path": "knight-portrait.css",
+      "exists": true,
+      "kind": "file",
+      "optional": false
+    },
+    {
+      "path": "inventory-oss-balance.css",
+      "exists": true,
+      "kind": "file",
+      "optional": false
+    },
+    {
+      "path": "inventory-gems-balance.css",
+      "exists": true,
+      "kind": "file",
+      "optional": false
+    },
+    {
+      "path": "skill-workspace.css",
+      "exists": true,
+      "kind": "file",
+      "optional": false
+    },
+    {
+      "path": "ui-panels.js",
+      "exists": true,
+      "kind": "file",
+      "optional": false
+    },
+    {
+      "path": "localization-runtime.js",
+      "exists": true,
+      "kind": "file",
+      "optional": false
+    },
+    {
+      "path": "localization-data.js",
+      "exists": true,
+      "kind": "file",
+      "optional": false
+    },
+    {
+      "path": "localization.css",
+      "exists": true,
+      "kind": "file",
+      "optional": false
+    },
+    {
+      "path": "lobby-stage-info.js",
+      "exists": true,
+      "kind": "file",
+      "optional": false
+    },
+    {
+      "path": "character-story-player.js",
+      "exists": true,
+      "kind": "file",
+      "optional": false
+    },
+    {
+      "path": "level-up-vfx.js",
+      "exists": true,
+      "kind": "file",
+      "optional": false
+    },
+    {
+      "path": "lobby-ancestor-art.css",
+      "exists": true,
+      "kind": "file",
+      "optional": false
+    },
+    {
+      "path": "lobby-ancestor-sprite.js",
+      "exists": true,
+      "kind": "file",
+      "optional": false
+    },
+    {
+      "path": "world-intro-player.js",
+      "exists": true,
+      "kind": "file",
+      "optional": false
+    },
+    {
+      "path": "world-intro-subtitles-data.js",
+      "exists": true,
+      "kind": "file",
+      "optional": false
+    },
+    {
+      "path": "world-intro-subtitles.js",
+      "exists": true,
+      "kind": "file",
+      "optional": false
+    },
+    {
+      "path": "cin-enter-engraved.css",
+      "exists": true,
+      "kind": "file",
+      "optional": false
+    },
+    {
+      "path": "cin-logo-art.js",
+      "exists": true,
+      "kind": "file",
+      "optional": false
+    },
+    {
+      "path": "GLTFLoader.js",
+      "exists": true,
+      "kind": "file",
+      "optional": false
+    },
+    {
+      "path": "three.min.js",
+      "exists": true,
+      "kind": "file",
+      "optional": false
+    },
+    {
+      "path": "three-runtime.js",
+      "exists": true,
+      "kind": "file",
+      "optional": false
+    },
+    {
+      "path": "maps_data.js",
+      "exists": true,
+      "kind": "file",
+      "optional": false
+    },
+    {
+      "path": "lobby_i18n.js",
+      "exists": true,
+      "kind": "file",
+      "optional": false
+    },
+    {
+      "path": "favicon.ico",
+      "exists": true,
+      "kind": "file",
+      "optional": false
+    },
+    {
+      "path": "proj_atlas.png",
+      "exists": true,
+      "kind": "file",
+      "optional": false
+    },
+    {
+      "path": "prefabs/registry.json",
+      "exists": true,
+      "kind": "file",
+      "optional": false
+    },
+    {
+      "path": "output/imagegen/exoduser-hell-lord-logo-api-v1.png",
+      "exists": true,
+      "kind": "file",
+      "optional": false
+    },
+    {
+      "path": "output/imagegen/enter-gothic-api-v1.png",
+      "exists": true,
+      "kind": "file",
+      "optional": false
+    },
+    {
+      "path": "output/fdg_reference_1280x720.png",
+      "exists": true,
+      "kind": "file",
+      "optional": false
+    },
+    {
+      "path": "output/imagegen/forge-icon-sheet-v1.png",
+      "exists": true,
+      "kind": "file",
+      "optional": false
+    },
+    {
+      "path": "output/imagegen/forge-icon-sheet-v3.png",
+      "exists": true,
+      "kind": "file",
+      "optional": false
+    },
+    {
+      "path": "assets",
+      "exists": true,
+      "kind": "directory",
+      "optional": false
+    },
+    {
+      "path": "img",
+      "exists": true,
+      "kind": "directory",
+      "optional": false
+    },
+    {
+      "path": "sprites",
+      "exists": true,
+      "kind": "directory",
+      "optional": false
+    },
+    {
+      "path": "bgm",
+      "exists": true,
+      "kind": "directory",
+      "optional": false
+    },
+    {
+      "path": "sfx",
+      "exists": true,
+      "kind": "directory",
+      "optional": false
+    },
+    {
+      "path": "video",
+      "exists": true,
+      "kind": "directory",
+      "optional": false
+    },
+    {
+      "path": "localization",
+      "exists": true,
+      "kind": "directory",
+      "optional": false
+    },
+    {
+      "path": "output/imagegen/item-skins",
+      "exists": true,
+      "kind": "directory",
+      "optional": false
+    },
+    {
+      "path": "output/imagegen/forge-tabs-v3",
+      "exists": false,
+      "error": "ENOENT",
+      "optional": true
+    },
+    {
+      "path": "output/imagegen/forge-tabs-v4",
+      "exists": true,
+      "kind": "directory",
+      "optional": false
+    },
+    {
+      "path": "atlas_boss01.json",
+      "exists": true,
+      "kind": "file",
+      "optional": false
+    },
+    {
+      "path": "atlas_boss01.png",
+      "exists": true,
+      "kind": "file",
+      "optional": false
+    },
+    {
+      "path": "atlas_bosses.json",
+      "exists": true,
+      "kind": "file",
+      "optional": false
+    },
+    {
+      "path": "atlas_bosses.png",
+      "exists": true,
+      "kind": "file",
+      "optional": false
+    },
+    {
+      "path": "atlas_player.json",
+      "exists": true,
+      "kind": "file",
+      "optional": false
+    },
+    {
+      "path": "atlas_player.json.bak",
+      "exists": true,
+      "kind": "file",
+      "optional": false
+    },
+    {
+      "path": "atlas_player.png",
+      "exists": true,
+      "kind": "file",
+      "optional": false
+    },
+    {
+      "path": "atlas_player.png.bak",
+      "exists": true,
+      "kind": "file",
+      "optional": false
+    },
+    {
+      "path": "lang_ar.js",
+      "exists": true,
+      "kind": "file",
+      "optional": false
+    },
+    {
+      "path": "lang_bg.js",
+      "exists": true,
+      "kind": "file",
+      "optional": false
+    },
+    {
+      "path": "lang_cs.js",
+      "exists": true,
+      "kind": "file",
+      "optional": false
+    },
+    {
+      "path": "lang_da.js",
+      "exists": true,
+      "kind": "file",
+      "optional": false
+    },
+    {
+      "path": "lang_de.js",
+      "exists": true,
+      "kind": "file",
+      "optional": false
+    },
+    {
+      "path": "lang_el.js",
+      "exists": true,
+      "kind": "file",
+      "optional": false
+    },
+    {
+      "path": "lang_es.js",
+      "exists": true,
+      "kind": "file",
+      "optional": false
+    },
+    {
+      "path": "lang_fi.js",
+      "exists": true,
+      "kind": "file",
+      "optional": false
+    },
+    {
+      "path": "lang_fr.js",
+      "exists": true,
+      "kind": "file",
+      "optional": false
+    },
+    {
+      "path": "lang_hu.js",
+      "exists": true,
+      "kind": "file",
+      "optional": false
+    },
+    {
+      "path": "lang_id.js",
+      "exists": true,
+      "kind": "file",
+      "optional": false
+    },
+    {
+      "path": "lang_it.js",
+      "exists": true,
+      "kind": "file",
+      "optional": false
+    },
+    {
+      "path": "lang_ja.js",
+      "exists": true,
+      "kind": "file",
+      "optional": false
+    },
+    {
+      "path": "lang_ms.js",
+      "exists": true,
+      "kind": "file",
+      "optional": false
+    },
+    {
+      "path": "lang_nl.js",
+      "exists": true,
+      "kind": "file",
+      "optional": false
+    },
+    {
+      "path": "lang_no.js",
+      "exists": true,
+      "kind": "file",
+      "optional": false
+    },
+    {
+      "path": "lang_pl.js",
+      "exists": true,
+      "kind": "file",
+      "optional": false
+    },
+    {
+      "path": "lang_ptbr.js",
+      "exists": true,
+      "kind": "file",
+      "optional": false
+    },
+    {
+      "path": "lang_ro.js",
+      "exists": true,
+      "kind": "file",
+      "optional": false
+    },
+    {
+      "path": "lang_ru.js",
+      "exists": true,
+      "kind": "file",
+      "optional": false
+    },
+    {
+      "path": "lang_sv.js",
+      "exists": true,
+      "kind": "file",
+      "optional": false
+    },
+    {
+      "path": "lang_th.js",
+      "exists": true,
+      "kind": "file",
+      "optional": false
+    },
+    {
+      "path": "lang_tr.js",
+      "exists": true,
+      "kind": "file",
+      "optional": false
+    },
+    {
+      "path": "lang_uk.js",
+      "exists": true,
+      "kind": "file",
+      "optional": false
+    },
+    {
+      "path": "lang_vi.js",
+      "exists": true,
+      "kind": "file",
+      "optional": false
+    },
+    {
+      "path": "lang_zh.js",
+      "exists": true,
+      "kind": "file",
+      "optional": false
+    },
+    {
+      "path": "lang_zht.js",
+      "exists": true,
+      "kind": "file",
+      "optional": false
+    },
+    {
+      "path": "package.json",
+      "exists": true,
+      "kind": "file",
+      "optional": false
+    },
+    {
+      "path": "node-main.js",
+      "exists": true,
+      "kind": "file",
+      "optional": false
+    }
+  ],
+  "counts": {
+    "fixedFiles": 63,
+    "dirs": 10,
+    "dynamic": 35,
+    "inputRoots": 108
+  },
+  "missingRequired": [],
+  "missingOptional": [
+    {
+      "path": "credits.html",
+      "exists": false,
+      "error": "ENOENT",
+      "optional": true
+    },
+    {
+      "path": "output/imagegen/forge-tabs-v3",
+      "exists": false,
+      "error": "ENOENT",
+      "optional": true
+    }
+  ],
+  "dependencyEdges": [
+    {
+      "from": "index.html",
+      "reference": "localization-runtime.js",
+      "resolved": "localization-runtime.js",
+      "exists": true,
+      "covered": true,
+      "scope": "한줄리터럴src/href(HTML속성/JS할당포함);동적표현식완전성보장없음"
+    },
+    {
+      "from": "index.html",
+      "reference": "localization-data.js",
+      "resolved": "localization-data.js",
+      "exists": true,
+      "covered": true,
+      "scope": "한줄리터럴src/href(HTML속성/JS할당포함);동적표현식완전성보장없음"
+    },
+    {
+      "from": "index.html",
+      "reference": "/favicon.ico?v=20260414-iconfix",
+      "resolved": "favicon.ico",
+      "exists": true,
+      "covered": true,
+      "scope": "한줄리터럴src/href(HTML속성/JS할당포함);동적표현식완전성보장없음"
+    },
+    {
+      "from": "index.html",
+      "reference": "/favicon.ico?v=20260414-iconfix",
+      "resolved": "favicon.ico",
+      "exists": true,
+      "covered": true,
+      "scope": "한줄리터럴src/href(HTML속성/JS할당포함);동적표현식완전성보장없음"
+    },
+    {
+      "from": "index.html",
+      "reference": "localization.css?v=20260909",
+      "resolved": "localization.css",
+      "exists": true,
+      "covered": true,
+      "scope": "한줄리터럴src/href(HTML속성/JS할당포함);동적표현식완전성보장없음"
+    },
+    {
+      "from": "index.html",
+      "reference": "ui-foundation.css?v=20260927-enter-responsive",
+      "resolved": "ui-foundation.css",
+      "exists": true,
+      "covered": true,
+      "scope": "한줄리터럴src/href(HTML속성/JS할당포함);동적표현식완전성보장없음"
+    },
+    {
+      "from": "index.html",
+      "reference": "ui-refinement.css?v=20260930-settings-title-plaque",
+      "resolved": "ui-refinement.css",
+      "exists": true,
+      "covered": true,
+      "scope": "한줄리터럴src/href(HTML속성/JS할당포함);동적표현식완전성보장없음"
+    },
+    {
+      "from": "index.html",
+      "reference": "lobby-ancestor-art.css?v=20260929-slotart3",
+      "resolved": "lobby-ancestor-art.css",
+      "exists": true,
+      "covered": true,
+      "scope": "한줄리터럴src/href(HTML속성/JS할당포함);동적표현식완전성보장없음"
+    },
+    {
+      "from": "index.html",
+      "reference": "lobby-ancestor-sprite.js?v=20260929-slotart2",
+      "resolved": "lobby-ancestor-sprite.js",
+      "exists": true,
+      "covered": true,
+      "scope": "한줄리터럴src/href(HTML속성/JS할당포함);동적표현식완전성보장없음"
+    },
+    {
+      "from": "index.html",
+      "reference": "img/title_clean_plate_20260929.png",
+      "resolved": "img/title_clean_plate_20260929.png",
+      "exists": true,
+      "covered": true,
+      "scope": "한줄리터럴src/href(HTML속성/JS할당포함);동적표현식완전성보장없음"
+    },
+    {
+      "from": "index.html",
+      "reference": "video/fdg_intro.mp4",
+      "resolved": "video/fdg_intro.mp4",
+      "exists": true,
+      "covered": true,
+      "scope": "한줄리터럴src/href(HTML속성/JS할당포함);동적표현식완전성보장없음"
+    },
+    {
+      "from": "index.html",
+      "reference": "img/fdg_wolf/fdg_wolf_emblem.png",
+      "resolved": "img/fdg_wolf/fdg_wolf_emblem.png",
+      "exists": true,
+      "covered": true,
+      "scope": "한줄리터럴src/href(HTML속성/JS할당포함);동적표현식완전성보장없음"
+    },
+    {
+      "from": "index.html",
+      "reference": "video/intro.mp4",
+      "resolved": "video/intro.mp4",
+      "exists": true,
+      "covered": true,
+      "scope": "한줄리터럴src/href(HTML속성/JS할당포함);동적표현식완전성보장없음"
+    },
+    {
+      "from": "index.html",
+      "reference": "video/world_intro_v13_exodus_en.mp4",
+      "resolved": "video/world_intro_v13_exodus_en.mp4",
+      "exists": true,
+      "covered": true,
+      "scope": "한줄리터럴src/href(HTML속성/JS할당포함);동적표현식완전성보장없음"
+    },
+    {
+      "from": "index.html",
+      "reference": "output/imagegen/exoduser-hell-lord-logo-api-v1.png",
+      "resolved": "output/imagegen/exoduser-hell-lord-logo-api-v1.png",
+      "exists": true,
+      "covered": true,
+      "scope": "한줄리터럴src/href(HTML속성/JS할당포함);동적표현식완전성보장없음"
+    },
+    {
+      "from": "index.html",
+      "reference": "output/imagegen/enter-gothic-api-v1.png",
+      "resolved": "output/imagegen/enter-gothic-api-v1.png",
+      "exists": true,
+      "covered": true,
+      "scope": "한줄리터럴src/href(HTML속성/JS할당포함);동적표현식완전성보장없음"
+    },
+    {
+      "from": "index.html",
+      "reference": "img/hellgate.png",
+      "resolved": "img/hellgate.png",
+      "exists": true,
+      "covered": true,
+      "scope": "한줄리터럴src/href(HTML속성/JS할당포함);동적표현식완전성보장없음"
+    },
+    {
+      "from": "index.html",
+      "reference": "assets/cutscene/prologue/p01.jpg",
+      "resolved": "assets/cutscene/prologue/p01.jpg",
+      "exists": true,
+      "covered": true,
+      "scope": "한줄리터럴src/href(HTML속성/JS할당포함);동적표현식완전성보장없음"
+    },
+    {
+      "from": "index.html",
+      "reference": "assets/cutscene/prologue/p01b.jpg",
+      "resolved": "assets/cutscene/prologue/p01b.jpg",
+      "exists": true,
+      "covered": true,
+      "scope": "한줄리터럴src/href(HTML속성/JS할당포함);동적표현식완전성보장없음"
+    },
+    {
+      "from": "index.html",
+      "reference": "assets/cutscene/prologue/p02.jpg",
+      "resolved": "assets/cutscene/prologue/p02.jpg",
+      "exists": true,
+      "covered": true,
+      "scope": "한줄리터럴src/href(HTML속성/JS할당포함);동적표현식완전성보장없음"
+    },
+    {
+      "from": "index.html",
+      "reference": "assets/cutscene/prologue/p03.jpg",
+      "resolved": "assets/cutscene/prologue/p03.jpg",
+      "exists": true,
+      "covered": true,
+      "scope": "한줄리터럴src/href(HTML속성/JS할당포함);동적표현식완전성보장없음"
+    },
+    {
+      "from": "index.html",
+      "reference": "assets/cutscene/prologue/p04.jpg",
+      "resolved": "assets/cutscene/prologue/p04.jpg",
+      "exists": true,
+      "covered": true,
+      "scope": "한줄리터럴src/href(HTML속성/JS할당포함);동적표현식완전성보장없음"
+    },
+    {
+      "from": "index.html",
+      "reference": "assets/cutscene/prologue/p05.jpg",
+      "resolved": "assets/cutscene/prologue/p05.jpg",
+      "exists": true,
+      "covered": true,
+      "scope": "한줄리터럴src/href(HTML속성/JS할당포함);동적표현식완전성보장없음"
+    },
+    {
+      "from": "index.html",
+      "reference": "assets/cutscene/prologue/p06.jpg",
+      "resolved": "assets/cutscene/prologue/p06.jpg",
+      "exists": true,
+      "covered": true,
+      "scope": "한줄리터럴src/href(HTML속성/JS할당포함);동적표현식완전성보장없음"
+    },
+    {
+      "from": "index.html",
+      "reference": "assets/cutscene/prologue/p07.jpg",
+      "resolved": "assets/cutscene/prologue/p07.jpg",
+      "exists": true,
+      "covered": true,
+      "scope": "한줄리터럴src/href(HTML속성/JS할당포함);동적표현식완전성보장없음"
+    },
+    {
+      "from": "index.html",
+      "reference": "assets/cutscene/prologue/p08.jpg",
+      "resolved": "assets/cutscene/prologue/p08.jpg",
+      "exists": true,
+      "covered": true,
+      "scope": "한줄리터럴src/href(HTML속성/JS할당포함);동적표현식완전성보장없음"
+    },
+    {
+      "from": "index.html",
+      "reference": "assets/cutscene/prologue/p09.jpg",
+      "resolved": "assets/cutscene/prologue/p09.jpg",
+      "exists": true,
+      "covered": true,
+      "scope": "한줄리터럴src/href(HTML속성/JS할당포함);동적표현식완전성보장없음"
+    },
+    {
+      "from": "index.html",
+      "reference": "assets/cutscene/prologue/p10.jpg",
+      "resolved": "assets/cutscene/prologue/p10.jpg",
+      "exists": true,
+      "covered": true,
+      "scope": "한줄리터럴src/href(HTML속성/JS할당포함);동적표현식완전성보장없음"
+    },
+    {
+      "from": "index.html",
+      "reference": "assets/cutscene/prologue/p11.jpg?v=20260730",
+      "resolved": "assets/cutscene/prologue/p11.jpg",
+      "exists": true,
+      "covered": true,
+      "scope": "한줄리터럴src/href(HTML속성/JS할당포함);동적표현식완전성보장없음"
+    },
+    {
+      "from": "index.html",
+      "reference": "assets/cutscene/prologue/p12.jpg",
+      "resolved": "assets/cutscene/prologue/p12.jpg",
+      "exists": true,
+      "covered": true,
+      "scope": "한줄리터럴src/href(HTML속성/JS할당포함);동적표현식완전성보장없음"
+    },
+    {
+      "from": "index.html",
+      "reference": "assets/cutscene/prologue/p13.jpg",
+      "resolved": "assets/cutscene/prologue/p13.jpg",
+      "exists": true,
+      "covered": true,
+      "scope": "한줄리터럴src/href(HTML속성/JS할당포함);동적표현식완전성보장없음"
+    },
+    {
+      "from": "index.html",
+      "reference": "assets/cutscene/prologue/p14.jpg",
+      "resolved": "assets/cutscene/prologue/p14.jpg",
+      "exists": true,
+      "covered": true,
+      "scope": "한줄리터럴src/href(HTML속성/JS할당포함);동적표현식완전성보장없음"
+    },
+    {
+      "from": "index.html",
+      "reference": "assets/cutscene/prologue/p15.jpg",
+      "resolved": "assets/cutscene/prologue/p15.jpg",
+      "exists": true,
+      "covered": true,
+      "scope": "한줄리터럴src/href(HTML속성/JS할당포함);동적표현식완전성보장없음"
+    },
+    {
+      "from": "index.html",
+      "reference": "assets/cutscene/prologue/p16.jpg",
+      "resolved": "assets/cutscene/prologue/p16.jpg",
+      "exists": true,
+      "covered": true,
+      "scope": "한줄리터럴src/href(HTML속성/JS할당포함);동적표현식완전성보장없음"
+    },
+    {
+      "from": "index.html",
+      "reference": "assets/cutscene/prologue/p17.jpg",
+      "resolved": "assets/cutscene/prologue/p17.jpg",
+      "exists": true,
+      "covered": true,
+      "scope": "한줄리터럴src/href(HTML속성/JS할당포함);동적표현식완전성보장없음"
+    },
+    {
+      "from": "index.html",
+      "reference": "img/logo_exoduser.png",
+      "resolved": "img/logo_exoduser.png",
+      "exists": true,
+      "covered": true,
+      "scope": "한줄리터럴src/href(HTML속성/JS할당포함);동적표현식완전성보장없음"
+    },
+    {
+      "from": "index.html",
+      "reference": "img/logo_exoduser.png",
+      "resolved": "img/logo_exoduser.png",
+      "exists": true,
+      "covered": true,
+      "scope": "한줄리터럴src/href(HTML속성/JS할당포함);동적표현식완전성보장없음"
+    },
+    {
+      "from": "index.html",
+      "reference": "img/logo_exoduser.png",
+      "resolved": "img/logo_exoduser.png",
+      "exists": true,
+      "covered": true,
+      "scope": "한줄리터럴src/href(HTML속성/JS할당포함);동적표현식완전성보장없음"
+    },
+    {
+      "from": "index.html",
+      "reference": "img/logo_exoduser.png",
+      "resolved": "img/logo_exoduser.png",
+      "exists": true,
+      "covered": true,
+      "scope": "한줄리터럴src/href(HTML속성/JS할당포함);동적표현식완전성보장없음"
+    },
+    {
+      "from": "index.html",
+      "reference": "assets/lobby/lobby_varkan_crypt_loop_v2.mp4?v=20260928-stable2",
+      "resolved": "assets/lobby/lobby_varkan_crypt_loop_v2.mp4",
+      "exists": true,
+      "covered": true,
+      "scope": "한줄리터럴src/href(HTML속성/JS할당포함);동적표현식완전성보장없음"
+    },
+    {
+      "from": "index.html",
+      "reference": "img/logo_exoduser.png",
+      "resolved": "img/logo_exoduser.png",
+      "exists": true,
+      "covered": true,
+      "scope": "한줄리터럴src/href(HTML속성/JS할당포함);동적표현식완전성보장없음"
+    },
+    {
+      "from": "index.html",
+      "reference": "assets/lobby/lobby_banner_btn.png",
+      "resolved": "assets/lobby/lobby_banner_btn.png",
+      "exists": true,
+      "covered": true,
+      "scope": "한줄리터럴src/href(HTML속성/JS할당포함);동적표현식완전성보장없음"
+    },
+    {
+      "from": "index.html",
+      "reference": "assets/lobby/lobby_enter_btn.png",
+      "resolved": "assets/lobby/lobby_enter_btn.png",
+      "exists": true,
+      "covered": true,
+      "scope": "한줄리터럴src/href(HTML속성/JS할당포함);동적표현식완전성보장없음"
+    },
+    {
+      "from": "index.html",
+      "reference": "assets/charselect/coming_soon_chains_v2.png",
+      "resolved": "assets/charselect/coming_soon_chains_v2.png",
+      "exists": true,
+      "covered": true,
+      "scope": "한줄리터럴src/href(HTML속성/JS할당포함);동적표현식완전성보장없음"
+    },
+    {
+      "from": "index.html",
+      "reference": "lobby_i18n.js",
+      "resolved": "lobby_i18n.js",
+      "exists": true,
+      "covered": true,
+      "scope": "한줄리터럴src/href(HTML속성/JS할당포함);동적표현식완전성보장없음"
+    },
+    {
+      "from": "index.html",
+      "reference": "lobby-stage-info.js",
+      "resolved": "lobby-stage-info.js",
+      "exists": true,
+      "covered": true,
+      "scope": "한줄리터럴src/href(HTML속성/JS할당포함);동적표현식완전성보장없음"
+    },
+    {
+      "from": "index.html",
+      "reference": "character-story-player.js?v=20260914-space-hold",
+      "resolved": "character-story-player.js",
+      "exists": true,
+      "covered": true,
+      "scope": "한줄리터럴src/href(HTML속성/JS할당포함);동적표현식완전성보장없음"
+    },
+    {
+      "from": "index.html",
+      "reference": "world-intro-player.js?v=20260907-v12-fullscene-newvoice",
+      "resolved": "world-intro-player.js",
+      "exists": true,
+      "covered": true,
+      "scope": "한줄리터럴src/href(HTML속성/JS할당포함);동적표현식완전성보장없음"
+    },
+    {
+      "from": "index.html",
+      "reference": "world-intro-subtitles-data.js?v=20260907-v13-exodus-ko-escape",
+      "resolved": "world-intro-subtitles-data.js",
+      "exists": true,
+      "covered": true,
+      "scope": "한줄리터럴src/href(HTML속성/JS할당포함);동적표현식완전성보장없음"
+    },
+    {
+      "from": "index.html",
+      "reference": "world-intro-subtitles.js?v=20260907-v6-cinema-size",
+      "resolved": "world-intro-subtitles.js",
+      "exists": true,
+      "covered": true,
+      "scope": "한줄리터럴src/href(HTML속성/JS할당포함);동적표현식완전성보장없음"
+    },
+    {
+      "from": "index.html",
+      "reference": "cin-enter-engraved.css?v=20260907-enter-4",
+      "resolved": "cin-enter-engraved.css",
+      "exists": true,
+      "covered": true,
+      "scope": "한줄리터럴src/href(HTML속성/JS할당포함);동적표현식완전성보장없음"
+    },
+    {
+      "from": "index.html",
+      "reference": "cin-logo-art.js?v=20260907-enter-2",
+      "resolved": "cin-logo-art.js",
+      "exists": true,
+      "covered": true,
+      "scope": "한줄리터럴src/href(HTML속성/JS할당포함);동적표현식완전성보장없음"
+    },
+    {
+      "from": "index.html",
+      "reference": "img/lording/",
+      "resolved": "img/lording/",
+      "exists": true,
+      "covered": true,
+      "scope": "한줄리터럴src/href(HTML속성/JS할당포함);동적표현식완전성보장없음"
+    },
+    {
+      "from": "index.html",
+      "reference": "img/lording/",
+      "resolved": "img/lording/",
+      "exists": true,
+      "covered": true,
+      "scope": "한줄리터럴src/href(HTML속성/JS할당포함);동적표현식완전성보장없음"
+    },
+    {
+      "from": "index.html",
+      "reference": "img/logo_exoduser.png",
+      "resolved": "img/logo_exoduser.png",
+      "exists": true,
+      "covered": true,
+      "scope": "한줄리터럴src/href(HTML속성/JS할당포함);동적표현식완전성보장없음"
+    },
+    {
+      "from": "index.html",
+      "reference": "assets/lobby/lobby_varkan_crypt_poster_v2.webp?v=20260928-stable2",
+      "resolved": "assets/lobby/lobby_varkan_crypt_poster_v2.webp",
+      "exists": true,
+      "covered": true,
+      "scope": "한줄리터럴src/href(HTML속성/JS할당포함);동적표현식완전성보장없음"
+    },
+    {
+      "from": "index.html",
+      "reference": "img/logo_exoduser.png",
+      "resolved": "img/logo_exoduser.png",
+      "exists": true,
+      "covered": true,
+      "scope": "한줄리터럴src/href(HTML속성/JS할당포함);동적표현식완전성보장없음"
+    },
+    {
+      "from": "index.html",
+      "reference": "img/title_clean_plate_20260929.png",
+      "resolved": "img/title_clean_plate_20260929.png",
+      "exists": true,
+      "covered": true,
+      "scope": "한줄리터럴src/href(HTML속성/JS할당포함);동적표현식완전성보장없음"
+    },
+    {
+      "from": "index.html",
+      "reference": "img/title_clean_plate_20260929.png",
+      "resolved": "img/title_clean_plate_20260929.png",
+      "exists": true,
+      "covered": true,
+      "scope": "한줄리터럴src/href(HTML속성/JS할당포함);동적표현식완전성보장없음"
+    },
+    {
+      "from": "index.html",
+      "reference": "video/title_motion_20260929.mp4?v=20260929-cs3",
+      "resolved": "video/title_motion_20260929.mp4",
+      "exists": true,
+      "covered": true,
+      "scope": "한줄리터럴src/href(HTML속성/JS할당포함);동적표현식완전성보장없음"
+    },
+    {
+      "from": "index.html",
+      "reference": "video/title_motion_hd_20260929.mp4?v=20260929-cs3",
+      "resolved": "video/title_motion_hd_20260929.mp4",
+      "exists": true,
+      "covered": true,
+      "scope": "한줄리터럴src/href(HTML속성/JS할당포함);동적표현식완전성보장없음"
+    },
+    {
+      "from": "game.html",
+      "reference": "player-attack-remaster.js?v=20260915-spin-speed15",
+      "resolved": "player-attack-remaster.js",
+      "exists": true,
+      "covered": true,
+      "scope": "한줄리터럴src/href(HTML속성/JS할당포함);동적표현식완전성보장없음"
+    },
+    {
+      "from": "game.html",
+      "reference": "warrior-bat-swing.js?v=20260915-speed85",
+      "resolved": "warrior-bat-swing.js",
+      "exists": true,
+      "covered": true,
+      "scope": "한줄리터럴src/href(HTML속성/JS할당포함);동적표현식완전성보장없음"
+    },
+    {
+      "from": "game.html",
+      "reference": "warrior-dash-flight.js?v=20260924-flight1",
+      "resolved": "warrior-dash-flight.js",
+      "exists": true,
+      "covered": true,
+      "scope": "한줄리터럴src/href(HTML속성/JS할당포함);동적표현식완전성보장없음"
+    },
+    {
+      "from": "game.html",
+      "reference": "tutorial-badges.css?v=20260929-earned-hud",
+      "resolved": "tutorial-badges.css",
+      "exists": true,
+      "covered": true,
+      "scope": "한줄리터럴src/href(HTML속성/JS할당포함);동적표현식완전성보장없음"
+    },
+    {
+      "from": "game.html",
+      "reference": "tutorial-badges.js?v=20260929-earned-hud",
+      "resolved": "tutorial-badges.js",
+      "exists": true,
+      "covered": true,
+      "scope": "한줄리터럴src/href(HTML속성/JS할당포함);동적표현식완전성보장없음"
+    },
+    {
+      "from": "game.html",
+      "reference": "system-lesson.css?v=20260912-restored4",
+      "resolved": "system-lesson.css",
+      "exists": true,
+      "covered": true,
+      "scope": "한줄리터럴src/href(HTML속성/JS할당포함);동적표현식완전성보장없음"
+    },
+    {
+      "from": "game.html",
+      "reference": "system-lesson.js?v=20260912-skip-density1",
+      "resolved": "system-lesson.js",
+      "exists": true,
+      "covered": true,
+      "scope": "한줄리터럴src/href(HTML속성/JS할당포함);동적표현식완전성보장없음"
+    },
+    {
+      "from": "game.html",
+      "reference": "parry-lesson.css?v=20260913-mission-details1",
+      "resolved": "parry-lesson.css",
+      "exists": true,
+      "covered": true,
+      "scope": "한줄리터럴src/href(HTML속성/JS할당포함);동적표현식완전성보장없음"
+    },
+    {
+      "from": "game.html",
+      "reference": "resource-practice.js?v=20260916-recovery2",
+      "resolved": "resource-practice.js",
+      "exists": true,
+      "covered": true,
+      "scope": "한줄리터럴src/href(HTML속성/JS할당포함);동적표현식완전성보장없음"
+    },
+    {
+      "from": "game.html",
+      "reference": "parry-lesson.js?v=20261001-kislash-2sec",
+      "resolved": "parry-lesson.js",
+      "exists": true,
+      "covered": true,
+      "scope": "한줄리터럴src/href(HTML속성/JS할당포함);동적표현식완전성보장없음"
+    },
+    {
+      "from": "game.html",
+      "reference": "/favicon.ico?v=20260414-iconfix",
+      "resolved": "favicon.ico",
+      "exists": true,
+      "covered": true,
+      "scope": "한줄리터럴src/href(HTML속성/JS할당포함);동적표현식완전성보장없음"
+    },
+    {
+      "from": "game.html",
+      "reference": "/favicon.ico?v=20260414-iconfix",
+      "resolved": "favicon.ico",
+      "exists": true,
+      "covered": true,
+      "scope": "한줄리터럴src/href(HTML속성/JS할당포함);동적표현식완전성보장없음"
+    },
+    {
+      "from": "game.html",
+      "reference": "three-runtime.js",
+      "resolved": "three-runtime.js",
+      "exists": true,
+      "covered": true,
+      "scope": "한줄리터럴src/href(HTML속성/JS할당포함);동적표현식완전성보장없음"
+    },
+    {
+      "from": "game.html",
+      "reference": "maps_data.js",
+      "resolved": "maps_data.js",
+      "exists": true,
+      "covered": true,
+      "scope": "한줄리터럴src/href(HTML속성/JS할당포함);동적표현식완전성보장없음"
+    },
+    {
+      "from": "game.html",
+      "reference": "assets/map/ch1/geometry/ch1_si1_geometry.js",
+      "resolved": "assets/map/ch1/geometry/ch1_si1_geometry.js",
+      "exists": true,
+      "covered": true,
+      "scope": "한줄리터럴src/href(HTML속성/JS할당포함);동적표현식완전성보장없음"
+    },
+    {
+      "from": "game.html",
+      "reference": "assets/map/ch1/production_finish/layout.js?v=20260916-finish-1",
+      "resolved": "assets/map/ch1/production_finish/layout.js",
+      "exists": true,
+      "covered": true,
+      "scope": "한줄리터럴src/href(HTML속성/JS할당포함);동적표현식완전성보장없음"
+    },
+    {
+      "from": "game.html",
+      "reference": "ch1-living-detail.js?v=20260929-87",
+      "resolved": "ch1-living-detail.js",
+      "exists": true,
+      "covered": true,
+      "scope": "한줄리터럴src/href(HTML속성/JS할당포함);동적표현식완전성보장없음"
+    },
+    {
+      "from": "game.html",
+      "reference": "ch1-forest-sway.js?v=20260930-90",
+      "resolved": "ch1-forest-sway.js",
+      "exists": true,
+      "covered": true,
+      "scope": "한줄리터럴src/href(HTML속성/JS할당포함);동적표현식완전성보장없음"
+    },
+    {
+      "from": "game.html",
+      "reference": "ch1-face-life.js?v=20260930-97",
+      "resolved": "ch1-face-life.js",
+      "exists": true,
+      "covered": true,
+      "scope": "한줄리터럴src/href(HTML속성/JS할당포함);동적표현식완전성보장없음"
+    },
+    {
+      "from": "game.html",
+      "reference": "ch1-altar-moat.js?v=20261001-3",
+      "resolved": "ch1-altar-moat.js",
+      "exists": true,
+      "covered": true,
+      "scope": "한줄리터럴src/href(HTML속성/JS할당포함);동적표현식완전성보장없음"
+    },
+    {
+      "from": "game.html",
+      "reference": "ch1-border-foreground.js?v=20261001-3",
+      "resolved": "ch1-border-foreground.js",
+      "exists": true,
+      "covered": true,
+      "scope": "한줄리터럴src/href(HTML속성/JS할당포함);동적표현식완전성보장없음"
+    },
+    {
+      "from": "game.html",
+      "reference": "ch1-boundary-edge.js?v=20261001-5",
+      "resolved": "ch1-boundary-edge.js",
+      "exists": true,
+      "covered": true,
+      "scope": "한줄리터럴src/href(HTML속성/JS할당포함);동적표현식완전성보장없음"
+    },
+    {
+      "from": "game.html",
+      "reference": "lang_zh.js",
+      "resolved": "lang_zh.js",
+      "exists": true,
+      "covered": true,
+      "scope": "한줄리터럴src/href(HTML속성/JS할당포함);동적표현식완전성보장없음"
+    },
+    {
+      "from": "game.html",
+      "reference": "lang_ja.js",
+      "resolved": "lang_ja.js",
+      "exists": true,
+      "covered": true,
+      "scope": "한줄리터럴src/href(HTML속성/JS할당포함);동적표현식완전성보장없음"
+    },
+    {
+      "from": "game.html",
+      "reference": "lang_es.js",
+      "resolved": "lang_es.js",
+      "exists": true,
+      "covered": true,
+      "scope": "한줄리터럴src/href(HTML속성/JS할당포함);동적표현식완전성보장없음"
+    },
+    {
+      "from": "game.html",
+      "reference": "lang_zht.js",
+      "resolved": "lang_zht.js",
+      "exists": true,
+      "covered": true,
+      "scope": "한줄리터럴src/href(HTML속성/JS할당포함);동적표현식완전성보장없음"
+    },
+    {
+      "from": "game.html",
+      "reference": "lang_ru.js",
+      "resolved": "lang_ru.js",
+      "exists": true,
+      "covered": true,
+      "scope": "한줄리터럴src/href(HTML속성/JS할당포함);동적표현식완전성보장없음"
+    },
+    {
+      "from": "game.html",
+      "reference": "lang_de.js",
+      "resolved": "lang_de.js",
+      "exists": true,
+      "covered": true,
+      "scope": "한줄리터럴src/href(HTML속성/JS할당포함);동적표현식완전성보장없음"
+    },
+    {
+      "from": "game.html",
+      "reference": "lang_ptbr.js",
+      "resolved": "lang_ptbr.js",
+      "exists": true,
+      "covered": true,
+      "scope": "한줄리터럴src/href(HTML속성/JS할당포함);동적표현식완전성보장없음"
+    },
+    {
+      "from": "game.html",
+      "reference": "lang_fr.js",
+      "resolved": "lang_fr.js",
+      "exists": true,
+      "covered": true,
+      "scope": "한줄리터럴src/href(HTML속성/JS할당포함);동적표현식완전성보장없음"
+    },
+    {
+      "from": "game.html",
+      "reference": "lang_pl.js",
+      "resolved": "lang_pl.js",
+      "exists": true,
+      "covered": true,
+      "scope": "한줄리터럴src/href(HTML속성/JS할당포함);동적표현식완전성보장없음"
+    },
+    {
+      "from": "game.html",
+      "reference": "lang_it.js",
+      "resolved": "lang_it.js",
+      "exists": true,
+      "covered": true,
+      "scope": "한줄리터럴src/href(HTML속성/JS할당포함);동적표현식완전성보장없음"
+    },
+    {
+      "from": "game.html",
+      "reference": "lang_uk.js",
+      "resolved": "lang_uk.js",
+      "exists": true,
+      "covered": true,
+      "scope": "한줄리터럴src/href(HTML속성/JS할당포함);동적표현식완전성보장없음"
+    },
+    {
+      "from": "game.html",
+      "reference": "lang_tr.js",
+      "resolved": "lang_tr.js",
+      "exists": true,
+      "covered": true,
+      "scope": "한줄리터럴src/href(HTML속성/JS할당포함);동적표현식완전성보장없음"
+    },
+    {
+      "from": "game.html",
+      "reference": "lang_vi.js",
+      "resolved": "lang_vi.js",
+      "exists": true,
+      "covered": true,
+      "scope": "한줄리터럴src/href(HTML속성/JS할당포함);동적표현식완전성보장없음"
+    },
+    {
+      "from": "game.html",
+      "reference": "lang_th.js",
+      "resolved": "lang_th.js",
+      "exists": true,
+      "covered": true,
+      "scope": "한줄리터럴src/href(HTML속성/JS할당포함);동적표현식완전성보장없음"
+    },
+    {
+      "from": "game.html",
+      "reference": "lang_id.js",
+      "resolved": "lang_id.js",
+      "exists": true,
+      "covered": true,
+      "scope": "한줄리터럴src/href(HTML속성/JS할당포함);동적표현식완전성보장없음"
+    },
+    {
+      "from": "game.html",
+      "reference": "lang_ar.js",
+      "resolved": "lang_ar.js",
+      "exists": true,
+      "covered": true,
+      "scope": "한줄리터럴src/href(HTML속성/JS할당포함);동적표현식완전성보장없음"
+    },
+    {
+      "from": "game.html",
+      "reference": "lang_sv.js",
+      "resolved": "lang_sv.js",
+      "exists": true,
+      "covered": true,
+      "scope": "한줄리터럴src/href(HTML속성/JS할당포함);동적표현식완전성보장없음"
+    },
+    {
+      "from": "game.html",
+      "reference": "lang_da.js",
+      "resolved": "lang_da.js",
+      "exists": true,
+      "covered": true,
+      "scope": "한줄리터럴src/href(HTML속성/JS할당포함);동적표현식완전성보장없음"
+    },
+    {
+      "from": "game.html",
+      "reference": "lang_no.js",
+      "resolved": "lang_no.js",
+      "exists": true,
+      "covered": true,
+      "scope": "한줄리터럴src/href(HTML속성/JS할당포함);동적표현식완전성보장없음"
+    },
+    {
+      "from": "game.html",
+      "reference": "lang_fi.js",
+      "resolved": "lang_fi.js",
+      "exists": true,
+      "covered": true,
+      "scope": "한줄리터럴src/href(HTML속성/JS할당포함);동적표현식완전성보장없음"
+    },
+    {
+      "from": "game.html",
+      "reference": "lang_cs.js",
+      "resolved": "lang_cs.js",
+      "exists": true,
+      "covered": true,
+      "scope": "한줄리터럴src/href(HTML속성/JS할당포함);동적표현식완전성보장없음"
+    },
+    {
+      "from": "game.html",
+      "reference": "lang_hu.js",
+      "resolved": "lang_hu.js",
+      "exists": true,
+      "covered": true,
+      "scope": "한줄리터럴src/href(HTML속성/JS할당포함);동적표현식완전성보장없음"
+    },
+    {
+      "from": "game.html",
+      "reference": "lang_ro.js",
+      "resolved": "lang_ro.js",
+      "exists": true,
+      "covered": true,
+      "scope": "한줄리터럴src/href(HTML속성/JS할당포함);동적표현식완전성보장없음"
+    },
+    {
+      "from": "game.html",
+      "reference": "lang_nl.js",
+      "resolved": "lang_nl.js",
+      "exists": true,
+      "covered": true,
+      "scope": "한줄리터럴src/href(HTML속성/JS할당포함);동적표현식완전성보장없음"
+    },
+    {
+      "from": "game.html",
+      "reference": "lang_el.js",
+      "resolved": "lang_el.js",
+      "exists": true,
+      "covered": true,
+      "scope": "한줄리터럴src/href(HTML속성/JS할당포함);동적표현식완전성보장없음"
+    },
+    {
+      "from": "game.html",
+      "reference": "lang_bg.js",
+      "resolved": "lang_bg.js",
+      "exists": true,
+      "covered": true,
+      "scope": "한줄리터럴src/href(HTML속성/JS할당포함);동적표현식완전성보장없음"
+    },
+    {
+      "from": "game.html",
+      "reference": "lang_ms.js",
+      "resolved": "lang_ms.js",
+      "exists": true,
+      "covered": true,
+      "scope": "한줄리터럴src/href(HTML속성/JS할당포함);동적표현식완전성보장없음"
+    },
+    {
+      "from": "game.html",
+      "reference": "localization-runtime.js",
+      "resolved": "localization-runtime.js",
+      "exists": true,
+      "covered": true,
+      "scope": "한줄리터럴src/href(HTML속성/JS할당포함);동적표현식완전성보장없음"
+    },
+    {
+      "from": "game.html",
+      "reference": "localization-data.js?v=20260910-nemesia-dialogue",
+      "resolved": "localization-data.js",
+      "exists": true,
+      "covered": true,
+      "scope": "한줄리터럴src/href(HTML속성/JS할당포함);동적표현식완전성보장없음"
+    },
+    {
+      "from": "game.html",
+      "reference": "level-up-vfx.js?v=20260910-readable-v3",
+      "resolved": "level-up-vfx.js",
+      "exists": true,
+      "covered": true,
+      "scope": "한줄리터럴src/href(HTML속성/JS할당포함);동적표현식완전성보장없음"
+    },
+    {
+      "from": "game.html",
+      "reference": "stat-panel-ui.css?v=20260913-smooth-ui",
+      "resolved": "stat-panel-ui.css",
+      "exists": true,
+      "covered": true,
+      "scope": "한줄리터럴src/href(HTML속성/JS할당포함);동적표현식완전성보장없음"
+    },
+    {
+      "from": "game.html",
+      "reference": "localization.css?v=20260909",
+      "resolved": "localization.css",
+      "exists": true,
+      "covered": true,
+      "scope": "한줄리터럴src/href(HTML속성/JS할당포함);동적표현식완전성보장없음"
+    },
+    {
+      "from": "game.html",
+      "reference": "ui-foundation.css?v=20260930-lesson-translucent",
+      "resolved": "ui-foundation.css",
+      "exists": true,
+      "covered": true,
+      "scope": "한줄리터럴src/href(HTML속성/JS할당포함);동적표현식완전성보장없음"
+    },
+    {
+      "from": "game.html",
+      "reference": "ui-refinement.css?v=20261001-combat-status22",
+      "resolved": "ui-refinement.css",
+      "exists": true,
+      "covered": true,
+      "scope": "한줄리터럴src/href(HTML속성/JS할당포함);동적표현식완전성보장없음"
+    },
+    {
+      "from": "game.html",
+      "reference": "growth-tree-detail.css?v=20260927-body-art3",
+      "resolved": "growth-tree-detail.css",
+      "exists": true,
+      "covered": true,
+      "scope": "한줄리터럴src/href(HTML속성/JS할당포함);동적표현식완전성보장없음"
+    },
+    {
+      "from": "game.html",
+      "reference": "knight-portrait.css?v=20260928-equipment-cutout3",
+      "resolved": "knight-portrait.css",
+      "exists": true,
+      "covered": true,
+      "scope": "한줄리터럴src/href(HTML속성/JS할당포함);동적표현식완전성보장없음"
+    },
+    {
+      "from": "game.html",
+      "reference": "inventory-paperdoll.js?v=20260928-equipment-cutout3",
+      "resolved": "inventory-paperdoll.js",
+      "exists": true,
+      "covered": true,
+      "scope": "한줄리터럴src/href(HTML속성/JS할당포함);동적표현식완전성보장없음"
+    },
+    {
+      "from": "game.html",
+      "reference": "growth-tree-fixed-background.css?v=20260927-fixed2",
+      "resolved": "growth-tree-fixed-background.css",
+      "exists": true,
+      "covered": true,
+      "scope": "한줄리터럴src/href(HTML속성/JS할당포함);동적표현식완전성보장없음"
+    },
+    {
+      "from": "game.html",
+      "reference": "growth-tree-information.css?v=20260927-info1",
+      "resolved": "growth-tree-information.css",
+      "exists": true,
+      "covered": true,
+      "scope": "한줄리터럴src/href(HTML속성/JS할당포함);동적표현식완전성보장없음"
+    },
+    {
+      "from": "game.html",
+      "reference": "ui-panels.js?v=20261001-settings-nav17",
+      "resolved": "ui-panels.js",
+      "exists": true,
+      "covered": true,
+      "scope": "한줄리터럴src/href(HTML속성/JS할당포함);동적표현식완전성보장없음"
+    },
+    {
+      "from": "game.html",
+      "reference": "inventory-gems.css?v=20260927-jewel-finish",
+      "resolved": "inventory-gems.css",
+      "exists": true,
+      "covered": true,
+      "scope": "한줄리터럴src/href(HTML속성/JS할당포함);동적표현식완전성보장없음"
+    },
+    {
+      "from": "game.html",
+      "reference": "inventory-gems-finish.css?v=20260927-square-art2",
+      "resolved": "inventory-gems-finish.css",
+      "exists": true,
+      "covered": true,
+      "scope": "한줄리터럴src/href(HTML속성/JS할당포함);동적표현식완전성보장없음"
+    },
+    {
+      "from": "game.html",
+      "reference": "inventory-space.css?v=20260928-relic-frame1",
+      "resolved": "inventory-space.css",
+      "exists": true,
+      "covered": true,
+      "scope": "한줄리터럴src/href(HTML속성/JS할당포함);동적표현식완전성보장없음"
+    },
+    {
+      "from": "game.html",
+      "reference": "skill-workspace.css?v=20260928-fixed-categories5",
+      "resolved": "skill-workspace.css",
+      "exists": true,
+      "covered": true,
+      "scope": "한줄리터럴src/href(HTML속성/JS할당포함);동적표현식완전성보장없음"
+    },
+    {
+      "from": "game.html",
+      "reference": "inventory-oss-balance.css?v=20260928-ossuary-fit5",
+      "resolved": "inventory-oss-balance.css",
+      "exists": true,
+      "covered": true,
+      "scope": "한줄리터럴src/href(HTML속성/JS할당포함);동적표현식완전성보장없음"
+    },
+    {
+      "from": "game.html",
+      "reference": "inventory-gems-balance.css?v=20260927-half",
+      "resolved": "inventory-gems-balance.css",
+      "exists": true,
+      "covered": true,
+      "scope": "한줄리터럴src/href(HTML속성/JS할당포함);동적표현식완전성보장없음"
+    },
+    {
+      "from": "game.html",
+      "reference": "stat-panel-ui.js?v=20260927-auto-invest2",
+      "resolved": "stat-panel-ui.js",
+      "exists": true,
+      "covered": true,
+      "scope": "한줄리터럴src/href(HTML속성/JS할당포함);동적표현식완전성보장없음"
+    },
+    {
+      "from": "game.html",
+      "reference": "img/mm_frame.png",
+      "resolved": "img/mm_frame.png",
+      "exists": true,
+      "covered": true,
+      "scope": "한줄리터럴src/href(HTML속성/JS할당포함);동적표현식완전성보장없음"
+    },
+    {
+      "from": "game.html",
+      "reference": "img/ui/inventory_knight_cutout_20260928.png",
+      "resolved": "img/ui/inventory_knight_cutout_20260928.png",
+      "exists": true,
+      "covered": true,
+      "scope": "한줄리터럴src/href(HTML속성/JS할당포함);동적표현식완전성보장없음"
+    },
+    {
+      "from": "game.html",
+      "reference": "img/ui/inventory_paperdoll_hf_20260923.png",
+      "resolved": "img/ui/inventory_paperdoll_hf_20260923.png",
+      "exists": true,
+      "covered": true,
+      "scope": "한줄리터럴src/href(HTML속성/JS할당포함);동적표현식완전성보장없음"
+    },
+    {
+      "from": "game.html",
+      "reference": "bgm/intro.mp4",
+      "resolved": "bgm/intro.mp4",
+      "exists": true,
+      "covered": true,
+      "scope": "한줄리터럴src/href(HTML속성/JS할당포함);동적표현식완전성보장없음"
+    },
+    {
+      "from": "game.html",
+      "reference": "img/crow/portrait.png?v=4",
+      "resolved": "img/crow/portrait.png",
+      "exists": true,
+      "covered": true,
+      "scope": "한줄리터럴src/href(HTML속성/JS할당포함);동적표현식완전성보장없음"
+    },
+    {
+      "from": "game.html",
+      "reference": "img/cat_pet/portrait.png?v=4",
+      "resolved": "img/cat_pet/portrait.png",
+      "exists": true,
+      "covered": true,
+      "scope": "한줄리터럴src/href(HTML속성/JS할당포함);동적표현식완전성보장없음"
+    },
+    {
+      "from": "game.html",
+      "reference": "assets/vfx/enemy/charge_start_rift.png",
+      "resolved": "assets/vfx/enemy/charge_start_rift.png",
+      "exists": true,
+      "covered": true,
+      "scope": "한줄리터럴src/href(HTML속성/JS할당포함);동적표현식완전성보장없음"
+    },
+    {
+      "from": "game.html",
+      "reference": "assets/vfx/enemy/charge_body_mist.png",
+      "resolved": "assets/vfx/enemy/charge_body_mist.png",
+      "exists": true,
+      "covered": true,
+      "scope": "한줄리터럴src/href(HTML속성/JS할당포함);동적표현식완전성보장없음"
+    },
+    {
+      "from": "game.html",
+      "reference": "assets/vfx/enemy/charge_end_spear.png",
+      "resolved": "assets/vfx/enemy/charge_end_spear.png",
+      "exists": true,
+      "covered": true,
+      "scope": "한줄리터럴src/href(HTML속성/JS할당포함);동적표현식완전성보장없음"
+    },
+    {
+      "from": "game.html",
+      "reference": "assets/vfx/fire_",
+      "resolved": "assets/vfx/fire_",
+      "exists": false,
+      "covered": true,
+      "scope": "한줄리터럴src/href(HTML속성/JS할당포함);동적표현식완전성보장없음"
+    },
+    {
+      "from": "game.html",
+      "reference": "assets/vfx/parry_impact_red.png",
+      "resolved": "assets/vfx/parry_impact_red.png",
+      "exists": true,
+      "covered": true,
+      "scope": "한줄리터럴src/href(HTML속성/JS할당포함);동적표현식완전성보장없음"
+    },
+    {
+      "from": "game.html",
+      "reference": "assets/vfx/parry_impact_rainbow.png",
+      "resolved": "assets/vfx/parry_impact_rainbow.png",
+      "exists": true,
+      "covered": true,
+      "scope": "한줄리터럴src/href(HTML속성/JS할당포함);동적표현식완전성보장없음"
+    },
+    {
+      "from": "game.html",
+      "reference": "img/boom_plague.png",
+      "resolved": "img/boom_plague.png",
+      "exists": true,
+      "covered": true,
+      "scope": "한줄리터럴src/href(HTML속성/JS할당포함);동적표현식완전성보장없음"
+    },
+    {
+      "from": "game.html",
+      "reference": "assets/vfx/chain_shuriken_2.webp",
+      "resolved": "assets/vfx/chain_shuriken_2.webp",
+      "exists": true,
+      "covered": true,
+      "scope": "한줄리터럴src/href(HTML속성/JS할당포함);동적표현식완전성보장없음"
+    },
+    {
+      "from": "game.html",
+      "reference": "img/vfx_repentance.png",
+      "resolved": "img/vfx_repentance.png",
+      "exists": true,
+      "covered": true,
+      "scope": "한줄리터럴src/href(HTML속성/JS할당포함);동적표현식완전성보장없음"
+    },
+    {
+      "from": "game.html",
+      "reference": "img/vfx_pentagram_purple.png",
+      "resolved": "img/vfx_pentagram_purple.png",
+      "exists": true,
+      "covered": true,
+      "scope": "한줄리터럴src/href(HTML속성/JS할당포함);동적표현식완전성보장없음"
+    },
+    {
+      "from": "game.html",
+      "reference": "img/vfx_pentagram_gold.png",
+      "resolved": "img/vfx_pentagram_gold.png",
+      "exists": true,
+      "covered": true,
+      "scope": "한줄리터럴src/href(HTML속성/JS할당포함);동적표현식완전성보장없음"
+    },
+    {
+      "from": "game.html",
+      "reference": "img/vfx_pentagram_red.png",
+      "resolved": "img/vfx_pentagram_red.png",
+      "exists": true,
+      "covered": true,
+      "scope": "한줄리터럴src/href(HTML속성/JS할당포함);동적표현식완전성보장없음"
+    },
+    {
+      "from": "game.html",
+      "reference": "img/vfx/mine_trap_ward_sheet.png",
+      "resolved": "img/vfx/mine_trap_ward_sheet.png",
+      "exists": true,
+      "covered": true,
+      "scope": "한줄리터럴src/href(HTML속성/JS할당포함);동적표현식완전성보장없음"
+    },
+    {
+      "from": "game.html",
+      "reference": "assets/vfx/bullet_black_hole_sheet.png",
+      "resolved": "assets/vfx/bullet_black_hole_sheet.png",
+      "exists": true,
+      "covered": true,
+      "scope": "한줄리터럴src/href(HTML속성/JS할당포함);동적표현식완전성보장없음"
+    },
+    {
+      "from": "game.html",
+      "reference": "img/vfx/teleport_out.png",
+      "resolved": "img/vfx/teleport_out.png",
+      "exists": true,
+      "covered": true,
+      "scope": "한줄리터럴src/href(HTML속성/JS할당포함);동적표현식완전성보장없음"
+    },
+    {
+      "from": "game.html",
+      "reference": "img/vfx/teleport_in.png",
+      "resolved": "img/vfx/teleport_in.png",
+      "exists": true,
+      "covered": true,
+      "scope": "한줄리터럴src/href(HTML속성/JS할당포함);동적표현식완전성보장없음"
+    },
+    {
+      "from": "game.html",
+      "reference": "img/tp_impact.png",
+      "resolved": "img/tp_impact.png",
+      "exists": true,
+      "covered": true,
+      "scope": "한줄리터럴src/href(HTML속성/JS할당포함);동적표현식완전성보장없음"
+    },
+    {
+      "from": "game.html",
+      "reference": "img/vfx_earthquake/explosion_spritesheet.webp",
+      "resolved": "img/vfx_earthquake/explosion_spritesheet.webp",
+      "exists": true,
+      "covered": true,
+      "scope": "한줄리터럴src/href(HTML속성/JS할당포함);동적표현식완전성보장없음"
+    },
+    {
+      "from": "game.html",
+      "reference": "img/crow/",
+      "resolved": "img/crow/",
+      "exists": true,
+      "covered": true,
+      "scope": "한줄리터럴src/href(HTML속성/JS할당포함);동적표현식완전성보장없음"
+    },
+    {
+      "from": "game.html",
+      "reference": "img/cat_pet/",
+      "resolved": "img/cat_pet/",
+      "exists": true,
+      "covered": true,
+      "scope": "한줄리터럴src/href(HTML속성/JS할당포함);동적표현식완전성보장없음"
+    },
+    {
+      "from": "game.html",
+      "reference": "img/cat_pet_anim/animations/idle/",
+      "resolved": "img/cat_pet_anim/animations/idle/",
+      "exists": true,
+      "covered": true,
+      "scope": "한줄리터럴src/href(HTML속성/JS할당포함);동적표현식완전성보장없음"
+    },
+    {
+      "from": "game.html",
+      "reference": "img/cat_pet_anim/animations/running-4-frames/",
+      "resolved": "img/cat_pet_anim/animations/running-4-frames/",
+      "exists": true,
+      "covered": true,
+      "scope": "한줄리터럴src/href(HTML속성/JS할당포함);동적표현식완전성보장없음"
+    },
+    {
+      "from": "game.html",
+      "reference": "img/",
+      "resolved": "img/",
+      "exists": true,
+      "covered": true,
+      "scope": "한줄리터럴src/href(HTML속성/JS할당포함);동적표현식완전성보장없음"
+    },
+    {
+      "from": "game.html",
+      "reference": "atlas_player.png?v=10",
+      "resolved": "atlas_player.png",
+      "exists": true,
+      "covered": true,
+      "scope": "한줄리터럴src/href(HTML속성/JS할당포함);동적표현식완전성보장없음"
+    },
+    {
+      "from": "game.html",
+      "reference": "atlas_enemies.png",
+      "resolved": "atlas_enemies.png",
+      "exists": false,
+      "covered": false,
+      "scope": "한줄리터럴src/href(HTML속성/JS할당포함);동적표현식완전성보장없음"
+    },
+    {
+      "from": "game.html",
+      "reference": "assets/vfx/boss/druid_corruption_ring.svg?v=20260928",
+      "resolved": "assets/vfx/boss/druid_corruption_ring.svg",
+      "exists": true,
+      "covered": true,
+      "scope": "한줄리터럴src/href(HTML속성/JS할당포함);동적표현식완전성보장없음"
+    },
+    {
+      "from": "game.html",
+      "reference": "assets/sprites/boss/boss_dark_druid_",
+      "resolved": "assets/sprites/boss/boss_dark_druid_",
+      "exists": false,
+      "covered": true,
+      "scope": "한줄리터럴src/href(HTML속성/JS할당포함);동적표현식완전성보장없음"
+    },
+    {
+      "from": "game.html",
+      "reference": "atlas_bosses.png?v=3",
+      "resolved": "atlas_bosses.png",
+      "exists": true,
+      "covered": true,
+      "scope": "한줄리터럴src/href(HTML속성/JS할당포함);동적표현식완전성보장없음"
+    },
+    {
+      "from": "game.html",
+      "reference": "assets/map/ch2/skull_wall_tile.png",
+      "resolved": "assets/map/ch2/skull_wall_tile.png",
+      "exists": true,
+      "covered": true,
+      "scope": "한줄리터럴src/href(HTML속성/JS할당포함);동적표현식완전성보장없음"
+    },
+    {
+      "from": "game.html",
+      "reference": "assets/map/ch2/wall_edge_tile.png",
+      "resolved": "assets/map/ch2/wall_edge_tile.png",
+      "exists": true,
+      "covered": true,
+      "scope": "한줄리터럴src/href(HTML속성/JS할당포함);동적표현식완전성보장없음"
+    },
+    {
+      "from": "game.html",
+      "reference": "assets/map/ch1/void_vista.jpg?v=20260817-vista",
+      "resolved": "assets/map/ch1/void_vista.jpg",
+      "exists": true,
+      "covered": true,
+      "scope": "한줄리터럴src/href(HTML속성/JS할당포함);동적표현식완전성보장없음"
+    },
+    {
+      "from": "game.html",
+      "reference": "assets/map/ch1/map_1-2.jpg?v=20260817-paint2",
+      "resolved": "assets/map/ch1/map_1-2.jpg",
+      "exists": true,
+      "covered": true,
+      "scope": "한줄리터럴src/href(HTML속성/JS할당포함);동적표현식완전성보장없음"
+    },
+    {
+      "from": "game.html",
+      "reference": "assets/map/eye_bloodshot_8dir.png",
+      "resolved": "assets/map/eye_bloodshot_8dir.png",
+      "exists": true,
+      "covered": true,
+      "scope": "한줄리터럴src/href(HTML속성/JS할당포함);동적표현식완전성보장없음"
+    },
+    {
+      "from": "game.html",
+      "reference": "img/exoduser_silvertail/blade_tip_api_v1_cropped.png",
+      "resolved": "img/exoduser_silvertail/blade_tip_api_v1_cropped.png",
+      "exists": true,
+      "covered": true,
+      "scope": "한줄리터럴src/href(HTML속성/JS할당포함);동적표현식완전성보장없음"
+    },
+    {
+      "from": "game.html",
+      "reference": "img/vfx/silvertail_ki_slash_realistic.png",
+      "resolved": "img/vfx/silvertail_ki_slash_realistic.png",
+      "exists": true,
+      "covered": true,
+      "scope": "한줄리터럴src/href(HTML속성/JS할당포함);동적표현식완전성보장없음"
+    },
+    {
+      "from": "game.html",
+      "reference": "img/vfx/silvertail_violet_arc_anim_api_v3.png?v=20260810-silvertail-arc-anim-v3",
+      "resolved": "img/vfx/silvertail_violet_arc_anim_api_v3.png",
+      "exists": true,
+      "covered": true,
+      "scope": "한줄리터럴src/href(HTML속성/JS할당포함);동적표현식완전성보장없음"
+    },
+    {
+      "from": "game.html",
+      "reference": "assets/vfx/flame_blade_swing_8f.png",
+      "resolved": "assets/vfx/flame_blade_swing_8f.png",
+      "exists": true,
+      "covered": true,
+      "scope": "한줄리터럴src/href(HTML속성/JS할당포함);동적표현식완전성보장없음"
+    },
+    {
+      "from": "game.html",
+      "reference": "assets/vfx/whirl_blade_1.webp",
+      "resolved": "assets/vfx/whirl_blade_1.webp",
+      "exists": true,
+      "covered": true,
+      "scope": "한줄리터럴src/href(HTML속성/JS할당포함);동적표현식완전성보장없음"
+    },
+    {
+      "from": "game.html",
+      "reference": "assets/vfx/ww_hit_impact.jpg",
+      "resolved": "assets/vfx/ww_hit_impact.jpg",
+      "exists": false,
+      "covered": true,
+      "scope": "한줄리터럴src/href(HTML속성/JS할당포함);동적표현식완전성보장없음"
+    },
+    {
+      "from": "game.html",
+      "reference": "img/crater.png",
+      "resolved": "img/crater.png",
+      "exists": true,
+      "covered": true,
+      "scope": "한줄리터럴src/href(HTML속성/JS할당포함);동적표현식완전성보장없음"
+    },
+    {
+      "from": "game.html",
+      "reference": "img/cursors/cursor_dark_css.png",
+      "resolved": "img/cursors/cursor_dark_css.png",
+      "exists": true,
+      "covered": true,
+      "scope": "한줄리터럴src/href(HTML속성/JS할당포함);동적표현식완전성보장없음"
+    },
+    {
+      "from": "game.html",
+      "reference": "img/balls/proj_bolt_",
+      "resolved": "img/balls/proj_bolt_",
+      "exists": false,
+      "covered": true,
+      "scope": "한줄리터럴src/href(HTML속성/JS할당포함);동적표현식완전성보장없음"
+    },
+    {
+      "from": "game.html",
+      "reference": "assets/gems/cursed_relics_",
+      "resolved": "assets/gems/cursed_relics_",
+      "exists": false,
+      "covered": true,
+      "scope": "한줄리터럴src/href(HTML속성/JS할당포함);동적표현식완전성보장없음"
+    },
+    {
+      "from": "game.html",
+      "reference": "img/ui/inventory_paperdoll_hf_20260923.png",
+      "resolved": "img/ui/inventory_paperdoll_hf_20260923.png",
+      "exists": true,
+      "covered": true,
+      "scope": "한줄리터럴src/href(HTML속성/JS할당포함);동적표현식완전성보장없음"
+    },
+    {
+      "from": "game.html",
+      "reference": "assets/vfx/crescent_slash.webp",
+      "resolved": "assets/vfx/crescent_slash.webp",
+      "exists": true,
+      "covered": true,
+      "scope": "한줄리터럴src/href(HTML속성/JS할당포함);동적표현식완전성보장없음"
+    },
+    {
+      "from": "game.html",
+      "reference": "assets/vfx/ki_slash_radiant_sheet.png",
+      "resolved": "assets/vfx/ki_slash_radiant_sheet.png",
+      "exists": true,
+      "covered": true,
+      "scope": "한줄리터럴src/href(HTML속성/JS할당포함);동적표현식완전성보장없음"
+    },
+    {
+      "from": "game.html",
+      "reference": "img/vfx/chain_blade_cyclone_8f.png",
+      "resolved": "img/vfx/chain_blade_cyclone_8f.png",
+      "exists": true,
+      "covered": true,
+      "scope": "한줄리터럴src/href(HTML속성/JS할당포함);동적표현식완전성보장없음"
+    },
+    {
+      "from": "game.html",
+      "reference": "img/vfx/sky_crusher_iron_wedge.png",
+      "resolved": "img/vfx/sky_crusher_iron_wedge.png",
+      "exists": true,
+      "covered": true,
+      "scope": "한줄리터럴src/href(HTML속성/JS할당포함);동적표현식완전성보장없음"
+    },
+    {
+      "from": "game.html",
+      "reference": "img/vfx/sky_crusher_burning.png",
+      "resolved": "img/vfx/sky_crusher_burning.png",
+      "exists": true,
+      "covered": true,
+      "scope": "한줄리터럴src/href(HTML속성/JS할당포함);동적표현식완전성보장없음"
+    },
+    {
+      "from": "game.html",
+      "reference": "img/vfx/sbash_blade.webp",
+      "resolved": "img/vfx/sbash_blade.webp",
+      "exists": true,
+      "covered": true,
+      "scope": "한줄리터럴src/href(HTML속성/JS할당포함);동적표현식완전성보장없음"
+    },
+    {
+      "from": "game.html",
+      "reference": "img/vfx/sbash_blade_black.webp",
+      "resolved": "img/vfx/sbash_blade_black.webp",
+      "exists": true,
+      "covered": true,
+      "scope": "한줄리터럴src/href(HTML속성/JS할당포함);동적표현식완전성보장없음"
+    },
+    {
+      "from": "game.html",
+      "reference": "assets/map/ch1/boss_room_bg.png",
+      "resolved": "assets/map/ch1/boss_room_bg.png",
+      "exists": true,
+      "covered": true,
+      "scope": "한줄리터럴src/href(HTML속성/JS할당포함);동적표현식완전성보장없음"
+    },
+    {
+      "from": "game.html",
+      "reference": "assets/map/ch1/collision/boss_pillar_01.webp",
+      "resolved": "assets/map/ch1/collision/boss_pillar_01.webp",
+      "exists": true,
+      "covered": true,
+      "scope": "한줄리터럴src/href(HTML속성/JS할당포함);동적표현식완전성보장없음"
+    },
+    {
+      "from": "game.html",
+      "reference": "img/map_dragon_skeleton.png",
+      "resolved": "img/map_dragon_skeleton.png",
+      "exists": true,
+      "covered": true,
+      "scope": "한줄리터럴src/href(HTML속성/JS할당포함);동적표현식완전성보장없음"
+    },
+    {
+      "from": "game.html",
+      "reference": "img/map_dragon_3d.png",
+      "resolved": "img/map_dragon_3d.png",
+      "exists": true,
+      "covered": true,
+      "scope": "한줄리터럴src/href(HTML속성/JS할당포함);동적표현식완전성보장없음"
+    },
+    {
+      "from": "game.html",
+      "reference": "assets/vfx/impact_basic_sheet.png",
+      "resolved": "assets/vfx/impact_basic_sheet.png",
+      "exists": true,
+      "covered": true,
+      "scope": "한줄리터럴src/href(HTML속성/JS할당포함);동적표현식완전성보장없음"
+    },
+    {
+      "from": "game.html",
+      "reference": "assets/vfx/impact_el",
+      "resolved": "assets/vfx/impact_el",
+      "exists": false,
+      "covered": true,
+      "scope": "한줄리터럴src/href(HTML속성/JS할당포함);동적표현식완전성보장없음"
+    },
+    {
+      "from": "game.html",
+      "reference": "assets/vfx/impact_el",
+      "resolved": "assets/vfx/impact_el",
+      "exists": false,
+      "covered": true,
+      "scope": "한줄리터럴src/href(HTML속성/JS할당포함);동적표현식완전성보장없음"
+    },
+    {
+      "from": "game.html",
+      "reference": "assets/vfx/malice_mortar_explode/sprite-384px-9-frames/frame_",
+      "resolved": "assets/vfx/malice_mortar_explode/sprite-384px-9-frames/frame_",
+      "exists": false,
+      "covered": true,
+      "scope": "한줄리터럴src/href(HTML속성/JS할당포함);동적표현식완전성보장없음"
+    },
+    {
+      "from": "game.html",
+      "reference": "assets/vfx/vfx_ice_orb.png",
+      "resolved": "assets/vfx/vfx_ice_orb.png",
+      "exists": true,
+      "covered": true,
+      "scope": "한줄리터럴src/href(HTML속성/JS할당포함);동적표현식완전성보장없음"
+    },
+    {
+      "from": "game.html",
+      "reference": "sprites/bonfire_barrier.png",
+      "resolved": "sprites/bonfire_barrier.png",
+      "exists": true,
+      "covered": true,
+      "scope": "한줄리터럴src/href(HTML속성/JS할당포함);동적표현식완전성보장없음"
+    },
+    {
+      "from": "game.html",
+      "reference": "assets/vfx/vfx_shield_aura.png",
+      "resolved": "assets/vfx/vfx_shield_aura.png",
+      "exists": true,
+      "covered": true,
+      "scope": "한줄리터럴src/href(HTML속성/JS할당포함);동적표현식완전성보장없음"
+    },
+    {
+      "from": "game.html",
+      "reference": "assets/vfx/ground_crack_sheet.png",
+      "resolved": "assets/vfx/ground_crack_sheet.png",
+      "exists": true,
+      "covered": true,
+      "scope": "한줄리터럴src/href(HTML속성/JS할당포함);동적표현식완전성보장없음"
+    },
+    {
+      "from": "game.html",
+      "reference": "assets/vfx/malice_dome.png",
+      "resolved": "assets/vfx/malice_dome.png",
+      "exists": true,
+      "covered": true,
+      "scope": "한줄리터럴src/href(HTML속성/JS할당포함);동적표현식완전성보장없음"
+    },
+    {
+      "from": "game.html",
+      "reference": "assets/vfx/fire_beam/fire_beam_spritesheet.png",
+      "resolved": "assets/vfx/fire_beam/fire_beam_spritesheet.png",
+      "exists": true,
+      "covered": true,
+      "scope": "한줄리터럴src/href(HTML속성/JS할당포함);동적표현식완전성보장없음"
+    },
+    {
+      "from": "game.html",
+      "reference": "assets/vfx/fire_explode/fire_explode_spritesheet.png",
+      "resolved": "assets/vfx/fire_explode/fire_explode_spritesheet.png",
+      "exists": true,
+      "covered": true,
+      "scope": "한줄리터럴src/href(HTML속성/JS할당포함);동적표현식완전성보장없음"
+    },
+    {
+      "from": "game.html",
+      "reference": "assets/vfx/arc_laser/laser_sheet.png?v=20260522b",
+      "resolved": "assets/vfx/arc_laser/laser_sheet.png",
+      "exists": true,
+      "covered": true,
+      "scope": "한줄리터럴src/href(HTML속성/JS할당포함);동적표현식완전성보장없음"
+    },
+    {
+      "from": "game.html",
+      "reference": "assets/vfx/vfx_magic_orb.png",
+      "resolved": "assets/vfx/vfx_magic_orb.png",
+      "exists": true,
+      "covered": true,
+      "scope": "한줄리터럴src/href(HTML속성/JS할당포함);동적표현식완전성보장없음"
+    },
+    {
+      "from": "game.html",
+      "reference": "img/vfx/silvertail_malice_orb_sheet_v3.png",
+      "resolved": "img/vfx/silvertail_malice_orb_sheet_v3.png",
+      "exists": true,
+      "covered": true,
+      "scope": "한줄리터럴src/href(HTML속성/JS할당포함);동적표현식완전성보장없음"
+    },
+    {
+      "from": "game.html",
+      "reference": "assets/vfx/lightning_burst_sheet.png",
+      "resolved": "assets/vfx/lightning_burst_sheet.png",
+      "exists": true,
+      "covered": true,
+      "scope": "한줄리터럴src/href(HTML속성/JS할당포함);동적표현식완전성보장없음"
+    },
+    {
+      "from": "game.html",
+      "reference": "assets/vfx/vfx_peace_shield.png",
+      "resolved": "assets/vfx/vfx_peace_shield.png",
+      "exists": true,
+      "covered": true,
+      "scope": "한줄리터럴src/href(HTML속성/JS할당포함);동적표현식완전성보장없음"
+    },
+    {
+      "from": "game.html",
+      "reference": "assets/vfx/boss/vfx_holy_burst.png",
+      "resolved": "assets/vfx/boss/vfx_holy_burst.png",
+      "exists": true,
+      "covered": true,
+      "scope": "한줄리터럴src/href(HTML속성/JS할당포함);동적표현식완전성보장없음"
+    },
+    {
+      "from": "game.html",
+      "reference": "assets/vfx/fire_",
+      "resolved": "assets/vfx/fire_",
+      "exists": false,
+      "covered": true,
+      "scope": "한줄리터럴src/href(HTML속성/JS할당포함);동적표현식완전성보장없음"
+    },
+    {
+      "from": "game.html",
+      "reference": "assets/vfx/ki_slash_hit_radiant_sheet.png",
+      "resolved": "assets/vfx/ki_slash_hit_radiant_sheet.png",
+      "exists": true,
+      "covered": true,
+      "scope": "한줄리터럴src/href(HTML속성/JS할당포함);동적표현식완전성보장없음"
+    },
+    {
+      "from": "game.html",
+      "reference": "img/vfx/kraken_vanish.png",
+      "resolved": "img/vfx/kraken_vanish.png",
+      "exists": true,
+      "covered": true,
+      "scope": "한줄리터럴src/href(HTML속성/JS할당포함);동적표현식완전성보장없음"
+    },
+    {
+      "from": "game.html",
+      "reference": "img/atlas_ch",
+      "resolved": "img/atlas_ch",
+      "exists": false,
+      "covered": true,
+      "scope": "한줄리터럴src/href(HTML속성/JS할당포함);동적표현식완전성보장없음"
+    },
+    {
+      "from": "game.html",
+      "reference": "img/atlas_ch",
+      "resolved": "img/atlas_ch",
+      "exists": false,
+      "covered": true,
+      "scope": "한줄리터럴src/href(HTML속성/JS할당포함);동적표현식완전성보장없음"
+    },
+    {
+      "from": "game.html",
+      "reference": "img/atlas_ch",
+      "resolved": "img/atlas_ch",
+      "exists": false,
+      "covered": true,
+      "scope": "한줄리터럴src/href(HTML속성/JS할당포함);동적표현식완전성보장없음"
+    },
+    {
+      "from": "game.html",
+      "reference": "img/atlas_ch",
+      "resolved": "img/atlas_ch",
+      "exists": false,
+      "covered": true,
+      "scope": "한줄리터럴src/href(HTML속성/JS할당포함);동적표현식완전성보장없음"
+    },
+    {
+      "from": "game.html",
+      "reference": "proj_atlas.png",
+      "resolved": "proj_atlas.png",
+      "exists": true,
+      "covered": true,
+      "scope": "한줄리터럴src/href(HTML속성/JS할당포함);동적표현식완전성보장없음"
+    },
+    {
+      "from": "game.html",
+      "reference": "img/balls/proj_bolt_phys.png",
+      "resolved": "img/balls/proj_bolt_phys.png",
+      "exists": true,
+      "covered": true,
+      "scope": "한줄리터럴src/href(HTML속성/JS할당포함);동적표현식완전성보장없음"
+    },
+    {
+      "from": "game.html",
+      "reference": "img/balls/proj_bolt_dark.png",
+      "resolved": "img/balls/proj_bolt_dark.png",
+      "exists": true,
+      "covered": true,
+      "scope": "한줄리터럴src/href(HTML속성/JS할당포함);동적표현식완전성보장없음"
+    },
+    {
+      "from": "game.html",
+      "reference": "img/proj_eye_sheet.png",
+      "resolved": "img/proj_eye_sheet.png",
+      "exists": true,
+      "covered": true,
+      "scope": "한줄리터럴src/href(HTML속성/JS할당포함);동적표현식완전성보장없음"
+    },
+    {
+      "from": "game.html",
+      "reference": "img/proj_phys_mouth.png?v=20260823-phys-user",
+      "resolved": "img/proj_phys_mouth.png",
+      "exists": true,
+      "covered": true,
+      "scope": "한줄리터럴src/href(HTML속성/JS할당포함);동적표현식완전성보장없음"
+    },
+    {
+      "from": "game.html",
+      "reference": "img/proj_elem_orb.png?v=20260823-elem-orb",
+      "resolved": "img/proj_elem_orb.png",
+      "exists": true,
+      "covered": true,
+      "scope": "한줄리터럴src/href(HTML속성/JS할당포함);동적표현식완전성보장없음"
+    },
+    {
+      "from": "game.html",
+      "reference": "img/balls/proj_kraken_shot_api_v1.png?v=20260903",
+      "resolved": "img/balls/proj_kraken_shot_api_v1.png",
+      "exists": true,
+      "covered": true,
+      "scope": "한줄리터럴src/href(HTML속성/JS할당포함);동적표현식완전성보장없음"
+    },
+    {
+      "from": "game.html",
+      "reference": "assets/vfx/water_blue_projectile_sheet.png?v=20260905",
+      "resolved": "assets/vfx/water_blue_projectile_sheet.png",
+      "exists": true,
+      "covered": true,
+      "scope": "한줄리터럴src/href(HTML속성/JS할당포함);동적표현식완전성보장없음"
+    },
+    {
+      "from": "game.html",
+      "reference": "img/vfx/silvertail_charge_range_api_v1.png?v=20260903",
+      "resolved": "img/vfx/silvertail_charge_range_api_v1.png",
+      "exists": true,
+      "covered": true,
+      "scope": "한줄리터럴src/href(HTML속성/JS할당포함);동적표현식완전성보장없음"
+    },
+    {
+      "from": "game.html",
+      "reference": "img/proj_titan_eye.png",
+      "resolved": "img/proj_titan_eye.png",
+      "exists": true,
+      "covered": true,
+      "scope": "한줄리터럴src/href(HTML속성/JS할당포함);동적표현식완전성보장없음"
+    },
+    {
+      "from": "game.html",
+      "reference": "img/proj_kraken_water.png",
+      "resolved": "img/proj_kraken_water.png",
+      "exists": true,
+      "covered": true,
+      "scope": "한줄리터럴src/href(HTML속성/JS할당포함);동적표현식완전성보장없음"
+    },
+    {
+      "from": "game.html",
+      "reference": "img/balls/proj_bolt_",
+      "resolved": "img/balls/proj_bolt_",
+      "exists": false,
+      "covered": true,
+      "scope": "한줄리터럴src/href(HTML속성/JS할당포함);동적표현식완전성보장없음"
+    },
+    {
+      "from": "game.html",
+      "reference": "img/balls/proj_shard_",
+      "resolved": "img/balls/proj_shard_",
+      "exists": false,
+      "covered": true,
+      "scope": "한줄리터럴src/href(HTML속성/JS할당포함);동적표현식완전성보장없음"
+    },
+    {
+      "from": "game.html",
+      "reference": "img/balls/proj_bolt_comet.png",
+      "resolved": "img/balls/proj_bolt_comet.png",
+      "exists": true,
+      "covered": true,
+      "scope": "한줄리터럴src/href(HTML속성/JS할당포함);동적표현식완전성보장없음"
+    },
+    {
+      "from": "game.html",
+      "reference": "assets/gore/",
+      "resolved": "assets/gore/",
+      "exists": true,
+      "covered": true,
+      "scope": "한줄리터럴src/href(HTML속성/JS할당포함);동적표현식완전성보장없음"
+    },
+    {
+      "from": "game.html",
+      "reference": "assets/gore/",
+      "resolved": "assets/gore/",
+      "exists": true,
+      "covered": true,
+      "scope": "한줄리터럴src/href(HTML속성/JS할당포함);동적표현식완전성보장없음"
+    },
+    {
+      "from": "game.html",
+      "reference": "assets/map/eye_bloodshot_8dir.png",
+      "resolved": "assets/map/eye_bloodshot_8dir.png",
+      "exists": true,
+      "covered": true,
+      "scope": "한줄리터럴src/href(HTML속성/JS할당포함);동적표현식완전성보장없음"
+    },
+    {
+      "from": "game.html",
+      "reference": "img/skillskin_upscaled/${fId}.png",
+      "resolved": "img/skillskin_upscaled/${fId}.png",
+      "exists": false,
+      "covered": true,
+      "scope": "한줄리터럴src/href(HTML속성/JS할당포함);동적표현식완전성보장없음"
+    },
+    {
+      "from": "game.html",
+      "reference": "img/skillskin_upscaled/${f}.png",
+      "resolved": "img/skillskin_upscaled/${f}.png",
+      "exists": false,
+      "covered": true,
+      "scope": "한줄리터럴src/href(HTML속성/JS할당포함);동적표현식완전성보장없음"
+    },
+    {
+      "from": "game.html",
+      "reference": "img/skillskin_upscaled/voidScarecrow.png",
+      "resolved": "img/skillskin_upscaled/voidScarecrow.png",
+      "exists": true,
+      "covered": true,
+      "scope": "한줄리터럴src/href(HTML속성/JS할당포함);동적표현식완전성보장없음"
+    },
+    {
+      "from": "game.html",
+      "reference": "img/skillskin_upscaled/explodeScarecrow.png",
+      "resolved": "img/skillskin_upscaled/explodeScarecrow.png",
+      "exists": true,
+      "covered": true,
+      "scope": "한줄리터럴src/href(HTML속성/JS할당포함);동적표현식완전성보장없음"
+    },
+    {
+      "from": "game.html",
+      "reference": "img/vfx_ancestor/ancestor_summon_circle.png",
+      "resolved": "img/vfx_ancestor/ancestor_summon_circle.png",
+      "exists": true,
+      "covered": true,
+      "scope": "한줄리터럴src/href(HTML속성/JS할당포함);동적표현식완전성보장없음"
+    },
+    {
+      "from": "game.html",
+      "reference": "img/vfx/chain_earth_cleave.png",
+      "resolved": "img/vfx/chain_earth_cleave.png",
+      "exists": true,
+      "covered": true,
+      "scope": "한줄리터럴src/href(HTML속성/JS할당포함);동적표현식완전성보장없음"
+    },
+    {
+      "from": "game.html",
+      "reference": "img/vfx/chain_earth_rubble.png",
+      "resolved": "img/vfx/chain_earth_rubble.png",
+      "exists": true,
+      "covered": true,
+      "scope": "한줄리터럴src/href(HTML속성/JS할당포함);동적표현식완전성보장없음"
+    },
+    {
+      "from": "game.html",
+      "reference": "index.html",
+      "resolved": "index.html",
+      "exists": true,
+      "covered": true,
+      "scope": "한줄리터럴src/href(HTML속성/JS할당포함);동적표현식완전성보장없음"
+    },
+    {
+      "from": "game.html",
+      "reference": "output/imagegen/item-skins/ossuary_phys.png",
+      "resolved": "output/imagegen/item-skins/ossuary_phys.png",
+      "exists": true,
+      "covered": true,
+      "scope": "한줄리터럴src/href(HTML속성/JS할당포함);동적표현식완전성보장없음"
+    },
+    {
+      "from": "game.html",
+      "reference": "output/imagegen/item-skins/bone_",
+      "resolved": "output/imagegen/item-skins/bone_",
+      "exists": false,
+      "covered": true,
+      "scope": "한줄리터럴src/href(HTML속성/JS할당포함);동적표현식완전성보장없음"
+    },
+    {
+      "from": "game.html",
+      "reference": "assets/vfx/boss/beam_laser_c.png",
+      "resolved": "assets/vfx/boss/beam_laser_c.png",
+      "exists": true,
+      "covered": true,
+      "scope": "한줄리터럴src/href(HTML속성/JS할당포함);동적표현식완전성보장없음"
+    },
+    {
+      "from": "game.html",
+      "reference": "sprites/spike_trap/vortex.png",
+      "resolved": "sprites/spike_trap/vortex.png",
+      "exists": true,
+      "covered": true,
+      "scope": "한줄리터럴src/href(HTML속성/JS할당포함);동적표현식완전성보장없음"
+    },
+    {
+      "from": "game.html",
+      "reference": "sprites/spike_trap/vortex.png",
+      "resolved": "sprites/spike_trap/vortex.png",
+      "exists": true,
+      "covered": true,
+      "scope": "한줄리터럴src/href(HTML속성/JS할당포함);동적표현식완전성보장없음"
+    },
+    {
+      "from": "game.html",
+      "reference": "sprites/spike_trap/spike_thorn.png",
+      "resolved": "sprites/spike_trap/spike_thorn.png",
+      "exists": true,
+      "covered": true,
+      "scope": "한줄리터럴src/href(HTML속성/JS할당포함);동적표현식완전성보장없음"
+    },
+    {
+      "from": "game.html",
+      "reference": "sprites/zone_single.png",
+      "resolved": "sprites/zone_single.png",
+      "exists": true,
+      "covered": true,
+      "scope": "한줄리터럴src/href(HTML속성/JS할당포함);동적표현식완전성보장없음"
+    },
+    {
+      "from": "game.html",
+      "reference": "sprites/holy_dome.png",
+      "resolved": "sprites/holy_dome.png",
+      "exists": true,
+      "covered": true,
+      "scope": "한줄리터럴src/href(HTML속성/JS할당포함);동적표현식완전성보장없음"
+    },
+    {
+      "from": "game.html",
+      "reference": "img/vfx_scarecrow/scarecrow_idle_",
+      "resolved": "img/vfx_scarecrow/scarecrow_idle_",
+      "exists": false,
+      "covered": true,
+      "scope": "한줄리터럴src/href(HTML속성/JS할당포함);동적표현식완전성보장없음"
+    },
+    {
+      "from": "game.html",
+      "reference": "img/vfx_scarecrow/scarecrow_idle_",
+      "resolved": "img/vfx_scarecrow/scarecrow_idle_",
+      "exists": false,
+      "covered": true,
+      "scope": "한줄리터럴src/href(HTML속성/JS할당포함);동적표현식완전성보장없음"
+    },
+    {
+      "from": "game.html",
+      "reference": "img/vfx_pentagram_purple.png",
+      "resolved": "img/vfx_pentagram_purple.png",
+      "exists": true,
+      "covered": true,
+      "scope": "한줄리터럴src/href(HTML속성/JS할당포함);동적표현식완전성보장없음"
+    },
+    {
+      "from": "game.html",
+      "reference": "assets/vfx/boss/ult_black_c.png",
+      "resolved": "assets/vfx/boss/ult_black_c.png",
+      "exists": true,
+      "covered": true,
+      "scope": "한줄리터럴src/href(HTML속성/JS할당포함);동적표현식완전성보장없음"
+    },
+    {
+      "from": "game.html",
+      "reference": "sprites/holy_dome.png",
+      "resolved": "sprites/holy_dome.png",
+      "exists": true,
+      "covered": true,
+      "scope": "한줄리터럴src/href(HTML속성/JS할당포함);동적표현식완전성보장없음"
+    },
+    {
+      "from": "game.html",
+      "reference": "img/fieldboss_angler.png",
+      "resolved": "img/fieldboss_angler.png",
+      "exists": true,
+      "covered": true,
+      "scope": "한줄리터럴src/href(HTML속성/JS할당포함);동적표현식완전성보장없음"
+    },
+    {
+      "from": "game.html",
+      "reference": "img/fieldboss_angler_charge.png?v=080110",
+      "resolved": "img/fieldboss_angler_charge.png",
+      "exists": true,
+      "covered": true,
+      "scope": "한줄리터럴src/href(HTML속성/JS할당포함);동적표현식완전성보장없음"
+    },
+    {
+      "from": "game.html",
+      "reference": "img/worm_burrow1.png",
+      "resolved": "img/worm_burrow1.png",
+      "exists": true,
+      "covered": true,
+      "scope": "한줄리터럴src/href(HTML속성/JS할당포함);동적표현식완전성보장없음"
+    },
+    {
+      "from": "game.html",
+      "reference": "img/worm_burrow2.png",
+      "resolved": "img/worm_burrow2.png",
+      "exists": true,
+      "covered": true,
+      "scope": "한줄리터럴src/href(HTML속성/JS할당포함);동적표현식완전성보장없음"
+    },
+    {
+      "from": "game.html",
+      "reference": "img/fieldboss_firedevil_emerge.png",
+      "resolved": "img/fieldboss_firedevil_emerge.png",
+      "exists": true,
+      "covered": true,
+      "scope": "한줄리터럴src/href(HTML속성/JS할당포함);동적표현식완전성보장없음"
+    },
+    {
+      "from": "game.html",
+      "reference": "img/fieldboss_firedevil_idle.png",
+      "resolved": "img/fieldboss_firedevil_idle.png",
+      "exists": true,
+      "covered": true,
+      "scope": "한줄리터럴src/href(HTML속성/JS할당포함);동적표현식완전성보장없음"
+    },
+    {
+      "from": "game.html",
+      "reference": "img/fieldboss_firedevil_dir.png",
+      "resolved": "img/fieldboss_firedevil_dir.png",
+      "exists": true,
+      "covered": true,
+      "scope": "한줄리터럴src/href(HTML속성/JS할당포함);동적표현식완전성보장없음"
+    },
+    {
+      "from": "game.html",
+      "reference": "img/fieldboss_firedevil_charge.png?v=052910",
+      "resolved": "img/fieldboss_firedevil_charge.png",
+      "exists": true,
+      "covered": true,
+      "scope": "한줄리터럴src/href(HTML속성/JS할당포함);동적표현식완전성보장없음"
+    },
+    {
+      "from": "game.html",
+      "reference": "img/proj_firedevil_orb.png",
+      "resolved": "img/proj_firedevil_orb.png",
+      "exists": true,
+      "covered": true,
+      "scope": "한줄리터럴src/href(HTML속성/JS할당포함);동적표현식완전성보장없음"
+    },
+    {
+      "from": "game.html",
+      "reference": "img/logo_exoduser.png",
+      "resolved": "img/logo_exoduser.png",
+      "exists": true,
+      "covered": true,
+      "scope": "한줄리터럴src/href(HTML속성/JS할당포함);동적표현식완전성보장없음"
+    },
+    {
+      "from": "game-easy-test.html",
+      "reference": "player-attack-remaster.js?v=20260915-spin-speed15",
+      "resolved": "player-attack-remaster.js",
+      "exists": true,
+      "covered": true,
+      "scope": "한줄리터럴src/href(HTML속성/JS할당포함);동적표현식완전성보장없음"
+    },
+    {
+      "from": "game-easy-test.html",
+      "reference": "warrior-bat-swing.js?v=20260915-speed85",
+      "resolved": "warrior-bat-swing.js",
+      "exists": true,
+      "covered": true,
+      "scope": "한줄리터럴src/href(HTML속성/JS할당포함);동적표현식완전성보장없음"
+    },
+    {
+      "from": "game-easy-test.html",
+      "reference": "warrior-dash-flight.js?v=20260924-flight1",
+      "resolved": "warrior-dash-flight.js",
+      "exists": true,
+      "covered": true,
+      "scope": "한줄리터럴src/href(HTML속성/JS할당포함);동적표현식완전성보장없음"
+    },
+    {
+      "from": "game-easy-test.html",
+      "reference": "tutorial-badges.css?v=20260929-earned-hud",
+      "resolved": "tutorial-badges.css",
+      "exists": true,
+      "covered": true,
+      "scope": "한줄리터럴src/href(HTML속성/JS할당포함);동적표현식완전성보장없음"
+    },
+    {
+      "from": "game-easy-test.html",
+      "reference": "tutorial-badges.js?v=20260929-earned-hud",
+      "resolved": "tutorial-badges.js",
+      "exists": true,
+      "covered": true,
+      "scope": "한줄리터럴src/href(HTML속성/JS할당포함);동적표현식완전성보장없음"
+    },
+    {
+      "from": "game-easy-test.html",
+      "reference": "system-lesson.css?v=20260912-restored4",
+      "resolved": "system-lesson.css",
+      "exists": true,
+      "covered": true,
+      "scope": "한줄리터럴src/href(HTML속성/JS할당포함);동적표현식완전성보장없음"
+    },
+    {
+      "from": "game-easy-test.html",
+      "reference": "system-lesson.js?v=20260912-skip-density1",
+      "resolved": "system-lesson.js",
+      "exists": true,
+      "covered": true,
+      "scope": "한줄리터럴src/href(HTML속성/JS할당포함);동적표현식완전성보장없음"
+    },
+    {
+      "from": "game-easy-test.html",
+      "reference": "parry-lesson.css?v=20260913-mission-details1",
+      "resolved": "parry-lesson.css",
+      "exists": true,
+      "covered": true,
+      "scope": "한줄리터럴src/href(HTML속성/JS할당포함);동적표현식완전성보장없음"
+    },
+    {
+      "from": "game-easy-test.html",
+      "reference": "resource-practice.js?v=20260916-recovery2",
+      "resolved": "resource-practice.js",
+      "exists": true,
+      "covered": true,
+      "scope": "한줄리터럴src/href(HTML속성/JS할당포함);동적표현식완전성보장없음"
+    },
+    {
+      "from": "game-easy-test.html",
+      "reference": "parry-lesson.js?v=20261001-kislash-2sec",
+      "resolved": "parry-lesson.js",
+      "exists": true,
+      "covered": true,
+      "scope": "한줄리터럴src/href(HTML속성/JS할당포함);동적표현식완전성보장없음"
+    },
+    {
+      "from": "game-easy-test.html",
+      "reference": "/favicon.ico?v=20260414-iconfix",
+      "resolved": "favicon.ico",
+      "exists": true,
+      "covered": true,
+      "scope": "한줄리터럴src/href(HTML속성/JS할당포함);동적표현식완전성보장없음"
+    },
+    {
+      "from": "game-easy-test.html",
+      "reference": "/favicon.ico?v=20260414-iconfix",
+      "resolved": "favicon.ico",
+      "exists": true,
+      "covered": true,
+      "scope": "한줄리터럴src/href(HTML속성/JS할당포함);동적표현식완전성보장없음"
+    },
+    {
+      "from": "game-easy-test.html",
+      "reference": "three-runtime.js",
+      "resolved": "three-runtime.js",
+      "exists": true,
+      "covered": true,
+      "scope": "한줄리터럴src/href(HTML속성/JS할당포함);동적표현식완전성보장없음"
+    },
+    {
+      "from": "game-easy-test.html",
+      "reference": "maps_data.js",
+      "resolved": "maps_data.js",
+      "exists": true,
+      "covered": true,
+      "scope": "한줄리터럴src/href(HTML속성/JS할당포함);동적표현식완전성보장없음"
+    },
+    {
+      "from": "game-easy-test.html",
+      "reference": "assets/map/ch1/geometry/ch1_si1_geometry.js",
+      "resolved": "assets/map/ch1/geometry/ch1_si1_geometry.js",
+      "exists": true,
+      "covered": true,
+      "scope": "한줄리터럴src/href(HTML속성/JS할당포함);동적표현식완전성보장없음"
+    },
+    {
+      "from": "game-easy-test.html",
+      "reference": "lang_zh.js",
+      "resolved": "lang_zh.js",
+      "exists": true,
+      "covered": true,
+      "scope": "한줄리터럴src/href(HTML속성/JS할당포함);동적표현식완전성보장없음"
+    },
+    {
+      "from": "game-easy-test.html",
+      "reference": "lang_ja.js",
+      "resolved": "lang_ja.js",
+      "exists": true,
+      "covered": true,
+      "scope": "한줄리터럴src/href(HTML속성/JS할당포함);동적표현식완전성보장없음"
+    },
+    {
+      "from": "game-easy-test.html",
+      "reference": "lang_es.js",
+      "resolved": "lang_es.js",
+      "exists": true,
+      "covered": true,
+      "scope": "한줄리터럴src/href(HTML속성/JS할당포함);동적표현식완전성보장없음"
+    },
+    {
+      "from": "game-easy-test.html",
+      "reference": "lang_zht.js",
+      "resolved": "lang_zht.js",
+      "exists": true,
+      "covered": true,
+      "scope": "한줄리터럴src/href(HTML속성/JS할당포함);동적표현식완전성보장없음"
+    },
+    {
+      "from": "game-easy-test.html",
+      "reference": "lang_ru.js",
+      "resolved": "lang_ru.js",
+      "exists": true,
+      "covered": true,
+      "scope": "한줄리터럴src/href(HTML속성/JS할당포함);동적표현식완전성보장없음"
+    },
+    {
+      "from": "game-easy-test.html",
+      "reference": "lang_de.js",
+      "resolved": "lang_de.js",
+      "exists": true,
+      "covered": true,
+      "scope": "한줄리터럴src/href(HTML속성/JS할당포함);동적표현식완전성보장없음"
+    },
+    {
+      "from": "game-easy-test.html",
+      "reference": "lang_ptbr.js",
+      "resolved": "lang_ptbr.js",
+      "exists": true,
+      "covered": true,
+      "scope": "한줄리터럴src/href(HTML속성/JS할당포함);동적표현식완전성보장없음"
+    },
+    {
+      "from": "game-easy-test.html",
+      "reference": "lang_fr.js",
+      "resolved": "lang_fr.js",
+      "exists": true,
+      "covered": true,
+      "scope": "한줄리터럴src/href(HTML속성/JS할당포함);동적표현식완전성보장없음"
+    },
+    {
+      "from": "game-easy-test.html",
+      "reference": "lang_pl.js",
+      "resolved": "lang_pl.js",
+      "exists": true,
+      "covered": true,
+      "scope": "한줄리터럴src/href(HTML속성/JS할당포함);동적표현식완전성보장없음"
+    },
+    {
+      "from": "game-easy-test.html",
+      "reference": "lang_it.js",
+      "resolved": "lang_it.js",
+      "exists": true,
+      "covered": true,
+      "scope": "한줄리터럴src/href(HTML속성/JS할당포함);동적표현식완전성보장없음"
+    },
+    {
+      "from": "game-easy-test.html",
+      "reference": "lang_uk.js",
+      "resolved": "lang_uk.js",
+      "exists": true,
+      "covered": true,
+      "scope": "한줄리터럴src/href(HTML속성/JS할당포함);동적표현식완전성보장없음"
+    },
+    {
+      "from": "game-easy-test.html",
+      "reference": "lang_tr.js",
+      "resolved": "lang_tr.js",
+      "exists": true,
+      "covered": true,
+      "scope": "한줄리터럴src/href(HTML속성/JS할당포함);동적표현식완전성보장없음"
+    },
+    {
+      "from": "game-easy-test.html",
+      "reference": "lang_vi.js",
+      "resolved": "lang_vi.js",
+      "exists": true,
+      "covered": true,
+      "scope": "한줄리터럴src/href(HTML속성/JS할당포함);동적표현식완전성보장없음"
+    },
+    {
+      "from": "game-easy-test.html",
+      "reference": "lang_th.js",
+      "resolved": "lang_th.js",
+      "exists": true,
+      "covered": true,
+      "scope": "한줄리터럴src/href(HTML속성/JS할당포함);동적표현식완전성보장없음"
+    },
+    {
+      "from": "game-easy-test.html",
+      "reference": "lang_id.js",
+      "resolved": "lang_id.js",
+      "exists": true,
+      "covered": true,
+      "scope": "한줄리터럴src/href(HTML속성/JS할당포함);동적표현식완전성보장없음"
+    },
+    {
+      "from": "game-easy-test.html",
+      "reference": "lang_ar.js",
+      "resolved": "lang_ar.js",
+      "exists": true,
+      "covered": true,
+      "scope": "한줄리터럴src/href(HTML속성/JS할당포함);동적표현식완전성보장없음"
+    },
+    {
+      "from": "game-easy-test.html",
+      "reference": "lang_sv.js",
+      "resolved": "lang_sv.js",
+      "exists": true,
+      "covered": true,
+      "scope": "한줄리터럴src/href(HTML속성/JS할당포함);동적표현식완전성보장없음"
+    },
+    {
+      "from": "game-easy-test.html",
+      "reference": "lang_da.js",
+      "resolved": "lang_da.js",
+      "exists": true,
+      "covered": true,
+      "scope": "한줄리터럴src/href(HTML속성/JS할당포함);동적표현식완전성보장없음"
+    },
+    {
+      "from": "game-easy-test.html",
+      "reference": "lang_no.js",
+      "resolved": "lang_no.js",
+      "exists": true,
+      "covered": true,
+      "scope": "한줄리터럴src/href(HTML속성/JS할당포함);동적표현식완전성보장없음"
+    },
+    {
+      "from": "game-easy-test.html",
+      "reference": "lang_fi.js",
+      "resolved": "lang_fi.js",
+      "exists": true,
+      "covered": true,
+      "scope": "한줄리터럴src/href(HTML속성/JS할당포함);동적표현식완전성보장없음"
+    },
+    {
+      "from": "game-easy-test.html",
+      "reference": "lang_cs.js",
+      "resolved": "lang_cs.js",
+      "exists": true,
+      "covered": true,
+      "scope": "한줄리터럴src/href(HTML속성/JS할당포함);동적표현식완전성보장없음"
+    },
+    {
+      "from": "game-easy-test.html",
+      "reference": "lang_hu.js",
+      "resolved": "lang_hu.js",
+      "exists": true,
+      "covered": true,
+      "scope": "한줄리터럴src/href(HTML속성/JS할당포함);동적표현식완전성보장없음"
+    },
+    {
+      "from": "game-easy-test.html",
+      "reference": "lang_ro.js",
+      "resolved": "lang_ro.js",
+      "exists": true,
+      "covered": true,
+      "scope": "한줄리터럴src/href(HTML속성/JS할당포함);동적표현식완전성보장없음"
+    },
+    {
+      "from": "game-easy-test.html",
+      "reference": "lang_nl.js",
+      "resolved": "lang_nl.js",
+      "exists": true,
+      "covered": true,
+      "scope": "한줄리터럴src/href(HTML속성/JS할당포함);동적표현식완전성보장없음"
+    },
+    {
+      "from": "game-easy-test.html",
+      "reference": "lang_el.js",
+      "resolved": "lang_el.js",
+      "exists": true,
+      "covered": true,
+      "scope": "한줄리터럴src/href(HTML속성/JS할당포함);동적표현식완전성보장없음"
+    },
+    {
+      "from": "game-easy-test.html",
+      "reference": "lang_bg.js",
+      "resolved": "lang_bg.js",
+      "exists": true,
+      "covered": true,
+      "scope": "한줄리터럴src/href(HTML속성/JS할당포함);동적표현식완전성보장없음"
+    },
+    {
+      "from": "game-easy-test.html",
+      "reference": "lang_ms.js",
+      "resolved": "lang_ms.js",
+      "exists": true,
+      "covered": true,
+      "scope": "한줄리터럴src/href(HTML속성/JS할당포함);동적표현식완전성보장없음"
+    },
+    {
+      "from": "game-easy-test.html",
+      "reference": "localization-runtime.js",
+      "resolved": "localization-runtime.js",
+      "exists": true,
+      "covered": true,
+      "scope": "한줄리터럴src/href(HTML속성/JS할당포함);동적표현식완전성보장없음"
+    },
+    {
+      "from": "game-easy-test.html",
+      "reference": "localization-data.js?v=20260910-nemesia-dialogue",
+      "resolved": "localization-data.js",
+      "exists": true,
+      "covered": true,
+      "scope": "한줄리터럴src/href(HTML속성/JS할당포함);동적표현식완전성보장없음"
+    },
+    {
+      "from": "game-easy-test.html",
+      "reference": "level-up-vfx.js?v=20260910-readable-v3",
+      "resolved": "level-up-vfx.js",
+      "exists": true,
+      "covered": true,
+      "scope": "한줄리터럴src/href(HTML속성/JS할당포함);동적표현식완전성보장없음"
+    },
+    {
+      "from": "game-easy-test.html",
+      "reference": "stat-panel-ui.css?v=20260910-fullscreen-readable-v1",
+      "resolved": "stat-panel-ui.css",
+      "exists": true,
+      "covered": true,
+      "scope": "한줄리터럴src/href(HTML속성/JS할당포함);동적표현식완전성보장없음"
+    },
+    {
+      "from": "game-easy-test.html",
+      "reference": "localization.css?v=20260909",
+      "resolved": "localization.css",
+      "exists": true,
+      "covered": true,
+      "scope": "한줄리터럴src/href(HTML속성/JS할당포함);동적표현식완전성보장없음"
+    },
+    {
+      "from": "game-easy-test.html",
+      "reference": "ui-foundation.css?v=20260930-lesson-translucent",
+      "resolved": "ui-foundation.css",
+      "exists": true,
+      "covered": true,
+      "scope": "한줄리터럴src/href(HTML속성/JS할당포함);동적표현식완전성보장없음"
+    },
+    {
+      "from": "game-easy-test.html",
+      "reference": "ui-refinement.css?v=20261001-combat-status22",
+      "resolved": "ui-refinement.css",
+      "exists": true,
+      "covered": true,
+      "scope": "한줄리터럴src/href(HTML속성/JS할당포함);동적표현식완전성보장없음"
+    },
+    {
+      "from": "game-easy-test.html",
+      "reference": "inventory-oss-balance.css?v=20260928-ossuary-fit5",
+      "resolved": "inventory-oss-balance.css",
+      "exists": true,
+      "covered": true,
+      "scope": "한줄리터럴src/href(HTML속성/JS할당포함);동적표현식완전성보장없음"
+    },
+    {
+      "from": "game-easy-test.html",
+      "reference": "ui-panels.js?v=20261001-settings-nav17",
+      "resolved": "ui-panels.js",
+      "exists": true,
+      "covered": true,
+      "scope": "한줄리터럴src/href(HTML속성/JS할당포함);동적표현식완전성보장없음"
+    },
+    {
+      "from": "game-easy-test.html",
+      "reference": "stat-panel-ui.js?v=20260909-constellation-v3",
+      "resolved": "stat-panel-ui.js",
+      "exists": true,
+      "covered": true,
+      "scope": "한줄리터럴src/href(HTML속성/JS할당포함);동적표현식완전성보장없음"
+    },
+    {
+      "from": "game-easy-test.html",
+      "reference": "img/mm_frame.png",
+      "resolved": "img/mm_frame.png",
+      "exists": true,
+      "covered": true,
+      "scope": "한줄리터럴src/href(HTML속성/JS할당포함);동적표현식완전성보장없음"
+    },
+    {
+      "from": "game-easy-test.html",
+      "reference": "bgm/intro.mp4",
+      "resolved": "bgm/intro.mp4",
+      "exists": true,
+      "covered": true,
+      "scope": "한줄리터럴src/href(HTML속성/JS할당포함);동적표현식완전성보장없음"
+    },
+    {
+      "from": "game-easy-test.html",
+      "reference": "img/crow/portrait.png?v=4",
+      "resolved": "img/crow/portrait.png",
+      "exists": true,
+      "covered": true,
+      "scope": "한줄리터럴src/href(HTML속성/JS할당포함);동적표현식완전성보장없음"
+    },
+    {
+      "from": "game-easy-test.html",
+      "reference": "img/cat_pet/portrait.png?v=4",
+      "resolved": "img/cat_pet/portrait.png",
+      "exists": true,
+      "covered": true,
+      "scope": "한줄리터럴src/href(HTML속성/JS할당포함);동적표현식완전성보장없음"
+    },
+    {
+      "from": "game-easy-test.html",
+      "reference": "assets/vfx/enemy/charge_start_rift.png",
+      "resolved": "assets/vfx/enemy/charge_start_rift.png",
+      "exists": true,
+      "covered": true,
+      "scope": "한줄리터럴src/href(HTML속성/JS할당포함);동적표현식완전성보장없음"
+    },
+    {
+      "from": "game-easy-test.html",
+      "reference": "assets/vfx/enemy/charge_body_mist.png",
+      "resolved": "assets/vfx/enemy/charge_body_mist.png",
+      "exists": true,
+      "covered": true,
+      "scope": "한줄리터럴src/href(HTML속성/JS할당포함);동적표현식완전성보장없음"
+    },
+    {
+      "from": "game-easy-test.html",
+      "reference": "assets/vfx/enemy/charge_end_spear.png",
+      "resolved": "assets/vfx/enemy/charge_end_spear.png",
+      "exists": true,
+      "covered": true,
+      "scope": "한줄리터럴src/href(HTML속성/JS할당포함);동적표현식완전성보장없음"
+    },
+    {
+      "from": "game-easy-test.html",
+      "reference": "assets/vfx/fire_",
+      "resolved": "assets/vfx/fire_",
+      "exists": false,
+      "covered": true,
+      "scope": "한줄리터럴src/href(HTML속성/JS할당포함);동적표현식완전성보장없음"
+    },
+    {
+      "from": "game-easy-test.html",
+      "reference": "assets/vfx/parry_impact_red.png",
+      "resolved": "assets/vfx/parry_impact_red.png",
+      "exists": true,
+      "covered": true,
+      "scope": "한줄리터럴src/href(HTML속성/JS할당포함);동적표현식완전성보장없음"
+    },
+    {
+      "from": "game-easy-test.html",
+      "reference": "assets/vfx/parry_impact_rainbow.png",
+      "resolved": "assets/vfx/parry_impact_rainbow.png",
+      "exists": true,
+      "covered": true,
+      "scope": "한줄리터럴src/href(HTML속성/JS할당포함);동적표현식완전성보장없음"
+    },
+    {
+      "from": "game-easy-test.html",
+      "reference": "img/boom_plague.png",
+      "resolved": "img/boom_plague.png",
+      "exists": true,
+      "covered": true,
+      "scope": "한줄리터럴src/href(HTML속성/JS할당포함);동적표현식완전성보장없음"
+    },
+    {
+      "from": "game-easy-test.html",
+      "reference": "assets/vfx/chain_shuriken_2.webp",
+      "resolved": "assets/vfx/chain_shuriken_2.webp",
+      "exists": true,
+      "covered": true,
+      "scope": "한줄리터럴src/href(HTML속성/JS할당포함);동적표현식완전성보장없음"
+    },
+    {
+      "from": "game-easy-test.html",
+      "reference": "img/vfx_repentance.png",
+      "resolved": "img/vfx_repentance.png",
+      "exists": true,
+      "covered": true,
+      "scope": "한줄리터럴src/href(HTML속성/JS할당포함);동적표현식완전성보장없음"
+    },
+    {
+      "from": "game-easy-test.html",
+      "reference": "img/vfx_pentagram_purple.png",
+      "resolved": "img/vfx_pentagram_purple.png",
+      "exists": true,
+      "covered": true,
+      "scope": "한줄리터럴src/href(HTML속성/JS할당포함);동적표현식완전성보장없음"
+    },
+    {
+      "from": "game-easy-test.html",
+      "reference": "img/vfx_pentagram_gold.png",
+      "resolved": "img/vfx_pentagram_gold.png",
+      "exists": true,
+      "covered": true,
+      "scope": "한줄리터럴src/href(HTML속성/JS할당포함);동적표현식완전성보장없음"
+    },
+    {
+      "from": "game-easy-test.html",
+      "reference": "img/vfx_pentagram_red.png",
+      "resolved": "img/vfx_pentagram_red.png",
+      "exists": true,
+      "covered": true,
+      "scope": "한줄리터럴src/href(HTML속성/JS할당포함);동적표현식완전성보장없음"
+    },
+    {
+      "from": "game-easy-test.html",
+      "reference": "assets/vfx/bullet_black_hole_sheet.png",
+      "resolved": "assets/vfx/bullet_black_hole_sheet.png",
+      "exists": true,
+      "covered": true,
+      "scope": "한줄리터럴src/href(HTML속성/JS할당포함);동적표현식완전성보장없음"
+    },
+    {
+      "from": "game-easy-test.html",
+      "reference": "img/vfx/teleport_out.png",
+      "resolved": "img/vfx/teleport_out.png",
+      "exists": true,
+      "covered": true,
+      "scope": "한줄리터럴src/href(HTML속성/JS할당포함);동적표현식완전성보장없음"
+    },
+    {
+      "from": "game-easy-test.html",
+      "reference": "img/vfx/teleport_in.png",
+      "resolved": "img/vfx/teleport_in.png",
+      "exists": true,
+      "covered": true,
+      "scope": "한줄리터럴src/href(HTML속성/JS할당포함);동적표현식완전성보장없음"
+    },
+    {
+      "from": "game-easy-test.html",
+      "reference": "img/tp_impact.png",
+      "resolved": "img/tp_impact.png",
+      "exists": true,
+      "covered": true,
+      "scope": "한줄리터럴src/href(HTML속성/JS할당포함);동적표현식완전성보장없음"
+    },
+    {
+      "from": "game-easy-test.html",
+      "reference": "img/vfx_earthquake/explosion_spritesheet.webp",
+      "resolved": "img/vfx_earthquake/explosion_spritesheet.webp",
+      "exists": true,
+      "covered": true,
+      "scope": "한줄리터럴src/href(HTML속성/JS할당포함);동적표현식완전성보장없음"
+    },
+    {
+      "from": "game-easy-test.html",
+      "reference": "img/crow/",
+      "resolved": "img/crow/",
+      "exists": true,
+      "covered": true,
+      "scope": "한줄리터럴src/href(HTML속성/JS할당포함);동적표현식완전성보장없음"
+    },
+    {
+      "from": "game-easy-test.html",
+      "reference": "img/cat_pet/",
+      "resolved": "img/cat_pet/",
+      "exists": true,
+      "covered": true,
+      "scope": "한줄리터럴src/href(HTML속성/JS할당포함);동적표현식완전성보장없음"
+    },
+    {
+      "from": "game-easy-test.html",
+      "reference": "img/cat_pet_anim/animations/idle/",
+      "resolved": "img/cat_pet_anim/animations/idle/",
+      "exists": true,
+      "covered": true,
+      "scope": "한줄리터럴src/href(HTML속성/JS할당포함);동적표현식완전성보장없음"
+    },
+    {
+      "from": "game-easy-test.html",
+      "reference": "img/cat_pet_anim/animations/running-4-frames/",
+      "resolved": "img/cat_pet_anim/animations/running-4-frames/",
+      "exists": true,
+      "covered": true,
+      "scope": "한줄리터럴src/href(HTML속성/JS할당포함);동적표현식완전성보장없음"
+    },
+    {
+      "from": "game-easy-test.html",
+      "reference": "img/",
+      "resolved": "img/",
+      "exists": true,
+      "covered": true,
+      "scope": "한줄리터럴src/href(HTML속성/JS할당포함);동적표현식완전성보장없음"
+    },
+    {
+      "from": "game-easy-test.html",
+      "reference": "atlas_player.png?v=10",
+      "resolved": "atlas_player.png",
+      "exists": true,
+      "covered": true,
+      "scope": "한줄리터럴src/href(HTML속성/JS할당포함);동적표현식완전성보장없음"
+    },
+    {
+      "from": "game-easy-test.html",
+      "reference": "atlas_enemies.png",
+      "resolved": "atlas_enemies.png",
+      "exists": false,
+      "covered": false,
+      "scope": "한줄리터럴src/href(HTML속성/JS할당포함);동적표현식완전성보장없음"
+    },
+    {
+      "from": "game-easy-test.html",
+      "reference": "assets/sprites/boss/boss_dark_druid_",
+      "resolved": "assets/sprites/boss/boss_dark_druid_",
+      "exists": false,
+      "covered": true,
+      "scope": "한줄리터럴src/href(HTML속성/JS할당포함);동적표현식완전성보장없음"
+    },
+    {
+      "from": "game-easy-test.html",
+      "reference": "atlas_bosses.png?v=3",
+      "resolved": "atlas_bosses.png",
+      "exists": true,
+      "covered": true,
+      "scope": "한줄리터럴src/href(HTML속성/JS할당포함);동적표현식완전성보장없음"
+    },
+    {
+      "from": "game-easy-test.html",
+      "reference": "assets/map/ch2/skull_wall_tile.png",
+      "resolved": "assets/map/ch2/skull_wall_tile.png",
+      "exists": true,
+      "covered": true,
+      "scope": "한줄리터럴src/href(HTML속성/JS할당포함);동적표현식완전성보장없음"
+    },
+    {
+      "from": "game-easy-test.html",
+      "reference": "assets/map/ch2/wall_edge_tile.png",
+      "resolved": "assets/map/ch2/wall_edge_tile.png",
+      "exists": true,
+      "covered": true,
+      "scope": "한줄리터럴src/href(HTML속성/JS할당포함);동적표현식완전성보장없음"
+    },
+    {
+      "from": "game-easy-test.html",
+      "reference": "assets/map/ch1/void_vista.jpg?v=20260817-vista",
+      "resolved": "assets/map/ch1/void_vista.jpg",
+      "exists": true,
+      "covered": true,
+      "scope": "한줄리터럴src/href(HTML속성/JS할당포함);동적표현식완전성보장없음"
+    },
+    {
+      "from": "game-easy-test.html",
+      "reference": "assets/map/ch1/map_1-2.jpg?v=20260817-paint2",
+      "resolved": "assets/map/ch1/map_1-2.jpg",
+      "exists": true,
+      "covered": true,
+      "scope": "한줄리터럴src/href(HTML속성/JS할당포함);동적표현식완전성보장없음"
+    },
+    {
+      "from": "game-easy-test.html",
+      "reference": "assets/map/eye_bloodshot_8dir.png",
+      "resolved": "assets/map/eye_bloodshot_8dir.png",
+      "exists": true,
+      "covered": true,
+      "scope": "한줄리터럴src/href(HTML속성/JS할당포함);동적표현식완전성보장없음"
+    },
+    {
+      "from": "game-easy-test.html",
+      "reference": "img/exoduser_silvertail/blade_tip_api_v1_cropped.png",
+      "resolved": "img/exoduser_silvertail/blade_tip_api_v1_cropped.png",
+      "exists": true,
+      "covered": true,
+      "scope": "한줄리터럴src/href(HTML속성/JS할당포함);동적표현식완전성보장없음"
+    },
+    {
+      "from": "game-easy-test.html",
+      "reference": "img/vfx/silvertail_ki_slash_realistic.png",
+      "resolved": "img/vfx/silvertail_ki_slash_realistic.png",
+      "exists": true,
+      "covered": true,
+      "scope": "한줄리터럴src/href(HTML속성/JS할당포함);동적표현식완전성보장없음"
+    },
+    {
+      "from": "game-easy-test.html",
+      "reference": "img/vfx/silvertail_violet_arc_anim_api_v3.png?v=20260810-silvertail-arc-anim-v3",
+      "resolved": "img/vfx/silvertail_violet_arc_anim_api_v3.png",
+      "exists": true,
+      "covered": true,
+      "scope": "한줄리터럴src/href(HTML속성/JS할당포함);동적표현식완전성보장없음"
+    },
+    {
+      "from": "game-easy-test.html",
+      "reference": "assets/vfx/flame_blade_swing_8f.png",
+      "resolved": "assets/vfx/flame_blade_swing_8f.png",
+      "exists": true,
+      "covered": true,
+      "scope": "한줄리터럴src/href(HTML속성/JS할당포함);동적표현식완전성보장없음"
+    },
+    {
+      "from": "game-easy-test.html",
+      "reference": "assets/vfx/whirl_blade_1.webp",
+      "resolved": "assets/vfx/whirl_blade_1.webp",
+      "exists": true,
+      "covered": true,
+      "scope": "한줄리터럴src/href(HTML속성/JS할당포함);동적표현식완전성보장없음"
+    },
+    {
+      "from": "game-easy-test.html",
+      "reference": "assets/vfx/ww_hit_impact.jpg",
+      "resolved": "assets/vfx/ww_hit_impact.jpg",
+      "exists": false,
+      "covered": true,
+      "scope": "한줄리터럴src/href(HTML속성/JS할당포함);동적표현식완전성보장없음"
+    },
+    {
+      "from": "game-easy-test.html",
+      "reference": "img/crater.png",
+      "resolved": "img/crater.png",
+      "exists": true,
+      "covered": true,
+      "scope": "한줄리터럴src/href(HTML속성/JS할당포함);동적표현식완전성보장없음"
+    },
+    {
+      "from": "game-easy-test.html",
+      "reference": "img/cursors/cursor_dark_css.png",
+      "resolved": "img/cursors/cursor_dark_css.png",
+      "exists": true,
+      "covered": true,
+      "scope": "한줄리터럴src/href(HTML속성/JS할당포함);동적표현식완전성보장없음"
+    },
+    {
+      "from": "game-easy-test.html",
+      "reference": "img/balls/proj_bolt_",
+      "resolved": "img/balls/proj_bolt_",
+      "exists": false,
+      "covered": true,
+      "scope": "한줄리터럴src/href(HTML속성/JS할당포함);동적표현식완전성보장없음"
+    },
+    {
+      "from": "game-easy-test.html",
+      "reference": "assets/vfx/crescent_slash.webp",
+      "resolved": "assets/vfx/crescent_slash.webp",
+      "exists": true,
+      "covered": true,
+      "scope": "한줄리터럴src/href(HTML속성/JS할당포함);동적표현식완전성보장없음"
+    },
+    {
+      "from": "game-easy-test.html",
+      "reference": "assets/vfx/ki_slash_radiant_sheet.png",
+      "resolved": "assets/vfx/ki_slash_radiant_sheet.png",
+      "exists": true,
+      "covered": true,
+      "scope": "한줄리터럴src/href(HTML속성/JS할당포함);동적표현식완전성보장없음"
+    },
+    {
+      "from": "game-easy-test.html",
+      "reference": "img/vfx/chain_blade_cyclone_8f.png",
+      "resolved": "img/vfx/chain_blade_cyclone_8f.png",
+      "exists": true,
+      "covered": true,
+      "scope": "한줄리터럴src/href(HTML속성/JS할당포함);동적표현식완전성보장없음"
+    },
+    {
+      "from": "game-easy-test.html",
+      "reference": "img/vfx/sky_crusher_iron_wedge.png",
+      "resolved": "img/vfx/sky_crusher_iron_wedge.png",
+      "exists": true,
+      "covered": true,
+      "scope": "한줄리터럴src/href(HTML속성/JS할당포함);동적표현식완전성보장없음"
+    },
+    {
+      "from": "game-easy-test.html",
+      "reference": "img/vfx/sky_crusher_burning.png",
+      "resolved": "img/vfx/sky_crusher_burning.png",
+      "exists": true,
+      "covered": true,
+      "scope": "한줄리터럴src/href(HTML속성/JS할당포함);동적표현식완전성보장없음"
+    },
+    {
+      "from": "game-easy-test.html",
+      "reference": "img/vfx/sbash_blade.webp",
+      "resolved": "img/vfx/sbash_blade.webp",
+      "exists": true,
+      "covered": true,
+      "scope": "한줄리터럴src/href(HTML속성/JS할당포함);동적표현식완전성보장없음"
+    },
+    {
+      "from": "game-easy-test.html",
+      "reference": "img/vfx/sbash_blade_black.webp",
+      "resolved": "img/vfx/sbash_blade_black.webp",
+      "exists": true,
+      "covered": true,
+      "scope": "한줄리터럴src/href(HTML속성/JS할당포함);동적표현식완전성보장없음"
+    },
+    {
+      "from": "game-easy-test.html",
+      "reference": "assets/map/ch1/boss_room_bg.png",
+      "resolved": "assets/map/ch1/boss_room_bg.png",
+      "exists": true,
+      "covered": true,
+      "scope": "한줄리터럴src/href(HTML속성/JS할당포함);동적표현식완전성보장없음"
+    },
+    {
+      "from": "game-easy-test.html",
+      "reference": "assets/map/ch1/collision/boss_pillar_01.webp",
+      "resolved": "assets/map/ch1/collision/boss_pillar_01.webp",
+      "exists": true,
+      "covered": true,
+      "scope": "한줄리터럴src/href(HTML속성/JS할당포함);동적표현식완전성보장없음"
+    },
+    {
+      "from": "game-easy-test.html",
+      "reference": "img/map_dragon_skeleton.png",
+      "resolved": "img/map_dragon_skeleton.png",
+      "exists": true,
+      "covered": true,
+      "scope": "한줄리터럴src/href(HTML속성/JS할당포함);동적표현식완전성보장없음"
+    },
+    {
+      "from": "game-easy-test.html",
+      "reference": "img/map_dragon_3d.png",
+      "resolved": "img/map_dragon_3d.png",
+      "exists": true,
+      "covered": true,
+      "scope": "한줄리터럴src/href(HTML속성/JS할당포함);동적표현식완전성보장없음"
+    },
+    {
+      "from": "game-easy-test.html",
+      "reference": "assets/vfx/impact_basic_sheet.png",
+      "resolved": "assets/vfx/impact_basic_sheet.png",
+      "exists": true,
+      "covered": true,
+      "scope": "한줄리터럴src/href(HTML속성/JS할당포함);동적표현식완전성보장없음"
+    },
+    {
+      "from": "game-easy-test.html",
+      "reference": "assets/vfx/impact_el",
+      "resolved": "assets/vfx/impact_el",
+      "exists": false,
+      "covered": true,
+      "scope": "한줄리터럴src/href(HTML속성/JS할당포함);동적표현식완전성보장없음"
+    },
+    {
+      "from": "game-easy-test.html",
+      "reference": "assets/vfx/impact_el",
+      "resolved": "assets/vfx/impact_el",
+      "exists": false,
+      "covered": true,
+      "scope": "한줄리터럴src/href(HTML속성/JS할당포함);동적표현식완전성보장없음"
+    },
+    {
+      "from": "game-easy-test.html",
+      "reference": "assets/vfx/malice_mortar_explode/sprite-384px-9-frames/frame_",
+      "resolved": "assets/vfx/malice_mortar_explode/sprite-384px-9-frames/frame_",
+      "exists": false,
+      "covered": true,
+      "scope": "한줄리터럴src/href(HTML속성/JS할당포함);동적표현식완전성보장없음"
+    },
+    {
+      "from": "game-easy-test.html",
+      "reference": "assets/vfx/vfx_ice_orb.png",
+      "resolved": "assets/vfx/vfx_ice_orb.png",
+      "exists": true,
+      "covered": true,
+      "scope": "한줄리터럴src/href(HTML속성/JS할당포함);동적표현식완전성보장없음"
+    },
+    {
+      "from": "game-easy-test.html",
+      "reference": "sprites/bonfire_barrier.png",
+      "resolved": "sprites/bonfire_barrier.png",
+      "exists": true,
+      "covered": true,
+      "scope": "한줄리터럴src/href(HTML속성/JS할당포함);동적표현식완전성보장없음"
+    },
+    {
+      "from": "game-easy-test.html",
+      "reference": "assets/vfx/vfx_shield_aura.png",
+      "resolved": "assets/vfx/vfx_shield_aura.png",
+      "exists": true,
+      "covered": true,
+      "scope": "한줄리터럴src/href(HTML속성/JS할당포함);동적표현식완전성보장없음"
+    },
+    {
+      "from": "game-easy-test.html",
+      "reference": "assets/vfx/ground_crack_sheet.png",
+      "resolved": "assets/vfx/ground_crack_sheet.png",
+      "exists": true,
+      "covered": true,
+      "scope": "한줄리터럴src/href(HTML속성/JS할당포함);동적표현식완전성보장없음"
+    },
+    {
+      "from": "game-easy-test.html",
+      "reference": "assets/vfx/malice_dome.png",
+      "resolved": "assets/vfx/malice_dome.png",
+      "exists": true,
+      "covered": true,
+      "scope": "한줄리터럴src/href(HTML속성/JS할당포함);동적표현식완전성보장없음"
+    },
+    {
+      "from": "game-easy-test.html",
+      "reference": "assets/vfx/fire_beam/fire_beam_spritesheet.png",
+      "resolved": "assets/vfx/fire_beam/fire_beam_spritesheet.png",
+      "exists": true,
+      "covered": true,
+      "scope": "한줄리터럴src/href(HTML속성/JS할당포함);동적표현식완전성보장없음"
+    },
+    {
+      "from": "game-easy-test.html",
+      "reference": "assets/vfx/fire_explode/fire_explode_spritesheet.png",
+      "resolved": "assets/vfx/fire_explode/fire_explode_spritesheet.png",
+      "exists": true,
+      "covered": true,
+      "scope": "한줄리터럴src/href(HTML속성/JS할당포함);동적표현식완전성보장없음"
+    },
+    {
+      "from": "game-easy-test.html",
+      "reference": "assets/vfx/arc_laser/laser_sheet.png?v=20260522b",
+      "resolved": "assets/vfx/arc_laser/laser_sheet.png",
+      "exists": true,
+      "covered": true,
+      "scope": "한줄리터럴src/href(HTML속성/JS할당포함);동적표현식완전성보장없음"
+    },
+    {
+      "from": "game-easy-test.html",
+      "reference": "assets/vfx/vfx_magic_orb.png",
+      "resolved": "assets/vfx/vfx_magic_orb.png",
+      "exists": true,
+      "covered": true,
+      "scope": "한줄리터럴src/href(HTML속성/JS할당포함);동적표현식완전성보장없음"
+    },
+    {
+      "from": "game-easy-test.html",
+      "reference": "img/vfx/silvertail_malice_orb_sheet_v3.png",
+      "resolved": "img/vfx/silvertail_malice_orb_sheet_v3.png",
+      "exists": true,
+      "covered": true,
+      "scope": "한줄리터럴src/href(HTML속성/JS할당포함);동적표현식완전성보장없음"
+    },
+    {
+      "from": "game-easy-test.html",
+      "reference": "assets/vfx/lightning_burst_sheet.png",
+      "resolved": "assets/vfx/lightning_burst_sheet.png",
+      "exists": true,
+      "covered": true,
+      "scope": "한줄리터럴src/href(HTML속성/JS할당포함);동적표현식완전성보장없음"
+    },
+    {
+      "from": "game-easy-test.html",
+      "reference": "assets/vfx/vfx_peace_shield.png",
+      "resolved": "assets/vfx/vfx_peace_shield.png",
+      "exists": true,
+      "covered": true,
+      "scope": "한줄리터럴src/href(HTML속성/JS할당포함);동적표현식완전성보장없음"
+    },
+    {
+      "from": "game-easy-test.html",
+      "reference": "assets/vfx/boss/vfx_holy_burst.png",
+      "resolved": "assets/vfx/boss/vfx_holy_burst.png",
+      "exists": true,
+      "covered": true,
+      "scope": "한줄리터럴src/href(HTML속성/JS할당포함);동적표현식완전성보장없음"
+    },
+    {
+      "from": "game-easy-test.html",
+      "reference": "assets/vfx/fire_",
+      "resolved": "assets/vfx/fire_",
+      "exists": false,
+      "covered": true,
+      "scope": "한줄리터럴src/href(HTML속성/JS할당포함);동적표현식완전성보장없음"
+    },
+    {
+      "from": "game-easy-test.html",
+      "reference": "assets/vfx/ki_slash_hit_radiant_sheet.png",
+      "resolved": "assets/vfx/ki_slash_hit_radiant_sheet.png",
+      "exists": true,
+      "covered": true,
+      "scope": "한줄리터럴src/href(HTML속성/JS할당포함);동적표현식완전성보장없음"
+    },
+    {
+      "from": "game-easy-test.html",
+      "reference": "img/vfx/kraken_vanish.png",
+      "resolved": "img/vfx/kraken_vanish.png",
+      "exists": true,
+      "covered": true,
+      "scope": "한줄리터럴src/href(HTML속성/JS할당포함);동적표현식완전성보장없음"
+    },
+    {
+      "from": "game-easy-test.html",
+      "reference": "img/atlas_ch",
+      "resolved": "img/atlas_ch",
+      "exists": false,
+      "covered": true,
+      "scope": "한줄리터럴src/href(HTML속성/JS할당포함);동적표현식완전성보장없음"
+    },
+    {
+      "from": "game-easy-test.html",
+      "reference": "img/atlas_ch",
+      "resolved": "img/atlas_ch",
+      "exists": false,
+      "covered": true,
+      "scope": "한줄리터럴src/href(HTML속성/JS할당포함);동적표현식완전성보장없음"
+    },
+    {
+      "from": "game-easy-test.html",
+      "reference": "img/atlas_ch",
+      "resolved": "img/atlas_ch",
+      "exists": false,
+      "covered": true,
+      "scope": "한줄리터럴src/href(HTML속성/JS할당포함);동적표현식완전성보장없음"
+    },
+    {
+      "from": "game-easy-test.html",
+      "reference": "img/atlas_ch",
+      "resolved": "img/atlas_ch",
+      "exists": false,
+      "covered": true,
+      "scope": "한줄리터럴src/href(HTML속성/JS할당포함);동적표현식완전성보장없음"
+    },
+    {
+      "from": "game-easy-test.html",
+      "reference": "proj_atlas.png",
+      "resolved": "proj_atlas.png",
+      "exists": true,
+      "covered": true,
+      "scope": "한줄리터럴src/href(HTML속성/JS할당포함);동적표현식완전성보장없음"
+    },
+    {
+      "from": "game-easy-test.html",
+      "reference": "img/balls/proj_bolt_phys.png",
+      "resolved": "img/balls/proj_bolt_phys.png",
+      "exists": true,
+      "covered": true,
+      "scope": "한줄리터럴src/href(HTML속성/JS할당포함);동적표현식완전성보장없음"
+    },
+    {
+      "from": "game-easy-test.html",
+      "reference": "img/balls/proj_bolt_dark.png",
+      "resolved": "img/balls/proj_bolt_dark.png",
+      "exists": true,
+      "covered": true,
+      "scope": "한줄리터럴src/href(HTML속성/JS할당포함);동적표현식완전성보장없음"
+    },
+    {
+      "from": "game-easy-test.html",
+      "reference": "img/proj_eye_sheet.png",
+      "resolved": "img/proj_eye_sheet.png",
+      "exists": true,
+      "covered": true,
+      "scope": "한줄리터럴src/href(HTML속성/JS할당포함);동적표현식완전성보장없음"
+    },
+    {
+      "from": "game-easy-test.html",
+      "reference": "img/proj_phys_mouth.png?v=20260823-phys-user",
+      "resolved": "img/proj_phys_mouth.png",
+      "exists": true,
+      "covered": true,
+      "scope": "한줄리터럴src/href(HTML속성/JS할당포함);동적표현식완전성보장없음"
+    },
+    {
+      "from": "game-easy-test.html",
+      "reference": "img/proj_elem_orb.png?v=20260823-elem-orb",
+      "resolved": "img/proj_elem_orb.png",
+      "exists": true,
+      "covered": true,
+      "scope": "한줄리터럴src/href(HTML속성/JS할당포함);동적표현식완전성보장없음"
+    },
+    {
+      "from": "game-easy-test.html",
+      "reference": "img/balls/proj_kraken_shot_api_v1.png?v=20260903",
+      "resolved": "img/balls/proj_kraken_shot_api_v1.png",
+      "exists": true,
+      "covered": true,
+      "scope": "한줄리터럴src/href(HTML속성/JS할당포함);동적표현식완전성보장없음"
+    },
+    {
+      "from": "game-easy-test.html",
+      "reference": "assets/vfx/water_blue_projectile_sheet.png?v=20260905",
+      "resolved": "assets/vfx/water_blue_projectile_sheet.png",
+      "exists": true,
+      "covered": true,
+      "scope": "한줄리터럴src/href(HTML속성/JS할당포함);동적표현식완전성보장없음"
+    },
+    {
+      "from": "game-easy-test.html",
+      "reference": "img/vfx/silvertail_charge_range_api_v1.png?v=20260903",
+      "resolved": "img/vfx/silvertail_charge_range_api_v1.png",
+      "exists": true,
+      "covered": true,
+      "scope": "한줄리터럴src/href(HTML속성/JS할당포함);동적표현식완전성보장없음"
+    },
+    {
+      "from": "game-easy-test.html",
+      "reference": "img/proj_titan_eye.png",
+      "resolved": "img/proj_titan_eye.png",
+      "exists": true,
+      "covered": true,
+      "scope": "한줄리터럴src/href(HTML속성/JS할당포함);동적표현식완전성보장없음"
+    },
+    {
+      "from": "game-easy-test.html",
+      "reference": "img/proj_kraken_water.png",
+      "resolved": "img/proj_kraken_water.png",
+      "exists": true,
+      "covered": true,
+      "scope": "한줄리터럴src/href(HTML속성/JS할당포함);동적표현식완전성보장없음"
+    },
+    {
+      "from": "game-easy-test.html",
+      "reference": "img/balls/proj_bolt_",
+      "resolved": "img/balls/proj_bolt_",
+      "exists": false,
+      "covered": true,
+      "scope": "한줄리터럴src/href(HTML속성/JS할당포함);동적표현식완전성보장없음"
+    },
+    {
+      "from": "game-easy-test.html",
+      "reference": "img/balls/proj_shard_",
+      "resolved": "img/balls/proj_shard_",
+      "exists": false,
+      "covered": true,
+      "scope": "한줄리터럴src/href(HTML속성/JS할당포함);동적표현식완전성보장없음"
+    },
+    {
+      "from": "game-easy-test.html",
+      "reference": "img/balls/proj_bolt_comet.png",
+      "resolved": "img/balls/proj_bolt_comet.png",
+      "exists": true,
+      "covered": true,
+      "scope": "한줄리터럴src/href(HTML속성/JS할당포함);동적표현식완전성보장없음"
+    },
+    {
+      "from": "game-easy-test.html",
+      "reference": "assets/gore/",
+      "resolved": "assets/gore/",
+      "exists": true,
+      "covered": true,
+      "scope": "한줄리터럴src/href(HTML속성/JS할당포함);동적표현식완전성보장없음"
+    },
+    {
+      "from": "game-easy-test.html",
+      "reference": "assets/gore/",
+      "resolved": "assets/gore/",
+      "exists": true,
+      "covered": true,
+      "scope": "한줄리터럴src/href(HTML속성/JS할당포함);동적표현식완전성보장없음"
+    },
+    {
+      "from": "game-easy-test.html",
+      "reference": "assets/map/eye_bloodshot_8dir.png",
+      "resolved": "assets/map/eye_bloodshot_8dir.png",
+      "exists": true,
+      "covered": true,
+      "scope": "한줄리터럴src/href(HTML속성/JS할당포함);동적표현식완전성보장없음"
+    },
+    {
+      "from": "game-easy-test.html",
+      "reference": "img/skillskin_upscaled/${fId}.png",
+      "resolved": "img/skillskin_upscaled/${fId}.png",
+      "exists": false,
+      "covered": true,
+      "scope": "한줄리터럴src/href(HTML속성/JS할당포함);동적표현식완전성보장없음"
+    },
+    {
+      "from": "game-easy-test.html",
+      "reference": "img/skillskin_upscaled/${f}.png",
+      "resolved": "img/skillskin_upscaled/${f}.png",
+      "exists": false,
+      "covered": true,
+      "scope": "한줄리터럴src/href(HTML속성/JS할당포함);동적표현식완전성보장없음"
+    },
+    {
+      "from": "game-easy-test.html",
+      "reference": "img/skillskin_upscaled/voidScarecrow.png",
+      "resolved": "img/skillskin_upscaled/voidScarecrow.png",
+      "exists": true,
+      "covered": true,
+      "scope": "한줄리터럴src/href(HTML속성/JS할당포함);동적표현식완전성보장없음"
+    },
+    {
+      "from": "game-easy-test.html",
+      "reference": "img/skillskin_upscaled/explodeScarecrow.png",
+      "resolved": "img/skillskin_upscaled/explodeScarecrow.png",
+      "exists": true,
+      "covered": true,
+      "scope": "한줄리터럴src/href(HTML속성/JS할당포함);동적표현식완전성보장없음"
+    },
+    {
+      "from": "game-easy-test.html",
+      "reference": "img/vfx_ancestor/ancestor_summon_circle.png",
+      "resolved": "img/vfx_ancestor/ancestor_summon_circle.png",
+      "exists": true,
+      "covered": true,
+      "scope": "한줄리터럴src/href(HTML속성/JS할당포함);동적표현식완전성보장없음"
+    },
+    {
+      "from": "game-easy-test.html",
+      "reference": "img/vfx/chain_earth_cleave.png",
+      "resolved": "img/vfx/chain_earth_cleave.png",
+      "exists": true,
+      "covered": true,
+      "scope": "한줄리터럴src/href(HTML속성/JS할당포함);동적표현식완전성보장없음"
+    },
+    {
+      "from": "game-easy-test.html",
+      "reference": "img/vfx/chain_earth_rubble.png",
+      "resolved": "img/vfx/chain_earth_rubble.png",
+      "exists": true,
+      "covered": true,
+      "scope": "한줄리터럴src/href(HTML속성/JS할당포함);동적표현식완전성보장없음"
+    },
+    {
+      "from": "game-easy-test.html",
+      "reference": "index.html",
+      "resolved": "index.html",
+      "exists": true,
+      "covered": true,
+      "scope": "한줄리터럴src/href(HTML속성/JS할당포함);동적표현식완전성보장없음"
+    },
+    {
+      "from": "game-easy-test.html",
+      "reference": "output/imagegen/item-skins/ossuary_phys.png",
+      "resolved": "output/imagegen/item-skins/ossuary_phys.png",
+      "exists": true,
+      "covered": true,
+      "scope": "한줄리터럴src/href(HTML속성/JS할당포함);동적표현식완전성보장없음"
+    },
+    {
+      "from": "game-easy-test.html",
+      "reference": "output/imagegen/item-skins/bone_",
+      "resolved": "output/imagegen/item-skins/bone_",
+      "exists": false,
+      "covered": true,
+      "scope": "한줄리터럴src/href(HTML속성/JS할당포함);동적표현식완전성보장없음"
+    },
+    {
+      "from": "game-easy-test.html",
+      "reference": "assets/vfx/boss/beam_laser_c.png",
+      "resolved": "assets/vfx/boss/beam_laser_c.png",
+      "exists": true,
+      "covered": true,
+      "scope": "한줄리터럴src/href(HTML속성/JS할당포함);동적표현식완전성보장없음"
+    },
+    {
+      "from": "game-easy-test.html",
+      "reference": "sprites/spike_trap/vortex.png",
+      "resolved": "sprites/spike_trap/vortex.png",
+      "exists": true,
+      "covered": true,
+      "scope": "한줄리터럴src/href(HTML속성/JS할당포함);동적표현식완전성보장없음"
+    },
+    {
+      "from": "game-easy-test.html",
+      "reference": "sprites/spike_trap/vortex.png",
+      "resolved": "sprites/spike_trap/vortex.png",
+      "exists": true,
+      "covered": true,
+      "scope": "한줄리터럴src/href(HTML속성/JS할당포함);동적표현식완전성보장없음"
+    },
+    {
+      "from": "game-easy-test.html",
+      "reference": "sprites/spike_trap/spike_thorn.png",
+      "resolved": "sprites/spike_trap/spike_thorn.png",
+      "exists": true,
+      "covered": true,
+      "scope": "한줄리터럴src/href(HTML속성/JS할당포함);동적표현식완전성보장없음"
+    },
+    {
+      "from": "game-easy-test.html",
+      "reference": "sprites/zone_single.png",
+      "resolved": "sprites/zone_single.png",
+      "exists": true,
+      "covered": true,
+      "scope": "한줄리터럴src/href(HTML속성/JS할당포함);동적표현식완전성보장없음"
+    },
+    {
+      "from": "game-easy-test.html",
+      "reference": "sprites/holy_dome.png",
+      "resolved": "sprites/holy_dome.png",
+      "exists": true,
+      "covered": true,
+      "scope": "한줄리터럴src/href(HTML속성/JS할당포함);동적표현식완전성보장없음"
+    },
+    {
+      "from": "game-easy-test.html",
+      "reference": "img/vfx_scarecrow/scarecrow_idle_",
+      "resolved": "img/vfx_scarecrow/scarecrow_idle_",
+      "exists": false,
+      "covered": true,
+      "scope": "한줄리터럴src/href(HTML속성/JS할당포함);동적표현식완전성보장없음"
+    },
+    {
+      "from": "game-easy-test.html",
+      "reference": "img/vfx_scarecrow/scarecrow_idle_",
+      "resolved": "img/vfx_scarecrow/scarecrow_idle_",
+      "exists": false,
+      "covered": true,
+      "scope": "한줄리터럴src/href(HTML속성/JS할당포함);동적표현식완전성보장없음"
+    },
+    {
+      "from": "game-easy-test.html",
+      "reference": "img/vfx_pentagram_purple.png",
+      "resolved": "img/vfx_pentagram_purple.png",
+      "exists": true,
+      "covered": true,
+      "scope": "한줄리터럴src/href(HTML속성/JS할당포함);동적표현식완전성보장없음"
+    },
+    {
+      "from": "game-easy-test.html",
+      "reference": "assets/vfx/boss/ult_holy_c.png",
+      "resolved": "assets/vfx/boss/ult_holy_c.png",
+      "exists": true,
+      "covered": true,
+      "scope": "한줄리터럴src/href(HTML속성/JS할당포함);동적표현식완전성보장없음"
+    },
+    {
+      "from": "game-easy-test.html",
+      "reference": "assets/vfx/boss/ult_black_c.png",
+      "resolved": "assets/vfx/boss/ult_black_c.png",
+      "exists": true,
+      "covered": true,
+      "scope": "한줄리터럴src/href(HTML속성/JS할당포함);동적표현식완전성보장없음"
+    },
+    {
+      "from": "game-easy-test.html",
+      "reference": "assets/vfx/boss/ult_lava_c.png",
+      "resolved": "assets/vfx/boss/ult_lava_c.png",
+      "exists": true,
+      "covered": true,
+      "scope": "한줄리터럴src/href(HTML속성/JS할당포함);동적표현식완전성보장없음"
+    },
+    {
+      "from": "game-easy-test.html",
+      "reference": "sprites/holy_dome.png",
+      "resolved": "sprites/holy_dome.png",
+      "exists": true,
+      "covered": true,
+      "scope": "한줄리터럴src/href(HTML속성/JS할당포함);동적표현식완전성보장없음"
+    },
+    {
+      "from": "game-easy-test.html",
+      "reference": "img/fieldboss_angler.png",
+      "resolved": "img/fieldboss_angler.png",
+      "exists": true,
+      "covered": true,
+      "scope": "한줄리터럴src/href(HTML속성/JS할당포함);동적표현식완전성보장없음"
+    },
+    {
+      "from": "game-easy-test.html",
+      "reference": "img/fieldboss_angler_charge.png?v=080110",
+      "resolved": "img/fieldboss_angler_charge.png",
+      "exists": true,
+      "covered": true,
+      "scope": "한줄리터럴src/href(HTML속성/JS할당포함);동적표현식완전성보장없음"
+    },
+    {
+      "from": "game-easy-test.html",
+      "reference": "img/worm_burrow1.png",
+      "resolved": "img/worm_burrow1.png",
+      "exists": true,
+      "covered": true,
+      "scope": "한줄리터럴src/href(HTML속성/JS할당포함);동적표현식완전성보장없음"
+    },
+    {
+      "from": "game-easy-test.html",
+      "reference": "img/worm_burrow2.png",
+      "resolved": "img/worm_burrow2.png",
+      "exists": true,
+      "covered": true,
+      "scope": "한줄리터럴src/href(HTML속성/JS할당포함);동적표현식완전성보장없음"
+    },
+    {
+      "from": "game-easy-test.html",
+      "reference": "img/fieldboss_firedevil_emerge.png",
+      "resolved": "img/fieldboss_firedevil_emerge.png",
+      "exists": true,
+      "covered": true,
+      "scope": "한줄리터럴src/href(HTML속성/JS할당포함);동적표현식완전성보장없음"
+    },
+    {
+      "from": "game-easy-test.html",
+      "reference": "img/fieldboss_firedevil_idle.png",
+      "resolved": "img/fieldboss_firedevil_idle.png",
+      "exists": true,
+      "covered": true,
+      "scope": "한줄리터럴src/href(HTML속성/JS할당포함);동적표현식완전성보장없음"
+    },
+    {
+      "from": "game-easy-test.html",
+      "reference": "img/fieldboss_firedevil_dir.png",
+      "resolved": "img/fieldboss_firedevil_dir.png",
+      "exists": true,
+      "covered": true,
+      "scope": "한줄리터럴src/href(HTML속성/JS할당포함);동적표현식완전성보장없음"
+    },
+    {
+      "from": "game-easy-test.html",
+      "reference": "img/fieldboss_firedevil_charge.png?v=052910",
+      "resolved": "img/fieldboss_firedevil_charge.png",
+      "exists": true,
+      "covered": true,
+      "scope": "한줄리터럴src/href(HTML속성/JS할당포함);동적표현식완전성보장없음"
+    },
+    {
+      "from": "game-easy-test.html",
+      "reference": "img/proj_firedevil_orb.png",
+      "resolved": "img/proj_firedevil_orb.png",
+      "exists": true,
+      "covered": true,
+      "scope": "한줄리터럴src/href(HTML속성/JS할당포함);동적표현식완전성보장없음"
+    },
+    {
+      "from": "game-easy-test.html",
+      "reference": "img/logo_exoduser.png",
+      "resolved": "img/logo_exoduser.png",
+      "exists": true,
+      "covered": true,
+      "scope": "한줄리터럴src/href(HTML속성/JS할당포함);동적표현식완전성보장없음"
+    }
+  ],
+  "uncoveredLiteralReferences": [
+    {
+      "from": "game.html",
+      "reference": "atlas_enemies.png",
+      "resolved": "atlas_enemies.png",
+      "exists": false,
+      "covered": false,
+      "scope": "한줄리터럴src/href(HTML속성/JS할당포함);동적표현식완전성보장없음"
+    },
+    {
+      "from": "game-easy-test.html",
+      "reference": "atlas_enemies.png",
+      "resolved": "atlas_enemies.png",
+      "exists": false,
+      "covered": false,
+      "scope": "한줄리터럴src/href(HTML속성/JS할당포함);동적표현식완전성보장없음"
+    }
+  ],
+  "packageDependencies": {
+    "acorn": "^8.16.0",
+    "canvas": "^3.2.3",
+    "nw-builder": "^4.17.10",
+    "omggif": "^1.0.10",
+    "playwright": "^1.58.2",
+    "pngjs": "^7.0.0"
+  },
+  "dependencyDecision": "실행package는deps/scripts/type/nwbuild제거;node-main은Node builtin require만사용하는지근거대조. 전체JS동적load/native모듈완전성미검증",
+  "serverDerivationMatches": {
+    "portNeedle": true,
+    "saveNeedle": true
+  },
+  "limits": "selection명칭/stat및명시HTML참조만;사용자save내용읽기0/대형asset해시0/생산복사0/execute0"
+}

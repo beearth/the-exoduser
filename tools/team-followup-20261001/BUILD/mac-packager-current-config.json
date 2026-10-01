@@ -1,0 +1,10 @@
+{
+ "sourceRoot":"/Users/fordeargamers/Projects/exoduser-migration-20261001",
+ "outputRoot":"/Users/fordeargamers/Projects/exoduser-migration-20261001/tools/team-followup-20261001/BUILD/mac-packager",
+ "port":3381,
+ "runtime":null,
+ "backup":{"sha":"98aedab7dd3df41a57c2311bfc4cf79731057e60","remoteSha":"98aedab7dd3df41a57c2311bfc4cf79731057e60","remoteRef":"UNKNOWN","verifiedAt":null,"inputs":[]},
+ "inputs":[],
+ "inputRoots":[],
+ "limits":"root시작원격조회인계SHA;정확ref/UTC/전체파일별backupSHA미제공·자가보완금지;실행용승인config아님"
+}
