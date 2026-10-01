@@ -1,0 +1,294 @@
+{
+  "at": "2026-10-01T18:20:26.314Z",
+  "scope": "양쪽 실제 renderOssPanel/withdraw/register/unequip 실행+Node DOM; disable retain/blur 모델, native 미검수",
+  "evidence": [
+    {
+      "path": "game.html",
+      "language": "ko",
+      "disableBlur": false,
+      "version": "baseline",
+      "branch": "withdrawBonePart→renderInv→real renderOssPanel",
+      "focus": "oss-withdraw",
+      "disabled": true
+    },
+    {
+      "path": "game.html",
+      "language": "ko",
+      "disableBlur": false,
+      "version": "baseline",
+      "branch": "real unequipItem→renderInv→real renderOssPanel",
+      "focus": "oss-unequip",
+      "disabled": true
+    },
+    {
+      "path": "game.html",
+      "language": "ko",
+      "disableBlur": false,
+      "version": "candidate",
+      "branch": "withdrawBonePart→renderInv→real renderOssPanel",
+      "focus": "invClose",
+      "disabled": true
+    },
+    {
+      "path": "game.html",
+      "language": "ko",
+      "disableBlur": false,
+      "version": "candidate",
+      "branch": "real unequipItem→renderInv→real renderOssPanel",
+      "focus": "invClose",
+      "disabled": true
+    },
+    {
+      "path": "game.html",
+      "language": "ko",
+      "disableBlur": true,
+      "version": "baseline",
+      "branch": "withdrawBonePart→renderInv→real renderOssPanel",
+      "focus": "BODY",
+      "disabled": true
+    },
+    {
+      "path": "game.html",
+      "language": "ko",
+      "disableBlur": true,
+      "version": "baseline",
+      "branch": "real unequipItem→renderInv→real renderOssPanel",
+      "focus": "BODY",
+      "disabled": true
+    },
+    {
+      "path": "game.html",
+      "language": "ko",
+      "disableBlur": true,
+      "version": "candidate",
+      "branch": "withdrawBonePart→renderInv→real renderOssPanel",
+      "focus": "invClose",
+      "disabled": true
+    },
+    {
+      "path": "game.html",
+      "language": "ko",
+      "disableBlur": true,
+      "version": "candidate",
+      "branch": "real unequipItem→renderInv→real renderOssPanel",
+      "focus": "invClose",
+      "disabled": true
+    },
+    {
+      "path": "game.html",
+      "language": "en",
+      "disableBlur": false,
+      "version": "baseline",
+      "branch": "withdrawBonePart→renderInv→real renderOssPanel",
+      "focus": "oss-withdraw",
+      "disabled": true
+    },
+    {
+      "path": "game.html",
+      "language": "en",
+      "disableBlur": false,
+      "version": "baseline",
+      "branch": "real unequipItem→renderInv→real renderOssPanel",
+      "focus": "oss-unequip",
+      "disabled": true
+    },
+    {
+      "path": "game.html",
+      "language": "en",
+      "disableBlur": false,
+      "version": "candidate",
+      "branch": "withdrawBonePart→renderInv→real renderOssPanel",
+      "focus": "invClose",
+      "disabled": true
+    },
+    {
+      "path": "game.html",
+      "language": "en",
+      "disableBlur": false,
+      "version": "candidate",
+      "branch": "real unequipItem→renderInv→real renderOssPanel",
+      "focus": "invClose",
+      "disabled": true
+    },
+    {
+      "path": "game.html",
+      "language": "en",
+      "disableBlur": true,
+      "version": "baseline",
+      "branch": "withdrawBonePart→renderInv→real renderOssPanel",
+      "focus": "BODY",
+      "disabled": true
+    },
+    {
+      "path": "game.html",
+      "language": "en",
+      "disableBlur": true,
+      "version": "baseline",
+      "branch": "real unequipItem→renderInv→real renderOssPanel",
+      "focus": "BODY",
+      "disabled": true
+    },
+    {
+      "path": "game.html",
+      "language": "en",
+      "disableBlur": true,
+      "version": "candidate",
+      "branch": "withdrawBonePart→renderInv→real renderOssPanel",
+      "focus": "invClose",
+      "disabled": true
+    },
+    {
+      "path": "game.html",
+      "language": "en",
+      "disableBlur": true,
+      "version": "candidate",
+      "branch": "real unequipItem→renderInv→real renderOssPanel",
+      "focus": "invClose",
+      "disabled": true
+    },
+    {
+      "path": "game-easy-test.html",
+      "language": "ko",
+      "disableBlur": false,
+      "version": "baseline",
+      "branch": "withdrawBonePart→renderInv→real renderOssPanel",
+      "focus": "oss-withdraw",
+      "disabled": true
+    },
+    {
+      "path": "game-easy-test.html",
+      "language": "ko",
+      "disableBlur": false,
+      "version": "baseline",
+      "branch": "real unequipItem→renderInv→real renderOssPanel",
+      "focus": "oss-unequip",
+      "disabled": true
+    },
+    {
+      "path": "game-easy-test.html",
+      "language": "ko",
+      "disableBlur": false,
+      "version": "candidate",
+      "branch": "withdrawBonePart→renderInv→real renderOssPanel",
+      "focus": "invClose",
+      "disabled": true
+    },
+    {
+      "path": "game-easy-test.html",
+      "language": "ko",
+      "disableBlur": false,
+      "version": "candidate",
+      "branch": "real unequipItem→renderInv→real renderOssPanel",
+      "focus": "invClose",
+      "disabled": true
+    },
+    {
+      "path": "game-easy-test.html",
+      "language": "ko",
+      "disableBlur": true,
+      "version": "baseline",
+      "branch": "withdrawBonePart→renderInv→real renderOssPanel",
+      "focus": "BODY",
+      "disabled": true
+    },
+    {
+      "path": "game-easy-test.html",
+      "language": "ko",
+      "disableBlur": true,
+      "version": "baseline",
+      "branch": "real unequipItem→renderInv→real renderOssPanel",
+      "focus": "BODY",
+      "disabled": true
+    },
+    {
+      "path": "game-easy-test.html",
+      "language": "ko",
+      "disableBlur": true,
+      "version": "candidate",
+      "branch": "withdrawBonePart→renderInv→real renderOssPanel",
+      "focus": "invClose",
+      "disabled": true
+    },
+    {
+      "path": "game-easy-test.html",
+      "language": "ko",
+      "disableBlur": true,
+      "version": "candidate",
+      "branch": "real unequipItem→renderInv→real renderOssPanel",
+      "focus": "invClose",
+      "disabled": true
+    },
+    {
+      "path": "game-easy-test.html",
+      "language": "en",
+      "disableBlur": false,
+      "version": "baseline",
+      "branch": "withdrawBonePart→renderInv→real renderOssPanel",
+      "focus": "oss-withdraw",
+      "disabled": true
+    },
+    {
+      "path": "game-easy-test.html",
+      "language": "en",
+      "disableBlur": false,
+      "version": "baseline",
+      "branch": "real unequipItem→renderInv→real renderOssPanel",
+      "focus": "oss-unequip",
+      "disabled": true
+    },
+    {
+      "path": "game-easy-test.html",
+      "language": "en",
+      "disableBlur": false,
+      "version": "candidate",
+      "branch": "withdrawBonePart→renderInv→real renderOssPanel",
+      "focus": "invClose",
+      "disabled": true
+    },
+    {
+      "path": "game-easy-test.html",
+      "language": "en",
+      "disableBlur": false,
+      "version": "candidate",
+      "branch": "real unequipItem→renderInv→real renderOssPanel",
+      "focus": "invClose",
+      "disabled": true
+    },
+    {
+      "path": "game-easy-test.html",
+      "language": "en",
+      "disableBlur": true,
+      "version": "baseline",
+      "branch": "withdrawBonePart→renderInv→real renderOssPanel",
+      "focus": "BODY",
+      "disabled": true
+    },
+    {
+      "path": "game-easy-test.html",
+      "language": "en",
+      "disableBlur": true,
+      "version": "baseline",
+      "branch": "real unequipItem→renderInv→real renderOssPanel",
+      "focus": "BODY",
+      "disabled": true
+    },
+    {
+      "path": "game-easy-test.html",
+      "language": "en",
+      "disableBlur": true,
+      "version": "candidate",
+      "branch": "withdrawBonePart→renderInv→real renderOssPanel",
+      "focus": "invClose",
+      "disabled": true
+    },
+    {
+      "path": "game-easy-test.html",
+      "language": "en",
+      "disableBlur": true,
+      "version": "candidate",
+      "branch": "real unequipItem→renderInv→real renderOssPanel",
+      "focus": "invClose",
+      "disabled": true
+    }
+  ]
+}

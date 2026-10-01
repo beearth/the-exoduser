@@ -1,0 +1,42 @@
+{
+  "작업": "UIUX-OSSUARY-FOCUS",
+  "수신": "사용자 메시지 UTC 미제공, 첫 실제 Read 이전",
+  "첫ReadUTC": "2026-10-01T18:14:14Z",
+  "중복": "ossuary-focus prefix에는 담당 task.md만 존재, 진행/대기 초안 없음",
+  "Read": "AGENTS/UI-04/인벤토리 SSOT/filter 인계·실제 renderOssPanel/선택/수집/해제 함수",
+  "기준HEAD": "8e4ed4e446329c863ed4d2d556d386c37f3ae310 (read 일치)",
+  "상태": "34PASS, 실제 핵심 함수16반례 RED→GREEN, 양쪽 최소 미적용 후보 root 인계",
+  "생산공유Git쓰기": 0,
+  "게임브라우저HTTP서버빌드새세션에이전트실행": 0,
+  "첫EditUTC": "2026-10-01T18:15:53Z",
+  "첫Edit근거": "prepare.mjs birthtime UTC/apply_patch",
+  "검수UTC": "2026-10-01T18:20:26.391Z",
+  "완료UTC": "2026-10-01T18:20:26.392Z",
+  "실제실행": "양쪽 renderOssPanel·withdrawBonePart·mkBonePart·unequipItem·_boneRegister/registerBonePart·equipItem bonePart 분기",
+  "원소스SHA": {
+    "game.html": {
+      "before": "6a8b523a4c91fdeaa300e85c3e5cfe25eb51cd8be705c395f5112d0771f6065b",
+      "final": "6a8b523a4c91fdeaa300e85c3e5cfe25eb51cd8be705c395f5112d0771f6065b",
+      "factory": "a7af601d1b5284677eb0362997112d46a69c40193427bd590660328b95edad65"
+    },
+    "game-easy-test.html": {
+      "before": "e81a708e97710a7fe8d45c6e4071edba79ff8464116de955bc801552b5746ec2",
+      "final": "e81a708e97710a7fe8d45c6e4071edba79ff8464116de955bc801552b5746ec2",
+      "factory": "a7af601d1b5284677eb0362997112d46a69c40193427bd590660328b95edad65"
+    }
+  },
+  "기존자료보존수": 303,
+  "생산기존byte불변": true,
+  "실제명령": [
+    "node ossuary-focus-prepare.mjs (최초1회)",
+    "node --test tools/team-followup-20261001/UIUX/ossuary-focus.test.mjs",
+    "node --check ossuary-focus-candidate.mjs / ossuary-focus-fixture.mjs",
+    "rg docs 전체 관련 키워드",
+    "git rev-parse HEAD / status 읽기만"
+  ],
+  "미검수": [
+    "OS키·native disabled retain/blur 동작·패드·CSS 레이아웃·픽셀",
+    "dbSaveForce 호출 대역으로 실제 저장0·통계/사운드/비관련 표현 대역",
+    "전대 소환·최초 유골함 지급·초상 리소스 로딩·일반 장비 장착 미실행"
+  ]
+}

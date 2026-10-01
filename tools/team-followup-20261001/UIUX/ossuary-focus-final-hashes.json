@@ -1,0 +1,35 @@
+{
+  "at": "2026-10-01T18:20:26.401Z",
+  "readOnlyProduction": {
+    "game.html": {
+      "before": "6a8b523a4c91fdeaa300e85c3e5cfe25eb51cd8be705c395f5112d0771f6065b",
+      "final": "6a8b523a4c91fdeaa300e85c3e5cfe25eb51cd8be705c395f5112d0771f6065b",
+      "factory": "a7af601d1b5284677eb0362997112d46a69c40193427bd590660328b95edad65"
+    },
+    "game-easy-test.html": {
+      "before": "e81a708e97710a7fe8d45c6e4071edba79ff8464116de955bc801552b5746ec2",
+      "final": "e81a708e97710a7fe8d45c6e4071edba79ff8464116de955bc801552b5746ec2",
+      "factory": "a7af601d1b5284677eb0362997112d46a69c40193427bd590660328b95edad65"
+    }
+  },
+  "files": {
+    "tools/team-followup-20261001/UIUX/ossuary-focus-before.json": "2f61d3bbb3810585a721a912515baad8424a77ee60a517986c48cd19dce9ecb7",
+    "tools/team-followup-20261001/UIUX/ossuary-focus-candidate.mjs": "a2e31dacbcb2ade9371c8ee2b029305012a1a82c78be63466d9c36acad778b1e",
+    "tools/team-followup-20261001/UIUX/ossuary-focus-dependencies.json": "686cc23ab7e854011f1b3e63eb70f9ec66d6a55bad6bff56c263c5acb5de1d55",
+    "tools/team-followup-20261001/UIUX/ossuary-focus-doc-matches.txt": "0ac2c2705b4e955fa185e0d49d8f3370949af033b508d76927a459ec001689c3",
+    "tools/team-followup-20261001/UIUX/ossuary-focus-easy.before.html": "e81a708e97710a7fe8d45c6e4071edba79ff8464116de955bc801552b5746ec2",
+    "tools/team-followup-20261001/UIUX/ossuary-focus-easy.patch": "9db8218334679e27214438275ab5436a5edcab5a2b8c98917eb9c6ed7780fc48",
+    "tools/team-followup-20261001/UIUX/ossuary-focus-extra-source.json": "d4f3e9d0d49632ba27e3bf50e6045b77144669394331bbe416a633518a9dd79c",
+    "tools/team-followup-20261001/UIUX/ossuary-focus-fixture.mjs": "9072f74294cbf5a0dd2c5a2237e8be8c0429bbc201f5b534482d2b0759bb5851",
+    "tools/team-followup-20261001/UIUX/ossuary-focus-main.before.html": "6a8b523a4c91fdeaa300e85c3e5cfe25eb51cd8be705c395f5112d0771f6065b",
+    "tools/team-followup-20261001/UIUX/ossuary-focus-main.patch": "74674eb0e0378804e24ca7ea0d4216a5fec199136abc312fc5f9ce435b2912e0",
+    "tools/team-followup-20261001/UIUX/ossuary-focus-prepare.mjs": "f1e9dda842945a2b06134da4c52e74478c612f066ba2fe032b489ee8b2f12476",
+    "tools/team-followup-20261001/UIUX/ossuary-focus-receipt.json": "0afa22f4171de75fb442b526bd0f24acdbfea6c28bd5fa692bf4886ee16478b3",
+    "tools/team-followup-20261001/UIUX/ossuary-focus-reproduction.json": "bf3253f9e93581f2b487f7b013e5b145c0944cfa2b4e8e75e38847d5c8808b1a",
+    "tools/team-followup-20261001/UIUX/ossuary-focus-result.md": "a6725d661ebb3ed9d54e934bf91ed544afddf8664f7d95f5e9ae2b5059c41bfe",
+    "tools/team-followup-20261001/UIUX/ossuary-focus-task.md": "f72633504bcc7361731fe2b967db726d663a52122727863a70a0726eeb14880f",
+    "tools/team-followup-20261001/UIUX/ossuary-focus-ui-panels.before.js": "b22c4a31141672304a15adfae3a5050cb9fde3b96601507c8f10de3ea63f4cb5",
+    "tools/team-followup-20261001/UIUX/ossuary-focus-validation.txt": "349e98268143b19294c927d78ce1507d931be1733db3af3feb02b64918f7dd3d",
+    "tools/team-followup-20261001/UIUX/ossuary-focus.test.mjs": "6ca1b380136a9f8c1cd9d1c7b50eed0111fe1eeeb211f8e53990475bea21a0fe"
+  }
+}

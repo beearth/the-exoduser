@@ -1,0 +1,19 @@
+{
+  "at": "2026-10-01T18:18:27.683Z",
+  "rows": [
+    {
+      "path": "game.html",
+      "name": "equipItem",
+      "line1": 15571,
+      "sha256": "32e0a5050627e371640d05a8a55faf7f34efd4969dd37ae8b59a8804bdde8bf6",
+      "execution": "bonePart 등록 인터셉트 실제 실행, 일반 장착 경로 미실행"
+    },
+    {
+      "path": "game-easy-test.html",
+      "name": "equipItem",
+      "line1": 14679,
+      "sha256": "494bde4a081e2c29784f33f493e1e2c96d4446e98e45d63df43141717a4b7179",
+      "execution": "bonePart 등록 인터셉트 실제 실행, 일반 장착 경로 미실행"
+    }
+  ]
+}
