@@ -1,0 +1,93 @@
+{
+  "utc": "2026-10-01T16:30:21.137Z",
+  "checks": 24,
+  "status": "PASS",
+  "gameSha256": "7631f5a083672124624e0b8dc22b0716d10c8815dbb1e6aee98a5e2e51299993",
+  "functions": [
+    {
+      "name": "fireBlackStar",
+      "sha256": "11fd34ebf4a12ef9957203d93e2aff9245b9009a9f086fe641ffd027054c5824",
+      "line": 45262
+    },
+    {
+      "name": "activateSpikeTrap",
+      "sha256": "f5d9f41ee12c8f51a0d8a1b116588a6133a3bc801aec73bb0532d3c02fc2dd19",
+      "line": 43984
+    },
+    {
+      "name": "activateGiantSlam",
+      "sha256": "2c2cb60f5af6a4759aa24efeea620673b621e7a0dad3658f0a480780f12c58fb",
+      "line": 44922
+    },
+    {
+      "name": "update",
+      "sha256": "c37aa75077f5670d8f4af076f2570f75471d7f0bf5c32b6c1b43185749045a1c",
+      "line": 30844
+    }
+  ],
+  "fixtures": [
+    {
+      "type": "fireAura",
+      "follow": true,
+      "line": 32329,
+      "sha256": "45f2bd47f4ff0809ecf04c6e1c204462a535cd9c68d1c39c3731a00f81d0af90",
+      "literal": "{type:'fireAura',x:P.x,y:P.y,r:_faR,dmg:_faDmg,el:EL.F,t:0,maxT:600,lv:_faLv,_tickCd:0,follow:true,_faFr:0}"
+    },
+    {
+      "type": "storm",
+      "follow": null,
+      "line": 35009,
+      "sha256": "707af3a755af3639b9f54261f872122af56d11fb7fc9433e4804460872c97dc7",
+      "literal": "{x:_hrwx,y:_hrwy,r:_msR,t:0,maxT:_hrDur,\n          dmg:_msDmg,el:EL.L,lv:_msLv,type:'storm'}"
+    },
+    {
+      "type": "boneStorm",
+      "follow": null,
+      "line": 35073,
+      "sha256": "b481f238205ba7e302f4f5ea4f76d243142818dcdd472c635cd5b51b0ec1d68e",
+      "literal": "{x:_mswx,y:_mswy,r:_bsRingR,t:0,maxT:_syncDur,\n              dmg:_msDmg,el:EL.D,lv:_msLv,type:'boneStorm'}"
+    },
+    {
+      "type": "storm",
+      "follow": null,
+      "line": 35093,
+      "sha256": "4c627fb4c6b4f82110fe93ef84e13c0196e2b9043d6a4699a3ded5b91e03accc",
+      "literal": "{x:_mswx,y:_mswy,r:_msR,t:0,maxT:600,\n            dmg:_msDmg,el:EL.L,lv:_msLv,type:'storm'}"
+    },
+    {
+      "type": "shockField",
+      "follow": null,
+      "line": 43882,
+      "sha256": "bf8f2e91083be9683a69b626d4037de6f32b0c032a252e4f33061e693f33bbff",
+      "literal": "{x:P.x,y:P.y,r:_sfR,t:0,maxT:600+(_sfLv-1)*30,dmg:_sfDmg,el:EL.L,lv:_sfLv,type:'shockField',defRed:_sfDR,\n        _thunder:[{pts:_thPts,br:_thBr,life:18,maxLife:18,baseW:_thBW}]}"
+    },
+    {
+      "type": "spikeTrap",
+      "follow": null,
+      "line": 43993,
+      "sha256": "772a34d9976fc981e21ce2775d514ca71a49a589c3964a427950762195b6fec8",
+      "literal": "{x:P.x,y:P.y,r:r,t:0,maxT:600,dmg:dmg,el:EL.P,lv:lv,type:'spikeTrap'}"
+    },
+    {
+      "type": "spikeTrap",
+      "follow": null,
+      "line": 44774,
+      "sha256": "0f061ec226722098127b4c16b35ee3ab82acab82d87d7972a04bb6d4a2fd3085",
+      "literal": "{x:p.x,y:p.y,r:_stR,t:0,maxT:600,dmg:_stDmg,el:EL.P,lv:_stLv,type:'spikeTrap',_pillarSpike:true}"
+    },
+    {
+      "type": "fireAura",
+      "follow": false,
+      "line": 44987,
+      "sha256": "fb419914b7dd79694d8d18ed546c2b0bf628af15cfa022dcf899f962ff9eb252",
+      "literal": "{type:'fireAura',x:P.x,y:P.y,r:_ifR,dmg:_ifDmg,el:EL.F,t:0,maxT:300,lv:_ifLv,_tickCd:0,follow:false,_faFr:0}"
+    },
+    {
+      "type": "holyDome",
+      "follow": null,
+      "line": 45155,
+      "sha256": "41978013658684ca040368644d4ba0ddafa4e5de5308e9f178d9daa1ac570b83",
+      "literal": "{x:P.x,y:P.y,r:_hdR,t:0,maxT:_hdDur,type:'holyDome',lv:slv}"
+    }
+  ]
+}

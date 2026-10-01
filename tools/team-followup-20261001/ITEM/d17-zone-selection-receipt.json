@@ -1,0 +1,18 @@
+{
+  "task": "ITEM d17-zone-selection",
+  "receivedUtc": "2026-10-01T16:27:25Z",
+  "firstReadUtc": "2026-10-01T16:27:25Z",
+  "receiptUtc": "2026-10-01T16:29:11Z",
+  "status": "후보 구현·격리검수 완료, root 인계; 생산 미적용",
+  "firstCodeEditClockUtc": "2026-10-01T16:29:21Z",
+  "firstCodeEditClockNote": "코드 apply_patch 직전 실제 date 출력 기준; 패치 자체 별도 시각 계측 없음",
+  "checksUtc": "2026-10-01T16:30:21.137Z",
+  "completedUtc": "2026-10-01T16:30:21Z",
+  "validation": "실제 AST literal VM fixture 9개, 24그룹 PASS. 첫 fixture 의존누락 실패 후 합성 데이터 보충. 재실행 node d17-zone-selection-check.mjs. docs 전체 rg 수행.",
+  "sourceEvidence": "d17-zone-selection-evidence.json: game 및 원함수4개/literal9개 SHA와 원문 행번호",
+  "remainingGates": "실제 블랙 종료 adapter·출처/보스 식별·시전기록 관리·자식덫 정책·identity 호환·실전 겹침피해는 root 검토. 생산 적용0",
+  "duplicateCheck": "동일 prefix는 배정 task.md만 존재. 직전 CSP 인수 완료. 다른 세션·queue 조회 없음.",
+  "reads": ["AGENTS 지침 및 하위 AGENTS 검색", "ITEM_TEAM_MASTER", "UNIQUE_TOP8_HOOK_REVIEW_20261001.md", "유니크_어픽스_리스트.md D절", "d17-zone-selection-task.md", "game.html 실제 생성·갱신·fireBlackStar 원문"],
+  "constraints": "소유 prefix만 쓰기. 생산/공유docs/Git/queue/게임/브라우저/서버/빌드 실행0.",
+  "commands": ["date -u +%Y-%m-%dT%H:%M:%SZ", "ls d17-zone-selection-* 및 cat task, sed D절", "rg 실제 장판 생성/갱신 및 보스 태그 검색(보스 태그 매칭 없음은 소유권 증명 아님)"]
+}

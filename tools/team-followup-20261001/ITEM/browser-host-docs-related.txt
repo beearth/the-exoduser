@@ -1,0 +1,198 @@
+docs/7아이템디자인/유니크_어픽스_리스트.md:121:| Space 분노 | U-D10~11 | 지옥강타의 분노 소모와 천공쇄기의 충전을 다음 공격으로 잇는다. |
+docs/7아이템디자인/유니크_어픽스_리스트.md:136:| 요청에 적힌 `ultRageGain`·`HOLD` | 현행 `game.html`·`docs/7아이템디자인`에서 정확한 id/명칭을 확인하지 못했다. 향후 해당 후보가 추가되면 U-D10·18 및 차징형 U-D03과 다시 대조한다. |
+docs/7아이템디자인/유니크_어픽스_리스트.md:155:| **U-D10** Space 지옥강타 / 잔불 분노 | 지옥강타가 분노 100 이상을 소모했다면 사용 직후 일부 분노를 남긴다. | 소모 분노의 **10~20%**: 하10~13/중14~16/상17~20%; 저장 `0.10~0.20`; 잔여 최대 `30`. | `_uSlamEmberRage`; `activateGiantSlam` 44282~44317. | 원래 `_rageMul`과 폭발은 **소모 전 분노**로 계산하고, `P.rage=0` 다음 `min(30,소모×값)` 복원. U-N01의 `최대치 도달` 래치를 재발동시키지 않음. 합체 지옥강타2의 420f 쿨은 그대로. | 분노100 지옥강타 10360/1회 기준 피해를 더 키우지 않는다. 상옵 잔여20으로 다음 폭발까지 패링 횟수만 줄인다. | U·S |
+docs/7아이템디자인/유니크_어픽스_리스트.md:174:| 2 | U-D10 | 분노100을 쓰고도 잔불이 남아 다음 패링 루프가 빨라진다. 기존 `P.rage=0` 뒤 복원이라 난도 **낮음**, U-N01 중복 발동만 확인. |
+docs/7아이템디자인/유니크_어픽스_리스트.md:207:| U-D10 | 분노 `100` 전부 지옥강타에 소모 | 잔여 분노=`min(30,100×롤÷100)` | 충만 래치 재발동 없음 |
+docs/7아이템디자인/유니크_어픽스_리스트.md:220:D절 효과 실행은 미구현 상태를 유지한다. 독립 `unique-item-project/roll-values.js`가 D절22종의 정수 범위·명시 하중상·저장 단위·수치 표시만 구현했다. `%` raw/100, f·발·개·분노 정수 그대로이며 frame 표시는 raw/60 소수2자리 반올림과 원분수 보존이다. D10 명시10–13/14–16/17–20을 재등분하지 않는다. 감사 소비가 원문과698개 정수 왕복을 확인한다. 롤69검사·통합101검사 통과, 게임 드롭/저장/효과 활성0. [상세](../0마스터플랜/mac-resume-20261001/vscode-dispatch/PM009-roll-review-root.md).
+docs/7아이템디자인/유니크_어픽스_리스트.md:223:### 2026-10-01 D10 독립 후보 검수
+docs/7아이템디자인/유니크_어픽스_리스트.md:227:| UI-10/U-D10 | 신규제안·미채택·게임비활성 | 흉갑/지옥강타 성공 실제소모>=100,저장롤10~20%,잔여 min(30,소모×롤) 후보 |
+docs/7아이템디자인/유니크_어픽스_리스트.md:230:| 롤 모듈 | roll-values.js 현행 | .mjs에서 동일바이트이동, HTTP JavaScript MIME, 서버변경0 |
+docs/7아이템디자인/유니크_어픽스_리스트.md:233:관련188검사와 최종화면수정후12검사 통과. 독립후보 완료와 게임효과 적용은 구분한다. [상세·실패 포함 근거](../0마스터플랜/mac-resume-20261001/vscode-dispatch/D10-root-review.md).
+docs/7아이템디자인/유니크_어픽스_리스트.md:236:### 2026-10-01 D10 저장 binding 후보 인수
+docs/7아이템디자인/유니크_어픽스_리스트.md:241:| 저장 필드 | `uniqueRoll:{version:1,effectId:'U-D10',stat:'_uSlamEmberRage',unit:'fraction',storedValue:0.15}` |
+docs/7아이템디자인/유니크_어픽스_리스트.md:245:| 복원 | restoreD10Instance는 전달된 로드 객체를 그대로 반환. 신규 생성·수리·재롤·legacy 자동변환 없음 |
+docs/7아이템디자인/유니크_어픽스_리스트.md:246:| 소비 | readStoredRoll→기존 createD10Consumer; 기본 enabled=false. UIUX는 실제 readD10Binding→기존 tooltip, 항상 active=false |
+docs/7아이템디자인/유니크_어픽스_리스트.md:250:`createNewIdentifiedD10Instance`는 명시 새 생성 fixture/호출자용 포트다. plain JSON 내용만으로 객체의 생성 이력을 증명할 수는 없다. 실제 생산 연결 때에는 fresh mkItem 생성 경로에서만 호출해야 한다. 현재 read/restore/tooltip이 이 생성 API를 호출하지 않는 회귀를 확인했다. 이 제약을 이유로 사용자가 일상 필드명을 선택하도록 반복 질문하지 않는다.
+docs/7아이템디자인/고유아이템_모델_어픽스_밸런싱_프로젝트_20260930.md:41:| UI-10 / U-D10 | 보라 잔불 흉갑 | 강타 뒤 분노 재시작 | U-N01 충만 재발동 | Seedream 비교 시안 |
+docs/7아이템디자인/고유아이템_모델_어픽스_밸런싱_프로젝트_20260930.md:62:| 2 | U-D10 | 분노100 강타 뒤 10~20 반환, 최대 30 | 다음 강타까지 걸리는 시간; U-N01 래치 |
+docs/7아이템디자인/고유아이템_모델_어픽스_밸런싱_프로젝트_20260930.md:77:| U-D10 + U-N01 | 강타 잔여 분노가 최대치 도달 이벤트를 다시 만들 수 있다. | 복원은 충만 래치를 발동시키지 않는 D절 계약 유지. |
+docs/7아이템디자인/UNIQUE_TOP8_HOOK_REVIEW_20261001.md:8:| 2 | U-D10 | 지옥강타의 소모 전 분노 스냅샷 → 원래 피해 계산·분노 소모 후 잔여 복원 | 상옵 분노100 소모 시 잔여20, 최대30; 충만 이벤트/U-N01을 복원 과정에서 다시 발동시키지 않기 |
+docs/7아이템디자인/UNIQUE_TOP8_HOOK_REVIEW_20261001.md:35:### 2026-10-01 D10 독립 후보 검수
+docs/7아이템디자인/UNIQUE_TOP8_HOOK_REVIEW_20261001.md:39:| UI-10/U-D10 | 신규제안·미채택·게임비활성 | 흉갑/지옥강타 성공 실제소모>=100,저장롤10~20%,잔여 min(30,소모×롤) 후보 |
+docs/7아이템디자인/UNIQUE_TOP8_HOOK_REVIEW_20261001.md:42:| 롤 모듈 | roll-values.js 현행 | .mjs에서 동일바이트이동, HTTP JavaScript MIME, 서버변경0 |
+docs/7아이템디자인/UNIQUE_TOP8_HOOK_REVIEW_20261001.md:45:관련188검사와 최종화면수정후12검사 통과. 독립후보 완료와 게임효과 적용은 구분한다. [상세·실패 포함 근거](../0마스터플랜/mac-resume-20261001/vscode-dispatch/D10-root-review.md).
+docs/7아이템디자인/UNIQUE_TOP8_HOOK_REVIEW_20261001.md:48:### 2026-10-01 D10 저장 binding 후보 인수
+docs/7아이템디자인/UNIQUE_TOP8_HOOK_REVIEW_20261001.md:53:| 저장 필드 | `uniqueRoll:{version:1,effectId:'U-D10',stat:'_uSlamEmberRage',unit:'fraction',storedValue:0.15}` |
+docs/7아이템디자인/UNIQUE_TOP8_HOOK_REVIEW_20261001.md:57:| 복원 | restoreD10Instance는 전달된 로드 객체를 그대로 반환. 신규 생성·수리·재롤·legacy 자동변환 없음 |
+docs/7아이템디자인/UNIQUE_TOP8_HOOK_REVIEW_20261001.md:58:| 소비 | readStoredRoll→기존 createD10Consumer; 기본 enabled=false. UIUX는 실제 readD10Binding→기존 tooltip, 항상 active=false |
+docs/7아이템디자인/UNIQUE_TOP8_HOOK_REVIEW_20261001.md:62:`createNewIdentifiedD10Instance`는 명시 새 생성 fixture/호출자용 포트다. plain JSON 내용만으로 객체의 생성 이력을 증명할 수는 없다. 실제 생산 연결 때에는 fresh mkItem 생성 경로에서만 호출해야 한다. 현재 read/restore/tooltip이 이 생성 API를 호출하지 않는 회귀를 확인했다. 이 제약을 이유로 사용자가 일상 필드명을 선택하도록 반복 질문하지 않는다.
+docs/7아이템디자인/UNIQUE_ITEM_GAME_INTEGRATION_CONTRACT_20261001.md:45:| `armor` | UI-10, UI-21 | U-D10, U-D21 | 흉갑 |
+docs/7아이템디자인/UNIQUE_ITEM_GAME_INTEGRATION_CONTRACT_20261001.md:79:| 롤 | roll-values.js: UI/U-D22종, D절 명시 정수 범위·하중상 구간. D10 10–13/14–16/17–20. RNG는 주입 필수이며 정확히1회·유한 [0,1) |
+docs/7아이템디자인/UNIQUE_ITEM_GAME_INTEGRATION_CONTRACT_20261001.md:83:| 개발 화면 | 정의22카드/44원화, 슬롯/타입·효과ID·비활성/미채택 표시. 실제3340 JavaScript MIME·모듈 import·64/160px·Tab/Enter/Space 확인 |
+docs/7아이템디자인/UNIQUE_ITEM_GAME_INTEGRATION_CONTRACT_20261001.md:88:### 2026-10-01 D10 독립 후보 검수
+docs/7아이템디자인/UNIQUE_ITEM_GAME_INTEGRATION_CONTRACT_20261001.md:92:| UI-10/U-D10 | 신규제안·미채택·게임비활성 | 흉갑/지옥강타 성공 실제소모>=100,저장롤10~20%,잔여 min(30,소모×롤) 후보 |
+docs/7아이템디자인/UNIQUE_ITEM_GAME_INTEGRATION_CONTRACT_20261001.md:95:| 롤 모듈 | roll-values.js 현행 | .mjs에서 동일바이트이동, HTTP JavaScript MIME, 서버변경0 |
+docs/7아이템디자인/UNIQUE_ITEM_GAME_INTEGRATION_CONTRACT_20261001.md:98:관련188검사와 최종화면수정후12검사 통과. 독립후보 완료와 게임효과 적용은 구분한다. [상세·실패 포함 근거](../0마스터플랜/mac-resume-20261001/vscode-dispatch/D10-root-review.md).
+docs/7아이템디자인/UNIQUE_ITEM_GAME_INTEGRATION_CONTRACT_20261001.md:101:### 2026-10-01 D10 저장 binding 후보 인수
+docs/7아이템디자인/UNIQUE_ITEM_GAME_INTEGRATION_CONTRACT_20261001.md:106:| 저장 필드 | `uniqueRoll:{version:1,effectId:'U-D10',stat:'_uSlamEmberRage',unit:'fraction',storedValue:0.15}` |
+docs/7아이템디자인/UNIQUE_ITEM_GAME_INTEGRATION_CONTRACT_20261001.md:110:| 복원 | restoreD10Instance는 전달된 로드 객체를 그대로 반환. 신규 생성·수리·재롤·legacy 자동변환 없음 |
+docs/7아이템디자인/UNIQUE_ITEM_GAME_INTEGRATION_CONTRACT_20261001.md:111:| 소비 | readStoredRoll→기존 createD10Consumer; 기본 enabled=false. UIUX는 실제 readD10Binding→기존 tooltip, 항상 active=false |
+docs/7아이템디자인/UNIQUE_ITEM_GAME_INTEGRATION_CONTRACT_20261001.md:115:`createNewIdentifiedD10Instance`는 명시 새 생성 fixture/호출자용 포트다. plain JSON 내용만으로 객체의 생성 이력을 증명할 수는 없다. 실제 생산 연결 때에는 fresh mkItem 생성 경로에서만 호출해야 한다. 현재 read/restore/tooltip이 이 생성 API를 호출하지 않는 회귀를 확인했다. 이 제약을 이유로 사용자가 일상 필드명을 선택하도록 반복 질문하지 않는다.
+docs/7아이템디자인/보라색_고유아이템_카탈로그_20260930.md:27:| UI-10 | 꺼지지 않는 심갑 | 갑옷 | 가슴 중앙에 남은 보라 숯불, 방사형 판금 균열 | U-D10 지옥강타 후 잔여 분노 | Higgsfield 원화 `assets/unique-items/ui-10.png` |
+docs/7아이템디자인/ITEM_TEAM_MASTER.md:107:정의 데이터는 동일 SHA의 definitions.js로 이동하여 기존 서버의 올바른 JavaScript MIME으로 소비한다. BALANCE22종/698정수 롤 모듈을 감사에 연결하고 UIUX22카드/44원화 화면을 실제3340에서 확인했다. 통합101PASS, 활성0/원화채택0. [최종 근거·한계](../0마스터플랜/mac-resume-20261001/vscode-dispatch/PM009-roll-review-root.md).
+docs/7아이템디자인/ITEM_TEAM_MASTER.md:110:### 2026-10-01 D10 독립 후보 검수
+docs/7아이템디자인/ITEM_TEAM_MASTER.md:114:| UI-10/U-D10 | 신규제안·미채택·게임비활성 | 흉갑/지옥강타 성공 실제소모>=100,저장롤10~20%,잔여 min(30,소모×롤) 후보 |
+docs/7아이템디자인/ITEM_TEAM_MASTER.md:117:| 롤 모듈 | roll-values.js 현행 | .mjs에서 동일바이트이동, HTTP JavaScript MIME, 서버변경0 |
+docs/7아이템디자인/ITEM_TEAM_MASTER.md:120:관련188검사와 최종화면수정후12검사 통과. 독립후보 완료와 게임효과 적용은 구분한다. [상세·실패 포함 근거](../0마스터플랜/mac-resume-20261001/vscode-dispatch/D10-root-review.md).
+docs/7아이템디자인/ITEM_TEAM_MASTER.md:123:### 2026-10-01 D10 저장 binding 후보 인수
+docs/7아이템디자인/ITEM_TEAM_MASTER.md:128:| 저장 필드 | `uniqueRoll:{version:1,effectId:'U-D10',stat:'_uSlamEmberRage',unit:'fraction',storedValue:0.15}` |
+docs/7아이템디자인/ITEM_TEAM_MASTER.md:132:| 복원 | restoreD10Instance는 전달된 로드 객체를 그대로 반환. 신규 생성·수리·재롤·legacy 자동변환 없음 |
+docs/7아이템디자인/ITEM_TEAM_MASTER.md:133:| 소비 | readStoredRoll→기존 createD10Consumer; 기본 enabled=false. UIUX는 실제 readD10Binding→기존 tooltip, 항상 active=false |
+docs/7아이템디자인/ITEM_TEAM_MASTER.md:137:`createNewIdentifiedD10Instance`는 명시 새 생성 fixture/호출자용 포트다. plain JSON 내용만으로 객체의 생성 이력을 증명할 수는 없다. 실제 생산 연결 때에는 fresh mkItem 생성 경로에서만 호출해야 한다. 현재 read/restore/tooltip이 이 생성 API를 호출하지 않는 회귀를 확인했다. 이 제약을 이유로 사용자가 일상 필드명을 선택하도록 반복 질문하지 않는다.
+docs/6사운드디자인/6사운드디자인.md:569:| 장면 | 마지막 W16-D100~103.5초, 음성 전체가 포함됨 |
+docs/15 세이브+데이터구조/15 세이브+데이터구조.md:892:### 2026-10-01 D10 저장 binding 후보 인수
+docs/15 세이브+데이터구조/15 세이브+데이터구조.md:897:| 저장 필드 | `uniqueRoll:{version:1,effectId:'U-D10',stat:'_uSlamEmberRage',unit:'fraction',storedValue:0.15}` |
+docs/15 세이브+데이터구조/15 세이브+데이터구조.md:901:| 복원 | restoreD10Instance는 전달된 로드 객체를 그대로 반환. 신규 생성·수리·재롤·legacy 자동변환 없음 |
+docs/15 세이브+데이터구조/15 세이브+데이터구조.md:902:| 소비 | readStoredRoll→기존 createD10Consumer; 기본 enabled=false. UIUX는 실제 readD10Binding→기존 tooltip, 항상 active=false |
+docs/15 세이브+데이터구조/15 세이브+데이터구조.md:906:`createNewIdentifiedD10Instance`는 명시 새 생성 fixture/호출자용 포트다. plain JSON 내용만으로 객체의 생성 이력을 증명할 수는 없다. 실제 생산 연결 때에는 fresh mkItem 생성 경로에서만 호출해야 한다. 현재 read/restore/tooltip이 이 생성 API를 호출하지 않는 회귀를 확인했다. 이 제약을 이유로 사용자가 일상 필드명을 선택하도록 반복 질문하지 않는다.
+docs/3.1 ui hud 디자인/SETTINGS_HUD_DETAIL_20260930.md:70:### 2026-10-01 D10 독립 후보 검수
+docs/3.1 ui hud 디자인/SETTINGS_HUD_DETAIL_20260930.md:74:| UI-10/U-D10 | 신규제안·미채택·게임비활성 | 흉갑/지옥강타 성공 실제소모>=100,저장롤10~20%,잔여 min(30,소모×롤) 후보 |
+docs/3.1 ui hud 디자인/SETTINGS_HUD_DETAIL_20260930.md:77:| 롤 모듈 | roll-values.js 현행 | .mjs에서 동일바이트이동, HTTP JavaScript MIME, 서버변경0 |
+docs/3.1 ui hud 디자인/SETTINGS_HUD_DETAIL_20260930.md:80:관련188검사와 최종화면수정후12검사 통과. 독립후보 완료와 게임효과 적용은 구분한다. [상세·실패 포함 근거](../0마스터플랜/mac-resume-20261001/vscode-dispatch/D10-root-review.md).
+docs/3.1 ui hud 디자인/SETTINGS_HUD_DETAIL_20260930.md:83:### 2026-10-01 D10 저장 binding 후보 인수
+docs/3.1 ui hud 디자인/SETTINGS_HUD_DETAIL_20260930.md:88:| 저장 필드 | `uniqueRoll:{version:1,effectId:'U-D10',stat:'_uSlamEmberRage',unit:'fraction',storedValue:0.15}` |
+docs/3.1 ui hud 디자인/SETTINGS_HUD_DETAIL_20260930.md:92:| 복원 | restoreD10Instance는 전달된 로드 객체를 그대로 반환. 신규 생성·수리·재롤·legacy 자동변환 없음 |
+docs/3.1 ui hud 디자인/SETTINGS_HUD_DETAIL_20260930.md:93:| 소비 | readStoredRoll→기존 createD10Consumer; 기본 enabled=false. UIUX는 실제 readD10Binding→기존 tooltip, 항상 active=false |
+docs/3.1 ui hud 디자인/SETTINGS_HUD_DETAIL_20260930.md:97:`createNewIdentifiedD10Instance`는 명시 새 생성 fixture/호출자용 포트다. plain JSON 내용만으로 객체의 생성 이력을 증명할 수는 없다. 실제 생산 연결 때에는 fresh mkItem 생성 경로에서만 호출해야 한다. 현재 read/restore/tooltip이 이 생성 API를 호출하지 않는 회귀를 확인했다. 이 제약을 이유로 사용자가 일상 필드명을 선택하도록 반복 질문하지 않는다.
+docs/CHANGELOG_SYNC.md:1825:| 편집 | 기존 PCM0~96.095초 유지,1.145초 디지털 쉼, W16-C100초까지·W16-D103.5초까지. 전체22cue |
+docs/CHANGELOG_SYNC.md:51795:- definitions.mjs → definitions.js 동일내용 이동: 기존 서버 MIME 지원, 서버·포트·저장 경로 변경0.
+docs/CHANGELOG_SYNC.md:51802:## 2026-10-01 D10 후보·실제툴팁 인수
+docs/CHANGELOG_SYNC.md:51803:- UI10흉갑/U-D10 지옥강타 소비후10~20%·최대30,성공실제소모>=100 독립후보.75전투+8독립그룹(148입력) 및통합188PASS. 생산활성0.
+docs/CHANGELOG_SYNC.md:51804:- roll-values.mjs→동일바이트.js;감사/회귀/증거import갱신. 한영10/15/20%검토UI·D10넓은배치,실HTTP/44로드/키보드/160px검수;최종12PASS.
+docs/CHANGELOG_SYNC.md:51808:## 2026-10-01 D10 저장 binding 후보 연결
+docs/CHANGELOG_SYNC.md:51809:- uniqueRoll version1/effectId U-D10/stat _uSlamEmberRage/unit fraction/storedValue .10~.20,신규주입RNG1회/읽기로드재롤0. plain JSON 생성과own enumerable data 조회,특수직렬화/접근자거부. 기존legacy/missing자동변환0.
+docs/12퍼포먼스·최적화/QA_PERFORMANCE_TEAM_MASTER.md:477:root가 기존3340의 격리origin에서 정상입력으로 시도했지만 튜토리얼/0처치/첫처치 관측누락/옵션변화가 있어5표본모두성능인수에서제외. 실제새병목/개선율/PC329ms해결주장0. CPU draw와RAF진단은구분,GL비용미측정·observer부하미독립측정. 게임탭닫기·draw/listener원복,측정종료. [환경·표본·실패단계](../0마스터플랜/mac-resume-20261001/vscode-dispatch/D10-root-review.md).
+docs/12퍼포먼스·최적화/QA_PERFORMANCE_TEAM_MASTER.md:506:기존 BUILD에 새 로드 경계와 live 증거 독립 검수를, 기존 ITEM에 D10 저장 호출부 최소 통합 후보를 각각 한 번 전송했다. 새 세션0. Mac 네이티브 접근은 다시 가능하며 QA Terminal1에는 이미 완료한 NEXT_TASK를 가리키는 미전송 초안이 보여 중복 실행하지 않고 보존했다. 다른 Claude 팀 전체 재가동으로 세지 않는다.
+docs/0마스터플랜/PROJECT_MANAGEMENT_MASTER.md:611:기존 BALANCE/UIUX의 새 구현을 root가 통합하여22종/698정수 롤과 정의 기반22카드/44원화 비교를 연결했다. 통합101PASS·문서변이7종 검출. 실행 중3340의 .mjs MIME 결함은 정의를 동일내용 .js로 이동해 해결했으며 서버파일/프로세스 수정0. 실제HTTP200 JavaScript MIME/디스크동일SHA·브라우저44이미지로드·64/160·Tab/Enter/Space 확인. 활성0/채택0/효과미구현 유지.13:44Z native noWindowsAvailable/잠금UNKNOWN으로 정정, ENEMY/ART/SKILL 미수신. [근거와 남은 게이트](mac-resume-20261001/vscode-dispatch/PM009-roll-review-root.md).
+docs/0마스터플랜/PROJECT_MANAGEMENT_MASTER.md:614:### 18.37 D10 후보·툴팁 인수와 QA 정직한 제외
+docs/0마스터플랜/PROJECT_MANAGEMENT_MASTER.md:616:ITEM/BALANCE/UIUX 실제후보를 root가검수:관련188PASS,독립148입력불일치0,실제44원화·한영10/15/20%·키보드·Chrome160px화면확인. D10만전체너비검토영역으로보강,roll-values 동일바이트.js이동. 생산game/easy/index/server수정0·효과비활성. QA5표본은처치관측누락/0처치/옵션변화로전부INCONCLUSIVE,성능통과0. BUILD부총괄Read/배정안완료후자체queue readonly실패;권한변경0. root의기존공식CLI로14:16:08Z binding3건각1회전송,수신·첫Read/Edit는최신상태표로분리. [검수·환경·남은게이트](mac-resume-20261001/vscode-dispatch/D10-root-review.md).
+docs/0마스터플랜/PROJECT_MANAGEMENT_MASTER.md:619:### 18.38 D10 저장후보 연결·독립반례 보강·지원 역할 조정
+docs/0마스터플랜/PROJECT_MANAGEMENT_MASTER.md:621:ITEM 실제binding 및 UIUX/BALANCE 의존연결을 인수, BUILD가 특수객체 생성/조회 경계 반례를 제공해 root가 plain JSON 생성·own enumerable data 읽기로 보강했다. 관련61PASS, 기존 세이브 소켓RNG/affixes 보충과 D10 재롤0을 구분한다. 게임생산/드롭/사용자세이브/실제UI 변경0. native는새Mac locked/기존Claude7idle이며초안·큐UNKNOWN. 원담당읽기전용을유지하고 기존ITEM→ENEMY tick, UIUX→ART최종crop, BALANCE→SKILL충전/예외수정 지원을각1회배정, 실제Read/Edit 확인. BUILD는 독립감사/보강검수,root는공식전송/최종인수. [후보계약·실패/검수·소유권](mac-resume-20261001/vscode-dispatch/BINDING-root-review.md).
+docs/0마스터플랜/PROJECT_MANAGEMENT_MASTER.md:660:기존 BUILD에 새 로드 경계와 live 증거 독립 검수를, 기존 ITEM에 D10 저장 호출부 최소 통합 후보를 각각 한 번 전송했다. 새 세션0. Mac 네이티브 접근은 다시 가능하며 QA Terminal1에는 이미 완료한 NEXT_TASK를 가리키는 미전송 초안이 보여 중복 실행하지 않고 보존했다. 다른 Claude 팀 전체 재가동으로 세지 않는다.
+docs/0마스터플랜/PROJECT_MANAGEMENT_MASTER.md:678:원격 `1c7cdb453c8a9ddaaac401020beb72ac87a74353` 대조 뒤 완료한 기존 네 팀에 15:26:13Z 한 건씩 전달했다. ITEM은 검토 전용 D10 포트 설치/해제와 UI 호출부, BUILD는 Mac runtime/고유 출력/소스 SHA/save 보존 사전검사 CLI, UIUX는 UI-04 빈 아이템 상세와 초점 오류, BALANCE는 장비 강화 게이트·차감·저장 경계 검수다. 각 독립 prefix에만 구현하며 생산·새 게임·빌드·설치 변경0. 전달과 실제 Read/코드 Edit는 분리 기록한다.
+docs/14밸런스+수치테이블/BALANCE_ECONOMY_TEAM_MASTER.md:105:기존 BALANCE가 D절22종/698정수에 대해 균등 정수 선택·명시 하중상·저장/표시 모듈을 구현했고 root가 실제 감사 소비로 연결했다. D10 10–13/14–16/17–20 유지, percent raw/100·나머지 정수, frame은60fps 변환 표시. 잘못된 입력/저장값 거부,69전용 및101통합 검사 PASS. 수치 정책·효과/드롭 활성 변경 없음. [인수·검수](../0마스터플랜/mac-resume-20261001/vscode-dispatch/PM009-roll-review-root.md).
+docs/14밸런스+수치테이블/BALANCE_ECONOMY_TEAM_MASTER.md:108:### 2026-10-01 D10 독립 후보 검수
+docs/14밸런스+수치테이블/BALANCE_ECONOMY_TEAM_MASTER.md:112:| UI-10/U-D10 | 신규제안·미채택·게임비활성 | 흉갑/지옥강타 성공 실제소모>=100,저장롤10~20%,잔여 min(30,소모×롤) 후보 |
+docs/14밸런스+수치테이블/BALANCE_ECONOMY_TEAM_MASTER.md:115:| 롤 모듈 | roll-values.js 현행 | .mjs에서 동일바이트이동, HTTP JavaScript MIME, 서버변경0 |
+docs/14밸런스+수치테이블/BALANCE_ECONOMY_TEAM_MASTER.md:118:관련188검사와 최종화면수정후12검사 통과. 독립후보 완료와 게임효과 적용은 구분한다. [상세·실패 포함 근거](../0마스터플랜/mac-resume-20261001/vscode-dispatch/D10-root-review.md).
+docs/14밸런스+수치테이블/BALANCE_ECONOMY_TEAM_MASTER.md:121:### 2026-10-01 D10 저장 binding 후보 인수
+docs/14밸런스+수치테이블/BALANCE_ECONOMY_TEAM_MASTER.md:126:| 저장 필드 | `uniqueRoll:{version:1,effectId:'U-D10',stat:'_uSlamEmberRage',unit:'fraction',storedValue:0.15}` |
+docs/14밸런스+수치테이블/BALANCE_ECONOMY_TEAM_MASTER.md:130:| 복원 | restoreD10Instance는 전달된 로드 객체를 그대로 반환. 신규 생성·수리·재롤·legacy 자동변환 없음 |
+docs/14밸런스+수치테이블/BALANCE_ECONOMY_TEAM_MASTER.md:131:| 소비 | readStoredRoll→기존 createD10Consumer; 기본 enabled=false. UIUX는 실제 readD10Binding→기존 tooltip, 항상 active=false |
+docs/14밸런스+수치테이블/BALANCE_ECONOMY_TEAM_MASTER.md:135:`createNewIdentifiedD10Instance`는 명시 새 생성 fixture/호출자용 포트다. plain JSON 내용만으로 객체의 생성 이력을 증명할 수는 없다. 실제 생산 연결 때에는 fresh mkItem 생성 경로에서만 호출해야 한다. 현재 read/restore/tooltip이 이 생성 API를 호출하지 않는 회귀를 확인했다. 이 제약을 이유로 사용자가 일상 필드명을 선택하도록 반복 질문하지 않는다.
+docs/0마스터플랜/mac-resume-20261001/vscode-dispatch/FOLLOWUP_RECEIPT.md:118:BALANCE13:44:06Z Read·13:45:41Z 담당완료, UIUX13:44:03Z 소스Read·13:47:01Z 최종검사. root가 롤 감사 소비 및 review 연결을 통합하고101PASS, 실제3340의22카드44원화와 두크기·키보드를 확인했다. definitions는 같은바이트 .js로 이동해 MIME을 해결했으며 서버를 변경/재시작하지 않았다.13:44Z native 입력 noWindowsAvailable/잠금UNKNOWN, ENEMY/ART/SKILL 새후속미수신 유지. [원자료·이력·한계](PM009-roll-review-root.md).
+docs/0마스터플랜/mac-resume-20261001/vscode-dispatch/UIUX-binding-result.md:1:# UIUX-D10-BINDING 결과
+docs/0마스터플랜/mac-resume-20261001/vscode-dispatch/UIUX-binding-result.md:5:- 기존 공식 배정 수신 뒤 continuation-dispatch-plan·최신 D10 결과·현재 tooltip·SSOT를 읽었다. 첫 명령 완료 UTC 2026-10-01T14:16:13Z. 메시지 도착의 정확한 초는 UNKNOWN.
+docs/0마스터플랜/mac-resume-20261001/vscode-dispatch/UIUX-binding-result.md:8:- root의 D10 188PASS/체크포인트는 사용자 인계로 확인한 별도 작업이다. 이 세션의 독립검사 수치와 합산하지 않는다.
+docs/0마스터플랜/mac-resume-20261001/vscode-dispatch/UIUX-binding-result.md:14:| binding-tooltip.mjs | 현재 definitions의 lookupItemProposal, roll-values의 fromStoredValue, d10-tooltip의 describeD10Tooltip 실제 재사용 |
+docs/0마스터플랜/mac-resume-20261001/vscode-dispatch/UIUX-binding-result.md:15:| createStoredD10TooltipConsumer(readBinding) | 입력 instance를 불변·불투명 상태로 읽기 포트에 전달. ITEM 저장 필드·버전·이름을 새로 정하지 않음 |
+docs/0마스터플랜/mac-resume-20261001/vscode-dispatch/UIUX-binding-result.md:17:| 성공 | 적격 UI-10 armor, proposal 정규화 결과, UI-10/U-D10 일치, 유효 canonical 저장 롤일 때만 기존 tooltip(raw,KO/EN)을 호출. 모든 결과 active=false |
+docs/0마스터플랜/mac-resume-20261001/vscode-dispatch/UIUX-binding-result.md:20:| 화면 소비 | mountStoredD10Tooltip은 빈 리프에만 설명·기존 주의문·미채택/비활성 안내를 작성. 부모교체 금지. 공유 review/tooltip에는 연결하지 않음 |
+docs/0마스터플랜/mac-resume-20261001/vscode-dispatch/UIUX-binding-result.md:23:상태 메시지는 한·영 구분하며 기존 정상 tooltip의 문구를 복제하지 않는다. 다른 고유ID/잘못된 슬롯은 D10 정상효과로 취급하지 않는다. ITEM reader 예외·비동기 Promise·불명 상태도 invalid로 닫힌다. 독립 포트는 동기 읽기 계약이며 실제 API가 다르면 임의 추정하지 않고 연결 게이트로 남긴다.
+docs/0마스터플랜/mac-resume-20261001/vscode-dispatch/UIUX-binding-result.md:39:docs 전체 U-D10/_uSlamEmberRage/uniqueId/재롤/binding 검색 결과는 `binding-doc-matches.txt`. 공유 SSOT/팀대장은 root가 반영한다. 입력 tooltip/definitions/roll/review 해시는 전용 영수증에 보존한다.
+docs/0마스터플랜/mac-resume-20261001/vscode-dispatch/UIUX-binding-result.md:47:| readD10Binding(item) | inspect의 valid만 `{kind:'proposal',uniqueId,effectId,stored,version,runtimeReady:false}`로 전달. 나머지는 legacy/missing/invalid 판별 결과 |
+docs/0마스터플랜/mac-resume-20261001/vscode-dispatch/UIUX-binding-result.md:48:| binding-item-tooltip.mjs | readD10Binding을 직접 import하여 기존 createStoredD10TooltipConsumer의 읽기 포트에 전달. schema/status 추정·변환·저장 필드 추가 없음 |
+docs/0마스터플랜/mac-resume-20261001/vscode-dispatch/UIUX-binding-result.md:49:| createNewIdentifiedD10Instance(base,rng) | 새 명시 UI-10 identity를 실제 ITEM 생성 API에 전달. 생성 RNG만1회 |
+docs/0마스터플랜/mac-resume-20261001/vscode-dispatch/UIUX-binding-result.md:50:| 저장 스키마 | 실제 ITEM D10_BINDING_SCHEMA의 uniqueRoll/version1/U-D10/fraction 계약을 읽기 확인. 어댑터는 해당 필드를 직접 읽거나 다시 정의하지 않음 |
+docs/0마스터플랜/mac-resume-20261001/vscode-dispatch/UIUX-binding-result.md:51:| restoreD10Instance | JSON.parse된 instance를 그대로 반환하는 실제 restore 포트 재사용 |
+docs/0마스터플랜/mac-resume-20261001/vscode-dispatch/UIUX-binding-result.md:57:실제 ITEM 생성→JSON.stringify/parse→restore→readD10Binding→UIUX 어댑터→현재 d10-tooltip→리프 소비를 실행했다. 10~20 전정수11개 모두KO/EN, 각3회 반복 소비를 대조했다. 생성RNG1회 유지·로드/읽기/툴팁 재롤0, 입력/저장JSON불변, 화면%표시·비활성주의문을 검증했다. legacy/유골함/missing/invalid/잘못된version·unit·effect/stat·저장값·ID/슬롯은 정상효과표시를 거부했다. ITEM API가 검증하지 않는 가상의 status 필드를 만들어 채택 여부를 추정하지 않았다.
+docs/0마스터플랜/mac-resume-20261001/vscode-dispatch/UIUX-binding-result.md:72:docs 전체 검색은 실제 연결 후 readD10Binding/uniqueRoll을 포함하여 다시 수행했다(exit0). root가 공유SSOT·통합문서를 반영한다. 남은 게이트는 root 인수/체크포인트·생산 연결 승인·실제UI/시각 검수이며 **ITEM API 미도착은 더 이상 게이트가 아니다**. 공유tooltip/review/ITEM파일/생산/레거시세이브 변경0, Git·게임·브라우저·새세션·하위에이전트0. 다른 새 승인수정지원 범위는 시작하지 않았다.
+docs/0마스터플랜/mac-resume-20261001/vscode-dispatch/FOUR-NEXT-20261002.md:13:| ITEM | ITEM-20261002-BROWSER-BOOTSTRAP | ITEM/browser-bootstrap-* | 검토 전용 명시 설치/해제·중복/실패 복원·호출부 후보, 기본 비활성·legacy/저장 보존. MIME와 브라우저 실검수 구분 |
+docs/0마스터플랜/mac-resume-20261001/vscode-dispatch/FOUR-NEXT-20261002.md:18:각 팀은 생산·공유 docs·타 팀 파일을 변경하지 않고 독립 후보를 제출한다. ITEM과 BALANCE의 저장 검수는 별개 호출부이며, BALANCE는 D10 bootstrap을 재구현하지 않는다. 실제 큐 ID·turn·Read·Edit 증거는 `outputs/team-review-20261001/four-next-20261002.json`과 `four-next-progress-20261002.json`, 최신 11팀 표는 `TEAM_UTILIZATION_20261001.json`을 따른다.
+docs/0마스터플랜/mac-resume-20261001/vscode-dispatch/FOUR-NEXT-20261002.md:24:ITEM의 persistence-integration은 root가 실제 `mkItem/rollAffixes/dbSave/dbRestore`와 공유창고 함수의 격리 검사를 독립 재실행해 42시나리오·84저장 왕복 PASS를 확인했다. 신규 D10 RNG1, 복원 재롤0, 이름/affixes/소켓 보존, proposal/inactive 게이트를 유지한다. 생산 patch 미적용이며 bootstrap/실제 브라우저 import/UI 연결이 남았다. 원자료는 `outputs/team-review-20261001/persistence-integration-root-20261002.json`이다.
+docs/0마스터플랜/mac-resume-20261001/vscode-dispatch/DRAW-attribution-root-review.md:52:기존 BUILD에 새 로드 경계와 live 증거 독립 검수를, 기존 ITEM에 D10 저장 호출부 최소 통합 후보를 각각 한 번 전송했다. 새 세션0. Mac 네이티브 접근은 다시 가능하며 QA Terminal1에는 이미 완료한 NEXT_TASK를 가리키는 미전송 초안이 보여 중복 실행하지 않고 보존했다. 다른 Claude 팀 전체 재가동으로 세지 않는다.
+docs/0마스터플랜/mac-resume-20261001/vscode-dispatch/ITEM-definition-result.md:24:|UI-10|꺼지지 않는 심갑|armor|U-D10|
+docs/0마스터플랜/mac-resume-20261001/vscode-dispatch/BALANCE-binding-result.md:1:# BALANCE-D10-BINDING 독립 왕복 검증기
+docs/0마스터플랜/mac-resume-20261001/vscode-dispatch/BALANCE-binding-result.md:19:실제 ports의 `createNewIdentifiedD10Instance`는 신규 요청의 UI-10 identity를 벗겨 core에 전달하고 core가 uniqueId와 제안 `uniqueRoll`을 생성한다. core의 레거시/기존 uniqueRoll 중복거부는 그대로 소비했다. adapter가 숫자 oracle을 후보 반환값으로 만들지 않는다. `readD10Binding`의 proposal만 stored로 반환하고 나머지는 null, restore는 실제 `restoreD10Instance`를 호출한다.
+docs/0마스터플랜/mac-resume-20261001/vscode-dispatch/BALANCE-binding-result.md:35:`uniqueRoll` version1/effectId U-D10/stat _uSlamEmberRage/unit fraction/storedValue는 **ITEM 후보 schema**이며 생산 저장 활성화가 아니다. 새 drop/legacy 변환/생산 등록은 없다. socketCount0 fixture와 저장식 일부만 실행했고 전체 dbRestore의 다른 마이그레이션·RNG, 실제서버/사용자저장/실UI/패키지를 검수했다고 보고하지 않는다.
+docs/0마스터플랜/mac-resume-20261001/vscode-dispatch/BALANCE-binding-result.md:41:- 2026-10-01T14:16:15Z 배정 수신·첫Read: BUILD continuation 계획, AGENTS, 최신 ITEM/BALANCE D10 결과, SSOT, 본편 dbSave/dbRestore 및 공유창고 저장식, 실제 D10 consumer. BALANCE binding 산출/동일 receipt 없음 확인.
+docs/0마스터플랜/mac-resume-20261001/vscode-dispatch/BALANCE-binding-result.md:42:- 첫Edit: 전용 receipt 생성 후 `binding-independent.mjs`, `binding-independent.test.mjs`, `binding-run.mjs` 실제 작성. 기존 D10 수치 검사를 반복하지 않고 저장 인스턴스/복원/콜백 호출계수 검증을 구현했다.
+docs/0마스터플랜/mac-resume-20261001/vscode-dispatch/BALANCE-binding-result.md:69:도착 후 예정 실제검사: 6개 신규 생성/저장/복원+36 legacy(총42행), 신규 총RNG6회·로드/legacy0회, read/restore 변이0. 정상 복원객체를 기존 실제 D10 consumer의 begin→consume100→finish로 직접 소비하여15 환급인지도 검사한다. 모듈 내부 Math.random은 임시 throw 대역으로 차단해 암묵 재롤을 검출하고 finally에서 복구한다. 서버/브라우저와 분리된 단일 검사프로세스에만 적용한다.
+docs/0마스터플랜/mac-resume-20261001/vscode-dispatch/BALANCE-binding-result.md:78:| `rg -n 'uniqueId|재롤|저장|U-D10' docs/` | exit0, docs 전체 검색 `binding-doc-search.txt` |
+docs/0마스터플랜/mac-resume-20261001/vscode-dispatch/ITEM-d10-result.md:1:# ITEM-D10-COMBAT-CANDIDATE 완료 / 생산 미적용
+docs/0마스터플랜/mac-resume-20261001/vscode-dispatch/ITEM-d10-result.md:3:2026-10-01. 기존 ITEM 담당의 승인 D10 독립후보·실제함수소비·회귀 완료. **기본비활성, 생산22종활성0, 실제전투/브라우저/빌드0.** root QA 정상전투와 별개인 작은VM 검증이다.
+docs/0마스터플랜/mac-resume-20261001/vscode-dispatch/ITEM-d10-result.md:7:14:00:59 UTC D10_TASK.md 읽기·소유파일목록 중복확인(d10-* 없음). 현재 definitions.js·roll-values.js 원문, TOP8_HOOK_REVIEW, D절D10·U-N01, 본편/easy activateGiantSlam·_uEq·rage소모/장착/합체/호출부·팀대장·총괄18.35/36·연속진행·백업정책을읽었다. 전용receipt를먼저작성하고 d10-consumer.mjs·d10-combat.test.mjs를편집했다.
+docs/0마스터플랜/mac-resume-20261001/vscode-dispatch/ITEM-d10-result.md:21:BALANCE는 `createD10Consumer({enabled:false,readStoredRoll})`와 `candidateSlamSource(source)`를import하여독립검수할수있다. 실제소비함수는begin/consume/finish다. 테스트에서만 enabled=true로제안장착fixture를명시사용. 이옵션은생산승인이아니며현재lookupActiveItemDefinition/definitions 전종은그대로비활성이다.
+docs/0마스터플랜/mac-resume-20261001/vscode-dispatch/ITEM-d10-result.md:66:docs전체 `rg -n 'U-D10|UI-10|_uSlamEmberRage|_uRageFullCd|_rageFullLatch|activateGiantSlam' docs --glob '*.md'` exit0; `d10-docs-related.txt` 보존. 본result에후보API·>=100/10~20%/30cap/실패·중복·필드미확정/실전미완료를정리했다. root가인수후TOP8·D10/PM009·팀대장에후보와생산상태를구분동기화한다. 공유docs원문·CHANGELOG수정0.
+docs/0마스터플랜/mac-resume-20261001/vscode-dispatch/D10-root-review.md:1:# D10 후보 인수와 정상 전투 회귀 — 2026-10-01
+docs/0마스터플랜/mac-resume-20261001/vscode-dispatch/D10-root-review.md:7:| ITEM D10 | 본편/easy 실제 activateGiantSlam 전체함수 VM 후보75검사, 소모 후 min(30,실제소모×저장롤) | 새instance 저장롤 binding·실게임 명중·세이브·패키지 |
+docs/0마스터플랜/mac-resume-20261001/vscode-dispatch/D10-root-review.md:13:D10은 UI-10 흉갑만, giantSlam/giantSlam2만 대상으로 한다. enabled 기본false, 저장필드 추정없이 주입된 readStoredRoll만 허용한다. 성공적으로 실제 분노100 이상을 소모한 뒤 한 번만 환급한다. 원피해/악의/합체쿨/RNG/VFX 호출순서는 원함수와 비교했다. 소모99/99.5는 환급0,100.5의 소수 보존,상한검사1000은 정상플레이 수치 주장이 아니다. 토큰 위조·중복consume/finish·동기재진입·장착교체·실패는 추가환급하지 않는다. 원필드/드롭/게임라우터는 변경0.
+docs/0마스터플랜/mac-resume-20261001/vscode-dispatch/D10-root-review.md:17:roll-values.mjs를 동일내용 roll-values.js로 이동했다. SHA256 `103d0460c738c117840586780eaaed7be7ebe0aba61fa50464db9d004b094975`. 실행중3340의 기존JS MIME을 사용, 서버파일/재시작0. 감사·테스트·BALANCE 증거 스크립트 import도 수정했다. definitions/roll/tooltip/review 실제HTTP200,디스크동일SHA 확인.
+docs/0마스터플랜/mac-resume-20261001/vscode-dispatch/D10-root-review.md:19:기존 공유회귀의 import1개 가정을 definitions+tooltip 두개로 수정했다. 원 실패로그와 후보diff는 보존. 최초화면은 좁은 D10카드로 행이 지나치게 늘어나 root가 D10만 전체너비로 배치하고 원화/문구를 나란히 두었다. 다른21종 내용·원화·정의는 유지.760px 이하에서 세로배치 규칙을 제공하지만 모바일 실화면은 미검수.
+docs/0마스터플랜/mac-resume-20261001/vscode-dispatch/D10-root-review.md:21:IAB1280×720 DPR2: 10 클릭→15 Enter→20 Space 실제문구/ARIA 확인,44이미지 로드·가로overflow0. IAB 캡처는960px 폭으로 잘리는 도구제약이 있어 전체시각증거로 쓰지 않았다. Chrome1352×666 DPR2:160px 원화·44로드·가로overflow0, 전체 D10카드/한영문구가 보이는 screenshot을 저장했다. `outputs/team-review-20261001/d10/review-chrome.png`가 최종 시각증거다. 22종 아트 채택 판정은 하지 않았다.
+docs/0마스터플랜/mac-resume-20261001/vscode-dispatch/D10-root-review.md:41:D10 세팀은 기존세션으로 실제Read/Edit/제출 완료. BUILD 부총괄은14:13:14Z 실제Read 후 완료물/후속plan을 작성했으나 자신의CLI queue가state DB readonly(exit1)로 실패했다. 권한/DB/환경변경·우회0. 조율권한과 실행환경제약을 구분해 BUILD=검수·배정안 준비,root=기존 승인된 정상전송·최종인수로 정정했다.
+docs/0마스터플랜/mac-resume-20261001/vscode-dispatch/D10-root-review.md:43:root는 세팀 최신완료턴을 다시확인하고 본래공식CLI에서14:16:08Z binding독립3건을각1회전송(exit0). 직접권한설정/DB쓰기·BUILD환경완화0. queue조회API미제공으로 큐전체상태UNKNOWN이며 중복송신0. 실제후속Read/Edit는 TEAM_UTILIZATION의최신스냅샷과 binding전용영수증으로 분리한다. 아직D10생산적용을 의미하지 않는다.
+docs/0마스터플랜/mac-resume-20261001/vscode-dispatch/D10-root-review.md:45:기존Claude7팀은 이번주기idle 확인. ENEMY/ART/SKILL 수정지시는 native잠금으로미수신, MAP실화면/ANIM90Hz/SOUND실청취/BUILD패키지게이트대기.11팀동시실행완료로표시하지 않는다. 게임/easy/index/server diff0,원래Mac3333/PC/세이브/타팀WIP/초안보존. 이번체크포인트는 D10후보·검토UI·증거·관련docs만 포함하며 새binding작업은별도소유로제외한다.
+docs/0마스터플랜/mac-resume-20261001/vscode-dispatch/D10-root-review.md:47:14:18Z root가 세팀 최신턴을 읽어 새14:16:08Z턴의 실제 source Read exit0 및 ITEM 영수증/UIUX 어댑터·검사/BALANCE 영수증 fileChange 완료를 확인했다. 앱 interrupted 표시만으로 CLI중단을 단정하지 않으며 동시running수는UNKNOWN,새착수3팀근거는존재. 이 산출은 이번D10체크포인트에서제외한다.
+docs/0마스터플랜/mac-resume-20261001/vscode-dispatch/BALANCE-roll-result.md:5:2026-10-01T13:44:06Z 수신. 배정·팀 최신 MD·definitions·적용 계약·D절 수치/저장 계약과22행을 읽었다. 모듈/전용 테스트/영수증·동일 roll 증거가 없어 중복이 아님을 확인했다. 첫 Edit는 전용 영수증, 다음 Edit는 실제 `unique-item-project/roll-values.mjs`와 `test/uniqueRollValues.test.js`다. 완료는 **독립 모듈 구현·검수**이며 게임 등록/저장 활성화 완료가 아니다.
+docs/0마스터플랜/mac-resume-20261001/vscode-dispatch/BALANCE-roll-result.md:55:| `node --test test/uniqueRollValues.test.js` | exit0, **69PASS/0FAIL/0SKIP**. 22ID 각 문서 대조/모든 raw JSON왕복/모든 균등 bin 경계 직전·동일·직후/부정 입력. 전체698개 정수 값 |
+docs/0마스터플랜/mac-resume-20261001/vscode-dispatch/UIUX-review-result.md:25:| UI-10 | 꺼지지 않는 심갑 | 흉갑 | U-D10 |
+docs/0마스터플랜/mac-resume-20261001/vscode-dispatch/UIUX-review-result.md:61:- VM 기본 로더는 현재 Node의 experimental warning을 출력하지만 검사 실패는 아니다. 브라우저 네트워크/MIME·실제 이미지 디코드·Tab/Enter/Space 이벤트·실측 64/160px·화면 넘침은 미검수다. native 버튼과 CSS 계약 검사를 실제 키보드/시각 PASS로 보고하지 않는다. **VISUAL VERDICT: UNKNOWN**.
+docs/0마스터플랜/mac-resume-20261001/vscode-dispatch/UIUX-d10-result.md:1:# UIUX-D10-TOOLTIP-CANDIDATE 결과
+docs/0마스터플랜/mac-resume-20261001/vscode-dispatch/UIUX-d10-result.md:7:중복 확인: 전용 d10 산출/영수증 없음. affix 공방의 문서 기반 D10 설명·롤은 존재하나 현재 roll-values.js를 이용하는 동일 한/영 툴팁 소비자는 없다. 기존 화면은 정의 기반 원화 비교만 제공했다. 이전 완료 원화/롤 소비를 다시 구현하지 않았다.
+docs/0마스터플랜/mac-resume-20261001/vscode-dispatch/UIUX-d10-result.md:9:소유 `review.html`, `d10-tooltip.js`, `test/uniqueD10Tooltip.test.js`, 전용 d10 증거/결과/영수증만 작업. definitions/roll/audit/ITEM·BALANCE 후보/공유 테스트/팀 대장/CHANGELOG 수정0. Git 쓰기·새 세션·하위 에이전트·게임·브라우저·서버·빌드 실행0. root QA 정상전투 단독 측정을 방해하지 않았다. 백업은 지시문의 f5292fa0 원격 대조 인계를 근거로 삼았으며 본 세션이 재확인했다고 보고하지 않는다.
+docs/0마스터플랜/mac-resume-20261001/vscode-dispatch/UIUX-d10-result.md:16:| 대상 | UI-10 / U-D10 / 꺼지지 않는 심갑 단일아이템. 다른21종 카드·게임효과/드롭/저장 활성0 |
+docs/0마스터플랜/mac-resume-20261001/vscode-dispatch/UIUX-d10-result.md:17:| API | describeD10Tooltip(raw=15, language='ko'): 검증된 % 표시와 내부 저장값을 가진 불변 후보. mountD10Tooltip(card, document): UI-10만 허용하고 리프 DOM을 생성·갱신 |
+docs/0마스터플랜/mac-resume-20261001/vscode-dispatch/UIUX-d10-result.md:25:| 실패 안내 | D10 모듈 실패는 UI-10의 새 리프 role=alert로 안내. 기존 원화 비교와 크기 버튼은 유지. 정의 로딩 실패 경로는 기존 그대로 |
+docs/0마스터플랜/mac-resume-20261001/vscode-dispatch/UIUX-d10-result.md:34:| D10 독립6검사 | 6PASS/0FAIL, exit0 |
+docs/0마스터플랜/mac-resume-20261001/vscode-dispatch/UIUX-d10-result.md:35:| D10+기존 롤+정의+감사 | 98PASS/0FAIL, exit0 |
+docs/0마스터플랜/mac-resume-20261001/vscode-dispatch/UIUX-d10-result.md:38:독립 테스트는 HTML 실제 스크립트의 import를 Node VM 기본 모듈 로더로 실행하여 현재 정의/롤/툴팁을 소비한다. 성공 경로에서 설명 문자열/모듈을 복제하지 않는다. 실패 경로만 D10 import를 주입 실패로 바꾼다. 부모 textContent/innerHTML 교체는 fixture가 실패시킨다.
+docs/0마스터플랜/mac-resume-20261001/vscode-dispatch/UIUX-d10-result.md:40:10~20 전정수 ×KO/EN22설명을 현재 롤 API와 대조하고 경계밖9/21·소수·문자열·NaN/Infinity·내부저장값0.15 입력을 거부한다. 실제UI-10의10/15/20 선택·양언어 갱신·ARIA, 다른21카드/44경로/실제이미지파일·lazy 보존, 크기선택 독립성과 로딩실패 안내를 검증했다. native 버튼의 실제Tab/Enter/Space·픽셀크기·레이아웃/스크린리더·브라우저HTTP/MIME는 검증하지 않았다. JS 확장자 계약은 확인했으나 새 모듈의 실제HTTP응답을 측정하지 않았다. VM experimental warning은 기록된 도구 경고다.
+docs/0마스터플랜/mac-resume-20261001/vscode-dispatch/UIUX-d10-result.md:48:docs 전체에서 U-D10/_uSlamEmberRage/지옥강타/Hell Slam/roll-values.js/definitions.js/review.html을 검색해 `d10-doc-matches.txt`에 보존했다. 공유 SSOT·UIUX대장은 수정하지 않으며 root가 “개발 검토용 D10 한영 툴팁 후보 실제소비·게임효과미구현·실시각대기”를 반영한다.
+docs/0마스터플랜/mac-resume-20261001/vscode-dispatch/ITEM-binding-result.md:1:# ITEM-D10-BINDING 결과
+docs/0마스터플랜/mac-resume-20261001/vscode-dispatch/ITEM-binding-result.md:3:2026-10-01. **새제안인스턴스 저장 binding·실제D10소비 adapter·실제저장식회귀 완료. 생산활성/드롭/레거시세이브변경0.**
+docs/0마스터플랜/mac-resume-20261001/vscode-dispatch/ITEM-binding-result.md:7:14:16:19 UTC BUILD continuation-dispatch-plan·AGENTS·최신ITEM D10결과·소유목록읽기. binding-* 기존산출없음 확인. 14:16:44 UTC까지 실제dbSave·적용계약·ITEM d10-consumer·공유definitions/roll-values·tooltip 및BALANCE D10결과를읽고전용receipt작성후binding코드/회귀를실제편집했다. root D10검수188PASS/체크포인트는사용자전달상태이며이번에Git조회/쓰기0.
+docs/0마스터플랜/mac-resume-20261001/vscode-dispatch/ITEM-binding-result.md:9:첫binding검사21PASS → endpoint/detachment추가22PASS. 14:20:11 UTC에새로도착한UIUX `createStoredD10TooltipConsumer(readBinding)` 및BALANCE `verifyBinding({create,read,restore})`의실제코드를읽어의존인수했다. 초기예상포트와달라대기하지않고자기폴더에binding-ports.mjs를추가했다. 실제import연동까지최종24PASS. 상대팀의최종보고/독립승인완료를대신선언하지않는다.
+docs/0마스터플랜/mac-resume-20261001/vscode-dispatch/ITEM-binding-result.md:15:실제dbSave는inv.bag/equipped를객체그대로data에전달하고dbRestore는그객체를복원한다. 공유창고도JSON전체객체를저장/load한다. uniqueId문자열+이미굴린값을보존하는적용계약에따라 **새인스턴스의독립 `uniqueRoll` 객체**를선택했다. 기존 `_uSlamEmberRage` 정수/uniqueSpecial.val의단위를추정하거나덮지않기위함이다. 코드/docs검색에서기존uniqueRoll생산소비는찾지못했으며root가채택하기전에는후보schema다.
+docs/0마스터플랜/mac-resume-20261001/vscode-dispatch/ITEM-binding-result.md:18:{"uniqueId":"UI-10","uniqueRoll":{"version":1,"effectId":"U-D10","stat":"_uSlamEmberRage","unit":"fraction","storedValue":0.15}}
+docs/0마스터플랜/mac-resume-20261001/vscode-dispatch/ITEM-binding-result.md:24:| uniqueRoll.version | 숫자1만허용. 누락/0/2/문자열1은invalid; 자동version이관0 |
+docs/0마스터플랜/mac-resume-20261001/vscode-dispatch/ITEM-binding-result.md:25:| effectId/stat | U-D10 / 현재lookupRoll의_uSlamEmberRage와일치해야함 |
+docs/0마스터플랜/mac-resume-20261001/vscode-dispatch/ITEM-binding-result.md:36:| `binding-d10.mjs`: `createD10ProposalInstance({newItem,rng})` | **명시새제안생성만**. ID/binding/레거시stat/unique=true/기존uniqueSpecial있는입력거부. 새armor JSONsnapshot을복제해UI10+binding추가,기존이름/수치/affix보존. 정상RNG정확1회 |
+docs/0마스터플랜/mac-resume-20261001/vscode-dispatch/ITEM-binding-result.md:37:| `inspectD10Binding(item)` | valid/legacy/missing/invalid상태·raw/storedValue. 읽기만;로드누락필드복구/롤생성0 |
+docs/0마스터플랜/mac-resume-20261001/vscode-dispatch/ITEM-binding-result.md:38:| `readStoredRoll(item,definition,roll)` | 현D10소비signature에직접연결. valid만number,나머지null. definition/effect/stat대조 |
+docs/0마스터플랜/mac-resume-20261001/vscode-dispatch/ITEM-binding-result.md:39:| `createBoundD10Consumer({enabled:false})` | 기존createD10Consumer에위reader주입. 기본비활성. 실제loadedbinding의소모100/20%→20복원·중복0검사 |
+docs/0마스터플랜/mac-resume-20261001/vscode-dispatch/ITEM-binding-result.md:40:| `binding-ports.mjs`: `readD10Binding(item)` | UIUX포트용 kind=proposal/legacy/missing/invalid와stored/identity반환. UIUX가실제tooltip을재사용하며active=false |
+docs/0마스터플랜/mac-resume-20261001/vscode-dispatch/ITEM-binding-result.md:41:| `createNewIdentifiedD10Instance(base,rng)` | BALANCE등의**명시신규생성포트**: 새base에이미UI10 identity가배정된fixture를받아분리복제후core생성. unknown/기존binding/레거시stat/uniqueSpecial거부 |
+docs/0마스터플랜/mac-resume-20261001/vscode-dispatch/ITEM-binding-result.md:42:| `restoreD10Instance(item)` | 원객체를그대로반환하는read-only로드포트. RNG인수를사용하지않고clone/수리/마이그레이션도하지않음 |
+docs/0마스터플랜/mac-resume-20261001/vscode-dispatch/ITEM-binding-result.md:43:| `createD10ValidationPorts()` | 위create/read/restore포트를묶어BALANCE verifyBinding에그대로주입 |
+docs/0마스터플랜/mac-resume-20261001/vscode-dispatch/ITEM-binding-result.md:45:`createNewIdentifiedD10Instance`는호출자가**새객체**임을보장하는생성전용포트다. JSON데이터만으로아이템이방금생성됐는지증명할수없으므로savedUI10의binding누락을이API로보충하면안된다. restore/read/UIUX포트는그렇게호출하지않는다. 기존미등록ID·구형슬롯유니크·유골함·missingbinding은null/상태폴백이며자동생성/레거시변환0.
+docs/0마스터플랜/mac-resume-20261001/vscode-dispatch/ITEM-binding-result.md:52:- 실제ITEM D10 consumer에loadedbinding reader를연결해100소모→20복원,duplicate0/defaultdisabled확인. d10원전투75회귀를반복하지않았다.
+docs/0마스터플랜/mac-resume-20261001/vscode-dispatch/ITEM-binding-result.md:65:docs전체 `rg -n 'uniqueId|uniqueRoll|U-D10|_uSlamEmberRage|직렬화|재롤' docs --glob '*.md'` 실행exit0, `binding-docs-related.txt`보존. 후보필드·버전·정규단위·생성/로드분리·legacy정책을본전용result에기록했다. root가채택하면적용계약§1/4·저장SSOT·D10/팀대장에bindingVersion1후보와실제생산상태를구분반영한다. 공유docs/소스쓰기0.
+docs/0마스터플랜/mac-resume-20261001/vscode-dispatch/ITEM-binding-result.md:67:**남은게이트:** root의필드/adapter독립인수·UIUX/BALANCE최종승인·소비경로정식연결/JS MIME검토·실게임스킬/저장/패키지회귀. `.mjs`는자기후보경로이며현3340MIME을검증하지않았다. productionrollfield는아직root미채택;defaultdisabled/전체22종inactive는그대로다. 새드롭/생산활성/레거시세이브변경/공유파일쓰기/Git/게임/브라우저/빌드/새세션/하위에이전트0. 타팀API는실제인수해서검사했으므로추상API대기를blocker로남기지않는다.
+docs/0마스터플랜/mac-resume-20261001/vscode-dispatch/BALANCE-d10-result.md:1:# BALANCE-D10-INDEPENDENT-ACCEPTANCE
+docs/0마스터플랜/mac-resume-20261001/vscode-dispatch/BALANCE-d10-result.md:5:2026-10-01T14:07:33Z 사용자 인계 수신 후 ITEM 결과/API `begin/consume/finish` 및 source변환을 실제 읽었다. 기존 waiting은 종료했다. BALANCE 소유 `d10-item-adapter.mjs` 첫Edit로 실제 ITEM 모듈을 import하고 `createD10Consumer`를 VM에 바인딩했다. `candidateSlamSource`로 실제 원함수를 변환한 결과가 제출된 두 완성 후보함수와 정확히 동일한지 assert한 뒤 **그 원후보 함수를 실행**했다. 기대값을 후보 결과로 반환하지 않았다.
+docs/0마스터플랜/mac-resume-20261001/vscode-dispatch/BALANCE-d10-result.md:28:2026-10-01T14:01:04Z 수신/첫Read. 배정·총괄§18최신·연속진행·백업정책·팀대장·D10 SSOT와 TOP8 훅·現 definitions.js/roll-values.js·양쪽 activateGiantSlam을 직접 읽었다. 이전 완료는 롤/환수이며 D10 독립 산출과 중복되지 않는다. 첫Edit는 전용 영수증, 다음Edit는 실제 `d10-independent.mjs`/전용 테스트다.
+docs/0마스터플랜/mac-resume-20261001/vscode-dispatch/BALANCE-d10-result.md:43:명시 어댑터는 `runD10Scenario(scenario)`를 export하고 **실제 ITEM 후보 코드를 실행**한 `{rage,cooldown,mats,hits,rageCast,latch,fullEvents}`를 반환해야 한다. hits는 `_gSlamHit` 실제 인자 배열 기록이며 rageCast는 교육 콜백의 실제 소모량 기록이다. 동기/비동기 함수 모두 지원. root가 실제 ITEM API를 읽고 이 얇은 어댑터를 연결한다. 기대 oracle을 후보처럼 반환하는 어댑터는 승인 근거가 아니다.
+docs/0마스터플랜/mac-resume-20261001/vscode-dispatch/BALANCE-d10-result.md:52:| 분노99/100/150/1000/99.5/100.5 | 원함수는 양수 모두 소모. D10 후보는 **실제 성공 소모>=100**만 min(30,소모×stored) 기대; 99/99.5 환급0,100.5 소수 보존 |
+docs/0마스터플랜/mac-resume-20261001/vscode-dispatch/BALANCE-d10-result.md:55:| 비장착/레거시/다른슬롯/unknown/다른 고유 | 現 lookupItemProposal 소비하여 D10 아닌 경우 원함수 동일 |
+docs/0마스터플랜/mac-resume-20261001/vscode-dispatch/BALANCE-d10-result.md:69:| `rg -n 'U-D10|_uSlamEmberRage|_rageFullLatch|U-N01' docs/` | exit0, 전체 검색 저장 |
+docs/0마스터플랜/mac-resume-20261001/vscode-dispatch/BINDING-root-review.md:1:# D10 저장 binding 후보 통합 인수 — 2026-10-01
+docs/0마스터플랜/mac-resume-20261001/vscode-dispatch/BINDING-root-review.md:10:| 저장 필드 | `uniqueRoll:{version:1,effectId:'U-D10',stat:'_uSlamEmberRage',unit:'fraction',storedValue:0.15}` |
+docs/0마스터플랜/mac-resume-20261001/vscode-dispatch/BINDING-root-review.md:14:| 복원 | restoreD10Instance는 전달된 로드 객체를 그대로 반환. 신규 생성·수리·재롤·legacy 자동변환 없음 |
+docs/0마스터플랜/mac-resume-20261001/vscode-dispatch/BINDING-root-review.md:15:| 소비 | readStoredRoll→기존 createD10Consumer; 기본 enabled=false. UIUX는 실제 readD10Binding→기존 tooltip, 항상 active=false |
+docs/0마스터플랜/mac-resume-20261001/vscode-dispatch/BINDING-root-review.md:19:`createNewIdentifiedD10Instance`는 명시 새 생성 fixture/호출자용 포트다. plain JSON 내용만으로 객체의 생성 이력을 증명할 수는 없다. 실제 생산 연결 때에는 fresh mkItem 생성 경로에서만 호출해야 한다. 현재 read/restore/tooltip이 이 생성 API를 호출하지 않는 회귀를 확인했다. 이 제약을 이유로 사용자가 일상 필드명을 선택하도록 반복 질문하지 않는다.
+docs/0마스터플랜/mac-resume-20261001/vscode-dispatch/BINDING-root-review.md:34:BUILD C1은 신규 생성 API를 loaded missing 객체에 잘못 호출할 수 있다는 호출자 경계다. 자동 복원 재롤이 실제 연결됐다는 뜻은 아니다. C8은 기존 dbRestore의 소켓 마이그레이션 RNG이며, 이 후보가 없앤다고 주장하지 않는다. 기존 affixes=[] 보충도 유지된다. 전체 구세이브의 모든 필드/전체 RNG가 항상 불변이라는 주장 대신 D10 저장롤 재추첨0과 canonical fixture 왕복을 입증한다.
+docs/0마스터플랜/mac-resume-20261001/vscode-dispatch/BINDING-root-review.md:38:실제 DB 서버/계정/사용자 저장·브라우저/MIME·실전 명중·패키지 검수는 하지 않았다. `.mjs`는 Node 후보이며 실행 중3340 서버에 직접 브라우저 import하지 않았다. 정의22종 enabled=false, 아트 채택0, runtimeReady=false는 유지된다.
+docs/0마스터플랜/mac-resume-20261001/vscode-dispatch/PM009-roll-review-root.md:7:| 롤 값 | `roll-values.mjs`의 22종/698개 정수. 주입 RNG 1회, 유한 [0,1)만 허용. 명시 하/중/상 구간 사용; D10 10–13/14–16/17–20 유지 |
+docs/0마스터플랜/mac-resume-20261001/vscode-dispatch/PM009-roll-review-root.md:11:| 경로 호환 | 기존 definitions.mjs를 **동일 6908바이트의 definitions.js로 이동**. 복사·동적 우회 로더 없음. package type=module이며 기존 server.cjs/node-main.js의 .js MIME 경로를 사용 |
+docs/0마스터플랜/mac-resume-20261001/vscode-dispatch/PM009-roll-review-root.md:19:- VM 서버 검사는 **실제 server.cjs 요청 핸들러**를 실행하고 listen만 stub한다. 200/206 JavaScript MIME·파일바이트·304·HTML캐시·격리 API를 검증했다. 실제 네트워크 검사와 구분한다.
+docs/cinematic/WARINTRO_LAST_SHOT_V9_20260909.md:9:| 마지막 장면 | W16-D100~103.5초, 기존 실제 움직이는 영상 유지 |
+docs/cinematic/WARINTRO_WEIGHT_V8_20260909.md:14:| 컷 |0~95.05초는 v7 타이밍 유지, W12만 교정 영상으로 교체. W16-C95.05~100초4.95초, W16-D100~103.5초3.5초. 소스 정상 속도 trim, 감속·정지 패딩 없음 |
+docs/13출시·마케팅/GAMEPLAY_TRAILER_V2_20260909.md:103:| 용량 / SHA256 | 133,925,778 bytes / `C1A175C604BB83056D1D4E569AD5AEA11AE872A806EA5AFFA82E48F8A0FB7D10` |
+docs/13출시·마케팅/TERMINAL_POPUP_WORKAROUND_20260927.md:8:| 터미널 설정 | `HKCU\Console\%%Startup`의 `DelegationConsole`, `DelegationTerminal` 모두 `{B23D10C0-E52E-411E-9D5B-C09FDF709C7D}`. 기존 값 백업: `tmp/terminal-settings/before-20260927-171345.json` |
+docs/16번역·로컬라이제이션/WARRIOR_LANGUAGE_SUBTITLES_20260922.md:58:네이티브 TextTrack 자막을 올바른 MIME으로 전달한다. 패키지 서버의 실제 요청 처리 함수를29개 언어 자막에 실행하여 상태200·헤더·22큐를 검사한다.
+docs/13출시·마케팅/INDIE_LIVE_EXPO_20261201_SUBMISSION_20260928.md:300:| 제출 파일 | Drive 폴더의 MP4 2개와 JPG 4개, 총 6개. 파일명·MIME 형식·바이트 수를 현재 로컬 `submission/`과 대조하여 일치 확인. Drive 커넥터 응답에 MD5가 없어 원격 해시 일치는 주장하지 않음 |
+docs/16번역·로컬라이제이션/번역대상_펫대사.md:97:| D10 | resource_low | cat | 자원 없으면 도망가는 게 답이야! | ❌ |
+docs/16번역·로컬라이제이션/LOCALIZATION_RUNTIME_20260909.md:182:네이티브 TextTrack 자막을 올바른 MIME으로 전달한다. 패키지 서버의 실제 요청 처리 함수를29개 언어 자막에 실행하여 상태200·헤더·22큐를 검사한다.
+docs/16번역·로컬라이제이션/LANGUAGE_PACKAGE_20260923.md:47:| 영상·Steam 검증 | 29개 언어 자막 구조·HTTP MIME은 회귀 검사에 포함. 이번 실제 EXE 검사에서 영상 전체 재생·Steam 클라이언트 설치·오버레이는 수행하지 않음 |
+2026-10-01T15:54:57Z

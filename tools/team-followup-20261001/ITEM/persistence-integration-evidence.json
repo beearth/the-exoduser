@@ -1,0 +1,441 @@
+{
+  "checkedAt": "2026-10-01T15:12:35.541Z",
+  "sources": [
+    {
+      "file": "game.html",
+      "sha256": "21235538c9766a28b04dcf529aed9883a8aa11bdbfef8e9e2ce35d5cc927c5cf",
+      "mkItem": "1ee1820b55f373a6db3c2041b359c393ebab34c3006972924d50cf1476373aa1",
+      "dbSave": "2152c5b37d34f6deb0d1fc4a8a06be6744c205bd93ada63157a31ee392bfa0a9",
+      "dbRestore": "63385633575b51647ab02b9e27f6d840e036dc35f9cd595b1cc65063e1133c35",
+      "baseGenerationRngObserved": 82,
+      "d10Rng": 1
+    },
+    {
+      "file": "game-easy-test.html",
+      "sha256": "4c408f1e7b57210900ddfa8a0646502f91b6a0bbc798a24338eb159cb613d874",
+      "mkItem": "1a07dde50c299aceb1d34a3fdd8e122d08fe42d5ca71b2827d0806f9336a0c3d",
+      "dbSave": "19eb6a0a97937ed20d2c3d7afcdf7ac7c4cb1bbc7d3c8a025ca408944eb68a48",
+      "dbRestore": "2785fd6138a7325f64bbf2c27cde281e270caa85f517b7a7c52801ad9726d274",
+      "baseGenerationRngObserved": 82,
+      "d10Rng": 1
+    }
+  ],
+  "scenarios": [
+    {
+      "file": "game.html",
+      "route": "bag",
+      "kind": "valid",
+      "cycles": 2,
+      "creationD10Rng": 1,
+      "restoreRng": 0,
+      "preserved": true
+    },
+    {
+      "file": "game.html",
+      "route": "bag",
+      "kind": "legacy",
+      "cycles": 2,
+      "creationD10Rng": 1,
+      "restoreRng": 0,
+      "preserved": true
+    },
+    {
+      "file": "game.html",
+      "route": "bag",
+      "kind": "legacy",
+      "cycles": 2,
+      "creationD10Rng": 1,
+      "restoreRng": 0,
+      "preserved": true
+    },
+    {
+      "file": "game.html",
+      "route": "bag",
+      "kind": "legacy",
+      "cycles": 2,
+      "creationD10Rng": 1,
+      "restoreRng": 0,
+      "preserved": true
+    },
+    {
+      "file": "game.html",
+      "route": "bag",
+      "kind": "missing",
+      "cycles": 2,
+      "creationD10Rng": 1,
+      "restoreRng": 0,
+      "preserved": true
+    },
+    {
+      "file": "game.html",
+      "route": "bag",
+      "kind": "invalid",
+      "cycles": 2,
+      "creationD10Rng": 1,
+      "restoreRng": 0,
+      "preserved": true
+    },
+    {
+      "file": "game.html",
+      "route": "bag",
+      "kind": "invalid",
+      "cycles": 2,
+      "creationD10Rng": 1,
+      "restoreRng": 0,
+      "preserved": true
+    },
+    {
+      "file": "game.html",
+      "route": "equipped",
+      "kind": "valid",
+      "cycles": 2,
+      "creationD10Rng": 1,
+      "restoreRng": 0,
+      "preserved": true
+    },
+    {
+      "file": "game.html",
+      "route": "equipped",
+      "kind": "legacy",
+      "cycles": 2,
+      "creationD10Rng": 1,
+      "restoreRng": 0,
+      "preserved": true
+    },
+    {
+      "file": "game.html",
+      "route": "equipped",
+      "kind": "legacy",
+      "cycles": 2,
+      "creationD10Rng": 1,
+      "restoreRng": 0,
+      "preserved": true
+    },
+    {
+      "file": "game.html",
+      "route": "equipped",
+      "kind": "legacy",
+      "cycles": 2,
+      "creationD10Rng": 1,
+      "restoreRng": 0,
+      "preserved": true
+    },
+    {
+      "file": "game.html",
+      "route": "equipped",
+      "kind": "missing",
+      "cycles": 2,
+      "creationD10Rng": 1,
+      "restoreRng": 0,
+      "preserved": true
+    },
+    {
+      "file": "game.html",
+      "route": "equipped",
+      "kind": "invalid",
+      "cycles": 2,
+      "creationD10Rng": 1,
+      "restoreRng": 0,
+      "preserved": true
+    },
+    {
+      "file": "game.html",
+      "route": "equipped",
+      "kind": "invalid",
+      "cycles": 2,
+      "creationD10Rng": 1,
+      "restoreRng": 0,
+      "preserved": true
+    },
+    {
+      "file": "game.html",
+      "route": "storage",
+      "kind": "valid",
+      "cycles": 2,
+      "creationD10Rng": 1,
+      "restoreRng": 0,
+      "preserved": true
+    },
+    {
+      "file": "game.html",
+      "route": "storage",
+      "kind": "legacy",
+      "cycles": 2,
+      "creationD10Rng": 1,
+      "restoreRng": 0,
+      "preserved": true
+    },
+    {
+      "file": "game.html",
+      "route": "storage",
+      "kind": "legacy",
+      "cycles": 2,
+      "creationD10Rng": 1,
+      "restoreRng": 0,
+      "preserved": true
+    },
+    {
+      "file": "game.html",
+      "route": "storage",
+      "kind": "legacy",
+      "cycles": 2,
+      "creationD10Rng": 1,
+      "restoreRng": 0,
+      "preserved": true
+    },
+    {
+      "file": "game.html",
+      "route": "storage",
+      "kind": "missing",
+      "cycles": 2,
+      "creationD10Rng": 1,
+      "restoreRng": 0,
+      "preserved": true
+    },
+    {
+      "file": "game.html",
+      "route": "storage",
+      "kind": "invalid",
+      "cycles": 2,
+      "creationD10Rng": 1,
+      "restoreRng": 0,
+      "preserved": true
+    },
+    {
+      "file": "game.html",
+      "route": "storage",
+      "kind": "invalid",
+      "cycles": 2,
+      "creationD10Rng": 1,
+      "restoreRng": 0,
+      "preserved": true
+    },
+    {
+      "file": "game-easy-test.html",
+      "route": "bag",
+      "kind": "valid",
+      "cycles": 2,
+      "creationD10Rng": 1,
+      "restoreRng": 0,
+      "preserved": true
+    },
+    {
+      "file": "game-easy-test.html",
+      "route": "bag",
+      "kind": "legacy",
+      "cycles": 2,
+      "creationD10Rng": 1,
+      "restoreRng": 0,
+      "preserved": true
+    },
+    {
+      "file": "game-easy-test.html",
+      "route": "bag",
+      "kind": "legacy",
+      "cycles": 2,
+      "creationD10Rng": 1,
+      "restoreRng": 0,
+      "preserved": true
+    },
+    {
+      "file": "game-easy-test.html",
+      "route": "bag",
+      "kind": "legacy",
+      "cycles": 2,
+      "creationD10Rng": 1,
+      "restoreRng": 0,
+      "preserved": true
+    },
+    {
+      "file": "game-easy-test.html",
+      "route": "bag",
+      "kind": "missing",
+      "cycles": 2,
+      "creationD10Rng": 1,
+      "restoreRng": 0,
+      "preserved": true
+    },
+    {
+      "file": "game-easy-test.html",
+      "route": "bag",
+      "kind": "invalid",
+      "cycles": 2,
+      "creationD10Rng": 1,
+      "restoreRng": 0,
+      "preserved": true
+    },
+    {
+      "file": "game-easy-test.html",
+      "route": "bag",
+      "kind": "invalid",
+      "cycles": 2,
+      "creationD10Rng": 1,
+      "restoreRng": 0,
+      "preserved": true
+    },
+    {
+      "file": "game-easy-test.html",
+      "route": "equipped",
+      "kind": "valid",
+      "cycles": 2,
+      "creationD10Rng": 1,
+      "restoreRng": 0,
+      "preserved": true
+    },
+    {
+      "file": "game-easy-test.html",
+      "route": "equipped",
+      "kind": "legacy",
+      "cycles": 2,
+      "creationD10Rng": 1,
+      "restoreRng": 0,
+      "preserved": true
+    },
+    {
+      "file": "game-easy-test.html",
+      "route": "equipped",
+      "kind": "legacy",
+      "cycles": 2,
+      "creationD10Rng": 1,
+      "restoreRng": 0,
+      "preserved": true
+    },
+    {
+      "file": "game-easy-test.html",
+      "route": "equipped",
+      "kind": "legacy",
+      "cycles": 2,
+      "creationD10Rng": 1,
+      "restoreRng": 0,
+      "preserved": true
+    },
+    {
+      "file": "game-easy-test.html",
+      "route": "equipped",
+      "kind": "missing",
+      "cycles": 2,
+      "creationD10Rng": 1,
+      "restoreRng": 0,
+      "preserved": true
+    },
+    {
+      "file": "game-easy-test.html",
+      "route": "equipped",
+      "kind": "invalid",
+      "cycles": 2,
+      "creationD10Rng": 1,
+      "restoreRng": 0,
+      "preserved": true
+    },
+    {
+      "file": "game-easy-test.html",
+      "route": "equipped",
+      "kind": "invalid",
+      "cycles": 2,
+      "creationD10Rng": 1,
+      "restoreRng": 0,
+      "preserved": true
+    },
+    {
+      "file": "game-easy-test.html",
+      "route": "storage",
+      "kind": "valid",
+      "cycles": 2,
+      "creationD10Rng": 1,
+      "restoreRng": 0,
+      "preserved": true
+    },
+    {
+      "file": "game-easy-test.html",
+      "route": "storage",
+      "kind": "legacy",
+      "cycles": 2,
+      "creationD10Rng": 1,
+      "restoreRng": 0,
+      "preserved": true
+    },
+    {
+      "file": "game-easy-test.html",
+      "route": "storage",
+      "kind": "legacy",
+      "cycles": 2,
+      "creationD10Rng": 1,
+      "restoreRng": 0,
+      "preserved": true
+    },
+    {
+      "file": "game-easy-test.html",
+      "route": "storage",
+      "kind": "legacy",
+      "cycles": 2,
+      "creationD10Rng": 1,
+      "restoreRng": 0,
+      "preserved": true
+    },
+    {
+      "file": "game-easy-test.html",
+      "route": "storage",
+      "kind": "missing",
+      "cycles": 2,
+      "creationD10Rng": 1,
+      "restoreRng": 0,
+      "preserved": true
+    },
+    {
+      "file": "game-easy-test.html",
+      "route": "storage",
+      "kind": "invalid",
+      "cycles": 2,
+      "creationD10Rng": 1,
+      "restoreRng": 0,
+      "preserved": true
+    },
+    {
+      "file": "game-easy-test.html",
+      "route": "storage",
+      "kind": "invalid",
+      "cycles": 2,
+      "creationD10Rng": 1,
+      "restoreRng": 0,
+      "preserved": true
+    }
+  ],
+  "patchSha256": "9d305af4e712d708cda2109d2a31461a4fdaeaa8217173fdbbfa0fa3f4b0dc7c",
+  "dependencies": [
+    {
+      "file": "binding-ports.mjs",
+      "sha256": "2b6bf07a42edc0336d976105015d2886fd4ef342aa6766131c29fdaf561a49a4"
+    },
+    {
+      "file": "binding-d10.mjs",
+      "sha256": "b16bb29314e64cc2161f4eadd921678af2303a164e95080fdf879042fa4303f1"
+    },
+    {
+      "file": "d10-consumer.mjs",
+      "sha256": "6045326868bea6f7c5b1026d9472a02bdba5756cac41a110165e050ba9d4e7fb"
+    },
+    {
+      "file": "binding-save-harness.mjs",
+      "sha256": "cbaf2bd4c4067ce95f793a823e222bddda7d385597ddbc1163eac9ed92c1dc48"
+    }
+  ],
+  "result": "PASS",
+  "saveScenarios": 42,
+  "saveRestoreCycles": 84,
+  "actualFunctions": [
+    "mkItem",
+    "rollAffixes",
+    "dbSave",
+    "dbRestore",
+    "_saveSharedStorage",
+    "_loadSharedStorage",
+    "_persistSharedStorage"
+  ],
+  "gates": "proposalOnly=true explicit request; definition disabled; runtimeReady=false; default consumer disabled; no drop or load creation hooks",
+  "limits": [
+    "original mkItem RNG distinct from exactly-one D10 RNG",
+    "canonical sockets/affixes fixtures only; old migration RNG unchanged",
+    "missing browser bridge/bootstrap is an adoption blocker",
+    "no user save/network/browser/production writes"
+  ]
+}

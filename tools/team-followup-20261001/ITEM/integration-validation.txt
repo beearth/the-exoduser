@@ -1,0 +1,54 @@
+명령: node tools/team-followup-20261001/ITEM/integration-bundle-check.mjs; node --test tools/team-followup-20261001/ITEM/ring-png-candidate.test.mjs
+exit: 0
+{
+  "headSha": "fe85bb0866b895b91adf82da54dfe48bb7f89f7f",
+  "productionModified": false,
+  "functionLine": 26576,
+  "functionSha256": "41cf68ff6b4b0ccefe690c9024191bb3a52f5178ad5896c4783c3a31edf03bf3",
+  "candidateSha256": "38e8aaaf30ec0d52123e4943bbfbca04e4db0e53ed42089e692fd785debc57ab",
+  "maskSha256": "1a8a563ba924b94577e1c53164c373ffadc371c039ed6ab93ff37bb853ab226f",
+  "gameSha256": "1fc7ac9a31eb516535bda52d300f1958bf5240f5620afbd4038d4ba7b36ecff5",
+  "easySha256": "269411143e093319926948dce42740d83617b2a0e1305cc1180a59a6ecb75e58",
+  "rawSha256": "2f3a05692db24dbd36562681921ac72613fd97e44c3210083a4324805355137e",
+  "pngSha256": "812b47358d293d3dc2c154ab5989470add22eb3f1bb7f2edf9f78cde16da0a96",
+  "pngBytes": 69119,
+  "runtimeAssetPresent": false,
+  "pixels": [
+    {
+      "size": 256,
+      "rgbaDiff": 93204,
+      "alphaDiff": 0,
+      "maxDelta": 23,
+      "transparent": 3056,
+      "partial": 56783
+    },
+    {
+      "size": 34,
+      "rgbaDiff": 1667,
+      "alphaDiff": 0,
+      "maxDelta": 36,
+      "transparent": 0,
+      "partial": 1106
+    }
+  ],
+  "scope": "native Canvas offline decode, not browser/GPU proof"
+}
+✔ diagnostic PNG success preserves image and all repeat calls without mask (42.776291ms)
+✔ diagnostic missing PNG waits for raw fallback then masks and caches (26.685083ms)
+✔ diagnostic both failures stay null with only two requests (24.749708ms)
+✔ diagnostic PNG to phys to PNG follows pending and loaded source (24.595667ms)
+✔ diagnostic fallback late load keeps original invalidation behavior (25.134958ms)
+✔ diagnostic only physical ring changes; elemental ring and existing cutout remain unchanged (73.385833ms)
+✔ diagnostic transformation fails closed when production signature changes (0.218167ms)
+✔ candidate null does not allocate or request (24.033625ms)
+✔ candidate ring slots share PNG cache and keep phys fallback entry (23.71725ms)
+✔ candidate fallback repeated failure never requeues either URL (24.160833ms)
+✔ candidate raw replacement rebuilds cached mask with new pixels (23.636833ms)
+ℹ tests 11
+ℹ suites 0
+ℹ pass 11
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 366.414333

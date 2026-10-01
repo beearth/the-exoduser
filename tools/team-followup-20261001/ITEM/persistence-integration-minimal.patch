@@ -1,0 +1,32 @@
+--- a/game.html
++++ b/game.html
+@@ -15434,1 +15434,13 @@
++function _createD10ProposalForPersistenceReview(request){
++  if(!request||request.proposalOnly!==true||request.uniqueId!=='UI-10')throw new TypeError('명시 제안 검토 요청 필요');
++  const port=window._d10PersistenceReviewPort;
++  if(!port||port.enabled!==false||port.runtimeReady!==false||port.status!=='proposal'||typeof port.createReview!=='function')throw new Error('비활성 저장 검토 포트 미설치');
++  return port.createReview(request);
++}
++function _readD10ProposalForPersistenceReview(item){
++  const port=window._d10PersistenceReviewPort;
++  if(!port||port.enabled!==false||port.runtimeReady!==false||port.status!=='proposal'||typeof port.readItem!=='function')return null;
++  return port.readItem(item);
++}
++
+ function defaultItems(){
+--- a/game-easy-test.html
++++ b/game-easy-test.html
+@@ -14557,1 +14557,13 @@
++function _createD10ProposalForPersistenceReview(request){
++  if(!request||request.proposalOnly!==true||request.uniqueId!=='UI-10')throw new TypeError('명시 제안 검토 요청 필요');
++  const port=window._d10PersistenceReviewPort;
++  if(!port||port.enabled!==false||port.runtimeReady!==false||port.status!=='proposal'||typeof port.createReview!=='function')throw new Error('비활성 저장 검토 포트 미설치');
++  return port.createReview(request);
++}
++function _readD10ProposalForPersistenceReview(item){
++  const port=window._d10PersistenceReviewPort;
++  if(!port||port.enabled!==false||port.runtimeReady!==false||port.status!=='proposal'||typeof port.readItem!=='function')return null;
++  return port.readItem(item);
++}
++
+ function defaultItems(){

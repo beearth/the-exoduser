@@ -1,0 +1,20 @@
+{
+  "task": "ITEM-20261002-BROWSER-CSP",
+  "receivedAt": "2026-10-01T16:09:12Z",
+  "firstReadAt": "2026-10-01T16:09:12Z",
+  "status": "독립 원인분리 완료·원host수정0·root최종인계",
+  "read": "AGENTS 제공 및 하위검색·ITEM MD·실제 root acceptance/item-browser.json",
+  "firstCodeEditAt": "2026-10-01T16:10:21Z",
+  "checkedAt": "2026-10-01T16:11:36.611Z",
+  "completedAt": "2026-10-01T16:12:20Z",
+  "timeEvidence": "실제 date -u 시계16:09:12/16:10:21/16:12:20Z 및 검사 checkedAt",
+  "commands": ["curl -sS --max-time 5 -D - http://127.0.0.1:3340/tools/team-followup-20261001/ITEM/browser-host/index.html", "node tools/team-followup-20261001/ITEM/browser-csp-check.mjs", "rg -n 'CSP|style-src|browser.host|검토.*host' docs --glob '*.md'"],
+  "validation": "9그룹 PASS/0FAIL; 원host초기inline/style속성0·직접JS주입근거없음·동일CSP/명시반례·root8sourceSHA일치/함수별SHA·원문보존",
+  "http": "curl exit7 연결실패, 응답미확보·원인UNKNOWN; 서버조작0",
+  "conclusion": "style-src-elem 요약만으로host/외부주체확정불가; 원host수정0·CSP완화0",
+  "remainingGate": "root 독립host에서 CSP event원문/DOM출처/초기baseline 및2명시반례의실제enforcement·최종귀속",
+  "duplicateCheck": "browser-host 이전완료/root인수; browser-csp task 외 동일진행/완료제출없음",
+  "scope": "browser-csp-* 및 browser-csp/만 쓰기; 원 browser-host 읽기전용",
+  "browserFinal": "root 담당; 사용자 tab1573846373 조작0",
+  "prohibitedExecutions": 0
+}

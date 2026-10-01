@@ -1,0 +1,20 @@
+{
+  "task": "PM-009/D10 저장 호출부 통합 후보",
+  "receivedAt": "2026-10-01T15:09:32Z",
+  "firstReadAt": "2026-10-01T15:09:32Z",
+  "status": "독립 구현 완료·root 인계·생산 미적용",
+  "read": ["AGENTS 제공 및 하위 지침 검색", "전용 task와 ITEM-followup-queue", "ITEM_TEAM_MASTER", "총괄18.38/18.41", "BINDING-root-review", "current binding-ports/d10", "실제 mkItem/dbSave/dbRestore/공유창고", "UNIQUE_ITEM_GAME_INTEGRATION_CONTRACT"],
+  "duplicateCheck": "normal 검수 완료; persistence task 외 같은 후보없음. 기존binding 재작성0, native queue UNKNOWN",
+  "firstEdit": "이 영수증 및 신규 검토 전용 호출부 adapter 작성",
+  "firstEditAt": "2026-10-01T15:10:41.356Z",
+  "firstEditEvidence": "전용 영수증 filesystem birthtime",
+  "checkedAt": "2026-10-01T15:12:35.541Z",
+  "completedAt": "2026-10-01T15:12:35.541Z",
+  "actualCommand": "node tools/team-followup-20261001/ITEM/persistence-integration-check.mjs",
+  "checks": "실제 mkItem/rollAffixes/전체저장·복원 VM42시나리오84왕복 PASS; 신규D10 RNG1/복원0; 메모리patch·schema조회·기본소비비활성; 생산SHA불변",
+  "completionCondition": "독립 구현·미적용patch·실제함수fixture·보존증거·브라우저bootstrap 누락 명시 후 root인계",
+  "blocker": "window._d10PersistenceReviewPort 설치/bootstrap/MIME 및 실제 검토UI호출자 없음. 드롭연결은 활성/채택금지로보류",
+  "remainingGates": "root 독립검수 및 검토전용 bootstrap/UI 인수; 생산적용은root전담",
+  "scope": "ITEM/persistence-integration-*만 쓰기",
+  "prohibitedExecutions": 0
+}

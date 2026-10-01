@@ -1,0 +1,22 @@
+<!doctype html>
+<html lang="ko">
+<head>
+  <meta charset="utf-8">
+  <script src="./diagnostic.js"></script>
+  <meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'self'; style-src 'self'; connect-src 'self'; base-uri 'none'; form-action 'none'">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>ITEM CSP 좁은 분리 진단</title>
+  <link rel="stylesheet" href="../browser-host/host.css">
+</head>
+<body>
+  <main>
+    <h1>CSP 원인 분리 · 동일 정책 · D10 설치 없음</h1>
+    <p>처음에는 아무 style을 주입하지 않습니다. root만 별도 호스트에서 초기 로그를 확인한 후 반례 버튼을 호출하세요.</p>
+    <p id="status">진단 스크립트 미실행: HTTP MIME/CSP를 확인하세요.</p>
+    <button id="element-probe" type="button">명시 반례: inline STYLE 요소</button>
+    <button id="attribute-probe" type="button">명시 반례: style 속성</button>
+    <p id="probe-target">속성 반례 대상</p>
+    <pre id="events">초기 로그 미확인</pre>
+  </main>
+</body>
+</html>

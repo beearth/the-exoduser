@@ -1,0 +1,9 @@
+--- a/game.html
++++ b/game.html
+@@ -26583,5 +26583,5 @@
+   const src=_itemSkinSrc(base,el);
+   const fallback=_itemSkinSrc(base,'phys');
+-  const cutoutSrc=_ITEM_CUTOUT_BASES.has(base)?'img/ui/item-cutouts/'+base+'_phys_cutout.png':'';
++  const cutoutSrc=base==='ring'&&el==='phys'?'img/ui/item-cutouts/ring_phys_masked.png':(_ITEM_CUTOUT_BASES.has(base)?'img/ui/item-cutouts/'+base+'_phys_cutout.png':'');
+   const renderSrc=cutoutSrc||src;
+   let img=_worldItemSkinCache.get(renderSrc);

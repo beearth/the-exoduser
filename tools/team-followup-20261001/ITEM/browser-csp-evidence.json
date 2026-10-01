@@ -1,0 +1,325 @@
+{
+  "checkedAt": "2026-10-01T16:11:36.611Z",
+  "acceptanceSha256": "96a56f55f227f6970e7f7f9bdeab98817196133a1aded6347f51c0f15c49d785",
+  "sources": [
+    {
+      "file": "tools/team-followup-20261001/ITEM/browser-host/index.html",
+      "sha256": "204ad41705750af0975abfdc4ea3da05b11555e7b1757cb3fbf64e6afa257600",
+      "acceptanceHashMatches": true,
+      "styleElements": [],
+      "styleAttributes": [],
+      "stylesheetLinks": [
+        "<link rel=\"stylesheet\" href=\"./host.css\">"
+      ],
+      "policies": [
+        "<meta http-equiv=\"Content-Security-Policy\" content=\"default-src 'none'; script-src 'self'; style-src 'self'; connect-src 'self'; base-uri 'none'; form-action 'none'\">"
+      ]
+    },
+    {
+      "file": "tools/team-followup-20261001/ITEM/browser-host/host.css",
+      "sha256": "9e2285d62d698b39d5820b36c2356a161adc06cee17b5351e16ca6eec80dc135",
+      "acceptanceHashMatches": true,
+      "externalCSS": true,
+      "imports": false
+    },
+    {
+      "file": "tools/team-followup-20261001/ITEM/browser-host/host.js",
+      "sha256": "1acc96fc49d181987fd5a38f316ea99400bd41c85980e65fda6a48c3768964b2",
+      "acceptanceHashMatches": true,
+      "risks": [],
+      "functions": [
+        {
+          "name": "createHostPortFactory",
+          "line": 1,
+          "sha256": "5743b65040d99e886c4b888fd88a1cde0192e82953b82bbc4e50ece65c52e45c"
+        },
+        {
+          "name": "verifyHTTP",
+          "line": 17,
+          "sha256": "4bcface62934af64edaff4b2b2ca9e29dd77035a80ad8c0c10b833e9caccf628"
+        },
+        {
+          "name": "initializeReviewHost",
+          "line": 30,
+          "sha256": "7755fb08889e38d5f528b4591b359c955060f724af3ef1d806a2e2048c45c25b"
+        }
+      ]
+    },
+    {
+      "file": "tools/team-followup-20261001/ITEM/browser-host/persistence-integration-port.js",
+      "sha256": "9d2536fef5608d18dda3a6e557e24b48d5c262f9566f3c0cd37a52d8e4058491",
+      "acceptanceHashMatches": true,
+      "risks": [],
+      "functions": [
+        {
+          "name": "createD10PersistenceIntegration",
+          "line": 5,
+          "sha256": "ab7bbc56093481774fac89c8e8f67d7244392fa9a8d39b62b59dc61c15698e4f"
+        }
+      ]
+    },
+    {
+      "file": "tools/team-followup-20261001/ITEM/browser-host/binding-ports.js",
+      "sha256": "a0e6341efb06d06c18ec5ea957a251fbce045fd4f09b28fabf9dfa0a9c9127ad",
+      "acceptanceHashMatches": true,
+      "risks": [],
+      "functions": [
+        {
+          "name": "readD10Binding",
+          "line": 3,
+          "sha256": "013da1ba19ae34b50129957e0903f4834bc42ba835934dde1722aaaccc5c17e6"
+        },
+        {
+          "name": "createNewIdentifiedD10Instance",
+          "line": 9,
+          "sha256": "491c58afaf7afca4b91e3ae280f9dcfb92a608e7dd421481e009c42ec6cea290"
+        },
+        {
+          "name": "restoreD10Instance",
+          "line": 16,
+          "sha256": "f1d5a01f5ca1cda1dbf66cd73be78af2789f0c96a841f670d091dc5f477b9282"
+        },
+        {
+          "name": "createD10ValidationPorts",
+          "line": 20,
+          "sha256": "8afcf29332c66a98c9ff4cfd6e7f42165b6c030ce00ebb263e554681f1c8e349"
+        }
+      ]
+    },
+    {
+      "file": "tools/team-followup-20261001/ITEM/browser-host/binding-d10.js",
+      "sha256": "4f3c8c980a9c6b93dcc975b660d7b1e8120067ca83a0152b1469e6ee35182529",
+      "acceptanceHashMatches": true,
+      "risks": [],
+      "functions": [
+        {
+          "name": "plainRecord",
+          "line": 8,
+          "sha256": "90e65f907bfd78a7f24a065863a61084eab89341f0aeb8609af5d31a1d4074d7"
+        },
+        {
+          "name": "ownData",
+          "line": 18,
+          "sha256": "e9abdbfe57bf919a1077e6d1b39e642db72811d1a63fb2141d049ee253273fd4"
+        },
+        {
+          "name": "copyPlainItem",
+          "line": 24,
+          "sha256": "376f62974cff9fe021f12fe46430fea34e6c5aadfcc444133c93dfe2d933db85"
+        },
+        {
+          "name": "createD10ProposalInstance",
+          "line": 46,
+          "sha256": "5ccf201e100f6cb528c277b80fe86c15a6753dfc93ff9258209f49d3661a1cf3"
+        },
+        {
+          "name": "inspectD10Binding",
+          "line": 57,
+          "sha256": "21f1edc1c6fd2e367244c718a4972a4d2189210cb4fbe025d0ee324ce8e7edab"
+        },
+        {
+          "name": "readStoredRoll",
+          "line": 73,
+          "sha256": "f65cdad8c84fa0ff729905b459f2fc95c99f7bbd68bdc9612bc3d5f0db9864e1"
+        },
+        {
+          "name": "createBoundD10Consumer",
+          "line": 79,
+          "sha256": "b8d2bee4ecccf0d557df97d1fa017111b97cc0bcd086200b38d6cb6c9e731d2a"
+        }
+      ]
+    },
+    {
+      "file": "tools/team-followup-20261001/ITEM/browser-host/d10-consumer.js",
+      "sha256": "78f9a69ca9e0f55ec6edb649e6845e94afebd016e6a01892098eb19f83e677e2",
+      "acceptanceHashMatches": true,
+      "risks": [],
+      "functions": [
+        {
+          "name": "createD10Consumer",
+          "line": 4,
+          "sha256": "6b61560a45aea32f3a431e25f7463a2892251fde4267b1196709888a0f2d1db1"
+        },
+        {
+          "name": "candidateSlamSource",
+          "line": 34,
+          "sha256": "f06b268be16749b395c931da1b8d43ba35a7e7c1e6966d670901d35868a672ff"
+        }
+      ]
+    },
+    {
+      "file": "tools/team-followup-20261001/ITEM/browser-host/mk-item-fixture.js",
+      "sha256": "5476174988858bd50b700cd48b1aa681cf7c002719a0e54248c199473e1cc0a8",
+      "acceptanceHashMatches": true,
+      "risks": [],
+      "functions": [
+        {
+          "name": "createMkItemFixture",
+          "line": 1,
+          "sha256": "6828ec1be757fb074e4cdb6af2a911b677c6dffe58103d96876d818ae0fe81ed"
+        },
+        {
+          "name": "rollAffixes",
+          "line": 545,
+          "sha256": "b9580a70fcc9e652d794521ca6d9afd8c83b317135634662b695eeda43f49a09"
+        },
+        {
+          "name": "mkItem",
+          "line": 589,
+          "sha256": "1ee1820b55f373a6db3c2041b359c393ebab34c3006972924d50cf1476373aa1"
+        }
+      ]
+    },
+    {
+      "file": "tools/team-followup-20261001/ITEM/browser-bootstrap-ui.js",
+      "sha256": "5c6a17133d39b276f12ebff6e33924b44acf7b122b47821a3730c3026b68634d",
+      "acceptanceHashMatches": null,
+      "risks": [],
+      "functions": [
+        {
+          "name": "mountD10PersistenceReview",
+          "line": 3,
+          "sha256": "b052f7174492bf3c861e9b0d11124d4646a10856d9a648d4c4d8fd869f84ace3"
+        },
+        {
+          "name": "remove",
+          "line": 7,
+          "sha256": "3bee4595d5a6f8970f56c9bd3ed9d22711d2289c541fed5e3ff7ba5ac254bbea"
+        }
+      ]
+    },
+    {
+      "file": "tools/team-followup-20261001/ITEM/browser-bootstrap-api.js",
+      "sha256": "dcea3ff9722dde2fd200ecf1fb55f6d742f70631918fa7276c089e5e775ae9eb",
+      "acceptanceHashMatches": null,
+      "risks": [],
+      "functions": [
+        {
+          "name": "installD10Review",
+          "line": 9,
+          "sha256": "0c4d4d98ae304772a83a0c7fc56e42c7a14aab4804a208b72f5c968b7b384e20"
+        },
+        {
+          "name": "createD10ReviewController",
+          "line": 58,
+          "sha256": "6c24bc034c76738e7365082cb51b179ba3297de21d972d23a50a872f1d85e41c"
+        }
+      ]
+    },
+    {
+      "file": "unique-item-project/definitions.js",
+      "sha256": "3f04bcc5ac90b039454f32dc9323e60bbe44dda27be7fd439a97633d1f25118a",
+      "acceptanceHashMatches": null,
+      "risks": [],
+      "functions": [
+        {
+          "name": "lookupDefinition",
+          "line": 41,
+          "sha256": "90d4a0f0f2b7af9c84f5348448efcf9f80f6644f3aa772b07a8fa4f1a60b1f2d"
+        },
+        {
+          "name": "lookupItemProposal",
+          "line": 45,
+          "sha256": "e86ade128ff32c40e00e438f315f8325d25d44144bdf95544ecdc9a8d62ec519"
+        },
+        {
+          "name": "lookupActiveItemDefinition",
+          "line": 53,
+          "sha256": "129a56786bc04ed64eb56e6198e20b0d75360f698b67b8873502b9416342c344"
+        },
+        {
+          "name": "validateDefinitions",
+          "line": 58,
+          "sha256": "3f0328a4efe12e0aadeaa887e8d0b8c30fd78e82fdbaad72b181a1ac9749607d"
+        }
+      ]
+    },
+    {
+      "file": "unique-item-project/roll-values.js",
+      "sha256": "103d0460c738c117840586780eaaed7be7ebe0aba61fa50464db9d004b094975",
+      "acceptanceHashMatches": null,
+      "risks": [],
+      "functions": [
+        {
+          "name": "lookupRoll",
+          "line": 29,
+          "sha256": "62881ff79c879b042865fbf103f5a73faf8f66e381f2114fabfc5110cb2c66e2"
+        },
+        {
+          "name": "validateRaw",
+          "line": 35,
+          "sha256": "d06bdc91f2948b22145cc222bade7254c62f39e0eedb616e43a32b39e2505475"
+        },
+        {
+          "name": "toStoredValue",
+          "line": 40,
+          "sha256": "ca97b221f38d94d2ae06c6d11efc0140bcd87606230b07365581bd74eaf73a79"
+        },
+        {
+          "name": "fromStoredValue",
+          "line": 46,
+          "sha256": "5e521cc77fabffb833bd99fa98d2e978da460b98f6f6dbfbf07c30d4ee823bfc"
+        },
+        {
+          "name": "describeRoll",
+          "line": 55,
+          "sha256": "2d5460c1d47a9b06d49bbb3eba5e7cc1f06148c37dd8e254bdfa9d305d2b1efa"
+        },
+        {
+          "name": "rollValue",
+          "line": 69,
+          "sha256": "36f1d785c456fe506255306f7e9550df88d6b44a8dbde5069a7055b2b9a8e75c"
+        }
+      ]
+    }
+  ],
+  "priorActualBrowser": "Codex in-app browser; independent reviewOnly host, no game",
+  "priorDiagnostic": "CSP style-src-elem inline observed on first AX state; origin not established",
+  "diagnosis": "검사한 host 초기HTML에는 style요소/속성이 없고 JS 직접 style/markup 주입도 없다. style-src-elem inline 요약만으로 host/외부주입 귀속 불가.",
+  "actualHTTP": "curl exit7 connection failed to 127.0.0.1:3340; headers/body unavailable, cause UNKNOWN, no server action",
+  "actualBrowser": "not run; root final gate",
+  "fixApplied": false,
+  "productionApplied": false,
+  "rows": [
+    {
+      "name": "root 인수 당시 source hash 일치",
+      "status": "PASS"
+    },
+    {
+      "name": "초기HTML inline STYLE/속성없음·외부CSS",
+      "status": "PASS"
+    },
+    {
+      "name": "전체 검사JS 직접 스타일주입없음",
+      "status": "PASS"
+    },
+    {
+      "name": "HTML style 요소/속성 최소반례 탐지",
+      "status": "PASS"
+    },
+    {
+      "name": "JS 생성/속성/CSSOM 최소반례 탐지",
+      "status": "PASS"
+    },
+    {
+      "name": "elem/attr/외부URI는 구분하되 주체는UNKNOWN",
+      "status": "PASS"
+    },
+    {
+      "name": "진단정책 원host와동일·완화0",
+      "status": "PASS"
+    },
+    {
+      "name": "명시버튼 이전 주입0·event 필드 원자료 기록",
+      "status": "PASS"
+    },
+    {
+      "name": "원문/함수SHA 보존",
+      "status": "PASS"
+    }
+  ],
+  "pass": 9,
+  "fail": 0,
+  "diagnosticSha": "67abe828e66d14a684ae6c9c0aa37e10d1c90c75c06ead61d3688c179805cce4",
+  "limit": "정적 직접 주입 검사 및 VM 이벤트fixture; CSP enforcement 실제검사는 root. 동적계산/외부확장 주입을 배제하는 완전한 분석 아님"
+}

@@ -189,3 +189,17 @@ root가 명시 reviewOnly 설치/해제 후보23그룹을 실제 port·양쪽 mk
 ### 2026-10-02 CSP 초기 원자료 진단 인수
 
 기존 browser-host의 sourceFile/줄·열·후속 이력 누락을 수정했다. 초기 외부 self 리스너와 누적 원자료를 추가했고 CSP 정책은 동일하다. 담당 완료와 root 별도 11+12=23그룹 Node PASS를 확인했다. 실제 브라우저/원주입자 귀속은 UNKNOWN이며 QA 전용 게이트로 남긴다. startup 실행 전 사건은 미관찰이다. 상세: `tools/team-followup-20261001/ITEM/browser-csp-cause-result.md`, 실제 검수: `browser-csp-cause-qa-plan.md`. 생산 게임/드롭/저장 스키마 변경0.
+
+### 2026-10-02 U-D13 원본 출처·지연 생성 경계 검토 후보
+
+실제 activateSpikeTrap/hurtE 전체 및 G._fireZones 전체22,471byte 조건문을 AST 추출 실행한19그룹 Node PASS. 루프 중 사망 뒤 즉시 push한 합성 object는 같은 tick t/timer1·RNG9회를 관측했고, 압축 완료 뒤 callback append는 t/timer0·RNG8회였다. 이는 순회/타이머 부작용 재현이며 자식 틱피해·실전 DPS/성능 PASS가 아니다.
+
+| 항목 | 검토 계약 |
+|---|---|
+| 출처 | private WeakMap의 original/fusion/child 명시 포트, actual _pillarSpike:true 원본 등록 거부. 생산 owner/출처 태그 추가0 |
+| 큐 | 실제 spikeTrap DOT 호출1개를 인수식 그대로 감싼 미적용 fixture. 원본 최종 사망 에지만 기록, 동기 전체 압축 성공 뒤 FIFO callback. 원본 시전당1은 D절 그대로 |
+| 보존 | payload 없는 후보 vs 원문에서 피해·배열 identity/순서·부가 상태/효과 호출·RNG 동일, 생산 활성/새 child payload0 |
+| 대역 | 일반 적·중립 어픽스·고정RNG 및 query/SFX/VFX/loot/XP/potion/checkRooms 대역. actual 부활/쉴드불발·전환 대역 stale 폐기도 검수 |
+| 미결 | 자식 피해/슬로우/출혈 구현·전역 cap·겹침·저장롤 스키마·실제 전환/연쇄/보스·성능·생산 연결 미확정 |
+
+소유 근거 `d13-deferred-contract-evidence.json`에 원블록/호출부 원문과4함수 SHA, 재실행 `d13-deferred-contract-check.mjs`, 한계 `d13-deferred-contract-result.md`. D17/CSP 반복0, 타팀 checkout/초안 보존. root 독립검수·백업 대기다.
