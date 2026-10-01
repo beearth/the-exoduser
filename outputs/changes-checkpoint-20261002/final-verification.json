@@ -1,0 +1,139 @@
+{
+  "verifiedAt": "2026-10-01T18:29:18.580695+00:00",
+  "beforeCount": 439,
+  "afterCount": 30,
+  "tracked": 21,
+  "untracked": 9,
+  "staged": 0,
+  "verifiedLocalHEAD": "134e15902c3d3bd5426d70407f4fe1fc74c30dfe",
+  "verifiedRemoteSHA": "134e15902c3d3bd5426d70407f4fe1fc74c30dfe",
+  "remoteRef": "refs/heads/codex/mac-environment-20261001",
+  "preservationCommits": 16,
+  "preservedFiles": 410,
+  "byteHashesVerified": 410,
+  "productionAndIgnoreChanged": false,
+  "remaining": [
+    {
+      "status": " M",
+      "path": "docs_backup_before_normalize_20260726/12퍼포먼스·최적화/12퍼포먼스·최적화.md"
+    },
+    {
+      "status": " M",
+      "path": "docs_backup_before_normalize_20260726/14밸런스+수치테이블/스킬_밸런스_리포트.md"
+    },
+    {
+      "status": " M",
+      "path": "docs_backup_before_normalize_20260726/14밸런스+수치테이블/스킬데미지공식표.md"
+    },
+    {
+      "status": " M",
+      "path": "docs_backup_before_normalize_20260726/14밸런스+수치테이블/스킬별_DPS_자원소비표.md"
+    },
+    {
+      "status": " M",
+      "path": "docs_backup_before_normalize_20260726/16번역·로컬라이제이션/번역_가이드.md"
+    },
+    {
+      "status": " M",
+      "path": "docs_backup_before_normalize_20260726/16번역·로컬라이제이션/번역대상_전체목록.md"
+    },
+    {
+      "status": " M",
+      "path": "docs_backup_before_normalize_20260726/16번역·로컬라이제이션/번역대상_펫대사.md"
+    },
+    {
+      "status": " M",
+      "path": "docs_backup_before_normalize_20260726/2_1 스킬관리+합체시스템+자원/2_1 스킬관리+합체시스템.md"
+    },
+    {
+      "status": " M",
+      "path": "docs_backup_before_normalize_20260726/2_1 스킬관리+합체시스템+자원/자원리젠+소모공식.md"
+    },
+    {
+      "status": " M",
+      "path": "docs_backup_before_normalize_20260726/2_1 스킬관리+합체시스템+자원/추천빌드_SKILL_REC_PATH.md"
+    },
+    {
+      "status": " M",
+      "path": "docs_backup_before_normalize_20260726/2_2 무기+활+속성시스템/2_2 무기+활+속성시스템.md"
+    },
+    {
+      "status": " M",
+      "path": "docs_backup_before_normalize_20260726/2_4 펫시스템/대사_스크립트.md"
+    },
+    {
+      "status": " M",
+      "path": "docs_backup_before_normalize_20260726/2게임디자인레벨디자인/2게임디자인레벨디자인.md"
+    },
+    {
+      "status": " M",
+      "path": "docs_backup_before_normalize_20260726/3.1 ui hud 디자인/exoduser-ui-phase2 (1).md"
+    },
+    {
+      "status": " M",
+      "path": "docs_backup_before_normalize_20260726/3.3 키바인딩+설정/3.3 키바인딩+설정.md"
+    },
+    {
+      "status": " M",
+      "path": "docs_backup_before_normalize_20260726/5.1임펙트디자인/VFX_구현가이드.md"
+    },
+    {
+      "status": " M",
+      "path": "docs_backup_before_normalize_20260726/8.0몬스터디자인/몬스터_공격시스템.md"
+    },
+    {
+      "status": " M",
+      "path": "docs_backup_before_normalize_20260726/8.0몬스터디자인/몬스터_총관리.md"
+    },
+    {
+      "status": " M",
+      "path": "docs_backup_before_normalize_20260726/8.0몬스터디자인/탄막시스템_총정리.md"
+    },
+    {
+      "status": " M",
+      "path": "docs_backup_before_normalize_20260726/8.1보스디자인바이블/BOSS_BATTLE_SETTINGS.md"
+    },
+    {
+      "status": " M",
+      "path": "docs_backup_before_normalize_20260726/9적ai패턴디자인/9_적AI패턴디자인.md"
+    },
+    {
+      "status": "??",
+      "path": "docs_backup_before_normalize_20260726/12퍼포먼스·최적화/맥북_프레임픽스_깜빡임.md"
+    },
+    {
+      "status": "??",
+      "path": "tools/team-followup-20261001/BALANCE/shared-mats-atomic-candidate.mjs"
+    },
+    {
+      "status": "??",
+      "path": "tools/team-followup-20261001/BALANCE/shared-mats-atomic-doc-search.txt"
+    },
+    {
+      "status": "??",
+      "path": "tools/team-followup-20261001/BALANCE/shared-mats-atomic-evidence.json"
+    },
+    {
+      "status": "??",
+      "path": "tools/team-followup-20261001/BALANCE/shared-mats-atomic-integration.patch"
+    },
+    {
+      "status": "??",
+      "path": "tools/team-followup-20261001/BALANCE/shared-mats-atomic-receipt.json"
+    },
+    {
+      "status": "??",
+      "path": "tools/team-followup-20261001/BALANCE/shared-mats-atomic-result.md"
+    },
+    {
+      "status": "??",
+      "path": "tools/team-followup-20261001/BALANCE/shared-mats-atomic-test.mjs"
+    },
+    {
+      "status": "??",
+      "path": "tools/team-followup-20261001/BALANCE/shared-mats-atomic-tests.txt"
+    }
+  ],
+  "remainingReason": "Existing backup Unicode-path differences and active-team shared-mats-atomic artifacts; no deletion/normalization/staging of these paths.",
+  "vscodeObservation": "Same repo confirmed; refreshed badge showed39 while9 audit/policy files awaited commit. Final badge check follows."
+}
