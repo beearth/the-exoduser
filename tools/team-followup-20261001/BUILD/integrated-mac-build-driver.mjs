@@ -1,0 +1,33 @@
+import fs from 'node:fs';
+import path from 'node:path';
+import {createHash,randomUUID} from 'node:crypto';
+import {execFileSync,spawnSync} from 'node:child_process';
+import {execute,plan} from './mac-packager/packager.mjs';
+const prefix='tools/team-followup-20261001/BUILD/integrated-mac-build-',startedAt=new Date().toISOString();
+const sha=data=>createHash('sha256').update(data).digest('hex');
+const git=(...args)=>execFileSync('git',args,{env:{...process.env,GIT_OPTIONAL_LOCKS:'0'},maxBuffer:128*1024*1024}).toString();
+function hashFile(value){const descriptor=fs.openSync(value,fs.constants.O_RDONLY|fs.constants.O_NOFOLLOW);try{const before=fs.fstatSync(descriptor);if(!before.isFile()||before.nlink!==1)throw Error('NON_SINGLE_REGULAR:'+value);const hash=createHash('sha256'),blob=createHash('sha1').update('blob '+before.size+'\0'),buffer=Buffer.alloc(1024*1024);let count;while((count=fs.readSync(descriptor,buffer,0,buffer.length,null))>0){const data=buffer.subarray(0,count);hash.update(data);blob.update(data);}const after=fs.fstatSync(descriptor);if(before.size!==after.size||before.mtimeMs!==after.mtimeMs||before.ctimeMs!==after.ctimeMs)throw Error('CHANGED:'+value);return {sha256:hash.digest('hex'),oid:blob.digest('hex'),bytes:before.size};}finally{fs.closeSync(descriptor);}}
+const remotePath='outputs/team-review-20261002/production-integration/remote-checkpoint-final.json';
+const remote=JSON.parse(fs.readFileSync(remotePath)),head=git('rev-parse','HEAD').trim();
+if(head!==remote.head||head!==remote.remote||!remote.exactMatch)throw Error('ROOT_REMOTE_EVIDENCE_MISMATCH');
+const config=JSON.parse(fs.readFileSync('outputs/team-review-20261002/mac-app/execute-config.json'));
+if(config.inputs.length!==7918||config.inputRoots.length!==7918)throw Error('APPROVED_ALLOWLIST_CHANGED');
+const tree=git('ls-tree','-r','-z',head).split('\0').filter(Boolean).map(line=>{const split=line.indexOf('\t');return {path:line.slice(split+1),oid:line.slice(0,split).split(' ')[2]};});
+const treeMap=new Map();for(const entry of tree){const key=entry.path.normalize('NFC');treeMap.set(key,[...(treeMap.get(key)||[]),entry]);}
+const inputEvidence=config.inputs.map(input=>{const data=hashFile(path.join(config.sourceRoot,input.path)),matching=(treeMap.get(input.path.normalize('NFC'))||[]).filter(entry=>entry.oid===data.oid);if(!matching.length)throw Error('INPUT_NOT_BACKED:'+input.path);return {path:input.path,...data,previousSHA:input.sha256,changed:data.sha256!==input.sha256,backupPaths:matching.map(entry=>entry.path)};});
+config.inputs=inputEvidence.map(({path,sha256})=>({path,sha256}));config.backup={sha:head,remoteSha:remote.remote,remoteRef:remote.ref,verifiedAt:remote.at,inputs:structuredClone(config.inputs)};
+config.id=randomUUID();config.port=3383;config.executionApproved=true;
+const portCheck=spawnSync('lsof',['-nP','-iTCP:3383','-sTCP:LISTEN'],{encoding:'utf8'});if(portCheck.status!==1||portCheck.stdout.trim()||portCheck.stderr.trim())throw Error('PORT_NOT_CONFIRMED_FREE:'+portCheck.stdout+portCheck.stderr);
+const roots=fs.readdirSync(config.outputRoot).filter(name=>/59376|abf57/.test(name));
+function oldCore(){return roots.flatMap(name=>{const directory=path.join(config.outputRoot,name,'package'),app=fs.readdirSync(directory).find(entry=>entry.endsWith('.app'));const base=path.join(directory,app);return ['Contents/Info.plist','Contents/MacOS/'+app.slice(0,-4),'Contents/Resources/app.nw/package.json','Contents/Resources/app.nw/node-main.js','Contents/Resources/app.nw/index.html','Contents/Resources/app.nw/game.html','Contents/Resources/app.nw/game-easy-test.html'].map(relative=>({path:path.join(base,relative),...hashFile(path.join(base,relative))}));});}
+const before=oldCore(),space=fs.statfsSync(config.outputRoot),available=Number(space.bavail)*Number(space.bsize),inputBytes=inputEvidence.reduce((sum,input)=>sum+input.bytes,0),expected=2*inputBytes+398307271;
+if(available<expected+1024**3)throw Error('INSUFFICIENT_SPACE');
+const preflight={startedAt,head,remoteSource:remotePath,remoteReadAt:new Date().toISOString(),remoteObservedAt:remote.at,remoteEvidenceSHA:sha(fs.readFileSync(remotePath)),freshNetwork:'BUILD ls-remote DNS 실패; 최신 root 제공 증거를 사용, 직접조회 성공 주장0',inputCount:inputEvidence.length,inputBytes,expectedStageAndPackageBytes:expected,availableBytes:available,port:{port:3383,lsofStatus:portCheck.status,listenEntries:0,limits:'순간 listen 조회; 예약/실행포트점유 인수 아님'},oldCoreBefore:before,nonOverlap:'task 최신 root 지시 및 TEAM_UTILIZATION QA 마지막 제출 완료·추가실측 지시없음; UI/게임 조작0',inputEvidence};
+fs.writeFileSync(prefix+'config.json',JSON.stringify(config,null,2)+'\n',{flag:'wx'});fs.writeFileSync(prefix+'preflight.json',JSON.stringify(preflight,null,2)+'\n',{flag:'wx'});
+const proposal=plan(config);fs.writeFileSync(prefix+'plan.json',JSON.stringify(proposal,null,2)+'\n',{flag:'wx'});if(proposal.status!=='READY_PLAN_ONLY')throw Error(proposal.error);
+if(git('rev-parse','HEAD').trim()!==head)throw Error('HEAD_CHANGED_BEFORE_EXECUTE');
+try{const buildStartedAt=new Date().toISOString(),result=await execute(config,{approved:true});const after=oldCore();if(JSON.stringify(before)!==JSON.stringify(after))throw Error('OLD_CORE_CHANGED');
+  const core=['Contents/Info.plist','Contents/MacOS/'+proposal.args.app.name,'Contents/Resources/app.nw/package.json','Contents/Resources/app.nw/node-main.js','Contents/Resources/app.nw/index.html','Contents/Resources/app.nw/game.html','Contents/Resources/app.nw/game-easy-test.html'].map(relative=>({path:relative,...hashFile(path.join(result.appPath,relative))}));
+  const outputManifest=[];function visit(directory,relative=''){for(const name of fs.readdirSync(directory)){const next=relative?relative+'/'+name:name,absolute=path.join(directory,name),stat=fs.lstatSync(absolute);if(stat.isSymbolicLink())outputManifest.push({path:next,type:'symlink',target:fs.readlinkSync(absolute)});else if(stat.isDirectory())visit(absolute,next);else outputManifest.push({path:next,type:'file',bytes:stat.size});}}visit(result.appPath);
+  const final={buildStartedAt,completedAt:new Date().toISOString(),...result,headAfter:git('rev-parse','HEAD').trim(),oldCoreUnchanged:true,oldCoreAfter:after,core,outputManifest,outputBytes:outputManifest.reduce((sum,entry)=>sum+(entry.bytes||0),0),runtimeAccepted:false,appExecuted:false};fs.writeFileSync(prefix+'result.json',JSON.stringify(final,null,2)+'\n',{flag:'wx'});console.log(JSON.stringify({status:final.status,appPath:final.appPath,completedAt:final.completedAt,outputBytes:final.outputBytes,oldCoreUnchanged:true}));
+}catch(error){fs.writeFileSync(prefix+'failure.json',JSON.stringify({at:new Date().toISOString(),error:error.message,cleanup:error.cleanup??'UNKNOWN'},null,2)+'\n',{flag:'wx'});throw error;}

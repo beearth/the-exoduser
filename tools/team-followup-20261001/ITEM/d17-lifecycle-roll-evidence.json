@@ -1,0 +1,65 @@
+{
+  "utc": "2026-10-01T17:14:40.756Z",
+  "checks": 28,
+  "status": "PASS",
+  "gameSha256": "c868284af349c996d42087e93eba47a10614d73cb8f55f4db5ae01dde89da31a",
+  "productionD17FieldsPresent": false,
+  "evidence": [
+    {
+      "name": "initStage",
+      "sha256": "2b88d7b367a9b2bb60aef018d2be92e51cbfb66c64524c327343772cd0f150c3",
+      "line": 30295,
+      "boundaries": [
+        "G._fireZones=[]"
+      ]
+    },
+    {
+      "name": "_enterBossArena",
+      "sha256": "01f063493e7b07deed6ae1f8925ffb09c54f0fd03070bf3d3e27cd2cf79d365b",
+      "line": 29511,
+      "boundaries": [
+        "G._fireZones=[]"
+      ]
+    },
+    {
+      "name": "_fallenResolve",
+      "sha256": "e5cb1a7a2c9dcd1065902e09e86539a5e3bf01ba662aa7c3a5eb6ca2230a582a",
+      "line": 42370,
+      "boundaries": [
+        "G._fireZones=[]"
+      ]
+    },
+    {
+      "name": "_loadCharAtlas",
+      "sha256": "47f6cb0b5630535ed2c79b436b80320978cd01b0d1aaa8f89e4d400a653eeae6",
+      "line": 10145,
+      "boundaries": [
+        "_charIdx=idx"
+      ]
+    },
+    {
+      "name": "dbRestore",
+      "sha256": "63385633575b51647ab02b9e27f6d840e036dc35f9cd595b1cc65063e1133c35",
+      "line": 3589,
+      "boundaries": [
+        "INV.equipped=d.inv.equipped||{weapon:null,shield:null,boots:null,armor:null,helmet:null,bow:null,gloves:null,pants:null,belt:null,necklace:null,ring1:null,ring2:null,cape:null,bracelet:null,headband:null,ossuary:null,headband2:null}"
+      ]
+    },
+    {
+      "name": "startGameFromDB",
+      "sha256": "57f378abad7d2315f51b8c3942889cce9ae38790c1ded3bbe87d9c0d37d1e86e",
+      "line": 60366,
+      "boundaries": [
+        "P=mkP()"
+      ]
+    },
+    {
+      "name": "fireBlackStar",
+      "sha256": "11fd34ebf4a12ef9957203d93e2aff9245b9009a9f086fe641ffd027054c5824"
+    },
+    {
+      "name": "activateSpikeTrap",
+      "sha256": "f5d9f41ee12c8f51a0d8a1b116588a6133a3bc801aec73bb0532d3c02fc2dd19"
+    }
+  ]
+}

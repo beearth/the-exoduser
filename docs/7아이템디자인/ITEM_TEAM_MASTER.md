@@ -159,3 +159,15 @@ root가 명시 reviewOnly 설치/해제 후보23그룹을 실제 port·양쪽 mk
 | 남은 게이트 | 실제 caller/clear 수명주기·D17 저장롤 공급·브라우저·적별 중첩 피해 검수. 효과·드롭·장착·경제·생산 적용 완료 아님 |
 
 원본 함수/literal SHA와 범위는 `d17-source-adapter-result.md`, root 근거는 `outputs/team-review-20261002/production-integration/item-root-check.json`에 기록했다.
+
+### 2026-10-02 D17 생명주기·저장롤 독립 검토 후보
+
+`tools/team-followup-20261001/ITEM/d17-lifecycle-roll-candidate.mjs`는 기존 adapter byte를 보존하며 실제 reset/load/character 경계6종을 감싸는 명시 호출 집합을 제공한다. 기본 비활성/reviewOnly opt-in/runtimeReady=false, 생산 연결0. 실제 원문 경계 AST fixture 및 원 종료/생성 함수 기반28그룹 PASS. 원함수 SHA8개와 대역 범위는 `d17-lifecycle-roll-evidence.json` 및 result에 기록했다.
+
+| 항목 | 검토 상태 |
+|---|---|
+| clear | stage/보스입장/사망/캐릭터/restore/load 경계 전후 clear, player·캐릭터 키·zone 배열 교체 시 stale 출처 폐기 |
+| 저장롤 | UI-17/helmet, uniqueRoll version1/effectId U-D17/stat _uBlackZoneGather/unit count/storedValue 정수1~3 제안. unknown/invalid/missing 효과0, RNG/자동보충0 |
+| 실제 미연결 | 현 game.html에 uniqueRoll/UI-17/_uBlackZoneGather 공급필드 없음. D17 저장스키마 채택·생성·생산 장착 소비 완료가 아님 |
+| 보존 | zone identity·좌표 외 상태/이전 후보/초안 보존.600px/최근접·tie 검토정책·경제·실전 DPS 변경0 |
+| 남은 게이트 | 실제 호출부 순차 연결·저장 공급·비동기 경계 직렬화·demo/test 추가 초기화·브라우저/중첩 실전검수 |

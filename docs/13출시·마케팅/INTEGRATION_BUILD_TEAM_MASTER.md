@@ -1,5 +1,8 @@
 # 통합·빌드팀 운영 대장
 
+## 2026-10-02 최신 통합 Mac 앱 생성 인계
+BUILD가 root의 17:09:31.515Z 원격 일치 증거와 로컬 HEAD `6be3a06b4e8d03768a35f4c57d419f45c8efeb39`의 정확7918입력을 대조했다. 직접 원격조회는 DNS 실패이며 root 제공 증거와 구분했다. QA 완료 snapshot/새실측없음 승인 뒤 17:14:19.752Z~17:15:36.564Z 새 job `08cac1ce-21fb-4874-b4df-c136df5ac269`에서 arm64 앱1개 생성. 출력 `outputs/mac-package-ready/mac-packager-08cac1ce-21fb-4874-b4df-c136df5ac269/package/EXODUSER-08cac1ce-21fb-4874-b4df-c136df5ac269.app`, loopback3383·고유 profile/save, 기존 두앱 핵심14파일 전후SHA 동일. 앱실행0·runtime/설정/저장/재실행/미디어/서명/배포 미인수. 입력·산출 목록/핵심SHA/한계는 `tools/team-followup-20261001/BUILD/integrated-mac-build-result.md` 및 전용 JSON을 따른다. 소스 원격백업과 로컬앱 생성은 별도다.
+
 작성/갱신: 2026-10-01 KST. 총괄 작업 [PM-002](../0마스터플랜/PROJECT_MANAGEMENT_MASTER.md), [팀 시작 규칙](../0마스터플랜/TEAM_START_COMMANDS_20261001.md), [PC 패키징 계약](PC_PACKAGING_20260910.md)을 따른다.
 
 ## 책임과 경계
@@ -82,3 +85,8 @@ root가 read-only preflight28검사를 재실행해 통과했다. 최신 확인 
 ### 2026-10-02 캐릭터 미디어 진단 완료 정정
 
 공식 기존 BUILD turn의 실제 완료는 2026-10-01T16:49:38Z다. 16:48:30Z의 interrupted는 중간 조회 이력이며 현재 작업 중단으로 유지하지 않는다. scene/idle/성공 비교영상2개의 원본·7918입력 manifest·두 생성앱 SHA 일치와 헤더 차이를 인수했다. root는 4파일×2앱/manifest 증거의 일관성을 대조했다. 실제 media.error 소유 요소·decode 지원·HEAD/Range 응답은 미확정이고 앱 실행/저장/재실행은 잠금으로 미완료다. 새 미디어 변환·앱 빌드/실행은 이번 소스 통합 중 수행하지 않았다. 결과: tools/team-followup-20261001/BUILD/mac-character-media-result.md.
+
+
+### 2026-10-02 최신 앱 Root 전수 파일 검증
+
+08cac1ce 앱의 8,258개 항목·일반파일 7,043,792,984바이트를 17:16:44.333–17:16:49.284Z에 독립 검증했다. 입력·핵심 파일·공식 주 실행파일 SHA 일치, 모든 링크가 앱 내부다. Root 원격 조회 17:14:40.072Z는 소스 6be3a06b와 정확히 일치한다. BUILD 직접 조회 DNS 실패와 구분한다. 앱은 실행하지 않았으며 로비·저장·재실행·미디어·서명·배포 인수는 미완료, 로컬 앱의 GitHub 업로드는 없다. 근거: `outputs/team-review-20261002/post-integration/app-verification.txt` 및 전체 manifest.

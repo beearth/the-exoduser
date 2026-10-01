@@ -148,3 +148,8 @@ Node 후보 연결과 root 보강 회귀61PASS. 게임 생성/드롭/저장라�
 ### 2026-10-02 강화 계약 root 인수
 
 실제 본편/easy 수동/AI 강화와 저장 객체식 validator2880입력+56경계를 root가 재실행해 통과했다. 비용·올림·할인·게이트/차감 mismatch 미발견, 수치변경0. AI _doAiEnhance 직접 저장 예약0은 확인했지만 전체영속화 손실과 구분하여 실제 debounce/dbSave/dbRestore·닫기/자동저장 source fixture 후속을 기존 BALANCE에 배정했다. 보호 패링 정규식 기존1FAIL은 이전 증거로 분리했고 보호코드/검사 수정0. [인수·한계](../0마스터플랜/mac-resume-20261001/vscode-dispatch/FOUR-SUBMISSIONS-HELLRAY-20261002.md).
+
+
+### 2026-10-02 실제 디스크 저장·재기동 검수 차단
+
+생산 pending-save drain의 기존 소스 22검사 PASS 이후 실제 격리 API 검수를 준비했다. 빈 포트 선확인에서 EPERM으로 중단되어 서버 child 0·API 0·통합 검사 0·합성 저장 파일 0이다. Root는 최종 하니스 문법만 확인했고 재실행·바인딩 변경·권한 우회를 하지 않았다. 실제 ACK→디스크→종료→재기동→load는 미검수다. 근거: `tools/team-followup-20261001/BALANCE/disk-save-restart-result.md`, `docs/15 세이브+데이터구조/BALANCE_DISK_SAVE_RESTART_20261002.md`.

@@ -1,0 +1,83 @@
+{
+  "at": "2026-10-01T17:17:14.420Z",
+  "results": [
+    {
+      "status": "fulfilled",
+      "value": {
+        "team": "BUILD",
+        "sessionId": "01a0f6e6-2e4c-7322-92d7-3aa309857856",
+        "status": "completed",
+        "startedAt": "2026-10-01T17:12:52.000Z",
+        "completedAt": "2026-10-01T17:16:30.000Z",
+        "firstCommand": "/bin/zsh -lc \"date -u +%Y-%m-%dT%H:%M:%SZ; cat tools/team-followup-20261001/BUILD/integrated-mac-build-task.md; rg --files tools/team-followup-20261001/BUILD | rg 'integrated-mac-build'; rg --files tools -g AGENTS.md\"",
+        "firstEdit": [
+          {
+            "path": "/Users/fordeargamers/Projects/exoduser-migration-20261001/tools/team-followup-20261001/BUILD/integrated-mac-build-driver.mjs",
+            "kind": {
+              "type": "add"
+            }
+          },
+          {
+            "path": "/Users/fordeargamers/Projects/exoduser-migration-20261001/tools/team-followup-20261001/BUILD/integrated-mac-build-receipt.json",
+            "kind": {
+              "type": "add"
+            }
+          }
+        ],
+        "last": "최신 통합 소스로 Mac arm64 앱 **1개를 생성했습니다**.\n\n- 정확 7,918개 입력을 HEAD·root 제공 원격 증거와 대조했습니다.\n- 새 UUID·포트3383·고유 profile/save 적용, 기존 두 앱 핵심14파일 해시 불변.\n- 앱 실행·게임·저장·서명·배포 인수는 **미완료**입니다.\n\n앱: `outputs/mac-package-ready/mac-packager-08cac1ce-21fb-4874-b4df-c136df5ac269/package/EXODUSER-08cac1ce-21fb-4874-b4df-c136df5ac269.app`\n\n결과: `tools/team-followup-20261001/BUILD/integrated-mac-build-result.md:1`\n\nBUILD 대장·receipt 기록을 마쳤으며 root 검토를 기다립니다."
+      }
+    },
+    {
+      "status": "fulfilled",
+      "value": {
+        "team": "BALANCE",
+        "sessionId": "01a0f6e6-5303-7392-81ba-94c42e349ffc",
+        "status": "completed",
+        "startedAt": "2026-10-01T17:12:52.000Z",
+        "completedAt": "2026-10-01T17:16:57.000Z",
+        "firstCommand": "/bin/zsh -lc \"date -u '+%Y-%m-%dT%H:%M:%SZ'; cat tools/team-followup-20261001/BALANCE/disk-save-restart-task.md; rg --files -g AGENTS.md; rg --files tools/team-followup-20261001/BALANCE | rg disk-save-restart\"",
+        "firstEdit": [
+          {
+            "path": "/Users/fordeargamers/Projects/exoduser-migration-20261001/tools/team-followup-20261001/BALANCE/disk-save-restart-receipt.json",
+            "kind": {
+              "type": "add"
+            }
+          },
+          {
+            "path": "/Users/fordeargamers/Projects/exoduser-migration-20261001/tools/team-followup-20261001/BALANCE/disk-save-restart.mjs",
+            "kind": {
+              "type": "add"
+            }
+          }
+        ],
+        "last": "전용 하니스와 영수증·한국어 결과를 작성했습니다.\n\n- 격리 포트 선확인에서 `EPERM` 발생. 우회하지 않았습니다.\n- 서버 실행·API 요청·통합 검사 모두 0회입니다.\n- 문법 검사만 통과했으며 실제 저장·재기동은 미검수입니다.\n- 생산 코드·사용자 세이브·게임은 변경하지 않았습니다.\n\n결과: `tools/team-followup-20261001/BALANCE/disk-save-restart-result.md:1`  \n남은 실제 검수를 root에 인계합니다."
+      }
+    },
+    {
+      "status": "fulfilled",
+      "value": {
+        "team": "ITEM",
+        "sessionId": "01a0f6e6-1fbe-7df0-8d02-a9c2d9df3750",
+        "status": "completed",
+        "startedAt": "2026-10-01T17:12:52.000Z",
+        "completedAt": "2026-10-01T17:15:37.000Z",
+        "firstCommand": "/bin/zsh -lc 'date -u +%Y-%m-%dT%H:%M:%SZ; cat tools/team-followup-20261001/ITEM/d17-lifecycle-roll-task.md; ls tools/team-followup-20261001/ITEM/d17-lifecycle-roll-*; find tools -name AGENTS.md'",
+        "firstEdit": [
+          {
+            "path": "/Users/fordeargamers/Projects/exoduser-migration-20261001/tools/team-followup-20261001/ITEM/d17-lifecycle-roll-candidate.mjs",
+            "kind": {
+              "type": "add"
+            }
+          },
+          {
+            "path": "/Users/fordeargamers/Projects/exoduser-migration-20261001/tools/team-followup-20261001/ITEM/d17-lifecycle-roll-receipt.json",
+            "kind": {
+              "type": "add"
+            }
+          }
+        ],
+        "last": "승인된 생명주기·저장롤 후보 완료했습니다.\n\n- 실제 소스 경계 기반 **28그룹 PASS**\n- 초기화·로드·캐릭터 전환 시 오래된 출처 폐기, 객체 identity 보존\n- 실제 D17 저장 공급필드 없음 확인; 누락·무효롤은 효과0\n- 기존 후보·초안 보존, 생산 수정0, 팀 문서 동기화 완료\n\n결과: `tools/team-followup-20261001/ITEM/d17-lifecycle-roll-result.md:1`\n\n생산 호출부 연결·저장 계약 채택·실전 검수는 root 인계 게이트로 남겼습니다."
+      }
+    }
+  ]
+}

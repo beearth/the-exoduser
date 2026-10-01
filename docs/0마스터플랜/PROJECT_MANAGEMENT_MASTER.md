@@ -707,3 +707,8 @@ ITEM bootstrap23, UIUX 후보21+기존9, BUILD preflight28, BALANCE2880+56를 ro
 ### 2026-10-02 Mac 인벤토리·저장 생산 통합
 
 UIUX 인벤토리 초점 수정의 root23검사·전체승인 byte 확인/원격66998de7 이후 BALANCE 저장 구역을 순차 반영했다. 저장 root22검사, 통합 후 인벤토리23검사와 양쪽 inline 구문 통과. U-D17 실제 소스 어댑터는13그룹 검수된 비활성 검토용이며 생산 미연결. BUILD 미디어 진단은 공식16:49:38Z 완료로 정정, 실제 media.error 원인은 미확정이다. 여섯 Claude는 제출 완료/다음 native 전달의 잠금 차단, SOUND는 별도 접근 제한으로 기록한다. 실제 게임/저장/앱 재실행은 미완료이고 기존 앱은 이번 소스 통합 전 버전이다. [정확한 범위·근거](mac-resume-20261001/vscode-dispatch/PRODUCTION-INTEGRATION-20261002.md).
+
+
+### 2026-10-02 통합 소스 후속 앱·검수 인수
+
+소스 6be3a06b 기준 Mac arm64 새 앱 1개를 생성하고 Root가 8,258개 항목의 해시·내부 링크를 검증했다. 앱 실행 인수는 잠금으로 미완료다. BALANCE 실제 저장 검수는 포트 선확인 EPERM으로 서버/API/검사 모두 0회이며 문법 검사만 통과했다. ITEM D17 생명주기·롤 후보는 Root 28그룹 PASS, 기본 비활성·생산 미연결이다. 여섯 Claude 다음 전달·UIUX 실제 검수는 한 번의 새 잠금 확인으로 차단, SOUND 기존 별도 정책 제한 유지. 완료한 작업을 가동 중으로 집계하지 않는다. 상세: [후속 인수](mac-resume-20261001/vscode-dispatch/POST-INTEGRATION-PACKAGE-20261002.md). 앱은 로컬 산출이며 원격 소스 백업과 구분한다.

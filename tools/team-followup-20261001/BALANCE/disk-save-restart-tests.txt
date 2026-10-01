@@ -1,0 +1,1 @@
+{"status":"blocked_permission_no_bypass","output":"/var/folders/jw/nw37c6px7p9cdgtst065y5gm0000gn/T/exoduser-disk-save-restart-8K1xMM","port":null,"processes":[],"checks":0,"error":"listen EPERM: operation not permitted 127.0.0.1","completedAt":"2026-10-01T17:14:56.634Z"}

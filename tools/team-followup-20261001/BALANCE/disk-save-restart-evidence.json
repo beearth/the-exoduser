@@ -1,0 +1,46 @@
+{
+  "startedAt": "2026-10-01T17:14:56.607Z",
+  "output": "/var/folders/jw/nw37c6px7p9cdgtst065y5gm0000gn/T/exoduser-disk-save-restart-8K1xMM",
+  "host": "127.0.0.1",
+  "port": null,
+  "processes": [],
+  "sources": [
+    {
+      "file": "server.cjs",
+      "sha256": "339fad6ab51cba92f6ca7a386c8aeb251f68cdb58cdfa55c109f57b1758a42ad"
+    },
+    {
+      "file": "game.html",
+      "sha256": "c868284af349c996d42087e93eba47a10614d73cb8f55f4db5ae01dde89da31a"
+    },
+    {
+      "file": "game-easy-test.html",
+      "sha256": "11b4e97b15903b9699b296362bdd068ffed6d3a1a505d9f6eeec5482b7c085ca"
+    }
+  ],
+  "checks": [],
+  "transport": [],
+  "status": "blocked_permission_no_bypass",
+  "limits": "실제격리server/API/disk/restart; fake DOM/clock·응답소비hold/HTTP503은fixture주입. 실브라우저/앱/unload/전원손실내구성미검수",
+  "error": {
+    "code": "EPERM",
+    "message": "listen EPERM: operation not permitted 127.0.0.1",
+    "stack": "Error: listen EPERM: operation not permitted 127.0.0.1\n    at Server.setupListenHandle [as _listen2] (node:net:1986:21)\n    at listenInCluster (node:net:2065:12)\n    at node:net:2274:7\n    at process.processTicksAndRejections (node:internal/process/task_queues:90:21)"
+  },
+  "completedAt": "2026-10-01T17:14:56.634Z",
+  "sourceHashesAfter": [
+    {
+      "file": "server.cjs",
+      "sha256": "339fad6ab51cba92f6ca7a386c8aeb251f68cdb58cdfa55c109f57b1758a42ad"
+    },
+    {
+      "file": "game.html",
+      "sha256": "c868284af349c996d42087e93eba47a10614d73cb8f55f4db5ae01dde89da31a"
+    },
+    {
+      "file": "game-easy-test.html",
+      "sha256": "11b4e97b15903b9699b296362bdd068ffed6d3a1a505d9f6eeec5482b7c085ca"
+    }
+  ],
+  "sourceBytesUnchanged": true
+}
