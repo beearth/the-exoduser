@@ -1,0 +1,13 @@
+{
+  "taskId": "BALANCE-LEGACY-REFUND-OVERFLOW-CANDIDATE",
+  "receivedAt": "2026-10-01T12:56:31Z",
+  "firstReadAt": "2026-10-01T12:56:31Z",
+  "firstRead": "지시·팀 MD·인벤 SSOT·양쪽 salvageVal/_enhRefund 실제 읽기",
+  "duplicateCheck": "소유 폴더와 전용 dispatch에 동일 후보/영수증 없음 확인",
+  "firstEdit": "전용 영수증 생성; 다음 편집은 소유 refund-overflow 도구",
+  "status": "completed_unapplied_candidate",
+  "firstCodeEdit": "refund-overflow.mjs 원함수 추출 회귀 구현",
+  "validation": "양쪽 RED→GREEN, 등급0~5 경계, 96강화표본 및 legacy/JSON 회귀 exit0",
+  "nextAction": "root에 최소4곳 미적용 diff·원자료·docs 후보·전체 저장 미검증 게이트 인계",
+  "productionModified": false
+}

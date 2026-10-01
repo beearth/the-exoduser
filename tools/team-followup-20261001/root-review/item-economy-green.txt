@@ -1,0 +1,26 @@
+✔ game.html: transcend EXP stays positive beyond signed 32-bit range (6.347083ms)
+✔ game.html: invalid legacy transcend EXP recovers without changing valid saves (61.187041ms)
+✔ game-easy-test.html: transcend EXP stays positive beyond signed 32-bit range (5.194375ms)
+✔ game-easy-test.html: invalid legacy transcend EXP recovers without changing valid saves (57.799708ms)
+✔ game.html: zero-malice skill upgrade remains available with zero malice (10.919459ms)
+✔ game.html: paid upgrade gates match actual charge at the boundary (10.425792ms)
+✔ game-easy-test.html: zero-malice skill upgrade remains available with zero malice (9.987875ms)
+✔ game-easy-test.html: paid upgrade gates match actual charge at the boundary (10.175542ms)
+✔ item ground drops play a rarity-scaled spatial drop sound with a burst gate (0.67025ms)
+✔ game.html: saved unique identity survives the actual name migration; legacy behavior remains (7.857708ms)
+✔ game.html: full equip, save snapshot and drop at refund overflow; affordable=true (38.9165ms)
+✔ game.html: full equip, save snapshot and drop at refund overflow; affordable=false (12.246708ms)
+✔ game-easy-test.html: saved unique identity survives the actual name migration; legacy behavior remains (3.465542ms)
+✔ game-easy-test.html: full equip, save snapshot and drop at refund overflow; affordable=true (29.227958ms)
+✔ game-easy-test.html: full equip, save snapshot and drop at refund overflow; affordable=false (11.615125ms)
+✔ known missing element variants resolve to the available physical item skin before creating an image request (0.982292ms)
+✔ every fire item skin resolves to its physical art before the browser can request a missing file (0.255875ms)
+✔ inventory and world drops share the 404-safe item skin source rule (4.227375ms)
+ℹ tests 18
+ℹ suites 0
+ℹ pass 18
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 167.084959

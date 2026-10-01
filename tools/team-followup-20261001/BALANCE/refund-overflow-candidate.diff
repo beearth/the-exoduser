@@ -1,0 +1,24 @@
+--- a/game.html
++++ b/game.html
+@@ -26899,3 +26899,3 @@
+     for(let i=0;i<e;i++) totalCost+=Math.ceil(Math.max(1,Math.ceil((1+i*0.15)*1.5))*rMul);
+-    enhRefund=~~(totalCost*0.5);
++    enhRefund=Math.floor(totalCost*0.5);
+   }
+@@ -15505,3 +15505,3 @@
+       // 강화 투자분 기록: 분해 시 50% 환불용
+-      {const _rMul=[0.5,0.7,1.0,1.3,1.8][_itemEconomyRarity(old.rarity)];let _tc=0;for(let _i=0;_i<fromE;_i++)_tc+=Math.ceil(Math.max(1,Math.ceil((1+_i*0.15)*1.5))*_rMul);old._enhRefund=~~(_tc*0.5);}
++      {const _rMul=[0.5,0.7,1.0,1.3,1.8][_itemEconomyRarity(old.rarity)];let _tc=0;for(let _i=0;_i<fromE;_i++)_tc+=Math.ceil(Math.max(1,Math.ceil((1+_i*0.15)*1.5))*_rMul);old._enhRefund=Math.floor(_tc*0.5);}
+       old.enh=0;
+--- a/game-easy-test.html
++++ b/game-easy-test.html
+@@ -25843,3 +25843,3 @@
+     for(let i=0;i<e;i++) totalCost+=Math.ceil(Math.max(1,Math.ceil((1+i*0.15)*1.5))*rMul);
+-    enhRefund=~~(totalCost*0.5);
++    enhRefund=Math.floor(totalCost*0.5);
+   }
+@@ -14681,3 +14681,3 @@
+       // 강화 투자분 기록: 분해 시 50% 환불용
+-      {const _rMul=[0.5,0.7,1.0,1.3,1.8][_itemEconomyRarity(old.rarity)];let _tc=0;for(let _i=0;_i<fromE;_i++)_tc+=Math.ceil(Math.max(1,Math.ceil((1+_i*0.15)*1.5))*_rMul);old._enhRefund=~~(_tc*0.5);}
++      {const _rMul=[0.5,0.7,1.0,1.3,1.8][_itemEconomyRarity(old.rarity)];let _tc=0;for(let _i=0;_i<fromE;_i++)_tc+=Math.ceil(Math.max(1,Math.ceil((1+_i*0.15)*1.5))*_rMul);old._enhRefund=Math.floor(_tc*0.5);}
+       old.enh=0;

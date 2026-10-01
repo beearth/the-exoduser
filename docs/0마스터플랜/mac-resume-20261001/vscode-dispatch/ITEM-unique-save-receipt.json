@@ -1,0 +1,16 @@
+{
+  "taskId": "ITEM-UNIQUE-SAVE-NAME-CANDIDATE",
+  "status": "completed_candidate_pending_root_integration",
+  "receivedAt": "2026-10-01T12:54:42Z",
+  "firstReadAt": "2026-10-01T12:54:42Z",
+  "firstEdit": "영수증 작성 후 unique-save-candidate.mjs와 unique-save-check.mjs 최소후보·회귀 작성",
+  "duplicateCheck": "소유 폴더에 unique-save 산출 없음; 기존 ring/rgb 결과와 다른 과제",
+  "cli": "Codex",
+  "model": null,
+  "sessionId": "01a0f6e6-1fbe-7df0-8d02-a9c2d9df3750",
+  "sessionIdSource": "이전 배정값",
+  "completedAt": "2026-10-01T12:56:40Z",
+  "validation": "최종명령 exit0; 82정상시나리오 RNG0 + 2기존소켓누락 RNG한계 시나리오, 합84통과",
+  "nextAction": "root에 양HTML 최소미적용diff·source해시·저장경로·84시나리오 인계; 실제저장/패키지게이트별도",
+  "blocker": null
+}

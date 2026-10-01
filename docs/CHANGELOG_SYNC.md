@@ -51768,3 +51768,8 @@ FIRE 독립8검사와 URL query17검사 인수, SOUND root canonical 관측기18
 ## 2026-10-01 Existing ITEM/BALANCE implementation resumed
 - Actual uniqueId name overwrite and legacy refund signed32 overflow reproduced; one task each delivered to existing owners with source Read/Edit evidence. Production and economic policy unchanged.
 - Native input failure preserved; ENEMY/ART/SKILL not delivered. Live candidate source excluded from this dispatch checkpoint.
+
+
+## 2026-10-01 ITEM/BALANCE 저장·환급 경계 수정
+
+본편/easy uniqueId 이름 보존 가드 및 salvageVal/equipItem 환급 Math.floor 적용(각3줄). 기존 공식/비율/수수료 유지. 인벤토리·아이템·밸런스·저장 SSOT 동기화. 실제 함수 회귀 포함18PASS·guard·inline parse PASS; 기존 SOUND2실패 별도 추적, 실게임 미검수. 근거: docs/0마스터플랜/mac-resume-20261001/vscode-dispatch/ITEM-BALANCE-integration-result.md.

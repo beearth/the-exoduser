@@ -1,0 +1,26 @@
+{
+  "at": "2026-10-01T13:03:06.188851+00:00",
+  "base": "696bda0c4476cb3dc60b9f0621c8ba1ef06922e7",
+  "preIntegrationRecovery": {
+    "ref": "refs/heads/codex/backup-item-economy-20261001-220100",
+    "sha": "d9dd5151825d1a04fe429f78b578c8b3d0c3f897",
+    "remoteVerified": true
+  },
+  "production": {
+    "game.html": "8ebc3b7b52a651c1a3bc5e8c285b00d186c6dacc18429ada7499781acc72b0b9",
+    "game-easy-test.html": "4c408f1e7b57210900ddfa8a0646502f91b6a0bbc798a24338eb159cb613d874"
+  },
+  "tests": {
+    "ownerItemScenarios": 84,
+    "ownerBalanceSamples": 96,
+    "ownerBalanceLegacyRecords": 48,
+    "independentLiveGroups": 6,
+    "relatedGreenTotal": 18,
+    "preexistingSoundFailures": 2,
+    "guard": "PASS",
+    "inlineSyntaxPerHTML": 6
+  },
+  "liveGameplay": "not run",
+  "realUserSave": "not touched",
+  "next": "SOUND existing two regression failures and UIUX demo scope test candidate under review"
+}

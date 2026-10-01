@@ -1,6 +1,6 @@
 {
-  "at": "2026-10-01T12:58:05.826628+00:00",
-  "root": "ITEM and BALANCE implementation resumed; native input not recovered",
+  "at": "2026-10-01T13:06:10.526045+00:00",
+  "root": "ITEM/BALANCE minimal production changes integrated; UIUX demo candidate awaiting root review; SOUND regression investigation active",
   "teams": [
     {
       "team": "QA",
@@ -33,8 +33,8 @@
       "exists": true,
       "receivedAt": null,
       "startedAt": null,
-      "blocker": "Native tool explicitly reported Mac locked; manual unlock required. No new session/hidden IPC used.",
-      "status": "blocked by locked Mac",
+      "blocker": "Native input noWindowsAvailable/clipboard timeout; current lock state unknown.",
+      "status": "new task not received; native input unavailable at last check",
       "cliState": "existing Claude session idle verified this cycle",
       "pendingRepair": {
         "dispatch": "not_received",
@@ -211,17 +211,17 @@
       "team": "UIUX",
       "sessionId": "01a0f6e5-8653-7ae2-8b2b-314e275c215c",
       "location": "T4",
-      "task": "UIUX-HOTPATH-BOUNDARY-FIX",
-      "instruction": "/Users/fordeargamers/Projects/exoduser-migration-20261001/tools/team-followup-20261001/UIUX/BOUNDARY_TASK.md",
+      "task": "UIUX-DEMO-SCOPE-REGRESSION-REPAIR",
+      "instruction": "/Users/fordeargamers/Projects/exoduser-migration-20261001/tools/team-followup-20261001/UIUX/DEMO_SCOPE_TASK.md",
       "stateBefore": "idle/completed verified",
       "dispatch": "received",
       "exists": true,
-      "receivedAt": "2026-10-01T12:40:16Z",
+      "receivedAt": "2026-10-01T12:59:44Z",
       "startedAt": null,
-      "status": "bounded candidate static accepted: 30 boundary/recovery/embedded + 15 groups/6VM + root600 comparisons; production/visual/FPS pending",
+      "status": "submitted; root integration pending",
       "startEvidence": "NEXT_TASK 첫 Read exit0, 이전 완료 산출과 현재 draw 경로·팀 MD 읽기 exit0. 중복 진행 산출 없음",
-      "receipt": "/Users/fordeargamers/Projects/exoduser-migration-20261001/docs/0마스터플랜/mac-resume-20261001/vscode-dispatch/UIUX-boundary-receipt.json",
-      "waitReason": "QA actual visual and dense performance gate; Mac locked",
+      "receipt": "/Users/fordeargamers/Projects/exoduser-migration-20261001/docs/0마스터플랜/mac-resume-20261001/vscode-dispatch/UIUX-demo-scope-receipt.json",
+      "waitReason": null,
       "previous": {
         "task": "UIUX-COORDINATE-HOTPATH-CANDIDATE",
         "previous": {
@@ -240,20 +240,22 @@
         "status": "15 groups + 6 VM pass; independent overflow timeout reproduced; acceptance withheld",
         "remoteSnapshot": "b3ab5be7f0c7a57ec1892cca1d65825549f54d72"
       },
-      "queueMessageId": "01a0f77a-d0fa-70f3-ae18-e7600ab6b88f",
+      "queueMessageId": "01a0f78c-a452-7e60-a082-d953d5f78e90",
       "queuedAt": null,
       "receivedAtBasis": "read_thread new user turn startedAt, not exact command timestamp",
       "firstActualAction": {
-        "command": "Read BOUNDARY_TASK then v1/v2 sources and input hashes",
-        "exitCode": 0,
-        "turnId": "01a0f77a-d0fa-70f3-ae18-e788e4f952ec",
-        "readRecordedAt": "2026-10-01T12:40:19Z",
-        "sourceReadRecordedAt": "2026-10-01T12:40:25Z",
-        "exactCommandStartedAt": null
+        "readRecordedAt": "2026-10-01T12:59:55Z",
+        "tool": "source Read"
       },
-      "completedAt": "2026-10-01T12:45:56Z",
+      "completedAt": "2026-10-01T13:03:53Z",
       "completedAtBasis": "read_thread latest turn completedAt",
-      "cliState": "completed verified"
+      "cliState": "candidate completed",
+      "previousTaskSnapshot": {
+        "task": "UIUX-HOTPATH-BOUNDARY-FIX",
+        "status": "bounded candidate static accepted: 30 boundary/recovery/embedded + 15 groups/6VM + root600 comparisons; production/visual/FPS pending",
+        "completedAt": "2026-10-01T12:45:56Z",
+        "receipt": "/Users/fordeargamers/Projects/exoduser-migration-20261001/docs/0마스터플랜/mac-resume-20261001/vscode-dispatch/UIUX-boundary-receipt.json"
+      }
     },
     {
       "team": "ITEM",
@@ -265,8 +267,8 @@
       "dispatch": "received",
       "exists": true,
       "receivedAt": "2026-10-01T12:54:38Z",
-      "startedAt": "2026-10-01T11:51:57Z",
-      "status": "actual source Read and candidate/test Edit verified",
+      "startedAt": null,
+      "status": "candidate independently verified and integrated into both HTML files; related18 PASS",
       "startEvidence": "NEXT_TASK.md와 기존 ITEM 결과·후보·현재 생산 함수 읽기",
       "receipt": "/Users/fordeargamers/Projects/exoduser-migration-20261001/docs/0마스터플랜/mac-resume-20261001/vscode-dispatch/ITEM-unique-save-receipt.json",
       "previous": {
@@ -275,10 +277,10 @@
       },
       "queueMessageId": "01a0f787-f77a-7f63-babd-667400f8bd45",
       "firstAction": "기존 native Canvas 검사 소스 읽기; 동일 SHA PNG decode와 단계별 비교 설계",
-      "currentDependencyReview": "Latest team MD/result/thread read: native RGB attribution completed. Target Chrome backend validation and production integration required; no new independent defect established.",
-      "cliState": "implementation active",
+      "currentDependencyReview": "See ITEM-BALANCE-integration-result.md; original unrelated visual/proc gates remain.",
+      "cliState": "completed",
       "waitReason": null,
-      "completedAt": null,
+      "completedAt": "2026-10-01T12:57:36Z",
       "firstActualAction": {
         "turnId": "01a0f787-f77c-7a50-90aa-003fecd6855a",
         "readRecordedAt": "2026-10-01T12:54:42Z",
@@ -295,19 +297,19 @@
       "dispatch": "received",
       "exists": true,
       "receivedAt": "2026-10-01T12:56:22Z",
-      "startedAt": "2026-10-01T11:45:16Z",
-      "status": "actual source Read and receipt Edit verified; candidate in progress",
+      "startedAt": null,
+      "status": "candidate independently verified and integrated into both HTML files; related18 PASS",
       "startEvidence": "NEXT_TASK.md·직전 결과·팀 MD·ITEM SSOT 실제 읽기 완료; 후보 파일 없음 확인",
       "receipt": "/Users/fordeargamers/Projects/exoduser-migration-20261001/docs/0마스터플랜/mac-resume-20261001/vscode-dispatch/BALANCE-refund-overflow-receipt.json",
       "waitReason": null,
-      "currentDependencyReview": "Latest MD/result/thread read: proc damage/resource/source/stack policy missing. Previously listed blastShot gate already uses malCost(5) in both current HTML files; no duplicate repair assigned.",
-      "cliState": "implementation active",
+      "currentDependencyReview": "See ITEM-BALANCE-integration-result.md; original unrelated visual/proc gates remain.",
+      "cliState": "completed",
       "previous": {
         "task": "BALANCE-FIREBALL-HOOK-CANDIDATE",
         "status": "CLI completed; explicit integration dependency; no new task queued"
       },
       "queueMessageId": "01a0f789-8e68-74f0-8403-5cdf63f541a3",
-      "completedAt": null,
+      "completedAt": "2026-10-01T12:58:36Z",
       "firstActualAction": {
         "turnId": "01a0f789-8e6a-7403-82f1-52554f0e8e93",
         "readRecordedAt": "2026-10-01T12:56:31Z",
@@ -317,7 +319,7 @@
     {
       "team": "SOUND",
       "sessionId": "aa3ac0ed-f4e5-44ad-a0b2-d4d2da045b84",
-      "task": "S-11-HOWL-RNG-PRESERVING-CANDIDATE",
+      "task": "SOUND-ITEM-EQUIP-PICKUP-REGRESSION",
       "dispatch": "received",
       "firstFileReadAt": "2026-10-01T11:40:49.363Z",
       "exists": true,
@@ -331,22 +333,28 @@
           "patchChecks": 2
         }
       },
-      "receivedAt": "2026-10-01T12:30:59.837Z",
+      "receivedAt": "2026-10-01T13:02:24.376Z",
       "firstActualAction": {
-        "at": "2026-10-01T12:31:04.694Z",
+        "at": "2026-10-01T13:02:29.179Z",
         "tool": "Read",
-        "path": "tools/team-followup-20261001/SOUND/RNG_TASK.md"
+        "path": "tools/team-followup-20261001/SOUND/ITEM_SOUND_TEST_TASK.md"
       },
-      "status": "submitted; corrected8 + independent6 PASS, both context patches valid; production/audio pending",
-      "completedAt": "2026-10-01T12:35:18.112Z",
-      "receipt": "/Users/fordeargamers/Projects/exoduser-migration-20261001/docs/0마스터플랜/mac-resume-20261001/vscode-dispatch/SOUND-rng-receipt.json",
-      "waitReason": "Actual audio and boss entry runtime acceptance pending",
-      "instruction": "/Users/fordeargamers/Projects/exoduser-migration-20261001/tools/team-followup-20261001/SOUND/RNG_TASK.md",
-      "cliState": "existing Claude session idle verified this cycle; done"
+      "status": "actual source and failed tests read; investigating current pickup contract",
+      "completedAt": null,
+      "receipt": null,
+      "waitReason": null,
+      "instruction": "/Users/fordeargamers/Projects/exoduser-migration-20261001/tools/team-followup-20261001/SOUND/ITEM_SOUND_TEST_TASK.md",
+      "cliState": "active at last observed Read",
+      "previousTaskSnapshot": {
+        "task": "S-11-HOWL-RNG-PRESERVING-CANDIDATE",
+        "status": "submitted; corrected8 + independent6 PASS, both context patches valid; production/audio pending",
+        "completedAt": "2026-10-01T12:35:18.112Z",
+        "receipt": "/Users/fordeargamers/Projects/exoduser-migration-20261001/docs/0마스터플랜/mac-resume-20261001/vscode-dispatch/SOUND-rng-receipt.json"
+      }
     }
   ],
   "remoteCheckpoint": {
-    "sha": "d5070ae0c6c0f5ed6665e98091e0c8a5688fa567",
+    "sha": "696bda0c4476cb3dc60b9f0621c8ba1ef06922e7",
     "branch": "codex/mac-environment-20261001",
     "verified": true
   },
@@ -390,5 +398,9 @@
     "idleSystemSleepPrevented": true,
     "physicalDisplayPower": "UNKNOWN",
     "settingsChanged": false
+  },
+  "itemEconomyRecovery": {
+    "sha": "d9dd5151825d1a04fe429f78b578c8b3d0c3f897",
+    "remoteVerified": true
   }
 }

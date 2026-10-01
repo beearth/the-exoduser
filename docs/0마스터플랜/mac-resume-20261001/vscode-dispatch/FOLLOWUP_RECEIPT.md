@@ -91,3 +91,8 @@ BALANCE는 무한 강화 UI와 현행 레거시 누적식을 대조했다. rarit
 Native 목록에는 앱이 나왔으나 입력 복구를 뜻하지 않았다. ENEMY 빈 프롬프트를 확인한 뒤 입력은 `noWindowsAvailable`·붙여넣기 시간 초과·키 입력 후 화면 미갱신을 보였고 JSONL 새 user/Read가 없다. AX에 열린 터미널 이름 편집은 Escape를 보냈지만 취소 확인이 안 됐으며 이름 변경 커밋은 미확인이다. 사용자 초안 전송/삭제0. ENEMY·ART·SKILL은 미전달로 유지하고 ART/SKILL의 구체적인 FIX_TASK만 준비했다. 숨은 TTY·새 세션·전원/잠금 설정 변경0. BUILD EPERM은 유지하며 실제 게임 QA 입력 복구도 미확인이다.
 
 이번 배정 체크포인트는 지시·상태 기록만 포함하며 진행 중 ITEM/BALANCE 후보 소스는 제외한다.
+
+
+## 2026-10-01 ITEM/BALANCE 통합 및 새 회귀 인수
+
+ITEM 12:57:36Z, BALANCE 12:58:36Z 제출 완료. root 독립 검수·사전 원격 d9dd5151 보존 후 양쪽 게임 각 3줄 반영, 관련 18PASS. UIUX-DEMO-SCOPE는 기존 턴 12:59:44Z 시작, 12:59:55Z 소스 읽기 기록, 13:03:53Z 후보 검증 완료로 통합 대기. SOUND-ITEM-EQUIP-PICKUP은 기존 세션 13:02:24.376Z 수신·13:02:29.179Z 실제 지시 Read. 아직 새 결과 인수 전이다. ENEMY/ART/SKILL 새 지시 미수신 및 native 입력 실패를 유지한다.

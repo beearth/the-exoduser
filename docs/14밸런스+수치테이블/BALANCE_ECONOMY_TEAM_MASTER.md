@@ -93,3 +93,8 @@ PM-013 수정 소유 구역: `game.html`과 `game-easy-test.html`의 `_calcMaxEx
 ### 2026-10-01 R 입력·GL·11팀 신규 후속 인수
 
 test/onHitFireballStack.test.js가 양쪽 실제 _eqAffix/hurtE를 추출하여36적중을 실행했다. 8PASS/2SKIP/0FAIL은 onHitFireball 조회0·투사체0인 MISSING_HOOK 상태를 확인한 결과다. 재귀는 NOT_REACHED라 SKIP이며 효과 완성이 아니다. 4/7/11/16/22% 데이터·실제 fireOnHit·경제식은 변경하지 않았다. 정상 무기 롤과 강제 복수 장착 fixture를 구분했다. [관측 원자료·진단 범위·한계](../0마스터플랜/mac-resume-20261001/R-입력과-GL-후속검수.md)
+
+
+## 2026-10-01 PM-013 레거시 환수 정수 경계 통합
+
+환수정책 결정과 별개로 현행 누적식의 signed32 오버플로만 수정했다. 본편/easy salvageVal·equipItem _enhRefund의 ~~를Math.floor로 교체했다. 6등급 최초경계직전/직후·일반값96표본 및 legacy기록48표본 통과. root는 전체equipItem의 이전비용차감/부족거부/장착/저장스냅샷과 JSON후dropItem 분해 지급을 실행해 검수했다. rarity4 enh145627의 강화분2147506212 및 rarity4 enh200000 최종4050427500. 실제지출50%환수 전환·강화상한·기존음수저장추정복구0, PM013D정책대기는 유지한다. 실제UI/사용자저장/패키지는 별도다.

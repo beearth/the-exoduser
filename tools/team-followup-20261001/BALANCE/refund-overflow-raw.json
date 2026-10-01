@@ -1,0 +1,946 @@
+{
+  "verdict": "후보 원식 회귀 PASS",
+  "scope": "salvageVal 및 equipItem 기록 블록+old.enh=0 추출; 전체 equipItem/실제 저장은 미실행",
+  "evidence": [
+    {
+      "file": "game.html",
+      "sha256": "e5518842324d17fb63da44457e6092af138b4fcfbaf49c1cb03ef791431dc115",
+      "red": -244539796,
+      "green": 4050427500,
+      "rows": [
+        {
+          "rarity": 0,
+          "enh": 0,
+          "refund": 0,
+          "original": 1006,
+          "candidate": 1006,
+          "originalRecord": 0,
+          "roundTripRecord": 0
+        },
+        {
+          "rarity": 0,
+          "enh": 1,
+          "refund": 0,
+          "original": 1006,
+          "candidate": 1006,
+          "originalRecord": 0,
+          "roundTripRecord": 0
+        },
+        {
+          "rarity": 0,
+          "enh": 10,
+          "refund": 8,
+          "original": 1014,
+          "candidate": 1014,
+          "originalRecord": 8,
+          "roundTripRecord": 8
+        },
+        {
+          "rarity": 0,
+          "enh": 100,
+          "refund": 340,
+          "original": 1346,
+          "candidate": 1346,
+          "originalRecord": 340,
+          "roundTripRecord": 340
+        },
+        {
+          "rarity": 0,
+          "enh": 1000,
+          "refund": 28718,
+          "original": 29724,
+          "candidate": 29724,
+          "originalRecord": 28718,
+          "roundTripRecord": 28718
+        },
+        {
+          "rarity": 0,
+          "enh": 200000,
+          "refund": 1125118750,
+          "original": 1125119756,
+          "candidate": 1125119756,
+          "originalRecord": 1125118750,
+          "roundTripRecord": 1125118750
+        },
+        {
+          "rarity": 0,
+          "enh": 276313,
+          "refund": 2147476141,
+          "original": 2147477147,
+          "candidate": 2147477147,
+          "originalRecord": 2147476141,
+          "roundTripRecord": 2147476141
+        },
+        {
+          "rarity": 0,
+          "enh": 276314,
+          "refund": 2147491684,
+          "original": -2147474606,
+          "candidate": 2147492690,
+          "originalRecord": -2147475612,
+          "roundTripRecord": 2147491684
+        },
+        {
+          "rarity": 0,
+          "firstSigned32Overflow": 276314,
+          "searchLimit": 300000
+        },
+        {
+          "rarity": 1,
+          "enh": 0,
+          "refund": 0,
+          "original": 2006,
+          "candidate": 2006,
+          "originalRecord": 0,
+          "roundTripRecord": 0
+        },
+        {
+          "rarity": 1,
+          "enh": 1,
+          "refund": 1,
+          "original": 2007,
+          "candidate": 2007,
+          "originalRecord": 1,
+          "roundTripRecord": 1
+        },
+        {
+          "rarity": 1,
+          "enh": 10,
+          "refund": 13,
+          "original": 2019,
+          "candidate": 2019,
+          "originalRecord": 13,
+          "roundTripRecord": 13
+        },
+        {
+          "rarity": 1,
+          "enh": 100,
+          "refund": 482,
+          "original": 2488,
+          "candidate": 2488,
+          "originalRecord": 482,
+          "roundTripRecord": 482
+        },
+        {
+          "rarity": 1,
+          "enh": 1000,
+          "refund": 40257,
+          "original": 42263,
+          "candidate": 42263,
+          "originalRecord": 40257,
+          "roundTripRecord": 40257
+        },
+        {
+          "rarity": 1,
+          "enh": 200000,
+          "refund": 1575176250,
+          "original": 1575178256,
+          "candidate": 1575178256,
+          "originalRecord": 1575176250,
+          "roundTripRecord": 1575176250
+        },
+        {
+          "rarity": 1,
+          "enh": 233525,
+          "refund": 2147479116,
+          "original": 2147481122,
+          "candidate": 2147481122,
+          "originalRecord": 2147479116,
+          "roundTripRecord": 2147479116
+        },
+        {
+          "rarity": 1,
+          "enh": 233526,
+          "refund": 2147497507,
+          "original": -2147467783,
+          "candidate": 2147499513,
+          "originalRecord": -2147469789,
+          "roundTripRecord": 2147497507
+        },
+        {
+          "rarity": 1,
+          "firstSigned32Overflow": 233526,
+          "searchLimit": 300000
+        },
+        {
+          "rarity": 2,
+          "enh": 0,
+          "refund": 0,
+          "original": 10006,
+          "candidate": 10006,
+          "originalRecord": 0,
+          "roundTripRecord": 0
+        },
+        {
+          "rarity": 2,
+          "enh": 1,
+          "refund": 1,
+          "original": 10007,
+          "candidate": 10007,
+          "originalRecord": 1,
+          "roundTripRecord": 1
+        },
+        {
+          "rarity": 2,
+          "enh": 10,
+          "refund": 15,
+          "original": 10021,
+          "candidate": 10021,
+          "originalRecord": 15,
+          "roundTripRecord": 15
+        },
+        {
+          "rarity": 2,
+          "enh": 100,
+          "refund": 656,
+          "original": 10662,
+          "candidate": 10662,
+          "originalRecord": 656,
+          "roundTripRecord": 656
+        },
+        {
+          "rarity": 2,
+          "enh": 1000,
+          "refund": 57187,
+          "original": 67193,
+          "candidate": 67193,
+          "originalRecord": 57187,
+          "roundTripRecord": 57187
+        },
+        {
+          "rarity": 2,
+          "enh": 200000,
+          "refund": 2250187500,
+          "original": -2044769790,
+          "candidate": 2250197506,
+          "originalRecord": -2044779796,
+          "roundTripRecord": 2250187500
+        },
+        {
+          "rarity": 2,
+          "enh": 195382,
+          "refund": 2147477753,
+          "original": 2147487759,
+          "candidate": 2147487759,
+          "originalRecord": 2147477753,
+          "roundTripRecord": 2147477753
+        },
+        {
+          "rarity": 2,
+          "enh": 195383,
+          "refund": 2147499735,
+          "original": -2147457555,
+          "candidate": 2147509741,
+          "originalRecord": -2147467561,
+          "roundTripRecord": 2147499735
+        },
+        {
+          "rarity": 2,
+          "firstSigned32Overflow": 195383,
+          "searchLimit": 300000
+        },
+        {
+          "rarity": 3,
+          "enh": 0,
+          "refund": 0,
+          "original": 20006,
+          "candidate": 20006,
+          "originalRecord": 0,
+          "roundTripRecord": 0
+        },
+        {
+          "rarity": 3,
+          "enh": 1,
+          "refund": 1,
+          "original": 20007,
+          "candidate": 20007,
+          "originalRecord": 1,
+          "roundTripRecord": 1
+        },
+        {
+          "rarity": 3,
+          "enh": 10,
+          "refund": 21,
+          "original": 20027,
+          "candidate": 20027,
+          "originalRecord": 21,
+          "roundTripRecord": 21
+        },
+        {
+          "rarity": 3,
+          "enh": 100,
+          "refund": 875,
+          "original": 20881,
+          "candidate": 20881,
+          "originalRecord": 875,
+          "roundTripRecord": 875
+        },
+        {
+          "rarity": 3,
+          "enh": 1000,
+          "refund": 74568,
+          "original": 94574,
+          "candidate": 94574,
+          "originalRecord": 74568,
+          "roundTripRecord": 74568
+        },
+        {
+          "rarity": 3,
+          "enh": 200000,
+          "refund": 2925288750,
+          "original": -1369658540,
+          "candidate": 2925308756,
+          "originalRecord": -1369678546,
+          "roundTripRecord": 2925288750
+        },
+        {
+          "rarity": 3,
+          "enh": 171359,
+          "refund": 2147483090,
+          "original": 2147503096,
+          "candidate": 2147503096,
+          "originalRecord": 2147483090,
+          "roundTripRecord": 2147483090
+        },
+        {
+          "rarity": 3,
+          "enh": 171360,
+          "refund": 2147508153,
+          "original": -2147439137,
+          "candidate": 2147528159,
+          "originalRecord": -2147459143,
+          "roundTripRecord": 2147508153
+        },
+        {
+          "rarity": 3,
+          "firstSigned32Overflow": 171360,
+          "searchLimit": 300000
+        },
+        {
+          "rarity": 4,
+          "enh": 0,
+          "refund": 0,
+          "original": 50006,
+          "candidate": 50006,
+          "originalRecord": 0,
+          "roundTripRecord": 0
+        },
+        {
+          "rarity": 4,
+          "enh": 1,
+          "refund": 2,
+          "original": 50008,
+          "candidate": 50008,
+          "originalRecord": 2,
+          "roundTripRecord": 2
+        },
+        {
+          "rarity": 4,
+          "enh": 10,
+          "refund": 30,
+          "original": 50036,
+          "candidate": 50036,
+          "originalRecord": 30,
+          "roundTripRecord": 30
+        },
+        {
+          "rarity": 4,
+          "enh": 100,
+          "refund": 1202,
+          "original": 51208,
+          "candidate": 51208,
+          "originalRecord": 1202,
+          "roundTripRecord": 1202
+        },
+        {
+          "rarity": 4,
+          "enh": 1000,
+          "refund": 103137,
+          "original": 153143,
+          "candidate": 153143,
+          "originalRecord": 103137,
+          "roundTripRecord": 103137
+        },
+        {
+          "rarity": 4,
+          "enh": 200000,
+          "refund": 4050377500,
+          "original": -244539790,
+          "candidate": 4050427506,
+          "originalRecord": -244589796,
+          "roundTripRecord": 4050377500
+        },
+        {
+          "rarity": 4,
+          "enh": 145626,
+          "refund": 2147476721,
+          "original": 2147526727,
+          "candidate": 2147526727,
+          "originalRecord": 2147476721,
+          "roundTripRecord": 2147476721
+        },
+        {
+          "rarity": 4,
+          "enh": 145627,
+          "refund": 2147506212,
+          "original": -2147411078,
+          "candidate": 2147556218,
+          "originalRecord": -2147461084,
+          "roundTripRecord": 2147506212
+        },
+        {
+          "rarity": 4,
+          "firstSigned32Overflow": 145627,
+          "searchLimit": 300000
+        },
+        {
+          "rarity": 5,
+          "enh": 0,
+          "refund": 0,
+          "original": 50006,
+          "candidate": 50006,
+          "originalRecord": 0,
+          "roundTripRecord": 0
+        },
+        {
+          "rarity": 5,
+          "enh": 1,
+          "refund": 2,
+          "original": 50008,
+          "candidate": 50008,
+          "originalRecord": 2,
+          "roundTripRecord": 2
+        },
+        {
+          "rarity": 5,
+          "enh": 10,
+          "refund": 30,
+          "original": 50036,
+          "candidate": 50036,
+          "originalRecord": 30,
+          "roundTripRecord": 30
+        },
+        {
+          "rarity": 5,
+          "enh": 100,
+          "refund": 1202,
+          "original": 51208,
+          "candidate": 51208,
+          "originalRecord": 1202,
+          "roundTripRecord": 1202
+        },
+        {
+          "rarity": 5,
+          "enh": 1000,
+          "refund": 103137,
+          "original": 153143,
+          "candidate": 153143,
+          "originalRecord": 103137,
+          "roundTripRecord": 103137
+        },
+        {
+          "rarity": 5,
+          "enh": 200000,
+          "refund": 4050377500,
+          "original": -244539790,
+          "candidate": 4050427506,
+          "originalRecord": -244589796,
+          "roundTripRecord": 4050377500
+        },
+        {
+          "rarity": 5,
+          "enh": 145626,
+          "refund": 2147476721,
+          "original": 2147526727,
+          "candidate": 2147526727,
+          "originalRecord": 2147476721,
+          "roundTripRecord": 2147476721
+        },
+        {
+          "rarity": 5,
+          "enh": 145627,
+          "refund": 2147506212,
+          "original": -2147411078,
+          "candidate": 2147556218,
+          "originalRecord": -2147461084,
+          "roundTripRecord": 2147506212
+        },
+        {
+          "rarity": 5,
+          "firstSigned32Overflow": 145627,
+          "searchLimit": 300000
+        }
+      ]
+    },
+    {
+      "file": "game-easy-test.html",
+      "sha256": "269411143e093319926948dce42740d83617b2a0e1305cc1180a59a6ecb75e58",
+      "red": -244539796,
+      "green": 4050427500,
+      "rows": [
+        {
+          "rarity": 0,
+          "enh": 0,
+          "refund": 0,
+          "original": 1006,
+          "candidate": 1006,
+          "originalRecord": 0,
+          "roundTripRecord": 0
+        },
+        {
+          "rarity": 0,
+          "enh": 1,
+          "refund": 0,
+          "original": 1006,
+          "candidate": 1006,
+          "originalRecord": 0,
+          "roundTripRecord": 0
+        },
+        {
+          "rarity": 0,
+          "enh": 10,
+          "refund": 8,
+          "original": 1014,
+          "candidate": 1014,
+          "originalRecord": 8,
+          "roundTripRecord": 8
+        },
+        {
+          "rarity": 0,
+          "enh": 100,
+          "refund": 340,
+          "original": 1346,
+          "candidate": 1346,
+          "originalRecord": 340,
+          "roundTripRecord": 340
+        },
+        {
+          "rarity": 0,
+          "enh": 1000,
+          "refund": 28718,
+          "original": 29724,
+          "candidate": 29724,
+          "originalRecord": 28718,
+          "roundTripRecord": 28718
+        },
+        {
+          "rarity": 0,
+          "enh": 200000,
+          "refund": 1125118750,
+          "original": 1125119756,
+          "candidate": 1125119756,
+          "originalRecord": 1125118750,
+          "roundTripRecord": 1125118750
+        },
+        {
+          "rarity": 0,
+          "enh": 276313,
+          "refund": 2147476141,
+          "original": 2147477147,
+          "candidate": 2147477147,
+          "originalRecord": 2147476141,
+          "roundTripRecord": 2147476141
+        },
+        {
+          "rarity": 0,
+          "enh": 276314,
+          "refund": 2147491684,
+          "original": -2147474606,
+          "candidate": 2147492690,
+          "originalRecord": -2147475612,
+          "roundTripRecord": 2147491684
+        },
+        {
+          "rarity": 0,
+          "firstSigned32Overflow": 276314,
+          "searchLimit": 300000
+        },
+        {
+          "rarity": 1,
+          "enh": 0,
+          "refund": 0,
+          "original": 2006,
+          "candidate": 2006,
+          "originalRecord": 0,
+          "roundTripRecord": 0
+        },
+        {
+          "rarity": 1,
+          "enh": 1,
+          "refund": 1,
+          "original": 2007,
+          "candidate": 2007,
+          "originalRecord": 1,
+          "roundTripRecord": 1
+        },
+        {
+          "rarity": 1,
+          "enh": 10,
+          "refund": 13,
+          "original": 2019,
+          "candidate": 2019,
+          "originalRecord": 13,
+          "roundTripRecord": 13
+        },
+        {
+          "rarity": 1,
+          "enh": 100,
+          "refund": 482,
+          "original": 2488,
+          "candidate": 2488,
+          "originalRecord": 482,
+          "roundTripRecord": 482
+        },
+        {
+          "rarity": 1,
+          "enh": 1000,
+          "refund": 40257,
+          "original": 42263,
+          "candidate": 42263,
+          "originalRecord": 40257,
+          "roundTripRecord": 40257
+        },
+        {
+          "rarity": 1,
+          "enh": 200000,
+          "refund": 1575176250,
+          "original": 1575178256,
+          "candidate": 1575178256,
+          "originalRecord": 1575176250,
+          "roundTripRecord": 1575176250
+        },
+        {
+          "rarity": 1,
+          "enh": 233525,
+          "refund": 2147479116,
+          "original": 2147481122,
+          "candidate": 2147481122,
+          "originalRecord": 2147479116,
+          "roundTripRecord": 2147479116
+        },
+        {
+          "rarity": 1,
+          "enh": 233526,
+          "refund": 2147497507,
+          "original": -2147467783,
+          "candidate": 2147499513,
+          "originalRecord": -2147469789,
+          "roundTripRecord": 2147497507
+        },
+        {
+          "rarity": 1,
+          "firstSigned32Overflow": 233526,
+          "searchLimit": 300000
+        },
+        {
+          "rarity": 2,
+          "enh": 0,
+          "refund": 0,
+          "original": 10006,
+          "candidate": 10006,
+          "originalRecord": 0,
+          "roundTripRecord": 0
+        },
+        {
+          "rarity": 2,
+          "enh": 1,
+          "refund": 1,
+          "original": 10007,
+          "candidate": 10007,
+          "originalRecord": 1,
+          "roundTripRecord": 1
+        },
+        {
+          "rarity": 2,
+          "enh": 10,
+          "refund": 15,
+          "original": 10021,
+          "candidate": 10021,
+          "originalRecord": 15,
+          "roundTripRecord": 15
+        },
+        {
+          "rarity": 2,
+          "enh": 100,
+          "refund": 656,
+          "original": 10662,
+          "candidate": 10662,
+          "originalRecord": 656,
+          "roundTripRecord": 656
+        },
+        {
+          "rarity": 2,
+          "enh": 1000,
+          "refund": 57187,
+          "original": 67193,
+          "candidate": 67193,
+          "originalRecord": 57187,
+          "roundTripRecord": 57187
+        },
+        {
+          "rarity": 2,
+          "enh": 200000,
+          "refund": 2250187500,
+          "original": -2044769790,
+          "candidate": 2250197506,
+          "originalRecord": -2044779796,
+          "roundTripRecord": 2250187500
+        },
+        {
+          "rarity": 2,
+          "enh": 195382,
+          "refund": 2147477753,
+          "original": 2147487759,
+          "candidate": 2147487759,
+          "originalRecord": 2147477753,
+          "roundTripRecord": 2147477753
+        },
+        {
+          "rarity": 2,
+          "enh": 195383,
+          "refund": 2147499735,
+          "original": -2147457555,
+          "candidate": 2147509741,
+          "originalRecord": -2147467561,
+          "roundTripRecord": 2147499735
+        },
+        {
+          "rarity": 2,
+          "firstSigned32Overflow": 195383,
+          "searchLimit": 300000
+        },
+        {
+          "rarity": 3,
+          "enh": 0,
+          "refund": 0,
+          "original": 20006,
+          "candidate": 20006,
+          "originalRecord": 0,
+          "roundTripRecord": 0
+        },
+        {
+          "rarity": 3,
+          "enh": 1,
+          "refund": 1,
+          "original": 20007,
+          "candidate": 20007,
+          "originalRecord": 1,
+          "roundTripRecord": 1
+        },
+        {
+          "rarity": 3,
+          "enh": 10,
+          "refund": 21,
+          "original": 20027,
+          "candidate": 20027,
+          "originalRecord": 21,
+          "roundTripRecord": 21
+        },
+        {
+          "rarity": 3,
+          "enh": 100,
+          "refund": 875,
+          "original": 20881,
+          "candidate": 20881,
+          "originalRecord": 875,
+          "roundTripRecord": 875
+        },
+        {
+          "rarity": 3,
+          "enh": 1000,
+          "refund": 74568,
+          "original": 94574,
+          "candidate": 94574,
+          "originalRecord": 74568,
+          "roundTripRecord": 74568
+        },
+        {
+          "rarity": 3,
+          "enh": 200000,
+          "refund": 2925288750,
+          "original": -1369658540,
+          "candidate": 2925308756,
+          "originalRecord": -1369678546,
+          "roundTripRecord": 2925288750
+        },
+        {
+          "rarity": 3,
+          "enh": 171359,
+          "refund": 2147483090,
+          "original": 2147503096,
+          "candidate": 2147503096,
+          "originalRecord": 2147483090,
+          "roundTripRecord": 2147483090
+        },
+        {
+          "rarity": 3,
+          "enh": 171360,
+          "refund": 2147508153,
+          "original": -2147439137,
+          "candidate": 2147528159,
+          "originalRecord": -2147459143,
+          "roundTripRecord": 2147508153
+        },
+        {
+          "rarity": 3,
+          "firstSigned32Overflow": 171360,
+          "searchLimit": 300000
+        },
+        {
+          "rarity": 4,
+          "enh": 0,
+          "refund": 0,
+          "original": 50006,
+          "candidate": 50006,
+          "originalRecord": 0,
+          "roundTripRecord": 0
+        },
+        {
+          "rarity": 4,
+          "enh": 1,
+          "refund": 2,
+          "original": 50008,
+          "candidate": 50008,
+          "originalRecord": 2,
+          "roundTripRecord": 2
+        },
+        {
+          "rarity": 4,
+          "enh": 10,
+          "refund": 30,
+          "original": 50036,
+          "candidate": 50036,
+          "originalRecord": 30,
+          "roundTripRecord": 30
+        },
+        {
+          "rarity": 4,
+          "enh": 100,
+          "refund": 1202,
+          "original": 51208,
+          "candidate": 51208,
+          "originalRecord": 1202,
+          "roundTripRecord": 1202
+        },
+        {
+          "rarity": 4,
+          "enh": 1000,
+          "refund": 103137,
+          "original": 153143,
+          "candidate": 153143,
+          "originalRecord": 103137,
+          "roundTripRecord": 103137
+        },
+        {
+          "rarity": 4,
+          "enh": 200000,
+          "refund": 4050377500,
+          "original": -244539790,
+          "candidate": 4050427506,
+          "originalRecord": -244589796,
+          "roundTripRecord": 4050377500
+        },
+        {
+          "rarity": 4,
+          "enh": 145626,
+          "refund": 2147476721,
+          "original": 2147526727,
+          "candidate": 2147526727,
+          "originalRecord": 2147476721,
+          "roundTripRecord": 2147476721
+        },
+        {
+          "rarity": 4,
+          "enh": 145627,
+          "refund": 2147506212,
+          "original": -2147411078,
+          "candidate": 2147556218,
+          "originalRecord": -2147461084,
+          "roundTripRecord": 2147506212
+        },
+        {
+          "rarity": 4,
+          "firstSigned32Overflow": 145627,
+          "searchLimit": 300000
+        },
+        {
+          "rarity": 5,
+          "enh": 0,
+          "refund": 0,
+          "original": 50006,
+          "candidate": 50006,
+          "originalRecord": 0,
+          "roundTripRecord": 0
+        },
+        {
+          "rarity": 5,
+          "enh": 1,
+          "refund": 2,
+          "original": 50008,
+          "candidate": 50008,
+          "originalRecord": 2,
+          "roundTripRecord": 2
+        },
+        {
+          "rarity": 5,
+          "enh": 10,
+          "refund": 30,
+          "original": 50036,
+          "candidate": 50036,
+          "originalRecord": 30,
+          "roundTripRecord": 30
+        },
+        {
+          "rarity": 5,
+          "enh": 100,
+          "refund": 1202,
+          "original": 51208,
+          "candidate": 51208,
+          "originalRecord": 1202,
+          "roundTripRecord": 1202
+        },
+        {
+          "rarity": 5,
+          "enh": 1000,
+          "refund": 103137,
+          "original": 153143,
+          "candidate": 153143,
+          "originalRecord": 103137,
+          "roundTripRecord": 103137
+        },
+        {
+          "rarity": 5,
+          "enh": 200000,
+          "refund": 4050377500,
+          "original": -244539790,
+          "candidate": 4050427506,
+          "originalRecord": -244589796,
+          "roundTripRecord": 4050377500
+        },
+        {
+          "rarity": 5,
+          "enh": 145626,
+          "refund": 2147476721,
+          "original": 2147526727,
+          "candidate": 2147526727,
+          "originalRecord": 2147476721,
+          "roundTripRecord": 2147476721
+        },
+        {
+          "rarity": 5,
+          "enh": 145627,
+          "refund": 2147506212,
+          "original": -2147411078,
+          "candidate": 2147556218,
+          "originalRecord": -2147461084,
+          "roundTripRecord": 2147506212
+        },
+        {
+          "rarity": 5,
+          "firstSigned32Overflow": 145627,
+          "searchLimit": 300000
+        }
+      ]
+    }
+  ]
+}

@@ -584,3 +584,8 @@ SOUND 원 제출을 보존하고 테스트 조립/patch 형식을 정정한 뒤8
 ### 18.31 ITEM/BALANCE implementation resumed
 
 Existing ITEM received the unique-save name preservation candidate at12:54:38Z; actual Read and candidate/test edits verified. Existing BALANCE received the legacy refund signed32 overflow candidate at12:56:22Z; actual source Read and receipt edit verified. Production and policy unchanged. Native inventory visibility did not restore input: ENEMY/ART/SKILL remain undelivered. See mac-resume-20261001/vscode-dispatch/FOLLOWUP_RECEIPT.md for evidence and gates.
+
+
+### 18.32 ITEM/BALANCE 실제 최소 수정 통합
+
+사전 원격 d9dd5151 보존 뒤 본편/easy 각 3줄 반영: uniqueId 이름 보존과 강화 환급 signed32 overflow 수정. 관련 18검사·guard·각 6script parse PASS. 기존 SOUND 2실패는 이전 HEAD에서도 재현하여 별도 담당이 실제 Read 후 조사 중이다. UIUX 데모 회귀 후보는 제출 완료·root 인수 대기. 실게임/오디오/패키지는 미검수. [변경·근거·한계](mac-resume-20261001/vscode-dispatch/ITEM-BALANCE-integration-result.md).

@@ -1,0 +1,132 @@
+✖ game.html: saved unique identity survives the actual name migration; legacy behavior remains (7.461792ms)
+✖ game.html: full equip, save snapshot and drop at refund overflow; affordable=true (38.248917ms)
+✔ game.html: full equip, save snapshot and drop at refund overflow; affordable=false (12.013541ms)
+✖ game-easy-test.html: saved unique identity survives the actual name migration; legacy behavior remains (3.664625ms)
+✖ game-easy-test.html: full equip, save snapshot and drop at refund overflow; affordable=true (28.273167ms)
+✔ game-easy-test.html: full equip, save snapshot and drop at refund overflow; affordable=false (11.285875ms)
+ℹ tests 6
+ℹ suites 0
+ℹ pass 2
+ℹ fail 4
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 151.99025
+
+✖ failing tests:
+
+test at test/itemSaveEconomyBoundary.test.js:15:2
+✖ game.html: saved unique identity survives the actual name migration; legacy behavior remains (7.461792ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly deep-equal:
+  + actual - expected
+  
+    {
+  +   _nameMig: 1,
+      affixes: [
+        {
+          value: 0.125
+        }
+      ],
+      atk: 12.375,
+  +   name: '녹슨 단검',
+  -   name: 'saved-unique-name',
+      rarity: 5,
+      slot: 'weapon',
+      uniqueId: 'UI-08',
+      uniqueSpecial: {
+        value: 1.375
+  
+      at TestContext.<anonymous> (file:///Users/fordeargamers/Projects/exoduser-migration-20261001/test/itemSaveEconomyBoundary.test.js:22:58)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1201:25)
+      at Test.start (node:internal/test_runner/test:1096:17)
+      at startSubtestAfterBootstrap (node:internal/test_runner/harness:385:17) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: { slot: 'weapon', wtype: 'dagger', name: '녹슨 단검', rarity: 5, atk: 12.375, uniqueSpecial: { value: 1.375 }, affixes: [ [Object] ], uniqueId: 'UI-08', _nameMig: 1 },
+    expected: { slot: 'weapon', wtype: 'dagger', name: 'saved-unique-name', rarity: 5, atk: 12.375, uniqueSpecial: { value: 1.375 }, affixes: [ [Object] ], uniqueId: 'UI-08' },
+    operator: 'deepStrictEqual',
+    diff: 'simple'
+  }
+
+test at test/itemSaveEconomyBoundary.test.js:26:39
+✖ game.html: full equip, save snapshot and drop at refund overflow; affordable=true (38.248917ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:
+  + actual - expected
+  
+  + -2147461084
+  - 2147506212
+  
+      at TestContext.<anonymous> (file:///Users/fordeargamers/Projects/exoduser-migration-20261001/test/itemSaveEconomyBoundary.test.js:43:10)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1201:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:831:18)
+      at Test.postRun (node:internal/test_runner/test:1330:19)
+      at Test.run (node:internal/test_runner/test:1258:12)
+      at async startSubtestAfterBootstrap (node:internal/test_runner/harness:385:3) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: -2147461084,
+    expected: 2147506212,
+    operator: 'strictEqual',
+    diff: 'simple'
+  }
+
+test at test/itemSaveEconomyBoundary.test.js:15:2
+✖ game-easy-test.html: saved unique identity survives the actual name migration; legacy behavior remains (3.664625ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly deep-equal:
+  + actual - expected
+  
+    {
+  +   _nameMig: 1,
+      affixes: [
+        {
+          value: 0.125
+        }
+      ],
+      atk: 12.375,
+  +   name: '녹슨 단검',
+  -   name: 'saved-unique-name',
+      rarity: 5,
+      slot: 'weapon',
+      uniqueId: 'UI-08',
+      uniqueSpecial: {
+        value: 1.375
+  
+      at TestContext.<anonymous> (file:///Users/fordeargamers/Projects/exoduser-migration-20261001/test/itemSaveEconomyBoundary.test.js:22:58)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1201:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:831:18)
+      at Test.postRun (node:internal/test_runner/test:1330:19)
+      at Test.run (node:internal/test_runner/test:1258:12)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:831:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: { slot: 'weapon', wtype: 'dagger', name: '녹슨 단검', rarity: 5, atk: 12.375, uniqueSpecial: { value: 1.375 }, affixes: [ [Object] ], uniqueId: 'UI-08', _nameMig: 1 },
+    expected: { slot: 'weapon', wtype: 'dagger', name: 'saved-unique-name', rarity: 5, atk: 12.375, uniqueSpecial: { value: 1.375 }, affixes: [ [Object] ], uniqueId: 'UI-08' },
+    operator: 'deepStrictEqual',
+    diff: 'simple'
+  }
+
+test at test/itemSaveEconomyBoundary.test.js:26:39
+✖ game-easy-test.html: full equip, save snapshot and drop at refund overflow; affordable=true (28.273167ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:
+  + actual - expected
+  
+  + -2147461084
+  - 2147506212
+  
+      at TestContext.<anonymous> (file:///Users/fordeargamers/Projects/exoduser-migration-20261001/test/itemSaveEconomyBoundary.test.js:43:10)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1201:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:831:18)
+      at Test.postRun (node:internal/test_runner/test:1330:19)
+      at Test.run (node:internal/test_runner/test:1258:12)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:831:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: -2147461084,
+    expected: 2147506212,
+    operator: 'strictEqual',
+    diff: 'simple'
+  }
