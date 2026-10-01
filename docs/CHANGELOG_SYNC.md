@@ -51696,3 +51696,7 @@ CSS 캐시 ui-refinement.css?v=20260927-4. 신규 이미지/아이템 데이터 
 - CPU profiler=false만 off 기록으로 인정하고 GPU timing·누락·오타입·상충을 구분한다. 모드 오타는 exit2.
 - 34/34 분류·CLI 회귀 PASS. 기존 실제 raw2건 diagnostic exit0 / comparison exit1 보존. 게임 실측 PASS와 다르며 생산 변경0.
 - 관련 계획·QA 결과/영수증·총괄 검토·QA 마스터를 동기화했다.
+
+### 2026-10-01 lightweight normal-play observer
+
+QA light-normal observer: one draw wrapper and rAF samples, no CPU/GPU profiler. Five lifecycle/contract tests passed. Plan preserves failed/early-kill attempts and separates first-kill/dense/natural-death windows. Connected Chrome uses a new localStorage origin in its existing profile; separate user-data-dir comparison condition is not met. No production changes.

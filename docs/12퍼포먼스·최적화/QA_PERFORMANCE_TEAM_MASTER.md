@@ -441,3 +441,5 @@ R28시행·3317이벤트 원자료를 update/rAF/수신 시간으로 분리했�
 ### 2026-10-01 Mac raw 분류기 재검토2
 
 [인수 결과](../0마스터플랜/mac-resume-20261001/vscode-dispatch/QA-result.md): 34/34 분류·CLI 회귀 통과. 단일 raw CLI는 실제 대응 쌍·연속 조건을 검증하지 않아 비교 true를 내지 않는다. GPU timer 기록은 CPU profiler-off를 대신하지 않는다. 기존 raw2건 진단 exit0·비교 exit1. 게임 개선 PASS 아님.
+
+[단일 정상 관측 계획](../../tools/team-followup-20261001/QA/LIGHT_OBSERVATION_PLAN.md): draw 래퍼1+rAF, CPU/GPU 프로파일러0, 생명주기5/5. 기존 프로필 안 새 원점 진단이며 별도 프로필·A/B 고정 조건 미충족. 게임 실제 결과는 별도 기록한다.
