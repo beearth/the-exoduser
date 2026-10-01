@@ -1,0 +1,21 @@
+{
+  "taskId": "BUILD-CLAUDE-CONTROL-DISCOVERY",
+  "sessionId": "01a0f6e6-2e4c-7322-92d7-3aa309857856",
+  "receivedAt": "2026-10-01T12:03:08Z",
+  "startedAt": "2026-10-01T12:03:08Z",
+  "completedAt": "2026-10-01T12:03:18Z",
+  "status": "도움말 조사 완료 / interactive 전달 지원 미확인",
+  "commands": [
+    { "command": "/Users/fordeargamers/.local/bin/claude --help", "exitCode": 0 },
+    { "command": "/Users/fordeargamers/.local/bin/claude agents --help", "exitCode": 0 },
+    { "command": "/Users/fordeargamers/.local/bin/claude attach --help", "exitCode": 0 }
+  ],
+  "finding": "attach는background전용 설명; agents --json은interactive조회 포함. 기존interactive에 새세션/새writer 없이 메시지 전송 명령은 조사 도움말에 미명시",
+  "version": null,
+  "actualMessageDelivery": false,
+  "startEvidence": "기존 완료result/receipt/NEXT_TASK 읽기; 동일 조사 산출 부재 확인; Claude 경로 조회",
+  "cliPath": "/Users/fordeargamers/.local/bin/claude",
+  "ownedPaths": ["tools/team-followup-20261001/BUILD/control-discovery.md", "tools/team-followup-20261001/BUILD/control-receipt.json"],
+  "nextAction": "root에 도움말 지원범위·미확인 인계; 직접 입력 없이 다음 지시 대기",
+  "blocker": "Mac 잠금으로 UI 입력 불가(사용자 인계); 직접 전송 금지"
+}

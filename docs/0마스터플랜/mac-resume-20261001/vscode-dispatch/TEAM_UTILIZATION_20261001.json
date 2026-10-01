@@ -126,7 +126,23 @@
       "waitReason": "NW runtime absent in bounded lookup; actual package context validation pending",
       "previousTask": "BUILD-NW-HANDOFF-BUNDLE",
       "receivedAt": "2026-10-01T12:03:08Z",
-      "startedAt": "2026-10-01T12:03:08Z"
+      "startedAt": "2026-10-01T12:03:08Z",
+      "completedAt": "2026-10-01T12:03:18Z",
+      "commands": [
+        {
+          "command": "/Users/fordeargamers/.local/bin/claude --help",
+          "exitCode": 0
+        },
+        {
+          "command": "/Users/fordeargamers/.local/bin/claude agents --help",
+          "exitCode": 0
+        },
+        {
+          "command": "/Users/fordeargamers/.local/bin/claude attach --help",
+          "exitCode": 0
+        }
+      ],
+      "finding": "attach는background전용 설명; agents --json은interactive조회 포함. 기존interactive에 새세션/새writer 없이 메시지 전송 명령은 조사 도움말에 미명시"
     },
     {
       "team": "UIUX",
@@ -206,7 +222,8 @@
   ],
   "remoteCheckpoint": {
     "branch": "codex/mac-environment-20261001",
-    "sha": "b19b9105e58f4301e80bf32f8d8b64e648f1d888",
-    "verified": true
+    "sha": "9277a0ca",
+    "verified": true,
+    "scope": "sound observer, independent fire checks, team receipt"
   }
 }

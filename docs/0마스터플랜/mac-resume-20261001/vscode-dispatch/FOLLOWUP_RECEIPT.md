@@ -10,7 +10,7 @@
 | SKILL | 11:58:04.859 수신 / 11:58:13.031 Read | 얼음 스킬 취소·정리 경계 검토 착수 |
 | ANIMVFX | 11:59:42.660 수신 / 12:00:26.682 Read | 고주사율 표본/수명 검증 후보 착수 |
 | ENEMY | 새 지시 수신 없음 | Mac 잠금으로 입력 중단. 직접 잠금해제 필요 |
-| BUILD | 기존 인수묶음25검사 완료 | 공식 Claude 메시지 경로 도움말 조사12:03:08 실제착수 확인 |
+| BUILD | 기존 인수묶음25검사 완료 | 공식 도움말3개 조사12:03:18 완료. 기존 interactive 전송 공식명령 미확인 |
 | UIUX | 실제 draw/HUD 읽기 및 후보14검사 제출 | 실제 Canvas 좌표 연결·시각 인수 대기 |
 | ITEM | RGB 귀속11:51:57 실제읽기/실험 | native premultiply 버림/반올림 귀속·자체0diff 후보 완료. Chrome/생산 인수 대기 |
 | BALANCE | 실제 SSOT 읽기 및 독립13검사 제출 | 피해/자원/교차프록 정책·생산 연결 대기 |
@@ -31,3 +31,5 @@ FIRE-02는 본편 이미지 준비 연결 및 원자료29파일을 `b19b9105e58f
 QA 독립8검사는 예약/예산만 검증한다. 팀의 'query' 항목은 URL query가 아니라 pending-job 상태였으므로 root가 실제 `?v=2` URL 회귀를 별도 추가했다. '세션 내 재시도 없음'은 과도한 일반화다. warm 시점 `_waitWarmAsync`도 `_warmAsyncJob`을 호출하고 다음 큐 수집도 재검사한다. 이미 warm 완료된 항목은 재시도가 보장되지 않으며, 전체 세션의 모든 재시도가 없다는 의미는 아니다. 원래 팀 제출을 보존하고 이 root 정정을 우선한다. 팀 영수증의 수신시각은 근삿값이므로 위 JSONL 실제시각을 우선한다.
 
 [SOUND root 검수](SOUND-observer-root-review.md). ITEM의 native RGBA 차이는 backend별 양자화 차이로 귀속됐지만 실제 Chrome 재검수와 생산 채택은 남았다. UIUX/BUILD/BALANCE 결과를 게임완료로 바꾸지 않는다.
+
+후속 관측 후보·검수·팀 영수증22파일은 `9277a0ca`로 push·원격대조 완료. BUILD는 도움말 조사 완료 후 잠금해제를 기다린다. [지원범위 조사](../../../../tools/team-followup-20261001/BUILD/control-discovery.md).
