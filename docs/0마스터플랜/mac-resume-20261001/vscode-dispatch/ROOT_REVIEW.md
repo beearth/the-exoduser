@@ -30,3 +30,9 @@
 - SHA: `02b0532dc95571e70cdb6fdee2c73a10de91a0bd` — push 성공 후 ls-remote 일치 확인.
 - 로컬 manifest: `tmp/github-backups/vscode-wip-20261001-192149/manifest.json`(개별 blob/SHA256·포함목록·제외범위·원격 확인시각).
 - **미검수 작업의 복구 사본**이며 정식 통합·기능 완료·게임/패키지 배포가 아니다. 현재 브랜치/HEAD/공용 인덱스는 이 백업 때문에 이동하지 않았다.
+
+## 분류 재검토2 — root 소유권 인수
+
+2026-10-01T19:46:27.443364+09:00 QA CLI가 두 번 idle임을 확인했다. 기존 VS Code QA 선택 후 AX와 화면이 일치하지 않아 review2 지시는 입력/전송하지 않았다(전송0, 중복0). 승인된 대체 절차로 QA 도구·result·receipt의 이 최소 수정만 root가 인수한다. 수정 전 사본은 `tmp/qa-classification-review2-before/`에 보존했다. 새 실측 release 없음. 현재 원격 HEAD `2b2a861a`, WIP ref `02b0532d` 일치 확인.
+
+재검토2 최소 수정 후 34/34 계약 PASS. 메타 존재만으로 비교 true 없음. profiler 누락·오타입·상충 포함, 실제 raw 진단 exit0·비교 exit1 유지. 도구 인수 완료, 새 게임 실측 별도.

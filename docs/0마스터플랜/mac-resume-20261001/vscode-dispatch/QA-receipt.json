@@ -1,0 +1,71 @@
+{
+  "taskId": "QA-B01-BASELINE-PREFLIGHT",
+  "title": "첫 처치와 밀집 전투의 유효 기준점 준비",
+  "team": "QA",
+  "terminal": "VS Code 기존 터미널 1 (QA)",
+  "cli": "Claude Code",
+  "model": "claude-opus-4-8",
+  "sessionId": "88c3f903-ece5-4640-8b0c-86feaaca0e53",
+  "sessionIdSource": "scratchpad 경로의 세션 UUID로 추정. CLI가 직접 보고한 값 아님",
+  "receivedAt": "2026-10-01T19:05:00+09:00",
+  "startedAt": "2026-10-01T19:07:00+09:00",
+  "status": "root-accepted-classification-review2",
+  "headFollowup": "94b47f87 (배정문서 추가, 생산소스는 30a204a7와 동일)",
+  "followup": {
+    "task": "QA-classification-followup.md — 진단 유효성과 비교 기준점 분리",
+    "diagnosticVsComparison": "diagnosticValid(구조)과 comparisonEligible(true/false/unknown) 분리. valid는 diagnosticValid 별칭(진단 전용)",
+    "cliModes": "--mode=diagnostic(구조 exit0) / --mode=comparison(전부 true일 때만 exit0)",
+    "realRaws": {
+      "combat-timeline": "diagnosticValid=true, comparisonEligible=unknown(CMP4)",
+      "normal-first-kill": "diagnosticValid=true, comparisonEligible=false(CMP1 atmos1→2 + CMP3 profiler)"
+    },
+    "fixtures": "그룹1 구조reject 11 + 그룹2 비교부적격 5 + 그룹3 비교적격(합성) 1, 모두 _fixtureMeta 표식",
+    "contractTests": "23/23 통과",
+    "boundaries": "trusted≠물리입력/막타증명, fpsCap0≠GPU완료/표시FPS/매루프draw, PC329ms·ring97ms 해결 주장 없음, 새 측정 release 없음"
+  },
+  "head": "30a204a7aa348a88b90bdc922862c610a7da938f",
+  "ownedPaths": [
+    "tools/team-followup-20261001/QA/",
+    "docs/0마스터플랜/mac-resume-20261001/vscode-dispatch/QA-result.md",
+    "docs/0마스터플랜/mac-resume-20261001/vscode-dispatch/QA-receipt.json"
+  ],
+  "gate": {
+    "newRealMeasurement": "blocked",
+    "reason": "이 폴더에 QA-game-release.json(released=true) 총괄 인계가 없음. 신규 실화면 측정 금지, production 변경 금지",
+    "checkedPath": "docs/0마스터플랜/mac-resume-20261001/vscode-dispatch/QA-game-release.json (부재 확인)"
+  },
+  "nextAction": "도구+docs 원격 체크포인트 후 root 단일 정상 첫 처치 관측",
+  "completed": {
+    "plan": "tools/team-followup-20261001/QA/BASELINE_PREFLIGHT_PLAN.md",
+    "validator": "tools/team-followup-20261001/QA/baseline_raw_validator.mjs",
+    "rejectHarness": "tools/team-followup-20261001/QA/make_reject_fixtures.mjs",
+    "realRawsValidated": 4,
+    "rejectFixtures": "12/12 reject (각 겨냥 required check FAIL 확인)",
+    "newRealMeasurement": 0,
+    "productionChange": 0,
+    "git": "add/commit/push 0"
+  },
+  "blocker": null,
+  "ownershipHandoff": {
+    "at": "2026-10-01T19:46:27.443364+09:00",
+    "owner": "Mac root 01a0f32f-a350-7430-85a4-fb71f336d5c7",
+    "previousOwner": "QA 88c3f903-ece5-4640-8b0c-86feaaca0e53",
+    "evidence": "claude agents 두 번 idle 확인. VS Code AX는 QA 선택이나 screenshot이 이전 split 화면에 머물러 입력 대상 확인 불가. review2 전송0/대기열0. 동시 편집 없음.",
+    "scope": [
+      "tools/team-followup-20261001/QA/",
+      "QA-result.md",
+      "QA-receipt.json"
+    ],
+    "beforeCopy": "tmp/qa-classification-review2-before"
+  },
+  "review2": {
+    "at": "2026-10-01T19:49:06.516822+09:00",
+    "testsPassed": 34,
+    "testsTotal": 34,
+    "comparisonTrueAllowed": false,
+    "realRawDiagnosticExit": 0,
+    "realRawComparisonExit": 1,
+    "newMeasurements": 0,
+    "productionChanges": 0
+  }
+}

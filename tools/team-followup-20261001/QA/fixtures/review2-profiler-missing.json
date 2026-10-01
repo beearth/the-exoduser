@@ -1,0 +1,907 @@
+{
+  "window": {
+    "inputAt": 37845.90000009537,
+    "endAt": 55061.300000071526,
+    "duration": 17215.399999976158,
+    "reason": "natural-death-or-game-ended",
+    "loops": 600,
+    "draws": 600,
+    "updates": 1025,
+    "rateLoop": 34.85251577081165,
+    "rateDraw": 34.85251577081165
+  },
+  "initial": {
+    "atmos": 1,
+    "enemies": 5,
+    "focus": true,
+    "fpsCap": 0,
+    "hidden": false,
+    "hp": 596,
+    "items": 0,
+    "kills": 0,
+    "on": true,
+    "paused": false,
+    "projectiles": 0,
+    "x": 4020,
+    "y": 7420
+  },
+  "end": {
+    "at": 55061.300000071526,
+    "atmos": 1,
+    "enemies": 43,
+    "focus": true,
+    "fpsCap": 0,
+    "hidden": false,
+    "hp": 0,
+    "items": 3,
+    "kills": 4,
+    "on": true,
+    "paused": false,
+    "projectiles": 0,
+    "x": 4016.107252880326,
+    "y": 7178.5308832751025
+  },
+  "metrics": {
+    "rAFtimestampIntervals": {
+      "n": 598,
+      "mean": 28.678929765886288,
+      "p95": 33.799999999995634,
+      "p99": 40.099999999998545,
+      "max": 123.80000000000291,
+      "gt50": 4,
+      "gt100": 1
+    },
+    "loopStartIntervals": {
+      "n": 599,
+      "mean": 28.6838063437473,
+      "p95": 33.09999990463257,
+      "p99": 36.800000071525574,
+      "max": 126.20000004768372,
+      "gt50": 4,
+      "gt100": 2
+    },
+    "drawStartIntervals": {
+      "n": 599,
+      "mean": 28.6762938230782,
+      "p95": 33.100000023849134,
+      "p99": 37.20000004767644,
+      "max": 126.39999997615087,
+      "gt50": 4,
+      "gt100": 2
+    },
+    "loopDuration": {
+      "n": 600,
+      "mean": 2.3826666659116746,
+      "p95": 3.399999976158142,
+      "p99": 7.799999952316284,
+      "max": 125.5,
+      "gt50": 3,
+      "gt100": 1
+    },
+    "updateDuration": {
+      "n": 1025,
+      "mean": 0.5527804894563628,
+      "p95": 0.8999999761581421,
+      "p99": 1.899999976158142,
+      "max": 5.799999952316284,
+      "gt50": 0,
+      "gt100": 0
+    },
+    "drawDuration": {
+      "n": 600,
+      "mean": 1.3631666652361552,
+      "p95": 2,
+      "p99": 5.600000023841858,
+      "max": 124.29999995231628,
+      "gt50": 3,
+      "gt100": 1
+    }
+  },
+  "skipCounts": {
+    "None": 600
+  },
+  "updateCountHistogram": {
+    "0": 7,
+    "1": 174,
+    "2": 406,
+    "3": 13
+  },
+  "aggregatesNestedDoNotSum": {
+    "_drawBurst": {
+      "count": 600,
+      "total": 3.400000333786011,
+      "max": 0.10000002384185792
+    },
+    "_texPreDrain": {
+      "count": 600,
+      "total": 0.10000002384185792,
+      "max": 0.10000002384185792
+    },
+    "draw": {
+      "count": 600,
+      "total": 817.8999991416931,
+      "max": 124.29999995231628
+    },
+    "update": {
+      "count": 1025,
+      "total": 566.6000016927719,
+      "max": 5.799999952316284
+    },
+    "_drCapture": {
+      "count": 171,
+      "total": 9.299999117851257,
+      "max": 0.20000004768371585
+    },
+    "hurtE": {
+      "count": 72,
+      "total": 5.299999952316285,
+      "max": 1.1999999284744265
+    },
+    "_addCorpse": {
+      "count": 4,
+      "total": 0.8999998569488525,
+      "max": 0.3999999761581421
+    },
+    "_addHeadGib": {
+      "count": 4,
+      "total": 0.5999999046325684,
+      "max": 0.20000004768371585
+    },
+    "_maskWorldDropBlack": {
+      "count": 4,
+      "total": 178.4999998807907,
+      "max": 79.69999992847443
+    },
+    "_worldDropFxTile": {
+      "count": 682,
+      "total": 146.99999976158142,
+      "max": 79.89999997615814
+    },
+    "_worldItemSkin": {
+      "count": 1137,
+      "total": 37.699999928474426,
+      "max": 27.300000071525577
+    }
+  },
+  "longLoopStartIntervals": [
+    {
+      "fromLoop": 623,
+      "toLoop": 624,
+      "start": 45514.60000002384,
+      "end": 45640.800000071526,
+      "interval": 126.20000004768372,
+      "previousLoopCPU": 125.5,
+      "outsidePreviousLoop": 0.7000000476837158,
+      "previousUpdate": 1,
+      "previousDraw": 124.29999995231628,
+      "previousLoopOther": 0.20000004768371582,
+      "afterKills": 3,
+      "items": 2,
+      "topEvents": [],
+      "browserEntries": [
+        {
+          "attribution": [
+            {}
+          ],
+          "duration": 125,
+          "entryType": "longtask",
+          "name": "self",
+          "navigationId": 5317,
+          "startTime": 45514.5
+        },
+        {
+          "blockingDuration": 75.6,
+          "duration": 150,
+          "entryType": "long-animation-frame",
+          "firstUIEventTimestamp": 0,
+          "name": "long-animation-frame",
+          "navigationId": 5317,
+          "paintTime": 45640.20000004768,
+          "presentationTime": 45684,
+          "renderStart": 45514.5,
+          "scripts": [
+            {}
+          ],
+          "startTime": 45490.20000004768,
+          "styleAndLayoutStart": 45640.10000002384
+        }
+      ]
+    },
+    {
+      "fromLoop": 479,
+      "toLoop": 480,
+      "start": 41641.70000004768,
+      "end": 41744.40000009537,
+      "interval": 102.70000004769099,
+      "previousLoopCPU": 89.39999997615814,
+      "outsidePreviousLoop": 13.300000071525574,
+      "previousUpdate": 2.700000047683716,
+      "previousDraw": 86.59999990463257,
+      "previousLoopOther": 0.10000002384185791,
+      "afterKills": 1,
+      "items": 2,
+      "topEvents": [
+        {
+          "duration": 79.89999997615814,
+          "end": 41729,
+          "killsAfter": 1,
+          "killsBefore": 1,
+          "kind": "_worldDropFxTile",
+          "loopId": 479,
+          "parent": "draw",
+          "start": 41649.10000002384
+        },
+        {
+          "duration": 79.69999992847443,
+          "end": 41729,
+          "killsAfter": 1,
+          "killsBefore": 1,
+          "kind": "_maskWorldDropBlack",
+          "loopId": 479,
+          "parent": "_worldDropFxTile",
+          "start": 41649.300000071526
+        },
+        {
+          "duration": 1.1999999284744265,
+          "end": 41643.60000002384,
+          "killsAfter": 1,
+          "killsBefore": 0,
+          "kind": "hurtE",
+          "loopId": 479,
+          "parent": "update",
+          "start": 41642.40000009537
+        },
+        {
+          "duration": 0.3999999761581421,
+          "end": 41643.10000002384,
+          "killsAfter": 1,
+          "killsBefore": 1,
+          "kind": "_addCorpse",
+          "loopId": 479,
+          "parent": "hurtE",
+          "start": 41642.70000004768
+        },
+        {
+          "duration": 0.19999992847442627,
+          "end": 41643.10000002384,
+          "killsAfter": 1,
+          "killsBefore": 1,
+          "kind": "_addHeadGib",
+          "loopId": 479,
+          "parent": "_addCorpse",
+          "start": 41642.90000009537
+        }
+      ],
+      "browserEntries": [
+        {
+          "attribution": [
+            {}
+          ],
+          "duration": 92,
+          "entryType": "longtask",
+          "name": "self",
+          "navigationId": 5317,
+          "startTime": 41641.5
+        },
+        {
+          "blockingDuration": 41.3,
+          "duration": 114.30000007152556,
+          "entryType": "long-animation-frame",
+          "firstUIEventTimestamp": 0,
+          "name": "long-animation-frame",
+          "navigationId": 5317,
+          "paintTime": 41732.800000071526,
+          "presentationTime": 41768,
+          "renderStart": 41641.5,
+          "scripts": [
+            {}
+          ],
+          "startTime": 41618.5,
+          "styleAndLayoutStart": 41731.40000009537
+        }
+      ]
+    },
+    {
+      "fromLoop": 484,
+      "toLoop": 485,
+      "start": 41795.90000009537,
+      "end": 41867.40000009537,
+      "interval": 71.5,
+      "previousLoopCPU": 68.29999995231628,
+      "outsidePreviousLoop": 3.2000000476909918,
+      "previousUpdate": 0.5,
+      "previousDraw": 67.70000004768372,
+      "previousLoopOther": 0.09999990463256836,
+      "afterKills": 1,
+      "items": 2,
+      "topEvents": [
+        {
+          "duration": 66.69999992847443,
+          "end": 41863.5,
+          "killsAfter": 1,
+          "killsBefore": 1,
+          "kind": "_worldDropFxTile",
+          "loopId": 484,
+          "parent": "draw",
+          "start": 41796.800000071526
+        },
+        {
+          "duration": 66.59999990463257,
+          "end": 41863.5,
+          "killsAfter": 1,
+          "killsBefore": 1,
+          "kind": "_maskWorldDropBlack",
+          "loopId": 484,
+          "parent": "_worldDropFxTile",
+          "start": 41796.90000009537
+        }
+      ],
+      "browserEntries": [
+        {
+          "attribution": [
+            {}
+          ],
+          "duration": 71,
+          "entryType": "longtask",
+          "name": "self",
+          "navigationId": 5317,
+          "startTime": 41795.70000004768
+        },
+        {
+          "blockingDuration": 20.1,
+          "duration": 75.39999997615814,
+          "entryType": "long-animation-frame",
+          "firstUIEventTimestamp": 0,
+          "name": "long-animation-frame",
+          "navigationId": 5317,
+          "paintTime": 41865.800000071526,
+          "presentationTime": 41908,
+          "renderStart": 41795.70000004768,
+          "scripts": [
+            {}
+          ],
+          "startTime": 41790.40000009537,
+          "styleAndLayoutStart": 41864.300000071526
+        }
+      ]
+    },
+    {
+      "fromLoop": 339,
+      "toLoop": 340,
+      "start": 38016.20000004768,
+      "end": 38081.300000071526,
+      "interval": 65.10000002384913,
+      "previousLoopCPU": 2.299999952316284,
+      "outsidePreviousLoop": 62.800000071525574,
+      "previousUpdate": 1.6999999284744265,
+      "previousDraw": 0.4000000953674317,
+      "previousLoopOther": 0.199999928474426,
+      "afterKills": 0,
+      "items": 0,
+      "topEvents": [],
+      "browserEntries": [
+        {
+          "blockingDuration": 0,
+          "duration": 62.10000002384186,
+          "entryType": "long-animation-frame",
+          "firstUIEventTimestamp": 0,
+          "name": "long-animation-frame",
+          "navigationId": 5317,
+          "paintTime": 38082.70000004768,
+          "presentationTime": 38176,
+          "renderStart": 38081.10000002384,
+          "scripts": [],
+          "startTime": 38020.60000002384,
+          "styleAndLayoutStart": 38082.60000002384
+        }
+      ]
+    }
+  ],
+  "longCalls": [
+    {
+      "duration": 124.29999995231628,
+      "end": 45640.10000002384,
+      "killsAfter": 3,
+      "killsBefore": 3,
+      "kind": "draw",
+      "loopId": 623,
+      "parent": "loop",
+      "start": 45515.800000071526
+    },
+    {
+      "duration": 86.59999990463257,
+      "end": 41731,
+      "killsAfter": 1,
+      "killsBefore": 1,
+      "kind": "draw",
+      "loopId": 479,
+      "parent": "loop",
+      "start": 41644.40000009537
+    },
+    {
+      "duration": 79.89999997615814,
+      "end": 41729,
+      "killsAfter": 1,
+      "killsBefore": 1,
+      "kind": "_worldDropFxTile",
+      "loopId": 479,
+      "parent": "draw",
+      "start": 41649.10000002384
+    },
+    {
+      "duration": 79.69999992847443,
+      "end": 41729,
+      "killsAfter": 1,
+      "killsBefore": 1,
+      "kind": "_maskWorldDropBlack",
+      "loopId": 479,
+      "parent": "_worldDropFxTile",
+      "start": 41649.300000071526
+    },
+    {
+      "duration": 67.70000004768372,
+      "end": 41864.20000004768,
+      "killsAfter": 1,
+      "killsBefore": 1,
+      "kind": "draw",
+      "loopId": 484,
+      "parent": "loop",
+      "start": 41796.5
+    },
+    {
+      "duration": 66.69999992847443,
+      "end": 41863.5,
+      "killsAfter": 1,
+      "killsBefore": 1,
+      "kind": "_worldDropFxTile",
+      "loopId": 484,
+      "parent": "draw",
+      "start": 41796.800000071526
+    },
+    {
+      "duration": 66.59999990463257,
+      "end": 41863.5,
+      "killsAfter": 1,
+      "killsBefore": 1,
+      "kind": "_maskWorldDropBlack",
+      "loopId": 484,
+      "parent": "_worldDropFxTile",
+      "start": 41796.90000009537
+    },
+    {
+      "duration": 28.09999990463257,
+      "end": 41783.5,
+      "killsAfter": 1,
+      "killsBefore": 1,
+      "kind": "draw",
+      "loopId": 481,
+      "parent": "loop",
+      "start": 41755.40000009537
+    },
+    {
+      "duration": 27.300000071525577,
+      "end": 41782.90000009537,
+      "killsAfter": 1,
+      "killsBefore": 1,
+      "kind": "_worldItemSkin",
+      "loopId": 481,
+      "parent": "draw",
+      "start": 41755.60000002384
+    },
+    {
+      "duration": 27.200000047683716,
+      "end": 41782.90000009537,
+      "killsAfter": 1,
+      "killsBefore": 1,
+      "kind": "_maskWorldDropBlack",
+      "loopId": 481,
+      "parent": "_worldItemSkin",
+      "start": 41755.70000004768
+    },
+    {
+      "duration": 21,
+      "end": 38420.800000071526,
+      "killsAfter": 0,
+      "killsBefore": 0,
+      "kind": "draw",
+      "loopId": 352,
+      "parent": "loop",
+      "start": 38399.800000071526
+    },
+    {
+      "duration": 6.099999904632568,
+      "end": 41752,
+      "killsAfter": 1,
+      "killsBefore": 1,
+      "kind": "draw",
+      "loopId": 480,
+      "parent": "loop",
+      "start": 41745.90000009537
+    },
+    {
+      "duration": 5.799999952316284,
+      "end": 37882,
+      "killsAfter": 0,
+      "killsBefore": 0,
+      "kind": "update",
+      "loopId": 334,
+      "parent": "loop",
+      "start": 37876.20000004768
+    },
+    {
+      "duration": 5.799999952316284,
+      "end": 48113.70000004768,
+      "killsAfter": 4,
+      "killsBefore": 4,
+      "kind": "update",
+      "loopId": 707,
+      "parent": "loop",
+      "start": 48107.90000009537
+    },
+    {
+      "duration": 5.600000023841858,
+      "end": 48080.40000009537,
+      "killsAfter": 3,
+      "killsBefore": 3,
+      "kind": "draw",
+      "loopId": 706,
+      "parent": "loop",
+      "start": 48074.800000071526
+    },
+    {
+      "duration": 5.100000023841858,
+      "end": 41751.20000004768,
+      "killsAfter": 1,
+      "killsBefore": 1,
+      "kind": "_worldItemSkin",
+      "loopId": 480,
+      "parent": "draw",
+      "start": 41746.10000002384
+    }
+  ],
+  "events": [
+    {
+      "at": 37845.90000009537,
+      "button": 0,
+      "code": null,
+      "kind": "mousedown",
+      "target": "CANVAS",
+      "trusted": true,
+      "x": 675,
+      "y": 245
+    },
+    {
+      "at": 37846.800000071526,
+      "button": 0,
+      "code": null,
+      "kind": "mouseup",
+      "target": "CANVAS",
+      "trusted": true,
+      "x": 675,
+      "y": 245
+    },
+    {
+      "at": 37849.800000071526,
+      "button": null,
+      "code": "KeyW",
+      "kind": "keydown",
+      "target": "BODY",
+      "trusted": true,
+      "x": null,
+      "y": null
+    },
+    {
+      "at": 37850.60000002384,
+      "button": null,
+      "code": "KeyW",
+      "kind": "keyup",
+      "target": "BODY",
+      "trusted": true,
+      "x": null,
+      "y": null
+    },
+    {
+      "at": 37883.10000002384,
+      "button": 0,
+      "code": null,
+      "kind": "mousedown",
+      "target": "CANVAS",
+      "trusted": true,
+      "x": 675,
+      "y": 245
+    },
+    {
+      "at": 37884.20000004768,
+      "button": 0,
+      "code": null,
+      "kind": "mouseup",
+      "target": "CANVAS",
+      "trusted": true,
+      "x": 675,
+      "y": 245
+    },
+    {
+      "at": 37887.10000002384,
+      "button": null,
+      "code": "KeyW",
+      "kind": "keydown",
+      "target": "BODY",
+      "trusted": true,
+      "x": null,
+      "y": null
+    },
+    {
+      "at": 37887.800000071526,
+      "button": null,
+      "code": "KeyW",
+      "kind": "keyup",
+      "target": "BODY",
+      "trusted": true,
+      "x": null,
+      "y": null
+    },
+    {
+      "after": 1,
+      "at": 41731.10000002384,
+      "before": 0,
+      "kind": "kills",
+      "loopId": 479
+    },
+    {
+      "after": 2,
+      "at": 41731.10000002384,
+      "before": 0,
+      "kind": "items",
+      "loopId": 479
+    },
+    {
+      "after": 2,
+      "at": 44358.40000009537,
+      "before": 1,
+      "kind": "kills",
+      "loopId": 582
+    },
+    {
+      "after": 3,
+      "at": 45023.10000002384,
+      "before": 2,
+      "kind": "kills",
+      "loopId": 607
+    },
+    {
+      "after": 4,
+      "at": 48114.90000009537,
+      "before": 3,
+      "kind": "kills",
+      "loopId": 707
+    },
+    {
+      "after": 3,
+      "at": 48114.90000009537,
+      "before": 2,
+      "kind": "items",
+      "loopId": 707
+    }
+  ],
+  "browserEntries": [
+    {
+      "blockingDuration": 0,
+      "duration": 62.10000002384186,
+      "entryType": "long-animation-frame",
+      "firstUIEventTimestamp": 0,
+      "name": "long-animation-frame",
+      "navigationId": 5317,
+      "paintTime": 38082.70000004768,
+      "presentationTime": 38176,
+      "renderStart": 38081.10000002384,
+      "scripts": [],
+      "startTime": 38020.60000002384,
+      "styleAndLayoutStart": 38082.60000002384
+    },
+    {
+      "attribution": [
+        {}
+      ],
+      "duration": 92,
+      "entryType": "longtask",
+      "name": "self",
+      "navigationId": 5317,
+      "startTime": 41641.5
+    },
+    {
+      "blockingDuration": 41.3,
+      "duration": 114.30000007152556,
+      "entryType": "long-animation-frame",
+      "firstUIEventTimestamp": 0,
+      "name": "long-animation-frame",
+      "navigationId": 5317,
+      "paintTime": 41732.800000071526,
+      "presentationTime": 41768,
+      "renderStart": 41641.5,
+      "scripts": [
+        {}
+      ],
+      "startTime": 41618.5,
+      "styleAndLayoutStart": 41731.40000009537
+    },
+    {
+      "attribution": [
+        {}
+      ],
+      "duration": 71,
+      "entryType": "longtask",
+      "name": "self",
+      "navigationId": 5317,
+      "startTime": 41795.70000004768
+    },
+    {
+      "blockingDuration": 20.1,
+      "duration": 75.39999997615814,
+      "entryType": "long-animation-frame",
+      "firstUIEventTimestamp": 0,
+      "name": "long-animation-frame",
+      "navigationId": 5317,
+      "paintTime": 41865.800000071526,
+      "presentationTime": 41908,
+      "renderStart": 41795.70000004768,
+      "scripts": [
+        {}
+      ],
+      "startTime": 41790.40000009537,
+      "styleAndLayoutStart": 41864.300000071526
+    },
+    {
+      "attribution": [
+        {}
+      ],
+      "duration": 125,
+      "entryType": "longtask",
+      "name": "self",
+      "navigationId": 5317,
+      "startTime": 45514.5
+    },
+    {
+      "blockingDuration": 75.6,
+      "duration": 150,
+      "entryType": "long-animation-frame",
+      "firstUIEventTimestamp": 0,
+      "name": "long-animation-frame",
+      "navigationId": 5317,
+      "paintTime": 45640.20000004768,
+      "presentationTime": 45684,
+      "renderStart": 45514.5,
+      "scripts": [
+        {}
+      ],
+      "startTime": 45490.20000004768,
+      "styleAndLayoutStart": 45640.10000002384
+    }
+  ],
+  "environment": {
+    "canvas": [
+      1352,
+      662
+    ],
+    "dpr": 1,
+    "performanceEntryTypes": [
+      "element",
+      "event",
+      "first-input",
+      "interaction-contentful-paint",
+      "largest-contentful-paint",
+      "layout-shift",
+      "long-animation-frame",
+      "longtask",
+      "mark",
+      "measure",
+      "navigation",
+      "paint",
+      "resource",
+      "soft-navigation",
+      "visibility-state"
+    ],
+    "physicsStep": 16.666666666666668,
+    "timeOrigin": 1790843229427.8,
+    "ua": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/152.0.0.0 Safari/537.36",
+    "url": "http://qa-combat-timeline-20261001.localhost:3340/game.html?webgpu=0",
+    "useGL": true,
+    "useGPU": false,
+    "viewport": [
+      1352,
+      663
+    ],
+    "warm": true,
+    "warmMs": 8.099999904632568
+  },
+  "options": {
+    "ambPart": true,
+    "atmos": 1,
+    "autoPotThr": 0.99,
+    "bgmTrack": "auto",
+    "bgmVol": 60,
+    "bloom": true,
+    "bossDebug": false,
+    "bossFog": true,
+    "crAutoEnh": -1,
+    "crAutoFuse": -1,
+    "cursor": 0,
+    "cursorSize": 50,
+    "deathFx": true,
+    "diff": 5,
+    "fog": true,
+    "fpsCap": 0,
+    "grain": true,
+    "hitStop": 0,
+    "lang": "ko",
+    "lighting": true,
+    "minPickLvTier": 0,
+    "minPickRar": 0,
+    "outline": true,
+    "parts": 80,
+    "petAuto": true,
+    "postfx": true,
+    "quality": "high",
+    "resScale": 100,
+    "sfxVol": 60,
+    "shake": 80,
+    "showFps": false,
+    "slash": true,
+    "ssaa": 1,
+    "torch": true,
+    "trail": true
+  },
+  "finalOptions": {
+    "ambPart": true,
+    "atmos": 1,
+    "autoPotThr": 0.99,
+    "bgmTrack": "auto",
+    "bgmVol": 60,
+    "bloom": true,
+    "bossDebug": false,
+    "bossFog": true,
+    "crAutoEnh": -1,
+    "crAutoFuse": -1,
+    "cursor": 0,
+    "cursorSize": 50,
+    "deathFx": true,
+    "diff": 5,
+    "fog": true,
+    "fpsCap": 0,
+    "grain": true,
+    "hitStop": 0,
+    "lang": "ko",
+    "lighting": true,
+    "minPickLvTier": 0,
+    "minPickRar": 0,
+    "outline": true,
+    "parts": 80,
+    "petAuto": true,
+    "postfx": true,
+    "quality": "high",
+    "resScale": 100,
+    "sfxVol": 60,
+    "shake": 80,
+    "showFps": false,
+    "slash": true,
+    "ssaa": 1,
+    "torch": true,
+    "trail": true
+  },
+  "restored": {
+    "draw": true,
+    "loop": true,
+    "update": true
+  },
+  "dropped": 0,
+  "_fixtureMeta": {
+    "synthetic": true,
+    "group": "review2-regression",
+    "base": "combat-timeline",
+    "purpose": "총괄 재검토2 회귀: review2-profiler-missing",
+    "target": "CMP3-instrumentation",
+    "expect": "unknown",
+    "note": "테스트용 합성 입력 — 실제 측정 raw 아님. 원자료처럼 사용 금지.",
+    "release": "none",
+    "generatedAt": "2026-10-01T10:47:17.593Z"
+  }
+}
