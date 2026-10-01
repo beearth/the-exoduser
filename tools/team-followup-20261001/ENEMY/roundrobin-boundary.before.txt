@@ -1,0 +1,8 @@
+  const _bf=G._bonfire;const _bfActive=_bf&&_bf.t>0;const _bfR2=_bfActive?_bf.r*_bf.r:0;
+  if(!G._eTierFrame)G._eTierFrame=0;G._eTierFrame++;
+  const _eUpdateStart=performance.now();
+  const _eo=_gameFrame&1; // 짝홀 프레임 분산
+  for(let _ei=0;_ei<ens.length;_ei++){const e=ens[_ei];
+    // 타임버짓: 8ms 초과하면 비보스 스킵
+    if(_ei%(IS_MOBILE?8:32)===0&&_ei>0&&!e.ib&&performance.now()-_eUpdateStart>(IS_MOBILE?8:12))break;
+    if(e.alive){

@@ -1,0 +1,68 @@
+{
+  "taskId": "ENEMY-20261002-ROUNDROBIN-ORDER-EFFECTS",
+  "title": "회전 순서가 spawn/splice/hole/동일tick death/drop 보상에 주는 영향 검수",
+  "team": "ENEMY",
+  "role": "원담당(owner). 회전 순서 효과 분석 — 중복update/skip/reward 차이 여부 실원문 미니실행 검증.",
+  "cli": "Claude Code",
+  "model": "claude-opus-4-8",
+  "sessionId": "ddbd64be-975a-458e-a020-c09749281f5b",
+  "sessionIdSource": "scratchpad 경로의 세션 UUID로 추정. CLI 직접 보고 아님",
+  "utc": {
+    "receivedAt": "2026-10-01T16:25:00Z",
+    "firstReadAt": "2026-10-01T16:26:00Z",
+    "firstCodeEditAt": "2026-10-01T16:30:00Z",
+    "reviewedAt": "2026-10-01T16:32:00Z",
+    "completedAt": "2026-10-01T16:32:30Z"
+  },
+  "duplicateCheck": "roundrobin-order-effects-* 신규. 음수정규화(roundrobin-boundary 8검사) 반복 아님 — 본 건은 순서/변이 효과 전용.",
+  "readInputs": [
+    "tools/team-followup-20261001/ENEMY/roundrobin-order-effects-task.md",
+    "AGENTS.md / docs/9적ai패턴디자인/ENEMY_AI_TEAM_MASTER.md (기 확인)",
+    "game.html 적 update 메인 루프(33117 헤더, 33140 벽끼임 kill 보상, 40703 hurtE 이중처리 가드), ens.push/mkEn(append), ens.splice(별도 함수/틱시작 GC) — 읽기전용",
+    "tools/team-followup-20261001/ENEMY/roundrobin-boundary.game.patch (현 후보 헤더 — 읽기전용)"
+  ],
+  "sourceAnchors": {
+    "gameSha256": "7631f5a083672124624e0b8dc22b0716d10c8815dbb1e6aee98a5e2e51299993",
+    "origLoopHeader": "for(let _ei=0;_ei<ens.length;_ei++){const e=ens[_ei];  (LIVE 길이, hole 가드 없음)",
+    "candLoopHeader": "const _elen=ens.length; ... for(let _k=0;_k<_elen;_k++){const _ei=(_eStart+_k)%_elen;const e=ens[_ei];if(!e)continue;",
+    "rewardOnce": "33140 벽끼임 kill rollDrop/addExp/G.kills/_regKill + 40703 hurtE if(e.hp<=0)return",
+    "midLoopMutation": "append만(ens.push/mkEn). 메인 루프 본문 내 ens.splice 없음",
+    "origLoopRegionFile": "tools/team-followup-20261001/ENEMY/roundrobin-boundary.before.txt (f379376e)"
+  },
+  "verdict": "결함 아님 — 중복 update 0·잘못된 skip 0·reward 차이 0. 최소 수정 후보 불필요(생산 patch 없음).",
+  "findings": {
+    "permutation": "_eStart∈[0,_elen) 에서 _ei=(_eStart+_k)%_elen (k=0.._elen-1) 은 [0,_elen) 의 순열 → tick당 각 인덱스 정확히 1회. 중복 update·이중 보상 불가. break 없을 때 skip 0.",
+    "reward": "원본·후보 동일 tick death 보상 총량 동일(8=8), 이중보상 0. 임의 _eStart 로도 사망 엔티티 정확히 1회 보상.",
+    "midTickSpawn": "분열/소환 append 신생아: 원본 same-tick 처리 vs 후보 1-tick 이연. 2 tick 후 신생아 update 정확히 1회 — 누락/중복 아님(benign 이연).",
+    "splice": "메인 루프 본문 내 ens.splice 없음 → 캡처 _elen 안전. (실제 제거는 틱시작 GC/별도 함수)",
+    "hole": "후보 if(!e)continue 로 undefined 슬롯 안전 skip(정상 엔티티 skip 아님). 원문은 hole 에서 throw → 후보가 오히려 개선, 회귀 아님.",
+    "intraTickOrder": "tick 내 처리 순서가 회전 — 교차 엔티티 상호작용(분리/플로우필드/충돌 타이브레이크) 순서 민감성만 변화. 보상/중복/skip 과 무관."
+  },
+  "ownedWrites": [
+    "tools/team-followup-20261001/ENEMY/roundrobin-order-effects.fixture.mjs",
+    "tools/team-followup-20261001/ENEMY/roundrobin-order-effects-receipt.json",
+    "tools/team-followup-20261001/ENEMY/roundrobin-order-effects-result.md"
+  ],
+  "deliverableShas": {
+    "fixture": "73a7f3234a5695bcbabfb74100e15b49c609b437ca3ba9624d1b8e1919a2efa3"
+  },
+  "commands": [
+    "node --check roundrobin-order-effects.fixture.mjs → exit0",
+    "node roundrobin-order-effects.fixture.mjs → 6 PASS / 0 FAIL"
+  ],
+  "verification": {
+    "fixture": "6 PASS / 0 FAIL (가상·소형)",
+    "minimalFixNeeded": false,
+    "productionPatchProduced": false,
+    "currentCandidateUnchanged": "roundrobin-boundary.{game,game-easy-test}.patch (하드닝본) 가 여전히 적용 대기 후보",
+    "productionChange": 0, "git": 0, "queue": 0, "newSession": 0, "sharedDocsWrite": 0,
+    "userGameTab1573846373": "입력·리로드·닫기·계측 0",
+    "macBuildOrLoad": 0, "perTickGuaranteeClaim": 0, "fpsClaim": 0
+  },
+  "limits": {
+    "intraTickOrderSensitivity": "교차 엔티티 순서 민감성(분리/플로우필드/충돌)은 결정적 미니모델로 '보상/중복/skip 무영향'만 확인. 실게임 시각적 타이브레이크 미세차는 라이브 육안(QA) 영역 — 결함 아님.",
+    "noLive": "실게임 실행/계측/육안 미수행(QA 소유). FPS/성능 주장 없음."
+  },
+  "handoff": "root/QA: 회전은 보상/중복/skip 정확성에 결함 없음(생산 수정 불요). 적용 후보는 기존 하드닝본 유지. mid-tick 신생아 1-tick 이연·intra-tick 순서민감성은 benign order-effect 로 기록. 한 건 종료·인계.",
+  "blocker": null
+}

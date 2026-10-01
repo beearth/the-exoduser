@@ -1,0 +1,23 @@
+--- a/game-easy-test.html
++++ b/game-easy-test.html
+@@ -31932,9 +31932,17 @@
+   if(!G._eTierFrame)G._eTierFrame=0;G._eTierFrame++;
+   const _eUpdateStart=performance.now();
+   const _eo=_gameFrame&1; // 짝홀 프레임 분산
+-  for(let _ei=0;_ei<ens.length;_ei++){const e=ens[_ei];
+-    // 타임버짓: 8ms 초과하면 비보스 스킵
+-    if(_ei%(IS_MOBILE?8:32)===0&&_ei>0&&!e.ib&&performance.now()-_eUpdateStart>(IS_MOBILE?8:12))break;
++  // ENEMY-F06: 라운드로빈 루프 시작 인덱스 회전 — 배열 꼬리 '영구' 기아 분산(매tick 처리 보장 아님).
++  //   엔티티 접근·LOD parity 는 원 배열 인덱스 _ei 유지. _k=이번 tick 처리 순번(타임버짓 카운터).
++  //   시작 인덱스는 음수/2^31 넘침/비정상값에도 [0,_elen) 로 안전 정규화(|0 금지, 다음 tick self-heal).
++  //   보호계약 불변: 예산 12/8ms·공격티켓 미도입·soft-cap 무조건활성 0. 과부하 지속 잔여 gap 은 QA soft-cap 과제.
++  const _elen=ens.length;
++  const _rr0=G._eLoopStart;
++  const _eStart=(_elen>0&&typeof _rr0==='number'&&Number.isFinite(_rr0))?(((Math.floor(_rr0)%_elen)+_elen)%_elen):0;
++  G._eLoopStart=_elen>0?((_eStart+1)%_elen):0; // 다음 tick 1칸 회전 → 모든 인덱스가 _elen tick 내 1회 선두
++  for(let _k=0;_k<_elen;_k++){const _ei=(_eStart+_k)%_elen;const e=ens[_ei];if(!e)continue;
++    // 타임버짓: 예산 초과 시 비보스에서 중단(이번 tick 미처리분은 다음 tick 회전으로 선두 승격)
++    if(_k%(IS_MOBILE?8:32)===0&&_k>0&&!e.ib&&performance.now()-_eUpdateStart>(IS_MOBILE?8:12))break;
+     if(e.alive){
+       // 화톳불 배리어: 중심이 아니라 몬스터 몸 전체가 결계 밖에 있도록 즉시 투영
+       if(_bfActive&&!e.ib)_pushOutsideBonfire(e,_bf,_bonfireEnemyClearance(e));

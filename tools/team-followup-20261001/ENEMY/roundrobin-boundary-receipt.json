@@ -1,0 +1,81 @@
+{
+  "taskId": "ENEMY-20261002-ROUNDROBIN-BOUNDARY",
+  "title": "f06 라운드로빈 시작인덱스 음수/오버플로 경계 반례 검수 + 최소 보강 후보",
+  "team": "ENEMY",
+  "role": "원담당(owner). root 지적(음수/signed-32 넘침 %→음수→유효 꼬리 누락) 실행 검증 + 하드닝.",
+  "cli": "Claude Code",
+  "model": "claude-opus-4-8",
+  "sessionId": "ddbd64be-975a-458e-a020-c09749281f5b",
+  "sessionIdSource": "scratchpad 경로의 세션 UUID로 추정. CLI가 직접 보고한 값 아님",
+  "utc": {
+    "receivedAt": "2026-10-01T16:10:00Z",
+    "firstReadAt": "2026-10-01T16:11:00Z",
+    "firstEditAt": "2026-10-01T16:14:00Z",
+    "reviewedAt": "2026-10-01T16:17:00Z",
+    "completedAt": "2026-10-01T16:18:00Z"
+  },
+  "duplicateCheck": "ENEMY/roundrobin-boundary-* 신규(task.md 외 없음). G._eLoopStart 식별자 production 사용 0건. 중복 아님.",
+  "readInputs": [
+    "tools/team-followup-20261001/ENEMY/roundrobin-boundary-task.md",
+    "AGENTS.md / docs/9적ai패턴디자인/ENEMY_AI_TEAM_MASTER.md (이전 세션 기 확인)",
+    "tools/team-followup-20261001/ENEMY/f06-source-roundrobin.game.patch (원 후보 — 읽기전용, 코드 추출용)",
+    "game.html / game-easy-test.html 메인 적 루프 헤더 (읽기전용)"
+  ],
+  "preserved": {
+    "f06GamePatchSha256": "7a00fa390d8660c5822fe077459a6de58d85c465d5f1868091adb977c04498af",
+    "f06FixtureSha256": "71d236add9100f712a4a2fb68b3e9b8bd6930cf3032acf921b2486767edf1f88",
+    "note": "원 f06-source-* 미수정(읽기전용 보존). 본 보강은 별도 roundrobin-boundary-* 로 제출."
+  },
+  "sourceAnchors": {
+    "gameSha256": "7631f5a083672124624e0b8dc22b0716d10c8815dbb1e6aee98a5e2e51299993",
+    "easySha256": "7d68b80afab131562266c39ea7d5631716d12861dbe7e7e2e4477550c15ec6a4",
+    "note": "game.html 은 공유 체크아웃에서 드리프트(이전 21235538→현 7631f5a0). 원 루프 헤더는 동일 유지, 보강 patch 는 현 파일에 재생성·dry-run 통과.",
+    "origLoopRegion": "tools/team-followup-20261001/ENEMY/roundrobin-boundary.before.txt (update() 적 루프 '함수' 원문)"
+  },
+  "bugVerifiedByExecution": {
+    "claim": "(G._eLoopStart|0)%_elen 는 음수/2^31 넘침/큰값에서 음수 _eStart → _ei<0 → if(!e)continue 가 유효 꼬리를 조용히 누락(F06 결함 재발)",
+    "negEStartStarts": { "-1": -1, "2147483648": -8, "1e21": -24 },
+    "effect": "N=40 에서 꼬리 인덱스 39 미방문, coverage<40. 음수 _ei 는 hole 가드에 가려져 조용함",
+    "staleButNonNeg": { "4294967296(2^32)": "|0→0 (회전위치 상실)", "-2147483649": "|0→+2147483647 (점프)" }
+  },
+  "hardening": {
+    "change": "(G._eLoopStart|0) 제거 → typeof+Number.isFinite 가드 후 (((Math.floor(_rr0)%_elen)+_elen)%_elen) 비음수 fold. _eStart∈[0,_elen) 보장 → _ei∈[0,_elen) 항상 유효. 다음 tick G._eLoopStart self-heal.",
+    "unchanged": "LOD parity(_ei 기준)·예산 12/8ms·_k 카운터·if(!e)continue hole 가드·updateE·바디 전부 불변",
+    "fixturePatchParity": "fixture HARDENED _eStart 식 == patch 추가 _eStart 식 (byte 동일)"
+  },
+  "ownedWrites": [
+    "tools/team-followup-20261001/ENEMY/roundrobin-boundary.fixture.mjs",
+    "tools/team-followup-20261001/ENEMY/roundrobin-boundary.before.txt",
+    "tools/team-followup-20261001/ENEMY/roundrobin-boundary.game.patch",
+    "tools/team-followup-20261001/ENEMY/roundrobin-boundary.game-easy-test.patch",
+    "tools/team-followup-20261001/ENEMY/roundrobin-boundary-receipt.json",
+    "tools/team-followup-20261001/ENEMY/roundrobin-boundary-result.md"
+  ],
+  "deliverableShas": {
+    "fixture": "6382c0566f638a44486da321667fd00cb3fedb06453ec8db48868396993dbe7a",
+    "beforeTxt": "f379376ebef4aa916d742da8846488effec92dc0c8b8cfcca31bcf2df08aa059",
+    "gamePatch": "3f27b6504482c19d62f2fec9b2a8c098ecad8c85b32aca25e627f80319a2421f",
+    "easyPatch": "70f82e9681abcae4d468972555976a91270654c09a5d7132e89bfed201bc8cd3"
+  },
+  "commands": [
+    "node --check roundrobin-boundary.fixture.mjs → exit0",
+    "node roundrobin-boundary.fixture.mjs → 8 PASS / 0 FAIL",
+    "patch --dry-run -p1 < roundrobin-boundary.game.patch → clean (no write)",
+    "patch --dry-run -p1 < roundrobin-boundary.game-easy-test.patch → clean (no write)"
+  ],
+  "verification": {
+    "fixture": "8 PASS / 0 FAIL (가상·소형): 반례 재현 + 보강 전인덱스 커버·self-heal + splice/spawn/LOD/보호계약",
+    "patchApplied": false,
+    "dryRunApplies": true,
+    "productionChange": 0,
+    "git": 0, "queue": 0, "newSessionOrAgent": 0, "sharedDocsWrite": 0,
+    "gameInputReloadMeasureClose": 0,
+    "cpuImprovementClaim": 0
+  },
+  "limits": {
+    "liveGate": "실게임 실행/계측/육안 미수행(QA 소유). 성능 개선 주장 없음.",
+    "softCapResidualGap": "지속 과부하 잔여 gap 은 여전히 QA soft-cap 결정 대상(본 보강은 커버리지 정확성만, 무조건 soft-cap 0)."
+  },
+  "handoff": "root/QA: roundrobin-boundary.{game,game-easy-test}.patch 는 f06 후보의 하드닝 대체본(-p1 clean). 적용 시 음수/오버플로/stale start 안전. 라이브 µs·soft-cap 결정은 QA. 한 건 종료·인계.",
+  "blocker": null
+}

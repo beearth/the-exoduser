@@ -1,0 +1,70 @@
+{
+  "taskId": "ENEMY-20261002-F06-SOURCE-CANDIDATE",
+  "title": "ENEMY-F06 배열 꼬리 기아 최소 source 후보(라운드로빈) + source-anchored fixture",
+  "team": "ENEMY",
+  "role": "원담당(owner). 승인된 ENEMY-F06의 실제 update 루프용 미적용 source 후보 작성.",
+  "terminal": "VS Code 기존 터미널 (ENEMY)",
+  "cli": "Claude Code",
+  "model": "claude-opus-4-8",
+  "sessionId": "ddbd64be-975a-458e-a020-c09749281f5b",
+  "sessionIdSource": "scratchpad 경로의 세션 UUID로 추정. CLI가 직접 보고한 값 아님",
+  "receivedAt": "2026-10-02T00:30:00+09:00",
+  "firstReadAt": "2026-10-02T00:31:00+09:00",
+  "firstEditAt": "2026-10-02T00:38:00+09:00",
+  "reviewedAt": "2026-10-02T00:42:00+09:00",
+  "completedAt": "2026-10-02T00:43:00+09:00",
+  "head": "727b095bd4495ecd882f2dcae162225f7afde8fc",
+  "duplicateCheck": "ENEMY/f06-source-* 기존 산출물 없음(신규). G._eLoopStart 식별자 game.html/easy 사용 0건 — 적용/진행 중 후보 없음. 중복 아님.",
+  "readInputs": [
+    "tools/team-followup-20261001/ENEMY/OWNER_IMPL_20261002.md",
+    "docs/9적ai패턴디자인/ENEMY_AI_TEAM_MASTER.md (§3-C ENEMY-F06 + QA 인계란)",
+    "test/enemyTimeBudgetStarvation.test.js (기존 합성 하니스 — 개념 재복제 아님)",
+    "game.html (메인 적 루프 33114~33189, break 33118, 타이머 33143~, LOD 33172~ / 읽기전용)",
+    "game-easy-test.html (동일 루프 31932~ / 읽기전용)"
+  ],
+  "sourceAnchors": {
+    "gameSha256": "21235538c9766a28b04dcf529aed9883a8aa11bdbfef8e9e2ce35d5cc927c5cf",
+    "easySha256": "4c408f1e7b57210900ddfa8a0646502f91b6a0bbc798a24338eb159cb613d874",
+    "loopHeaderBothFilesIdentical": true,
+    "breakSignature": "_ei%(IS_MOBILE?8:32)===0&&_ei>0&&!e.ib&&performance.now()-_eUpdateStart>(IS_MOBILE?8:12))break",
+    "lodParityKey": "_ei (원 배열 인덱스) — (G._eTierFrame&1|3|7)===(_ei&1|3|7)"
+  },
+  "ownedWrites": [
+    "tools/team-followup-20261001/ENEMY/f06-source-roundrobin.fixture.mjs",
+    "tools/team-followup-20261001/ENEMY/f06-source-roundrobin.game.patch",
+    "tools/team-followup-20261001/ENEMY/f06-source-roundrobin.game-easy-test.patch",
+    "tools/team-followup-20261001/ENEMY/OWNER_IMPL_20261002-receipt.json",
+    "tools/team-followup-20261001/ENEMY/OWNER_IMPL_20261002-result.md"
+  ],
+  "deliverables": {
+    "fixture": { "path": "tools/team-followup-20261001/ENEMY/f06-source-roundrobin.fixture.mjs", "sha256": "71d236add9100f712a4a2fb68b3e9b8bd6930cf3032acf921b2486767edf1f88" },
+    "gamePatch": { "path": "tools/team-followup-20261001/ENEMY/f06-source-roundrobin.game.patch", "sha256": "7a00fa390d8660c5822fe077459a6de58d85c465d5f1868091adb977c04498af", "target": "game.html", "applied": false, "dryRunApplies": true },
+    "easyPatch": { "path": "tools/team-followup-20261001/ENEMY/f06-source-roundrobin.game-easy-test.patch", "sha256": "27adbf99a9cf2cf472a38162d6508f08e3a4749a1665aa7cc5cf3b28da3fdca6", "target": "game-easy-test.html", "applied": false, "dryRunApplies": true }
+  },
+  "commands": [
+    "node --check f06-source-roundrobin.fixture.mjs  → exit0",
+    "node f06-source-roundrobin.fixture.mjs  → 9 PASS / 0 FAIL",
+    "patch --dry-run -p1 < f06-source-roundrobin.game.patch  → 'patching file game.html' (clean, no write)",
+    "patch --dry-run -p1 < f06-source-roundrobin.game-easy-test.patch  → 'patching file game-easy-test.html' (clean, no write)"
+  ],
+  "verification": {
+    "fixture": "9 PASS / 0 FAIL (가상시계·소형 N=40·소수 tick)",
+    "reproOriginal": "고정 start: 꼬리 보스 처리 0/60 tick(영구 기아 재현)",
+    "candidate": "회전: 꼬리 보스 46/60 처리·14 스킵·maxGap 8 tick(≤N, 영구 아님). per-tick 보장 아님 명시.",
+    "lodParity": "원 배열 인덱스 _ei 유지(방문순서만 회전)",
+    "boundaries": "빈배열/stale start/reset/NaN|0/hole(if(!e)continue) 전부 크래시 없음",
+    "protection": "예산 12/8ms 불변·공격티켓 미도입·soft-cap 무조건활성 0(코드 기준)",
+    "productionChange": 0,
+    "git": "add/commit/push 0",
+    "newSessionOrAgent": 0,
+    "otherTeamMessages": 0,
+    "perfImprovementClaim": 0
+  },
+  "limits": {
+    "liveGameGate": "실게임 고밀도 전투 육안 '근접/보스 동결' 재확인·실측 µs 미수행(QA 소유). 성능 개선 주장 안 함.",
+    "softCapResidualGap": "지속 과부하의 잔여 gap(최대 ~N tick) 해소는 QA 소유 soft-cap 과제. 본 후보는 무조건 활성화하지 않음.",
+    "patchNotApplied": "game.html/easy 직접 미수정(읽기전용, root/QA 소유). dry-run 적용성만 확인."
+  },
+  "handoff": "root/QA: 두 patch는 -p1 로 각 파일에 깨끗이 적용됨(검증). 적용 시 updateE·LOD 바디 불변, 루프 헤더만 회전. 라이브 µs·육안 검수와 soft-cap 결정은 QA가 수행. 안전 후보 성립 — 정책 임의확정 없음(round-robin=영구기아 분산, per-tick 비보장).",
+  "blocker": null
+}

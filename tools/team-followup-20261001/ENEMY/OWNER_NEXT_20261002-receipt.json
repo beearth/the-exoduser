@@ -1,0 +1,72 @@
+{
+  "taskId": "ENEMY-TICK-UNKNOWN-FIX-OWNER-INTEGRATION",
+  "title": "검수된 tick-health 수정의 원담당 probe 경로 인수(owner-integration)",
+  "team": "ENEMY",
+  "role": "원담당(owner) 인수. ITEM 지원팀 검수본을 원 probe 경로로 통합.",
+  "terminal": "VS Code 기존 터미널 (ENEMY)",
+  "cli": "Claude Code",
+  "model": "claude-opus-4-8",
+  "sessionId": "ddbd64be-975a-458e-a020-c09749281f5b",
+  "sessionIdSource": "scratchpad 경로의 세션 UUID로 추정. CLI가 직접 보고한 값 아님",
+  "receivedAt": "2026-10-02T00:14:00+09:00",
+  "firstReadAt": "2026-10-02T00:14:00+09:00",
+  "firstEditAt": "2026-10-02T00:17:00+09:00",
+  "completedAt": "2026-10-02T00:18:30+09:00",
+  "status": "done-patch-and-regression",
+  "reviewedFixBaseHead": "8d221540594cddebcb9f73fd785f3f82df631268",
+  "readOnlyInputs": [
+    "tools/team-followup-20261001/ENEMY/et3-probe.fixed.js",
+    "tools/team-followup-20261001/ITEM/enemy-support-probe.js",
+    "tools/team-followup-20261001/ITEM/enemy-support-tick.test.mjs",
+    "docs/0마스터플랜/mac-resume-20261001/vscode-dispatch/SUPPORT-root-review.md"
+  ],
+  "ownedWrites": [
+    "tools/team-followup-20261001/ENEMY/owner-integration-et3-probe.patch",
+    "tools/team-followup-20261001/ENEMY/owner-integration-et3-probe.fixed.js",
+    "tools/team-followup-20261001/ENEMY/owner-integration-tick.test.mjs",
+    "tools/team-followup-20261001/ENEMY/OWNER_NEXT_20261002-receipt.json",
+    "tools/team-followup-20261001/ENEMY/OWNER_NEXT_20261002-result.md"
+  ],
+  "deliverables": {
+    "acceptancePatch": {
+      "path": "tools/team-followup-20261001/ENEMY/owner-integration-et3-probe.patch",
+      "sha256": "4624d5e32b4adb82d44e79367bcdaf97f3db43b576de161be1cb2d62f7b67831",
+      "target": "tools/team-followup-20261001/ENEMY/et3-probe.fixed.js",
+      "dryRunApplies": true,
+      "appliedToRealOwnerFile": false,
+      "note": "원 probe 파일에는 적용하지 않음(소유 밖). dry-run(patch --dry-run -p1) 깨끗이 적용 확인. 실제 적용은 root/총괄 통합 시."
+    },
+    "integratedPreview": {
+      "path": "tools/team-followup-20261001/ENEMY/owner-integration-et3-probe.fixed.js",
+      "sha256": "92cbecd7cb38ad13b83cc5cc00938dcb69e8687de9c36fa38f0046708bd5f1a8",
+      "identicalToReviewed": "tools/team-followup-20261001/ITEM/enemy-support-probe.js (sha256 동일) — 검수 로직 재작성 없이 그대로 인수"
+    },
+    "regression": {
+      "path": "tools/team-followup-20261001/ENEMY/owner-integration-tick.test.mjs",
+      "sha256": "f6cc3c4c12ae692d8d1f0df9033ce9c618c837620ae8aeba2fe6143b320703a1"
+    }
+  },
+  "commands": [
+    "node --check owner-integration-et3-probe.fixed.js  → exit0",
+    "node --check owner-integration-tick.test.mjs  → exit0",
+    "patch --dry-run -p1 < owner-integration-et3-probe.patch  → 'patching file ... et3-probe.fixed.js' (clean, no write)",
+    "node --test owner-integration-tick.test.mjs  → 17 pass / 0 fail",
+    "node (통합본 대상 기존 9 mock 무회귀)  → 9 PASS / 0 FAIL"
+  ],
+  "verification": {
+    "regressionTests": "17 pass / 0 fail",
+    "noRegressionMock": "9 PASS / 0 FAIL (통합본 대상)",
+    "coreContract": "tick 없는 451 rAF → INCONCLUSIVE(physical_tick_unverified), FAIL_NO_FIRE 승격 안 함. missing/nonfinite/stalled/backward → INCONCLUSIVE. rAF↔물리tick 분리.",
+    "gameCodeChange": 0,
+    "git": "add/commit/push 0",
+    "newSessionOrAgent": 0,
+    "otherTeamMessages": 0
+  },
+  "limits": {
+    "realGameTickObservation": "미수행(root 실전측정 종료, 실게임 AI/tick 연결 검수 아님). 모의/정적까지만.",
+    "realOwnerFileEdit": "et3-probe.fixed.js 직접 미수정(소유 밖). patch로 제출."
+  },
+  "handoff": "root/총괄: owner-integration-et3-probe.patch를 ENEMY/et3-probe.fixed.js에 적용(-p1)하면 원담당 probe가 검수된 tick-health 거동을 갖는다. 실게임 verdict 산출은 여전히 QA 종료 인계 후.",
+  "blocker": null,
+  "duplicateCheck": "owner-integration-* 기존 산출물 없음(신규). 중복 실행 아님."
+}
