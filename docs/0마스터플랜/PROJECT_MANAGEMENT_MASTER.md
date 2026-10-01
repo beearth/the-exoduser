@@ -550,3 +550,8 @@ QA 분류34/34 및 관측기5검사, 정상 전투2회 기록·release 종료. �
 기존3장 우선예약 뒤 fire6,193,152px를 추가, 총61,683,832/64MP. 실제 GPU 전수RGBA24,772,608바이트0diff 및 같은texture/필터 확인. 실게임 기존warm146.9→0.0ms이나 별도bitmap업로드73.7ms가 남는다. 관련69검사·주석정정 후 집중58검사·guard PASS. 관측4wrapper 제거 뒤 짧은 정상입력 표본은0처치 자연사이므로 정상처치·독립QA·전체성능·패키지 게이트 미완료다. [정확한 계약·비용·잔여 게이트](mac-resume-20261001/Mac-불꽃-비동기준비.md).
 
 기존 Codex4팀 후속은 실제읽기/파일작성 확인, SOUND도 제출 후 root가4개 관측기 경계실패를 재현했다. SOUND 수정 지시는11:51:34Z 수신/38Z 실제Read 확인. ITEM에는RGB 차이 귀속을 다음 한 건으로 대기열 제출했고 수신/착수는 별도 확인한다. BUILD/UIUX/BALANCE는 후보완료와 실제런타임/정책/통합 게이트 대기를 구분한다. QA/ART/MAP/SKILL/ENEMY/ANIMVFX 6개 interactive 팀은 AX·화면 불일치/붙여넣기 timeout으로 아직미전달. 새세션·PC재가동0. [전달·수신·실제착수 분리 기록](mac-resume-20261001/vscode-dispatch/TEAM_UTILIZATION_20261001.json). 이 표는 스냅샷이며11팀 전체가 동시에 실행중이라는 주장이 아니다.
+
+
+### 18.25 기존 팀 실제 재개와 잠금으로 남은 ENEMY
+
+JSONL 교차확인으로 QA/ART/SKILL/MAP/ANIMVFX 후속 수신과 실제 Read를 확인했다. 기존 Codex4/SOUND까지10팀의 후속 실제착수 증거가 있으며 동시실행10팀을 뜻하지 않는다. ENEMY는 새 수신 없음이며 원격 도구가 Mac locked를 명시해 직접 잠금해제를 요청했다. SOUND 후보18검사 PASS·실제설치미실행, ITEM native RGB차이귀속 완료·Chrome미인수, QA 독립8 및 URL 보강 root17 PASS. BUILD는 공식도움말 경로 조사 후속을 지원CLI 대기열에 전달·12:03:08Z 실제착수 확인했다. 원격 FIRE 체크포인트 b19b9105 SHA 대조 완료. [팀별 실제시각·남은단계·정정 영수증](mac-resume-20261001/vscode-dispatch/FOLLOWUP_RECEIPT.md).

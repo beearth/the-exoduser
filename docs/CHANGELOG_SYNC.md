@@ -51727,3 +51727,8 @@ QA-WARM-IDLE-01: game.html 일반Image3장 비동기 warm 연결, 컨텍스트 j
 ## 2026-10-01 QA-WARM-FIRE-02 제한적 체크포인트
 
 기존3장 예약을 우선한 뒤 fire_burst_radial 6,193,152px를 같은64MP 안에서 준비한다. 실제 총61,683,832px. 전수 RGBA24,772,608바이트0diff, 실제 기존warm146.9→0.0ms이나 별도bitmap업로드73.7ms가 남는다. 관련69검사 및 주석정정 뒤 집중58검사/guard PASS. 관측4wrapper 정상입력 전 원복; 이번0처치 자연사로 정상처치·독립QA·전체FPS 인수는 미완료다. easy/패키지 미적용. [FIRE-02 계약·실측·미완료 게이트](0마스터플랜/mac-resume-20261001/Mac-불꽃-비동기준비.md).
+
+
+## 2026-10-01 후속 관측 후보 및 팀 수신 정정
+
+FIRE 독립8검사와 URL query17검사 인수, SOUND root canonical 관측기18검사 PASS·생산미적용. 기존10팀 후속실제착수 확인, ENEMY는Mac잠금으로미수신. [계약·정정·의존게이트](0마스터플랜/mac-resume-20261001/vscode-dispatch/FOLLOWUP_RECEIPT.md).

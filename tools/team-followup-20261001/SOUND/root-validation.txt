@@ -1,0 +1,26 @@
+✔ F1: getG 예외가 원 arena 실행을 막지 않음 (1.268875ms)
+✔ F2: phase/retry 증거 없으면 UNKNOWN, direct 추정 금지 (0.731666ms)
+✔ F3: phase4 전 seal 1회는 미완료(비-PASS) (0.318625ms)
+✔ F4: episodes 상한(이벤트와 함께) (0.375875ms)
+✔ 보스문 정상 수정본: entrance만 → PASS (0.301084ms)
+✔ 보스문 미수정: seal+entrance → FAIL_DUPLICATE (0.299875ms)
+✔ 재도전/직행: seal 1회 PASS (0.880041ms)
+✔ this/args/return/throw 보존 — playSample (0.700167ms)
+✔ this/args/return/throw 보존 — _enterBossArena (0.31775ms)
+✔ bounded events + dropped, 집계 유지 (0.345375ms)
+✔ frame 기본 null, getFrame 주입 시 사용 (0.621458ms)
+✔ double-install/ cleanup / reinstall / 다른 wrapper 보존 (0.6465ms)
+✔ observer state reader failure must not suppress original arena call (1.192834ms)
+✔ missing phase and retry evidence must stay UNKNOWN (0.4555ms)
+✔ one early seal before phase4 is incomplete, not a PASS (0.317375ms)
+✔ episode storage must be bounded along with event storage (0.37475ms)
+✔ invalid capacities fail before installing any wrapper (2.92875ms)
+✔ nonzero or nonfinite phase is not proof of direct entry (1.115458ms)
+ℹ tests 18
+ℹ suites 0
+ℹ pass 18
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 39.762125

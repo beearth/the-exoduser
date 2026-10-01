@@ -1,0 +1,49 @@
+{
+  "taskId": "QA-FIRE-BOUNDARY-REVIEW",
+  "team": "QA",
+  "session": "88c3f903-ece5-4640-8b0c-86feaaca0e53",
+  "terminal": "VS Code 기존 터미널 1 (QA)",
+  "cli": "Claude Code",
+  "model": "claude-opus-4-8",
+  "receivedAt": "2026-10-01T20:49:00+09:00",
+  "firstReadAt": "2026-10-01T20:49:30+09:00",
+  "startedAt": "2026-10-01T20:51:00+09:00",
+  "head": "fe85bb08",
+  "status": "done-fire-boundary-review",
+  "duplicateCheck": "root가 이미 test/warmImageAsyncHandoff.test.js(공용, 수정금지)에 fire 계약 4건 추가, test/warmFireObserver.test.js 신규. 중복이 아니라 독립 검토로 보강 — 소유 폴더에 7경계 매트릭스 회귀를 별도 작성",
+  "ownedPaths": [
+    "tools/team-followup-20261001/QA/fire-boundary-regression.mjs",
+    "docs/0마스터플랜/mac-resume-20261001/vscode-dispatch/QA-next-result.md",
+    "docs/0마스터플랜/mac-resume-20261001/vscode-dispatch/QA-next-receipt.json"
+  ],
+  "doNotModify": [
+    "game.html",
+    "test/warmImageAsyncHandoff.test.js",
+    "test/warmFireObserver.test.js",
+    "총괄MD",
+    "타팀 파일"
+  ],
+  "gate": {
+    "newRealMeasurement": "blocked (QA-game-release.json released=true 부재)",
+    "game/server/browser/listen/imagegen/encode/build/newsession/PC/git": "모두 금지 — 작은 테스트만"
+  },
+  "findings": {
+    "fireAsset": "fire_burst_radial.webp 3584x1728 = 6,193,152 px",
+    "budget": "_TEXHOT_BUDGET_PX=64e6. seed 32,204,920 + 3 primary(13,369,344+5,308,416+4,608,000) + fire 6,193,152 = 61,683,832, 여유 2,316,168",
+    "rootTestsIndependentRun": "16/16 PASS"
+  },
+  "nextAction": "7경계(absent/late/cache/query/context/failure/first-use) 매트릭스 회귀 + 판정표 작성, 실제 game.html 함수 추출로 검증",
+  "blocker": null,
+  "result": {
+    "verdict": "수정 불필요 — 7경계(absent/late/cache/query/context/failure/first-use)+budget 8/8 PASS",
+    "independentRegression": "tools/team-followup-20261001/QA/fire-boundary-regression.mjs (game.html 원문 추출, 8/8, exit0)",
+    "rootSharedTests": "test/warmImageAsyncHandoff.test.js + warmFireObserver.test.js 16/16 PASS (미수정)",
+    "patch": "없음(결함 미발견)",
+    "limitations": [
+      "absent/late primary→세션내 fire 미프리워밍, lazy fallback(의도)",
+      "실패/stale px 미환불이나 61,683,832≤64MP라 영향없음, fire-last 우선순위"
+    ],
+    "noModify": "game.html / 공용 test / 총괄MD / 타팀 파일 변경0",
+    "gates": "신규실측0, 게임/서버/브라우저/빌드/PC/Git 0, PC329ms·ring97ms 해결주장 없음"
+  }
+}

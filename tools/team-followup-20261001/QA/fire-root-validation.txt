@@ -1,0 +1,49 @@
+QA-FIRE-BOUNDARY-REVIEW 독립 회귀 (read-only, game.html 원문 추출)
+
+판정표
+────────────────────────────────────────────────────────────────────────────────────────────
+  PASS  baseline       present: 시드+3primary 뒤 fire 예약, 총합 64MP 이내
+        └ fire 예약 pending, 총 61,683,832 / 여유 2,316,168 — 예산 내 admit
+  PASS  absent         primary 부재 → fire 미예약(동기 fallback 유지)
+        └ fire 미예약 → 부재 primary 예산 보존, fire 는 첫 사용 lazy 경로
+  PASS  late           fire 선수집(게이트 차단) → primary 예약 후 deferred 패스에서 예약
+        └ 선수집 시 차단, primary 예약 후 deferred 패스에서 fire 예약 (수집 순서 역전 대응)
+  PASS  cache          primary 캐시(업로드)됨 → fire 예약 허용
+        └ primary 캐시 충족 → fire 예약 (추가 primary 예약 불필요)
+  PASS  query          primary 라이브 pending job 질의 → fire 예약 허용
+        └ primary 라이브 job(context 일치, status≠stale) → 게이트 통과
+  PASS  context        GL 복구 전 primary job(context 불일치) → fire 차단
+        └ primary job.context ≠ 현 _texBySrc → 게이트 차단(복구 후 재예약까지 보류)
+  PASS  failure        primary 실패(failed) → fire 예약 허용, 예산 내
+        └ 실패 primary 는 stale 아님 → 게이트 통과, px 미환불이나 총합 61,683,832 ≤ 64MP
+  PASS  budget-reject  잔여 예산 부족 → fire 미예약(첫 사용 동기 fallback)
+        └ 게이트 통과해도 _texPrePx+px>budget → fire 미예약, 첫 사용 lazy 업로드
+────────────────────────────────────────────────────────────────────────────────────────────
+8/8 경계 통과
+
+경계: 이 회귀는 예약·예산 로직만 검증. GPU/표시FPS/실화면/PC329ms/ring97ms 해결 주장 없음. 새 실측 release 없음.
+✔ identity observation preserves this/return and does not enqueue or change gameplay (1.035583ms)
+✔ exceptions, reinstalls, and externally replaced bindings are preserved (0.792834ms)
+✔ bounded buffer reports drops and untrusted events do not begin normal input (2.403667ms)
+✔ upload records absolute URL and preserves arguments/return without adding jobs (0.322125ms)
+✔ target admission before warm index, waits for decoded upload then adopts once (4.549417ms)
+✔ duplicate URLs share one ticket and budget; gameplay-first cache avoids duplicate upload (1.995084ms)
+✔ HTTP/decode failure and timeout retain synchronous warm fallback without poisoning success before draw (5.610292ms)
+✔ context reset disposes queued/in-flight bitmaps exactly once; old work never uploads to restored context (2.183167ms)
+✔ in-flight reservation enforces decoded queue 4 and concurrency 2 across batch completions (2.093666ms)
+✔ unsupported renderer/API, Canvas, non-target, foreign origin and budget keep original path (8.236ms)
+✔ lost context never marks target warmed; queue replacement receives a fresh timeout (1.671292ms)
+✔ failed upload still closes bitmap and advances job failure status (2.594792ms)
+✔ fire cannot preempt a missing or budget-rejected primary, even if it is collected first (3.676792ms)
+✔ measured dimensions fit 64MP after original seed and three primary reservations (1.865875ms)
+✔ cached primaries permit fire without extra primary reservation; insufficient residual budget falls back (1.757875ms)
+✔ deferred pass never admits fire outside capped queue or revives stale primary reservations (2.032417ms)
+✔ primary query variants conservatively preserve fallback; fire query variant keeps its own URL cache key (1.8935ms)
+ℹ tests 17
+ℹ suites 0
+ℹ pass 17
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 77.560166

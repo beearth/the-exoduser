@@ -1,6 +1,6 @@
 {
-  "at": "2026-10-01T11:53:42.703316+00:00",
-  "root": "fire run closed; normal-kill gate pending; six interactive teams blocked awaiting native focus recovery",
+  "at": "2026-10-01T12:04:14.699144+00:00",
+  "root": "game closed; native Mac locked; manual unlock requested; scoped fire checkpoint pushed",
   "teams": [
     {
       "team": "QA",
@@ -9,11 +9,17 @@
       "task": "QA-FIRE-BOUNDARY-REVIEW",
       "instruction": "/Users/fordeargamers/Projects/exoduser-migration-20261001/tools/team-followup-20261001/QA/NEXT_TASK.md",
       "stateBefore": "idle/completed verified",
-      "dispatch": "not_delivered",
+      "dispatch": "received",
       "exists": true,
-      "receivedAt": null,
+      "receivedAt": "2026-10-01T11:48:54.892Z",
       "startedAt": null,
-      "blocker": "Native VS Code AX selects Terminal 1 but screenshot remains split-terminal view; paste timeout waiting for clipboard read. No Return submitted. Existing interactive CLI attach unsupported."
+      "firstActualAction": {
+        "at": "2026-10-01T11:49:01.524Z",
+        "tool": "Read",
+        "input": "{'file_path': '/Users/fordeargamers/Projects/exoduser-migration-20261001/tools/team-followup-20261001/QA/NEXT_TASK.md'}"
+      },
+      "status": "independent8/root17 PASS; report timing and query/late claims corrected in root receipt",
+      "completedAt": "2026-10-01T11:58:36.004Z"
     },
     {
       "team": "ENEMY",
@@ -22,11 +28,12 @@
       "task": "ENEMY-TICK-UNKNOWN-FIX",
       "instruction": "/Users/fordeargamers/Projects/exoduser-migration-20261001/tools/team-followup-20261001/ENEMY/NEXT_TASK.md",
       "stateBefore": "idle/completed verified",
-      "dispatch": "not_delivered",
+      "dispatch": "not_received",
       "exists": true,
       "receivedAt": null,
       "startedAt": null,
-      "blocker": "Native VS Code AX selects Terminal 1 but screenshot remains split-terminal view; paste timeout waiting for clipboard read. No Return submitted. Existing interactive CLI attach unsupported."
+      "blocker": "Native tool explicitly reported Mac locked; manual unlock required. No new session/hidden IPC used.",
+      "status": "blocked by locked Mac"
     },
     {
       "team": "MAP",
@@ -35,11 +42,17 @@
       "task": "MAP-M5-EVIDENCE-GATE",
       "instruction": "/Users/fordeargamers/Projects/exoduser-migration-20261001/tools/team-followup-20261001/MAP/NEXT_TASK.md",
       "stateBefore": "idle/completed verified",
-      "dispatch": "not_delivered",
+      "dispatch": "received",
       "exists": true,
-      "receivedAt": null,
+      "receivedAt": "2026-10-01T11:59:00.273Z",
       "startedAt": null,
-      "blocker": "Native VS Code AX selects Terminal 1 but screenshot remains split-terminal view; paste timeout waiting for clipboard read. No Return submitted. Existing interactive CLI attach unsupported."
+      "firstActualAction": {
+        "at": "2026-10-01T12:00:50.646Z",
+        "tool": "Read",
+        "input": "{'file_path': '/Users/fordeargamers/Projects/exoduser-migration-20261001/tools/team-followup-20261001/MAP/NEXT_TASK.md'}"
+      },
+      "status": "actual command/read started",
+      "completedAt": null
     },
     {
       "team": "ART",
@@ -48,11 +61,17 @@
       "task": "ART-WA24-DELTA-CANDIDATE",
       "instruction": "/Users/fordeargamers/Projects/exoduser-migration-20261001/tools/team-followup-20261001/ART/NEXT_TASK.md",
       "stateBefore": "idle/completed verified",
-      "dispatch": "not_delivered",
+      "dispatch": "received",
       "exists": true,
-      "receivedAt": null,
+      "receivedAt": "2026-10-01T11:56:40.550Z",
       "startedAt": null,
-      "blocker": "Native VS Code AX selects Terminal 1 but screenshot remains split-terminal view; paste timeout waiting for clipboard read. No Return submitted. Existing interactive CLI attach unsupported."
+      "firstActualAction": {
+        "at": "2026-10-01T11:56:49.754Z",
+        "tool": "Read",
+        "input": "{'file_path': '/Users/fordeargamers/Projects/exoduser-migration-20261001/tools/team-followup-20261001/ART/NEXT_TASK.md'}"
+      },
+      "status": "actual command/read started",
+      "completedAt": null
     },
     {
       "team": "SKILL",
@@ -61,11 +80,17 @@
       "task": "SKILL-ICE-CANCEL-EDGE",
       "instruction": "/Users/fordeargamers/Projects/exoduser-migration-20261001/tools/team-followup-20261001/SKILL/NEXT_TASK.md",
       "stateBefore": "idle/completed verified",
-      "dispatch": "not_delivered",
+      "dispatch": "received",
       "exists": true,
-      "receivedAt": null,
+      "receivedAt": "2026-10-01T11:58:04.859Z",
       "startedAt": null,
-      "blocker": "Native VS Code AX selects Terminal 1 but screenshot remains split-terminal view; paste timeout waiting for clipboard read. No Return submitted. Existing interactive CLI attach unsupported."
+      "firstActualAction": {
+        "at": "2026-10-01T11:58:13.031Z",
+        "tool": "Read",
+        "input": "{'file_path': '/Users/fordeargamers/Projects/exoduser-migration-20261001/tools/team-followup-20261001/SKILL/NEXT_TASK.md'}"
+      },
+      "status": "actual command/read started",
+      "completedAt": null
     },
     {
       "team": "ANIMVFX",
@@ -74,27 +99,34 @@
       "task": "ANIM-HIGHHZ-LIFETIME-GATE",
       "instruction": "/Users/fordeargamers/Projects/exoduser-migration-20261001/tools/team-followup-20261001/ANIMVFX/NEXT_TASK.md",
       "stateBefore": "idle/completed verified",
-      "dispatch": "not_delivered",
+      "dispatch": "received",
       "exists": true,
-      "receivedAt": null,
+      "receivedAt": "2026-10-01T11:59:42.660Z",
       "startedAt": null,
-      "blocker": "Native VS Code AX selects Terminal 1 but screenshot remains split-terminal view; paste timeout waiting for clipboard read. No Return submitted. Existing interactive CLI attach unsupported."
+      "firstActualAction": {
+        "at": "2026-10-01T12:00:26.682Z",
+        "tool": "Read",
+        "input": "{'file_path': '/Users/fordeargamers/Projects/exoduser-migration-20261001/tools/team-followup-20261001/ANIMVFX/NEXT_TASK.md'}"
+      },
+      "status": "actual command/read started",
+      "completedAt": null
     },
     {
       "team": "BUILD",
       "sessionId": "01a0f6e6-2e4c-7322-92d7-3aa309857856",
       "location": "T10",
-      "task": "BUILD-NW-HANDOFF-BUNDLE",
+      "task": "BUILD-CLAUDE-CONTROL-DISCOVERY",
       "instruction": "/Users/fordeargamers/Projects/exoduser-migration-20261001/tools/team-followup-20261001/BUILD/NEXT_TASK.md",
       "stateBefore": "idle/completed verified",
       "dispatch": "received",
       "exists": true,
-      "receivedAt": "2026-10-01T11:45:12Z",
-      "startedAt": "2026-10-01T11:45:12Z",
-      "status": "candidate complete; runtime/integration gates pending",
-      "startEvidence": "NEXT_TASK·직전rootReview·최신팀MD 읽기; 한정 runtime find 실행. 이전 준비 완료/실행 게이트 대기 확인, 중복 실환경 실행 없음",
+      "status": "도움말 조사 완료 / interactive 전달 지원 미확인",
+      "startEvidence": "기존 완료result/receipt/NEXT_TASK 읽기; 동일 조사 산출 부재 확인; Claude 경로 조회",
       "receipt": "/Users/fordeargamers/Projects/exoduser-migration-20261001/docs/0마스터플랜/mac-resume-20261001/vscode-dispatch/BUILD-next-receipt.json",
-      "waitReason": "NW runtime absent in bounded lookup; actual package context validation pending"
+      "waitReason": "NW runtime absent in bounded lookup; actual package context validation pending",
+      "previousTask": "BUILD-NW-HANDOFF-BUNDLE",
+      "receivedAt": "2026-10-01T12:03:08Z",
+      "startedAt": "2026-10-01T12:03:08Z"
     },
     {
       "team": "UIUX",
@@ -119,18 +151,19 @@
       "task": "ITEM-RING-RGB-ATTRIBUTION",
       "instruction": "/Users/fordeargamers/Projects/exoduser-migration-20261001/tools/team-followup-20261001/ITEM/NEXT_TASK.md",
       "stateBefore": "idle/completed verified",
-      "dispatch": "queued",
+      "dispatch": "received",
       "exists": true,
-      "receivedAt": null,
-      "startedAt": null,
-      "status": "start not yet independently checked",
+      "receivedAt": "2026-10-01T11:51:57Z",
+      "startedAt": "2026-10-01T11:51:57Z",
+      "status": "completed_attribution_pending_chrome_acceptance",
       "startEvidence": "NEXT_TASK.md와 기존 ITEM 결과·후보·현재 생산 함수 읽기",
       "receipt": "/Users/fordeargamers/Projects/exoduser-migration-20261001/docs/0마스터플랜/mac-resume-20261001/vscode-dispatch/ITEM-next-receipt.json",
       "previous": {
         "task": "ITEM-RING-INTEGRATION-BUNDLE",
         "status": "completed_bundle_pending_runtime_gates"
       },
-      "queueMessageId": "01a0f74e-77b9-7bd3-ae28-d54aa6e46cf2"
+      "queueMessageId": "01a0f74e-77b9-7bd3-ae28-d54aa6e46cf2",
+      "firstAction": "기존 native Canvas 검사 소스 읽기; 동일 SHA PNG decode와 단계별 비교 설계"
     },
     {
       "team": "BALANCE",
@@ -167,7 +200,13 @@
           "file_path": "/Users/fordeargamers/Projects/exoduser-migration-20261001/tools/team-followup-20261001/SOUND/howl-submission-0.js"
         }
       },
-      "status": "correction in progress"
+      "status": "corrected submission reviewed; root canonical 18 tests pass; runtime not installed",
+      "completedAt": "2026-10-01T11:54:39.815Z"
     }
-  ]
+  ],
+  "remoteCheckpoint": {
+    "branch": "codex/mac-environment-20261001",
+    "sha": "b19b9105e58f4301e80bf32f8d8b64e648f1d888",
+    "verified": true
+  }
 }

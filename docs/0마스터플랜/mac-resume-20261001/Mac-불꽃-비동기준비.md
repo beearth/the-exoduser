@@ -1,6 +1,6 @@
 # QA-WARM-FIRE-02 불꽃 이미지 준비
 
-판정: **본편의 좁은 비동기 연결 구현 및 픽셀·준비 경로 확인. 정상 처치 회귀·독립 QA·전체 성능 인수는 미완료.** easy/패키지 미적용. 입력 HEAD `fe85bb0866b895b91adf82da54dfe48bb7f89f7f`, 실제 GPU/게임 측정 SHA256 `1fc7ac9a31eb516535bda52d300f1958bf5240f5620afbd4038d4ba7b36ecff5`. 이후 게임 변경은 context-loss 주석의 three→explicitly targeted 정정뿐이며 실행문 동일.
+판정: **본편의 좁은 비동기 연결 구현 및 픽셀·준비 경로 확인. 정상 처치 회귀·전체 성능 인수는 미완료. 독립 예약 검토8개와 URL-query 포함 root17개는 후속 인수.** easy/패키지 미적용. 입력 HEAD `fe85bb0866b895b91adf82da54dfe48bb7f89f7f`, 실제 GPU/게임 측정 SHA256 `1fc7ac9a31eb516535bda52d300f1958bf5240f5620afbd4038d4ba7b36ecff5`. 이후 게임 변경은 context-loss 주석의 three→explicitly targeted 정정뿐이며 실행문 동일.
 
 ## 계약
 
@@ -28,7 +28,7 @@
 | primary 우선순위 | 기존3장과 fire 모두 ready, 최종61,683,832px, busy0·queue0 | 장기 메모리·실제 context loss 전투 검수 아님 |
 | 관측기 | 4개 wrapper, 정상 입력 전 모두 원복 | 상세 호출/drop 수는 원자료 summary 참조 |
 | 정상 입력 | 연습 건너뛰기·W·좌클릭 drag·우클릭. 약24.45초 관측 뒤 HP0 자연사·0처치 | 게임 강제 상태 변경0. 처치·스킬 가시성 회귀 완료로 인수하지 않음 |
-| 회귀 | 관련69개 PASS, guard·inline6 PASS(앞선 실행). 주석/fixture 출력폴더 정정 후 필요한 재검사 별도 로그 | 외부 QA 독립 검토는 아직 미전달 |
+| 회귀 | 관련69개 PASS, guard·inline6 PASS(앞선 실행). 주석/fixture 출력폴더 정정 후 필요한 재검사 별도 로그 | 독립 QA 후속8개 PASS, URL query 보강17개 PASS; 자세한 정정은 후속 영수증 |
 
 관측 warm/업로드는 모두 정상 전투 입력 전 연습 상태에서 발생했다. G.on=true만으로 전투 중 업로드라고 분류하지 않는다. 정상 전투 시작 스냅샷37576.8ms, 종료62029.7ms는 페이지 시각이며 정확한 사망 시각은 미계측. viewport1352×666/DPR2, CPU profiler/GPU timer OFF. 상세 없는 Object 콘솔 오류가 기준/fixture/게임에 있어 오류0 판정은 하지 않는다. 종료 후 about:blank, 3340 격리 서버/세이브·PC3333 보존.
 
@@ -38,4 +38,4 @@
 
 ## MAP PRODUCTION REPORT
 
-STAGE CH1-1 시작/전투 QA. geometry/충돌/아트/배치 변경0. 기존8뷰 전체 미검수. TECH QA는 위 픽셀·수명·준비 호출 범위. **VISUAL VERDICT: RETOUCH**. 다음 게이트는 정상 처치 회귀, 독립 QA 경계 검토 및 별도 업로드73.7ms의 예산 영향 분석이다.
+STAGE CH1-1 시작/전투 QA. geometry/충돌/아트/배치 변경0. 기존8뷰 전체 미검수. TECH QA는 위 픽셀·수명·준비 호출 범위. **VISUAL VERDICT: RETOUCH**. 다음 게이트는 정상 처치 회귀 및 별도 업로드73.7ms의 예산 영향 분석이다.

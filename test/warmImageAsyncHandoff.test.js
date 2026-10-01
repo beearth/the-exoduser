@@ -89,3 +89,12 @@ test('deferred pass never admits fire outside capped queue or revives stale prim
  const a=setup();for(const path of primaryPaths)a.c._warmAsyncJob(new a.Img(path));a.c._queueWarmImage(new a.Img(firePath),0);a.c._queueWarmFireAsync();assert.equal(a.c._texPreJobs.size,3);
  for(const j of a.c._texPreJobs.values())j.status='stale';a.c._queueWarmImage(new a.Img(firePath),80);a.c._queueWarmFireAsync();assert.equal(a.c._texPreJobs.size,3);
 });
+test('primary query variants conservatively preserve fallback; fire query variant keeps its own URL cache key',()=>{
+ const a=setup();for(const path of primaryPaths)a.c._warmAsyncJob(new a.Img(path+'?v=2'));
+ const fire=new a.Img(firePath);assert.equal(a.c._warmAsyncJob(fire),undefined);
+ assert.equal(a.c._texPreJobs.has(fire.src),false);
+ for(const path of primaryPaths)a.c._texBySrc.set('http://qa.local'+path,{w:1000,h:1000});
+ const variant=new a.Img(firePath+'?v=2'),job=a.c._warmAsyncJob(variant);
+ assert.equal(job.status,'pending');assert.equal(a.c._texPreJobs.get(variant.src),job);
+ assert.equal(a.c._texPreJobs.has(fire.src),false);
+});
