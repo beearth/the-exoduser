@@ -1,0 +1,15 @@
+# ring_phys diagnostic reproduction
+
+This is a diagnostic artifact, not a runtime asset or approved production patch. Use one isolated local game at a time; do not change the user's saves.
+
+1. Use source commit `61d3b1ec6b6c7a1c8cc12888d380229fe6a7d132`, `server.cjs` port3340 and a fresh `.localhost` origin, viewport1352×663 DPR1, `game.html?webgpu=0`. Preserve the existing server configuration and isolated save directory. A new origin is not a new process/GPU.
+2. Copy this directory's `ring_phys_masked.png` to ignored `tmp/ring-png-20261001/ring_phys_masked.png`. Verify SHA256 `812b47358d293d3dc2c154ab5989470add22eb3f1bb7f2edf9f78cde16da0a96`.
+3. After `_bootLoadActive===false` and `G.on===false`, evaluate `tools/qa/ring-png-diagnostic.js` through the local development browser tool. The production source is not rewritten.
+4. For the uninstrumented comparison call `__ringPngDiagnostic.measure(['raw','png'])`, alternating order on a new page. Never repeat in the same page because existing item cache entries deliberately fail the precondition. Save the entire returned object. `firstDisplayMs` is a historical field name for request-to-submit-return elapsed time, not actual display/GPU completion.
+5. For phase observations only, install the diagnostic candidate first with `.install()`, then `tools/qa/world-item-skin-observer.js`, then measure. Stop the observer with `__worldItemSkinQA.stop('done')`. That observer wraps raw only, so this is secondary attribution evidence; use uninstrumented samples for the main timing comparison.
+6. Revisit the same origin for cache-context observations, preserving exact options in each result. In the recorded run difficulty changed5→10 on revisit. Do not equate a new-origin/revisit difference with a cold/warm causal effect.
+7. To regenerate PNG, in a separate isolated page evaluate `.generate()` and save returned dataURL bytes without printing them. It uses the current default Canvas draw + actual `_maskWorldDropBlack`, then PNG encoding. `.pixels()` loads the saved PNG after generation. Timing and readback comparison must be separate.
+8. After timing, `ring-png-contract-fixture.js` tests cached source transitions and deliberate404 fixture URLs. It expects the successful PNG cache from measure. Preserve its finally-restored result. Missing URLs are deliberate; they are not user file deletion.
+9. For the actual34px visual fixture skip the normal intro/lesson, then run `world-fixture-setup.js`. After capture use `world-direct-verdict.js` for direct Canvas comparison and function restoration. This injects fake visual drops and pauses the game; it is not natural combat or a performance sample. Leave the isolated page and reset viewport afterward.
+
+Exact measured script copies, nine timing samples, source provenance, generation time, pixels, contract results, tests, failure/setup note and cleanup receipts are in evidence.zip. Source SHA256 and per-file hashes are in manifest.json. New automated regression is `test/ringPngDiagnostic.test.js`; production fallback and observer tests are unchanged.
