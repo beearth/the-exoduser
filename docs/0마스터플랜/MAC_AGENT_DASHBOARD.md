@@ -1,5 +1,7 @@
 # Mac 에이전트 작업 상태판
 
+**후속 갱신:** 11팀 배정 기록의 원격 체크포인트 `94b47f87` 확인. 진행 중 도구·docs 61파일은 별도 WIP 복구 브랜치 `codex/backup-vscode-wip-20261001-192149` / `02b0532d`로 보존·원격 대조했다. QA 최초 산출의 `VALID`와 비교 적격 분류를 분리하도록 같은 T1 세션에 후속 전달·착수 확인했다. 새 실측 release는 아직 없다. [총괄 검수·백업·남은 게이트](mac-resume-20261001/vscode-dispatch/ROOT_REVIEW.md).
+
 최신 조회: **2026-10-01 19:19 KST**. 현재 VS Code 본창 10팀 + 별도 VS Code 창 SOUND 1팀에서 **11/11 지시 수신·소스 읽기 착수**를 확인했다. QA/UIUX/ITEM/BUILD/BALANCE는 지정 정적 산출 제출, 나머지는 진행 중이다. 산출 제출은 총괄 인수·새 실화면·통합 완료와 다르다.
 
 [현재 팀별 작업·위치·근거](mac-resume-20261001/vscode-dispatch/DISPATCH_STATUS.md) · [실제 UUID와 조회 스냅샷](mac-resume-20261001/vscode-dispatch/dispatch-snapshot.json). 새 팀/중복 세션0, 생산 본편/easy 변경0, 게임/빌드 미실행. root는 배정 기록의 원격 체크포인트를 정리한다. 다음은 산출 검수 후 QA 단독 실측 인계다.

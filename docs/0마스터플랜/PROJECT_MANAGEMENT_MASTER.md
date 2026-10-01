@@ -523,3 +523,5 @@ root가 원격61d3b1ec와 기존22경로·빈 인덱스를 확인하고 진단 �
 2026-10-01 19:19 KST 기준 본창 10팀과 별도 VS Code 창의 기존 SOUND 세션 모두 지시 수신·소스 읽기 착수(11/11)를 확인했다. 새 팀/중복 세션0. QA 검증기, ART/MAP/SKILL/ENEMY/ANIMVFX 관측 후보 보강, UIUX 밀집 증거, ITEM 반지 최소 후보, BUILD 복구 계약, BALANCE 화구 훅 감사, SOUND 독립 후보 검토로 소유 경로를 분리했다. 생산 본편/easy·공용 마스터는 root 소유다.
 
 QA/UIUX/ITEM/BUILD/BALANCE 지정 정적 산출 제출은 신규 실화면·최종 통합 완료가 아니다. QA 단독 실측 release는 아직 없으며 나머지 팀은 작업 중이다. ART 기존 검수 코드 한 건의 일회성 읽기만 허용했고 광범위 권한 변경은 하지 않았다. SOUND는 Claude 앱이 아니라 별도 VS Code 창이다. 기존22경로·세이브·PC/3333 보존. [실제 위치·UUID·상태와 증거](mac-resume-20261001/vscode-dispatch/DISPATCH_STATUS.md). 다음은 제출 산출 검수·docs 인수 후 QA 단독 측정 인계다.
+
+배정 기록 원격 `94b47f87` 일치 확인 후 진행 중 도구·docs 61파일을 별도 `codex/backup-vscode-wip-20261001-192149` / `02b0532d`로 캡처·push·원격 대조했다. 미검수 WIP 복구 사본이며 현재 HEAD/인덱스를 변경하지 않았다. QA 검증기는 품질변화 경고가 있지만 최상위 VALID가 비교 적격과 혼동될 수 있어 같은 QA T1에 분류/부정 fixture 보강을 전달·착수 확인했다. 후속 인수 전 새 실측 release 없음. [총괄 재검사 범위·백업·분류 검토](mac-resume-20261001/vscode-dispatch/ROOT_REVIEW.md).
