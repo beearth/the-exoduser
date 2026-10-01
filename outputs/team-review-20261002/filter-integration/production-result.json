@@ -1,0 +1,65 @@
+{
+  "utc": "2026-10-01T18:06:53.634Z",
+  "mode": "production",
+  "sources": {
+    "game.html": {
+      "before": "c868284af349c996d42087e93eba47a10614d73cb8f55f4db5ae01dde89da31a",
+      "current": "6a8b523a4c91fdeaa300e85c3e5cfe25eb51cd8be705c395f5112d0771f6065b",
+      "candidate": "6a8b523a4c91fdeaa300e85c3e5cfe25eb51cd8be705c395f5112d0771f6065b",
+      "inline": {
+        "classic": 4,
+        "module": 2,
+        "importmap": 1
+      }
+    },
+    "game-easy-test.html": {
+      "before": "11b4e97b15903b9699b296362bdd068ffed6d3a1a505d9f6eeec5482b7c085ca",
+      "current": "e81a708e97710a7fe8d45c6e4071edba79ff8464116de955bc801552b5746ec2",
+      "candidate": "e81a708e97710a7fe8d45c6e4071edba79ff8464116de955bc801552b5746ec2",
+      "inline": {
+        "classic": 4,
+        "module": 2,
+        "importmap": 1
+      }
+    }
+  },
+  "ownerGroups": 26,
+  "extraGroups": 6,
+  "totalGroups": 32,
+  "originalFailureCases": 32,
+  "extra": [
+    {
+      "file": "game.html",
+      "boundary": "disabled",
+      "status": "PASS"
+    },
+    {
+      "file": "game.html",
+      "boundary": "missing",
+      "status": "PASS"
+    },
+    {
+      "file": "game.html",
+      "boundary": "panel-closed",
+      "status": "PASS"
+    },
+    {
+      "file": "game-easy-test.html",
+      "boundary": "disabled",
+      "status": "PASS"
+    },
+    {
+      "file": "game-easy-test.html",
+      "boundary": "missing",
+      "status": "PASS"
+    },
+    {
+      "file": "game-easy-test.html",
+      "boundary": "panel-closed",
+      "status": "PASS"
+    }
+  ],
+  "ownerFilesPreserved": 19,
+  "compositionUnchanged": true,
+  "limits": "Node DOM with actual source and composition; CSS visibility model only; renderOssPanel stub. Native keyboard/gamepad/layout/runtime not verified."
+}

@@ -1,0 +1,39 @@
+{
+  "작업": "UIUX-FILTER-FOCUS",
+  "수신": "사용자 메시지 UTC 미제공, 첫 Read 이전 수신",
+  "첫ReadUTC": "2026-10-01T17:54:24Z",
+  "중복": "filter-focus prefix에는 task.md만 존재. 동일 진행/대기 결과·초안 없음",
+  "Read": "AGENTS·UI-04·인벤토리 SSOT·생산 인계·기존 카드 제거 후보/DOM 회귀·실제 HTML 필터/탭 호출·ui-panels composition",
+  "상태": "26PASS; 실제 필터 버튼 소멸32반례 RED→GREEN; 양쪽 최소 patch 미적용/root 인계",
+  "production쓰기": 0,
+  "브라우저게임서버빌드Git새세션에이전트실행": 0,
+  "첫EditUTC": "2026-10-01T17:56:08Z",
+  "첫Edit근거": "filter-focus-candidate.mjs birthtime UTC/apply_patch",
+  "검수UTC": "2026-10-01T17:59:16Z",
+  "완료UTC": "2026-10-01T17:59:29.106Z",
+  "원소스SHA": {
+    "game.html": {
+      "before": "c868284af349c996d42087e93eba47a10614d73cb8f55f4db5ae01dde89da31a",
+      "final": "c868284af349c996d42087e93eba47a10614d73cb8f55f4db5ae01dde89da31a",
+      "factorySha256": "694bf7cbd893eacbf190db85272438e0123a7e373c0f0bcb4501313d3e9d6827"
+    },
+    "game-easy-test.html": {
+      "before": "11b4e97b15903b9699b296362bdd068ffed6d3a1a505d9f6eeec5482b7c085ca",
+      "final": "11b4e97b15903b9699b296362bdd068ffed6d3a1a505d9f6eeec5482b7c085ca",
+      "factorySha256": "694bf7cbd893eacbf190db85272438e0123a7e373c0f0bcb4501313d3e9d6827"
+    }
+  },
+  "생산기존자료불변": true,
+  "보존자료수": 285,
+  "실제명령": [
+    "node tools/team-followup-20261001/UIUX/filter-focus-prepare.mjs (최초 1회)",
+    "node --test tools/team-followup-20261001/UIUX/filter-focus.test.mjs",
+    "node --check filter-focus-candidate.mjs / filter-focus-fixture.mjs",
+    "rg docs 전체 관련 키워드"
+  ],
+  "미검수": [
+    "실제 필터 Enter/Space OS 활성화·Tab 순서·CSS/레이아웃·패드",
+    "renderOssPanel 전대/골격/중앙 유골함 서브렌더 대역; 실제 미검수",
+    "저장/경제/실전 게임 검수 미실행"
+  ]
+}

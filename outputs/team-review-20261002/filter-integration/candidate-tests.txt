@@ -1,0 +1,34 @@
+✔ game.html/ko/CSS-false: 실제 필터 onclick→render 소멸 RED→GREEN (139.665083ms)
+✔ game.html/ko/CSS-false: 실제 유골함 탭 Arrow/복귀·필터초기화·키보드 상세 (32.428834ms)
+✔ game.html/ko/CSS-false: 비활성 필터 호출은 외부초점 강탈0 (18.522125ms)
+✔ game.html/ko/CSS-true: 실제 필터 onclick→render 소멸 RED→GREEN (135.858833ms)
+✔ game.html/ko/CSS-true: 실제 유골함 탭 Arrow/복귀·필터초기화·키보드 상세 (28.633041ms)
+✔ game.html/ko/CSS-true: 비활성 필터 호출은 외부초점 강탈0 (16.716292ms)
+✔ game.html/en/CSS-false: 실제 필터 onclick→render 소멸 RED→GREEN (114.599833ms)
+✔ game.html/en/CSS-false: 실제 유골함 탭 Arrow/복귀·필터초기화·키보드 상세 (29.810167ms)
+✔ game.html/en/CSS-false: 비활성 필터 호출은 외부초점 강탈0 (18.157833ms)
+✔ game.html/en/CSS-true: 실제 필터 onclick→render 소멸 RED→GREEN (125.030708ms)
+✔ game.html/en/CSS-true: 실제 유골함 탭 Arrow/복귀·필터초기화·키보드 상세 (29.373833ms)
+✔ game.html/en/CSS-true: 비활성 필터 호출은 외부초점 강탈0 (15.984917ms)
+✔ game-easy-test.html/ko/CSS-false: 실제 필터 onclick→render 소멸 RED→GREEN (112.576375ms)
+✔ game-easy-test.html/ko/CSS-false: 실제 유골함 탭 Arrow/복귀·필터초기화·키보드 상세 (27.656334ms)
+✔ game-easy-test.html/ko/CSS-false: 비활성 필터 호출은 외부초점 강탈0 (14.969875ms)
+✔ game-easy-test.html/ko/CSS-true: 실제 필터 onclick→render 소멸 RED→GREEN (139.838167ms)
+✔ game-easy-test.html/ko/CSS-true: 실제 유골함 탭 Arrow/복귀·필터초기화·키보드 상세 (33.159792ms)
+✔ game-easy-test.html/ko/CSS-true: 비활성 필터 호출은 외부초점 강탈0 (16.231041ms)
+✔ game-easy-test.html/en/CSS-false: 실제 필터 onclick→render 소멸 RED→GREEN (120.924083ms)
+✔ game-easy-test.html/en/CSS-false: 실제 유골함 탭 Arrow/복귀·필터초기화·키보드 상세 (28.686458ms)
+✔ game-easy-test.html/en/CSS-false: 비활성 필터 호출은 외부초점 강탈0 (18.016417ms)
+✔ game-easy-test.html/en/CSS-true: 실제 필터 onclick→render 소멸 RED→GREEN (127.948542ms)
+✔ game-easy-test.html/en/CSS-true: 실제 유골함 탭 Arrow/복귀·필터초기화·키보드 상세 (29.277417ms)
+✔ game-easy-test.html/en/CSS-true: 비활성 필터 호출은 외부초점 강탈0 (16.719875ms)
+✔ 숨긴 재생성 필터는 focus하지 않고 invClose 복귀 (32.858417ms)
+✔ 새 패치 재적용 거부·factory 구문·원 자료/생산 byte 보존 (77.519958ms)
+ℹ tests 26
+ℹ suites 0
+ℹ pass 26
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 1545.709666

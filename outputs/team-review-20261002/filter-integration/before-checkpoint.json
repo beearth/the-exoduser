@@ -1,0 +1,149 @@
+{
+  "utc": "2026-10-01T18:06:23.831835+00:00",
+  "remote": "49eaec385cc97cfb260217a7676ffb897512774c",
+  "sources": {
+    "game.html": {
+      "tag": "main",
+      "beforeSha256": "c868284af349c996d42087e93eba47a10614d73cb8f55f4db5ae01dde89da31a",
+      "candidateSha256": "6a8b523a4c91fdeaa300e85c3e5cfe25eb51cd8be705c395f5112d0771f6065b",
+      "factorySha256": "694bf7cbd893eacbf190db85272438e0123a7e373c0f0bcb4501313d3e9d6827",
+      "functions": [
+        {
+          "name": "_invPlaceDetail",
+          "line1": 47795,
+          "sha256": "f6da18a101abc3c9680f0319b0c15337594c01b7bb26e73819892eddd19b5abb"
+        },
+        {
+          "name": "_invRenderDetail",
+          "line1": 47919,
+          "sha256": "eeba01ab414a3d80b20a54ae66465a45e971e01f38073c75d21137e5e2cd43b7"
+        },
+        {
+          "name": "_invClearHover",
+          "line1": 48093,
+          "sha256": "8f0494e1cde07e3c86b023236cde3cf504dad954f86f1f241e2ed2e8d53e0a0d"
+        },
+        {
+          "name": "_invRestoreSelectedActions",
+          "line1": 48100,
+          "sha256": "891e7095b75973a2b707d68dd4ef938811f8e437a13638788109834ec8d7eb26"
+        },
+        {
+          "name": "_invCategoryMatches",
+          "line1": 48489,
+          "sha256": "bf6f1ec41adb83e63f2e35d8596c546da2270bb74e936a6aebb9a2030c18d9f7"
+        },
+        {
+          "name": "_invChangeCategory",
+          "line1": 48496,
+          "sha256": "dcdf0bcd02c8d0404702aaed3ef171bbb3fc429e89c8ebe3d57f6486a4fd1d05"
+        },
+        {
+          "name": "_invPlacement",
+          "line1": 48502,
+          "sha256": "879d8a804ff8c3394f4aab7251ede02e41acb2a6e0783e91db7d7c549d327389"
+        },
+        {
+          "name": "_invPlacementChanged",
+          "line1": 48505,
+          "sha256": "42242a0857c46616150aa572945a78eb4c68caec058e9576f78d670a19994a54"
+        },
+        {
+          "name": "renderInv",
+          "line1": 48511,
+          "sha256": "3d2537c4392075e1393266ec1f19e73329a06b1c15857b9f84895ba54f2ee2a2"
+        },
+        {
+          "name": "closePanel",
+          "line1": 42597,
+          "sha256": "f63fb8abb59fa846a7b17a11b89a0ecf13fa30f61fdb43be1387f3978e2c9f4f"
+        },
+        {
+          "name": "_invRenderEmptyDetail",
+          "line1": 48048,
+          "sha256": "ed79b99a87f9d1860d861391b9c4833d932de40a442971fd7ecaa7c591cf47ac"
+        }
+      ]
+    },
+    "game-easy-test.html": {
+      "tag": "easy",
+      "beforeSha256": "11b4e97b15903b9699b296362bdd068ffed6d3a1a505d9f6eeec5482b7c085ca",
+      "candidateSha256": "e81a708e97710a7fe8d45c6e4071edba79ff8464116de955bc801552b5746ec2",
+      "factorySha256": "694bf7cbd893eacbf190db85272438e0123a7e373c0f0bcb4501313d3e9d6827",
+      "functions": [
+        {
+          "name": "_invPlaceDetail",
+          "line1": 46389,
+          "sha256": "f6da18a101abc3c9680f0319b0c15337594c01b7bb26e73819892eddd19b5abb"
+        },
+        {
+          "name": "_invRenderDetail",
+          "line1": 46513,
+          "sha256": "b39c5bed0208cb35d3ca2e21ceaa17528967d9aa301471b3572abd8b99384470"
+        },
+        {
+          "name": "_invClearHover",
+          "line1": 46585,
+          "sha256": "8f0494e1cde07e3c86b023236cde3cf504dad954f86f1f241e2ed2e8d53e0a0d"
+        },
+        {
+          "name": "_invRestoreSelectedActions",
+          "line1": 46592,
+          "sha256": "a673f79d16c5907e6f7a3394141f14daa76296720e3b0af21ec429e14f9cbc05"
+        },
+        {
+          "name": "_invCategoryMatches",
+          "line1": 46981,
+          "sha256": "f337c7995d2da57d084269483cf27e265a49c4875e6c9155b311a84334dfcefa"
+        },
+        {
+          "name": "_invChangeCategory",
+          "line1": 46987,
+          "sha256": "dcdf0bcd02c8d0404702aaed3ef171bbb3fc429e89c8ebe3d57f6486a4fd1d05"
+        },
+        {
+          "name": "_invPlacement",
+          "line1": 46993,
+          "sha256": "879d8a804ff8c3394f4aab7251ede02e41acb2a6e0783e91db7d7c549d327389"
+        },
+        {
+          "name": "_invPlacementChanged",
+          "line1": 46996,
+          "sha256": "42242a0857c46616150aa572945a78eb4c68caec058e9576f78d670a19994a54"
+        },
+        {
+          "name": "renderInv",
+          "line1": 47002,
+          "sha256": "a52032f6517c09e265ddeee6b23485146fc102a7c17af264117973aaee663f73"
+        },
+        {
+          "name": "closePanel",
+          "line1": 41394,
+          "sha256": "f63fb8abb59fa846a7b17a11b89a0ecf13fa30f61fdb43be1387f3978e2c9f4f"
+        }
+      ]
+    }
+  },
+  "preservedCount": 285,
+  "ownerFiles": {
+    "tools/team-followup-20261001/UIUX/filter-focus-result.md": "80de3d521205220431d9062549002aad39ee57ab7e836633adbd3b1d706cf3c9",
+    "tools/team-followup-20261001/UIUX/filter-focus.test.mjs": "09393e9547ec6749bc2789c7f4a588c2905e0d0005bc9fb2ee82e8ae411a7566",
+    "tools/team-followup-20261001/UIUX/filter-focus-fixture.mjs": "b06bb93809161b1ff385eded5b92b9fe914a2862546239b4e7c29f6f962a75e0",
+    "tools/team-followup-20261001/UIUX/filter-focus-before.json": "f9bebbbc36384955ee0d13a8bc66c8f6be46063990e2fad841d10a17ba79b30f",
+    "tools/team-followup-20261001/UIUX/filter-focus-easy.patch": "6867bf99429782d5468cb37883a067862e2d67701c1adbb9671ae9efaa1dbec9",
+    "tools/team-followup-20261001/UIUX/filter-focus-validation.txt": "fc9b04eb506d64a990a6c98bc97b74e9b4f2ee7776036292a9fdd9c5fb5a9df6",
+    "tools/team-followup-20261001/UIUX/filter-focus-main.patch": "6d42093f4d9f567436fd06e6219952d568990fc5d1e69bf950a5c97e1d3a7a1e",
+    "tools/team-followup-20261001/UIUX/filter-focus-candidate.mjs": "634f7d86fadec17b0b408a644c66524681fec605f8c9cdd719b00885a3575c38",
+    "tools/team-followup-20261001/UIUX/filter-focus-doc-matches.txt": "209654d8fb4c77e8103135be1f77f37f85953baa610272f6e68f307e16dccc14",
+    "tools/team-followup-20261001/UIUX/filter-focus-main.before.html": "c868284af349c996d42087e93eba47a10614d73cb8f55f4db5ae01dde89da31a",
+    "tools/team-followup-20261001/UIUX/filter-focus-dependencies.json": "b317103a30ff51f68f442f8365026be2b13c2b9557451085dee865f3650e2d82",
+    "tools/team-followup-20261001/UIUX/filter-focus-final-hashes.json": "fe2d5e9900bf2dd377a4e3321c161efd1d24c8a1a652a505d2a567ad3bfd104e",
+    "tools/team-followup-20261001/UIUX/filter-focus-task.md": "f9e017f2103d2ccff4983ddd11c72cffba57edf57c952944be2560323567ca1e",
+    "tools/team-followup-20261001/UIUX/filter-focus-ui-panels.before.js": "b22c4a31141672304a15adfae3a5050cb9fde3b96601507c8f10de3ea63f4cb5",
+    "tools/team-followup-20261001/UIUX/filter-focus-ossuary-source.json": "f46190ef1e687c614095ada15928d7c574d1c53da18672d2e887c8f809896408",
+    "tools/team-followup-20261001/UIUX/filter-focus-reproduction.json": "ce6ebcf69fb39fe56211ed8d7807acb15b5df60fee1036c659ac396444354e5b",
+    "tools/team-followup-20261001/UIUX/filter-focus-prepare.mjs": "31c968bfedffe07245ca2d740eb6714a263b380b78cc0f25c33c87db8e93889b",
+    "tools/team-followup-20261001/UIUX/filter-focus-easy.before.html": "11b4e97b15903b9699b296362bdd068ffed6d3a1a505d9f6eeec5482b7c085ca",
+    "tools/team-followup-20261001/UIUX/filter-focus-receipt.json": "79316c29ac3c3c79ea36d40508931a2608cfefefd0f1f65be1089177e4b37343"
+  }
+}

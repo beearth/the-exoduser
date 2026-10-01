@@ -27,3 +27,10 @@
 | 남은 게이트 | 생산 전체게임·OS 키 이동·실화면/CSS 레이아웃·긴 비교·필터·유골함·저장 실전 부작용·물리 패드 UNKNOWN. UI-04 전체 완료가 아님 |
 
 재현 명령과 byte 보존·SHA·의존성 목록은 `tools/team-followup-20261001/UIUX/production-integration-result.md` 및 전용 receipt/before/dependencies 기록을 따른다. Git checkpoint와 생산 실전 검수는 root 담당이다.
+
+
+## 2026-10-02 필터 버튼 재생성 초점 반영
+
+본편/easy의 mkF 버튼은 key/value dataset을 가진다. beforeRender는 실제 활성 필터 identity도 저장하고 afterRender는 동일한 새 네이티브 버튼으로 복귀한다. 결과0/선택카드 제외/필터 해제도 동일하다. 숨김·비활성·누락이면 invClose, 패널이 닫혔거나 외부 초점이면 강탈하지 않는다. 필터 조건/데이터·유골함 탭·CSS는 그대로다.
+
+생산 전체가 filter-focus 후보와 byte 일치한다. 현재 source/composition 기반32 + 인접23=55그룹 PASS와 전체 inline 구문 확인. 이전 production-integration byte 일치 표는 이전 반영 이력이다. 현재 재현은 root-review/filter-integration.mjs --production 및 filter-adjacent.mjs를 사용한다. 기존32 RED와 owner19파일 보존. 실제 OS 버튼 입력/패드/유골함 세부 renderOssPanel·레이아웃은 미검수. [상세 인수](../0마스터플랜/mac-resume-20261001/vscode-dispatch/FILTER-INTEGRATION-20261002.md).

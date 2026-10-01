@@ -1,0 +1,46 @@
+{
+  "at": "2026-10-01T17:57:26.486Z",
+  "evidence": {
+    "game.html": [
+      {
+        "name": "renderOssPanel",
+        "line1": 48378,
+        "sha256": "c4cfd5e7b042913d12c8255369358b7762fe75add10333d2b26e33db13b2aede",
+        "execution": "미실행·읽기 소스 근거만"
+      },
+      {
+        "name": "_ossHideBoneInfo",
+        "line1": 48351,
+        "sha256": "7d847b61dc4abca1e0e3bcdba0f05ba092fa4f2615b013214cad5cd460b17c84",
+        "execution": "미실행·읽기 소스 근거만"
+      },
+      {
+        "name": "_ossShowBoneInfo",
+        "line1": 48352,
+        "sha256": "1d749fff707b5b886a5ab7d20ffdf24f56d2a22aa0174fb04452d03fe83f2c9b",
+        "execution": "미실행·읽기 소스 근거만"
+      }
+    ],
+    "game-easy-test.html": [
+      {
+        "name": "renderOssPanel",
+        "line1": 46870,
+        "sha256": "743db12dae4affde117078b768fe0a80b616f050842fa7e746ef874182030deb",
+        "execution": "미실행·읽기 소스 근거만"
+      },
+      {
+        "name": "_ossHideBoneInfo",
+        "line1": 46843,
+        "sha256": "7d847b61dc4abca1e0e3bcdba0f05ba092fa4f2615b013214cad5cd460b17c84",
+        "execution": "미실행·읽기 소스 근거만"
+      },
+      {
+        "name": "_ossShowBoneInfo",
+        "line1": 46844,
+        "sha256": "71ed675a8709d0ef860a95170fa8bad963d873a17217fed1ea5d406114b7ea1b",
+        "execution": "미실행·읽기 소스 근거만"
+      }
+    ]
+  },
+  "note": "탭 composition/실제 _invChangeCategory·renderInv는 실행; 전대 수집 렌더와 골격 UI 서브렌더는 대역이므로 별도 native 게이트"
+}

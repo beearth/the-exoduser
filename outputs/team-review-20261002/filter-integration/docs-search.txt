@@ -1,0 +1,52 @@
+docs/3.1 ui hud 디자인/UI_UX_IMPROVEMENT_PROJECT_20260930.md:37:| UI-04 | P1 | 인벤토리/장비/유골함 | 아이템 비교, 긴 설명, 필터, 키보드/패드 이동과 작은 화면의 정보 우선순위를 검수한다. | 부분 완료 | 2026-10-02 양쪽 HTML 빈 상세·키보드 진입·카드 소멸/재렌더/닫기 초점 반영. 생산 추출23+기존69+인접9검사. native 독립 host8조합 root 인수와 생산 전체게임/패드/시각 게이트는 구분. |
+docs/3.1 ui hud 디자인/UI_UX_IMPROVEMENT_PROJECT_20260930.md:86:### 2026-10-02 UI-04 빈 상세 후보 root 검수
+docs/3.1 ui hud 디자인/UI_UX_IMPROVEMENT_PROJECT_20260930.md:88:빈 bag/eq/st 선택 뒤 이전 상세·비교·행동 잔류를 양쪽 실제 함수에서 재현하고 후보21+기존3/6=30검사 및 양쪽 inline 구문을 확인했다. 당시 생산 미반영. 실제 renderInv 재구성·_invClearHover 숨김·키보드 상세/삭제 후 초점 복귀를 inventory-dom 후속으로 기존 UIUX에 배정했다. 신규 DOM-only host는 실게임/패드/전체 UI-04 시각 완료를 뜻하지 않는다. [인수·후속](../0마스터플랜/mac-resume-20261001/vscode-dispatch/FOUR-SUBMISSIONS-HELLRAY-20261002.md).
+docs/3.1 ui hud 디자인/UI_UX_IMPROVEMENT_PROJECT_20260930.md:90:### 2026-10-02 UI-04 키보드 상세·카드 소멸 초점 생산 반영
+docs/3.1 ui hud 디자인/UI_UX_IMPROVEMENT_PROJECT_20260930.md:98:| 미검수 | 생산 전체게임·실제 입력·CSS 레이아웃·긴 설명·필터·유골함·실물 패드·저장 부작용 실전 검수는 별도 대기. UI-04 전체 완료 아님 |
+docs/2_9 결정슬롯시스템/2_9 결정슬롯시스템.md:508:| 초점 표시 | 피커 필터/목록 focus-visible outline2px #ead1a0/offset−3px,상속폰트/색·왼쪽정렬. 기존 하단 버튼 초점 표시 유지 |
+docs/2_9 결정슬롯시스템/2_9 결정슬롯시스템.md:510:| 검증 | 실제 Space로 필터 변경·보석 선택·장착·해제 성공. Space 후 junk=false 보존. Tab/Shift+Tab 이동·필터 초점 유지 확인.320/390/640/1280px에서 실제 Tab 이동 후 마지막 하단 버튼 전체 노출. pageerror0 |
+docs/2_9 결정슬롯시스템/2_9 결정슬롯시스템.md:538:| 브라우저 | 실제 디스크 코드에서18→6행 필터 변경 후index0,키보드focus행3→index3,마우스행1→index1,D-pad 아래→행2초점,A→cr_ward_stone 선택·팝업닫힘 확인. pageerror0 |
+docs/2_9 결정슬롯시스템/2_9 결정슬롯시스템.md:548:| 쉬운게임 보완 | renderCrystalBag 말미의 목록 이벤트 연결과 재렌더 필터 초점 복원 누락을 보완. 생성 영역은 createContextualFragment + replaceChildren으로 갱신. 기존 쉬운게임 분류·아이템 수치 유지 |
+docs/2_7 인벤토리+장비시스템/2_7 인벤토리+장비시스템.md:25:2026-09-27 가방 도구줄 마감: 필터 펼침 줄 최소32px, 열림/닫힘 화살표와 키보드 초점 표시 추가. 보유 수량·최대 용량 대비와 정렬 호버 강조 보강. 동작·용량 값 변경 없음. 정확한 스타일 수치는 `docs/3.1 ui hud 디자인/UI_COMPOSITION_20260925.md`의 **가방 도구줄 디테일** 절을 따른다.
+docs/2_7 인벤토리+장비시스템/2_7 인벤토리+장비시스템.md:153:| 필터 | 인벤 필터 바 "유골" 버튼 (`invFilter.slot='bonePart'`). 슬롯 필터에서 ossuary 버튼은 제거 |
+docs/2_7 인벤토리+장비시스템/2_7 인벤토리+장비시스템.md:544:| 전환 | 초기 UI 구성은 기본 equipment 탭과 접근성 상태만 설정한다. inventoryPage가 이미 정의되고 새 탭과 다를 때만 _invChangeCategory 호출: INV.selected=null, _invHover=-1, 분해 선택 clear, invFilter의 slot/rarity/el=null. renderInv 후 정보창 숨김. 같은 탭 재선택은 재렌더하지 않음 |
+docs/2_7 인벤토리+장비시스템/2_7 인벤토리+장비시스템.md:756:| 초점 표시 | 피커 필터/목록 focus-visible outline2px #ead1a0/offset−3px,상속폰트/색·왼쪽정렬. 기존 하단 버튼 초점 표시 유지 |
+docs/2_7 인벤토리+장비시스템/2_7 인벤토리+장비시스템.md:758:| 검증 | 실제 Space로 필터 변경·보석 선택·장착·해제 성공. Space 후 junk=false 보존. Tab/Shift+Tab 이동·필터 초점 유지 확인.320/390/640/1280px에서 실제 Tab 이동 후 마지막 하단 버튼 전체 노출. pageerror0 |
+docs/2_7 인벤토리+장비시스템/2_7 인벤토리+장비시스템.md:800:| 브라우저 | 실제 디스크 코드에서18→6행 필터 변경 후index0,키보드focus행3→index3,마우스행1→index1,D-pad 아래→행2초점,A→cr_ward_stone 선택·팝업닫힘 확인. pageerror0 |
+docs/2_7 인벤토리+장비시스템/2_7 인벤토리+장비시스템.md:840:| 쉬운게임 보완 | renderCrystalBag 말미의 목록 이벤트 연결과 재렌더 필터 초점 복원 누락을 보완. 생성 영역은 createContextualFragment + replaceChildren으로 갱신. 기존 쉬운게임 분류·아이템 수치 유지 |
+docs/2_7 인벤토리+장비시스템/INVENTORY_KEYBOARD_FOCUS_20261002.md:3:2026-10-02 UI-04 승인 생산 반영. 기본 시스템·필터·아이템 수치는 `2_7 인벤토리+장비시스템.md`, UI 구성은 `../3.1 ui hud 디자인/UI_COMPOSITION_20260925.md`를 따른다. 본 문서는 기존 마우스 hover 계약에 추가된 키보드 소유 상세·소멸 복귀의 현행 예외를 정의한다. 기본 문서의 혼합 CRLF/LF와 기존 내용은 byte 보존한다.
+docs/2_7 인벤토리+장비시스템/INVENTORY_KEYBOARD_FOCUS_20261002.md:7:| _inventoryFocus | game.html/game-easy-test.html inline factory. 등록 item→현재 카드 Map, 카드→resolver WeakMap, keyboard item·anchor·외부 opener 보존 |
+docs/2_7 인벤토리+장비시스템/INVENTORY_KEYBOARD_FOCUS_20261002.md:27:| 남은 게이트 | 생산 전체게임·OS 키 이동·실화면/CSS 레이아웃·긴 비교·필터·유골함·저장 실전 부작용·물리 패드 UNKNOWN. UI-04 전체 완료가 아님 |
+docs/3.1 ui hud 디자인/GEM_ATELIER_20260927.md:9:| 필터 | 전체/공격/방어/자원과 1~5성 버튼에 **현재 홈에 호환되는 보석 수**를 각각 표시한다. 0개 버튼은 흐리게, 활성 버튼은 금색 금속판으로 구별한다. 빈 결과는 유물 홈 문양·원인 설명을 담은 패널이다. 호환 보석은 있지만 선택한 분류에 없을 때는 `전체 호환 보석 보기`로 복귀하며 첫 후보에 초점을 둔다. 홈 자체에 호환 보석이 0개면 다른 홈 선택·획득을 안내한다 |
+docs/3.1 ui hud 디자인/UI_COMPOSITION_20260925.md:172:| 가방 | 필터는 details/summary로 접기, 기존invFilters/선택 로직 유지. invGrid최소140px, 가방최소200px |
+docs/3.1 ui hud 디자인/UI_COMPOSITION_20260925.md:714:#invPanel.panel .pbox #invFilters{gap:5px!important;padding:8px 0!important;max-height:68px;overflow-y:auto;overscroll-behavior:contain;scrollbar-gutter:stable;}
+docs/3.1 ui hud 디자인/UI_COMPOSITION_20260925.md:766:| 전환 | 초기 UI 구성은 기본 equipment 탭과 접근성 상태만 설정한다. inventoryPage가 이미 정의되고 새 탭과 다를 때만 _invChangeCategory 호출: INV.selected=null, _invHover=-1, 분해 선택 clear, invFilter의 slot/rarity/el=null. renderInv 후 정보창 숨김. 같은 탭 재선택은 재렌더하지 않음 |
+docs/3.1 ui hud 디자인/UI_COMPOSITION_20260925.md:1263:| 초점 표시 | 피커 필터/목록 focus-visible outline2px #ead1a0/offset−3px,상속폰트/색·왼쪽정렬. 기존 하단 버튼 초점 표시 유지 |
+docs/3.1 ui hud 디자인/UI_COMPOSITION_20260925.md:1265:| 검증 | 실제 Space로 필터 변경·보석 선택·장착·해제 성공. Space 후 junk=false 보존. Tab/Shift+Tab 이동·필터 초점 유지 확인.320/390/640/1280px에서 실제 Tab 이동 후 마지막 하단 버튼 전체 노출. pageerror0 |
+docs/3.1 ui hud 디자인/UI_COMPOSITION_20260925.md:1307:| 브라우저 | 실제 디스크 코드에서18→6행 필터 변경 후index0,키보드focus행3→index3,마우스행1→index1,D-pad 아래→행2초점,A→cr_ward_stone 선택·팝업닫힘 확인. pageerror0 |
+docs/3.1 ui hud 디자인/UI_COMPOSITION_20260925.md:1334:| 쉬운게임 보완 | renderCrystalBag 말미의 목록 이벤트 연결과 재렌더 필터 초점 복원 누락을 보완. 생성 영역은 createContextualFragment + replaceChildren으로 갱신. 기존 쉬운게임 분류·아이템 수치 유지 |
+docs/3.1 ui hud 디자인/UI_COMPOSITION_20260925.md:2682:## 2026-10-02 UI-04 인벤토리 키보드 상세·소멸 초점 생산 반영
+docs/3.1 ui hud 디자인/UI_COMPOSITION_20260925.md:2686:| _inventoryFocus / 카드 bind | 두 HTML에 동일 승인 factory. 가방/장착 카드의 role=button·tabIndex=0·기존 _T(item.name) 접근성 이름. 정상 마우스/데이터 액션은 유지 |
+docs/7아이템디자인/보라색_고유아이템_카탈로그_20260930.md:21:| UI-04 | 빙편을 거두는 손 | 장갑 | 손등에 펼쳐진 얼음 부채, 관절마다 흑철 고리 | U-D04 얼음 파쇄 쿨 회수 | Higgsfield 원화 `assets/unique-items/ui-04.png` |
+docs/7아이템디자인/보라색_고유아이템_카탈로그_20260930.md:57:| UI-04 | `ui-04.png` | `7421385d-4834-446b-8a2d-e3d57b48e017` |
+docs/7아이템디자인/고유아이템_모델_어픽스_밸런싱_프로젝트_20260930.md:35:| UI-04 / U-D04 | 얼음 부채 장갑 | 빙결 무리에서 파쇄 | 대상별 1회·360f 회수 상한 | Seedream 비교 시안 |
+docs/7아이템디자인/고유아이템_모델_어픽스_밸런싱_프로젝트_20260930.md:94:UI-04~08·10~22의 작업 id, 원본 프롬프트와 저장 경로는 [18종 생성 이력](SEEDREAM_UNIQUE_ART_BATCH_20261001.md)에 기록했다. 2026-10-01 현재 총 22/22종 Seedream 후보가 있으나 채택 판정은 하지 않았다.
+docs/7아이템디자인/SEEDREAM_UNIQUE_ART_BATCH_20261001.md:36:18개 작업 id가 MagicLight의 완성 이미지에 대응함을 확인했고, 18개 PNG를 프로젝트 경로에서 모두 열었다. UI-04 장갑, UI-17 왕관, UI-22 머리띠는 원본 크기에서 종류와 주된 보라 구조를 눈으로 확인했다. 이는 전종 시각 품질 판정이 아니다.
+docs/7아이템디자인/UNIQUE_ITEM_GAME_INTEGRATION_CONTRACT_20261001.md:39:| `gloves` | UI-04, UI-16, UI-19 | U-D04, U-D16, U-D19 | 같은 장갑 슬롯의 서로 다른 정의 |
+docs/CHANGELOG_SYNC.md:49411:| 전환 | 초기 UI 구성은 기본 equipment 탭과 접근성 상태만 설정한다. inventoryPage가 이미 정의되고 새 탭과 다를 때만 _invChangeCategory 호출: INV.selected=null, _invHover=-1, 분해 선택 clear, invFilter의 slot/rarity/el=null. renderInv 후 정보창 숨김. 같은 탭 재선택은 재렌더하지 않음 |
+docs/CHANGELOG_SYNC.md:49781:| 초점 표시 | 피커 필터/목록 focus-visible outline2px #ead1a0/offset−3px,상속폰트/색·왼쪽정렬. 기존 하단 버튼 초점 표시 유지 |
+docs/CHANGELOG_SYNC.md:49783:| 검증 | 실제 Space로 필터 변경·보석 선택·장착·해제 성공. Space 후 junk=false 보존. Tab/Shift+Tab 이동·필터 초점 유지 확인.320/390/640/1280px에서 실제 Tab 이동 후 마지막 하단 버튼 전체 노출. pageerror0 |
+docs/CHANGELOG_SYNC.md:49835:| 브라우저 | 실제 디스크 코드에서18→6행 필터 변경 후index0,키보드focus행3→index3,마우스행1→index1,D-pad 아래→행2초점,A→cr_ward_stone 선택·팝업닫힘 확인. pageerror0 |
+docs/CHANGELOG_SYNC.md:49872:| 쉬운게임 보완 | renderCrystalBag 말미의 목록 이벤트 연결과 재렌더 필터 초점 복원 누락을 보완. 생성 영역은 createContextualFragment + replaceChildren으로 갱신. 기존 쉬운게임 분류·아이템 수치 유지 |
+docs/CHANGELOG_SYNC.md:51859:- ITEM/BUILD/UIUX/BALANCE 완료 turn 확인 후 기존 세션에 검토 bootstrap·Mac 패키지 사전검사·UI-04 초점 오류·강화 자원 계약을 한 건씩 배정했다. queue 성공과 실제 Read/코드 Edit를 구분해 증거를 기록한다.
+docs/CHANGELOG_SYNC.md:51905:- UI-04/인벤토리 SSOT 동기화. 독립 native 후보8조합과 생산 전체게임/패드 미검수를 구분. 후속 저장 변경과 분리 가능한 회귀 추가.
+docs/CHANGELOG_SYNC.md:51928:- 기존 BUILD Range, UIUX 필터초점, BALANCE 저장실패 과제 수신·Read 확인. 생산 수정0, 기존 서버 EPERM 우회0.
+docs/3.3 키바인딩+설정/3.3 키바인딩+설정.md:539:| 초점 표시 | 피커 필터/목록 focus-visible outline2px #ead1a0/offset−3px,상속폰트/색·왼쪽정렬. 기존 하단 버튼 초점 표시 유지 |
+docs/3.3 키바인딩+설정/3.3 키바인딩+설정.md:541:| 검증 | 실제 Space로 필터 변경·보석 선택·장착·해제 성공. Space 후 junk=false 보존. Tab/Shift+Tab 이동·필터 초점 유지 확인.320/390/640/1280px에서 실제 Tab 이동 후 마지막 하단 버튼 전체 노출. pageerror0 |
+docs/3.3 키바인딩+설정/게임패드_매핑표.md:244:| 브라우저 | 실제 디스크 코드에서18→6행 필터 변경 후index0,키보드focus행3→index3,마우스행1→index1,D-pad 아래→행2초점,A→cr_ward_stone 선택·팝업닫힘 확인. pageerror0 |
+docs/3.3 키바인딩+설정/게임패드_매핑표.md:254:| 쉬운게임 보완 | renderCrystalBag 말미의 목록 이벤트 연결과 재렌더 필터 초점 복원 누락을 보완. 생성 영역은 createContextualFragment + replaceChildren으로 갱신. 기존 쉬운게임 분류·아이템 수치 유지 |
+docs/0마스터플랜/PROJECT_MANAGEMENT_MASTER.md:678:원격 `1c7cdb453c8a9ddaaac401020beb72ac87a74353` 대조 뒤 완료한 기존 네 팀에 15:26:13Z 한 건씩 전달했다. ITEM은 검토 전용 D10 포트 설치/해제와 UI 호출부, BUILD는 Mac runtime/고유 출력/소스 SHA/save 보존 사전검사 CLI, UIUX는 UI-04 빈 아이템 상세와 초점 오류, BALANCE는 장비 강화 게이트·차감·저장 경계 검수다. 각 독립 prefix에만 구현하며 생산·새 게임·빌드·설치 변경0. 전달과 실제 Read/코드 Edit는 분리 기록한다.
+docs/0마스터플랜/mac-resume-20261001/vscode-dispatch/FOUR-NEXT-20261002.md:15:| UIUX | UIUX-20261002-INVENTORY-FOCUS | UIUX/inventory-focus-* | 승인 UI-04 상세/비교 진입·닫기의 실제 오류 재현, 최소 후보/회귀. 실화면 판정은 별도 |
+docs/0마스터플랜/mac-resume-20261001/vscode-dispatch/ITEM-definition-result.md:18:|UI-04|빙편을 거두는 손|gloves|U-D04|
+docs/0마스터플랜/mac-resume-20261001/vscode-dispatch/INDEPENDENT-NEXT-20261002.md:9:| UIUX | 필터/유골함 전환의 실제 초점 경계; UIUX/filter-focus-* | 기존 세션 수신·Read 확인. 생산 HTML 읽기 전용 |
+docs/0마스터플랜/mac-resume-20261001/vscode-dispatch/UIUX-review-result.md:19:| UI-04 | 빙편을 거두는 손 | 장갑 | U-D04 |

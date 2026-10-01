@@ -1,5 +1,5 @@
 {
-  "checkedAt": "2026-10-01T18:03:01.407911+00:00",
+  "checkedAt": "2026-10-01T18:08:19.672397+00:00",
   "kind": "observed_followup_activity_and_delivery_blockers",
   "teams": [
     {
@@ -130,7 +130,7 @@
       "timestampSource": "official read_thread turn timestamps; first command/edit existence confirmed, precise event time unavailable",
       "actualReadConfirmed": true,
       "actualEditConfirmed": true,
-      "nextGate": "Runtime remains unverified; source checkpoint pending",
+      "nextGate": "Source checkpoint 49eaec38 verified; actual disk/HTTP/media/runtime still pending",
       "productionApplied": true,
       "priorAcceptance": "Profile argument fix committed179813c2; root43PASS and new package created",
       "currentTaskReceipt": "tools/team-followup-20261001/BUILD/integrated-mac-build-receipt.json",
@@ -156,18 +156,18 @@
       "instruction": "tools/team-followup-20261001/UIUX/filter-focus-task.md",
       "receivedAt": "2026-10-01T17:54:19+00:00",
       "completedAt": "2026-10-01T17:59:33+00:00",
-      "status": "candidate_completed_root_review_pending",
+      "status": "production_source_integrated_runtime_pending",
       "timestampSource": "official read_thread turn timestamps; first command/edit existence confirmed, precise event time unavailable",
       "actualReadConfirmed": true,
       "actualEditConfirmed": true,
-      "nextGate": "Candidate review and QA native; no production ownership",
-      "productionApplied": false,
+      "nextGate": "QA native filter/gamepad/ossuary details; Mac locked",
+      "productionApplied": true,
       "currentTaskReceipt": "tools/team-followup-20261001/UIUX/production-integration-receipt.json",
-      "rootAcceptance": "Owner reports 26 groups and 32 RED/GREEN cases; independent root review not yet performed",
+      "rootAcceptance": "Actual source32 + adjacent23 groups PASS; 32 old RED cases preserved; owner19 files unchanged",
       "currentlyRunning": false,
       "nativeSessionLocation": "VS Code Terminal4",
       "previousTaskStatus": "completed_source_accepted",
-      "executionStateNote": "Official owner turn completed",
+      "executionStateNote": "Owner completed and root integrated source; no active team work claimed",
       "lastObservedCommandCount": 3
     },
     {
@@ -210,7 +210,7 @@
       "timestampSource": "official read_thread turn timestamps; first command/edit existence confirmed, precise event time unavailable",
       "actualReadConfirmed": true,
       "actualEditConfirmed": true,
-      "nextGate": "Runtime remains unverified; source checkpoint pending",
+      "nextGate": "Source checkpoint 49eaec38 verified; actual disk/HTTP/media/runtime still pending",
       "productionApplied": true,
       "rootAcceptance": "Merged server actual source 40 groups PASS; no disk/network/runtime",
       "currentTaskReceipt": "tools/team-followup-20261001/BALANCE/disk-save-restart-receipt.json",
@@ -256,16 +256,15 @@
   ],
   "counts": {
     "next_delivery_blocked_mac_locked": 7,
-    "production_source_integrated_runtime_pending": 2,
-    "candidate_completed_root_review_pending": 1,
+    "production_source_integrated_runtime_pending": 3,
     "completed_source_accepted_runtime_pending": 1
   },
-  "remoteCheckpoint": "aafcd9d5733506c89906c3389863b6c8adf23a23",
-  "remoteCheckpointVerifiedAt": "2026-10-01T18:03:22.080403+00:00",
+  "remoteCheckpoint": "49eaec385cc97cfb260217a7676ffb897512774c",
+  "remoteCheckpointVerifiedAt": "2026-10-01T18:08:20.148306+00:00",
   "remoteRef": "refs/heads/codex/mac-environment-20261001",
   "history": {
-    "path": "outputs/team-review-20261002/server-integration/team-utilization-history-5c863d776b77.json",
-    "sha256": "5c863d776b772a5b6d89aaa160e355d3c421bf1fcd70a58afb28fc4f8551df90"
+    "path": "outputs/team-review-20261002/filter-integration/team-utilization-history-3d7e1d016d82.json",
+    "sha256": "3d7e1d016d82fb146758e45aa94d4d92a4d27a6347e4d82c4e4e936ff60cf003"
   },
   "rootGate": {
     "status": "mac_locked_runtime_pending",
@@ -333,7 +332,9 @@
     "outputs/team-review-20261002/independent-next/item-host-root.json",
     "docs/0마스터플랜/mac-resume-20261001/vscode-dispatch/INDEPENDENT-NEXT-20261002.md",
     "outputs/team-review-20261002/server-integration/result.json",
-    "docs/0마스터플랜/mac-resume-20261001/vscode-dispatch/SERVER-INTEGRATION-20261002.md"
+    "docs/0마스터플랜/mac-resume-20261001/vscode-dispatch/SERVER-INTEGRATION-20261002.md",
+    "outputs/team-review-20261002/filter-integration/production-result.json",
+    "docs/0마스터플랜/mac-resume-20261001/vscode-dispatch/FILTER-INTEGRATION-20261002.md"
   ],
   "unassignedTerminal": {
     "number": 12,
@@ -342,5 +343,5 @@
     "countedAsTeam": false,
     "evidence": "outputs/team-review-20261002/async-boundary/terminal12-audit.json"
   },
-  "remoteCheckpointNote": "Exact ref reread immediately before committing server integration; this snapshot precedes new commit"
+  "remoteCheckpointNote": "Exact ref before filter integration commit; new remote verification is separate receipt."
 }

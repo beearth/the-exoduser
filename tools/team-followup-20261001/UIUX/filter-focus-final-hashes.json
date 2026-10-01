@@ -1,0 +1,35 @@
+{
+  "at": "2026-10-01T17:59:29.114Z",
+  "productionReadOnlySHA": {
+    "game.html": {
+      "before": "c868284af349c996d42087e93eba47a10614d73cb8f55f4db5ae01dde89da31a",
+      "final": "c868284af349c996d42087e93eba47a10614d73cb8f55f4db5ae01dde89da31a",
+      "factorySha256": "694bf7cbd893eacbf190db85272438e0123a7e373c0f0bcb4501313d3e9d6827"
+    },
+    "game-easy-test.html": {
+      "before": "11b4e97b15903b9699b296362bdd068ffed6d3a1a505d9f6eeec5482b7c085ca",
+      "final": "11b4e97b15903b9699b296362bdd068ffed6d3a1a505d9f6eeec5482b7c085ca",
+      "factorySha256": "694bf7cbd893eacbf190db85272438e0123a7e373c0f0bcb4501313d3e9d6827"
+    }
+  },
+  "files": {
+    "tools/team-followup-20261001/UIUX/filter-focus-before.json": "f9bebbbc36384955ee0d13a8bc66c8f6be46063990e2fad841d10a17ba79b30f",
+    "tools/team-followup-20261001/UIUX/filter-focus-candidate.mjs": "634f7d86fadec17b0b408a644c66524681fec605f8c9cdd719b00885a3575c38",
+    "tools/team-followup-20261001/UIUX/filter-focus-dependencies.json": "b317103a30ff51f68f442f8365026be2b13c2b9557451085dee865f3650e2d82",
+    "tools/team-followup-20261001/UIUX/filter-focus-doc-matches.txt": "209654d8fb4c77e8103135be1f77f37f85953baa610272f6e68f307e16dccc14",
+    "tools/team-followup-20261001/UIUX/filter-focus-easy.before.html": "11b4e97b15903b9699b296362bdd068ffed6d3a1a505d9f6eeec5482b7c085ca",
+    "tools/team-followup-20261001/UIUX/filter-focus-easy.patch": "6867bf99429782d5468cb37883a067862e2d67701c1adbb9671ae9efaa1dbec9",
+    "tools/team-followup-20261001/UIUX/filter-focus-fixture.mjs": "b06bb93809161b1ff385eded5b92b9fe914a2862546239b4e7c29f6f962a75e0",
+    "tools/team-followup-20261001/UIUX/filter-focus-main.before.html": "c868284af349c996d42087e93eba47a10614d73cb8f55f4db5ae01dde89da31a",
+    "tools/team-followup-20261001/UIUX/filter-focus-main.patch": "6d42093f4d9f567436fd06e6219952d568990fc5d1e69bf950a5c97e1d3a7a1e",
+    "tools/team-followup-20261001/UIUX/filter-focus-ossuary-source.json": "f46190ef1e687c614095ada15928d7c574d1c53da18672d2e887c8f809896408",
+    "tools/team-followup-20261001/UIUX/filter-focus-prepare.mjs": "31c968bfedffe07245ca2d740eb6714a263b380b78cc0f25c33c87db8e93889b",
+    "tools/team-followup-20261001/UIUX/filter-focus-receipt.json": "79316c29ac3c3c79ea36d40508931a2608cfefefd0f1f65be1089177e4b37343",
+    "tools/team-followup-20261001/UIUX/filter-focus-reproduction.json": "ce6ebcf69fb39fe56211ed8d7807acb15b5df60fee1036c659ac396444354e5b",
+    "tools/team-followup-20261001/UIUX/filter-focus-result.md": "80de3d521205220431d9062549002aad39ee57ab7e836633adbd3b1d706cf3c9",
+    "tools/team-followup-20261001/UIUX/filter-focus-task.md": "f9e017f2103d2ccff4983ddd11c72cffba57edf57c952944be2560323567ca1e",
+    "tools/team-followup-20261001/UIUX/filter-focus-ui-panels.before.js": "b22c4a31141672304a15adfae3a5050cb9fde3b96601507c8f10de3ea63f4cb5",
+    "tools/team-followup-20261001/UIUX/filter-focus-validation.txt": "fc9b04eb506d64a990a6c98bc97b74e9b4f2ee7776036292a9fdd9c5fb5a9df6",
+    "tools/team-followup-20261001/UIUX/filter-focus.test.mjs": "09393e9547ec6749bc2789c7f4a588c2905e0d0005bc9fb2ee82e8ae411a7566"
+  }
+}

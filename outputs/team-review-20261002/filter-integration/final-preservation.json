@@ -1,0 +1,25 @@
+{
+  "utc": "2026-10-01T18:08:41.052251+00:00",
+  "priorArtifacts": 285,
+  "unchanged": 282,
+  "approvedDocSync": {
+    "docs/3.1 ui hud 디자인/UI_UX_IMPROVEMENT_PROJECT_20260930.md": {
+      "before": "f36a06e84002010920b7050578adc489037f5f653b07bab4f9d918faa0ecf4c3",
+      "after": "6071fec98cebf7be0cd40e199ec9791b90f6680ad2a8db2a85a563703d0c00d1"
+    },
+    "docs/2_7 인벤토리+장비시스템/INVENTORY_KEYBOARD_FOCUS_20261002.md": {
+      "before": "d1582b0fe8e1cbdd1bb256f8da9f7f6eb85823745167024d6773f10b8e458f94",
+      "after": "10933868f5a6a3df291805f664ef6b7faa616f7a92180d6ec1b7037bab0173c2"
+    },
+    "docs/2_7 인벤토리+장비시스템/2_7 인벤토리+장비시스템.md": {
+      "before": "a90141c201c09ab7a3fd44e5ccbfb6d0df22ef94022b8b3d974c08bc8f066511",
+      "after": "52619a230ffa831c64a84f6f9cc2b2b74152fc672ed6f5c78b33815671dc57c7"
+    }
+  },
+  "ownerFilesUnchanged": 19,
+  "productionFiles": [
+    "game.html",
+    "game-easy-test.html"
+  ],
+  "runtime": "not executed"
+}

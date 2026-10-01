@@ -47890,12 +47890,20 @@ const _inventoryFocus=(function createInventoryFocus({document, get, label}) {
   }
   function beforeRender() {
     const active = document.activeElement;
+    const filter = get('invFilters')?.contains(active) && active.dataset.inventoryFilterKey
+      ? {key:active.dataset.inventoryFilterKey,value:active.dataset.inventoryFilterValue} : null;
     const activeItem = [...currentCards].find(([,card]) => card === active)?.[0];
     const owned = !!activeItem || (!!keyboardItem && (get('invRight')?.contains(active) || get('invActionBtns')?.contains(active)));
     currentCards.clear();
-    return {active,owned,item:activeItem || keyboardItem};
+    return {active,owned,item:activeItem || keyboardItem,filter};
   }
   function afterRender(token) {
+    if (token.filter && inside()) {
+      const filters = get('invFilters')?.querySelectorAll('button') || [];
+      const target = [...filters].find(node => node.dataset.inventoryFilterKey === token.filter.key && node.dataset.inventoryFilterValue === token.filter.value);
+      if (!focus(target)) focus(get('invClose'));
+      return;
+    }
     if (!token.owned || !inside()) return;
     if (currentCards.has(token.item) && document.activeElement === token.active && usable(token.active)) return;
     const current = currentCards.get(token.item);
@@ -48581,6 +48589,8 @@ function renderInv(){
     b.style.cssText=`display:inline-block;padding:1px 6px;font-size:.95rem;font-family:'Noto Sans KR';cursor:pointer;border:1px solid ${act?col:'#332211'};background:${act?col+'22':'rgba(0,0,0,.2)'};color:${act?col:'#776655'};margin:0 2px 2px 0;transition:all .15s`;
     b.style.setProperty('--filter-color',col);
     b.textContent=label;
+    b.dataset.inventoryFilterKey=key;
+    b.dataset.inventoryFilterValue=String(val);
     b.onclick=()=>{invFilter[key]=act?null:val;renderInv()};
     fBar.appendChild(b);
   };
