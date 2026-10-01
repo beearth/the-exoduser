@@ -1,0 +1,13 @@
+{
+  "taskId": "ITEM-RING-PNG-REVIEW",
+  "terminal": "배정 터미널 9 (실제 UI 번호 미확인)",
+  "cli": "Codex",
+  "model": null,
+  "sessionId": null,
+  "receivedAt": "2026-10-01T10:16:04Z",
+  "startedAt": "2026-10-01T10:16:04Z",
+  "status": "completed_review_pending_integration",
+  "ownedPaths": ["tools/team-followup-20261001/ITEM/", "docs/0마스터플랜/mac-resume-20261001/vscode-dispatch/ITEM-result.md", "docs/0마스터플랜/mac-resume-20261001/vscode-dispatch/ITEM-receipt.json"],
+  "nextAction": "총괄에 최소 patch와 9PASS 인계; 생산 연결·실화면·자연전투·패키지 검수는 별도 게이트",
+  "blocker": null
+}

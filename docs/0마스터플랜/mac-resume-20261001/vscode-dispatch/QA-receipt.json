@@ -1,0 +1,36 @@
+{
+  "taskId": "QA-B01-BASELINE-PREFLIGHT",
+  "title": "첫 처치와 밀집 전투의 유효 기준점 준비",
+  "team": "QA",
+  "terminal": "VS Code 기존 터미널 1 (QA)",
+  "cli": "Claude Code",
+  "model": "claude-opus-4-8",
+  "sessionId": "88c3f903-ece5-4640-8b0c-86feaaca0e53",
+  "sessionIdSource": "scratchpad 경로의 세션 UUID로 추정. CLI가 직접 보고한 값 아님",
+  "receivedAt": "2026-10-01T19:05:00+09:00",
+  "startedAt": "2026-10-01T19:07:00+09:00",
+  "status": "done-planning-and-validator",
+  "head": "30a204a7aa348a88b90bdc922862c610a7da938f",
+  "ownedPaths": [
+    "tools/team-followup-20261001/QA/",
+    "docs/0마스터플랜/mac-resume-20261001/vscode-dispatch/QA-result.md",
+    "docs/0마스터플랜/mac-resume-20261001/vscode-dispatch/QA-receipt.json"
+  ],
+  "gate": {
+    "newRealMeasurement": "blocked",
+    "reason": "이 폴더에 QA-game-release.json(released=true) 총괄 인계가 없음. 신규 실화면 측정 금지, production 변경 금지",
+    "checkedPath": "docs/0마스터플랜/mac-resume-20261001/vscode-dispatch/QA-game-release.json (부재 확인)"
+  },
+  "nextAction": "M2 정식 실측은 QA-game-release.json(released=true) 총괄 인계 후 본 계획·검증기로 수행. 그 전까지 대기.",
+  "completed": {
+    "plan": "tools/team-followup-20261001/QA/BASELINE_PREFLIGHT_PLAN.md",
+    "validator": "tools/team-followup-20261001/QA/baseline_raw_validator.mjs",
+    "rejectHarness": "tools/team-followup-20261001/QA/make_reject_fixtures.mjs",
+    "realRawsValidated": 4,
+    "rejectFixtures": "12/12 reject (각 겨냥 required check FAIL 확인)",
+    "newRealMeasurement": 0,
+    "productionChange": 0,
+    "git": "add/commit/push 0"
+  },
+  "blocker": null
+}

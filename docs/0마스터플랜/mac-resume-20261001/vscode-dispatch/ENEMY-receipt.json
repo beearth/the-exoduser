@@ -1,0 +1,26 @@
+{
+  "taskId": "ENEMY-TYPE3-PROBE-FIX",
+  "title": "type3 발사 관측 후보 정확성 보강",
+  "team": "ENEMY",
+  "terminal": "VS Code 기존 터미널 (ENEMY)",
+  "cli": "Claude Code",
+  "model": "claude-opus-4-8",
+  "sessionId": "ddbd64be-975a-458e-a020-c09749281f5b",
+  "sessionIdSource": "scratchpad 경로의 세션 UUID로 추정. CLI가 직접 보고한 값 아님",
+  "receivedAt": "2026-10-01T19:14:00+09:00",
+  "startedAt": "2026-10-01T19:14:00+09:00",
+  "status": "in-progress",
+  "head": "30a204a7aa348a88b90bdc922862c610a7da938f",
+  "ownedPaths": [
+    "tools/team-followup-20261001/ENEMY/",
+    "docs/0마스터플랜/mac-resume-20261001/vscode-dispatch/ENEMY-result.md",
+    "docs/0마스터플랜/mac-resume-20261001/vscode-dispatch/ENEMY-receipt.json"
+  ],
+  "gate": {
+    "realGameObservation": "blocked",
+    "reason": "QA-receipt.json gate=blocked (QA-game-release.json released=true 미인계). 실화면 관측은 QA 종료 인계 후.",
+    "checkedPath": "docs/0마스터플랜/mac-resume-20261001/vscode-dispatch/QA-game-release.json (부재 확인)"
+  },
+  "nextAction": "검증결과.md ENEMY 5결함(lexical G/P/ens 접근, projT 재설정 차징감지, 투사체 commit 후 판정, 개체전환/실 tick, wrapper 소유권/재설치)을 game.html HEAD 30a204a7과 대조 후 독립 사본에 수정, mock 발사/무발사/대상교체/복원 검사.",
+  "blocker": null
+}

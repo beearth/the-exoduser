@@ -1,0 +1,36 @@
+{
+  "taskId": "SKILL-03-OBSERVER-FIX",
+  "title": "iceStorm 설치·취소 관측 후보 보강",
+  "team": "SKILL",
+  "terminal": 6,
+  "cli": "claude-code",
+  "model": "claude-opus-4-8",
+  "sessionId": null,
+  "receivedAt": "2026-10-01T10:13:00Z",
+  "startedAt": "2026-10-01T10:13:00Z",
+  "status": "done_pending_live",
+  "completedAt": "2026-10-01T10:20:00Z",
+  "head": "30a204a7aa348a88b90bdc922862c610a7da938f",
+  "ownedPaths": [
+    "docs/0마스터플랜/mac-resume-20261001/vscode-dispatch/SKILL-result.md",
+    "docs/0마스터플랜/mac-resume-20261001/vscode-dispatch/SKILL-receipt.json",
+    "tools/team-followup-20261001/SKILL/ice-cancel-probe.safe.js",
+    "tools/team-followup-20261001/SKILL/ice-cancel-probe.selftest.mjs",
+    "tools/team-followup-20261001/SKILL/_source-candidate-SKILL.js",
+    "tools/team-followup-20261001/SKILL/_source-검증결과.md"
+  ],
+  "artifacts": {
+    "observer": "tools/team-followup-20261001/SKILL/ice-cancel-probe.safe.js",
+    "selftest": "tools/team-followup-20261001/SKILL/ice-cancel-probe.selftest.mjs",
+    "syntaxCheck": "node --check → OK (exit0)",
+    "selftestResult": "38 PASS / 0 FAIL (exit0)"
+  },
+  "nextAction": "QA 종료 인계 후 총괄/QA가 실게임 콘솔에서 IceCancelProbe.install()→입력순서 명세대로 mark/dump/verdict 수집. 양성대조 포착 필수.",
+  "blocker": null,
+  "incomplete": [
+    "실브라우저 입력·게임 실행·덤프 수집(QA 실측 종료 인계 전 보류)",
+    "취소 후 LMB 무기공격 발동 2차 확인",
+    "패드 경로·합체 holyIce 자동 존·본편 실플레이(범위 밖)"
+  ],
+  "notes": "원본 candidates/SKILL.js(sha256 aeded941…, manifest 일치)·검증결과.md·teams/SKILL.md는 r-input-evidence/evidence.zip 내부라 스크래치패드로 추출해 읽기 전용 대조하고 _source-* 사본을 팀 폴더에 보존. 게이트 G1~G6+스택누수 반영. game.html/자원공식/전투/생산코드 무수정. SSOT(2_1:407) iceStorm MP40/2스택/600f 일치 → docs 수치 정정 불필요."
+}

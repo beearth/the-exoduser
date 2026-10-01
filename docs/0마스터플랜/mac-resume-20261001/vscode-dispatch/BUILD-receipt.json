@@ -1,0 +1,14 @@
+{
+  "taskId": "BUILD-RECOVERY-CONTRACT",
+  "terminal": "10 (배정 번호, UI 미확인)",
+  "cli": "Codex",
+  "model": null,
+  "sessionId": null,
+  "receivedAt": "2026-10-01",
+  "startedAt": "2026-10-01",
+  "status": "completed_scoped_checks",
+  "completedAt": "2026-10-01T10:17:25Z",
+  "ownedPaths": ["tools/team-followup-20261001/BUILD/", "docs/0마스터플랜/mac-resume-20261001/vscode-dispatch/BUILD-result.md", "docs/0마스터플랜/mac-resume-20261001/vscode-dispatch/BUILD-receipt.json"],
+  "nextAction": "총괄에 복구 계약 누락·공유 docs 보충·실제 패키지 검수·원격 체크포인트 인계",
+  "blocker": "담당 단위검사는 완료. 실제 서버/게임/패키지 검수 및 생산 수정은 배정 범위 밖"
+}

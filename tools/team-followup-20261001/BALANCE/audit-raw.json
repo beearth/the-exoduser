@@ -1,0 +1,161 @@
+{
+  "scope": "독립 정적 감사; 롤은 실제 함수/단일 어픽스 풀 fixture이며 정상 전체 풀 획득률 검증 아님",
+  "rows": [
+    {
+      "file": "game.html",
+      "sha256": "593a7a9d84c78402f04c50c94ae169e237e49751ad58d8640e78e672850728f2",
+      "definition": {
+        "id": "onHitFireball",
+        "type": 1,
+        "tiers": [
+          0.04,
+          0.07,
+          0.11,
+          0.16,
+          0.22
+        ],
+        "unit": "prob",
+        "slots": [
+          "wpn"
+        ],
+        "group": "ohFb",
+        "weight": 25,
+        "tierW": [
+          40,
+          30,
+          20,
+          8,
+          2
+        ]
+      },
+      "isolatedPoolRoll": {
+        "definition": {
+          "id": "onHitFireball",
+          "type": 1,
+          "tiers": [
+            0.04,
+            0.07,
+            0.11,
+            0.16,
+            0.22
+          ],
+          "unit": "prob",
+          "slots": [
+            "wpn"
+          ],
+          "group": "ohFb",
+          "weight": 25,
+          "tierW": [
+            40,
+            30,
+            20,
+            8,
+            2
+          ]
+        },
+        "weapon": [
+          {
+            "id": "onHitFireball",
+            "tier": 0,
+            "value": 0.04
+          }
+        ],
+        "bow": []
+      },
+      "verdict": "MISSING_HOOK",
+      "recursion": "NOT_REACHED",
+      "occurrences": [
+        {
+          "line": 13971,
+          "text": "{id:'onHitFireball',type:1,tiers:[.04,.07,.11,.16,.22],unit:'prob',slots:['wpn'],group:'ohFb',weight:25,tierW:[40,30,20,8,2]},"
+        },
+        {
+          "line": 14276,
+          "text": "onHitFireball:'화구발사의',onHitChainL:'연쇄뇌격의',onHitFreeze:'동결타의',onHitStun:'경직타의',onHitPoison:'독침의',onHitBleed:'출혈의',onHitWeaken:'약화의',onHitSlow:'둔화의',onHitMark:'표적의',"
+        },
+        {
+          "line": 14358,
+          "text": "onHitFireball:'적중시화구',onHitChainL:'적중시연쇄뇌격',onHitFreeze:'적중빙결%',onHitStun:'적중스턴%',onHitPoison:'적중중독%',onHitBleed:'적중출혈%',onHitWeaken:'적중약화%',onHitSlow:'적중감속%',onHitMark:'적중표적%',"
+        }
+      ]
+    },
+    {
+      "file": "game-easy-test.html",
+      "sha256": "269411143e093319926948dce42740d83617b2a0e1305cc1180a59a6ecb75e58",
+      "definition": {
+        "id": "onHitFireball",
+        "type": 1,
+        "tiers": [
+          0.04,
+          0.07,
+          0.11,
+          0.16,
+          0.22
+        ],
+        "unit": "prob",
+        "slots": [
+          "wpn"
+        ],
+        "group": "ohFb",
+        "weight": 25,
+        "tierW": [
+          40,
+          30,
+          20,
+          8,
+          2
+        ]
+      },
+      "isolatedPoolRoll": {
+        "definition": {
+          "id": "onHitFireball",
+          "type": 1,
+          "tiers": [
+            0.04,
+            0.07,
+            0.11,
+            0.16,
+            0.22
+          ],
+          "unit": "prob",
+          "slots": [
+            "wpn"
+          ],
+          "group": "ohFb",
+          "weight": 25,
+          "tierW": [
+            40,
+            30,
+            20,
+            8,
+            2
+          ]
+        },
+        "weapon": [
+          {
+            "id": "onHitFireball",
+            "tier": 0,
+            "value": 0.04
+          }
+        ],
+        "bow": []
+      },
+      "verdict": "MISSING_HOOK",
+      "recursion": "NOT_REACHED",
+      "occurrences": [
+        {
+          "line": 13471,
+          "text": "{id:'onHitFireball',type:1,tiers:[.04,.07,.11,.16,.22],unit:'prob',slots:['wpn'],group:'ohFb',weight:25,tierW:[40,30,20,8,2]},"
+        },
+        {
+          "line": 13776,
+          "text": "onHitFireball:'화구발사의',onHitChainL:'연쇄뇌격의',onHitFreeze:'동결타의',onHitStun:'경직타의',onHitPoison:'독침의',onHitBleed:'출혈의',onHitWeaken:'약화의',onHitSlow:'둔화의',onHitMark:'표적의',"
+        },
+        {
+          "line": 13858,
+          "text": "onHitFireball:'적중시화구',onHitChainL:'적중시연쇄뇌격',onHitFreeze:'적중빙결%',onHitStun:'적중스턴%',onHitPoison:'적중중독%',onHitBleed:'적중출혈%',onHitWeaken:'적중약화%',onHitSlow:'적중감속%',onHitMark:'적중표적%',"
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,21 @@
+{
+  "taskId": "ANIMVFX-GL-PROBE-FIX",
+  "title": "플래시 관측 후보 자원·게이트 보강",
+  "team": "ANIMVFX",
+  "terminal": "VS Code 기존 터미널 8 (ANIMVFX)",
+  "cli": "Claude Code",
+  "model": "claude-opus-4-8",
+  "sessionId": "1d2a7253-478c-43aa-8c6f-766a02270432",
+  "sessionIdSource": "scratchpad 경로의 세션 UUID로 추정. CLI가 직접 보고한 값 아님",
+  "receivedAt": "2026-10-01T19:16:00+09:00",
+  "startedAt": "2026-10-01T19:16:33+09:00",
+  "status": "in-progress",
+  "head": "30a204a7aa348a88b90bdc922862c610a7da938f",
+  "ownedPaths": [
+    "tools/team-followup-20261001/ANIMVFX/",
+    "docs/0마스터플랜/mac-resume-20261001/vscode-dispatch/ANIMVFX-result.md",
+    "docs/0마스터플랜/mac-resume-20261001/vscode-dispatch/ANIMVFX-receipt.json"
+  ],
+  "nextAction": "AGENTS.md·연속정책·총괄 §18·ANIMATION_VFX_TEAM_MASTER·R/GL 원자료 읽기 후 독립 GL 프로브 사본 구현 및 정적/mock 검사 실행",
+  "blocker": null
+}
