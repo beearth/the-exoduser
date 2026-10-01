@@ -9,6 +9,9 @@ import fs from 'node:fs';
 import path from 'node:path';
 import vm from 'node:vm';
 import {fileURLToPath} from 'node:url';
+import {createHash} from 'node:crypto';
+import {parseExpressionAt} from 'acorn';
+import {createCanvas,Image as CanvasImage} from 'canvas';
 const ROOT=path.join(path.dirname(fileURLToPath(import.meta.url)),'..');
 const src=fs.readFileSync(path.join(ROOT,'ch1-boundary-edge.js'),'utf8');
 const gameSrc=fs.readFileSync(path.join(ROOT,'game.html'),'utf8');
@@ -66,7 +69,7 @@ function preparedDraw(zoom,cam={x:4000,y:4000},anchors=[]){
   const sandbox={performance:{now:()=>0},location:{search:'?edgeShade=b'}};
   sandbox.globalThis=sandbox;vm.createContext(sandbox);
   vm.runInContext(src.replace('  function draw(',
-    '  root.seed=(g,list)=>{shade={width:800,height:800};rim={};pool={};roots=list;mapRef=g.map;};\n  function draw('),sandbox);
+    '  root.seed=(g,list)=>{shade={width:800,height:800};rim=[{},{},{}];pool={};roots=list;mapRef=g.map;};\n  function draw('),sandbox);
   const g={stage:0,map:[[0]],mw:200,mh:200,cam};
   sandbox.seed(g,anchors);
   const images=[],translations=[];
@@ -113,4 +116,130 @@ test('boundary edge: both callers pass the exact zoom used by the world transfor
     assert.match(s,/X\.scale\(_tzoom,_tzoom\)/);
     assert.match(s,/Ch1BoundaryEdge\.draw\(X,G,_now,VW,VH,_tzoom\)/);
   }
+});
+
+// Baseline: outputs/map020-variants-20261001/before-boundary.js,
+// SHA256 6274c941c790ff9ff34494620393a03824bb1a87406c298f97ac022b601423df.
+// Pin the relevant original functions so tests remain portable without that local output.
+const digest=s=>createHash('sha256').update(s).digest('hex');
+function functionText(source,name){
+  const start=source.indexOf('function '+name+'(');
+  assert.ok(start>=0,'missing function '+name);
+  const node=parseExpressionAt(source,start,{ecmaVersion:'latest'});
+  return source.slice(node.start,node.end);
+}
+const legacyBuildRim=`function buildRim(){
+    rim=cv(440,120);const rc=rim.getContext('2d');
+    rc.drawImage(pool,200,530,440,120,0,0,440,120);
+    rc.globalCompositeOperation='destination-in';
+    const rh=rc.createLinearGradient(0,0,440,0);rh.addColorStop(0,'rgba(0,0,0,0)');rh.addColorStop(.16,'#000');rh.addColorStop(.84,'#000');rh.addColorStop(1,'rgba(0,0,0,0)');rc.fillStyle=rh;rc.fillRect(0,0,440,120);
+    const rv=rc.createLinearGradient(0,0,0,120);rv.addColorStop(0,'rgba(0,0,0,0)');rv.addColorStop(.26,'#000');rv.addColorStop(.9,'#000');rv.addColorStop(1,'rgba(0,0,0,0)');rc.fillStyle=rv;rc.fillRect(0,0,440,120);
+    // Darken toward the forest tone so strips sit in the edge shadow.
+    rc.globalCompositeOperation='source-atop';rc.fillStyle='rgba(10,7,8,.12)';rc.fillRect(0,0,440,120);
+  }`;
+const legacyDraw=functionText(src,'draw').replace('ctx.drawImage(rim[rootVariant(r)],-220,-46)','ctx.drawImage(rim,-220,-46)');
+const legacySrc=src.replace(functionText(src,'buildRim'),legacyBuildRim).replace(functionText(src,'draw'),legacyDraw);
+
+test('boundary variants: original build/RNG and legacy draw are byte-exact before-source functions',()=>{
+  assert.strictEqual(digest(functionText(src,'build')),'412b8e73d89c49377da06f1f2350c2015d290d09027df7c7316f849dd8a60b7c');
+  assert.strictEqual(digest(functionText(src,'rng')),'72e8f493a4cc7862047ea7c47d9ba88910611d13304c6a7058dfeaa430195a60');
+  assert.strictEqual(digest(legacyDraw),'95adff66ae20a4fae90d485b4daf7f9b69d32ecbd2b251eae1ebce9db20893b0');
+  assert.strictEqual(digest(legacyBuildRim),'3192ad961b8d40b8ead17799a306cceade86081584d85e2dbf775d30cdbd5315');
+});
+
+// Real raster surfaces and the approved on-disk image, with draw-call observation.
+// Node-canvas blur behavior is not a browser visual oracle: equality here protects
+// build/anchor/RNG/cache contracts; browser camera quality is verified separately.
+function rasterRun(source,mode='b'){
+  const created=[],buildDraws=[],idle=[];let imageLoads=0;
+  const math=Object.create(Math);math.random=()=>{throw new Error('unexpected unseeded RNG');};
+  class PoolImage extends CanvasImage{
+    set src(value){imageLoads++;super.src=fs.readFileSync(path.join(ROOT,value));}
+  }
+  const sandbox={Math:math,performance:{now:()=>0},location:{search:'?edgeShade='+mode},Image:PoolImage,
+    __rngCalls:0,requestIdleCallback:fn=>idle.push(fn),
+    document:{createElement(tag){
+      assert.strictEqual(tag,'canvas');const canvas=createCanvas(1,1);created.push(canvas);
+      const context=canvas.getContext('2d'),original=context.drawImage;
+      context.drawImage=function(image,...args){buildDraws.push({canvas,image,args});return original.call(this,image,...args);};
+      return canvas;
+    }}};
+  sandbox.globalThis=sandbox;vm.createContext(sandbox);
+  const marker='return function(){s=(Math.imul';
+  assert.ok(source.includes(marker),'seeded RNG instrumentation anchor');
+  vm.runInContext(source.replace(marker,'return function(){root.__rngCalls++;s=(Math.imul'),sandbox);
+  const map=Array.from({length:20},(_,y)=>Array.from({length:24},(_,x)=>
+    x<3||x>20||y<3||y>16||(x===12&&y>=6&&y<=14)?1:0));
+  for(const row of map)Object.freeze(row);Object.freeze(map);
+  const g={stage:0,map,mw:24,mh:20,cam:{x:480,y:400}};
+  const output=createCanvas(1280,800),ctx=output.getContext('2d');let trace=[];
+  for(const name of ['drawImage','save','restore','translate','rotate','scale']){
+    const original=ctx[name];ctx[name]=function(...args){trace.push({name,args});return original.apply(this,args);};
+  }
+  function draw(zoom=1){trace=[];ctx.clearRect(0,0,1280,800);sandbox.Ch1BoundaryEdge.draw(ctx,g,0,1280,800,zoom);return trace.slice();}
+  draw();assert.strictEqual(created.length,0,'first draw defers build');
+  function flushIdle(){while(idle.length)idle.shift()();}
+  flushIdle();
+  return{g,draw,created,buildDraws,edge:sandbox.Ch1BoundaryEdge,rngCalls:()=>sandbox.__rngCalls,
+    flushIdle,imageLoads:()=>imageLoads,pixels:()=>digest(ctx.getImageData(0,0,1280,800).data)};
+}
+function anchorTrace(trace){return trace.filter(t=>t.name!=='drawImage').map(t=>({name:t.name,args:t.args}));}
+
+test('boundary variants: real draw selects all three cached crops and reuses textures across frames/map rebuilds',()=>{
+  const run=rasterRun(src),first=run.draw();
+  const strips=run.created.filter(c=>c.width===440&&c.height===120);
+  assert.strictEqual(strips.length,3,'exactly three materialized rim caches');
+  const cropCalls=run.buildDraws.filter(call=>strips.includes(call.canvas)&&call.image instanceof CanvasImage);
+  assert.deepStrictEqual(cropCalls.map(call=>call.args),[
+    [200,530,440,120,0,0,440,120],[370,535,270,90,0,0,440,120],[250,550,310,70,0,0,440,120]]);
+  assert.strictEqual(new Set(strips.map(c=>digest(c.getContext('2d').getImageData(0,0,440,120).data))).size,3,'three distinct real image crops');
+  const selected=new Set();let position;
+  for(const call of first){
+    if(call.name==='translate')position=call.args;
+    if(call.name==='drawImage'&&strips.includes(call.args[0])){
+      const [x,y]=position;
+      const expected=((Math.imul(x|0,73856093)^Math.imul(y|0,19349663))>>>0)%3;
+      assert.strictEqual(call.args[0],strips[expected],'world anchor selects the correct cache identity');
+      assert.deepStrictEqual(call.args.slice(1),[-220,-46]);selected.add(expected);
+    }
+  }
+  assert.deepStrictEqual([...selected].sort(),[0,1,2],'fixture exercises each actual draw branch');
+  const count=run.created.length,rng=run.rngCalls(),raster=run.pixels();
+  assert.deepStrictEqual(run.draw(),first,'same source images and transforms on the next frame');
+  assert.strictEqual(run.created.length,count);assert.strictEqual(run.imageLoads(),1);
+  assert.strictEqual(run.rngCalls(),rng,'selection/draw never advances anchor RNG');
+  assert.strictEqual(run.pixels(),raster,'same-frame pixels are deterministic');
+  run.g.cam={x:440,y:380};run.draw(.62);
+  assert.strictEqual(run.created.length,count);assert.strictEqual(run.rngCalls(),rng,'pan/zoom reuse caches');
+  run.g.map=run.g.map.map(row=>row.slice());
+  assert.deepStrictEqual(run.draw(.62),[],'new map identity waits for its shade build');
+  run.flushIdle();const rebuilt=run.draw(.62);
+  assert.strictEqual(run.created.length,count+4,'rebuild only creates mask, two blur fields and shade');
+  assert.strictEqual(run.imageLoads(),1);assert.strictEqual(run.rngCalls(),rng*2,'same map values repeat the same anchor RNG sequence');
+  assert.strictEqual(run.created.filter(c=>c.width===440&&c.height===120).length,3);
+  assert.ok(rebuilt.filter(t=>t.name==='drawImage').slice(1).every(t=>strips.includes(t.args[0])),'map rebuild still references the same three rim objects');
+});
+
+test('boundary variants: real before/after builds keep every root anchor, rotation, scale and RNG count',()=>{
+  const before=rasterRun(legacySrc),after=rasterRun(src);
+  const oldTrace=before.draw(),newTrace=after.draw();
+  assert.ok(anchorTrace(oldTrace).length>30,'nontrivial generated anchor fixture');
+  assert.deepStrictEqual(anchorTrace(newTrace),anchorTrace(oldTrace));
+  assert.deepStrictEqual(newTrace[0].args.slice(1),oldTrace[0].args.slice(1),'shade crop preserved');
+  assert.strictEqual(after.rngCalls(),before.rngCalls());
+  assert.strictEqual(after.edge.qa().roots,before.edge.qa().roots);
+  const oldStrip=before.created.find(c=>c.width===440&&c.height===120);
+  const newStrip=after.created.find(c=>c.width===440&&c.height===120);
+  assert.strictEqual(digest(newStrip.toBuffer('raw')),digest(oldStrip.toBuffer('raw')),'variant 0 retains original masked pixels');
+});
+
+test('boundary variants: mode 0 stays dormant and mode A preserves actual shade pixels without loading roots',()=>{
+  const zero=rasterRun(src,'0');assert.deepStrictEqual(zero.draw(),[]);
+  assert.strictEqual(zero.created.length,0);assert.strictEqual(zero.rngCalls(),0);assert.strictEqual(zero.imageLoads(),0);
+  const before=rasterRun(legacySrc,'a'),after=rasterRun(src,'a');
+  const oldTrace=before.draw(),newTrace=after.draw();
+  assert.strictEqual(newTrace.length,1);assert.strictEqual(newTrace[0].name,'drawImage');
+  assert.deepStrictEqual(newTrace[0].args.slice(1),oldTrace[0].args.slice(1));
+  assert.strictEqual(after.pixels(),before.pixels());assert.strictEqual(after.rngCalls(),before.rngCalls());
+  assert.strictEqual(after.imageLoads(),0);assert.strictEqual(after.created.filter(c=>c.width===440).length,0);
 });

@@ -1,0 +1,18 @@
+{
+  "after-z1-b.png": {
+    "sha256": "088ae00968920910b3cba2e2d5adb904b7ea8ac4b2eab7120851ac8334d613fe",
+    "bytes": 113515
+  },
+  "evidence.zip": {
+    "sha256": "ab2238de143bb2f5c36a0aa9a7bfcc15f4359f02154dafc558bbfd6ae3255b18",
+    "bytes": 1748719
+  },
+  "after-z0.62-b.png": {
+    "sha256": "4c06fee5ba57a6383b38c87acd852fce2410b989bc200972ac7e73df13007d15",
+    "bytes": 120509
+  },
+  "crop-board.png": {
+    "sha256": "15198327bfea9a4cf1f0805f5169d4c1655e212cbd4db4e0baa998efe2469e9b",
+    "bytes": 115849
+  }
+}

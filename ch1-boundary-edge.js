@@ -15,6 +15,9 @@
   const AO_MAX=.30,RECESS_MAX=.70,AO_BLUR=5,RECESS_BLUR=14;
   // B: one root strip per ~92px of edge, strips span ~185px.
   const ROOT_GAP=92,ROOT_SCALE=.42;
+  // The two inner-wood crops avoid the liquid and transparent outer corners.
+  // Keep the original strip as variant 0; selection never consumes anchor RNG.
+  const ROOT_CROPS=[[200,530,440,120],[370,535,270,90],[250,550,310,70]];
   let shade=null,roots=null,rim=null,pool=null,mapRef=null,buildMs=0,lastDraws=0,variant=null,pending=null;
   function cv(w,h){const c=document.createElement('canvas');c.width=w;c.height=h;return c;}
   function rng(seed){let s=seed>>>0;return function(){s=(Math.imul(s,1664525)+1013904223)>>>0;return s/4294967296;};}
@@ -58,14 +61,18 @@
     roots=list;mapRef=g.map;buildMs=performance.now()-t0;
   }
   function buildRim(){
-    rim=cv(440,120);const rc=rim.getContext('2d');
-    rc.drawImage(pool,200,530,440,120,0,0,440,120);
+    rim=ROOT_CROPS.map(function(crop){
+    const strip=cv(440,120),rc=strip.getContext('2d');
+    rc.drawImage(pool,crop[0],crop[1],crop[2],crop[3],0,0,440,120);
     rc.globalCompositeOperation='destination-in';
     const rh=rc.createLinearGradient(0,0,440,0);rh.addColorStop(0,'rgba(0,0,0,0)');rh.addColorStop(.16,'#000');rh.addColorStop(.84,'#000');rh.addColorStop(1,'rgba(0,0,0,0)');rc.fillStyle=rh;rc.fillRect(0,0,440,120);
     const rv=rc.createLinearGradient(0,0,0,120);rv.addColorStop(0,'rgba(0,0,0,0)');rv.addColorStop(.26,'#000');rv.addColorStop(.9,'#000');rv.addColorStop(1,'rgba(0,0,0,0)');rc.fillStyle=rv;rc.fillRect(0,0,440,120);
     // Darken toward the forest tone so strips sit in the edge shadow.
     rc.globalCompositeOperation='source-atop';rc.fillStyle='rgba(10,7,8,.12)';rc.fillRect(0,0,440,120);
+    return strip;
+    });
   }
+  function rootVariant(r){return ((Math.imul(r.x|0,73856093)^Math.imul(r.y|0,19349663))>>>0)%ROOT_CROPS.length;}
   function draw(ctx,g,now,VW,VH,zoom){
     lastDraws=0;
     const v=mode();
@@ -89,7 +96,7 @@
     if(!rim){if(!(pool.complete&&pool.naturalWidth>1))return;buildRim();}
     for(let i=0;i<roots.length;i++){
       const r=roots[i];if(r.x<x0-90||r.x>x1+90||r.y<y0-90||r.y>y1+90)continue;
-      ctx.save();ctx.translate(r.x,r.y);ctx.rotate(r.rot);ctx.scale(r.flip?-r.s:r.s,r.s);ctx.drawImage(rim,-220,-46);ctx.restore();lastDraws++;
+      ctx.save();ctx.translate(r.x,r.y);ctx.rotate(r.rot);ctx.scale(r.flip?-r.s:r.s,r.s);ctx.drawImage(rim[rootVariant(r)],-220,-46);ctx.restore();lastDraws++;
     }
   }
   function qa(){return{mode:mode(),built:!!shade,buildMs:Math.round(buildMs*10)/10,roots:roots?roots.length:0,lastDraws:lastDraws,texPx:shade?shade.width*shade.height:0};}

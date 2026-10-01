@@ -51640,3 +51640,8 @@ CSS 캐시 ui-refinement.css?v=20260927-4. 신규 이미지/아이템 데이터 
 | 파일 검증 | ui-panels.js 및 두 HTML 인라인4개씩 구문PASS, HTML2개/CSS/JS HTTP200 원본과 디스크 바이트 일치. verification.json/status-final.txt 보존. 브라우저 도구 재연결 실패로 QA 임시 viewport 수동 reset·닫기는 미확인, 생성 검수 탭은 턴 종료 자동 정리 대상 |
 | 문서 | docs 전체 키워드 검색 후 UI 현행 계약·UI composition·키바인딩/호버·i18n2문서·Steam 소스 번역 현황·CHANGELOG_SYNC 동기화 |
 | 상태 | 변경 전 백업 tmp/settings-choice-20260929. 기존 dirty/staged 작업 유지, .git 읽기 전용으로 커밋 미완료. 실제 게임패드/NW.js 패키징/Steam 업로드 미검증 |
+
+
+## 2026-10-01 Mac MAP020 뿌리 변주·11팀 실행
+
+경계3crop/좌표hash/캐시3장·본편cache20261001-5.305앵커·충돌·0/A보존,40회귀/35소스검사PASS. 양쪽enhCostRaw주석533→528만·salvageVal레거시환수설명정정(식불변). 후보QA도구실행과ITEM폴백FAIL1/청취·GL·M5미완료분리. [상세](0마스터플랜/mac-resume-20261001/MAP020-뿌리변주-검수.md).
