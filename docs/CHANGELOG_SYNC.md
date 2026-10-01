@@ -51809,3 +51809,8 @@ FIRE 독립8검사와 URL query17검사 인수, SOUND root canonical 관측기18
 - uniqueRoll version1/effectId U-D10/stat _uSlamEmberRage/unit fraction/storedValue .10~.20,신규주입RNG1회/읽기로드재롤0. plain JSON 생성과own enumerable data 조회,특수직렬화/접근자거부. 기존legacy/missing자동변환0.
 - ITEM24/UIUX23/BALANCE6/root경계8=61PASS. 실제함수메모리왕복과실계정저장/생산연결구분. BUILD반례원자료/최종보강증거보존. 관련아이템/세이브/UI/밸런스SSOT·총괄18.38동기화.
 - 기존담당3팀을ENEMY/ART/SKILL별도지원후보로전환,원담당파일보존. BUILD readonly queue권한변경0.
+
+
+## 2026-10-01 지원 관측 후보 3건 인수
+
+ENEMY 물리tick, ART 최종crop, SKILL 충전증거/예외정리 후보 검수. BUILD 반례2건을 root가 보강해 독립33PASS. 원 실패와 원담당 파일 보존; game/easy/index/server 변경0. 상세: docs/0마스터플랜/mac-resume-20261001/vscode-dispatch/SUPPORT-root-review.md.

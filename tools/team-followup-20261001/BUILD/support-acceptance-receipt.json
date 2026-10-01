@@ -1,0 +1,18 @@
+{
+  "taskId": "SUPPORT-TRIPLE-INDEPENDENT-ACCEPTANCE",
+  "receivedAt": "2026-10-01T14:38:24Z",
+  "firstReadAt": "2026-10-01T14:38:24Z",
+  "validatedAt": "2026-10-01T14:40:37Z",
+  "completedAt": "2026-10-01T14:40:37Z",
+  "status": "독립감사완료 / ENEMY기하ART범위PASS / SKILL반례2건RETOUCH",
+  "command": "node tools/team-followup-20261001/BUILD/support-acceptance-check.mjs",
+  "exitCode": 1,
+  "pass": 31,
+  "fail": 2,
+  "findings": ["S1 취소전throw 뒤RAF id소실/재dispose미정리", "S2 raw필드getter예외뒤listeners3/UNKNOWN미기록"],
+  "sourcesChanged": false,
+  "firstCommand": "총괄18.38/전용task/세지원소스·원소스/실제draw fixture/지원receipt·결과 읽기",
+  "duplicateCheck": "support-acceptance-task만 있고 BUILD 독립검수산출 미발견; 지원3팀은후보완료/미적용",
+  "ownedPaths": "tools/team-followup-20261001/BUILD/support-acceptance-*",
+  "nextAction": "root S1/S2수정또는계약결정 후독립재검수;실전QA는별도게이트"
+}

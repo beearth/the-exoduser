@@ -1,0 +1,252 @@
+✖ 1920x1080 400ms actual clip/zoom/shake crop (1.191792ms)
+✖ 1920x1080 1200ms actual clip/zoom/shake crop (0.362041ms)
+✖ 1920x1080 2399ms actual clip/zoom/shake crop (0.279334ms)
+✖ 2560x1080 400ms actual clip/zoom/shake crop (0.2595ms)
+✖ 2560x1080 1200ms actual clip/zoom/shake crop (0.392375ms)
+✖ 2560x1080 2399ms actual clip/zoom/shake crop (0.23175ms)
+✖ 1920x1200 400ms actual clip/zoom/shake crop (0.234708ms)
+✖ 1920x1200 1200ms actual clip/zoom/shake crop (0.239833ms)
+✖ 1920x1200 2399ms actual clip/zoom/shake crop (0.480667ms)
+✖ 1024x768 400ms actual clip/zoom/shake crop (0.371ms)
+✖ 1024x768 1200ms actual clip/zoom/shake crop (0.233666ms)
+✖ 1024x768 2399ms actual clip/zoom/shake crop (0.20875ms)
+✔ 16:9 root percentages reproduce with unrounded transforms, and letterbox offsets are retained (0.629833ms)
+✔ line-index timing correction remains and shake uses absolute now rather than lineElapsed (0.2375ms)
+✔ fade zero is never a visibility verdict; pan is outside scale and no-crop remains geometric only (0.064334ms)
+✔ source and 12-row evidence stay within UIUX support ownership (0.368ms)
+ℹ tests 16
+ℹ suites 0
+ℹ pass 4
+ℹ fail 12
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 82.190459
+
+✖ failing tests:
+
+test at tools/team-followup-20261001/UIUX/art-support-finalcrop.test.mjs:12:44
+✖ 1920x1080 400ms actual clip/zoom/shake crop (1.191792ms)
+  AssertionError [ERR_ASSERTION]: 0 != 0.06347554630593154
+      at near (file:///Users/fordeargamers/Projects/exoduser-migration-20261001/tools/team-followup-20261001/UIUX/art-support-finalcrop.test.mjs:10:43)
+      at TestContext.<anonymous> (file:///Users/fordeargamers/Projects/exoduser-migration-20261001/tools/team-followup-20261001/UIUX/art-support-finalcrop.test.mjs:19:7)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1201:25)
+      at Test.start (node:internal/test_runner/test:1096:17)
+      at startSubtestAfterBootstrap (node:internal/test_runner/harness:385:17) {
+    generatedMessage: false,
+    code: 'ERR_ASSERTION',
+    actual: false,
+    expected: true,
+    operator: '==',
+    diff: 'simple'
+  }
+
+test at tools/team-followup-20261001/UIUX/art-support-finalcrop.test.mjs:12:44
+✖ 1920x1080 1200ms actual clip/zoom/shake crop (0.362041ms)
+  AssertionError [ERR_ASSERTION]: 0 != 0.047619047619047616
+      at near (file:///Users/fordeargamers/Projects/exoduser-migration-20261001/tools/team-followup-20261001/UIUX/art-support-finalcrop.test.mjs:10:43)
+      at TestContext.<anonymous> (file:///Users/fordeargamers/Projects/exoduser-migration-20261001/tools/team-followup-20261001/UIUX/art-support-finalcrop.test.mjs:19:7)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1201:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:831:18)
+      at Test.postRun (node:internal/test_runner/test:1330:19)
+      at Test.run (node:internal/test_runner/test:1258:12)
+      at async startSubtestAfterBootstrap (node:internal/test_runner/harness:385:3) {
+    generatedMessage: false,
+    code: 'ERR_ASSERTION',
+    actual: false,
+    expected: true,
+    operator: '==',
+    diff: 'simple'
+  }
+
+test at tools/team-followup-20261001/UIUX/art-support-finalcrop.test.mjs:12:44
+✖ 1920x1080 2399ms actual clip/zoom/shake crop (0.279334ms)
+  AssertionError [ERR_ASSERTION]: 0 != 0.03846154488206745
+      at near (file:///Users/fordeargamers/Projects/exoduser-migration-20261001/tools/team-followup-20261001/UIUX/art-support-finalcrop.test.mjs:10:43)
+      at TestContext.<anonymous> (file:///Users/fordeargamers/Projects/exoduser-migration-20261001/tools/team-followup-20261001/UIUX/art-support-finalcrop.test.mjs:19:7)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1201:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:831:18)
+      at Test.postRun (node:internal/test_runner/test:1330:19)
+      at Test.run (node:internal/test_runner/test:1258:12)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:831:7) {
+    generatedMessage: false,
+    code: 'ERR_ASSERTION',
+    actual: false,
+    expected: true,
+    operator: '==',
+    diff: 'simple'
+  }
+
+test at tools/team-followup-20261001/UIUX/art-support-finalcrop.test.mjs:12:44
+✖ 2560x1080 400ms actual clip/zoom/shake crop (0.2595ms)
+  AssertionError [ERR_ASSERTION]: 0 != 0.06347554630593154
+      at near (file:///Users/fordeargamers/Projects/exoduser-migration-20261001/tools/team-followup-20261001/UIUX/art-support-finalcrop.test.mjs:10:43)
+      at TestContext.<anonymous> (file:///Users/fordeargamers/Projects/exoduser-migration-20261001/tools/team-followup-20261001/UIUX/art-support-finalcrop.test.mjs:19:7)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1201:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:831:18)
+      at Test.postRun (node:internal/test_runner/test:1330:19)
+      at Test.run (node:internal/test_runner/test:1258:12)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:831:7) {
+    generatedMessage: false,
+    code: 'ERR_ASSERTION',
+    actual: false,
+    expected: true,
+    operator: '==',
+    diff: 'simple'
+  }
+
+test at tools/team-followup-20261001/UIUX/art-support-finalcrop.test.mjs:12:44
+✖ 2560x1080 1200ms actual clip/zoom/shake crop (0.392375ms)
+  AssertionError [ERR_ASSERTION]: 0 != 0.047619047619047616
+      at near (file:///Users/fordeargamers/Projects/exoduser-migration-20261001/tools/team-followup-20261001/UIUX/art-support-finalcrop.test.mjs:10:43)
+      at TestContext.<anonymous> (file:///Users/fordeargamers/Projects/exoduser-migration-20261001/tools/team-followup-20261001/UIUX/art-support-finalcrop.test.mjs:19:7)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1201:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:831:18)
+      at Test.postRun (node:internal/test_runner/test:1330:19)
+      at Test.run (node:internal/test_runner/test:1258:12)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:831:7) {
+    generatedMessage: false,
+    code: 'ERR_ASSERTION',
+    actual: false,
+    expected: true,
+    operator: '==',
+    diff: 'simple'
+  }
+
+test at tools/team-followup-20261001/UIUX/art-support-finalcrop.test.mjs:12:44
+✖ 2560x1080 2399ms actual clip/zoom/shake crop (0.23175ms)
+  AssertionError [ERR_ASSERTION]: 0 != 0.03846154488206745
+      at near (file:///Users/fordeargamers/Projects/exoduser-migration-20261001/tools/team-followup-20261001/UIUX/art-support-finalcrop.test.mjs:10:43)
+      at TestContext.<anonymous> (file:///Users/fordeargamers/Projects/exoduser-migration-20261001/tools/team-followup-20261001/UIUX/art-support-finalcrop.test.mjs:19:7)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1201:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:831:18)
+      at Test.postRun (node:internal/test_runner/test:1330:19)
+      at Test.run (node:internal/test_runner/test:1258:12)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:831:7) {
+    generatedMessage: false,
+    code: 'ERR_ASSERTION',
+    actual: false,
+    expected: true,
+    operator: '==',
+    diff: 'simple'
+  }
+
+test at tools/team-followup-20261001/UIUX/art-support-finalcrop.test.mjs:12:44
+✖ 1920x1200 400ms actual clip/zoom/shake crop (0.234708ms)
+  AssertionError [ERR_ASSERTION]: 0 != 0.06347554630593143
+      at near (file:///Users/fordeargamers/Projects/exoduser-migration-20261001/tools/team-followup-20261001/UIUX/art-support-finalcrop.test.mjs:10:43)
+      at TestContext.<anonymous> (file:///Users/fordeargamers/Projects/exoduser-migration-20261001/tools/team-followup-20261001/UIUX/art-support-finalcrop.test.mjs:19:7)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1201:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:831:18)
+      at Test.postRun (node:internal/test_runner/test:1330:19)
+      at Test.run (node:internal/test_runner/test:1258:12)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:831:7) {
+    generatedMessage: false,
+    code: 'ERR_ASSERTION',
+    actual: false,
+    expected: true,
+    operator: '==',
+    diff: 'simple'
+  }
+
+test at tools/team-followup-20261001/UIUX/art-support-finalcrop.test.mjs:12:44
+✖ 1920x1200 1200ms actual clip/zoom/shake crop (0.239833ms)
+  AssertionError [ERR_ASSERTION]: 0 != 0.047619047619047616
+      at near (file:///Users/fordeargamers/Projects/exoduser-migration-20261001/tools/team-followup-20261001/UIUX/art-support-finalcrop.test.mjs:10:43)
+      at TestContext.<anonymous> (file:///Users/fordeargamers/Projects/exoduser-migration-20261001/tools/team-followup-20261001/UIUX/art-support-finalcrop.test.mjs:19:7)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1201:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:831:18)
+      at Test.postRun (node:internal/test_runner/test:1330:19)
+      at Test.run (node:internal/test_runner/test:1258:12)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:831:7) {
+    generatedMessage: false,
+    code: 'ERR_ASSERTION',
+    actual: false,
+    expected: true,
+    operator: '==',
+    diff: 'simple'
+  }
+
+test at tools/team-followup-20261001/UIUX/art-support-finalcrop.test.mjs:12:44
+✖ 1920x1200 2399ms actual clip/zoom/shake crop (0.480667ms)
+  AssertionError [ERR_ASSERTION]: 0 != 0.03846154488206766
+      at near (file:///Users/fordeargamers/Projects/exoduser-migration-20261001/tools/team-followup-20261001/UIUX/art-support-finalcrop.test.mjs:10:43)
+      at TestContext.<anonymous> (file:///Users/fordeargamers/Projects/exoduser-migration-20261001/tools/team-followup-20261001/UIUX/art-support-finalcrop.test.mjs:19:7)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1201:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:831:18)
+      at Test.postRun (node:internal/test_runner/test:1330:19)
+      at Test.run (node:internal/test_runner/test:1258:12)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:831:7) {
+    generatedMessage: false,
+    code: 'ERR_ASSERTION',
+    actual: false,
+    expected: true,
+    operator: '==',
+    diff: 'simple'
+  }
+
+test at tools/team-followup-20261001/UIUX/art-support-finalcrop.test.mjs:12:44
+✖ 1024x768 400ms actual clip/zoom/shake crop (0.371ms)
+  AssertionError [ERR_ASSERTION]: 0 != 0.06347554630593152
+      at near (file:///Users/fordeargamers/Projects/exoduser-migration-20261001/tools/team-followup-20261001/UIUX/art-support-finalcrop.test.mjs:10:43)
+      at TestContext.<anonymous> (file:///Users/fordeargamers/Projects/exoduser-migration-20261001/tools/team-followup-20261001/UIUX/art-support-finalcrop.test.mjs:19:7)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1201:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:831:18)
+      at Test.postRun (node:internal/test_runner/test:1330:19)
+      at Test.run (node:internal/test_runner/test:1258:12)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:831:7) {
+    generatedMessage: false,
+    code: 'ERR_ASSERTION',
+    actual: false,
+    expected: true,
+    operator: '==',
+    diff: 'simple'
+  }
+
+test at tools/team-followup-20261001/UIUX/art-support-finalcrop.test.mjs:12:44
+✖ 1024x768 1200ms actual clip/zoom/shake crop (0.233666ms)
+  AssertionError [ERR_ASSERTION]: 0 != 0.04761904761904773
+      at near (file:///Users/fordeargamers/Projects/exoduser-migration-20261001/tools/team-followup-20261001/UIUX/art-support-finalcrop.test.mjs:10:43)
+      at TestContext.<anonymous> (file:///Users/fordeargamers/Projects/exoduser-migration-20261001/tools/team-followup-20261001/UIUX/art-support-finalcrop.test.mjs:19:7)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1201:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:831:18)
+      at Test.postRun (node:internal/test_runner/test:1330:19)
+      at Test.run (node:internal/test_runner/test:1258:12)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:831:7) {
+    generatedMessage: false,
+    code: 'ERR_ASSERTION',
+    actual: false,
+    expected: true,
+    operator: '==',
+    diff: 'simple'
+  }
+
+test at tools/team-followup-20261001/UIUX/art-support-finalcrop.test.mjs:12:44
+✖ 1024x768 2399ms actual clip/zoom/shake crop (0.20875ms)
+  AssertionError [ERR_ASSERTION]: 0 != 0.03846154488206769
+      at near (file:///Users/fordeargamers/Projects/exoduser-migration-20261001/tools/team-followup-20261001/UIUX/art-support-finalcrop.test.mjs:10:43)
+      at TestContext.<anonymous> (file:///Users/fordeargamers/Projects/exoduser-migration-20261001/tools/team-followup-20261001/UIUX/art-support-finalcrop.test.mjs:19:7)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1201:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:831:18)
+      at Test.postRun (node:internal/test_runner/test:1330:19)
+      at Test.run (node:internal/test_runner/test:1258:12)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:831:7) {
+    generatedMessage: false,
+    code: 'ERR_ASSERTION',
+    actual: false,
+    expected: true,
+    operator: '==',
+    diff: 'simple'
+  }

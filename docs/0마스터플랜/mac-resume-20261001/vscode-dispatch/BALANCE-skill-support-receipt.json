@@ -1,0 +1,19 @@
+{
+  "taskId": "SKILL-RECHARGE-EXCEPTION-FIX",
+  "supportTeam": "BALANCE",
+  "originalOwner": "SKILL Claude203377cc, 사용자 제공 idle/native locked·수정미수신; 큐/초안 UNKNOWN",
+  "receivedAt": "2026-10-01T14:25:43Z",
+  "firstReadAt": "2026-10-01T14:25:43Z",
+  "firstRead": "FIX_TASK·SKILL-next 결과/receipt·ROOT_NEXT_REVIEW·submission-boundaries·실제 probe/selftest 읽기",
+  "duplicateCheck": "원담당 새 수정영수증 없음; 별도 BALANCE support 경로만 생성",
+  "firstEdit": "전용 지원 영수증 생성",
+  "status": "completed_unapplied_support_candidate",
+  "firstCodeEdit": "별도 skill-support-probe.js/검사 구현, 원 SKILL 변경0",
+  "validatedAt": "2026-10-01T14:28:50Z",
+  "validation": "원실패재현/새9그룹PASS, 원66GREEN·옛기대후보52PASS14FAIL·정정기대66PASS 구분",
+  "originalSourceHash": "ae7c8e8ad6e874e565c3ee0cb8b635130cefa234c5628bd0ba2922da96481d1b",
+  "candidateHash": "18ab8391ea2490edac74fd631e81245a6808b6112a3d00049e3446b5de593532",
+  "originalOwnerReception": "새 수정 receipt/결과 파일 없음; 실제세션/큐 상태는 UNKNOWN, 사용자 제공 미수신상태 기반 지원",
+  "nextAction": "root 후보인수/공유docs 정정 및 QA 실게임/trace 공급게이트 인계; 원담당 새수신 발견시 충돌중지",
+  "liveGameVerified": false
+}

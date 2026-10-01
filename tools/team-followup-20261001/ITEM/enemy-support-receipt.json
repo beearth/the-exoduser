@@ -1,0 +1,18 @@
+{
+  "taskId": "ENEMY-TICK-UNKNOWN-FIX",
+  "supportOwner": "기존 ITEM",
+  "originalOwner": "ENEMY Claude ddbd64be; 배정상 미수신/idle, native큐UNKNOWN",
+  "status": "completed_independent_candidate",
+  "receivedAt": "2026-10-01T14:25:10Z",
+  "firstReadAt": "2026-10-01T14:25:10Z",
+  "firstRead": "지원배정·ENEMY NEXT_TASK·원probe/mock/root반례검색",
+  "duplicateCheck": "binding 완료/root인수중으로불변; ENEMY원경로수정/중복세션없음",
+  "firstEdit": "자기 enemy-support 전용영수증 작성 후 별도probe 사본 수정착수",
+  "nextAction": "root 독립검수 및 원 ENEMY 소유자 조율 후에만 적용·실측",
+  "completedAt": "2026-10-01T14:32:17Z",
+  "actualCommands": ["node tools/team-followup-20261001/ITEM/enemy-support-existing.test.mjs", "node --test tools/team-followup-20261001/ITEM/enemy-support-tick.test.mjs", "rg -n 'etype3|FAIL_NO_FIRE|INCONCLUSIVE|_gameFrame|물리.?tick' docs --glob '*.md'", "diff -u tools/team-followup-20261001/ENEMY/et3-probe.fixed.js tools/team-followup-20261001/ITEM/enemy-support-probe.js"],
+  "validation": "기존 mock 9 PASS/0 FAIL, 추가 tick 검사 17 PASS/0 FAIL; 원 null tick 451 rAF 오판 재현",
+  "preservation": "원 ENEMY probe/mock 해시 유지; binding 읽기전용; Git·게임·브라우저·서버·빌드·새세션 실행0",
+  "remainingGates": "root 독립검수, 원 ENEMY 수신 조율, 실제 물리 tick 기반 live 검수; native 큐 UNKNOWN",
+  "blocker": null
+}

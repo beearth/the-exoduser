@@ -1,0 +1,541 @@
+Warning: truncated output (original token count: 64766)
+Total output lines: 2247
+
+docs/5.1임펙트디자인/VFX_구현가이드.md:753:| G._shotWarnings / e._shotWarning | 소유자·world(ens)·_gameFrame·el·blackBean이 모두 같은 탄만 링1개에 묶음. props 복사 후 대기. 다른 속성은 별도 링: r=(e.r 또는12)+동일 소유자/월드 기존 대기 링 수×8 |
+docs/5.1임펙트디자인/VFX_구현가이드.md:760:| 일반 차징 색/진행 | normal+EL.P=#f4f4f4, black=_BEAN_RAINBOW[(_gameFrame>>2)%7], fire=#ff2e22, 그 외 _projChargeCol; 진행=1-_projChargeT/60 |
+docs/5.1임펙트디자인/VFX_구현가이드.md:761:| 특수/큐 색/진행 | eShootWind: _swChargeEl===EL.P이면 #f4f4f4, 그 외 ELC[_swChargeEl??e.el] 또는 #f4f4f4; 진행=1-st2/60. 큐: 물리 비무지개=#f4f4f4, 무지개=_BEAN_RAINBOW[(_gameFrame>>2)%7], 나머지 요청 탄색 또는 #ff6644; 진행=1-w.t/60 |
+docs/2_1 스킬관리+합체시스템+자원/2_1 스킬관리+합체시스템.md:496:착지 VFX (2026-09-29): 전용 시트 `speed=4`, `baseAlpha=.5`, 36f (약 0.6초). 불바닥 광원은 반경 `r*1.35`, 세기 `(.24+sin(_gameFrame*.13+_fzL)*.03)*max(0,1-t/24)^2`, 24f (약 0.4초)부터 생성하지 않는다. 화면 섬광 `G._flashT`는 티어 1/2/3에 `.6/.8/1`. 아래 피해·스택·기폭·장판 수명은 그대로 적용한다.
+docs/2_1 스킬관리+합체시스템+자원/추적전격_합체_20260927.md:11:| 발동 창 | 해당 발사의 첫 유도 칼날 종료부터 30프레임(60fps 기준 0.5초) | `P._bladeEchoReady.until=_gameFrame+30` |
+docs/12퍼포먼스·최적화/QA_PERFORMANCE_TEAM_MASTER.md:475:### 2026-10-01 FIRE 정상전투 재측정: INCONCLUSIVE
+docs/5.1임펙트디자인/CHAIN_FLAME_LIGHT_QA_20260929.md:12:| 광원 범위·세기 | `r*1.35`, `(.24+sin(_gameFrame*.13+_fzL)*.03)*max(0,1-t/24)^2` |
+docs/12퍼포먼스·최적화/LIGHTING_TEXTURE_FRESHNESS_20260910.md:11:| `_lightCvs` | 어둠과 광원 홀 / `~~(C.width/2)` × `~~(C.height/2)` | `_renderLighting`의 어둠 재작성 후 `_glVer=(_glVer||0)+1` | 정지 시 `_gameFrame%3===0`, 카메라 변경·최초 생성·크기 변경 시 즉시. lighting 활성 및 quality가 low가 아닐 때 |
+docs/12퍼포먼스·최적화/LIGHTING_TEXTURE_FRESHNESS_20260910.md:13:| `_bloomCvs` | 블룸 / `~~(C.width/6)` × `~~(C.height/6)` | `_renderBloom` 재작성 후, `X.drawImage` 이전에 `_glVer=(_glVer||0)+1` | `_hasGlow`가 참이고 `_gameFrame%3===1`, bloom 활성 및 quality가 low/mid가 아닐 때 |
+docs/12퍼포먼스·최적화/LIGHTING_TEXTURE_FRESHNESS_20260910.md:21:| 실제 화염 장판 (`el===EL.F`, `iceStorm` 제외) | 프리셋 7; 반경 `_fz.r*2.6`, 세기 `.68+sin(_gameFrame*.13+_fzL)*.10`. 이후 비화염 오분류 수정은 [현행 라우팅](../5.1임펙트디자인/ZONE_LIGHT_CLASSIFICATION_20260910.md) 참조 |
+docs/5.1임펙트디자인/ZONE_LIGHT_CLASSIFICATION_20260910.md:23:| `assaultFlame` + `el===EL.F` | `r*1.35` | `(.24+sin(_gameFrame*.13+_fzL)*.03)*max(0,1-t/24)^2`; 24f부터 미생성 | `[255,140,50]`, `ci=7` |
+docs/5.1임펙트디자인/ZONE_LIGHT_CLASSIFICATION_20260910.md:24:| 나머지 중 `el===EL.F` | `r*2.6` | `.68+sin(_gameFrame*.13+_fzL)*.10` | `[255,140,50]`, `ci=7` |
+docs/8.0몬스터디자인/pixellab_몬스터_완성도리스트.md:88:| 074 | etype31_thornApostle | 18da29ed-32d8-4a12-8399-3f9c12029e12 | 4dir | 48px | 4 | 16 |
+docs/8.0몬스터디자인/pixellab_몬스터_완성도리스트.md:89:| 075 | etype32_boulderApostle | 5a3652a4-a78c-4234-9531-878be849415a | 4dir | 64px | 4 | 16 |
+docs/8.0몬스터디자인/pixellab_몬스터_완성도리스트.md:90:| 076 | etype33_miniDemon | 26481f37-fbb2-40c4-8fb1-cae4e5d085f8 | 4dir | 32px | 4 | 16 |
+docs/8.0몬스터디자인/pixellab_몬스터_완성도리스트.md:91:| 077 | etype34 | 7950ccab-970c-479f-8937-f4b891ef72fe | 4dir | 48px | 4 | 16 |
+docs/8.0몬스터디자인/pixellab_몬스터_완성도리스트.md:92:| 078 | etype35 | 59fa9855-42bf-4c97-b758-19a26d1b302d | 4dir | 48px | 4 | 16 |
+docs/8.0몬스터디자인/pixellab_몬스터_완성도리스트.md:109:| 095 | etype36_serpentApostle | 2f5a7cea-18c4-4963-85c1-3fb64c2c239e | 4dir | 48px | 4 | 12 |
+docs/8.0몬스터디자인/pixellab_몬스터_완성도리스트.md:112:| 098 | etype30_huntDog | d1949c2b-dca7-4bfd-b7d8-11390e7e34a7 | 4dir | 48px | 3 | 12 |
+docs/8.0몬스터디자인/pixellab_몬스터_완성도리스트.md:135:| 121 | etype37_predatorApostle | 8eafaf21-2806-4e49-a66b-5b1dd83d0e0b | 4dir | 48px | 4 | 7 |
+docs/8.0몬스터디자인/pixellab_몬스터_완성도리스트.md:136:| 122 | etype38_broodApostle | 1a7ad229-7c37-4dfb-a773-5716f2ae80a4 | 4dir | 64px | 4 | 7 |
+docs/8.0몬스터디자인/몬스터_공격시스템.md:668:| G._shotWarnings / e._shotWarning | 소유자·world(ens)·_gameFrame·el·blackBean이 모두 같은 탄만 링1개에 묶음. props 복사 후 대기. 다른 속성은 별도 링: r=(e.r 또는12)+동일 소유자/월드 기존 대기 링 수×8 |
+docs/8.0몬스터디자인/몬스터_공격시스템.md:676:| 특수/큐 색/진행 | eShootWind: _swChargeEl===EL.P이면 #f4f4f4, 그 외 ELC[_swChargeEl??e.el] 또는 #f4f4f4; 진행=1-st2/60. 큐: 물리 비무지개=#f4f4f4, 무지개=_BEAN_RAINBOW[(_gameFrame>>2)%7], 나머지 요청 탄색 또는 #ff6644; 진행=1-w.t/60 |
+docs/3.3 키바인딩+설정/3.3 키바인딩+설정.md:49:| 퍼즈 가드 | 패널 입력 뒤 게임플레이 틱 계속 실행 | 패널 입력 직후 `if(G.paused)return`으로 종료 | `update()`의 `_gameFrame++` 앞 |
+docs/3.3 키바인딩+설정/3.3 키바인딩+설정.md:50:| 전투·월드 | 플레이어·펫·일반 적·독립 필드몹·투사체를 정상 갱신 | `_gameFrame`, `_fbTick`, `_wmTick`, `_fdTick`, `updatePet`과 후속 일반 AI·투사체 갱신을 모두 정지 | 전체 게임플레이 업데이트 |
+docs/8.0몬스터디자인/탄막시스템_총정리.md:679:| G._shotWarnings / e._shotWarning | 소유자·world(ens)·_gameFrame·el·blackBean이 모두 같은 탄만 링1개에 묶음. props 복사 후 대기. 다른 속성은 별도 링: r=(e.r 또는12)+동일 소유자/월드 기존 대기 링 수×8 |
+docs/8.0몬스터디자인/탄막시스템_총정리.md:687:| 특수/큐 색/진행 | eShootWind: _swChargeEl===EL.P이면 #f4f4f4, 그 외 ELC[_swChargeEl??e.el] 또는 #f4f4f4; 진행=1-st2/60. 큐: 물리 비무지개=#f4f4f4, 무지개=_BEAN_RAINBOW[(_gameFrame>>2)%7], 나머지 요청 탄색 또는 #ff6644; 진행=1-w.t/60 |
+docs/3.1 ui hud 디자인/exoduser-ui-phase2 (1).md:839:| 2. 전역 가드 | 입력 직후, `_gameFrame++` 및 모든 게임플레이 틱보다 앞에서 `if(G.paused)return` | 플레이어·펫·적·독립 필드몹·투사체가 모두 정지 |
+docs/12퍼포먼스·최적화/맥북_프레임픽스_깜빡임.md:52:| L43993 | `_gameFrame%3===0` 일 때 (라이팅 합성 직전) |
+docs/12퍼포먼스·최적화/맥북_프레임픽스_깜빡임.md:53:| L43995 | `_gameFrame%3===1` 일 때 (블룸 합성 직전) |
+docs/8.0몬스터디자인/pixellab_종류분류.md:147:| etype33_miniDemon | 26481f37 | 32px |
+docs/8.0몬스터디자인/pixellab_종류분류.md:196:| etype35 | 59fa9855 | 48px |
+docs/8.0몬스터디자인/pixellab_종류분류.md:197:| etype36_serpentApostle | 2f5a7cea | 48px |
+docs/8.0몬스터디자인/pixellab_종류분류.md:198:| etype34 | 7950ccab | 48px |
+docs/8.0몬스터디자인/pixellab_종류분류.md:199:| etype32_boulderApostle | 5a3652a4 | 64px |
+docs/8.0몬스터디자인/pixellab_종류분류.md:200:| etype31_thornApostle | 18da29ed | 48px |
+docs/8.0몬스터디자인/pixellab_종류분류.md:202:| etype30_huntDog | d1949c2b | 48px |
+docs/8.0몬스터디자인/pixellab_종류분류.md:203:| etype37_predatorApostle | 8eafaf21 | 48px |
+docs/8.0몬스터디자인/pixellab_종류분류.md:204:| etype38_broodApostle | 1a7ad229 | 64px |
+docs/8.0몬스터디자인/PHYSICAL_PROJECTILE_BITE_20260916.md:12:| 저장 | `P._physicalBites`: born=`_gameFrame`, stage, ang, size의 값만 보관. 풀에 반환할 투사체 객체를 참조하지 않음 |
+docs/9적ai패턴디자인/9_적AI패턴디자인.md:42:| **windup** | 8f (etype3: 5f) | 패턴별 가변 |
+docs/9적ai패턴디자인/9_적AI패턴디자인.md:314:| G._shotWarnings / e._shotWarning | 소유자·world(ens)·_gameFrame·el·blackBean이 모두 같은 탄만 링1개에 묶음. props 복사 후 대기. 다른 속성은 별도 링: r=(e.r 또는12)+동일 소유자/월드 기존 대기 링 수×8 |
+docs/9적ai패턴디자인/9_적AI패턴디자인.md:321:| 일반 차징 색/진행 | normal+EL.P=#f4f4f4, black=_BEAN_RAINBOW[(_gameFrame>>2)%7], fire=#ff2e22, 그 외 _projChargeCol; 진행=1-_projChargeT/60 |
+docs/9적ai패턴디자인/9_적AI패턴디자인.md:322:| 특수/큐 색/진행 | eShootWind: _swChargeEl===EL.P이면 #f4f4f4, 그 외 ELC[_swChargeEl??e.el] 또는 #f4f4f4; 진행=1-st2/60. 큐: 물리 비무지개=#f4f4f4, 무지개=_BEAN_RAINBOW[(_gameFrame>>2)%7], 나머지 요청 탄색 또는 #ff6644; 진행=1-w.t/60 |
+docs/13출시·마케팅/13출시·마케팅.md:457:| 유휴 60초 | 3600f | 어트랙트 오버레이 on (rgba .72 + "아무 키나 눌러 시작"/PRESS ANY KEY, `Math.sin(_gameFrame*.05)` 페이드) |
+docs/13출시·마케팅/13출시·마케팅.md:461:- 유휴/리셋 로직: `update()` 내 `_gameFrame++` 직후(per-frame 보장). 렌더: `loop()` 말미 `_boothDraw()`.
+docs/9적ai패턴디자인/ENEMY_AI_TEAM_MASTER.md:47:- 공통 AI: idle 대기 15~30f → windup 8f(etype3=5f) → attack(판정 `st2≤5 && st2+sp>5`) → recover 35f. 근접 사거리 `d<30+P.r+18≈48~50px`. 시야 어그로 `d<800 && hasLOS`. 근접 어그로 `d<100 && d>50`. 피격 즉시 반격(DOT 제외). 디어그로 없음.
+docs/9적ai패턴디자인/ENEMY_AI_TEAM_MASTER.md:142:| etype3 요마(고속) | 32px | 6.75px | 불가 |
+docs/9적ai패턴디자인/ENEMY_AI_TEAM_MASTER.md:264:기존 02420005 세션에서 CH1 windup→attack→recover 발사 경계, etype3 누락 가설의 결정적 재현 코드 후보를 제출했다. 실제 읽기·산출 완료이며 코드 적용/게임 실행/패키지/실측 완료가 아니다. 원문 후보 및 정정은 [팀 산출](../0마스터플랜/mac-resume-20261001/ui03-evidence/ENEMY-팀검토.md), 실제 수신/착수/다음 게이트는 [11팀 인수표](../0마스터플랜/mac-resume-20261001/11팀-UI03-병행후속.md)를 따른다.
+docs/1전체그래픽세팅/맵_화면효과_전수조사.md:128:- 그 외 6프레임마다 1회 (`_gameFrame%6===2`)
+docs/1전체그래픽세팅/맵_화면효과_전수조사.md:138:- `_collectLights()` — `_gameFrame%3===0`에 광원 수집
+docs/1전체그래픽세팅/맵_화면효과_전수조사.md:221:- **`_gameFrame%3===1`**: 다운샘플 → multiply(rgb 60,60,60) → 대각 자기복사 2회((-2,-2), (2,2), alpha .18) → `_bloomCvs._glVer` 1 증가 → 합성
+docs/0마스터플랜/PROJECT_MANAGEMENT_MASTER.md:252:| ENEMY | F05 NO-FIX `459df6448`, F06 하니스 `7e08189d7` 총괄 재실행 PASS | 실제 11~12µs/근접 최대 31 조건, 물리 tick 단위, 뒤쪽 보스·타이머 누락 검증 보강 **전송·착수 확인**. 본인 하니스/docs만 소유, 실제 update/loop는 QA 소유 |
+docs/0마스터플랜/PROJECT_MANAGEMENT_MASTER.md:295:**총괄 직접 검수:** `node --test test/skillResourceGateAudit.test.js test/enemyTimeBudgetStarvation.test.js` — **10/10 PASS**, 약 124ms. 스킬 6개는 악의 게이트/차감·소스 추출 중심 정적 검사로 전체 ST/MP/쿨다운 실플레이 경계 검증이 아니다. ENEMY 4개는 모델 하니스이며 실제 PC 프레임 개선이나 새 빌드 완료를 증명하지 않는다. soft cap 모델은 필수 적 누락을 없애지만 평균 물리 tick 시간이 약 12.548→17.341ms로 늘어 프레임 개선으로 단정할 수 없다.
+docs/0마스터플랜/PROJECT_MANAGEMENT_MASTER.md:616:ITEM/BALANCE/UIUX 실제후보를 root가검수:관련188PASS,독립148입력불일치0,실제44원화·한영10/15/20%·키보드·Chrome160px화면확인. D10만전체너비검토영역으로보강,roll-values 동일바이트.js이동. 생산game/easy/index/server수정0·효과비활성. QA5표본은처치관측누락/0처치/옵션변화로전부INCONCLUSIVE,성능통과0. BUILD부총괄Read/배정안완료후자체queue readonly실패;권한변경0. root의기존공식CLI로14:16:08Z binding3건각1회전송,수신·첫Read/Edit는최신상태표로분리. [검수·환경·남은게이트](mac-resume-20261001/vscode-dispatch/D10-root-review.md).
+docs/0마스터플랜/mac-resume-20261001/11팀-MAP020-실행검수.md:38:- ENEMY는 강제 windup/eCircle의 etype3 발사 에지0을 재현했으나, 정상 idle301틱에서 공통 차징 탄1이 생성됐다. ‘요마가 전혀 공격하지 않는다’는 가설은 채택하지 않는다. 판본별 windup 대입16곳의 AST 조건을 기록했으며 자연 경로 빈도를 증명한 것은 아니다. 어택 티켓이나 전투 수치를 변경하지 않았다.
+docs/0마스터플랜/mac-resume-20261001/ui03-evidence/ENEMY-팀검토.md:42:| `39566` | `case'windup':if(e.st2<=0){e.s='attack';e.st2=e.etype===3?5:8}break;` | windup→attack 진입 시 attack `st2`를 **8**(요마 etype3=**5**)로 설정 |
+docs/0마스터플랜/mac-resume-20261001/ui03-evidence/ENEMY-팀검토.md:46:**잠재 결함 가설 (재현 대상):** 발사 조건은 `st2`가 **5보다 위에서 아래로 교차**할 때만 1회 발동하는 에지 디텍터다. 그런데 **요마(etype3)** 는 windup→attack 진입 시 `st2`를 교차 임계값과 **정확히 같은 5**로 설정한다. 다음 프레임 `st2-=sp`로 즉시 5 미만이 되므로 `st2+sp>5`가 **한 번도 참이 되지 않아 발사가 0회**가 된다(일반몹은 8에서 시작 → 정상 1회). etype3은 `_meleeET`(접촉공격 집합 {0,2,4,5,6,10,12,18,19})에 없어 이 경로가 유일한 공격 출력일 수 있어, 요마가 windup/recover만 반복하고 **실질 공격이 누락**되는 상태 전이 결함일 가능성이 있다.
+docs/0마스터플랜/mac-resume-20261001/ui03-evidence/ENEMY-팀검토.md:56:// 재현 대상: CH1 일반 필드몹 windup→attack 발사 에지 단발 불변식과 etype3(요마) 경계 누락.
+docs/0마스터플랜/mac-resume-20261001/ui03-evidence/ENEMY-팀검토.md:97:// ── 판정 3(결함 재현·고정): 요마(etype3, 진입 st2=5)는 발사=0회 ──
+docs/0마스터플랜/mac-resume-20261001/ui03-evidence/ENEMY-팀검토.md:100:test('[결함 재현] 요마(etype3) attack 발사 누락(현행=0, 설계=1)', () => {
+docs/0마스터플랜/mac-resume-20261001/ui03-evidence/ENEMY-팀검토.md:104:      `etype3 sp=${sp}: 현행 코드는 경계값(st2=5=임계)으로 발사 0회. `+
+docs/0마스터플랜/mac-resume-20261001/ui03-evidence/ENEMY-팀검토.md:116:| 3 | etype3, 전 sp | `fires === 0` | **요마 발사 누락 재현 성립**. 설계(1회)와 불일치 |
+docs/0마스터플랜/mac-resume-20261001/ui03-evidence/ENEMY-팀검토.md:118:- 판정 1·2가 PASS면 에지 디텍터 자체는 건전(누락·중복 없음)이고, **문제는 etype3의 진입 `st2`가 임계값과 같은 5라는 "값"에 국한**됨을 분리 증명한다.
+docs/CHANGELOG_SYNC.md:2873:| `G.paused` 가드 | `update()` 중간에 있어 `_gameFrame++`과 일부 플레이어·월드 틱이 먼저 실행 | 패널 단축키 처리 직후, 모든 게임플레이 틱보다 먼저 반환 | `game.html` `update()` 초입 | `test/pauseCombatFreeze.test.js` |
+docs/CHANGELOG_SYNC.md:5162:- img/pixellab_all/ch1/001_etype35/animations/breathing-idle/north-east/frame_000.png
+docs/CHANGELOG_SYNC.md:5163:- img/pixellab_all/ch1/001_etype35/animations/breathing-idle/north-east/frame_001.png
+docs/CHANGELOG_SYNC.md:5164:- img/pixellab_all/ch1/001_etype35/animations/breathing-idle/north-east/frame_002.png
+docs/CHANGELOG_SYNC.md:5165:- img/pixellab_all/ch1/001_etype35/animations/breathing-idle/north-east/frame_003.png
+docs/CHANGELOG_SYNC.md:5166:- img/pixellab_all/ch1/001_etype35/animations/breathing-idle/north-west/frame_000.png
+docs/CHANGELOG_SYNC.md:5167:- img/pixellab_all/ch1/001_etype35/animations/breathing-idle/north-west/frame_001.png
+docs/CHANGELOG_SYNC.md:5168:- img/pixellab_all/ch1/001_etype35/animations/breathing-idle/north-west/frame_002.png
+docs/CHANGELOG_SYNC.md:5169:- img/pixellab_all/ch1/001_etype35/animations/breathing-idle/north-west/frame_003.png
+docs/CHANGELOG_SYNC.md:5170:- img/pixellab_all/ch1/001_etype35/animations/breathing-idle/south-east/frame_000.png
+docs/CHANGELOG_SYNC.md:5171:- img/pixellab_all/ch1/001_etype35/animations/breathing-idle/south-east/frame_001.png
+docs/CHANGELOG_SYNC.md:5172:- img/pixellab_all/ch1/001_etype35/animations/breathing-idle/south-east/frame_002.png
+docs/CHANGELOG_SYNC.md:5173:- img/pixellab_all/ch1/001_etype35/animations/breathing-idle/south-east/frame_003.png
+docs/CHANGELOG_SYNC.md:5174:- img/pixellab_all/ch1/001_etype35/animations/breathing-idle/south-west/frame_000.png
+docs/CHANGELOG_SYNC.md:5175:- img/pixellab_all/ch1/001_etype35/animations/breathing-idle/south-west/frame_001.png
+docs/CHANGELOG_SYNC.md:5176:- img/pixellab_all/ch1/001_etype35/animations/breathing-idle/south-west/frame_002.png
+docs/CHANGELOG_SYNC.md:5177:- img/pixellab_all/ch1/001_etype35/animations/breathing-idle/south-west/frame_003.png
+docs/CHANGELOG_SYNC.md:5178:- img/pixellab_all/ch1/001_etype35/animations/cross-punch/north-east/frame_000.png
+docs/CHANGELOG_SYNC.md:5179:- img/pixellab_all/ch1/001_etype35/animations/cross-punch/north-east/frame_001.png
+docs/CHANGELOG_SYNC.md:5180:- img/pixellab_all/ch1/001_etype35/animations/cross-punch/north-east/frame_002.png
+docs/CHANGELOG_SYNC.md:5181:- img/pixellab_all/ch1/001_etype35/animations/cross-punch/north-east/frame_003.png
+docs/CHANGELOG_SYNC.md:5182:- img/pixellab_all/ch1/001_etype35/animations/cross-punch/north-east/frame_004.png
+docs/CHANGELOG_SYNC.md:5183:- img/pixellab_all/ch1/001_etype35/animations/cross-punch/north-east/frame_005.png
+docs/CHANGELOG_SYNC.md:5184:- img/pixellab_all/ch1/001_etype35/animations/cross-punch/north-west/frame_000.png
+docs/CHANGELOG_SYNC.md:5185:- img/pixellab_all/ch1/001_etype35/animations/cross-punch/north-west/frame_001.png
+docs/CHANGELOG_SYNC.md:5186:- img/pixellab_all/ch1/001_etype35/animations/cross-punch/north-west/frame_002.png
+docs/CHANGELOG_SYNC.md:5187:- img/pixellab_all/ch1/001_etype35/animations/cross-punch/north-west/frame_003.png
+docs/CHANGELOG_SYNC.md:5188:- img/pixellab_all/ch1/001_etype35/animations/cross-punch/north-west/frame_004.png
+docs/CHANGELOG_SYNC.md:5189:- img/pixellab_all/ch1/001_etype35/animations/cross-punch/north-west/frame_005.png
+docs/CHANGELOG_SYNC.md:5190:- img/pixellab_all/ch1/001_etype35/animations/cross-punch/south-east/frame_000.png
+docs/CHANGELOG_SYNC.md:5191:- img/pixellab_all/ch1/001_etype35/animations/cross-punch/south-east/frame_001.png
+docs/CHANGELOG_SYNC.md:5192:- img/pixellab_all/ch1/001_etype35/animations/cross-punch/south-east/frame_002.png
+docs/CHANGELOG_SYNC.md:5193:- img/pixellab_all/ch1/001_etype35/animations/cross-punch/south-east/frame_003.png
+docs/CHANGELOG_SYNC.md:5194:- img/pixellab_all/ch1/001_etype35/animations/cross-punch/south-east/frame_004.png
+docs/CHANGELOG_SYNC.md:5195:- img/pixellab_all/ch1/001_etype35/animations/cross-punch/south-east/frame_005.png
+docs/CHANGELOG_SYNC.md:5196:- img/pixellab_all/ch1/001_etype35/animations/cross-punch/south-west/frame_000.png
+docs/CHANGELOG_SYNC.md:5197:- img/pixellab_all/ch1/001_etype35/animations/cross-punch/south-west/frame_001.png
+docs/CHANGELOG_SYNC.md:5198:- img/pixellab_all/ch1/001_etype35/animations/cross-punch/south-west/frame_002.png
+docs/CHANGELOG_SYNC.md:5199:- img/pixellab_all/ch1/001_etype35/animations/cross-punch/south-west/frame_003.png
+docs/CHANGELOG_SYNC.md:5200:- img/pixellab_all/ch1/001_etype35/animations/cross-punch/south-west/frame_004.png
+docs/CHANGELOG_SYNC.md:5201:- img/pixellab_all/ch1/001_etype35/animations/cross-punch/south-west/frame_005.png
+docs/CHANGELOG_SYNC.md:5202:- img/pixellab_all/ch1/001_etype35/animations/taking-punch/north-east/frame_000.png
+docs/CHANGELOG_SYNC.md:5203:- img/pixellab_all/ch1/001_etype35/animations/taking-punch/north-east/frame_001.png
+docs/CHANGELOG_SYNC.md:5204:- img/pixellab_all/ch1/001_etype35/animations/taking-punch/north-east/frame_002.png
+docs/CHANGELOG_SYNC.md:5205:- img/pixellab_all/ch1/001_etype35/animations/taking-punch/north-east/frame_003.png
+docs/CHANGELOG_SYNC.md:5206:- img/pixellab_all/ch1/001_etype35/animations/taking-punch/north-east/frame_004.png
+docs/CHANGELOG_SYNC.md:5207:- img/pixellab_all/ch1/001_etype35/animations/taking-punch/north-east/frame_005.png
+docs/CHANGELOG_SYNC.md:5208:- img/pixellab_all/ch1/001_etype35/animations/taking-punch/north-west/frame_000.png
+docs/CHANGELOG_SYNC.md:5209:- img/pixellab_all/ch1/001_etype35/animations/taking-punch/north-west/frame_001.png
+docs/CHANGELOG_SYNC.md:5210:- img/pixellab_all/ch1/001_etype35/animations/taking-punch/north-west/frame_002.png
+docs/CHANGELOG_SYNC.md:5211:- img/pixellab_all/ch1/001_etype35/animations/taking-punch/north-west/frame_003.png
+docs/CHANGELOG_SYNC.md:5212:- img/pixellab_all/ch1/001_etype35/animations/taking-punch/north-west/frame_004.png
+docs/CHANGELOG_SYNC.md:5213:- img/pixellab_all/ch1/001_etype35/animations/taking-punch/north-west/frame_005.png
+docs/CHANGELOG_SYNC.md:5214:- img/pixellab_all/ch1/001_etype35/animations/taking-punch/south-east/frame_000.png
+docs/CHANGELOG_SYNC.md:5215:- img/pixellab_all/ch1/001_etype35/animations/taking-punch/south-east/frame_001.png
+docs/CHANGELOG_SYNC.md:5216:- img/pixellab_all/ch1/001_etype35/animations/taking-punch/south-east/frame_002.png
+docs/CHANGELOG_SYNC.md:5217:- img/pixellab_all/ch1/001_etype35/animations/taking-punch/south-east/frame_003.png
+docs/CHANGELOG_SYNC.md:5218:- img/pixellab_all/ch1/001_etype35/animations/taking-punch/south-east/frame_004.png
+docs/CHANGELOG_SYNC.md:5219:- img/pixellab_all/ch1/001_etype35/animations/taking-punch/south-east/frame_005.png
+docs/CHANGELOG_SYNC.md:5220:- img/pixellab_all/ch1/001_etype35/animations/taking-punch/south-west/frame_000.png
+docs/CHANGELOG_SYNC.md:5221:- img/pixellab_all/ch1/001_etype35/animations/taking-punch/south-west/frame_001.png
+docs/CHANGELOG_SYNC.md:5222:- img/pixellab_all/ch1/001_etype35/animations/taking-punch/south-west/frame_002.png
+docs/CHANGELOG_SYNC.md:5223:- img/pixellab_all/ch1/001_etype35/animations/taking-punch/south-west/frame_003.png
+docs/CHANGELOG_SYNC.md:5224:- img/pixellab_all/ch1/001_etype35/animations/taking-punch/south-west/frame_004.png
+docs/CHANGELOG_SYNC.md:5225:- img/pixellab_all/ch1/001_etype35/animations/taking-punch/south-west/frame_005.png
+docs/CHANGELOG_SYNC.md:5226:- img/pixellab_all/ch1/001_etype35/animations/walking-4-frames/north-east/frame_000.png
+docs/CHANGELOG_SYNC.md:5227:- img/pixellab_all/ch1/001_etype35/animations/walking-4-frames/north-east/frame_001.png
+docs/CHANGELOG_SYNC.md:5228:- img/pixellab_all/ch1/001_etype35/animations/walking-4-frames/north-east/frame_002.png
+docs/CHANGELOG_SYNC.md:5229:- img/pixellab_all/ch1/001_etype35/animations/walking-4-frames/north-east/frame_003.png
+docs/CHANGELOG_SYNC.md:5230:- img/pixellab_all/ch1/001_etype35/animations/walking-4-frames/north-west/frame_000.png
+docs/CHANGELOG_SYNC.md:5231:- img/pixellab_all/ch1/001_etype35/animations/walking-4-frames/north-west/frame_001.png
+docs/CHANGELOG_SYNC.md:5232:- img/pixellab_all/ch1/001_etype35/animations/walking-4-frames/north-west/frame_002.png
+docs/CHANGELOG_SYNC.md:5233:- img/pixellab_all/ch1/001_etype35/animations/walking-4-frames/north-west/frame_003.png
+docs/CHANGELOG_SYNC.md:5234:- img/pixellab_all/ch1/001_etype35/animations/walking-4-frames/south-east/frame_000.png
+docs/CHANGELOG_SYNC.md:5235:- img/pixellab_all/ch1/001_etype35/animations/walking-4-frames/south-east/frame_001.png
+docs/CHANGELOG_SYNC.md:5236:- img/pixellab_all/ch1/001_etype35/animations/walking-4-frames/south-east/frame_002.png
+docs/CHANGELOG_SYNC.md:5237:- img/pixellab_all/ch1/001_etype35/animations/walking-4-frames/south-east/frame_003.png
+docs/CHANGELOG_SYNC.md:5238:- img/pixellab_all/ch1/001_etype35/animations/walking-4-frames/south-west/frame_000.png
+docs/CHANGELOG_SYNC.md:5239:- img/pixellab_all/ch1/001_etype35/animations/walking-4-frames/south-west/frame_001.png
+docs/CHANGELOG_SYNC.md:5240:- img/pixellab_all/ch1/001_etype35/animations/walking-4-frames/south-west/frame_002.png
+docs/CHANGELOG_SYNC.md:5241:- img/pixellab_all/ch1/001_etype35/animations/walking-4-frames/south-west/frame_003.png
+docs/CHANGELOG_SYNC.md:5242:- img/pixellab_all/ch1/001_etype35/metadata.json
+docs/CHANGELOG_SYNC.md:5243:- img/pixellab_all/ch1/001_etype35/rotations/north-east.png
+docs/CHANGELOG_SYNC.md:5244:- img/pixellab_all/ch1/001_etype35/rotations/north-west.png
+docs/CHANGELOG_SYNC.md:5245:- img/pixellab_all/ch1/001_etype35/rotations/south-east.png
+docs/CHANGELOG_SYNC.md:5246:- img/pixellab_all/ch1/001_etype35/rotations/south-west.png
+docs/CHANGELOG_SYNC.md:6454:- img/pixellab_all/ch1/017_etype36_serpentApostle/animations/breathing-idle/north-east/frame_000.png
+docs/CHANGELOG_SYNC.md:6455:- img/pixellab_all/ch1/017_etype36_serpentApostle/animations/breathing-idle/north-east/frame_001.png
+docs/CHANGELOG_SYNC.md:6456:- img/pixellab_all/ch1/017_etype36_serpentApostle/animations/breathing-idle/north-east/frame_002.png
+docs/CHANGELOG_SYNC.md:6457:- img/pixellab_all/ch1/017_etype36_serpentApostle/animations/breathing-idle/north-east/frame_003.png
+docs/CHANGELOG_SYNC.md:6458:- img/pixellab_all/ch1/017_etype36_serpentApostle/animations/breathing-idle/north-west/frame_000.png
+docs/CHANGELOG_SYNC.md:6459:- img/pixellab_all/ch1/017_etype36_serpentApostle/animations/breathing-idle/north-west/frame_001.png
+docs/CHANGELOG_SYNC.md:6460:- img/pixellab_all/ch1/017_etype36_serpentApostle/animations/breathing-idle/north-west/frame_002.png
+docs/CHANGELOG_SYNC.md:6461:- img/pixellab_all/ch1/017_etype36_serpentApostle/animations/breathing-idle/north-west/frame_003.png
+docs/CHANGELOG_SYNC.md:6462:- img/pixellab_all/ch1/017_etype36_serpentApostle/animations/breathing-idle/south-east/frame_000.png
+docs/CHANGELOG_SYNC.md:6463:- img/pixellab_all/ch1/017_etype36_serpentApostle/animations/breathing-idle/south-east/frame_001.png
+docs/CHANGELOG_SYNC.md:6464:- img/pixellab_all/ch1/017_etype36_serpentApostle/animations/breathing-idle/south-east/frame_002.png
+docs/CHANGELOG_SYNC.md:6465:- img/pixellab_all/ch1/017_etype36_serpentApostle/animations/breathing-idle/south-east/frame_003.png
+docs/CHANGELOG_SYNC.md:6466:- img/pixellab_all/ch1/017_etype36_serpentApostle/animations/breathing-idle/south-west/frame_000.png
+docs/CHANGELOG_SYNC.md:6467:- img/pixellab_all/ch1/017_etype36_serpentApostle/animations/breathing-idle/south-west/frame_001.png
+docs/CHANGELOG_SYNC.md:6468:- img/pixellab_all/ch1/017_etype36_serpentApostle/animations/breathing-idle/south-west/frame_002.png
+docs/CHANGELOG_SYNC.md:6469:- img/pixellab_all/ch1/017_etype36_serpentApostle/animations/breathing-idle/south-west/frame_003.png
+docs/CHANGELOG_SYNC.md:6470:- img/pixellab_all/ch1/017_etype36_serpentApostle/animations/cross-punch/north-east/frame_000.png
+docs/CHANGELOG_SYNC.md:6471:- img/pixellab_all/ch1/017_etype36_serpentApostle/animations/cross-punch/north-east/frame_001.png
+docs/CHANGELOG_SYNC.md:6472:- img/pixellab_all/ch1/017_etype36_serpentApostle/animations/cross-punch/north-east/frame_002.png
+docs/CHANGELOG_SYNC.md:6473:- img/pixellab_all/ch1/017_etype36_serpentApostle/animations/cross-punch/north-east/frame_003.png
+docs/CHANGELOG_SYNC.md:6474:- img/pixellab_all/ch1/017_etype36_serpentApostle/animations/cross-punch/north-east/frame_004.png
+docs/CHANGELOG_SYNC.md:6475:- img/pixellab_all/ch1/017_etype36_serpentApostle/animations/cross-punch/north-east/frame_005.png
+docs/CHANGELOG_SYNC.md:6476:- img/pixellab_all/ch1/017_etype36_serpentApostle/animations/cross-punch/north-west/frame_000.png
+docs/CHANGELOG_SYNC.md:6477:- img/pixellab_all/ch1/017_etype36_serpentApostle/animations/cross-punch/north-west/frame_001.png
+docs/CHANGELOG_SYNC.md:6478:- img/pixellab_all/ch1/017_etype36_serpentApostle/animations/cross-punch/north-west/frame_002.png
+docs/CHANGELOG_SYNC.md:6479:- img/pixellab_all/ch1/017_etype36_serpentApostle/animations/cross-punch/north-west/frame_003.png
+docs/CHANGELOG_SYNC.md:6480:- img/pixellab_all/ch1/017_etype36_serpentApostle/animations/cross-punch/north-west/frame_004.png
+docs/CHANGELOG_SYNC.md:6481:- img/pixellab_all/ch1/017_etype36_serpentApostle/animations/cross-punch/north-west/frame_005.png
+docs/CHANGELOG_SYNC.md:6482:- img/pixellab_all/ch1/017_etype36_serpentApostle/animations/cross-punch/south-east/frame_000.png
+docs/CHANGELOG_SYNC.md:6483:- img/pixellab_all/ch1/017_etype36_serpentApostle/animations/cross-punch/south-east/frame_001.png
+docs/CHANGELOG_SYNC.md:6484:- img/pixellab_all/ch1/017_etype36_serpentApostle/animations/cross-punch/south-east/frame_002.png
+docs/CHANGELOG_SYNC.md:6485:- img/pixellab_all/ch1/017_etype36_serpentApostle/animations/cross-punch/south-east/frame_003.png
+docs/CHANGELOG_SYNC.md:6486:- img/pixellab_all/ch1/017_etype36_serpentApostle/animations/cross-punch/south-east/frame_004.png
+docs/CHANGELOG_SYNC.md:6487:- img/pixellab_all/ch1/017_etype36_serpentApostle/animations/cross-punch/south-east/frame_005.png
+docs/CHANGELOG_SYNC.md:6488:- img/pixellab_all/ch1/017_etype36_serpentApostle/animations/cross-punch/south-west/frame_000.png
+docs/CHANGELOG_SYNC.md:6489:- img/pixellab_all/ch1/017_etype36_serpentApostle/animations/cross-punch/south-west/frame_001.png
+docs/CHANGELOG_SYNC.md:6490:- img/pixellab_all/ch1/017_etype36_serpentApostle/animations/cross-punch/south-west/frame_002.png
+docs/CHANGELOG_SYNC.md:6491:- img/pixellab_all/ch1/017_etype36_serpentApostle/animations/cross-punch/south-west/frame_003.png
+docs/CHANGELOG_SYNC.md:6492:- img/pixellab_all/ch1/017_etype36_serpentApostle/animations/cross-punch/south-west/frame_004.png
+docs/CHANGELOG_SYNC.md:6493:- img/pixellab_all/ch1/017_etype36_serpentApostle/animations/cross-punch/south-west/frame_005.png
+docs/CHANGELOG_SYNC.md:6494:- img/pixellab_all/ch1/017_etype36_serpentApostle/animations/taking-punch/north-east/frame_000.png
+docs/CHANGELOG_SYNC.md:6495:- img/pixellab_all/ch1/017_etype36_serpentApostle/animations/taking-punch/north-east/frame_001.png
+docs/CHANGELOG_SYNC.md:6496:- img/pixellab_all/ch1/017_etype36_serpentApostle/animations/taking-punch/north-east/frame_002.png
+docs/CHANGELOG_SYNC.md:6497:- img/pixellab_all/ch1/017_etype36_serpentApostle/animations/taking-punch/north-east/frame_003.png
+docs/CHANGELOG_SYNC.md:6498:- img/pixellab_all/ch1/017_etype36_serpentApostle/animations/taking-punch/north-east/frame_004.png
+docs/CHANGELOG_SYNC.md:6499:- img/pixellab_all/ch1/017_etype36_serpentApostle/animations/taking-punch/north-east/frame_005.png
+docs/CHANGELOG_SYNC.md:6500:- img/pixellab_all/ch1/017_etype36_serpentApostle/animations/taking-punch/north-west/frame_000.png
+docs/CHANGELOG_SYNC.md:6501:- img/pixellab_all/ch1/017_etype36_serpentApostle/animations/taking-punch/north-west/frame_001.png
+docs/CHANGELOG_SYNC.md:6502:- img/pixellab_all/ch1/017_etype36_serpentApostle/animations/taking-punch/north-west/frame_002.png
+docs/CHANGELOG_SYNC.md:6503:- img/pixellab_all/ch1/017_etype36_serpentApostle/animations/taking-punch/north-west/frame_003.png
+docs/CHANGELOG_SYNC.md:6504:- img/pixellab_all/ch1/017_etype36_serpentApostle/animations/taking-punch/north-west/frame_004.png
+docs/CHANGELOG_SYNC.md:6505:- img/pixellab_all/ch1/017_etype36_serpentApostle/animations/taking-punch/north-west/frame_005.png
+docs/CHANGELOG_SYNC.md:6506:- img/pixellab_all/ch1/017_etype36_serpentApostle/animations/taking-punch/south-east/frame_000.png
+docs/CHANGELOG_SYNC.md:6507:- img/pixellab_all/ch1/017_etype36_serpentApostle/animations/taking-punch/south-east/frame_001.png
+docs/CHANGELOG_SYNC.md:6508:- img/pixellab_all/ch1/017_etype36_serpentApostle/animations/taking-punch/south-east/frame_002.png
+docs/CHANGELOG_SYNC.md:6509:- img/pixellab_all/ch1/017_etype36_serpentApostle/animations/taking-punch/south-east/frame_003.png
+docs/CHANGELOG_SYNC.md:6510:- img/pixellab_all/ch1/017_etype36_serpentApostle/animations/taking-punch/south-east/frame_004.png
+docs/CHANGELOG_SYNC.md:6511:- img/pixellab_all/ch1/017_etype36_serpentApostle/animations/taking-punch/south-east/frame_005.png
+docs/CHANGELOG_SYNC.md:6512:- img/pixellab_all/ch1/017_etype36_serpentApostle/animations/taking-punch/south-west/frame_000.png
+docs/CHANGELOG_SYNC.md:6513:- img/pixellab_all/ch1/017_etype36_serpentApostle/animations/taking-punch/south-west/frame_001.png
+docs/CHANGELOG_SYNC.md:6514:- img/pixellab_all/ch1/017_etype36_serpentApostle/animations/taking-punch/south-west/frame_002.png
+docs/CHANGELOG_SYNC.md:6515:- img/pixellab_all/ch1/017_etype36_serpentApostle/animations/taking-punch/south-west/frame_003.png
+docs/CHANGELOG_SYNC.md:6516:- img/pixellab_all/ch1/017_etype36_serpentApostle/animations/taking-punch/south-west/frame_004.png
+docs/CHANGELOG_SYNC.md:6517:- img/pixellab_all/ch1/017_etype36_serpentApostle/animations/taking-punch/south-west/frame_005.png
+docs/CHANGELOG_SYNC.md:6518:- img/pixellab_all/ch1/017_etype36_serpentApostle/animations/walking-4-frames/north-east/frame_000.png
+docs/CHANGELOG_SYNC.md:6519:- img/pixellab_all/ch1/017_etype36_serpentApostle/animations/walking-4-frames/north-east/frame_001.png
+docs/CHANGELOG_SYNC.md:6520:- img/pixellab_all/ch1/017_etype36_serpentApostle/animations/walking-4-frames/north-east/frame_002.png
+docs/CHANGELOG_SYNC.md:6521:- img/pixellab_all/ch1/017_etype36_serpentApostle/animations/walking-4-frames/north-east/frame_003.png
+docs/CHANGELOG_SYNC.md:6522:- img/pixellab_all/ch1/017_etype36_serpentApostle/animations/walking-4-frames/north-west/frame_000.png
+docs/CHANGELOG_SYNC.md:6523:- img/pixellab_all/ch1/017_etype36_serpentApostle/animations/walking-4-frames/north-west/frame_001.png
+docs/CHANGELOG_SYNC.md:6524:- img/pixellab_all/ch1/017_etype36_serpentApostle/animations/walking-4-frames/north-west/frame_002.png
+docs/CHANGELOG_SYNC.md:6525:- img/pixellab_all/ch1/017_etype36_serpentApostle/animations/walking-4-frames/north-west/frame_003.png
+docs/CHANGELOG_SYNC.md:6526:- img/pixellab_all/ch1/017_etype36_serpentApostle/animations/walking-4-frames/south-east/frame_000.png
+docs/CHANGELOG_SYNC.md:6527:- img/pixellab_all/ch1/017_etype36_serpentApostle/animations/walking-4-frames/south-east/frame_001.png
+docs/CHANGELOG_SYNC.md:6528:- img/pixellab_all/ch1/017_etype36_serpentApostle/animations/walking-4-frames/south-east/frame_002.png
+docs/CHANGELOG_SYNC.md:6529:- img/pixellab_all/ch1/017_etype36_serpentApostle/animations/walking-4-frames/south-east/frame_003.png
+docs/CHANGELOG_SYNC.md:6530:- img/pixellab_all/ch1/017_etype36_serpentApostle/animations/walking-4-frames/south-west/frame_000.png
+docs/CHANGELOG_SYNC.md:6531:- img/pixellab_all/ch1/017_etype36_serpentApostle/animations/walking-4-frames/south-west/frame_001.png
+docs/CHANGELOG_SYNC.md:6532:- img/pixellab_all/ch1/017_etype36_serpentApostle/animations/walking-4-frames/south-west/frame_002.png
+docs/CHANGELOG_SYNC.md:6533:- img/pixellab_all/ch1/017_etype36_serpentApostle/animations/walking-4-frames/south-west/frame_003.png
+docs/CHANGELOG_SYNC.md:6534:- img/pixellab_all/ch1/017_etype36_serpentApostle/metadata.json
+docs/CHANGELOG_SYNC.md:6535:- img/pixellab_all/ch1/017_etype36_serpentApostle/rotations/north-east.png
+docs/CHANGELOG_SYNC.md:6536:- img/pixellab_all/ch1/017_etype36_serpentApostle/rotations/north-west.png
+docs/CHANGELOG_SYNC.md:6537:- img/pixellab_all/ch1/017_etype36_serpentApostle/rotations/south-east.png
+docs/CHANGELOG_SYNC.md:6538:- img/pixellab_all/ch1/017_etype36_serpentApostle/rotations/south-west.png
+docs/CHANGELOG_SYNC.md:7139:- img/pixellab_all/ch1/032_etype34/animations/breathing-idle/north-east/frame_000.png
+docs/CHANGELOG_SYNC.md:7140:- img/pixell…46766 tokens truncated…sters/etype36_full/animations/walking-4-frames/north-west/frame_001.png
+docs/CHANGELOG_SYNC.md:14403:- img/monsters/etype36_full/animations/walking-4-frames/north-west/frame_002.png
+docs/CHANGELOG_SYNC.md:14404:- img/monsters/etype36_full/animations/walking-4-frames/north-west/frame_003.png
+docs/CHANGELOG_SYNC.md:14405:- img/monsters/etype36_full/animations/walking-4-frames/north/frame_000.png
+docs/CHANGELOG_SYNC.md:14406:- img/monsters/etype36_full/animations/walking-4-frames/north/frame_001.png
+docs/CHANGELOG_SYNC.md:14407:- img/monsters/etype36_full/animations/walking-4-frames/north/frame_002.png
+docs/CHANGELOG_SYNC.md:14408:- img/monsters/etype36_full/animations/walking-4-frames/north/frame_003.png
+docs/CHANGELOG_SYNC.md:14409:- img/monsters/etype36_full/animations/walking-4-frames/south-east/frame_000.png
+docs/CHANGELOG_SYNC.md:14410:- img/monsters/etype36_full/animations/walking-4-frames/south-east/frame_001.png
+docs/CHANGELOG_SYNC.md:14411:- img/monsters/etype36_full/animations/walking-4-frames/south-east/frame_002.png
+docs/CHANGELOG_SYNC.md:14412:- img/monsters/etype36_full/animations/walking-4-frames/south-east/frame_003.png
+docs/CHANGELOG_SYNC.md:14413:- img/monsters/etype36_full/animations/walking-4-frames/south-west/frame_000.png
+docs/CHANGELOG_SYNC.md:14414:- img/monsters/etype36_full/animations/walking-4-frames/south-west/frame_001.png
+docs/CHANGELOG_SYNC.md:14415:- img/monsters/etype36_full/animations/walking-4-frames/south-west/frame_002.png
+docs/CHANGELOG_SYNC.md:14416:- img/monsters/etype36_full/animations/walking-4-frames/south-west/frame_003.png
+docs/CHANGELOG_SYNC.md:14417:- img/monsters/etype36_full/animations/walking-4-frames/south/frame_000.png
+docs/CHANGELOG_SYNC.md:14418:- img/monsters/etype36_full/animations/walking-4-frames/south/frame_001.png
+docs/CHANGELOG_SYNC.md:14419:- img/monsters/etype36_full/animations/walking-4-frames/south/frame_002.png
+docs/CHANGELOG_SYNC.md:14420:- img/monsters/etype36_full/animations/walking-4-frames/south/frame_003.png
+docs/CHANGELOG_SYNC.md:14421:- img/monsters/etype36_full/animations/walking-4-frames/west/frame_000.png
+docs/CHANGELOG_SYNC.md:14422:- img/monsters/etype36_full/animations/walking-4-frames/west/frame_001.png
+docs/CHANGELOG_SYNC.md:14423:- img/monsters/etype36_full/animations/walking-4-frames/west/frame_002.png
+docs/CHANGELOG_SYNC.md:14424:- img/monsters/etype36_full/animations/walking-4-frames/west/frame_003.png
+docs/CHANGELOG_SYNC.md:14425:- img/monsters/etype36_full/atlas.json
+docs/CHANGELOG_SYNC.md:14426:- img/monsters/etype36_full/atlas.png
+docs/CHANGELOG_SYNC.md:14427:- img/monsters/etype36_full/metadata.json
+docs/CHANGELOG_SYNC.md:14428:- img/monsters/etype36_full/rotations/east.png
+docs/CHANGELOG_SYNC.md:14429:- img/monsters/etype36_full/rotations/north-east.png
+docs/CHANGELOG_SYNC.md:14430:- img/monsters/etype36_full/rotations/north-west.png
+docs/CHANGELOG_SYNC.md:14431:- img/monsters/etype36_full/rotations/north.png
+docs/CHANGELOG_SYNC.md:14432:- img/monsters/etype36_full/rotations/south-east.png
+docs/CHANGELOG_SYNC.md:14433:- img/monsters/etype36_full/rotations/south-west.png
+docs/CHANGELOG_SYNC.md:14434:- img/monsters/etype36_full/rotations/south.png
+docs/CHANGELOG_SYNC.md:14435:- img/monsters/etype36_full/rotations/west.png
+docs/CHANGELOG_SYNC.md:14436:- img/monsters/etype37_full/animations/breathing-idle/east/frame_000.png
+docs/CHANGELOG_SYNC.md:14437:- img/monsters/etype37_full/animations/breathing-idle/east/frame_001.png
+docs/CHANGELOG_SYNC.md:14438:- img/monsters/etype37_full/animations/breathing-idle/east/frame_002.png
+docs/CHANGELOG_SYNC.md:14439:- img/monsters/etype37_full/animations/breathing-idle/east/frame_003.png
+docs/CHANGELOG_SYNC.md:14440:- img/monsters/etype37_full/animations/breathing-idle/north-east/frame_000.png
+docs/CHANGELOG_SYNC.md:14441:- img/monsters/etype37_full/animations/breathing-idle/north-east/frame_001.png
+docs/CHANGELOG_SYNC.md:14442:- img/monsters/etype37_full/animations/breathing-idle/north-east/frame_002.png
+docs/CHANGELOG_SYNC.md:14443:- img/monsters/etype37_full/animations/breathing-idle/north-east/frame_003.png
+docs/CHANGELOG_SYNC.md:14444:- img/monsters/etype37_full/animations/breathing-idle/north-west/frame_000.png
+docs/CHANGELOG_SYNC.md:14445:- img/monsters/etype37_full/animations/breathing-idle/north-west/frame_001.png
+docs/CHANGELOG_SYNC.md:14446:- img/monsters/etype37_full/animations/breathing-idle/north-west/frame_002.png
+docs/CHANGELOG_SYNC.md:14447:- img/monsters/etype37_full/animations/breathing-idle/north-west/frame_003.png
+docs/CHANGELOG_SYNC.md:14448:- img/monsters/etype37_full/animations/breathing-idle/north/frame_000.png
+docs/CHANGELOG_SYNC.md:14449:- img/monsters/etype37_full/animations/breathing-idle/north/frame_001.png
+docs/CHANGELOG_SYNC.md:14450:- img/monsters/etype37_full/animations/breathing-idle/north/frame_002.png
+docs/CHANGELOG_SYNC.md:14451:- img/monsters/etype37_full/animations/breathing-idle/north/frame_003.png
+docs/CHANGELOG_SYNC.md:14452:- img/monsters/etype37_full/animations/breathing-idle/south-east/frame_000.png
+docs/CHANGELOG_SYNC.md:14453:- img/monsters/etype37_full/animations/breathing-idle/south-east/frame_001.png
+docs/CHANGELOG_SYNC.md:14454:- img/monsters/etype37_full/animations/breathing-idle/south-east/frame_002.png
+docs/CHANGELOG_SYNC.md:14455:- img/monsters/etype37_full/animations/breathing-idle/south-east/frame_003.png
+docs/CHANGELOG_SYNC.md:14456:- img/monsters/etype37_full/animations/breathing-idle/south-west/frame_000.png
+docs/CHANGELOG_SYNC.md:14457:- img/monsters/etype37_full/animations/breathing-idle/south-west/frame_001.png
+docs/CHANGELOG_SYNC.md:14458:- img/monsters/etype37_full/animations/breathing-idle/south-west/frame_002.png
+docs/CHANGELOG_SYNC.md:14459:- img/monsters/etype37_full/animations/breathing-idle/south-west/frame_003.png
+docs/CHANGELOG_SYNC.md:14460:- img/monsters/etype37_full/animations/breathing-idle/south/frame_000.png
+docs/CHANGELOG_SYNC.md:14461:- img/monsters/etype37_full/animations/breathing-idle/south/frame_001.png
+docs/CHANGELOG_SYNC.md:14462:- img/monsters/etype37_full/animations/breathing-idle/south/frame_002.png
+docs/CHANGELOG_SYNC.md:14463:- img/monsters/etype37_full/animations/breathing-idle/south/frame_003.png
+docs/CHANGELOG_SYNC.md:14464:- img/monsters/etype37_full/animations/breathing-idle/west/frame_000.png
+docs/CHANGELOG_SYNC.md:14465:- img/monsters/etype37_full/animations/breathing-idle/west/frame_001.png
+docs/CHANGELOG_SYNC.md:14466:- img/monsters/etype37_full/animations/breathing-idle/west/frame_002.png
+docs/CHANGELOG_SYNC.md:14467:- img/monsters/etype37_full/animations/breathing-idle/west/frame_003.png
+docs/CHANGELOG_SYNC.md:14468:- img/monsters/etype37_full/animations/cross-punch/north-east/frame_000.png
+docs/CHANGELOG_SYNC.md:14469:- img/monsters/etype37_full/animations/cross-punch/north-east/frame_001.png
+docs/CHANGELOG_SYNC.md:14470:- img/monsters/etype37_full/animations/cross-punch/north-east/frame_002.png
+docs/CHANGELOG_SYNC.md:14471:- img/monsters/etype37_full/animations/cross-punch/north-east/frame_003.png
+docs/CHANGELOG_SYNC.md:14472:- img/monsters/etype37_full/animations/cross-punch/north-east/frame_004.png
+docs/CHANGELOG_SYNC.md:14473:- img/monsters/etype37_full/animations/cross-punch/north-east/frame_005.png
+docs/CHANGELOG_SYNC.md:14474:- img/monsters/etype37_full/animations/cross-punch/north-west/frame_000.png
+docs/CHANGELOG_SYNC.md:14475:- img/monsters/etype37_full/animations/cross-punch/north-west/frame_001.png
+docs/CHANGELOG_SYNC.md:14476:- img/monsters/etype37_full/animations/cross-punch/north-west/frame_002.png
+docs/CHANGELOG_SYNC.md:14477:- img/monsters/etype37_full/animations/cross-punch/north-west/frame_003.png
+docs/CHANGELOG_SYNC.md:14478:- img/monsters/etype37_full/animations/cross-punch/north-west/frame_004.png
+docs/CHANGELOG_SYNC.md:14479:- img/monsters/etype37_full/animations/cross-punch/north-west/frame_005.png
+docs/CHANGELOG_SYNC.md:14480:- img/monsters/etype37_full/animations/cross-punch/south-east/frame_000.png
+docs/CHANGELOG_SYNC.md:14481:- img/monsters/etype37_full/animations/cross-punch/south-east/frame_001.png
+docs/CHANGELOG_SYNC.md:14482:- img/monsters/etype37_full/animations/cross-punch/south-east/frame_002.png
+docs/CHANGELOG_SYNC.md:14483:- img/monsters/etype37_full/animations/cross-punch/south-east/frame_003.png
+docs/CHANGELOG_SYNC.md:14484:- img/monsters/etype37_full/animations/cross-punch/south-east/frame_004.png
+docs/CHANGELOG_SYNC.md:14485:- img/monsters/etype37_full/animations/cross-punch/south-east/frame_005.png
+docs/CHANGELOG_SYNC.md:14486:- img/monsters/etype37_full/animations/cross-punch/south-west/frame_000.png
+docs/CHANGELOG_SYNC.md:14487:- img/monsters/etype37_full/animations/cross-punch/south-west/frame_001.png
+docs/CHANGELOG_SYNC.md:14488:- img/monsters/etype37_full/animations/cross-punch/south-west/frame_002.png
+docs/CHANGELOG_SYNC.md:14489:- img/monsters/etype37_full/animations/cross-punch/south-west/frame_003.png
+docs/CHANGELOG_SYNC.md:14490:- img/monsters/etype37_full/animations/cross-punch/south-west/frame_004.png
+docs/CHANGELOG_SYNC.md:14491:- img/monsters/etype37_full/animations/cross-punch/south-west/frame_005.png
+docs/CHANGELOG_SYNC.md:14492:- img/monsters/etype37_full/animations/cross-punch/south/frame_000.png
+docs/CHANGELOG_SYNC.md:14493:- img/monsters/etype37_full/animations/cross-punch/south/frame_001.png
+docs/CHANGELOG_SYNC.md:14494:- img/monsters/etype37_full/animations/cross-punch/south/frame_002.png
+docs/CHANGELOG_SYNC.md:14495:- img/monsters/etype37_full/animations/cross-punch/south/frame_003.png
+docs/CHANGELOG_SYNC.md:14496:- img/monsters/etype37_full/animations/cross-punch/south/frame_004.png
+docs/CHANGELOG_SYNC.md:14497:- img/monsters/etype37_full/animations/cross-punch/south/frame_005.png
+docs/CHANGELOG_SYNC.md:14498:- img/monsters/etype37_full/animations/taking-punch/north-east/frame_000.png
+docs/CHANGELOG_SYNC.md:14499:- img/monsters/etype37_full/animations/taking-punch/north-east/frame_001.png
+docs/CHANGELOG_SYNC.md:14500:- img/monsters/etype37_full/animations/taking-punch/north-east/frame_002.png
+docs/CHANGELOG_SYNC.md:14501:- img/monsters/etype37_full/animations/taking-punch/north-east/frame_003.png
+docs/CHANGELOG_SYNC.md:14502:- img/monsters/etype37_full/animations/taking-punch/north-east/frame_004.png
+docs/CHANGELOG_SYNC.md:14503:- img/monsters/etype37_full/animations/taking-punch/north-east/frame_005.png
+docs/CHANGELOG_SYNC.md:14504:- img/monsters/etype37_full/animations/taking-punch/north-west/frame_000.png
+docs/CHANGELOG_SYNC.md:14505:- img/monsters/etype37_full/animations/taking-punch/north-west/frame_001.png
+docs/CHANGELOG_SYNC.md:14506:- img/monsters/etype37_full/animations/taking-punch/north-west/frame_002.png
+docs/CHANGELOG_SYNC.md:14507:- img/monsters/etype37_full/animations/taking-punch/north-west/frame_003.png
+docs/CHANGELOG_SYNC.md:14508:- img/monsters/etype37_full/animations/taking-punch/north-west/frame_004.png
+docs/CHANGELOG_SYNC.md:14509:- img/monsters/etype37_full/animations/taking-punch/north-west/frame_005.png
+docs/CHANGELOG_SYNC.md:14510:- img/monsters/etype37_full/animations/taking-punch/south-east/frame_000.png
+docs/CHANGELOG_SYNC.md:14511:- img/monsters/etype37_full/animations/taking-punch/south-east/frame_001.png
+docs/CHANGELOG_SYNC.md:14512:- img/monsters/etype37_full/animations/taking-punch/south-east/frame_002.png
+docs/CHANGELOG_SYNC.md:14513:- img/monsters/etype37_full/animations/taking-punch/south-east/frame_003.png
+docs/CHANGELOG_SYNC.md:14514:- img/monsters/etype37_full/animations/taking-punch/south-east/frame_004.png
+docs/CHANGELOG_SYNC.md:14515:- img/monsters/etype37_full/animations/taking-punch/south-east/frame_005.png
+docs/CHANGELOG_SYNC.md:14516:- img/monsters/etype37_full/animations/taking-punch/south-west/frame_000.png
+docs/CHANGELOG_SYNC.md:14517:- img/monsters/etype37_full/animations/taking-punch/south-west/frame_001.png
+docs/CHANGELOG_SYNC.md:14518:- img/monsters/etype37_full/animations/taking-punch/south-west/frame_002.png
+docs/CHANGELOG_SYNC.md:14519:- img/monsters/etype37_full/animations/taking-punch/south-west/frame_003.png
+docs/CHANGELOG_SYNC.md:14520:- img/monsters/etype37_full/animations/taking-punch/south-west/frame_004.png
+docs/CHANGELOG_SYNC.md:14521:- img/monsters/etype37_full/animations/taking-punch/south-west/frame_005.png
+docs/CHANGELOG_SYNC.md:14522:- img/monsters/etype37_full/animations/taking-punch/south/frame_000.png
+docs/CHANGELOG_SYNC.md:14523:- img/monsters/etype37_full/animations/taking-punch/south/frame_001.png
+docs/CHANGELOG_SYNC.md:14524:- img/monsters/etype37_full/animations/taking-punch/south/frame_002.png
+docs/CHANGELOG_SYNC.md:14525:- img/monsters/etype37_full/animations/taking-punch/south/frame_003.png
+docs/CHANGELOG_SYNC.md:14526:- img/monsters/etype37_full/animations/taking-punch/south/frame_004.png
+docs/CHANGELOG_SYNC.md:14527:- img/monsters/etype37_full/animations/taking-punch/south/frame_005.png
+docs/CHANGELOG_SYNC.md:14528:- img/monsters/etype37_full/animations/walking-4-frames/north-east/frame_000.png
+docs/CHANGELOG_SYNC.md:14529:- img/monsters/etype37_full/animations/walking-4-frames/north-east/frame_001.png
+docs/CHANGELOG_SYNC.md:14530:- img/monsters/etype37_full/animations/walking-4-frames/north-east/frame_002.png
+docs/CHANGELOG_SYNC.md:14531:- img/monsters/etype37_full/animations/walking-4-frames/north-east/frame_003.png
+docs/CHANGELOG_SYNC.md:14532:- img/monsters/etype37_full/animations/walking-4-frames/north-west/frame_000.png
+docs/CHANGELOG_SYNC.md:14533:- img/monsters/etype37_full/animations/walking-4-frames/north-west/frame_001.png
+docs/CHANGELOG_SYNC.md:14534:- img/monsters/etype37_full/animations/walking-4-frames/north-west/frame_002.png
+docs/CHANGELOG_SYNC.md:14535:- img/monsters/etype37_full/animations/walking-4-frames/north-west/frame_003.png
+docs/CHANGELOG_SYNC.md:14536:- img/monsters/etype37_full/animations/walking-4-frames/south-east/frame_000.png
+docs/CHANGELOG_SYNC.md:14537:- img/monsters/etype37_full/animations/walking-4-frames/south-east/frame_001.png
+docs/CHANGELOG_SYNC.md:14538:- img/monsters/etype37_full/animations/walking-4-frames/south-east/frame_002.png
+docs/CHANGELOG_SYNC.md:14539:- img/monsters/etype37_full/animations/walking-4-frames/south-east/frame_003.png
+docs/CHANGELOG_SYNC.md:14540:- img/monsters/etype37_full/animations/walking-4-frames/south-west/frame_000.png
+docs/CHANGELOG_SYNC.md:14541:- img/monsters/etype37_full/animations/walking-4-frames/south-west/frame_001.png
+docs/CHANGELOG_SYNC.md:14542:- img/monsters/etype37_full/animations/walking-4-frames/south-west/frame_002.png
+docs/CHANGELOG_SYNC.md:14543:- img/monsters/etype37_full/animations/walking-4-frames/south-west/frame_003.png
+docs/CHANGELOG_SYNC.md:14544:- img/monsters/etype37_full/animations/walking-4-frames/south/frame_000.png
+docs/CHANGELOG_SYNC.md:14545:- img/monsters/etype37_full/animations/walking-4-frames/south/frame_001.png
+docs/CHANGELOG_SYNC.md:14546:- img/monsters/etype37_full/animations/walking-4-frames/south/frame_002.png
+docs/CHANGELOG_SYNC.md:14547:- img/monsters/etype37_full/animations/walking-4-frames/south/frame_003.png
+docs/CHANGELOG_SYNC.md:14548:- img/monsters/etype37_full/atlas.json
+docs/CHANGELOG_SYNC.md:14549:- img/monsters/etype37_full/atlas.png
+docs/CHANGELOG_SYNC.md:14550:- img/monsters/etype37_full/metadata.json
+docs/CHANGELOG_SYNC.md:14551:- img/monsters/etype37_full/rotations/east.png
+docs/CHANGELOG_SYNC.md:14552:- img/monsters/etype37_full/rotations/north-east.png
+docs/CHANGELOG_SYNC.md:14553:- img/monsters/etype37_full/rotations/north-west.png
+docs/CHANGELOG_SYNC.md:14554:- img/monsters/etype37_full/rotations/north.png
+docs/CHANGELOG_SYNC.md:14555:- img/monsters/etype37_full/rotations/south-east.png
+docs/CHANGELOG_SYNC.md:14556:- img/monsters/etype37_full/rotations/south-west.png
+docs/CHANGELOG_SYNC.md:14557:- img/monsters/etype37_full/rotations/south.png
+docs/CHANGELOG_SYNC.md:14558:- img/monsters/etype37_full/rotations/west.png
+docs/CHANGELOG_SYNC.md:14559:- img/monsters/etype38_full/animations/breathing-idle/east/frame_000.png
+docs/CHANGELOG_SYNC.md:14560:- img/monsters/etype38_full/animations/breathing-idle/east/frame_001.png
+docs/CHANGELOG_SYNC.md:14561:- img/monsters/etype38_full/animations/breathing-idle/east/frame_002.png
+docs/CHANGELOG_SYNC.md:14562:- img/monsters/etype38_full/animations/breathing-idle/east/frame_003.png
+docs/CHANGELOG_SYNC.md:14563:- img/monsters/etype38_full/animations/breathing-idle/north-east/frame_000.png
+docs/CHANGELOG_SYNC.md:14564:- img/monsters/etype38_full/animations/breathing-idle/north-east/frame_001.png
+docs/CHANGELOG_SYNC.md:14565:- img/monsters/etype38_full/animations/breathing-idle/north-east/frame_002.png
+docs/CHANGELOG_SYNC.md:14566:- img/monsters/etype38_full/animations/breathing-idle/north-east/frame_003.png
+docs/CHANGELOG_SYNC.md:14567:- img/monsters/etype38_full/animations/breathing-idle/north-west/frame_000.png
+docs/CHANGELOG_SYNC.md:14568:- img/monsters/etype38_full/animations/breathing-idle/north-west/frame_001.png
+docs/CHANGELOG_SYNC.md:14569:- img/monsters/etype38_full/animations/breathing-idle/north-west/frame_002.png
+docs/CHANGELOG_SYNC.md:14570:- img/monsters/etype38_full/animations/breathing-idle/north-west/frame_003.png
+docs/CHANGELOG_SYNC.md:14571:- img/monsters/etype38_full/animations/breathing-idle/north/frame_000.png
+docs/CHANGELOG_SYNC.md:14572:- img/monsters/etype38_full/animations/breathing-idle/north/frame_001.png
+docs/CHANGELOG_SYNC.md:14573:- img/monsters/etype38_full/animations/breathing-idle/north/frame_002.png
+docs/CHANGELOG_SYNC.md:14574:- img/monsters/etype38_full/animations/breathing-idle/north/frame_003.png
+docs/CHANGELOG_SYNC.md:14575:- img/monsters/etype38_full/animations/breathing-idle/south-east/frame_000.png
+docs/CHANGELOG_SYNC.md:14576:- img/monsters/etype38_full/animations/breathing-idle/south-east/frame_001.png
+docs/CHANGELOG_SYNC.md:14577:- img/monsters/etype38_full/animations/breathing-idle/south-east/frame_002.png
+docs/CHANGELOG_SYNC.md:14578:- img/monsters/etype38_full/animations/breathing-idle/south-east/frame_003.png
+docs/CHANGELOG_SYNC.md:14579:- img/monsters/etype38_full/animations/breathing-idle/south-west/frame_000.png
+docs/CHANGELOG_SYNC.md:14580:- img/monsters/etype38_full/animations/breathing-idle/south-west/frame_001.png
+docs/CHANGELOG_SYNC.md:14581:- img/monsters/etype38_full/animations/breathing-idle/south-west/frame_002.png
+docs/CHANGELOG_SYNC.md:14582:- img/monsters/etype38_full/animations/breathing-idle/south-west/frame_003.png
+docs/CHANGELOG_SYNC.md:14583:- img/monsters/etype38_full/animations/breathing-idle/south/frame_000.png
+docs/CHANGELOG_SYNC.md:14584:- img/monsters/etype38_full/animations/breathing-idle/south/frame_001.png
+docs/CHANGELOG_SYNC.md:14585:- img/monsters/etype38_full/animations/breathing-idle/south/frame_002.png
+docs/CHANGELOG_SYNC.md:14586:- img/monsters/etype38_full/animations/breathing-idle/south/frame_003.png
+docs/CHANGELOG_SYNC.md:14587:- img/monsters/etype38_full/animations/breathing-idle/west/frame_000.png
+docs/CHANGELOG_SYNC.md:14588:- img/monsters/etype38_full/animations/breathing-idle/west/frame_001.png
+docs/CHANGELOG_SYNC.md:14589:- img/monsters/etype38_full/animations/breathing-idle/west/frame_002.png
+docs/CHANGELOG_SYNC.md:14590:- img/monsters/etype38_full/animations/breathing-idle/west/frame_003.png
+docs/CHANGELOG_SYNC.md:14591:- img/monsters/etype38_full/animations/cross-punch/north-east/frame_000.png
+docs/CHANGELOG_SYNC.md:14592:- img/monsters/etype38_full/animations/cross-punch/north-east/frame_001.png
+docs/CHANGELOG_SYNC.md:14593:- img/monsters/etype38_full/animations/cross-punch/north-east/frame_002.png
+docs/CHANGELOG_SYNC.md:14594:- img/monsters/etype38_full/animations/cross-punch/north-east/frame_003.png
+docs/CHANGELOG_SYNC.md:14595:- img/monsters/etype38_full/animations/cross-punch/north-east/frame_004.png
+docs/CHANGELOG_SYNC.md:14596:- img/monsters/etype38_full/animations/cross-punch/north-east/frame_005.png
+docs/CHANGELOG_SYNC.md:14597:- img/monsters/etype38_full/animations/cross-punch/north-west/frame_000.png
+docs/CHANGELOG_SYNC.md:14598:- img/monsters/etype38_full/animations/cross-punch/north-west/frame_001.png
+docs/CHANGELOG_SYNC.md:14599:- img/monsters/etype38_full/animations/cross-punch/north-west/frame_002.png
+docs/CHANGELOG_SYNC.md:14600:- img/monsters/etype38_full/animations/cross-punch/north-west/frame_003.png
+docs/CHANGELOG_SYNC.md:14601:- img/monsters/etype38_full/animations/cross-punch/north-west/frame_004.png
+docs/CHANGELOG_SYNC.md:14602:- img/monsters/etype38_full/animations/cross-punch/north-west/frame_005.png
+docs/CHANGELOG_SYNC.md:14603:- img/monsters/etype38_full/animations/cross-punch/north/frame_000.png
+docs/CHANGELOG_SYNC.md:14604:- img/monsters/etype38_full/animations/cross-punch/north/frame_001.png
+docs/CHANGELOG_SYNC.md:14605:- img/monsters/etype38_full/animations/cross-punch/north/frame_002.png
+docs/CHANGELOG_SYNC.md:14606:- img/monsters/etype38_full/animations/cross-punch/north/frame_003.png
+docs/CHANGELOG_SYNC.md:14607:- img/monsters/etype38_full/animations/cross-punch/north/frame_004.png
+docs/CHANGELOG_SYNC.md:14608:- img/monsters/etype38_full/animations/cross-punch/north/frame_005.png
+docs/CHANGELOG_SYNC.md:14609:- img/monsters/etype38_full/animations/cross-punch/south-east/frame_000.png
+docs/CHANGELOG_SYNC.md:14610:- img/monsters/etype38_full/animations/cross-punch/south-east/frame_001.png
+docs/CHANGELOG_SYNC.md:14611:- img/monsters/etype38_full/animations/cross-punch/south-east/frame_002.png
+docs/CHANGELOG_SYNC.md:14612:- img/monsters/etype38_full/animations/cross-punch/south-east/frame_003.png
+docs/CHANGELOG_SYNC.md:14613:- img/monsters/etype38_full/animations/cross-punch/south-east/frame_004.png
+docs/CHANGELOG_SYNC.md:14614:- img/monsters/etype38_full/animations/cross-punch/south-east/frame_005.png
+docs/CHANGELOG_SYNC.md:14615:- img/monsters/etype38_full/animations/cross-punch/south-west/frame_000.png
+docs/CHANGELOG_SYNC.md:14616:- img/monsters/etype38_full/animations/cross-punch/south-west/frame_001.png
+docs/CHANGELOG_SYNC.md:14617:- img/monsters/etype38_full/animations/cross-punch/south-west/frame_002.png
+docs/CHANGELOG_SYNC.md:14618:- img/monsters/etype38_full/animations/cross-punch/south-west/frame_003.png
+docs/CHANGELOG_SYNC.md:14619:- img/monsters/etype38_full/animations/cross-punch/south-west/frame_004.png
+docs/CHANGELOG_SYNC.md:14620:- img/monsters/etype38_full/animations/cross-punch/south-west/frame_005.png
+docs/CHANGELOG_SYNC.md:14621:- img/monsters/etype38_full/animations/taking-punch/north-east/frame_000.png
+docs/CHANGELOG_SYNC.md:14622:- img/monsters/etype38_full/animations/taking-punch/north-east/frame_001.png
+docs/CHANGELOG_SYNC.md:14623:- img/monsters/etype38_full/animations/taking-punch/north-east/frame_002.png
+docs/CHANGELOG_SYNC.md:14624:- img/monsters/etype38_full/animations/taking-punch/north-east/frame_003.png
+docs/CHANGELOG_SYNC.md:14625:- img/monsters/etype38_full/animations/taking-punch/north-east/frame_004.png
+docs/CHANGELOG_SYNC.md:14626:- img/monsters/etype38_full/animations/taking-punch/north-east/frame_005.png
+docs/CHANGELOG_SYNC.md:14627:- img/monsters/etype38_full/animations/taking-punch/north-west/frame_000.png
+docs/CHANGELOG_SYNC.md:14628:- img/monsters/etype38_full/animations/taking-punch/north-west/frame_001.png
+docs/CHANGELOG_SYNC.md:14629:- img/monsters/etype38_full/animations/taking-punch/north-west/frame_002.png
+docs/CHANGELOG_SYNC.md:14630:- img/monsters/etype38_full/animations/taking-punch/north-west/frame_003.png
+docs/CHANGELOG_SYNC.md:14631:- img/monsters/etype38_full/animations/taking-punch/north-west/frame_004.png
+docs/CHANGELOG_SYNC.md:14632:- img/monsters/etype38_full/animations/taking-punch/north-west/frame_005.png
+docs/CHANGELOG_SYNC.md:14633:- img/monsters/etype38_full/animations/taking-punch/south-east/frame_000.png
+docs/CHANGELOG_SYNC.md:14634:- img/monsters/etype38_full/animations/taking-punch/south-east/frame_001.png
+docs/CHANGELOG_SYNC.md:14635:- img/monsters/etype38_full/animations/taking-punch/south-east/frame_002.png
+docs/CHANGELOG_SYNC.md:14636:- img/monsters/etype38_full/animations/taking-punch/south-east/frame_003.png
+docs/CHANGELOG_SYNC.md:14637:- img/monsters/etype38_full/animations/taking-punch/south-east/frame_004.png
+docs/CHANGELOG_SYNC.md:14638:- img/monsters/etype38_full/animations/taking-punch/south-east/frame_005.png
+docs/CHANGELOG_SYNC.md:14639:- img/monsters/etype38_full/animations/taking-punch/south-west/frame_000.png
+docs/CHANGELOG_SYNC.md:14640:- img/monsters/etype38_full/animations/taking-punch/south-west/frame_001.png
+docs/CHANGELOG_SYNC.md:14641:- img/monsters/etype38_full/animations/taking-punch/south-west/frame_002.png
+docs/CHANGELOG_SYNC.md:14642:- img/monsters/etype38_full/animations/taking-punch/south-west/frame_003.png
+docs/CHANGELOG_SYNC.md:14643:- img/monsters/etype38_full/animations/taking-punch/south-west/frame_004.png
+docs/CHANGELOG_SYNC.md:14644:- img/monsters/etype38_full/animations/taking-punch/south-west/frame_005.png
+docs/CHANGELOG_SYNC.md:14645:- img/monsters/etype38_full/animations/taking-punch/south/frame_000.png
+docs/CHANGELOG_SYNC.md:14646:- img/monsters/etype38_full/animations/taking-punch/south/frame_001.png
+docs/CHANGELOG_SYNC.md:14647:- img/monsters/etype38_full/animations/taking-punch/south/frame_002.png
+docs/CHANGELOG_SYNC.md:14648:- img/monsters/etype38_full/animations/taking-punch/south/frame_003.png
+docs/CHANGELOG_SYNC.md:14649:- img/monsters/etype38_full/animations/taking-punch/south/frame_004.png
+docs/CHANGELOG_SYNC.md:14650:- img/monsters/etype38_full/animations/taking-punch/south/frame_005.png
+docs/CHANGELOG_SYNC.md:14651:- img/monsters/etype38_full/animations/walking-4-frames/north-east/frame_000.png
+docs/CHANGELOG_SYNC.md:14652:- img/monsters/etype38_full/animations/walking-4-frames/north-east/frame_001.png
+docs/CHANGELOG_SYNC.md:14653:- img/monsters/etype38_full/animations/walking-4-frames/north-east/frame_002.png
+docs/CHANGELOG_SYNC.md:14654:- img/monsters/etype38_full/animations/walking-4-frames/north-east/frame_003.png
+docs/CHANGELOG_SYNC.md:14655:- img/monsters/etype38_full/animations/walking-4-frames/north-west/frame_000.png
+docs/CHANGELOG_SYNC.md:14656:- img/monsters/etype38_full/animations/walking-4-frames/north-west/frame_001.png
+docs/CHANGELOG_SYNC.md:14657:- img/monsters/etype38_full/animations/walking-4-frames/north-west/frame_002.png
+docs/CHANGELOG_SYNC.md:14658:- img/monsters/etype38_full/animations/walking-4-frames/north-west/frame_003.png
+docs/CHANGELOG_SYNC.md:14659:- img/monsters/etype38_full/animations/walking-4-frames/south-east/frame_000.png
+docs/CHANGELOG_SYNC.md:14660:- img/monsters/etype38_full/animations/walking-4-frames/south-east/frame_001.png
+docs/CHANGELOG_SYNC.md:14661:- img/monsters/etype38_full/animations/walking-4-frames/south-east/frame_002.png
+docs/CHANGELOG_SYNC.md:14662:- img/monsters/etype38_full/animations/walking-4-frames/south-east/frame_003.png
+docs/CHANGELOG_SYNC.md:14663:- img/monsters/etype38_full/animations/walking-4-frames/south-west/frame_000.png
+docs/CHANGELOG_SYNC.md:14664:- img/monsters/etype38_full/animations/walking-4-frames/south-west/frame_001.png
+docs/CHANGELOG_SYNC.md:14665:- img/monsters/etype38_full/animations/walking-4-frames/south-west/frame_002.png
+docs/CHANGELOG_SYNC.md:14666:- img/monsters/etype38_full/animations/walking-4-frames/south-west/frame_003.png
+docs/CHANGELOG_SYNC.md:14667:- img/monsters/etype38_full/animations/walking-4-frames/south/frame_000.png
+docs/CHANGELOG_SYNC.md:14668:- img/monsters/etype38_full/animations/walking-4-frames/south/frame_001.png
+docs/CHANGELOG_SYNC.md:14669:- img/monsters/etype38_full/animations/walking-4-frames/south/frame_002.png
+docs/CHANGELOG_SYNC.md:14670:- img/monsters/etype38_full/animations/walking-4-frames/south/frame_003.png
+docs/CHANGELOG_SYNC.md:14671:- img/monsters/etype38_full/atlas.json
+docs/CHANGELOG_SYNC.md:14672:- img/monsters/etype38_full/atlas.png
+docs/CHANGELOG_SYNC.md:14673:- img/monsters/etype38_full/metadata.json
+docs/CHANGELOG_SYNC.md:14674:- img/monsters/etype38_full/rotations/east.png
+docs/CHANGELOG_SYNC.md:14675:- img/monsters/etype38_full/rotations/north-east.png
+docs/CHANGELOG_SYNC.md:14676:- img/monsters/etype38_full/rotations/north-west.png
+docs/CHANGELOG_SYNC.md:14677:- img/monsters/etype38_full/rotations/north.png
+docs/CHANGELOG_SYNC.md:14678:- img/monsters/etype38_full/rotations/south-east.png
+docs/CHANGELOG_SYNC.md:14679:- img/monsters/etype38_full/rotations/south-west.png
+docs/CHANGELOG_SYNC.md:14680:- img/monsters/etype38_full/rotations/south.png
+docs/CHANGELOG_SYNC.md:14681:- img/monsters/etype38_full/rotations/west.png
+docs/CHANGELOG_SYNC.md:51805:- QA정상전투5표본제외(INCONCLUSIVE),첫처치포착·동일조건실측미완료. BUILD조율환경readonly 실패와root의기존공식전송구분. 관련SSOT·팀대장·master18.37 동기화. 세이브/게임/서버변경0.
+docs/0마스터플랜/mac-resume-20261001/R-입력-작업대장.md:17:| ENEMY | etype3 정규 idle→첫 발사 관측기 본문 |
+docs/0마스터플랜/mac-resume-20261001/11팀-UI03-병행후속.md:18:| ENEMY | 02420005 | Glob / 8 | [CH1 windup→attack→recover 발사 경계, etype3 누락 가설의 결정적 재현 코드 후보](ui03-evidence/ENEMY-팀검토.md) | 후보 제출 완료·총괄 검토/순차 실행 대기 |
+docs/0마스터플랜/mac-resume-20261001/11팀-UI03-병행후속.md:28:- ENEMY는 원본 전이를 복제한 결정적 후보다. etype3의 실제 전체 AI 경로/활성 공격 여부를 관측하기 전 결함 확정이나 수정 완료로 보고하지 않는다.
+docs/0마스터플랜/mac-resume-20261001/vscode-dispatch/MAP-next-result.md:24:| **INCONCLUSIVE** | 정지했으나 충돌 근거 불명(전방벽 프로브 없음/전방 비벽), 미도달/타임아웃, 입력불명(held=false), 예상좌표 불일치 |
+docs/0마스터플랜/mac-resume-20261001/vscode-dispatch/MAP-next-result.md:30:차단사유: `8뷰 미완(미방문: EARLY, MAIN ARENA, SIDE LEFT, PRIMARY LANDMARK, LATE, EXIT/BOSS)`, `INCONCLUSIVE 항목 존재`.
+docs/0마스터플랜/mac-resume-20261001/vscode-dispatch/MAP-next-result.md:35:| A_enter_south (S) | (6660, 6304.369) | **INCONCLUSIVE** | 정지(held, Δy≈0)했으나 전방벽 프로브 없음 → 충돌불명. 실측 raw는 플레이어-중심 isW(=false)만 기록, 전방 벽 확인 불가 |
+docs/0마스터플랜/mac-resume-20261001/vscode-dispatch/MAP-next-result.md:38:| D_block_south2 (S) | (6746.363, 6223.577) | **INCONCLUSIVE** | 정지했으나 전방벽 프로브 없음 → 충돌불명 |
+docs/0마스터플랜/mac-resume-20261001/vscode-dispatch/MAP-next-result.md:40:> 남측 "막힘" 2건이 INCONCLUSIVE인 이유: 실측 하니스는 전방 벽 프로브(wallAhead/gameIsW)를 남기지 않아 "정지=벽 충돌"을 증거로 확정할 수 없다. 안전화 하니스(`m5-walk-harness.safe.js`)는 `wallAhead`/`gameWallAhead`를 기록하므로, QA가 그것을 실행해 출력을 본 게이트에 넣으면 전방벽 확인 시 PASS 승격이 가능하다(§6 합성 PASS 케이스로 검증).
+docs/0마스터플랜/mac-resume-20261001/vscode-dispatch/MAP-next-result.md:54:- [1] 실측 원자료: verdict≠PASS, 8뷰 미완 차단, 남측 INCONCLUSIVE, 복귀/개구 PASS, 좌표 PASS, 2/8뷰.
+docs/0마스터플랜/mac-resume-20261001/vscode-dispatch/MAP-next-result.md:57:- [4] 등급별 단위 9종: 미방문=UNKNOWN, 표본0=UNKNOWN, held=false=INCONCLUSIVE, 정지+전방벽없음=INCONCLUSIVE(충돌불명), 정지+전방비벽=INCONCLUSIVE, 전방벽 통과=FAIL, 맵변경=FAIL, 좌표불일치=INCONCLUSIVE, 개구막힘=FAIL.
+docs/0마스터플랜/mac-resume-20261001/vscode-dispatch/MAP-next-result.md:69:2. **남측 막힘 전방벽 확정**: 안전화 하니스 실행으로 wallAhead/gameIsW 수집 → INCONCLUSIVE→PASS 승격 판정.
+docs/0마스터플랜/mac-resume-20261001/vscode-dispatch/MAP-next-result.md:74:`CAMERA QA`/`8뷰`/`INCONCLUSIVE`/`충돌불명` rg 검색: M5 전용 수치/스펙 변경 없음(게이트는 신규 검증 도구). 실측 판정(RETOUCH·M5 보류)이 기존 docs 상태와 일치 → 추가 정정 불필요, 총괄/타팀 문서 미편집.
+docs/0마스터플랜/mac-resume-20261001/vscode-dispatch/BINDING-root-review.md:53:QA 첫처치/밀집 회귀는 앞 주기 INCONCLUSIVE, MAP 실제8뷰·ANIMVFX90Hz·SOUND 실청취·BUILD NW 패키지는 미검수 상태를 유지한다. 게임 측정은 현재 종료 상태. 앱의 interrupted 표시만으로 외부CLI 종료를 단정하지 않으며 실제 Read/Edit·완료 영수증을 구분한다. 정확한 전체 스냅샷은 TEAM_UTILIZATION_20261001.json과 outputs/team-utilization-20261001.json에 기록한다.
+docs/0마스터플랜/mac-resume-20261001/vscode-dispatch/D10-root-review.md:23:## QA-FIRE-NORMAL-REGRESSION: INCONCLUSIVE
+docs/0마스터플랜/mac-resume-20261001/vscode-dispatch/ROOT_REVIEW.md:49:ENEMY 기존9/9 모의 검사 통과 후 root 추가 재현에서 `getTick()=>null`·rAF451회가 `elapsedTicks:null`, `tickSource:unavailable(_gameFrame)`, `inRangeTicks:451`, `FAIL_NO_FIRE`로 잘못 분류됐다. 시계 미확인 자료는 INCONCLUSIVE여야 한다. 물리 tick 누락을 rAF로 대체하는 결함이 있어 라이브 판정용 인수 보류. ENEMY 후속 지시는 native 입력 포커스를 확인할 수 없어 아직 전송하지 않았다. 전달 완료나 AI 자체 결함으로 보고하지 않는다.
+docs/0마스터플랜/mac-resume-20261001/vscode-dispatch/ENEMY-result.md:38:- **소스 대조(중요):** `G.frame`은 `game.html` 전체에서 **대입 0건**(읽기 19건) → 항상 `undefined`. 원본 `curFrame()`은 `G.frame`을 읽어 **항상 -1**. 실제 physics-tick 카운터는 `let _gameFrame`(`30689`), physics tick당 1회 증가(`30727`).
+docs/0마스터플랜/mac-resume-20261001/vscode-dispatch/ENEMY-result.md:40:- **수정:** tick 회계는 `_gameFrame` 증가분으로만(rAF는 스케줄러). 예산 450은 sim-tick(60tps=7.5초, 주사율 무관). 대상 1회 고정, 사망 시 혼합 없이 `targetLost` 종료.
+docs/0마스터플랜/mac-resume-20261001/vscode-dispatch/ENEMY-result.md:41:- **검증:** `F4 dedup` 모의(rAF 2×/tick)에서 `inRangeTicks ≤ 경과 sim-tick`; 시나리오 C에서 사망 후 새 etype3 등장해도 residency 혼합 없음.
+docs/0마스터플랜/mac-resume-20261001/vscode-dispatch/ENEMY-result.md:64:  `docs/9적ai패턴디자인/ENEMY_AI_TEAM_MASTER.md` ENEMY-002(§2, §7 환경 메모)에 "관측 프로브 교정본은 `_gameFrame`(physics tick)을 사용하며 `G.frame`은 game.html에서 미대입(undefined)"과 "차징 개시는 `_projChargeT` 양의 전이로 포착(projT는 개시 프레임에 projCd로 리셋)" 한 줄 보강 권고.
+docs/0마스터플랜/mac-resume-20261001/vscode-dispatch/ENEMY-result.md:70:- **모의 한계:** 모의는 소스 경로를 축약 재현한 것으로, 실제 realm의 lexical 가시성(콘솔/주입 스크립트에서 베어 `G/_gameFrame` 접근 성공 여부)과 고주사율 다중 physics-tick/rAF 비율은 라이브에서 최종 확인 필요. 프로브는 `tickSource:'unavailable(_gameFrame)'`로 그 실패를 명시 보고한다.
+docs/0마스터플랜/mac-resume-20261001/item-fallback-evidence/다음작업-감사.md:86:| ENEMY | 정규 필드 etype3 자연 조우의 첫 탄막 경로 검수 | `updateE`의 자연 idle/차징 흐름에서 실제 발사 시점·개수를 읽기 기록. 강제 windup 진입으로 공격 전무를 재주장하지 않음. QA plate가 아닌 정규 필드 사용, 밸런스 수치 변경 없음. | `ENEMY_AI_TEAM_MASTER.md:269`: 기존 원문6검사는 idle301tick 차징1발로 공격 전무 가설을 반증했다. 실제 필드 자연 경로는 별도 미검수. |

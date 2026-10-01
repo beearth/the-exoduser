@@ -1,0 +1,1885 @@
+{
+  "taskId": "ENEMY-TICK-UNKNOWN-FIX",
+  "originalSourceSha256": "1bf68b094b792998abe5a9e0ca1f6c57534ef4ec6d9dbbd28c792450cbfdf489",
+  "candidateSourceSha256": "92cbecd7cb38ad13b83cc5cc00938dcb69e8687de9c36fa38f0046708bd5f1a8",
+  "rows": [
+    {
+      "case": "root-null-451",
+      "original": {
+        "key": "et3-natural-firstfire",
+        "observedAt": "2026-10-01T14:41:47.721Z",
+        "tickSource": "unavailable(_gameFrame)",
+        "gameTickNow": null,
+        "installedTick": null,
+        "elapsedTicks": null,
+        "range": 200,
+        "budgetTicks": 450,
+        "spawnSnapshot": {
+          "tick": null,
+          "s": "idle",
+          "projCd": 9999,
+          "projT0": 9999,
+          "d": 150,
+          "x": 150,
+          "y": 0
+        },
+        "chargeStart": null,
+        "firstFire": null,
+        "pendingFire": null,
+        "edgeFire": null,
+        "targetLost": false,
+        "residency": {
+          "inRangeTicks": 451,
+          "aliveTicks": 451,
+          "frozenTicks": 0,
+          "stunnedTicks": 0
+        },
+        "stateHistogram": {
+          "idle": 451
+        },
+        "dHistory": [],
+        "wrapped": [],
+        "probeError": null,
+        "verdict": "FAIL_NO_FIRE",
+        "reasons": [
+          "d<200 체류 451 sim-tick·생존 451 sim-tick인데 차징 발사 0 — 자연 발사 누락(실결함 후보)"
+        ]
+      },
+      "candidate": {
+        "key": "et3-natural-firstfire",
+        "observedAt": "2026-10-01T14:41:47.722Z",
+        "tickSource": "unavailable(_gameFrame)",
+        "gameTickNow": null,
+        "installedTick": null,
+        "elapsedTicks": null,
+        "tickHealth": {
+          "healthy": false,
+          "issues": [
+            "missing_tick",
+            "stalled_tick"
+          ],
+          "rafSamples": 451,
+          "physicalAdvances": 0,
+          "stagnantRafSamples": 451,
+          "stalledRafThreshold": 120
+        },
+        "range": 200,
+        "budgetTicks": 450,
+        "spawnSnapshot": {
+          "tick": null,
+          "s": "idle",
+          "projCd": 9999,
+          "projT0": 9999,
+          "d": 150,
+          "x": 150,
+          "y": 0
+        },
+        "chargeStart": null,
+        "firstFire": null,
+        "pendingFire": null,
+        "edgeFire": null,
+        "targetLost": false,
+        "residency": {
+          "inRangeTicks": 0,
+          "aliveTicks": 0,
+          "frozenTicks": 0,
+          "stunnedTicks": 0
+        },
+        "stateHistogram": {
+          "idle": 451
+        },
+        "dHistory": [],
+        "wrapped": [],
+        "probeError": null,
+        "verdict": "INCONCLUSIVE",
+        "reasons": [
+          "physical_tick_unverified:missing_tick,stalled_tick; advances=0; stagnantRAF=451"
+        ]
+      }
+    },
+    {
+      "case": "missing",
+      "result": {
+        "key": "et3-natural-firstfire",
+        "observedAt": "2026-10-01T14:41:47.723Z",
+        "tickSource": "_gameFrame",
+        "gameTickNow": 0,
+        "installedTick": 0,
+        "elapsedTicks": null,
+        "tickHealth": {
+          "healthy": false,
+          "issues": [
+            "stalled_tick"
+          ],
+          "rafSamples": 451,
+          "physicalAdvances": 0,
+          "stagnantRafSamples": 451,
+          "stalledRafThreshold": 120
+        },
+        "range": 200,
+        "budgetTicks": 450,
+        "spawnSnapshot": {
+          "tick": 0,
+          "s": "idle",
+          "projCd": 9999,
+          "projT0": 9999,
+          "d": 150,
+          "x": 150,
+          "y": 0
+        },
+        "chargeStart": null,
+        "firstFire": null,
+        "pendingFire": null,
+        "edgeFire": null,
+        "targetLost": false,
+        "residency": {
+          "inRangeTicks": 0,
+          "aliveTicks": 0,
+          "frozenTicks": 0,
+          "stunnedTicks": 0
+        },
+        "stateHistogram": {
+          "idle": 451
+        },
+        "dHistory": [],
+        "wrapped": [],
+        "probeError": null,
+        "verdict": "INCONCLUSIVE",
+        "reasons": [
+          "physical_tick_unverified:stalled_tick; advances=0; stagnantRAF=451"
+        ]
+      }
+    },
+    {
+      "case": "NaN",
+      "result": {
+        "key": "et3-natural-firstfire",
+        "observedAt": "2026-10-01T14:41:47.724Z",
+        "tickSource": "unavailable(_gameFrame)",
+        "gameTickNow": null,
+        "installedTick": null,
+        "elapsedTicks": null,
+        "tickHealth": {
+          "healthy": false,
+          "issues": [
+            "nonfinite_or_invalid_tick",
+            "stalled_tick"
+          ],
+          "rafSamples": 451,
+          "physicalAdvances": 0,
+          "stagnantRafSamples": 451,
+          "stalledRafThreshold": 120
+        },
+        "range": 200,
+        "budgetTicks": 450,
+        "spawnSnapshot": {
+          "tick": null,
+          "s": "idle",
+          "projCd": 9999,
+          "projT0": 9999,
+          "d": 150,
+          "x": 150,
+          "y": 0
+        },
+        "chargeStart": null,
+        "firstFire": null,
+        "pendingFire": null,
+        "edgeFire": null,
+        "targetLost": false,
+        "residency": {
+          "inRangeTicks": 0,
+          "aliveTicks": 0,
+          "frozenTicks": 0,
+          "stunnedTicks": 0
+        },
+        "stateHistogram": {
+          "idle": 451
+        },
+        "dHistory": [],
+        "wrapped": [],
+        "probeError": null,
+        "verdict": "INCONCLUSIVE",
+        "reasons": [
+          "physical_tick_unverified:nonfinite_or_invalid_tick,stalled_tick; advances=0; stagnantRAF=451"
+        ]
+      }
+    },
+    {
+      "case": "positive-infinity",
+      "result": {
+        "key": "et3-natural-firstfire",
+        "observedAt": "2026-10-01T14:41:47.724Z",
+        "tickSource": "unavailable(_gameFrame)",
+        "gameTickNow": null,
+        "installedTick": null,
+        "elapsedTicks": null,
+        "tickHealth": {
+          "healthy": false,
+          "issues": [
+            "nonfinite_or_invalid_tick",
+            "stalled_tick"
+          ],
+          "rafSamples": 451,
+          "physicalAdvances": 0,
+          "stagnantRafSamples": 451,
+          "stalledRafThreshold": 120
+        },
+        "range": 200,
+        "budgetTicks": 450,
+        "spawnSnapshot": {
+          "tick": null,
+          "s": "idle",
+          "projCd": 9999,
+          "projT0": 9999,
+          "d": 150,
+          "x": 150,
+          "y": 0
+        },
+        "chargeStart": null,
+        "firstFire": null,
+        "pendingFire": null,
+        "edgeFire": null,
+        "targetLost": false,
+        "residency": {
+          "inRangeTicks": 0,
+          "aliveTicks": 0,
+          "frozenTicks": 0,
+          "stunnedTicks": 0
+        },
+        "stateHistogram": {
+          "idle": 451
+        },
+        "dHistory": [],
+        "wrapped": [],
+        "probeError": null,
+        "verdict": "INCONCLUSIVE",
+        "reasons": [
+          "physical_tick_unverified:nonfinite_or_invalid_tick,stalled_tick; advances=0; stagnantRAF=451"
+        ]
+      }
+    },
+    {
+      "case": "negative-infinity",
+      "result": {
+        "key": "et3-natural-firstfire",
+        "observedAt": "2026-10-01T14:41:47.724Z",
+        "tickSource": "unavailable(_gameFrame)",
+        "gameTickNow": null,
+        "installedTick": null,
+        "elapsedTicks": null,
+        "tickHealth": {
+          "healthy": false,
+          "issues": [
+            "nonfinite_or_invalid_tick",
+            "stalled_tick"
+          ],
+          "rafSamples": 451,
+          "physicalAdvances": 0,
+          "stagnantRafSamples": 451,
+          "stalledRafThreshold": 120
+        },
+        "range": 200,
+        "budgetTicks": 450,
+        "spawnSnapshot": {
+          "tick": null,
+          "s": "idle",
+          "projCd": 9999,
+          "projT0": 9999,
+          "d": 150,
+          "x": 150,
+          "y": 0
+        },
+        "chargeStart": null,
+        "firstFire": null,
+        "pendingFire": null,
+        "edgeFire": null,
+        "targetLost": false,
+        "residency": {
+          "inRangeTicks": 0,
+          "aliveTicks": 0,
+          "frozenTicks": 0,
+          "stunnedTicks": 0
+        },
+        "stateHistogram": {
+          "idle": 451
+        },
+        "dHistory": [],
+        "wrapped": [],
+        "probeError": null,
+        "verdict": "INCONCLUSIVE",
+        "reasons": [
+          "physical_tick_unverified:nonfinite_or_invalid_tick,stalled_tick; advances=0; stagnantRAF=451"
+        ]
+      }
+    },
+    {
+      "case": "string",
+      "result": {
+        "key": "et3-natural-firstfire",
+        "observedAt": "2026-10-01T14:41:47.725Z",
+        "tickSource": "unavailable(_gameFrame)",
+        "gameTickNow": null,
+        "installedTick": null,
+        "elapsedTicks": null,
+        "tickHealth": {
+          "healthy": false,
+          "issues": [
+            "nonfinite_or_invalid_tick",
+            "stalled_tick"
+          ],
+          "rafSamples": 451,
+          "physicalAdvances": 0,
+          "stagnantRafSamples": 451,
+          "stalledRafThreshold": 120
+        },
+        "range": 200,
+        "budgetTicks": 450,
+        "spawnSnapshot": {
+          "tick": null,
+          "s": "idle",
+          "projCd": 9999,
+          "projT0": 9999,
+          "d": 150,
+          "x": 150,
+          "y": 0
+        },
+        "chargeStart": null,
+        "firstFire": null,
+        "pendingFire": null,
+        "edgeFire": null,
+        "targetLost": false,
+        "residency": {
+          "inRangeTicks": 0,
+          "aliveTicks": 0,
+          "frozenTicks": 0,
+          "stunnedTicks": 0
+        },
+        "stateHistogram": {
+          "idle": 451
+        },
+        "dHistory": [],
+        "wrapped": [],
+        "probeError": null,
+        "verdict": "INCONCLUSIVE",
+        "reasons": [
+          "physical_tick_unverified:nonfinite_or_invalid_tick,stalled_tick; advances=0; stagnantRAF=451"
+        ]
+      }
+    },
+    {
+      "case": "negative",
+      "result": {
+        "key": "et3-natural-firstfire",
+        "observedAt": "2026-10-01T14:41:47.725Z",
+        "tickSource": "unavailable(_gameFrame)",
+        "gameTickNow": null,
+        "installedTick": null,
+        "elapsedTicks": null,
+        "tickHealth": {
+          "healthy": false,
+          "issues": [
+            "invalid_tick_counter",
+            "stalled_tick"
+          ],
+          "rafSamples": 451,
+          "physicalAdvances": 0,
+          "stagnantRafSamples": 451,
+          "stalledRafThreshold": 120
+        },
+        "range": 200,
+        "budgetTicks": 450,
+        "spawnSnapshot": {
+          "tick": null,
+          "s": "idle",
+          "projCd": 9999,
+          "projT0": 9999,
+          "d": 150,
+          "x": 150,
+          "y": 0
+        },
+        "chargeStart": null,
+        "firstFire": null,
+        "pendingFire": null,
+        "edgeFire": null,
+        "targetLost": false,
+        "residency": {
+          "inRangeTicks": 0,
+          "aliveTicks": 0,
+          "frozenTicks": 0,
+          "stunnedTicks": 0
+        },
+        "stateHistogram": {
+          "idle": 451
+        },
+        "dHistory": [],
+        "wrapped": [],
+        "probeError": null,
+        "verdict": "INCONCLUSIVE",
+        "reasons": [
+          "physical_tick_unverified:invalid_tick_counter,stalled_tick; advances=0; stagnantRAF=451"
+        ]
+      }
+    },
+    {
+      "case": "fractional",
+      "result": {
+        "key": "et3-natural-firstfire",
+        "observedAt": "2026-10-01T14:41:47.725Z",
+        "tickSource": "unavailable(_gameFrame)",
+        "gameTickNow": null,
+        "installedTick": null,
+        "elapsedTicks": null,
+        "tickHealth": {
+          "healthy": false,
+          "issues": [
+            "invalid_tick_counter",
+            "stalled_tick"
+          ],
+          "rafSamples": 451,
+          "physicalAdvances": 0,
+          "stagnantRafSamples": 451,
+          "stalledRafThreshold": 120
+        },
+        "range": 200,
+        "budgetTicks": 450,
+        "spawnSnapshot": {
+          "tick": null,
+          "s": "idle",
+          "projCd": 9999,
+          "projT0": 9999,
+          "d": 150,
+          "x": 150,
+          "y": 0
+        },
+        "chargeStart": null,
+        "firstFire": null,
+        "pendingFire": null,
+        "edgeFire": null,
+        "targetLost": false,
+        "residency": {
+          "inRangeTicks": 0,
+          "aliveTicks": 0,
+          "frozenTicks": 0,
+          "stunnedTicks": 0
+        },
+        "stateHistogram": {
+          "idle": 451
+        },
+        "dHistory": [],
+        "wrapped": [],
+        "probeError": null,
+        "verdict": "INCONCLUSIVE",
+        "reasons": [
+          "physical_tick_unverified:invalid_tick_counter,stalled_tick; advances=0; stagnantRAF=451"
+        ]
+      }
+    },
+    {
+      "case": "constant",
+      "result": {
+        "key": "et3-natural-firstfire",
+        "observedAt": "2026-10-01T14:41:47.726Z",
+        "tickSource": "_gameFrame",
+        "gameTickNow": 10,
+        "installedTick": 10,
+        "elapsedTicks": null,
+        "tickHealth": {
+          "healthy": false,
+          "issues": [
+            "stalled_tick"
+          ],
+          "rafSamples": 451,
+          "physicalAdvances": 0,
+          "stagnantRafSamples": 451,
+          "stalledRafThreshold": 120
+        },
+        "range": 200,
+        "budgetTicks": 450,
+        "spawnSnapshot": {
+          "tick": 10,
+          "s": "idle",
+          "projCd": 9999,
+          "projT0": 9999,
+          "d": 150,
+          "x": 150,
+          "y": 0
+        },
+        "chargeStart": null,
+        "firstFire": null,
+        "pendingFire": null,
+        "edgeFire": null,
+        "targetLost": false,
+        "residency": {
+          "inRangeTicks": 0,
+          "aliveTicks": 0,
+          "frozenTicks": 0,
+          "stunnedTicks": 0
+        },
+        "stateHistogram": {
+          "idle": 451
+        },
+        "dHistory": [],
+        "wrapped": [],
+        "probeError": null,
+        "verdict": "INCONCLUSIVE",
+        "reasons": [
+          "physical_tick_unverified:stalled_tick; advances=0; stagnantRAF=451"
+        ]
+      }
+    },
+    {
+      "case": "470-physics-1410-raf",
+      "result": {
+        "key": "et3-natural-firstfire",
+        "observedAt": "2026-10-01T14:41:47.726Z",
+        "tickSource": "_gameFrame",
+        "gameTickNow": 470,
+        "installedTick": 0,
+        "elapsedTicks": 470,
+        "tickHealth": {
+          "healthy": true,
+          "issues": [],
+          "rafSamples": 1410,
+          "physicalAdvances": 470,
+          "stagnantRafSamples": 2,
+          "stalledRafThreshold": 120
+        },
+        "range": 200,
+        "budgetTicks": 450,
+        "spawnSnapshot": {
+          "tick": 1,
+          "s": "idle",
+          "projCd": 9999,
+          "projT0": 9999,
+          "d": 150,
+          "x": 150,
+          "y": 0
+        },
+        "chargeStart": null,
+        "firstFire": null,
+        "pendingFire": null,
+        "edgeFire": null,
+        "targetLost": false,
+        "residency": {
+          "inRangeTicks": 470,
+          "aliveTicks": 470,
+          "frozenTicks": 0,
+          "stunnedTicks": 0
+        },
+        "stateHistogram": {
+          "idle": 1410
+        },
+        "dHistory": [
+          [
+            15,
+            150,
+            "idle",
+            9999,
+            0
+          ],
+          [
+            30,
+            150,
+            "idle",
+            9999,
+            0
+          ],
+          [
+            45,
+            150,
+            "idle",
+            9999,
+            0
+          ],
+          [
+            60,
+            150,
+            "idle",
+            9999,
+            0
+          ],
+          [
+            75,
+            150,
+            "idle",
+            9999,
+            0
+          ],
+          [
+            90,
+            150,
+            "idle",
+            9999,
+            0
+          ],
+          [
+            105,
+            150,
+            "idle",
+            9999,
+            0
+          ],
+          [
+            120,
+            150,
+            "idle",
+            9999,
+            0
+          ],
+          [
+            135,
+            150,
+            "idle",
+            9999,
+            0
+          ],
+          [
+            150,
+            150,
+            "idle",
+            9999,
+            0
+          ],
+          [
+            165,
+            150,
+            "idle",
+            9999,
+            0
+          ],
+          [
+            180,
+            150,
+            "idle",
+            9999,
+            0
+          ],
+          [
+            195,
+            150,
+            "idle",
+            9999,
+            0
+          ],
+          [
+            210,
+            150,
+            "idle",
+            9999,
+            0
+          ],
+          [
+            225,
+            150,
+            "idle",
+            9999,
+            0
+          ],
+          [
+            240,
+            150,
+            "idle",
+            9999,
+            0
+          ],
+          [
+            255,
+            150,
+            "idle",
+            9999,
+            0
+          ],
+          [
+            270,
+            150,
+            "idle",
+            9999,
+            0
+          ],
+          [
+            285,
+            150,
+            "idle",
+            9999,
+            0
+          ],
+          [
+            300,
+            150,
+            "idle",
+            9999,
+            0
+          ],
+          [
+            315,
+            150,
+            "idle",
+            9999,
+            0
+          ],
+          [
+            330,
+            150,
+            "idle",
+            9999,
+            0
+          ],
+          [
+            345,
+            150,
+            "idle",
+            9999,
+            0
+          ],
+          [
+            360,
+            150,
+            "idle",
+            9999,
+            0
+          ],
+          [
+            375,
+            150,
+            "idle",
+            9999,
+            0
+          ],
+          [
+            390,
+            150,
+            "idle",
+            9999,
+            0
+          ],
+          [
+            405,
+            150,
+            "idle",
+            9999,
+            0
+          ],
+          [
+            420,
+            150,
+            "idle",
+            9999,
+            0
+          ],
+          [
+            435,
+            150,
+            "idle",
+            9999,
+            0
+          ],
+          [
+            450,
+            150,
+            "idle",
+            9999,
+            0
+          ],
+          [
+            465,
+            150,
+            "idle",
+            9999,
+            0
+          ]
+        ],
+        "wrapped": [],
+        "probeError": null,
+        "verdict": "FAIL_NO_FIRE",
+        "reasons": [
+          "d<200 체류 470 sim-tick·생존 470 sim-tick인데 차징 발사 0 — 자연 발사 누락(실결함 후보)"
+        ]
+      }
+    },
+    {
+      "case": "after-valid-0",
+      "result": {
+        "key": "et3-natural-firstfire",
+        "observedAt": "2026-10-01T14:41:47.727Z",
+        "tickSource": "_gameFrame",
+        "gameTickNow": 480,
+        "installedTick": 0,
+        "elapsedTicks": null,
+        "tickHealth": {
+          "healthy": false,
+          "issues": [
+            "backward_tick"
+          ],
+          "rafSamples": 481,
+          "physicalAdvances": 480,
+          "stagnantRafSamples": 0,
+          "stalledRafThreshold": 120
+        },
+        "range": 200,
+        "budgetTicks": 450,
+        "spawnSnapshot": {
+          "tick": 1,
+          "s": "idle",
+          "projCd": 9999,
+          "projT0": 9999,
+          "d": 150,
+          "x": 150,
+          "y": 0
+        },
+        "chargeStart": null,
+        "firstFire": null,
+        "pendingFire": null,
+        "edgeFire": null,
+        "targetLost": false,
+        "residency": {
+          "inRangeTicks": 470,
+          "aliveTicks": 470,
+          "frozenTicks": 0,
+          "stunnedTicks": 0
+        },
+        "stateHistogram": {
+          "idle": 481
+        },
+        "dHistory": [
+          [
+            15,
+            150,
+            "idle",
+            9999,
+            0
+          ],
+          [
+            30,
+            150,
+            "idle",
+            9999,
+            0
+          ],
+          [
+            45,
+            150,
+            "idle",
+            9999,
+            0
+          ],
+          [
+            60,
+            150,
+            "idle",
+            9999,
+            0
+          ],
+          [
+            75,
+            150,
+            "idle",
+            9999,
+            0
+          ],
+          [
+            90,
+            150,
+            "idle",
+            9999,
+            0
+          ],
+          [
+            105,
+            150,
+            "idle",
+            9999,
+            0
+          ],
+          [
+            120,
+            150,
+            "idle",
+            9999,
+            0
+          ],
+          [
+            135,
+            150,
+            "idle",
+            9999,
+            0
+          ],
+          [
+            150,
+            150,
+            "idle",
+            9999,
+            0
+          ],
+          [
+            165,
+            150,
+            "idle",
+            9999,
+            0
+          ],
+          [
+            180,
+            150,
+            "idle",
+            9999,
+            0
+          ],
+          [
+            195,
+            150,
+            "idle",
+            9999,
+            0
+          ],
+          [
+            210,
+            150,
+            "idle",
+            9999,
+            0
+          ],
+          [
+            225,
+            150,
+            "idle",
+            9999,
+            0
+          ],
+          [
+            240,
+            150,
+            "idle",
+            9999,
+            0
+          ],
+          [
+            255,
+            150,
+            "idle",
+            9999,
+            0
+          ],
+          [
+            270,
+            150,
+            "idle",
+            9999,
+            0
+          ],
+          [
+            285,
+            150,
+            "idle",
+            9999,
+            0
+          ],
+          [
+            300,
+            150,
+            "idle",
+            9999,
+            0
+          ],
+          [
+            315,
+            150,
+            "idle",
+            9999,
+            0
+          ],
+          [
+            330,
+            150,
+            "idle",
+            9999,
+            0
+          ],
+          [
+            345,
+            150,
+            "idle",
+            9999,
+            0
+          ],
+          [
+            360,
+            150,
+            "idle",
+            9999,
+            0
+          ],
+          [
+            375,
+            150,
+            "idle",
+            9999,
+            0
+          ],
+          [
+            390,
+            150,
+            "idle",
+            9999,
+            0
+          ],
+          [
+            405,
+            150,
+            "idle",
+            9999,
+            0
+          ],
+          [
+            420,
+            150,
+            "idle",
+            9999,
+            0
+          ],
+          [
+            435,
+            150,
+            "idle",
+            9999,
+            0
+          ],
+          [
+            450,
+            150,
+            "idle",
+            9999,
+            0
+          ],
+          [
+            465,
+            150,
+            "idle",
+            9999,
+            0
+          ]
+        ],
+        "wrapped": [],
+        "probeError": null,
+        "verdict": "INCONCLUSIVE",
+        "reasons": [
+          "physical_tick_unverified:backward_tick; advances=480; stagnantRAF=0"
+        ]
+      }
+    },
+    {
+      "case": "after-valid-null",
+      "result": {
+        "key": "et3-natural-firstfire",
+        "observedAt": "2026-10-01T14:41:47.727Z",
+        "tickSource": "_gameFrame",
+        "gameTickNow": 480,
+        "installedTick": 0,
+        "elapsedTicks": null,
+        "tickHealth": {
+          "healthy": false,
+          "issues": [
+            "missing_tick"
+          ],
+          "rafSamples": 481,
+          "physicalAdvances": 480,
+          "stagnantRafSamples": 0,
+          "stalledRafThreshold": 120
+        },
+        "range": 200,
+        "budgetTicks": 450,
+        "spawnSnapshot": {
+          "tick": 1,
+          "s": "idle",
+          "projCd": 9999,
+          "projT0": 9999,
+          "d": 150,
+          "x": 150,
+          "y": 0
+        },
+        "chargeStart": null,
+        "firstFire": null,
+        "pendingFire": null,
+        "edgeFire": null,
+        "targetLost": false,
+        "residency": {
+          "inRangeTicks": 470,
+          "aliveTicks": 470,
+          "frozenTicks": 0,
+          "stunnedTicks": 0
+        },
+        "stateHistogram": {
+          "idle": 481
+        },
+        "dHistory": [
+          [
+            15,
+            150,
+            "idle",
+            9999,
+            0
+          ],
+          [
+            30,
+            150,
+            "idle",
+            9999,
+            0
+          ],
+          [
+            45,
+            150,
+            "idle",
+            9999,
+            0
+          ],
+          [
+            60,
+            150,
+            "idle",
+            9999,
+            0
+          ],
+          [
+            75,
+            150,
+            "idle",
+            9999,
+            0
+          ],
+          [
+            90,
+            150,
+            "idle",
+            9999,
+            0
+          ],
+          [
+            105,
+            150,
+            "idle",
+            9999,
+            0
+          ],
+          [
+            120,
+            150,
+            "idle",
+            9999,
+            0
+          ],
+          [
+            135,
+            150,
+            "idle",
+            9999,
+            0
+          ],
+          [
+            150,
+            150,
+            "idle",
+            9999,
+            0
+          ],
+          [
+            165,
+            150,
+            "idle",
+            9999,
+            0
+          ],
+          [
+            180,
+            150,
+            "idle",
+            9999,
+            0
+          ],
+          [
+            195,
+            150,
+            "idle",
+            9999,
+            0
+          ],
+          [
+            210,
+            150,
+            "idle",
+            9999,
+            0
+          ],
+          [
+            225,
+            150,
+            "idle",
+            9999,
+            0
+          ],
+          [
+            240,
+            150,
+            "idle",
+            9999,
+            0
+          ],
+          [
+            255,
+            150,
+            "idle",
+            9999,
+            0
+          ],
+          [
+            270,
+            150,
+            "idle",
+            9999,
+            0
+          ],
+          [
+            285,
+            150,
+            "idle",
+            9999,
+            0
+          ],
+          [
+            300,
+            150,
+            "idle",
+            9999,
+            0
+          ],
+          [
+            315,
+            150,
+            "idle",
+            9999,
+            0
+          ],
+          [
+            330,
+            150,
+            "idle",
+            9999,
+            0
+          ],
+          [
+            345,
+            150,
+            "idle",
+            9999,
+            0
+          ],
+          [
+            360,
+            150,
+            "idle",
+            9999,
+            0
+          ],
+          [
+            375,
+            150,
+            "idle",
+            9999,
+            0
+          ],
+          [
+            390,
+            150,
+            "idle",
+            9999,
+            0
+          ],
+          [
+            405,
+            150,
+            "idle",
+            9999,
+            0
+          ],
+          [
+            420,
+            150,
+            "idle",
+            9999,
+            0
+          ],
+          [
+            435,
+            150,
+            "idle",
+            9999,
+            0
+          ],
+          [
+            450,
+            150,
+            "idle",
+            9999,
+            0
+          ],
+          [
+            465,
+            150,
+            "idle",
+            9999,
+            0
+          ]
+        ],
+        "wrapped": [],
+        "probeError": null,
+        "verdict": "INCONCLUSIVE",
+        "reasons": [
+          "physical_tick_unverified:missing_tick; advances=480; stagnantRAF=0"
+        ]
+      }
+    },
+    {
+      "case": "after-valid-NaN",
+      "result": {
+        "key": "et3-natural-firstfire",
+        "observedAt": "2026-10-01T14:41:47.728Z",
+        "tickSource": "_gameFrame",
+        "gameTickNow": 480,
+        "installedTick": 0,
+        "elapsedTicks": null,
+        "tickHealth": {
+          "healthy": false,
+          "issues": [
+            "nonfinite_or_invalid_tick"
+          ],
+          "rafSamples": 481,
+          "physicalAdvances": 480,
+          "stagnantRafSamples": 0,
+          "stalledRafThreshold": 120
+        },
+        "range": 200,
+        "budgetTicks": 450,
+        "spawnSnapshot": {
+          "tick": 1,
+          "s": "idle",
+          "projCd": 9999,
+          "projT0": 9999,
+          "d": 150,
+          "x": 150,
+          "y": 0
+        },
+        "chargeStart": null,
+        "firstFire": null,
+        "pendingFire": null,
+        "edgeFire": null,
+        "targetLost": false,
+        "residency": {
+          "inRangeTicks": 470,
+          "aliveTicks": 470,
+          "frozenTicks": 0,
+          "stunnedTicks": 0
+        },
+        "stateHistogram": {
+          "idle": 481
+        },
+        "dHistory": [
+          [
+            15,
+            150,
+            "idle",
+            9999,
+            0
+          ],
+          [
+            30,
+            150,
+            "idle",
+            9999,
+            0
+          ],
+          [
+            45,
+            150,
+            "idle",
+            9999,
+            0
+          ],
+          [
+            60,
+            150,
+            "idle",
+            9999,
+            0
+          ],
+          [
+            75,
+            150,
+            "idle",
+            9999,
+            0
+          ],
+          [
+            90,
+            150,
+            "idle",
+            9999,
+            0
+          ],
+          [
+            105,
+            150,
+            "idle",
+            9999,
+            0
+          ],
+          [
+            120,
+            150,
+            "idle",
+            9999,
+            0
+          ],
+          [
+            135,
+            150,
+            "idle",
+            9999,
+            0
+          ],
+          [
+            150,
+            150,
+            "idle",
+            9999,
+            0
+          ],
+          [
+            165,
+            150,
+            "idle",
+            9999,
+            0
+          ],
+          [
+            180,
+            150,
+            "idle",
+            9999,
+            0
+          ],
+          [
+            195,
+            150,
+            "idle",
+            9999,
+            0
+          ],
+          [
+            210,
+            150,
+            "idle",
+            9999,
+            0
+          ],
+          [
+            225,
+            150,
+            "idle",
+            9999,
+            0
+          ],
+          [
+            240,
+            150,
+            "idle",
+            9999,
+            0
+          ],
+          [
+            255,
+            150,
+            "idle",
+            9999,
+            0
+          ],
+          [
+            270,
+            150,
+            "idle",
+            9999,
+            0
+          ],
+          [
+            285,
+            150,
+            "idle",
+            9999,
+            0
+          ],
+          [
+            300,
+            150,
+            "idle",
+            9999,
+            0
+          ],
+          [
+            315,
+            150,
+            "idle",
+            9999,
+            0
+          ],
+          [
+            330,
+            150,
+            "idle",
+            9999,
+            0
+          ],
+          [
+            345,
+            150,
+            "idle",
+            9999,
+            0
+          ],
+          [
+            360,
+            150,
+            "idle",
+            9999,
+            0
+          ],
+          [
+            375,
+            150,
+            "idle",
+            9999,
+            0
+          ],
+          [
+            390,
+            150,
+            "idle",
+            9999,
+            0
+          ],
+          [
+            405,
+            150,
+            "idle",
+            9999,
+            0
+          ],
+          [
+            420,
+            150,
+            "idle",
+            9999,
+            0
+          ],
+          [
+            435,
+            150,
+            "idle",
+            9999,
+            0
+          ],
+          [
+            450,
+            150,
+            "idle",
+            9999,
+            0
+          ],
+          [
+            465,
+            150,
+            "idle",
+            9999,
+            0
+          ]
+        ],
+        "wrapped": [],
+        "probeError": null,
+        "verdict": "INCONCLUSIVE",
+        "reasons": [
+          "physical_tick_unverified:nonfinite_or_invalid_tick; advances=480; stagnantRAF=0"
+        ]
+      }
+    },
+    {
+      "case": "stalled-after-valid",
+      "result": {
+        "key": "et3-natural-firstfire",
+        "observedAt": "2026-10-01T14:41:47.728Z",
+        "tickSource": "_gameFrame",
+        "gameTickNow": 470,
+        "installedTick": 0,
+        "elapsedTicks": null,
+        "tickHealth": {
+          "healthy": false,
+          "issues": [
+            "stalled_tick"
+          ],
+          "rafSamples": 590,
+          "physicalAdvances": 470,
+          "stagnantRafSamples": 120,
+          "stalledRafThreshold": 120
+        },
+        "range": 200,
+        "budgetTicks": 450,
+        "spawnSnapshot": {
+          "tick": 1,
+          "s": "idle",
+          "projCd": 9999,
+          "projT0": 9999,
+          "d": 150,
+          "x": 150,
+          "y": 0
+        },
+        "chargeStart": null,
+        "firstFire": null,
+        "pendingFire": null,
+        "edgeFire": null,
+        "targetLost": false,
+        "residency": {
+          "inRangeTicks": 470,
+          "aliveTicks": 470,
+          "frozenTicks": 0,
+          "stunnedTicks": 0
+        },
+        "stateHistogram": {
+          "idle": 590
+        },
+        "dHistory": [
+          [
+            15,
+            150,
+            "idle",
+            9999,
+            0
+          ],
+          [
+            30,
+            150,
+            "idle",
+            9999,
+            0
+          ],
+          [
+            45,
+            150,
+            "idle",
+            9999,
+            0
+          ],
+          [
+            60,
+            150,
+            "idle",
+            9999,
+            0
+          ],
+          [
+            75,
+            150,
+            "idle",
+            9999,
+            0
+          ],
+          [
+            90,
+            150,
+            "idle",
+            9999,
+            0
+          ],
+          [
+            105,
+            150,
+            "idle",
+            9999,
+            0
+          ],
+          [
+            120,
+            150,
+            "idle",
+            9999,
+            0
+          ],
+          [
+            135,
+            150,
+            "idle",
+            9999,
+            0
+          ],
+          [
+            150,
+            150,
+            "idle",
+            9999,
+            0
+          ],
+          [
+            165,
+            150,
+            "idle",
+            9999,
+            0
+          ],
+          [
+            180,
+            150,
+            "idle",
+            9999,
+            0
+          ],
+          [
+            195,
+            150,
+            "idle",
+            9999,
+            0
+          ],
+          [
+            210,
+            150,
+            "idle",
+            9999,
+            0
+          ],
+          [
+            225,
+            150,
+            "idle",
+            9999,
+            0
+          ],
+          [
+            240,
+            150,
+            "idle",
+            9999,
+            0
+          ],
+          [
+            255,
+            150,
+            "idle",
+            9999,
+            0
+          ],
+          [
+            270,
+            150,
+            "idle",
+            9999,
+            0
+          ],
+          [
+            285,
+            150,
+            "idle",
+            9999,
+            0
+          ],
+          [
+            300,
+            150,
+            "idle",
+            9999,
+            0
+          ],
+          [
+            315,
+            150,
+            "idle",
+            9999,
+            0
+          ],
+          [
+            330,
+            150,
+            "idle",
+            9999,
+            0
+          ],
+          [
+            345,
+            150,
+            "idle",
+            9999,
+            0
+          ],
+          [
+            360,
+            150,
+            "idle",
+            9999,
+            0
+          ],
+          [
+            375,
+            150,
+            "idle",
+            9999,
+            0
+          ],
+          [
+            390,
+            150,
+            "idle",
+            9999,
+            0
+          ],
+          [
+            405,
+            150,
+            "idle",
+            9999,
+            0
+          ],
+          [
+            420,
+            150,
+            "idle",
+            9999,
+            0
+          ],
+          [
+            435,
+            150,
+            "idle",
+            9999,
+            0
+          ],
+          [
+            450,
+            150,
+            "idle",
+            9999,
+            0
+          ],
+          [
+            465,
+            150,
+            "idle",
+            9999,
+            0
+          ]
+        ],
+        "wrapped": [],
+        "probeError": null,
+        "verdict": "INCONCLUSIVE",
+        "reasons": [
+          "physical_tick_unverified:stalled_tick; advances=470; stagnantRAF=120"
+        ]
+      }
+    }
+  ],
+  "scope": "mock observation only, no actual game/AI test"
+}

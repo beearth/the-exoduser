@@ -1,0 +1,40 @@
+명령: node enemy-support-existing.test.mjs; node --test enemy-support-tick.test.mjs
+최종exit: 0
+ENEMY-TYPE3-PROBE-FIX 모의 검증
+
+  PASS  F1 lexical: makeBrowserHost().getG() == null (window.G 미노출 재현)
+  PASS  A 실제 발사: idle→차징→커밋 PASS, chargeStart 포착(F2), commit 확인(F3), sim-tick(F4)
+  PASS  F3 커밋실패: 호출만 있고 projs 미증가 → FAIL_PATH (호출만으로 PASS 금지)
+  PASS  F4 dedup: rAF 2×/tick 에도 inRangeTicks ≤ 경과 sim-tick
+  PASS  B 무발사: 장기 사거리 체류·생존·발사0 → FAIL_NO_FIRE
+  PASS  C 대상교체: 포착 etype3 사망 → targetLost INCONCLUSIVE, 2번째 개체와 혼합 안 함
+  PASS  F5 복원: stop 후 _fireChargedProj/_spawnBossProjectile 가 원함수로 복원
+  PASS  F5 재설치: 중복 install 후 stop 해도 wrapper-as-original 저장 안 됨(원함수 복원)
+  PASS  F5 소유권: 외부가 바인딩을 바꿔치면 stop 이 덮어쓰지 않음
+
+결과: 9 PASS / 0 FAIL
+✔ root null tick/rAF451 original FAIL_NO_FIRE is reproduced; candidate INCONCLUSIVE and zero physics count (2.402458ms)
+✔ missing tick cannot classify no fire (0.472541ms)
+✔ NaN tick cannot classify no fire (0.403625ms)
+✔ positive-infinity tick cannot classify no fire (0.373084ms)
+✔ negative-infinity tick cannot classify no fire (0.353ms)
+✔ string tick cannot classify no fire (0.305041ms)
+✔ negative tick cannot classify no fire (0.3795ms)
+✔ fractional tick cannot classify no fire (0.397416ms)
+✔ constant tick cannot classify no fire (0.379959ms)
+✔ normal finite monotonic physics keeps FAIL_NO_FIRE and exact counts with high RAF duplicates (0.776458ms)
+✔ backward/reset or missing/NaN after valid progress permanently invalidate this observation (1.491333ms)
+✔ stall after sufficient physics invalidates report, never counts stalled RAF as additional physics (0.620125ms)
+✔ a diagnosed stall cannot recover a conclusive verdict within the same probe (0.489458ms)
+✔ physics gaps never extrapolate missing residency and report without advancement is inconclusive (0.555875ms)
+✔ committed fire is retained as evidence but missing tick never produces timing PASS (0.309375ms)
+✔ tick getter exception is a health issue instead of report crash (0.262917ms)
+✔ preserve original source hashes and output evidence without production writes (0.577292ms)
+ℹ tests 17
+ℹ suites 0
+ℹ pass 17
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 45.946

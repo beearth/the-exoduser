@@ -1,0 +1,8 @@
+{
+  "at": "2026-10-01T14:38:19.258757+00:00",
+  "exit": 0,
+  "receipt": "Queued message 01a0f7e6-e46f-7ae1-875d-9e4c22db288f for thread 01a0f6e6-2e4c-7322-92d7-3aa309857856.\n",
+  "error": "",
+  "queueInspection": "not supported; latest turn completed, no same task/source found",
+  "native": "fresh getApp: Mac locked; no input or permission changes"
+}

@@ -1,0 +1,44 @@
+T1 리스너·rAF 설치/정리 대칭
+T2 재설치 시 이전 관측기 자동 dispose
+T3 유효표본0 → UNDETERMINED(PASS 금지)
+  ✗ T3 구간C verdict UNDETERMINED (got "UNKNOWN", want "UNDETERMINED")
+  ✗ T3 전체 verdict도 UNDETERMINED(양성대조 없음) (got "UNKNOWN", want "UNDETERMINED")
+T4 양성대조 포착 + 정상 설치 분류
+T5 설치 없는 MP 감소 = 다른 MP 소비로 분리
+T6 장판 만료와 신규 설치 상쇄 상황에서 신규 식별(G5)
+T7 설치 없는 스택 감소 = 잔류소모 누수 → SUSPECT
+T8 적법 리젠 완료(dStk=+1, prev.rech>0) 인식 — 플래그 아님
+  ✗ T8 적법 리젠 완료 1건 집계 (got 0, want 1)
+  ✗ T8 리젠 프레임 legitRecharge=true, dStk=+1
+  ✗ T8 PASS 유지 (got "UNKNOWN", want "PASS")
+T9 리젠 완료 아닌 스택 증가 = STK_REFUND → SUSPECT
+  ✗ T9 스택 환급 1건 (got 0, want 1)
+  ✗ T9 STK_REFUND? 플래그 발생
+  ✗ T9 SUSPECT (got "UNKNOWN", want "SUSPECT")
+T9b 한 프레임 dStk=+2(리젠 중이어도 1회 1스택 위반) = STK_REFUND
+  ✗ T9b dStk>1 환급으로 분류 (got 0, want 1)
+  ✗ T9b SUSPECT (got "UNKNOWN", want "SUSPECT")
+T10 취소(조준 ON→OFF, 비설치, 자원 무변) 정상 → PASS
+T11 취소 ∧ 적법 리젠 완료 동시 = 부작용 아님(오탐 방지)
+  ✗ T11 적법 리젠 완료 1건 (got 0, want 1)
+  ✗ T11 오탐 없이 PASS (got "UNKNOWN", want "PASS")
+T12 취소 프레임에 스택 감소 = 취소 부작용 → SUSPECT
+  ✗ T12 SUSPECT (got "UNKNOWN", want "SUSPECT")
+  ✗ T12 verdict 사유에 취소부작용 명시
+
+결과: 52 PASS / 14 FAIL
+실패 항목:
+ - T3 구간C verdict UNDETERMINED (got "UNKNOWN", want "UNDETERMINED")
+ - T3 전체 verdict도 UNDETERMINED(양성대조 없음) (got "UNKNOWN", want "UNDETERMINED")
+ - T8 적법 리젠 완료 1건 집계 (got 0, want 1)
+ - T8 리젠 프레임 legitRecharge=true, dStk=+1
+ - T8 PASS 유지 (got "UNKNOWN", want "PASS")
+ - T9 스택 환급 1건 (got 0, want 1)
+ - T9 STK_REFUND? 플래그 발생
+ - T9 SUSPECT (got "UNKNOWN", want "SUSPECT")
+ - T9b dStk>1 환급으로 분류 (got 0, want 1)
+ - T9b SUSPECT (got "UNKNOWN", want "SUSPECT")
+ - T11 적법 리젠 완료 1건 (got 0, want 1)
+ - T11 오탐 없이 PASS (got "UNKNOWN", want "PASS")
+ - T12 SUSPECT (got "UNKNOWN", want "SUSPECT")
+ - T12 verdict 사유에 취소부작용 명시

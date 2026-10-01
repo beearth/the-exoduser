@@ -1,0 +1,24 @@
+✔ 1920x1080 400ms actual clip/zoom/shake crop (1.183916ms)
+✔ 1920x1080 1200ms actual clip/zoom/shake crop (0.30275ms)
+✔ 1920x1080 2399ms actual clip/zoom/shake crop (0.258875ms)
+✔ 2560x1080 400ms actual clip/zoom/shake crop (0.251625ms)
+✔ 2560x1080 1200ms actual clip/zoom/shake crop (0.228125ms)
+✔ 2560x1080 2399ms actual clip/zoom/shake crop (0.213959ms)
+✔ 1920x1200 400ms actual clip/zoom/shake crop (0.245958ms)
+✔ 1920x1200 1200ms actual clip/zoom/shake crop (0.231625ms)
+✔ 1920x1200 2399ms actual clip/zoom/shake crop (0.246083ms)
+✔ 1024x768 400ms actual clip/zoom/shake crop (0.355375ms)
+✔ 1024x768 1200ms actual clip/zoom/shake crop (0.366083ms)
+✔ 1024x768 2399ms actual clip/zoom/shake crop (0.215792ms)
+✔ 16:9 root percentages reproduce with unrounded transforms, and letterbox offsets are retained (0.613459ms)
+✔ line-index timing correction remains and shake uses absolute now rather than lineElapsed (0.247167ms)
+✔ fade zero is never a visibility verdict; pan is outside scale and no-crop remains geometric only (0.067333ms)
+✔ source and 12-row evidence stay within UIUX support ownership (0.370875ms)
+ℹ tests 16
+ℹ suites 0
+ℹ pass 16
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 89.054875

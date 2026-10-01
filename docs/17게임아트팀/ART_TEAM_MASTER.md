@@ -243,3 +243,8 @@ MagicLight 마지막 조회 59,540 (2026-10-01, emg1 2차 후). 이번 마감 �
 ### 2026-10-01 MAP020 병행 후보 실행 인수
 
 실제뿌리전후캡처읽기검토. 신규원화0·유사모티브잔여RETOUCH. crop/mode혼동은최종소스근거로정정. 기존CLI는읽기검토,지원에이전트와root가실제파일작성/실행했다. [실행근거·제약·다음게이트](../0마스터플랜/mac-resume-20261001/11팀-MAP020-실행검수.md). 이전UI03후보미실행상태는당시이력이다.
+
+
+### 2026-10-01 UIUX 지원 최종crop 기하 후보 인수
+
+wa24의 실제 clip/letterbox/zoom/shake/cover를 4화면비×3시점 대조한 후보16시험과 BUILD 독립검수 통과. 원그림·게임 변경0. fade0 가시성 증거 아님; 눈/발/자막 픽셀 인수 UNKNOWN. [지원 인수](../0마스터플랜/mac-resume-20261001/vscode-dispatch/SUPPORT-root-review.md).

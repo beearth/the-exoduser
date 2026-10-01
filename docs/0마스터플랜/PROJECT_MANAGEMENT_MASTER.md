@@ -619,3 +619,8 @@ ITEM/BALANCE/UIUX 실제후보를 root가검수:관련188PASS,독립148입력불
 ### 18.38 D10 저장후보 연결·독립반례 보강·지원 역할 조정
 
 ITEM 실제binding 및 UIUX/BALANCE 의존연결을 인수, BUILD가 특수객체 생성/조회 경계 반례를 제공해 root가 plain JSON 생성·own enumerable data 읽기로 보강했다. 관련61PASS, 기존 세이브 소켓RNG/affixes 보충과 D10 재롤0을 구분한다. 게임생산/드롭/사용자세이브/실제UI 변경0. native는새Mac locked/기존Claude7idle이며초안·큐UNKNOWN. 원담당읽기전용을유지하고 기존ITEM→ENEMY tick, UIUX→ART최종crop, BALANCE→SKILL충전/예외수정 지원을각1회배정, 실제Read/Edit 확인. BUILD는 독립감사/보강검수,root는공식전송/최종인수. [후보계약·실패/검수·소유권](mac-resume-20261001/vscode-dispatch/BINDING-root-review.md).
+
+
+### 18.39 지원3후보 인수·SKILL 정리 경계 보강
+
+ITEM→ENEMY tick, UIUX→ART 최종crop, BALANCE→SKILL 충전증거 후보를 인수했다. BUILD 독립31PASS/2FAIL의 취소ID·getter처리 반례를 root가 지원 후보에서 수정, 동일 독립검사33PASS. 원실패·원담당소스 보존, 생산변경0. 세지원 제출완료이며 실제 tick/trace/픽셀은 미검수. 다음은 첫처치·밀집 정상전투 단독측정. [근거·운영상태](mac-resume-20261001/vscode-dispatch/SUPPORT-root-review.md).

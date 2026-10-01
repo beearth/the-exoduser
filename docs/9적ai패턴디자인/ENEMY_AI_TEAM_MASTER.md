@@ -267,3 +267,8 @@ CH1에도 등장 가능. 대표: 90 방랑기사(3연 콤보 st2 18/12/10, d<60 
 ### 2026-10-01 MAP020 병행 후보 실행 인수
 
 전체updateE원문실행6검사PASS. 강제windup0발이나정상idle301tick차징1발로공격전무가설반증. 자연경로/잠재경계를구분. 기존CLI는읽기검토,지원에이전트와root가실제파일작성/실행했다. [실행근거·제약·다음게이트](../0마스터플랜/mac-resume-20261001/11팀-MAP020-실행검수.md). 이전UI03후보미실행상태는당시이력이다.
+
+
+### 2026-10-01 ITEM 지원 tick 관측 후보 인수
+
+유효한 물리tick 증가만 세고 null/비정상/역행/120 rAF 연속정체는 INCONCLUSIVE로 남긴다. 원9 assertion+새17시험 및 BUILD 독립검수 통과. 실게임 tick 연결·AI 결함수정은 미완료. [지원 인수](../0마스터플랜/mac-resume-20261001/vscode-dispatch/SUPPORT-root-review.md).

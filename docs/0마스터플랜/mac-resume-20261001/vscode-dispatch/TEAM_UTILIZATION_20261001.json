@@ -18,7 +18,7 @@
         "tool": "Read",
         "input": "{'file_path': '/Users/fordeargamers/Projects/exoduser-migration-20261001/tools/team-followup-20261001/QA/NEXT_TASK.md'}"
       },
-      "status": "independent8/root17 PASS; report timing and query/late claims corrected in root receipt",
+      "status": "root preparing single normal combat observation",
       "completedAt": "2026-10-01T11:58:36.004Z",
       "cliState": "idle in fresh seven-Claude inventory; previous evidence retained",
       "rootFollowup": {
@@ -26,7 +26,8 @@
         "owner": "root",
         "status": "INCONCLUSIVE;5excluded samples; all game tabs closed",
         "evidence": "outputs/team-review-20261001/d10/qa-verdict.json"
-      }
+      },
+      "nextAction": "first-kill and dense uninterrupted sample after remote checkpoint"
     },
     {
       "team": "ENEMY",
@@ -181,7 +182,7 @@
       "stateBefore": "idle/completed verified",
       "dispatch": "received",
       "exists": true,
-      "status": "final24 assertions PASS; source hashes verified; own queue not retried",
+      "status": "independent audit complete 31PASS2FAIL; root fixed S1/S2 and reran independent33PASS",
       "startEvidence": "기존 완료result/receipt/NEXT_TASK 읽기; 동일 조사 산출 부재 확인; Claude 경로 조회",
       "receipt": "/Users/fordeargamers/Projects/exoduser-migration-20261001/docs/0마스터플랜/mac-resume-20261001/vscode-dispatch/BUILD-next-receipt.json",
       "waitReason": "Execution environment denied loopback listen; no bypass/retry. NW gate separate",
@@ -242,7 +243,8 @@
         "otherTeamWrites": 0,
         "outgoingQueue": 0,
         "newSessions": 0
-      }
+      },
+      "nextAction": "QA completion gate before further load"
     },
     {
       "team": "UIUX",
@@ -255,7 +257,7 @@
       "exists": true,
       "receivedAt": "2026-10-01T14:25:37Z",
       "startedAt": "2026-10-01T14:25:37Z",
-      "status": "support_candidate_verified_pending_root_pixel_acceptance",
+      "status": "support submitted and root candidate accepted; actual game/trace/pixels pending",
       "startEvidence": "본 영수증 및 review.html 소비 구현 apply_patch",
       "receipt": "/Users/fordeargamers/Projects/exoduser-migration-20261001/docs/0마스터플랜/mac-resume-20261001/vscode-dispatch/UIUX-review-receipt.json",
       "waitReason": "Effect/art/translation/game/package gates remain",
@@ -365,7 +367,8 @@
         },
         "nextAction": "독립 읽기 포트/실패닫힘 fixture 검사 뒤 ITEM 실제 API 재조회",
         "prohibitedRuns": 0
-      }
+      },
+      "nextAction": "root normal combat QA; no duplicate dispatch"
     },
     {
       "team": "ITEM",
@@ -378,7 +381,7 @@
       "exists": true,
       "receivedAt": "2026-10-01T14:25:02Z",
       "startedAt": "2026-10-01T14:25:02Z",
-      "status": "in_progress",
+      "status": "support submitted and root candidate accepted; actual game/trace/pixels pending",
       "startEvidence": "NEXT_TASK.md와 기존 ITEM 결과·후보·현재 생산 함수 읽기",
       "receipt": "/Users/fordeargamers/Projects/exoduser-migration-20261001/docs/0마스터플랜/mac-resume-20261001/vscode-dispatch/ITEM-definition-receipt.json",
       "previous": {
@@ -436,7 +439,8 @@
         "dependency": "현 ITEM d10-consumer·공유definitions/roll-values·tooltip API를 실제 읽기인수; 타팀binding최종인수는별도",
         "nextAction": "새제안인스턴스의명시버전저장필드·RNG1회·readStoredRoll adapter·JSON회귀 구현",
         "blocker": null
-      }
+      },
+      "nextAction": "root normal combat QA; no duplicate dispatch"
     },
     {
       "team": "BALANCE",
@@ -449,7 +453,7 @@
       "exists": true,
       "receivedAt": "2026-10-01T14:25:37Z",
       "startedAt": "2026-10-01T14:25:37Z",
-      "status": "completed_unapplied_support_candidate",
+      "status": "support submitted and root candidate accepted; actual game/trace/pixels pending",
       "startEvidence": "배정·팀 최신 MD·정의 모듈·적용 계약·D절22행 실제 읽기",
       "receipt": "/Users/fordeargamers/Projects/exoduser-migration-20261001/docs/0마스터플랜/mac-resume-20261001/vscode-dispatch/BALANCE-roll-receipt.json",
       "waitReason": "Effect/art/translation/game/package gates remain",
@@ -513,7 +517,8 @@
         "nextAction": "실제 저장 표현식 fixture·호출계수·레거시 보존 검증기 구현",
         "runtimeReady": false,
         "forbiddenActions": 0
-      }
+      },
+      "nextAction": "root normal combat QA; no duplicate dispatch"
     },
     {
       "team": "SOUND",
@@ -553,10 +558,10 @@
     }
   ],
   "remoteCheckpoint": {
-    "sha": "cddb83f504f93cf3270ebe56ee8b98d6d0941234",
+    "sha": "8d221540594cddebcb9f73fd785f3f82df631268",
     "branch": "codex/mac-environment-20261001",
     "verified": true,
-    "scope": "prior definition checkpoint; final PM009 commit recorded in output checkpoint after push"
+    "scope": "prior binding checkpoint; new support checkpoint recorded after push"
   },
   "wipRecovery": {
     "sha": "3921dfc98085ee856accdd1795b5efd9a7589e19",
@@ -606,12 +611,13 @@
   },
   "currentSummary": {
     "binding": "completed Node candidate,61 tests/BUILD24 assertions",
-    "supportTasks": "3 actual Read/code writes verified; reports are candidate submissions, root acceptance pending",
+    "supportTasks": "all3 root candidate acceptance complete; BUILD33 after root S1/S2 fixes",
     "originalClaudeTeamsIdle": 7,
     "nativeInput": "blocked: fresh Mac locked",
     "pendingQueueAndDrafts": "UNKNOWN; no duplicates",
     "gameMeasurementRunning": false,
     "productionD10Active": false,
     "simultaneouslyRunningCount": "UNKNOWN for external CLI; use actual actions and receipts rather than interrupted app flag"
-  }
+  },
+  "updatedAt": "2026-10-01T14:42:47.470361+00:00"
 }

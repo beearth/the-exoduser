@@ -1,0 +1,3773 @@
+{
+  "startedAt": "2026-10-01T14:41:47.573Z",
+  "completedAt": "2026-10-01T14:41:47.667Z",
+  "kind": "independent-three-support-VM-and-source-geometry",
+  "sources": [
+    {
+      "file": "game.html",
+      "sha256": "8ebc3b7b52a651c1a3bc5e8c285b00d186c6dacc18429ada7499781acc72b0b9"
+    },
+    {
+      "file": "game-easy-test.html",
+      "sha256": "4c408f1e7b57210900ddfa8a0646502f91b6a0bbc798a24338eb159cb613d874"
+    },
+    {
+      "file": "tools/team-followup-20261001/ITEM/enemy-support-probe.js",
+      "sha256": "92cbecd7cb38ad13b83cc5cc00938dcb69e8687de9c36fa38f0046708bd5f1a8"
+    },
+    {
+      "file": "tools/team-followup-20261001/ENEMY/et3-probe.fixed.js",
+      "sha256": "1bf68b094b792998abe5a9e0ca1f6c57534ef4ec6d9dbbd28c792450cbfdf489"
+    },
+    {
+      "file": "tools/team-followup-20261001/BALANCE/skill-support-probe.js",
+      "sha256": "63006cf9b4714ad038ec5d87a64fb8bfdc8bd65befbe8b26537de8c89a1af223"
+    },
+    {
+      "file": "tools/team-followup-20261001/SKILL/ice-cancel-probe.safe.js",
+      "sha256": "ae7c8e8ad6e874e565c3ee0cb8b635130cefa234c5628bd0ba2922da96481d1b"
+    },
+    {
+      "file": "tools/team-followup-20261001/UIUX/art-support-finalcrop.mjs",
+      "sha256": "aa73c00b4e9f74acf0a5c8898969b1f5430e82bddbf9dbdcf1fbcb6192875018"
+    },
+    {
+      "file": "tools/team-followup-20261001/UIUX/art-support-source-fixture.mjs",
+      "sha256": "daa71b38b9cdc4cae4aa6db4067dac19ee6645ecfc1ffc29598373c3a332a9b3"
+    },
+    {
+      "file": "tools/team-followup-20261001/ART/wa24-delta-probe.cjs",
+      "sha256": "79193e10228007bfce1935c633156a208b719d6540b4b3b45b4889d32a1936e9"
+    }
+  ],
+  "sourceDrawEvidence": {
+    "sourceSha256": "8ebc3b7b52a651c1a3bc5e8c285b00d186c6dacc18429ada7499781acc72b0b9",
+    "drawSha256": "65c473f734fee4b4de8f84a8d4bac43a462909468d50e9c0d32c6ccef88be812",
+    "executableSha256": "043cf22ab333ce2eff40eda42f8d14efd50546343d415b65c973a2df7baeb6cb",
+    "lineSource": "{id:'wa24',img:'warintro/cin_fallhell_custom.jpg',t:73600,dur:2400,speaker:null,narr:1,text:'그리고 지옥에 떨어진다.',cam:{zs:1.08,ze:1.04,ease:'out'},vfx:{vig:.5,shake:1},fade:{type:'cross',in:400}}",
+    "letterboxSource": "  const _maxAR=16/9;\n  const _curAR=_fullW/_fullH;\n  let _lbX=0,_lbY=0,cw=_fullW,ch=_fullH;\n  if(_curAR>_maxAR){cw=~~(_fullH*_maxAR);_lbX=~~((_fullW-cw)/2)}\n  else if(_curAR<9/16){ch=~~(_fullW/(9/16));_lbY=~~((_fullH-ch)/2)}\n\n",
+    "clipSource": "cx.save();cx.beginPath();cx.rect(_lbX,_lbY,cw,ch);cx.clip();cx.translate(_lbX,_lbY);",
+    "drawSource": "      // 카메라 트랜스폼\n      const cam=ln.cam||{zs:1,ze:1};\n      const t=Math.min(1,lineElapsed/(ln.dur||1));\n      const ef=_ease[cam.ease||'linear']||_ease.linear;\n      const et=ef(t);\n      const zoom=cam.zs+(cam.ze-cam.zs)*et;\n      const panX=(cam.px||0)*et;\n      const panY=(cam.py||0)*et;\n      // shake\n      const vfx=ln.vfx||{};\n      const sk=_cutShake(vfx.shake||0,now);\n      cx.translate(cw/2+panX+sk.x,ch/2+panY+sk.y);\n      cx.scale(zoom,zoom);\n      cx.translate(-cw/2,-ch/2);\n      // cover 방식 draw\n      const imgR=img.naturalWidth/img.naturalHeight;\n      const cR=cw/ch;\n      let dw,dh,dx,dy;\n      if(imgR>cR){dh=ch;dw=ch*imgR;dx=(cw-dw)/2;dy=0}\n      else{dw=cw;dh=cw/imgR;dx=0;dy=(ch-dh)*.1}\n      cx.drawImage(img,dx,dy,dw,dh);\n",
+    "shakeSource": "function _cutShake(mag,t){return mag?{x:(Math.sin(t*0.047)*mag*2)|0,y:(Math.cos(t*0.053)*mag*2)|0}:{x:0,y:0}}",
+    "easeSource": "{linear:t=>t,in:t=>t*t,out:t=>1-(1-t)*(1-t),inout:t=>t<.5?2*t*t:1-Math.pow(-2*t+2,2)/2}",
+    "drawStartLine": 60781
+  },
+  "rows": [
+    {
+      "name": "ENEMY451rAF null",
+      "status": "PASS"
+    },
+    {
+      "name": "ENEMY451rAF missing",
+      "status": "PASS"
+    },
+    {
+      "name": "ENEMY451rAF NaN",
+      "status": "PASS"
+    },
+    {
+      "name": "ENEMY451rAF Infinity",
+      "status": "PASS"
+    },
+    {
+      "name": "ENEMY451rAF stalled",
+      "status": "PASS"
+    },
+    {
+      "name": "ENEMY backward after budget never recovers",
+      "status": "PASS"
+    },
+    {
+      "name": "ENEMY normal physics vs refresh counts / cleanup",
+      "status": "PASS"
+    },
+    {
+      "name": "ENEMY actual wrapper commit and no commit differentiated",
+      "status": "PASS"
+    },
+    {
+      "name": "ENEMY cleanup preserves later foreign wrapper",
+      "status": "PASS"
+    },
+    {
+      "name": "SKILL endpoints original false recharge -> candidate UNKNOWN",
+      "status": "PASS"
+    },
+    {
+      "name": "SKILL complete two-update trace vs partial trace",
+      "status": "PASS"
+    },
+    {
+      "name": "SKILL trace wrong before/reset/sp becomes UNKNOWN",
+      "status": "PASS"
+    },
+    {
+      "name": "SKILL installation reader throw original leak and candidate cleanup",
+      "status": "PASS"
+    },
+    {
+      "name": "SKILL rAF reader throw records and clears",
+      "status": "PASS"
+    },
+    {
+      "name": "SKILL remove exception attempts others mousedown",
+      "status": "PASS"
+    },
+    {
+      "name": "SKILL remove exception attempts others mouseup",
+      "status": "PASS"
+    },
+    {
+      "name": "SKILL remove exception attempts others contextmenu",
+      "status": "PASS"
+    },
+    {
+      "name": "SKILL cancel throws before release: tracked RAF id must remain retryable",
+      "status": "PASS"
+    },
+    {
+      "name": "SKILL rAF field getter throws: cleanup/UNKNOWN contract",
+      "status": "PASS"
+    },
+    {
+      "name": "ART full source transform 1920x1080/400",
+      "status": "PASS"
+    },
+    {
+      "name": "ART full source transform 1920x1080/1200",
+      "status": "PASS"
+    },
+    {
+      "name": "ART full source transform 1920x1080/2399",
+      "status": "PASS"
+    },
+    {
+      "name": "ART full source transform 2560x1080/400",
+      "status": "PASS"
+    },
+    {
+      "name": "ART full source transform 2560x1080/1200",
+      "status": "PASS"
+    },
+    {
+      "name": "ART full source transform 2560x1080/2399",
+      "status": "PASS"
+    },
+    {
+      "name": "ART full source transform 1920x1200/400",
+      "status": "PASS"
+    },
+    {
+      "name": "ART full source transform 1920x1200/1200",
+      "status": "PASS"
+    },
+    {
+      "name": "ART full source transform 1920x1200/2399",
+      "status": "PASS"
+    },
+    {
+      "name": "ART full source transform 1024x768/400",
+      "status": "PASS"
+    },
+    {
+      "name": "ART full source transform 1024x768/1200",
+      "status": "PASS"
+    },
+    {
+      "name": "ART full source transform 1024x768/2399",
+      "status": "PASS"
+    },
+    {
+      "name": "ART fade zero never visibility proof",
+      "status": "PASS"
+    },
+    {
+      "name": "all original/candidate/source hashes unchanged",
+      "status": "PASS"
+    }
+  ],
+  "comparisons": [
+    {
+      "team": "ENEMY",
+      "input": {
+        "name": "null",
+        "raf": 451,
+        "tick": "null"
+      },
+      "original": {
+        "key": "et3-natural-firstfire",
+        "observedAt": "2026-10-01T14:41:47.636Z",
+        "tickSource": "unavailable(_gameFrame)",
+        "gameTickNow": null,
+        "installedTick": null,
+        "elapsedTicks": null,
+        "range": 200,
+        "budgetTicks": 450,
+        "spawnSnapshot": {
+          "tick": null,
+          "s": "idle",
+          "projCd": 9999,
+          "projT0": 9999,
+          "d": 100,
+          "x": 100,
+          "y": 0
+        },
+        "chargeStart": null,
+        "firstFire": null,
+        "pendingFire": null,
+        "edgeFire": null,
+        "targetLost": false,
+        "residency": {
+          "inRangeTicks": 451,
+          "aliveTicks": 451,
+          "frozenTicks": 0,
+          "stunnedTicks": 0
+        },
+        "stateHistogram": {
+          "idle": 451
+        },
+        "dHistory": [],
+        "wrapped": [],
+        "probeError": null,
+        "verdict": "FAIL_NO_FIRE",
+        "reasons": [
+          "d<200 체류 451 sim-tick·생존 451 sim-tick인데 차징 발사 0 — 자연 발사 누락(실결함 후보)"
+        ]
+      },
+      "candidate": {
+        "key": "et3-natural-firstfire",
+        "observedAt": "2026-10-01T14:41:47.636Z",
+        "tickSource": "unavailable(_gameFrame)",
+        "gameTickNow": null,
+        "installedTick": null,
+        "elapsedTicks": null,
+        "tickHealth": {
+          "healthy": false,
+          "issues": [
+            "missing_tick",
+            "stalled_tick"
+          ],
+          "rafSamples": 451,
+          "physicalAdvances": 0,
+          "stagnantRafSamples": 451,
+          "stalledRafThreshold": 120
+        },
+        "range": 200,
+        "budgetTicks": 450,
+        "spawnSnapshot": {
+          "tick": null,
+          "s": "idle",
+          "projCd": 9999,
+          "projT0": 9999,
+          "d": 100,
+          "x": 100,
+          "y": 0
+        },
+        "chargeStart": null,
+        "firstFire": null,
+        "pendingFire": null,
+        "edgeFire": null,
+        "targetLost": false,
+        "residency": {
+          "inRangeTicks": 0,
+          "aliveTicks": 0,
+          "frozenTicks": 0,
+          "stunnedTicks": 0
+        },
+        "stateHistogram": {
+          "idle": 451
+        },
+        "dHistory": [],
+        "wrapped": [],
+        "probeError": null,
+        "verdict": "INCONCLUSIVE",
+        "reasons": [
+          "physical_tick_unverified:missing_tick,stalled_tick; advances=0; stagnantRAF=451"
+        ]
+      }
+    },
+    {
+      "team": "ENEMY",
+      "input": {
+        "name": "missing",
+        "raf": 451,
+        "tick": "undefined"
+      },
+      "original": {
+        "key": "et3-natural-firstfire",
+        "observedAt": "2026-10-01T14:41:47.637Z",
+        "tickSource": "unavailable(_gameFrame)",
+        "gameTickNow": null,
+        "installedTick": 0,
+        "elapsedTicks": null,
+        "range": 200,
+        "budgetTicks": 450,
+        "spawnSnapshot": {
+          "tick": null,
+          "s": "idle",
+          "projCd": 9999,
+          "projT0": 9999,
+          "d": 100,
+          "x": 100,
+          "y": 0
+        },
+        "chargeStart": null,
+        "firstFire": null,
+        "pendingFire": null,
+        "edgeFire": null,
+        "targetLost": false,
+        "residency": {
+          "inRangeTicks": 451,
+          "aliveTicks": 451,
+          "frozenTicks": 0,
+          "stunnedTicks": 0
+        },
+        "stateHistogram": {
+          "idle": 451
+        },
+        "dHistory": [],
+        "wrapped": [],
+        "probeError": null,
+        "verdict": "FAIL_NO_FIRE",
+        "reasons": [
+          "d<200 체류 451 sim-tick·생존 451 sim-tick인데 차징 발사 0 — 자연 발사 누락(실결함 후보)"
+        ]
+      },
+      "candidate": {
+        "key": "et3-natural-firstfire",
+        "observedAt": "2026-10-01T14:41:47.637Z",
+        "tickSource": "unavailable(_gameFrame)",
+        "gameTickNow": null,
+        "installedTick": 0,
+        "elapsedTicks": null,
+        "tickHealth": {
+          "healthy": false,
+          "issues": [
+            "missing_tick",
+            "stalled_tick"
+          ],
+          "rafSamples": 451,
+          "physicalAdvances": 0,
+          "stagnantRafSamples": 451,
+          "stalledRafThreshold": 120
+        },
+        "range": 200,
+        "budgetTicks": 450,
+        "spawnSnapshot": {
+          "tick": null,
+          "s": "idle",
+          "projCd": 9999,
+          "projT0": 9999,
+          "d": 100,
+          "x": 100,
+          "y": 0
+        },
+        "chargeStart": null,
+        "firstFire": null,
+        "pendingFire": null,
+        "edgeFire": null,
+        "targetLost": false,
+        "residency": {
+          "inRangeTicks": 0,
+          "aliveTicks": 0,
+          "frozenTicks": 0,
+          "stunnedTicks": 0
+        },
+        "stateHistogram": {
+          "idle": 451
+        },
+        "dHistory": [],
+        "wrapped": [],
+        "probeError": null,
+        "verdict": "INCONCLUSIVE",
+        "reasons": [
+          "physical_tick_unverified:missing_tick,stalled_tick; advances=0; stagnantRAF=451"
+        ]
+      }
+    },
+    {
+      "team": "ENEMY",
+      "input": {
+        "name": "NaN",
+        "raf": 451,
+        "tick": "NaN"
+      },
+      "original": {
+        "key": "et3-natural-firstfire",
+        "observedAt": "2026-10-01T14:41:47.637Z",
+        "tickSource": "_gameFrame",
+        "gameTickNow": null,
+        "installedTick": null,
+        "elapsedTicks": null,
+        "range": 200,
+        "budgetTicks": 450,
+        "spawnSnapshot": {
+          "tick": null,
+          "s": "idle",
+          "projCd": 9999,
+          "projT0": 9999,
+          "d": 100,
+          "x": 100,
+          "y": 0
+        },
+        "chargeStart": null,
+        "firstFire": null,
+        "pendingFire": null,
+        "edgeFire": null,
+        "targetLost": false,
+        "residency": {
+          "inRangeTicks": 1,
+          "aliveTicks": 1,
+          "frozenTicks": 0,
+          "stunnedTicks": 0
+        },
+        "stateHistogram": {
+          "idle": 451
+        },
+        "dHistory": [],
+        "wrapped": [],
+        "probeError": null,
+        "verdict": "INCONCLUSIVE",
+        "reasons": [
+          "사거리 체류 1 sim-tick/생존 1/빙결 0/스턴 0 — 미발사가 결함인지 판정 불가(더 오래 사거리 유지 필요)"
+        ]
+      },
+      "candidate": {
+        "key": "et3-natural-firstfire",
+        "observedAt": "2026-10-01T14:41:47.637Z",
+        "tickSource": "unavailable(_gameFrame)",
+        "gameTickNow": null,
+        "installedTick": null,
+        "elapsedTicks": null,
+        "tickHealth": {
+          "healthy": false,
+          "issues": [
+            "nonfinite_or_invalid_tick",
+            "stalled_tick"
+          ],
+          "rafSamples": 451,
+          "physicalAdvances": 0,
+          "stagnantRafSamples": 451,
+          "stalledRafThreshold": 120
+        },
+        "range": 200,
+        "budgetTicks": 450,
+        "spawnSnapshot": {
+          "tick": null,
+          "s": "idle",
+          "projCd": 9999,
+          "projT0": 9999,
+          "d": 100,
+          "x": 100,
+          "y": 0
+        },
+        "chargeStart": null,
+        "firstFire": null,
+        "pendingFire": null,
+        "edgeFire": null,
+        "targetLost": false,
+        "residency": {
+          "inRangeTicks": 0,
+          "aliveTicks": 0,
+          "frozenTicks": 0,
+          "stunnedTicks": 0
+        },
+        "stateHistogram": {
+          "idle": 451
+        },
+        "dHistory": [],
+        "wrapped": [],
+        "probeError": null,
+        "verdict": "INCONCLUSIVE",
+        "reasons": [
+          "physical_tick_unverified:nonfinite_or_invalid_tick,stalled_tick; advances=0; stagnantRAF=451"
+        ]
+      }
+    },
+    {
+      "team": "ENEMY",
+      "input": {
+        "name": "Infinity",
+        "raf": 451,
+        "tick": "Infinity"
+      },
+      "original": {
+        "key": "et3-natural-firstfire",
+        "observedAt": "2026-10-01T14:41:47.638Z",
+        "tickSource": "_gameFrame",
+        "gameTickNow": null,
+        "installedTick": null,
+        "elapsedTicks": null,
+        "range": 200,
+        "budgetTicks": 450,
+        "spawnSnapshot": {
+          "tick": null,
+          "s": "idle",
+          "projCd": 9999,
+          "projT0": 9999,
+          "d": 100,
+          "x": 100,
+          "y": 0
+        },
+        "chargeStart": null,
+        "firstFire": null,
+        "pendingFire": null,
+        "edgeFire": null,
+        "targetLost": false,
+        "residency": {
+          "inRangeTicks": 1,
+          "aliveTicks": 1,
+          "frozenTicks": 0,
+          "stunnedTicks": 0
+        },
+        "stateHistogram": {
+          "idle": 451
+        },
+        "dHistory": [],
+        "wrapped": [],
+        "probeError": null,
+        "verdict": "INCONCLUSIVE",
+        "reasons": [
+          "사거리 체류 1 sim-tick/생존 1/빙결 0/스턴 0 — 미발사가 결함인지 판정 불가(더 오래 사거리 유지 필요)"
+        ]
+      },
+      "candidate": {
+        "key": "et3-natural-firstfire",
+        "observedAt": "2026-10-01T14:41:47.638Z",
+        "tickSource": "unavailable(_gameFrame)",
+        "gameTickNow": null,
+        "installedTick": null,
+        "elapsedTicks": null,
+        "tickHealth": {
+          "healthy": false,
+          "issues": [
+            "nonfinite_or_invalid_tick",
+            "stalled_tick"
+          ],
+          "rafSamples": 451,
+          "physicalAdvances": 0,
+          "stagnantRafSamples": 451,
+          "stalledRafThreshold": 120
+        },
+        "range": 200,
+        "budgetTicks": 450,
+        "spawnSnapshot": {
+          "tick": null,
+          "s": "idle",
+          "projCd": 9999,
+          "projT0": 9999,
+          "d": 100,
+          "x": 100,
+          "y": 0
+        },
+        "chargeStart": null,
+        "firstFire": null,
+        "pendingFire": null,
+        "edgeFire": null,
+        "targetLost": false,
+        "residency": {
+          "inRangeTicks": 0,
+          "aliveTicks": 0,
+          "frozenTicks": 0,
+          "stunnedTicks": 0
+        },
+        "stateHistogram": {
+          "idle": 451
+        },
+        "dHistory": [],
+        "wrapped": [],
+        "probeError": null,
+        "verdict": "INCONCLUSIVE",
+        "reasons": [
+          "physical_tick_unverified:nonfinite_or_invalid_tick,stalled_tick; advances=0; stagnantRAF=451"
+        ]
+      }
+    },
+    {
+      "team": "ENEMY",
+      "input": {
+        "name": "stalled",
+        "raf": 451,
+        "tick": "12"
+      },
+      "original": {
+        "key": "et3-natural-firstfire",
+        "observedAt": "2026-10-01T14:41:47.638Z",
+        "tickSource": "_gameFrame",
+        "gameTickNow": 12,
+        "installedTick": 12,
+        "elapsedTicks": 0,
+        "range": 200,
+        "budgetTicks": 450,
+        "spawnSnapshot": {
+          "tick": 12,
+          "s": "idle",
+          "projCd": 9999,
+          "projT0": 9999,
+          "d": 100,
+          "x": 100,
+          "y": 0
+        },
+        "chargeStart": null,
+        "firstFire": null,
+        "pendingFire": null,
+        "edgeFire": null,
+        "targetLost": false,
+        "residency": {
+          "inRangeTicks": 1,
+          "aliveTicks": 1,
+          "frozenTicks": 0,
+          "stunnedTicks": 0
+        },
+        "stateHistogram": {
+          "idle": 451
+        },
+        "dHistory": [],
+        "wrapped": [],
+        "probeError": null,
+        "verdict": "INCONCLUSIVE",
+        "reasons": [
+          "사거리 체류 1 sim-tick/생존 1/빙결 0/스턴 0 — 미발사가 결함인지 판정 불가(더 오래 사거리 유지 필요)"
+        ]
+      },
+      "candidate": {
+        "key": "et3-natural-firstfire",
+        "observedAt": "2026-10-01T14:41:47.638Z",
+        "tickSource": "_gameFrame",
+        "gameTickNow": 12,
+        "installedTick": 12,
+        "elapsedTicks": null,
+        "tickHealth": {
+          "healthy": false,
+          "issues": [
+            "stalled_tick"
+          ],
+          "rafSamples": 451,
+          "physicalAdvances": 0,
+          "stagnantRafSamples": 451,
+          "stalledRafThreshold": 120
+        },
+        "range": 200,
+        "budgetTicks": 450,
+        "spawnSnapshot": {
+          "tick": 12,
+          "s": "idle",
+          "projCd": 9999,
+          "projT0": 9999,
+          "d": 100,
+          "x": 100,
+          "y": 0
+        },
+        "chargeStart": null,
+        "firstFire": null,
+        "pendingFire": null,
+        "edgeFire": null,
+        "targetLost": false,
+        "residency": {
+          "inRangeTicks": 0,
+          "aliveTicks": 0,
+          "frozenTicks": 0,
+          "stunnedTicks": 0
+        },
+        "stateHistogram": {
+          "idle": 451
+        },
+        "dHistory": [],
+        "wrapped": [],
+        "probeError": null,
+        "verdict": "INCONCLUSIVE",
+        "reasons": [
+          "physical_tick_unverified:stalled_tick; advances=0; stagnantRAF=451"
+        ]
+      }
+    },
+    {
+      "team": "ENEMY",
+      "input": "1..460,2,461..480",
+      "candidate": {
+        "key": "et3-natural-firstfire",
+        "observedAt": "2026-10-01T14:41:47.639Z",
+        "tickSource": "_gameFrame",
+        "gameTickNow": 480,
+        "installedTick": 0,
+        "elapsedTicks": null,
+        "tickHealth": {
+          "healthy": false,
+          "issues": [
+            "backward_tick"
+          ],
+          "rafSamples": 481,
+          "physicalAdvances": 480,
+          "stagnantRafSamples": 0,
+          "stalledRafThreshold": 120
+        },
+        "range": 200,
+        "budgetTicks": 450,
+        "spawnSnapshot": {
+          "tick": 1,
+          "s": "idle",
+          "projCd": 9999,
+          "projT0": 9999,
+          "d": 100,
+          "x": 100,
+          "y": 0
+        },
+        "chargeStart": null,
+        "firstFire": null,
+        "pendingFire": null,
+        "edgeFire": null,
+        "targetLost": false,
+        "residency": {
+          "inRangeTicks": 460,
+          "aliveTicks": 460,
+          "frozenTicks": 0,
+          "stunnedTicks": 0
+        },
+        "stateHistogram": {
+          "idle": 481
+        },
+        "dHistory": [
+          [
+            15,
+            100,
+            "idle",
+            9999,
+            0
+          ],
+          [
+            30,
+            100,
+            "idle",
+            9999,
+            0
+          ],
+          [
+            45,
+            100,
+            "idle",
+            9999,
+            0
+          ],
+          [
+            60,
+            100,
+            "idle",
+            9999,
+            0
+          ],
+          [
+            75,
+            100,
+            "idle",
+            9999,
+            0
+          ],
+          [
+            90,
+            100,
+            "idle",
+            9999,
+            0
+          ],
+          [
+            105,
+            100,
+            "idle",
+            9999,
+            0
+          ],
+          [
+            120,
+            100,
+            "idle",
+            9999,
+            0
+          ],
+          [
+            135,
+            100,
+            "idle",
+            9999,
+            0
+          ],
+          [
+            150,
+            100,
+            "idle",
+            9999,
+            0
+          ],
+          [
+            165,
+            100,
+            "idle",
+            9999,
+            0
+          ],
+          [
+            180,
+            100,
+            "idle",
+            9999,
+            0
+          ],
+          [
+            195,
+            100,
+            "idle",
+            9999,
+            0
+          ],
+          [
+            210,
+            100,
+            "idle",
+            9999,
+            0
+          ],
+          [
+            225,
+            100,
+            "idle",
+            9999,
+            0
+          ],
+          [
+            240,
+            100,
+            "idle",
+            9999,
+            0
+          ],
+          [
+            255,
+            100,
+            "idle",
+            9999,
+            0
+          ],
+          [
+            270,
+            100,
+            "idle",
+            9999,
+            0
+          ],
+          [
+            285,
+            100,
+            "idle",
+            9999,
+            0
+          ],
+          [
+            300,
+            100,
+            "idle",
+            9999,
+            0
+          ],
+          [
+            315,
+            100,
+            "idle",
+            9999,
+            0
+          ],
+          [
+            330,
+            100,
+            "idle",
+            9999,
+            0
+          ],
+          [
+            345,
+            100,
+            "idle",
+            9999,
+            0
+          ],
+          [
+            360,
+            100,
+            "idle",
+            9999,
+            0
+          ],
+          [
+            375,
+            100,
+            "idle",
+            9999,
+            0
+          ],
+          [
+            390,
+            100,
+            "idle",
+            9999,
+            0
+          ],
+          [
+            405,
+            100,
+            "idle",
+            9999,
+            0
+          ],
+          [
+            420,
+            100,
+            "idle",
+            9999,
+            0
+          ],
+          [
+            435,
+            100,
+            "idle",
+            9999,
+            0
+          ],
+          [
+            450,
+            100,
+            "idle",
+            9999,
+            0
+          ]
+        ],
+        "wrapped": [],
+        "probeError": null,
+        "verdict": "INCONCLUSIVE",
+        "reasons": [
+          "physical_tick_unverified:backward_tick; advances=480; stagnantRAF=0"
+        ]
+      }
+    },
+    {
+      "team": "ENEMY",
+      "input": "460physics x4refresh",
+      "candidate": {
+        "key": "et3-natural-firstfire",
+        "observedAt": "2026-10-01T14:41:47.640Z",
+        "tickSource": "_gameFrame",
+        "gameTickNow": 460,
+        "installedTick": 0,
+        "elapsedTicks": 460,
+        "tickHealth": {
+          "healthy": true,
+          "issues": [],
+          "rafSamples": 1840,
+          "physicalAdvances": 460,
+          "stagnantRafSamples": 3,
+          "stalledRafThreshold": 120
+        },
+        "range": 200,
+        "budgetTicks": 450,
+        "spawnSnapshot": {
+          "tick": 1,
+          "s": "idle",
+          "projCd": 9999,
+          "projT0": 9999,
+          "d": 100,
+          "x": 100,
+          "y": 0
+        },
+        "chargeStart": null,
+        "firstFire": null,
+        "pendingFire": null,
+        "edgeFire": null,
+        "targetLost": false,
+        "residency": {
+          "inRangeTicks": 460,
+          "aliveTicks": 460,
+          "frozenTicks": 0,
+          "stunnedTicks": 0
+        },
+        "stateHistogram": {
+          "idle": 1840
+        },
+        "dHistory": [
+          [
+            15,
+            100,
+            "idle",
+            9999,
+            0
+          ],
+          [
+            30,
+            100,
+            "idle",
+            9999,
+            0
+          ],
+          [
+            45,
+            100,
+            "idle",
+            9999,
+            0
+          ],
+          [
+            60,
+            100,
+            "idle",
+            9999,
+            0
+          ],
+          [
+            75,
+            100,
+            "idle",
+            9999,
+            0
+          ],
+          [
+            90,
+            100,
+            "idle",
+            9999,
+            0
+          ],
+          [
+            105,
+            100,
+            "idle",
+            9999,
+            0
+          ],
+          [
+            120,
+            100,
+            "idle",
+            9999,
+            0
+          ],
+          [
+            135,
+            100,
+            "idle",
+            9999,
+            0
+          ],
+          [
+            150,
+            100,
+            "idle",
+            9999,
+            0
+          ],
+          [
+            165,
+            100,
+            "idle",
+            9999,
+            0
+          ],
+          [
+            180,
+            100,
+            "idle",
+            9999,
+            0
+          ],
+          [
+            195,
+            100,
+            "idle",
+            9999,
+            0
+          ],
+          [
+            210,
+            100,
+            "idle",
+            9999,
+            0
+          ],
+          [
+            225,
+            100,
+            "idle",
+            9999,
+            0
+          ],
+          [
+            240,
+            100,
+            "idle",
+            9999,
+            0
+          ],
+          [
+            255,
+            100,
+            "idle",
+            9999,
+            0
+          ],
+          [
+            270,
+            100,
+            "idle",
+            9999,
+            0
+          ],
+          [
+            285,
+            100,
+            "idle",
+            9999,
+            0
+          ],
+          [
+            300,
+            100,
+            "idle",
+            9999,
+            0
+          ],
+          [
+            315,
+            100,
+            "idle",
+            9999,
+            0
+          ],
+          [
+            330,
+            100,
+            "idle",
+            9999,
+            0
+          ],
+          [
+            345,
+            100,
+            "idle",
+            9999,
+            0
+          ],
+          [
+            360,
+            100,
+            "idle",
+            9999,
+            0
+          ],
+          [
+            375,
+            100,
+            "idle",
+            9999,
+            0
+          ],
+          [
+            390,
+            100,
+            "idle",
+            9999,
+            0
+          ],
+          [
+            405,
+            100,
+            "idle",
+            9999,
+            0
+          ],
+          [
+            420,
+            100,
+            "idle",
+            9999,
+            0
+          ],
+          [
+            435,
+            100,
+            "idle",
+            9999,
+            0
+          ],
+          [
+            450,
+            100,
+            "idle",
+            9999,
+            0
+          ]
+        ],
+        "wrapped": [],
+        "probeError": null,
+        "verdict": "FAIL_NO_FIRE",
+        "reasons": [
+          "d<200 체류 460 sim-tick·생존 460 sim-tick인데 차징 발사 0 — 자연 발사 누락(실결함 후보)"
+        ]
+      }
+    },
+    {
+      "team": "ENEMY",
+      "input": {
+        "commit": false,
+        "ticks": [
+          1,
+          2,
+          62
+        ]
+      },
+      "candidate": {
+        "key": "et3-natural-firstfire",
+        "observedAt": "2026-10-01T14:41:47.640Z",
+        "tickSource": "_gameFrame",
+        "gameTickNow": 62,
+        "installedTick": 0,
+        "elapsedTicks": 62,
+        "tickHealth": {
+          "healthy": true,
+          "issues": [],
+          "rafSamples": 3,
+          "physicalAdvances": 3,
+          "stagnantRafSamples": 0,
+          "stalledRafThreshold": 120
+        },
+        "range": 200,
+        "budgetTicks": 450,
+        "spawnSnapshot": {
+          "tick": 1,
+          "s": "idle",
+          "projCd": 9999,
+          "projT0": 9999,
+          "d": 100,
+          "x": 100,
+          "y": 0
+        },
+        "chargeStart": {
+          "tick": 2,
+          "d": 100,
+          "projChargeT": 60
+        },
+        "firstFire": null,
+        "pendingFire": {
+          "tick": 62,
+          "s": "idle",
+          "note": "orig 호출됐으나 projs 증가 없음(커밋 미확인)"
+        },
+        "edgeFire": null,
+        "targetLost": false,
+        "residency": {
+          "inRangeTicks": 3,
+          "aliveTicks": 3,
+          "frozenTicks": 0,
+          "stunnedTicks": 0
+        },
+        "stateHistogram": {
+          "idle": 3
+        },
+        "dHistory": [],
+        "wrapped": [],
+        "probeError": null,
+        "verdict": "FAIL_PATH",
+        "reasons": [
+          "_fireChargedProj 호출됐으나 projs 증가 없음(커밋 실패) — orig 호출됐으나 projs 증가 없음(커밋 미확인)"
+        ]
+      }
+    },
+    {
+      "team": "ENEMY",
+      "input": {
+        "commit": true,
+        "ticks": [
+          1,
+          2,
+          62
+        ]
+      },
+      "candidate": {
+        "key": "et3-natural-firstfire",
+        "observedAt": "2026-10-01T14:41:47.640Z",
+        "tickSource": "_gameFrame",
+        "gameTickNow": 62,
+        "installedTick": 0,
+        "elapsedTicks": 62,
+        "tickHealth": {
+          "healthy": true,
+          "issues": [],
+          "rafSamples": 3,
+          "physicalAdvances": 3,
+          "stagnantRafSamples": 0,
+          "stalledRafThreshold": 120
+        },
+        "range": 200,
+        "budgetTicks": 450,
+        "spawnSnapshot": {
+          "tick": 1,
+          "s": "idle",
+          "projCd": 9999,
+          "projT0": 9999,
+          "d": 100,
+          "x": 100,
+          "y": 0
+        },
+        "chargeStart": {
+          "tick": 2,
+          "d": 100,
+          "projChargeT": 60
+        },
+        "firstFire": {
+          "tick": 62,
+          "tickSinceChargeStart": 60,
+          "s": "idle",
+          "projChargeT": 60,
+          "projCd": 9999,
+          "bean": null,
+          "d": 100,
+          "path": "charged(spawnProj _commit)",
+          "committed": true,
+          "projsDelta": 1
+        },
+        "pendingFire": null,
+        "edgeFire": null,
+        "targetLost": false,
+        "residency": {
+          "inRangeTicks": 3,
+          "aliveTicks": 3,
+          "frozenTicks": 0,
+          "stunnedTicks": 0
+        },
+        "stateHistogram": {
+          "idle": 3
+        },
+        "dHistory": [],
+        "wrapped": [],
+        "probeError": null,
+        "verdict": "PASS",
+        "reasons": [
+          "자연 idle→차징(_projChargeT 60)→_fireChargedProj→spawnProj(_commit) 커밋 1발 확인(projsΔ=1)"
+        ]
+      }
+    },
+    {
+      "team": "SKILL",
+      "input": "aimtrue/rech100/stk0 -> aimfalse/rech99/stk1",
+      "name": "original",
+      "result": {
+        "taskId": "SKILL-03-OBSERVER-FIX",
+        "sampledFrames": 1,
+        "counts": {
+          "install": 0,
+          "otherMp": 0,
+          "residualStk": 0,
+          "delayed": 0,
+          "rechargeTicks": 1,
+          "stkRefund": 0,
+          "cancel": 1,
+          "cancelSideEffect": 0
+        },
+        "positiveControl": null,
+        "marks": {
+          "(none)": {
+            "validSamples": 1,
+            "nullSamples": 0,
+            "firstFrame": 0
+          }
+        },
+        "flags": [],
+        "otherMpFrames": [],
+        "installs": [],
+        "recharges": [
+          {
+            "f": 0,
+            "t": 0,
+            "mark": null,
+            "aim": false,
+            "mp": 100,
+            "stk": 1,
+            "rech": 99,
+            "zoneCount": 0,
+            "newInstalls": 0,
+            "expired": 0,
+            "dMp": 0,
+            "dStk": 1,
+            "isInstall": false,
+            "isIceCost": false,
+            "otherMp": false,
+            "legitRecharge": true,
+            "stkRefund": false,
+            "isCancel": true,
+            "cancelSideEffect": false,
+            "aimChanged": true,
+            "flag": null
+          }
+        ],
+        "refunds": [],
+        "cancels": [
+          {
+            "f": 0,
+            "t": 0,
+            "mark": null,
+            "aim": false,
+            "mp": 100,
+            "stk": 1,
+            "rech": 99,
+            "zoneCount": 0,
+            "newInstalls": 0,
+            "expired": 0,
+            "dMp": 0,
+            "dStk": 1,
+            "isInstall": false,
+            "isIceCost": false,
+            "otherMp": false,
+            "legitRecharge": true,
+            "stkRefund": false,
+            "isCancel": true,
+            "cancelSideEffect": false,
+            "aimChanged": true,
+            "flag": null
+          }
+        ],
+        "aimTransitions": [
+          {
+            "f": 0,
+            "t": 0,
+            "mark": null,
+            "aim": false,
+            "mp": 100,
+            "stk": 1,
+            "rech": 99,
+            "zoneCount": 0,
+            "newInstalls": 0,
+            "expired": 0,
+            "dMp": 0,
+            "dStk": 1,
+            "isInstall": false,
+            "isIceCost": false,
+            "otherMp": false,
+            "legitRecharge": true,
+            "stkRefund": false,
+            "isCancel": true,
+            "cancelSideEffect": false,
+            "aimChanged": true,
+            "flag": null
+          }
+        ],
+        "events": [],
+        "frames": [
+          {
+            "f": 0,
+            "t": 0,
+            "mark": null,
+            "aim": false,
+            "mp": 100,
+            "stk": 1,
+            "rech": 99,
+            "zoneCount": 0,
+            "newInstalls": 0,
+            "expired": 0,
+            "dMp": 0,
+            "dStk": 1,
+            "isInstall": false,
+            "isIceCost": false,
+            "otherMp": false,
+            "legitRecharge": true,
+            "stkRefund": false,
+            "isCancel": true,
+            "cancelSideEffect": false,
+            "aimChanged": true,
+            "flag": null
+          }
+        ]
+      },
+      "verdict": {
+        "verdict": "UNDETERMINED",
+        "region": null,
+        "reason": "양성대조 미포착 — 관측기가 정상 설치(신규존+mp-40+stk-1)를 한 번도 못 봄. 누수 없음을 신뢰할 수 없음."
+      }
+    },
+    {
+      "team": "SKILL",
+      "input": "aimtrue/rech100/stk0 -> aimfalse/rech99/stk1",
+      "name": "candidate",
+      "result": {
+        "taskId": "SKILL-03-OBSERVER-FIX",
+        "sampledFrames": 1,
+        "counts": {
+          "install": 0,
+          "otherMp": 0,
+          "residualStk": 0,
+          "delayed": 0,
+          "rechargeTicks": 0,
+          "unknownCharge": 1,
+          "stkRefund": 0,
+          "cancel": 1,
+          "cancelSideEffect": 0
+        },
+        "positiveControl": null,
+        "errors": [],
+        "disposed": false,
+        "unknownCharges": [
+          {
+            "f": 0,
+            "t": 0,
+            "mark": null,
+            "aim": false,
+            "mp": 100,
+            "stk": 1,
+            "rech": 99,
+            "zoneCount": 0,
+            "newInstalls": 0,
+            "expired": 0,
+            "dMp": 0,
+            "dStk": 1,
+            "isInstall": false,
+            "isIceCost": false,
+            "otherMp": false,
+            "legitRecharge": false,
+            "stkRefund": false,
+            "chargeStatus": "UNKNOWN",
+            "unknownCharge": true,
+            "isCancel": true,
+            "cancelSideEffect": false,
+            "aimChanged": true,
+            "flag": null
+          }
+        ],
+        "marks": {
+          "(none)": {
+            "validSamples": 1,
+            "nullSamples": 0,
+            "firstFrame": 0
+          }
+        },
+        "flags": [],
+        "otherMpFrames": [],
+        "installs": [],
+        "recharges": [],
+        "refunds": [],
+        "cancels": [
+          {
+            "f": 0,
+            "t": 0,
+            "mark": null,
+            "aim": false,
+            "mp": 100,
+            "stk": 1,
+            "rech": 99,
+            "zoneCount": 0,
+            "newInstalls": 0,
+            "expired": 0,
+            "dMp": 0,
+            "dStk": 1,
+            "isInstall": false,
+            "isIceCost": false,
+            "otherMp": false,
+            "legitRecharge": false,
+            "stkRefund": false,
+            "chargeStatus": "UNKNOWN",
+            "unknownCharge": true,
+            "isCancel": true,
+            "cancelSideEffect": false,
+            "aimChanged": true,
+            "flag": null
+          }
+        ],
+        "aimTransitions": [
+          {
+            "f": 0,
+            "t": 0,
+            "mark": null,
+            "aim": false,
+            "mp": 100,
+            "stk": 1,
+            "rech": 99,
+            "zoneCount": 0,
+            "newInstalls": 0,
+            "expired": 0,
+            "dMp": 0,
+            "dStk": 1,
+            "isInstall": false,
+            "isIceCost": false,
+            "otherMp": false,
+            "legitRecharge": false,
+            "stkRefund": false,
+            "chargeStatus": "UNKNOWN",
+            "unknownCharge": true,
+            "isCancel": true,
+            "cancelSideEffect": false,
+            "aimChanged": true,
+            "flag": null
+          }
+        ],
+        "events": [],
+        "frames": [
+          {
+            "f": 0,
+            "t": 0,
+            "mark": null,
+            "aim": false,
+            "mp": 100,
+            "stk": 1,
+            "rech": 99,
+            "zoneCount": 0,
+            "newInstalls": 0,
+            "expired": 0,
+            "dMp": 0,
+            "dStk": 1,
+            "isInstall": false,
+            "isIceCost": false,
+            "otherMp": false,
+            "legitRecharge": false,
+            "stkRefund": false,
+            "chargeStatus": "UNKNOWN",
+            "unknownCharge": true,
+            "isCancel": true,
+            "cancelSideEffect": false,
+            "aimChanged": true,
+            "flag": null
+          }
+        ]
+      },
+      "verdict": {
+        "verdict": "UNKNOWN",
+        "region": null,
+        "reason": "충전 증거 부족 또는 관측/정리 예외",
+        "errors": [],
+        "unknownCharge": 1,
+        "observationGaps": 0
+      }
+    },
+    {
+      "team": "SKILL",
+      "input": {
+        "partial": false,
+        "trace": [
+          {
+            "updateSeq": 1,
+            "beforeStk": 0,
+            "beforeRech": 100,
+            "afterStk": 1,
+            "afterRech": 1500,
+            "max": 3,
+            "sp": 100
+          },
+          {
+            "updateSeq": 2,
+            "beforeStk": 1,
+            "beforeRech": 1500,
+            "afterStk": 2,
+            "afterRech": 1500,
+            "max": 3,
+            "sp": 1500
+          }
+        ]
+      },
+      "candidate": {
+        "taskId": "SKILL-03-OBSERVER-FIX",
+        "sampledFrames": 1,
+        "counts": {
+          "install": 0,
+          "otherMp": 0,
+          "residualStk": 0,
+          "delayed": 0,
+          "rechargeTicks": 2,
+          "unknownCharge": 0,
+          "stkRefund": 0,
+          "cancel": 0,
+          "cancelSideEffect": 0
+        },
+        "positiveControl": null,
+        "errors": [],
+        "disposed": false,
+        "unknownCharges": [],
+        "marks": {
+          "(none)": {
+            "validSamples": 1,
+            "nullSamples": 0,
+            "firstFrame": 0
+          }
+        },
+        "flags": [],
+        "otherMpFrames": [],
+        "installs": [],
+        "recharges": [
+          {
+            "f": 0,
+            "t": 0,
+            "mark": null,
+            "aim": false,
+            "mp": 100,
+            "stk": 2,
+            "rech": 1500,
+            "zoneCount": 0,
+            "newInstalls": 0,
+            "expired": 0,
+            "dMp": 0,
+            "dStk": 2,
+            "isInstall": false,
+            "isIceCost": false,
+            "otherMp": false,
+            "legitRecharge": true,
+            "stkRefund": false,
+            "chargeStatus": "RECHARGE",
+            "unknownCharge": false,
+            "isCancel": false,
+            "cancelSideEffect": false,
+            "aimChanged": false,
+            "flag": null
+          }
+        ],
+        "refunds": [],
+        "cancels": [],
+        "aimTransitions": [],
+        "events": [],
+        "frames": [
+          {
+            "f": 0,
+            "t": 0,
+            "mark": null,
+            "aim": false,
+            "mp": 100,
+            "stk": 2,
+            "rech": 1500,
+            "zoneCount": 0,
+            "newInstalls": 0,
+            "expired": 0,
+            "dMp": 0,
+            "dStk": 2,
+            "isInstall": false,
+            "isIceCost": false,
+            "otherMp": false,
+            "legitRecharge": true,
+            "stkRefund": false,
+            "chargeStatus": "RECHARGE",
+            "unknownCharge": false,
+            "isCancel": false,
+            "cancelSideEffect": false,
+            "aimChanged": false,
+            "flag": null
+          }
+        ]
+      }
+    },
+    {
+      "team": "SKILL",
+      "input": {
+        "partial": true,
+        "trace": [
+          {
+            "updateSeq": 2,
+            "beforeStk": 1,
+            "beforeRech": 1500,
+            "afterStk": 2,
+            "afterRech": 1500,
+            "max": 3,
+            "sp": 1500
+          }
+        ]
+      },
+      "candidate": {
+        "taskId": "SKILL-03-OBSERVER-FIX",
+        "sampledFrames": 1,
+        "counts": {
+          "install": 0,
+          "otherMp": 0,
+          "residualStk": 0,
+          "delayed": 0,
+          "rechargeTicks": 0,
+          "unknownCharge": 1,
+          "stkRefund": 0,
+          "cancel": 0,
+          "cancelSideEffect": 0
+        },
+        "positiveControl": null,
+        "errors": [],
+        "disposed": false,
+        "unknownCharges": [
+          {
+            "f": 0,
+            "t": 0,
+            "mark": null,
+            "aim": false,
+            "mp": 100,
+            "stk": 2,
+            "rech": 1500,
+            "zoneCount": 0,
+            "newInstalls": 0,
+            "expired": 0,
+            "dMp": 0,
+            "dStk": 2,
+            "isInstall": false,
+            "isIceCost": false,
+            "otherMp": false,
+            "legitRecharge": false,
+            "stkRefund": false,
+            "chargeStatus": "UNKNOWN",
+            "unknownCharge": true,
+            "isCancel": false,
+            "cancelSideEffect": false,
+            "aimChanged": false,
+            "flag": null
+          }
+        ],
+        "marks": {
+          "(none)": {
+            "validSamples": 1,
+            "nullSamples": 0,
+            "firstFrame": 0
+          }
+        },
+        "flags": [],
+        "otherMpFrames": [],
+        "installs": [],
+        "recharges": [],
+        "refunds": [],
+        "cancels": [],
+        "aimTransitions": [],
+        "events": [],
+        "frames": [
+          {
+            "f": 0,
+            "t": 0,
+            "mark": null,
+            "aim": false,
+            "mp": 100,
+            "stk": 2,
+            "rech": 1500,
+            "zoneCount": 0,
+            "newInstalls": 0,
+            "expired": 0,
+            "dMp": 0,
+            "dStk": 2,
+            "isInstall": false,
+            "isIceCost": false,
+            "otherMp": false,
+            "legitRecharge": false,
+            "stkRefund": false,
+            "chargeStatus": "UNKNOWN",
+            "unknownCharge": true,
+            "isCancel": false,
+            "cancelSideEffect": false,
+            "aimChanged": false,
+            "flag": null
+          }
+        ]
+      }
+    },
+    {
+      "team": "SKILL",
+      "input": "install-read throw",
+      "original": {
+        "listeners": 3,
+        "error": "install-reader"
+      },
+      "candidate": {
+        "taskId": "SKILL-03-OBSERVER-FIX",
+        "sampledFrames": 0,
+        "counts": {
+          "install": 0,
+          "otherMp": 0,
+          "residualStk": 0,
+          "delayed": 0,
+          "rechargeTicks": 0,
+          "unknownCharge": 0,
+          "stkRefund": 0,
+          "cancel": 0,
+          "cancelSideEffect": 0
+        },
+        "positiveControl": null,
+        "errors": [
+          {
+            "phase": "install",
+            "message": "install-reader"
+          }
+        ],
+        "disposed": true,
+        "unknownCharges": [],
+        "marks": {},
+        "flags": [],
+        "otherMpFrames": [],
+        "installs": [],
+        "recharges": [],
+        "refunds": [],
+        "cancels": [],
+        "aimTransitions": [],
+        "events": [],
+        "frames": []
+      }
+    },
+    {
+      "team": "SKILL",
+      "input": "raf-read throw",
+      "candidate": {
+        "taskId": "SKILL-03-OBSERVER-FIX",
+        "sampledFrames": 0,
+        "counts": {
+          "install": 0,
+          "otherMp": 0,
+          "residualStk": 0,
+          "delayed": 0,
+          "rechargeTicks": 0,
+          "unknownCharge": 0,
+          "stkRefund": 0,
+          "cancel": 0,
+          "cancelSideEffect": 0
+        },
+        "positiveControl": null,
+        "errors": [
+          {
+            "phase": "raf-read",
+            "message": "raf-reader"
+          }
+        ],
+        "disposed": true,
+        "unknownCharges": [],
+        "marks": {},
+        "flags": [],
+        "otherMpFrames": [],
+        "installs": [],
+        "recharges": [],
+        "refunds": [],
+        "cancels": [],
+        "aimTransitions": [],
+        "events": [],
+        "frames": []
+      }
+    },
+    {
+      "team": "ART",
+      "input": {
+        "width": 1920,
+        "height": 1080,
+        "elapsed": 400
+      },
+      "original": {
+        "fullW": 1920,
+        "fullH": 1080,
+        "viewAR": 1.7778,
+        "letterbox": {
+          "cw": 1920,
+          "ch": 1080,
+          "lbX": 0,
+          "lbY": 0,
+          "letterboxed": false
+        },
+        "cover": {
+          "branch": "fit-width/cut-topbottom",
+          "imgR": 1.7778,
+          "cR": 1.7778,
+          "dw": 1920,
+          "dh": 1080,
+          "dx": 0,
+          "dy": 0,
+          "hidden": {
+            "left": 0,
+            "right": 0,
+            "top": 0,
+            "bottom": 0
+          },
+          "cutFracX": 0,
+          "cutFracY": 0
+        },
+        "cutAxis": "X",
+        "cutFrac": 0,
+        "verdict": "OK_FULLFRAME"
+      },
+      "candidate": {
+        "active": "wa24",
+        "timeBase": "line-index",
+        "lineElapsed": 400,
+        "zoom": 1.067777777777778,
+        "shake": {
+          "x": 0,
+          "y": -1
+        },
+        "matrix": [
+          1.067777777777778,
+          0,
+          0,
+          1.067777777777778,
+          -65.06666666666683,
+          -37.600000000000136
+        ],
+        "letterbox": {
+          "cw": 1920,
+          "ch": 1080,
+          "lbX": 0,
+          "lbY": 0,
+          "letterboxed": false
+        },
+        "clip": {
+          "x": 0,
+          "y": 0,
+          "w": 1920,
+          "h": 1080
+        },
+        "drawRect": {
+          "x": -65.06666666666683,
+          "y": -37.600000000000136,
+          "w": 2050.1333333333337,
+          "h": 1153.2000000000003
+        },
+        "visibleDrawRect": {
+          "x": 0,
+          "y": 0,
+          "w": 1920,
+          "h": 1080
+        },
+        "visibleSourceRect": {
+          "x": 81.24869927159227,
+          "y": 46.9510926118628,
+          "w": 2397.5026014568152,
+          "h": 1348.5952133194587
+        },
+        "fractions": {
+          "left": 0.031737773152965734,
+          "right": 0.031737773152965734,
+          "top": 0.03260492542490472,
+          "bottom": 0.03087062088102682
+        },
+        "sourceLossPixels": {
+          "left": 81.24869927159227,
+          "right": 81.24869927159227,
+          "top": 46.9510926118628,
+          "bottom": 44.45369406867862
+        },
+        "horizontalFraction": 0.06347554630593147,
+        "verticalFraction": 0.06347554630593154,
+        "geometryVerdict": "CROPPED",
+        "fadeAlpha": 1,
+        "visibilityEvidence": "GEOMETRY_ONLY",
+        "eyeVerdict": "UNKNOWN",
+        "footVerdict": "UNKNOWN",
+        "subtitleVerdict": "UNKNOWN"
+      },
+      "actual": {
+        "matrix": [
+          1.067777777777778,
+          0,
+          0,
+          1.067777777777778,
+          -65.06666666666683,
+          -37.600000000000136
+        ],
+        "clip": {
+          "x": 0,
+          "y": 0,
+          "w": 1920,
+          "h": 1080
+        },
+        "drawRect": {
+          "x": -65.06666666666683,
+          "y": -37.600000000000136,
+          "w": 2050.1333333333337,
+          "h": 1153.2000000000003
+        },
+        "fractions": {
+          "left": 0.031737773152965734,
+          "right": 0.031737773152965734,
+          "top": 0.03260492542490472,
+          "bottom": 0.03087062088102682
+        },
+        "operations": [
+          "save",
+          "beginPath",
+          "rect",
+          "clip",
+          "translate",
+          "translate",
+          "scale",
+          "translate",
+          "drawImage"
+        ]
+      }
+    },
+    {
+      "team": "ART",
+      "input": {
+        "width": 1920,
+        "height": 1080,
+        "elapsed": 1200
+      },
+      "original": {
+        "fullW": 1920,
+        "fullH": 1080,
+        "viewAR": 1.7778,
+        "letterbox": {
+          "cw": 1920,
+          "ch": 1080,
+          "lbX": 0,
+          "lbY": 0,
+          "letterboxed": false
+        },
+        "cover": {
+          "branch": "fit-width/cut-topbottom",
+          "imgR": 1.7778,
+          "cR": 1.7778,
+          "dw": 1920,
+          "dh": 1080,
+          "dx": 0,
+          "dy": 0,
+          "hidden": {
+            "left": 0,
+            "right": 0,
+            "top": 0,
+            "bottom": 0
+          },
+          "cutFracX": 0,
+          "cutFracY": 0
+        },
+        "cutAxis": "X",
+        "cutFrac": 0,
+        "verdict": "OK_FULLFRAME"
+      },
+      "candidate": {
+        "active": "wa24",
+        "timeBase": "line-index",
+        "lineElapsed": 1200,
+        "zoom": 1.05,
+        "shake": {
+          "x": 0,
+          "y": 1
+        },
+        "matrix": [
+          1.05,
+          0,
+          0,
+          1.05,
+          -48,
+          -26
+        ],
+        "letterbox": {
+          "cw": 1920,
+          "ch": 1080,
+          "lbX": 0,
+          "lbY": 0,
+          "letterboxed": false
+        },
+        "clip": {
+          "x": 0,
+          "y": 0,
+          "w": 1920,
+          "h": 1080
+        },
+        "drawRect": {
+          "x": -48,
+          "y": -26,
+          "w": 2016,
+          "h": 1134
+        },
+        "visibleDrawRect": {
+          "x": 0,
+          "y": 0,
+          "w": 1920,
+          "h": 1080
+        },
+        "visibleSourceRect": {
+          "x": 60.95238095238095,
+          "y": 33.01587301587301,
+          "w": 2438.095238095238,
+          "h": 1371.4285714285716
+        },
+        "fractions": {
+          "left": 0.023809523809523808,
+          "right": 0.023809523809523808,
+          "top": 0.02292768959435626,
+          "bottom": 0.024691358024691357
+        },
+        "sourceLossPixels": {
+          "left": 60.95238095238095,
+          "right": 60.95238095238095,
+          "top": 33.01587301587301,
+          "bottom": 35.55555555555556
+        },
+        "horizontalFraction": 0.047619047619047616,
+        "verticalFraction": 0.047619047619047616,
+        "geometryVerdict": "CROPPED",
+        "fadeAlpha": 1,
+        "visibilityEvidence": "GEOMETRY_ONLY",
+        "eyeVerdict": "UNKNOWN",
+        "footVerdict": "UNKNOWN",
+        "subtitleVerdict": "UNKNOWN"
+      },
+      "actual": {
+        "matrix": [
+          1.05,
+          0,
+          0,
+          1.05,
+          -48,
+          -26
+        ],
+        "clip": {
+          "x": 0,
+          "y": 0,
+          "w": 1920,
+          "h": 1080
+        },
+        "drawRect": {
+          "x": -48,
+          "y": -26,
+          "w": 2016,
+          "h": 1134
+        },
+        "fractions": {
+          "left": 0.023809523809523808,
+          "right": 0.023809523809523808,
+          "top": 0.02292768959435626,
+          "bottom": 0.024691358024691357
+        },
+        "operations": [
+          "save",
+          "beginPath",
+          "rect",
+          "clip",
+          "translate",
+          "translate",
+          "scale",
+          "translate",
+          "drawImage"
+        ]
+      }
+    },
+    {
+      "team": "ART",
+      "input": {
+        "width": 1920,
+        "height": 1080,
+        "elapsed": 2399
+      },
+      "original": {
+        "fullW": 1920,
+        "fullH": 1080,
+        "viewAR": 1.7778,
+        "letterbox": {
+          "cw": 1920,
+          "ch": 1080,
+          "lbX": 0,
+          "lbY": 0,
+          "letterboxed": false
+        },
+        "cover": {
+          "branch": "fit-width/cut-topbottom",
+          "imgR": 1.7778,
+          "cR": 1.7778,
+          "dw": 1920,
+          "dh": 1080,
+          "dx": 0,
+          "dy": 0,
+          "hidden": {
+            "left": 0,
+            "right": 0,
+            "top": 0,
+            "bottom": 0
+          },
+          "cutFracX": 0,
+          "cutFracY": 0
+        },
+        "cutAxis": "X",
+        "cutFrac": 0,
+        "verdict": "OK_FULLFRAME"
+      },
+      "candidate": {
+        "active": "wa24",
+        "timeBase": "line-index",
+        "lineElapsed": 2399,
+        "zoom": 1.0400000069444444,
+        "shake": {
+          "x": 0,
+          "y": 0
+        },
+        "matrix": [
+          1.0400000069444444,
+          0,
+          0,
+          1.0400000069444444,
+          -38.40000666666663,
+          -21.600003749999928
+        ],
+        "letterbox": {
+          "cw": 1920,
+          "ch": 1080,
+          "lbX": 0,
+          "lbY": 0,
+          "letterboxed": false
+        },
+        "clip": {
+          "x": 0,
+          "y": 0,
+          "w": 1920,
+          "h": 1080
+        },
+        "drawRect": {
+          "x": -38.40000666666663,
+          "y": -21.600003749999928,
+          "w": 1996.8000133333333,
+          "h": 1123.2000074999999
+        },
+        "visibleDrawRect": {
+          "x": 0,
+          "y": 0,
+          "w": 1920,
+          "h": 1080
+        },
+        "visibleSourceRect": {
+          "x": 49.23077744904657,
+          "y": 27.692312315088635,
+          "w": 2461.5384451019067,
+          "h": 1384.615375369823
+        },
+        "fractions": {
+          "left": 0.019230772441033817,
+          "right": 0.019230772441033876,
+          "top": 0.019230772441033776,
+          "bottom": 0.019230772441033675
+        },
+        "sourceLossPixels": {
+          "left": 49.23077744904657,
+          "right": 49.23077744904673,
+          "top": 27.692312315088635,
+          "bottom": 27.692312315088493
+        },
+        "horizontalFraction": 0.0384615448820677,
+        "verticalFraction": 0.03846154488206745,
+        "geometryVerdict": "CROPPED",
+        "fadeAlpha": 1,
+        "visibilityEvidence": "GEOMETRY_ONLY",
+        "eyeVerdict": "UNKNOWN",
+        "footVerdict": "UNKNOWN",
+        "subtitleVerdict": "UNKNOWN"
+      },
+      "actual": {
+        "matrix": [
+          1.0400000069444444,
+          0,
+          0,
+          1.0400000069444444,
+          -38.40000666666663,
+          -21.600003749999928
+        ],
+        "clip": {
+          "x": 0,
+          "y": 0,
+          "w": 1920,
+          "h": 1080
+        },
+        "drawRect": {
+          "x": -38.40000666666663,
+          "y": -21.600003749999928,
+          "w": 1996.8000133333333,
+          "h": 1123.2000074999999
+        },
+        "fractions": {
+          "left": 0.019230772441033817,
+          "right": 0.019230772441033876,
+          "top": 0.019230772441033776,
+          "bottom": 0.019230772441033675
+        },
+        "operations": [
+          "save",
+          "beginPath",
+          "rect",
+          "clip",
+          "translate",
+          "translate",
+          "scale",
+          "translate",
+          "drawImage"
+        ]
+      }
+    },
+    {
+      "team": "ART",
+      "input": {
+        "width": 2560,
+        "height": 1080,
+        "elapsed": 400
+      },
+      "original": {
+        "fullW": 2560,
+        "fullH": 1080,
+        "viewAR": 2.3704,
+        "letterbox": {
+          "cw": 1920,
+          "ch": 1080,
+          "lbX": 320,
+          "lbY": 0,
+          "letterboxed": true
+        },
+        "cover": {
+          "branch": "fit-width/cut-topbottom",
+          "imgR": 1.7778,
+          "cR": 1.7778,
+          "dw": 1920,
+          "dh": 1080,
+          "dx": 0,
+          "dy": 0,
+          "hidden": {
+            "left": 0,
+            "right": 0,
+            "top": 0,
+            "bottom": 0
+          },
+          "cutFracX": 0,
+          "cutFracY": 0
+        },
+        "cutAxis": "X",
+        "cutFrac": 0,
+        "verdict": "OK_FULLFRAME"
+      },
+      "candidate": {
+        "active": "wa24",
+        "timeBase": "line-index",
+        "lineElapsed": 400,
+        "zoom": 1.067777777777778,
+        "shake": {
+          "x": 0,
+          "y": -1
+        },
+        "matrix": [
+          1.067777777777778,
+          0,
+          0,
+          1.067777777777778,
+          254.93333333333317,
+          -37.600000000000136
+        ],
+        "letterbox": {
+          "cw": 1920,
+          "ch": 1080,
+          "lbX": 320,
+          "lbY": 0,
+          "letterboxed": true
+        },
+        "clip": {
+          "x": 320,
+          "y": 0,
+          "w": 1920,
+          "h": 1080
+        },
+        "drawRect": {
+          "x": 254.93333333333317,
+          "y": -37.600000000000136,
+          "w": 2050.1333333333337,
+          "h": 1153.2000000000003
+        },
+        "visibleDrawRect": {
+          "x": 320,
+          "y": 0,
+          "w": 1920,
+          "h": 1080
+        },
+        "visibleSourceRect": {
+          "x": 81.24869927159227,
+          "y": 46.9510926118628,
+          "w": 2397.5026014568157,
+          "h": 1348.5952133194587
+        },
+        "fractions": {
+          "left": 0.031737773152965734,
+          "right": 0.03173777315296562,
+          "top": 0.03260492542490472,
+          "bottom": 0.03087062088102682
+        },
+        "sourceLossPixels": {
+          "left": 81.24869927159227,
+          "right": 81.24869927159199,
+          "top": 46.9510926118628,
+          "bottom": 44.45369406867862
+        },
+        "horizontalFraction": 0.06347554630593136,
+        "verticalFraction": 0.06347554630593154,
+        "geometryVerdict": "CROPPED",
+        "fadeAlpha": 1,
+        "visibilityEvidence": "GEOMETRY_ONLY",
+        "eyeVerdict": "UNKNOWN",
+        "footVerdict": "UNKNOWN",
+        "subtitleVerdict": "UNKNOWN"
+      },
+      "actual": {
+        "matrix": [
+          1.067777777777778,
+          0,
+          0,
+          1.067777777777778,
+          254.93333333333317,
+          -37.600000000000136
+        ],
+        "clip": {
+          "x": 320,
+          "y": 0,
+          "w": 1920,
+          "h": 1080
+        },
+        "drawRect": {
+          "x": 254.93333333333317,
+          "y": -37.600000000000136,
+          "w": 2050.1333333333337,
+          "h": 1153.2000000000003
+        },
+        "fractions": {
+          "left": 0.031737773152965734,
+          "right": 0.03173777315296562,
+          "top": 0.03260492542490472,
+          "bottom": 0.03087062088102682
+        },
+        "operations": [
+          "save",
+          "beginPath",
+          "rect",
+          "clip",
+          "translate",
+          "translate",
+          "scale",
+          "translate",
+          "drawImage"
+        ]
+      }
+    },
+    {
+      "team": "ART",
+      "input": {
+        "width": 2560,
+        "height": 1080,
+        "elapsed": 1200
+      },
+      "original": {
+        "fullW": 2560,
+        "fullH": 1080,
+        "viewAR": 2.3704,
+        "letterbox": {
+          "cw": 1920,
+          "ch": 1080,
+          "lbX": 320,
+          "lbY": 0,
+          "letterboxed": true
+        },
+        "cover": {
+          "branch": "fit-width/cut-topbottom",
+          "imgR": 1.7778,
+          "cR": 1.7778,
+          "dw": 1920,
+          "dh": 1080,
+          "dx": 0,
+          "dy": 0,
+          "hidden": {
+            "left": 0,
+            "right": 0,
+            "top": 0,
+            "bottom": 0
+          },
+          "cutFracX": 0,
+          "cutFracY": 0
+        },
+        "cutAxis": "X",
+        "cutFrac": 0,
+        "verdict": "OK_FULLFRAME"
+      },
+      "candidate": {
+        "active": "wa24",
+        "timeBase": "line-index",
+        "lineElapsed": 1200,
+        "zoom": 1.05,
+        "shake": {
+          "x": 0,
+          "y": 1
+        },
+        "matrix": [
+          1.05,
+          0,
+          0,
+          1.05,
+          272,
+          -26
+        ],
+        "letterbox": {
+          "cw": 1920,
+          "ch": 1080,
+          "lbX": 320,
+          "lbY": 0,
+          "letterboxed": true
+        },
+        "clip": {
+          "x": 320,
+          "y": 0,
+          "w": 1920,
+          "h": 1080
+        },
+        "drawRect": {
+          "x": 272,
+          "y": -26,
+          "w": 2016,
+          "h": 1134
+        },
+        "visibleDrawRect": {
+          "x": 320,
+          "y": 0,
+          "w": 1920,
+          "h": 1080
+        },
+        "visibleSourceRect": {
+          "x": 60.95238095238095,
+          "y": 33.01587301587301,
+          "w": 2438.095238095238,
+          "h": 1371.4285714285716
+        },
+        "fractions": {
+          "left": 0.023809523809523808,
+          "right": 0.023809523809523808,
+          "top": 0.02292768959435626,
+          "bottom": 0.024691358024691357
+        },
+        "sourceLossPixels": {
+          "left": 60.95238095238095,
+          "right": 60.95238095238095,
+          "top": 33.01587301587301,
+          "bottom": 35.55555555555556
+        },
+        "horizontalFraction": 0.047619047619047616,
+        "verticalFraction": 0.047619047619047616,
+        "geometryVerdict": "CROPPED",
+        "fadeAlpha": 1,
+        "visibilityEvidence": "GEOMETRY_ONLY",
+        "eyeVerdict": "UNKNOWN",
+        "footVerdict": "UNKNOWN",
+        "subtitleVerdict": "UNKNOWN"
+      },
+      "actual": {
+        "matrix": [
+          1.05,
+          0,
+          0,
+          1.05,
+          272,
+          -26
+        ],
+        "clip": {
+          "x": 320,
+          "y": 0,
+          "w": 1920,
+          "h": 1080
+        },
+        "drawRect": {
+          "x": 272,
+          "y": -26,
+          "w": 2016,
+          "h": 1134
+        },
+        "fractions": {
+          "left": 0.023809523809523808,
+          "right": 0.023809523809523808,
+          "top": 0.02292768959435626,
+          "bottom": 0.024691358024691357
+        },
+        "operations": [
+          "save",
+          "beginPath",
+          "rect",
+          "clip",
+          "translate",
+          "translate",
+          "scale",
+          "translate",
+          "drawImage"
+        ]
+      }
+    },
+    {
+      "team": "ART",
+      "input": {
+        "width": 2560,
+        "height": 1080,
+        "elapsed": 2399
+      },
+      "original": {
+        "fullW": 2560,
+        "fullH": 1080,
+        "viewAR": 2.3704,
+        "letterbox": {
+          "cw": 1920,
+          "ch": 1080,
+          "lbX": 320,
+          "lbY": 0,
+          "letterboxed": true
+        },
+        "cover": {
+          "branch": "fit-width/cut-topbottom",
+          "imgR": 1.7778,
+          "cR": 1.7778,
+          "dw": 1920,
+          "dh": 1080,
+          "dx": 0,
+          "dy": 0,
+          "hidden": {
+            "left": 0,
+            "right": 0,
+            "top": 0,
+            "bottom": 0
+          },
+          "cutFracX": 0,
+          "cutFracY": 0
+        },
+        "cutAxis": "X",
+        "cutFrac": 0,
+        "verdict": "OK_FULLFRAME"
+      },
+      "candidate": {
+        "active": "wa24",
+        "timeBase": "line-index",
+        "lineElapsed": 2399,
+        "zoom": 1.0400000069444444,
+        "shake": {
+          "x": 0,
+          "y": 0
+        },
+        "matrix": [
+          1.0400000069444444,
+          0,
+          0,
+          1.0400000069444444,
+          281.5999933333334,
+          -21.600003749999928
+        ],
+        "letterbox": {
+          "cw": 1920,
+          "ch": 1080,
+          "lbX": 320,
+          "lbY": 0,
+          "letterboxed": true
+        },
+        "clip": {
+          "x": 320,
+          "y": 0,
+          "w": 1920,
+          "h": 1080
+        },
+        "drawRect": {
+          "x": 281.5999933333334,
+          "y": -21.600003749999928,
+          "w": 1996.8000133333333,
+          "h": 1123.2000074999999
+        },
+        "visibleDrawRect": {
+          "x": 320,
+          "y": 0,
+          "w": 1920,
+          "h": 1080
+        },
+        "visibleSourceRect": {
+          "x": 49.23077744904657,
+          "y": 27.692312315088635,
+          "w": 2461.5384451019067,
+          "h": 1384.615375369823
+        },
+        "fractions": {
+          "left": 0.019230772441033817,
+          "right": 0.019230772441033876,
+          "top": 0.019230772441033776,
+          "bottom": 0.019230772441033675
+        },
+        "sourceLossPixels": {
+          "left": 49.23077744904657,
+          "right": 49.23077744904673,
+          "top": 27.692312315088635,
+          "bottom": 27.692312315088493
+        },
+        "horizontalFraction": 0.0384615448820677,
+        "verticalFraction": 0.03846154488206745,
+        "geometryVerdict": "CROPPED",
+        "fadeAlpha": 1,
+        "visibilityEvidence": "GEOMETRY_ONLY",
+        "eyeVerdict": "UNKNOWN",
+        "footVerdict": "UNKNOWN",
+        "subtitleVerdict": "UNKNOWN"
+      },
+      "actual": {
+        "matrix": [
+          1.0400000069444444,
+          0,
+          0,
+          1.0400000069444444,
+          281.5999933333334,
+          -21.600003749999928
+        ],
+        "clip": {
+          "x": 320,
+          "y": 0,
+          "w": 1920,
+          "h": 1080
+        },
+        "drawRect": {
+          "x": 281.5999933333334,
+          "y": -21.600003749999928,
+          "w": 1996.8000133333333,
+          "h": 1123.2000074999999
+        },
+        "fractions": {
+          "left": 0.019230772441033817,
+          "right": 0.019230772441033876,
+          "top": 0.019230772441033776,
+          "bottom": 0.019230772441033675
+        },
+        "operations": [
+          "save",
+          "beginPath",
+          "rect",
+          "clip",
+          "translate",
+          "translate",
+          "scale",
+          "translate",
+          "drawImage"
+        ]
+      }
+    },
+    {
+      "team": "ART",
+      "input": {
+        "width": 1920,
+        "height": 1200,
+        "elapsed": 400
+      },
+      "original": {
+        "fullW": 1920,
+        "fullH": 1200,
+        "viewAR": 1.6,
+        "letterbox": {
+          "cw": 1920,
+          "ch": 1200,
+          "lbX": 0,
+          "lbY": 0,
+          "letterboxed": false
+        },
+        "cover": {
+          "branch": "fit-height/cut-sides",
+          "imgR": 1.7778,
+          "cR": 1.6,
+          "dw": 2133.33,
+          "dh": 1200,
+          "dx": -106.67,
+          "dy": 0,
+          "hidden": {
+            "left": 106.67,
+            "right": 106.67,
+            "top": 0,
+            "bottom": 0
+          },
+          "cutFracX": 0.1,
+          "cutFracY": 0
+        },
+        "cutAxis": "X",
+        "cutFrac": 0.1,
+        "verdict": "CROP_SIDE_MINOR"
+      },
+      "candidate": {
+        "active": "wa24",
+        "timeBase": "line-index",
+        "lineElapsed": 400,
+        "zoom": 1.067777777777778,
+        "shake": {
+          "x": 0,
+          "y": -1
+        },
+        "matrix": [
+          1.067777777777778,
+          0,
+          0,
+          1.067777777777778,
+          -65.06666666666683,
+          -41.66666666666674
+        ],
+        "letterbox": {
+          "cw": 1920,
+          "ch": 1200,
+          "lbX": 0,
+          "lbY": 0,
+          "letterboxed": false
+        },
+        "clip": {
+          "x": 0,
+          "y": 0,
+          "w": 1920,
+          "h": 1200
+        },
+        "drawRect": {
+          "x": -178.962962962963,
+          "y": -41.66666666666674,
+          "w": 2277.925925925926,
+          "h": 1281.3333333333335
+        },
+        "visibleDrawRect": {
+          "x": 0,
+          "y": 0,
+          "w": 1920,
+          "h": 1200
+        },
+        "visibleSourceRect": {
+          "x": 201.1238293444329,
+          "y": 46.82622268470351,
+          "w": 2157.752341311134,
+          "h": 1348.5952133194587
+        },
+        "fractions": {
+          "left": 0.0785639958376691,
+          "right": 0.07856399583766913,
+          "top": 0.03251821019771077,
+          "bottom": 0.03095733610822066
+        },
+        "sourceLossPixels": {
+          "left": 201.1238293444329,
+          "right": 201.12382934443298,
+          "top": 46.82622268470351,
+          "bottom": 44.57856399583775
+        },
+        "horizontalFraction": 0.15712799167533822,
+        "verticalFraction": 0.06347554630593143,
+        "geometryVerdict": "CROPPED",
+        "fadeAlpha": 1,
+        "visibilityEvidence": "GEOMETRY_ONLY",
+        "eyeVerdict": "UNKNOWN",
+        "footVerdict": "UNKNOWN",
+        "subtitleVerdict": "UNKNOWN"
+      },
+      "actual": {
+        "matrix": [
+          1.067777777777778,
+          0,
+          0,
+          1.067777777777778,
+          -65.06666666666683,
+          -41.66666666666674
+        ],
+        "clip": {
+          "x": 0,
+          "y": 0,
+          "w": 1920,
+          "h": 1200
+        },
+        "drawRect": {
+          "x": -178.962962962963,
+          "y": -41.66666666666674,
+          "w": 2277.925925925926,
+          "h": 1281.3333333333335
+        },
+        "fractions": {
+          "left": 0.0785639958376691,
+          "right": 0.07856399583766913,
+          "top": 0.03251821019771077,
+          "bottom": 0.03095733610822066
+        },
+        "operations": [
+          "save",
+          "beginPath",
+          "rect",
+          "clip",
+          "translate",
+          "translate",
+          "scale",
+          "translate",
+          "drawImage"
+        ]
+      }
+    },
+    {
+      "team": "ART",
+      "input": {
+        "width": 1920,
+        "height": 1200,
+        "elapsed": 1200
+      },
+      "original": {
+        "fullW": 1920,
+        "fullH": 1200,
+        "viewAR": 1.6,
+        "letterbox": {
+          "cw": 1920,
+          "ch": 1200,
+          "lbX": 0,
+          "lbY": 0,
+          "letterboxed": false
+        },
+        "cover": {
+          "branch": "fit-height/cut-sides",
+          "imgR": 1.7778,
+          "cR": 1.6,
+          "dw": 2133.33,
+          "dh": 1200,
+          "dx": -106.67,
+          "dy": 0,
+          "hidden": {
+            "left": 106.67,
+            "right": 106.67,
+            "top": 0,
+            "bottom": 0
+          },
+          "cutFracX": 0.1,
+          "cutFracY": 0
+        },
+        "cutAxis": "X",
+        "cutFrac": 0.1,
+        "verdict": "CROP_SIDE_MINOR"
+      },
+      "candidate": {
+        "active": "wa24",
+        "timeBase": "line-index",
+        "lineElapsed": 1200,
+        "zoom": 1.05,
+        "shake": {
+          "x": 0,
+          "y": 1
+        },
+        "matrix": [
+          1.05,
+          0,
+          0,
+          1.05,
+          -48,
+          -29
+        ],
+        "letterbox": {
+          "cw": 1920,
+          "ch": 1200,
+          "lbX": 0,
+          "lbY": 0,
+          "letterboxed": false
+        },
+        "clip": {
+          "x": 0,
+          "y": 0,
+          "w": 1920,
+          "h": 1200
+        },
+        "drawRect": {
+          "x": -159.99999999999983,
+          "y": -29,
+          "w": 2240,
+          "h": 1260
+        },
+        "visibleDrawRect": {
+          "x": 0,
+          "y": 0,
+          "w": 1920,
+          "h": 1200
+        },
+        "visibleSourceRect": {
+          "x": 182.85714285714266,
+          "y": 33.142857142857146,
+          "w": 2194.2857142857147,
+          "h": 1371.4285714285713
+        },
+        "fractions": {
+          "left": 0.07142857142857136,
+          "right": 0.07142857142857142,
+          "top": 0.023015873015873017,
+          "bottom": 0.024603174603174603
+        },
+        "sourceLossPixels": {
+          "left": 182.85714285714266,
+          "right": 182.85714285714283,
+          "top": 33.142857142857146,
+          "bottom": 35.42857142857143
+        },
+        "horizontalFraction": 0.1428571428571428,
+        "verticalFraction": 0.047619047619047616,
+        "geometryVerdict": "CROPPED",
+        "fadeAlpha": 1,
+        "visibilityEvidence": "GEOMETRY_ONLY",
+        "eyeVerdict": "UNKNOWN",
+        "footVerdict": "UNKNOWN",
+        "subtitleVerdict": "UNKNOWN"
+      },
+      "actual": {
+        "matrix": [
+          1.05,
+          0,
+          0,
+          1.05,
+          -48,
+          -29
+        ],
+        "clip": {
+          "x": 0,
+          "y": 0,
+          "w": 1920,
+          "h": 1200
+        },
+        "drawRect": {
+          "x": -159.99999999999983,
+          "y": -29,
+          "w": 2240,
+          "h": 1260
+        },
+        "fractions": {
+          "left": 0.07142857142857136,
+          "right": 0.07142857142857142,
+          "top": 0.023015873015873017,
+          "bottom": 0.024603174603174603
+        },
+        "operations": [
+          "save",
+          "beginPath",
+          "rect",
+          "clip",
+          "translate",
+          "translate",
+          "scale",
+          "translate",
+          "drawImage"
+        ]
+      }
+    },
+    {
+      "team": "ART",
+      "input": {
+        "width": 1920,
+        "height": 1200,
+        "elapsed": 2399
+      },
+      "original": {
+        "fullW": 1920,
+        "fullH": 1200,
+        "viewAR": 1.6,
+        "letterbox": {
+          "cw": 1920,
+          "ch": 1200,
+          "lbX": 0,
+          "lbY": 0,
+          "letterboxed": false
+        },
+        "cover": {
+          "branch": "fit-height/cut-sides",
+          "imgR": 1.7778,
+          "cR": 1.6,
+          "dw": 2133.33,
+          "dh": 1200,
+          "dx": -106.67,
+          "dy": 0,
+          "hidden": {
+            "left": 106.67,
+            "right": 106.67,
+            "top": 0,
+            "bottom": 0
+          },
+          "cutFracX": 0.1,
+          "cutFracY": 0
+        },
+        "cutAxis": "X",
+        "cutFrac": 0.1,
+        "verdict": "CROP_SIDE_MINOR"
+      },
+      "candidate": {
+        "active": "wa24",
+        "timeBase": "line-index",
+        "lineElapsed": 2399,
+        "zoom": 1.0400000069444444,
+        "shake": {
+          "x": 0,
+          "y": 0
+        },
+        "matrix": [
+          1.0400000069444444,
+          0,
+          0,
+          1.0400000069444444,
+          -38.40000666666663,
+          -24.0000041666666
+        ],
+        "letterbox": {
+          "cw": 1920,
+          "ch": 1200,
+          "lbX": 0,
+          "lbY": 0,
+          "letterboxed": false
+        },
+        "clip": {
+          "x": 0,
+          "y": 0,
+          "w": 1920,
+          "h": 1200
+        },
+        "drawRect": {
+          "x": -149.33334074074054,
+          "y": -24.0000041666666,
+          "w": 2218.666681481481,
+          "h": 1248.0000083333332
+        },
+        "visibleDrawRect": {
+          "x": 0,
+          "y": 0,
+          "w": 1920,
+          "h": 1200
+        },
+        "visibleSourceRect": {
+          "x": 172.30769970414175,
+          "y": 27.692312315088653,
+          "w": 2215.384600591716,
+          "h": 1384.6153753698227
+        },
+        "fractions": {
+          "left": 0.06730769519693038,
+          "right": 0.0673076951969305,
+          "top": 0.019230772441033786,
+          "bottom": 0.019230772441033876
+        },
+        "sourceLossPixels": {
+          "left": 172.30769970414175,
+          "right": 172.30769970414207,
+          "top": 27.692312315088653,
+          "bottom": 27.69231231508878
+        },
+        "horizontalFraction": 0.1346153903938609,
+        "verticalFraction": 0.03846154488206766,
+        "geometryVerdict": "CROPPED",
+        "fadeAlpha": 1,
+        "visibilityEvidence": "GEOMETRY_ONLY",
+        "eyeVerdict": "UNKNOWN",
+        "footVerdict": "UNKNOWN",
+        "subtitleVerdict": "UNKNOWN"
+      },
+      "actual": {
+        "matrix": [
+          1.0400000069444444,
+          0,
+          0,
+          1.0400000069444444,
+          -38.40000666666663,
+          -24.0000041666666
+        ],
+        "clip": {
+          "x": 0,
+          "y": 0,
+          "w": 1920,
+          "h": 1200
+        },
+        "drawRect": {
+          "x": -149.33334074074054,
+          "y": -24.0000041666666,
+          "w": 2218.666681481481,
+          "h": 1248.0000083333332
+        },
+        "fractions": {
+          "left": 0.06730769519693038,
+          "right": 0.0673076951969305,
+          "top": 0.019230772441033786,
+          "bottom": 0.019230772441033876
+        },
+        "operations": [
+          "save",
+          "beginPath",
+          "rect",
+          "clip",
+          "translate",
+          "translate",
+          "scale",
+          "translate",
+          "drawImage"
+        ]
+      }
+    },
+    {
+      "team": "ART",
+      "input": {
+        "width": 1024,
+        "height": 768,
+        "elapsed": 400
+      },
+      "original": {
+        "fullW": 1024,
+        "fullH": 768,
+        "viewAR": 1.3333,
+        "letterbox": {
+          "cw": 1024,
+          "ch": 768,
+          "lbX": 0,
+          "lbY": 0,
+          "letterboxed": false
+        },
+        "cover": {
+          "branch": "fit-height/cut-sides",
+          "imgR": 1.7778,
+          "cR": 1.3333,
+          "dw": 1365.33,
+          "dh": 768,
+          "dx": -170.67,
+          "dy": 0,
+          "hidden": {
+            "left": 170.67,
+            "right": 170.67,
+            "top": 0,
+            "bottom": 0
+          },
+          "cutFracX": 0.25,
+          "cutFracY": 0
+        },
+        "cutAxis": "X",
+        "cutFrac": 0.25,
+        "verdict": "CROP_SIDE_MAJOR"
+      },
+      "candidate": {
+        "active": "wa24",
+        "timeBase": "line-index",
+        "lineElapsed": 400,
+        "zoom": 1.067777777777778,
+        "shake": {
+          "x": 0,
+          "y": -1
+        },
+        "matrix": [
+          1.067777777777778,
+          0,
+          0,
+          1.067777777777778,
+          -34.702222222222304,
+          -27.026666666666756
+        ],
+        "letterbox": {
+          "cw": 1024,
+          "ch": 768,
+          "lbX": 0,
+          "lbY": 0,
+          "letterboxed": false
+        },
+        "clip": {
+          "x": 0,
+          "y": 0,
+          "w": 1024,
+          "h": 768
+        },
+        "drawRect": {
+          "x": -216.93629629629638,
+          "y": -27.026666666666756,
+          "w": 1457.8725925925928,
+          "h": 820.0533333333335
+        },
+        "visibleDrawRect": {
+          "x": 0,
+          "y": 0,
+          "w": 1024,
+          "h": 768
+        },
+        "visibleSourceRect": {
+          "x": 380.9365244536941,
+          "y": 47.458376690947084,
+          "w": 1798.1269510926118,
+          "h": 1348.5952133194587
+        },
+        "fractions": {
+          "left": 0.14880332986472428,
+          "right": 0.1488033298647243,
+          "top": 0.03295720603537992,
+          "bottom": 0.03051834027055161
+        },
+        "sourceLossPixels": {
+          "left": 380.9365244536941,
+          "right": 380.93652445369423,
+          "top": 47.458376690947084,
+          "bottom": 43.94640998959432
+        },
+        "horizontalFraction": 0.29760665972944855,
+        "verticalFraction": 0.06347554630593152,
+        "geometryVerdict": "CROPPED",
+        "fadeAlpha": 1,
+        "visibilityEvidence": "GEOMETRY_ONLY",
+        "eyeVerdict": "UNKNOWN",
+        "footVerdict": "UNKNOWN",
+        "subtitleVerdict": "UNKNOWN"
+      },
+      "actual": {
+        "matrix": [
+          1.067777777777778,
+          0,
+          0,
+          1.067777777777778,
+          -34.702222222222304,
+          -27.026666666666756
+        ],
+        "clip": {
+          "x": 0,
+          "y": 0,
+          "w": 1024,
+          "h": 768
+        },
+        "drawRect": {
+          "x": -216.93629629629638,
+          "y": -27.026666666666756,
+          "w": 1457.8725925925928,
+          "h": 820.0533333333335
+        },
+        "fractions": {
+          "left": 0.14880332986472428,
+          "right": 0.1488033298647243,
+          "top": 0.03295720603537992,
+          "bottom": 0.03051834027055161
+        },
+        "operations": [
+          "save",
+          "beginPath",
+          "rect",
+          "clip",
+          "translate",
+          "translate",
+          "scale",
+          "translate",
+          "drawImage"
+        ]
+      }
+    },
+    {
+      "team": "ART",
+      "input": {
+        "width": 1024,
+        "height": 768,
+        "elapsed": 1200
+      },
+      "original": {
+        "fullW": 1024,
+        "fullH": 768,
+        "viewAR": 1.3333,
+        "letterbox": {
+          "cw": 1024,
+          "ch": 768,
+          "lbX": 0,
+          "lbY": 0,
+          "letterboxed": false
+        },
+        "cover": {
+          "branch": "fit-height/cut-sides",
+          "imgR": 1.7778,
+          "cR": 1.3333,
+          "dw": 1365.33,
+          "dh": 768,
+          "dx": -170.67,
+          "dy": 0,
+          "hidden": {
+            "left": 170.67,
+            "right": 170.67,
+            "top": 0,
+            "bottom": 0
+          },
+          "cutFracX": 0.25,
+          "cutFracY": 0
+        },
+        "cutAxis": "X",
+        "cutFrac": 0.25,
+        "verdict": "CROP_SIDE_MAJOR"
+      },
+      "candidate": {
+        "active": "wa24",
+        "timeBase": "line-index",
+        "lineElapsed": 1200,
+        "zoom": 1.05,
+        "shake": {
+          "x": 0,
+          "y": 1
+        },
+        "matrix": [
+          1.05,
+          0,
+          0,
+          1.05,
+          -25.600000000000023,
+          -18.200000000000045
+        ],
+        "letterbox": {
+          "cw": 1024,
+          "ch": 768,
+          "lbX": 0,
+          "lbY": 0,
+          "letterboxed": false
+        },
+        "clip": {
+          "x": 0,
+          "y": 0,
+          "w": 1024,
+          "h": 768
+        },
+        "drawRect": {
+          "x": -204.79999999999998,
+          "y": -18.200000000000045,
+          "w": 1433.6,
+          "h": 806.4000000000001
+        },
+        "visibleDrawRect": {
+          "x": 0,
+          "y": 0,
+          "w": 1024,
+          "h": 768
+        },
+        "visibleSourceRect": {
+          "x": 365.71428571428567,
+          "y": 32.50000000000008,
+          "w": 1828.571428571429,
+          "h": 1371.428571428571
+        },
+        "fractions": {
+          "left": 0.14285714285714285,
+          "right": 0.14285714285714282,
+          "top": 0.0225694444444445,
+          "bottom": 0.025049603174603228
+        },
+        "sourceLossPixels": {
+          "left": 365.71428571428567,
+          "right": 365.7142857142856,
+          "top": 32.50000000000008,
+          "bottom": 36.07142857142865
+        },
+        "horizontalFraction": 0.2857142857142857,
+        "verticalFraction": 0.04761904761904773,
+        "geometryVerdict": "CROPPED",
+        "fadeAlpha": 1,
+        "visibilityEvidence": "GEOMETRY_ONLY",
+        "eyeVerdict": "UNKNOWN",
+        "footVerdict": "UNKNOWN",
+        "subtitleVerdict": "UNKNOWN"
+      },
+      "actual": {
+        "matrix": [
+          1.05,
+          0,
+          0,
+          1.05,
+          -25.600000000000023,
+          -18.200000000000045
+        ],
+        "clip": {
+          "x": 0,
+          "y": 0,
+          "w": 1024,
+          "h": 768
+        },
+        "drawRect": {
+          "x": -204.79999999999998,
+          "y": -18.200000000000045,
+          "w": 1433.6,
+          "h": 806.4000000000001
+        },
+        "fractions": {
+          "left": 0.14285714285714285,
+          "right": 0.14285714285714282,
+          "top": 0.0225694444444445,
+          "bottom": 0.025049603174603228
+        },
+        "operations": [
+          "save",
+          "beginPath",
+          "rect",
+          "clip",
+          "translate",
+          "translate",
+          "scale",
+          "translate",
+          "drawImage"
+        ]
+      }
+    },
+    {
+      "team": "ART",
+      "input": {
+        "width": 1024,
+        "height": 768,
+        "elapsed": 2399
+      },
+      "original": {
+        "fullW": 1024,
+        "fullH": 768,
+        "viewAR": 1.3333,
+        "letterbox": {
+          "cw": 1024,
+          "ch": 768,
+          "lbX": 0,
+          "lbY": 0,
+          "letterboxed": false
+        },
+        "cover": {
+          "branch": "fit-height/cut-sides",
+          "imgR": 1.7778,
+          "cR": 1.3333,
+          "dw": 1365.33,
+          "dh": 768,
+          "dx": -170.67,
+          "dy": 0,
+          "hidden": {
+            "left": 170.67,
+            "right": 170.67,
+            "top": 0,
+            "bottom": 0
+          },
+          "cutFracX": 0.25,
+          "cutFracY": 0
+        },
+        "cutAxis": "X",
+        "cutFrac": 0.25,
+        "verdict": "CROP_SIDE_MAJOR"
+      },
+      "candidate": {
+        "active": "wa24",
+        "timeBase": "line-index",
+        "lineElapsed": 2399,
+        "zoom": 1.0400000069444444,
+        "shake": {
+          "x": 0,
+          "y": 0
+        },
+        "matrix": [
+          1.0400000069444444,
+          0,
+          0,
+          1.0400000069444444,
+          -20.480003555555527,
+          -15.360002666666674
+        ],
+        "letterbox": {
+          "cw": 1024,
+          "ch": 768,
+          "lbX": 0,
+          "lbY": 0,
+          "letterboxed": false
+        },
+        "clip": {
+          "x": 0,
+          "y": 0,
+          "w": 1024,
+          "h": 768
+        },
+        "drawRect": {
+          "x": -197.973338074074,
+          "y": -15.360002666666674,
+          "w": 1419.946676148148,
+          "h": 798.7200053333333
+        },
+        "visibleDrawRect": {
+          "x": 0,
+          "y": 0,
+          "w": 1024,
+          "h": 768
+        },
+        "visibleSourceRect": {
+          "x": 356.92308308678486,
+          "y": 27.69231231508874,
+          "w": 1846.1538338264302,
+          "h": 1384.6153753698225
+        },
+        "fractions": {
+          "left": 0.13942307933077533,
+          "right": 0.13942307933077536,
+          "top": 0.019230772441033845,
+          "bottom": 0.019230772441033845
+        },
+        "sourceLossPixels": {
+          "left": 356.92308308678486,
+          "right": 356.9230830867849,
+          "top": 27.69231231508874,
+          "bottom": 27.69231231508874
+        },
+        "horizontalFraction": 0.2788461586615507,
+        "verticalFraction": 0.03846154488206769,
+        "geometryVerdict": "CROPPED",
+        "fadeAlpha": 1,
+        "visibilityEvidence": "GEOMETRY_ONLY",
+        "eyeVerdict": "UNKNOWN",
+        "footVerdict": "UNKNOWN",
+        "subtitleVerdict": "UNKNOWN"
+      },
+      "actual": {
+        "matrix": [
+          1.0400000069444444,
+          0,
+          0,
+          1.0400000069444444,
+          -20.480003555555527,
+          -15.360002666666674
+        ],
+        "clip": {
+          "x": 0,
+          "y": 0,
+          "w": 1024,
+          "h": 768
+        },
+        "drawRect": {
+          "x": -197.973338074074,
+          "y": -15.360002666666674,
+          "w": 1419.946676148148,
+          "h": 798.7200053333333
+        },
+        "fractions": {
+          "left": 0.13942307933077533,
+          "right": 0.13942307933077536,
+          "top": 0.019230772441033845,
+          "bottom": 0.019230772441033845
+        },
+        "operations": [
+          "save",
+          "beginPath",
+          "rect",
+          "clip",
+          "translate",
+          "translate",
+          "scale",
+          "translate",
+          "drawImage"
+        ]
+      }
+    }
+  ],
+  "findings": [
+    {
+      "id": "S1",
+      "input": "cancelAnimationFrame(id) throws before deleting pending id; retry succeeds if called with old id",
+      "expected": "old scheduled id retained and retry can cancel",
+      "actual": {
+        "before": 1,
+        "remaining": 0,
+        "attempts": [
+          "cancel:1",
+          "mousedown",
+          "mouseup",
+          "contextmenu",
+          "cancel:1"
+        ],
+        "diag": {
+          "listenersAdded": false,
+          "remainingListeners": 0,
+          "errors": 1,
+          "disposed": true,
+          "rafId": 0,
+          "sampledFrames": 0
+        }
+      },
+      "scope": "disposed callback is inert if it later runs; immediate resource release not guaranteed"
+    },
+    {
+      "id": "S2",
+      "input": "readRaw returns object whose zones getter throws during rAF processing",
+      "expected": "error recorded, disposed, listeners0, UNKNOWN",
+      "actual": {
+        "listeners": 0,
+        "disposed": true,
+        "verdict": {
+          "verdict": "UNKNOWN",
+          "region": null,
+          "reason": "충전 증거 부족 또는 관측/정리 예외",
+          "errors": [
+            {
+              "phase": "raf-process",
+              "message": "zones-getter"
+            }
+          ],
+          "unknownCharge": 0,
+          "observationGaps": 0
+        }
+      },
+      "scope": "injected/custom reader object; default reader result is plain; whole processing exception guarantee absent"
+    }
+  ],
+  "pass": 33,
+  "fail": 0,
+  "limits": [
+    "No pixels or browser; ART geometry is not visual acceptance",
+    "SKILL traces injected, no actual game trace supply",
+    "Counterexamples S1/S2 must be scoped to cancellation/processing contracts"
+  ]
+}

@@ -1,0 +1,317 @@
+✖ 1920x1080 400ms actual clip/zoom/shake crop (1.060667ms)
+✖ 1920x1080 1200ms actual clip/zoom/shake crop (0.266458ms)
+✖ 1920x1080 2399ms actual clip/zoom/shake crop (0.226083ms)
+✖ 2560x1080 400ms actual clip/zoom/shake crop (0.224959ms)
+✖ 2560x1080 1200ms actual clip/zoom/shake crop (0.177125ms)
+✖ 2560x1080 2399ms actual clip/zoom/shake crop (0.193042ms)
+✖ 1920x1200 400ms actual clip/zoom/shake crop (0.18875ms)
+✖ 1920x1200 1200ms actual clip/zoom/shake crop (0.201875ms)
+✖ 1920x1200 2399ms actual clip/zoom/shake crop (0.215916ms)
+✖ 1024x768 400ms actual clip/zoom/shake crop (0.218667ms)
+✖ 1024x768 1200ms actual clip/zoom/shake crop (0.189709ms)
+✖ 1024x768 2399ms actual clip/zoom/shake crop (0.178125ms)
+✖ 16:9 root percentages reproduce with unrounded transforms, and letterbox offsets are retained (0.213208ms)
+✖ line-index timing correction remains and shake uses absolute now rather than lineElapsed (0.422167ms)
+✖ fade zero is never a visibility verdict; pan is outside scale and no-crop remains geometric only (0.194125ms)
+✖ source and 12-row evidence stay within UIUX support ownership (0.138458ms)
+ℹ tests 16
+ℹ suites 0
+ℹ pass 0
+ℹ fail 16
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 79.225667
+
+✖ failing tests:
+
+test at tools/team-followup-20261001/UIUX/art-support-finalcrop.test.mjs:12:44
+✖ 1920x1080 400ms actual clip/zoom/shake crop (1.060667ms)
+  evalmachine.<anonymous>:4
+      {id:'wa25',img:null,t:76000,dur:2900,speaker:null,narr:1,text:'',vfx:{vig:.5},fade:{type:'cross',in:400}},
+          ^^^^^^
+  
+  SyntaxError: Invalid destructuring assignment target
+      at new Script (node:vm:117:7)
+      at createScript (node:vm:269:10)
+      at Object.runInNewContext (node:vm:310:10)
+      at actualDraw (file:///Users/fordeargamers/Projects/exoduser-migration-20261001/tools/team-followup-20261001/UIUX/art-support-source-fixture.mjs:63:6)
+      at TestContext.<anonymous> (file:///Users/fordeargamers/Projects/exoduser-migration-20261001/tools/team-followup-20261001/UIUX/art-support-finalcrop.test.mjs:13:20)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1201:25)
+      at Test.start (node:internal/test_runner/test:1096:17)
+      at startSubtestAfterBootstrap (node:internal/test_runner/harness:385:17)
+
+test at tools/team-followup-20261001/UIUX/art-support-finalcrop.test.mjs:12:44
+✖ 1920x1080 1200ms actual clip/zoom/shake crop (0.266458ms)
+  evalmachine.<anonymous>:4
+      {id:'wa25',img:null,t:76000,dur:2900,speaker:null,narr:1,text:'',vfx:{vig:.5},fade:{type:'cross',in:400}},
+          ^^^^^^
+  
+  SyntaxError: Invalid destructuring assignment target
+      at new Script (node:vm:117:7)
+      at createScript (node:vm:269:10)
+      at Object.runInNewContext (node:vm:310:10)
+      at actualDraw (file:///Users/fordeargamers/Projects/exoduser-migration-20261001/tools/team-followup-20261001/UIUX/art-support-source-fixture.mjs:63:6)
+      at TestContext.<anonymous> (file:///Users/fordeargamers/Projects/exoduser-migration-20261001/tools/team-followup-20261001/UIUX/art-support-finalcrop.test.mjs:13:20)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1201:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:831:18)
+      at Test.postRun (node:internal/test_runner/test:1330:19)
+      at Test.run (node:internal/test_runner/test:1258:12)
+
+test at tools/team-followup-20261001/UIUX/art-support-finalcrop.test.mjs:12:44
+✖ 1920x1080 2399ms actual clip/zoom/shake crop (0.226083ms)
+  evalmachine.<anonymous>:4
+      {id:'wa25',img:null,t:76000,dur:2900,speaker:null,narr:1,text:'',vfx:{vig:.5},fade:{type:'cross',in:400}},
+          ^^^^^^
+  
+  SyntaxError: Invalid destructuring assignment target
+      at new Script (node:vm:117:7)
+      at createScript (node:vm:269:10)
+      at Object.runInNewContext (node:vm:310:10)
+      at actualDraw (file:///Users/fordeargamers/Projects/exoduser-migration-20261001/tools/team-followup-20261001/UIUX/art-support-source-fixture.mjs:63:6)
+      at TestContext.<anonymous> (file:///Users/fordeargamers/Projects/exoduser-migration-20261001/tools/team-followup-20261001/UIUX/art-support-finalcrop.test.mjs:13:20)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1201:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:831:18)
+      at Test.postRun (node:internal/test_runner/test:1330:19)
+      at Test.run (node:internal/test_runner/test:1258:12)
+
+test at tools/team-followup-20261001/UIUX/art-support-finalcrop.test.mjs:12:44
+✖ 2560x1080 400ms actual clip/zoom/shake crop (0.224959ms)
+  evalmachine.<anonymous>:4
+      {id:'wa25',img:null,t:76000,dur:2900,speaker:null,narr:1,text:'',vfx:{vig:.5},fade:{type:'cross',in:400}},
+          ^^^^^^
+  
+  SyntaxError: Invalid destructuring assignment target
+      at new Script (node:vm:117:7)
+      at createScript (node:vm:269:10)
+      at Object.runInNewContext (node:vm:310:10)
+      at actualDraw (file:///Users/fordeargamers/Projects/exoduser-migration-20261001/tools/team-followup-20261001/UIUX/art-support-source-fixture.mjs:63:6)
+      at TestContext.<anonymous> (file:///Users/fordeargamers/Projects/exoduser-migration-20261001/tools/team-followup-20261001/UIUX/art-support-finalcrop.test.mjs:13:20)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1201:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:831:18)
+      at Test.postRun (node:internal/test_runner/test:1330:19)
+      at Test.run (node:internal/test_runner/test:1258:12)
+
+test at tools/team-followup-20261001/UIUX/art-support-finalcrop.test.mjs:12:44
+✖ 2560x1080 1200ms actual clip/zoom/shake crop (0.177125ms)
+  evalmachine.<anonymous>:4
+      {id:'wa25',img:null,t:76000,dur:2900,speaker:null,narr:1,text:'',vfx:{vig:.5},fade:{type:'cross',in:400}},
+          ^^^^^^
+  
+  SyntaxError: Invalid destructuring assignment target
+      at new Script (node:vm:117:7)
+      at createScript (node:vm:269:10)
+      at Object.runInNewContext (node:vm:310:10)
+      at actualDraw (file:///Users/fordeargamers/Projects/exoduser-migration-20261001/tools/team-followup-20261001/UIUX/art-support-source-fixture.mjs:63:6)
+      at TestContext.<anonymous> (file:///Users/fordeargamers/Projects/exoduser-migration-20261001/tools/team-followup-20261001/UIUX/art-support-finalcrop.test.mjs:13:20)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1201:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:831:18)
+      at Test.postRun (node:internal/test_runner/test:1330:19)
+      at Test.run (node:internal/test_runner/test:1258:12)
+
+test at tools/team-followup-20261001/UIUX/art-support-finalcrop.test.mjs:12:44
+✖ 2560x1080 2399ms actual clip/zoom/shake crop (0.193042ms)
+  evalmachine.<anonymous>:4
+      {id:'wa25',img:null,t:76000,dur:2900,speaker:null,narr:1,text:'',vfx:{vig:.5},fade:{type:'cross',in:400}},
+          ^^^^^^
+  
+  SyntaxError: Invalid destructuring assignment target
+      at new Script (node:vm:117:7)
+      at createScript (node:vm:269:10)
+      at Object.runInNewContext (node:vm:310:10)
+      at actualDraw (file:///Users/fordeargamers/Projects/exoduser-migration-20261001/tools/team-followup-20261001/UIUX/art-support-source-fixture.mjs:63:6)
+      at TestContext.<anonymous> (file:///Users/fordeargamers/Projects/exoduser-migration-20261001/tools/team-followup-20261001/UIUX/art-support-finalcrop.test.mjs:13:20)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1201:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:831:18)
+      at Test.postRun (node:internal/test_runner/test:1330:19)
+      at Test.run (node:internal/test_runner/test:1258:12)
+
+test at tools/team-followup-20261001/UIUX/art-support-finalcrop.test.mjs:12:44
+✖ 1920x1200 400ms actual clip/zoom/shake crop (0.18875ms)
+  evalmachine.<anonymous>:4
+      {id:'wa25',img:null,t:76000,dur:2900,speaker:null,narr:1,text:'',vfx:{vig:.5},fade:{type:'cross',in:400}},
+          ^^^^^^
+  
+  SyntaxError: Invalid destructuring assignment target
+      at new Script (node:vm:117:7)
+      at createScript (node:vm:269:10)
+      at Object.runInNewContext (node:vm:310:10)
+      at actualDraw (file:///Users/fordeargamers/Projects/exoduser-migration-20261001/tools/team-followup-20261001/UIUX/art-support-source-fixture.mjs:63:6)
+      at TestContext.<anonymous> (file:///Users/fordeargamers/Projects/exoduser-migration-20261001/tools/team-followup-20261001/UIUX/art-support-finalcrop.test.mjs:13:20)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1201:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:831:18)
+      at Test.postRun (node:internal/test_runner/test:1330:19)
+      at Test.run (node:internal/test_runner/test:1258:12)
+
+test at tools/team-followup-20261001/UIUX/art-support-finalcrop.test.mjs:12:44
+✖ 1920x1200 1200ms actual clip/zoom/shake crop (0.201875ms)
+  evalmachine.<anonymous>:4
+      {id:'wa25',img:null,t:76000,dur:2900,speaker:null,narr:1,text:'',vfx:{vig:.5},fade:{type:'cross',in:400}},
+          ^^^^^^
+  
+  SyntaxError: Invalid destructuring assignment target
+      at new Script (node:vm:117:7)
+      at createScript (node:vm:269:10)
+      at Object.runInNewContext (node:vm:310:10)
+      at actualDraw (file:///Users/fordeargamers/Projects/exoduser-migration-20261001/tools/team-followup-20261001/UIUX/art-support-source-fixture.mjs:63:6)
+      at TestContext.<anonymous> (file:///Users/fordeargamers/Projects/exoduser-migration-20261001/tools/team-followup-20261001/UIUX/art-support-finalcrop.test.mjs:13:20)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1201:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:831:18)
+      at Test.postRun (node:internal/test_runner/test:1330:19)
+      at Test.run (node:internal/test_runner/test:1258:12)
+
+test at tools/team-followup-20261001/UIUX/art-support-finalcrop.test.mjs:12:44
+✖ 1920x1200 2399ms actual clip/zoom/shake crop (0.215916ms)
+  evalmachine.<anonymous>:4
+      {id:'wa25',img:null,t:76000,dur:2900,speaker:null,narr:1,text:'',vfx:{vig:.5},fade:{type:'cross',in:400}},
+          ^^^^^^
+  
+  SyntaxError: Invalid destructuring assignment target
+      at new Script (node:vm:117:7)
+      at createScript (node:vm:269:10)
+      at Object.runInNewContext (node:vm:310:10)
+      at actualDraw (file:///Users/fordeargamers/Projects/exoduser-migration-20261001/tools/team-followup-20261001/UIUX/art-support-source-fixture.mjs:63:6)
+      at TestContext.<anonymous> (file:///Users/fordeargamers/Projects/exoduser-migration-20261001/tools/team-followup-20261001/UIUX/art-support-finalcrop.test.mjs:13:20)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1201:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:831:18)
+      at Test.postRun (node:internal/test_runner/test:1330:19)
+      at Test.run (node:internal/test_runner/test:1258:12)
+
+test at tools/team-followup-20261001/UIUX/art-support-finalcrop.test.mjs:12:44
+✖ 1024x768 400ms actual clip/zoom/shake crop (0.218667ms)
+  evalmachine.<anonymous>:4
+      {id:'wa25',img:null,t:76000,dur:2900,speaker:null,narr:1,text:'',vfx:{vig:.5},fade:{type:'cross',in:400}},
+          ^^^^^^
+  
+  SyntaxError: Invalid destructuring assignment target
+      at new Script (node:vm:117:7)
+      at createScript (node:vm:269:10)
+      at Object.runInNewContext (node:vm:310:10)
+      at actualDraw (file:///Users/fordeargamers/Projects/exoduser-migration-20261001/tools/team-followup-20261001/UIUX/art-support-source-fixture.mjs:63:6)
+      at TestContext.<anonymous> (file:///Users/fordeargamers/Projects/exoduser-migration-20261001/tools/team-followup-20261001/UIUX/art-support-finalcrop.test.mjs:13:20)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1201:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:831:18)
+      at Test.postRun (node:internal/test_runner/test:1330:19)
+      at Test.run (node:internal/test_runner/test:1258:12)
+
+test at tools/team-followup-20261001/UIUX/art-support-finalcrop.test.mjs:12:44
+✖ 1024x768 1200ms actual clip/zoom/shake crop (0.189709ms)
+  evalmachine.<anonymous>:4
+      {id:'wa25',img:null,t:76000,dur:2900,speaker:null,narr:1,text:'',vfx:{vig:.5},fade:{type:'cross',in:400}},
+          ^^^^^^
+  
+  SyntaxError: Invalid destructuring assignment target
+      at new Script (node:vm:117:7)
+      at createScript (node:vm:269:10)
+      at Object.runInNewContext (node:vm:310:10)
+      at actualDraw (file:///Users/fordeargamers/Projects/exoduser-migration-20261001/tools/team-followup-20261001/UIUX/art-support-source-fixture.mjs:63:6)
+      at TestContext.<anonymous> (file:///Users/fordeargamers/Projects/exoduser-migration-20261001/tools/team-followup-20261001/UIUX/art-support-finalcrop.test.mjs:13:20)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1201:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:831:18)
+      at Test.postRun (node:internal/test_runner/test:1330:19)
+      at Test.run (node:internal/test_runner/test:1258:12)
+
+test at tools/team-followup-20261001/UIUX/art-support-finalcrop.test.mjs:12:44
+✖ 1024x768 2399ms actual clip/zoom/shake crop (0.178125ms)
+  evalmachine.<anonymous>:4
+      {id:'wa25',img:null,t:76000,dur:2900,speaker:null,narr:1,text:'',vfx:{vig:.5},fade:{type:'cross',in:400}},
+          ^^^^^^
+  
+  SyntaxError: Invalid destructuring assignment target
+      at new Script (node:vm:117:7)
+      at createScript (node:vm:269:10)
+      at Object.runInNewContext (node:vm:310:10)
+      at actualDraw (file:///Users/fordeargamers/Projects/exoduser-migration-20261001/tools/team-followup-20261001/UIUX/art-support-source-fixture.mjs:63:6)
+      at TestContext.<anonymous> (file:///Users/fordeargamers/Projects/exoduser-migration-20261001/tools/team-followup-20261001/UIUX/art-support-finalcrop.test.mjs:13:20)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1201:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:831:18)
+      at Test.postRun (node:internal/test_runner/test:1330:19)
+      at Test.run (node:internal/test_runner/test:1258:12)
+
+test at tools/team-followup-20261001/UIUX/art-support-finalcrop.test.mjs:39:1
+✖ 16:9 root percentages reproduce with unrounded transforms, and letterbox offsets are retained (0.213208ms)
+  evalmachine.<anonymous>:4
+      {id:'wa25',img:null,t:76000,dur:2900,speaker:null,narr:1,text:'',vfx:{vig:.5},fade:{type:'cross',in:400}},
+          ^^^^^^
+  
+  SyntaxError: Invalid destructuring assignment target
+      at new Script (node:vm:117:7)
+      at createScript (node:vm:269:10)
+      at Object.runInNewContext (node:vm:310:10)
+      at actualDraw (file:///Users/fordeargamers/Projects/exoduser-migration-20261001/tools/team-followup-20261001/UIUX/art-support-source-fixture.mjs:63:6)
+      at TestContext.<anonymous> (file:///Users/fordeargamers/Projects/exoduser-migration-20261001/tools/team-followup-20261001/UIUX/art-support-finalcrop.test.mjs:41:20)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1201:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:831:18)
+      at Test.postRun (node:internal/test_runner/test:1330:19)
+      at Test.run (node:internal/test_runner/test:1258:12)
+
+test at tools/team-followup-20261001/UIUX/art-support-finalcrop.test.mjs:49:1
+✖ line-index timing correction remains and shake uses absolute now rather than lineElapsed (0.422167ms)
+  evalmachine.<anonymous>:4
+      {id:'wa25',img:null,t:76000,dur:2900,speaker:null,narr:1,text:'',vfx:{vig:.5},fade:{type:'cross',in:400}},
+          ^^^^^^
+  
+  SyntaxError: Invalid destructuring assignment target
+      at new Script (node:vm:117:7)
+      at createScript (node:vm:269:10)
+      at Object.runInNewContext (node:vm:310:10)
+      at actualDraw (file:///Users/fordeargamers/Projects/exoduser-migration-20261001/tools/team-followup-20261001/UIUX/art-support-source-fixture.mjs:63:6)
+      at TestContext.<anonymous> (file:///Users/fordeargamers/Projects/exoduser-migration-20261001/tools/team-followup-20261001/UIUX/art-support-finalcrop.test.mjs:54:18)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1201:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:831:18)
+      at Test.postRun (node:internal/test_runner/test:1330:19)
+      at Test.run (node:internal/test_runner/test:1258:12)
+
+test at tools/team-followup-20261001/UIUX/art-support-finalcrop.test.mjs:60:1
+✖ fade zero is never a visibility verdict; pan is outside scale and no-crop remains geometric only (0.194125ms)
+  AssertionError [ERR_ASSERTION]: 8 != 5
+      at near (file:///Users/fordeargamers/Projects/exoduser-migration-20261001/tools/team-followup-20261001/UIUX/art-support-finalcrop.test.mjs:10:43)
+      at TestContext.<anonymous> (file:///Users/fordeargamers/Projects/exoduser-migration-20261001/tools/team-followup-20261001/UIUX/art-support-finalcrop.test.mjs:67:3)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1201:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:831:18)
+      at Test.postRun (node:internal/test_runner/test:1330:19)
+      at Test.run (node:internal/test_runner/test:1258:12)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:831:7) {
+    generatedMessage: false,
+    code: 'ERR_ASSERTION',
+    actual: false,
+    expected: true,
+    operator: '==',
+    diff: 'simple'
+  }
+
+test at tools/team-followup-20261001/UIUX/art-support-finalcrop.test.mjs:74:1
+✖ source and 12-row evidence stay within UIUX support ownership (0.138458ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:
+  
+  0 !== 12
+  
+      at TestContext.<anonymous> (file:///Users/fordeargamers/Projects/exoduser-migration-20261001/tools/team-followup-20261001/UIUX/art-support-finalcrop.test.mjs:75:10)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1201:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:831:18)
+      at Test.postRun (node:internal/test_runner/test:1330:19)
+      at Test.run (node:internal/test_runner/test:1258:12)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:831:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: 0,
+    expected: 12,
+    operator: 'strictEqual',
+    diff: 'simple'
+  }
