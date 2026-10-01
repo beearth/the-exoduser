@@ -1,0 +1,22 @@
+{
+  "summary.json": {
+    "bytes": 20923,
+    "sha256": "b861242d4df834a444976680fa80072eddd949318417c76294fb818a4fb988f0"
+  },
+  "plan.json": {
+    "bytes": 911,
+    "sha256": "ce9b231d7c302874227d3c4d24aa49ee2812b61e3124bc0dfabf759a913006c7"
+  },
+  "evidence.zip": {
+    "bytes": 116111,
+    "sha256": "479ef047da37b28be02b7b023cb553728dc85e5ca824bc1a7ff62f64a8321a9a"
+  },
+  "post-observation.png": {
+    "bytes": 138920,
+    "sha256": "6ff8647eab0d6aa380c2e1eb9d3374f3b3edb2ca267bb3745295e63b409fd40d"
+  },
+  "cleanup.json": {
+    "bytes": 681,
+    "sha256": "392d15bda9be7a39e84c0b53efaca00c4c3910f442d5b7e16409929ca301f112"
+  }
+}

@@ -1,0 +1,22 @@
+{
+  "at": "2026-10-01T17:26:33.571005+09:00",
+  "head": "479cf55c0a6422551e11762e117c5ff737b371cf",
+  "gameSHA": "4fe6a6e0806126a595c2933beb925233eba03174832a216b78928fe9ec8e897e",
+  "serverPID": 40609,
+  "port": 3340,
+  "savedir": "tmp/mac-migration-runtime/saves",
+  "plannedRunsMax": 2,
+  "primaryStop": "25 seconds after first native W or canvas mousedown; earlier natural death HP<=0 or G.on=false after combat started",
+  "installDeadlineSeconds": 120,
+  "viewport": [
+    1352,
+    663
+  ],
+  "DPR": 1,
+  "CPUProfiler": false,
+  "GPUtimer": false,
+  "forcedReadback": false,
+  "comparison": "prior83.4/116.7 independent rAF timestamp delta; prior76.7 actual draw start delta, different sample/DPR/profiler. No pooled comparison.",
+  "concurrency": "Chrome user tabs only lobby/new/Claude/GitHub; no active game; Claude11 done; no build or encoding process observed",
+  "productionChangesAllowed": false
+}

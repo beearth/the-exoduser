@@ -1,0 +1,19 @@
+{
+  "at": "2026-10-01T17:31:04.015680+09:00",
+  "gameSHA": "4fe6a6e0806126a595c2933beb925233eba03174832a216b78928fe9ec8e897e",
+  "productionDiffEmpty": true,
+  "protected22StatusIdentical": true,
+  "sharedIndexEmpty": true,
+  "restoredObserved": {
+    "draw": true,
+    "loop": true,
+    "update": true
+  },
+  "observerReachedEndOfUndoLoop": true,
+  "gameNavigatedAboutBlank": true,
+  "viewportReset": true,
+  "optionsChangedDuringWindow": false,
+  "actualGameRuns": 1,
+  "finalObserverChange": "after measurement, cleanup exception isolation only, unit tested without another game run",
+  "measuredObserverSHA": "37152ab4d3078b1a911514519ff1f00b0265c1907a74bde84dac606a586a3601"
+}
