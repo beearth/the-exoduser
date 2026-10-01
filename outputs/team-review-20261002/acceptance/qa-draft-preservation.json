@@ -1,0 +1,9 @@
+{
+  "sessionId": "88c3f903-ece5-4640-8b0c-86feaaca0e53",
+  "surface": "VS Code existing Terminal 1 / Mac QA task dispatch",
+  "observedDraft": "Read tools/team-followup-20261001/QA/NEXT_TASK.md",
+  "observedCompletedOutput": "fire-boundary-regression.mjs 8/8 PASS; independent warmImageAsyncHandoff/warmFireObserver 16/16 PASS; done 8:58 PM",
+  "comparison": "Draft names same previously received/completed fire-boundary task. Current task is independent confirm/inventory review.",
+  "preservation": "Do not delete or overwrite original draft text. Append explicit statement that previous referenced task is completed and must not rerun, followed by single new task pointer. No user text removed.",
+  "dispatch": "prepared; actual UI submission/Read recorded separately"
+}

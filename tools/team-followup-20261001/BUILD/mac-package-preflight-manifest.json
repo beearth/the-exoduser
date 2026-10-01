@@ -1,0 +1,9 @@
+{
+ "sourceRoot":"/Users/fordeargamers/Projects/exoduser-migration-20261001",
+ "outputRoot":"/Users/fordeargamers/Projects/exoduser-migration-20261001/tools/team-followup-20261001/BUILD",
+ "arch":"arm64",
+ "inputs":[{"path":"game.html","sha256":"21235538c9766a28b04dcf529aed9883a8aa11bdbfef8e9e2ce35d5cc927c5cf","backupSha256":"21235538c9766a28b04dcf529aed9883a8aa11bdbfef8e9e2ce35d5cc927c5cf"}],
+ "backup":{"localSha":"4fb217eaae985b196a9ff0b90fdd1ed1eb02ceca","remoteSha":"4fb217eaae985b196a9ff0b90fdd1ed1eb02ceca","remoteRef":"UNKNOWN","verifiedAt":"2026-10-01T15:06:40.906792+00:00"},
+ "runtime":null,
+ "scope":"live-prewarm/preflight.json 제공gameSHA만대조;전체입력manifest아님"
+}

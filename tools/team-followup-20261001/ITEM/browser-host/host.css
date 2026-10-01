@@ -1,0 +1,5 @@
+:root { color-scheme: dark; font: 16px/1.6 system-ui, sans-serif; background: #171a20; color: #eceef2; }
+main { max-width: 860px; margin: 3rem auto; padding: 1.5rem; }
+button { margin: .75rem .5rem .75rem 0; padding: .65rem 1rem; font: inherit; cursor: pointer; }
+section { border-top: 1px solid #596275; margin-top: 1rem; }
+pre { white-space: pre-wrap; overflow-wrap: anywhere; color: #ffcc98; }

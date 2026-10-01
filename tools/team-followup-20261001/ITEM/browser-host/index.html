@@ -1,0 +1,23 @@
+<!doctype html>
+<html lang="ko">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'self'; style-src 'self'; connect-src 'self'; base-uri 'none'; form-action 'none'">
+  <title>D10 reviewOnly 저장 후보 호스트</title>
+  <link rel="stylesheet" href="./host.css">
+</head>
+<body>
+  <main>
+    <h1>D10 검토 전용 합성 fixture</h1>
+    <p>제안 · 비활성 · runtimeReady=false. 게임·사용자 저장·DB·공유 악의·드롭·전투 효과와 연결하지 않습니다.</p>
+    <label><input id="opt-in" type="checkbox"> reviewOnly 검토 설치에 명시 동의</label>
+    <div><button id="install" type="button">의존 확인 후 검토 설치</button><button id="uninstall" type="button">검토 해제</button></div>
+    <p id="status" role="status">호스트 스크립트 실행 전입니다. 이 문구가 유지되면 CSP/JS MIME/모듈 오류를 확인하세요. 자동 설치·생성 없음.</p>
+    <p id="counts">base RNG=0 · D10 RNG=0 · restore RNG=0</p>
+    <section id="review" aria-label="합성 fixture 신규 생성 및 JSON 복원"></section>
+    <pre id="errors" aria-label="CSP·HTTP MIME·import 진단"></pre>
+  </main>
+  <script type="module" src="./host.js"></script>
+</body>
+</html>

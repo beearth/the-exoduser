@@ -1,0 +1,53 @@
+{
+  "mode": "dry-run/read-only",
+  "at": "2026-10-01T15:53:14.757Z",
+  "status": "BLOCKED",
+  "checks": [
+    {
+      "name": "입력root",
+      "pass": true,
+      "evidence": "/Users/fordeargamers/Projects/exoduser-migration-20261001"
+    },
+    {
+      "name": "원격복구증거",
+      "pass": true,
+      "evidence": {
+        "localSha": "98aedab7dd3df41a57c2311bfc4cf79731057e60",
+        "remoteSha": "98aedab7dd3df41a57c2311bfc4cf79731057e60",
+        "remoteRef": "refs/heads/codex/mac-environment-20261001",
+        "verifiedAt": "2026-10-01T15:53:14.724584+00:00",
+        "trust": "제공된증거;외부조회0"
+      }
+    },
+    {
+      "name": "명시입력SHA/원격보존입력SHA",
+      "pass": true,
+      "evidence": [
+        {
+          "path": "game.html",
+          "sha256": "21235538c9766a28b04dcf529aed9883a8aa11bdbfef8e9e2ce35d5cc927c5cf"
+        }
+      ]
+    },
+    {
+      "name": "고유출력경로/덮어쓰기금지",
+      "pass": true,
+      "evidence": {
+        "path": "/Users/fordeargamers/Projects/exoduser-migration-20261001/tools/team-followup-20261001/BUILD/EXODUSER-mac-arm64-5bee2494-e2c9-4f7c-8820-fa4f4fc6804b",
+        "exists": false,
+        "reserved": false
+      }
+    },
+    {
+      "name": "Mac런타임존재/헤더대상일치",
+      "pass": false,
+      "error": "MAC_RUNTIME_MISSING"
+    }
+  ],
+  "limitations": [
+    "원격SHA는제공된증거대조이며Git원격독립조회아님",
+    "명시목록만검사;전체에셋완전성/런타임서명/코덱/실행검수아님",
+    "출력경로는예약하지않음;실제생성직전독점mkdir와전체입력재검증필요"
+  ],
+  "packageCreated": false
+}

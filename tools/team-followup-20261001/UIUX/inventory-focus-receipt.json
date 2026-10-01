@@ -1,0 +1,20 @@
+{
+  "작업": "UIUX-20261002-INVENTORY-FOCUS",
+  "수신": "사용자 승인 지시 수신, 메시지 자체 시각 미제공",
+  "첫ReadUTC": "2026-10-01T15:26:18Z",
+  "중복확인": "소유 prefix에는 task.md만 존재. 기존 정렬·닫기 네이티브 버튼 작업은 완료, 이번 빈 상세 반환 오류와 구분",
+  "실제Read": "UI-04·UI_COMPOSITION 관련 현행절·인벤토리 SSOT·ui-panels.js·양쪽 _invRenderDetail/_invRestoreSelectedActions/패널 함수·기존 검사",
+  "첫코드Edit": "이 영수증과 후보 apply_patch 실제 호출, UTC 2026-10-01T15:26:50Z~15:28:56Z 사이. 호출 순간 별도 wall-clock 미채집",
+  "검수UTC": "2026-10-01T15:30:13.122Z, 신규21PASS·기존9PASS·양쪽 patch 생성",
+  "최종검수UTC": "2026-10-01T15:31:42Z, 후보 classic inline 각4개 구문PASS·원소스3개 SHA 불변",
+  "완료": "최종 검수 후 이 receipt/result Edit로 root 인계. 다음 범위 직접 시작0",
+  "시각기준": "실제 도구 UTC 사용. 사용자 환경의20261002 작업명과 별개이며 한국시각은 UTC+9",
+  "원소스해시": "inventory-focus-source-hashes.json 및 inventory-focus-final-check.json",
+  "재현근거": "실제 _invRenderDetail 추출, 양쪽 bag/eq/st 최소6 오류경로 원식/후보 대조12행 inventory-focus-reproduction.json",
+  "검사오류": "첫 구문 검사 도구가 importmap을 JS로 오분류. 제외 후8inline PASS, 생산수정0",
+  "docs반영안": "docs 전체 검색 inventory-focus-doc-matches.txt 및 result의 반영표. 공유 docs 수정0",
+  "상태": "한 건 미적용 후보·호출 연결·회귀 완료, root 인계",
+  "남은게이트": "실제 화면의 초점 가시성·Tab 순회·KO/EN·크기별 레이아웃·패드·승인 적용 검수",
+  "생산수정": false,
+  "실화면패드검수": "UNKNOWN"
+}

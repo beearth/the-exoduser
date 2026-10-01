@@ -1,0 +1,110 @@
+[
+  {
+    "status": "fulfilled",
+    "value": {
+      "team": "ITEM",
+      "threadId": "01a0f6e6-1fbe-7df0-8d02-a9c2d9df3750",
+      "status": "interrupted",
+      "turnId": "01a0f829-cb17-7820-9e01-6c7e2db69462",
+      "startedAt": 1790869883,
+      "completedAt": null,
+      "firstAction": {
+        "type": "commandExecution",
+        "id": "exec-151595fe-06f8-4a43-993b-97ee12afb2f3",
+        "command": "/bin/zsh -lc \"date -u +%Y-%m-%dT%H:%M:%SZ; rg --files tools/team-followup-20261001/ITEM | rg 'browser-host|AGENTS'; for p in tools/AGENTS.md tools/team-followup-20261001/AGENTS.md tools/team-followup-20261001/ITEM/AGENTS.md; do if [ -f \\\"\"'$p\" ]; then cat \"$p\"; fi; done'",
+        "cwd": "/Users/fordeargamers/Projects/exoduser-migration-20261001",
+        "status": "completed",
+        "exitCode": 0,
+        "durationMs": 0
+      },
+      "firstCodeEdit": {
+        "path": "/Users/fordeargamers/Projects/exoduser-migration-20261001/tools/team-followup-20261001/ITEM/browser-host-transform.mjs",
+        "kind": {
+          "type": "add"
+        }
+      },
+      "final": []
+    }
+  },
+  {
+    "status": "fulfilled",
+    "value": {
+      "team": "UIUX",
+      "threadId": "01a0f6e5-8653-7ae2-8b2b-314e275c215c",
+      "status": "interrupted",
+      "turnId": "01a0f829-cb38-73d1-8927-3ca64662d558",
+      "startedAt": 1790869883,
+      "completedAt": null,
+      "firstAction": {
+        "type": "commandExecution",
+        "id": "exec-babb76a4-83e5-4f4b-bd7a-4f268cb4d1bb",
+        "command": "/bin/zsh -lc \"date -u '+%Y-%m-%dT%H:%M:%SZ'; rg --files tools -g AGENTS.md; cat 'tools/team-followup-20261001/UIUX/inventory-dom-task.md'; sed -n '20,39p' 'docs/3.1 ui hud 디자인/UI_UX_IMPROVEMENT_PROJECT_20260930.md'; sed -n '850,869p' 'docs/2_7 인벤토리+장비시스템/2_7 인벤토리+장비시스템.md'; sed -n '1,150p' tools/team-followup-20261001/UIUX/inventory-focus-candidate.mjs; cat package.json | head -n 40; rg --files node_modules 2>/dev/null | rg '/(jsdom|linkedom|happy-dom)/' | head -n 5\"",
+        "cwd": "/Users/fordeargamers/Projects/exoduser-migration-20261001",
+        "status": "completed",
+        "exitCode": 0,
+        "durationMs": 0
+      },
+      "firstCodeEdit": {
+        "path": "/Users/fordeargamers/Projects/exoduser-migration-20261001/tools/team-followup-20261001/UIUX/inventory-dom-candidate.mjs",
+        "kind": {
+          "type": "add"
+        }
+      },
+      "final": []
+    }
+  },
+  {
+    "status": "fulfilled",
+    "value": {
+      "team": "BUILD",
+      "threadId": "01a0f6e6-2e4c-7322-92d7-3aa309857856",
+      "status": "interrupted",
+      "turnId": "01a0f829-cb5e-7161-ae19-5eef4b2bdbcb",
+      "startedAt": 1790869883,
+      "completedAt": null,
+      "firstAction": {
+        "type": "commandExecution",
+        "id": "exec-338ea2ed-dfa4-43b9-8c70-ada74e0b5b25",
+        "command": "/bin/zsh -lc \"date -u '+%Y-%m-%dT%H:%M:%SZ'; ls tools/team-followup-20261001/BUILD/mac-packager* 2>/dev/null; cat node_modules/nw-builder/src/index.js; sed -n '90,280p' node_modules/nw-builder/src/bld.js\"",
+        "cwd": "/Users/fordeargamers/Projects/exoduser-migration-20261001",
+        "status": "completed",
+        "exitCode": 0,
+        "durationMs": 0
+      },
+      "firstCodeEdit": {
+        "path": "/Users/fordeargamers/Projects/exoduser-migration-20261001/tools/team-followup-20261001/BUILD/mac-packager-cli.mjs",
+        "kind": {
+          "type": "add"
+        }
+      },
+      "final": []
+    }
+  },
+  {
+    "status": "fulfilled",
+    "value": {
+      "team": "BALANCE",
+      "threadId": "01a0f6e6-5303-7392-81ba-94c42e349ffc",
+      "status": "interrupted",
+      "turnId": "01a0f829-cb7d-7fb2-a902-698de5a7c0f6",
+      "startedAt": 1790869883,
+      "completedAt": null,
+      "firstAction": {
+        "type": "commandExecution",
+        "id": "exec-ad891210-2d4a-4cdc-8cee-03f71353cc78",
+        "command": "/bin/zsh -lc \"date -u '+%Y-%m-%dT%H:%M:%SZ'; rg --files -g AGENTS.md; rg --files tools/team-followup-20261001/BALANCE | rg 'ai-enhance-persistence'; sed -n '3900,3935p' game.html; rg -n 'forgeClose|forgeOpen=false|closeForge|forgeOverlay|forge.*onclick|beforeunload|visibilitychange' game.html | tail -23\"",
+        "cwd": "/Users/fordeargamers/Projects/exoduser-migration-20261001",
+        "status": "completed",
+        "exitCode": 0,
+        "durationMs": 0
+      },
+      "firstCodeEdit": {
+        "path": "/Users/fordeargamers/Projects/exoduser-migration-20261001/tools/team-followup-20261001/BALANCE/ai-enhance-persistence-harness.mjs",
+        "kind": {
+          "type": "add"
+        }
+      },
+      "final": []
+    }
+  }
+]

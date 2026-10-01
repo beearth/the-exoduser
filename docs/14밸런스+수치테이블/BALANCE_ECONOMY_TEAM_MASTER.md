@@ -136,3 +136,7 @@ test/onHitFireballStack.test.js가 양쪽 실제 _eqAffix/hurtE를 추출하여3
 
 
 Node 후보 연결과 root 보강 회귀61PASS. 게임 생성/드롭/저장라우터·실제UI·패키지 연결은 미완료이며 활성0을 유지한다. 기존 소켓누락 마이그레이션 RNG·affixes 보충은 그대로다. [실제 검수·반례·제한](../0마스터플랜/mac-resume-20261001/vscode-dispatch/BINDING-root-review.md).
+
+### 2026-10-02 강화 계약 root 인수
+
+실제 본편/easy 수동/AI 강화와 저장 객체식 validator2880입력+56경계를 root가 재실행해 통과했다. 비용·올림·할인·게이트/차감 mismatch 미발견, 수치변경0. AI _doAiEnhance 직접 저장 예약0은 확인했지만 전체영속화 손실과 구분하여 실제 debounce/dbSave/dbRestore·닫기/자동저장 source fixture 후속을 기존 BALANCE에 배정했다. 보호 패링 정규식 기존1FAIL은 이전 증거로 분리했고 보호코드/검사 수정0. [인수·한계](../0마스터플랜/mac-resume-20261001/vscode-dispatch/FOUR-SUBMISSIONS-HELLRAY-20261002.md).

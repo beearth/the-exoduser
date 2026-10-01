@@ -1,0 +1,12 @@
+{
+  "at": "2026-10-01T15:49:29.673033+00:00",
+  "head": "98aedab7dd3df41a57c2311bfc4cf79731057e60",
+  "remote": "98aedab7dd3df41a57c2311bfc4cf79731057e60\trefs/heads/codex/mac-environment-20261001",
+  "staged": "",
+  "protected": {
+    "game.html": "21235538c9766a28b04dcf529aed9883a8aa11bdbfef8e9e2ce35d5cc927c5cf",
+    "game-easy-test.html": "4c408f1e7b57210900ddfa8a0646502f91b6a0bbc798a24338eb159cb613d874",
+    "server.cjs": "339fad6ab51cba92f6ca7a386c8aeb251f68cdb58cdfa55c109f57b1758a42ad",
+    "index.html": "38f4e0e97ed63014e86ec48a14d9d0a677472ef57b99916f9a48b7b3395e66c8"
+  }
+}

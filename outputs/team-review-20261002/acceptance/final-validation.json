@@ -1,0 +1,16 @@
+{
+  "checkedAt": "2026-10-01T16:03:21.512911+00:00",
+  "stagedFileCount": 104,
+  "scopeExact": true,
+  "productionDiff": "hellRay confirmation guards only in game.html and game-easy-test.html",
+  "rootTests": "production24; owner before/fixed25; independent QA17; ITEM bootstrap23/host12 + actual browser; UIUX21+9; BUILD preflight28; BALANCE2880+56",
+  "whitespace": "Non-patch artifacts PASS; preserved UIUX .patch blank context lines trigger diff --check and were not rewritten",
+  "userGame": "no input/reload/close; marked deliverable; temporary independent review tab closed",
+  "excluded": "Unreviewed latest UIUX/BUILD/BALANCE and ART/MAP/ENEMY/ANIMVFX code; unrelated backup normalization WIP; saves/runtime/assets/builds",
+  "protected": {
+    "game.html": "f7212ac287665f831975c47523783967374db4c1219b898e57bca5f97cfa1649",
+    "game-easy-test.html": "34ffa8ae1ff4a4509e695f921eef53e0a236aff63184459d13a915f37434bd04",
+    "server.cjs": "339fad6ab51cba92f6ca7a386c8aeb251f68cdb58cdfa55c109f57b1758a42ad",
+    "index.html": "38f4e0e97ed63014e86ec48a14d9d0a677472ef57b99916f9a48b7b3395e66c8"
+  }
+}

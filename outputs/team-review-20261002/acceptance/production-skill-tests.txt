@@ -1,0 +1,32 @@
+✔ game.html: fixed before reproduces negative MP and stack (1.069583ms)
+✔ game.html: valid success preserves every observed effect; fused=false (0.770791ms)
+✔ game.html: valid success preserves every observed effect; fused=true (0.459584ms)
+✔ game.html: confirm resource boundary 99/1 (0.323417ms)
+✔ game.html: confirm resource boundary 0/1 (0.2475ms)
+✔ game.html: confirm resource boundary 100/0 (0.23675ms)
+✔ game.html: confirm resource boundary 100/undefined (0.35375ms)
+✔ game.html: resource changes while aiming; refill succeeds once (0.231542ms)
+✔ game.html: simultaneous cancel owns confirm cancel (0.339541ms)
+✔ game.html: simultaneous cancel owns confirm escape (0.4105ms)
+✔ game-easy-test.html: fixed before reproduces negative MP and stack (0.50575ms)
+✔ game-easy-test.html: valid success preserves every observed effect; fused=false (0.41725ms)
+✔ game-easy-test.html: valid success preserves every observed effect; fused=true (0.356209ms)
+✔ game-easy-test.html: confirm resource boundary 99/1 (0.225333ms)
+✔ game-easy-test.html: confirm resource boundary 0/1 (0.194125ms)
+✔ game-easy-test.html: confirm resource boundary 100/0 (0.169875ms)
+✔ game-easy-test.html: confirm resource boundary 100/undefined (0.166208ms)
+✔ game-easy-test.html: resource changes while aiming; refill succeeds once (0.173375ms)
+✔ game-easy-test.html: simultaneous cancel owns confirm cancel (0.183125ms)
+✔ game-easy-test.html: simultaneous cancel owns confirm escape (0.167208ms)
+✔ game.html: 아이스스톰 확정 비용/부족/스택0/취소/중복 지역 (0.745583ms)
+✔ game.html: 해골무덤 악의 경계/MP0/스택0/재호출 (0.275708ms)
+✔ game-easy-test.html: 아이스스톰 확정 비용/부족/스택0/취소/중복 지역 (0.09725ms)
+✔ game-easy-test.html: 해골무덤 악의 경계/MP0/스택0/재호출 (0.07275ms)
+ℹ tests 24
+ℹ suites 0
+ℹ pass 24
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 63.752916

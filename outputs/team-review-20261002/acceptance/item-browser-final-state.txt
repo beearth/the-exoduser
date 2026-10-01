@@ -1,0 +1,15 @@
+Browser tab: 4, Title: "D10 reviewOnly 저장 후보 호스트", URL: "http://127.0.0.1:3340/tools/team-followup-20261001/ITEM/browser-host/index.html".
+0 AXWebArea D10 reviewOnly 저장 후보 호스트, URL: 127.0.0.1:3340/tools/team-followup-20261001/ITEM/browser-host/index.html
+	1 container
+		2 heading D10 검토 전용 합성 fixture, Value: 1
+			3 text D10 검토 전용 합성 fixture
+		4 text 제안 · 비활성 · runtimeReady=false. 게임·사용자 저장·DB·공유 악의·드롭·전투 효과와 연결하지 않습니다.
+		5 checkbox (settable, integer) Description: reviewOnly 검토 설치에 명시 동의, Value: 1, ID: opt-in
+		6 button 의존 확인 후 검토 설치, ID: install
+		7 button 검토 해제, ID: uninstall
+		12 text 검토 해제 완료 · 기존 property 보존 · 자동 재설치 없음
+		13 text base RNG=49 · D10 RNG=1 · restore RNG=0 · 복원조회=2
+		10 container Description: 합성 fixture 신규 생성 및 JSON 복원, ID: review
+		11 container Description: CSP·HTTP MIME·import 진단, ID: errors
+
+The focused UI element is 7 button 검토 해제, ID: uninstall

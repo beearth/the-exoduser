@@ -62,3 +62,7 @@
 ### 2026-10-01 R 입력·GL·11팀 신규 후속 인수
 
 새 build-assets.py로 assets/unique-items44 + assets/map/ch1 907 + ch1-* FILES6 =957파일, 2,078,759,459바이트 SHA를 읽었다. LFS 포인터3개로 exit1/3FAIL을 보존한다. 제작 원본2개(CH1_1_PRODUCTION_MASTER.png, outer90_sources/outer90_patch.png)·출처zip1개(outer76_81-provenance.zip)이며 직접 참조 조사상 런타임 필수 누락 근거는 찾지 못했다. 실제 패키지 생성/로드/화면은 미검수이며 무영향을 단정하지 않는다. [관측 원자료·진단 범위·한계](../0마스터플랜/mac-resume-20261001/R-입력과-GL-후속검수.md)
+
+### 2026-10-02 Mac preflight 인수와 packager 후보
+
+root가 read-only preflight28검사를 재실행해 통과했다. 최신 확인 원격98aedab7·명시 ref·조회시각을 넣은 실제 입력 검사는 복구/입력/고유출력 통과, MAC_RUNTIME_MISSING으로 BLOCKED다. 기존 build-nwjs는 win/x64 고정. 설치 nw-builder의 osx/실제arch·로컬runtime·고유출력·세이브 제외·다운로드 차단을 실제 packager 인자까지 연결하는 후보를 기존 BUILD에 배정해 Read/Edit 확인했다. 실제 .app 생성/실행/다운로드0, 전체에셋/서명/코덱/저장패키지 검수 미완료. [인수 기록](../0마스터플랜/mac-resume-20261001/vscode-dispatch/FOUR-SUBMISSIONS-HELLRAY-20261002.md).

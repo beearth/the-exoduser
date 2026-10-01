@@ -687,3 +687,9 @@ QA의 완료 작업을 가리키는 미전송 초안은 그대로 보존했다. 
 기존 다섯 팀 ART/MAP/SKILL/ENEMY/ANIMVFX의 다음 한 건은 각각 live 관측기 line-index 연결/수명·포커스 수정/hellRay 확정자원/source 기반 F06 후보/sparse clock canonical 통합이다. 15:35:08~15:36:07Z 수신 및15:35:12~15:36:16Z Read를 실제 원세션에서 확인했다. 새세션0. 앞서 배정한 Codex4팀은 새 결과 제출 완료·다음 독립 인수 대기이며 실행 중으로 세지 않는다. [검사·반영 단계·정확한11팀상태](mac-resume-20261001/vscode-dispatch/FIVE-OWNER-INTEGRATION-20261002.md).
 
 BALANCE의 패링 인접 검사1FAIL은 root도 동일 실패를 확인했다. game/easy/test 입력SHA가1c7cdb45와 동일해 이번 변경 이전 실패임을 확인했고 보호 설계 수정0. 사용자 게임 유지·새 게임/계측/대형빌드0, QA 미전송 초안 보존, SOUND 미전달/접근제한 유지. 현행 관리 주기는 PC 총괄 최신 전달 기준5분 ACTIVE이며 이전10분은 이력으로 구분한다. Mac view는 카드 반환만 확인했으며 설정값을 독립 확인했다는 주장은 하지 않는다. 자동화 생성·수정0.
+
+### 2026-10-02 네 제출 독립 인수·hellRay 생산 반영
+
+ITEM bootstrap23, UIUX 후보21+기존9, BUILD preflight28, BALANCE2880+56를 root가 재실행했다. hellRay MP/스택 재검사를 양쪽 생산에 순차 반영하고 actual20+인접4=24 PASS·전체inline구문 확인. 사용자 게임탭은 그대로다. 네 Codex에 각 한 건 후속 queue·Read·Edit 확인, QA는 완료과제 초안을 문자보존한 채 재실행금지/새독립과제 범위로 수신·Read 확인. ART/MAP/ENEMY/ANIMVFX 완료 제출은 인수대기. SOUND 접근제약/후속미전달. 실행패키지와 실게임품질 완료 주장0. [독립 인수·후속 상태](mac-resume-20261001/vscode-dispatch/FOUR-SUBMISSIONS-HELLRAY-20261002.md).
+
+- 2026-10-02 추가: 최종 인수: hellRay 생산 양쪽24PASS와 QA 독립17PASS, ITEM 실제 검토 host 인수. UIUX DOM/BUILD packager/BALANCE AI저장 및 ART/MAP/ENEMY/ANIMVFX 새 제출은 독립 검수 큐. 실제 Mac 앱은 runtime 부재로 미완료. 상세 `FOUR-SUBMISSIONS-HELLRAY-20261002.md` 및 팀 활용표 참조.

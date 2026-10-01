@@ -1,0 +1,1 @@
+{"pass":2936,"rows":2880,"boundaries":56,"sources":[{"file":"game.html","sha256":"21235538c9766a28b04dcf529aed9883a8aa11bdbfef8e9e2ce35d5cc927c5cf"},{"file":"game-easy-test.html","sha256":"4c408f1e7b57210900ddfa8a0646502f91b6a0bbc798a24338eb159cb613d874"}],"completedAt":"2026-10-01T15:28:17.106Z"}

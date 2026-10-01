@@ -1,0 +1,16 @@
+{
+ "taskId":"BUILD-20261002-MAC-PACKAGE-PREFLIGHT",
+ "receivedAt":"2026-10-01T15:26:19Z",
+ "firstReadAt":"2026-10-01T15:26:19Z",
+ "duplicateCheck":"소유경로에는task만존재;동일완료없음",
+ "status":"도구구현완료28PASS;실제Mac패키지인수BLOCKED(runtime/ref증거부족)",
+ "firstCodeEditAt":"2026-10-01T15:27:38Z",
+ "validationCompletedAt":"2026-10-01T15:29:28Z",
+ "completedAt":"2026-10-01T15:30:47Z",
+ "validationCommand":"node --test tools/team-followup-20261001/BUILD/mac-package-preflight-test.mjs",
+ "validation":{"pass":28,"fail":0,"actualCLIExit":2,"packageCreated":false},
+ "actualRead":"AGENTS/BUILD팀/백업정책/package/build/node-main/server/기존inventory/설치nw-builder소스",
+ "firstCommand":"UTC시각·중복경로·팀MD/AGENTS검색;receipt먼저작성뒤필수소스Read",
+ "constraints":"현재Chrome불변;실행/복사/압축/패키징/설치/다운로드/Git/queue0",
+ "ownedPaths":"tools/team-followup-20261001/BUILD/mac-package-preflight-*"
+}

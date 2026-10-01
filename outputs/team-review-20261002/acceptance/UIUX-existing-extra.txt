@@ -1,0 +1,14 @@
+✔ game.html: shortened list remains selectable with A (1.089208ms)
+✔ game.html: empty list accepts navigation without a phantom selection (0.343292ms)
+✔ game.html: D-pad moves focus and reveals the same row (0.331625ms)
+✔ game-easy-test.html: shortened list remains selectable with A (0.308208ms)
+✔ game-easy-test.html: empty list accepts navigation without a phantom selection (0.265458ms)
+✔ game-easy-test.html: D-pad moves focus and reveals the same row (0.220666ms)
+ℹ tests 6
+ℹ suites 0
+ℹ pass 6
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 51.031458

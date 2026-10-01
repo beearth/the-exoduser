@@ -1,0 +1,20 @@
+{
+  "sourceRoot": "/Users/fordeargamers/Projects/exoduser-migration-20261001",
+  "outputRoot": "/Users/fordeargamers/Projects/exoduser-migration-20261001/tools/team-followup-20261001/BUILD",
+  "arch": "arm64",
+  "inputs": [
+    {
+      "path": "game.html",
+      "sha256": "21235538c9766a28b04dcf529aed9883a8aa11bdbfef8e9e2ce35d5cc927c5cf",
+      "backupSha256": "21235538c9766a28b04dcf529aed9883a8aa11bdbfef8e9e2ce35d5cc927c5cf"
+    }
+  ],
+  "backup": {
+    "localSha": "98aedab7dd3df41a57c2311bfc4cf79731057e60",
+    "remoteSha": "98aedab7dd3df41a57c2311bfc4cf79731057e60",
+    "remoteRef": "refs/heads/codex/mac-environment-20261001",
+    "verifiedAt": "2026-10-01T15:53:14.724584+00:00"
+  },
+  "runtime": null,
+  "scope": "live-prewarm/preflight.json \uc81c\uacf5gameSHA\ub9cc\ub300\uc870;\uc804\uccb4\uc785\ub825manifest\uc544\ub2d8"
+}

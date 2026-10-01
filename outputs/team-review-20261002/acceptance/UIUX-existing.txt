@@ -1,0 +1,11 @@
+✔ inventory composition initializes selection without rendering an uncreated player (1.90775ms)
+✔ subsequent category changes refresh inventory once; reselecting does not (0.909ms)
+✔ gems have a separate inventory tab and preserve the equipment and ossuary pages (0.374917ms)
+ℹ tests 3
+ℹ suites 0
+ℹ pass 3
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 42.4585

@@ -1,0 +1,17 @@
+{
+  "checkedAt": "2026-10-01T15:31:42.465Z",
+  "sourceUnchanged": true,
+  "checks": [
+    {
+      "path": "game.html",
+      "classicInlineScripts": 4,
+      "status": "구문 PASS, 실행0"
+    },
+    {
+      "path": "game-easy-test.html",
+      "classicInlineScripts": 4,
+      "status": "구문 PASS, 실행0"
+    }
+  ],
+  "firstAttempt": "importmap JSON을 classic JS로 분류하여 도구 SyntaxError. importmap 제외 후 재검사, 소스 수정0"
+}

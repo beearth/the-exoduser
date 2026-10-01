@@ -1,0 +1,77 @@
+{
+  "at": "2026-10-01T15:29:05.546Z",
+  "platform": "darwin",
+  "arch": "arm64",
+  "observations": [
+    {
+      "root": "/Applications",
+      "status": "READ",
+      "total": 9,
+      "depth": 1,
+      "entries": [
+        ".DS_Store",
+        ".localized",
+        "Antigravity.app",
+        "ChatGPT.app",
+        "Google Chrome 2.app",
+        "Google Chrome.app",
+        "Safari.app",
+        "Utilities",
+        "Visual Studio Code.app"
+      ],
+      "truncated": false
+    },
+    {
+      "root": "/Users/fordeargamers/Applications",
+      "status": "READ",
+      "total": 1,
+      "depth": 1,
+      "entries": [
+        "Claude Code URL Handler.app"
+      ],
+      "truncated": false
+    },
+    {
+      "root": "/Users/fordeargamers/Library/Caches/nwjs",
+      "status": "ENOENT"
+    },
+    {
+      "root": "/Users/fordeargamers/Library/Caches/nw-builder",
+      "status": "ENOENT"
+    },
+    {
+      "root": "/Users/fordeargamers/Library/Caches/nw",
+      "status": "ENOENT"
+    },
+    {
+      "root": "/Users/fordeargamers/.cache/nwjs",
+      "status": "ENOENT"
+    },
+    {
+      "root": "/Users/fordeargamers/Projects/exoduser-migration-20261001/cache",
+      "status": "ENOENT"
+    },
+    {
+      "root": "/Users/fordeargamers/Projects/exoduser-migration-20261001/node_modules/.cache",
+      "status": "ENOENT"
+    },
+    {
+      "root": "/Users/fordeargamers/Projects/exoduser-migration-20261001/node_modules/nw",
+      "status": "ENOENT"
+    },
+    {
+      "root": "/Users/fordeargamers/Projects/exoduser-migration-20261001/vendor/nwjs-ffmpeg/0.111.2",
+      "status": "READ",
+      "total": 2,
+      "depth": 1,
+      "entries": [
+        "README.md",
+        "ffmpeg.dll"
+      ],
+      "truncated": false
+    }
+  ],
+  "candidates": [],
+  "runtimeStatus": "BLOCKED_NOT_FOUND_IN_BOUNDED_SCOPE",
+  "limits": "지정10루트각1단계/최대200이름만조회;파일내용/세이브/전체디스크/프로세스/UI검사0;범위밖런타임은UNKNOWN"
+}

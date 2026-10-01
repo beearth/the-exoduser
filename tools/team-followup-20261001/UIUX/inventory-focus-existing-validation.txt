@@ -1,0 +1,17 @@
+✔ game.html: shortened list remains selectable with A (0.898125ms)
+✔ game.html: empty list accepts navigation without a phantom selection (0.221667ms)
+✔ game.html: D-pad moves focus and reveals the same row (0.223709ms)
+✔ game-easy-test.html: shortened list remains selectable with A (0.21ms)
+✔ game-easy-test.html: empty list accepts navigation without a phantom selection (0.202833ms)
+✔ game-easy-test.html: D-pad moves focus and reveals the same row (0.191625ms)
+✔ inventory composition initializes selection without rendering an uncreated player (1.398667ms)
+✔ subsequent category changes refresh inventory once; reselecting does not (0.666458ms)
+✔ gems have a separate inventory tab and preserve the equipment and ossuary pages (0.305084ms)
+ℹ tests 9
+ℹ suites 0
+ℹ pass 9
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 41.969875

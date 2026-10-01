@@ -138,3 +138,9 @@ QA 실측 중에는 별도 게임 장면·대형 빌드를 중복 실행하지 �
 
 
 Node 후보 연결과 root 보강 회귀61PASS. 게임 생성/드롭/저장라우터·실제UI·패키지 연결은 미완료이며 활성0을 유지한다. 기존 소켓누락 마이그레이션 RNG·affixes 보충은 그대로다. [실제 검수·반례·제한](../0마스터플랜/mac-resume-20261001/vscode-dispatch/BINDING-root-review.md).
+
+### 2026-10-02 검토 bootstrap 인수·브라우저 host 후속
+
+root가 명시 reviewOnly 설치/해제 후보23그룹을 실제 port·양쪽 mkItem/저장/복원으로 재검수했다. 신규 D10 RNG1/복원0, proposal/inactive/runtimeReady=false, 원 property/타주체 교체 보존. 생산 drop/effect/DB 라우터 연결0. 현재3340의 .mjs 응답은 application/octet-stream이고 .js는 application/javascript여서 전이 .js+독립 host 구현을 기존 ITEM에 배정·실제 Read/Edit 확인했다. [인수 기록](../0마스터플랜/mac-resume-20261001/vscode-dispatch/FOUR-SUBMISSIONS-HELLRAY-20261002.md).
+
+- 2026-10-02 추가: ITEM 검토 host root12검사 및 실제 독립 브라우저 import/생성/JSON복원/해제 인수. 초기 inline-style CSP 진단은 미해결, production 비활성 유지. 상세 `FOUR-SUBMISSIONS-HELLRAY-20261002.md` 및 팀 활용표 참조.

@@ -1,0 +1,22 @@
+{
+  "task": "ITEM-20261002-BROWSER-HOST",
+  "status": "독립 구현·Node검수 완료·root 인계",
+  "receivedAt": "2026-10-01T15:51:30Z",
+  "firstReadAt": "2026-10-01T15:51:38Z",
+  "firstCodeEditAt": "2026-10-01T15:52:35Z",
+  "checkedAt": "2026-10-01T15:54:57.860Z",
+  "completedAt": "2026-10-01T15:55:47Z",
+  "timeEvidence": "실제 date -u 명령15:51:30/15:51:38/15:52:35/15:55:47Z, 검수JSON checkedAt",
+  "commands": ["node tools/team-followup-20261001/ITEM/browser-host-transform.mjs --emit", "node tools/team-followup-20261001/ITEM/browser-host-check.mjs", "rg -n 'D10|uniqueRoll|reviewOnly|browser bootstrap|MIME' docs --glob '*.md'"],
+  "validation": "12그룹 PASS/0FAIL·전이4개 import literal만변환/역치환원문일치·추출11조각동일·실파일Node ESM/UI호스트·원본10개byte보존·D10 RNG1/restore0",
+  "initialFailure": "생성뒤 game 전체SHA 외부변경으로 manifest전체비교1FAIL; 관련 추출원문은동일. provenance drift별도보존/소스조각엄격대조로분리",
+  "completionCondition": "재현변환/실JS체인/명시reviewOnlyHTML/원포트UI소비/Node회귀·SHA·한계제출",
+  "remainingGate": "root 같은3340 독립reviewOnly호스트 실제HTTP/CSP/import·버튼·카운터·해제 인수",
+  "productionApplied": false,
+  "actualRead": "전용 task·AGENTS 하위검색·ITEM MD·저장계약·기존bootstrap 결과/API/UI/MIME 계획·실제 mkItem 의존 확인",
+  "receiptFirst": true,
+  "duplicateCheck": "전용 prefix 파일 검색; 기존 bootstrap/port/binding 읽기전용, 새 세션 없음",
+  "scope": "ITEM/browser-host-* 및 ITEM/browser-host/만 쓰기",
+  "actualBrowserImport": "UNKNOWN",
+  "prohibitedExecutions": 0
+}

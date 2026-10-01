@@ -1,0 +1,30 @@
+[
+  {
+    "file": "game.html",
+    "kind": "production",
+    "scripts": 6,
+    "sha256": "f7212ac287665f831975c47523783967374db4c1219b898e57bca5f97cfa1649",
+    "status": "PASS"
+  },
+  {
+    "file": "game.html",
+    "kind": "unapplied-inventory-candidate",
+    "scripts": 6,
+    "sha256": "4c05675fe21545ba553e7ea9be68c98dcc3ad6599325e43005de34454961cb5d",
+    "status": "PASS"
+  },
+  {
+    "file": "game-easy-test.html",
+    "kind": "production",
+    "scripts": 6,
+    "sha256": "34ffa8ae1ff4a4509e695f921eef53e0a236aff63184459d13a915f37434bd04",
+    "status": "PASS"
+  },
+  {
+    "file": "game-easy-test.html",
+    "kind": "unapplied-inventory-candidate",
+    "scripts": 6,
+    "sha256": "e7db1db122233a16fdebb7312230d9704a9629d87c2ace5d7eb97d82413cad84",
+    "status": "PASS"
+  }
+]

@@ -51868,3 +51868,9 @@ QA의 완료 작업을 가리키는 미전송 초안은 그대로 보존했다. 
 - MAP27/ANIM8+2 이후 추가 lifecycle3건·누락draw 전체오PASS를 root 재현해 인수 보류 및 동일 원담당 수정 전달. 다섯 기존 세션 모두 후속 실제 Read 확인, 새세션0.
 - 별도 네 Codex 과제는 제출 완료·다음 인수 대기. 패링 검사1FAIL은 기존1c7cdb45와 game/easy/test SHA 동일, 보호패링 변경0.
 - 현행 자동화5분(PC총괄 전달)과 옛10분/lock 이력 분리. 사용자 게임·QA초안·SOUND 제한 보존. 상세 FIVE-OWNER-INTEGRATION-20261002.md 및 TEAM_UTILIZATION_20261001.json.
+
+## 2026-10-02 hellRay 확정 재검사와 네 팀 제출 인수
+
+- 본편/easy hellRay: 확정 스택0 조준종료/MP100미만 조준유지, 자원·설치 부작용0. 성공 MP100+스택1·합체/충전/음향 유지. actual20+인접4=24 PASS.
+- ITEM23/UIUX21+기존9/BUILD28/BALANCE2880+56 root 재검수; 네 담당 새 소유과제 Read/Edit 확인. QA 기존초안 보존 후 새독립검수 수신/Read.
+- 원격98aedab7 시작검증. 사용자게임 입력/리로드/계측/닫기0, 실제Mac runtime 미발견/.app 미생성, UIUX 후보·실화면 검수 단계 구분. 상세 FOUR-SUBMISSIONS-HELLRAY-20261002.md.

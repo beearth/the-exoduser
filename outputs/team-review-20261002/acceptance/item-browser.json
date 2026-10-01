@@ -1,0 +1,40 @@
+{
+  "checkedAt": "2026-10-01T15:58:43.539620+00:00",
+  "url": "http://127.0.0.1:3340/tools/team-followup-20261001/ITEM/browser-host/index.html",
+  "surface": "Codex in-app browser; independent reviewOnly host, no game",
+  "initial": {
+    "autoInstall": false,
+    "baseRng": 0,
+    "d10Rng": 0,
+    "diagnostic": "CSP style-src-elem inline observed on first AX state; origin not established"
+  },
+  "installation": "explicit opt-in and install succeeded; HTTP/module chain imported",
+  "afterNewAndJson": {
+    "baseRng": 49,
+    "d10Rng": 1,
+    "restoreRng": 0,
+    "restoreCalls": 2,
+    "status": "JSON restore proposal; no reroll"
+  },
+  "uninstall": {
+    "status": "review uninstall complete",
+    "reviewChildren": 0,
+    "automaticReinstall": false
+  },
+  "consoleErrorsAndWarnings": [],
+  "CSPVerdict": "Module installation succeeded; do not claim globally clean CSP because startup inline style violation was observed",
+  "productionApplied": false,
+  "userGameTabUntouched": 1573846373,
+  "proof": "item-browser-proof.jpg",
+  "hostHashes": {
+    "tools/team-followup-20261001/ITEM/browser-host/host.js": "1acc96fc49d181987fd5a38f316ea99400bd41c85980e65fda6a48c3768964b2",
+    "tools/team-followup-20261001/ITEM/browser-host/index.html": "204ad41705750af0975abfdc4ea3da05b11555e7b1757cb3fbf64e6afa257600",
+    "tools/team-followup-20261001/ITEM/browser-host/binding-d10.js": "4f3c8c980a9c6b93dcc975b660d7b1e8120067ca83a0152b1469e6ee35182529",
+    "tools/team-followup-20261001/ITEM/browser-host/d10-consumer.js": "78f9a69ca9e0f55ec6edb649e6845e94afebd016e6a01892098eb19f83e677e2",
+    "tools/team-followup-20261001/ITEM/browser-host/persistence-integration-port.js": "9d2536fef5608d18dda3a6e557e24b48d5c262f9566f3c0cd37a52d8e4058491",
+    "tools/team-followup-20261001/ITEM/browser-host/host.css": "9e2285d62d698b39d5820b36c2356a161adc06cee17b5351e16ca6eec80dc135",
+    "tools/team-followup-20261001/ITEM/browser-host/mk-item-fixture.js": "5476174988858bd50b700cd48b1aa681cf7c002719a0e54248c199473e1cc0a8",
+    "tools/team-followup-20261001/ITEM/browser-host/manifest.json": "ee985696e39dbce7913f5e7d28be4a32d92a3b525107c9a9f2fdce3ed1030f79",
+    "tools/team-followup-20261001/ITEM/browser-host/binding-ports.js": "a0e6341efb06d06c18ec5ea957a251fbce045fd4f09b28fabf9dfa0a9c9127ad"
+  }
+}

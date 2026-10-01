@@ -1,0 +1,151 @@
+{
+  "at": "2026-10-01T15:52:26.892850+00:00",
+  "rows": [
+    {
+      "team": "QA",
+      "sessionId": "88c3f903-ece5-4640-8b0c-86feaaca0e53",
+      "latestUser": {
+        "at": "2026-10-01T15:52:01.959Z",
+        "text": "Read tools/team-followup-20261001/QA/NEXT_TASK.md. The preceding draft references an already completed task; DO NOT rerun it. Preserve that history. Instead, read tools/team-followup-20261001/QA/confirm-inventory-review-task.md and execute only this new independent review task. Correct new task path: tools/team-followup-20261001/QA/confirm-inventory-review-task.md"
+      },
+      "lastAssistant": {
+        "at": "2026-10-01T11:58:36.004Z",
+        "text": "QA-FIRE-BOUNDARY-REVIEW를 같은 QA 세션에서 완료했습니다. 변경은 QA 소유 경로 3개(fire-boundary-regression.mjs, QA-next-result.md, QA-next-receipt.json)에만 국한되고, game.html·공용 test·타팀 파일은 건드리지 않았습니다.\n\n## 완료 보고 — QA-FIRE-BOUNDARY-REVIEW\n\n**수신/첫Read/착수/완료** 구분 기록(`QA-next-receipt.json`). HEAD `fe85bb08`.\n\n### 중복 확인\nroot가 이미 공용 `test/warmImageAsyncHandoff.test.js`에 fire 계약 4건(+신규 `test/warmFireObserver.test.js`)을 추가했습니다. 재작성 대신 **독립 검토로 보강** — 공용 테스트는 수정 않고, 소유 폴더에 7개 명시 경계 매트릭스 회귀를 별도 작성해 실제 game.html 함수로 교차검증했습니다.\n\n### 핵심 사실 (root 산출과 교차확인)\n- fire_burst_radial.webp = 3584×1728 = **6,193,152px**\n- 예산 `_TEXHOT_BUDGET_PX=64e6`. 시드 32,204,920 + 3 primary(13,369,344+5,308,416+4,608,000) + fire = **61,683,832 ≤ 64,000,000 (여유 2,316,168)**\n- 우선순위: `학습/시드 → 3 primary → fire`. fire(6.19MP)는 **마지막에만 admit** → primary 예산을 선점 못 하고, 빠듯하면 fire가 먼저 탈락.\n\n### 판정표 (독립 회귀 8/8 PASS, 실제 game.html 추출)\n| 경계 | 판정 |\n|---|---|\n| first-use/baseline | PASS — 3장 뒤 fire 예약, 총 61,683,832 ≤ 64MP |\n| absent | PASS — primary 부재 시 fire 차단→lazy(의도된 양보) |\n| late | PASS — fire 선수집돼도 전체 패스에서 재예약(순서 역전 대응) |\n| cache | PASS — primary 업로드됨→게이트 충족 |\n| query | PASS — primary 라이브 pending job→통과 |\n| context | PASS — 복구 전 context 불일치→fire 차단 |\n| failur"
+      },
+      "firstRead": {
+        "at": "2026-10-01T15:52:09.687Z",
+        "tool": "Read",
+        "path": "/Users/fordeargamers/Projects/exoduser-migration-20261001/tools/team-followup-20261001/QA/confirm-inventory-review-task.md"
+      },
+      "firstCodeEdit": null
+    },
+    {
+      "team": "ENEMY",
+      "sessionId": "ddbd64be-975a-458e-a020-c09749281f5b",
+      "latestUser": {
+        "at": "2026-10-01T15:35:55.131Z",
+        "text": "Read tools/team-followup-20261001/ENEMY/OWNER_IMPL_20261002.md and execute this one assigned task."
+      },
+      "lastAssistant": {
+        "at": "2026-10-01T15:45:09.959Z",
+        "text": "완료. ENEMY-F06 배열 꼬리 기아의 최소 source 후보 한 건을 작성·검수했습니다.\n\n## OWNER_IMPL_20261002 결과 보고 (한국어)\n\n**과제:** 승인된 ENEMY-F06(배열 꼬리 AI **영구** 기아)의 실제 update 루프용 최소 source 후보(라운드로빈) + source-anchored fixture. 관측기 통합은 반복하지 않음.\n\n**수신·착수 구분:** 수신 00:30 → 첫 Read 00:31 → 첫 Edit 00:38 → 검수 00:42 → 완료 00:43 (KST, 2026-10-02). 중복 확인: `f06-source-*` 신규, `G._eLoopStart` 사용 0건 → 진행 중 후보 없음.\n\n**source 후보 (미적용 patch, 양쪽 HTML):**\n- 루프 헤더만 변경, 바디·LOD 전부 불변:\n  - 매 physics tick 시작 인덱스 **1칸 회전**(`G._eLoopStart`) → 모든 인덱스가 `_elen` tick 내 1회 선두 → 고정 꼬리 **영구 기아 제거**.\n  - **LOD parity는 원 배열 인덱스 `_ei` 유지**(`(G._eTierFrame&…)===(_ei&…)`), 방문 순서만 회전.\n  - 타임버짓 카운터만 `_ei→_k`, 예산식·간격·`>0` 보존.\n  - `_elen` 캡처 + `if(!e)continue` + `_elen>0` 가드로 빈배열/splice/스폰/죽음/reset/stale/NaN 경계 안전.\n\n**검수 (fixture 9 PASS / 0 FAIL, 가상시계·소형):**\n- 원 게이트 소스 추출·대조(양쪽 HTML 존재) ✓\n- **원본 재현:** 고정 start → 꼬리 보스 **0/60 tick(영구 기아)**.\n- **후보:** 회전 → 보스 **46/60 처리·14 스킵·maxGap 8 tick(≤N)**. 영구 기아 해소, **단 per-tick 보장 아님**(명시).\n- 경계 전부 크래시 없음. 보호계약(예산 12/8ms·공격티켓 미도입·soft-cap 무조건활성 0) 코드 기준 유지.\n- 명령: `node --check` exit0, fixture 9/0, `patch --dry-run -p1` 두 파일 clean.\n\n**적용 여부:** `game.html`/`game-easy-test.html` **직접 미수정**(읽기전용, root/QA 소유). patch는 dry-ru"
+      },
+      "firstRead": {
+        "at": "2026-10-01T15:35:58.793Z",
+        "tool": "Read",
+        "path": "/Users/fordeargamers/Projects/exoduser-migration-20261001/tools/team-followup-20261001/ENEMY/OWNER_IMPL_20261002.md"
+      },
+      "firstCodeEdit": {
+        "at": "2026-10-01T15:41:19.191Z",
+        "tool": "Write",
+        "path": "/Users/fordeargamers/Projects/exoduser-migration-20261001/tools/team-followup-20261001/ENEMY/f06-source-roundrobin.fixture.mjs"
+      }
+    },
+    {
+      "team": "MAP",
+      "sessionId": "d447a49d-ecaa-4b5f-bc56-da5353ebb668",
+      "latestUser": {
+        "at": "2026-10-01T15:35:28.388Z",
+        "text": "Read tools/team-followup-20261001/MAP/OWNER_IMPL_20261002.md and execute this one assigned task."
+      },
+      "lastAssistant": {
+        "at": "2026-10-01T15:44:58.193Z",
+        "text": "`OWNER_IMPL_20261002.md`(MAP-20261002-MANUAL-LIFECYCLE-FIX) 한 건을 실행 완료했습니다.\n\n## 완료 보고 (Mac MAP / 터미널 3 / 세션 d447a49d / 과제일 2026-10-02)\n\n**상태: 3반례 RED→GREEN + 회귀 완료. 실맵/8뷰/좌표경계 시각 PASS 없음 — 기존 RETOUCH 유지.**\n\n### 수신 / Read / Edit / 실행 / 완료\n수신 15:35Z · 첫Read 15:35Z(과제·재현기 `root-review/five-owner-counterexamples.mjs`·`counterexamples-before.json`) · 첫Edit 15:40Z(관측기) · 실행 15:42Z · 완료 15:43Z. 선독(가이드 v0.9·SSOT·맵디테일) 유지.\n\n### 수정: 단일 lifecycle 계약 (`manual-input-observer.js`)\n세 반례를 \"시작/실패/중복/포커스손실\" 하나의 계약으로 해결:\n1. **원자적 설치+롤백** — 설치 중 예외 시 이미 설치된 리스너/인터벌 전부 롤백 후 재던짐 → 부분설치 누수 0. (반례1)\n2. **인스턴스 레지스트리** — 새 `start()`가 기존 활성 인스턴스를 먼저 폐기(핸들 유실 0) → 중복 start 잔존 0. (반례3)\n3. **포커스손실 게이트(armed/focused/awaitingFresh)** — blur/hidden 즉시 표본 중단 + leg를 `focus-lost` 종료, 재개는 **명시적 visible/focus 복귀 + 새 keydown**에서만. 이전 held를 새 입력으로 가정 안 함. (반례2)\n4. **정리 실패 비은폐** — remove/clear 예외를 `teardownErrors`에 기록, 실패 핸들 보존(재시도 가능), `cleanup='partial-unknown-retry-possible'` 노출.\n5. 부가: keydown/keyup 별도 핸들 등록, `_dispose` idempotent, abort 정리.\n\n### RED→GREEN (before→after)\n| 반례 | before | after |\n|---|---|---|\n| install-rollback | listener **1** | **0** |\n| hidden-sampling | legs **1**/표본 **2** | **0 / 0** |\n| duplicate"
+      },
+      "firstRead": {
+        "at": "2026-10-01T15:35:32.334Z",
+        "tool": "Read",
+        "path": "/Users/fordeargamers/Projects/exoduser-migration-20261001/tools/team-followup-20261001/MAP/OWNER_IMPL_20261002.md"
+      },
+      "firstCodeEdit": {
+        "at": "2026-10-01T15:38:37.480Z",
+        "tool": "Edit",
+        "path": "/Users/fordeargamers/Projects/exoduser-migration-20261001/tools/team-followup-20261001/MAP/manual-input-observer.js"
+      }
+    },
+    {
+      "team": "ART",
+      "sessionId": "a489cbeb-92d9-449a-a2b7-ba0e2871322f",
+      "latestUser": {
+        "at": "2026-10-01T15:35:08.392Z",
+        "text": "Read tools/team-followup-20261001/ART/OWNER_IMPL_20261002.md and execute this one assigned task."
+      },
+      "lastAssistant": {
+        "at": "2026-10-01T15:45:19.390Z",
+        "text": "소유 경로(ART 폴더)만 변경됐고 game/index/server는 clean입니다. 작업을 완료했습니다.\n\n## ART-20261002-LIVE-CALLSITE 완료 보고 (QA 인계 전 실측 보류)\n\n**수신·단계 기록**(receipt): receivedAt/firstReadAt 15:35:42Z → firstEditAt/startedAt 15:36:30Z → completedAt 15:43:12Z, `DONE_PENDING_QA_HANDOFF`. 신규 착수(중복 없음).\n\n### 고친 결함 (D5 — 실제 호출부 시간축)\n`wa24-observer.cjs`의 `tick()`이 **`_cutsceneStartMs + L.t`(seq-time)**로 활성 컷을 고르던 것을 **엔진 실제 재생축 `_cutLineIdx` + `_cutLineStartMs` / `_cutsceneGetLines` 순서**(game.html:60704-60807 직접 Read)로 교체했습니다. 어댑터 단계를 끝내고 **실제 호출부**를 수정한 것입니다.\n\n- **의존주입 연결**: 검수된 `correctedSampler`를 `env.sampler`로 주입 연결, 활성 라인은 `env.getLines()` 계약. 미주입(브라우저)이면 동일 공식 builtin 사용 → **브라우저 UMD/자동설치 불변, ESM require 없음, 기본 자동실행 확대 0**. 폴백 스모크 PASS.\n- **canonical 정합**: root가 추가한 `wa24-finalcrop.mjs`(=`predictFinalCrop`)와 **같은 line-index 시간축**으로 일치시킴.\n\n### 검사 (실제 실행, 실개수 기록)\n| suite | 결과 |\n|---|---|\n| `wa24-observer.test.mjs` | **46 PASS** (이전 35 → line-index + 신규 케이스) |\n| `live-callsite-canonical.test.mjs` (신규) | **11 PASS** |\n| `owner-integration-finalcrop.test.mjs` | **31 PASS** (4비율×3시점 geometry 보존) |\n| `wa24-delta-probe.test.mjs` | **38 PASS** (보존) |\n| **합계** | **126 PASS / 0 FAIL** |\n\n요구 검사 충족:\n- **★RED→GREEN 지연시작**: w"
+      },
+      "firstRead": {
+        "at": "2026-10-01T15:35:12.601Z",
+        "tool": "Read",
+        "path": "/Users/fordeargamers/Projects/exoduser-migration-20261001/tools/team-followup-20261001/ART/OWNER_IMPL_20261002.md"
+      },
+      "firstCodeEdit": {
+        "at": "2026-10-01T15:38:48.898Z",
+        "tool": "Edit",
+        "path": "/Users/fordeargamers/Projects/exoduser-migration-20261001/tools/team-followup-20261001/ART/wa24-observer.cjs"
+      }
+    },
+    {
+      "team": "SKILL",
+      "sessionId": "203377cc-64c4-47ea-af27-95b66ae829fa",
+      "latestUser": {
+        "at": "2026-10-01T15:35:40.994Z",
+        "text": "Read tools/team-followup-20261001/SKILL/OWNER_IMPL_20261002.md and execute this one assigned task."
+      },
+      "lastAssistant": {
+        "at": "2026-10-01T15:42:33.978Z",
+        "text": "완료했습니다. 터미널 6 / SKILL 세션의 hellRay 확정 경계 한 건을 처리했습니다.\n\n## 수신·착수·완료 (KST)\n- **10:05 수신 → 10:06 첫 Read**(양쪽 game hellRay 블록·`skillStackConfirmGate.test.js` 관례·SSOT `2_1:408`) → **10:24 첫 코드 Edit → 10:41 완료**. 테스트 **25/25 PASS**, 양쪽 patch dry-run **APPLIES CLEAN**. 중복 아님(신규).\n\n## 결함 (승인 SKILL03 '조준-확정 재검사' 대상)\n`game.html:34989` / `game-easy-test.html:33794`의 `else if(MBjust[0])` 확정이 조준 시작 후 **MP<100·스택0 재검사 없이** 즉시 `P.mp-=100;P._hrStk--` → MP99면 mp 음수(-1), 스택0이면 stk 음수(-1)로 설치. iceStorm SKILL03과 동일 결함 클래스.\n\n## 산출물 (SKILL 소유 `hellray-confirm-*`)\n- `hellray-confirm-gate.test.mjs` — 양쪽 원블록 추출 → **RED(결함 재현)** + 메모리 patch → **GREEN**, 25 assertion\n- `hellray-confirm-game.patch` / `hellray-confirm-easy.patch` — **최소 미적용** unified diff(가드 3줄 + 닫는 `}` 1), 양쪽 dry-run clean\n\n## 최소 patch 계약\n취소(RMB/Escape) 우선 → 스택0 조준 종료(무차감) → MP<100 조준 유지(무차감) → 성공만 **MP100+스택1 1회 차감, 기존 설치·합체 storm branch·음향·숙련·리젠 그대로**. `P.mp-=100` 그대로(게이트가 MP≥100 보장), 중복지역 검사는 SSOT에 없어 추가 안 함(새 효과 금지 준수).\n\n## 검수 (node, exit0) — 25/25\nRED: MP99→mp=-1·zone1, 스택0→stk=-1·zone1(결함 재현). GREEN: MP99→조준 유지·무차감·**부작용0**·'MP 부족! (100)', 스택0→조준 종료·'충전 중...', 취소/Escape 우선, 성공 1회(재클릭 무설치), 합체 성공은 hellRay+storm 2장판 보존, 합체 실패(MP99)는 storm도"
+      },
+      "firstRead": {
+        "at": "2026-10-01T15:35:46.502Z",
+        "tool": "Read",
+        "path": "/Users/fordeargamers/Projects/exoduser-migration-20261001/tools/team-followup-20261001/SKILL/OWNER_IMPL_20261002.md"
+      },
+      "firstCodeEdit": {
+        "at": "2026-10-01T15:40:13.615Z",
+        "tool": "Write",
+        "path": "/Users/fordeargamers/Projects/exoduser-migration-20261001/tools/team-followup-20261001/SKILL/hellray-confirm-gate.test.mjs"
+      }
+    },
+    {
+      "team": "ANIMVFX",
+      "sessionId": "1d2a7253-478c-43aa-8c6f-766a02270432",
+      "latestUser": {
+        "at": "2026-10-01T15:36:07.879Z",
+        "text": "Read tools/team-followup-20261001/ANIMVFX/OWNER_IMPL_20261002.md and execute this one assigned task."
+      },
+      "lastAssistant": {
+        "at": "2026-10-01T15:50:53.897Z",
+        "text": "Task complete.\n\n## ANIMVFX-20261002-SPARSE-CLOCK-INTEGRATION 완료 보고 (터미널 8)\n\n수신 00:36 / 첫 Read 00:37 / 첫 Edit 00:40 / 완료 00:48 (KST). 중복/진행중 아님 확인.\n\n### 반례 재현 → 수정\nroot 반례 `ANIM-missing-middle-draw-record` / `ANIM-missing-draw-counter`: 중간/전체 `draws` 누락 시 `dD=null`을 **\"진행 없음(0)\"처럼** 취급 → `update-only` 오분류 → **오PASS(고주사율 오인증)**, `clockMissing`이 `draws` 미검사. 직접 `classifyDecaySparse({dHf:1,dU:1,dD:null})`도 PASS였음.\n\n### 최소 수정 (canonical gate에 통합)\n- **before 동결**: `sparse-clock-gate-before.mjs`(통합 전 magnitude, SHA `3309238f…`) 보존.\n- **C2 카운터 무결**: `updates/draws/now` 결측·NaN·비정수·음수·역행·**가짜 zero event**(hf≠0인데 flash-zero) → REJECT. 종료는 실제 `hf===0`만 인정. 초기 hidden/paused도 시작 record에서 포착.\n- **C5 끝점 미상 처리**: `dU/dD`는 두 유효 끝점에서 수치일 때만 비교. null/NaN이면 **indeterminate → PASS 승격 금지(UNKNOWN)**. 실제 draw 구동(update 없이 감소)만 FAIL. sp0.5·총량일치 수정·부활/사망 reset 계약 유지.\n- **중복 제거**: `sparse-update-c5-gate.mjs`의 버그 로컬 사본 삭제 → canonical 위임, old-wrong은 고정 before 참조.\n\n### 검사 (게임 실행 0, 전부 exit 0)\n- `node --check` 5/5 PASS\n- **canonical 자가검사 18/18** (두 반례 → REJECT 포함)\n- **반례 RED→GREEN**: before=PASS(오판) → canonical=REJECT/UNKNOWN, 단위 `{dD:null}` before=PASS→canonical=UNKNOWN ✓\n- canonical 회귀: update-only 240→PASS, dr"
+      },
+      "firstRead": {
+        "at": "2026-10-01T15:36:16.753Z",
+        "tool": "Read",
+        "path": "/Users/fordeargamers/Projects/exoduser-migration-20261001/tools/team-followup-20261001/ANIMVFX/OWNER_IMPL_20261002.md"
+      },
+      "firstCodeEdit": {
+        "at": "2026-10-01T15:44:37.214Z",
+        "tool": "Write",
+        "path": "/Users/fordeargamers/Projects/exoduser-migration-20261001/tools/team-followup-20261001/ANIMVFX/animvfx_highhz_lifetime_gate.mjs"
+      }
+    },
+    {
+      "team": "SOUND",
+      "sessionId": "aa3ac0ed-f4e5-44ad-a0b2-d4d2da045b84",
+      "latestUser": {
+        "at": "2026-10-01T13:02:24.376Z",
+        "text": "기존 SOUND 다음 실제 회귀 실패 한 건입니다. tools/team-followup-20261001/SOUND/ITEM_SOUND_TEST_TASK.md 를 읽고 중복 확인 후 원식/SSOT에 맞는 미적용 회귀 수정 후보를 제출하세요. 기존 HEAD에서도 itemEquipSound/itemPickupSound 두 검사가 실패함을 root가 확인했습니다. 실제 소리 결함인지 낡은 인접 문자열 가정인지 먼저 판정하고, 읽기 전용이면 완성 diff와 실행 가능한 테스트를 답변 코드로 주세요. 이전 RNG 과제 반복 및 생산 쓰기는 금지입니다."
+      },
+      "lastAssistant": {
+        "at": "2026-10-01T13:06:02.382Z",
+        "text": "교차 확인 완료. `playEquipSfx`는 3곳(정의 15467 / 수동장착 15558 / 제작 자동장착 49313)뿐이고, **`playItemPickupSfx(item);playEquipSfx(item)` 인접은 어디에도 없습니다.** 세계아이템 습득(31581/31607)·수동장착·제작 라인은 현재도 테스트와 일치합니다.\n\n## 판정: 실제 소리 결함 아님 — **낡은 인접 문자열 가정(리팩터)**\n\n- 두 실패 어서션은 **\"픽업 시 자동장착\" 경로**(`INV.equipped[_autoSlot]=item;...playItemPickupSfx;playEquipSfx` + `...획득! ⚡ 자동 장착!` notify)를 가정합니다.\n- 현재 `pickupItem`(15593–15619)에는 그 분기가 **의도적으로 삭제**됨 — 15606–15607 주석: \"획득 장비는 빈 부위가 있어도 가방으로; 장착은 플레이어가 아이템창에서 결정\". 획득 경로는 `playItemPickupSfx` **1회만** + `획득!` notify.\n- SSOT 함수/맵(15465–15473)·에셋존재·희귀 레이어·기본폴백·제작 자동장착(49313: `SFX.pickup();playEquipSfx`)·수동장착(15558)·세계습득 중복제거(31581/607)는 **모두 현행과 일치**(해당 어서션 통과).\n- 즉 현재 **의도된 소리 횟수**: 가방 성공=pickup 1·equip 0 / 가방부족 거부=0·0 / 제작 자동장착=SFX.pickup 1·equip 1 / 수동장착=equip(base+rare≥2) 1~2. 중복/누락 없음.\n> ∴ 생산 수정 불필요. **테스트의 폐기 가정 2줄만 교정**하고, 완화가 아니라 \"현 설계=픽업 자동장착 없음·거부 무음\"을 **양성으로 검증**하도록 보강.\n\n## 미적용 후보 ① 공유 테스트 교정 diff (root가 적용)\n\n```diff\n--- a/test/itemEquipSound.test.js\n+++ b/test/itemEquipSound.test.js\n@@\n   assert.match(gameHtml, /recalcSt\\(\\);\\s*playEquipSfx\\(item\\);\\s*notify\\(_T\\(item\\.name\\)\\+_T\\(' 장착!'\\)\\);/);\n-  assert.match(gameHtml, /INV\\.equipped\\[_autoSlot\\]=item;item\\.slot"
+      },
+      "firstRead": {
+        "at": "2026-10-01T13:02:29.179Z",
+        "tool": "Read",
+        "path": "/Users/fordeargamers/Projects/exoduser-migration-20261001/tools/team-followup-20261001/SOUND/ITEM_SOUND_TEST_TASK.md"
+      },
+      "firstCodeEdit": null
+    }
+  ]
+}

@@ -34988,6 +34988,9 @@ function update(){
     if(MBjust[2]||K['Escape']){P._hrAiming=false;MBjust[2]=false;K['Escape']=false}
     else if(MBjust[0]){
       MBjust[0]=false;
+      if((P._hrStk||0)<=0){P._hrAiming=false;showPH(_T('충전 중...'),'#ffd700')}
+      else if(P.mp<100){showPH(_T('MP 부족! (100)'),'#4488ff')}
+      else{
       const _hrLv=P.skills.hellRay||1;
       const _hrR=200+(_hrLv-1)*22; // 악의폭풍과 동일 크기
       const _hrElec=_isFused('elecRepent'); // 참회 귀환 합체
@@ -35008,7 +35011,7 @@ function update(){
       P._hrAiming=false;_addSkProf('hellRay');
       SFX.magic(_hrElec?4:5);playSample('repentance',.7,_r(1,.08));
       if(_hrElec)playSample(Math.random()>.5?'electric_storm':'electric_storm2',.5,_r(1,.1));
-      addTxt(_hrwx,_hrwy-20,_hrElec?_T('⚡⚡ 참회 귀환!'):_T('⚡ 참회!'),_hrElec?'#ffee44':'#ffd700',50);shake(_hrElec?10:6);
+      addTxt(_hrwx,_hrwy-20,_hrElec?_T('⚡⚡ 참회 귀환!'):_T('⚡ 참회!'),_hrElec?'#ffee44':'#ffd700',50);shake(_hrElec?10:6);}
     }
   }
   // ═══ 해골번개 쿨다운 ═══

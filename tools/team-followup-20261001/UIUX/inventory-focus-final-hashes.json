@@ -1,0 +1,18 @@
+{
+  "completedAt": "2026-10-01T15:32:07.289Z",
+  "hashes": {
+    "inventory-focus-artifacts.mjs": "5a443a5d0cf9f3fe9178ade612c40c1d17d24cecba7e9cc27600d50c25c9f4ce",
+    "inventory-focus-candidate.mjs": "324f41ee802f8487cc81dc2d0cfd75f8c70f1cefed2f62d06a109b93bfcc6f56",
+    "inventory-focus-doc-matches.txt": "dfc30c9ff152d0efa913385a5f9f2cc030de8e51c41bbbe914d67bf97ed9ee56",
+    "inventory-focus-easy.patch": "afd4711efd5c0010ffc3c2e779ef08a86723875387d4e7aa222c78848b75f60a",
+    "inventory-focus-existing-validation.txt": "a558bde1c750228cfa61e6266fc60e1c4b514c1a25e69f2c399deb7ea17f2cf8",
+    "inventory-focus-final-check.json": "b440ded98aad61a516bb3a2353066947a906aa901a5fd26414af81b354a310da",
+    "inventory-focus-main.patch": "3f80f9a41e3733e8336b9950ef506b10d8972b1bca987b6e8ca62af21df7f43e",
+    "inventory-focus-receipt.json": "a710c9f28d16e0b7ec786670454f504a6c9313ffc4b8c09678f0f44468e5056b",
+    "inventory-focus-reproduction.json": "f37a37ae91baba22d639eea4771b84b0b21fa928b5b2a1d19b5a713d32f7f7fd",
+    "inventory-focus-result.md": "e79770e100a61e125ababbe0c2af598121f5fa8d78c0e4acadd625753c7a232d",
+    "inventory-focus-source-hashes.json": "433c0da928556dfc8dcfca6727e2f16822eaa89d2f632390d313016847fadd24",
+    "inventory-focus-task.md": "68c234159e67b164349056a8c1d2701eb5a0cfd5efbd6dd4e566e133a0e223d9",
+    "inventory-focus-validation.txt": "5d135a6ae01ac7d1b9f973c1e3aaa427d3620c85bd0218603c22d3a589fdb837"
+  }
+}

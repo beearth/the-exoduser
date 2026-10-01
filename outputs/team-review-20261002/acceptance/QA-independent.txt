@@ -1,0 +1,29 @@
+실제 소스 SHA-256:
+  game.html          f7212ac287665f831975c47523783967374db4c1219b898e57bca5f97cfa1649
+  game-easy-test.html 34ffa8ae1ff4a4509e695f921eef53e0a236aff63184459d13a915f37434bd04
+
+[A] SKILL hellRay 확정 게이트 — 독립 대조
+  ✓ A1 양쪽 확정 블록 동일(한 patch로 커버 가능)
+  ✓ A2 SSOT 수치가 실제 소스에 그대로 존재 (2_1:408 / 자원공식:247)
+  ✓ A3 현재 소스 상태 판정(before/patched) & 이중 patch 방지
+  ✓ A4 양쪽 patch 본문 동일(오프셋만 상이) & 확정 블록 내 앵커 유일
+  ✓ A5 RED(게이트 없는 before 블록): MP99 확정 → mp 음수(-1)+장판 설치
+  ✓ A6 RED(게이트 없는 before 블록): 스택0 확정 → stk 음수(-1)+장판 설치
+  ✓ A7 patched≠before (게이트가 블록을 실제로 변경)
+  ✓ A8 GREEN: MP99 → 무차감·무설치·부작용0 (조준 유지)
+  ✓ A9 GREEN: 스택0 → 무차감·무설치·부작용0 (조준 종료)
+  ✓ A10 GREEN: 동시취소(RMB+click) 우선 → 무설치·부작용0
+  ✓ A11 GREEN: 성공(MP100/스택1) 기존 행동·클릭소비·충전 보존
+  ✓ A12 GREEN: 합체(elecRepent) 성공 2장판 / 실패(MP99) 0장판·부작용0
+
+[B] UIUX inventory-focus 후보 — 실제 소스·숨김/분리 위험 대조
+  ✓ B1 소스 해시 drift 탐지: 기록 해시 vs 현재
+  ✓ B2 connectCandidate 앵커 13개 모두 현재 game.html에 정확히 1회 → 치환 적용 가능
+  ✓ B3 실제 소스에 _invClearHover / renderInv / _invRenderDetail / closeAllPanels 존재
+  ✓ B4 usable(): [hidden]/[aria-hidden]/disconnected/disabled 노드 거부(분리·숨김 방지)
+  ✓ B5 missing(): detail 정리 시 compare/hover-preview 클래스 제거·플로트 숨김(잔상 분리 방지)
+
+확정·인벤토리 독립 회귀: 17 PASS / 0 FAIL
+한계·주의:
+  - 현재 game.html/easy = PATCHED (root가 hellRay 게이트 이미 적용, uncommitted). → 이중 patch 금지.
+  - UIUX 후보 기록해시 drift(2026-10-01T15:32:07.262Z 기준) — game:true easy:true. 앵커는 아래 B2에서 현재소스 재검증.

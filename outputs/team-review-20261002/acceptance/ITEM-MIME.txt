@@ -1,0 +1,143 @@
+{
+  "checkedAt": "2026-10-01T15:49:30.315Z",
+  "serverSha256": "339fad6ab51cba92f6ca7a386c8aeb251f68cdb58cdfa55c109f57b1758a42ad",
+  "graph": [
+    {
+      "file": "tools/team-followup-20261001/ITEM/persistence-integration-port.mjs",
+      "target": "tools/team-followup-20261001/ITEM/browser-bootstrap-derived-persistence-integration-port.js",
+      "sha256": "39debbda9b23065c026d80861eb397cb59cb2a43b1b1ca7e570621f8242b189a",
+      "mime": "application/octet-stream",
+      "imports": [
+        "./binding-ports.mjs",
+        "./binding-d10.mjs",
+        "../../../unique-item-project/definitions.js"
+      ],
+      "proposedImportRewrites": [
+        {
+          "from": "./binding-ports.mjs",
+          "to": "./browser-bootstrap-derived-binding-ports.js"
+        },
+        {
+          "from": "./binding-d10.mjs",
+          "to": "./browser-bootstrap-derived-binding-d10.js"
+        },
+        {
+          "from": "../../../unique-item-project/definitions.js",
+          "to": "../../../unique-item-project/definitions.js"
+        }
+      ]
+    },
+    {
+      "file": "tools/team-followup-20261001/ITEM/binding-ports.mjs",
+      "target": "tools/team-followup-20261001/ITEM/browser-bootstrap-derived-binding-ports.js",
+      "sha256": "2b6bf07a42edc0336d976105015d2886fd4ef342aa6766131c29fdaf561a49a4",
+      "mime": "application/octet-stream",
+      "imports": [
+        "./binding-d10.mjs"
+      ],
+      "proposedImportRewrites": [
+        {
+          "from": "./binding-d10.mjs",
+          "to": "./browser-bootstrap-derived-binding-d10.js"
+        }
+      ]
+    },
+    {
+      "file": "tools/team-followup-20261001/ITEM/binding-d10.mjs",
+      "target": "tools/team-followup-20261001/ITEM/browser-bootstrap-derived-binding-d10.js",
+      "sha256": "b16bb29314e64cc2161f4eadd921678af2303a164e95080fdf879042fa4303f1",
+      "mime": "application/octet-stream",
+      "imports": [
+        "../../../unique-item-project/definitions.js",
+        "../../../unique-item-project/roll-values.js",
+        "./d10-consumer.mjs"
+      ],
+      "proposedImportRewrites": [
+        {
+          "from": "../../../unique-item-project/definitions.js",
+          "to": "../../../unique-item-project/definitions.js"
+        },
+        {
+          "from": "../../../unique-item-project/roll-values.js",
+          "to": "../../../unique-item-project/roll-values.js"
+        },
+        {
+          "from": "./d10-consumer.mjs",
+          "to": "./browser-bootstrap-derived-d10-consumer.js"
+        }
+      ]
+    },
+    {
+      "file": "unique-item-project/definitions.js",
+      "target": "unique-item-project/definitions.js",
+      "sha256": "3f04bcc5ac90b039454f32dc9323e60bbe44dda27be7fd439a97633d1f25118a",
+      "mime": "application/javascript",
+      "imports": [],
+      "proposedImportRewrites": []
+    },
+    {
+      "file": "unique-item-project/roll-values.js",
+      "target": "unique-item-project/roll-values.js",
+      "sha256": "103d0460c738c117840586780eaaed7be7ebe0aba61fa50464db9d004b094975",
+      "mime": "application/javascript",
+      "imports": [
+        "./definitions.js"
+      ],
+      "proposedImportRewrites": [
+        {
+          "from": "./definitions.js",
+          "to": "./definitions.js"
+        }
+      ]
+    },
+    {
+      "file": "tools/team-followup-20261001/ITEM/d10-consumer.mjs",
+      "target": "tools/team-followup-20261001/ITEM/browser-bootstrap-derived-d10-consumer.js",
+      "sha256": "6045326868bea6f7c5b1026d9472a02bdba5756cac41a110165e050ba9d4e7fb",
+      "mime": "application/octet-stream",
+      "imports": [
+        "../../../unique-item-project/definitions.js",
+        "../../../unique-item-project/roll-values.js"
+      ],
+      "proposedImportRewrites": [
+        {
+          "from": "../../../unique-item-project/definitions.js",
+          "to": "../../../unique-item-project/definitions.js"
+        },
+        {
+          "from": "../../../unique-item-project/roll-values.js",
+          "to": "../../../unique-item-project/roll-values.js"
+        }
+      ]
+    },
+    {
+      "file": "tools/team-followup-20261001/ITEM/browser-bootstrap-ui.js",
+      "target": "tools/team-followup-20261001/ITEM/browser-bootstrap-ui.js",
+      "sha256": "5c6a17133d39b276f12ebff6e33924b44acf7b122b47821a3730c3026b68634d",
+      "mime": "application/javascript",
+      "imports": [
+        "./browser-bootstrap-api.js"
+      ],
+      "proposedImportRewrites": [
+        {
+          "from": "./browser-bootstrap-api.js",
+          "to": "./browser-bootstrap-api.js"
+        }
+      ]
+    },
+    {
+      "file": "tools/team-followup-20261001/ITEM/browser-bootstrap-api.js",
+      "target": "tools/team-followup-20261001/ITEM/browser-bootstrap-api.js",
+      "sha256": "dcea3ff9722dde2fd200ecf1fb55f6d742f70631918fa7276c089e5e775ae9eb",
+      "mime": "application/javascript",
+      "imports": [],
+      "proposedImportRewrites": []
+    }
+  ],
+  "plan": "root 인수 후 명시 파생 .js 4개에 원문 그대로+import 경로만 치환; 원본 재작성/서버수정 없음. 현재는 계획만, 파생파일 생성/빌드0",
+  "factoryInstall": "별도 opt-in bootstrap에서 derived persistence factory를 import 후 installD10Review/createD10ReviewController에 주입",
+  "liveHTTP": "UNKNOWN",
+  "browserImport": "UNKNOWN",
+  "CSPAndPackaging": "UNKNOWN",
+  "mjsDirectImport": "현행 소스 MIME상 부적격"
+}

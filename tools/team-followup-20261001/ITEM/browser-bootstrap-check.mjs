@@ -1,0 +1,70 @@
+import fs from 'node:fs';
+import vm from 'node:vm';
+import assert from 'node:assert/strict';
+import crypto from 'node:crypto';
+import {installD10Review,createD10ReviewController} from './browser-bootstrap-api.js';
+import {mountD10PersistenceReview} from './browser-bootstrap-ui.js';
+import {createD10PersistenceIntegration} from './persistence-integration-port.mjs';
+import {createSaveHarness,extract} from './binding-save-harness.mjs';
+
+const rows=[];
+const protectedFiles=['server.cjs','game.html','game-easy-test.html','unique-item-project/review.html','tools/team-followup-20261001/ITEM/persistence-integration-port.mjs','tools/team-followup-20261001/ITEM/binding-ports.mjs','tools/team-followup-20261001/ITEM/binding-d10.mjs','tools/team-followup-20261001/ITEM/d10-consumer.mjs'];
+const originalBytes=new Map(protectedFiles.map(file=>[file,fs.readFileSync(file)]));
+async function check(name,action){await action();rows.push({name,status:'PASS'});}
+const request={proposalOnly:true,uniqueId:'UI-10',tier:0,element:0,baseRarity:0};
+let rng=0;
+const base={slot:'armor',name:'합성 fixture',affixes:[],socketCount:1,crystals:[null]};
+const options=host=>({host,reviewOnly:true,createPort:createD10PersistenceIntegration,mkItem:()=>structuredClone(base),rng:()=>{rng++;return .5;}});
+await check('기본 자동설치없음 및 opt-in 필수',()=>{const host={};assert.throws(()=>installD10Review({...options(host),reviewOnly:false}));assert.deepEqual(host,{});});
+await check('중복 설치거부 및 재설치',()=>{const host={},handle=installD10Review(options(host));assert.throws(()=>installD10Review(options(host)));handle.uninstall();installD10Review(options(host)).uninstall();});
+await check('원 data descriptor 복구',()=>{const host={};Object.defineProperty(host,'_d10PersistenceReviewPort',{value:17,writable:false,enumerable:true,configurable:true});const old=Object.getOwnPropertyDescriptor(host,'_d10PersistenceReviewPort');installD10Review(options(host)).uninstall();assert.deepEqual(Object.getOwnPropertyDescriptor(host,'_d10PersistenceReviewPort'),old);});
+await check('원 getter 실행0·descriptor 복구',()=>{let calls=0;const host={},get=()=>{calls++;return 1;};Object.defineProperty(host,'_d10PersistenceReviewPort',{get,configurable:true});const old=Object.getOwnPropertyDescriptor(host,'_d10PersistenceReviewPort');installD10Review(options(host)).uninstall();assert.deepEqual(Object.getOwnPropertyDescriptor(host,'_d10PersistenceReviewPort'),old);assert.equal(calls,0);});
+await check('원 비구성 property 거부',()=>{const host={};Object.defineProperty(host,'_d10PersistenceReviewPort',{value:1,configurable:false});assert.throws(()=>installD10Review(options(host)));assert.equal(host._d10PersistenceReviewPort,1);});
+await check('inherited property 보존',()=>{const host=Object.create({_d10PersistenceReviewPort:7});installD10Review(options(host)).uninstall();assert(!Object.hasOwn(host,'_d10PersistenceReviewPort'));assert.equal(host._d10PersistenceReviewPort,7);});
+await check('factory 예외 설치0',()=>{const host={};assert.throws(()=>installD10Review({...options(host),createPort:()=>{throw Error('fixture');}}));assert.deepEqual(host,{});installD10Review(options(host)).uninstall();});
+await check('설치 후 callback 예외 rollback',()=>{const host={_d10PersistenceReviewPort:3};assert.throws(()=>installD10Review({...options(host),onInstalled:()=>{throw Error('fixture');}}));assert.equal(host._d10PersistenceReviewPort,3);installD10Review(options(host)).uninstall();});
+await check('defineProperty 실패 정리',()=>{const host=Object.preventExtensions({});assert.throws(()=>installD10Review(options(host)));assert(!Object.hasOwn(host,'_d10PersistenceReviewPort'));});
+await check('factory 재진입 중복거부',()=>{const host={};installD10Review({...options(host),createPort:deps=>{assert.throws(()=>installD10Review(options(host)));return createD10PersistenceIntegration(deps);}}).uninstall();});
+await check('factory의 타주체교체 보호',()=>{const host={};assert.throws(()=>installD10Review({...options(host),createPort:deps=>{host._d10PersistenceReviewPort='foreign';return createD10PersistenceIntegration(deps);}}));assert.equal(host._d10PersistenceReviewPort,'foreign');});
+await check('callback 교체후 실패 타property 보호',()=>{const host={};assert.throws(()=>installD10Review({...options(host),onInstalled:()=>{host._d10PersistenceReviewPort='foreign';throw Error('fixture');}}));assert.equal(host._d10PersistenceReviewPort,'foreign');});
+await check('uninstall 타주체교체 및 stale 호출보호',()=>{const host={},handle=installD10Review(options(host));host._d10PersistenceReviewPort='foreign';assert.throws(()=>handle.create(request));assert.equal(handle.uninstall().status,'foreign-preserved');assert.equal(host._d10PersistenceReviewPort,'foreign');assert.equal(handle.uninstall().status,'already-uninstalled');});
+await check('동일 port descriptor 교체도 보호',()=>{const host={},handle=installD10Review(options(host));Object.defineProperty(host,'_d10PersistenceReviewPort',{enumerable:true});assert.equal(handle.uninstall().status,'foreign-preserved');assert(Object.hasOwn(host,'_d10PersistenceReviewPort'));});
+await check('해제후 생성/조회거부·명시 신규RNG1·복원0',()=>{const host={},controller=createD10ReviewController(options(host)),before=rng,item=controller.createNew(request);assert.equal(rng,before+1);const loaded=JSON.parse(JSON.stringify(controller.serialize(item)));assert.equal(controller.readLoaded(loaded).stored,.15);assert.equal(rng,before+1);controller.close();assert.throws(()=>controller.readLoaded(loaded));assert.throws(()=>controller.createNew(request));});
+await check('legacy/missing/invalid 보충0',()=>{const controller=createD10ReviewController(options({})),before=rng;for(const item of [base,{...base,uniqueId:'UI-10'},{...base,uniqueId:'UI-10',uniqueRoll:{version:2}}]){const snapshot=structuredClone(item);assert.notEqual(controller.readLoaded(item).kind,'proposal');assert.deepEqual(item,snapshot);}assert.equal(rng,before);controller.close();});
+function dom(){
+  const document={createElement:tag=>({tag,parentNode:null,listeners:new Map(),children:[],addEventListener(kind,fn){this.listeners.set(kind,fn);},removeEventListener(kind,fn){if(this.listeners.get(kind)===fn)this.listeners.delete(kind);},click(){this.listeners.get('click')?.();}})};
+  const container={children:[],appendChild(node){node.parentNode=this;this.children.push(node);},removeChild(node){this.children.splice(this.children.indexOf(node),1);node.parentNode=null;}};
+  return {document,container};
+}
+await check('실제 UI 버튼 신규/JSON읽기/정리',()=>{const fixture=dom(),host={},before=rng,mount=mountD10PersistenceReview({...options(host),...fixture,request});fixture.container.children[0].click();fixture.container.children[1].click();assert.match(fixture.container.children[2].textContent,/JSON 복원 proposal/);assert.equal(rng,before+1);const button=fixture.container.children[0];mount.close();mount.close();assert.equal(fixture.container.children.length,0);assert.equal(button.listeners.size,0);assert(!Object.hasOwn(host,'_d10PersistenceReviewPort'));});
+await check('UI 설치예외 rollback·부분DOM 정리',()=>{const fixture=dom(),host={},append=fixture.container.appendChild;let calls=0;fixture.container.appendChild=function(node){if(++calls===2)throw Error('fixture');append.call(this,node);};assert.throws(()=>mountD10PersistenceReview({...options(host),...fixture,request}));assert.equal(fixture.container.children.length,0);assert(!Object.hasOwn(host,'_d10PersistenceReviewPort'));});
+await check('UI 정리 타주체 DOM/property 보존',()=>{const fixture=dom(),host={},mount=mountD10PersistenceReview({...options(host),...fixture,request}),foreign=fixture.document.createElement('p');fixture.container.appendChild(foreign);host._d10PersistenceReviewPort='foreign';mount.close();assert.deepEqual(fixture.container.children,[foreign]);assert.equal(host._d10PersistenceReviewPort,'foreign');});
+await check('실제 검토UI 미적용patch 추출 연결',async()=>{
+  const html=fs.readFileSync('unique-item-project/review.html','utf8');
+  const patch=fs.readFileSync('tools/team-followup-20261001/ITEM/browser-bootstrap-ui.patch','utf8');
+  const added=patch.split('\n').filter(line=>line.startsWith('+')&&!line.startsWith('+++')).map(line=>line.slice(1)).join('\n');
+  assert(html.includes('  <script>'));assert(added.includes('await import('));
+  const body=added.replace("const { mountD10PersistenceReview } = await import('../tools/team-followup-20261001/ITEM/browser-bootstrap-ui.js');",'const mountD10PersistenceReview = fixtureMount;');
+  const fixture=dom();fixture.document.querySelector=()=>fixture.container;
+  const context=vm.createContext({window:{},document:fixture.document,fixtureMount:mountD10PersistenceReview});
+  vm.runInContext(body,context);assert.equal(typeof context.window.openD10PersistenceReview,'function');
+  await assert.rejects(context.window.openD10PersistenceReview({reviewOnly:false}));
+  const host={},before=rng,mount=await context.window.openD10PersistenceReview({...options(host),request});
+  fixture.container.children[0].click();fixture.container.children[1].click();
+  assert.match(fixture.container.children[2].textContent,/JSON 복원 proposal/);assert.equal(rng,before+1);mount.close();
+});
+for(const file of ['game.html','game-easy-test.html'])await check(file+' 실제생성/저장/복원 포트연결',async()=>{
+  const html=fs.readFileSync(file,'utf8'),harness=createSaveHarness(html);let baseCalls=0,d10Calls=0;
+  harness.context.Math.random=()=>{baseCalls++;return .5;};
+  Object.assign(harness.context,{_DEMO_MODE:false,_DEMO_AFFIX_BANNED:new Set(),EL:{P:0,F:1,I:2,D:3,L:4,H:5}});
+  vm.runInContext(['AFFIX_POOL','_AFSLOT','IMPLICIT_TABLE','LEGENDARY_SPECIAL','UNIQUE_SPECIAL'].map(name=>extract(html,name,true)).concat([extract(html,'rollAffixes'),extract(html,'mkItem')]).join('\n'),harness.context);
+  const controller=createD10ReviewController({host:harness.context.window,reviewOnly:true,createPort:createD10PersistenceIntegration,mkItem:harness.context.mkItem,rng:()=>{d10Calls++;return .5;}});
+  const item=controller.createNew(request);assert(baseCalls>0);assert.equal(d10Calls,1);harness.context.INV.bag=[item];
+  harness.context.Math.random=()=>{throw Error('restore RNG fixture');};
+  await harness.context.dbSave();assert.deepEqual(harness.errors,[]);assert.equal(harness.context.dbRestore(structuredClone(harness.saved())),true);
+  const loaded=harness.context.INV.bag[0];assert.deepEqual(JSON.parse(JSON.stringify(loaded)),item);assert.equal(controller.readLoaded(loaded).stored,.15);assert.equal(d10Calls,1);controller.close();
+});
+const hash=file=>crypto.createHash('sha256').update(fs.readFileSync(file)).digest('hex');
+await check('원본/기존 제출물 byte 보존',()=>{for(const [file,bytes] of originalBytes)assert(fs.readFileSync(file).equals(bytes));});
+const sourcePaths=['server.cjs','game.html','game-easy-test.html','tools/team-followup-20261001/ITEM/persistence-integration-port.mjs','tools/team-followup-20261001/ITEM/binding-ports.mjs','tools/team-followup-20261001/ITEM/binding-d10.mjs','tools/team-followup-20261001/ITEM/d10-consumer.mjs'];
+process.stdout.write(JSON.stringify({checkedAt:new Date().toISOString(),pass:rows.length,fail:0,rows,sources:Object.fromEntries(sourcePaths.map(file=>[file,hash(file)])),browserImport:'UNKNOWN: Node ESM only, no browser/network interaction',productionApplied:false},null,2)+'\n');

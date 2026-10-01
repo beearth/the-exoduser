@@ -1,0 +1,22 @@
+{
+  "task": "ITEM-20261002-BROWSER-BOOTSTRAP",
+  "receivedAt": "2026-10-01T15:26:21Z",
+  "firstReadAt": "2026-10-01T15:26:21Z",
+  "actualRead": "전용task·AGENTS 하위검색 후 persistence 결과/port/patch·ITEM 팀MD·저장계약·server.cjs MIME 읽음",
+  "status": "독립 구현·격리검수 완료·root 인계",
+  "duplicateCheck": "전용 prefix 파일 검색 후 착수; 기존 persistence/binding 보존, 기존 세션만 사용",
+  "firstEdit": "코드보다 이 전용 영수증 먼저 작성",
+  "receiptFirstEditAt": "2026-10-01T15:26:21.393Z",
+  "firstCodeEditAt": "2026-10-01T15:27:11.490Z",
+  "editTimeEvidence": "영수증/api.js filesystem birthtime",
+  "checkedAt": "2026-10-01T15:29:27.993Z",
+  "completedAt": "2026-10-01T15:29:28Z",
+  "commands": ["node tools/team-followup-20261001/ITEM/browser-bootstrap-check.mjs", "node tools/team-followup-20261001/ITEM/browser-bootstrap-mime-check.mjs", "rg -n 'uniqueRoll|D10|browser bootstrap|MIME|검토.*포트' docs --glob '*.md'"],
+  "validation": "23그룹 PASS/0FAIL·실제포트/생성/저장/복원·타교체/원descriptor/rollback·전이MIME소스검사; 원8파일byte불변",
+  "completionCondition": "명시설치/해제API·reviewOnly UI호출부·미적용patch·격리검수·MIME전이계획 제출",
+  "remainingGates": "기존factory .js 파생 또는 canonical 이동 root인수·fresh mkItem 검토호스트·브라우저 실제import/UI/CSP 검수UNKNOWN",
+  "productionApplied": false,
+  "scope": "ITEM/browser-bootstrap-*만 쓰기",
+  "userGame": "mac-play-20261002 기존 사용자 게임 조작·입력·리로드·계측0",
+  "prohibitedExecutions": 0
+}

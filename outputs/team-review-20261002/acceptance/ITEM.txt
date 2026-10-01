@@ -1,0 +1,110 @@
+{
+  "checkedAt": "2026-10-01T15:49:30.456Z",
+  "pass": 23,
+  "fail": 0,
+  "rows": [
+    {
+      "name": "기본 자동설치없음 및 opt-in 필수",
+      "status": "PASS"
+    },
+    {
+      "name": "중복 설치거부 및 재설치",
+      "status": "PASS"
+    },
+    {
+      "name": "원 data descriptor 복구",
+      "status": "PASS"
+    },
+    {
+      "name": "원 getter 실행0·descriptor 복구",
+      "status": "PASS"
+    },
+    {
+      "name": "원 비구성 property 거부",
+      "status": "PASS"
+    },
+    {
+      "name": "inherited property 보존",
+      "status": "PASS"
+    },
+    {
+      "name": "factory 예외 설치0",
+      "status": "PASS"
+    },
+    {
+      "name": "설치 후 callback 예외 rollback",
+      "status": "PASS"
+    },
+    {
+      "name": "defineProperty 실패 정리",
+      "status": "PASS"
+    },
+    {
+      "name": "factory 재진입 중복거부",
+      "status": "PASS"
+    },
+    {
+      "name": "factory의 타주체교체 보호",
+      "status": "PASS"
+    },
+    {
+      "name": "callback 교체후 실패 타property 보호",
+      "status": "PASS"
+    },
+    {
+      "name": "uninstall 타주체교체 및 stale 호출보호",
+      "status": "PASS"
+    },
+    {
+      "name": "동일 port descriptor 교체도 보호",
+      "status": "PASS"
+    },
+    {
+      "name": "해제후 생성/조회거부·명시 신규RNG1·복원0",
+      "status": "PASS"
+    },
+    {
+      "name": "legacy/missing/invalid 보충0",
+      "status": "PASS"
+    },
+    {
+      "name": "실제 UI 버튼 신규/JSON읽기/정리",
+      "status": "PASS"
+    },
+    {
+      "name": "UI 설치예외 rollback·부분DOM 정리",
+      "status": "PASS"
+    },
+    {
+      "name": "UI 정리 타주체 DOM/property 보존",
+      "status": "PASS"
+    },
+    {
+      "name": "실제 검토UI 미적용patch 추출 연결",
+      "status": "PASS"
+    },
+    {
+      "name": "game.html 실제생성/저장/복원 포트연결",
+      "status": "PASS"
+    },
+    {
+      "name": "game-easy-test.html 실제생성/저장/복원 포트연결",
+      "status": "PASS"
+    },
+    {
+      "name": "원본/기존 제출물 byte 보존",
+      "status": "PASS"
+    }
+  ],
+  "sources": {
+    "server.cjs": "339fad6ab51cba92f6ca7a386c8aeb251f68cdb58cdfa55c109f57b1758a42ad",
+    "game.html": "21235538c9766a28b04dcf529aed9883a8aa11bdbfef8e9e2ce35d5cc927c5cf",
+    "game-easy-test.html": "4c408f1e7b57210900ddfa8a0646502f91b6a0bbc798a24338eb159cb613d874",
+    "tools/team-followup-20261001/ITEM/persistence-integration-port.mjs": "39debbda9b23065c026d80861eb397cb59cb2a43b1b1ca7e570621f8242b189a",
+    "tools/team-followup-20261001/ITEM/binding-ports.mjs": "2b6bf07a42edc0336d976105015d2886fd4ef342aa6766131c29fdaf561a49a4",
+    "tools/team-followup-20261001/ITEM/binding-d10.mjs": "b16bb29314e64cc2161f4eadd921678af2303a164e95080fdf879042fa4303f1",
+    "tools/team-followup-20261001/ITEM/d10-consumer.mjs": "6045326868bea6f7c5b1026d9472a02bdba5756cac41a110165e050ba9d4e7fb"
+  },
+  "browserImport": "UNKNOWN: Node ESM only, no browser/network interaction",
+  "productionApplied": false
+}

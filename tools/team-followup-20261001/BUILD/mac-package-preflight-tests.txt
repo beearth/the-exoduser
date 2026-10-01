@@ -1,0 +1,36 @@
+✔ 정상 fixture dry-run·실제출력생성0·소스불변 (3.687875ms)
+✔ 출력충돌 거부 (1.559ms)
+✔ 입력SHA불일치 거부 (1.793041ms)
+✔ 원격commit불일치 거부 (1.27475ms)
+✔ 원격입력SHA불일치 거부 (1.261041ms)
+✔ 원격조회시각없음 거부 (1.783208ms)
+✔ 원격ref미확인 거부 (1.815875ms)
+✔ 빈입력목록 거부 (1.370292ms)
+✔ 세이브포함 거부 (1.800042ms)
+✔ 프로필포함 거부 (1.23375ms)
+✔ 기존실행본포함 거부 (1.357542ms)
+✔ 비밀환경포함 거부 (1.488542ms)
+✔ 입력경로탈출 거부 (1.214625ms)
+✔ 절대입력 거부 (1.213625ms)
+✔ 출력경로탈출 거부 (1.350791ms)
+✔ 입력symlink 거부 (1.47225ms)
+✔ 입력부모symlink 거부 (1.30875ms)
+✔ 출력부모symlink 거부 (1.418791ms)
+✔ dangling출력symlink 거부 (1.700167ms)
+✔ 입력hardlink 거부 (1.555792ms)
+✔ runtime없음 거부 (1.645542ms)
+✔ runtime아키텍처다름 거부 (1.81ms)
+✔ runtimeSHA다름 거부 (1.75475ms)
+✔ runtimebinarysymlink 거부 (1.805458ms)
+✔ 폴더입력 거부 (1.746667ms)
+✔ 중복입력 거부 (1.652583ms)
+✔ x64 thin Mach-O 헤더 fixture (1.902ms)
+✔ 실제CLI JSON/종료코드·실행옵션미제공 (46.317792ms)
+ℹ tests 28
+ℹ suites 0
+ℹ pass 28
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 123.036375

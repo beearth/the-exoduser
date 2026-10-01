@@ -1,0 +1,320 @@
+{
+  "checkedAt": "2026-10-01T15:54:57.860Z",
+  "pass": 12,
+  "fail": 0,
+  "rows": [
+    {
+      "name": "변환 재실행/원문역치환·JS산출 byte동일",
+      "status": "PASS"
+    },
+    {
+      "name": "실제 mkItem 의존/원함수 추출과 fixture 제한",
+      "status": "PASS"
+    },
+    {
+      "name": "JS 전이 MIME 소스검사",
+      "status": "PASS"
+    },
+    {
+      "name": "생성 D10 정확1/base별도·전체 JSON/이름/affixes/소켓 보존",
+      "status": "PASS"
+    },
+    {
+      "name": "legacy/missing/invalid 수리/재롤0",
+      "status": "PASS"
+    },
+    {
+      "name": "HTTP 오류/비JS MIME은 읽을수있는 실패",
+      "status": "PASS"
+    },
+    {
+      "name": "HTML CSP·외부JS·자동포트 설치없음",
+      "status": "PASS"
+    },
+    {
+      "name": "호스트 init/opt-in없는 클릭 생성·import0",
+      "status": "PASS"
+    },
+    {
+      "name": "실제 .js 체인 Node import·설치→신규→JSON→해제 UI",
+      "status": "PASS"
+    },
+    {
+      "name": "호스트 import전 HTTP실패 property설치0/CSP표시",
+      "status": "PASS"
+    },
+    {
+      "name": "해제 타property보호",
+      "status": "PASS"
+    },
+    {
+      "name": "원본 byte 보존",
+      "status": "PASS"
+    }
+  ],
+  "protectedSources": {
+    "game.html": "f7212ac287665f831975c47523783967374db4c1219b898e57bca5f97cfa1649",
+    "server.cjs": "339fad6ab51cba92f6ca7a386c8aeb251f68cdb58cdfa55c109f57b1758a42ad",
+    "unique-item-project/definitions.js": "3f04bcc5ac90b039454f32dc9323e60bbe44dda27be7fd439a97633d1f25118a",
+    "unique-item-project/roll-values.js": "103d0460c738c117840586780eaaed7be7ebe0aba61fa50464db9d004b094975",
+    "tools/team-followup-20261001/ITEM/persistence-integration-port.mjs": "39debbda9b23065c026d80861eb397cb59cb2a43b1b1ca7e570621f8242b189a",
+    "tools/team-followup-20261001/ITEM/binding-ports.mjs": "2b6bf07a42edc0336d976105015d2886fd4ef342aa6766131c29fdaf561a49a4",
+    "tools/team-followup-20261001/ITEM/binding-d10.mjs": "b16bb29314e64cc2161f4eadd921678af2303a164e95080fdf879042fa4303f1",
+    "tools/team-followup-20261001/ITEM/d10-consumer.mjs": "6045326868bea6f7c5b1026d9472a02bdba5756cac41a110165e050ba9d4e7fb",
+    "tools/team-followup-20261001/ITEM/browser-bootstrap-api.js": "dcea3ff9722dde2fd200ecf1fb55f6d742f70631918fa7276c089e5e775ae9eb",
+    "tools/team-followup-20261001/ITEM/browser-bootstrap-ui.js": "5c6a17133d39b276f12ebff6e33924b44acf7b122b47821a3730c3026b68634d"
+  },
+  "manifest": {
+    "schema": "reviewOnly-browser-host-v1",
+    "modules": [
+      {
+        "sourcePath": "tools/team-followup-20261001/ITEM/persistence-integration-port.mjs",
+        "targetPath": "tools/team-followup-20261001/ITEM/browser-host/persistence-integration-port.js",
+        "sourceSha256": "39debbda9b23065c026d80861eb397cb59cb2a43b1b1ca7e570621f8242b189a",
+        "targetSha256": "9d2536fef5608d18dda3a6e557e24b48d5c262f9566f3c0cd37a52d8e4058491",
+        "reverseImportEditsExact": true,
+        "edits": [
+          {
+            "start": 79,
+            "end": 100,
+            "original": "'./binding-ports.mjs'",
+            "replacement": "\"./binding-ports.js\"",
+            "dependency": "tools/team-followup-20261001/ITEM/binding-ports.mjs",
+            "target": "tools/team-followup-20261001/ITEM/browser-host/binding-ports.js"
+          },
+          {
+            "start": 168,
+            "end": 187,
+            "original": "'./binding-d10.mjs'",
+            "replacement": "\"./binding-d10.js\"",
+            "dependency": "tools/team-followup-20261001/ITEM/binding-d10.mjs",
+            "target": "tools/team-followup-20261001/ITEM/browser-host/binding-d10.js"
+          },
+          {
+            "start": 220,
+            "end": 265,
+            "original": "'../../../unique-item-project/definitions.js'",
+            "replacement": "\"../../../../unique-item-project/definitions.js\"",
+            "dependency": "unique-item-project/definitions.js",
+            "target": "unique-item-project/definitions.js"
+          }
+        ]
+      },
+      {
+        "sourcePath": "tools/team-followup-20261001/ITEM/binding-ports.mjs",
+        "targetPath": "tools/team-followup-20261001/ITEM/browser-host/binding-ports.js",
+        "sourceSha256": "2b6bf07a42edc0336d976105015d2886fd4ef342aa6766131c29fdaf561a49a4",
+        "targetSha256": "a0e6341efb06d06c18ec5ea957a251fbce045fd4f09b28fabf9dfa0a9c9127ad",
+        "reverseImportEditsExact": true,
+        "edits": [
+          {
+            "start": 72,
+            "end": 91,
+            "original": "'./binding-d10.mjs'",
+            "replacement": "\"./binding-d10.js\"",
+            "dependency": "tools/team-followup-20261001/ITEM/binding-d10.mjs",
+            "target": "tools/team-followup-20261001/ITEM/browser-host/binding-d10.js"
+          }
+        ]
+      },
+      {
+        "sourcePath": "tools/team-followup-20261001/ITEM/binding-d10.mjs",
+        "targetPath": "tools/team-followup-20261001/ITEM/browser-host/binding-d10.js",
+        "sourceSha256": "b16bb29314e64cc2161f4eadd921678af2303a164e95080fdf879042fa4303f1",
+        "targetSha256": "4f3c8c980a9c6b93dcc975b660d7b1e8120067ca83a0152b1469e6ee35182529",
+        "reverseImportEditsExact": true,
+        "edits": [
+          {
+            "start": 33,
+            "end": 78,
+            "original": "'../../../unique-item-project/definitions.js'",
+            "replacement": "\"../../../../unique-item-project/definitions.js\"",
+            "dependency": "unique-item-project/definitions.js",
+            "target": "unique-item-project/definitions.js"
+          },
+          {
+            "start": 131,
+            "end": 176,
+            "original": "'../../../unique-item-project/roll-values.js'",
+            "replacement": "\"../../../../unique-item-project/roll-values.js\"",
+            "dependency": "unique-item-project/roll-values.js",
+            "target": "unique-item-project/roll-values.js"
+          },
+          {
+            "start": 210,
+            "end": 230,
+            "original": "'./d10-consumer.mjs'",
+            "replacement": "\"./d10-consumer.js\"",
+            "dependency": "tools/team-followup-20261001/ITEM/d10-consumer.mjs",
+            "target": "tools/team-followup-20261001/ITEM/browser-host/d10-consumer.js"
+          }
+        ]
+      },
+      {
+        "sourcePath": "tools/team-followup-20261001/ITEM/d10-consumer.mjs",
+        "targetPath": "tools/team-followup-20261001/ITEM/browser-host/d10-consumer.js",
+        "sourceSha256": "6045326868bea6f7c5b1026d9472a02bdba5756cac41a110165e050ba9d4e7fb",
+        "targetSha256": "78f9a69ca9e0f55ec6edb649e6845e94afebd016e6a01892098eb19f83e677e2",
+        "reverseImportEditsExact": true,
+        "edits": [
+          {
+            "start": 33,
+            "end": 78,
+            "original": "'../../../unique-item-project/definitions.js'",
+            "replacement": "\"../../../../unique-item-project/definitions.js\"",
+            "dependency": "unique-item-project/definitions.js",
+            "target": "unique-item-project/definitions.js"
+          },
+          {
+            "start": 121,
+            "end": 166,
+            "original": "'../../../unique-item-project/roll-values.js'",
+            "replacement": "\"../../../../unique-item-project/roll-values.js\"",
+            "dependency": "unique-item-project/roll-values.js",
+            "target": "unique-item-project/roll-values.js"
+          }
+        ]
+      }
+    ],
+    "sourceGame": {
+      "file": "game.html",
+      "sha256": "f7212ac287665f831975c47523783967374db4c1219b898e57bca5f97cfa1649",
+      "wholeHTMLExecuted": false
+    },
+    "extraction": [
+      {
+        "name": "EL",
+        "sha256": "a0bb447f773a52c3c7a8dade348dccb9ff74c0823ab8ee5976618ddb0cee4340",
+        "bytes": 39
+      },
+      {
+        "name": "RARITY_MUL",
+        "sha256": "3caa809abf4ac530479e7db765ea47c95b16249fa1393082c7e43c60e60584b0",
+        "bytes": 46
+      },
+      {
+        "name": "SLOT_NAMES",
+        "sha256": "72c647f1cf345052d72ece51609e9ffd37720ac6b5d80bd51c151b0ead38e065",
+        "bytes": 170
+      },
+      {
+        "name": "SLOT_EMOJI",
+        "sha256": "ee7ce0584245a7a20ac79566b50d54996b08bc289e9d3323722d41f033aaa38f",
+        "bytes": 146
+      },
+      {
+        "name": "AFFIX_POOL",
+        "sha256": "53ec78ea46643a999736bd09c01b14bdb407c42dc34ac3ed255388f7caabf42f",
+        "bytes": 48880
+      },
+      {
+        "name": "_AFSLOT",
+        "sha256": "0711e07e91c5321b81529d22c13459c25773e1eb3d412ab5814bc3c4fd62a366",
+        "bytes": 274
+      },
+      {
+        "name": "IMPLICIT_TABLE",
+        "sha256": "6450cba6ac66aaa6f51e8d194943b7eb49b8182d458c429d92e75b162c85fd1c",
+        "bytes": 1211
+      },
+      {
+        "name": "LEGENDARY_SPECIAL",
+        "sha256": "8a52be9dca152bf7f856041992a4ac0076d5537ad073add075a587d6637c0ee4",
+        "bytes": 2254
+      },
+      {
+        "name": "UNIQUE_SPECIAL",
+        "sha256": "684c8dc66059f95e3bb3fb0859dacc8adbe0cc40d4979f77837dd8d128d83f0b",
+        "bytes": 1473
+      },
+      {
+        "name": "rollAffixes",
+        "sha256": "b9580a70fcc9e652d794521ca6d9afd8c83b317135634662b695eeda43f49a09",
+        "bytes": 2262
+      },
+      {
+        "name": "mkItem",
+        "sha256": "1ee1820b55f373a6db3c2041b359c393ebab34c3006972924d50cf1476373aa1",
+        "bytes": 26245
+      }
+    ],
+    "fixture": {
+      "file": "tools/team-followup-20261001/ITEM/browser-host/mk-item-fixture.js",
+      "sha256": "5476174988858bd50b700cd48b1aa681cf7c002719a0e54248c199473e1cc0a8",
+      "config": "synthetic P.lv20/demo=false, only armor; local Math/Date shadows, no game state"
+    },
+    "unchangedDependencies": [
+      {
+        "file": "unique-item-project/definitions.js",
+        "sha256": "3f04bcc5ac90b039454f32dc9323e60bbe44dda27be7fd439a97633d1f25118a"
+      },
+      {
+        "file": "unique-item-project/roll-values.js",
+        "sha256": "103d0460c738c117840586780eaaed7be7ebe0aba61fa50464db9d004b094975"
+      },
+      {
+        "file": "tools/team-followup-20261001/ITEM/browser-bootstrap-api.js",
+        "sha256": "dcea3ff9722dde2fd200ecf1fb55f6d742f70631918fa7276c089e5e775ae9eb"
+      },
+      {
+        "file": "tools/team-followup-20261001/ITEM/browser-bootstrap-ui.js",
+        "sha256": "5c6a17133d39b276f12ebff6e33924b44acf7b122b47821a3730c3026b68634d"
+      }
+    ],
+    "httpChecks": [
+      {
+        "url": "/tools/team-followup-20261001/ITEM/browser-host/persistence-integration-port.js",
+        "expectedMime": "JavaScript"
+      },
+      {
+        "url": "/tools/team-followup-20261001/ITEM/browser-host/binding-ports.js",
+        "expectedMime": "JavaScript"
+      },
+      {
+        "url": "/tools/team-followup-20261001/ITEM/browser-host/binding-d10.js",
+        "expectedMime": "JavaScript"
+      },
+      {
+        "url": "/tools/team-followup-20261001/ITEM/browser-host/d10-consumer.js",
+        "expectedMime": "JavaScript"
+      },
+      {
+        "url": "/tools/team-followup-20261001/ITEM/browser-host/mk-item-fixture.js",
+        "expectedMime": "JavaScript"
+      },
+      {
+        "url": "/unique-item-project/definitions.js",
+        "expectedMime": "JavaScript"
+      },
+      {
+        "url": "/unique-item-project/roll-values.js",
+        "expectedMime": "JavaScript"
+      },
+      {
+        "url": "/tools/team-followup-20261001/ITEM/browser-bootstrap-api.js",
+        "expectedMime": "JavaScript"
+      },
+      {
+        "url": "/tools/team-followup-20261001/ITEM/browser-bootstrap-ui.js",
+        "expectedMime": "JavaScript"
+      }
+    ],
+    "browserImport": "UNKNOWN",
+    "productionApplied": false
+  },
+  "sourceDrift": {
+    "initialGameSha": "21235538c9766a28b04dcf529aed9883a8aa11bdbfef8e9e2ce35d5cc927c5cf",
+    "currentGameSha": "f7212ac287665f831975c47523783967374db4c1219b898e57bca5f97cfa1649",
+    "extractedFragmentsExact": true
+  },
+  "counters": {
+    "base": 49,
+    "d10": 1,
+    "restoreCalls": 4,
+    "restoreRng": 0
+  },
+  "actualBrowserImport": "UNKNOWN",
+  "actualHTTP": "UNKNOWN: fixture responses only",
+  "NodeJSChainImport": "PASS",
+  "productionApplied": false
+}

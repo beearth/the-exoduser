@@ -1,0 +1,11 @@
+--- a/unique-item-project/review.html
++++ b/unique-item-project/review.html
+@@ -49,1 +49,8 @@
+   <script>
++    window.openD10PersistenceReview = async function(options) {
++      if (!options || options.reviewOnly !== true) throw new Error('reviewOnly 명시 opt-in 필요');
++      const { mountD10PersistenceReview } = await import('../tools/team-followup-20261001/ITEM/browser-bootstrap-ui.js');
++      const container = document.querySelector('article[data-unique-id="UI-10"]');
++      if (!container) throw new Error('UI-10 검토 카드 없음');
++      return mountD10PersistenceReview({ ...options, document, container });
++    };

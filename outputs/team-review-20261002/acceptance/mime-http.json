@@ -1,0 +1,14 @@
+[
+  {
+    "path": "tools/team-followup-20261001/ITEM/persistence-integration-port.mjs",
+    "status": 200,
+    "contentType": "application/octet-stream",
+    "bytes": 2514
+  },
+  {
+    "path": "tools/team-followup-20261001/ITEM/browser-bootstrap-api.js",
+    "status": 200,
+    "contentType": "application/javascript",
+    "bytes": 3696
+  }
+]
