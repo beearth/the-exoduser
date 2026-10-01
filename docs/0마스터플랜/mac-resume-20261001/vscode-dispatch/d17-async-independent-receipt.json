@@ -1,0 +1,54 @@
+{
+  "taskId": "QA-d17-async-independent",
+  "team": "QA",
+  "session": "88c3f903-ece5-4640-8b0c-86feaaca0e53",
+  "terminal": "VS Code 기존 터미널 1 (QA)",
+  "cli": "Claude Code",
+  "model": "claude-opus-4-8",
+  "head": "f965a15b",
+  "receivedUTC": "2026-10-01T17:30:22Z",
+  "firstReadUTC": "2026-10-01T17:30:50Z",
+  "editStartUTC": "2026-10-01T17:36:00Z",
+  "status": "done-d17-async-independent",
+  "scopeNote": "d17-async-independent-task.md 한 건. 기존 lifecycle-roll-candidate 비동기 결함(pending 등록/효과·늦은 완료) 독립 fixture 재현 후, 완성된 async-boundary 후보에 동일 반례 적용. ITEM 파일 수정 0.",
+  "candidateReadiness": "d17-async-boundary 후보 완성 확인(ITEM receipt status '기존 FAIL2건 재현·새58검사 PASS 완료, root 인계', completedUtc 2026-10-01T17:30:53Z) → 대기 불필요, 반례 적용 진행.",
+  "ownedPaths": [
+    "tools/team-followup-20261001/QA/d17-async-independent-*",
+    "docs/0마스터플랜/mac-resume-20261001/vscode-dispatch/d17-async-independent-result.md",
+    "docs/0마스터플랜/mac-resume-20261001/vscode-dispatch/d17-async-independent-receipt.json"
+  ],
+  "sourceSHA16": {
+    "d17-lifecycle-roll-candidate.mjs": "381e43c79b4b16d7",
+    "d17-async-boundary-candidate.mjs": "f4c15457b7636557",
+    "d17-source-adapter-candidate.mjs": "6bf70e525a6a7aa1",
+    "d17-source-adapter-callsite.mjs": "0e1f024e3d631f11",
+    "d17-zone-selection-candidate.mjs": "a505c072dbf18d31",
+    "UI-17": "effectId U-D17, slot helmet, stat _uBlackZoneGather, unit count, min1 max3"
+  },
+  "readOnlyReviewed": [
+    "ITEM d17 후보군 5개 + task/receipt",
+    "unique-item-project/{definitions,roll-values}.js",
+    "ITEM d17-async-boundary-receipt(완성)"
+  ],
+  "doNotModify": [
+    "기존 QA 결과",
+    "ITEM 파일",
+    "production game/easy",
+    "공유 docs/CHANGELOG",
+    "saves"
+  ],
+  "gate": "Git/queue/새세션/하위에이전트/서버/게임/성능측정/빌드 0. source 검수이며 앱 인수/생산 활성 아님.",
+  "nextAction": "d17-async-independent-regression.mjs(독립 fixture: prior 결함 2건 재현 + 새 후보 억제 확인, A/B겹침·역순·pending생성/시전·clear교체·this/args/return/count·기본비활성) 작성·실행 후 result 인계",
+  "blocker": null,
+  "completedUTC": "2026-10-01T17:38:00Z",
+  "result": {
+    "regression": "tools/team-followup-20261001/QA/d17-async-independent-regression.mjs — 20 PASS/0 FAIL, exit0 (독립 fixture, ITEM check 비복제)",
+    "priorReproduced": "2건: FAIL-A(pending 중 등록 true·시전 이동 효과), FAIL-B(A/B 겹침·늦은 finally clear 로 오등록 후 삭제)",
+    "newFixed": "동일 반례 전부 억제: pending Set 로 진행 경계 있으면 등록/시전 억제(원함수 통과), 늦은 clear 없음, 전 경계 완료(성공/역순/reject/동기throw) 후 재개",
+    "commonContracts": "기본 비활성·원함수 this/args/return/1회·character/zones 교체 stale 폐기 확인",
+    "candidateUse": "async-boundary 후보 완성됨 → 반례 적용 완료(대기 불필요). ITEM 파일 수정 0(read-only import)",
+    "noModify": "기존 QA결과/ITEM파일/production/공유docs/세이브 변경0",
+    "gates": "Git/queue/새세션/하위에이전트/서버/게임/성능측정/빌드0, source 검수(앱인수/생산활성 아님)",
+    "remaining": "실제 생산 callsite 장착 부작용·저장 공급 필드 실제 연결·never-settle 경계는 root/ITEM·생산 게이트 소관"
+  }
+}

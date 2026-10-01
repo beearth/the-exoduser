@@ -1,0 +1,36 @@
+{
+  "taskId": "SKILL-mortar-confirm-dispatch",
+  "title": "mortar aim-start→확정→fireMaliceMortar 통합 제어흐름 회귀",
+  "team": "SKILL",
+  "terminal": 6,
+  "cli": "claude-code",
+  "model": "claude-opus-4-8",
+  "sessionId": "203377cc-64c4-47ea-af27-95b66ae829fa",
+  "head": "f965a15b65fa99729ca0c6ea1f9aeeabde7d9706",
+  "receivedAtUTC": "2026-10-01T17:28:00Z",
+  "firstReadUTC": "2026-10-01T17:30:00Z",
+  "firstCodeEditUTC": "2026-10-01T17:40:00Z",
+  "status": "done",
+  "duplicateCheck": "mortar-confirm-dispatch-* 부재(task.md만) → 신규. mortar-confirm-source(단독 함수 17검사)를 보존·확장(통합 제어흐름).",
+  "newDefect": "없음 — 기존 mortar-confirm-source의 MP 재검사 결함 1건 외 추가 결함 미발견. 신규 patch 생성 안 함, 기존 후보 가드 재검증만.",
+  "patchReuse": {
+    "fireMaliceMortar_sha256_current": "cdeeead948d5518c (양쪽 동일, mortar-confirm-source frozen과 동일 — 함수 무변)",
+    "existingPatchApplies": "mortar-confirm-source-game.patch·-easy.patch 둘 다 현 HEAD f965a15b에서 dry-run APPLIES CLEAN",
+    "guardOwnership": "mortar 가드는 fireMaliceMortar 함수 내부 1개소. 다른 SKILL 후보(iceStorm/hellRay/thunderStake = 인라인 확정블록)와 guard/함수 소유 겹침 없음"
+  },
+  "ownedPaths": [
+    "tools/team-followup-20261001/SKILL/mortar-confirm-dispatch.test.mjs",
+    "tools/team-followup-20261001/SKILL/mortar-confirm-dispatch-evidence.json",
+    "tools/team-followup-20261001/SKILL/mortar-confirm-dispatch-receipt.json",
+    "tools/team-followup-20261001/SKILL/mortar-confirm-dispatch-result.md"
+  ],
+  "nextAction": "aim-start/확정/fire 실제 3슬라이스 추출 통합 하니스로 조준중 MP감소·취소우선·릴리즈·회복후재확정·중복차단·합체·호출수 비교 회귀 작성·실행",
+  "blocker": null,
+  "notes": "생산 직접 적용 0, 새 비용/쿨/밸런스/thunderStake duration 변경 0. 기존 후보·17검사 보존. 공유docs/Git/queue/새세션/게임/서버 0. 게임탭 입력/리로드/닫기/계측 0.",
+  "completedAtUTC": "2026-10-01T17:48:00Z",
+  "artifacts": {
+    "integratedTest": "mortar-confirm-dispatch.test.mjs → 19 PASS / 0 FAIL (exit0)",
+    "evidence": "mortar-confirm-dispatch-evidence.json",
+    "preservedSourceTest": "mortar-confirm-source.test.mjs → 17 PASS / 0 FAIL (재실행 확인)"
+  }
+}

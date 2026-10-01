@@ -1,0 +1,176 @@
+{
+  "oldAndNew": {
+    "utc": "2026-10-01T17:29:46.383Z",
+    "oldFailures": [
+      {
+        "case": "pending 중 신규 출처 재등록 및 이동",
+        "expectedX": 100,
+        "actualX": 0,
+        "verdict": "기존 후보 FAIL 재현"
+      },
+      {
+        "case": "A pending/B 완료 뒤 새 provenance를 A finally가 삭제",
+        "expectedX": 0,
+        "actualX": 100,
+        "verdict": "기존 후보 FAIL 재현"
+      }
+    ],
+    "newChecks": 30,
+    "newStatus": "PASS",
+    "passed": [
+      "A/B resolve/resolve 정순",
+      "A/B resolve/resolve 역순",
+      "A/B resolve/reject 정순",
+      "A/B resolve/reject 역순",
+      "A/B reject/resolve 정순",
+      "A/B reject/resolve 역순",
+      "A/B reject/reject 정순",
+      "A/B reject/reject 역순",
+      "pending 생성/시전/등록 원동작 횟수와 상태",
+      "clear 뒤 늦은 resolve",
+      "clear 뒤 늦은 reject",
+      "player 뒤 늦은 resolve",
+      "player 뒤 늦은 reject",
+      "character 뒤 늦은 resolve",
+      "character 뒤 늦은 reject",
+      "zones 뒤 늦은 resolve",
+      "zones 뒤 늦은 reject",
+      "clear는 진행중 경계 취소하지 않음/중첩 동기원함수",
+      "원함수 this/인수/동기반환 identity/호출1",
+      "동기 예외 identity/호출1 및 후속 회복",
+      "native Promise identity는 별개/결과 this 인수 보존",
+      "then getter1/then 호출1/receiver/비동기 동화",
+      "throwing then getter는 동기 예외/경계 해제",
+      "then 비함수 객체 반환 identity",
+      "then 호출 예외/다중 resolve/reject",
+      "pending/ready 원 생성·종료 this/인수/반환·예외",
+      "정착 후 microtask 후속 경계 token 분리",
+      "기본/한쪽 opt-in 비활성",
+      "기본/한쪽 opt-in 비활성",
+      "기본/한쪽 opt-in 비활성"
+    ],
+    "gameSha256": "c868284af349c996d42087e93eba47a10614d73cb8f55f4db5ae01dde89da31a",
+    "functions": [
+      {
+        "name": "fireBlackStar",
+        "sha256": "11fd34ebf4a12ef9957203d93e2aff9245b9009a9f086fe641ffd027054c5824"
+      },
+      {
+        "name": "activateSpikeTrap",
+        "sha256": "f5d9f41ee12c8f51a0d8a1b116588a6133a3bc801aec73bb0532d3c02fc2dd19"
+      }
+    ]
+  },
+  "prior28OnNew": {
+    "utc": "2026-10-01T17:29:46.486Z",
+    "checks": 28,
+    "status": "PASS",
+    "gameSha256": "c868284af349c996d42087e93eba47a10614d73cb8f55f4db5ae01dde89da31a",
+    "productionD17FieldsPresent": false,
+    "evidence": [
+      {
+        "name": "initStage",
+        "sha256": "2b88d7b367a9b2bb60aef018d2be92e51cbfb66c64524c327343772cd0f150c3",
+        "line": 30295,
+        "boundaries": [
+          "G._fireZones=[]"
+        ]
+      },
+      {
+        "name": "_enterBossArena",
+        "sha256": "01f063493e7b07deed6ae1f8925ffb09c54f0fd03070bf3d3e27cd2cf79d365b",
+        "line": 29511,
+        "boundaries": [
+          "G._fireZones=[]"
+        ]
+      },
+      {
+        "name": "_fallenResolve",
+        "sha256": "e5cb1a7a2c9dcd1065902e09e86539a5e3bf01ba662aa7c3a5eb6ca2230a582a",
+        "line": 42370,
+        "boundaries": [
+          "G._fireZones=[]"
+        ]
+      },
+      {
+        "name": "_loadCharAtlas",
+        "sha256": "47f6cb0b5630535ed2c79b436b80320978cd01b0d1aaa8f89e4d400a653eeae6",
+        "line": 10145,
+        "boundaries": [
+          "_charIdx=idx"
+        ]
+      },
+      {
+        "name": "dbRestore",
+        "sha256": "63385633575b51647ab02b9e27f6d840e036dc35f9cd595b1cc65063e1133c35",
+        "line": 3589,
+        "boundaries": [
+          "INV.equipped=d.inv.equipped||{weapon:null,shield:null,boots:null,armor:null,helmet:null,bow:null,gloves:null,pants:null,belt:null,necklace:null,ring1:null,ring2:null,cape:null,bracelet:null,headband:null,ossuary:null,headband2:null}"
+        ]
+      },
+      {
+        "name": "startGameFromDB",
+        "sha256": "57f378abad7d2315f51b8c3942889cce9ae38790c1ded3bbe87d9c0d37d1e86e",
+        "line": 60366,
+        "boundaries": [
+          "P=mkP()"
+        ]
+      },
+      {
+        "name": "fireBlackStar",
+        "sha256": "11fd34ebf4a12ef9957203d93e2aff9245b9009a9f086fe641ffd027054c5824"
+      },
+      {
+        "name": "activateSpikeTrap",
+        "sha256": "f5d9f41ee12c8f51a0d8a1b116588a6133a3bc801aec73bb0532d3c02fc2dd19"
+      }
+    ]
+  },
+  "preservation": {
+    "before": {
+      "d17-lifecycle-roll-candidate.mjs": "381e43c79b4b16d7350e2e1262244805f647449f2c9479124d2f749d8665bac9",
+      "d17-lifecycle-roll-check.mjs": "d7d0078695474e5f74791355ed8818b6462cbb963399b446e39f1d98bfdd7438",
+      "d17-lifecycle-roll-evidence.json": "7a1403aaf8086a058cc0ae8743e5f64f90d08a56cc9d7493a253d6022acfff2a",
+      "d17-lifecycle-roll-receipt.json": "3009095267ac524411a55a2282ba886475f27b1c7721796edb5e9fff017a2c57",
+      "d17-lifecycle-roll-result.md": "a5e016fcd3406df713d8428f2ff3e2f331fdd649df11da11d0860ee61578dfb9",
+      "d17-lifecycle-roll-task.md": "f7023988f598e0fc5cfc8f4414640bf9db174a1268bdc514e8d8083f4692f485",
+      "d17-source-adapter-callsite.mjs": "0e1f024e3d631f11a0594c01a4a664472c804f58e3b0c34876a890a79467949a",
+      "d17-source-adapter-candidate.mjs": "6bf70e525a6a7aa1c2f0a1b1a2a6799ecc0174da7113892d38923ad0606d26c4",
+      "d17-source-adapter-check.mjs": "8b011efd81a9a9e97da289f93547ed379818043087c3ecd68359a8a80405fc90",
+      "d17-source-adapter-evidence.json": "22e4d5c0030517e8effbd74f47dfd0d38178cc31a6ee60f88483f881e736c081",
+      "d17-source-adapter-receipt.json": "786062521c1e2a0caf9b078a1a752812311cf83b3f2e4dffa7e7e4ec11b941ca",
+      "d17-source-adapter-result.md": "7838e664bdccf7f7455f8b6e580ecf155c9c595961e44d6e87e753173650f15a",
+      "d17-source-adapter-task.md": "83ccc0c80a8eaeba86ceeab762f83f265b12271161a64e7f013544dc76c3cdc7",
+      "d17-zone-selection-candidate.mjs": "a505c072dbf18d31d7db754d6167dffafc2ef5693a7e372eaee3866013f49e64",
+      "d17-zone-selection-check.mjs": "96051d04f3e7317710a2206e7bf055f6b292fd4aacbdda17a729ecdf46939a78",
+      "d17-zone-selection-evidence.json": "2d4d3c57702d4a6d410d51815996aeafe1c5dd88eb6b0f356e439b3f53c1e373",
+      "d17-zone-selection-receipt.json": "77564a61ab7f1f30be3e5b6e9cff2437982b89d9c82a103ea80c0122ec37c19f",
+      "d17-zone-selection-result.md": "c663fd827b69468585aab85578a78eaf52de5b05d59351010e8dcda5018b837c",
+      "d17-zone-selection-task.md": "1e513b40a6e74d89ccf08fdf8a8e6ab7c537ffb1e3abf23e91ffed0716f7bd7f"
+    },
+    "after": {
+      "d17-lifecycle-roll-candidate.mjs": "381e43c79b4b16d7350e2e1262244805f647449f2c9479124d2f749d8665bac9",
+      "d17-lifecycle-roll-check.mjs": "d7d0078695474e5f74791355ed8818b6462cbb963399b446e39f1d98bfdd7438",
+      "d17-lifecycle-roll-evidence.json": "7a1403aaf8086a058cc0ae8743e5f64f90d08a56cc9d7493a253d6022acfff2a",
+      "d17-lifecycle-roll-receipt.json": "3009095267ac524411a55a2282ba886475f27b1c7721796edb5e9fff017a2c57",
+      "d17-lifecycle-roll-result.md": "a5e016fcd3406df713d8428f2ff3e2f331fdd649df11da11d0860ee61578dfb9",
+      "d17-lifecycle-roll-task.md": "f7023988f598e0fc5cfc8f4414640bf9db174a1268bdc514e8d8083f4692f485",
+      "d17-source-adapter-callsite.mjs": "0e1f024e3d631f11a0594c01a4a664472c804f58e3b0c34876a890a79467949a",
+      "d17-source-adapter-candidate.mjs": "6bf70e525a6a7aa1c2f0a1b1a2a6799ecc0174da7113892d38923ad0606d26c4",
+      "d17-source-adapter-check.mjs": "8b011efd81a9a9e97da289f93547ed379818043087c3ecd68359a8a80405fc90",
+      "d17-source-adapter-evidence.json": "22e4d5c0030517e8effbd74f47dfd0d38178cc31a6ee60f88483f881e736c081",
+      "d17-source-adapter-receipt.json": "786062521c1e2a0caf9b078a1a752812311cf83b3f2e4dffa7e7e4ec11b941ca",
+      "d17-source-adapter-result.md": "7838e664bdccf7f7455f8b6e580ecf155c9c595961e44d6e87e753173650f15a",
+      "d17-source-adapter-task.md": "83ccc0c80a8eaeba86ceeab762f83f265b12271161a64e7f013544dc76c3cdc7",
+      "d17-zone-selection-candidate.mjs": "a505c072dbf18d31d7db754d6167dffafc2ef5693a7e372eaee3866013f49e64",
+      "d17-zone-selection-check.mjs": "96051d04f3e7317710a2206e7bf055f6b292fd4aacbdda17a729ecdf46939a78",
+      "d17-zone-selection-evidence.json": "2d4d3c57702d4a6d410d51815996aeafe1c5dd88eb6b0f356e439b3f53c1e373",
+      "d17-zone-selection-receipt.json": "77564a61ab7f1f30be3e5b6e9cff2437982b89d9c82a103ea80c0122ec37c19f",
+      "d17-zone-selection-result.md": "c663fd827b69468585aab85578a78eaf52de5b05d59351010e8dcda5018b837c",
+      "d17-zone-selection-task.md": "1e513b40a6e74d89ccf08fdf8a8e6ab7c537ffb1e3abf23e91ffed0716f7bd7f"
+    },
+    "unchanged": true
+  },
+  "regressionTransformation": "기존 check.mjs 원문 중 candidate import 경로 한 곳만 새 후보로 변경한 별도 owned regression 파일. 기존 파일은 SHA 동일.",
+  "finalVerification": {"async":{"utc":"2026-10-01T17:30:52.926Z","oldFailures":[{"case":"pending 중 신규 출처 재등록 및 이동","expectedX":100,"actualX":0,"verdict":"기존 후보 FAIL 재현"},{"case":"A pending/B 완료 뒤 새 provenance를 A finally가 삭제","expectedX":0,"actualX":100,"verdict":"기존 후보 FAIL 재현"}],"newChecks":30,"newStatus":"PASS","passed":["A/B resolve/resolve 정순","A/B resolve/resolve 역순","A/B resolve/reject 정순","A/B resolve/reject 역순","A/B reject/resolve 정순","A/B reject/resolve 역순","A/B reject/reject 정순","A/B reject/reject 역순","pending 생성/시전/등록 원동작 횟수와 상태","clear 뒤 늦은 resolve","clear 뒤 늦은 reject","player 뒤 늦은 resolve","player 뒤 늦은 reject","character 뒤 늦은 resolve","character 뒤 늦은 reject","zones 뒤 늦은 resolve","zones 뒤 늦은 reject","clear는 진행중 경계 취소하지 않음/중첩 동기원함수","원함수 this/인수/동기반환 identity/호출1","동기 예외 identity/호출1 및 후속 회복","native Promise identity는 별개/결과 this 인수 보존","then getter1/then 호출1/receiver/비동기 동화","throwing then getter는 동기 예외/경계 해제","then 비함수 객체 반환 identity","then 호출 예외/다중 resolve/reject","pending/ready 원 생성·종료 this/인수/반환·예외","정착 후 microtask 후속 경계 token 분리","기본/한쪽 opt-in 비활성","기본/한쪽 opt-in 비활성","기본/한쪽 opt-in 비활성"],"preservedFiles":19,"regressionImportOnly":true,"gameSha256":"c868284af349c996d42087e93eba47a10614d73cb8f55f4db5ae01dde89da31a","functions":[{"name":"fireBlackStar","sha256":"11fd34ebf4a12ef9957203d93e2aff9245b9009a9f086fe641ffd027054c5824"},{"name":"activateSpikeTrap","sha256":"f5d9f41ee12c8f51a0d8a1b116588a6133a3bc801aec73bb0532d3c02fc2dd19"}]},"regression":{"utc":"2026-10-01T17:30:53.672Z","checks":28,"status":"PASS","gameSha256":"c868284af349c996d42087e93eba47a10614d73cb8f55f4db5ae01dde89da31a","productionD17FieldsPresent":false,"evidence":[{"name":"initStage","sha256":"2b88d7b367a9b2bb60aef018d2be92e51cbfb66c64524c327343772cd0f150c3","line":30295,"boundaries":["G._fireZones=[]"]},{"name":"_enterBossArena","sha256":"01f063493e7b07deed6ae1f8925ffb09c54f0fd03070bf3d3e27cd2cf79d365b","line":29511,"boundaries":["G._fireZones=[]"]},{"name":"_fallenResolve","sha256":"e5cb1a7a2c9dcd1065902e09e86539a5e3bf01ba662aa7c3a5eb6ca2230a582a","line":42370,"boundaries":["G._fireZones=[]"]},{"name":"_loadCharAtlas","sha256":"47f6cb0b5630535ed2c79b436b80320978cd01b0d1aaa8f89e4d400a653eeae6","line":10145,"boundaries":["_charIdx=idx"]},{"name":"dbRestore","sha256":"63385633575b51647ab02b9e27f6d840e036dc35f9cd595b1cc65063e1133c35","line":3589,"boundaries":["INV.equipped=d.inv.equipped||{weapon:null,shield:null,boots:null,armor:null,helmet:null,bow:null,gloves:null,pants:null,belt:null,necklace:null,ring1:null,ring2:null,cape:null,bracelet:null,headband:null,ossuary:null,headband2:null}"]},{"name":"startGameFromDB","sha256":"57f378abad7d2315f51b8c3942889cce9ae38790c1ded3bbe87d9c0d37d1e86e","line":60366,"boundaries":["P=mkP()"]},{"name":"fireBlackStar","sha256":"11fd34ebf4a12ef9957203d93e2aff9245b9009a9f086fe641ffd027054c5824"},{"name":"activateSpikeTrap","sha256":"f5d9f41ee12c8f51a0d8a1b116588a6133a3bc801aec73bb0532d3c02fc2dd19"}]}}
+}

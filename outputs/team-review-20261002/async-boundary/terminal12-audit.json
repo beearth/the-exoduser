@@ -1,0 +1,31 @@
+{
+  "checkedAt": "2026-10-01T17:41:49.393628+00:00",
+  "classification": "unassigned_start_screen_excluded_from_team_utilization",
+  "terminalNumber": 12,
+  "label": "exoduser-migration-20...",
+  "shellPid": 55139,
+  "codexChildPid": 79106,
+  "tty": "ttys014",
+  "sessionId": null,
+  "roleConfirmed": false,
+  "workInThisTerminalConfirmed": false,
+  "reason": "CUA screenshot shows Codex v0.159.3 welcome and empty Ask Codex input. No received task or exact session ID established. This is Terminal 12, not Terminal 9. It must not count as an active team.",
+  "item": {
+    "terminalNumber": 9,
+    "title": "할당 작업 실행",
+    "sessionId": "01a0f6e6-1fbe-7df0-8d02-a9c2d9df3750",
+    "queueId": "01a0f881-a198-7441-98c9-2a6709b1e27c",
+    "startedAt": "2026-10-01T17:27:20Z",
+    "completedAt": "2026-10-01T17:31:18Z",
+    "status": "completed; not running",
+    "evidence": "codex-activity.json"
+  },
+  "actions": [
+    "Read-only status UI attempted; no status output or session ID verified.",
+    "Clicked existing ITEM Terminal 9 label; accessibility tree changed from Terminal 12 to seven existing split terminals including Terminal 9.",
+    "Screenshot remained the earlier Terminal 12 image despite updated AX tree. Visible switch is therefore unverified.",
+    "No resume, new session, duplicate queue, team task, permission change or terminal termination."
+  ],
+  "blocker": "CUA screenshot and accessibility tree disagree; coordinate attempt returned noWindowsAvailable. Fresh full-path app binding returned AX but screenshot stayed unchanged. No blind resume into an unidentified session.",
+  "next": "Use existing Terminal 9 for ITEM. If Terminal 12 is retained, label it unassigned only after reliable UI control; do not claim it is the eleventh working team."
+}

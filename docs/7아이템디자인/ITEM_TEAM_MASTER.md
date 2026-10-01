@@ -171,3 +171,17 @@ root가 명시 reviewOnly 설치/해제 후보23그룹을 실제 port·양쪽 mk
 | 실제 미연결 | 현 game.html에 uniqueRoll/UI-17/_uBlackZoneGather 공급필드 없음. D17 저장스키마 채택·생성·생산 장착 소비 완료가 아님 |
 | 보존 | zone identity·좌표 외 상태/이전 후보/초안 보존.600px/최근접·tie 검토정책·경제·실전 DPS 변경0 |
 | 남은 게이트 | 실제 호출부 순차 연결·저장 공급·비동기 경계 직렬화·demo/test 추가 초기화·브라우저/중첩 실전검수 |
+
+### 2026-10-02 D17 비동기 경계 결함 수정 후보
+
+기존 lifecycle 후보의 pending 중 출처 재등록/이동 및 늦은 finally의 후속 출처 삭제를 실제 원 생성·종료 함수 fixture로 각각 FAIL 재현했다. 기존28 PASS 증거는 덮지 않고 결함 재현과 구분한다. 새 `d17-async-boundary-candidate.mjs`는 기존 adapter/저장롤 검증을 재사용하고 고유 pending token Set으로 진행중 검토 등록·이동만 차단한다. 원함수 호출·게임 동작은 즉시 유지하며 완료는 자기 token만 삭제한다. explicit clear는 진행중 token을 임의 취소하지 않는다.
+
+| 항목 | 실제 검토 결과 |
+|---|---|
+| 회귀 | 새 async30검사 + 기존28검사 새 후보 대상 PASS, 기존 실패2건 별도 기록 |
+| 중첩/전환 | A/B resolve/reject 정·역순, pending 생성/시전/등록0, clear/player/character/zones 교체 뒤 늦은 정착 확인 |
+| 보존 | this/인수/원함수1회/동기 반환·예외 identity/최종 resolve·reject 값 보존; 기존19파일 SHA 동일 |
+| 제한 | Promise identity 및 추가 microtask는 달라짐. then getter1회/then 호출1회 관찰 부작용 있음; never-settle은 검토효과 계속 차단, 원 게임은 유지 |
+| 남은 게이트 | root 독립검수/백업 및 생산 caller/저장 공급/브라우저/실전 중첩. 미채택 스키마·기본 비활성/runtimeReady=false/드롭·밸런스 변경0 |
+
+원문 SHA·기존 실패·새 PASS·보존 manifest는 소유 `d17-async-boundary-evidence.json`, 구현/한계는 `d17-async-boundary-result.md`에 기록했다. 앞선 초안·인수구역은 보존했다.

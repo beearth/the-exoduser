@@ -1,0 +1,214 @@
+Window: "exoduser-migration-20261001", App: Code.
+0 표준 윈도우 exoduser-migration-20261001, Secondary Actions: Raise
+	1 container exoduser-migration-20261001
+		2 container
+			3 HTML 콘텐츠 exoduser-migration-20261001, URL: vscode-file://vscode-app/Applications/Visual%20Studio%20Code.app/Contents/Resources/app/out/vs/code/electron-browser/workbench/workbench.html
+				4 container
+					5 container
+						6 container
+							7 툴바
+								8 버튼 Go Back (⌃-)
+									9 텍스트 
+								10 버튼 (disabled) Go Forward (⌃⇧-)
+									11 텍스트 
+								12 툴바 Agent Status
+									13 버튼 Open Quick Access
+									14 container
+										15 버튼 Toggle Chat
+											16 버튼 Toggle Chat
+												17 텍스트 
+										18 팝업 버튼 More Actions
+							19 툴바
+								20 버튼 Open in Agents Window (⇧⌘A)
+							21 툴바 Title actions
+								22 버튼 Customize Layout...
+									23 텍스트 
+								24 전환 버튼 Description: Toggle Primary Side Bar (⌘B), Value: 0
+									25 텍스트 
+								26 전환 버튼 Description: Toggle Panel (⌘J), Value: 1
+									27 텍스트 
+								28 전환 버튼 Description: Toggle Secondary Side Bar (⌥⌘B), Value: 0
+									29 텍스트 
+						30 container
+							31 container
+								32 탭 그룹 Active View Switcher
+									33 tab (settable, integer) Explorer (⇧⌘E), Value: 0
+										34 container Explorer (⇧⌘E)
+											35 텍스트 
+									36 tab (settable, integer) Search (⇧⌘F), Value: 0
+										37 container Search (⇧⌘F)
+											38 텍스트 
+									39 tab (settable, integer) Description: Source Control (⌃⇧G) - 431 pending changes, Value: 0
+										40 container Source Control (⌃⇧G) - 431 pending changes
+											41 텍스트 
+										42 container Source Control (⌃⇧G) - 431 pending changes
+											43 텍스트 431
+									44 tab (settable, integer) Run and Debug (⇧⌘D), Value: 0
+										45 container Run and Debug (⇧⌘D)
+											46 텍스트 
+									47 tab (settable, integer) Description: Extensions (⇧⌘X) - 1 requires restart, Value: 0
+										48 container Extensions (⇧⌘X) - 1 requires restart
+											49 텍스트 
+										50 container Extensions (⇧⌘X) - 1 requires restart
+											51 텍스트 1
+									52 tab (settable, integer) Description: GitLens, Value: 0
+										53 container GitLens
+											54 텍스트 
+									55 tab (settable, integer) Description: GitLens Inspect, Value: 0
+										56 container GitLens Inspect
+											57 텍스트 
+									58 tab (settable, integer) GitHub Actions, Value: 0
+										59 container GitHub Actions
+									60 tab (settable, integer) Description: GitHub, Value: 0
+										61 container GitHub
+											62 텍스트 
+									63 tab (settable, integer) Python, Value: 0
+										64 container Python
+									65 tab (settable, integer) Claude Code, Value: 0
+										66 container Claude Code
+								67 툴바 Manage
+									68 팝업 버튼 Accounts - Sign in requested
+										69 container Accounts - Sign in requested
+										70 container Accounts - Sign in requested
+											71 텍스트 1
+									72 팝업 버튼 Manage
+										73 container Manage
+											74 텍스트 
+							75 container
+								76 container
+								77 container
+									78 container Editor Group 1 (empty)
+								79 container
+									80 탭 그룹 Active View Switcher
+										81 tab (settable, integer) Problems (⇧⌘M), Value: 0
+											82 container Problems (⇧⌘M)
+												83 텍스트 Problems
+										84 tab (settable, integer) Output (⇧⌘U), Value: 0
+											85 container Output (⇧⌘U)
+												86 텍스트 Output
+										87 tab (settable, integer) Debug Console (⇧⌘Y), Value: 0
+											88 container Debug Console (⇧⌘Y)
+												89 텍스트 Debug Console
+										90 tab (selected) Description: Terminal, Value: 1
+											91 container Terminal
+												92 텍스트 Terminal
+										93 tab (settable, integer) Ports, Value: 0
+											94 container Ports
+												95 텍스트 Ports
+									96 툴바 Terminal actions
+										97 버튼 Split Terminal (⌘\)
+											98 버튼 Split Terminal (⌘\)
+										99 팝업 버튼 Launch Profile...
+										100 팝업 버튼 Views and More Actions...
+									101 툴바
+										102 전환 버튼 Description: Maximize Panel, Value: 0
+											103 텍스트 
+										104 버튼 Hide Panel (⌘J)
+											105 텍스트 
+									106 container
+										107 container
+											108 container
+												109 container
+													110 텍스트 필드 (settable) Terminal 12, exoduser-migration-20... Run the command: Toggle Screen Reader Accessibility Mode for an optimized screen reader experience Use ⌥F1 for terminal accessibility help
+													111 이미지
+													112 이미지
+											113 내용 목록 Terminal tabs
+												114 container
+													115 container Terminal 3 ✳ Mac MAP 팀 작업 착수, split 1 of 7
+														116 container ┌ $(terminal) ✳ Mac MAP 팀 작업 착수
+															117 container
+																118 text ┌    ✳ Mac MAP 팀 작업 착수
+													119 container Terminal 4 UIUX 작업 착수 기록 | exoduser-migration-20..., split 2 of 7
+														120 container ├ $(terminal) UIUX 작업 착수 기록 | exoduser-migration-20...
+															121 container
+																122 text ├    UIUX 작업 착수 기록 | exoduser-migration-20...
+													123 container Terminal 7 ✳ Claude Code, split 3 of 7
+														124 container ├ $(terminal) ✳ Claude Code
+															125 container
+																126 text ├    ✳ Claude Code
+													127 container Terminal 8 ✳ ANIMVFX-task 실행, split 4 of 7
+														128 container ├ $(terminal) ✳ ANIMVFX-task 실행
+															129 container
+																130 text ├    ✳ ANIMVFX-task 실행
+													131 container Terminal 9 할당 작업 실행 | exoduser-migration-20..., split 5 of 7
+														132 container ├ $(terminal) 할당 작업 실행 | exoduser-migration-20...
+															133 container
+																134 text ├    할당 작업 실행 | exoduser-migration-20...
+													135 container Terminal 10 BUILD-task.md 실행하기 | exoduser-migration-20..., split 6 of 7
+														136 container ├ $(terminal) BUILD-task.md 실행하기 | exoduser-migration-20...
+															137 container
+																138 text ├    BUILD-task.md 실행하기 | exoduser-migration-20...
+													139 container Terminal 11 Execute assigned task | exoduser-migration-20..., split 7 of 7
+														140 container └ $(terminal) Execute assigned task | exoduser-migration-20...
+															141 container
+																142 text └    Execute assigned task | exoduser-migration-20...
+													143 container Terminal 1 ◑ Mac QA task dispatch
+														144 container $(terminal) ◑ Mac QA task dispatch
+															145 container
+																146 text   ◑ Mac QA task dispatch
+													147 container Terminal 12 exoduser-migration-20...
+														148 container $(terminal) exoduser-migration-20...
+															149 텍스트 필드 (settable) Description: Type terminal name. Press Enter to confirm or Escape to cancel., Value: exoduser-migration-20...
+													150 container Terminal 6 ✳ SKILL-task 실행
+														151 container $(terminal) ✳ SKILL-task 실행
+															152 container
+																153 text   ✳ SKILL-task 실행
+													154 container Terminal 2 ✳ Mac ART task assignment
+														155 container $(terminal) ✳ Mac ART task assignment
+															156 container
+																157 text   ✳ Mac ART task assignment
+						158 container
+							159 container remote
+								160 버튼 remote
+							161 container exoduser-migration-20261001 (Git) - codex/mac-environment-20261001*, Checkout Branch/Tag...
+								162 버튼 exoduser-migration-20261001 (Git) - codex/mac-environment-20261001*, Checkout Branch/Tag...
+									163 텍스트 
+									164 텍스트  codex/mac-environment-20261001*
+							165 container exoduser-migration-20261001 (Git) - Publish Branch
+								166 버튼 exoduser-migration-20261001 (Git) - Publish Branch
+							167 container Show the GitLens Commit Graph
+								168 버튼 Show the GitLens Commit Graph
+							169 container rocket gitlens-unplug Launchpad, GitLens Launchpad ᴘʀᴏ    &mdash;    [$(question)](command:gitlens.launchpad.indicator.action?%22info%22 "What is this?") [$(gear)](command:workbench.action.openSettings?%22gitlens.launchpad%22 "Settings")  |  [$(circle-slash) Hide](command:gitlens.launchpad.indicator.action?%22hide%22 "Hide") --- [Launchpad](command:gitlens.launchpad.indicator.action?%22info%22 "Learn about Launchpad") organizes your pull requests into actionable groups to help you focus and keep your team u
+								170 버튼 rocket gitlens-unplug Launchpad, GitLens Launchpad ᴘʀᴏ    &mdash;    [$(question)](command:gitlens.launchpad.indicator.action?%22info%22 "What is this?") [$(gear)](command:workbench.action.openSettings?%22gitlens.launchpad%22 "Settings")  |  [$(circle-slash) Hide](command:gitlens.launchpad.indicator.action?%22hide%22 "Hide") --- [Launchpad](command:gitlens.launchpad.indicator.action?%22info%22 "Learn about Launchpad") organizes your pull requests into actionable groups to help you focus and keep your team u
+									171 텍스트 
+									172 텍스트 
+									173 텍스트  Launchpad
+							174 container No Problems
+								175 버튼 No Problems
+									176 텍스트 
+									177 텍스트  0 
+									178 텍스트 
+									179 텍스트  0
+							180 container Notifications
+								181 버튼 Notifications
+							182 container broadcast Go Live, Click to run live server
+								183 버튼 broadcast Go Live, Click to run live server
+									184 텍스트 
+									185 텍스트  Go Live
+							186 container Copilot status
+								187 버튼 Copilot status
+					188 텍스트 Cannot edit in read-only editor
+					189 container exoduser-migration-20... Process ID (PID): 55139 Command line: /bin/zsh -il Shell integration: Rich Show Environment Contributions Show Details
+						190 container
+							191 텍스트 exoduser-migration-20...
+							192 text Process ID (PID): 55139 Command line: /bin/zsh -il
+							193 텍스트 Shell integration: Rich
+						194 버튼 Show Environment Contributions
+						195 버튼 Show Details
+196 menu bar
+	197 Code
+	198 File
+	199 Edit
+	200 Selection
+	201 View
+	202 Go
+	203 Run
+	204 Terminal
+	205 Window
+	206 Help
+
+Selected text: ```
+exoduser-migration-20...
+```
+
+Note: Pay special attention to the content selected by the user. If the user asks a question or refers to the content they are looking at on-screen, they might be referring to the selected content (but they might be referring to something else that's visible, too).

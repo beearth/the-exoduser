@@ -1,0 +1,15 @@
+# corpse-flash-minimal.patch — ANIMVFX (CANDIDATE, 생산 미적용)
+# 도달 입증된 결함(etype9 시체부활, catch-up 프레임)만 수정. 보스/드루이드(방어 전용) 미포함.
+# 대상 game.html SHA-256(before): c868284af349c996d42087e93eba47a10614d73cb8f55f4db5ae01dde89da31a
+# 변경 1행(L37571): 시체부활 전이 끝에 "corpse._hitFlash=0;" 추가. 함수호출/RNG/보상/타이머 변경 없음.
+--- a/game.html
++++ b/game.html
+@@ -37568,7 +37568,7 @@
+       let corpse=null;
+       for(let _ci=0;_ci<_deadPool.length;_ci++){const oe=_deadPool[_ci];if(!oe.ib&&oe.etype!==9&&!oe._absorbed&&dst(oe.x,oe.y,e.x,e.y)<150){corpse=oe;break}}
+       if(corpse){
+-        corpse.alive=true;corpse.hp=~~(corpse.mhp*.5);corpse.eShield=0;corpse.eShieldMax=0;corpse.s='recover';corpse.st2=60;corpse.stunned=0;corpse.poise=corpse.maxPoise;corpse.reviveIframes=0;
++        corpse.alive=true;corpse.hp=~~(corpse.mhp*.5);corpse.eShield=0;corpse.eShieldMax=0;corpse.s='recover';corpse.st2=60;corpse.stunned=0;corpse.poise=corpse.maxPoise;corpse.reviveIframes=0; corpse._hitFlash=0;
+         _reviveVFX(corpse.x,corpse.y,'#ffdd44','💀부활!',{partN:16,partSpd:5,shake:10,vfxSize:140,flash:3});
+         addTxt(e.x,e.y-15,_T('🔮주술!'),'#8833cc',30);addParts(e.x,e.y,'#8833cc',6);
+         e.reviveT=e.reviveCd;

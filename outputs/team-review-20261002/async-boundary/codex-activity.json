@@ -1,0 +1,742 @@
+[
+  {
+    "status": "fulfilled",
+    "value": {
+      "team": "ITEM",
+      "thread": {
+        "id": "01a0f6e6-1fbe-7df0-8d02-a9c2d9df3750",
+        "kind": "codex",
+        "hostId": "local",
+        "title": "할당 작업 실행",
+        "preview": "Read docs/0마스터플랜/mac-resume-20261001/vscode-dispatch/ITEM-task.md and execute the assigned task.",
+        "status": {
+          "type": "notLoaded"
+        },
+        "cwd": "/Users/fordeargamers/Projects/exoduser-migration-20261001",
+        "createdAt": 1790848671,
+        "updatedAt": 1790875878
+      },
+      "turns": [
+        {
+          "id": "01a0f881-a199-7e50-8017-ddfe4453729e",
+          "status": "completed",
+          "startedAt": 1790875640,
+          "completedAt": 1790875878,
+          "actions": [
+            {
+              "type": "commandExecution",
+              "status": "completed",
+              "exitCode": 0,
+              "command": "/bin/zsh -lc 'date -u +%Y-%m-%dT%H:%M:%SZ; cat tools/team-followup-20261001/ITEM/d17-async-boundary-task.md; ls tools/team-followup-20261001/ITEM/d17-async-boundary-*; find tools -name AGENTS.md; tail -22 docs/7아이템디자인/ITEM_TEAM_MASTER.md; cat tools/team-followup-20261001/ITEM/d17-lifecycle-roll-candidate.mjs'"
+            },
+            {
+              "type": "commandExecution",
+              "status": "completed",
+              "exitCode": 0,
+              "command": "/bin/zsh -lc \"cat docs/7아이템디자인/UNIQUE_TOP8_HOOK_REVIEW_20261001.md | head -34; sed -n '160,164p' docs/7아이템디자인/유니크_어픽스_리스트.md; cat tools/team-followup-20261001/ITEM/d17-lifecycle-roll-check.mjs; date -u +%Y-%m-%dT%H:%M:%SZ\""
+            },
+            {
+              "type": "fileChange",
+              "status": "completed",
+              "changes": [
+                {
+                  "path": "/Users/fordeargamers/Projects/exoduser-migration-20261001/tools/team-followup-20261001/ITEM/d17-async-boundary-candidate.mjs",
+                  "kind": {
+                    "type": "add"
+                  }
+                },
+                {
+                  "path": "/Users/fordeargamers/Projects/exoduser-migration-20261001/tools/team-followup-20261001/ITEM/d17-async-boundary-receipt.json",
+                  "kind": {
+                    "type": "add"
+                  }
+                }
+              ]
+            },
+            {
+              "type": "commandExecution",
+              "status": "completed",
+              "exitCode": 0,
+              "command": "/bin/zsh -lc 'cat tools/team-followup-20261001/ITEM/d17-lifecycle-roll-check.mjs'"
+            },
+            {
+              "type": "fileChange",
+              "status": "completed",
+              "changes": [
+                {
+                  "path": "/Users/fordeargamers/Projects/exoduser-migration-20261001/tools/team-followup-20261001/ITEM/d17-async-boundary-check-regression.mjs",
+                  "kind": {
+                    "type": "add"
+                  }
+                }
+              ]
+            },
+            {
+              "type": "commandExecution",
+              "status": "completed",
+              "exitCode": 0,
+              "command": "/bin/zsh -lc \"node --input-type=module -e \\\"import fs from 'node:fs';import crypto from 'node:crypto';const dir='tools/team-followup-20261001/ITEM/';const names=fs.readdirSync(dir).filter(n=>/\"'^d17-(lifecycle-roll|source-adapter|zone-selection)-/.test(n));console.log(JSON.stringify(Object.fromEntries(names.map(n=>[n,crypto.createHash('\"'sha256').update(fs.readFileSync(dir+n)).digest('hex')]))));\\\"\""
+            },
+            {
+              "type": "fileChange",
+              "status": "completed",
+              "changes": [
+                {
+                  "path": "/Users/fordeargamers/Projects/exoduser-migration-20261001/tools/team-followup-20261001/ITEM/d17-async-boundary-check.mjs",
+                  "kind": {
+                    "type": "add"
+                  }
+                }
+              ]
+            },
+            {
+              "type": "commandExecution",
+              "status": "completed",
+              "exitCode": 0,
+              "command": "/bin/zsh -lc 'node tools/team-followup-20261001/ITEM/d17-async-boundary-check.mjs; node tools/team-followup-20261001/ITEM/d17-async-boundary-check-regression.mjs; date -u +%Y-%m-%dT%H:%M:%SZ'"
+            },
+            {
+              "type": "fileChange",
+              "status": "completed",
+              "changes": [
+                {
+                  "path": "/Users/fordeargamers/Projects/exoduser-migration-20261001/tools/team-followup-20261001/ITEM/d17-async-boundary-check.mjs",
+                  "kind": {
+                    "type": "update",
+                    "move_path": null
+                  }
+                }
+              ]
+            },
+            {
+              "type": "commandExecution",
+              "status": "completed",
+              "exitCode": 0,
+              "command": "/bin/zsh -lc \"node tools/team-followup-20261001/ITEM/d17-async-boundary-check.mjs; node tools/team-followup-20261001/ITEM/d17-async-boundary-check-regression.mjs; rg -l 'U-D17|_uBlackZoneGather|uniqueRoll' docs/; date -u +%Y-%m-%dT%H:%M:%SZ\""
+            },
+            {
+              "type": "commandExecution",
+              "status": "completed",
+              "exitCode": 0,
+              "command": "/bin/zsh -lc \"node --input-type=module -e \\\"import fs from 'node:fs';import crypto from 'node:crypto';const dir='tools/team-followup-20261001/ITEM/';const names=fs.readdirSync(dir).filter(n=>/\"'^d17-(lifecycle-roll|source-adapter|zone-selection)-/.test(n));console.log(JSON.stringify(Object.fromEntries(names.map(n=>[n,crypto.createHash('\"'sha256').update(fs.readFileSync(dir+n)).digest('hex')]))));\\\"; date -u +%Y-%m-%dT%H:%M:%SZ; tail -4 docs/7아이템디자인/ITEM_TEAM_MASTER.md\""
+            },
+            {
+              "type": "fileChange",
+              "status": "completed",
+              "changes": [
+                {
+                  "path": "/Users/fordeargamers/Projects/exoduser-migration-20261001/tools/team-followup-20261001/ITEM/d17-async-boundary-evidence.json",
+                  "kind": {
+                    "type": "add"
+                  }
+                },
+                {
+                  "path": "/Users/fordeargamers/Projects/exoduser-migration-20261001/tools/team-followup-20261001/ITEM/d17-async-boundary-result.md",
+                  "kind": {
+                    "type": "add"
+                  }
+                }
+              ]
+            },
+            {
+              "type": "fileChange",
+              "status": "completed",
+              "changes": [
+                {
+                  "path": "/Users/fordeargamers/Projects/exoduser-migration-20261001/docs/7아이템디자인/ITEM_TEAM_MASTER.md",
+                  "kind": {
+                    "type": "update",
+                    "move_path": null
+                  }
+                },
+                {
+                  "path": "/Users/fordeargamers/Projects/exoduser-migration-20261001/tools/team-followup-20261001/ITEM/d17-async-boundary-check.mjs",
+                  "kind": {
+                    "type": "update",
+                    "move_path": null
+                  }
+                }
+              ]
+            },
+            {
+              "type": "commandExecution",
+              "status": "completed",
+              "exitCode": 0,
+              "command": "/bin/zsh -lc 'node tools/team-followup-20261001/ITEM/d17-async-boundary-check.mjs; node tools/team-followup-20261001/ITEM/d17-async-boundary-check-regression.mjs; date -u +%Y-%m-%dT%H:%M:%SZ'"
+            },
+            {
+              "type": "fileChange",
+              "status": "completed",
+              "changes": [
+                {
+                  "path": "/Users/fordeargamers/Projects/exoduser-migration-20261001/tools/team-followup-20261001/ITEM/d17-async-boundary-evidence.json",
+                  "kind": {
+                    "type": "update",
+                    "move_path": null
+                  }
+                },
+                {
+                  "path": "/Users/fordeargamers/Projects/exoduser-migration-20261001/tools/team-followup-20261001/ITEM/d17-async-boundary-receipt.json",
+                  "kind": {
+                    "type": "update",
+                    "move_path": null
+                  }
+                },
+                {
+                  "path": "/Users/fordeargamers/Projects/exoduser-migration-20261001/tools/team-followup-20261001/ITEM/d17-async-boundary-result.md",
+                  "kind": {
+                    "type": "update",
+                    "move_path": null
+                  }
+                }
+              ]
+            }
+          ],
+          "final": [
+            "비동기 경계 결함 수정 후보를 완료했습니다.\n\n- 기존 결함 **2건 FAIL 재현**, 새 30검사 + 이전 28회귀 **58검사 PASS**\n- pending 중 검토 등록·이동만 차단하고 원동작은 유지\n- 기존 후보·증거 19파일 SHA 보존, 생산 수정0\n- Promise/thenable 보존 한계와 남은 root 게이트 기록\n\n결과: `tools/team-followup-20261001/ITEM/d17-async-boundary-result.md:1`"
+          ]
+        }
+      ]
+    }
+  },
+  {
+    "status": "fulfilled",
+    "value": {
+      "team": "UIUX",
+      "thread": {
+        "id": "01a0f6e5-8653-7ae2-8b2b-314e275c215c",
+        "kind": "codex",
+        "hostId": "local",
+        "title": "UIUX 작업 착수 기록",
+        "preview": "당신은 Mac UIUX 팀입니다. docs/0마스터플랜/mac-resume-20261001/vscode-dispatch/UIUX-task.md를 읽고 지정 작업을 시작하세요. UIUX-receipt.json에 수신과 실제 착수를 구분해 기록하고 소유 파일만 작업하세요. 새 팀/세션 생성 없이 한국어로 보고하세요.",
+        "status": {
+          "type": "notLoaded"
+        },
+        "cwd": "/Users/fordeargamers/Projects/exoduser-migration-20261001",
+        "createdAt": 1790848632,
+        "updatedAt": 1790874062
+      },
+      "turns": [
+        {
+          "id": "01a0f863-f0a5-73d1-abad-bd1d006625aa",
+          "status": "completed",
+          "startedAt": 1790873694,
+          "completedAt": 1790874062,
+          "actions": [
+            {
+              "type": "commandExecution",
+              "status": "completed",
+              "exitCode": 0,
+              "command": "/bin/zsh -lc \"date -u '+%Y-%m-%dT%H:%M:%SZ'; cat tools/team-followup-20261001/UIUX/production-integration-task.md; rg --files -g AGENTS.md; cat tools/team-followup-20261001/UIUX/card-removal-focus-result.md\""
+            },
+            {
+              "type": "commandExecution",
+              "status": "completed",
+              "exitCode": 0,
+              "command": "/bin/zsh -lc \"cat outputs/team-review-20261002/mac-app/uiux-native-matrix.json; cat AGENTS.md; cat tools/team-followup-20261001/UIUX/card-removal-focus-main-combined.patch; cat tools/team-followup-20261001/UIUX/card-removal-focus-easy-combined.patch; sed -n '1,110p' 'docs/3.1 ui hud 디자인/UI_UX_IMPROVEMENT_PROJECT_20260930.md'; sed -n '150,185p' 'docs/2_7 인벤토리+장비시스템/2_7 인벤토리+장비시스템.md'; head -70 tools/team-followup-20261001/UIUX/inventory-focus.test.mjs; head -60 tools/team-followup-20261001/UIUX/inventory-dom.test.mjs\""
+            },
+            {
+              "type": "commandExecution",
+              "status": "completed",
+              "exitCode": 0,
+              "command": "/bin/zsh -lc \"git status --short --untracked-files=all; git rev-parse HEAD; cat tools/team-followup-20261001/UIUX/card-removal-focus-main-combined.patch; tail -20 tools/team-followup-20261001/UIUX/inventory-dom.test.mjs; rg --files tools/team-followup-20261001/UIUX | rg 'existing|production-integration'; rg -n '18\\\\.4|UIUX|인벤토리' docs/0마스터플랜/PROJECT_MANAGEMENT_MASTER.md | tail -8\""
+            },
+            {
+              "type": "commandExecution",
+              "status": "completed",
+              "exitCode": 0,
+              "command": "/bin/zsh -lc \"cat tools/team-followup-20261001/UIUX/inventory-dom-existing.test.mjs; head -18 tools/team-followup-20261001/UIUX/card-removal-focus-main-combined.patch; head -18 tools/team-followup-20261001/UIUX/card-removal-focus-easy-combined.patch; git rev-parse HEAD; git status --short -- game.html game-easy-test.html 'docs/3.1 ui hud 디자인/UI_UX_IMPROVEMENT_PROJECT_20260930.md' 'docs/3.1 ui hud 디자인/UI_COMPOSITION_20260925.md' 'docs/2_7 인벤토리+장비시스템/2_7 인벤토리+장비시스템.md'; git diff --cached --stat; rg --files tools/team-followup-20261001/UIUX | rg 'before.*game|game.*before|source-data|fixture'; sed -n '2617,2633p' 'docs/3.1 ui hud 디자인/UI_COMPOSITION_20260925.md'; sed -n '696,708p' docs/0마스터플랜/PROJECT_MANAGEMENT_MASTER.md\""
+            },
+            {
+              "type": "commandExecution",
+              "status": "completed",
+              "exitCode": 0,
+              "command": "/bin/zsh -lc \"git rev-parse HEAD; git status --short -- game.html game-easy-test.html; git diff --cached --stat; node --input-type=module <<'NODE'\nimport fs from 'node:fs';import {createHash} from 'node:crypto';const base='tools/team-followup-20261001/UIUX/';const hash=b=>createHash('sha256').update(b).digest('hex');const prov=JSON.parse(fs.readFileSync(base+'card-removal-focus-provenance.json'));for(const path of ['game.html','game-easy-test.html'])console.log(path,hash(fs.readFileSync(path)),prov.evidence[path].sourceSha256);console.log('기존 production prefix:',fs.readdirSync(base).filter(name=>name.startsWith('production-integration')));\nNODE\nsed -n '1,35p' 'docs/2_7 인벤토리+장비시스템/2_7 인벤토리+장비시스템.md'; rg -n 'DOM 조작 안전' AGENTS.md; rg -n 'UI-04|_invClearHover|_invRenderDetail|data-inventory-detail-trigger|beforeRender|afterRender|초점|키보드' docs > tools/team-followup-20261001/UIUX/production-integration-doc-matches.txt\""
+            },
+            {
+              "type": "fileChange",
+              "status": "completed",
+              "changes": [
+                {
+                  "path": "/Users/fordeargamers/Projects/exoduser-migration-20261001/tools/team-followup-20261001/UIUX/production-integration-prepare.mjs",
+                  "kind": {
+                    "type": "add"
+                  }
+                },
+                {
+                  "path": "/Users/fordeargamers/Projects/exoduser-migration-20261001/tools/team-followup-20261001/UIUX/production-integration-receipt.json",
+                  "kind": {
+                    "type": "add"
+                  }
+                }
+              ]
+            },
+            {
+              "type": "commandExecution",
+              "status": "completed",
+              "exitCode": 0,
+              "command": "/bin/zsh -lc \"node tools/team-followup-20261001/UIUX/production-integration-prepare.mjs | tail -c 700; TZ=UTC stat -f '%SB' -t '%Y-%m-%dT%H:%M:%SZ' tools/team-followup-20261001/UIUX/production-integration-prepare.mjs; git status --short --untracked-files=all | wc -l; shasum -a 256 .git/index; date -u '+%Y-%m-%dT%H:%M:%SZ'\""
+            },
+            {
+              "type": "commandExecution",
+              "status": "completed",
+              "exitCode": 0,
+              "command": "/bin/zsh -lc \"node --input-type=module <<'NODE'\nimport fs from 'node:fs';\nlet patch='*** Begin Patch\\\\n';for(const [name,path]of [['main','game.html'],['easy','game-easy-test.html']]){const diff=fs.readFileSync('tools/team-followup-20261001/UIUX/card-removal-focus-'+name+'-combined.patch','utf8').split('\\\\n');patch+='*** Update File: '+path+'\\\\n'+diff.slice(2).map(line=>line.startsWith('@@ ')?'@@':line).join('\\\\n');}patch+='*** End Patch\\\\n';process.stdout.write(patch);\nNODE\""
+            },
+            {
+              "type": "fileChange",
+              "status": "completed",
+              "changes": [
+                {
+                  "path": "/Users/fordeargamers/Projects/exoduser-migration-20261001/game-easy-test.html",
+                  "kind": {
+                    "type": "update",
+                    "move_path": null
+                  }
+                },
+                {
+                  "path": "/Users/fordeargamers/Projects/exoduser-migration-20261001/game.html",
+                  "kind": {
+                    "type": "update",
+                    "move_path": null
+                  }
+                }
+              ]
+            },
+            {
+              "type": "commandExecution",
+              "status": "completed",
+              "exitCode": 0,
+              "command": "/bin/zsh -lc \"node --input-type=module <<'NODE'\nimport fs from 'node:fs';import {createHash} from 'node:crypto';const base='tools/team-followup-20261001/UIUX/';for(const path of ['game.html','game-easy-test.html']){const actual=fs.readFileSync(path),expected=fs.readFileSync(base+'production-integration-fixtures/'+path+'.expected');if(\"'!actual.equals(expected))throw new Error('\"'합본 byte 불일치 '+path);console.log(path,'approved exact bytes',createHash('sha256').update(actual).digest('hex'));}console.log(new Date().toISOString());\nNODE\""
+            },
+            {
+              "type": "commandExecution",
+              "status": "failed",
+              "exitCode": 1,
+              "command": "/bin/zsh -lc \"sed -n '42550,42593p' game.html; sed -n '12703,12715p' game.html; sed -n '47877,47920p' game.html; sed -n '120,150p' tools/team-followup-20261001/UIUX/inventory-focus.test.mjs; sed -n '1,110p' tools/team-followup-20261001/UIUX/production-integration-doc-matches.txt | tail -10; rg --files tests | rg -i 'inventory|panel|crystal'\""
+            },
+            {
+              "type": "commandExecution",
+              "status": "completed",
+              "exitCode": 0,
+              "command": "/bin/zsh -lc \"sed -n '42585p' game.html; rg --files test | rg -i 'inventory|panel|crystal'; cat package.json | head -38; cat tools/team-followup-20261001/UIUX/inventory-focus.test.mjs | tail -40; cat tools/team-followup-20261001/UIUX/inventory-focus-existing-validation.txt | tail -12\""
+            },
+            {
+              "type": "fileChange",
+              "status": "completed",
+              "changes": [
+                {
+                  "path": "/Users/fordeargamers/Projects/exoduser-migration-20261001/tools/team-followup-20261001/UIUX/production-integration-legacy.test.mjs",
+                  "kind": {
+                    "type": "add"
+                  }
+                },
+                {
+                  "path": "/Users/fordeargamers/Projects/exoduser-migration-20261001/tools/team-followup-20261001/UIUX/production-integration.test.mjs",
+                  "kind": {
+                    "type": "add"
+                  }
+                }
+              ]
+            },
+            {
+              "type": "commandExecution",
+              "status": "completed",
+              "exitCode": 0,
+              "command": "/bin/zsh -lc 'node --test tools/team-followup-20261001/UIUX/production-integration.test.mjs > tools/team-followup-20261001/UIUX/production-integration-validation.txt; head -30 tools/team-followup-20261001/UIUX/production-integration-validation.txt; for suite in inventory-focus inventory-dom native-focus card-removal-focus; do UIUX_LEGACY_SUITE=\"$suite\" node --test tools/team-followup-20261001/UIUX/production-integration-legacy.test.mjs > \"tools/team-followup-20261001/UIUX/production-integration-$suite-validation.txt\"; echo \"$suite exit=$?\"; tail -8 \"tools/team-followup-20261001/UIUX/production-integration-$suite-validation.txt\"; done'"
+            },
+            {
+              "type": "commandExecution",
+              "status": "completed",
+              "exitCode": 0,
+              "command": "/bin/zsh -lc \"sed -n '32,72p' tools/team-followup-20261001/UIUX/production-integration-validation.txt; rg -n '<script|</script' game.html | tail -15; rg -n 'inline|vm.Script' tools/team-followup-20261001/UIUX/*test* | head -10\""
+            },
+            {
+              "type": "commandExecution",
+              "status": "completed",
+              "exitCode": 0,
+              "command": "/bin/zsh -lc \"rg -n '\"'^<script|''^</script'\"' game.html | tail -12; rg -n '<script[\"'^>]*type='\"' game.html | tail -6; sed -n '1,55p' test/uiPanelInitialization.test.js; sed -n '1,22p' test/crystalPickerNavigation.test.js\""
+            },
+            {
+              "type": "fileChange",
+              "status": "completed",
+              "changes": [
+                {
+                  "path": "/Users/fordeargamers/Projects/exoduser-migration-20261001/tools/team-followup-20261001/UIUX/production-integration-legacy.test.mjs",
+                  "kind": {
+                    "type": "update",
+                    "move_path": null
+                  }
+                },
+                {
+                  "path": "/Users/fordeargamers/Projects/exoduser-migration-20261001/tools/team-followup-20261001/UIUX/production-integration.test.mjs",
+                  "kind": {
+                    "type": "update",
+                    "move_path": null
+                  }
+                }
+              ]
+            },
+            {
+              "type": "commandExecution",
+              "status": "completed",
+              "exitCode": 0,
+              "command": "/bin/zsh -lc 'node --test tools/team-followup-20261001/UIUX/production-integration.test.mjs > tools/team-followup-20261001/UIUX/production-integration-validation.txt; tail -9 tools/team-followup-20261001/UIUX/production-integration-validation.txt; for suite in native-focus card-removal-focus; do UIUX_LEGACY_SUITE=\"$suite\" node --test tools/team-followup-20261001/UIUX/production-integration-legacy.test.mjs > \"tools/team-followup-20261001/UIUX/production-integration-$suite-validation.txt\"; echo \"$suite exit=$?\"; tail -8 \"tools/team-followup-20261001/UIUX/production-integration-$suite-validation.txt\"; done; node --test test/uiPanelInitialization.test.js test/crystalPickerNavigation.test.js > tools/team-followup-20261001/UIUX/production-integration-adjacent-validation.txt; tail -8 tools/team-followup-20261001/UIUX/production-integration-adjacent-validation.txt; date -u '\"'+%Y-%m-%dT%H:%M:%SZ'\""
+            },
+            {
+              "type": "commandExecution",
+              "status": "completed",
+              "exitCode": 0,
+              "command": "/bin/zsh -lc \"node --input-type=module <<'NODE'\nimport fs from 'node:fs';for(const path of ['docs/3.1 ui hud 디자인/UI_UX_IMPROVEMENT_PROJECT_20260930.md','docs/3.1 ui hud 디자인/UI_COMPOSITION_20260925.md','docs/2_7 인벤토리+장비시스템/2_7 인벤토리+장비시스템.md']){const text=fs.readFileSync(path,'utf8');console.log(path,'crlf',(text.match(/\\\\r\\\\n/g)||[]).length,'lf',(text.match(/\\\\n/g)||[]).length);console.log(text.slice(-350));}\nNODE\nsed -n '152,158p' AGENTS.md; git diff --numstat -- game.html game-easy-test.html; git diff --check -- game.html game-easy-test.html\""
+            },
+            {
+              "type": "fileChange",
+              "status": "completed",
+              "changes": [
+                {
+                  "path": "/Users/fordeargamers/Projects/exoduser-migration-20261001/docs/2_7 인벤토리+장비시스템/INVENTORY_KEYBOARD_FOCUS_20261002.md",
+                  "kind": {
+                    "type": "add"
+                  }
+                },
+                {
+                  "path": "/Users/fordeargamers/Projects/exoduser-migration-20261001/docs/3.1 ui hud 디자인/UI_COMPOSITION_20260925.md",
+                  "kind": {
+                    "type": "update",
+                    "move_path": null
+                  }
+                },
+                {
+                  "path": "/Users/fordeargamers/Projects/exoduser-migration-20261001/docs/3.1 ui hud 디자인/UI_UX_IMPROVEMENT_PROJECT_20260930.md",
+                  "kind": {
+                    "type": "update",
+                    "move_path": null
+                  }
+                }
+              ]
+            },
+            {
+              "type": "commandExecution",
+              "status": "completed",
+              "exitCode": 0,
+              "command": "/bin/zsh -lc \"rg -n 'UI-04|_inventoryFocus|_invClearHover|_invRenderDetail|data-inventory-detail-trigger|beforeRender|afterRender|초점|키보드' docs > tools/team-followup-20261001/UIUX/production-integration-doc-matches.txt; node --test tools/team-followup-20261001/UIUX/production-integration.test.mjs > tools/team-followup-20261001/UIUX/production-integration-validation.txt; tail -8 tools/team-followup-20261001/UIUX/production-integration-validation.txt; git diff --check -- game.html game-easy-test.html 'docs/3.1 ui hud 디자인/UI_UX_IMPROVEMENT_PROJECT_20260930.md' 'docs/3.1 ui hud 디자인/UI_COMPOSITION_20260925.md'; date -u '+%Y-%m-%dT%H:%M:%SZ'\""
+            },
+            {
+              "type": "fileChange",
+              "status": "completed",
+              "changes": [
+                {
+                  "path": "/Users/fordeargamers/Projects/exoduser-migration-20261001/tools/team-followup-20261001/UIUX/production-integration-result.md",
+                  "kind": {
+                    "type": "add"
+                  }
+                }
+              ]
+            },
+            {
+              "type": "commandExecution",
+              "status": "completed",
+              "exitCode": 0,
+              "command": "/bin/zsh -lc \"node --input-type=module <<'NODE'\nimport fs from 'node:fs';import {fileURLToPath} from 'node:url';\nconst base='tools/team-followup-20261001/UIUX/';const roots=['production-integration-prepare.mjs','production-integration.test.mjs','production-integration-legacy.test.mjs','inventory-focus.test.mjs','inventory-dom.test.mjs','native-focus.test.mjs','card-removal-focus.test.mjs'].map(name=>base+name);const imports=new Set();\nfunction visit(path){if(imports.has(path))return;imports.add(path);const text=fs.readFileSync(path,'utf8');for(const match of text.matchAll(/\"'^import [''^'\"\\\\n]*? from ['\\\"](\\\\.\\\\/[\"'^'\"'\\\"]+)['\\\"]/gm)){const target=fileURLToPath(new URL(match[1],new URL(path,'file://'+process.cwd()+'/'))).slice(process.cwd().length+1);visit(target);}}\nroots.forEach(visit);const before=JSON.parse(fs.readFileSync(base+'production-integration-before.json'));const fixtures=fs.readdirSync(base+'production-integration-fixtures').map(name=>base+'production-integration-fixtures/'+name);\nfs.writeFileSync(base+'production-integration-dependencies.json',JSON.stringify({at:new Date().toISOString(),localImportFiles:[...imports].sort(),dynamicLegacySuites:roots.slice(3),fixtureFiles:fixtures,readOnlyEvidenceFiles:Object.keys(before.preserved).sort(),sharedAdjacentFiles:['test/uiPanelInitialization.test.js','test/crystalPickerNavigation.test.js','ui-panels.js','game.html','game-easy-test.html'],requiredManifests:['inventory-dom-provenance.json','native-focus-manifest.json','native-focus/current-function-text.json','native-focus/before/','card-removal-focus-provenance.json','card-removal-focus/host/before/','inventory-dom-existing-reproduction.json','inventory-focus-reproduction.json'].map(path=>base+path),note:'Node 標準 builtins以外 외부 설치 없음; 소유 변경파일과 기존 읽기 의존은 구분'},null,2)+'\\\\n');console.log('local import dependencies',imports.size);\nNODE\nfor suite in inventory-focus inventory-dom native-focus card-removal-focus; do UIUX_LEGACY_SUITE=\\\"\"'$suite\" node --test tools/team-followup-20261001/UIUX/production-integration-legacy.test.mjs > \"tools/team-followup-20261001/UIUX/production-integration-$suite-validation.txt\" || exit 1; done\nnode --test tools/team-followup-20261001/UIUX/production-integration.test.mjs > tools/team-followup-20261001/UIUX/production-integration-validation.txt && node --test test/uiPanelInitialization.test.js test/crystalPickerNavigation.test.js > tools/team-followup-20261001/UIUX/production-integration-adjacent-validation.txt\ngit diff --check -- game.html game-easy-test.html '\"'docs/3.1 ui hud 디자인/UI_UX_IMPROVEMENT_PROJECT_20260930.md' 'docs/3.1 ui hud 디자인/UI_COMPOSITION_20260925.md'; git status --short --untracked-files=all | wc -l; shasum -a 256 .git/index; date -u '+%Y-%m-%dT%H:%M:%SZ'\""
+            },
+            {
+              "type": "commandExecution",
+              "status": "completed",
+              "exitCode": 0,
+              "command": "/bin/zsh -lc \"git rev-parse HEAD; git diff --cached --name-only | head -8; node --input-type=module <<'NODE'\nimport fs from 'node:fs';import {createHash} from 'node:crypto';const base='tools/team-followup-20261001/UIUX/',hash=b=>createHash('sha256').update(b).digest('hex');const before=JSON.parse(fs.readFileSync(base+'production-integration-before.json'));for(const [path,expected]of Object.entries(before.preserved))if(hash(fs.readFileSync(path))\"'!==expected)throw new Error('\"'원 파일 변화 '+path);for(const [path,row]of Object.entries(before.sources))if(hash(fs.readFileSync(path))\"'!==row.expectedSha256)throw new Error('\"'생산 승인 byte 변화 '+path);const docs='docs/2_7 인벤토리+장비시스템/2_7 인벤토리+장비시스템.md';if(\"'!fs.readFileSync(docs).equals(fs.readFileSync(base+'\"'production-integration-fixtures/'+docs.replaceAll('/','__'))))throw new Error('기본 SSOT byte 변화');console.log('256 preserved files / 2 approved HTML / mixed-EOL SSOT byte equality PASS');\nNODE\""
+            },
+            {
+              "type": "fileChange",
+              "status": "completed",
+              "changes": [
+                {
+                  "path": "/Users/fordeargamers/Projects/exoduser-migration-20261001/tools/team-followup-20261001/UIUX/production-integration-dependencies.json",
+                  "kind": {
+                    "type": "update",
+                    "move_path": null
+                  }
+                },
+                {
+                  "path": "/Users/fordeargamers/Projects/exoduser-migration-20261001/tools/team-followup-20261001/UIUX/production-integration-result.md",
+                  "kind": {
+                    "type": "update",
+                    "move_path": null
+                  }
+                }
+              ]
+            },
+            {
+              "type": "commandExecution",
+              "status": "completed",
+              "exitCode": 0,
+              "command": "/bin/zsh -lc \"node --input-type=module <<'NODE'\nimport fs from 'node:fs';import {createHash} from 'node:crypto';const base='tools/team-followup-20261001/UIUX/',sha=path=>createHash('sha256').update(fs.readFileSync(path)).digest('hex');const receipt=JSON.parse(fs.readFileSync(base+'production-integration-receipt.json')),before=JSON.parse(fs.readFileSync(base+'production-integration-before.json'));receipt.첫EditUTC='2026-10-01T16:56:10Z';receipt.생산Edit확인UTC='2026-10-01T16:56:18.209Z';receipt.검수UTC='2026-10-01T17:00:19Z';receipt.완료UTC=new Date().toISOString();receipt.상태='생산 반영·101PASS·docs 동기화 완료, 두 HTML 소유권 root 반환';receipt.실제검수={production:23,legacy:69,adjacent:9,total:101,classicPerHTML:4,modulePerHTML:2,importmapPerHTML:1};receipt.남은게이트=['생산 실게임·OS 입력·레이아웃·긴 비교/필터/유골함·물리 패드','저장 실전 부작용·전체 투자용 빌드 검수','Git 원격 checkpoint root 담당'];receipt.보존파일수=256;receipt.공유HEAD변화={start:'35ddea9d41ecf776e4ddf781566d3ff5dad53017',observed:'375aa9e4944fe7fa54fb0404493045e6a3a1d982',담당Git쓰기:0,원인:'미확정·공용 진행 관측'};receipt.공유index관측={start:'5d6db3830c55bede2a7eea8ea77af67f37e3a5482be33cae0ce6b65f239d399c',intermediate:'c4555a0efb99e6d76070a4e52f353298bdba677c7ee2a582a21c714cc42fb11d',cachedNamesAtFinalRead:[]};receipt.변경파일=['game.html','game-easy-test.html','docs/3.1 ui hud 디자인/UI_UX_IMPROVEMENT_PROJECT_20260930.md','docs/3.1 ui hud 디자인/UI_COMPOSITION_20260925.md','docs/2_7 인벤토리+장비시스템/INVENTORY_KEYBOARD_FOCUS_20261002.md'];receipt.생산SHA=Object.fromEntries(Object.keys(before.sources).map(path=>[path,{before:before.sources[path].beforeSha256,after:sha(path)}]));fs.writeFileSync(base+'production-integration-receipt.json',JSON.stringify(receipt,null,2)+'\\\\n');\nconst files={};for(const path of receipt.변경파일)files[path]=sha(path);function walk(dir){for(const entry of fs.readdirSync(dir,{withFileTypes:true})){const path=dir+'/'+entry.name;if(entry.isDirectory())walk(path);else files[path]=sha(path);}}for(const entry of fs.readdirSync(base,{withFileTypes:true}).filter(entry=>entry.name.startsWith('production-integration-')&&entry.name\"'!=='\"'production-integration-final-hashes.json')){const path=base+entry.name;if(entry.isDirectory())walk(path);else files[path]=sha(path);}fs.writeFileSync(base+'production-integration-final-hashes.json',JSON.stringify({at:new Date().toISOString(),changedProductionAndDocs:receipt.변경파일,ownedArtifacts:Object.keys(files).filter(path=>path.startsWith(base)),files},null,2)+'\\\\n');console.log(JSON.stringify({completed:receipt.완료UTC,tests:receipt.실제검수.total,hashedFiles:Object.keys(files).length,htmlOwnership:'root 반환'}));\nNODE\""
+            }
+          ],
+          "final": [
+            "- 두 HTML 인벤토리에 승인 후보를 반영했습니다. 저장·전투·CSS 변경 없음.\n- **101 PASS**, 양쪽 전체 inline 구문 검사 통과. 기존 RED 회귀와 증거 보존.\n- SSOT·UTC·SHA·의존성 기록 완료. 실제 게임·화면·패드 검수는 남아 있습니다.\n- HTML 소유권을 root에 반환합니다. Git 쓰기는 하지 않았습니다.\n\n결과: `tools/team-followup-20261001/UIUX/production-integration-result.md:1`"
+          ]
+        }
+      ]
+    }
+  },
+  {
+    "status": "fulfilled",
+    "value": {
+      "team": "BUILD",
+      "thread": {
+        "id": "01a0f6e6-2e4c-7322-92d7-3aa309857856",
+        "kind": "codex",
+        "hostId": "local",
+        "title": "BUILD-task.md 실행하기",
+        "preview": "Read docs/0마스터플랜/mac-resume-20261001/vscode-dispatch/BUILD-task.md and execute the assigned task.",
+        "status": {
+          "type": "notLoaded"
+        },
+        "cwd": "/Users/fordeargamers/Projects/exoduser-migration-20261001",
+        "createdAt": 1790848675,
+        "updatedAt": 1790874990
+      },
+      "turns": [
+        {
+          "id": "01a0f874-6361-7a63-b4ef-42ec322ebb22",
+          "status": "completed",
+          "startedAt": 1790874772,
+          "completedAt": 1790874990,
+          "actions": [
+            {
+              "type": "commandExecution",
+              "status": "failed",
+              "exitCode": 1,
+              "command": "/bin/zsh -lc \"date -u +%Y-%m-%dT%H:%M:%SZ; cat tools/team-followup-20261001/BUILD/integrated-mac-build-task.md; rg --files tools/team-followup-20261001/BUILD | rg 'integrated-mac-build'; rg --files tools -g AGENTS.md\""
+            },
+            {
+              "type": "commandExecution",
+              "status": "failed",
+              "exitCode": 1,
+              "command": "/bin/zsh -lc \"cat tools/team-followup-20261001/BUILD/root-review/rebuild-profile-fixed.mjs; cat outputs/team-review-20261002/mac-app/profile-fixed-build-result.json; head -30 docs/13출시·마케팅/INTEGRATION_BUILD_TEAM_MASTER.md; head -24 docs/13출시·마케팅/BUILD_BACKUP_POLICY_20261001.md; head -20 AGENTS.md; rg -n '17:|18\\\\.4|QA.*(완료|측정)|잠금' docs/0마스터플랜/PROJECT_MANAGEMENT_MASTER.md | tail -12; cat outputs/team-review-20261002/persistence/remote-checkpoint.json; ls outputs/team-review-20261002/persistence | tail -12; sed -n '1,18p' outputs/team-review-20261002/mac-app/execute-config.json; df -k .; lsof -nP -iTCP:3383 -sTCP:LISTEN\""
+            },
+            {
+              "type": "commandExecution",
+              "status": "failed",
+              "exitCode": 128,
+              "command": "/bin/zsh -lc \"rg --files tools outputs | rg 'rebuild-profile-fixed|remote.*json|QA/.+result|qa.*status' | head -30; tail -35 docs/0마스터플랜/mac-resume-20261001/vscode-dispatch/PRODUCTION-INTEGRATION-20261002.md; cat tools/team-followup-20261001/QA/NEXT_TASK.md | head -12; rg --files tools/team-followup-20261001/QA | tail -8; GIT_OPTIONAL_LOCKS=0 git rev-parse HEAD; GIT_OPTIONAL_LOCKS=0 git ls-remote origin refs/heads/codex/mac-environment-20261001\""
+            },
+            {
+              "type": "commandExecution",
+              "status": "completed",
+              "exitCode": 0,
+              "command": "/bin/zsh -lc \"cat outputs/team-review-20261002/production-integration/remote-checkpoint-final.json; cat tools/team-followup-20261001/root-review/rebuild-profile-fixed.mjs; cat tools/team-followup-20261001/QA/persistence-review-receipt.json 2>/dev/null; rg -n 'QA|updated|snapshot|6be3' docs/0마스터플랜/mac-resume-20261001/vscode-dispatch/TEAM_UTILIZATION_20261001.json | tail -10; sed -n '1,15p' tools/team-followup-20261001/BUILD/mac-packager/packager.mjs; rg -n 'PROFILE_ARGUMENT|JSON.stringify\\\\(profile\\\\)' tools/team-followup-20261001/BUILD/mac-packager/packager.mjs\""
+            },
+            {
+              "type": "fileChange",
+              "status": "completed",
+              "changes": [
+                {
+                  "path": "/Users/fordeargamers/Projects/exoduser-migration-20261001/tools/team-followup-20261001/BUILD/integrated-mac-build-driver.mjs",
+                  "kind": {
+                    "type": "add"
+                  }
+                },
+                {
+                  "path": "/Users/fordeargamers/Projects/exoduser-migration-20261001/tools/team-followup-20261001/BUILD/integrated-mac-build-receipt.json",
+                  "kind": {
+                    "type": "add"
+                  }
+                }
+              ]
+            },
+            {
+              "type": "commandExecution",
+              "status": "completed",
+              "exitCode": 0,
+              "command": "/bin/zsh -lc \"ls tools/team-followup-20261001/BUILD/integrated-mac-build-*; tail -3 tools/team-followup-20261001/BUILD/integrated-mac-build-command.log; node --input-type=module -e \\\"import fs from 'node:fs';const p='tools/team-followup-20261001/BUILD/integrated-mac-build-preflight.json';if(fs.existsSync(p)){const x=JSON.parse(fs.readFileSync(p));console.log(JSON.stringify({inputCount:x.inputCount,inputBytes:x.inputBytes,availableBytes:x.availableBytes,expected:x.expectedStageAndPackageBytes,changed:x.inputEvidence.filter(e=>e.changed).map(e=>e.path)}));}\\\"\""
+            },
+            {
+              "type": "commandExecution",
+              "status": "completed",
+              "exitCode": 0,
+              "command": "/bin/zsh -lc 'tail -3 tools/team-followup-20261001/BUILD/integrated-mac-build-command.log; date -u +%Y-%m-%dT%H:%M:%SZ; ls tools/team-followup-20261001/BUILD/integrated-mac-build-plan.json'"
+            },
+            {
+              "type": "commandExecution",
+              "status": "completed",
+              "exitCode": 0,
+              "command": "/bin/zsh -lc 'head -26 docs/0마스터플랜/mac-resume-20261001/vscode-dispatch/TEAM_UTILIZATION_20261001.json; cat tools/team-followup-20261001/QA/busy-save-independent-receipt.json 2>/dev/null | head -22; node tools/team-followup-20261001/BUILD/integrated-mac-build-driver.mjs > tools/team-followup-20261001/BUILD/integrated-mac-build-command.log 2>&1; tail -6 tools/team-followup-20261001/BUILD/integrated-mac-build-command.log'"
+            },
+            {
+              "type": "commandExecution",
+              "status": "completed",
+              "exitCode": 0,
+              "command": "/bin/zsh -lc \"node --input-type=module <<'NODE'\nimport fs from 'node:fs';const p='tools/team-followup-20261001/BUILD/integrated-mac-build-';const r=JSON.parse(fs.readFileSync(p+'result.json'));console.log(JSON.stringify({started:r.buildStartedAt,end:r.completedAt,head:r.headAfter,core:r.core.filter(e=>/package.json|game.html|game-easy-test.html|node-main.js/.test(e.path)),outputCount:r.outputManifest.length}));\nNODE\nrg -n 'Mac.*packag|프로필|빌드.*입력' docs > tools/team-followup-20261001/BUILD/integrated-mac-build-docs-search.txt; node --check tools/team-followup-20261001/BUILD/integrated-mac-build-driver.mjs; date -u +%Y-%m-%dT%H:%M:%SZ\""
+            },
+            {
+              "type": "fileChange",
+              "status": "completed",
+              "changes": [
+                {
+                  "path": "/Users/fordeargamers/Projects/exoduser-migration-20261001/docs/13출시·마케팅/INTEGRATION_BUILD_TEAM_MASTER.md",
+                  "kind": {
+                    "type": "update",
+                    "move_path": null
+                  }
+                },
+                {
+                  "path": "/Users/fordeargamers/Projects/exoduser-migration-20261001/tools/team-followup-20261001/BUILD/integrated-mac-build-result.md",
+                  "kind": {
+                    "type": "add"
+                  }
+                }
+              ]
+            },
+            {
+              "type": "commandExecution",
+              "status": "completed",
+              "exitCode": 0,
+              "command": "/bin/zsh -lc \"date -u +%Y-%m-%dT%H:%M:%SZ; stat -f '%SB' -t '%Y-%m-%dT%H:%M:%S%z' tools/team-followup-20261001/BUILD/integrated-mac-build-driver.mjs\""
+            },
+            {
+              "type": "fileChange",
+              "status": "completed",
+              "changes": [
+                {
+                  "path": "/Users/fordeargamers/Projects/exoduser-migration-20261001/tools/team-followup-20261001/BUILD/integrated-mac-build-receipt.json",
+                  "kind": {
+                    "type": "update",
+                    "move_path": null
+                  }
+                }
+              ]
+            }
+          ],
+          "final": [
+            "최신 통합 소스로 Mac arm64 앱 **1개를 생성했습니다**.\n\n- 정확 7,918개 입력을 HEAD·root 제공 원격 증거와 대조했습니다.\n- 새 UUID·포트3383·고유 profile/save 적용, 기존 두 앱 핵심14파일 해시 불변.\n- 앱 실행·게임·저장·서명·배포 인수는 **미완료**입니다.\n\n앱: `outputs/mac-package-ready/mac-packager-08cac1ce-21fb-4874-b4df-c136df5ac269/package/EXODUSER-08cac1ce-21fb-4874-b4df-c136df5ac269.app`\n\n결과: `tools/team-followup-20261001/BUILD/integrated-mac-build-result.md:1`\n\nBUILD 대장·receipt 기록을 마쳤으며 root 검토를 기다립니다."
+          ]
+        }
+      ]
+    }
+  },
+  {
+    "status": "fulfilled",
+    "value": {
+      "team": "BALANCE",
+      "thread": {
+        "id": "01a0f6e6-5303-7392-81ba-94c42e349ffc",
+        "kind": "codex",
+        "hostId": "local",
+        "title": "Execute assigned task",
+        "preview": "Read docs/0마스터플랜/mac-resume-20261001/vscode-dispatch/BALANCE-task.md and execute the assigned task.",
+        "status": {
+          "type": "notLoaded"
+        },
+        "cwd": "/Users/fordeargamers/Projects/exoduser-migration-20261001",
+        "createdAt": 1790848684,
+        "updatedAt": 1790875017
+      },
+      "turns": [
+        {
+          "id": "01a0f874-63b2-7620-ac57-d0bb6833ede1",
+          "status": "completed",
+          "startedAt": 1790874772,
+          "completedAt": 1790875017,
+          "actions": [
+            {
+              "type": "commandExecution",
+              "status": "completed",
+              "exitCode": 0,
+              "command": "/bin/zsh -lc \"date -u '+%Y-%m-%dT%H:%M:%SZ'; cat tools/team-followup-20261001/BALANCE/disk-save-restart-task.md; rg --files -g AGENTS.md; rg --files tools/team-followup-20261001/BALANCE | rg disk-save-restart\""
+            },
+            {
+              "type": "commandExecution",
+              "status": "completed",
+              "exitCode": 0,
+              "command": "/bin/zsh -lc \"cat AGENTS.md >/dev/null; sed -n '33,43p' server.cjs; sed -n '59,82p' server.cjs; sed -n '120,149p' server.cjs; tail -8 server.cjs; sed -n '350,374p' docs/'15 세이브+데이터구조/15 세이브+데이터구조.md'; head -36 tools/team-followup-20261001/BALANCE/production-integration.test.mjs; rg -n 'listen\\\\(|SIGTERM|SIGINT' server.cjs\""
+            },
+            {
+              "type": "fileChange",
+              "status": "completed",
+              "changes": [
+                {
+                  "path": "/Users/fordeargamers/Projects/exoduser-migration-20261001/tools/team-followup-20261001/BALANCE/disk-save-restart-receipt.json",
+                  "kind": {
+                    "type": "add"
+                  }
+                },
+                {
+                  "path": "/Users/fordeargamers/Projects/exoduser-migration-20261001/tools/team-followup-20261001/BALANCE/disk-save-restart.mjs",
+                  "kind": {
+                    "type": "add"
+                  }
+                }
+              ]
+            },
+            {
+              "type": "commandExecution",
+              "status": "completed",
+              "exitCode": 0,
+              "command": "/bin/zsh -lc \"date -u '+%Y-%m-%dT%H:%M:%SZ'; node tools/team-followup-20261001/BALANCE/disk-save-restart.mjs > tools/team-followup-20261001/BALANCE/disk-save-restart-tests.txt 2>&1; cat tools/team-followup-20261001/BALANCE/disk-save-restart-tests.txt\""
+            },
+            {
+              "type": "commandExecution",
+              "status": "completed",
+              "exitCode": 0,
+              "command": "/bin/zsh -lc \"date -u '+%Y-%m-%dT%H:%M:%SZ'; cat tools/team-followup-20261001/BALANCE/disk-save-restart-task.md; cat tools/team-followup-20261001/BALANCE/disk-save-restart-evidence.json; node --check tools/team-followup-20261001/BALANCE/disk-save-restart.mjs; rg --files -g AGENTS.md; rg -n 'EXODUSER_SAVE_DIR|beforeunload|진행 중 저장|dbSaveNow|재기동|/api/save' docs/ > tools/team-followup-20261001/BALANCE/disk-save-restart-doc-search.txt; shasum -a 256 tools/team-followup-20261001/BALANCE/disk-save-restart.mjs; stat -f '%Sm' -t '%Y-%m-%dT%H:%M:%SZ' tools/team-followup-20261001/BALANCE/disk-save-restart.mjs\""
+            },
+            {
+              "type": "commandExecution",
+              "status": "completed",
+              "exitCode": 0,
+              "command": "/bin/zsh -lc \"sed -n '1,125p' tools/team-followup-20261001/BALANCE/disk-save-restart.mjs; cat tools/team-followup-20261001/BALANCE/disk-save-restart-receipt.json; TZ=UTC stat -f '%Sm' -t '%Y-%m-%dT%H:%M:%SZ' tools/team-followup-20261001/BALANCE/disk-save-restart.mjs; date -u '+%Y-%m-%dT%H:%M:%SZ'\""
+            },
+            {
+              "type": "fileChange",
+              "status": "completed",
+              "changes": [
+                {
+                  "path": "/Users/fordeargamers/Projects/exoduser-migration-20261001/tools/team-followup-20261001/BALANCE/disk-save-restart.mjs",
+                  "kind": {
+                    "type": "update",
+                    "move_path": null
+                  }
+                }
+              ]
+            },
+            {
+              "type": "commandExecution",
+              "status": "completed",
+              "exitCode": 0,
+              "command": "/bin/zsh -lc \"node --check tools/team-followup-20261001/BALANCE/disk-save-restart.mjs && shasum -a 256 tools/team-followup-20261001/BALANCE/disk-save-restart.mjs; date -u '+%Y-%m-%dT%H:%M:%SZ'\""
+            },
+            {
+              "type": "fileChange",
+              "status": "completed",
+              "changes": [
+                {
+                  "path": "/Users/fordeargamers/Projects/exoduser-migration-20261001/docs/15 세이브+데이터구조/BALANCE_DISK_SAVE_RESTART_20261002.md",
+                  "kind": {
+                    "type": "add"
+                  }
+                },
+                {
+                  "path": "/Users/fordeargamers/Projects/exoduser-migration-20261001/tools/team-followup-20261001/BALANCE/disk-save-restart-receipt.json",
+                  "kind": {
+                    "type": "update",
+                    "move_path": null
+                  }
+                },
+                {
+                  "path": "/Users/fordeargamers/Projects/exoduser-migration-20261001/tools/team-followup-20261001/BALANCE/disk-save-restart-result.md",
+                  "kind": {
+                    "type": "add"
+                  }
+                }
+              ]
+            }
+          ],
+          "final": [
+            "전용 하니스와 영수증·한국어 결과를 작성했습니다.\n\n- 격리 포트 선확인에서 `EPERM` 발생. 우회하지 않았습니다.\n- 서버 실행·API 요청·통합 검사 모두 0회입니다.\n- 문법 검사만 통과했으며 실제 저장·재기동은 미검수입니다.\n- 생산 코드·사용자 세이브·게임은 변경하지 않았습니다.\n\n결과: `tools/team-followup-20261001/BALANCE/disk-save-restart-result.md:1`  \n남은 실제 검수를 root에 인계합니다."
+          ]
+        }
+      ]
+    }
+  }
+]

@@ -1,0 +1,64 @@
+{
+  "utc": "2026-10-01T17:31:19.152Z",
+  "oldFailures": [
+    {
+      "case": "pending 중 신규 출처 재등록 및 이동",
+      "expectedX": 100,
+      "actualX": 0,
+      "verdict": "기존 후보 FAIL 재현"
+    },
+    {
+      "case": "A pending/B 완료 뒤 새 provenance를 A finally가 삭제",
+      "expectedX": 0,
+      "actualX": 100,
+      "verdict": "기존 후보 FAIL 재현"
+    }
+  ],
+  "newChecks": 30,
+  "newStatus": "PASS",
+  "passed": [
+    "A/B resolve/resolve 정순",
+    "A/B resolve/resolve 역순",
+    "A/B resolve/reject 정순",
+    "A/B resolve/reject 역순",
+    "A/B reject/resolve 정순",
+    "A/B reject/resolve 역순",
+    "A/B reject/reject 정순",
+    "A/B reject/reject 역순",
+    "pending 생성/시전/등록 원동작 횟수와 상태",
+    "clear 뒤 늦은 resolve",
+    "clear 뒤 늦은 reject",
+    "player 뒤 늦은 resolve",
+    "player 뒤 늦은 reject",
+    "character 뒤 늦은 resolve",
+    "character 뒤 늦은 reject",
+    "zones 뒤 늦은 resolve",
+    "zones 뒤 늦은 reject",
+    "clear는 진행중 경계 취소하지 않음/중첩 동기원함수",
+    "원함수 this/인수/동기반환 identity/호출1",
+    "동기 예외 identity/호출1 및 후속 회복",
+    "native Promise identity는 별개/결과 this 인수 보존",
+    "then getter1/then 호출1/receiver/비동기 동화",
+    "throwing then getter는 동기 예외/경계 해제",
+    "then 비함수 객체 반환 identity",
+    "then 호출 예외/다중 resolve/reject",
+    "pending/ready 원 생성·종료 this/인수/반환·예외",
+    "정착 후 microtask 후속 경계 token 분리",
+    "기본/한쪽 opt-in 비활성",
+    "기본/한쪽 opt-in 비활성",
+    "기본/한쪽 opt-in 비활성"
+  ],
+  "preservedFiles": 19,
+  "regressionImportOnly": true,
+  "gameSha256": "c868284af349c996d42087e93eba47a10614d73cb8f55f4db5ae01dde89da31a",
+  "functions": [
+    {
+      "name": "fireBlackStar",
+      "sha256": "11fd34ebf4a12ef9957203d93e2aff9245b9009a9f086fe641ffd027054c5824"
+    },
+    {
+      "name": "activateSpikeTrap",
+      "sha256": "f5d9f41ee12c8f51a0d8a1b116588a6133a3bc801aec73bb0532d3c02fc2dd19"
+    }
+  ]
+}

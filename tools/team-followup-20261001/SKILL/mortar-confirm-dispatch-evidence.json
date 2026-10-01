@@ -1,0 +1,80 @@
+{
+  "taskId": "SKILL-mortar-confirm-dispatch",
+  "head": "f965a15b",
+  "generatedAtUTC": "2026-10-01T17:39:12.567Z",
+  "verdict": "EXISTING_DEFECT_CONFIRMED_NO_NEW_DEFECT",
+  "newPatch": false,
+  "reusedGuard": "fireMaliceMortar 진입 MP 재검사(mortar-confirm-source)",
+  "pass": 19,
+  "fail": 0,
+  "evidence": {
+    "byFile": {
+      "game.html": {
+        "lowMp_orig": {
+          "sfx": 1,
+          "playSample": 1,
+          "shake": 1,
+          "fires": 1,
+          "showPH": []
+        },
+        "lowMp_cand": {
+          "sfx": 0,
+          "playSample": 0,
+          "shake": 0,
+          "fires": 0,
+          "showPH": [
+            "MP 부족!"
+          ]
+        },
+        "success_orig": {
+          "sfx": 1,
+          "playSample": 1,
+          "shake": 1,
+          "fires": 1,
+          "showPH": []
+        },
+        "success_cand": {
+          "sfx": 1,
+          "playSample": 1,
+          "shake": 1,
+          "fires": 1,
+          "showPH": []
+        },
+        "fireSha": "cdeeead948d5518c"
+      },
+      "game-easy-test.html": {
+        "lowMp_orig": {
+          "sfx": 1,
+          "playSample": 1,
+          "shake": 1,
+          "fires": 1,
+          "showPH": []
+        },
+        "lowMp_cand": {
+          "sfx": 0,
+          "playSample": 0,
+          "shake": 0,
+          "fires": 0,
+          "showPH": [
+            "MP 부족!"
+          ]
+        },
+        "success_orig": {
+          "sfx": 1,
+          "playSample": 1,
+          "shake": 1,
+          "fires": 1,
+          "showPH": []
+        },
+        "success_cand": {
+          "sfx": 1,
+          "playSample": 1,
+          "shake": 1,
+          "fires": 1,
+          "showPH": []
+        },
+        "fireSha": "cdeeead948d5518c"
+      }
+    }
+  }
+}

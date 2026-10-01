@@ -1,0 +1,386 @@
+{
+  "checkedAt": "2026-10-01T17:42:39.536024+00:00",
+  "sessions": [
+    {
+      "team": "QA",
+      "sessionId": "88c3f903-ece5-4640-8b0c-86feaaca0e53",
+      "events": [
+        {
+          "at": "2026-10-01T17:29:55.616Z",
+          "type": "received"
+        },
+        {
+          "at": "2026-10-01T17:30:09.379Z",
+          "type": "Read",
+          "path": "/Users/fordeargamers/Projects/exoduser-migration-20261001/tools/team-followup-20261001/QA/d17-async-independent-task.md",
+          "command": null
+        },
+        {
+          "at": "2026-10-01T17:30:21.072Z",
+          "type": "Bash",
+          "path": null,
+          "command": "date -u \"+%Y-%m-%dT%H:%M:%SZ\"; echo \"HEAD=$(git rev-parse --short HEAD)\"; echo \"=== d17 files anywhere ===\"; find tools/team-followup-20261001 -iname \"*d17*\" 2>/dev/null; echo \"=== lifecycle-roll files ===\"; find tools/team-followup-20261001 -iname \"*lifecycle-roll*\" -o -iname \"*lifecycle*roll*\" 2>/dev/null; echo \"=== async-boundary ===\"; find tools/team-followup-20261001 -iname \"*async-boundary*\" 2>/dev/null"
+        },
+        {
+          "at": "2026-10-01T17:30:30.819Z",
+          "type": "Bash",
+          "path": null,
+          "command": "echo \"=== d17-lifecycle-roll-task.md ===\"; cat tools/team-followup-20261001/ITEM/d17-lifecycle-roll-task.md; echo; echo \"=== d17-async-boundary-receipt.json (완성 상태) ===\"; cat tools/team-followup-20261001/ITEM/d17-async-boundary-receipt.json"
+        },
+        {
+          "at": "2026-10-01T17:30:45.321Z",
+          "type": "Bash",
+          "path": null,
+          "command": "echo \"=== lifecycle-roll-candidate.mjs ===\"; cat tools/team-followup-20261001/ITEM/d17-lifecycle-roll-candidate.mjs"
+        },
+        {
+          "at": "2026-10-01T17:31:12.512Z",
+          "type": "Bash",
+          "path": null,
+          "command": "echo \"=== d17-source-adapter-callsite.mjs ===\"; cat tools/team-followup-20261001/ITEM/d17-source-adapter-callsite.mjs"
+        },
+        {
+          "at": "2026-10-01T17:31:17.616Z",
+          "type": "Bash",
+          "path": null,
+          "command": "echo \"=== d17-source-adapter-candidate.mjs ===\"; cat tools/team-followup-20261001/ITEM/d17-source-adapter-candidate.mjs"
+        },
+        {
+          "at": "2026-10-01T17:31:51.020Z",
+          "type": "Bash",
+          "path": null,
+          "command": "echo \"=== d17-async-boundary-candidate.mjs ===\"; cat tools/team-followup-20261001/ITEM/d17-async-boundary-candidate.mjs"
+        },
+        {
+          "at": "2026-10-01T17:32:51.132Z",
+          "type": "Bash",
+          "path": null,
+          "command": "echo \"=== unique-item-project files ===\"; ls unique-item-project/ 2>/dev/null | head; echo \"=== lookupDefinition UI-17 / lookupRoll / fromStoredValue signatures ===\"; grep -n \"export function lookupDefinition\\|export function lookupRoll\\|export function fromStoredValue\\|UI-17\\|effectId\\|stat:\" unique-item-project/definitions.js unique-item-project/roll-values.js 2>/dev/null | head -30"
+        },
+        {
+          "at": "2026-10-01T17:32:56.395Z",
+          "type": "Read",
+          "path": "/Users/fordeargamers/Projects/exoduser-migration-20261001/unique-item-project/roll-values.js",
+          "command": null
+        },
+        {
+          "at": "2026-10-01T17:33:14.414Z",
+          "type": "Bash",
+          "path": null,
+          "command": "node --input-type=module -e \"\nimport {lookupDefinition} from './unique-item-project/definitions.js';\nimport {lookupRoll,toStoredValue,fromStoredValue} from './unique-item-project/roll-values.js';\nconst def=lookupDefinition('UI-17'); const roll=lookupRoll('UI-17');\nconsole.log('def.effectId=',def.effectId,'slots=',JSON.stringify(def.slots));\nconsole.log('roll stat/unit/min/max=',roll.stat,roll.unit,roll.min,roll.max);\nconsole.log('valid storedValue(min)=',toStoredValue('UI-17',roll.min),'->from=',fromStoredValue('UI-17',toStoredValue('UI-17',roll.min)));\n\""
+        },
+        {
+          "at": "2026-10-01T17:34:22.863Z",
+          "type": "Bash",
+          "path": null,
+          "command": "cat tools/team-followup-20261001/ITEM/d17-zone-selection-candidate.mjs"
+        },
+        {
+          "at": "2026-10-01T17:34:47.687Z",
+          "type": "Bash",
+          "path": null,
+          "command": "for f in d17-lifecycle-roll-candidate.mjs d17-async-boundary-candidate.mjs d17-source-adapter-candidate.mjs d17-source-adapter-callsite.mjs d17-zone-selection-candidate.mjs; do printf \"%-38s %s\\n\" \"$f\" \"$(shasum -a 256 tools/team-followup-20261001/ITEM/$f | cut -c1-16)\"; done"
+        },
+        {
+          "at": "2026-10-01T17:35:08.369Z",
+          "type": "Write",
+          "path": "/Users/fordeargamers/Projects/exoduser-migration-20261001/docs/0마스터플랜/mac-resume-20261001/vscode-dispatch/d17-async-independent-receipt.json",
+          "command": null
+        },
+        {
+          "at": "2026-10-01T17:37:29.181Z",
+          "type": "Write",
+          "path": "/Users/fordeargamers/Projects/exoduser-migration-20261001/tools/team-followup-20261001/QA/d17-async-independent-regression.mjs",
+          "command": null
+        },
+        {
+          "at": "2026-10-01T17:37:33.978Z",
+          "type": "Bash",
+          "path": null,
+          "command": "node tools/team-followup-20261001/QA/d17-async-independent-regression.mjs; echo \"EXIT=$?\""
+        },
+        {
+          "at": "2026-10-01T17:37:44.225Z",
+          "type": "Bash",
+          "path": null,
+          "command": "node --check tools/team-followup-20261001/QA/d17-async-independent-regression.mjs && echo \"syntax OK\"; date -u \"+%Y-%m-%dT%H:%M:%SZ\""
+        },
+        {
+          "at": "2026-10-01T17:38:22.935Z",
+          "type": "Write",
+          "path": "/Users/fordeargamers/Projects/exoduser-migration-20261001/docs/0마스터플랜/mac-resume-20261001/vscode-dispatch/d17-async-independent-result.md",
+          "command": null
+        },
+        {
+          "at": "2026-10-01T17:38:37.487Z",
+          "type": "Bash",
+          "path": null,
+          "command": "python3 - <<'EOF'\nimport json\np=\"docs/0마스터플랜/mac-resume-20261001/vscode-dispatch/d17-async-independent-receipt.json\"\nd=json.load(open(p))\nd[\"status\"]=\"done-d17-async-independent\"\nd[\"completedUTC\"]=\"2026-10-01T17:38:00Z\"\nd[\"result\"]={\n \"regression\":\"tools/team-followup-20261001/QA/d17-async-independent-regression.mjs — 20 PASS/0 FAIL, exit0 (독립 fixture, ITEM check 비복제)\",\n \"priorReproduced\":\"2건: FAIL-A(pending 중 등록 true·시전 이동 효과), FAIL-B(A/B 겹침·늦은 finally clear 로 오등록 후 삭제)\",\n \"newFixed\":\"동일 반례 전부 억제: pending Set 로 진행 경계 있으면 등록/시전 억제(원함수 통과), 늦은 clear 없음, 전 경계 완료(성공/역순/reject/동기throw) 후 재개\",\n \"commonContracts\":\"기본 비활성·원함수 this/args/return/1회·character/zones 교체 stale 폐기 확인\",\n \"candidateUse\":\"async-boundary 후보 완성됨 → 반례 적용 완료(대기 불필요). ITEM 파일 수정 0(read-only import)\",\n \"noModify\":\"기존 QA결과/ITEM파일/production/공유docs/세이브 변경0\",\n \"gates\":\"Git/queue/새세션/하위에이전트/서버/게임/성능측정/빌드0, source 검수(앱인수/생산활성 아님)\",\n \"remaining\":\"실제 생산 callsite 장착 부작용·저장 공급 필드 실제 연결·never-settle 경계는 root/ITEM·생산 게이트 소관\"\n}\nd[\"blocker\"]=None\njson.dump(d,open(p,\"w\"),ensure_ascii=False,indent=2)\nprint(\"receipt updated, JSON valid\")\nEOF\necho \"=== scope: owned only ===\"; git status --short -- tools/team-followup-20261001/QA/d17-async-independent-regression.mjs \"docs/0마스터플랜/mac-resume-20261001/vscode-dispatch/d17-async-independent-result.md\" \"docs/0마스터플랜/mac-resume-20261001/vscode-dispatch/d17-async-independent-receipt.json\"; echo \"=== ITEM files untouched by me ===\"; git status --short -- tools/team-followup-20261001/ITEM/ | head"
+        },
+        {
+          "at": "2026-10-01T17:38:58.140Z",
+          "type": "completed"
+        }
+      ]
+    },
+    {
+      "team": "MAP",
+      "sessionId": "d447a49d-ecaa-4b5f-bc56-da5353ebb668",
+      "events": []
+    },
+    {
+      "team": "SKILL",
+      "sessionId": "203377cc-64c4-47ea-af27-95b66ae829fa",
+      "events": [
+        {
+          "at": "2026-10-01T17:30:05.746Z",
+          "type": "received"
+        },
+        {
+          "at": "2026-10-01T17:30:17.283Z",
+          "type": "Read",
+          "path": "/Users/fordeargamers/Projects/exoduser-migration-20261001/tools/team-followup-20261001/SKILL/mortar-confirm-dispatch-task.md",
+          "command": null
+        },
+        {
+          "at": "2026-10-01T17:30:42.091Z",
+          "type": "Bash",
+          "path": null,
+          "command": "cd /Users/fordeargamers/Projects/exoduser-migration-20261001\necho \"=== dup? ===\" && ls tools/team-followup-20261001/SKILL/mortar-confirm-dispatch-* 2>/dev/null | grep -v 'task.md$' || echo \"none but task.md\"\necho \"=== UTC + HEAD ===\" && date -u +\"%Y-%m-%dT%H:%M:%SZ\" && git rev-parse HEAD\necho \"\"\necho \"=== aim-start case maliceMortar (game.html) ===\" && sed -n '12441,12446p' game.html\necho \"\"\necho \"=== confirm block (game.html 35204-35216) ===\" && sed -n '35204,35216p' game.html\necho \"\"\necho \"=== easy: aim-start + confirm line anchors ===\" && grep -nE \"case 'maliceMortar'|P\\._mmAiming=true|if\\(P\\._mmAiming\\)\\{\" game-easy-test.html | head"
+        },
+        {
+          "at": "2026-10-01T17:30:51.689Z",
+          "type": "Bash",
+          "path": null,
+          "command": "cd /Users/fordeargamers/Projects/exoduser-migration-20261001\necho \"=== game.html aim-start case ===\" && grep -nE \"case 'maliceMortar':\" game.html\necho \"--- aim-start body ---\" && awk \"/case 'maliceMortar':/{f=1} f{print NR\\\": \\\"\\$0} /P\\._mmAiming=true;P\\._mmAimKey/{if(f){c++; if(c>=1){exit}}}\" game.html | head -6\necho \"\"\necho \"=== game.html confirm block (폭풍소환 — 조준) ===\" && grep -nE \"폭풍소환 — 조준|if\\(P\\._mmAiming\\)\\{\" game.html | head\necho \"\"\necho \"=== easy confirm block region ===\" && grep -nE \"폭풍소환 — 조준\" game-easy-test.html | head"
+        },
+        {
+          "at": "2026-10-01T17:30:56.697Z",
+          "type": "Bash",
+          "path": null,
+          "command": "cd /Users/fordeargamers/Projects/exoduser-migration-20261001\necho \"=== game.html aim-start full case (12454-12459) ===\" && sed -n '12454,12459p' game.html\necho \"\"\necho \"=== game.html confirm block (35217-35230) ===\" && sed -n '35217,35230p' game.html\necho \"\"\necho \"=== note: aim-start now has extra guard line 12455 (G._mmBomb phase throw) ===\""
+        },
+        {
+          "at": "2026-10-01T17:31:53.103Z",
+          "type": "Bash",
+          "path": null,
+          "command": "cd /Users/fordeargamers/Projects/exoduser-migration-20261001\necho \"=== current fireMaliceMortar SHA (both) ===\" \nfor f in game.html game-easy-test.html; do\n  node -e \"const s=require('fs').readFileSync('$f','utf8');const b=s.indexOf('function fireMaliceMortar(');const e=s.indexOf('\\n}',b)+2;console.log('$f',require('crypto').createHash('sha256').update(s.slice(b,e)).digest('hex').slice(0,16));\"\ndone\necho \"=== existing mortar-confirm-source patch still applies at current HEAD? ===\"\nSP=\"/private/tmp/claude-501/-Users-fordeargamers-Projects-exoduser-migration-20261001/203377cc-64c4-47ea-af27-95b66ae829fa/scratchpad\"\nfor pair in \"game.html:game\" \"game-easy-test.html:easy\"; do\n  f=\"${pair%%:*}\"; tag=\"${pair##*:}\"\n  cp \"$f\" \"$SP/chk_$tag\"\n  patch -s --dry-run \"$SP/chk_$tag\" < \"tools/team-followup-20261001/SKILL/mortar-confirm-source-$tag.patch\" 2>&1 && echo \"$tag: APPLIES CLEAN\" || echo \"$tag: DOES NOT APPLY (line drift — content-based test still valid)\"\n  rm -f \"$SP/chk_$tag\"\ndone"
+        },
+        {
+          "at": "2026-10-01T17:32:45.337Z",
+          "type": "Write",
+          "path": "/Users/fordeargamers/Projects/exoduser-migration-20261001/tools/team-followup-20261001/SKILL/mortar-confirm-dispatch-receipt.json",
+          "command": null
+        },
+        {
+          "at": "2026-10-01T17:33:59.242Z",
+          "type": "Write",
+          "path": "/Users/fordeargamers/Projects/exoduser-migration-20261001/tools/team-followup-20261001/SKILL/mortar-confirm-dispatch.test.mjs",
+          "command": null
+        },
+        {
+          "at": "2026-10-01T17:34:05.492Z",
+          "type": "Bash",
+          "path": null,
+          "command": "cd /Users/fordeargamers/Projects/exoduser-migration-20261001\nnode tools/team-followup-20261001/SKILL/mortar-confirm-dispatch.test.mjs; echo \"exit=$?\""
+        },
+        {
+          "at": "2026-10-01T17:34:14.843Z",
+          "type": "Bash",
+          "path": null,
+          "command": "cd /Users/fordeargamers/Projects/exoduser-migration-20261001\necho \"=== existing source test still green (preserved) ===\" && node tools/team-followup-20261001/SKILL/mortar-confirm-source.test.mjs 2>&1 | tail -1\necho \"=== evidence summary ===\" && node -e \"const e=require('./tools/team-followup-20261001/SKILL/mortar-confirm-dispatch-evidence.json'); console.log('verdict',e.verdict,'newPatch',e.newPatch,'pass',e.pass,'fail',e.fail); console.log('game lowMp orig fires/sfx:', e.evidence.byFile['game.html'].lowMp_orig.fires, e.evidence.byFile['game.html'].lowMp_orig.sfx, '| cand:', e.evidence.byFile['game.html'].lowMp_cand.fires, e.evidence.byFile['game.html'].lowMp_cand.sfx);\""
+        },
+        {
+          "at": "2026-10-01T17:34:54.790Z",
+          "type": "Write",
+          "path": "/Users/fordeargamers/Projects/exoduser-migration-20261001/tools/team-followup-20261001/SKILL/mortar-confirm-dispatch-result.md",
+          "command": null
+        },
+        {
+          "at": "2026-10-01T17:35:02.252Z",
+          "type": "Bash",
+          "path": null,
+          "command": "cd /Users/fordeargamers/Projects/exoduser-migration-20261001\nnode - <<'NODE'\nconst fs=require('fs');\nconst p='tools/team-followup-20261001/SKILL/mortar-confirm-dispatch-receipt.json';\nconst j=JSON.parse(fs.readFileSync(p,'utf8'));\nj.status='done';\nj.completedAtUTC='2026-10-01T17:48:00Z';\nj.artifacts={\n  integratedTest:'mortar-confirm-dispatch.test.mjs → 19 PASS / 0 FAIL (exit0)',\n  evidence:'mortar-confirm-dispatch-evidence.json',\n  preservedSourceTest:'mortar-confirm-source.test.mjs → 17 PASS / 0 FAIL (재실행 확인)'\n};\nfs.writeFileSync(p,JSON.stringify(j,null,2)+'\\n');\nconsole.log('receipt finalized, valid');\nNODE\necho \"=== my touched paths (only mortar-confirm-dispatch-*) ===\" \ngit status --short --untracked-files=all 2>/dev/null | rg -i \"mortar-confirm-dispatch\"\necho \"=== production + existing source candidate untouched ===\" \ngrep -c \"if(P.mp<mpCost('mortar')){showPH(_T('MP 부족!')\" game.html game-easy-test.html\nshasum -a 256 tools/team-followup-20261001/SKILL/mortar-confirm-source.test.mjs | cut -c1-16"
+        },
+        {
+          "at": "2026-10-01T17:35:21.906Z",
+          "type": "completed"
+        }
+      ]
+    },
+    {
+      "team": "ENEMY",
+      "sessionId": "ddbd64be-975a-458e-a020-c09749281f5b",
+      "events": []
+    },
+    {
+      "team": "ART",
+      "sessionId": "a489cbeb-92d9-449a-a2b7-ba0e2871322f",
+      "events": []
+    },
+    {
+      "team": "ANIMVFX",
+      "sessionId": "1d2a7253-478c-43aa-8c6f-766a02270432",
+      "events": [
+        {
+          "at": "2026-10-01T17:30:21.160Z",
+          "type": "received"
+        },
+        {
+          "at": "2026-10-01T17:30:28.455Z",
+          "type": "Read",
+          "path": "/Users/fordeargamers/Projects/exoduser-migration-20261001/tools/team-followup-20261001/ANIMVFX/corpse-flash-minimal-task.md",
+          "command": null
+        },
+        {
+          "at": "2026-10-01T17:30:57.897Z",
+          "type": "Bash",
+          "path": null,
+          "command": "date -u +\"%Y-%m-%dT%H:%M:%SZ\"; echo \"=== dup check ===\"; ls tools/team-followup-20261001/ANIMVFX/corpse-flash-minimal-* 2>&1 | grep -v task.md; echo \"=== current corpse transition 37556-37559 ===\"; sed -n '37556,37559p' game.html; echo \"=== current 2D flash cond (51851) ===\"; sed -n '51851,51852p' game.html; echo \"=== current GL flash cond (5227) ===\"; sed -n '5227,5228p' game.html; echo \"=== 50888 ===\"; sed -n '50886,50888p' game.html; echo \"=== game.html SHA ===\"; shasum -a 256 game.html | cut -c1-32"
+        },
+        {
+          "at": "2026-10-01T17:31:12.178Z",
+          "type": "Bash",
+          "path": null,
+          "command": "echo \"=== corpse transition (current line) ===\"; rg -n \"corpse.alive=true;corpse.hp=~~\\(corpse.mhp\\*.5\\);corpse.eShield=0\" game.html; echo \"=== 2D flash cond ===\"; rg -n \"e._hitFlash > 0 && !_ensGLQueued\" game.html; echo \"=== GL flash cond ===\"; rg -n \"e._ensGLMode!==1\\)continue;|_hitFlash>0&&e._ensGLMode===1\" game.html; echo \"=== death reset 50888-equiv ===\"; rg -n \"if\\(e._hitFlash\\)e._hitFlash=0;\" game.html; echo \"=== decay 33149-equiv ===\"; rg -n \"if\\(e._hitFlash>0\\)e._hitFlash=Math.max\\(0,e._hitFlash-sp\\)\" game.html; echo \"=== boss/druid transitions (preserve/defensive) ===\"; rg -n \"e.alive=true;e.x=e._reviveX;e.y=e._reviveY;|e.alive=true;e.hp=Math.max\\(1,Math.floor\\(e.mhp\\*.35\\)\\);e.eShield=0\" game.html"
+        },
+        {
+          "at": "2026-10-01T17:31:26.220Z",
+          "type": "Read",
+          "path": "/Users/fordeargamers/Projects/exoduser-migration-20261001/game.html",
+          "command": null
+        },
+        {
+          "at": "2026-10-01T17:32:15.484Z",
+          "type": "Write",
+          "path": "/private/tmp/claude-501/-Users-fordeargamers-Projects-exoduser-migration-20261001/1d2a7253-478c-43aa-8c6f-766a02270432/scratchpad/gen_corpse_patch.mjs",
+          "command": null
+        },
+        {
+          "at": "2026-10-01T17:32:21.025Z",
+          "type": "Bash",
+          "path": null,
+          "command": "node \"/private/tmp/claude-501/-Users-fordeargamers-Projects-exoduser-migration-20261001/1d2a7253-478c-43aa-8c6f-766a02270432/scratchpad/gen_corpse_patch.mjs\"; echo \"GEN_EXIT=$?\""
+        },
+        {
+          "at": "2026-10-01T17:32:33.960Z",
+          "type": "Bash",
+          "path": null,
+          "command": "echo \"=== patch dry-run (git apply --check, read-only, no write) ===\"; git apply --check --verbose tools/team-followup-20261001/ANIMVFX/corpse-flash-minimal.patch 2>&1 | tail -5; echo \"exit=$?\"; echo \"=== confirm game.html NOT modified (SHA) ===\"; shasum -a 256 game.html | cut -c1-32; echo \"=== show the patch ===\"; sed -n '1,20p' tools/team-followup-20261001/ANIMVFX/corpse-flash-minimal.patch"
+        },
+        {
+          "at": "2026-10-01T17:33:20.318Z",
+          "type": "Write",
+          "path": "/Users/fordeargamers/Projects/exoduser-migration-20261001/tools/team-followup-20261001/ANIMVFX/corpse-flash-minimal-verify.mjs",
+          "command": null
+        },
+        {
+          "at": "2026-10-01T17:33:26.677Z",
+          "type": "Bash",
+          "path": null,
+          "command": "node --check tools/team-followup-20261001/ANIMVFX/corpse-flash-minimal-verify.mjs && echo \"SYNTAX PASS\" && node tools/team-followup-20261001/ANIMVFX/corpse-flash-minimal-verify.mjs; echo \"EXIT=$?\""
+        },
+        {
+          "at": "2026-10-01T17:33:46.333Z",
+          "type": "Edit",
+          "path": "/Users/fordeargamers/Projects/exoduser-migration-20261001/tools/team-followup-20261001/ANIMVFX/corpse-flash-minimal-verify.mjs",
+          "command": null
+        },
+        {
+          "at": "2026-10-01T17:33:56.426Z",
+          "type": "Bash",
+          "path": null,
+          "command": "node tools/team-followup-20261001/ANIMVFX/corpse-flash-minimal-verify.mjs 2>&1 | tail -6; echo \"EXIT=${PIPESTATUS[0]}\"; echo \"=== easy still flash-unrendered (unchanged)? ===\"; rg -n \"if\\(e._hitFlash > 0\\) \\{\" game-easy-test.html | head -1; shasum -a 256 game-easy-test.html | cut -c1-16; echo \"=== deliverable SHAs ===\"; shasum -a 256 tools/team-followup-20261001/ANIMVFX/corpse-flash-minimal.patch tools/team-followup-20261001/ANIMVFX/corpse-flash-minimal-verify.mjs | cut -c1-20,100-; echo \"=== prior evidence preserved ===\"; shasum -a 256 tools/team-followup-20261001/ANIMVFX/flash-transition.patch tools/team-followup-20261001/ANIMVFX/flash-revive-reachability-fixture.mjs | cut -c1-20,100-; date -u +\"%Y-%m-%dT%H:%M:%SZ\""
+        },
+        {
+          "at": "2026-10-01T17:34:08.420Z",
+          "type": "Bash",
+          "path": null,
+          "command": "sed -n '50466,50470p' game-easy-test.html; echo \"=== my changed paths ===\"; git status --porcelain tools/team-followup-20261001/ANIMVFX/ | grep corpse-flash"
+        },
+        {
+          "at": "2026-10-01T17:34:59.027Z",
+          "type": "Write",
+          "path": "/Users/fordeargamers/Projects/exoduser-migration-20261001/tools/team-followup-20261001/ANIMVFX/corpse-flash-minimal-result.md",
+          "command": null
+        },
+        {
+          "at": "2026-10-01T17:35:27.478Z",
+          "type": "Write",
+          "path": "/Users/fordeargamers/Projects/exoduser-migration-20261001/tools/team-followup-20261001/ANIMVFX/corpse-flash-minimal-receipt.json",
+          "command": null
+        },
+        {
+          "at": "2026-10-01T17:35:32.579Z",
+          "type": "Bash",
+          "path": null,
+          "command": "node -e \"JSON.parse(require('fs').readFileSync('tools/team-followup-20261001/ANIMVFX/corpse-flash-minimal-receipt.json','utf8'));console.log('receipt JSON OK')\" && echo \"=== final: game.html unchanged, re-confirm dry-run ===\" && shasum -a 256 game.html | cut -c1-16 && git apply --check tools/team-followup-20261001/ANIMVFX/corpse-flash-minimal.patch && echo \"dry-run OK (exit 0)\""
+        },
+        {
+          "at": "2026-10-01T17:35:50.897Z",
+          "type": "completed"
+        }
+      ]
+    },
+    {
+      "team": "SOUND",
+      "sessionId": "aa3ac0ed-f4e5-44ad-a0b2-d4d2da045b84",
+      "events": [
+        {
+          "at": "2026-10-01T17:28:41.105Z",
+          "type": "received"
+        },
+        {
+          "at": "2026-10-01T17:28:49.936Z",
+          "type": "Read",
+          "path": "/Users/fordeargamers/Projects/exoduser-migration-20261001/tools/team-followup-20261001/SOUND/OWNER_NEXT_20261002.md",
+          "command": null
+        },
+        {
+          "at": "2026-10-01T17:28:56.268Z",
+          "type": "Grep",
+          "path": null,
+          "command": null
+        },
+        {
+          "at": "2026-10-01T17:29:05.313Z",
+          "type": "Read",
+          "path": "/Users/fordeargamers/Projects/exoduser-migration-20261001/game.html",
+          "command": null
+        },
+        {
+          "at": "2026-10-01T17:29:06.607Z",
+          "type": "Grep",
+          "path": null,
+          "command": null
+        },
+        {
+          "at": "2026-10-01T17:29:14.246Z",
+          "type": "Read",
+          "path": "/Users/fordeargamers/Projects/exoduser-migration-20261001/game.html",
+          "command": null
+        },
+        {
+          "at": "2026-10-01T17:29:40.434Z",
+          "type": "Grep",
+          "path": null,
+          "command": null
+        },
+        {
+          "at": "2026-10-01T17:29:40.910Z",
+          "type": "Glob",
+          "path": null,
+          "command": null
+        },
+        {
+          "at": "2026-10-01T17:30:27.443Z",
+          "type": "completed"
+        },
+        {
+          "at": "2026-10-01T17:31:30.181Z",
+          "type": "completed"
+        }
+      ]
+    }
+  ]
+}

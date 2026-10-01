@@ -1,0 +1,58 @@
+{
+  "taskId": "ANIMVFX-CORPSE-FLASH-MINIMAL",
+  "title": "도달 입증된 etype9 시체부활 플래시 최소 unified patch(1행) + 불변/드라이런 검증",
+  "team": "ANIMVFX",
+  "continuesSession": "1d2a7253-478c-43aa-8c6f-766a02270432",
+  "terminal": "VS Code 기존 터미널 8 (ANIMVFX)",
+  "cli": "Claude Code",
+  "model": "claude-opus-4-8",
+  "head": "30a204a7aa348a88b90bdc922862c610a7da938f",
+  "receivedUTC": "2026-10-01T17:30:59Z",
+  "firstReadUTC": "2026-10-01T17:31:10Z",
+  "firstEditUTC": "2026-10-01T17:32:30Z",
+  "commandUTC": "2026-10-01T17:33:10Z",
+  "completedUTC": "2026-10-01T17:34:00Z",
+  "status": "completed_with_pending_gates",
+  "duplicateCheck": "corpse-flash-minimal-* 부재 확인 — 중복/진행중 아님. 기존 flash-transition/flash-revive-reachability 산출 보존.",
+  "sourceReExtract": {
+    "gameHtmlShaBefore": "c868284af349c996d42087e93eba47a10614d73cb8f55f4db5ae01dde89da31a",
+    "note": "소스 드리프트(타 팀 편집)로 라인 재탐색(내용 기준) — 모델 라인주장 반복 아님",
+    "corpseTransition": "game.html:37571",
+    "flash2D": "game.html:51981  if(e._hitFlash > 0 && !_ensGLQueued)",
+    "flashGL": "game.html:5240  !(e._hitFlash>0)||e._ensGLMode!==1)continue",
+    "deathReset": "game.html:51018",
+    "updateDecay": "game.html:33162",
+    "bossDruidExcluded": "33217/33252/16232 (방어 전용, 미포함)"
+  },
+  "deliverables": {
+    "tools/team-followup-20261001/ANIMVFX/corpse-flash-minimal.patch": "f819df3fc9fff7ec886c",
+    "tools/team-followup-20261001/ANIMVFX/corpse-flash-minimal-verify.mjs": "07fd194abebcc924f61f"
+  },
+  "patch": {
+    "scope": "단 1행(L37571) — 시체부활 전이 끝에 'corpse._hitFlash=0;' 추가",
+    "insert": "corpse._hitFlash=0;  (순수 시각상태 대입; 함수호출/RNG/보상/타이머/파리 토큰 없음)",
+    "dryRun": "git apply --check → exit 0 (클린 적용 가능, 읽기 전용)",
+    "productionApplied": false,
+    "gameHtmlUnchanged": true
+  },
+  "verify": {
+    "nodeCheck": "PASS",
+    "beforeAfter": "catch-up: before 4프레임 stale 렌더 → after 0 (후보 제거). 정상1tick: before/after 0 (분리).",
+    "invariants": "alive/hp/poise(maxPoise)/reviveIframes/eShield 동일, 원 호출/보상 횟수 동일(reviveVFX/addTxt/addParts 각1, rollDrop/addExp 0). 유일 차이=corpse._hitFlash=0.",
+    "exit": 0
+  },
+  "bothFiles": {
+    "gameHtml": "미수정(SHA c868284a…). 패치는 후보 파일로만.",
+    "easy": "플래시 죽은 코드(decrement-only, 렌더 안 함) 유지. 본 세션 미수정(easy SHA는 타 팀 WIP로 변동, 내 변경 아님)."
+  },
+  "preserved": ["flash-transition.patch(e50b1b92…)", "flash-transition-before.md", "flash-revive-reachability-fixture.mjs(8ea8dd08…)", "flash-revive-reachability-result/receipt"],
+  "pending": [
+    "총괄/QA: corpse-flash-minimal.patch(1행) 적용 검토(dry-run 클린). 보스/드루이드는 방어 전용으로 미포함.",
+    "QA/root: 적용 후 정규 GL 실화면에서 히치 유도+주술사 인접 사망→부활 첫 프레임 pop 소거 실측(본 세션 게임/GL 실행 0)."
+  ],
+  "limits": "도달/제거 입증은 추출 순서의 Node 모델(라이브 화면 아님). catch-up 프레임+reviveT 정렬 조건부. sp=1. 실제 ≥90Hz·실화면 미실측.",
+  "docsPlan": "ANIMATION_VFX_TEAM_MASTER §11 한 줄(공유 직접편집 금지, result §6에 기록).",
+  "nextAction": "patch 적용·실화면 검증은 root/QA 인계. 한 건 완료.",
+  "notModified": "game/easy/index/server/사용자세이브/생산/공유docs/타팀 0. 신규 사망효과/성능관측기/전투수치·타이머·파리 0. Git쓰기/새세션/에이전트/queue/게임/서버/브라우저/빌드/인코딩 0.",
+  "blocker": null
+}

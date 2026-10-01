@@ -1,0 +1,10 @@
+{
+  "checkedAt": "2026-10-01T17:39:12.572360+00:00",
+  "command": [
+    "/Users/fordeargamers/.local/node-runtime/node-v24.15.0-darwin-arm64/bin/node",
+    "tools/team-followup-20261001/SKILL/mortar-confirm-dispatch.test.mjs"
+  ],
+  "exitCode": 0,
+  "stdout": "\nmortar 통합 제어흐름 회귀: 19 PASS / 0 FAIL\n",
+  "stderr": ""
+}

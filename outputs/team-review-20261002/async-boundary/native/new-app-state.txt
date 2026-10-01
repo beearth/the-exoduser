@@ -1,0 +1,23 @@
+Window: "HELL: EXODUSER", App: EXODUSER.
+0 표준 윈도우 HELL: EXODUSER - NW.js, URL: 127.0.0.1:3383/index.html?demo=1, Secondary Actions: Raise
+	1 container HELL: EXODUSER - NW.js, URL: 127.0.0.1:3383/index.html?demo=1
+		2 container
+			3 HTML 콘텐츠 HELL: EXODUSER, URL: 127.0.0.1:3383/index.html?demo=1
+				4 container
+					5 container World intro — English voice, selectable subtitles
+					6 container 인트로 오디오 확인
+						7 버튼 재생
+						8 텍스트 EN VOICE · SUBTITLES
+					9 이미지
+					10 팝업 버튼 한국어
+						11 (selected) 한국어
+					12 container
+						13 팝업 버튼 한국어
+							14 (selected) 한국어
+	15 텍스트 HELL: EXODUSER
+16 menu bar
+	17 EXODUSER-08cac1ce-21fb-4874-b4df-c136df5ac269
+	18 수정
+	19 창
+
+The focused UI element is 3 HTML 콘텐츠 HELL: EXODUSER, URL: 127.0.0.1:3383/index.html?demo=1
