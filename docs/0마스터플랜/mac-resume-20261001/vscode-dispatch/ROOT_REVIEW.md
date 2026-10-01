@@ -36,3 +36,16 @@
 2026-10-01T19:46:27.443364+09:00 QA CLI가 두 번 idle임을 확인했다. 기존 VS Code QA 선택 후 AX와 화면이 일치하지 않아 review2 지시는 입력/전송하지 않았다(전송0, 중복0). 승인된 대체 절차로 QA 도구·result·receipt의 이 최소 수정만 root가 인수한다. 수정 전 사본은 `tmp/qa-classification-review2-before/`에 보존했다. 새 실측 release 없음. 현재 원격 HEAD `2b2a861a`, WIP ref `02b0532d` 일치 확인.
 
 재검토2 최소 수정 후 34/34 계약 PASS. 메타 존재만으로 비교 true 없음. profiler 누락·오타입·상충 포함, 실제 raw 진단 exit0·비교 exit1 유지. 도구 인수 완료, 새 게임 실측 별도.
+
+
+## ROOT 후속 인수 — 경량 정상 전투 / BUILD / SOUND / ENEMY
+
+QA 분류 재검토2는 root 소유 인수 뒤 34/34 회귀, 경량 관측기5테스트 및 원격 `7526bf63` / `db09c0b7`까지 확인했다. 이어 게임2회 단독 관측 완료·release 닫힘. 첫 시행0처치 별도 보존, 두 번째 첫 입력 후5.2727초 첫 처치/17.8899초 자연사/적 최대43. draw 간격 최대109.8ms, 첫 처치 CPU 원인 미확정·FPS 개선 주장 없음. 별도 프로필 조건 미충족과 초기 옵션 변화를 명시했다. [실측 근거](../Mac-정상전투-경량관측.md).
+
+BUILD 기존26/26 계약을 root 재검사하고 기존 세션 `01a0f6e6-2e4c-7322-92d7-3aa309857856`에 포트 오류 후속1건만 queue했다. 실제 수신·소스 읽기10:52:33Z, 완료10:53:08Z 확인. root가 두 후보와 검사 코드를 읽고 13/13를 다시 실행해 통과했다. 실제 socket0, 후보만 인수·생산 미반영. NW.js 창의 기존 서버 오인 진입은 해결되지 않았다.
+
+SOUND `aa3ac0ed-f4e5-44ad-a0b2-d4d2da045b84`의 읽기 전용 도구 구성 때문에 파일 저장이 막혔다. 기존 세션 마지막 보고를 root가 원문 추출해 result/receipt로 보존했다. 권한 확대·새 세션 없음. **root 소스 대조 정정:** 후보 `49851bd`의 main에는 SFX_MAP/BGM_MAP/bgmPlay 제거 및 howl phase2 억제가 있으나 easy에는 세 상수와 무조건 howl이 남는다. 양쪽 변경 제안은 기존 커밋 단순 채택이 아니라 easy 신규 확장이다. 자동 청취/실제 howl 횟수 검수0, 생산 적용0. 팀 보고를 현재 양쪽 구현 완료로 인수하지 않는다.
+
+ENEMY 기존9/9 모의 검사 통과 후 root 추가 재현에서 `getTick()=>null`·rAF451회가 `elapsedTicks:null`, `tickSource:unavailable(_gameFrame)`, `inRangeTicks:451`, `FAIL_NO_FIRE`로 잘못 분류됐다. 시계 미확인 자료는 INCONCLUSIVE여야 한다. 물리 tick 누락을 rAF로 대체하는 결함이 있어 라이브 판정용 인수 보류. ENEMY 후속 지시는 native 입력 포커스를 확인할 수 없어 아직 전송하지 않았다. 전달 완료나 AI 자체 결함으로 보고하지 않는다.
+
+BUILD 다음 한 건은 기존 세션의 실패 포트→NW.js 진입 차단 정적 추적/독립 후보다. `BUILD-entry-followup.md`를 공식 queue로1회 전달했다. 이 기록 시점에는 대기열 등록만 확인했고 실제 수신·착수·완료는 후속 receipt로 구분한다. 실제 게임/소켓/빌드는 금지했다.

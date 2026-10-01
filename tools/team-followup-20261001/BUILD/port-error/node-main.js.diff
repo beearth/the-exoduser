@@ -1,0 +1,21 @@
+--- a/node-main.js
++++ b/node-main.js
+@@
+-http.createServer(async (req, res) => {
++const server = http.createServer(async (req, res) => {
+@@
+-}).listen(PORT, '127.0.0.1', () => {
++});
++let serverFailed = false;
++server.on('error', error => {
++  if (serverFailed) return;
++  serverFailed = true;
++  const message = '[Server] bind failed host=127.0.0.1 port=' + PORT + ' code=' + (error.code || 'UNKNOWN');
++  console.error(message);
++  dlog(message);
++  process.exitCode = 1;
++  server.close(() => {});
++});
++server.listen(PORT, '127.0.0.1', () => {
+   dlog('HTTP server listening on port ' + PORT);
+ });

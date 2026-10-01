@@ -525,3 +525,8 @@ root가 원격61d3b1ec와 기존22경로·빈 인덱스를 확인하고 진단 �
 QA/UIUX/ITEM/BUILD/BALANCE 지정 정적 산출 제출은 신규 실화면·최종 통합 완료가 아니다. QA 단독 실측 release는 아직 없으며 나머지 팀은 작업 중이다. ART 기존 검수 코드 한 건의 일회성 읽기만 허용했고 광범위 권한 변경은 하지 않았다. SOUND는 Claude 앱이 아니라 별도 VS Code 창이다. 기존22경로·세이브·PC/3333 보존. [실제 위치·UUID·상태와 증거](mac-resume-20261001/vscode-dispatch/DISPATCH_STATUS.md). 다음은 제출 산출 검수·docs 인수 후 QA 단독 측정 인계다.
 
 배정 기록 원격 `94b47f87` 일치 확인 후 진행 중 도구·docs 61파일을 별도 `codex/backup-vscode-wip-20261001-192149` / `02b0532d`로 캡처·push·원격 대조했다. 미검수 WIP 복구 사본이며 현재 HEAD/인덱스를 변경하지 않았다. QA 검증기는 품질변화 경고가 있지만 최상위 VALID가 비교 적격과 혼동될 수 있어 같은 QA T1에 분류/부정 fixture 보강을 전달·착수 확인했다. 후속 인수 전 새 실측 release 없음. [총괄 재검사 범위·백업·분류 검토](mac-resume-20261001/vscode-dispatch/ROOT_REVIEW.md).
+
+
+### 18.21 QA 분류 인수·경량 실측 완료와 팀 후속
+
+QA 분류34/34 및 관측기5검사, 정상 전투2회 기록·release 종료. 시행2 첫 처치5.2727초/17.8899초 자연사, draw 간격 최대109.8ms; 비교 조건 미충족으로 성능 향상 미판정. BUILD 후속 후보13/13 root 재검사·생산 미반영. SOUND easy 불일치와 ENEMY 시계 누락 오판정을 발견해 인수 보류했다. [최신 검수·수신·남은 게이트](mac-resume-20261001/vscode-dispatch/ROOT_REVIEW.md) · [실측 원자료](mac-resume-20261001/Mac-정상전투-경량관측.md).

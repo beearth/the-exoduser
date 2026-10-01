@@ -51700,3 +51700,8 @@ CSS 캐시 ui-refinement.css?v=20260927-4. 신규 이미지/아이템 데이터 
 ### 2026-10-01 lightweight normal-play observer
 
 QA light-normal observer: one draw wrapper and rAF samples, no CPU/GPU profiler. Five lifecycle/contract tests passed. Plan preserves failed/early-kill attempts and separates first-kill/dense/natural-death windows. Connected Chrome uses a new localStorage origin in its existing profile; separate user-data-dir comparison condition is not met. No production changes.
+
+
+## 2026-10-01 — 정상 전투 경량 관측과 BUILD 후보 인수
+
+생산 수정 없이2회 실측·raw/화면/통계 보존, 비교 부적격 명시. BUILD 포트 오류 독립 후보13/13 root 재검사·생산 미반영. SOUND 후보 easy 불일치 및 ENEMY tick 누락 오판정 기록. [검수](0마스터플랜/mac-resume-20261001/vscode-dispatch/ROOT_REVIEW.md).

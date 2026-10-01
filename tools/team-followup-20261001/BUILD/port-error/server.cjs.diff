@@ -1,0 +1,15 @@
+--- a/server.cjs
++++ b/server.cjs
+@@
+-server.listen(PORT, HOST, () => {
++let serverFailed = false;
++server.on('error', error => {
++  if (serverFailed) return;
++  serverFailed = true;
++  console.error('[Server] bind failed host=' + (HOST || '<unspecified>') + ' port=' + PORT + ' code=' + (error.code || 'UNKNOWN'));
++  process.exitCode = 1;
++  server.close(() => {});
++});
++server.listen(PORT, HOST, () => {
+   console.log(`Server on ${PORT} (no-cache)`);
+ });

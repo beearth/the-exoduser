@@ -1,0 +1,69 @@
+{
+  "at": "2026-10-01T11:03:43.076Z",
+  "kind": "EventEmitter-no-socket",
+  "hashes": {
+    "server.cjs": "339fad6ab51cba92f6ca7a386c8aeb251f68cdb58cdfa55c109f57b1758a42ad",
+    "node-main.js": "01b0c1d51f77f500ee0a59185458bf0294edce12544482d6cf7abce4262c91ce"
+  },
+  "rows": [
+    {
+      "name": "server.cjs full candidate syntax",
+      "status": "PASS"
+    },
+    {
+      "name": "server.cjs normal",
+      "status": "PASS"
+    },
+    {
+      "name": "server.cjs EADDRINUSE",
+      "status": "PASS"
+    },
+    {
+      "name": "server.cjs EACCES",
+      "status": "PASS"
+    },
+    {
+      "name": "server.cjs EIO",
+      "status": "PASS"
+    },
+    {
+      "name": "server.cjs UNKNOWN",
+      "status": "PASS"
+    },
+    {
+      "name": "unspecified development HOST identified",
+      "status": "PASS"
+    },
+    {
+      "name": "node-main.js full candidate syntax",
+      "status": "PASS"
+    },
+    {
+      "name": "node-main.js normal",
+      "status": "PASS"
+    },
+    {
+      "name": "node-main.js EADDRINUSE",
+      "status": "PASS"
+    },
+    {
+      "name": "node-main.js EACCES",
+      "status": "PASS"
+    },
+    {
+      "name": "node-main.js EIO",
+      "status": "PASS"
+    },
+    {
+      "name": "node-main.js UNKNOWN",
+      "status": "PASS"
+    }
+  ],
+  "pass": 13,
+  "fail": 0,
+  "limits": [
+    "Only listener tail executes; no HTTP handler, filesystem save or socket executes.",
+    "exitCode is not forced process exit or NW.js GUI closure.",
+    "Live bind failure / shutdown and package identity require separate validation."
+  ]
+}

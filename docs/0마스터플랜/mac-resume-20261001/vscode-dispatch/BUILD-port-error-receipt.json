@@ -1,0 +1,25 @@
+{
+  "taskId": "BUILD-PORT-ERROR-FOLLOWUP",
+  "cli": "Codex",
+  "sessionId": "01a0f6e6-2e4c-7322-92d7-3aa309857856",
+  "sessionIdEvidence": "총괄 배정서의 기존 세션 ID; 런타임 API 대조 없음",
+  "model": null,
+  "receivedAt": "2026-10-01",
+  "startedAt": "2026-10-01T10:52:33Z",
+  "completedAt": "2026-10-01T10:53:08Z",
+  "status": "독립 후보·모의 검증 완료 / 생산 미반영",
+  "startEvidence": "두 서버 tail 및 PORT/HOST/createServer/error 검색 exit0 후 최소 hunk 작성",
+  "validation": "EventEmitter 13/13, exit0; 실제 소켓0",
+  "ownedPaths": [
+    "tools/team-followup-20261001/BUILD/port-error/",
+    "docs/0마스터플랜/mac-resume-20261001/vscode-dispatch/BUILD-port-error-result.md",
+    "docs/0마스터플랜/mac-resume-20261001/vscode-dispatch/BUILD-port-error-receipt.json"
+  ],
+  "nextAction": "총괄 후보 인수·생산 적용 여부 결정 및 실환경 종료/패키지 진입 차단 검수",
+  "blocker": "실환경 종료·NW.js 실패 화면·생산 수정은 범위 밖",
+  "rootReview": {
+    "at": "2026-10-01T11:05:04.293719+00:00",
+    "tests": "13/13 exit0",
+    "accepted": "independent candidate only; production not applied"
+  }
+}

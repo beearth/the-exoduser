@@ -1,0 +1,335 @@
+{
+  "recordedAt": "2026-10-01T11:04:09.689650+00:00",
+  "sourceSHA": "593a7a9d84c78402f04c50c94ae169e237e49751ad58d8640e78e672850728f2",
+  "servedSHA": "593a7a9d84c78402f04c50c94ae169e237e49751ad58d8640e78e672850728f2",
+  "sourceUnchanged": true,
+  "classification": "diagnostic only; not comparison eligible",
+  "method": "Nearest rank p95/p99; intervals require both endpoints inside window; draw call count is not displayed FPS. Dense means consecutive observed alive enemies >=30.",
+  "runs": [
+    {
+      "run": 1,
+      "rawSHA256": "80847ee37a0ad37b3c5c668b7a6b5e17a336f8f087c6abac139d7d68664992ef",
+      "reason": "natural-death-or-ended",
+      "firstKillSeconds": null,
+      "whole": {
+        "start": 48432.199999928474,
+        "end": 51426.09999990463,
+        "seconds": 2.993899999976158,
+        "raf": {
+          "n": 86,
+          "mean": 34.59651162790701,
+          "p95": 41.700000000004366,
+          "p99": 42.599999999998545,
+          "max": 42.599999999998545,
+          "over50": 0,
+          "over100": 0
+        },
+        "drawStart": {
+          "n": 86,
+          "mean": 34.53372092995533,
+          "p95": 38.299999952316284,
+          "p99": 61.0,
+          "max": 61.0,
+          "over50": 1,
+          "over100": 0
+        },
+        "drawCall": {
+          "n": 87,
+          "mean": 0.7540229805584612,
+          "p95": 1.7999999523162842,
+          "p99": 2.399999976158142,
+          "max": 2.399999976158142,
+          "over50": 0,
+          "over100": 0
+        },
+        "drawCalls": 87,
+        "drawCallsPerSecond": 29.0590868100781,
+        "maxEnemies": 43,
+        "backgroundSamples": 0,
+        "qualityEvents": []
+      },
+      "firstKillWindow": null,
+      "denseSegments": [
+        {
+          "start": 48454.699999928474,
+          "end": 51426,
+          "seconds": 2.9713000000715257,
+          "raf": {
+            "n": 86,
+            "mean": 34.59651162790701,
+            "p95": 41.700000000004366,
+            "p99": 42.599999999998545,
+            "max": 42.599999999998545,
+            "over50": 0,
+            "over100": 0
+          },
+          "drawStart": {
+            "n": 85,
+            "mean": 34.62705882296843,
+            "p95": 38.299999952316284,
+            "p99": 61.0,
+            "max": 61.0,
+            "over50": 1,
+            "over100": 0
+          },
+          "drawCall": {
+            "n": 86,
+            "mean": 0.755813945171445,
+            "p95": 1.7999999523162842,
+            "p99": 2.399999976158142,
+            "max": 2.399999976158142,
+            "over50": 0,
+            "over100": 0
+          },
+          "drawCalls": 86,
+          "drawCallsPerSecond": 28.943560057190385,
+          "maxEnemies": 43,
+          "backgroundSamples": 0,
+          "qualityEvents": []
+        }
+      ],
+      "dropped": 0,
+      "restored": {
+        "draw": true,
+        "listeners": true
+      },
+      "initialOptions": {
+        "quality": "high",
+        "resScale": 100,
+        "ssaa": 1,
+        "fpsCap": 0,
+        "parts": 100,
+        "diff": 5,
+        "atmos": 1,
+        "bloom": true,
+        "lighting": true,
+        "postfx": true,
+        "fog": true,
+        "grain": true
+      },
+      "finalOptions": {
+        "quality": "high",
+        "resScale": 100,
+        "ssaa": 1,
+        "fpsCap": 0,
+        "parts": 100,
+        "diff": 5,
+        "atmos": 1,
+        "bloom": true,
+        "lighting": true,
+        "postfx": true,
+        "fog": true,
+        "grain": true
+      },
+      "events": [],
+      "environment": {
+        "url": "http://qa-light-20261001.localhost:3340/game.html?webgpu=0",
+        "ua": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/152.0.0.0 Safari/537.36",
+        "timeOrigin": 1790852303419.1,
+        "viewport": [
+          1352,
+          610
+        ],
+        "dpr": 2,
+        "canvas": [
+          1352,
+          610
+        ],
+        "profiler": false,
+        "gpuTiming": false,
+        "instrumentation": "one pass-through draw wrapper + rAF state/options snapshots; no update/Canvas/WebGL wrappers; overhead not independently measured"
+      },
+      "totalRows": 759
+    },
+    {
+      "run": 2,
+      "rawSHA256": "e9845e9925764e2a0e8e0fdc01b97a0a2bf17e2e2089206e81027ec8a9c55483",
+      "reason": "natural-death-or-ended",
+      "firstKillSeconds": 5.272700000047684,
+      "whole": {
+        "start": 147217.60000002384,
+        "end": 165107.5,
+        "seconds": 17.88989999997616,
+        "raf": {
+          "n": 602,
+          "mean": 29.706644518272416,
+          "p95": 34.09999999997672,
+          "p99": 35.0,
+          "max": 91.69999999998254,
+          "over50": 3,
+          "over100": 0
+        },
+        "drawStart": {
+          "n": 602,
+          "mean": 29.71063122915667,
+          "p95": 33.200000047683716,
+          "p99": 36.300000071525574,
+          "max": 109.79999995231628,
+          "over50": 5,
+          "over100": 1
+        },
+        "drawCall": {
+          "n": 603,
+          "mean": 0.8019900533492688,
+          "p95": 0.9000000953674316,
+          "p99": 5.800000071525574,
+          "max": 88.60000002384186,
+          "over50": 1,
+          "over100": 0
+        },
+        "drawCalls": 603,
+        "drawCallsPerSecond": 33.706169402892336,
+        "maxEnemies": 43,
+        "backgroundSamples": 0,
+        "qualityEvents": []
+      },
+      "firstKillWindow": {
+        "start": 147217.60000002384,
+        "end": 153990.30000007153,
+        "seconds": 6.772700000047684,
+        "raf": {
+          "n": 233,
+          "mean": 28.969957081545065,
+          "p95": 34.20000000001164,
+          "p99": 35.0,
+          "max": 82.19999999998254,
+          "over50": 1,
+          "over100": 0
+        },
+        "drawStart": {
+          "n": 233,
+          "mean": 28.95579399110933,
+          "p95": 33.799999952316284,
+          "p99": 54.0,
+          "max": 109.79999995231628,
+          "over50": 3,
+          "over100": 1
+        },
+        "drawCall": {
+          "n": 234,
+          "mean": 0.8072649617480416,
+          "p95": 2.6999999284744263,
+          "p99": 6.700000047683716,
+          "max": 7.899999976158142,
+          "over50": 0,
+          "over100": 0
+        },
+        "drawCalls": 234,
+        "drawCallsPerSecond": 34.55047469965486,
+        "maxEnemies": 14,
+        "backgroundSamples": 0,
+        "qualityEvents": []
+      },
+      "denseSegments": [
+        {
+          "start": 160711.80000007153,
+          "end": 165107.40000009537,
+          "seconds": 4.395600000023842,
+          "raf": {
+            "n": 145,
+            "mean": 30.28689655172418,
+            "p95": 34.09999999997672,
+            "p99": 35.0,
+            "max": 35.30000000001746,
+            "over50": 0,
+            "over100": 0
+          },
+          "drawStart": {
+            "n": 144,
+            "mean": 30.302083333333332,
+            "p95": 32.5,
+            "p99": 35.0,
+            "max": 36.300000071525574,
+            "over50": 0,
+            "over100": 0
+          },
+          "drawCall": {
+            "n": 145,
+            "mean": 0.56275862578688,
+            "p95": 0.8000000715255737,
+            "p99": 2.600000023841858,
+            "max": 3.5999999046325684,
+            "over50": 0,
+            "over100": 0
+          },
+          "drawCalls": 145,
+          "drawCallsPerSecond": 32.987532987354065,
+          "maxEnemies": 43,
+          "backgroundSamples": 0,
+          "qualityEvents": []
+        }
+      ],
+      "dropped": 0,
+      "restored": {
+        "draw": true,
+        "listeners": true
+      },
+      "initialOptions": {
+        "quality": "high",
+        "resScale": 100,
+        "ssaa": 1,
+        "fpsCap": 0,
+        "parts": 80,
+        "diff": 5,
+        "atmos": 2,
+        "bloom": true,
+        "lighting": true,
+        "postfx": true,
+        "fog": true,
+        "grain": true
+      },
+      "finalOptions": {
+        "quality": "high",
+        "resScale": 100,
+        "ssaa": 1,
+        "fpsCap": 0,
+        "parts": 80,
+        "diff": 5,
+        "atmos": 1,
+        "bloom": true,
+        "lighting": true,
+        "postfx": true,
+        "fog": true,
+        "grain": true
+      },
+      "events": [
+        {
+          "kind": "options",
+          "at": 144466,
+          "options": {
+            "quality": "high",
+            "resScale": 100,
+            "ssaa": 1,
+            "fpsCap": 0,
+            "parts": 80,
+            "diff": 5,
+            "atmos": 1,
+            "bloom": true,
+            "lighting": true,
+            "postfx": true,
+            "fog": true,
+            "grain": true
+          }
+        }
+      ],
+      "environment": {
+        "url": "http://qa-light-run2-20261001.localhost:3340/game.html?webgpu=0",
+        "ua": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/152.0.0.0 Safari/537.36",
+        "timeOrigin": 1790852420487.3,
+        "viewport": [
+          1352,
+          610
+        ],
+        "dpr": 2,
+        "canvas": [
+          1352,
+          608
+        ],
+        "profiler": false,
+        "gpuTiming": false,
+        "instrumentation": "one pass-through draw wrapper + rAF state/options snapshots; no update/Canvas/WebGL wrappers; overhead not independently measured"
+      },
+      "totalRows": 840
+    }
+  ]
+}
