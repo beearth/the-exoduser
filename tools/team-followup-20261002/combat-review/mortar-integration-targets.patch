@@ -1,0 +1,20 @@
+--- a/game.html
++++ b/game.html
+@@ -43755,6 +43755,7 @@
+ 
+ // ═══ 폭풍소환 발사 (키홀드 거리 → 기원 투척 → 착지 시 소용돌이 전개) ═══
+ function fireMaliceMortar(_tx,_ty){
++  if(P.mp<mpCost('mortar')){showPH(_T('MP 부족!'),'#4488ff');return}
+   P._mmAiming=false;
+   useMp('mortar');
+   const tx=_tx!=null?_tx:P.x+Math.cos(P.facing)*(P._mmDist||150);
+--- a/game-easy-test.html
++++ b/game-easy-test.html
+@@ -42460,6 +42460,7 @@
+ 
+ // ═══ 폭풍소환 발사 (키홀드 거리 → 기원 투척 → 착지 시 소용돌이 전개) ═══
+ function fireMaliceMortar(_tx,_ty){
++  if(P.mp<mpCost('mortar')){showPH(_T('MP 부족!'),'#4488ff');return}
+   P._mmAiming=false;
+   useMp('mortar');
+   const tx=_tx!=null?_tx:P.x+Math.cos(P.facing)*(P._mmDist||150);

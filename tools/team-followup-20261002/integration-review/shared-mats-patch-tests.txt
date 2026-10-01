@@ -1,0 +1,49 @@
+{
+  "checkedAt": "2026-10-01T23:18:50.158Z",
+  "productionApplied": false,
+  "ownerCandidate": "tools/team-followup-20261001/BALANCE/shared-mats-atomic-candidate.mjs",
+  "ownerCandidateSha256": "75cb158df4a54569603a4a9855369e72a45d7b135ca0bf07d071141e2b19da1b",
+  "files": [
+    {
+      "file": "server.cjs",
+      "sourceSha256": "18cf9aa806d5715788f360debbc2a45c2574a76db952f101b524e2ff77fd517d",
+      "candidateSha256": "6caf90a73e7eaf313eba46a2808e7c9bceeb591cdccc86b17e33ac6f4a7a58ec",
+      "patchSha256": "cb6ab97f899f1683d588e2d8ecf6809fbf40099ac4c1de49769fef742b86c7d1",
+      "helperInserted": false,
+      "helperCount": 1,
+      "sequenceCount": 1,
+      "getSha256": "721cf522bb88ac56820e28026a7d63d32ca4e2efe9d9e46d9040afbd2dda76f7",
+      "beforePostSha256": "da16f804c862dda894083674eb33456b5f945a06db22e86fc832bb9b539f0116",
+      "afterPostSha256": "b46eee42166824d0984f695c32200253fb354e3ea19aaa9857d7b26e862c2244",
+      "helperSha256": "3dc865c85002dcc58e2986d0bcbb069e47f6663d6c4c4ed5555370d7a1b5684a",
+      "gitApplyCheck": {
+        "status": 0,
+        "stdout": "",
+        "stderr": ""
+      }
+    },
+    {
+      "file": "node-main.js",
+      "sourceSha256": "01b0c1d51f77f500ee0a59185458bf0294edce12544482d6cf7abce4262c91ce",
+      "candidateSha256": "3b56932b93efabb15718394cd9116604aebcf12e60827bef5abd0d32080f218c",
+      "patchSha256": "6716d7710b4d835eb3ba5fafd40a67eef9590f12676b7e27d49bbe9bdf489a7b",
+      "helperInserted": true,
+      "helperCount": 1,
+      "sequenceCount": 1,
+      "getSha256": "478234c1293b3ce91701ea507f81f61f66246ff99af21e167bcdb65b72352b4d",
+      "beforePostSha256": "a08ce9307b630417013062564f0f4b7fdb1a7c1cc19973a4f1d7016b8eeacee2",
+      "afterPostSha256": "513910fe84eeebd09bc9d514babb2e94a8de1bd36c642fd984bd328ee15b360e",
+      "helperSha256": "3dc865c85002dcc58e2986d0bcbb069e47f6663d6c4c4ed5555370d7a1b5684a",
+      "gitApplyCheck": {
+        "status": 0,
+        "stdout": "",
+        "stderr": ""
+      }
+    }
+  ],
+  "limits": [
+    "Exact source-context patches only; source files untouched.",
+    "git apply --check does not apply patches or confirm native HTTP/storage/package behavior."
+  ],
+  "status": "READY_EXACT_PATCHES_NOT_APPLIED"
+}

@@ -1,0 +1,13 @@
+diff --git a/server.cjs b/server.cjs
+index cab33a0c..c2255e95 100644
+--- a/server.cjs
++++ b/server.cjs
+@@ -201,7 +201,7 @@ const server = http.createServer(async (req, res) => {
+     if (pathname === '/api/mats' && req.method === 'POST') {
+       const body = await readBody(req);
+       const n = Math.max(0, Math.min(Math.floor(+body.mats || 0), Number.MAX_SAFE_INTEGER));
+-      fs.writeFileSync(MATS_FILE, JSON.stringify({ mats: n, ts: Date.now() }), 'utf8');
++      atomicSaveJSON(fs, MATS_FILE, { mats: n, ts: Date.now() }, process.pid);
+       return sendJSON(res, 200, { ok: true, mats: n });
+     }
+ 

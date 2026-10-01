@@ -731,3 +731,15 @@ D17 이전 결함2건 재현 후 새30+이전28, QA독립20, SKILL 실제확정�
 BUILD INM 소스 통합84검사와 UIUX 유골함 초점 양쪽HTML 통합66검사 후 기존 담당 세션에 각1회 독립 생산소스 인수를 배정했고 실제 task Read를 확인했다. ITEM 콜백 경계 수정은 root 독립2반례 및13+19 PASS, BALANCE 실제 합성 파일14 PASS를 root 재검사했다. ITEM/BALANCE는 후보 미적용이다. 실제 화면·패드·HTTP 검수는 미완료, 다른7팀 native 지시 전달은 보류 상태다. 현재 과제/완료 상태는 TEAM_UTILIZATION_20261001.json, 세부 근거는 FOUR-CANDIDATE-ACCEPTANCE-20261002.md와 outputs/team-review-20261002/four-candidate-acceptance/에 기록한다.
 
 2026-10-02 독립 후속 인수 완료: UIUX 현행 factory/renderOssPanel과 승인 후보 byte 일치, 보호 저장10함수 SHA 동일, 담당 독립15 PASS를 root가 하니스·원자료로 검토했다. 기존 root34+32와 구분하며 생산 추가 수정0·native/패드/레이아웃 미검수다. BUILD 후속13도 완료했고 네 Codex 팀 모두 현재 배정의 실제 Read·완료를 확인했다. 다른7팀은 전달0/Read0 보류다. GitHub 601a0574 체크포인트 SHA를 재확인했으며 이 최종 기록의 원격 확인은 다음 checkpoint로 수행한다.
+
+
+### 2026-10-02 맥북 11팀 총괄 source 인수와 현재 실행 제약
+
+HEAD5b8e6ba9에서 지원3명이 11역할을 묶어 mortar38 PASS·MAP source9 PASS/과거PNG15 SHA·actual 유골획득 RNG18그룹/84입력 및 shared-mats 실파일14 PASS를 인수했다. mortar 비용 canonical3문서의50/+35%/최종정수207을 정정하고, 원담당 patch 헤더·8뷰 좌표와 두 mats context patch를 별도 준비했다. 생산 변경0, 후보 미적용, 새 게임/시각/청취0. 기존 앱 HTML은 현행과 다르며 node-main의 격리port/save 차이는 의도된 변환이다.
+
+기존 Claude7 Code CUA는미승인, Codex4 공식후속은approval required/policy never로전달0/Read0. exact3340 startup EPERM·Git index.lock EPERM·GitHub DNS오류로runtime/새commit/push/원격SHA검증 미완료다. 11팀 동시가동·새백업완료로보고하지않는다. 기존PC/3333/사용자게임/세이브/22한글백업/초안·공용인덱스보존. 자동화변경0. [실제 근거·11팀 다음 한 건·Gate](mac-resume-20261001/vscode-dispatch/MAC-COORDINATION-20261002.md).
+
+
+### 2026-10-02 권한 변경 후 GitHub·3340 응답 회복
+
+원격작업브랜치5b8e6ba9 exactHEAD 확인 및3340 Node서버/격리저장 기동 성공, 실제슬롯API ok=true·기존1슬롯 확인. 새게임/실측0. BUILD 재전달 active writer거절·전달0/중복세션0. 자기검수범위 checkpoint의 최종 commit/push/원격대조는 tmp/mac-migration-runtime/coordination-resume-checkpoint-20261002.json에 기록한다. [후속근거](mac-resume-20261001/vscode-dispatch/MAC-COORDINATION-20261002.md#권한-환경-변경-뒤-후속-확인).

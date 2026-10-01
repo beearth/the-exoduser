@@ -1,0 +1,392 @@
+const http = require('http');
+const https = require('https');
+const fs = require('fs');
+const path = require('path');
+const zlib = require('zlib');
+
+// gzip 대상 (텍스트/코드만 — 이미지·오디오는 이미 압축됨)
+function matchesIfNoneMatch(value,currentTag){
+  if(typeof value!=='string'||typeof currentTag!=='string')return false;
+  if(value.replace(/^[ \t]+|[ \t]+$/g,'')==='*')return true;
+  const current=/^(?:W\/)?("[\x21\x23-\x7e\x80-\xff]*")$/.exec(currentTag);
+  if(!current)return false;
+  const tag=/(?:W\/)?("[\x21\x23-\x7e\x80-\xff]*")/y;
+  let position=0,matched=false,seen=false,emptyMembers=0;
+  while(position<value.length){
+    while(value[position]===' '||value[position]==='\t')position++;
+    if(position===value.length)break;
+    if(value[position]===','){if(++emptyMembers>32)return false;position++;continue;}
+    tag.lastIndex=position;
+    const member=tag.exec(value);if(!member)return false;
+    seen=true;matched=matched||member[1]===current[1];position=tag.lastIndex;
+    while(value[position]===' '||value[position]==='\t')position++;
+    if(position===value.length)break;
+    if(value[position]!==',')return false;
+    position++;
+  }
+  return seen&&matched;
+}
+
+const COMPRESSIBLE = new Set(['.html', '.js', '.css', '.json', '.svg', '.gltf']);
+// 반복 진입 시 대형 HTML을 매번 gzip 하지 않도록 파일 버전별 압축 결과를 보관한다.
+// size/mtime이 바뀌면 새 Promise로 교체되므로 코드 수정은 다음 요청에 바로 반영된다.
+const GZIP_HTML_CACHE = new Map();
+
+function gzipHtmlCached(filePath, stat) {
+  const _gzipCacheKey = stat.size + ':' + Math.floor(stat.mtimeMs);
+  const cached = GZIP_HTML_CACHE.get(filePath);
+  if (cached && cached.key === _gzipCacheKey) return cached.body;
+  const entry = { key: _gzipCacheKey, body: null };
+  entry.body = fs.promises.readFile(filePath).then(body => new Promise((resolve, reject) => {
+    zlib.gzip(body, { level: 6 }, (err, compressed) => err ? reject(err) : resolve(compressed));
+  })).catch(err => {
+    if (GZIP_HTML_CACHE.get(filePath) === entry) GZIP_HTML_CACHE.delete(filePath);
+    throw err;
+  });
+  GZIP_HTML_CACHE.set(filePath, entry);
+  return entry.body;
+}
+
+// .env 로드
+const _envPath = path.join(__dirname, '.env');
+if (fs.existsSync(_envPath)) {
+  fs.readFileSync(_envPath, 'utf8').split('\n').forEach(line => {
+    const m = line.match(/^\s*([^#=]+?)\s*=\s*(.*)\s*$/);
+    if (m && !process.env[m[1]]) process.env[m[1]] = m[2];
+  });
+}
+
+const PORT = Number(process.env.PORT || 3333);
+if (!Number.isInteger(PORT) || PORT < 1 || PORT > 65535) {
+  throw new Error('PORT must be an integer between 1 and 65535');
+}
+const HOST = process.env.HOST || undefined;
+const ROOT = __dirname;
+const SAVE_DIR = process.env.EXODUSER_SAVE_DIR
+  ? path.resolve(process.env.EXODUSER_SAVE_DIR)
+  : path.join(ROOT, 'saves');
+const FAVICON_ICO_PATH = path.join(ROOT, 'favicon.ico');
+const FAVICON_PNG_PATH = path.join(ROOT, 'img', 'icon-256.png');
+if (!fs.existsSync(SAVE_DIR)) fs.mkdirSync(SAVE_DIR, { recursive: true });
+
+const MIME = {
+  '.vtt': 'text/vtt; charset=utf-8',
+  '.html':'text/html; charset=utf-8','.js':'application/javascript','.css':'text/css',
+  '.json':'application/json','.png':'image/png','.jpg':'image/jpeg','.jpeg':'image/jpeg',
+  '.gif':'image/gif','.webp':'image/webp','.svg':'image/svg+xml','.ico':'image/x-icon',
+  '.wav':'audio/wav','.mp3':'audio/mpeg','.ogg':'audio/ogg',
+  '.mp4':'video/mp4','.webm':'video/webm','.glb':'model/gltf-binary','.gltf':'model/gltf+json',
+};
+
+let atomicSaveSequence = 0;
+
+function atomicSaveJSON(fs, file, data, processId) {
+  const serialized = JSON.stringify(data, null, 2);
+  const temporary = file + '.tmp-' + processId + '-' + (++atomicSaveSequence);
+  let descriptor;
+  let owned = false;
+  try {
+    descriptor = fs.openSync(temporary, 'wx');
+    owned = true;
+    fs.writeFileSync(descriptor, serialized, 'utf8');
+    fs.closeSync(descriptor);
+    descriptor = undefined;
+    fs.renameSync(temporary, file);
+    owned = false;
+  } finally {
+    if (descriptor !== undefined) {
+      try { fs.closeSync(descriptor); } catch {}
+    }
+    if (owned) {
+      try { fs.unlinkSync(temporary); } catch {}
+    }
+  }
+}
+
+function sanitizeSlot(name) {
+  return String(name).replace(/[^a-zA-Z0-9가-힣_\-]/g, '_').slice(0, 50);
+}
+
+function sendJSON(res, status, data) {
+  res.writeHead(status, { 'Content-Type': 'application/json', 'Access-Control-Allow-Origin': '*' });
+  res.end(JSON.stringify(data));
+}
+
+function readBody(req) {
+  return new Promise((resolve, reject) => {
+    const chunks = [];
+    req.on('data', c => chunks.push(c));
+    req.on('end', () => {
+      try { resolve(JSON.parse(Buffer.concat(chunks).toString())); }
+      catch (e) { reject(e); }
+    });
+    req.on('error', reject);
+  });
+}
+
+const server = http.createServer(async (req, res) => {
+  const url = new URL(req.url, `http://localhost:${PORT}`);
+  const pathname = url.pathname;
+
+  if (req.method === 'OPTIONS') {
+    res.writeHead(204, {
+      'Access-Control-Allow-Origin': '*',
+      'Access-Control-Allow-Methods': 'GET, POST, DELETE, OPTIONS',
+      'Access-Control-Allow-Headers': 'Content-Type',
+    });
+    return res.end();
+  }
+
+  if (pathname === '/favicon.ico') {
+    if (fs.existsSync(FAVICON_ICO_PATH)) {
+      res.writeHead(200, { 'Content-Type': 'image/x-icon', 'Access-Control-Allow-Origin': '*' });
+      return fs.createReadStream(FAVICON_ICO_PATH).pipe(res);
+    }
+    if (fs.existsSync(FAVICON_PNG_PATH)) {
+      res.writeHead(200, { 'Content-Type': 'image/png', 'Access-Control-Allow-Origin': '*' });
+      return fs.createReadStream(FAVICON_PNG_PATH).pipe(res);
+    }
+    res.writeHead(204, { 'Access-Control-Allow-Origin': '*' });
+    return res.end();
+  }
+
+  try {
+    if (pathname === '/api/slots' && req.method === 'GET') {
+      const files = fs.readdirSync(SAVE_DIR).filter(f => f.endsWith('.json') && !f.startsWith('_'));
+      const slots = files.map(f => {
+        try {
+          const data = JSON.parse(fs.readFileSync(path.join(SAVE_DIR, f), 'utf8'));
+          return {
+            name: f.replace('.json', ''),
+            ts: data.ts || 0,
+            lv: data.player?.lv || 1,
+            stage: data.game?.stage || 0,
+            kills: data.game?.kills || 0,
+            charIdx: data.charIdx ?? 0,
+          };
+        } catch { return null; }
+      }).filter(Boolean);
+      return sendJSON(res, 200, { ok: true, slots, development: true });
+    }
+
+    if (pathname === '/api/save' && req.method === 'POST') {
+      const body = await readBody(req);
+      const slot = sanitizeSlot(body.slot || 'default');
+      const saveData = body.data;
+      if (!saveData) return sendJSON(res, 400, { ok: false, error: 'No data' });
+      atomicSaveJSON(fs, path.join(SAVE_DIR, slot + '.json'), saveData, process.pid);
+      return sendJSON(res, 200, { ok: true, slot });
+    }
+
+    if (pathname.startsWith('/api/load/') && req.method === 'GET') {
+      const slot = sanitizeSlot(decodeURIComponent(pathname.slice(10)));
+      const fp = path.join(SAVE_DIR, slot + '.json');
+      if (!fs.existsSync(fp)) return sendJSON(res, 404, { ok: false, error: 'Not found' });
+      const data = JSON.parse(fs.readFileSync(fp, 'utf8'));
+      return sendJSON(res, 200, { ok: true, data });
+    }
+
+    // ═══ 악의(mats) 공유 풀 — 서버 동기화 ═══
+    const MATS_FILE = path.join(SAVE_DIR, '_sharedMats.json');
+    if (pathname === '/api/mats' && req.method === 'GET') {
+      try {
+        if (fs.existsSync(MATS_FILE)) {
+          const d = JSON.parse(fs.readFileSync(MATS_FILE, 'utf8'));
+          return sendJSON(res, 200, { ok: true, mats: d.mats || 0 });
+        }
+      } catch (e) {}
+      return sendJSON(res, 200, { ok: true, mats: 0 });
+    }
+
+    if (pathname === '/api/mats' && req.method === 'POST') {
+      const body = await readBody(req);
+      const n = Math.max(0, Math.min(Math.floor(+body.mats || 0), Number.MAX_SAFE_INTEGER));
+      atomicSaveJSON(fs, MATS_FILE, { mats: n, ts: Date.now() }, process.pid);
+      return sendJSON(res, 200, { ok: true, mats: n });
+    }
+
+    // ═══ GPT 이미지 생성 API ═══
+    if (pathname === '/api/gpt-image' && req.method === 'POST') {
+      const apiKey = process.env.OPENAI_API_KEY;
+      if (!apiKey) return sendJSON(res, 500, { ok: false, error: 'OPENAI_API_KEY not set' });
+      const body = await readBody(req);
+      const prompt = body.prompt;
+      const size = body.size || '1024x1024';
+      const model = body.model || 'gpt-image-1';
+      const quality = body.quality || 'auto';
+      const n = Math.min(body.n || 1, 4);
+      if (!prompt) return sendJSON(res, 400, { ok: false, error: 'No prompt' });
+
+      const postData = JSON.stringify({ model, prompt, n, size, quality });
+      const result = await new Promise((resolve, reject) => {
+        const r = https.request({
+          hostname: 'api.openai.com',
+          path: '/v1/images/generations',
+          method: 'POST',
+          headers: {
+            'Authorization': 'Bearer ' + apiKey,
+            'Content-Type': 'application/json',
+            'Content-Length': Buffer.byteLength(postData),
+          }
+        }, (resp) => {
+          const chunks = [];
+          resp.on('data', c => chunks.push(c));
+          resp.on('end', () => {
+            try { resolve(JSON.parse(Buffer.concat(chunks).toString())); }
+            catch (e) { reject(e); }
+          });
+        });
+        r.on('error', reject);
+        r.write(postData);
+        r.end();
+      });
+
+      if (result.error) return sendJSON(res, 400, { ok: false, error: result.error.message });
+
+      // base64 이미지를 파일로 저장
+      const imgDir = path.join(ROOT, 'img', 'gpt_gen');
+      if (!fs.existsSync(imgDir)) fs.mkdirSync(imgDir, { recursive: true });
+      const saved = [];
+      for (let i = 0; i < (result.data || []).length; i++) {
+        const d = result.data[i];
+        const fname = `gpt_${Date.now()}_${i}.png`;
+        if (d.b64_json) {
+          fs.writeFileSync(path.join(imgDir, fname), Buffer.from(d.b64_json, 'base64'));
+          saved.push({ file: 'img/gpt_gen/' + fname, revised_prompt: d.revised_prompt });
+        } else if (d.url) {
+          saved.push({ url: d.url, revised_prompt: d.revised_prompt });
+        }
+      }
+      console.log('[GPT-IMG] Generated', saved.length, 'images for:', prompt.slice(0, 50));
+      return sendJSON(res, 200, { ok: true, images: saved });
+    }
+
+    if (pathname.startsWith('/api/save/') && req.method === 'DELETE') {
+      const slot = sanitizeSlot(decodeURIComponent(pathname.slice(10)));
+      const fp = path.join(SAVE_DIR, slot + '.json');
+      if (fs.existsSync(fp)) fs.unlinkSync(fp);
+      return sendJSON(res, 200, { ok: true });
+    }
+
+    // 탄종을 한 발씩 실전 Q/E 판정으로 확인하는 독립 시험장.
+    if (pathname === '/projectile-lab') {
+      res.writeHead(302, { Location: '/game.html?test=1&testchar=1&projectilelab=1' });
+      return res.end();
+    }
+
+    let filePath;
+    if (pathname === '/') filePath = path.join(ROOT, 'index.html');
+    else if (pathname === '/game' || pathname === '/game.html') filePath = path.join(ROOT, 'game.html');
+    else filePath = path.join(ROOT, decodeURIComponent(pathname).replace(/\.\./g, ''));
+
+    // 디렉토리면 index.html 자동 서빙
+    if (fs.existsSync(filePath) && fs.statSync(filePath).isDirectory()) {
+      filePath = path.join(filePath, 'index.html');
+    }
+
+    if (fs.existsSync(filePath) && fs.statSync(filePath).isFile()) {
+      const stat = fs.statSync(filePath);
+      const ext = path.extname(filePath);
+      const mime = MIME[ext] || 'application/octet-stream';
+      const _isHtml = ext === '.html';
+      const _cache = _isHtml
+        ? 'no-cache, no-store, must-revalidate'
+        : 'public, max-age=3600';
+      const _etag='"'+stat.size.toString(16)+'-'+Math.floor(stat.mtimeMs).toString(16)+'"';
+      if (!_isHtml && (req.method === 'GET' || req.method === 'HEAD') && matchesIfNoneMatch(req.headers['if-none-match'], _etag)) {
+        res.writeHead(304, { 'Cache-Control': _cache, 'ETag': _etag });
+        return res.end();
+      }
+      const _rangeMatch = req.headers['if-range'] === undefined && req.method === 'GET' && stat.size > 0 && typeof req.headers.range === 'string'
+        ? /^bytes=(\d*)-(\d*)$/i.exec(req.headers.range.trim()) : null;
+      const range = _rangeMatch && (_rangeMatch[1] || _rangeMatch[2]) ? _rangeMatch : null;
+
+      if (range) {
+        const _size = BigInt(stat.size);
+        const _first = range[1] ? BigInt(range[1]) : null;
+        const _last = range[2] ? BigInt(range[2]) : null;
+        const _start = _first === null ? (_last < _size ? _size - _last : 0n) : _first;
+        const _end = _first === null || _last === null || _last >= _size ? _size - 1n : _last;
+        const start = _start >= _size ? stat.size : Number(_start);
+        const end = Number(_end);
+        if (start >= stat.size || start > end) {
+          res.writeHead(416, { 'Content-Range': `bytes */${stat.size}`, 'Access-Control-Allow-Origin': '*' });
+          return res.end();
+        }
+        const chunksize = (end - start) + 1;
+        const file = fs.createReadStream(filePath, { start, end });
+        file.on('error', (err) => {
+          if (err.code === 'EPIPE' || err.code === 'ECONNRESET') return;
+          console.error('[Stream] Range error:', err.message);
+          if (!res.headersSent) { res.writeHead(500); res.end(); }
+        });
+        res.on('close', () => file.destroy());
+        res.writeHead(206, {
+          'Content-Range': `bytes ${start}-${end}/${stat.size}`,
+          'Accept-Ranges': 'bytes',
+          'Content-Length': chunksize,
+          'Content-Type': mime,
+          'Access-Control-Allow-Origin': '*',
+        });
+        return file.pipe(res);
+      } else {
+        // HTML(코드)만 no-cache로 즉시 반영. 에셋(이미지/오디오/JSON 등)은 캐시 허용
+        // — no-store를 모든 파일에 걸면 게임 중 에셋 재요청마다 디스크 재읽기 → 렉.
+        // Vercel 배포(vercel.json)와 동일 정책: html=no-cache, 그 외=캐시.
+
+        const _acceptsGzip = /\bgzip\b/.test(req.headers['accept-encoding'] || '');
+        const _gzip = _acceptsGzip && COMPRESSIBLE.has(ext);
+        const _h = { 'Content-Type': mime, 'Cache-Control': _cache };
+        _h['ETag'] = _etag;
+        if (_isHtml) { _h['Pragma'] = 'no-cache'; _h['Expires'] = '0'; }
+        if (_gzip && _isHtml) {
+          _h['Content-Encoding'] = 'gzip';
+          _h['Vary'] = 'Accept-Encoding';
+          try {
+            const _gzipBody = await gzipHtmlCached(filePath, stat);
+            _h['Content-Length'] = _gzipBody.length;
+            res.writeHead(200, _h);
+            return res.end(_gzipBody);
+          } catch (err) {
+            console.error('[Stream] HTML gzip cache error:', err.message);
+            if (!res.headersSent) { res.writeHead(500); res.end(); }
+            return;
+          }
+        }
+        const file200 = fs.createReadStream(filePath);
+        file200.on('error', (err) => {
+          if (err.code === 'EPIPE' || err.code === 'ECONNRESET') return;
+          console.error('[Stream] Read error:', err.message);
+          if (!res.headersSent) { res.writeHead(500); res.end(); }
+        });
+        if (_gzip) {
+          // 압축 전송: Content-Length 생략(청크), Content-Encoding 명시
+          _h['Content-Encoding'] = 'gzip';
+          _h['Vary'] = 'Accept-Encoding';
+          res.writeHead(200, _h);
+          const gz = zlib.createGzip({ level: 6 });
+          gz.on('error', () => { try { res.end(); } catch (e) {} });
+          res.on('close', () => { file200.destroy(); gz.destroy(); });
+          return file200.pipe(gz).pipe(res);
+        } else {
+          _h['Content-Length'] = stat.size;
+          res.writeHead(200, _h);
+          res.on('close', () => file200.destroy());
+          return file200.pipe(res);
+        }
+      }
+    }
+
+    res.writeHead(404, { 'Content-Type': 'text/plain' });
+    res.end('Not Found');
+
+  } catch (err) {
+    console.error('[Server] Error:', err);
+    res.writeHead(500, { 'Content-Type': 'text/plain' });
+    res.end('Internal Server Error');
+  }
+});
+
+server.listen(PORT, HOST, () => {
+  console.log(`Server on ${PORT} (no-cache)`);
+});

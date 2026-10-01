@@ -1,0 +1,222 @@
+{
+  "at": "2026-10-01T23:29:36.833469+00:00",
+  "kind": "acceptance file manifest at checkpoint; exact Git ref separately verified after push",
+  "files": {
+    "docs/0마스터플랜/MAC_AGENT_DASHBOARD.md": {
+      "sha256": "c52ffbf842d0aefa852079c2386ec2d8f2ee70a998760c241ff38104892f7a41",
+      "bytes": 20180
+    },
+    "docs/0마스터플랜/PROJECT_MANAGEMENT_MASTER.md": {
+      "sha256": "68c9cd1283761aec491dc7dfab042a6982831af51732375e50776f87080c4567",
+      "bytes": 125344
+    },
+    "docs/0마스터플랜/mac-resume-20261001/vscode-dispatch/COMBAT-REVIEW-20261002.md": {
+      "sha256": "46b1514bafc8ef9e7ed8f3b134fd6e0e530794649a9ff9a2caf6f7e56139093d",
+      "bytes": 12287
+    },
+    "docs/0마스터플랜/mac-resume-20261001/vscode-dispatch/INTEGRATION-REVIEW-20261002.md": {
+      "sha256": "17cba3feb35237834031228ad664716c7b65b6848e09098a5efe9d1ce6dffc6d",
+      "bytes": 10468
+    },
+    "docs/0마스터플랜/mac-resume-20261001/vscode-dispatch/MAC-COORDINATION-20261002.md": {
+      "sha256": "f121379d4efc7d058799fcd4f50776b4570d063b665cd04f6f81a890a1c88d79",
+      "bytes": 7298
+    },
+    "docs/0마스터플랜/mac-resume-20261001/vscode-dispatch/MAP-ART-REVIEW-20261002.md": {
+      "sha256": "e942f2919ba93c2f50828c168feb71d61f803afd060c282145faac8297f8646b",
+      "bytes": 12818
+    },
+    "docs/0마스터플랜/mac-resume-20261001/vscode-dispatch/TEAM_UTILIZATION_20261001.json": {
+      "sha256": "6710f17e935a728e547ae5287673355877d8cca7fb0901864e0892edb6198601",
+      "bytes": 56174
+    },
+    "docs/14밸런스+수치테이블/스킬_밸런스_리포트.md": {
+      "sha256": "25d4c2c23417d46a817bcdc7d7a516689db575ae0d5e2b6877f93024b0ba3dc3",
+      "bytes": 24947
+    },
+    "docs/14밸런스+수치테이블/스킬별_DPS_자원소비표.md": {
+      "sha256": "336ca84b7581c1c512c2df511c373df9ae12f03a112ca562e6b60e918850d6ea",
+      "bytes": 29645
+    },
+    "docs/2_1 스킬관리+합체시스템+자원/자원리젠+소모공식.md": {
+      "sha256": "34f3804123037e635fdab92fc43e7619bd211413e22004c2053203ed9446a111",
+      "bytes": 18645
+    },
+    "tools/team-followup-20261002/combat-review/analyze-normal-capture.mjs": {
+      "sha256": "b7ca2d1f4d7022fc971c3a9f4d2b2f8ee1d20534abd171c34c9f084a8880a163",
+      "bytes": 1783
+    },
+    "tools/team-followup-20261002/combat-review/analyzer-interface-old-sample.json": {
+      "sha256": "f4d4a1cd5441451ae78416b731082d46048f325bd87d28425e5eabbd5622b164",
+      "bytes": 5563
+    },
+    "tools/team-followup-20261002/combat-review/docs-search-20261002.txt": {
+      "sha256": "9398e950cf85be15abb3e66665e6db5b69de19a30af28035eda1a494f809210f",
+      "bytes": 39525
+    },
+    "tools/team-followup-20261002/combat-review/docs-search-after-code-20261002.txt": {
+      "sha256": "27442b333c878481e3db50c325f6c9781dcda6ab483606130fda6947e3cb4e6e",
+      "bytes": 45413
+    },
+    "tools/team-followup-20261002/combat-review/mortar-integration-audit.mjs": {
+      "sha256": "177f19f6381ddb26ad6c59339547407355b1877cf6b5bfd9ed2611d8bb1982a5",
+      "bytes": 9246
+    },
+    "tools/team-followup-20261002/combat-review/mortar-integration-evidence.json": {
+      "sha256": "bff0f307717382017701e5e08fb223893661ae4e87eaa69fa02c88a949d7f39d",
+      "bytes": 21034
+    },
+    "tools/team-followup-20261002/combat-review/mortar-integration-first-run.json": {
+      "sha256": "b6bd297643b33f33acb3c6f97ef12eda0ddcb53d75c8b1fef7efd0f221ba3f83",
+      "bytes": 22365
+    },
+    "tools/team-followup-20261002/combat-review/mortar-integration-targets.patch": {
+      "sha256": "b29ed20fcea62334a0c432d7c5c27f26534d4902658b5aa36534f15887c6958e",
+      "bytes": 804
+    },
+    "tools/team-followup-20261002/combat-review/status-evidence.json": {
+      "sha256": "b2cc01b64195f746c4d998846be28a7a5625ce0fae685dcb62762fcc23b85823",
+      "bytes": 7133
+    },
+    "tools/team-followup-20261002/integration-review/completion-summary.json": {
+      "sha256": "8e72686fdbf640df71ef81203572292a737a5c0277d30adec3a03ca03295451d",
+      "bytes": 2559
+    },
+    "tools/team-followup-20261002/integration-review/docs-keywords.txt": {
+      "sha256": "a1e8727061c3da68caeacec67e576f520687add154cf242def7a39677f17076c",
+      "bytes": 44915
+    },
+    "tools/team-followup-20261002/integration-review/mkitem-sideeffects-evidence.json": {
+      "sha256": "9b128722a412a8325a3274cce79df3dca9ea455e3d045315e877c8882ee6a5d8",
+      "bytes": 426029
+    },
+    "tools/team-followup-20261002/integration-review/mkitem-sideeffects-source.mjs": {
+      "sha256": "072bade072253b600bc1f333ea14138af33fca1368f8fe44ac812a33f0900bd7",
+      "bytes": 11950
+    },
+    "tools/team-followup-20261002/integration-review/mkitem-sideeffects-tests.txt": {
+      "sha256": "3acd26bffc057df28b9152da7e527b9bedd3baf352cac05815bddb17700372ec",
+      "bytes": 1975
+    },
+    "tools/team-followup-20261002/integration-review/node-main.js.shared-mats-candidate": {
+      "sha256": "3b56932b93efabb15718394cd9116604aebcf12e60827bef5abd0d32080f218c",
+      "bytes": 10819
+    },
+    "tools/team-followup-20261002/integration-review/node-main.js.shared-mats.patch": {
+      "sha256": "6716d7710b4d835eb3ba5fafd40a67eef9590f12676b7e27d49bbe9bdf489a7b",
+      "bytes": 1437
+    },
+    "tools/team-followup-20261002/integration-review/package-four-file-drift.json": {
+      "sha256": "3574bd2f994ad515f2aee90bbcd564c0dbadd3ea6d943c667de2cfbfbd58ae7b",
+      "bytes": 2831
+    },
+    "tools/team-followup-20261002/integration-review/prepare-shared-mats-patches.mjs": {
+      "sha256": "70648ec93158fafa730b26155538a712ee57e92c435b6e88d71e9e3f002d8cc4",
+      "bytes": 4728
+    },
+    "tools/team-followup-20261002/integration-review/server.cjs.shared-mats-candidate": {
+      "sha256": "6caf90a73e7eaf313eba46a2808e7c9bceeb591cdccc86b17e33ac6f4a7a58ec",
+      "bytes": 16326
+    },
+    "tools/team-followup-20261002/integration-review/server.cjs.shared-mats.patch": {
+      "sha256": "cb6ab97f899f1683d588e2d8ecf6809fbf40099ac4c1de49769fef742b86c7d1",
+      "bytes": 610
+    },
+    "tools/team-followup-20261002/integration-review/shared-mats-file-independent.json": {
+      "sha256": "f701e2792ae1ae488d7ef7dd4814fd60ef8c121e901ac35228fc07c297a46435",
+      "bytes": 6975
+    },
+    "tools/team-followup-20261002/integration-review/shared-mats-file-independent.mjs": {
+      "sha256": "316a845d59714b8e48370cc401287529675592d2c361430a0a1a604f4dbb51cf",
+      "bytes": 7140
+    },
+    "tools/team-followup-20261002/integration-review/shared-mats-file-tests.txt": {
+      "sha256": "f701e2792ae1ae488d7ef7dd4814fd60ef8c121e901ac35228fc07c297a46435",
+      "bytes": 6975
+    },
+    "tools/team-followup-20261002/integration-review/shared-mats-owned-fixtures/run-kntge3/node-main-js/_redMats.json": {
+      "sha256": "8dab2dffea7b00a78f2bc279f81784407ed0ce13282c8d249d65d375ac286138",
+      "bytes": 8
+    },
+    "tools/team-followup-20261002/integration-review/shared-mats-owned-fixtures/run-kntge3/node-main-js/_sharedMats.json": {
+      "sha256": "08d6ba4a165d7543c51c84aba09847421d45518652a453a37bb8af0a96bab853",
+      "bytes": 34
+    },
+    "tools/team-followup-20261002/integration-review/shared-mats-owned-fixtures/run-kntge3/server-cjs/_redMats.json": {
+      "sha256": "8dab2dffea7b00a78f2bc279f81784407ed0ce13282c8d249d65d375ac286138",
+      "bytes": 8
+    },
+    "tools/team-followup-20261002/integration-review/shared-mats-owned-fixtures/run-kntge3/server-cjs/_sharedMats.json": {
+      "sha256": "08d6ba4a165d7543c51c84aba09847421d45518652a453a37bb8af0a96bab853",
+      "bytes": 34
+    },
+    "tools/team-followup-20261002/integration-review/shared-mats-patch-evidence.json": {
+      "sha256": "35480c976f35f7a19ab71f34f4d6c36874c67711aee4dc3a7dc04874afbe2011",
+      "bytes": 2219
+    },
+    "tools/team-followup-20261002/integration-review/shared-mats-patch-tests.txt": {
+      "sha256": "35480c976f35f7a19ab71f34f4d6c36874c67711aee4dc3a7dc04874afbe2011",
+      "bytes": 2219
+    },
+    "tools/team-followup-20261002/map-art-review/canonical-camera-board.json": {
+      "sha256": "9aade42e662b6c6e553e4ee72e5c4b848e8dcc7252053d7ec6d7ddd764316a7f",
+      "bytes": 2956
+    },
+    "tools/team-followup-20261002/map-art-review/docs-keyword-matches.txt": {
+      "sha256": "660b576225ca0667277ddbfea91db73f8d08cc45505b706761d24eb196bdf8ad",
+      "bytes": 119613
+    },
+    "tools/team-followup-20261002/map-art-review/source-camera-gate-result.json": {
+      "sha256": "8f2772c12506c682ae476c15efaea181061873ddd760bce5a131ec07d7c49b68",
+      "bytes": 4824
+    },
+    "tools/team-followup-20261002/map-art-review/source-camera-gate.mjs": {
+      "sha256": "8bb613dc0ebdfa56f34376a30f426e62d427be96a88f98491827bcaa9fab8c84",
+      "bytes": 9395
+    },
+    "tools/team-followup-20261002/owner-dispatch/BALANCE-task.md": {
+      "sha256": "edbd3725dd80ec3c4668d6822c1b9b6a2903e95bcd5a7f67420c31a6877f4cb7",
+      "bytes": 1664
+    },
+    "tools/team-followup-20261002/owner-dispatch/BUILD-task.md": {
+      "sha256": "b4a93a43f21f6c8469f161f88dffd2bc7f1edb3ac58d8fe89fd937b541690624",
+      "bytes": 1592
+    },
+    "tools/team-followup-20261002/owner-dispatch/ITEM-task.md": {
+      "sha256": "7c586e41d23746c91a5dbc5d189888de25ed4db784fc889c018ddb58fef3ec48",
+      "bytes": 1599
+    },
+    "tools/team-followup-20261002/owner-dispatch/UIUX-task.md": {
+      "sha256": "5732ff8f7b58f5500036418a5836d327d21401a338843869aa1c86daf86fc70a",
+      "bytes": 1664
+    },
+    "tools/team-followup-20261002/owner-dispatch/dispatch-receipt.json": {
+      "sha256": "594d430600c1af1994d38ce954a58e276d9668f2c82acbe68bf520a470ba955e",
+      "bytes": 1649
+    },
+    "tools/team-followup-20261002/owner-dispatch/mortar-doc-sync.json": {
+      "sha256": "f654b21e1583b7a192721a203af62c485b888e321357eb736d3cf5e6f72f442f",
+      "bytes": 1636
+    },
+    "tools/team-followup-20261002/owner-dispatch/root-acceptance.json": {
+      "sha256": "3865bd328f668a2040fd14af6d0b2c8be9aa4dee9e4dcc1fabe92a4a970a755a",
+      "bytes": 1866
+    },
+    "tools/team-followup-20261002/owner-dispatch/root-mortar-doc-matches.txt": {
+      "sha256": "f07708d694adb0f11150f569830091c7d88f8dd318967669332cf949fbe8a1e5",
+      "bytes": 15396
+    },
+    "tools/team-followup-20261002/owner-dispatch/source-baseline.json": {
+      "sha256": "1077bde58d06fd872d4d6de6d500eabbc67ee9544bc1e1d84e11da0830fcea11",
+      "bytes": 805
+    },
+    "docs/CHANGELOG_SYNC.md": {
+      "sha256": "872f0bb516b76016d2096a87a229ab1772f850a2b237bc6d9907000395cae99a",
+      "bytes": 3258065
+    },
+    "tools/team-followup-20261002/owner-dispatch/resume-runtime-receipt.json": {
+      "sha256": "31e40fced94e5dce302b9b6557f6670124332a75578e98fe7422bbe16934fe8c",
+      "bytes": 739
+    }
+  }
+}

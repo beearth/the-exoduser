@@ -1,0 +1,95 @@
+{
+  "groups": 18,
+  "fixtureRuns": 84,
+  "status": "PASS",
+  "files": [
+    {
+      "file": "game.html",
+      "sha256": "30ae8544524d7cd710383ebd10f4911bea3247e90b18a46c51c253e73ce9ba3f"
+    },
+    {
+      "file": "game-easy-test.html",
+      "sha256": "9c7c25c131f6175a464cffe2e981e946cf2a0af70ed04b969cc5292403799af8"
+    }
+  ],
+  "firstRegistrationPickupRng": [
+    {
+      "file": "game.html",
+      "seed": 0,
+      "demo": false,
+      "count": 42
+    },
+    {
+      "file": "game.html",
+      "seed": 0,
+      "demo": true,
+      "count": 42
+    },
+    {
+      "file": "game.html",
+      "seed": 7,
+      "demo": false,
+      "count": 42
+    },
+    {
+      "file": "game.html",
+      "seed": 7,
+      "demo": true,
+      "count": 42
+    },
+    {
+      "file": "game.html",
+      "seed": 4294967295,
+      "demo": false,
+      "count": 42
+    },
+    {
+      "file": "game.html",
+      "seed": 4294967295,
+      "demo": true,
+      "count": 42
+    },
+    {
+      "file": "game-easy-test.html",
+      "seed": 0,
+      "demo": false,
+      "count": 42
+    },
+    {
+      "file": "game-easy-test.html",
+      "seed": 0,
+      "demo": true,
+      "count": 42
+    },
+    {
+      "file": "game-easy-test.html",
+      "seed": 7,
+      "demo": false,
+      "count": 42
+    },
+    {
+      "file": "game-easy-test.html",
+      "seed": 7,
+      "demo": true,
+      "count": 42
+    },
+    {
+      "file": "game-easy-test.html",
+      "seed": 4294967295,
+      "demo": false,
+      "count": 42
+    },
+    {
+      "file": "game-easy-test.html",
+      "seed": 4294967295,
+      "demo": true,
+      "count": 42
+    }
+  ],
+  "limits": [
+    "Source functions execute in VM with synthetic inventory and seeded RNG.",
+    "Audio/stat/save/UI helper bodies are not executed; counters record calls only.",
+    "No claim about whole-game RNG, decoded audio, native UI, actual saves, or packages.",
+    "Missing ossuary is granted before duplicate full-bag refusal in current sources."
+  ]
+}

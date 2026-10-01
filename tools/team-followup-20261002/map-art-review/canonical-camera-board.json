@@ -1,0 +1,146 @@
+{
+  "source": "production SSOT/source, prepared only",
+  "capturePlan": [
+    {
+      "view": "START",
+      "tile": [
+        100,
+        185
+      ],
+      "worldTileCentre": [
+        4020,
+        7420
+      ],
+      "note": "locked actual spawn; add SSOT START board [100,180] if useful",
+      "actualEvidence": "UNMEASURED"
+    },
+    {
+      "view": "EARLY",
+      "tile": [
+        100,
+        157
+      ],
+      "worldTileCentre": [
+        4020,
+        6300
+      ],
+      "note": "SSOT camera board",
+      "actualEvidence": "UNMEASURED"
+    },
+    {
+      "view": "MAIN ARENA",
+      "tile": [
+        100,
+        120
+      ],
+      "worldTileCentre": [
+        4020,
+        4820
+      ],
+      "note": "SSOT camera board",
+      "actualEvidence": "UNMEASURED"
+    },
+    {
+      "view": "SIDE LEFT",
+      "tile": [
+        49,
+        151
+      ],
+      "worldTileCentre": [
+        1980,
+        6060
+      ],
+      "note": "SSOT camera board",
+      "actualEvidence": "UNMEASURED"
+    },
+    {
+      "view": "SIDE RIGHT",
+      "tile": [
+        151,
+        136
+      ],
+      "worldTileCentre": [
+        6060,
+        5460
+      ],
+      "note": "SSOT camera board; M5 approach is an extra diagnostic",
+      "actualEvidence": "UNMEASURED"
+    },
+    {
+      "view": "PRIMARY LANDMARK",
+      "tile": [
+        102,
+        90
+      ],
+      "worldTileCentre": [
+        4100,
+        3620
+      ],
+      "note": "source primary role + SSOT camera board; tree anchor may collide, observe from walkable vicinity",
+      "actualEvidence": "UNMEASURED"
+    },
+    {
+      "view": "LATE",
+      "tile": [
+        100,
+        48
+      ],
+      "worldTileCentre": [
+        4020,
+        1940
+      ],
+      "note": "SSOT camera board; separate from EXIT",
+      "actualEvidence": "UNMEASURED"
+    },
+    {
+      "view": "EXIT / BOSS",
+      "tile": [
+        100,
+        15
+      ],
+      "worldTileCentre": [
+        4020,
+        620
+      ],
+      "note": "SSOT camera approach; not a claim that the y5 gate/y7 exit is open",
+      "actualEvidence": "UNMEASURED"
+    }
+  ],
+  "extraDiagnostics": [
+    {
+      "view": "SOUTH MASS",
+      "world": [
+        2420,
+        6600
+      ],
+      "modes": [
+        "0",
+        "a",
+        "b"
+      ],
+      "zooms": [
+        1,
+        0.62
+      ],
+      "reason": "same-location D1/D2 regression comparison"
+    },
+    {
+      "view": "M5 APPROACH",
+      "world": [
+        6660,
+        6140
+      ],
+      "reason": "known historical non-wall; log actual isW/canMv and wallAhead under trusted manual input. Full pocket route remains unproven."
+    },
+    {
+      "view": "REPORTED WEST EDGE",
+      "world": [
+        1766,
+        6620
+      ],
+      "reason": "boundary diagnostic, never primary-landmark evidence"
+    }
+  ],
+  "globalVerdict": "RETOUCH",
+  "passRequirement": "8 distinct actual views + tech/combat/route evidence; no approximate camera-name substitution"
+}

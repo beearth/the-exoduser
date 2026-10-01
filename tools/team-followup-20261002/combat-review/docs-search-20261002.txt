@@ -1,0 +1,166 @@
+docs/9적ai패턴디자인/ENEMY_AI_TEAM_MASTER.md:136:- 접촉(몸통) 피해 = 설계상 **텔레그래프 없음**(SSOT §2 "근접 접촉공격 밀착 시 atk×0.8, 쿨 40~60f"). 게이트 `_meleeET && d<e.r+P.r+8 && P.iframes<=0 && e.st2<=0`. 텔레그래프는 windup 공격(_telegraphT=20f)에만 적용. → **텔레포트가 적을 접촉 사거리(≈32~48px)에 순간 배치할 때만** 규약상 문제.
+docs/9적ai패턴디자인/ENEMY_AI_TEAM_MASTER.md:246:| → 아트팀 | 예고 VFX 계약: 돌진 3파트(START/BODY/END), 탄막 예고링 60f, `_telegraphT` 20f, 텔레포트 연기·번개. etype별 스프라이트 프레임(`ATLAS_ENEMY_LAYOUT` `21467`) | 예고 에셋 규격·가독성, 8방향 프레임 |
+docs/9적ai패턴디자인/9_적AI패턴디자인.md:47:| **텔레그래프** | _telegraphT=20f | 20f |
+docs/7아이템디자인/슬롯별_어픽스_풀.md:93:skMaliceHuntDmg, skMaliceMortarDmg, skMaliceStormDmg, skMissileDmg,
+docs/7아이템디자인/슬롯별_어픽스_풀.md:102:farDmg, skBlueShotDmg, skChainAssaultDmg, skMaliceMortarDmg,
+docs/7아이템디자인/슬롯별_어픽스_풀.md:394:| `skMaliceMortarDmg` | 악의박격강화 | xbow.SUF | pct |
+docs/7아이템디자인/슬롯별_어픽스_풀.md:709:| `skMaliceMortarDmg` | 악의박격강화 | xbow.SUF | 35 |
+docs/7아이템디자인/슬롯별_어픽스_풀.md:863:| `skMaliceMortarDmg` | 악의박격강화 | 1 | xbow | 0.08→0.44 | pct |
+docs/7아이템디자인/슬롯별_어픽스_풀.md:1112:| skMaliceMortarDmg | 악의박격강화 | 0.08 | 0.14 | 0.22 | 0.32 | 0.44 | pct | 35 |  |
+docs/7아이템디자인/슬롯별_어픽스_풀.md:1194:| skMaliceMortarDmg | 악의박격강화 | 0.08 | 0.14 | 0.22 | 0.32 | 0.44 | pct | 35 |  |
+docs/9적ai패턴디자인/참고_영문레퍼런스_AI디자인패턴.md:13:**The key design principle**: enemies should be sorted into 4-6 archetypes (Shambler, Swarmer, Ranged, Charger, Caster, Spawner), each with 3 escalation tiers (Base → Armored → Elite). Each archetype needs a distinct silhouette so players can identify threat type at a glance — Hollow Knight's "form informs function" rule means a spiked head telegraphs charge direction, wings mean flying, visible armor means blocking.
+docs/9적ai패턴디자인/참고_영문레퍼런스_AI디자인패턴.md:17:## How attacks are telegraphed before they execute
+docs/9적ai패턴디자인/참고_영문레퍼런스_AI디자인패턴.md:21:FromSoftware's evolution reveals how telegraph design scales with difficulty. Dark Souls 1 used predictable wind-ups matching weapon arc. Dark Souls 3 introduced **delayed attacks** — holding mid-wind-up to catch panic-rollers. Elden Ring made variable timing the primary design language: Margit holds his cane for **3-5 seconds** then releases instantly, and combo rhythms deliberately break pattern (0.7s → 0.7s → 1.2s wind-up) to punish autopilot play. The critical fairness principle: **every attack has at least one visual tell**, even if brief. Sekiro added a universal danger symbol (red kanji 危) for unblockable attacks requiring specific counters.
+docs/9적ai패턴디자인/참고_영문레퍼런스_AI디자인패턴.md:23:Diablo's approach differs for the ARPG context. The series uses **ground indicators** — red/orange shapes appearing 0.5-1.5s before damage lands. Arcane Enchanted places a small circle then spawns a rotating beam. Frozen shows growing orbs before explosion. Mortar shows landing zones. Game designer Mike Stout's key insight: **"If players don't understand the questions they are being asked, they cannot play your game."** Challenge comes from overlapping many well-communicated threats, never from confusion. His testing showed that changing telegraph timing within the same level — even making it easier — **increased player deaths** because muscle memory was disrupted.
+docs/9적ai패턴디자인/참고_영문레퍼런스_AI디자인패턴.md:25:The four visual channels for telegraphing, ranked by reliability:
+docs/9적ai패턴디자인/참고_영문레퍼런스_AI디자인패턴.md:125:- WIND_UP: Play anticipation animation for current attack (duration varies by attack type). This is the telegraph window.
+docs/9적ai패턴디자인/참고_영문레퍼런스_AI디자인패턴.md:139:4. **Charger** (Brute archetype): Speed 0.5 normally, chargeSpeed 3.0, aggroRange 350, chargeRange 200, windUpTime 1.2s (long telegraph!), recoveryTime 1.5s. Normal approach until within chargeRange, then enters WIND_UP with visible charge-up animation, then CHARGES in a straight line. If hits wall, extra 0.5s stun (self-damage optional).
+docs/9적ai패턴디자인/참고_영문레퍼런스_AI디자인패턴.md:148:- Wind-up state should set a visual flag (this.isWindingUp = true) so the renderer can show telegraph
+docs/9적ai패턴디자인/참고_영문레퍼런스_AI디자인패턴.md:152:- Add a drawTelegraph(ctx) method that draws attack indicators during WIND_UP state
+docs/9적ai패턴디자인/참고_영문레퍼런스_AI디자인패턴.md:172:2. **Mortar**: Every 4s, fires 3 arcing projectiles that land at player's position ± random offset. Show red circle ground indicators 0.8s before impact. KEY: Mortars have minimum range (100px) — melee players are SAFE if they stay close.
+docs/9적ai패턴디자인/참고_영문레퍼런스_AI디자인패턴.md:199:- All ground indicators use alpha animation (fade in over telegraph duration)
+docs/9적ai패턴디자인/참고_영문레퍼런스_AI디자인패턴.md:204:### Prompt 3 — Attack telegraph and combat feel system (hit-stop, screen shake, particles)
+docs/9적ai패턴디자인/참고_영문레퍼런스_AI디자인패턴.md:268:Implement a boss encounter system inspired by Hades phase transitions, FromSoftware's stance/posture mechanics, and Hollow Knight's telegraph design.
+docs/9적ai패턴디자인/참고_영문레퍼런스_AI디자인패턴.md:545:The most surprising finding across all seven game series is how simple the underlying systems are. Hollow Knight's acclaimed enemy AI runs on basic finite state machines. Diablo 2's entire monster behavior library is parameterized by 5 numbers per type. Hades achieves its renowned combat feel with just **3 frames of hit-stop**. The complexity players experience emerges from combining simple, well-tuned systems — the attack ticket pattern with 2-3 tickets creates the illusion of coordinated aggression, incremental enemy complexity teaches skills without tutorials, and the Anticipation → Attack → Recovery cycle with precisely calibrated timing windows makes every encounter readable yet challenging. The real craft lies not in architectural complexity but in **tuning the numbers**: a 0.2-second difference in wind-up time can make an attack feel fair or frustrating, and the relationship between telegraph duration and player reaction time (0.25s baseline + action time + difficulty buffer) is the single most important formula for combat that teaches rather than punishes.
+docs/2_1 스킬관리+합체시스템+자원/2_1 스킬관리+합체시스템.md:227:| maliceMortar | 폭풍소환 | **summon+aoe** | 투척 (마우스=방향, 키 홀드=거리충전, 릴리즈=투척), 1렙 400범위 +18/Lv, 6.5초(390f) 흡인+뎀, 쿨 11초 |
+docs/2_1 스킬관리+합체시스템+자원/2_1 스킬관리+합체시스템.md:397:> - **포격식 설치** (maliceStorm = 악의폭풍): KBM=마우스 클릭, 게임패드=키홀드→`P._msDist` 충전(150→1000, +24×sp/f), 릴리즈=발사. P.facing방향으로 투척. (2026-05-12: maliceMortar 방식과 통일)
+docs/2_1 스킬관리+합체시스템+자원/2_1 스킬관리+합체시스템.md:398:> - **투척 계열** (maliceMortar = 폭풍소환): 마우스=방향, **키 홀드=거리 충전**, 릴리즈=투척 발사. `P._mmDist` 150에서 시작, 프레임당 `+24*sp` 증가 (2026-04-16: `6→12→24` 4배 가속, 풀충전 1000px 도달 시간 약 2.3초 → 0.6초), 1000px 클램프. 투척 컨셉이므로 홀드-충전 패턴만 쓰는 유일 스킬. (`8f7fb78b` 원본 구현 / `game.html:23595`)
+docs/2_1 스킬관리+합체시스템+자원/2_1 스킬관리+합체시스템.md:400:> **키다운 `e.repeat` 가드 (2026-04-16)**: 브라우저 키반복(~500ms 딜레이 후 ~30ms 간격)이 `_dispatchSkillSlot`을 재호출해서 maliceMortar aim/charge 모드를 중간에 취소하던 문제. 1000px 충전에 2.3초 필요한데 500ms부터 repeat이 발동하면 충전 불가. Digit1~4 / Space / KeyF / ControlLeft / KeyZ 전부 `!e.repeat` 가드 추가. (`game.html:7030, 7052, 7056, 7060, 7064`)
+docs/2_1 스킬관리+합체시스템+자원/2_1 스킬관리+합체시스템.md:592:| iceMortar | 얼음소용돌이 | 2성 | maliceMortar + iceOrb |
+docs/2_1 스킬관리+합체시스템+자원/2_1 스킬관리+합체시스템.md:746:| iceMortar (얼음소용돌이) | maliceMortar | iceOrb |
+docs/2_1 스킬관리+합체시스템+자원/2_1 스킬관리+합체시스템.md:780:| iceMortar | maliceMortar, iceOrb |
+docs/2_1 스킬관리+합체시스템+자원/2_1 스킬관리+합체시스템.md:1121:| iceMortar | _isIceFuse | maliceMortar | 2성 |
+docs/12퍼포먼스·최적화/QA_PERFORMANCE_TEAM_MASTER.md:47:| 캐릭터 | 주: 데모 테스트 캐릭터(Lv100, 전 스킬·합체, `_dLv500` 경로, 슬롯 maliceStorm/maliceMortar/ghostXbowTurret/maliceHunt/giantSlam2/holyDome). 보조: 데모 신규 Lv1 |
+docs/2_1 스킬관리+합체시스템+자원/자원리젠+소모공식.md:135:| mortar | 폭풍소환 | 250 | +15%/Lv | 250→587 | |
+docs/2_1 스킬관리+합체시스템+자원/자원리젠+소모공식.md:288:| 지옥강타 1(giantSlam) | ~~유탄산탄(삭제됨)~~ | 폭풍소환(maliceMortar) |
+docs/2_1 스킬관리+합체시스템+자원/자원리젠+소모공식.md:321:- **폭풍소환(maliceMortar)**: 악의 소모 없음, MP만 소모.
+docs/7아이템디자인/아이템_어픽스_시스템.md:429:| skMaliceMortarDmg | 악의박격강화 | SUF | 0.08 / 0.14 / 0.22 / 0.32 / 0.44 | pct | 무기, 왕관 | 35 |
+docs/7아이템디자인/아이템_어픽스_시스템.md:813:| `aoeRadiusPct` | 확산의 | 범위 반경% + | 34% | wpn/helm | 회전참, 지옥강타 1, 폭풍소환 |
+docs/2_1 스킬관리+합체시스템+자원/추천빌드_SKILL_REC_PATH.md:24:| 10 | 폭풍소환+얼음보주+뇌전걸음 | maliceMortar, iceOrb, ghostWalk | iceMortar | 얼음소용돌이 | Ice Vortex | maliceMortar + iceOrb |
+docs/7아이템디자인/어픽스_시스템_현황분석_2026-08-10.md:153:- 스킬강화 20: skWhirlDmg skBeamDmg skFireballDmg skMissileDmg skBlueShotDmg skBlastShotDmg skHellRayDmg skMaliceStormDmg skChainSlashDmg skGiantSlamDmg skGhostWalkDmg skMaliceMortarDmg skFireAuraDmg skIceOrbDmg skFireBeamDmg skMaliceHuntDmg skDarkPillarDmg skPlagueDmg skSpikeAuraDmg skChainAssaultDmg
+docs/12퍼포먼스·최적화/CLAUDE_CODE_인수인계_전체작업보고서_2026-08-10.md:399:**Skill-use 교전 (Lv100 전스킬 43개, heavy 슬롯 maliceStorm/maliceMortar/ghostXbowTurret/plagueBurst/giantSlam2/holyDome + ULT blackStar, 스킬 연속 발동)** — 유저 지적("스킬 쓸 때 끊긴다") 반영:
+docs/7아이템디자인/유니크_어픽스_리스트.md:122:| F 영역·1~4 설치 스킬 | U-D12~14 | F 회복의 영역 방어, 1~4 가시덫 증식·폭풍소환과 악의구 연동. |
+docs/7아이템디자인/유니크_어픽스_리스트.md:149:| **U-D04** Ctrl 얼음보주 / 파쇄 회수 | 파쇄 칼날이 얼어붙은 **서로 다른 적**을 맞히면 얼음보주 쿨다운을 회복한다. | 적당 **60~180f**: 하60~100/중101~140/상141~180f; 저장 정수 f; 시전당 최대 `360f`. | `_uIceShatterRefund`; `activateIceShatter` 44567~44617, 얼음칼날 적중 33400~. | `_ioCd=max(0,_ioCd-min(값,남은 시전 상한))`; 적별 1회, 파쇄가 만든 칼날만 인정, 빙결은 소비하지 않음. `iceMortar` 합체가 얼음보주를 흡수한 경우 자동 파쇄 경로에서만 허용 여부 확인. | 기본 파쇄 쿨 1200f, 최저 600f. 상한 360f는 기본의 30% 회복이며 다수전 무한 파쇄를 막는다. | H·U |
+docs/7아이템디자인/유니크_어픽스_리스트.md:159:| **U-D14** 1~4 폭풍소환 / 폭심 악의구 | 폭풍소환 소용돌이 안에서 악의구가 폭발하면 그 소용돌이가 **추가 충격파 1회**를 낸다. | 악의구 원래 폭발 피해의 **20~40%**: 하20~26/중27~33/상34~40%; 저장 `0.20~0.40`; 소용돌이별 `120f` 간격. | `_uVortexOrbPulse`; 악의구 폭발 22956~22968, 폭풍소환 착지·장판 생성 34933~34951, 장판 틱 35404~35435. | 폭발 중심이 `vortex` 또는 `iceVortex` 안일 때만, 동일 소용돌이에서 반경 `min(200,r)` 1회; 충격파는 중독·흡인·재폭발 없음. `iceMortar` 합체 시 냉기 소용돌이에도 동일 횟수 상한을 적용한다. | 폭풍소환 기본 쿨660f·소용돌이 지속390f(6.5초) 동안 위치를 맞춘 E 연계를 보상한다. 초반 악의구 직격+폭발 1404의 일부만 추가한다. | H·U·S |
+docs/7아이템디자인/유니크_어픽스_리스트.md:177:| 5 | U-D14 | 폭풍소환의 위치와 악의구 폭발을 맞추는 능동 조합이다. 구역 중복·재귀 차단으로 난도 **중간**. |
+docs/2_1 스킬관리+합체시스템+자원/자원리젠+소모공식__NFD_0628_2305_백업.md:133:| mortar | 폭풍소환 | 250 | +15%/Lv | 250→587 | |
+docs/2_1 스킬관리+합체시스템+자원/자원리젠+소모공식__NFD_0628_2305_백업.md:277:| 지옥강타 1(giantSlam) | ~~유탄산탄(삭제됨)~~ | 폭풍소환(maliceMortar) |
+docs/2_1 스킬관리+합체시스템+자원/자원리젠+소모공식__NFD_0628_2305_백업.md:310:- **폭풍소환(maliceMortar)**: 악의 소모 없음, MP만 소모.
+docs/7아이템디자인/어픽스_Layer_재분류_설계_2026-08-10.md:564:| skMaliceMortarDmg | D | 스킬강화 | FLEX | REWORK | 〃 포격기 |
+docs/7아이템디자인/어픽스_Layer_재분류_설계_2026-08-10.md:927:**UD-3 계열안 A (sk* 20종 실측 분할)**: ①근접기(Whirl·ChainSlash·GiantSlam·GhostWalk) ②투사체기(Missile·BlueShot·BlastShot·MaliceHunt) ③구체기(Fireball·IceOrb) ④광선기(Beam·HellRay·FireBeam) ⑤포격기(MaliceStorm·MaliceMortar·ChainAssault) ⑥오라·장판기(FireAura·SpikeAura·DarkPillar·Plague). 소환기(악의 보호자)·영역기(회복/구속의 영역)는 현 sk*에 없음 → 7계열째 확장 슬롯으로 예약. Element/DoT 계열은 L4와 중복이라 제외.
+docs/13출시·마케팅/13출시·마케팅.md:107:dimBreach, dimSlam, sixFuse, elemFuse, whirlDet, slamStorm, bladeFuse, plagueFuse, boneStorm, elecRepent, shieldFuse, holyFuse, holyIce, iceMortar, pillarSpike, pillarSlam, infernoSlam, thunderGhost, dualScarecrow, siegeGhost
+docs/13출시·마케팅/13출시·마케팅.md:265:| 스킬 | **전 스킬 53종 Lv5** | chargeBoost/magicBlink/ghostWalk/bladeDash/kiSlash/fireball/whirlwind/detonate/maliceSwipe/fanShot/omniBeam/elemMissile/guardian/maliceHunt/venomBlade/maliceMortar/boneWall/blackStar/lavaSummon/execution/iceOrb/needleShot/arcLaser/fireBeam/fireAura/plagueBurst/maliceStorm/darkPillar/holyDome/holyPrison/iceStorm/giantSlam/giantSlam2/**skyCrusher**/chainAssault/chainSlam/chainSlash/peaceShield/hellRay/shieldThrow/weakPhys/weakMag/weakPj/weakRev/spikeTrap/blueShot/burstLoop/voidScarecrow/explodeScarecrow/ghostXbowTurret/timeWarp/thunderStake/ancestorSummon |
+docs/13출시·마케팅/13출시·마케팅.md:266:| 합체 해금 | **전 합체 30종** | dimBreach/dimSlam/dimThunder/dimRush/dimBlast/whirlDet/slamStorm/stormBeam/stormBurst/bladeFuse/iceMortar/sixFuse/elemFuse/boneStorm/elecRepent/shieldFuse/plagueFuse/holyFuse/holyIce/holyWeak1/holyWeak2/holyWeak3/holyWeak4/pillarSpike/pillarSlam/infernoSlam/siegeGhost/dualScarecrow/thunderGhost/timeStep |
+docs/7아이템디자인/어픽스_Layer_전수매핑_402_2026-08-10.md:363:| skMaliceMortarDmg | DEAD | 스킬강화 | L6 | FLEX | REWORK | 〃 포격기 |
+docs/13출시·마케팅/GAMEPLAY_TRAILER_V22_20260909.md:87:| mortar | 5 | 64 | 35 | 420 | 290 | 38 | 96005901.067 | 3 | 6 | 70.7 |
+docs/13출시·마케팅/GAMEPLAY_TRAILER_V22_20260909.md:131:| `maliceMortar` | 폭풍소환 |
+docs/13출시·마케팅/GAMEPLAY_TRAILER_V22_20260909.md:172:| 25 | mortar | 0.60 | 42.10 | 44.40 |
+docs/0마스터플랜/mac-resume-20261001/vscode-dispatch/native-recovery/ANIMVFX-task.md:3:INDEPENDENT-NEXT-20261002.md의 미전달 한 건을 기존 세션에서만 이어간다. 작업 ID foot-shadow-anchor. 동일 과제 수신/진행/대기 또는 초안이 있으면 중복 실행하지 말고 원자료를 보존해 상태를 보고한다. 기준 원격 체크포인트60b0d08b, 현재 HEAD는 시작 시 읽어 기록한다.
+docs/0마스터플랜/mac-resume-20261001/vscode-dispatch/native-recovery/ANIMVFX-task.md:7:소유 신규 prefix: tools/team-followup-20261001/ANIMVFX/foot-shadow-anchor-*. SOUND 외 팀은 최소 필요한 산출만 만들고 불필요한 전체 게임 사본을 늘리지 않는다. 공용 HTML/서버/에셋/팀 외 docs는 읽기 전용. 후보·단위검사·실제 런타임 인수를 구분한다. 기존 초안/사용자 세이브/타팀 stage·변경을 보존한다. 새 팀·세션·에이전트/생산 통합/빌드/에셋생성/Git쓰기/권한 변경0. 서버/listen/EPERM/읽기전용 제한 우회0. UI/런타임은 QA만 맡는다.
+docs/0마스터플랜/mac-resume-20261001/vscode-dispatch/native-recovery/ENEMY-task.md:3:INDEPENDENT-NEXT-20261002.md의 미전달 한 건을 기존 세션에서만 이어간다. 작업 ID telegraph-cancel-boundary. 동일 과제 수신/진행/대기 또는 초안이 있으면 중복 실행하지 말고 원자료를 보존해 상태를 보고한다. 기준 원격 체크포인트60b0d08b, 현재 HEAD는 시작 시 읽어 기록한다.
+docs/0마스터플랜/mac-resume-20261001/vscode-dispatch/native-recovery/ENEMY-task.md:7:소유 신규 prefix: tools/team-followup-20261001/ENEMY/telegraph-cancel-boundary-*. SOUND 외 팀은 최소 필요한 산출만 만들고 불필요한 전체 게임 사본을 늘리지 않는다. 공용 HTML/서버/에셋/팀 외 docs는 읽기 전용. 후보·단위검사·실제 런타임 인수를 구분한다. 기존 초안/사용자 세이브/타팀 stage·변경을 보존한다. 새 팀·세션·에이전트/생산 통합/빌드/에셋생성/Git쓰기/권한 변경0. 서버/listen/EPERM/읽기전용 제한 우회0. UI/런타임은 QA만 맡는다.
+docs/12퍼포먼스·최적화/FIRST_KILL_CPU_INVESTIGATION_20261001.md:32:| 검증 | Node `--check tools/qa_first_kill_cpu_probe.js` exit 0. 실게임 실행 0 |
+docs/12퍼포먼스·최적화/FIRST_KILL_CPU_INVESTIGATION_20261001.md:35:이전 인계의 다음 건은 가시 headed 정규 부팅에서 첫 처치 한 번의 CPU 귀속을 확인하는 것이었다. 서버는 `node server.cjs`; 당시 계획 인수는 `--chrome=/Applications/Google Chrome.app/Contents/MacOS/Google Chrome --char=new --scen=COMBAT --inject=tools/qa_first_kill_cpu_probe.js --profile=1`이었다. 실행 전 Mac 경로 처리·의존성·세이브 차단·정상 visibility를 검증하고 CPU/GPU 결과를 Windows와 직접 성능 비교하지 않는다. 당시 하니스는 종료 records 자동 회수가 없었으며, 위 Mac 재개 절에서 보강했다. 실제 실행 경로는 현재 지원되는 브라우저 도구 규칙을 따른다.
+docs/12퍼포먼스·최적화/FIRST_KILL_CPU_INVESTIGATION_20261001.md:49:`tools/qa_first_kill_cpu_probe.js`는 정상 부트 후 설치하는 임시 래퍼다. 포함 시간·계측된 자식 제외 시간·호출 시각·부모·캔버스 크기를 기록한다. 미존재 함수는 missing으로 남긴다. 생산 사망 판정·보상·VFX 플래시 구역을 편집하지 않는다. `__qaFirstKill.stop()`은 래퍼를 복구한다. 이전 버전은 선착순 20,000개 이후 기록을 버렸으며, 현재 한도·필터·포화 표기는 위 Mac 재개 절을 따른다.
+docs/CHANGELOG_SYNC.md:764:test/eliteTelegraphVisibility.test.js와 test/rareMobNameplates.test.js에서 프레임 진행, 색상 틴트, 링 미사용, 양 렌더 경로, 네임드 10종 및 금색 이름표를 검사한다.
+docs/CHANGELOG_SYNC.md:784:| 회귀 | test/eliteAttackTelegraphLock.test.js 잠금 만료·중첩 방지·공격별 예약 프레임 검증 |
+docs/CHANGELOG_SYNC.md:792:| 테스트 | eliteTierModifierCount, eliteTelegraphVisibility, gameHtmlInlineSyntax 총 7개 PASS. 실제 게임 페이지 Playwright 실행, 오류 0 |
+docs/CHANGELOG_SYNC.md:2342:| 검증 | enemyShotWarning 및 기존 projChargeTelegraph, druidPoisonProjectiles, waterBeanIceBarrage 회귀 검사 |
+docs/CHANGELOG_SYNC.md:3134:| `projChargeTelegraph.test.js` | 색언어 회귀 | 일반 `_projChargeT` 물리만 검사 | 일반 물리/E빨콩 + 물리 특수 3종 흰색 검사 | 관련 탄막 테스트 **20/20 PASS** | 무지개·물·기타 원소색 불변 |
+docs/CHANGELOG_SYNC.md:3232:- TDD: `test/magicBarrageHoming.test.js` 4/4 PASS, `test/projChargeTelegraph.test.js` 7/7 PASS.
+docs/CHANGELOG_SYNC.md:3506:- 실게임 캡처: `captures/charge_telegraph_3part/before_single.png`, `before_overlap.png`, `after_single.png`, `after_overlap.png`.
+docs/CHANGELOG_SYNC.md:3509:- TDD `test/chargeTelegraphWebgl.test.js` 5/5. START/BODY/END 분리, BODY 단독 stretch, opacity/크기, 8방향 WebGL 경로, AI·히트박스·피해 불변 계약 검증.
+docs/CHANGELOG_SYNC.md:3978:- 바닥 흑색 tone은 `rgba(6,8,10,.49)`, 프롭은 `brightness(.46) contrast(1.34) saturate(.18)`로 조정해 밝은 설원/청색 과포화를 억제하면서 dead blue-gray를 남겼다. ritual alpha는 `.56`으로 낮춰 30-enemy/적색 telegraph보다 낮은 hierarchy를 확인했다.
+docs/CHANGELOG_SYNC.md:4357:- **wpn→xbow 24종**: arcRangerRange, arcRangerDmg, arcRangerPierce, bowAtkSpd, bowRange, critRateBow, pierceChance, pierceCount, projDmgPct, projSpeedPct, rangedDmgPct, multiShot, splashRadius, splashDmg, farDmg, chainTarget, pierceDmgKeep, skBlastShotDmg, skBlueShotDmg, skChainAssaultDmg, skMaliceHuntDmg, skMaliceMortarDmg, skMaliceStormDmg, skMissileDmg
+docs/CHANGELOG_SYNC.md:4358:- **helm→xbow 6종**: farDmg, skBlueShotDmg, skChainAssaultDmg, skMaliceMortarDmg, skMaliceStormDmg, skMissileDmg
+docs/CHANGELOG_SYNC.md:4711:  - **마법**: fireball, fireBeam, fireAura, blueShot, omniBeam(2곳), hellRay(2곳), maliceStorm(2곳), darkPillar, iceOrb, maliceMortar(5곳), spikeTrap, burstLoop, plagueBurst, ghostWalk, elemMissile, magicBlink(DOT)
+docs/CHANGELOG_SYNC.md:4728:  - **maliceMortar (폭풍소환)**: `*5*(1+Lv*0.2)` → `*(5+(Lv-1))`
+docs/CHANGELOG_SYNC.md:23048:- img/sk_maliceMortar.png
+docs/CHANGELOG_SYNC.md:23090:- img/skillskin/maliceMortar.png
+docs/CHANGELOG_SYNC.md:23155:- img/skillskin/maliceMortar.png
+docs/CHANGELOG_SYNC.md:23205:- img/skillskin/maliceMortar.png
+docs/CHANGELOG_SYNC.md:23254:- img/skillskin/maliceMortar.png
+docs/CHANGELOG_SYNC.md:23343:- img/skillskin/maliceMortar.png
+docs/CHANGELOG_SYNC.md:23385:- img/skillskin_upscaled/maliceMortar.png
+docs/CHANGELOG_SYNC.md:23680:- img/skillskin/maliceMortar.png
+docs/CHANGELOG_SYNC.md:23754:- img/skillskinXX/maliceMortar.png
+docs/CHANGELOG_SYNC.md:23821:- img/skillskin_upscaled/maliceMortar.png
+docs/CHANGELOG_SYNC.md:38848:- _autosave/game_20260628_233807_pre_tp_telegraph.html
+docs/CHANGELOG_SYNC.md:38975:- _autosave/game_20260628_233807_pre_tp_telegraph.html
+docs/CHANGELOG_SYNC.md:39139:- _autosave/game_20260628_233807_pre_tp_telegraph.html
+docs/CHANGELOG_SYNC.md:39292:- _autosave/game_20260628_233807_pre_tp_telegraph.html
+docs/CHANGELOG_SYNC.md:39476:- _autosave/game_20260628_233807_pre_tp_telegraph.html
+docs/CHANGELOG_SYNC.md:39660:- _autosave/game_20260628_233807_pre_tp_telegraph.html
+docs/CHANGELOG_SYNC.md:39844:- _autosave/game_20260628_233807_pre_tp_telegraph.html
+docs/CHANGELOG_SYNC.md:40028:- _autosave/game_20260628_233807_pre_tp_telegraph.html
+docs/CHANGELOG_SYNC.md:40213:- _autosave/game_20260628_233807_pre_tp_telegraph.html
+docs/CHANGELOG_SYNC.md:40433:- _autosave/game_20260628_233807_pre_tp_telegraph.html
+docs/CHANGELOG_SYNC.md:40670:- _autosave/game_20260628_233807_pre_tp_telegraph.html
+docs/CHANGELOG_SYNC.md:40907:- _autosave/game_20260628_233807_pre_tp_telegraph.html
+docs/CHANGELOG_SYNC.md:41149:- _autosave/game_20260628_233807_pre_tp_telegraph.html
+docs/CHANGELOG_SYNC.md:41426:- _autosave/game_20260628_233807_pre_tp_telegraph.html
+docs/CHANGELOG_SYNC.md:41709:- _autosave/game_20260628_233807_pre_tp_telegraph.html
+docs/CHANGELOG_SYNC.md:41993:- _autosave/game_20260628_233807_pre_tp_telegraph.html
+docs/CHANGELOG_SYNC.md:42279:- _autosave/game_20260628_233807_pre_tp_telegraph.html
+docs/CHANGELOG_SYNC.md:42568:- _autosave/game_20260628_233807_pre_tp_telegraph.html
+docs/CHANGELOG_SYNC.md:42862:- _autosave/game_20260628_233807_pre_tp_telegraph.html
+docs/CHANGELOG_SYNC.md:43156:- _autosave/game_20260628_233807_pre_tp_telegraph.html
+docs/CHANGELOG_SYNC.md:43450:- _autosave/game_20260628_233807_pre_tp_telegraph.html
+docs/CHANGELOG_SYNC.md:43744:- _autosave/game_20260628_233807_pre_tp_telegraph.html
+docs/CHANGELOG_SYNC.md:44038:- _autosave/game_20260628_233807_pre_tp_telegraph.html
+docs/CHANGELOG_SYNC.md:44332:- _autosave/game_20260628_233807_pre_tp_telegraph.html
+docs/CHANGELOG_SYNC.md:44626:- _autosave/game_20260628_233807_pre_tp_telegraph.html
+docs/CHANGELOG_SYNC.md:44920:- _autosave/game_20260628_233807_pre_tp_telegraph.html
+docs/CHANGELOG_SYNC.md:45214:- _autosave/game_20260628_233807_pre_tp_telegraph.html
+docs/CHANGELOG_SYNC.md:45508:- _autosave/game_20260628_233807_pre_tp_telegraph.html
+docs/CHANGELOG_SYNC.md:45802:- _autosave/game_20260628_233807_pre_tp_telegraph.html
+docs/CHANGELOG_SYNC.md:46100:- _autosave/game_20260628_233807_pre_tp_telegraph.html
+docs/CHANGELOG_SYNC.md:46424:- _autosave/game_20260628_233807_pre_tp_telegraph.html
+docs/CHANGELOG_SYNC.md:49293:| 검증 | 진행률 자체 테스트 없음 | 0, 0.5, 0.99 입력에서 전체 밝은 원이 출력되지 않는 회귀 테스트 추가 | `test/projChargeTelegraph.test.js` |
+docs/0마스터플랜/mac-resume-20261001/vscode-dispatch/native-recovery/SKILL-task.md:1:# SKILL: 검수된 mortar guard의 생산 적용 준비
+docs/0마스터플랜/mac-resume-20261001/vscode-dispatch/native-recovery/SKILL-task.md:3:INDEPENDENT-NEXT-20261002.md의 미전달 한 건을 기존 세션에서만 이어간다. 작업 ID mortar-integration-ready. 동일 과제 수신/진행/대기 또는 초안이 있으면 중복 실행하지 말고 원자료를 보존해 상태를 보고한다. 기준 원격 체크포인트60b0d08b, 현재 HEAD는 시작 시 읽어 기록한다.
+docs/0마스터플랜/mac-resume-20261001/vscode-dispatch/native-recovery/SKILL-task.md:5:mortar-confirm-source/dispatch 및 root 독립19검사 인수 결과를 읽고 현재 양쪽 실제 함수에 기존 최소 패치가 적용 가능한지 준비한다. 기존 후보 재작성/이미 동일한 검사를 단순 반복하지 말고 함수 SHA/문맥 드리프트와 꼭 필요한 인접 회귀만 확인한다. 생산 HTML은 읽기 전용이며 소유 prefix의 검토용 파생본/미적용 patch만 가능. 원 MP 수치·확정/취소·RNG·보호 전투 설계를 보존한다.
+docs/0마스터플랜/mac-resume-20261001/vscode-dispatch/native-recovery/SKILL-task.md:7:소유 신규 prefix: tools/team-followup-20261001/SKILL/mortar-integration-ready-*. SOUND 외 팀은 최소 필요한 산출만 만들고 불필요한 전체 게임 사본을 늘리지 않는다. 공용 HTML/서버/에셋/팀 외 docs는 읽기 전용. 후보·단위검사·실제 런타임 인수를 구분한다. 기존 초안/사용자 세이브/타팀 stage·변경을 보존한다. 새 팀·세션·에이전트/생산 통합/빌드/에셋생성/Git쓰기/권한 변경0. 서버/listen/EPERM/읽기전용 제한 우회0. UI/런타임은 QA만 맡는다.
+docs/14밸런스+수치테이블/스킬_밸런스_리포트.md:26:| 단발 폭딜 (장쿨) | 지옥강타 1, 폭풍소환, 얼음보주, 악의폭풍 | DPS ÷ 쿨타임 (초당 환산) |
+docs/14밸런스+수치테이블/스킬_밸런스_리포트.md:78:| maliceMortar | 폭풍소환 | **10** | +15%/Lv | 10 | 23.5 | 범위 | 11초 | MP 250×DPS(+15%) |
+docs/14밸런스+수치테이블/스킬_밸런스_리포트.md:127:  3위 maliceMortar  23.5배               ← 11초 쿨 (미변경)
+docs/14밸런스+수치테이블/스킬_밸런스_리포트.md:161:#### 2. 폭풍소환(maliceMortar) 배율 조정 완료 — 기본배율 15→10, Lv스케일 +20%→+15%
+docs/14밸런스+수치테이블/스킬_밸런스_리포트.md:248:| maliceMortar 폭풍소환 | 배율 15, +20%/Lv | **배율 10, +15%/Lv** | 마법 평균(4)의 2.5배로 하향 |
+docs/14밸런스+수치테이블/스킬_밸런스_리포트.md:292:  - maliceMortar 폭풍소환 (2.14/초, 범위)  ← 쿨 11초
+docs/14밸런스+수치테이블/스킬_밸런스_리포트.md:360:| 20 | 폭풍소환 | 단발 | **86** |
+docs/14밸런스+수치테이블/자원소비량표.md:52:| mortar | +35%/Lv | 50 | 120 | 207 |
+docs/14밸런스+수치테이블/자원소비량표.md:93:| 폭풍소환 (maliceMortar) | 50 | 120 | 207 | 50×DPS(+35%) | 쿨 11초 |
+docs/8.0몬스터디자인/PHYSICAL_PROJECTILE_AUDIT_20260916.md:12:| 발사 전조 큐 | enemyShotWarning / projChargeTelegraph | 60틱 대기, 완료탄 밀도드랍 면제, 혼합탄 색 분리, 스턴/사망/스테이지 전환 취소, 사망탄 전조 검사 |
+docs/14밸런스+수치테이블/MAGIC_ATTACK_DAMAGE_20260910.md:12:| 이동·소환·특수 | 강화된 마법 기반 피해 사용 | 사슬화염, 기동불꽃, 전격이동, 뇌전걸음, 폭풍소환, 천공쇄기, 전대, 허수아비, 탄막블랙홀 |
+docs/5.1임펙트디자인/VFX_구현가이드.md:871:| 등급 오라 | _drawEliteAuraTelegraph(X,e,sa,_now), GPU 인스턴스·일반 적 경로 양쪽 호출. lighter 발광 후 Canvas 상태 복원 | 매직 파랑 #4488ff, 레어 금 #ffaa00, 챔피언 빨강 #ff4444; 내부 링 r+1+tier, 외부 링 r+5+3×tier; 레어 아크6개, 챔피언 아크8개+백색 마름모 노드4개 |
+docs/5.1임펙트디자인/VFX_구현가이드.md:872:| 원형 장판 | _drawEliteZoneTelegraph: 피해반경과 일치하는 외곽 링, 20개 경계 눈금, 중심에서 바깥으로 자라는 면·발광 전선12개 | 외곽 r−1, 선폭2.2~3.4px; 전선 q=clamp(1−t/dur,0,1)×r, 코어 선폭3.2~4.8px, 글로우11px. M30 충격파·M19 낙뢰·M32 포격에 적용 |
+docs/5.1임펙트디자인/VFX_구현가이드.md:874:| 번개 조준 | _drawEliteBoltTelegraph: 3갈래 점선 위험 레인, 애니메이션 지그재그 중심선과 가지 아크 | 길이850px, 레인 간격20px, 점선18/13px, 중심 아크24분절·진폭8px, 코어2.2px. 투사체 속성·Q패링 판정 변경 없음 |
+docs/5.1임펙트디자인/VFX_구현가이드.md:875:| 비용·회귀 | 엘리트별 최대 활성 장판 수는 기존 패턴 생성량(낙뢰/충격파1, 포격3)과 동일. 고정 개수 반복으로 그리며 배열·그라디언트를 새로 만들지 않음. 번개 중심선에 Canvas shadowBlur=10 사용 | test/eliteTelegraphVisibility.test.js 실제 Canvas 픽셀에서 경계·중심 전선·포격 조준·챔피언 외곽선 검사. GPU/일반 렌더 경로 모두 검사 |
+docs/5.1임펙트디자인/VFX_구현가이드.md:881:| 엘리트 M30 진원 충격파 | 주황 `#ff8844` → 위험 빨강 `#ff2438`. `_drawEliteZoneTelegraph`의 기본 색도 `#ff2438`, 바닥 채움 alpha `.075~.10` → `.15~.20` | 반경 125px, 54f 전조, 480f 주기, 판정·피해 불변. M19 낙뢰의 속성 노랑과 M32 포격의 기존 빨강은 유지 |
+docs/5.1임펙트디자인/VFX_구현가이드.md:894:이 마법진과 분출은 시각 전용이다. 기존 반경·피해·전조 시간·화염비 착탄 후 페이드 및 폭발 SFX를 변경하지 않는다. 회귀 검사는 `test/groundHazardImpact.test.cjs`와 `test/eliteTelegraphVisibility.test.js`를 사용한다.
+docs/8.1보스디자인바이블/BOSS_BATTLE_SETTINGS.md:556:- 회귀 테스트: `test/bossTelegraphReadability.test.js`는 전조 종료의 방향 잠금, 누적 스윕, 발사 중 재조준 제거를 검사한다.
+docs/14밸런스+수치테이블/스킬데미지공식표.md:76:- **해당 스킬**: fireball, omniBeam, fireAura, maliceMortar, maliceStorm, hellRay, elemMissile, thunderStake
+docs/14밸런스+수치테이블/스킬데미지공식표.md:216:| 폭풍소환 (maliceMortar) | magicRef | INT | pMagicMul | _skMul (b:7, g:5.6) | **ATK×7** | **ATK×32.2** | 광역 | 11초쿨. Lv10=32.2×, Lv20=60.2×. (g 2배 상향 2026-05-19) |
+docs/14밸런스+수치테이블/스킬데미지공식표.md:229:| 폭풍소환 (maliceMortar) | magicRef | INT | pMagicMul | _skMul | 300 | 390 | 범위 | 쿨 11초, 흡인, 5라인 모두 통일 |
+docs/14밸런스+수치테이블/스킬별_DPS_자원소비표.md:45:  magic:250, blink:250, iceOrb:250, dimBreach:250, exBolt:250, mortar:250
+docs/14밸런스+수치테이블/스킬별_DPS_자원소비표.md:51:  마법(+10~15%): magic/iceOrb/mortar(15%), blink/dimBreach/exBolt(10%)
+docs/14밸런스+수치테이블/스킬별_DPS_자원소비표.md:130:| maliceMortar | 폭풍소환 | MP | 250×DPS (마법할인, key=mortar) | **660f (11초)** | INT 스케일 | 6.5초간 소용돌이, 범위 400+(Lv-1)×18 (1렙400, 20렙742), **흡인력 2.0+Lv×0.1** — lv1=2.1, lv20=4.0, 랩당 +0.1 선형 (2026-05-13 수정), 마우스 조준 클릭 설치 (사거리 1000px) (2026-04-21 범위×2) |
+docs/14밸런스+수치테이블/스킬별_DPS_자원소비표.md:191:| maliceMortar 폭풍소환 | 액티브 | 10 | 11초 | **0.9** |
+docs/5.1임펙트디자인/CH1_1_BOSS_IMPACT_AUDIT_20260927.md:56:- `test/ch1DruidAssignment.test.js` 2개, `bossTelegraphReadability.test.js` 1개, `druidPoisonProjectiles.test.js` 1개 통과. `fieldBossSpawnEmerge.test.js`는 14개 중 13개 통과, 1개 실패: 크라켄 대형탄 패링 반경 문자열 기대와 현행 코드가 다르며 작업 전 백업에도 같은 불일치가 있다. 이 임팩트 변경의 회귀로 분류하지 않는다.
+docs/4.1맵디자인+설정/CH3_1_HELL_WINTER_IMPLEMENTATION.md:170:매크로 톤은 바닥 흑색 overlay `.46→.49`, 프롭 `brightness .48→.46`, `contrast 1.28→1.34`, `saturate 0→.18`로 조정해 완전 무채색 대신 죽은 청회색을 남겼다. ritual은 위치·크기·구조를 유지하고 alpha만 `.78→.56`으로 낮춰 30-enemy/telegraph보다 먼저 튀지 않게 했다.
+docs/4.1맵디자인+설정/맵오브젝트_에셋목록.md:721:검증 기준: viewport 1600×900 실제 플레이 카메라에서 START/EARLY/ARENA/SIDE L/SIDE R/LANDMARK/LATE/EXIT 및 Final Macro LEFT/RIGHT/TOP/CENTER를 캡처한다. si10 Central Detail 실측은 `pageerror=0`, asset 404=0, missing sprite 0, source 346/runtime authored 343(basin 가장자리 보정 3), 전체 `MAP_OBJS=344`(전체맵)/`345`(플레이 QA), collision object 101, 중앙·x92..108 종주축·북문 회랑 blocker 0이다. 중앙 floor detail은 3 type/6 instance, collision 0, route intrusion 0이다. silhouette crest는 5 runtime crop type/16 instance, TOP/RIGHT/SOUTH/LEFT 각 4개, 전부 비충돌이다. 전체 crop은 13종/87 instance, rotated 81, mirrored 30, 신규 원화 0이다. `captures/ch3_final_macro_retouch/{SI11_full,model_vs_runtime,outer_LEFT,outer_RIGHT,outer_TOP,central_arena}.png`와 `captures/ch3_center_detail/{SI11_full,central_arena}.png`에서 silhouette·반복·density·landmark·전투 가독성·black/blue-gray·red accent를 재판정했다. 30-enemy `combat_readability.png`에서 player/enemy/붉은 telegraph 판독을 확인했고, WASD는 `(100.5,185.5)`→`(100.5,11.50)` 6구간 PASS, 최대 50ms 이동량 `43.41px < 50px`다. 최종 판정은 **CH3-1 VISUAL FINAL PASS / CENTRAL DETAIL PASS**다.
+docs/2_7 인벤토리+장비시스템/3파트_아이템분류.md:286:  - **wpn→xbow 이전 (24종)**: arcRangerRange, arcRangerDmg, arcRangerPierce, bowAtkSpd, bowRange, critRateBow, pierceChance, pierceCount, projDmgPct, projSpeedPct, rangedDmgPct, multiShot, splashRadius, splashDmg, farDmg, chainTarget, pierceDmgKeep, skBlastShotDmg, skBlueShotDmg, skChainAssaultDmg, skMaliceHuntDmg, skMaliceMortarDmg, skMaliceStormDmg, skMissileDmg
+docs/2_7 인벤토리+장비시스템/3파트_아이템분류.md:287:  - **helm→xbow 이전 (6종)**: farDmg, skBlueShotDmg, skChainAssaultDmg, skMaliceMortarDmg, skMaliceStormDmg, skMissileDmg
+docs/0마스터플랜/mac-resume-20261001/Mac-정상-WebGL-첫처치-관측.md:62:기존 검증된 `tools/qa_first_kill_cpu_probe.js`와 별도 임시 frame 관측기를 사용했다. 원본 반환·예외를 전달하고 상태를 읽었으며 처치 규칙은 바꾸지 않았다. CPU 래퍼 기록 누락0·포화false, `_worldDropSkin`은 기존 코드에 없어 missing에 남았다. update/draw 래퍼와 CDP CPU Profiler의 오버헤드를 포함하므로 무계측 성능 본표로 간주하지 않는다.
+docs/16번역·로컬라이제이션/번역대상_전체목록.md:117:| 0050 | 폭풍소환 | Vortex Summon |
+docs/16번역·로컬라이제이션/번역대상_전체목록.md:778:| 0582 | 🌪️ 폭풍소환! | 🌪️ Vortex Summon! |
+docs/16번역·로컬라이제이션/번역대상_전체목록.md:1716:| 1257 | 영역 스킬 (폭풍소환 등) | Area Skill (Vortex Summon etc) |
+docs/16번역·로컬라이제이션/번역대상_전체목록.md:2473:| 2013 | 폭풍소환 + 얼음보주 → 합체: 얼음폭풍 | Malice Mortar + Ice Orb → Fuse: Ice Mortar |
+docs/16번역·로컬라이제이션/번역대상_전체목록.md:2499:| 2034 | maliceMortar | Summon dark vortex. CD 11s. INT scale. Pulls enemies |
+docs/16번역·로컬라이제이션/번역대상_전체목록.md:2822:| 2526 | 악의박격강화 | Malice Mortar Boost | 恶意迫击强化 | 悪意迫撃強化 |
+docs/3.1 ui hud 디자인/exoduser-ui-phase2 (1).md:467:| maliceMortar | P._mmCd | 악의포격 |
+docs/0마스터플랜/mac-resume-20261001/vscode-dispatch/INDEPENDENT-NEXT-20261002.md:14:| SKILL | 검수된 mortar guard의 생산 적용 준비 및 원소스 회귀; SKILL 소유 후보 | 미전달. 생산 HTML 소유권 미부여, 다른 작업과 직렬 조율 필요 |
+docs/0마스터플랜/mac-resume-20261001/vscode-dispatch/QA-result.md:63:- 도구: `tools/qa_first_kill_cpu_probe.js`, `tools/qa_frame_probe.mjs` (읽기·규약 참조)
+docs/0마스터플랜/mac-resume-20261001/QA-ENEMY-ANIMVFX-인수검토.md:11:| tools/qa_first_kill_cpu_probe.js | 빠른 일반 2D는 집계, 대상 함수 자식/느린 2D/GL은 상세 기록. 최근 20,000개 순환 보관과 droppedCount/truncated. 이미지 src 수정. stop 멱등·재주입 복구·생성자 부재 처리. |
+docs/0마스터플랜/mac-resume-20261001/QA-ENEMY-ANIMVFX-인수검토.md:79:| 기록 포화 | `tools/qa_first_kill_cpu_probe.js:19`: 20,000개 후 버림. :31에서 모든 2D drawImage·clearRect 등을 감싼다. | `startedAt/endedAt/totalCalls/droppedCount/truncated`를 저장하고, 포화된 첫 처치 표본은 원인 귀속 무효로 표시한다. 첫 처치 직전에 설치하거나 기록 시작점을 따로 둔다. |
+docs/0마스터플랜/mac-resume-20261001/vscode-dispatch/ASYNC-BOUNDARY-20261002.md:9:| SKILL | 실제 조준→확정→발사 슬라이스 통합 | 19 PASS | 기존 mortar MP 가드 후보 적용·실게임 |

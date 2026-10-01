@@ -1,0 +1,141 @@
+{
+  "at": "2026-10-01T23:16:43.719Z",
+  "head": "5b8e6ba9d952d1148048c2889c588531640698fe",
+  "kind": "read-only source and camera-manifest acceptance",
+  "sources": {
+    "game.html": "30ae8544524d7cd710383ebd10f4911bea3247e90b18a46c51c253e73ce9ba3f",
+    "game-easy-test.html": "9c7c25c131f6175a464cffe2e981e946cf2a0af70ed04b969cc5292403799af8",
+    "ch1-boundary-edge.js": "e1271685ee41026e330c77dfb9c8fc83146f2d116b97512e37d82cf53798edc2",
+    "ch1-border-foreground.js": "7f0f3e2e373041adc9e39512b147ab535f99b89e914686ab7ff14eb602f46b22",
+    "assets/map/ch1/production_finish/layout.js": "94b974df0ea090bd0cedb4f492777194e3b5938bcace6a7db2fd879b89a20dab",
+    "tools/team-followup-20261001/MAP/visual-eight-view-preparation-manifest.json": "91e5f1445cfde93220bc66e1804ab550d9202d493d68d87e731849f0cfaf0d54",
+    "docs/4.1맵디자인+설정/EXODUSER_MAP_PRODUCTION_GUIDELINE_v0.9.md": "607e36a49a99205be61c0aeedb438da06bffaf13370360acc99fe86be751e80b",
+    "docs/4.1맵디자인+설정/CH1_1_PRODUCTION_FINISH_20260916.md": "8a4027204bcbf175a3205dfbd26b34b4c17d8bc22680bf390482480dd4369e5a",
+    "docs/0마스터플랜/mac-resume-20261001/map020-evidence/manifest.json": "00d287d943032c67d2f42015414c64a0cdeda80cae4beb9bf660bb2deff61fd1"
+  },
+  "checks": [
+    {
+      "id": "layout source primary role",
+      "result": "PASS"
+    },
+    {
+      "id": "current boundary module matches candidate source",
+      "result": "PASS"
+    },
+    {
+      "id": "current border foreground matches candidate source",
+      "result": "PASS"
+    },
+    {
+      "id": "both production callers retain complete zoom transform",
+      "result": "PASS"
+    },
+    {
+      "id": "production shade crop inverse viewport z1",
+      "result": "PASS"
+    },
+    {
+      "id": "production shade crop inverse viewport z0.62",
+      "result": "PASS"
+    },
+    {
+      "id": "historical PNG bytes and SHA provenance",
+      "result": "PASS"
+    },
+    {
+      "id": "canonical SSOT eight camera rows exist",
+      "result": "PASS"
+    },
+    {
+      "id": "all inspected source inputs remain unchanged",
+      "result": "PASS"
+    }
+  ],
+  "checkCount": 9,
+  "pngCount": 15,
+  "wholeGameEqualToCandidate": false,
+  "candidateRecordedWholeGameSha": "7631f5a083672124624e0b8dc22b0716d10c8815dbb1e6aee98a5e2e51299993",
+  "actualWholeGameSha": "30ae8544524d7cd710383ebd10f4911bea3247e90b18a46c51c253e73ce9ba3f",
+  "candidateVerdict": "RETOUCH",
+  "defects": [
+    {
+      "id": "CAM-1",
+      "result": "RETOUCH",
+      "reason": "8 candidate rows replace a required view with SOUTH MASS and merge LATE/EXIT. Required LATE and EXIT must have separate actual camera evidence."
+    },
+    {
+      "id": "CAM-2",
+      "result": "RETOUCH",
+      "reason": "Candidate PRIMARY [1766,6620] is a reported boundary point. Source primary-landmark is corpse_basin [102,90], with production m_c1tree at world [4100,3620]."
+    },
+    {
+      "id": "CAM-3",
+      "result": "RETOUCH",
+      "reason": "Candidate START [4000,7600] is approximate; locked spawn is world [4020,7420]. EXIT camera [4000,720] is not gameplay gate/exit tile y5/y7."
+    },
+    {
+      "id": "PROV-1",
+      "result": "HISTORICAL",
+      "reason": "The 15 historical PNGs are valid bytes from pre-fix measured_source 6cbeb664. They are not current 8-view or zoom-fix evidence."
+    },
+    {
+      "id": "PROV-2",
+      "result": "HISTORICAL",
+      "reason": "Candidate whole-game SHA is stale; boundary and foreground exact SHA remain equal. Whole-game changes do not themselves imply a map regression."
+    }
+  ],
+  "semanticAudit": {
+    "candidateLabels": [
+      "START",
+      "SOUTH MASS (START 인접)",
+      "EARLY",
+      "MAIN ARENA",
+      "SIDE LEFT",
+      "SIDE RIGHT (M5 주머니)",
+      "PRIMARY LANDMARK",
+      "LATE → EXIT/BOSS GATE"
+    ],
+    "requiredViews": [
+      "START",
+      "EARLY",
+      "MAIN ARENA",
+      "SIDE LEFT",
+      "SIDE RIGHT",
+      "PRIMARY LANDMARK",
+      "LATE",
+      "EXIT / BOSS"
+    ],
+    "independentLate": false,
+    "independentExit": false,
+    "candidatePrimary": [
+      1766,
+      6620
+    ],
+    "sourcePrimaryAnchor": [
+      102,
+      90
+    ],
+    "candidateStart": [
+      4000,
+      7600
+    ],
+    "lockedSpawnFromSSOT": [
+      4020,
+      7420
+    ],
+    "currentViewEvidenceCount": 0,
+    "historicalPartialCanonicalRoles": [
+      "SIDE RIGHT"
+    ],
+    "historicalExtraDiagnostics": [
+      "SOUTH MASS"
+    ],
+    "evidenceNote": "The owner 2/8 HAVE count includes SOUTH MASS and partial M5. It cannot establish 2 completed canonical camera roles."
+  },
+  "visualVerdict": "RETOUCH",
+  "visualReason": "No new actual screen/route/combat evidence collected; source checks cannot grant visual PASS.",
+  "runtimeRuns": 0,
+  "browserRuns": 0,
+  "productionEdits": 0,
+  "gitItemCountBeforeOutputs": 33
+}

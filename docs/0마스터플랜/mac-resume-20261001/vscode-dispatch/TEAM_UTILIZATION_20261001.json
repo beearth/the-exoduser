@@ -1,6 +1,6 @@
 {
-  "checkedAt": "2026-10-01T18:53:31.855475+00:00",
-  "kind": "observed_followup_activity_and_delivery_blockers",
+  "checkedAt": "2026-10-01T23:21:34.918080+00:00",
+  "kind": "coordination acceptance snapshot; prior owner liveness timestamps preserved, no new owner receipt",
   "teams": [
     {
       "team": "QA",
@@ -31,7 +31,9 @@
       },
       "actualReadConfirmed": false,
       "actualEditConfirmed": false,
-      "currentTaskReceipt": null
+      "currentTaskReceipt": null,
+      "currentLivenessEvidence": "last owner turn/source evidence preserved; no newly received work",
+      "currentDispatchBlocker": "Code UI not approved; previous native-window blocker superseded only for current dispatch; no new session check"
     },
     {
       "team": "MAP",
@@ -62,7 +64,9 @@
       "actualReadConfirmed": false,
       "actualEditConfirmed": false,
       "currentTaskReceipt": null,
-      "rootAcceptance": null
+      "rootAcceptance": null,
+      "currentLivenessEvidence": "last owner turn/source evidence preserved; no newly received work",
+      "currentDispatchBlocker": "Code UI not approved; previous native-window blocker superseded only for current dispatch; no new session check"
     },
     {
       "team": "SKILL",
@@ -93,7 +97,9 @@
       },
       "actualReadConfirmed": false,
       "actualEditConfirmed": false,
-      "currentTaskReceipt": null
+      "currentTaskReceipt": null,
+      "currentLivenessEvidence": "last owner turn/source evidence preserved; no newly received work",
+      "currentDispatchBlocker": "Code UI not approved; previous native-window blocker superseded only for current dispatch; no new session check"
     },
     {
       "team": "ENEMY",
@@ -124,7 +130,9 @@
       "actualReadConfirmed": false,
       "actualEditConfirmed": false,
       "currentTaskReceipt": null,
-      "rootAcceptance": null
+      "rootAcceptance": null,
+      "currentLivenessEvidence": "last owner turn/source evidence preserved; no newly received work",
+      "currentDispatchBlocker": "Code UI not approved; previous native-window blocker superseded only for current dispatch; no new session check"
     },
     {
       "team": "ART",
@@ -155,7 +163,9 @@
       "actualReadConfirmed": false,
       "actualEditConfirmed": false,
       "currentTaskReceipt": null,
-      "rootAcceptance": null
+      "rootAcceptance": null,
+      "currentLivenessEvidence": "last owner turn/source evidence preserved; no newly received work",
+      "currentDispatchBlocker": "Code UI not approved; previous native-window blocker superseded only for current dispatch; no new session check"
     },
     {
       "team": "ANIMVFX",
@@ -186,7 +196,9 @@
       },
       "actualReadConfirmed": false,
       "actualEditConfirmed": false,
-      "currentTaskReceipt": null
+      "currentTaskReceipt": null,
+      "currentLivenessEvidence": "last owner turn/source evidence preserved; no newly received work",
+      "currentDispatchBlocker": "Code UI not approved; previous native-window blocker superseded only for current dispatch; no new session check"
     },
     {
       "team": "BUILD",
@@ -337,7 +349,17 @@
       },
       "firstCommandAt": null,
       "firstArtifactWriteAt": null,
-      "firstCodeEditAt": null
+      "firstCodeEditAt": null,
+      "currentLivenessEvidence": "last owner turn/source evidence preserved; no newly received work",
+      "preparedNextTask": {
+        "id": "packaged-source-delta",
+        "instruction": "tools/team-followup-20261002/owner-dispatch/BUILD-task.md",
+        "deliveryAttempt": 1,
+        "status": "approval_rejected_not_delivered",
+        "receivedAt": null,
+        "firstReadAt": null,
+        "currentlyRunning": false
+      }
     },
     {
       "team": "UIUX",
@@ -462,7 +484,17 @@
           "exitCode": 0,
           "durationMs": 53
         }
-      ]
+      ],
+      "currentLivenessEvidence": "last owner turn/source evidence preserved; no newly received work",
+      "preparedNextTask": {
+        "id": "cross-panel-focus-source",
+        "instruction": "tools/team-followup-20261002/owner-dispatch/UIUX-task.md",
+        "deliveryAttempt": 1,
+        "status": "approval_rejected_not_delivered",
+        "receivedAt": null,
+        "firstReadAt": null,
+        "currentlyRunning": false
+      }
     },
     {
       "team": "ITEM",
@@ -630,7 +662,17 @@
           "exitCode": 0,
           "durationMs": 0
         }
-      ]
+      ],
+      "currentLivenessEvidence": "last owner turn/source evidence preserved; no newly received work",
+      "preparedNextTask": {
+        "id": "d13-integration-map",
+        "instruction": "tools/team-followup-20261002/owner-dispatch/ITEM-task.md",
+        "deliveryAttempt": 1,
+        "status": "approval_rejected_not_delivered",
+        "receivedAt": null,
+        "firstReadAt": null,
+        "currentlyRunning": false
+      }
     },
     {
       "team": "BALANCE",
@@ -724,6 +766,16 @@
         "instruction": "tools/team-followup-20261001/BALANCE/shared-mats-atomic-task.md",
         "completedAt": "2026-10-01T18:26:11.000Z",
         "status": "completed_pending_root_acceptance"
+      },
+      "currentLivenessEvidence": "last owner turn/source evidence preserved; no newly received work",
+      "preparedNextTask": {
+        "id": "shared-mats-integration-ready",
+        "instruction": "tools/team-followup-20261002/owner-dispatch/BALANCE-task.md",
+        "deliveryAttempt": 1,
+        "status": "approval_rejected_not_delivered",
+        "receivedAt": null,
+        "firstReadAt": null,
+        "currentlyRunning": false
       }
     },
     {
@@ -761,7 +813,9 @@
       "actualReadConfirmed": false,
       "actualEditConfirmed": false,
       "productionApplied": false,
-      "currentTaskReceipt": null
+      "currentTaskReceipt": null,
+      "currentLivenessEvidence": "last owner turn/source evidence preserved; no newly received work",
+      "currentDispatchBlocker": "Code UI not approved; previous native-window blocker superseded only for current dispatch; no new session check"
     }
   ],
   "counts": {
@@ -795,13 +849,17 @@
     "apiSaveGate": "EPERM at port preflight; no server or API execution",
     "screenshotEvidence": "Intro/paused PNG byte-identical; not independent proof of progression. Only AX states and process presence accepted; runtime gate incomplete.",
     "runtimeOwner": "QA only; next task not yet delivered",
-    "dispatchBlocker": "Fresh noWindowsAvailable and AX/screenshot inconsistency; no locked error. All 7 new tasks undelivered."
+    "dispatchBlocker": "Fresh noWindowsAvailable and AX/screenshot inconsistency; no locked error. All 7 new tasks undelivered.",
+    "currentStatus": "3340 listening/API verified; no new gameplay; checkpoint in progress",
+    "currentReason": "Code UI permission denied, official task send approval prohibited, exact3340 listen EPERM, index.lock EPERM; no current lock diagnosis"
   },
   "automation": {
     "status": "ACTIVE",
     "intervalMinutes": 5,
     "source": "PC coordinator latest report; local view returned card only",
-    "localIndependentVerification": false
+    "localIndependentVerification": false,
+    "changedThisTurn": false,
+    "localMatchingConfigFound": false
   },
   "visibleUserGame": {
     "evidence": "outputs/team-review-20261001/mac-game-visible-20261002.json",
@@ -852,7 +910,10 @@
     "outputs/team-review-20261002/conditional-integration/acceptance.json",
     "outputs/team-review-20261002/conditional-integration/next-receipts.json",
     "outputs/team-review-20261002/native-recovery/dispatch-proof.json",
-    "outputs/team-review-20261002/native-recovery/codex-snapshot.json"
+    "outputs/team-review-20261002/native-recovery/codex-snapshot.json",
+    "tools/team-followup-20261002/owner-dispatch/dispatch-receipt.json",
+    "tools/team-followup-20261002/owner-dispatch/mortar-doc-sync.json",
+    "docs/0마스터플랜/mac-resume-20261001/vscode-dispatch/MAC-COORDINATION-20261002.md"
   ],
   "unassignedTerminal": {
     "number": 12,
@@ -861,5 +922,69 @@
     "countedAsTeam": false,
     "evidence": "outputs/team-review-20261002/async-boundary/terminal12-audit.json"
   },
-  "remoteCheckpointNote": "Verified checkpoint before this recovery attempt"
+  "remoteCheckpointNote": "Verified checkpoint before this recovery attempt",
+  "previousSnapshotAt": "2026-10-01T18:53:31.855475+00:00",
+  "currentDispatchGate": {
+    "claudeSeven": "Code computer use not approved; no new dispatch",
+    "codexFour": "official send attempted once/team; approval required and policy never; received0/read0",
+    "server3340": "connection refused; exact startup1 listen EPERM",
+    "git": "index.lock EPERM; commit0; GitHub DNS error; push0/current remote unverified"
+  },
+  "supportReview20261002": {
+    "concurrency": {
+      "root": 1,
+      "support": 3,
+      "newOwnerSessions": 0
+    },
+    "status": "source inspections completed",
+    "combat": {
+      "mortarPass": 38,
+      "fail": 0,
+      "productionApplied": false
+    },
+    "map": {
+      "sourcePass": 9,
+      "historicalPNGIntegrity": 15,
+      "freshViews": 0,
+      "visualVerdict": "RETOUCH"
+    },
+    "integration": {
+      "soundGroups": 18,
+      "soundFixtures": 84,
+      "sharedMatsActualFilePass": 14,
+      "patchesApplied": false
+    },
+    "report": "docs/0마스터플랜/mac-resume-20261001/vscode-dispatch/MAC-COORDINATION-20261002.md"
+  },
+  "currentRemoteCheck": {
+    "at": "2026-10-01T23:28:42.652186+00:00",
+    "status": "verified",
+    "verifiedSha": "5b8e6ba9d952d1148048c2889c588531640698fe",
+    "ref": "refs/heads/codex/mac-environment-20261001",
+    "auditCheckpointPushPending": true
+  },
+  "recoveryAfterPermissionChange": {
+    "at": "2026-10-01T23:28:42.652186+00:00",
+    "kind": "permission-change recovery; prior failures historical",
+    "verifiedSourceRef": "refs/heads/codex/mac-environment-20261001",
+    "verifiedSourceSha": "5b8e6ba9d952d1148048c2889c588531640698fe",
+    "server": {
+      "port": 3340,
+      "host": "127.0.0.1",
+      "saveDir": "tmp/mac-migration-runtime/saves",
+      "started": true,
+      "slotsAPI": {
+        "ok": true,
+        "slotCount": 1
+      },
+      "gameMeasurements": 0
+    },
+    "ownerDispatch": {
+      "BUILD": "one retry: active writer rejected, received0",
+      "others": "not resent"
+    },
+    "newOwnerSessions": 0,
+    "productionChanges": 0,
+    "checkpointFinalReceipt": "tmp/mac-migration-runtime/coordination-resume-checkpoint-20261002.json"
+  }
 }

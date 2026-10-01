@@ -1,0 +1,62 @@
+docs/7아이템디자인/슬롯별_어픽스_풀.md:538:| `mpCostRed` | 절약의 | headband.PRE, neck.PRE | pct |
+docs/7아이템디자인/슬롯별_어픽스_풀.md:833:| `mpCostRed` | 절약의 | 2 | neck, headband | -0.05→-0.3 | pct |
+docs/7아이템디자인/슬롯별_어픽스_풀.md:1584:| mpCostRed | 절약의 | -0.05 | -0.08 | -0.14 | -0.22 | -0.3 | pct | 80 |  |
+docs/7아이템디자인/슬롯별_어픽스_풀.md:1648:| mpCostRed | 절약의 | -0.05 | -0.08 | -0.14 | -0.22 | -0.3 | pct | 80 |  |
+docs/14밸런스+수치테이블/자원소비량표.md:52:| mortar | +35%/Lv | 50 | 120 | 207 |
+docs/14밸런스+수치테이블/스킬_밸런스_리포트.md:71:| fireball | 악의구 | 13.2 | +5.28/Lv | Lv1=13.2 | Lv20=113.52 | 직격+60%폭발 | 없음 | mpCost(magic), 공통마법2배 별도 |
+docs/14밸런스+수치테이블/스킬_밸런스_리포트.md:87:| fireball | 악의구 | 13.2 | +5.28/Lv | Lv1=13.2 | Lv20=113.52 | 직격+60%폭발 | 없음 | mpCost(magic), 공통마법2배 별도 |
+docs/14밸런스+수치테이블/패시브효과표.md:82:| MP 비용 | `max(0.4,1−0.04×pMagic−mpCostRed−유니크)`. 패시브만Lv10이면0.60이며 장비 포함 최저0.40 |
+docs/7아이템디자인/아이템_어픽스_시스템.md:549:| mpCostRed | 절약의 | PRE | -0.05 / -0.08 / -0.14 / -0.22 / -0.3 | pct | 머리띠, 목걸이 | 80 |
+docs/7아이템디자인/아이템_어픽스_시스템.md:841:| `mpCostRed` | 절약의 | MP 소비 - | 30% | headband/neck | 마법 빌드 필수 |
+docs/7아이템디자인/어픽스_시스템_현황분석_2026-08-10.md:126:- 저항/자원: fireRes iceRes lightRes darkRes poisonRes allRes eDefFlat antiRevive(×2) maxSTFlat maxMPFlat mpCostRed stCostRed maxMPPct extraST
+docs/14밸런스+수치테이블/스킬별_DPS_자원소비표.md:39:mpCost(key) = COST_BASE[key] × (1 + (skLv-1) × DPS스케일) × pMagicCost() → 최소 0.40
+docs/14밸런스+수치테이블/스킬별_DPS_자원소비표.md:45:  magic:250, blink:250, iceOrb:250, dimBreach:250, exBolt:250, mortar:250
+docs/14밸런스+수치테이블/스킬별_DPS_자원소비표.md:51:  마법(+10~15%): magic/iceOrb/mortar(15%), blink/dimBreach/exBolt(10%)
+docs/14밸런스+수치테이블/스킬별_DPS_자원소비표.md:71:| chainAssault | 기동불꽃 | MP | mpCost('dimBreach') | 없음 (이동 중) | INT × _skMul('chainAssault') × **티어3단계(×30/×60/×100)** | 착지 화염폭발, 3티어=업화선 2.5초 차징급. 불바닥을 여러 개 쌓은 뒤 충돌 스킬(기동파괴) 또는 분노 스킬(지옥강타 1)로 일괄 기폭 가능. 천공쇄기 착탄은 활성 `assaultFlame` 전량을 기존 총피해 공식 그대로 즉시 기폭(추가 비용 없음) |
+docs/14밸런스+수치테이블/스킬별_DPS_자원소비표.md:123:| fireball | 악의구 | MP | mpCost(magic) | 없음 | `_skMul=13.2+(Lv−1)×10.56×0.5`; Lv1=13.2, Lv10=60.72, Lv20=113.52; magicRef×statInt×pMagicMul×_fuseMul, 직격100%+폭발60% | 10레벨 기준7발, 중독 별도 |
+docs/14밸런스+수치테이블/스킬별_DPS_자원소비표.md:130:| maliceMortar | 폭풍소환 | MP | 250×DPS (마법할인, key=mortar) | **660f (11초)** | INT 스케일 | 6.5초간 소용돌이, 범위 400+(Lv-1)×18 (1렙400, 20렙742), **흡인력 2.0+Lv×0.1** — lv1=2.1, lv20=4.0, 랩당 +0.1 선형 (2026-05-13 수정), 마우스 조준 클릭 설치 (사거리 1000px) (2026-04-21 범위×2) |
+docs/14밸런스+수치테이블/스킬별_DPS_자원소비표.md:133:| darkPillar | 악의기둥 | MP | mpCost 기반 | **900f (15초)** | INT × (4+(Lv-1)) | 9기둥 각각10초, 범위 250+(Lv-1)×22, Lv당 뎀+1 |
+docs/13출시·마케팅/GAMEPLAY_TRAILER_V22_20260909.md:87:| mortar | 5 | 64 | 35 | 420 | 290 | 38 | 96005901.067 | 3 | 6 | 70.7 |
+docs/13출시·마케팅/GAMEPLAY_TRAILER_V22_20260909.md:172:| 25 | mortar | 0.60 | 42.10 | 44.40 |
+docs/7아이템디자인/어픽스_Layer_재분류_설계_2026-08-10.md:216:| mpCostRed | W | 자원 | A | KEEP | MP 소모 감소 |
+docs/7아이템디자인/어픽스_Layer_전수매핑_402_2026-08-10.md:35:| mpCostRed | WORKING | 자원 | L2 | A | KEEP | MP 소모 감소 |
+docs/0마스터플랜/mac-resume-20261001/vscode-dispatch/native-recovery/SKILL-task.md:1:# SKILL: 검수된 mortar guard의 생산 적용 준비
+docs/0마스터플랜/mac-resume-20261001/vscode-dispatch/native-recovery/SKILL-task.md:3:INDEPENDENT-NEXT-20261002.md의 미전달 한 건을 기존 세션에서만 이어간다. 작업 ID mortar-integration-ready. 동일 과제 수신/진행/대기 또는 초안이 있으면 중복 실행하지 말고 원자료를 보존해 상태를 보고한다. 기준 원격 체크포인트60b0d08b, 현재 HEAD는 시작 시 읽어 기록한다.
+docs/0마스터플랜/mac-resume-20261001/vscode-dispatch/native-recovery/SKILL-task.md:5:mortar-confirm-source/dispatch 및 root 독립19검사 인수 결과를 읽고 현재 양쪽 실제 함수에 기존 최소 패치가 적용 가능한지 준비한다. 기존 후보 재작성/이미 동일한 검사를 단순 반복하지 말고 함수 SHA/문맥 드리프트와 꼭 필요한 인접 회귀만 확인한다. 생산 HTML은 읽기 전용이며 소유 prefix의 검토용 파생본/미적용 patch만 가능. 원 MP 수치·확정/취소·RNG·보호 전투 설계를 보존한다.
+docs/0마스터플랜/mac-resume-20261001/vscode-dispatch/native-recovery/SKILL-task.md:7:소유 신규 prefix: tools/team-followup-20261001/SKILL/mortar-integration-ready-*. SOUND 외 팀은 최소 필요한 산출만 만들고 불필요한 전체 게임 사본을 늘리지 않는다. 공용 HTML/서버/에셋/팀 외 docs는 읽기 전용. 후보·단위검사·실제 런타임 인수를 구분한다. 기존 초안/사용자 세이브/타팀 stage·변경을 보존한다. 새 팀·세션·에이전트/생산 통합/빌드/에셋생성/Git쓰기/권한 변경0. 서버/listen/EPERM/읽기전용 제한 우회0. UI/런타임은 QA만 맡는다.
+docs/2_1 스킬관리+합체시스템+자원/신규캐릭_스킬프로젝트_20260930.md:65:2. **자원·비용**: `mpCost()`/ST/HP 소모. 신규 자원(HP탄약·영혼스택)은 P에 상태변수 추가 + HUD 표기.
+docs/2_1 스킬관리+합체시스템+자원/SKILL_자원게이트_감사_20261001.md:15:| MP | 게이트 `P.mp<X` vs 차감 `P.mp-=X` | bladeDash(_bdCost)·skyCrusher(spec.mpCost)·timeWarp(_twMpCost)·maliceDome60·hellRay100 — **전부 X 일치** |
+docs/2_1 스킬관리+합체시스템+자원/자원리젠+소모공식__NFD_0628_2305_백업.md:73:### 실제 소모 경로: _COST_BASE + stCost()/mpCost()
+docs/2_1 스킬관리+합체시스템+자원/자원리젠+소모공식__NFD_0628_2305_백업.md:76:stCost(key) = min( _COST_BASE[key] × (1 + (skLv-1) × _COST_DPS[key]) × _stDisc(key), P.mst × 0.90 )
+docs/2_1 스킬관리+합체시스템+자원/자원리젠+소모공식__NFD_0628_2305_백업.md:78:mpCost(key) = _COST_BASE[key] × (1 + (skLv-1) × _COST_DPS[key]) × pMagicCost()
+docs/2_1 스킬관리+합체시스템+자원/자원리젠+소모공식__NFD_0628_2305_백업.md:96:| 스킬 | 한글명 | _COST_BASE | DPS스케일 | Lv1→Lv10 | 할인 |
+docs/2_1 스킬관리+합체시스템+자원/자원리젠+소모공식__NFD_0628_2305_백업.md:124:## 5. 마법 계열 — MP 소모 (1회성, mpCost 경유)
+docs/2_1 스킬관리+합체시스템+자원/자원리젠+소모공식__NFD_0628_2305_백업.md:126:| 스킬 | 한글명 | _COST_BASE | DPS스케일 | Lv1→Lv10 | 비고 |
+docs/2_1 스킬관리+합체시스템+자원/자원리젠+소모공식__NFD_0628_2305_백업.md:133:| mortar | 폭풍소환 | 250 | +15%/Lv | 250→587 | |
+docs/2_1 스킬관리+합체시스템+자원/자원리젠+소모공식__NFD_0628_2305_백업.md:136:| elemMissile | 원소추적탄 | mpCost('magic') | X | |
+docs/2_1 스킬관리+합체시스템+자원/자원리젠+소모공식__NFD_0628_2305_백업.md:307:- ~~COST_GLOBAL/COST_PCT/\_COST\_RAW~~ — **삭제됨** (미사용 레거시). 실제 소비는 `_COST_BASE × (1+(skLv-1)×DPS스케일) × 할인계수` DPS비례 방식.
+docs/2_1 스킬관리+합체시스템+자원/2_1 스킬관리+합체시스템.md:858:| fireball | 악의구 | 우클릭 탭 | mpCost('magic') | 없음 | 어둠속성(EL.D) 마법 오브 1발 (범위폭발 80px×스케일, 본체60%뎀, 넉백 5%). 기본 보유. 폭발 시 어둠 버스트 VFX(vfx_dark_burst.png). **폭발 적중 시 중독 부여 (폭발뎀×2 총량, 10초, 최대10중첩)** | 크기×(1+(Lv-1)×0.50), 뎀=`_skMul('fireball')`(b=13.2, g=10.56, Lv당+5.28), 폭발범위×(1+(Lv-1)×0.50), 사거리=400+(Lv-1)×50 |
+docs/2_1 스킬관리+합체시스템+자원/2_1 스킬관리+합체시스템.md:860:| elemMissile | 원소추적탄 | 우클릭 탭 | mpCost('magic') | 없음 | 6원소 유도 미사일 3~6발 (Lv당+0.33발), 넉백 0 (p.kb=0) | 뎀=`_skMul('elemMissile')`(b=1.0, g=0.4), 사거리+26/Lv (1렙540, 10렙774) |
+docs/2_1 스킬관리+합체시스템+자원/2_1 스킬관리+합체시스템.md:1045:- **MP 소모**: `mpCost('magicBurst')` — base 30, Lv 스케일
+docs/2_1 스킬관리+합체시스템+자원/2_1 스킬관리+합체시스템.md:1301:| `pMagicCost()` | `max(0.40, 1-lv×0.04-mpCostRed-유니크)`; 패시브만 Lv10은0.60 | `mpCost()` MP비용, 암전나선 MP |
+docs/2_1 스킬관리+합체시스템+자원/자원리젠+소모공식.md:75:### 실제 소모 경로: _COST_BASE + stCost()/mpCost()
+docs/2_1 스킬관리+합체시스템+자원/자원리젠+소모공식.md:78:stCost(key) = min( _COST_BASE[key] × (1 + (skLv-1) × _COST_DPS[key]) × _stDisc(key), P.mst × 0.90 )
+docs/2_1 스킬관리+합체시스템+자원/자원리젠+소모공식.md:80:mpCost(key) = _COST_BASE[key] × (1 + (skLv-1) × _COST_DPS[key]) × pMagicCost()
+docs/2_1 스킬관리+합체시스템+자원/자원리젠+소모공식.md:98:| 스킬 | 한글명 | _COST_BASE | DPS스케일 | Lv1→Lv10 | 할인 |
+docs/2_1 스킬관리+합체시스템+자원/자원리젠+소모공식.md:126:## 5. 마법 계열 — MP 소모 (1회성, mpCost 경유)
+docs/2_1 스킬관리+합체시스템+자원/자원리젠+소모공식.md:128:| 스킬 | 한글명 | _COST_BASE | DPS스케일 | Lv1→Lv10 | 비고 |
+docs/2_1 스킬관리+합체시스템+자원/자원리젠+소모공식.md:135:| mortar | 폭풍소환 | 250 | +15%/Lv | 250→587 | |
+docs/2_1 스킬관리+합체시스템+자원/자원리젠+소모공식.md:138:| elemMissile | 원소추적탄 | mpCost('magic') | X | |
+docs/2_1 스킬관리+합체시스템+자원/자원리젠+소모공식.md:318:- ~~COST_GLOBAL/COST_PCT/\_COST\_RAW~~ — **삭제됨** (미사용 레거시). 실제 소비는 `_COST_BASE × (1+(skLv-1)×DPS스케일) × 할인계수` DPS비례 방식.
+docs/0마스터플랜/mac-resume-20261001/vscode-dispatch/COMBAT-REVIEW-20261002.md:10:| SKILL | `mortar-integration-ready` 준비, 전달0·Read0·미가동; 이전 실제3슬라이스19검사 인수 | 기존 mortar 가드의 현행 양쪽 생산 함수 문맥·드리프트·인접 회귀 확인 | 원함수 SHA·패치 적용가능성·동적 실제 MP 비용·정상/RNG parity; 생산 적용 뒤 실제 플레이는 별도 | 실제 현재 소스 새 감사38 PASS/0 FAIL. 헤더만 정규화한 미적용 patch 준비 |
+docs/0마스터플랜/mac-resume-20261001/vscode-dispatch/COMBAT-REVIEW-20261002.md:16:`node tools/team-followup-20261002/combat-review/mortar-integration-audit.mjs`를 실제 실행해 **38 PASS/0 FAIL**을 확인했다. 기존19검사의 반복 실행으로 집계한 숫자가 아니다. 현재 양쪽 실제 aim-start/confirm/fire 및 `_COST_BASE`·`_COST_SK`·`_COST_DPS`·`_skLv`·`_dpsCostMul`·`pMagicCost`·`mpCost`·`useMp`·`_r` 원문을 실행한다. 환경의 PASSIVES/어픽스/유니크 조회와 SFX는 fixture다.
+docs/0마스터플랜/mac-resume-20261001/vscode-dispatch/COMBAT-REVIEW-20261002.md:24:| 조준 중 magic discount 변경으로 비용 상승 | 실제 `pMagicCost`/`mpCost`가 확정 시 최신 비용을 계산하고 후보가 거부 | fixture PASSIVES 변경이며 사용자 상태를 쓰지 않음 |
+docs/0마스터플랜/mac-resume-20261001/vscode-dispatch/COMBAT-REVIEW-20261002.md:30:새로 확인한 적용 장애는 **owner patch의 파일 헤더**다. 기존 `mortar-confirm-source-{game,easy}.patch`의 `+++`가 `/private/tmp/claude-501/.../scratchpad/mm/...`를 가리켜 현행 Git의 `git apply --check`는 `No such file or directory`로 실패했다. 소스 문맥 드리프트나 생산 결함 추가를 의미하지 않는다. 원담당 patch는 그대로 보존했다.
+docs/0마스터플랜/mac-resume-20261001/vscode-dispatch/COMBAT-REVIEW-20261002.md:32:지원 파생본 `tools/team-followup-20261002/combat-review/mortar-integration-targets.patch`에서 `--- a/game*.html`·`+++ b/game*.html` 헤더만 정규화했다. **각 @@ 이하 hunk 바이트가 원담당 patch와 동일**하며 combined `git apply --check`가 통과했다. patch는 미적용이다. 기존 가드는 함수 시작의 MP 재검사1줄이며 새 로직 후보를 설계하지 않았다.
+docs/0마스터플랜/mac-resume-20261001/vscode-dispatch/COMBAT-REVIEW-20261002.md:34:첫 감사 원자료 `mortar-integration-first-run.json`의31 PASS/4 FAIL도 보존했다. 2 FAIL은 frozen 파일의 설명주석까지 비교한 지원 하니스 오류로, 원함수만 추출하도록 수정했다. 다른2 FAIL은 위 파일헤더의 실제 적용 준비 장애다. 최종 근거는 `mortar-integration-evidence.json`이다. 원담당 결과의 미래시각/전체 RNG0 표현을 현행 인수로 승격하지 않는다.
+docs/0마스터플랜/mac-resume-20261001/vscode-dispatch/COMBAT-REVIEW-20261002.md:38:`rg -n -i 'mortar|폭풍소환|fireMaliceMortar|light-normal-observer|qa_first_kill_cpu_probe|telegraph|foot.shadow' docs/ --glob '*.md'`를 실행했다. 기존 문서166매칭의 원문을 `tools/team-followup-20261002/combat-review/docs-search-20261002.txt`로 보존했다. 지원 도구 추가 후 관련 현행 계약과 미적용 상태를 이 문서에 기록했다. 공용 SSOT와 NFD 백업을 임의 수정하지 않는다.
+docs/0마스터플랜/mac-resume-20261001/vscode-dispatch/COMBAT-REVIEW-20261002.md:42:| `docs/14밸런스+수치테이블/자원소비량표.md` 52·93행 | mortar base50·+35%/Lv | 현행 비용 SSOT와 일치 |
+docs/0마스터플랜/mac-resume-20261001/vscode-dispatch/COMBAT-REVIEW-20261002.md:44:| `docs/14밸런스+수치테이블/스킬별_DPS_자원소비표.md` 45·51·130행 | mortar250·+15%·MP250×DPS | 같은 비용 불일치. 비용과 피해배율을 혼동하지 말고 비용 부분만 정정 |
+docs/0마스터플랜/mac-resume-20261001/vscode-dispatch/ASYNC-BOUNDARY-20261002.md:9:| SKILL | 실제 조준→확정→발사 슬라이스 통합 | 19 PASS | 기존 mortar MP 가드 후보 적용·실게임 |
+docs/0마스터플랜/mac-resume-20261001/vscode-dispatch/INDEPENDENT-NEXT-20261002.md:14:| SKILL | 검수된 mortar guard의 생산 적용 준비 및 원소스 회귀; SKILL 소유 후보 | 미전달. 생산 HTML 소유권 미부여, 다른 작업과 직렬 조율 필요 |
+docs/2_7 인벤토리+장비시스템/2_7 인벤토리+장비시스템.md:250:- **headband / headband2 (귀걸이1 / 귀걸이2)**: 마법데미지(magicDmg), MP소비감소(mpCostRed) 특화 (maxMPPct 어픽스 제거됨 → ST와 대칭 유지)

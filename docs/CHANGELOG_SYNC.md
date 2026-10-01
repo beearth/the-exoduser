@@ -52053,3 +52053,8 @@ Mac core.ignorecase=true에서 기존 build/ 규칙이 tools/team-followup-20261
 - 출력·팀 문서·canonical 상태를 동기화한다. 원격 확인 전 백업 완료로 주장하지 않는다.
 
 2026-10-02 독립 후속 인수 완료: UIUX 현행 factory/renderOssPanel과 승인 후보 byte 일치, 보호 저장10함수 SHA 동일, 담당 독립15 PASS를 root가 하니스·원자료로 검토했다. 기존 root34+32와 구분하며 생산 추가 수정0·native/패드/레이아웃 미검수다. BUILD 후속13도 완료했고 네 Codex 팀 모두 현재 배정의 실제 Read·완료를 확인했다. 다른7팀은 전달0/Read0 보류다. GitHub 601a0574 체크포인트 SHA를 재확인했으며 이 최종 기록의 원격 확인은 다음 checkpoint로 수행한다.
+### 2026-10-02 Mac 11팀 source 지원 인수 및 권한 변경 후 runtime 회복
+
+mortar 실제 비용/확정 source38검사 PASS 및 미적용 원후보 헤더 정정, MAP source9검사/과거PNG15 무결성과 정정8뷰, SOUND actual mkItem/등록/획득18그룹·84입력, shared-mats actual-file14 및 현행 양쪽 미적용 context patch를 기록했다. 생산코드 변화0. mortar 비용 canonical3문서는 base50/+35%/최종정수절삭, 할인없는 Lv10 최종207에 맞췄고 피해+15%·역사백업을 보존했다. 코드 도구·필수 합성 fixture·근거와 관련 docs를 함께 보존한다.
+
+unrestricted/network-enabled 변경 뒤 원격5b8e6ba9 exactHEAD 및 지정127.0.0.1:3340/격리SAVE_DIR의 Node서버 기동·실제슬롯API ok=true/기존1슬롯 응답을 확인했다. 기존저장 수정0·새게임/실측/시각/청취/패키지검수0. BUILD 공식 재전달은 active writer거절로 수신0/중복실행0. 이전 권한/DNS차단은 당시이력이며 새로운팀세션/자동화/PC재가동0. 총괄 MAC-COORDINATION-20261002.md와 resume-runtime-receipt.json, 최종 원격대조는 tmp/mac-migration-runtime/coordination-resume-checkpoint-20261002.json을 따른다. 자기검수55파일만 체크포인트하며 기존23보존항목·공용인덱스 소유권을 분리한다.

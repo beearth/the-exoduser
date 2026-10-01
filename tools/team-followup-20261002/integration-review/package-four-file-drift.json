@@ -1,0 +1,66 @@
+{
+  "checkedAt": "2026-10-01T23:18:02.581092+00:00",
+  "kind": "four_file_readonly_package_drift",
+  "packageSourceCommit": "6be3a06b4e8d03768a35f4c57d419f45c8efeb39",
+  "packagePath": "outputs/mac-package-ready/mac-packager-08cac1ce-21fb-4874-b4df-c136df5ac269/package/EXODUSER-08cac1ce-21fb-4874-b4df-c136df5ac269.app/Contents/Resources/app.nw",
+  "files": [
+    {
+      "file": "game.html",
+      "sourceBytes": 4025302,
+      "packageBytes": 4024167,
+      "sourceSha256": "30ae8544524d7cd710383ebd10f4911bea3247e90b18a46c51c253e73ce9ba3f",
+      "packageSha256": "c868284af349c996d42087e93eba47a10614d73cb8f55f4db5ae01dde89da31a",
+      "exactMatch": false
+    },
+    {
+      "file": "game-easy-test.html",
+      "sourceBytes": 3902427,
+      "packageBytes": 3901292,
+      "sourceSha256": "9c7c25c131f6175a464cffe2e981e946cf2a0af70ed04b969cc5292403799af8",
+      "packageSha256": "11b4e97b15903b9699b296362bdd068ffed6d3a1a505d9f6eeec5482b7c085ca",
+      "exactMatch": false
+    },
+    {
+      "file": "index.html",
+      "sourceBytes": 342046,
+      "packageBytes": 342046,
+      "sourceSha256": "38f4e0e97ed63014e86ec48a14d9d0a677472ef57b99916f9a48b7b3395e66c8",
+      "packageSha256": "38f4e0e97ed63014e86ec48a14d9d0a677472ef57b99916f9a48b7b3395e66c8",
+      "exactMatch": true
+    },
+    {
+      "file": "node-main.js",
+      "sourceBytes": 10153,
+      "packageBytes": 10261,
+      "sourceSha256": "01b0c1d51f77f500ee0a59185458bf0294edce12544482d6cf7abce4262c91ce",
+      "packageSha256": "f0f922cf4e62dd9f30282ebd37b6ef0c258f2864416e89ab125a6631fd8654c1",
+      "exactMatch": false,
+      "diffLines": [
+        "--- source\n",
+        "+++ package\n",
+        "@@ -14,5 +14,5 @@\n",
+        " dlog('=== EXODUSER RELEASE Server started ===');",
+        " ",
+        "-const PORT = 3333;",
+        "+const PORT = 3383;",
+        " const APP_DIR = __dirname;",
+        " ",
+        "@@ -44,5 +44,5 @@\n",
+        " // 세이브 폴더: %APPDATA%\\EXODUSER-HELL\\saves\\ (EA와 동일 경로 공유)",
+        " const APPDATA = process.env.APPDATA || require('os').homedir();",
+        "-const SAVE_DIR = path.join(APPDATA, 'EXODUSER-HELL', 'saves');",
+        "+const SAVE_DIR = \"/Users/fordeargamers/Projects/exoduser-migration-20261001/outputs/mac-package-ready/mac-packager-08cac1ce-21fb-4874-b4df-c136df5ac269/user-state/saves\";",
+        " if (!fs.existsSync(SAVE_DIR)) fs.mkdirSync(SAVE_DIR, { recursive: true });",
+        " "
+      ]
+    }
+  ],
+  "appLaunched": false,
+  "appModified": false,
+  "fullManifestRead": false,
+  "limitations": [
+    "node-main.js is intentionally transformed for isolated package port/save/profile; raw SHA mismatch alone is not a source regression.",
+    "Package has no server.cjs; its embedded server is node-main.js.",
+    "Four files only, no claim about entire package."
+  ]
+}

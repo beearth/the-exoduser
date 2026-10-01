@@ -1,0 +1,849 @@
+{
+  "task": "combat-review-mortar-integration-readiness",
+  "startedAt": "2026-10-01T23:15:48.440Z",
+  "completedAt": "2026-10-01T23:15:48.599Z",
+  "head": "5b8e6ba9d952d1148048c2889c588531640698fe",
+  "startGitItems": 24,
+  "sources": {
+    "game.html": {
+      "fileSha": "30ae8544524d7cd710383ebd10f4911bea3247e90b18a46c51c253e73ce9ba3f",
+      "slices": {
+        "aim": {
+          "sha256": "bc204f9f160a75d0660aa3301b164639b217714a7a130e97a4a66bbb6522ad7f",
+          "chars": 443
+        },
+        "confirm": {
+          "sha256": "caa4c1881e6d3be59ca9361d3157c6a0a8dccb4dfcd7c8e85ff18d0d5108c188",
+          "chars": 535
+        },
+        "fire": {
+          "sha256": "cdeeead948d5518c6beeb8f3eee4fbf38eed8cc785165738f7150f8c375f2f49",
+          "chars": 789
+        },
+        "costs": {
+          "sha256": "327181ff5ded95664611d3ef6d1e503b7df7cde1bf5988aa435383be0221e973",
+          "chars": 1452
+        }
+      }
+    },
+    "game-easy-test.html": {
+      "fileSha": "9c7c25c131f6175a464cffe2e981e946cf2a0af70ed04b969cc5292403799af8",
+      "slices": {
+        "aim": {
+          "sha256": "bc204f9f160a75d0660aa3301b164639b217714a7a130e97a4a66bbb6522ad7f",
+          "chars": 443
+        },
+        "confirm": {
+          "sha256": "caa4c1881e6d3be59ca9361d3157c6a0a8dccb4dfcd7c8e85ff18d0d5108c188",
+          "chars": 535
+        },
+        "fire": {
+          "sha256": "cdeeead948d5518c6beeb8f3eee4fbf38eed8cc785165738f7150f8c375f2f49",
+          "chars": 789
+        },
+        "costs": {
+          "sha256": "327181ff5ded95664611d3ef6d1e503b7df7cde1bf5988aa435383be0221e973",
+          "chars": 1452
+        }
+      }
+    }
+  },
+  "checks": [
+    {
+      "name": "game.html current fire is preserved owner frozen byte sequence",
+      "status": "FAIL",
+      "message": "AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:\n+ actual - expected\n\n+ 'function fireMaliceMortar(_tx,_ty){\\n' +\n- '/* game.html fireMaliceMortar 원함수 보존 (patch 미적용 기준). HEAD ae230e74. */\\n' +\n-   'function fireMaliceMortar(_tx,_ty){\\n' +\n    '  P._mmAiming=false;\\n' +\n    \"  useMp('mortar');\\n\" +\n    '  const tx=_tx!=null?_tx:P.x+Math.cos(P.facing)*(P._mmDist||150);\\n' +\n    '  const ty=_ty!=null?_ty:P.y+Math.sin(P.facing)*(P._mmDist||150);\\n' +\n    '  const _mmSlv=P.skills.maliceMortar||1;\\n' +\n"
+    },
+    {
+      "name": "game.html existing minimum patch applies clean",
+      "status": "FAIL",
+      "message": "Error: Command failed: git apply --check /Users/fordeargamers/Projects/exoduser-migration-20261001/tools/team-followup-20261001/SKILL/mortar-confirm-source-game.patch\nerror: private/tmp/claude-501/-Users-fordeargamers-Projects-exoduser-migration-20261001/203377cc-64c4-47ea-af27-95b66ae829fa/scratchpad/mm/game.html: No such file or directory\n"
+    },
+    {
+      "name": "game.html actual cost path, fractional affordability {\"lv\":1}",
+      "status": "PASS"
+    },
+    {
+      "name": "game.html exact-cost valid source state/RNG parity {\"lv\":1} seed0.2",
+      "status": "PASS"
+    },
+    {
+      "name": "game.html exact-cost valid source state/RNG parity {\"lv\":1} seed0.8",
+      "status": "PASS"
+    },
+    {
+      "name": "game.html actual cost path, fractional affordability {\"lv\":5,\"passive\":3}",
+      "status": "PASS"
+    },
+    {
+      "name": "game.html exact-cost valid source state/RNG parity {\"lv\":5,\"passive\":3} seed0.2",
+      "status": "PASS"
+    },
+    {
+      "name": "game.html exact-cost valid source state/RNG parity {\"lv\":5,\"passive\":3} seed0.8",
+      "status": "PASS"
+    },
+    {
+      "name": "game.html actual cost path, fractional affordability {\"lv\":20,\"affix\":0.1}",
+      "status": "PASS"
+    },
+    {
+      "name": "game.html exact-cost valid source state/RNG parity {\"lv\":20,\"affix\":0.1} seed0.2",
+      "status": "PASS"
+    },
+    {
+      "name": "game.html exact-cost valid source state/RNG parity {\"lv\":20,\"affix\":0.1} seed0.8",
+      "status": "PASS"
+    },
+    {
+      "name": "game.html actual cost path, fractional affordability {\"lv\":10,\"passive\":20,\"affix\":0.2}",
+      "status": "PASS"
+    },
+    {
+      "name": "game.html exact-cost valid source state/RNG parity {\"lv\":10,\"passive\":20,\"affix\":0.2} seed0.2",
+      "status": "PASS"
+    },
+    {
+      "name": "game.html exact-cost valid source state/RNG parity {\"lv\":10,\"passive\":20,\"affix\":0.2} seed0.8",
+      "status": "PASS"
+    },
+    {
+      "name": "game.html current pMagicCost changing during aim is rechecked at confirm",
+      "status": "PASS"
+    },
+    {
+      "name": "game.html failed release does not retry/spam without a new confirm input",
+      "status": "PASS"
+    },
+    {
+      "name": "game.html failed fused confirm preserves existing bomb/cooldown until fresh input",
+      "status": "PASS"
+    },
+    {
+      "name": "game-easy-test.html current fire is preserved owner frozen byte sequence",
+      "status": "FAIL",
+      "message": "AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:\n+ actual - expected\n\n+ 'function fireMaliceMortar(_tx,_ty){\\n' +\n- '/* game.html fireMaliceMortar 원함수 보존 (patch 미적용 기준). HEAD ae230e74. */\\n' +\n-   'function fireMaliceMortar(_tx,_ty){\\n' +\n    '  P._mmAiming=false;\\n' +\n    \"  useMp('mortar');\\n\" +\n    '  const tx=_tx!=null?_tx:P.x+Math.cos(P.facing)*(P._mmDist||150);\\n' +\n    '  const ty=_ty!=null?_ty:P.y+Math.sin(P.facing)*(P._mmDist||150);\\n' +\n    '  const _mmSlv=P.skills.maliceMortar||1;\\n' +\n"
+    },
+    {
+      "name": "game-easy-test.html existing minimum patch applies clean",
+      "status": "FAIL",
+      "message": "Error: Command failed: git apply --check /Users/fordeargamers/Projects/exoduser-migration-20261001/tools/team-followup-20261001/SKILL/mortar-confirm-source-easy.patch\nerror: private/tmp/claude-501/-Users-fordeargamers-Projects-exoduser-migration-20261001/203377cc-64c4-47ea-af27-95b66ae829fa/scratchpad/mm/game-easy-test.html: No such file or directory\n"
+    },
+    {
+      "name": "game-easy-test.html actual cost path, fractional affordability {\"lv\":1}",
+      "status": "PASS"
+    },
+    {
+      "name": "game-easy-test.html exact-cost valid source state/RNG parity {\"lv\":1} seed0.2",
+      "status": "PASS"
+    },
+    {
+      "name": "game-easy-test.html exact-cost valid source state/RNG parity {\"lv\":1} seed0.8",
+      "status": "PASS"
+    },
+    {
+      "name": "game-easy-test.html actual cost path, fractional affordability {\"lv\":5,\"passive\":3}",
+      "status": "PASS"
+    },
+    {
+      "name": "game-easy-test.html exact-cost valid source state/RNG parity {\"lv\":5,\"passive\":3} seed0.2",
+      "status": "PASS"
+    },
+    {
+      "name": "game-easy-test.html exact-cost valid source state/RNG parity {\"lv\":5,\"passive\":3} seed0.8",
+      "status": "PASS"
+    },
+    {
+      "name": "game-easy-test.html actual cost path, fractional affordability {\"lv\":20,\"affix\":0.1}",
+      "status": "PASS"
+    },
+    {
+      "name": "game-easy-test.html exact-cost valid source state/RNG parity {\"lv\":20,\"affix\":0.1} seed0.2",
+      "status": "PASS"
+    },
+    {
+      "name": "game-easy-test.html exact-cost valid source state/RNG parity {\"lv\":20,\"affix\":0.1} seed0.8",
+      "status": "PASS"
+    },
+    {
+      "name": "game-easy-test.html actual cost path, fractional affordability {\"lv\":10,\"passive\":20,\"affix\":0.2}",
+      "status": "PASS"
+    },
+    {
+      "name": "game-easy-test.html exact-cost valid source state/RNG parity {\"lv\":10,\"passive\":20,\"affix\":0.2} seed0.2",
+      "status": "PASS"
+    },
+    {
+      "name": "game-easy-test.html exact-cost valid source state/RNG parity {\"lv\":10,\"passive\":20,\"affix\":0.2} seed0.8",
+      "status": "PASS"
+    },
+    {
+      "name": "game-easy-test.html current pMagicCost changing during aim is rechecked at confirm",
+      "status": "PASS"
+    },
+    {
+      "name": "game-easy-test.html failed release does not retry/spam without a new confirm input",
+      "status": "PASS"
+    },
+    {
+      "name": "game-easy-test.html failed fused confirm preserves existing bomb/cooldown until fresh input",
+      "status": "PASS"
+    },
+    {
+      "name": "both current relevant source slices are equal",
+      "status": "PASS"
+    }
+  ],
+  "evidence": [
+    {
+      "file": "game.html",
+      "config": {
+        "lv": 1
+      },
+      "actualCost": 50,
+      "mpAtConfirm": 49.75,
+      "original": {
+        "P": {
+          "x": 10,
+          "y": 20,
+          "facing": 0.4,
+          "mp": 0,
+          "skills": {
+            "maliceMortar": 1,
+            "iceOrb": 0
+          },
+          "_mmCd": 660,
+          "_ioCd": 0,
+          "_mmDist": 150,
+          "_mmAiming": false,
+          "_mmCharging": false,
+          "_mmAimKey": "Digit1"
+        },
+        "bomb": {
+          "sx": 10,
+          "sy": 20,
+          "tx": 148.15914910043276,
+          "ty": 78.41275134629757,
+          "x": 10,
+          "y": 20,
+          "t": 0,
+          "maxT": 40,
+          "r": 400,
+          "phase": "throw",
+          "vortex": true,
+          "iceFuse": false,
+          "slv": 1
+        },
+        "lastCost": 49.75,
+        "counts": {
+          "rng": 1,
+          "sfx": 1,
+          "sample": 1,
+          "shake": 1,
+          "messages": []
+        }
+      },
+      "candidate": {
+        "P": {
+          "x": 10,
+          "y": 20,
+          "facing": 0.4,
+          "mp": 49.75,
+          "skills": {
+            "maliceMortar": 1,
+            "iceOrb": 0
+          },
+          "_mmCd": 0,
+          "_ioCd": 0,
+          "_mmDist": 150,
+          "_mmAiming": true,
+          "_mmCharging": false,
+          "_mmAimKey": "Digit1"
+        },
+        "lastCost": 0,
+        "counts": {
+          "rng": 0,
+          "sfx": 0,
+          "sample": 0,
+          "shake": 0,
+          "messages": [
+            "MP 부족!"
+          ]
+        }
+      }
+    },
+    {
+      "file": "game.html",
+      "config": {
+        "lv": 5,
+        "passive": 3
+      },
+      "actualCost": 105,
+      "mpAtConfirm": 104.75,
+      "original": {
+        "P": {
+          "x": 10,
+          "y": 20,
+          "facing": 0.4,
+          "mp": 0,
+          "skills": {
+            "maliceMortar": 5,
+            "iceOrb": 0
+          },
+          "_mmCd": 660,
+          "_ioCd": 0,
+          "_mmDist": 150,
+          "_mmAiming": false,
+          "_mmCharging": false,
+          "_mmAimKey": "Digit1"
+        },
+        "bomb": {
+          "sx": 10,
+          "sy": 20,
+          "tx": 148.15914910043276,
+          "ty": 78.41275134629757,
+          "x": 10,
+          "y": 20,
+          "t": 0,
+          "maxT": 40,
+          "r": 472,
+          "phase": "throw",
+          "vortex": true,
+          "iceFuse": false,
+          "slv": 5
+        },
+        "lastCost": 104.75,
+        "counts": {
+          "rng": 1,
+          "sfx": 1,
+          "sample": 1,
+          "shake": 1,
+          "messages": []
+        }
+      },
+      "candidate": {
+        "P": {
+          "x": 10,
+          "y": 20,
+          "facing": 0.4,
+          "mp": 104.75,
+          "skills": {
+            "maliceMortar": 5,
+            "iceOrb": 0
+          },
+          "_mmCd": 0,
+          "_ioCd": 0,
+          "_mmDist": 150,
+          "_mmAiming": true,
+          "_mmCharging": false,
+          "_mmAimKey": "Digit1"
+        },
+        "lastCost": 0,
+        "counts": {
+          "rng": 0,
+          "sfx": 0,
+          "sample": 0,
+          "shake": 0,
+          "messages": [
+            "MP 부족!"
+          ]
+        }
+      }
+    },
+    {
+      "file": "game.html",
+      "config": {
+        "lv": 20,
+        "affix": 0.1
+      },
+      "actualCost": 344,
+      "mpAtConfirm": 343.75,
+      "original": {
+        "P": {
+          "x": 10,
+          "y": 20,
+          "facing": 0.4,
+          "mp": 0,
+          "skills": {
+            "maliceMortar": 20,
+            "iceOrb": 0
+          },
+          "_mmCd": 660,
+          "_ioCd": 0,
+          "_mmDist": 150,
+          "_mmAiming": false,
+          "_mmCharging": false,
+          "_mmAimKey": "Digit1"
+        },
+        "bomb": {
+          "sx": 10,
+          "sy": 20,
+          "tx": 148.15914910043276,
+          "ty": 78.41275134629757,
+          "x": 10,
+          "y": 20,
+          "t": 0,
+          "maxT": 40,
+          "r": 742,
+          "phase": "throw",
+          "vortex": true,
+          "iceFuse": false,
+          "slv": 20
+        },
+        "lastCost": 343.75,
+        "counts": {
+          "rng": 1,
+          "sfx": 1,
+          "sample": 1,
+          "shake": 1,
+          "messages": []
+        }
+      },
+      "candidate": {
+        "P": {
+          "x": 10,
+          "y": 20,
+          "facing": 0.4,
+          "mp": 343.75,
+          "skills": {
+            "maliceMortar": 20,
+            "iceOrb": 0
+          },
+          "_mmCd": 0,
+          "_ioCd": 0,
+          "_mmDist": 150,
+          "_mmAiming": true,
+          "_mmCharging": false,
+          "_mmAimKey": "Digit1"
+        },
+        "lastCost": 0,
+        "counts": {
+          "rng": 0,
+          "sfx": 0,
+          "sample": 0,
+          "shake": 0,
+          "messages": [
+            "MP 부족!"
+          ]
+        }
+      }
+    },
+    {
+      "file": "game.html",
+      "config": {
+        "lv": 10,
+        "passive": 20,
+        "affix": 0.2
+      },
+      "actualCost": 83,
+      "mpAtConfirm": 82.75,
+      "original": {
+        "P": {
+          "x": 10,
+          "y": 20,
+          "facing": 0.4,
+          "mp": 0,
+          "skills": {
+            "maliceMortar": 10,
+            "iceOrb": 0
+          },
+          "_mmCd": 660,
+          "_ioCd": 0,
+          "_mmDist": 150,
+          "_mmAiming": false,
+          "_mmCharging": false,
+          "_mmAimKey": "Digit1"
+        },
+        "bomb": {
+          "sx": 10,
+          "sy": 20,
+          "tx": 148.15914910043276,
+          "ty": 78.41275134629757,
+          "x": 10,
+          "y": 20,
+          "t": 0,
+          "maxT": 40,
+          "r": 562,
+          "phase": "throw",
+          "vortex": true,
+          "iceFuse": false,
+          "slv": 10
+        },
+        "lastCost": 82.75,
+        "counts": {
+          "rng": 1,
+          "sfx": 1,
+          "sample": 1,
+          "shake": 1,
+          "messages": []
+        }
+      },
+      "candidate": {
+        "P": {
+          "x": 10,
+          "y": 20,
+          "facing": 0.4,
+          "mp": 82.75,
+          "skills": {
+            "maliceMortar": 10,
+            "iceOrb": 0
+          },
+          "_mmCd": 0,
+          "_ioCd": 0,
+          "_mmDist": 150,
+          "_mmAiming": true,
+          "_mmCharging": false,
+          "_mmAimKey": "Digit1"
+        },
+        "lastCost": 0,
+        "counts": {
+          "rng": 0,
+          "sfx": 0,
+          "sample": 0,
+          "shake": 0,
+          "messages": [
+            "MP 부족!"
+          ]
+        }
+      }
+    },
+    {
+      "file": "game.html",
+      "dynamicCost": {
+        "before": 96,
+        "after": 120,
+        "mp": 96
+      }
+    },
+    {
+      "file": "game-easy-test.html",
+      "config": {
+        "lv": 1
+      },
+      "actualCost": 50,
+      "mpAtConfirm": 49.75,
+      "original": {
+        "P": {
+          "x": 10,
+          "y": 20,
+          "facing": 0.4,
+          "mp": 0,
+          "skills": {
+            "maliceMortar": 1,
+            "iceOrb": 0
+          },
+          "_mmCd": 660,
+          "_ioCd": 0,
+          "_mmDist": 150,
+          "_mmAiming": false,
+          "_mmCharging": false,
+          "_mmAimKey": "Digit1"
+        },
+        "bomb": {
+          "sx": 10,
+          "sy": 20,
+          "tx": 148.15914910043276,
+          "ty": 78.41275134629757,
+          "x": 10,
+          "y": 20,
+          "t": 0,
+          "maxT": 40,
+          "r": 400,
+          "phase": "throw",
+          "vortex": true,
+          "iceFuse": false,
+          "slv": 1
+        },
+        "lastCost": 49.75,
+        "counts": {
+          "rng": 1,
+          "sfx": 1,
+          "sample": 1,
+          "shake": 1,
+          "messages": []
+        }
+      },
+      "candidate": {
+        "P": {
+          "x": 10,
+          "y": 20,
+          "facing": 0.4,
+          "mp": 49.75,
+          "skills": {
+            "maliceMortar": 1,
+            "iceOrb": 0
+          },
+          "_mmCd": 0,
+          "_ioCd": 0,
+          "_mmDist": 150,
+          "_mmAiming": true,
+          "_mmCharging": false,
+          "_mmAimKey": "Digit1"
+        },
+        "lastCost": 0,
+        "counts": {
+          "rng": 0,
+          "sfx": 0,
+          "sample": 0,
+          "shake": 0,
+          "messages": [
+            "MP 부족!"
+          ]
+        }
+      }
+    },
+    {
+      "file": "game-easy-test.html",
+      "config": {
+        "lv": 5,
+        "passive": 3
+      },
+      "actualCost": 105,
+      "mpAtConfirm": 104.75,
+      "original": {
+        "P": {
+          "x": 10,
+          "y": 20,
+          "facing": 0.4,
+          "mp": 0,
+          "skills": {
+            "maliceMortar": 5,
+            "iceOrb": 0
+          },
+          "_mmCd": 660,
+          "_ioCd": 0,
+          "_mmDist": 150,
+          "_mmAiming": false,
+          "_mmCharging": false,
+          "_mmAimKey": "Digit1"
+        },
+        "bomb": {
+          "sx": 10,
+          "sy": 20,
+          "tx": 148.15914910043276,
+          "ty": 78.41275134629757,
+          "x": 10,
+          "y": 20,
+          "t": 0,
+          "maxT": 40,
+          "r": 472,
+          "phase": "throw",
+          "vortex": true,
+          "iceFuse": false,
+          "slv": 5
+        },
+        "lastCost": 104.75,
+        "counts": {
+          "rng": 1,
+          "sfx": 1,
+          "sample": 1,
+          "shake": 1,
+          "messages": []
+        }
+      },
+      "candidate": {
+        "P": {
+          "x": 10,
+          "y": 20,
+          "facing": 0.4,
+          "mp": 104.75,
+          "skills": {
+            "maliceMortar": 5,
+            "iceOrb": 0
+          },
+          "_mmCd": 0,
+          "_ioCd": 0,
+          "_mmDist": 150,
+          "_mmAiming": true,
+          "_mmCharging": false,
+          "_mmAimKey": "Digit1"
+        },
+        "lastCost": 0,
+        "counts": {
+          "rng": 0,
+          "sfx": 0,
+          "sample": 0,
+          "shake": 0,
+          "messages": [
+            "MP 부족!"
+          ]
+        }
+      }
+    },
+    {
+      "file": "game-easy-test.html",
+      "config": {
+        "lv": 20,
+        "affix": 0.1
+      },
+      "actualCost": 344,
+      "mpAtConfirm": 343.75,
+      "original": {
+        "P": {
+          "x": 10,
+          "y": 20,
+          "facing": 0.4,
+          "mp": 0,
+          "skills": {
+            "maliceMortar": 20,
+            "iceOrb": 0
+          },
+          "_mmCd": 660,
+          "_ioCd": 0,
+          "_mmDist": 150,
+          "_mmAiming": false,
+          "_mmCharging": false,
+          "_mmAimKey": "Digit1"
+        },
+        "bomb": {
+          "sx": 10,
+          "sy": 20,
+          "tx": 148.15914910043276,
+          "ty": 78.41275134629757,
+          "x": 10,
+          "y": 20,
+          "t": 0,
+          "maxT": 40,
+          "r": 742,
+          "phase": "throw",
+          "vortex": true,
+          "iceFuse": false,
+          "slv": 20
+        },
+        "lastCost": 343.75,
+        "counts": {
+          "rng": 1,
+          "sfx": 1,
+          "sample": 1,
+          "shake": 1,
+          "messages": []
+        }
+      },
+      "candidate": {
+        "P": {
+          "x": 10,
+          "y": 20,
+          "facing": 0.4,
+          "mp": 343.75,
+          "skills": {
+            "maliceMortar": 20,
+            "iceOrb": 0
+          },
+          "_mmCd": 0,
+          "_ioCd": 0,
+          "_mmDist": 150,
+          "_mmAiming": true,
+          "_mmCharging": false,
+          "_mmAimKey": "Digit1"
+        },
+        "lastCost": 0,
+        "counts": {
+          "rng": 0,
+          "sfx": 0,
+          "sample": 0,
+          "shake": 0,
+          "messages": [
+            "MP 부족!"
+          ]
+        }
+      }
+    },
+    {
+      "file": "game-easy-test.html",
+      "config": {
+        "lv": 10,
+        "passive": 20,
+        "affix": 0.2
+      },
+      "actualCost": 83,
+      "mpAtConfirm": 82.75,
+      "original": {
+        "P": {
+          "x": 10,
+          "y": 20,
+          "facing": 0.4,
+          "mp": 0,
+          "skills": {
+            "maliceMortar": 10,
+            "iceOrb": 0
+          },
+          "_mmCd": 660,
+          "_ioCd": 0,
+          "_mmDist": 150,
+          "_mmAiming": false,
+          "_mmCharging": false,
+          "_mmAimKey": "Digit1"
+        },
+        "bomb": {
+          "sx": 10,
+          "sy": 20,
+          "tx": 148.15914910043276,
+          "ty": 78.41275134629757,
+          "x": 10,
+          "y": 20,
+          "t": 0,
+          "maxT": 40,
+          "r": 562,
+          "phase": "throw",
+          "vortex": true,
+          "iceFuse": false,
+          "slv": 10
+        },
+        "lastCost": 82.75,
+        "counts": {
+          "rng": 1,
+          "sfx": 1,
+          "sample": 1,
+          "shake": 1,
+          "messages": []
+        }
+      },
+      "candidate": {
+        "P": {
+          "x": 10,
+          "y": 20,
+          "facing": 0.4,
+          "mp": 82.75,
+          "skills": {
+            "maliceMortar": 10,
+            "iceOrb": 0
+          },
+          "_mmCd": 0,
+          "_ioCd": 0,
+          "_mmDist": 150,
+          "_mmAiming": true,
+          "_mmCharging": false,
+          "_mmAimKey": "Digit1"
+        },
+        "lastCost": 0,
+        "counts": {
+          "rng": 0,
+          "sfx": 0,
+          "sample": 0,
+          "shake": 0,
+          "messages": [
+            "MP 부족!"
+          ]
+        }
+      }
+    },
+    {
+      "file": "game-easy-test.html",
+      "dynamicCost": {
+        "before": 96,
+        "after": 120,
+        "mp": 96
+      }
+    }
+  ],
+  "pass": 31,
+  "fail": 4,
+  "productionApplied": false,
+  "limits": [
+    "Actual source aim/confirm/fire/cost/RNG helper slices; game/DOM/physics not executed",
+    "Actual pMagicCost with fixture PASSIVES/affix/unique lookups; audio effects are counters, not playback",
+    "Whole-program RNG behavior and actual game MP-change play are not verified",
+    "Existing owner patch is preserved and not rewritten or applied",
+    "Source readiness is not runtime or visual acceptance"
+  ]
+}

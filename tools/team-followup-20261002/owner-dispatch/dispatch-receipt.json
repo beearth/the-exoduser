@@ -1,0 +1,65 @@
+{
+  "at": "2026-10-01T23:17:11.955Z",
+  "kind": "attempted-not-delivered",
+  "teams": [
+    {
+      "team": "UIUX",
+      "threadId": "01a0f6e5-8653-7ae2-8b2b-314e275c215c",
+      "at": "2026-10-01T23:16:43.941Z",
+      "result": {
+        "content": [
+          {
+            "type": "text",
+            "text": "MCP tool call requires approval, but approval policy is never"
+          }
+        ],
+        "isError": true
+      }
+    },
+    {
+      "team": "BUILD",
+      "threadId": "01a0f6e6-2e4c-7322-92d7-3aa309857856",
+      "at": "2026-10-01T23:16:43.944Z",
+      "result": {
+        "content": [
+          {
+            "type": "text",
+            "text": "MCP tool call requires approval, but approval policy is never"
+          }
+        ],
+        "isError": true
+      }
+    },
+    {
+      "team": "ITEM",
+      "threadId": "01a0f6e6-1fbe-7df0-8d02-a9c2d9df3750",
+      "at": "2026-10-01T23:16:43.946Z",
+      "result": {
+        "content": [
+          {
+            "type": "text",
+            "text": "MCP tool call requires approval, but approval policy is never"
+          }
+        ],
+        "isError": true
+      }
+    },
+    {
+      "team": "BALANCE",
+      "threadId": "01a0f6e6-5303-7392-81ba-94c42e349ffc",
+      "at": "2026-10-01T23:16:43.947Z",
+      "result": {
+        "content": [
+          {
+            "type": "text",
+            "text": "MCP tool call requires approval, but approval policy is never"
+          }
+        ],
+        "isError": true
+      }
+    }
+  ],
+  "deliveryCount": 0,
+  "readCount": 0,
+  "constraints": "Tool approval required; current approval policy never. No retry or alternate messaging."
+}

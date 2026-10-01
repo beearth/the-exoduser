@@ -1,0 +1,38 @@
+{
+  "at": "2026-10-01T23:19:22.401841+00:00",
+  "kind": "mortar-cost-document-sync-only",
+  "codeChanges": 0,
+  "level10Raw": 207.5,
+  "level10FinalAtDiscount1": 207,
+  "files": [
+    {
+      "path": "docs/2_1 스킬관리+합체시스템+자원/자원리젠+소모공식.md",
+      "beforeSha256": "14c6e001b54ba814c9cb54c075373a8efd38020436a853efd3d80f4a97c437bb",
+      "afterSha256": "34f3804123037e635fdab92fc43e7619bd211413e22004c2053203ed9446a111",
+      "backup": "tmp/mac-migration-runtime/coordination-doc-backup-20261002/자원리젠+소모공식.md",
+      "replacements": 1,
+      "lineEndingsPreserved": true
+    },
+    {
+      "path": "docs/14밸런스+수치테이블/스킬별_DPS_자원소비표.md",
+      "beforeSha256": "a8db01a1aa042460062c7a43158627bb6aac7e6d7a2f070a4e308af8ba46abd8",
+      "afterSha256": "336ca84b7581c1c512c2df511c373df9ae12f03a112ca562e6b60e918850d6ea",
+      "backup": "tmp/mac-migration-runtime/coordination-doc-backup-20261002/스킬별_DPS_자원소비표.md",
+      "replacements": 3,
+      "lineEndingsPreserved": true
+    },
+    {
+      "path": "docs/14밸런스+수치테이블/스킬_밸런스_리포트.md",
+      "beforeSha256": "d12562d24ee0bbcb00539d717f1b12d9b3043c9955a5f3051dc71fad49aa89bc",
+      "afterSha256": "25d4c2c23417d46a817bcdc7d7a516689db575ae0d5e2b6877f93024b0ba3dc3",
+      "backup": "tmp/mac-migration-runtime/coordination-doc-backup-20261002/스킬_밸런스_리포트.md",
+      "replacements": 1,
+      "lineEndingsPreserved": true
+    }
+  ],
+  "preserved": [
+    "__NFD historical backup",
+    "protected parry docs",
+    "all other production values"
+  ]
+}

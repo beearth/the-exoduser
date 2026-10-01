@@ -1,0 +1,24 @@
+{
+  "at": "2026-10-01T23:28:42.652186+00:00",
+  "kind": "permission-change recovery; prior failures historical",
+  "verifiedSourceRef": "refs/heads/codex/mac-environment-20261001",
+  "verifiedSourceSha": "5b8e6ba9d952d1148048c2889c588531640698fe",
+  "server": {
+    "port": 3340,
+    "host": "127.0.0.1",
+    "saveDir": "tmp/mac-migration-runtime/saves",
+    "started": true,
+    "slotsAPI": {
+      "ok": true,
+      "slotCount": 1
+    },
+    "gameMeasurements": 0
+  },
+  "ownerDispatch": {
+    "BUILD": "one retry: active writer rejected, received0",
+    "others": "not resent"
+  },
+  "newOwnerSessions": 0,
+  "productionChanges": 0,
+  "checkpointFinalReceipt": "tmp/mac-migration-runtime/coordination-resume-checkpoint-20261002.json"
+}

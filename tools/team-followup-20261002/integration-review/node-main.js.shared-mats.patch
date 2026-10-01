@@ -1,0 +1,44 @@
+diff --git a/node-main.js b/node-main.js
+index 8b0fa00b..7266fca8 100644
+--- a/node-main.js
++++ b/node-main.js
+@@ -62,6 +62,30 @@ function readBody(req) {
+   });
+ }
+ 
++let atomicSaveSequence = 0;
++function atomicSaveJSON(fs, file, data, processId) {
++  const serialized = JSON.stringify(data, null, 2);
++  const temporary = file + '.tmp-' + processId + '-' + (++atomicSaveSequence);
++  let descriptor;
++  let owned = false;
++  try {
++    descriptor = fs.openSync(temporary, 'wx');
++    owned = true;
++    fs.writeFileSync(descriptor, serialized, 'utf8');
++    fs.closeSync(descriptor);
++    descriptor = undefined;
++    fs.renameSync(temporary, file);
++    owned = false;
++  } finally {
++    if (descriptor !== undefined) {
++      try { fs.closeSync(descriptor); } catch {}
++    }
++    if (owned) {
++      try { fs.unlinkSync(temporary); } catch {}
++    }
++  }
++}
++
+ http.createServer(async (req, res) => {
+   let pathname = urlMod.parse(req.url).pathname;
+ 
+@@ -159,7 +183,7 @@ http.createServer(async (req, res) => {
+   if (pathname === '/api/mats' && req.method === 'POST') {
+     const body = await readBody(req);
+     const n = Math.max(0, Math.min(Math.floor(+body.mats || 0), Number.MAX_SAFE_INTEGER));
+-    fs.writeFileSync(MATS_FILE, JSON.stringify({ mats: n, ts: Date.now() }), 'utf8');
++    atomicSaveJSON(fs, MATS_FILE, { mats: n, ts: Date.now() }, process.pid);
+     return sendJSON(res, 200, { ok: true, mats: n });
+   }
+ 

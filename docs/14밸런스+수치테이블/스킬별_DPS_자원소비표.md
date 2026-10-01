@@ -1,5 +1,8 @@
 # 스킬별 DPS + 자원 소비 총정리
 
+> **2026-10-02 폭풍소환 MP 현행 교정:** 본편/easy의 key=`mortar`, 스킬레벨=`P.skills.maliceMortar||1`, `_COST_BASE=50`, `_COST_DPS=.35`. `mpCost`는 `~~(50×(1+(Lv−1)×.35)×pMagicCost())`로 최종 정수 절삭한다. 할인계수1에서 Lv1=50/Lv10=207(절삭 전207.5), 할인계수.4에서20/83이다. `pMagicCost()=max(.40,1−PASSIVES.pMagic×.04−_eqAffix('mpCostRed')−(_uEq('_uHelmMagic')||0))`. 비용계수와 피해 성장률을 구분한다. 다른 스킬의 아래 과거 수치·비교는 이번 감사에서 검수하지 않았다. 생산 수치 변경0, 확정입력 재검사 patch는 아직 미적용. [38검사·소스 근거](../0마스터플랜/mac-resume-20261001/vscode-dispatch/COMBAT-REVIEW-20261002.md).
+
+
 > **2026-09-10 현행 교정:** 악의구는 `_skMul=13.2+(Lv−1)×10.56×0.5`; Lv1=13.2, Lv10=60.72, Lv20=113.52; magicRef×statInt×pMagicMul×_fuseMul, 직격100%+폭발60%. Space 지옥강타는 `floor(floor(meleeRef×statStr×(20+(Lv−1)×19×0.5)×_rageMul)×pAtkMul)+_atkBon`; pAtkMul은 _gSlamHit에서1회. 분노100 기본20배. 쿨다운 `floor(max(60,1800−(slv−1)×12)×(1+_cdRed()))`f (Lv1=30초), 합체 giantSlam2 특정 경로는420f 기반. 과거 비교/순위는 당시 이력이며 [최신 기준](EARLY_COMBAT_5_7_1_20260910.md)을 우선한다.
 
 
@@ -42,13 +45,13 @@ COST_BASE: (단발성 기본 250, 기본공격 10)
   weapon:10, finisher:250, shield:10, giantSlam:50
   charge:250, bladeDash:250
   bow:250, bladeShot:250, blastShot:250, shieldThrow:250, fanShot:250
-  magic:250, blink:250, iceOrb:250, dimBreach:250, exBolt:250, mortar:250
+  magic:250, blink:250, iceOrb:250, dimBreach:250, exBolt:250, mortar:50
   whirlTick:0.4, sBlockTick:0.4, qsTick:0.5
 
 DPS스케일 (_COST_DPS): 각 스킬의 DPS 성장률과 동일
   물리(+10%): giantSlam, charge, bladeDash, finisher
   석궁(+5~10%): bow/fanShot(5%), bladeShot/blastShot(10%), shieldThrow(8%)
-  마법(+10~15%): magic/iceOrb/mortar(15%), blink/dimBreach/exBolt(10%)
+  마법(+10~15%): magic/iceOrb(15%), mortar(35%, 비용), blink/dimBreach/exBolt(10%)
 
 채널링: 기본 30/초 × (1+(Lv-1)×DPS스케일)
   회전참: 30+Lv당5 (Lv1=30, Lv10=75, Lv20=125)
@@ -127,7 +130,7 @@ DPS_BAL = { bow: 0.77, magic: 0.475, beam: 0.0080 }
 | arcLaser | 얼음송곳 | MP | **8+Lv/초 (채널링)** | 없음 (우클릭 홀드) | INT × magicRef × pMagicMul × _skMul('arcLaser') **(b:8, g:6.4)** ÷4틱/초 | 4hit/s → Lv20 DPS=276. 직선 관통 레이저, 폭160+(Lv×10), 사거리1200+Lv×80, 감속. (2026-05-30 b:2.5→8, g:2→6.4) |
 | fireBeam | 업화선 | MP | floor(50×(1+(Lv-1)×0.12))/차징 시작 | floor(60/pMagicSpd())프레임 | magicRef×INT×pMagic×pBeam×_skMul×_fuseMul×max(10,차징초×40) | 최대5초 차징, 직선 관통+폭발+화상; 고정 DPS는 차징 조건 없이 산정 불가 |
 | fireAura | 지옥진 | MP | **100** 고정 | **720f (12초)** | INT × (6+(Lv-1)) /틱 | 10초간 용암기둥, 범위+10%/Lv 뎀+1/Lv |
-| maliceMortar | 폭풍소환 | MP | 250×DPS (마법할인, key=mortar) | **660f (11초)** | INT 스케일 | 6.5초간 소용돌이, 범위 400+(Lv-1)×18 (1렙400, 20렙742), **흡인력 2.0+Lv×0.1** — lv1=2.1, lv20=4.0, 랩당 +0.1 선형 (2026-05-13 수정), 마우스 조준 클릭 설치 (사거리 1000px) (2026-04-21 범위×2) |
+| maliceMortar | 폭풍소환 | MP | `~~(50×(1+(Lv−1)×.35)×pMagicCost())` (key=mortar) | **660f (11초)** | INT 스케일 | 6.5초간 소용돌이, 범위 400+(Lv-1)×18 (1렙400, 20렙742), **흡인력 2.0+Lv×0.1** — lv1=2.1, lv20=4.0, 랩당 +0.1 선형 (2026-05-13 수정), 마우스 조준 클릭 설치 (사거리 1000px) (2026-04-21 범위×2) |
 | plagueBurst | 폭독칼날 | 악의 | **15** 고정 | **900f (15초, 최소10초)** | STR 스케일 | 관통률 **800+(Lv-1)×20 + bowPierce×300 + pPierce×30 +100**, **적중뎀 10% 출혈(무한중첩)**, 전염+처형, 사거리 **2000+(Lv-1)×100** |
 | maliceStorm | 악의폭풍 | MP | 90 추정 | **1200f (20초)** | magicRef × INT × pMagicMul × **_skMul('maliceStorm')** (b:7, g:5.6) × _fuseMul | 3.3tick/s → DPS 23(Lv1)→198(Lv20). 10초 암전나선, 범위 200+(Lv-1)×22 (2026-05-29 밸런스 평균화) |
 | darkPillar | 악의기둥 | MP | mpCost 기반 | **900f (15초)** | INT × (4+(Lv-1)) | 9기둥 각각10초, 범위 250+(Lv-1)×22, Lv당 뎀+1 |

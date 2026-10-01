@@ -1,0 +1,163 @@
+{
+  "startedAt": "2026-10-01T23:18:47.074Z",
+  "runtime": {
+    "node": "v24.15.0",
+    "platform": "darwin",
+    "arch": "arm64"
+  },
+  "before": {
+    "server.cjs": "18cf9aa806d5715788f360debbc2a45c2574a76db952f101b524e2ff77fd517d",
+    "node-main.js": "01b0c1d51f77f500ee0a59185458bf0294edce12544482d6cf7abce4262c91ce",
+    "tools/team-followup-20261001/BALANCE/shared-mats-atomic-candidate.mjs": "75cb158df4a54569603a4a9855369e72a45d7b135ca0bf07d071141e2b19da1b",
+    "tools/team-followup-20261001/BALANCE/shared-mats-atomic-doc-search.txt": "80c0331ace81be33681d829a8b46691b2f28f1c5d2bc563be35e3a9fcc503c54",
+    "tools/team-followup-20261001/BALANCE/shared-mats-atomic-evidence.json": "af4e8a384d376f0e166fa2882b9f6fc1be5485e053bbe13a2f444e50649c577a",
+    "tools/team-followup-20261001/BALANCE/shared-mats-atomic-integration.patch": "30185ae9f4b7d4ded17f428179df91d6b8f3b59670c3217f37499c5214132d05",
+    "tools/team-followup-20261001/BALANCE/shared-mats-atomic-receipt.json": "28e99703a203e2ad4f8e5e60627b264907056e83f3b4d7078f0da4ac70a60273",
+    "tools/team-followup-20261001/BALANCE/shared-mats-atomic-result.md": "9d41b38d18035aee83e6fbb739aee9d8ca97ef0dbbba8c11b2acbb6455708d56",
+    "tools/team-followup-20261001/BALANCE/shared-mats-atomic-task.md": "b566aa20c971a437b0366a7279325c7a20c04dea2a37f30ee5645e06e1cc255d",
+    "tools/team-followup-20261001/BALANCE/shared-mats-atomic-test.mjs": "17ffaff899167d8ed312a1ad9b8571369915110ef346f4609bde6fc3f4fb5d5b",
+    "tools/team-followup-20261001/BALANCE/shared-mats-atomic-tests.txt": "af4e8a384d376f0e166fa2882b9f6fc1be5485e053bbe13a2f444e50649c577a"
+  },
+  "checks": [
+    "server.cjs 신규 실제 bytes/GET/콜백ACK",
+    "server.cjs 기존 교체",
+    "server.cjs 반복 저장·clamp/schema 10입력",
+    "server.cjs write주입 실패 이전bytes/GET/temp/ACK0",
+    "server.cjs rename주입 실패 이전bytes/GET/temp/ACK0",
+    "server.cjs 실제ENOENT POST거부/GET0",
+    "server.cjs 원문 부분쓰기 실제 손상 GET0",
+    "node-main.js 신규 실제 bytes/GET/콜백ACK",
+    "node-main.js 기존 교체",
+    "node-main.js 반복 저장·clamp/schema 10입력",
+    "node-main.js write주입 실패 이전bytes/GET/temp/ACK0",
+    "node-main.js rename주입 실패 이전bytes/GET/temp/ACK0",
+    "node-main.js 실제ENOENT POST거부/GET0",
+    "node-main.js 원문 부분쓰기 실제 손상 GET0"
+  ],
+  "errors": [
+    {
+      "sourceFile": "server.cjs",
+      "mode": "write",
+      "kind": "injected",
+      "code": "EIO"
+    },
+    {
+      "sourceFile": "server.cjs",
+      "mode": "rename",
+      "kind": "injected",
+      "code": "EIO"
+    },
+    {
+      "sourceFile": "server.cjs",
+      "kind": "actual OS",
+      "code": "ENOENT",
+      "syscall": "open"
+    },
+    {
+      "sourceFile": "node-main.js",
+      "mode": "write",
+      "kind": "injected",
+      "code": "EIO"
+    },
+    {
+      "sourceFile": "node-main.js",
+      "mode": "rename",
+      "kind": "injected",
+      "code": "EIO"
+    },
+    {
+      "sourceFile": "node-main.js",
+      "kind": "actual OS",
+      "code": "ENOENT",
+      "syscall": "open"
+    }
+  ],
+  "counterexamples": [
+    {
+      "sourceFile": "server.cjs",
+      "input": {
+        "previous": 4567,
+        "post": 100,
+        "failure": "8 chars then injected EIO"
+      },
+      "originalBytes": "{\"mats\":",
+      "originalGet": {
+        "ok": true,
+        "mats": 0
+      },
+      "candidateGet": {
+        "ok": true,
+        "mats": 4567
+      }
+    },
+    {
+      "sourceFile": "node-main.js",
+      "input": {
+        "previous": 4567,
+        "post": 100,
+        "failure": "8 chars then injected EIO"
+      },
+      "originalBytes": "{\"mats\":",
+      "originalGet": {
+        "ok": true,
+        "mats": 0
+      },
+      "candidateGet": {
+        "ok": true,
+        "mats": 4567
+      }
+    }
+  ],
+  "hashes": {
+    "server.cjs": {
+      "get": "721cf522bb88ac56820e28026a7d63d32ca4e2efe9d9e46d9040afbd2dda76f7",
+      "post": "da16f804c862dda894083674eb33456b5f945a06db22e86fc832bb9b539f0116",
+      "helper": "3dc865c85002dcc58e2986d0bcbb069e47f6663d6c4c4ed5555370d7a1b5684a"
+    },
+    "node-main.js": {
+      "get": "478234c1293b3ce91701ea507f81f61f66246ff99af21e167bcdb65b72352b4d",
+      "post": "a08ce9307b630417013062564f0f4b7fdb1a7c1cc19973a4f1d7016b8eeacee2",
+      "helper": "3dc865c85002dcc58e2986d0bcbb069e47f6663d6c4c4ed5555370d7a1b5684a"
+    }
+  },
+  "output": "/Users/fordeargamers/Projects/exoduser-migration-20261001/tools/team-followup-20261002/integration-review/shared-mats-owned-fixtures/run-kntge3",
+  "status": "actual_owned_files_14pass",
+  "after": {
+    "server.cjs": "18cf9aa806d5715788f360debbc2a45c2574a76db952f101b524e2ff77fd517d",
+    "node-main.js": "01b0c1d51f77f500ee0a59185458bf0294edce12544482d6cf7abce4262c91ce",
+    "tools/team-followup-20261001/BALANCE/shared-mats-atomic-candidate.mjs": "75cb158df4a54569603a4a9855369e72a45d7b135ca0bf07d071141e2b19da1b",
+    "tools/team-followup-20261001/BALANCE/shared-mats-atomic-doc-search.txt": "80c0331ace81be33681d829a8b46691b2f28f1c5d2bc563be35e3a9fcc503c54",
+    "tools/team-followup-20261001/BALANCE/shared-mats-atomic-evidence.json": "af4e8a384d376f0e166fa2882b9f6fc1be5485e053bbe13a2f444e50649c577a",
+    "tools/team-followup-20261001/BALANCE/shared-mats-atomic-integration.patch": "30185ae9f4b7d4ded17f428179df91d6b8f3b59670c3217f37499c5214132d05",
+    "tools/team-followup-20261001/BALANCE/shared-mats-atomic-receipt.json": "28e99703a203e2ad4f8e5e60627b264907056e83f3b4d7078f0da4ac70a60273",
+    "tools/team-followup-20261001/BALANCE/shared-mats-atomic-result.md": "9d41b38d18035aee83e6fbb739aee9d8ca97ef0dbbba8c11b2acbb6455708d56",
+    "tools/team-followup-20261001/BALANCE/shared-mats-atomic-task.md": "b566aa20c971a437b0366a7279325c7a20c04dea2a37f30ee5645e06e1cc255d",
+    "tools/team-followup-20261001/BALANCE/shared-mats-atomic-test.mjs": "17ffaff899167d8ed312a1ad9b8571369915110ef346f4609bde6fc3f4fb5d5b",
+    "tools/team-followup-20261001/BALANCE/shared-mats-atomic-tests.txt": "af4e8a384d376f0e166fa2882b9f6fc1be5485e053bbe13a2f444e50649c577a"
+  },
+  "preserved": true,
+  "files": [
+    {
+      "file": "node-main-js/_redMats.json",
+      "bytes": 8,
+      "sha256": "8dab2dffea7b00a78f2bc279f81784407ed0ce13282c8d249d65d375ac286138"
+    },
+    {
+      "file": "node-main-js/_sharedMats.json",
+      "bytes": 34,
+      "sha256": "08d6ba4a165d7543c51c84aba09847421d45518652a453a37bb8af0a96bab853"
+    },
+    {
+      "file": "server-cjs/_redMats.json",
+      "bytes": 8,
+      "sha256": "8dab2dffea7b00a78f2bc279f81784407ed0ce13282c8d249d65d375ac286138"
+    },
+    {
+      "file": "server-cjs/_sharedMats.json",
+      "bytes": 34,
+      "sha256": "08d6ba4a165d7543c51c84aba09847421d45518652a453a37bb8af0a96bab853"
+    }
+  ],
+  "completedAt": "2026-10-01T23:18:47.127Z",
+  "limits": "실제 소유 합성파일만. write/rename EIO주입 vs 실제ENOENT 구분. HTTP/앱/fsync/전원손실/크래시/Windows/동시writer 미검수"
+}

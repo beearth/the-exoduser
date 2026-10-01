@@ -1,0 +1,48 @@
+{
+  "checkedAt": "2026-10-01T23:19:24.013571+00:00",
+  "soundGroups": 18,
+  "soundFixtureRuns": 84,
+  "balanceGroups": 14,
+  "balancePreserved": true,
+  "patchChecks": [
+    {
+      "file": "server.cjs",
+      "status": 0
+    },
+    {
+      "file": "node-main.js",
+      "status": 0
+    }
+  ],
+  "docsLines": 121,
+  "docsFiles": 46,
+  "observedChangeItems": 68,
+  "sourceStartChangeItems": 23,
+  "completedAt": "2026-10-01T23:20:41.587548+00:00",
+  "finalObservedChangeItems": 70,
+  "finalDocsLines": 131,
+  "finalDocsFiles": 47,
+  "ownedChangeEntries": [
+    "?? docs/0마스터플랜/mac-resume-20261001/vscode-dispatch/INTEGRATION-REVIEW-20261002.md",
+    "?? tools/team-followup-20261002/integration-review/completion-summary.json",
+    "?? tools/team-followup-20261002/integration-review/docs-keywords.txt",
+    "?? tools/team-followup-20261002/integration-review/mkitem-sideeffects-evidence.json",
+    "?? tools/team-followup-20261002/integration-review/mkitem-sideeffects-source.mjs",
+    "?? tools/team-followup-20261002/integration-review/mkitem-sideeffects-tests.txt",
+    "?? tools/team-followup-20261002/integration-review/node-main.js.shared-mats-candidate",
+    "?? tools/team-followup-20261002/integration-review/node-main.js.shared-mats.patch",
+    "?? tools/team-followup-20261002/integration-review/package-four-file-drift.json",
+    "?? tools/team-followup-20261002/integration-review/prepare-shared-mats-patches.mjs",
+    "?? tools/team-followup-20261002/integration-review/server.cjs.shared-mats-candidate",
+    "?? tools/team-followup-20261002/integration-review/server.cjs.shared-mats.patch",
+    "?? tools/team-followup-20261002/integration-review/shared-mats-file-independent.json",
+    "?? tools/team-followup-20261002/integration-review/shared-mats-file-independent.mjs",
+    "?? tools/team-followup-20261002/integration-review/shared-mats-file-tests.txt",
+    "?? tools/team-followup-20261002/integration-review/shared-mats-owned-fixtures/run-kntge3/node-main-js/_redMats.json",
+    "?? tools/team-followup-20261002/integration-review/shared-mats-owned-fixtures/run-kntge3/node-main-js/_sharedMats.json",
+    "?? tools/team-followup-20261002/integration-review/shared-mats-owned-fixtures/run-kntge3/server-cjs/_redMats.json",
+    "?? tools/team-followup-20261002/integration-review/shared-mats-owned-fixtures/run-kntge3/server-cjs/_sharedMats.json",
+    "?? tools/team-followup-20261002/integration-review/shared-mats-patch-evidence.json",
+    "?? tools/team-followup-20261002/integration-review/shared-mats-patch-tests.txt"
+  ]
+}
