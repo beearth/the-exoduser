@@ -49,3 +49,5 @@ SOUND `aa3ac0ed-f4e5-44ad-a0b2-d4d2da045b84`의 읽기 전용 도구 구성 때�
 ENEMY 기존9/9 모의 검사 통과 후 root 추가 재현에서 `getTick()=>null`·rAF451회가 `elapsedTicks:null`, `tickSource:unavailable(_gameFrame)`, `inRangeTicks:451`, `FAIL_NO_FIRE`로 잘못 분류됐다. 시계 미확인 자료는 INCONCLUSIVE여야 한다. 물리 tick 누락을 rAF로 대체하는 결함이 있어 라이브 판정용 인수 보류. ENEMY 후속 지시는 native 입력 포커스를 확인할 수 없어 아직 전송하지 않았다. 전달 완료나 AI 자체 결함으로 보고하지 않는다.
 
 BUILD 다음 한 건은 기존 세션의 실패 포트→NW.js 진입 차단 정적 추적/독립 후보다. `BUILD-entry-followup.md`를 공식 queue로1회 전달했다. 이 기록 시점에는 대기열 등록만 확인했고 실제 수신·착수·완료는 후속 receipt로 구분한다. 실제 게임/소켓/빌드는 금지했다.
+
+BUILD failure-entry 후속 실제 수신/착수11:05:52Z·완료11:06:56Z. root가 전체 후보·검사 코드를 읽고19/19 재실행 PASS. 생산/실제NW.js 미인수. 다음은 기존 세션에 context-probe 하니스 준비1건만 queue, QA 중 실제 실행 금지. 실제 수신은 별도 확인한다.

@@ -51705,3 +51705,8 @@ QA light-normal observer: one draw wrapper and rAF samples, no CPU/GPU profiler.
 ## 2026-10-01 — 정상 전투 경량 관측과 BUILD 후보 인수
 
 생산 수정 없이2회 실측·raw/화면/통계 보존, 비교 부적격 명시. BUILD 포트 오류 독립 후보13/13 root 재검사·생산 미반영. SOUND 후보 easy 불일치 및 ENEMY tick 누락 오판정 기록. [검수](0마스터플랜/mac-resume-20261001/vscode-dispatch/ROOT_REVIEW.md).
+
+
+## 2026-10-01 — 경량 관측109.8ms 후속 귀속 준비
+
+원자료상 첫 처치보다 약5초 앞선 간격이며 첫 공격 전이다. loop/update/draw3래퍼+CPU샘플의 별도1회 진단 계획과 수명회귀를 추가했다. 생산수정0·계측오버헤드미측정·비교금지. 계획: `tools/team-followup-20261001/QA/GAP_ATTRIBUTION_PLAN.md`.

@@ -1,0 +1,25 @@
+{
+  "taskId": "BUILD-FAILURE-ENTRY",
+  "sessionId": "01a0f6e6-2e4c-7322-92d7-3aa309857856",
+  "sessionIdEvidence": "총괄 지시서; 런타임 대조 없음",
+  "model": null,
+  "receivedAt": "2026-10-01T11:05:52Z",
+  "startedAt": "2026-10-01T11:05:52Z",
+  "completedAt": "2026-10-01T11:06:56Z",
+  "status": "독립 후보·모의19/19 완료 / 생산 미반영",
+  "validation": "모의 검사19/19 exit0, 상태 모듈 구문 exit0",
+  "ownedPaths": [
+    "tools/team-followup-20261001/BUILD/failure-entry/",
+    "docs/0마스터플랜/mac-resume-20261001/vscode-dispatch/BUILD-entry-receipt.json",
+    "docs/0마스터플랜/mac-resume-20261001/vscode-dispatch/BUILD-entry-result.md"
+  ],
+  "startEvidence": "package.json 직접 읽기 및 main/node-main/빌더 진입 치환 검색 exit0",
+  "nextAction": "총괄 인수 및 다음 지시 대기; 새 작업·세션 생성 없음",
+  "blocker": "NW.js 실제 공유 process·포트 충돌·진입 차단·패키지 정체 검수는 별도 게이트",
+  "rootReview": {
+    "at": "2026-10-01T11:10:07.542993+00:00",
+    "pass": 19,
+    "fail": 0,
+    "accepted": "independent candidate; actual NW.js gate pending"
+  }
+}
