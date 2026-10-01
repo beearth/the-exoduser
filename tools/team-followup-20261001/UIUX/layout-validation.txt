@@ -1,0 +1,15 @@
+PASS 단독 원위치
+PASS 중복 예고 분리
+PASS 예고 우선 피해수치 후순위
+PASS 입력 미변경/결정성
+PASS 120개 포화는 삭제하지 않고 미해결 표시
+PASS 1280 해상도 모서리
+PASS 1324 해상도 모서리
+PASS 390 해상도 모서리
+PASS 긴 EN 폭 축소/절단 금지
+PASS HUD 예약 구역 회피
+PASS 부정확한 좌표 거절
+PASS 중복ID 거절
+PASS 빈 프레임 회수
+PASS 줌 변환 동치
+{"checks":14,"scope":"독립 합성 레이아웃 회귀, 실제 Canvas 시각/성능 PASS 아님"}

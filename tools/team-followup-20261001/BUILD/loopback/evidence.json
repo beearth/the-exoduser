@@ -1,0 +1,35 @@
+{
+  "startedAt": "2026-10-01T12:24:21.065Z",
+  "completedAt": "2026-10-01T12:24:21.072Z",
+  "kind": "real-Node-loopback-plus-VM-entry",
+  "node": "v24.15.0",
+  "fixture": "/Users/fordeargamers/Projects/exoduser-migration-20261001/tools/team-followup-20261001/BUILD/loopback/fixture-p2Vk63",
+  "sources": {
+    "node-main.js": "01b0c1d51f77f500ee0a59185458bf0294edce12544482d6cf7abce4262c91ce",
+    "tools/team-followup-20261001/BUILD/handoff-bundle/node-main.js.diff": "0b73e33805ba05602cb377db8d7e38b2f8fac76fb62b882faab68f2eb7069534"
+  },
+  "writes": [],
+  "observations": {
+    "cleaned": true
+  },
+  "rows": [
+    {
+      "name": "integration execution",
+      "status": "FAIL",
+      "error": "Error: listen EPERM: operation not permitted 127.0.0.1\n    at Server.setupListenHandle [as _listen2] (node:net:1986:21)\n    at listenInCluster (node:net:2065:12)\n    at node:net:2274:7\n    at process.processTicksAndRejections (node:internal/process/task_queues:90:21)"
+    }
+  ],
+  "pass": 0,
+  "fail": 1,
+  "substitutions": [
+    "PORT=0 for initial listen, own allocated port for rival",
+    "SAVE_DIR=unique fixture/saves",
+    "only extracted save helpers/routes and candidate listen/error tail execute",
+    "VM entry allowed-port list replaced by allocated port; navigation captured only"
+  ],
+  "limits": [
+    "No NW.js context identity or actual browser navigation.",
+    "No real EACCES test, game or package validation.",
+    "Filesystem proxy constrains extracted save API, not whole production code."
+  ]
+}

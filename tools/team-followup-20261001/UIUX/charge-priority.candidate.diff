@@ -1,0 +1,53 @@
+--- a/game.html
++++ b/game.html
+@@ -22910,14 +22910,24 @@
+-function _drawProjectileChargeLabel(x,y,r,label){
+-  const cy=y-r-25;
+-  X.save();X.globalCompositeOperation='source-over';X.globalAlpha=1;
+-  X.font='bold 13px "Noto Sans KR",sans-serif';X.textAlign='center';X.textBaseline='middle';
+-  const metrics=_chargeLabelMetrics;
+-  if(metrics.ctx!==X||metrics.label!==label||metrics.font!==X.font){
+-    metrics.width=X.measureText(label).width;metrics.ctx=X;metrics.label=label;metrics.font=X.font;
+-  }
+-  const tw=metrics.width,bw=tw+14,bh=20,bx=x-bw/2,by=cy-bh/2;
+-  X.fillStyle='rgba(5,8,13,.92)';X.strokeStyle='#f4f4f4';X.lineWidth=1.5;
+-  X.fillRect(bx,by,bw,bh);X.strokeRect(bx,by,bw,bh);
+-  X.fillStyle='#ffffff';X.fillText(label,x,cy);
+-  X.restore();
+-}
++const _combatChargeReadings=[];
++function _drawProjectileChargeLabel(x,y,r,label){
++  _combatChargeReadings.push({x,y,r,label});
++}
++function _flushCombatChargeReadings(){
++  for(const reading of _combatChargeReadings){
++    _paintProjectileChargeLabel(reading.x,reading.y,reading.r,reading.label);
++  }
++  _combatChargeReadings.length=0;
++}
++function _paintProjectileChargeLabel(x,y,r,label){
++  const cy=y-r-25;
++  X.save();X.globalCompositeOperation='source-over';X.globalAlpha=1;
++  X.font='bold 13px "Noto Sans KR",sans-serif';X.textAlign='center';X.textBaseline='middle';
++  const metrics=_chargeLabelMetrics;
++  if(metrics.ctx!==X||metrics.label!==label||metrics.font!==X.font){
++    metrics.width=X.measureText(label).width;metrics.ctx=X;metrics.label=label;metrics.font=X.font;
++  }
++  const tw=metrics.width,bw=tw+14,bh=20,bx=x-bw/2,by=cy-bh/2;
++  X.fillStyle='rgba(5,8,13,.92)';X.strokeStyle='#f4f4f4';X.lineWidth=1.5;
++  X.fillRect(bx,by,bw,bh);X.strokeRect(bx,by,bw,bh);
++  X.fillStyle='#ffffff';X.fillText(label,x,cy);
++  X.restore();
++}
+@@ -49862,2 +49872,3 @@
+-function draw(){
+-  if(!X)return;
++function draw(){
++  _combatChargeReadings.length=0;
++  if(!X)return;
+@@ -52950,2 +52961,3 @@
+-  X.restore();
+-  if(_wantPlateTest()){
++  _flushCombatChargeReadings();
++  X.restore();
++  if(_wantPlateTest()){

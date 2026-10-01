@@ -1,0 +1,33 @@
+{
+  "taskId": "MAP-020-M5-PREFLIGHT",
+  "title": "M5 보행 경계 검수 후보 안전화",
+  "team": "MAP",
+  "terminal": 3,
+  "cli": "claude-code",
+  "model": "claude-opus-4-8",
+  "sessionId": null,
+  "receivedAt": "2026-10-01T10:07:12Z",
+  "startedAt": "2026-10-01T10:07:12Z",
+  "status": "done_pending_live_gate",
+  "completedAt": "2026-10-01T10:18:00Z",
+  "head": "30a204a7aa348a88b90bdc922862c610a7da938f",
+  "ownedPaths": [
+    "docs/0마스터플랜/mac-resume-20261001/vscode-dispatch/MAP-result.md",
+    "docs/0마스터플랜/mac-resume-20261001/vscode-dispatch/MAP-receipt.json",
+    "tools/team-followup-20261001/MAP/"
+  ],
+  "deliverables": [
+    "tools/team-followup-20261001/MAP/m5-walk-harness.safe.js",
+    "tools/team-followup-20261001/MAP/mock-harness-check.cjs",
+    "tools/team-followup-20261001/MAP/mock-check-output.txt",
+    "tools/team-followup-20261001/MAP/_source-candidate-MAP.js",
+    "tools/team-followup-20261001/MAP/_source-검증결과.md"
+  ],
+  "verification": {
+    "nodeCheck": "PASS (node v24.15.0)",
+    "mock": "32 PASS / 0 FAIL (exit 0)"
+  },
+  "nextAction": "실화면 보행 검수·시각 인수(원거리 반복무늬/shade 사각절단/M5 보행경계)는 QA 종료 인계 후 수행. SSOT M5 7000,6900 좌표 정정은 생산수정 소유자 인계.",
+  "blocker": "실게임 기동은 QA 종료 인계 전 보류(MAP/ART/UIUX/ANIMVFX 공통).",
+  "notes": "원본 candidates/MAP.js·검증결과.md·teams/MAP.md는 r-input-evidence/evidence.zip 내부에 있어 스크래치패드로 추출해 읽기 전용 대조. 공용 game.html·마스터/상태판·타 팀 WIP·세이브·Git 미변경."
+}

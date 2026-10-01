@@ -1,0 +1,20 @@
+const fs = require('node:fs');
+const path = require('node:path');
+const vm = require('node:vm');
+const assert = require('node:assert/strict');
+const { prepare, apply } = require('./prepare.cjs');
+const rows = [];
+function check(name, action) { try { action(); rows.push({ name, status: 'PASS' }); } catch (error) { rows.push({ name, status: 'FAIL', error: error.message }); } }
+const id = 'test-' + Date.now();
+const output = prepare(id);
+const read = file => fs.readFileSync(path.join(output, file), 'utf8');
+check('all required entry files present', () => { for (const file of ['package-entry-state.cjs', 'package-entry.html', 'node-main.js', 'index.html', 'package.json', 'manifest.json']) assert.ok(read(file)); });
+check('package main and unique absolute profile', () => { const pkg = JSON.parse(read('package.json')); assert.equal(pkg.main, 'package-entry.html'); assert.ok(pkg.name.endsWith(id)); assert.ok(pkg['chromium-args'].includes(path.join(output, 'fixture-profile'))); assert.ok(!pkg['chromium-args'].includes('--no-sandbox')); });
+check('server isolated save and fixed port', () => { const source = read('node-main.js'); assert.ok(source.includes('const PORT = 3347;')); assert.ok(source.includes("path.join(__dirname, 'fixture-saves')")); assert.ok(!source.includes("path.join(APPDATA, 'EXODUSER-HELL', 'saves')")); new vm.Script(source); });
+check('refuse existing output and invalid path', () => { assert.throws(() => prepare(id), /EEXIST/); assert.throws(() => prepare('../escape'), /Invalid unique id/); });
+check('fixture not game and not previous server marker', () => { assert.ok(read('index.html').includes('게임 아님')); assert.ok(!read('index.html').includes('game.html')); });
+check('builder patch apply order remains valid', () => { const input = fs.readFileSync(path.join(__dirname, 'inputs/build-nwjs.mjs'), 'utf8'); const diff = fs.readFileSync(path.join(__dirname, 'build-nwjs.mjs.diff'), 'utf8'); const source = apply(input, diff); assert.ok(source.indexOf("nwPkg.main = 'package-entry.html'") > source.indexOf("nwPkg.main = nwPkg.main.replace('localhost:3333', 'localhost:3347')")); });
+fs.rmSync(output, { recursive: true });
+const result = { at: new Date().toISOString(), kind: 'small-file-fixture-no-runtime', rows, pass: rows.filter(row => row.status === 'PASS').length, fail: rows.filter(row => row.status === 'FAIL').length };
+fs.writeFileSync(path.join(__dirname, 'bundle-evidence.json'), JSON.stringify(result, null, 2) + '\n');
+console.log(JSON.stringify({ pass: result.pass, fail: result.fail })); process.exitCode = result.fail ? 1 : 0;

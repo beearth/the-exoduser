@@ -1,0 +1,46 @@
+{
+  "taskId": "ANIMVFX-GL-PROBE-FIX",
+  "team": "ANIMVFX",
+  "head": "30a204a7aa348a88b90bdc922862c610a7da938f",
+  "node": "v24.15.0",
+  "deliverables": {
+    "tools/team-followup-20261001/ANIMVFX/animvfx_gl_probe.js": "b7ca9939f44f59dca4a67f1853327b61480c61e112d9e88d2df65c55a041ec7c",
+    "tools/team-followup-20261001/ANIMVFX/animvfx_gl_validator.mjs": "9312a7163706d6a48a108ff26b98deed1025ccc0b4566865ca754f6bcac59365",
+    "tools/team-followup-20261001/ANIMVFX/animvfx_highhz_lifetime_gate.mjs (ANIM-HIGHHZ-LIFETIME-GATE)": "3309238f04d51ccf65af92b90c9aade9edb034e0632a81119d17efa198dfcfd7"
+  },
+  "followupTask_ANIM_HIGHHZ_LIFETIME_GATE": {
+    "checks": [
+      { "cmd": "node --check animvfx_highhz_lifetime_gate.mjs", "exit": 0 },
+      { "cmd": "node animvfx_highhz_lifetime_gate.mjs (부정회귀 fixture 11종)", "exit": 0, "result": "11/11 기대 일치" },
+      { "cmd": "node animvfx_highhz_lifetime_gate.mjs gl-revive-valid.json", "result": "비치명4 감쇠 PASS(update-tick 구동)·고주사율 UNKNOWN·부활 3/구울 1" },
+      { "cmd": "node animvfx_highhz_lifetime_gate.mjs gl-revive-60.json", "result": "감쇠 PASS·고주사율 UNKNOWN·부활 2/구울 2" },
+      { "cmd": "node animvfx_highhz_lifetime_gate.mjs gl-revive-raw.json", "result": "에피소드 0 · UNKNOWN" }
+    ],
+    "highRefreshActual": "NOT-MEASURED (자연감쇠 drawHz ~36-38Hz) — UNKNOWN, PASS 아님",
+    "priorValidatorRegression": "mock 9/9 유지"
+  },
+  "sources_read_only": {
+    "evidence.zip": "bd20c18c8d7b66537e5514405d0ff033cc538c6a1b0b967005b5b10a4449a41f",
+    "candidates/ANIMVFX.js (원본 후보)": "69382b56040920d399c33ed37b34b942aa55c9bbbfa4228067826408a6e658e2",
+    "gl-revive-raw.json (무효 표본)": "7e42128cd8be879633b9403e257d001d045f4df94dda51fdf15ce773df68771e",
+    "gl-revive-valid.json (유효·무제한)": "587adcef613e834bfe559e1d25f816181de504077d56f2c66ffe7f2a3f4eb58f",
+    "gl-revive-60.json (유효·60fps)": "2e32cad9ece7a2f7c95bc953b32229769e7029bbbc16eb2120b6002fd16bb001"
+  },
+  "productionUnchanged": {
+    "game.html(현 워킹트리, 타팀 WIP 포함; 내 변경 0)": "593a7a9d84c78402f04c50c94ae169e237e49751ad58d8640e78e672850728f2",
+    "note": "game.html은 총괄 소유. 본 세션 미편집. 해시가 팀보고 시점 775237034…과 다른 것은 타 팀 미커밋 변경 때문이며 내 변경 아님."
+  },
+  "checks": [
+    { "cmd": "node --check animvfx_gl_probe.js", "exit": 0, "result": "구문 PASS" },
+    { "cmd": "node --check animvfx_gl_validator.mjs", "exit": 0, "result": "구문 PASS" },
+    { "cmd": "node animvfx_gl_validator.mjs (내장 mock 9종)", "exit": 0, "result": "9/9 기대 분류 일치 (GL_ABSENT·가짜contextLost거부·CONTEXT_LOST·ZERO_SAMPLE×2·SAMPLED 고/저주사율·부활잔상FAIL·새구울)" },
+    { "cmd": "node animvfx_gl_validator.mjs gl-revive-raw.json", "exit": 0, "result": "ZERO_SAMPLE · drawHz≈34(low) · 부활 NO_VERDICT (R 문서의 무효 표본과 일치)" },
+    { "cmd": "node animvfx_gl_validator.mjs gl-revive-valid.json", "exit": 0, "result": "SAMPLED · 동일객체 부활 3 / 새 구울 1 · hf0·mode1 PASS · drawHz≈38.8 고주사율 REJECT" },
+    { "cmd": "node animvfx_gl_validator.mjs gl-revive-60.json", "exit": 0, "result": "SAMPLED · 동일객체 부활 2 / 새 구울 2 · hf0·mode1 PASS · drawHz≈42.7 고주사율 REJECT" }
+  ],
+  "notExecuted": [
+    "게임/브라우저/서버 실행 0 (ANIMVFX은 QA 종료 인계 전 보류)",
+    "animvfx_gl_probe.js 브라우저 실행 0 (정규 GL 실화면·고주사율·자연 전투·새 구울 시각 인수는 미실시)",
+    "git add/commit/push 0, game.html·easy·패키지·세이브·PC/3333 변경 0"
+  ]
+}

@@ -1,0 +1,39 @@
+[
+  {
+    "command": [
+      "/Users/fordeargamers/.local/node-runtime/node-v24.15.0-darwin-arm64/bin/node",
+      "--test",
+      "tools/team-followup-20261001/SOUND/dedup-source-regression.cjs"
+    ],
+    "exitCode": 0,
+    "output": "game.html:29491 sha256=439ed1be7ce7ea78\ngame-easy-test.html:28391 sha256=439ed1be7ce7ea78\nenter/seal 위치 — game.html seal L29491, easy seal L28391\n✔ 증거: seal 라인 추출·위치·해시 + 미수정(가드 없음) + 본편/easy 동일 (20.699333ms)\n✔ 수정 전: 모든 경로에서 seal howl 1회(phase2 포함 = 중복 기여) (10.424916ms)\n✔ 수정 후: phase2만 억제(0), direct/retry 보존(1), groggy 항상 보존 (19.646417ms)\n✔ 범위 한정: pre/post 소스 차이는 seal 1줄뿐, entrance/phase-up/봉인텍스트/음량 보존 (38.03525ms)\n✔ 본편/easy 차이: 라인 내용 동일, 함수 위치만 상이 (20.505833ms)\nℹ tests 5\nℹ suites 0\nℹ pass 5\nℹ fail 0\nℹ cancelled 0\nℹ skipped 0\nℹ todo 0\nℹ duration_ms 142.509125\n"
+  },
+  {
+    "command": [
+      "/Users/fordeargamers/.local/node-runtime/node-v24.15.0-darwin-arm64/bin/node",
+      "tools/team-followup-20261001/SOUND/dedup-root-review.cjs"
+    ],
+    "exitCode": 0,
+    "output": "{\"checks\":16,\"status\":\"STATIC_SOURCE_CANDIDATE\",\"productionUnchanged\":true}\n"
+  },
+  {
+    "command": [
+      "git",
+      "apply",
+      "--check",
+      "tools/team-followup-20261001/SOUND/dedup-main.root.diff"
+    ],
+    "exitCode": 0,
+    "output": ""
+  },
+  {
+    "command": [
+      "git",
+      "apply",
+      "--check",
+      "tools/team-followup-20261001/SOUND/dedup-easy.root.diff"
+    ],
+    "exitCode": 0,
+    "output": ""
+  }
+]

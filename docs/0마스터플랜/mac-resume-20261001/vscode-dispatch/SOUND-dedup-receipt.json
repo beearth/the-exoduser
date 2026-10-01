@@ -1,0 +1,20 @@
+{
+  "taskId": "S-11-HOWL-DEDUP-CANDIDATE",
+  "sessionId": "aa3ac0ed-f4e5-44ad-a0b2-d4d2da045b84",
+  "receivedAt": "2026-10-01T12:23:14.159Z",
+  "firstReadAt": "2026-10-01T12:23:17.784Z",
+  "submittedAt": "2026-10-01T12:25:57.531Z",
+  "status": "submitted and root recovered; static candidate reviewed; production acceptance withheld",
+  "rootTests": {
+    "submission": 5,
+    "rootSourceFragments": 16,
+    "patchChecks": 2
+  },
+  "productionApplied": false,
+  "audioExecuted": false,
+  "remainingGate": "playSample internal RNG/dedupe state plus real audio/full arena tests",
+  "sourceHashes": {
+    "game.html": "e5518842324d17fb63da44457e6092af138b4fcfbaf49c1cb03ef791431dc115",
+    "game-easy-test.html": "269411143e093319926948dce42740d83617b2a0e1305cc1180a59a6ecb75e58"
+  }
+}

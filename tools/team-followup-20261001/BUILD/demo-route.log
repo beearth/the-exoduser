@@ -1,0 +1,16 @@
+✔ demo lobby uses the browser save path even when an account session exists (0.83125ms)
+✔ demo entry URL never labels the browser-only save as a cloud character (0.79375ms)
+✔ local old lobby completion keeps the newer loading screen (0.746583ms)
+✔ local hidden lobby completion cannot close another loading screen (0.361875ms)
+✔ local current lobby completion closes its loading screen normally (0.347583ms)
+✔ online old lobby completion keeps the newer loading screen (0.375375ms)
+✔ online hidden lobby completion cannot close another loading screen (0.333167ms)
+✔ online current lobby completion closes its loading screen normally (0.296916ms)
+ℹ tests 8
+ℹ suites 0
+ℹ pass 8
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 37.623459

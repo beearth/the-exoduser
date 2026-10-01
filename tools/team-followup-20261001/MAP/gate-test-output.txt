@@ -1,0 +1,40 @@
+
+[1] 실측 원자료 (walk-input-raw.json + south-shots.json)
+  PASS 1a 실측 종합 verdict≠PASS(8뷰·충돌불명)
+  PASS 1b 8뷰 미완 차단사유 포함
+  PASS 1c 남측 차단 leg는 INCONCLUSIVE(충돌불명: 전방프로브 없음)
+  PASS 1d 복귀/개구 leg PASS(종점 일치)
+  PASS 1e 좌표계약: 문서=벽 PASS, 접근=비벽 PASS
+  PASS 1f 8뷰 집계: present<8
+  실측 verdict=RETOUCH | views=2/8 | {"INCONCLUSIVE":2,"PASS":2}
+
+[2] 완전 증거 → PASS
+  PASS 2a 전체 PASS
+  PASS 2b 모든 경계 PASS
+
+[3] 8뷰 미완 → PASS 금지
+  PASS 3a verdict RETOUCH(≠PASS)
+  PASS 3b 차단사유에 8뷰 미완
+  PASS 3c 미방문 뷰 EXIT/BOSS 보고
+
+[4] 등급별 단위
+  PASS 4a 미방문(leg 없음)=UNKNOWN
+  PASS 4b 표본0=UNKNOWN
+  PASS 4c held=false 표본=INCONCLUSIVE(입력불명)
+  PASS 4d 정지+전방벽증거 없음=INCONCLUSIVE(충돌불명)
+  PASS 4e 정지+전방 비벽=INCONCLUSIVE
+  PASS 4f 전방벽 통과=FAIL
+  PASS 4g 맵 변경=FAIL
+  PASS 4h 정지+전방벽+예상좌표 불일치=INCONCLUSIVE
+  PASS 4i 개구 기대인데 막힘=FAIL
+
+[5] 좌표 계약 단위
+  PASS 5a 접근점 gameIsW=false → PASS(비벽 일치)
+  PASS 5b 접근점 gameIsW=true → FAIL(SSOT 불일치)
+  PASS 5c 접근점 증거 없음 → UNKNOWN
+  PASS 5d 문서좌표 wallTile=true → PASS(벽 일치)
+  PASS 5e 문서좌표 wallTile=false → FAIL
+  PASS 5f 벽판정 없음(null) → UNKNOWN
+
+==== 결과: 26 PASS / 0 FAIL ====
+GATE_TEST_JSON {"pass":26,"fail":0,"results":[{"name":"1a 실측 종합 verdict≠PASS(8뷰·충돌불명)","ok":true},{"name":"1b 8뷰 미완 차단사유 포함","ok":true},{"name":"1c 남측 차단 leg는 INCONCLUSIVE(충돌불명: 전방프로브 없음)","ok":true},{"name":"1d 복귀/개구 leg PASS(종점 일치)","ok":true},{"name":"1e 좌표계약: 문서=벽 PASS, 접근=비벽 PASS","ok":true},{"name":"1f 8뷰 집계: present<8","ok":true},{"name":"2a 전체 PASS","ok":true},{"name":"2b 모든 경계 PASS","ok":true},{"name":"3a verdict RETOUCH(≠PASS)","ok":true},{"name":"3b 차단사유에 8뷰 미완","ok":true},{"name":"3c 미방문 뷰 EXIT/BOSS 보고","ok":true},{"name":"4a 미방문(leg 없음)=UNKNOWN","ok":true},{"name":"4b 표본0=UNKNOWN","ok":true},{"name":"4c held=false 표본=INCONCLUSIVE(입력불명)","ok":true},{"name":"4d 정지+전방벽증거 없음=INCONCLUSIVE(충돌불명)","ok":true},{"name":"4e 정지+전방 비벽=INCONCLUSIVE","ok":true},{"name":"4f 전방벽 통과=FAIL","ok":true},{"name":"4g 맵 변경=FAIL","ok":true},{"name":"4h 정지+전방벽+예상좌표 불일치=INCONCLUSIVE","ok":true},{"name":"4i 개구 기대인데 막힘=FAIL","ok":true},{"name":"5a 접근점 gameIsW=false → PASS(비벽 일치)","ok":true},{"name":"5b 접근점 gameIsW=true → FAIL(SSOT 불일치)","ok":true},{"name":"5c 접근점 증거 없음 → UNKNOWN","ok":true},{"name":"5d 문서좌표 wallTile=true → PASS(벽 일치)","ok":true},{"name":"5e 문서좌표 wallTile=false → FAIL","ok":true},{"name":"5f 벽판정 없음(null) → UNKNOWN","ok":true}]}

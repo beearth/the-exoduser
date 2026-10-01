@@ -1,6 +1,6 @@
 {
-  "at": "2026-10-01T12:24:35.602696+00:00",
-  "root": "native checked once: locked; no UI retry. UIUX static candidate reviewed; SOUND/BUILD started existing owners",
+  "at": "2026-10-01T12:29:27.948799+00:00",
+  "root": "UIUX v1 static checkpoint complete; v2 owner started; SOUND recovered with RNG acceptance gate; BUILD listen EPERM without retry; native lock not retried",
   "teams": [
     {
       "team": "QA",
@@ -189,33 +189,32 @@
       "team": "UIUX",
       "sessionId": "01a0f6e5-8653-7ae2-8b2b-314e275c215c",
       "location": "T4",
-      "task": "UIUX-HUD-COORDINATE-ADAPTER",
-      "instruction": "/Users/fordeargamers/Projects/exoduser-migration-20261001/tools/team-followup-20261001/UIUX/COORDINATE_TASK.md",
+      "task": "UIUX-COORDINATE-HOTPATH-CANDIDATE",
+      "instruction": "/Users/fordeargamers/Projects/exoduser-migration-20261001/tools/team-followup-20261001/UIUX/HOTPATH_TASK.md",
       "stateBefore": "idle/completed verified",
       "dispatch": "received",
       "exists": true,
-      "receivedAt": "2026-10-01T12:17:38+00:00",
+      "receivedAt": "2026-10-01T12:28:17+00:00",
       "startedAt": null,
-      "status": "candidate accepted for static handoff; root91+dependency14 pass; production/visual/performance pending",
+      "status": "received; instruction and v1 sources read exit0; v2 implementation in progress",
       "startEvidence": "NEXT_TASK 첫 Read exit0, 이전 완료 산출과 현재 draw 경로·팀 MD 읽기 exit0. 중복 진행 산출 없음",
-      "receipt": "/Users/fordeargamers/Projects/exoduser-migration-20261001/docs/0마스터플랜/mac-resume-20261001/vscode-dispatch/UIUX-coordinate-receipt.json",
+      "receipt": "/Users/fordeargamers/Projects/exoduser-migration-20261001/docs/0마스터플랜/mac-resume-20261001/vscode-dispatch/UIUX-hotpath-receipt.json",
       "waitReason": "No static implementation blocker; real visual and dense performance QA remain later gates",
       "previous": {
-        "task": "UIUX-HUD-OCCLUSION-CANDIDATE",
-        "status": "candidate complete; runtime/integration gates pending",
-        "receivedAt": "2026-10-01T11:45:21Z",
-        "startedAt": "2026-10-01T11:45:21Z"
+        "task": "UIUX-HUD-COORDINATE-ADAPTER",
+        "status": "candidate accepted for static handoff; root91+dependency14 pass; production/visual/performance pending",
+        "completedAt": "2026-10-01T12:22:55Z"
       },
-      "queueMessageId": "01a0f766-197d-7430-94c8-de093b7cb36d",
+      "queueMessageId": "01a0f76f-d79c-7720-abcf-412eba0d2eba",
       "queuedAt": "2026-10-01T12:17:38.698597+00:00",
       "receivedAtBasis": "read_thread new user turn startedAt, not exact command timestamp",
       "firstActualAction": {
-        "command": "cat tools/team-followup-20261001/UIUX/COORDINATE_TASK.md; ls -la tools/team-followup-20261001/UIUX; find tools docs -name AGENTS.md; date -u +%FT%TZ",
+        "command": "Read HOTPATH_TASK and v1 sources, duplicate search, source hashes",
         "exitCode": 0,
-        "observedAt": "2026-10-01T12:18:17.309987+00:00",
-        "source": "read_thread turn 01a0f766-1980-7a62-be96-b03620367404"
+        "turnId": "01a0f76f-d79d-70a1-8150-d317eff84291",
+        "exactCommandStartedAt": null
       },
-      "completedAt": "2026-10-01T12:22:55Z",
+      "completedAt": null,
       "completedAtBasis": "owner final UTC query; not exact final message timestamp",
       "rootValidation": {
         "checks": 91,
@@ -236,7 +235,7 @@
       "exists": true,
       "receivedAt": "2026-10-01T11:51:57Z",
       "startedAt": "2026-10-01T11:51:57Z",
-      "status": "completed_attribution_pending_chrome_acceptance",
+      "status": "CLI completed; explicit integration dependency; no new task queued",
       "startEvidence": "NEXT_TASK.md와 기존 ITEM 결과·후보·현재 생산 함수 읽기",
       "receipt": "/Users/fordeargamers/Projects/exoduser-migration-20261001/docs/0마스터플랜/mac-resume-20261001/vscode-dispatch/ITEM-next-receipt.json",
       "previous": {
@@ -244,7 +243,8 @@
         "status": "completed_bundle_pending_runtime_gates"
       },
       "queueMessageId": "01a0f74e-77b9-7bd3-ae28-d54aa6e46cf2",
-      "firstAction": "기존 native Canvas 검사 소스 읽기; 동일 SHA PNG decode와 단계별 비교 설계"
+      "firstAction": "기존 native Canvas 검사 소스 읽기; 동일 SHA PNG decode와 단계별 비교 설계",
+      "currentDependencyReview": "Latest team MD/result/thread read: native RGB attribution completed. Target Chrome backend validation and production integration required; no new independent defect established."
     },
     {
       "team": "BALANCE",
@@ -257,10 +257,11 @@
       "exists": true,
       "receivedAt": "2026-10-01T11:45:16Z",
       "startedAt": "2026-10-01T11:45:16Z",
-      "status": "candidate complete; runtime/integration gates pending",
+      "status": "CLI completed; explicit integration dependency; no new task queued",
       "startEvidence": "NEXT_TASK.md·직전 결과·팀 MD·ITEM SSOT 실제 읽기 완료; 후보 파일 없음 확인",
       "receipt": "/Users/fordeargamers/Projects/exoduser-migration-20261001/docs/0마스터플랜/mac-resume-20261001/vscode-dispatch/BALANCE-next-receipt.json",
-      "waitReason": "damage/source/stack/resource policy not fixed; no fabricated numerical implementation"
+      "waitReason": "damage/source/stack/resource policy not fixed; no fabricated numerical implementation",
+      "currentDependencyReview": "Latest MD/result/thread read: proc damage/resource/source/stack policy missing. Previously listed blastShot gate already uses malCost(5) in both current HTML files; no duplicate repair assigned."
     },
     {
       "team": "SOUND",
@@ -279,8 +280,15 @@
         "tool": "Read",
         "path": "tools/team-followup-20261001/SOUND/DEDUP_TASK.md"
       },
-      "status": "received and first Read verified; read-only candidate preparation",
-      "completedAt": null
+      "status": "submitted and root recovered; static candidate reviewed; production acceptance withheld",
+      "completedAt": "2026-10-01T12:25:57.531Z",
+      "receipt": "/Users/fordeargamers/Projects/exoduser-migration-20261001/docs/0마스터플랜/mac-resume-20261001/vscode-dispatch/SOUND-dedup-receipt.json",
+      "waitReason": "playSample internal RNG/dedupe state plus real audio/full arena tests",
+      "rootValidation": {
+        "submission": 5,
+        "rootSourceFragments": 16,
+        "patchChecks": 2
+      }
     }
   ],
   "remoteCheckpoint": {

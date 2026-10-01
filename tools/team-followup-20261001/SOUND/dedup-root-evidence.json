@@ -1,0 +1,146 @@
+{
+  "status": "STATIC_SOURCE_CANDIDATE",
+  "sources": [
+    {
+      "file": "game.html",
+      "sourceSha256": "e5518842324d17fb63da44457e6092af138b4fcfbaf49c1cb03ef791431dc115",
+      "candidateSha256": "5ce8de2550337e6199816996ff22dbac49768100a057b9e59160be09577a3ea3",
+      "line": 29491,
+      "rateSource": "function _r(v,s){return v*(1+(Math.random()-.5)*2*(s||.05))} // pitch randomize",
+      "entrance": "          const _bsf=_bossSfx(G.stage);\n          playSample(_bsf?_bsf.howl:'boss_howl',1.0,_r(_bsf?_bsf.howlP:.9,.1));",
+      "phaseup": "  SFX.groggy();\n  const _pbsf=_bossSfx(G.stage);\n  setTimeout(()=>{\n    if(_pbsf)playSample(_pbsf.howl,.8,_r(_pbsf.howlP,.12));\n    else playSample(Math.random()<.5?'boss_howl':'boss_howl1',.8,_r(.85,.12));\n  },120);",
+      "changedLines": 1,
+      "playSampleInternalRandomSource": "rate=rate*(0.92+Math.random()*0.16)",
+      "remainingGate": "Suppressing playSample can skip its gated internal random draw; global RNG equivalence is unverified."
+    },
+    {
+      "file": "game-easy-test.html",
+      "sourceSha256": "269411143e093319926948dce42740d83617b2a0e1305cc1180a59a6ecb75e58",
+      "candidateSha256": "277067b7cc0b8f6c0c618ecb2ac4048f3416c2469db505fca6edb6c6d51418b6",
+      "line": 28391,
+      "rateSource": "function _r(v,s){return v*(1+(Math.random()-.5)*2*(s||.05))} // pitch randomize",
+      "entrance": "          const _bsf=_bossSfx(G.stage);\n          playSample(_bsf?_bsf.howl:'boss_howl',1.0,_r(_bsf?_bsf.howlP:.9,.1));",
+      "phaseup": "  SFX.groggy();\n  const _pbsf=_bossSfx(G.stage);\n  setTimeout(()=>{\n    if(_pbsf)playSample(_pbsf.howl,.8,_r(_pbsf.howlP,.12));\n    else playSample(Math.random()<.5?'boss_howl':'boss_howl1',.8,_r(.85,.12));\n  },120);",
+      "changedLines": 1,
+      "playSampleInternalRandomSource": "rate=rate*(0.92+Math.random()*0.16)",
+      "remainingGate": "Suppressing playSample can skip its gated internal random draw; global RNG equivalence is unverified."
+    }
+  ],
+  "results": [
+    {
+      "file": "game.html",
+      "phase": 2,
+      "hasBoss": true,
+      "status": "PASS",
+      "randomDraws": 1
+    },
+    {
+      "file": "game.html",
+      "phase": 0,
+      "hasBoss": true,
+      "status": "PASS",
+      "randomDraws": 1
+    },
+    {
+      "file": "game.html",
+      "phase": "undefined",
+      "hasBoss": true,
+      "status": "PASS",
+      "randomDraws": 1
+    },
+    {
+      "file": "game.html",
+      "hasBoss": true,
+      "status": "PASS",
+      "sourceFragments": "normal door 2->1; entrance volume1; phase-up volume.8 delay120 preserved"
+    },
+    {
+      "file": "game.html",
+      "phase": 2,
+      "hasBoss": false,
+      "status": "PASS",
+      "randomDraws": 2
+    },
+    {
+      "file": "game.html",
+      "phase": 0,
+      "hasBoss": false,
+      "status": "PASS",
+      "randomDraws": 2
+    },
+    {
+      "file": "game.html",
+      "phase": "undefined",
+      "hasBoss": false,
+      "status": "PASS",
+      "randomDraws": 2
+    },
+    {
+      "file": "game.html",
+      "hasBoss": false,
+      "status": "PASS",
+      "sourceFragments": "normal door 2->1; entrance volume1; phase-up volume.8 delay120 preserved"
+    },
+    {
+      "file": "game-easy-test.html",
+      "phase": 2,
+      "hasBoss": true,
+      "status": "PASS",
+      "randomDraws": 1
+    },
+    {
+      "file": "game-easy-test.html",
+      "phase": 0,
+      "hasBoss": true,
+      "status": "PASS",
+      "randomDraws": 1
+    },
+    {
+      "file": "game-easy-test.html",
+      "phase": "undefined",
+      "hasBoss": true,
+      "status": "PASS",
+      "randomDraws": 1
+    },
+    {
+      "file": "game-easy-test.html",
+      "hasBoss": true,
+      "status": "PASS",
+      "sourceFragments": "normal door 2->1; entrance volume1; phase-up volume.8 delay120 preserved"
+    },
+    {
+      "file": "game-easy-test.html",
+      "phase": 2,
+      "hasBoss": false,
+      "status": "PASS",
+      "randomDraws": 2
+    },
+    {
+      "file": "game-easy-test.html",
+      "phase": 0,
+      "hasBoss": false,
+      "status": "PASS",
+      "randomDraws": 2
+    },
+    {
+      "file": "game-easy-test.html",
+      "phase": "undefined",
+      "hasBoss": false,
+      "status": "PASS",
+      "randomDraws": 2
+    },
+    {
+      "file": "game-easy-test.html",
+      "hasBoss": false,
+      "status": "PASS",
+      "sourceFragments": "normal door 2->1; entrance volume1; phase-up volume.8 delay120 preserved"
+    }
+  ],
+  "limits": [
+    "Source fragments only; full arena/map/game not executed.",
+    "Retry reset verified in source; retry arena was not executed.",
+    "Explicit pitch/key random draws preserved; playSample internals not executed.",
+    "No real audio, production application, NW or visual acceptance.",
+    "Root patch preserves explicit key/pitch draws only. playSample has another gated Math.random; global RNG/combat trace equivalence is UNVERIFIED. Production acceptance withheld."
+  ]
+}

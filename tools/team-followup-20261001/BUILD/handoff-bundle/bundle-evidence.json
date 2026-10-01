@@ -1,0 +1,32 @@
+{
+  "at": "2026-10-01T11:46:19.322Z",
+  "kind": "small-file-fixture-no-runtime",
+  "rows": [
+    {
+      "name": "all required entry files present",
+      "status": "PASS"
+    },
+    {
+      "name": "package main and unique absolute profile",
+      "status": "PASS"
+    },
+    {
+      "name": "server isolated save and fixed port",
+      "status": "PASS"
+    },
+    {
+      "name": "refuse existing output and invalid path",
+      "status": "PASS"
+    },
+    {
+      "name": "fixture not game and not previous server marker",
+      "status": "PASS"
+    },
+    {
+      "name": "builder patch apply order remains valid",
+      "status": "PASS"
+    }
+  ],
+  "pass": 6,
+  "fail": 0
+}

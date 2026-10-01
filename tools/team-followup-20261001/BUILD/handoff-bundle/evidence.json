@@ -1,0 +1,94 @@
+{
+  "at": "2026-10-01T11:46:19.298Z",
+  "kind": "static-and-VM-no-socket",
+  "hashes": {
+    "package.json": "58d101ca053f29d36d0f9bd8d63639753fde807064d3c957e0bb6db17d4be0e8",
+    "node-main.js": "01b0c1d51f77f500ee0a59185458bf0294edce12544482d6cf7abce4262c91ce",
+    "build-nwjs.mjs": "567a4b2d6761974b8763abe03ac3c50fc5b973c36be6324c7200ac27b445a78f"
+  },
+  "rows": [
+    {
+      "name": "node-main.js unique hunks present",
+      "status": "PASS"
+    },
+    {
+      "name": "node-main candidate syntax",
+      "status": "PASS"
+    },
+    {
+      "name": "server listener normal",
+      "status": "PASS"
+    },
+    {
+      "name": "server listener EADDRINUSE",
+      "status": "PASS"
+    },
+    {
+      "name": "server listener EACCES",
+      "status": "PASS"
+    },
+    {
+      "name": "server listener UNKNOWN",
+      "status": "PASS"
+    },
+    {
+      "name": "build-nwjs.mjs unique hunks present",
+      "status": "PASS"
+    },
+    {
+      "name": "3333 pending then own listen",
+      "status": "PASS"
+    },
+    {
+      "name": "3333 listen before page",
+      "status": "PASS"
+    },
+    {
+      "name": "3333 failure before page",
+      "status": "PASS"
+    },
+    {
+      "name": "3333 pending failure and late ready",
+      "status": "PASS"
+    },
+    {
+      "name": "3347 pending then own listen",
+      "status": "PASS"
+    },
+    {
+      "name": "3347 listen before page",
+      "status": "PASS"
+    },
+    {
+      "name": "3347 failure before page",
+      "status": "PASS"
+    },
+    {
+      "name": "3347 pending failure and late ready",
+      "status": "PASS"
+    },
+    {
+      "name": "missing shared process state fails closed",
+      "status": "PASS"
+    },
+    {
+      "name": "Node unavailable fails closed",
+      "status": "PASS"
+    },
+    {
+      "name": "unapproved port blocked",
+      "status": "PASS"
+    },
+    {
+      "name": "pagehide unsubscribes before ready",
+      "status": "PASS"
+    }
+  ],
+  "pass": 19,
+  "fail": 0,
+  "limits": [
+    "Shared process identity across actual NW.js contexts unverified.",
+    "No actual navigation, port identity HTTP check, package or live shutdown.",
+    "A server error after navigation cannot retract the opened game."
+  ]
+}

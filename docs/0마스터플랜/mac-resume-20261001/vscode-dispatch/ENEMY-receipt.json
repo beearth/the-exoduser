@@ -1,0 +1,41 @@
+{
+  "taskId": "ENEMY-TYPE3-PROBE-FIX",
+  "title": "type3 발사 관측 후보 정확성 보강",
+  "team": "ENEMY",
+  "terminal": "VS Code 기존 터미널 (ENEMY)",
+  "cli": "Claude Code",
+  "model": "claude-opus-4-8",
+  "sessionId": "ddbd64be-975a-458e-a020-c09749281f5b",
+  "sessionIdSource": "scratchpad 경로의 세션 UUID로 추정. CLI가 직접 보고한 값 아님",
+  "receivedAt": "2026-10-01T19:14:00+09:00",
+  "startedAt": "2026-10-01T19:14:00+09:00",
+  "status": "done-static-and-mock",
+  "head": "30a204a7aa348a88b90bdc922862c610a7da938f",
+  "gameSourceSha256": "593a7a9d84c78402f04c50c94ae169e237e49751ad58d8640e78e672850728f2",
+  "deliverables": {
+    "fixedProbe": "tools/team-followup-20261001/ENEMY/et3-probe.fixed.js",
+    "fixedProbeSha256": "1bf68b094b792998abe5a9e0ca1f6c57534ef4ec6d9dbbd28c792450cbfdf489",
+    "mockTest": "tools/team-followup-20261001/ENEMY/et3-probe.mock.test.mjs",
+    "mockTestSha256": "91a709f333a7c31ab9e8e96b84f30e258403d3784aadb44c022a927b02c18d05",
+    "result": "docs/0마스터플랜/mac-resume-20261001/vscode-dispatch/ENEMY-result.md"
+  },
+  "verification": {
+    "syntaxCheck": "node --check 2/2 exit0",
+    "mockHarness": "9 PASS / 0 FAIL exit0",
+    "fixes": ["F1 lexical G/P/ens/projs/ETYPE_RANGE", "F2 _projChargeT 전이 차징감지", "F3 projs 증가 commit 후 판정", "F4 _gameFrame sim-tick + 대상 혼합 금지", "F5 wrapper 소유권/재설치"],
+    "gameCodeChange": 0,
+    "git": "add/commit/push 0"
+  },
+  "ownedPaths": [
+    "tools/team-followup-20261001/ENEMY/",
+    "docs/0마스터플랜/mac-resume-20261001/vscode-dispatch/ENEMY-result.md",
+    "docs/0마스터플랜/mac-resume-20261001/vscode-dispatch/ENEMY-receipt.json"
+  ],
+  "gate": {
+    "realGameObservation": "blocked",
+    "reason": "QA-receipt.json gate=blocked (QA-game-release.json released=true 미인계). 실화면 관측은 QA 종료 인계 후.",
+    "checkedPath": "docs/0마스터플랜/mac-resume-20261001/vscode-dispatch/QA-game-release.json (부재 확인)"
+  },
+  "nextAction": "실화면 verdict 산출은 QA-game-release.json(released=true) 총괄 인계 후 정규 CH1-1 필드에서 본 교정본으로 수행. 그 전까지 대기. ENEMY_AI_TEAM_MASTER.md ENEMY-002 문서 보강은 총괄 통합 시 반영(직접 미편집).",
+  "blocker": "실화면 관측 = QA 종료 인계 대기(blocked). 정적 대조 + 결정적 모의는 완료."
+}

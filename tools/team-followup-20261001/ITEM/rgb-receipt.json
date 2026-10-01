@@ -1,0 +1,12 @@
+{
+  "taskId": "ITEM-RING-RGB-ATTRIBUTION",
+  "status": "completed_attribution_pending_chrome_acceptance",
+  "receivedAt": "2026-10-01T11:51:57Z",
+  "startedAt": "2026-10-01T11:51:57Z",
+  "firstAction": "기존 native Canvas 검사 소스 읽기; 동일 SHA PNG decode와 단계별 비교 설계",
+  "sessionId": "01a0f6e6-1fbe-7df0-8d02-a9c2d9df3750",
+  "sessionIdSource": "이전 배정값",
+  "ownedPaths": ["tools/team-followup-20261001/ITEM/"],
+  "nextAction": "root에 premultiply 버림/반올림 귀속과 native자체0diff 후보 인계; Chrome별0diff·34px검수 후 결정",
+  "blocker": null
+}

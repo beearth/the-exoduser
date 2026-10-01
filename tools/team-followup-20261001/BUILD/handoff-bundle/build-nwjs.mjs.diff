@@ -1,0 +1,9 @@
+--- a/build-nwjs.mjs
++++ b/build-nwjs.mjs
+@@
+ const FILES = [
++  'package-entry.html', 'package-entry-state.cjs',
+@@
+-  writeFileSync(`${DIST}/package.json`, JSON.stringify(nwPkg, null, 2), 'utf8');
++  nwPkg.main = 'package-entry.html';
++  writeFileSync(`${DIST}/package.json`, JSON.stringify(nwPkg, null, 2), 'utf8');

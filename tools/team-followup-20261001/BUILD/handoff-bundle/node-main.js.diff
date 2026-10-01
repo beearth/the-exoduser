@@ -1,0 +1,28 @@
+--- a/node-main.js
++++ b/node-main.js
+@@
+ const PORT = 3333;
++const entryState = require('./package-entry-state.cjs')(PORT);
++require('node:process').__exoduserPackageEntry = entryState;
+@@
+-http.createServer(async (req, res) => {
++const server = http.createServer(async (req, res) => {
+@@
+-}).listen(PORT, '127.0.0.1', () => {
++});
++let serverFailed = false;
++server.on('error', error => {
++  if (serverFailed) return;
++  serverFailed = true;
++  entryState.failed(error.code);
++  const message = '[Server] bind failed host=127.0.0.1 port=' + PORT + ' code=' + (error.code || 'UNKNOWN');
++  console.error(message);
++  dlog(message);
++  process.exitCode = 1;
++  server.close(() => {});
++});
++server.listen(PORT, '127.0.0.1', () => {
++  if (serverFailed) return;
++  entryState.ready();
+   dlog('HTTP server listening on port ' + PORT);
+ });
