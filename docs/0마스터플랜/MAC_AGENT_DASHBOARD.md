@@ -74,4 +74,4 @@ CLI 조회: `claude agents --json --all --cwd /Users/fordeargamers/Projects/exod
 
 ## 최신 완료 — 드롭 빔 부트 준비
 
-root가 본편20타일 준비·실제픽셀·3전투(앞2표본빔0포함)·분리획득저장fixture 검수를 완료했다. 기존qa_review는읽기전용독립검토,새CLI팀0. 타일최대0.1ms/마스킹0,준비로딩339.5ms,30회귀·guard통과. 스킨136.5ms등잔여·easy/패키지미적용. [상세](mac-resume-20261001/Mac-드롭빔-부트준비-검수.md). 원격체크포인트마감중.
+root가 본편20타일 준비·실제픽셀·3전투(앞2표본빔0포함)·분리획득저장fixture 검수를 완료했다. 기존qa_review는읽기전용독립검토,새CLI팀0. 타일최대0.1ms/마스킹0,준비로딩339.5ms,30회귀·guard통과. 스킨136.5ms등잔여·easy/패키지미적용. [상세](mac-resume-20261001/Mac-드롭빔-부트준비-검수.md). 구현·검수 원격 체크포인트 `d19ac0b588628f2e04cd016eef8d1f947762f14c`를 GitHub ref와 대조 완료. 현재 게임 검수는 종료됐으며 다음 후보는 월드 아이템 스킨 최초 가공이다.
