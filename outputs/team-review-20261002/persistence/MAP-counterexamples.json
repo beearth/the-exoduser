@@ -1,0 +1,14 @@
+[
+  {
+    "case": "initially-hidden",
+    "samples": 1,
+    "expected": 0
+  },
+  {
+    "case": "clear-retry",
+    "remainingTimers": 1,
+    "handle": null,
+    "cleanup": "partial-unknown-retry-possible",
+    "expected": 0
+  }
+]

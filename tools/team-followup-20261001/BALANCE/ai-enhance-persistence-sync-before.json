@@ -1,0 +1,12 @@
+[
+  {
+    "file": "game.html",
+    "code": "function _matsDirty(){if(!isFinite(G.mats)){console.warn('[MATS] NaN detected!',new Error().stack);G.mats=0;}_matsSyncDirty=true;const now=Date.now();if(now-_matsSyncLast>=3000){_matsSyncLast=now;_matsSyncDirty=false;_saveSharedMats(G.mats||0)}else if(!_matsSyncTimer){_matsSyncTimer=setTimeout(()=>{_matsSyncTimer=0;if(_matsSyncDirty){_matsSyncLast=Date.now();_matsSyncDirty=false;_saveSharedMats(G.mats||0)}},3000-(now-_matsSyncLast))}}\n  if(G.mats!==_matsPrev){_matsPrev=G.mats;_matsDirty()}",
+    "sha256": "3d49bbc8155d4d708cc30ea886641c1ec53248fd9ee16e5ba3c908a0ff97331a"
+  },
+  {
+    "file": "game-easy-test.html",
+    "code": "function _matsDirty(){if(!isFinite(G.mats)){console.warn('[MATS] NaN detected!',new Error().stack);G.mats=0;}_matsSyncDirty=true;const now=Date.now();if(now-_matsSyncLast>=3000){_matsSyncLast=now;_matsSyncDirty=false;_saveSharedMats(G.mats||0)}else if(!_matsSyncTimer){_matsSyncTimer=setTimeout(()=>{_matsSyncTimer=0;if(_matsSyncDirty){_matsSyncLast=Date.now();_matsSyncDirty=false;_saveSharedMats(G.mats||0)}},3000-(now-_matsSyncLast))}}\n  if(G.mats!==_matsPrev){_matsPrev=G.mats;_matsDirty()}",
+    "sha256": "3d49bbc8155d4d708cc30ea886641c1ec53248fd9ee16e5ba3c908a0ff97331a"
+  }
+]

@@ -1,0 +1,13 @@
+{
+  "task": "ROOT-20261002-AI-PERSISTENCE-INTEGRATION",
+  "receivedAt": "2026-10-01T16:06:55.516298+00:00",
+  "status": "started: inspect latest existing sessions and actual persistence candidate",
+  "head": "7cb8485de65b2afdf6d3da726aab44bb33c7516f",
+  "staged": "",
+  "constraints": [
+    "no new sessions",
+    "no user game input/reload/close",
+    "SOUND blocked: no alternate route",
+    "sequential production ownership by root"
+  ]
+}

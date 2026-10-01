@@ -1,0 +1,15 @@
+{
+  "at": "2026-10-01T16:13:14.528058+00:00",
+  "source": "https://dl.nwjs.io/v0.111.2/nwjs-v0.111.2-osx-arm64.zip",
+  "officialRedirect": "https://dl.node-webkit.org/v0.111.2/nwjs-v0.111.2-osx-arm64.zip",
+  "archive": "/Users/fordeargamers/Projects/exoduser-mac-runtime-root-20261002/nwjs-v0.111.2-osx-arm64.zip",
+  "sha256": "efda00a9f91353be1b78b7b38ab6fab12b5871c50e5648c6632fb44059da33f8",
+  "officialSha256": "efda00a9f91353be1b78b7b38ab6fab12b5871c50e5648c6632fb44059da33f8",
+  "match": true,
+  "arch": "arm64",
+  "cacheRoot": "/Users/fordeargamers/Projects/exoduser-mac-runtime-root-20261002/cache",
+  "releaseInfoPath": "/Users/fordeargamers/Projects/exoduser-mac-runtime-root-20261002/release.json",
+  "releaseInfoSha256": "f5b3855b14e24f99ed9bf271a5896cbfe6b8e0fd14a8cef66609221ecef3a626",
+  "appExecuted": false,
+  "securitySettingsChanged": false
+}

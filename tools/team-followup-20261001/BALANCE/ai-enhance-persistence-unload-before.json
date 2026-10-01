@@ -1,0 +1,12 @@
+[
+  {
+    "file": "game.html",
+    "code": "window.addEventListener('beforeunload',()=>{\n  if(_dbReady&&P){\n    // navigator.sendBeacon은 JSON 전송이 복잡하므로 동기적 Supabase 호출 대신\n    // 최종 저장 시도 (브라우저가 허용하는 범위에서)\n    dbSave();\n  }\n});",
+    "sha256": "460b6d53ef4012dd0260b53cca298881818c889fcea4c0c1d1135add278867e7"
+  },
+  {
+    "file": "game-easy-test.html",
+    "code": "window.addEventListener('beforeunload',()=>{\n  if(_dbReady&&P){\n    // navigator.sendBeacon은 JSON 전송이 복잡하므로 동기적 Supabase 호출 대신\n    // 최종 저장 시도 (브라우저가 허용하는 범위에서)\n    dbSave();\n  }\n});",
+    "sha256": "460b6d53ef4012dd0260b53cca298881818c889fcea4c0c1d1135add278867e7"
+  }
+]

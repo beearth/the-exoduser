@@ -693,3 +693,8 @@ BALANCE의 패링 인접 검사1FAIL은 root도 동일 실패를 확인했다. g
 ITEM bootstrap23, UIUX 후보21+기존9, BUILD preflight28, BALANCE2880+56를 root가 재실행했다. hellRay MP/스택 재검사를 양쪽 생산에 순차 반영하고 actual20+인접4=24 PASS·전체inline구문 확인. 사용자 게임탭은 그대로다. 네 Codex에 각 한 건 후속 queue·Read·Edit 확인, QA는 완료과제 초안을 문자보존한 채 재실행금지/새독립과제 범위로 수신·Read 확인. ART/MAP/ENEMY/ANIMVFX 완료 제출은 인수대기. SOUND 접근제약/후속미전달. 실행패키지와 실게임품질 완료 주장0. [독립 인수·후속 상태](mac-resume-20261001/vscode-dispatch/FOUR-SUBMISSIONS-HELLRAY-20261002.md).
 
 - 2026-10-02 추가: 최종 인수: hellRay 생산 양쪽24PASS와 QA 독립17PASS, ITEM 실제 검토 host 인수. UIUX DOM/BUILD packager/BALANCE AI저장 및 ART/MAP/ENEMY/ANIMVFX 새 제출은 독립 검수 큐. 실제 Mac 앱은 runtime 부재로 미완료. 상세 `FOUR-SUBMISSIONS-HELLRAY-20261002.md` 및 팀 활용표 참조.
+
+
+### 2026-10-02 AI 강화 저장 생산 인수·Mac 패키지 입력 확인
+
+본편/easy 소비 후 저장예약 한 줄씩을 반영하고 root32·QA독립10 PASS를 확인했다. 500ms 이전 종료와 저장진행중 재시도는 별도 미해결이다. 공식 arm64 NW.js 런타임 확보·SHA 일치, 앱 입력7925개 스캔 완료. LFS 포인터/제작 ZIP/동적 참조 게이트가 남아 실제 앱은 미완료다. UIUX native 카드 소멸 초점 반례로 후보 생산 적용을 보류했다. [상세 인수·팀별 단계](mac-resume-20261001/vscode-dispatch/PERSISTENCE-MAC-PACKAGE-20261002.md).

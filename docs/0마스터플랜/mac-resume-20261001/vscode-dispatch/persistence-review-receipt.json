@@ -1,0 +1,51 @@
+{
+  "taskId": "QA-20261002-PERSISTENCE-REVIEW",
+  "team": "QA",
+  "session": "88c3f903-ece5-4640-8b0c-86feaaca0e53",
+  "terminal": "VS Code 기존 터미널 1 (QA)",
+  "cli": "Claude Code",
+  "model": "claude-opus-4-8",
+  "head": "7cb8485d",
+  "receivedUTC": "2026-10-01T16:09:32Z",
+  "firstReadUTC": "2026-10-01T16:10:00Z",
+  "editStartUTC": "2026-10-01T16:14:00Z",
+  "status": "done-persistence-review",
+  "scopeNote": "persistence-review-task.md 한 건만. 기존 fire/confirm-inventory 과제 재실행 안 함. 중복 없음(QA에 persistence-review 결과 없음).",
+  "ownedPaths": [
+    "tools/team-followup-20261001/QA/persistence-review-*",
+    "docs/0마스터플랜/mac-resume-20261001/vscode-dispatch/persistence-review-result.md",
+    "docs/0마스터플랜/mac-resume-20261001/vscode-dispatch/persistence-review-receipt.json"
+  ],
+  "appliedChangeReviewed": "양쪽 _doAiEnhance: const res=aiEnhance(...) 직후 if(res.used>0)dbSaveNow(); (game.html L26921-26922, game-easy-test.html L25796-25797) — 이미 적용(current=patched)",
+  "functionBaselines": "함수별 before/SHA는 persistence-review-result.md 표에 고정(root 순차 수정용)",
+  "doNotModify": [
+    "game.html",
+    "game-easy-test.html",
+    "index",
+    "server",
+    "공유 test/*",
+    "docs",
+    "타팀 파일(BALANCE/*, ITEM/*)"
+  ],
+  "gate": "게임/성능/빌드 0. 사용자 게임 tab1573846373 입력/리로드/계측/닫기 금지. 사용자 세이브 미사용(메모리/소유 임시객체만). Git/queue/새세션/에이전트 0.",
+  "readOnlyReviewed": [
+    "game.html dbSave(L3520)/dbSaveNow(L3927)/dbSaveForce(L3934)/_saving(L3440)/beforeunload(L61474)/autosave(L3916)",
+    "aiEnhance(L26897)/enhCost 군",
+    "BALANCE/ai-enhance-persistence-before.json, candidate.diff, harness.mjs, .test.mjs"
+  ],
+  "nextAction": "persistence-review-regression.mjs(current callback 추출 + hold 가능 전송 sink로 성공/실패/무시도/중복500ms/창닫기/저장진행중/5분기·공유악의·원본대비 악화여부) 작성·실행 후 result 인계",
+  "blocker": null,
+  "completedUTC": "2026-10-01T16:14:30Z",
+  "result": {
+    "regression": "tools/team-followup-20261001/QA/persistence-review-regression.mjs — 10 PASS/0 FAIL, exit0 (current callback 원문 추출 + hold 가능 sink)",
+    "verdict": "변경(if(res.used>0)dbSaveNow())은 +1→+0 손실 창을 autosave(<=10s)→500ms로 축소. 성공/실패(소비>0) 저장, 무시도(used=0) 미저장, 중복500ms 병합. 공유악의(G.mats)+enh persist 확인. 원본 대비 악화 없음.",
+    "unsolved": [
+      "창닫기(500ms 이전): 디바운스 미발화로 유실 가능 — 해결 아님",
+      "저장진행중(_saving): dbSave no-op+ dbSaveNow가 _pendingForce 미설정 → 해당 사이클 유실 가능(기존 한계)",
+      "5저장분기 공유 _saveDebounce: force 대기분이 500ms dbSave로 대체(데이터는 저장, force 의미 소실)"
+    ],
+    "handoff": "busy(_saving) 재시도 후보는 BALANCE 별도 과제. 창닫기 완전해결은 beforeunload 연계 별도 설계.",
+    "noModify": "game/easy/index/server/공유test/docs/타팀 파일 변경0",
+    "gates": "게임/성능/빌드0, tab1573846373 미접촉, 사용자세이브 미사용, Git/queue/새세션/에이전트0"
+  }
+}

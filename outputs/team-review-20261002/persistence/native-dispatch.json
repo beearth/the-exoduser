@@ -1,0 +1,82 @@
+[
+  {
+    "team": "QA",
+    "sid": "88c3f903-ece5-4640-8b0c-86feaaca0e53",
+    "receivedAt": "2026-10-01T16:09:11.425Z",
+    "firstRead": {
+      "at": "2026-10-01T16:09:15.282Z",
+      "tool": "Read",
+      "input": "{'file_path': '/Users/fordeargamers/Projects/exoduser-migration-20261001/tools/team-followup-20261001/QA/persistence-review-task.md'}"
+    },
+    "firstWrite": null,
+    "firstCommand": {
+      "at": "2026-10-01T16:09:31.703Z",
+      "tool": "Bash",
+      "input": "{'command': 'date -u \"+%Y-%m-%dT%H:%M:%SZ\"; echo \"HEAD=$(git rev-parse --short HEAD)\"; echo \"=== _doAiEnhance / dbSaveNow in game.html ===\"; grep -n \"_doAiEnhance\\\\|function dbSaveNow\\\\|dbSaveNow(\" game.html | head; echo \"=== BALANCE ai-enhance-persistence files ===\"; find tools/team-followup-20261001 -iname \"*ai-enhance*\" -o -iname \"*persistence*\" 2>/dev/null | head -30; echo \"=== existing persistence tests ===\"; ls test/ | grep -iE \"persist|save|aiEnhance|dbSave|enhance\"', 'description': 'Locate persistence sources and artifacts'}"
+    }
+  },
+  {
+    "team": "SKILL",
+    "sid": "203377cc-64c4-47ea-af27-95b66ae829fa",
+    "receivedAt": "2026-10-01T16:11:15.251Z",
+    "firstRead": {
+      "at": "2026-10-01T16:11:22.802Z",
+      "tool": "Read",
+      "input": "{'file_path': '/Users/fordeargamers/Projects/exoduser-migration-20261001/tools/team-followup-20261001/SKILL/aim-resource-next-task.md'}"
+    },
+    "firstWrite": null,
+    "firstCommand": {
+      "at": "2026-10-01T16:11:43.245Z",
+      "tool": "Bash",
+      "input": "{'command': 'cd /Users/fordeargamers/Projects/exoduser-migration-20261001\\necho \"=== dup? ===\" && ls tools/team-followup-20261001/SKILL/aim-resource-next-* 2>/dev/null || echo \"none yet\"\\necho \"\"\\necho \"=== identify ts/ms/mm skills (confirm blocks in game.html) ===\" \\ngrep -nE \"_msAiming|_tsAiming|_mmAiming\" game.html | head -40', 'description': 'Check dup + locate ms/ts/mm aim blocks'}"
+    }
+  },
+  {
+    "team": "ART",
+    "sid": "a489cbeb-92d9-449a-a2b7-ba0e2871322f",
+    "receivedAt": "2026-10-01T16:11:27.141Z",
+    "firstRead": {
+      "at": "2026-10-01T16:11:33.552Z",
+      "tool": "Read",
+      "input": "{'file_path': '/Users/fordeargamers/Projects/exoduser-migration-20261001/tools/team-followup-20261001/ART/wa24-preview-task.md'}"
+    },
+    "firstWrite": null,
+    "firstCommand": null
+  },
+  {
+    "team": "MAP",
+    "sid": "d447a49d-ecaa-4b5f-bc56-da5353ebb668",
+    "receivedAt": "2026-10-01T16:11:42.916Z",
+    "firstRead": {
+      "at": "2026-10-01T16:11:46.879Z",
+      "tool": "Read",
+      "input": "{'file_path': '/Users/fordeargamers/Projects/exoduser-migration-20261001/tools/team-followup-20261001/MAP/cleanup-retry-task.md'}"
+    },
+    "firstWrite": null,
+    "firstCommand": null
+  },
+  {
+    "team": "ENEMY",
+    "sid": "ddbd64be-975a-458e-a020-c09749281f5b",
+    "receivedAt": "2026-10-01T16:11:49.087Z",
+    "firstRead": {
+      "at": "2026-10-01T16:11:52.268Z",
+      "tool": "Read",
+      "input": "{'file_path': '/Users/fordeargamers/Projects/exoduser-migration-20261001/tools/team-followup-20261001/ENEMY/roundrobin-boundary-task.md'}"
+    },
+    "firstWrite": null,
+    "firstCommand": null
+  },
+  {
+    "team": "ANIMVFX",
+    "sid": "1d2a7253-478c-43aa-8c6f-766a02270432",
+    "receivedAt": "2026-10-01T16:11:54.083Z",
+    "firstRead": {
+      "at": "2026-10-01T16:11:58.495Z",
+      "tool": "Read",
+      "input": "{'file_path': '/Users/fordeargamers/Projects/exoduser-migration-20261001/tools/team-followup-20261001/ANIMVFX/flash-transition-task.md'}"
+    },
+    "firstWrite": null,
+    "firstCommand": null
+  }
+]

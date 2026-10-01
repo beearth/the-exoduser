@@ -1,0 +1,32 @@
+[
+  {
+    "team": "BALANCE",
+    "exit": 0,
+    "tail": "ter 실제 저장/복원 (2.583625ms)\n✔ game-easy-test.html route2 failure before→after 실제 저장/복원 (0.777167ms)\n✔ game-easy-test.html route3 success before→after 실제 저장/복원 (2.423875ms)\n✔ game-easy-test.html route3 failure before→after 실제 저장/복원 (0.765916ms)\n✔ game-easy-test.html route4 success before→after 실제 저장/복원 (2.676125ms)\n✔ game-easy-test.html route4 failure before→after 실제 저장/복원 (1.034041ms)\n✔ game.html debounce중복·미시도·취소·기존효과불변 (2.592708ms)\n✔ game.html autosave·db미준비·로컬폴백·499ms취약창 (2.200042ms)\n✔ game.html 정상beforeunload 저장시도·진행중저장 guard 한계 (4.958208ms)\n✔ game.html 실제루프 악의분리동기화후 성공장비만 소실·후보는 보존 (0.993292ms)\n✔ game-easy-test.html debounce중복·미시도·취소·기존효과불변 (2.590416ms)\n✔ game-easy-test.html autosave·db미준비·로컬폴백·499ms취약창 (2.147791ms)\n✔ game-easy-test.html 정상beforeunload 저장시도·진행중저장 guard 한계 (3.264208ms)\n✔ game-easy-test.html 실제루프 악의분리동기화후 성공장비만 소실·후보는 보존 (0.800208ms)\n✔ 소유구역 입력SHA 불변 및 실행근거 (56.4505ms)\nℹ tests 29\nℹ suites 0\nℹ pass 29\nℹ fail 0\nℹ cancelled 0\nℹ skipped 0\nℹ todo 0\nℹ duration_ms 189.680792\n"
+  },
+  {
+    "team": "BUILD",
+    "exit": 0,
+    "tail": "s)\n✔ 목록밖asset추가 BLOCKED·execute호출0 (7.038584ms)\n✔ save포함 BLOCKED·execute호출0 (6.852875ms)\n✔ profile포함 BLOCKED·execute호출0 (8.559458ms)\n✔ 기존dist포함 BLOCKED·execute호출0 (8.468417ms)\n✔ 기존app포함 BLOCKED·execute호출0 (6.941167ms)\n✔ 입력탈출 BLOCKED·execute호출0 (6.810709ms)\n✔ 입력symlink BLOCKED·execute호출0 (6.727292ms)\n✔ 출력부모symlink BLOCKED·execute호출0 (7.903416ms)\n✔ runtime탈출symlink BLOCKED·execute호출0 (9.890125ms)\n✔ runtimeSHA변경 BLOCKED·execute호출0 (9.495958ms)\n✔ releaseInfo변경 BLOCKED·execute호출0 (6.521416ms)\n✔ arch다름 BLOCKED·execute호출0 (6.817ms)\n✔ 기존3333 BLOCKED·execute호출0 (7.4835ms)\n✔ 현재3340 BLOCKED·execute호출0 (7.358708ms)\n✔ 파생치환원문변경 BLOCKED·execute호출0 (9.005791ms)\n✔ adapter실패는소유job만정리·기존marker보존 (10.328417ms)\n✔ 라이브러리osx가오류삼켜도출력검증실패·정리 (13.369ms)\n✔ 두execute충돌·기존job삭제0 (19.800958ms)\n✔ 미지정arch는실제process.arch 사용 (8.155334ms)\n✔ 명시x64는로컬runtime헤더검증후osx/x64연결 (10.83375ms)\n✔ 부분osx실패·잘못된plist는성공반환금지 (18.226583ms)\nℹ tests 34\nℹ suites 0\nℹ pass 34\nℹ fail 0\nℹ cancelled 0\nℹ skipped 0\nℹ todo 0\nℹ duration_ms 398.319459\n"
+  },
+  {
+    "team": "ART",
+    "exit": 0,
+    "tail": "(동일 캐시)\n  PASS 종료 후 재예약 없음\n\n[5] ★RED→GREEN 지연시작 — line-index=wa24, seq-time=wa25 오독\n  PASS ★GREEN: line-index 로 wa24 포착\n  PASS wa25 로 오독하지 않음\n  PASS ★RED: seq-time 축은 wa25 오독 (got wa25)\n  PASS ★두 축 불일치 → 수정 효과 증명\n\n[6] PRO/비PRO — 비PRO 활성목록엔 wa24 없음 → 미확정\n  PASS 비PRO: wa24 미포착\n  PASS 비PRO: 표본0 → 미확정(INCOMPLETE)\n\n[7] 누락/역행 — 샘플 보류, 크래시 없음\n  PASS 누락 상태에서 크래시 없음\n  PASS 누락 → 샘플 없음\n  PASS 역행 감지 기록(reverse_seen)\n  PASS 정상 구간 wa24 는 포착됨\n\n[8] 주입 correctedSampler — 관측기 샘플이 검수 샘플러 출력과 일치\n  PASS 주입 경로로 wa24 샘플 기록\n  PASS lineElapsed 일치 (1200=1200)\n  PASS zoom 일치 (1.05=1.05)\n  PASS fadeAlpha 일치 (1=1)\n  PASS 검수 샘플러 base=line-index\n\n[보조] shake ±2 초과 → FAIL / 모델 드리프트 → FAIL\n  PASS shake>2 → within_pm2=false\n  PASS shake 초과 → FAIL (got FAIL)\n  PASS 모델 드리프트 → modelCheck.ok=false\n  PASS 드리프트 → FAIL (got FAIL)\n\n=== 결과: 46 PASS / 0 FAIL ===\n✔ tools/team-followup-20261001/ART/wa24-observer.test.mjs (25.083375ms)\nℹ tests 2\nℹ suites 0\nℹ pass 2\nℹ fail 0\nℹ cancelled 0\nℹ skipped 0\nℹ todo 0\nℹ duration_ms 29.704792\n"
+  },
+  {
+    "team": "MAP",
+    "exit": 0,
+    "tail": "ame\":\"C1a 설치 예외 전파\",\"ok\":true},{\"name\":\"C1b GREEN: 첫 리스너 누수 0(롤백)\",\"ok\":true},{\"name\":\"C1c GREEN: 인터벌 누수 0\",\"ok\":true},{\"name\":\"C2a GREEN: 숨김 중 새 leg 0\",\"ok\":true},{\"name\":\"C2b GREEN: 숨김 중 표본 0\",\"ok\":true},{\"name\":\"C2c focusEvents에 hidden 기록\",\"ok\":true},{\"name\":\"C3a GREEN: 잔존 interval 0\",\"ok\":true},{\"name\":\"C3b GREEN: 잔존 listener 0\",\"ok\":true},{\"name\":\"C3c first.stop() idempotent(에러 없음)\",\"ok\":true},{\"name\":\"C3d first 인스턴스는 superseded로 폐기\",\"ok\":true},{\"name\":\"R1a blur 직후 재샘플 0\",\"ok\":true},{\"name\":\"R1b focus만으로는 재개 안 함\",\"ok\":true},{\"name\":\"R1c 새 keydown 후 재개(표본 증가)\",\"ok\":true},{\"name\":\"R1d resumeEvents 기록\",\"ok\":true},{\"name\":\"R1e blur leg는 focus-lost 종료\",\"ok\":true},{\"name\":\"R2a cleanup=partial-unknown\",\"ok\":true},{\"name\":\"R2b teardownErrors 기록됨\",\"ok\":true},{\"name\":\"R2c 실패 핸들 보존(유실 방지)\",\"ok\":true},{\"name\":\"R2d controller.cleanupState() 노출\",\"ok\":true},{\"name\":\"R3a external-abort 종료\",\"ok\":true},{\"name\":\"R3b abort 후 listener/timer 0\",\"ok\":true},{\"name\":\"R3c stop 재호출 idempotent\",\"ok\":true}]}\n"
+  },
+  {
+    "team": "ENEMY",
+    "exit": 0,
+    "tail": "SS  원 LOD parity 게이트가 _ei(원 인덱스) 기준(game.html)\n  PASS  예산 상수(12/8ms)·공격티켓 미도입(보호계약) 원본 유지\n  PASS  후보 헤더는 원 헤더의 치환 결과(예산식·_eo·_eUpdateStart 보존, 카운터만 _ei→_k)\n  PASS  원본(고정 start): 배열 꼬리 보스가 영구 기아(전 tick 미처리)\n  PASS  후보(회전): 꼬리 보스가 영구 기아 아님(유한 gap 내 처리) + 매tick 보장은 아님\n  PASS  LOD parity: 처리되는 엔티티의 티어 스케줄은 원 배열 인덱스(_ei) 기준으로 원본·후보 동일\n  PASS  경계: 빈 배열/길이변동/reset/NaN/hole — 크래시·범위이탈 없음\n  PASS  soft-cap 무조건 활성화 0 / 공격티켓 미도입 (보호계약, 코드 기준)\n\n결과: 9 PASS / 0 FAIL\n{\n  \"taskId\": \"ENEMY-20261002-F06-SOURCE-CANDIDATE\",\n  \"gameSha256\": \"f7212ac287665f831975c47523783967374db4c1219b898e57bca5f97cfa1649\",\n  \"easySha256\": \"34ffa8ae1ff4a4509e695f921eef53e0a236aff63184459d13a915f37434bd04\",\n  \"rows\": [\n    {\n      \"case\": \"original-hot-tail\",\n      \"N\": 40,\n      \"ticks\": 60,\n      \"bossProcessedTicks\": 0\n    },\n    {\n      \"case\": \"rotated-hot-tail\",\n      \"N\": 40,\n      \"ticks\": 60,\n      \"bossProcessedTicks\": 46,\n      \"skippedTicks\": 14,\n      \"maxGapTicks\": 8,\n      \"note\": \"per-tick 보장 아님\"\n    }\n  ]\n}\n"
+  },
+  {
+    "team": "ANIMVFX",
+    "exit": 0,
+    "tail": "sparse-clock-integration — 반례 RED→GREEN·회귀·실raw\n\n── 반례 RED(통합 전 버그) → GREEN(canonical 통합본) ──\n[OK ] ANIM-missing-middle-draw-record\n      RED(버그 classifyBefore)=PASS (오PASS 재현 ✓)\n      GREEN(canonical)=REJECT (수정 ✓)\n[OK ] ANIM-missing-draw-counter\n      RED(버그 classifyBefore)=PASS (오PASS 재현 ✓)\n      GREEN(canonical)=REJECT (수정 ✓)\n[OK ] 단위 {dHf:1,dU:1,dD:null}: before=PASS(오PASS) → canonical=UNKNOWN(UNKNOWN)\n\n── canonical 작은 회귀 ──\n[OK ] update-only 240fps → PASS(고주사율) → PASS(고주사율 실수명 인증 포함)\n[OK ] draw-only 240fps → FAIL → FAIL\n\n── 실 raw: 인자 미지정(별도 실행). canonical gate로 분류 가능 ──\n\nALL OK (exit 0)\n"
+  }
+]

@@ -1,0 +1,12 @@
+[
+  {
+    "file": "game.html",
+    "inlineScripts": 6,
+    "status": "PASS"
+  },
+  {
+    "file": "game-easy-test.html",
+    "inlineScripts": 6,
+    "status": "PASS"
+  }
+]

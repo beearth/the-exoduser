@@ -1,0 +1,112 @@
+[
+  {
+    "team": "QA",
+    "sessionId": "88c3f903-ece5-4640-8b0c-86feaaca0e53",
+    "prefix": "persistence-review",
+    "firstRead": {
+      "at": "2026-10-01T16:09:15.282Z",
+      "tool": "Read",
+      "path": "/Users/fordeargamers/Projects/exoduser-migration-20261001/tools/team-followup-20261001/QA/persistence-review-task.md"
+    },
+    "firstEdit": {
+      "at": "2026-10-01T16:12:37.926Z",
+      "tool": "Write",
+      "path": "/Users/fordeargamers/Projects/exoduser-migration-20261001/docs/0마스터플랜/mac-resume-20261001/vscode-dispatch/persistence-review-receipt.json"
+    },
+    "latestText": {
+      "at": "2026-10-01T16:15:22.939Z",
+      "text": "QA-20261002-PERSISTENCE-REVIEW를 기존 QA 세션에서 완료했습니다. 변경은 QA 소유 `persistence-review-*` 3개 파일에만 국한되고, game.html/game-easy-test.html의 M 상태는 **root의 기존 적용분**(제가 건드리지 않음)입니다.\n\n## 완료 보고 — AI 강화 영속성 독립 검수\n\n**수신/첫Read/Edit/완료**(UTC) 구분 기록(`persistence-review-receipt.json`). 대상: root 적용분 `if(res.used>0)dbSaveNow();`(game.html L26921-26922 / easy L25796-25797, **current=patched**).\n\n### 방법 (중복 회피)\nBALANCE 기존 29검사를 복제하지 않고, **current callback(실제 `aiEnhance`+`dbSaveNow`/`dbSaveForce`)을 원문 추출** + **hold 가능한 전송 sink**로 저장진행중·창닫기를 결정적으로 재현했습니다. 사용자 세이브 미사용(메모리/가짜 클럭만). 함수별 before/SHA를 result 표에 고정(root 순차 수정용)"
+    }
+  },
+  {
+    "team": "ART",
+    "sessionId": "a489cbeb-92d9-449a-a2b7-ba0e2871322f",
+    "prefix": "wa24-preview",
+    "firstRead": {
+      "at": "2026-10-01T16:11:33.552Z",
+      "tool": "Read",
+      "path": "/Users/fordeargamers/Projects/exoduser-migration-20261001/tools/team-followup-20261001/ART/wa24-preview-task.md"
+    },
+    "firstEdit": {
+      "at": "2026-10-01T16:13:10.043Z",
+      "tool": "Write",
+      "path": "/Users/fordeargamers/Projects/exoduser-migration-20261001/tools/team-followup-20261001/ART/wa24-preview-receipt.json"
+    },
+    "latestText": {
+      "at": "2026-10-01T16:18:08.637Z",
+      "text": "`M game.html`은 **다른 세션/auto-sync의 변경**입니다 — 제 이번 작업은 `wa24-preview/`에만 파일을 생성했고 game.html은 읽기(fixture)만 했을 뿐 편집·스테이징하지 않았습니다. 동시 세션 불간섭 규칙에 따라 건드리지 않고 그대로 둡니다. 작업을 완료했습니다.\n\n## ART-20261002-WA24-PREVIEW 완료 보고 (root native 인수 전)\n\n**수신·단계 기록**(receipt, UTC): 수신/첫Read 16:12:51Z → 첫Edit/착수 16:13:30Z → 검수/완료 16:16:28Z. 신규 착수(중복 없음), 한 건만 진행.\n\n### 산출물 (소유 `wa24-preview/`)\n| 파일 | SHA256 |\n|---|---|\n| `wa24-preview/index.html` | `40bb3e1e…b040f` |\n| `wa24-preview/selfcheck.mjs` | `2cf82ce2…083c5` |\n\n### 기능 (요구 충족)\n- **실제 원화 사용**: `cin_remember.jpg`(wa23)·`cin_fallhell_custom.jpg`(wa24)·wa25=블랙. **read-"
+    }
+  },
+  {
+    "team": "MAP",
+    "sessionId": "d447a49d-ecaa-4b5f-bc56-da5353ebb668",
+    "prefix": "cleanup-retry",
+    "firstRead": {
+      "at": "2026-10-01T16:11:46.879Z",
+      "tool": "Read",
+      "path": "/Users/fordeargamers/Projects/exoduser-migration-20261001/tools/team-followup-20261001/MAP/cleanup-retry-task.md"
+    },
+    "firstEdit": {
+      "at": "2026-10-01T16:13:34.920Z",
+      "tool": "Write",
+      "path": "/Users/fordeargamers/Projects/exoduser-migration-20261001/tools/team-followup-20261001/MAP/cleanup-retry-receipt.json"
+    },
+    "latestText": {
+      "at": "2026-10-01T16:18:35.729Z",
+      "text": "`cleanup-retry-task.md`(MAP-20261002-CLEANUP-RETRY) 한 건을 실행 완료했습니다.\n\n## 완료 보고 (Mac MAP / 터미널 3 / 세션 d447a49d / 과제일 2026-10-02)\n\n**상태: 2반례 RED→GREEN + 재시도/중복정리 보강 + 전체 회귀 완료. 실맵 시각 PASS 없음 — RETOUCH 유지.**\n\n### 수신 / Read / Edit / 실행 / 완료 (실제 UTC)\n수신 16:12Z · 첫Read 16:12Z(과제·재현기 `persistence-cycle-counterexamples.mjs`·`MAP-counterexamples.json`) · 첫Edit 16:13Z · 실행 16:15Z · 완료 16:16Z. before 동결 스냅샷(`cleanup-retry-before-observer.js`, sha `f7514fbf…`) 보존.\n\n### 확인된 원코드 실패와 수정 (관측기 추가 없이 원코드만)\n1. **initially-hidden** — `start()`가 초기 포커스/가시성 무시하고 무조건 armed → 숨김 상태 표본1. **수정**: `doc.hidden`/`hasFocus("
+    }
+  },
+  {
+    "team": "SKILL",
+    "sessionId": "203377cc-64c4-47ea-af27-95b66ae829fa",
+    "prefix": "aim-resource-next",
+    "firstRead": {
+      "at": "2026-10-01T16:11:22.802Z",
+      "tool": "Read",
+      "path": "/Users/fordeargamers/Projects/exoduser-migration-20261001/tools/team-followup-20261001/SKILL/aim-resource-next-task.md"
+    },
+    "firstEdit": {
+      "at": "2026-10-01T16:14:29.340Z",
+      "tool": "Write",
+      "path": "/Users/fordeargamers/Projects/exoduser-migration-20261001/tools/team-followup-20261001/SKILL/aim-resource-next-receipt.json"
+    },
+    "latestText": {
+      "at": "2026-10-01T16:17:50.091Z",
+      "text": "Confirmed clean: my thunderStake guard is **absent** from both production files (I didn't touch them), and the ` M` on game.html/easy is root's prior application of my hellRay gate (+1 line each, `MP 부족! (100)` present) — expected, not mine, left untouched.\n\n완료했습니다. 조준-확정 자원 재검사 다음 건을 처리했습니다.\n\n## 수신·착수·완료 (UTC)\n- **16:10 수신 → 16:11 첫 Read**(_ms/_mm/_ts 블록·aim-start·SSOT·관례) → **16:16 첫 코드 Edit → 16:22 완료**. 테스트 **23/23 PASS**, 양쪽 patch dry-run **APPLIES CLEAN**. 중복 아님(신규).\n\n## 후보 3개 → 1개 선정\n- `_msAiming` maliceStorm: 기본 무비용(쿨다운만), 합체는 MP50 재검사 있음 → **결함 아님**\n- `_mmAiming` maliceMortar: 확정이 `fi"
+    }
+  },
+  {
+    "team": "ENEMY",
+    "sessionId": "ddbd64be-975a-458e-a020-c09749281f5b",
+    "prefix": "roundrobin-boundary",
+    "firstRead": {
+      "at": "2026-10-01T16:11:52.268Z",
+      "tool": "Read",
+      "path": "/Users/fordeargamers/Projects/exoduser-migration-20261001/tools/team-followup-20261001/ENEMY/roundrobin-boundary-task.md"
+    },
+    "firstEdit": {
+      "at": "2026-10-01T16:14:54.268Z",
+      "tool": "Write",
+      "path": "/Users/fordeargamers/Projects/exoduser-migration-20261001/tools/team-followup-20261001/ENEMY/roundrobin-boundary.fixture.mjs"
+    },
+    "latestText": {
+      "at": "2026-10-01T16:20:02.757Z",
+      "text": "완료. root가 지적한 f06 라운드로빈 경계 결함을 실행으로 검증하고 최소 보강 후보를 작성했습니다.\n\n> 참고: `game.html`·`game-easy-test.html`가 git에 `M`으로 보이는데, 이는 공유 체크아웃의 **타 세션/auto-sync 드리프트**입니다(세션 중 sha가 `21235538…`→`7631f5a0…`로 변동). 제가 쓴 변경이 아니며(저는 dry-run read-only만), 타세션 파일 불간섭 규칙에 따라 손대지 않았습니다.\n\n## ROUNDROBIN-BOUNDARY 결과 보고 (한국어)\n\n**과제:** root 검토에서 f06 후보의 `(G._eLoopStart|0)%_elen`가 음수/signed-32 넘침에서 음수가 되어 유효 꼬리를 누락한다는 지적(미검증)을 **실제 후보 헤더 실행으로 검증** + 최소 보강.\n\n**수신·착수(UTC):** 수신 16:10 → Read 16:11 → Edit 16:14 → 검수 16:17 → 완료 16:18. 중복 없음(신규).\n\n**결함 — 실행 검증(사실 확인됨):** 원 `_eStart` 식을 그대로 실행 →\n- `-1`→`_eStart=-1`, `2^31`→`-8`, `"
+    }
+  },
+  {
+    "team": "ANIMVFX",
+    "sessionId": "1d2a7253-478c-43aa-8c6f-766a02270432",
+    "prefix": "flash-transition",
+    "firstRead": {
+      "at": "2026-10-01T16:11:58.495Z",
+      "tool": "Read",
+      "path": "/Users/fordeargamers/Projects/exoduser-migration-20261001/tools/team-followup-20261001/ANIMVFX/flash-transition-task.md"
+    },
+    "firstEdit": null,
+    "latestText": {
+      "at": "2026-10-01T16:18:54.970Z",
+      "text": "`rebuildDeadPool()` runs every 2 frames (33089), after compaction. I need the exact dead-retention logic to know if dead normal mobs linger in `ens` (reset by 50888) or are dropped. Let me read 33040–33090."
+    }
+  }
+]

@@ -51874,3 +51874,7 @@ QA의 완료 작업을 가리키는 미전송 초안은 그대로 보존했다. 
 - 본편/easy hellRay: 확정 스택0 조준종료/MP100미만 조준유지, 자원·설치 부작용0. 성공 MP100+스택1·합체/충전/음향 유지. actual20+인접4=24 PASS.
 - ITEM23/UIUX21+기존9/BUILD28/BALANCE2880+56 root 재검수; 네 담당 새 소유과제 Read/Edit 확인. QA 기존초안 보존 후 새독립검수 수신/Read.
 - 원격98aedab7 시작검증. 사용자게임 입력/리로드/계측/닫기0, 실제Mac runtime 미발견/.app 미생성, UIUX 후보·실화면 검수 단계 구분. 상세 FOUR-SUBMISSIONS-HELLRAY-20261002.md.
+
+
+## 2026-10-02 AI 강화 소비 후 저장 예약
+- 본편/easy `_doAiEnhance`: `res.used>0`이면 기존 dbSaveNow 500ms 예약. 실제 함수 회귀32/QA독립10 PASS. 500ms 이전 종료·진행중 저장 요청 재시도는 미해결. 저장/메타 SSOT와 총괄 인수 기록 동기화.

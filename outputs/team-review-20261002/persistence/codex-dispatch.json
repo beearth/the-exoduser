@@ -1,0 +1,38 @@
+[
+  {
+    "team": "ITEM",
+    "sid": "01a0f6e6-1fbe-7df0-8d02-a9c2d9df3750",
+    "task": "tools/team-followup-20261001/ITEM/browser-csp-task.md",
+    "at": "2026-10-01T16:09:07.279443+00:00",
+    "exit": 0,
+    "stdout": "Queued message 01a0f83a-05c1-7940-8b94-b10934f02eae for thread 01a0f6e6-1fbe-7df0-8d02-a9c2d9df3750.\n",
+    "stderr": ""
+  },
+  {
+    "team": "BUILD",
+    "sid": "01a0f6e6-2e4c-7322-92d7-3aa309857856",
+    "task": "tools/team-followup-20261001/BUILD/runtime-acquire-task.md",
+    "at": "2026-10-01T16:09:07.306559+00:00",
+    "exit": 0,
+    "stdout": "Queued message 01a0f83a-05e1-7010-a82f-075a08be220a for thread 01a0f6e6-2e4c-7322-92d7-3aa309857856.\n",
+    "stderr": ""
+  },
+  {
+    "team": "BALANCE",
+    "sid": "01a0f6e6-5303-7392-81ba-94c42e349ffc",
+    "task": "tools/team-followup-20261001/BALANCE/save-inflight-task.md",
+    "at": "2026-10-01T16:09:07.337150+00:00",
+    "exit": 0,
+    "stdout": "Queued message 01a0f83a-0601-7132-b28a-241033272a7d for thread 01a0f6e6-5303-7392-81ba-94c42e349ffc.\n",
+    "stderr": ""
+  },
+  {
+    "team": "UIUX",
+    "sid": "01a0f6e5-8653-7ae2-8b2b-314e275c215c",
+    "task": "tools/team-followup-20261001/UIUX/native-focus-task.md",
+    "at": "2026-10-01T16:11:05.022881+00:00",
+    "exit": 0,
+    "stdout": "Queued message 01a0f83b-d1b5-7ca1-bfa3-488db9f68cab for thread 01a0f6e5-8653-7ae2-8b2b-314e275c215c.\n",
+    "stderr": ""
+  }
+]

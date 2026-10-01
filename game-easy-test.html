@@ -25794,6 +25794,7 @@ function _doAiEnhance(){
   const budget=Math.min(Math.ceil(_expBudget)||1000,G.mats||0);
   if(budget<=0){addTxt(P.x,P.y-20,_T('악의 부족'),'#cc4444',50);return}
   const res=aiEnhance(_aiItem,target,budget);
+  if(res.used>0)dbSaveNow();
   applyStats();
   const rDiv=$('aiEnhResult');
   if(rDiv){

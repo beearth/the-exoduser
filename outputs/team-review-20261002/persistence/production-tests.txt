@@ -1,0 +1,40 @@
+✔ game.html: production callback contains exactly the reviewed save change (0.626916ms)
+✔ game.html: current route 0 success closes and persists after 500ms (9.605292ms)
+✔ game.html: current route 0 failure closes and persists after 500ms (0.658292ms)
+✔ game.html: current route 1 success closes and persists after 500ms (1.424917ms)
+✔ game.html: current route 1 failure closes and persists after 500ms (0.548666ms)
+✔ game.html: current route 2 success closes and persists after 500ms (1.720458ms)
+✔ game.html: current route 2 failure closes and persists after 500ms (0.574833ms)
+✔ game.html: current route 3 success closes and persists after 500ms (1.416166ms)
+✔ game.html: current route 3 failure closes and persists after 500ms (0.646167ms)
+✔ game.html: current route 4 success closes and persists after 500ms (1.443125ms)
+✔ game.html: current route 4 failure closes and persists after 500ms (0.482916ms)
+✔ game.html: original loses upgraded item after resource sync, current retains it (1.725167ms)
+✔ game.html: no attempt does not schedule a save (1.098541ms)
+✔ game.html: duplicate attempts share trailing debounce without changing RNG or effects (1.02275ms)
+✔ game.html: existing early-exit and busy-save limitations are unchanged (2.710166ms)
+✔ game.html: local fallback and explicit unload still use existing save paths (1.121834ms)
+✔ game-easy-test.html: production callback contains exactly the reviewed save change (0.036584ms)
+✔ game-easy-test.html: current route 0 success closes and persists after 500ms (1.197459ms)
+✔ game-easy-test.html: current route 0 failure closes and persists after 500ms (0.372958ms)
+✔ game-easy-test.html: current route 1 success closes and persists after 500ms (1.061541ms)
+✔ game-easy-test.html: current route 1 failure closes and persists after 500ms (0.38725ms)
+✔ game-easy-test.html: current route 2 success closes and persists after 500ms (1.295584ms)
+✔ game-easy-test.html: current route 2 failure closes and persists after 500ms (0.375084ms)
+✔ game-easy-test.html: current route 3 success closes and persists after 500ms (1.158458ms)
+✔ game-easy-test.html: current route 3 failure closes and persists after 500ms (0.396375ms)
+✔ game-easy-test.html: current route 4 success closes and persists after 500ms (1.051584ms)
+✔ game-easy-test.html: current route 4 failure closes and persists after 500ms (0.410292ms)
+✔ game-easy-test.html: original loses upgraded item after resource sync, current retains it (1.50875ms)
+✔ game-easy-test.html: no attempt does not schedule a save (0.718292ms)
+✔ game-easy-test.html: duplicate attempts share trailing debounce without changing RNG or effects (0.959291ms)
+✔ game-easy-test.html: existing early-exit and busy-save limitations are unchanged (1.754542ms)
+✔ game-easy-test.html: local fallback and explicit unload still use existing save paths (1.060208ms)
+ℹ tests 32
+ℹ suites 0
+ℹ pass 32
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 107.777208
