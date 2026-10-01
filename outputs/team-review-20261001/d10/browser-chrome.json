@@ -1,0 +1,21 @@
+{
+  "cards": 22,
+  "dpr": 2,
+  "images": [
+    {
+      "h": "160px",
+      "w": "160px"
+    },
+    {
+      "h": "160px",
+      "w": "160px"
+    }
+  ],
+  "imagesLoaded": 44,
+  "overflow": false,
+  "selection": "범위 / Range: 10~20% · 선택 / Selected: 20%",
+  "viewport": [
+    1352,
+    666
+  ]
+}

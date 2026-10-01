@@ -2,7 +2,7 @@ import { readFile, access } from 'node:fs/promises';
 import path from 'node:path';
 import { pathToFileURL } from 'node:url';
 import { UNIQUE_DEFINITIONS, EFFECT_PROPOSALS, validateDefinitions } from './definitions.js';
-import { ROLL_PROPOSALS, rollValue, toStoredValue, fromStoredValue, describeRoll } from './roll-values.mjs';
+import { ROLL_PROPOSALS, rollValue, toStoredValue, fromStoredValue, describeRoll } from './roll-values.js';
 
 const projectRoot = path.resolve(import.meta.dirname, '..');
 

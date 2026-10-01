@@ -1,0 +1,496 @@
+{
+  "at": "2026-10-01T14:15:25.908045+00:00",
+  "verdict": "INCONCLUSIVE",
+  "measurementRunning": false,
+  "gameTabsClosed": true,
+  "pc329msClaim": false,
+  "runs": [
+    {
+      "file": "qa-chrome-followup.json",
+      "gate": "INCONCLUSIVE / excluded from performance acceptance",
+      "reasons": [
+        "no captured new natural first kill",
+        "observer installed after death",
+        "no eligible live frames"
+      ],
+      "rows": 2,
+      "eligibleLiveRows": 0,
+      "initial": {
+        "at": 280978.09999990463,
+        "on": true,
+        "paused": false,
+        "kills": 2,
+        "hp": 0,
+        "lv": 1,
+        "x": 4019.3348424711785,
+        "y": 7162.495497361896,
+        "enemies": 44,
+        "hidden": false,
+        "focus": true,
+        "gl": true,
+        "gpu": false
+      },
+      "end": {
+        "at": 281054.7999999523,
+        "on": true,
+        "paused": false,
+        "kills": 2,
+        "hp": 0,
+        "lv": 1,
+        "x": 4019.3348424711785,
+        "y": 7162.495497361896,
+        "enemies": 44,
+        "hidden": false,
+        "focus": true,
+        "gl": true,
+        "gpu": false
+      },
+      "firstKill": null,
+      "inputs": 4,
+      "maxEnemies": 44,
+      "diagnosticOnlyRAF": {
+        "n": 0,
+        "p95": null,
+        "p99": null,
+        "over50": 0,
+        "over100": 0
+      },
+      "diagnosticOnlyDrawCPU": {
+        "n": 2,
+        "p95": 0.6000000238418579,
+        "p99": 0.6000000238418579,
+        "over50": 0,
+        "over100": 0
+      },
+      "gpuCost": "not measured",
+      "options": {
+        "quality": "high",
+        "resScale": 100,
+        "ssaa": 1,
+        "fpsCap": 0,
+        "parts": 100,
+        "diff": 5,
+        "atmos": 1,
+        "bloom": true,
+        "lighting": true,
+        "postfx": true,
+        "fog": true,
+        "grain": true
+      },
+      "optionEvents": [],
+      "restored": {
+        "draw": true,
+        "listeners": true
+      },
+      "environment": {
+        "url": "http://qa-fire-normal-chrome-20261001.localhost:3340/game.html?webgpu=0",
+        "ua": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/152.0.0.0 Safari/537.36",
+        "timeOrigin": 1790863576469.7,
+        "viewport": [
+          1352,
+          666
+        ],
+        "dpr": 2,
+        "canvas": [
+          1352,
+          666
+        ],
+        "profiler": false,
+        "gpuTiming": false,
+        "instrumentation": "one pass-through draw wrapper + rAF state/options snapshots; no update/Canvas/WebGL wrappers; overhead not independently measured"
+      }
+    },
+    {
+      "file": "qa-chrome-normal.json",
+      "gate": "INCONCLUSIVE / excluded from performance acceptance",
+      "reasons": [
+        "no captured new natural first kill"
+      ],
+      "rows": 53,
+      "eligibleLiveRows": 53,
+      "initial": {
+        "at": 263552,
+        "on": true,
+        "paused": false,
+        "kills": 0,
+        "hp": 531,
+        "lv": 1,
+        "x": 4020,
+        "y": 7420,
+        "enemies": 5,
+        "hidden": false,
+        "focus": true,
+        "gl": true,
+        "gpu": false
+      },
+      "end": {
+        "at": 265270.2999999523,
+        "on": true,
+        "paused": false,
+        "kills": 0,
+        "hp": 531,
+        "lv": 1,
+        "x": 4020,
+        "y": 7169.999999999998,
+        "enemies": 5,
+        "hidden": false,
+        "focus": true,
+        "gl": true,
+        "gpu": false
+      },
+      "firstKill": null,
+      "inputs": 122,
+      "maxEnemies": 5,
+      "diagnosticOnlyRAF": {
+        "n": 52,
+        "p95": 50.0,
+        "p99": 66.59999999997672,
+        "over50": 1,
+        "over100": 0
+      },
+      "diagnosticOnlyDrawCPU": {
+        "n": 53,
+        "p95": 2.600000023841858,
+        "p99": 7.5,
+        "over50": 0,
+        "over100": 0
+      },
+      "gpuCost": "not measured",
+      "options": {
+        "quality": "high",
+        "resScale": 100,
+        "ssaa": 1,
+        "fpsCap": 0,
+        "parts": 100,
+        "diff": 5,
+        "atmos": 1,
+        "bloom": true,
+        "lighting": true,
+        "postfx": true,
+        "fog": true,
+        "grain": true
+      },
+      "optionEvents": [],
+      "restored": {
+        "draw": true,
+        "listeners": true
+      },
+      "environment": {
+        "url": "http://qa-fire-normal-chrome-20261001.localhost:3340/game.html?webgpu=0",
+        "ua": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/152.0.0.0 Safari/537.36",
+        "timeOrigin": 1790863576469.7,
+        "viewport": [
+          1352,
+          666
+        ],
+        "dpr": 2,
+        "canvas": [
+          1352,
+          666
+        ],
+        "profiler": false,
+        "gpuTiming": false,
+        "instrumentation": "one pass-through draw wrapper + rAF state/options snapshots; no update/Canvas/WebGL wrappers; overhead not independently measured"
+      }
+    },
+    {
+      "file": "qa-chrome-restart.json",
+      "gate": "INCONCLUSIVE / excluded from performance acceptance",
+      "reasons": [
+        "no captured new natural first kill",
+        "option changes recorded"
+      ],
+      "rows": 923,
+      "eligibleLiveRows": 923,
+      "initial": {
+        "at": 318978.7999999523,
+        "on": true,
+        "paused": false,
+        "kills": 2,
+        "hp": 531,
+        "lv": 1,
+        "x": 4020,
+        "y": 7420,
+        "enemies": 14,
+        "hidden": false,
+        "focus": true,
+        "gl": true,
+        "gpu": false
+      },
+      "end": {
+        "at": 344010.2999999523,
+        "on": true,
+        "paused": false,
+        "kills": 2,
+        "hp": 531,
+        "lv": 1,
+        "x": 4020,
+        "y": 7420,
+        "enemies": 53,
+        "hidden": false,
+        "focus": true,
+        "gl": true,
+        "gpu": false
+      },
+      "firstKill": null,
+      "inputs": 546,
+      "maxEnemies": 53,
+      "diagnosticOnlyRAF": {
+        "n": 922,
+        "p95": 41.5,
+        "p99": 42.100000000034925,
+        "over50": 3,
+        "over100": 1
+      },
+      "diagnosticOnlyDrawCPU": {
+        "n": 923,
+        "p95": 0.7999999523162842,
+        "p99": 0.8999999761581421,
+        "over50": 0,
+        "over100": 0
+      },
+      "gpuCost": "not measured",
+      "options": {
+        "quality": "high",
+        "resScale": 100,
+        "ssaa": 1,
+        "fpsCap": 0,
+        "parts": 100,
+        "diff": 5,
+        "atmos": 2,
+        "bloom": true,
+        "lighting": true,
+        "postfx": true,
+        "fog": true,
+        "grain": true
+      },
+      "optionEvents": [
+        {
+          "kind": "options",
+          "at": 325897.7999999523,
+          "options": {
+            "quality": "high",
+            "resScale": 100,
+            "ssaa": 1,
+            "fpsCap": 0,
+            "parts": 100,
+            "diff": 5,
+            "atmos": 1,
+            "bloom": true,
+            "lighting": true,
+            "postfx": true,
+            "fog": true,
+            "grain": true
+          }
+        }
+      ],
+      "restored": {
+        "draw": true,
+        "listeners": true
+      },
+      "environment": {
+        "url": "http://qa-fire-normal-chrome-20261001.localhost:3340/game.html?webgpu=0",
+        "ua": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/152.0.0.0 Safari/537.36",
+        "timeOrigin": 1790863576469.7,
+        "viewport": [
+          1352,
+          666
+        ],
+        "dpr": 2,
+        "canvas": [
+          1352,
+          666
+        ],
+        "profiler": false,
+        "gpuTiming": false,
+        "instrumentation": "one pass-through draw wrapper + rAF state/options snapshots; no update/Canvas/WebGL wrappers; overhead not independently measured"
+      }
+    },
+    {
+      "file": "qa-iab-no-kill.json",
+      "gate": "INCONCLUSIVE / excluded from performance acceptance",
+      "reasons": [
+        "no captured new natural first kill"
+      ],
+      "rows": 494,
+      "eligibleLiveRows": 493,
+      "initial": {
+        "at": 230158.40000009537,
+        "on": true,
+        "paused": false,
+        "kills": 0,
+        "hp": 602,
+        "lv": 1,
+        "x": 4020,
+        "y": 7420,
+        "enemies": 5,
+        "hidden": false,
+        "focus": true,
+        "gl": true,
+        "gpu": false
+      },
+      "end": {
+        "at": 246887,
+        "on": true,
+        "paused": false,
+        "kills": 0,
+        "hp": 0,
+        "lv": 1,
+        "x": 4018.9821585920286,
+        "y": 7404.451197506137,
+        "enemies": 44,
+        "hidden": false,
+        "focus": true,
+        "gl": true,
+        "gpu": false
+      },
+      "firstKill": null,
+      "inputs": 2,
+      "maxEnemies": 44,
+      "diagnosticOnlyRAF": {
+        "n": 492,
+        "p95": 41.70000000001164,
+        "p99": 41.89999999999418,
+        "over50": 3,
+        "over100": 3
+      },
+      "diagnosticOnlyDrawCPU": {
+        "n": 494,
+        "p95": 2.0,
+        "p99": 6.700000047683716,
+        "over50": 1,
+        "over100": 1
+      },
+      "gpuCost": "not measured",
+      "options": {
+        "quality": "high",
+        "resScale": 100,
+        "ssaa": 1,
+        "fpsCap": 0,
+        "parts": 80,
+        "diff": 5,
+        "atmos": 1,
+        "bloom": true,
+        "lighting": true,
+        "postfx": true,
+        "fog": true,
+        "grain": true
+      },
+      "optionEvents": [],
+      "restored": {
+        "draw": true,
+        "listeners": true
+      },
+      "environment": {
+        "url": "http://qa-fire-normal-20261001.localhost:3340/game.html?webgpu=0",
+        "ua": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/154.0.0.0 Safari/537.36",
+        "timeOrigin": 1790863293396.4,
+        "viewport": [
+          1280,
+          720
+        ],
+        "dpr": 2,
+        "canvas": [
+          1280,
+          720
+        ],
+        "profiler": false,
+        "gpuTiming": false,
+        "instrumentation": "one pass-through draw wrapper + rAF state/options snapshots; no update/Canvas/WebGL wrappers; overhead not independently measured"
+      }
+    },
+    {
+      "file": "qa-preflight-excluded.json",
+      "gate": "INCONCLUSIVE / excluded from performance acceptance",
+      "reasons": [
+        "no captured new natural first kill"
+      ],
+      "rows": 1805,
+      "eligibleLiveRows": 1805,
+      "initial": {
+        "at": 133264,
+        "on": true,
+        "paused": false,
+        "kills": 0,
+        "hp": 602,
+        "lv": 1,
+        "x": 4020,
+        "y": 7420,
+        "enemies": 0,
+        "hidden": false,
+        "focus": true,
+        "gl": true,
+        "gpu": false
+      },
+      "end": {
+        "at": 169652.70000004768,
+        "on": true,
+        "paused": false,
+        "kills": 0,
+        "hp": 602,
+        "lv": 1,
+        "x": 4020,
+        "y": 6836.666666666662,
+        "enemies": 0,
+        "hidden": false,
+        "focus": true,
+        "gl": true,
+        "gpu": false
+      },
+      "firstKill": null,
+      "inputs": 82,
+      "maxEnemies": 0,
+      "diagnosticOnlyRAF": {
+        "n": 1804,
+        "p95": 25.10000000000582,
+        "p99": 25.89999999999418,
+        "over50": 4,
+        "over100": 1
+      },
+      "diagnosticOnlyDrawCPU": {
+        "n": 1805,
+        "p95": 0.7000000476837158,
+        "p99": 0.8000000715255737,
+        "over50": 1,
+        "over100": 0
+      },
+      "gpuCost": "not measured",
+      "options": {
+        "quality": "high",
+        "resScale": 100,
+        "ssaa": 1,
+        "fpsCap": 0,
+        "parts": 80,
+        "diff": 5,
+        "atmos": 1,
+        "bloom": true,
+        "lighting": true,
+        "postfx": true,
+        "fog": true,
+        "grain": true
+      },
+      "optionEvents": [],
+      "restored": {
+        "draw": true,
+        "listeners": true
+      },
+      "environment": {
+        "url": "http://qa-fire-normal-20261001.localhost:3340/game.html?webgpu=0",
+        "ua": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/154.0.0.0 Safari/537.36",
+        "timeOrigin": 1790863293396.4,
+        "viewport": [
+          1280,
+          720
+        ],
+        "dpr": 2,
+        "canvas": [
+          1280,
+          720
+        ],
+        "profiler": false,
+        "gpuTiming": false,
+        "instrumentation": "one pass-through draw wrapper + rAF state/options snapshots; no update/Canvas/WebGL wrappers; overhead not independently measured"
+      }
+    }
+  ]
+}

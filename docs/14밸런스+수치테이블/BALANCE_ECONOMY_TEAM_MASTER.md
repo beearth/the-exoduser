@@ -103,3 +103,16 @@ test/onHitFireballStack.test.js가 양쪽 실제 _eqAffix/hurtE를 추출하여3
 ## 2026-10-01 PM-009 롤 단위 모듈 인수
 
 기존 BALANCE가 D절22종/698정수에 대해 균등 정수 선택·명시 하중상·저장/표시 모듈을 구현했고 root가 실제 감사 소비로 연결했다. D10 10–13/14–16/17–20 유지, percent raw/100·나머지 정수, frame은60fps 변환 표시. 잘못된 입력/저장값 거부,69전용 및101통합 검사 PASS. 수치 정책·효과/드롭 활성 변경 없음. [인수·검수](../0마스터플랜/mac-resume-20261001/vscode-dispatch/PM009-roll-review-root.md).
+
+
+### 2026-10-01 D10 독립 후보 검수
+
+| 범위 | 현재 상태 | 실제 근거 |
+|---|---|---|
+| UI-10/U-D10 | 신규제안·미채택·게임비활성 | 흉갑/지옥강타 성공 실제소모>=100,저장롤10~20%,잔여 min(30,소모×롤) 후보 |
+| 전투 후보 | ITEM75검사·독립148입력 포함8그룹 PASS | 원피해/악의/합체쿨/RNG 유지,중복·실패·재진입 방어 |
+| 검토 UI | 한영10/15/20% 소비,22카드44원화 유지 | Chrome 실화면/160px/44로드/가로overflow0, IAB Enter·Space |
+| 롤 모듈 | roll-values.js 현행 | .mjs에서 동일바이트이동, HTTP JavaScript MIME, 서버변경0 |
+| 남은 게이트 | 새instance 저장binding·실전·패키지 | 활성0/runtimeReady=false/110차단,실제U-N01 미구현 |
+
+관련188검사와 최종화면수정후12검사 통과. 독립후보 완료와 게임효과 적용은 구분한다. [상세·실패 포함 근거](../0마스터플랜/mac-resume-20261001/vscode-dispatch/D10-root-review.md).

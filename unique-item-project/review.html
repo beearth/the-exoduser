@@ -16,6 +16,18 @@
     body[data-size="64"] { --image-size: 64px; --card-width: 230px; }
     body[data-size="160"] { --image-size: 160px; --card-width: 380px; }
     article { padding: 12px; border: 1px solid #453451; border-radius: 8px; background: #1b1622; }
+    article[data-unique-id="UI-10"] { grid-column: 1 / -1; display: grid; grid-template-columns: minmax(0, 380px) minmax(0, 1fr); column-gap: 28px; align-content: start; }
+    article[data-unique-id="UI-10"] > :not(.d10-tooltip) { grid-column: 1; }
+    .d10-tooltip { grid-column: 2; grid-row: 1 / span 5; min-width: 0; }
+    .d10-tooltip h3 { margin: 0 0 12px; color: #d9b6f4; }
+    .d10-tooltip [role="group"] { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 12px; }
+    .d10-tooltip button { margin: 0; }
+    .d10-tooltip p { font-size: 14px; }
+    .d10-selection { color: #f0d3ff; font-weight: 600; }
+    @media (max-width: 760px) {
+      article[data-unique-id="UI-10"] { display: block; }
+      .d10-tooltip { margin-top: 20px; }
+    }
     h2 { margin: 0 0 9px; font-size: 15px; color: #d9b6f4; }
     .pair { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px; }
     figure { margin: 0; min-width: 0; }
@@ -76,9 +88,21 @@
         for (const other of document.querySelectorAll('button[data-target]')) other.setAttribute('aria-pressed', String(other === button));
       });
     }
-    import('./definitions.js').then(({ UNIQUE_DEFINITIONS }) => {
+    import('./definitions.js').then(async ({ UNIQUE_DEFINITIONS }) => {
       for (const definition of UNIQUE_DEFINITIONS) appendDefinition(definition);
       status.textContent = `${UNIQUE_DEFINITIONS.length}종 정의 · 개발 검토용입니다. 게임 등록·아트 채택 판정이 아닙니다.`;
+      const card = Array.from(main.children).find(article => article.dataset.uniqueId === 'UI-10');
+      if (card) {
+        try {
+          const { mountD10Tooltip } = await import('./d10-tooltip.js');
+          mountD10Tooltip(card, document);
+        } catch {
+          const failure = document.createElement('p');
+          failure.setAttribute('role', 'alert');
+          failure.textContent = 'UI-10 툴팁 후보를 불러오지 못했습니다. d10-tooltip.js / roll-values.js 응답을 확인하세요. 원화 비교는 계속 이용할 수 있습니다.';
+          card.append(failure);
+        }
+      }
     }).catch(() => {
       status.textContent = '정의를 불러오지 못했습니다. HTTP로 화면을 열고 definitions.js 경로와 모듈 응답을 확인하세요. 게임 적용이나 채택은 수행하지 않았습니다.';
       status.setAttribute('role', 'alert');

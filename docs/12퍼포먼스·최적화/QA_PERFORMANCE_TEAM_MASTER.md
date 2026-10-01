@@ -470,3 +470,8 @@ QA-WARM-IDLE-01 한정 구현 인수: 일반Image3장 전수픽셀동일/61회�
 ## 2026-10-01 QA-WARM-FIRE-02 제한적 체크포인트
 
 기존3장 예약을 우선한 뒤 fire_burst_radial 6,193,152px를 같은64MP 안에서 준비한다. 실제 총61,683,832px. 전수 RGBA24,772,608바이트0diff, 실제 기존warm146.9→0.0ms이나 별도bitmap업로드73.7ms가 남는다. 관련69검사 및 주석정정 뒤 집중58검사/guard PASS. 관측4wrapper 정상입력 전 원복; 이번0처치 자연사로 정상처치·독립QA·전체FPS 인수는 미완료다. easy/패키지 미적용. [FIRE-02 계약·실측·미완료 게이트](../0마스터플랜/mac-resume-20261001/Mac-불꽃-비동기준비.md).
+
+
+### 2026-10-01 FIRE 정상전투 재측정: INCONCLUSIVE
+
+root가 기존3340의 격리origin에서 정상입력으로 시도했지만 튜토리얼/0처치/첫처치 관측누락/옵션변화가 있어5표본모두성능인수에서제외. 실제새병목/개선율/PC329ms해결주장0. CPU draw와RAF진단은구분,GL비용미측정·observer부하미독립측정. 게임탭닫기·draw/listener원복,측정종료. [환경·표본·실패단계](../0마스터플랜/mac-resume-20261001/vscode-dispatch/D10-root-review.md).

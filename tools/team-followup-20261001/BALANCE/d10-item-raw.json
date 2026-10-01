@@ -1,0 +1,8197 @@
+{
+  "status": "candidate_checked",
+  "runtimeReady": false,
+  "rows": [
+    {
+      "scenario": {
+        "file": "game.html",
+        "raw": 10,
+        "stored": 0.1,
+        "rage": 99,
+        "item": {
+          "uniqueId": "UI-10",
+          "slot": "armor"
+        },
+        "latch": true
+      },
+      "original": {
+        "rage": 0,
+        "cooldown": 1800,
+        "mats": 90,
+        "hits": [
+          [
+            0,
+            500,
+            3.141592653589793,
+            99,
+            0,
+            0,
+            1
+          ]
+        ],
+        "rageCast": [
+          99
+        ],
+        "latch": true,
+        "fullEvents": 0
+      },
+      "candidate": {
+        "rage": 0,
+        "cooldown": 1800,
+        "mats": 90,
+        "hits": [
+          [
+            0,
+            500,
+            3.141592653589793,
+            99,
+            0,
+            0,
+            1
+          ]
+        ],
+        "rageCast": [
+          99
+        ],
+        "latch": true,
+        "fullEvents": 0
+      }
+    },
+    {
+      "scenario": {
+        "file": "game.html",
+        "raw": 10,
+        "stored": 0.1,
+        "rage": 100,
+        "item": {
+          "uniqueId": "UI-10",
+          "slot": "armor"
+        },
+        "latch": true
+      },
+      "original": {
+        "rage": 0,
+        "cooldown": 1800,
+        "mats": 90,
+        "hits": [
+          [
+            0,
+            500,
+            3.141592653589793,
+            100,
+            0,
+            0,
+            1
+          ]
+        ],
+        "rageCast": [
+          100
+        ],
+        "latch": true,
+        "fullEvents": 0
+      },
+      "candidate": {
+        "rage": 10,
+        "cooldown": 1800,
+        "mats": 90,
+        "hits": [
+          [
+            0,
+            500,
+            3.141592653589793,
+            100,
+            0,
+            0,
+            1
+          ]
+        ],
+        "rageCast": [
+          100
+        ],
+        "latch": true,
+        "fullEvents": 0
+      }
+    },
+    {
+      "scenario": {
+        "file": "game.html",
+        "raw": 10,
+        "stored": 0.1,
+        "rage": 150,
+        "item": {
+          "uniqueId": "UI-10",
+          "slot": "armor"
+        },
+        "latch": true
+      },
+      "original": {
+        "rage": 0,
+        "cooldown": 1800,
+        "mats": 90,
+        "hits": [
+          [
+            0,
+            500,
+            3.141592653589793,
+            147,
+            0,
+            0,
+            1
+          ]
+        ],
+        "rageCast": [
+          150
+        ],
+        "latch": true,
+        "fullEvents": 0
+      },
+      "candidate": {
+        "rage": 15,
+        "cooldown": 1800,
+        "mats": 90,
+        "hits": [
+          [
+            0,
+            500,
+            3.141592653589793,
+            147,
+            0,
+            0,
+            1
+          ]
+        ],
+        "rageCast": [
+          150
+        ],
+        "latch": true,
+        "fullEvents": 0
+      }
+    },
+    {
+      "scenario": {
+        "file": "game.html",
+        "raw": 10,
+        "stored": 0.1,
+        "rage": 1000,
+        "item": {
+          "uniqueId": "UI-10",
+          "slot": "armor"
+        },
+        "latch": true
+      },
+      "original": {
+        "rage": 0,
+        "cooldown": 1800,
+        "mats": 90,
+        "hits": [
+          [
+            0,
+            500,
+            3.141592653589793,
+            955,
+            0,
+            0,
+            1
+          ]
+        ],
+        "rageCast": [
+          1000
+        ],
+        "latch": true,
+        "fullEvents": 0
+      },
+      "candidate": {
+        "rage": 30,
+        "cooldown": 1800,
+        "mats": 90,
+        "hits": [
+          [
+            0,
+            500,
+            3.141592653589793,
+            955,
+            0,
+            0,
+            1
+          ]
+        ],
+        "rageCast": [
+          1000
+        ],
+        "latch": true,
+        "fullEvents": 0
+      }
+    },
+    {
+      "scenario": {
+        "file": "game.html",
+        "raw": 10,
+        "stored": 0.1,
+        "rage": 99.5,
+        "item": {
+          "uniqueId": "UI-10",
+          "slot": "armor"
+        },
+        "latch": true
+      },
+      "original": {
+        "rage": 0,
+        "cooldown": 1800,
+        "mats": 90,
+        "hits": [
+          [
+            0,
+            500,
+            3.141592653589793,
+            99,
+            0,
+            0,
+            1
+          ]
+        ],
+        "rageCast": [
+          99.5
+        ],
+        "latch": true,
+        "fullEvents": 0
+      },
+      "candidate": {
+        "rage": 0,
+        "cooldown": 1800,
+        "mats": 90,
+        "hits": [
+          [
+            0,
+            500,
+            3.141592653589793,
+            99,
+            0,
+            0,
+            1
+          ]
+        ],
+        "rageCast": [
+          99.5
+        ],
+        "latch": true,
+        "fullEvents": 0
+      }
+    },
+    {
+      "scenario": {
+        "file": "game.html",
+        "raw": 10,
+        "stored": 0.1,
+        "rage": 100.5,
+        "item": {
+          "uniqueId": "UI-10",
+          "slot": "armor"
+        },
+        "latch": true
+      },
+      "original": {
+        "rage": 0,
+        "cooldown": 1800,
+        "mats": 90,
+        "hits": [
+          [
+            0,
+            500,
+            3.141592653589793,
+            100,
+            0,
+            0,
+            1
+          ]
+        ],
+        "rageCast": [
+          100.5
+        ],
+        "latch": true,
+        "fullEvents": 0
+      },
+      "candidate": {
+        "rage": 10.05,
+        "cooldown": 1800,
+        "mats": 90,
+        "hits": [
+          [
+            0,
+            500,
+            3.141592653589793,
+            100,
+            0,
+            0,
+            1
+          ]
+        ],
+        "rageCast": [
+          100.5
+        ],
+        "latch": true,
+        "fullEvents": 0
+      }
+    },
+    {
+      "scenario": {
+        "file": "game.html",
+        "raw": 11,
+        "stored": 0.11,
+        "rage": 99,
+        "item": {
+          "uniqueId": "UI-10",
+          "slot": "armor"
+        },
+        "latch": true
+      },
+      "original": {
+        "rage": 0,
+        "cooldown": 1800,
+        "mats": 90,
+        "hits": [
+          [
+            0,
+            500,
+            3.141592653589793,
+            99,
+            0,
+            0,
+            1
+          ]
+        ],
+        "rageCast": [
+          99
+        ],
+        "latch": true,
+        "fullEvents": 0
+      },
+      "candidate": {
+        "rage": 0,
+        "cooldown": 1800,
+        "mats": 90,
+        "hits": [
+          [
+            0,
+            500,
+            3.141592653589793,
+            99,
+            0,
+            0,
+            1
+          ]
+        ],
+        "rageCast": [
+          99
+        ],
+        "latch": true,
+        "fullEvents": 0
+      }
+    },
+    {
+      "scenario": {
+        "file": "game.html",
+        "raw": 11,
+        "stored": 0.11,
+        "rage": 100,
+        "item": {
+          "uniqueId": "UI-10",
+          "slot": "armor"
+        },
+        "latch": true
+      },
+      "original": {
+        "rage": 0,
+        "cooldown": 1800,
+        "mats": 90,
+        "hits": [
+          [
+            0,
+            500,
+            3.141592653589793,
+            100,
+            0,
+            0,
+            1
+          ]
+        ],
+        "rageCast": [
+          100
+        ],
+        "latch": true,
+        "fullEvents": 0
+      },
+      "candidate": {
+        "rage": 11,
+        "cooldown": 1800,
+        "mats": 90,
+        "hits": [
+          [
+            0,
+            500,
+            3.141592653589793,
+            100,
+            0,
+            0,
+            1
+          ]
+        ],
+        "rageCast": [
+          100
+        ],
+        "latch": true,
+        "fullEvents": 0
+      }
+    },
+    {
+      "scenario": {
+        "file": "game.html",
+        "raw": 11,
+        "stored": 0.11,
+        "rage": 150,
+        "item": {
+          "uniqueId": "UI-10",
+          "slot": "armor"
+        },
+        "latch": true
+      },
+      "original": {
+        "rage": 0,
+        "cooldown": 1800,
+        "mats": 90,
+        "hits": [
+          [
+            0,
+            500,
+            3.141592653589793,
+            147,
+            0,
+            0,
+            1
+          ]
+        ],
+        "rageCast": [
+          150
+        ],
+        "latch": true,
+        "fullEvents": 0
+      },
+      "candidate": {
+        "rage": 16.5,
+        "cooldown": 1800,
+        "mats": 90,
+        "hits": [
+          [
+            0,
+            500,
+            3.141592653589793,
+            147,
+            0,
+            0,
+            1
+          ]
+        ],
+        "rageCast": [
+          150
+        ],
+        "latch": true,
+        "fullEvents": 0
+      }
+    },
+    {
+      "scenario": {
+        "file": "game.html",
+        "raw": 11,
+        "stored": 0.11,
+        "rage": 1000,
+        "item": {
+          "uniqueId": "UI-10",
+          "slot": "armor"
+        },
+        "latch": true
+      },
+      "original": {
+        "rage": 0,
+        "cooldown": 1800,
+        "mats": 90,
+        "hits": [
+          [
+            0,
+            500,
+            3.141592653589793,
+            955,
+            0,
+            0,
+            1
+          ]
+        ],
+        "rageCast": [
+          1000
+        ],
+        "latch": true,
+        "fullEvents": 0
+      },
+      "candidate": {
+        "rage": 30,
+        "cooldown": 1800,
+        "mats": 90,
+        "hits": [
+          [
+            0,
+            500,
+            3.141592653589793,
+            955,
+            0,
+            0,
+            1
+          ]
+        ],
+        "rageCast": [
+          1000
+        ],
+        "latch": true,
+        "fullEvents": 0
+      }
+    },
+    {
+      "scenario": {
+        "file": "game.html",
+        "raw": 11,
+        "stored": 0.11,
+        "rage": 99.5,
+        "item": {
+          "uniqueId": "UI-10",
+          "slot": "armor"
+        },
+        "latch": true
+      },
+      "original": {
+        "rage": 0,
+        "cooldown": 1800,
+        "mats": 90,
+        "hits": [
+          [
+            0,
+            500,
+            3.141592653589793,
+            99,
+            0,
+            0,
+            1
+          ]
+        ],
+        "rageCast": [
+          99.5
+        ],
+        "latch": true,
+        "fullEvents": 0
+      },
+      "candidate": {
+        "rage": 0,
+        "cooldown": 1800,
+        "mats": 90,
+        "hits": [
+          [
+            0,
+            500,
+            3.141592653589793,
+            99,
+            0,
+            0,
+            1
+          ]
+        ],
+        "rageCast": [
+          99.5
+        ],
+        "latch": true,
+        "fullEvents": 0
+      }
+    },
+    {
+      "scenario": {
+        "file": "game.html",
+        "raw": 11,
+        "stored": 0.11,
+        "rage": 100.5,
+        "item": {
+          "uniqueId": "UI-10",
+          "slot": "armor"
+        },
+        "latch": true
+      },
+      "original": {
+        "rage": 0,
+        "cooldown": 1800,
+        "mats": 90,
+        "hits": [
+          [
+            0,
+            500,
+            3.141592653589793,
+            100,
+            0,
+            0,
+            1
+          ]
+        ],
+        "rageCast": [
+          100.5
+        ],
+        "latch": true,
+        "fullEvents": 0
+      },
+      "candidate": {
+        "rage": 11.055,
+        "cooldown": 1800,
+        "mats": 90,
+        "hits": [
+          [
+            0,
+            500,
+            3.141592653589793,
+            100,
+            0,
+            0,
+            1
+          ]
+        ],
+        "rageCast": [
+          100.5
+        ],
+        "latch": true,
+        "fullEvents": 0
+      }
+    },
+    {
+      "scenario": {
+        "file": "game.html",
+        "raw": 12,
+        "stored": 0.12,
+        "rage": 99,
+        "item": {
+          "uniqueId": "UI-10",
+          "slot": "armor"
+        },
+        "latch": true
+      },
+      "original": {
+        "rage": 0,
+        "cooldown": 1800,
+        "mats": 90,
+        "hits": [
+          [
+            0,
+            500,
+            3.141592653589793,
+            99,
+            0,
+            0,
+            1
+          ]
+        ],
+        "rageCast": [
+          99
+        ],
+        "latch": true,
+        "fullEvents": 0
+      },
+      "candidate": {
+        "rage": 0,
+        "cooldown": 1800,
+        "mats": 90,
+        "hits": [
+          [
+            0,
+            500,
+            3.141592653589793,
+            99,
+            0,
+            0,
+            1
+          ]
+        ],
+        "rageCast": [
+          99
+        ],
+        "latch": true,
+        "fullEvents": 0
+      }
+    },
+    {
+      "scenario": {
+        "file": "game.html",
+        "raw": 12,
+        "stored": 0.12,
+        "rage": 100,
+        "item": {
+          "uniqueId": "UI-10",
+          "slot": "armor"
+        },
+        "latch": true
+      },
+      "original": {
+        "rage": 0,
+        "cooldown": 1800,
+        "mats": 90,
+        "hits": [
+          [
+            0,
+            500,
+            3.141592653589793,
+            100,
+            0,
+            0,
+            1
+          ]
+        ],
+        "rageCast": [
+          100
+        ],
+        "latch": true,
+        "fullEvents": 0
+      },
+      "candidate": {
+        "rage": 12,
+        "cooldown": 1800,
+        "mats": 90,
+        "hits": [
+          [
+            0,
+            500,
+            3.141592653589793,
+            100,
+            0,
+            0,
+            1
+          ]
+        ],
+        "rageCast": [
+          100
+        ],
+        "latch": true,
+        "fullEvents": 0
+      }
+    },
+    {
+      "scenario": {
+        "file": "game.html",
+        "raw": 12,
+        "stored": 0.12,
+        "rage": 150,
+        "item": {
+          "uniqueId": "UI-10",
+          "slot": "armor"
+        },
+        "latch": true
+      },
+      "original": {
+        "rage": 0,
+        "cooldown": 1800,
+        "mats": 90,
+        "hits": [
+          [
+            0,
+            500,
+            3.141592653589793,
+            147,
+            0,
+            0,
+            1
+          ]
+        ],
+        "rageCast": [
+          150
+        ],
+        "latch": true,
+        "fullEvents": 0
+      },
+      "candidate": {
+        "rage": 18,
+        "cooldown": 1800,
+        "mats": 90,
+        "hits": [
+          [
+            0,
+            500,
+            3.141592653589793,
+            147,
+            0,
+            0,
+            1
+          ]
+        ],
+        "rageCast": [
+          150
+        ],
+        "latch": true,
+        "fullEvents": 0
+      }
+    },
+    {
+      "scenario": {
+        "file": "game.html",
+        "raw": 12,
+        "stored": 0.12,
+        "rage": 1000,
+        "item": {
+          "uniqueId": "UI-10",
+          "slot": "armor"
+        },
+        "latch": true
+      },
+      "original": {
+        "rage": 0,
+        "cooldown": 1800,
+        "mats": 90,
+        "hits": [
+          [
+            0,
+            500,
+            3.141592653589793,
+            955,
+            0,
+            0,
+            1
+          ]
+        ],
+        "rageCast": [
+          1000
+        ],
+        "latch": true,
+        "fullEvents": 0
+      },
+      "candidate": {
+        "rage": 30,
+        "cooldown": 1800,
+        "mats": 90,
+        "hits": [
+          [
+            0,
+            500,
+            3.141592653589793,
+            955,
+            0,
+            0,
+            1
+          ]
+        ],
+        "rageCast": [
+          1000
+        ],
+        "latch": true,
+        "fullEvents": 0
+      }
+    },
+    {
+      "scenario": {
+        "file": "game.html",
+        "raw": 12,
+        "stored": 0.12,
+        "rage": 99.5,
+        "item": {
+          "uniqueId": "UI-10",
+          "slot": "armor"
+        },
+        "latch": true
+      },
+      "original": {
+        "rage": 0,
+        "cooldown": 1800,
+        "mats": 90,
+        "hits": [
+          [
+            0,
+            500,
+            3.141592653589793,
+            99,
+            0,
+            0,
+            1
+          ]
+        ],
+        "rageCast": [
+          99.5
+        ],
+        "latch": true,
+        "fullEvents": 0
+      },
+      "candidate": {
+        "rage": 0,
+        "cooldown": 1800,
+        "mats": 90,
+        "hits": [
+          [
+            0,
+            500,
+            3.141592653589793,
+            99,
+            0,
+            0,
+            1
+          ]
+        ],
+        "rageCast": [
+          99.5
+        ],
+        "latch": true,
+        "fullEvents": 0
+      }
+    },
+    {
+      "scenario": {
+        "file": "game.html",
+        "raw": 12,
+        "stored": 0.12,
+        "rage": 100.5,
+        "item": {
+          "uniqueId": "UI-10",
+          "slot": "armor"
+        },
+        "latch": true
+      },
+      "original": {
+        "rage": 0,
+        "cooldown": 1800,
+        "mats": 90,
+        "hits": [
+          [
+            0,
+            500,
+            3.141592653589793,
+            100,
+            0,
+            0,
+            1
+          ]
+        ],
+        "rageCast": [
+          100.5
+        ],
+        "latch": true,
+        "fullEvents": 0
+      },
+      "candidate": {
+        "rage": 12.059999999999999,
+        "cooldown": 1800,
+        "mats": 90,
+        "hits": [
+          [
+            0,
+            500,
+            3.141592653589793,
+            100,
+            0,
+            0,
+            1
+          ]
+        ],
+        "rageCast": [
+          100.5
+        ],
+        "latch": true,
+        "fullEvents": 0
+      }
+    },
+    {
+      "scenario": {
+        "file": "game.html",
+        "raw": 13,
+        "stored": 0.13,
+        "rage": 99,
+        "item": {
+          "uniqueId": "UI-10",
+          "slot": "armor"
+        },
+        "latch": true
+      },
+      "original": {
+        "rage": 0,
+        "cooldown": 1800,
+        "mats": 90,
+        "hits": [
+          [
+            0,
+            500,
+            3.141592653589793,
+            99,
+            0,
+            0,
+            1
+          ]
+        ],
+        "rageCast": [
+          99
+        ],
+        "latch": true,
+        "fullEvents": 0
+      },
+      "candidate": {
+        "rage": 0,
+        "cooldown": 1800,
+        "mats": 90,
+        "hits": [
+          [
+            0,
+            500,
+            3.141592653589793,
+            99,
+            0,
+            0,
+            1
+          ]
+        ],
+        "rageCast": [
+          99
+        ],
+        "latch": true,
+        "fullEvents": 0
+      }
+    },
+    {
+      "scenario": {
+        "file": "game.html",
+        "raw": 13,
+        "stored": 0.13,
+        "rage": 100,
+        "item": {
+          "uniqueId": "UI-10",
+          "slot": "armor"
+        },
+        "latch": true
+      },
+      "original": {
+        "rage": 0,
+        "cooldown": 1800,
+        "mats": 90,
+        "hits": [
+          [
+            0,
+            500,
+            3.141592653589793,
+            100,
+            0,
+            0,
+            1
+          ]
+        ],
+        "rageCast": [
+          100
+        ],
+        "latch": true,
+        "fullEvents": 0
+      },
+      "candidate": {
+        "rage": 13,
+        "cooldown": 1800,
+        "mats": 90,
+        "hits": [
+          [
+            0,
+            500,
+            3.141592653589793,
+            100,
+            0,
+            0,
+            1
+          ]
+        ],
+        "rageCast": [
+          100
+        ],
+        "latch": true,
+        "fullEvents": 0
+      }
+    },
+    {
+      "scenario": {
+        "file": "game.html",
+        "raw": 13,
+        "stored": 0.13,
+        "rage": 150,
+        "item": {
+          "uniqueId": "UI-10",
+          "slot": "armor"
+        },
+        "latch": true
+      },
+      "original": {
+        "rage": 0,
+        "cooldown": 1800,
+        "mats": 90,
+        "hits": [
+          [
+            0,
+            500,
+            3.141592653589793,
+            147,
+            0,
+            0,
+            1
+          ]
+        ],
+        "rageCast": [
+          150
+        ],
+        "latch": true,
+        "fullEvents": 0
+      },
+      "candidate": {
+        "rage": 19.5,
+        "cooldown": 1800,
+        "mats": 90,
+        "hits": [
+          [
+            0,
+            500,
+            3.141592653589793,
+            147,
+            0,
+            0,
+            1
+          ]
+        ],
+        "rageCast": [
+          150
+        ],
+        "latch": true,
+        "fullEvents": 0
+      }
+    },
+    {
+      "scenario": {
+        "file": "game.html",
+        "raw": 13,
+        "stored": 0.13,
+        "rage": 1000,
+        "item": {
+          "uniqueId": "UI-10",
+          "slot": "armor"
+        },
+        "latch": true
+      },
+      "original": {
+        "rage": 0,
+        "cooldown": 1800,
+        "mats": 90,
+        "hits": [
+          [
+            0,
+            500,
+            3.141592653589793,
+            955,
+            0,
+            0,
+            1
+          ]
+        ],
+        "rageCast": [
+          1000
+        ],
+        "latch": true,
+        "fullEvents": 0
+      },
+      "candidate": {
+        "rage": 30,
+        "cooldown": 1800,
+        "mats": 90,
+        "hits": [
+          [
+            0,
+            500,
+            3.141592653589793,
+            955,
+            0,
+            0,
+            1
+          ]
+        ],
+        "rageCast": [
+          1000
+        ],
+        "latch": true,
+        "fullEvents": 0
+      }
+    },
+    {
+      "scenario": {
+        "file": "game.html",
+        "raw": 13,
+        "stored": 0.13,
+        "rage": 99.5,
+        "item": {
+          "uniqueId": "UI-10",
+          "slot": "armor"
+        },
+        "latch": true
+      },
+      "original": {
+        "rage": 0,
+        "cooldown": 1800,
+        "mats": 90,
+        "hits": [
+          [
+            0,
+            500,
+            3.141592653589793,
+            99,
+            0,
+            0,
+            1
+          ]
+        ],
+        "rageCast": [
+          99.5
+        ],
+        "latch": true,
+        "fullEvents": 0
+      },
+      "candidate": {
+        "rage": 0,
+        "cooldown": 1800,
+        "mats": 90,
+        "hits": [
+          [
+            0,
+            500,
+            3.141592653589793,
+            99,
+            0,
+            0,
+            1
+          ]
+        ],
+        "rageCast": [
+          99.5
+        ],
+        "latch": true,
+        "fullEvents": 0
+      }
+    },
+    {
+      "scenario": {
+        "file": "game.html",
+        "raw": 13,
+        "stored": 0.13,
+        "rage": 100.5,
+        "item": {
+          "uniqueId": "UI-10",
+          "slot": "armor"
+        },
+        "latch": true
+      },
+      "original": {
+        "rage": 0,
+        "cooldown": 1800,
+        "mats": 90,
+        "hits": [
+          [
+            0,
+            500,
+            3.141592653589793,
+            100,
+            0,
+            0,
+            1
+          ]
+        ],
+        "rageCast": [
+          100.5
+        ],
+        "latch": true,
+        "fullEvents": 0
+      },
+      "candidate": {
+        "rage": 13.065000000000001,
+        "cooldown": 1800,
+        "mats": 90,
+        "hits": [
+          [
+            0,
+            500,
+            3.141592653589793,
+            100,
+            0,
+            0,
+            1
+          ]
+        ],
+        "rageCast": [
+          100.5
+        ],
+        "latch": true,
+        "fullEvents": 0
+      }
+    },
+    {
+      "scenario": {
+        "file": "game.html",
+        "raw": 14,
+        "stored": 0.14,
+        "rage": 99,
+        "item": {
+          "uniqueId": "UI-10",
+          "slot": "armor"
+        },
+        "latch": true
+      },
+      "original": {
+        "rage": 0,
+        "cooldown": 1800,
+        "mats": 90,
+        "hits": [
+          [
+            0,
+            500,
+            3.141592653589793,
+            99,
+            0,
+            0,
+            1
+          ]
+        ],
+        "rageCast": [
+          99
+        ],
+        "latch": true,
+        "fullEvents": 0
+      },
+      "candidate": {
+        "rage": 0,
+        "cooldown": 1800,
+        "mats": 90,
+        "hits": [
+          [
+            0,
+            500,
+            3.141592653589793,
+            99,
+            0,
+            0,
+            1
+          ]
+        ],
+        "rageCast": [
+          99
+        ],
+        "latch": true,
+        "fullEvents": 0
+      }
+    },
+    {
+      "scenario": {
+        "file": "game.html",
+        "raw": 14,
+        "stored": 0.14,
+        "rage": 100,
+        "item": {
+          "uniqueId": "UI-10",
+          "slot": "armor"
+        },
+        "latch": true
+      },
+      "original": {
+        "rage": 0,
+        "cooldown": 1800,
+        "mats": 90,
+        "hits": [
+          [
+            0,
+            500,
+            3.141592653589793,
+            100,
+            0,
+            0,
+            1
+          ]
+        ],
+        "rageCast": [
+          100
+        ],
+        "latch": true,
+        "fullEvents": 0
+      },
+      "candidate": {
+        "rage": 14.000000000000002,
+        "cooldown": 1800,
+        "mats": 90,
+        "hits": [
+          [
+            0,
+            500,
+            3.141592653589793,
+            100,
+            0,
+            0,
+            1
+          ]
+        ],
+        "rageCast": [
+          100
+        ],
+        "latch": true,
+        "fullEvents": 0
+      }
+    },
+    {
+      "scenario": {
+        "file": "game.html",
+        "raw": 14,
+        "stored": 0.14,
+        "rage": 150,
+        "item": {
+          "uniqueId": "UI-10",
+          "slot": "armor"
+        },
+        "latch": true
+      },
+      "original": {
+        "rage": 0,
+        "cooldown": 1800,
+        "mats": 90,
+        "hits": [
+          [
+            0,
+            500,
+            3.141592653589793,
+            147,
+            0,
+            0,
+            1
+          ]
+        ],
+        "rageCast": [
+          150
+        ],
+        "latch": true,
+        "fullEvents": 0
+      },
+      "candidate": {
+        "rage": 21.000000000000004,
+        "cooldown": 1800,
+        "mats": 90,
+        "hits": [
+          [
+            0,
+            500,
+            3.141592653589793,
+            147,
+            0,
+            0,
+            1
+          ]
+        ],
+        "rageCast": [
+          150
+        ],
+        "latch": true,
+        "fullEvents": 0
+      }
+    },
+    {
+      "scenario": {
+        "file": "game.html",
+        "raw": 14,
+        "stored": 0.14,
+        "rage": 1000,
+        "item": {
+          "uniqueId": "UI-10",
+          "slot": "armor"
+        },
+        "latch": true
+      },
+      "original": {
+        "rage": 0,
+        "cooldown": 1800,
+        "mats": 90,
+        "hits": [
+          [
+            0,
+            500,
+            3.141592653589793,
+            955,
+            0,
+            0,
+            1
+          ]
+        ],
+        "rageCast": [
+          1000
+        ],
+        "latch": true,
+        "fullEvents": 0
+      },
+      "candidate": {
+        "rage": 30,
+        "cooldown": 1800,
+        "mats": 90,
+        "hits": [
+          [
+            0,
+            500,
+            3.141592653589793,
+            955,
+            0,
+            0,
+            1
+          ]
+        ],
+        "rageCast": [
+          1000
+        ],
+        "latch": true,
+        "fullEvents": 0
+      }
+    },
+    {
+      "scenario": {
+        "file": "game.html",
+        "raw": 14,
+        "stored": 0.14,
+        "rage": 99.5,
+        "item": {
+          "uniqueId": "UI-10",
+          "slot": "armor"
+        },
+        "latch": true
+      },
+      "original": {
+        "rage": 0,
+        "cooldown": 1800,
+        "mats": 90,
+        "hits": [
+          [
+            0,
+            500,
+            3.141592653589793,
+            99,
+            0,
+            0,
+            1
+          ]
+        ],
+        "rageCast": [
+          99.5
+        ],
+        "latch": true,
+        "fullEvents": 0
+      },
+      "candidate": {
+        "rage": 0,
+        "cooldown": 1800,
+        "mats": 90,
+        "hits": [
+          [
+            0,
+            500,
+            3.141592653589793,
+            99,
+            0,
+            0,
+            1
+          ]
+        ],
+        "rageCast": [
+          99.5
+        ],
+        "latch": true,
+        "fullEvents": 0
+      }
+    },
+    {
+      "scenario": {
+        "file": "game.html",
+        "raw": 14,
+        "stored": 0.14,
+        "rage": 100.5,
+        "item": {
+          "uniqueId": "UI-10",
+          "slot": "armor"
+        },
+        "latch": true
+      },
+      "original": {
+        "rage": 0,
+        "cooldown": 1800,
+        "mats": 90,
+        "hits": [
+          [
+            0,
+            500,
+            3.141592653589793,
+            100,
+            0,
+            0,
+            1
+          ]
+        ],
+        "rageCast": [
+          100.5
+        ],
+        "latch": true,
+        "fullEvents": 0
+      },
+      "candidate": {
+        "rage": 14.070000000000002,
+        "cooldown": 1800,
+        "mats": 90,
+        "hits": [
+          [
+            0,
+            500,
+            3.141592653589793,
+            100,
+            0,
+            0,
+            1
+          ]
+        ],
+        "rageCast": [
+          100.5
+        ],
+        "latch": true,
+        "fullEvents": 0
+      }
+    },
+    {
+      "scenario": {
+        "file": "game.html",
+        "raw": 15,
+        "stored": 0.15,
+        "rage": 99,
+        "item": {
+          "uniqueId": "UI-10",
+          "slot": "armor"
+        },
+        "latch": true
+      },
+      "original": {
+        "rage": 0,
+        "cooldown": 1800,
+        "mats": 90,
+        "hits": [
+          [
+            0,
+            500,
+            3.141592653589793,
+            99,
+            0,
+            0,
+            1
+          ]
+        ],
+        "rageCast": [
+          99
+        ],
+        "latch": true,
+        "fullEvents": 0
+      },
+      "candidate": {
+        "rage": 0,
+        "cooldown": 1800,
+        "mats": 90,
+        "hits": [
+          [
+            0,
+            500,
+            3.141592653589793,
+            99,
+            0,
+            0,
+            1
+          ]
+        ],
+        "rageCast": [
+          99
+        ],
+        "latch": true,
+        "fullEvents": 0
+      }
+    },
+    {
+      "scenario": {
+        "file": "game.html",
+        "raw": 15,
+        "stored": 0.15,
+        "rage": 100,
+        "item": {
+          "uniqueId": "UI-10",
+          "slot": "armor"
+        },
+        "latch": true
+      },
+      "original": {
+        "rage": 0,
+        "cooldown": 1800,
+        "mats": 90,
+        "hits": [
+          [
+            0,
+            500,
+            3.141592653589793,
+            100,
+            0,
+            0,
+            1
+          ]
+        ],
+        "rageCast": [
+          100
+        ],
+        "latch": true,
+        "fullEvents": 0
+      },
+      "candidate": {
+        "rage": 15,
+        "cooldown": 1800,
+        "mats": 90,
+        "hits": [
+          [
+            0,
+            500,
+            3.141592653589793,
+            100,
+            0,
+            0,
+            1
+          ]
+        ],
+        "rageCast": [
+          100
+        ],
+        "latch": true,
+        "fullEvents": 0
+      }
+    },
+    {
+      "scenario": {
+        "file": "game.html",
+        "raw": 15,
+        "stored": 0.15,
+        "rage": 150,
+        "item": {
+          "uniqueId": "UI-10",
+          "slot": "armor"
+        },
+        "latch": true
+      },
+      "original": {
+        "rage": 0,
+        "cooldown": 1800,
+        "mats": 90,
+        "hits": [
+          [
+            0,
+            500,
+            3.141592653589793,
+            147,
+            0,
+            0,
+            1
+          ]
+        ],
+        "rageCast": [
+          150
+        ],
+        "latch": true,
+        "fullEvents": 0
+      },
+      "candidate": {
+        "rage": 22.5,
+        "cooldown": 1800,
+        "mats": 90,
+        "hits": [
+          [
+            0,
+            500,
+            3.141592653589793,
+            147,
+            0,
+            0,
+            1
+          ]
+        ],
+        "rageCast": [
+          150
+        ],
+        "latch": true,
+        "fullEvents": 0
+      }
+    },
+    {
+      "scenario": {
+        "file": "game.html",
+        "raw": 15,
+        "stored": 0.15,
+        "rage": 1000,
+        "item": {
+          "uniqueId": "UI-10",
+          "slot": "armor"
+        },
+        "latch": true
+      },
+      "original": {
+        "rage": 0,
+        "cooldown": 1800,
+        "mats": 90,
+        "hits": [
+          [
+            0,
+            500,
+            3.141592653589793,
+            955,
+            0,
+            0,
+            1
+          ]
+        ],
+        "rageCast": [
+          1000
+        ],
+        "latch": true,
+        "fullEvents": 0
+      },
+      "candidate": {
+        "rage": 30,
+        "cooldown": 1800,
+        "mats": 90,
+        "hits": [
+          [
+            0,
+            500,
+            3.141592653589793,
+            955,
+            0,
+            0,
+            1
+          ]
+        ],
+        "rageCast": [
+          1000
+        ],
+        "latch": true,
+        "fullEvents": 0
+      }
+    },
+    {
+      "scenario": {
+        "file": "game.html",
+        "raw": 15,
+        "stored": 0.15,
+        "rage": 99.5,
+        "item": {
+          "uniqueId": "UI-10",
+          "slot": "armor"
+        },
+        "latch": true
+      },
+      "original": {
+        "rage": 0,
+        "cooldown": 1800,
+        "mats": 90,
+        "hits": [
+          [
+            0,
+            500,
+            3.141592653589793,
+            99,
+            0,
+            0,
+            1
+          ]
+        ],
+        "rageCast": [
+          99.5
+        ],
+        "latch": true,
+        "fullEvents": 0
+      },
+      "candidate": {
+        "rage": 0,
+        "cooldown": 1800,
+        "mats": 90,
+        "hits": [
+          [
+            0,
+            500,
+            3.141592653589793,
+            99,
+            0,
+            0,
+            1
+          ]
+        ],
+        "rageCast": [
+          99.5
+        ],
+        "latch": true,
+        "fullEvents": 0
+      }
+    },
+    {
+      "scenario": {
+        "file": "game.html",
+        "raw": 15,
+        "stored": 0.15,
+        "rage": 100.5,
+        "item": {
+          "uniqueId": "UI-10",
+          "slot": "armor"
+        },
+        "latch": true
+      },
+      "original": {
+        "rage": 0,
+        "cooldown": 1800,
+        "mats": 90,
+        "hits": [
+          [
+            0,
+            500,
+            3.141592653589793,
+            100,
+            0,
+            0,
+            1
+          ]
+        ],
+        "rageCast": [
+          100.5
+        ],
+        "latch": true,
+        "fullEvents": 0
+      },
+      "candidate": {
+        "rage": 15.075,
+        "cooldown": 1800,
+        "mats": 90,
+        "hits": [
+          [
+            0,
+            500,
+            3.141592653589793,
+            100,
+            0,
+            0,
+            1
+          ]
+        ],
+        "rageCast": [
+          100.5
+        ],
+        "latch": true,
+        "fullEvents": 0
+      }
+    },
+    {
+      "scenario": {
+        "file": "game.html",
+        "raw": 16,
+        "stored": 0.16,
+        "rage": 99,
+        "item": {
+          "uniqueId": "UI-10",
+          "slot": "armor"
+        },
+        "latch": true
+      },
+      "original": {
+        "rage": 0,
+        "cooldown": 1800,
+        "mats": 90,
+        "hits": [
+          [
+            0,
+            500,
+            3.141592653589793,
+            99,
+            0,
+            0,
+            1
+          ]
+        ],
+        "rageCast": [
+          99
+        ],
+        "latch": true,
+        "fullEvents": 0
+      },
+      "candidate": {
+        "rage": 0,
+        "cooldown": 1800,
+        "mats": 90,
+        "hits": [
+          [
+            0,
+            500,
+            3.141592653589793,
+            99,
+            0,
+            0,
+            1
+          ]
+        ],
+        "rageCast": [
+          99
+        ],
+        "latch": true,
+        "fullEvents": 0
+      }
+    },
+    {
+      "scenario": {
+        "file": "game.html",
+        "raw": 16,
+        "stored": 0.16,
+        "rage": 100,
+        "item": {
+          "uniqueId": "UI-10",
+          "slot": "armor"
+        },
+        "latch": true
+      },
+      "original": {
+        "rage": 0,
+        "cooldown": 1800,
+        "mats": 90,
+        "hits": [
+          [
+            0,
+            500,
+            3.141592653589793,
+            100,
+            0,
+            0,
+            1
+          ]
+        ],
+        "rageCast": [
+          100
+        ],
+        "latch": true,
+        "fullEvents": 0
+      },
+      "candidate": {
+        "rage": 16,
+        "cooldown": 1800,
+        "mats": 90,
+        "hits": [
+          [
+            0,
+            500,
+            3.141592653589793,
+            100,
+            0,
+            0,
+            1
+          ]
+        ],
+        "rageCast": [
+          100
+        ],
+        "latch": true,
+        "fullEvents": 0
+      }
+    },
+    {
+      "scenario": {
+        "file": "game.html",
+        "raw": 16,
+        "stored": 0.16,
+        "rage": 150,
+        "item": {
+          "uniqueId": "UI-10",
+          "slot": "armor"
+        },
+        "latch": true
+      },
+      "original": {
+        "rage": 0,
+        "cooldown": 1800,
+        "mats": 90,
+        "hits": [
+          [
+            0,
+            500,
+            3.141592653589793,
+            147,
+            0,
+            0,
+            1
+          ]
+        ],
+        "rageCast": [
+          150
+        ],
+        "latch": true,
+        "fullEvents": 0
+      },
+      "candidate": {
+        "rage": 24,
+        "cooldown": 1800,
+        "mats": 90,
+        "hits": [
+          [
+            0,
+            500,
+            3.141592653589793,
+            147,
+            0,
+            0,
+            1
+          ]
+        ],
+        "rageCast": [
+          150
+        ],
+        "latch": true,
+        "fullEvents": 0
+      }
+    },
+    {
+      "scenario": {
+        "file": "game.html",
+        "raw": 16,
+        "stored": 0.16,
+        "rage": 1000,
+        "item": {
+          "uniqueId": "UI-10",
+          "slot": "armor"
+        },
+        "latch": true
+      },
+      "original": {
+        "rage": 0,
+        "cooldown": 1800,
+        "mats": 90,
+        "hits": [
+          [
+            0,
+            500,
+            3.141592653589793,
+            955,
+            0,
+            0,
+            1
+          ]
+        ],
+        "rageCast": [
+          1000
+        ],
+        "latch": true,
+        "fullEvents": 0
+      },
+      "candidate": {
+        "rage": 30,
+        "cooldown": 1800,
+        "mats": 90,
+        "hits": [
+          [
+            0,
+            500,
+            3.141592653589793,
+            955,
+            0,
+            0,
+            1
+          ]
+        ],
+        "rageCast": [
+          1000
+        ],
+        "latch": true,
+        "fullEvents": 0
+      }
+    },
+    {
+      "scenario": {
+        "file": "game.html",
+        "raw": 16,
+        "stored": 0.16,
+        "rage": 99.5,
+        "item": {
+          "uniqueId": "UI-10",
+          "slot": "armor"
+        },
+        "latch": true
+      },
+      "original": {
+        "rage": 0,
+        "cooldown": 1800,
+        "mats": 90,
+        "hits": [
+          [
+            0,
+            500,
+            3.141592653589793,
+            99,
+            0,
+            0,
+            1
+          ]
+        ],
+        "rageCast": [
+          99.5
+        ],
+        "latch": true,
+        "fullEvents": 0
+      },
+      "candidate": {
+        "rage": 0,
+        "cooldown": 1800,
+        "mats": 90,
+        "hits": [
+          [
+            0,
+            500,
+            3.141592653589793,
+            99,
+            0,
+            0,
+            1
+          ]
+        ],
+        "rageCast": [
+          99.5
+        ],
+        "latch": true,
+        "fullEvents": 0
+      }
+    },
+    {
+      "scenario": {
+        "file": "game.html",
+        "raw": 16,
+        "stored": 0.16,
+        "rage": 100.5,
+        "item": {
+          "uniqueId": "UI-10",
+          "slot": "armor"
+        },
+        "latch": true
+      },
+      "original": {
+        "rage": 0,
+        "cooldown": 1800,
+        "mats": 90,
+        "hits": [
+          [
+            0,
+            500,
+            3.141592653589793,
+            100,
+            0,
+            0,
+            1
+          ]
+        ],
+        "rageCast": [
+          100.5
+        ],
+        "latch": true,
+        "fullEvents": 0
+      },
+      "candidate": {
+        "rage": 16.080000000000002,
+        "cooldown": 1800,
+        "mats": 90,
+        "hits": [
+          [
+            0,
+            500,
+            3.141592653589793,
+            100,
+            0,
+            0,
+            1
+          ]
+        ],
+        "rageCast": [
+          100.5
+        ],
+        "latch": true,
+        "fullEvents": 0
+      }
+    },
+    {
+      "scenario": {
+        "file": "game.html",
+        "raw": 17,
+        "stored": 0.17,
+        "rage": 99,
+        "item": {
+          "uniqueId": "UI-10",
+          "slot": "armor"
+        },
+        "latch": true
+      },
+      "original": {
+        "rage": 0,
+        "cooldown": 1800,
+        "mats": 90,
+        "hits": [
+          [
+            0,
+            500,
+            3.141592653589793,
+            99,
+            0,
+            0,
+            1
+          ]
+        ],
+        "rageCast": [
+          99
+        ],
+        "latch": true,
+        "fullEvents": 0
+      },
+      "candidate": {
+        "rage": 0,
+        "cooldown": 1800,
+        "mats": 90,
+        "hits": [
+          [
+            0,
+            500,
+            3.141592653589793,
+            99,
+            0,
+            0,
+            1
+          ]
+        ],
+        "rageCast": [
+          99
+        ],
+        "latch": true,
+        "fullEvents": 0
+      }
+    },
+    {
+      "scenario": {
+        "file": "game.html",
+        "raw": 17,
+        "stored": 0.17,
+        "rage": 100,
+        "item": {
+          "uniqueId": "UI-10",
+          "slot": "armor"
+        },
+        "latch": true
+      },
+      "original": {
+        "rage": 0,
+        "cooldown": 1800,
+        "mats": 90,
+        "hits": [
+          [
+            0,
+            500,
+            3.141592653589793,
+            100,
+            0,
+            0,
+            1
+          ]
+        ],
+        "rageCast": [
+          100
+        ],
+        "latch": true,
+        "fullEvents": 0
+      },
+      "candidate": {
+        "rage": 17,
+        "cooldown": 1800,
+        "mats": 90,
+        "hits": [
+          [
+            0,
+            500,
+            3.141592653589793,
+            100,
+            0,
+            0,
+            1
+          ]
+        ],
+        "rageCast": [
+          100
+        ],
+        "latch": true,
+        "fullEvents": 0
+      }
+    },
+    {
+      "scenario": {
+        "file": "game.html",
+        "raw": 17,
+        "stored": 0.17,
+        "rage": 150,
+        "item": {
+          "uniqueId": "UI-10",
+          "slot": "armor"
+        },
+        "latch": true
+      },
+      "original": {
+        "rage": 0,
+        "cooldown": 1800,
+        "mats": 90,
+        "hits": [
+          [
+            0,
+            500,
+            3.141592653589793,
+            147,
+            0,
+            0,
+            1
+          ]
+        ],
+        "rageCast": [
+          150
+        ],
+        "latch": true,
+        "fullEvents": 0
+      },
+      "candidate": {
+        "rage": 25.500000000000004,
+        "cooldown": 1800,
+        "mats": 90,
+        "hits": [
+          [
+            0,
+            500,
+            3.141592653589793,
+            147,
+            0,
+            0,
+            1
+          ]
+        ],
+        "rageCast": [
+          150
+        ],
+        "latch": true,
+        "fullEvents": 0
+      }
+    },
+    {
+      "scenario": {
+        "file": "game.html",
+        "raw": 17,
+        "stored": 0.17,
+        "rage": 1000,
+        "item": {
+          "uniqueId": "UI-10",
+          "slot": "armor"
+        },
+        "latch": true
+      },
+      "original": {
+        "rage": 0,
+        "cooldown": 1800,
+        "mats": 90,
+        "hits": [
+          [
+            0,
+            500,
+            3.141592653589793,
+            955,
+            0,
+            0,
+            1
+          ]
+        ],
+        "rageCast": [
+          1000
+        ],
+        "latch": true,
+        "fullEvents": 0
+      },
+      "candidate": {
+        "rage": 30,
+        "cooldown": 1800,
+        "mats": 90,
+        "hits": [
+          [
+            0,
+            500,
+            3.141592653589793,
+            955,
+            0,
+            0,
+            1
+          ]
+        ],
+        "rageCast": [
+          1000
+        ],
+        "latch": true,
+        "fullEvents": 0
+      }
+    },
+    {
+      "scenario": {
+        "file": "game.html",
+        "raw": 17,
+        "stored": 0.17,
+        "rage": 99.5,
+        "item": {
+          "uniqueId": "UI-10",
+          "slot": "armor"
+        },
+        "latch": true
+      },
+      "original": {
+        "rage": 0,
+        "cooldown": 1800,
+        "mats": 90,
+        "hits": [
+          [
+            0,
+            500,
+            3.141592653589793,
+            99,
+            0,
+            0,
+            1
+          ]
+        ],
+        "rageCast": [
+          99.5
+        ],
+        "latch": true,
+        "fullEvents": 0
+      },
+      "candidate": {
+        "rage": 0,
+        "cooldown": 1800,
+        "mats": 90,
+        "hits": [
+          [
+            0,
+            500,
+            3.141592653589793,
+            99,
+            0,
+            0,
+            1
+          ]
+        ],
+        "rageCast": [
+          99.5
+        ],
+        "latch": true,
+        "fullEvents": 0
+      }
+    },
+    {
+      "scenario": {
+        "file": "game.html",
+        "raw": 17,
+        "stored": 0.17,
+        "rage": 100.5,
+        "item": {
+          "uniqueId": "UI-10",
+          "slot": "armor"
+        },
+        "latch": true
+      },
+      "original": {
+        "rage": 0,
+        "cooldown": 1800,
+        "mats": 90,
+        "hits": [
+          [
+            0,
+            500,
+            3.141592653589793,
+            100,
+            0,
+            0,
+            1
+          ]
+        ],
+        "rageCast": [
+          100.5
+        ],
+        "latch": true,
+        "fullEvents": 0
+      },
+      "candidate": {
+        "rage": 17.085,
+        "cooldown": 1800,
+        "mats": 90,
+        "hits": [
+          [
+            0,
+            500,
+            3.141592653589793,
+            100,
+            0,
+            0,
+            1
+          ]
+        ],
+        "rageCast": [
+          100.5
+        ],
+        "latch": true,
+        "fullEvents": 0
+      }
+    },
+    {
+      "scenario": {
+        "file": "game.html",
+        "raw": 18,
+        "stored": 0.18,
+        "rage": 99,
+        "item": {
+          "uniqueId": "UI-10",
+          "slot": "armor"
+        },
+        "latch": true
+      },
+      "original": {
+        "rage": 0,
+        "cooldown": 1800,
+        "mats": 90,
+        "hits": [
+          [
+            0,
+            500,
+            3.141592653589793,
+            99,
+            0,
+            0,
+            1
+          ]
+        ],
+        "rageCast": [
+          99
+        ],
+        "latch": true,
+        "fullEvents": 0
+      },
+      "candidate": {
+        "rage": 0,
+        "cooldown": 1800,
+        "mats": 90,
+        "hits": [
+          [
+            0,
+            500,
+            3.141592653589793,
+            99,
+            0,
+            0,
+            1
+          ]
+        ],
+        "rageCast": [
+          99
+        ],
+        "latch": true,
+        "fullEvents": 0
+      }
+    },
+    {
+      "scenario": {
+        "file": "game.html",
+        "raw": 18,
+        "stored": 0.18,
+        "rage": 100,
+        "item": {
+          "uniqueId": "UI-10",
+          "slot": "armor"
+        },
+        "latch": true
+      },
+      "original": {
+        "rage": 0,
+        "cooldown": 1800,
+        "mats": 90,
+        "hits": [
+          [
+            0,
+            500,
+            3.141592653589793,
+            100,
+            0,
+            0,
+            1
+          ]
+        ],
+        "rageCast": [
+          100
+        ],
+        "latch": true,
+        "fullEvents": 0
+      },
+      "candidate": {
+        "rage": 18,
+        "cooldown": 1800,
+        "mats": 90,
+        "hits": [
+          [
+            0,
+            500,
+            3.141592653589793,
+            100,
+            0,
+            0,
+            1
+          ]
+        ],
+        "rageCast": [
+          100
+        ],
+        "latch": true,
+        "fullEvents": 0
+      }
+    },
+    {
+      "scenario": {
+        "file": "game.html",
+        "raw": 18,
+        "stored": 0.18,
+        "rage": 150,
+        "item": {
+          "uniqueId": "UI-10",
+          "slot": "armor"
+        },
+        "latch": true
+      },
+      "original": {
+        "rage": 0,
+        "cooldown": 1800,
+        "mats": 90,
+        "hits": [
+          [
+            0,
+            500,
+            3.141592653589793,
+            147,
+            0,
+            0,
+            1
+          ]
+        ],
+        "rageCast": [
+          150
+        ],
+        "latch": true,
+        "fullEvents": 0
+      },
+      "candidate": {
+        "rage": 27,
+        "cooldown": 1800,
+        "mats": 90,
+        "hits": [
+          [
+            0,
+            500,
+            3.141592653589793,
+            147,
+            0,
+            0,
+            1
+          ]
+        ],
+        "rageCast": [
+          150
+        ],
+        "latch": true,
+        "fullEvents": 0
+      }
+    },
+    {
+      "scenario": {
+        "file": "game.html",
+        "raw": 18,
+        "stored": 0.18,
+        "rage": 1000,
+        "item": {
+          "uniqueId": "UI-10",
+          "slot": "armor"
+        },
+        "latch": true
+      },
+      "original": {
+        "rage": 0,
+        "cooldown": 1800,
+        "mats": 90,
+        "hits": [
+          [
+            0,
+            500,
+            3.141592653589793,
+            955,
+            0,
+            0,
+            1
+          ]
+        ],
+        "rageCast": [
+          1000
+        ],
+        "latch": true,
+        "fullEvents": 0
+      },
+      "candidate": {
+        "rage": 30,
+        "cooldown": 1800,
+        "mats": 90,
+        "hits": [
+          [
+            0,
+            500,
+            3.141592653589793,
+            955,
+            0,
+            0,
+            1
+          ]
+        ],
+        "rageCast": [
+          1000
+        ],
+        "latch": true,
+        "fullEvents": 0
+      }
+    },
+    {
+      "scenario": {
+        "file": "game.html",
+        "raw": 18,
+        "stored": 0.18,
+        "rage": 99.5,
+        "item": {
+          "uniqueId": "UI-10",
+          "slot": "armor"
+        },
+        "latch": true
+      },
+      "original": {
+        "rage": 0,
+        "cooldown": 1800,
+        "mats": 90,
+        "hits": [
+          [
+            0,
+            500,
+            3.141592653589793,
+            99,
+            0,
+            0,
+            1
+          ]
+        ],
+        "rageCast": [
+          99.5
+        ],
+        "latch": true,
+        "fullEvents": 0
+      },
+      "candidate": {
+        "rage": 0,
+        "cooldown": 1800,
+        "mats": 90,
+        "hits": [
+          [
+            0,
+            500,
+            3.141592653589793,
+            99,
+            0,
+            0,
+            1
+          ]
+        ],
+        "rageCast": [
+          99.5
+        ],
+        "latch": true,
+        "fullEvents": 0
+      }
+    },
+    {
+      "scenario": {
+        "file": "game.html",
+        "raw": 18,
+        "stored": 0.18,
+        "rage": 100.5,
+        "item": {
+          "uniqueId": "UI-10",
+          "slot": "armor"
+        },
+        "latch": true
+      },
+      "original": {
+        "rage": 0,
+        "cooldown": 1800,
+        "mats": 90,
+        "hits": [
+          [
+            0,
+            500,
+            3.141592653589793,
+            100,
+            0,
+            0,
+            1
+          ]
+        ],
+        "rageCast": [
+          100.5
+        ],
+        "latch": true,
+        "fullEvents": 0
+      },
+      "candidate": {
+        "rage": 18.09,
+        "cooldown": 1800,
+        "mats": 90,
+        "hits": [
+          [
+            0,
+            500,
+            3.141592653589793,
+            100,
+            0,
+            0,
+            1
+          ]
+        ],
+        "rageCast": [
+          100.5
+        ],
+        "latch": true,
+        "fullEvents": 0
+      }
+    },
+    {
+      "scenario": {
+        "file": "game.html",
+        "raw": 19,
+        "stored": 0.19,
+        "rage": 99,
+        "item": {
+          "uniqueId": "UI-10",
+          "slot": "armor"
+        },
+        "latch": true
+      },
+      "original": {
+        "rage": 0,
+        "cooldown": 1800,
+        "mats": 90,
+        "hits": [
+          [
+            0,
+            500,
+            3.141592653589793,
+            99,
+            0,
+            0,
+            1
+          ]
+        ],
+        "rageCast": [
+          99
+        ],
+        "latch": true,
+        "fullEvents": 0
+      },
+      "candidate": {
+        "rage": 0,
+        "cooldown": 1800,
+        "mats": 90,
+        "hits": [
+          [
+            0,
+            500,
+            3.141592653589793,
+            99,
+            0,
+            0,
+            1
+          ]
+        ],
+        "rageCast": [
+          99
+        ],
+        "latch": true,
+        "fullEvents": 0
+      }
+    },
+    {
+      "scenario": {
+        "file": "game.html",
+        "raw": 19,
+        "stored": 0.19,
+        "rage": 100,
+        "item": {
+          "uniqueId": "UI-10",
+          "slot": "armor"
+        },
+        "latch": true
+      },
+      "original": {
+        "rage": 0,
+        "cooldown": 1800,
+        "mats": 90,
+        "hits": [
+          [
+            0,
+            500,
+            3.141592653589793,
+            100,
+            0,
+            0,
+            1
+          ]
+        ],
+        "rageCast": [
+          100
+        ],
+        "latch": true,
+        "fullEvents": 0
+      },
+      "candidate": {
+        "rage": 19,
+        "cooldown": 1800,
+        "mats": 90,
+        "hits": [
+          [
+            0,
+            500,
+            3.141592653589793,
+            100,
+            0,
+            0,
+            1
+          ]
+        ],
+        "rageCast": [
+          100
+        ],
+        "latch": true,
+        "fullEvents": 0
+      }
+    },
+    {
+      "scenario": {
+        "file": "game.html",
+        "raw": 19,
+        "stored": 0.19,
+        "rage": 150,
+        "item": {
+          "uniqueId": "UI-10",
+          "slot": "armor"
+        },
+        "latch": true
+      },
+      "original": {
+        "rage": 0,
+        "cooldown": 1800,
+        "mats": 90,
+        "hits": [
+          [
+            0,
+            500,
+            3.141592653589793,
+            147,
+            0,
+            0,
+            1
+          ]
+        ],
+        "rageCast": [
+          150
+        ],
+        "latch": true,
+        "fullEvents": 0
+      },
+      "candidate": {
+        "rage": 28.5,
+        "cooldown": 1800,
+        "mats": 90,
+        "hits": [
+          [
+            0,
+            500,
+            3.141592653589793,
+            147,
+            0,
+            0,
+            1
+          ]
+        ],
+        "rageCast": [
+          150
+        ],
+        "latch": true,
+        "fullEvents": 0
+      }
+    },
+    {
+      "scenario": {
+        "file": "game.html",
+        "raw": 19,
+        "stored": 0.19,
+        "rage": 1000,
+        "item": {
+          "uniqueId": "UI-10",
+          "slot": "armor"
+        },
+        "latch": true
+      },
+      "original": {
+        "rage": 0,
+        "cooldown": 1800,
+        "mats": 90,
+        "hits": [
+          [
+            0,
+            500,
+            3.141592653589793,
+            955,
+            0,
+            0,
+            1
+          ]
+        ],
+        "rageCast": [
+          1000
+        ],
+        "latch": true,
+        "fullEvents": 0
+      },
+      "candidate": {
+        "rage": 30,
+        "cooldown": 1800,
+        "mats": 90,
+        "hits": [
+          [
+            0,
+            500,
+            3.141592653589793,
+            955,
+            0,
+            0,
+            1
+          ]
+        ],
+        "rageCast": [
+          1000
+        ],
+        "latch": true,
+        "fullEvents": 0
+      }
+    },
+    {
+      "scenario": {
+        "file": "game.html",
+        "raw": 19,
+        "stored": 0.19,
+        "rage": 99.5,
+        "item": {
+          "uniqueId": "UI-10",
+          "slot": "armor"
+        },
+        "latch": true
+      },
+      "original": {
+        "rage": 0,
+        "cooldown": 1800,
+        "mats": 90,
+        "hits": [
+          [
+            0,
+            500,
+            3.141592653589793,
+            99,
+            0,
+            0,
+            1
+          ]
+        ],
+        "rageCast": [
+          99.5
+        ],
+        "latch": true,
+        "fullEvents": 0
+      },
+      "candidate": {
+        "rage": 0,
+        "cooldown": 1800,
+        "mats": 90,
+        "hits": [
+          [
+            0,
+            500,
+            3.141592653589793,
+            99,
+            0,
+            0,
+            1
+          ]
+        ],
+        "rageCast": [
+          99.5
+        ],
+        "latch": true,
+        "fullEvents": 0
+      }
+    },
+    {
+      "scenario": {
+        "file": "game.html",
+        "raw": 19,
+        "stored": 0.19,
+        "rage": 100.5,
+        "item": {
+          "uniqueId": "UI-10",
+          "slot": "armor"
+        },
+        "latch": true
+      },
+      "original": {
+        "rage": 0,
+        "cooldown": 1800,
+        "mats": 90,
+        "hits": [
+          [
+            0,
+            500,
+            3.141592653589793,
+            100,
+            0,
+            0,
+            1
+          ]
+        ],
+        "rageCast": [
+          100.5
+        ],
+        "latch": true,
+        "fullEvents": 0
+      },
+      "candidate": {
+        "rage": 19.095,
+        "cooldown": 1800,
+        "mats": 90,
+        "hits": [
+          [
+            0,
+            500,
+            3.141592653589793,
+            100,
+            0,
+            0,
+            1
+          ]
+        ],
+        "rageCast": [
+          100.5
+        ],
+        "latch": true,
+        "fullEvents": 0
+      }
+    },
+    {
+      "scenario": {
+        "file": "game.html",
+        "raw": 20,
+        "stored": 0.2,
+        "rage": 99,
+        "item": {
+          "uniqueId": "UI-10",
+          "slot": "armor"
+        },
+        "latch": true
+      },
+      "original": {
+        "rage": 0,
+        "cooldown": 1800,
+        "mats": 90,
+        "hits": [
+          [
+            0,
+            500,
+            3.141592653589793,
+            99,
+            0,
+            0,
+            1
+          ]
+        ],
+        "rageCast": [
+          99
+        ],
+        "latch": true,
+        "fullEvents": 0
+      },
+      "candidate": {
+        "rage": 0,
+        "cooldown": 1800,
+        "mats": 90,
+        "hits": [
+          [
+            0,
+            500,
+            3.141592653589793,
+            99,
+            0,
+            0,
+            1
+          ]
+        ],
+        "rageCast": [
+          99
+        ],
+        "latch": true,
+        "fullEvents": 0
+      }
+    },
+    {
+      "scenario": {
+        "file": "game.html",
+        "raw": 20,
+        "stored": 0.2,
+        "rage": 100,
+        "item": {
+          "uniqueId": "UI-10",
+          "slot": "armor"
+        },
+        "latch": true
+      },
+      "original": {
+        "rage": 0,
+        "cooldown": 1800,
+        "mats": 90,
+        "hits": [
+          [
+            0,
+            500,
+            3.141592653589793,
+            100,
+            0,
+            0,
+            1
+          ]
+        ],
+        "rageCast": [
+          100
+        ],
+        "latch": true,
+        "fullEvents": 0
+      },
+      "candidate": {
+        "rage": 20,
+        "cooldown": 1800,
+        "mats": 90,
+        "hits": [
+          [
+            0,
+            500,
+            3.141592653589793,
+            100,
+            0,
+            0,
+            1
+          ]
+        ],
+        "rageCast": [
+          100
+        ],
+        "latch": true,
+        "fullEvents": 0
+      }
+    },
+    {
+      "scenario": {
+        "file": "game.html",
+        "raw": 20,
+        "stored": 0.2,
+        "rage": 150,
+        "item": {
+          "uniqueId": "UI-10",
+          "slot": "armor"
+        },
+        "latch": true
+      },
+      "original": {
+        "rage": 0,
+        "cooldown": 1800,
+        "mats": 90,
+        "hits": [
+          [
+            0,
+            500,
+            3.141592653589793,
+            147,
+            0,
+            0,
+            1
+          ]
+        ],
+        "rageCast": [
+          150
+        ],
+        "latch": true,
+        "fullEvents": 0
+      },
+      "candidate": {
+        "rage": 30,
+        "cooldown": 1800,
+        "mats": 90,
+        "hits": [
+          [
+            0,
+            500,
+            3.141592653589793,
+            147,
+            0,
+            0,
+            1
+          ]
+        ],
+        "rageCast": [
+          150
+        ],
+        "latch": true,
+        "fullEvents": 0
+      }
+    },
+    {
+      "scenario": {
+        "file": "game.html",
+        "raw": 20,
+        "stored": 0.2,
+        "rage": 1000,
+        "item": {
+          "uniqueId": "UI-10",
+          "slot": "armor"
+        },
+        "latch": true
+      },
+      "original": {
+        "rage": 0,
+        "cooldown": 1800,
+        "mats": 90,
+        "hits": [
+          [
+            0,
+            500,
+            3.141592653589793,
+            955,
+            0,
+            0,
+            1
+          ]
+        ],
+        "rageCast": [
+          1000
+        ],
+        "latch": true,
+        "fullEvents": 0
+      },
+      "candidate": {
+        "rage": 30,
+        "cooldown": 1800,
+        "mats": 90,
+        "hits": [
+          [
+            0,
+            500,
+            3.141592653589793,
+            955,
+            0,
+            0,
+            1
+          ]
+        ],
+        "rageCast": [
+          1000
+        ],
+        "latch": true,
+        "fullEvents": 0
+      }
+    },
+    {
+      "scenario": {
+        "file": "game.html",
+        "raw": 20,
+        "stored": 0.2,
+        "rage": 99.5,
+        "item": {
+          "uniqueId": "UI-10",
+          "slot": "armor"
+        },
+        "latch": true
+      },
+      "original": {
+        "rage": 0,
+        "cooldown": 1800,
+        "mats": 90,
+        "hits": [
+          [
+            0,
+            500,
+            3.141592653589793,
+            99,
+            0,
+            0,
+            1
+          ]
+        ],
+        "rageCast": [
+          99.5
+        ],
+        "latch": true,
+        "fullEvents": 0
+      },
+      "candidate": {
+        "rage": 0,
+        "cooldown": 1800,
+        "mats": 90,
+        "hits": [
+          [
+            0,
+            500,
+            3.141592653589793,
+            99,
+            0,
+            0,
+            1
+          ]
+        ],
+        "rageCast": [
+          99.5
+        ],
+        "latch": true,
+        "fullEvents": 0
+      }
+    },
+    {
+      "scenario": {
+        "file": "game.html",
+        "raw": 20,
+        "stored": 0.2,
+        "rage": 100.5,
+        "item": {
+          "uniqueId": "UI-10",
+          "slot": "armor"
+        },
+        "latch": true
+      },
+      "original": {
+        "rage": 0,
+        "cooldown": 1800,
+        "mats": 90,
+        "hits": [
+          [
+            0,
+            500,
+            3.141592653589793,
+            100,
+            0,
+            0,
+            1
+          ]
+        ],
+        "rageCast": [
+          100.5
+        ],
+        "latch": true,
+        "fullEvents": 0
+      },
+      "candidate": {
+        "rage": 20.1,
+        "cooldown": 1800,
+        "mats": 90,
+        "hits": [
+          [
+            0,
+            500,
+            3.141592653589793,
+            100,
+            0,
+            0,
+            1
+          ]
+        ],
+        "rageCast": [
+          100.5
+        ],
+        "latch": true,
+        "fullEvents": 0
+      }
+    },
+    {
+      "scenario": {
+        "file": "game-easy-test.html",
+        "raw": 10,
+        "stored": 0.1,
+        "rage": 99,
+        "item": {
+          "uniqueId": "UI-10",
+          "slot": "armor"
+        },
+        "latch": true
+      },
+      "original": {
+        "rage": 0,
+        "cooldown": 1800,
+        "mats": 90,
+        "hits": [
+          [
+            0,
+            500,
+            3.141592653589793,
+            99,
+            0,
+            0,
+            1
+          ]
+        ],
+        "rageCast": [
+          99
+        ],
+        "latch": true,
+        "fullEvents": 0
+      },
+      "candidate": {
+        "rage": 0,
+        "cooldown": 1800,
+        "mats": 90,
+        "hits": [
+          [
+            0,
+            500,
+            3.141592653589793,
+            99,
+            0,
+            0,
+            1
+          ]
+        ],
+        "rageCast": [
+          99
+        ],
+        "latch": true,
+        "fullEvents": 0
+      }
+    },
+    {
+      "scenario": {
+        "file": "game-easy-test.html",
+        "raw": 10,
+        "stored": 0.1,
+        "rage": 100,
+        "item": {
+          "uniqueId": "UI-10",
+          "slot": "armor"
+        },
+        "latch": true
+      },
+      "original": {
+        "rage": 0,
+        "cooldown": 1800,
+        "mats": 90,
+        "hits": [
+          [
+            0,
+            500,
+            3.141592653589793,
+            100,
+            0,
+            0,
+            1
+          ]
+        ],
+        "rageCast": [
+          100
+        ],
+        "latch": true,
+        "fullEvents": 0
+      },
+      "candidate": {
+        "rage": 10,
+        "cooldown": 1800,
+        "mats": 90,
+        "hits": [
+          [
+            0,
+            500,
+            3.141592653589793,
+            100,
+            0,
+            0,
+            1
+          ]
+        ],
+        "rageCast": [
+          100
+        ],
+        "latch": true,
+        "fullEvents": 0
+      }
+    },
+    {
+      "scenario": {
+        "file": "game-easy-test.html",
+        "raw": 10,
+        "stored": 0.1,
+        "rage": 150,
+        "item": {
+          "uniqueId": "UI-10",
+          "slot": "armor"
+        },
+        "latch": true
+      },
+      "original": {
+        "rage": 0,
+        "cooldown": 1800,
+        "mats": 90,
+        "hits": [
+          [
+            0,
+            500,
+            3.141592653589793,
+            147,
+            0,
+            0,
+            1
+          ]
+        ],
+        "rageCast": [
+          150
+        ],
+        "latch": true,
+        "fullEvents": 0
+      },
+      "candidate": {
+        "rage": 15,
+        "cooldown": 1800,
+        "mats": 90,
+        "hits": [
+          [
+            0,
+            500,
+            3.141592653589793,
+            147,
+            0,
+            0,
+            1
+          ]
+        ],
+        "rageCast": [
+          150
+        ],
+        "latch": true,
+        "fullEvents": 0
+      }
+    },
+    {
+      "scenario": {
+        "file": "game-easy-test.html",
+        "raw": 10,
+        "stored": 0.1,
+        "rage": 1000,
+        "item": {
+          "uniqueId": "UI-10",
+          "slot": "armor"
+        },
+        "latch": true
+      },
+      "original": {
+        "rage": 0,
+        "cooldown": 1800,
+        "mats": 90,
+        "hits": [
+          [
+            0,
+            500,
+            3.141592653589793,
+            955,
+            0,
+            0,
+            1
+          ]
+        ],
+        "rageCast": [
+          1000
+        ],
+        "latch": true,
+        "fullEvents": 0
+      },
+      "candidate": {
+        "rage": 30,
+        "cooldown": 1800,
+        "mats": 90,
+        "hits": [
+          [
+            0,
+            500,
+            3.141592653589793,
+            955,
+            0,
+            0,
+            1
+          ]
+        ],
+        "rageCast": [
+          1000
+        ],
+        "latch": true,
+        "fullEvents": 0
+      }
+    },
+    {
+      "scenario": {
+        "file": "game-easy-test.html",
+        "raw": 10,
+        "stored": 0.1,
+        "rage": 99.5,
+        "item": {
+          "uniqueId": "UI-10",
+          "slot": "armor"
+        },
+        "latch": true
+      },
+      "original": {
+        "rage": 0,
+        "cooldown": 1800,
+        "mats": 90,
+        "hits": [
+          [
+            0,
+            500,
+            3.141592653589793,
+            99,
+            0,
+            0,
+            1
+          ]
+        ],
+        "rageCast": [
+          99.5
+        ],
+        "latch": true,
+        "fullEvents": 0
+      },
+      "candidate": {
+        "rage": 0,
+        "cooldown": 1800,
+        "mats": 90,
+        "hits": [
+          [
+            0,
+            500,
+            3.141592653589793,
+            99,
+            0,
+            0,
+            1
+          ]
+        ],
+        "rageCast": [
+          99.5
+        ],
+        "latch": true,
+        "fullEvents": 0
+      }
+    },
+    {
+      "scenario": {
+        "file": "game-easy-test.html",
+        "raw": 10,
+        "stored": 0.1,
+        "rage": 100.5,
+        "item": {
+          "uniqueId": "UI-10",
+          "slot": "armor"
+        },
+        "latch": true
+      },
+      "original": {
+        "rage": 0,
+        "cooldown": 1800,
+        "mats": 90,
+        "hits": [
+          [
+            0,
+            500,
+            3.141592653589793,
+            100,
+            0,
+            0,
+            1
+          ]
+        ],
+        "rageCast": [
+          100.5
+        ],
+        "latch": true,
+        "fullEvents": 0
+      },
+      "candidate": {
+        "rage": 10.05,
+        "cooldown": 1800,
+        "mats": 90,
+        "hits": [
+          [
+            0,
+            500,
+            3.141592653589793,
+            100,
+            0,
+            0,
+            1
+          ]
+        ],
+        "rageCast": [
+          100.5
+        ],
+        "latch": true,
+        "fullEvents": 0
+      }
+    },
+    {
+      "scenario": {
+        "file": "game-easy-test.html",
+        "raw": 11,
+        "stored": 0.11,
+        "rage": 99,
+        "item": {
+          "uniqueId": "UI-10",
+          "slot": "armor"
+        },
+        "latch": true
+      },
+      "original": {
+        "rage": 0,
+        "cooldown": 1800,
+        "mats": 90,
+        "hits": [
+          [
+            0,
+            500,
+            3.141592653589793,
+            99,
+            0,
+            0,
+            1
+          ]
+        ],
+        "rageCast": [
+          99
+        ],
+        "latch": true,
+        "fullEvents": 0
+      },
+      "candidate": {
+        "rage": 0,
+        "cooldown": 1800,
+        "mats": 90,
+        "hits": [
+          [
+            0,
+            500,
+            3.141592653589793,
+            99,
+            0,
+            0,
+            1
+          ]
+        ],
+        "rageCast": [
+          99
+        ],
+        "latch": true,
+        "fullEvents": 0
+      }
+    },
+    {
+      "scenario": {
+        "file": "game-easy-test.html",
+        "raw": 11,
+        "stored": 0.11,
+        "rage": 100,
+        "item": {
+          "uniqueId": "UI-10",
+          "slot": "armor"
+        },
+        "latch": true
+      },
+      "original": {
+        "rage": 0,
+        "cooldown": 1800,
+        "mats": 90,
+        "hits": [
+          [
+            0,
+            500,
+            3.141592653589793,
+            100,
+            0,
+            0,
+            1
+          ]
+        ],
+        "rageCast": [
+          100
+        ],
+        "latch": true,
+        "fullEvents": 0
+      },
+      "candidate": {
+        "rage": 11,
+        "cooldown": 1800,
+        "mats": 90,
+        "hits": [
+          [
+            0,
+            500,
+            3.141592653589793,
+            100,
+            0,
+            0,
+            1
+          ]
+        ],
+        "rageCast": [
+          100
+        ],
+        "latch": true,
+        "fullEvents": 0
+      }
+    },
+    {
+      "scenario": {
+        "file": "game-easy-test.html",
+        "raw": 11,
+        "stored": 0.11,
+        "rage": 150,
+        "item": {
+          "uniqueId": "UI-10",
+          "slot": "armor"
+        },
+        "latch": true
+      },
+      "original": {
+        "rage": 0,
+        "cooldown": 1800,
+        "mats": 90,
+        "hits": [
+          [
+            0,
+            500,
+            3.141592653589793,
+            147,
+            0,
+            0,
+            1
+          ]
+        ],
+        "rageCast": [
+          150
+        ],
+        "latch": true,
+        "fullEvents": 0
+      },
+      "candidate": {
+        "rage": 16.5,
+        "cooldown": 1800,
+        "mats": 90,
+        "hits": [
+          [
+            0,
+            500,
+            3.141592653589793,
+            147,
+            0,
+            0,
+            1
+          ]
+        ],
+        "rageCast": [
+          150
+        ],
+        "latch": true,
+        "fullEvents": 0
+      }
+    },
+    {
+      "scenario": {
+        "file": "game-easy-test.html",
+        "raw": 11,
+        "stored": 0.11,
+        "rage": 1000,
+        "item": {
+          "uniqueId": "UI-10",
+          "slot": "armor"
+        },
+        "latch": true
+      },
+      "original": {
+        "rage": 0,
+        "cooldown": 1800,
+        "mats": 90,
+        "hits": [
+          [
+            0,
+            500,
+            3.141592653589793,
+            955,
+            0,
+            0,
+            1
+          ]
+        ],
+        "rageCast": [
+          1000
+        ],
+        "latch": true,
+        "fullEvents": 0
+      },
+      "candidate": {
+        "rage": 30,
+        "cooldown": 1800,
+        "mats": 90,
+        "hits": [
+          [
+            0,
+            500,
+            3.141592653589793,
+            955,
+            0,
+            0,
+            1
+          ]
+        ],
+        "rageCast": [
+          1000
+        ],
+        "latch": true,
+        "fullEvents": 0
+      }
+    },
+    {
+      "scenario": {
+        "file": "game-easy-test.html",
+        "raw": 11,
+        "stored": 0.11,
+        "rage": 99.5,
+        "item": {
+          "uniqueId": "UI-10",
+          "slot": "armor"
+        },
+        "latch": true
+      },
+      "original": {
+        "rage": 0,
+        "cooldown": 1800,
+        "mats": 90,
+        "hits": [
+          [
+            0,
+            500,
+            3.141592653589793,
+            99,
+            0,
+            0,
+            1
+          ]
+        ],
+        "rageCast": [
+          99.5
+        ],
+        "latch": true,
+        "fullEvents": 0
+      },
+      "candidate": {
+        "rage": 0,
+        "cooldown": 1800,
+        "mats": 90,
+        "hits": [
+          [
+            0,
+            500,
+            3.141592653589793,
+            99,
+            0,
+            0,
+            1
+          ]
+        ],
+        "rageCast": [
+          99.5
+        ],
+        "latch": true,
+        "fullEvents": 0
+      }
+    },
+    {
+      "scenario": {
+        "file": "game-easy-test.html",
+        "raw": 11,
+        "stored": 0.11,
+        "rage": 100.5,
+        "item": {
+          "uniqueId": "UI-10",
+          "slot": "armor"
+        },
+        "latch": true
+      },
+      "original": {
+        "rage": 0,
+        "cooldown": 1800,
+        "mats": 90,
+        "hits": [
+          [
+            0,
+            500,
+            3.141592653589793,
+            100,
+            0,
+            0,
+            1
+          ]
+        ],
+        "rageCast": [
+          100.5
+        ],
+        "latch": true,
+        "fullEvents": 0
+      },
+      "candidate": {
+        "rage": 11.055,
+        "cooldown": 1800,
+        "mats": 90,
+        "hits": [
+          [
+            0,
+            500,
+            3.141592653589793,
+            100,
+            0,
+            0,
+            1
+          ]
+        ],
+        "rageCast": [
+          100.5
+        ],
+        "latch": true,
+        "fullEvents": 0
+      }
+    },
+    {
+      "scenario": {
+        "file": "game-easy-test.html",
+        "raw": 12,
+        "stored": 0.12,
+        "rage": 99,
+        "item": {
+          "uniqueId": "UI-10",
+          "slot": "armor"
+        },
+        "latch": true
+      },
+      "original": {
+        "rage": 0,
+        "cooldown": 1800,
+        "mats": 90,
+        "hits": [
+          [
+            0,
+            500,
+            3.141592653589793,
+            99,
+            0,
+            0,
+            1
+          ]
+        ],
+        "rageCast": [
+          99
+        ],
+        "latch": true,
+        "fullEvents": 0
+      },
+      "candidate": {
+        "rage": 0,
+        "cooldown": 1800,
+        "mats": 90,
+        "hits": [
+          [
+            0,
+            500,
+            3.141592653589793,
+            99,
+            0,
+            0,
+            1
+          ]
+        ],
+        "rageCast": [
+          99
+        ],
+        "latch": true,
+        "fullEvents": 0
+      }
+    },
+    {
+      "scenario": {
+        "file": "game-easy-test.html",
+        "raw": 12,
+        "stored": 0.12,
+        "rage": 100,
+        "item": {
+          "uniqueId": "UI-10",
+          "slot": "armor"
+        },
+        "latch": true
+      },
+      "original": {
+        "rage": 0,
+        "cooldown": 1800,
+        "mats": 90,
+        "hits": [
+          [
+            0,
+            500,
+            3.141592653589793,
+            100,
+            0,
+            0,
+            1
+          ]
+        ],
+        "rageCast": [
+          100
+        ],
+        "latch": true,
+        "fullEvents": 0
+      },
+      "candidate": {
+        "rage": 12,
+        "cooldown": 1800,
+        "mats": 90,
+        "hits": [
+          [
+            0,
+            500,
+            3.141592653589793,
+            100,
+            0,
+            0,
+            1
+          ]
+        ],
+        "rageCast": [
+          100
+        ],
+        "latch": true,
+        "fullEvents": 0
+      }
+    },
+    {
+      "scenario": {
+        "file": "game-easy-test.html",
+        "raw": 12,
+        "stored": 0.12,
+        "rage": 150,
+        "item": {
+          "uniqueId": "UI-10",
+          "slot": "armor"
+        },
+        "latch": true
+      },
+      "original": {
+        "rage": 0,
+        "cooldown": 1800,
+        "mats": 90,
+        "hits": [
+          [
+            0,
+            500,
+            3.141592653589793,
+            147,
+            0,
+            0,
+            1
+          ]
+        ],
+        "rageCast": [
+          150
+        ],
+        "latch": true,
+        "fullEvents": 0
+      },
+      "candidate": {
+        "rage": 18,
+        "cooldown": 1800,
+        "mats": 90,
+        "hits": [
+          [
+            0,
+            500,
+            3.141592653589793,
+            147,
+            0,
+            0,
+            1
+          ]
+        ],
+        "rageCast": [
+          150
+        ],
+        "latch": true,
+        "fullEvents": 0
+      }
+    },
+    {
+      "scenario": {
+        "file": "game-easy-test.html",
+        "raw": 12,
+        "stored": 0.12,
+        "rage": 1000,
+        "item": {
+          "uniqueId": "UI-10",
+          "slot": "armor"
+        },
+        "latch": true
+      },
+      "original": {
+        "rage": 0,
+        "cooldown": 1800,
+        "mats": 90,
+        "hits": [
+          [
+            0,
+            500,
+            3.141592653589793,
+            955,
+            0,
+            0,
+            1
+          ]
+        ],
+        "rageCast": [
+          1000
+        ],
+        "latch": true,
+        "fullEvents": 0
+      },
+      "candidate": {
+        "rage": 30,
+        "cooldown": 1800,
+        "mats": 90,
+        "hits": [
+          [
+            0,
+            500,
+            3.141592653589793,
+            955,
+            0,
+            0,
+            1
+          ]
+        ],
+        "rageCast": [
+          1000
+        ],
+        "latch": true,
+        "fullEvents": 0
+      }
+    },
+    {
+      "scenario": {
+        "file": "game-easy-test.html",
+        "raw": 12,
+        "stored": 0.12,
+        "rage": 99.5,
+        "item": {
+          "uniqueId": "UI-10",
+          "slot": "armor"
+        },
+        "latch": true
+      },
+      "original": {
+        "rage": 0,
+        "cooldown": 1800,
+        "mats": 90,
+        "hits": [
+          [
+            0,
+            500,
+            3.141592653589793,
+            99,
+            0,
+            0,
+            1
+          ]
+        ],
+        "rageCast": [
+          99.5
+        ],
+        "latch": true,
+        "fullEvents": 0
+      },
+      "candidate": {
+        "rage": 0,
+        "cooldown": 1800,
+        "mats": 90,
+        "hits": [
+          [
+            0,
+            500,
+            3.141592653589793,
+            99,
+            0,
+            0,
+            1
+          ]
+        ],
+        "rageCast": [
+          99.5
+        ],
+        "latch": true,
+        "fullEvents": 0
+      }
+    },
+    {
+      "scenario": {
+        "file": "game-easy-test.html",
+        "raw": 12,
+        "stored": 0.12,
+        "rage": 100.5,
+        "item": {
+          "uniqueId": "UI-10",
+          "slot": "armor"
+        },
+        "latch": true
+      },
+      "original": {
+        "rage": 0,
+        "cooldown": 1800,
+        "mats": 90,
+        "hits": [
+          [
+            0,
+            500,
+            3.141592653589793,
+            100,
+            0,
+            0,
+            1
+          ]
+        ],
+        "rageCast": [
+          100.5
+        ],
+        "latch": true,
+        "fullEvents": 0
+      },
+      "candidate": {
+        "rage": 12.059999999999999,
+        "cooldown": 1800,
+        "mats": 90,
+        "hits": [
+          [
+            0,
+            500,
+            3.141592653589793,
+            100,
+            0,
+            0,
+            1
+          ]
+        ],
+        "rageCast": [
+          100.5
+        ],
+        "latch": true,
+        "fullEvents": 0
+      }
+    },
+    {
+      "scenario": {
+        "file": "game-easy-test.html",
+        "raw": 13,
+        "stored": 0.13,
+        "rage": 99,
+        "item": {
+          "uniqueId": "UI-10",
+          "slot": "armor"
+        },
+        "latch": true
+      },
+      "original": {
+        "rage": 0,
+        "cooldown": 1800,
+        "mats": 90,
+        "hits": [
+          [
+            0,
+            500,
+            3.141592653589793,
+            99,
+            0,
+            0,
+            1
+          ]
+        ],
+        "rageCast": [
+          99
+        ],
+        "latch": true,
+        "fullEvents": 0
+      },
+      "candidate": {
+        "rage": 0,
+        "cooldown": 1800,
+        "mats": 90,
+        "hits": [
+          [
+            0,
+            500,
+            3.141592653589793,
+            99,
+            0,
+            0,
+            1
+          ]
+        ],
+        "rageCast": [
+          99
+        ],
+        "latch": true,
+        "fullEvents": 0
+      }
+    },
+    {
+      "scenario": {
+        "file": "game-easy-test.html",
+        "raw": 13,
+        "stored": 0.13,
+        "rage": 100,
+        "item": {
+          "uniqueId": "UI-10",
+          "slot": "armor"
+        },
+        "latch": true
+      },
+      "original": {
+        "rage": 0,
+        "cooldown": 1800,
+        "mats": 90,
+        "hits": [
+          [
+            0,
+            500,
+            3.141592653589793,
+            100,
+            0,
+            0,
+            1
+          ]
+        ],
+        "rageCast": [
+          100
+        ],
+        "latch": true,
+        "fullEvents": 0
+      },
+      "candidate": {
+        "rage": 13,
+        "cooldown": 1800,
+        "mats": 90,
+        "hits": [
+          [
+            0,
+            500,
+            3.141592653589793,
+            100,
+            0,
+            0,
+            1
+          ]
+        ],
+        "rageCast": [
+          100
+        ],
+        "latch": true,
+        "fullEvents": 0
+      }
+    },
+    {
+      "scenario": {
+        "file": "game-easy-test.html",
+        "raw": 13,
+        "stored": 0.13,
+        "rage": 150,
+        "item": {
+          "uniqueId": "UI-10",
+          "slot": "armor"
+        },
+        "latch": true
+      },
+      "original": {
+        "rage": 0,
+        "cooldown": 1800,
+        "mats": 90,
+        "hits": [
+          [
+            0,
+            500,
+            3.141592653589793,
+            147,
+            0,
+            0,
+            1
+          ]
+        ],
+        "rageCast": [
+          150
+        ],
+        "latch": true,
+        "fullEvents": 0
+      },
+      "candidate": {
+        "rage": 19.5,
+        "cooldown": 1800,
+        "mats": 90,
+        "hits": [
+          [
+            0,
+            500,
+            3.141592653589793,
+            147,
+            0,
+            0,
+            1
+          ]
+        ],
+        "rageCast": [
+          150
+        ],
+        "latch": true,
+        "fullEvents": 0
+      }
+    },
+    {
+      "scenario": {
+        "file": "game-easy-test.html",
+        "raw": 13,
+        "stored": 0.13,
+        "rage": 1000,
+        "item": {
+          "uniqueId": "UI-10",
+          "slot": "armor"
+        },
+        "latch": true
+      },
+      "original": {
+        "rage": 0,
+        "cooldown": 1800,
+        "mats": 90,
+        "hits": [
+          [
+            0,
+            500,
+            3.141592653589793,
+            955,
+            0,
+            0,
+            1
+          ]
+        ],
+        "rageCast": [
+          1000
+        ],
+        "latch": true,
+        "fullEvents": 0
+      },
+      "candidate": {
+        "rage": 30,
+        "cooldown": 1800,
+        "mats": 90,
+        "hits": [
+          [
+            0,
+            500,
+            3.141592653589793,
+            955,
+            0,
+            0,
+            1
+          ]
+        ],
+        "rageCast": [
+          1000
+        ],
+        "latch": true,
+        "fullEvents": 0
+      }
+    },
+    {
+      "scenario": {
+        "file": "game-easy-test.html",
+        "raw": 13,
+        "stored": 0.13,
+        "rage": 99.5,
+        "item": {
+          "uniqueId": "UI-10",
+          "slot": "armor"
+        },
+        "latch": true
+      },
+      "original": {
+        "rage": 0,
+        "cooldown": 1800,
+        "mats": 90,
+        "hits": [
+          [
+            0,
+            500,
+            3.141592653589793,
+            99,
+            0,
+            0,
+            1
+          ]
+        ],
+        "rageCast": [
+          99.5
+        ],
+        "latch": true,
+        "fullEvents": 0
+      },
+      "candidate": {
+        "rage": 0,
+        "cooldown": 1800,
+        "mats": 90,
+        "hits": [
+          [
+            0,
+            500,
+            3.141592653589793,
+            99,
+            0,
+            0,
+            1
+          ]
+        ],
+        "rageCast": [
+          99.5
+        ],
+        "latch": true,
+        "fullEvents": 0
+      }
+    },
+    {
+      "scenario": {
+        "file": "game-easy-test.html",
+        "raw": 13,
+        "stored": 0.13,
+        "rage": 100.5,
+        "item": {
+          "uniqueId": "UI-10",
+          "slot": "armor"
+        },
+        "latch": true
+      },
+      "original": {
+        "rage": 0,
+        "cooldown": 1800,
+        "mats": 90,
+        "hits": [
+          [
+            0,
+            500,
+            3.141592653589793,
+            100,
+            0,
+            0,
+            1
+          ]
+        ],
+        "rageCast": [
+          100.5
+        ],
+        "latch": true,
+        "fullEvents": 0
+      },
+      "candidate": {
+        "rage": 13.065000000000001,
+        "cooldown": 1800,
+        "mats": 90,
+        "hits": [
+          [
+            0,
+            500,
+            3.141592653589793,
+            100,
+            0,
+            0,
+            1
+          ]
+        ],
+        "rageCast": [
+          100.5
+        ],
+        "latch": true,
+        "fullEvents": 0
+      }
+    },
+    {
+      "scenario": {
+        "file": "game-easy-test.html",
+        "raw": 14,
+        "stored": 0.14,
+        "rage": 99,
+        "item": {
+          "uniqueId": "UI-10",
+          "slot": "armor"
+        },
+        "latch": true
+      },
+      "original": {
+        "rage": 0,
+        "cooldown": 1800,
+        "mats": 90,
+        "hits": [
+          [
+            0,
+            500,
+            3.141592653589793,
+            99,
+            0,
+            0,
+            1
+          ]
+        ],
+        "rageCast": [
+          99
+        ],
+        "latch": true,
+        "fullEvents": 0
+      },
+      "candidate": {
+        "rage": 0,
+        "cooldown": 1800,
+        "mats": 90,
+        "hits": [
+          [
+            0,
+            500,
+            3.141592653589793,
+            99,
+            0,
+            0,
+            1
+          ]
+        ],
+        "rageCast": [
+          99
+        ],
+        "latch": true,
+        "fullEvents": 0
+      }
+    },
+    {
+      "scenario": {
+        "file": "game-easy-test.html",
+        "raw": 14,
+        "stored": 0.14,
+        "rage": 100,
+        "item": {
+          "uniqueId": "UI-10",
+          "slot": "armor"
+        },
+        "latch": true
+      },
+      "original": {
+        "rage": 0,
+        "cooldown": 1800,
+        "mats": 90,
+        "hits": [
+          [
+            0,
+            500,
+            3.141592653589793,
+            100,
+            0,
+            0,
+            1
+          ]
+        ],
+        "rageCast": [
+          100
+        ],
+        "latch": true,
+        "fullEvents": 0
+      },
+      "candidate": {
+        "rage": 14.000000000000002,
+        "cooldown": 1800,
+        "mats": 90,
+        "hits": [
+          [
+            0,
+            500,
+            3.141592653589793,
+            100,
+            0,
+            0,
+            1
+          ]
+        ],
+        "rageCast": [
+          100
+        ],
+        "latch": true,
+        "fullEvents": 0
+      }
+    },
+    {
+      "scenario": {
+        "file": "game-easy-test.html",
+        "raw": 14,
+        "stored": 0.14,
+        "rage": 150,
+        "item": {
+          "uniqueId": "UI-10",
+          "slot": "armor"
+        },
+        "latch": true
+      },
+      "original": {
+        "rage": 0,
+        "cooldown": 1800,
+        "mats": 90,
+        "hits": [
+          [
+            0,
+            500,
+            3.141592653589793,
+            147,
+            0,
+            0,
+            1
+          ]
+        ],
+        "rageCast": [
+          150
+        ],
+        "latch": true,
+        "fullEvents": 0
+      },
+      "candidate": {
+        "rage": 21.000000000000004,
+        "cooldown": 1800,
+        "mats": 90,
+        "hits": [
+          [
+            0,
+            500,
+            3.141592653589793,
+            147,
+            0,
+            0,
+            1
+          ]
+        ],
+        "rageCast": [
+          150
+        ],
+        "latch": true,
+        "fullEvents": 0
+      }
+    },
+    {
+      "scenario": {
+        "file": "game-easy-test.html",
+        "raw": 14,
+        "stored": 0.14,
+        "rage": 1000,
+        "item": {
+          "uniqueId": "UI-10",
+          "slot": "armor"
+        },
+        "latch": true
+      },
+      "original": {
+        "rage": 0,
+        "cooldown": 1800,
+        "mats": 90,
+        "hits": [
+          [
+            0,
+            500,
+            3.141592653589793,
+            955,
+            0,
+            0,
+            1
+          ]
+        ],
+        "rageCast": [
+          1000
+        ],
+        "latch": true,
+        "fullEvents": 0
+      },
+      "candidate": {
+        "rage": 30,
+        "cooldown": 1800,
+        "mats": 90,
+        "hits": [
+          [
+            0,
+            500,
+            3.141592653589793,
+            955,
+            0,
+            0,
+            1
+          ]
+        ],
+        "rageCast": [
+          1000
+        ],
+        "latch": true,
+        "fullEvents": 0
+      }
+    },
+    {
+      "scenario": {
+        "file": "game-easy-test.html",
+        "raw": 14,
+        "stored": 0.14,
+        "rage": 99.5,
+        "item": {
+          "uniqueId": "UI-10",
+          "slot": "armor"
+        },
+        "latch": true
+      },
+      "original": {
+        "rage": 0,
+        "cooldown": 1800,
+        "mats": 90,
+        "hits": [
+          [
+            0,
+            500,
+            3.141592653589793,
+            99,
+            0,
+            0,
+            1
+          ]
+        ],
+        "rageCast": [
+          99.5
+        ],
+        "latch": true,
+        "fullEvents": 0
+      },
+      "candidate": {
+        "rage": 0,
+        "cooldown": 1800,
+        "mats": 90,
+        "hits": [
+          [
+            0,
+            500,
+            3.141592653589793,
+            99,
+            0,
+            0,
+            1
+          ]
+        ],
+        "rageCast": [
+          99.5
+        ],
+        "latch": true,
+        "fullEvents": 0
+      }
+    },
+    {
+      "scenario": {
+        "file": "game-easy-test.html",
+        "raw": 14,
+        "stored": 0.14,
+        "rage": 100.5,
+        "item": {
+          "uniqueId": "UI-10",
+          "slot": "armor"
+        },
+        "latch": true
+      },
+      "original": {
+        "rage": 0,
+        "cooldown": 1800,
+        "mats": 90,
+        "hits": [
+          [
+            0,
+            500,
+            3.141592653589793,
+            100,
+            0,
+            0,
+            1
+          ]
+        ],
+        "rageCast": [
+          100.5
+        ],
+        "latch": true,
+        "fullEvents": 0
+      },
+      "candidate": {
+        "rage": 14.070000000000002,
+        "cooldown": 1800,
+        "mats": 90,
+        "hits": [
+          [
+            0,
+            500,
+            3.141592653589793,
+            100,
+            0,
+            0,
+            1
+          ]
+        ],
+        "rageCast": [
+          100.5
+        ],
+        "latch": true,
+        "fullEvents": 0
+      }
+    },
+    {
+      "scenario": {
+        "file": "game-easy-test.html",
+        "raw": 15,
+        "stored": 0.15,
+        "rage": 99,
+        "item": {
+          "uniqueId": "UI-10",
+          "slot": "armor"
+        },
+        "latch": true
+      },
+      "original": {
+        "rage": 0,
+        "cooldown": 1800,
+        "mats": 90,
+        "hits": [
+          [
+            0,
+            500,
+            3.141592653589793,
+            99,
+            0,
+            0,
+            1
+          ]
+        ],
+        "rageCast": [
+          99
+        ],
+        "latch": true,
+        "fullEvents": 0
+      },
+      "candidate": {
+        "rage": 0,
+        "cooldown": 1800,
+        "mats": 90,
+        "hits": [
+          [
+            0,
+            500,
+            3.141592653589793,
+            99,
+            0,
+            0,
+            1
+          ]
+        ],
+        "rageCast": [
+          99
+        ],
+        "latch": true,
+        "fullEvents": 0
+      }
+    },
+    {
+      "scenario": {
+        "file": "game-easy-test.html",
+        "raw": 15,
+        "stored": 0.15,
+        "rage": 100,
+        "item": {
+          "uniqueId": "UI-10",
+          "slot": "armor"
+        },
+        "latch": true
+      },
+      "original": {
+        "rage": 0,
+        "cooldown": 1800,
+        "mats": 90,
+        "hits": [
+          [
+            0,
+            500,
+            3.141592653589793,
+            100,
+            0,
+            0,
+            1
+          ]
+        ],
+        "rageCast": [
+          100
+        ],
+        "latch": true,
+        "fullEvents": 0
+      },
+      "candidate": {
+        "rage": 15,
+        "cooldown": 1800,
+        "mats": 90,
+        "hits": [
+          [
+            0,
+            500,
+            3.141592653589793,
+            100,
+            0,
+            0,
+            1
+          ]
+        ],
+        "rageCast": [
+          100
+        ],
+        "latch": true,
+        "fullEvents": 0
+      }
+    },
+    {
+      "scenario": {
+        "file": "game-easy-test.html",
+        "raw": 15,
+        "stored": 0.15,
+        "rage": 150,
+        "item": {
+          "uniqueId": "UI-10",
+          "slot": "armor"
+        },
+        "latch": true
+      },
+      "original": {
+        "rage": 0,
+        "cooldown": 1800,
+        "mats": 90,
+        "hits": [
+          [
+            0,
+            500,
+            3.141592653589793,
+            147,
+            0,
+            0,
+            1
+          ]
+        ],
+        "rageCast": [
+          150
+        ],
+        "latch": true,
+        "fullEvents": 0
+      },
+      "candidate": {
+        "rage": 22.5,
+        "cooldown": 1800,
+        "mats": 90,
+        "hits": [
+          [
+            0,
+            500,
+            3.141592653589793,
+            147,
+            0,
+            0,
+            1
+          ]
+        ],
+        "rageCast": [
+          150
+        ],
+        "latch": true,
+        "fullEvents": 0
+      }
+    },
+    {
+      "scenario": {
+        "file": "game-easy-test.html",
+        "raw": 15,
+        "stored": 0.15,
+        "rage": 1000,
+        "item": {
+          "uniqueId": "UI-10",
+          "slot": "armor"
+        },
+        "latch": true
+      },
+      "original": {
+        "rage": 0,
+        "cooldown": 1800,
+        "mats": 90,
+        "hits": [
+          [
+            0,
+            500,
+            3.141592653589793,
+            955,
+            0,
+            0,
+            1
+          ]
+        ],
+        "rageCast": [
+          1000
+        ],
+        "latch": true,
+        "fullEvents": 0
+      },
+      "candidate": {
+        "rage": 30,
+        "cooldown": 1800,
+        "mats": 90,
+        "hits": [
+          [
+            0,
+            500,
+            3.141592653589793,
+            955,
+            0,
+            0,
+            1
+          ]
+        ],
+        "rageCast": [
+          1000
+        ],
+        "latch": true,
+        "fullEvents": 0
+      }
+    },
+    {
+      "scenario": {
+        "file": "game-easy-test.html",
+        "raw": 15,
+        "stored": 0.15,
+        "rage": 99.5,
+        "item": {
+          "uniqueId": "UI-10",
+          "slot": "armor"
+        },
+        "latch": true
+      },
+      "original": {
+        "rage": 0,
+        "cooldown": 1800,
+        "mats": 90,
+        "hits": [
+          [
+            0,
+            500,
+            3.141592653589793,
+            99,
+            0,
+            0,
+            1
+          ]
+        ],
+        "rageCast": [
+          99.5
+        ],
+        "latch": true,
+        "fullEvents": 0
+      },
+      "candidate": {
+        "rage": 0,
+        "cooldown": 1800,
+        "mats": 90,
+        "hits": [
+          [
+            0,
+            500,
+            3.141592653589793,
+            99,
+            0,
+            0,
+            1
+          ]
+        ],
+        "rageCast": [
+          99.5
+        ],
+        "latch": true,
+        "fullEvents": 0
+      }
+    },
+    {
+      "scenario": {
+        "file": "game-easy-test.html",
+        "raw": 15,
+        "stored": 0.15,
+        "rage": 100.5,
+        "item": {
+          "uniqueId": "UI-10",
+          "slot": "armor"
+        },
+        "latch": true
+      },
+      "original": {
+        "rage": 0,
+        "cooldown": 1800,
+        "mats": 90,
+        "hits": [
+          [
+            0,
+            500,
+            3.141592653589793,
+            100,
+            0,
+            0,
+            1
+          ]
+        ],
+        "rageCast": [
+          100.5
+        ],
+        "latch": true,
+        "fullEvents": 0
+      },
+      "candidate": {
+        "rage": 15.075,
+        "cooldown": 1800,
+        "mats": 90,
+        "hits": [
+          [
+            0,
+            500,
+            3.141592653589793,
+            100,
+            0,
+            0,
+            1
+          ]
+        ],
+        "rageCast": [
+          100.5
+        ],
+        "latch": true,
+        "fullEvents": 0
+      }
+    },
+    {
+      "scenario": {
+        "file": "game-easy-test.html",
+        "raw": 16,
+        "stored": 0.16,
+        "rage": 99,
+        "item": {
+          "uniqueId": "UI-10",
+          "slot": "armor"
+        },
+        "latch": true
+      },
+      "original": {
+        "rage": 0,
+        "cooldown": 1800,
+        "mats": 90,
+        "hits": [
+          [
+            0,
+            500,
+            3.141592653589793,
+            99,
+            0,
+            0,
+            1
+          ]
+        ],
+        "rageCast": [
+          99
+        ],
+        "latch": true,
+        "fullEvents": 0
+      },
+      "candidate": {
+        "rage": 0,
+        "cooldown": 1800,
+        "mats": 90,
+        "hits": [
+          [
+            0,
+            500,
+            3.141592653589793,
+            99,
+            0,
+            0,
+            1
+          ]
+        ],
+        "rageCast": [
+          99
+        ],
+        "latch": true,
+        "fullEvents": 0
+      }
+    },
+    {
+      "scenario": {
+        "file": "game-easy-test.html",
+        "raw": 16,
+        "stored": 0.16,
+        "rage": 100,
+        "item": {
+          "uniqueId": "UI-10",
+          "slot": "armor"
+        },
+        "latch": true
+      },
+      "original": {
+        "rage": 0,
+        "cooldown": 1800,
+        "mats": 90,
+        "hits": [
+          [
+            0,
+            500,
+            3.141592653589793,
+            100,
+            0,
+            0,
+            1
+          ]
+        ],
+        "rageCast": [
+          100
+        ],
+        "latch": true,
+        "fullEvents": 0
+      },
+      "candidate": {
+        "rage": 16,
+        "cooldown": 1800,
+        "mats": 90,
+        "hits": [
+          [
+            0,
+            500,
+            3.141592653589793,
+            100,
+            0,
+            0,
+            1
+          ]
+        ],
+        "rageCast": [
+          100
+        ],
+        "latch": true,
+        "fullEvents": 0
+      }
+    },
+    {
+      "scenario": {
+        "file": "game-easy-test.html",
+        "raw": 16,
+        "stored": 0.16,
+        "rage": 150,
+        "item": {
+          "uniqueId": "UI-10",
+          "slot": "armor"
+        },
+        "latch": true
+      },
+      "original": {
+        "rage": 0,
+        "cooldown": 1800,
+        "mats": 90,
+        "hits": [
+          [
+            0,
+            500,
+            3.141592653589793,
+            147,
+            0,
+            0,
+            1
+          ]
+        ],
+        "rageCast": [
+          150
+        ],
+        "latch": true,
+        "fullEvents": 0
+      },
+      "candidate": {
+        "rage": 24,
+        "cooldown": 1800,
+        "mats": 90,
+        "hits": [
+          [
+            0,
+            500,
+            3.141592653589793,
+            147,
+            0,
+            0,
+            1
+          ]
+        ],
+        "rageCast": [
+          150
+        ],
+        "latch": true,
+        "fullEvents": 0
+      }
+    },
+    {
+      "scenario": {
+        "file": "game-easy-test.html",
+        "raw": 16,
+        "stored": 0.16,
+        "rage": 1000,
+        "item": {
+          "uniqueId": "UI-10",
+          "slot": "armor"
+        },
+        "latch": true
+      },
+      "original": {
+        "rage": 0,
+        "cooldown": 1800,
+        "mats": 90,
+        "hits": [
+          [
+            0,
+            500,
+            3.141592653589793,
+            955,
+            0,
+            0,
+            1
+          ]
+        ],
+        "rageCast": [
+          1000
+        ],
+        "latch": true,
+        "fullEvents": 0
+      },
+      "candidate": {
+        "rage": 30,
+        "cooldown": 1800,
+        "mats": 90,
+        "hits": [
+          [
+            0,
+            500,
+            3.141592653589793,
+            955,
+            0,
+            0,
+            1
+          ]
+        ],
+        "rageCast": [
+          1000
+        ],
+        "latch": true,
+        "fullEvents": 0
+      }
+    },
+    {
+      "scenario": {
+        "file": "game-easy-test.html",
+        "raw": 16,
+        "stored": 0.16,
+        "rage": 99.5,
+        "item": {
+          "uniqueId": "UI-10",
+          "slot": "armor"
+        },
+        "latch": true
+      },
+      "original": {
+        "rage": 0,
+        "cooldown": 1800,
+        "mats": 90,
+        "hits": [
+          [
+            0,
+            500,
+            3.141592653589793,
+            99,
+            0,
+            0,
+            1
+          ]
+        ],
+        "rageCast": [
+          99.5
+        ],
+        "latch": true,
+        "fullEvents": 0
+      },
+      "candidate": {
+        "rage": 0,
+        "cooldown": 1800,
+        "mats": 90,
+        "hits": [
+          [
+            0,
+            500,
+            3.141592653589793,
+            99,
+            0,
+            0,
+            1
+          ]
+        ],
+        "rageCast": [
+          99.5
+        ],
+        "latch": true,
+        "fullEvents": 0
+      }
+    },
+    {
+      "scenario": {
+        "file": "game-easy-test.html",
+        "raw": 16,
+        "stored": 0.16,
+        "rage": 100.5,
+        "item": {
+          "uniqueId": "UI-10",
+          "slot": "armor"
+        },
+        "latch": true
+      },
+      "original": {
+        "rage": 0,
+        "cooldown": 1800,
+        "mats": 90,
+        "hits": [
+          [
+            0,
+            500,
+            3.141592653589793,
+            100,
+            0,
+            0,
+            1
+          ]
+        ],
+        "rageCast": [
+          100.5
+        ],
+        "latch": true,
+        "fullEvents": 0
+      },
+      "candidate": {
+        "rage": 16.080000000000002,
+        "cooldown": 1800,
+        "mats": 90,
+        "hits": [
+          [
+            0,
+            500,
+            3.141592653589793,
+            100,
+            0,
+            0,
+            1
+          ]
+        ],
+        "rageCast": [
+          100.5
+        ],
+        "latch": true,
+        "fullEvents": 0
+      }
+    },
+    {
+      "scenario": {
+        "file": "game-easy-test.html",
+        "raw": 17,
+        "stored": 0.17,
+        "rage": 99,
+        "item": {
+          "uniqueId": "UI-10",
+          "slot": "armor"
+        },
+        "latch": true
+      },
+      "original": {
+        "rage": 0,
+        "cooldown": 1800,
+        "mats": 90,
+        "hits": [
+          [
+            0,
+            500,
+            3.141592653589793,
+            99,
+            0,
+            0,
+            1
+          ]
+        ],
+        "rageCast": [
+          99
+        ],
+        "latch": true,
+        "fullEvents": 0
+      },
+      "candidate": {
+        "rage": 0,
+        "cooldown": 1800,
+        "mats": 90,
+        "hits": [
+          [
+            0,
+            500,
+            3.141592653589793,
+            99,
+            0,
+            0,
+            1
+          ]
+        ],
+        "rageCast": [
+          99
+        ],
+        "latch": true,
+        "fullEvents": 0
+      }
+    },
+    {
+      "scenario": {
+        "file": "game-easy-test.html",
+        "raw": 17,
+        "stored": 0.17,
+        "rage": 100,
+        "item": {
+          "uniqueId": "UI-10",
+          "slot": "armor"
+        },
+        "latch": true
+      },
+      "original": {
+        "rage": 0,
+        "cooldown": 1800,
+        "mats": 90,
+        "hits": [
+          [
+            0,
+            500,
+            3.141592653589793,
+            100,
+            0,
+            0,
+            1
+          ]
+        ],
+        "rageCast": [
+          100
+        ],
+        "latch": true,
+        "fullEvents": 0
+      },
+      "candidate": {
+        "rage": 17,
+        "cooldown": 1800,
+        "mats": 90,
+        "hits": [
+          [
+            0,
+            500,
+            3.141592653589793,
+            100,
+            0,
+            0,
+            1
+          ]
+        ],
+        "rageCast": [
+          100
+        ],
+        "latch": true,
+        "fullEvents": 0
+      }
+    },
+    {
+      "scenario": {
+        "file": "game-easy-test.html",
+        "raw": 17,
+        "stored": 0.17,
+        "rage": 150,
+        "item": {
+          "uniqueId": "UI-10",
+          "slot": "armor"
+        },
+        "latch": true
+      },
+      "original": {
+        "rage": 0,
+        "cooldown": 1800,
+        "mats": 90,
+        "hits": [
+          [
+            0,
+            500,
+            3.141592653589793,
+            147,
+            0,
+            0,
+            1
+          ]
+        ],
+        "rageCast": [
+          150
+        ],
+        "latch": true,
+        "fullEvents": 0
+      },
+      "candidate": {
+        "rage": 25.500000000000004,
+        "cooldown": 1800,
+        "mats": 90,
+        "hits": [
+          [
+            0,
+            500,
+            3.141592653589793,
+            147,
+            0,
+            0,
+            1
+          ]
+        ],
+        "rageCast": [
+          150
+        ],
+        "latch": true,
+        "fullEvents": 0
+      }
+    },
+    {
+      "scenario": {
+        "file": "game-easy-test.html",
+        "raw": 17,
+        "stored": 0.17,
+        "rage": 1000,
+        "item": {
+          "uniqueId": "UI-10",
+          "slot": "armor"
+        },
+        "latch": true
+      },
+      "original": {
+        "rage": 0,
+        "cooldown": 1800,
+        "mats": 90,
+        "hits": [
+          [
+            0,
+            500,
+            3.141592653589793,
+            955,
+            0,
+            0,
+            1
+          ]
+        ],
+        "rageCast": [
+          1000
+        ],
+        "latch": true,
+        "fullEvents": 0
+      },
+      "candidate": {
+        "rage": 30,
+        "cooldown": 1800,
+        "mats": 90,
+        "hits": [
+          [
+            0,
+            500,
+            3.141592653589793,
+            955,
+            0,
+            0,
+            1
+          ]
+        ],
+        "rageCast": [
+          1000
+        ],
+        "latch": true,
+        "fullEvents": 0
+      }
+    },
+    {
+      "scenario": {
+        "file": "game-easy-test.html",
+        "raw": 17,
+        "stored": 0.17,
+        "rage": 99.5,
+        "item": {
+          "uniqueId": "UI-10",
+          "slot": "armor"
+        },
+        "latch": true
+      },
+      "original": {
+        "rage": 0,
+        "cooldown": 1800,
+        "mats": 90,
+        "hits": [
+          [
+            0,
+            500,
+            3.141592653589793,
+            99,
+            0,
+            0,
+            1
+          ]
+        ],
+        "rageCast": [
+          99.5
+        ],
+        "latch": true,
+        "fullEvents": 0
+      },
+      "candidate": {
+        "rage": 0,
+        "cooldown": 1800,
+        "mats": 90,
+        "hits": [
+          [
+            0,
+            500,
+            3.141592653589793,
+            99,
+            0,
+            0,
+            1
+          ]
+        ],
+        "rageCast": [
+          99.5
+        ],
+        "latch": true,
+        "fullEvents": 0
+      }
+    },
+    {
+      "scenario": {
+        "file": "game-easy-test.html",
+        "raw": 17,
+        "stored": 0.17,
+        "rage": 100.5,
+        "item": {
+          "uniqueId": "UI-10",
+          "slot": "armor"
+        },
+        "latch": true
+      },
+      "original": {
+        "rage": 0,
+        "cooldown": 1800,
+        "mats": 90,
+        "hits": [
+          [
+            0,
+            500,
+            3.141592653589793,
+            100,
+            0,
+            0,
+            1
+          ]
+        ],
+        "rageCast": [
+          100.5
+        ],
+        "latch": true,
+        "fullEvents": 0
+      },
+      "candidate": {
+        "rage": 17.085,
+        "cooldown": 1800,
+        "mats": 90,
+        "hits": [
+          [
+            0,
+            500,
+            3.141592653589793,
+            100,
+            0,
+            0,
+            1
+          ]
+        ],
+        "rageCast": [
+          100.5
+        ],
+        "latch": true,
+        "fullEvents": 0
+      }
+    },
+    {
+      "scenario": {
+        "file": "game-easy-test.html",
+        "raw": 18,
+        "stored": 0.18,
+        "rage": 99,
+        "item": {
+          "uniqueId": "UI-10",
+          "slot": "armor"
+        },
+        "latch": true
+      },
+      "original": {
+        "rage": 0,
+        "cooldown": 1800,
+        "mats": 90,
+        "hits": [
+          [
+            0,
+            500,
+            3.141592653589793,
+            99,
+            0,
+            0,
+            1
+          ]
+        ],
+        "rageCast": [
+          99
+        ],
+        "latch": true,
+        "fullEvents": 0
+      },
+      "candidate": {
+        "rage": 0,
+        "cooldown": 1800,
+        "mats": 90,
+        "hits": [
+          [
+            0,
+            500,
+            3.141592653589793,
+            99,
+            0,
+            0,
+            1
+          ]
+        ],
+        "rageCast": [
+          99
+        ],
+        "latch": true,
+        "fullEvents": 0
+      }
+    },
+    {
+      "scenario": {
+        "file": "game-easy-test.html",
+        "raw": 18,
+        "stored": 0.18,
+        "rage": 100,
+        "item": {
+          "uniqueId": "UI-10",
+          "slot": "armor"
+        },
+        "latch": true
+      },
+      "original": {
+        "rage": 0,
+        "cooldown": 1800,
+        "mats": 90,
+        "hits": [
+          [
+            0,
+            500,
+            3.141592653589793,
+            100,
+            0,
+            0,
+            1
+          ]
+        ],
+        "rageCast": [
+          100
+        ],
+        "latch": true,
+        "fullEvents": 0
+      },
+      "candidate": {
+        "rage": 18,
+        "cooldown": 1800,
+        "mats": 90,
+        "hits": [
+          [
+            0,
+            500,
+            3.141592653589793,
+            100,
+            0,
+            0,
+            1
+          ]
+        ],
+        "rageCast": [
+          100
+        ],
+        "latch": true,
+        "fullEvents": 0
+      }
+    },
+    {
+      "scenario": {
+        "file": "game-easy-test.html",
+        "raw": 18,
+        "stored": 0.18,
+        "rage": 150,
+        "item": {
+          "uniqueId": "UI-10",
+          "slot": "armor"
+        },
+        "latch": true
+      },
+      "original": {
+        "rage": 0,
+        "cooldown": 1800,
+        "mats": 90,
+        "hits": [
+          [
+            0,
+            500,
+            3.141592653589793,
+            147,
+            0,
+            0,
+            1
+          ]
+        ],
+        "rageCast": [
+          150
+        ],
+        "latch": true,
+        "fullEvents": 0
+      },
+      "candidate": {
+        "rage": 27,
+        "cooldown": 1800,
+        "mats": 90,
+        "hits": [
+          [
+            0,
+            500,
+            3.141592653589793,
+            147,
+            0,
+            0,
+            1
+          ]
+        ],
+        "rageCast": [
+          150
+        ],
+        "latch": true,
+        "fullEvents": 0
+      }
+    },
+    {
+      "scenario": {
+        "file": "game-easy-test.html",
+        "raw": 18,
+        "stored": 0.18,
+        "rage": 1000,
+        "item": {
+          "uniqueId": "UI-10",
+          "slot": "armor"
+        },
+        "latch": true
+      },
+      "original": {
+        "rage": 0,
+        "cooldown": 1800,
+        "mats": 90,
+        "hits": [
+          [
+            0,
+            500,
+            3.141592653589793,
+            955,
+            0,
+            0,
+            1
+          ]
+        ],
+        "rageCast": [
+          1000
+        ],
+        "latch": true,
+        "fullEvents": 0
+      },
+      "candidate": {
+        "rage": 30,
+        "cooldown": 1800,
+        "mats": 90,
+        "hits": [
+          [
+            0,
+            500,
+            3.141592653589793,
+            955,
+            0,
+            0,
+            1
+          ]
+        ],
+        "rageCast": [
+          1000
+        ],
+        "latch": true,
+        "fullEvents": 0
+      }
+    },
+    {
+      "scenario": {
+        "file": "game-easy-test.html",
+        "raw": 18,
+        "stored": 0.18,
+        "rage": 99.5,
+        "item": {
+          "uniqueId": "UI-10",
+          "slot": "armor"
+        },
+        "latch": true
+      },
+      "original": {
+        "rage": 0,
+        "cooldown": 1800,
+        "mats": 90,
+        "hits": [
+          [
+            0,
+            500,
+            3.141592653589793,
+            99,
+            0,
+            0,
+            1
+          ]
+        ],
+        "rageCast": [
+          99.5
+        ],
+        "latch": true,
+        "fullEvents": 0
+      },
+      "candidate": {
+        "rage": 0,
+        "cooldown": 1800,
+        "mats": 90,
+        "hits": [
+          [
+            0,
+            500,
+            3.141592653589793,
+            99,
+            0,
+            0,
+            1
+          ]
+        ],
+        "rageCast": [
+          99.5
+        ],
+        "latch": true,
+        "fullEvents": 0
+      }
+    },
+    {
+      "scenario": {
+        "file": "game-easy-test.html",
+        "raw": 18,
+        "stored": 0.18,
+        "rage": 100.5,
+        "item": {
+          "uniqueId": "UI-10",
+          "slot": "armor"
+        },
+        "latch": true
+      },
+      "original": {
+        "rage": 0,
+        "cooldown": 1800,
+        "mats": 90,
+        "hits": [
+          [
+            0,
+            500,
+            3.141592653589793,
+            100,
+            0,
+            0,
+            1
+          ]
+        ],
+        "rageCast": [
+          100.5
+        ],
+        "latch": true,
+        "fullEvents": 0
+      },
+      "candidate": {
+        "rage": 18.09,
+        "cooldown": 1800,
+        "mats": 90,
+        "hits": [
+          [
+            0,
+            500,
+            3.141592653589793,
+            100,
+            0,
+            0,
+            1
+          ]
+        ],
+        "rageCast": [
+          100.5
+        ],
+        "latch": true,
+        "fullEvents": 0
+      }
+    },
+    {
+      "scenario": {
+        "file": "game-easy-test.html",
+        "raw": 19,
+        "stored": 0.19,
+        "rage": 99,
+        "item": {
+          "uniqueId": "UI-10",
+          "slot": "armor"
+        },
+        "latch": true
+      },
+      "original": {
+        "rage": 0,
+        "cooldown": 1800,
+        "mats": 90,
+        "hits": [
+          [
+            0,
+            500,
+            3.141592653589793,
+            99,
+            0,
+            0,
+            1
+          ]
+        ],
+        "rageCast": [
+          99
+        ],
+        "latch": true,
+        "fullEvents": 0
+      },
+      "candidate": {
+        "rage": 0,
+        "cooldown": 1800,
+        "mats": 90,
+        "hits": [
+          [
+            0,
+            500,
+            3.141592653589793,
+            99,
+            0,
+            0,
+            1
+          ]
+        ],
+        "rageCast": [
+          99
+        ],
+        "latch": true,
+        "fullEvents": 0
+      }
+    },
+    {
+      "scenario": {
+        "file": "game-easy-test.html",
+        "raw": 19,
+        "stored": 0.19,
+        "rage": 100,
+        "item": {
+          "uniqueId": "UI-10",
+          "slot": "armor"
+        },
+        "latch": true
+      },
+      "original": {
+        "rage": 0,
+        "cooldown": 1800,
+        "mats": 90,
+        "hits": [
+          [
+            0,
+            500,
+            3.141592653589793,
+            100,
+            0,
+            0,
+            1
+          ]
+        ],
+        "rageCast": [
+          100
+        ],
+        "latch": true,
+        "fullEvents": 0
+      },
+      "candidate": {
+        "rage": 19,
+        "cooldown": 1800,
+        "mats": 90,
+        "hits": [
+          [
+            0,
+            500,
+            3.141592653589793,
+            100,
+            0,
+            0,
+            1
+          ]
+        ],
+        "rageCast": [
+          100
+        ],
+        "latch": true,
+        "fullEvents": 0
+      }
+    },
+    {
+      "scenario": {
+        "file": "game-easy-test.html",
+        "raw": 19,
+        "stored": 0.19,
+        "rage": 150,
+        "item": {
+          "uniqueId": "UI-10",
+          "slot": "armor"
+        },
+        "latch": true
+      },
+      "original": {
+        "rage": 0,
+        "cooldown": 1800,
+        "mats": 90,
+        "hits": [
+          [
+            0,
+            500,
+            3.141592653589793,
+            147,
+            0,
+            0,
+            1
+          ]
+        ],
+        "rageCast": [
+          150
+        ],
+        "latch": true,
+        "fullEvents": 0
+      },
+      "candidate": {
+        "rage": 28.5,
+        "cooldown": 1800,
+        "mats": 90,
+        "hits": [
+          [
+            0,
+            500,
+            3.141592653589793,
+            147,
+            0,
+            0,
+            1
+          ]
+        ],
+        "rageCast": [
+          150
+        ],
+        "latch": true,
+        "fullEvents": 0
+      }
+    },
+    {
+      "scenario": {
+        "file": "game-easy-test.html",
+        "raw": 19,
+        "stored": 0.19,
+        "rage": 1000,
+        "item": {
+          "uniqueId": "UI-10",
+          "slot": "armor"
+        },
+        "latch": true
+      },
+      "original": {
+        "rage": 0,
+        "cooldown": 1800,
+        "mats": 90,
+        "hits": [
+          [
+            0,
+            500,
+            3.141592653589793,
+            955,
+            0,
+            0,
+            1
+          ]
+        ],
+        "rageCast": [
+          1000
+        ],
+        "latch": true,
+        "fullEvents": 0
+      },
+      "candidate": {
+        "rage": 30,
+        "cooldown": 1800,
+        "mats": 90,
+        "hits": [
+          [
+            0,
+            500,
+            3.141592653589793,
+            955,
+            0,
+            0,
+            1
+          ]
+        ],
+        "rageCast": [
+          1000
+        ],
+        "latch": true,
+        "fullEvents": 0
+      }
+    },
+    {
+      "scenario": {
+        "file": "game-easy-test.html",
+        "raw": 19,
+        "stored": 0.19,
+        "rage": 99.5,
+        "item": {
+          "uniqueId": "UI-10",
+          "slot": "armor"
+        },
+        "latch": true
+      },
+      "original": {
+        "rage": 0,
+        "cooldown": 1800,
+        "mats": 90,
+        "hits": [
+          [
+            0,
+            500,
+            3.141592653589793,
+            99,
+            0,
+            0,
+            1
+          ]
+        ],
+        "rageCast": [
+          99.5
+        ],
+        "latch": true,
+        "fullEvents": 0
+      },
+      "candidate": {
+        "rage": 0,
+        "cooldown": 1800,
+        "mats": 90,
+        "hits": [
+          [
+            0,
+            500,
+            3.141592653589793,
+            99,
+            0,
+            0,
+            1
+          ]
+        ],
+        "rageCast": [
+          99.5
+        ],
+        "latch": true,
+        "fullEvents": 0
+      }
+    },
+    {
+      "scenario": {
+        "file": "game-easy-test.html",
+        "raw": 19,
+        "stored": 0.19,
+        "rage": 100.5,
+        "item": {
+          "uniqueId": "UI-10",
+          "slot": "armor"
+        },
+        "latch": true
+      },
+      "original": {
+        "rage": 0,
+        "cooldown": 1800,
+        "mats": 90,
+        "hits": [
+          [
+            0,
+            500,
+            3.141592653589793,
+            100,
+            0,
+            0,
+            1
+          ]
+        ],
+        "rageCast": [
+          100.5
+        ],
+        "latch": true,
+        "fullEvents": 0
+      },
+      "candidate": {
+        "rage": 19.095,
+        "cooldown": 1800,
+        "mats": 90,
+        "hits": [
+          [
+            0,
+            500,
+            3.141592653589793,
+            100,
+            0,
+            0,
+            1
+          ]
+        ],
+        "rageCast": [
+          100.5
+        ],
+        "latch": true,
+        "fullEvents": 0
+      }
+    },
+    {
+      "scenario": {
+        "file": "game-easy-test.html",
+        "raw": 20,
+        "stored": 0.2,
+        "rage": 99,
+        "item": {
+          "uniqueId": "UI-10",
+          "slot": "armor"
+        },
+        "latch": true
+      },
+      "original": {
+        "rage": 0,
+        "cooldown": 1800,
+        "mats": 90,
+        "hits": [
+          [
+            0,
+            500,
+            3.141592653589793,
+            99,
+            0,
+            0,
+            1
+          ]
+        ],
+        "rageCast": [
+          99
+        ],
+        "latch": true,
+        "fullEvents": 0
+      },
+      "candidate": {
+        "rage": 0,
+        "cooldown": 1800,
+        "mats": 90,
+        "hits": [
+          [
+            0,
+            500,
+            3.141592653589793,
+            99,
+            0,
+            0,
+            1
+          ]
+        ],
+        "rageCast": [
+          99
+        ],
+        "latch": true,
+        "fullEvents": 0
+      }
+    },
+    {
+      "scenario": {
+        "file": "game-easy-test.html",
+        "raw": 20,
+        "stored": 0.2,
+        "rage": 100,
+        "item": {
+          "uniqueId": "UI-10",
+          "slot": "armor"
+        },
+        "latch": true
+      },
+      "original": {
+        "rage": 0,
+        "cooldown": 1800,
+        "mats": 90,
+        "hits": [
+          [
+            0,
+            500,
+            3.141592653589793,
+            100,
+            0,
+            0,
+            1
+          ]
+        ],
+        "rageCast": [
+          100
+        ],
+        "latch": true,
+        "fullEvents": 0
+      },
+      "candidate": {
+        "rage": 20,
+        "cooldown": 1800,
+        "mats": 90,
+        "hits": [
+          [
+            0,
+            500,
+            3.141592653589793,
+            100,
+            0,
+            0,
+            1
+          ]
+        ],
+        "rageCast": [
+          100
+        ],
+        "latch": true,
+        "fullEvents": 0
+      }
+    },
+    {
+      "scenario": {
+        "file": "game-easy-test.html",
+        "raw": 20,
+        "stored": 0.2,
+        "rage": 150,
+        "item": {
+          "uniqueId": "UI-10",
+          "slot": "armor"
+        },
+        "latch": true
+      },
+      "original": {
+        "rage": 0,
+        "cooldown": 1800,
+        "mats": 90,
+        "hits": [
+          [
+            0,
+            500,
+            3.141592653589793,
+            147,
+            0,
+            0,
+            1
+          ]
+        ],
+        "rageCast": [
+          150
+        ],
+        "latch": true,
+        "fullEvents": 0
+      },
+      "candidate": {
+        "rage": 30,
+        "cooldown": 1800,
+        "mats": 90,
+        "hits": [
+          [
+            0,
+            500,
+            3.141592653589793,
+            147,
+            0,
+            0,
+            1
+          ]
+        ],
+        "rageCast": [
+          150
+        ],
+        "latch": true,
+        "fullEvents": 0
+      }
+    },
+    {
+      "scenario": {
+        "file": "game-easy-test.html",
+        "raw": 20,
+        "stored": 0.2,
+        "rage": 1000,
+        "item": {
+          "uniqueId": "UI-10",
+          "slot": "armor"
+        },
+        "latch": true
+      },
+      "original": {
+        "rage": 0,
+        "cooldown": 1800,
+        "mats": 90,
+        "hits": [
+          [
+            0,
+            500,
+            3.141592653589793,
+            955,
+            0,
+            0,
+            1
+          ]
+        ],
+        "rageCast": [
+          1000
+        ],
+        "latch": true,
+        "fullEvents": 0
+      },
+      "candidate": {
+        "rage": 30,
+        "cooldown": 1800,
+        "mats": 90,
+        "hits": [
+          [
+            0,
+            500,
+            3.141592653589793,
+            955,
+            0,
+            0,
+            1
+          ]
+        ],
+        "rageCast": [
+          1000
+        ],
+        "latch": true,
+        "fullEvents": 0
+      }
+    },
+    {
+      "scenario": {
+        "file": "game-easy-test.html",
+        "raw": 20,
+        "stored": 0.2,
+        "rage": 99.5,
+        "item": {
+          "uniqueId": "UI-10",
+          "slot": "armor"
+        },
+        "latch": true
+      },
+      "original": {
+        "rage": 0,
+        "cooldown": 1800,
+        "mats": 90,
+        "hits": [
+          [
+            0,
+            500,
+            3.141592653589793,
+            99,
+            0,
+            0,
+            1
+          ]
+        ],
+        "rageCast": [
+          99.5
+        ],
+        "latch": true,
+        "fullEvents": 0
+      },
+      "candidate": {
+        "rage": 0,
+        "cooldown": 1800,
+        "mats": 90,
+        "hits": [
+          [
+            0,
+            500,
+            3.141592653589793,
+            99,
+            0,
+            0,
+            1
+          ]
+        ],
+        "rageCast": [
+          99.5
+        ],
+        "latch": true,
+        "fullEvents": 0
+      }
+    },
+    {
+      "scenario": {
+        "file": "game-easy-test.html",
+        "raw": 20,
+        "stored": 0.2,
+        "rage": 100.5,
+        "item": {
+          "uniqueId": "UI-10",
+          "slot": "armor"
+        },
+        "latch": true
+      },
+      "original": {
+        "rage": 0,
+        "cooldown": 1800,
+        "mats": 90,
+        "hits": [
+          [
+            0,
+            500,
+            3.141592653589793,
+            100,
+            0,
+            0,
+            1
+          ]
+        ],
+        "rageCast": [
+          100.5
+        ],
+        "latch": true,
+        "fullEvents": 0
+      },
+      "candidate": {
+        "rage": 20.1,
+        "cooldown": 1800,
+        "mats": 90,
+        "hits": [
+          [
+            0,
+            500,
+            3.141592653589793,
+            100,
+            0,
+            0,
+            1
+          ]
+        ],
+        "rageCast": [
+          100.5
+        ],
+        "latch": true,
+        "fullEvents": 0
+      }
+    },
+    {
+      "scenario": {
+        "file": "game.html",
+        "raw": 20,
+        "stored": 0.2,
+        "rage": 150,
+        "item": null,
+        "latch": false
+      },
+      "original": {
+        "rage": 0,
+        "cooldown": 1800,
+        "mats": 90,
+        "hits": [
+          [
+            0,
+            500,
+            3.141592653589793,
+            147,
+            0,
+            0,
+            1
+          ]
+        ],
+        "rageCast": [
+          150
+        ],
+        "latch": false,
+        "fullEvents": 0
+      },
+      "candidate": {
+        "rage": 0,
+        "cooldown": 1800,
+        "mats": 90,
+        "hits": [
+          [
+            0,
+            500,
+            3.141592653589793,
+            147,
+            0,
+            0,
+            1
+          ]
+        ],
+        "rageCast": [
+          150
+        ],
+        "latch": false,
+        "fullEvents": 0
+      }
+    },
+    {
+      "scenario": {
+        "file": "game.html",
+        "raw": 20,
+        "stored": 0.2,
+        "rage": 150,
+        "item": {
+          "slot": "armor"
+        },
+        "latch": false
+      },
+      "original": {
+        "rage": 0,
+        "cooldown": 1800,
+        "mats": 90,
+        "hits": [
+          [
+            0,
+            500,
+            3.141592653589793,
+            147,
+            0,
+            0,
+            1
+          ]
+        ],
+        "rageCast": [
+          150
+        ],
+        "latch": false,
+        "fullEvents": 0
+      },
+      "candidate": {
+        "rage": 0,
+        "cooldown": 1800,
+        "mats": 90,
+        "hits": [
+          [
+            0,
+            500,
+            3.141592653589793,
+            147,
+            0,
+            0,
+            1
+          ]
+        ],
+        "rageCast": [
+          150
+        ],
+        "latch": false,
+        "fullEvents": 0
+      }
+    },
+    {
+      "scenario": {
+        "file": "game.html",
+        "raw": 20,
+        "stored": 0.2,
+        "rage": 150,
+        "item": {
+          "uniqueId": "UI-10",
+          "slot": "helmet"
+        },
+        "latch": false
+      },
+      "original": {
+        "rage": 0,
+        "cooldown": 1800,
+        "mats": 90,
+        "hits": [
+          [
+            0,
+            500,
+            3.141592653589793,
+            147,
+            0,
+            0,
+            1
+          ]
+        ],
+        "rageCast": [
+          150
+        ],
+        "latch": false,
+        "fullEvents": 0
+      },
+      "candidate": {
+        "rage": 0,
+        "cooldown": 1800,
+        "mats": 90,
+        "hits": [
+          [
+            0,
+            500,
+            3.141592653589793,
+            147,
+            0,
+            0,
+            1
+          ]
+        ],
+        "rageCast": [
+          150
+        ],
+        "latch": false,
+        "fullEvents": 0
+      }
+    },
+    {
+      "scenario": {
+        "file": "game.html",
+        "raw": 20,
+        "stored": 0.2,
+        "rage": 150,
+        "item": {
+          "uniqueId": "unknown",
+          "slot": "armor"
+        },
+        "latch": false
+      },
+      "original": {
+        "rage": 0,
+        "cooldown": 1800,
+        "mats": 90,
+        "hits": [
+          [
+            0,
+            500,
+            3.141592653589793,
+            147,
+            0,
+            0,
+            1
+          ]
+        ],
+        "rageCast": [
+          150
+        ],
+        "latch": false,
+        "fullEvents": 0
+      },
+      "candidate": {
+        "rage": 0,
+        "cooldown": 1800,
+        "mats": 90,
+        "hits": [
+          [
+            0,
+            500,
+            3.141592653589793,
+            147,
+            0,
+            0,
+            1
+          ]
+        ],
+        "rageCast": [
+          150
+        ],
+        "latch": false,
+        "fullEvents": 0
+      }
+    },
+    {
+      "scenario": {
+        "file": "game.html",
+        "raw": 20,
+        "stored": 0.2,
+        "rage": 150,
+        "item": {
+          "uniqueId": "UI-21",
+          "slot": "armor"
+        },
+        "latch": false
+      },
+      "original": {
+        "rage": 0,
+        "cooldown": 1800,
+        "mats": 90,
+        "hits": [
+          [
+            0,
+            500,
+            3.141592653589793,
+            147,
+            0,
+            0,
+            1
+          ]
+        ],
+        "rageCast": [
+          150
+        ],
+        "latch": false,
+        "fullEvents": 0
+      },
+      "candidate": {
+        "rage": 0,
+        "cooldown": 1800,
+        "mats": 90,
+        "hits": [
+          [
+            0,
+            500,
+            3.141592653589793,
+            147,
+            0,
+            0,
+            1
+          ]
+        ],
+        "rageCast": [
+          150
+        ],
+        "latch": false,
+        "fullEvents": 0
+      }
+    },
+    {
+      "scenario": {
+        "file": "game.html",
+        "raw": 20,
+        "stored": 0.2,
+        "rage": 150,
+        "item": {
+          "uniqueId": "UI-10",
+          "slot": "armor"
+        },
+        "failed": true,
+        "latch": true
+      },
+      "original": {
+        "rage": 150,
+        "cooldown": null,
+        "mats": 0,
+        "hits": [],
+        "rageCast": [],
+        "latch": true,
+        "fullEvents": 0
+      },
+      "candidate": {
+        "rage": 150,
+        "cooldown": null,
+        "mats": 0,
+        "hits": [],
+        "rageCast": [],
+        "latch": true,
+        "fullEvents": 0
+      }
+    },
+    {
+      "scenario": {
+        "file": "game.html",
+        "raw": 20,
+        "stored": 0.2,
+        "rage": 150,
+        "item": {
+          "uniqueId": "UI-10",
+          "slot": "armor"
+        },
+        "srcId": "giantSlam2",
+        "fusion": "pillarSlam",
+        "latch": true
+      },
+      "original": {
+        "rage": 0,
+        "cooldown": 420,
+        "mats": 90,
+        "hits": [
+          [
+            0,
+            500,
+            3.141592653589793,
+            147,
+            0,
+            0,
+            1
+          ]
+        ],
+        "rageCast": [
+          150
+        ],
+        "latch": true,
+        "fullEvents": 0
+      },
+      "candidate": {
+        "rage": 30,
+        "cooldown": 420,
+        "mats": 90,
+        "hits": [
+          [
+            0,
+            500,
+            3.141592653589793,
+            147,
+            0,
+            0,
+            1
+          ]
+        ],
+        "rageCast": [
+          150
+        ],
+        "latch": true,
+        "fullEvents": 0
+      }
+    },
+    {
+      "scenario": {
+        "file": "game.html",
+        "raw": 20,
+        "stored": 0.2,
+        "rage": 150,
+        "item": {
+          "uniqueId": "UI-10",
+          "slot": "armor"
+        },
+        "srcId": "giantSlam2",
+        "fusion": "infernoSlam",
+        "latch": true
+      },
+      "original": {
+        "rage": 0,
+        "cooldown": 420,
+        "mats": 90,
+        "hits": [
+          [
+            0,
+            500,
+            3.141592653589793,
+            147,
+            0,
+            0,
+            1
+          ]
+        ],
+        "rageCast": [
+          150
+        ],
+        "latch": true,
+        "fullEvents": 0
+      },
+      "candidate": {
+        "rage": 30,
+        "cooldown": 420,
+        "mats": 90,
+        "hits": [
+          [
+            0,
+            500,
+            3.141592653589793,
+            147,
+            0,
+            0,
+            1
+          ]
+        ],
+        "rageCast": [
+          150
+        ],
+        "latch": true,
+        "fullEvents": 0
+      }
+    },
+    {
+      "scenario": {
+        "file": "game-easy-test.html",
+        "raw": 20,
+        "stored": 0.2,
+        "rage": 150,
+        "item": null,
+        "latch": false
+      },
+      "original": {
+        "rage": 0,
+        "cooldown": 1800,
+        "mats": 90,
+        "hits": [
+          [
+            0,
+            500,
+            3.141592653589793,
+            147,
+            0,
+            0,
+            1
+          ]
+        ],
+        "rageCast": [
+          150
+        ],
+        "latch": false,
+        "fullEvents": 0
+      },
+      "candidate": {
+        "rage": 0,
+        "cooldown": 1800,
+        "mats": 90,
+        "hits": [
+          [
+            0,
+            500,
+            3.141592653589793,
+            147,
+            0,
+            0,
+            1
+          ]
+        ],
+        "rageCast": [
+          150
+        ],
+        "latch": false,
+        "fullEvents": 0
+      }
+    },
+    {
+      "scenario": {
+        "file": "game-easy-test.html",
+        "raw": 20,
+        "stored": 0.2,
+        "rage": 150,
+        "item": {
+          "slot": "armor"
+        },
+        "latch": false
+      },
+      "original": {
+        "rage": 0,
+        "cooldown": 1800,
+        "mats": 90,
+        "hits": [
+          [
+            0,
+            500,
+            3.141592653589793,
+            147,
+            0,
+            0,
+            1
+          ]
+        ],
+        "rageCast": [
+          150
+        ],
+        "latch": false,
+        "fullEvents": 0
+      },
+      "candidate": {
+        "rage": 0,
+        "cooldown": 1800,
+        "mats": 90,
+        "hits": [
+          [
+            0,
+            500,
+            3.141592653589793,
+            147,
+            0,
+            0,
+            1
+          ]
+        ],
+        "rageCast": [
+          150
+        ],
+        "latch": false,
+        "fullEvents": 0
+      }
+    },
+    {
+      "scenario": {
+        "file": "game-easy-test.html",
+        "raw": 20,
+        "stored": 0.2,
+        "rage": 150,
+        "item": {
+          "uniqueId": "UI-10",
+          "slot": "helmet"
+        },
+        "latch": false
+      },
+      "original": {
+        "rage": 0,
+        "cooldown": 1800,
+        "mats": 90,
+        "hits": [
+          [
+            0,
+            500,
+            3.141592653589793,
+            147,
+            0,
+            0,
+            1
+          ]
+        ],
+        "rageCast": [
+          150
+        ],
+        "latch": false,
+        "fullEvents": 0
+      },
+      "candidate": {
+        "rage": 0,
+        "cooldown": 1800,
+        "mats": 90,
+        "hits": [
+          [
+            0,
+            500,
+            3.141592653589793,
+            147,
+            0,
+            0,
+            1
+          ]
+        ],
+        "rageCast": [
+          150
+        ],
+        "latch": false,
+        "fullEvents": 0
+      }
+    },
+    {
+      "scenario": {
+        "file": "game-easy-test.html",
+        "raw": 20,
+        "stored": 0.2,
+        "rage": 150,
+        "item": {
+          "uniqueId": "unknown",
+          "slot": "armor"
+        },
+        "latch": false
+      },
+      "original": {
+        "rage": 0,
+        "cooldown": 1800,
+        "mats": 90,
+        "hits": [
+          [
+            0,
+            500,
+            3.141592653589793,
+            147,
+            0,
+            0,
+            1
+          ]
+        ],
+        "rageCast": [
+          150
+        ],
+        "latch": false,
+        "fullEvents": 0
+      },
+      "candidate": {
+        "rage": 0,
+        "cooldown": 1800,
+        "mats": 90,
+        "hits": [
+          [
+            0,
+            500,
+            3.141592653589793,
+            147,
+            0,
+            0,
+            1
+          ]
+        ],
+        "rageCast": [
+          150
+        ],
+        "latch": false,
+        "fullEvents": 0
+      }
+    },
+    {
+      "scenario": {
+        "file": "game-easy-test.html",
+        "raw": 20,
+        "stored": 0.2,
+        "rage": 150,
+        "item": {
+          "uniqueId": "UI-21",
+          "slot": "armor"
+        },
+        "latch": false
+      },
+      "original": {
+        "rage": 0,
+        "cooldown": 1800,
+        "mats": 90,
+        "hits": [
+          [
+            0,
+            500,
+            3.141592653589793,
+            147,
+            0,
+            0,
+            1
+          ]
+        ],
+        "rageCast": [
+          150
+        ],
+        "latch": false,
+        "fullEvents": 0
+      },
+      "candidate": {
+        "rage": 0,
+        "cooldown": 1800,
+        "mats": 90,
+        "hits": [
+          [
+            0,
+            500,
+            3.141592653589793,
+            147,
+            0,
+            0,
+            1
+          ]
+        ],
+        "rageCast": [
+          150
+        ],
+        "latch": false,
+        "fullEvents": 0
+      }
+    },
+    {
+      "scenario": {
+        "file": "game-easy-test.html",
+        "raw": 20,
+        "stored": 0.2,
+        "rage": 150,
+        "item": {
+          "uniqueId": "UI-10",
+          "slot": "armor"
+        },
+        "failed": true,
+        "latch": true
+      },
+      "original": {
+        "rage": 150,
+        "cooldown": null,
+        "mats": 0,
+        "hits": [],
+        "rageCast": [],
+        "latch": true,
+        "fullEvents": 0
+      },
+      "candidate": {
+        "rage": 150,
+        "cooldown": null,
+        "mats": 0,
+        "hits": [],
+        "rageCast": [],
+        "latch": true,
+        "fullEvents": 0
+      }
+    },
+    {
+      "scenario": {
+        "file": "game-easy-test.html",
+        "raw": 20,
+        "stored": 0.2,
+        "rage": 150,
+        "item": {
+          "uniqueId": "UI-10",
+          "slot": "armor"
+        },
+        "srcId": "giantSlam2",
+        "fusion": "pillarSlam",
+        "latch": true
+      },
+      "original": {
+        "rage": 0,
+        "cooldown": 420,
+        "mats": 90,
+        "hits": [
+          [
+            0,
+            500,
+            3.141592653589793,
+            147,
+            0,
+            0,
+            1
+          ]
+        ],
+        "rageCast": [
+          150
+        ],
+        "latch": true,
+        "fullEvents": 0
+      },
+      "candidate": {
+        "rage": 30,
+        "cooldown": 420,
+        "mats": 90,
+        "hits": [
+          [
+            0,
+            500,
+            3.141592653589793,
+            147,
+            0,
+            0,
+            1
+          ]
+        ],
+        "rageCast": [
+          150
+        ],
+        "latch": true,
+        "fullEvents": 0
+      }
+    },
+    {
+      "scenario": {
+        "file": "game-easy-test.html",
+        "raw": 20,
+        "stored": 0.2,
+        "rage": 150,
+        "item": {
+          "uniqueId": "UI-10",
+          "slot": "armor"
+        },
+        "srcId": "giantSlam2",
+        "fusion": "infernoSlam",
+        "latch": true
+      },
+      "original": {
+        "rage": 0,
+        "cooldown": 420,
+        "mats": 90,
+        "hits": [
+          [
+            0,
+            500,
+            3.141592653589793,
+            147,
+            0,
+            0,
+            1
+          ]
+        ],
+        "rageCast": [
+          150
+        ],
+        "latch": true,
+        "fullEvents": 0
+      },
+      "candidate": {
+        "rage": 30,
+        "cooldown": 420,
+        "mats": 90,
+        "hits": [
+          [
+            0,
+            500,
+            3.141592653589793,
+            147,
+            0,
+            0,
+            1
+          ]
+        ],
+        "rageCast": [
+          150
+        ],
+        "latch": true,
+        "fullEvents": 0
+      }
+    },
+    {
+      "sequence": "두 독립 실제 시전",
+      "file": "game.html",
+      "first": {
+        "rage": 30,
+        "cooldown": 1800,
+        "mats": 90,
+        "hits": [
+          [
+            0,
+            500,
+            3.141592653589793,
+            147,
+            0,
+            0,
+            1
+          ]
+        ],
+        "rageCast": [
+          150
+        ],
+        "latch": true,
+        "fullEvents": 0
+      },
+      "second": {
+        "rage": 0,
+        "cooldown": 1800,
+        "mats": 90,
+        "hits": [
+          [
+            0,
+            500,
+            3.141592653589793,
+            33,
+            0,
+            0,
+            1
+          ]
+        ],
+        "rageCast": [
+          30
+        ],
+        "latch": true,
+        "fullEvents": 0
+      }
+    },
+    {
+      "sequence": "두 독립 실제 시전",
+      "file": "game-easy-test.html",
+      "first": {
+        "rage": 30,
+        "cooldown": 1800,
+        "mats": 90,
+        "hits": [
+          [
+            0,
+            500,
+            3.141592653589793,
+            147,
+            0,
+            0,
+            1
+          ]
+        ],
+        "rageCast": [
+          150
+        ],
+        "latch": true,
+        "fullEvents": 0
+      },
+      "second": {
+        "rage": 0,
+        "cooldown": 1800,
+        "mats": 90,
+        "hits": [
+          [
+            0,
+            500,
+            3.141592653589793,
+            33,
+            0,
+            0,
+            1
+          ]
+        ],
+        "rageCast": [
+          30
+        ],
+        "latch": true,
+        "fullEvents": 0
+      }
+    }
+  ],
+  "sourceHashes": {
+    "game.html": "8ebc3b7b52a651c1a3bc5e8c285b00d186c6dacc18429ada7499781acc72b0b9",
+    "game-easy-test.html": "4c408f1e7b57210900ddfa8a0646502f91b6a0bbc798a24338eb159cb613d874"
+  },
+  "candidatePath": "/Users/fordeargamers/Projects/exoduser-migration-20261001/tools/team-followup-20261001/BALANCE/d10-item-adapter.mjs"
+}

@@ -1,0 +1,327 @@
+{
+  "sources": [
+    {
+      "file": "game.html",
+      "sourceSha256": "2c2cb60f5af6a4759aa24efeea620673b621e7a0dad3658f0a480780f12c58fb",
+      "candidateSha256": "ad3b5e46c664c9f909e32676c8a891841cd060d578ce13aaddb1d0a157e35a3b",
+      "htmlSha256": "8ebc3b7b52a651c1a3bc5e8c285b00d186c6dacc18429ada7499781acc72b0b9",
+      "line": 44849
+    },
+    {
+      "file": "game-easy-test.html",
+      "sourceSha256": "9aa22aa9a97d75c9ee9908894f7cecad392c608350de3ef676ac13b029438fe7",
+      "candidateSha256": "7bf3757a2b79c4a70ba8f5ad779da6da659a8edd516e45686b9018f02daaa33e",
+      "htmlSha256": "4c408f1e7b57210900ddfa8a0646502f91b6a0bbc798a24338eb159cb613d874",
+      "line": 43561
+    }
+  ],
+  "comparisons": [
+    {
+      "file": "game.html",
+      "rage": 0,
+      "raw": 10,
+      "resultRage": 0,
+      "damageAndEffectsSame": true
+    },
+    {
+      "file": "game.html",
+      "rage": 0,
+      "raw": 15,
+      "resultRage": 0,
+      "damageAndEffectsSame": true
+    },
+    {
+      "file": "game.html",
+      "rage": 0,
+      "raw": 20,
+      "resultRage": 0,
+      "damageAndEffectsSame": true
+    },
+    {
+      "file": "game.html",
+      "rage": 99,
+      "raw": 10,
+      "resultRage": 0,
+      "damageAndEffectsSame": true
+    },
+    {
+      "file": "game.html",
+      "rage": 99,
+      "raw": 15,
+      "resultRage": 0,
+      "damageAndEffectsSame": true
+    },
+    {
+      "file": "game.html",
+      "rage": 99,
+      "raw": 20,
+      "resultRage": 0,
+      "damageAndEffectsSame": true
+    },
+    {
+      "file": "game.html",
+      "rage": 99.999,
+      "raw": 10,
+      "resultRage": 0,
+      "damageAndEffectsSame": true
+    },
+    {
+      "file": "game.html",
+      "rage": 99.999,
+      "raw": 15,
+      "resultRage": 0,
+      "damageAndEffectsSame": true
+    },
+    {
+      "file": "game.html",
+      "rage": 99.999,
+      "raw": 20,
+      "resultRage": 0,
+      "damageAndEffectsSame": true
+    },
+    {
+      "file": "game.html",
+      "rage": 100,
+      "raw": 10,
+      "resultRage": 10,
+      "damageAndEffectsSame": true
+    },
+    {
+      "file": "game.html",
+      "rage": 100,
+      "raw": 15,
+      "resultRage": 15,
+      "damageAndEffectsSame": true
+    },
+    {
+      "file": "game.html",
+      "rage": 100,
+      "raw": 20,
+      "resultRage": 20,
+      "damageAndEffectsSame": true
+    },
+    {
+      "file": "game.html",
+      "rage": 150,
+      "raw": 10,
+      "resultRage": 15,
+      "damageAndEffectsSame": true
+    },
+    {
+      "file": "game.html",
+      "rage": 150,
+      "raw": 15,
+      "resultRage": 22.5,
+      "damageAndEffectsSame": true
+    },
+    {
+      "file": "game.html",
+      "rage": 150,
+      "raw": 20,
+      "resultRage": 30,
+      "damageAndEffectsSame": true
+    },
+    {
+      "file": "game.html",
+      "rage": 200,
+      "raw": 10,
+      "resultRage": 20,
+      "damageAndEffectsSame": true
+    },
+    {
+      "file": "game.html",
+      "rage": 200,
+      "raw": 15,
+      "resultRage": 30,
+      "damageAndEffectsSame": true
+    },
+    {
+      "file": "game.html",
+      "rage": 200,
+      "raw": 20,
+      "resultRage": 30,
+      "damageAndEffectsSame": true
+    },
+    {
+      "file": "game.html",
+      "rage": 1000,
+      "raw": 10,
+      "resultRage": 30,
+      "damageAndEffectsSame": true
+    },
+    {
+      "file": "game.html",
+      "rage": 1000,
+      "raw": 15,
+      "resultRage": 30,
+      "damageAndEffectsSame": true
+    },
+    {
+      "file": "game.html",
+      "rage": 1000,
+      "raw": 20,
+      "resultRage": 30,
+      "damageAndEffectsSame": true
+    },
+    {
+      "file": "game-easy-test.html",
+      "rage": 0,
+      "raw": 10,
+      "resultRage": 0,
+      "damageAndEffectsSame": true
+    },
+    {
+      "file": "game-easy-test.html",
+      "rage": 0,
+      "raw": 15,
+      "resultRage": 0,
+      "damageAndEffectsSame": true
+    },
+    {
+      "file": "game-easy-test.html",
+      "rage": 0,
+      "raw": 20,
+      "resultRage": 0,
+      "damageAndEffectsSame": true
+    },
+    {
+      "file": "game-easy-test.html",
+      "rage": 99,
+      "raw": 10,
+      "resultRage": 0,
+      "damageAndEffectsSame": true
+    },
+    {
+      "file": "game-easy-test.html",
+      "rage": 99,
+      "raw": 15,
+      "resultRage": 0,
+      "damageAndEffectsSame": true
+    },
+    {
+      "file": "game-easy-test.html",
+      "rage": 99,
+      "raw": 20,
+      "resultRage": 0,
+      "damageAndEffectsSame": true
+    },
+    {
+      "file": "game-easy-test.html",
+      "rage": 99.999,
+      "raw": 10,
+      "resultRage": 0,
+      "damageAndEffectsSame": true
+    },
+    {
+      "file": "game-easy-test.html",
+      "rage": 99.999,
+      "raw": 15,
+      "resultRage": 0,
+      "damageAndEffectsSame": true
+    },
+    {
+      "file": "game-easy-test.html",
+      "rage": 99.999,
+      "raw": 20,
+      "resultRage": 0,
+      "damageAndEffectsSame": true
+    },
+    {
+      "file": "game-easy-test.html",
+      "rage": 100,
+      "raw": 10,
+      "resultRage": 10,
+      "damageAndEffectsSame": true
+    },
+    {
+      "file": "game-easy-test.html",
+      "rage": 100,
+      "raw": 15,
+      "resultRage": 15,
+      "damageAndEffectsSame": true
+    },
+    {
+      "file": "game-easy-test.html",
+      "rage": 100,
+      "raw": 20,
+      "resultRage": 20,
+      "damageAndEffectsSame": true
+    },
+    {
+      "file": "game-easy-test.html",
+      "rage": 150,
+      "raw": 10,
+      "resultRage": 15,
+      "damageAndEffectsSame": true
+    },
+    {
+      "file": "game-easy-test.html",
+      "rage": 150,
+      "raw": 15,
+      "resultRage": 22.5,
+      "damageAndEffectsSame": true
+    },
+    {
+      "file": "game-easy-test.html",
+      "rage": 150,
+      "raw": 20,
+      "resultRage": 30,
+      "damageAndEffectsSame": true
+    },
+    {
+      "file": "game-easy-test.html",
+      "rage": 200,
+      "raw": 10,
+      "resultRage": 20,
+      "damageAndEffectsSame": true
+    },
+    {
+      "file": "game-easy-test.html",
+      "rage": 200,
+      "raw": 15,
+      "resultRage": 30,
+      "damageAndEffectsSame": true
+    },
+    {
+      "file": "game-easy-test.html",
+      "rage": 200,
+      "raw": 20,
+      "resultRage": 30,
+      "damageAndEffectsSame": true
+    },
+    {
+      "file": "game-easy-test.html",
+      "rage": 1000,
+      "raw": 10,
+      "resultRage": 30,
+      "damageAndEffectsSame": true
+    },
+    {
+      "file": "game-easy-test.html",
+      "rage": 1000,
+      "raw": 15,
+      "resultRage": 30,
+      "damageAndEffectsSame": true
+    },
+    {
+      "file": "game-easy-test.html",
+      "rage": 1000,
+      "raw": 20,
+      "resultRage": 30,
+      "damageAndEffectsSame": true
+    }
+  ],
+  "sharedModules": [
+    {
+      "path": "unique-item-project/definitions.js",
+      "sha256": "3f04bcc5ac90b039454f32dc9323e60bbe44dda27be7fd439a97633d1f25118a"
+    },
+    {
+      "path": "unique-item-project/roll-values.js",
+      "sha256": "103d0460c738c117840586780eaaed7be7ebe0aba61fa50464db9d004b094975"
+    }
+  ],
+  "productionModified": false,
+  "rollField": "unconfirmed: explicit readStoredRoll injection only",
+  "activation": "fixture opt-in, default disabled"
+}

@@ -1,0 +1,12 @@
+{"sourceHashes":{"game.html":"8ebc3b7b52a651c1a3bc5e8c285b00d186c6dacc18429ada7499781acc72b0b9","game-easy-test.html":"4c408f1e7b57210900ddfa8a0646502f91b6a0bbc798a24338eb159cb613d874"},"scenarios":148}
+✔ D10 실제 SSOT 조건/상한/단위·원함수 입력소모/피해·실패 게이트 (44.559917ms)
+✔ 독립 oracle 명시 경계·비장착·잘못된 저장값 (0.499ms)
+✔ 부정 변이: 미소모 원함수·99환급·피해변경·충만생성 모두 검출 (4.102083ms)
+ℹ tests 3
+ℹ suites 0
+ℹ pass 3
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 107.349708

@@ -1,0 +1,24 @@
+(node:27845) ExperimentalWarning: vm.USE_MAIN_CONTEXT_DEFAULT_LOADER is an experimental feature and might change at any time
+(Use `node --trace-warnings ...` to show where the warning was created)
+✔ D10 percent tooltip consumes current definition/lookup/describe/store contracts in KO and EN (1.342125ms)
+✔ invalid rolls and unsupported language fail rather than display invalid player values (0.237083ms)
+✔ real review executes .js imports and mounts only UI-10 while preserving 22 cards/44 images (1.21325ms)
+✔ 10/15/20 native controls update bilingual leaf descriptions and ARIA without modifying other cards (0.871166ms)
+✔ 64/160 controls remain independent; native keyboard semantics are retained, not visually certified (4.26775ms)
+✔ tooltip module failure leaves original art comparison and size controls available with local alert (0.587375ms)
+(node:27846) ExperimentalWarning: vm.USE_MAIN_CONTEXT_DEFAULT_LOADER is an experimental feature and might change at any time
+(Use `node --trace-warnings ...` to show where the warning was created)
+✔ review dynamically imports the real definition module without catalog or path copies (0.560167ms)
+✔ actual definitions render 22 cards and all 44 exact lazy image paths (1.807166ms)
+✔ all equipment mappings use contract Korean slot names and SSOT weapon types (0.487084ms)
+✔ definition changes flow to names IDs equipment effect state and image paths (0.676291ms)
+✔ 64/160 CSS and native buttons retain focus/keyboard semantics and ARIA toggle (0.7025ms)
+✔ module loading failure displays actionable alert without disabling size controls (0.522416ms)
+ℹ tests 12
+ℹ suites 0
+ℹ pass 12
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 43.355791

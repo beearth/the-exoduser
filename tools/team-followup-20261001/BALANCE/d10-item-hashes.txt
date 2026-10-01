@@ -1,0 +1,5 @@
+6045326868bea6f7c5b1026d9472a02bdba5756cac41a110165e050ba9d4e7fb  tools/team-followup-20261001/ITEM/d10-consumer.mjs
+ed979a68ab0eba1fa61d8b8f85ef6d5e6f7acb8bac872e134456b98dbbd9211f  tools/team-followup-20261001/ITEM/d10-game-function.js
+74463e22bd18f027834e961a106151f1603a50669cef04517cb7015ba95ba6c8  tools/team-followup-20261001/ITEM/d10-game-easy-test-function.js
+3f04bcc5ac90b039454f32dc9323e60bbe44dda27be7fd439a97633d1f25118a  unique-item-project/definitions.js
+103d0460c738c117840586780eaaed7be7ebe0aba61fa50464db9d004b094975  unique-item-project/roll-values.js

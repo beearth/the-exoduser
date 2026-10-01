@@ -1,0 +1,30 @@
+[
+  {
+    "path": "unique-item-project/definitions.js",
+    "status": 200,
+    "mime": "application/javascript",
+    "sha256": "3f04bcc5ac90b039454f32dc9323e60bbe44dda27be7fd439a97633d1f25118a",
+    "diskMatch": true
+  },
+  {
+    "path": "unique-item-project/roll-values.js",
+    "status": 200,
+    "mime": "application/javascript",
+    "sha256": "103d0460c738c117840586780eaaed7be7ebe0aba61fa50464db9d004b094975",
+    "diskMatch": true
+  },
+  {
+    "path": "unique-item-project/d10-tooltip.js",
+    "status": 200,
+    "mime": "application/javascript",
+    "sha256": "d35c86f6369ebda346c1c300519c131a96fb34000ff41192e511d61f9f62dcc2",
+    "diskMatch": true
+  },
+  {
+    "path": "unique-item-project/review.html",
+    "status": 200,
+    "mime": "text/html; charset=utf-8",
+    "sha256": "8f888911674c33e8d5f1aafab3374791545de903e66593c88104d00c0735d1b2",
+    "diskMatch": true
+  }
+]

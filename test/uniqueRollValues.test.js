@@ -2,7 +2,7 @@ import test from 'node:test';
 import assert from 'node:assert/strict';
 import { readFileSync } from 'node:fs';
 import { UNIQUE_DEFINITIONS } from '../unique-item-project/definitions.js';
-import { ROLL_PROPOSALS,lookupRoll,rollValue,toStoredValue,fromStoredValue,describeRoll } from '../unique-item-project/roll-values.mjs';
+import { ROLL_PROPOSALS,lookupRoll,rollValue,toStoredValue,fromStoredValue,describeRoll } from '../unique-item-project/roll-values.js';
 
 const document = readFileSync(new URL('../docs/7아이템디자인/유니크_어픽스_리스트.md',import.meta.url),'utf8');
 function adjacent(value,direction) {

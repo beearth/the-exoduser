@@ -1,0 +1,13 @@
+{
+  "at": "2026-10-01T14:00:54.503091+00:00",
+  "head": "f5292fa02ae7eb8320f7bdf0436b415bc3078ede",
+  "qaOwner": "root",
+  "qaTask": "QA-FIRE-NORMAL-REGRESSION",
+  "measurementRunning": false,
+  "native": "one fresh getApp: Mac locked; automatic unlock failed; no follow-up native input",
+  "claudeTeams": "all7 idle from claude agents --json",
+  "codexTeams": "last4 turns completed; no D10 source or receipt; queue-inspection not exposed; send once only",
+  "existingGameTabs": 0,
+  "serverPID": 40609,
+  "remainingWipPreserved": true
+}

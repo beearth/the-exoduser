@@ -1,0 +1,5 @@
+# D10 다음 한 건 — 2026-10-01
+기존 세션만 사용, 새 세션/하위 에이전트/Git 쓰기/게임·브라우저 실행/빌드 금지. QA 정상 전투는 root 단독 소유로 별도 수행한다. 먼저 AGENTS·총괄 최신절/팀대장/연속진행·백업정책·SSOT를 읽고 이전 완료와 중복 산출을 확인하라. 현재 f5292fa0 원격 대조 완료. definitions.js가 현행이며 root가 roll-values.mjs도 동일 바이트 roll-values.js로 이동했다(기존3340 JS MIME 호환). 두 파일 읽기만. 실제 Read/Edit/검사 시각과 실패 포함 결과를 전용 영수증·결과 MD에 기록하라. 공유 게임·definitions·roll·audit·팀 대장·CHANGELOG는 수정하지 않는다. root가 검수 후 공유 docs를 반영한다. 보고서만 만들지 말고 아래 실제 코드/검증을 제출한다.
+## ITEM-D10-COMBAT-CANDIDATE
+소유 tools/team-followup-20261001/ITEM/d10-* 및 docs/0마스터플랜/mac-resume-20261001/vscode-dispatch/ITEM-d10-{receipt.json,result.md}.
+TOP8_HOOK_REVIEW, D10 SSOT, 현재 본편/easy activateGiantSlam과 분노 소모·장착조회·스택·충만/U-N01을 읽어 실제 함수에 맞는 독립 후보 코드와 context patch를 구현하라. 원함수/후보함수 동일 입력 회귀를 제출한다. 기존 정의·roll 단위를 재사용한다. 비장착/unknown ID는 원행동 동일. UI-10 장착 제안은 분노100이상 실제성공 소모 때만 소비량의10~20% 복원, 최대30. 원피해/소모/합체쿨 유지. 실패·중복·재귀 충만/U-N01 이벤트로 분노를 생성하지 않는다. D절의 >=100 조건을 빠뜨리지 않는다. 저장될 새 인스턴스 롤 필드가 미확정이면 후보에서 명시하고 현재 레거시를 추정 변환하지 않는다. 전체22종·생산 파일 직접 활성0. BALANCE가 독립검수하므로 API·원본해시·후보경로를 d10 결과에 명확히 남긴다.

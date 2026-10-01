@@ -1,0 +1,12 @@
+{
+  "at": "2026-10-01T14:06:42.053655+00:00",
+  "head": "f5292fa02ae7eb8320f7bdf0436b415bc3078ede",
+  "sourceSHA256": "8ebc3b7b52a651c1a3bc5e8c285b00d186c6dacc18429ada7499781acc72b0b9",
+  "httpSHA256": "8ebc3b7b52a651c1a3bc5e8c285b00d186c6dacc18429ada7499781acc72b0b9",
+  "serverPID": 40609,
+  "port": 3340,
+  "serverSaveDir": "/Users/fordeargamers/Projects/exoduser-migration-20261001/tmp/mac-migration-runtime/saves",
+  "isolation": "new .localhost origin; normal web standalone localStorage save; no user origin reset",
+  "coldWarm": "new page/origin; persistent browser cache/GPU coldness unknown; no cache clearing",
+  "native": "locked; IAB DOM input works; body.press timeout and IAB raw Input unsupported; no unlock/security settings changed"
+}

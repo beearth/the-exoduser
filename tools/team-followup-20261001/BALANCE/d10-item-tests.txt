@@ -1,0 +1,17 @@
+{"sourceHashes":{"game.html":"8ebc3b7b52a651c1a3bc5e8c285b00d186c6dacc18429ada7499781acc72b0b9","game-easy-test.html":"4c408f1e7b57210900ddfa8a0646502f91b6a0bbc798a24338eb159cb613d874"},"scenarios":148}
+✔ D10 실제 SSOT 조건/상한/단위·원함수 입력소모/피해·실패 게이트 (52.274541ms)
+✔ 독립 oracle 명시 경계·비장착·잘못된 저장값 (0.549417ms)
+✔ 부정 변이: 미소모 원함수·99환급·피해변경·충만생성 모두 검출 (5.609958ms)
+✔ 실제 ITEM 후보148입력 및 두 연속시전 독립 비교 (114.541209ms)
+✔ 실제 함수 동기 재진입: 원피해/쿨/자원/래치 동일·외부1회 환급 (1.5035ms)
+✔ 실제 함수 비활성/부정 저장롤은 원결과 동일 (11.928375ms)
+✔ 실제 token 중복consume/finish·위조·재진입·실패 후 재개 (0.193375ms)
+✔ 실제 token 장착교체/다른분노생성/미소모는 추가 환급 없음 (0.08ms)
+ℹ tests 8
+ℹ suites 0
+ℹ pass 8
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 207.747125

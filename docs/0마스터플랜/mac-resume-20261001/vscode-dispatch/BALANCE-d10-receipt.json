@@ -1,0 +1,21 @@
+{
+  "taskId": "BALANCE-D10-INDEPENDENT-ACCEPTANCE",
+  "receivedAt": "2026-10-01T14:01:04Z",
+  "firstReadAt": "2026-10-01T14:01:04Z",
+  "firstRead": "D10 배정·총괄 최신절·팀대장·연속진행·백업정책·definitions.js/roll-values.js·SSOT·실제 함수",
+  "duplicateCheck": "BALANCE d10 산출 없음, ITEM 폴더에는 배정만 존재",
+  "firstEdit": "전용 영수증 생성",
+  "status": "completed_actual_candidate_review",
+  "dependencyArrivedAt": "2026-10-01T14:07:33Z",
+  "actualItemRead": "ITEM-d10-result.md·d10-consumer.mjs begin/consume/finish 및 candidateSlamSource 실제 읽기",
+  "firstCodeEdit": "d10-independent.mjs와 독립 테스트 구현",
+  "validation": "실제 ITEM 원후보148입력/두 연속시전/재진입/중복token/부정저장8그룹PASS, 불일치0",
+  "validatedAt": "2026-10-01T14:08:19Z",
+  "dependencyResumeEdit": "BALANCE d10-item-adapter.mjs에서 실제 consumer 및 제출원후보함수 VM 연결",
+  "actualCandidateCommand": "node tools/team-followup-20261001/BALANCE/d10-run.mjs tools/team-followup-20261001/BALANCE/d10-item-adapter.mjs",
+  "actualCandidateExit": 0,
+  "dependencyCheck": "짧은1회 확인 시 ITEM 영수증만 존재, 후보/API/결과 없음",
+  "nextAction": "root 저장롤 binding/공유docs 및 실제게임/저장/패키지 후속 게이트 인계",
+  "runtimeReady": false,
+  "gameBrowserBuildGitWrites": 0
+}

@@ -51797,3 +51797,9 @@ FIRE 독립8검사와 URL query17검사 인수, SOUND root canonical 관측기18
 - review.html은 정의의22카드·44경로를 import. 한국어슬롯·효과ID·제안/미채택/비활성 표시, 원화채택0.
 - 통합101PASS, 실제3340 HTTP/44이미지·64/160px·Tab/Enter/Space 확인. 게임/easy/index·사용자저장 미변경.
 - 상세: docs/0마스터플랜/mac-resume-20261001/vscode-dispatch/PM009-roll-review-root.md.
+
+
+## 2026-10-01 D10 후보·실제툴팁 인수
+- UI10흉갑/U-D10 지옥강타 소비후10~20%·최대30,성공실제소모>=100 독립후보.75전투+8독립그룹(148입력) 및통합188PASS. 생산활성0.
+- roll-values.mjs→동일바이트.js;감사/회귀/증거import갱신. 한영10/15/20%검토UI·D10넓은배치,실HTTP/44로드/키보드/160px검수;최종12PASS.
+- QA정상전투5표본제외(INCONCLUSIVE),첫처치포착·동일조건실측미완료. BUILD조율환경readonly 실패와root의기존공식전송구분. 관련SSOT·팀대장·master18.37 동기화. 세이브/게임/서버변경0.

@@ -1,0 +1,13 @@
+{
+  "taskId": "ITEM-D10-COMBAT-CANDIDATE",
+  "status": "completed_candidate_pending_balance_root_review",
+  "receivedAt": "2026-10-01T14:00:59Z",
+  "firstReadAt": "2026-10-01T14:00:59Z",
+  "firstRead": "D10_TASK·definitions.js·roll-values.js·TOP8·D10 SSOT·본편/easy 지옥강타·장착조회·분노코드",
+  "duplicateCheck": "d10-* 기존산출없음; 이름수리/정의/픽셀과제와구분",
+  "firstEdit": "전용영수증·d10-consumer.mjs·d10-combat.test.mjs 실제편집",
+  "validation": "최종exit0/75PASS; 중간context재구성2FAIL(빈줄)을수정, 실패/최종로그분리보존",
+  "completedAt": "2026-10-01T14:03:25Z",
+  "nextAction": "BALANCE/root에API·원본해시·contextdiff·75회귀 인계; 저장롤필드미확정/생산활성0 유지",
+  "blocker": null
+}

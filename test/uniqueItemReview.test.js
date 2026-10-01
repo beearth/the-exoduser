@@ -68,9 +68,8 @@ async function render(loadDefinitions) {
 }
 
 test('review dynamically imports the real definition module without catalog or path copies', () => {
-  assert.equal(imports.length, 1);
-  assert.equal(imports[0].source.value, './definitions.js');
-  assert.doesNotMatch(script, /const names|ui-\$|seedream-candidate|roll-values|innerHTML/);
+  assert.deepEqual(imports.map(node => node.source.value), ['./definitions.js', './d10-tooltip.js']);
+  assert.doesNotMatch(script, /const names|ui-\$|seedream-candidate|innerHTML/);
   for (const definition of UNIQUE_DEFINITIONS) assert.ok(!script.includes(definition.catalogName));
 });
 

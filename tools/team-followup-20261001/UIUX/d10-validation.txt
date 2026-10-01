@@ -1,0 +1,16 @@
+(node:23954) ExperimentalWarning: vm.USE_MAIN_CONTEXT_DEFAULT_LOADER is an experimental feature and might change at any time
+(Use `node --trace-warnings ...` to show where the warning was created)
+✔ D10 percent tooltip consumes current definition/lookup/describe/store contracts in KO and EN (1.201708ms)
+✔ invalid rolls and unsupported language fail rather than display invalid player values (0.224333ms)
+✔ real review executes .js imports and mounts only UI-10 while preserving 22 cards/44 images (1.146083ms)
+✔ 10/15/20 native controls update bilingual leaf descriptions and ARIA without modifying other cards (0.75775ms)
+✔ 64/160 controls remain independent; native keyboard semantics are retained, not visually certified (4.226083ms)
+✔ tooltip module failure leaves original art comparison and size controls available with local alert (0.720333ms)
+ℹ tests 6
+ℹ suites 0
+ℹ pass 6
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 44.303625

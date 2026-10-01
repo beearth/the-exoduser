@@ -1,0 +1,32 @@
+docs/7아이템디자인/고유아이템_모델_어픽스_밸런싱_프로젝트_20260930.md:41:| UI-10 / U-D10 | 보라 잔불 흉갑 | 강타 뒤 분노 재시작 | U-N01 충만 재발동 | Seedream 비교 시안 |
+docs/7아이템디자인/고유아이템_모델_어픽스_밸런싱_프로젝트_20260930.md:62:| 2 | U-D10 | 분노100 강타 뒤 10~20 반환, 최대 30 | 다음 강타까지 걸리는 시간; U-N01 래치 |
+docs/7아이템디자인/고유아이템_모델_어픽스_밸런싱_프로젝트_20260930.md:77:| U-D10 + U-N01 | 강타 잔여 분노가 최대치 도달 이벤트를 다시 만들 수 있다. | 복원은 충만 래치를 발동시키지 않는 D절 계약 유지. |
+docs/7아이템디자인/UNIQUE_TOP8_HOOK_REVIEW_20261001.md:8:| 2 | U-D10 | 지옥강타의 소모 전 분노 스냅샷 → 원래 피해 계산·분노 소모 후 잔여 복원 | 상옵 분노100 소모 시 잔여20, 최대30; 충만 이벤트/U-N01을 복원 과정에서 다시 발동시키지 않기 |
+docs/7아이템디자인/UNIQUE_ITEM_GAME_INTEGRATION_CONTRACT_20261001.md:45:| `armor` | UI-10, UI-21 | U-D10, U-D21 | 흉갑 |
+docs/7아이템디자인/유니크_어픽스_리스트.md:52:### U-N01 분노 충만 — 분노가 가득 차면 분노스킬 쿨다운 회복
+docs/7아이템디자인/유니크_어픽스_리스트.md:61:| 발동 판정 | **상승 에지 1회**: `P.rage>=_rageMax()`가 되는 프레임에 1번. 분노가 최대 미만으로 떨어진 뒤 다시 가득 차야 재발동 (래치 `P._rageFullLatch`). 가득 찬 상태를 유지하는 동안 반복 발동 금지 |
+docs/7아이템디자인/유니크_어픽스_리스트.md:106:2. 효과 코드: U-N01 분노 래치 + 쿨 회복 / U-N02 경로 판정 + 디버프 + `hurtE` 곱 + 디버프 타이머 감소(`e._shockDRT` 옆) / U-N03 `_fireKiSlashCrescent` 피해식에 `×(1+_uEq('_uKiChargeDmg'))` (차징 단계 조건).
+docs/7아이템디자인/유니크_어픽스_리스트.md:121:| Space 분노 | U-D10~11 | 지옥강타의 분노 소모와 천공쇄기의 충전을 다음 공격으로 잇는다. |
+docs/7아이템디자인/유니크_어픽스_리스트.md:136:| 요청에 적힌 `ultRageGain`·`HOLD` | 현행 `game.html`·`docs/7아이템디자인`에서 정확한 id/명칭을 확인하지 못했다. 향후 해당 후보가 추가되면 U-D10·18 및 차징형 U-D03과 다시 대조한다. |
+docs/7아이템디자인/유니크_어픽스_리스트.md:155:| **U-D10** Space 지옥강타 / 잔불 분노 | 지옥강타가 분노 100 이상을 소모했다면 사용 직후 일부 분노를 남긴다. | 소모 분노의 **10~20%**: 하10~13/중14~16/상17~20%; 저장 `0.10~0.20`; 잔여 최대 `30`. | `_uSlamEmberRage`; `activateGiantSlam` 44282~44317. | 원래 `_rageMul`과 폭발은 **소모 전 분노**로 계산하고, `P.rage=0` 다음 `min(30,소모×값)` 복원. U-N01의 `최대치 도달` 래치를 재발동시키지 않음. 합체 지옥강타2의 420f 쿨은 그대로. | 분노100 지옥강타 10360/1회 기준 피해를 더 키우지 않는다. 상옵 잔여20으로 다음 폭발까지 패링 횟수만 줄인다. | U·S |
+docs/7아이템디자인/유니크_어픽스_리스트.md:166:| **U-D21** 악마화 부활 / 재점화 | 악마화 부활 **성공 시에만** 분노를 즉시 채워 다음 Space 공격을 준비한다. | 분노 **20~40**: 하20~26/중27~33/상34~40; 저장 정수 분노; 부활당 1회. | `_uDemonRekindle`; 부활 성공 41722~41732, 최대치 `_rageMax` 26155~26156. | `P.rage=min(_rageMax(),P.rage+값)`; 부활 실패·일반 재시작 불발. 부활 성공의 HP/MP/ST 전량 회복·120f 무적을 바꾸지 않고 U-N01 충만 래치를 인위적으로 재발동시키지 않음. | 분노100 지옥강타가 초반 10360인 데 비해 분노40 계수는 `1+40×0.19=8.6`으로 100의 20보다 훨씬 낮다. 복귀 직후 즉시 최대폭발은 불가. | U |
+docs/7아이템디자인/유니크_어픽스_리스트.md:174:| 2 | U-D10 | 분노100을 쓰고도 잔불이 남아 다음 패링 루프가 빨라진다. 기존 `P.rage=0` 뒤 복원이라 난도 **낮음**, U-N01 중복 발동만 확인. |
+docs/7아이템디자인/유니크_어픽스_리스트.md:207:| U-D10 | 분노 `100` 전부 지옥강타에 소모 | 잔여 분노=`min(30,100×롤÷100)` | 충만 래치 재발동 없음 |
+docs/7아이템디자인/보라색_고유아이템_카탈로그_20260930.md:27:| UI-10 | 꺼지지 않는 심갑 | 갑옷 | 가슴 중앙에 남은 보라 숯불, 방사형 판금 균열 | U-D10 지옥강타 후 잔여 분노 | Higgsfield 원화 `assets/unique-items/ui-10.png` |
+docs/7아이템디자인/보라색_고유아이템_카탈로그_20260930.md:63:| UI-10 | `ui-10.png` | `21498f40-7a03-4da3-86c4-5065df00ad5b` |
+docs/0마스터플랜/mac-resume-20261001/vscode-dispatch/UIUX-d10-result.md:16:| 대상 | UI-10 / U-D10 / 꺼지지 않는 심갑 단일아이템. 다른21종 카드·게임효과/드롭/저장 활성0 |
+docs/0마스터플랜/mac-resume-20261001/vscode-dispatch/UIUX-d10-result.md:17:| API | describeD10Tooltip(raw=15, language='ko'): 검증된 % 표시와 내부 저장값을 가진 불변 후보. mountD10Tooltip(card, document): UI-10만 허용하고 리프 DOM을 생성·갱신 |
+docs/0마스터플랜/mac-resume-20261001/vscode-dispatch/UIUX-d10-result.md:24:| 소비 연결 | 기존22카드를 만든 뒤 실제 .js 모듈 import, UI-10 카드에만 mount. 원본/Seedream44이미지·lazy·64/160CSS·native 버튼·ARIA 유지 |
+docs/0마스터플랜/mac-resume-20261001/vscode-dispatch/UIUX-d10-result.md:25:| 실패 안내 | D10 모듈 실패는 UI-10의 새 리프 role=alert로 안내. 기존 원화 비교와 크기 버튼은 유지. 정의 로딩 실패 경로는 기존 그대로 |
+docs/0마스터플랜/mac-resume-20261001/vscode-dispatch/UIUX-d10-result.md:40:10~20 전정수 ×KO/EN22설명을 현재 롤 API와 대조하고 경계밖9/21·소수·문자열·NaN/Infinity·내부저장값0.15 입력을 거부한다. 실제UI-10의10/15/20 선택·양언어 갱신·ARIA, 다른21카드/44경로/실제이미지파일·lazy 보존, 크기선택 독립성과 로딩실패 안내를 검증했다. native 버튼의 실제Tab/Enter/Space·픽셀크기·레이아웃/스크린리더·브라우저HTTP/MIME는 검증하지 않았다. JS 확장자 계약은 확인했으나 새 모듈의 실제HTTP응답을 측정하지 않았다. VM experimental warning은 기록된 도구 경고다.
+docs/0마스터플랜/mac-resume-20261001/vscode-dispatch/UIUX-d10-result.md:48:docs 전체에서 U-D10/_uSlamEmberRage/지옥강타/Hell Slam/roll-values.js/definitions.js/review.html을 검색해 `d10-doc-matches.txt`에 보존했다. 공유 SSOT·UIUX대장은 수정하지 않으며 root가 “개발 검토용 D10 한영 툴팁 후보 실제소비·게임효과미구현·실시각대기”를 반영한다.
+docs/0마스터플랜/mac-resume-20261001/vscode-dispatch/ITEM-d10-result.md:7:14:00:59 UTC D10_TASK.md 읽기·소유파일목록 중복확인(d10-* 없음). 현재 definitions.js·roll-values.js 원문, TOP8_HOOK_REVIEW, D절D10·U-N01, 본편/easy activateGiantSlam·_uEq·rage소모/장착/합체/호출부·팀대장·총괄18.35/36·연속진행·백업정책을읽었다. 전용receipt를먼저작성하고 d10-consumer.mjs·d10-combat.test.mjs를편집했다.
+docs/0마스터플랜/mac-resume-20261001/vscode-dispatch/ITEM-d10-result.md:25:1. `begin(player,equipped,srcId)`는giantSlam/giantSlam2, 실제equipped.armor의UI-10/slotarmor제안에한정한다. 비장착/unknown/슬롯불일치/disabled는null·원행동.
+docs/0마스터플랜/mac-resume-20261001/vscode-dispatch/ITEM-d10-result.md:26:2. 저장필드명은**미확정**. `readStoredRoll(item,definition,lookupRoll('UI-10'))` callback의유한number 반환만사용하고 `fromStoredValue('UI-10',value)`로정규저장분수0.10~0.20의정수%롤을검증한다. 10/20레거시정수·문자열·.155·범위밖값·누락을추정변환하지않고폴백한다. 기존 `_uSlamEmberRage` 필드를자동읽지않는다. 신규저장필드/포맷을만들지않았다.
+docs/0마스터플랜/mac-resume-20261001/vscode-dispatch/ITEM-d10-result.md:31:원래스킬함수는쿨/ST gate를내부모두확인하지않으며호출부에서검사한다(본편12448/12451). 후보가원본gate를임의확대하거나실제성공을'적명중'으로새정의하지않았다. 원함수의악의부족return/예외는finish실패로복원없음; 소비자/외부호출gate통합은root가검수한다. _uEq는첫장착stat값을읽는현행이고후보는UI-10갑옷인스턴스의명시단위만사용해레거시stat중첩/다른슬롯효과이중지급을피한다.
+docs/0마스터플랜/mac-resume-20261001/vscode-dispatch/ITEM-d10-result.md:47:| U-N01/충만 | 현재game/easy에 `_uRageFullCd`/`_rageFullLatch` rg매칭0.후보는충만콜백/쿨회복을추가호출하지않음. fixture latch=true보존검사통과; **실제U-N01구현검수는아님** |
+docs/0마스터플랜/mac-resume-20261001/vscode-dispatch/ITEM-d10-result.md:66:docs전체 `rg -n 'U-D10|UI-10|_uSlamEmberRage|_uRageFullCd|_rageFullLatch|activateGiantSlam' docs --glob '*.md'` exit0; `d10-docs-related.txt` 보존. 본result에후보API·>=100/10~20%/30cap/실패·중복·필드미확정/실전미완료를정리했다. root가인수후TOP8·D10/PM009·팀대장에후보와생산상태를구분동기화한다. 공유docs원문·CHANGELOG수정0.
+docs/0마스터플랜/mac-resume-20261001/vscode-dispatch/ITEM-definition-result.md:24:|UI-10|꺼지지 않는 심갑|armor|U-D10|
+docs/0마스터플랜/mac-resume-20261001/vscode-dispatch/UIUX-review-result.md:25:| UI-10 | 꺼지지 않는 심갑 | 흉갑 | U-D10 |
+docs/0마스터플랜/mac-resume-20261001/vscode-dispatch/BALANCE-d10-result.md:35:| U-N01 래치 | 명시 fixture `_rageFullLatch` 불변/fullEvents0 비교 계약. 현재 원함수에 실제 U-N01 발동 구현이 없으므로 실게임 래치 통합 보장이 아님 |
+docs/0마스터플랜/mac-resume-20261001/vscode-dispatch/BALANCE-d10-result.md:46:| `rg -n 'U-D10|_uSlamEmberRage|_rageFullLatch|U-N01' docs/` | exit0, 전체 검색 저장 |

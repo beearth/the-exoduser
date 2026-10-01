@@ -1,0 +1,25 @@
+docs/7아이템디자인/유니크_어픽스_리스트.md:59:| 제안 stat | `_uRageFullCd` |
+docs/7아이템디자인/유니크_어픽스_리스트.md:61:| 발동 판정 | **상승 에지 1회**: `P.rage>=_rageMax()`가 되는 프레임에 1번. 분노가 최대 미만으로 떨어진 뒤 다시 가득 차야 재발동 (래치 `P._rageFullLatch`). 가득 찬 상태를 유지하는 동안 반복 발동 금지 |
+docs/7아이템디자인/유니크_어픽스_리스트.md:121:| Space 분노 | U-D10~11 | 지옥강타의 분노 소모와 천공쇄기의 충전을 다음 공격으로 잇는다. |
+docs/7아이템디자인/유니크_어픽스_리스트.md:136:| 요청에 적힌 `ultRageGain`·`HOLD` | 현행 `game.html`·`docs/7아이템디자인`에서 정확한 id/명칭을 확인하지 못했다. 향후 해당 후보가 추가되면 U-D10·18 및 차징형 U-D03과 다시 대조한다. |
+docs/7아이템디자인/유니크_어픽스_리스트.md:155:| **U-D10** Space 지옥강타 / 잔불 분노 | 지옥강타가 분노 100 이상을 소모했다면 사용 직후 일부 분노를 남긴다. | 소모 분노의 **10~20%**: 하10~13/중14~16/상17~20%; 저장 `0.10~0.20`; 잔여 최대 `30`. | `_uSlamEmberRage`; `activateGiantSlam` 44282~44317. | 원래 `_rageMul`과 폭발은 **소모 전 분노**로 계산하고, `P.rage=0` 다음 `min(30,소모×값)` 복원. U-N01의 `최대치 도달` 래치를 재발동시키지 않음. 합체 지옥강타2의 420f 쿨은 그대로. | 분노100 지옥강타 10360/1회 기준 피해를 더 키우지 않는다. 상옵 잔여20으로 다음 폭발까지 패링 횟수만 줄인다. | U·S |
+docs/7아이템디자인/유니크_어픽스_리스트.md:174:| 2 | U-D10 | 분노100을 쓰고도 잔불이 남아 다음 패링 루프가 빨라진다. 기존 `P.rage=0` 뒤 복원이라 난도 **낮음**, U-N01 중복 발동만 확인. |
+docs/7아이템디자인/유니크_어픽스_리스트.md:207:| U-D10 | 분노 `100` 전부 지옥강타에 소모 | 잔여 분노=`min(30,100×롤÷100)` | 충만 래치 재발동 없음 |
+docs/7아이템디자인/보라색_고유아이템_카탈로그_20260930.md:27:| UI-10 | 꺼지지 않는 심갑 | 갑옷 | 가슴 중앙에 남은 보라 숯불, 방사형 판금 균열 | U-D10 지옥강타 후 잔여 분노 | Higgsfield 원화 `assets/unique-items/ui-10.png` |
+docs/7아이템디자인/보라색_고유아이템_카탈로그_20260930.md:63:| UI-10 | `ui-10.png` | `21498f40-7a03-4da3-86c4-5065df00ad5b` |
+docs/7아이템디자인/고유아이템_모델_어픽스_밸런싱_프로젝트_20260930.md:41:| UI-10 / U-D10 | 보라 잔불 흉갑 | 강타 뒤 분노 재시작 | U-N01 충만 재발동 | Seedream 비교 시안 |
+docs/7아이템디자인/고유아이템_모델_어픽스_밸런싱_프로젝트_20260930.md:62:| 2 | U-D10 | 분노100 강타 뒤 10~20 반환, 최대 30 | 다음 강타까지 걸리는 시간; U-N01 래치 |
+docs/7아이템디자인/고유아이템_모델_어픽스_밸런싱_프로젝트_20260930.md:77:| U-D10 + U-N01 | 강타 잔여 분노가 최대치 도달 이벤트를 다시 만들 수 있다. | 복원은 충만 래치를 발동시키지 않는 D절 계약 유지. |
+docs/7아이템디자인/UNIQUE_TOP8_HOOK_REVIEW_20261001.md:8:| 2 | U-D10 | 지옥강타의 소모 전 분노 스냅샷 → 원래 피해 계산·분노 소모 후 잔여 복원 | 상옵 분노100 소모 시 잔여20, 최대30; 충만 이벤트/U-N01을 복원 과정에서 다시 발동시키지 않기 |
+docs/7아이템디자인/UNIQUE_ITEM_GAME_INTEGRATION_CONTRACT_20261001.md:45:| `armor` | UI-10, UI-21 | U-D10, U-D21 | 흉갑 |
+docs/15 세이브+데이터구조/15 세이브+데이터구조.md:290:| `activateGiantSlam` | 20 | `if(G.mats<20)return` |
+docs/13출시·마케팅/GAMEPLAY_TRAILER_V2_20260909.md:28:| 지옥강타 | 256기, Lv35, 원형 반경 `220+(i%9)×20`, 각도 `i×2.3999632297`. 이전 장면에서 얻은 분노 100 유지 | 원본 3.8초 `activateGiantSlam()`, 실제 처치 +256, 분노 100→0. 이후 필드 재스폰은 존재 |
+docs/14밸런스+수치테이블/EARLY_COMBAT_5_7_1_20260910.md:29:| `activateGiantSlam` | `_gs1Dmg=floor(meleeRef×statStr×_skMul('giantSlam')×_rageMul)` | 여기의 pAtkMul 제거, `_gSlamHit`에서1회만 곱함. 같은 배율의 중복 적용으로 미투자0.7이0.49가 되는 문제 수정 |
+docs/14밸런스+수치테이블/EARLY_COMBAT_5_7_1_20260910.md:58:- `tools/audit_early_combat.py`: 실제 game.html의 검기 충돌·hitArc·hurtE·_fireballExplode·activateGiantSlam 실행. 밀리5 / 구체7 / 분노100 폭발1회 사망 확인, pageerror0. 위치는 타격 비교를 위해 접촉 거리로 고정했다.
+docs/CHANGELOG_SYNC.md:1348:| 분노폭발 | activateGiantSlam의 pAtkMul 중복 곱 제거. _gSlamHit에서1회 적용. 분노100 피해7251→10360 |
+docs/0마스터플랜/mac-resume-20261001/vscode-dispatch/UIUX-review-result.md:25:| UI-10 | 꺼지지 않는 심갑 | 흉갑 | U-D10 |
+docs/0마스터플랜/mac-resume-20261001/vscode-dispatch/ITEM-definition-result.md:24:|UI-10|꺼지지 않는 심갑|armor|U-D10|
+docs/0마스터플랜/mac-resume-20261001/vscode-dispatch/BALANCE-d10-result.md:5:2026-10-01T14:01:04Z 수신/첫Read. 배정·총괄§18최신·연속진행·백업정책·팀대장·D10 SSOT와 TOP8 훅·現 definitions.js/roll-values.js·양쪽 activateGiantSlam을 직접 읽었다. 이전 완료는 롤/환수이며 D10 독립 산출과 중복되지 않는다. 첫Edit는 전용 영수증, 다음Edit는 실제 `d10-independent.mjs`/전용 테스트다.
+docs/0마스터플랜/mac-resume-20261001/vscode-dispatch/BALANCE-d10-result.md:35:| U-N01 래치 | 명시 fixture `_rageFullLatch` 불변/fullEvents0 비교 계약. 현재 원함수에 실제 U-N01 발동 구현이 없으므로 실게임 래치 통합 보장이 아님 |
+docs/0마스터플랜/mac-resume-20261001/vscode-dispatch/BALANCE-d10-result.md:37:148개=양쪽×(11롤×6분노+비장착5+실패1+합체2). 분노1000은 허용 범위 밖일 수 있는 **상한검증 fixture**이며 정상 자연 달성을 주장하지 않는다. 소수분노·래치도 의미 분리 fixture다. VM은 스킬/렌더/오디오/피격 실행부를 stub하여 actual activateGiantSlam 자체를 실행한다. 실제 피해 적용·전투/프레임·스킬라우터 진입 보장은 별도다.
+docs/0마스터플랜/mac-resume-20261001/vscode-dispatch/BALANCE-d10-result.md:46:| `rg -n 'U-D10|_uSlamEmberRage|_rageFullLatch|U-N01' docs/` | exit0, 전체 검색 저장 |

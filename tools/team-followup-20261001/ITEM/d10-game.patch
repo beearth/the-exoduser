@@ -1,0 +1,23 @@
+--- a/game.html
++++ b/game.html
+@@ -44849,4 +44849,7 @@
+ function activateGiantSlam(srcId){
++  const _d10Cast=_d10Candidate.begin(P,INV.equipped,srcId);
++  let _d10Succeeded=false;
++  try{
+   G._dbgSlam=120;
+   srcId=srcId||'giantSlam';
+   const slv=P.skills[srcId]||P.skills.giantSlam||1;
+@@ -44878,5 +44881,6 @@
+       _addLavaErupt(P.x+Math.cos(_ra)*_rd,P.y+Math.sin(_ra)*_rd,120+_rb*30,60+_rb*8,true);
+     }
+     P.rage=0;
++    _d10Candidate.consume(_d10Cast,_rageP);
+     window._parryLesson?.rageCast(_rageP);
+   }
+@@ -44917,3 +44921,5 @@
+   // 이동스킬 — 모든 멈춤 강제 제거
+   G.hitStop=0;G.slowMo=0;
++  _d10Succeeded=true;
++  }finally{_d10Candidate.finish(_d10Cast,_d10Succeeded);}
+ }

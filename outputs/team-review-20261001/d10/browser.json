@@ -1,0 +1,197 @@
+{
+  "box": {
+    "bottom": 654,
+    "height": 359.5,
+    "left": 24,
+    "right": 1256,
+    "top": 294.5,
+    "width": 1232,
+    "x": 24,
+    "y": 294.5
+  },
+  "cards": 22,
+  "images": [
+    {
+      "complete": true,
+      "width": 1024
+    },
+    {
+      "complete": true,
+      "width": 1920
+    },
+    {
+      "complete": true,
+      "width": 1024
+    },
+    {
+      "complete": true,
+      "width": 1920
+    },
+    {
+      "complete": true,
+      "width": 1024
+    },
+    {
+      "complete": true,
+      "width": 1920
+    },
+    {
+      "complete": true,
+      "width": 1024
+    },
+    {
+      "complete": true,
+      "width": 1920
+    },
+    {
+      "complete": true,
+      "width": 1024
+    },
+    {
+      "complete": true,
+      "width": 1920
+    },
+    {
+      "complete": true,
+      "width": 1024
+    },
+    {
+      "complete": true,
+      "width": 1920
+    },
+    {
+      "complete": true,
+      "width": 1024
+    },
+    {
+      "complete": true,
+      "width": 1920
+    },
+    {
+      "complete": true,
+      "width": 1024
+    },
+    {
+      "complete": true,
+      "width": 1920
+    },
+    {
+      "complete": true,
+      "width": 1024
+    },
+    {
+      "complete": true,
+      "width": 1920
+    },
+    {
+      "complete": true,
+      "width": 1024
+    },
+    {
+      "complete": true,
+      "width": 1920
+    },
+    {
+      "complete": true,
+      "width": 1024
+    },
+    {
+      "complete": true,
+      "width": 1920
+    },
+    {
+      "complete": true,
+      "width": 1024
+    },
+    {
+      "complete": true,
+      "width": 1920
+    },
+    {
+      "complete": true,
+      "width": 1024
+    },
+    {
+      "complete": true,
+      "width": 1920
+    },
+    {
+      "complete": true,
+      "width": 1024
+    },
+    {
+      "complete": true,
+      "width": 1920
+    },
+    {
+      "complete": true,
+      "width": 1024
+    },
+    {
+      "complete": true,
+      "width": 1920
+    },
+    {
+      "complete": true,
+      "width": 1024
+    },
+    {
+      "complete": true,
+      "width": 1920
+    },
+    {
+      "complete": true,
+      "width": 1024
+    },
+    {
+      "complete": true,
+      "width": 1920
+    },
+    {
+      "complete": true,
+      "width": 1024
+    },
+    {
+      "complete": true,
+      "width": 1920
+    },
+    {
+      "complete": true,
+      "width": 1024
+    },
+    {
+      "complete": true,
+      "width": 1920
+    },
+    {
+      "complete": true,
+      "width": 1024
+    },
+    {
+      "complete": true,
+      "width": 1920
+    },
+    {
+      "complete": true,
+      "width": 1024
+    },
+    {
+      "complete": true,
+      "width": 1920
+    },
+    {
+      "complete": true,
+      "width": 1024
+    },
+    {
+      "complete": true,
+      "width": 1920
+    }
+  ],
+  "overflow": false,
+  "tooltip": "U-D10 · 잔불 분노 툴팁 후보\n최소 / Minimum 10%\n중간 / Midpoint 15%\n최대 / Maximum 20%\n\n범위 / Range: 10~20% · 선택 / Selected: 20%\n\n분노 100 이상을 실제로 소모한 성공 지옥강타 직후, 소모한 분노의 20%를 잔여 분노로 복원합니다. 잔여 분노는 최대 30입니다.\n\nImmediately after a successful Hell Slam that actually spends at least 100 Rage, restore 20% of the Rage spent as remaining Rage, up to 30.\n\n피해 계산은 소모 전 분노 기준을 유지하며, 분노 최대치 도달 효과를 재발동시키지 않습니다.\n\nDamage still uses Rage before spending. This does not retrigger effects for reaching maximum Rage.\n\nUI-10 / U-D10 단일아이템 개발 검토용 후보 · 미채택·비활성 · 게임 효과가 아닙니다.\n\nUI-10 / U-D10 single-item development review candidate · unaccepted and inactive · not an active game effect.",
+  "viewport": [
+    1280,
+    720
+  ]
+}
