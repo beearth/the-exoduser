@@ -1,0 +1,132 @@
+{
+  "fixture": "MAP020-visual-eight-view-preparation",
+  "stage": "CH1-1 (stage0)",
+  "generatedBy": "Mac MAP / session d447a49d / 2026-10-02",
+  "purpose": "MAP-020 시각 인수용 8뷰 준비. 기존 원화/캡처 재사용(신규 생성 0). root가 별도 게임에서 재현할 좌표·시작경로·기대/금지·결함위치 확정.",
+  "worldContract": {
+    "T": 40, "world": 8000, "master": 8192, "map": "200x200", "bake2world": "x1000/1024",
+    "start_6시": [4000, 7600], "bossGate_12시": [4000, 720],
+    "ambient": [6, 16, 9, 0.38], "edgeShade_default": "B",
+    "zoom": { "normal": 1, "far": 0.62 },
+    "viewWorld": { "z1": [1280, 800], "z0.62": [2064.52, 1290.32] }
+  },
+  "sourceSHA": {
+    "game.html_current": "7631f5a083672124624e0b8dc22b0716d10c8815dbb1e6aee98a5e2e51299993",
+    "game.html_measured_6cbeb664": "6cbeb664dfcd75a3b890be275562d27e95415c9e",
+    "ch1-boundary-edge.js": "e1271685ee41026e330c77dfb9c8fc83146f2d116b97512e37d82cf53798edc2",
+    "ch1-border-foreground.js": "7f0f3e2e373041adc9e39512b147ab535f99b89e914686ab7ff14eb602f46b22"
+  },
+  "renderPipeline": "Ch1BorderForeground.drawBack(...) 직후 Ch1BoundaryEdge.draw(X,G,_now,VW,VH,_tzoom) — 엔티티 아래 바닥 레이어. script ch1-boundary-edge.js?v=20261001-5. 뿌리 띠=prop_pool.png crop(200,530,440x120)+내부목질[370,535,270,90]/[250,550,310,70], 92px 격자 305앵커(시드 20261001, 35% skip).",
+  "eightViews": [
+    {
+      "no": 1, "view": "START", "coordWorld": [4000, 7600], "tile": [100, 190],
+      "coordSource": "WORLD_STRUCTURE_SSOT §6 (6시 cx100,cy≈190)",
+      "evidence": "UNKNOWN(정확 6시 캡처 없음; 인접 SOUTH MASS 2420,6600 캡처는 #2)",
+      "expect": ["외곽이 화면 끝까지 연속", "시작 안전구역 가독", "하단 START mass 연결"],
+      "forbid": ["블록 배치감", "빈 외곽 hole", "동일 asset 즉시 반복"],
+      "knownDefect": ["D2 뿌리 띠 반복(남측 경계)"]
+    },
+    {
+      "no": 2, "view": "SOUTH MASS (START 인접)", "coordWorld": [2420, 6600], "tile": [60.5, 165],
+      "coordSource": "MAP020-Mac-실화면-검수 / south-shots.json cam",
+      "evidence": "HAVE",
+      "images": ["south-z1-0.png", "south-z1-a.png", "south-z1-b.png", "south-z0.62-0.png", "south-z0.62-a.png", "south-z0.62-b.png"],
+      "expect": ["정상 줌1에서 경계 뿌리 윤곽 읽힘", "바닥-숲 경계 연속"],
+      "forbid": ["좌측 갈고리 뿌리 마디 반복(D2)", "원거리 사각 그림자 절단(D1)"],
+      "knownDefect": ["D1 원거리 shade 사각절단(수정됨, 재발검증)", "D2 뿌리 반복(잔존)"]
+    },
+    {
+      "no": 3, "view": "EARLY", "coordWorld": [5620, 6520], "tile": [140.5, 163],
+      "coordSource": "MAP-ART-인수검토 edgeShade 위치(제안)",
+      "evidence": "UNKNOWN",
+      "expect": ["START와 다른 composition(3초 규칙)", "전투 공간 확보"],
+      "forbid": ["START와 동일 구도", "동일 통로 폭 반복"],
+      "knownDefect": []
+    },
+    {
+      "no": 4, "view": "MAIN ARENA", "coordWorld": [4020, 4450], "tile": [100.5, 111],
+      "coordSource": "MAP-ART-인수검토 중앙(제안)",
+      "evidence": "UNKNOWN",
+      "expect": ["중앙 전투공간 충분", "landmark hierarchy 읽힘"],
+      "forbid": ["동일 크기 arena 반복", "빈 중앙"],
+      "knownDefect": []
+    },
+    {
+      "no": 5, "view": "SIDE LEFT", "coordWorld": [1640, 5620], "tile": [41, 140.5],
+      "coordSource": "MAP-ART-인수검토 서(제안)",
+      "evidence": "UNKNOWN(서측 보드 PC 관찰 이력만, Mac 실화면 0)",
+      "expect": ["좌 side mass 충분", "외곽 연속"],
+      "forbid": ["빈 side", "뿌리 반복 띠(D2)"],
+      "knownDefect": ["D2 뿌리 반복(서측 보드 관찰)"]
+    },
+    {
+      "no": 6, "view": "SIDE RIGHT (M5 주머니)", "coordWorld": [6660, 6140], "tile": [166, 153],
+      "coordSource": "approach(검증 비벽). 문서 M5 7000,6900=벽(오기)",
+      "evidence": "HAVE(접근 경계만; 주머니 안→입구 전체경로 UNKNOWN)",
+      "images": ["south-approach.png", "south-blocked.png", "north-return.png", "east-entry.png", "m5-enemies-ready.png"],
+      "walkBoundaries": { "S_block": [6660, 6304.369], "N_return": [6660, 6137.214], "E_open": [6746.363, 6137.214], "S2_block": [6746.363, 6223.577] },
+      "expect": ["접근 경계 이동/복귀/차단 가독", "오버행 아래 플레이어 가독"],
+      "forbid": ["문서 7000,6900을 보행 진입점으로 사용(벽)", "오버행이 플레이어/적 가림"],
+      "knownDefect": ["D3 M5 주머니 전체경로 미성립(보류)"]
+    },
+    {
+      "no": 7, "view": "PRIMARY LANDMARK", "coordWorld": [1766, 6620], "tile": [44.15, 165.5],
+      "coordSource": "MAP-ART-인수검토 '신고' 후보(미확정) — root 확인 필요",
+      "evidence": "UNKNOWN",
+      "expect": ["primary landmark 위계 읽힘", "주변과 대비"],
+      "forbid": ["landmark 미식별", "배경에 묻힘"],
+      "knownDefect": []
+    },
+    {
+      "no": 8, "view": "LATE → EXIT/BOSS GATE", "coordWorld": [4000, 720], "tile": [100, 18],
+      "coordSource": "WORLD_STRUCTURE_SSOT §6 (보스게이트 12시 cx100,cy≈18)",
+      "evidence": "UNKNOWN",
+      "expect": ["게이트/상승 통로 읽힘", "좁은 연결로 시각화"],
+      "forbid": ["출구 불명확", "빈 상단 외곽"],
+      "knownDefect": []
+    }
+  ],
+  "startPathForRoot": [
+    "START 6시 (4000,7600)",
+    "→ SOUTH MASS (2420,6600)  [기존 캡처 지점]",
+    "→ EARLY (5620,6520)",
+    "→ SIDE RIGHT/M5 approach (6660,6140) → 주머니 S/W/D/S 보행",
+    "→ MAIN ARENA (4020,4450)",
+    "→ SIDE LEFT (1640,5620)",
+    "→ PRIMARY LANDMARK (후보 1766,6620 — 확정 필요)",
+    "→ LATE (상단 중앙, 제안 ~4000,2400 — 확정 필요)",
+    "→ EXIT/BOSS GATE 12시 (4000,720)",
+    "주의: 좌표 이름(master/world) 혼재 → 실제 G.cam·플레이어 월드좌표 읽고 맞출 것. 기본B·어둠.38 유지. 실제 적용 줌(런타임 _tzoom) 확인."
+  ],
+  "defectCatalog": {
+    "D1": {
+      "name": "원거리 shade 사각 절단",
+      "status": "FIXED (CH1_BOUNDARY_EDGE §7, 범위 VW*.5/z+80·VH*.5/z+80)",
+      "whereBefore": "줌 .62 A/B, 화면 약 x194~1086 / y102~698 사각형 AO 톤블록 (0 비교엔 없음)",
+      "rootCause": "Ch1BoundaryEdge.draw 의 hw=VW*.5+80 / hh=VH*.5+80 가 줌 미반영",
+      "reverify": "현행 소스의 .62 A/B 재촬영에서 사각형 재발 없어야 함. (map020-evidence 캡처는 수정 전 6cbeb664)"
+    },
+    "D2": {
+      "name": "뿌리 띠 반복(유사 모티브)",
+      "status": "RETOUCH 잔존(부분 개선 §8 내부목질 2종 추가)",
+      "where": "남·서 경계 바닥-숲 사이, 좌측 갈고리 뿌리 마디 동일 형태 반복",
+      "detail": "prop_pool.png crop(200,530,440x120)+내부목질 2종, 305앵커 92px 격자",
+      "reject": "같은 asset 즉시 반복(CAMERA QA Q4)"
+    },
+    "D3": {
+      "name": "M5 주머니 전체 경로 미성립",
+      "status": "보류(승인 안 함)",
+      "where": "M5 남동 보행 주머니. 문서 7000,6900=벽(오기), approach 6660,6140 비벽",
+      "detail": "접근 경계 이동/복귀/차단만 확인. 주머니 안→입구 전체경로·오버행 아래 플레이어 가독성 미통과"
+    }
+  },
+  "visualVerdictBasis": {
+    "overall": "RETOUCH",
+    "reasonsSeparatedFromProductionReport": true,
+    "pass_evidence": ["D1 줌 사각절단 수정 PASS(§7, 재검수 별도)"],
+    "retouch_evidence": ["D2 뿌리 반복 잔존", "8뷰 중 6뷰 미방문 UNKNOWN", "D3 M5 전체경로 보류"],
+    "fail_evidence": [],
+    "note": "CAMERA QA 8뷰 전부 실증거 없으면 PASS 금지(evidence-gate 일관). 현재 2/8 HAVE, 6/8 UNKNOWN → PASS 불가."
+  },
+  "constraints": "신규 이미지 생성 0, 관측기/카메라/맵 변경 0, game.html/production/Git/queue/공유docs 쓰기 0, 사용자 게임 tab 입력/리로드/닫기/계측 0. 이미지 재사용만. 실화면 8뷰 재현은 root 단독 후속."
+}

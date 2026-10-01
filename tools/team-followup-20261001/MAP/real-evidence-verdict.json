@@ -1,0 +1,101 @@
+{
+ "fixture": "MAP-M5-EVIDENCE-GATE",
+ "verdict": "RETOUCH",
+ "passForbiddenReason": [
+  "8뷰 미완(미방문: EARLY, MAIN ARENA, SIDE LEFT, PRIMARY LANDMARK, LATE, EXIT/BOSS)",
+  "INCONCLUSIVE 항목 존재"
+ ],
+ "views": {
+  "present": [
+   "START",
+   "SIDE RIGHT"
+  ],
+  "missing": [
+   "EARLY",
+   "MAIN ARENA",
+   "SIDE LEFT",
+   "PRIMARY LANDMARK",
+   "LATE",
+   "EXIT/BOSS"
+  ],
+  "complete": false
+ },
+ "boundaries": {
+  "A_enter_south": {
+   "grade": "INCONCLUSIVE",
+   "reason": "정지하나 전방벽 증거 없음(충돌불명)",
+   "key": "A_enter_south",
+   "end": {
+    "x": 6660,
+    "y": 6304.368926000003
+   }
+  },
+  "B_inside_north": {
+   "grade": "PASS",
+   "reason": "기대 방향 이동·종점 도달",
+   "key": "B_inside_north",
+   "end": {
+    "x": 6660,
+    "y": 6137.214086
+   }
+  },
+  "C_entry_east": {
+   "grade": "PASS",
+   "reason": "기대 방향 이동·종점 도달",
+   "key": "C_entry_east",
+   "end": {
+    "x": 6746.3633340000015,
+    "y": 6137.214086
+   }
+  },
+  "D_block_south2": {
+   "grade": "INCONCLUSIVE",
+   "reason": "정지하나 전방벽 증거 없음(충돌불명)",
+   "key": "D_block_south2",
+   "end": {
+    "x": 6746.3633340000015,
+    "y": 6223.577420000001
+   }
+  }
+ },
+ "coords": {
+  "doc_M5_world": {
+   "grade": "PASS",
+   "reason": "벽판정 일치(=true)",
+   "key": "doc_M5_world",
+   "world": [
+    7000,
+    6900
+   ]
+  },
+  "doc_M5_bake": {
+   "grade": "PASS",
+   "reason": "벽판정 일치(=true)",
+   "key": "doc_M5_bake",
+   "world": [
+    6835.9375,
+    6738.28125
+   ]
+  },
+  "approach": {
+   "grade": "PASS",
+   "reason": "벽판정 일치(=false)",
+   "key": "approach",
+   "world": [
+    6660,
+    6140
+   ]
+  }
+ },
+ "summary": {
+  "boundaries": {
+   "INCONCLUSIVE": 2,
+   "PASS": 2
+  },
+  "coords": {
+   "PASS": 3
+  },
+  "viewsPresent": 2,
+  "viewsWanted": 8
+ }
+}

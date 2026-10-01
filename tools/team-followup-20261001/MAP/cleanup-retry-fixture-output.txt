@@ -1,0 +1,39 @@
+
+[CR1] 시작 시 doc.hidden=true → 표본/leg 0
+  PASS CR1a GREEN: 표본 0
+  PASS CR1b leg 0
+  PASS CR1c start-hidden 기록
+
+[CR1'] 시작 시 hasFocus()=false → 표본 0
+  PASS CR1'a GREEN: 표본 0
+  PASS CR1'b start-unfocused 기록
+
+[CR2] 초기 hidden → visible+새 keydown 재개
+  PASS CR2a visible만으로는 재개 안 함
+  PASS CR2b 새 keydown 후 재개
+
+[CR3] clearInterval 1회 실패 → stop 재시도로 GREEN
+  PASS CR3a 1차 실패 시 cleanup=partial
+  PASS CR3b 1차 실패 시 핸들 보존(null 아님)
+  PASS CR3c 1차 후 잔여 timer 1
+  PASS CR3d teardownErrors에 retry 기록
+  PASS CR3e GREEN: 재시도 후 timer 0
+  PASS CR3f GREEN: 핸들 null
+  PASS CR3g GREEN: cleanup=ok
+
+[CR4] removeEventListener 1회 실패 → stop 재시도로 GREEN
+  PASS CR4a 1차 cleanup=partial
+  PASS CR4b 실패 핸들 보존
+  PASS CR4c GREEN: listener 0
+  PASS CR4d GREEN: cleanup=ok
+  PASS CR4e 보존 핸들 소진
+
+[CR5] 중복 start 시 기존 인스턴스 정리 예외 → 유실 방지
+  PASS CR5a 중복 start가 예외로 중단되지 않음
+  PASS CR5b first는 superseded로 폐기 시도
+  PASS CR5c first 부분정리 기록(partial)
+  PASS CR5d first 핸들 유실 안 됨(보존)
+  PASS CR5e second 정상 정리(ok)
+
+==== 결과: 24 PASS / 0 FAIL ====
+CLEANUP_RETRY_FIXTURE_JSON {"pass":24,"fail":0,"results":[{"name":"CR1a GREEN: 표본 0","ok":true},{"name":"CR1b leg 0","ok":true},{"name":"CR1c start-hidden 기록","ok":true},{"name":"CR1'a GREEN: 표본 0","ok":true},{"name":"CR1'b start-unfocused 기록","ok":true},{"name":"CR2a visible만으로는 재개 안 함","ok":true},{"name":"CR2b 새 keydown 후 재개","ok":true},{"name":"CR3a 1차 실패 시 cleanup=partial","ok":true},{"name":"CR3b 1차 실패 시 핸들 보존(null 아님)","ok":true},{"name":"CR3c 1차 후 잔여 timer 1","ok":true},{"name":"CR3d teardownErrors에 retry 기록","ok":true},{"name":"CR3e GREEN: 재시도 후 timer 0","ok":true},{"name":"CR3f GREEN: 핸들 null","ok":true},{"name":"CR3g GREEN: cleanup=ok","ok":true},{"name":"CR4a 1차 cleanup=partial","ok":true},{"name":"CR4b 실패 핸들 보존","ok":true},{"name":"CR4c GREEN: listener 0","ok":true},{"name":"CR4d GREEN: cleanup=ok","ok":true},{"name":"CR4e 보존 핸들 소진","ok":true},{"name":"CR5a 중복 start가 예외로 중단되지 않음","ok":true},{"name":"CR5b first는 superseded로 폐기 시도","ok":true},{"name":"CR5c first 부분정리 기록(partial)","ok":true},{"name":"CR5d first 핸들 유실 안 됨(보존)","ok":true},{"name":"CR5e second 정상 정리(ok)","ok":true}]}

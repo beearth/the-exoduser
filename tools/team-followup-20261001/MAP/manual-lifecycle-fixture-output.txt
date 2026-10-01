@@ -1,0 +1,37 @@
+
+[C1] 두번째 addEventListener 예외 → 첫 리스너 롤백
+  PASS C1a 설치 예외 전파
+  PASS C1b GREEN: 첫 리스너 누수 0(롤백)
+  PASS C1c GREEN: 인터벌 누수 0
+
+[C2] hidden 후 held 키 있어도 숨김상태 새 leg/표본 금지
+  PASS C2a GREEN: 숨김 중 새 leg 0
+  PASS C2b GREEN: 숨김 중 표본 0
+  PASS C2c focusEvents에 hidden 기록
+
+[C3] start 두번 후 last만 stop → 첫 interval/listener 잔존 금지
+  PASS C3a GREEN: 잔존 interval 0
+  PASS C3b GREEN: 잔존 listener 0
+  PASS C3c first.stop() idempotent(에러 없음)
+  PASS C3d first 인스턴스는 superseded로 폐기
+
+[R1] blur 후 재개는 명시적 복귀+새 keydown에서만
+  PASS R1a blur 직후 재샘플 0
+  PASS R1b focus만으로는 재개 안 함
+  PASS R1c 새 keydown 후 재개(표본 증가)
+  PASS R1d resumeEvents 기록
+  PASS R1e blur leg는 focus-lost 종료
+
+[R2] removeEventListener 예외 → cleanup 상태/에러 기록
+  PASS R2a cleanup=partial-unknown
+  PASS R2b teardownErrors 기록됨
+  PASS R2c 실패 핸들 보존(유실 방지)
+  PASS R2d controller.cleanupState() 노출
+
+[R3] abort → external-abort 종료, 재정리 idempotent
+  PASS R3a external-abort 종료
+  PASS R3b abort 후 listener/timer 0
+  PASS R3c stop 재호출 idempotent
+
+==== 결과: 22 PASS / 0 FAIL ====
+LIFECYCLE_FIXTURE_JSON {"pass":22,"fail":0,"results":[{"name":"C1a 설치 예외 전파","ok":true},{"name":"C1b GREEN: 첫 리스너 누수 0(롤백)","ok":true},{"name":"C1c GREEN: 인터벌 누수 0","ok":true},{"name":"C2a GREEN: 숨김 중 새 leg 0","ok":true},{"name":"C2b GREEN: 숨김 중 표본 0","ok":true},{"name":"C2c focusEvents에 hidden 기록","ok":true},{"name":"C3a GREEN: 잔존 interval 0","ok":true},{"name":"C3b GREEN: 잔존 listener 0","ok":true},{"name":"C3c first.stop() idempotent(에러 없음)","ok":true},{"name":"C3d first 인스턴스는 superseded로 폐기","ok":true},{"name":"R1a blur 직후 재샘플 0","ok":true},{"name":"R1b focus만으로는 재개 안 함","ok":true},{"name":"R1c 새 keydown 후 재개(표본 증가)","ok":true},{"name":"R1d resumeEvents 기록","ok":true},{"name":"R1e blur leg는 focus-lost 종료","ok":true},{"name":"R2a cleanup=partial-unknown","ok":true},{"name":"R2b teardownErrors 기록됨","ok":true},{"name":"R2c 실패 핸들 보존(유실 방지)","ok":true},{"name":"R2d controller.cleanupState() 노출","ok":true},{"name":"R3a external-abort 종료","ok":true},{"name":"R3b abort 후 listener/timer 0","ok":true},{"name":"R3c stop 재호출 idempotent","ok":true}]}

@@ -1,0 +1,44 @@
+{
+  "taskId": "MAP-visual-eight-view-preparation",
+  "title": "MAP020 8뷰 시각 인수 준비 — contact sheet + manifest (신규생성0, 재사용)",
+  "team": "MAP",
+  "session": "d447a49d-ecaa-4b5f-bc56-da5353ebb668",
+  "terminal": 3,
+  "cli": "claude-code",
+  "model": "claude-opus-4-8",
+  "taskDateLocal": "2026-10-02",
+  "receivedAt": "2026-10-01T16:28:15Z",
+  "firstReadAt": "2026-10-01T16:28:15Z",
+  "firstEditAt": "2026-10-01T16:40:00Z",
+  "firstRunAt": "2026-10-01T16:55:00Z",
+  "completedAt": "2026-10-01T16:57:00Z",
+  "status": "done",
+  "head": "30a204a7aa348a88b90bdc922862c610a7da938f",
+  "sourceSHA": {
+    "game.html(현재)": "7631f5a083672124624e0b8dc22b0716d10c8815dbb1e6aee98a5e2e51299993",
+    "game.html(측정시점 manifest measured_source)": "6cbeb664dfcd75a3b890be275562d27e95415c9e",
+    "ch1-boundary-edge.js(원함수)": "e1271685ee41026e330c77dfb9c8fc83146f2d116b97512e37d82cf53798edc2",
+    "ch1-border-foreground.js": "7f0f3e2e373041adc9e39512b147ab535f99b89e914686ab7ff14eb602f46b22"
+  },
+  "ownedPaths": [
+    "tools/team-followup-20261001/MAP/visual-eight-view-preparation-*",
+    "tools/team-followup-20261001/MAP/visual-eight-view-preparation-receipt.json",
+    "tools/team-followup-20261001/MAP/visual-eight-view-preparation-result.md"
+  ],
+  "evidenceInventory": "map020-evidence PNG 15장(south-z1 0/a/b·south-z0.62 0/a/b·south-approach·south-blocked·north-return·east-entry·m5-* 3·item-*). 실제 보유 CAMERA QA 뷰 = START/SOUTH + SIDE RIGHT(M5) 2개. EARLY/MAIN ARENA/SIDE LEFT/PRIMARY LANDMARK/LATE/EXIT·BOSS 6뷰 = 증거 없음 → UNKNOWN.",
+  "nextAction": "8뷰 좌표·시작경로·기대/금지·결함위치 확정표 + 기존 이미지 재사용 HTML contact sheet 1개 + manifest 작성. 신규 이미지 생성/관측기/카메라/맵 변경 0.",
+  "blocker": "실게임/브라우저/대형빌드 직접 실행 0. 사용자 게임 tab1573846373 입력/리로드/닫기/계측 0. 8뷰 실화면 재현은 root 단독 후속. 전체 MAP-020 RETOUCH 유지.",
+  "notes": "수신 UTC 16:28Z(과제일 2026-10-02). map020-evidence는 수정 전 소스(6cbeb664) 캡처 — §7 줌수정 재검수는 별도(MAP020-줌수정-검수.md).",
+  "deliverables": [
+    "tools/team-followup-20261001/MAP/visual-eight-view-preparation-contact-sheet.html",
+    "tools/team-followup-20261001/MAP/visual-eight-view-preparation-manifest.json",
+    "tools/team-followup-20261001/MAP/visual-eight-view-preparation-result.md"
+  ],
+  "verification": {
+    "manifestJSON": "valid",
+    "imageRefs": "11장 상대경로 모두 해석 OK",
+    "evidencePNG_SHA": "map020-evidence/manifest.json과 대조 무결",
+    "views": "2/8 HAVE (SOUTH MASS, M5 approach 부분) · 6/8 UNKNOWN"
+  },
+  "verdict": "RETOUCH (D2 반복 잔존 · 6뷰 UNKNOWN · D3 보류; D1 사각절단 FIXED)"
+}

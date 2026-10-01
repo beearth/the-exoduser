@@ -1,0 +1,52 @@
+
+[F1] 상태쓰기0
+M5MANUAL_RESULT_JSON
+{"fixture":"MAP020-M5-manual","mode":"observe-only","stage":0,"T":40,"binds":{"map":{"N":"KeyW","S":"KeyS","E":"KeyD","W":"KeyA"},"source":"default-wasd"},"coordAudit":{"doc_M5_world":{"world":[7000,6900],"wallTile":true,"gameIsW":true},"doc_M5_bake":{"world":[6835.9375,6738.28125],"wallTile":true,"gameIsW":true},"approach":{"world":[6660,6140],"wallTile":false,"gameIsW":false}},"legs":[{"name":"obs1_S","dir":"S","code":"KeyS","samples":[{"t":22,"x":6660,"y":6140,"held":true,"wall":false,"wallAhead":true,"gameWallAhead":false,"mapSame":true},{"t":43,"x":6660,"y":6140,"held":true,"wall":false,"wallAhead":true,"gameWallAhead":false,"mapSame":true},{"t":64,"x":6660,"y":6140,"held":true,"wall":false,"wallAhead":true,"gameWallAhead":false,"mapSame":true},{"t":84,"x":6660,"y":6140,"held":true,"wall":false,"wallAhead":true,"gameWallAhead":false,"mapSame":true},{"t":105,"x":6660,"y":6140,"held":true,"wall":false,"wallAhead":true,"gameWallAhead":false,"mapSame":true}],"endPos":{"x":6660,"y":6140},"stopReason":"stopped","mapUnchanged":true}],"focusEvents":[],"inputEvents":[],"resumeEvents":[],"mapUnchanged":true,"mapSig":{"before":869893578,"after":869893578},"stopReason":"stopped","cleanup":"ok","teardownErrors":[]}
+  PASS F1a P 좌표 미변경(관측기 쓰기 0)
+  PASS F1b G.map 미변경
+  PASS F1c K 미오염(사용자가 넣은 KeyS만)
+  PASS F1d mapUnchanged 보고
+  PASS F1e 관측 표본 수집됨
+
+[F2/F3] 정리 + passive
+M5MANUAL_RESULT_JSON
+{"fixture":"MAP020-M5-manual","mode":"observe-only","stage":0,"T":40,"binds":{"map":{"N":"KeyW","S":"KeyS","E":"KeyD","W":"KeyA"},"source":"default-wasd"},"coordAudit":{"doc_M5_world":{"world":[7000,6900],"wallTile":true,"gameIsW":true},"doc_M5_bake":{"world":[6835.9375,6738.28125],"wallTile":true,"gameIsW":true},"approach":{"world":[6660,6140],"wallTile":false,"gameIsW":false}},"legs":[{"name":"obs1_S","dir":"S","code":"KeyS","samples":[{"t":20,"x":6660,"y":6140,"held":true,"wall":false,"wallAhead":true,"gameWallAhead":false,"mapSame":true},{"t":41,"x":6660,"y":6140,"held":true,"wall":false,"wallAhead":true,"gameWallAhead":false,"mapSame":true}],"endPos":{"x":6660,"y":6140},"stopReason":"stopped","mapUnchanged":true}],"focusEvents":[],"inputEvents":[],"resumeEvents":[],"mapUnchanged":true,"mapSig":{"before":869893578,"after":869893578},"stopReason":"stopped","cleanup":"ok","teardownErrors":[]}
+  PASS F3a 리스너 등록됨(관측 중)
+  PASS F3b 모든 리스너 passive:true
+  PASS F3c 비캡처(capture 미설정/false)
+  PASS F2a stop 후 document 리스너 0
+  PASS F2b stop 후 window 리스너 0
+  PASS F2c stop 후 interval 정리
+
+[F4] 포커스손실 경계
+M5MANUAL_RESULT_JSON
+{"fixture":"MAP020-M5-manual","mode":"observe-only","stage":0,"T":40,"binds":{"map":{"N":"KeyW","S":"KeyS","E":"KeyD","W":"KeyA"},"source":"default-wasd"},"coordAudit":{"doc_M5_world":{"world":[7000,6900],"wallTile":true,"gameIsW":true},"doc_M5_bake":{"world":[6835.9375,6738.28125],"wallTile":true,"gameIsW":true},"approach":{"world":[6660,6140],"wallTile":false,"gameIsW":false}},"legs":[{"name":"obs1_S","dir":"S","code":"KeyS","samples":[{"t":20,"x":6660,"y":6140,"held":true,"wall":false,"wallAhead":true,"gameWallAhead":false,"mapSame":true},{"t":42,"x":6660,"y":6140,"held":true,"wall":false,"wallAhead":true,"gameWallAhead":false,"mapSame":true}],"endPos":{"x":6660,"y":6140},"stopReason":"focus-lost","mapUnchanged":true}],"focusEvents":[{"type":"blur","t":60}],"inputEvents":[],"resumeEvents":[],"mapUnchanged":true,"mapSig":{"before":869893578,"after":869893578},"stopReason":"stopped","cleanup":"ok","teardownErrors":[]}
+  PASS F4a focusEvents에 blur 기록
+  PASS F4b leg가 focus-lost로 종료
+
+[F5] 전방벽 원식 읽기
+M5MANUAL_RESULT_JSON
+{"fixture":"MAP020-M5-manual","mode":"observe-only","stage":0,"T":40,"binds":{"map":{"N":"KeyW","S":"KeyS","E":"KeyD","W":"KeyA"},"source":"default-wasd"},"coordAudit":{"doc_M5_world":{"world":[7000,6900],"wallTile":true,"gameIsW":true},"doc_M5_bake":{"world":[6835.9375,6738.28125],"wallTile":true,"gameIsW":true},"approach":{"world":[6660,6140],"wallTile":false,"gameIsW":false}},"legs":[{"name":"obs1_S","dir":"S","code":"KeyS","samples":[{"t":22,"x":6660,"y":6148,"held":true,"wall":false,"wallAhead":true,"gameWallAhead":false,"mapSame":true},{"t":42,"x":6660,"y":6156,"held":true,"wall":false,"wallAhead":true,"gameWallAhead":false,"mapSame":true},{"t":63,"x":6660,"y":6164,"held":true,"wall":false,"wallAhead":true,"gameWallAhead":false,"mapSame":true},{"t":84,"x":6660,"y":6172,"held":true,"wall":false,"wallAhead":true,"gameWallAhead":false,"mapSame":true},{"t":105,"x":6660,"y":6180,"held":true,"wall":false,"wallAhead":true,"gameWallAhead":false,"mapSame":true},{"t":126,"x":6660,"y":6188,"held":true,"wall":false,"wallAhead":true,"gameWallAhead":false,"mapSame":true},{"t":147,"x":6660,"y":6196,"held":true,"wall":false,"wallAhead":true,"gameWallAhead":false,"mapSame":true},{"t":168,"x":6660,"y":6204,"held":true,"wall":false,"wallAhead":true,"gameWallAhead":false,"mapSame":true},{"t":189,"x":6660,"y":6212,"held":true,"wall":false,"wallAhead":true,"gameWallAhead":false,"mapSame":true},{"t":210,"x":6660,"y":6220,"held":true,"wall":false,"wallAhead":true,"gameWallAhead":false,"mapSame":true},{"t":231,"x":6660,"y":6228,"held":true,"wall":false,"wallAhead":true,"gameWallAhead":false,"mapSame":true},{"t":252,"x":6660,"y":6236,"held":true,"wall":false,"wallAhead":true,"gameWallAhead":false,"mapSame":true},{"t":273,"x":6660,"y":6244,"held":true,"wall":false,"wallAhead":true,"gameWallAhead":false,"mapSame":true},{"t":294,"x":6660,"y":6252,"held":true,"wall":false,"wallAhead":true,"gameWallAhead":false,"mapSame":true},{"t":315,"x":6660,"y":6260,"held":true,"wall":false,"wallAhead":true,"gameWallAhead":false,"mapSame":true},{"t":336,"x":6660,"y":6268,"held":true,"wall":false,"wallAhead":true,"gameWallAhead":false,"mapSame":true},{"t":357,"x":6660,"y":6276,"held":true,"wall":false,"wallAhead":true,"gameWallAhead":false,"mapSame":true},{"t":378,"x":6660,"y":6284,"held":true,"wall":false,"wallAhead":true,"gameWallAhead":true,"mapSame":true},{"t":399,"x":6660,"y":6292,"held":true,"wall":false,"wallAhead":true,"gameWallAhead":true,"mapSame":true},{"t":420,"x":6660,"y":6300,"held":true,"wall":true,"wallAhead":true,"gameWallAhead":true,"mapSame":true},{"t":441,"x":6660,"y":6300,"held":true,"wall":true,"wallAhead":true,"gameWallAhead":true,"mapSame":true},{"t":463,"x":6660,"y":6300,"held":true,"wall":true,"wallAhead":true,"gameWallAhead":true,"mapSame":true},{"t":484,"x":6660,"y":6300,"held":true,"wall":true,"wallAhead":true,"gameWallAhead":true,"mapSame":true},{"t":504,"x":6660,"y":6300,"held":true,"wall":true,"wallAhead":true,"gameWallAhead":true,"mapSame":true},{"t":525,"x":6660,"y":6300,"held":true,"wall":true,"wallAhead":true,"gameWallAhead":true,"mapSame":true},{"t":546,"x":6660,"y":6300,"held":true,"wall":true,"wallAhead":true,"gameWallAhead":true,"mapSame":true},{"t":567,"x":6660,"y":6300,"held":true,"wall":true,"wallAhead":true,"gameWallAhead":true,"mapSame":true},{"t":588,"x":6660,"y":6300,"held":true,"wall":true,"wallAhead":true,"gameWallAhead":true,"mapSame":true}],"endPos":{"x":6660,"y":6300},"stopReason":"stopped","mapUnchanged":true}],"focusEvents":[],"inputEvents":[],"resumeEvents":[],"mapUnchanged":true,"mapSig":{"before":869893578,"after":869893578},"stopReason":"stopped","cleanup":"ok","teardownErrors":[]}
+  PASS F5a gameWallAhead(원식) true 표본 존재
+  PASS F5b 원식 값이 isW와 일치
+  PASS F5c 현재좌표 전진 관측(실이동 표본)
+  PASS F5d held=true 관측
+
+[F6] abort 정리
+M5MANUAL_RESULT_JSON
+{"fixture":"MAP020-M5-manual","mode":"observe-only","stage":0,"T":40,"binds":{"map":{"N":"KeyW","S":"KeyS","E":"KeyD","W":"KeyA"},"source":"default-wasd"},"coordAudit":{"doc_M5_world":{"world":[7000,6900],"wallTile":true,"gameIsW":true},"doc_M5_bake":{"world":[6835.9375,6738.28125],"wallTile":true,"gameIsW":true},"approach":{"world":[6660,6140],"wallTile":false,"gameIsW":false}},"legs":[{"name":"obs1_S","dir":"S","code":"KeyS","samples":[{"t":21,"x":6660,"y":6140,"held":true,"wall":false,"wallAhead":true,"gameWallAhead":false,"mapSame":true}],"endPos":{"x":6660,"y":6140},"stopReason":"external-abort","mapUnchanged":true}],"focusEvents":[],"inputEvents":[],"resumeEvents":[],"mapUnchanged":true,"mapSig":{"before":869893578,"after":869893578},"stopReason":"external-abort","cleanup":"ok","teardownErrors":[]}
+  PASS F6a abort 후 관측 중단
+  PASS F6b abort 후 리스너 0
+  PASS F6c abort 후 interval 정리
+  PASS F6d stopReason=external-abort
+
+[F7] evidence gate 연결
+  PASS F7a 미매핑 관측 → verdict≠PASS
+  PASS F7b 4경계 모두 UNKNOWN(미방문)
+  PASS F7c 8뷰 미완 차단
+  PASS F7d 좌표계약 평가(네이티브 isW): 접근=비벽 PASS
+  PASS F7e 매핑 시 A_enter_south 등급 산출(미UNKNOWN)
+  PASS F7f 그래도 8뷰 없어 PASS 금지
+
+==== 결과: 27 PASS / 0 FAIL ====
+MANUAL_FIXTURE_JSON {"pass":27,"fail":0,"results":[{"name":"F1a P 좌표 미변경(관측기 쓰기 0)","ok":true},{"name":"F1b G.map 미변경","ok":true},{"name":"F1c K 미오염(사용자가 넣은 KeyS만)","ok":true},{"name":"F1d mapUnchanged 보고","ok":true},{"name":"F1e 관측 표본 수집됨","ok":true},{"name":"F3a 리스너 등록됨(관측 중)","ok":true},{"name":"F3b 모든 리스너 passive:true","ok":true},{"name":"F3c 비캡처(capture 미설정/false)","ok":true},{"name":"F2a stop 후 document 리스너 0","ok":true},{"name":"F2b stop 후 window 리스너 0","ok":true},{"name":"F2c stop 후 interval 정리","ok":true},{"name":"F4a focusEvents에 blur 기록","ok":true},{"name":"F4b leg가 focus-lost로 종료","ok":true},{"name":"F5a gameWallAhead(원식) true 표본 존재","ok":true},{"name":"F5b 원식 값이 isW와 일치","ok":true},{"name":"F5c 현재좌표 전진 관측(실이동 표본)","ok":true},{"name":"F5d held=true 관측","ok":true},{"name":"F6a abort 후 관측 중단","ok":true},{"name":"F6b abort 후 리스너 0","ok":true},{"name":"F6c abort 후 interval 정리","ok":true},{"name":"F6d stopReason=external-abort","ok":true},{"name":"F7a 미매핑 관측 → verdict≠PASS","ok":true},{"name":"F7b 4경계 모두 UNKNOWN(미방문)","ok":true},{"name":"F7c 8뷰 미완 차단","ok":true},{"name":"F7d 좌표계약 평가(네이티브 isW): 접근=비벽 PASS","ok":true},{"name":"F7e 매핑 시 A_enter_south 등급 산출(미UNKNOWN)","ok":true},{"name":"F7f 그래도 8뷰 없어 PASS 금지","ok":true}]}

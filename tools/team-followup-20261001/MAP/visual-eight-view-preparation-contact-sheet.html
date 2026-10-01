@@ -1,0 +1,227 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>MAP020 8-View Prep</title>
+<style>
+  :root{
+    --bg:#0d0b0c; --panel:#15110f; --panel2:#1b1512; --ink:#dfd6c2; --ink-dim:#a89c86;
+    --hair:rgba(164,147,115,.5); --hair-soft:rgba(164,147,115,.22);
+    --fire:#c2452f; --fire-dim:#8a3326; --gold:#b9975b;
+    --have:#5a7f4a; --unknown:#7a6f3a; --fixed:#4a6f7f; --retouch:#8a6a2a; --hold:#8a3a3a;
+  }
+  *{box-sizing:border-box}
+  body{margin:0;background:var(--bg);color:var(--ink);
+    font-family:"Nanum Myeongjo",'Noto Serif KR',serif;line-height:1.5;padding:24px 16px 60px}
+  h1,h2,h3,.num{font-family:'Cinzel','Nanum Myeongjo',serif;letter-spacing:.02em}
+  h1{font-size:22px;margin:0 0 4px;color:#eee4cf}
+  .sub{color:var(--ink-dim);font-size:13px;margin:0 0 18px}
+  .wrap{max-width:1180px;margin:0 auto}
+  .meta{background:var(--panel);border:1px solid var(--hair-soft);border-radius:8px;padding:12px 14px;margin-bottom:22px;font-size:12.5px}
+  .meta code{color:var(--gold);word-break:break-all}
+  .meta .row{margin:2px 0}
+  h2{font-size:16px;border-bottom:1px solid var(--hair);padding-bottom:6px;margin:30px 0 14px;color:#eadfc8}
+  .grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(330px,1fr));gap:16px}
+  .card{background:var(--panel);border:1px solid var(--hair-soft);border-radius:10px;overflow:hidden;display:flex;flex-direction:column}
+  .card header{padding:10px 12px;background:var(--panel2);border-bottom:1px solid var(--hair-soft);display:flex;align-items:baseline;gap:8px;flex-wrap:wrap}
+  .card header .num{color:var(--fire);font-size:15px}
+  .card header .vn{font-size:14px;color:#eadfc8;font-weight:600}
+  .card header .co{font-size:11.5px;color:var(--ink-dim);margin-left:auto}
+  .badge{display:inline-block;font-size:10.5px;padding:1px 7px;border-radius:20px;border:1px solid var(--hair);font-family:'Cinzel',serif}
+  .b-have{background:rgba(90,127,74,.18);border-color:var(--have);color:#bcd9a9}
+  .b-unknown{background:rgba(122,111,58,.18);border-color:var(--unknown);color:#ddd09a}
+  .shots{display:grid;grid-template-columns:1fr 1fr 1fr;gap:3px;background:#000;padding:3px}
+  .shots.two{grid-template-columns:1fr 1fr}
+  .shots img{width:100%;height:auto;display:block;border:1px solid #000}
+  figure{margin:0}
+  figcaption{font-size:10px;color:var(--ink-dim);text-align:center;padding:2px 0}
+  .ph{display:flex;align-items:center;justify-content:center;min-height:120px;color:var(--ink-dim);
+    background:repeating-linear-gradient(45deg,#141010,#141010 10px,#181312 10px,#181312 20px);font-size:12px}
+  .body{padding:10px 12px;font-size:12.5px;flex:1}
+  .body dl{margin:0}
+  .body dt{color:var(--gold);font-size:11px;font-family:'Cinzel',serif;margin-top:7px;letter-spacing:.03em}
+  .body dd{margin:1px 0 0;color:var(--ink)}
+  .body ul{margin:2px 0 0;padding-left:16px}
+  .body li{margin:1px 0}
+  .warn{color:#d98f7a}
+  .defect-tag{color:#caa15a}
+  table{width:100%;border-collapse:collapse;font-size:12.5px;margin-top:8px}
+  th,td{border:1px solid var(--hair-soft);padding:6px 8px;text-align:left;vertical-align:top}
+  th{background:var(--panel2);color:var(--gold);font-family:'Cinzel',serif;font-size:11.5px}
+  .st{font-family:'Cinzel',serif;font-size:10.5px;padding:1px 6px;border-radius:4px;white-space:nowrap}
+  .st-fixed{background:rgba(74,111,127,.2);color:#9cc4d4;border:1px solid var(--fixed)}
+  .st-retouch{background:rgba(138,106,42,.2);color:#e0c078;border:1px solid var(--retouch)}
+  .st-hold{background:rgba(138,58,58,.2);color:#e09a9a;border:1px solid var(--hold)}
+  .verdict{background:var(--panel);border:1px solid var(--hair);border-left:4px solid var(--retouch);border-radius:8px;padding:14px 16px;margin-top:10px}
+  .verdict .big{font-family:'Cinzel',serif;font-size:18px;color:#e0c078}
+  .path{background:var(--panel);border:1px solid var(--hair-soft);border-radius:8px;padding:12px 16px;font-size:13px}
+  .path li{margin:3px 0}
+  .foot{color:var(--ink-dim);font-size:11.5px;margin-top:26px;border-top:1px solid var(--hair-soft);padding-top:10px}
+  .note{color:var(--ink-dim);font-size:11.5px;font-style:italic}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <h1>MAP-020 · CH1-1 · 8뷰 시각 인수 준비 (Contact Sheet)</h1>
+  <p class="sub">Mac MAP · 세션 d447a49d · 2026-10-02 · 기존 원화/캡처 재사용(신규 생성 0) · root 재현용</p>
+
+  <div class="meta">
+    <div class="row">world 8000² · T=40 · map 200×200 · bake→world ×1000/1024 · 어둠 ambient [6,16,9,.38] · edgeShade <b>B</b> · 줌 1 / .62</div>
+    <div class="row">START 6시 <code>(4000,7600)</code> · BOSS GATE 12시 <code>(4000,720)</code></div>
+    <div class="row">원함수 <code>ch1-boundary-edge.js</code> sha256 <code>e1271685…98edc2</code> · <code>ch1-border-foreground.js</code> <code>7f0f3e2e…f46b22</code></div>
+    <div class="row">game.html 현재 <code>7631f5a0…299993</code> · 증거 측정시점 measured_source <code>6cbeb664…</code></div>
+    <div class="row note">주의: 아래 map020-evidence 캡처는 <b>수정 전 소스(6cbeb664)</b> 기준. §7 줌 사각절단 수정 재검수는 별도(MAP020-줌수정-검수.md).</div>
+  </div>
+
+  <h2>CAMERA QA 8뷰 — 2/8 HAVE · 6/8 UNKNOWN</h2>
+  <div class="grid">
+
+    <!-- 1 START -->
+    <section class="card">
+      <header><span class="num">01</span><span class="vn">START</span><span class="badge b-unknown">UNKNOWN</span><span class="co">6시 (4000,7600) · t100,190</span></header>
+      <div class="ph">정확 6시 캡처 없음 — root 재현 필요<br>(인접 SOUTH MASS는 #02)</div>
+      <div class="body"><dl>
+        <dt>기대</dt><dd>외곽 화면 끝까지 연속 · 시작 안전구역 가독 · 하단 START mass 연결</dd>
+        <dt>금지</dt><dd class="warn">블록 배치감 · 빈 외곽 hole · 동일 asset 즉시 반복</dd>
+        <dt>결함</dt><dd class="defect-tag">D2 뿌리 띠 반복(남측)</dd>
+      </dl></div>
+    </section>
+
+    <!-- 2 SOUTH MASS -->
+    <section class="card">
+      <header><span class="num">02</span><span class="vn">SOUTH MASS</span><span class="badge b-have">HAVE</span><span class="co">(2420,6600) · t60.5,165</span></header>
+      <div class="shots">
+        <figure><img src="../../../docs/0마스터플랜/mac-resume-20261001/map020-evidence/south-z1-0.png" alt="z1-0"><figcaption>z1 · 0</figcaption></figure>
+        <figure><img src="../../../docs/0마스터플랜/mac-resume-20261001/map020-evidence/south-z1-a.png" alt="z1-a"><figcaption>z1 · A</figcaption></figure>
+        <figure><img src="../../../docs/0마스터플랜/mac-resume-20261001/map020-evidence/south-z1-b.png" alt="z1-b"><figcaption>z1 · B</figcaption></figure>
+        <figure><img src="../../../docs/0마스터플랜/mac-resume-20261001/map020-evidence/south-z0.62-0.png" alt="z.62-0"><figcaption>.62 · 0</figcaption></figure>
+        <figure><img src="../../../docs/0마스터플랜/mac-resume-20261001/map020-evidence/south-z0.62-a.png" alt="z.62-a"><figcaption>.62 · A</figcaption></figure>
+        <figure><img src="../../../docs/0마스터플랜/mac-resume-20261001/map020-evidence/south-z0.62-b.png" alt="z.62-b"><figcaption>.62 · B</figcaption></figure>
+      </div>
+      <div class="body"><dl>
+        <dt>기대</dt><dd>정상 줌1 경계 뿌리 윤곽 읽힘 · 바닥–숲 경계 연속</dd>
+        <dt>금지</dt><dd class="warn">좌측 갈고리 뿌리 마디 반복(D2) · 원거리 사각 그림자 절단(D1)</dd>
+        <dt>관찰</dt><dd>.62 B 하부에 사각 톤블록(D1, 수정 전 캡처). 0 비교엔 없음. 좌측 뿌리 윤곽 반복감.</dd>
+      </dl></div>
+    </section>
+
+    <!-- 3 EARLY -->
+    <section class="card">
+      <header><span class="num">03</span><span class="vn">EARLY</span><span class="badge b-unknown">UNKNOWN</span><span class="co">(5620,6520) · 제안</span></header>
+      <div class="ph">증거 없음 — root 재현 필요</div>
+      <div class="body"><dl>
+        <dt>기대</dt><dd>START와 다른 composition(3초 규칙) · 전투 공간 확보</dd>
+        <dt>금지</dt><dd class="warn">START와 동일 구도 · 동일 통로 폭 반복</dd>
+      </dl></div>
+    </section>
+
+    <!-- 4 MAIN ARENA -->
+    <section class="card">
+      <header><span class="num">04</span><span class="vn">MAIN ARENA</span><span class="badge b-unknown">UNKNOWN</span><span class="co">중앙 (4020,4450)</span></header>
+      <div class="ph">증거 없음 — root 재현 필요</div>
+      <div class="body"><dl>
+        <dt>기대</dt><dd>중앙 전투공간 충분 · landmark 위계 읽힘</dd>
+        <dt>금지</dt><dd class="warn">동일 크기 arena 반복 · 빈 중앙</dd>
+      </dl></div>
+    </section>
+
+    <!-- 5 SIDE LEFT -->
+    <section class="card">
+      <header><span class="num">05</span><span class="vn">SIDE LEFT</span><span class="badge b-unknown">UNKNOWN</span><span class="co">서 (1640,5620)</span></header>
+      <div class="ph">Mac 실화면 0 (PC 서측 보드 관찰 이력만)</div>
+      <div class="body"><dl>
+        <dt>기대</dt><dd>좌 side mass 충분 · 외곽 연속</dd>
+        <dt>금지</dt><dd class="warn">빈 side · 뿌리 반복 띠(D2)</dd>
+        <dt>결함</dt><dd class="defect-tag">D2 뿌리 반복(서측 보드)</dd>
+      </dl></div>
+    </section>
+
+    <!-- 6 SIDE RIGHT M5 -->
+    <section class="card">
+      <header><span class="num">06</span><span class="vn">SIDE RIGHT · M5 주머니</span><span class="badge b-have">HAVE(부분)</span><span class="co">approach (6660,6140)</span></header>
+      <div class="shots two">
+        <figure><img src="../../../docs/0마스터플랜/mac-resume-20261001/map020-evidence/south-approach.png" alt="approach"><figcaption>approach S</figcaption></figure>
+        <figure><img src="../../../docs/0마스터플랜/mac-resume-20261001/map020-evidence/south-blocked.png" alt="blocked"><figcaption>S 차단</figcaption></figure>
+        <figure><img src="../../../docs/0마스터플랜/mac-resume-20261001/map020-evidence/north-return.png" alt="return"><figcaption>N 복귀</figcaption></figure>
+        <figure><img src="../../../docs/0마스터플랜/mac-resume-20261001/map020-evidence/east-entry.png" alt="east"><figcaption>E 개구</figcaption></figure>
+        <figure><img src="../../../docs/0마스터플랜/mac-resume-20261001/map020-evidence/m5-enemies-ready.png" alt="m5 enemies"><figcaption>적 가독</figcaption></figure>
+      </div>
+      <div class="body"><dl>
+        <dt>보행 경계</dt><dd>S→y6304.369 차단 · N→y6137.214 · E→x6746.363 · S2→y6223.577 차단</dd>
+        <dt>기대</dt><dd>접근 경계 이동/복귀/차단 가독 · 오버행 아래 플레이어 가독</dd>
+        <dt>금지</dt><dd class="warn">문서 7000,6900을 진입점으로 사용(벽/오기) · 오버행이 플레이어·적 가림</dd>
+        <dt>결함</dt><dd class="defect-tag">D3 주머니 안→입구 전체경로 미성립(보류)</dd>
+      </dl></div>
+    </section>
+
+    <!-- 7 PRIMARY LANDMARK -->
+    <section class="card">
+      <header><span class="num">07</span><span class="vn">PRIMARY LANDMARK</span><span class="badge b-unknown">UNKNOWN</span><span class="co">후보 (1766,6620)</span></header>
+      <div class="ph">좌표 미확정 — root 확인 필요</div>
+      <div class="body"><dl>
+        <dt>기대</dt><dd>primary landmark 위계 읽힘 · 주변과 대비</dd>
+        <dt>금지</dt><dd class="warn">landmark 미식별 · 배경에 묻힘</dd>
+      </dl></div>
+    </section>
+
+    <!-- 8 EXIT/BOSS -->
+    <section class="card">
+      <header><span class="num">08</span><span class="vn">LATE → EXIT / BOSS GATE</span><span class="badge b-unknown">UNKNOWN</span><span class="co">12시 (4000,720)</span></header>
+      <div class="ph">증거 없음 — root 재현 필요 (LATE 상단중앙 ~4000,2400 경유)</div>
+      <div class="body"><dl>
+        <dt>기대</dt><dd>게이트/상승 통로 읽힘 · 좁은 연결로 시각화</dd>
+        <dt>금지</dt><dd class="warn">출구 불명확 · 빈 상단 외곽</dd>
+      </dl></div>
+    </section>
+
+  </div>
+
+  <h2>기존 결함 위치 (Defect Catalog)</h2>
+  <table>
+    <tr><th>ID</th><th>결함</th><th>상태</th><th>위치 / 상세</th><th>재검 기준</th></tr>
+    <tr>
+      <td>D1</td><td>원거리 shade 사각 절단</td><td><span class="st st-fixed">FIXED</span></td>
+      <td>줌 .62 A/B, 화면 약 x194~1086 / y102~698 사각 AO 톤블록(0엔 없음). 원인: <code>Ch1BoundaryEdge.draw</code> hw=VW*.5+80/hh=VH*.5+80 줌 미반영</td>
+      <td>현행 소스(범위 VW*.5/z+80)에서 .62 A/B 재촬영 시 사각형 재발 없음</td>
+    </tr>
+    <tr>
+      <td>D2</td><td>뿌리 띠 반복(유사 모티브)</td><td><span class="st st-retouch">RETOUCH</span></td>
+      <td>남·서 바닥–숲 경계, 좌측 갈고리 뿌리 마디 동일 형태. prop_pool.png crop(200,530,440×120)+내부목질 2종, 305앵커 92px 격자</td>
+      <td>같은 asset 즉시 반복 안 보여야 함(CAMERA QA Q4)</td>
+    </tr>
+    <tr>
+      <td>D3</td><td>M5 주머니 전체 경로</td><td><span class="st st-hold">보류</span></td>
+      <td>M5 남동 보행 주머니. 문서 7000,6900=벽(오기), approach 6660,6140 비벽. 접근 경계만 확인</td>
+      <td>주머니 안→입구 전체경로 + 오버행 아래 플레이어/적 가독 통과</td>
+    </tr>
+  </table>
+
+  <h2>root 재현 시작 경로</h2>
+  <div class="path"><ol>
+    <li>START 6시 <b>(4000,7600)</b></li>
+    <li>→ SOUTH MASS <b>(2420,6600)</b> <span class="note">[기존 캡처 지점]</span></li>
+    <li>→ EARLY <b>(5620,6520)</b></li>
+    <li>→ SIDE RIGHT / M5 approach <b>(6660,6140)</b> → 주머니 S·W·D·S 보행</li>
+    <li>→ MAIN ARENA <b>(4020,4450)</b></li>
+    <li>→ SIDE LEFT <b>(1640,5620)</b></li>
+    <li>→ PRIMARY LANDMARK <b>(후보 1766,6620 — 확정 필요)</b></li>
+    <li>→ LATE <b>(상단중앙 ~4000,2400 — 확정 필요)</b></li>
+    <li>→ EXIT / BOSS GATE 12시 <b>(4000,720)</b></li>
+  </ol>
+  <p class="note">좌표 이름(master/world) 혼재 → 실제 G.cam·플레이어 월드좌표를 읽고 맞출 것. 기본 B·어둠 .38 유지. 설정값이 아닌 실제 적용 줌(런타임 _tzoom)과 화면 범위를 확인.</p>
+  </div>
+
+  <h2>VISUAL VERDICT 근거 (MAP PRODUCTION REPORT와 분리)</h2>
+  <div class="verdict">
+    <div class="big">RETOUCH</div>
+    <p style="margin:8px 0 0"><b>PASS 근거</b>: D1 줌 사각절단 수정(§7, 재검수 별도).</p>
+    <p style="margin:4px 0 0"><b>RETOUCH 근거</b>: D2 뿌리 반복 잔존 · 8뷰 중 6뷰 미방문(UNKNOWN) · D3 M5 전체경로 보류.</p>
+    <p style="margin:4px 0 0"><b>FAIL 근거</b>: 없음.</p>
+    <p style="margin:8px 0 0" class="note">CAMERA QA 8뷰 전부 실증거 없으면 PASS 금지(evidence-gate 일관). 현재 2/8 HAVE → PASS 불가. 실화면 8뷰 재현은 root 단독 후속.</p>
+  </div>
+
+  <p class="foot">제약: 신규 이미지 생성 0 · 관측기/카메라/맵 변경 0 · game.html/production/Git/queue/공유docs 쓰기 0 · 사용자 게임 tab 입력/리로드/닫기/계측 0. 이미지는 map020-evidence 원본을 상대경로로 재사용(SHA는 manifest 참조).</p>
+</div>
+</body>
+</html>

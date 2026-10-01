@@ -1,0 +1,34 @@
+{
+  "taskId": "MAP-M5-EVIDENCE-GATE",
+  "title": "MAP-020/M5 하니스 불완전 표본 판정 보강 (검증기+회귀)",
+  "team": "MAP",
+  "session": "d447a49d-ecaa-4b5f-bc56-da5353ebb668",
+  "terminal": 3,
+  "cli": "claude-code",
+  "model": "claude-opus-4-8",
+  "sessionId": null,
+  "receivedAt": "2026-10-01T12:01:08Z",
+  "startedAt": "2026-10-01T12:01:08Z",
+  "status": "done_pending_live_gate",
+  "completedAt": "2026-10-01T12:05:00Z",
+  "head": "30a204a7aa348a88b90bdc922862c610a7da938f",
+  "ownedPaths": [
+    "docs/0마스터플랜/mac-resume-20261001/vscode-dispatch/MAP-next-result.md",
+    "docs/0마스터플랜/mac-resume-20261001/vscode-dispatch/MAP-next-receipt.json",
+    "tools/team-followup-20261001/MAP/"
+  ],
+  "deliverables": [
+    "tools/team-followup-20261001/MAP/m5-evidence-gate.cjs",
+    "tools/team-followup-20261001/MAP/m5-evidence-gate.test.cjs",
+    "tools/team-followup-20261001/MAP/gate-test-output.txt",
+    "tools/team-followup-20261001/MAP/real-evidence-verdict.json"
+  ],
+  "verification": {
+    "nodeCheck": "PASS (node v24.15.0)",
+    "regression": "26 PASS / 0 FAIL (exit 0)",
+    "realEvidenceVerdict": "RETOUCH (views 2/8; 남측 차단 2건 INCONCLUSIVE 충돌불명; 복귀/개구 2건 PASS; 좌표계약 3건 PASS)"
+  },
+  "nextAction": "QA 종료 인계 후: 실제 8뷰 촬영(6뷰 미방문), 안전화 하니스 실행으로 전방벽 프로브 수집→남측 막힘 INCONCLUSIVE→PASS 승격, M5 주머니 전체경로 검수.",
+  "blocker": "실게임/서버/브라우저 미기동(QA 종료 인계 전). 판정기는 하니스 출력+8뷰 메타를 받는 오프라인 게이트로 구현.",
+  "notes": "실제8뷰 없는 PASS 금지 게이트 강제 확인. 원자료 Read-only, game.html/총괄MD/타팀/Git 미변경."
+}

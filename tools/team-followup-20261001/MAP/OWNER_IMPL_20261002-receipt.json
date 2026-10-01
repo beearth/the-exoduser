@@ -1,0 +1,50 @@
+{
+  "taskId": "MAP-20261002-MANUAL-LIFECYCLE-FIX",
+  "title": "manual-input 관측기 lifecycle 계약 수정(부분설치/중복/포커스손실 3반례 RED→GREEN)",
+  "team": "MAP",
+  "session": "d447a49d-ecaa-4b5f-bc56-da5353ebb668",
+  "terminal": 3,
+  "cli": "claude-code",
+  "model": "claude-opus-4-8",
+  "taskDateLocal": "2026-10-02",
+  "receivedAt": "2026-10-01T15:35:51Z",
+  "firstReadAt": "2026-10-01T15:35:51Z",
+  "firstEditAt": "2026-10-01T15:40:00Z",
+  "firstRunAt": "2026-10-01T15:42:00Z",
+  "completedAt": "2026-10-01T15:43:00Z",
+  "status": "done",
+  "deliverables": [
+    "tools/team-followup-20261001/MAP/manual-input-observer.js (수정)",
+    "tools/team-followup-20261001/MAP/manual-lifecycle-fixture.cjs (신규)",
+    "tools/team-followup-20261001/MAP/manual-lifecycle-fixture-output.txt (신규)",
+    "tools/team-followup-20261001/MAP/manual-lifecycle-after.json (신규)",
+    "tools/team-followup-20261001/MAP/manual-input-fixture-output.txt (갱신)"
+  ],
+  "verification": {
+    "nodeCheck": "PASS (node v24.15.0)",
+    "lifecycleFixture": "22 PASS / 0 FAIL (exit 0) — C1 롤백·C2 숨김중단·C3 중복정리 + R1 복귀계약·R2 정리예외기록·R3 abort",
+    "regression27": "27 PASS / 0 FAIL (exit 0)",
+    "redToGreen": "install-rollback 1→0, hidden-sampling (1,2)→(0,0), duplicate-start (1,3)→(0,0)"
+  },
+  "preservedConfirmed": "m5-walk-harness.safe.js, m5-evidence-gate.cjs 원본 미수정. game K/P/G/map 쓰기0, passive 유지.",
+  "notTouched": "PROJECT_MANAGEMENT_MASTER.md(M)는 대화 시작 스냅샷의 타 세션 WIP — 미간섭. 공유docs/타팀/root-review/counterexamples-before 미수정.",
+  "visualScope": "실맵/8뷰/좌표경계 시각 PASS 이번 없음. RETOUCH 유지. 미측정 범위 result §7에 명시.",
+  "head": "30a204a7aa348a88b90bdc922862c610a7da938f",
+  "ownedPaths": [
+    "tools/team-followup-20261001/MAP/manual-input-observer.js",
+    "tools/team-followup-20261001/MAP/manual-input-fixture.cjs",
+    "tools/team-followup-20261001/MAP/manual-lifecycle-*",
+    "tools/team-followup-20261001/MAP/OWNER_IMPL_20261002-receipt.json",
+    "tools/team-followup-20261001/MAP/OWNER_IMPL_20261002-result.md"
+  ],
+  "preserve": "unsafe/safe 주입 하니스(m5-walk-harness.safe.js) + evidence gate(m5-evidence-gate.cjs) 원본 보존",
+  "readOnlyScope": "game.html/index/server/다른팀/생산/공유docs/map020-evidence·team-review 원자료 — 읽기전용",
+  "counterexamples": [
+    "(1) 두번째 addEventListener 예외 시 첫 리스너1개 누수(부분설치)",
+    "(2) hidden으로 leg 닫아도 다음 tick에 held 키 있으면 숨김상태 새 leg/표본2개 생성",
+    "(3) start 두번 후 마지막 ctl만 stop → 첫 interval1+listener3 잔존(중복 인스턴스)"
+  ],
+  "nextAction": "재현기/counterexamples 읽고 RED 확인 → 단일 lifecycle 계약(부분설치 롤백·중복 레지스트리·명시 focus/visible 복귀 게이트)으로 수정 → 3반례 GREEN + 정상27/stop/abort/복귀/cleanup예외 회귀",
+  "blocker": "실맵/8뷰/좌표경계 시각 PASS 이번 없음(기존 RETOUCH 유지). 게임/브라우저/서버/빌드/새세션/Git/권한 0.",
+  "notes": "수신 UTC 15:35Z(로컬 과제일 2026-10-02)."
+}

@@ -1,0 +1,58 @@
+{
+  "taskId": "MAP-20261002-CLEANUP-RETRY",
+  "title": "manual-input 관측기 초기hidden/정리실패재시도/중복start부분정리 수정(2반례 RED→GREEN)",
+  "team": "MAP",
+  "session": "d447a49d-ecaa-4b5f-bc56-da5353ebb668",
+  "terminal": 3,
+  "cli": "claude-code",
+  "model": "claude-opus-4-8",
+  "taskDateLocal": "2026-10-02",
+  "receivedAt": "2026-10-01T16:12:08Z",
+  "firstReadAt": "2026-10-01T16:12:08Z",
+  "firstEditAt": "2026-10-01T16:13:00Z",
+  "firstRunAt": "2026-10-01T16:15:00Z",
+  "completedAt": "2026-10-01T16:16:00Z",
+  "status": "done",
+  "deliverables": [
+    "tools/team-followup-20261001/MAP/manual-input-observer.js (수정, sha256 9191e7dd25ed5b2b631a1aa6ecc4db665fa8523c975514cc2abaf1ffd5724332)",
+    "tools/team-followup-20261001/MAP/cleanup-retry-before-observer.js (before 동결, sha256 f7514fbfea8d0eda6caa26c491e3f21b25b7b0a2abcaa62b4b0dc8979f9cd6c6)",
+    "tools/team-followup-20261001/MAP/cleanup-retry-fixture.cjs (신규, sha256 5e7107f119d31e1b306a811fed68bbdc9d832fdf92aad5bed1f5ab6470514a9e)",
+    "tools/team-followup-20261001/MAP/cleanup-retry-fixture-output.txt (신규)",
+    "tools/team-followup-20261001/MAP/cleanup-retry-after.json (신규)"
+  ],
+  "verification": {
+    "nodeCheck": "PASS (node v24.15.0)",
+    "cleanupRetryFixture": "24 PASS / 0 FAIL (exit 0)",
+    "regression": "lifecycle 22 / manual 27 / evidence-gate 26 / safe-mock 32 모두 exit 0",
+    "redToGreen": "initially-hidden samples 1->0; clear-retry remainingTimers 1->0 & cleanup partial->ok(재시도)"
+  },
+  "fixes": [
+    "초기 hidden/hasFocus 반영 disarmed 시작(명시적 복귀+새 keydown 전 표본0)",
+    "_teardown: clearInterval/removeEventListener 실패 시 핸들 보존(null 폐기 금지)+teardownErrors retry 기록",
+    "_dispose: cleanup!=='ok'면 stop 재시도로 재정리, ok된 인스턴스만 레지스트리 제거(핸들 유실 방지)",
+    "중복 start 부분정리 예외 시 크래시 없이 partial 기록·핸들 보존"
+  ],
+  "notTouched": "game.html(M)·ANIMVFX/*·vscode-dispatch ANIMVFX-* = 타 세션/타 팀 동시작업 미간섭. 재현기·MAP-counterexamples.json·counterexamples-before.json 동결(읽기만).",
+  "visualScope": "실맵/8뷰/좌표경계 시각 PASS 없음. RETOUCH 유지. 검증은 오프라인(vm) 한정.",
+  "resultNotes": "수신 UTC 16:12Z(과제일 2026-10-02). 관측기 추가 없이 확인된 원코드 실패만 수정.",
+  "head": "30a204a7aa348a88b90bdc922862c610a7da938f",
+  "ownedPaths": [
+    "tools/team-followup-20261001/MAP/manual-input-observer.js",
+    "tools/team-followup-20261001/MAP/cleanup-retry-*",
+    "tools/team-followup-20261001/MAP/cleanup-retry-receipt.json",
+    "tools/team-followup-20261001/MAP/cleanup-retry-result.md"
+  ],
+  "frozenReadOnly": [
+    "tools/team-followup-20261001/root-review/persistence-cycle-counterexamples.mjs",
+    "outputs/team-review-20261002/persistence/MAP-counterexamples.json",
+    "outputs/team-review-20261001/five-owner-acceptance/counterexamples-before.json"
+  ],
+  "beforeSnapshot": "tools/team-followup-20261001/MAP/cleanup-retry-before-observer.js (sha256 f7514fbfea8d0eda6caa26c491e3f21b25b7b0a2abcaa62b4b0dc8979f9cd6c6)",
+  "counterexamplesRED": [
+    "initially-hidden: start 시 doc.hidden=true인데 표본 1 생성(관측기가 무조건 armed) → 기대 0",
+    "clear-retry: clearInterval 첫 예외 뒤 핸들 null 폐기 + disposed=true → stop 재시도해도 잔여 timer 1 → 기대 0"
+  ],
+  "nextAction": "단일 lifecycle에서 (1)초기 hidden/focus 반영해 disarmed 시작 (2)정리실패 시 핸들 보존+stop 재시도 가능 (3)중복 start 부분정리 예외시 핸들 유실 방지 — 수정 후 cleanup-retry-fixture로 RED→GREEN + 기존 22/27 회귀",
+  "blocker": "실맵 시각 PASS 금지(RETOUCH 유지). 관측기 추가 없음 — 확인된 원코드 실패만 수정. 사용자 게임 입력/리로드/계측/닫기 0.",
+  "notes": "수신 UTC 16:12Z(로컬 과제일 2026-10-02). before 동결 스냅샷 보존."
+}

@@ -1,0 +1,24 @@
+{
+ "kind": "map-lifecycle-after-fix",
+ "note": "수정된 manual-input-observer.js 기준 재측정(모두 expected=0 달성)",
+ "results": [
+  {
+   "id": "MAP-install-rollback",
+   "error": "fixture add",
+   "remainingListeners": 0,
+   "expected": 0
+  },
+  {
+   "id": "MAP-hidden-sampling",
+   "hiddenLegs": 0,
+   "hiddenSamples": 0,
+   "expected": 0
+  },
+  {
+   "id": "MAP-duplicate-start",
+   "remainingTimers": 0,
+   "remainingListeners": 0,
+   "expected": 0
+  }
+ ]
+}

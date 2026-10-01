@@ -1,0 +1,41 @@
+{
+  "taskId": "MAP-OWNER-NEXT-20261002",
+  "title": "m5-walk-harness 수동입력 관측 후보(manual-input-*) — 상태쓰기0, evidence gate 연결",
+  "team": "MAP",
+  "session": "d447a49d-ecaa-4b5f-bc56-da5353ebb668",
+  "terminal": 3,
+  "cli": "claude-code",
+  "model": "claude-opus-4-8",
+  "sessionId": null,
+  "taskDateLocal": "2026-10-02",
+  "receivedAt": "2026-10-01T15:14:46Z",
+  "firstReadAt": "2026-10-01T15:14:46Z",
+  "firstEditAt": "2026-10-01T15:16:00Z",
+  "firstRunAt": "2026-10-01T15:18:00Z",
+  "completedAt": "2026-10-01T15:20:00Z",
+  "status": "done_pending_live_gate",
+  "deliverables": [
+    "tools/team-followup-20261001/MAP/manual-input-observer.js",
+    "tools/team-followup-20261001/MAP/manual-input-fixture.cjs",
+    "tools/team-followup-20261001/MAP/manual-input-fixture-output.txt"
+  ],
+  "verification": {
+    "nodeCheck": "PASS (node v24.15.0)",
+    "fixture": "27 PASS / 0 FAIL (exit 0)",
+    "zeroStateWrite": "P/K/G.map 미변경 확인, mapUnchanged true",
+    "nativeForwardWall": "gameWallAhead == isW(px,py+Δ) 정확 일치",
+    "cleanup": "stop/abort 후 리스너 0 + interval 정리",
+    "gateLink": "미매핑·미방문8뷰 → verdict≠PASS (이번 시각 PASS 없음)"
+  },
+  "head": "30a204a7aa348a88b90bdc922862c610a7da938f",
+  "ownedPaths": [
+    "tools/team-followup-20261001/MAP/manual-input-*",
+    "tools/team-followup-20261001/MAP/OWNER_NEXT_20261002-receipt.json",
+    "tools/team-followup-20261001/MAP/OWNER_NEXT_20261002-result.md"
+  ],
+  "readOnlyScope": "game.html/easy/index/server/다른 팀/생산/공유문서/map020-evidence 원자료 — 읽기 전용",
+  "dupCheck": "manual-input-* 및 OWNER_NEXT_20261002-* 없음 → 중복/진행중 아님, 신규 착수",
+  "nextAction": "가이드 v0.9 전문·_MAP_SSOT_INDEX 통독 후 manual-input observer 구현(현재좌표·전방벽 원식읽기·실이동표본·취소/정리·포커스손실), evidence gate 연결, 상태쓰기0 fixture 검수",
+  "blocker": "실게임/화면/8뷰 검수는 root 단독 후속 — 이번 시각 PASS 금지. 미방문 8뷰는 UNKNOWN.",
+  "notes": "수신 UTC는 15:14Z(로컬 과제일 2026-10-02). 원 하니스 m5-walk-harness.safe.js 보존, 신규 manual-input-*에 구현."
+}
