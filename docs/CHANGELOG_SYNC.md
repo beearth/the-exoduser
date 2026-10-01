@@ -51763,3 +51763,8 @@ FIRE 독립8검사와 URL query17검사 인수, SOUND root canonical 관측기18
 ## 2026-10-01 UIUX bounded 정적 인수
 - 변환 overflow/거대band 반복을 별도후보에서 제한, v1 오류/출력 유지. 원본15파일 보존·30경계/15그룹/6VM/독립600사례 PASS, 생산·시각·FPS 미인수.
 - Mac12:47:42Z 새OS응답과잠금확인, 물리화면전원UNKNOWN·설정변경0.
+
+
+## 2026-10-01 Existing ITEM/BALANCE implementation resumed
+- Actual uniqueId name overwrite and legacy refund signed32 overflow reproduced; one task each delivered to existing owners with source Read/Edit evidence. Production and economic policy unchanged.
+- Native input failure preserved; ENEMY/ART/SKILL not delivered. Live candidate source excluded from this dispatch checkpoint.

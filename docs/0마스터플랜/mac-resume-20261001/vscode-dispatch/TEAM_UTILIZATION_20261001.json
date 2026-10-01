@@ -1,6 +1,6 @@
 {
-  "at": "2026-10-01T12:49:23.994875+00:00",
-  "root": "UIUX bounded root static acceptance complete; all 11 latest session states checked; runtime and delivery gates remain",
+  "at": "2026-10-01T12:58:05.826628+00:00",
+  "root": "ITEM and BALANCE implementation resumed; native input not recovered",
   "teams": [
     {
       "team": "QA",
@@ -35,7 +35,12 @@
       "startedAt": null,
       "blocker": "Native tool explicitly reported Mac locked; manual unlock required. No new session/hidden IPC used.",
       "status": "blocked by locked Mac",
-      "cliState": "existing Claude session idle verified this cycle"
+      "cliState": "existing Claude session idle verified this cycle",
+      "pendingRepair": {
+        "dispatch": "not_received",
+        "instruction": "/Users/fordeargamers/Projects/exoduser-migration-20261001/tools/team-followup-20261001/ENEMY/NEXT_TASK.md",
+        "blocker": "Native inventory and AX visible, input noWindowsAvailable/clipboard timeout; no new ENEMY JSONL receipt"
+      }
     },
     {
       "team": "MAP",
@@ -88,7 +93,12 @@
         "tools/team-followup-20261001/ART/wa24-observer.cjs": "a7134b053786c0c976ecb65832c20ab7380d4addd6e1341445e3d80567f0b7b3",
         "tools/team-followup-20261001/ART/wa24-observer.test.mjs": "17aba27f029995856ee0dc23651cb46b063ad5b51018477f0f79a3ffdf2664bd"
       },
-      "cliState": "existing Claude session idle verified this cycle"
+      "cliState": "existing Claude session idle verified this cycle",
+      "pendingRepair": {
+        "dispatch": "not_received",
+        "instruction": "/Users/fordeargamers/Projects/exoduser-migration-20261001/tools/team-followup-20261001/ART/FIX_TASK.md",
+        "blocker": "Native inventory and AX visible, input noWindowsAvailable/clipboard timeout; no new ENEMY JSONL receipt"
+      }
     },
     {
       "team": "SKILL",
@@ -113,7 +123,12 @@
         "tools/team-followup-20261001/SKILL/ice-cancel-probe.safe.js": "ae7c8e8ad6e874e565c3ee0cb8b635130cefa234c5628bd0ba2922da96481d1b",
         "tools/team-followup-20261001/SKILL/_source-candidate-SKILL.js": "aeded94120a1186da3983a4975efd06ed7c610644bab2ba0c3a11f0a4f756b1f"
       },
-      "cliState": "existing Claude session idle verified this cycle"
+      "cliState": "existing Claude session idle verified this cycle",
+      "pendingRepair": {
+        "dispatch": "not_received",
+        "instruction": "/Users/fordeargamers/Projects/exoduser-migration-20261001/tools/team-followup-20261001/SKILL/FIX_TASK.md",
+        "blocker": "Native inventory and AX visible, input noWindowsAvailable/clipboard timeout; no new ENEMY JSONL receipt"
+      }
     },
     {
       "team": "ANIMVFX",
@@ -244,42 +259,60 @@
       "team": "ITEM",
       "sessionId": "01a0f6e6-1fbe-7df0-8d02-a9c2d9df3750",
       "location": "T9",
-      "task": "ITEM-RING-RGB-ATTRIBUTION",
-      "instruction": "/Users/fordeargamers/Projects/exoduser-migration-20261001/tools/team-followup-20261001/ITEM/NEXT_TASK.md",
+      "task": "ITEM-UNIQUE-SAVE-NAME-CANDIDATE",
+      "instruction": "/Users/fordeargamers/Projects/exoduser-migration-20261001/tools/team-followup-20261001/ITEM/UNIQUE_SAVE_TASK.md",
       "stateBefore": "idle/completed verified",
       "dispatch": "received",
       "exists": true,
-      "receivedAt": "2026-10-01T11:51:57Z",
+      "receivedAt": "2026-10-01T12:54:38Z",
       "startedAt": "2026-10-01T11:51:57Z",
-      "status": "CLI completed; explicit integration dependency; no new task queued",
+      "status": "actual source Read and candidate/test Edit verified",
       "startEvidence": "NEXT_TASK.md와 기존 ITEM 결과·후보·현재 생산 함수 읽기",
-      "receipt": "/Users/fordeargamers/Projects/exoduser-migration-20261001/docs/0마스터플랜/mac-resume-20261001/vscode-dispatch/ITEM-next-receipt.json",
+      "receipt": "/Users/fordeargamers/Projects/exoduser-migration-20261001/docs/0마스터플랜/mac-resume-20261001/vscode-dispatch/ITEM-unique-save-receipt.json",
       "previous": {
-        "task": "ITEM-RING-INTEGRATION-BUNDLE",
-        "status": "completed_bundle_pending_runtime_gates"
+        "task": "ITEM-RING-RGB-ATTRIBUTION",
+        "status": "CLI completed; explicit integration dependency; no new task queued"
       },
-      "queueMessageId": "01a0f74e-77b9-7bd3-ae28-d54aa6e46cf2",
+      "queueMessageId": "01a0f787-f77a-7f63-babd-667400f8bd45",
       "firstAction": "기존 native Canvas 검사 소스 읽기; 동일 SHA PNG decode와 단계별 비교 설계",
       "currentDependencyReview": "Latest team MD/result/thread read: native RGB attribution completed. Target Chrome backend validation and production integration required; no new independent defect established.",
-      "cliState": "latest Codex turn completed verified this cycle"
+      "cliState": "implementation active",
+      "waitReason": null,
+      "completedAt": null,
+      "firstActualAction": {
+        "turnId": "01a0f787-f77c-7a50-90aa-003fecd6855a",
+        "readRecordedAt": "2026-10-01T12:54:42Z",
+        "exitCode": 0
+      }
     },
     {
       "team": "BALANCE",
       "sessionId": "01a0f6e6-5303-7392-81ba-94c42e349ffc",
       "location": "T11",
-      "task": "BALANCE-FIREBALL-HOOK-CANDIDATE",
-      "instruction": "/Users/fordeargamers/Projects/exoduser-migration-20261001/tools/team-followup-20261001/BALANCE/NEXT_TASK.md",
+      "task": "BALANCE-LEGACY-REFUND-OVERFLOW-CANDIDATE",
+      "instruction": "/Users/fordeargamers/Projects/exoduser-migration-20261001/tools/team-followup-20261001/BALANCE/REFUND_OVERFLOW_TASK.md",
       "stateBefore": "idle/completed verified",
       "dispatch": "received",
       "exists": true,
-      "receivedAt": "2026-10-01T11:45:16Z",
+      "receivedAt": "2026-10-01T12:56:22Z",
       "startedAt": "2026-10-01T11:45:16Z",
-      "status": "CLI completed; explicit integration dependency; no new task queued",
+      "status": "actual source Read and receipt Edit verified; candidate in progress",
       "startEvidence": "NEXT_TASK.md·직전 결과·팀 MD·ITEM SSOT 실제 읽기 완료; 후보 파일 없음 확인",
-      "receipt": "/Users/fordeargamers/Projects/exoduser-migration-20261001/docs/0마스터플랜/mac-resume-20261001/vscode-dispatch/BALANCE-next-receipt.json",
-      "waitReason": "damage/source/stack/resource policy not fixed; no fabricated numerical implementation",
+      "receipt": "/Users/fordeargamers/Projects/exoduser-migration-20261001/docs/0마스터플랜/mac-resume-20261001/vscode-dispatch/BALANCE-refund-overflow-receipt.json",
+      "waitReason": null,
       "currentDependencyReview": "Latest MD/result/thread read: proc damage/resource/source/stack policy missing. Previously listed blastShot gate already uses malCost(5) in both current HTML files; no duplicate repair assigned.",
-      "cliState": "latest Codex turn completed verified this cycle"
+      "cliState": "implementation active",
+      "previous": {
+        "task": "BALANCE-FIREBALL-HOOK-CANDIDATE",
+        "status": "CLI completed; explicit integration dependency; no new task queued"
+      },
+      "queueMessageId": "01a0f789-8e68-74f0-8403-5cdf63f541a3",
+      "completedAt": null,
+      "firstActualAction": {
+        "turnId": "01a0f789-8e6a-7403-82f1-52554f0e8e93",
+        "readRecordedAt": "2026-10-01T12:56:31Z",
+        "exitCode": 0
+      }
     },
     {
       "team": "SOUND",
@@ -313,7 +346,7 @@
     }
   ],
   "remoteCheckpoint": {
-    "sha": "d2e3c4bfa924e3da62d6e5b05719281b4b8ce159",
+    "sha": "d5070ae0c6c0f5ed6665e98091e0c8a5688fa567",
     "branch": "codex/mac-environment-20261001",
     "verified": true
   },
@@ -329,9 +362,18 @@
     "scope": "includes BUILD denied loopback and SOUND dedup; later RNG and v2 changes not in this snapshot"
   },
   "nativeCheck": {
-    "atApprox": "2026-10-01T12:47:43Z",
-    "locked": true,
-    "attemptsThisCycle": 1
+    "atApprox": "2026-10-01T12:51:59Z",
+    "inventoryChecksThisCycle": 1,
+    "appInventoryAvailable": true,
+    "locked": null,
+    "inputRecovered": false,
+    "errors": [
+      "noWindowsAvailable",
+      "clipboard read timeout"
+    ],
+    "terminalRenameCommitConfirmed": false,
+    "userDraftSentOrCleared": false,
+    "unlockOrPowerChanges": false
   },
   "uiuxSubmissionRecovery": {
     "sha": "b3ab5be7f0c7a57ec1892cca1d65825549f54d72",

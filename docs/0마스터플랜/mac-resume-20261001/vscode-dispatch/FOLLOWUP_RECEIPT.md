@@ -81,3 +81,13 @@ UIUX v2의15그룹/6VM은 통과했으나 변환 후 Infinity 좌표에서25ms V
 ## 21:47 실제 호스트 응답과 UIUX bounded 정적 인수
 
 UTC12:47:42 새 date/uptime/pmset/ioreg 응답exit0·AC/100%·자동시스템절전방지 확인. native1회 locked, 물리화면전원 UNKNOWN. 설정변경0. UIUX 최종턴12:45:56Z 완료를 확인하고 별도복사에서30경계/재사용/embedded·15그룹/6VM/8계수쌍·patch 및 원15해시를 검수했다. 독립600혼합사례도 v1 출력/오류와 동등했다. 후보 정적 인수이며 실게임/시각/FPS는 미완료다. Claude7 idle·Codex4 completed, 나머지 기존 게이트 및 미전달을 유지한다. [상세 인수·전원확인·다음 단계](UIUX-boundary-root-review.md).
+
+## 21:54 이후 ITEM/BALANCE 실제 구현 재개
+
+기존 ITEM에 PM-009 고유 이름 저장 호환 한 건을 배정했다. 현재 본편/easy의 실제 `_fixWpnName`은 uniqueId UI-08 fixture의 고유 이름을 일반 단검으로 덮었다. 신규 고유가 실제 드롭 중이라는 주장은 아니다. queue `01a0f787-f77a-7f63-babd-667400f8bd45`, 턴12:54:38Z, Read 기록12:54:42Z, 후보·회귀 코드 작성과 실행을 확인했다.
+
+BALANCE는 무한 강화 UI와 현행 레거시 누적식을 대조했다. rarity4/enh200000에서 양쪽 `salvageVal=-244539796`, 같은 누적식의 수학적 내림 결과는4050427500이다. 실제 이 강화수치의 플레이 달성은 미검증이다. root 최초 출력의 rarity2 표기는 오기이며 실제 호출은 rarity4였다. 새 환수 정책 없이 signed32 오버플로만 제거하는 미적용 후보를 배정했다. queue `01a0f789-8e68-74f0-8403-5cdf63f541a3`, 턴12:56:22Z, 원식 Read·영수증 Edit 기록12:56:31Z 확인. PM-013-D 환수 목표와 화구 정책은 그대로 미확정이다.
+
+Native 목록에는 앱이 나왔으나 입력 복구를 뜻하지 않았다. ENEMY 빈 프롬프트를 확인한 뒤 입력은 `noWindowsAvailable`·붙여넣기 시간 초과·키 입력 후 화면 미갱신을 보였고 JSONL 새 user/Read가 없다. AX에 열린 터미널 이름 편집은 Escape를 보냈지만 취소 확인이 안 됐으며 이름 변경 커밋은 미확인이다. 사용자 초안 전송/삭제0. ENEMY·ART·SKILL은 미전달로 유지하고 ART/SKILL의 구체적인 FIX_TASK만 준비했다. 숨은 TTY·새 세션·전원/잠금 설정 변경0. BUILD EPERM은 유지하며 실제 게임 QA 입력 복구도 미확인이다.
+
+이번 배정 체크포인트는 지시·상태 기록만 포함하며 진행 중 ITEM/BALANCE 후보 소스는 제외한다.

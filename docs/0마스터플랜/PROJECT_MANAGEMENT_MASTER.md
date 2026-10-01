@@ -580,3 +580,7 @@ SOUND 원 제출을 보존하고 테스트 조립/patch 형식을 정정한 뒤8
 ### 18.30 UIUX bounded 후보 정적 인수 / Mac 응답 확인
 
 기존 UIUX가12:45:56Z 완료한 별도후보를 root가30경계/재사용/embedded·15그룹/6VM·600혼합사례 및patch/원본보존으로검수했다. 실제시각·밀집성능은대기.12:47:42Z Mac 새명령응답·AC전원확인, native잠금1회·물리화면전원UNKNOWN.11팀현재idle/완료와게이트를분리갱신했다. [인수·제한·소스근거](mac-resume-20261001/vscode-dispatch/UIUX-boundary-root-review.md).
+
+### 18.31 ITEM/BALANCE implementation resumed
+
+Existing ITEM received the unique-save name preservation candidate at12:54:38Z; actual Read and candidate/test edits verified. Existing BALANCE received the legacy refund signed32 overflow candidate at12:56:22Z; actual source Read and receipt edit verified. Production and policy unchanged. Native inventory visibility did not restore input: ENEMY/ART/SKILL remain undelivered. See mac-resume-20261001/vscode-dispatch/FOLLOWUP_RECEIPT.md for evidence and gates.
