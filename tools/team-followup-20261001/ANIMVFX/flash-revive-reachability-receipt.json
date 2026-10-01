@@ -1,0 +1,50 @@
+{
+  "taskId": "ANIMVFX-FLASH-REVIVE-REACHABILITY",
+  "title": "부활 플래시 후보의 실제 도달 경로 검수(실행 fixture, draw 생략 가정 없음)",
+  "team": "ANIMVFX",
+  "continuesSession": "1d2a7253-478c-43aa-8c6f-766a02270432",
+  "terminal": "VS Code 기존 터미널 8 (ANIMVFX)",
+  "cli": "Claude Code",
+  "model": "claude-opus-4-8",
+  "head": "30a204a7aa348a88b90bdc922862c610a7da938f",
+  "receivedUTC": "2026-10-01T16:32:12Z",
+  "firstReadUTC": "2026-10-01T16:32:20Z",
+  "firstEditUTC": "2026-10-01T16:34:00Z",
+  "commandUTC": "2026-10-01T16:36:00Z",
+  "completedUTC": "2026-10-01T16:38:28Z",
+  "status": "completed_with_pending_gates",
+  "duplicateCheck": "flash-revive-reachability-* 부재 확인 — 중복/진행중 아님. 기존 flash-transition.patch/before 보존.",
+  "loopOrderExtracted": {
+    "mainLoop": "game.html:59803-59830  while(_acc>=PHYS_STEP){update();_acc-=PHYS_STEP} 후 draw() 1회(G.on이면 항상, _didUpdate=false여도 else로 draw)",
+    "accCap": "game.html:59763  _accCap=IS_MOBILE?2틱:(_prof.u<=8?5틱:3틱) — 프레임당 update 최대 5(데스크톱)/3(무거움)/2(모바일)",
+    "update": "game.html:30844 function update(). rebuildDeadPool game.html:33089(2틱 주기), 적 decay game.html:33149(if(e.alive) 안), etype9 시체부활 game.html:37558",
+    "draw": "game.html:49935 function draw(). 사망분기 소거 game.html:50888, 2D 플래시 렌더 51851, GL 5227"
+  },
+  "hypothesis": "boss/druid 부활(reviveTimer 90~180)은 ≤5틱/프레임으로 동일프레임 불가 → 미도달(방어). etype9 시체부활은 _deadPool 2틱 재구성 + AI루프 부활이라 단일 catch-up 프레임 내 사망→부활(draw 없음) 가능성 → 실행 fixture로 검증.",
+  "ownedPaths": [
+    "tools/team-followup-20261001/ANIMVFX/flash-revive-reachability-fixture.mjs",
+    "tools/team-followup-20261001/ANIMVFX/flash-revive-reachability-result.md",
+    "tools/team-followup-20261001/ANIMVFX/flash-revive-reachability-receipt.json"
+  ],
+  "fixtureSHA": { "flash-revive-reachability-fixture.mjs": "8ea8dd085ecac4c6c769" },
+  "functionSHA": { "update(30844-)": "3ede71081bd2dbd4", "draw(49935-)": "2c4551389be189c4", "etype9(37551-37560)": "4daadabfacc40d6a", "rebuildDeadPool(17913)": "b3ef26080d28eca1" },
+  "findings": {
+    "reachable": "etype9 시체부활(game.html:37558) — catch-up 프레임(≥2 update/프레임) + 주술사 reviveT≈0가 인접 신규 시체와 정렬 시, 사망→부활이 draw 없이 같은 프레임에 일어나 hf=6 유지 → 부활 몹에 플래시 렌더(fixture 시나리오 A, 4프레임 렌더 확인). 시체부활 행 corpse._hitFlash=0은 효과 있는 수정.",
+    "notReachable": "보스(:33205)/드루이드(:16219) — reviveTimer 90~180이 _accCap(≤5틱/프레임) 초과라 동일프레임 부활 불가, 사망 중 draw(50888)가 소거 → 부활 시 hf=0. 방어 전용(생산 적용을 결함수정으로 요구하지 않음).",
+    "smooth": "정상 60fps(1틱/프레임)은 사망 프레임 draw가 즉시 소거 → 미도달."
+  },
+  "bothFileCompare": {
+    "transitionLocations": "동일 — 시체(game:37558 / easy:36352), 보스(game:33205 / easy:32011,32046), 드루이드(game:16219 / easy:15334)",
+    "flashRender": "game.html=렌더함(GL 5227+2D 51851). easy=죽은 코드(50337 '타이머만 감소', 렌더 안 함) + 사망소거(50888)·update감쇠(33149) 없음(구형) → easy는 _hitFlash 잔류가 시각상 무효. 도달 결함은 생산 전용.",
+    "easyUnchanged": true
+  },
+  "priorPatchPreserved": { "flash-transition.patch": "e50b1b92… 불변", "flash-transition-before.md": "5f7a2a41… 불변", "reclassify": "3행 중 시체부활 행=도달결함수정, 보스/드루이드 2행=방어 전용(라벨 정정, 파일 미변경)" },
+  "pending": [
+    "총괄/QA: flash-transition.patch의 시체부활 행 적용 검토(도달 결함). 보스/드루이드 2행은 방어 선택.",
+    "QA/root: 정규 GL 실화면에서 catch-up(히치 유도)+주술사 인접 사망→부활 첫 프레임 플래시 pop 실측(본 세션 게임/GL 실행 0)."
+  ],
+  "limits": "도달 입증은 추출 순서의 Node 모델(라이브 화면 아님). catch-up 프레임+reviveT 정렬 조건부(좁음). sp=1 가정. 실제 ≥90Hz·실화면 미실측.",
+  "nextAction": "시체부활 행 적용·실화면 검증은 root/QA 인계. 한 건 완료.",
+  "notModified": "신규 사망효과/성능관측기/game/easy/index/server/사용자세이브/생산/Git/공유docs/새세션 0. 기존 patch/before 보존.",
+  "blocker": null
+}

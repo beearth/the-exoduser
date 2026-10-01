@@ -1,0 +1,50 @@
+--- animvfx_highhz_lifetime_gate.mjs	2026-10-01 21:07:03
++++ gate_patched.mjs	2026-10-02 00:26:03
+@@ -65,9 +65,9 @@
+         startUpdates: num(r.updates), startDraws: num(r.draws), startNow: num(r.now),
+         minHf: hf ?? null, minIdx: i, minUpdates: num(r.updates), minDraws: num(r.draws), minNow: num(r.now),
+         decreaseEvents: 0, sawPauseDuring: false, sawHiddenDuring: false,
+-        sawDeath: false, sawReviveReset: false, clockBreak: false, pauseDecay: false, reachedZero: false,
++        sawDeath: hasEv(r,'death-observed'), sawReviveReset: false, clockBreak: false, pauseDecay: false, reachedZero: false,
+         zeroKind: null, lastHf: hf ?? null, lastUpdates: num(r.updates), lastDraws: num(r.draws), lastNow: num(r.now),
+-        samples: 1 };
++        samples: 1, intervals: [], _pU: num(r.updates), _pD: num(r.draws), _pHf: hf ?? null };
+     }
+     const ep = open[id];
+     if (!ep) continue;
+@@ -98,6 +98,7 @@
+       ep.minHf = 0; ep.minUpdates = u; ep.minDraws = d; ep.minNow = n;
+       episodes.push(ep); open[id] = null; continue;
+     }
++    if (hf != null && ep._pHf != null) { const _dHf = ep._pHf - hf; const _dU = (u != null && ep._pU != null) ? u - ep._pU : null; const _dD = (d != null && ep._pD != null) ? d - ep._pD : null; const _atDeath = hasEv(r,'death-observed') || (ep.sawDeath && hf === 0); if (_dHf > 1e-6) ep.intervals.push({ dHf:_dHf, dU:_dU, dD:_dD, atDeath:_atDeath }); } ep._pU = u ?? ep._pU; ep._pD = d ?? ep._pD; ep._pHf = hf ?? ep._pHf;
+     ep.lastHf = hf ?? ep.lastHf; ep.lastUpdates = u ?? ep.lastUpdates; ep.lastDraws = d ?? ep.lastDraws; ep.lastNow = n ?? ep.lastNow;
+   }
+   // 종료 못한 에피소드(미종료 후보)
+@@ -136,16 +137,17 @@
+ 
+   // C5 감쇠모델 — update-tick 구동 vs draw-frame 구동
+   let decayModel = 'UNKNOWN', decayNote = '';
+-  if (decrements != null && dU != null && dD != null && decrements >= 1) {
+-    // 감쇠가 update-tick을 따르는가 draw-frame을 따르는가 — 감소수와 일치하는 쪽이 구동원.
+-    // (저주사율: draw<감소, 고주사율: draw>감소. 어느 쪽이든 '일치 여부'로 판별하면 둘 다 맞음.)
+-    const updateMatch = Math.abs(dU - decrements) <= TICK_TOL;
+-    const drawMatch = Math.abs(dD - decrements) <= TICK_TOL;
+-    if (updateMatch && !drawMatch) { decayModel = 'PASS'; decayNote = `update-tick 구동(주사율 독립): ${decrements}감소≈${dU}updateTick, draw는 ${dD}프레임`; }
+-    else if (drawMatch && !updateMatch) { decayModel = 'FAIL'; decayNote = `draw-frame 구동(주사율 의존 회귀): ${decrements}감소≈${dD}draw, update ${dU}틱`; flags.push('감쇠가 draw 구동 — 고주사율에서 수명 단축 회귀'); }
+-    else if (updateMatch && drawMatch) { decayModel = 'UNKNOWN'; decayNote = `update≈draw 레이트(구분 불가): ${decrements}감소, dU=${dU} dD=${dD}. 고주사율/저주사율 분리 표본 필요`; }
+-    else { decayModel = 'UNKNOWN'; decayNote = `불명확: ${decrements}감소, dU=${dU} dD=${dD}`; }
+-  } else { decayNote = '감쇠 표본 부족'; }
++  // [sparse-update-c5-fix] 총량 단순 일치가 아니라 구간 증거로 구동원 판별(드문표본·sp감쇠 오판 방지).
++  { const decs = (ep.intervals||[]).filter(iv => iv.dHf > 1e-6 && !iv.atDeath);
++    let uOnly=0,dOnly=0,both=0,noC=0;
++    for (const iv of decs){ const up=iv.dU!=null&&iv.dU>0, dp=iv.dD!=null&&iv.dD>0;
++      if(up&&!dp)uOnly++; else if(dp&&!up)dOnly++; else if(up&&dp)both++; else noC++; }
++    if (decs.length===0){ decayModel='UNKNOWN'; decayNote='감소 구간 없음(사망리셋 제외)'; }
++    else if (noC>0){ decayModel='UNKNOWN'; decayNote=`무카운터 감소 ${noC}건(trace 결함)`; flags.push('C5 trace 결함'); }
++    else if (uOnly>0 && dOnly>0){ decayModel='FAIL'; decayNote=`모순 update-only ${uOnly}+draw-only ${dOnly}`; flags.push('C5 모순'); }
++    else if (uOnly>0){ decayModel='PASS'; decayNote=`update 구동(주사율 독립): draw 없이 감소 ${uOnly}건(sp<1 성립), 둘다진행 ${both}`; }
++    else if (dOnly>0){ decayModel='FAIL'; decayNote=`draw 구동 회귀: update 없이 감소 ${dOnly}건`; flags.push('감쇠 draw 구동 — 고주사율 수명 단축'); }
++    else { decayModel='UNKNOWN'; decayNote=`둘다진행 ${both}건만 — 드문/불완전 표본 분리 불가(총량 단순 일치 PASS 금지)`; } }
+   verdict.decayModel = decayModel;
+ 
+   // C6 수명종료

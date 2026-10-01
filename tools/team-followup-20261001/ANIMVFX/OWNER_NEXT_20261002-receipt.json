@@ -1,0 +1,57 @@
+{
+  "taskId": "ANIM-C5-SPARSE-UPDATE-EDGE",
+  "title": "고주사율 게이트 C5 드문표본·sp감쇠 경계 오PASS 재현·최소수정·부정회귀",
+  "team": "ANIMVFX",
+  "continuesSession": "1d2a7253-478c-43aa-8c6f-766a02270432",
+  "terminal": "VS Code 기존 터미널 8 (ANIMVFX)",
+  "cli": "Claude Code",
+  "model": "claude-opus-4-8",
+  "sessionId": "1d2a7253-478c-43aa-8c6f-766a02270432",
+  "head": "30a204a7aa348a88b90bdc922862c610a7da938f",
+  "receivedAtKST": "2026-10-02T00:16",
+  "firstReadKST": "2026-10-02T00:17",
+  "firstEditKST": "2026-10-02T00:18",
+  "commandStartKST": "2026-10-02T00:20 — node --check·sparse-update-* 자가검사·선행 오판 데모·실 raw",
+  "completedKST": "2026-10-02T00:26",
+  "status": "completed_with_pending_gates",
+  "duplicateCheck": "ANIMVFX OWNER_NEXT/sparse-update-* 부재 확인 — 중복/진행중 아님. 단 공유 dispatch 경로의 OWNER_NEXT_20261002-receipt/result는 이미 SKILL팀(terminal6, SKILL-OWNER-INTEGRATION-20261002)이 점유 중(파일명 충돌).",
+  "pathCollisionNote": "배정은 OWNER_NEXT_20261002-receipt/result를 ANIMVFX 소유로 지정했으나 동일 파일명을 SKILL 세션이 먼저 사용 중. 타팀 WIP 보존 규칙상 공유 경로를 덮어쓰지 않고, 내 receipt/result를 내 소유 tools/team-followup-20261001/ANIMVFX/ 아래 OWNER_NEXT_20261002- 접두사로 작성한다. 총괄 확인 요청.",
+  "realFormula": "game.html:33148  if(e._hitFlash>0)e._hitFlash=Math.max(0,e._hitFlash-sp);  — 감쇠=update틱당 sp(슬로모/히트스톱), 1이 아님. hf는 분수 가능. render(5227 GL/51847 2D)는 그리기만, 사망분기 50884 리셋.",
+  "readOnlyInputs": [
+    "tools/team-followup-20261001/ANIMVFX/animvfx_highhz_lifetime_gate.mjs (선행 C5)",
+    "docs/.../vscode-dispatch/ANIMVFX-next-result.md",
+    "docs/5.1임펙트디자인/ANIMATION_VFX_TEAM_MASTER.md",
+    "game.html:33148 / 5220-5235 / 51847 / 50884 (읽기 전용)"
+  ],
+  "ownedPaths": [
+    "tools/team-followup-20261001/ANIMVFX/ (sparse-update-* 접두사)",
+    "tools/team-followup-20261001/ANIMVFX/OWNER_NEXT_20261002-result.md",
+    "tools/team-followup-20261001/ANIMVFX/OWNER_NEXT_20261002-receipt.json"
+  ],
+  "completed": {
+    "finding": "선행 C5 총량 단순일치의 양방향 오판 — 슬로모 sp=0.5 update구동→오FAIL, draw step2+30fps 드문표본→오PASS. 둘 다 선행 게이트로 실제 재현.",
+    "minimalFix": "sparse-update-c5-gate.mjs — 구간 증거(update-only/draw-only/둘다진행/무카운터)로 구동원 판별. update-only만=PASS(sp<1 성립), draw-only만=FAIL, 둘다진행만=UNKNOWN(드문표본), 무카운터=REJECT. +사망리셋 제외 2건.",
+    "patch": "sparse-update-c5.patch (선행 게이트 적용가능 통합 diff, 패치본 node --check·동작 검증, 원본 미적용)",
+    "deliverables": {
+      "tools/team-followup-20261001/ANIMVFX/sparse-update-c5-gate.mjs": "b11c5a41368c240149ce",
+      "tools/team-followup-20261001/ANIMVFX/sparse-update-c5.patch": "71a0aa2b89f05a0eac30"
+    },
+    "checks": {
+      "nodeCheck": "gate+patched 모두 PASS",
+      "negativeRegression": "sparse-update-* 8/8 + 선행 오판 데모 2/2 (exit 0)",
+      "realRaw": "gl-revive-valid/60: 비치명 감쇠 PASS(update-only 6건, 주사율 독립)·사망리셋 UNKNOWN·부활 PASS·전체 UNKNOWN(고주사율 미측정). gl-revive-raw: 에피소드0 UNKNOWN",
+      "priorGatePatchedVerified": "slowmo→PASS, drawstep2→UNKNOWN, drawdriven240→FAIL"
+    },
+    "node": "v24.15.0"
+  },
+  "highRefreshActual": "NOT-MEASURED — 자연감쇠 drawHz ~36-38Hz. 불완전 trace UNKNOWN 유지",
+  "pending": [
+    "총괄: sparse-update-c5.patch 선행 게이트 통합 결정 + 경로충돌(SKILL OWNER_NEXT 파일명) 정리",
+    "QA/총괄: 고주사율(120/240Hz)+after-update 표본 포함 raw(슬로모 구간 권장) 확보 시 신규 C5가 고주사율 수명 자동 판정"
+  ],
+  "notModified": "원GL프로브·생산VFX·보호설계·선행게이트 원본·game/easy/index/server/공유마스터/타팀 0",
+  "git": "add/commit/push 0",
+  "nextAction": "고주사율 실화면 raw는 QA 단독 캡처 인계. 총괄: 패치 통합·경로충돌 정리·원격 체크포인트",
+  "blocker": null,
+  "notes": "원GL프로브/생산VFX/보호설계 수정0. game/easy/index/server/공유마스터/타팀 읽기전용. Git/게임/브라우저/서버/이미지/청취/새세션/타팀메시지 0. 불완전 trace=UNKNOWN, 실제 고주사율 미측정 유지. 11PASS 반복 보고 안 함."
+}

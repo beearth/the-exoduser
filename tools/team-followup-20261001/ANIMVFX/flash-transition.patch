@@ -1,0 +1,18 @@
+# flash-transition.patch — ANIMVFX-20261002-FLASH-TRANSITION (CANDIDATE, 미적용)
+# 대상: game.html (총괄 소유·생산). 본 세션 미적용. 총괄/QA 검토 후 적용.
+# game.html SHA-256(before): 7631f5a083672124624e0b8dc22b0716d10c8815dbb1e6aee98a5e2e51299993
+# 변경: 동일객체 부활 전이 3곳에 "<obj>._hitFlash=0;" 추가 — 형제 상태(eShield/stunned/reviveIframes) 리셋과 같은 지점.
+#       시각 상태만. 수명감쇠(33149)/사망소거(50888)/판정/보상/시체수/death/alive 불변. 새 사망 디졸브 구현 0.
+
+@@ game.html:33205  (보스 부활) @@
+-             e.hp=~~(e.mhp*.5);e.eShield=0;e.eShieldMax=0;e.s='recover';e.st2=60;e.stunned=0;e.kb={x:0,y:0};
++             e.hp=~~(e.mhp*.5);e.eShield=0;e.eShieldMax=0;e.s='recover';e.st2=60;e.stunned=0;e.kb={x:0,y:0}; e._hitFlash=0;
+
+@@ game.html:16219  (드루이드 피날레 부활) @@
+-   e.alive=true;e.hp=Math.max(1,Math.floor(e.mhp*.35));e.eShield=0;e.eShieldMax=0;
++   e.alive=true;e.hp=Math.max(1,Math.floor(e.mhp*.35));e.eShield=0;e.eShieldMax=0; e._hitFlash=0;
+
+@@ game.html:37558  (주술사 시체 부활(etype9)) @@
+-         corpse.alive=true;corpse.hp=~~(corpse.mhp*.5);corpse.eShield=0;corpse.eShieldMax=0;corpse.s='recover';corpse.st2=60;corpse.stunned=0;corpse.poise=corpse.maxPoise;corpse.reviveIframes=0;
++         corpse.alive=true;corpse.hp=~~(corpse.mhp*.5);corpse.eShield=0;corpse.eShieldMax=0;corpse.s='recover';corpse.st2=60;corpse.stunned=0;corpse.poise=corpse.maxPoise;corpse.reviveIframes=0; corpse._hitFlash=0;
+

@@ -1,0 +1,48 @@
+{
+  "taskId": "ANIMVFX-20261002-FLASH-TRANSITION",
+  "title": "_hitFlash 죽음·부활·pool재사용·GL↔2D 전이 소스 회귀 + 확인 결함 1건 최소 미적용 patch",
+  "team": "ANIMVFX",
+  "continuesSession": "1d2a7253-478c-43aa-8c6f-766a02270432",
+  "terminal": "VS Code 기존 터미널 8 (ANIMVFX)",
+  "cli": "Claude Code",
+  "model": "claude-opus-4-8",
+  "head": "30a204a7aa348a88b90bdc922862c610a7da938f",
+  "receivedUTC": "2026-10-01T16:12:46Z",
+  "firstReadUTC": "2026-10-01T16:13:00Z",
+  "firstEditUTC": "2026-10-01T16:18:00Z",
+  "reviewUTC": "2026-10-01T16:20:00Z",
+  "completedUTC": "2026-10-01T16:22:45Z",
+  "status": "completed_with_pending_gates",
+  "duplicateCheck": "flash-transition-* 산출물 부재 확인(task.md 제외) — 중복/진행중 아님.",
+  "confirmedDefect": {
+    "one": "동일객체 부활 전이 3곳(game.html:33205 보스, :16219 드루이드, :37558 주술사 시체)이 eShield/stunned/reviveIframes는 리셋하나 e._hitFlash 소거를 누락.",
+    "nature": "'부활 시 피격 플래시 없음' 불변식이 상태전이가 아니라 렌더경로 소거(draw :50888)에만 의존(단일 경로).",
+    "liveReproNote": "현재 라이브 잔상은 미재현 — 죽은 몹이 ens에 ≥1프레임 남고 draw가 매 프레임 50888로 소거해 가려짐. GC 타이밍/비렌더 부활/ens밖 객체 부활 변경 시 부활 첫 프레임 잔상(pop)으로 회귀하는 잠재·구조 결함.",
+    "scopeChecked": {
+      "death": "draw :50888 사망분기가 매 프레임 _hitFlash=0 (ens 잔류 중) — 커버",
+      "revive": "전이 3곳 _hitFlash 소거 누락(위) — 결함",
+      "poolReuse": "mkEn/_spawnGhoul/_spawnMatSlime 모두 신규 객체(복사 아님) → stale 없음. _deadPool ⊆ ens → 50888 커버",
+      "glVs2d": "감쇠=update :33149 단일지점, 렌더(GL :5227/2D :51851)는 그리기만 → 전환 이중감소/누락 없음"
+    }
+  },
+  "deliverables": {
+    "tools/team-followup-20261001/ANIMVFX/flash-transition-source-regression.mjs": "982a280f0fb5547d6bd0",
+    "tools/team-followup-20261001/ANIMVFX/flash-transition.patch": "e50b1b92d1bf7d334232 (CANDIDATE·미적용)",
+    "tools/team-followup-20261001/ANIMVFX/flash-transition-before.md": "5f7a2a41e0fb35249d4b"
+  },
+  "checks": {
+    "nodeCheck": "source-regression PASS",
+    "sourceRegression": "CONFIRMED (exit 0) — game.html 실제 소스에서 생애경로/스폰/부활전이 누락/GL↔2D/제어흐름 전부 확인",
+    "patchApplied": false,
+    "patchValidity": "3곳 모두 문장군 끝에 '<obj>._hitFlash=0;' append — 단순 대입, 구문 안전"
+  },
+  "patchEffect": "시각 상태만 소거. 수명감쇠(33149)/사망소거(50888)/death/alive/판정/보상(rollDrop/addExp/kills)/시체수(_addCorpse)/경직/쿨다운 불변. 새 사망 디졸브 구현 0(기존 보류 계약 유지).",
+  "notModified": "game.html(SHA 7631f5a0…08672124624e… 변경 0)·easy·index·server·공유docs·타팀·원GL프로브·생산VFX 0. Git/queue/새세션/새에이전트/권한 0. 사용자 게임 입력/리로드/계측/닫기 0.",
+  "pending": [
+    "총괄/QA: flash-transition.patch 검토·적용 결정(생산 game.html은 총괄 소유).",
+    "QA/root: 적용 후 정규 GL 실화면에서 보스/구울/주술사 부활 첫 프레임 _hitFlash=0·플래시 pop 없음 실측(본 세션 게임/GL 실화면 실행 없음)."
+  ],
+  "limits": "라이브 잔상 미재현(렌더 소거가 현재 가림). 실제 ≥90Hz·실화면 검수는 root/QA 별도. 소스 회귀는 라인 드리프트 시 수동 확인 필요.",
+  "nextAction": "patch 검토·실화면 검증은 root/QA 인계. 한 건 완료.",
+  "blocker": null
+}

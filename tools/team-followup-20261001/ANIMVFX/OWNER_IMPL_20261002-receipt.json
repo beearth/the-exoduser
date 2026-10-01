@@ -1,0 +1,57 @@
+{
+  "taskId": "ANIMVFX-20261002-SPARSE-CLOCK-INTEGRATION",
+  "title": "C5 구간판정에 누락/비정상/역행 카운터 계약 보강 후 canonical gate 통합",
+  "team": "ANIMVFX",
+  "continuesSession": "1d2a7253-478c-43aa-8c6f-766a02270432",
+  "terminal": "VS Code 기존 터미널 8 (ANIMVFX)",
+  "cli": "Claude Code",
+  "model": "claude-opus-4-8",
+  "sessionId": "1d2a7253-478c-43aa-8c6f-766a02270432",
+  "head": "30a204a7aa348a88b90bdc922862c610a7da938f",
+  "receivedAtKST": "2026-10-02T00:36",
+  "firstReadKST": "2026-10-02T00:37",
+  "firstEditKST": "2026-10-02T00:40",
+  "commandStartKST": "2026-10-02T00:42",
+  "completedKST": "2026-10-02T00:48",
+  "status": "completed_with_pending_gates",
+  "duplicateCheck": "OWNER_IMPL_20261002-receipt/result·sparse-clock-* 부재 확인 — 중복/진행중 아님.",
+  "redCounterexamples": [
+    "ANIM-missing-middle-draw-record: 중간 record의 draws 누락 → dD=null을 0처럼 처리 → 오PASS(고주사율 인증). clockMissing이 draws 미검사.",
+    "ANIM-missing-draw-counter: draws 카운터 누락 → 오PASS, 기대 UNKNOWN or REJECT.",
+    "직접: classifyDecaySparse({dHf:1,dU:1,dD:null}) → 오PASS"
+  ],
+  "fixPlan": "① extractEpisodes에 updates/draws/now 3카운터 정수·단조·유한·비음수 계약 + 시작/중간/종료 완전성 + 가짜 zero event + 초기 hidden/paused/runtimeGate=false 포착. ② classifyDecaySparse: dU/dD는 두 유효 끝점에서 정확히 0 관측 시에만 '진행없음'. null/NaN=indeterminate→PASS 금지. ③ canonical animvfx_highhz_lifetime_gate.mjs에 통합(before 사본 보존). ④ sparse 데모 old-wrong은 고정 before 참조.",
+  "ownedPaths": [
+    "tools/team-followup-20261001/ANIMVFX/animvfx_highhz_lifetime_gate.mjs (canonical — 통합 대상)",
+    "tools/team-followup-20261001/ANIMVFX/sparse-update-c5-gate.mjs",
+    "tools/team-followup-20261001/ANIMVFX/sparse-clock-* (신규)",
+    "tools/team-followup-20261001/ANIMVFX/OWNER_IMPL_20261002-result.md",
+    "tools/team-followup-20261001/ANIMVFX/OWNER_IMPL_20261002-receipt.json"
+  ],
+  "completed": {
+    "beforeFrozen": { "sparse-clock-gate-before.mjs": "3309238f04d51ccf65af (통합 전 magnitude 동결)" },
+    "canonicalIntegrated": { "animvfx_highhz_lifetime_gate.mjs": "94fb46c002fdca7cbcfe" },
+    "newHarness": { "sparse-clock-integration.mjs": "d66d4c978e920a95ad7e" },
+    "sideUpdated": { "sparse-update-c5-gate.mjs": "37d9956be9b7054b081d (canonical 위임·고정 before 참조)" },
+    "fix": "C2 카운터 무결(updates/draws/now 결측·NaN·비정수·음수·역행·가짜zero) + C5 끝점미상(dD/dU null)=indeterminate→PASS 금지(UNKNOWN). 실제 draw 구동만 FAIL.",
+    "checks": {
+      "nodeCheck": "5/5 PASS",
+      "canonicalSelfTest": "18/18 (missing-middle-draw·missing-draw-counter=REJECT 포함) exit 0",
+      "redToGreen": "2 반례 + 단위 {dD:null}: before=PASS(오판)→canonical=REJECT/UNKNOWN 전부 ✓",
+      "canonicalRegression": "update-only240=PASS, draw-only240=FAIL",
+      "existing8plus2": "sparse-update-c5-gate 8 fixture + 2 old-wrong(고정 before) OK",
+      "realRaw3": "valid/60=UNKNOWN(고주사율 미실측)·부활 PASS, raw=에피소드0 UNKNOWN — 오REJECT/오PASS 없음",
+      "priorValidatorRegression": "animvfx_gl_validator 9/9 유지"
+    },
+    "node": "v24.15.0"
+  },
+  "highRefreshActual": "NOT-MEASURED — 실제 >=90Hz 라이브 수명 계속 UNKNOWN. 통합은 판정기 하드닝.",
+  "pending": [
+    "총괄: canonical 통합본을 새 acceptance 기준으로 채택 검토(기존 sparse-update-c5.patch는 끝점미상 보강 전 → 본 통합본으로 대체)",
+    "QA/총괄: 고주사율(120/240Hz)+after-update(슬로모 포함) raw 확보 시 canonical C7 자동 판정"
+  ],
+  "docsPlan": "ANIMATION_VFX_TEAM_MASTER §11 한 줄 인덱스 후보 — result §6. 공유docs 직접편집 0.",
+  "nextAction": "고주사율 실화면 raw는 QA 단독 캡처 인계. 총괄: canonical 채택·원격 체크포인트.",
+  "notModified": "원GL프로브·생산VFX·game/easy/index/server/공유docs·타팀 0. Git/queue/새세션/권한 0. canonical 원본은 before로 동결 후 통합.",
+  "blocker": null
+}

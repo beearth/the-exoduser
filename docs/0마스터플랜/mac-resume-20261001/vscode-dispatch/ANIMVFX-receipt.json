@@ -1,0 +1,51 @@
+{
+  "taskId": "ANIMVFX-GL-PROBE-FIX",
+  "title": "플래시 관측 후보 자원·게이트 보강",
+  "team": "ANIMVFX",
+  "terminal": "VS Code 기존 터미널 8 (ANIMVFX)",
+  "cli": "Claude Code",
+  "model": "claude-opus-4-8",
+  "sessionId": "1d2a7253-478c-43aa-8c6f-766a02270432",
+  "sessionIdSource": "scratchpad 경로의 세션 UUID로 추정. CLI가 직접 보고한 값 아님",
+  "receivedAt": "2026-10-01T19:16:00+09:00",
+  "startedAt": "2026-10-01T19:16:33+09:00",
+  "completedAt": "2026-10-01T19:28:15+09:00",
+  "status": "completed_with_pending_gates",
+  "head": "30a204a7aa348a88b90bdc922862c610a7da938f",
+  "ownedPaths": [
+    "tools/team-followup-20261001/ANIMVFX/",
+    "docs/0마스터플랜/mac-resume-20261001/vscode-dispatch/ANIMVFX-result.md",
+    "docs/0마스터플랜/mac-resume-20261001/vscode-dispatch/ANIMVFX-receipt.json"
+  ],
+  "completed": {
+    "probe": "tools/team-followup-20261001/ANIMVFX/animvfx_gl_probe.js",
+    "validator": "tools/team-followup-20261001/ANIMVFX/animvfx_gl_validator.mjs",
+    "manifest": "tools/team-followup-20261001/ANIMVFX/validation-manifest.json",
+    "fixes": [
+      "임시 WebGL2 컨텍스트 생성(:20) 제거 — 게임 실제 백엔드로만 GL 판정",
+      "flashPathReady에 per-mob _ensGLMode===1 + 실행/일시정지 게이트(G.on/G.paused) 반영",
+      "install/dispose 정리·재설치(중복설치 가드·원본 draw/update 복원)",
+      "GL없음/contextLost/표본0/동일객체 부활 vs 새 구울 분류 스키마"
+    ],
+    "staticChecks": {
+      "nodeCheckProbe": 0,
+      "nodeCheckValidator": 0,
+      "mockSelfTest": "9/9 PASS (exit 0)",
+      "realRawRevalidation": "gl-revive-raw=ZERO_SAMPLE, gl-revive-valid=동일객체3/구울1, gl-revive-60=동일객체2/구울2 — R 문서 수치 재현, 둘 다 고주사율 REJECT"
+    },
+    "node": "v24.15.0"
+  },
+  "gate": {
+    "browserRun": "blocked",
+    "reason": "게임/브라우저/서버 추가 실행은 QA 단독. ANIMVFX은 QA 종료 인계 전 보류",
+    "pending": [
+      "animvfx_gl_probe.js 브라우저 실행(정규 GL ?webgpu=0 풀부팅·사망/부활 첫 after-draw 캡처)",
+      "고주사율(>=90Hz) GL 수명 PASS (현존 raw 전부 저주사율)",
+      "자연전투·새 구울 객체 시각 인수·부활 잔상0 실화면 검수"
+    ]
+  },
+  "productionChange": 0,
+  "git": "add/commit/push 0",
+  "nextAction": "QA/총괄: 정규 GL 고주사율 풀부팅에서 프로브 install→사망/부활→dispose raw를 본 검증기로 자동 판정. 총괄: result §7 docs 한 줄 인덱스 통합·원격 체크포인트",
+  "blocker": null
+}
