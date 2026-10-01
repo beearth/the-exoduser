@@ -1,0 +1,29 @@
+{
+  "utc": "2026-10-01T18:19:34.466Z",
+  "beforeSHA": "339fad6ab51cba92f6ca7a386c8aeb251f68cdb58cdfa55c109f57b1758a42ad",
+  "productionSHA": "441bacbd8a5e0f7ae883e5c9a0a2e0368bf5190f50d2cb0246b89a4e6771bb6d",
+  "rangeGroups": 23,
+  "saveGroups": 13,
+  "wholeHandlerGroups": 4,
+  "totalGroups": 40,
+  "checks": [
+    {
+      "name": "whole-handler-success",
+      "status": "PASS"
+    },
+    {
+      "name": "whole-handler-write",
+      "status": "PASS"
+    },
+    {
+      "name": "whole-handler-rename",
+      "status": "PASS"
+    },
+    {
+      "name": "whole-handler-invalid-json",
+      "status": "PASS"
+    }
+  ],
+  "ownerFilesPreserved": 20,
+  "limits": "Actual source in VM with memory fs and stream doubles. No listen/network/real save/disk/crash/fsync/media playback verification."
+}

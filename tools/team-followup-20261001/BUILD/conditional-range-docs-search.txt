@@ -1,0 +1,359 @@
+docs/1전체그래픽세팅/IMAGE_TEXTURE_RUNTIME_20260913.md:15:| 보존 원칙 | ui_refs/output이라는 폴더명만으로 미사용 판정하지 않음. 이름을 조합하는 애니메이션·조건부 로딩은 요청되지 않았다는 이유로 삭제하지 않음 |
+docs/7아이템디자인/슬롯별_어픽스_풀.md:20:- **B. 아키타입 인덱스** — `arcMage*/arcRanger*/arcWarrior*/arcAssassin*/arcTank*` 즉 클래스 전용 어픽스 지도.
+docs/7아이템디자인/슬롯별_어픽스_풀.md:59:| 반지1 | `ring` | 스탯/조건부 | 힘·민첩·지능·원소반지·콤보 |
+docs/7아이템디자인/슬롯별_어픽스_풀.md:89:arcRangerRange, arcRangerDmg, arcRangerPierce, bowAtkSpd, bowRange,
+docs/7아이템디자인/슬롯별_어픽스_풀.md:152:| `ATK-CONDITIONAL` 조건부 공격 배수 | 특정 조건(보스/정예/처형/약자포식 등)에서 폭딜 | 34 | 46 |
+docs/7아이템디자인/슬롯별_어픽스_풀.md:175:| `arcRangerPierce` | 궁수관통의 | xbow.SUF | pct |
+docs/7아이템디자인/슬롯별_어픽스_풀.md:176:| `arcRangerRange` | 궁수사거리의 | xbow.PRE | pct |
+docs/7아이템디자인/슬롯별_어픽스_풀.md:182:| `bowRange` | 활사거리의 | xbow.PRE | pct |
+docs/7아이템디자인/슬롯별_어픽스_풀.md:264:| `weaponRange` | 무기사거리의 | wpn.PRE | pct |
+docs/7아이템디자인/슬롯별_어픽스_풀.md:266:### ATK-CONDITIONAL — 조건부 공격 배수
+docs/7아이템디자인/슬롯별_어픽스_풀.md:550:| `arcRangerMS` | 궁수질주의 | boots.PRE | pct |
+docs/7아이템디자인/슬롯별_어픽스_풀.md:552:| `bootsChargeRange` | 돌진범위의 | boots.PRE | pct |
+docs/7아이템디자인/슬롯별_어픽스_풀.md:557:| `dashRange` | 돌진거리의 | boots.PRE | pct |
+docs/7아이템디자인/슬롯별_어픽스_풀.md:612:| `arcRangerDmg` | 궁수의힘 | xbow.SUF | pct |
+docs/7아이템디자인/슬롯별_어픽스_풀.md:646:### Ranger — 궁수 (4종)
+docs/7아이템디자인/슬롯별_어픽스_풀.md:651:| `arcRangerDmg` | 궁수의힘 | xbow.SUF | 0.08 | 0.44 | pct | 30 |
+docs/7아이템디자인/슬롯별_어픽스_풀.md:652:| `arcRangerMS` | 궁수질주의 | boots.PRE | 0.03 | 0.18 | pct | 35 |
+docs/7아이템디자인/슬롯별_어픽스_풀.md:653:| `arcRangerPierce` | 궁수관통의 | xbow.SUF | 0.04 | 0.22 | pct | 30 |
+docs/7아이템디자인/슬롯별_어픽스_풀.md:654:| `arcRangerRange` | 궁수사거리의 | xbow.PRE | 0.05 | 0.3 | pct | 30 |
+docs/7아이템디자인/슬롯별_어픽스_풀.md:930:| arcRangerRange | 궁수사거리의 | 0.05 | 0.08 | 0.14 | 0.22 | 0.3 | pct | 30 |  |
+docs/7아이템디자인/슬롯별_어픽스_풀.md:938:| bowRange | 활사거리의 | 0.05 | 0.08 | 0.14 | 0.22 | 0.3 | pct | 55 |  |
+docs/7아이템디자인/슬롯별_어픽스_풀.md:996:| weaponRange | 무기사거리의 | 0.04 | 0.07 | 0.11 | 0.16 | 0.22 | pct | 55 |  |
+docs/7아이템디자인/슬롯별_어픽스_풀.md:1008:| arcRangerDmg | 궁수의힘 | 0.08 | 0.14 | 0.22 | 0.32 | 0.44 | pct | 30 |  |
+docs/7아이템디자인/슬롯별_어픽스_풀.md:1009:| arcRangerPierce | 궁수관통의 | 0.04 | 0.07 | 0.11 | 0.16 | 0.22 | pct | 30 |  |
+docs/7아이템디자인/슬롯별_어픽스_풀.md:1362:| arcRangerMS | 궁수질주의 | 0.03 | 0.05 | 0.08 | 0.12 | 0.18 | pct | 35 |  |
+docs/7아이템디자인/슬롯별_어픽스_풀.md:1363:| bootsChargeRange | 돌진범위의 | 0.05 | 0.08 | 0.14 | 0.22 | 0.3 | pct | 45 |  |
+docs/7아이템디자인/슬롯별_어픽스_풀.md:1364:| dashRange | 돌진거리의 | 0.05 | 0.08 | 0.14 | 0.22 | 0.3 | pct | 45 |  |
+docs/5.1임펙트디자인/VFX_구현가이드.md:48:| 배치 | 캐릭터 중심 피벗, `P.facing` 회전. 크기 `(200+견갑bonusRange×8)×C×M`, C=충전1~3, M=1+(L−1)×0.05. 프레임별 위치/크기 정규화 없이 동일 스케일 |
+docs/5.1임펙트디자인/VFX_구현가이드.md:137:| `silvertailChargeRange` | `img/vfx/silvertail_charge_range_api_v1.png` | 1254×1254 RGB, 근검정 배경, 개방형 은빛 룬 아크 | 지름 `range×2.24×(1+sin(frame×.16)×.018)`; 글로우 alpha `.12+tier×.035`, 본체 `.34+tier×.10` | 같은 `_makeBlackAdditiveCutout(24,72)` 캐시 후 `lighter`, `rotate(facing+π)` | `_drawSilvertailChargeRange`; `sDraw/kiGather` |
+docs/5.1임펙트디자인/VFX_구현가이드.md:792:| 발사 크기 | `_wvRangeMul=(1+(L−1)×0.05)×clamp(P._sBashChgMul,1,3)`를 발사 시 r/w/maxDist에 반영 |
+docs/12퍼포먼스·최적화/GPU-Bullet-System.md:774:      const hits = new Uint32Array(_hitReadBuf.getMappedRange())[0];
+docs/7아이템디자인/exoduser-item-system-full.md:147:  // ── SUFFIX: 조건부 트리거 ──
+docs/7아이템디자인/exoduser-item-system-full.md:253:#### 조건부 DPS (무기 파트 SUFFIX)
+docs/7아이템디자인/exoduser-item-system-full.md:292:#### 조건부 방어 (방어구 파트 SUFFIX)
+docs/7아이템디자인/exoduser-item-system-full.md:307:#### 장신구 조건부 (장신구 파트 SUFFIX)
+docs/7아이템디자인/exoduser-item-system-full.md:323:> **합연산 규칙:** 같은 카테고리의 조건부 뎀+ 어픽스는 전부 합연산 후 1회 곱연산 적용.  
+docs/7아이템디자인/exoduser-item-system-full.md:404:| 5 | weapon_club | `_uClubStun` | 스턴 중 데미지 ×3 | `hurtE()` 조건부 뎀업 → `e.stunned>0` 시 합연산 +2 | _cAx 합연산 |
+docs/2_3 돌진+패링+방패시스템/2_3 돌진+패링+방패시스템.md:63:| 칼등치기/Q일반/해제패링 (`_parryR`) | 기본 110 + bonusRange×4 + pParry×2 + parryBonus×20, **최대 140** (2026-08-22: 70→110/cap 100→140, 유저 지시 "판정 빡빡" 완화) |
+docs/2_3 돌진+패링+방패시스템/2_3 돌진+패링+방패시스템.md:64:| Q 기폭팔 (`_parryRDet`) | 기본 140 + bonusRange×6 + pParry×3 + parryBonus×30, **최대 200** (2026-08-22: 120→140/cap 180→200) |
+docs/2_3 돌진+패링+방패시스템/2_3 돌진+패링+방패시스템.md:65:| 공격 상태(wSwing 등) | (wRange+bonusRange)×2+60 |
+docs/2_3 돌진+패링+방패시스템/2_3 돌진+패링+방패시스템.md:199:- 릴리즈 모션 = **진짜 sBash 그 자체**(배율만 확대 — 실버테일 아크 scale·비실버테일 sweepRange 포함, 포즈 게이트 원복). 차징 중엔 확장될 반경을 전방 점선 아크로 미리보기. `_wwBladeImg`·통짜 회전 미사용 (2026-09-03 최종)
+docs/3.3 키바인딩+설정/게임패드_호버_상호작용.md:465:| 이름 확정 | _visualConfirm은 기존 comingSoon 차단 후 _closeVisualSelect 사용. createModal show, 이름/안내 초기화, 기존50ms 조건부 이름 초점 유지. 캐릭터 생성 요청·저장·스토리 경로 변경 없음 |
+docs/12퍼포먼스·최적화/CLAUDE_CODE_인수인계_전체작업보고서_2026-08-10.md:35:| 정적 서버 | HTML no-cache, 비HTML 1시간 캐시 + ETag | Range 이미지/오디오 스트리밍을 훼손하지 않는다. |
+docs/12퍼포먼스·최적화/CLAUDE_CODE_인수인계_전체작업보고서_2026-08-10.md:62:| 비HTML ETag | `"<size hex>-<mtime hex>"`, `If-None-Match` 일치 시 304 | 이미지/오디오/JS/JSON 등 기존 1시간 브라우저 캐시 유지 |
+docs/12퍼포먼스·최적화/CLAUDE_CODE_인수인계_전체작업보고서_2026-08-10.md:66:- 이미지·오디오·Range 요청과 HTML 이외 gzip 대상은 기존 스트리밍 경로를 유지한다.
+docs/CHANGELOG_SYNC.md:2019:| 패키지 서버 | GET/POST /api/mats와 공유 파일 슬롯 제외, 영상 Range 206/416·HEAD·HTML 캐시 제어 동기화 |
+docs/CHANGELOG_SYNC.md:3008:| 홀드 시각 경계 | 오라 스프라이트만 표시되어 실제 성장량이 작게 보임 | 패링 판정과 같은 외곽선·흡수 코어선을 추가 | `_sbRangeR=_sBlockChargeRadius(P._sbHoldT)`=100→500px(4초), 외곽은 점선·중심 `20px`은 얇은 선 | `drawP()` Q 보호막 렌더 |
+docs/CHANGELOG_SYNC.md:4357:- **wpn→xbow 24종**: arcRangerRange, arcRangerDmg, arcRangerPierce, bowAtkSpd, bowRange, critRateBow, pierceChance, pierceCount, projDmgPct, projSpeedPct, rangedDmgPct, multiShot, splashRadius, splashDmg, farDmg, chainTarget, pierceDmgKeep, skBlastShotDmg, skBlueShotDmg, skChainAssaultDmg, skMaliceHuntDmg, skMaliceMortarDmg, skMaliceStormDmg, skMissileDmg
+docs/CHANGELOG_SYNC.md:4415:- `applyStats()`: _allDefSlots 루프에서 슬롯별 조건부 가산
+docs/CHANGELOG_SYNC.md:4477:  - 조건부 (내HP≥70%): pAbund ×0.20/lv
+docs/CHANGELOG_SYNC.md:4510:  - 조건부 계열 표 업데이트 (pAbund/pPred → 합연산 방식, 적용처 설명)
+docs/CHANGELOG_SYNC.md:4584:- 원인: `game.html:7745` wheel 핸들러가 `G.on && !G.paused` 조건부로만 `preventDefault()` 호출 → 패널 열면 `G.paused=true` 되면서 브라우저 줌 통과
+docs/CHANGELOG_SYNC.md:4586:- 일반 휠(Ctrl 없음)은 기존 조건부 동작 그대로 유지 (게임 중에만 차단)
+docs/CHANGELOG_SYNC.md:48810:| `silvertailChargeRange` | E 홀드 처내기 범위 | radial-gradient 원 + ±1.8rad 부채꼴 채움 + 9/7 점선 아크 | `silvertail_charge_range_api_v1.png` 1254×1254 RGB 근검정 배경. 로드시 `_makeBlackAdditiveCutout(24,72)` 캐시 후 `lighter`; 화면 지름 `range×2.24×(1+sin(frame×.16)×.018)`, alpha `.12+tier×.035`/`.34+tier×.10`, `facing+π` | `_drawSilvertailChargeRange`, `sDraw/kiGather` |
+docs/CHANGELOG_SYNC.md:49067:| 수정 | `_wvRangeMul=M×C`로 사거리·진행 반경·폭 및 기존 먼지 분포에 충전 배율 적용 |
+docs/CHANGELOG_SYNC.md:51068:| 이름 확정 | _visualConfirm은 기존 comingSoon 차단 후 _closeVisualSelect 사용. createModal show, 이름/안내 초기화, 기존50ms 조건부 이름 초점 유지. 캐릭터 생성 요청·저장·스토리 경로 변경 없음 |
+docs/CHANGELOG_SYNC.md:51928:- 기존 BUILD Range, UIUX 필터초점, BALANCE 저장실패 과제 수신·Read 확인. 생산 수정0, 기존 서버 EPERM 우회0.
+docs/CHANGELOG_SYNC.md:51932:## 2026-10-02 서버 Range·저장 실패 최소 통합
+docs/9적ai패턴디자인/참고_영문레퍼런스_AI디자인패턴.md:13:**The key design principle**: enemies should be sorted into 4-6 archetypes (Shambler, Swarmer, Ranged, Charger, Caster, Spawner), each with 3 escalation tiers (Base → Armored → Elite). Each archetype needs a distinct silhouette so players can identify threat type at a glance — Hollow Knight's "form informs function" rule means a spiked head telegraphs charge direction, wings mean flying, visible armor means blocking.
+docs/9적ai패턴디자인/참고_영문레퍼런스_AI디자인패턴.md:133:1. **Shambler** (Zombie archetype): Speed 0.3, aggroRange 200, attackRange 40, windUpTime 0.8s, recoveryTime 1.0s, actionDelay 1.5s. Walks straight at player. No special behavior. Good for density/fodder.
+docs/9적ai패턴디자인/참고_영문레퍼런스_AI디자인패턴.md:135:2. **Swarmer** (Fallen archetype): Speed 1.2, aggroRange 300, attackRange 30, windUpTime 0.3s, recoveryTime 0.5s, actionDelay 0.3s. Moves in groups. KEY BEHAVIOR: When an ally within 150px dies, 60% chance to FLEE for 2s, then regroup. Creates scatter/chaos.
+docs/9적ai패턴디자인/참고_영문레퍼런스_AI디자인패턴.md:137:3. **Ranger** (Archer archetype): Speed 0.8, aggroRange 400, preferredRange 250, attackRange 250, windUpTime 0.5s, recoveryTime 0.8s. MAINTAINS DISTANCE — if player is closer than preferredRange, retreats. Fires projectile at player's current position.
+docs/9적ai패턴디자인/참고_영문레퍼런스_AI디자인패턴.md:139:4. **Charger** (Brute archetype): Speed 0.5 normally, chargeSpeed 3.0, aggroRange 350, chargeRange 200, windUpTime 1.2s (long telegraph!), recoveryTime 1.5s. Normal approach until within chargeRange, then enters WIND_UP with visible charge-up animation, then CHARGES in a straight line. If hits wall, extra 0.5s stun (self-damage optional).
+docs/9적ai패턴디자인/참고_영문레퍼런스_AI디자인패턴.md:141:5. **Caster** (Mage archetype): Speed 0.6, aggroRange 400, castRange 300, windUpTime 1.0s, recoveryTime 1.2s. Positions at castRange, casts AoE spell at player's position with GROUND INDICATOR (red circle appears 0.8s before damage). Repositions after each cast.
+docs/9적ai패턴디자인/참고_영문레퍼런스_AI디자인패턴.md:291:- Each attack has: name, damage, windUpTime, activeTime, recoveryTime, minRange, maxRange, cooldown, weight
+docs/9적ai패턴디자인/참고_영문레퍼런스_AI디자인패턴.md:293:  1. Filter attacks by: player distance within [minRange, maxRange] AND cooldown elapsed
+docs/9적ai패턴디자인/참고_영문레퍼런스_AI디자인패턴.md:457:- Volume falloff: volume = 1.0 - clamp(distance / maxHearingRange, 0, 0.9) — never fully silent if on screen
+docs/12퍼포먼스·최적화/코드전수조사_디버그_최적화_2026-09-03.md:80:최종 헤드리스 Chrome 재실행에서 지옥강타 1/지옥강타 2 시트가 각각 올바른 512×512 셀을 선택해 화면 900×900/980×980px로 렌더되는 것을 캡처했다. 이 과정에서 `wall_black_void_tile.png`의 실제 파일 누락으로 로컬 404를 재현했고, 생성기 출력과 파일 존재 회귀를 추가한 뒤 `pageerror=0`, 로컬 HTTP 4xx/5xx 0으로 재검증했다. `intro.mp4`의 `net::ERR_ABORTED`만 브라우저 주도 미디어 취소로 남았으며 서버 Range 응답은 206이다. 사용자 실게임 콘솔에서 발견된 `_bfR2`·`_wwDetAbs` 선언 누락 2종도 회귀 테스트로 고정했으며 최종 자동 회귀는 **471/471 PASS**다.
+docs/7아이템디자인/어픽스_Layer_전수매핑_402_2026-08-10.md:57:| injuredSpeed | WORKING | 이동 | L2 | B | KEEP | 조건부 이속 |
+docs/7아이템디자인/어픽스_Layer_전수매핑_402_2026-08-10.md:59:| dashRange | DEAD | 이동 | L2 | B | FIX | 돌진 거리 |
+docs/7아이템디자인/어픽스_Layer_전수매핑_402_2026-08-10.md:61:| bootsChargeRange | DEAD | 이동 | L2 | B | FIX | 돌진 범위 |
+docs/7아이템디자인/어픽스_Layer_전수매핑_402_2026-08-10.md:63:| arcRangerMS | DEAD | 아키타입 | L2 | B | MERGE | movSpeed 중복 |
+docs/7아이템디자인/어픽스_Layer_전수매핑_402_2026-08-10.md:89:| healthyDef | WORKING | 방어 | L3 | A | KEEP | 조건부 DEF |
+docs/7아이템디자인/어픽스_Layer_전수매핑_402_2026-08-10.md:90:| injuredDR | WORKING | 방어 | L3 | A | KEEP | 조건부 DR |
+docs/7아이템디자인/어픽스_Layer_전수매핑_402_2026-08-10.md:247:| weaponRange | DEAD | 사거리 | L5 | A | FIX | 무기 사거리 (CORE_CANDIDATE) |
+docs/7아이템디자인/어픽스_Layer_전수매핑_402_2026-08-10.md:248:| bowRange | DEAD | 사거리 | L5 | A | FIX | 활 사거리 (CORE_CANDIDATE) |
+docs/7아이템디자인/어픽스_Layer_전수매핑_402_2026-08-10.md:257:| arcRangerDmg | DEAD | 아키타입 | L5 | A | MERGE | rangedDmgPct 중복 |
+docs/7아이템디자인/어픽스_Layer_전수매핑_402_2026-08-10.md:258:| arcRangerRange | DEAD | 아키타입 | L5 | A | MERGE | bowRange 중복 |
+docs/7아이템디자인/어픽스_Layer_전수매핑_402_2026-08-10.md:274:| arcRangerPierce | DEAD | 아키타입 | L5 | B | MERGE | pierceChance 중복 |
+docs/7아이템디자인/어픽스_Layer_전수매핑_402_2026-08-10.md:276:| abundDmg | WORKING | 조건부 | L6 | A | KEEP | HP多 조건뎀 |
+docs/7아이템디자인/어픽스_Layer_전수매핑_402_2026-08-10.md:277:| predDmg | WORKING | 조건부 | L6 | A | KEEP | 적HP低 조건뎀 |
+docs/7아이템디자인/어픽스_Layer_전수매핑_402_2026-08-10.md:278:| fullLifeDmg | WORKING | 조건부 | L6 | A | KEEP | 만혈 조건뎀 |
+docs/7아이템디자인/어픽스_Layer_전수매핑_402_2026-08-10.md:279:| lowLifeDmg | WORKING | 조건부 | L6 | A | KEEP | 저혈 조건뎀 |
+docs/7아이템디자인/어픽스_Layer_전수매핑_402_2026-08-10.md:280:| overkilDmg | WORKING | 조건부 | L6 | A | KEEP | 처형 뎀(대표) |
+docs/7아이템디자인/어픽스_Layer_전수매핑_402_2026-08-10.md:281:| closeDmg | WORKING | 조건부 | L6 | A | KEEP | 근접 거리뎀 |
+docs/7아이템디자인/어픽스_Layer_전수매핑_402_2026-08-10.md:282:| farDmg | WORKING | 조건부 | L6 | A | KEEP | 원거리 거리뎀 |
+docs/7아이템디자인/어픽스_Layer_전수매핑_402_2026-08-10.md:283:| stunDmgUp | WORKING | 조건부 | L6 | A | KEEP | 경직 대상뎀 |
+docs/7아이템디자인/어픽스_Layer_전수매핑_402_2026-08-10.md:284:| frozenDmgUp | WORKING | 조건부 | L6 | A | KEEP | 빙결 대상뎀 |
+docs/7아이템디자인/어픽스_Layer_전수매핑_402_2026-08-10.md:285:| burnDmgUp | WORKING | 조건부 | L6 | A | KEEP | 화상 대상뎀 |
+docs/7아이템디자인/어픽스_Layer_전수매핑_402_2026-08-10.md:286:| poisonDmgUp | WORKING | 조건부 | L6 | A | KEEP | 중독 대상뎀 |
+docs/7아이템디자인/어픽스_Layer_전수매핑_402_2026-08-10.md:287:| curseDmgUp | WORKING | 조건부 | L6 | A | KEEP | 저주 대상뎀 |
+docs/7아이템디자인/어픽스_Layer_전수매핑_402_2026-08-10.md:288:| slowDmgUp | WORKING | 조건부 | L6 | A | KEEP | 둔화 대상뎀 |
+docs/7아이템디자인/어픽스_Layer_전수매핑_402_2026-08-10.md:289:| bossSlayer | WORKING | 조건부 | L6 | A | KEEP | 보스뎀(대표) |
+docs/7아이템디자인/어픽스_Layer_전수매핑_402_2026-08-10.md:290:| eliteSlayer | WORKING | 조건부 | L6 | A | KEEP | 정예뎀(대표) |
+docs/7아이템디자인/어픽스_Layer_전수매핑_402_2026-08-10.md:291:| mobSlayer | WORKING | 조건부 | L6 | A | KEEP | 일반몹뎀 |
+docs/7아이템디자인/어픽스_Layer_전수매핑_402_2026-08-10.md:292:| firstStrike | WORKING | 조건부 | L6 | A | KEEP | 선제타뎀 |
+docs/7아이템디자인/어픽스_Layer_전수매핑_402_2026-08-10.md:293:| healthyAtk | WORKING | 조건부 | L6 | A | KEEP | 건강 조건뎀 |
+docs/7아이템디자인/어픽스_Layer_전수매핑_402_2026-08-10.md:294:| injuredDmg | WORKING | 조건부 | L6 | A | KEEP | 중상 조건뎀 |
+docs/7아이템디자인/어픽스_Layer_전수매핑_402_2026-08-10.md:295:| vsBossDmg | WORKING | 조건부 | L6 | A | MERGE | bossSlayer 중복(장신구판) |
+docs/7아이템디자인/어픽스_Layer_전수매핑_402_2026-08-10.md:296:| vsEliteDmg | WORKING | 조건부 | L6 | A | MERGE | eliteSlayer 중복 |
+docs/7아이템디자인/어픽스_Layer_전수매핑_402_2026-08-10.md:297:| crisisBoost | WORKING | 조건부 | L6 | A | KEEP | 위기 뎀업 |
+docs/7아이템디자인/어픽스_Layer_전수매핑_402_2026-08-10.md:298:| comboBoost | WORKING | 조건부 | L6 | A | KEEP | 콤보 조건뎀 |
+docs/7아이템디자인/어픽스_Layer_전수매핑_402_2026-08-10.md:302:| backstabDmg | DEAD | 조건부 | L6 | A | FIX | 후방타 (판정 구현 필요) |
+docs/7아이템디자인/어픽스_Layer_전수매핑_402_2026-08-10.md:303:| executeDmg | DEAD | 조건부 | L6 | A | MERGE | overkilDmg와 이름·기능 중복 |
+docs/7아이템디자인/어픽스_Layer_전수매핑_402_2026-08-10.md:304:| movingDmg | DEAD | 조건부 | L6 | A | FIX | 이동 중 뎀 |
+docs/7아이템디자인/어픽스_Layer_전수매핑_402_2026-08-10.md:305:| nearDeathDmg | DEAD | 조건부 | L6 | A | MERGE | lowLifeDmg 유사 중복 |
+docs/7아이템디자인/어픽스_Layer_전수매핑_402_2026-08-10.md:306:| fullStaminaDmg | DEAD | 조건부 | L6 | A | FIX | 만기력 조건뎀 |
+docs/7아이템디자인/어픽스_Layer_전수매핑_402_2026-08-10.md:307:| fullManaDmg2 | DEAD | 조건부 | L6 | A | MERGE | onFullManaDmg 중복 |
+docs/7아이템디자인/어픽스_Layer_전수매핑_402_2026-08-10.md:308:| onFullManaDmg | DEAD | 조건부 | L6 | A | FIX | 만마나 조건뎀(대표) |
+docs/7아이템디자인/어픽스_Layer_전수매핑_402_2026-08-10.md:309:| freshKillDmg | DEAD | 조건부 | L6 | A | MERGE | killSlayer 유사 중복 |
+docs/7아이템디자인/어픽스_Layer_전수매핑_402_2026-08-10.md:310:| whileStationaryDmg | DEAD | 조건부 | L6 | A | FIX | 정지 조건뎀(대표) |
+docs/7아이템디자인/어픽스_Layer_전수매핑_402_2026-08-10.md:311:| standingDmg | DEAD | 조건부 | L6 | A | MERGE | whileStationaryDmg 중복 |
+docs/7아이템디자인/어픽스_Layer_전수매핑_402_2026-08-10.md:312:| whileMovingDR | DEAD | 조건부 | L6 | A | FIX | 이동 중 DR |
+docs/7아이템디자인/어픽스_Layer_전수매핑_402_2026-08-10.md:316:| killSlayer | WORKING | 조건부 | L6 | B | KEEP | 처치 후 버프 |
+docs/7아이템디자인/어픽스_Layer_전수매핑_402_2026-08-10.md:321:| injuredLeech | WORKING | 흡수 | L6 | B | KEEP | 조건부 흡혈 |
+docs/7아이템디자인/어픽스_Layer_전수매핑_402_2026-08-10.md:341:| killStreakDmg | DEAD | 조건부 | L6 | B | FIX | 연속처치 스택뎀 — 루프형 |
+docs/7아이템디자인/어픽스_Layer_전수매핑_402_2026-08-10.md:342:| killStreakSpd | DEAD | 조건부 | L6 | B | FIX | 연속처치 공속 |
+docs/7아이템디자인/어픽스_Layer_전수매핑_402_2026-08-10.md:343:| momentumDmg | DEAD | 조건부 | L6 | B | FIX | 이동 누적뎀 |
+docs/7아이템디자인/어픽스_Layer_전수매핑_402_2026-08-10.md:408:| recentParryDmg | DEAD | 조건부 | L9 | A | REWORK | 패링 후 공세 → 분노 상태 공세 |
+docs/7아이템디자인/유니크_어픽스_리스트.md:133:| `AFFIX_POOL`의 `sk*Dmg`, `poisonStack`, `resourceOnHit`, `afterParryShield`, `overhealShield`, `stunDmgUp` | 수치·조건부 보너스를 재명명하지 않고, 특정 스킬의 **행동 순서·소모·배치**를 바꾸는 후보만 남겼다. U-D20은 쉴드 **생성**이 아니라 파괴 후 Q에 저장한다. |
+docs/7아이템디자인/어픽스_시스템_현황분석_2026-08-10.md:79:- 조건부 뎀업: docs 규칙은 "합연산 후 1회 곱연산"이나 실제 코드는 어픽스별 곱연산 연쇄인 곳 다수 (**docs-코드 불일치 소지**)
+docs/7아이템디자인/어픽스_시스템_현황분석_2026-08-10.md:120:- 조건부뎀: abundDmg predDmg fullLifeDmg lowLifeDmg overkilDmg closeDmg farDmg stunDmgUp frozenDmgUp burnDmgUp poisonDmgUp curseDmgUp slowDmgUp bossSlayer eliteSlayer mobSlayer firstStrike healthyAtk injuredDmg vsBossDmg vsEliteDmg
+docs/7아이템디자인/어픽스_시스템_현황분석_2026-08-10.md:135:- 조건부뎀 13: backstabDmg executeDmg killStreakDmg killStreakSpd momentumDmg standingDmg movingDmg recentParryDmg nearDeathDmg fullStaminaDmg fullManaDmg2 freshKillDmg whileStationaryDmg
+docs/7아이템디자인/어픽스_시스템_현황분석_2026-08-10.md:141:- 이동 5: dashRange dodgeCooldown bootsDashDmg bootsChargeRange cloakMSPct
+docs/7아이템디자인/어픽스_시스템_현황분석_2026-08-10.md:148:- 투사체/DoT조작 27: aoeRadiusPct elemPenAll shieldBypass armorShred projSpeedPct atkPctAll weaponRange bowRange doubleStrike multiShot pierceChance pierceCount pierceDmgKeep chainDmgKeep splashRadius splashDmg chargeAtkDmg counterAtkDmg dotTickRate bleedDps bleedDuration spellAmp stunDuration freezeDuration slowEfficiency poisonStack bleedStack
+docs/7아이템디자인/어픽스_시스템_현황분석_2026-08-10.md:152:- 아키타입 20: arcWarrior×4 arcMage×4 arcRanger×4 arcTank×4 arcAssassin×4
+docs/12퍼포먼스·최적화/12퍼포먼스·최적화.md:321:## 정적 파일 스트리밍 Range 안정화 (2026-04-14)
+docs/12퍼포먼스·최적화/12퍼포먼스·최적화.md:323:2026-09-09 Steam 패키지 서버 `node-main.js`에도 단일 바이트 Range를 구현했다. `bytes=start-end`/`bytes=start-`/`bytes=-suffix`는 206·Content-Range·Content-Length·Accept-Ranges로 응답하며 종료 바이트는 파일 끝으로 제한한다. 잘못된 구간은 416, HEAD는 본문 없이 헤더만 반환, 연결 종료 시 스트림을 해제한다. 일반 정적 응답은 Content-Length/Accept-Ranges를 명시하고 HTML만 no-cache/no-store/must-revalidate를 적용한다. v13 컷 이동 실패를 재현한 뒤 패키지 인트로 회귀 PASS. [배포 기록](../13출시·마케팅/STEAM_LATEST_DEPLOY_20260909.md).
+docs/12퍼포먼스·최적화/12퍼포먼스·최적화.md:325:`server.cjs` 비디오/오디오 스트리밍 경로(`/video/`, `/sfx/`, `/bgm/`)에서 브라우저 Range 요청 안정화.
+docs/12퍼포먼스·최적화/12퍼포먼스·최적화.md:329:| Range start 파싱 | `parseInt(parts[0],10)` | `parseInt(parts[0],10) \|\| 0` (비정상 값 방어) |
+docs/12퍼포먼스·최적화/12퍼포먼스·최적화.md:330:| Range end 상한 | 요청값 그대로 사용 | `Math.min(end, stat.size-1)` |
+docs/12퍼포먼스·최적화/12퍼포먼스·최적화.md:331:| 잘못된 구간 처리 | 예외 가능 | `416 Range Not Satisfiable` + `Content-Range: bytes */size` |
+docs/12퍼포먼스·최적화/12퍼포먼스·최적화.md:341:| 만료 뒤 파일 미변경 | `If-None-Match` 일치 → **304**, 본문 재전송 없음 |
+docs/12퍼포먼스·최적화/12퍼포먼스·최적화.md:356:| 이미지·오디오·Range 응답·HTML 이외 gzip 대상 | 기존 스트리밍 경로를 그대로 사용 |
+docs/12퍼포먼스·최적화/12퍼포먼스·최적화.md:924:| LAYER_FOLLOWUP | 이후 CH1_HIDDEN_UNDERLAY_20260929는 별도 바닥3그룹 조건부 렌더 제외. 위 ART표본을 그 코드의 전후FPS나GPU문제 해결 증거로 재사용하지 않음 |
+docs/15 세이브+데이터구조/15 세이브+데이터구조.md:669:| 이름 확정 | _visualConfirm은 기존 comingSoon 차단 후 _closeVisualSelect 사용. createModal show, 이름/안내 초기화, 기존50ms 조건부 이름 초점 유지. 캐릭터 생성 요청·저장·스토리 경로 변경 없음 |
+docs/0마스터플랜/EXODUSER_MASTER_BIBLE_v2_2 (2).md:718:**SUFFIX — 조건부 트리거 (7종)**
+docs/0마스터플랜/EXODUSER_MASTER_BIBLE_v2_2 (2).md:1419:// (1) 버전 있는 트랙은 배열로 관리 → Random.Range로 픽
+docs/7아이템디자인/아이템_어픽스_시스템.md:5:> **2026-04-18**: 패시브 곱연산→합연산 변경, 어픽스는 여전히 조건부 합연산 후 1회 곱연산 유지
+docs/7아이템디자인/아이템_어픽스_시스템.md:39:### 조건부 어픽스 합연산 규칙
+docs/7아이템디자인/아이템_어픽스_시스템.md:41:**어픽스만** 같은 카테고리 조건부 뎀업은 **전부 합연산** 후 1회 곱연산:
+docs/7아이템디자인/아이템_어픽스_시스템.md:49:3. 어픽스 적용: `dmg *= (1 + 조건부어픽스 합)` (abundDmg/predDmg 포함, 별도 곱연산)
+docs/7아이템디자인/아이템_어픽스_시스템.md:94:| **무기 (weapon)** | wpn | 무기 | ~45 | ~70 | ~115 | 공격/DoT/근접크리/프록/스킬강화/조건부DPS |
+docs/7아이템디자인/아이템_어픽스_시스템.md:105:| **반지 (ring)** | ring | 장신구 | ~6 | ~15 | ~21 | 크리/저항/원소뎀/콤보/조건부DPS |
+docs/7아이템디자인/아이템_어픽스_시스템.md:125:| 조건부 | 20종+ | 10종+ (4축) | 보통 | 적음 | **36종** |
+docs/7아이템디자인/아이템_어픽스_시스템.md:128:**D4 조건부 4축:** Healthy(HP≥80%) / Injured(HP≤35%) / Close(≤10m) / Distant(>10m)
+docs/7아이템디자인/아이템_어픽스_시스템.md:150:| 3 | **크리티컬** | 9 | 크리확률(전체/근접/마법/석궁), 크리뎀, 조건부크리 |
+docs/7아이템디자인/아이템_어픽스_시스템.md:152:| 5 | **조건부DPS** | 36 | HP/거리/적상태/대상/타이밍/자원 기반 조건부 뎀업 (합연산) |
+docs/7아이템디자인/아이템_어픽스_시스템.md:153:| 6 | **흡수** | 6 | HP/MP/ST 흡수%, 적중고정회복, 조건부흡혈 |
+docs/7아이템디자인/아이템_어픽스_시스템.md:189:| bowRange | 활사거리의 | PRE | 0.05 / 0.08 / 0.14 / 0.22 / 0.3 | pct | 무기 | 55 |
+docs/7아이템디자인/아이템_어픽스_시스템.md:240:| weaponRange | 무기사거리의 | PRE | 0.04 / 0.07 / 0.11 / 0.16 / 0.22 | pct | 무기 | 55 |
+docs/7아이템디자인/아이템_어픽스_시스템.md:288:> 크리확률(전체/근접/마법/석궁), 크리뎀, 조건부크리
+docs/7아이템디자인/아이템_어픽스_시스템.md:319:### 조건부DPS (36종)
+docs/7아이템디자인/아이템_어픽스_시스템.md:321:> HP/거리/적상태/대상/타이밍/자원 기반 조건부 뎀업 (합연산)
+docs/7아이템디자인/아이템_어픽스_시스템.md:364:> HP/MP/ST 흡수%, 적중고정회복, 조건부흡혈
+docs/7아이템디자인/아이템_어픽스_시스템.md:504:| bootsChargeRange | 돌진범위의 | PRE | 0.05 / 0.08 / 0.14 / 0.22 / 0.3 | pct | 부츠 | 45 |
+docs/7아이템디자인/아이템_어픽스_시스템.md:509:| dashRange | 돌진거리의 | PRE | 0.05 / 0.08 / 0.14 / 0.22 / 0.3 | pct | 부츠 | 45 |
+docs/7아이템디자인/아이템_어픽스_시스템.md:665:| arcRangerDmg | 궁수의힘 | SUF | 0.08 / 0.14 / 0.22 / 0.32 / 0.44 | pct | 무기 | 30 |
+docs/7아이템디자인/아이템_어픽스_시스템.md:666:| arcRangerMS | 궁수질주의 | PRE | 0.03 / 0.05 / 0.08 / 0.12 / 0.18 | pct | 부츠 | 35 |
+docs/7아이템디자인/아이템_어픽스_시스템.md:667:| arcRangerPierce | 궁수관통의 | SUF | 0.04 / 0.07 / 0.11 / 0.16 / 0.22 | pct | 무기 | 30 |
+docs/7아이템디자인/아이템_어픽스_시스템.md:668:| arcRangerRange | 궁수사거리의 | PRE | 0.05 / 0.08 / 0.14 / 0.22 / 0.3 | pct | 무기 | 30 |
+docs/7아이템디자인/아이템_어픽스_시스템.md:730:| `arcRangerPierce` | 궁수관통의 | 궁수 아키타입 관통 + | — | xbow | 궁수 빌드 |
+docs/15 세이브+데이터구조/BALANCE_DISK_SAVE_RESTART_20261002.md:19:BUILD suffix 처리와 BALANCE 임시파일 교체 후보를 root가 server.cjs에 순차 적용했다. 원소스339fad6a→합본6a7c1083, 실제 생산 Range23+저장13+전체handler4=40그룹 PASS. 기존 실패 RED/원본과 담당20파일 SHA 보존. 저장 스키마/반환 JSON/GET 캐시·gzip 계약 유지. 실제 디스크·크래시·fsync·HTTP·영상 원인·앱 재실행은 미검수, 기존 EPERM 우회0. 상세: [서버 통합 인수](../0마스터플랜/mac-resume-20261001/vscode-dispatch/SERVER-INTEGRATION-20261002.md). 앞선 미적용 후보 기록은 제출 당시 이력이다.
+docs/2_7 인벤토리+장비시스템/2_7 인벤토리+장비시스템.md:207:| 전투 | wStagger×2, wRange×3, bonusRange×8, bowRange×2, bowPierce×150 | — |
+docs/12퍼포먼스·최적화/FRAME_DROP_HUD_TEXT_20260928.md:173:| LAYER_FOLLOWUP | 이후 CH1_HIDDEN_UNDERLAY_20260929는 별도 바닥3그룹 조건부 렌더 제외. 위 ART표본을 그 코드의 전후FPS나GPU문제 해결 증거로 재사용하지 않음 |
+docs/7아이템디자인/어픽스_Layer_재분류_설계_2026-08-10.md:18:| **L6 Conditional·Synergy** | 조건부·시너지 | 조건부 뎀·처치/타격 프록·흡수·콤보·스킬 |
+docs/7아이템디자인/어픽스_Layer_재분류_설계_2026-08-10.md:38:| L6 | 조건부 수치 (vs대상·HP/자원 상태·거리) | 발동 프록 (처치·흡수·콤보·스택) + sk* (FLEX) |
+docs/7아이템디자인/어픽스_Layer_재분류_설계_2026-08-10.md:109:| movSpeed | cloakMSPct, movSpeedCombat, arcRangerMS |
+docs/7아이템디자인/어픽스_Layer_재분류_설계_2026-08-10.md:111:| meleeDmgPct | arcWarriorDmg / rangedDmgPct ← arcRangerDmg |
+docs/7아이템디자인/어픽스_Layer_재분류_설계_2026-08-10.md:112:| bowRange | arcRangerRange / pierceChance ← arcRangerPierce, ringProjPierce |
+docs/7아이템디자인/어픽스_Layer_재분류_설계_2026-08-10.md:172:sharpAtk·brutalAtk·ruinAtk·endAtkFlat(무기 플랫ATK — CORE atk와 동질), weaponRange·bowRange(CORE 사거리 존재), projSpeedPct(CORE bowProjSpd 존재), armorDefPct(CORE def의 %판)
+docs/7아이템디자인/어픽스_Layer_재분류_설계_2026-08-10.md:238:| injuredSpeed | W | 이동 | B | KEEP | 조건부 이속 |
+docs/7아이템디자인/어픽스_Layer_재분류_설계_2026-08-10.md:240:| dashRange | D | 이동 | B | FIX | 돌진 거리 |
+docs/7아이템디자인/어픽스_Layer_재분류_설계_2026-08-10.md:242:| bootsChargeRange | D | 이동 | B | FIX | 돌진 범위 |
+docs/7아이템디자인/어픽스_Layer_재분류_설계_2026-08-10.md:244:| arcRangerMS | D | 아키타입 | B | MERGE | movSpeed 중복 |
+docs/7아이템디자인/어픽스_Layer_재분류_설계_2026-08-10.md:275:| healthyDef | W | 방어 | A | KEEP | 조건부 DEF |
+docs/7아이템디자인/어픽스_Layer_재분류_설계_2026-08-10.md:276:| injuredDR | W | 방어 | A | KEEP | 조건부 DR |
+docs/7아이템디자인/어픽스_Layer_재분류_설계_2026-08-10.md:443:| weaponRange | D | 사거리 | A | FIX | 무기 사거리 (CORE_CANDIDATE) |
+docs/7아이템디자인/어픽스_Layer_재분류_설계_2026-08-10.md:444:| bowRange | D | 사거리 | A | FIX | 활 사거리 (CORE_CANDIDATE) |
+docs/7아이템디자인/어픽스_Layer_재분류_설계_2026-08-10.md:453:| arcRangerDmg | D | 아키타입 | A | MERGE | rangedDmgPct 중복 |
+docs/7아이템디자인/어픽스_Layer_재분류_설계_2026-08-10.md:454:| arcRangerRange | D | 아키타입 | A | MERGE | bowRange 중복 |
+docs/7아이템디자인/어픽스_Layer_재분류_설계_2026-08-10.md:470:| arcRangerPierce | D | 아키타입 | B | MERGE | pierceChance 중복 |
+docs/7아이템디자인/어픽스_Layer_재분류_설계_2026-08-10.md:477:| abundDmg | W | 조건부 | A | KEEP | HP多 조건뎀 |
+docs/7아이템디자인/어픽스_Layer_재분류_설계_2026-08-10.md:478:| predDmg | W | 조건부 | A | KEEP | 적HP低 조건뎀 |
+docs/7아이템디자인/어픽스_Layer_재분류_설계_2026-08-10.md:479:| fullLifeDmg | W | 조건부 | A | KEEP | 만혈 조건뎀 |
+docs/7아이템디자인/어픽스_Layer_재분류_설계_2026-08-10.md:480:| lowLifeDmg | W | 조건부 | A | KEEP | 저혈 조건뎀 |
+docs/7아이템디자인/어픽스_Layer_재분류_설계_2026-08-10.md:481:| overkilDmg | W | 조건부 | A | KEEP | 처형 뎀(대표) |
+docs/7아이템디자인/어픽스_Layer_재분류_설계_2026-08-10.md:482:| closeDmg | W | 조건부 | A | KEEP | 근접 거리뎀 |
+docs/7아이템디자인/어픽스_Layer_재분류_설계_2026-08-10.md:483:| farDmg | W | 조건부 | A | KEEP | 원거리 거리뎀 |
+docs/7아이템디자인/어픽스_Layer_재분류_설계_2026-08-10.md:484:| stunDmgUp | W | 조건부 | A | KEEP | 경직 대상뎀 |
+docs/7아이템디자인/어픽스_Layer_재분류_설계_2026-08-10.md:485:| frozenDmgUp | W | 조건부 | A | KEEP | 빙결 대상뎀 |
+docs/7아이템디자인/어픽스_Layer_재분류_설계_2026-08-10.md:486:| burnDmgUp | W | 조건부 | A | KEEP | 화상 대상뎀 |
+docs/7아이템디자인/어픽스_Layer_재분류_설계_2026-08-10.md:487:| poisonDmgUp | W | 조건부 | A | KEEP | 중독 대상뎀 |
+docs/7아이템디자인/어픽스_Layer_재분류_설계_2026-08-10.md:488:| curseDmgUp | W | 조건부 | A | KEEP | 저주 대상뎀 |
+docs/7아이템디자인/어픽스_Layer_재분류_설계_2026-08-10.md:489:| slowDmgUp | W | 조건부 | A | KEEP | 둔화 대상뎀 |
+docs/7아이템디자인/어픽스_Layer_재분류_설계_2026-08-10.md:490:| bossSlayer | W | 조건부 | A | KEEP | 보스뎀(대표) |
+docs/7아이템디자인/어픽스_Layer_재분류_설계_2026-08-10.md:491:| eliteSlayer | W | 조건부 | A | KEEP | 정예뎀(대표) |
+docs/7아이템디자인/어픽스_Layer_재분류_설계_2026-08-10.md:492:| mobSlayer | W | 조건부 | A | KEEP | 일반몹뎀 |
+docs/7아이템디자인/어픽스_Layer_재분류_설계_2026-08-10.md:493:| firstStrike | W | 조건부 | A | KEEP | 선제타뎀 |
+docs/7아이템디자인/어픽스_Layer_재분류_설계_2026-08-10.md:494:| healthyAtk | W | 조건부 | A | KEEP | 건강 조건뎀 |
+docs/7아이템디자인/어픽스_Layer_재분류_설계_2026-08-10.md:495:| injuredDmg | W | 조건부 | A | KEEP | 중상 조건뎀 |
+docs/7아이템디자인/어픽스_Layer_재분류_설계_2026-08-10.md:496:| vsBossDmg | W | 조건부 | A | MERGE | bossSlayer 중복(장신구판) |
+docs/7아이템디자인/어픽스_Layer_재분류_설계_2026-08-10.md:497:| vsEliteDmg | W | 조건부 | A | MERGE | eliteSlayer 중복 |
+docs/7아이템디자인/어픽스_Layer_재분류_설계_2026-08-10.md:498:| crisisBoost | W | 조건부 | A | KEEP | 위기 뎀업 |
+docs/7아이템디자인/어픽스_Layer_재분류_설계_2026-08-10.md:499:| comboBoost | W | 조건부 | A | KEEP | 콤보 조건뎀 |
+docs/7아이템디자인/어픽스_Layer_재분류_설계_2026-08-10.md:503:| backstabDmg | D | 조건부 | A | FIX | 후방타 (판정 구현 필요) |
+docs/7아이템디자인/어픽스_Layer_재분류_설계_2026-08-10.md:504:| executeDmg | D | 조건부 | A | MERGE | overkilDmg와 이름·기능 중복 |
+docs/7아이템디자인/어픽스_Layer_재분류_설계_2026-08-10.md:505:| movingDmg | D | 조건부 | A | FIX | 이동 중 뎀 |
+docs/7아이템디자인/어픽스_Layer_재분류_설계_2026-08-10.md:506:| nearDeathDmg | D | 조건부 | A | MERGE | lowLifeDmg 유사 중복 |
+docs/7아이템디자인/어픽스_Layer_재분류_설계_2026-08-10.md:507:| fullStaminaDmg | D | 조건부 | A | FIX | 만기력 조건뎀 |
+docs/7아이템디자인/어픽스_Layer_재분류_설계_2026-08-10.md:508:| fullManaDmg2 | D | 조건부 | A | MERGE | onFullManaDmg 중복 |
+docs/7아이템디자인/어픽스_Layer_재분류_설계_2026-08-10.md:509:| onFullManaDmg | D | 조건부 | A | FIX | 만마나 조건뎀(대표) |
+docs/7아이템디자인/어픽스_Layer_재분류_설계_2026-08-10.md:510:| freshKillDmg | D | 조건부 | A | MERGE | killSlayer 유사 중복 |
+docs/7아이템디자인/어픽스_Layer_재분류_설계_2026-08-10.md:511:| whileStationaryDmg | D | 조건부 | A | FIX | 정지 조건뎀(대표) |
+docs/7아이템디자인/어픽스_Layer_재분류_설계_2026-08-10.md:512:| standingDmg | D | 조건부 | A | MERGE | whileStationaryDmg 중복 |
+docs/7아이템디자인/어픽스_Layer_재분류_설계_2026-08-10.md:513:| whileMovingDR | D | 조건부 | A | FIX | 이동 중 DR |
+docs/7아이템디자인/어픽스_Layer_재분류_설계_2026-08-10.md:517:| killSlayer | W | 조건부 | B | KEEP | 처치 후 버프 |
+docs/7아이템디자인/어픽스_Layer_재분류_설계_2026-08-10.md:522:| injuredLeech | W | 흡수 | B | KEEP | 조건부 흡혈 |
+docs/7아이템디자인/어픽스_Layer_재분류_설계_2026-08-10.md:542:| killStreakDmg | D | 조건부 | B | FIX | 연속처치 스택뎀 — 루프형 |
+docs/7아이템디자인/어픽스_Layer_재분류_설계_2026-08-10.md:543:| killStreakSpd | D | 조건부 | B | FIX | 연속처치 공속 |
+docs/7아이템디자인/어픽스_Layer_재분류_설계_2026-08-10.md:544:| momentumDmg | D | 조건부 | B | FIX | 이동 누적뎀 |
+docs/7아이템디자인/어픽스_Layer_재분류_설계_2026-08-10.md:624:| recentParryDmg | D | 조건부 | A | REWORK | 패링 후 공세 → 분노 상태 공세 |
+docs/7아이템디자인/어픽스_Layer_재분류_설계_2026-08-10.md:699:분포 자체는 "현재 게임이 무엇을 쌓아왔는가"를 정확히 반영한다: 하위(생존·조건부) 과잉, 상위(증폭·크리·분노·궁극) 공백. 매핑의 문제가 아니라 **원본 풀의 편식**이 문제다. 따라서 해결책은 재배치가 아니라 ① 하위 레이어 MERGE 정리 ② 상위 레이어 신규 설계다.
+docs/7아이템디자인/어픽스_Layer_재분류_설계_2026-08-10.md:705:3. **L3·L6 정체성 혼합** — L3=방어+저항+회복+부활+반격(80), L6=조건부수치+프록+흡수+스킬강화(93). 층 번호만 보고 예측 불가.
+docs/7아이템디자인/어픽스_Layer_재분류_설계_2026-08-10.md:706:4. **빌드 변화형 부족** — 402 중 순수 수치형 ~290(72%). 프록 ~40, 조건부 ~50, 루프형 ~10, 변형형 ~10. 키스톤(트레이드오프)형 **0**.
+docs/7아이템디자인/어픽스_Layer_재분류_설계_2026-08-10.md:718:| L6 조건부·시너지 | 유지+**감량** | sk* 20→계열 6종 REWORK, 상태시너지 6종 L4 이관 → 93→약 60 |
+docs/7아이템디자인/어픽스_Layer_재분류_설계_2026-08-10.md:733:| L6 | 조건부 수치 ~35 | 트리거·루프 ~25 | 자연스러움 (sk* 계열 6종은 B) |
+docs/7아이템디자인/어픽스_Layer_재분류_설계_2026-08-10.md:764:분해: 조건부뎀 35 · 처치발동 10 · 흡수 7 · 회피/기타 프록 8 · 콤보 4 · 스킬 21(sk20+skillBoost) · 엔드/아키/기타 8.
+docs/7아이템디자인/어픽스_Layer_재분류_설계_2026-08-10.md:765:판정: A(진짜 L6) = 조건부뎀 대부분·처치·흡수·콤보 / **B(이동)** = 상태이상 대상 뎀업 6종→L4-B / **C(시스템 연결)** = sk* 계열(Synthesis) / **D** = MERGE 15건.
+docs/7아이템디자인/어픽스_Layer_재분류_설계_2026-08-10.md:782:- 예: "대검 장착 중 스태거 +X"(arcWarrior 계승), "석궁 장착 중 관통 +X"(arcRanger), "견갑 들면 반격 +X"(arcTank), "단검류 후방타 +X"(arcAssassin), "왕관 다속성 빔 +1"(arcMage)
+docs/7아이템디자인/어픽스_Layer_재분류_설계_2026-08-10.md:811:- L10-A: ultDmg(필살기 피해%), ultCdRed(필살기 전용 쿨감 — 일반 쿨감과 분리), ultCostRed(MP 30% 소모 감소), ultRange(범위%), ultStun(경직/스턴 연장)
+docs/7아이템디자인/어픽스_Layer_재분류_설계_2026-08-10.md:832:현재 구성비: 순수 수치 72% / 조건부 12% / 프록 10% / 루프·변형 ~3% / 키스톤 0%.
+docs/7아이템디자인/어픽스_Layer_재분류_설계_2026-08-10.md:889:L6 Conditional·SkillSyn  A=조건부 수치    B=트리거·루프·스킬계열
+docs/7아이템디자인/어픽스_Layer_재분류_설계_2026-08-10.md:938:| L6 | 93 | 58(sk→6, 이관−6) | +8 (조건부·루프 잔존 DEAD) + sk계열6 | +2 (합체연계) | 54 | 61 |
+docs/2_7 인벤토리+장비시스템/3파트_아이템분류.md:286:  - **wpn→xbow 이전 (24종)**: arcRangerRange, arcRangerDmg, arcRangerPierce, bowAtkSpd, bowRange, critRateBow, pierceChance, pierceCount, projDmgPct, projSpeedPct, rangedDmgPct, multiShot, splashRadius, splashDmg, farDmg, chainTarget, pierceDmgKeep, skBlastShotDmg, skBlueShotDmg, skChainAssaultDmg, skMaliceHuntDmg, skMaliceMortarDmg, skMaliceStormDmg, skMissileDmg
+docs/12퍼포먼스·최적화/프레임최적화_전수조사_2026-05-21.md:84:  - 40658~40790: 보스 wind (조건부 8곳)
+docs/12퍼포먼스·최적화/프레임최적화_전수조사_2026-05-21.md:203:### 10. 조건부 IIFE 클로저
+docs/12퍼포먼스·최적화/성능최적화_보고서_2026-05-23.md:319:| LAYER_FOLLOWUP | 이후 CH1_HIDDEN_UNDERLAY_20260929는 별도 바닥3그룹 조건부 렌더 제외. 위 ART표본을 그 코드의 전후FPS나GPU문제 해결 증거로 재사용하지 않음 |
+docs/14밸런스+수치테이블/14밸런스+수치테이블.md:195:| 약자포식(pPred) | 적HP≤30%: 뎀 `+Lv×20%`. 내HP≤30%: 회복력 `+Lv×10%`, 이속 `+Lv×5%` | 조건부 합연산 |
+docs/14밸런스+수치테이블/14밸런스+수치테이블.md:204:| 조건부 DPS | 15종 | fullLifeDmg, lowLifeDmg, closeDmg, farDmg, stunDmgUp, bossSlayer 등 |
+docs/14밸런스+수치테이블/14밸런스+수치테이블.md:207:| 조건부 방어 | 9종 | healthyDef, injuredDR, dotDR, bossDR, closeDR, farDR 등 |
+docs/14밸런스+수치테이블/14밸런스+수치테이블.md:208:| 장신구 조건부 | 5종 | healthyAtk, injuredDmg, vsBossDmg 등 |
+docs/14밸런스+수치테이블/14밸런스+수치테이블.md:216:| 장신구 확장 | 30종 | strFlat, allStat, maxResMax 5종, 팔찌특화 5종, 조건부 6종 등 |
+docs/12퍼포먼스·최적화/GPU_이관_적용성_조사와_실행_로드맵_2026-08-09.md:31:| VFX Graph + GraphicsBuffer | 조건부 적용 | Unity VFX Graph 대신 WebGPU StorageBuffer + compute + instanced quad로 구현 가능하다. 1,000개 이상인 **순수 시각** 파티클에만 후보이며, 충돌/AI 결과를 GPU에서 CPU로 매 프레임 읽어오지 않는다. |
+docs/12퍼포먼스·최적화/GPU_이관_적용성_조사와_실행_로드맵_2026-08-09.md:35:| PBR 채널 패킹 / 동적 브랜칭 | PBR 패킹은 비적용, 아틀라스화는 조건부 | Diffuse/Normal/Metallic 재질이 없다. 다만 동일 블렌드·동일 텍스처 그룹의 투사체/VFX는 측정 후 아틀라스화하여 flush를 줄일 수 있다. |
+docs/4.0케릭터스프라이트 디자인/캐릭터_몬스터_보스_최적화디자인_v1.md:870:| 1 | PixelLab 유지, 프롬프트만 튜닝 | 재고 332 활용, 파이프 익숙 | 주인공 불만의 원인이 모델 바이어스(휴머노이드 punch, 224→48 머시). 이미 LOCK 후 gen을 전제로 했고 결과가 거절됨 | 주인공/쇼케이스 **기각**. fodder만 조건부 |
+docs/14밸런스+수치테이블/스킬_밸런스_리포트.md:27:| 기동 공격 (조건부) | 기동파괴, 기동불꽃, 기동칼날개 | 사슬기동 비용 포함 초당 환산 |
+docs/14밸런스+수치테이블/스킬_밸런스_리포트.md:125:  1위 chainAssault  Lv10 3티어: 19.6 × 100 = **1960배** (Shift 0.2초 차징, 3티어=업화선급) ← 조건부(사슬기동 중)
+docs/14밸런스+수치테이블/스킬_밸런스_리포트.md:126:  2위 chainSlam     Lv10 3티어: 16.8 × 100 = **1680배** (Shift 0.2초 차징, 3티어=업화선급) ← 조건부(사슬기동 중)
+docs/14밸런스+수치테이블/스킬_밸런스_리포트.md:268:| ghostWalk 뇌전걸음 | 무료+무적이지만 20초 쿨 + 적 통과 조건부 |
+docs/14밸런스+수치테이블/스킬_밸런스_리포트.md:279:  - chainAssault 기동불꽃 (3티어 ×100, 조건부, Lv10: ~1960배율)
+docs/14밸런스+수치테이블/스킬_밸런스_리포트.md:280:  - chainSlam 기동파괴 (3티어 ×100, 조건부, Lv10: ~1680배율)
+docs/14밸런스+수치테이블/스킬_밸런스_리포트.md:294:  - ghostWalk 뇌전걸음 (조건부 폭발)
+docs/8.0몬스터디자인/code_etype20_29_얼음몹_애니메이션_공격모션_정리.md:42:| 21 | 빙궁수 | `Ranged` | 활 대신 1차는 손/활 들고 냉기 투사체 발사 | `fireball` | `Ice Archer` `4ebaf86c` `12/16` 세트. `walk 4dir`, `hit 4dir`, `attack 3dir`, `idle 1dir` | `idle 3dir`, `attack west` 추가. 최종형은 활 포즈 리디자인 |
+docs/8.0몬스터디자인/code_etype20_29_얼음몹_애니메이션_공격모션_정리.md:44:| 23 | 얼음 정령 | `Ranged` | 부유 캐스팅 후 얼음 탄 발사, 몸 자체는 크게 이동하지 않음 | `fireball` | `Ice Elemental` `78a3508d` `6/16` 세트. `attack 3dir`, `hit 3dir`만 존재 | `idle 4dir`, `walk 4dir`, `south attack/hit` 추가 |
+docs/3.1 ui hud 디자인/PASSIVE_BODY_TREE_UI_20260909.md:14:| 화면 왼다리 | 기동회복과 조건부 회복/이동·풍요·약탈 |
+docs/3.1 ui hud 디자인/lobby_full_patch.md:1009:| 이름 확정 | _visualConfirm은 기존 comingSoon 차단 후 _closeVisualSelect 사용. createModal show, 이름/안내 초기화, 기존50ms 조건부 이름 초점 유지. 캐릭터 생성 요청·저장·스토리 경로 변경 없음 |
+docs/8.0몬스터디자인/몬스터_사운드설계.md:438:| 1 | 가시 사도 | Ranged | HUMANOID | die_human | m_archer |
+docs/8.0몬스터디자인/몬스터_사운드설계.md:463:| 21 | 빙궁수 | Ranged | HUMANOID | die_human | m_archer |
+docs/8.0몬스터디자인/몬스터_사운드설계.md:465:| 23 | 얼음 정령 | Ranged | BONE | death_bone | m_caster |
+docs/8.0몬스터디자인/몬스터_사운드설계.md:478:| 31 | 가시 사도II | Ranged | HUMANOID | die_human | m_melee |
+docs/8.0몬스터디자인/몬스터_사운드설계.md:510:| 53 | 눈알 괴물 | Ranged | FLESH | death_flesh | monster_crawl |
+docs/8.0몬스터디자인/몬스터_사운드설계.md:526:| 62 | 해파리 사도 | Ranged | ARMOR | death_armor | m_splitter |
+docs/8.0몬스터디자인/몬스터_사운드설계.md:560:| 86 | 거꾸로 된 천사 | Ranged | GHOST | death_ghost | m_caster |
+docs/3.1 ui hud 디자인/캐릭터선택_리모델링_기획서.md:620:| 이름 확정 | _visualConfirm은 기존 comingSoon 차단 후 _closeVisualSelect 사용. createModal show, 이름/안내 초기화, 기존50ms 조건부 이름 초점 유지. 캐릭터 생성 요청·저장·스토리 경로 변경 없음 |
+docs/14밸런스+수치테이블/스킬별_DPS_자원소비표.md:256:| E 타격/전진 패링/충전 미리보기 | `_eSwingRadius(C)=floor((70+견갑bonusRange×4)×M×C)` |
+docs/14밸런스+수치테이블/스킬별_DPS_자원소비표.md:258:| 불꽃칼날 추가 반사 | `_sdRange=floor(_gsRange2×1.5)` (기존 합체 보너스 유지) |
+docs/14밸런스+수치테이블/스킬별_DPS_자원소비표.md:259:| 파워웨이브 | `_wvRangeMul=M×C`; 사거리210×M×C, 진행 판정 r=50×M×C, 폭95×M×C. C는 발사 시 충전 배율1~3 스냅샷. 적/탄막 충돌과 먼지 분포가 같은 r/w 사용. Lv1 풀차지 사거리630·r150·폭285 |
+docs/14밸런스+수치테이블/스킬별_DPS_자원소비표.md:260:| 시각 | 실버테일 아크 scale=C×M; 다른 캐릭터 sweepRange=floor((90+견갑bonusRange×4)×C×M). 룬 미리보기는 실제 `_eSwingRadius(C)` 사용 |
+docs/8.0몬스터디자인/탄막시스템_총정리.md:370:| 칼등치기/Q일반/해제패링 (`_parryR`) | 110 + bonusRange×4 + pParry×2 + parryBonus×20, **최대 140** |
+docs/8.0몬스터디자인/탄막시스템_총정리.md:371:| Q 기폭팔 (`_parryRDet`) | 140 + bonusRange×6 + pParry×3 + parryBonus×30, **최대 200** |
+docs/8.0몬스터디자인/탄막시스템_총정리.md:372:| 공격 상태(wSwing 등) | (wRange+bonusRange)×2+60 |
+docs/3.1 ui hud 디자인/UI_COMPOSITION_20260925.md:2303:| 이름 확정 | _visualConfirm은 기존 comingSoon 차단 후 _closeVisualSelect 사용. createModal show, 이름/안내 초기화, 기존50ms 조건부 이름 초점 유지. 캐릭터 생성 요청·저장·스토리 경로 변경 없음 |
+docs/최종기획서/build_document.py:411:        ['SUFFIX — 조건부 트리거 (7)', '위기/피격반격/패링폭발/스태거폭발/정화/불굴/부활', '상황별 발동'],
+docs/3.1 ui hud 디자인/PASSIVE_TREE_REDESIGN_20260909.md:18:| 목표 | 선택은 간단하고 조합은 다양하게. 반복 수치 강화뿐 아니라 조건부 효과·전투 방식 변경을 확대 |
+docs/3.1 ui hud 디자인/PASSIVE_TREE_REDESIGN_20260909.md:48:| 주요 | 특정 전투 성향 강화 | 출혈 대상 근접 피해, 근거리 투사체 피해, 관통, 축적, 자원 조건부 보너스 | 중간 문장과 이름 |
+docs/8.0몬스터디자인/몬스터_총관리.md:34:        Ranged,         // 1: 원거리 투사체
+docs/8.0몬스터디자인/몬스터_총관리.md:38:        Ranged,         // 5: 원거리 탄막 (자폭 제거)
+docs/8.0몬스터디자인/몬스터_총관리.md:248:            ("가시 사도",     "Thorn Apostle",     -1, EnemyAIType.Ranged,     "등 가시 원거리 발사"),
+docs/8.0몬스터디자인/몬스터_총관리.md:269:            ("빙궁수",        "Ice Archer",         0, EnemyAIType.Ranged,     "빙결 화살 발사"),
+docs/8.0몬스터디자인/몬스터_총관리.md:271:            ("얼음 정령",     "Ice Elemental",      0, EnemyAIType.Ranged,     "부유+빙하 투사체 원거리"),
+docs/8.0몬스터디자인/몬스터_총관리.md:280:            ("가시 사도II",   "Spike Apostle",      1, EnemyAIType.Ranged,     "뼈 가시 발사+근접 할퀴기"),
+docs/8.0몬스터디자인/몬스터_총관리.md:304:            ("눈알 괴물",     "Eye Horror",         3, EnemyAIType.Ranged,     "응시 빔(직선)+몹 정확도 버프"),
+docs/8.0몬스터디자인/몬스터_총관리.md:314:            ("해파리 사도",   "Jellyfish Apostle",  4, EnemyAIType.Ranged,     "부유+마비(1초)+전기 방전"),
+docs/8.0몬스터디자인/몬스터_총관리.md:340:            ("거꾸로 된 천사","Inverted Angel",     6, EnemyAIType.Ranged,     "빛의 창(관통)+어둠 폭발+속성 번갈아"),
+docs/14밸런스+수치테이블/BALANCE_ECONOMY_TEAM_MASTER.md:52:| COMBAT-01 방어·조건부 피해 | 적 HP≥70%의 `pAbund`, ≤30%의 `pPred`는 해당 적 HP 구간에서 적용. 물리·속성 DR 75%, 플레이어 한방 33%/60f 상한은 코드·수치표 일치 | 정적 계약 확인. 실제 빌드별 타수·생존은 미측정 |
+docs/14밸런스+수치테이블/BALANCE_ECONOMY_TEAM_MASTER.md:169:BUILD suffix 처리와 BALANCE 임시파일 교체 후보를 root가 server.cjs에 순차 적용했다. 원소스339fad6a→합본6a7c1083, 실제 생산 Range23+저장13+전체handler4=40그룹 PASS. 기존 실패 RED/원본과 담당20파일 SHA 보존. 저장 스키마/반환 JSON/GET 캐시·gzip 계약 유지. 실제 디스크·크래시·fsync·HTTP·영상 원인·앱 재실행은 미검수, 기존 EPERM 우회0. 상세: [서버 통합 인수](../0마스터플랜/mac-resume-20261001/vscode-dispatch/SERVER-INTEGRATION-20261002.md). 앞선 미적용 후보 기록은 제출 당시 이력이다.
+docs/0마스터플랜/mac-resume-20261001/map020-evidence/팀실행-영수증.json:70:      "result_text": "MAP-020 독립 화면 검토 완료 — 총괄이 생성한 캡처 6장·`south-shots.json`·`walk-input-raw.json`·`before-map-collision.json`을 직접 열람한 결과입니다(본인 브라우저 실행 아님).\n\n## 조건 대조 (실측 아님, 캡처 메타 확인)\n- `south-shots.json`: 6장 모두 cam=player 2420,6600, ambient `[6,16,9,0.38]`(어둠 .38), `mapUnchanged:true`, roots 305/buildMs 14.7/texPx 640000(800×800). 줌1 viewWorld `[1280,800]`, 줌.62 viewWorld `[2064.52,1290.32]` — **줌 1→.62 실적용 확인**(설정값이 아니라 런타임 view 범위가 실제로 넓어짐). mode 0/a/b의 boundary lastDraws 0/1/16으로 3종 분기도 실동작.\n- 좌표 검증(`coordinateCheck`): approach `[6660,6140]` isWall **false**, bake환산 `[6835.94,6738.28]` isWall **true**, 문서 `[7000,6900]` isWall **true**(tile=1). 지시하신 값과 100% 일치.\n- 보행(`walk-input-raw`): 4구간·총 110표본, 전부 `held:true`·`paused:false`·`on:true`·`mapUnchanged:true`. 워프 없음.\n\n## 1) 가독성 — 조건부 PASS\n정상 줌(`south-z1-b`)·M5 두 컷(`south-approach`/`south-blocked`)에서 플레이어(붉은 실루엣)와 적·포탈이 읽힘. 단 줌.62에서는 플레이어가 과소해지고, M5 컷은 오버행 아래 단일 프레임 판정이라 밀집 전투 가독성은 미검증. foreground band 170/instances 13/lastDrawsFront 2는 전경이 실제로 그려졌음을 뒷받침.\n\n## 2) 뿌리 반복 — RETOUCH (기존 약점 잔존)\n`south-z1-b`·`south-z0.62-b`의 좌측 접지 경계에 갈고리형 뿌리 마디가 같은 모양으로 이어져 **\"밧줄\" 반복감이 여전히 관찰**됨. mode a(그림자만)·0(끔) 대비 b에서만 이 띠가 두드러지므로 원인은 `buildRim` 뿌리 인스턴싱. 승인 문서 1차판이 명시한 약점이 해소되지 않음.\n\n## 3) 줌 절단 — **신규 결함(별도 범위)**\n줌.62의 0·A·B 세 장 모두에서 x≈194~1086, y≈102~698 구간에 **직선 모서리의 사각 그림자 절단**이 관찰됨. 줌1에는 없음. draw cull 반경이 `VW/2+80` 고정(줌 미반영)이라, view가 2064×1290로 넓어지면 경계 그림자 텍스처가 1x 기준 사각형에서 하드컷되는 정적 원인으로 판단. 이는 `buildRim`이 아니라 **cull/그리기 경로 결함**이므로 뿌리 반복과 분리.\n\n## 4) M5 좌표 결함 — 문서 오기 확정\n문서 `[7000,6900]`은 벽 타일(1)이라 보행 주머니가 아님. 실제 걷는 주머니 진입은 `[6660,6140]`(비벽). 남진 정지선이 x6660→y6304.37, x6746→y6223.58로 **동쪽일수록 북상**해 막힌 남측 경계가 곡선/사선임을 실제 이동으로 확인. `wall` 플래그는 계속 false지만 좌표가 flatline(클램프)으로 정지 → 워프가 아닌 실보행 차단. (부수: 전 구간 `pState:\"idle\"` 유지 — 정지 판정엔 영향 없으나 상태 텔레메트리 확인 필요.)\n\n## VISUAL VERDICT: **RETOUCH**\n근거: (2) 뿌리 반복 미해소 + (3) 줌아웃 신규 사각 절단. 두 결함이 남아 원거리 PASS 불가. 정상 줌·보행 차단·좌표 정합은 확인됨.\n\n## 수정 후보 (분리)\n- **맵팀 범위**: `ch1-boundary-edge.js` `buildRim`의 뿌리 변주만 — 기존 `prop_pool.png` 다른 테두리 2~3구간 크롭으로 반복 해소, 위치 앵커·법선·씨드·92px 간격·충돌 보존, 총괄 검토 후 적용.\n- **별도 범위(맵팀 아님)**: 줌 미반영 `VW/2+80` cull 사각 절단 — 그리기/cull 경로 소유팀에 이관 권고. buildRim 변주와 같은 커밋에 묶지 않음.\n- **문서 정정 대상**: `CH1_BOUNDARY_EDGE_MAP020_20261001.md`의 CAMERA QA M5 좌표 `(7000,6900)` → 실보행 진입 `(6660,6140)`. (이번엔 판정만, 수정 미실시.)\n\n## 마감\n소스 수정·새 실행·타팀 작업 0. 본 답변은 총괄 캡처·로그 기반 독립 판정이며, 채택 전 정상 전투·탄·패링·드롭 가독성 및 경계/깊이/도랑 회귀와 성능 동일조건 재측정이 남아 있음. **화면 검수는 RETOUCH로 종결, 후속 후보 적용 대기.**",
+docs/0마스터플랜/mac-resume-20261001/ui03-evidence/team-receipts.json:496:      "text": "Mac 작업트리 실제 존재 여부를 확인했습니다. 이를 사실로 반영해 격리 검사 도구 후보 코드를 완성합니다.\n\n## 확인된 Mac 파일 사실 (경로 존재/부재)\n\n| 구분 | 경로 | Mac 상태 |\n|---|---|---|\n| 원본 WAV | `bgm/1장_썩은숲/Ashes Under the Banner (Remastered).wav` | **존재** |\n| 원본 WAV | `bgm/3장_얼음굴/흰눈의 맹세 (Remastered).wav` | **존재** |\n| 원본 WAV | `bgm/공통/네메시아의 강림2 (Remastered).wav` | **존재** |\n| 런타임 mp3 | `bgm/1장_썩은숲/Ashes Under the Banner.mp3` | **존재**(단 `audio_review/S-02/` 밖 → S-02 256k 후보와 동일 보장 없음) |\n| S-02 후보 묶음 | `audio_review/S-02/` (MP3 256k·OGG q6·Opus 160k 9개 + 측정3 + README) | **부재**(Glob 0건, 별도 브랜치 `49851bd`에만 존재) |\n| 압축 변형 | `bgm/**/*.ogg`, `bgm/**/*.opus` | **부재**(작업트리 내 0개) |\n\n→ 즉 **원본 WAV 3곡은 Mac에 있으나, S-02 압축 후보 9개는 Mac에 없음**. 아래 도구는 이 상태를 자동으로 404로 드러내도록 설계했고, 후보 묶음을 격리 조회해 프로젝트 루트에 둔 뒤에만 실제 비교가 가능합니다.\n\n## 산출 코드 (격리 검사 HTML 후보 — 미배치·미실행)\n\n```html\n<!DOCTYPE html>\n<!--\n  S-02 격리 디코딩/재생 계약 검사 도구 (후보, 미실행)\n  - 배치 위치(제안): 프로젝트 루트 audio_review/S02_inspect.html 로 두고,\n    반드시 server.cjs(포트 3340/3333)로 서빙해야 상대경로 해석됨. python http.server 금지(프로젝트 규칙).\n  - 자동재생 없음. 모든 디코딩/재생은 사용자가 '오디오 시작' 버튼을 눌러 AudioContext를 활성화한 뒤에만 동작.\n  - 원본 삭제/재인코딩/병합/덮어쓰기 없음. 이 파일은 읽기 전용 fetch만 수행.\n  - 제약: 이 코드는 \"완성된 후보\"일 뿐, 본 세션에서 브라우저로 실행하거나 청취/기계검증하지 않았음.\n-->\n<html lang=\"ko\">\n<head>\n<meta charset=\"utf-8\">\n<title>S-02 디코딩/재생 계약 검사 (후보·미실행)</title>\n<style>\n  body{background:#15110e;color:#dfd6c2;font-family:'Nanum Myeongjo',serif;margin:0;padding:18px}\n  h1{font-size:18px;color:#e6d9bf;border-bottom:1px solid rgba(164,147,115,.5);padding-bottom:8px}\n  .note{color:#b9a98a;font-size:12px;line-height:1.6;margin:8px 0 16px}\n  button{background:#241c16;color:#e6d9bf;border:1px solid rgba(164,147,115,.5);\n    padding:6px 12px;border-radius:4px;cursor:pointer;font-family:inherit;margin:2px}\n  button:hover{background:#3a2c20}\n  button:disabled{opacity:.4;cursor:not-allowed}\n  table{border-collapse:collapse;width:100%;margin-top:12px;font-size:13px}\n  th,td{border:1px solid rgba(164,147,115,.3);padding:6px 8px;text-align:left;vertical-align:top}\n  th{background:#241c16}\n  .ok{color:#8fd08a}.bad{color:#e07a6a}.wait{color:#c9b98f}\n  code{color:#cdbf9e;font-size:12px}\n  .seg{margin:4px 0}\n  input[type=number]{width:64px;background:#1c1510;color:#dfd6c2;border:1px solid rgba(164,147,115,.4);border-radius:3px;padding:2px 4px}\n</style>\n</head>\n<body>\n<h1>S-02 디코딩/재생 계약 검사 — 격리 도구(후보, 미실행)</h1>\n<div class=\"note\">\n  절차: ① <b>오디오 시작</b>(사용자 제스처) → ② <b>경로 존재 검사</b> → ③ 곡·포맷별 <b>디코딩</b>(duration/decode error) →\n  ④ <b>루프 재생</b> + <b>끝으로 이동</b>으로 loop seam 청취 → ⑤ 원본 WAV와 <b>A/B</b> 교차 청취.<br>\n  자동재생/자동청취/기계판정 없음. 디코딩은 duration·sampleRate·channels 보고와 오류 표면화까지만 수행.\n</div>\n\n<div class=\"seg\">\n  <button id=\"startBtn\">① 오디오 시작 (사용자 제스처 필요)</button>\n  <span id=\"acState\" class=\"wait\">AudioContext: 미시작</span>\n  &nbsp;|&nbsp; 끝 구간 seam(초): <input type=\"number\" id=\"seamSec\" value=\"0.5\" min=\"0.1\" max=\"5\" step=\"0.1\">\n  <button id=\"probeBtn\" disabled>② 경로 존재 검사</button>\n</div>\n\n<table id=\"grid\"></table>\n\n<script>\n// 대표 3곡 × (원본 WAV + MP3 256k/OGG q6/Opus 160k 후보). 후보 파일명은 문서상 스킴 기반 '예상' 경로이며,\n// 실제 audio_review/S-02/ 내 파일명이 다르면 아래 paths만 수정. 존재 여부는 ②가 사실로 표시함.\nconst SONGS = [\n  { id:'ashes', name:'Ashes Under the Banner (고역)',\n    wav:'../bgm/1장_썩은숲/Ashes Under the Banner (Remastered).wav',\n    mp3:'Ashes Under the Banner.mp3', ogg:'Ashes Under the Banner.ogg', opus:'Ashes Under the Banner.opus' },\n  { id:'snow', name:'흰눈의 맹세 (합창·잔향)',\n    wav:'../bgm/3장_얼음굴/흰눈의 맹세 (Remastered).wav',\n    mp3:'흰눈의 맹세.mp3', ogg:'흰눈의 맹세.ogg', opus:'흰눈의 맹세.opus' },\n  { id:'nemesia', name:'네메시아의 강림2 (루프 경계)',\n    wav:'../bgm/공통/네메시아의 강림2 (Remastered).wav',\n    mp3:'네메시아의 강림2.mp3', ogg:'네메시아의 강림2.ogg', opus:'네메시아의 강림2.opus' },\n];\nconst FORMATS = ['wav','mp3','ogg','opus']; // wav=원본, 나머지=S-02 후보\n\nlet AC = null;\nconst el = (id)=>document.getElementById(id);\n\nel('startBtn').onclick = async ()=>{\n  try{\n    AC = new (window.AudioContext||window.webkitAudioContext)();\n    await AC.resume();\n    el('acState').textContent = 'AudioContext: '+AC.state+' / sr='+AC.sampleRate;\n    el('acState').className = 'ok';\n    el('probeBtn').disabled = false;\n    el('startBtn').disabled = true;\n  }catch(e){ el('acState').textContent='시작 실패: '+e; el('acState').className='bad'; }\n};\n\n// 경로 존재 검사: HEAD 우선, 미지원 서버 대비 Range GET 폴백. 디코딩/재생 안 함.\nasync function exists(url){\n  try{\n    let r = await fetch(url,{method:'HEAD'});\n    if(r.status===405||r.status===501){ r = await fetch(url,{headers:{Range:'bytes=0-0'}}); }\n    return r.ok ? r.status : r.status;\n  }catch(e){ return 'ERR'; }\n}\n\nfunction buildGrid(){\n  const t = el('grid');\n  t.innerHTML = '<tr><th>곡 / 포맷</th><th>경로</th><th>존재</th><th>디코딩(duration·sr·ch)</th><th>재생/seam</th><th>A/B</th></tr>';\n  SONGS.forEach(s=>{\n    FORMATS.forEach(fmt=>{\n      const url = fmt==='wav' ? s.wav : ('./'+s[fmt]); // 후보는 이 HTML(audio_review/) 기준 상대\n      const key = s.id+'_'+fmt;\n      const tr = document.createElement('tr');\n      tr.innerHTML =\n        '<td>'+(fmt==='wav'?('<b>'+s.name+'</b><br>원본 WAV'):('└ '+fmt.toUpperCase()+' 후보'))+'</td>'+\n        '<td><code>'+url+'</code></td>'+\n        '<td id=\"ex_'+key+'\" class=\"wait\">—</td>'+\n        '<td id=\"dec_'+key+'\" class=\"wait\">미디코딩</td>'+\n        '<td>'+\n          '<button data-act=\"decode\" data-url=\"'+encodeURIComponent(url)+'\" data-key=\"'+key+'\">디코딩</button>'+\n          '<button data-act=\"loop\"   data-url=\"'+encodeURIComponent(url)+'\" data-key=\"'+key+'\">루프재생</button>'+\n          '<button data-act=\"seam\"   data-key=\"'+key+'\">끝으로이동</button>'+\n          '<button data-act=\"stop\"   data-key=\"'+key+'\">정지</button>'+\n          '<audio id=\"au_'+key+'\" preload=\"none\" loop></audio>'+\n        '</td>'+\n        '<td><button data-act=\"ab\" data-key=\"'+key+'\">A/B 재생</button></td>';\n      t.appendChild(tr);\n    });\n  });\n}\n\nel('probeBtn').onclick = async ()=>{\n  buildGrid();\n  bindRowButtons();\n  for(const s of SONGS){\n    for(const fmt of FORMATS){\n      const url = fmt==='wav' ? s.wav : ('./'+s[fmt]);\n      const cell = el('ex_'+s.id+'_'+fmt);\n      cell.textContent = '검사중…';\n      const st = await exists(url);\n      const good = (st===200||st===206);\n      cell.textContent = good ? ('있음('+st+')') : ('없음/'+st);\n      cell.className = good ? 'ok' : 'bad';\n    }\n  }\n};\n\n// 디코딩: fetch→decodeAudioData. Opus는 decodeAudioData 미지원일 수 있어 그 경우 '디코딩 불가(재생은 <audio>로)'로 표기.\nasync function doDecode(url,key){\n  const cell = el('dec_'+key);\n  cell.textContent='디코딩중…'; cell.className='wait';\n  try{\n    const r = await fetch(url);\n    if(!r.ok){ cell.textContent='fetch 실패 '+r.status; cell.className='bad'; return; }\n    const buf = await r.arrayBuffer();\n    AC.decodeAudioData(buf.slice(0),\n      (ab)=>{ cell.textContent = ab.duration.toFixed(4)+'s · '+ab.sampleRate+'Hz · '+ab.numberOfChannels+'ch'; cell.className='ok'; },\n      (err)=>{ cell.textContent = 'decodeAudioData 오류: '+(err&&err.message||err); cell.className='bad'; }\n    );\n  }catch(e){ cell.textContent='예외: '+e; cell.className='bad'; }\n}\n\nfunction bindRowButtons(){\n  el('grid').onclick = (ev)=>{\n    const b = ev.target.closest('button[data-act]'); if(!b) return;\n    const act=b.dataset.act, key=b.dataset.key;\n    const url = b.dataset.url ? decodeURIComponent(b.dataset.url) : null;\n    const au = el('au_'+key);\n    if(act==='decode'){ if(!AC){alert('먼저 오디오 시작');return;} doDecode(url,key); }\n    else if(act==='loop'){ if(!au.src) au.src=url; au.loop=true; au.play().catch(e=>alert('재생 실패(포맷 미지원 가능): '+e)); }\n    else if(act==='seam'){ const s=parseFloat(el('seamSec').value)||0.5;\n      if(au.duration&&isFinite(au.duration)) au.currentTime=Math.max(0,au.duration-s); else alert('duration 미확정 — 먼저 루프재생'); }\n    else if(act==='stop'){ au.pause(); }\n    else if(act==='ab'){ // 같은 곡 원본 WAV ↔ 이 변형 번갈아 재생\n      const song=key.split('_')[0];\n      const wavAu=el('au_'+song+'_wav');\n      if(!wavAu.src){ const s=SONGS.find(x=>x.id===song); wavAu.src=s.wav; }\n      if(!au.src){ alert('먼저 이 변형 루프재생/디코딩'); return; }\n      wavAu.pause(); au.pause();\n      wavAu.currentTime=au.currentTime=0;\n      wavAu.play().then(()=>setTimeout(()=>{wavAu.pause(); au.currentTime=0; au.play();},3000))\n                  .catch(e=>alert('A/B 재생 실패: '+e));\n    }\n  };\n}\n</script>\n</body>\n</html>\n```\n\n## 사용 절차 (관찰 항목 매핑)\n- **duration**: 각 행 「디코딩」 → `decodeAudioData` 성공 시 `duration·sampleRate·channels` 표시. 원본 WAV와 3포맷 간 길이차·샘플레이트차 확인.\n- **decode error**: 디코딩 실패는 빨간색으로 사유 표면화. Opus는 `decodeAudioData` 미지원 브라우저에서 실패할 수 있으며, 그 경우 「루프재생」(`<audio>`)으로 재생 가능 여부를 별도 판정(정상적 분기).\n- **loop seam**: 「루프재생」(loop=true) 후 「끝으로 이동」(기본 끝 0.5초)으로 반복 이음부를 사용자가 직접 청취 — 특히 네메시아의 강림2.\n- **볼륨 정합·왜곡·A/B**: 「A/B 재생」으로 같은 곡 원본 WAV↔후보를 3초 간격 교차 재생.\n- **존재 사실**: 「경로 존재 검사」가 각 경로를 200/404로 표시 → 현재 Mac에서는 **S-02 후보 3포맷이 `없음(404)`으로 나오는 것이 정상**(격리 조회 전 상태).\n\n## 미실행 제약 (명시)\n- 이 코드는 **완성된 후보일 뿐 본 세션에서 브라우저로 실행하지 않았고**, 자동재생 청취나 기계검증(디코딩/파형/seam 판정)을 수행했다고 주장하지 않습니다.\n- **파일 미생성·미배치**: 프로젝트에 쓰지 않았습니다(답변 코드블록으로만 산출). 실제 사용 시 총괄이 `audio_review/`에 배치하고 `server.cjs`로 서빙해야 합니다.\n- 원본 삭제·재생성·인코딩·병합·게임/파일 변경 **없음**. 읽기 도구(Glob)로 존재 사실만 확인했습니다.\n- S-02 후보 9개는 Mac 작업트리 **부재** → 실제 디코딩/청취는 브랜치 `49851bd`의 `audio_review/S-02/` 격리 조회 후에만 가능. 후보 파일명이 문서 스킴과 다르면 `SONGS` 배열의 경로만 수정하면 됩니다.\n\n작업 완료. 결과 저장은 총괄이 수행합니다. 종료합니다."
+docs/4.1맵디자인+설정/DIMRAETH_MAP_RESEARCH_20260916.md:96:| 3 | 지형과 이벤트 슬롯 분리 | 검수된 맵의 encounterSlots에 기존 소환굴/이벤트를 조건부 배치 | 배경 재제작 없이 플레이 변주. 기존 스폰 예산/전투 규칙 유지 |
+docs/8.0몬스터디자인/몬스터_공격시스템.md:338:- 일반탄/특수탄: life=_pRange×0.3
+docs/8.0몬스터디자인/몬스터_공격시스템.md:495:| 칼등치기/Q일반/해제패링 (`_parryR`) | 기본 110 + bonusRange×4 + pParry×2 + parryBonus×20, **최대 140** |
+docs/8.0몬스터디자인/몬스터_공격시스템.md:496:| Q 기폭팔 (`_parryRDet`) | 기본 140 + bonusRange×6 + pParry×3 + parryBonus×30, **최대 200** |
+docs/8.0몬스터디자인/몬스터_공격시스템.md:497:| 공격 상태(wSwing 등) | (wRange+bonusRange)×2+60 |
+docs/2_5 부활+에너지쉴드시스템/2_5 부활+에너지쉴드시스템.md:164:  - **모든 DR(기본DR + barrier 어픽스 + 조건부DR)** 적용 후 쉴드→HP 순서로 분배 (2026-05-13 수정)
+docs/2_5 부활+에너지쉴드시스템/2_5 부활+에너지쉴드시스템.md:174:3. 조건부 DR 어픽스: healthyDef/injuredDR/dotDR/bossDR/closeDR/farDR (합산 최대 50%)
+docs/2_5 부활+에너지쉴드시스템/2_5 부활+에너지쉴드시스템.md:180:- 설계 변경 이유: 이전 구현은 barrier/조건부DR이 HP에만 적용되어 쉴드가 HP보다 훨씬 약했음
+docs/2_5 부활+에너지쉴드시스템/2_5 부활+에너지쉴드시스템.md:184:- 2026-05-13: barrier/조건부DR이 쉴드 적용 이후에 계산되어 HP에만 유리하던 버그 → 쉴드 체크를 모든 DR 이후로 이동
+docs/0마스터플랜/mac-resume-20261001/vscode-dispatch/DRAW-attribution-root-review.md:30:BUILD 독립15검사와 실제생산회귀17검사도 통과했다(14:58:17Z). currentSrc 정상로드 생략·동기예산선점불가·청소API가 거절하면잔존할수있음을 재확인했다. 정상 브라우저 부트/실전 검수 전의 조건부 통합 단계다.
+docs/0마스터플랜/mac-resume-20261001/ui03-evidence/SOUND-팀검토.md:106:// 경로 존재 검사: HEAD 우선, 미지원 서버 대비 Range GET 폴백. 디코딩/재생 안 함.
+docs/0마스터플랜/mac-resume-20261001/ui03-evidence/SOUND-팀검토.md:110:    if(r.status===405||r.status===501){ r = await fetch(url,{headers:{Range:'bytes=0-0'}}); }
+docs/16번역·로컬라이제이션/번역대상_전체목록.md:2426:| 1980 | 투사체뎀 +15%, 공속 +10%, 사거리 +8%... | Projectile DMG +15%, ATK speed +10%, Range +8%... |
+docs/16번역·로컬라이제이션/번역대상_전체목록.md:2581:| 2094 | 검기 거리 | Crescent Range | 劍氣距離 | 剣気射程 |
+docs/16번역·로컬라이제이션/번역대상_전체목록.md:2582:| 2095 | 레벨당 거리 | Lv Range Bonus | 每級距離 | Lv毎射程 |
+docs/16번역·로컬라이제이션/번역대상_전체목록.md:2587:| 2100 | 레벨당 범위 | Per Lv Range | 每級範圍 | Lv毎範囲 |
+docs/16번역·로컬라이제이션/번역대상_전체목록.md:2711:| 2415 | 원거리의 | Ranged | 远程 | 遠距離 |
+docs/16번역·로컬라이제이션/번역대상_전체목록.md:2737:| 2441 | 원거리방어의 | Ranged DR | 远程防御 | 遠距離防御 |
+docs/16번역·로컬라이제이션/번역대상_전체목록.md:2771:| 2475 | 원사의 | Ranged Shot | 远射 | 遠射 |
+docs/16번역·로컬라이제이션/번역대상_전체목록.md:2778:| 2482 | 사격회심의 | Ranged Crit | 射击暴击 | 射撃クリ |
+docs/16번역·로컬라이제이션/번역대상_전체목록.md:2780:| 2484 | 사격쾌속의 | Ranged Speed | 射击速攻 | 射撃速攻 |
+docs/16번역·로컬라이제이션/번역대상_전체목록.md:2849:| 2553 | 돌진거리의 | Dash Range | 突进距离 | 突進距離 |
+docs/16번역·로컬라이제이션/번역대상_전체목록.md:2892:| 2596 | 무기사거리의 | Weapon Range | 武器射程 | 武器射程 |
+docs/16번역·로컬라이제이션/번역대상_전체목록.md:2893:| 2597 | 활사거리의 | Bow Range | 弓箭射程 | 弓射程 |
+docs/16번역·로컬라이제이션/번역대상_전체목록.md:2899:| 2603 | 범위확장의 | Splash Range | 范围扩展 | 範囲拡張 |
+docs/16번역·로컬라이제이션/번역대상_전체목록.md:2993:| 2697 | 궁수사거리의 | Archer Range | 弓手射程 | 弓使い射程 |
+docs/0마스터플랜/mac-resume-20261001/vscode-dispatch/ITEM-enemy-support-result.md:11:| null tick, 451 rAF | elapsedTicks=null, inRangeTicks=451, FAIL_NO_FIRE | inRangeTicks=0, INCONCLUSIVE |
+docs/0마스터플랜/mac-resume-20261001/vscode-dispatch/SOUND-observer-root-review.md:7:root는 추가로 음수 maxEpisodes의 무한 while 가능성을 제거했다. maxEvents/maxEpisodes 기본512·최대4096, 1 이상 안전 정수만 허용하며 잘못된 값은 wrapper 설치 전에 RangeError. 직접진입 분류는 유한 여부만 보는 대신 실제 알려진 phase0으로 좁혔다. getFrame 기본null, 원래 함수 this/인수/반환/예외 보존, bounded event/episode/drop, cleanup·중복설치·다른wrapper 보존 계약이다.
+docs/0마스터플랜/mac-resume-20261001/vscode-dispatch/SERVER-INTEGRATION-20261002.md:7:- Range suffix: 길이10000에서 bytes=-500을 기존0–500/501바이트 대신9500–9999/500바이트로 계산한다. 고정/열린 끝/큰 숫자 clamp 및 416을 처리한다. GET 외/알 수 없는 단위/미지원 다중범위는 기존 전체 응답 경로를 사용한다. GET 캐시·gzip 분기는 byte 그대로다. [RFC9110 §14.1.2·14.2](https://www.rfc-editor.org/rfc/rfc9110.html#section-14.1.2)의 suffix 정의와 범위 무시 허용을 확인했다. If-Range/조건부 Range 순서 및 HEAD 전체 최적화는 기존 남은 문제로 분리한다.
+docs/0마스터플랜/mac-resume-20261001/vscode-dispatch/SERVER-INTEGRATION-20261002.md:12:`node tools/team-followup-20261001/root-review/server-integration.mjs`: actual production Range23 + 실제 production helper/route 메모리fs13 + actual 전체 HTTP handler4 =40그룹 PASS. 기존 suffix 잘못된 결과와 부분쓰기 손상 RED를 frozen before로 계속 재현한다. 전체 handler는 AST 표현식만 VM에서 호출하여 성공 ACK 순서/쓰기 실패/rename 실패/깨진 JSON500을 검수했다. http.createServer/listen 자체 호출0, .env 로드0, 실제 저장/API/사용자파일 접근0.
+docs/0마스터플랜/mac-resume-20261001/vscode-dispatch/ENEMY-result.md:26:- **소스 대조:** `game.html:38970 if(e.projT<=0&&d<_eRange){e.projT=e.projCd; … 38975 e._projChargeT=60}`. 차징 개시 **그 프레임에 projT가 projCd(≈240, 양수)로 즉시 리셋**. 문서 `탄막시스템_총정리.md:619`("시작 | idle, projT<=0 + 사거리 안 → _projChargeT=60")과 일치.
+docs/0마스터플랜/mac-resume-20261001/vscode-dispatch/ENEMY-result.md:41:- **검증:** `F4 dedup` 모의(rAF 2×/tick)에서 `inRangeTicks ≤ 경과 sim-tick`; 시나리오 C에서 사망 후 새 etype3 등장해도 residency 혼합 없음.
+docs/0마스터플랜/mac-resume-20261001/vscode-dispatch/ROOT_REVIEW.md:49:ENEMY 기존9/9 모의 검사 통과 후 root 추가 재현에서 `getTick()=>null`·rAF451회가 `elapsedTicks:null`, `tickSource:unavailable(_gameFrame)`, `inRangeTicks:451`, `FAIL_NO_FIRE`로 잘못 분류됐다. 시계 미확인 자료는 INCONCLUSIVE여야 한다. 물리 tick 누락을 rAF로 대체하는 결함이 있어 라이브 판정용 인수 보류. ENEMY 후속 지시는 native 입력 포커스를 확인할 수 없어 아직 전송하지 않았다. 전달 완료나 AI 자체 결함으로 보고하지 않는다.
+docs/0마스터플랜/mac-resume-20261001/vscode-dispatch/BALANCE-roll-result.md:41:| `lookupRoll(id)` | UI-XX 또는 U-DXX 엄격 조회; 오타/미등록 ID RangeError |
+docs/0마스터플랜/mac-resume-20261001/vscode-dispatch/INDEPENDENT-NEXT-20261002.md:8:| BUILD | 실제 server Range suffix 결함 재현·최소 후보; BUILD/media-range-* | 기존 세션 수신·Read·후보 파일 작성 확인. 서버는 읽기 전용 |
+docs/4.1맵디자인+설정/DEPTH_SLICE2_20261001.md:78:| G2 가독성 | PASS(조건부) | 가림 시 .62 페이드+고스트 α.55로 플레이어 판독. 단 **적은 고스트 없음** — 수관 아래 적 가독은 §6 잔여 |
+docs/4.1맵디자인+설정/CH1_HIDDEN_UNDERLAY_20260929.md:15:사용자 첨부 시작 화면과 “맵에 안보이는 레이어는 빼도 될 것 같다” 지시를 적용했다. 완성 맵의 불투명 청크 아래에 가려진 기존 렌더 작업 3개만 조건부 제외한다. 게임에 보이는 생체·언덕·그림자·소품·전투 효과는 유지한다.
+docs/4.1맵디자인+설정/CH1_HIDDEN_UNDERLAY_20260929.md:28:| COMPARISON | ?ch1LegacyUnderlay=1이면 이번 조건부 제외만 끄고 기존 레이어를 그린다. 기본값은 제외 활성. 일회성 QA의 함수 spy/강제status 오류는 저장 코드에 없음 |
+docs/4.1맵디자인+설정/CH1_HIDDEN_UNDERLAY_20260929.md:48:| GROUND | shadow / contamination / structure integration | 피부 바닥·보이는 생체 그림자/늪/언덕/오브젝트 유지. 가려진 옛 바닥만 조건부 제외 |
+docs/4.1맵디자인+설정/MAP_IMPLEMENTATION_ROADMAP.md:61:- **CODE SCOPE**: 배경 렌더 조건부 복구(si0). 패럴랙스 or Vista 택1.
+docs/4.1맵디자인+설정/MAP_IMPLEMENTATION_ROADMAP.md:63:- **IMPLEMENTATION IDEA**: `_bgLayers`를 si0에서 조건부 활성, 저해상도 캐시 캔버스 1~2장 drawImage(엔티티당 draw 아님). 저채도 후퇴.
+docs/4.1맵디자인+설정/CH1_1_SMOOTHING_PASS.md:62:| `groundPatchOpacityRange` | 전체 바닥 패치 알파 | `0.16~0.34` | EDGE/CORNER/TREE/SIDE/OPEN |
+docs/4.1맵디자인+설정/CH1_1_SMOOTHING_PASS.md:63:| `poiFootprintScaleRange` | POI 연결 패치 scale | `0.82~1.20×` | SIDE_CONNECTION 10 |
+docs/4.1맵디자인+설정/MAP_RUNTIME_ARCHITECTURE.md:274:- **전역 OUTER 배경 재활성**: `_bgLayers=null`(43539) 조건부 복구. CH1-1 local baked 예외와 별개.
+docs/2_1 스킬관리+합체시스템+자원/E_BASE_WING_STRIKE_20260910.md:9:| 배치 | 캐릭터 중심 피벗, `P.facing` 회전. 크기 `(200+견갑bonusRange×8)×C×M`, C=충전1~3, M=1+(L−1)×0.05. 프레임별 위치/크기 정규화 없이 동일 스케일 |
+docs/2_1 스킬관리+합체시스템+자원/E_BASE_WING_STRIKE_20260910.md:31:| E 타격/전진 패링/충전 미리보기 | `_eSwingRadius(C)=floor((70+견갑bonusRange×4)×M×C)` |
+docs/2_1 스킬관리+합체시스템+자원/E_BASE_WING_STRIKE_20260910.md:33:| 불꽃칼날 추가 반사 | `_sdRange=floor(_gsRange2×1.5)` (기존 합체 보너스 유지) |
+docs/2_1 스킬관리+합체시스템+자원/E_BASE_WING_STRIKE_20260910.md:35:| 파워웨이브 | `_wvRangeMul=M×C`; 사거리210×M×C, 진행 판정 r=50×M×C, 폭95×M×C. C는 발사 시 충전 배율1~3 스냅샷. 적/탄막 충돌과 먼지 분포가 같은 r/w 사용. Lv1 풀차지 사거리630·r150·폭285 |
+docs/2_1 스킬관리+합체시스템+자원/E_BASE_WING_STRIKE_20260910.md:36:| 시각 | 강화 E는 캐릭터별 위 계약 우선(실버테일 보라 아크 강화형 / 다른 캐릭터 불꽃). 실버테일 아크 scale=C×M; 다른 캐릭터 sweepRange=floor((90+견갑bonusRange×4)×C×M). 룬 미리보기는 실제 `_eSwingRadius(C)` 사용 |
+docs/13출시·마케팅/FULL_SOURCE_CHECKPOINT_20260909.md:12:| 코드 검증 | 패키징·번역·전투 연출·성장 UI·인트로·저장 API·Range 회귀 테스트 57개 PASS. `tools/guard.js` 전체 PASS, `git diff --check` PASS |
+docs/2_1 스킬관리+합체시스템+자원/2_1 스킬관리+합체시스템.md:268:- 보호막 스프라이트 오라는 `_sBlockChargeRadius(P._sbHoldT)×0.5` 스케일(시작 50px~최대 250px)을 유지한다. 별도 외곽선 `_sbRangeR=_sBlockChargeRadius(P._sbHoldT)`은 **해제 충격파 예약 반경 100→500px(4초)**을 보여 주는 차지 예고이며, 홀드 중 흡수·패링 판정 범위가 아니다. 중심 고정 `20px` 흡수 코어는 바깥과 동일한 파랑/빨강 오라 스프라이트를 `75×pulse`px로 밀착 렌더한다. 텍스처 워밍 전만 얇은 선을 표시한다. [표시·흡수음 계약](../5.1임펙트디자인/Q_SHIELD_FEEDBACK_20260913.md). Q 해제 버스트는 `release:true`와 `_bReleaseR=_b.maxR`로 표시해 저장 반경의 반투명 버블·외곽선을 끝까지 유지한다.
+docs/2_1 스킬관리+합체시스템+자원/2_1 스킬관리+합체시스템.md:1287:| `pChargeRange()` | `1 + lv×0.02` (+2%/lv, 10lv=+20%) | `_harpDistTier()` 사슬 사거리 |
+docs/2_1 스킬관리+합체시스템+자원/2_1 스킬관리+합체시스템.md:1346:| `pBowRange()` | `1 + lv×0.08` (+8%/lv, 10lv=+80%) | 석궁 사거리 |
+docs/2_1 스킬관리+합체시스템+자원/2_1 스킬관리+합체시스템.md:1434:| `_gsRange2` (sBash 스윙 타격/반사 기준 반경) | `floor((70+방패range×4)×(1+(E스킬Lv−1)×0.05)×배율)` — `_sdRange`(반사)·`_gSlamHit` 타격범위·진동파(×1.6)·파편 전부 파생 확장 |
+docs/2_1 스킬관리+합체시스템+자원/2_1 스킬관리+합체시스템.md:1438:| 비실버테일(대검 캐릭) sBash 스윕 아크 `sweepRange` | `floor(((maliceSwipe?90:60)+방패range×4)×(1+(E스킬Lv−1)×0.05)×배율)` — **2026-09-03 수정: 대검 캐릭에서 범위 확장이 안 보이던 원인**(이 렌더에 배율 미적용이었음) |
+docs/2_1 스킬관리+합체시스템+자원/2_1 스킬관리+합체시스템.md:1440:| **실버테일 전진 돌진 패링** (2026-09-03, 이동거리 2026-09-03 재조정) | `_charIdx===1 && _sBashChgMul>1`일 때만: 릴리즈 sBash 동안 ① **자동 전진** — `P.facing` 방향 프레임당 `_slpDist/20`, **`_slpDist=150+175×(mult-1)`**(당시 명목 전격이동500px/12f를 참조한 별도 패링 수치이며 현재 전격이동250px/6f와 독립: mult1≈150px→mult3(풀차지)=500px, 이동거리는 패링 판정반경 `_slpR`과 분리된 별도 상수), `canMv` 벽 충돌, 방향키 이동과 합성 ② **경로 패링** — 매 프레임 확장 판정반경(`_slpR`=`_gsRange2` 동일식×mult)·전방 ±1.8rad 내 탄 반사(일반탄→블루콩 `pParryProjDmg×(1.5+(maliceSwipe−1))`·빨콩→유도 블루콩 ×1.8, blackBean/대형에너지 제외, 탄마다 `doParry` 보상 — 반사탄=friendly라 기존 단발 반사와 중복 없음) ③ 릴리즈 진입 시 경량 무적 8f ④ 돌진 잔상 파티클. **대검/타 캐릭터·기본 E탭(mult=1)은 제자리 처내기 무변경** |
+docs/2_1 스킬관리+합체시스템+자원/2_1 스킬관리+합체시스템.md:1445:- **릴리즈**: 별도 렌더 없음 — 진짜 sBash라서 몸통 스윙(atk 프레임/`_silvertailAttackPose`)·실버테일 아크(`_drawSilvertailEArc`×배율)·비실버테일 스윕 아크(`sweepRange`×배율)·진동파·파편이 **기존 E 경로 그대로, 배율만 확장**. 불꽃칼날(shieldFuse) 등 합체 비주얼도 자동. `_silvertailAttackPose` 상태 게이트는 원복(kiParry 항목 불필요)
+docs/13출시·마케팅/STEAM_LATEST_DEPLOY_20260909.md:29:| 단위 회귀 | 패키징·공유 악의·Range·인트로 player/subtitles/handoff 28개 PASS. 단위 테스트는 작업본의 후속 29언어도 포함하며 위 실제 패키지 브라우저 검증은 빌드 시점의 28언어 기준 |
+docs/13출시·마케팅/STEAM_LATEST_DEPLOY_20260909.md:30:| 검증 패키지 기준 | 전체 빌드 시점의 index.html/game.html/stat-panel-ui.js와 에셋을 고정하고, 이후 발견한 패키지 누락·node-main.js API/Range·ffmpeg.dll만 보완. 배포 도중 시작된 별도 번역 WIP는 이 검증 패키지에 아직 포함하지 않음 |
+docs/13출시·마케팅/STEAM_LATEST_DEPLOY_20260909.md:31:| 영상 탐색 | node-main.js가 Range를 무시해 78.041667초 컷 이동 실패 재현. 단일 `bytes=start-end`, `bytes=start-`, `bytes=-suffix`를 206/Content-Range로 응답하고 잘못된 구간은 416 처리. HEAD는 본문 없음, 연결 종료 시 스트림 해제. 일반 응답 Content-Length/Accept-Ranges, HTML no-cache/no-store 적용 |
+docs/13출시·마케팅/INTEGRATION_BUILD_TEAM_MASTER.md:4:실제 server.cjs suffix `bytes=-500`, size10000이 원분기0-500/501바이트로 잘못 계산됨을 서버없이 추출VM 대역으로 재현했다. 최소 후보는9500-9999/500바이트, 단일bytes/큰숫자/이상입력과 기존GET 캐시/압축/HEAD Range무시 등23검사 PASS. 원본SHA `339fad6ab51cba92f6ca7a386c8aeb251f68cdb58cdfa55c109f57b1758a42ad`, 생산서버 수정0. HEAD wire/If-Range/미디어 실제원인 인수는 별도다. 후보/원결과/제약은 `tools/team-followup-20261001/BUILD/media-range-result.md` 참조. 서버/listen/포트/API/UI/Git 실행0, root 통합 대기.
+docs/13출시·마케팅/INTEGRATION_BUILD_TEAM_MASTER.md:90:공식 기존 BUILD turn의 실제 완료는 2026-10-01T16:49:38Z다. 16:48:30Z의 interrupted는 중간 조회 이력이며 현재 작업 중단으로 유지하지 않는다. scene/idle/성공 비교영상2개의 원본·7918입력 manifest·두 생성앱 SHA 일치와 헤더 차이를 인수했다. root는 4파일×2앱/manifest 증거의 일관성을 대조했다. 실제 media.error 소유 요소·decode 지원·HEAD/Range 응답은 미확정이고 앱 실행/저장/재실행은 잠금으로 미완료다. 새 미디어 변환·앱 빌드/실행은 이번 소스 통합 중 수행하지 않았다. 결과: tools/team-followup-20261001/BUILD/mac-character-media-result.md.
+docs/13출시·마케팅/INTEGRATION_BUILD_TEAM_MASTER.md:100:BUILD suffix 처리와 BALANCE 임시파일 교체 후보를 root가 server.cjs에 순차 적용했다. 원소스339fad6a→합본6a7c1083, 실제 생산 Range23+저장13+전체handler4=40그룹 PASS. 기존 실패 RED/원본과 담당20파일 SHA 보존. 저장 스키마/반환 JSON/GET 캐시·gzip 계약 유지. 실제 디스크·크래시·fsync·HTTP·영상 원인·앱 재실행은 미검수, 기존 EPERM 우회0. 상세: [서버 통합 인수](../0마스터플랜/mac-resume-20261001/vscode-dispatch/SERVER-INTEGRATION-20261002.md). 앞선 미적용 후보 기록은 제출 당시 이력이다.
+docs/13출시·마케팅/INDIE_LIVE_EXPO_20261201_SUBMISSION_20260928.md:133:## 비워둔 선택/조건부 항목
+docs/13출시·마케팅/INDIE_LIVE_EXPO_20261201_SUBMISSION_20260928.md:137:- 조건부 스트리밍 이용 규칙: 현재 Yes 선택이므로 해당 없음. 조건부 허용 선택에만 쓰는 칸이므로 비워 둔다.
+docs/13출시·마케팅/INDIE_LIVE_EXPO_20261201_SUBMISSION_20260928.md:235:| 조건부 스트리밍 규칙 | 무조건 Yes이므로 해당 없음. 공백 유지 |
+docs/13출시·마케팅/PUBLISHER_BUILD_1005_20260929.md:18:| 내장 서버 | 3337 / HTML·Three 로컬 의존성 HTTP200 및 SHA 일치 / 지도·영상 Range206 / 격리 save-load·mats 왕복 PASS |
+docs/13출시·마케팅/WEB_RENDERER_REDEPLOY_20260910.md:57:| 타이틀 영상 | /video/title_motion_hd.mp4 HTTP200, video/mp4, 7,612,715바이트, Accept-Ranges: bytes |
+docs/13출시·마케팅/HELL_DIROI_종합확장전략기획서_v2_0.md:453:★★ 조건부
+docs/13출시·마케팅/HELL_DIROI_종합확장전략기획서_v2_0.md:457:★★ 조건부

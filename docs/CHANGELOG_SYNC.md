@@ -51944,3 +51944,9 @@ QA의 완료 작업을 가리키는 미전송 초안은 그대로 보존했다. 
 ## 2026-10-02 잠금 독립 기존4팀 후속 배정
 - BUILD conditional Range, UIUX 실제 유골함 초점, BALANCE 합성 슬롯 실제파일 I/O, ITEM U-D13 출처·지연생성 계약을 각 기존 세션에1회 전달. 실제 userMessage/Read와 BALANCE 초기 Edit 확인.
 - 생산 읽기전용·소유prefix·공유초안/stage 보존 명시. canonical에4팀 작업관찰/7팀잠금 미전달 구분. 이번 생산 통합·서버·빌드·새세션0.
+
+
+## 2026-10-02 조건부 Range·실제파일 검수 인수
+- server 정확단일INM304를 Range보다 우선 처리하고 If-Range는 보수적 전체응답. 기존suffix·gzip·저장helper 보존.
+- 생산31+기존소스40+합성 실제파일7=78그룹 PASS, 원RED/owner24파일 보존. 실제 OS 오류와 주입 EIO 구분.
+- weak/list/wildcard·IMS·HEAD wire·HTTP/앱·크래시/fsync는 미완료. fresh CUA 잠금 지속, 기존7팀 미전달 및 진행2팀 보존.

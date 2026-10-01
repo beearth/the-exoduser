@@ -1,0 +1,32 @@
+{
+  "completedAt": "2026-10-01T18:19:34.463Z",
+  "checks": [
+    "원문 부분 기록 뒤 EIO: 기존 JSON 손상",
+    "후보 open 실패: 이전 파일 보존",
+    "후보 write 실패: 이전 파일 보존",
+    "후보 close 실패: 이전 파일 보존",
+    "후보 rename 실패: 이전 파일 보존",
+    "후보 cleanup 실패: 이전 파일 보존",
+    "후보 collision 실패: 이전 파일 보존",
+    "후보 성공 기존파일=true",
+    "후보 성공 기존파일=false",
+    "원문/후보 슬롯·JSON·응답 호환",
+    "No data 400: 쓰기0",
+    "직렬화 실패: 이전 파일 보존·임시 파일0",
+    "반복 저장: 새 snapshot·임시 파일0"
+  ],
+  "passed": 13,
+  "serverSha256": "339fad6ab51cba92f6ca7a386c8aeb251f68cdb58cdfa55c109f57b1758a42ad",
+  "routeSha256": "4a356c1d618bdbc8e1d933463997d0646fa1b678fc3b2fc998258df264308873",
+  "sanitizeSha256": "1be40f5b0490a3a37b229e05c75143a728df7974981e39d94bcd32e184e156d0",
+  "productionUnchanged": true,
+  "limits": "메모리 fs 실패 주입만. 실제 디스크/크래시/원자성/fsync/서버ACK 미검수",
+  "imports": [
+    "node:fs",
+    "node:path",
+    "node:vm",
+    "node:assert/strict",
+    "node:crypto",
+    "./save-write-failure-candidate.mjs"
+  ]
+}

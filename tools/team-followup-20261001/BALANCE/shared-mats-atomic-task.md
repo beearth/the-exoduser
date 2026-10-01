@@ -1,0 +1,5 @@
+# BALANCE: 공유 악의 저장 실패 보존 한 건
+
+기준 server SHA 441bacbd8a5e0f7ae883e5c9a0a2e0368bf5190f50d2cb0246b89a4e6771bb6d, node-main SHA 01b0c1d51f77f500ee0a59185458bf0294edce12544482d6cf7abce4262c91ce. docs/15 세이브+데이터구조/15 세이브+데이터구조.md 공유 악의 SSOT와 양쪽 GET/POST /api/mats를 읽는다. 두 POST의 직접 writeFileSync는 부분 쓰기 실패 시 기존 JSON을 훼손하고 GET은 0으로 돌아갈 수 있다. 실제 분기를 추출하여 합성 메모리 또는 BALANCE/shared-mats-atomic-fixtures/<고유ID>의 작은 합성 파일만으로 원 RED를 재현한다. server의 검증된 atomicSaveJSON 재사용, node-main의 동등 helper/route 최소 미적용 후보를 shared-mats-atomic-*로 만든다. clamp·mats/ts schema·GET 형태·슬롯의 밑줄파일 제외·성공 ACK/실패 경계를 보존한다. 원본 bytes 보존 및 temp 정리와 정상 신규/교체에 필요한 회귀만 검증한다. 경제 수치·경합 정책 변경 금지. 실제 OS 오류와 주입 오류, fsync·크래시·Windows·HTTP 미검수를 분리한다. 기존7검사 단순 반복이 아니라 미보호 공유 저장 경로에 한정한다.
+
+공유 checkout의 생산 파일은 읽기 전용. 새 소유 prefix와 해당 팀 MD 본인 추가구역만 쓴다. 기존 자료·타팀 변경·초안·stage 보존. 서버 전체 import/실행, listen, HTTP, 포트, 앱, 브라우저, 빌드, 사용자 세이브, 권한 변경, Git 쓰기, 새 팀/세션/에이전트 금지. 이전 EPERM 우회 금지. QA만 실제 UI 검수하며 사용자 게임 탭1573846373 보존. 동일 과제가 이미 진행/대기 중이면 중복하지 않는다. 수신·실제 Read·Edit·명령·제약을 한국어 receipt/result로 남긴다.

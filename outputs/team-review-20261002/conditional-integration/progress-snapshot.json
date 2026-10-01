@@ -1,0 +1,86 @@
+{
+  "utc": "2026-10-01T18:19:34.133154+00:00",
+  "scope": "Read-only snapshot of in-progress owners, changes expected; root does not write these files",
+  "files": {
+    "tools/team-followup-20261001/UIUX/ossuary-focus-receipt.json": {
+      "sha256": "17780ff4be143e16553c3ee1d9da47374e2aee73bc763c02496734f0dfa15007",
+      "bytes": 583
+    },
+    "tools/team-followup-20261001/UIUX/ossuary-focus-task.md": {
+      "sha256": "f72633504bcc7361731fe2b967db726d663a52122727863a70a0726eeb14880f",
+      "bytes": 1707
+    },
+    "tools/team-followup-20261001/UIUX/ossuary-focus-reproduction.json": {
+      "sha256": "3b095ed6740654eae1ede400b65f1bcda286c7a036f877030ed2a69a8d3076eb",
+      "bytes": 8058
+    },
+    "tools/team-followup-20261001/UIUX/ossuary-focus-extra-source.json": {
+      "sha256": "d4f3e9d0d49632ba27e3bf50e6045b77144669394331bbe416a633518a9dd79c",
+      "bytes": 603
+    },
+    "tools/team-followup-20261001/UIUX/ossuary-focus-prepare.mjs": {
+      "sha256": "f1e9dda842945a2b06134da4c52e74478c612f066ba2fe032b489ee8b2f12476",
+      "bytes": 2387
+    },
+    "tools/team-followup-20261001/UIUX/ossuary-focus-doc-matches.txt": {
+      "sha256": "0ac2c2705b4e955fa185e0d49d8f3370949af033b508d76927a459ec001689c3",
+      "bytes": 377651
+    },
+    "tools/team-followup-20261001/UIUX/ossuary-focus-before.json": {
+      "sha256": "2f61d3bbb3810585a721a912515baad8424a77ee60a517986c48cd19dce9ecb7",
+      "bytes": 53553
+    },
+    "tools/team-followup-20261001/UIUX/ossuary-focus-easy.before.html": {
+      "sha256": "e81a708e97710a7fe8d45c6e4071edba79ff8464116de955bc801552b5746ec2",
+      "bytes": 3901918
+    },
+    "tools/team-followup-20261001/UIUX/ossuary-focus-fixture.mjs": {
+      "sha256": "9072f74294cbf5a0dd2c5a2237e8be8c0429bbc201f5b534482d2b0759bb5851",
+      "bytes": 5107
+    },
+    "tools/team-followup-20261001/UIUX/ossuary-focus-candidate.mjs": {
+      "sha256": "a2e31dacbcb2ade9371c8ee2b029305012a1a82c78be63466d9c36acad778b1e",
+      "bytes": 1187
+    },
+    "tools/team-followup-20261001/UIUX/ossuary-focus-easy.patch": {
+      "sha256": "9db8218334679e27214438275ab5436a5edcab5a2b8c98917eb9c6ed7780fc48",
+      "bytes": 2019
+    },
+    "tools/team-followup-20261001/UIUX/ossuary-focus-main.patch": {
+      "sha256": "74674eb0e0378804e24ca7ea0d4216a5fec199136abc312fc5f9ce435b2912e0",
+      "bytes": 2002
+    },
+    "tools/team-followup-20261001/UIUX/ossuary-focus-validation.txt": {
+      "sha256": "6d9024fa8211f6f0cd55a3b506e9c7c35fd29e3507a487010e20017481c6de3f",
+      "bytes": 3577
+    },
+    "tools/team-followup-20261001/UIUX/ossuary-focus-ui-panels.before.js": {
+      "sha256": "b22c4a31141672304a15adfae3a5050cb9fde3b96601507c8f10de3ea63f4cb5",
+      "bytes": 11883
+    },
+    "tools/team-followup-20261001/UIUX/ossuary-focus-main.before.html": {
+      "sha256": "6a8b523a4c91fdeaa300e85c3e5cfe25eb51cd8be705c395f5112d0771f6065b",
+      "bytes": 4024793
+    },
+    "tools/team-followup-20261001/ITEM/d13-deferred-contract-task.md": {
+      "sha256": "8165325339a310a6d1bf405cb4886c944b28e8a23e5c5c7529c2fd43c77e7bd7",
+      "bytes": 2179
+    },
+    "tools/team-followup-20261001/ITEM/d13-deferred-contract-candidate.mjs": {
+      "sha256": "43ed003c5270621601306512f85d45025f540ede7252eb55bdb67556c288dd75",
+      "bytes": 2985
+    },
+    "tools/team-followup-20261001/ITEM/d13-deferred-contract-fixture.mjs": {
+      "sha256": "a5475a45d6ccfad6db8f775195bb6b683f8c3d54ae646adcc77d654adf30ee04",
+      "bytes": 4025
+    },
+    "tools/team-followup-20261001/ITEM/d13-deferred-contract-receipt.json": {
+      "sha256": "aa7a9e7db2d68a09858770350d83096bba582c3e49a4be692b39b3c83e0c3ed2",
+      "bytes": 753
+    },
+    "tools/team-followup-20261001/ITEM/d13-deferred-contract-check.mjs": {
+      "sha256": "3e7dd3374a169273a15dbed9073df84da73ba5148ef76451e7d2224b958780e3",
+      "bytes": 11642
+    }
+  }
+}

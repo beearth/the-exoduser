@@ -1,0 +1,34 @@
+{"tests":23,"sourceSHA":"339fad6ab51cba92f6ca7a386c8aeb251f68cdb58cdfa55c109f57b1758a42ad","completedAt":"2026-10-01T18:19:34.450Z","suffix":{"name":"suffix","input":{"range":"bytes=-500","size":10000},"original":{"status":206,"headers":{"Content-Range":"bytes 0-500/10000","Accept-Ranges":"bytes","Content-Length":501,"Content-Type":"video/mp4","Access-Control-Allow-Origin":"*"},"bodyBytes":0,"calls":[{"stream":{"start":0,"end":500}},{"pipe":"file"},{"destroy":true}]},"candidate":{"status":206,"headers":{"Content-Range":"bytes 9500-9999/10000","Accept-Ranges":"bytes","Content-Length":500,"Content-Type":"video/mp4","Access-Control-Allow-Origin":"*"},"bodyBytes":0,"calls":[{"stream":{"start":9500,"end":9999}},{"pipe":"file"},{"destroy":true}]}},"head":{"original":{"status":206,"headers":{"Content-Range":"bytes 0-9/10000","Accept-Ranges":"bytes","Content-Length":10,"Content-Type":"video/mp4","Access-Control-Allow-Origin":"*"},"bodyBytes":0,"calls":[{"stream":{"start":0,"end":9}},{"pipe":"file"},{"destroy":true}]},"candidate":{"status":200,"headers":{"Content-Type":"video/mp4","Cache-Control":"public, max-age=3600","ETag":"\"2710-1\"","Content-Length":10000},"bodyBytes":0,"calls":[{"stream":null},{"pipe":"file"},{"destroy":true}]},"limits":"Range 무시는수정됨;기존200분기는stream.pipe를호출하므로HEAD본문전송금지는실HTTP미검수·별도후속"},"fallbackUnchanged":true}
+{
+  "completedAt": "2026-10-01T18:19:34.463Z",
+  "checks": [
+    "원문 부분 기록 뒤 EIO: 기존 JSON 손상",
+    "후보 open 실패: 이전 파일 보존",
+    "후보 write 실패: 이전 파일 보존",
+    "후보 close 실패: 이전 파일 보존",
+    "후보 rename 실패: 이전 파일 보존",
+    "후보 cleanup 실패: 이전 파일 보존",
+    "후보 collision 실패: 이전 파일 보존",
+    "후보 성공 기존파일=true",
+    "후보 성공 기존파일=false",
+    "원문/후보 슬롯·JSON·응답 호환",
+    "No data 400: 쓰기0",
+    "직렬화 실패: 이전 파일 보존·임시 파일0",
+    "반복 저장: 새 snapshot·임시 파일0"
+  ],
+  "passed": 13,
+  "serverSha256": "339fad6ab51cba92f6ca7a386c8aeb251f68cdb58cdfa55c109f57b1758a42ad",
+  "routeSha256": "4a356c1d618bdbc8e1d933463997d0646fa1b678fc3b2fc998258df264308873",
+  "sanitizeSha256": "1be40f5b0490a3a37b229e05c75143a728df7974981e39d94bcd32e184e156d0",
+  "productionUnchanged": true,
+  "limits": "메모리 fs 실패 주입만. 실제 디스크/크래시/원자성/fsync/서버ACK 미검수",
+  "imports": [
+    "node:fs",
+    "node:path",
+    "node:vm",
+    "node:assert/strict",
+    "node:crypto",
+    "./save-write-failure-candidate.mjs"
+  ]
+}
+{"utc":"2026-10-01T18:19:34.466Z","beforeSHA":"339fad6ab51cba92f6ca7a386c8aeb251f68cdb58cdfa55c109f57b1758a42ad","productionSHA":"441bacbd8a5e0f7ae883e5c9a0a2e0368bf5190f50d2cb0246b89a4e6771bb6d","rangeGroups":23,"saveGroups":13,"wholeHandlerGroups":4,"totalGroups":40,"checks":[{"name":"whole-handler-success","status":"PASS"},{"name":"whole-handler-write","status":"PASS"},{"name":"whole-handler-rename","status":"PASS"},{"name":"whole-handler-invalid-json","status":"PASS"}],"ownerFilesPreserved":20,"limits":"Actual source in VM with memory fs and stream doubles. No listen/network/real save/disk/crash/fsync/media playback verification."}

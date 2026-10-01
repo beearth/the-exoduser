@@ -56,31 +56,6 @@ const MIME = {
   '.mp4':'video/mp4','.webm':'video/webm','.glb':'model/gltf-binary','.gltf':'model/gltf+json',
 };
 
-let atomicSaveSequence = 0;
-
-function atomicSaveJSON(fs, file, data, processId) {
-  const serialized = JSON.stringify(data, null, 2);
-  const temporary = file + '.tmp-' + processId + '-' + (++atomicSaveSequence);
-  let descriptor;
-  let owned = false;
-  try {
-    descriptor = fs.openSync(temporary, 'wx');
-    owned = true;
-    fs.writeFileSync(descriptor, serialized, 'utf8');
-    fs.closeSync(descriptor);
-    descriptor = undefined;
-    fs.renameSync(temporary, file);
-    owned = false;
-  } finally {
-    if (descriptor !== undefined) {
-      try { fs.closeSync(descriptor); } catch {}
-    }
-    if (owned) {
-      try { fs.unlinkSync(temporary); } catch {}
-    }
-  }
-}
-
 function sanitizeSlot(name) {
   return String(name).replace(/[^a-zA-Z0-9가-힣_\-]/g, '_').slice(0, 50);
 }
@@ -152,7 +127,7 @@ const server = http.createServer(async (req, res) => {
       const slot = sanitizeSlot(body.slot || 'default');
       const saveData = body.data;
       if (!saveData) return sendJSON(res, 400, { ok: false, error: 'No data' });
-      atomicSaveJSON(fs, path.join(SAVE_DIR, slot + '.json'), saveData, process.pid);
+      fs.writeFileSync(path.join(SAVE_DIR, slot + '.json'), JSON.stringify(saveData, null, 2), 'utf8');
       return sendJSON(res, 200, { ok: true, slot });
     }
 
@@ -266,27 +241,12 @@ const server = http.createServer(async (req, res) => {
       const stat = fs.statSync(filePath);
       const ext = path.extname(filePath);
       const mime = MIME[ext] || 'application/octet-stream';
-      const _isHtml = ext === '.html';
-      const _cache = _isHtml
-        ? 'no-cache, no-store, must-revalidate'
-        : 'public, max-age=3600';
-      const _etag='"'+stat.size.toString(16)+'-'+Math.floor(stat.mtimeMs).toString(16)+'"';
-      if (!_isHtml && (req.method === 'GET' || req.method === 'HEAD') && req.headers['if-none-match'] === _etag) {
-        res.writeHead(304, { 'Cache-Control': _cache, 'ETag': _etag });
-        return res.end();
-      }
-      const _rangeMatch = req.headers['if-range'] === undefined && req.method === 'GET' && stat.size > 0 && typeof req.headers.range === 'string'
-        ? /^bytes=(\d*)-(\d*)$/i.exec(req.headers.range.trim()) : null;
-      const range = _rangeMatch && (_rangeMatch[1] || _rangeMatch[2]) ? _rangeMatch : null;
+      const range = req.headers.range;
 
       if (range) {
-        const _size = BigInt(stat.size);
-        const _first = range[1] ? BigInt(range[1]) : null;
-        const _last = range[2] ? BigInt(range[2]) : null;
-        const _start = _first === null ? (_last < _size ? _size - _last : 0n) : _first;
-        const _end = _first === null || _last === null || _last >= _size ? _size - 1n : _last;
-        const start = _start >= _size ? stat.size : Number(_start);
-        const end = Number(_end);
+        const parts = range.replace(/bytes=/, "").split("-");
+        const start = parseInt(parts[0], 10) || 0;
+        const end = Math.min(parts[1] ? parseInt(parts[1], 10) : stat.size - 1, stat.size - 1);
         if (start >= stat.size || start > end) {
           res.writeHead(416, { 'Content-Range': `bytes */${stat.size}`, 'Access-Control-Allow-Origin': '*' });
           return res.end();
@@ -311,7 +271,15 @@ const server = http.createServer(async (req, res) => {
         // HTML(코드)만 no-cache로 즉시 반영. 에셋(이미지/오디오/JSON 등)은 캐시 허용
         // — no-store를 모든 파일에 걸면 게임 중 에셋 재요청마다 디스크 재읽기 → 렉.
         // Vercel 배포(vercel.json)와 동일 정책: html=no-cache, 그 외=캐시.
-
+        const _isHtml = ext === '.html';
+        const _cache = _isHtml
+          ? 'no-cache, no-store, must-revalidate'
+          : 'public, max-age=3600';
+        const _etag='"'+stat.size.toString(16)+'-'+Math.floor(stat.mtimeMs).toString(16)+'"';
+        if(!_isHtml&&req.headers['if-none-match']===_etag){
+          res.writeHead(304, { 'Cache-Control': _cache, 'ETag': _etag });
+          return res.end();
+        }
         const _acceptsGzip = /\bgzip\b/.test(req.headers['accept-encoding'] || '');
         const _gzip = _acceptsGzip && COMPRESSIBLE.has(ext);
         const _h = { 'Content-Type': mime, 'Cache-Control': _cache };
