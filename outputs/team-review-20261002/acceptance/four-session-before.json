@@ -1,0 +1,70 @@
+[
+  {
+    "status": "fulfilled",
+    "value": {
+      "team": "ITEM",
+      "threadId": "01a0f6e6-1fbe-7df0-8d02-a9c2d9df3750",
+      "status": {
+        "type": "notLoaded"
+      },
+      "turnId": "01a0f812-c160-7cf0-b368-6f07c53e0e48",
+      "turnStatus": "completed",
+      "completedAt": 1790868624,
+      "final": [
+        "구현·격리 검수 후 root에 인계합니다.\n\n- 명시 설치/해제·reviewOnly UI 호출부 및 미적용 patch 제출.\n- 중복·rollback·타주체 property 보호 등 23검사 PASS.\n- 신규 RNG1회·복원 재롤0, 기존 포트/생산파일 보존.\n- 전이 `.mjs` MIME 해결안 제출. 실제 브라우저 import는 UNKNOWN이며 사용자 게임 조작0.\n\n결과: `tools/team-followup-20261001/ITEM/browser-bootstrap-result.md:1`"
+      ],
+      "queue": "not exposed by read_thread; no duplicate task artifacts found"
+    }
+  },
+  {
+    "status": "fulfilled",
+    "value": {
+      "team": "UIUX",
+      "threadId": "01a0f6e5-8653-7ae2-8b2b-314e275c215c",
+      "status": {
+        "type": "notLoaded"
+      },
+      "turnId": "01a0f812-c19a-78a1-80b5-b87c2a78794b",
+      "turnStatus": "completed",
+      "completedAt": 1790868732,
+      "final": [
+        "소멸한 아이템의 이전 상세·비교·액션과 초점이 남는 오류를 양쪽 실제 함수에서 재현했습니다.\n\n- 미적용 코드·호출부 연결·본편/easy patch 완료.\n- 신규 **21 PASS**, 기존 **9 PASS**, 후보 구문 **8 PASS**.\n- 수신·Read/Edit·검수·SHA·docs 반영안 기록 완료.\n- 생산·사용자 Chrome 변경0. 실화면·레이아웃·패드는 미검수입니다.\n\n결과: `tools/team-followup-20261001/UIUX/inventory-focus-result.md:1`\n\n이번 한 건을 root에 인계합니다."
+      ],
+      "queue": "not exposed by read_thread; no duplicate task artifacts found"
+    }
+  },
+  {
+    "status": "fulfilled",
+    "value": {
+      "team": "BUILD",
+      "threadId": "01a0f6e6-2e4c-7322-92d7-3aa309857856",
+      "status": {
+        "type": "notLoaded"
+      },
+      "turnId": "01a0f812-c17d-7833-a51f-a19c91116d8e",
+      "turnStatus": "completed",
+      "completedAt": 1790868663,
+      "final": [
+        "읽기 전용 preflight CLI 구현 완료, **신규 fixture 28PASS/0FAIL**입니다.\n\n- SHA·복구 증거·고유 출력·저장 포함·symlink/경로탈출 거부를 검수했습니다.\n- 현재 빌더는 **Windows 전용**입니다.\n- 실제 Mac 검사는 **BLOCKED**: 제한 조사에서 NW.js 런타임 미발견, 정확한 원격 ref 증거 부족.\n- 실제 앱 생성·빌드·다운로드·게임/Chrome 조작은 하지 않았습니다.\n\n결과·후속 절차: `tools/team-followup-20261001/BUILD/mac-package-preflight-result.md:1`"
+      ],
+      "queue": "not exposed by read_thread; no duplicate task artifacts found"
+    }
+  },
+  {
+    "status": "fulfilled",
+    "value": {
+      "team": "BALANCE",
+      "threadId": "01a0f6e6-5303-7392-81ba-94c42e349ffc",
+      "status": {
+        "type": "notLoaded"
+      },
+      "turnId": "01a0f812-c1b6-7b52-9aad-f50d56944ef7",
+      "turnStatus": "completed",
+      "completedAt": 1790868548,
+      "final": [
+        "계약 validator를 완성했습니다.\n\n- 본편/easy **2,880 입력 + 56 경계 검증 통과**.\n- 비용·올림·할인·게이트/차감 불일치 미발견: 비용 수정 후보는 없습니다.\n- AI 강화의 직접 저장 예약 부재는 별도 관측으로 기록했습니다.\n- 인접 회귀는 **11 PASS / 기존 패링 검사 1 FAIL**이며 수정하지 않았습니다.\n\n결과: `tools/team-followup-20261001/BALANCE/enhancement-resource-result.md:1`\n\nreceipt·해시·검사 로그를 기록했습니다. 생산·사용자 게임·세이브는 건드리지 않았으며 root에 인계합니다."
+      ],
+      "queue": "not exposed by read_thread; no duplicate task artifacts found"
+    }
+  }
+]

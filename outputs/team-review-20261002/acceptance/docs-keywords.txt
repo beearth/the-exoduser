@@ -1,0 +1,155 @@
+docs/2_1 스킬관리+합체시스템+자원/SKILL03_설치확정_자원검수_20261001.md:49:root가 검수 지원 body를 ice-cancel-probe.safe.js 실제 경로에 반영했다. before 사본과 실제 owner를 대조하는20검사 및 trace 없는 증가 UNKNOWN으로 정정한 기존66검사 PASS. 설치 실패 rollback·취소 핸들 재시도·예외 정리, 실제 연속 updateSeq/rechargeTrace 없는 충전 UNKNOWN 계약은 유지한다. 생산 자원식 변경0. 다음 승인 검수는 hellRay 조준 뒤 MP/스택 변경의 확정 재검사 누락을 실제 양쪽 블록으로 재현하고 최소 미적용 patch를 제출하는 한 건이다. [인수·후속 Read 증거](../0마스터플랜/mac-resume-20261001/vscode-dispatch/FIVE-OWNER-INTEGRATION-20261002.md).
+docs/2_1 스킬관리+합체시스템+자원/SKILL_자원게이트_감사_20261001.md:15:| MP | 게이트 `P.mp<X` vs 차감 `P.mp-=X` | bladeDash(_bdCost)·skyCrusher(spec.mpCost)·timeWarp(_twMpCost)·maliceDome60·hellRay100 — **전부 X 일치** |
+docs/2_1 스킬관리+합체시스템+자원/SKILL_자원게이트_감사_20261001.md:26:| hellRay | MP100 | `P.mp-=100` + 스택 | (MP100) | **일치(정상)** |
+docs/7아이템디자인/보라색_고유아이템_카탈로그_20260930.md:21:| UI-04 | 빙편을 거두는 손 | 장갑 | 손등에 펼쳐진 얼음 부채, 관절마다 흑철 고리 | U-D04 얼음 파쇄 쿨 회수 | Higgsfield 원화 `assets/unique-items/ui-04.png` |
+docs/7아이템디자인/보라색_고유아이템_카탈로그_20260930.md:57:| UI-04 | `ui-04.png` | `7421385d-4834-446b-8a2d-e3d57b48e017` |
+docs/7아이템디자인/고유아이템_모델_어픽스_밸런싱_프로젝트_20260930.md:35:| UI-04 / U-D04 | 얼음 부채 장갑 | 빙결 무리에서 파쇄 | 대상별 1회·360f 회수 상한 | Seedream 비교 시안 |
+docs/7아이템디자인/고유아이템_모델_어픽스_밸런싱_프로젝트_20260930.md:94:UI-04~08·10~22의 작업 id, 원본 프롬프트와 저장 경로는 [18종 생성 이력](SEEDREAM_UNIQUE_ART_BATCH_20261001.md)에 기록했다. 2026-10-01 현재 총 22/22종 Seedream 후보가 있으나 채택 판정은 하지 않았다.
+docs/2_1 스킬관리+합체시스템+자원/2_1 스킬관리+합체시스템.md:229:| hellRay | 참회 | **summon+dot** | 히든, 에너지 쐐기 설치, 회전+뎀 |
+docs/2_1 스킬관리+합체시스템+자원/2_1 스킬관리+합체시스템.md:408:| hellRay | 참회 | 1 (합체 시 2~3) | 10초/1충전 | 에너지 쐐기 설치, 회전+데미지. MP 100. **범위: 200+(Lv-1)×22 — 악의폭풍과 동일** (2026-05-13 수정) | 지속+0.5초/Lv |
+docs/2_1 스킬관리+합체시스템+자원/2_1 스킬관리+합체시스템.md:566:히든: stormBeam 합체 시 **기폭팔(detonate)** + **지옥강타 1(giantSlam)** + **평화의보호(peaceShield)** + **참회(hellRay)** 자동 해금
+docs/2_1 스킬관리+합체시스템+자원/2_1 스킬관리+합체시스템.md:598:| elecRepent | 참회 귀환 | 2성 | maliceStorm + hellRay |
+docs/2_1 스킬관리+합체시스템+자원/2_1 스킬관리+합체시스템.md:600:`boneStorm`은 `maliceStorm` 시전점에 `G._boneWalls`와 `G._fireZones(type='boneStorm')`를 함께 생성한다. 따라서 외곽 링은 해골무덤과 같은 6프레임 뼈감옥 시트를 사용하고, 내부 녹색 이오닉 스톰·암흑 DOT는 그대로 겹쳐 그린다. 합체 여부는 시트 적용을 막지 않는다. 뼈 생성 직후 `skull_summon`을 공통 1회 재생하므로 `elecRepent` 참회 분기에서도 캐릭터별 참회 음성과 함께 들린다. 전사는 기존 `repentance`, 실버테일은 전용 여성 보이스 `silvertail_repentance`(`Repent!`)를 사용한다.
+docs/2_1 스킬관리+합체시스템+자원/2_1 스킬관리+합체시스템.md:748:| elecRepent (참회 귀환) | maliceStorm | hellRay, boneWall |
+docs/2_1 스킬관리+합체시스템+자원/2_1 스킬관리+합체시스템.md:782:| **elecRepent** | **maliceStorm, boneWall, hellRay** (버그 수정: 이전에 누락돼 hellRay만 따로 놀았음) |
+docs/2_1 스킬관리+합체시스템+자원/2_1 스킬관리+합체시스템.md:825:| 우클릭 | stormBeam | ⚡ →좌클 통합 | `P.activeMagicSk` | `'hellRay'` |
+docs/2_1 스킬관리+합체시스템+자원/2_1 스킬관리+합체시스템.md:840:| 4 | `_amsk !== 'hellRay'` + 빔합체 활성 (sixFuse/elemFuse) + stormBeam 아님 | 만화광선/추적암전 빔 모드 |
+docs/2_1 스킬관리+합체시스템+자원/2_1 스킬관리+합체시스템.md:841:| 5 | 그 외 (beam, hellRay 등) | 기본 파이어볼 or hellRay(stormBeam 시 별도 경로) |
+docs/2_1 스킬관리+합체시스템+자원/2_1 스킬관리+합체시스템.md:843:**핵심**: `hellRay`/`blueShot` 선택 시 빔합체 경로를 **스킵** → 선택한 스킬이 정확히 발동됨.
+docs/2_1 스킬관리+합체시스템+자원/2_1 스킬관리+합체시스템.md:844:hellRay는 stormBeam 합체 전용 — stormBeam 없으면 기본 파이어볼 폴백.
+docs/2_1 스킬관리+합체시스템+자원/2_1 스킬관리+합체시스템.md:851:| 우클릭, 추적암전 합체 | 🎯 추적암전 / ⚡ 참회 / 💎 푸른비 / 🔮 악의구 | 각각 클릭→해당 스킬 세팅 |
+docs/2_1 스킬관리+합체시스템+자원/2_1 스킬관리+합체시스템.md:861:| hellRay | 참회 | 우클릭 탭 | 스톡제 | 스톡 리젠 | 신성한 선 설치 (시계방향 회전) | 스톡+1(Lv5,10) |
+docs/7아이템디자인/SEEDREAM_UNIQUE_ART_BATCH_20261001.md:36:18개 작업 id가 MagicLight의 완성 이미지에 대응함을 확인했고, 18개 PNG를 프로젝트 경로에서 모두 열었다. UI-04 장갑, UI-17 왕관, UI-22 머리띠는 원본 크기에서 종류와 주된 보라 구조를 눈으로 확인했다. 이는 전종 시각 품질 판정이 아니다.
+docs/7아이템디자인/UNIQUE_ITEM_GAME_INTEGRATION_CONTRACT_20261001.md:39:| `gloves` | UI-04, UI-16, UI-19 | U-D04, U-D16, U-D19 | 같은 장갑 슬롯의 서로 다른 정의 |
+docs/2_3 돌진+패링+방패시스템/2_3 돌진+패링+방패시스템.md:23:- isPWin() = sBash OR (sBlock+패링윈도우) OR (peaceShield+패링윈도우) OR (비회전/빔/전기참회+패링윈도우)
+docs/2_1 스킬관리+합체시스템+자원/자원리젠+소모공식.md:225:| maliceStorm (elecRepent) | 참회 귀환 합체 | 12 | MP 50 | |
+docs/2_1 스킬관리+합체시스템+자원/자원리젠+소모공식.md:247:| hellRay | 참회 | MP | 100 고정 + 스택 1 | |
+docs/2_9 결정슬롯시스템/2_9 결정슬롯시스템.md:30:보석함 칸의 정확한 hover를 위해 비활성 `.panel:not(.on)`의 모든 자식 포인터 입력을 막는다. 닫힌 능력치 창의 자식 `pointer-events:auto`가 보석 칸 위에 겹쳐 실제 hover를 가로채던 문제를 해결한다. 보유 보석 좌클릭 누름은 즉시 `_invCrSelected`를 설정하고 기존 호환 빈 홈 강조를 갱신한다. 누른 채 6px 이상 이동하면 입력 투과 드래그 아이콘을 보이고, 커서 아래의 호환 빈 홈만 드롭 대상으로 강조한다. 마우스를 놓을 때 `CRYSTAL_BAG`의 원본 보석 참조·현재 장비 객체·빈 홈·`CRYSTAL_DEFS[id].slots`를 다시 확인해 성공한 경우에만 `attachCrystal`과 `dbSaveNow()`를 호출한다. 그 외 위치에 놓거나 Escape/포인터 취소하면 장착·저장 없이 표시를 정리한다. 클릭 장착·탈착 및 키보드 조작은 유지한다. `inventory-gems-finish.css?v=20260927-gem-drag1`.
+docs/2_9 결정슬롯시스템/2_9 결정슬롯시스템.md:112:| 안전·저장 | 장비 객체·홈 내용·보유 객체 인덱스를 클릭 시 재확인. 변경 성공만 `dbSaveNow()` 및 화면 재렌더. 지연 피커·중복 클릭으로 다른 보석 소비 방지 |
+docs/2_9 결정슬롯시스템/2_9 결정슬롯시스템.md:140:| 바로 장착 | 장착 중인 호환 장비의 빈 홈을 선택하면 `attachCrystal(item,si,cr,bi)` → `dbSaveNow()` → 전용 화면 갱신. 클릭 시 원본 객체 인덱스·장착 장비 동일성·빈 홈 재검증. 1개만 이동 |
+docs/15 세이브+데이터구조/15 세이브+데이터구조.md:166:| 디바운스 | `dbSaveNow()`의 500ms 콜백 실행 시 `_saveDebounce=null`. 완료된 타이머 핸들이 후속 강제 저장 예약을 막지 않도록 함 |
+docs/15 세이브+데이터구조/15 세이브+데이터구조.md:184:| `dbSaveNow()` | 500ms 디바운스 후 dbSave (일반 저장) |
+docs/15 세이브+데이터구조/15 세이브+데이터구조.md:357:| 아이템 획득/분해 | `dbSaveNow()` |
+docs/2_1 스킬관리+합체시스템+자원/자원리젠+소모공식__NFD_0628_2305_백업.md:214:| maliceStorm (elecRepent) | 참회 귀환 합체 | 12 | MP 50 | |
+docs/2_1 스킬관리+합체시스템+자원/자원리젠+소모공식__NFD_0628_2305_백업.md:236:| hellRay | 참회 | MP | 100 고정 + 스택 1 | |
+docs/6사운드디자인/TRAILER_CHARACTER_VOICE_FIX_20260909.md:14:| 검사 | `test/testCharacterVoiceIdentity.test.js` | 실제 두 초기화 함수의 초기화 구간 실행 후 남녀 번호와 기합·공격·궁극·피격·참회 매핑 검사 |
+docs/8.0몬스터디자인/탄막시스템_총정리.md:298:sBash상태 OR (sBlock + _sbParryT>0) OR (peaceShield + _sbParryT>0) OR (비회전/빔/전기참회 + _sbParryT>0)
+docs/6사운드디자인/6사운드디자인.md:53:| `elecRepent` | 참회 귀환 | 위 배열 + `G._fireZones(type='hellRay')` | `skull_summon` | 동일 | `SFX.magic(EL.L)` + 전사 `repentance` / 실버테일 `silvertail_repentance` |
+docs/6사운드디자인/6사운드디자인.md:56:- 호출 계약: 보스 감옥은 `G._cageTraps`, 플레이어 뼈벽은 `G._boneWalls`에 넣은 직후 정확히 1회 재생한다. 합체는 세부 분기 전에 호출하므로 참회 귀환의 전사 `repentance`/실버테일 `silvertail_repentance`가 뼈 생성음을 대체하지 않는다.
+docs/6사운드디자인/6사운드디자인.md:57:- 회귀: `test/bossCageTrapSprite.test.js`가 보스·단독·합체 생성 블록의 `skull_summon` 1회 호출과 참회 분기 전 호출 순서를 검증한다.
+docs/6사운드디자인/6사운드디자인.md:425:| `silvertail_repentance` | `sfx/voice/silvertail_repentance.mp3` | `repentance` | Repent! | 참회·참회 귀환 발동 |
+docs/6사운드디자인/6사운드디자인.md:806:기존 aa3ac0ed 세션에서 S02 원본3개 존재/후보9개 Mac부재 확인, decode/재생/루프/A-B 격리 HTML 후보를 제출했다. 실제 읽기·산출 완료이며 코드 적용/게임 실행/패키지/실측 완료가 아니다. 원문 후보 및 정정은 [팀 산출](../0마스터플랜/mac-resume-20261001/ui03-evidence/SOUND-팀검토.md), 실제 수신/착수/다음 게이트는 [11팀 인수표](../0마스터플랜/mac-resume-20261001/11팀-UI03-병행후속.md)를 따른다.
+docs/5.1임펙트디자인/ZONE_LIGHT_CLASSIFICATION_20260910.md:25:| `spikeTrap`, `darkPillar`, `holyDome`, `holyPrison`, `weakPhys/Mag/Pj/Rev`, `maliceDome`, `storm`, `boneStorm`, `hellRay`, `vortex`, `iceVortex`, `shockField` 등 비화염 | 생성하지 않음 | — | 각 스킬 고유 VFX만 유지 |
+docs/12퍼포먼스·최적화/QA_PERFORMANCE_TEAM_MASTER.md:243:| QA-B01 | P0 | 첫 사용 픽셀 가공 스파이크 제거 | `_maskWorldDropBlack`, `_worldDropFxTile`, `_worldItemSkin`, `_tintHolyDome` | 결과 캔버스 픽셀 동일, 전투 콜드 구간에서 해당 `getImageData` 5ms 초과 0회 | **빔 부분 완료** — Mac20타일 부트 준비·픽셀동일·자연 빔620호출≤0.1ms 검수. 스킨86.7/136.5ms·홀리돔·패키지 잔여, 아래 최신 인수 참조 |
+docs/5.1임펙트디자인/BOSS_CAGE_TRAP_VFX.md:63:| `elecRepent` 참회 귀환 | `skull_summon`, 동일 | `SFX.magic(EL.L)` + 전사 `repentance` / 실버테일 `silvertail_repentance` | 참회 분기 여부와 무관하게 뼈벽 생성 직후 1회 |
+docs/5.1임펙트디자인/BOSS_CAGE_TRAP_VFX.md:65:`skull_summon`은 `sfx/skillsound/bone/skull_summon.mp3`(MP3, 44.1kHz stereo, 1.48초)를 사용한다. 참회 귀환에서 캐릭터별 참회 음성이 뼈 생성음을 대체하지 않는다. 실버테일은 남성 음성 포함 `repentance` 대신 `_SILVERTAIL_VOICE_MAP`의 전용 여성 `silvertail_repentance`(`Repent!`)를 재생한다.
+docs/13출시·마케팅/USB_WEB_RELEASE_20260910.md:32:Mac 과거 조사 문서의 OPEN 판정은 당시 기록이다. 원격에서 후속 수정 및 사용자120FPS 확인이 추가됐으며, 현재 정책은 MAC_DEFAULT_WEBGPU_FPS_20260910.md를 따른다. 이 Windows 패키지 검사로 Mac 실기 성능을 새로 판정하지 않는다.
+docs/2_7 인벤토리+장비시스템/2_7 인벤토리+장비시스템.md:167:| 원인 | 떠 있는 `#invRight`가 장착/가방 슬롯 위에서 마우스를 가로채 진입→상세 표시→이탈→상세 숨김을 반복 |
+docs/2_7 인벤토리+장비시스템/2_7 인벤토리+장비시스템.md:168:| 미리보기 | `_invRenderDetail(idx,source,preview=false)`의 `preview=true`는 `inv-hover-preview` 클래스를 설정. `#invPanel #invRight.inv-hover-preview`에 `pointer-events:none!important` 적용 |
+docs/2_7 인벤토리+장비시스템/2_7 인벤토리+장비시스템.md:530:| 종료 | 기존 선택 복원 처리를 _invRestoreSelectedActions로 분리. _invClearHover는 이를 호출한 뒤 invRight visibility:hidden, invCompareFloat display:none |
+docs/2_7 인벤토리+장비시스템/2_7 인벤토리+장비시스템.md:583:**후속 확정 — 유골함형 보석함:** 좌우 2단(폭 최대980px, 높이 min(680px,94vh))으로 변경. 왼쪽 보유 보석/상세, 오른쪽 `SLOT_NAMES` 17부위 전체를 4열로 표시한다. 미장착 부위도 표시. 빈 홈은 선택 보석 장착 또는 호환 피커 열기, 장착 홈은 무료 탈착. 기존 부위 제한·보석 수치 유지. 클릭 시 장비/홈/보석 객체 재검증, 성공 시 `dbSaveNow`. 상세 규격은 `UI_COMPOSITION_20260925.md`의 유골함형 보석함 절, 회귀 검증은 `test/crystalEquipment.browser.js`(격리 브라우저 9항목 통과). 터미널 장애로 CLI/Git 검증·커밋은 미완료.
+docs/2_7 인벤토리+장비시스템/2_7 인벤토리+장비시스템.md:592:| 조작 | 호버 상세, 클릭/키보드 초점 선택, 호환 장착 장비 빈 홈 선택 → attachCrystal → dbSaveNow. 객체 인덱스·장비 동일성·빈 홈 재확인 |
+docs/2_7 인벤토리+장비시스템/2_7 인벤토리+장비시스템.md:701:| 호버 상세 휠 | ui-panels.js inventory 초기화에서 invPanel wheel 위임. .inv-item/.inv-eq-slot/.inv-cell/.oss-center 위에서 invRight가 inv-hover-preview이며 visible이고 clientHeight>0/실제 세로 넘침이 있을 때만 상세 스크롤 |
+docs/2_7 인벤토리+장비시스템/2_7 인벤토리+장비시스템.md:828:| 구조 | 유골함 탭의 좌측 `#invCenter`에서 가방 격자 아래에 `#invOssInfo`를 둔다. 기존 `#invRight` 상세 노드를 정보판 안으로 이동해 유골함 가방 아이템과 장착 유골함 정보를 재사용하고, 다른 탭에서는 원래 `.inv-wrap`으로 돌린다 |
+docs/2_7 인벤토리+장비시스템/2_7 인벤토리+장비시스템.md:856:| 정보판 | 기존 `#invRight`를 오른쪽 전체 높이의 고정 그리드 칸으로 사용. 호버·클릭한 가방/장착 아이템의 기존 옵션·비교·보석 홈 상세를 이곳에 표시. 선택이 없으면 상단부터 `calcCP()`의 공격/방어/추가 효과·보석 장착 수와 16부위 장착 목록을 2열로 표시. 목록의 착용 아이템을 누르면 상세로 이동. 유골함 탭에서는 기존대로 `#invOssInfo`로 이동 |
+docs/2_7 인벤토리+장비시스템/2_7 인벤토리+장비시스템.md:864:| 발동 | 장비 탭에서 가방 아이템과 같은 부위에 현재 착용 아이템이 있을 때 `#invRight.inv-side-compare` 사용. 장착 아이템이 없으면 기존 단일 상세 유지 |
+docs/2_5 부활+에너지쉴드시스템/2_5 부활+에너지쉴드시스템.md:217:| `hellRay` | 참회(지옥광선) | fz.el | 마법 | ✅ `true` | 신성 마법 (직접 hurtE) |
+docs/3.1 ui hud 디자인/UI_UX_IMPROVEMENT_PROJECT_20260930.md:37:| UI-04 | P1 | 인벤토리/장비/유골함 | 아이템 비교, 긴 설명, 필터, 키보드/패드 이동과 작은 화면의 정보 우선순위를 검수한다. | 대기 | `UI_COMPOSITION_20260925.md`와 인벤토리 SSOT 읽고 흐름별 검사. |
+docs/0마스터플랜/mac-resume-20261001/BUILD-SOUND-잔여팀-인수검토.md:11:| BUILD | Mac 개발 서버의 포트·저장 격리와 32/32 회귀, 3처치·반지·재접속 복원은 Mac 인수 기록에 있음. 패키지는 미완료 | QA가 넘긴 정확한 소스·옵션·측정 기록을 기준으로 통합 검수 입력표 확정 | `build-nwjs.mjs`, `tools/integration-build-record.mjs`, `node-main.js`의 패키지 포트·저장 계약, `INTEGRATION_BUILD_TEAM_MASTER.md` | 개발 서버 3340과 패키지 3347을 구분. 입력 SHA/필수 자산 해시·고유 출력·프로필·저장 경로를 확정하고 QA 종료 뒤에만 빌드 실행. 현 빌더는 Windows x64 전용이므로 Mac 패키지 완료로 보고할 수 없음 |
+docs/13출시·마케팅/PC_TRANSFER_READY_20261001.md:7:Node/의존성/개발 도구 설치, Claude Google 로그인, 실제 전투 3처치·불꽃 반지 획득과 재접속 복원, 관련 회귀 검사 32/32까지 완료했다. 기존 Mac 저장소 수정 22개 파일 해시와 HEAD를 다시 확인해 보존했다. 설치/자료 인수 범위는 완료이며 장시간 전체 콘텐츠 QA·Mac 배포 패키지·독립 SOUND 병합은 수행하지 않았다. 팀/자동화는 재개하지 않는다. 아래의 미수신·설치 대기 표기는 이전 이력이다.
+docs/13출시·마케팅/PC_TRANSFER_READY_20261001.md:24:권한 변경 후 순서: 전달받은 정확한 원격 ref/SHA 대조 → 고유 Mac 브랜치에 복구 → Node 24.15.0 arm64·lockfile 의존성·canvas/sharp 로드 검증 → Mac 경로/PowerShell hook·서버 포트 계약 확인 → 로비·전투·설정·분리 저장/재실행 검수. 기존 Windows 빌드 스크립트의 win/x64·ffmpeg.dll을 Mac 패키지로 간주하지 않는다. 새 기능·팀 자동 재개는 사용자 재개 지시 전 보류한다.
+docs/16번역·로컬라이제이션/번역대상_전체목록.md:143:| 0076 | 참회 | Repentance |
+docs/16번역·로컬라이제이션/번역대상_전체목록.md:588:| 0420 | AI 자동 강화 | AI Auto-Enhance |
+docs/16번역·로컬라이제이션/번역대상_전체목록.md:766:| 0570 | ⚡⚡ 참회 귀환! | ⚡⚡ Repentance Return! |
+docs/16번역·로컬라이제이션/번역대상_전체목록.md:767:| 0571 | ⚡ 참회! | ⚡ Repentance! |
+docs/16번역·로컬라이제이션/번역대상_전체목록.md:2022:| 1492 | ⚡🦴 참회 귀환! | ⚡🦴 Repentance Return! |
+docs/16번역·로컬라이제이션/번역대상_전체목록.md:2095:| 1565 | ⚡ 히든: 참회 해금! | ⚡ Hidden: Repentance unlocked! |
+docs/16번역·로컬라이제이션/번역대상_전체목록.md:2521:| 2057 | hellRay | [Hidden] E aim click: energy wedge rotate+DMG. MP 100. CD 10s |
+docs/13출시·마케팅/GAMEPLAY_TRAILER_20260908_PLAN.md:18:| 00:20–00:24 | 4초 | 참회 `hellRay` | 실제 설치·회전과 적중 장면을 보여준다 |
+docs/13출시·마케팅/GAMEPLAY_TRAILER_20260908_PLAN.md:32:| 최신 주요 스킬 | `lavaSummon`은 탄막블랙홀, `hellRay` 표시 이름은 참회 | 구 용암소환·헬레이 명칭으로 자막을 만들지 않는다 |
+docs/0마스터플랜/mac-resume-20261001/vscode-dispatch/BINDING-root-review.md:38:실제 DB 서버/계정/사용자 저장·브라우저/MIME·실전 명중·패키지 검수는 하지 않았다. `.mjs`는 Node 후보이며 실행 중3340 서버에 직접 브라우저 import하지 않았다. 정의22종 enabled=false, 아트 채택0, runtimeReady=false는 유지된다.
+docs/13출시·마케팅/LAPTOP_MIGRATION_CHECKLIST_20261001.md:8:- 현재 `build-nwjs.mjs`는 `platform: 'win'`, `arch: 'x64'`, `.ico`, Windows `ffmpeg.dll` 후처리로 고정돼 있다. Mac 개발 환경 이전과 macOS 실행 패키지 제작은 별도 작업이다. Windows 빌드 계약을 덮어쓰지 않고 Mac 후보 경로를 별도로 만든 뒤 검수한다.
+docs/13출시·마케팅/LAPTOP_MIGRATION_CHECKLIST_20261001.md:11:- 운영 제안: Mac을 주 개발·팀 관리 장치로 준비하고, 기존 PC는 전환 검수가 끝날 때까지 정상 실행본·복구 지점 및 Windows 최종 패키지 검수용으로 유지한다. 실제 담당 장치 전환은 아직 하지 않았다.
+docs/13출시·마케팅/LAPTOP_MIGRATION_CHECKLIST_20261001.md:23:| Windows 빌드 | 현재 `build-nwjs.mjs`, NW.js 0.111.2 Windows x64. 대상 Mac용 패키지 경로·코덱·실행 검수는 별도 필요 |
+docs/16번역·로컬라이제이션/LOCALIZATION_RUNTIME_20260909.md:51:| `terminology.json` | 28개 비한국어의 기본 `뇌전창`을 Thunder Stake 계열 명칭으로 통일. 별도 합체 `전격의창`과 구별. VI 근성=`Bền Chí`, MS 참회=`Taubat`, PL 폭독칼날=`Ostrze Zarazy`. TR6·FI7·SV5·DA8·NO7·NL9·BG3·EL7개 혼합/오역 스킬명도 교정. 기존 카탈로그·UI·EXTRA·성장 화면 다음 마지막으로 적용 |
+docs/13출시·마케팅/MAC_ENVIRONMENT_HANDOFF_20261001.md:7:Node/의존성/개발 도구 설치, Claude Google 로그인, 실제 전투 3처치·불꽃 반지 획득과 재접속 복원, 관련 회귀 검사 32/32까지 완료했다. 기존 Mac 저장소 수정 22개 파일 해시와 HEAD를 다시 확인해 보존했다. 설치/자료 인수 범위는 완료이며 장시간 전체 콘텐츠 QA·Mac 배포 패키지·독립 SOUND 병합은 수행하지 않았다. 팀/자동화는 재개하지 않는다. 아래의 미수신·설치 대기 표기는 이전 이력이다.
+docs/13출시·마케팅/MAC_ENVIRONMENT_HANDOFF_20261001.md:106:- 연결 확인, 소스 복구, 도구 설치, 개발 실행, 저장 호환 검수, Mac 패키지, 팀 운영 전환을 각각 구분한다.
+docs/0마스터플랜/MAC_AGENT_DASHBOARD.md:50:| EXODUSER-Mac-BUILD<br>claude-opus-4-8<br>ID `70f84406` · PID 33534 (ps 확인) | BUILD / 에셋 매니페스트·LFS 분류 | 이번 검토 제출 완료 | idle/done · end_turn<br>2026-10-01T07:12:26.213Z (UTC) | [산출](/Users/fordeargamers/Documents/Codex/2026-10-01/dho/outputs/r-input-20261001/teams/BUILD.md)<br>제작 원본 포인터3건, 패키지 검수 대기 |
+docs/12퍼포먼스·최적화/FIRST_KILL_CPU_INVESTIGATION_20261001.md:37:미검증: 주입 래퍼의 정규 런타임 설치/회수, 329ms 원본 재대조, 사망 종류별 분리, Mac 정상 부팅, 패키지 SHA 대조. 성능 개선 선언 없음. 생산 게임·ENEMY/VFX 소유 구역·세이브 수정 없음.
+docs/13출시·마케팅/GAMEPLAY_TRAILER_20260909_PRODUCTION.md:40:초기 참회 소개 컷은 지옥강타로 교체한다. 게임의 스킬 수치·이름 변경은 아니다.
+docs/3.1 ui hud 디자인/UI_COMPOSITION_20260925.md:173:| 상세 | invRight top135/right26px, 폭min(360px,85vw), 최대높이calc(100%−210px) |
+docs/3.1 ui hud 디자인/UI_COMPOSITION_20260925.md:227:| 저장 | 실제 이동 직전에 배열 indexOf로 현재 위치 재확인. 기존 용량 제한, 좌표 초기화, SFX.pickup, _persistSharedStorage, dbSaveNow 유지. 인벤토리 내 보관함 동작은 기존 계약 |
+docs/3.1 ui hud 디자인/UI_COMPOSITION_20260925.md:661:| 상세창 내부 중첩 스크롤 | id-stats flex:none/overflow:visible, 바깥 invRight에서 스크롤. overscroll contain/안정 거터로 폭 변화 최소화 |
+docs/3.1 ui hud 디자인/UI_COMPOSITION_20260925.md:689:#invPanel.panel .pbox #invRight{overscroll-behavior:contain;scrollbar-gutter:stable;}
+docs/3.1 ui hud 디자인/UI_COMPOSITION_20260925.md:690:#invPanel.panel .pbox #invRight .item-detail{flex-shrink:0;min-height:0;}
+docs/3.1 ui hud 디자인/UI_COMPOSITION_20260925.md:691:#invPanel.panel .pbox #invRight .id-stats{flex:none!important;overflow:visible!important;}
+docs/3.1 ui hud 디자인/UI_COMPOSITION_20260925.md:692:#invPanel.panel .pbox #invRight .ui-item-hint{margin-bottom:2px;}
+docs/3.1 ui hud 디자인/UI_COMPOSITION_20260925.md:752:| 종료 | 기존 선택 복원 처리를 _invRestoreSelectedActions로 분리. _invClearHover는 이를 호출한 뒤 invRight visibility:hidden, invCompareFloat display:none |
+docs/3.1 ui hud 디자인/UI_COMPOSITION_20260925.md:894:| 조작 | 호버 상세, 클릭/키보드 초점 선택, 호환 장착 장비 빈 홈 선택 → attachCrystal → dbSaveNow. 객체 인덱스·장비 동일성·빈 홈 재확인 |
+docs/3.1 ui hud 디자인/UI_COMPOSITION_20260925.md:930:#invPanel.panel[data-inventory-page=crystals] .pbox :is(.inv-equip,#invOssuaryPanel,#invStorageCol,#invCenter,#invRight,.inv-actions){display:none!important;}
+docs/3.1 ui hud 디자인/UI_COMPOSITION_20260925.md:1206:| 호버 상세 휠 | ui-panels.js inventory 초기화에서 invPanel wheel 위임. #invGrid/.inv-eq-slot/.oss-center 위에서 invRight가 보이고 clientHeight>0이며 호버 미리보기 또는 나란히 비교가 열렸을 때 정보판을 스크롤. 짧은 내용도 배경 가방으로 휠을 넘기지 않음 |
+docs/3.1 ui hud 디자인/UI_COMPOSITION_20260925.md:1207:| 나란히 비교 휠 보정 | 장비 탭 invRight가 inv-side-compare이고 실제 보이면 hover-preview 유무와 무관하게 #invGrid 전체의 휠을 두 .inv-compare-card scrollTop에 같은 delta로 적용한다. 카드가 짧거나 스크롤 끝이어도 preventDefault하여 가방 위치를 고정한다. 비교가 없는 호버 정보는 invRight 단일 스크롤을 사용하고, 정보가 닫히면 가방 휠을 원래대로 둔다. game.html/game-easy-test.html의 공통 스크립트 캐시는 ui-panels.js?v=20260927-compare-wheel2 |
+docs/3.1 ui hud 디자인/UI_COMPOSITION_20260925.md:1208:| 같은 상세 재렌더 | game.html `_invRenderDetail`에서 우측 패널의 현재 아이템 객체와 출처가 다음 렌더와 같으면 invRight 본문 scrollTop, 두 비교 카드 scrollTop, 수치 차이 details open/scrollTop을 보존. 호버 종료로 선택 상세를 복원할 때 읽던 위치가 맨 위로 튀지 않음. `_invRenderEmptyDetail`은 추적 아이템을 비워 다른 아이템의 위치를 재사용하지 않음 |
+docs/0마스터플랜/mac-resume-20261001/ui03-evidence/BUILD-팀검토.md:13:// 플랫폼: 이 도구는 Mac 개발 체크아웃에서 도는 정적 검사다. 패키지 산출 대상은 Windows NW.js(win/x64)로 별개다.
+docs/0마스터플랜/mac-resume-20261001/ui03-evidence/BUILD-팀검토.md:110:  warn('격리 구분 요약', `개발=server.cjs(Mac,PORT=${EXPECT.devPortMacConv}) / 패키지=node-main(Win,3333→${EXPECT.pkgPort})`);
+docs/0마스터플랜/mac-resume-20261001/ui03-evidence/BUILD-팀검토.md:130:- **격리·플랫폼 구분(§5·§6)**: 개발 서버는 `server.cjs`의 `PORT`(기본 3333, Mac 개발 관례 **3340**)·`EXODUSER_SAVE_DIR` env 격리, 패키지는 `node-main.js` 고정 3333을 통합패치로 **3347**·`userdata-integration`·`EXODUSER-INTEGRATION/saves`로 격리. 도구는 Mac 정적 검사이고 산출 대상은 Windows NW.js임을 명시 출력.
+docs/14밸런스+수치테이블/14밸런스+수치테이블.md:158:| 확인/저장 | 취소 시 유지, 확인 후 최신 투자량 재계산·초기화·applyStats·dbSaveNow |
+docs/3.1 ui hud 디자인/GEM_ATELIER_20260927.md:60:| 호환 빈 홈에서 놓음 | 원본 보유 객체·현재 장비·빈 홈·부위 호환을 다시 검사한 뒤 1개 장착 | 성공 시에만 기존 `attachCrystal`→`dbSaveNow`→재렌더 |
+docs/14밸런스+수치테이블/스킬_밸런스_리포트.md:84:| hellRay | 참회 | 5 | +1/Lv | 5 | 14 | 지속 | 10초/충전 | MP 100 |
+docs/14밸런스+수치테이블/스킬_밸런스_리포트.md:134: 10위 hellRay       14배 (지속)           ← 10초/충전
+docs/14밸런스+수치테이블/스킬_밸런스_리포트.md:214:- 왕관 `beamDmg`가 `pBeamMul()`로 실제 레이저/참회/업화선/암전나선 계산식에 연결됨
+docs/14밸런스+수치테이블/스킬_밸런스_리포트.md:352:| 12 | 참회 | 채널 | **258** |
+docs/13출시·마케팅/13출시·마케팅.md:265:| 스킬 | **전 스킬 53종 Lv5** | chargeBoost/magicBlink/ghostWalk/bladeDash/kiSlash/fireball/whirlwind/detonate/maliceSwipe/fanShot/omniBeam/elemMissile/guardian/maliceHunt/venomBlade/maliceMortar/boneWall/blackStar/lavaSummon/execution/iceOrb/needleShot/arcLaser/fireBeam/fireAura/plagueBurst/maliceStorm/darkPillar/holyDome/holyPrison/iceStorm/giantSlam/giantSlam2/**skyCrusher**/chainAssault/chainSlam/chainSlash/peaceShield/hellRay/shieldThrow/weakPhys/weakMag/weakPj/weakRev/spikeTrap/blueShot/burstLoop/voidScarecrow/explodeScarecrow/ghostXbowTurret/timeWarp/thunderStake/ancestorSummon |
+docs/0마스터플랜/PROJECT_MANAGEMENT_MASTER.md:223:| UI·아이템 | 로비부터 설정·인벤토리·스킬·획득까지 입력·초점·표시·가독성과 실제 데이터 일치 |
+docs/0마스터플랜/PROJECT_MANAGEMENT_MASTER.md:332:- Mac 절전 방지 `caffeinate` PID 21769와 assertion 확인 보고를 받았다. 2026-10-01 09:10 KST경까지 유효. PC 절전 설정은 변경하지 않았다. 현재 PC→Mac 자료 준비, 실제 Mac 설치, 실행·저장 검수, Mac 패키지, 팀 재개를 각각 별도 단계로 관리한다.
+docs/0마스터플랜/PROJECT_MANAGEMENT_MASTER.md:368:- ART 재사용4장과 캐시/대사 연결은 확인, 실제 컷신·NW.js·배포 미검수. 현 빌더는 Windows 대상이므로 Mac 패키지 완료와 구분한다.
+docs/0마스터플랜/PROJECT_MANAGEMENT_MASTER.md:426:기존11CLI만동일세션재접속하여읽기검토를실행했고지원3명이후보를실제도구로작성/실행했다. 게임플레이35PASS·관측스모크10PASS·BUILD25PASS2WARN·SOUND9개시작디코드PASS(청취미검수)·ITEM25PASS1FAIL. 양쪽강화주석만4곳수정후35재통과. root단일브라우저에서관측도구도실행,드롭내부mask호출포착·중복시간분리확인. GL/부활게이트미충족을PASS로계산하지않음. [11팀실행/미완료인수](mac-resume-20261001/11팀-MAP020-실행검수.md).
+docs/0마스터플랜/PROJECT_MANAGEMENT_MASTER.md:676:위 종료 기록 뒤 15:19:51Z 사용자용 Chrome 게임을 별도로 열었다. `mac-play-20261002.localhost:3340/game.html?webgpu=0`의 튜토리얼 화면을 유지하며 후속 작업 중 입력·리로드·닫기·계측을 하지 않는다. 이는 브라우저 실행이고 Mac .app/Windows .exe 패키지 완료가 아니다.
+docs/0마스터플랜/PROJECT_MANAGEMENT_MASTER.md:678:원격 `1c7cdb453c8a9ddaaac401020beb72ac87a74353` 대조 뒤 완료한 기존 네 팀에 15:26:13Z 한 건씩 전달했다. ITEM은 검토 전용 D10 포트 설치/해제와 UI 호출부, BUILD는 Mac runtime/고유 출력/소스 SHA/save 보존 사전검사 CLI, UIUX는 UI-04 빈 아이템 상세와 초점 오류, BALANCE는 장비 강화 게이트·차감·저장 경계 검수다. 각 독립 prefix에만 구현하며 생산·새 게임·빌드·설치 변경0. 전달과 실제 Read/코드 Edit는 분리 기록한다.
+docs/0마스터플랜/PROJECT_MANAGEMENT_MASTER.md:687:기존 다섯 팀 ART/MAP/SKILL/ENEMY/ANIMVFX의 다음 한 건은 각각 live 관측기 line-index 연결/수명·포커스 수정/hellRay 확정자원/source 기반 F06 후보/sparse clock canonical 통합이다. 15:35:08~15:36:07Z 수신 및15:35:12~15:36:16Z Read를 실제 원세션에서 확인했다. 새세션0. 앞서 배정한 Codex4팀은 새 결과 제출 완료·다음 독립 인수 대기이며 실행 중으로 세지 않는다. [검사·반영 단계·정확한11팀상태](mac-resume-20261001/vscode-dispatch/FIVE-OWNER-INTEGRATION-20261002.md).
+docs/3.1 ui hud 디자인/능력치_패시브_개편_20260909.md:25:| 계획/적용 | 노드 탐색은 비용 없음. 상세 투자·환불은 계획만 변경. 적용은 live 재검증 후 stats/passives/grit/SP/AP를 원자적으로 반영, applyStats/SFX/dbSaveNow 각1회 |
+docs/14밸런스+수치테이블/MAGIC_ATTACK_DAMAGE_20260910.md:11:| 빔·지속 | 강화된 마법 기반 피해 사용 | 얼음송곳, 멸살광선, 참회, 지옥진, 악의폭풍, 악의기둥, 뇌전창, 가시덫 |
+docs/14밸런스+수치테이블/스킬별_DPS_자원소비표.md:136:| hellRay | 참회 | MP | **100/충전** | **600f (10초)/충전** | magicRef × INT × pMagicMul × pBeamMul × _skMul('hellRay') | 에너지 쐐기, 회전+뎀. ~~증표 시스템 삭제(2026-05-29)~~ |
+docs/14밸런스+수치테이블/스킬별_DPS_자원소비표.md:194:| hellRay 참회 | 액티브 | 100 | 10초/충전 | **10** |
+docs/0마스터플랜/mac-resume-20261001/ITEM-폴백마스킹-검수.md:51:양쪽 HTML의 JavaScript inline 6개씩 acorn 구문 검사 통과. 첫 검사 명령은 importmap JSON을 JavaScript로 오인해 실패했으며 type별 분리 후 통과했다. BUILD 원문 중 “Windows x64 대상이라 Mac에서 산출 불가”는 이 검수로 입증되지 않은 추론이므로 채택하지 않는다. 이번에는 플랫폼 간 패키지 생성/Windows 실행을 시도하지 않았다는 사실만 유지한다.
+docs/0마스터플랜/mac-resume-20261001/QA-ENEMY-ANIMVFX-인수검토.md:71:각 파일에서 valid=true는 기록 수집의 유효 판정이지 동등한 교전 부하를 보장하지 않는다. 이 수치는 QA 마스터 175–204행 표·판정과 일치한다. 전후 처치 수·적 수가 다르며 before 신규 프로필/after 학습 프로필 조건이다. COMBAT2의 >50ms는 4회 모두 0이지만 PANELS에는 >100ms가 각각 4/1/3/3회 남는다. L0는 학습 실행으로 비교에서 제외한다. 전체 게임 프레임 개선·329ms 해결·Mac 패키지 완료를 선언할 근거가 아니다.
+docs/3.1 ui hud 디자인/exoduser-ui-phase2 (1).md:22:| 상세 미리보기 | `_invRenderDetail(idx,source,preview=false)`, 호버에서만 true. `#invRight.inv-hover-preview`는 pointer-events:none!important로 슬롯 마우스 이벤트를 가로채지 않음 |
+docs/3.1 ui hud 디자인/exoduser-ui-phase2 (1).md:494:- maliceStorm/iceStorm/boneWall/hellRay: 스택 시스템 (_msStk/_isStk/_bwStk/_hrStk + 충전타이머)
+docs/3.1 ui hud 디자인/exoduser-ui-phase2 (1).md:821:| 합체 호스트 | 독혈해방·얼음소용돌이·참회 귀환·공성유령 등 | 합체 여부만 확인해 전부 `⚡` 강제 표시 | `_skFuseIcon()`이 결정한 합체 ID와 `SKILL_ICONS` 별칭을 거쳐 실제 보유 스킬 아이콘 표시 | `_skIcon(sk.id)` |
+docs/3.1 ui hud 디자인/exoduser-ui-phase2 (1).md:962:| 종료 | 기존 선택 복원 처리를 _invRestoreSelectedActions로 분리. _invClearHover는 이를 호출한 뒤 invRight visibility:hidden, invCompareFloat display:none |
+docs/3.1 ui hud 디자인/exoduser-ui-phase2 (1).md:975:**후속 확정 — 유골함형 보석함:** 좌우 2단(폭 최대980px, 높이 min(680px,94vh))으로 변경. 왼쪽 보유 보석/상세, 오른쪽 `SLOT_NAMES` 17부위 전체를 4열로 표시한다. 미장착 부위도 표시. 빈 홈은 선택 보석 장착 또는 호환 피커 열기, 장착 홈은 무료 탈착. 기존 부위 제한·보석 수치 유지. 클릭 시 장비/홈/보석 객체 재검증, 성공 시 `dbSaveNow`. 상세 규격은 `UI_COMPOSITION_20260925.md`의 유골함형 보석함 절, 회귀 검증은 `test/crystalEquipment.browser.js`(격리 브라우저 9항목 통과). 터미널 장애로 CLI/Git 검증·커밋은 미완료.
+docs/3.1 ui hud 디자인/exoduser-ui-phase2 (1).md:984:| 조작 | 호버 상세, 클릭/키보드 초점 선택, 호환 장착 장비 빈 홈 선택 → attachCrystal → dbSaveNow. 객체 인덱스·장비 동일성·빈 홈 재확인 |
+docs/3.1 ui hud 디자인/exoduser-ui-phase2 (1).md:1025:| 호버 상세 휠 | ui-panels.js inventory 초기화에서 invPanel wheel 위임. .inv-item/.inv-eq-slot/.inv-cell/.oss-center 위에서 invRight가 inv-hover-preview이며 visible이고 clientHeight>0/실제 세로 넘침이 있을 때만 상세 스크롤 |
+docs/0마스터플랜/mac-resume-20261001/vscode-dispatch/FIVE-OWNER-INTEGRATION-20261002.md:10:| SKILL | 원담당 경로20 + 기존66 PASS | `ice-cancel-probe.safe.js`에 검수 지원 body 인수. 취소/설치 예외 정리, trace 없는 충전은 UNKNOWN. 테스트는 실제 owner를 소비 | hellRay 조준 이후 MP/스택 변경 시 확정 재검사 누락 재현·최소 소스 후보 |
+docs/0마스터플랜/mac-resume-20261001/vscode-dispatch/FIVE-OWNER-INTEGRATION-20261002.md:27:| SKILL | 15:35:40.994 | 15:35:46.502 | 양쪽 hellRay 실제 확정 블록 RED→GREEN·미적용 patch, MP100/스택1 및 취소 보존 |
+docs/0마스터플랜/mac-resume-20261001/vscode-dispatch/FIVE-OWNER-INTEGRATION-20261002.md:35:ITEM browser-bootstrap 23그룹, UIUX inventory-focus 신규21/기존9/inline8, BUILD mac-package-preflight 28fixture, BALANCE 강화 validator 2880입력/56경계 결과가 제출됐다. receipt 완료를 읽었으며 **다음 독립 인수 대기**다. 네 팀이 여전히 실행 중이라고 계산하지 않는다. ITEM 실제 브라우저 import/CSP·UIUX 실화면·Mac .app 패키지·강화 전체 영속화는 미검수다. BUILD의 제한 검색에서 Mac runtime은 미발견이며 Windows 전용 현행 빌더를 Mac 빌드 완료로 세지 않는다. 비용 불일치가 발견되지 않았으므로 밸런스를 억지로 변경하지 않는다.
+docs/14밸런스+수치테이블/스킬데미지공식표.md:76:- **해당 스킬**: fireball, omniBeam, fireAura, maliceMortar, maliceStorm, hellRay, elemMissile, thunderStake
+docs/14밸런스+수치테이블/스킬데미지공식표.md:222:| 참회 (hellRay) | magicRef | INT | pMagicMul | _skMul (b:5, g:4.0) | **ATK×5** | **ATK×23** | 지속 | 10초/충전. Lv10=23×, Lv20=43×. (g 2배 상향 2026-05-19) |
+docs/14밸런스+수치테이블/스킬데미지공식표.md:231:| 참회광선 (hellRay) | magicRef | INT | pMagicMul | _skMul | 300 | 390 | 지속 | 전기 ×1.2, 합체라인도 통일 |
+docs/0마스터플랜/mac-resume-20261001/vscode-dispatch/UIUX-review-result.md:19:| UI-04 | 빙편을 거두는 손 | 장갑 | U-D04 |
+docs/0마스터플랜/mac-resume-20261001/vscode-dispatch/UIUX-review-result.md:61:- VM 기본 로더는 현재 Node의 experimental warning을 출력하지만 검사 실패는 아니다. 브라우저 네트워크/MIME·실제 이미지 디코드·Tab/Enter/Space 이벤트·실측 64/160px·화면 넘침은 미검수다. native 버튼과 CSS 계약 검사를 실제 키보드/시각 PASS로 보고하지 않는다. **VISUAL VERDICT: UNKNOWN**.
+docs/16영문화(i18n)/영문화_진행현황.md:62:| 25 | _EN 누락 보충 | ~35건 추가 (사슬이동/기동, 참회, 파도방향 4종, 그로기, 해방, 왕관/팔찌, 당기기/밀어내기 모드, 흡수, 폭발 등) |
+docs/16영문화(i18n)/영문화_진행현황.md:105:| 2026-04-05 | 25 | **_EN 누락 보충** — addTxt/showPH/notify에서 사용되지만 _EN에 없던 35건 추가: ⚡사슬이동/기동, 참회/귀환, 파도 방향명 4종, 그로기, 해방 2종, 왕관/팔찌 4종, 당기기/밀어내기 모드, 흡수, 폭발, 암전/암흑 등 |
+docs/0마스터플랜/mac-resume-20261001/vscode-dispatch/FOUR-NEXT-20261002.md:15:| UIUX | UIUX-20261002-INVENTORY-FOCUS | UIUX/inventory-focus-* | 승인 UI-04 상세/비교 진입·닫기의 실제 오류 재현, 최소 후보/회귀. 실화면 판정은 별도 |
+docs/0마스터플랜/mac-resume-20261001/vscode-dispatch/ITEM-definition-result.md:18:|UI-04|빙편을 거두는 손|gloves|U-D04|
+docs/0마스터플랜/mac-resume-20261001/vscode-dispatch/DISPATCH_STATUS.md:32:생산 본편/easy SHA는 기준과 동일하다. 기존 정규화 22경로·타 팀 WIP·사용자 세이브·PC·원래 Mac3333을 보존했다. QA release 파일은 없고 새 게임·빌드·인코딩은 실행하지 않았다. SOUND 청취·MAP 시각·GL 고주사율·Windows 패키지는 별도 미완료다.
+docs/0마스터플랜/mac-resume-20261001/vscode-dispatch/UIUX-d10-result.md:40:10~20 전정수 ×KO/EN22설명을 현재 롤 API와 대조하고 경계밖9/21·소수·문자열·NaN/Infinity·내부저장값0.15 입력을 거부한다. 실제UI-10의10/15/20 선택·양언어 갱신·ARIA, 다른21카드/44경로/실제이미지파일·lazy 보존, 크기선택 독립성과 로딩실패 안내를 검증했다. native 버튼의 실제Tab/Enter/Space·픽셀크기·레이아웃/스크린리더·브라우저HTTP/MIME는 검증하지 않았다. JS 확장자 계약은 확인했으나 새 모듈의 실제HTTP응답을 측정하지 않았다. VM experimental warning은 기록된 도구 경고다.
+docs/4.1맵디자인+설정/맵디테일.md:304:| 생체 움직임 | 기존 맵 보존 지시에 따라 [런타임 효과18차](CH1_LIVING_DETAIL_RUNTIME_20260925.md) 추가: 조직16프레임/약6.614초·중간굴곡7px, 길 어깨11곳, 밑동 고정 나무 회전과 실루엣 그림자, 고치 X±1.8%·Y∓1.2%/약5.984초. 7차는 동맥 아래 국소 피부막·주름·얼룩과 기존 웅덩이 스프라이트 수축 추가(충돌 불변). 6차는 압력 폭 계수9·위로 들림7px·국소 명암 보강으로 가시성 강화. 5차 동맥3형태·끝부분 알파 감쇠 유지, 당시 분산 시작점은10차 공동 유착부로 대체. 4차는 동맥을 연속 면으로 연결하고 이동성 압력 맥동 추가. 3차는 웅덩이 기포5개, 고치·독낭 체액3개, 접지 얼룩7개 추가. v4~v8 원화 전체의 게임 적용과 구덩이 벽 수축은 미완료; 8차 독액 증기3갈래·고치/독낭 점액 줄기 추가(국소 효과, 전체 재질 통합은 RETOUCH); 9차 동측 pit_poison 한 곳에 절차식 안쪽 벽·낮은 수면·앞턱 가림·국소 수축 적용(기존 대형 구덩이 원화의 벽 분리 변형과는 별개); 10차는 촉수 시작부·끝점 고정과 중간 맥동; 23차 사용자 교정으로 dry 촉수는 밑동만 고정하고 끝 선행 뻗기·몸통 지연 당김으로 변경(wet 유지); 11차 오른쪽 아래 독구덩이의 불규칙 젖은 경계·고정 유입 자국2개 추가; 12차 야영지 화로/힘줄·대왕나무 뿌리 국소 변형,고치/독낭 실루엣 그림자 추가; 13차 사용자 “손이 움직여야지” 교정: 야영지 출렁임 제거,화로의 시체 손3개를 손목·손가락 관절로 움켜쥐었다 펴도록 교체(팔/돌/가시 고정); 14차 손가락별 접힘 지연·연속 관절 연결 보강; 15차 대왕나무 좌우뿌리2축의 밑동 고정·끝부분 들기/굽힘으로 교체(배경에 구워진 뿌리는 정적); 16차 나무에 매달린 고치3개·왼쪽시체1개 고정매듭 진자회전; 17차 오른쪽 시체1개 추가, 총 고치3개·시체2개 독립 진자회전; 18차 원본 하단 뿌리 알파 기반 접촉 그림자 추가(정적512×192,0.375MiB) |
+docs/CHANGELOG_SYNC.md:2837:## 2026-09-04 실버테일 참회 전용 여성 보이스
+docs/CHANGELOG_SYNC.md:2841:| `repentance` | `voice_*`가 아닌 스킬 SFX 키여서 `_SILVERTAIL_VOICE_MAP` 전수 치환에서 누락, 참회/참회 귀환 시 남성 음성 포함 MP3가 그대로 재생됨 | `repentance:'silvertail_repentance'`로 치환하여 전용 여성 `Repent!` 재생, 기존 10초 전용 보이스 중복 방지 적용 | 전사 등 `_charIdx!==1`은 `sfx/skillsound/repentance/repentance.mp3` 유지 | `_sampleFiles`, `_silvertailVoiceKey()`, 참회 단독·`elecRepent` 호출부 |
+docs/CHANGELOG_SYNC.md:2843:- `SFX.magic()`와 `skull_summon`, 참회 판정·피해·범위·자원·VFX는 변경하지 않았다.
+docs/CHANGELOG_SYNC.md:2981:| 합체 호스트 | 합체 종류와 무관하게 `⚡` 강제 표시 | `_skFuseIcon()` → `SKILL_ICONS` 별칭으로 실제 스킬 아이콘 해석 | 이름은 `_fuseName()` 유지 | 독혈해방·얼음소용돌이·참회 귀환·공성유령 등 |
+docs/CHANGELOG_SYNC.md:2996:- 원인: 퇴장 분기는 alpha만 낮추고 프레임을 5로 고정했다. 생성음은 `skull_summon` 호출이 `elecRepent`의 `else` 안에 있어 참회 분기에서 건너뛰었다.
+docs/CHANGELOG_SYNC.md:2997:- TDD: 역재생 프레임 계약과 단독/합체 생성음 1회·참회 분기 전 호출 검증을 먼저 RED로 확인한 뒤 `test/bossCageTrapSprite.test.js` **4/4 PASS**.
+docs/CHANGELOG_SYNC.md:4711:  - **마법**: fireball, fireBeam, fireAura, blueShot, omniBeam(2곳), hellRay(2곳), maliceStorm(2곳), darkPillar, iceOrb, maliceMortar(5곳), spikeTrap, burstLoop, plagueBurst, ghostWalk, elemMissile, magicBlink(DOT)
+docs/CHANGELOG_SYNC.md:23507:- img/skillskin/hellRay.png
+docs/CHANGELOG_SYNC.md:23669:- img/skillskin/hellRay.png
+docs/CHANGELOG_SYNC.md:23706:- img/skillskin_upscaled/hellRay.png
+docs/CHANGELOG_SYNC.md:23743:- img/skillskinXX/hellRay.png
+docs/CHANGELOG_SYNC.md:49397:| 종료 | 기존 선택 복원 처리를 _invRestoreSelectedActions로 분리. _invClearHover는 이를 호출한 뒤 invRight visibility:hidden, invCompareFloat display:none |
+docs/CHANGELOG_SYNC.md:49454:**후속 확정 — 유골함형 보석함:** 좌우 2단(폭 최대980px, 높이 min(680px,94vh))으로 변경. 왼쪽 보유 보석/상세, 오른쪽 `SLOT_NAMES` 17부위 전체를 4열로 표시한다. 미장착 부위도 표시. 빈 홈은 선택 보석 장착 또는 호환 피커 열기, 장착 홈은 무료 탈착. 기존 부위 제한·보석 수치 유지. 클릭 시 장비/홈/보석 객체 재검증, 성공 시 `dbSaveNow`. 상세 규격은 `UI_COMPOSITION_20260925.md`의 유골함형 보석함 절, 회귀 검증은 `test/crystalEquipment.browser.js`(격리 브라우저 9항목 통과). 터미널 장애로 CLI/Git 검증·커밋은 미완료.
+docs/CHANGELOG_SYNC.md:49463:| 조작 | 호버 상세, 클릭/키보드 초점 선택, 호환 장착 장비 빈 홈 선택 → attachCrystal → dbSaveNow. 객체 인덱스·장비 동일성·빈 홈 재확인 |
+docs/CHANGELOG_SYNC.md:49666:| 호버 상세 휠 | ui-panels.js inventory 초기화에서 invPanel wheel 위임. .inv-item/.inv-eq-slot/.inv-cell/.oss-center 위에서 invRight가 inv-hover-preview이며 visible이고 clientHeight>0/실제 세로 넘침이 있을 때만 상세 스크롤 |
+docs/CHANGELOG_SYNC.md:50227:| 정보 | `#invRight`를 고정 정보판으로 재사용. 선택 전 실제 공격/방어/추가 효과/보석 홈 현황, 선택·호버 시 기존 상세/비교 표시. 장착판 하단 장착 부위 수/보석 홈/전투력. 아이템·보석 데이터와 저장 계약 불변 |
+docs/CHANGELOG_SYNC.md:51859:- ITEM/BUILD/UIUX/BALANCE 완료 turn 확인 후 기존 세션에 검토 bootstrap·Mac 패키지 사전검사·UI-04 초점 오류·강화 자원 계약을 한 건씩 배정했다. queue 성공과 실제 Read/코드 Edit를 구분해 증거를 기록한다.
+docs/3.3 키바인딩+설정/3.3 키바인딩+설정.md:246:- `_unfuseAll` 헬퍼: `P._fused`를 순회하며 해당 스킬이 `_FUSE_PAIRS[fk]` 또는 `_FUSE_GEM_GROUPS[fk].skills`에 포함되면 `delete P._fused[fk]` + 누적 강화 SP 추정 환불

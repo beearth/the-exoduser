@@ -1,0 +1,95 @@
+
+[1] canonical finalcrop 시간축 (line-index)
+  PASS canonical timeBase=line-index (got line-index)
+  PASS canonical active=wa24 (got wa24)
+  PASS canonical lineElapsed=700 (now-lineStartMs) (got 700)
+  PASS 눈/발/자막 UNKNOWN 유지
+
+[2] 관측기 line-index 샘플이 canonical 과 일치
+  PASS 관측기 timeBase=line-index (got line-index)
+  PASS 관측기 wa24 포착
+  PASS 관측기 wa24 el=700 (got 700)
+  PASS ★관측기 el == canonical lineElapsed (700=700)
+  PASS 관측기 el == correctedSampler lineElapsed
+
+[3] RED 참조 — seq-time 축이면 같은 now 에서 wa25 오독
+  PASS seq-time 축 active=wa25 (got wa25)
+  PASS ★canonical(wa24) ≠ seq-time(wa25) — 호출부 수정이 canonical 과 정합됨
+
+=== 결과: 11 PASS / 0 FAIL ===
+✔ tools/team-followup-20261001/ART/live-callsite-canonical.test.mjs (25.9865ms)
+
+[1] 정상표본 — PASS 기대 (line-index)
+  PASS 설치 후 rAF·timeout 각 1
+  PASS verdict=PASS (got PASS, reasons=[])
+  PASS timeBase=line-index (got line-index)
+  PASS modelCheck.ok=true
+  PASS wa24 경계 포착
+  PASS wa24 표본 n>=5 (n=5)
+  PASS within_pm2=true (±2 이내)
+  PASS shake x∈[-1,1] ⊂[-2,2]
+  PASS done 도달 후 자동 종료
+  PASS 자동 종료 시 누수 0
+  PASS 자동 종료 시 namespace 제거
+
+[2] 0표본 — INCOMPLETE 기대
+  PASS wa24 표본 n=0 (got 0)
+  PASS within_pm2=false (표본0은 통과 아님)
+  PASS verdict=INCOMPLETE (got INCOMPLETE)
+  PASS reasons 에 wa24_표본0
+
+[3] 재설치 — dispose + installSeq
+  PASS A 자동 cleanup → stopped
+  PASS namespace 가 B
+  PASS installSeq 증가 (1→2)
+  PASS 누수 없이 B 것만
+  PASS B 정리 후 0
+
+[4] 취소 — 멱등 + 전체 정리
+  PASS 진행 중 rAF·timeout 각 1
+  PASS cleanup 후 stopped
+  PASS rAF 취소
+  PASS safety timeout 취소
+  PASS namespace 제거
+  PASS 2차 cleanup 멱등(동일 캐시)
+  PASS 종료 후 재예약 없음
+
+[5] ★RED→GREEN 지연시작 — line-index=wa24, seq-time=wa25 오독
+  PASS ★GREEN: line-index 로 wa24 포착
+  PASS wa25 로 오독하지 않음
+  PASS ★RED: seq-time 축은 wa25 오독 (got wa25)
+  PASS ★두 축 불일치 → 수정 효과 증명
+
+[6] PRO/비PRO — 비PRO 활성목록엔 wa24 없음 → 미확정
+  PASS 비PRO: wa24 미포착
+  PASS 비PRO: 표본0 → 미확정(INCOMPLETE)
+
+[7] 누락/역행 — 샘플 보류, 크래시 없음
+  PASS 누락 상태에서 크래시 없음
+  PASS 누락 → 샘플 없음
+  PASS 역행 감지 기록(reverse_seen)
+  PASS 정상 구간 wa24 는 포착됨
+
+[8] 주입 correctedSampler — 관측기 샘플이 검수 샘플러 출력과 일치
+  PASS 주입 경로로 wa24 샘플 기록
+  PASS lineElapsed 일치 (1200=1200)
+  PASS zoom 일치 (1.05=1.05)
+  PASS fadeAlpha 일치 (1=1)
+  PASS 검수 샘플러 base=line-index
+
+[보조] shake ±2 초과 → FAIL / 모델 드리프트 → FAIL
+  PASS shake>2 → within_pm2=false
+  PASS shake 초과 → FAIL (got FAIL)
+  PASS 모델 드리프트 → modelCheck.ok=false
+  PASS 드리프트 → FAIL (got FAIL)
+
+=== 결과: 46 PASS / 0 FAIL ===
+✔ tools/team-followup-20261001/ART/wa24-observer.test.mjs (25.083375ms)
+ℹ tests 2
+ℹ suites 0
+ℹ pass 2
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 29.704792

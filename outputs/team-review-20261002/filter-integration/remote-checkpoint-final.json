@@ -1,0 +1,16 @@
+{
+  "verifiedAt": "2026-10-01T18:08:57.071645+00:00",
+  "head": "8e4ed4e446329c863ed4d2d556d386c37f3ae310",
+  "remote": "8e4ed4e446329c863ed4d2d556d386c37f3ae310",
+  "match": true,
+  "sourceTests": 55,
+  "actualNative": "unverified; Mac unlock pending",
+  "indexEmpty": true,
+  "productionFilesClean": true,
+  "hashes": {
+    "game.html": "6a8b523a4c91fdeaa300e85c3e5cfe25eb51cd8be705c395f5112d0771f6065b",
+    "game-easy-test.html": "e81a708e97710a7fe8d45c6e4071edba79ff8464116de955bc801552b5746ec2",
+    "ui-panels.js": "b22c4a31141672304a15adfae3a5050cb9fde3b96601507c8f10de3ea63f4cb5",
+    "server.cjs": "6a7c1083ac10b105cca3624c8fd0e919d14a59b32774612ff0a00cb881be8538"
+  }
+}

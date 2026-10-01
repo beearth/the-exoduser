@@ -1,0 +1,23 @@
+{
+  "at": "2026-10-01T13:10:28.362977+00:00",
+  "sha": "d9bb0901dd4f0eb416b94b37709a2df128c91072",
+  "remoteSha": "d9bb0901dd4f0eb416b94b37709a2df128c91072",
+  "remoteVerified": true,
+  "commits": [
+    "b043cd7d52e028a51dbd65cbc0d1d9e1214d7c08",
+    "86a5996a00bc0f5af3e5ba43ce85cdb538471bca",
+    "d9bb0901dd4f0eb416b94b37709a2df128c91072"
+  ],
+  "productionHashes": {
+    "game.html": "8ebc3b7b52a651c1a3bc5e8c285b00d186c6dacc18429ada7499781acc72b0b9",
+    "game-easy-test.html": "4c408f1e7b57210900ddfa8a0646502f91b6a0bbc798a24338eb159cb613d874"
+  },
+  "tests": {
+    "itemEconomyRelated": 18,
+    "demoRelated": 23,
+    "soundAndItemEconomy": 21,
+    "overlap": true
+  },
+  "native": "fresh 13:09Z native query explicitly locked; no input retry",
+  "remaining": "actual game/audio/package gates"
+}

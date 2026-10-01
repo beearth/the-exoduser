@@ -1,0 +1,18 @@
+sparse-clock-integration — 반례 RED→GREEN·회귀·실raw
+
+── 반례 RED(통합 전 버그) → GREEN(canonical 통합본) ──
+[OK ] ANIM-missing-middle-draw-record
+      RED(버그 classifyBefore)=PASS (오PASS 재현 ✓)
+      GREEN(canonical)=REJECT (수정 ✓)
+[OK ] ANIM-missing-draw-counter
+      RED(버그 classifyBefore)=PASS (오PASS 재현 ✓)
+      GREEN(canonical)=REJECT (수정 ✓)
+[OK ] 단위 {dHf:1,dU:1,dD:null}: before=PASS(오PASS) → canonical=UNKNOWN(UNKNOWN)
+
+── canonical 작은 회귀 ──
+[OK ] update-only 240fps → PASS(고주사율) → PASS(고주사율 실수명 인증 포함)
+[OK ] draw-only 240fps → FAIL → FAIL
+
+── 실 raw: 인자 미지정(별도 실행). canonical gate로 분류 가능 ──
+
+ALL OK (exit 0)

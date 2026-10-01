@@ -1,0 +1,65 @@
+{
+  "taskId": "QA-20261002-CONFIRM-INVENTORY-REVIEW",
+  "team": "QA",
+  "session": "88c3f903-ece5-4640-8b0c-86feaaca0e53",
+  "terminal": "VS Code 기존 터미널 1 (QA)",
+  "cli": "Claude Code",
+  "model": "claude-opus-4-8",
+  "head": "98aedab7",
+  "receivedUTC": "2026-10-01T15:52:26Z",
+  "firstReadUTC": "2026-10-01T15:53:00Z",
+  "editStartUTC": "2026-10-01T15:55:00Z",
+  "status": "done-confirm-inventory-review",
+  "scopeNote": "NEXT_TASK.md(완료된 fire 과제 중복 초안)는 재실행 안 함. confirm-inventory-review-task.md 한 건만.",
+  "ownedPaths": [
+    "tools/team-followup-20261001/QA/confirm-inventory-review-*",
+    "docs/0마스터플랜/mac-resume-20261001/vscode-dispatch/confirm-inventory-review-result.md",
+    "docs/0마스터플랜/mac-resume-20261001/vscode-dispatch/confirm-inventory-review-receipt.json"
+  ],
+  "readOnlyReviewed": {
+    "skill": [
+      "tools/team-followup-20261001/SKILL/hellray-confirm-gate.test.mjs",
+      "hellray-confirm-game.patch",
+      "hellray-confirm-easy.patch"
+    ],
+    "uiux": [
+      "tools/team-followup-20261001/UIUX/inventory-focus-candidate.mjs",
+      "inventory-focus.test.mjs",
+      "inventory-focus-source-hashes.json"
+    ],
+    "realSource": [
+      "game.html hellRay confirm block (L34984~35013)",
+      "game-easy-test.html (L33793~)",
+      "_invClearHover L47967 / renderInv L48384 / _invRenderDetail / closeAllPanels"
+    ],
+    "ssot": [
+      "docs/2_1.../2_1 스킬관리+합체시스템.md:408",
+      "자원리젠+소모공식.md:247",
+      "SKILL_자원게이트_감사_20261001.md:26",
+      "SKILL03_설치확정_자원검수_20261001.md:49"
+    ]
+  },
+  "doNotModify": [
+    "game.html",
+    "game-easy-test.html",
+    "공유 test/*",
+    "docs",
+    "타팀 파일(SKILL/*, UIUX/inventory-dom-*)"
+  ],
+  "gate": "게임/브라우저/서버/빌드/에셋/계측/Git/queue/새세션/에이전트 0. 사용자탭 1573846373 미접촉. 작은 테스트만.",
+  "preliminaryFindings": {
+    "hellRay": "현재 game.html/easy 둘 다 gate 미적용(before=current) → 이중 patch 위험 없음. 양쪽 patch 본문 동일(오프셋만 상이). root SKILL 테스트 25/25 PASS 독립 확인.",
+    "uiux": "connectCandidate 앵커 13/13 현재 소스에 정확히 1회 → 치환 적용 가능. 단 inventory-focus-source-hashes.json 기록 해시가 현재 소스와 drift(소스 변경됨) → 적용 전 재검증 필요. root UIUX 테스트 21/21 PASS 독립 확인."
+  },
+  "nextAction": "confirm-inventory-review-regression.mjs(소형 독립 회귀: SSOT 대조 + before/patch 정합 + RED/GREEN 핵심 + UIUX 해시 drift·앵커·숨김/분리 불변) 작성·실행 후 result 인계",
+  "blocker": null,
+  "completedUTC": "2026-10-01T15:57:00Z",
+  "result": {
+    "regression": "tools/team-followup-20261001/QA/confirm-inventory-review-regression.mjs — 17 PASS/0 FAIL, exit0",
+    "hellRay": "7경계(MP100/99·stk1/0·동시취소·클릭소비·조준후자원변동·합체·실패부작용0) 독립 검증 통과. 현재 game.html/easy = PATCHED(root 이미 적용, uncommitted) → 이중 patch 금지. RED는 재구성 before 블록에서 재현, current는 GREEN.",
+    "uiux": "connectCandidate 앵커 13/13 현재 소스 정합, 숨김/분리 가드(usable·missing) 유효. 단 inventory-focus-source-hashes.json drift → 적용 전 재검증 권장.",
+    "rootTestsReadonly": "SKILL hellray-confirm-gate 25/25, UIUX inventory-focus 21/21 (미수정)",
+    "noModify": "game/easy/공유test/docs/타팀 파일 변경0",
+    "gates": "게임/브라우저/서버/빌드/에셋/계측/Git/queue/새세션/에이전트 0, 사용자탭 1573846373 미접촉"
+  }
+}

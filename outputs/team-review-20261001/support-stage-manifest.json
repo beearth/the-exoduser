@@ -1,0 +1,332 @@
+[
+  {
+    "path": "docs/0마스터플랜/PROJECT_MANAGEMENT_MASTER.md",
+    "size": 105573,
+    "sha256": "10c60c8536d50e15b3324940662baf40daaeae657c218cb2a07bc3625736a569"
+  },
+  {
+    "path": "docs/0마스터플랜/mac-resume-20261001/vscode-dispatch/BALANCE-skill-support-receipt.json",
+    "size": 1353,
+    "sha256": "6f0825873024e5107af6ae4eba026a1dabdafd3bb16537170b601722d70fdc93"
+  },
+  {
+    "path": "docs/0마스터플랜/mac-resume-20261001/vscode-dispatch/BALANCE-skill-support-result.md",
+    "size": 7742,
+    "sha256": "2c364f17201c00353ca5bf82b7b500feaac8a8980cfcfa8c5aba0804fa166482"
+  },
+  {
+    "path": "docs/0마스터플랜/mac-resume-20261001/vscode-dispatch/ITEM-enemy-support-result.md",
+    "size": 3443,
+    "sha256": "e90122619b8a9fca7992bd65951234e928fb014578098a6b335d2fe2cc9fe365"
+  },
+  {
+    "path": "docs/0마스터플랜/mac-resume-20261001/vscode-dispatch/SUPPORT-root-review.md",
+    "size": 3472,
+    "sha256": "64b9a5ea6a73dcde5d6d882d3c85b3b4a97745c4f01daa2445fa8a3aee3a8132"
+  },
+  {
+    "path": "docs/0마스터플랜/mac-resume-20261001/vscode-dispatch/TEAM_UTILIZATION_20261001.json",
+    "size": 34497,
+    "sha256": "c59789398030593a29c2fe828d03890fe8bb390e28298c9f7c19820a824b359d"
+  },
+  {
+    "path": "docs/0마스터플랜/mac-resume-20261001/vscode-dispatch/UIUX-art-support-receipt.json",
+    "size": 2207,
+    "sha256": "398dcc07d8348b526a8e29cc0a585063013a2bbf7b6cbb74893e65d6dcccedbf"
+  },
+  {
+    "path": "docs/0마스터플랜/mac-resume-20261001/vscode-dispatch/UIUX-art-support-result.md",
+    "size": 6730,
+    "sha256": "b36e74dfb5320a172cac4d8d4ce911c945f6f343f3c1862e3f4498c0a8ee1537"
+  },
+  {
+    "path": "docs/17게임아트팀/ART_TEAM_MASTER.md",
+    "size": 21072,
+    "sha256": "7a1a3b675ef0be5ba208fb28d06a16f77577a3c7d51bb4d29ddf048e28ba7829"
+  },
+  {
+    "path": "docs/2_1 스킬관리+합체시스템+자원/SKILL03_설치확정_자원검수_20261001.md",
+    "size": 4480,
+    "sha256": "525aaefc3e2946fd45bd7ec3c0b402501aa457c5bebad487c19d5b01aa6ff326"
+  },
+  {
+    "path": "docs/9적ai패턴디자인/ENEMY_AI_TEAM_MASTER.md",
+    "size": 29249,
+    "sha256": "ecdd65b375d81ade6b6bd34abf336f9d832cbe5f20c724d830660b3c1bca6721"
+  },
+  {
+    "path": "docs/CHANGELOG_SYNC.md",
+    "size": 3226505,
+    "sha256": "58ee31c78695573bc63ac43205bed048183493c5410d9c1a7bf89adf428caebd"
+  },
+  {
+    "path": "outputs/team-review-20261001/support/BUILD-queue.json",
+    "size": 354,
+    "sha256": "4ab92a52912fcebf3c2de896d0deaf5697ab4a69b08d64603571beee3a9e6f70"
+  },
+  {
+    "path": "outputs/team-review-20261001/support/art-root.txt",
+    "size": 1262,
+    "sha256": "cc4f9f8b1cb4827379cacbf419b3eccfa56972bb2261380507c937795b3e4239"
+  },
+  {
+    "path": "outputs/team-review-20261001/support/claude-states.json",
+    "size": 2238,
+    "sha256": "f539afe9d92611920224a313e733b283cb8be25002f880ae484560ccc6bc55bd"
+  },
+  {
+    "path": "outputs/team-review-20261001/support/docs-search.txt",
+    "size": 49792,
+    "sha256": "80923e741ed579671af021034c36cdce341e6edf349133967f925c5bbf9aa621"
+  },
+  {
+    "path": "outputs/team-review-20261001/support/enemy-root.txt",
+    "size": 2477,
+    "sha256": "98789ee3e032ae8908c28467f49f177ca0b3a01b5eb0d19896b8228d3824051c"
+  },
+  {
+    "path": "outputs/team-review-20261001/support/independent-root.txt",
+    "size": 34,
+    "sha256": "489b36c52a3b6aa7069172c674271992cc089849ceaee03a4c4565ab71a21f1f"
+  },
+  {
+    "path": "outputs/team-review-20261001/support/root-validation.json",
+    "size": 459,
+    "sha256": "289a9f75076da3ab8f421613ab06f76971ad7fae827da133ca03d3a906405c36"
+  },
+  {
+    "path": "outputs/team-review-20261001/support/skill-root.txt",
+    "size": 4462,
+    "sha256": "ce1aa58ec2b8ad0c750215e83748befd4b683ae24c8493ad8e69be95a7278281"
+  },
+  {
+    "path": "outputs/team-review-20261001/support/skill66-root.txt",
+    "size": 833,
+    "sha256": "9322f7e7ba29f39a25e44c82dfba0cee347d1a4c401371a66ed56632d1435935"
+  },
+  {
+    "path": "tools/team-followup-20261001/ART/wa24-delta-probe.cjs",
+    "size": 10608,
+    "sha256": "79193e10228007bfce1935c633156a208b719d6540b4b3b45b4889d32a1936e9"
+  },
+  {
+    "path": "tools/team-followup-20261001/BALANCE/skill-support-doc-search.txt",
+    "size": 98430,
+    "sha256": "cebc2dc41072f5450df129a7f1217d709967b6e802c6de03bbbaa285398342a9"
+  },
+  {
+    "path": "tools/team-followup-20261001/BALANCE/skill-support-final-hash.txt",
+    "size": 126,
+    "sha256": "b5b5c43202050f86ca970e48c25f64815640f4e7c0a2c891c9e8eee6cc3bbc04"
+  },
+  {
+    "path": "tools/team-followup-20261001/BALANCE/skill-support-input-hashes.txt",
+    "size": 419,
+    "sha256": "d2447677a4c7766f6beccfadf77ef1d51f928a881162d7c235af834b0a2e4f14"
+  },
+  {
+    "path": "tools/team-followup-20261001/BALANCE/skill-support-legacy66.mjs",
+    "size": 16560,
+    "sha256": "5a83c3d88f9abb2462855e3803d9419c4a451f7c3dd1ba4d38b6931208e4030a"
+  },
+  {
+    "path": "tools/team-followup-20261001/BALANCE/skill-support-legacy66.txt",
+    "size": 2367,
+    "sha256": "e03329ef6d4141bb6e56acf365f25910b8c3c2515dc19cd828deb88d74af8287"
+  },
+  {
+    "path": "tools/team-followup-20261001/BALANCE/skill-support-original66.txt",
+    "size": 833,
+    "sha256": "9322f7e7ba29f39a25e44c82dfba0cee347d1a4c401371a66ed56632d1435935"
+  },
+  {
+    "path": "tools/team-followup-20261001/BALANCE/skill-support-probe.js",
+    "size": 21910,
+    "sha256": "63006cf9b4714ad038ec5d87a64fb8bfdc8bd65befbe8b26537de8c89a1af223"
+  },
+  {
+    "path": "tools/team-followup-20261001/BALANCE/skill-support-regression.test.mjs",
+    "size": 7249,
+    "sha256": "b2684d46931341ca6d93704821f6b49405c99f355679c82581924c4e5c9e2060"
+  },
+  {
+    "path": "tools/team-followup-20261001/BALANCE/skill-support-regression.txt",
+    "size": 4459,
+    "sha256": "f4f74c36f90b1941348b209518cd60e93a388f55e4bf7688a621138bf4fcf3e5"
+  },
+  {
+    "path": "tools/team-followup-20261001/BALANCE/skill-support-task.md",
+    "size": 1674,
+    "sha256": "ee7bb1587cbe9cf8711ebfc6a05c394d2cf25ac7f3c1c719ca766297826c8f8d"
+  },
+  {
+    "path": "tools/team-followup-20261001/BALANCE/skill-support-updated66.mjs",
+    "size": 16565,
+    "sha256": "b8310f9e51a64f8d68338c41369cb84fbcc36a42eb5024f42f98dd866bddadc3"
+  },
+  {
+    "path": "tools/team-followup-20261001/BALANCE/skill-support-updated66.txt",
+    "size": 833,
+    "sha256": "9322f7e7ba29f39a25e44c82dfba0cee347d1a4c401371a66ed56632d1435935"
+  },
+  {
+    "path": "tools/team-followup-20261001/BUILD/support-acceptance-check.mjs",
+    "size": 13003,
+    "sha256": "4ede72ee93c57a28e3c915dc5f079cc406f856e1ed7768fdec6fb638abb74830"
+  },
+  {
+    "path": "tools/team-followup-20261001/BUILD/support-acceptance-docs.txt",
+    "size": 365283,
+    "sha256": "6cbf77346b324d88e9977ae6353fae1c1fef31b1c742cb56f0668fa5c9a31c6f"
+  },
+  {
+    "path": "tools/team-followup-20261001/BUILD/support-acceptance-evidence.json",
+    "size": 92303,
+    "sha256": "6811f0751ea77a6e40203dc016fa56c6430bcee0f12dea95156183ace38bdbe9"
+  },
+  {
+    "path": "tools/team-followup-20261001/BUILD/support-acceptance-receipt.json",
+    "size": 1015,
+    "sha256": "f73249c445c1830118d757a8ba8de2943505731029baac42fce99ecbccca8eb6"
+  },
+  {
+    "path": "tools/team-followup-20261001/BUILD/support-acceptance-result.md",
+    "size": 6806,
+    "sha256": "f45751ecd09da9753b26821a882f384a7383e92ccf70c5008479271d6d8c2b9f"
+  },
+  {
+    "path": "tools/team-followup-20261001/BUILD/support-acceptance-task.md",
+    "size": 2048,
+    "sha256": "c3b514f3a5cc71e39a9abcc67c1513921e06b94881f64572089b46f53e311a89"
+  },
+  {
+    "path": "tools/team-followup-20261001/ENEMY/et3-probe.fixed.js",
+    "size": 17276,
+    "sha256": "1bf68b094b792998abe5a9e0ca1f6c57534ef4ec6d9dbbd28c792450cbfdf489"
+  },
+  {
+    "path": "tools/team-followup-20261001/ITEM/enemy-support-docs-related.txt",
+    "size": 71655,
+    "sha256": "3ef18612e006d3c3c8f6607c8057c44b7526120bbe53db788872f748d28f91f5"
+  },
+  {
+    "path": "tools/team-followup-20261001/ITEM/enemy-support-evidence.json",
+    "size": 38167,
+    "sha256": "c77d68617a5dc567af7a03bd062a804ec3a3e367cdd09a3e751345172824ce59"
+  },
+  {
+    "path": "tools/team-followup-20261001/ITEM/enemy-support-existing.test.mjs",
+    "size": 11225,
+    "sha256": "b7042ef1ab4b42fc8c6a99256fc4f55d4f702e1c73f7a80abbf2d4c33a40409b"
+  },
+  {
+    "path": "tools/team-followup-20261001/ITEM/enemy-support-probe.js",
+    "size": 19185,
+    "sha256": "92cbecd7cb38ad13b83cc5cc00938dcb69e8687de9c36fa38f0046708bd5f1a8"
+  },
+  {
+    "path": "tools/team-followup-20261001/ITEM/enemy-support-probe.patch",
+    "size": 5632,
+    "sha256": "603753577163ead14aa801fea7c9b5fa143248ecceb108694753c15ee6bcb831"
+  },
+  {
+    "path": "tools/team-followup-20261001/ITEM/enemy-support-receipt.json",
+    "size": 1490,
+    "sha256": "b29569f74d6c7197615c334f274806d56e0c41e1fb7c5cf5909f2aae1202ea64"
+  },
+  {
+    "path": "tools/team-followup-20261001/ITEM/enemy-support-task.md",
+    "size": 1492,
+    "sha256": "97dcb3ee4a9335a3e4291adc494434af257829c7ea99a01e8f24708b9e43c832"
+  },
+  {
+    "path": "tools/team-followup-20261001/ITEM/enemy-support-tick.test.mjs",
+    "size": 6168,
+    "sha256": "5d655811555a74477509e2300fbad42f71ce1c6e51854777b50fe9f7bccff10b"
+  },
+  {
+    "path": "tools/team-followup-20261001/ITEM/enemy-support-validation.txt",
+    "size": 2492,
+    "sha256": "1949212d0e3722feb92c0255961f25a64630064f12de3432741a8a2a14cd0e69"
+  },
+  {
+    "path": "tools/team-followup-20261001/SKILL/ice-cancel-probe.safe.js",
+    "size": 18808,
+    "sha256": "ae7c8e8ad6e874e565c3ee0cb8b635130cefa234c5628bd0ba2922da96481d1b"
+  },
+  {
+    "path": "tools/team-followup-20261001/SKILL/ice-cancel-probe.selftest.mjs",
+    "size": 16562,
+    "sha256": "b536d95f63e633aa526b7951e973b28d1306b72bb6f26390f4b0cf664a5ad5e4"
+  },
+  {
+    "path": "tools/team-followup-20261001/UIUX/art-support-after.txt",
+    "size": 1262,
+    "sha256": "886cb9fae2fefd9d5238eb30ac548a84525048568159388cac570124b963a005"
+  },
+  {
+    "path": "tools/team-followup-20261001/UIUX/art-support-before-evidence.json",
+    "size": 35111,
+    "sha256": "7d1a35e2a84601f9b864c412f27bec9512ed3bcbc9c6650633d1f7f36b76089a"
+  },
+  {
+    "path": "tools/team-followup-20261001/UIUX/art-support-before.txt",
+    "size": 13829,
+    "sha256": "18e42202085e14e97a03e79fa4b9e064a2516df26054f9d371a8514ad349c090"
+  },
+  {
+    "path": "tools/team-followup-20261001/UIUX/art-support-doc-matches.txt",
+    "size": 31898,
+    "sha256": "04230d6e9a876123b0c92674a04b416a7d0575081e3a050ba629714c3e0e9787"
+  },
+  {
+    "path": "tools/team-followup-20261001/UIUX/art-support-final-evidence.json",
+    "size": 35117,
+    "sha256": "94dd8efd840b793f4b767ed91a5a07b7de5f01c3976f6e3a58d3aac9e730dc4a"
+  },
+  {
+    "path": "tools/team-followup-20261001/UIUX/art-support-finalcrop.mjs",
+    "size": 3430,
+    "sha256": "aa73c00b4e9f74acf0a5c8898969b1f5430e82bddbf9dbdcf1fbcb6192875018"
+  },
+  {
+    "path": "tools/team-followup-20261001/UIUX/art-support-finalcrop.test.mjs",
+    "size": 4717,
+    "sha256": "8c246b2678be4d97f836deec7c6e99b99b2a4f8ba7bf6c7c7efbdd126279291c"
+  },
+  {
+    "path": "tools/team-followup-20261001/UIUX/art-support-initial-fixture-failure.txt",
+    "size": 19090,
+    "sha256": "e813c1d078c31a3742033ef3f0f147f0df13e30f2ffb48d2f265451af46aba0b"
+  },
+  {
+    "path": "tools/team-followup-20261001/UIUX/art-support-source-fixture.mjs",
+    "size": 3904,
+    "sha256": "daa71b38b9cdc4cae4aa6db4067dac19ee6645ecfc1ffc29598373c3a332a9b3"
+  },
+  {
+    "path": "tools/team-followup-20261001/UIUX/art-support-task.md",
+    "size": 1580,
+    "sha256": "462ff466d277d2eab42863f61ebef75bfc1a37397e72505ae81b4a497591e799"
+  },
+  {
+    "path": "tools/team-followup-20261001/root-review/support-acceptance-check.mjs",
+    "size": 12998,
+    "sha256": "6f17831a4b35dc2ec6ee86e7f38a64a92040c10549365ba943d1523115dfbcad"
+  },
+  {
+    "path": "tools/team-followup-20261001/root-review/support-before/skill-support-probe.js",
+    "size": 21527,
+    "sha256": "18ab8391ea2490edac74fd631e81245a6808b6112a3d00049e3446b5de593532"
+  },
+  {
+    "path": "tools/team-followup-20261001/root-review/support-before/support-acceptance-evidence.json",
+    "size": 92303,
+    "sha256": "6811f0751ea77a6e40203dc016fa56c6430bcee0f12dea95156183ace38bdbe9"
+  },
+  {
+    "path": "tools/team-followup-20261001/root-review/support-final-evidence.json",
+    "size": 91323,
+    "sha256": "2e2bf49fb84a0fa1675659a1fd994d75bb4fb8c09c862e9e5a458469d2ae5438"
+  }
+]

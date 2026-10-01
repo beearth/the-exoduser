@@ -1,0 +1,382 @@
+[
+  {
+    "path": "docs/0마스터플랜/PROJECT_MANAGEMENT_MASTER.md",
+    "size": 106903,
+    "sha256": "0494d7a8c475e15f167a8c302506ff0d41a21ba9c5a67d0c0f99c0a2ff18b182"
+  },
+  {
+    "path": "docs/0마스터플랜/mac-resume-20261001/vscode-dispatch/DRAW-attribution-root-review.md",
+    "size": 4753,
+    "sha256": "8c42cef13ad91e974fada14baac4cf3c7738b7f87c574de8bed022a7227481a4"
+  },
+  {
+    "path": "docs/0마스터플랜/mac-resume-20261001/vscode-dispatch/TEAM_UTILIZATION_20261001.json",
+    "size": 35251,
+    "sha256": "a8a6ba66fa7a67f8b2ca3b02c61ce9f2ae8b11489626c8b7fc50b0652315e132"
+  },
+  {
+    "path": "docs/12퍼포먼스·최적화/FIRST_KILL_CPU_INVESTIGATION_20261001.md",
+    "size": 14156,
+    "sha256": "c8fcc28ca9d2b9f66281bc62cbbd9f07adc62b2e20fa3c772f64119c7876596e"
+  },
+  {
+    "path": "docs/5.1임펙트디자인/VFX_구현가이드.md",
+    "size": 117192,
+    "sha256": "7ef5b7d469e05a798c073eb36ad9e3fa344ffb27833c1783d9297b58f7603885"
+  },
+  {
+    "path": "docs/CHANGELOG_SYNC.md",
+    "size": 3227267,
+    "sha256": "62dda93614175d5fc9a53d99295ffa98736676b655a6221f284f32cb5ab16a10"
+  },
+  {
+    "path": "game.html",
+    "size": 4017295,
+    "sha256": "7c681cfaa592778ab6d7cc5b88c46906b332e4395bb60fda1b837d09ed6ee1de"
+  },
+  {
+    "path": "outputs/team-review-20261001/draw-attribution/BALANCE-queue.json",
+    "size": 314,
+    "sha256": "e84f1d1dc119d5eb38f2332faff470d138095ab26761d34ba34d646e48c99124"
+  },
+  {
+    "path": "outputs/team-review-20261001/draw-attribution/BUILD-physical-queue.json",
+    "size": 302,
+    "sha256": "a895ac1cb77a6ad61a859912ac045e18db3b303de87d0c2b8b75c0854b5ea062"
+  },
+  {
+    "path": "outputs/team-review-20261001/draw-attribution/BUILD-queue.json",
+    "size": 347,
+    "sha256": "de9632cd80418a28f450ab46291c941dbee5ab850cb9b923e28dbb711edc1844"
+  },
+  {
+    "path": "outputs/team-review-20261001/draw-attribution/ITEM-normal-eligibility-queue.json",
+    "size": 363,
+    "sha256": "373a4031cb4d2f7c246c28fc01952e6cec3de7b301913653eda1ec4a7f77bfc6"
+  },
+  {
+    "path": "outputs/team-review-20261001/draw-attribution/ITEM-queue.json",
+    "size": 319,
+    "sha256": "58fdd6d7b908cf60f04c3e299e13e3103b20b602153bf9a9d56a95a869782053"
+  },
+  {
+    "path": "outputs/team-review-20261001/draw-attribution/UIUX-membrane-prewarm-queue.json",
+    "size": 363,
+    "sha256": "63c9a059249c8aa9a259742cc1a3d003f5fe12670b6c8042ed4a08b3302f74d8"
+  },
+  {
+    "path": "outputs/team-review-20261001/draw-attribution/UIUX-queue.json",
+    "size": 319,
+    "sha256": "4de740f0eac468bb9c83041f26e814492bfdb5c4f74075eca991f9e3239d7afb"
+  },
+  {
+    "path": "outputs/team-review-20261001/draw-attribution/after.png",
+    "size": 107008,
+    "sha256": "17652ff723bcbbfebfd46e7cd36fae151910a65c52980c33576eb1dc4fa6b01c"
+  },
+  {
+    "path": "outputs/team-review-20261001/draw-attribution/claude-states.json",
+    "size": 2238,
+    "sha256": "f539afe9d92611920224a313e733b283cb8be25002f880ae484560ccc6bc55bd"
+  },
+  {
+    "path": "outputs/team-review-20261001/draw-attribution/clock.json",
+    "size": 6074,
+    "sha256": "1337ff447a77a84652b99baa55e07c21db13694a17d0724064670308f801302d"
+  },
+  {
+    "path": "outputs/team-review-20261001/draw-attribution/fixture-source.json",
+    "size": 243,
+    "sha256": "e423a3437b202be466f9cca3c31b7459421a05dec10348ec6aff6fd868b2d658"
+  },
+  {
+    "path": "outputs/team-review-20261001/draw-attribution/normal-analysis-before.json",
+    "size": 4852,
+    "sha256": "8a0fe3b0c3593f74f6a35fd4a76c311afa78ee81e951d882067f804cc39b8e82"
+  },
+  {
+    "path": "outputs/team-review-20261001/draw-attribution/normal-analysis-final.txt",
+    "size": 4958,
+    "sha256": "163388bf9b67d5f874e0884dac4e14e942fda36d2214c51f51f285f67a06e607"
+  },
+  {
+    "path": "outputs/team-review-20261001/draw-attribution/physical-fixture.json",
+    "size": 4826,
+    "sha256": "570f7fdcdb6f844f16633053a9dbd9e4eeb88930818556444a9cba480b1acabc"
+  },
+  {
+    "path": "outputs/team-review-20261001/draw-attribution/physical-fixture.png",
+    "size": 48964,
+    "sha256": "d2c1825564708311ca7a6b391bbea3053e9d663846ce3659c1109889b5e71473"
+  },
+  {
+    "path": "outputs/team-review-20261001/draw-attribution/physical-production-tests.txt",
+    "size": 1894,
+    "sha256": "c705f1dc4cf9a463d0a43444d290a51920ecee515cb59b2df420a27b52069152"
+  },
+  {
+    "path": "outputs/team-review-20261001/draw-attribution/preflight.json",
+    "size": 527,
+    "sha256": "3acddb3b8290a328ad26866f3aa948479818562abb17affcf41b0b480e8c5c7b"
+  },
+  {
+    "path": "outputs/team-review-20261001/draw-attribution/profile.cpuprofile",
+    "size": 251082,
+    "sha256": "71e15813b68a8235ae264a6eb359e0e5e79de622f984bf9907e6cfd365ae27ba"
+  },
+  {
+    "path": "outputs/team-review-20261001/draw-attribution/raw.json",
+    "size": 1021772,
+    "sha256": "a50e25e3cc50492d90b819126a98653bd3c80738985e663785442aeee986a4e2"
+  },
+  {
+    "path": "outputs/team-review-20261001/normal-combat-checkpoint.json",
+    "size": 186,
+    "sha256": "e62915526ca5b97cc67ca06874275642a5fdfbb1d88935587c7662296bc627f9"
+  },
+  {
+    "path": "outputs/team-review-20261001/support/normal-combat/analysis.json",
+    "size": 4958,
+    "sha256": "163388bf9b67d5f874e0884dac4e14e942fda36d2214c51f51f285f67a06e607"
+  },
+  {
+    "path": "test/physicalImpactPrewarm.test.mjs",
+    "size": 9448,
+    "sha256": "f8bc0b5073a3feb838680017fc1ecd56df707cc1666ab0ba0f6440b369ccc3c2"
+  },
+  {
+    "path": "tools/guard.baseline.json",
+    "size": 902,
+    "sha256": "10b311e9df0328fc02683783154abd9985169a2fef47c2ecf566fdc26bb69b25"
+  },
+  {
+    "path": "tools/team-followup-20261001/BALANCE/physical-prewarm-candidate.js",
+    "size": 3760,
+    "sha256": "34524ef90d3549aa60448b2bee0d6a25b04af71e43f20be0823ded8723e5f6ed"
+  },
+  {
+    "path": "tools/team-followup-20261001/BALANCE/physical-prewarm-doc-search.txt",
+    "size": 6604,
+    "sha256": "6fbb1e762c5d7188aa468c08cf33e7a74d76e8f1c3125b4e5bdc7fca7cc97bf8"
+  },
+  {
+    "path": "tools/team-followup-20261001/BALANCE/physical-prewarm-hashes.txt",
+    "size": 670,
+    "sha256": "eccd42779cea03dd284bad88b0aabc8f892cc0a386398be93ecae696e0478261"
+  },
+  {
+    "path": "tools/team-followup-20261001/BALANCE/physical-prewarm-receipt.json",
+    "size": 906,
+    "sha256": "8ca5986adf359cfecf938d2c308345415187cb2cd38b0a2fdadd316a2bde5e7d"
+  },
+  {
+    "path": "tools/team-followup-20261001/BALANCE/physical-prewarm-result.md",
+    "size": 7398,
+    "sha256": "c5845b48990f7ecb68d376e6ff727792e6735c469764687052388acfb24d6d48"
+  },
+  {
+    "path": "tools/team-followup-20261001/BALANCE/physical-prewarm-task.md",
+    "size": 2212,
+    "sha256": "847a2841e5461a7461a78420b4fd68b3b4b9cd45dbc645bcea5dfdfe27d3a12d"
+  },
+  {
+    "path": "tools/team-followup-20261001/BALANCE/physical-prewarm-tests.txt",
+    "size": 1450,
+    "sha256": "6d6b63434fe60f8fb7510d8aca67b4a7dfa5fbf5466ecf17dd776722ddb468ab"
+  },
+  {
+    "path": "tools/team-followup-20261001/BUILD/normal-combat-audit-check.mjs",
+    "size": 8340,
+    "sha256": "0904ac94abb084237dc052cb3349cae19032ac475ae35d2e7b9dabc485bae51f"
+  },
+  {
+    "path": "tools/team-followup-20261001/BUILD/normal-combat-audit-docs.txt",
+    "size": 15073,
+    "sha256": "56ef23831480cd59edb7e2cd87c4071e82624225592c911a3ef4da05fbfcb5d5"
+  },
+  {
+    "path": "tools/team-followup-20261001/BUILD/normal-combat-audit-evidence.json",
+    "size": 20809,
+    "sha256": "f4dc827df44df1945fd137f7a753536cedddd8fb861c42eaf4eb3938d8e80d77"
+  },
+  {
+    "path": "tools/team-followup-20261001/BUILD/normal-combat-audit-receipt.json",
+    "size": 845,
+    "sha256": "df1e113f991d6a04aa64ccddf4b1ae95f7ab613a835f670734680d7c9e309d6e"
+  },
+  {
+    "path": "tools/team-followup-20261001/BUILD/normal-combat-audit-result.md",
+    "size": 6972,
+    "sha256": "7f0972bf5cc919c07c2db9c5064ae3f0355ec2ba4706818a3db275929bf3b3d4"
+  },
+  {
+    "path": "tools/team-followup-20261001/BUILD/normal-combat-audit-task.md",
+    "size": 1662,
+    "sha256": "cd9854d1eab09d8ff47aea28c4064be0ab7a36b508d4748c42e5ddf545283e1c"
+  },
+  {
+    "path": "tools/team-followup-20261001/BUILD/physical-prewarm-check.mjs",
+    "size": 8134,
+    "sha256": "d87866a72b92df027cfa469868e162382c888dea49e333c99233cc0591487329"
+  },
+  {
+    "path": "tools/team-followup-20261001/BUILD/physical-prewarm-docs.txt",
+    "size": 16297,
+    "sha256": "368084e466b29117f1ff01f241b80cdce434dd4b675f4014fbd1f316fca3fee6"
+  },
+  {
+    "path": "tools/team-followup-20261001/BUILD/physical-prewarm-evidence.json",
+    "size": 4718,
+    "sha256": "6f264f27560127bae15c28c9648fd19802a226b286d1b34c3128457e46cb164d"
+  },
+  {
+    "path": "tools/team-followup-20261001/BUILD/physical-prewarm-receipt.json",
+    "size": 903,
+    "sha256": "b002706cf69e0654d6312a66056b77d8534c84ea3cc19d3e1efc42889dd7194f"
+  },
+  {
+    "path": "tools/team-followup-20261001/BUILD/physical-prewarm-regression.txt",
+    "size": 1894,
+    "sha256": "007539147d1b04a518ff65bbcda3302137f4426a9dcb2f300a43c11c4ce9856c"
+  },
+  {
+    "path": "tools/team-followup-20261001/BUILD/physical-prewarm-result.md",
+    "size": 5901,
+    "sha256": "8cf971486ab44fa4bb8c063e3766c728624e078d0919472d6c257aea241e4e36"
+  },
+  {
+    "path": "tools/team-followup-20261001/BUILD/physical-prewarm-task.md",
+    "size": 1630,
+    "sha256": "f44e536c475a93b35f04fc231e2c6608c4c551cee1e6eb9d877ebad2b7aab69a"
+  },
+  {
+    "path": "tools/team-followup-20261001/ITEM/draw-attribution-analyze.mjs",
+    "size": 6974,
+    "sha256": "9015c90c03ad88afa4ee526e3927de20e3f44f5996c3a9518c65c93166b9970d"
+  },
+  {
+    "path": "tools/team-followup-20261001/ITEM/draw-attribution-check.mjs",
+    "size": 1322,
+    "sha256": "e0bee16d95174c81e6f30d7e11fe945ada97085e5021ba9fe6f00ffbd66c3049"
+  },
+  {
+    "path": "tools/team-followup-20261001/ITEM/draw-attribution-docs-related.txt",
+    "size": 37128,
+    "sha256": "f1c55cbb40fca4cd6c0bb03e2c484e3e959475728744316b49781fffe14edbaa"
+  },
+  {
+    "path": "tools/team-followup-20261001/ITEM/draw-attribution-receipt.json",
+    "size": 1884,
+    "sha256": "c58f71a8199f82c59e202df4e8eec1f401fb1e296a091ee34ac222286d232940"
+  },
+  {
+    "path": "tools/team-followup-20261001/ITEM/draw-attribution-result.json",
+    "size": 188819,
+    "sha256": "06ecea6c06967d80f62156c4d42c75598d435d11867214e0cdb3e43fdd89d894"
+  },
+  {
+    "path": "tools/team-followup-20261001/ITEM/draw-attribution-result.md",
+    "size": 7337,
+    "sha256": "23faa05ca9b69496840d8fbff77c6eb6bcf2d7a81af84423a07271228eedb9a1"
+  },
+  {
+    "path": "tools/team-followup-20261001/ITEM/draw-attribution-task.md",
+    "size": 1995,
+    "sha256": "a09bcf87b1bb9866033bbaac8146e743b59600911eb2fad204ee0e45eed4a5d8"
+  },
+  {
+    "path": "tools/team-followup-20261001/ITEM/normal-eligibility-task.md",
+    "size": 1121,
+    "sha256": "e121dc8f485bba2cfa55cbf30b2952bdbde3e49dc70b9048456a53491159f893"
+  },
+  {
+    "path": "tools/team-followup-20261001/QA/analyze-support-normal.mjs",
+    "size": 6793,
+    "sha256": "1b2b17e0b3ef0391be43dbacef2120ca00d3b0eb48f8bbbc89fdfeced595025f"
+  },
+  {
+    "path": "tools/team-followup-20261001/QA/physical-prewarm-fixture.html",
+    "size": 2874,
+    "sha256": "4ef64f25a29628a9195946b9c551ba4a7bad0c386655323abde6e183ffb8e094"
+  },
+  {
+    "path": "tools/team-followup-20261001/QA/physical-prewarm-observer.js",
+    "size": 2061,
+    "sha256": "94fbfc9f88603551901ff5d890a2c9e8ad3f76f346f901fe348f9273d7e6834e"
+  },
+  {
+    "path": "tools/team-followup-20261001/QA/physical-prewarm-original.js",
+    "size": 830,
+    "sha256": "681989477a37b39bdcc961afa07e9e00af01fe2a3414f0ee3052d9d756a5f5be"
+  },
+  {
+    "path": "tools/team-followup-20261001/QA/physical-prewarm-plan.md",
+    "size": 1860,
+    "sha256": "b3e08d7ce55de54d803ca377f96d0d27d672d1a0adad62349ea111c3e0bafd25"
+  },
+  {
+    "path": "tools/team-followup-20261001/UIUX/draw-attribution-analysis.json",
+    "size": 5864806,
+    "sha256": "b0d36a0a1748215ca8669ab9be0be3bf26a6ce7c1fd63bbb494cd978ed3c1526"
+  },
+  {
+    "path": "tools/team-followup-20261001/UIUX/draw-attribution-analyze.mjs",
+    "size": 10054,
+    "sha256": "a801531dd6dbf179a3d9afd50cff89a9d9e7d5150c0b06515ad330bab611ad27"
+  },
+  {
+    "path": "tools/team-followup-20261001/UIUX/draw-attribution-analyze.test.mjs",
+    "size": 3555,
+    "sha256": "dad0f2a376ab0cba9ba8766697b2bf223c980be7214fabc74bec4767ad2305e8"
+  },
+  {
+    "path": "tools/team-followup-20261001/UIUX/draw-attribution-doc-matches.txt",
+    "size": 898614,
+    "sha256": "f12ae97a9d9fbf1dae870b529d7d1e9f703dadedd9c23aac109b11a89b913524"
+  },
+  {
+    "path": "tools/team-followup-20261001/UIUX/draw-attribution-receipt.json",
+    "size": 2126,
+    "sha256": "669fe1a614af7b4fa6f61464265a859710a9c3c913904593e95afefd00b00000"
+  },
+  {
+    "path": "tools/team-followup-20261001/UIUX/draw-attribution-result.md",
+    "size": 10511,
+    "sha256": "5a6747f9556bfa3f888626958a8990ad6946cdd6a2e72459dfd1baeab2554f2b"
+  },
+  {
+    "path": "tools/team-followup-20261001/UIUX/draw-attribution-summary.json",
+    "size": 24356,
+    "sha256": "9820c0f4da173e6bba60038ffe42e2d09de3bc7ca1541289f4557c9663a84dc8"
+  },
+  {
+    "path": "tools/team-followup-20261001/UIUX/draw-attribution-task.md",
+    "size": 1963,
+    "sha256": "518c10d3f295cf9b20bedfe427a672557a7908b1fa252dde7a774a8e45415a8c"
+  },
+  {
+    "path": "tools/team-followup-20261001/UIUX/draw-attribution-validation.txt",
+    "size": 640,
+    "sha256": "10becd0ef34ae2b0349340e8dcd3fd916cb61916edc14941b77e9f48e4bd9d71"
+  },
+  {
+    "path": "tools/team-followup-20261001/UIUX/membrane-prewarm-task.md",
+    "size": 1342,
+    "sha256": "5697ae4e8f77a49bf21613a5c9f78f024e6e2c6d8599bca5527f9c222efbd43a"
+  },
+  {
+    "path": "tools/team-followup-20261001/root-review/normal-analyzer-before.mjs",
+    "size": 3507,
+    "sha256": "78fa5e6b81c66b6d629df1a4ada39f0cf7926996caa7bb18c7ff373658df10f8"
+  },
+  {
+    "path": "tools/team-followup-20261001/root-review/normal-analyzer-check.mjs",
+    "size": 8325,
+    "sha256": "fcfd55cce93bc3960df356e390a3844ba20b81367082fb993ef4ed65bf2ac3b3"
+  },
+  {
+    "path": "tools/team-followup-20261001/root-review/normal-analyzer-final-evidence.json",
+    "size": 11893,
+    "sha256": "91384c222d154f932f90defdeac4c9e1ae9a86ea23b527e9bbf7412bf6cc6259"
+  }
+]

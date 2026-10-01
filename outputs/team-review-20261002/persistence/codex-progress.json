@@ -1,0 +1,116 @@
+[
+  {
+    "status": "fulfilled",
+    "value": {
+      "team": "ITEM",
+      "id": "01a0f6e6-1fbe-7df0-8d02-a9c2d9df3750",
+      "status": "completed",
+      "turn": "01a0f83a-05c3-7491-99c2-c97b5e7e1fcc",
+      "startedAt": 1790870947,
+      "completedAt": 1790871156,
+      "firstAction": {
+        "type": "commandExecution",
+        "id": "exec-528d2fda-180c-4e19-a095-a46b54fe9292",
+        "command": "/bin/zsh -lc 'date -u +%Y-%m-%dT%H:%M:%SZ; for p in tools/AGENTS.md tools/team-followup-20261001/AGENTS.md tools/team-followup-20261001/ITEM/AGENTS.md; do if [ -f \"$p\" ]; then cat \"$p\"; fi; done; tail -28 docs/7아이템디자인/ITEM_TEAM_MASTER.md; rg --files tools/team-followup-20261001/ITEM | rg '\"'browser-csp|receipt'; cat outputs/team-review-20261002/acceptance/item-browser.json\"",
+        "cwd": "/Users/fordeargamers/Projects/exoduser-migration-20261001",
+        "status": "completed",
+        "exitCode": 0,
+        "durationMs": 0
+      },
+      "firstCode": {
+        "path": "/Users/fordeargamers/Projects/exoduser-migration-20261001/tools/team-followup-20261001/ITEM/browser-csp-receipt.json",
+        "kind": {
+          "type": "add"
+        }
+      },
+      "final": [
+        "원인 분리를 완료했습니다.\n\n- host의 직접 inline 스타일 주입 근거 없음. 원주입자는 **UNKNOWN**입니다.\n- 원 host 수정·CSP 완화0. 독립 진단 페이지와 반례검사 9그룹 PASS.\n- 3340 HTTP 연결은 실패했고 서버는 건드리지 않았습니다. 실제 브라우저 최종 확인은 root 담당입니다.\n\n결과: `tools/team-followup-20261001/ITEM/browser-csp-result.md:1`"
+      ]
+    }
+  },
+  {
+    "status": "fulfilled",
+    "value": {
+      "team": "UIUX",
+      "id": "01a0f6e5-8653-7ae2-8b2b-314e275c215c",
+      "status": "interrupted",
+      "turn": "01a0f83b-d1b5-7ca1-bfa3-48a703857ba3",
+      "startedAt": 1790871065,
+      "completedAt": null,
+      "firstAction": {
+        "type": "commandExecution",
+        "id": "exec-6b0ec221-c26b-4995-8182-17b82a668a8c",
+        "command": "/bin/zsh -lc \"date -u '+%Y-%m-%dT%H:%M:%SZ'; rg --files tools/team-followup-20261001/UIUX | rg 'native-focus|AGENTS'; cat tools/team-followup-20261001/UIUX/native-focus-task.md; sed -n '1,25p' AGENTS.md; sed -n '150,158p' AGENTS.md; cat tools/team-followup-20261001/UIUX/inventory-dom-provenance.json | tail -n 100; cat tools/team-followup-20261001/UIUX/inventory-dom/harness.mjs; cat tools/team-followup-20261001/UIUX/inventory-dom/host.html; sed -n '100,122p' inventory-space.css\"",
+        "cwd": "/Users/fordeargamers/Projects/exoduser-migration-20261001",
+        "status": "completed",
+        "exitCode": 0,
+        "durationMs": 0
+      },
+      "firstCode": {
+        "path": "/Users/fordeargamers/Projects/exoduser-migration-20261001/tools/team-followup-20261001/UIUX/native-focus-generate.mjs",
+        "kind": {
+          "type": "add"
+        }
+      },
+      "final": []
+    }
+  },
+  {
+    "status": "fulfilled",
+    "value": {
+      "team": "BUILD",
+      "id": "01a0f6e6-2e4c-7322-92d7-3aa309857856",
+      "status": "completed",
+      "turn": "01a0f83a-05e2-7ba2-b8aa-102f74079044",
+      "startedAt": 1790870947,
+      "completedAt": 1790871187,
+      "firstAction": {
+        "type": "commandExecution",
+        "id": "exec-1db3dabb-8f7a-4caa-b7fe-642d91500140",
+        "command": "/bin/zsh -lc \"date -u '+%Y-%m-%dT%H:%M:%SZ'; rg --files tools/team-followup-20261001/BUILD | rg 'runtime-acquire'; sed -n '1,50p' AGENTS.md; sed -n '1,35p' docs/13출시·마케팅/INTEGRATION_BUILD_TEAM_MASTER.md; ls -ld /Users/fordeargamers/Projects/exoduser-mac-runtime-20261002 2>/dev/null; node -p 'JSON.stringify({platform:process.platform,arch:process.arch})'; cat tools/team-followup-20261001/BUILD/runtime-acquire-task.md\"",
+        "cwd": "/Users/fordeargamers/Projects/exoduser-migration-20261001",
+        "status": "completed",
+        "exitCode": 0,
+        "durationMs": 0
+      },
+      "firstCode": {
+        "path": "/Users/fordeargamers/Projects/exoduser-migration-20261001/tools/team-followup-20261001/BUILD/runtime-acquire-receipt.json",
+        "kind": {
+          "type": "add"
+        }
+      },
+      "final": [
+        "실제 런타임 확보는 **BLOCKED**입니다.\n\n- [공식 메타데이터](https://nwjs.io/versions.json)에 v0.111.2 `osx-arm64`가 있습니다. 배포 부재로 단정하지 않았습니다.\n- 로컬 DNS 실패로 다운로드·체크섬 확인·압축해제·Mach-O 검수는 미완료입니다.\n- 전체 빌더 선택 **108개 inputRoots**를 대조하고 실행불가 config 초안을 작성했습니다.\n- 신규 경로는 현재 쓰기 허용범위 밖입니다. 권한 우회·버전 변경·앱 실행·게임 탭 조작0입니다.\n\n인계: `tools/team-followup-20261001/BUILD/runtime-acquire-result.md:1`"
+      ]
+    }
+  },
+  {
+    "status": "fulfilled",
+    "value": {
+      "team": "BALANCE",
+      "id": "01a0f6e6-5303-7392-81ba-94c42e349ffc",
+      "status": "completed",
+      "turn": "01a0f83a-0601-7132-b28a-243d024eb5be",
+      "startedAt": 1790870947,
+      "completedAt": 1790871180,
+      "firstAction": {
+        "type": "commandExecution",
+        "id": "exec-42e8ea12-e5fa-47d7-8852-fd3d2eab72a8",
+        "command": "/bin/zsh -lc \"date -u '+%Y-%m-%dT%H:%M:%SZ'; rg --files -g AGENTS.md; rg --files tools/team-followup-20261001/BALANCE | rg 'save-inflight|TEAM|MASTER'; cat AGENTS.md >/dev/null; cat docs/14밸런스+수치테이블/BALANCE_ECONOMY_TEAM_MASTER.md >/dev/null; cat tools/team-followup-20261001/BALANCE/save-inflight-task.md; sed -n '3520,3576p' game.html; sed -n '3927,3950p' game.html; sed -n '61708,61730p' game.html; cat tools/team-followup-20261001/BALANCE/ai-enhance-persistence-harness.mjs\"",
+        "cwd": "/Users/fordeargamers/Projects/exoduser-migration-20261001",
+        "status": "completed",
+        "exitCode": 0,
+        "durationMs": 0
+      },
+      "firstCode": {
+        "path": "/Users/fordeargamers/Projects/exoduser-migration-20261001/tools/team-followup-20261001/BALANCE/save-inflight-candidate.mjs",
+        "kind": {
+          "type": "add"
+        }
+      },
+      "final": [
+        "진행중 저장으로 새 snapshot 요청이 유실되는 반례를 재현했습니다.\n\n- 캐릭터별 pending 1개를 보관하고 전송 완료 후 500ms 재예약하는 미적용 후보 제출.\n- **29 PASS / 0 FAIL**: 실패 무한반복0·캐릭터 전환·DB미준비·중복·demo·force 5초 계약 검수.\n- 원본·함수별 SHA·실행 로그·receipt 기록 완료.\n\n결과: `tools/team-followup-20261001/BALANCE/save-inflight-result.md:1`\n\n생산·사용자 게임·세이브는 미접촉입니다. 전송 영구대기·완료 전 중단 등 남은 한계를 명시하고 root에 인계합니다."
+      ]
+    }
+  }
+]

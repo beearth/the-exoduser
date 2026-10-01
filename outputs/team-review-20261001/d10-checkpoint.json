@@ -1,0 +1,14 @@
+{
+  "at": "2026-10-01T14:18:57.989965+00:00",
+  "sha": "10de7cd50ff540b55536a748a4283c2f653c37bf",
+  "remoteSHA": "10de7cd50ff540b55536a748a4283c2f653c37bf",
+  "branch": "codex/mac-environment-20261001",
+  "verified": true,
+  "tests": 188,
+  "finalUITests": 12,
+  "qa": "INCONCLUSIVE; five excluded samples",
+  "activeD10": false,
+  "nextBinding": "three existing threads received; source Read and fileChange observed",
+  "preservedWhitespace": "raw logs/patches/source-copy candidate preserve original whitespace; all other staged source/docs diff-check passed",
+  "unrelatedWipPreserved": true
+}

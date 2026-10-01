@@ -1,0 +1,18 @@
+{
+  "files": [
+    "tools/team-followup-20261001/ITEM/browser-bootstrap-task.md",
+    "tools/team-followup-20261001/BUILD/mac-package-preflight-task.md",
+    "tools/team-followup-20261001/UIUX/inventory-focus-task.md",
+    "tools/team-followup-20261001/BALANCE/enhancement-resource-task.md",
+    "docs/0마스터플랜/PROJECT_MANAGEMENT_MASTER.md",
+    "docs/0마스터플랜/mac-resume-20261001/vscode-dispatch/TEAM_UTILIZATION_20261001.json",
+    "docs/0마스터플랜/mac-resume-20261001/vscode-dispatch/FOUR-NEXT-20261002.md",
+    "docs/CHANGELOG_SYNC.md",
+    "outputs/team-review-20261001/four-next-20261002.json",
+    "outputs/team-review-20261001/four-next-progress-20261002.json",
+    "outputs/team-review-20261001/native-progress-20261002.json",
+    "outputs/team-review-20261001/persistence-integration-root-20261002.json",
+    "outputs/team-review-20261001/mac-game-visible-20261002.json",
+    "outputs/team-review-20261001/mac-game-visible-20261002.png"
+  ]
+}

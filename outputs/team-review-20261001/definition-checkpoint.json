@@ -1,0 +1,9 @@
+{
+  "sha": "cddb83f504f93cf3270ebe56ee8b98d6d0941234",
+  "remoteVerified": true,
+  "tests": 23,
+  "activeDefinitions": 0,
+  "runtimeReady": false,
+  "consumer": "unique-item-project/audit-art.mjs",
+  "gameChanged": false
+}

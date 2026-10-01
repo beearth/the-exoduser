@@ -1,0 +1,11 @@
+{
+  "verifiedAt": "2026-10-01T18:15:57.971052+00:00",
+  "head": "b04b0b6a94d15834b53417ef8cb1ae5cf51edf45",
+  "remote": "b04b0b6a94d15834b53417ef8cb1ae5cf51edf45",
+  "match": true,
+  "actualTaskReceipts": 4,
+  "nativeTasksUndelivered": 7,
+  "productionSourcesUnchanged": true,
+  "indexEmpty": true,
+  "scope": "Task instructions and actual Read/Edit evidence only; in-progress owner work excluded"
+}

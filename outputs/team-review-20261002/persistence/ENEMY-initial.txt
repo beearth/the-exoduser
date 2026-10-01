@@ -1,0 +1,38 @@
+ENEMY-20261002-F06-SOURCE-CANDIDATE fixture
+
+  game.html sha256=f7212ac287665f831975c47523783967374db4c1219b898e57bca5f97cfa1649
+  game-easy-test.html sha256=34ffa8ae1ff4a4509e695f921eef53e0a236aff63184459d13a915f37434bd04
+
+  PASS  원 헤더 블록이 game.html 과 game-easy-test.html 양쪽에 그대로 존재(추출 기준점)
+  PASS  원 LOD parity 게이트가 _ei(원 인덱스) 기준(game.html)
+  PASS  예산 상수(12/8ms)·공격티켓 미도입(보호계약) 원본 유지
+  PASS  후보 헤더는 원 헤더의 치환 결과(예산식·_eo·_eUpdateStart 보존, 카운터만 _ei→_k)
+  PASS  원본(고정 start): 배열 꼬리 보스가 영구 기아(전 tick 미처리)
+  PASS  후보(회전): 꼬리 보스가 영구 기아 아님(유한 gap 내 처리) + 매tick 보장은 아님
+  PASS  LOD parity: 처리되는 엔티티의 티어 스케줄은 원 배열 인덱스(_ei) 기준으로 원본·후보 동일
+  PASS  경계: 빈 배열/길이변동/reset/NaN/hole — 크래시·범위이탈 없음
+  PASS  soft-cap 무조건 활성화 0 / 공격티켓 미도입 (보호계약, 코드 기준)
+
+결과: 9 PASS / 0 FAIL
+{
+  "taskId": "ENEMY-20261002-F06-SOURCE-CANDIDATE",
+  "gameSha256": "f7212ac287665f831975c47523783967374db4c1219b898e57bca5f97cfa1649",
+  "easySha256": "34ffa8ae1ff4a4509e695f921eef53e0a236aff63184459d13a915f37434bd04",
+  "rows": [
+    {
+      "case": "original-hot-tail",
+      "N": 40,
+      "ticks": 60,
+      "bossProcessedTicks": 0
+    },
+    {
+      "case": "rotated-hot-tail",
+      "N": 40,
+      "ticks": 60,
+      "bossProcessedTicks": 46,
+      "skippedTicks": 14,
+      "maxGapTicks": 8,
+      "note": "per-tick 보장 아님"
+    }
+  ]
+}

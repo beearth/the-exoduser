@@ -1,0 +1,114 @@
+{
+  "checkedAt": "2026-10-01T15:30:12.535Z",
+  "scope": "실제 함수 추출·DOM 대역, 실화면 아님",
+  "reproductions": [
+    {
+      "path": "game.html",
+      "sourceType": "bag",
+      "patched": false,
+      "selectedItemExists": false,
+      "staleActions": 1,
+      "staleDetail": true,
+      "focus": "소멸 아이템의 이전 액션"
+    },
+    {
+      "path": "game.html",
+      "sourceType": "bag",
+      "patched": true,
+      "selectedItemExists": false,
+      "staleActions": 0,
+      "staleDetail": false,
+      "focus": "인벤토리 닫기"
+    },
+    {
+      "path": "game.html",
+      "sourceType": "eq",
+      "patched": false,
+      "selectedItemExists": false,
+      "staleActions": 1,
+      "staleDetail": true,
+      "focus": "소멸 아이템의 이전 액션"
+    },
+    {
+      "path": "game.html",
+      "sourceType": "eq",
+      "patched": true,
+      "selectedItemExists": false,
+      "staleActions": 0,
+      "staleDetail": false,
+      "focus": "인벤토리 닫기"
+    },
+    {
+      "path": "game.html",
+      "sourceType": "st",
+      "patched": false,
+      "selectedItemExists": false,
+      "staleActions": 1,
+      "staleDetail": true,
+      "focus": "소멸 아이템의 이전 액션"
+    },
+    {
+      "path": "game.html",
+      "sourceType": "st",
+      "patched": true,
+      "selectedItemExists": false,
+      "staleActions": 0,
+      "staleDetail": false,
+      "focus": "인벤토리 닫기"
+    },
+    {
+      "path": "game-easy-test.html",
+      "sourceType": "bag",
+      "patched": false,
+      "selectedItemExists": false,
+      "staleActions": 1,
+      "staleDetail": true,
+      "focus": "소멸 아이템의 이전 액션"
+    },
+    {
+      "path": "game-easy-test.html",
+      "sourceType": "bag",
+      "patched": true,
+      "selectedItemExists": false,
+      "staleActions": 0,
+      "staleDetail": false,
+      "focus": "인벤토리 닫기"
+    },
+    {
+      "path": "game-easy-test.html",
+      "sourceType": "eq",
+      "patched": false,
+      "selectedItemExists": false,
+      "staleActions": 1,
+      "staleDetail": true,
+      "focus": "소멸 아이템의 이전 액션"
+    },
+    {
+      "path": "game-easy-test.html",
+      "sourceType": "eq",
+      "patched": true,
+      "selectedItemExists": false,
+      "staleActions": 0,
+      "staleDetail": false,
+      "focus": "인벤토리 닫기"
+    },
+    {
+      "path": "game-easy-test.html",
+      "sourceType": "st",
+      "patched": false,
+      "selectedItemExists": false,
+      "staleActions": 1,
+      "staleDetail": true,
+      "focus": "소멸 아이템의 이전 액션"
+    },
+    {
+      "path": "game-easy-test.html",
+      "sourceType": "st",
+      "patched": true,
+      "selectedItemExists": false,
+      "staleActions": 0,
+      "staleDetail": false,
+      "focus": "인벤토리 닫기"
+    }
+  ]
+}

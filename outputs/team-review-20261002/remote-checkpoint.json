@@ -1,0 +1,10 @@
+{
+  "verifiedAt": "2026-10-01T16:03:37.897323+00:00",
+  "branch": "refs/heads/codex/mac-environment-20261001",
+  "local": "7cb8485de65b2afdf6d3da726aab44bb33c7516f",
+  "remote": "7cb8485de65b2afdf6d3da726aab44bb33c7516f",
+  "exactMatch": true,
+  "files": 105,
+  "scope": "reviewed acceptance only; unreviewed candidates/WIP excluded",
+  "stagedRemaining": ""
+}

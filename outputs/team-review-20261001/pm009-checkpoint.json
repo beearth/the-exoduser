@@ -1,0 +1,30 @@
+{
+  "at": "2026-10-01T13:54:06.313038+00:00",
+  "sha": "f5292fa02ae7eb8320f7bdf0436b415bc3078ede",
+  "remoteSHA": "f5292fa02ae7eb8320f7bdf0436b415bc3078ede",
+  "verified": true,
+  "tests": {
+    "pass": 101,
+    "fail": 0
+  },
+  "browser": {
+    "cards": 22,
+    "loadedImages": 44,
+    "sizes": [
+      64,
+      160
+    ],
+    "keyboard": [
+      "Tab",
+      "Enter",
+      "Space"
+    ]
+  },
+  "runtimeReady": false,
+  "remaining": [
+    "art acceptance",
+    "effect integration",
+    "translation",
+    "game and package checks"
+  ]
+}

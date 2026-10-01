@@ -1,0 +1,50 @@
+{
+  "taskId": "QA-busy-save-independent",
+  "team": "QA",
+  "session": "88c3f903-ece5-4640-8b0c-86feaaca0e53",
+  "terminal": "VS Code 기존 터미널 1 (QA)",
+  "cli": "Claude Code",
+  "model": "claude-opus-4-8",
+  "head": "ae230e74",
+  "receivedUTC": "2026-10-01T16:28:10Z",
+  "firstReadUTC": "2026-10-01T16:28:40Z",
+  "editStartUTC": "2026-10-01T16:33:00Z",
+  "status": "done-busy-save-independent",
+  "scopeNote": "busy-save-independent-task.md 한 건만. BALANCE/save-inflight-candidate 독립 검토. 후보 미적용. 기존 29테스트 복제 안 함.",
+  "ownedPaths": [
+    "tools/team-followup-20261001/QA/busy-save-independent-*",
+    "docs/0마스터플랜/mac-resume-20261001/vscode-dispatch/busy-save-independent-result.md",
+    "docs/0마스터플랜/mac-resume-20261001/vscode-dispatch/busy-save-independent-receipt.json"
+  ],
+  "originalFunctionSHA": {
+    "dbSaveNow(game, current)": "f31e1ecf47f3df72",
+    "dbSave(game, current async)": "2152c5b37d34f6de",
+    "candidate.mjs(save-inflight)": "96750107f0da4dce"
+  },
+  "saveBranchesChecked": "게임 _saving=false 3곳(3570 dbSave / 61727·61878 local-save finally), easy 3곳(3343/60058/60209). 후보 diff가 전부 _drainPendingSaveNow() 삽입 — 누락 drain 사이트 없음. _saving=true 3곳(3524/61689/61845).",
+  "doNotModify": [
+    "game.html",
+    "game-easy-test.html",
+    "index",
+    "server",
+    "공유 test/*",
+    "공유 docs",
+    "타팀 파일(BALANCE/*, ITEM/*)"
+  ],
+  "gate": "게임/브라우저/대형빌드 직접 실행0, Mac 앱 빌드·부하 중복 금지. tab1573846373 입력/리로드/닫기/계측0. 실제 사용자 세이브0(fake sink). Git/queue/새세션0.",
+  "nextAction": "busy-save-independent-regression.mjs(후보 추출 + fake sink 요청시점 직렬화·완료분리로 pending/drain·캐릭터전환·실패/force 경쟁 반례 시도) 작성·실행 후 result 인계",
+  "blocker": null,
+  "completedUTC": "2026-10-01T16:34:00Z",
+  "result": {
+    "regression": "tools/team-followup-20261001/QA/busy-save-independent-regression.mjs — 7 PASS/0 FAIL, exit0 (후보 원문 추출 + 요청시점 직렬화·완료분리 fake sink)",
+    "counterexampleFound": "1건(R1): _drainPendingSaveNow가 dbSave 즉시가 아닌 dbSaveNow 재디바운스(+500ms) → in-flight 완료 직후 500ms 내 종료 시 busy-보류분 유실. 회귀 아님(원본은 항상 유실), 부분 개선.",
+    "safeConfirmed": [
+      "모든 _saving=false 사이트 drain 삽입(게임3/easy3, 누락0)",
+      "캐릭터 전환 시 컨텍스트 abort로 잘못된 저장 0(C3/C4/C6)",
+      "force 경쟁 유실 없음, 중복저장 무해(C5)"
+    ],
+    "handoff": "후보 안전·부분개선. R1 개선(즉시 dbSave 배수)·창닫기 beforeunload 연계는 BALANCE 별도 과제. 후보 미적용 유지, 생산 반영 root.",
+    "noModify": "game/easy/index/server/공유test/공유docs/타팀 파일 변경0",
+    "gates": "게임·브라우저·대형빌드0, Mac앱빌드·부하중복0, tab1573846373 미접촉, 사용자세이브0, Git/queue/새세션0"
+  }
+}

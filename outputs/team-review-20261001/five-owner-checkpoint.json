@@ -1,0 +1,11 @@
+{
+  "verifiedAt": "2026-10-01T15:43:38.687485+00:00",
+  "head": "98aedab7dd3df41a57c2311bfc4cf79731057e60",
+  "remote": "98aedab7dd3df41a57c2311bfc4cf79731057e60",
+  "match": true,
+  "productionHashes": {
+    "game.html": "21235538c9766a28b04dcf529aed9883a8aa11bdbfef8e9e2ce35d5cc927c5cf",
+    "game-easy-test.html": "4c408f1e7b57210900ddfa8a0646502f91b6a0bbc798a24338eb159cb613d874"
+  },
+  "stagedRemaining": ""
+}

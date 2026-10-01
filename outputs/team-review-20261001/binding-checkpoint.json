@@ -1,0 +1,12 @@
+{
+  "at": "2026-10-01T14:32:46.117550+00:00",
+  "sha": "8d221540594cddebcb9f73fd785f3f82df631268",
+  "remoteSHA": "8d221540594cddebcb9f73fd785f3f82df631268",
+  "verified": true,
+  "tests": 61,
+  "buildIndependentAssertions": 24,
+  "productionD10Active": false,
+  "supportOriginalFilesUnchanged": true,
+  "supportCandidateAcceptance": "pending separate root review",
+  "indexEmpty": true
+}
