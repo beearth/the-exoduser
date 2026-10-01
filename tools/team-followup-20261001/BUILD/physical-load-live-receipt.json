@@ -1,0 +1,15 @@
+{
+ "taskId":"PHYSICAL-LOAD-LIVE-INDEPENDENT-ACCEPTANCE",
+ "receivedAt":"2026-10-01T15:09:31Z",
+ "firstReadAt":"2026-10-01T15:09:31Z",
+ "firstEditAt":"2026-10-01T15:10:27Z",
+ "validationCompletedAt":"2026-10-01T15:10:27.965Z",
+ "completedAt":"2026-10-01T15:11:30.752Z",
+ "status":"완료: 독립23PASS/회귀22PASS; live주장원자료일치; cold최초확정실기증명제외",
+ "duplicateCheck":"전용task만존재; 이전15/17원자료보존",
+ "firstCommand":"UTC시각/생산함수/BALANCE후속파일/원자료경로읽기",
+ "validationCommand":"node tools/team-followup-20261001/BUILD/physical-load-live-check.mjs",
+ "validation":{"pass":23,"fail":0,"regressionPass":22,"inputHashesUnchanged":true},
+ "limits":"fixture.delayed.initial이미complete/currentSrc확정;55개별호출trace없음;전체FPS개선미확정",
+ "ownedPaths":"tools/team-followup-20261001/BUILD/physical-load-live-*"
+}

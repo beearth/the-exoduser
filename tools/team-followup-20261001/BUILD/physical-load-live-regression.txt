@@ -1,0 +1,31 @@
+✔ flight update cannot recolor an existing physical projectile into a dark sphere (0.953833ms)
+✔ dark sphere spawn clears stale physical metadata before classification (1.0315ms)
+✔ impact element overrides legacy redBean visuals for every element (0.469291ms)
+✔ physical impact uses only four burst frames from Fire Impact, without smoke (1.727083ms)
+{"game":"21235538c9766a28b04dcf529aed9883a8aa11bdbfef8e9e2ce35d5cc927c5cf","helper":"c0cbb70318242c1cd8193d8c2f1a88f4db7e9a9728829d4d3df3c70e9b61bb37","tint":"9315c1821002f0af5dbe670809994667842e1f70cf96cb3f1b760acc0c76af51","candidate":"e80f74f25fcc0ffa2144897ba4290c0b383e46c570f9a7eb4941ef90f29101b0","limits":"fake clock + 실제함수추출 + synthetic Canvas RGBA; 브라우저픽셀/실전미검수"}
+✔ 실제원helper/tint 실행·같은WeakMap/동일객체/재호출가공0/RNG0 (41.359667ms)
+✔ G.on/bootActive/killed 부트밖은 동기가공0 (5.359ms)
+✔ 미완료512이미지 load대기·기존handler불변·listener/timer cleanup (37.946917ms)
+✔ 로드error/완료됐지만잘못된크기/missing은lazy 유지 (5.389666ms)
+✔ 대기중 G.on/killed/bootActive/epoch 취소와cleanup (8.1425ms)
+✔ 대기뒤 src/currentSrc/identity변경 stale작업0 (7.594917ms)
+✔ 250ms협력적대기예산·늦은load무효/무한예약0 (3.529ms)
+✔ 동기가공예산초과는선점하지않고명시·lazy원캐시 유지 (37.092ms)
+✔ 가공예외는error·동기시간기록·기존lazy 재시도가능 (1.977334ms)
+✔ 대기중원lazy이미준비된캐시는재사용 (37.376333ms)
+✔ 추출원문/후보해시 (5.053416ms)
+✔ 늦은getter예외/부분listener등록예외도settle과정리 (3.695292ms)
+✔ boot prepares physical impact after assets and before renderer (0.594292ms)
+✔ 정상 최초 currentSrc 확정은 같은객체/절대src/선택속성불변에서 준비·재호출0 (38.827334ms)
+✔ 최초 확정 경계: 다른URL/선택URL/상대src/DOM속성없음/객체교체는 stale (13.358875ms)
+✔ srcset/sizes 전환 및 기존선택속성은 정상주소처럼 보여도 거부 (8.217042ms)
+✔ 정상 최초확정 동시 epoch/취소 및 완료전확정은 거부 (8.29225ms)
+✔ 이미 확정된 currentSrc 변경은 요청src와 같아져도 거부 (1.737292ms)
+ℹ tests 22
+ℹ suites 0
+ℹ pass 22
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 311.456667

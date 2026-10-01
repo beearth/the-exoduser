@@ -1,0 +1,20 @@
+{
+  "at": "2026-10-01T15:06:40.906792+00:00",
+  "checkpoint": {
+    "sha": "4fb217eaae985b196a9ff0b90fdd1ed1eb02ceca",
+    "remote": "4fb217eaae985b196a9ff0b90fdd1ed1eb02ceca",
+    "verifiedAt": "2026-10-01T15:06:40.906792+00:00"
+  },
+  "gameSha": "21235538c9766a28b04dcf529aed9883a8aa11bdbfef8e9e2ce35d5cc927c5cf",
+  "profile": "existing Chrome, fresh origin, cache UNKNOWN",
+  "port": 3340,
+  "url": "http://qa-physical-prewarm-20261002.localhost:3340/game.html?webgpu=0",
+  "load": "No other game/build started by root; team analyses completed; background process load not isolated",
+  "previousCheckpoint": {
+    "sha": "3d5badddad5fa389ebb3c767b890a66f72412aba",
+    "remote": "3d5badddad5fa389ebb3c767b890a66f72412aba",
+    "verifiedAt": "2026-10-01T15:00:19.656984+00:00",
+    "liveGate": "pending",
+    "source": "7c681cfaa592778ab6d7cc5b88c46906b332e4395bb60fda1b837d09ed6ee1de"
+  }
+}

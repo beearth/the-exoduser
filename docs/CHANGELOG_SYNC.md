@@ -51833,3 +51833,13 @@ ENEMY 물리tick, ART 최종crop, SKILL 충전증거/예외정리 후보 검수.
 최종 후보 SHA `e80f74f25fcc0ffa2144897ba4290c0b383e46c570f9a7eb4941ef90f29101b0`를 브라우저에서 다시 실행, 원 RGBA1,048,576바이트 0diff와 동일 캐시를 확인했다. 준비11.7ms/전체12.1ms는 standalone 결과이며 게임 개선율이 아니다. 추가 이미지 시도는 이미 complete/currentSrc 확정 상태였으므로 실제 빈값→주소 전환 검증으로 인정하지 않는다(단위 하니스에서는 검증).
 
 ITEM 추가3반례(미래/음수 rAF timestamp, 역순 input)를 분석기에 반영했다. 원 정상자료와 통계 불변, root21 PASS 및 추가8반례 모두 거부. 원 ITEM 실패 증거와 적용 전 분석기를 보존했다. `normal-eligibility-final.json`의 candidate unadopted 문구는 독립 검수기의 기존 문구이며, 실제 current 출력에서 새3반례가 이미 거부됨을 확인했다.
+
+### 2026-10-02 실제 부트·전투 결과
+
+원격 `4fb217eaae985b196a9ff0b90fdd1ed1eb02ceca` SHA 대조 후 기존3340/격리origin에서 실행했다. 실제 부트 stats는 prepared, 동기가공3.8ms/전체준비3.9ms/명목1MiB/오류0이었다. 이는 이미지 준비 함수 시간이며 전체 게임 부트 시간은 미측정이다. 시작 전 UI로 높음 프리셋·parts80·atmos1·ambPart 켜기를 적용했고 관측 중 설정/포커스 변경은 없었다.
+
+25.007초·19처치·생존적 최대42·밀집 연속11.4135초, HP587→268.01875. 정상표본 게이트 eligible=true. 물리 효과 55회가 동일한 준비 Canvas를 재사용했고 추가 tint0이었다. 호출 max0ms는 브라우저 시계 해상도 내 기록이며 실제 계산비용0 주장 아님. 첫 호출은 처치7 상태에서 관측했다. 원본 색/알파 전수0diff와 결합해 이 준비 경로의 실전 인수 근거로 삼는다.
+
+전체 RAF p99 58.4/max166.7ms, 동기 draw p99 6.9/max156.5ms, draw>100ms 두 건이 남았다. 기존 표본과 시작 장비·적/전투/부하·계측이 다르므로 전체 개선율·회귀율을 계산하지 않는다. 이번에는 draw+sheet+tint 3wrapper, CPU profiler와 GPU timing은 끔. 잔여 긴 draw를 membrane으로 소급 귀속할 증거는 없다.
+
+BUILD 독립 검수는 15:11:30.752Z 완료: 새 경계·원자료 재산출23 PASS, 생산 회귀22 PASS. 코드/fixture 함수 SHA 일치와 모든 분포를 대조했다. 실제 cold 빈 currentSrc→주소 전환은 이번 브라우저 fixture에서 관측되지 않았고 VM 경계검사로만 검증됐다는 한계를 유지한다. ITEM은 15:09:32Z 실제 Read 후 persistence-integration-port.mjs 구현 Edit에 착수했으며 아직 생산 적용·완료 아님.

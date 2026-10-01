@@ -1,0 +1,614 @@
+{
+  "startedAt": "2026-10-01T15:10:27.882Z",
+  "completedAt": "2026-10-01T15:10:27.965Z",
+  "sources": [
+    {
+      "file": "game.html",
+      "sha256": "21235538c9766a28b04dcf529aed9883a8aa11bdbfef8e9e2ce35d5cc927c5cf"
+    },
+    {
+      "file": "test/physicalImpactPrewarm.test.mjs",
+      "sha256": "cda2575021087423bf7e45d8b9b61f85d9dd6401039776f1014c5431ddfe733a"
+    },
+    {
+      "file": "tools/team-followup-20261001/BALANCE/physical-prewarm-candidate.js",
+      "sha256": "e80f74f25fcc0ffa2144897ba4290c0b383e46c570f9a7eb4941ef90f29101b0"
+    },
+    {
+      "file": "outputs/team-review-20261001/draw-attribution/physical-fixture-final.json",
+      "sha256": "dd2b59b8e5c7e8ffbafe21726c7d182f15599b613296cb445d4c25199dcbe427"
+    },
+    {
+      "file": "outputs/team-review-20261001/draw-attribution/live-prewarm/preflight.json",
+      "sha256": "10978cc4f12268e7699921c4d85031ecb098d35c5ab29396db019b4d7a29f5ae"
+    },
+    {
+      "file": "outputs/team-review-20261001/draw-attribution/live-prewarm/raw.json",
+      "sha256": "16fcf4917ae4463dc1d50abbbc727267a3e927398349c2f4fe1d9f909b17aea9"
+    },
+    {
+      "file": "outputs/team-review-20261001/draw-attribution/live-prewarm/analysis.json",
+      "sha256": "e7fe6b52fcfc166c689c72c5c98fae4b8305601d4bf4fd9e9206ea6211e15edc"
+    }
+  ],
+  "checks": [
+    {
+      "name": "생산SHA/preflight·후보/fixture함수 동일",
+      "pass": true,
+      "actual": {
+        "sha": "4fb217eaae985b196a9ff0b90fdd1ed1eb02ceca",
+        "remote": "4fb217eaae985b196a9ff0b90fdd1ed1eb02ceca",
+        "verifiedAt": "2026-10-01T15:06:40.906792+00:00"
+      }
+    },
+    {
+      "name": "최초확정 normal",
+      "pass": true,
+      "actual": {
+        "initial": {
+          "src": "https://fixture.invalid/sheet.png",
+          "currentSrc": "",
+          "srcset": "",
+          "sizes": ""
+        },
+        "expected": "prepared",
+        "stats": {
+          "attempts": 1,
+          "reuses": 0,
+          "status": "prepared",
+          "syncMs": 5,
+          "totalMs": 5,
+          "pixelBytes": 1048576,
+          "errors": []
+        }
+      }
+    },
+    {
+      "name": "최초확정 relative",
+      "pass": true,
+      "actual": {
+        "initial": {
+          "src": "sheet.png",
+          "currentSrc": "",
+          "srcset": "",
+          "sizes": ""
+        },
+        "expected": "stale",
+        "stats": {
+          "attempts": 1,
+          "reuses": 0,
+          "status": "stale",
+          "syncMs": 0,
+          "totalMs": 0,
+          "pixelBytes": 0,
+          "errors": []
+        }
+      }
+    },
+    {
+      "name": "최초확정 missing-srcset",
+      "pass": true,
+      "actual": {
+        "initial": {
+          "src": "https://fixture.invalid/sheet.png",
+          "currentSrc": "",
+          "sizes": ""
+        },
+        "expected": "stale",
+        "stats": {
+          "attempts": 1,
+          "reuses": 0,
+          "status": "stale",
+          "syncMs": 0,
+          "totalMs": 0,
+          "pixelBytes": 0,
+          "errors": []
+        }
+      }
+    },
+    {
+      "name": "최초확정 initial-srcset",
+      "pass": true,
+      "actual": {
+        "initial": {
+          "src": "https://fixture.invalid/sheet.png",
+          "currentSrc": "",
+          "srcset": "other.png 2x",
+          "sizes": ""
+        },
+        "expected": "stale",
+        "stats": {
+          "attempts": 1,
+          "reuses": 0,
+          "status": "stale",
+          "syncMs": 0,
+          "totalMs": 0,
+          "pixelBytes": 0,
+          "errors": []
+        }
+      }
+    },
+    {
+      "name": "최초확정 initial-sizes",
+      "pass": true,
+      "actual": {
+        "initial": {
+          "src": "https://fixture.invalid/sheet.png",
+          "currentSrc": "",
+          "srcset": "",
+          "sizes": "100vw"
+        },
+        "expected": "stale",
+        "stats": {
+          "attempts": 1,
+          "reuses": 0,
+          "status": "stale",
+          "syncMs": 0,
+          "totalMs": 0,
+          "pixelBytes": 0,
+          "errors": []
+        }
+      }
+    },
+    {
+      "name": "최초확정 changed-srcset",
+      "pass": true,
+      "actual": {
+        "initial": {
+          "src": "https://fixture.invalid/sheet.png",
+          "currentSrc": "",
+          "srcset": "",
+          "sizes": ""
+        },
+        "expected": "stale",
+        "stats": {
+          "attempts": 1,
+          "reuses": 0,
+          "status": "stale",
+          "syncMs": 0,
+          "totalMs": 0,
+          "pixelBytes": 0,
+          "errors": []
+        }
+      }
+    },
+    {
+      "name": "최초확정 changed-sizes",
+      "pass": true,
+      "actual": {
+        "initial": {
+          "src": "https://fixture.invalid/sheet.png",
+          "currentSrc": "",
+          "srcset": "",
+          "sizes": ""
+        },
+        "expected": "stale",
+        "stats": {
+          "attempts": 1,
+          "reuses": 0,
+          "status": "stale",
+          "syncMs": 0,
+          "totalMs": 0,
+          "pixelBytes": 0,
+          "errors": []
+        }
+      }
+    },
+    {
+      "name": "최초확정 other",
+      "pass": true,
+      "actual": {
+        "initial": {
+          "src": "https://fixture.invalid/sheet.png",
+          "currentSrc": "",
+          "srcset": "",
+          "sizes": ""
+        },
+        "expected": "stale",
+        "stats": {
+          "attempts": 1,
+          "reuses": 0,
+          "status": "stale",
+          "syncMs": 0,
+          "totalMs": 0,
+          "pixelBytes": 0,
+          "errors": []
+        }
+      }
+    },
+    {
+      "name": "최초확정 changed-src",
+      "pass": true,
+      "actual": {
+        "initial": {
+          "src": "https://fixture.invalid/sheet.png",
+          "currentSrc": "",
+          "srcset": "",
+          "sizes": ""
+        },
+        "expected": "stale",
+        "stats": {
+          "attempts": 1,
+          "reuses": 0,
+          "status": "stale",
+          "syncMs": 0,
+          "totalMs": 0,
+          "pixelBytes": 0,
+          "errors": []
+        }
+      }
+    },
+    {
+      "name": "최초확정 identity",
+      "pass": true,
+      "actual": {
+        "initial": {
+          "src": "https://fixture.invalid/sheet.png",
+          "currentSrc": "",
+          "srcset": "",
+          "sizes": ""
+        },
+        "expected": "stale",
+        "stats": {
+          "attempts": 1,
+          "reuses": 0,
+          "status": "stale",
+          "syncMs": 0,
+          "totalMs": 0,
+          "pixelBytes": 0,
+          "errors": []
+        }
+      }
+    },
+    {
+      "name": "최초확정 incomplete",
+      "pass": true,
+      "actual": {
+        "initial": {
+          "src": "https://fixture.invalid/sheet.png",
+          "currentSrc": "",
+          "srcset": "",
+          "sizes": ""
+        },
+        "expected": "stale",
+        "stats": {
+          "attempts": 1,
+          "reuses": 0,
+          "status": "stale",
+          "syncMs": 0,
+          "totalMs": 0,
+          "pixelBytes": 0,
+          "errors": []
+        }
+      }
+    },
+    {
+      "name": "최초확정 wrong-size",
+      "pass": true,
+      "actual": {
+        "initial": {
+          "src": "https://fixture.invalid/sheet.png",
+          "currentSrc": "",
+          "srcset": "",
+          "sizes": ""
+        },
+        "expected": "load-failed",
+        "stats": {
+          "attempts": 1,
+          "reuses": 0,
+          "status": "load-failed",
+          "syncMs": 0,
+          "totalMs": 0,
+          "pixelBytes": 0,
+          "errors": []
+        }
+      }
+    },
+    {
+      "name": "최초확정 epoch",
+      "pass": true,
+      "actual": {
+        "initial": {
+          "src": "https://fixture.invalid/sheet.png",
+          "currentSrc": "",
+          "srcset": "",
+          "sizes": ""
+        },
+        "expected": "cancelled",
+        "stats": {
+          "attempts": 1,
+          "reuses": 0,
+          "status": "cancelled",
+          "syncMs": 0,
+          "totalMs": 0,
+          "pixelBytes": 0,
+          "errors": []
+        }
+      }
+    },
+    {
+      "name": "최초확정 on",
+      "pass": true,
+      "actual": {
+        "initial": {
+          "src": "https://fixture.invalid/sheet.png",
+          "currentSrc": "",
+          "srcset": "",
+          "sizes": ""
+        },
+        "expected": "cancelled",
+        "stats": {
+          "attempts": 1,
+          "reuses": 0,
+          "status": "cancelled",
+          "syncMs": 0,
+          "totalMs": 0,
+          "pixelBytes": 0,
+          "errors": []
+        }
+      }
+    },
+    {
+      "name": "최초확정 killed",
+      "pass": true,
+      "actual": {
+        "initial": {
+          "src": "https://fixture.invalid/sheet.png",
+          "currentSrc": "",
+          "srcset": "",
+          "sizes": ""
+        },
+        "expected": "cancelled",
+        "stats": {
+          "attempts": 1,
+          "reuses": 0,
+          "status": "cancelled",
+          "syncMs": 0,
+          "totalMs": 0,
+          "pixelBytes": 0,
+          "errors": []
+        }
+      }
+    },
+    {
+      "name": "최초확정 inactive",
+      "pass": true,
+      "actual": {
+        "initial": {
+          "src": "https://fixture.invalid/sheet.png",
+          "currentSrc": "",
+          "srcset": "",
+          "sizes": ""
+        },
+        "expected": "cancelled",
+        "stats": {
+          "attempts": 1,
+          "reuses": 0,
+          "status": "cancelled",
+          "syncMs": 0,
+          "totalMs": 0,
+          "pixelBytes": 0,
+          "errors": []
+        }
+      }
+    },
+    {
+      "name": "최초확정 timeout",
+      "pass": true,
+      "actual": {
+        "initial": {
+          "src": "https://fixture.invalid/sheet.png",
+          "currentSrc": "",
+          "srcset": "",
+          "sizes": ""
+        },
+        "expected": "timeout",
+        "stats": {
+          "attempts": 1,
+          "reuses": 0,
+          "status": "timeout",
+          "syncMs": 0,
+          "totalMs": 250,
+          "pixelBytes": 0,
+          "errors": []
+        }
+      }
+    },
+    {
+      "name": "live시간/처치·분포 독립 재산출",
+      "pass": true,
+      "actual": {
+        "durationMs": 25007,
+        "kills": 19,
+        "rows": 648,
+        "draws": 648,
+        "metrics": {
+          "rafTimestampIntervals": {
+            "n": 647,
+            "p50": 33.79999999998836,
+            "p95": 50.30000000000291,
+            "p99": 58.40000000000873,
+            "max": 166.6999999999971,
+            "over50": 50,
+            "over100": 2
+          },
+          "snapshotWallIntervals": {
+            "n": 647,
+            "p50": 36.799999952316284,
+            "p95": 53.200000047683716,
+            "p99": 58.699999928474426,
+            "max": 206.30000007152557,
+            "over50": 68,
+            "over100": 2
+          },
+          "drawStartIntervals": {
+            "n": 647,
+            "p50": 36.59999990463257,
+            "p95": 53,
+            "p99": 58.60000002384186,
+            "max": 162.10000002384186,
+            "over50": 69,
+            "over100": 2
+          },
+          "synchronousDrawCPU": {
+            "n": 648,
+            "p50": 0.6000000238418579,
+            "p95": 2.100000023841858,
+            "p99": 6.899999976158142,
+            "max": 156.5,
+            "over50": 2,
+            "over100": 2
+          }
+        }
+      }
+    },
+    {
+      "name": "live부트/캐시55회/tint0 증거대조",
+      "pass": true,
+      "actual": {
+        "physical": {
+          "bootStats": {
+            "attempts": 1,
+            "reuses": 0,
+            "status": "prepared",
+            "syncMs": 3.799999952316284,
+            "totalMs": 3.899999976158142,
+            "pixelBytes": 1048576,
+            "errors": []
+          },
+          "image": {
+            "src": "http://qa-physical-prewarm-20261002.localhost:3340/assets/vfx/Fire_ImpactFire_Sheet.png",
+            "currentSrc": "http://qa-physical-prewarm-20261002.localhost:3340/assets/vfx/Fire_ImpactFire_Sheet.png",
+            "width": 512,
+            "height": 512
+          },
+          "cacheReady": true,
+          "cacheSize": [
+            512,
+            512
+          ],
+          "calls": 55,
+          "tintCalls": 0,
+          "maxCallMs": 0,
+          "samePreparedSheet": true,
+          "firstCall": {
+            "at": 71611.70000004768,
+            "src": "http://qa-physical-prewarm-20261002.localhost:3340/assets/vfx/Fire_ImpactFire_Sheet.png",
+            "currentSrc": "http://qa-physical-prewarm-20261002.localhost:3340/assets/vfx/Fire_ImpactFire_Sheet.png",
+            "width": 512,
+            "height": 512,
+            "kills": 7
+          },
+          "restored": {
+            "sheet": true,
+            "tint": true
+          }
+        },
+        "limits": "raw의누적카운터·동일객체판정기록;55개호출별trace는없어각호출재구성불가"
+      }
+    },
+    {
+      "name": "전경/옵션/누락/정리·첫처치관측",
+      "pass": true,
+      "actual": {
+        "delayMs": 4224.899999976158,
+        "firstBatch": 2,
+        "options": {
+          "quality": "high",
+          "resScale": 100,
+          "ssaa": 1,
+          "fpsCap": 0,
+          "parts": 80,
+          "diff": 5,
+          "atmos": 1,
+          "bloom": true,
+          "lighting": true,
+          "postfx": true,
+          "fog": true,
+          "grain": true
+        }
+      }
+    },
+    {
+      "name": "최종브라우저fixture 저장픽셀증거",
+      "pass": true,
+      "actual": {
+        "pixel": {
+          "at": "2026-10-01T15:05:21.028Z",
+          "image": {
+            "src": "http://qa-physical-final-20261002.localhost:3340/assets/vfx/Fire_ImpactFire_Sheet.png",
+            "currentSrc": "http://qa-physical-final-20261002.localhost:3340/assets/vfx/Fire_ImpactFire_Sheet.png",
+            "width": 512,
+            "height": 512
+          },
+          "bytes": 1048576,
+          "different": 0,
+          "maxDifference": 0,
+          "originalHash": "b31bc9fb30293b3d019bb9ec68c50c83c772565962f1a498d033485db414bbee",
+          "candidateHash": "b31bc9fb30293b3d019bb9ec68c50c83c772565962f1a498d033485db414bbee",
+          "first": {
+            "attempts": 1,
+            "reuses": 0,
+            "status": "prepared",
+            "syncMs": 11.700000047683716,
+            "totalMs": 12.100000023841858,
+            "pixelBytes": 1048576,
+            "errors": []
+          },
+          "again": {
+            "attempts": 1,
+            "reuses": 1,
+            "status": "reused",
+            "syncMs": 0,
+            "totalMs": 0,
+            "pixelBytes": 1048576,
+            "errors": []
+          },
+          "sameIdentity": true,
+          "callsAfterPrepare": 1,
+          "tintCalls": 1,
+          "baselineMs": 18.799999952316284,
+          "viewport": [
+            1352,
+            666
+          ],
+          "dpr": 2,
+          "limits": "standalone fixture, not live-game performance comparison; GPU/total memory unmeasured"
+        },
+        "delayed": {
+          "initial": {
+            "complete": true,
+            "currentSrc": "http://qa-physical-final-20261002.localhost:3340/assets/vfx/Fire_ImpactFire_Sheet.png",
+            "src": "http://qa-physical-final-20261002.localhost:3340/assets/vfx/Fire_ImpactFire_Sheet.png",
+            "srcset": "",
+            "sizes": ""
+          },
+          "stats": {
+            "attempts": 1,
+            "reuses": 0,
+            "status": "prepared",
+            "syncMs": 20.600000023841858,
+            "totalMs": 20.700000047683716,
+            "pixelBytes": 1048576,
+            "errors": []
+          },
+          "currentSrc": "http://qa-physical-final-20261002.localhost:3340/assets/vfx/Fire_ImpactFire_Sheet.png",
+          "cacheReady": true
+        },
+        "limits": "저장증거대조;신규브라우저실행0"
+      }
+    },
+    {
+      "name": "입력SHA검사중불변",
+      "pass": true,
+      "actual": true
+    }
+  ],
+  "pass": 23,
+  "fail": 0,
+  "limits": [
+    "actual source extraction; reused synthetic Canvas/fake-clock harness with independent inputs",
+    "remote SHA is preflight assertion, no Git verification",
+    "single observation; cache UNKNOWN; overhead unmeasured; no FPS improvement or CPU/GPU attribution"
+  ]
+}

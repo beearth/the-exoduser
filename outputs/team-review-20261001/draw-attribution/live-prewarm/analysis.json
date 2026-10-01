@@ -1,0 +1,233 @@
+{
+  "kind": "single normal-play observation, not A/B improvement",
+  "eligible": true,
+  "exclusions": [],
+  "at": "2026-10-01T15:07:53.995Z",
+  "environment": {
+    "url": "http://qa-physical-prewarm-20261002.localhost:3340/game.html?webgpu=0",
+    "ua": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/152.0.0.0 Safari/537.36",
+    "timeOrigin": 1790867209712.8,
+    "viewport": [
+      1352,
+      666
+    ],
+    "dpr": 2,
+    "canvas": [
+      1352,
+      666
+    ],
+    "profiler": false,
+    "gpuTiming": false,
+    "instrumentation": "one pass-through draw wrapper + rAF state/options snapshots; no update/Canvas/WebGL wrappers; overhead not independently measured; two pass-through physical sheet/tint wrappers, overhead unmeasured"
+  },
+  "options": {
+    "quality": "high",
+    "resScale": 100,
+    "ssaa": 1,
+    "fpsCap": 0,
+    "parts": 80,
+    "diff": 5,
+    "atmos": 1,
+    "bloom": true,
+    "lighting": true,
+    "postfx": true,
+    "fog": true,
+    "grain": true
+  },
+  "kills": 19,
+  "initialHP": 587,
+  "endHP": 268.0187499999985,
+  "maxEnemies": 42,
+  "firstObservedKill": {
+    "delayAfterFirstInputMs": 4224.899999976158,
+    "killsInFirstObservedBatch": 2,
+    "precision": "rAF observation, not exact death-event timestamp"
+  },
+  "full": {
+    "start": 64324.800000071526,
+    "end": 89331.80000007153,
+    "durationMs": 25007,
+    "rafTimestampIntervals": {
+      "n": 647,
+      "p50": 33.79999999998836,
+      "p95": 50.30000000000291,
+      "p99": 58.40000000000873,
+      "max": 166.6999999999971,
+      "over50": 50,
+      "over100": 2
+    },
+    "snapshotWallIntervals": {
+      "n": 647,
+      "p50": 36.799999952316284,
+      "p95": 53.200000047683716,
+      "p99": 58.699999928474426,
+      "max": 206.30000007152557,
+      "over50": 68,
+      "over100": 2
+    },
+    "drawStartIntervals": {
+      "n": 647,
+      "p50": 36.59999990463257,
+      "p95": 53,
+      "p99": 58.60000002384186,
+      "max": 162.10000002384186,
+      "over50": 69,
+      "over100": 2
+    },
+    "synchronousDrawCPU": {
+      "n": 648,
+      "p50": 0.6000000238418579,
+      "p95": 2.100000023841858,
+      "p99": 6.899999976158142,
+      "max": 156.5,
+      "over50": 2,
+      "over100": 2
+    }
+  },
+  "firstKillWindow": {
+    "start": 64324.800000071526,
+    "end": 70549.70000004768,
+    "durationMs": 6224.899999976158,
+    "rafTimestampIntervals": {
+      "n": 175,
+      "p50": 33.39999999999418,
+      "p95": 41.70000000001164,
+      "p99": 58.69999999999709,
+      "max": 141.6999999999971,
+      "over50": 3,
+      "over100": 1
+    },
+    "snapshotWallIntervals": {
+      "n": 175,
+      "p50": 34.300000071525574,
+      "p95": 44.09999990463257,
+      "p99": 60.200000047683716,
+      "max": 159.39999997615814,
+      "over50": 2,
+      "over100": 1
+    },
+    "drawStartIntervals": {
+      "n": 175,
+      "p50": 34.199999928474426,
+      "p95": 43.700000047683716,
+      "p99": 60.299999952316284,
+      "max": 138.20000004768372,
+      "over50": 2,
+      "over100": 1
+    },
+    "synchronousDrawCPU": {
+      "n": 176,
+      "p50": 0.5999999046325684,
+      "p95": 4.200000047683716,
+      "p99": 9.199999928474426,
+      "max": 131.39999997615814,
+      "over50": 1,
+      "over100": 1
+    }
+  },
+  "denseSegments": [
+    {
+      "start": 77918.20000004768,
+      "end": 89331.70000004768,
+      "rows": 264
+    }
+  ],
+  "denseLongest": {
+    "start": 77918.20000004768,
+    "end": 89331.70000004768,
+    "durationMs": 11413.5,
+    "rafTimestampIntervals": {
+      "n": 263,
+      "p50": 41.70000000001164,
+      "p95": 58.30000000000291,
+      "p99": 59.09999999999127,
+      "max": 166.6999999999971,
+      "over50": 44,
+      "over100": 1
+    },
+    "snapshotWallIntervals": {
+      "n": 263,
+      "p50": 42.200000047683716,
+      "p95": 56.199999928474426,
+      "p99": 62.10000002384186,
+      "max": 206.30000007152557,
+      "over50": 66,
+      "over100": 1
+    },
+    "drawStartIntervals": {
+      "n": 262,
+      "p50": 42.299999952316284,
+      "p95": 55.89999997615814,
+      "p99": 61.699999928474426,
+      "max": 162.10000002384186,
+      "over50": 67,
+      "over100": 1
+    },
+    "synchronousDrawCPU": {
+      "n": 263,
+      "p50": 0.7000000476837158,
+      "p95": 2.3000000715255737,
+      "p99": 7.699999928474426,
+      "max": 156.5,
+      "over50": 1,
+      "over100": 1
+    }
+  },
+  "inputs": {
+    "count": 776,
+    "trusted": true,
+    "mechanism": "normal CUA key/click events; no held-key timing guarantee"
+  },
+  "cleanup": {
+    "draw": true,
+    "listeners": true
+  },
+  "limits": [
+    "synchronousDrawCPU is a historical field name for synchronous elapsed wall time, not CPU-only work",
+    "GL/GPU cost unmeasured",
+    "observer overhead not independently measured",
+    "existing Chrome profile; cache state unknown",
+    "first-kill prehistory is only from first input; batch size is recorded in firstObservedKill",
+    "post-run screenshot is later than measured endpoint; HUD regional counter differs from total G.kills",
+    "no comparison or PC329ms resolution claim"
+  ],
+  "physicalImpact": {
+    "bootStats": {
+      "attempts": 1,
+      "reuses": 0,
+      "status": "prepared",
+      "syncMs": 3.799999952316284,
+      "totalMs": 3.899999976158142,
+      "pixelBytes": 1048576,
+      "errors": []
+    },
+    "image": {
+      "src": "http://qa-physical-prewarm-20261002.localhost:3340/assets/vfx/Fire_ImpactFire_Sheet.png",
+      "currentSrc": "http://qa-physical-prewarm-20261002.localhost:3340/assets/vfx/Fire_ImpactFire_Sheet.png",
+      "width": 512,
+      "height": 512
+    },
+    "cacheReady": true,
+    "cacheSize": [
+      512,
+      512
+    ],
+    "calls": 55,
+    "tintCalls": 0,
+    "maxCallMs": 0,
+    "samePreparedSheet": true,
+    "firstCall": {
+      "at": 71611.70000004768,
+      "src": "http://qa-physical-prewarm-20261002.localhost:3340/assets/vfx/Fire_ImpactFire_Sheet.png",
+      "currentSrc": "http://qa-physical-prewarm-20261002.localhost:3340/assets/vfx/Fire_ImpactFire_Sheet.png",
+      "width": 512,
+      "height": 512,
+      "kills": 7
+    },
+    "restored": {
+      "sheet": true,
+      "tint": true
+    }
+  },
+  "physicalGate": true
+}

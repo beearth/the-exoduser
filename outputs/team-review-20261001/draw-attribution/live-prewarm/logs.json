@@ -1,0 +1,20 @@
+[
+  {
+    "level": "error",
+    "message": "Object",
+    "timestamp": "2026-10-01T15:06:56.403Z",
+    "url": "chrome-extension://ofpnmcalabcbjgholdjcjblkibolbppb/content.js"
+  },
+  {
+    "level": "error",
+    "message": "Object",
+    "timestamp": "2026-10-01T15:06:56.501Z",
+    "url": "http://qa-physical-prewarm-20261002.localhost:3340/game.html?webgpu=0"
+  },
+  {
+    "level": "error",
+    "message": "Object",
+    "timestamp": "2026-10-01T15:06:56.501Z",
+    "url": "http://qa-physical-prewarm-20261002.localhost:3340/game.html?webgpu=0"
+  }
+]

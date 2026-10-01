@@ -1,0 +1,17 @@
+{
+  "at": "2026-10-01T15:10:16.924611+00:00",
+  "gameShaUnchanged": "21235538c9766a28b04dcf529aed9883a8aa11bdbfef8e9e2ce35d5cc927c5cf",
+  "sourceCheckpoint": {
+    "sha": "4fb217eaae985b196a9ff0b90fdd1ed1eb02ceca",
+    "remote": "4fb217eaae985b196a9ff0b90fdd1ed1eb02ceca",
+    "verifiedAt": "2026-10-01T15:06:40.906792+00:00"
+  },
+  "gameTabClosed": true,
+  "files": {
+    "logs.json": "a2caae9559ea082e7f224834268826e932ef17e8bb5d3f0d1111c85945cd0ebc",
+    "after.png": "e978bdbdf326443ca73d40251782e4c55a15ca8578fa1ee6bc3674d6d5b5e3b0",
+    "raw.json": "16fcf4917ae4463dc1d50abbbc727267a3e927398349c2f4fe1d9f909b17aea9",
+    "analysis.json": "e7fe6b52fcfc166c689c72c5c98fae4b8305601d4bf4fd9e9206ea6211e15edc",
+    "preflight.json": "10978cc4f12268e7699921c4d85031ecb098d35c5ab29396db019b4d7a29f5ae"
+  }
+}
