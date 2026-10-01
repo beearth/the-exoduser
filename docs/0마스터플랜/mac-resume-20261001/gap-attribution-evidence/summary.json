@@ -1,0 +1,1150 @@
+{
+  "window": {
+    "inputAt": 35930.90000009537,
+    "endAt": 51146.90000009537,
+    "duration": 15216.0,
+    "reason": "natural-death-or-game-ended",
+    "loops": 478,
+    "draws": 478,
+    "updates": 901,
+    "rateLoop": 31.414300736067297,
+    "rateDraw": 31.414300736067297
+  },
+  "initial": {
+    "kills": 0,
+    "hp": 586,
+    "on": true,
+    "paused": false,
+    "atmos": 1,
+    "fpsCap": 0,
+    "hidden": false,
+    "focus": true,
+    "x": 4020,
+    "y": 7420,
+    "enemies": 5,
+    "items": 0,
+    "projectiles": 0
+  },
+  "end": {
+    "at": 51146.90000009537,
+    "kills": 0,
+    "hp": 0,
+    "on": true,
+    "paused": false,
+    "atmos": 1,
+    "fpsCap": 0,
+    "hidden": false,
+    "focus": true,
+    "x": 4017.083341765316,
+    "y": 7417.51001160294,
+    "enemies": 38,
+    "items": 0,
+    "projectiles": 0
+  },
+  "metrics": {
+    "rAFtimestampIntervals": {
+      "n": 476,
+      "mean": 31.855462184873943,
+      "p95": 41.60000000000582,
+      "p99": 66.69999999999709,
+      "max": 100.0,
+      "gt50": 7,
+      "gt100": 0
+    },
+    "loopStartIntervals": {
+      "n": 477,
+      "mean": 31.85513626854375,
+      "p95": 37.10000002384186,
+      "p99": 73.69999992847443,
+      "max": 139.20000004768372,
+      "gt50": 7,
+      "gt100": 4
+    },
+    "drawStartIntervals": {
+      "n": 477,
+      "mean": 31.847169811370737,
+      "p95": 37.60000002384186,
+      "p99": 74.0,
+      "max": 139.20000004768372,
+      "gt50": 7,
+      "gt100": 4
+    },
+    "loopDuration": {
+      "n": 478,
+      "mean": 2.0485355659508806,
+      "p95": 3.3000000715255737,
+      "p99": 7.100000023841858,
+      "max": 104.70000004768372,
+      "gt50": 1,
+      "gt100": 1
+    },
+    "updateDuration": {
+      "n": 901,
+      "mean": 0.5604883449588314,
+      "p95": 1,
+      "p99": 1.600000023841858,
+      "max": 5.900000095367432,
+      "gt50": 0,
+      "gt100": 0
+    },
+    "drawDuration": {
+      "n": 478,
+      "mean": 0.9102510455761993,
+      "p95": 1.8000000715255737,
+      "p99": 4.299999952316284,
+      "max": 103.30000007152557,
+      "gt50": 1,
+      "gt100": 1
+    }
+  },
+  "skipCounts": {
+    "None": 478
+  },
+  "updateCountHistogram": {
+    "2": 386,
+    "1": 66,
+    "3": 21,
+    "0": 5
+  },
+  "aggregatesNestedDoNotSum": {
+    "update": {
+      "count": 901,
+      "total": 504.9999988079071,
+      "max": 5.900000095367432
+    },
+    "draw": {
+      "count": 478,
+      "total": 435.0999997854233,
+      "max": 103.30000007152557
+    }
+  },
+  "longLoopStartIntervals": [
+    {
+      "fromLoop": 184,
+      "toLoop": 185,
+      "start": 36955.10000002384,
+      "end": 37094.300000071526,
+      "interval": 139.20000004768372,
+      "previousLoopCPU": 1.5,
+      "outsidePreviousLoop": 137.70000004768372,
+      "previousUpdate": 1.100000023841858,
+      "previousDraw": 0.3999999761581421,
+      "previousLoopOther": 0.0,
+      "afterKills": 0,
+      "items": 0,
+      "topEvents": [],
+      "browserEntries": [
+        {
+          "name": "self",
+          "entryType": "longtask",
+          "startTime": 36958.700000047684,
+          "duration": 135,
+          "navigationId": 2290,
+          "attribution": [
+            {
+              "name": "unknown",
+              "entryType": "taskattribution",
+              "startTime": 0,
+              "duration": 0,
+              "navigationId": 2290,
+              "containerType": "window",
+              "containerSrc": "",
+              "containerId": "",
+              "containerName": ""
+            }
+          ]
+        },
+        {
+          "name": "long-animation-frame",
+          "entryType": "long-animation-frame",
+          "startTime": 36958.5,
+          "duration": 139,
+          "navigationId": 2290,
+          "paintTime": 37097.5,
+          "presentationTime": 37148,
+          "renderStart": 37094.300000071526,
+          "styleAndLayoutStart": 37096.10000002384,
+          "firstUIEventTimestamp": 0,
+          "blockingDuration": 88.8,
+          "scripts": [
+            {
+              "name": "script",
+              "entryType": "script",
+              "startTime": 36958.700000047684,
+              "duration": 135.60000002384186,
+              "navigationId": 2290,
+              "invoker": "IdleRequestCallback",
+              "invokerType": "user-callback",
+              "windowAttribution": "self",
+              "executionStart": 36958.700000047684,
+              "forcedStyleAndLayoutDuration": 0,
+              "pauseDuration": 0,
+              "sourceURL": "http://qa-gap-attribution-20261001.localhost:3340/game.html?webgpu=0",
+              "sourceFunctionName": "_warmupNext",
+              "sourceCharPosition": 1063855
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "fromLoop": 193,
+      "toLoop": 194,
+      "start": 37252.300000071526,
+      "end": 37385.200000047684,
+      "interval": 132.89999997615814,
+      "previousLoopCPU": 1.2999999523162842,
+      "outsidePreviousLoop": 131.60000002384186,
+      "previousUpdate": 0.7999999523162842,
+      "previousDraw": 0.2999999523162842,
+      "previousLoopOther": 0.20000004768371582,
+      "afterKills": 0,
+      "items": 0,
+      "topEvents": [],
+      "browserEntries": [
+        {
+          "name": "self",
+          "entryType": "longtask",
+          "startTime": 37254,
+          "duration": 131,
+          "navigationId": 2290,
+          "attribution": [
+            {
+              "name": "unknown",
+              "entryType": "taskattribution",
+              "startTime": 0,
+              "duration": 0,
+              "navigationId": 2290,
+              "containerType": "window",
+              "containerSrc": "",
+              "containerId": "",
+              "containerName": ""
+            }
+          ]
+        },
+        {
+          "name": "long-animation-frame",
+          "entryType": "long-animation-frame",
+          "startTime": 37253.90000009537,
+          "duration": 133.79999995231628,
+          "navigationId": 2290,
+          "paintTime": 37387.700000047684,
+          "presentationTime": 37440,
+          "renderStart": 37385,
+          "styleAndLayoutStart": 37386.5,
+          "firstUIEventTimestamp": 0,
+          "blockingDuration": 83.6,
+          "scripts": [
+            {
+              "name": "script",
+              "entryType": "script",
+              "startTime": 37254,
+              "duration": 131,
+              "navigationId": 2290,
+              "invoker": "IdleRequestCallback",
+              "invokerType": "user-callback",
+              "windowAttribution": "self",
+              "executionStart": 37254,
+              "forcedStyleAndLayoutDuration": 0,
+              "pauseDuration": 0,
+              "sourceURL": "http://qa-gap-attribution-20261001.localhost:3340/game.html?webgpu=0",
+              "sourceFunctionName": "_warmupNext",
+              "sourceCharPosition": 1063855
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "fromLoop": 171,
+      "toLoop": 172,
+      "start": 36522.90000009537,
+      "end": 36655.60000002384,
+      "interval": 132.69999992847443,
+      "previousLoopCPU": 1.399999976158142,
+      "outsidePreviousLoop": 131.29999995231628,
+      "previousUpdate": 0.8999999761581421,
+      "previousDraw": 0.5,
+      "previousLoopOther": 0.0,
+      "afterKills": 0,
+      "items": 0,
+      "topEvents": [],
+      "browserEntries": [
+        {
+          "name": "self",
+          "entryType": "longtask",
+          "startTime": 36524.800000071526,
+          "duration": 130,
+          "navigationId": 2290,
+          "attribution": [
+            {
+              "name": "unknown",
+              "entryType": "taskattribution",
+              "startTime": 0,
+              "duration": 0,
+              "navigationId": 2290,
+              "containerType": "window",
+              "containerSrc": "",
+              "containerId": "",
+              "containerName": ""
+            }
+          ]
+        },
+        {
+          "name": "long-animation-frame",
+          "entryType": "long-animation-frame",
+          "startTime": 36524.800000071526,
+          "duration": 134.10000002384186,
+          "navigationId": 2290,
+          "paintTime": 36658.90000009537,
+          "presentationTime": 36716,
+          "renderStart": 36655.5,
+          "styleAndLayoutStart": 36657.700000047684,
+          "firstUIEventTimestamp": 0,
+          "blockingDuration": 84.1,
+          "scripts": [
+            {
+              "name": "script",
+              "entryType": "script",
+              "startTime": 36524.800000071526,
+              "duration": 130.69999992847443,
+              "navigationId": 2290,
+              "invoker": "IdleRequestCallback",
+              "invokerType": "user-callback",
+              "windowAttribution": "self",
+              "executionStart": 36524.800000071526,
+              "forcedStyleAndLayoutDuration": 0,
+              "pauseDuration": 0,
+              "sourceURL": "http://qa-gap-attribution-20261001.localhost:3340/game.html?webgpu=0",
+              "sourceFunctionName": "_warmupNext",
+              "sourceCharPosition": 1063855
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "fromLoop": 401,
+      "toLoop": 402,
+      "start": 43663.200000047684,
+      "end": 43768.90000009537,
+      "interval": 105.70000004768372,
+      "previousLoopCPU": 104.70000004768372,
+      "outsidePreviousLoop": 1.0,
+      "previousUpdate": 1.2999999523162842,
+      "previousDraw": 103.30000007152557,
+      "previousLoopOther": 0.10000002384185791,
+      "afterKills": 0,
+      "items": 0,
+      "topEvents": [],
+      "browserEntries": [
+        {
+          "name": "self",
+          "entryType": "longtask",
+          "startTime": 43663.10000002384,
+          "duration": 105,
+          "navigationId": 2290,
+          "attribution": [
+            {
+              "name": "unknown",
+              "entryType": "taskattribution",
+              "startTime": 0,
+              "duration": 0,
+              "navigationId": 2290,
+              "containerType": "window",
+              "containerSrc": "",
+              "containerId": "",
+              "containerName": ""
+            }
+          ]
+        },
+        {
+          "name": "long-animation-frame",
+          "entryType": "long-animation-frame",
+          "startTime": 43632.700000047684,
+          "duration": 135.20000004768372,
+          "navigationId": 2290,
+          "paintTime": 43767.90000009537,
+          "presentationTime": 43808,
+          "renderStart": 43663.10000002384,
+          "styleAndLayoutStart": 43767.90000009537,
+          "firstUIEventTimestamp": 0,
+          "blockingDuration": 55,
+          "scripts": [
+            {
+              "name": "script",
+              "entryType": "script",
+              "startTime": 43663.200000047684,
+              "duration": 104.70000004768372,
+              "navigationId": 2290,
+              "invoker": "FrameRequestCallback",
+              "invokerType": "user-callback",
+              "windowAttribution": "self",
+              "executionStart": 43663.200000047684,
+              "forcedStyleAndLayoutDuration": 1.5,
+              "pauseDuration": 0,
+              "sourceURL": "",
+              "sourceFunctionName": "",
+              "sourceCharPosition": -1
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "fromLoop": 166,
+      "toLoop": 167,
+      "start": 36362.800000071526,
+      "end": 36436.5,
+      "interval": 73.69999992847443,
+      "previousLoopCPU": 1.2999999523162842,
+      "outsidePreviousLoop": 72.39999997615814,
+      "previousUpdate": 0.5999999046325684,
+      "previousDraw": 0.6000000238418579,
+      "previousLoopOther": 0.10000002384185791,
+      "afterKills": 0,
+      "items": 0,
+      "topEvents": [],
+      "browserEntries": [
+        {
+          "name": "long-animation-frame",
+          "entryType": "long-animation-frame",
+          "startTime": 36364.5,
+          "duration": 74.80000007152557,
+          "navigationId": 2290,
+          "paintTime": 36439.300000071526,
+          "presentationTime": 36540,
+          "renderStart": 36436.40000009537,
+          "styleAndLayoutStart": 36438.200000047684,
+          "firstUIEventTimestamp": 0,
+          "blockingDuration": 0,
+          "scripts": []
+        }
+      ]
+    },
+    {
+      "fromLoop": 486,
+      "toLoop": 487,
+      "start": 46425.200000047684,
+      "end": 46493.60000002384,
+      "interval": 68.39999997615814,
+      "previousLoopCPU": 2.5,
+      "outsidePreviousLoop": 65.89999997615814,
+      "previousUpdate": 1.5,
+      "previousDraw": 0.7999999523162842,
+      "previousLoopOther": 0.20000004768371582,
+      "afterKills": 0,
+      "items": 0,
+      "topEvents": [],
+      "browserEntries": [
+        {
+          "name": "long-animation-frame",
+          "entryType": "long-animation-frame",
+          "startTime": 46429.90000009537,
+          "duration": 67.79999995231628,
+          "navigationId": 2290,
+          "paintTime": 46497.700000047684,
+          "presentationTime": 46620,
+          "renderStart": 46493.5,
+          "styleAndLayoutStart": 46495.90000009537,
+          "firstUIEventTimestamp": 0,
+          "blockingDuration": 0,
+          "scripts": []
+        }
+      ]
+    },
+    {
+      "fromLoop": 319,
+      "toLoop": 320,
+      "start": 41162.40000009537,
+      "end": 41227.90000009537,
+      "interval": 65.5,
+      "previousLoopCPU": 1.6999999284744263,
+      "outsidePreviousLoop": 63.800000071525574,
+      "previousUpdate": 1.100000023841858,
+      "previousDraw": 0.3999999761581421,
+      "previousLoopOther": 0.19999992847442627,
+      "afterKills": 0,
+      "items": 0,
+      "topEvents": [],
+      "browserEntries": [
+        {
+          "name": "long-animation-frame",
+          "entryType": "long-animation-frame",
+          "startTime": 41166.200000047684,
+          "duration": 63.5,
+          "navigationId": 2290,
+          "paintTime": 41229.700000047684,
+          "presentationTime": 41348,
+          "renderStart": 41227.800000071526,
+          "styleAndLayoutStart": 41229.60000002384,
+          "firstUIEventTimestamp": 0,
+          "blockingDuration": 0,
+          "scripts": []
+        }
+      ]
+    }
+  ],
+  "longCalls": [
+    {
+      "kind": "draw",
+      "start": 43664.5,
+      "end": 43767.800000071526,
+      "duration": 103.30000007152557,
+      "loopId": 401,
+      "parent": "loop",
+      "killsBefore": 0,
+      "killsAfter": 0
+    },
+    {
+      "kind": "update",
+      "start": 49426.5,
+      "end": 49432.40000009537,
+      "duration": 5.900000095367432,
+      "loopId": 578,
+      "parent": "loop",
+      "killsBefore": 0,
+      "killsAfter": 0
+    },
+    {
+      "kind": "update",
+      "start": 35947.40000009537,
+      "end": 35953.200000047684,
+      "duration": 5.799999952316284,
+      "loopId": 152,
+      "parent": "loop",
+      "killsBefore": 0,
+      "killsAfter": 0
+    }
+  ],
+  "events": [
+    {
+      "kind": "keydown",
+      "at": 35930.90000009537,
+      "code": "KeyW",
+      "button": null,
+      "trusted": true,
+      "target": "BODY",
+      "x": null,
+      "y": null
+    },
+    {
+      "kind": "keyup",
+      "at": 35931.700000047684,
+      "code": "KeyW",
+      "button": null,
+      "trusted": true,
+      "target": "BODY",
+      "x": null,
+      "y": null
+    },
+    {
+      "kind": "mousedown",
+      "at": 35955.5,
+      "code": null,
+      "button": 0,
+      "trusted": true,
+      "target": "CANVAS",
+      "x": 675,
+      "y": 245
+    },
+    {
+      "kind": "mouseup",
+      "at": 35956.800000071526,
+      "code": null,
+      "button": 0,
+      "trusted": true,
+      "target": "CANVAS",
+      "x": 675,
+      "y": 245
+    },
+    {
+      "kind": "mousedown",
+      "at": 35973.300000071526,
+      "code": null,
+      "button": 0,
+      "trusted": true,
+      "target": "CANVAS",
+      "x": 675,
+      "y": 245
+    },
+    {
+      "kind": "mouseup",
+      "at": 36214.90000009537,
+      "code": null,
+      "button": 0,
+      "trusted": true,
+      "target": "CANVAS",
+      "x": 676,
+      "y": 245
+    },
+    {
+      "kind": "keydown",
+      "at": 36220.60000002384,
+      "code": "KeyW",
+      "button": null,
+      "trusted": true,
+      "target": "BODY",
+      "x": null,
+      "y": null
+    },
+    {
+      "kind": "keyup",
+      "at": 36221.800000071526,
+      "code": "KeyW",
+      "button": null,
+      "trusted": true,
+      "target": "BODY",
+      "x": null,
+      "y": null
+    },
+    {
+      "kind": "mousedown",
+      "at": 36245.800000071526,
+      "code": null,
+      "button": 2,
+      "trusted": true,
+      "target": "CANVAS",
+      "x": 675,
+      "y": 245
+    },
+    {
+      "kind": "mouseup",
+      "at": 36247.200000047684,
+      "code": null,
+      "button": 2,
+      "trusted": true,
+      "target": "CANVAS",
+      "x": 675,
+      "y": 245
+    },
+    {
+      "kind": "mousedown",
+      "at": 40417.200000047684,
+      "code": null,
+      "button": 0,
+      "trusted": true,
+      "target": "CANVAS",
+      "x": 675,
+      "y": 245
+    },
+    {
+      "kind": "mouseup",
+      "at": 40693,
+      "code": null,
+      "button": 0,
+      "trusted": true,
+      "target": "CANVAS",
+      "x": 676,
+      "y": 245
+    },
+    {
+      "kind": "keydown",
+      "at": 40700.40000009537,
+      "code": "KeyW",
+      "button": null,
+      "trusted": true,
+      "target": "BODY",
+      "x": null,
+      "y": null
+    },
+    {
+      "kind": "keyup",
+      "at": 40701.60000002384,
+      "code": "KeyW",
+      "button": null,
+      "trusted": true,
+      "target": "BODY",
+      "x": null,
+      "y": null
+    },
+    {
+      "kind": "mousedown",
+      "at": 40732.60000002384,
+      "code": null,
+      "button": 2,
+      "trusted": true,
+      "target": "CANVAS",
+      "x": 675,
+      "y": 245
+    },
+    {
+      "kind": "mouseup",
+      "at": 40733.90000009537,
+      "code": null,
+      "button": 2,
+      "trusted": true,
+      "target": "CANVAS",
+      "x": 675,
+      "y": 245
+    },
+    {
+      "kind": "mousedown",
+      "at": 40763.10000002384,
+      "code": null,
+      "button": 0,
+      "trusted": true,
+      "target": "CANVAS",
+      "x": 675,
+      "y": 245
+    },
+    {
+      "kind": "mouseup",
+      "at": 41033.5,
+      "code": null,
+      "button": 0,
+      "trusted": true,
+      "target": "CANVAS",
+      "x": 676,
+      "y": 245
+    },
+    {
+      "kind": "mousedown",
+      "at": 45648.200000047684,
+      "code": null,
+      "button": 0,
+      "trusted": true,
+      "target": "CANVAS",
+      "x": 675,
+      "y": 245
+    },
+    {
+      "kind": "mouseup",
+      "at": 45944.800000071526,
+      "code": null,
+      "button": 0,
+      "trusted": true,
+      "target": "CANVAS",
+      "x": 676,
+      "y": 245
+    },
+    {
+      "kind": "keydown",
+      "at": 45950.300000071526,
+      "code": "KeyA",
+      "button": null,
+      "trusted": true,
+      "target": "BODY",
+      "x": null,
+      "y": null
+    },
+    {
+      "kind": "keyup",
+      "at": 45951.300000071526,
+      "code": "KeyA",
+      "button": null,
+      "trusted": true,
+      "target": "BODY",
+      "x": null,
+      "y": null
+    },
+    {
+      "kind": "mousedown",
+      "at": 45980.10000002384,
+      "code": null,
+      "button": 2,
+      "trusted": true,
+      "target": "CANVAS",
+      "x": 675,
+      "y": 245
+    },
+    {
+      "kind": "mouseup",
+      "at": 45981.5,
+      "code": null,
+      "button": 2,
+      "trusted": true,
+      "target": "CANVAS",
+      "x": 675,
+      "y": 245
+    },
+    {
+      "kind": "mousedown",
+      "at": 46018,
+      "code": null,
+      "button": 0,
+      "trusted": true,
+      "target": "CANVAS",
+      "x": 675,
+      "y": 245
+    },
+    {
+      "kind": "mouseup",
+      "at": 46295.5,
+      "code": null,
+      "button": 0,
+      "trusted": true,
+      "target": "CANVAS",
+      "x": 676,
+      "y": 245
+    }
+  ],
+  "browserEntries": [
+    {
+      "name": "self",
+      "entryType": "longtask",
+      "startTime": 36524.800000071526,
+      "duration": 130,
+      "navigationId": 2290,
+      "attribution": [
+        {
+          "name": "unknown",
+          "entryType": "taskattribution",
+          "startTime": 0,
+          "duration": 0,
+          "navigationId": 2290,
+          "containerType": "window",
+          "containerSrc": "",
+          "containerId": "",
+          "containerName": ""
+        }
+      ]
+    },
+    {
+      "name": "long-animation-frame",
+      "entryType": "long-animation-frame",
+      "startTime": 36364.5,
+      "duration": 74.80000007152557,
+      "navigationId": 2290,
+      "paintTime": 36439.300000071526,
+      "presentationTime": 36540,
+      "renderStart": 36436.40000009537,
+      "styleAndLayoutStart": 36438.200000047684,
+      "firstUIEventTimestamp": 0,
+      "blockingDuration": 0,
+      "scripts": []
+    },
+    {
+      "name": "long-animation-frame",
+      "entryType": "long-animation-frame",
+      "startTime": 36524.800000071526,
+      "duration": 134.10000002384186,
+      "navigationId": 2290,
+      "paintTime": 36658.90000009537,
+      "presentationTime": 36716,
+      "renderStart": 36655.5,
+      "styleAndLayoutStart": 36657.700000047684,
+      "firstUIEventTimestamp": 0,
+      "blockingDuration": 84.1,
+      "scripts": [
+        {
+          "name": "script",
+          "entryType": "script",
+          "startTime": 36524.800000071526,
+          "duration": 130.69999992847443,
+          "navigationId": 2290,
+          "invoker": "IdleRequestCallback",
+          "invokerType": "user-callback",
+          "windowAttribution": "self",
+          "executionStart": 36524.800000071526,
+          "forcedStyleAndLayoutDuration": 0,
+          "pauseDuration": 0,
+          "sourceURL": "http://qa-gap-attribution-20261001.localhost:3340/game.html?webgpu=0",
+          "sourceFunctionName": "_warmupNext",
+          "sourceCharPosition": 1063855
+        }
+      ]
+    },
+    {
+      "name": "self",
+      "entryType": "longtask",
+      "startTime": 36958.700000047684,
+      "duration": 135,
+      "navigationId": 2290,
+      "attribution": [
+        {
+          "name": "unknown",
+          "entryType": "taskattribution",
+          "startTime": 0,
+          "duration": 0,
+          "navigationId": 2290,
+          "containerType": "window",
+          "containerSrc": "",
+          "containerId": "",
+          "containerName": ""
+        }
+      ]
+    },
+    {
+      "name": "long-animation-frame",
+      "entryType": "long-animation-frame",
+      "startTime": 36958.5,
+      "duration": 139,
+      "navigationId": 2290,
+      "paintTime": 37097.5,
+      "presentationTime": 37148,
+      "renderStart": 37094.300000071526,
+      "styleAndLayoutStart": 37096.10000002384,
+      "firstUIEventTimestamp": 0,
+      "blockingDuration": 88.8,
+      "scripts": [
+        {
+          "name": "script",
+          "entryType": "script",
+          "startTime": 36958.700000047684,
+          "duration": 135.60000002384186,
+          "navigationId": 2290,
+          "invoker": "IdleRequestCallback",
+          "invokerType": "user-callback",
+          "windowAttribution": "self",
+          "executionStart": 36958.700000047684,
+          "forcedStyleAndLayoutDuration": 0,
+          "pauseDuration": 0,
+          "sourceURL": "http://qa-gap-attribution-20261001.localhost:3340/game.html?webgpu=0",
+          "sourceFunctionName": "_warmupNext",
+          "sourceCharPosition": 1063855
+        }
+      ]
+    },
+    {
+      "name": "self",
+      "entryType": "longtask",
+      "startTime": 37254,
+      "duration": 131,
+      "navigationId": 2290,
+      "attribution": [
+        {
+          "name": "unknown",
+          "entryType": "taskattribution",
+          "startTime": 0,
+          "duration": 0,
+          "navigationId": 2290,
+          "containerType": "window",
+          "containerSrc": "",
+          "containerId": "",
+          "containerName": ""
+        }
+      ]
+    },
+    {
+      "name": "long-animation-frame",
+      "entryType": "long-animation-frame",
+      "startTime": 37253.90000009537,
+      "duration": 133.79999995231628,
+      "navigationId": 2290,
+      "paintTime": 37387.700000047684,
+      "presentationTime": 37440,
+      "renderStart": 37385,
+      "styleAndLayoutStart": 37386.5,
+      "firstUIEventTimestamp": 0,
+      "blockingDuration": 83.6,
+      "scripts": [
+        {
+          "name": "script",
+          "entryType": "script",
+          "startTime": 37254,
+          "duration": 131,
+          "navigationId": 2290,
+          "invoker": "IdleRequestCallback",
+          "invokerType": "user-callback",
+          "windowAttribution": "self",
+          "executionStart": 37254,
+          "forcedStyleAndLayoutDuration": 0,
+          "pauseDuration": 0,
+          "sourceURL": "http://qa-gap-attribution-20261001.localhost:3340/game.html?webgpu=0",
+          "sourceFunctionName": "_warmupNext",
+          "sourceCharPosition": 1063855
+        }
+      ]
+    },
+    {
+      "name": "long-animation-frame",
+      "entryType": "long-animation-frame",
+      "startTime": 41166.200000047684,
+      "duration": 63.5,
+      "navigationId": 2290,
+      "paintTime": 41229.700000047684,
+      "presentationTime": 41348,
+      "renderStart": 41227.800000071526,
+      "styleAndLayoutStart": 41229.60000002384,
+      "firstUIEventTimestamp": 0,
+      "blockingDuration": 0,
+      "scripts": []
+    },
+    {
+      "name": "self",
+      "entryType": "longtask",
+      "startTime": 43663.10000002384,
+      "duration": 105,
+      "navigationId": 2290,
+      "attribution": [
+        {
+          "name": "unknown",
+          "entryType": "taskattribution",
+          "startTime": 0,
+          "duration": 0,
+          "navigationId": 2290,
+          "containerType": "window",
+          "containerSrc": "",
+          "containerId": "",
+          "containerName": ""
+        }
+      ]
+    },
+    {
+      "name": "long-animation-frame",
+      "entryType": "long-animation-frame",
+      "startTime": 43632.700000047684,
+      "duration": 135.20000004768372,
+      "navigationId": 2290,
+      "paintTime": 43767.90000009537,
+      "presentationTime": 43808,
+      "renderStart": 43663.10000002384,
+      "styleAndLayoutStart": 43767.90000009537,
+      "firstUIEventTimestamp": 0,
+      "blockingDuration": 55,
+      "scripts": [
+        {
+          "name": "script",
+          "entryType": "script",
+          "startTime": 43663.200000047684,
+          "duration": 104.70000004768372,
+          "navigationId": 2290,
+          "invoker": "FrameRequestCallback",
+          "invokerType": "user-callback",
+          "windowAttribution": "self",
+          "executionStart": 43663.200000047684,
+          "forcedStyleAndLayoutDuration": 1.5,
+          "pauseDuration": 0,
+          "sourceURL": "",
+          "sourceFunctionName": "",
+          "sourceCharPosition": -1
+        }
+      ]
+    },
+    {
+      "name": "long-animation-frame",
+      "entryType": "long-animation-frame",
+      "startTime": 46429.90000009537,
+      "duration": 67.79999995231628,
+      "navigationId": 2290,
+      "paintTime": 46497.700000047684,
+      "presentationTime": 46620,
+      "renderStart": 46493.5,
+      "styleAndLayoutStart": 46495.90000009537,
+      "firstUIEventTimestamp": 0,
+      "blockingDuration": 0,
+      "scripts": []
+    }
+  ],
+  "environment": {
+    "url": "http://qa-gap-attribution-20261001.localhost:3340/game.html?webgpu=0",
+    "ua": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/152.0.0.0 Safari/537.36",
+    "timeOrigin": 1790853035604.5,
+    "viewport": [
+      1352,
+      666
+    ],
+    "dpr": 2,
+    "canvas": [
+      1352,
+      666
+    ],
+    "useGL": true,
+    "useGPU": false,
+    "physicsStep": 16.666666666666668,
+    "warm": true,
+    "warmMs": 7.599999904632568,
+    "profiler": true,
+    "profilerMode": "external CDP sampling interval requested 1000us",
+    "gpuTiming": false,
+    "instrumentation": "loop/update/draw pass-through wrappers; rAF/state; PerformanceObserver; overhead unmeasured",
+    "performanceEntryTypes": [
+      "element",
+      "event",
+      "first-input",
+      "interaction-contentful-paint",
+      "largest-contentful-paint",
+      "layout-shift",
+      "long-animation-frame",
+      "longtask",
+      "mark",
+      "measure",
+      "navigation",
+      "paint",
+      "resource",
+      "soft-navigation",
+      "visibility-state"
+    ]
+  },
+  "options": {
+    "shake": 80,
+    "hitStop": 0,
+    "parts": 100,
+    "sfxVol": 60,
+    "bgmVol": 60,
+    "diff": 5,
+    "minPickRar": 0,
+    "minPickLvTier": 0,
+    "fpsCap": 0,
+    "petAuto": true,
+    "bossDebug": false,
+    "bloom": true,
+    "trail": true,
+    "slash": true,
+    "postfx": true,
+    "deathFx": true,
+    "lighting": true,
+    "torch": true,
+    "ambPart": true,
+    "fog": true,
+    "bossFog": true,
+    "grain": true,
+    "autoPotThr": 0.99,
+    "cursor": 0,
+    "cursorSize": 50,
+    "quality": "high",
+    "resScale": 100,
+    "ssaa": 1,
+    "outline": true,
+    "bgmTrack": "auto",
+    "lang": "ko",
+    "crAutoFuse": -1,
+    "crAutoEnh": -1,
+    "showFps": false,
+    "atmos": 2
+  },
+  "finalOptions": {
+    "shake": 80,
+    "hitStop": 0,
+    "parts": 100,
+    "sfxVol": 60,
+    "bgmVol": 60,
+    "diff": 5,
+    "minPickRar": 0,
+    "minPickLvTier": 0,
+    "fpsCap": 0,
+    "petAuto": true,
+    "bossDebug": false,
+    "bloom": true,
+    "trail": true,
+    "slash": true,
+    "postfx": true,
+    "deathFx": true,
+    "lighting": true,
+    "torch": true,
+    "ambPart": true,
+    "fog": true,
+    "bossFog": true,
+    "grain": true,
+    "autoPotThr": 0.99,
+    "cursor": 0,
+    "cursorSize": 50,
+    "quality": "high",
+    "resScale": 100,
+    "ssaa": 1,
+    "outline": true,
+    "bgmTrack": "auto",
+    "lang": "ko",
+    "crAutoFuse": -1,
+    "crAutoEnh": -1,
+    "showFps": false,
+    "atmos": 1
+  },
+  "restored": {
+    "loop": true,
+    "update": true,
+    "draw": true
+  },
+  "dropped": 0
+}

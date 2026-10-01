@@ -1,0 +1,1535 @@
+{
+  "lightFirstInput": 147217.60000002384,
+  "lightFirstAttack": 147713.20000004768,
+  "lightFirstKillObserved": 152490.30000007153,
+  "lightLongDrawGaps": [
+    {
+      "start": 147453.30000007153,
+      "end": 147563.10000002384,
+      "gap": 109.79999995231628,
+      "previousDraw": 0.5,
+      "betweenDrawCalls": 109.29999995231628,
+      "startAfterInput": 235.70000004768372,
+      "endRelativeToFirstKill": -4927.200000047684,
+      "endBeforeFirstAttack": true,
+      "adjacentDraws": [
+        {
+          "at": 147453.30000007153,
+          "end": 147453.80000007153
+        },
+        {
+          "at": 147563.10000002384,
+          "end": 147563.5
+        }
+      ],
+      "adjacentStates": [
+        {
+          "timestamp": 147422.3,
+          "at": 147430.5,
+          "on": true,
+          "paused": false,
+          "kills": 0,
+          "hp": 572,
+          "lv": 1,
+          "x": 4020,
+          "y": 7420,
+          "enemies": 5,
+          "hidden": false,
+          "focus": true,
+          "gl": true,
+          "gpu": false
+        },
+        {
+          "timestamp": 147447.4,
+          "at": 147453.80000007153,
+          "on": true,
+          "paused": false,
+          "kills": 0,
+          "hp": 572,
+          "lv": 1,
+          "x": 4020,
+          "y": 7420,
+          "enemies": 5,
+          "hidden": false,
+          "focus": true,
+          "gl": true,
+          "gpu": false
+        },
+        {
+          "timestamp": 147480.7,
+          "at": 147563.5,
+          "on": true,
+          "paused": false,
+          "kills": 0,
+          "hp": 572,
+          "lv": 1,
+          "x": 4020,
+          "y": 7420,
+          "enemies": 5,
+          "hidden": false,
+          "focus": true,
+          "gl": true,
+          "gpu": false
+        },
+        {
+          "timestamp": 147562.9,
+          "at": 147567.10000002384,
+          "on": true,
+          "paused": false,
+          "kills": 0,
+          "hp": 572,
+          "lv": 1,
+          "x": 4020,
+          "y": 7420,
+          "enemies": 5,
+          "hidden": false,
+          "focus": true,
+          "gl": true,
+          "gpu": false
+        },
+        {
+          "timestamp": 147572.7,
+          "at": 147573.30000007153,
+          "on": true,
+          "paused": false,
+          "kills": 0,
+          "hp": 572,
+          "lv": 1,
+          "x": 4020,
+          "y": 7420,
+          "enemies": 5,
+          "hidden": false,
+          "focus": true,
+          "gl": true,
+          "gpu": false
+        },
+        {
+          "timestamp": 147580.6,
+          "at": 147581.30000007153,
+          "on": true,
+          "paused": false,
+          "kills": 0,
+          "hp": 572,
+          "lv": 1,
+          "x": 4020,
+          "y": 7420,
+          "enemies": 5,
+          "hidden": false,
+          "focus": true,
+          "gl": true,
+          "gpu": false
+        },
+        {
+          "timestamp": 147597.7,
+          "at": 147601,
+          "on": true,
+          "paused": false,
+          "kills": 0,
+          "hp": 572,
+          "lv": 1,
+          "x": 4020,
+          "y": 7420,
+          "enemies": 5,
+          "hidden": false,
+          "focus": true,
+          "gl": true,
+          "gpu": false
+        }
+      ],
+      "nearbyInputs": [],
+      "nearbyEvents": []
+    },
+    {
+      "start": 154833.5,
+      "end": 154926.30000007153,
+      "gap": 92.80000007152557,
+      "previousDraw": 88.60000002384186,
+      "betweenDrawCalls": 4.200000047683716,
+      "startAfterInput": 7615.899999976158,
+      "endRelativeToFirstKill": 2436.0,
+      "endBeforeFirstAttack": false,
+      "adjacentDraws": [
+        {
+          "at": 154833.5,
+          "end": 154922.10000002384
+        },
+        {
+          "at": 154926.30000007153,
+          "end": 154926.90000009537
+        }
+      ],
+      "adjacentStates": [
+        {
+          "timestamp": 154797.3,
+          "at": 154804.20000004768,
+          "on": true,
+          "paused": false,
+          "kills": 1,
+          "hp": 572,
+          "lv": 1,
+          "x": 4020,
+          "y": 7420,
+          "enemies": 18,
+          "hidden": false,
+          "focus": true,
+          "gl": true,
+          "gpu": false
+        },
+        {
+          "timestamp": 154830.7,
+          "at": 154922.10000002384,
+          "on": true,
+          "paused": false,
+          "kills": 1,
+          "hp": 572,
+          "lv": 1,
+          "x": 4020,
+          "y": 7420,
+          "enemies": 18,
+          "hidden": false,
+          "focus": true,
+          "gl": true,
+          "gpu": false
+        },
+        {
+          "timestamp": 154922.4,
+          "at": 154926.90000009537,
+          "on": true,
+          "paused": false,
+          "kills": 1,
+          "hp": 572,
+          "lv": 1,
+          "x": 4020,
+          "y": 7420,
+          "enemies": 18,
+          "hidden": false,
+          "focus": true,
+          "gl": true,
+          "gpu": false
+        },
+        {
+          "timestamp": 154930.6,
+          "at": 154931.90000009537,
+          "on": true,
+          "paused": false,
+          "kills": 1,
+          "hp": 572,
+          "lv": 1,
+          "x": 4020,
+          "y": 7420,
+          "enemies": 18,
+          "hidden": false,
+          "focus": true,
+          "gl": true,
+          "gpu": false
+        },
+        {
+          "timestamp": 154939.1,
+          "at": 154939.70000004768,
+          "on": true,
+          "paused": false,
+          "kills": 1,
+          "hp": 572,
+          "lv": 1,
+          "x": 4020,
+          "y": 7420,
+          "enemies": 18,
+          "hidden": false,
+          "focus": true,
+          "gl": true,
+          "gpu": false
+        },
+        {
+          "timestamp": 154955.5,
+          "at": 154958.40000009537,
+          "on": true,
+          "paused": false,
+          "kills": 1,
+          "hp": 572,
+          "lv": 1,
+          "x": 4020,
+          "y": 7420,
+          "enemies": 18,
+          "hidden": false,
+          "focus": true,
+          "gl": true,
+          "gpu": false
+        }
+      ],
+      "nearbyInputs": [],
+      "nearbyEvents": []
+    },
+    {
+      "start": 158188.80000007153,
+      "end": 158265.40000009537,
+      "gap": 76.60000002384186,
+      "previousDraw": 0.5,
+      "betweenDrawCalls": 76.10000002384186,
+      "startAfterInput": 10971.200000047684,
+      "endRelativeToFirstKill": 5775.100000023842,
+      "endBeforeFirstAttack": false,
+      "adjacentDraws": [
+        {
+          "at": 158188.80000007153,
+          "end": 158189.30000007153
+        },
+        {
+          "at": 158265.40000009537,
+          "end": 158266.10000002384
+        }
+      ],
+      "adjacentStates": [
+        {
+          "timestamp": 158155.7,
+          "at": 158157.80000007153,
+          "on": true,
+          "paused": false,
+          "kills": 1,
+          "hp": 572,
+          "lv": 1,
+          "x": 4017.217806220703,
+          "y": 7422.213794827944,
+          "enemies": 23,
+          "hidden": false,
+          "focus": true,
+          "gl": true,
+          "gpu": false
+        },
+        {
+          "timestamp": 158180.6,
+          "at": 158189.30000007153,
+          "on": true,
+          "paused": false,
+          "kills": 1,
+          "hp": 572,
+          "lv": 1,
+          "x": 4017.217806220703,
+          "y": 7422.213794827944,
+          "enemies": 23,
+          "hidden": false,
+          "focus": true,
+          "gl": true,
+          "gpu": false
+        },
+        {
+          "timestamp": 158214,
+          "at": 158266.10000002384,
+          "on": true,
+          "paused": false,
+          "kills": 1,
+          "hp": 572,
+          "lv": 1,
+          "x": 4017.217806220703,
+          "y": 7422.213794827944,
+          "enemies": 23,
+          "hidden": false,
+          "focus": true,
+          "gl": true,
+          "gpu": false
+        },
+        {
+          "timestamp": 158280.8,
+          "at": 158290.20000004768,
+          "on": true,
+          "paused": false,
+          "kills": 1,
+          "hp": 572,
+          "lv": 1,
+          "x": 4017.217806220703,
+          "y": 7422.213794827944,
+          "enemies": 23,
+          "hidden": false,
+          "focus": true,
+          "gl": true,
+          "gpu": false
+        }
+      ],
+      "nearbyInputs": [],
+      "nearbyEvents": []
+    },
+    {
+      "start": 148471,
+      "end": 148534.90000009537,
+      "gap": 63.90000009536743,
+      "previousDraw": 0.7000000476837158,
+      "betweenDrawCalls": 63.200000047683716,
+      "startAfterInput": 1253.3999999761581,
+      "endRelativeToFirstKill": -3955.399999976158,
+      "endBeforeFirstAttack": false,
+      "adjacentDraws": [
+        {
+          "at": 148471,
+          "end": 148471.70000004768
+        },
+        {
+          "at": 148534.90000009537,
+          "end": 148535.40000009537
+        }
+      ],
+      "adjacentStates": [
+        {
+          "timestamp": 148439,
+          "at": 148444.40000009537,
+          "on": true,
+          "paused": false,
+          "kills": 0,
+          "hp": 572,
+          "lv": 1,
+          "x": 4020,
+          "y": 7420,
+          "enemies": 5,
+          "hidden": false,
+          "focus": true,
+          "gl": true,
+          "gpu": false
+        },
+        {
+          "timestamp": 148464,
+          "at": 148471.70000004768,
+          "on": true,
+          "paused": false,
+          "kills": 0,
+          "hp": 572,
+          "lv": 1,
+          "x": 4020,
+          "y": 7420,
+          "enemies": 5,
+          "hidden": false,
+          "focus": true,
+          "gl": true,
+          "gpu": false
+        },
+        {
+          "timestamp": 148497.2,
+          "at": 148535.5,
+          "on": true,
+          "paused": false,
+          "kills": 0,
+          "hp": 572,
+          "lv": 1,
+          "x": 4020,
+          "y": 7420,
+          "enemies": 5,
+          "hidden": false,
+          "focus": true,
+          "gl": true,
+          "gpu": false
+        },
+        {
+          "timestamp": 148547.2,
+          "at": 148550.80000007153,
+          "on": true,
+          "paused": false,
+          "kills": 0,
+          "hp": 572,
+          "lv": 1,
+          "x": 4020,
+          "y": 7420,
+          "enemies": 5,
+          "hidden": false,
+          "focus": true,
+          "gl": true,
+          "gpu": false
+        }
+      ],
+      "nearbyInputs": [],
+      "nearbyEvents": []
+    },
+    {
+      "start": 153330.40000009537,
+      "end": 153384.40000009537,
+      "gap": 54.0,
+      "previousDraw": 0.6999999284744263,
+      "betweenDrawCalls": 53.300000071525574,
+      "startAfterInput": 6112.800000071526,
+      "endRelativeToFirstKill": 894.1000000238419,
+      "endBeforeFirstAttack": false,
+      "adjacentDraws": [
+        {
+          "at": 153330.40000009537,
+          "end": 153331.10000002384
+        },
+        {
+          "at": 153384.40000009537,
+          "end": 153385
+        }
+      ],
+      "adjacentStates": [
+        {
+          "timestamp": 153297.4,
+          "at": 153304.80000007153,
+          "on": true,
+          "paused": false,
+          "kills": 1,
+          "hp": 572,
+          "lv": 1,
+          "x": 4020,
+          "y": 7420,
+          "enemies": 14,
+          "hidden": false,
+          "focus": true,
+          "gl": true,
+          "gpu": false
+        },
+        {
+          "timestamp": 153322.4,
+          "at": 153331.10000002384,
+          "on": true,
+          "paused": false,
+          "kills": 1,
+          "hp": 572,
+          "lv": 1,
+          "x": 4020,
+          "y": 7420,
+          "enemies": 14,
+          "hidden": false,
+          "focus": true,
+          "gl": true,
+          "gpu": false
+        },
+        {
+          "timestamp": 153355.7,
+          "at": 153385.10000002384,
+          "on": true,
+          "paused": false,
+          "kills": 1,
+          "hp": 572,
+          "lv": 1,
+          "x": 4020,
+          "y": 7420,
+          "enemies": 14,
+          "hidden": false,
+          "focus": true,
+          "gl": true,
+          "gpu": false
+        },
+        {
+          "timestamp": 153387.5,
+          "at": 153395.30000007153,
+          "on": true,
+          "paused": false,
+          "kills": 1,
+          "hp": 572,
+          "lv": 1,
+          "x": 4020,
+          "y": 7420,
+          "enemies": 14,
+          "hidden": false,
+          "focus": true,
+          "gl": true,
+          "gpu": false
+        }
+      ],
+      "nearbyInputs": [],
+      "nearbyEvents": []
+    }
+  ],
+  "lightLargestDraw": {
+    "at": 154833.5,
+    "end": 154922.10000002384
+  },
+  "lightKillTransitionRows": [
+    {
+      "timestamp": 152412.7,
+      "at": 152418.80000007153,
+      "on": true,
+      "paused": false,
+      "kills": 0,
+      "hp": 572,
+      "lv": 1,
+      "x": 4020,
+      "y": 7420,
+      "enemies": 14,
+      "hidden": false,
+      "focus": true,
+      "gl": true,
+      "gpu": false
+    },
+    {
+      "timestamp": 152446.1,
+      "at": 152449.10000002384,
+      "on": true,
+      "paused": false,
+      "kills": 0,
+      "hp": 572,
+      "lv": 1,
+      "x": 4020,
+      "y": 7420,
+      "enemies": 14,
+      "hidden": false,
+      "focus": true,
+      "gl": true,
+      "gpu": false
+    },
+    {
+      "timestamp": 152472.3,
+      "at": 152490.30000007153,
+      "on": true,
+      "paused": false,
+      "kills": 1,
+      "hp": 572,
+      "lv": 1,
+      "x": 4020,
+      "y": 7420,
+      "enemies": 13,
+      "hidden": false,
+      "focus": true,
+      "gl": true,
+      "gpu": false
+    },
+    {
+      "timestamp": 152505.6,
+      "at": 152519.30000007153,
+      "on": true,
+      "paused": false,
+      "kills": 1,
+      "hp": 572,
+      "lv": 1,
+      "x": 4020,
+      "y": 7420,
+      "enemies": 13,
+      "hidden": false,
+      "focus": true,
+      "gl": true,
+      "gpu": false
+    },
+    {
+      "timestamp": 152539,
+      "at": 152547.70000004768,
+      "on": true,
+      "paused": false,
+      "kills": 1,
+      "hp": 572,
+      "lv": 1,
+      "x": 4020,
+      "y": 7420,
+      "enemies": 13,
+      "hidden": false,
+      "focus": true,
+      "gl": true,
+      "gpu": false
+    },
+    {
+      "timestamp": 152572.4,
+      "at": 152579.5,
+      "on": true,
+      "paused": false,
+      "kills": 1,
+      "hp": 572,
+      "lv": 1,
+      "x": 4020,
+      "y": 7420,
+      "enemies": 13,
+      "hidden": false,
+      "focus": true,
+      "gl": true,
+      "gpu": false
+    }
+  ],
+  "lightKillAdjacentDraws": [
+    {
+      "at": 152418.20000004768,
+      "end": 152418.70000004768
+    },
+    {
+      "at": 152448.5,
+      "end": 152449.10000002384
+    },
+    {
+      "at": 152482.30000007153,
+      "end": 152490.20000004768
+    },
+    {
+      "at": 152515.90000009537,
+      "end": 152519.10000002384
+    },
+    {
+      "at": 152545.10000002384,
+      "end": 152547.60000002384
+    },
+    {
+      "at": 152576.80000007153,
+      "end": 152579.5
+    }
+  ],
+  "diagnosticLongLoopGaps": [
+    {
+      "fromLoop": 184,
+      "toLoop": 185,
+      "start": 36955.10000002384,
+      "end": 37094.300000071526,
+      "gap": 139.20000004768372,
+      "previousLoopElapsed": 1.5,
+      "previousUpdate": 1.100000023841858,
+      "previousDraw": 0.3999999761581421,
+      "otherInsidePreviousLoop": 0.0,
+      "outsidePreviousLoop": 137.70000004768372,
+      "browserEntries": [
+        {
+          "name": "self",
+          "entryType": "longtask",
+          "startTime": 36958.700000047684,
+          "duration": 135,
+          "navigationId": 2290,
+          "attribution": [
+            {
+              "name": "unknown",
+              "entryType": "taskattribution",
+              "startTime": 0,
+              "duration": 0,
+              "navigationId": 2290,
+              "containerType": "window",
+              "containerSrc": "",
+              "containerId": "",
+              "containerName": ""
+            }
+          ]
+        },
+        {
+          "name": "long-animation-frame",
+          "entryType": "long-animation-frame",
+          "startTime": 36958.5,
+          "duration": 139,
+          "navigationId": 2290,
+          "paintTime": 37097.5,
+          "presentationTime": 37148,
+          "renderStart": 37094.300000071526,
+          "styleAndLayoutStart": 37096.10000002384,
+          "firstUIEventTimestamp": 0,
+          "blockingDuration": 88.8,
+          "scripts": [
+            {
+              "name": "script",
+              "entryType": "script",
+              "startTime": 36958.700000047684,
+              "duration": 135.60000002384186,
+              "navigationId": 2290,
+              "invoker": "IdleRequestCallback",
+              "invokerType": "user-callback",
+              "windowAttribution": "self",
+              "executionStart": 36958.700000047684,
+              "forcedStyleAndLayoutDuration": 0,
+              "pauseDuration": 0,
+              "sourceURL": "http://qa-gap-attribution-20261001.localhost:3340/game.html?webgpu=0",
+              "sourceFunctionName": "_warmupNext",
+              "sourceCharPosition": 1063855
+            }
+          ]
+        }
+      ],
+      "possibleStackSamples": [
+        {
+          "function": "(root)",
+          "url": "",
+          "line": 0,
+          "sampleCount": 320
+        },
+        {
+          "function": "(idle)",
+          "url": "",
+          "line": 0,
+          "sampleCount": 164
+        },
+        {
+          "function": "drawImage",
+          "url": "http://qa-gap-attribution-20261001.localhost:3340/game.html?webgpu=0",
+          "line": 6007,
+          "sampleCount": 115
+        },
+        {
+          "function": "texImage2D",
+          "url": "",
+          "line": 0,
+          "sampleCount": 114
+        },
+        {
+          "function": "_getTex",
+          "url": "http://qa-gap-attribution-20261001.localhost:3340/game.html?webgpu=0",
+          "line": 5701,
+          "sampleCount": 114
+        },
+        {
+          "function": "_warmImageGpu",
+          "url": "http://qa-gap-attribution-20261001.localhost:3340/game.html?webgpu=0",
+          "line": 21935,
+          "sampleCount": 114
+        },
+        {
+          "function": "_warmupNext",
+          "url": "http://qa-gap-attribution-20261001.localhost:3340/game.html?webgpu=0",
+          "line": 22016,
+          "sampleCount": 114
+        },
+        {
+          "function": "(program)",
+          "url": "",
+          "line": 0,
+          "sampleCount": 26
+        },
+        {
+          "function": "wrappedLoop",
+          "url": "",
+          "line": 63,
+          "sampleCount": 14
+        },
+        {
+          "function": "wrapped",
+          "url": "",
+          "line": 48,
+          "sampleCount": 13
+        },
+        {
+          "function": "loop",
+          "url": "http://qa-gap-attribution-20261001.localhost:3340/game.html?webgpu=0",
+          "line": 59577,
+          "sampleCount": 13
+        },
+        {
+          "function": "update",
+          "url": "http://qa-gap-attribution-20261001.localhost:3340/game.html?webgpu=0",
+          "line": 30698,
+          "sampleCount": 6
+        }
+      ]
+    },
+    {
+      "fromLoop": 193,
+      "toLoop": 194,
+      "start": 37252.300000071526,
+      "end": 37385.200000047684,
+      "gap": 132.89999997615814,
+      "previousLoopElapsed": 1.2999999523162842,
+      "previousUpdate": 0.7999999523162842,
+      "previousDraw": 0.2999999523162842,
+      "otherInsidePreviousLoop": 0.20000004768371582,
+      "outsidePreviousLoop": 131.60000002384186,
+      "browserEntries": [
+        {
+          "name": "self",
+          "entryType": "longtask",
+          "startTime": 37254,
+          "duration": 131,
+          "navigationId": 2290,
+          "attribution": [
+            {
+              "name": "unknown",
+              "entryType": "taskattribution",
+              "startTime": 0,
+              "duration": 0,
+              "navigationId": 2290,
+              "containerType": "window",
+              "containerSrc": "",
+              "containerId": "",
+              "containerName": ""
+            }
+          ]
+        },
+        {
+          "name": "long-animation-frame",
+          "entryType": "long-animation-frame",
+          "startTime": 37253.90000009537,
+          "duration": 133.79999995231628,
+          "navigationId": 2290,
+          "paintTime": 37387.700000047684,
+          "presentationTime": 37440,
+          "renderStart": 37385,
+          "styleAndLayoutStart": 37386.5,
+          "firstUIEventTimestamp": 0,
+          "blockingDuration": 83.6,
+          "scripts": [
+            {
+              "name": "script",
+              "entryType": "script",
+              "startTime": 37254,
+              "duration": 131,
+              "navigationId": 2290,
+              "invoker": "IdleRequestCallback",
+              "invokerType": "user-callback",
+              "windowAttribution": "self",
+              "executionStart": 37254,
+              "forcedStyleAndLayoutDuration": 0,
+              "pauseDuration": 0,
+              "sourceURL": "http://qa-gap-attribution-20261001.localhost:3340/game.html?webgpu=0",
+              "sourceFunctionName": "_warmupNext",
+              "sourceCharPosition": 1063855
+            }
+          ]
+        }
+      ],
+      "possibleStackSamples": [
+        {
+          "function": "(root)",
+          "url": "",
+          "line": 0,
+          "sampleCount": 316
+        },
+        {
+          "function": "drawImage",
+          "url": "http://qa-gap-attribution-20261001.localhost:3340/game.html?webgpu=0",
+          "line": 6007,
+          "sampleCount": 186
+        },
+        {
+          "function": "texImage2D",
+          "url": "",
+          "line": 0,
+          "sampleCount": 184
+        },
+        {
+          "function": "_getTex",
+          "url": "http://qa-gap-attribution-20261001.localhost:3340/game.html?webgpu=0",
+          "line": 5701,
+          "sampleCount": 184
+        },
+        {
+          "function": "_warmImageGpu",
+          "url": "http://qa-gap-attribution-20261001.localhost:3340/game.html?webgpu=0",
+          "line": 21935,
+          "sampleCount": 184
+        },
+        {
+          "function": "_warmupNext",
+          "url": "http://qa-gap-attribution-20261001.localhost:3340/game.html?webgpu=0",
+          "line": 22016,
+          "sampleCount": 184
+        },
+        {
+          "function": "(idle)",
+          "url": "",
+          "line": 0,
+          "sampleCount": 103
+        },
+        {
+          "function": "(program)",
+          "url": "",
+          "line": 0,
+          "sampleCount": 14
+        },
+        {
+          "function": "wrapped",
+          "url": "",
+          "line": 48,
+          "sampleCount": 12
+        },
+        {
+          "function": "loop",
+          "url": "http://qa-gap-attribution-20261001.localhost:3340/game.html?webgpu=0",
+          "line": 59577,
+          "sampleCount": 12
+        },
+        {
+          "function": "wrappedLoop",
+          "url": "",
+          "line": 63,
+          "sampleCount": 12
+        },
+        {
+          "function": "update",
+          "url": "http://qa-gap-attribution-20261001.localhost:3340/game.html?webgpu=0",
+          "line": 30698,
+          "sampleCount": 9
+        }
+      ]
+    },
+    {
+      "fromLoop": 171,
+      "toLoop": 172,
+      "start": 36522.90000009537,
+      "end": 36655.60000002384,
+      "gap": 132.69999992847443,
+      "previousLoopElapsed": 1.399999976158142,
+      "previousUpdate": 0.8999999761581421,
+      "previousDraw": 0.5,
+      "otherInsidePreviousLoop": 0.0,
+      "outsidePreviousLoop": 131.29999995231628,
+      "browserEntries": [
+        {
+          "name": "self",
+          "entryType": "longtask",
+          "startTime": 36524.800000071526,
+          "duration": 130,
+          "navigationId": 2290,
+          "attribution": [
+            {
+              "name": "unknown",
+              "entryType": "taskattribution",
+              "startTime": 0,
+              "duration": 0,
+              "navigationId": 2290,
+              "containerType": "window",
+              "containerSrc": "",
+              "containerId": "",
+              "containerName": ""
+            }
+          ]
+        },
+        {
+          "name": "long-animation-frame",
+          "entryType": "long-animation-frame",
+          "startTime": 36524.800000071526,
+          "duration": 134.10000002384186,
+          "navigationId": 2290,
+          "paintTime": 36658.90000009537,
+          "presentationTime": 36716,
+          "renderStart": 36655.5,
+          "styleAndLayoutStart": 36657.700000047684,
+          "firstUIEventTimestamp": 0,
+          "blockingDuration": 84.1,
+          "scripts": [
+            {
+              "name": "script",
+              "entryType": "script",
+              "startTime": 36524.800000071526,
+              "duration": 130.69999992847443,
+              "navigationId": 2290,
+              "invoker": "IdleRequestCallback",
+              "invokerType": "user-callback",
+              "windowAttribution": "self",
+              "executionStart": 36524.800000071526,
+              "forcedStyleAndLayoutDuration": 0,
+              "pauseDuration": 0,
+              "sourceURL": "http://qa-gap-attribution-20261001.localhost:3340/game.html?webgpu=0",
+              "sourceFunctionName": "_warmupNext",
+              "sourceCharPosition": 1063855
+            }
+          ]
+        }
+      ],
+      "possibleStackSamples": [
+        {
+          "function": "(root)",
+          "url": "",
+          "line": 0,
+          "sampleCount": 317
+        },
+        {
+          "function": "(idle)",
+          "url": "",
+          "line": 0,
+          "sampleCount": 131
+        },
+        {
+          "function": "texImage2D",
+          "url": "",
+          "line": 0,
+          "sampleCount": 111
+        },
+        {
+          "function": "_getTex",
+          "url": "http://qa-gap-attribution-20261001.localhost:3340/game.html?webgpu=0",
+          "line": 5701,
+          "sampleCount": 111
+        },
+        {
+          "function": "drawImage",
+          "url": "http://qa-gap-attribution-20261001.localhost:3340/game.html?webgpu=0",
+          "line": 6007,
+          "sampleCount": 111
+        },
+        {
+          "function": "_warmImageGpu",
+          "url": "http://qa-gap-attribution-20261001.localhost:3340/game.html?webgpu=0",
+          "line": 21935,
+          "sampleCount": 111
+        },
+        {
+          "function": "_warmupNext",
+          "url": "http://qa-gap-attribution-20261001.localhost:3340/game.html?webgpu=0",
+          "line": 22016,
+          "sampleCount": 111
+        },
+        {
+          "function": "(program)",
+          "url": "",
+          "line": 0,
+          "sampleCount": 57
+        },
+        {
+          "function": "wrappedLoop",
+          "url": "",
+          "line": 63,
+          "sampleCount": 18
+        },
+        {
+          "function": "wrapped",
+          "url": "",
+          "line": 48,
+          "sampleCount": 17
+        },
+        {
+          "function": "loop",
+          "url": "http://qa-gap-attribution-20261001.localhost:3340/game.html?webgpu=0",
+          "line": 59577,
+          "sampleCount": 17
+        },
+        {
+          "function": "update",
+          "url": "http://qa-gap-attribution-20261001.localhost:3340/game.html?webgpu=0",
+          "line": 30698,
+          "sampleCount": 12
+        }
+      ]
+    },
+    {
+      "fromLoop": 401,
+      "toLoop": 402,
+      "start": 43663.200000047684,
+      "end": 43768.90000009537,
+      "gap": 105.70000004768372,
+      "previousLoopElapsed": 104.70000004768372,
+      "previousUpdate": 1.2999999523162842,
+      "previousDraw": 103.30000007152557,
+      "otherInsidePreviousLoop": 0.10000002384185791,
+      "outsidePreviousLoop": 1.0,
+      "browserEntries": [
+        {
+          "name": "self",
+          "entryType": "longtask",
+          "startTime": 43663.10000002384,
+          "duration": 105,
+          "navigationId": 2290,
+          "attribution": [
+            {
+              "name": "unknown",
+              "entryType": "taskattribution",
+              "startTime": 0,
+              "duration": 0,
+              "navigationId": 2290,
+              "containerType": "window",
+              "containerSrc": "",
+              "containerId": "",
+              "containerName": ""
+            }
+          ]
+        },
+        {
+          "name": "long-animation-frame",
+          "entryType": "long-animation-frame",
+          "startTime": 43632.700000047684,
+          "duration": 135.20000004768372,
+          "navigationId": 2290,
+          "paintTime": 43767.90000009537,
+          "presentationTime": 43808,
+          "renderStart": 43663.10000002384,
+          "styleAndLayoutStart": 43767.90000009537,
+          "firstUIEventTimestamp": 0,
+          "blockingDuration": 55,
+          "scripts": [
+            {
+              "name": "script",
+              "entryType": "script",
+              "startTime": 43663.200000047684,
+              "duration": 104.70000004768372,
+              "navigationId": 2290,
+              "invoker": "FrameRequestCallback",
+              "invokerType": "user-callback",
+              "windowAttribution": "self",
+              "executionStart": 43663.200000047684,
+              "forcedStyleAndLayoutDuration": 1.5,
+              "pauseDuration": 0,
+              "sourceURL": "",
+              "sourceFunctionName": "",
+              "sourceCharPosition": -1
+            }
+          ]
+        }
+      ],
+      "possibleStackSamples": [
+        {
+          "function": "(root)",
+          "url": "",
+          "line": 0,
+          "sampleCount": 294
+        },
+        {
+          "function": "(idle)",
+          "url": "",
+          "line": 0,
+          "sampleCount": 181
+        },
+        {
+          "function": "loop",
+          "url": "http://qa-gap-attribution-20261001.localhost:3340/game.html?webgpu=0",
+          "line": 59577,
+          "sampleCount": 98
+        },
+        {
+          "function": "wrappedLoop",
+          "url": "",
+          "line": 63,
+          "sampleCount": 98
+        },
+        {
+          "function": "wrapped",
+          "url": "",
+          "line": 48,
+          "sampleCount": 97
+        },
+        {
+          "function": "draw",
+          "url": "http://qa-gap-attribution-20261001.localhost:3340/game.html?webgpu=0",
+          "line": 49786,
+          "sampleCount": 88
+        },
+        {
+          "function": "drawP",
+          "url": "http://qa-gap-attribution-20261001.localhost:3340/game.html?webgpu=0",
+          "line": 53457,
+          "sampleCount": 84
+        },
+        {
+          "function": "_tintHolyDome",
+          "url": "http://qa-gap-attribution-20261001.localhost:3340/game.html?webgpu=0",
+          "line": 8703,
+          "sampleCount": 82
+        },
+        {
+          "function": "_physicalImpactSheet",
+          "url": "http://qa-gap-attribution-20261001.localhost:3340/game.html?webgpu=0",
+          "line": 8505,
+          "sampleCount": 82
+        },
+        {
+          "function": "getImageData",
+          "url": "",
+          "line": 0,
+          "sampleCount": 78
+        },
+        {
+          "function": "(program)",
+          "url": "",
+          "line": 0,
+          "sampleCount": 14
+        },
+        {
+          "function": "update",
+          "url": "http://qa-gap-attribution-20261001.localhost:3340/game.html?webgpu=0",
+          "line": 30698,
+          "sampleCount": 6
+        }
+      ]
+    },
+    {
+      "fromLoop": 166,
+      "toLoop": 167,
+      "start": 36362.800000071526,
+      "end": 36436.5,
+      "gap": 73.69999992847443,
+      "previousLoopElapsed": 1.2999999523162842,
+      "previousUpdate": 0.5999999046325684,
+      "previousDraw": 0.6000000238418579,
+      "otherInsidePreviousLoop": 0.10000002384185791,
+      "outsidePreviousLoop": 72.39999997615814,
+      "browserEntries": [
+        {
+          "name": "long-animation-frame",
+          "entryType": "long-animation-frame",
+          "startTime": 36364.5,
+          "duration": 74.80000007152557,
+          "navigationId": 2290,
+          "paintTime": 36439.300000071526,
+          "presentationTime": 36540,
+          "renderStart": 36436.40000009537,
+          "styleAndLayoutStart": 36438.200000047684,
+          "firstUIEventTimestamp": 0,
+          "blockingDuration": 0,
+          "scripts": []
+        }
+      ],
+      "possibleStackSamples": [
+        {
+          "function": "(root)",
+          "url": "",
+          "line": 0,
+          "sampleCount": 270
+        },
+        {
+          "function": "(idle)",
+          "url": "",
+          "line": 0,
+          "sampleCount": 197
+        },
+        {
+          "function": "(program)",
+          "url": "",
+          "line": 0,
+          "sampleCount": 53
+        },
+        {
+          "function": "wrappedLoop",
+          "url": "",
+          "line": 63,
+          "sampleCount": 19
+        },
+        {
+          "function": "wrapped",
+          "url": "",
+          "line": 48,
+          "sampleCount": 18
+        },
+        {
+          "function": "loop",
+          "url": "http://qa-gap-attribution-20261001.localhost:3340/game.html?webgpu=0",
+          "line": 59577,
+          "sampleCount": 18
+        },
+        {
+          "function": "update",
+          "url": "http://qa-gap-attribution-20261001.localhost:3340/game.html?webgpu=0",
+          "line": 30698,
+          "sampleCount": 13
+        },
+        {
+          "function": "_ffBuild",
+          "url": "http://qa-gap-attribution-20261001.localhost:3340/game.html?webgpu=0",
+          "line": 30446,
+          "sampleCount": 10
+        },
+        {
+          "function": "draw",
+          "url": "http://qa-gap-attribution-20261001.localhost:3340/game.html?webgpu=0",
+          "line": 49786,
+          "sampleCount": 4
+        },
+        {
+          "function": "getElementById",
+          "url": "",
+          "line": 0,
+          "sampleCount": 1
+        },
+        {
+          "function": "$",
+          "url": "http://qa-gap-attribution-20261001.localhost:3340/game.html?webgpu=0",
+          "line": 42361,
+          "sampleCount": 1
+        },
+        {
+          "function": "_updateActionKeys",
+          "url": "http://qa-gap-attribution-20261001.localhost:3340/game.html?webgpu=0",
+          "line": 27001,
+          "sampleCount": 1
+        }
+      ]
+    },
+    {
+      "fromLoop": 486,
+      "toLoop": 487,
+      "start": 46425.200000047684,
+      "end": 46493.60000002384,
+      "gap": 68.39999997615814,
+      "previousLoopElapsed": 2.5,
+      "previousUpdate": 1.5,
+      "previousDraw": 0.7999999523162842,
+      "otherInsidePreviousLoop": 0.20000004768371582,
+      "outsidePreviousLoop": 65.89999997615814,
+      "browserEntries": [
+        {
+          "name": "long-animation-frame",
+          "entryType": "long-animation-frame",
+          "startTime": 46429.90000009537,
+          "duration": 67.79999995231628,
+          "navigationId": 2290,
+          "paintTime": 46497.700000047684,
+          "presentationTime": 46620,
+          "renderStart": 46493.5,
+          "styleAndLayoutStart": 46495.90000009537,
+          "firstUIEventTimestamp": 0,
+          "blockingDuration": 0,
+          "scripts": []
+        }
+      ],
+      "possibleStackSamples": [
+        {
+          "function": "(root)",
+          "url": "",
+          "line": 0,
+          "sampleCount": 224
+        },
+        {
+          "function": "(idle)",
+          "url": "",
+          "line": 0,
+          "sampleCount": 160
+        },
+        {
+          "function": "(program)",
+          "url": "",
+          "line": 0,
+          "sampleCount": 46
+        },
+        {
+          "function": "wrappedLoop",
+          "url": "",
+          "line": 63,
+          "sampleCount": 17
+        },
+        {
+          "function": "wrapped",
+          "url": "",
+          "line": 48,
+          "sampleCount": 16
+        },
+        {
+          "function": "loop",
+          "url": "http://qa-gap-attribution-20261001.localhost:3340/game.html?webgpu=0",
+          "line": 59577,
+          "sampleCount": 16
+        },
+        {
+          "function": "update",
+          "url": "http://qa-gap-attribution-20261001.localhost:3340/game.html?webgpu=0",
+          "line": 30698,
+          "sampleCount": 11
+        },
+        {
+          "function": "_ffBuild",
+          "url": "http://qa-gap-attribution-20261001.localhost:3340/game.html?webgpu=0",
+          "line": 30446,
+          "sampleCount": 8
+        },
+        {
+          "function": "draw",
+          "url": "http://qa-gap-attribution-20261001.localhost:3340/game.html?webgpu=0",
+          "line": 49786,
+          "sampleCount": 4
+        },
+        {
+          "function": "_checkPetDialogue",
+          "url": "http://qa-gap-attribution-20261001.localhost:3340/game.html?webgpu=0",
+          "line": 9068,
+          "sampleCount": 2
+        },
+        {
+          "function": "updatePet",
+          "url": "http://qa-gap-attribution-20261001.localhost:3340/game.html?webgpu=0",
+          "line": 39929,
+          "sampleCount": 2
+        },
+        {
+          "function": "_updatePetBubble",
+          "url": "http://qa-gap-attribution-20261001.localhost:3340/game.html?webgpu=0",
+          "line": 9043,
+          "sampleCount": 1
+        }
+      ]
+    },
+    {
+      "fromLoop": 319,
+      "toLoop": 320,
+      "start": 41162.40000009537,
+      "end": 41227.90000009537,
+      "gap": 65.5,
+      "previousLoopElapsed": 1.6999999284744263,
+      "previousUpdate": 1.100000023841858,
+      "previousDraw": 0.3999999761581421,
+      "otherInsidePreviousLoop": 0.19999992847442627,
+      "outsidePreviousLoop": 63.800000071525574,
+      "browserEntries": [
+        {
+          "name": "long-animation-frame",
+          "entryType": "long-animation-frame",
+          "startTime": 41166.200000047684,
+          "duration": 63.5,
+          "navigationId": 2290,
+          "paintTime": 41229.700000047684,
+          "presentationTime": 41348,
+          "renderStart": 41227.800000071526,
+          "styleAndLayoutStart": 41229.60000002384,
+          "firstUIEventTimestamp": 0,
+          "blockingDuration": 0,
+          "scripts": []
+        }
+      ],
+      "possibleStackSamples": [
+        {
+          "function": "(root)",
+          "url": "",
+          "line": 0,
+          "sampleCount": 261
+        },
+        {
+          "function": "(idle)",
+          "url": "",
+          "line": 0,
+          "sampleCount": 193
+        },
+        {
+          "function": "(program)",
+          "url": "",
+          "line": 0,
+          "sampleCount": 52
+        },
+        {
+          "function": "loop",
+          "url": "http://qa-gap-attribution-20261001.localhost:3340/game.html?webgpu=0",
+          "line": 59577,
+          "sampleCount": 14
+        },
+        {
+          "function": "wrappedLoop",
+          "url": "",
+          "line": 63,
+          "sampleCount": 14
+        },
+        {
+          "function": "wrapped",
+          "url": "",
+          "line": 48,
+          "sampleCount": 12
+        },
+        {
+          "function": "update",
+          "url": "http://qa-gap-attribution-20261001.localhost:3340/game.html?webgpu=0",
+          "line": 30698,
+          "sampleCount": 6
+        },
+        {
+          "function": "draw",
+          "url": "http://qa-gap-attribution-20261001.localhost:3340/game.html?webgpu=0",
+          "line": 49786,
+          "sampleCount": 4
+        },
+        {
+          "function": "_ffBuild",
+          "url": "http://qa-gap-attribution-20261001.localhost:3340/game.html?webgpu=0",
+          "line": 30446,
+          "sampleCount": 4
+        },
+        {
+          "function": "_colWorker.onmessage",
+          "url": "http://qa-gap-attribution-20261001.localhost:3340/game.html?webgpu=0",
+          "line": 30423,
+          "sampleCount": 1
+        },
+        {
+          "function": "_hset",
+          "url": "http://qa-gap-attribution-20261001.localhost:3340/game.html?webgpu=0",
+          "line": 58202,
+          "sampleCount": 1
+        },
+        {
+          "function": "updateHUD",
+          "url": "http://qa-gap-attribution-20261001.localhost:3340/game.html?webgpu=0",
+          "line": 58203,
+          "sampleCount": 1
+        }
+      ]
+    }
+  ],
+  "profileClock": {
+    "startPageLowerBound": 31699.80000007153,
+    "startPageUpperBound": 31960.30000007153,
+    "uncertaintyMs": 260.5,
+    "durationMs": 32546.049,
+    "samples": 23435,
+    "note": "Possible stack windows include clock uncertainty. Counts are neither CPU milliseconds nor causal percentages."
+  },
+  "diagnosticFirstKill": null,
+  "diagnosticReason": "natural-death-or-game-ended",
+  "diagnosticRestored": {
+    "loop": true,
+    "update": true,
+    "draw": true
+  },
+  "dropped": 0
+}

@@ -453,3 +453,8 @@ R28시행·3317이벤트 원자료를 update/rAF/수신 시간으로 분리했�
 ## 2026-10-01 — 경량 관측109.8ms 후속 귀속 준비
 
 원자료상 첫 처치보다 약5초 앞선 간격이며 첫 공격 전이다. loop/update/draw3래퍼+CPU샘플의 별도1회 진단 계획과 수명회귀를 추가했다. 생산수정0·계측오버헤드미측정·비교금지. 계획: `tools/team-followup-20261001/QA/GAP_ATTRIBUTION_PLAN.md`.
+
+
+## 2026-10-01 — loop 밖 워밍업 직접 귀속
+
+기존run2 109.8ms는 첫 공격 전·첫처치 관측보다4927.2ms 앞에 끝난다. 별도profiler-on/3wrapper 진단1회에서는 `_warmupNext` idle callback130.7/135.6/131.0ms와 texImage2D표본을 확인했다. 무처치15.216초·시계매핑오차260.5ms·계측/화면/옵션차이로 비교금지. 별도draw103.3ms는physicalImpactSheet/tint/readback표본과상관. 생산수정0. [직접귀속/한계/다음후보](../0마스터플랜/mac-resume-20261001/Mac-긴간격-루프밖-귀속.md).

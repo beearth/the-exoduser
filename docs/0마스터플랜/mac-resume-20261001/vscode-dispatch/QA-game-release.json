@@ -17,9 +17,17 @@
   "heavyParallelTasksAllowed": false,
   "comparisonEligible": false,
   "expectedStop": "25s after normal input or natural death/focus loss",
-  "status": "finished-two-runs-diagnostic-only",
-  "finishedAt": "2026-10-01T11:05:04.293719+00:00",
+  "status": "finished-gap-attribution-one-run",
+  "finishedAt": "2026-10-01T11:15:59.194286+00:00",
   "runs": 2,
   "gameClosed": true,
-  "result": "../Mac-정상전투-경량관측.md"
+  "result": "../Mac-정상전투-경량관측.md",
+  "latestDiagnostic": {
+    "runs": 1,
+    "profiler": true,
+    "sourceHead": "b988771019f2520a1d33560f178655b143d1a1a2",
+    "result": "../Mac-긴간격-루프밖-귀속.md",
+    "forcedState": false,
+    "comparisonEligible": false
+  }
 }

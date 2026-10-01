@@ -51710,3 +51710,8 @@ QA light-normal observer: one draw wrapper and rAF samples, no CPU/GPU profiler.
 ## 2026-10-01 — 경량 관측109.8ms 후속 귀속 준비
 
 원자료상 첫 처치보다 약5초 앞선 간격이며 첫 공격 전이다. loop/update/draw3래퍼+CPU샘플의 별도1회 진단 계획과 수명회귀를 추가했다. 생산수정0·계측오버헤드미측정·비교금지. 계획: `tools/team-followup-20261001/QA/GAP_ATTRIBUTION_PLAN.md`.
+
+
+## 2026-10-01 — 루프 밖 워밍업 긴 간격 귀속
+
+109.8ms의 첫처치 인과 혼동을 분리하고 별도1회진단에서 warmup idle130.7/135.6/131.0ms를확인. 프로파일시계오차/무처치/비교금지 명시·생산수정0. BUILD context준비 인수/실행미검수. [근거](0마스터플랜/mac-resume-20261001/Mac-긴간격-루프밖-귀속.md).

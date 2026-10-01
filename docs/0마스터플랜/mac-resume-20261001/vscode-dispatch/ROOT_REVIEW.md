@@ -51,3 +51,10 @@ ENEMY 기존9/9 모의 검사 통과 후 root 추가 재현에서 `getTick()=>nu
 BUILD 다음 한 건은 기존 세션의 실패 포트→NW.js 진입 차단 정적 추적/독립 후보다. `BUILD-entry-followup.md`를 공식 queue로1회 전달했다. 이 기록 시점에는 대기열 등록만 확인했고 실제 수신·착수·완료는 후속 receipt로 구분한다. 실제 게임/소켓/빌드는 금지했다.
 
 BUILD failure-entry 후속 실제 수신/착수11:05:52Z·완료11:06:56Z. root가 전체 후보·검사 코드를 읽고19/19 재실행 PASS. 생산/실제NW.js 미인수. 다음은 기존 세션에 context-probe 하니스 준비1건만 queue, QA 중 실제 실행 금지. 실제 수신은 별도 확인한다.
+
+
+## ROOT 긴 간격 후속 마감
+
+기존run2 109.8ms는 최초공격 전/첫처치 관측보다 약5초 전으로 정정했다. 별도진단1회에서 `_warmupNext`의 IdleRequestCallback130.7/135.6/131.0ms를 브라우저scripts로 직접 귀속, 샘플스택 texImage2D 경로와 대조했다. 원래109.8ms의 소급 원인 확정은 하지 않는다. 새진단 무처치/15.216초 자연사, 별도draw103.3ms는 physicalImpactSheet/tint/getImageData 표본과 상관. source불변·프로파일중지·관측기복구·게임종료. [전체 시점·시계오차·한계·좁은 후보와 회귀기준](../Mac-긴간격-루프밖-귀속.md).
+
+BUILD context-probe 기존세션 수신/착수11:10:12Z·완료11:11:26Z. root가 node/page/manifest/README를 읽었고 준비범위 인수. 실제NW.js 실행0·동일process/진입차단 미검수. 제한된 기존경로 검색에서 실행파일 미발견이므로 설치완료/전체미설치로 단정하지 않는다. 현재 대기는 기존 런타임경로 확보와6시나리오 실제검수다. QA는 종료되었지만 root가 NW.js 실행을 시작하지 않았다. 추가 중복지시 없음. ENEMY tick누락 오판정·SOUND easy불일치는 미인수 상태 유지.

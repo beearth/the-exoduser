@@ -1,0 +1,23 @@
+{
+  "taskId": "BUILD-NW-CONTEXT-PREP",
+  "sessionId": "01a0f6e6-2e4c-7322-92d7-3aa309857856",
+  "sessionIdEvidence": "기존 총괄 배정; 런타임 대조 없음",
+  "receivedAt": "2026-10-01T11:10:12Z",
+  "startedAt": "2026-10-01T11:10:12Z",
+  "completedAt": "2026-10-01T11:11:26Z",
+  "status": "검증 준비 완료 / 실제 실행 미수행",
+  "startEvidence": "공식 NW.js 문서 조회 및 기존 설치 경로/빌더 버전 읽기 조회",
+  "validation": "CJS/inline 구문·manifest JSON 파서 exit0; 하니스 실행0",
+  "ownedPaths": [
+    "tools/team-followup-20261001/BUILD/context-probe/",
+    "docs/0마스터플랜/mac-resume-20261001/vscode-dispatch/BUILD-context-receipt.json",
+    "docs/0마스터플랜/mac-resume-20261001/vscode-dispatch/BUILD-context-result.md"
+  ],
+  "nextAction": "QA 종료 후 root의 실행 경로 확인·6시나리오 별도 인수 게이트 대기",
+  "blocker": "QA 단독 측정 중: 실제 NW.js/하니스/소켓 실행 금지",
+  "rootReview": {
+    "at": "2026-10-01T11:15:59.194286+00:00",
+    "scope": "preparation files read; no actual runtime validation",
+    "runtimeGate": "existing NW.js path not found in scoped search"
+  }
+}

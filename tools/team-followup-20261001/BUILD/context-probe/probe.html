@@ -1,0 +1,43 @@
+<!doctype html><html lang="ko"><meta charset="utf-8"><title>공유 상태 진단</title>
+<body><h1>NW.js 공유 상태 진단</h1><p>소켓·게임 탐색 없음. 오류는 모의 상태입니다.</p><pre id="result"></pre>
+<script>
+(() => {
+  const output = document.getElementById('result');
+  const rows = [];
+  let diagnostic;
+  let settled = false;
+  let unsubscribe = () => {};
+  function report(event, details) {
+    const row = { at: new Date().toISOString(), event, details };
+    rows.push(row); output.textContent = JSON.stringify(rows, null, 2);
+    console.log('[context-probe]', row);
+    if (diagnostic) diagnostic.record(event, details);
+  }
+  try {
+    const browserProcess = require('node:process');
+    diagnostic = browserProcess.__exoduserContextDiagnostic;
+    if (!diagnostic) return report('FAIL_CONTEXT_MISSING', { blocked: true, navigations: 0 });
+    const same = diagnostic.sameProcess(browserProcess);
+    report('process-identity', { strictSameObject: same, scenario: diagnostic.scenario });
+    if (!same) return report('FAIL_PROCESS_IDENTITY', { blocked: true, navigations: 0 });
+    const entry = browserProcess.__exoduserPackageEntry;
+    if (!entry) return report(diagnostic.scenario === 'missing' ? 'PASS_MISSING_FAIL_CLOSED' : 'FAIL_ENTRY_MISSING', { blocked: true, navigations: 0 });
+    function update(state) {
+      report('observed-state', state);
+      if (settled || state.phase === 'pending') return;
+      settled = true;
+      const expectedFailure = diagnostic.scenario.startsWith('error');
+      const passed = expectedFailure ? state.phase === 'failed' : state.phase === 'ready';
+      report(passed ? 'PASS_SCENARIO' : 'FAIL_SCENARIO', { wouldNavigate: state.phase === 'ready', actualNavigations: 0, blocked: state.phase !== 'ready', code: state.code });
+      unsubscribe();
+    }
+    unsubscribe = entry.subscribe(update);
+    update(entry.snapshot());
+    diagnostic.pageAttached();
+    setTimeout(() => {
+      if (!settled) { settled = true; unsubscribe(); report('FAIL_PENDING_TIMEOUT', { blocked: true, navigations: 0, diagnosticOnly: true, expectedInPendingCase: diagnostic.scenario === 'pending' }); }
+    }, 2000);
+    addEventListener('pagehide', () => { settled = true; unsubscribe(); }, { once: true });
+  } catch (error) { report('FAIL_CONTEXT_EXCEPTION', { name: error.name, message: error.message, blocked: true, navigations: 0 }); }
+})();
+</script></body></html>

@@ -1,0 +1,8 @@
+{
+  "name": "exoduser-context-probe-20261001",
+  "version": "0.0.1",
+  "main": "probe.html",
+  "node-main": "probe-node.cjs",
+  "window": { "title": "EXODUSER 공유 상태 진단 — 게임 아님", "width": 760, "height": 520, "fullscreen": false },
+  "chromium-args": "--user-data-dir=./probe-userdata"
+}
