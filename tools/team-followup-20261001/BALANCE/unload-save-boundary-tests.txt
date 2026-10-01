@@ -1,0 +1,33 @@
+✔ game.html route0 성공 AI→499ms→unload 즉시경계 (11.106167ms)
+✔ game.html route0 실패 AI→499ms→unload 즉시경계 (0.621833ms)
+✔ game.html route1 성공 AI→499ms→unload 즉시경계 (0.779875ms)
+✔ game.html route1 실패 AI→499ms→unload 즉시경계 (0.390084ms)
+✔ game.html route2 성공 AI→499ms→unload 즉시경계 (0.689917ms)
+✔ game.html route2 실패 AI→499ms→unload 즉시경계 (0.344958ms)
+✔ game.html route3 성공 AI→499ms→unload 즉시경계 (0.7345ms)
+✔ game.html route3 실패 AI→499ms→unload 즉시경계 (0.360167ms)
+✔ game.html route4 성공 AI→499ms→unload 즉시경계 (0.922542ms)
+✔ game.html route4 실패 AI→499ms→unload 즉시경계 (0.59375ms)
+✔ game-easy-test.html route0 성공 AI→499ms→unload 즉시경계 (0.9315ms)
+✔ game-easy-test.html route0 실패 AI→499ms→unload 즉시경계 (0.391958ms)
+✔ game-easy-test.html route1 성공 AI→499ms→unload 즉시경계 (0.6305ms)
+✔ game-easy-test.html route1 실패 AI→499ms→unload 즉시경계 (0.331208ms)
+✔ game-easy-test.html route2 성공 AI→499ms→unload 즉시경계 (0.558166ms)
+✔ game-easy-test.html route2 실패 AI→499ms→unload 즉시경계 (0.313875ms)
+✔ game-easy-test.html route3 성공 AI→499ms→unload 즉시경계 (0.919333ms)
+✔ game-easy-test.html route3 실패 AI→499ms→unload 즉시경계 (0.332334ms)
+✔ game-easy-test.html route4 성공 AI→499ms→unload 즉시경계 (0.580833ms)
+✔ game-easy-test.html route4 실패 AI→499ms→unload 즉시경계 (0.289584ms)
+✔ game.html 로컬 기확인실패 동기폴백·storage예외·미준비·진행중 (1.712417ms)
+✔ game-easy-test.html 로컬 기확인실패 동기폴백·storage예외·미준비·진행중 (1.713333ms)
+✔ server.cjs 실제 서버분기: body완료→write-return→ACK구분 (0.482333ms)
+✔ node-main.js 실제 서버분기: body완료→write-return→ACK구분 (0.051ms)
+✔ 함수SHA불변·실행기록 (35.542958ms)
+ℹ tests 25
+ℹ suites 0
+ℹ pass 25
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 103.57975

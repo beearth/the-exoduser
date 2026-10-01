@@ -1,0 +1,86 @@
+docs/3.1 ui hud 디자인/LOBBY_ANCESTOR_ART_20260928.md:12:| SELECTED_MEDIA | idleVid 재생, idleRate 없으면1. 전사 assets/charselect/idle_warrior_cs3_4k.mp4?v=20260929-cs3, playbackRate0.75; poster_idle_warrior_cs3_4k.jpg 같은 버전 (2026-09-29 CS3.0 재생성, 아래 §전사 아이들 재생성 참조; 구 idle_warrior_higgsfield_4k.* 파일은 미참조로 보존). 실버테일 idle_silvertail.mp4 및 poster_idle_silvertail.jpg, 버전20260927-restored. 공개 comingSoon/생성 제한 변경 없음 |
+docs/3.1 ui hud 디자인/LOBBY_ANCESTOR_ART_20260928.md:31:| 원화 | Higgsfield GPT Image 2.5 **sunburst** (사용자 직접 생성, job 90882b0d), 레퍼런스=구 poster_idle_warrior_higgsfield_4k.jpg, 3456×2048(27:16). 같은 구도·디자인 유지, 고해상 재묘사 |
+docs/3.1 ui hud 디자인/LOBBY_ANCESTOR_ART_20260928.md:35:| 인코딩 | NW.js Chromium HEVC 재생 불확실 → libx264 High@5.1, yuv420p, 18M VBR(max24M), +faststart, 무음. 결과 idle_warrior_cs3_4k.mp4 14.1MB, 8.04s |
+docs/3.1 ui hud 디자인/LOBBY_ANCESTOR_ART_20260928.md:36:| 포스터 | poster_idle_warrior_cs3_4k.jpg = 영상 0프레임(q2) → 영상 로딩 전/실패 시 동일 구도 |
+docs/3.1 ui hud 디자인/LOBBY_ANCESTOR_ART_20260928.md:192:| .char-thumb img | 고정 데모 charIdx0의 CHAR_VISUALS[0].bust, assets/charselect/portrait_warrior.png?v=1. 소환체 초상화를 이 카드에서 제거. width/height100%, object-fit:cover, object-position:center20%, radius2px 유지 |
+docs/15 세이브+데이터구조/15 세이브+데이터구조.md:810:| 실제 재선택 | Node 서버 원본480×360/960×540/1920×1080×2외형×클릭·경계 방향키 유지=12조건. sceneVid 분기는 기존 bg_scene1_loop.mp4?v=2로960×540 클릭/Home의2조건. 총14조건 모두 currentTime 연속 증가·emptied/loadstart0·선택/출시 잠금·속도 보존 |
+docs/3.1 ui hud 디자인/lobby_full_patch.md:483:| 실버테일 | 기존 공식 assets/charselect/silvertail_solo.png?v=20260927을 전체 선택 장면으로 사용. 썸네일은 공식 bust 유지. 신규 이미지·영상 생성/변형 없음 |
+docs/3.1 ui hud 디자인/lobby_full_patch.md:510:| 복원 | tmp/silvertail_art_backup_20260927.zip에서 assets/charselect/silvertail_cut.png,portrait_silvertail.png,poster_idle_silvertail.jpg,idle_silvertail.mp4 4개 원본 바이트 복원. 기존 PNG2장은 삭제하지 않고 보관,CHAR_VISUALS에서 미사용 |
+docs/3.1 ui hud 디자인/lobby_full_patch.md:1182:| 실제 재선택 | Node 서버 원본480×360/960×540/1920×1080×2외형×클릭·경계 방향키 유지=12조건. sceneVid 분기는 기존 bg_scene1_loop.mp4?v=2로960×540 클릭/Home의2조건. 총14조건 모두 currentTime 연속 증가·emptied/loadstart0·선택/출시 잠금·속도 보존 |
+docs/CHANGELOG_SYNC.md:1072:| 교체 | `CHAR_VISUALS[0].idleVid/poster` → `idle_warrior_higgsfield_4k.mp4` / `poster_idle_warrior_higgsfield_4k.jpg`, 캐시 `20260913-detail1` |
+docs/CHANGELOG_SYNC.md:2095:| 생성 | 기존 `poster_idle_warrior.jpg` 직접 업로드, Seedance 2.5, 시작/끝 동일 이미지, 6초 요청, 1080p, 무음. job `88756648-e041-43b7-b645-e697e6e4a57e` |
+docs/CHANGELOG_SYNC.md:2096:| 적용 | `CHAR_VISUALS[0]` → `idle_warrior_higgsfield.mp4?v=1` 및 전용 포스터. 기존 울렁임 메시 영상은 현재 재생에서 제외 |
+docs/CHANGELOG_SYNC.md:2120:사용자가 울렁임을 지적하여 이 메시 변형안은 폐기했다. 현재 재생 파일은 Higgsfield 생성본의 Topaz 4K 복원 `idle_warrior_higgsfield_4k.mp4`(2026-09-13)이며, 아래 값은 이전 구현 이력이다.
+docs/CHANGELOG_SYNC.md:2125:| 구현 | 기존 전사 영상 기반 망토 파동·상체 호흡/체중 이동·머리 추종을 메시 변형으로 사전 합성. `idle_warrior_dynamic.mp4` 및 전용 첫 프레임 포스터 연결 |
+docs/CHANGELOG_SYNC.md:49025:| 에셋 | assets/charselect/coming_soon_chains_v2.png, 1254×1254 RGBA, 알파0~255. 원본·프롬프트는 output/imagegen에 보관 |
+docs/CHANGELOG_SYNC.md:50410:| 공식 이미지 | `assets/charselect/silvertail_solo.png`, `silvertail_title.png`를 사용자 지정 Downloads 원본과 동일한 SHA-256으로 복사. 출처·해시는 `docs/archetypes/silvertail/SILVERTAIL_KEYART_CANON_20260927.md` 참조 |
+docs/CHANGELOG_SYNC.md:50461:| 실버테일 | 기존 공식 assets/charselect/silvertail_solo.png?v=20260927을 전체 선택 장면으로 사용. 썸네일은 공식 bust 유지. 신규 이미지·영상 생성/변형 없음 |
+docs/CHANGELOG_SYNC.md:50508:| 복원 | tmp/silvertail_art_backup_20260927.zip에서 assets/charselect/silvertail_cut.png,portrait_silvertail.png,poster_idle_silvertail.jpg,idle_silvertail.mp4 4개 원본 바이트 복원. 기존 PNG2장은 삭제하지 않고 보관,CHAR_VISUALS에서 미사용 |
+docs/CHANGELOG_SYNC.md:51230:| .char-thumb img | 고정 데모 charIdx0의 CHAR_VISUALS[0].bust, assets/charselect/portrait_warrior.png?v=1. 소환체 초상화를 이 카드에서 제거. width/height100%, object-fit:cover, object-position:center20%, radius2px 유지 |
+docs/CHANGELOG_SYNC.md:51314:| 실제 재선택 | Node 서버 원본480×360/960×540/1920×1080×2외형×클릭·경계 방향키 유지=12조건. sceneVid 분기는 기존 bg_scene1_loop.mp4?v=2로960×540 클릭/Home의2조건. 총14조건 모두 currentTime 연속 증가·emptied/loadstart0·선택/출시 잠금·속도 보존 |
+docs/CHANGELOG_DAILY_20260520.md:229:| 실제 재선택 | Node 서버 원본480×360/960×540/1920×1080×2외형×클릭·경계 방향키 유지=12조건. sceneVid 분기는 기존 bg_scene1_loop.mp4?v=2로960×540 클릭/Home의2조건. 총14조건 모두 currentTime 연속 증가·emptied/loadstart0·선택/출시 잠금·속도 보존 |
+docs/1전체그래픽세팅/GODDESS_INTRO_REMASTER_20260930.md:53:| 전사 05·06·07·19·20 | 레퍼런스1=블러 구도, 레퍼런스2=전사 초상화(`assets/charselect/portrait_warrior.png`) 머리·흉터·갑옷 크롭 | 잔점 제거, 짧은 흑발·왼눈썹 흉터·보라 눈·가시 흑갑옷·암적색 망토 통일. 컷별 상황(쓰러짐·깨어남·손뻗기·목마 안기·기절) 반영 |
+docs/3.1 ui hud 디자인/UI_COMPOSITION_20260925.md:1738:| 실버테일 | 기존 공식 assets/charselect/silvertail_solo.png?v=20260927을 전체 선택 장면으로 사용. 썸네일은 공식 bust 유지. 신규 이미지·영상 생성/변형 없음 |
+docs/3.1 ui hud 디자인/UI_COMPOSITION_20260925.md:1778:| 복원 | tmp/silvertail_art_backup_20260927.zip에서 assets/charselect/silvertail_cut.png,portrait_silvertail.png,poster_idle_silvertail.jpg,idle_silvertail.mp4 4개 원본 바이트 복원. 기존 PNG2장은 삭제하지 않고 보관,CHAR_VISUALS에서 미사용 |
+docs/3.1 ui hud 디자인/UI_COMPOSITION_20260925.md:2468:| 실제 재선택 | Node 서버 원본480×360/960×540/1920×1080×2외형×클릭·경계 방향키 유지=12조건. sceneVid 분기는 기존 bg_scene1_loop.mp4?v=2로960×540 클릭/Home의2조건. 총14조건 모두 currentTime 연속 증가·emptied/loadstart0·선택/출시 잠금·속도 보존 |
+docs/1전체그래픽세팅/CHARSELECT_VIDEO_QUALITY_20260913.md:12:| 최종 영상 | `assets/charselect/idle_warrior_higgsfield_4k.mp4?v=20260913-detail1`, H.264 3840×2160, 24fps, 133프레임, 11,222,864 bytes |
+docs/1전체그래픽세팅/CHARSELECT_VIDEO_QUALITY_20260913.md:13:| 포스터 | `assets/charselect/poster_idle_warrior_higgsfield_4k.jpg?v=20260913-detail1`, 3840×2160, 572,270 bytes, 최종 첫 프레임, JPEG q:v=2 |
+docs/1전체그래픽세팅/CHARSELECT_VIDEO_QUALITY_20260913.md:19:| 원본 보존 | 기존 `idle_warrior_higgsfield.mp4`, `poster_idle_warrior_higgsfield.jpg`; UI 연결만 새 파일로 전환 |
+docs/1전체그래픽세팅/CHARSELECT_VIDEO_QUALITY_20260913.md:25:| 같은 프레임 비교 | 실제 선택 UI 2548×1255, 영상 시간 0.5초 고정. `output/charselect_quality_20260913/before-still.png`, `after-still.png` |
+docs/1전체그래픽세팅/CHARSELECT_VIDEO_QUALITY_20260913.md:28:| 최종 재생 통계 | 적용 경로로 879프레임 재생 중 dropped 0 / corrupted 0, 경계 6회 약 50.0~58.4ms, 페이지 오류 0. `output/charselect_quality_20260913/playback.json` |
+docs/1전체그래픽세팅/CHARSELECT_VIDEO_QUALITY_20260913.md:29:| 실제 UI | 로비 슬롯 선택 및 새 캐릭터 선택 화면 양쪽 3840×2160, 0.75배속 재생과 새 포스터 경로 확인. 저장/생성 작업 없음. `output/charselect_quality_20260913/verification.json` |
+docs/1전체그래픽세팅/CHARSELECT_VIDEO_QUALITY_20260913.md:43:| 복원 | tmp/silvertail_art_backup_20260927.zip에서 assets/charselect/silvertail_cut.png,portrait_silvertail.png,poster_idle_silvertail.jpg,idle_silvertail.mp4 4개 원본 바이트 복원. 기존 PNG2장은 삭제하지 않고 보관,CHAR_VISUALS에서 미사용 |
+docs/1전체그래픽세팅/CHARSELECT_VIDEO_QUALITY_20260913.md:70:| 실제 재선택 | Node 서버 원본480×360/960×540/1920×1080×2외형×클릭·경계 방향키 유지=12조건. sceneVid 분기는 기존 bg_scene1_loop.mp4?v=2로960×540 클릭/Home의2조건. 총14조건 모두 currentTime 연속 증가·emptied/loadstart0·선택/출시 잠금·속도 보존 |
+docs/3.1 ui hud 디자인/남전사_로비_아이들_모션_20260908.md:9:| 원본 이미지 | `assets/charselect/poster_idle_warrior.jpg`, 시작/끝 모두 같은 이미지 |
+docs/3.1 ui hud 디자인/남전사_로비_아이들_모션_20260908.md:14:| 현재 영상 | `assets/charselect/idle_warrior_higgsfield_4k.mp4?v=20260913-detail1`, H.264 3840×2160, 24fps, 133프레임, 133/24초(약 5.542초), 11,222,864 bytes |
+docs/3.1 ui hud 디자인/남전사_로비_아이들_모션_20260908.md:16:| 현재 포스터 | `assets/charselect/poster_idle_warrior_higgsfield_4k.jpg?v=20260913-detail1`, 3840×2160, 572,270 bytes, 최종 영상 첫 프레임, ffmpeg JPEG q:v=2 |
+docs/3.1 ui hud 디자인/남전사_로비_아이들_모션_20260908.md:30:4K 복원본의 시각·재생 검증과 한계는 `../1전체그래픽세팅/CHARSELECT_VIDEO_QUALITY_20260913.md`를 따른다. 기존 1080p `idle_warrior_higgsfield.mp4` 및 포스터는 비교 원본으로 보존하고 현재 UI에서는 참조하지 않는다.
+docs/3.1 ui hud 디자인/남전사_로비_아이들_모션_20260908.md:41:| 원본 보존 | `assets/charselect/idle_warrior.mp4` (1280×720, 3초) 및 기존 포스터 |
+docs/3.1 ui hud 디자인/남전사_로비_아이들_모션_20260908.md:42:| 폐기 영상 | `assets/charselect/idle_warrior_dynamic.mp4?v=1` |
+docs/3.1 ui hud 디자인/남전사_로비_아이들_모션_20260908.md:43:| 폐기 포스터 | `assets/charselect/poster_idle_warrior_dynamic.jpg?v=1`, 해당 영상의 0프레임, JPEG quality 94 |
+docs/3.1 ui hud 디자인/남전사_로비_아이들_모션_20260908.md:80:| 복원 | tmp/silvertail_art_backup_20260927.zip에서 assets/charselect/silvertail_cut.png,portrait_silvertail.png,poster_idle_silvertail.jpg,idle_silvertail.mp4 4개 원본 바이트 복원. 기존 PNG2장은 삭제하지 않고 보관,CHAR_VISUALS에서 미사용 |
+docs/3.1 ui hud 디자인/남전사_로비_아이들_모션_20260908.md:107:| 실제 재선택 | Node 서버 원본480×360/960×540/1920×1080×2외형×클릭·경계 방향키 유지=12조건. sceneVid 분기는 기존 bg_scene1_loop.mp4?v=2로960×540 클릭/Home의2조건. 총14조건 모두 currentTime 연속 증가·emptied/loadstart0·선택/출시 잠금·속도 보존 |
+docs/1전체그래픽세팅/CHARSELECT_VIDEO_QUALITY_20260913.json:14:      "path": "assets/charselect/idle_warrior_higgsfield_4k.mp4",
+docs/1전체그래픽세팅/CHARSELECT_VIDEO_QUALITY_20260913.json:21:      "path": "assets/charselect/poster_idle_warrior_higgsfield_4k.jpg",
+docs/1전체그래픽세팅/CHARSELECT_VIDEO_QUALITY_20260913.json:32:      "poster": "http://localhost:3333/assets/charselect/poster_idle_warrior_higgsfield_4k.jpg?v=20260913-detail1",
+docs/1전체그래픽세팅/CHARSELECT_VIDEO_QUALITY_20260913.json:34:      "src": "http://localhost:3333/assets/charselect/idle_warrior_higgsfield_4k.mp4?v=20260913-detail1",
+docs/1전체그래픽세팅/CHARSELECT_VIDEO_QUALITY_20260913.json:41:      "poster": "http://localhost:3333/assets/charselect/poster_idle_warrior_higgsfield_4k.jpg?v=20260913-detail1",
+docs/1전체그래픽세팅/CHARSELECT_VIDEO_QUALITY_20260913.json:43:      "src": "http://localhost:3333/assets/charselect/idle_warrior_higgsfield_4k.mp4?v=20260913-detail1",
+docs/1전체그래픽세팅/CHARSELECT_VIDEO_QUALITY_20260913.json:55:    "src": "http://localhost:3333/assets/charselect/idle_warrior_higgsfield_4k.mp4?v=20260913-detail1",
+docs/11내러티브·로어디자인/WARRIOR_DESIGN_LOCK.md:3:기준 이미지: 캐릭터 선택 메인 컷 `assets/charselect/warrior_cut.png`(+ idle 포스터). 크롭 기준: `assets/warrior_identity_ref.png`.
+docs/11내러티브·로어디자인/WARRIOR_DESIGN_LOCK.md:13:- `assets/charselect/portrait_warrior.png`(bust)는 2026-09-30 평범한 눈으로 교체됨. 이전 보라 안광 버전은 `output/charselect_remaster_20260930/original/`.
+docs/3.1 ui hud 디자인/캐릭터선택_리모델링_기획서.md:24:| 에셋 (`assets/charselect/`, `?v=20260929`) | 내용 |
+docs/3.1 ui hud 디자인/캐릭터선택_리모델링_기획서.md:50:| 파일 | `assets/charselect/idle_silvertail_4k.mp4`, `poster_idle_silvertail_4k.jpg`. `CHAR_VISUALS[1]` idleVid/poster를 `?v=20260929-remaster`로 교체. 구 `idle_silvertail.mp4`·`poster_idle_silvertail.jpg`는 보관(미참조) |
+docs/3.1 ui hud 디자인/캐릭터선택_리모델링_기획서.md:62:| 에셋 | `assets/charselect/coming_soon_chains_v2.png`, 1254×1254 RGBA, API로 제작한 입체 흑철 X사슬·청동 테두리 고딕 자물쇠. 중앙 폭 min(34vw,440px), 최대 높이65vh. 레일은 링 크기100%. 이전 `coming_soon_chains.svg`는 보관·런타임 미사용 |
+docs/3.1 ui hud 디자인/캐릭터선택_리모델링_기획서.md:246:2026-09-13 전사 영상은 Higgsfield Seedance 2.5 생성 원본을 Topaz로 3840×2160 복원한 `idle_warrior_higgsfield_4k.mp4`(133프레임, 24fps, 파일 길이 약 5.542초)와 전용 포스터를 사용한다. `idleRate:0.75`를 선택 화면/로비의 `defaultPlaybackRate` 및 `playbackRate`에 적용하여 실제 반복 주기는 약 7.389초다. 실버테일 등 `idleRate` 없는 캐릭터는 1배속으로 복원한다. 자세한 제작 수치와 적용 계약은 [남전사 로비 아이들 모션](남전사_로비_아이들_모션_20260908.md)을 따른다.
+docs/3.1 ui hud 디자인/캐릭터선택_리모델링_기획서.md:250:| `idle_warrior_higgsfield_4k.mp4` | `object-fit: cover`, 기본 중앙 크롭 | `object-fit: contain; object-position: center top; transform: scale(1.15) scaleX(1.1)` | `#charVisualPop .cs-idle-vid` | 전사 머리 보존, 발끝만 허용 크롭·가로 10% 확장 |
+docs/3.1 ui hud 디자인/캐릭터선택_리모델링_기획서.md:507:| 실버테일 | 기존 공식 assets/charselect/silvertail_solo.png?v=20260927을 전체 선택 장면으로 사용. 썸네일은 공식 bust 유지. 신규 이미지·영상 생성/변형 없음 |
+docs/3.1 ui hud 디자인/캐릭터선택_리모델링_기획서.md:534:| 복원 | tmp/silvertail_art_backup_20260927.zip에서 assets/charselect/silvertail_cut.png,portrait_silvertail.png,poster_idle_silvertail.jpg,idle_silvertail.mp4 4개 원본 바이트 복원. 기존 PNG2장은 삭제하지 않고 보관,CHAR_VISUALS에서 미사용 |
+docs/3.1 ui hud 디자인/캐릭터선택_리모델링_기획서.md:788:| 실제 재선택 | Node 서버 원본480×360/960×540/1920×1080×2외형×클릭·경계 방향키 유지=12조건. sceneVid 분기는 기존 bg_scene1_loop.mp4?v=2로960×540 클릭/Home의2조건. 총14조건 모두 currentTime 연속 증가·emptied/loadstart0·선택/출시 잠금·속도 보존 |
+docs/1전체그래픽세팅/LOBBY_IMAGE_REVIEW_20260913.md:99:| `assets/charselect/warrior_cut.png` | 유지 — 이번 문제에 해당하는 전면 점묘 없음 |
+docs/1전체그래픽세팅/LOBBY_IMAGE_REVIEW_20260913.md:100:| `assets/charselect/portrait_warrior.png` | 유지 — 이번 문제에 해당하는 전면 점묘 없음 |
+docs/1전체그래픽세팅/LOBBY_IMAGE_REVIEW_20260913.md:101:| `assets/charselect/bg_scene1.png` | 유지 — 이번 문제에 해당하는 전면 점묘 없음 |
+docs/1전체그래픽세팅/LOBBY_IMAGE_REVIEW_20260913.md:102:| `assets/charselect/poster_idle_warrior_higgsfield.jpg` | 초기 점묘 검수에서는 유지했으나 영상 선명도 검증은 누락. 22:25 사용자 신고 후 1080p 영상의 원본 디테일 부족·확대 문제 확인. 현재 `poster_idle_warrior_higgsfield_4k.jpg`와 4K 복원 영상으로 교체. `CHARSELECT_VIDEO_QUALITY_20260913.md` 참조 |
+docs/17게임아트팀/ART_TEAM_MASTER.md:115:| 캐릭터 선택 `portrait_warrior.png`(bust — 로비 캐릭터 썸네일·선택창 초상) | ✅ 2026-09-30 평범한 눈으로 교체 (`?v=20260930-eyefix`, 원본 `output/charselect_remaster_20260930/original/`) |
+docs/17게임아트팀/ART_TEAM_MASTER.md:117:| 캐릭터 선택 실버테일(`portrait_silvertail.png`·`silvertail_cut.png`)·배경(`bg_scene1/2.png`)·로비 포스터·엠블럼 | ✅ 점검(2026-10-01): 잔점 없음 |
+docs/archetypes/silvertail/SILVERTAIL_KEYART_CANON_20260927.md:10:| 대표 키아트 | `assets/charselect/silvertail_solo.png` | `실버테일솔로.png` | `B43F0CB4DF5E8F028A8787615AF8153E16FDEEE86C644AB15E9D070709A9CB57` | 보관용 키아트(현재 선택/로비 미사용) |
+docs/archetypes/silvertail/SILVERTAIL_KEYART_CANON_20260927.md:11:| 타이틀 키아트 | `assets/charselect/silvertail_title.png` | `ChatGPT Image 2026년 8월 1일 오후 09_48_11.png` | `A75F39F8B6FB509B2318B3365BA2D6A1AD7E644EC89F5ADD0A1EB27C47392B2D` | 보관용 타이틀(현재 썸네일 미사용) |
+docs/archetypes/silvertail/SILVERTAIL_KEYART_CANON_20260927.md:27:| 실버테일 | 기존 공식 assets/charselect/silvertail_solo.png?v=20260927을 전체 선택 장면으로 사용. 썸네일은 공식 bust 유지. 신규 이미지·영상 생성/변형 없음 |
+docs/archetypes/silvertail/SILVERTAIL_KEYART_CANON_20260927.md:54:| 복원 | tmp/silvertail_art_backup_20260927.zip에서 assets/charselect/silvertail_cut.png,portrait_silvertail.png,poster_idle_silvertail.jpg,idle_silvertail.mp4 4개 원본 바이트 복원. 기존 PNG2장은 삭제하지 않고 보관,CHAR_VISUALS에서 미사용 |
+docs/archetypes/silvertail/SILVERTAIL_KEYART_CANON_20260927.md:85:| 실제 재선택 | Node 서버 원본480×360/960×540/1920×1080×2외형×클릭·경계 방향키 유지=12조건. sceneVid 분기는 기존 bg_scene1_loop.mp4?v=2로960×540 클릭/Home의2조건. 총14조건 모두 currentTime 연속 증가·emptied/loadstart0·선택/출시 잠금·속도 보존 |
+docs/4.0케릭터스프라이트 디자인/캐릭터_몬스터_보스_최적화디자인_v1.md:210:| 로비 초상 / idle 영상 | 별도 (현 `assets/charselect/*`) | 존재감 | 48px 업스케일 금지. 다운만 허용 |
+docs/4.0케릭터스프라이트 디자인/캐릭터_몬스터_보스_최적화디자인_v1.md:288:| 기존 `idle_warrior.mp4`를 원본으로 보존하고 동일 실루엣의 `idle_warrior_higgsfield_4k.mp4`를 재생 | H1/H2 턴어라운드 |
+docs/4.0케릭터스프라이트 디자인/캐릭터_몬스터_보스_최적화디자인_v1.md:353:| `idle_warrior_higgsfield_4k.mp4` 구도 (기존 `poster_idle_warrior.jpg`로 Higgsfield 생성) | 로비 초상은 동일 실루엣에서 다운 (48px 업스케일 금지) |
+docs/4.0케릭터스프라이트 디자인/캐릭터_몬스터_보스_최적화디자인_v1.md:363:| 로비 초상 | `assets/charselect/*_cut.png` 등 | 마스터에서 다운. 48px 업스케일 금지 |
+docs/4.0케릭터스프라이트 디자인/캐릭터_몬스터_보스_최적화디자인_v1.md:364:| 로비 idle 영상 | `idle_warrior_higgsfield_4k.mp4` | 전사만 Higgsfield 생성본을 Topaz 3840×2160으로 복원한 133프레임·24fps 동작 루프(2026-09-13), `idleRate=0.75`로 약7.389초 반복. 실버테일은 복원한 idle_silvertail.mp4(1280×720,3초)를 표시한다. |
+docs/4.0케릭터스프라이트 디자인/캐릭터_몬스터_보스_최적화디자인_v1.md:365:| 시네마틱 / 키아트 | `docs/cinematic/`, `refs/2026-08-02_keyart/`, `assets/charselect/silvertail_solo.png`, `assets/charselect/silvertail_title.png` | 실버테일 공식 2장, 전사·장 콘셉트 8장. 실버테일의 07-27 키아트 6장과 08-02 보드 3장은 제거했다. |
+docs/4.0케릭터스프라이트 디자인/캐릭터_몬스터_보스_최적화디자인_v1.md:1138:- **파일**: `assets/charselect/*` (전사+실버테일)
+docs/4.0케릭터스프라이트 디자인/캐릭터_몬스터_보스_최적화디자인_v1.md:1243:| 복원 | tmp/silvertail_art_backup_20260927.zip에서 assets/charselect/silvertail_cut.png,portrait_silvertail.png,poster_idle_silvertail.jpg,idle_silvertail.mp4 4개 원본 바이트 복원. 기존 PNG2장은 삭제하지 않고 보관,CHAR_VISUALS에서 미사용 |
+docs/4.0케릭터스프라이트 디자인/4.0케릭터스프라이트 디자인.md:44:| 외형 참조 | 현재 캐릭터 선택 전신 `assets/charselect/warrior_cut.png`와 `poster_idle_warrior_higgsfield_4k.jpg` |
+docs/cinematic/WARINTRO_IDENTITY_V5_20260909.md:13:| 주 기준 | `assets/charselect/warrior_cut.png`의 현재 전사 전신 |
+docs/cinematic/WARINTRO_IDENTITY_V5_20260909.md:14:| 보조 기준 | `assets/charselect/poster_idle_warrior_higgsfield_4k.jpg`의 캐릭터 선택 화면 (2026-09-13 기존 포스터/영상의 Topaz 4K 복원, 동일 인물·구도) |
+docs/cinematic/WARINTRO_ENDING_V6_20260909.md:33:| 기준 | `assets/charselect/warrior_cut.png`의 짧은 흑발·흑철 겹판 갑옷·어두운 붉은 스카프/망토·넓은 대검 |
+docs/cinematic/WARINTRO_STYLE_LOCK_20260909.md:18:| 주인공 외형만 | assets/charselect/warrior_cut.png (프로젝트 루트 기준) | 흑발·흑철 갑옷·어두운 붉은 망토·넓은 대검. 게임 원화의 회화적 표현은 그림체 기준으로 사용하지 않음 |
+docs/13출시·마케팅/SOURCE_CONTROL_HYGIENE_20260916.md:23:| `output/charselect_quality_20260913/` | 26 |
+docs/13출시·마케팅/DESKTOP_LATEST_BUILD_20260929.md:38:| 최신 맵·영상 | CH1 production_finish chunk_0_0.png 및 bg_scene1_loop.mp4: HTTP 206 범위 응답과 원본 바이트 일치 |
+docs/13출시·마케팅/PUBLISHER_REVIEW_20260929.md:111:사용자 요청으로 `C:/Users/심도진/Desktop/EXODUSER_게임기획서_신캐릭터포함_20260929.pdf`를 현재 로컬 최신본으로 교체했다. 기존 바탕화면 파일은 `tmp/publisher-20260929/desktop-before-latest-update.pdf`에 백업했다. 17페이지 및 우클릭 홀딩·기검참 페이지가 유지되었고, 현재 9·13페이지의 실버테일 원본은 `assets/charselect/poster_idle_silvertail.jpg`다. 변경된 원화를 임의로 이전 그림으로 되돌리지 않았다.

@@ -1,0 +1,17 @@
+{
+  "task": "busy 저장 보류분의 즉시 배수 후보",
+  "receivedAt": "2026-10-01T16:41:42Z",
+  "firstReadAt": "2026-10-01T16:41:42Z",
+  "firstEditAt": "2026-10-01T16:42:28Z",
+  "firstCodeEditAt": "2026-10-01T16:42:28Z",
+  "duplicateCheck": "동일 prefix는 task만 존재; AGENTS/담당MD/저장SSOT/QA R1·원후보 읽음",
+  "firstTestCommandAt": "2026-10-01T16:43:29Z~16:43:30Z",
+  "command": "node --test tools/team-followup-20261001/BALANCE/immediate-drain.test.mjs",
+  "validatedAt": "2026-10-01T16:44:37Z",
+  "completedAt": "2026-10-01T16:45:42Z",
+  "validation": "17PASS/0FAIL; R1 before/after8행·즉시dispatch/ACK/persist분리·재귀/중복/force/실패/2busy/교대/전환; memory diff 동일",
+  "candidateSha256": "5acc71f59ac6e9d9f88cb87d1cff0814a039c5adedccb7f606a35d71ea692269",
+  "priorPreservedSha256": "96750107f0da4dceb756bbe3a14017d1e58e29015f91fb76cf91bea4301bfb5b",
+  "status": "completed_unapplied_candidate_waiting_root",
+  "productionModified": false
+}

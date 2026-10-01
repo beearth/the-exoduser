@@ -1,0 +1,37 @@
+✔ game.html route0 success before→after 실제 저장/복원 (10.978458ms)
+✔ game.html route0 failure before→after 실제 저장/복원 (1.192833ms)
+✔ game.html route1 success before→after 실제 저장/복원 (2.271167ms)
+✔ game.html route1 failure before→after 실제 저장/복원 (0.871542ms)
+✔ game.html route2 success before→after 실제 저장/복원 (2.199333ms)
+✔ game.html route2 failure before→after 실제 저장/복원 (0.843375ms)
+✔ game.html route3 success before→after 실제 저장/복원 (2.130833ms)
+✔ game.html route3 failure before→after 실제 저장/복원 (0.78225ms)
+✔ game.html route4 success before→after 실제 저장/복원 (1.978791ms)
+✔ game.html route4 failure before→after 실제 저장/복원 (1.857958ms)
+✔ game-easy-test.html route0 success before→after 실제 저장/복원 (2.290375ms)
+✔ game-easy-test.html route0 failure before→after 실제 저장/복원 (0.7335ms)
+✔ game-easy-test.html route1 success before→after 실제 저장/복원 (2.050375ms)
+✔ game-easy-test.html route1 failure before→after 실제 저장/복원 (0.681ms)
+✔ game-easy-test.html route2 success before→after 실제 저장/복원 (2.108958ms)
+✔ game-easy-test.html route2 failure before→after 실제 저장/복원 (0.69125ms)
+✔ game-easy-test.html route3 success before→after 실제 저장/복원 (2.538458ms)
+✔ game-easy-test.html route3 failure before→after 실제 저장/복원 (0.770958ms)
+✔ game-easy-test.html route4 success before→after 실제 저장/복원 (2.015583ms)
+✔ game-easy-test.html route4 failure before→after 실제 저장/복원 (0.712458ms)
+✔ game.html debounce중복·미시도·취소·기존효과불변 (2.503709ms)
+✔ game.html autosave·db미준비·로컬폴백·499ms취약창 (2.362125ms)
+✔ game.html 정상beforeunload 저장시도·진행중저장 guard 한계 (4.27325ms)
+✔ game.html 실제루프 악의분리동기화후 성공장비만 소실·후보는 보존 (0.876959ms)
+✔ game-easy-test.html debounce중복·미시도·취소·기존효과불변 (2.301ms)
+✔ game-easy-test.html autosave·db미준비·로컬폴백·499ms취약창 (2.028375ms)
+✔ game-easy-test.html 정상beforeunload 저장시도·진행중저장 guard 한계 (3.175208ms)
+✔ game-easy-test.html 실제루프 악의분리동기화후 성공장비만 소실·후보는 보존 (0.84975ms)
+✔ 소유구역 입력SHA 불변 및 실행근거 (51.189958ms)
+ℹ tests 29
+ℹ suites 0
+ℹ pass 29
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 172.416208

@@ -1,0 +1,4 @@
+# 캐릭터 선택 미디어 읽기 진단
+기존 BUILD profile 수정 완료43검사 및 원격179813c2 인수 후 다음 한 건. root가 최초59376baf 앱의 native 로비→데모입장→새캐릭터→전사 선택 화면에서 AX '미디어를 재생할 수 없습니다'를 관측했다. 다른 세계관/전사 story 영상은 실제 재생됐다. Mac 잠금으로 추가 UI 관측은 보류 중이다. 같은 지시/대기/초안의 중복 여부 확인 후 BUILD/mac-character-media-* 소유 범위의 읽기 진단/작은검사만 수행하라.
+현재 index.html의 CHAR_VISUALS warrior sceneVid/idleVid, manifest7918입력, 생성앱59376/새abf57의 파일 포함/크기/헤더를 대조. 현재 사용 가능한 로컬 미디어 metadata 도구가 있으면 코덱/프로필/컨테이너만 읽어라. 누락/상대경로/포맷/브라우저 지원 추정을 구분. 실행 코드에서 서버 Range/MIME 계약을 읽고, 필요한 경우 root 소유3381의 해당 에셋만 작은 HEAD/Range 읽기 검사 가능(새서버금지). 실제 네이티브 media.error/지원 여부는 잠금해제 후 root 한 항목으로 인계. 일반 'MP4 unsupported' 추정 금지, 실제 재생 영상과 비교.
+앱 재실행·게임·브라우저·대형빌드·인코딩·다운로드·권한/보안설정·원본/생성앱/세이브/공유docs/타팀/Git/queue/새세션·하위에이전트 변경 금지. 정확 실제 Read/Edit/명령/완료 UTC receipt, 소스/파일SHA와 docs 반영안을 소유 결과에 기록. 임의 미래시각/구HEAD 사용 금지. 완료 후 root 대기.

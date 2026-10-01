@@ -1,5 +1,13 @@
 # BALANCE 전투 밸런스·성장 경제팀 운영 대장
 
+## 2026-10-02 저장 보류분 생산 통합
+
+| 대상 | 현재 상태·계약 | 검수·남은 인수 |
+|---|---|---|
+| 본편/easy 저장 구역 | dbSaveNow 컨텍스트 보류와 _drainPendingSaveNow, 세 _saving=false 종료 호출을 생산 반영(각 HTML 4hunk). 일반500ms/force5초/비용/RNG/schema 불변 | 생산 추출22 PASS, 양쪽 inline6개 구문검수, 승인범위 밖 전체byte·인벤토리 및 기존후보/증거 보존 |
+| 보류분 처리 | 같은 charId/idx/P/dbSave와 DB준비 확인, pending 먼저 소비한 뒤 dbSave 즉시 호출. 완료 후 재500ms 제거 | dispatch/ACK/메모리persist 분리. 실제 서버/사용자 save/재실행/unload 미검수 |
+| 소유 인계 | UIUX 반환 뒤 BALANCE 단독 저장 구역 통합. 완료 후 HTML은 root에 반환 | Git checkpoint/총괄·CHANGELOG는 root 담당. [결과·의존성](../../tools/team-followup-20261001/BALANCE/production-integration-result.md) |
+
 기준: 2026-10-01 KST. 총괄 작업 [PM-013](../0마스터플랜/PROJECT_MANAGEMENT_MASTER.md). 수치의 확정 근거는 각 시스템 SSOT와 실제 코드이며, 이 문서는 조사·검수·인계 상태를 관리한다.
 
 ## 책임과 공용 편집 범위

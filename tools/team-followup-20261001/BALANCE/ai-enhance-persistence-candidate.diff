@@ -1,0 +1,12 @@
+--- a/game.html
++++ b/game.html
+@@ -26922,2 +26922,3 @@
+   const res=aiEnhance(_aiItem,target,budget);
++  if(res.used>0)dbSaveNow();
+   applyStats();
+--- a/game-easy-test.html
++++ b/game-easy-test.html
+@@ -25796,2 +25796,3 @@
+   const res=aiEnhance(_aiItem,target,budget);
++  if(res.used>0)dbSaveNow();
+   applyStats();

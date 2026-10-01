@@ -1,0 +1,70 @@
+--- a/game.html
++++ b/game.html
+@@ -3570,1 +3570,1 @@
+-  _saving=false;if(_pendingForce){_pendingForce=false;if(Date.now()-_lastSaveTime>=5000)dbSave()}
++  _saving=false;_drainPendingSaveNow();if(_pendingForce){_pendingForce=false;if(Date.now()-_lastSaveTime>=5000)dbSave()}
+@@ -3927,5 +3927,18 @@
+-function dbSaveNow(){
+-  if(!_dbReady)return;
+-  if(_saveDebounce)clearTimeout(_saveDebounce);
+-  _saveDebounce=setTimeout(()=>{_saveDebounce=null;dbSave()},500);
+-}
++function dbSaveNow(){
++  if(!_dbReady)return;
++  if(_saveDebounce)clearTimeout(_saveDebounce);
++  const request={charId:_charId,charIdx:_charIdx,player:P,save:dbSave};
++  _saveDebounce=setTimeout(()=>{
++    _saveDebounce=null;
++    if(!_dbReady||request.charId!==_charId||request.charIdx!==_charIdx||request.player!==P||request.save!==dbSave)return;
++    if(_saving){dbSaveNow.pending=request;return}
++    dbSaveNow.pending=null;
++    dbSave();
++  },500);
++}
++function _drainPendingSaveNow(){
++  const request=dbSaveNow.pending;
++  dbSaveNow.pending=null;
++  if(!request||!_dbReady||request.charId!==_charId||request.charIdx!==_charIdx||request.player!==P||request.save!==dbSave)return;
++  dbSave();
++}
+@@ -61727,1 +61740,1 @@
+-    finally{_saving=false;if(_pendingForce){_pendingForce=false;if(Date.now()-_lastSaveTime>=5000)dbSave()}}
++    finally{_saving=false;_drainPendingSaveNow();if(_pendingForce){_pendingForce=false;if(Date.now()-_lastSaveTime>=5000)dbSave()}}
+@@ -61878,1 +61891,1 @@
+-    finally{_saving=false;if(_pendingForce){_pendingForce=false;if(Date.now()-_lastSaveTime>=5000)dbSave()}}
++    finally{_saving=false;_drainPendingSaveNow();if(_pendingForce){_pendingForce=false;if(Date.now()-_lastSaveTime>=5000)dbSave()}}
+--- a/game-easy-test.html
++++ b/game-easy-test.html
+@@ -3343,1 +3343,1 @@
+-  _saving=false;if(_pendingForce){_pendingForce=false;if(Date.now()-_lastSaveTime>=5000)dbSave()}
++  _saving=false;_drainPendingSaveNow();if(_pendingForce){_pendingForce=false;if(Date.now()-_lastSaveTime>=5000)dbSave()}
+@@ -3696,5 +3696,18 @@
+-function dbSaveNow(){
+-  if(!_dbReady)return;
+-  if(_saveDebounce)clearTimeout(_saveDebounce);
+-  _saveDebounce=setTimeout(()=>{_saveDebounce=null;dbSave()},500);
+-}
++function dbSaveNow(){
++  if(!_dbReady)return;
++  if(_saveDebounce)clearTimeout(_saveDebounce);
++  const request={charId:_charId,charIdx:_charIdx,player:P,save:dbSave};
++  _saveDebounce=setTimeout(()=>{
++    _saveDebounce=null;
++    if(!_dbReady||request.charId!==_charId||request.charIdx!==_charIdx||request.player!==P||request.save!==dbSave)return;
++    if(_saving){dbSaveNow.pending=request;return}
++    dbSaveNow.pending=null;
++    dbSave();
++  },500);
++}
++function _drainPendingSaveNow(){
++  const request=dbSaveNow.pending;
++  dbSaveNow.pending=null;
++  if(!request||!_dbReady||request.charId!==_charId||request.charIdx!==_charIdx||request.player!==P||request.save!==dbSave)return;
++  dbSave();
++}
+@@ -60058,1 +60071,1 @@
+-    finally{_saving=false;if(_pendingForce){_pendingForce=false;if(Date.now()-_lastSaveTime>=5000)dbSave()}}
++    finally{_saving=false;_drainPendingSaveNow();if(_pendingForce){_pendingForce=false;if(Date.now()-_lastSaveTime>=5000)dbSave()}}
+@@ -60209,1 +60222,1 @@
+-    finally{_saving=false;if(_pendingForce){_pendingForce=false;if(Date.now()-_lastSaveTime>=5000)dbSave()}}
++    finally{_saving=false;_drainPendingSaveNow();if(_pendingForce){_pendingForce=false;if(Date.now()-_lastSaveTime>=5000)dbSave()}}

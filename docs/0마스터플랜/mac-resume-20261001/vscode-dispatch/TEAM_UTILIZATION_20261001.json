@@ -1,5 +1,5 @@
 {
-  "checkedAt": "2026-10-01T16:48:30.054Z",
+  "checkedAt": "2026-10-01T17:08:49.148844+00:00",
   "kind": "point-in-time evidence snapshot, not continuous utilization",
   "teams": [
     {
@@ -13,10 +13,11 @@
       "firstArtifactWriteAt": "2026-10-01T16:31:41.539Z",
       "firstCodeEditAt": "2026-10-01T16:32:48.972Z",
       "completedAt": "2026-10-01T16:35:16.612Z",
-      "status": "completed_pending_root_acceptance",
+      "status": "submitted_next_dispatch_blocked",
       "timestampSource": "existing Claude session JSONL; owner claimed timestamps are not used",
-      "nextGate": "root independent acceptance; no duplicate dispatch",
-      "productionApplied": false
+      "nextGate": "Submitted result retained; next native CLI dispatch blocked by last observed Mac lock. No duplicate dispatch or new session.",
+      "productionApplied": false,
+      "nextDispatchStatus": "blocked_mac_locked"
     },
     {
       "team": "MAP",
@@ -29,10 +30,11 @@
       "firstArtifactWriteAt": "2026-10-01T16:31:25.108Z",
       "firstCodeEditAt": "2026-10-01T16:34:01.597Z",
       "completedAt": "2026-10-01T16:35:58.128Z",
-      "status": "completed_pending_root_acceptance",
+      "status": "submitted_next_dispatch_blocked",
       "timestampSource": "existing Claude session JSONL; owner claimed timestamps are not used",
-      "nextGate": "root independent acceptance; no duplicate dispatch",
-      "productionApplied": false
+      "nextGate": "Submitted result retained; next native CLI dispatch blocked by last observed Mac lock. No duplicate dispatch or new session.",
+      "productionApplied": false,
+      "nextDispatchStatus": "blocked_mac_locked"
     },
     {
       "team": "SKILL",
@@ -45,10 +47,11 @@
       "firstArtifactWriteAt": "2026-10-01T16:30:31.859Z",
       "firstCodeEditAt": "2026-10-01T16:31:42.817Z",
       "completedAt": "2026-10-01T16:33:21.252Z",
-      "status": "completed_pending_root_acceptance",
+      "status": "submitted_next_dispatch_blocked",
       "timestampSource": "existing Claude session JSONL; owner claimed timestamps are not used",
-      "nextGate": "root independent acceptance; no duplicate dispatch",
-      "productionApplied": false
+      "nextGate": "Submitted result retained; next native CLI dispatch blocked by last observed Mac lock. No duplicate dispatch or new session.",
+      "productionApplied": false,
+      "nextDispatchStatus": "blocked_mac_locked"
     },
     {
       "team": "ENEMY",
@@ -61,10 +64,11 @@
       "firstArtifactWriteAt": "2026-10-01T16:31:49.824Z",
       "firstCodeEditAt": "2026-10-01T16:31:49.824Z",
       "completedAt": "2026-10-01T16:33:55.875Z",
-      "status": "completed_pending_root_acceptance",
+      "status": "submitted_next_dispatch_blocked",
       "timestampSource": "existing Claude session JSONL; owner claimed timestamps are not used",
-      "nextGate": "root independent acceptance; no duplicate dispatch",
-      "productionApplied": false
+      "nextGate": "Submitted result retained; next native CLI dispatch blocked by last observed Mac lock. No duplicate dispatch or new session.",
+      "productionApplied": false,
+      "nextDispatchStatus": "blocked_mac_locked"
     },
     {
       "team": "ART",
@@ -77,10 +81,11 @@
       "firstArtifactWriteAt": "2026-10-01T16:29:55.321Z",
       "firstCodeEditAt": "2026-10-01T16:32:25.005Z",
       "completedAt": "2026-10-01T16:35:27.906Z",
-      "status": "completed_pending_root_acceptance",
+      "status": "submitted_next_dispatch_blocked",
       "timestampSource": "existing Claude session JSONL; owner claimed timestamps are not used",
-      "nextGate": "root independent acceptance; no duplicate dispatch",
-      "productionApplied": false
+      "nextGate": "Submitted result retained; next native CLI dispatch blocked by last observed Mac lock. No duplicate dispatch or new session.",
+      "productionApplied": false,
+      "nextDispatchStatus": "blocked_mac_locked"
     },
     {
       "team": "ANIMVFX",
@@ -93,10 +98,11 @@
       "firstArtifactWriteAt": "2026-10-01T16:34:35.120Z",
       "firstCodeEditAt": "2026-10-01T16:36:11.074Z",
       "completedAt": "2026-10-01T16:40:26.295Z",
-      "status": "completed_pending_root_acceptance",
+      "status": "submitted_next_dispatch_blocked",
       "timestampSource": "existing Claude session JSONL; owner claimed timestamps are not used",
-      "nextGate": "root independent acceptance; no duplicate dispatch",
-      "productionApplied": false
+      "nextGate": "Submitted result retained; next native CLI dispatch blocked by last observed Mac lock. No duplicate dispatch or new session.",
+      "productionApplied": false,
+      "nextDispatchStatus": "blocked_mac_locked"
     },
     {
       "team": "BUILD",
@@ -106,63 +112,70 @@
       "receivedAt": "2026-10-01T16:47:39.000Z",
       "firstReadAt": null,
       "firstCodeEditAt": null,
-      "completedAt": null,
-      "status": "interrupted",
-      "timestampSource": "official read_thread timestamps; per-command timestamps unavailable",
+      "completedAt": "2026-10-01T16:49:38.000Z",
+      "status": "completed_source_accepted",
+      "timestampSource": "official read_thread turn timestamps; first command/edit existence confirmed, precise event time unavailable",
       "actualReadConfirmed": true,
       "actualEditConfirmed": true,
-      "nextGate": "Character media read/receipt confirmed; official latest turn interrupted, cause unknown, not counted as running. No duplicate resend.",
+      "nextGate": "Native media.error/HTTP/decode and app settings/save/relaunch remain unverified; source metadata diagnosis complete",
       "productionApplied": false,
-      "priorAcceptance": "Profile argument fix committed179813c2; root43PASS and new package created"
+      "priorAcceptance": "Profile argument fix committed179813c2; root43PASS and new package created",
+      "currentTaskReceipt": "tools/team-followup-20261001/BUILD/mac-character-media-receipt.json",
+      "rootAcceptance": "4 assets × 2 apps and input manifest evidence consistency checked; cause UNKNOWN"
     },
     {
       "team": "UIUX",
       "sessionId": "01a0f6e5-8653-7ae2-8b2b-314e275c215c",
-      "task": "card-removal-focus",
-      "instruction": "tools/team-followup-20261001/UIUX/card-removal-focus-task.md",
-      "receivedAt": "2026-10-01T16:25:13.000Z",
+      "task": "production-integration",
+      "instruction": "tools/team-followup-20261001/UIUX/production-integration-task.md",
+      "receivedAt": "2026-10-01T16:54:54.000Z",
       "firstReadAt": null,
       "firstCodeEditAt": null,
-      "completedAt": "2026-10-01T16:28:17.000Z",
-      "status": "completed_pending_root_acceptance",
-      "timestampSource": "official read_thread timestamps; per-command timestamps unavailable",
+      "completedAt": "2026-10-01T17:01:02.000Z",
+      "status": "completed_source_accepted",
+      "timestampSource": "official read_thread turn timestamps; first command/edit existence confirmed, precise event time unavailable",
       "actualReadConfirmed": true,
       "actualEditConfirmed": true,
-      "nextGate": "native DOM8 matrix accepted; full game/layout/gamepad and production integration pending",
-      "productionApplied": false
+      "nextGate": "Production focus accepted; native full-game/layout/physical gamepad pending",
+      "productionApplied": true,
+      "currentTaskReceipt": "tools/team-followup-20261001/UIUX/production-integration-receipt.json",
+      "rootAcceptance": "Root production 23 PASS; accepted whole-source equality; owner 101 PASS; remote 66998de7"
     },
     {
       "team": "ITEM",
       "sessionId": "01a0f6e6-1fbe-7df0-8d02-a9c2d9df3750",
-      "task": "d17-zone-selection",
-      "instruction": "tools/team-followup-20261001/ITEM/d17-zone-selection-task.md",
-      "receivedAt": "2026-10-01T16:27:19.000Z",
+      "task": "d17-source-adapter",
+      "instruction": "tools/team-followup-20261001/ITEM/d17-source-adapter-task.md",
+      "receivedAt": "2026-10-01T16:54:54.000Z",
       "firstReadAt": null,
       "firstCodeEditAt": null,
-      "completedAt": "2026-10-01T16:31:04.000Z",
-      "status": "completed_pending_root_acceptance",
-      "timestampSource": "official read_thread timestamps; per-command timestamps unavailable",
+      "completedAt": "2026-10-01T16:57:22.000Z",
+      "status": "completed_source_accepted",
+      "timestampSource": "official read_thread turn timestamps; first command/edit existence confirmed, precise event time unavailable",
       "actualReadConfirmed": true,
       "actualEditConfirmed": true,
-      "nextGate": "root independent acceptance",
-      "productionApplied": false
+      "nextGate": "Disabled review adapter accepted; production caller/clear/roll supply/combat overlap pending",
+      "productionApplied": false,
+      "currentTaskReceipt": "tools/team-followup-20261001/ITEM/d17-source-adapter-receipt.json",
+      "rootAcceptance": "Root 13 groups plus public callsite disabled/enabled/identity checks PASS; remote 375aa9e4"
     },
     {
       "team": "BALANCE",
       "sessionId": "01a0f6e6-5303-7392-81ba-94c42e349ffc",
-      "task": "immediate-drain",
-      "instruction": "tools/team-followup-20261001/BALANCE/immediate-drain-task.md",
-      "receivedAt": "2026-10-01T16:41:37.000Z",
+      "task": "production-integration",
+      "instruction": "tools/team-followup-20261001/BALANCE/production-integration-task.md",
+      "receivedAt": "2026-10-01T17:02:16.000Z",
       "firstReadAt": null,
       "firstCodeEditAt": null,
-      "completedAt": "2026-10-01T16:45:57.000Z",
-      "status": "completed_pending_root_acceptance",
-      "timestampSource": "official read_thread timestamps; per-command timestamps unavailable",
+      "completedAt": "2026-10-01T17:07:51.000Z",
+      "status": "completed_source_accepted",
+      "timestampSource": "official read_thread turn timestamps; first command/edit existence confirmed, precise event time unavailable",
       "actualReadConfirmed": true,
       "actualEditConfirmed": true,
-      "nextGate": "root independent acceptance",
-      "productionApplied": false,
-      "rootAcceptance": "Immediate drain17PASS independently rerun; production application pending"
+      "nextGate": "Production pending-save drain accepted; actual server/save restore/relaunch/unload pending",
+      "productionApplied": true,
+      "rootAcceptance": "Root production 22 PASS; 8 timing traces; 12 inline scripts; combined source equality; checkpoint pending",
+      "currentTaskReceipt": "tools/team-followup-20261001/BALANCE/production-integration-receipt.json"
     },
     {
       "team": "SOUND",
@@ -178,20 +191,21 @@
       "nextAction": "locate accessible existing SOUND session; do not create duplicate",
       "lastSessionCheck": "official CLI exact existing background session idle/done; no accessible same-session native terminal",
       "progressEvidence": "outputs/team-review-20261002/acceptance/claude-agents-latest.json",
-      "completedAt": null
+      "completedAt": null,
+      "nextGate": "Existing SOUND access policy restriction; no bypass or replacement session"
     }
   ],
   "counts": {
-    "completed_pending_root_acceptance": 9,
-    "interrupted": 1,
+    "submitted_next_dispatch_blocked": 6,
+    "completed_source_accepted": 4,
     "blocked_not_dispatched": 1
   },
-  "remoteCheckpoint": "179813c2ebdd8e52e564d4183240968c1442e477",
-  "remoteCheckpointVerifiedAt": "2026-10-01T16:48:30.054Z",
+  "remoteCheckpoint": "66998de7d0c2f25a1261825ec52957cc0464e983",
+  "remoteCheckpointVerifiedAt": "2026-10-01T17:08:49.148844+00:00",
   "remoteRef": "refs/heads/codex/mac-environment-20261001",
   "history": {
-    "path": "outputs/team-review-20261002/mac-app/team-utilization-history-59dac202dc15.json",
-    "sha256": "59dac202dc152304d0686cd939d24ca87e65e62d140ff5eaae0182142d7d071b"
+    "path": "outputs/team-review-20261002/production-integration/team-utilization-history-317ee7b1b91c.json",
+    "sha256": "317ee7b1b91c0ebebf8f56d5ba092fafa0b575caa512b6b31e9df38968a19196"
   },
   "rootGate": {
     "status": "waiting_for_user_unlock",
@@ -203,7 +217,9 @@
       "settings",
       "isolated save restore",
       "app relaunch"
-    ]
+    ],
+    "lastObservationNote": "Mac lock observed in prior native turn; no repeated unlock request or current UI attempt",
+    "sourceIntegration": "Inventory and save changes accepted in source; existing app builds precede these changes"
   },
   "automation": {
     "status": "ACTIVE",
@@ -222,12 +238,14 @@
   "corrections": [
     "Owner MAP/SKILL/ENEMY/ANIM/QA claimed times or HEAD include unverified/future values. Current rows use actual session events. Old receipts remain historical assertions, not accepted execution evidence.",
     "FirstCodeEdit null means no timestamped code Write/Edit proof; a Bash mutation may exist but is not guessed.",
-    "completed_pending_root_acceptance is not running."
+    "completed_pending_root_acceptance is not running.",
+    "BUILD previous interrupted row was an intermediate snapshot; official completedAt 2026-10-01T16:49:38Z supersedes it. Completed source work is not current utilization."
   ],
   "evidence": [
     "outputs/team-review-20261002/mac-app/native-activity-snapshot.json",
     "outputs/team-review-20261002/mac-app/codex-activity-snapshot.json",
     "outputs/team-review-20261002/mac-app/uiux-native-matrix.json",
-    "outputs/team-review-20261002/mac-app/launch-profile-trial.json"
+    "outputs/team-review-20261002/mac-app/launch-profile-trial.json",
+    "outputs/team-review-20261002/production-integration/codex-activity-snapshot.json"
   ]
 }

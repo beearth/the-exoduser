@@ -1,0 +1,12 @@
+docs/15 세이브+데이터구조/15 세이브+데이터구조.md:33:`game.html`의 일반 공개 데모(`_startDemoNew`, `hellsave_demo`)는 같은 브라우저 origin에서 종료·새로고침·재입장해도 진행을 이어간다. 30초 자동저장과 주요 이벤트 저장, 로비 복귀·페이지 이탈 저장 경로는 유지한다. 스테이지 클리어에서는 SP 보상·타임어택·지옥 클리어 기록 반영 후 즉시 저장한다. 기존 저장 데이터는 삭제하거나 초기화하지 않는다.
+docs/15 세이브+데이터구조/15 세이브+데이터구조.md:350:## 저장 타이밍
+docs/4.1맵디자인+설정/tilemap-editor.html:4269:window.addEventListener('beforeunload',()=>{ try{ _saveLiveMapState(); }catch(e){} });
+docs/3.2메타·진행시스템/3.2메타·진행시스템.md:15:| AI 강화 저장 | `_doAiEnhance`의 실제 소비 `res.used>0`이면 성공·실패 모두 `dbSaveNow()` 500ms 예약. 미시도는 예약 없음. 본편/easy 동일, 경제 수치 불변 | [저장 타이밍·기존 한계](../15%20세이브+데이터구조/15%20세이브+데이터구조.md) |
+docs/0마스터플랜/mac-resume-20261001/vscode-dispatch/TEAM_UTILIZATION_20261001.json:366:        "command": "/bin/zsh -lc \"date -u '+%Y-%m-%dT%H:%M:%SZ'; rg --files -g AGENTS.md; rg --files tools/team-followup-20261001/BALANCE | rg 'ai-enhance-persistence'; sed -n '3900,3935p' game.html; rg -n 'forgeClose|forgeOpen=false|closeForge|forgeOverlay|forge.*onclick|beforeunload|visibilitychange' game.html | tail -23\"",
+docs/0마스터플랜/mac-resume-20261001/vscode-dispatch/persistence-review-receipt.json:32:    "game.html dbSave(L3520)/dbSaveNow(L3927)/dbSaveForce(L3934)/_saving(L3440)/beforeunload(L61474)/autosave(L3916)",
+docs/0마스터플랜/mac-resume-20261001/vscode-dispatch/persistence-review-receipt.json:47:    "handoff": "busy(_saving) 재시도 후보는 BALANCE 별도 과제. 창닫기 완전해결은 beforeunload 연계 별도 설계.",
+docs/0마스터플랜/mac-resume-20261001/vscode-dispatch/persistence-review-result.md:41:- **BALANCE before.json의 +1→+0 손실**(강화 후 저장 트리거 없음 → autosave/beforeunload 전 종료 시 enh·공유악의 유실)에 대해, `if(res.used>0)dbSaveNow()`는 **손실 창을 autosave(≤10s)에서 500ms 디바운스로 축소**한다. 성공·실패(소비>0) 모두 저장을 트리거하고, **무시도(used=0)는 저장하지 않아** 과저장도 없다. 공유악의(G.mats)와 item.enh 모두 dbSave 실행 시 persist됨을 확인.
+docs/0마스터플랜/mac-resume-20261001/vscode-dispatch/persistence-review-result.md:52:- 창닫기(≤500ms) 완전 해결은 beforeunload 동기 저장과의 연계 필요 — 별도 설계.
+docs/4.1맵디자인+설정/tilemap-editor.html.broken:4001:window.addEventListener('beforeunload',()=>{ try{ _saveLiveMapState(); }catch(e){} });
+docs/4.1맵디자인+설정/tilemap-editor.html.bak:3889:window.addEventListener('beforeunload',()=>{ try{ _saveLiveMapState(); }catch(e){} });
+docs/4.1맵디자인+설정/tilemap-editor.html.bak2:4199:window.addEventListener('beforeunload',()=>{ try{ _saveLiveMapState(); }catch(e){} });

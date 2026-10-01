@@ -1,0 +1,25 @@
+✔ game.html route0 R1 원후보추가500ms→즉시후보 dispatch/ack 분리 (9.633667ms)
+✔ game.html route0 2회busy·A/B교대·신규일반500ms 보존 (3.322416ms)
+✔ game.html route0 성공/실패+pendingForce·중복drain·자체무한반복0 (2.582834ms)
+✔ game.html route3 R1 원후보추가500ms→즉시후보 dispatch/ack 분리 (5.918667ms)
+✔ game.html route3 2회busy·A/B교대·신규일반500ms 보존 (3.860125ms)
+✔ game.html route3 성공/실패+pendingForce·중복drain·자체무한반복0 (4.06475ms)
+✔ game-easy-test.html route0 R1 원후보추가500ms→즉시후보 dispatch/ack 분리 (3.280167ms)
+✔ game-easy-test.html route0 2회busy·A/B교대·신규일반500ms 보존 (1.998042ms)
+✔ game-easy-test.html route0 성공/실패+pendingForce·중복drain·자체무한반복0 (3.800917ms)
+✔ game-easy-test.html route3 R1 원후보추가500ms→즉시후보 dispatch/ack 분리 (3.335708ms)
+✔ game-easy-test.html route3 2회busy·A/B교대·신규일반500ms 보존 (2.92025ms)
+✔ game-easy-test.html route3 성공/실패+pendingForce·중복drain·자체무한반복0 (2.246875ms)
+✔ game.html identity/DB미준비 폐기·force5초·후속debounce 보존 (10.292667ms)
+✔ game.html 동기override·순수재귀소비경계 (5.994583ms)
+✔ game-easy-test.html identity/DB미준비 폐기·force5초·후속debounce 보존 (8.288375ms)
+✔ game-easy-test.html 동기override·순수재귀소비경계 (4.037375ms)
+✔ 원후보/소스SHA불변·결과기록 (127.095333ms)
+ℹ tests 17
+ℹ suites 0
+ℹ pass 17
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 338.8855

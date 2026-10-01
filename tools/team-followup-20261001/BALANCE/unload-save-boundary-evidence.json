@@ -1,0 +1,490 @@
+{
+  "completedAt": "2026-10-01T16:41:09.380Z",
+  "hashes": [
+    {
+      "file": "game.html",
+      "hashes": {
+        "formulas": "035418ca26f096477a3e47b9644c2e9c6f57649133fd2c940b3a349cfdfc9e57",
+        "rarity": "b42950ce7fecb64b9e949ef1d396ceb46814fc218bf54b3de0ac39a0e681be50",
+        "ai": "01d0462b57f93daef9df5cdf14e4b0287df9a086f5c8656aaeb243e4313fabc0",
+        "click": "26c8052860ccd82c70d315a1cc748eb04c6a2bc75d37df3077a3800dd7265720",
+        "sanitize": "d31b0b304bbac35f0aa6de15c80178b97bfefb7dabc7643fbbfb3ccd8476ed5b",
+        "restore": "563d0fae0a802ef60c0f7872adb58b474ebd831dd17ebf734e108562c8b01566",
+        "xp": "81804d144eff69c7c390bfc0dc00a9bb80ca3af5ee2c924e655bbf2366e5f7ee",
+        "now": "a1221d6bed33b2e4cfb3759efdf9604b8980d224a8c1a4fe86ed651a95b5238f",
+        "auto": "48409cec52fcf19c9d2f26b1812c96f7891ddbd53c5611d8a11f3370cc48727b",
+        "startAuto": "790eb755e2e504bb7d177d0e1d9a2fd609794e1cecd269ee3ef556c49de695ba",
+        "close": "d9cc511f0eb45a0e923b128fc8f638057ddd9dc35a40c90e58e3c1909b4f0e86",
+        "closeAll": "06cb72ad4a7f73b402463c7743ac3ed802472d3bc3496cb5b6359c20f4bc50a5",
+        "saves": "4c937159632dec648ef1045b8d939a78b787d1495c7cc9e34ae4b510aa4fb229",
+        "unload": "460b6d53ef4012dd0260b53cca298881818c889fcea4c0c1d1135add278867e7",
+        "shared": "cfa24593355c623a9fac40ecc7dcf4d17e8e050f4f0805af4de874eab9b5e332"
+      }
+    },
+    {
+      "file": "game-easy-test.html",
+      "hashes": {
+        "formulas": "035418ca26f096477a3e47b9644c2e9c6f57649133fd2c940b3a349cfdfc9e57",
+        "rarity": "b42950ce7fecb64b9e949ef1d396ceb46814fc218bf54b3de0ac39a0e681be50",
+        "ai": "01d0462b57f93daef9df5cdf14e4b0287df9a086f5c8656aaeb243e4313fabc0",
+        "click": "26c8052860ccd82c70d315a1cc748eb04c6a2bc75d37df3077a3800dd7265720",
+        "sanitize": "d31b0b304bbac35f0aa6de15c80178b97bfefb7dabc7643fbbfb3ccd8476ed5b",
+        "restore": "10615ec25b5a1ebe52382a8d0efa42cb556f276def25c4f720db9e24b4efb36d",
+        "xp": "81804d144eff69c7c390bfc0dc00a9bb80ca3af5ee2c924e655bbf2366e5f7ee",
+        "now": "a1221d6bed33b2e4cfb3759efdf9604b8980d224a8c1a4fe86ed651a95b5238f",
+        "auto": "48409cec52fcf19c9d2f26b1812c96f7891ddbd53c5611d8a11f3370cc48727b",
+        "startAuto": "790eb755e2e504bb7d177d0e1d9a2fd609794e1cecd269ee3ef556c49de695ba",
+        "close": "d9cc511f0eb45a0e923b128fc8f638057ddd9dc35a40c90e58e3c1909b4f0e86",
+        "closeAll": "06cb72ad4a7f73b402463c7743ac3ed802472d3bc3496cb5b6359c20f4bc50a5",
+        "saves": "9d182bc1c772674169bff5fff948b2b0ad3579c95481ec1075ab7e8a32f25185",
+        "unload": "460b6d53ef4012dd0260b53cca298881818c889fcea4c0c1d1135add278867e7",
+        "shared": "cfa24593355c623a9fac40ecc7dcf4d17e8e050f4f0805af4de874eab9b5e332"
+      }
+    }
+  ],
+  "servers": [
+    {
+      "file": "server.cjs",
+      "sha256": "c5cb7c8da3ac61f846bf23b7d8b365d4fba8fea655da0dcb203ccbd93723e190"
+    },
+    {
+      "file": "node-main.js",
+      "sha256": "7284183e49865ccd3d278013e30fb3ca5060aa4d691444ef5de5cf19e398eb14"
+    }
+  ],
+  "rows": [
+    {
+      "file": "game.html",
+      "route": 0,
+      "success": true,
+      "time": 100499,
+      "returned": "undefined",
+      "ack": 0,
+      "serverPersist": 0,
+      "wireDelivery": "not-observed",
+      "clientCalls": 2,
+      "synchronousWrites": [
+        "shared-fixture"
+      ],
+      "calls": [
+        {
+          "kind": "fetch-invoked",
+          "url": "/api/mats",
+          "keepalive": null
+        },
+        {
+          "kind": "sdk-select-invoked",
+          "keepalive": null
+        }
+      ]
+    },
+    {
+      "file": "game.html",
+      "route": 0,
+      "success": false,
+      "time": 100499,
+      "returned": "undefined",
+      "ack": 0,
+      "serverPersist": 0,
+      "wireDelivery": "not-observed",
+      "clientCalls": 2,
+      "synchronousWrites": [
+        "shared-fixture"
+      ],
+      "calls": [
+        {
+          "kind": "fetch-invoked",
+          "url": "/api/mats",
+          "keepalive": null
+        },
+        {
+          "kind": "sdk-select-invoked",
+          "keepalive": null
+        }
+      ]
+    },
+    {
+      "file": "game.html",
+      "route": 1,
+      "success": true,
+      "time": 100499,
+      "returned": "undefined",
+      "ack": 0,
+      "serverPersist": 0,
+      "wireDelivery": "not-observed",
+      "clientCalls": 0,
+      "synchronousWrites": [
+        "demo500"
+      ],
+      "calls": []
+    },
+    {
+      "file": "game.html",
+      "route": 1,
+      "success": false,
+      "time": 100499,
+      "returned": "undefined",
+      "ack": 0,
+      "serverPersist": 0,
+      "wireDelivery": "not-observed",
+      "clientCalls": 0,
+      "synchronousWrites": [
+        "demo500"
+      ],
+      "calls": []
+    },
+    {
+      "file": "game.html",
+      "route": 2,
+      "success": true,
+      "time": 100499,
+      "returned": "undefined",
+      "ack": 0,
+      "serverPersist": 0,
+      "wireDelivery": "not-observed",
+      "clientCalls": 0,
+      "synchronousWrites": [
+        "demo"
+      ],
+      "calls": []
+    },
+    {
+      "file": "game.html",
+      "route": 2,
+      "success": false,
+      "time": 100499,
+      "returned": "undefined",
+      "ack": 0,
+      "serverPersist": 0,
+      "wireDelivery": "not-observed",
+      "clientCalls": 0,
+      "synchronousWrites": [
+        "demo"
+      ],
+      "calls": []
+    },
+    {
+      "file": "game.html",
+      "route": 3,
+      "success": true,
+      "time": 100499,
+      "returned": "undefined",
+      "ack": 0,
+      "serverPersist": 0,
+      "wireDelivery": "not-observed",
+      "clientCalls": 2,
+      "synchronousWrites": [
+        "shared-fixture"
+      ],
+      "calls": [
+        {
+          "kind": "fetch-invoked",
+          "url": "/api/mats",
+          "keepalive": null
+        },
+        {
+          "kind": "fetch-invoked",
+          "url": "/api/save",
+          "keepalive": null
+        }
+      ]
+    },
+    {
+      "file": "game.html",
+      "route": 3,
+      "success": false,
+      "time": 100499,
+      "returned": "undefined",
+      "ack": 0,
+      "serverPersist": 0,
+      "wireDelivery": "not-observed",
+      "clientCalls": 2,
+      "synchronousWrites": [
+        "shared-fixture"
+      ],
+      "calls": [
+        {
+          "kind": "fetch-invoked",
+          "url": "/api/mats",
+          "keepalive": null
+        },
+        {
+          "kind": "fetch-invoked",
+          "url": "/api/save",
+          "keepalive": null
+        }
+      ]
+    },
+    {
+      "file": "game.html",
+      "route": 4,
+      "success": true,
+      "time": 100499,
+      "returned": "undefined",
+      "ack": 0,
+      "serverPersist": 0,
+      "wireDelivery": "not-observed",
+      "clientCalls": 1,
+      "synchronousWrites": [
+        "shared-fixture",
+        "web"
+      ],
+      "calls": [
+        {
+          "kind": "fetch-invoked",
+          "url": "/api/mats",
+          "keepalive": null
+        }
+      ]
+    },
+    {
+      "file": "game.html",
+      "route": 4,
+      "success": false,
+      "time": 100499,
+      "returned": "undefined",
+      "ack": 0,
+      "serverPersist": 0,
+      "wireDelivery": "not-observed",
+      "clientCalls": 1,
+      "synchronousWrites": [
+        "shared-fixture",
+        "web"
+      ],
+      "calls": [
+        {
+          "kind": "fetch-invoked",
+          "url": "/api/mats",
+          "keepalive": null
+        }
+      ]
+    },
+    {
+      "file": "game-easy-test.html",
+      "route": 0,
+      "success": true,
+      "time": 100499,
+      "returned": "undefined",
+      "ack": 0,
+      "serverPersist": 0,
+      "wireDelivery": "not-observed",
+      "clientCalls": 2,
+      "synchronousWrites": [
+        "shared-fixture"
+      ],
+      "calls": [
+        {
+          "kind": "fetch-invoked",
+          "url": "/api/mats",
+          "keepalive": null
+        },
+        {
+          "kind": "sdk-select-invoked",
+          "keepalive": null
+        }
+      ]
+    },
+    {
+      "file": "game-easy-test.html",
+      "route": 0,
+      "success": false,
+      "time": 100499,
+      "returned": "undefined",
+      "ack": 0,
+      "serverPersist": 0,
+      "wireDelivery": "not-observed",
+      "clientCalls": 2,
+      "synchronousWrites": [
+        "shared-fixture"
+      ],
+      "calls": [
+        {
+          "kind": "fetch-invoked",
+          "url": "/api/mats",
+          "keepalive": null
+        },
+        {
+          "kind": "sdk-select-invoked",
+          "keepalive": null
+        }
+      ]
+    },
+    {
+      "file": "game-easy-test.html",
+      "route": 1,
+      "success": true,
+      "time": 100499,
+      "returned": "undefined",
+      "ack": 0,
+      "serverPersist": 0,
+      "wireDelivery": "not-observed",
+      "clientCalls": 0,
+      "synchronousWrites": [
+        "demo500"
+      ],
+      "calls": []
+    },
+    {
+      "file": "game-easy-test.html",
+      "route": 1,
+      "success": false,
+      "time": 100499,
+      "returned": "undefined",
+      "ack": 0,
+      "serverPersist": 0,
+      "wireDelivery": "not-observed",
+      "clientCalls": 0,
+      "synchronousWrites": [
+        "demo500"
+      ],
+      "calls": []
+    },
+    {
+      "file": "game-easy-test.html",
+      "route": 2,
+      "success": true,
+      "time": 100499,
+      "returned": "undefined",
+      "ack": 0,
+      "serverPersist": 0,
+      "wireDelivery": "not-observed",
+      "clientCalls": 0,
+      "synchronousWrites": [
+        "demo"
+      ],
+      "calls": []
+    },
+    {
+      "file": "game-easy-test.html",
+      "route": 2,
+      "success": false,
+      "time": 100499,
+      "returned": "undefined",
+      "ack": 0,
+      "serverPersist": 0,
+      "wireDelivery": "not-observed",
+      "clientCalls": 0,
+      "synchronousWrites": [
+        "demo"
+      ],
+      "calls": []
+    },
+    {
+      "file": "game-easy-test.html",
+      "route": 3,
+      "success": true,
+      "time": 100499,
+      "returned": "undefined",
+      "ack": 0,
+      "serverPersist": 0,
+      "wireDelivery": "not-observed",
+      "clientCalls": 2,
+      "synchronousWrites": [
+        "shared-fixture"
+      ],
+      "calls": [
+        {
+          "kind": "fetch-invoked",
+          "url": "/api/mats",
+          "keepalive": null
+        },
+        {
+          "kind": "fetch-invoked",
+          "url": "/api/save",
+          "keepalive": null
+        }
+      ]
+    },
+    {
+      "file": "game-easy-test.html",
+      "route": 3,
+      "success": false,
+      "time": 100499,
+      "returned": "undefined",
+      "ack": 0,
+      "serverPersist": 0,
+      "wireDelivery": "not-observed",
+      "clientCalls": 2,
+      "synchronousWrites": [
+        "shared-fixture"
+      ],
+      "calls": [
+        {
+          "kind": "fetch-invoked",
+          "url": "/api/mats",
+          "keepalive": null
+        },
+        {
+          "kind": "fetch-invoked",
+          "url": "/api/save",
+          "keepalive": null
+        }
+      ]
+    },
+    {
+      "file": "game-easy-test.html",
+      "route": 4,
+      "success": true,
+      "time": 100499,
+      "returned": "undefined",
+      "ack": 0,
+      "serverPersist": 0,
+      "wireDelivery": "not-observed",
+      "clientCalls": 1,
+      "synchronousWrites": [
+        "shared-fixture",
+        "web"
+      ],
+      "calls": [
+        {
+          "kind": "fetch-invoked",
+          "url": "/api/mats",
+          "keepalive": null
+        }
+      ]
+    },
+    {
+      "file": "game-easy-test.html",
+      "route": 4,
+      "success": false,
+      "time": 100499,
+      "returned": "undefined",
+      "ack": 0,
+      "serverPersist": 0,
+      "wireDelivery": "not-observed",
+      "clientCalls": 1,
+      "synchronousWrites": [
+        "shared-fixture",
+        "web"
+      ],
+      "calls": [
+        {
+          "kind": "fetch-invoked",
+          "url": "/api/mats",
+          "keepalive": null
+        }
+      ]
+    },
+    {
+      "server": "server.cjs",
+      "deliveredRequestScenarioOnly": true,
+      "events": [
+        "server-write-return",
+        "server-ack-generated"
+      ],
+      "actualDiskWritten": false,
+      "clientAckObserved": false
+    },
+    {
+      "server": "node-main.js",
+      "deliveredRequestScenarioOnly": true,
+      "events": [
+        "server-write-return",
+        "server-ack-generated"
+      ],
+      "actualDiskWritten": false,
+      "clientAckObserved": false
+    }
+  ],
+  "limits": "unload 콜백 호출만; 네트워크promise 미완료 고정/ack0/자동서버persist0. 별도서버분기검사는 전달된요청가정+메모리fs이며 실제디스크/브라우저미검수"
+}

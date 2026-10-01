@@ -1,0 +1,478 @@
+{
+  "completedAt": "2026-10-01T17:08:04.384Z",
+  "syntax": [
+    {
+      "file": "game.html",
+      "inlineScripts": 6,
+      "sha256": "c868284af349c996d42087e93eba47a10614d73cb8f55f4db5ae01dde89da31a"
+    },
+    {
+      "file": "game-easy-test.html",
+      "inlineScripts": 6,
+      "sha256": "11b4e97b15903b9699b296362bdd068ffed6d3a1a505d9f6eeec5482b7c085ca"
+    }
+  ],
+  "rows": [
+    {
+      "file": "game.html",
+      "route": 0,
+      "immediate": false,
+      "dispatchTimes": [
+        100000,
+        101000
+      ],
+      "events": [
+        {
+          "type": "shared-sink",
+          "value": 100000,
+          "time": 100000
+        },
+        {
+          "type": "dispatch",
+          "index": 0,
+          "time": 100000
+        },
+        {
+          "type": "memory-persist",
+          "index": 0,
+          "time": 100500
+        },
+        {
+          "type": "ack",
+          "index": 0,
+          "ok": true,
+          "time": 100500
+        },
+        {
+          "type": "shared-sink",
+          "value": 99900,
+          "time": 101000
+        },
+        {
+          "type": "dispatch",
+          "index": 1,
+          "time": 101000
+        },
+        {
+          "type": "memory-persist",
+          "index": 1,
+          "time": 101000
+        },
+        {
+          "type": "ack",
+          "index": 1,
+          "ok": true,
+          "time": 101000
+        }
+      ],
+      "realServerPersistence": false
+    },
+    {
+      "file": "game.html",
+      "route": 0,
+      "immediate": true,
+      "dispatchTimes": [
+        100000,
+        100500
+      ],
+      "events": [
+        {
+          "type": "shared-sink",
+          "value": 100000,
+          "time": 100000
+        },
+        {
+          "type": "dispatch",
+          "index": 0,
+          "time": 100000
+        },
+        {
+          "type": "memory-persist",
+          "index": 0,
+          "time": 100500
+        },
+        {
+          "type": "ack",
+          "index": 0,
+          "ok": true,
+          "time": 100500
+        },
+        {
+          "type": "shared-sink",
+          "value": 99900,
+          "time": 100500
+        },
+        {
+          "type": "dispatch",
+          "index": 1,
+          "time": 100500
+        },
+        {
+          "type": "memory-persist",
+          "index": 1,
+          "time": 100800
+        },
+        {
+          "type": "ack",
+          "index": 1,
+          "ok": true,
+          "time": 100800
+        }
+      ],
+      "realServerPersistence": false
+    },
+    {
+      "file": "game.html",
+      "route": 3,
+      "immediate": false,
+      "dispatchTimes": [
+        100000,
+        101000
+      ],
+      "events": [
+        {
+          "type": "shared-sink",
+          "value": 100000,
+          "time": 100000
+        },
+        {
+          "type": "dispatch",
+          "index": 0,
+          "time": 100000
+        },
+        {
+          "type": "memory-persist",
+          "index": 0,
+          "time": 100500
+        },
+        {
+          "type": "ack",
+          "index": 0,
+          "ok": true,
+          "time": 100500
+        },
+        {
+          "type": "shared-sink",
+          "value": 99900,
+          "time": 101000
+        },
+        {
+          "type": "dispatch",
+          "index": 1,
+          "time": 101000
+        },
+        {
+          "type": "memory-persist",
+          "index": 1,
+          "time": 101000
+        },
+        {
+          "type": "ack",
+          "index": 1,
+          "ok": true,
+          "time": 101000
+        }
+      ],
+      "realServerPersistence": false
+    },
+    {
+      "file": "game.html",
+      "route": 3,
+      "immediate": true,
+      "dispatchTimes": [
+        100000,
+        100500
+      ],
+      "events": [
+        {
+          "type": "shared-sink",
+          "value": 100000,
+          "time": 100000
+        },
+        {
+          "type": "dispatch",
+          "index": 0,
+          "time": 100000
+        },
+        {
+          "type": "memory-persist",
+          "index": 0,
+          "time": 100500
+        },
+        {
+          "type": "ack",
+          "index": 0,
+          "ok": true,
+          "time": 100500
+        },
+        {
+          "type": "shared-sink",
+          "value": 99900,
+          "time": 100500
+        },
+        {
+          "type": "dispatch",
+          "index": 1,
+          "time": 100500
+        },
+        {
+          "type": "memory-persist",
+          "index": 1,
+          "time": 100800
+        },
+        {
+          "type": "ack",
+          "index": 1,
+          "ok": true,
+          "time": 100800
+        }
+      ],
+      "realServerPersistence": false
+    },
+    {
+      "file": "game-easy-test.html",
+      "route": 0,
+      "immediate": false,
+      "dispatchTimes": [
+        100000,
+        101000
+      ],
+      "events": [
+        {
+          "type": "shared-sink",
+          "value": 100000,
+          "time": 100000
+        },
+        {
+          "type": "dispatch",
+          "index": 0,
+          "time": 100000
+        },
+        {
+          "type": "memory-persist",
+          "index": 0,
+          "time": 100500
+        },
+        {
+          "type": "ack",
+          "index": 0,
+          "ok": true,
+          "time": 100500
+        },
+        {
+          "type": "shared-sink",
+          "value": 99900,
+          "time": 101000
+        },
+        {
+          "type": "dispatch",
+          "index": 1,
+          "time": 101000
+        },
+        {
+          "type": "memory-persist",
+          "index": 1,
+          "time": 101000
+        },
+        {
+          "type": "ack",
+          "index": 1,
+          "ok": true,
+          "time": 101000
+        }
+      ],
+      "realServerPersistence": false
+    },
+    {
+      "file": "game-easy-test.html",
+      "route": 0,
+      "immediate": true,
+      "dispatchTimes": [
+        100000,
+        100500
+      ],
+      "events": [
+        {
+          "type": "shared-sink",
+          "value": 100000,
+          "time": 100000
+        },
+        {
+          "type": "dispatch",
+          "index": 0,
+          "time": 100000
+        },
+        {
+          "type": "memory-persist",
+          "index": 0,
+          "time": 100500
+        },
+        {
+          "type": "ack",
+          "index": 0,
+          "ok": true,
+          "time": 100500
+        },
+        {
+          "type": "shared-sink",
+          "value": 99900,
+          "time": 100500
+        },
+        {
+          "type": "dispatch",
+          "index": 1,
+          "time": 100500
+        },
+        {
+          "type": "memory-persist",
+          "index": 1,
+          "time": 100800
+        },
+        {
+          "type": "ack",
+          "index": 1,
+          "ok": true,
+          "time": 100800
+        }
+      ],
+      "realServerPersistence": false
+    },
+    {
+      "file": "game-easy-test.html",
+      "route": 3,
+      "immediate": false,
+      "dispatchTimes": [
+        100000,
+        101000
+      ],
+      "events": [
+        {
+          "type": "shared-sink",
+          "value": 100000,
+          "time": 100000
+        },
+        {
+          "type": "dispatch",
+          "index": 0,
+          "time": 100000
+        },
+        {
+          "type": "memory-persist",
+          "index": 0,
+          "time": 100500
+        },
+        {
+          "type": "ack",
+          "index": 0,
+          "ok": true,
+          "time": 100500
+        },
+        {
+          "type": "shared-sink",
+          "value": 99900,
+          "time": 101000
+        },
+        {
+          "type": "dispatch",
+          "index": 1,
+          "time": 101000
+        },
+        {
+          "type": "memory-persist",
+          "index": 1,
+          "time": 101000
+        },
+        {
+          "type": "ack",
+          "index": 1,
+          "ok": true,
+          "time": 101000
+        }
+      ],
+      "realServerPersistence": false
+    },
+    {
+      "file": "game-easy-test.html",
+      "route": 3,
+      "immediate": true,
+      "dispatchTimes": [
+        100000,
+        100500
+      ],
+      "events": [
+        {
+          "type": "shared-sink",
+          "value": 100000,
+          "time": 100000
+        },
+        {
+          "type": "dispatch",
+          "index": 0,
+          "time": 100000
+        },
+        {
+          "type": "memory-persist",
+          "index": 0,
+          "time": 100500
+        },
+        {
+          "type": "ack",
+          "index": 0,
+          "ok": true,
+          "time": 100500
+        },
+        {
+          "type": "shared-sink",
+          "value": 99900,
+          "time": 100500
+        },
+        {
+          "type": "dispatch",
+          "index": 1,
+          "time": 100500
+        },
+        {
+          "type": "memory-persist",
+          "index": 1,
+          "time": 100800
+        },
+        {
+          "type": "ack",
+          "index": 1,
+          "ok": true,
+          "time": 100800
+        }
+      ],
+      "realServerPersistence": false
+    }
+  ],
+  "sourceHashes": [
+    {
+      "file": "game.html",
+      "now": "d616badd0586ec62a6e19ed7824726fd9c755ab4d87302c59c7e91efab46000c",
+      "drain": "adfbd8f54ef5fae993f4ad6a0867f4ff58d691206dbee3bb1b15119ff5dac75a",
+      "force": "9e6f375e6a2856522d55791f7e76d7f93705699cc35d96f187373a3406aa1b21",
+      "saves": [
+        "3f730eda402d7bf4a2a77c0def9a8d33ef31db4852fbe0acbafc76ddd3882bb5",
+        "8bac8270ba1d01d7190311d199f04e1cbfaa7cb0db52128d17b818f3503a5aa3",
+        "f2c108806bd60c8f93e658d8feb60b2d24c21f7e37d9833d341bc8ac919a8e66",
+        "311d1028853ce15e687f7e13db4214310cd4832404b58ffd0ee1fb1d561cc926",
+        "96e85dc52a59cb6378d883dbc8bbc5cf3ae42840e968cf9ef3282edfb3cd6289"
+      ]
+    },
+    {
+      "file": "game-easy-test.html",
+      "now": "d616badd0586ec62a6e19ed7824726fd9c755ab4d87302c59c7e91efab46000c",
+      "drain": "adfbd8f54ef5fae993f4ad6a0867f4ff58d691206dbee3bb1b15119ff5dac75a",
+      "force": "9e6f375e6a2856522d55791f7e76d7f93705699cc35d96f187373a3406aa1b21",
+      "saves": [
+        "ebd0655ce20ff3e924d3fda551ab6b0c95abcdde45f4088d3d5514d1c2b9ef3d",
+        "88020477c1e99c4eb28e6668c00ab85090aeeb48493964faeed62e7a485f3ba8",
+        "8dddd5dea504667f3c5530728db62b962351da8a7218fe697e9155d335abc053",
+        "e90396e1c564298a273d5bbf45dccb2d83ada97ac4d2964dee752ae8fdb1b7ce",
+        "abf5205fc339219f25c11d5b2fec4bbef465042cce7871f6c0b8d9a841500f83"
+      ]
+    }
+  ],
+  "limits": "생산전체저장함수추출·fake시계/DOM/sink; snapshot/ACK/메모리persist분리; 실제서버/저장재실행/unload미검수"
+}

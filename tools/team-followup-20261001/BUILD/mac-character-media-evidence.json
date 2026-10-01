@@ -1,0 +1,608 @@
+{
+  "startedAt": "2026-10-01T16:48:50.342Z",
+  "completedAt": "2026-10-01T16:48:50.591Z",
+  "videos": [
+    "video/world_intro_v13_exodus_en.mp4",
+    "assets/charselect/bg_scene1_loop.mp4",
+    "assets/charselect/idle_warrior_cs3_4k.mp4",
+    "video/warrior_story_v23_clean.mp4"
+  ],
+  "files": [
+    {
+      "relative": "video/world_intro_v13_exodus_en.mp4",
+      "manifest": {
+        "path": "video/world_intro_v13_exodus_en.mp4",
+        "sha256": "19706b005ea6137e820dfe0bdb69244b782e693904f62795837453eed6608865"
+      },
+      "original": {
+        "path": "video/world_intro_v13_exodus_en.mp4",
+        "exists": true,
+        "bytes": 32381760,
+        "sha256": "19706b005ea6137e820dfe0bdb69244b782e693904f62795837453eed6608865",
+        "stable": true,
+        "boxes": [
+          {
+            "offset": 0,
+            "type": "ftyp",
+            "size": 32
+          },
+          {
+            "offset": 32,
+            "type": "moov",
+            "size": 79754
+          },
+          {
+            "offset": 79786,
+            "type": "free",
+            "size": 8
+          },
+          {
+            "offset": 79794,
+            "type": "mdat",
+            "size": 32301966
+          }
+        ],
+        "samples": [
+          {
+            "codec": "avc1",
+            "entrySize": 158,
+            "width": 1280,
+            "height": 720,
+            "avcProfile": 100,
+            "avcCompatibility": 0,
+            "avcLevel": 31
+          },
+          {
+            "codec": "mp4a",
+            "entrySize": 110
+          }
+        ],
+        "limit": "MP4 box/sample-entry 헤더만; decode/브라우저 지원 인수 아님"
+      },
+      "packaged": [
+        {
+          "path": "outputs/mac-package-ready/mac-packager-59376baf-37c9-4c20-a42f-af67b8d9221a/package/EXODUSER-59376baf-37c9-4c20-a42f-af67b8d9221a.app/Contents/Resources/app.nw/video/world_intro_v13_exodus_en.mp4",
+          "exists": true,
+          "bytes": 32381760,
+          "sha256": "19706b005ea6137e820dfe0bdb69244b782e693904f62795837453eed6608865",
+          "stable": true,
+          "boxes": [
+            {
+              "offset": 0,
+              "type": "ftyp",
+              "size": 32
+            },
+            {
+              "offset": 32,
+              "type": "moov",
+              "size": 79754
+            },
+            {
+              "offset": 79786,
+              "type": "free",
+              "size": 8
+            },
+            {
+              "offset": 79794,
+              "type": "mdat",
+              "size": 32301966
+            }
+          ],
+          "samples": [
+            {
+              "codec": "avc1",
+              "entrySize": 158,
+              "width": 1280,
+              "height": 720,
+              "avcProfile": 100,
+              "avcCompatibility": 0,
+              "avcLevel": 31
+            },
+            {
+              "codec": "mp4a",
+              "entrySize": 110
+            }
+          ],
+          "limit": "MP4 box/sample-entry 헤더만; decode/브라우저 지원 인수 아님"
+        },
+        {
+          "path": "outputs/mac-package-ready/mac-packager-abf57f41-ebe0-4393-852f-0522f5750f9a/package/EXODUSER-abf57f41-ebe0-4393-852f-0522f5750f9a.app/Contents/Resources/app.nw/video/world_intro_v13_exodus_en.mp4",
+          "exists": true,
+          "bytes": 32381760,
+          "sha256": "19706b005ea6137e820dfe0bdb69244b782e693904f62795837453eed6608865",
+          "stable": true,
+          "boxes": [
+            {
+              "offset": 0,
+              "type": "ftyp",
+              "size": 32
+            },
+            {
+              "offset": 32,
+              "type": "moov",
+              "size": 79754
+            },
+            {
+              "offset": 79786,
+              "type": "free",
+              "size": 8
+            },
+            {
+              "offset": 79794,
+              "type": "mdat",
+              "size": 32301966
+            }
+          ],
+          "samples": [
+            {
+              "codec": "avc1",
+              "entrySize": 158,
+              "width": 1280,
+              "height": 720,
+              "avcProfile": 100,
+              "avcCompatibility": 0,
+              "avcLevel": 31
+            },
+            {
+              "codec": "mp4a",
+              "entrySize": 110
+            }
+          ],
+          "limit": "MP4 box/sample-entry 헤더만; decode/브라우저 지원 인수 아님"
+        }
+      ],
+      "allSame": true
+    },
+    {
+      "relative": "assets/charselect/bg_scene1_loop.mp4",
+      "manifest": {
+        "path": "assets/charselect/bg_scene1_loop.mp4",
+        "sha256": "8630d175488e7afb9bf2a29a35eb3a4eb84cc3ab661e33c3da1ea376d6e205ad"
+      },
+      "original": {
+        "path": "assets/charselect/bg_scene1_loop.mp4",
+        "exists": true,
+        "bytes": 515341,
+        "sha256": "8630d175488e7afb9bf2a29a35eb3a4eb84cc3ab661e33c3da1ea376d6e205ad",
+        "stable": true,
+        "boxes": [
+          {
+            "offset": 0,
+            "type": "ftyp",
+            "size": 32
+          },
+          {
+            "offset": 32,
+            "type": "moov",
+            "size": 1618
+          },
+          {
+            "offset": 1650,
+            "type": "free",
+            "size": 8
+          },
+          {
+            "offset": 1658,
+            "type": "mdat",
+            "size": 513683
+          }
+        ],
+        "samples": [
+          {
+            "codec": "avc1",
+            "entrySize": 160,
+            "width": 1280,
+            "height": 720,
+            "avcProfile": 100,
+            "avcCompatibility": 0,
+            "avcLevel": 31
+          }
+        ],
+        "limit": "MP4 box/sample-entry 헤더만; decode/브라우저 지원 인수 아님"
+      },
+      "packaged": [
+        {
+          "path": "outputs/mac-package-ready/mac-packager-59376baf-37c9-4c20-a42f-af67b8d9221a/package/EXODUSER-59376baf-37c9-4c20-a42f-af67b8d9221a.app/Contents/Resources/app.nw/assets/charselect/bg_scene1_loop.mp4",
+          "exists": true,
+          "bytes": 515341,
+          "sha256": "8630d175488e7afb9bf2a29a35eb3a4eb84cc3ab661e33c3da1ea376d6e205ad",
+          "stable": true,
+          "boxes": [
+            {
+              "offset": 0,
+              "type": "ftyp",
+              "size": 32
+            },
+            {
+              "offset": 32,
+              "type": "moov",
+              "size": 1618
+            },
+            {
+              "offset": 1650,
+              "type": "free",
+              "size": 8
+            },
+            {
+              "offset": 1658,
+              "type": "mdat",
+              "size": 513683
+            }
+          ],
+          "samples": [
+            {
+              "codec": "avc1",
+              "entrySize": 160,
+              "width": 1280,
+              "height": 720,
+              "avcProfile": 100,
+              "avcCompatibility": 0,
+              "avcLevel": 31
+            }
+          ],
+          "limit": "MP4 box/sample-entry 헤더만; decode/브라우저 지원 인수 아님"
+        },
+        {
+          "path": "outputs/mac-package-ready/mac-packager-abf57f41-ebe0-4393-852f-0522f5750f9a/package/EXODUSER-abf57f41-ebe0-4393-852f-0522f5750f9a.app/Contents/Resources/app.nw/assets/charselect/bg_scene1_loop.mp4",
+          "exists": true,
+          "bytes": 515341,
+          "sha256": "8630d175488e7afb9bf2a29a35eb3a4eb84cc3ab661e33c3da1ea376d6e205ad",
+          "stable": true,
+          "boxes": [
+            {
+              "offset": 0,
+              "type": "ftyp",
+              "size": 32
+            },
+            {
+              "offset": 32,
+              "type": "moov",
+              "size": 1618
+            },
+            {
+              "offset": 1650,
+              "type": "free",
+              "size": 8
+            },
+            {
+              "offset": 1658,
+              "type": "mdat",
+              "size": 513683
+            }
+          ],
+          "samples": [
+            {
+              "codec": "avc1",
+              "entrySize": 160,
+              "width": 1280,
+              "height": 720,
+              "avcProfile": 100,
+              "avcCompatibility": 0,
+              "avcLevel": 31
+            }
+          ],
+          "limit": "MP4 box/sample-entry 헤더만; decode/브라우저 지원 인수 아님"
+        }
+      ],
+      "allSame": true
+    },
+    {
+      "relative": "assets/charselect/idle_warrior_cs3_4k.mp4",
+      "manifest": {
+        "path": "assets/charselect/idle_warrior_cs3_4k.mp4",
+        "sha256": "f982c42c9b60e64ddb644ae8c6f3983a08a9314597eb14b9a04065b485e6405f"
+      },
+      "original": {
+        "path": "assets/charselect/idle_warrior_cs3_4k.mp4",
+        "exists": true,
+        "bytes": 14132329,
+        "sha256": "f982c42c9b60e64ddb644ae8c6f3983a08a9314597eb14b9a04065b485e6405f",
+        "stable": true,
+        "boxes": [
+          {
+            "offset": 0,
+            "type": "ftyp",
+            "size": 32
+          },
+          {
+            "offset": 32,
+            "type": "moov",
+            "size": 3320
+          },
+          {
+            "offset": 3352,
+            "type": "free",
+            "size": 8
+          },
+          {
+            "offset": 3360,
+            "type": "mdat",
+            "size": 14128969
+          }
+        ],
+        "samples": [
+          {
+            "codec": "avc1",
+            "entrySize": 182,
+            "width": 3840,
+            "height": 2160,
+            "avcProfile": 100,
+            "avcCompatibility": 0,
+            "avcLevel": 51
+          }
+        ],
+        "limit": "MP4 box/sample-entry 헤더만; decode/브라우저 지원 인수 아님"
+      },
+      "packaged": [
+        {
+          "path": "outputs/mac-package-ready/mac-packager-59376baf-37c9-4c20-a42f-af67b8d9221a/package/EXODUSER-59376baf-37c9-4c20-a42f-af67b8d9221a.app/Contents/Resources/app.nw/assets/charselect/idle_warrior_cs3_4k.mp4",
+          "exists": true,
+          "bytes": 14132329,
+          "sha256": "f982c42c9b60e64ddb644ae8c6f3983a08a9314597eb14b9a04065b485e6405f",
+          "stable": true,
+          "boxes": [
+            {
+              "offset": 0,
+              "type": "ftyp",
+              "size": 32
+            },
+            {
+              "offset": 32,
+              "type": "moov",
+              "size": 3320
+            },
+            {
+              "offset": 3352,
+              "type": "free",
+              "size": 8
+            },
+            {
+              "offset": 3360,
+              "type": "mdat",
+              "size": 14128969
+            }
+          ],
+          "samples": [
+            {
+              "codec": "avc1",
+              "entrySize": 182,
+              "width": 3840,
+              "height": 2160,
+              "avcProfile": 100,
+              "avcCompatibility": 0,
+              "avcLevel": 51
+            }
+          ],
+          "limit": "MP4 box/sample-entry 헤더만; decode/브라우저 지원 인수 아님"
+        },
+        {
+          "path": "outputs/mac-package-ready/mac-packager-abf57f41-ebe0-4393-852f-0522f5750f9a/package/EXODUSER-abf57f41-ebe0-4393-852f-0522f5750f9a.app/Contents/Resources/app.nw/assets/charselect/idle_warrior_cs3_4k.mp4",
+          "exists": true,
+          "bytes": 14132329,
+          "sha256": "f982c42c9b60e64ddb644ae8c6f3983a08a9314597eb14b9a04065b485e6405f",
+          "stable": true,
+          "boxes": [
+            {
+              "offset": 0,
+              "type": "ftyp",
+              "size": 32
+            },
+            {
+              "offset": 32,
+              "type": "moov",
+              "size": 3320
+            },
+            {
+              "offset": 3352,
+              "type": "free",
+              "size": 8
+            },
+            {
+              "offset": 3360,
+              "type": "mdat",
+              "size": 14128969
+            }
+          ],
+          "samples": [
+            {
+              "codec": "avc1",
+              "entrySize": 182,
+              "width": 3840,
+              "height": 2160,
+              "avcProfile": 100,
+              "avcCompatibility": 0,
+              "avcLevel": 51
+            }
+          ],
+          "limit": "MP4 box/sample-entry 헤더만; decode/브라우저 지원 인수 아님"
+        }
+      ],
+      "allSame": true
+    },
+    {
+      "relative": "video/warrior_story_v23_clean.mp4",
+      "manifest": {
+        "path": "video/warrior_story_v23_clean.mp4",
+        "sha256": "fb1b47274ab3f793ab3254182b44f83349958e4db435e4331f03c879389007bd"
+      },
+      "original": {
+        "path": "video/warrior_story_v23_clean.mp4",
+        "exists": true,
+        "bytes": 93670905,
+        "sha256": "fb1b47274ab3f793ab3254182b44f83349958e4db435e4331f03c879389007bd",
+        "stable": true,
+        "boxes": [
+          {
+            "offset": 0,
+            "type": "ftyp",
+            "size": 32
+          },
+          {
+            "offset": 32,
+            "type": "moov",
+            "size": 154317
+          },
+          {
+            "offset": 154349,
+            "type": "free",
+            "size": 8
+          },
+          {
+            "offset": 154357,
+            "type": "mdat",
+            "size": 93516548
+          }
+        ],
+        "samples": [
+          {
+            "codec": "avc1",
+            "entrySize": 178,
+            "width": 1920,
+            "height": 1080,
+            "avcProfile": 100,
+            "avcCompatibility": 0,
+            "avcLevel": 50
+          },
+          {
+            "codec": "mp4a",
+            "entrySize": 110
+          }
+        ],
+        "limit": "MP4 box/sample-entry 헤더만; decode/브라우저 지원 인수 아님"
+      },
+      "packaged": [
+        {
+          "path": "outputs/mac-package-ready/mac-packager-59376baf-37c9-4c20-a42f-af67b8d9221a/package/EXODUSER-59376baf-37c9-4c20-a42f-af67b8d9221a.app/Contents/Resources/app.nw/video/warrior_story_v23_clean.mp4",
+          "exists": true,
+          "bytes": 93670905,
+          "sha256": "fb1b47274ab3f793ab3254182b44f83349958e4db435e4331f03c879389007bd",
+          "stable": true,
+          "boxes": [
+            {
+              "offset": 0,
+              "type": "ftyp",
+              "size": 32
+            },
+            {
+              "offset": 32,
+              "type": "moov",
+              "size": 154317
+            },
+            {
+              "offset": 154349,
+              "type": "free",
+              "size": 8
+            },
+            {
+              "offset": 154357,
+              "type": "mdat",
+              "size": 93516548
+            }
+          ],
+          "samples": [
+            {
+              "codec": "avc1",
+              "entrySize": 178,
+              "width": 1920,
+              "height": 1080,
+              "avcProfile": 100,
+              "avcCompatibility": 0,
+              "avcLevel": 50
+            },
+            {
+              "codec": "mp4a",
+              "entrySize": 110
+            }
+          ],
+          "limit": "MP4 box/sample-entry 헤더만; decode/브라우저 지원 인수 아님"
+        },
+        {
+          "path": "outputs/mac-package-ready/mac-packager-abf57f41-ebe0-4393-852f-0522f5750f9a/package/EXODUSER-abf57f41-ebe0-4393-852f-0522f5750f9a.app/Contents/Resources/app.nw/video/warrior_story_v23_clean.mp4",
+          "exists": true,
+          "bytes": 93670905,
+          "sha256": "fb1b47274ab3f793ab3254182b44f83349958e4db435e4331f03c879389007bd",
+          "stable": true,
+          "boxes": [
+            {
+              "offset": 0,
+              "type": "ftyp",
+              "size": 32
+            },
+            {
+              "offset": 32,
+              "type": "moov",
+              "size": 154317
+            },
+            {
+              "offset": 154349,
+              "type": "free",
+              "size": 8
+            },
+            {
+              "offset": 154357,
+              "type": "mdat",
+              "size": 93516548
+            }
+          ],
+          "samples": [
+            {
+              "codec": "avc1",
+              "entrySize": 178,
+              "width": 1920,
+              "height": 1080,
+              "avcProfile": 100,
+              "avcCompatibility": 0,
+              "avcLevel": 50
+            },
+            {
+              "codec": "mp4a",
+              "entrySize": 110
+            }
+          ],
+          "limit": "MP4 box/sample-entry 헤더만; decode/브라우저 지원 인수 아님"
+        }
+      ],
+      "allSame": true
+    }
+  ],
+  "textHashes": [
+    {
+      "path": "index.html",
+      "sha256": "38f4e0e97ed63014e86ec48a14d9d0a677472ef57b99916f9a48b7b3395e66c8"
+    },
+    {
+      "path": "node-main.js",
+      "sha256": "01b0c1d51f77f500ee0a59185458bf0294edce12544482d6cf7abce4262c91ce"
+    },
+    {
+      "path": "character-story-player.js",
+      "sha256": "3965e5d5767b26ab55bfcb7951306ecb67b2872c9518843eb853161c8ca72a94"
+    },
+    {
+      "path": "outputs/mac-package-ready/mac-packager-59376baf-37c9-4c20-a42f-af67b8d9221a/package/EXODUSER-59376baf-37c9-4c20-a42f-af67b8d9221a.app/Contents/Resources/app.nw/index.html",
+      "sha256": "38f4e0e97ed63014e86ec48a14d9d0a677472ef57b99916f9a48b7b3395e66c8"
+    },
+    {
+      "path": "outputs/mac-package-ready/mac-packager-59376baf-37c9-4c20-a42f-af67b8d9221a/package/EXODUSER-59376baf-37c9-4c20-a42f-af67b8d9221a.app/Contents/Resources/app.nw/node-main.js",
+      "sha256": "2b1b6e7a5c0cd2fb8915accf414a178d6fd941c504f29f9d1be51cd87509127a"
+    },
+    {
+      "path": "outputs/mac-package-ready/mac-packager-59376baf-37c9-4c20-a42f-af67b8d9221a/package/EXODUSER-59376baf-37c9-4c20-a42f-af67b8d9221a.app/Contents/Resources/app.nw/character-story-player.js",
+      "sha256": "3965e5d5767b26ab55bfcb7951306ecb67b2872c9518843eb853161c8ca72a94"
+    },
+    {
+      "path": "outputs/mac-package-ready/mac-packager-abf57f41-ebe0-4393-852f-0522f5750f9a/package/EXODUSER-abf57f41-ebe0-4393-852f-0522f5750f9a.app/Contents/Resources/app.nw/index.html",
+      "sha256": "38f4e0e97ed63014e86ec48a14d9d0a677472ef57b99916f9a48b7b3395e66c8"
+    },
+    {
+      "path": "outputs/mac-package-ready/mac-packager-abf57f41-ebe0-4393-852f-0522f5750f9a/package/EXODUSER-abf57f41-ebe0-4393-852f-0522f5750f9a.app/Contents/Resources/app.nw/node-main.js",
+      "sha256": "2bdbe88c35689bd4d2ab4b3fd7146204aebe2ce6e58dca4cc555f1484a711356"
+    },
+    {
+      "path": "outputs/mac-package-ready/mac-packager-abf57f41-ebe0-4393-852f-0522f5750f9a/package/EXODUSER-abf57f41-ebe0-4393-852f-0522f5750f9a.app/Contents/Resources/app.nw/character-story-player.js",
+      "sha256": "3965e5d5767b26ab55bfcb7951306ecb67b2872c9518843eb853161c8ca72a94"
+    }
+  ],
+  "tools": "command -v ffprobe/mediainfo/ffmpeg 없음; 설치/다운로드0; 소형 자체 MP4 header 검사",
+  "limits": "실제 media.error/canPlayType/AX 추가관측 UNKNOWN; UI/재시작/디코드0"
+}

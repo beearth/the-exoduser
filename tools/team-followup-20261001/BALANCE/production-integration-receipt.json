@@ -1,0 +1,19 @@
+{
+  "task": "BALANCE 저장 보류분 생산 반영",
+  "receivedAt": "2026-10-01T17:02:21Z",
+  "firstReadAt": "2026-10-01T17:02:21Z",
+  "firstCodeEditAt": "2026-10-01T17:03:41Z",
+  "validatedAt": "2026-10-01T17:06:38Z",
+  "completedAt": "2026-10-01T17:07:35Z",
+  "gameSha256": "c868284af349c996d42087e93eba47a10614d73cb8f55f4db5ae01dde89da31a",
+  "easySha256": "11b4e97b15903b9699b296362bdd068ffed6d3a1a505d9f6eeec5482b7c085ca",
+  "validation": "22PASS/0FAIL·HTML inline각6·원본RED/생산GREEN·승인4hunk외전체byte/기존산출불변",
+  "command": "node --test tools/team-followup-20261001/BALANCE/production-integration.test.mjs",
+  "imports": ["immediate-drain-candidate.mjs", "save-inflight-candidate.mjs", "immediate-drain-prior-before.mjs"],
+  "status": "completed_production_integration_returned_root",
+  "ownershipReturnedTo": "root",
+  "productionModified": true,
+  "outsideSaveRegionsBytePreserved": true,
+  "ownership": "game.html/game-easy-test.html 저장4hunk만; 인벤토리보존; 완료후root반환",
+  "checkpoint": "66998de7d0c2f25a1261825ec52957cc0464e983 사용자전달·Git조회0"
+}

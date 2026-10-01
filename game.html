@@ -3567,7 +3567,7 @@ async function dbSave(){
     else if(updated&&updated.length===1&&updated[0].id===_charId)_lastSaveTime=Date.now();
     else if(!IS_ELECTRON)console.error('[DB] Save failed: character missing or update denied');
   }catch(e){if(!IS_ELECTRON)console.error('[DB] Save exception:',e)}
-  _saving=false;if(_pendingForce){_pendingForce=false;if(Date.now()-_lastSaveTime>=5000)dbSave()}
+  _saving=false;_drainPendingSaveNow();if(_pendingForce){_pendingForce=false;if(Date.now()-_lastSaveTime>=5000)dbSave()}
 }
 
 // ═══ Load game state from DB ═══
@@ -3927,7 +3927,20 @@ let _saveDebounce=null;
 function dbSaveNow(){
   if(!_dbReady)return;
   if(_saveDebounce)clearTimeout(_saveDebounce);
-  _saveDebounce=setTimeout(()=>{_saveDebounce=null;dbSave()},500);
+  const request={charId:_charId,charIdx:_charIdx,player:P,save:dbSave};
+  _saveDebounce=setTimeout(()=>{
+    _saveDebounce=null;
+    if(!_dbReady||request.charId!==_charId||request.charIdx!==_charIdx||request.player!==P||request.save!==dbSave)return;
+    if(_saving){dbSaveNow.pending=request;return}
+    dbSaveNow.pending=null;
+    dbSave();
+  },500);
+}
+function _drainPendingSaveNow(){
+  const request=dbSaveNow.pending;
+  dbSaveNow.pending=null;
+  if(!request||!_dbReady||request.charId!==_charId||request.charIdx!==_charIdx||request.player!==P||request.save!==dbSave)return;
+  dbSave();
 }
 // ═══ 강제 즉시 저장 (디바운스 없음) — 아이템 획득/레벨업 등 핵심 이벤트 ═══
 let _pendingForce=false;
@@ -61841,7 +61854,7 @@ if((_isLocal&&!_charId)||new URLSearchParams(window.location.search).get('test')
       if(j.ok){_lastSaveTime=Date.now()}
       else{if(!IS_ELECTRON)console.error('[LOCAL] Save failed:',j.error)}
     }catch(e){_serverOk=false;try{localStorage.setItem('hellsave_'+_SLOT,JSON.stringify(saveData));_lastSaveTime=Date.now()}catch(le){}}
-    finally{_saving=false;if(_pendingForce){_pendingForce=false;if(Date.now()-_lastSaveTime>=5000)dbSave()}}
+    finally{_saving=false;_drainPendingSaveNow();if(_pendingForce){_pendingForce=false;if(Date.now()-_lastSaveTime>=5000)dbSave()}}
   };
 
   if(_DROP_PREVIEW)dbSave=async()=>{};
@@ -61992,7 +62005,7 @@ if((_isLocal&&!_charId)||new URLSearchParams(window.location.search).get('test')
       localStorage.setItem(_LS_KEY,JSON.stringify(saveData));
       _lastSaveTime=Date.now();
     }catch(e){console.warn('[WEB] Save failed:',e)}
-    finally{_saving=false;if(_pendingForce){_pendingForce=false;if(Date.now()-_lastSaveTime>=5000)dbSave()}}
+    finally{_saving=false;_drainPendingSaveNow();if(_pendingForce){_pendingForce=false;if(Date.now()-_lastSaveTime>=5000)dbSave()}}
   };
   showBootLoading(_T('맵과 몬스터 불러오는 중...'));
   setBootLoading(25,_T('기본 데이터 준비 중...'));

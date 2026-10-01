@@ -1,0 +1,37 @@
+✔ game.html route0 성공 원본 held→500ms→완료 (12.544875ms)
+✔ game.html route0 성공 후보 held→500ms→완료 (1.009875ms)
+✔ game.html route0 실패 원본 held→500ms→완료 (0.556875ms)
+✔ game.html route0 실패 후보 held→500ms→완료 (0.606917ms)
+✔ game.html route3 성공 원본 held→500ms→완료 (1.299666ms)
+✔ game.html route3 성공 후보 held→500ms→완료 (1.001209ms)
+✔ game.html route3 실패 원본 held→500ms→완료 (0.469583ms)
+✔ game.html route3 실패 후보 held→500ms→완료 (0.522417ms)
+✔ game-easy-test.html route0 성공 원본 held→500ms→완료 (1.204042ms)
+✔ game-easy-test.html route0 성공 후보 held→500ms→완료 (0.729042ms)
+✔ game-easy-test.html route0 실패 원본 held→500ms→완료 (0.783875ms)
+✔ game-easy-test.html route0 실패 후보 held→500ms→완료 (0.542042ms)
+✔ game-easy-test.html route3 성공 원본 held→500ms→완료 (1.164416ms)
+✔ game-easy-test.html route3 성공 후보 held→500ms→완료 (0.655125ms)
+✔ game-easy-test.html route3 실패 원본 held→500ms→완료 (0.379083ms)
+✔ game-easy-test.html route3 실패 후보 held→500ms→완료 (0.458291ms)
+✔ game.html 중복debounce/pending 요청은 재전송1회 (0.477959ms)
+✔ game.html 첫실패·재시도실패도 무한반복0 (1.672417ms)
+✔ game.html 캐릭터/플레이어/저장override 전환 및 DB미준비 요청폐기 (4.483167ms)
+✔ game.html force5초계약과 요청없음 불필요재시도0 (0.456708ms)
+✔ game.html force 진행중 계약불변·demo/standalone 동기override (2.373458ms)
+✔ game.html no-op 강화/DB미준비는 예약0 (0.322417ms)
+✔ game-easy-test.html 중복debounce/pending 요청은 재전송1회 (0.924042ms)
+✔ game-easy-test.html 첫실패·재시도실패도 무한반복0 (1.026666ms)
+✔ game-easy-test.html 캐릭터/플레이어/저장override 전환 및 DB미준비 요청폐기 (4.118334ms)
+✔ game-easy-test.html force5초계약과 요청없음 불필요재시도0 (0.616417ms)
+✔ game-easy-test.html force 진행중 계약불변·demo/standalone 동기override (3.0235ms)
+✔ game-easy-test.html no-op 강화/DB미준비는 예약0 (0.267917ms)
+✔ 함수별원문SHA불변·실행결과기록 (71.597583ms)
+ℹ tests 29
+ℹ suites 0
+ℹ pass 29
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 161.602083

@@ -1,0 +1,22 @@
+{
+  "at": "2026-10-01T17:02:52.210Z",
+  "ref": "66998de7d0c2f25a1261825ec52957cc0464e983",
+  "localImportClosure": [
+    "tools/team-followup-20261001/root-review/inventory-production-regression.test.mjs",
+    "tools/team-followup-20261001/UIUX/inventory-dom-candidate.mjs",
+    "tools/team-followup-20261001/UIUX/inventory-focus-candidate.mjs",
+    "tools/team-followup-20261001/UIUX/card-removal-focus-candidate.mjs",
+    "tools/team-followup-20261001/UIUX/card-removal-focus/host/source-data.js",
+    "tools/team-followup-20261001/UIUX/card-removal-focus/host/harness.js",
+    "tools/team-followup-20261001/UIUX/inventory-dom/node-dom.mjs",
+    "tools/team-followup-20261001/root-review/production-integration-check.mjs",
+    "tools/team-followup-20261001/BALANCE/immediate-drain-candidate.mjs",
+    "tools/team-followup-20261001/BALANCE/save-inflight-candidate.mjs",
+    "tools/team-followup-20261001/ITEM/d17-source-adapter-check.mjs",
+    "tools/team-followup-20261001/ITEM/binding-save-harness.mjs",
+    "tools/team-followup-20261001/ITEM/d17-source-adapter-candidate.mjs",
+    "tools/team-followup-20261001/ITEM/d17-zone-selection-candidate.mjs",
+    "tools/team-followup-20261001/ITEM/d17-source-adapter-callsite.mjs"
+  ],
+  "allInCheckpoint": true
+}

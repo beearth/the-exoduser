@@ -1,0 +1,121 @@
+{
+  "at": "2026-10-01T17:08:04.425Z",
+  "results": [
+    {
+      "status": "fulfilled",
+      "value": {
+        "team": "BUILD",
+        "sessionId": "01a0f6e6-2e4c-7322-92d7-3aa309857856",
+        "status": "completed",
+        "startedAt": "2026-10-01T16:47:39.000Z",
+        "completedAt": "2026-10-01T16:49:38.000Z",
+        "user": [
+          {
+            "type": "text",
+            "text": "Read tools/team-followup-20261001/BUILD/mac-character-media-task.md and execute this read-only diagnostic in the existing session. Root native UI is blocked by the locked Mac; no UI or restart is allowed. Report in Korean."
+          }
+        ],
+        "firstCommand": "/bin/zsh -lc \"date -u +%Y-%m-%dT%H:%M:%SZ; cat tools/team-followup-20261001/BUILD/mac-character-media-task.md; rg --files tools -g AGENTS.md; rg --files tools/team-followup-20261001/BUILD | rg 'mac-character-media'\"",
+        "firstEdit": [
+          {
+            "path": "/Users/fordeargamers/Projects/exoduser-migration-20261001/tools/team-followup-20261001/BUILD/mac-character-media-receipt.json",
+            "kind": {
+              "type": "add"
+            }
+          }
+        ],
+        "last": "읽기 진단 완료했습니다.\n\n- 전사 scene/idle 및 성공 비교 영상2개의 원본·manifest·두 앱 SHA가 일치합니다.\n- idle은 3840×2160·avc1 level51로 비교군과 다르지만, 지원 실패 원인은 **미확정**입니다.\n- 3381 HEAD/Range 연결 실패로 실제 서버 응답은 검증하지 못했습니다.\n- 잠금해제 후 root가 `csIdleVid`/`csSceneVid`의 실제 `media.error`를 확인해야 합니다.\n\n결과: `tools/team-followup-20261001/BUILD/mac-character-media-result.md:1`\n\nUI·재시작·앱 수정 없이 종료하고 root를 기다립니다."
+      }
+    },
+    {
+      "status": "fulfilled",
+      "value": {
+        "team": "UIUX",
+        "sessionId": "01a0f6e5-8653-7ae2-8b2b-314e275c215c",
+        "status": "completed",
+        "startedAt": "2026-10-01T16:54:54.000Z",
+        "completedAt": "2026-10-01T17:01:02.000Z",
+        "user": [
+          {
+            "type": "text",
+            "text": "tools/team-followup-20261001/UIUX/production-integration-task.md를 읽고 승인된 다음 작업을 진행하세요. 두 HTML 인벤토리 구역 단독 소유권을 부여합니다. 한국어로 보고하세요."
+          }
+        ],
+        "firstCommand": "/bin/zsh -lc \"date -u '+%Y-%m-%dT%H:%M:%SZ'; cat tools/team-followup-20261001/UIUX/production-integration-task.md; rg --files -g AGENTS.md; cat tools/team-followup-20261001/UIUX/card-removal-focus-result.md\"",
+        "firstEdit": [
+          {
+            "path": "/Users/fordeargamers/Projects/exoduser-migration-20261001/tools/team-followup-20261001/UIUX/production-integration-prepare.mjs",
+            "kind": {
+              "type": "add"
+            }
+          },
+          {
+            "path": "/Users/fordeargamers/Projects/exoduser-migration-20261001/tools/team-followup-20261001/UIUX/production-integration-receipt.json",
+            "kind": {
+              "type": "add"
+            }
+          }
+        ],
+        "last": "- 두 HTML 인벤토리에 승인 후보를 반영했습니다. 저장·전투·CSS 변경 없음.\n- **101 PASS**, 양쪽 전체 inline 구문 검사 통과. 기존 RED 회귀와 증거 보존.\n- SSOT·UTC·SHA·의존성 기록 완료. 실제 게임·화면·패드 검수는 남아 있습니다.\n- HTML 소유권을 root에 반환합니다. Git 쓰기는 하지 않았습니다.\n\n결과: `tools/team-followup-20261001/UIUX/production-integration-result.md:1`"
+      }
+    },
+    {
+      "status": "fulfilled",
+      "value": {
+        "team": "ITEM",
+        "sessionId": "01a0f6e6-1fbe-7df0-8d02-a9c2d9df3750",
+        "status": "completed",
+        "startedAt": "2026-10-01T16:54:54.000Z",
+        "completedAt": "2026-10-01T16:57:22.000Z",
+        "user": [
+          {
+            "type": "text",
+            "text": "tools/team-followup-20261001/ITEM/d17-source-adapter-task.md를 읽고 기존 세션에서 승인된 다음 작업을 진행하세요. 생산 HTML 편집 금지이며 기본 비활성 검토용 코드와 실제 소스 기반 검사를 작성합니다. 한국어로 보고하세요."
+          }
+        ],
+        "firstCommand": "/bin/zsh -lc 'date -u +%Y-%m-%dT%H:%M:%SZ; cat tools/team-followup-20261001/ITEM/d17-source-adapter-task.md; find tools -name AGENTS.md; ls tools/team-followup-20261001/ITEM/*source-adapter*'",
+        "firstEdit": [
+          {
+            "path": "/Users/fordeargamers/Projects/exoduser-migration-20261001/tools/team-followup-20261001/ITEM/d17-source-adapter-candidate.mjs",
+            "kind": {
+              "type": "add"
+            }
+          },
+          {
+            "path": "/Users/fordeargamers/Projects/exoduser-migration-20261001/tools/team-followup-20261001/ITEM/d17-source-adapter-receipt.json",
+            "kind": {
+              "type": "add"
+            }
+          }
+        ],
+        "last": "승인된 어댑터 후보 구현·검수 완료했습니다.\n\n- 실제 종료 함수·장판 생성 원문 기반 **13그룹 PASS**\n- 기본 비활성, 객체 identity·좌표 외 상태 보존\n- 검토 호출부 Node import 검사 통과, 생산 HTML 수정 **0**\n- 실제 호출부 적용·브라우저·실전 중첩 피해 검수는 root/UIUX 게이트로 남겼습니다.\n\n결과·UTC 영수증·소스 SHA: `tools/team-followup-20261001/ITEM/d17-source-adapter-result.md:1`"
+      }
+    },
+    {
+      "status": "fulfilled",
+      "value": {
+        "team": "BALANCE",
+        "sessionId": "01a0f6e6-5303-7392-81ba-94c42e349ffc",
+        "status": "completed",
+        "startedAt": "2026-10-01T17:02:16.000Z",
+        "completedAt": "2026-10-01T17:07:51.000Z",
+        "user": [
+          {
+            "type": "text",
+            "text": "UIUX HTML 소유권 반환과 root23회귀/전체승인 byte 검수, 원격 66998de7d0c2f25a1261825ec52957cc0464e983 체크포인트를 마쳤습니다. tools/team-followup-20261001/BALANCE/production-integration-task.md를 읽고 지금부터 두 HTML 저장 구역을 단독 수정하세요. 인벤토리 영역은 그대로 보존하고 한국어로 보고하세요."
+          }
+        ],
+        "firstCommand": "/bin/zsh -lc \"date -u '+%Y-%m-%dT%H:%M:%SZ'; cat tools/team-followup-20261001/BALANCE/production-integration-task.md; rg --files -g AGENTS.md; cat AGENTS.md >/dev/null; cat docs/14밸런스+수치테이블/BALANCE_ECONOMY_TEAM_MASTER.md >/dev/null; rg -n '\"'^function dbSaveNow|''^function _drainPendingSaveNow|_saving=false;|''^function dbSaveForce'\"' game.html game-easy-test.html\"",
+        "firstEdit": [
+          {
+            "path": "/Users/fordeargamers/Projects/exoduser-migration-20261001/tools/team-followup-20261001/BALANCE/production-integration-receipt.json",
+            "kind": {
+              "type": "add"
+            }
+          }
+        ],
+        "last": "두 HTML 저장 구역에 생산 반영했습니다.\n\n- 각 HTML **4hunk** 적용, 인벤토리 포함 승인 범위 밖 바이트 보존 확인.\n- 생산 추출 회귀 **22 PASS / 0 FAIL**, 양쪽 inline 구문 검수 통과.\n- 저장 SSOT·담당 MD·receipt·최종 SHA 기록 완료.\n- 실제 서버·사용자 저장·재실행·unload 보장은 미검수입니다.\n\n결과: `tools/team-followup-20261001/BALANCE/production-integration-result.md:1`\n\nHTML 소유권을 root에 반환합니다. 이후 추가 편집 없이 대기합니다."
+      }
+    }
+  ]
+}

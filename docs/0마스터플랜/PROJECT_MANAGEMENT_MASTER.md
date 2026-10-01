@@ -702,3 +702,8 @@ ITEM bootstrap23, UIUX 후보21+기존9, BUILD preflight28, BALANCE2880+56를 ro
 
 ### 2026-10-02 Mac 실물 앱·팀 현황 후속
 179813c2의 Mac 프로필 인자 수정과43검사/원격SHA를 인수하고, 새abf57f41 앱 생성까지 완료했다. 최초앱은 로비·캐릭터생성·스토리·game.html 도입 장면까지 확인했으나 Mac 잠금으로 실제 설정/저장/재실행 검수 대기다. UIUX DOM8조합은 인수, 전체게임/패드/생산 적용 미완료. 팀 현재과제·실제수신/Read/완료시각과 원격SHA는 vscode-dispatch/TEAM_UTILIZATION_20261001.json의 snapshot 시각을 따른다. 원receipt의 미래시각/30a204 HEAD는 현황근거로 사용하지 않는다. 상세 MAC-APP-RUNTIME-20261002.md.
+
+
+### 2026-10-02 Mac 인벤토리·저장 생산 통합
+
+UIUX 인벤토리 초점 수정의 root23검사·전체승인 byte 확인/원격66998de7 이후 BALANCE 저장 구역을 순차 반영했다. 저장 root22검사, 통합 후 인벤토리23검사와 양쪽 inline 구문 통과. U-D17 실제 소스 어댑터는13그룹 검수된 비활성 검토용이며 생산 미연결. BUILD 미디어 진단은 공식16:49:38Z 완료로 정정, 실제 media.error 원인은 미확정이다. 여섯 Claude는 제출 완료/다음 native 전달의 잠금 차단, SOUND는 별도 접근 제한으로 기록한다. 실제 게임/저장/앱 재실행은 미완료이고 기존 앱은 이번 소스 통합 전 버전이다. [정확한 범위·근거](mac-resume-20261001/vscode-dispatch/PRODUCTION-INTEGRATION-20261002.md).

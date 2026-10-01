@@ -1,0 +1,150 @@
+[
+  {
+    "file": "tools/team-followup-20261001/BALANCE/ai-enhance-persistence-before.json",
+    "sha256": "3130c3056bcfc30edb34fccd67a0b2ca6876bf48e04a0ae4a290f0b8853933e4"
+  },
+  {
+    "file": "tools/team-followup-20261001/BALANCE/ai-enhance-persistence-candidate.diff",
+    "sha256": "4bae21e35fa875c3bddf32301bfd5d75f8c19d4194fb109dff25c0ee7c9b80f6"
+  },
+  {
+    "file": "tools/team-followup-20261001/BALANCE/ai-enhance-persistence-doc-search.txt",
+    "sha256": "e66c571aec5b13e463fdf32796f2373e6f8e67c1c588fd5be2b9bbc339da5c1b"
+  },
+  {
+    "file": "tools/team-followup-20261001/BALANCE/ai-enhance-persistence-evidence.json",
+    "sha256": "41bc82c631979746695ff0edc35dba4c0d19189e4ba202723cebc4cd003ff0c7"
+  },
+  {
+    "file": "tools/team-followup-20261001/BALANCE/ai-enhance-persistence-harness.mjs",
+    "sha256": "03204fd16f3787cb2e171f5c442a91dcdca4487a2fb29401c416f8081958d4fc"
+  },
+  {
+    "file": "tools/team-followup-20261001/BALANCE/ai-enhance-persistence-receipt.json",
+    "sha256": "fdf5b2e4f54ed6b195bd61ad07f9104a7969140d452deb6c1f53382d47f75ff0"
+  },
+  {
+    "file": "tools/team-followup-20261001/BALANCE/ai-enhance-persistence-result.md",
+    "sha256": "e03b081f82a4c840dda53d8a9037e27929012e3d4467d3482d1a8dd7f437625d"
+  },
+  {
+    "file": "tools/team-followup-20261001/BALANCE/ai-enhance-persistence-sync-before.json",
+    "sha256": "ac29687a52d20454b5ffdfbbcca04da2ce86bf6c507fa64db6b958a0f92d402e"
+  },
+  {
+    "file": "tools/team-followup-20261001/BALANCE/ai-enhance-persistence-task.md",
+    "sha256": "579e322ea726d4414decbbf58fd89f9047d0ecb032f9443ad00ea86a210d12fa"
+  },
+  {
+    "file": "tools/team-followup-20261001/BALANCE/ai-enhance-persistence-tests.txt",
+    "sha256": "141ceb3514eb5edd3bce608ea97c04d7f16cc49fccddc36b7dbc930990646245"
+  },
+  {
+    "file": "tools/team-followup-20261001/BALANCE/ai-enhance-persistence-unload-before.json",
+    "sha256": "bbb8ced789f3c9fea37d6136cef611640e6abeed6bcc1e26b5ee4d42bacac59e"
+  },
+  {
+    "file": "tools/team-followup-20261001/BALANCE/immediate-drain-before.json",
+    "sha256": "d6ef2b44fdcd8a487ad44f6aa42c47365b4f663f1e79cbb315d021b8db2f6d8d"
+  },
+  {
+    "file": "tools/team-followup-20261001/BALANCE/immediate-drain-candidate.diff",
+    "sha256": "5acc71f59ac6e9d9f88cb87d1cff0814a039c5adedccb7f606a35d71ea692269"
+  },
+  {
+    "file": "tools/team-followup-20261001/BALANCE/immediate-drain-candidate.mjs",
+    "sha256": "b8a18fc3748d8248cb95c9554ae0b4fa2e786d804257b080e8a999bb43fdee19"
+  },
+  {
+    "file": "tools/team-followup-20261001/BALANCE/immediate-drain-doc-search.txt",
+    "sha256": "9c5184558c9cd62d354c08eb059692fc7afc0d959e6a43de4fcb6ba00525fba9"
+  },
+  {
+    "file": "tools/team-followup-20261001/BALANCE/immediate-drain-evidence.json",
+    "sha256": "1b868db5cfd7422dd72f7486c223b29ab2c28f4ff73c978b6a06be235289a199"
+  },
+  {
+    "file": "tools/team-followup-20261001/BALANCE/immediate-drain-prior-before.mjs",
+    "sha256": "96750107f0da4dceb756bbe3a14017d1e58e29015f91fb76cf91bea4301bfb5b"
+  },
+  {
+    "file": "tools/team-followup-20261001/BALANCE/immediate-drain-receipt.json",
+    "sha256": "ade38350b9eee59efefc5bc953e98de6c9f29124e1a926386842ecb0dec154fa"
+  },
+  {
+    "file": "tools/team-followup-20261001/BALANCE/immediate-drain-result.md",
+    "sha256": "cf198a020330af89ffc61af1f9ba404ec54130b81c113c1ca5db426d69f43e54"
+  },
+  {
+    "file": "tools/team-followup-20261001/BALANCE/immediate-drain-task.md",
+    "sha256": "e039b8803619f78071f011e2e7a965e2cd1aafe093ec5830545100f77f2b54c9"
+  },
+  {
+    "file": "tools/team-followup-20261001/BALANCE/immediate-drain-tests.txt",
+    "sha256": "8dc47c8ac5c70fc9abb6c60e12ed55d2dcf3ebbfdb435f65e5694454a89179f4"
+  },
+  {
+    "file": "tools/team-followup-20261001/BALANCE/save-inflight-before.json",
+    "sha256": "ae7000ff2020a5eac60ff8f4a0cd2310fd11c2b16aa2ee50fac78ffc2e8ed87a"
+  },
+  {
+    "file": "tools/team-followup-20261001/BALANCE/save-inflight-candidate.diff",
+    "sha256": "a6708fbcbf440be0ad8893d9651c35d31347b2012785797aa3b7b40382f7ab73"
+  },
+  {
+    "file": "tools/team-followup-20261001/BALANCE/save-inflight-candidate.mjs",
+    "sha256": "96750107f0da4dceb756bbe3a14017d1e58e29015f91fb76cf91bea4301bfb5b"
+  },
+  {
+    "file": "tools/team-followup-20261001/BALANCE/save-inflight-doc-search.txt",
+    "sha256": "64a6f5d7dcc89e37e4197713554be5a3a420c0e3726a597c7d6401048d272b50"
+  },
+  {
+    "file": "tools/team-followup-20261001/BALANCE/save-inflight-evidence.json",
+    "sha256": "5be47a1189bbadb7a8596943559eaea52a78dc50296bb4250068e56ddd48cfc6"
+  },
+  {
+    "file": "tools/team-followup-20261001/BALANCE/save-inflight-receipt.json",
+    "sha256": "58b95e0e23b0077f53426ddb22a648506a4977c9ed46491107790881b5240a14"
+  },
+  {
+    "file": "tools/team-followup-20261001/BALANCE/save-inflight-result.md",
+    "sha256": "f9b15fda3fbdcb7853289ae512bd6356496135fd7e36c044730aeb090d8fee38"
+  },
+  {
+    "file": "tools/team-followup-20261001/BALANCE/save-inflight-task.md",
+    "sha256": "a3a8b0d81949e9bf0e84842093f53e76e0c011113b4061885c3439944526a7d3"
+  },
+  {
+    "file": "tools/team-followup-20261001/BALANCE/save-inflight-tests.txt",
+    "sha256": "3f63fd32a58d6c9ff395bf65875efdf34bff68559bd5e889b98574e52bd45d67"
+  },
+  {
+    "file": "tools/team-followup-20261001/BALANCE/unload-save-boundary-before.json",
+    "sha256": "eb044aae3e7a8c389a57dcdf289a9d4c894be3e077e6130c8372c1a4124c9c83"
+  },
+  {
+    "file": "tools/team-followup-20261001/BALANCE/unload-save-boundary-doc-search.txt",
+    "sha256": "fd01e317e36dafda74af53f16c200793980fe3bcea87c66b8e02f866fb9e4a77"
+  },
+  {
+    "file": "tools/team-followup-20261001/BALANCE/unload-save-boundary-evidence.json",
+    "sha256": "47584581ca1cddb232e326e723c344d5a25e522d43c624b7b06041f6e25adf51"
+  },
+  {
+    "file": "tools/team-followup-20261001/BALANCE/unload-save-boundary-receipt.json",
+    "sha256": "76c283c483aeb6760373ffe15c021f0d8102c0a5522640f3c5643602ecf455f3"
+  },
+  {
+    "file": "tools/team-followup-20261001/BALANCE/unload-save-boundary-result.md",
+    "sha256": "7494dece1f080918b00f7cb7da588e6a9ce6a634cd147694dd6362fe32048dda"
+  },
+  {
+    "file": "tools/team-followup-20261001/BALANCE/unload-save-boundary-task.md",
+    "sha256": "d72550e7c2ca7407d6c8e05b05bd3b73a4d9eff0e471ecbc7a4981e8f3587cad"
+  },
+  {
+    "file": "tools/team-followup-20261001/BALANCE/unload-save-boundary-tests.txt",
+    "sha256": "accb3a88a18bb43d61581b075d08a7c18e99b8f0f16027843cc1eaeab89df587"
+  }
+]

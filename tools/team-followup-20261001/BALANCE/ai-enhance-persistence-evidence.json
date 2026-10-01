@@ -1,0 +1,560 @@
+{
+  "completedAt": "2026-10-01T16:07:44.130Z",
+  "regions": [
+    {
+      "file": "game.html",
+      "hashes": {
+        "formulas": "035418ca26f096477a3e47b9644c2e9c6f57649133fd2c940b3a349cfdfc9e57",
+        "rarity": "b42950ce7fecb64b9e949ef1d396ceb46814fc218bf54b3de0ac39a0e681be50",
+        "ai": "01d0462b57f93daef9df5cdf14e4b0287df9a086f5c8656aaeb243e4313fabc0",
+        "click": "e4f3ea6ec13e19dba3ab211f1d6a26f5b0c3aa2685ff6f5054ee2f7efd33d683",
+        "sanitize": "d31b0b304bbac35f0aa6de15c80178b97bfefb7dabc7643fbbfb3ccd8476ed5b",
+        "restore": "563d0fae0a802ef60c0f7872adb58b474ebd831dd17ebf734e108562c8b01566",
+        "xp": "81804d144eff69c7c390bfc0dc00a9bb80ca3af5ee2c924e655bbf2366e5f7ee",
+        "now": "a1221d6bed33b2e4cfb3759efdf9604b8980d224a8c1a4fe86ed651a95b5238f",
+        "auto": "48409cec52fcf19c9d2f26b1812c96f7891ddbd53c5611d8a11f3370cc48727b",
+        "startAuto": "790eb755e2e504bb7d177d0e1d9a2fd609794e1cecd269ee3ef556c49de695ba",
+        "close": "d9cc511f0eb45a0e923b128fc8f638057ddd9dc35a40c90e58e3c1909b4f0e86",
+        "closeAll": "06cb72ad4a7f73b402463c7743ac3ed802472d3bc3496cb5b6359c20f4bc50a5",
+        "saves": "4c937159632dec648ef1045b8d939a78b787d1495c7cc9e34ae4b510aa4fb229"
+      }
+    },
+    {
+      "file": "game-easy-test.html",
+      "hashes": {
+        "formulas": "035418ca26f096477a3e47b9644c2e9c6f57649133fd2c940b3a349cfdfc9e57",
+        "rarity": "b42950ce7fecb64b9e949ef1d396ceb46814fc218bf54b3de0ac39a0e681be50",
+        "ai": "01d0462b57f93daef9df5cdf14e4b0287df9a086f5c8656aaeb243e4313fabc0",
+        "click": "e4f3ea6ec13e19dba3ab211f1d6a26f5b0c3aa2685ff6f5054ee2f7efd33d683",
+        "sanitize": "d31b0b304bbac35f0aa6de15c80178b97bfefb7dabc7643fbbfb3ccd8476ed5b",
+        "restore": "10615ec25b5a1ebe52382a8d0efa42cb556f276def25c4f720db9e24b4efb36d",
+        "xp": "81804d144eff69c7c390bfc0dc00a9bb80ca3af5ee2c924e655bbf2366e5f7ee",
+        "now": "a1221d6bed33b2e4cfb3759efdf9604b8980d224a8c1a4fe86ed651a95b5238f",
+        "auto": "48409cec52fcf19c9d2f26b1812c96f7891ddbd53c5611d8a11f3370cc48727b",
+        "startAuto": "790eb755e2e504bb7d177d0e1d9a2fd609794e1cecd269ee3ef556c49de695ba",
+        "close": "d9cc511f0eb45a0e923b128fc8f638057ddd9dc35a40c90e58e3c1909b4f0e86",
+        "closeAll": "06cb72ad4a7f73b402463c7743ac3ed802472d3bc3496cb5b6359c20f4bc50a5",
+        "saves": "9d182bc1c772674169bff5fff948b2b0ad3579c95481ec1075ab7e8a32f25185"
+      }
+    }
+  ],
+  "rows": [
+    {
+      "file": "game.html",
+      "route": 0,
+      "success": true,
+      "candidate": false,
+      "restored": {
+        "enh": 0,
+        "mats": 15000
+      },
+      "writes": 1,
+      "shared": 15000
+    },
+    {
+      "file": "game.html",
+      "route": 0,
+      "success": true,
+      "candidate": true,
+      "restored": {
+        "enh": 1,
+        "mats": 0
+      },
+      "writes": 2,
+      "shared": 0
+    },
+    {
+      "file": "game.html",
+      "route": 0,
+      "success": false,
+      "candidate": false,
+      "restored": {
+        "enh": 0,
+        "mats": 15000
+      },
+      "writes": 1,
+      "shared": 15000
+    },
+    {
+      "file": "game.html",
+      "route": 0,
+      "success": false,
+      "candidate": true,
+      "restored": {
+        "enh": 0,
+        "mats": 0
+      },
+      "writes": 2,
+      "shared": 0
+    },
+    {
+      "file": "game.html",
+      "route": 1,
+      "success": true,
+      "candidate": false,
+      "restored": {
+        "enh": 0,
+        "mats": 15000
+      },
+      "writes": 1,
+      "shared": 15000
+    },
+    {
+      "file": "game.html",
+      "route": 1,
+      "success": true,
+      "candidate": true,
+      "restored": {
+        "enh": 1,
+        "mats": 15000
+      },
+      "writes": 2,
+      "shared": 15000
+    },
+    {
+      "file": "game.html",
+      "route": 1,
+      "success": false,
+      "candidate": false,
+      "restored": {
+        "enh": 0,
+        "mats": 15000
+      },
+      "writes": 1,
+      "shared": 15000
+    },
+    {
+      "file": "game.html",
+      "route": 1,
+      "success": false,
+      "candidate": true,
+      "restored": {
+        "enh": 0,
+        "mats": 15000
+      },
+      "writes": 2,
+      "shared": 15000
+    },
+    {
+      "file": "game.html",
+      "route": 2,
+      "success": true,
+      "candidate": false,
+      "restored": {
+        "enh": 0,
+        "mats": 15000
+      },
+      "writes": 1,
+      "shared": 15000
+    },
+    {
+      "file": "game.html",
+      "route": 2,
+      "success": true,
+      "candidate": true,
+      "restored": {
+        "enh": 1,
+        "mats": 15000
+      },
+      "writes": 2,
+      "shared": 15000
+    },
+    {
+      "file": "game.html",
+      "route": 2,
+      "success": false,
+      "candidate": false,
+      "restored": {
+        "enh": 0,
+        "mats": 15000
+      },
+      "writes": 1,
+      "shared": 15000
+    },
+    {
+      "file": "game.html",
+      "route": 2,
+      "success": false,
+      "candidate": true,
+      "restored": {
+        "enh": 0,
+        "mats": 15000
+      },
+      "writes": 2,
+      "shared": 15000
+    },
+    {
+      "file": "game.html",
+      "route": 3,
+      "success": true,
+      "candidate": false,
+      "restored": {
+        "enh": 0,
+        "mats": 15000
+      },
+      "writes": 1,
+      "shared": 15000
+    },
+    {
+      "file": "game.html",
+      "route": 3,
+      "success": true,
+      "candidate": true,
+      "restored": {
+        "enh": 1,
+        "mats": 0
+      },
+      "writes": 2,
+      "shared": 0
+    },
+    {
+      "file": "game.html",
+      "route": 3,
+      "success": false,
+      "candidate": false,
+      "restored": {
+        "enh": 0,
+        "mats": 15000
+      },
+      "writes": 1,
+      "shared": 15000
+    },
+    {
+      "file": "game.html",
+      "route": 3,
+      "success": false,
+      "candidate": true,
+      "restored": {
+        "enh": 0,
+        "mats": 0
+      },
+      "writes": 2,
+      "shared": 0
+    },
+    {
+      "file": "game.html",
+      "route": 4,
+      "success": true,
+      "candidate": false,
+      "restored": {
+        "enh": 0,
+        "mats": 15000
+      },
+      "writes": 1,
+      "shared": 15000
+    },
+    {
+      "file": "game.html",
+      "route": 4,
+      "success": true,
+      "candidate": true,
+      "restored": {
+        "enh": 1,
+        "mats": 0
+      },
+      "writes": 2,
+      "shared": 0
+    },
+    {
+      "file": "game.html",
+      "route": 4,
+      "success": false,
+      "candidate": false,
+      "restored": {
+        "enh": 0,
+        "mats": 15000
+      },
+      "writes": 1,
+      "shared": 15000
+    },
+    {
+      "file": "game.html",
+      "route": 4,
+      "success": false,
+      "candidate": true,
+      "restored": {
+        "enh": 0,
+        "mats": 0
+      },
+      "writes": 2,
+      "shared": 0
+    },
+    {
+      "file": "game-easy-test.html",
+      "route": 0,
+      "success": true,
+      "candidate": false,
+      "restored": {
+        "enh": 0,
+        "mats": 15000
+      },
+      "writes": 1,
+      "shared": 15000
+    },
+    {
+      "file": "game-easy-test.html",
+      "route": 0,
+      "success": true,
+      "candidate": true,
+      "restored": {
+        "enh": 1,
+        "mats": 0
+      },
+      "writes": 2,
+      "shared": 0
+    },
+    {
+      "file": "game-easy-test.html",
+      "route": 0,
+      "success": false,
+      "candidate": false,
+      "restored": {
+        "enh": 0,
+        "mats": 15000
+      },
+      "writes": 1,
+      "shared": 15000
+    },
+    {
+      "file": "game-easy-test.html",
+      "route": 0,
+      "success": false,
+      "candidate": true,
+      "restored": {
+        "enh": 0,
+        "mats": 0
+      },
+      "writes": 2,
+      "shared": 0
+    },
+    {
+      "file": "game-easy-test.html",
+      "route": 1,
+      "success": true,
+      "candidate": false,
+      "restored": {
+        "enh": 0,
+        "mats": 15000
+      },
+      "writes": 1,
+      "shared": 15000
+    },
+    {
+      "file": "game-easy-test.html",
+      "route": 1,
+      "success": true,
+      "candidate": true,
+      "restored": {
+        "enh": 1,
+        "mats": 15000
+      },
+      "writes": 2,
+      "shared": 15000
+    },
+    {
+      "file": "game-easy-test.html",
+      "route": 1,
+      "success": false,
+      "candidate": false,
+      "restored": {
+        "enh": 0,
+        "mats": 15000
+      },
+      "writes": 1,
+      "shared": 15000
+    },
+    {
+      "file": "game-easy-test.html",
+      "route": 1,
+      "success": false,
+      "candidate": true,
+      "restored": {
+        "enh": 0,
+        "mats": 15000
+      },
+      "writes": 2,
+      "shared": 15000
+    },
+    {
+      "file": "game-easy-test.html",
+      "route": 2,
+      "success": true,
+      "candidate": false,
+      "restored": {
+        "enh": 0,
+        "mats": 15000
+      },
+      "writes": 1,
+      "shared": 15000
+    },
+    {
+      "file": "game-easy-test.html",
+      "route": 2,
+      "success": true,
+      "candidate": true,
+      "restored": {
+        "enh": 1,
+        "mats": 15000
+      },
+      "writes": 2,
+      "shared": 15000
+    },
+    {
+      "file": "game-easy-test.html",
+      "route": 2,
+      "success": false,
+      "candidate": false,
+      "restored": {
+        "enh": 0,
+        "mats": 15000
+      },
+      "writes": 1,
+      "shared": 15000
+    },
+    {
+      "file": "game-easy-test.html",
+      "route": 2,
+      "success": false,
+      "candidate": true,
+      "restored": {
+        "enh": 0,
+        "mats": 15000
+      },
+      "writes": 2,
+      "shared": 15000
+    },
+    {
+      "file": "game-easy-test.html",
+      "route": 3,
+      "success": true,
+      "candidate": false,
+      "restored": {
+        "enh": 0,
+        "mats": 15000
+      },
+      "writes": 1,
+      "shared": 15000
+    },
+    {
+      "file": "game-easy-test.html",
+      "route": 3,
+      "success": true,
+      "candidate": true,
+      "restored": {
+        "enh": 1,
+        "mats": 0
+      },
+      "writes": 2,
+      "shared": 0
+    },
+    {
+      "file": "game-easy-test.html",
+      "route": 3,
+      "success": false,
+      "candidate": false,
+      "restored": {
+        "enh": 0,
+        "mats": 15000
+      },
+      "writes": 1,
+      "shared": 15000
+    },
+    {
+      "file": "game-easy-test.html",
+      "route": 3,
+      "success": false,
+      "candidate": true,
+      "restored": {
+        "enh": 0,
+        "mats": 0
+      },
+      "writes": 2,
+      "shared": 0
+    },
+    {
+      "file": "game-easy-test.html",
+      "route": 4,
+      "success": true,
+      "candidate": false,
+      "restored": {
+        "enh": 0,
+        "mats": 15000
+      },
+      "writes": 1,
+      "shared": 15000
+    },
+    {
+      "file": "game-easy-test.html",
+      "route": 4,
+      "success": true,
+      "candidate": true,
+      "restored": {
+        "enh": 1,
+        "mats": 0
+      },
+      "writes": 2,
+      "shared": 0
+    },
+    {
+      "file": "game-easy-test.html",
+      "route": 4,
+      "success": false,
+      "candidate": false,
+      "restored": {
+        "enh": 0,
+        "mats": 15000
+      },
+      "writes": 1,
+      "shared": 15000
+    },
+    {
+      "file": "game-easy-test.html",
+      "route": 4,
+      "success": false,
+      "candidate": true,
+      "restored": {
+        "enh": 0,
+        "mats": 0
+      },
+      "writes": 2,
+      "shared": 0
+    },
+    {
+      "file": "game.html",
+      "frameSync": true,
+      "candidate": false,
+      "restored": {
+        "enh": 0,
+        "mats": 0
+      }
+    },
+    {
+      "file": "game.html",
+      "frameSync": true,
+      "candidate": true,
+      "restored": {
+        "enh": 1,
+        "mats": 0
+      }
+    },
+    {
+      "file": "game-easy-test.html",
+      "frameSync": true,
+      "candidate": false,
+      "restored": {
+        "enh": 0,
+        "mats": 0
+      }
+    },
+    {
+      "file": "game-easy-test.html",
+      "frameSync": true,
+      "candidate": true,
+      "restored": {
+        "enh": 1,
+        "mats": 0
+      }
+    }
+  ],
+  "limits": "fake DOM/clock/sink; 실제 전체dbSave/dbRestore 함수; demo500의 별도 생산 복원 override는 장비 복원하지 않으므로 공용dbRestore 비교와 구별"
+}
