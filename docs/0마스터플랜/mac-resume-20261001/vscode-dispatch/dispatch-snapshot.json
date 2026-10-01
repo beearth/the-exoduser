@@ -1,0 +1,347 @@
+{
+  "observedAt": "2026-10-01T10:19:01.060236+00:00",
+  "head": "30a204a7aa348a88b90bdc922862c610a7da938f",
+  "teams": [
+    {
+      "team": "QA",
+      "terminal": 1,
+      "sessionId": "88c3f903-ece5-4640-8b0c-86feaaca0e53",
+      "received": true,
+      "started": true,
+      "receiptSnapshot": {
+        "taskId": "QA-B01-BASELINE-PREFLIGHT",
+        "title": "첫 처치와 밀집 전투의 유효 기준점 준비",
+        "team": "QA",
+        "terminal": "VS Code 기존 터미널 1 (QA)",
+        "cli": "Claude Code",
+        "model": "claude-opus-4-8",
+        "sessionId": "88c3f903-ece5-4640-8b0c-86feaaca0e53",
+        "sessionIdSource": "scratchpad 경로의 세션 UUID로 추정. CLI가 직접 보고한 값 아님",
+        "receivedAt": "2026-10-01T19:05:00+09:00",
+        "startedAt": "2026-10-01T19:07:00+09:00",
+        "status": "done-planning-and-validator",
+        "head": "30a204a7aa348a88b90bdc922862c610a7da938f",
+        "ownedPaths": [
+          "tools/team-followup-20261001/QA/",
+          "docs/0마스터플랜/mac-resume-20261001/vscode-dispatch/QA-result.md",
+          "docs/0마스터플랜/mac-resume-20261001/vscode-dispatch/QA-receipt.json"
+        ],
+        "gate": {
+          "newRealMeasurement": "blocked",
+          "reason": "이 폴더에 QA-game-release.json(released=true) 총괄 인계가 없음. 신규 실화면 측정 금지, production 변경 금지",
+          "checkedPath": "docs/0마스터플랜/mac-resume-20261001/vscode-dispatch/QA-game-release.json (부재 확인)"
+        },
+        "nextAction": "M2 정식 실측은 QA-game-release.json(released=true) 총괄 인계 후 본 계획·검증기로 수행. 그 전까지 대기.",
+        "completed": {
+          "plan": "tools/team-followup-20261001/QA/BASELINE_PREFLIGHT_PLAN.md",
+          "validator": "tools/team-followup-20261001/QA/baseline_raw_validator.mjs",
+          "rejectHarness": "tools/team-followup-20261001/QA/make_reject_fixtures.mjs",
+          "realRawsValidated": 4,
+          "rejectFixtures": "12/12 reject (각 겨냥 required check FAIL 확인)",
+          "newRealMeasurement": 0,
+          "productionChange": 0,
+          "git": "add/commit/push 0"
+        },
+        "blocker": null
+      },
+      "cliStatus": "idle",
+      "surface": "main-vscode-window",
+      "modelObserved": "Opus 4.8"
+    },
+    {
+      "team": "ART",
+      "terminal": 2,
+      "sessionId": "a489cbeb-92d9-449a-a2b7-ba0e2871322f",
+      "received": true,
+      "started": true,
+      "receiptSnapshot": {
+        "taskId": "ART-WA24-PROBE-FIX",
+        "team": "ART",
+        "terminal": "VS Code Terminal 2 (vscode-dispatch 배정)",
+        "cli": "Claude Code",
+        "model": "claude-opus-4-8",
+        "sessionId": null,
+        "receivedAt": "2026-10-01T10:17:47Z",
+        "startedAt": "2026-10-01T10:17:47Z",
+        "status": "IN_PROGRESS",
+        "ownedPaths": [
+          "tools/team-followup-20261001/ART/",
+          "docs/0마스터플랜/mac-resume-20261001/vscode-dispatch/ART-result.md",
+          "docs/0마스터플랜/mac-resume-20261001/vscode-dispatch/ART-receipt.json"
+        ],
+        "baseHead": "30a204a7aa348a88b90bdc922862c610a7da938f",
+        "sourceInputs": [
+          "/Users/fordeargamers/Documents/Codex/2026-10-01/dho/outputs/r-input-20261001/candidates/ART.js",
+          "/Users/fordeargamers/Documents/Codex/2026-10-01/dho/outputs/r-input-20261001/검증결과.md"
+        ],
+        "nextAction": "candidates/ART.js의 결함(표본0 within_pm2 오탐·cleanup 미정리 timeout/namespace·중복설치 방어 부재)을 고친 독립 관측기를 tools/team-followup-20261001/ART/에 구현하고, mock 환경에서 정상표본·0표본·재설치·취소 4케이스 정적 검증한다.",
+        "blocker": "실제 컷신 인수(실게임 ?test=1&cutscene=1 PRO 재생)는 QA 종료 인계 전 보류. 게임/브라우저/서버 추가 실행 금지 게이트에 걸림.",
+        "startedActualWork": true
+      },
+      "cliStatus": "busy",
+      "surface": "main-vscode-window",
+      "modelObserved": "Opus 4.8"
+    },
+    {
+      "team": "MAP",
+      "terminal": 3,
+      "sessionId": "d447a49d-ecaa-4b5f-bc56-da5353ebb668",
+      "received": true,
+      "started": true,
+      "receiptSnapshot": {
+        "taskId": "MAP-020-M5-PREFLIGHT",
+        "title": "M5 보행 경계 검수 후보 안전화",
+        "team": "MAP",
+        "terminal": 3,
+        "cli": "claude-code",
+        "model": "claude-opus-4-8",
+        "sessionId": null,
+        "receivedAt": "2026-10-01T10:07:12Z",
+        "startedAt": "2026-10-01T10:07:12Z",
+        "status": "in_progress",
+        "head": "30a204a7aa348a88b90bdc922862c610a7da938f",
+        "ownedPaths": [
+          "docs/0마스터플랜/mac-resume-20261001/vscode-dispatch/MAP-result.md",
+          "docs/0마스터플랜/mac-resume-20261001/vscode-dispatch/MAP-receipt.json",
+          "tools/team-followup-20261001/MAP/"
+        ],
+        "nextAction": "맵 가이드 전문·맵 SSOT 색인·MAP-020 증거 통독 후 r-input candidates/MAP.js·검증결과.md 대조, 독립 하니스 사본 작성 및 mock 정적 검사",
+        "blocker": null,
+        "notes": "원본 candidates/MAP.js·검증결과.md·teams/MAP.md는 r-input-evidence/evidence.zip 내부에 있어 스크래치패드로 추출해 읽기 전용 대조. 실게임 열기는 QA 종료 인계 전 보류."
+      },
+      "cliStatus": "busy",
+      "surface": "main-vscode-window",
+      "modelObserved": "Opus 4.8"
+    },
+    {
+      "team": "UIUX",
+      "terminal": 4,
+      "sessionId": "01a0f6e5-8653-7ae2-8b2b-314e275c215c",
+      "received": true,
+      "started": true,
+      "receiptSnapshot": {
+        "taskId": "UI-03-DENSE-EVIDENCE",
+        "terminal": "배정: VS Code 터미널 4 (실제 UI 번호 미조회)",
+        "cli": "Codex",
+        "model": null,
+        "sessionId": null,
+        "receivedAt": "2026-10-01T10:06:43Z",
+        "startedAt": "2026-10-01T10:06:43Z",
+        "status": "completed_with_pending_gates",
+        "ownedPaths": [
+          "tools/team-followup-20261001/UIUX/",
+          "docs/0마스터플랜/mac-resume-20261001/vscode-dispatch/UIUX-result.md",
+          "docs/0마스터플랜/mac-resume-20261001/vscode-dispatch/UIUX-receipt.json"
+        ],
+        "nextAction": "QA/총괄에 D01~D06 새 baseline 캡처 조건과 문서 반영 후보 인계. 소유권 밖 실행 없음",
+        "blocker": "지정 산출의 차단 없음. 새 실화면/UI03 전체는 QA 종료 인계와 QA 단독 캡처 대기",
+        "startEvidence": "파일 작성 이전 팀 정책·마스터 §18·UI03 검수·UIUX 작업대장 실제 읽기 exit0. receivedAt/startedAt은 첫 UTC 기록 시각으로 동일하며 최초 수신과 읽기의 정확한 초 단위 시각은 미계측. 동작 순서로 수신과 착수를 구분",
+        "completedAt": "2026-10-01T10:09:08Z",
+        "completionTimeNote": "최종 산출 작성 후 재검증 종료 UTC 조회 시각",
+        "resultPath": "docs/0마스터플랜/mac-resume-20261001/vscode-dispatch/UIUX-result.md",
+        "newLiveValidation": false
+      },
+      "cliStatus": null,
+      "surface": "main-vscode-window",
+      "modelObserved": "GPT-6.1-Sol (UI)"
+    },
+    {
+      "team": "SOUND",
+      "terminal": 5,
+      "sessionId": "aa3ac0ed-f4e5-44ad-a0b2-d4d2da045b84",
+      "received": true,
+      "started": true,
+      "receiptSnapshot": null,
+      "cliStatus": "busy",
+      "surface": "separate-vscode-window",
+      "modelObserved": "Opus 4.8"
+    },
+    {
+      "team": "SKILL",
+      "terminal": 6,
+      "sessionId": "203377cc-64c4-47ea-af27-95b66ae829fa",
+      "received": true,
+      "started": true,
+      "receiptSnapshot": {
+        "taskId": "SKILL-03-OBSERVER-FIX",
+        "title": "iceStorm 설치·취소 관측 후보 보강",
+        "team": "SKILL",
+        "terminal": 6,
+        "cli": "claude-code",
+        "model": "claude-opus-4-8",
+        "sessionId": null,
+        "receivedAt": "2026-10-01T10:13:00Z",
+        "startedAt": "2026-10-01T10:13:00Z",
+        "status": "in_progress",
+        "head": "30a204a7aa348a88b90bdc922862c610a7da938f",
+        "ownedPaths": [
+          "docs/0마스터플랜/mac-resume-20261001/vscode-dispatch/SKILL-result.md",
+          "docs/0마스터플랜/mac-resume-20261001/vscode-dispatch/SKILL-receipt.json",
+          "tools/team-followup-20261001/SKILL/"
+        ],
+        "nextAction": "검증결과.md·validation-manifest SKILL 게이트 반영한 안전화 관측기 사본 작성 후 mock 자가검사(리스너·rAF 재설치/정리·0표본·양성대조·MP/장판만료 분리) 실행",
+        "blocker": null,
+        "notes": "원본 candidates/SKILL.js(sha256 aeded941…)·검증결과.md·teams/SKILL.md는 r-input-evidence/evidence.zip 내부라 스크래치패드로 추출해 읽기 전용 대조하고 _source-* 사본을 팀 폴더에 보존. 자원공식·전투·생산코드 무수정. 실브라우저 입력·게임 실행은 QA 종료 인계 전 보류."
+      },
+      "cliStatus": "busy",
+      "surface": "main-vscode-window",
+      "modelObserved": "Opus 4.8"
+    },
+    {
+      "team": "ENEMY",
+      "terminal": 7,
+      "sessionId": "ddbd64be-975a-458e-a020-c09749281f5b",
+      "received": true,
+      "started": true,
+      "receiptSnapshot": {
+        "taskId": "ENEMY-TYPE3-PROBE-FIX",
+        "title": "type3 발사 관측 후보 정확성 보강",
+        "team": "ENEMY",
+        "terminal": "VS Code 기존 터미널 (ENEMY)",
+        "cli": "Claude Code",
+        "model": "claude-opus-4-8",
+        "sessionId": "ddbd64be-975a-458e-a020-c09749281f5b",
+        "sessionIdSource": "scratchpad 경로의 세션 UUID로 추정. CLI가 직접 보고한 값 아님",
+        "receivedAt": "2026-10-01T19:14:00+09:00",
+        "startedAt": "2026-10-01T19:14:00+09:00",
+        "status": "in-progress",
+        "head": "30a204a7aa348a88b90bdc922862c610a7da938f",
+        "ownedPaths": [
+          "tools/team-followup-20261001/ENEMY/",
+          "docs/0마스터플랜/mac-resume-20261001/vscode-dispatch/ENEMY-result.md",
+          "docs/0마스터플랜/mac-resume-20261001/vscode-dispatch/ENEMY-receipt.json"
+        ],
+        "gate": {
+          "realGameObservation": "blocked",
+          "reason": "QA-receipt.json gate=blocked (QA-game-release.json released=true 미인계). 실화면 관측은 QA 종료 인계 후.",
+          "checkedPath": "docs/0마스터플랜/mac-resume-20261001/vscode-dispatch/QA-game-release.json (부재 확인)"
+        },
+        "nextAction": "검증결과.md ENEMY 5결함(lexical G/P/ens 접근, projT 재설정 차징감지, 투사체 commit 후 판정, 개체전환/실 tick, wrapper 소유권/재설치)을 game.html HEAD 30a204a7과 대조 후 독립 사본에 수정, mock 발사/무발사/대상교체/복원 검사.",
+        "blocker": null
+      },
+      "cliStatus": "busy",
+      "surface": "main-vscode-window",
+      "modelObserved": "Opus 4.8"
+    },
+    {
+      "team": "ANIMVFX",
+      "terminal": 8,
+      "sessionId": "1d2a7253-478c-43aa-8c6f-766a02270432",
+      "received": true,
+      "started": true,
+      "receiptSnapshot": {
+        "taskId": "ANIMVFX-GL-PROBE-FIX",
+        "title": "플래시 관측 후보 자원·게이트 보강",
+        "team": "ANIMVFX",
+        "terminal": "VS Code 기존 터미널 8 (ANIMVFX)",
+        "cli": "Claude Code",
+        "model": "claude-opus-4-8",
+        "sessionId": "1d2a7253-478c-43aa-8c6f-766a02270432",
+        "sessionIdSource": "scratchpad 경로의 세션 UUID로 추정. CLI가 직접 보고한 값 아님",
+        "receivedAt": "2026-10-01T19:16:00+09:00",
+        "startedAt": "2026-10-01T19:16:33+09:00",
+        "status": "in-progress",
+        "head": "30a204a7aa348a88b90bdc922862c610a7da938f",
+        "ownedPaths": [
+          "tools/team-followup-20261001/ANIMVFX/",
+          "docs/0마스터플랜/mac-resume-20261001/vscode-dispatch/ANIMVFX-result.md",
+          "docs/0마스터플랜/mac-resume-20261001/vscode-dispatch/ANIMVFX-receipt.json"
+        ],
+        "nextAction": "AGENTS.md·연속정책·총괄 §18·ANIMATION_VFX_TEAM_MASTER·R/GL 원자료 읽기 후 독립 GL 프로브 사본 구현 및 정적/mock 검사 실행",
+        "blocker": null
+      },
+      "cliStatus": "busy",
+      "surface": "main-vscode-window",
+      "modelObserved": "Opus 4.8"
+    },
+    {
+      "team": "ITEM",
+      "terminal": 9,
+      "sessionId": "01a0f6e6-1fbe-7df0-8d02-a9c2d9df3750",
+      "received": true,
+      "started": true,
+      "receiptSnapshot": {
+        "taskId": "ITEM-RING-PNG-REVIEW",
+        "terminal": "배정 터미널 9 (실제 UI 번호 미확인)",
+        "cli": "Codex",
+        "model": null,
+        "sessionId": null,
+        "receivedAt": "2026-10-01T10:16:04Z",
+        "startedAt": "2026-10-01T10:16:04Z",
+        "status": "completed_review_pending_integration",
+        "ownedPaths": [
+          "tools/team-followup-20261001/ITEM/",
+          "docs/0마스터플랜/mac-resume-20261001/vscode-dispatch/ITEM-result.md",
+          "docs/0마스터플랜/mac-resume-20261001/vscode-dispatch/ITEM-receipt.json"
+        ],
+        "nextAction": "총괄에 최소 patch와 9PASS 인계; 생산 연결·실화면·자연전투·패키지 검수는 별도 게이트",
+        "blocker": null
+      },
+      "cliStatus": null,
+      "surface": "main-vscode-window",
+      "modelObserved": "GPT-6.1-Sol (UI)"
+    },
+    {
+      "team": "BUILD",
+      "terminal": 10,
+      "sessionId": "01a0f6e6-2e4c-7322-92d7-3aa309857856",
+      "received": true,
+      "started": true,
+      "receiptSnapshot": {
+        "taskId": "BUILD-RECOVERY-CONTRACT",
+        "terminal": "10 (배정 번호, UI 미확인)",
+        "cli": "Codex",
+        "model": null,
+        "sessionId": null,
+        "receivedAt": "2026-10-01",
+        "startedAt": "2026-10-01",
+        "status": "completed_scoped_checks",
+        "completedAt": "2026-10-01T10:17:25Z",
+        "ownedPaths": [
+          "tools/team-followup-20261001/BUILD/",
+          "docs/0마스터플랜/mac-resume-20261001/vscode-dispatch/BUILD-result.md",
+          "docs/0마스터플랜/mac-resume-20261001/vscode-dispatch/BUILD-receipt.json"
+        ],
+        "nextAction": "총괄에 복구 계약 누락·공유 docs 보충·실제 패키지 검수·원격 체크포인트 인계",
+        "blocker": "담당 단위검사는 완료. 실제 서버/게임/패키지 검수 및 생산 수정은 배정 범위 밖"
+      },
+      "cliStatus": null,
+      "surface": "main-vscode-window",
+      "modelObserved": "GPT-6.1-Sol (UI)"
+    },
+    {
+      "team": "BALANCE",
+      "terminal": 11,
+      "sessionId": "01a0f6e6-5303-7392-81ba-94c42e349ffc",
+      "received": true,
+      "started": true,
+      "receiptSnapshot": {
+        "taskId": "BALANCE-FIREBALL-HOOK-AUDIT",
+        "terminal": "VS Code 터미널 11 (배정 표기, UI 독립 확인 없음)",
+        "cli": "Codex",
+        "model": null,
+        "sessionId": null,
+        "receivedAt": "2026-10-01T10:16:25Z",
+        "startedAt": "2026-10-01T10:16:25Z",
+        "status": "completed_audit_only",
+        "completedAt": "2026-10-01T10:17:10Z",
+        "ownedPaths": [
+          "tools/team-followup-20261001/BALANCE/",
+          "docs/0마스터플랜/mac-resume-20261001/vscode-dispatch/BALANCE-result.md",
+          "docs/0마스터플랜/mac-resume-20261001/vscode-dispatch/BALANCE-receipt.json"
+        ],
+        "nextAction": "총괄에 결과·미결정 피해원/재귀/피해/중첩 계약과 docs 반영 후보 인계",
+        "blocker": "감사는 완료. 효과 구현·실화면 검수는 계약 확정 및 별도 소유권 배정 필요"
+      },
+      "cliStatus": null,
+      "surface": "main-vscode-window",
+      "modelObserved": "GPT-6.1-Sol (UI)"
+    }
+  ],
+  "newAgents": 0,
+  "newLiveMeasurement": false,
+  "sourceHashes": {
+    "game.html": "593a7a9d84c78402f04c50c94ae169e237e49751ad58d8640e78e672850728f2",
+    "game-easy-test.html": "269411143e093319926948dce42740d83617b2a0e1305cc1180a59a6ecb75e58"
+  }
+}
