@@ -1,0 +1,3 @@
+{"file":"physical-prewarm-before.js","input":"same identity / empty currentSrc→captured absolute src / empty unchanged srcset,sizes / complete512²","status":"stale","reads":0,"listeners":0,"timers":0}
+{"file":"physical-prewarm-candidate.js","input":"same identity / empty currentSrc→captured absolute src / empty unchanged srcset,sizes / complete512²","status":"prepared","reads":1,"listeners":0,"timers":0}
+before 검사로그 byte equality PASS

@@ -11,12 +11,8 @@ function _preparePhysicalImpactSheet(){
       if(cancelled()){stats.status='cancelled';return stats;}
       const image=_tvfx2Imgs['Fire_ImpactFire_Sheet.png'];
       if(!image){stats.status='missing';return stats;}
-      const source=image.src,currentSource=image.currentSrc,sourceSet=image.srcset,sourceSizes=image.sizes;
-      const stale=()=>{
-        if(image!==_tvfx2Imgs['Fire_ImpactFire_Sheet.png']||image.src!==source||image.srcset!==sourceSet||image.sizes!==sourceSizes)return true;
-        if(image.currentSrc===currentSource)return false;
-        return !(currentSource===''&&sourceSet===''&&sourceSizes===''&&typeof source==='string'&&/^[a-zA-Z][a-zA-Z\d+.-]*:/.test(source)&&image.complete&&image.currentSrc===source);
-      };
+      const source=image.src,currentSource=image.currentSrc;
+      const stale=()=>image!==_tvfx2Imgs['Fire_ImpactFire_Sheet.png']||image.src!==source||image.currentSrc!==currentSource;
       const ready=()=>image.complete&&image.naturalWidth===512&&image.naturalHeight===512;
       stats.attempts=1;
       if(!ready()){

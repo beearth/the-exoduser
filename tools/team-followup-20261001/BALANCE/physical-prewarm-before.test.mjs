@@ -4,11 +4,10 @@ import {readFileSync} from 'node:fs';
 import vm from 'node:vm';
 import {createHash} from 'node:crypto';
 
-const game=readFileSync(new URL('../game.html',import.meta.url),'utf8');
-const candidateStart=game.indexOf('function _preparePhysicalImpactSheet(');
-const candidate=game.slice(candidateStart,game.indexOf('function _waterBeanIceBurst(',candidateStart));
+const game=readFileSync(new URL('../../../game.html',import.meta.url),'utf8');
+const candidate=readFileSync(new URL('./physical-prewarm-candidate.js',import.meta.url),'utf8');
 const start=game.indexOf('function _physicalImpactSheet(img)');
-const end=game.indexOf('function _preparePhysicalImpactSheet(',start);
+const end=game.indexOf('function _waterBeanIceBurst(',start);
 assert(start>=0&&end>start);
 const helper=game.slice(start,end);
 const tint=game.split('\n').find(line=>line.startsWith('function _tintHolyDome('));
@@ -116,74 +115,4 @@ test('늦은getter예외/부분listener등록예외도settle과정리',async()=>
   const partial=harness({complete:false});const add=partial.image.addEventListener;
   partial.image.addEventListener=(type,handler)=>{add(type,handler);if(type==='error')throw Error('partial listener fixture');};
   assert.equal((await partial.run()).status,'error');assert.equal(partial.listeners.size,0);
-});
-
-test("boot prepares physical impact after assets and before renderer",()=>{
- const boot=game.slice(game.indexOf("(async function _boot(){"));
- const call=boot.indexOf("await _preparePhysicalImpactSheet();");
- assert.ok(call>boot.indexOf("await _preloadAssets();"));
- assert.ok(call<boot.indexOf("await _bootRenderer();"));
-});
-
-function initialLoad(){
-  const state=harness({complete:false});
-  Object.assign(state.image,{src:'http://127.0.0.1:3340/assets/Fire_ImpactFire_Sheet.png',currentSrc:'',srcset:'',sizes:''});
-  return state;
-}
-
-function finishLoad(state){
-  state.image.complete=true;state.image.naturalWidth=state.image.naturalHeight=512;state.image.emit('load');
-}
-
-test('정상 최초 currentSrc 확정은 같은객체/절대src/선택속성불변에서 준비·재호출0',async()=>{
-  const state=initialLoad();const pending=state.run();await state.flush();await state.advance(32);
-  state.image.currentSrc=state.image.src;finishLoad(state);
-  const stats=await pending;assert.equal(stats.status,'prepared');assert.equal(stats.totalMs,37);
-  const sheet=state.context._physicalImpactSheet(state.image);
-  assert.equal((await state.run()).status,'reused');assert.equal(state.context._physicalImpactSheet(state.image),sheet);
-  assert.equal(state.reads(),1);assert.equal(state.listeners.size,0);assert.equal(state.timers.size,0);
-});
-
-test('최초 확정 경계: 다른URL/선택URL/상대src/DOM속성없음/객체교체는 stale',async()=>{
-  for(const variant of ['other','selected','relative','no-dom','identity','src']){
-    const state=initialLoad();
-    if(variant==='relative')state.image.src='assets/Fire_ImpactFire_Sheet.png';
-    if(variant==='no-dom'){delete state.image.srcset;delete state.image.sizes;}
-    const pending=state.run();await state.flush();state.image.currentSrc=state.image.src;
-    if(variant==='other')state.image.currentSrc='https://evil.example/other.png';
-    if(variant==='selected')state.image.currentSrc=state.image.src+'?selected=2';
-    if(variant==='identity')state.context._tvfx2Imgs['Fire_ImpactFire_Sheet.png']={...state.image};
-    if(variant==='src')state.image.src='https://evil.example/other.png';
-    finishLoad(state);assert.equal((await pending).status,'stale',variant);assert.equal(state.reads(),0);
-    assert.equal(state.listeners.size,0);assert.equal(state.timers.size,0);
-  }
-});
-
-test('srcset/sizes 전환 및 기존선택속성은 정상주소처럼 보여도 거부',async()=>{
-  for(const variant of ['srcset','sizes','initial-srcset','initial-sizes']){
-    const state=initialLoad();const field=variant.includes('srcset')?'srcset':'sizes';
-    if(variant.startsWith('initial'))state.image[field]='selected';
-    const pending=state.run();await state.flush();state.image.currentSrc=state.image.src;
-    if(!variant.startsWith('initial'))state.image[field]='changed';
-    finishLoad(state);assert.equal((await pending).status,'stale',variant);assert.equal(state.reads(),0);
-    assert.equal(state.listeners.size,0);assert.equal(state.timers.size,0);
-  }
-});
-
-test('정상 최초확정 동시 epoch/취소 및 완료전확정은 거부',async()=>{
-  for(const variant of ['epoch','killed','inactive','on','incomplete']){
-    const state=initialLoad();const pending=state.run();await state.flush();state.image.currentSrc=state.image.src;
-    if(variant==='epoch')state.context._bootLoadEpoch++;
-    if(variant==='killed')state.context._bootLoadKilled=true;
-    if(variant==='inactive')state.context._bootLoadActive=false;
-    if(variant==='on')state.context.G.on=true;
-    if(variant==='incomplete')state.image.emit('load');else finishLoad(state);
-    assert.equal((await pending).status,variant==='incomplete'?'stale':'cancelled');assert.equal(state.reads(),0);
-    assert.equal(state.listeners.size,0);assert.equal(state.timers.size,0);
-  }
-});
-
-test('이미 확정된 currentSrc 변경은 요청src와 같아져도 거부',async()=>{
-  const state=initialLoad();state.image.currentSrc=state.image.src+'?old=1';const pending=state.run();await state.flush();
-  state.image.currentSrc=state.image.src;finishLoad(state);assert.equal((await pending).status,'stale');assert.equal(state.reads(),0);
 });

@@ -1,0 +1,176 @@
+{
+  "status": "정확 variant UNKNOWN",
+  "hashes": {
+    "ch1-living-detail.js": "e5e7e75b3865a926dfb3f8a5a1cc284a5dc5a976233a591062fa6506fd4a6640",
+    "game.html": "7c681cfaa592778ab6d7cc5b88c46906b332e4395bb60fda1b837d09ed6ee1de",
+    "outputs/team-review-20261001/draw-attribution/raw.json": "a50e25e3cc50492d90b819126a98653bd3c80738985e663785442aeee986a4e2",
+    "outputs/team-review-20261001/draw-attribution/profile.cpuprofile": "71e15813b68a8235ae264a6eb359e0e5e79de622f984bf9907e6cfd365ae27ba",
+    "outputs/team-review-20261001/draw-attribution/clock.json": "1337ff447a77a84652b99baa55e07c21db13694a17d0724064670308f801302d",
+    "outputs/team-review-20261001/draw-attribution/preflight.json": "3acddb3b8290a328ad26866f3aa948479818562abb17affcf41b0b480e8c5c7b"
+  },
+  "span": {
+    "kind": "draw",
+    "start": 71976,
+    "end": 72075,
+    "duration": 99,
+    "loopId": 686,
+    "parent": "loop",
+    "killsBefore": 9,
+    "killsAfter": 9
+  },
+  "clock": {
+    "navigationUs": 816904114954,
+    "anchorMs": 34665.821,
+    "bracket": [
+      34659.60000002384,
+      34670.200000047684
+    ]
+  },
+  "sampleEstimate": {
+    "membraneOverlapMs": 95.89199999999255,
+    "membraneSamples": 65,
+    "method": "샘플 시각부터 다음 샘플까지 겹침; native/GPU 분해 아님"
+  },
+  "metadataPaths": [],
+  "rawTopKeys": [
+    "startedAt",
+    "inputAt",
+    "stopped",
+    "reason",
+    "loops",
+    "spans",
+    "frames",
+    "events",
+    "browserEntries",
+    "dropped",
+    "cleanupErrors",
+    "initial",
+    "end",
+    "options",
+    "finalOptions",
+    "environment",
+    "inputState",
+    "restored",
+    "restoredBindings"
+  ],
+  "spanKeys": [
+    "kind",
+    "start",
+    "end",
+    "duration",
+    "loopId",
+    "parent",
+    "killsBefore",
+    "killsAfter"
+  ],
+  "relevantNodes": [
+    {
+      "id": 445,
+      "fields": [
+        "callFrame",
+        "children",
+        "hitCount",
+        "id"
+      ],
+      "columnNumber": 16,
+      "functionName": "atlas",
+      "lineNumber": 311,
+      "scriptId": "15",
+      "url": "http://qa-draw-attribution-20261001.localhost:3340/ch1-living-detail.js?v=20260929-87",
+      "line1": 312
+    },
+    {
+      "id": 446,
+      "fields": [
+        "callFrame",
+        "children",
+        "hitCount",
+        "id",
+        "positionTicks"
+      ],
+      "columnNumber": 16,
+      "functionName": "paint",
+      "lineNumber": 172,
+      "scriptId": "15",
+      "url": "http://qa-draw-attribution-20261001.localhost:3340/ch1-living-detail.js?v=20260929-87",
+      "line1": 173
+    },
+    {
+      "id": 447,
+      "fields": [
+        "callFrame",
+        "children",
+        "hitCount",
+        "id",
+        "positionTicks"
+      ],
+      "columnNumber": 19,
+      "functionName": "membrane",
+      "lineNumber": 119,
+      "scriptId": "15",
+      "url": "http://qa-draw-attribution-20261001.localhost:3340/ch1-living-detail.js?v=20260929-87",
+      "line1": 120
+    }
+  ],
+  "sourceEvidence": [
+    {
+      "line": 119,
+      "text": "  const membranes=[];"
+    },
+    {
+      "line": 121,
+      "text": "    const id=wet?3:variant;if(membranes[id])return membranes[id];"
+    },
+    {
+      "line": 135,
+      "text": "    let seed=781+variant*357+(wet?91:0);"
+    },
+    {
+      "line": 155,
+      "text": "      const image=c.getImageData(0,0,320,320),data=image.data;"
+    },
+    {
+      "line": 164,
+      "text": "    membranes[id]=a;return a;"
+    },
+    {
+      "line": 311,
+      "text": "  const atlases=[];"
+    },
+    {
+      "line": 313,
+      "text": "    const id=surfaceOnly?(wet?2:3):wet?1:variant?3+variant:0;if(atlases[id])return atlases[id];"
+    },
+    {
+      "line": 329,
+      "text": "    atlases[id]=a;return a;"
+    },
+    {
+      "line": 350,
+      "text": "      const variant=wet||surfaceOnly?0:Math.abs(Math.floor(o.x/40)*7+Math.floor(o.y/40)*11)%3;"
+    }
+  ],
+  "dryCandidates": [
+    {
+      "variant": 0,
+      "membraneKey": 0,
+      "atlasKey": 0,
+      "seed": 781
+    },
+    {
+      "variant": 1,
+      "membraneKey": 1,
+      "atlasKey": 4,
+      "seed": 1138
+    },
+    {
+      "variant": 2,
+      "membraneKey": 2,
+      "atlasKey": 5,
+      "seed": 1495
+    }
+  ],
+  "inference": "기존 동일 소스와 getImageData 스택에 한해 wet=false·surfaceOnly=false·두 캐시 miss. 인수·대상 좌표·캐시 상태는 원자료에 없어 정확 variant는 미확정.",
+  "initialization": "각 배열은 모듈 평가 시 빈 배열. 첫 가시 draw가 atlas를 lazy 생성하고 paint 첫 프레임에서 membrane 생성. 완료 후 캐시 공개. 실제 모듈 평가·해당 키 최초 호출 시각 미기록.",
+  "limits": "GPU 완료·순수 CPU 분해·계측 오버헤드·픽셀·프레임 개선 미검수. 이전 정상표본과 다른 사건."
+}

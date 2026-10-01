@@ -1,0 +1,26 @@
+{"game":"7c681cfaa592778ab6d7cc5b88c46906b332e4395bb60fda1b837d09ed6ee1de","helper":"4c48a2c6d2b8be3b1df5069d99433420e01645696039652df1ff8fedecf5b06d","tint":"9315c1821002f0af5dbe670809994667842e1f70cf96cb3f1b760acc0c76af51","candidate":"e80f74f25fcc0ffa2144897ba4290c0b383e46c570f9a7eb4941ef90f29101b0","limits":"fake clock + 실제함수추출 + synthetic Canvas RGBA; 브라우저픽셀/실전미검수"}
+✔ 실제원helper/tint 실행·같은WeakMap/동일객체/재호출가공0/RNG0 (40.206458ms)
+✔ G.on/bootActive/killed 부트밖은 동기가공0 (5.31625ms)
+✔ 미완료512이미지 load대기·기존handler불변·listener/timer cleanup (36.5105ms)
+✔ 로드error/완료됐지만잘못된크기/missing은lazy 유지 (6.158041ms)
+✔ 대기중 G.on/killed/bootActive/epoch 취소와cleanup (7.430292ms)
+✔ 대기뒤 src/currentSrc/identity변경 stale작업0 (5.115166ms)
+✔ 250ms협력적대기예산·늦은load무효/무한예약0 (2.312125ms)
+✔ 동기가공예산초과는선점하지않고명시·lazy원캐시 유지 (36.837958ms)
+✔ 가공예외는error·동기시간기록·기존lazy 재시도가능 (2.4655ms)
+✔ 대기중원lazy이미준비된캐시는재사용 (35.556583ms)
+✔ 추출원문/후보해시 (4.982959ms)
+✔ 늦은getter예외/부분listener등록예외도settle과정리 (3.360875ms)
+✔ 정상 최초 currentSrc 확정은 같은객체/절대src/선택속성불변에서 준비·재호출0 (36.515ms)
+✔ 최초 확정 경계: 다른URL/선택URL/상대src/DOM속성없음/객체교체는 stale (9.768958ms)
+✔ srcset/sizes 전환 및 기존선택속성은 정상주소처럼 보여도 거부 (6.504667ms)
+✔ 정상 최초확정 동시 epoch/취소 및 완료전확정은 거부 (8.467583ms)
+✔ 이미 확정된 currentSrc 변경은 요청src와 같아져도 거부 (1.7065ms)
+ℹ tests 17
+ℹ suites 0
+ℹ pass 17
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 297.443625

@@ -1,0 +1,23 @@
+{
+  "checkedAt": "2026-10-01T15:03:43.957Z",
+  "sourceAndRawUnchanged": true,
+  "hashes": {
+    "ch1-living-detail.js": "e5e7e75b3865a926dfb3f8a5a1cc284a5dc5a976233a591062fa6506fd4a6640",
+    "game.html": "7c681cfaa592778ab6d7cc5b88c46906b332e4395bb60fda1b837d09ed6ee1de",
+    "outputs/team-review-20261001/draw-attribution/raw.json": "a50e25e3cc50492d90b819126a98653bd3c80738985e663785442aeee986a4e2",
+    "outputs/team-review-20261001/draw-attribution/profile.cpuprofile": "71e15813b68a8235ae264a6eb359e0e5e79de622f984bf9907e6cfd365ae27ba",
+    "outputs/team-review-20261001/draw-attribution/clock.json": "1337ff447a77a84652b99baa55e07c21db13694a17d0724064670308f801302d",
+    "outputs/team-review-20261001/draw-attribution/preflight.json": "3acddb3b8290a328ad26866f3aa948479818562abb17affcf41b0b480e8c5c7b"
+  },
+  "ownedHashes": {
+    "membrane-prewarm-analysis.json": "1761bf6cb31d7a203050262df9ca71c2c90dd99bf7af34253387b0d83511ac50",
+    "membrane-prewarm-analyze.mjs": "7e874b3d5d529b14a5c8428203bdc27efd5a3a8797f54997cfc9abe23cdc23f1",
+    "membrane-prewarm-capture.mjs": "ff1dce64afee68ff9608ef639cef83ccd5578d92da646c531335f23d35f34138",
+    "membrane-prewarm-capture.test.mjs": "e1b349fc3a814a59cfb71ab5fe0e753c76f98c952c90aba1bfd26407842004d1",
+    "membrane-prewarm-doc-matches.txt": "9a620d61775946b6385687dc97d7c49c102be7dbd688c3aafd635fe1ebef0162",
+    "membrane-prewarm-receipt.json": "c3482f8598645586fe2c319ac282aeca9699213773dc6cfa2120364c532e46be",
+    "membrane-prewarm-result.md": "13df2f3ed19a9e18c2f5881ac3b5627ead0910ebf587423823dc70f8488ed426",
+    "membrane-prewarm-task.md": "5697ae4e8f77a49bf21613a5c9f78f024e6e2c6d8599bca5527f9c222efbd43a",
+    "membrane-prewarm-validation.txt": "cbe7ba01ae9bc266e31b955e8242444727221ffaecda80a240395cdefbdddb67"
+  }
+}

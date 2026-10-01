@@ -1,0 +1,17 @@
+{
+  "taskId": "PHYSICAL-PREWARM-NORMAL-LOAD-IDENTITY",
+  "receivedAt": "2026-10-01T15:00:55Z",
+  "firstReadAt": "2026-10-01T15:00:55Z",
+  "firstEditAt": "2026-10-01T15:02:08Z",
+  "duplicateCheck": "load-task 지시 외 동일 수정 산출 없음; BUILD15의 정상 최초currentSrc stale 반례 읽음",
+  "preserved": ["physical-prewarm-before.js", "physical-prewarm-tests-before.txt", "physical-prewarm-before.test.mjs"],
+  "codeEditAndValidatedAt": "2026-10-01T15:02:43Z",
+  "completedAt": "2026-10-01T15:02:57Z",
+  "validation": "기존12+추가5=17PASS/0FAIL; 동일입력 before stale/read0 → after prepared/read1; cleanup0; 원함수 직접추출 실행",
+  "candidateSha256": "e80f74f25fcc0ffa2144897ba4290c0b383e46c570f9a7eb4941ef90f29101b0",
+  "beforeSha256": "34524ef90d3549aa60448b2bee0d6a25b04af71e43f20be0823ded8723e5f6ed",
+  "docsSearch": "physical-prewarm-load-doc-search.txt",
+  "remainingGate": "root 본편/test 인수·실제부트/브라우저픽셀/실전측정",
+  "status": "completed_unapplied_boundary_fix",
+  "productionModified": false
+}

@@ -4,11 +4,10 @@ import {readFileSync} from 'node:fs';
 import vm from 'node:vm';
 import {createHash} from 'node:crypto';
 
-const game=readFileSync(new URL('../game.html',import.meta.url),'utf8');
-const candidateStart=game.indexOf('function _preparePhysicalImpactSheet(');
-const candidate=game.slice(candidateStart,game.indexOf('function _waterBeanIceBurst(',candidateStart));
+const game=readFileSync(new URL('../../../game.html',import.meta.url),'utf8');
+const candidate=readFileSync(new URL('./physical-prewarm-candidate.js',import.meta.url),'utf8');
 const start=game.indexOf('function _physicalImpactSheet(img)');
-const end=game.indexOf('function _preparePhysicalImpactSheet(',start);
+const end=game.indexOf('function _waterBeanIceBurst(',start);
 assert(start>=0&&end>start);
 const helper=game.slice(start,end);
 const tint=game.split('\n').find(line=>line.startsWith('function _tintHolyDome('));
@@ -116,13 +115,6 @@ test('늦은getter예외/부분listener등록예외도settle과정리',async()=>
   const partial=harness({complete:false});const add=partial.image.addEventListener;
   partial.image.addEventListener=(type,handler)=>{add(type,handler);if(type==='error')throw Error('partial listener fixture');};
   assert.equal((await partial.run()).status,'error');assert.equal(partial.listeners.size,0);
-});
-
-test("boot prepares physical impact after assets and before renderer",()=>{
- const boot=game.slice(game.indexOf("(async function _boot(){"));
- const call=boot.indexOf("await _preparePhysicalImpactSheet();");
- assert.ok(call>boot.indexOf("await _preloadAssets();"));
- assert.ok(call<boot.indexOf("await _bootRenderer();"));
 });
 
 function initialLoad(){

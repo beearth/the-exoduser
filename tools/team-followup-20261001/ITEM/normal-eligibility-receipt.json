@@ -1,0 +1,21 @@
+{
+  "task": "NORMAL-ELIGIBILITY-ROOT-FIX-REVIEW",
+  "receivedAt": "2026-10-01T14:58:53Z",
+  "firstReadAt": "2026-10-01T14:58:53Z",
+  "status": "독립 검수 완료·새3반례 미적용 후보 인수 대기",
+  "read": ["AGENTS와 소유 하위검색", "전용 task 및 공식 queue 수신", "BUILD normal-combat-audit-result/check/evidence", "root before/current/check", "정상 raw와 before/current analysis", "관련 docs"],
+  "duplicateCheck": "draw 분석 완료; 새 전용 task만 있고 동일검수 결과 없음. root 12반례 수정은 반복하지 않음; native queue UNKNOWN",
+  "firstEdit": "전용 영수증 및 fs 메모리 치환 검수기 작성",
+  "firstEditAt": "2026-10-01T14:59:56.201Z",
+  "firstEditEvidence": "전용 영수증 filesystem birthtime",
+  "checkedAt": "2026-10-01T15:00:31Z",
+  "completedAt": "2026-10-01T15:00:31Z",
+  "actualCommand": "node tools/team-followup-20261001/ITEM/normal-eligibility-check.mjs",
+  "checks": "BUILD12 before 허용/current거부·정상 수치/자격불변·root실제검수21PASS 재확인·원자료9해시불변; 메모리2줄후보 정상전체동일/20변이거부",
+  "findings": "미래rAF timestamp·음수timestamp·역행inputs 새3변이 current eligible=true; 실제자료 이상없음",
+  "candidate": "normal-eligibility-minimal.patch 미적용; 기존12반례 수정 중복없음",
+  "toolFailures": "root VM 문자열까지 치환한 문법오류1회 해결; evidence 동일경로 delete+add 도구거부 후 Update 성공",
+  "remainingGate": "root 새반례와 최소후보 독립검수·필요시 채택",
+  "scope": "ITEM/normal-eligibility-*만 쓰기, 원자료/현재분석/QA/root/BUILD 읽기전용",
+  "forbiddenExecutionCount": 0
+}

@@ -1,0 +1,232 @@
+{
+  "checkedAt": "2026-10-01T15:00:25.069Z",
+  "hashes": {
+    "outputs/team-review-20261001/support/normal-combat/raw.json": "9df8cd85a5634299fa13410475435fcc161d3cffd7dd261610b988edbf6e6413",
+    "outputs/team-review-20261001/support/normal-combat/analysis.json": "163388bf9b67d5f874e0884dac4e14e942fda36d2214c51f51f285f67a06e607",
+    "outputs/team-review-20261001/support/normal-combat/preflight.json": "32260488a467b5ba7f6e0ca8427d9ebe2a93b1070e436eba5036ee0f00ac1ecc",
+    "tools/team-followup-20261001/QA/analyze-support-normal.mjs": "1b2b17e0b3ef0391be43dbacef2120ca00d3b0eb48f8bbbc89fdfeced595025f",
+    "tools/team-followup-20261001/root-review/normal-analyzer-before.mjs": "78fa5e6b81c66b6d629df1a4ada39f0cf7926996caa7bb18c7ff373658df10f8",
+    "outputs/team-review-20261001/draw-attribution/normal-analysis-before.json": "8a0fe3b0c3593f74f6a35fd4a76c311afa78ee81e951d882067f804cc39b8e82",
+    "tools/team-followup-20261001/BUILD/normal-combat-audit-evidence.json": "f4dc827df44df1945fd137f7a753536cedddd8fb861c42eaf4eb3938d8e80d77",
+    "tools/team-followup-20261001/BUILD/normal-combat-audit-check.mjs": "0904ac94abb084237dc052cb3349cae19032ac475ae35d2e7b9dabc485bae51f",
+    "tools/team-followup-20261001/root-review/normal-analyzer-check.mjs": "fcfd55cce93bc3960df356e390a3844ba20b81367082fb993ef4ed65bf2ac3b3"
+  },
+  "preservedMetrics": [
+    "full",
+    "firstKillWindow",
+    "denseLongest",
+    "denseSegments",
+    "firstObservedKill",
+    "kills",
+    "inputs"
+  ],
+  "eligibleBefore": true,
+  "eligibleCurrent": true,
+  "counterexamples": [
+    {
+      "name": "empty rows",
+      "beforeEligible": true,
+      "currentEligible": false,
+      "reasons": [
+        "insufficient samples",
+        "first kill does not match observed batch",
+        "end kill count mismatch"
+      ]
+    },
+    {
+      "name": "empty draws",
+      "beforeEligible": true,
+      "currentEligible": false,
+      "reasons": [
+        "insufficient samples"
+      ]
+    },
+    {
+      "name": "empty inputs",
+      "beforeEligible": true,
+      "currentEligible": false,
+      "reasons": [
+        "insufficient samples",
+        "first input does not match evidence"
+      ]
+    },
+    {
+      "name": "not stopped",
+      "beforeEligible": true,
+      "currentEligible": false,
+      "reasons": [
+        "capture not complete or missing loss count"
+      ]
+    },
+    {
+      "name": "firstKill before input",
+      "beforeEligible": true,
+      "currentEligible": false,
+      "reasons": [
+        "first kill does not match observed batch"
+      ]
+    },
+    {
+      "name": "firstKill inconsistent batch",
+      "beforeEligible": true,
+      "currentEligible": false,
+      "reasons": [
+        "first kill does not match observed batch"
+      ]
+    },
+    {
+      "name": "nonfinite timestamp JSON null",
+      "beforeEligible": true,
+      "currentEligible": false,
+      "reasons": [
+        "invalid row 5",
+        "nonmonotonic row 5"
+      ]
+    },
+    {
+      "name": "backward timestamp",
+      "beforeEligible": true,
+      "currentEligible": false,
+      "reasons": [
+        "nonmonotonic row 5"
+      ]
+    },
+    {
+      "name": "negative draw duration",
+      "beforeEligible": true,
+      "currentEligible": false,
+      "reasons": [
+        "invalid draw 5"
+      ]
+    },
+    {
+      "name": "untrusted input",
+      "beforeEligible": true,
+      "currentEligible": false,
+      "reasons": [
+        "invalid input evidence",
+        "first input does not match evidence"
+      ]
+    },
+    {
+      "name": "end unfocused",
+      "beforeEligible": true,
+      "currentEligible": false,
+      "reasons": [
+        "invalid endpoint state"
+      ]
+    },
+    {
+      "name": "dropped field missing",
+      "beforeEligible": true,
+      "currentEligible": false,
+      "reasons": [
+        "capture not complete or missing loss count"
+      ]
+    }
+  ],
+  "findings": [
+    {
+      "name": "unknown schema",
+      "eligible": false,
+      "exclusions": [
+        "unsupported schema"
+      ]
+    },
+    {
+      "name": "missing rows array",
+      "eligible": false,
+      "exclusions": [
+        "missing array rows"
+      ]
+    },
+    {
+      "name": "missing firstInput",
+      "eligible": false,
+      "exclusions": [
+        "invalid recording chronology",
+        "first input does not match evidence",
+        "first kill does not match observed batch"
+      ]
+    },
+    {
+      "name": "missing firstKill",
+      "eligible": false,
+      "exclusions": [
+        "first kill does not match observed batch"
+      ]
+    },
+    {
+      "name": "invalid endpoint paused",
+      "eligible": false,
+      "exclusions": [
+        "invalid endpoint state"
+      ]
+    },
+    {
+      "name": "future rAF timestamp",
+      "eligible": true,
+      "exclusions": [],
+      "raf": {
+        "n": 692,
+        "p50": 33.400000000001455,
+        "p95": 42.700000000004366,
+        "p99": 50.20000000001164,
+        "max": 1000051.5999999285,
+        "over50": 12,
+        "over100": 3
+      }
+    },
+    {
+      "name": "negative initial rAF timestamp",
+      "eligible": true,
+      "exclusions": [],
+      "raf": {
+        "n": 692,
+        "p50": 33.400000000001455,
+        "p95": 42.5,
+        "p99": 50.19999999999709,
+        "max": 133.40000000000146,
+        "over50": 11,
+        "over100": 2
+      }
+    },
+    {
+      "name": "reversed inputs array",
+      "eligible": true,
+      "exclusions": [],
+      "raf": {
+        "n": 692,
+        "p50": 33.400000000001455,
+        "p95": 42.5,
+        "p99": 50.19999999999709,
+        "max": 133.40000000000146,
+        "over50": 11,
+        "over100": 2
+      }
+    }
+  ],
+  "minimalInputs": {
+    "futureTimestamp": {
+      "path": "rows[last].timestamp",
+      "expression": "rows[last].at + 1000000"
+    },
+    "negativeTimestamp": {
+      "path": "rows[0].timestamp",
+      "value": -1
+    },
+    "reversedInputs": "swap inputs[0] and inputs[1], no other edits"
+  },
+  "rootCheck": {
+    "pass": 21,
+    "fail": 0,
+    "mode": "fs writes intercepted in memory, no root evidence overwrite"
+  },
+  "candidateChecks": "정상 원자료 출력 동일; BUILD12+추가8 모두 거부; 공유파일 수정0",
+  "limitations": [
+    "synchronousDrawCPU means synchronous elapsed wall time, not CPU-only or GPU completion",
+    "candidate unadopted",
+    "no live measurement",
+    "JSON serializable fixtures only"
+  ]
+}

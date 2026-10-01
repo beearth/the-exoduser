@@ -1,0 +1,9 @@
+--- a/tools/team-followup-20261001/QA/analyze-support-normal.mjs
++++ b/tools/team-followup-20261001/QA/analyze-support-normal.mjs
+@@ -20,2 +20,3 @@
+ for(const [index,row] of raw.rows.entries()){
++  require(Number.isFinite(row?.timestamp)&&row.timestamp>=0&&row.timestamp<=row.at,'invalid rAF/snapshot chronology '+index);
+   require(row&&['at','timestamp','hp','kills','enemies'].every(k=>Number.isFinite(row[k]))&&Number.isSafeInteger(row.kills)&&row.kills>=0&&Number.isSafeInteger(row.enemies)&&row.enemies>=0,'invalid row '+index);
+@@ -34,1 +35,2 @@
++for(const [index,input] of raw.inputs.entries())if(index)require(input.at>=raw.inputs[index-1].at,'nonmonotonic input '+index);
+ const firstInput=raw.inputs.find(i=>good(i)&&((i.kind==='keydown'&&i.code==='KeyW')||(i.kind==='mousedown'&&i.target==='CANVAS')));

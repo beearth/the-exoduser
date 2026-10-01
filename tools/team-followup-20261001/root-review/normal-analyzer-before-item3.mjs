@@ -18,7 +18,6 @@ require(good(raw.initial)&&good(raw.end),'invalid endpoint state');
 require(Number.isFinite(raw.start)&&Number.isFinite(raw.firstInput?.at)&&Number.isFinite(raw.end?.at)&&raw.start<=raw.firstInput.at&&raw.firstInput.at<raw.end.at,'invalid recording chronology');
 require(raw.initial?.kills===0&&Number.isSafeInteger(raw.end?.kills)&&raw.end.kills>=0,'invalid kill baseline/end');
 for(const [index,row] of raw.rows.entries()){
-  require(Number.isFinite(row?.timestamp)&&row.timestamp>=0&&row.timestamp<=row.at,'invalid rAF/snapshot chronology '+index);
   require(row&&['at','timestamp','hp','kills','enemies'].every(k=>Number.isFinite(row[k]))&&Number.isSafeInteger(row.kills)&&row.kills>=0&&Number.isSafeInteger(row.enemies)&&row.enemies>=0,'invalid row '+index);
   if(index){const prev=raw.rows[index-1];require(row?.at>prev?.at&&row?.timestamp>prev?.timestamp&&row?.kills>=prev?.kills,'nonmonotonic row '+index);}
   require(row?.at>=raw.start&&row?.at<=raw.end?.at,'row outside recording '+index);
@@ -29,7 +28,6 @@ for(const [index,draw] of raw.draws.entries()){
 }
 const same=(a,b)=>a&&b&&JSON.stringify(a)===JSON.stringify(b);
 require(raw.inputs.every(i=>i?.trusted===true&&Number.isFinite(i.at)&&i.at>=raw.start&&i.at<=raw.end?.at),'invalid input evidence');
-for(const [index,input] of raw.inputs.entries())if(index)require(input?.at>=raw.inputs[index-1]?.at,'nonmonotonic input '+index);
 const firstInput=raw.inputs.find(i=>good(i)&&((i.kind==='keydown'&&i.code==='KeyW')||(i.kind==='mousedown'&&i.target==='CANVAS')));
 require(same(firstInput,raw.firstInput),'first input does not match evidence');
 const firstKill=raw.rows.find(r=>r?.kills>raw.initial?.kills);

@@ -51824,3 +51824,12 @@ ENEMY 물리tick, ART 최종crop, SKILL 충전증거/예외정리 후보 검수.
 ## 2026-10-01 draw귀속·물리타격시트 부트준비 후보 통합
 
 별도프로파일114.2/99ms의VFX틴트/MAP막 getImageData스택확인.본편기존물리512²캐시를250ms협력예산으로renderer전에준비.실패lazy폴백·전투/외형/easy불변.17회귀·전수RGBA1,048,576바이트0diff;실전부트후속검수대기. 정상자료분석기12반례거부21검사PASS·원자료불변. 상세DRAW-attribution-root-review.md.
+
+
+### 2026-10-02 정상 로드 경계·분석기 추가 보강
+
+원격 `3d5baddd` 보존 뒤 정상 최초 currentSrc 확정 경계를 인수했다. 같은 이미지·불변 절대 src·처음부터 빈 srcset/sizes·complete 조건에서만 빈 currentSrc→원 src를 허용한다. 객체·주소·선택 속성 변경과 취소는 거부한다. 위 최초 통합의 정상 로드 생략 제한은 이 보강으로 수정됐다. 기존 helper/tint/WeakMap·250ms 협력예산·부트 위치는 유지한다. BALANCE before/after 대조는 stale/read0→prepared/read1, 정리 잔여0이다. root 실제 생산 함수18+darkSphere4=22 PASS, guard와 inline6 PASS.
+
+최종 후보 SHA `e80f74f25fcc0ffa2144897ba4290c0b383e46c570f9a7eb4941ef90f29101b0`를 브라우저에서 다시 실행, 원 RGBA1,048,576바이트 0diff와 동일 캐시를 확인했다. 준비11.7ms/전체12.1ms는 standalone 결과이며 게임 개선율이 아니다. 추가 이미지 시도는 이미 complete/currentSrc 확정 상태였으므로 실제 빈값→주소 전환 검증으로 인정하지 않는다(단위 하니스에서는 검증).
+
+ITEM 추가3반례(미래/음수 rAF timestamp, 역순 input)를 분석기에 반영했다. 원 정상자료와 통계 불변, root21 PASS 및 추가8반례 모두 거부. 원 ITEM 실패 증거와 적용 전 분석기를 보존했다. `normal-eligibility-final.json`의 candidate unadopted 문구는 독립 검수기의 기존 문구이며, 실제 current 출력에서 새3반례가 이미 거부됨을 확인했다.

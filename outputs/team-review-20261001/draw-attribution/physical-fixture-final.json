@@ -1,0 +1,67 @@
+{
+  "pixel": {
+    "result": {
+      "at": "2026-10-01T15:05:21.028Z",
+      "image": {
+        "src": "http://qa-physical-final-20261002.localhost:3340/assets/vfx/Fire_ImpactFire_Sheet.png",
+        "currentSrc": "http://qa-physical-final-20261002.localhost:3340/assets/vfx/Fire_ImpactFire_Sheet.png",
+        "width": 512,
+        "height": 512
+      },
+      "bytes": 1048576,
+      "different": 0,
+      "maxDifference": 0,
+      "originalHash": "b31bc9fb30293b3d019bb9ec68c50c83c772565962f1a498d033485db414bbee",
+      "candidateHash": "b31bc9fb30293b3d019bb9ec68c50c83c772565962f1a498d033485db414bbee",
+      "first": {
+        "attempts": 1,
+        "reuses": 0,
+        "status": "prepared",
+        "syncMs": 11.700000047683716,
+        "totalMs": 12.100000023841858,
+        "pixelBytes": 1048576,
+        "errors": []
+      },
+      "again": {
+        "attempts": 1,
+        "reuses": 1,
+        "status": "reused",
+        "syncMs": 0,
+        "totalMs": 0,
+        "pixelBytes": 1048576,
+        "errors": []
+      },
+      "sameIdentity": true,
+      "callsAfterPrepare": 1,
+      "tintCalls": 1,
+      "baselineMs": 18.799999952316284,
+      "viewport": [
+        1352,
+        666
+      ],
+      "dpr": 2,
+      "limits": "standalone fixture, not live-game performance comparison; GPU/total memory unmeasured"
+    },
+    "source": "function _preparePhysicalImpactSheet(){\n  if(_preparePhysicalImpactSheet.pending)return _preparePhysicalImpactSheet.pending;\n  const start=performance.now(),epoch=_bootLoadEpoch;\n  const stats={attempts:0,reuses:0,status:'starting',syncMs:0,totalMs:0,pixelBytes:0,errors:[]};\n  _preparePhysicalImpactSheet.stats=stats;\n  const cancelled=()=>G.on||!_bootLoadActive||_bootLoadKilled||epoch!==_bootLoadEpoch;\n  if(cancelled()){stats.status='outside-boot';return Promise.resolve(stats);}\n  const deadline=start+250;\n  const work=Promise.resolve().then(async()=>{\n    try{\n      if(cancelled()){stats.status='cancelled';return stats;}\n      const image=_tvfx2Imgs['Fire_ImpactFire_Sheet.png'];\n      if(!image){stats.status='missing';return stats;}\n      const source=image.src,currentSource=image.currentSrc,sourceSet=image.srcset,sourceSizes=image.sizes;\n      const stale=()=>{\n        if(image!==_tvfx2Imgs['Fire_ImpactFire_Sheet.png']||image.src!==source||image.srcset!==sourceSet||image.sizes!==sourceSizes)return true;\n        if(image.currentSrc===currentSource)return false;\n        return !(currentSource===''&&sourceSet===''&&sourceSizes===''&&typeof source==='string'&&/^[a-zA-Z][a-zA-Z\\d+.-]*:/.test(source)&&image.complete&&image.currentSrc===source);\n      };\n      const ready=()=>image.complete&&image.naturalWidth===512&&image.naturalHeight===512;\n      stats.attempts=1;\n      if(!ready()){\n        const state=await new Promise(resolve=>{\n          let timer=null,done=false;\n          const finish=status=>{\n            if(done)return;done=true;\n            if(timer!==null){try{clearTimeout(timer);}catch(error){stats.errors.push('clear:'+String(error.message||error));}timer=null;}\n            for(const [type,handler] of [['load',onLoad],['error',onError]]){\n              try{image.removeEventListener(type,handler);}catch(error){stats.errors.push('cleanup:'+String(error.message||error));}\n            }\n            resolve(status);\n          };\n          const inspect=()=>{\n            try{\n            if(cancelled())return finish('cancelled');\n            if(stale())return finish('stale');\n            if(performance.now()>=deadline)return finish('timeout');\n            if(ready())return finish('ready');\n            if(image.complete)return finish('load-failed');\n            timer=setTimeout(inspect,Math.min(16,Math.max(0,deadline-performance.now())));\n            }catch(error){stats.errors.push('inspect:'+String(error.message||error));finish('error');}\n          };\n          const onLoad=()=>{if(timer!==null){try{clearTimeout(timer);}catch(error){stats.errors.push('clear:'+String(error.message||error));}timer=null;}inspect();};\n          const onError=()=>finish('load-failed');\n          try{image.addEventListener('load',onLoad);image.addEventListener('error',onError);inspect();}\n          catch(error){stats.errors.push('wait:'+String(error.message||error));finish('error');}\n        });\n        if(state!=='ready'){stats.status=state;return stats;}\n      }\n      if(cancelled()){stats.status='cancelled';return stats;}\n      if(stale()){stats.status='stale';return stats;}\n      if(performance.now()>=deadline){stats.status='timeout';return stats;}\n      if(!ready()){stats.status='load-failed';return stats;}\n      const cached=_physicalImpactSheet.cache&&_physicalImpactSheet.cache.get(image);\n      if(cached){stats.reuses=1;stats.status='reused';stats.pixelBytes=512*512*4;return stats;}\n      const syncStart=performance.now();\n      let sheet;\n      try{sheet=_physicalImpactSheet(image);}finally{stats.syncMs=performance.now()-syncStart;}\n      if(sheet){stats.pixelBytes=512*512*4;stats.status=performance.now()>deadline?'prepared-over-budget':'prepared';}\n      else stats.status='empty';\n    }catch(error){stats.status='error';stats.errors.push(String(error.message||error));}\n    finally{stats.totalMs=performance.now()-start;}\n    return stats;\n  });\n  const pending=work.finally(()=>{if(_preparePhysicalImpactSheet.pending===pending)_preparePhysicalImpactSheet.pending=null;});\n  _preparePhysicalImpactSheet.pending=pending;\n  return pending;\n}"
+  },
+  "delayed": {
+    "initial": {
+      "complete": true,
+      "currentSrc": "http://qa-physical-final-20261002.localhost:3340/assets/vfx/Fire_ImpactFire_Sheet.png",
+      "src": "http://qa-physical-final-20261002.localhost:3340/assets/vfx/Fire_ImpactFire_Sheet.png",
+      "srcset": "",
+      "sizes": ""
+    },
+    "stats": {
+      "attempts": 1,
+      "reuses": 0,
+      "status": "prepared",
+      "syncMs": 20.600000023841858,
+      "totalMs": 20.700000047683716,
+      "pixelBytes": 1048576,
+      "errors": []
+    },
+    "currentSrc": "http://qa-physical-final-20261002.localhost:3340/assets/vfx/Fire_ImpactFire_Sheet.png",
+    "cacheReady": true
+  }
+}

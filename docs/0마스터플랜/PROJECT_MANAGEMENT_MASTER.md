@@ -634,3 +634,14 @@ ITEM→ENEMY tick, UIUX→ART 최종crop, BALANCE→SKILL 충전증거 후보를
 ### 18.41 draw실제스택 귀속·물리타격 준비 통합 검수
 
 별도profiler표본9처치에서draw114.2ms의_tintHolyDome/getImageData와99ms의membrane/getImageData를ITEM/UIUX가독립대조했다. 이전129.8ms와다른사건,CPU/GPU대기미분리. BUILD는정상표본수치일치와분석기12반례를확인,root가모두거부하도록수정해21PASS. BALANCE의기존물리512²시트250ms협력준비를본편부트에통합,실제원함수17검사·RGBA전수0diff. 실제부트/전투는아직검수전. BUILD통합독립검수,ITEM자격재검수,UIUX맵variant식별만배정했으며추측맵수정0. 새native Mac잠금/Claude7idle·큐초안UNKNOWN. [근거·단계](mac-resume-20261001/vscode-dispatch/DRAW-attribution-root-review.md).
+
+
+### 2026-10-02 정상 로드 경계·분석기 추가 보강
+
+원격 `3d5baddd` 보존 뒤 정상 최초 currentSrc 확정 경계를 인수했다. 같은 이미지·불변 절대 src·처음부터 빈 srcset/sizes·complete 조건에서만 빈 currentSrc→원 src를 허용한다. 객체·주소·선택 속성 변경과 취소는 거부한다. 위 최초 통합의 정상 로드 생략 제한은 이 보강으로 수정됐다. 기존 helper/tint/WeakMap·250ms 협력예산·부트 위치는 유지한다. BALANCE before/after 대조는 stale/read0→prepared/read1, 정리 잔여0이다. root 실제 생산 함수18+darkSphere4=22 PASS, guard와 inline6 PASS.
+
+최종 후보 SHA `e80f74f25fcc0ffa2144897ba4290c0b383e46c570f9a7eb4941ef90f29101b0`를 브라우저에서 다시 실행, 원 RGBA1,048,576바이트 0diff와 동일 캐시를 확인했다. 준비11.7ms/전체12.1ms는 standalone 결과이며 게임 개선율이 아니다. 추가 이미지 시도는 이미 complete/currentSrc 확정 상태였으므로 실제 빈값→주소 전환 검증으로 인정하지 않는다(단위 하니스에서는 검증).
+
+ITEM 추가3반례(미래/음수 rAF timestamp, 역순 input)를 분석기에 반영했다. 원 정상자료와 통계 불변, root21 PASS 및 추가8반례 모두 거부. 원 ITEM 실패 증거와 적용 전 분석기를 보존했다. `normal-eligibility-final.json`의 candidate unadopted 문구는 독립 검수기의 기존 문구이며, 실제 current 출력에서 새3반례가 이미 거부됨을 확인했다.
+
+UIUX 식별 결과 dry variant는 0/1/2 중 UNKNOWN이다. 기존99ms 사건을 소급 특정하지 않으며 맵 생산 변경0. 메모리 소스 계측 후보6 PASS와 인계 보고서만 보존한다. 다음은 단일 실제 부트/25초 정상 전투에서 준비 캐시 재사용과 후속 tint0을 확인한다.
