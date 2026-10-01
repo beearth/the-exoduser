@@ -1,0 +1,680 @@
+{
+  "taskId": "ITEM-UNIQUE-SAVE-NAME-CANDIDATE",
+  "sources": [
+    {
+      "file": "game.html",
+      "htmlSha256": "e5518842324d17fb63da44457e6092af138b4fcfbaf49c1cb03ef791431dc115",
+      "dbSaveSha256": "2152c5b37d34f6deb0d1fc4a8a06be6744c205bd93ada63157a31ee392bfa0a9",
+      "dbRestoreSha256": "26c8789edaa85f46dfd14f1fbd040f3e55fd388942327a4abf50ccd79129c5d4",
+      "candidateRestoreSha256": "63385633575b51647ab02b9e27f6d840e036dc35f9cd595b1cc65063e1133c35",
+      "weaponNameSha256": "f84d1ddbdcd856dfca80c01fff5c0e3a6a3df7b93b06183071b02a09c9ccdb19",
+      "functions": [
+        {
+          "name": "dbSave",
+          "line": 3520
+        },
+        {
+          "name": "dbRestore",
+          "line": 3589
+        },
+        {
+          "name": "_weaponName",
+          "line": 15084
+        },
+        {
+          "name": "_loadSharedStorage",
+          "line": 46770
+        },
+        {
+          "name": "_saveSharedStorage",
+          "line": 46771
+        },
+        {
+          "name": "_getStore",
+          "line": 46784
+        },
+        {
+          "name": "_flushSharedStorage",
+          "line": 46800
+        }
+      ]
+    },
+    {
+      "file": "game-easy-test.html",
+      "htmlSha256": "269411143e093319926948dce42740d83617b2a0e1305cc1180a59a6ecb75e58",
+      "dbSaveSha256": "19eb6a0a97937ed20d2c3d7afcdf7ac7c4cb1bbc7d3c8a025ca408944eb68a48",
+      "dbRestoreSha256": "4e9f40574f363bc1cb00a61ca9e10d4d20bb256020e27fef644b35665649749a",
+      "candidateRestoreSha256": "2785fd6138a7325f64bbf2c27cde281e270caa85f517b7a7c52801ad9726d274",
+      "weaponNameSha256": "f84d1ddbdcd856dfca80c01fff5c0e3a6a3df7b93b06183071b02a09c9ccdb19",
+      "functions": [
+        {
+          "name": "dbSave",
+          "line": 3293
+        },
+        {
+          "name": "dbRestore",
+          "line": 3362
+        },
+        {
+          "name": "_weaponName",
+          "line": 14277
+        },
+        {
+          "name": "_loadSharedStorage",
+          "line": 45440
+        },
+        {
+          "name": "_saveSharedStorage",
+          "line": 45441
+        },
+        {
+          "name": "_getStore",
+          "line": 45454
+        },
+        {
+          "name": "_flushSharedStorage",
+          "line": 45470
+        }
+      ]
+    }
+  ],
+  "rows": [
+    {
+      "file": "game.html",
+      "path": "bag",
+      "case": "original_failure_to_candidate_preservation",
+      "originalName": "녹슨 단검",
+      "originalNameMig": 1,
+      "candidateName": "고유 단검 이름",
+      "rngCalls": 0
+    },
+    {
+      "file": "game.html",
+      "path": "equipped",
+      "case": "original_failure_to_candidate_preservation",
+      "originalName": "녹슨 단검",
+      "originalNameMig": 1,
+      "candidateName": "고유 단검 이름",
+      "rngCalls": 0
+    },
+    {
+      "file": "game.html",
+      "path": "storage",
+      "case": "original_failure_to_candidate_preservation",
+      "originalName": "고유 단검 이름",
+      "originalNameMig": null,
+      "candidateName": "고유 단검 이름",
+      "rngCalls": 0
+    },
+    {
+      "file": "game.html",
+      "path": "bag",
+      "case": "unknown",
+      "name": "고유 단검 이름",
+      "rngCalls": 0
+    },
+    {
+      "file": "game.html",
+      "path": "equipped",
+      "case": "unknown",
+      "name": "고유 단검 이름",
+      "rngCalls": 0
+    },
+    {
+      "file": "game.html",
+      "path": "storage",
+      "case": "unknown",
+      "name": "고유 단검 이름",
+      "rngCalls": 0
+    },
+    {
+      "file": "game.html",
+      "path": "bag",
+      "case": "whitespace",
+      "name": "고유 단검 이름",
+      "rngCalls": 0
+    },
+    {
+      "file": "game.html",
+      "path": "equipped",
+      "case": "whitespace",
+      "name": "고유 단검 이름",
+      "rngCalls": 0
+    },
+    {
+      "file": "game.html",
+      "path": "storage",
+      "case": "whitespace",
+      "name": "고유 단검 이름",
+      "rngCalls": 0
+    },
+    {
+      "file": "game.html",
+      "path": "bag",
+      "case": "absent",
+      "name": "녹슨 단검",
+      "rngCalls": 0
+    },
+    {
+      "file": "game.html",
+      "path": "equipped",
+      "case": "absent",
+      "name": "녹슨 단검",
+      "rngCalls": 0
+    },
+    {
+      "file": "game.html",
+      "path": "storage",
+      "case": "absent",
+      "name": "고유 단검 이름",
+      "rngCalls": 0
+    },
+    {
+      "file": "game.html",
+      "path": "bag",
+      "case": "empty",
+      "name": "녹슨 단검",
+      "rngCalls": 0
+    },
+    {
+      "file": "game.html",
+      "path": "equipped",
+      "case": "empty",
+      "name": "녹슨 단검",
+      "rngCalls": 0
+    },
+    {
+      "file": "game.html",
+      "path": "storage",
+      "case": "empty",
+      "name": "고유 단검 이름",
+      "rngCalls": 0
+    },
+    {
+      "file": "game.html",
+      "path": "bag",
+      "case": "null",
+      "name": "녹슨 단검",
+      "rngCalls": 0
+    },
+    {
+      "file": "game.html",
+      "path": "equipped",
+      "case": "null",
+      "name": "녹슨 단검",
+      "rngCalls": 0
+    },
+    {
+      "file": "game.html",
+      "path": "storage",
+      "case": "null",
+      "name": "고유 단검 이름",
+      "rngCalls": 0
+    },
+    {
+      "file": "game.html",
+      "path": "bag",
+      "case": "number",
+      "name": "녹슨 단검",
+      "rngCalls": 0
+    },
+    {
+      "file": "game.html",
+      "path": "equipped",
+      "case": "number",
+      "name": "녹슨 단검",
+      "rngCalls": 0
+    },
+    {
+      "file": "game.html",
+      "path": "storage",
+      "case": "number",
+      "name": "고유 단검 이름",
+      "rngCalls": 0
+    },
+    {
+      "file": "game.html",
+      "path": "bag",
+      "case": "object",
+      "name": "녹슨 단검",
+      "rngCalls": 0
+    },
+    {
+      "file": "game.html",
+      "path": "equipped",
+      "case": "object",
+      "name": "녹슨 단검",
+      "rngCalls": 0
+    },
+    {
+      "file": "game.html",
+      "path": "storage",
+      "case": "object",
+      "name": "고유 단검 이름",
+      "rngCalls": 0
+    },
+    {
+      "file": "game.html",
+      "path": "bag",
+      "case": "array",
+      "name": "녹슨 단검",
+      "rngCalls": 0
+    },
+    {
+      "file": "game.html",
+      "path": "equipped",
+      "case": "array",
+      "name": "녹슨 단검",
+      "rngCalls": 0
+    },
+    {
+      "file": "game.html",
+      "path": "storage",
+      "case": "array",
+      "name": "고유 단검 이름",
+      "rngCalls": 0
+    },
+    {
+      "file": "game.html",
+      "path": "bag",
+      "case": "legacy-slot-unique",
+      "name": "녹슨 단검",
+      "rngCalls": 0
+    },
+    {
+      "file": "game.html",
+      "path": "equipped",
+      "case": "legacy-slot-unique",
+      "name": "녹슨 단검",
+      "rngCalls": 0
+    },
+    {
+      "file": "game.html",
+      "path": "storage",
+      "case": "legacy-slot-unique",
+      "name": "고유 단검 이름",
+      "rngCalls": 0
+    },
+    {
+      "file": "game.html",
+      "path": "bag",
+      "case": "ossuary",
+      "name": "고유 유골함",
+      "rngCalls": 0
+    },
+    {
+      "file": "game.html",
+      "path": "equipped",
+      "case": "ossuary",
+      "name": "고유 유골함",
+      "rngCalls": 0
+    },
+    {
+      "file": "game.html",
+      "path": "storage",
+      "case": "ossuary",
+      "name": "고유 유골함",
+      "rngCalls": 0
+    },
+    {
+      "file": "game.html",
+      "path": "bag",
+      "case": "already-name-migrated",
+      "name": "고유 단검 이름",
+      "rngCalls": 0
+    },
+    {
+      "file": "game.html",
+      "path": "equipped",
+      "case": "already-name-migrated",
+      "name": "고유 단검 이름",
+      "rngCalls": 0
+    },
+    {
+      "file": "game.html",
+      "path": "storage",
+      "case": "already-name-migrated",
+      "name": "고유 단검 이름",
+      "rngCalls": 0
+    },
+    {
+      "file": "game.html",
+      "path": "bag",
+      "case": "speed-unmigrated",
+      "name": "고유 단검 이름",
+      "rngCalls": 0
+    },
+    {
+      "file": "game.html",
+      "path": "equipped",
+      "case": "speed-unmigrated",
+      "name": "고유 단검 이름",
+      "rngCalls": 0
+    },
+    {
+      "file": "game.html",
+      "path": "storage",
+      "case": "speed-unmigrated",
+      "name": "고유 단검 이름",
+      "rngCalls": 0
+    },
+    {
+      "file": "game.html",
+      "path": "legacy-storage[0]→localStorage→STORAGE[0]",
+      "case": "one_time_transfer",
+      "rngCalls": 0
+    },
+    {
+      "file": "game.html",
+      "path": "storage",
+      "case": "existing_shared_storage_authoritative",
+      "rngCalls": 0
+    },
+    {
+      "file": "game.html",
+      "path": "bag",
+      "case": "missing_socket_original_and_candidate_existing_rng_limit",
+      "rngCalls": 1
+    },
+    {
+      "file": "game-easy-test.html",
+      "path": "bag",
+      "case": "original_failure_to_candidate_preservation",
+      "originalName": "녹슨 단검",
+      "originalNameMig": 1,
+      "candidateName": "고유 단검 이름",
+      "rngCalls": 0
+    },
+    {
+      "file": "game-easy-test.html",
+      "path": "equipped",
+      "case": "original_failure_to_candidate_preservation",
+      "originalName": "녹슨 단검",
+      "originalNameMig": 1,
+      "candidateName": "고유 단검 이름",
+      "rngCalls": 0
+    },
+    {
+      "file": "game-easy-test.html",
+      "path": "storage",
+      "case": "original_failure_to_candidate_preservation",
+      "originalName": "고유 단검 이름",
+      "originalNameMig": null,
+      "candidateName": "고유 단검 이름",
+      "rngCalls": 0
+    },
+    {
+      "file": "game-easy-test.html",
+      "path": "bag",
+      "case": "unknown",
+      "name": "고유 단검 이름",
+      "rngCalls": 0
+    },
+    {
+      "file": "game-easy-test.html",
+      "path": "equipped",
+      "case": "unknown",
+      "name": "고유 단검 이름",
+      "rngCalls": 0
+    },
+    {
+      "file": "game-easy-test.html",
+      "path": "storage",
+      "case": "unknown",
+      "name": "고유 단검 이름",
+      "rngCalls": 0
+    },
+    {
+      "file": "game-easy-test.html",
+      "path": "bag",
+      "case": "whitespace",
+      "name": "고유 단검 이름",
+      "rngCalls": 0
+    },
+    {
+      "file": "game-easy-test.html",
+      "path": "equipped",
+      "case": "whitespace",
+      "name": "고유 단검 이름",
+      "rngCalls": 0
+    },
+    {
+      "file": "game-easy-test.html",
+      "path": "storage",
+      "case": "whitespace",
+      "name": "고유 단검 이름",
+      "rngCalls": 0
+    },
+    {
+      "file": "game-easy-test.html",
+      "path": "bag",
+      "case": "absent",
+      "name": "녹슨 단검",
+      "rngCalls": 0
+    },
+    {
+      "file": "game-easy-test.html",
+      "path": "equipped",
+      "case": "absent",
+      "name": "녹슨 단검",
+      "rngCalls": 0
+    },
+    {
+      "file": "game-easy-test.html",
+      "path": "storage",
+      "case": "absent",
+      "name": "고유 단검 이름",
+      "rngCalls": 0
+    },
+    {
+      "file": "game-easy-test.html",
+      "path": "bag",
+      "case": "empty",
+      "name": "녹슨 단검",
+      "rngCalls": 0
+    },
+    {
+      "file": "game-easy-test.html",
+      "path": "equipped",
+      "case": "empty",
+      "name": "녹슨 단검",
+      "rngCalls": 0
+    },
+    {
+      "file": "game-easy-test.html",
+      "path": "storage",
+      "case": "empty",
+      "name": "고유 단검 이름",
+      "rngCalls": 0
+    },
+    {
+      "file": "game-easy-test.html",
+      "path": "bag",
+      "case": "null",
+      "name": "녹슨 단검",
+      "rngCalls": 0
+    },
+    {
+      "file": "game-easy-test.html",
+      "path": "equipped",
+      "case": "null",
+      "name": "녹슨 단검",
+      "rngCalls": 0
+    },
+    {
+      "file": "game-easy-test.html",
+      "path": "storage",
+      "case": "null",
+      "name": "고유 단검 이름",
+      "rngCalls": 0
+    },
+    {
+      "file": "game-easy-test.html",
+      "path": "bag",
+      "case": "number",
+      "name": "녹슨 단검",
+      "rngCalls": 0
+    },
+    {
+      "file": "game-easy-test.html",
+      "path": "equipped",
+      "case": "number",
+      "name": "녹슨 단검",
+      "rngCalls": 0
+    },
+    {
+      "file": "game-easy-test.html",
+      "path": "storage",
+      "case": "number",
+      "name": "고유 단검 이름",
+      "rngCalls": 0
+    },
+    {
+      "file": "game-easy-test.html",
+      "path": "bag",
+      "case": "object",
+      "name": "녹슨 단검",
+      "rngCalls": 0
+    },
+    {
+      "file": "game-easy-test.html",
+      "path": "equipped",
+      "case": "object",
+      "name": "녹슨 단검",
+      "rngCalls": 0
+    },
+    {
+      "file": "game-easy-test.html",
+      "path": "storage",
+      "case": "object",
+      "name": "고유 단검 이름",
+      "rngCalls": 0
+    },
+    {
+      "file": "game-easy-test.html",
+      "path": "bag",
+      "case": "array",
+      "name": "녹슨 단검",
+      "rngCalls": 0
+    },
+    {
+      "file": "game-easy-test.html",
+      "path": "equipped",
+      "case": "array",
+      "name": "녹슨 단검",
+      "rngCalls": 0
+    },
+    {
+      "file": "game-easy-test.html",
+      "path": "storage",
+      "case": "array",
+      "name": "고유 단검 이름",
+      "rngCalls": 0
+    },
+    {
+      "file": "game-easy-test.html",
+      "path": "bag",
+      "case": "legacy-slot-unique",
+      "name": "녹슨 단검",
+      "rngCalls": 0
+    },
+    {
+      "file": "game-easy-test.html",
+      "path": "equipped",
+      "case": "legacy-slot-unique",
+      "name": "녹슨 단검",
+      "rngCalls": 0
+    },
+    {
+      "file": "game-easy-test.html",
+      "path": "storage",
+      "case": "legacy-slot-unique",
+      "name": "고유 단검 이름",
+      "rngCalls": 0
+    },
+    {
+      "file": "game-easy-test.html",
+      "path": "bag",
+      "case": "ossuary",
+      "name": "고유 유골함",
+      "rngCalls": 0
+    },
+    {
+      "file": "game-easy-test.html",
+      "path": "equipped",
+      "case": "ossuary",
+      "name": "고유 유골함",
+      "rngCalls": 0
+    },
+    {
+      "file": "game-easy-test.html",
+      "path": "storage",
+      "case": "ossuary",
+      "name": "고유 유골함",
+      "rngCalls": 0
+    },
+    {
+      "file": "game-easy-test.html",
+      "path": "bag",
+      "case": "already-name-migrated",
+      "name": "고유 단검 이름",
+      "rngCalls": 0
+    },
+    {
+      "file": "game-easy-test.html",
+      "path": "equipped",
+      "case": "already-name-migrated",
+      "name": "고유 단검 이름",
+      "rngCalls": 0
+    },
+    {
+      "file": "game-easy-test.html",
+      "path": "storage",
+      "case": "already-name-migrated",
+      "name": "고유 단검 이름",
+      "rngCalls": 0
+    },
+    {
+      "file": "game-easy-test.html",
+      "path": "bag",
+      "case": "speed-unmigrated",
+      "name": "고유 단검 이름",
+      "rngCalls": 0
+    },
+    {
+      "file": "game-easy-test.html",
+      "path": "equipped",
+      "case": "speed-unmigrated",
+      "name": "고유 단검 이름",
+      "rngCalls": 0
+    },
+    {
+      "file": "game-easy-test.html",
+      "path": "storage",
+      "case": "speed-unmigrated",
+      "name": "고유 단검 이름",
+      "rngCalls": 0
+    },
+    {
+      "file": "game-easy-test.html",
+      "path": "legacy-storage[0]→localStorage→STORAGE[0]",
+      "case": "one_time_transfer",
+      "rngCalls": 0
+    },
+    {
+      "file": "game-easy-test.html",
+      "path": "storage",
+      "case": "existing_shared_storage_authoritative",
+      "rngCalls": 0
+    },
+    {
+      "file": "game-easy-test.html",
+      "path": "bag",
+      "case": "missing_socket_original_and_candidate_existing_rng_limit",
+      "rngCalls": 1
+    }
+  ],
+  "passed": 84,
+  "productionModified": false,
+  "scope": "extracted full dbSave/dbRestore plus actual naming/storage/sanitize functions; fake DB JSON and in-memory localStorage; no user save"
+}

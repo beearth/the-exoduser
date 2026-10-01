@@ -1,0 +1,9 @@
+--- a/game.html
++++ b/game.html
+@@ -3661,5 +3661,5 @@
+     // 무기 표시명 마이그레이션: 구 wpNames(타입 무관 '대검') 저장분을 _weaponName(타입별 정합)으로 재생성.
+     //   name(표시 문자열)만 갱신 — wtype/id/스탯 불변 → 세이브 타입 identity 유지.
+-    const _fixWpnName=(it)=>{if(it&&it.slot==='weapon'&&it.wtype&&WTYPES[it.wtype]&&(it._nameMig||0)<1){
++    const _fixWpnName=(it)=>{if(it&&typeof it.uniqueId==='string'&&it.uniqueId.length>0)return;if(it&&it.slot==='weapon'&&it.wtype&&WTYPES[it.wtype]&&(it._nameMig||0)<1){
+       it.name=_weaponName(it.wtype,it.el||0,it.tier||0);
+       it._nameMig=1}};
