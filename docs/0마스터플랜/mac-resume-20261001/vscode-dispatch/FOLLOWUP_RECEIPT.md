@@ -106,3 +106,8 @@ ITEM 12:57:36Z, BALANCE 12:58:36Z 제출 완료. root 독립 검수·사전 원�
 ## SOUND 아이템 회귀 인수 / 새 GUI 조회
 
 13:06:02.382Z 원 답변 회수, root 실제 실행5PASS1FAIL은 하니스 인자 전달 오류였다. Acorn 기반 영구 회귀로 교체·통합하고 사운드15+저장경제6=21PASS. 원문/원실패 보존.13:09Z 지원 native 새 조회1회: Mac locked/automatic unlock failure, 추가 입력0. ENEMY/ART/SKILL 미수신, 새 세션0. UIUX86a5996a00bc0f5af3e5ba43ce85cdb538471bca 원격 대조 완료.
+
+
+## PM-009 정의 조회·검증 구현 인수
+
+앱activewriter 오류 뒤 공식queue01a0f7a9-af0f-7990-b525-79cb5637f359 수락·기존 ITEM 새턴 실제Read/Edit 확인.13:31:32Z 수신/Read,13:33:44Z 담당완료. root 소비 연결·23회귀·실제 원화 감사 완료, 정의 유효/게임 활성불가 분리. 기존 이름수리·환수·데모·사운드 반복0.

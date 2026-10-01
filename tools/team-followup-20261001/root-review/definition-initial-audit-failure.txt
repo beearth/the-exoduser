@@ -1,0 +1,67 @@
+✖ real definition audit distinguishes valid proposals from runtime readiness (3.669334ms)
+✖ audit catches document drift instead of trusting a copied definition table (3.219208ms)
+✔ actual 22 names/effect IDs/stats match catalog and D document, not runtime implementation (0.605791ms)
+✔ every slot and weapon/bow type matches contract section3 independently (0.478334ms)
+✔ all 44 source files exist but 22 rows remain valid proposals, never active (0.366875ms)
+✔ definition and item lookups preserve frozen data and original instances without RNG (0.370417ms)
+✔ unknown/empty/invalid ID, legacy slot unique and ossuary use null fallback (0.099ms)
+✔ duplicate uniqueId (0.220459ms)
+✔ duplicate effectId (0.166791ms)
+✔ wrong effect reference (0.149459ms)
+✔ missing definition (0.173292ms)
+✔ unknown ID (0.221542ms)
+✔ helmet to earring (0.15325ms)
+✔ missing second ring slot (0.14475ms)
+✔ sword to dagger (0.135459ms)
+✔ bow type missing (0.1385ms)
+✔ activation attempted (0.127ms)
+✔ art accepted without gate (0.310041ms)
+✔ invented name key (0.240625ms)
+✔ null injected row (0.112542ms)
+✔ duplicate/missing/undocumented/stat-mismatched effect registries fail independently (0.150125ms)
+✔ missing source/runtime art and unaccepted status are explicit activation blockers (0.067125ms)
+✔ module is browser ES module with no imports/Node dependencies or mutation/random operations (4.523917ms)
+ℹ tests 23
+ℹ suites 0
+ℹ pass 21
+ℹ fail 2
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 51.246708
+
+✖ failing tests:
+
+test at test/uniqueDefinitionAudit.test.js:9:1
+✖ real definition audit distinguishes valid proposals from runtime readiness (3.669334ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:
+  
+  false !== true
+  
+      at TestContext.<anonymous> (file:///Users/fordeargamers/Projects/exoduser-migration-20261001/test/uniqueDefinitionAudit.test.js:13:10)
+      at async Test.run (node:internal/test_runner/test:1208:7)
+      at async startSubtestAfterBootstrap (node:internal/test_runner/harness:385:3) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: false,
+    expected: true,
+    operator: 'strictEqual',
+    diff: 'simple'
+  }
+
+test at test/uniqueDefinitionAudit.test.js:25:1
+✖ audit catches document drift instead of trusting a copied definition table (3.219208ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:
+  
+  false !== true
+  
+      at TestContext.<anonymous> (file:///Users/fordeargamers/Projects/exoduser-migration-20261001/test/uniqueDefinitionAudit.test.js:34:12)
+      at async Test.run (node:internal/test_runner/test:1208:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:831:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: false,
+    expected: true,
+    operator: 'strictEqual',
+    diff: 'simple'
+  }

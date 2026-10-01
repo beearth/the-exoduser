@@ -1,0 +1,31 @@
+✔ real definition audit distinguishes valid proposals from runtime readiness (49.870792ms)
+✔ audit catches document drift instead of trusting a copied definition table (11.56125ms)
+✔ actual 22 names/effect IDs/stats match catalog and D document, not runtime implementation (0.537167ms)
+✔ every slot and weapon/bow type matches contract section3 independently (0.405666ms)
+✔ all 44 source files exist but 22 rows remain valid proposals, never active (0.348292ms)
+✔ definition and item lookups preserve frozen data and original instances without RNG (0.302084ms)
+✔ unknown/empty/invalid ID, legacy slot unique and ossuary use null fallback (0.074208ms)
+✔ duplicate uniqueId (0.230375ms)
+✔ duplicate effectId (0.196417ms)
+✔ wrong effect reference (0.174542ms)
+✔ missing definition (0.277708ms)
+✔ unknown ID (0.328833ms)
+✔ helmet to earring (0.195583ms)
+✔ missing second ring slot (0.176292ms)
+✔ sword to dagger (0.161792ms)
+✔ bow type missing (0.165708ms)
+✔ activation attempted (0.151875ms)
+✔ art accepted without gate (0.305459ms)
+✔ invented name key (0.160083ms)
+✔ null injected row (0.142125ms)
+✔ duplicate/missing/undocumented/stat-mismatched effect registries fail independently (0.155708ms)
+✔ missing source/runtime art and unaccepted status are explicit activation blockers (0.071708ms)
+✔ module is browser ES module with no imports/Node dependencies or mutation/random operations (4.714708ms)
+ℹ tests 23
+ℹ suites 0
+ℹ pass 23
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 93.48525

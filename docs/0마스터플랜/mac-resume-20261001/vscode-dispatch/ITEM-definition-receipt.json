@@ -1,0 +1,15 @@
+{
+  "taskId": "ITEM-PM009-DEFINITION-VALIDATION",
+  "status": "completed_definition_pending_root_consumption",
+  "receivedAt": "2026-10-01T13:31:32Z",
+  "firstReadAt": "2026-10-01T13:31:32Z",
+  "firstRead": "DEFINITION_TASK.md, 적용계약§3/4·D절·카탈로그·unique-item-project 목록과 후보 조회",
+  "duplicateCheck": "definition-* 산출 없음; 기존 unique-save/ring 과제와 구분",
+  "firstEdit": "전용 수신 영수증 및 definition-catalog.mjs·definition-catalog.test.mjs 구현",
+  "cli": "Codex",
+  "model": null,
+  "validation": "node --test definition-catalog.test.mjs exit0, 22PASS; 제안구조 valid=true/활성false/110blockers",
+  "completedAt": "2026-10-01T13:33:44Z",
+  "nextAction": "root에22종비활성제안 정의·조회·검증 인계; 독립검수후 소비코드연결, 생산활성화는미완료",
+  "blocker": null
+}

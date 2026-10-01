@@ -1,6 +1,6 @@
 {
-  "at": "2026-10-01T13:10:02.202545+00:00",
-  "root": "ITEM/BALANCE production fix and UIUX test remotely saved; SOUND regression integrated; fresh native check locked",
+  "at": "2026-10-01T13:36:11.967911+00:00",
+  "root": "PM-009 22-row definition module and existing audit consumer integrated; runtime activation disabled",
   "teams": [
     {
       "team": "QA",
@@ -263,33 +263,39 @@
       "team": "ITEM",
       "sessionId": "01a0f6e6-1fbe-7df0-8d02-a9c2d9df3750",
       "location": "T9",
-      "task": "ITEM-UNIQUE-SAVE-NAME-CANDIDATE",
-      "instruction": "/Users/fordeargamers/Projects/exoduser-migration-20261001/tools/team-followup-20261001/ITEM/UNIQUE_SAVE_TASK.md",
+      "task": "ITEM-PM009-DEFINITION-VALIDATION",
+      "instruction": "/Users/fordeargamers/Projects/exoduser-migration-20261001/tools/team-followup-20261001/ITEM/DEFINITION_TASK.md",
       "stateBefore": "idle/completed verified",
       "dispatch": "received",
       "exists": true,
-      "receivedAt": "2026-10-01T12:54:38Z",
+      "receivedAt": "2026-10-01T13:31:32Z",
       "startedAt": null,
-      "status": "candidate independently verified and integrated into both HTML files; related18 PASS",
+      "status": "definition module and audit consumer integrated; permanent23 PASS, active0/runtimeReady false",
       "startEvidence": "NEXT_TASK.md와 기존 ITEM 결과·후보·현재 생산 함수 읽기",
-      "receipt": "/Users/fordeargamers/Projects/exoduser-migration-20261001/docs/0마스터플랜/mac-resume-20261001/vscode-dispatch/ITEM-unique-save-receipt.json",
+      "receipt": "/Users/fordeargamers/Projects/exoduser-migration-20261001/docs/0마스터플랜/mac-resume-20261001/vscode-dispatch/ITEM-definition-receipt.json",
       "previous": {
         "task": "ITEM-RING-RGB-ATTRIBUTION",
         "status": "CLI completed; explicit integration dependency; no new task queued"
       },
-      "queueMessageId": "01a0f787-f77a-7f63-babd-667400f8bd45",
+      "queueMessageId": "01a0f7a9-af0f-7990-b525-79cb5637f359",
       "firstAction": "기존 native Canvas 검사 소스 읽기; 동일 SHA PNG decode와 단계별 비교 설계",
       "currentDependencyReview": "See ITEM-BALANCE-integration-result.md; original unrelated visual/proc gates remain.",
-      "cliState": "completed",
+      "cliState": "submitted; root integration completed",
       "waitReason": null,
-      "completedAt": "2026-10-01T12:57:36Z",
+      "completedAt": "2026-10-01T13:33:44Z",
       "firstActualAction": {
-        "turnId": "01a0f787-f77c-7a50-90aa-003fecd6855a",
-        "readRecordedAt": "2026-10-01T12:54:42Z",
+        "turnId": "01a0f7a9-af10-7e81-9a89-84a3039f413b",
+        "tool": "Read",
         "exitCode": 0
       },
       "backlogReevaluatedAt": "2026-10-01T13:10:02.202545+00:00",
-      "backlogDecision": "Unique save bug integrated. Ring PNG target Chrome acceptance remains; no repeated RGB investigation."
+      "backlogDecision": "Unique save bug integrated. Ring PNG target Chrome acceptance remains; no repeated RGB investigation.",
+      "previousTaskSnapshot": {
+        "task": "ITEM-UNIQUE-SAVE-NAME-CANDIDATE",
+        "status": "candidate independently verified and integrated into both HTML files; related18 PASS",
+        "completedAt": "2026-10-01T12:57:36Z",
+        "receipt": "/Users/fordeargamers/Projects/exoduser-migration-20261001/docs/0마스터플랜/mac-resume-20261001/vscode-dispatch/ITEM-unique-save-receipt.json"
+      }
     },
     {
       "team": "BALANCE",
@@ -360,7 +366,7 @@
     }
   ],
   "remoteCheckpoint": {
-    "sha": "86a5996a00bc0f5af3e5ba43ce85cdb538471bca",
+    "sha": "d9bb0901dd4f0eb416b94b37709a2df128c91072",
     "branch": "codex/mac-environment-20261001",
     "verified": true
   },
@@ -376,16 +382,11 @@
     "scope": "includes BUILD denied loopback and SOUND dedup; later RNG and v2 changes not in this snapshot"
   },
   "nativeCheck": {
-    "atApprox": "2026-10-01T13:09:00Z",
-    "inventoryChecksThisCycle": 1,
-    "appInventoryAvailable": false,
-    "locked": true,
-    "inputRecovered": false,
-    "errors": [
-      "Mac is locked and automatic unlock could not unlock it"
-    ],
-    "inputAttempts": 0,
-    "unlockOrPowerChanges": false
+    "atApprox": "2026-10-01T13:28:00Z",
+    "inventoryAccessible": true,
+    "lockState": "unknown",
+    "error": "noWindowsAvailable",
+    "note": "No new native attempt during independent PM-009 implementation"
   },
   "uiuxSubmissionRecovery": {
     "sha": "b3ab5be7f0c7a57ec1892cca1d65825549f54d72",

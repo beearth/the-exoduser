@@ -62,3 +62,10 @@
 ## 2026-10-01 최소 저장 호환 반영
 
 본편/easy dbRestore의 _fixWpnName은 비어 있지 않은 문자열 uniqueId를 가진 아이템을 건너뛰어 고유 이름과 기존 _nameMig 상태를 보존한다. 공백/미등록 문자열도 그대로 보존하며 없는/빈/null/숫자/객체 ID는 기존 마이그레이션을 따른다. 새 고유 등록·드롭·효과·아트·번역은 아직 미구현이다. 가방·장착만 이름 마이그레이션을 실행하며 공유창고는 원래 해당 수리를 실행하지 않는다. 기존 공속/소켓 마이그레이션은 그대로이며 소켓누락 구세이브에는 기존 RNG 호출이 남는다. 이미 덮인 이름은 복원하지 않는다. 격리 실제함수 저장84시나리오와 root 회귀 통과, 실제 사용자 저장/창고 UI/패키지는 미검수다.
+
+
+## 2026-10-01 정의·유효성 계층 구현 및 감사 연결
+
+§4.1의 제안 정의 조회·검증은 unique-item-project/definitions.mjs로 구현했다. §3의22종 슬롯/타입·UI/U-D 대응과 카탈로그명·D절 stat를 보유하며 불변 데이터다. 전종 enabled=false/status=proposal, nameKey=null/translationStatus=unregistered, runtimePath=null/accepted=false, effectStatus=unimplemented다. 실제 게임 등록·드롭·효과 실행은 미구현이다.
+
+조회 API: lookupDefinition(ID), lookupItemProposal(item), lookupActiveItemDefinition(item). 활성조회는현재 전부null이며 미등록ID·기존 UNIQUE_SPECIAL·유골함은 원래 폴백을 유지한다. validateDefinitions는 ID중복/슬롯타입/효과참조/미채택아트/활성시도를 검사한다. 기본 context의 없는 소스원화도 차단 사유로 표시한다. audit-definitions.mjs 및 기존 audit-art.mjs가 실제 문서를 읽어 소비·대조하며 구조유효와 runtimeReady를 분리한다. --require-ready는 활성불가 시 exit1. 인수23검사·독립문서변이3종 검출, 실게임미검수.

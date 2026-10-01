@@ -1,0 +1,1069 @@
+{
+  "taskId": "ITEM-PM009-DEFINITION-VALIDATION",
+  "count": 22,
+  "sourceArtCount": 44,
+  "validation": {
+    "valid": true,
+    "canActivate": false,
+    "issues": [],
+    "blockers": [
+      {
+        "code": "effect_unimplemented",
+        "uniqueId": "UI-01"
+      },
+      {
+        "code": "translation_unregistered",
+        "uniqueId": "UI-01"
+      },
+      {
+        "code": "missing_runtime_art",
+        "uniqueId": "UI-01"
+      },
+      {
+        "code": "art_unaccepted",
+        "uniqueId": "UI-01"
+      },
+      {
+        "code": "proposal_not_activatable",
+        "uniqueId": "UI-01"
+      },
+      {
+        "code": "effect_unimplemented",
+        "uniqueId": "UI-02"
+      },
+      {
+        "code": "translation_unregistered",
+        "uniqueId": "UI-02"
+      },
+      {
+        "code": "missing_runtime_art",
+        "uniqueId": "UI-02"
+      },
+      {
+        "code": "art_unaccepted",
+        "uniqueId": "UI-02"
+      },
+      {
+        "code": "proposal_not_activatable",
+        "uniqueId": "UI-02"
+      },
+      {
+        "code": "effect_unimplemented",
+        "uniqueId": "UI-03"
+      },
+      {
+        "code": "translation_unregistered",
+        "uniqueId": "UI-03"
+      },
+      {
+        "code": "missing_runtime_art",
+        "uniqueId": "UI-03"
+      },
+      {
+        "code": "art_unaccepted",
+        "uniqueId": "UI-03"
+      },
+      {
+        "code": "proposal_not_activatable",
+        "uniqueId": "UI-03"
+      },
+      {
+        "code": "effect_unimplemented",
+        "uniqueId": "UI-04"
+      },
+      {
+        "code": "translation_unregistered",
+        "uniqueId": "UI-04"
+      },
+      {
+        "code": "missing_runtime_art",
+        "uniqueId": "UI-04"
+      },
+      {
+        "code": "art_unaccepted",
+        "uniqueId": "UI-04"
+      },
+      {
+        "code": "proposal_not_activatable",
+        "uniqueId": "UI-04"
+      },
+      {
+        "code": "effect_unimplemented",
+        "uniqueId": "UI-05"
+      },
+      {
+        "code": "translation_unregistered",
+        "uniqueId": "UI-05"
+      },
+      {
+        "code": "missing_runtime_art",
+        "uniqueId": "UI-05"
+      },
+      {
+        "code": "art_unaccepted",
+        "uniqueId": "UI-05"
+      },
+      {
+        "code": "proposal_not_activatable",
+        "uniqueId": "UI-05"
+      },
+      {
+        "code": "effect_unimplemented",
+        "uniqueId": "UI-06"
+      },
+      {
+        "code": "translation_unregistered",
+        "uniqueId": "UI-06"
+      },
+      {
+        "code": "missing_runtime_art",
+        "uniqueId": "UI-06"
+      },
+      {
+        "code": "art_unaccepted",
+        "uniqueId": "UI-06"
+      },
+      {
+        "code": "proposal_not_activatable",
+        "uniqueId": "UI-06"
+      },
+      {
+        "code": "effect_unimplemented",
+        "uniqueId": "UI-07"
+      },
+      {
+        "code": "translation_unregistered",
+        "uniqueId": "UI-07"
+      },
+      {
+        "code": "missing_runtime_art",
+        "uniqueId": "UI-07"
+      },
+      {
+        "code": "art_unaccepted",
+        "uniqueId": "UI-07"
+      },
+      {
+        "code": "proposal_not_activatable",
+        "uniqueId": "UI-07"
+      },
+      {
+        "code": "effect_unimplemented",
+        "uniqueId": "UI-08"
+      },
+      {
+        "code": "translation_unregistered",
+        "uniqueId": "UI-08"
+      },
+      {
+        "code": "missing_runtime_art",
+        "uniqueId": "UI-08"
+      },
+      {
+        "code": "art_unaccepted",
+        "uniqueId": "UI-08"
+      },
+      {
+        "code": "proposal_not_activatable",
+        "uniqueId": "UI-08"
+      },
+      {
+        "code": "effect_unimplemented",
+        "uniqueId": "UI-09"
+      },
+      {
+        "code": "translation_unregistered",
+        "uniqueId": "UI-09"
+      },
+      {
+        "code": "missing_runtime_art",
+        "uniqueId": "UI-09"
+      },
+      {
+        "code": "art_unaccepted",
+        "uniqueId": "UI-09"
+      },
+      {
+        "code": "proposal_not_activatable",
+        "uniqueId": "UI-09"
+      },
+      {
+        "code": "effect_unimplemented",
+        "uniqueId": "UI-10"
+      },
+      {
+        "code": "translation_unregistered",
+        "uniqueId": "UI-10"
+      },
+      {
+        "code": "missing_runtime_art",
+        "uniqueId": "UI-10"
+      },
+      {
+        "code": "art_unaccepted",
+        "uniqueId": "UI-10"
+      },
+      {
+        "code": "proposal_not_activatable",
+        "uniqueId": "UI-10"
+      },
+      {
+        "code": "effect_unimplemented",
+        "uniqueId": "UI-11"
+      },
+      {
+        "code": "translation_unregistered",
+        "uniqueId": "UI-11"
+      },
+      {
+        "code": "missing_runtime_art",
+        "uniqueId": "UI-11"
+      },
+      {
+        "code": "art_unaccepted",
+        "uniqueId": "UI-11"
+      },
+      {
+        "code": "proposal_not_activatable",
+        "uniqueId": "UI-11"
+      },
+      {
+        "code": "effect_unimplemented",
+        "uniqueId": "UI-12"
+      },
+      {
+        "code": "translation_unregistered",
+        "uniqueId": "UI-12"
+      },
+      {
+        "code": "missing_runtime_art",
+        "uniqueId": "UI-12"
+      },
+      {
+        "code": "art_unaccepted",
+        "uniqueId": "UI-12"
+      },
+      {
+        "code": "proposal_not_activatable",
+        "uniqueId": "UI-12"
+      },
+      {
+        "code": "effect_unimplemented",
+        "uniqueId": "UI-13"
+      },
+      {
+        "code": "translation_unregistered",
+        "uniqueId": "UI-13"
+      },
+      {
+        "code": "missing_runtime_art",
+        "uniqueId": "UI-13"
+      },
+      {
+        "code": "art_unaccepted",
+        "uniqueId": "UI-13"
+      },
+      {
+        "code": "proposal_not_activatable",
+        "uniqueId": "UI-13"
+      },
+      {
+        "code": "effect_unimplemented",
+        "uniqueId": "UI-14"
+      },
+      {
+        "code": "translation_unregistered",
+        "uniqueId": "UI-14"
+      },
+      {
+        "code": "missing_runtime_art",
+        "uniqueId": "UI-14"
+      },
+      {
+        "code": "art_unaccepted",
+        "uniqueId": "UI-14"
+      },
+      {
+        "code": "proposal_not_activatable",
+        "uniqueId": "UI-14"
+      },
+      {
+        "code": "effect_unimplemented",
+        "uniqueId": "UI-15"
+      },
+      {
+        "code": "translation_unregistered",
+        "uniqueId": "UI-15"
+      },
+      {
+        "code": "missing_runtime_art",
+        "uniqueId": "UI-15"
+      },
+      {
+        "code": "art_unaccepted",
+        "uniqueId": "UI-15"
+      },
+      {
+        "code": "proposal_not_activatable",
+        "uniqueId": "UI-15"
+      },
+      {
+        "code": "effect_unimplemented",
+        "uniqueId": "UI-16"
+      },
+      {
+        "code": "translation_unregistered",
+        "uniqueId": "UI-16"
+      },
+      {
+        "code": "missing_runtime_art",
+        "uniqueId": "UI-16"
+      },
+      {
+        "code": "art_unaccepted",
+        "uniqueId": "UI-16"
+      },
+      {
+        "code": "proposal_not_activatable",
+        "uniqueId": "UI-16"
+      },
+      {
+        "code": "effect_unimplemented",
+        "uniqueId": "UI-17"
+      },
+      {
+        "code": "translation_unregistered",
+        "uniqueId": "UI-17"
+      },
+      {
+        "code": "missing_runtime_art",
+        "uniqueId": "UI-17"
+      },
+      {
+        "code": "art_unaccepted",
+        "uniqueId": "UI-17"
+      },
+      {
+        "code": "proposal_not_activatable",
+        "uniqueId": "UI-17"
+      },
+      {
+        "code": "effect_unimplemented",
+        "uniqueId": "UI-18"
+      },
+      {
+        "code": "translation_unregistered",
+        "uniqueId": "UI-18"
+      },
+      {
+        "code": "missing_runtime_art",
+        "uniqueId": "UI-18"
+      },
+      {
+        "code": "art_unaccepted",
+        "uniqueId": "UI-18"
+      },
+      {
+        "code": "proposal_not_activatable",
+        "uniqueId": "UI-18"
+      },
+      {
+        "code": "effect_unimplemented",
+        "uniqueId": "UI-19"
+      },
+      {
+        "code": "translation_unregistered",
+        "uniqueId": "UI-19"
+      },
+      {
+        "code": "missing_runtime_art",
+        "uniqueId": "UI-19"
+      },
+      {
+        "code": "art_unaccepted",
+        "uniqueId": "UI-19"
+      },
+      {
+        "code": "proposal_not_activatable",
+        "uniqueId": "UI-19"
+      },
+      {
+        "code": "effect_unimplemented",
+        "uniqueId": "UI-20"
+      },
+      {
+        "code": "translation_unregistered",
+        "uniqueId": "UI-20"
+      },
+      {
+        "code": "missing_runtime_art",
+        "uniqueId": "UI-20"
+      },
+      {
+        "code": "art_unaccepted",
+        "uniqueId": "UI-20"
+      },
+      {
+        "code": "proposal_not_activatable",
+        "uniqueId": "UI-20"
+      },
+      {
+        "code": "effect_unimplemented",
+        "uniqueId": "UI-21"
+      },
+      {
+        "code": "translation_unregistered",
+        "uniqueId": "UI-21"
+      },
+      {
+        "code": "missing_runtime_art",
+        "uniqueId": "UI-21"
+      },
+      {
+        "code": "art_unaccepted",
+        "uniqueId": "UI-21"
+      },
+      {
+        "code": "proposal_not_activatable",
+        "uniqueId": "UI-21"
+      },
+      {
+        "code": "effect_unimplemented",
+        "uniqueId": "UI-22"
+      },
+      {
+        "code": "translation_unregistered",
+        "uniqueId": "UI-22"
+      },
+      {
+        "code": "missing_runtime_art",
+        "uniqueId": "UI-22"
+      },
+      {
+        "code": "art_unaccepted",
+        "uniqueId": "UI-22"
+      },
+      {
+        "code": "proposal_not_activatable",
+        "uniqueId": "UI-22"
+      }
+    ]
+  },
+  "definitions": [
+    {
+      "uniqueId": "UI-01",
+      "effectId": "U-D01",
+      "catalogName": "반향의 장막",
+      "slots": [
+        "cape"
+      ],
+      "wtype": null,
+      "btype": null,
+      "status": "proposal",
+      "enabled": false,
+      "nameKey": null,
+      "translationStatus": "unregistered",
+      "art": {
+        "originalPath": "assets/unique-items/ui-01.png",
+        "candidatePath": "assets/unique-items/ui-01-seedream-candidate.png",
+        "runtimePath": null,
+        "accepted": false
+      },
+      "effectStatus": "unimplemented"
+    },
+    {
+      "uniqueId": "UI-02",
+      "effectId": "U-D02",
+      "catalogName": "독심의 봉환",
+      "slots": [
+        "ring1",
+        "ring2"
+      ],
+      "wtype": null,
+      "btype": null,
+      "status": "proposal",
+      "enabled": false,
+      "nameKey": null,
+      "translationStatus": "unregistered",
+      "art": {
+        "originalPath": "assets/unique-items/ui-02.png",
+        "candidatePath": "assets/unique-items/ui-02-seedream-candidate.png",
+        "runtimePath": null,
+        "accepted": false
+      },
+      "effectStatus": "unimplemented"
+    },
+    {
+      "uniqueId": "UI-03",
+      "effectId": "U-D03",
+      "catalogName": "삼획의 맹세",
+      "slots": [
+        "weapon"
+      ],
+      "wtype": "sword",
+      "btype": null,
+      "status": "proposal",
+      "enabled": false,
+      "nameKey": null,
+      "translationStatus": "unregistered",
+      "art": {
+        "originalPath": "assets/unique-items/ui-03.png",
+        "candidatePath": "assets/unique-items/ui-03-seedream-candidate.png",
+        "runtimePath": null,
+        "accepted": false
+      },
+      "effectStatus": "unimplemented"
+    },
+    {
+      "uniqueId": "UI-04",
+      "effectId": "U-D04",
+      "catalogName": "빙편을 거두는 손",
+      "slots": [
+        "gloves"
+      ],
+      "wtype": null,
+      "btype": null,
+      "status": "proposal",
+      "enabled": false,
+      "nameKey": null,
+      "translationStatus": "unregistered",
+      "art": {
+        "originalPath": "assets/unique-items/ui-04.png",
+        "candidatePath": "assets/unique-items/ui-04-seedream-candidate.png",
+        "runtimePath": null,
+        "accepted": false
+      },
+      "effectStatus": "unimplemented"
+    },
+    {
+      "uniqueId": "UI-05",
+      "effectId": "U-D05",
+      "catalogName": "귀환자의 잔보",
+      "slots": [
+        "boots"
+      ],
+      "wtype": null,
+      "btype": null,
+      "status": "proposal",
+      "enabled": false,
+      "nameKey": null,
+      "translationStatus": "unregistered",
+      "art": {
+        "originalPath": "assets/unique-items/ui-05.png",
+        "candidatePath": "assets/unique-items/ui-05-seedream-candidate.png",
+        "runtimePath": null,
+        "accepted": false
+      },
+      "effectStatus": "unimplemented"
+    },
+    {
+      "uniqueId": "UI-06",
+      "effectId": "U-D06",
+      "catalogName": "되감긴 고리",
+      "slots": [
+        "helmet"
+      ],
+      "wtype": null,
+      "btype": null,
+      "status": "proposal",
+      "enabled": false,
+      "nameKey": null,
+      "translationStatus": "unregistered",
+      "art": {
+        "originalPath": "assets/unique-items/ui-06.png",
+        "candidatePath": "assets/unique-items/ui-06-seedream-candidate.png",
+        "runtimePath": null,
+        "accepted": false
+      },
+      "effectStatus": "unimplemented"
+    },
+    {
+      "uniqueId": "UI-07",
+      "effectId": "U-D07",
+      "catalogName": "셋째 사슬의 고삐",
+      "slots": [
+        "belt"
+      ],
+      "wtype": null,
+      "btype": null,
+      "status": "proposal",
+      "enabled": false,
+      "nameKey": null,
+      "translationStatus": "unregistered",
+      "art": {
+        "originalPath": "assets/unique-items/ui-07.png",
+        "candidatePath": "assets/unique-items/ui-07-seedream-candidate.png",
+        "runtimePath": null,
+        "accepted": false
+      },
+      "effectStatus": "unimplemented"
+    },
+    {
+      "uniqueId": "UI-08",
+      "effectId": "U-D08",
+      "catalogName": "혈흔을 따르는 날",
+      "slots": [
+        "weapon"
+      ],
+      "wtype": "dagger",
+      "btype": null,
+      "status": "proposal",
+      "enabled": false,
+      "nameKey": null,
+      "translationStatus": "unregistered",
+      "art": {
+        "originalPath": "assets/unique-items/ui-08.png",
+        "candidatePath": "assets/unique-items/ui-08-seedream-candidate.png",
+        "runtimePath": null,
+        "accepted": false
+      },
+      "effectStatus": "unimplemented"
+    },
+    {
+      "uniqueId": "UI-09",
+      "effectId": "U-D09",
+      "catalogName": "쌍극의 회로",
+      "slots": [
+        "bracelet"
+      ],
+      "wtype": null,
+      "btype": null,
+      "status": "proposal",
+      "enabled": false,
+      "nameKey": null,
+      "translationStatus": "unregistered",
+      "art": {
+        "originalPath": "assets/unique-items/ui-09.png",
+        "candidatePath": "assets/unique-items/ui-09-seedream-candidate.png",
+        "runtimePath": null,
+        "accepted": false
+      },
+      "effectStatus": "unimplemented"
+    },
+    {
+      "uniqueId": "UI-10",
+      "effectId": "U-D10",
+      "catalogName": "꺼지지 않는 심갑",
+      "slots": [
+        "armor"
+      ],
+      "wtype": null,
+      "btype": null,
+      "status": "proposal",
+      "enabled": false,
+      "nameKey": null,
+      "translationStatus": "unregistered",
+      "art": {
+        "originalPath": "assets/unique-items/ui-10.png",
+        "candidatePath": "assets/unique-items/ui-10-seedream-candidate.png",
+        "runtimePath": null,
+        "accepted": false
+      },
+      "effectStatus": "unimplemented"
+    },
+    {
+      "uniqueId": "UI-11",
+      "effectId": "U-D11",
+      "catalogName": "체간을 깨는 추",
+      "slots": [
+        "weapon"
+      ],
+      "wtype": "hammer",
+      "btype": null,
+      "status": "proposal",
+      "enabled": false,
+      "nameKey": null,
+      "translationStatus": "unregistered",
+      "art": {
+        "originalPath": "assets/unique-items/ui-11.png",
+        "candidatePath": "assets/unique-items/ui-11-seedream-candidate.png",
+        "runtimePath": null,
+        "accepted": false
+      },
+      "effectStatus": "unimplemented"
+    },
+    {
+      "uniqueId": "UI-12",
+      "effectId": "U-D12",
+      "catalogName": "성역의 숨결",
+      "slots": [
+        "shield"
+      ],
+      "wtype": null,
+      "btype": null,
+      "status": "proposal",
+      "enabled": false,
+      "nameKey": null,
+      "translationStatus": "unregistered",
+      "art": {
+        "originalPath": "assets/unique-items/ui-12.png",
+        "candidatePath": "assets/unique-items/ui-12-seedream-candidate.png",
+        "runtimePath": null,
+        "accepted": false
+      },
+      "effectStatus": "unimplemented"
+    },
+    {
+      "uniqueId": "UI-13",
+      "effectId": "U-D13",
+      "catalogName": "번지는 뿌리의 띠",
+      "slots": [
+        "belt"
+      ],
+      "wtype": null,
+      "btype": null,
+      "status": "proposal",
+      "enabled": false,
+      "nameKey": null,
+      "translationStatus": "unregistered",
+      "art": {
+        "originalPath": "assets/unique-items/ui-13.png",
+        "candidatePath": "assets/unique-items/ui-13-seedream-candidate.png",
+        "runtimePath": null,
+        "accepted": false
+      },
+      "effectStatus": "unimplemented"
+    },
+    {
+      "uniqueId": "UI-14",
+      "effectId": "U-D14",
+      "catalogName": "폭심의 씨앗",
+      "slots": [
+        "necklace"
+      ],
+      "wtype": null,
+      "btype": null,
+      "status": "proposal",
+      "enabled": false,
+      "nameKey": null,
+      "translationStatus": "unregistered",
+      "art": {
+        "originalPath": "assets/unique-items/ui-14.png",
+        "candidatePath": "assets/unique-items/ui-14-seedream-candidate.png",
+        "runtimePath": null,
+        "accepted": false
+      },
+      "effectStatus": "unimplemented"
+    },
+    {
+      "uniqueId": "UI-15",
+      "effectId": "U-D15",
+      "catalogName": "독을 기억하는 석궁",
+      "slots": [
+        "bow"
+      ],
+      "wtype": null,
+      "btype": "crossbow",
+      "status": "proposal",
+      "enabled": false,
+      "nameKey": null,
+      "translationStatus": "unregistered",
+      "art": {
+        "originalPath": "assets/unique-items/ui-15.png",
+        "candidatePath": "assets/unique-items/ui-15-seedream-candidate.png",
+        "runtimePath": null,
+        "accepted": false
+      },
+      "effectStatus": "unimplemented"
+    },
+    {
+      "uniqueId": "UI-16",
+      "effectId": "U-D16",
+      "catalogName": "철거자의 명령",
+      "slots": [
+        "gloves"
+      ],
+      "wtype": null,
+      "btype": null,
+      "status": "proposal",
+      "enabled": false,
+      "nameKey": null,
+      "translationStatus": "unregistered",
+      "art": {
+        "originalPath": "assets/unique-items/ui-16.png",
+        "candidatePath": "assets/unique-items/ui-16-seedream-candidate.png",
+        "runtimePath": null,
+        "accepted": false
+      },
+      "effectStatus": "unimplemented"
+    },
+    {
+      "uniqueId": "UI-17",
+      "effectId": "U-D17",
+      "catalogName": "무중력의 왕관",
+      "slots": [
+        "helmet"
+      ],
+      "wtype": null,
+      "btype": null,
+      "status": "proposal",
+      "enabled": false,
+      "nameKey": null,
+      "translationStatus": "unregistered",
+      "art": {
+        "originalPath": "assets/unique-items/ui-17.png",
+        "candidatePath": "assets/unique-items/ui-17-seedream-candidate.png",
+        "runtimePath": null,
+        "accepted": false
+      },
+      "effectStatus": "unimplemented"
+    },
+    {
+      "uniqueId": "UI-18",
+      "effectId": "U-D18",
+      "catalogName": "흡성의 목걸이",
+      "slots": [
+        "necklace"
+      ],
+      "wtype": null,
+      "btype": null,
+      "status": "proposal",
+      "enabled": false,
+      "nameKey": null,
+      "translationStatus": "unregistered",
+      "art": {
+        "originalPath": "assets/unique-items/ui-18.png",
+        "candidatePath": "assets/unique-items/ui-18-seedream-candidate.png",
+        "runtimePath": null,
+        "accepted": false
+      },
+      "effectStatus": "unimplemented"
+    },
+    {
+      "uniqueId": "UI-19",
+      "effectId": "U-D19",
+      "catalogName": "증기 단조의 손",
+      "slots": [
+        "gloves"
+      ],
+      "wtype": null,
+      "btype": null,
+      "status": "proposal",
+      "enabled": false,
+      "nameKey": null,
+      "translationStatus": "unregistered",
+      "art": {
+        "originalPath": "assets/unique-items/ui-19.png",
+        "candidatePath": "assets/unique-items/ui-19-seedream-candidate.png",
+        "runtimePath": null,
+        "accepted": false
+      },
+      "effectStatus": "unimplemented"
+    },
+    {
+      "uniqueId": "UI-20",
+      "effectId": "U-D20",
+      "catalogName": "파열을 품은 견갑",
+      "slots": [
+        "shield"
+      ],
+      "wtype": null,
+      "btype": null,
+      "status": "proposal",
+      "enabled": false,
+      "nameKey": null,
+      "translationStatus": "unregistered",
+      "art": {
+        "originalPath": "assets/unique-items/ui-20.png",
+        "candidatePath": "assets/unique-items/ui-20-seedream-candidate.png",
+        "runtimePath": null,
+        "accepted": false
+      },
+      "effectStatus": "unimplemented"
+    },
+    {
+      "uniqueId": "UI-21",
+      "effectId": "U-D21",
+      "catalogName": "돌아온 자의 흉갑",
+      "slots": [
+        "armor"
+      ],
+      "wtype": null,
+      "btype": null,
+      "status": "proposal",
+      "enabled": false,
+      "nameKey": null,
+      "translationStatus": "unregistered",
+      "art": {
+        "originalPath": "assets/unique-items/ui-21.png",
+        "candidatePath": "assets/unique-items/ui-21-seedream-candidate.png",
+        "runtimePath": null,
+        "accepted": false
+      },
+      "effectStatus": "unimplemented"
+    },
+    {
+      "uniqueId": "UI-22",
+      "effectId": "U-D22",
+      "catalogName": "균열을 보는 눈",
+      "slots": [
+        "helmet"
+      ],
+      "wtype": null,
+      "btype": null,
+      "status": "proposal",
+      "enabled": false,
+      "nameKey": null,
+      "translationStatus": "unregistered",
+      "art": {
+        "originalPath": "assets/unique-items/ui-22.png",
+        "candidatePath": "assets/unique-items/ui-22-seedream-candidate.png",
+        "runtimePath": null,
+        "accepted": false
+      },
+      "effectStatus": "unimplemented"
+    }
+  ],
+  "effects": [
+    {
+      "effectId": "U-D01",
+      "proposalStat": "_uParryOrbEcho",
+      "documented": true,
+      "implemented": false
+    },
+    {
+      "effectId": "U-D02",
+      "proposalStat": "_uOrbPoisonBurst",
+      "documented": true,
+      "implemented": false
+    },
+    {
+      "effectId": "U-D03",
+      "proposalStat": "_uKiPrecharge",
+      "documented": true,
+      "implemented": false
+    },
+    {
+      "effectId": "U-D04",
+      "proposalStat": "_uIceShatterRefund",
+      "documented": true,
+      "implemented": false
+    },
+    {
+      "effectId": "U-D05",
+      "proposalStat": "_uGhostFuel",
+      "documented": true,
+      "implemented": false
+    },
+    {
+      "effectId": "U-D06",
+      "proposalStat": "_uWarpStepRefund",
+      "documented": true,
+      "implemented": false
+    },
+    {
+      "effectId": "U-D07",
+      "proposalStat": "_uChainCrowdRefund",
+      "documented": true,
+      "implemented": false
+    },
+    {
+      "effectId": "U-D08",
+      "proposalStat": "_uChainBleedEcho",
+      "documented": true,
+      "implemented": false
+    },
+    {
+      "effectId": "U-D09",
+      "proposalStat": "_uDashCircuit",
+      "documented": true,
+      "implemented": false
+    },
+    {
+      "effectId": "U-D10",
+      "proposalStat": "_uSlamEmberRage",
+      "documented": true,
+      "implemented": false
+    },
+    {
+      "effectId": "U-D11",
+      "proposalStat": "_uSkyPoiseRefund",
+      "documented": true,
+      "implemented": false
+    },
+    {
+      "effectId": "U-D12",
+      "proposalStat": "_uHolyParryCd",
+      "documented": true,
+      "implemented": false
+    },
+    {
+      "effectId": "U-D13",
+      "proposalStat": "_uTrapOffshoot",
+      "documented": true,
+      "implemented": false
+    },
+    {
+      "effectId": "U-D14",
+      "proposalStat": "_uVortexOrbPulse",
+      "documented": true,
+      "implemented": false
+    },
+    {
+      "effectId": "U-D15",
+      "proposalStat": "_uBowPoisonRicochet",
+      "documented": true,
+      "implemented": false
+    },
+    {
+      "effectId": "U-D16",
+      "proposalStat": "_uTurretSalvo",
+      "documented": true,
+      "implemented": false
+    },
+    {
+      "effectId": "U-D17",
+      "proposalStat": "_uBlackZoneGather",
+      "documented": true,
+      "implemented": false
+    },
+    {
+      "effectId": "U-D18",
+      "proposalStat": "_uBlackholeManaReturn",
+      "documented": true,
+      "implemented": false
+    },
+    {
+      "effectId": "U-D19",
+      "proposalStat": "_uSteamBreak",
+      "documented": true,
+      "implemented": false
+    },
+    {
+      "effectId": "U-D20",
+      "proposalStat": "_uShieldBreakBank",
+      "documented": true,
+      "implemented": false
+    },
+    {
+      "effectId": "U-D21",
+      "proposalStat": "_uDemonRekindle",
+      "documented": true,
+      "implemented": false
+    },
+    {
+      "effectId": "U-D22",
+      "proposalStat": "_uPoiseOrbFracture",
+      "documented": true,
+      "implemented": false
+    }
+  ],
+  "sources": [
+    {
+      "path": "docs/7아이템디자인/UNIQUE_ITEM_GAME_INTEGRATION_CONTRACT_20261001.md",
+      "sha256": "184499090e15a67fc38bb3c234cb2a14db96766875c3a6693039a91b9e08034d"
+    },
+    {
+      "path": "docs/7아이템디자인/유니크_어픽스_리스트.md",
+      "sha256": "f93732922e268c58cd4f04b60ae2f28dfe3ea1a60a83b3fcaf7d2481068a4cbc"
+    },
+    {
+      "path": "docs/7아이템디자인/보라색_고유아이템_카탈로그_20260930.md",
+      "sha256": "6d1303ede39e997d1eb104e00ccb6cce07dca1727df1d3bf0c690d5273f66a0c"
+    },
+    {
+      "path": "unique-item-project/review.html",
+      "sha256": "4a47d3bb11242e3b42b59abae0d27073728d0abc8071cf611ebf857a7721664a"
+    }
+  ]
+}

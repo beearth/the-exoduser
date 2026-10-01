@@ -599,3 +599,8 @@ Existing ITEM received the unique-save name preservation candidate at12:54:38Z; 
 ### 18.34 SOUND 회귀 인수 및 새 native 상태
 
 SOUND 제출을 root 실행하여 후보 인자 오류1건을 교정하고 실제 소스 기반 영구 회귀로 통합했다. 사운드15+저장경제6=21PASS, 생산변경0. easy 빈 슬롯 자동장착과 본편 가방우선 차이를 확인·SSOT에 기록.13:09Z 새 native 조회에서 Mac locked 명시, 후속 입력0. ITEM/BALANCE/UIUX 백로그 재확인 후 Chrome·실전·정책 의존과 완료 항목을 분리했다. [근거와 제한](mac-resume-20261001/vscode-dispatch/SOUND-item-sound-root-review.md).
+
+
+### 18.35 PM-009 정의 계층 실제 구현·소비 연결
+
+기존 ITEM13:31:32Z Read 후22종 제안 데이터/검증 구현, root가 정의 모듈과 기존 원화 감사 소비 경로에 인수했다.23영구회귀·문서변이3종검출·44PNG감사 통과. 활성0/runtimeReady=false/110차단이며 새 효과·드롭은 미구현이다. 앱activewriter미전달 뒤 공식기존queue1회, 새세션0/native재시도0. [인수·원실패·한계](mac-resume-20261001/vscode-dispatch/ITEM-definition-root-review.md).

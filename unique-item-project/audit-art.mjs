@@ -2,8 +2,11 @@ import { createHash } from 'node:crypto';
 import { readFile, readdir } from 'node:fs/promises';
 import path from 'node:path';
 import sharp from 'sharp';
+import { auditDefinitions } from './audit-definitions.mjs';
 
 const root = path.resolve(import.meta.dirname, '..');
+const definitions = await auditDefinitions(root);
+if (!definitions.structurallyValid) throw new Error(`고유아이템 정의 불일치: ${JSON.stringify(definitions.documentErrors.concat(definitions.issues))}`);
 const assetDir = path.join(root, 'assets', 'unique-items');
 const downloadDir = path.join(process.env.USERPROFILE || '', 'Downloads');
 const projectDoc = await readFile(path.join(root, 'docs', '7아이템디자인', '고유아이템_모델_어픽스_밸런싱_프로젝트_20260930.md'), 'utf8');
@@ -56,4 +59,4 @@ for (const match of teamDoc.matchAll(/^\| (\d\d) \| `(\d{19})` \| (\d\d) \| `(\d
 if (teamIds.size !== 22) throw new Error(`팀 대장 작업 ID 개수 오류: ${teamIds.size}`);
 for (const [id, task] of ids) if (teamIds.get(id) !== task) throw new Error(`팀 대장 작업 ID 불일치: UI-${id}`);
 
-console.log(JSON.stringify({ count: rows.length, files: files.length, teamIds: teamIds.size, downloadMatched: rows.filter(row => row.downloadMatch === true).length, downloadMissing: rows.filter(row => row.downloadMatch === null).length, downloadMismatched: rows.filter(row => row.downloadMatch === false).map(row => row.id), rows }, null, 2));
+console.log(JSON.stringify({ count: rows.length, files: files.length, teamIds: teamIds.size, definitions, downloadMatched: rows.filter(row => row.downloadMatch === true).length, downloadMissing: rows.filter(row => row.downloadMatch === null).length, downloadMismatched: rows.filter(row => row.downloadMatch === false).map(row => row.id), rows }, null, 2));

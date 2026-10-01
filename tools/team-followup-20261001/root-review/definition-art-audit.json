@@ -1,0 +1,967 @@
+{
+  "count": 22,
+  "files": 44,
+  "teamIds": 22,
+  "definitions": {
+    "definitions": 22,
+    "structurallyValid": true,
+    "runtimeReady": false,
+    "activeDefinitions": 0,
+    "sourceArtFound": 44,
+    "documentErrors": [],
+    "issues": [],
+    "blockers": [
+      {
+        "code": "effect_unimplemented",
+        "uniqueId": "UI-01"
+      },
+      {
+        "code": "translation_unregistered",
+        "uniqueId": "UI-01"
+      },
+      {
+        "code": "missing_runtime_art",
+        "uniqueId": "UI-01"
+      },
+      {
+        "code": "art_unaccepted",
+        "uniqueId": "UI-01"
+      },
+      {
+        "code": "proposal_not_activatable",
+        "uniqueId": "UI-01"
+      },
+      {
+        "code": "effect_unimplemented",
+        "uniqueId": "UI-02"
+      },
+      {
+        "code": "translation_unregistered",
+        "uniqueId": "UI-02"
+      },
+      {
+        "code": "missing_runtime_art",
+        "uniqueId": "UI-02"
+      },
+      {
+        "code": "art_unaccepted",
+        "uniqueId": "UI-02"
+      },
+      {
+        "code": "proposal_not_activatable",
+        "uniqueId": "UI-02"
+      },
+      {
+        "code": "effect_unimplemented",
+        "uniqueId": "UI-03"
+      },
+      {
+        "code": "translation_unregistered",
+        "uniqueId": "UI-03"
+      },
+      {
+        "code": "missing_runtime_art",
+        "uniqueId": "UI-03"
+      },
+      {
+        "code": "art_unaccepted",
+        "uniqueId": "UI-03"
+      },
+      {
+        "code": "proposal_not_activatable",
+        "uniqueId": "UI-03"
+      },
+      {
+        "code": "effect_unimplemented",
+        "uniqueId": "UI-04"
+      },
+      {
+        "code": "translation_unregistered",
+        "uniqueId": "UI-04"
+      },
+      {
+        "code": "missing_runtime_art",
+        "uniqueId": "UI-04"
+      },
+      {
+        "code": "art_unaccepted",
+        "uniqueId": "UI-04"
+      },
+      {
+        "code": "proposal_not_activatable",
+        "uniqueId": "UI-04"
+      },
+      {
+        "code": "effect_unimplemented",
+        "uniqueId": "UI-05"
+      },
+      {
+        "code": "translation_unregistered",
+        "uniqueId": "UI-05"
+      },
+      {
+        "code": "missing_runtime_art",
+        "uniqueId": "UI-05"
+      },
+      {
+        "code": "art_unaccepted",
+        "uniqueId": "UI-05"
+      },
+      {
+        "code": "proposal_not_activatable",
+        "uniqueId": "UI-05"
+      },
+      {
+        "code": "effect_unimplemented",
+        "uniqueId": "UI-06"
+      },
+      {
+        "code": "translation_unregistered",
+        "uniqueId": "UI-06"
+      },
+      {
+        "code": "missing_runtime_art",
+        "uniqueId": "UI-06"
+      },
+      {
+        "code": "art_unaccepted",
+        "uniqueId": "UI-06"
+      },
+      {
+        "code": "proposal_not_activatable",
+        "uniqueId": "UI-06"
+      },
+      {
+        "code": "effect_unimplemented",
+        "uniqueId": "UI-07"
+      },
+      {
+        "code": "translation_unregistered",
+        "uniqueId": "UI-07"
+      },
+      {
+        "code": "missing_runtime_art",
+        "uniqueId": "UI-07"
+      },
+      {
+        "code": "art_unaccepted",
+        "uniqueId": "UI-07"
+      },
+      {
+        "code": "proposal_not_activatable",
+        "uniqueId": "UI-07"
+      },
+      {
+        "code": "effect_unimplemented",
+        "uniqueId": "UI-08"
+      },
+      {
+        "code": "translation_unregistered",
+        "uniqueId": "UI-08"
+      },
+      {
+        "code": "missing_runtime_art",
+        "uniqueId": "UI-08"
+      },
+      {
+        "code": "art_unaccepted",
+        "uniqueId": "UI-08"
+      },
+      {
+        "code": "proposal_not_activatable",
+        "uniqueId": "UI-08"
+      },
+      {
+        "code": "effect_unimplemented",
+        "uniqueId": "UI-09"
+      },
+      {
+        "code": "translation_unregistered",
+        "uniqueId": "UI-09"
+      },
+      {
+        "code": "missing_runtime_art",
+        "uniqueId": "UI-09"
+      },
+      {
+        "code": "art_unaccepted",
+        "uniqueId": "UI-09"
+      },
+      {
+        "code": "proposal_not_activatable",
+        "uniqueId": "UI-09"
+      },
+      {
+        "code": "effect_unimplemented",
+        "uniqueId": "UI-10"
+      },
+      {
+        "code": "translation_unregistered",
+        "uniqueId": "UI-10"
+      },
+      {
+        "code": "missing_runtime_art",
+        "uniqueId": "UI-10"
+      },
+      {
+        "code": "art_unaccepted",
+        "uniqueId": "UI-10"
+      },
+      {
+        "code": "proposal_not_activatable",
+        "uniqueId": "UI-10"
+      },
+      {
+        "code": "effect_unimplemented",
+        "uniqueId": "UI-11"
+      },
+      {
+        "code": "translation_unregistered",
+        "uniqueId": "UI-11"
+      },
+      {
+        "code": "missing_runtime_art",
+        "uniqueId": "UI-11"
+      },
+      {
+        "code": "art_unaccepted",
+        "uniqueId": "UI-11"
+      },
+      {
+        "code": "proposal_not_activatable",
+        "uniqueId": "UI-11"
+      },
+      {
+        "code": "effect_unimplemented",
+        "uniqueId": "UI-12"
+      },
+      {
+        "code": "translation_unregistered",
+        "uniqueId": "UI-12"
+      },
+      {
+        "code": "missing_runtime_art",
+        "uniqueId": "UI-12"
+      },
+      {
+        "code": "art_unaccepted",
+        "uniqueId": "UI-12"
+      },
+      {
+        "code": "proposal_not_activatable",
+        "uniqueId": "UI-12"
+      },
+      {
+        "code": "effect_unimplemented",
+        "uniqueId": "UI-13"
+      },
+      {
+        "code": "translation_unregistered",
+        "uniqueId": "UI-13"
+      },
+      {
+        "code": "missing_runtime_art",
+        "uniqueId": "UI-13"
+      },
+      {
+        "code": "art_unaccepted",
+        "uniqueId": "UI-13"
+      },
+      {
+        "code": "proposal_not_activatable",
+        "uniqueId": "UI-13"
+      },
+      {
+        "code": "effect_unimplemented",
+        "uniqueId": "UI-14"
+      },
+      {
+        "code": "translation_unregistered",
+        "uniqueId": "UI-14"
+      },
+      {
+        "code": "missing_runtime_art",
+        "uniqueId": "UI-14"
+      },
+      {
+        "code": "art_unaccepted",
+        "uniqueId": "UI-14"
+      },
+      {
+        "code": "proposal_not_activatable",
+        "uniqueId": "UI-14"
+      },
+      {
+        "code": "effect_unimplemented",
+        "uniqueId": "UI-15"
+      },
+      {
+        "code": "translation_unregistered",
+        "uniqueId": "UI-15"
+      },
+      {
+        "code": "missing_runtime_art",
+        "uniqueId": "UI-15"
+      },
+      {
+        "code": "art_unaccepted",
+        "uniqueId": "UI-15"
+      },
+      {
+        "code": "proposal_not_activatable",
+        "uniqueId": "UI-15"
+      },
+      {
+        "code": "effect_unimplemented",
+        "uniqueId": "UI-16"
+      },
+      {
+        "code": "translation_unregistered",
+        "uniqueId": "UI-16"
+      },
+      {
+        "code": "missing_runtime_art",
+        "uniqueId": "UI-16"
+      },
+      {
+        "code": "art_unaccepted",
+        "uniqueId": "UI-16"
+      },
+      {
+        "code": "proposal_not_activatable",
+        "uniqueId": "UI-16"
+      },
+      {
+        "code": "effect_unimplemented",
+        "uniqueId": "UI-17"
+      },
+      {
+        "code": "translation_unregistered",
+        "uniqueId": "UI-17"
+      },
+      {
+        "code": "missing_runtime_art",
+        "uniqueId": "UI-17"
+      },
+      {
+        "code": "art_unaccepted",
+        "uniqueId": "UI-17"
+      },
+      {
+        "code": "proposal_not_activatable",
+        "uniqueId": "UI-17"
+      },
+      {
+        "code": "effect_unimplemented",
+        "uniqueId": "UI-18"
+      },
+      {
+        "code": "translation_unregistered",
+        "uniqueId": "UI-18"
+      },
+      {
+        "code": "missing_runtime_art",
+        "uniqueId": "UI-18"
+      },
+      {
+        "code": "art_unaccepted",
+        "uniqueId": "UI-18"
+      },
+      {
+        "code": "proposal_not_activatable",
+        "uniqueId": "UI-18"
+      },
+      {
+        "code": "effect_unimplemented",
+        "uniqueId": "UI-19"
+      },
+      {
+        "code": "translation_unregistered",
+        "uniqueId": "UI-19"
+      },
+      {
+        "code": "missing_runtime_art",
+        "uniqueId": "UI-19"
+      },
+      {
+        "code": "art_unaccepted",
+        "uniqueId": "UI-19"
+      },
+      {
+        "code": "proposal_not_activatable",
+        "uniqueId": "UI-19"
+      },
+      {
+        "code": "effect_unimplemented",
+        "uniqueId": "UI-20"
+      },
+      {
+        "code": "translation_unregistered",
+        "uniqueId": "UI-20"
+      },
+      {
+        "code": "missing_runtime_art",
+        "uniqueId": "UI-20"
+      },
+      {
+        "code": "art_unaccepted",
+        "uniqueId": "UI-20"
+      },
+      {
+        "code": "proposal_not_activatable",
+        "uniqueId": "UI-20"
+      },
+      {
+        "code": "effect_unimplemented",
+        "uniqueId": "UI-21"
+      },
+      {
+        "code": "translation_unregistered",
+        "uniqueId": "UI-21"
+      },
+      {
+        "code": "missing_runtime_art",
+        "uniqueId": "UI-21"
+      },
+      {
+        "code": "art_unaccepted",
+        "uniqueId": "UI-21"
+      },
+      {
+        "code": "proposal_not_activatable",
+        "uniqueId": "UI-21"
+      },
+      {
+        "code": "effect_unimplemented",
+        "uniqueId": "UI-22"
+      },
+      {
+        "code": "translation_unregistered",
+        "uniqueId": "UI-22"
+      },
+      {
+        "code": "missing_runtime_art",
+        "uniqueId": "UI-22"
+      },
+      {
+        "code": "art_unaccepted",
+        "uniqueId": "UI-22"
+      },
+      {
+        "code": "proposal_not_activatable",
+        "uniqueId": "UI-22"
+      }
+    ]
+  },
+  "downloadMatched": 0,
+  "downloadMissing": 22,
+  "downloadMismatched": [],
+  "rows": [
+    {
+      "id": "UI-01",
+      "task": "7511075533608345600",
+      "original": {
+        "name": "ui-01.png",
+        "width": 1024,
+        "height": 1024,
+        "channels": 3,
+        "hasAlpha": false,
+        "bytes": 1211510,
+        "sha256": "d7ba8306185572c99333b055b6727742dffb520a964e2dff28a22ef962b00f43"
+      },
+      "seedream": {
+        "name": "ui-01-seedream-candidate.png",
+        "width": 1920,
+        "height": 1920,
+        "channels": 3,
+        "hasAlpha": false,
+        "bytes": 4088628,
+        "sha256": "a2aa3ac6cf98bb8dbcacdc69b806a6bb208b1d337ee7a386d108ec46d46e2215"
+      },
+      "downloadMatch": null
+    },
+    {
+      "id": "UI-02",
+      "task": "7511075606769590272",
+      "original": {
+        "name": "ui-02.png",
+        "width": 1024,
+        "height": 1024,
+        "channels": 3,
+        "hasAlpha": false,
+        "bytes": 1163525,
+        "sha256": "e5c05078235fc9e63c2bbfbb508ba9afee877e1f8bea414dc2c5846850a290c7"
+      },
+      "seedream": {
+        "name": "ui-02-seedream-candidate.png",
+        "width": 1920,
+        "height": 1920,
+        "channels": 3,
+        "hasAlpha": false,
+        "bytes": 4823955,
+        "sha256": "4ffdb45b77352067f7258680184850cecd7f85ab888e703783fab31f2b2682a8"
+      },
+      "downloadMatch": null
+    },
+    {
+      "id": "UI-03",
+      "task": "7511075691511336960",
+      "original": {
+        "name": "ui-03.png",
+        "width": 1024,
+        "height": 1024,
+        "channels": 3,
+        "hasAlpha": false,
+        "bytes": 1034373,
+        "sha256": "e7ca44416b02035cb8c428bd9e6dd94cecff22a97e8ced2642869f21891d59a2"
+      },
+      "seedream": {
+        "name": "ui-03-seedream-candidate.png",
+        "width": 1920,
+        "height": 1920,
+        "channels": 3,
+        "hasAlpha": false,
+        "bytes": 3695940,
+        "sha256": "4949f1c34ed5882e7c783177ec1730ff979c52b8452ed77e240fc567e2b3256b"
+      },
+      "downloadMatch": null
+    },
+    {
+      "id": "UI-04",
+      "task": "7511087453233131520",
+      "original": {
+        "name": "ui-04.png",
+        "width": 1024,
+        "height": 1024,
+        "channels": 3,
+        "hasAlpha": false,
+        "bytes": 1193169,
+        "sha256": "64dc6276e9da33c424ea4a7d643310c22bda5f78e06eb5319104125d44fbe21d"
+      },
+      "seedream": {
+        "name": "ui-04-seedream-candidate.png",
+        "width": 1920,
+        "height": 1920,
+        "channels": 3,
+        "hasAlpha": false,
+        "bytes": 4582444,
+        "sha256": "6adead9deb709a28aec6b889e7faf134ead5fff324b8b3a4d71c4271a5bdc776"
+      },
+      "downloadMatch": null
+    },
+    {
+      "id": "UI-05",
+      "task": "7511087470073270272",
+      "original": {
+        "name": "ui-05.png",
+        "width": 1024,
+        "height": 1024,
+        "channels": 3,
+        "hasAlpha": false,
+        "bytes": 1223020,
+        "sha256": "e614f44721b27ceb495bbb93be7be42001c79b06c14fe423f0ff46c7b71344f2"
+      },
+      "seedream": {
+        "name": "ui-05-seedream-candidate.png",
+        "width": 1920,
+        "height": 1920,
+        "channels": 3,
+        "hasAlpha": false,
+        "bytes": 3384984,
+        "sha256": "0075c46cd5f4e3dc271ec082321e8cd008fd408f54a53b1b8d126fef61502e8b"
+      },
+      "downloadMatch": null
+    },
+    {
+      "id": "UI-06",
+      "task": "7511087481548865536",
+      "original": {
+        "name": "ui-06.png",
+        "width": 1024,
+        "height": 1024,
+        "channels": 3,
+        "hasAlpha": false,
+        "bytes": 999406,
+        "sha256": "20700aecc86c40c3dd82b76dd0969eff8c3495fa264279d78f7939b02e443459"
+      },
+      "seedream": {
+        "name": "ui-06-seedream-candidate.png",
+        "width": 1920,
+        "height": 1920,
+        "channels": 3,
+        "hasAlpha": false,
+        "bytes": 2796451,
+        "sha256": "f21f4801e688980bd16b31ac4e8d4267c71053a971035440d5991f9bbd952c65"
+      },
+      "downloadMatch": null
+    },
+    {
+      "id": "UI-07",
+      "task": "7511087497621454848",
+      "original": {
+        "name": "ui-07.png",
+        "width": 1024,
+        "height": 1024,
+        "channels": 3,
+        "hasAlpha": false,
+        "bytes": 1147357,
+        "sha256": "564918488f331ade55ac36f89acc8731f8c9226108fbba1d2aa5b7e22767d0b3"
+      },
+      "seedream": {
+        "name": "ui-07-seedream-candidate.png",
+        "width": 1920,
+        "height": 1920,
+        "channels": 3,
+        "hasAlpha": false,
+        "bytes": 3677400,
+        "sha256": "6a70989b88d5218ee77feb58abc70e167def7ee0f34e0f6c109c9114740a84a2"
+      },
+      "downloadMatch": null
+    },
+    {
+      "id": "UI-08",
+      "task": "7511087678781825024",
+      "original": {
+        "name": "ui-08.png",
+        "width": 1024,
+        "height": 1024,
+        "channels": 3,
+        "hasAlpha": false,
+        "bytes": 973448,
+        "sha256": "e47a78720b712cb0a39e23bc7d573ca2efb805942a3b3c56ce6c565dc451417a"
+      },
+      "seedream": {
+        "name": "ui-08-seedream-candidate.png",
+        "width": 1920,
+        "height": 1920,
+        "channels": 3,
+        "hasAlpha": false,
+        "bytes": 3270135,
+        "sha256": "41c82fe9a46a3799a589bb7104800ee3bb18e25b71eff99e77395c5873cfedb2"
+      },
+      "downloadMatch": null
+    },
+    {
+      "id": "UI-09",
+      "task": "7511070399411146752",
+      "original": {
+        "name": "ui-09.png",
+        "width": 1024,
+        "height": 1024,
+        "channels": 3,
+        "hasAlpha": false,
+        "bytes": 1103563,
+        "sha256": "01c6e17f50735c3e6a887a800d0f734af9b1d7c161822aafc4a36f2666113c87"
+      },
+      "seedream": {
+        "name": "ui-09-seedream-candidate.png",
+        "width": 1920,
+        "height": 1920,
+        "channels": 3,
+        "hasAlpha": false,
+        "bytes": 3793031,
+        "sha256": "44af223987c0d1d9a6ecebc43ac9f6d6955cd0e7ef3d05114ee3fc35e28c0802"
+      },
+      "downloadMatch": null
+    },
+    {
+      "id": "UI-10",
+      "task": "7511087690668466176",
+      "original": {
+        "name": "ui-10.png",
+        "width": 1024,
+        "height": 1024,
+        "channels": 3,
+        "hasAlpha": false,
+        "bytes": 1409615,
+        "sha256": "9cae02399807a6ae564edc9c3dde7e0c776dabe38264aeeefbbb0fbc8a6e9088"
+      },
+      "seedream": {
+        "name": "ui-10-seedream-candidate.png",
+        "width": 1920,
+        "height": 1920,
+        "channels": 3,
+        "hasAlpha": false,
+        "bytes": 3553077,
+        "sha256": "118c960c4c24a22d4622e14af535fbbcec46d3d12f6ba30d2ab146f61d1f6bc3"
+      },
+      "downloadMatch": null
+    },
+    {
+      "id": "UI-11",
+      "task": "7511087704585191424",
+      "original": {
+        "name": "ui-11.png",
+        "width": 1024,
+        "height": 1024,
+        "channels": 3,
+        "hasAlpha": false,
+        "bytes": 983582,
+        "sha256": "e0c44cbbbe589e763344e738ff0ac064f823ca2e651bc8bedbc549db95661e30"
+      },
+      "seedream": {
+        "name": "ui-11-seedream-candidate.png",
+        "width": 1920,
+        "height": 1920,
+        "channels": 3,
+        "hasAlpha": false,
+        "bytes": 2887729,
+        "sha256": "456a3be21589923ec9392de469079f7678fb92eff7d5931eb293b4de0f4f3e41"
+      },
+      "downloadMatch": null
+    },
+    {
+      "id": "UI-12",
+      "task": "7511087722981380096",
+      "original": {
+        "name": "ui-12.png",
+        "width": 1024,
+        "height": 1024,
+        "channels": 3,
+        "hasAlpha": false,
+        "bytes": 1194809,
+        "sha256": "89d3da01324ccbca5ab689e15651f475ba52cb3f1f73ad90e16a7aa39ef72b69"
+      },
+      "seedream": {
+        "name": "ui-12-seedream-candidate.png",
+        "width": 1920,
+        "height": 1920,
+        "channels": 3,
+        "hasAlpha": false,
+        "bytes": 3708511,
+        "sha256": "64e9b5037900728a0a3bf63b632d2d8cf24cb140d9493fb7e722f650eec0f09f"
+      },
+      "downloadMatch": null
+    },
+    {
+      "id": "UI-13",
+      "task": "7511087809497313280",
+      "original": {
+        "name": "ui-13.png",
+        "width": 1024,
+        "height": 1024,
+        "channels": 3,
+        "hasAlpha": false,
+        "bytes": 1248248,
+        "sha256": "503231fd7d0f0dfc37f3f12924fe27f1c42c7e5ef91d8f8bbf4aa47ca1550790"
+      },
+      "seedream": {
+        "name": "ui-13-seedream-candidate.png",
+        "width": 1920,
+        "height": 1920,
+        "channels": 3,
+        "hasAlpha": false,
+        "bytes": 4903427,
+        "sha256": "3018885bf063bf0235afb1e175731043bd552efb7b75f5a664c0c72f53364ee8"
+      },
+      "downloadMatch": null
+    },
+    {
+      "id": "UI-14",
+      "task": "7511087819983081472",
+      "original": {
+        "name": "ui-14.png",
+        "width": 1024,
+        "height": 1024,
+        "channels": 3,
+        "hasAlpha": false,
+        "bytes": 1114094,
+        "sha256": "a91a3a73eef51e637ce9bc6d0640bc0ca595973bcae0337eeb93fd0cb0e772b0"
+      },
+      "seedream": {
+        "name": "ui-14-seedream-candidate.png",
+        "width": 1920,
+        "height": 1920,
+        "channels": 3,
+        "hasAlpha": false,
+        "bytes": 3605716,
+        "sha256": "281f12665d9542e784ce60ec47f5f17344606a3fa8e4c72fd76bda23b9d78a3b"
+      },
+      "downloadMatch": null
+    },
+    {
+      "id": "UI-15",
+      "task": "7511087836089176064",
+      "original": {
+        "name": "ui-15.png",
+        "width": 1024,
+        "height": 1024,
+        "channels": 3,
+        "hasAlpha": false,
+        "bytes": 1113041,
+        "sha256": "a7e2ad0527cf6411b5c3d53cd21db4aac0469910380951a9bbd7bdd54f5d3052"
+      },
+      "seedream": {
+        "name": "ui-15-seedream-candidate.png",
+        "width": 1920,
+        "height": 1920,
+        "channels": 3,
+        "hasAlpha": false,
+        "bytes": 2790072,
+        "sha256": "cec7f4ce3fc3ce251f3f35fdeee6d94777f0d3745961594d4a081bd44a4211fe"
+      },
+      "downloadMatch": null
+    },
+    {
+      "id": "UI-16",
+      "task": "7511087850957996032",
+      "original": {
+        "name": "ui-16.png",
+        "width": 1024,
+        "height": 1024,
+        "channels": 3,
+        "hasAlpha": false,
+        "bytes": 1255134,
+        "sha256": "a92cffb5431c6346da9d08fff2dc990941ad7f070e53e26f0f2e6ba0e575e3a2"
+      },
+      "seedream": {
+        "name": "ui-16-seedream-candidate.png",
+        "width": 1920,
+        "height": 1920,
+        "channels": 3,
+        "hasAlpha": false,
+        "bytes": 3930513,
+        "sha256": "92dca1085214f87143321525c79df7477da0e8a26b6737cf58ab6d5657baed46"
+      },
+      "downloadMatch": null
+    },
+    {
+      "id": "UI-17",
+      "task": "7511087937301925888",
+      "original": {
+        "name": "ui-17.png",
+        "width": 1024,
+        "height": 1024,
+        "channels": 3,
+        "hasAlpha": false,
+        "bytes": 1125666,
+        "sha256": "acc54c5c1b5e7da990285841175e09a22d689512cbb858a9a191c4ee94fee86a"
+      },
+      "seedream": {
+        "name": "ui-17-seedream-candidate.png",
+        "width": 1920,
+        "height": 1920,
+        "channels": 3,
+        "hasAlpha": false,
+        "bytes": 3554807,
+        "sha256": "656a7486ad18ed901f532bc841ea06896824ffe2ee8a5f1e1d8faec8e3357aba"
+      },
+      "downloadMatch": null
+    },
+    {
+      "id": "UI-18",
+      "task": "7511087950354612224",
+      "original": {
+        "name": "ui-18.png",
+        "width": 1024,
+        "height": 1024,
+        "channels": 3,
+        "hasAlpha": false,
+        "bytes": 1080016,
+        "sha256": "636efa0ce31341dccfff9c4a08b92f8a8d54c484860f9771e3d813fdc8bed815"
+      },
+      "seedream": {
+        "name": "ui-18-seedream-candidate.png",
+        "width": 1920,
+        "height": 1920,
+        "channels": 3,
+        "hasAlpha": false,
+        "bytes": 3592757,
+        "sha256": "4fcd61adbbfa99e787da32a5e1fe3d9f67c04e6542d7c1a5dabe87d33504af7a"
+      },
+      "downloadMatch": null
+    },
+    {
+      "id": "UI-19",
+      "task": "7511087964640432128",
+      "original": {
+        "name": "ui-19.png",
+        "width": 1024,
+        "height": 1024,
+        "channels": 3,
+        "hasAlpha": false,
+        "bytes": 1331348,
+        "sha256": "d0b684fa1b8371522c4fd59614f286b98a82db08b339da4014b40a3c7377cea6"
+      },
+      "seedream": {
+        "name": "ui-19-seedream-candidate.png",
+        "width": 1920,
+        "height": 1920,
+        "channels": 3,
+        "hasAlpha": false,
+        "bytes": 4262208,
+        "sha256": "7c5132252eaef48b2db3cb0bb1afd6d4b41fd4960152008e1becdef6ce4e11d5"
+      },
+      "downloadMatch": null
+    },
+    {
+      "id": "UI-20",
+      "task": "7511087983086948352",
+      "original": {
+        "name": "ui-20.png",
+        "width": 1024,
+        "height": 1024,
+        "channels": 3,
+        "hasAlpha": false,
+        "bytes": 1252323,
+        "sha256": "1a6cf48c04bc798b05732a82e966e9a577819fa4a595de4bb3a75df90324ba1e"
+      },
+      "seedream": {
+        "name": "ui-20-seedream-candidate.png",
+        "width": 1920,
+        "height": 1920,
+        "channels": 3,
+        "hasAlpha": false,
+        "bytes": 4008708,
+        "sha256": "77f241ff0bc73516f8052baf37b1fd3f0e71467a938b823710b1002ad7de7c0b"
+      },
+      "downloadMatch": null
+    },
+    {
+      "id": "UI-21",
+      "task": "7511088031657021440",
+      "original": {
+        "name": "ui-21.png",
+        "width": 1024,
+        "height": 1024,
+        "channels": 3,
+        "hasAlpha": false,
+        "bytes": 1406213,
+        "sha256": "8b8c28e83c0a686c673d601119748ad9489a29df5b49f04bd3f404b07c5e5ac6"
+      },
+      "seedream": {
+        "name": "ui-21-seedream-candidate.png",
+        "width": 1920,
+        "height": 1920,
+        "channels": 3,
+        "hasAlpha": false,
+        "bytes": 2600021,
+        "sha256": "a9497745318b0b55636b0dd9a2ff365592b6356c3123ebf3a3a7d6d9100c6494"
+      },
+      "downloadMatch": null
+    },
+    {
+      "id": "UI-22",
+      "task": "7511088043463954432",
+      "original": {
+        "name": "ui-22.png",
+        "width": 1024,
+        "height": 1024,
+        "channels": 3,
+        "hasAlpha": false,
+        "bytes": 987117,
+        "sha256": "84d8ec93fd92276d39631626e32a5d413ced809cd1bfd54740ed195fe095d568"
+      },
+      "seedream": {
+        "name": "ui-22-seedream-candidate.png",
+        "width": 1920,
+        "height": 1920,
+        "channels": 3,
+        "hasAlpha": false,
+        "bytes": 3737894,
+        "sha256": "a9841f2ee0634ced44f074594b53b7a157bd9280bc708593100f957875754a47"
+      },
+      "downloadMatch": null
+    }
+  ]
+}
