@@ -1,0 +1,1047 @@
+{
+  "startedAt": "2026-10-01T18:01:41.160Z",
+  "completedAt": "2026-10-01T18:01:41.200Z",
+  "sourceSHA": "339fad6ab51cba92f6ca7a386c8aeb251f68cdb58cdfa55c109f57b1758a42ad",
+  "candidateSHA": "6a7c1083ac10b105cca3624c8fd0e919d14a59b32774612ff0a00cb881be8538",
+  "sourceAfterSHA": "6a7c1083ac10b105cca3624c8fd0e919d14a59b32774612ff0a00cb881be8538",
+  "extractedBranchSHA": "e1de3ef631b24ea370c4bc857497fff375fcb5c9a735c89f5c154c1a1616c59f",
+  "fallbackUnchanged": true,
+  "evidence": [
+    {
+      "name": "fixed",
+      "input": {
+        "range": "bytes=100-199",
+        "size": 10000
+      },
+      "original": {
+        "status": 206,
+        "headers": {
+          "Content-Range": "bytes 100-199/10000",
+          "Accept-Ranges": "bytes",
+          "Content-Length": 100,
+          "Content-Type": "video/mp4",
+          "Access-Control-Allow-Origin": "*"
+        },
+        "bodyBytes": 0,
+        "calls": [
+          {
+            "stream": {
+              "start": 100,
+              "end": 199
+            }
+          },
+          {
+            "pipe": "file"
+          },
+          {
+            "destroy": true
+          }
+        ]
+      },
+      "candidate": {
+        "status": 206,
+        "headers": {
+          "Content-Range": "bytes 100-199/10000",
+          "Accept-Ranges": "bytes",
+          "Content-Length": 100,
+          "Content-Type": "video/mp4",
+          "Access-Control-Allow-Origin": "*"
+        },
+        "bodyBytes": 0,
+        "calls": [
+          {
+            "stream": {
+              "start": 100,
+              "end": 199
+            }
+          },
+          {
+            "pipe": "file"
+          },
+          {
+            "destroy": true
+          }
+        ]
+      }
+    },
+    {
+      "name": "open",
+      "input": {
+        "range": "bytes=9500-",
+        "size": 10000
+      },
+      "original": {
+        "status": 206,
+        "headers": {
+          "Content-Range": "bytes 9500-9999/10000",
+          "Accept-Ranges": "bytes",
+          "Content-Length": 500,
+          "Content-Type": "video/mp4",
+          "Access-Control-Allow-Origin": "*"
+        },
+        "bodyBytes": 0,
+        "calls": [
+          {
+            "stream": {
+              "start": 9500,
+              "end": 9999
+            }
+          },
+          {
+            "pipe": "file"
+          },
+          {
+            "destroy": true
+          }
+        ]
+      },
+      "candidate": {
+        "status": 206,
+        "headers": {
+          "Content-Range": "bytes 9500-9999/10000",
+          "Accept-Ranges": "bytes",
+          "Content-Length": 500,
+          "Content-Type": "video/mp4",
+          "Access-Control-Allow-Origin": "*"
+        },
+        "bodyBytes": 0,
+        "calls": [
+          {
+            "stream": {
+              "start": 9500,
+              "end": 9999
+            }
+          },
+          {
+            "pipe": "file"
+          },
+          {
+            "destroy": true
+          }
+        ]
+      }
+    },
+    {
+      "name": "suffix",
+      "input": {
+        "range": "bytes=-500",
+        "size": 10000
+      },
+      "original": {
+        "status": 206,
+        "headers": {
+          "Content-Range": "bytes 0-500/10000",
+          "Accept-Ranges": "bytes",
+          "Content-Length": 501,
+          "Content-Type": "video/mp4",
+          "Access-Control-Allow-Origin": "*"
+        },
+        "bodyBytes": 0,
+        "calls": [
+          {
+            "stream": {
+              "start": 0,
+              "end": 500
+            }
+          },
+          {
+            "pipe": "file"
+          },
+          {
+            "destroy": true
+          }
+        ]
+      },
+      "candidate": {
+        "status": 206,
+        "headers": {
+          "Content-Range": "bytes 9500-9999/10000",
+          "Accept-Ranges": "bytes",
+          "Content-Length": 500,
+          "Content-Type": "video/mp4",
+          "Access-Control-Allow-Origin": "*"
+        },
+        "bodyBytes": 0,
+        "calls": [
+          {
+            "stream": {
+              "start": 9500,
+              "end": 9999
+            }
+          },
+          {
+            "pipe": "file"
+          },
+          {
+            "destroy": true
+          }
+        ]
+      }
+    },
+    {
+      "name": "oversuffix",
+      "input": {
+        "range": "bytes=-20000",
+        "size": 10000
+      },
+      "original": {
+        "status": 206,
+        "headers": {
+          "Content-Range": "bytes 0-9999/10000",
+          "Accept-Ranges": "bytes",
+          "Content-Length": 10000,
+          "Content-Type": "video/mp4",
+          "Access-Control-Allow-Origin": "*"
+        },
+        "bodyBytes": 0,
+        "calls": [
+          {
+            "stream": {
+              "start": 0,
+              "end": 9999
+            }
+          },
+          {
+            "pipe": "file"
+          },
+          {
+            "destroy": true
+          }
+        ]
+      },
+      "candidate": {
+        "status": 206,
+        "headers": {
+          "Content-Range": "bytes 0-9999/10000",
+          "Accept-Ranges": "bytes",
+          "Content-Length": 10000,
+          "Content-Type": "video/mp4",
+          "Access-Control-Allow-Origin": "*"
+        },
+        "bodyBytes": 0,
+        "calls": [
+          {
+            "stream": {
+              "start": 0,
+              "end": 9999
+            }
+          },
+          {
+            "pipe": "file"
+          },
+          {
+            "destroy": true
+          }
+        ]
+      }
+    },
+    {
+      "name": "end-clamp",
+      "input": {
+        "range": "bytes=9000-20000",
+        "size": 10000
+      },
+      "original": {
+        "status": 206,
+        "headers": {
+          "Content-Range": "bytes 9000-9999/10000",
+          "Accept-Ranges": "bytes",
+          "Content-Length": 1000,
+          "Content-Type": "video/mp4",
+          "Access-Control-Allow-Origin": "*"
+        },
+        "bodyBytes": 0,
+        "calls": [
+          {
+            "stream": {
+              "start": 9000,
+              "end": 9999
+            }
+          },
+          {
+            "pipe": "file"
+          },
+          {
+            "destroy": true
+          }
+        ]
+      },
+      "candidate": {
+        "status": 206,
+        "headers": {
+          "Content-Range": "bytes 9000-9999/10000",
+          "Accept-Ranges": "bytes",
+          "Content-Length": 1000,
+          "Content-Type": "video/mp4",
+          "Access-Control-Allow-Origin": "*"
+        },
+        "bodyBytes": 0,
+        "calls": [
+          {
+            "stream": {
+              "start": 9000,
+              "end": 9999
+            }
+          },
+          {
+            "pipe": "file"
+          },
+          {
+            "destroy": true
+          }
+        ]
+      }
+    },
+    {
+      "name": "suffix-zero",
+      "input": {
+        "range": "bytes=-0",
+        "size": 10000
+      },
+      "original": {
+        "status": 206,
+        "headers": {
+          "Content-Range": "bytes 0-0/10000",
+          "Accept-Ranges": "bytes",
+          "Content-Length": 1,
+          "Content-Type": "video/mp4",
+          "Access-Control-Allow-Origin": "*"
+        },
+        "bodyBytes": 0,
+        "calls": [
+          {
+            "stream": {
+              "start": 0,
+              "end": 0
+            }
+          },
+          {
+            "pipe": "file"
+          },
+          {
+            "destroy": true
+          }
+        ]
+      },
+      "candidate": {
+        "status": 416,
+        "headers": {
+          "Content-Range": "bytes */10000",
+          "Access-Control-Allow-Origin": "*"
+        },
+        "bodyBytes": 0,
+        "calls": []
+      }
+    },
+    {
+      "name": "start-out",
+      "input": {
+        "range": "bytes=10000-",
+        "size": 10000
+      },
+      "original": {
+        "status": 416,
+        "headers": {
+          "Content-Range": "bytes */10000",
+          "Access-Control-Allow-Origin": "*"
+        },
+        "bodyBytes": 0,
+        "calls": []
+      },
+      "candidate": {
+        "status": 416,
+        "headers": {
+          "Content-Range": "bytes */10000",
+          "Access-Control-Allow-Origin": "*"
+        },
+        "bodyBytes": 0,
+        "calls": []
+      }
+    },
+    {
+      "name": "reverse",
+      "input": {
+        "range": "bytes=4-2",
+        "size": 10000
+      },
+      "original": {
+        "status": 416,
+        "headers": {
+          "Content-Range": "bytes */10000",
+          "Access-Control-Allow-Origin": "*"
+        },
+        "bodyBytes": 0,
+        "calls": []
+      },
+      "candidate": {
+        "status": 416,
+        "headers": {
+          "Content-Range": "bytes */10000",
+          "Access-Control-Allow-Origin": "*"
+        },
+        "bodyBytes": 0,
+        "calls": []
+      }
+    },
+    {
+      "name": "empty",
+      "input": {
+        "range": "bytes=-500",
+        "size": 0
+      },
+      "original": {
+        "status": 416,
+        "headers": {
+          "Content-Range": "bytes */0",
+          "Access-Control-Allow-Origin": "*"
+        },
+        "bodyBytes": 0,
+        "calls": []
+      },
+      "candidate": {
+        "status": 200,
+        "headers": {
+          "Content-Type": "video/mp4",
+          "Cache-Control": "public, max-age=3600",
+          "ETag": "\"0-1\"",
+          "Content-Length": 0
+        },
+        "bodyBytes": 0,
+        "calls": [
+          {
+            "stream": null
+          },
+          {
+            "pipe": "file"
+          },
+          {
+            "destroy": true
+          }
+        ]
+      }
+    },
+    {
+      "name": "unit",
+      "input": {
+        "range": "items=0-5",
+        "size": 10000
+      },
+      "original": {
+        "status": 206,
+        "headers": {
+          "Content-Range": "bytes 0-5/10000",
+          "Accept-Ranges": "bytes",
+          "Content-Length": 6,
+          "Content-Type": "video/mp4",
+          "Access-Control-Allow-Origin": "*"
+        },
+        "bodyBytes": 0,
+        "calls": [
+          {
+            "stream": {
+              "start": 0,
+              "end": 5
+            }
+          },
+          {
+            "pipe": "file"
+          },
+          {
+            "destroy": true
+          }
+        ]
+      },
+      "candidate": {
+        "status": 200,
+        "headers": {
+          "Content-Type": "video/mp4",
+          "Cache-Control": "public, max-age=3600",
+          "ETag": "\"2710-1\"",
+          "Content-Length": 10000
+        },
+        "bodyBytes": 0,
+        "calls": [
+          {
+            "stream": null
+          },
+          {
+            "pipe": "file"
+          },
+          {
+            "destroy": true
+          }
+        ]
+      }
+    },
+    {
+      "name": "numeric",
+      "input": {
+        "range": "bytes=1x-9",
+        "size": 10000
+      },
+      "original": {
+        "status": 206,
+        "headers": {
+          "Content-Range": "bytes 1-9/10000",
+          "Accept-Ranges": "bytes",
+          "Content-Length": 9,
+          "Content-Type": "video/mp4",
+          "Access-Control-Allow-Origin": "*"
+        },
+        "bodyBytes": 0,
+        "calls": [
+          {
+            "stream": {
+              "start": 1,
+              "end": 9
+            }
+          },
+          {
+            "pipe": "file"
+          },
+          {
+            "destroy": true
+          }
+        ]
+      },
+      "candidate": {
+        "status": 200,
+        "headers": {
+          "Content-Type": "video/mp4",
+          "Cache-Control": "public, max-age=3600",
+          "ETag": "\"2710-1\"",
+          "Content-Length": 10000
+        },
+        "bodyBytes": 0,
+        "calls": [
+          {
+            "stream": null
+          },
+          {
+            "pipe": "file"
+          },
+          {
+            "destroy": true
+          }
+        ]
+      }
+    },
+    {
+      "name": "multi",
+      "input": {
+        "range": "bytes=0-1,8-9",
+        "size": 10000
+      },
+      "original": {
+        "status": 206,
+        "headers": {
+          "Content-Range": "bytes 0-1/10000",
+          "Accept-Ranges": "bytes",
+          "Content-Length": 2,
+          "Content-Type": "video/mp4",
+          "Access-Control-Allow-Origin": "*"
+        },
+        "bodyBytes": 0,
+        "calls": [
+          {
+            "stream": {
+              "start": 0,
+              "end": 1
+            }
+          },
+          {
+            "pipe": "file"
+          },
+          {
+            "destroy": true
+          }
+        ]
+      },
+      "candidate": {
+        "status": 200,
+        "headers": {
+          "Content-Type": "video/mp4",
+          "Cache-Control": "public, max-age=3600",
+          "ETag": "\"2710-1\"",
+          "Content-Length": 10000
+        },
+        "bodyBytes": 0,
+        "calls": [
+          {
+            "stream": null
+          },
+          {
+            "pipe": "file"
+          },
+          {
+            "destroy": true
+          }
+        ]
+      }
+    },
+    {
+      "name": "empty-range",
+      "input": {
+        "range": "bytes=-",
+        "size": 10000
+      },
+      "original": {
+        "status": 206,
+        "headers": {
+          "Content-Range": "bytes 0-9999/10000",
+          "Accept-Ranges": "bytes",
+          "Content-Length": 10000,
+          "Content-Type": "video/mp4",
+          "Access-Control-Allow-Origin": "*"
+        },
+        "bodyBytes": 0,
+        "calls": [
+          {
+            "stream": {
+              "start": 0,
+              "end": 9999
+            }
+          },
+          {
+            "pipe": "file"
+          },
+          {
+            "destroy": true
+          }
+        ]
+      },
+      "candidate": {
+        "status": 200,
+        "headers": {
+          "Content-Type": "video/mp4",
+          "Cache-Control": "public, max-age=3600",
+          "ETag": "\"2710-1\"",
+          "Content-Length": 10000
+        },
+        "bodyBytes": 0,
+        "calls": [
+          {
+            "stream": null
+          },
+          {
+            "pipe": "file"
+          },
+          {
+            "destroy": true
+          }
+        ]
+      }
+    },
+    {
+      "name": "negative",
+      "input": {
+        "range": "bytes=-1-5",
+        "size": 10000
+      },
+      "original": {
+        "status": 206,
+        "headers": {
+          "Content-Range": "bytes 0-1/10000",
+          "Accept-Ranges": "bytes",
+          "Content-Length": 2,
+          "Content-Type": "video/mp4",
+          "Access-Control-Allow-Origin": "*"
+        },
+        "bodyBytes": 0,
+        "calls": [
+          {
+            "stream": {
+              "start": 0,
+              "end": 1
+            }
+          },
+          {
+            "pipe": "file"
+          },
+          {
+            "destroy": true
+          }
+        ]
+      },
+      "candidate": {
+        "status": 200,
+        "headers": {
+          "Content-Type": "video/mp4",
+          "Cache-Control": "public, max-age=3600",
+          "ETag": "\"2710-1\"",
+          "Content-Length": 10000
+        },
+        "bodyBytes": 0,
+        "calls": [
+          {
+            "stream": null
+          },
+          {
+            "pipe": "file"
+          },
+          {
+            "destroy": true
+          }
+        ]
+      }
+    },
+    {
+      "name": "huge-start",
+      "input": {
+        "range": "bytes=999999999999999999999999-",
+        "size": 10000
+      },
+      "original": {
+        "status": 416,
+        "headers": {
+          "Content-Range": "bytes */10000",
+          "Access-Control-Allow-Origin": "*"
+        },
+        "bodyBytes": 0,
+        "calls": []
+      },
+      "candidate": {
+        "status": 416,
+        "headers": {
+          "Content-Range": "bytes */10000",
+          "Access-Control-Allow-Origin": "*"
+        },
+        "bodyBytes": 0,
+        "calls": []
+      }
+    },
+    {
+      "name": "huge-suffix",
+      "input": {
+        "range": "bytes=-999999999999999999999999",
+        "size": 10000
+      },
+      "original": {
+        "status": 206,
+        "headers": {
+          "Content-Range": "bytes 0-9999/10000",
+          "Accept-Ranges": "bytes",
+          "Content-Length": 10000,
+          "Content-Type": "video/mp4",
+          "Access-Control-Allow-Origin": "*"
+        },
+        "bodyBytes": 0,
+        "calls": [
+          {
+            "stream": {
+              "start": 0,
+              "end": 9999
+            }
+          },
+          {
+            "pipe": "file"
+          },
+          {
+            "destroy": true
+          }
+        ]
+      },
+      "candidate": {
+        "status": 206,
+        "headers": {
+          "Content-Range": "bytes 0-9999/10000",
+          "Accept-Ranges": "bytes",
+          "Content-Length": 10000,
+          "Content-Type": "video/mp4",
+          "Access-Control-Allow-Origin": "*"
+        },
+        "bodyBytes": 0,
+        "calls": [
+          {
+            "stream": {
+              "start": 0,
+              "end": 9999
+            }
+          },
+          {
+            "pipe": "file"
+          },
+          {
+            "destroy": true
+          }
+        ]
+      }
+    },
+    {
+      "name": "huge-end",
+      "input": {
+        "range": "bytes=0-999999999999999999999999",
+        "size": 10000
+      },
+      "original": {
+        "status": 206,
+        "headers": {
+          "Content-Range": "bytes 0-9999/10000",
+          "Accept-Ranges": "bytes",
+          "Content-Length": 10000,
+          "Content-Type": "video/mp4",
+          "Access-Control-Allow-Origin": "*"
+        },
+        "bodyBytes": 0,
+        "calls": [
+          {
+            "stream": {
+              "start": 0,
+              "end": 9999
+            }
+          },
+          {
+            "pipe": "file"
+          },
+          {
+            "destroy": true
+          }
+        ]
+      },
+      "candidate": {
+        "status": 206,
+        "headers": {
+          "Content-Range": "bytes 0-9999/10000",
+          "Accept-Ranges": "bytes",
+          "Content-Length": 10000,
+          "Content-Type": "video/mp4",
+          "Access-Control-Allow-Origin": "*"
+        },
+        "bodyBytes": 0,
+        "calls": [
+          {
+            "stream": {
+              "start": 0,
+              "end": 9999
+            }
+          },
+          {
+            "pipe": "file"
+          },
+          {
+            "destroy": true
+          }
+        ]
+      }
+    },
+    {
+      "name": "normal",
+      "original": {
+        "status": 200,
+        "headers": {
+          "Content-Type": "video/mp4",
+          "Cache-Control": "public, max-age=3600",
+          "ETag": "\"2710-1\"",
+          "Content-Length": 10000
+        },
+        "bodyBytes": 0,
+        "calls": [
+          {
+            "stream": null
+          },
+          {
+            "pipe": "file"
+          },
+          {
+            "destroy": true
+          }
+        ]
+      },
+      "candidate": {
+        "status": 200,
+        "headers": {
+          "Content-Type": "video/mp4",
+          "Cache-Control": "public, max-age=3600",
+          "ETag": "\"2710-1\"",
+          "Content-Length": 10000
+        },
+        "bodyBytes": 0,
+        "calls": [
+          {
+            "stream": null
+          },
+          {
+            "pipe": "file"
+          },
+          {
+            "destroy": true
+          }
+        ]
+      },
+      "preserved": true
+    },
+    {
+      "name": "html-gzip",
+      "original": {
+        "status": 200,
+        "headers": {
+          "Content-Type": "text/html",
+          "Cache-Control": "no-cache, no-store, must-revalidate",
+          "ETag": "\"2710-1\"",
+          "Pragma": "no-cache",
+          "Expires": "0",
+          "Content-Encoding": "gzip",
+          "Vary": "Accept-Encoding",
+          "Content-Length": 11
+        },
+        "bodyBytes": 11,
+        "calls": []
+      },
+      "candidate": {
+        "status": 200,
+        "headers": {
+          "Content-Type": "text/html",
+          "Cache-Control": "no-cache, no-store, must-revalidate",
+          "ETag": "\"2710-1\"",
+          "Pragma": "no-cache",
+          "Expires": "0",
+          "Content-Encoding": "gzip",
+          "Vary": "Accept-Encoding",
+          "Content-Length": 11
+        },
+        "bodyBytes": 11,
+        "calls": []
+      },
+      "preserved": true
+    },
+    {
+      "name": "js-gzip",
+      "original": {
+        "status": 200,
+        "headers": {
+          "Content-Type": "text/html",
+          "Cache-Control": "public, max-age=3600",
+          "ETag": "\"2710-1\"",
+          "Content-Encoding": "gzip",
+          "Vary": "Accept-Encoding"
+        },
+        "bodyBytes": 0,
+        "calls": [
+          {
+            "stream": null
+          },
+          {
+            "stream": null
+          },
+          {
+            "pipe": "file"
+          },
+          {
+            "pipe": "gzip"
+          },
+          {
+            "destroy": true
+          },
+          {
+            "destroy": true
+          }
+        ]
+      },
+      "candidate": {
+        "status": 200,
+        "headers": {
+          "Content-Type": "text/html",
+          "Cache-Control": "public, max-age=3600",
+          "ETag": "\"2710-1\"",
+          "Content-Encoding": "gzip",
+          "Vary": "Accept-Encoding"
+        },
+        "bodyBytes": 0,
+        "calls": [
+          {
+            "stream": null
+          },
+          {
+            "stream": null
+          },
+          {
+            "pipe": "file"
+          },
+          {
+            "pipe": "gzip"
+          },
+          {
+            "destroy": true
+          },
+          {
+            "destroy": true
+          }
+        ]
+      },
+      "preserved": true
+    },
+    {
+      "name": "cache304",
+      "original": {
+        "status": 304,
+        "headers": {
+          "Cache-Control": "public, max-age=3600",
+          "ETag": "\"2710-1\""
+        },
+        "bodyBytes": 0,
+        "calls": []
+      },
+      "candidate": {
+        "status": 304,
+        "headers": {
+          "Cache-Control": "public, max-age=3600",
+          "ETag": "\"2710-1\""
+        },
+        "bodyBytes": 0,
+        "calls": []
+      },
+      "preserved": true
+    }
+  ],
+  "head": {
+    "original": {
+      "status": 206,
+      "headers": {
+        "Content-Range": "bytes 0-9/10000",
+        "Accept-Ranges": "bytes",
+        "Content-Length": 10,
+        "Content-Type": "video/mp4",
+        "Access-Control-Allow-Origin": "*"
+      },
+      "bodyBytes": 0,
+      "calls": [
+        {
+          "stream": {
+            "start": 0,
+            "end": 9
+          }
+        },
+        {
+          "pipe": "file"
+        },
+        {
+          "destroy": true
+        }
+      ]
+    },
+    "candidate": {
+      "status": 200,
+      "headers": {
+        "Content-Type": "video/mp4",
+        "Cache-Control": "public, max-age=3600",
+        "ETag": "\"2710-1\"",
+        "Content-Length": 10000
+      },
+      "bodyBytes": 0,
+      "calls": [
+        {
+          "stream": null
+        },
+        {
+          "pipe": "file"
+        },
+        {
+          "destroy": true
+        }
+      ]
+    },
+    "limits": "Range 무시는수정됨;기존200분기는stream.pipe를호출하므로HEAD본문전송금지는실HTTP미검수·별도후속"
+  },
+  "tests": 23,
+  "limits": "추출실분기 VM req/res/fs 대역;서버/listen/실HTTP/미디어원인인수0"
+}

@@ -1,0 +1,25 @@
+--- a/server.cjs
++++ b/server.cjs
+@@ -241,12 +241,18 @@
+       const stat = fs.statSync(filePath);
+       const ext = path.extname(filePath);
+       const mime = MIME[ext] || 'application/octet-stream';
+-      const range = req.headers.range;
++      const _rangeMatch = req.method === 'GET' && stat.size > 0 && typeof req.headers.range === 'string'
++        ? /^bytes=(\d*)-(\d*)$/i.exec(req.headers.range.trim()) : null;
++      const range = _rangeMatch && (_rangeMatch[1] || _rangeMatch[2]) ? _rangeMatch : null;
+ 
+       if (range) {
+-        const parts = range.replace(/bytes=/, "").split("-");
+-        const start = parseInt(parts[0], 10) || 0;
+-        const end = Math.min(parts[1] ? parseInt(parts[1], 10) : stat.size - 1, stat.size - 1);
++        const _size = BigInt(stat.size);
++        const _first = range[1] ? BigInt(range[1]) : null;
++        const _last = range[2] ? BigInt(range[2]) : null;
++        const _start = _first === null ? (_last < _size ? _size - _last : 0n) : _first;
++        const _end = _first === null || _last === null || _last >= _size ? _size - 1n : _last;
++        const start = _start >= _size ? stat.size : Number(_start);
++        const end = Number(_end);
+         if (start >= stat.size || start > end) {
+           res.writeHead(416, { 'Content-Range': `bytes */${stat.size}`, 'Access-Control-Allow-Origin': '*' });
+           return res.end();

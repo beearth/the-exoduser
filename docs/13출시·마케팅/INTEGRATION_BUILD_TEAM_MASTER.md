@@ -1,5 +1,8 @@
 # 통합·빌드팀 운영 대장
 
+## BUILD MEDIA-RANGE 독립 후보 인계
+실제 server.cjs suffix `bytes=-500`, size10000이 원분기0-500/501바이트로 잘못 계산됨을 서버없이 추출VM 대역으로 재현했다. 최소 후보는9500-9999/500바이트, 단일bytes/큰숫자/이상입력과 기존GET 캐시/압축/HEAD Range무시 등23검사 PASS. 원본SHA `339fad6ab51cba92f6ca7a386c8aeb251f68cdb58cdfa55c109f57b1758a42ad`, 생산서버 수정0. HEAD wire/If-Range/미디어 실제원인 인수는 별도다. 후보/원결과/제약은 `tools/team-followup-20261001/BUILD/media-range-result.md` 참조. 서버/listen/포트/API/UI/Git 실행0, root 통합 대기.
+
 ## 2026-10-02 최신 통합 Mac 앱 생성 인계
 BUILD가 root의 17:09:31.515Z 원격 일치 증거와 로컬 HEAD `6be3a06b4e8d03768a35f4c57d419f45c8efeb39`의 정확7918입력을 대조했다. 직접 원격조회는 DNS 실패이며 root 제공 증거와 구분했다. QA 완료 snapshot/새실측없음 승인 뒤 17:14:19.752Z~17:15:36.564Z 새 job `08cac1ce-21fb-4874-b4df-c136df5ac269`에서 arm64 앱1개 생성. 출력 `outputs/mac-package-ready/mac-packager-08cac1ce-21fb-4874-b4df-c136df5ac269/package/EXODUSER-08cac1ce-21fb-4874-b4df-c136df5ac269.app`, loopback3383·고유 profile/save, 기존 두앱 핵심14파일 전후SHA 동일. 앱실행0·runtime/설정/저장/재실행/미디어/서명/배포 미인수. 입력·산출 목록/핵심SHA/한계는 `tools/team-followup-20261001/BUILD/integrated-mac-build-result.md` 및 전용 JSON을 따른다. 소스 원격백업과 로컬앱 생성은 별도다.
 
@@ -90,3 +93,8 @@ root가 read-only preflight28검사를 재실행해 통과했다. 최신 확인 
 ### 2026-10-02 최신 앱 Root 전수 파일 검증
 
 08cac1ce 앱의 8,258개 항목·일반파일 7,043,792,984바이트를 17:16:44.333–17:16:49.284Z에 독립 검증했다. 입력·핵심 파일·공식 주 실행파일 SHA 일치, 모든 링크가 앱 내부다. Root 원격 조회 17:14:40.072Z는 소스 6be3a06b와 정확히 일치한다. BUILD 직접 조회 DNS 실패와 구분한다. 앱은 실행하지 않았으며 로비·저장·재실행·미디어·서명·배포 인수는 미완료, 로컬 앱의 GitHub 업로드는 없다. 근거: `outputs/team-review-20261002/post-integration/app-verification.txt` 및 전체 manifest.
+
+
+### 2026-10-02 서버 합본 생산 반영 인수
+
+BUILD suffix 처리와 BALANCE 임시파일 교체 후보를 root가 server.cjs에 순차 적용했다. 원소스339fad6a→합본6a7c1083, 실제 생산 Range23+저장13+전체handler4=40그룹 PASS. 기존 실패 RED/원본과 담당20파일 SHA 보존. 저장 스키마/반환 JSON/GET 캐시·gzip 계약 유지. 실제 디스크·크래시·fsync·HTTP·영상 원인·앱 재실행은 미검수, 기존 EPERM 우회0. 상세: [서버 통합 인수](../0마스터플랜/mac-resume-20261001/vscode-dispatch/SERVER-INTEGRATION-20261002.md). 앞선 미적용 후보 기록은 제출 당시 이력이다.

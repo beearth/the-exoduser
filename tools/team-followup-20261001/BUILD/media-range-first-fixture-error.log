@@ -1,0 +1,58 @@
+node:internal/modules/run_main:107
+    triggerUncaughtException(
+    ^
+
+AssertionError [ERR_ASSERTION]: normal
+
+{
+  bodyBytes: 0,
+  calls: [
+    {
+      stream: null
+    },
+    {
+      pipe: 'file'
+    },
+    {
+      destroy: true
+    }
+  ],
+  headers: {
+    'Cache-Control': 'public, max-age=3600',
+    'Content-Length': 10000,
+    'Content-Type': 'video/mp4',
+    ETag: '"2710-1"'
+  },
+  status: 200
+}
+
+    at file:///Users/fordeargamers/Projects/exoduser-migration-20261001/tools/team-followup-20261001/BUILD/media-range-test.mjs:19:373 {
+  generatedMessage: false,
+  code: 'ERR_ASSERTION',
+  actual: {
+    status: 200,
+    headers: {
+      'Content-Type': 'video/mp4',
+      'Cache-Control': 'public, max-age=3600',
+      ETag: '"2710-1"',
+      'Content-Length': 10000
+    },
+    bodyBytes: 0,
+    calls: [ { stream: null }, { pipe: 'file' }, { destroy: true } ]
+  },
+  expected: {
+    status: 200,
+    headers: {
+      'Content-Type': 'video/mp4',
+      'Cache-Control': 'public, max-age=3600',
+      ETag: '"2710-1"',
+      'Content-Length': 10000
+    },
+    bodyBytes: 0,
+    calls: [ { stream: null }, { pipe: 'file' }, { destroy: true } ]
+  },
+  operator: 'deepStrictEqual',
+  diff: 'simple'
+}
+
+Node.js v24.15.0

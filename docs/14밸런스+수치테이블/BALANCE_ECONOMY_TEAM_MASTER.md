@@ -1,5 +1,14 @@
 # BALANCE 전투 밸런스·성장 경제팀 운영 대장
 
+## BALANCE 본인 추가: SAVE-WRITE-FAILURE 미적용 후보 (2026-10-02)
+
+| 범위 | 근거·현재 상태 | 남은 게이트 |
+|---|---|---|
+| server.cjs POST /api/save 읽기 전용 | 원문 추출·메모리 fs 부분쓰기 EIO로 기존 JSON 손상 재현. 같은 디렉터리 wx 임시쓰기/close/rename 후보와 실패/정리/호환 13 PASS | 생산 미적용. 실제 디스크/OS 교체/크래시/fsync/HTTP 미검수 |
+| 소유 산출 | tools/team-followup-20261001/BALANCE/save-write-failure-* 전용 후보/patch/검사/evidence/receipt/result | root 함수 SHA 검수 후 통합 판단. 이전 disk-save-restart EPERM 미완료 유지 |
+
+상세 근거: [전용 결과](../../tools/team-followup-20261001/BALANCE/save-write-failure-result.md). 사용자 저장·공유 악의·강화수치 변경0, 서버/네트워크 실행0. 기존 팀 기록과 타팀 초안은 보존했다.
+
 ## 2026-10-02 저장 보류분 생산 통합
 
 | 대상 | 현재 상태·계약 | 검수·남은 인수 |
@@ -153,3 +162,8 @@ Node 후보 연결과 root 보강 회귀61PASS. 게임 생성/드롭/저장라�
 ### 2026-10-02 실제 디스크 저장·재기동 검수 차단
 
 생산 pending-save drain의 기존 소스 22검사 PASS 이후 실제 격리 API 검수를 준비했다. 빈 포트 선확인에서 EPERM으로 중단되어 서버 child 0·API 0·통합 검사 0·합성 저장 파일 0이다. Root는 최종 하니스 문법만 확인했고 재실행·바인딩 변경·권한 우회를 하지 않았다. 실제 ACK→디스크→종료→재기동→load는 미검수다. 근거: `tools/team-followup-20261001/BALANCE/disk-save-restart-result.md`, `docs/15 세이브+데이터구조/BALANCE_DISK_SAVE_RESTART_20261002.md`.
+
+
+### 2026-10-02 서버 합본 생산 반영 인수
+
+BUILD suffix 처리와 BALANCE 임시파일 교체 후보를 root가 server.cjs에 순차 적용했다. 원소스339fad6a→합본6a7c1083, 실제 생산 Range23+저장13+전체handler4=40그룹 PASS. 기존 실패 RED/원본과 담당20파일 SHA 보존. 저장 스키마/반환 JSON/GET 캐시·gzip 계약 유지. 실제 디스크·크래시·fsync·HTTP·영상 원인·앱 재실행은 미검수, 기존 EPERM 우회0. 상세: [서버 통합 인수](../0마스터플랜/mac-resume-20261001/vscode-dispatch/SERVER-INTEGRATION-20261002.md). 앞선 미적용 후보 기록은 제출 당시 이력이다.

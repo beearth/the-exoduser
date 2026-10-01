@@ -56,31 +56,6 @@ const MIME = {
   '.mp4':'video/mp4','.webm':'video/webm','.glb':'model/gltf-binary','.gltf':'model/gltf+json',
 };
 
-let atomicSaveSequence = 0;
-
-function atomicSaveJSON(fs, file, data, processId) {
-  const serialized = JSON.stringify(data, null, 2);
-  const temporary = file + '.tmp-' + processId + '-' + (++atomicSaveSequence);
-  let descriptor;
-  let owned = false;
-  try {
-    descriptor = fs.openSync(temporary, 'wx');
-    owned = true;
-    fs.writeFileSync(descriptor, serialized, 'utf8');
-    fs.closeSync(descriptor);
-    descriptor = undefined;
-    fs.renameSync(temporary, file);
-    owned = false;
-  } finally {
-    if (descriptor !== undefined) {
-      try { fs.closeSync(descriptor); } catch {}
-    }
-    if (owned) {
-      try { fs.unlinkSync(temporary); } catch {}
-    }
-  }
-}
-
 function sanitizeSlot(name) {
   return String(name).replace(/[^a-zA-Z0-9가-힣_\-]/g, '_').slice(0, 50);
 }
@@ -152,7 +127,7 @@ const server = http.createServer(async (req, res) => {
       const slot = sanitizeSlot(body.slot || 'default');
       const saveData = body.data;
       if (!saveData) return sendJSON(res, 400, { ok: false, error: 'No data' });
-      atomicSaveJSON(fs, path.join(SAVE_DIR, slot + '.json'), saveData, process.pid);
+      fs.writeFileSync(path.join(SAVE_DIR, slot + '.json'), JSON.stringify(saveData, null, 2), 'utf8');
       return sendJSON(res, 200, { ok: true, slot });
     }
 
