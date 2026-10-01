@@ -1,0 +1,58 @@
+{
+  "allPass": false,
+  "cacheEntries": 6,
+  "rows": [
+    {
+      "case": "loaded-cutout",
+      "pass": true,
+      "src": "http://qa-item-skin-20261001.localhost:3340/img/ui/item-cutouts/belt_phys_cutout.png"
+    },
+    {
+      "case": "cutout-to-phys-pending",
+      "pass": true
+    },
+    {
+      "case": "cutout-to-phys-loaded",
+      "mask": true,
+      "pass": true,
+      "src": "http://qa-item-skin-20261001.localhost:3340/output/imagegen/item-skins/belt_phys.png"
+    },
+    {
+      "case": "phys-120-reuse",
+      "pass": true
+    },
+    {
+      "case": "phys-to-cutout-pending",
+      "pass": false
+    },
+    {
+      "case": "phys-to-cutout-loaded",
+      "pass": true,
+      "src": "http://qa-item-skin-20261001.localhost:3340/img/ui/item-cutouts/belt_phys_cutout.png"
+    },
+    {
+      "case": "actual-cutout-failure-phys-success",
+      "currentSrc": "http://qa-item-skin-20261001.localhost:3340/output/imagegen/item-skins/gloves_phys.png",
+      "oneShotError": true,
+      "pass": true,
+      "src": "http://qa-item-skin-20261001.localhost:3340/output/imagegen/item-skins/gloves_phys.png",
+      "width": 256
+    },
+    {
+      "case": "gloves-120-reuse-or-null",
+      "pass": true
+    },
+    {
+      "case": "actual-both-failure",
+      "currentSrc": "output/imagegen/item-skins/sword_phys.png",
+      "oneShotError": true,
+      "pass": true,
+      "src": "http://qa-item-skin-20261001.localhost:3340/output/imagegen/item-skins/sword_phys.png",
+      "width": 0
+    },
+    {
+      "case": "sword-120-reuse-or-null",
+      "pass": true
+    }
+  ]
+}

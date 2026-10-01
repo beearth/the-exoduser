@@ -1,0 +1,125 @@
+<!doctype html><meta charset="utf-8"><base href="/"><title>월드 스킨 최초 가공 분리</title><style>body{background:#16171b;color:white;font:18px sans-serif;padding:24px}canvas{width:128px;height:128px;margin:12px;background:#333}section{display:flex;align-items:center}</style><h1>월드 스킨: 실제 함수 / 실제 이미지</h1><p id="status">검사 중</p><main id="grid"></main><script>const _ELKEY=['phys','fire','ice','dark','light','holy','earth'];
+const _ITEM_CUTOUT_BASES=new Set(['armor','axe','belt','boots','bracelet','cape','crossbow','earring','gloves','helmet','necklace','pants','shield','sword']);
+const _ITEM_SKIN_MISSING_ELEMENTS=new Set(['fire']);
+const _ITEM_SKIN_MISSING_VARIANTS=new Set(['necklace_fire','cape_fire','earring_fire','ossuary_ice','ossuary_dark','ossuary_light','ossuary_holy','ossuary_earth']);
+const _worldItemSkinCache=new Map();
+function _itemSkinSrc(base,el){if(base.lastIndexOf('bone_',0)===0)return 'output/imagegen/item-skins/'+base+'.png';const variant=_ITEM_SKIN_MISSING_ELEMENTS.has(el)||_ITEM_SKIN_MISSING_VARIANTS.has(base+'_'+el)?'phys':el;return 'output/imagegen/item-skins/'+base+'_'+variant+'.png';}
+function _maskWorldDropBlack(canvas){
+  const ctx=canvas.getContext('2d',{willReadFrequently:true});
+  try{
+    const data=ctx.getImageData(0,0,canvas.width,canvas.height),px=data.data;
+    for(let i=0;i<px.length;i+=4){
+      const light=Math.max(px[i],px[i+1],px[i+2]);
+      if(light<=24)px[i+3]=0;
+      else if(light<72)px[i+3]=Math.round(px[i+3]*(light-24)/48);
+    }
+    ctx.putImageData(data,0,0);
+  }catch(_maskErr){}
+  return canvas;
+}
+function _worldItemSkin(it){
+  if(!it)return null;
+  let base=it.wtype||it.btype||it.slot||'';
+  if(it.slot==='bonePart')base='bone_'+(it.part||'skull'); // 유골 부위: bone_*.png (2026-09-01)
+  base=({ring1:'ring',ring2:'ring',headband:'earring',headband2:'earring'})[base]||base;
+  const el=_ELKEY[it.el||0]||'phys';
+  const src=_itemSkinSrc(base,el);
+  const fallback=_itemSkinSrc(base,'phys');
+  const cutoutSrc=_ITEM_CUTOUT_BASES.has(base)?'img/ui/item-cutouts/'+base+'_phys_cutout.png':'';
+  const renderSrc=cutoutSrc||src;
+  let img=_worldItemSkinCache.get(renderSrc);
+  if(!img){
+    img=new Image();
+    img.onload=()=>{img._worldDropMasked=null;};
+    if(renderSrc!==fallback)img.onerror=()=>{img.onerror=null;img._worldDropMasked=null;img.src=fallback;};
+    img.src=renderSrc;img._worldDropCutoutSrc=cutoutSrc?img.src:'';_worldItemSkinCache.set(renderSrc,img);
+  }
+  if(!img.complete||!img.naturalWidth)return null;
+  if(cutoutSrc&&img.src===img._worldDropCutoutSrc)return img; // 실제 컷아웃 로드 성공만 우회; phys 폴백은 마스킹한다.
+  if(!img._worldDropMasked){
+    const canvas=document.createElement('canvas');canvas.width=img.naturalWidth;canvas.height=img.naturalHeight;
+    canvas.getContext('2d',{willReadFrequently:true}).drawImage(img,0,0);
+    img._worldDropMasked=_maskWorldDropBlack(canvas);
+  }
+  return img._worldDropMasked;
+}
+// Temporary local QA: observes existing calls; never requests images or masks itself.
+(() => {
+  window.__worldItemSkinQA?.stop('reinstall');
+  const originalSkin=_worldItemSkin, originalMask=_maskWorldDropBlack;
+  const proto=CanvasRenderingContext2D.prototype;
+  const originals=Object.fromEntries(['drawImage','getImageData','putImageData'].map(k=>[k,proto[k]]));
+  const ids=new WeakMap(), signatures=new Map();
+  let sequence=0, active=null, mask=null;
+  const id=o=>{if(!o)return null;if(!ids.has(o))ids.set(o,++sequence);return ids.get(o);};
+  const snapshot=im=>im?{object:id(im),src:im.src,currentSrc:im.currentSrc,complete:im.complete,
+    width:im.naturalWidth,height:im.naturalHeight,maskObject:id(im._worldDropMasked)}:null;
+  const api=window.__worldItemSkinQA={startedAt:performance.now(),rows:[],calls:0,maskedCalls:0,dropped:0,
+    environment:{url:location.href,timeOrigin:performance.timeOrigin,viewport:[innerWidth,innerHeight],dpr:devicePixelRatio},
+    stopped:false,reason:null,restored:null,stop(reason='manual'){
+      if(this.stopped)return this;this.stopped=true;this.reason=reason;
+      if(_worldItemSkin===wrappedSkin)_worldItemSkin=originalSkin;
+      if(_maskWorldDropBlack===wrappedMask)_maskWorldDropBlack=originalMask;
+      for(const k of Object.keys(originals))if(proto[k]===wrappers[k])proto[k]=originals[k];
+      this.restored={skin:_worldItemSkin===originalSkin,mask:_maskWorldDropBlack===originalMask,
+        ...Object.fromEntries(Object.keys(originals).map(k=>[k,proto[k]===originals[k]]))};return this;
+    }};
+  const wrappers={};
+  for(const k of Object.keys(originals)){
+    wrappers[k]=function(...args){
+      if(api.stopped||!active)return originals[k].apply(this,args);
+      const t=performance.now();try{return originals[k].apply(this,args);}
+      finally{const end=performance.now();const row={kind:k,start:t,end,ms:end-t,canvas:id(this.canvas)};
+        active.phases.push(row);
+        if(mask&&k==='getImageData')mask.readEnd=end;
+        if(mask&&k==='putImageData')mask.loopIntervalMs=t-(mask.readEnd??t);
+      }
+    };proto[k]=wrappers[k];
+  }
+  function wrappedMask(canvas){
+    if(api.stopped||!active)return originalMask.apply(this,arguments);
+    const previous=mask, record={start:performance.now(),canvas:id(canvas),width:canvas.width,height:canvas.height};
+    mask=record;active.masks.push(record);api.maskedCalls++;
+    try{return originalMask.apply(this,arguments);}
+    finally{record.end=performance.now();record.ms=record.end-record.start;mask=previous;}
+  }
+  function wrappedSkin(it){
+    if(api.stopped||!it)return originalSkin.apply(this,arguments);
+    let base=it.wtype||it.btype||it.slot||'';
+    if(it.slot==='bonePart')base='bone_'+(it.part||'skull');
+    base=({ring1:'ring',ring2:'ring',headband:'earring',headband2:'earring'})[base]||base;
+    const element=_ELKEY[it.el||0]||'phys',src=_itemSkinSrc(base,element);
+    const cutout=_ITEM_CUTOUT_BASES.has(base)?'img/ui/item-cutouts/'+base+'_phys_cutout.png':'';
+    const key=cutout||src, previous=active;
+    const row={start:performance.now(),item:{id:it.id,name:it.name,slot:it.slot,wtype:it.wtype,btype:it.btype,el:it.el,rarity:it.rarity},
+      base,element,key,before:snapshot(_worldItemSkinCache.get(key)),phases:[],masks:[]};
+    let value;active=row;api.calls++;
+    try{return value=originalSkin.apply(this,arguments);}
+    finally{
+      row.end=performance.now();row.ms=row.end-row.start;row.after=snapshot(_worldItemSkinCache.get(key));row.result=id(value);
+      const im=_worldItemSkinCache.get(key);
+      row.branch=!value?'pending-or-failed':value===im?'loaded-cutout':'masked-raw';
+      row.missReason=!row.before?'image-cache-miss':row.masks.length?(!row.before.maskObject?'first-mask-or-load-invalidated':'replacement-mask'):'none';
+      const signature=JSON.stringify([row.after,row.branch]);
+      if(signatures.get(key)!==signature||row.masks.length||row.ms>=5){
+        if(api.rows.length<300)api.rows.push(row);else api.dropped++;
+        signatures.set(key,signature);
+      }
+      active=previous;
+    }
+  }
+  _worldItemSkin=wrappedSkin;_maskWorldDropBlack=wrappedMask;
+  return {installed:true,environment:api.environment};
+})();
+
+(async()=>{
+ const cases=[{id:1,wtype:'repeater',el:0},{id:2,wtype:'hammer',el:0},{id:3,slot:'ring1',el:4},{id:4,slot:'belt',el:0}];
+ const results=[];
+ for(const item of cases){
+  _worldItemSkin(item);const im=[..._worldItemSkinCache.values()].at(-1);await new Promise((resolve,reject)=>{if(im.complete&&im.naturalWidth)resolve();else{im.addEventListener('load',resolve,{once:true});im.addEventListener('error',reject,{once:true});}});await im.decode();
+  const first=_worldItemSkin(item);let reused=true;for(let i=0;i<120;i++)reused&&=_worldItemSkin(item)===first;
+  const row=document.createElement('section'),name=document.createElement('span');name.textContent=JSON.stringify(item);row.append(name,first);grid.append(row);
+  results.push({item,reused,currentSrc:im.currentSrc,dimensions:[im.naturalWidth,im.naturalHeight],result:first.tagName});
+ }
+ __worldItemSkinQA.stop();window.results={cases:results,observation:__worldItemSkinQA};document.getElementById('status').textContent='완료: 4종 / 각 120회 캐시 재사용';
+})().catch(e=>document.getElementById('status').textContent=String(e));</script>

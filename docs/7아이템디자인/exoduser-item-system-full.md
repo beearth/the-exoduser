@@ -983,3 +983,8 @@ renderAffixTooltip(item) → 인벤토리 툴팁 표시
 | 실패 폴백 | 기존 onerror가 data-fb 물리 PNG로 1회 재시도. 재시도 중 SVG 숨김 유지. 최종 실패로 이미지 노드가 제거되면 SVG visibility가 visible로 복귀. 로딩 대기 중에도 이미지 노드가 있으므로 SVG 숨김 |
 | 검증 | 실제 Chromium CSS2162×721에서 수정 전 정상 이미지17개 뒤의 SVG17개 노출로 검사 실패 → 수정 후 정상17개·노출0개 PASS. 별도 임시 DOM에서 숨김→물리 재시도 중 숨김→최종 실패 후 visible 및 이미지 제거 PASS. 임시 DOM 제거·저장 변경 없음 |
 | 회귀 | 기존 `test/itemSkinFallback.test.js` 3/3 통과. PNG 경로·장착·능력치·저장·홈 클릭 판정 유지 |
+
+
+### 2026-10-01 — QA-B01 월드 스킨 첫 가공 진단 / 후보 기각
+
+기준 정상 전투의 실제 dagger_phys 256² 첫 처리99.1ms 중 getImageData98.4ms, 읽기→쓰기 구간0.4ms, put0.1ms를 분리했다. 실제src/currentSrc·아이템ID·캐시객체를 기록했으며 과거repeater/hammer86.7/136.5ms 귀속은 여전히 시간상관 후보다. 최초2D컨텍스트 willReadFrequently 힌트는 137원화/40,958,608바이트0diff·폴백/재사용을 통과하고 정상후보 ring2종 read각0.4ms였으나, 별도동일repeater 최초draw41.4ms/총47.9ms(기준총9.8ms)로 늘어 **기각·생산 한 줄 원복**했다. 전체개선율/QA-B01완료 아님. 실제로드이벤트가 따뜻한캐시의앞선마스크를무효화하는별도사례도보존. 전스킨준비0·최종게임SHA원본동일·쉬운판/저장/전투불변. 다음은첫draw와read를함께줄이는좁은후보검증. [진단·기각근거·원자료](../0마스터플랜/mac-resume-20261001/Mac-아이템스킨-첫가공-검수.md).

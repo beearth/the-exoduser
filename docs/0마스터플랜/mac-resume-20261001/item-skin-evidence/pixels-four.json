@@ -1,0 +1,46 @@
+[
+  {
+    "alphaChanged": 0,
+    "baselineMs": 10,
+    "bytes": 262144,
+    "changed": 0,
+    "cpuMs": 37.60000002384186,
+    "h": 256,
+    "maxDelta": 0,
+    "name": "repeater_phys",
+    "w": 256
+  },
+  {
+    "alphaChanged": 0,
+    "baselineMs": 4.599999904632568,
+    "bytes": 262144,
+    "changed": 0,
+    "cpuMs": 3.200000047683716,
+    "h": 256,
+    "maxDelta": 0,
+    "name": "hammer_phys",
+    "w": 256
+  },
+  {
+    "alphaChanged": 0,
+    "baselineMs": 3.399999976158142,
+    "bytes": 262144,
+    "changed": 0,
+    "cpuMs": 2.399999976158142,
+    "h": 256,
+    "maxDelta": 0,
+    "name": "ring_light",
+    "w": 256
+  },
+  {
+    "alphaChanged": 0,
+    "baselineMs": 3.700000047683716,
+    "bytes": 262144,
+    "changed": 0,
+    "cpuMs": 2.299999952316284,
+    "h": 256,
+    "maxDelta": 0,
+    "name": "belt_phys",
+    "w": 256
+  }
+]

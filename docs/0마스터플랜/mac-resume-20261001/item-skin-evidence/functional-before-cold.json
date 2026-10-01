@@ -1,0 +1,442 @@
+{
+  "cases": [
+    {
+      "currentSrc": "http://qa-skin-fixture-before-20261001.localhost:3340/output/imagegen/item-skins/repeater_phys.png",
+      "dimensions": [
+        256,
+        256
+      ],
+      "item": {
+        "el": 0,
+        "id": 1,
+        "wtype": "repeater"
+      },
+      "result": "CANVAS",
+      "reused": true
+    },
+    {
+      "currentSrc": "http://qa-skin-fixture-before-20261001.localhost:3340/output/imagegen/item-skins/hammer_phys.png",
+      "dimensions": [
+        256,
+        256
+      ],
+      "item": {
+        "el": 0,
+        "id": 2,
+        "wtype": "hammer"
+      },
+      "result": "CANVAS",
+      "reused": true
+    },
+    {
+      "currentSrc": "http://qa-skin-fixture-before-20261001.localhost:3340/output/imagegen/item-skins/ring_light.png",
+      "dimensions": [
+        256,
+        256
+      ],
+      "item": {
+        "el": 4,
+        "id": 3,
+        "slot": "ring1"
+      },
+      "result": "CANVAS",
+      "reused": true
+    },
+    {
+      "currentSrc": "http://qa-skin-fixture-before-20261001.localhost:3340/img/ui/item-cutouts/belt_phys_cutout.png",
+      "dimensions": [
+        1254,
+        1254
+      ],
+      "item": {
+        "el": 0,
+        "id": 4,
+        "slot": "belt"
+      },
+      "result": "IMG",
+      "reused": true
+    }
+  ],
+  "observation": {
+    "calls": 488,
+    "dropped": 0,
+    "environment": {
+      "dpr": 1,
+      "timeOrigin": 1790845585264.6,
+      "url": "http://qa-skin-fixture-before-20261001.localhost:3340/tmp/item-skin-20261001/functional-before.html",
+      "viewport": [
+        1352,
+        663
+      ]
+    },
+    "maskedCalls": 3,
+    "reason": "manual",
+    "restored": {
+      "drawImage": true,
+      "getImageData": true,
+      "mask": true,
+      "putImageData": true,
+      "skin": true
+    },
+    "rows": [
+      {
+        "after": {
+          "complete": false,
+          "currentSrc": "",
+          "height": 0,
+          "maskObject": null,
+          "object": 1,
+          "src": "http://qa-skin-fixture-before-20261001.localhost:3340/output/imagegen/item-skins/repeater_phys.png",
+          "width": 0
+        },
+        "base": "repeater",
+        "before": null,
+        "branch": "pending-or-failed",
+        "element": "phys",
+        "end": 16.700000047683716,
+        "item": {
+          "el": 0,
+          "id": 1,
+          "wtype": "repeater"
+        },
+        "key": "output/imagegen/item-skins/repeater_phys.png",
+        "masks": [],
+        "missReason": "image-cache-miss",
+        "ms": 0.2999999523162842,
+        "phases": [],
+        "result": null,
+        "start": 16.40000009536743
+      },
+      {
+        "after": {
+          "complete": true,
+          "currentSrc": "http://qa-skin-fixture-before-20261001.localhost:3340/output/imagegen/item-skins/repeater_phys.png",
+          "height": 256,
+          "maskObject": 2,
+          "object": 1,
+          "src": "http://qa-skin-fixture-before-20261001.localhost:3340/output/imagegen/item-skins/repeater_phys.png",
+          "width": 256
+        },
+        "base": "repeater",
+        "before": {
+          "complete": true,
+          "currentSrc": "http://qa-skin-fixture-before-20261001.localhost:3340/output/imagegen/item-skins/repeater_phys.png",
+          "height": 256,
+          "maskObject": null,
+          "object": 1,
+          "src": "http://qa-skin-fixture-before-20261001.localhost:3340/output/imagegen/item-skins/repeater_phys.png",
+          "width": 256
+        },
+        "branch": "masked-raw",
+        "element": "phys",
+        "end": 3222.8000000715256,
+        "item": {
+          "el": 0,
+          "id": 1,
+          "wtype": "repeater"
+        },
+        "key": "output/imagegen/item-skins/repeater_phys.png",
+        "masks": [
+          {
+            "canvas": 2,
+            "end": 3222.8000000715256,
+            "height": 256,
+            "loopIntervalMs": 2.100000023841858,
+            "ms": 8.899999976158142,
+            "readEnd": 3220.600000023842,
+            "start": 3213.900000095367,
+            "width": 256
+          }
+        ],
+        "missReason": "first-mask-or-load-invalidated",
+        "ms": 9.800000071525574,
+        "phases": [
+          {
+            "canvas": 2,
+            "end": 3213.8000000715256,
+            "kind": "drawImage",
+            "ms": 0.5,
+            "start": 3213.3000000715256
+          },
+          {
+            "canvas": 2,
+            "end": 3220.600000023842,
+            "kind": "getImageData",
+            "ms": 6.5,
+            "start": 3214.100000023842
+          },
+          {
+            "canvas": 2,
+            "end": 3222.8000000715256,
+            "kind": "putImageData",
+            "ms": 0.10000002384185792,
+            "start": 3222.7000000476837
+          }
+        ],
+        "result": 2,
+        "start": 3213
+      },
+      {
+        "after": {
+          "complete": false,
+          "currentSrc": "",
+          "height": 0,
+          "maskObject": null,
+          "object": 3,
+          "src": "http://qa-skin-fixture-before-20261001.localhost:3340/output/imagegen/item-skins/hammer_phys.png",
+          "width": 0
+        },
+        "base": "hammer",
+        "before": null,
+        "branch": "pending-or-failed",
+        "element": "phys",
+        "end": 3224.400000095367,
+        "item": {
+          "el": 0,
+          "id": 2,
+          "wtype": "hammer"
+        },
+        "key": "output/imagegen/item-skins/hammer_phys.png",
+        "masks": [],
+        "missReason": "image-cache-miss",
+        "ms": 0.10000002384185792,
+        "phases": [],
+        "result": null,
+        "start": 3224.3000000715256
+      },
+      {
+        "after": {
+          "complete": true,
+          "currentSrc": "http://qa-skin-fixture-before-20261001.localhost:3340/output/imagegen/item-skins/hammer_phys.png",
+          "height": 256,
+          "maskObject": 4,
+          "object": 3,
+          "src": "http://qa-skin-fixture-before-20261001.localhost:3340/output/imagegen/item-skins/hammer_phys.png",
+          "width": 256
+        },
+        "base": "hammer",
+        "before": {
+          "complete": true,
+          "currentSrc": "http://qa-skin-fixture-before-20261001.localhost:3340/output/imagegen/item-skins/hammer_phys.png",
+          "height": 256,
+          "maskObject": null,
+          "object": 3,
+          "src": "http://qa-skin-fixture-before-20261001.localhost:3340/output/imagegen/item-skins/hammer_phys.png",
+          "width": 256
+        },
+        "branch": "masked-raw",
+        "element": "phys",
+        "end": 3240.600000023842,
+        "item": {
+          "el": 0,
+          "id": 2,
+          "wtype": "hammer"
+        },
+        "key": "output/imagegen/item-skins/hammer_phys.png",
+        "masks": [
+          {
+            "canvas": 4,
+            "end": 3240.600000023842,
+            "height": 256,
+            "loopIntervalMs": 0.5,
+            "ms": 3.1999999284744263,
+            "readEnd": 3240.100000023842,
+            "start": 3237.400000095367,
+            "width": 256
+          }
+        ],
+        "missReason": "first-mask-or-load-invalidated",
+        "ms": 3.5,
+        "phases": [
+          {
+            "canvas": 4,
+            "end": 3237.3000000715256,
+            "kind": "drawImage",
+            "ms": 0,
+            "start": 3237.3000000715256
+          },
+          {
+            "canvas": 4,
+            "end": 3240.100000023842,
+            "kind": "getImageData",
+            "ms": 2.600000023841858,
+            "start": 3237.5
+          },
+          {
+            "canvas": 4,
+            "end": 3240.600000023842,
+            "kind": "putImageData",
+            "ms": 0,
+            "start": 3240.600000023842
+          }
+        ],
+        "result": 4,
+        "start": 3237.100000023842
+      },
+      {
+        "after": {
+          "complete": false,
+          "currentSrc": "",
+          "height": 0,
+          "maskObject": null,
+          "object": 5,
+          "src": "http://qa-skin-fixture-before-20261001.localhost:3340/output/imagegen/item-skins/ring_light.png",
+          "width": 0
+        },
+        "base": "ring",
+        "before": null,
+        "branch": "pending-or-failed",
+        "element": "light",
+        "end": 3241.3000000715256,
+        "item": {
+          "el": 4,
+          "id": 3,
+          "slot": "ring1"
+        },
+        "key": "output/imagegen/item-skins/ring_light.png",
+        "masks": [],
+        "missReason": "image-cache-miss",
+        "ms": 0,
+        "phases": [],
+        "result": null,
+        "start": 3241.3000000715256
+      },
+      {
+        "after": {
+          "complete": true,
+          "currentSrc": "http://qa-skin-fixture-before-20261001.localhost:3340/output/imagegen/item-skins/ring_light.png",
+          "height": 256,
+          "maskObject": 6,
+          "object": 5,
+          "src": "http://qa-skin-fixture-before-20261001.localhost:3340/output/imagegen/item-skins/ring_light.png",
+          "width": 256
+        },
+        "base": "ring",
+        "before": {
+          "complete": true,
+          "currentSrc": "http://qa-skin-fixture-before-20261001.localhost:3340/output/imagegen/item-skins/ring_light.png",
+          "height": 256,
+          "maskObject": null,
+          "object": 5,
+          "src": "http://qa-skin-fixture-before-20261001.localhost:3340/output/imagegen/item-skins/ring_light.png",
+          "width": 256
+        },
+        "branch": "masked-raw",
+        "element": "light",
+        "end": 3287.5,
+        "item": {
+          "el": 4,
+          "id": 3,
+          "slot": "ring1"
+        },
+        "key": "output/imagegen/item-skins/ring_light.png",
+        "masks": [
+          {
+            "canvas": 6,
+            "end": 3287.5,
+            "height": 256,
+            "loopIntervalMs": 0.5,
+            "ms": 3.1999999284744263,
+            "readEnd": 3287,
+            "start": 3284.3000000715256,
+            "width": 256
+          }
+        ],
+        "missReason": "first-mask-or-load-invalidated",
+        "ms": 3.5,
+        "phases": [
+          {
+            "canvas": 6,
+            "end": 3284.3000000715256,
+            "kind": "drawImage",
+            "ms": 0.10000002384185792,
+            "start": 3284.2000000476837
+          },
+          {
+            "canvas": 6,
+            "end": 3287,
+            "kind": "getImageData",
+            "ms": 2.6999999284744263,
+            "start": 3284.3000000715256
+          },
+          {
+            "canvas": 6,
+            "end": 3287.5,
+            "kind": "putImageData",
+            "ms": 0,
+            "start": 3287.5
+          }
+        ],
+        "result": 6,
+        "start": 3284
+      },
+      {
+        "after": {
+          "complete": false,
+          "currentSrc": "",
+          "height": 0,
+          "maskObject": null,
+          "object": 7,
+          "src": "http://qa-skin-fixture-before-20261001.localhost:3340/img/ui/item-cutouts/belt_phys_cutout.png",
+          "width": 0
+        },
+        "base": "belt",
+        "before": null,
+        "branch": "pending-or-failed",
+        "element": "phys",
+        "end": 3288.600000023842,
+        "item": {
+          "el": 0,
+          "id": 4,
+          "slot": "belt"
+        },
+        "key": "img/ui/item-cutouts/belt_phys_cutout.png",
+        "masks": [],
+        "missReason": "image-cache-miss",
+        "ms": 0.10000002384185792,
+        "phases": [],
+        "result": null,
+        "start": 3288.5
+      },
+      {
+        "after": {
+          "complete": true,
+          "currentSrc": "http://qa-skin-fixture-before-20261001.localhost:3340/img/ui/item-cutouts/belt_phys_cutout.png",
+          "height": 1254,
+          "maskObject": null,
+          "object": 7,
+          "src": "http://qa-skin-fixture-before-20261001.localhost:3340/img/ui/item-cutouts/belt_phys_cutout.png",
+          "width": 1254
+        },
+        "base": "belt",
+        "before": {
+          "complete": true,
+          "currentSrc": "http://qa-skin-fixture-before-20261001.localhost:3340/img/ui/item-cutouts/belt_phys_cutout.png",
+          "height": 1254,
+          "maskObject": null,
+          "object": 7,
+          "src": "http://qa-skin-fixture-before-20261001.localhost:3340/img/ui/item-cutouts/belt_phys_cutout.png",
+          "width": 1254
+        },
+        "branch": "loaded-cutout",
+        "element": "phys",
+        "end": 3410.600000023842,
+        "item": {
+          "el": 0,
+          "id": 4,
+          "slot": "belt"
+        },
+        "key": "img/ui/item-cutouts/belt_phys_cutout.png",
+        "masks": [],
+        "missReason": "none",
+        "ms": 0,
+        "phases": [],
+        "result": 7,
+        "start": 3410.600000023842
+      }
+    ],
+    "startedAt": 10.400000095367432,
+    "stop": {},
+    "stopped": true
+  }
+}

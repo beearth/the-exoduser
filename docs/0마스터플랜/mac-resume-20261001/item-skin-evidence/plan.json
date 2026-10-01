@@ -1,0 +1,9 @@
+{
+  "created": "2026-10-01T17:59:38.329608",
+  "baseline": "b918a4d35c6033025217b4f233ae6fb54eb0f288",
+  "productionCandidate": "first world-skin 2d context willReadFrequently true; only if 137 assets zero-diff and phase timings justify",
+  "normal": "fresh local origin, 3340, webgpu=0, 1352x663 DPR1, unchanged options captured; native W/attack; up to two 25-second observations, stop on death; no RNG/HP/world mutations",
+  "functional": "separate extracted production functions and actual PNGs; first-use plus reused calls; no natural-play claim",
+  "stopping": "if pixel differences reject candidate; preserve baseline and publish diagnosis with remaining gates",
+  "cost": "no preload; existing Image+canvas lifetime; 256 squared RGBA 256KiB nominal per allocated canvas, actual browser/GPU memory not claimed"
+}

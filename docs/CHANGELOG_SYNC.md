@@ -51667,3 +51667,8 @@ CSS 캐시 ui-refinement.css?v=20260927-4. 신규 이미지/아이템 데이터 
 ### 2026-10-01 R 입력·정규 GL 관측과 검수 도구
 
 생산 HTML 수정0. R28시행·GL 부활5건·BUILD957파일·BALANCE 실제36적중 근거를 보존했다. R 수동 진단16만족/10미충족, BUILD LFS3FAIL, BALANCE8PASS/2SKIP(MISSING_HOOK)를 구분한다. SOUND 비교 페이지·에이전트 상태판 추가. [상세](0마스터플랜/mac-resume-20261001/R-입력과-GL-후속검수.md).
+
+
+### 2026-10-01 — QA-B01 월드 스킨 첫 가공 진단 / 후보 기각
+
+기준 정상 전투의 실제 dagger_phys 256² 첫 처리99.1ms 중 getImageData98.4ms, 읽기→쓰기 구간0.4ms, put0.1ms를 분리했다. 실제src/currentSrc·아이템ID·캐시객체를 기록했으며 과거repeater/hammer86.7/136.5ms 귀속은 여전히 시간상관 후보다. 최초2D컨텍스트 willReadFrequently 힌트는 137원화/40,958,608바이트0diff·폴백/재사용을 통과하고 정상후보 ring2종 read각0.4ms였으나, 별도동일repeater 최초draw41.4ms/총47.9ms(기준총9.8ms)로 늘어 **기각·생산 한 줄 원복**했다. 전체개선율/QA-B01완료 아님. 실제로드이벤트가 따뜻한캐시의앞선마스크를무효화하는별도사례도보존. 전스킨준비0·최종게임SHA원본동일·쉬운판/저장/전투불변. 다음은첫draw와read를함께줄이는좁은후보검증. [진단·기각근거·원자료](0마스터플랜/mac-resume-20261001/Mac-아이템스킨-첫가공-검수.md).

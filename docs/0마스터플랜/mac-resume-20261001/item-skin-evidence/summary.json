@@ -1,0 +1,697 @@
+{
+  "before": {
+    "inputMs": 19303.700000047684,
+    "initial": {
+      "atmos": 1,
+      "enemies": 14,
+      "focus": true,
+      "fpsCap": 0,
+      "hidden": false,
+      "hp": 527,
+      "items": 0,
+      "kills": 0,
+      "on": true,
+      "paused": false,
+      "projectiles": 3,
+      "x": 4020,
+      "y": 7420
+    },
+    "end": {
+      "at": 111912.80000007153,
+      "atmos": 1,
+      "enemies": 40,
+      "focus": true,
+      "fpsCap": 0,
+      "hidden": false,
+      "hp": 0,
+      "items": 3,
+      "kills": 6,
+      "on": true,
+      "paused": false,
+      "projectiles": 2,
+      "x": 4029.067813671934,
+      "y": 6993.627401984042
+    },
+    "options": {
+      "ambPart": true,
+      "atmos": 1,
+      "autoPotThr": 0.99,
+      "bgmTrack": "auto",
+      "bgmVol": 60,
+      "bloom": true,
+      "bossDebug": false,
+      "bossFog": true,
+      "crAutoEnh": -1,
+      "crAutoFuse": -1,
+      "cursor": 0,
+      "cursorSize": 50,
+      "deathFx": true,
+      "diff": 5,
+      "fog": true,
+      "fpsCap": 0,
+      "grain": true,
+      "hitStop": 0,
+      "lang": "ko",
+      "lighting": true,
+      "minPickLvTier": 0,
+      "minPickRar": 0,
+      "outline": true,
+      "parts": 100,
+      "petAuto": true,
+      "postfx": true,
+      "quality": "high",
+      "resScale": 100,
+      "sfxVol": 60,
+      "shake": 80,
+      "showFps": false,
+      "slash": true,
+      "ssaa": 1,
+      "torch": true,
+      "trail": true
+    },
+    "finalOptions": {
+      "ambPart": true,
+      "atmos": 1,
+      "autoPotThr": 0.99,
+      "bgmTrack": "auto",
+      "bgmVol": 60,
+      "bloom": true,
+      "bossDebug": false,
+      "bossFog": true,
+      "crAutoEnh": -1,
+      "crAutoFuse": -1,
+      "cursor": 0,
+      "cursorSize": 50,
+      "deathFx": true,
+      "diff": 5,
+      "fog": true,
+      "fpsCap": 0,
+      "grain": true,
+      "hitStop": 0,
+      "lang": "ko",
+      "lighting": true,
+      "minPickLvTier": 0,
+      "minPickRar": 0,
+      "outline": true,
+      "parts": 100,
+      "petAuto": true,
+      "postfx": true,
+      "quality": "high",
+      "resScale": 100,
+      "sfxVol": 60,
+      "shake": 80,
+      "showFps": false,
+      "slash": true,
+      "ssaa": 1,
+      "torch": true,
+      "trail": true
+    },
+    "environment": {
+      "canvas": [
+        1352,
+        662
+      ],
+      "dpr": 1,
+      "gpuTiming": false,
+      "performanceEntryTypes": [
+        "element",
+        "event",
+        "first-input",
+        "interaction-contentful-paint",
+        "largest-contentful-paint",
+        "layout-shift",
+        "long-animation-frame",
+        "longtask",
+        "mark",
+        "measure",
+        "navigation",
+        "paint",
+        "resource",
+        "soft-navigation",
+        "visibility-state"
+      ],
+      "physicsStep": 16.666666666666668,
+      "profiler": false,
+      "timeOrigin": 1790845190228,
+      "ua": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/152.0.0.0 Safari/537.36",
+      "url": "http://qa-item-skin-base-20261001.localhost:3340/game.html?webgpu=0",
+      "useGL": true,
+      "useGPU": false,
+      "viewport": [
+        1352,
+        663
+      ],
+      "warm": true,
+      "warmMs": 8.299999952316284
+    },
+    "maskRows": [
+      {
+        "after": {
+          "complete": true,
+          "currentSrc": "http://qa-item-skin-base-20261001.localhost:3340/output/imagegen/item-skins/dagger_phys.png",
+          "height": 256,
+          "maskObject": 4,
+          "object": 3,
+          "src": "http://qa-item-skin-base-20261001.localhost:3340/output/imagegen/item-skins/dagger_phys.png",
+          "width": 256
+        },
+        "base": "dagger",
+        "before": {
+          "complete": true,
+          "currentSrc": "http://qa-item-skin-base-20261001.localhost:3340/output/imagegen/item-skins/dagger_phys.png",
+          "height": 256,
+          "maskObject": null,
+          "object": 3,
+          "src": "http://qa-item-skin-base-20261001.localhost:3340/output/imagegen/item-skins/dagger_phys.png",
+          "width": 256
+        },
+        "branch": "masked-raw",
+        "element": "phys",
+        "end": 110597.60000002384,
+        "item": {
+          "el": 0,
+          "id": 1790845300693.1355,
+          "name": "녹슨 단검",
+          "rarity": 0,
+          "slot": "weapon",
+          "wtype": "dagger"
+        },
+        "key": "output/imagegen/item-skins/dagger_phys.png",
+        "masks": [
+          {
+            "canvas": 4,
+            "end": 110597.60000002384,
+            "height": 256,
+            "loopIntervalMs": 0.3999999761581421,
+            "ms": 98.89999997615814,
+            "readEnd": 110597.10000002384,
+            "start": 110498.70000004768,
+            "width": 256
+          }
+        ],
+        "missReason": "first-mask-or-load-invalidated",
+        "ms": 99.10000002384186,
+        "phases": [
+          {
+            "canvas": 4,
+            "end": 110498.70000004768,
+            "kind": "drawImage",
+            "ms": 0.10000002384185792,
+            "start": 110498.60000002384
+          },
+          {
+            "canvas": 4,
+            "end": 110597.10000002384,
+            "kind": "getImageData",
+            "ms": 98.39999997615814,
+            "start": 110498.70000004768
+          },
+          {
+            "canvas": 4,
+            "end": 110597.60000002384,
+            "kind": "putImageData",
+            "ms": 0.10000002384185792,
+            "start": 110597.5
+          }
+        ],
+        "result": 4,
+        "start": 110498.5
+      }
+    ],
+    "skinAggregateIncludesPostStop": true,
+    "skinCalls": 1228,
+    "observerRestored": {
+      "drawImage": true,
+      "getImageData": true,
+      "mask": true,
+      "putImageData": true,
+      "skin": true
+    },
+    "timelineRestored": {
+      "draw": true,
+      "loop": true,
+      "update": true
+    },
+    "timelineBindings": {
+      "_addCorpse": true,
+      "_addHeadGib": true,
+      "_drCapture": true,
+      "_drawBurst": true,
+      "_fmDeathFx": true,
+      "_maskWorldDropBlack": true,
+      "_texPreDrain": true,
+      "_tickBgInit": true,
+      "_tickBuildMapCache": true,
+      "_tickStreamChunkBuild": true,
+      "_worldDropFxTile": true,
+      "_worldItemSkin": true,
+      "draw": true,
+      "hurtE": true,
+      "update": true
+    },
+    "rowsDropped": 0
+  },
+  "after": {
+    "inputMs": 17686.800000071526,
+    "initial": {
+      "atmos": 1,
+      "enemies": 5,
+      "focus": true,
+      "fpsCap": 0,
+      "hidden": false,
+      "hp": 565,
+      "items": 0,
+      "kills": 0,
+      "on": true,
+      "paused": false,
+      "projectiles": 0,
+      "x": 4020,
+      "y": 7420
+    },
+    "end": {
+      "at": 57207,
+      "atmos": 1,
+      "enemies": 42,
+      "focus": true,
+      "fpsCap": 0,
+      "hidden": false,
+      "hp": 0,
+      "items": 4,
+      "kills": 4,
+      "on": true,
+      "paused": false,
+      "projectiles": 0,
+      "x": 4006.3956487987016,
+      "y": 7168.923608925729
+    },
+    "options": {
+      "ambPart": true,
+      "atmos": 1,
+      "autoPotThr": 0.99,
+      "bgmTrack": "auto",
+      "bgmVol": 60,
+      "bloom": true,
+      "bossDebug": false,
+      "bossFog": true,
+      "crAutoEnh": -1,
+      "crAutoFuse": -1,
+      "cursor": 0,
+      "cursorSize": 50,
+      "deathFx": true,
+      "diff": 5,
+      "fog": true,
+      "fpsCap": 0,
+      "grain": true,
+      "hitStop": 0,
+      "lang": "ko",
+      "lighting": true,
+      "minPickLvTier": 0,
+      "minPickRar": 0,
+      "outline": true,
+      "parts": 100,
+      "petAuto": true,
+      "postfx": true,
+      "quality": "high",
+      "resScale": 100,
+      "sfxVol": 60,
+      "shake": 80,
+      "showFps": false,
+      "slash": true,
+      "ssaa": 1,
+      "torch": true,
+      "trail": true
+    },
+    "finalOptions": {
+      "ambPart": true,
+      "atmos": 1,
+      "autoPotThr": 0.99,
+      "bgmTrack": "auto",
+      "bgmVol": 60,
+      "bloom": true,
+      "bossDebug": false,
+      "bossFog": true,
+      "crAutoEnh": -1,
+      "crAutoFuse": -1,
+      "cursor": 0,
+      "cursorSize": 50,
+      "deathFx": true,
+      "diff": 5,
+      "fog": true,
+      "fpsCap": 0,
+      "grain": true,
+      "hitStop": 0,
+      "lang": "ko",
+      "lighting": true,
+      "minPickLvTier": 0,
+      "minPickRar": 0,
+      "outline": true,
+      "parts": 100,
+      "petAuto": true,
+      "postfx": true,
+      "quality": "high",
+      "resScale": 100,
+      "sfxVol": 60,
+      "shake": 80,
+      "showFps": false,
+      "slash": true,
+      "ssaa": 1,
+      "torch": true,
+      "trail": true
+    },
+    "environment": {
+      "canvas": [
+        1352,
+        662
+      ],
+      "dpr": 1,
+      "gpuTiming": false,
+      "performanceEntryTypes": [
+        "element",
+        "event",
+        "first-input",
+        "interaction-contentful-paint",
+        "largest-contentful-paint",
+        "layout-shift",
+        "long-animation-frame",
+        "longtask",
+        "mark",
+        "measure",
+        "navigation",
+        "paint",
+        "resource",
+        "soft-navigation",
+        "visibility-state"
+      ],
+      "physicsStep": 16.666666666666668,
+      "profiler": false,
+      "timeOrigin": 1790845387151.9,
+      "ua": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/152.0.0.0 Safari/537.36",
+      "url": "http://qa-item-skin-final-20261001.localhost:3340/game.html?webgpu=0",
+      "useGL": true,
+      "useGPU": false,
+      "viewport": [
+        1352,
+        663
+      ],
+      "warm": true,
+      "warmMs": 7.700000047683716
+    },
+    "maskRows": [
+      {
+        "after": {
+          "complete": true,
+          "currentSrc": "http://qa-item-skin-final-20261001.localhost:3340/output/imagegen/item-skins/ring_phys.png",
+          "height": 256,
+          "maskObject": 2,
+          "object": 1,
+          "src": "http://qa-item-skin-final-20261001.localhost:3340/output/imagegen/item-skins/ring_phys.png",
+          "width": 256
+        },
+        "base": "ring",
+        "before": {
+          "complete": true,
+          "currentSrc": "http://qa-item-skin-final-20261001.localhost:3340/output/imagegen/item-skins/ring_phys.png",
+          "height": 256,
+          "maskObject": null,
+          "object": 1,
+          "src": "http://qa-item-skin-final-20261001.localhost:3340/output/imagegen/item-skins/ring_phys.png",
+          "width": 256
+        },
+        "branch": "masked-raw",
+        "element": "phys",
+        "end": 45667.60000002384,
+        "item": {
+          "el": 0,
+          "id": 1790845432782.6155,
+          "name": "녹슨 반지",
+          "rarity": 0,
+          "slot": "ring1"
+        },
+        "key": "output/imagegen/item-skins/ring_phys.png",
+        "masks": [
+          {
+            "canvas": 2,
+            "end": 45667.60000002384,
+            "height": 256,
+            "loopIntervalMs": 0.6000000238418579,
+            "ms": 1,
+            "readEnd": 45667,
+            "start": 45666.60000002384,
+            "width": 256
+          }
+        ],
+        "missReason": "first-mask-or-load-invalidated",
+        "ms": 1.4000000953674316,
+        "phases": [
+          {
+            "canvas": 2,
+            "end": 45666.5,
+            "kind": "drawImage",
+            "ms": 0.30000007152557373,
+            "start": 45666.199999928474
+          },
+          {
+            "canvas": 2,
+            "end": 45667,
+            "kind": "getImageData",
+            "ms": 0.3999999761581421,
+            "start": 45666.60000002384
+          },
+          {
+            "canvas": 2,
+            "end": 45667.60000002384,
+            "kind": "putImageData",
+            "ms": 0,
+            "start": 45667.60000002384
+          }
+        ],
+        "result": 2,
+        "start": 45666.199999928474
+      },
+      {
+        "after": {
+          "complete": true,
+          "currentSrc": "http://qa-item-skin-final-20261001.localhost:3340/output/imagegen/item-skins/ring_light.png",
+          "height": 256,
+          "maskObject": 5,
+          "object": 4,
+          "src": "http://qa-item-skin-final-20261001.localhost:3340/output/imagegen/item-skins/ring_light.png",
+          "width": 256
+        },
+        "base": "ring",
+        "before": {
+          "complete": true,
+          "currentSrc": "http://qa-item-skin-final-20261001.localhost:3340/output/imagegen/item-skins/ring_light.png",
+          "height": 256,
+          "maskObject": null,
+          "object": 4,
+          "src": "http://qa-item-skin-final-20261001.localhost:3340/output/imagegen/item-skins/ring_light.png",
+          "width": 256
+        },
+        "branch": "masked-raw",
+        "element": "light",
+        "end": 49395.89999997616,
+        "item": {
+          "el": 4,
+          "id": 1790845436507.1565,
+          "name": "전기 반지",
+          "rarity": 0,
+          "slot": "ring1"
+        },
+        "key": "output/imagegen/item-skins/ring_light.png",
+        "masks": [
+          {
+            "canvas": 5,
+            "end": 49395.89999997616,
+            "height": 256,
+            "loopIntervalMs": 0.20000004768371585,
+            "ms": 0.6000000238418579,
+            "readEnd": 49395.699999928474,
+            "start": 49395.29999995232,
+            "width": 256
+          }
+        ],
+        "missReason": "first-mask-or-load-invalidated",
+        "ms": 0.8999999761581421,
+        "phases": [
+          {
+            "canvas": 5,
+            "end": 49395.29999995232,
+            "kind": "drawImage",
+            "ms": 0.2999999523162842,
+            "start": 49395
+          },
+          {
+            "canvas": 5,
+            "end": 49395.699999928474,
+            "kind": "getImageData",
+            "ms": 0.3999999761581421,
+            "start": 49395.29999995232
+          },
+          {
+            "canvas": 5,
+            "end": 49395.89999997616,
+            "kind": "putImageData",
+            "ms": 0,
+            "start": 49395.89999997616
+          }
+        ],
+        "result": 5,
+        "start": 49395
+      }
+    ],
+    "skinAggregateIncludesPostStop": true,
+    "skinCalls": 1348,
+    "observerRestored": {
+      "drawImage": true,
+      "getImageData": true,
+      "mask": true,
+      "putImageData": true,
+      "skin": true
+    },
+    "timelineRestored": {
+      "draw": true,
+      "loop": true,
+      "update": true
+    },
+    "timelineBindings": {
+      "_addCorpse": true,
+      "_addHeadGib": true,
+      "_drCapture": true,
+      "_drawBurst": true,
+      "_fmDeathFx": true,
+      "_maskWorldDropBlack": true,
+      "_texPreDrain": true,
+      "_tickBgInit": true,
+      "_tickBuildMapCache": true,
+      "_tickStreamChunkBuild": true,
+      "_worldDropFxTile": true,
+      "_worldItemSkin": true,
+      "draw": true,
+      "hurtE": true,
+      "update": true
+    },
+    "rowsDropped": 0
+  },
+  "decision": "REJECT: hint lowers measured readback but raises first repeater draw/total in isolated same-image cold-origin fixture; original production bytes restored",
+  "sourceHashRestored": "78c3a0c763eb32cb39056835d3eaf30f3402bc054a463028bde783bf4e4f0e28",
+  "httpMatches": true,
+  "teams": [
+    {
+      "pid": 26669,
+      "cwd": "/Users/fordeargamers/Projects/exoduser-migration-20261001",
+      "kind": "interactive",
+      "startedAt": 1790805527902,
+      "sessionId": "c79046b7-dc57-4f1d-9ac8-f44f88039fe7",
+      "name": "exoduser-migration-20261001-ff",
+      "status": "idle"
+    },
+    {
+      "id": "92f20335",
+      "cwd": "/Users/fordeargamers/Projects/exoduser-migration-20261001",
+      "kind": "background",
+      "startedAt": 1790805778089,
+      "sessionId": "92f20335-1a88-4ed7-9b57-32a7441609c4",
+      "name": "EXODUSER-Mac-ART",
+      "state": "done"
+    },
+    {
+      "id": "44508f89",
+      "cwd": "/Users/fordeargamers/Projects/exoduser-migration-20261001",
+      "kind": "background",
+      "startedAt": 1790805779159,
+      "sessionId": "44508f89-4549-4a99-a1f0-30c048997c44",
+      "name": "EXODUSER-Mac-MAP",
+      "state": "done"
+    },
+    {
+      "id": "b9eeea10",
+      "cwd": "/Users/fordeargamers/Projects/exoduser-migration-20261001",
+      "kind": "background",
+      "startedAt": 1790805779958,
+      "sessionId": "b9eeea10-895d-46cf-9039-1bbcb95bcb5d",
+      "name": "EXODUSER-Mac-SKILL",
+      "state": "done"
+    },
+    {
+      "id": "4b78d932",
+      "cwd": "/Users/fordeargamers/Projects/exoduser-migration-20261001",
+      "kind": "background",
+      "startedAt": 1790805780754,
+      "sessionId": "4b78d932-aeb6-492a-ad5f-ce0524ade4ce",
+      "name": "EXODUSER-Mac-UIUX",
+      "state": "done"
+    },
+    {
+      "id": "a1c26e3a",
+      "cwd": "/Users/fordeargamers/Projects/exoduser-migration-20261001",
+      "kind": "background",
+      "startedAt": 1790805781575,
+      "sessionId": "a1c26e3a-5431-41aa-9c8d-db10ada69680",
+      "name": "EXODUSER-Mac-ITEM",
+      "state": "done"
+    },
+    {
+      "id": "aa3ac0ed",
+      "cwd": "/Users/fordeargamers/Projects/exoduser-migration-20261001",
+      "kind": "background",
+      "startedAt": 1790805782408,
+      "sessionId": "aa3ac0ed-f4e5-44ad-a0b2-d4d2da045b84",
+      "name": "EXODUSER-Mac-SOUND",
+      "state": "done"
+    },
+    {
+      "id": "f63e19c0",
+      "cwd": "/Users/fordeargamers/Projects/exoduser-migration-20261001",
+      "kind": "background",
+      "startedAt": 1790805783201,
+      "sessionId": "f63e19c0-babb-4773-8307-2a7d89cd317c",
+      "name": "EXODUSER-Mac-QA",
+      "state": "done"
+    },
+    {
+      "id": "02420005",
+      "cwd": "/Users/fordeargamers/Projects/exoduser-migration-20261001",
+      "kind": "background",
+      "startedAt": 1790805783980,
+      "sessionId": "02420005-fd8a-43d6-8457-6c4ea6b7be1d",
+      "name": "EXODUSER-Mac-ENEMY",
+      "state": "done"
+    },
+    {
+      "id": "70f84406",
+      "cwd": "/Users/fordeargamers/Projects/exoduser-migration-20261001",
+      "kind": "background",
+      "startedAt": 1790805784721,
+      "sessionId": "70f84406-7599-4186-ae73-48ee7c2a55d3",
+      "name": "EXODUSER-Mac-BUILD",
+      "state": "done"
+    },
+    {
+      "id": "1fd751d8",
+      "cwd": "/Users/fordeargamers/Projects/exoduser-migration-20261001",
+      "kind": "background",
+      "startedAt": 1790805785523,
+      "sessionId": "1fd751d8-1b6b-4685-a68f-fc5579022217",
+      "name": "EXODUSER-Mac-BALANCE",
+      "state": "done"
+    },
+    {
+      "id": "720a6335",
+      "cwd": "/Users/fordeargamers/Projects/exoduser-migration-20261001",
+      "kind": "background",
+      "startedAt": 1790805786355,
+      "sessionId": "720a6335-3dcb-4912-a3d5-91899f01d887",
+      "name": "EXODUSER-Mac-ANIMVFX",
+      "state": "done"
+    }
+  ],
+  "cleanup": {
+    "gameNavigatedAway": true,
+    "networkBlockCleared": true,
+    "viewportReset": true,
+    "productionRestored": true,
+    "easyDiffEmpty": true,
+    "noBuildOrEncoding": true
+  }
+}

@@ -1,0 +1,33 @@
+✔ all 20 tiles use the existing cache, yield individually and reuse identical objects (1.953084ms)
+✔ a delayed frame does not block a ready frame; both finish after arrival (0.47025ms)
+✔ failed and undersized images only skip unavailable tiles; never create out-of-atlas tiles (0.376875ms)
+✔ stalled image has a finite timeout and later remains retryable (1.140333ms)
+✔ combat, cancellation or a replacement boot stops processing after the current task (0.998167ms)
+✔ processing failure preserves successful cache and releases in-flight guard for retry (0.329708ms)
+✔ deadline includes processing time; remaining jobs use lazy fallback (0.221333ms)
+✔ common boot awaits optional preparation between asset preload and renderer initialization (1.849917ms)
+✔ replacement boot shares pending cancellation, then can retry after settlement (0.358792ms)
+✔ drop preview query spawns isolated rarity samples only when explicitly enabled (9.079542ms)
+✔ world drops keep a readable inventory skin in front of a subdued item-pillar without floating item-name text (12.788916ms)
+✔ equipment drops alternate two centered item-pillar frames without lateral motion (9.745291ms)
+✔ main: successful cutout keeps original alpha and never masks or allocates a canvas (61.568125ms)
+✔ game.html: initial/fallback loading returns null; successful phys fallback masks once and reuses (22.689167ms)
+✔ game.html: both primary and phys failure stay null without retry loops (22.125792ms)
+✔ game.html: same Image source transition is null while pending and onload invalidates old mask (21.061292ms)
+✔ game-easy-test.html: initial/fallback loading returns null; successful phys fallback masks once and reuses (17.987167ms)
+✔ game-easy-test.html: both primary and phys failure stay null without retry loops (18.126083ms)
+✔ game-easy-test.html: same Image source transition is null while pending and onload invalidates old mask (18.836083ms)
+✔ main: same Image cutout → phys → cutout follows current loaded source, not item classification (20.301875ms)
+✔ easy: successful element art still uses raw source and black masking, without cutout policy (20.638083ms)
+✔ observer records first processing source, phase split and cache reuse without extra processing (1.937875ms)
+✔ observer preserves exceptions and restores its context after failures (0.469417ms)
+✔ observer stop does not overwrite a newer owner (0.24175ms)
+✔ stopped wrapper remains inert when another owner later restores it (0.24875ms)
+ℹ tests 25
+ℹ suites 0
+ℹ pass 25
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 276.846583

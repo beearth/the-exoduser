@@ -1,0 +1,442 @@
+{
+  "cases": [
+    {
+      "currentSrc": "http://qa-item-skin-20261001.localhost:3340/output/imagegen/item-skins/repeater_phys.png",
+      "dimensions": [
+        256,
+        256
+      ],
+      "item": {
+        "el": 0,
+        "id": 1,
+        "wtype": "repeater"
+      },
+      "result": "CANVAS",
+      "reused": true
+    },
+    {
+      "currentSrc": "http://qa-item-skin-20261001.localhost:3340/output/imagegen/item-skins/hammer_phys.png",
+      "dimensions": [
+        256,
+        256
+      ],
+      "item": {
+        "el": 0,
+        "id": 2,
+        "wtype": "hammer"
+      },
+      "result": "CANVAS",
+      "reused": true
+    },
+    {
+      "currentSrc": "http://qa-item-skin-20261001.localhost:3340/output/imagegen/item-skins/ring_light.png",
+      "dimensions": [
+        256,
+        256
+      ],
+      "item": {
+        "el": 4,
+        "id": 3,
+        "slot": "ring1"
+      },
+      "result": "CANVAS",
+      "reused": true
+    },
+    {
+      "currentSrc": "http://qa-item-skin-20261001.localhost:3340/img/ui/item-cutouts/belt_phys_cutout.png",
+      "dimensions": [
+        1254,
+        1254
+      ],
+      "item": {
+        "el": 0,
+        "id": 4,
+        "slot": "belt"
+      },
+      "result": "IMG",
+      "reused": true
+    }
+  ],
+  "observation": {
+    "calls": 488,
+    "dropped": 0,
+    "environment": {
+      "dpr": 1,
+      "timeOrigin": 1790845322194.7,
+      "url": "http://qa-item-skin-20261001.localhost:3340/tmp/item-skin-20261001/functional.html",
+      "viewport": [
+        1352,
+        663
+      ]
+    },
+    "maskedCalls": 3,
+    "reason": "manual",
+    "restored": {
+      "drawImage": true,
+      "getImageData": true,
+      "mask": true,
+      "putImageData": true,
+      "skin": true
+    },
+    "rows": [
+      {
+        "after": {
+          "complete": false,
+          "currentSrc": "",
+          "height": 0,
+          "maskObject": null,
+          "object": 1,
+          "src": "http://qa-item-skin-20261001.localhost:3340/output/imagegen/item-skins/repeater_phys.png",
+          "width": 0
+        },
+        "base": "repeater",
+        "before": null,
+        "branch": "pending-or-failed",
+        "element": "phys",
+        "end": 17,
+        "item": {
+          "el": 0,
+          "id": 1,
+          "wtype": "repeater"
+        },
+        "key": "output/imagegen/item-skins/repeater_phys.png",
+        "masks": [],
+        "missReason": "image-cache-miss",
+        "ms": 0.30000007152557373,
+        "phases": [],
+        "result": null,
+        "start": 16.699999928474426
+      },
+      {
+        "after": {
+          "complete": true,
+          "currentSrc": "http://qa-item-skin-20261001.localhost:3340/output/imagegen/item-skins/repeater_phys.png",
+          "height": 256,
+          "maskObject": 2,
+          "object": 1,
+          "src": "http://qa-item-skin-20261001.localhost:3340/output/imagegen/item-skins/repeater_phys.png",
+          "width": 256
+        },
+        "base": "repeater",
+        "before": {
+          "complete": true,
+          "currentSrc": "http://qa-item-skin-20261001.localhost:3340/output/imagegen/item-skins/repeater_phys.png",
+          "height": 256,
+          "maskObject": null,
+          "object": 1,
+          "src": "http://qa-item-skin-20261001.localhost:3340/output/imagegen/item-skins/repeater_phys.png",
+          "width": 256
+        },
+        "branch": "masked-raw",
+        "element": "phys",
+        "end": 3045,
+        "item": {
+          "el": 0,
+          "id": 1,
+          "wtype": "repeater"
+        },
+        "key": "output/imagegen/item-skins/repeater_phys.png",
+        "masks": [
+          {
+            "canvas": 2,
+            "end": 3045,
+            "height": 256,
+            "loopIntervalMs": 1.600000023841858,
+            "ms": 5,
+            "readEnd": 3043.399999976158,
+            "start": 3040,
+            "width": 256
+          }
+        ],
+        "missReason": "first-mask-or-load-invalidated",
+        "ms": 5.900000095367432,
+        "phases": [
+          {
+            "canvas": 2,
+            "end": 3039.899999976158,
+            "kind": "drawImage",
+            "ms": 0.6000000238418579,
+            "start": 3039.2999999523163
+          },
+          {
+            "canvas": 2,
+            "end": 3043.399999976158,
+            "kind": "getImageData",
+            "ms": 3.3000000715255737,
+            "start": 3040.099999904633
+          },
+          {
+            "canvas": 2,
+            "end": 3045,
+            "kind": "putImageData",
+            "ms": 0,
+            "start": 3045
+          }
+        ],
+        "result": 2,
+        "start": 3039.099999904633
+      },
+      {
+        "after": {
+          "complete": false,
+          "currentSrc": "",
+          "height": 0,
+          "maskObject": null,
+          "object": 3,
+          "src": "http://qa-item-skin-20261001.localhost:3340/output/imagegen/item-skins/hammer_phys.png",
+          "width": 0
+        },
+        "base": "hammer",
+        "before": null,
+        "branch": "pending-or-failed",
+        "element": "phys",
+        "end": 3045.899999976158,
+        "item": {
+          "el": 0,
+          "id": 2,
+          "wtype": "hammer"
+        },
+        "key": "output/imagegen/item-skins/hammer_phys.png",
+        "masks": [],
+        "missReason": "image-cache-miss",
+        "ms": 0,
+        "phases": [],
+        "result": null,
+        "start": 3045.899999976158
+      },
+      {
+        "after": {
+          "complete": true,
+          "currentSrc": "http://qa-item-skin-20261001.localhost:3340/output/imagegen/item-skins/hammer_phys.png",
+          "height": 256,
+          "maskObject": 4,
+          "object": 3,
+          "src": "http://qa-item-skin-20261001.localhost:3340/output/imagegen/item-skins/hammer_phys.png",
+          "width": 256
+        },
+        "base": "hammer",
+        "before": {
+          "complete": true,
+          "currentSrc": "http://qa-item-skin-20261001.localhost:3340/output/imagegen/item-skins/hammer_phys.png",
+          "height": 256,
+          "maskObject": null,
+          "object": 3,
+          "src": "http://qa-item-skin-20261001.localhost:3340/output/imagegen/item-skins/hammer_phys.png",
+          "width": 256
+        },
+        "branch": "masked-raw",
+        "element": "phys",
+        "end": 3062.2999999523163,
+        "item": {
+          "el": 0,
+          "id": 2,
+          "wtype": "hammer"
+        },
+        "key": "output/imagegen/item-skins/hammer_phys.png",
+        "masks": [
+          {
+            "canvas": 4,
+            "end": 3062.2999999523163,
+            "height": 256,
+            "loopIntervalMs": 0.2999999523162842,
+            "ms": 3.100000023841858,
+            "readEnd": 3062,
+            "start": 3059.1999999284744,
+            "width": 256
+          }
+        ],
+        "missReason": "first-mask-or-load-invalidated",
+        "ms": 3.299999952316284,
+        "phases": [
+          {
+            "canvas": 4,
+            "end": 3059.1999999284744,
+            "kind": "drawImage",
+            "ms": 0.10000002384185792,
+            "start": 3059.099999904633
+          },
+          {
+            "canvas": 4,
+            "end": 3062,
+            "kind": "getImageData",
+            "ms": 2.8000000715255737,
+            "start": 3059.1999999284744
+          },
+          {
+            "canvas": 4,
+            "end": 3062.2999999523163,
+            "kind": "putImageData",
+            "ms": 0,
+            "start": 3062.2999999523163
+          }
+        ],
+        "result": 4,
+        "start": 3059
+      },
+      {
+        "after": {
+          "complete": false,
+          "currentSrc": "",
+          "height": 0,
+          "maskObject": null,
+          "object": 5,
+          "src": "http://qa-item-skin-20261001.localhost:3340/output/imagegen/item-skins/ring_light.png",
+          "width": 0
+        },
+        "base": "ring",
+        "before": null,
+        "branch": "pending-or-failed",
+        "element": "light",
+        "end": 3063,
+        "item": {
+          "el": 4,
+          "id": 3,
+          "slot": "ring1"
+        },
+        "key": "output/imagegen/item-skins/ring_light.png",
+        "masks": [],
+        "missReason": "image-cache-miss",
+        "ms": 0,
+        "phases": [],
+        "result": null,
+        "start": 3063
+      },
+      {
+        "after": {
+          "complete": true,
+          "currentSrc": "http://qa-item-skin-20261001.localhost:3340/output/imagegen/item-skins/ring_light.png",
+          "height": 256,
+          "maskObject": 6,
+          "object": 5,
+          "src": "http://qa-item-skin-20261001.localhost:3340/output/imagegen/item-skins/ring_light.png",
+          "width": 256
+        },
+        "base": "ring",
+        "before": {
+          "complete": true,
+          "currentSrc": "http://qa-item-skin-20261001.localhost:3340/output/imagegen/item-skins/ring_light.png",
+          "height": 256,
+          "maskObject": null,
+          "object": 5,
+          "src": "http://qa-item-skin-20261001.localhost:3340/output/imagegen/item-skins/ring_light.png",
+          "width": 256
+        },
+        "branch": "masked-raw",
+        "element": "light",
+        "end": 3098.599999904633,
+        "item": {
+          "el": 4,
+          "id": 3,
+          "slot": "ring1"
+        },
+        "key": "output/imagegen/item-skins/ring_light.png",
+        "masks": [
+          {
+            "canvas": 6,
+            "end": 3098.599999904633,
+            "height": 256,
+            "loopIntervalMs": 0.5,
+            "ms": 3,
+            "readEnd": 3098.099999904633,
+            "start": 3095.599999904633,
+            "width": 256
+          }
+        ],
+        "missReason": "first-mask-or-load-invalidated",
+        "ms": 3.0999999046325684,
+        "phases": [
+          {
+            "canvas": 6,
+            "end": 3095.599999904633,
+            "kind": "drawImage",
+            "ms": 0,
+            "start": 3095.599999904633
+          },
+          {
+            "canvas": 6,
+            "end": 3098.099999904633,
+            "kind": "getImageData",
+            "ms": 2.5,
+            "start": 3095.599999904633
+          },
+          {
+            "canvas": 6,
+            "end": 3098.599999904633,
+            "kind": "putImageData",
+            "ms": 0,
+            "start": 3098.599999904633
+          }
+        ],
+        "result": 6,
+        "start": 3095.5
+      },
+      {
+        "after": {
+          "complete": false,
+          "currentSrc": "",
+          "height": 0,
+          "maskObject": null,
+          "object": 7,
+          "src": "http://qa-item-skin-20261001.localhost:3340/img/ui/item-cutouts/belt_phys_cutout.png",
+          "width": 0
+        },
+        "base": "belt",
+        "before": null,
+        "branch": "pending-or-failed",
+        "element": "phys",
+        "end": 3099.599999904633,
+        "item": {
+          "el": 0,
+          "id": 4,
+          "slot": "belt"
+        },
+        "key": "img/ui/item-cutouts/belt_phys_cutout.png",
+        "masks": [],
+        "missReason": "image-cache-miss",
+        "ms": 0.09999990463256836,
+        "phases": [],
+        "result": null,
+        "start": 3099.5
+      },
+      {
+        "after": {
+          "complete": true,
+          "currentSrc": "http://qa-item-skin-20261001.localhost:3340/img/ui/item-cutouts/belt_phys_cutout.png",
+          "height": 1254,
+          "maskObject": null,
+          "object": 7,
+          "src": "http://qa-item-skin-20261001.localhost:3340/img/ui/item-cutouts/belt_phys_cutout.png",
+          "width": 1254
+        },
+        "base": "belt",
+        "before": {
+          "complete": true,
+          "currentSrc": "http://qa-item-skin-20261001.localhost:3340/img/ui/item-cutouts/belt_phys_cutout.png",
+          "height": 1254,
+          "maskObject": null,
+          "object": 7,
+          "src": "http://qa-item-skin-20261001.localhost:3340/img/ui/item-cutouts/belt_phys_cutout.png",
+          "width": 1254
+        },
+        "branch": "loaded-cutout",
+        "element": "phys",
+        "end": 3132.099999904633,
+        "item": {
+          "el": 0,
+          "id": 4,
+          "slot": "belt"
+        },
+        "key": "img/ui/item-cutouts/belt_phys_cutout.png",
+        "masks": [],
+        "missReason": "none",
+        "ms": 0,
+        "phases": [],
+        "result": 7,
+        "start": 3132.099999904633
+      }
+    ],
+    "startedAt": 10.699999928474426,
+    "stop": {},
+    "stopped": true
+  }
+}
