@@ -1,0 +1,177 @@
+{
+  "inputCommit": "cd31c6363a3750d0ae070c2793221b086b8384fe",
+  "gameSha256": "593a7a9d84c78402f04c50c94ae169e237e49751ad58d8640e78e672850728f2",
+  "reproducedV3HtmlByteIdentical": true,
+  "raw": {
+    "baseline-cold.json": {
+      "sha256": "d90662e12f18b62bb20882f02975cfe2fd5a282ef0d46f14595e81e860d1d5b7",
+      "bytes": 9368
+    },
+    "baseline-resized-after-boot.json": {
+      "sha256": "ebd453b5c49eff96ffd5af8e6b6b0f82012e6cf4862cb56c6f92e5d1ed2cebca",
+      "bytes": 9386
+    },
+    "baseline-warm.json": {
+      "sha256": "8a8291522a1ad5d16f491180ab3ebefea0673cfdcd4fed84b40077ebcca10711",
+      "bytes": 9331
+    },
+    "browser-cleanup.json": {
+      "sha256": "78e285cc719d7ac802d706d21d9a693c499e95ed37006d8b8ca6476fd75ca59e",
+      "bytes": 199
+    },
+    "docs-related.txt": {
+      "sha256": "3152104262ada900d8e323b6922d8c8807201cff5e624996f68b3a6e9fa57759",
+      "bytes": 2216
+    },
+    "experiment-sources-final.json": {
+      "sha256": "97e6e3945becddb46f1d2269a7364582b1e950c40376480674127d3177b5bd4f",
+      "bytes": 899
+    },
+    "experiment-sources.json": {
+      "sha256": "f4edc065b5d775c7c3a4277381cd7b75220cb607095904317a96527915c7cfcb",
+      "bytes": 427
+    },
+    "guard-final.txt": {
+      "sha256": "abca326ea1b0b458ede325d06c223a3505ac8935aba3da70658ede5b9aa67ef8",
+      "bytes": 595
+    },
+    "independent-review.txt": {
+      "sha256": "206834d9e95e56c27382c207f8e986fc21eac5b0ea29920f5c0dae1149fbaf8d",
+      "bytes": 770
+    },
+    "normal-summary.json": {
+      "sha256": "6285503ee1110e9eb3d8a18af17c62e12c34384432d25ff2eab570993a21ca2f",
+      "bytes": 1205
+    },
+    "pickup-reloaded.png": {
+      "sha256": "5bcf56d85052a62f849a8911efc294f0fffa8365f0152c8a7f7cdafc5808c133",
+      "bytes": 119420
+    },
+    "pickup-save-before.json": {
+      "sha256": "7194c67c97854ff284bee71d770047960157eada68e40652ae9682d7d614776a",
+      "bytes": 28231
+    },
+    "pickup-save-reloaded.json": {
+      "sha256": "d77c31a3a8afbaaf89a583896547404fed0d6f817cb9cd6d78c9577bfde0cbab",
+      "bytes": 47393
+    },
+    "pickup-verdict.json": {
+      "sha256": "1d390700acc07d5324721578942cc10f6f42a7bedbd1894b3678eebda4ebe16a",
+      "bytes": 360
+    },
+    "pixels-two.json": {
+      "sha256": "a59f7c5d7135257a07ba78fa24ba034ce5e285521e62df477c041cd43c42e44d",
+      "bytes": 556
+    },
+    "plan.json": {
+      "sha256": "3d82a913dd3c033c78ef4693aa06ba0d6ded9d785d7aaecc6df9bfd52a4cda24",
+      "bytes": 1382
+    },
+    "prepare-cold.json": {
+      "sha256": "4992d8aba3a2ba904576616528305bb79d6496fe56627e5d989402841a454af3",
+      "bytes": 11506
+    },
+    "prepare-v2-cold.json": {
+      "sha256": "a066fc5f733bc3b68e37413d06a42c9991cab615421d78d29be5f2d8b88a1fac",
+      "bytes": 11466
+    },
+    "prepare-v2-warm.json": {
+      "sha256": "27310c839beb155bae0ac8c977068fd20d1eb3e03f248d1c1e3061b4caae13e3",
+      "bytes": 13318
+    },
+    "prepare-v3-cold.json": {
+      "sha256": "ecec1fa76f5c4eaaaa14126caa77612accbe7487e205f8c22199333f1cb2e627",
+      "bytes": 11395
+    },
+    "prepare-v3-warm.json": {
+      "sha256": "c8ffb0a61cdcc6a8a83d5097442382ac09c2098421e159d89ea537e68c3b0f23",
+      "bytes": 13432
+    },
+    "prepare-warm.json": {
+      "sha256": "43ecf227da71bcdd5013cbf414045e6d5c75d94551fa79df0bf71bfaf6a66f9a",
+      "bytes": 11590
+    },
+    "production-boot.json": {
+      "sha256": "7aa47d7448cb9444dd5e36c5f4e0d72187fe97d2096dbd00c0b477bc75b77179",
+      "bytes": 2038
+    },
+    "production-first-display-fixture.json": {
+      "sha256": "2787f4a0b2f7cb31a503e2c98a189a8f6838fd9b84b4b31291aa4ff2a6397bc2",
+      "bytes": 5905
+    },
+    "production-normal.json": {
+      "sha256": "da759c6dc8c734b1d5523336379e084f4f0f24f5eed584505857bd8540091632",
+      "bytes": 1128566
+    },
+    "production-pixels.json": {
+      "sha256": "582c2eb10b3f5b764f3384b1fa36639ee414e8c34378bd2277469cbe5018d25b",
+      "bytes": 200
+    },
+    "production-source.json": {
+      "sha256": "fe71379c898b2c838195766d6de65715c1da4f403ddc05f2c16cf37bc5a8ccd3",
+      "bytes": 138
+    },
+    "production-world-fixture.json": {
+      "sha256": "2071bb0797ff241fd71306c854b3c68282ba40f101f6c085834189467b2607a3",
+      "bytes": 5164
+    },
+    "scope-proof.json": {
+      "sha256": "597ef165391aa9668af0ac9e59071c1b1f558a93d7d7e9420d43be5c64ff3772",
+      "bytes": 279
+    },
+    "tests-final.txt": {
+      "sha256": "b7f221589cf7448de38467bcbae6aee184ae71aab753951f3c6b2e4578b5dee0",
+      "bytes": 3664
+    },
+    "tests-first-37pass-1fail.txt": {
+      "sha256": "f43d29c23ec7ce821a86010c8bdb64d99e60aca3a9675f6e195b554d9c668483",
+      "bytes": 28195
+    },
+    "two-skins-world.png": {
+      "sha256": "4518ded4f1c52397ae80129d8dd2fa0f9d4706f424ad618ac7ee10f6ab6bf9e2",
+      "bytes": 95131
+    }
+  },
+  "files": {
+    "candidate-v1.js": {
+      "sha256": "bbd2dd09ecf94d0071bb9988237b8b3ac257c1e293d5e46228405114c7ff0609",
+      "bytes": 2687
+    },
+    "candidate-v2.js": {
+      "sha256": "0042f6f139103fdbc69b6055315383814d511e05215fc62e5300ff4062ce7c73",
+      "bytes": 2704
+    },
+    "candidate.js": {
+      "sha256": "c3651c15bccc097fff9945427216946d4d3ca6441e333a761860d221fe363f98",
+      "bytes": 2912
+    },
+    "evidence.zip": {
+      "sha256": "b364351b825d0e95a5ba23beefef02e21b85d8a42de2d5eb7ebed9d0134d5ffb",
+      "bytes": 310938
+    },
+    "make-repro.mjs": {
+      "sha256": "0ab52d1890b0f12d2729abbf4b31060c2a2215da242fa86376842ad30483bd8e",
+      "bytes": 1607
+    },
+    "measure.js": {
+      "sha256": "a6e3cdaeccc5d834ae28d6b8eb988be0fa21c9ea7d0aaf32ef80b9051dfdc793",
+      "bytes": 2378
+    },
+    "observer-measured.js": {
+      "sha256": "c2d6380b96ba8b4be0544ed5817e7826d67aca25c662c078e6ca7b80ff860fcc",
+      "bytes": 4201
+    },
+    "pickup-reloaded.png": {
+      "sha256": "5bcf56d85052a62f849a8911efc294f0fffa8365f0152c8a7f7cdafc5808c133",
+      "bytes": 119420
+    },
+    "production-helper.js": {
+      "sha256": "76bd2face8890462c750b170ac72a3fef0bb2377cdd235883566f86ffa834ec4",
+      "bytes": 3010
+    },
+    "two-skins-world.png": {
+      "sha256": "4518ded4f1c52397ae80129d8dd2fa0f9d4706f424ad618ac7ee10f6ab6bf9e2",
+      "bytes": 95131
+    }
+  }
+}

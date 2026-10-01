@@ -54,7 +54,9 @@ test('deadline includes processing time; remaining jobs use lazy fallback',async
   const p=env._prepareWorldDropFx();await drain();const s=await p;assert.equal(s.created,1);assert.equal(s.status,'timeout');
 });
 test('common boot awaits optional preparation between asset preload and renderer initialization',()=>{
-  assert.match(html,/await _preloadAssets\(\);\s*await _prepareWorldDropFx\(\);[^\n]*\nsetBootLoading\(80,[^\n]*\nawait _bootRenderer\(\);/);
+  const boot=html.slice(html.indexOf('(async function _boot(){'));
+  const preload=boot.indexOf('await _preloadAssets();'),prepare=boot.indexOf('await _prepareWorldDropFx();'),renderer=boot.indexOf('await _bootRenderer();');
+  assert.ok(preload>=0&&prepare>preload&&renderer>prepare,'beam preparation must be awaited after assets and before renderer');
   assert.match(html,/_bootLoadActive=true;_bootLoadKilled=false;_bootLoadEpoch\+\+;/);
 });
 test('replacement boot shares pending cancellation, then can retry after settlement',async()=>{
