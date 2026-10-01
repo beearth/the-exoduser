@@ -1,0 +1,22 @@
+{
+  "at": "2026-10-01T16:39:01.730Z",
+  "appPath": "/Users/fordeargamers/Projects/exoduser-migration-20261001/outputs/mac-package-ready/mac-packager-59376baf-37c9-4c20-a42f-af67b8d9221a/package/EXODUSER-59376baf-37c9-4c20-a42f-af67b8d9221a.app",
+  "sourceBackup": "97db3f1a9cf6c91ea7dbd50e16d6e61d60c996a9",
+  "remoteVerifiedAt": "2026-10-01T16:39:01.730Z",
+  "stoppedOwnedPid": null,
+  "beforeSha": "29b5b4e0a235111c7e7dd5d8ef5e7ea9cf982eea5833aa507e11146d88c1a940",
+  "afterSha": "e4b5bbf6ff6a911465f71b4c433900cf158545466352f2c1ec0addf238dd3f4e",
+  "change": "Only remove literal double quotes around whitespace-free absolute user-data-dir; no mkdir, no security flag changes",
+  "profile": "/Users/fordeargamers/Projects/exoduser-migration-20261001/outputs/mac-package-ready/mac-packager-59376baf-37c9-4c20-a42f-af67b8d9221a/user-state/profile",
+  "profileExistsBeforeLaunch": false,
+  "runtimeResult": "Native NW.js lobby appeared after quote-only correction and confirmed old process termination",
+  "termination": {
+    "pid": 8841,
+    "signal": "SIGTERM ignored in modal loop; SIGKILL sent only to verified owned test process",
+    "at": "2026-10-01T16:39:22.903Z"
+  },
+  "observedAt": "2026-10-01T16:39:44.855Z",
+  "profileCreated": true,
+  "listener": "COMMAND     PID          USER   FD   TYPE             DEVICE SIZE/OFF NODE NAME\nEXODUSER- 14476 fordeargamers   21u  IPv4 0x2fa73c6b9bab9f61      0t0  TCP 127.0.0.1:3381 (LISTEN)\n",
+  "caveat": "Initial alert text unavailable; parent creation not required, no security change"
+}

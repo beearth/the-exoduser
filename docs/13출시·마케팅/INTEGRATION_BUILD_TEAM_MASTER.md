@@ -71,3 +71,7 @@ root가 read-only preflight28검사를 재실행해 통과했다. 최신 확인 
 ### 2026-10-02 Mac arm64 첫 실제 패키지 준비
 
 공식 NW.js0.111.2 arm64 runtime SHA를 재사용한다. ae230e74 원격에 보존된 입력 중 제작용 LFS 포인터/ZIP 정확7경로만 제외한7918개 allowlist를 검수했다. 원본은 유지한다. 유한 맵/투사체524참조와 직접 script/style139 검수, 임의 동적 외부 호출 전체는 UNKNOWN이다. 고유 job59376baf-37c9-4c20-a42f-af67b8d9221a, loopback3381, job내 profile/save 경로 파생. 사용자3340게임/세이브 보존. mac-packager34검사 및 정식plan은 실행과 별도 기록한다. 해당 출력만 .gitignore에 추가하고 필수 에셋 원본은 숨기지 않는다. 다음 단계는 actual execute 및 앱/격리저장 검수이며 이 준비 기록은 완료 선언이 아니다. 상세 outputs/team-review-20261002/mac-app/build-config.json, build-plan.json 및 BUILD/package-input-resolution-result.md.
+
+### 2026-10-02 Mac 프로필 인자 실물 결함 수정
+
+첫 .app 생성 후 NSAlert 대기/3381 미개방이 발생했다. 생성 manifest의 무공백 절대 user-data-dir에서 literal double quote만 제거하고 기존 본인 테스트 프로세스 종료 후 네이티브 로비·profile 생성·서버 listen을 확인했다. 경고 본문 자체는 UNKNOWN. packager는 같은 경로를 무인용 토큰으로 생성하고 공백/단·쌍따옴표/제어문자/DEL 경로를 명시 거부한다. 원 보안 args·서명·quarantine·사용자 세이브 변경0. root 43회귀 PASS. 상세 실물 검수와 남은 항목은 MAC-APP-RUNTIME-20261002.md 및 outputs/team-review-20261002/mac-app/의 기록을 따른다. 이 시점은 실행 시작 해결이며 출시·게임 전체 인수 선언이 아니다.

@@ -1,0 +1,402 @@
+{
+  "at": "2026-10-01T16:37:36.473Z",
+  "scope": "extracted real renderer in native browser; not full game/layout/gamepad",
+  "cases": [
+    {
+      "source": "game.html",
+      "language": "ko",
+      "css": false,
+      "activation": "Enter",
+      "hover": {
+        "scope": "DOM-only, 게임/레이아웃/패드 PASS 아님",
+        "source": "game.html",
+        "sha256": "7631f5a083672124624e0b8dc22b0716d10c8815dbb1e6aee98a5e2e51299993",
+        "version": "candidate",
+        "language": "ko",
+        "css": "미연결",
+        "active": "id-btn equip",
+        "activeConnected": true,
+        "inlineVisibility": "visible",
+        "computedVisibility": "visible",
+        "blockedActions": 0
+      },
+      "rerender": {
+        "scope": "DOM-only, 게임/레이아웃/패드 PASS 아님",
+        "source": "game.html",
+        "sha256": "7631f5a083672124624e0b8dc22b0716d10c8815dbb1e6aee98a5e2e51299993",
+        "version": "candidate",
+        "language": "ko",
+        "css": "미연결",
+        "active": "inv-item",
+        "activeConnected": true,
+        "inlineVisibility": "visible",
+        "computedVisibility": "visible",
+        "blockedActions": 0
+      },
+      "removed": {
+        "scope": "DOM-only, 게임/레이아웃/패드 PASS 아님",
+        "source": "game.html",
+        "sha256": "7631f5a083672124624e0b8dc22b0716d10c8815dbb1e6aee98a5e2e51299993",
+        "version": "candidate",
+        "language": "ko",
+        "css": "미연결",
+        "active": "invClose",
+        "activeConnected": true,
+        "inlineVisibility": "hidden",
+        "computedVisibility": "hidden",
+        "blockedActions": 0
+      },
+      "close": {
+        "connected": true,
+        "text": "인벤토리 열기"
+      }
+    },
+    {
+      "source": "game.html",
+      "language": "ko",
+      "css": true,
+      "activation": "Space",
+      "hover": {
+        "scope": "DOM-only, 게임/레이아웃/패드 PASS 아님",
+        "source": "game.html",
+        "sha256": "7631f5a083672124624e0b8dc22b0716d10c8815dbb1e6aee98a5e2e51299993",
+        "version": "candidate",
+        "language": "ko",
+        "css": "연결",
+        "active": "id-btn equip",
+        "activeConnected": true,
+        "inlineVisibility": "visible",
+        "computedVisibility": "visible",
+        "blockedActions": 0
+      },
+      "rerender": {
+        "scope": "DOM-only, 게임/레이아웃/패드 PASS 아님",
+        "source": "game.html",
+        "sha256": "7631f5a083672124624e0b8dc22b0716d10c8815dbb1e6aee98a5e2e51299993",
+        "version": "candidate",
+        "language": "ko",
+        "css": "연결",
+        "active": "inv-item",
+        "activeConnected": true,
+        "inlineVisibility": "visible",
+        "computedVisibility": "visible",
+        "blockedActions": 0
+      },
+      "removed": {
+        "scope": "DOM-only, 게임/레이아웃/패드 PASS 아님",
+        "source": "game.html",
+        "sha256": "7631f5a083672124624e0b8dc22b0716d10c8815dbb1e6aee98a5e2e51299993",
+        "version": "candidate",
+        "language": "ko",
+        "css": "연결",
+        "active": "invClose",
+        "activeConnected": true,
+        "inlineVisibility": "hidden",
+        "computedVisibility": "visible",
+        "blockedActions": 0
+      },
+      "close": {
+        "connected": true,
+        "text": "인벤토리 열기"
+      }
+    },
+    {
+      "source": "game.html",
+      "language": "en",
+      "css": false,
+      "activation": "Enter",
+      "hover": {
+        "scope": "DOM-only, 게임/레이아웃/패드 PASS 아님",
+        "source": "game.html",
+        "sha256": "7631f5a083672124624e0b8dc22b0716d10c8815dbb1e6aee98a5e2e51299993",
+        "version": "candidate",
+        "language": "en",
+        "css": "미연결",
+        "active": "id-btn equip",
+        "activeConnected": true,
+        "inlineVisibility": "visible",
+        "computedVisibility": "visible",
+        "blockedActions": 0
+      },
+      "rerender": {
+        "scope": "DOM-only, 게임/레이아웃/패드 PASS 아님",
+        "source": "game.html",
+        "sha256": "7631f5a083672124624e0b8dc22b0716d10c8815dbb1e6aee98a5e2e51299993",
+        "version": "candidate",
+        "language": "en",
+        "css": "미연결",
+        "active": "inv-item",
+        "activeConnected": true,
+        "inlineVisibility": "visible",
+        "computedVisibility": "visible",
+        "blockedActions": 0
+      },
+      "removed": {
+        "scope": "DOM-only, 게임/레이아웃/패드 PASS 아님",
+        "source": "game.html",
+        "sha256": "7631f5a083672124624e0b8dc22b0716d10c8815dbb1e6aee98a5e2e51299993",
+        "version": "candidate",
+        "language": "en",
+        "css": "미연결",
+        "active": "invClose",
+        "activeConnected": true,
+        "inlineVisibility": "hidden",
+        "computedVisibility": "hidden",
+        "blockedActions": 0
+      },
+      "close": {
+        "connected": true,
+        "text": "Open inventory"
+      }
+    },
+    {
+      "source": "game.html",
+      "language": "en",
+      "css": true,
+      "activation": "Space",
+      "hover": {
+        "scope": "DOM-only, 게임/레이아웃/패드 PASS 아님",
+        "source": "game.html",
+        "sha256": "7631f5a083672124624e0b8dc22b0716d10c8815dbb1e6aee98a5e2e51299993",
+        "version": "candidate",
+        "language": "en",
+        "css": "연결",
+        "active": "id-btn equip",
+        "activeConnected": true,
+        "inlineVisibility": "visible",
+        "computedVisibility": "visible",
+        "blockedActions": 0
+      },
+      "rerender": {
+        "scope": "DOM-only, 게임/레이아웃/패드 PASS 아님",
+        "source": "game.html",
+        "sha256": "7631f5a083672124624e0b8dc22b0716d10c8815dbb1e6aee98a5e2e51299993",
+        "version": "candidate",
+        "language": "en",
+        "css": "연결",
+        "active": "inv-item",
+        "activeConnected": true,
+        "inlineVisibility": "visible",
+        "computedVisibility": "visible",
+        "blockedActions": 0
+      },
+      "removed": {
+        "scope": "DOM-only, 게임/레이아웃/패드 PASS 아님",
+        "source": "game.html",
+        "sha256": "7631f5a083672124624e0b8dc22b0716d10c8815dbb1e6aee98a5e2e51299993",
+        "version": "candidate",
+        "language": "en",
+        "css": "연결",
+        "active": "invClose",
+        "activeConnected": true,
+        "inlineVisibility": "hidden",
+        "computedVisibility": "visible",
+        "blockedActions": 0
+      },
+      "close": {
+        "connected": true,
+        "text": "Open inventory"
+      }
+    },
+    {
+      "source": "game-easy-test.html",
+      "language": "ko",
+      "css": false,
+      "activation": "Enter",
+      "hover": {
+        "scope": "DOM-only, 게임/레이아웃/패드 PASS 아님",
+        "source": "game-easy-test.html",
+        "sha256": "7d68b80afab131562266c39ea7d5631716d12861dbe7e7e2e4477550c15ec6a4",
+        "version": "candidate",
+        "language": "ko",
+        "css": "미연결",
+        "active": "id-btn equip",
+        "activeConnected": true,
+        "inlineVisibility": "visible",
+        "computedVisibility": "visible",
+        "blockedActions": 0
+      },
+      "actionText": "장착",
+      "rerender": {
+        "scope": "DOM-only, 게임/레이아웃/패드 PASS 아님",
+        "source": "game-easy-test.html",
+        "sha256": "7d68b80afab131562266c39ea7d5631716d12861dbe7e7e2e4477550c15ec6a4",
+        "version": "candidate",
+        "language": "ko",
+        "css": "미연결",
+        "active": "inv-item",
+        "activeConnected": true,
+        "inlineVisibility": "visible",
+        "computedVisibility": "visible",
+        "blockedActions": 0
+      },
+      "removed": {
+        "scope": "DOM-only, 게임/레이아웃/패드 PASS 아님",
+        "source": "game-easy-test.html",
+        "sha256": "7d68b80afab131562266c39ea7d5631716d12861dbe7e7e2e4477550c15ec6a4",
+        "version": "candidate",
+        "language": "ko",
+        "css": "미연결",
+        "active": "invClose",
+        "activeConnected": true,
+        "inlineVisibility": "hidden",
+        "computedVisibility": "hidden",
+        "blockedActions": 0
+      },
+      "close": {
+        "connected": true,
+        "text": "인벤토리 열기"
+      }
+    },
+    {
+      "source": "game-easy-test.html",
+      "language": "ko",
+      "css": true,
+      "activation": "Space",
+      "hover": {
+        "scope": "DOM-only, 게임/레이아웃/패드 PASS 아님",
+        "source": "game-easy-test.html",
+        "sha256": "7d68b80afab131562266c39ea7d5631716d12861dbe7e7e2e4477550c15ec6a4",
+        "version": "candidate",
+        "language": "ko",
+        "css": "연결",
+        "active": "id-btn equip",
+        "activeConnected": true,
+        "inlineVisibility": "visible",
+        "computedVisibility": "visible",
+        "blockedActions": 0
+      },
+      "actionText": "장착",
+      "rerender": {
+        "scope": "DOM-only, 게임/레이아웃/패드 PASS 아님",
+        "source": "game-easy-test.html",
+        "sha256": "7d68b80afab131562266c39ea7d5631716d12861dbe7e7e2e4477550c15ec6a4",
+        "version": "candidate",
+        "language": "ko",
+        "css": "연결",
+        "active": "inv-item",
+        "activeConnected": true,
+        "inlineVisibility": "visible",
+        "computedVisibility": "visible",
+        "blockedActions": 0
+      },
+      "removed": {
+        "scope": "DOM-only, 게임/레이아웃/패드 PASS 아님",
+        "source": "game-easy-test.html",
+        "sha256": "7d68b80afab131562266c39ea7d5631716d12861dbe7e7e2e4477550c15ec6a4",
+        "version": "candidate",
+        "language": "ko",
+        "css": "연결",
+        "active": "invClose",
+        "activeConnected": true,
+        "inlineVisibility": "hidden",
+        "computedVisibility": "visible",
+        "blockedActions": 0
+      },
+      "close": {
+        "connected": true,
+        "text": "인벤토리 열기"
+      }
+    },
+    {
+      "source": "game-easy-test.html",
+      "language": "en",
+      "css": false,
+      "activation": "Enter",
+      "hover": {
+        "scope": "DOM-only, 게임/레이아웃/패드 PASS 아님",
+        "source": "game-easy-test.html",
+        "sha256": "7d68b80afab131562266c39ea7d5631716d12861dbe7e7e2e4477550c15ec6a4",
+        "version": "candidate",
+        "language": "en",
+        "css": "미연결",
+        "active": "id-btn equip",
+        "activeConnected": true,
+        "inlineVisibility": "visible",
+        "computedVisibility": "visible",
+        "blockedActions": 0
+      },
+      "actionText": "장착",
+      "rerender": {
+        "scope": "DOM-only, 게임/레이아웃/패드 PASS 아님",
+        "source": "game-easy-test.html",
+        "sha256": "7d68b80afab131562266c39ea7d5631716d12861dbe7e7e2e4477550c15ec6a4",
+        "version": "candidate",
+        "language": "en",
+        "css": "미연결",
+        "active": "inv-item",
+        "activeConnected": true,
+        "inlineVisibility": "visible",
+        "computedVisibility": "visible",
+        "blockedActions": 0
+      },
+      "removed": {
+        "scope": "DOM-only, 게임/레이아웃/패드 PASS 아님",
+        "source": "game-easy-test.html",
+        "sha256": "7d68b80afab131562266c39ea7d5631716d12861dbe7e7e2e4477550c15ec6a4",
+        "version": "candidate",
+        "language": "en",
+        "css": "미연결",
+        "active": "invClose",
+        "activeConnected": true,
+        "inlineVisibility": "hidden",
+        "computedVisibility": "hidden",
+        "blockedActions": 0
+      },
+      "close": {
+        "connected": true,
+        "text": "Open inventory"
+      }
+    },
+    {
+      "source": "game-easy-test.html",
+      "language": "en",
+      "css": true,
+      "activation": "Space",
+      "hover": {
+        "scope": "DOM-only, 게임/레이아웃/패드 PASS 아님",
+        "source": "game-easy-test.html",
+        "sha256": "7d68b80afab131562266c39ea7d5631716d12861dbe7e7e2e4477550c15ec6a4",
+        "version": "candidate",
+        "language": "en",
+        "css": "연결",
+        "active": "id-btn equip",
+        "activeConnected": true,
+        "inlineVisibility": "visible",
+        "computedVisibility": "visible",
+        "blockedActions": 0
+      },
+      "actionText": "장착",
+      "rerender": {
+        "scope": "DOM-only, 게임/레이아웃/패드 PASS 아님",
+        "source": "game-easy-test.html",
+        "sha256": "7d68b80afab131562266c39ea7d5631716d12861dbe7e7e2e4477550c15ec6a4",
+        "version": "candidate",
+        "language": "en",
+        "css": "연결",
+        "active": "inv-item",
+        "activeConnected": true,
+        "inlineVisibility": "visible",
+        "computedVisibility": "visible",
+        "blockedActions": 0
+      },
+      "removed": {
+        "scope": "DOM-only, 게임/레이아웃/패드 PASS 아님",
+        "source": "game-easy-test.html",
+        "sha256": "7d68b80afab131562266c39ea7d5631716d12861dbe7e7e2e4477550c15ec6a4",
+        "version": "candidate",
+        "language": "en",
+        "css": "연결",
+        "active": "invClose",
+        "activeConnected": true,
+        "inlineVisibility": "hidden",
+        "computedVisibility": "visible",
+        "blockedActions": 0
+      },
+      "close": {
+        "connected": true,
+        "text": "Open inventory"
+      }
+    }
+  ]
+}

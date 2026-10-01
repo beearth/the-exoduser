@@ -51882,3 +51882,9 @@ QA의 완료 작업을 가리키는 미전송 초안은 그대로 보존했다. 
 
 ## 2026-10-02 Mac arm64 패키지 준비
 - 검수된 mac-packager와 정확7918파일 입력명세를 백업. 제작 전용7경로만 입력 제외·원본보존. loopback3381/고유 profile·save 파생,34회귀PASS·정식plan통과. 출력 전용 ignore와 BUILD 대장 동기화. 앱 생성/실행은 후속 검수 단계.
+
+
+## 2026-10-02 Mac 앱 프로필 인자 수정 및 실물 검수
+- BUILD packager의 user-data-dir literal quote 제거, 미검수 경로 공백/quote/control 거부. root43회귀 PASS.
+- 실제 생성 앱의 quote-only 수정 후 NW.js 로비/profile/3381서버 확인; 게임·저장·재실행 검수는 진행 중. INTEGRATION_BUILD_TEAM_MASTER 및 MAC-APP-RUNTIME-20261002 동기화.
+- UIUX 실제 DOM8조합 초점 회귀 인수와 팀 현재시각/과제 증거 정정. 생산 게임 코드 변경0.
