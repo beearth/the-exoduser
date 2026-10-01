@@ -1,0 +1,9 @@
+{
+  "inputSha256": "1fc7ac9a31eb516535bda52d300f1958bf5240f5620afbd4038d4ba7b36ecff5",
+  "syntaxScripts": 4,
+  "queuedCalls": 2,
+  "callsAfterRepeatedFlush": 2,
+  "patchReplay": "PASS",
+  "productionSourceUnchanged": true,
+  "scope": "미적용 우선순위 hunk, 원좌표·문구 유지. 배치 후보는 별도 게이트"
+}
