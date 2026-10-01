@@ -1,0 +1,29 @@
+flash-transition 소스 회귀 — game.html
+
+── _hitFlash 생애 경로 ──
+[OK ] update 감쇠(alive 전용) 존재  [L33149]
+[OK ] draw 사망분기 소거(렌더 전용) 존재  [L50888]
+[OK ] 감쇠는 'if(e.alive){' 블록 안 → 죽은 몹 감쇠는 렌더 소거(50888)에만 의존 (단일 경로)
+
+── 스폰/pool ──
+[OK ] mkEn _e 리터럴에 _hitFlash 없음 → 신규 몹 undefined(≈0) 안전(초기 잔상 없음)
+[OK ] _spawnGhoul은 신규 객체 리터럴(origE 복사 아님) → 구울 stale hf 없음
+
+── 동일객체 부활 전이(결함 확인) ──
+   보스 부활  [L33204]  eShield=true stunned=true reviveIframes=true _hitFlash=false
+[OK ] 보스 부활: 형제 상태(eShield/stunned/reviveIframes) 리셋하나 _hitFlash 소거 누락 = 결함
+   드루이드 피날레 부활  [L16219]  eShield=true stunned=true reviveIframes=true _hitFlash=false
+[OK ] 드루이드 피날레 부활: 형제 상태(eShield/stunned/reviveIframes) 리셋하나 _hitFlash 소거 누락 = 결함
+   주술사 시체 부활(etype9)  [L37558]  eShield=true stunned=true reviveIframes=true _hitFlash=false
+[OK ] 주술사 시체 부활(etype9): 형제 상태(eShield/stunned/reviveIframes) 리셋하나 _hitFlash 소거 누락 = 결함
+
+── GL↔2D 전환 ──
+[OK ] GL 경로/2D 경로 플래시 렌더 상호배타(_ensGLMode / !_ensGLQueued) 존재
+[OK ] 렌더(GL/2D)는 감소 안 함(감쇠=update 33149 단일지점) → GL↔2D 전환 이중감소 없음
+
+── 제어흐름 모델(렌더경로 의존 — 결함 영향) ──
+[OK ] 사망 시 ens 즉시 splice 없음 → 죽은 몹 ≥1프레임 ens 잔류(draw가 소거할 기회)
+[OK ] GC는 20프레임 주기(_gcT>20) → 그 사이 draw의 50888이 _hitFlash 소거(현재 가림막)
+   → 결론: 현재 라이브 잔상은 가려져 있으나(렌더 소거 의존), 부활 전이에 _hitFlash 소거가 없어 구조적 단일경로 취약. 최소 패치=전이에서 소거.
+
+CONFIRMED (결함: 부활 전이 _hitFlash 소거 누락, 소스에서 확인) (exit 0)

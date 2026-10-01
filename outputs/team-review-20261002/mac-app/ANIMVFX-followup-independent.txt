@@ -1,0 +1,17 @@
+flash-revive-reachability — 실제 루프 순서 실행 fixture (draw 매 프레임 1회, 생략 없음)
+
+── 시나리오 A: etype9 시체부활, catch-up 5틱 프레임 ──
+   tick1(frame1): KILL A#1 hf=6 alive=false (막타 피격)
+   tick2(frame1): REVIVE corpse#1 alive=true hf=6 (draw 미실행 상태)
+   draw에서 '부활/생존 몹에 플래시 렌더' 횟수 = 4  첫: frame1 hf=4
+[OK ] A: catch-up 프레임 내 사망→etype9 부활(같은 프레임, draw 없음) → 부활 몹에 stale _hitFlash 렌더 = 실제 도달 확인
+
+── 시나리오 B: 정상 60fps(프레임당 1틱) ──
+[OK ] B: 매 프레임 draw가 사망 몹 _hitFlash 즉시 소거 → 부활 잔상 렌더 0 (미도달)
+
+── 시나리오 C: 보스 부활(reviveTimer=90), catch-up 5틱 ──
+   tick90(frame87): BOSS REVIVE #9 alive=true hf=0
+[OK ] C: reviveTimer 90은 ≤5틱/프레임으로 동일프레임 불가 → 사망 중 draw가 소거 → 부활 시 hf=0 (미도달, 방어 전용)
+
+판정: etype9 시체부활 = 실제 도달(REACHABLE) · boss/druid = 미도달(방어 전용)
+ALL OK (exit 0)

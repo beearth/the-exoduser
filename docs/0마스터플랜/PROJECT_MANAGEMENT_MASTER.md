@@ -698,3 +698,7 @@ ITEM bootstrap23, UIUX 후보21+기존9, BUILD preflight28, BALANCE2880+56를 ro
 ### 2026-10-02 AI 강화 저장 생산 인수·Mac 패키지 입력 확인
 
 본편/easy 소비 후 저장예약 한 줄씩을 반영하고 root32·QA독립10 PASS를 확인했다. 500ms 이전 종료와 저장진행중 재시도는 별도 미해결이다. 공식 arm64 NW.js 런타임 확보·SHA 일치, 앱 입력7925개 스캔 완료. LFS 포인터/제작 ZIP/동적 참조 게이트가 남아 실제 앱은 미완료다. UIUX native 카드 소멸 초점 반례로 후보 생산 적용을 보류했다. [상세 인수·팀별 단계](mac-resume-20261001/vscode-dispatch/PERSISTENCE-MAC-PACKAGE-20261002.md).
+
+
+### 2026-10-02 Mac 실물 앱·팀 현황 후속
+179813c2의 Mac 프로필 인자 수정과43검사/원격SHA를 인수하고, 새abf57f41 앱 생성까지 완료했다. 최초앱은 로비·캐릭터생성·스토리·game.html 도입 장면까지 확인했으나 Mac 잠금으로 실제 설정/저장/재실행 검수 대기다. UIUX DOM8조합은 인수, 전체게임/패드/생산 적용 미완료. 팀 현재과제·실제수신/Read/완료시각과 원격SHA는 vscode-dispatch/TEAM_UTILIZATION_20261001.json의 snapshot 시각을 따른다. 원receipt의 미래시각/30a204 HEAD는 현황근거로 사용하지 않는다. 상세 MAC-APP-RUNTIME-20261002.md.

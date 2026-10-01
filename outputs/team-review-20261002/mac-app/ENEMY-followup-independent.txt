@@ -1,0 +1,34 @@
+ENEMY-20261002-ROUNDROBIN-ORDER-EFFECTS fixture
+  game.html sha256=7631f5a083672124624e0b8dc22b0716d10c8815dbb1e6aee98a5e2e51299993 (읽기전용)
+
+  PASS  회전은 [0,_elen) 순열 — tick당 각 인덱스 정확히 1회(중복0·누락0), _eStart 무관
+  PASS  동일 tick death: 원본·후보 reward 총량 동일, 이중 보상 0, 엔티티당 update 1회
+  PASS  분열 append: 원본 same-tick 처리 vs 후보 1-tick 이연. 2 tick 후 신생아 update 정확히 1회(누락·중복 0)
+  PASS  보상 1회 불변: 임의 _eStart 로도 사망 엔티티 reward 정확히 1회(회전이 이중보상 유발 안 함)
+  PASS  hole(undefined 슬롯): 후보 안전 skip, 원문 throw — 후보는 개선(원 정상 엔티티 skip 아님)
+  PASS  원문 사실: 메인 적 루프 본문 내 ens.splice 없음(변이는 append만) — 캡처 _elen 안전
+
+결과: 6 PASS / 0 FAIL
+{
+  "taskId": "ENEMY-20261002-ROUNDROBIN-ORDER-EFFECTS",
+  "gameSha256": "7631f5a083672124624e0b8dc22b0716d10c8815dbb1e6aee98a5e2e51299993",
+  "verdict": "NO duplicate-update / NO wrong-skip / NO reward-diff — 결함 아님(최소수정 불필요)",
+  "orderEffects": [
+    "mid-tick append(분열/소환) 신생아: 원본 same-tick vs 후보 1-tick 이연(누락/중복 아님)",
+    "tick 내 처리 순서 회전: 교차 엔티티 상호작용(분리/플로우필드/충돌) 순서 민감성 변화(보상/중복/skip 아님)"
+  ],
+  "rows": [
+    {
+      "case": "same-tick-death",
+      "rewardOriginal": 8,
+      "rewardRotated": 8
+    },
+    {
+      "case": "mid-tick-split-append",
+      "original": "newborn same-tick",
+      "rotated": "newborn deferred 1 tick",
+      "newbornUpdatesTotal": 1,
+      "note": "이연일 뿐 누락/중복 아님"
+    }
+  ]
+}

@@ -1,0 +1,18 @@
+{
+  "startedAt": "2026-10-01T16:29:45.418Z",
+  "completedAt": "2026-10-01T16:30:19.429Z",
+  "status": "PACKAGED_NOT_RUNTIME_ACCEPTED",
+  "fixtureOnly": false,
+  "packageCreated": true,
+  "appPath": "/Users/fordeargamers/Projects/exoduser-migration-20261001/outputs/mac-package-ready/mac-packager-59376baf-37c9-4c20-a42f-af67b8d9221a/package/EXODUSER-59376baf-37c9-4c20-a42f-af67b8d9221a.app",
+  "job": "/Users/fordeargamers/Projects/exoduser-migration-20261001/outputs/mac-package-ready/mac-packager-59376baf-37c9-4c20-a42f-af67b8d9221a",
+  "sourceBackup": "97db3f1a9cf6c91ea7dbd50e16d6e61d60c996a9",
+  "limits": [
+    "로컬bld내부API고정;최상위getter/manifest/다운로드호출안함",
+    "SHA/원격근거는제공된파일목록대조;외부Git조회아님",
+    "선택root전체파일커버리지검사;선택root의게임의존성완전성은root승인계약",
+    "port는정적격리값;실행직전실제점유검사는별도",
+    "서명/코덱/실행검수미완료",
+    "프로필/저장절대경로는고유job에귀속;이동/배포계약별도"
+  ]
+}

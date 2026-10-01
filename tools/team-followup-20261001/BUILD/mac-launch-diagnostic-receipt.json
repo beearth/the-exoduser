@@ -1,0 +1,15 @@
+{
+  "receivedAt": "2026-10-01T16:35:40Z",
+  "firstReadAt": "2026-10-01T16:35:40Z",
+  "firstEditAt": "2026-10-01T16:35:54Z",
+  "firstCodeEditAt": "2026-10-01T16:36:44Z",
+  "completedAt": "2026-10-01T16:37:18Z",
+  "duplicateCheck": "동일 prefix 기존 결과 없음; task만 존재",
+  "status": "읽기 진단 완료·원인 미확정·최소 후보 root 인계 후 대기",
+  "commands": ["task/AGENTS/BUILD/정책/execute-result/sample/vendor Read", "실제 package/server/plist/helpers 읽기", "공식 NW.js 문서·소스 web 조회; raw cache miss 기록", "node mac-launch-diagnostic-check.mjs: 작은10검사 PASS", "node --check 후보/검사2개 PASS"],
+  "actualEvidence": "NSAlert modal 대기; profile literal double quote·부모 미생성; helper4 이름 일치",
+  "limits": "alert 본문/111 parser/실제 원인 UNKNOWN; 실제 launch 검증 미실행",
+  "constraints": "앱/프로세스/생산 수정·실행·종료0;세이브/UI/보안변경/Git/새세션0",
+  "result": "mac-launch-diagnostic-result.md",
+  "evidence": "mac-launch-diagnostic-evidence.json"
+}

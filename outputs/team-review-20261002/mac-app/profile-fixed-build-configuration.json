@@ -1,0 +1,13 @@
+{
+  "baseConfig": "outputs/team-review-20261002/mac-app/build-config.json",
+  "id": "abf57f41-ebe0-4393-852f-0522f5750f9a",
+  "port": 3382,
+  "backup": {
+    "sha": "179813c2ebdd8e52e564d4183240968c1442e477",
+    "remoteSha": "179813c2ebdd8e52e564d4183240968c1442e477",
+    "remoteRef": "refs/heads/codex/mac-environment-20261001",
+    "verifiedAt": "2026-10-01T16:45:51.845Z"
+  },
+  "inputCount": 7918,
+  "reason": "Build with remote-backed profile argument correction; old trial app/profile preserved"
+}

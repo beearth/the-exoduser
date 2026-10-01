@@ -1,0 +1,133 @@
+{
+  "checkedAt": "2026-10-01T16:48:14.676Z",
+  "results": [
+    {
+      "status": "fulfilled",
+      "value": {
+        "team": "BUILD",
+        "sessionId": "01a0f6e6-2e4c-7322-92d7-3aa309857856",
+        "status": "interrupted",
+        "startedAt": "2026-10-01T16:47:39.000Z",
+        "completedAt": null,
+        "task": [
+          {
+            "type": "text",
+            "text": "Read tools/team-followup-20261001/BUILD/mac-character-media-task.md and execute this read-only diagnostic in the existing session. Root native UI is blocked by the locked Mac; no UI or restart is allowed. Report in Korean."
+          }
+        ],
+        "firstCommand": "/bin/zsh -lc \"date -u +%Y-%m-%dT%H:%M:%SZ; cat tools/team-followup-20261001/BUILD/mac-character-media-task.md; rg --files tools -g AGENTS.md; rg --files tools/team-followup-20261001/BUILD | rg 'mac-character-media'\"",
+        "firstEdit": [
+          {
+            "path": "/Users/fordeargamers/Projects/exoduser-migration-20261001/tools/team-followup-20261001/BUILD/mac-character-media-receipt.json",
+            "kind": {
+              "type": "add"
+            }
+          }
+        ],
+        "final": []
+      }
+    },
+    {
+      "status": "fulfilled",
+      "value": {
+        "team": "UIUX",
+        "sessionId": "01a0f6e5-8653-7ae2-8b2b-314e275c215c",
+        "status": "completed",
+        "startedAt": "2026-10-01T16:25:13.000Z",
+        "completedAt": "2026-10-01T16:28:17.000Z",
+        "task": [
+          {
+            "type": "text",
+            "text": "# UIUX native 카드 소멸 초점 반례\n직전 native-focus 완료를 확인했다. root actual native 증거 outputs/team-review-20261002/persistence/uiux-native-focus.json/.jpg를 읽어라. candidate/game/ko CSS on에서 시험 검 Enter→Tab→Tab(장착)→hover 종료는 유지, renderInv 재구성은 새 시험 검 focus. 그 상태에서 fixture 아이템 소멸 시 active=BODY. 상세 invRight에서 바로 삭제하면 invClose 복귀. inline hidden/computed visible 차이도 확인됐다.\n실제 원문에서 카드 소멸 복귀 누락의 원인을 찾아 최소 후보와 회귀를 작성하라. 기존 native-focus/원화/shared CSS/원후보를 byte 보존하고 새 card-removal-focus-* 및 card-removal-focus/host만 소유한다. 양쪽 HTML/KO EN/CSS off on/Enter Space Tab hover 재렌더 삭제/실제 opener 열기 닫기의 계약을 제공하라. 원소스 함수SHA 대조·원본 반례 RED→후보GREEN. browser 실행 가능한 .js chain 유지, 게임데이터 액션은 차단.\n생산/game/shared docs/Git/queue/새세션/게임/사용자세이브 변경0. 실제 브라우저 검수는 root가 맡는다. 다른 미검수 동작을 PASS라고 하지 말 것. 수신/Read/Edit/완료 UTC를 정확히 남겨 한 건 인계.\n"
+          }
+        ],
+        "firstCommand": "/bin/zsh -lc \"date -u '+%Y-%m-%dT%H:%M:%SZ'; rg --files -g AGENTS.md tools outputs; cat outputs/team-review-20261002/persistence/uiux-native-focus.json; cat tools/team-followup-20261001/UIUX/native-focus-task.md; cat tools/team-followup-20261001/UIUX/inventory-dom-candidate.mjs\"",
+        "firstEdit": [
+          {
+            "path": "/Users/fordeargamers/Projects/exoduser-migration-20261001/tools/team-followup-20261001/UIUX/card-removal-focus-candidate.mjs",
+            "kind": {
+              "type": "add"
+            }
+          },
+          {
+            "path": "/Users/fordeargamers/Projects/exoduser-migration-20261001/tools/team-followup-20261001/UIUX/card-removal-focus-generate.mjs",
+            "kind": {
+              "type": "add"
+            }
+          },
+          {
+            "path": "/Users/fordeargamers/Projects/exoduser-migration-20261001/tools/team-followup-20261001/UIUX/card-removal-focus-receipt.json",
+            "kind": {
+              "type": "add"
+            }
+          }
+        ],
+        "final": [
+          "- 원인: 재렌더 후 카드 초점이 복귀 소유권에서 빠져, 삭제 시 BODY로 이동합니다.\n- 최소 미적용 후보와 `.js` host 작성. 반례 8조합 **RED→GREEN**, 독립검사 **18 PASS**.\n- 기존 파일 42개 byte 보존, 함수 19개 SHA 일치 확인. 생산·게임 변경 없음.\n- 새 후보의 실제 브라우저·CSS·패드 검수는 root에 인계합니다.\n\n결과: `tools/team-followup-20261001/UIUX/card-removal-focus-result.md:1`"
+        ]
+      }
+    },
+    {
+      "status": "fulfilled",
+      "value": {
+        "team": "ITEM",
+        "sessionId": "01a0f6e6-1fbe-7df0-8d02-a9c2d9df3750",
+        "status": "completed",
+        "startedAt": "2026-10-01T16:27:19.000Z",
+        "completedAt": "2026-10-01T16:31:04.000Z",
+        "task": [
+          {
+            "type": "text",
+            "text": "# ITEM d17-zone-selection\n\nbrowser CSP 진단 완료 인수, 원주입자 미확정/host정책변경0 유지. 다음 승인 TOP8 상호작용 후보 U-D17: docs/7아이템디자인/UNIQUE_TOP8_HOOK_REVIEW_20261001.md 및 현D절 기준으로 블랙종료 사건의 고정 장판 선택/위치만 이동하는 비활성 순수 후보를 작성. 실제 현재 원문 zone타입·follow false·600px·저장롤 상한·제외 holyDome/shockField/boneStorm/보스와 t/maxT/피해/원소/틱 상태 불변을 확인하고 실제 zone object fixture로 검수. 활성 기본false, 드롭/장착/게임효과/경제수치 변경0. D10/CSP반복금지. 소유 ITEM/d17-zone-selection-* 및 폴더.\n기존 세션 한 건만, AGENTS·담당SSOT 먼저 읽기. 수신/Read/코드Edit/명령/완료 실제 UTC와 원함수SHA 기록. 한국어 보고. 소유 prefix 밖/공유docs/production/Git/queue/새세션 쓰기0. 사용자게임 tab1573846373 입력·리로드·닫기·계측0. 이번 Mac 앱 빌드와 부하 중복 금지, 게임/브라우저/대형빌드 직접 실행0.\n"
+          }
+        ],
+        "firstCommand": "/bin/zsh -lc 'date -u +%Y-%m-%dT%H:%M:%SZ; for p in tools/AGENTS.md tools/team-followup-20261001/AGENTS.md tools/team-followup-20261001/ITEM/AGENTS.md; do if [ -f \"$p\" ]; then cat \"$p\"; fi; done; cat docs/7아이템디자인/UNIQUE_TOP8_HOOK_REVIEW_20261001.md; rg -n '\"'U-D17|D17|무중력|장판.*600|블랙종료' docs/7아이템디자인 unique-item-project/roll-values.js; rg --files tools/team-followup-20261001/ITEM | rg d17\"",
+        "firstEdit": [
+          {
+            "path": "/Users/fordeargamers/Projects/exoduser-migration-20261001/tools/team-followup-20261001/ITEM/d17-zone-selection-receipt.json",
+            "kind": {
+              "type": "add"
+            }
+          }
+        ],
+        "final": [
+          "U-D17 비활성 순수 후보 구현·검수 완료했습니다.\n\n- 실제 장판 원문 fixture 기반 **24그룹 PASS**\n- 600px·저장롤 1~3 상한, 추적형·보스 등 제외, 좌표 외 상태 보존\n- 생산 적용·게임/브라우저/빌드 실행 **0**\n- 실제 출처 식별·종료 호출부 연결·실전 중첩 피해는 root 검수 게이트로 남겼습니다.\n\n결과: `tools/team-followup-20261001/ITEM/d17-zone-selection-result.md:1`\n영수증·원함수 SHA도 소유 경로에 기록했습니다."
+        ]
+      }
+    },
+    {
+      "status": "fulfilled",
+      "value": {
+        "team": "BALANCE",
+        "sessionId": "01a0f6e6-5303-7392-81ba-94c42e349ffc",
+        "status": "completed",
+        "startedAt": "2026-10-01T16:41:37.000Z",
+        "completedAt": "2026-10-01T16:45:57.000Z",
+        "task": [
+          {
+            "type": "text",
+            "text": "Read tools/team-followup-20261001/BALANCE/immediate-drain-task.md and execute this next scoped candidate task in the existing session. Report in Korean."
+          }
+        ],
+        "firstCommand": "/bin/zsh -lc \"date -u '+%Y-%m-%dT%H:%M:%SZ'; cat tools/team-followup-20261001/BALANCE/immediate-drain-task.md; rg --files -g AGENTS.md; cat docs/14밸런스+수치테이블/BALANCE_ECONOMY_TEAM_MASTER.md >/dev/null; rg --files tools/team-followup-20261001/BALANCE | rg immediate-drain\"",
+        "firstEdit": [
+          {
+            "path": "/Users/fordeargamers/Projects/exoduser-migration-20261001/tools/team-followup-20261001/BALANCE/immediate-drain-candidate.mjs",
+            "kind": {
+              "type": "add"
+            }
+          },
+          {
+            "path": "/Users/fordeargamers/Projects/exoduser-migration-20261001/tools/team-followup-20261001/BALANCE/immediate-drain-receipt.json",
+            "kind": {
+              "type": "add"
+            }
+          }
+        ],
+        "final": [
+          "즉시 배수 미적용 후보를 완성했습니다.\n\n- 보류분 완료 후 추가 500ms만 제거했습니다. 일반 디바운스·비용·force 정책은 유지합니다.\n- **17 PASS / 0 FAIL**: 재귀·중복·실패·2회 busy·캐릭터 교대/전환 검수.\n- dispatch·ACK·메모리 저장을 분리했으며 unload/실서버 저장 보장은 주장하지 않습니다.\n- 원후보·원함수 SHA·UTC receipt 기록 완료.\n\n결과: `tools/team-followup-20261001/BALANCE/immediate-drain-result.md:1`\n\n생산·사용자 게임은 미접촉입니다. root 인계 후 대기합니다."
+        ]
+      }
+    }
+  ]
+}

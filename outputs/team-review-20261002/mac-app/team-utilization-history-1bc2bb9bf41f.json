@@ -1,0 +1,424 @@
+{
+  "at": "2026-10-01T15:42:12.408342+00:00",
+  "updatedAt": "2026-10-01T16:20:59.975798+00:00",
+  "root": "Three owner validation integrations accepted; MAP and ANIMVFX acceptance withheld after counterexamples; five next tasks received/read; four Codex submissions pending independent review",
+  "teams": [
+    {
+      "team": "QA",
+      "sessionId": "88c3f903-ece5-4640-8b0c-86feaaca0e53",
+      "location": "T1",
+      "pendingQueueAndDrafts": "UNKNOWN beyond observed task; no duplicate resend",
+      "task": "persistence-review",
+      "status": "accepted: independent10 PASS rerun by root",
+      "dispatch": "original draft preserved; explicitly excluded old task; new task delivered once",
+      "nextAction": "See PERSISTENCE-MAC-PACKAGE-20261002.md; no duplicate dispatch",
+      "instruction": "tools/team-followup-20261001/QA/persistence-review-task.md",
+      "receivedAt": "2026-10-01T15:52:01.959Z",
+      "firstActualAction": {
+        "at": "2026-10-01T16:09:15.282Z",
+        "tool": "Read",
+        "path": "/Users/fordeargamers/Projects/exoduser-migration-20261001/tools/team-followup-20261001/QA/persistence-review-task.md"
+      },
+      "firstCodeEdit": {
+        "at": "2026-10-01T16:12:37.926Z",
+        "tool": "Write",
+        "path": "/Users/fordeargamers/Projects/exoduser-migration-20261001/docs/0마스터플랜/mac-resume-20261001/vscode-dispatch/persistence-review-receipt.json"
+      },
+      "progressEvidence": "outputs/team-review-20261002/persistence/claude-final.json"
+    },
+    {
+      "team": "ENEMY",
+      "sessionId": "ddbd64be-975a-458e-a020-c09749281f5b",
+      "location": "T7",
+      "pendingQueueAndDrafts": "UNKNOWN beyond observed task; no duplicate resend",
+      "task": "roundrobin-boundary",
+      "instruction": "tools/team-followup-20261001/ENEMY/roundrobin-boundary-task.md",
+      "status": "submitted boundary candidate; production unapplied",
+      "dispatch": "previous assignment completed; no resend",
+      "receivedAt": "2026-10-01T15:35:55.131Z",
+      "firstActualAction": {
+        "at": "2026-10-01T16:11:52.268Z",
+        "tool": "Read",
+        "path": "/Users/fordeargamers/Projects/exoduser-migration-20261001/tools/team-followup-20261001/ENEMY/roundrobin-boundary-task.md"
+      },
+      "firstCodeEdit": {
+        "at": "2026-10-01T16:14:54.268Z",
+        "tool": "Write",
+        "path": "/Users/fordeargamers/Projects/exoduser-migration-20261001/tools/team-followup-20261001/ENEMY/roundrobin-boundary.fixture.mjs"
+      },
+      "progressEvidence": "outputs/team-review-20261002/persistence/claude-final.json",
+      "nextAction": "See PERSISTENCE-MAC-PACKAGE-20261002.md; no duplicate dispatch",
+      "priorAcceptance": "accepted into owner validation path",
+      "blocker": null
+    },
+    {
+      "team": "MAP",
+      "sessionId": "d447a49d-ecaa-4b5f-bc56-da5353ebb668",
+      "location": "T3",
+      "pendingQueueAndDrafts": "UNKNOWN beyond observed task; no duplicate resend",
+      "task": "cleanup-retry",
+      "instruction": "tools/team-followup-20261001/MAP/cleanup-retry-task.md",
+      "status": "submitted cleanup retry fixes; independent acceptance pending",
+      "dispatch": "previous assignment completed; no resend",
+      "receivedAt": "2026-10-01T15:35:28.388Z",
+      "firstActualAction": {
+        "at": "2026-10-01T16:11:46.879Z",
+        "tool": "Read",
+        "path": "/Users/fordeargamers/Projects/exoduser-migration-20261001/tools/team-followup-20261001/MAP/cleanup-retry-task.md"
+      },
+      "firstCodeEdit": {
+        "at": "2026-10-01T16:13:34.920Z",
+        "tool": "Write",
+        "path": "/Users/fordeargamers/Projects/exoduser-migration-20261001/tools/team-followup-20261001/MAP/cleanup-retry-receipt.json"
+      },
+      "progressEvidence": "outputs/team-review-20261002/persistence/claude-final.json",
+      "nextAction": "See PERSISTENCE-MAC-PACKAGE-20261002.md; no duplicate dispatch",
+      "priorAcceptance": "withheld; root counterexamples reproduced",
+      "blocker": null
+    },
+    {
+      "team": "ART",
+      "sessionId": "a489cbeb-92d9-449a-a2b7-ba0e2871322f",
+      "location": "T2",
+      "pendingQueueAndDrafts": "UNKNOWN beyond observed task; no duplicate resend",
+      "task": "wa24-preview",
+      "instruction": "tools/team-followup-20261001/ART/wa24-preview-task.md",
+      "status": "submitted preview; native visual acceptance pending",
+      "dispatch": "previous assignment completed; no resend",
+      "receivedAt": "2026-10-01T15:35:08.392Z",
+      "firstActualAction": {
+        "at": "2026-10-01T16:11:33.552Z",
+        "tool": "Read",
+        "path": "/Users/fordeargamers/Projects/exoduser-migration-20261001/tools/team-followup-20261001/ART/wa24-preview-task.md"
+      },
+      "firstCodeEdit": {
+        "at": "2026-10-01T16:13:10.043Z",
+        "tool": "Write",
+        "path": "/Users/fordeargamers/Projects/exoduser-migration-20261001/tools/team-followup-20261001/ART/wa24-preview-receipt.json"
+      },
+      "progressEvidence": "outputs/team-review-20261002/persistence/claude-final.json",
+      "nextAction": "See PERSISTENCE-MAC-PACKAGE-20261002.md; no duplicate dispatch",
+      "priorAcceptance": "accepted into owner validation path",
+      "blocker": null
+    },
+    {
+      "team": "SKILL",
+      "sessionId": "203377cc-64c4-47ea-af27-95b66ae829fa",
+      "location": "T6",
+      "pendingQueueAndDrafts": "UNKNOWN beyond observed task; no duplicate resend",
+      "task": "aim-resource-next",
+      "instruction": "tools/team-followup-20261001/SKILL/aim-resource-next-task.md",
+      "status": "submitted thunderStake candidate; production unapplied",
+      "dispatch": "received in existing native session",
+      "receivedAt": "2026-10-01T15:35:40.994Z",
+      "firstActualAction": {
+        "at": "2026-10-01T16:11:22.802Z",
+        "tool": "Read",
+        "path": "/Users/fordeargamers/Projects/exoduser-migration-20261001/tools/team-followup-20261001/SKILL/aim-resource-next-task.md"
+      },
+      "firstCodeEdit": {
+        "at": "2026-10-01T16:14:29.340Z",
+        "tool": "Write",
+        "path": "/Users/fordeargamers/Projects/exoduser-migration-20261001/tools/team-followup-20261001/SKILL/aim-resource-next-receipt.json"
+      },
+      "progressEvidence": "outputs/team-review-20261002/persistence/claude-final.json",
+      "nextAction": "See PERSISTENCE-MAC-PACKAGE-20261002.md; no duplicate dispatch",
+      "priorAcceptance": "accepted into owner validation path",
+      "blocker": null,
+      "completionObservedAt": "2026-10-01T15:43:17.244613+00:00",
+      "receipt": "tools/team-followup-20261001/SKILL/OWNER_IMPL_20261002-receipt.json",
+      "receiptCaveat": "Owner receipt contains inconsistent KST/HEAD; use native JSONL for actual reception/Read/code Edit. Completion is observed, not independently accepted.",
+      "productionApplied": true
+    },
+    {
+      "team": "ANIMVFX",
+      "sessionId": "1d2a7253-478c-43aa-8c6f-766a02270432",
+      "location": "T8",
+      "pendingQueueAndDrafts": "UNKNOWN beyond observed task; no duplicate resend",
+      "task": "flash-transition",
+      "instruction": "tools/team-followup-20261001/ANIMVFX/flash-transition-task.md",
+      "status": "Read and source investigation confirmed; completion unconfirmed",
+      "dispatch": "previous assignment completed; no resend",
+      "receivedAt": "2026-10-01T15:36:07.879Z",
+      "firstActualAction": {
+        "at": "2026-10-01T16:11:58.495Z",
+        "tool": "Read",
+        "path": "/Users/fordeargamers/Projects/exoduser-migration-20261001/tools/team-followup-20261001/ANIMVFX/flash-transition-task.md"
+      },
+      "firstCodeEdit": null,
+      "progressEvidence": "outputs/team-review-20261002/persistence/claude-final.json",
+      "nextAction": "See PERSISTENCE-MAC-PACKAGE-20261002.md; no duplicate dispatch",
+      "priorAcceptance": "withheld; root counterexamples reproduced",
+      "blocker": null
+    },
+    {
+      "team": "BUILD",
+      "sessionId": "01a0f6e6-2e4c-7322-92d7-3aa309857856",
+      "location": "T10",
+      "pendingQueueAndDrafts": "UNKNOWN beyond observed task; no duplicate resend",
+      "task": "package-ready",
+      "instruction": "tools/team-followup-20261001/BUILD/package-ready-task.md",
+      "queueMessageId": "01a0f829-cb5d-78b2-b42b-365038f7457a",
+      "latestTurnId": "01a0f829-cb5e-7161-ae19-5eef4b2bdbcb",
+      "status": "input scan received; runtime acquired; package gates unresolved",
+      "dispatch": "received in existing official CLI session",
+      "receivedAt": "2026-10-01T15:51:23.749911+00:00",
+      "receipt": "tools/team-followup-20261001/BUILD/mac-packager-receipt.json",
+      "currentTaskReceipt": {
+        "taskId": "BUILD-20261002-MAC-PACKAGER",
+        "receivedAt": "2026-10-01T15:51:27Z",
+        "firstReadAt": "2026-10-01T15:51:27Z",
+        "firstCodeEditAt": "2026-10-01T15:53:35Z",
+        "validationCompletedAt": "2026-10-01T15:57:09Z",
+        "completedAt": "2026-10-01T15:58:35Z",
+        "duplicateCheck": "소유경로task만존재;동일완료없음",
+        "status": "후보구현·fixture34PASS완료;실제runtime BLOCKED/.app미생성",
+        "actualRead": "AGENTS/BUILD/백업정책/build/package/node-main/설치index/bld/osx/util",
+        "command": "node --test tools/team-followup-20261001/BUILD/mac-packager/test.mjs",
+        "validation": {
+          "pass": 34,
+          "fail": 0,
+          "firstRunPass": 30,
+          "firstRunFail": 1,
+          "firstFailure": "Node로더open도차단한하니스오류;원로그보존"
+        },
+        "adapter": "설치nw-builder4.17.10 src/bld.js 고정SHA·지연import;최상위getter호출0",
+        "actualPlan": {
+          "status": "BLOCKED",
+          "error": "MAC_RUNTIME_MISSING",
+          "exit": 2
+        },
+        "actualDefaultAdapterCalls": 0,
+        "packageCreated": false,
+        "backupHandoffSha": "98aedab7dd3df41a57c2311bfc4cf79731057e60",
+        "backupLimit": "정확입력별원격보존미확인;이후변경에사용불가",
+        "constraints": "실제runtime없음BLOCKED;이번fixture주입만;공유/게임/Git/다운로드0"
+      },
+      "nextAction": "See PERSISTENCE-MAC-PACKAGE-20261002.md; no duplicate dispatch",
+      "productionApplied": false,
+      "priorAcceptance": "preflight28 PASS; refreshed ref evidence passes, actual runtime missing",
+      "firstActualAction": {
+        "type": "commandExecution",
+        "id": "exec-338ea2ed-dfa4-43b9-8c70-ada74e0b5b25",
+        "command": "/bin/zsh -lc \"date -u '+%Y-%m-%dT%H:%M:%SZ'; ls tools/team-followup-20261001/BUILD/mac-packager* 2>/dev/null; cat node_modules/nw-builder/src/index.js; sed -n '90,280p' node_modules/nw-builder/src/bld.js\"",
+        "cwd": "/Users/fordeargamers/Projects/exoduser-migration-20261001",
+        "status": "completed",
+        "exitCode": 0,
+        "durationMs": 0
+      },
+      "firstCodeEdit": {
+        "path": "/Users/fordeargamers/Projects/exoduser-migration-20261001/tools/team-followup-20261001/BUILD/mac-packager-cli.mjs",
+        "kind": {
+          "type": "add"
+        }
+      },
+      "progressEvidence": "outputs/team-review-20261002/acceptance/four-session-latest.json",
+      "nextDispatch": "not delivered: active writer error; not retried"
+    },
+    {
+      "team": "UIUX",
+      "sessionId": "01a0f6e5-8653-7ae2-8b2b-314e275c215c",
+      "location": "T4",
+      "pendingQueueAndDrafts": "UNKNOWN beyond observed task; no duplicate resend",
+      "task": "native-focus",
+      "instruction": "tools/team-followup-20261001/UIUX/native-focus-task.md",
+      "queueMessageId": "01a0f829-cb38-73d1-8927-3c8e1f0083ad",
+      "latestTurnId": "01a0f829-cb38-73d1-8927-3ca64662d558",
+      "status": "native candidate rejected for card-removal focus loss; production unapplied",
+      "dispatch": "received in existing official CLI session",
+      "receivedAt": "2026-10-01T15:51:23.719860+00:00",
+      "receipt": "tools/team-followup-20261001/UIUX/inventory-dom-receipt.json",
+      "currentTaskReceipt": {
+        "작업": "UIUX-20261002-INVENTORY-DOM",
+        "수신": "사용자 지시 수신, 메시지 자체 UTC 미제공",
+        "첫ReadUTC": "2026-10-01T15:51:31Z",
+        "실제Read": "지시서·UI-04·인벤토리 SSOT·원 inventory-focus 후보·actual renderInv/_invClearHover/선택복원·DOM 계약",
+        "중복": "기존21검사는 읽기 전용 보존. 소유 prefix에는 task.md만 존재",
+        "첫코드EditUTC": "2026-10-01T15:53:10Z",
+        "Edit시각근거": "TZ=UTC stat의 후보 birthtime. UIUX 파일 최초 apply_patch 생성 시각이며 한국시각을 Z로 잘못 표시하지 않도록 UTC 재대조",
+        "검수UTC": "2026-10-01T15:56:15Z 기존21/공통9 재실행, 2026-10-01T15:58:06Z 최종 파생18PASS·원후보/생산 SHA 전수 불변",
+        "실제검수범위": "실제 full renderInv 및 상세/hover/패널 함수 추출·Node DOM 연결 대역. root용 native DOM host 생성, 실제 브라우저 실행0",
+        "상태": "파생 후보·양쪽 minimal/combined patch·연결회귀·host 완료, root 인계",
+        "완료실제UTC": "2026-10-01T16:00:31.339Z 최종 bytes 재대조 완료 후 결과·영수증 최종 기록",
+        "원증거변화": "inventory-focus-reproduction.json checkedAt15:59:16.354Z 갱신 관측, 주체미확정. 원 코드/patch·생산2개 SHA 불변, checkedAt 제외 payload 동일. 원 증거 덮어쓰기/복원0",
+        "원본SHA": "inventory-dom-provenance.json의 원 inventory-focus 전수·생산2개·함수별 줄번호/SHA",
+        "원검사출력보존": "기존21 import의 after-hook 출력만 inventory-dom-existing-reproduction.json으로 리다이렉트, 원 검사·증거 bytes 변경0",
+        "docs반영안": "inventory-dom-result.md 및 전체검색 inventory-dom-doc-matches.txt, 공유 docs 수정0",
+        "남은게이트": "root native DOM/직접 Tab·키 입력·production CSS computed visibility·크기별 화면·실물 패드 검수",
+        "브라우저게임실행": 0,
+        "생산원후보수정": 0
+      },
+      "nextAction": "See PERSISTENCE-MAC-PACKAGE-20261002.md; no duplicate dispatch",
+      "productionApplied": false,
+      "priorAcceptance": "inventory-focus21 + existing9 PASS; production deferred for DOM/CSS/focus acceptance",
+      "firstActualAction": {
+        "type": "commandExecution",
+        "id": "exec-babb76a4-83e5-4f4b-bd7a-4f268cb4d1bb",
+        "command": "/bin/zsh -lc \"date -u '+%Y-%m-%dT%H:%M:%SZ'; rg --files tools -g AGENTS.md; cat 'tools/team-followup-20261001/UIUX/inventory-dom-task.md'; sed -n '20,39p' 'docs/3.1 ui hud 디자인/UI_UX_IMPROVEMENT_PROJECT_20260930.md'; sed -n '850,869p' 'docs/2_7 인벤토리+장비시스템/2_7 인벤토리+장비시스템.md'; sed -n '1,150p' tools/team-followup-20261001/UIUX/inventory-focus-candidate.mjs; cat package.json | head -n 40; rg --files node_modules 2>/dev/null | rg '/(jsdom|linkedom|happy-dom)/' | head -n 5\"",
+        "cwd": "/Users/fordeargamers/Projects/exoduser-migration-20261001",
+        "status": "completed",
+        "exitCode": 0,
+        "durationMs": 0
+      },
+      "firstCodeEdit": {
+        "path": "/Users/fordeargamers/Projects/exoduser-migration-20261001/tools/team-followup-20261001/UIUX/inventory-dom-candidate.mjs",
+        "kind": {
+          "type": "add"
+        }
+      },
+      "progressEvidence": "outputs/team-review-20261002/acceptance/uiux-final-session.json",
+      "nextDispatch": "not delivered: active writer error; not retried"
+    },
+    {
+      "team": "ITEM",
+      "sessionId": "01a0f6e6-1fbe-7df0-8d02-a9c2d9df3750",
+      "location": "T9",
+      "pendingQueueAndDrafts": "UNKNOWN beyond observed task; no duplicate resend",
+      "task": "browser-csp",
+      "instruction": "tools/team-followup-20261001/ITEM/browser-csp-task.md",
+      "queueMessageId": "01a0f829-cb16-76b3-9487-852159d0a57e",
+      "latestTurnId": "01a0f829-cb17-7820-9e01-6c7e2db69462",
+      "status": "CSP diagnostic inspected natively; host policy unchanged",
+      "dispatch": "received in existing official CLI session",
+      "receivedAt": "2026-10-01T15:51:23.684551+00:00",
+      "receipt": "tools/team-followup-20261001/ITEM/browser-host-receipt.json",
+      "currentTaskReceipt": {
+        "task": "ITEM-20261002-BROWSER-HOST",
+        "status": "독립 구현·Node검수 완료·root 인계",
+        "receivedAt": "2026-10-01T15:51:30Z",
+        "firstReadAt": "2026-10-01T15:51:38Z",
+        "firstCodeEditAt": "2026-10-01T15:52:35Z",
+        "checkedAt": "2026-10-01T15:54:57.860Z",
+        "completedAt": "2026-10-01T15:55:47Z",
+        "timeEvidence": "실제 date -u 명령15:51:30/15:51:38/15:52:35/15:55:47Z, 검수JSON checkedAt",
+        "commands": [
+          "node tools/team-followup-20261001/ITEM/browser-host-transform.mjs --emit",
+          "node tools/team-followup-20261001/ITEM/browser-host-check.mjs",
+          "rg -n 'D10|uniqueRoll|reviewOnly|browser bootstrap|MIME' docs --glob '*.md'"
+        ],
+        "validation": "12그룹 PASS/0FAIL·전이4개 import literal만변환/역치환원문일치·추출11조각동일·실파일Node ESM/UI호스트·원본10개byte보존·D10 RNG1/restore0",
+        "initialFailure": "생성뒤 game 전체SHA 외부변경으로 manifest전체비교1FAIL; 관련 추출원문은동일. provenance drift별도보존/소스조각엄격대조로분리",
+        "completionCondition": "재현변환/실JS체인/명시reviewOnlyHTML/원포트UI소비/Node회귀·SHA·한계제출",
+        "remainingGate": "root 같은3340 독립reviewOnly호스트 실제HTTP/CSP/import·버튼·카운터·해제 인수",
+        "productionApplied": false,
+        "actualRead": "전용 task·AGENTS 하위검색·ITEM MD·저장계약·기존bootstrap 결과/API/UI/MIME 계획·실제 mkItem 의존 확인",
+        "receiptFirst": true,
+        "duplicateCheck": "전용 prefix 파일 검색; 기존 bootstrap/port/binding 읽기전용, 새 세션 없음",
+        "scope": "ITEM/browser-host-* 및 ITEM/browser-host/만 쓰기",
+        "actualBrowserImport": "UNKNOWN",
+        "prohibitedExecutions": 0
+      },
+      "nextAction": "See PERSISTENCE-MAC-PACKAGE-20261002.md; no duplicate dispatch",
+      "productionApplied": false,
+      "priorAcceptance": "bootstrap23 PASS; new host12 + actual browser import/create/JSON/uninstall accepted as review only",
+      "firstActualAction": {
+        "type": "commandExecution",
+        "id": "exec-151595fe-06f8-4a43-993b-97ee12afb2f3",
+        "command": "/bin/zsh -lc \"date -u +%Y-%m-%dT%H:%M:%SZ; rg --files tools/team-followup-20261001/ITEM | rg 'browser-host|AGENTS'; for p in tools/AGENTS.md tools/team-followup-20261001/AGENTS.md tools/team-followup-20261001/ITEM/AGENTS.md; do if [ -f \\\"\"'$p\" ]; then cat \"$p\"; fi; done'",
+        "cwd": "/Users/fordeargamers/Projects/exoduser-migration-20261001",
+        "status": "completed",
+        "exitCode": 0,
+        "durationMs": 0
+      },
+      "firstCodeEdit": {
+        "path": "/Users/fordeargamers/Projects/exoduser-migration-20261001/tools/team-followup-20261001/ITEM/browser-host-transform.mjs",
+        "kind": {
+          "type": "add"
+        }
+      },
+      "progressEvidence": "outputs/team-review-20261002/acceptance/four-session-latest.json"
+    },
+    {
+      "team": "BALANCE",
+      "sessionId": "01a0f6e6-5303-7392-81ba-94c42e349ffc",
+      "location": "T11",
+      "pendingQueueAndDrafts": "UNKNOWN beyond observed task; no duplicate resend",
+      "task": "save-inflight",
+      "instruction": "tools/team-followup-20261001/BALANCE/save-inflight-task.md",
+      "queueMessageId": "01a0f829-cb7d-7fb2-a902-6961470fc090",
+      "latestTurnId": "01a0f829-cb7d-7fb2-a902-698de5a7c0f6",
+      "status": "save-inflight candidate submitted; root acceptance pending",
+      "dispatch": "received in existing official CLI session",
+      "receivedAt": "2026-10-01T15:51:23.780656+00:00",
+      "receipt": "tools/team-followup-20261001/BALANCE/ai-enhance-persistence-receipt.json",
+      "currentTaskReceipt": {
+        "task": "BALANCE-20261002-AI-ENHANCE-PERSISTENCE",
+        "receivedAt": "2026-10-01T15:51:29Z",
+        "firstReadAt": "2026-10-01T15:51:29Z",
+        "firstEditAt": "2026-10-01T15:51:29Z",
+        "firstCodeEditAt": "2026-10-01T15:52:58Z",
+        "duplicateCheck": "동일 prefix는 task만 존재",
+        "validatedAt": "2026-10-01T15:54:34Z",
+        "completedAt": "2026-10-01T15:55:34Z",
+        "validation": "29PASS/0FAIL; 실제전체dbSave/dbRestore·5override·원본/후보·분리악의observer 경계",
+        "finding": "원콜백 정상시도 후 아이템snapshot 저장공백 재현; res.used>0 두판본500ms예약 미적용후보",
+        "candidateSha256": "4bae21e35fa875c3bddf32301bfd5d75f8c19d4194fb109dff25c0ee7c9b80f6",
+        "remainingGate": "root 통합/종료전송·saving진행중·demo공유자원/선택복원 계약은 별도인수",
+        "status": "completed_unapplied_candidate_root_handoff",
+        "productionModified": false
+      },
+      "nextAction": "See PERSISTENCE-MAC-PACKAGE-20261002.md; no duplicate dispatch",
+      "productionApplied": false,
+      "priorAcceptance": "2880 inputs+56 boundaries PASS; costs unchanged",
+      "firstActualAction": {
+        "type": "commandExecution",
+        "id": "exec-ad891210-2d4a-4cdc-8cee-03f71353cc78",
+        "command": "/bin/zsh -lc \"date -u '+%Y-%m-%dT%H:%M:%SZ'; rg --files -g AGENTS.md; rg --files tools/team-followup-20261001/BALANCE | rg 'ai-enhance-persistence'; sed -n '3900,3935p' game.html; rg -n 'forgeClose|forgeOpen=false|closeForge|forgeOverlay|forge.*onclick|beforeunload|visibilitychange' game.html | tail -23\"",
+        "cwd": "/Users/fordeargamers/Projects/exoduser-migration-20261001",
+        "status": "completed",
+        "exitCode": 0,
+        "durationMs": 0
+      },
+      "firstCodeEdit": {
+        "path": "/Users/fordeargamers/Projects/exoduser-migration-20261001/tools/team-followup-20261001/BALANCE/ai-enhance-persistence-harness.mjs",
+        "kind": {
+          "type": "add"
+        }
+      },
+      "progressEvidence": "outputs/team-review-20261002/acceptance/four-session-latest.json"
+    },
+    {
+      "team": "SOUND",
+      "sessionId": "aa3ac0ed-f4e5-44ad-a0b2-d4d2da045b84",
+      "pendingQueueAndDrafts": "UNKNOWN beyond observed task; no duplicate resend",
+      "task": "SOUND-BONE-PICKUP-CANDIDATE",
+      "instruction": "tools/team-followup-20261001/SOUND/OWNER_NEXT_20261002.md",
+      "status": "prepared only; not delivered",
+      "dispatch": "not_received",
+      "receivedAt": null,
+      "firstActualAction": null,
+      "blocker": "SOUND absent from visible VS Code terminals; Terminal app access denied by Computer Use safety policy; no alternate input attempted",
+      "nextAction": "locate accessible existing SOUND session; do not create duplicate",
+      "lastSessionCheck": "official CLI exact existing background session idle/done; no accessible same-session native terminal",
+      "progressEvidence": "outputs/team-review-20261002/acceptance/claude-agents-latest.json"
+    }
+  ],
+  "automation": {
+    "status": "ACTIVE",
+    "intervalMinutes": 5,
+    "source": "PC coordinator latest report; local view returned card only",
+    "localIndependentVerification": false
+  },
+  "nativeCheck": {
+    "current": "VS Code existing five sessions received/read confirmed",
+    "SOUND": "Terminal app access denied; no alternate input route attempted",
+    "QA": "duplicate reconciled, new task delivered/read/edited/completed; root17PASS"
+  },
+  "remoteCheckpoint": "98aedab7dd3df41a57c2311bfc4cf79731057e60",
+  "historicalSnapshot": {
+    "commit": "727b095bd4495ecd882f2dcae162225f7afde8fc",
+    "path": "docs/0마스터플랜/mac-resume-20261001/vscode-dispatch/TEAM_UTILIZATION_20261001.json",
+    "note": "All previous task rows, lock checks, 10-minute automation and nested receipts are historical, not current status"
+  },
+  "visibleUserGame": {
+    "evidence": "outputs/team-review-20261001/mac-game-visible-20261002.json",
+    "tabId": "1573846373",
+    "url": "http://mac-play-20261002.localhost:3340/game.html?webgpu=0",
+    "lastObservedAt": "2026-10-01T15:19:51.804Z",
+    "currentTaskActions": "no input/reload/close/instrumentation",
+    "package": false
+  },
+  "evidence": "docs/0마스터플랜/mac-resume-20261001/vscode-dispatch/PERSISTENCE-MAC-PACKAGE-20261002.md",
+  "remoteCheckpointVerifiedAt": "2026-10-01T16:02:18.287277+00:00",
+  "remoteCheckpointScope": "Last exact remote ref verified BEFORE this acceptance checkpoint; final commit SHA recorded in outputs/team-review-20261002/remote-checkpoint.json after push (self-reference excluded)."
+}

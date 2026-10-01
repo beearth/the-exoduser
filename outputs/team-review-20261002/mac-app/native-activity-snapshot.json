@@ -1,0 +1,287 @@
+{
+  "checkedAt": "2026-10-01T16:35:55.625Z",
+  "teams": [
+    {
+      "team": "QA",
+      "sessionId": "88c3f903-ece5-4640-8b0c-86feaaca0e53",
+      "first": [
+        {
+          "at": "2026-10-01T16:27:54.476Z",
+          "type": "received",
+          "text": "tools/team-followup-20261001/QA/busy-save-independent-task.md        .  /       ."
+        },
+        {
+          "at": "2026-10-01T16:27:58.679Z",
+          "tool": "Read",
+          "path": "/Users/fordeargamers/Projects/exoduser-migration-20261001/tools/team-followup-20261001/QA/busy-save-independent-task.md"
+        },
+        {
+          "at": "2026-10-01T16:28:09.732Z",
+          "tool": "Bash",
+          "command": "date -u \"+%Y-%m-%dT%H:%M:%SZ\"; echo \"HEAD=$(git rev-parse --short HEAD)\"; echo \"remote ae230e74? $(git cat-file -t ae230e74 2>/dev/null || echo 'n/a')"
+        },
+        {
+          "at": "2026-10-01T16:28:15.056Z",
+          "tool": "Bash",
+          "command": "echo \"=== save-inflight-candidate.mjs ===\"; cat tools/team-followup-20261001/BALANCE/save-inflight-candidate.mjs; echo; echo \"=== save-inflight-candid"
+        },
+        {
+          "at": "2026-10-01T16:29:41.390Z",
+          "tool": "Bash",
+          "command": "echo \"=== ALL _saving=false sites in game.html ===\"; grep -n \"_saving=false\\|_saving =false\\|_saving = false\" game.html; echo \"=== ALL _saving=true si"
+        }
+      ],
+      "last": [
+        {
+          "at": "2026-10-01T16:34:39.033Z",
+          "tool": "Write",
+          "path": "/Users/fordeargamers/Projects/exoduser-migration-20261001/docs/0마스터플랜/mac-resume-20261001/vscode-dispatch/busy-save-independent-result.md"
+        },
+        {
+          "at": "2026-10-01T16:34:54.992Z",
+          "tool": "Bash",
+          "command": "python3 - <<'EOF'\nimport json\np=\"docs/0마스터플랜/mac-resume-20261001/vscode-dispatch/busy-save-independent-receipt.json\"\nd=json.load(open(p))\nd[\"status\"]="
+        },
+        {
+          "at": "2026-10-01T16:35:16.612Z",
+          "type": "completed"
+        }
+      ]
+    },
+    {
+      "team": "MAP",
+      "sessionId": "d447a49d-ecaa-4b5f-bc56-da5353ebb668",
+      "first": [
+        {
+          "at": "2026-10-01T16:27:30.173Z",
+          "type": "received",
+          "text": "tools/team-followup-20261001/MAP/visual-eight-view-preparation-task.md       . root     ."
+        },
+        {
+          "at": "2026-10-01T16:27:38.118Z",
+          "tool": "Read",
+          "path": "/Users/fordeargamers/Projects/exoduser-migration-20261001/tools/team-followup-20261001/MAP/visual-eight-view-preparation-task.md"
+        },
+        {
+          "at": "2026-10-01T16:28:15.051Z",
+          "tool": "Bash",
+          "command": "date -u +\"%Y-%m-%dT%H:%M:%SZ\" && cd /Users/fordeargamers/Projects/exoduser-migration-20261001 && echo \"=== current game.html SHA (원본, 읽기전용) ===\" && sh"
+        },
+        {
+          "at": "2026-10-01T16:28:42.730Z",
+          "tool": "Bash",
+          "command": "echo \"=== guide 19~27 camera/QA ===\" && sed -n '700,900p' \"docs/4.1맵디자인+설정/EXODUSER_MAP_PRODUCTION_GUIDELINE_v0.9.md\" | grep -nE \"CAMERA|뷰|view|좌표|STA"
+        },
+        {
+          "at": "2026-10-01T16:28:47.371Z",
+          "tool": "Bash",
+          "command": "sed -n '840,880p' \"docs/4.1맵디자인+설정/EXODUSER_MAP_PRODUCTION_GUIDELINE_v0.9.md\""
+        }
+      ],
+      "last": [
+        {
+          "at": "2026-10-01T16:35:11.213Z",
+          "tool": "Write",
+          "path": "/Users/fordeargamers/Projects/exoduser-migration-20261001/tools/team-followup-20261001/MAP/visual-eight-view-preparation-result.md"
+        },
+        {
+          "at": "2026-10-01T16:35:21.421Z",
+          "tool": "Bash",
+          "command": "cd /Users/fordeargamers/Projects/exoduser-migration-20261001 && N=\"/Users/fordeargamers/.local/node-runtime/node-v24.15.0-darwin-arm64/bin/node\" && py"
+        },
+        {
+          "at": "2026-10-01T16:35:30.691Z",
+          "tool": "Bash",
+          "command": "echo \"=== my visual-eight-view-* artifacts ===\" && ls -1 tools/team-followup-20261001/MAP/visual-eight-view-* && echo \"=== any write outside owned pre"
+        }
+      ]
+    },
+    {
+      "team": "SKILL",
+      "sessionId": "203377cc-64c4-47ea-af27-95b66ae829fa",
+      "first": [
+        {
+          "at": "2026-10-01T16:27:44.303Z",
+          "type": "received",
+          "text": "tools/team-followup-20261001/SKILL/mortar-confirm-source-task.md       ."
+        },
+        {
+          "at": "2026-10-01T16:27:47.370Z",
+          "tool": "Read",
+          "path": "/Users/fordeargamers/Projects/exoduser-migration-20261001/tools/team-followup-20261001/SKILL/mortar-confirm-source-task.md"
+        },
+        {
+          "at": "2026-10-01T16:28:05.675Z",
+          "tool": "Bash",
+          "command": "cd /Users/fordeargamers/Projects/exoduser-migration-20261001\necho \"=== dup? ===\" && ls tools/team-followup-20261001/SKILL/mortar-confirm-source-* 2>/d"
+        },
+        {
+          "at": "2026-10-01T16:28:11.759Z",
+          "tool": "Read",
+          "path": "/Users/fordeargamers/Projects/exoduser-migration-20261001/game.html"
+        },
+        {
+          "at": "2026-10-01T16:29:21.944Z",
+          "tool": "Bash",
+          "command": "cd /Users/fordeargamers/Projects/exoduser-migration-20261001\necho \"=== callers of fireMaliceMortar ===\" && grep -nE \"fireMaliceMortar\\(\" game.html | g"
+        }
+      ],
+      "last": [
+        {
+          "at": "2026-10-01T16:32:49.615Z",
+          "tool": "Write",
+          "path": "/Users/fordeargamers/Projects/exoduser-migration-20261001/tools/team-followup-20261001/SKILL/mortar-confirm-source-result.md"
+        },
+        {
+          "at": "2026-10-01T16:33:00.890Z",
+          "tool": "Bash",
+          "command": "cd /Users/fordeargamers/Projects/exoduser-migration-20261001\nnode - <<'NODE'\nconst fs=require('fs');\nconst p='tools/team-followup-20261001/SKILL/morta"
+        },
+        {
+          "at": "2026-10-01T16:33:21.252Z",
+          "type": "completed"
+        }
+      ]
+    },
+    {
+      "team": "ENEMY",
+      "sessionId": "ddbd64be-975a-458e-a020-c09749281f5b",
+      "first": [
+        {
+          "at": "2026-10-01T16:27:35.735Z",
+          "type": "received",
+          "text": "tools/team-followup-20261001/ENEMY/roundrobin-order-effects-task.md       .  8 root ."
+        },
+        {
+          "at": "2026-10-01T16:27:39.460Z",
+          "tool": "Read",
+          "path": "/Users/fordeargamers/Projects/exoduser-migration-20261001/tools/team-followup-20261001/ENEMY/roundrobin-order-effects-task.md"
+        },
+        {
+          "at": "2026-10-01T16:28:48.226Z",
+          "tool": "Bash",
+          "command": "echo \"=== UTC ===\" && date -u \"+%Y-%m-%dT%H:%M:%SZ\" && echo \"=== current enemy loop header line ===\" && grep -n \"for(let _ei=0;_ei<ens.length;_ei++){c"
+        },
+        {
+          "at": "2026-10-01T16:29:06.119Z",
+          "tool": "Bash",
+          "command": "echo \"=== mkEn appends to ens? ===\" && sed -n '29869,29875p' game.html | grep -n \"ens.push\\|ens\\[\" ; grep -n \"ens.push\" game.html | sed -n '1,12p'; ec"
+        },
+        {
+          "at": "2026-10-01T16:30:23.432Z",
+          "tool": "Bash",
+          "command": "echo \"=== wall-stuck kill reward line in main loop ===\" && grep -n \"rollDrop(e);addExp\" game.html | head && echo \"=== confirm original header (live en"
+        }
+      ],
+      "last": [
+        {
+          "at": "2026-10-01T16:33:33.018Z",
+          "tool": "Bash",
+          "command": "echo \"=== my new files this task ===\" && git status --short --untracked-files=all | grep -iE \"ENEMY/roundrobin-order-effects\"; echo \"=== production/ot"
+        },
+        {
+          "at": "2026-10-01T16:33:39.510Z",
+          "type": "completed"
+        },
+        {
+          "at": "2026-10-01T16:33:55.875Z",
+          "type": "completed"
+        }
+      ]
+    },
+    {
+      "team": "ART",
+      "sessionId": "a489cbeb-92d9-449a-a2b7-ba0e2871322f",
+      "first": [
+        {
+          "at": "2026-10-01T16:28:02.145Z",
+          "type": "received",
+          "text": "tools/team-followup-20261001/ART/wa24-engine-parity-task.md        ."
+        },
+        {
+          "at": "2026-10-01T16:28:06.189Z",
+          "tool": "Read",
+          "path": "/Users/fordeargamers/Projects/exoduser-migration-20261001/tools/team-followup-20261001/ART/wa24-engine-parity-task.md"
+        },
+        {
+          "at": "2026-10-01T16:29:27.221Z",
+          "tool": "Bash",
+          "command": "echo \"=== 중복: wa24-engine-parity 산출? ===\" && ls -la tools/team-followup-20261001/ART/wa24-engine-parity* 2>/dev/null || echo \"(task.md 외 없음 — 신규)\"; ec"
+        },
+        {
+          "at": "2026-10-01T16:29:55.321Z",
+          "tool": "Write",
+          "path": "/Users/fordeargamers/Projects/exoduser-migration-20261001/tools/team-followup-20261001/ART/wa24-engine-parity-receipt.json"
+        },
+        {
+          "at": "2026-10-01T16:30:00.235Z",
+          "tool": "Read",
+          "path": "/Users/fordeargamers/Projects/exoduser-migration-20261001/game.html"
+        }
+      ],
+      "last": [
+        {
+          "at": "2026-10-01T16:35:00.696Z",
+          "tool": "Bash",
+          "command": "node -e \"JSON.parse(require('fs').readFileSync('tools/team-followup-20261001/ART/wa24-engine-parity-receipt.json','utf8'));console.log('receipt JSON v"
+        },
+        {
+          "at": "2026-10-01T16:35:06.294Z",
+          "type": "completed"
+        },
+        {
+          "at": "2026-10-01T16:35:27.906Z",
+          "type": "completed"
+        }
+      ]
+    },
+    {
+      "team": "ANIMVFX",
+      "sessionId": "1d2a7253-478c-43aa-8c6f-766a02270432",
+      "first": [
+        {
+          "at": "2026-10-01T16:31:28.054Z",
+          "type": "received",
+          "text": "Read tools/team-followup-20261001/ANIMVFX/flash-revive-reachability-task.md and execute only this next task in the existing session."
+        },
+        {
+          "at": "2026-10-01T16:31:31.542Z",
+          "tool": "Read",
+          "path": "/Users/fordeargamers/Projects/exoduser-migration-20261001/tools/team-followup-20261001/ANIMVFX/flash-revive-reachability-task.md"
+        },
+        {
+          "at": "2026-10-01T16:32:11.827Z",
+          "tool": "Bash",
+          "command": "date -u +\"%Y-%m-%dT%H:%M:%SZ\"; echo \"=== dup check ===\"; ls tools/team-followup-20261001/ANIMVFX/flash-revive-reachability-* 2>&1 | grep -v \"task.md\";"
+        },
+        {
+          "at": "2026-10-01T16:32:15.682Z",
+          "tool": "Read",
+          "path": "/Users/fordeargamers/Projects/exoduser-migration-20261001/game.html"
+        },
+        {
+          "at": "2026-10-01T16:32:46.452Z",
+          "tool": "Bash",
+          "command": "echo \"=== _acc clamp / spiral guard ===\"; rg -n \"_acc\\s*=|_acc\\+=|_acc>|Math.min.*_acc|PHYS_STEP\\s*=|_maxAcc|MAX_ACC|_acc=Math\" game.html | head -20"
+        }
+      ],
+      "last": [
+        {
+          "at": "2026-10-01T16:32:50.976Z",
+          "tool": "Bash",
+          "command": "echo \"=== _accCap def + frameTime clamp ===\"; rg -n \"_accCap|frameTime=|frameTime\\s*=\" game.html | head; sed -n '59745,59766p' game.html"
+        },
+        {
+          "at": "2026-10-01T16:34:35.120Z",
+          "tool": "Write",
+          "path": "/Users/fordeargamers/Projects/exoduser-migration-20261001/tools/team-followup-20261001/ANIMVFX/flash-revive-reachability-receipt.json"
+        },
+        {
+          "at": "2026-10-01T16:34:58.908Z",
+          "tool": "Bash",
+          "command": "echo \"=== etype9 revive block 37551-37560 ===\"; sed -n '37551,37560p' game.html; echo \"=== rebuildDeadPool call context 33088-33090 ===\"; sed -n '3308"
+        }
+      ]
+    }
+  ]
+}

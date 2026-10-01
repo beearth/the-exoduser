@@ -1,0 +1,53 @@
+{"libraryEvidence":{"entry":"/Users/fordeargamers/Projects/exoduser-migration-20261001/node_modules/nw-builder/src/index.js","buildEntry":"/Users/fordeargamers/Projects/exoduser-migration-20261001/node_modules/nw-builder/src/bld.js","version":"4.17.10","files":[{"name":"index.js","sha256":"75e7a65f378bdc33677eb50d53bf9f6ccb90fceb639cdc9abd81205faeffa03d"},{"name":"bld.js","sha256":"9a52b68223e5dc1b3f59ed504db50dc888c6a4c23708b3307a300e48395f29f9"},{"name":"util.js","sha256":"0e35bc436cdfd26e0ba771748688825bfd6b46a6968915b6e12d3d1d23235844"},{"name":"bld/osx.js","sha256":"9db9b472d4eea79776076d187d5329107de73177d82628f88f006e3eb281968a"}]}}
+{"actualSpyArgs":{"version":"0.111.2","flavor":"normal","platform":"osx","arch":"arm64","srcDir":"/Users/fordeargamers/Projects/exoduser-migration-20261001/tools/team-followup-20261001/BUILD/mac-packager/fixture-ARbcjL/destinations/mac-packager-969b8aab-b52b-41be-8c87-bf49e2a09ac2/stage","cacheDir":"/Users/fordeargamers/Projects/exoduser-migration-20261001/tools/team-followup-20261001/BUILD/mac-packager/fixture-ARbcjL/local-cache","outDir":"/Users/fordeargamers/Projects/exoduser-migration-20261001/tools/team-followup-20261001/BUILD/mac-packager/fixture-ARbcjL/destinations/mac-packager-969b8aab-b52b-41be-8c87-bf49e2a09ac2/package","glob":false,"managedManifest":false,"zip":false,"releaseInfo":{"version":"v0.111.2","components":{"chromium":"148.0.0"}},"app":{"name":"EXODUSER-969b8aab-b52b-41be-8c87-bf49e2a09ac2","CFBundleIdentifier":"com.exoduser.mac.969b8aab-b52b-41be-8c87-bf49e2a09ac2","CFBundleName":"EXODUSER-969b8aab-b52b-41be-8c87-bf49e2a09ac2","CFBundleDisplayName":"EXODUSER","CFBundleVersion":"1.0.0","CFBundleShortVersionString":"1.0.0","LSApplicationCategoryType":"public.app-category.games"}},"derivedPackage":{"name":"fixture","version":"1.0.0","main":"http://127.0.0.1:3381/index.html?demo=1","node-main":"node-main.js","node-remote":["http://127.0.0.1:3381","http://localhost:3381"],"chromium-args":"--user-data-dir=/Users/fordeargamers/Projects/exoduser-migration-20261001/tools/team-followup-20261001/BUILD/mac-packager/fixture-ARbcjL/destinations/mac-packager-969b8aab-b52b-41be-8c87-bf49e2a09ac2/user-state/profile --existing-flag"}}
+✔ 설치라이브러리shape/고정hash index→getter, bld→osx 확인 (10.554584ms)
+✔ import만으로애플리케이션I/O/adapter실행0 (100.114959ms)
+✔ 기본plan 읽기전용·실제spy build 인자·최소파생·원본보존 (152.817166ms)
+✔ 승인없으면예약/호출0 (33.855917ms)
+✔ profile은무공백절대토큰·나머지flags/고유save격리보존 (57.434208ms)
+✔ profile spaceはPLAN BLOCKED・予約/adapter0 (115.689667ms)
+✔ profile double-quoteはPLAN BLOCKED・予約/adapter0 (160.325125ms)
+✔ profile single-quoteはPLAN BLOCKED・予約/adapter0 (80.745167ms)
+✔ profile tabはPLAN BLOCKED・予約/adapter0 (71.346458ms)
+✔ profile newlineはPLAN BLOCKED・予約/adapter0 (80.90425ms)
+✔ profile controlはPLAN BLOCKED・予約/adapter0 (109.055208ms)
+✔ profile deleteはPLAN BLOCKED・予約/adapter0 (88.916958ms)
+✔ profile unicode-spaceはPLAN BLOCKED・予約/adapter0 (72.141083ms)
+✔ runtime없음 BLOCKED·execute호출0 (43.40725ms)
+✔ cache없음 BLOCKED·execute호출0 (60.378166ms)
+✔ 출력충돌 BLOCKED·execute호출0 (62.620541ms)
+✔ 입력SHA변경 BLOCKED·execute호출0 (57.196042ms)
+✔ 원격입력SHA다름 BLOCKED·execute호출0 (44.755209ms)
+✔ 원격commit다름 BLOCKED·execute호출0 (66.095459ms)
+✔ 원격ref없음 BLOCKED·execute호출0 (56.265083ms)
+✔ 파일누락 BLOCKED·execute호출0 (34.041042ms)
+✔ 명시목록누락 BLOCKED·execute호출0 (46.741958ms)
+✔ 목록밖asset추가 BLOCKED·execute호출0 (46.35ms)
+✔ save포함 BLOCKED·execute호출0 (68.224125ms)
+✔ profile포함 BLOCKED·execute호출0 (65.377792ms)
+✔ 기존dist포함 BLOCKED·execute호출0 (24.405125ms)
+✔ 기존app포함 BLOCKED·execute호출0 (49.628625ms)
+✔ 입력탈출 BLOCKED·execute호출0 (57.423792ms)
+✔ 입력symlink BLOCKED·execute호출0 (48.652625ms)
+✔ 출력부모symlink BLOCKED·execute호출0 (54.190375ms)
+✔ runtime탈출symlink BLOCKED·execute호출0 (79.881083ms)
+✔ runtimeSHA변경 BLOCKED·execute호출0 (164.3035ms)
+✔ releaseInfo변경 BLOCKED·execute호출0 (81.069166ms)
+✔ arch다름 BLOCKED·execute호출0 (78.09275ms)
+✔ 기존3333 BLOCKED·execute호출0 (45.039375ms)
+✔ 현재3340 BLOCKED·execute호출0 (40.470625ms)
+✔ 파생치환원문변경 BLOCKED·execute호출0 (132.602583ms)
+✔ adapter실패는소유job만정리·기존marker보존 (100.64525ms)
+✔ 라이브러리osx가오류삼켜도출력검증실패·정리 (73.921ms)
+✔ 두execute충돌·기존job삭제0 (245.613458ms)
+✔ 미지정arch는실제process.arch 사용 (107.933666ms)
+✔ 명시x64는로컬runtime헤더검증후osx/x64연결 (170.79675ms)
+✔ 부분osx실패·잘못된plist는성공반환금지 (196.2855ms)
+ℹ tests 43
+ℹ suites 0
+ℹ pass 43
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 3870.660834

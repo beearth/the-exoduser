@@ -1,0 +1,17 @@
+
+[preview 수식] canonicalFinal / engineFractions ↔ predictFinalCrop ↔ actualDraw (4×3)
+  PASS 1920x1080 @400ms: preview 수식 == canonical == 실엔진 draw (1e-11)
+  PASS 1920x1080 @1200ms: preview 수식 == canonical == 실엔진 draw (1e-11)
+  PASS 1920x1080 @2399ms: preview 수식 == canonical == 실엔진 draw (1e-11)
+  PASS 2560x1080 @400ms: preview 수식 == canonical == 실엔진 draw (1e-11)
+  PASS 2560x1080 @1200ms: preview 수식 == canonical == 실엔진 draw (1e-11)
+  PASS 2560x1080 @2399ms: preview 수식 == canonical == 실엔진 draw (1e-11)
+  PASS 1920x1200 @400ms: preview 수식 == canonical == 실엔진 draw (1e-11)
+  PASS 1920x1200 @1200ms: preview 수식 == canonical == 실엔진 draw (1e-11)
+  PASS 1920x1200 @2399ms: preview 수식 == canonical == 실엔진 draw (1e-11)
+  PASS 1024x768 @400ms: preview 수식 == canonical == 실엔진 draw (1e-11)
+  PASS 1024x768 @1200ms: preview 수식 == canonical == 실엔진 draw (1e-11)
+  PASS 1024x768 @2399ms: preview 수식 == canonical == 실엔진 draw (1e-11)
+  PASS 12행(4비율×3시점) (got 12)
+
+=== 결과: 13 PASS / 0 FAIL ===

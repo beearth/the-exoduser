@@ -1,0 +1,32 @@
+
+[A] 시퀀스 타임라인 (자동진행 경계)
+  PASS TOTAL=10700ms (got 10700)
+  PASS seq 0 → wa23 el0
+  PASS seq 5399 → wa23 (경계 직전)
+  PASS ★seq 5400 → wa24 el0 (wa23 dur 자동진행)
+  PASS seq 5800 → wa24 el400 (진입)
+  PASS seq 7799 → wa24 (출구 직전)
+  PASS ★seq 7800 → wa25 el0
+  PASS seq 10700 → done
+
+[B] geometry 공식 ↔ canonical ↔ 실엔진 draw (4비율×3시점, now=el 결정 모드)
+  PASS 1920x1080 @400ms: 후보 == canonical == 실엔진 draw (1e-11)
+  PASS 1920x1080 @1200ms: 후보 == canonical == 실엔진 draw (1e-11)
+  PASS 1920x1080 @2399ms: 후보 == canonical == 실엔진 draw (1e-11)
+  PASS 2560x1080 @400ms: 후보 == canonical == 실엔진 draw (1e-11)
+  PASS 2560x1080 @1200ms: 후보 == canonical == 실엔진 draw (1e-11)
+  PASS 2560x1080 @2399ms: 후보 == canonical == 실엔진 draw (1e-11)
+  PASS 1920x1200 @400ms: 후보 == canonical == 실엔진 draw (1e-11)
+  PASS 1920x1200 @1200ms: 후보 == canonical == 실엔진 draw (1e-11)
+  PASS 1920x1200 @2399ms: 후보 == canonical == 실엔진 draw (1e-11)
+  PASS 1024x768 @400ms: 후보 == canonical == 실엔진 draw (1e-11)
+  PASS 1024x768 @1200ms: 후보 == canonical == 실엔진 draw (1e-11)
+  PASS 1024x768 @2399ms: 후보 == canonical == 실엔진 draw (1e-11)
+  PASS 12행 (got 12)
+
+[C] ★shake 절대-now 보정 (고정 preview now=el 과 구분)
+  PASS shake 는 절대 now 에 따라 프레임마다 변함(애니메이션)
+  PASS ★절대-now shake 가 now=el 스냅샷과 구분됨(고정 preview 가 생략한 지터)
+  PASS cutShake 공식 = 엔진 :60627
+
+=== 결과: 24 PASS / 0 FAIL ===

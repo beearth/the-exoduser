@@ -75,3 +75,5 @@ root가 read-only preflight28검사를 재실행해 통과했다. 최신 확인 
 ### 2026-10-02 Mac 프로필 인자 실물 결함 수정
 
 첫 .app 생성 후 NSAlert 대기/3381 미개방이 발생했다. 생성 manifest의 무공백 절대 user-data-dir에서 literal double quote만 제거하고 기존 본인 테스트 프로세스 종료 후 네이티브 로비·profile 생성·서버 listen을 확인했다. 경고 본문 자체는 UNKNOWN. packager는 같은 경로를 무인용 토큰으로 생성하고 공백/단·쌍따옴표/제어문자/DEL 경로를 명시 거부한다. 원 보안 args·서명·quarantine·사용자 세이브 변경0. root 43회귀 PASS. 상세 실물 검수와 남은 항목은 MAC-APP-RUNTIME-20261002.md 및 outputs/team-review-20261002/mac-app/의 기록을 따른다. 이 시점은 실행 시작 해결이며 출시·게임 전체 인수 선언이 아니다.
+
+후속 실물 빌드: 원격179813c2 수정 빌더로 abf57f41 고유앱/3382 생성·7918입력 및 출력SHA검사 완료. 아직 새앱 실행 전. 첫 앱의 게임 도입 장면 확인 뒤 Mac 잠금이 발생해 설정/저장/재실행은 사용자 잠금 해제 대기다. 소스백업/생성/실제런타임인수를 구분한다.

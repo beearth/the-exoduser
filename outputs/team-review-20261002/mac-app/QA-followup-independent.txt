@@ -1,0 +1,15 @@
+  ✓ S1 게임 _saving=false 사이트 전부 _drainPendingSaveNow 대상(diff 누락 없음)
+  ✓ C1 busy-defer 보완: _saving 중 발화 → pending 보류 → 완료 drain → 저장됨
+  ✓ C2 반례: drain 후 500ms 이전 종료 → 보류분 유실 (재디바운스 때문)
+  ✓ C3 캐릭터 전환: busy 중 pending 뒤 char 전환 → drain abort, 他캐릭 저장 안 함
+  ✓ C4 재디바운스 창 중 전환: 재무장된 저장도 컨텍스트 불일치로 abort
+  ✓ C5 force 경쟁: busy 중 pending + _pendingForce → 완료 시 유실 없음(중복 저장 허용)
+  ✓ C6 charIdx 변경만으로도 drain abort (컨텍스트 체크 유효)
+
+BUSY-SAVE 독립 반례 시도: 7 PASS / 0 FAIL
+발견 반례(최소 재현):
+  ! drain 이 dbSave() 즉시 호출이 아니라 dbSaveNow() 재디바운스(+500ms) → in-flight 완료 직후 500ms 내 종료 시 busy-보류분 유실. 최소재현: hold dbSave→dbSaveNow→500ms→release→300ms→close ⇒ transmits=1(보류분 없음). 원본(drain 없음)은 항상 유실이므로 회귀는 아니나 "완전 배수"는 아님.
+검수 범위·한계:
+  - 게임 _saving=false 토글 3곳, diff 내 drain 삽입(game+easy) 6곳
+  - 캐릭터 전환 시 drain abort 는 안전(잘못된 캐릭 저장 방지). 단 A의 busy-보류 변경은 전환 경로가 별도로 저장하지 않으면 유실 — 이는 전환 경로 책임(후보가 악화시키지 않음).
+  - 실패/force 경쟁: drain(재디바운스)과 _pendingForce(≥5s 즉시 dbSave)가 같은 완료 epilogue에서 모두 동작 → 데이터 유실 없음. 동일 상태 중복 저장이 발생할 수 있으나 무해(과저장).

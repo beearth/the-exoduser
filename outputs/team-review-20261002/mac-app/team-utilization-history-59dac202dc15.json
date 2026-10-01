@@ -1,5 +1,5 @@
 {
-  "checkedAt": "2026-10-01T16:48:30.054Z",
+  "checkedAt": "2026-10-01T16:46:30.076Z",
   "kind": "point-in-time evidence snapshot, not continuous utilization",
   "teams": [
     {
@@ -101,19 +101,19 @@
     {
       "team": "BUILD",
       "sessionId": "01a0f6e6-2e4c-7322-92d7-3aa309857856",
-      "task": "mac-character-media",
-      "instruction": "tools/team-followup-20261001/BUILD/mac-character-media-task.md",
-      "receivedAt": "2026-10-01T16:47:39.000Z",
+      "task": "profile-argument-fix",
+      "instruction": "tools/team-followup-20261001/BUILD/profile-argument-fix-task.md",
+      "receivedAt": "2026-10-01T16:40:43.000Z",
       "firstReadAt": null,
       "firstCodeEditAt": null,
-      "completedAt": null,
-      "status": "interrupted",
+      "completedAt": "2026-10-01T16:42:15.000Z",
+      "status": "completed_pending_root_acceptance",
       "timestampSource": "official read_thread timestamps; per-command timestamps unavailable",
       "actualReadConfirmed": true,
       "actualEditConfirmed": true,
-      "nextGate": "Character media read/receipt confirmed; official latest turn interrupted, cause unknown, not counted as running. No duplicate resend.",
+      "nextGate": "root quote-only correction launches real app; save/relaunch acceptance ongoing",
       "productionApplied": false,
-      "priorAcceptance": "Profile argument fix committed179813c2; root43PASS and new package created"
+      "rootAcceptance": "43PASS; code committed179813c2; generated new app; native verification blocked by Mac lock"
     },
     {
       "team": "UIUX",
@@ -162,7 +162,7 @@
       "actualEditConfirmed": true,
       "nextGate": "root independent acceptance",
       "productionApplied": false,
-      "rootAcceptance": "Immediate drain17PASS independently rerun; production application pending"
+      "rootAcceptance": "immediate-drain17PASS root independent; candidate not applied"
     },
     {
       "team": "SOUND",
@@ -182,28 +182,15 @@
     }
   ],
   "counts": {
-    "completed_pending_root_acceptance": 9,
-    "interrupted": 1,
+    "completed_pending_root_acceptance": 10,
     "blocked_not_dispatched": 1
   },
   "remoteCheckpoint": "179813c2ebdd8e52e564d4183240968c1442e477",
-  "remoteCheckpointVerifiedAt": "2026-10-01T16:48:30.054Z",
+  "remoteCheckpointVerifiedAt": "2026-10-01T16:46:30.076Z",
   "remoteRef": "refs/heads/codex/mac-environment-20261001",
   "history": {
-    "path": "outputs/team-review-20261002/mac-app/team-utilization-history-59dac202dc15.json",
-    "sha256": "59dac202dc152304d0686cd939d24ca87e65e62d140ff5eaae0182142d7d071b"
-  },
-  "rootGate": {
-    "status": "waiting_for_user_unlock",
-    "reason": "Computer Use reports Mac locked; no bypass attempted",
-    "appBuild": "/Users/fordeargamers/Projects/exoduser-migration-20261001/outputs/mac-package-ready/mac-packager-abf57f41-ebe0-4393-852f-0522f5750f9a/package/EXODUSER-abf57f41-ebe0-4393-852f-0522f5750f9a.app",
-    "sourceBackup": "179813c2ebdd8e52e564d4183240968c1442e477",
-    "pending": [
-      "native game HUD",
-      "settings",
-      "isolated save restore",
-      "app relaunch"
-    ]
+    "path": "outputs/team-review-20261002/mac-app/team-utilization-history-c7a2fa205e98.json",
+    "sha256": "c7a2fa205e98810508d5e12b61dae8de007b04f7565bba563d3b71d68f9fea9e"
   },
   "automation": {
     "status": "ACTIVE",
@@ -229,5 +216,17 @@
     "outputs/team-review-20261002/mac-app/codex-activity-snapshot.json",
     "outputs/team-review-20261002/mac-app/uiux-native-matrix.json",
     "outputs/team-review-20261002/mac-app/launch-profile-trial.json"
-  ]
+  ],
+  "rootGate": {
+    "status": "waiting_for_user_unlock",
+    "reason": "Computer Use reports Mac locked; no bypass attempted",
+    "appBuild": "/Users/fordeargamers/Projects/exoduser-migration-20261001/outputs/mac-package-ready/mac-packager-abf57f41-ebe0-4393-852f-0522f5750f9a/package/EXODUSER-abf57f41-ebe0-4393-852f-0522f5750f9a.app",
+    "sourceBackup": "179813c2ebdd8e52e564d4183240968c1442e477",
+    "pending": [
+      "native game HUD",
+      "settings",
+      "isolated save restore",
+      "app relaunch"
+    ]
+  }
 }

@@ -1,0 +1,1 @@
+{"at":"2026-10-01T16:36:45.061Z","completedAt":"2026-10-01T16:36:45.076Z","userStateParentExists":false,"bootLogExists":false,"helpers":4,"helperValid":true,"tests":10,"serverChecks":{"port3381":true,"saveRootLiteral":true,"mkdirRecursive":true,"loopback":true,"firstLogBeforeSaveInit":true}}

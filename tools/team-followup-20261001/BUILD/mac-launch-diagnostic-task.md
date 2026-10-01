@@ -1,0 +1,3 @@
+# Mac 앱 시작 진단
+기존 BUILD 세션의 다음 승인 작업. AGENTS/BUILD docs/백업정책을 따르며 새 세션·다른 팀·게임/사용자 브라우저·보안설정 변경 금지.
+root가 97db3f1 체크포인트에서 실제 빌드를 생성했다. outputs/team-review-20261002/mac-app/execute-result.json 참조. 현재 PID8841 시작 후 서버3381/프로필 생성 없이 대기한다. launch-hang-sample.txt의 main stack은 NSAlert runModal. CUA app 경로/ID timeout, displayName Invalid app. 원인을 읽기 진단하고 안전한 최소 수정 후보와 검증을 BUILD/mac-launch-diagnostic-*에 작성하라. app·프로세스·생산코드 수정/실행/종료 금지(root 담당). 현재 파생 package chromium-args의 --user-data-dir="절대경로" 및 새 user-state 부모 미생성, vendor osx rename/helper, manifest node-main 등을 확인하라. 로그/소스 증거 없이 추정 확정 금지. source map/runtime doc 조사 필요시 공식 NW.js primary source만 사용. 보안 우회·quarantine 제거·서명 무력화 금지. 실제 Read/첫 Edit/완료시각 receipt 작성. 사용자 세이브 접근 금지. 결과가 준비되면 보고하고 멈춰 root 통합을 기다려라.

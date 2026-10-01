@@ -51888,3 +51888,8 @@ QA의 완료 작업을 가리키는 미전송 초안은 그대로 보존했다. 
 - BUILD packager의 user-data-dir literal quote 제거, 미검수 경로 공백/quote/control 거부. root43회귀 PASS.
 - 실제 생성 앱의 quote-only 수정 후 NW.js 로비/profile/3381서버 확인; 게임·저장·재실행 검수는 진행 중. INTEGRATION_BUILD_TEAM_MASTER 및 MAC-APP-RUNTIME-20261002 동기화.
 - UIUX 실제 DOM8조합 초점 회귀 인수와 팀 현재시각/과제 증거 정정. 생산 게임 코드 변경0.
+
+## 2026-10-02 Mac 재생성 및 실행 게이트 기록
+- 179813c2 수정 빌더로 고유 abf57f41 앱 실제 생성. runtime 인수는 별도.
+- 첫앱의 로비/생성/스토리/game 도입과 Mac 잠금에 따른 설정/저장/재실행 대기를 총괄/BUILD/실행기록에 동기화.
+- 팀 snapshot 실제시각 정정·옛행 해시 history 보존, BALANCE 즉시배수17회귀 결과 기록.

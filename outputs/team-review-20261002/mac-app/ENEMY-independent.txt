@@ -1,0 +1,132 @@
+ENEMY-20261002-ROUNDROBIN-BOUNDARY fixture
+  f06 patch sha256=7a00fa390d8660c5822fe077459a6de58d85c465d5f1868091adb977c04498af (원 후보 — 읽기전용 보존)
+
+  PASS  반례(원후보): 음수/2^31/큰값 start → 실제 _eStart<0 → 유효 인덱스 누락(꼬리 포함)
+  PASS  정상 start(원후보): 0/39/undefined/NaN/Infinity 는 안전(음수 아님)
+  PASS  보강: 음수/2^31/큰값/비정상 start 전부 → 전 인덱스 1회 방문·꼬리 포함·음수 _ei 0
+  PASS  보강: 다음 tick G._eLoopStart 자가치유 — bad start 라도 이후엔 [0,_elen) 정상 회전
+  PASS  경계: 루프 중 splice(축소) — 크래시 없음, 범위밖은 hole 가드로 스킵
+  PASS  경계: spawn(증가)은 당틱 _elen 캡처 이후분 미방문, 크래시 없음(다음 tick 재캡처)
+  PASS  LOD parity 유지: 보강 후 _ei 는 [0,_elen) 실제 인덱스 → (tierFrame&m)===(_ei&m) 원본과 동일
+  PASS  보호계약: 예산 12/8ms·공격티켓 미도입·soft-cap 무조건활성 0(보강 코드 기준)
+
+결과: 8 PASS / 0 FAIL
+{
+  "taskId": "ENEMY-20261002-ROUNDROBIN-BOUNDARY",
+  "f06PatchSha256": "7a00fa390d8660c5822fe077459a6de58d85c465d5f1868091adb977c04498af",
+  "rows": [
+    {
+      "case": "original-bad-starts",
+      "note": "음수 _ei 는 if(!e)continue 로 가려져 조용히 유효 꼬리를 누락(=F06 결함 재발)",
+      "rows": [
+        {
+          "start": "-1",
+          "eStart": -1,
+          "tailVisited": false,
+          "coverage": 39,
+          "negIdxMaskedByHoleGuard": true
+        },
+        {
+          "start": "2147483648",
+          "eStart": -8,
+          "tailVisited": false,
+          "coverage": 32,
+          "negIdxMaskedByHoleGuard": true
+        },
+        {
+          "start": "1e+21",
+          "eStart": -24,
+          "tailVisited": false,
+          "coverage": 16,
+          "negIdxMaskedByHoleGuard": true
+        }
+      ]
+    },
+    {
+      "case": "hardened-all-starts",
+      "rows": [
+        {
+          "start": "-1",
+          "tailVisited": true,
+          "coverage": 40,
+          "negOrOob": false,
+          "nextStart": 0
+        },
+        {
+          "start": "2147483648",
+          "tailVisited": true,
+          "coverage": 40,
+          "negOrOob": false,
+          "nextStart": 9
+        },
+        {
+          "start": "1e+21",
+          "tailVisited": true,
+          "coverage": 40,
+          "negOrOob": false,
+          "nextStart": 1
+        },
+        {
+          "start": "4294967296",
+          "tailVisited": true,
+          "coverage": 40,
+          "negOrOob": false,
+          "nextStart": 17
+        },
+        {
+          "start": "-2147483649",
+          "tailVisited": true,
+          "coverage": 40,
+          "negOrOob": false,
+          "nextStart": 32
+        },
+        {
+          "start": "0",
+          "tailVisited": true,
+          "coverage": 40,
+          "negOrOob": false,
+          "nextStart": 1
+        },
+        {
+          "start": "1",
+          "tailVisited": true,
+          "coverage": 40,
+          "negOrOob": false,
+          "nextStart": 2
+        },
+        {
+          "start": "39",
+          "tailVisited": true,
+          "coverage": 40,
+          "negOrOob": false,
+          "nextStart": 0
+        },
+        {
+          "start": "undefined",
+          "tailVisited": true,
+          "coverage": 40,
+          "negOrOob": false,
+          "nextStart": 1
+        },
+        {
+          "start": "NaN",
+          "tailVisited": true,
+          "coverage": 40,
+          "negOrOob": false,
+          "nextStart": 1
+        },
+        {
+          "start": "Infinity",
+          "tailVisited": true,
+          "coverage": 40,
+          "negOrOob": false,
+          "nextStart": 1
+        }
+      ]
+    },
+    {
+      "case": "hardened-selfheal-rotation",
+      "distinctHeads": 40
+    }
+  ]
+}

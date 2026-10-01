@@ -1,0 +1,157 @@
+{
+  "at": "2026-10-01T16:36:45.061Z",
+  "app": "/Users/fordeargamers/Projects/exoduser-migration-20261001/outputs/mac-package-ready/mac-packager-59376baf-37c9-4c20-a42f-af67b8d9221a/package/EXODUSER-59376baf-37c9-4c20-a42f-af67b8d9221a.app",
+  "sourceBackup": "97db3f1a9cf6c91ea7dbd50e16d6e61d60c996a9",
+  "stackEvidence": {
+    "path": "outputs/team-review-20261002/mac-app/launch-hang-sample.txt",
+    "sha256": "3e32ebc63fc2da058c21ca8326942ff0508cc3fc40850046ce6dbf0105b0c6f7"
+  },
+  "hashes": [
+    {
+      "path": "outputs/team-review-20261002/mac-app/execute-result.json",
+      "sha256": "c8823efe2e506cbfedf0a6b1c18b241c1e10567527c229c6d592b69b5b3cee58"
+    },
+    {
+      "path": "/Users/fordeargamers/Projects/exoduser-migration-20261001/outputs/mac-package-ready/mac-packager-59376baf-37c9-4c20-a42f-af67b8d9221a/package/EXODUSER-59376baf-37c9-4c20-a42f-af67b8d9221a.app/Contents/Resources/app.nw/package.json",
+      "sha256": "29b5b4e0a235111c7e7dd5d8ef5e7ea9cf982eea5833aa507e11146d88c1a940"
+    },
+    {
+      "path": "/Users/fordeargamers/Projects/exoduser-migration-20261001/outputs/mac-package-ready/mac-packager-59376baf-37c9-4c20-a42f-af67b8d9221a/package/EXODUSER-59376baf-37c9-4c20-a42f-af67b8d9221a.app/Contents/Resources/app.nw/node-main.js",
+      "sha256": "2b1b6e7a5c0cd2fb8915accf414a178d6fd941c504f29f9d1be51cd87509127a"
+    },
+    {
+      "path": "/Users/fordeargamers/Projects/exoduser-migration-20261001/outputs/mac-package-ready/mac-packager-59376baf-37c9-4c20-a42f-af67b8d9221a/package/EXODUSER-59376baf-37c9-4c20-a42f-af67b8d9221a.app/Contents/Info.plist",
+      "sha256": "a9caf9d6f258d3ab2d16550c2ac2a60070671420925f4672611cef41a366e4c7"
+    },
+    {
+      "path": "node_modules/nw-builder/src/bld/osx.js",
+      "sha256": "9db9b472d4eea79776076d187d5329107de73177d82628f88f006e3eb281968a"
+    },
+    {
+      "path": "tools/team-followup-20261001/BUILD/mac-packager/packager.mjs",
+      "sha256": "4e0aff74b153cecaf73bf955c15a4413a841a2c9db7aff6b69bf606ede07e1af"
+    }
+  ],
+  "manifest": {
+    "name": "hell-exoduser-release",
+    "version": "1.0.0",
+    "main": "http://127.0.0.1:3381/index.html?demo=1",
+    "node-main": "node-main.js",
+    "node-remote": [
+      "http://127.0.0.1:3381",
+      "http://localhost:3381"
+    ],
+    "window": {
+      "title": "EXODUSER: HELL LORD",
+      "width": 1920,
+      "height": 1080,
+      "min_width": 1280,
+      "min_height": 720,
+      "fullscreen": true,
+      "resizable": true,
+      "frame": false,
+      "toolbar": false
+    },
+    "chromium-args": "--disable-features=CrossOriginOpenerPolicy,CrossOriginEmbedderPolicy,IsolateOrigins,SitePerProcess,SkiaGraphite --disable-site-isolation-trials --disable-web-security --no-sandbox --ignore-gpu-blocklist --enable-gpu-rasterization --allow-running-insecure-content --autoplay-policy=no-user-gesture-required --enable-features=SharedArrayBuffer --user-data-dir=\"/Users/fordeargamers/Projects/exoduser-migration-20261001/outputs/mac-package-ready/mac-packager-59376baf-37c9-4c20-a42f-af67b8d9221a/user-state/profile\"",
+    "product_string": "EXODUSER-59376baf-37c9-4c20-a42f-af67b8d9221a"
+  },
+  "mainExecutable": {
+    "name": "EXODUSER-59376baf-37c9-4c20-a42f-af67b8d9221a",
+    "exists": true,
+    "mode": 493
+  },
+  "helperChecks": [
+    {
+      "name": "EXODUSER-59376baf-37c9-4c20-a42f-af67b8d9221a Helper (Alerts).app",
+      "executable": "EXODUSER-59376baf-37c9-4c20-a42f-af67b8d9221a Helper (Alerts)",
+      "id": "com.exoduser.mac.59376baf-37c9-4c20-a42f-af67b8d9221a.helper.alert",
+      "executableExists": true,
+      "executableMode": 493
+    },
+    {
+      "name": "EXODUSER-59376baf-37c9-4c20-a42f-af67b8d9221a Helper (GPU).app",
+      "executable": "EXODUSER-59376baf-37c9-4c20-a42f-af67b8d9221a Helper (GPU)",
+      "id": "com.exoduser.mac.59376baf-37c9-4c20-a42f-af67b8d9221a.helper.gpu",
+      "executableExists": true,
+      "executableMode": 493
+    },
+    {
+      "name": "EXODUSER-59376baf-37c9-4c20-a42f-af67b8d9221a Helper (Renderer).app",
+      "executable": "EXODUSER-59376baf-37c9-4c20-a42f-af67b8d9221a Helper (Renderer)",
+      "id": "com.exoduser.mac.59376baf-37c9-4c20-a42f-af67b8d9221a.helper.renderer",
+      "executableExists": true,
+      "executableMode": 493
+    },
+    {
+      "name": "EXODUSER-59376baf-37c9-4c20-a42f-af67b8d9221a Helper.app",
+      "executable": "EXODUSER-59376baf-37c9-4c20-a42f-af67b8d9221a Helper",
+      "id": "com.exoduser.mac.59376baf-37c9-4c20-a42f-af67b8d9221a.helper",
+      "executableExists": true,
+      "executableMode": 493
+    }
+  ],
+  "userStateParentExists": false,
+  "profileDirectoryExists": false,
+  "saveDirectoryExists": false,
+  "bootLogExists": false,
+  "serverChecks": {
+    "port3381": true,
+    "saveRootLiteral": true,
+    "mkdirRecursive": true,
+    "loopback": true,
+    "firstLogBeforeSaveInit": true
+  },
+  "proposal": {
+    "chromiumArgs": "--disable-features=CrossOriginOpenerPolicy,CrossOriginEmbedderPolicy,IsolateOrigins,SitePerProcess,SkiaGraphite --disable-site-isolation-trials --disable-web-security --no-sandbox --ignore-gpu-blocklist --enable-gpu-rasterization --allow-running-insecure-content --autoplay-policy=no-user-gesture-required --enable-features=SharedArrayBuffer --user-data-dir=/Users/fordeargamers/Projects/exoduser-migration-20261001/outputs/mac-package-ready/mac-packager-59376baf-37c9-4c20-a42f-af67b8d9221a/user-state/profile",
+    "rootOnlyDirectories": [
+      "/Users/fordeargamers/Projects/exoduser-migration-20261001/outputs/mac-package-ready/mac-packager-59376baf-37c9-4c20-a42f-af67b8d9221a/user-state",
+      "/Users/fordeargamers/Projects/exoduser-migration-20261001/outputs/mac-package-ready/mac-packager-59376baf-37c9-4c20-a42f-af67b8d9221a/user-state/profile",
+      "/Users/fordeargamers/Projects/exoduser-migration-20261001/outputs/mac-package-ready/mac-packager-59376baf-37c9-4c20-a42f-af67b8d9221a/user-state/saves"
+    ],
+    "limits": "문자열 후보만; 공식111 파서 확인/실앱 검증 아님; mkdir 실행0"
+  },
+  "tests": [
+    {
+      "name": "현재 quoted profile을 무공백 절대경로로 교체",
+      "result": "PASS"
+    },
+    {
+      "name": "나머지 flags 그대로",
+      "result": "PASS"
+    },
+    {
+      "name": "idempotent",
+      "result": "PASS"
+    },
+    {
+      "name": "공백 profile 거부",
+      "result": "PASS"
+    },
+    {
+      "name": "상대경로 거부",
+      "result": "PASS"
+    },
+    {
+      "name": "quote path 거부",
+      "result": "PASS"
+    },
+    {
+      "name": "중복 flag 거부",
+      "result": "PASS"
+    },
+    {
+      "name": "flag 누락 거부",
+      "result": "PASS"
+    },
+    {
+      "name": "파생 server 문법만 검사",
+      "result": "PASS"
+    },
+    {
+      "name": "node-main 실제 packaged 파일 존재",
+      "result": "PASS"
+    }
+  ],
+  "unknown": "NSAlert 본문/상징화 caller 미확인; user-data-dir double quote 의미와 alert 원인 미확정",
+  "completedAt": "2026-10-01T16:36:45.076Z"
+}

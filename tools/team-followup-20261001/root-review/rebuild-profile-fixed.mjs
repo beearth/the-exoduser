@@ -1,0 +1,16 @@
+import fs from 'node:fs';
+import {randomUUID} from 'node:crypto';
+import {execFileSync} from 'node:child_process';
+import net from 'node:net';
+import {execute} from '../BUILD/mac-packager/packager.mjs';
+const base='outputs/team-review-20261002/mac-app';
+const config=JSON.parse(fs.readFileSync(base+'/build-config.json'));
+const sha=execFileSync('git',['rev-parse','HEAD'],{encoding:'utf8'}).trim();
+const remoteRef='refs/heads/codex/mac-environment-20261001';
+const remoteSha=execFileSync('git',['ls-remote','origin',remoteRef],{encoding:'utf8'}).trim().split(/\s+/)[0];
+if(sha!==remoteSha)throw Error('Exact remote checkpoint required');
+config.backup={...config.backup,sha,remoteSha,remoteRef,verifiedAt:new Date().toISOString()};config.id=randomUUID();config.port=3382;
+await new Promise((resolve,reject)=>{const server=net.createServer();server.once('error',reject);server.listen({host:'127.0.0.1',port:config.port,exclusive:true},()=>server.close(resolve));});
+const configRecord={baseConfig:base+'/build-config.json',id:config.id,port:config.port,backup:{sha,remoteSha,remoteRef,verifiedAt:config.backup.verifiedAt},inputCount:config.inputs.length,reason:'Build with remote-backed profile argument correction; old trial app/profile preserved'};
+fs.writeFileSync(base+'/profile-fixed-build-configuration.json',JSON.stringify(configRecord,null,2)+'\n',{flag:'wx'});
+const startedAt=new Date().toISOString();const result=await execute(config,{approved:true});fs.writeFileSync(base+'/profile-fixed-build-result.json',JSON.stringify({startedAt,completedAt:new Date().toISOString(),...result},null,2)+'\n',{flag:'wx'});console.log(JSON.stringify({status:result.status,appPath:result.appPath,sourceBackup:result.sourceBackup}));
