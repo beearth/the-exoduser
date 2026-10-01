@@ -1,0 +1,9 @@
+# Physical impact preparation — root integration plan
+
+Measured diagnostic: draw114.2ms includes getImageData samples under _tintHolyDome/_physicalImpactSheet. The independent ITEM/UIUX stack audits use the same profile and identify this path, not a loot mask. The other99ms membrane path stays a separate issue. CPU sampling and wrapper elapsed time do not isolate GPU waiting.
+
+Only the512×512 Fire_ImpactFire_Sheet original is prepared before renderer/game using the unchanged tint function and unchanged image-keyed WeakMap. Existing displayed4frames/white RGB/alpha formula/size/blend remain unchanged. The additional cached Canvas is nominal1MiB, normally otherwise allocated on first impact; the temporary source/read/output arrays also exist during preparation. Browser/GPU peak memory must not be equated with1MiB.
+
+BALANCE supplies a250ms cooperative-budget candidate. Root reviews source/epoch/cancellation/failure and exact cache reuse before integration; no hard deadline guarantee around synchronous pixel processing. No new source request or RNG. Failed/unready/stale work keeps original lazy fallback. The pre-existing item-skin and drop-beam preparation remain unchanged; easy remains unmodified.
+
+Before production, standalone browser fixture compares every1,048,576 output byte from original tint with the candidate cache and verifies one-time construction/identity/reuse. Same input and browser fixture reports individual timings, not universal performance. Then actual normal boot must expose stats and live physical-impact use without new tint, preserving normal inputs and visuals. Finally run scoped source/boot/lifetime regressions and core guard, synchronize VFX/performance/master/CHANGELOG, and verify exact remote SHA. Original diagnostic and normal samples remain immutable; new captures have their own directory and metadata.

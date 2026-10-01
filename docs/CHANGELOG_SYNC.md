@@ -51819,3 +51819,8 @@ ENEMY 물리tick, ART 최종crop, SKILL 충전증거/예외정리 후보 검수.
 ## 2026-10-01 정상 전투 연속 관측
 
 원격36a66f0e/기본품질/단독25.020초,15처치·생존적41·연속밀집11.440초. 전체RAF p99 50.2ms, CPUdraw최대129.8ms 잔여. GL/개선율미확정, 게임탭/관측기정리완료. 생산변경0. 상세 SUPPORT-normal-combat.md 및 raw/analysis 보존.
+
+
+## 2026-10-01 draw귀속·물리타격시트 부트준비 후보 통합
+
+별도프로파일114.2/99ms의VFX틴트/MAP막 getImageData스택확인.본편기존물리512²캐시를250ms협력예산으로renderer전에준비.실패lazy폴백·전투/외형/easy불변.17회귀·전수RGBA1,048,576바이트0diff;실전부트후속검수대기. 정상자료분석기12반례거부21검사PASS·원자료불변. 상세DRAW-attribution-root-review.md.

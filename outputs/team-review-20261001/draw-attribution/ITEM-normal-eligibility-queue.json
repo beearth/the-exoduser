@@ -1,0 +1,7 @@
+{
+  "at": "2026-10-01T14:58:48.997600+00:00",
+  "exit": 0,
+  "output": "Queued message 01a0f7f9-a81e-7cc3-9dc5-9faa49a8b474 for thread 01a0f6e6-1fbe-7df0-8d02-a9c2d9df3750.\n",
+  "error": "",
+  "duplicateCheck": "draw-attribution completion receipt verified; no same-task artifacts before creation; queue UNKNOWN; root eligibility already fixed so review only"
+}

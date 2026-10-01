@@ -1,0 +1,20 @@
+{
+  "task": "DRAW-LONG-FRAME-ATTRIBUTION",
+  "status": "독립 분석 완료·root 인수 대기",
+  "receivedAt": "2026-10-01T14:50:43Z",
+  "firstReadAt": "2026-10-01T14:50:43Z",
+  "read": ["draw-attribution-task.md", "ITEM-queue.json", "AGENTS 사용자 제공 및 적용 하위 파일 검색", "PROJECT_MANAGEMENT_MASTER 18.40", "SUPPORT-normal-combat.md", "exoduser-item-system-full.md 월드 드롭 계약", "root raw/profile/clock/preflight", "game.html 실제 함수"],
+  "duplicateCheck": "기존 지원 완료; draw-attribution-task만 존재하고 분석 제출물 없음. 공식 ITEM-queue 수신 확인, native queue UNKNOWN. 기존 세션만 사용",
+  "firstEdit": "이 전용 영수증 생성; 이후 독립 분석기만 작성",
+  "firstEditAt": "2026-10-01T14:51:52.867Z",
+  "firstEditTimeEvidence": "전용 영수증 filesystem birthtime; 분석기 birthtime14:51:52.883Z",
+  "checkedAt": "2026-10-01T14:53:00Z",
+  "completedAt": "2026-10-01T14:53:00Z",
+  "actualCommands": ["node tools/team-followup-20261001/ITEM/draw-attribution-analyze.mjs", "node tools/team-followup-20261001/ITEM/draw-attribution-check.mjs", "rg -n '_worldItemSkin|_maskWorldDropBlack|_physicalImpactSheet|_tintHolyDome|membrane|129\\.8' docs --glob '*.md'"],
+  "checks": "PASS: 재실행2회/저장결과 동일, 원자료SHA 보존, source hash/preflight 및 clock bracket 직접 대조",
+  "initialToolFailure": "큰 stdout 도구출력 truncation으로 JSON parse1회 실패; node ID 정규화 후 성공",
+  "result": "2 draw 장시간의 주샘플은 VFX tint와 MAP membrane native getImageData. 전리품/RNG 원인 미확정. 생산 적용0",
+  "remainingGates": "root 독립검수·당시 외부source해시·실제이미지/variant 식별·원담당 최소후보 검증",
+  "scope": "ITEM/draw-attribution-*만 쓰기; 원자료·생산 읽기전용",
+  "prohibitedExecutions": 0
+}

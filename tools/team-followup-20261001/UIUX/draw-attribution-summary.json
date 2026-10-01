@@ -1,0 +1,656 @@
+{
+  "aligned": {
+    "navigationUs": 816904114954,
+    "mappedAnchor": 34665.82099997997,
+    "anchorBefore": 34659.60000002384,
+    "anchorAfter": 34670.200000047684,
+    "anchorInsideBracket": true,
+    "bracketWidthMs": 10.600000023841858,
+    "residualBracketMs": [
+      -6.2209999561309814,
+      4.3790000677108765
+    ],
+    "profileStartMs": 47677.764,
+    "profileEndMs": 75108.919,
+    "profileBefore": 47673.39999997616,
+    "profileAfter": 47908.300000071526,
+    "profileStartInsideBracket": true,
+    "stopTimestampMs": 75151.18300008774
+  },
+  "windows": [
+    {
+      "span": {
+        "kind": "draw",
+        "start": 55887.39999997616,
+        "end": 56001.60000002384,
+        "duration": 114.20000004768372,
+        "loopId": 210,
+        "parent": "loop",
+        "killsBefore": 5,
+        "killsAfter": 5
+      },
+      "categories": {
+        "Canvas-pixel-read/write": 111.02900002383831,
+        "other-JS/unresolved": 2.9510000000009313,
+        "runtime/unresolved": 0.22000002384447725
+      },
+      "topStacks": [
+        {
+          "nodeId": 283,
+          "samples": 74,
+          "estimatedMs": 111.02900002383831,
+          "category": "Canvas-pixel-read/write",
+          "stack": [
+            {
+              "nodeId": 1,
+              "functionName": "(root)",
+              "url": "",
+              "scriptId": "0",
+              "line0": -1,
+              "line1": null,
+              "column0": -1,
+              "sourcePath": null,
+              "sourceSha256": null,
+              "sourceLine": null
+            },
+            {
+              "nodeId": 44,
+              "functionName": "wrappedLoop",
+              "url": "",
+              "scriptId": "157",
+              "line0": 62,
+              "line1": 63,
+              "column0": 28,
+              "sourcePath": null,
+              "sourceSha256": null,
+              "sourceLine": null
+            },
+            {
+              "nodeId": 45,
+              "functionName": "loop",
+              "url": "http://qa-draw-attribution-20261001.localhost:3340/game.html?webgpu=0",
+              "scriptId": "59",
+              "line0": 59652,
+              "line1": 59653,
+              "column0": 13,
+              "sourcePath": "game.html",
+              "sourceSha256": "8ebc3b7b52a651c1a3bc5e8c285b00d186c6dacc18429ada7499781acc72b0b9",
+              "sourceLine": "function loop(timestamp){"
+            },
+            {
+              "nodeId": 46,
+              "functionName": "wrapped",
+              "url": "",
+              "scriptId": "157",
+              "line0": 47,
+              "line1": 48,
+              "column0": 26,
+              "sourcePath": null,
+              "sourceSha256": null,
+              "sourceLine": null
+            },
+            {
+              "nodeId": 59,
+              "functionName": "draw",
+              "url": "http://qa-draw-attribution-20261001.localhost:3340/game.html?webgpu=0",
+              "scriptId": "59",
+              "line0": 49861,
+              "line1": 49862,
+              "column0": 13,
+              "sourcePath": "game.html",
+              "sourceSha256": "8ebc3b7b52a651c1a3bc5e8c285b00d186c6dacc18429ada7499781acc72b0b9",
+              "sourceLine": "function draw(){"
+            },
+            {
+              "nodeId": 66,
+              "functionName": "drawP",
+              "url": "http://qa-draw-attribution-20261001.localhost:3340/game.html?webgpu=0",
+              "scriptId": "59",
+              "line0": 53532,
+              "line1": 53533,
+              "column0": 14,
+              "sourcePath": "game.html",
+              "sourceSha256": "8ebc3b7b52a651c1a3bc5e8c285b00d186c6dacc18429ada7499781acc72b0b9",
+              "sourceLine": "function drawP(){"
+            },
+            {
+              "nodeId": 281,
+              "functionName": "_physicalImpactSheet",
+              "url": "http://qa-draw-attribution-20261001.localhost:3340/game.html?webgpu=0",
+              "scriptId": "59",
+              "line0": 8538,
+              "line1": 8539,
+              "column0": 29,
+              "sourcePath": "game.html",
+              "sourceSha256": "8ebc3b7b52a651c1a3bc5e8c285b00d186c6dacc18429ada7499781acc72b0b9",
+              "sourceLine": "function _physicalImpactSheet(img){"
+            },
+            {
+              "nodeId": 282,
+              "functionName": "_tintHolyDome",
+              "url": "http://qa-draw-attribution-20261001.localhost:3340/game.html?webgpu=0",
+              "scriptId": "59",
+              "line0": 8736,
+              "line1": 8737,
+              "column0": 22,
+              "sourcePath": "game.html",
+              "sourceSha256": "8ebc3b7b52a651c1a3bc5e8c285b00d186c6dacc18429ada7499781acc72b0b9",
+              "sourceLine": "function _tintHolyDome(img,r,g,b){const w=img.naturalWidth||img.width,h=img.naturalHeight||img.height,srcC=document.createElement('canvas'),outC=document.createElement('canvas');srcC.width=outC.width=w;srcC.height=outC.height=h;const sx=srcC.getContext('2d'),ox=outC.getContext('2d');sx.drawImage(img,0,0,w,h);const src=sx.getImageData(0,0,w,h).data,out=ox.createImageData(w,h).data;for(let i=0;i<src.length;i+=4){const light=Math.max(src[i],src[i+1],src[i+2]);out[i]=r;out[i+1]=g;out[i+2]=b;out[i+3]=Math.round(light*src[i+3]/255)}ox.putImageData(new ImageData(out,w,h),0,0);return outC}"
+            },
+            {
+              "nodeId": 283,
+              "functionName": "getImageData",
+              "url": "",
+              "scriptId": "0",
+              "line0": -1,
+              "line1": null,
+              "column0": -1,
+              "sourcePath": null,
+              "sourceSha256": null,
+              "sourceLine": null
+            }
+          ]
+        },
+        {
+          "nodeId": 281,
+          "samples": 1,
+          "estimatedMs": 1.4440000000031432,
+          "category": "other-JS/unresolved",
+          "stack": [
+            {
+              "nodeId": 1,
+              "functionName": "(root)",
+              "url": "",
+              "scriptId": "0",
+              "line0": -1,
+              "line1": null,
+              "column0": -1,
+              "sourcePath": null,
+              "sourceSha256": null,
+              "sourceLine": null
+            },
+            {
+              "nodeId": 44,
+              "functionName": "wrappedLoop",
+              "url": "",
+              "scriptId": "157",
+              "line0": 62,
+              "line1": 63,
+              "column0": 28,
+              "sourcePath": null,
+              "sourceSha256": null,
+              "sourceLine": null
+            },
+            {
+              "nodeId": 45,
+              "functionName": "loop",
+              "url": "http://qa-draw-attribution-20261001.localhost:3340/game.html?webgpu=0",
+              "scriptId": "59",
+              "line0": 59652,
+              "line1": 59653,
+              "column0": 13,
+              "sourcePath": "game.html",
+              "sourceSha256": "8ebc3b7b52a651c1a3bc5e8c285b00d186c6dacc18429ada7499781acc72b0b9",
+              "sourceLine": "function loop(timestamp){"
+            },
+            {
+              "nodeId": 46,
+              "functionName": "wrapped",
+              "url": "",
+              "scriptId": "157",
+              "line0": 47,
+              "line1": 48,
+              "column0": 26,
+              "sourcePath": null,
+              "sourceSha256": null,
+              "sourceLine": null
+            },
+            {
+              "nodeId": 59,
+              "functionName": "draw",
+              "url": "http://qa-draw-attribution-20261001.localhost:3340/game.html?webgpu=0",
+              "scriptId": "59",
+              "line0": 49861,
+              "line1": 49862,
+              "column0": 13,
+              "sourcePath": "game.html",
+              "sourceSha256": "8ebc3b7b52a651c1a3bc5e8c285b00d186c6dacc18429ada7499781acc72b0b9",
+              "sourceLine": "function draw(){"
+            },
+            {
+              "nodeId": 66,
+              "functionName": "drawP",
+              "url": "http://qa-draw-attribution-20261001.localhost:3340/game.html?webgpu=0",
+              "scriptId": "59",
+              "line0": 53532,
+              "line1": 53533,
+              "column0": 14,
+              "sourcePath": "game.html",
+              "sourceSha256": "8ebc3b7b52a651c1a3bc5e8c285b00d186c6dacc18429ada7499781acc72b0b9",
+              "sourceLine": "function drawP(){"
+            },
+            {
+              "nodeId": 281,
+              "functionName": "_physicalImpactSheet",
+              "url": "http://qa-draw-attribution-20261001.localhost:3340/game.html?webgpu=0",
+              "scriptId": "59",
+              "line0": 8538,
+              "line1": 8539,
+              "column0": 29,
+              "sourcePath": "game.html",
+              "sourceSha256": "8ebc3b7b52a651c1a3bc5e8c285b00d186c6dacc18429ada7499781acc72b0b9",
+              "sourceLine": "function _physicalImpactSheet(img){"
+            }
+          ]
+        },
+        {
+          "nodeId": 282,
+          "samples": 2,
+          "estimatedMs": 1.2929999999978463,
+          "category": "other-JS/unresolved",
+          "stack": [
+            {
+              "nodeId": 1,
+              "functionName": "(root)",
+              "url": "",
+              "scriptId": "0",
+              "line0": -1,
+              "line1": null,
+              "column0": -1,
+              "sourcePath": null,
+              "sourceSha256": null,
+              "sourceLine": null
+            },
+            {
+              "nodeId": 44,
+              "functionName": "wrappedLoop",
+              "url": "",
+              "scriptId": "157",
+              "line0": 62,
+              "line1": 63,
+              "column0": 28,
+              "sourcePath": null,
+              "sourceSha256": null,
+              "sourceLine": null
+            },
+            {
+              "nodeId": 45,
+              "functionName": "loop",
+              "url": "http://qa-draw-attribution-20261001.localhost:3340/game.html?webgpu=0",
+              "scriptId": "59",
+              "line0": 59652,
+              "line1": 59653,
+              "column0": 13,
+              "sourcePath": "game.html",
+              "sourceSha256": "8ebc3b7b52a651c1a3bc5e8c285b00d186c6dacc18429ada7499781acc72b0b9",
+              "sourceLine": "function loop(timestamp){"
+            },
+            {
+              "nodeId": 46,
+              "functionName": "wrapped",
+              "url": "",
+              "scriptId": "157",
+              "line0": 47,
+              "line1": 48,
+              "column0": 26,
+              "sourcePath": null,
+              "sourceSha256": null,
+              "sourceLine": null
+            },
+            {
+              "nodeId": 59,
+              "functionName": "draw",
+              "url": "http://qa-draw-attribution-20261001.localhost:3340/game.html?webgpu=0",
+              "scriptId": "59",
+              "line0": 49861,
+              "line1": 49862,
+              "column0": 13,
+              "sourcePath": "game.html",
+              "sourceSha256": "8ebc3b7b52a651c1a3bc5e8c285b00d186c6dacc18429ada7499781acc72b0b9",
+              "sourceLine": "function draw(){"
+            },
+            {
+              "nodeId": 66,
+              "functionName": "drawP",
+              "url": "http://qa-draw-attribution-20261001.localhost:3340/game.html?webgpu=0",
+              "scriptId": "59",
+              "line0": 53532,
+              "line1": 53533,
+              "column0": 14,
+              "sourcePath": "game.html",
+              "sourceSha256": "8ebc3b7b52a651c1a3bc5e8c285b00d186c6dacc18429ada7499781acc72b0b9",
+              "sourceLine": "function drawP(){"
+            },
+            {
+              "nodeId": 281,
+              "functionName": "_physicalImpactSheet",
+              "url": "http://qa-draw-attribution-20261001.localhost:3340/game.html?webgpu=0",
+              "scriptId": "59",
+              "line0": 8538,
+              "line1": 8539,
+              "column0": 29,
+              "sourcePath": "game.html",
+              "sourceSha256": "8ebc3b7b52a651c1a3bc5e8c285b00d186c6dacc18429ada7499781acc72b0b9",
+              "sourceLine": "function _physicalImpactSheet(img){"
+            },
+            {
+              "nodeId": 282,
+              "functionName": "_tintHolyDome",
+              "url": "http://qa-draw-attribution-20261001.localhost:3340/game.html?webgpu=0",
+              "scriptId": "59",
+              "line0": 8736,
+              "line1": 8737,
+              "column0": 22,
+              "sourcePath": "game.html",
+              "sourceSha256": "8ebc3b7b52a651c1a3bc5e8c285b00d186c6dacc18429ada7499781acc72b0b9",
+              "sourceLine": "function _tintHolyDome(img,r,g,b){const w=img.naturalWidth||img.width,h=img.naturalHeight||img.height,srcC=document.createElement('canvas'),outC=document.createElement('canvas');srcC.width=outC.width=w;srcC.height=outC.height=h;const sx=srcC.getContext('2d'),ox=outC.getContext('2d');sx.drawImage(img,0,0,w,h);const src=sx.getImageData(0,0,w,h).data,out=ox.createImageData(w,h).data;for(let i=0;i<src.length;i+=4){const light=Math.max(src[i],src[i+1],src[i+2]);out[i]=r;out[i+1]=g;out[i+2]=b;out[i+3]=Math.round(light*src[i+3]/255)}ox.putImageData(new ImageData(out,w,h),0,0);return outC}"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "span": {
+        "kind": "draw",
+        "start": 71976,
+        "end": 72075,
+        "duration": 99,
+        "loopId": 686,
+        "parent": "loop",
+        "killsBefore": 9,
+        "killsAfter": 9
+      },
+      "categories": {
+        "other-JS/unresolved": 4.5129999999917345,
+        "Canvas/image-api": 0.3790000000008149,
+        "Canvas-pixel-read/write": 91.38700000000244,
+        "runtime/unresolved": 1.5670000000100117,
+        "GL-call-path": 1.1539999999949941
+      },
+      "topStacks": [
+        {
+          "nodeId": 449,
+          "samples": 61,
+          "estimatedMs": 91.38700000000244,
+          "category": "Canvas-pixel-read/write",
+          "stack": [
+            {
+              "nodeId": 1,
+              "functionName": "(root)",
+              "url": "",
+              "scriptId": "0",
+              "line0": -1,
+              "line1": null,
+              "column0": -1,
+              "sourcePath": null,
+              "sourceSha256": null,
+              "sourceLine": null
+            },
+            {
+              "nodeId": 44,
+              "functionName": "wrappedLoop",
+              "url": "",
+              "scriptId": "157",
+              "line0": 62,
+              "line1": 63,
+              "column0": 28,
+              "sourcePath": null,
+              "sourceSha256": null,
+              "sourceLine": null
+            },
+            {
+              "nodeId": 45,
+              "functionName": "loop",
+              "url": "http://qa-draw-attribution-20261001.localhost:3340/game.html?webgpu=0",
+              "scriptId": "59",
+              "line0": 59652,
+              "line1": 59653,
+              "column0": 13,
+              "sourcePath": "game.html",
+              "sourceSha256": "8ebc3b7b52a651c1a3bc5e8c285b00d186c6dacc18429ada7499781acc72b0b9",
+              "sourceLine": "function loop(timestamp){"
+            },
+            {
+              "nodeId": 46,
+              "functionName": "wrapped",
+              "url": "",
+              "scriptId": "157",
+              "line0": 47,
+              "line1": 48,
+              "column0": 26,
+              "sourcePath": null,
+              "sourceSha256": null,
+              "sourceLine": null
+            },
+            {
+              "nodeId": 59,
+              "functionName": "draw",
+              "url": "http://qa-draw-attribution-20261001.localhost:3340/game.html?webgpu=0",
+              "scriptId": "59",
+              "line0": 49861,
+              "line1": 49862,
+              "column0": 13,
+              "sourcePath": "game.html",
+              "sourceSha256": "8ebc3b7b52a651c1a3bc5e8c285b00d186c6dacc18429ada7499781acc72b0b9",
+              "sourceLine": "function draw(){"
+            },
+            {
+              "nodeId": 60,
+              "functionName": "draw",
+              "url": "http://qa-draw-attribution-20261001.localhost:3340/ch1-living-detail.js?v=20260929-87",
+              "scriptId": "15",
+              "line0": 330,
+              "line1": 331,
+              "column0": 15,
+              "sourcePath": "ch1-living-detail.js",
+              "sourceSha256": "e5e7e75b3865a926dfb3f8a5a1cc284a5dc5a976233a591062fa6506fd4a6640",
+              "sourceLine": "function draw(c,g,objects,now,width,height,surfaceOnly=false){"
+            },
+            {
+              "nodeId": 445,
+              "functionName": "atlas",
+              "url": "http://qa-draw-attribution-20261001.localhost:3340/ch1-living-detail.js?v=20260929-87",
+              "scriptId": "15",
+              "line0": 311,
+              "line1": 312,
+              "column0": 16,
+              "sourcePath": "ch1-living-detail.js",
+              "sourceSha256": "e5e7e75b3865a926dfb3f8a5a1cc284a5dc5a976233a591062fa6506fd4a6640",
+              "sourceLine": "function atlas(wet,surfaceOnly=false,variant=0){"
+            },
+            {
+              "nodeId": 446,
+              "functionName": "paint",
+              "url": "http://qa-draw-attribution-20261001.localhost:3340/ch1-living-detail.js?v=20260929-87",
+              "scriptId": "15",
+              "line0": 172,
+              "line1": 173,
+              "column0": 16,
+              "sourcePath": "ch1-living-detail.js",
+              "sourceSha256": "e5e7e75b3865a926dfb3f8a5a1cc284a5dc5a976233a591062fa6506fd4a6640",
+              "sourceLine": "function paint(c,g,objects,now,width,height,surfaceOnly=false){"
+            },
+            {
+              "nodeId": 447,
+              "functionName": "membrane",
+              "url": "http://qa-draw-attribution-20261001.localhost:3340/ch1-living-detail.js?v=20260929-87",
+              "scriptId": "15",
+              "line0": 119,
+              "line1": 120,
+              "column0": 19,
+              "sourcePath": "ch1-living-detail.js",
+              "sourceSha256": "e5e7e75b3865a926dfb3f8a5a1cc284a5dc5a976233a591062fa6506fd4a6640",
+              "sourceLine": "function membrane(wet,variant){"
+            },
+            {
+              "nodeId": 449,
+              "functionName": "getImageData",
+              "url": "",
+              "scriptId": "0",
+              "line0": -1,
+              "line1": null,
+              "column0": -1,
+              "sourcePath": null,
+              "sourceSha256": null,
+              "sourceLine": null
+            }
+          ]
+        },
+        {
+          "nodeId": 447,
+          "samples": 3,
+          "estimatedMs": 3.004000000000815,
+          "category": "other-JS/unresolved",
+          "stack": [
+            {
+              "nodeId": 1,
+              "functionName": "(root)",
+              "url": "",
+              "scriptId": "0",
+              "line0": -1,
+              "line1": null,
+              "column0": -1,
+              "sourcePath": null,
+              "sourceSha256": null,
+              "sourceLine": null
+            },
+            {
+              "nodeId": 44,
+              "functionName": "wrappedLoop",
+              "url": "",
+              "scriptId": "157",
+              "line0": 62,
+              "line1": 63,
+              "column0": 28,
+              "sourcePath": null,
+              "sourceSha256": null,
+              "sourceLine": null
+            },
+            {
+              "nodeId": 45,
+              "functionName": "loop",
+              "url": "http://qa-draw-attribution-20261001.localhost:3340/game.html?webgpu=0",
+              "scriptId": "59",
+              "line0": 59652,
+              "line1": 59653,
+              "column0": 13,
+              "sourcePath": "game.html",
+              "sourceSha256": "8ebc3b7b52a651c1a3bc5e8c285b00d186c6dacc18429ada7499781acc72b0b9",
+              "sourceLine": "function loop(timestamp){"
+            },
+            {
+              "nodeId": 46,
+              "functionName": "wrapped",
+              "url": "",
+              "scriptId": "157",
+              "line0": 47,
+              "line1": 48,
+              "column0": 26,
+              "sourcePath": null,
+              "sourceSha256": null,
+              "sourceLine": null
+            },
+            {
+              "nodeId": 59,
+              "functionName": "draw",
+              "url": "http://qa-draw-attribution-20261001.localhost:3340/game.html?webgpu=0",
+              "scriptId": "59",
+              "line0": 49861,
+              "line1": 49862,
+              "column0": 13,
+              "sourcePath": "game.html",
+              "sourceSha256": "8ebc3b7b52a651c1a3bc5e8c285b00d186c6dacc18429ada7499781acc72b0b9",
+              "sourceLine": "function draw(){"
+            },
+            {
+              "nodeId": 60,
+              "functionName": "draw",
+              "url": "http://qa-draw-attribution-20261001.localhost:3340/ch1-living-detail.js?v=20260929-87",
+              "scriptId": "15",
+              "line0": 330,
+              "line1": 331,
+              "column0": 15,
+              "sourcePath": "ch1-living-detail.js",
+              "sourceSha256": "e5e7e75b3865a926dfb3f8a5a1cc284a5dc5a976233a591062fa6506fd4a6640",
+              "sourceLine": "function draw(c,g,objects,now,width,height,surfaceOnly=false){"
+            },
+            {
+              "nodeId": 445,
+              "functionName": "atlas",
+              "url": "http://qa-draw-attribution-20261001.localhost:3340/ch1-living-detail.js?v=20260929-87",
+              "scriptId": "15",
+              "line0": 311,
+              "line1": 312,
+              "column0": 16,
+              "sourcePath": "ch1-living-detail.js",
+              "sourceSha256": "e5e7e75b3865a926dfb3f8a5a1cc284a5dc5a976233a591062fa6506fd4a6640",
+              "sourceLine": "function atlas(wet,surfaceOnly=false,variant=0){"
+            },
+            {
+              "nodeId": 446,
+              "functionName": "paint",
+              "url": "http://qa-draw-attribution-20261001.localhost:3340/ch1-living-detail.js?v=20260929-87",
+              "scriptId": "15",
+              "line0": 172,
+              "line1": 173,
+              "column0": 16,
+              "sourcePath": "ch1-living-detail.js",
+              "sourceSha256": "e5e7e75b3865a926dfb3f8a5a1cc284a5dc5a976233a591062fa6506fd4a6640",
+              "sourceLine": "function paint(c,g,objects,now,width,height,surfaceOnly=false){"
+            },
+            {
+              "nodeId": 447,
+              "functionName": "membrane",
+              "url": "http://qa-draw-attribution-20261001.localhost:3340/ch1-living-detail.js?v=20260929-87",
+              "scriptId": "15",
+              "line0": 119,
+              "line1": 120,
+              "column0": 19,
+              "sourcePath": "ch1-living-detail.js",
+              "sourceSha256": "e5e7e75b3865a926dfb3f8a5a1cc284a5dc5a976233a591062fa6506fd4a6640",
+              "sourceLine": "function membrane(wet,variant){"
+            }
+          ]
+        },
+        {
+          "nodeId": 82,
+          "samples": 1,
+          "estimatedMs": 1.5060000000084983,
+          "category": "runtime/unresolved",
+          "stack": [
+            {
+              "nodeId": 1,
+              "functionName": "(root)",
+              "url": "",
+              "scriptId": "0",
+              "line0": -1,
+              "line1": null,
+              "column0": -1,
+              "sourcePath": null,
+              "sourceSha256": null,
+              "sourceLine": null
+            },
+            {
+              "nodeId": 82,
+              "functionName": "(garbage collector)",
+              "url": "",
+              "scriptId": "0",
+              "line0": -1,
+              "line1": null,
+              "column0": -1,
+              "sourcePath": null,
+              "sourceSha256": null,
+              "sourceLine": null
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "inputHashes": {
+    "raw.json": "a50e25e3cc50492d90b819126a98653bd3c80738985e663785442aeee986a4e2",
+    "profile.cpuprofile": "71e15813b68a8235ae264a6eb359e0e5e79de622f984bf9907e6cfd365ae27ba",
+    "clock.json": "1337ff447a77a84652b99baa55e07c21db13694a17d0724064670308f801302d",
+    "preflight.json": "3acddb3b8290a328ad26866f3aa948479818562abb17affcf41b0b480e8c5c7b"
+  }
+}

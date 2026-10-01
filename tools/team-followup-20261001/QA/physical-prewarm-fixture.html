@@ -1,0 +1,26 @@
+<!doctype html><meta charset="utf-8"><title>물리 타격 이펙트 픽셀 검수</title>
+<style>body{background:#19191c;color:#eee;font:16px system-ui;margin:32px}canvas{display:block;background:#303038;max-width:100%;border:1px solid #666}pre{white-space:pre-wrap}h2{font-size:18px}</style>
+<h1>물리 타격 이펙트 · 원본 처리 / 사전 준비</h1><p>같은 이미지와 기존 색상·알파 처리로 만든 첫 행 4프레임입니다.</p>
+<h2>기존 처리</h2><canvas id="before" width="512" height="128"></canvas>
+<h2>사전 준비 후보</h2><canvas id="after" width="512" height="128"></canvas><pre id="result">검사 중</pre>
+<script>const G={on:false};let _bootLoadActive=true,_bootLoadKilled=false,_bootLoadEpoch=1;const _tvfx2Imgs={};</script>
+<script src="physical-prewarm-original.js"></script>
+<script src="../BALANCE/physical-prewarm-candidate.js"></script>
+<script>
+(async()=>{
+  const image=new Image();await new Promise((resolve,reject)=>{image.onload=resolve;image.onerror=reject;image.src='/assets/vfx/Fire_ImpactFire_Sheet.png';});
+  _tvfx2Imgs['Fire_ImpactFire_Sheet.png']=image;
+  const at=performance.now(),original=_tintHolyDome(image,255,255,255),baselineMs=performance.now()-at;
+  const realTint=_tintHolyDome;let tintCalls=0;
+  _tintHolyDome=function(...args){tintCalls++;return realTint.apply(this,args);};
+  const first=await _preparePhysicalImpactSheet(),candidate=_physicalImpactSheet(image),callsAfterPrepare=tintCalls;
+  const again=await _preparePhysicalImpactSheet(),sameIdentity=candidate===_physicalImpactSheet(image);
+  const a=original.getContext('2d').getImageData(0,0,512,512).data,b=candidate.getContext('2d').getImageData(0,0,512,512).data;
+  let different=0,maxDifference=0;for(let i=0;i<a.length;i++){const d=Math.abs(a[i]-b[i]);if(d)different++;maxDifference=Math.max(maxDifference,d);}
+  const hash=async bytes=>Array.from(new Uint8Array(await crypto.subtle.digest('SHA-256',bytes)),x=>x.toString(16).padStart(2,'0')).join('');
+  document.getElementById('before').getContext('2d').drawImage(original,0,0,512,128,0,0,512,128);
+  document.getElementById('after').getContext('2d').drawImage(candidate,0,0,512,128,0,0,512,128);
+  window.__physicalQA={at:new Date().toISOString(),image:{src:image.src,currentSrc:image.currentSrc,width:image.naturalWidth,height:image.naturalHeight},bytes:a.length,different,maxDifference,originalHash:await hash(a),candidateHash:await hash(b),first,again,sameIdentity,callsAfterPrepare,tintCalls,baselineMs,viewport:[innerWidth,innerHeight],dpr:devicePixelRatio,limits:'standalone fixture, not live-game performance comparison; GPU/total memory unmeasured'};
+  document.getElementById('result').textContent=JSON.stringify(window.__physicalQA,null,2);
+})().catch(error=>{window.__physicalQA={error:String(error)};document.getElementById('result').textContent=String(error);});
+</script>

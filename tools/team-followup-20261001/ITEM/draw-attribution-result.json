@@ -1,0 +1,8521 @@
+{
+  "generatedAt": "2026-10-01T14:52:22.117Z",
+  "inputs": {
+    "raw.json": "a50e25e3cc50492d90b819126a98653bd3c80738985e663785442aeee986a4e2",
+    "profile.cpuprofile": "71e15813b68a8235ae264a6eb359e0e5e79de622f984bf9907e6cfd365ae27ba",
+    "clock.json": "1337ff447a77a84652b99baa55e07c21db13694a17d0724064670308f801302d",
+    "preflight.json": "3acddb3b8290a328ad26866f3aa948479818562abb17affcf41b0b480e8c5c7b"
+  },
+  "sourceHashes": {
+    "game.html": "8ebc3b7b52a651c1a3bc5e8c285b00d186c6dacc18429ada7499781acc72b0b9",
+    "ch1-living-detail.js": "e5e7e75b3865a926dfb3f8a5a1cc284a5dc5a976233a591062fa6506fd4a6640"
+  },
+  "sourceVerification": {
+    "gameMatchesPreflight": true,
+    "externalScriptHistoricalHash": "UNKNOWN: local current hash only; root preflight has no external script digest"
+  },
+  "clock": {
+    "navigationUs": 816904114954,
+    "bracketBefore": 34659.60000002384,
+    "anchor": 34665.821,
+    "bracketAfter": 34670.200000047684,
+    "bracketWidthMs": 10.600000023841858,
+    "profileStartMs": 47677.764,
+    "profileBefore": 47673.39999997616,
+    "profileAfter": 47908.300000071526,
+    "profileEndMs": 75108.919,
+    "stopMetricsMs": 75151.183,
+    "finalSampleMs": 75108.425,
+    "unsampledTailMs": 0.494
+  },
+  "method": "timeDelta preceding interval assigned to endpoint stack, clipped to draw bounds; endpoint-only alternative retained; sampled estimates, not complete CPU/native/GPU split",
+  "environment": {
+    "url": "http://qa-draw-attribution-20261001.localhost:3340/game.html?webgpu=0",
+    "ua": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/152.0.0.0 Safari/537.36",
+    "timeOrigin": 1790866122248.8,
+    "viewport": [
+      1352,
+      666
+    ],
+    "dpr": 2,
+    "canvas": [
+      1352,
+      666
+    ],
+    "useGL": true,
+    "useGPU": false,
+    "physicsStep": 16.666666666666668,
+    "warm": true,
+    "warmMs": 7.800000071525574,
+    "profiler": true,
+    "profilerMode": "external CDP sampling interval requested 1000us",
+    "gpuTiming": false,
+    "instrumentation": "loop/update/draw pass-through wrappers; rAF/state; PerformanceObserver; overhead unmeasured",
+    "performanceEntryTypes": [
+      "element",
+      "event",
+      "first-input",
+      "interaction-contentful-paint",
+      "largest-contentful-paint",
+      "layout-shift",
+      "long-animation-frame",
+      "longtask",
+      "mark",
+      "measure",
+      "navigation",
+      "paint",
+      "resource",
+      "soft-navigation",
+      "visibility-state"
+    ]
+  },
+  "initial": {
+    "kills": 0,
+    "hp": 597,
+    "on": true,
+    "paused": false,
+    "atmos": 1,
+    "fpsCap": 0,
+    "hidden": false,
+    "focus": true,
+    "x": 4020,
+    "y": 7420,
+    "enemies": 5,
+    "items": 0,
+    "projectiles": 0
+  },
+  "end": {
+    "at": 73363.10000002384,
+    "kills": 9,
+    "hp": 597,
+    "on": true,
+    "paused": false,
+    "atmos": 1,
+    "fpsCap": 0,
+    "hidden": false,
+    "focus": true,
+    "x": 4016.2420035416653,
+    "y": 6671.163837629008,
+    "enemies": 39,
+    "items": 5,
+    "projectiles": 1
+  },
+  "dropped": 0,
+  "cleanupErrors": [],
+  "windows": [
+    {
+      "span": {
+        "kind": "draw",
+        "start": 55887.39999997616,
+        "end": 56001.60000002384,
+        "duration": 114.20000004768372,
+        "loopId": 210,
+        "parent": "loop",
+        "killsBefore": 5,
+        "killsAfter": 5
+      },
+      "relativeToInputMs": 7524.399999976158,
+      "loop": {
+        "id": 210,
+        "rafTimestamp": 55883.5,
+        "start": 55885.39999997616,
+        "before": {
+          "kills": 5,
+          "hp": 597,
+          "on": true,
+          "paused": false,
+          "atmos": 1,
+          "fpsCap": 0,
+          "hidden": false,
+          "focus": true,
+          "x": 4020,
+          "y": 7420,
+          "enemies": 17,
+          "items": 2,
+          "projectiles": 4
+        },
+        "lastLoopTsBefore": 55841.1,
+        "prevTsBefore": 55841.1,
+        "accBefore": 16.43333333332293,
+        "calls": {
+          "update": {
+            "count": 3,
+            "total": 1.899999976158142,
+            "max": 0.8000000715255737
+          },
+          "draw": {
+            "count": 1,
+            "total": 114.20000004768372,
+            "max": 114.20000004768372
+          }
+        },
+        "end": 56001.700000047684,
+        "duration": 116.30000007152557,
+        "after": {
+          "kills": 5,
+          "hp": 597,
+          "on": true,
+          "paused": false,
+          "atmos": 1,
+          "fpsCap": 0,
+          "hidden": false,
+          "focus": true,
+          "x": 4020,
+          "y": 7420,
+          "enemies": 17,
+          "items": 2,
+          "projectiles": 3
+        },
+        "lastLoopTsAfter": 55883.5,
+        "accAfter": 8.833333333324383,
+        "updateCount": 3,
+        "drawCount": 1,
+        "skip": null
+      },
+      "previousLoopAfter": {
+        "kills": 5,
+        "hp": 597,
+        "on": true,
+        "paused": false,
+        "atmos": 1,
+        "fpsCap": 0,
+        "hidden": false,
+        "focus": true,
+        "x": 4020,
+        "y": 7420,
+        "enemies": 17,
+        "items": 2,
+        "projectiles": 4
+      },
+      "sampleCount": 79,
+      "estimatedMs": 114.20000004768372,
+      "stacks": [
+        {
+          "stack": [
+            1,
+            44,
+            45,
+            46,
+            59,
+            66,
+            281,
+            282,
+            283
+          ],
+          "sampleCount": 74,
+          "estimatedMs": 111.02900002383831
+        },
+        {
+          "stack": [
+            1,
+            44,
+            45,
+            46,
+            59,
+            66,
+            281
+          ],
+          "sampleCount": 1,
+          "estimatedMs": 1.4440000000031432
+        },
+        {
+          "stack": [
+            1,
+            44,
+            45,
+            46,
+            59,
+            66,
+            281,
+            282
+          ],
+          "sampleCount": 2,
+          "estimatedMs": 1.2929999999978463
+        },
+        {
+          "stack": [
+            1,
+            2
+          ],
+          "sampleCount": 1,
+          "estimatedMs": 0.22000002384447725
+        },
+        {
+          "stack": [
+            1,
+            44,
+            45,
+            46,
+            59,
+            284,
+            285,
+            286
+          ],
+          "sampleCount": 1,
+          "estimatedMs": 0.2139999999999418
+        }
+      ],
+      "itemSampleCount": 0,
+      "rngSampleCount": 0,
+      "endpointOnlyStacks": [
+        {
+          "stack": [
+            1,
+            44,
+            45,
+            46,
+            59,
+            66,
+            281,
+            282,
+            283
+          ],
+          "sampleCount": 74,
+          "estimatedMs": 111.24299999999494
+        },
+        {
+          "stack": [
+            1,
+            44,
+            45,
+            46,
+            59,
+            66,
+            281
+          ],
+          "sampleCount": 1,
+          "estimatedMs": 1.4440000000031432
+        },
+        {
+          "stack": [
+            1,
+            44,
+            45,
+            46,
+            59,
+            66,
+            281,
+            282
+          ],
+          "sampleCount": 2,
+          "estimatedMs": 1.2929999999978463
+        },
+        {
+          "stack": [
+            1,
+            44,
+            45,
+            46,
+            59,
+            284,
+            285,
+            286
+          ],
+          "sampleCount": 1,
+          "estimatedMs": 0.2139999999999418
+        }
+      ]
+    },
+    {
+      "span": {
+        "kind": "draw",
+        "start": 71976,
+        "end": 72075,
+        "duration": 99,
+        "loopId": 686,
+        "parent": "loop",
+        "killsBefore": 9,
+        "killsAfter": 9
+      },
+      "relativeToInputMs": 23613,
+      "loop": {
+        "id": 686,
+        "rafTimestamp": 71973.7,
+        "start": 71975,
+        "before": {
+          "kills": 9,
+          "hp": 597,
+          "on": true,
+          "paused": false,
+          "atmos": 1,
+          "fpsCap": 0,
+          "hidden": false,
+          "focus": true,
+          "x": 4016.2420035416653,
+          "y": 6671.163837629008,
+          "enemies": 39,
+          "items": 5,
+          "projectiles": 0
+        },
+        "lastLoopTsBefore": 71941.1,
+        "prevTsBefore": 71941.1,
+        "accBefore": 15.799999999992,
+        "calls": {
+          "update": {
+            "count": 2,
+            "total": 1,
+            "max": 0.6000000238418579
+          },
+          "draw": {
+            "count": 1,
+            "total": 99,
+            "max": 99
+          }
+        },
+        "end": 72075,
+        "duration": 100,
+        "after": {
+          "kills": 9,
+          "hp": 597,
+          "on": true,
+          "paused": false,
+          "atmos": 1,
+          "fpsCap": 0,
+          "hidden": false,
+          "focus": true,
+          "x": 4016.2420035416653,
+          "y": 6671.163837629008,
+          "enemies": 39,
+          "items": 5,
+          "projectiles": 0
+        },
+        "lastLoopTsAfter": 71973.7,
+        "accAfter": 15.06666666664993,
+        "updateCount": 2,
+        "drawCount": 1,
+        "skip": null
+      },
+      "previousLoopAfter": {
+        "kills": 9,
+        "hp": 597,
+        "on": true,
+        "paused": false,
+        "atmos": 1,
+        "fpsCap": 0,
+        "hidden": false,
+        "focus": true,
+        "x": 4016.2420035416653,
+        "y": 6671.163837629008,
+        "enemies": 39,
+        "items": 5,
+        "projectiles": 0
+      },
+      "sampleCount": 70,
+      "estimatedMs": 99,
+      "stacks": [
+        {
+          "stack": [
+            1,
+            44,
+            45,
+            46,
+            59,
+            60,
+            445,
+            446,
+            447,
+            449
+          ],
+          "sampleCount": 61,
+          "estimatedMs": 91.38700000000244
+        },
+        {
+          "stack": [
+            1,
+            44,
+            45,
+            46,
+            59,
+            60,
+            445,
+            446,
+            447
+          ],
+          "sampleCount": 3,
+          "estimatedMs": 3.004000000000815
+        },
+        {
+          "stack": [
+            1,
+            82
+          ],
+          "sampleCount": 1,
+          "estimatedMs": 1.5060000000084983
+        },
+        {
+          "stack": [
+            1,
+            44,
+            45,
+            46,
+            59,
+            60,
+            445,
+            446
+          ],
+          "sampleCount": 1,
+          "estimatedMs": 1.5009999999892898
+        },
+        {
+          "stack": [
+            1,
+            44,
+            45,
+            450,
+            451
+          ],
+          "sampleCount": 1,
+          "estimatedMs": 1.1539999999949941
+        },
+        {
+          "stack": [
+            1,
+            44,
+            45,
+            46,
+            59,
+            60,
+            445,
+            446,
+            447,
+            448
+          ],
+          "sampleCount": 1,
+          "estimatedMs": 0.3790000000008149
+        },
+        {
+          "stack": [
+            1,
+            2
+          ],
+          "sampleCount": 1,
+          "estimatedMs": 0.0610000000015134
+        },
+        {
+          "stack": [
+            1,
+            44,
+            45,
+            46,
+            59,
+            60,
+            445
+          ],
+          "sampleCount": 1,
+          "estimatedMs": 0.008000000001629815
+        }
+      ],
+      "itemSampleCount": 0,
+      "rngSampleCount": 0,
+      "endpointOnlyStacks": [
+        {
+          "stack": [
+            1,
+            44,
+            45,
+            46,
+            59,
+            60,
+            445,
+            446,
+            447,
+            449
+          ],
+          "sampleCount": 61,
+          "estimatedMs": 91.38700000000244
+        },
+        {
+          "stack": [
+            1,
+            44,
+            45,
+            46,
+            59,
+            60,
+            445,
+            446,
+            447
+          ],
+          "sampleCount": 3,
+          "estimatedMs": 3.004000000000815
+        },
+        {
+          "stack": [
+            1,
+            82
+          ],
+          "sampleCount": 1,
+          "estimatedMs": 1.5060000000084983
+        },
+        {
+          "stack": [
+            1,
+            44,
+            45,
+            46,
+            59,
+            60,
+            445,
+            446
+          ],
+          "sampleCount": 1,
+          "estimatedMs": 1.5009999999892898
+        },
+        {
+          "stack": [
+            1,
+            44,
+            45,
+            450,
+            451
+          ],
+          "sampleCount": 1,
+          "estimatedMs": 1.1539999999949941
+        },
+        {
+          "stack": [
+            1,
+            44,
+            45,
+            46,
+            59,
+            60,
+            445
+          ],
+          "sampleCount": 1,
+          "estimatedMs": 0.8650000000052387
+        },
+        {
+          "stack": [
+            1,
+            44,
+            45,
+            46,
+            59,
+            60,
+            445,
+            446,
+            447,
+            448
+          ],
+          "sampleCount": 1,
+          "estimatedMs": 0.3790000000008149
+        }
+      ]
+    }
+  ],
+  "itemProfileSamples": [
+    {
+      "index": 4375,
+      "start": 54359.503,
+      "end": 54361.017,
+      "stack": [
+        1,
+        44,
+        45,
+        46,
+        59,
+        260
+      ]
+    },
+    {
+      "index": 13392,
+      "start": 67756.671,
+      "end": 67756.698,
+      "stack": [
+        1,
+        44,
+        45,
+        46,
+        59,
+        260
+      ]
+    },
+    {
+      "index": 13774,
+      "start": 68325.865,
+      "end": 68327.385,
+      "stack": [
+        1,
+        44,
+        45,
+        46,
+        59,
+        260
+      ]
+    },
+    {
+      "index": 14242,
+      "start": 69027.96,
+      "end": 69029.469,
+      "stack": [
+        1,
+        44,
+        45,
+        46,
+        59,
+        260
+      ]
+    }
+  ],
+  "limitations": [
+    "observer/profiler overhead unmeasured",
+    "cache UNKNOWN; environment warm flag not cache proof",
+    "separate from support/normal-combat 129.8ms event",
+    "draw wrapper wall elapsed not GPU completion",
+    "zero sampled calls does not prove zero actual calls",
+    "native getImageData stack does not isolate readback wait from native work",
+    "positionTicks are whole-profile line counts, not window-specific samples"
+  ],
+  "checks": "clock bracket/start bracket, NavigationStart stability, source preflight hash, profile lengths/tree/deltas, span containment, two windows, clipped budget assertions PASS",
+  "frames": [
+    {
+      "nodeId": 1,
+      "function": "(root)",
+      "url": "",
+      "line0": -1,
+      "line1": null,
+      "column0": -1,
+      "source": null,
+      "positionTicks": []
+    },
+    {
+      "nodeId": 2,
+      "function": "(program)",
+      "url": "",
+      "line0": -1,
+      "line1": null,
+      "column0": -1,
+      "source": null,
+      "positionTicks": []
+    },
+    {
+      "nodeId": 3,
+      "function": "(idle)",
+      "url": "",
+      "line0": -1,
+      "line1": null,
+      "column0": -1,
+      "source": null,
+      "positionTicks": []
+    },
+    {
+      "nodeId": 4,
+      "function": "loop",
+      "url": "http://qa-draw-attribution-20261001.localhost:3340/game.html?webgpu=0",
+      "line0": 59652,
+      "line1": 59653,
+      "column0": 13,
+      "source": "game.html",
+      "positionTicks": [
+        {
+          "line": 59654,
+          "ticks": 1
+        },
+        {
+          "line": 59755,
+          "ticks": 4
+        },
+        {
+          "line": 59733,
+          "ticks": 5
+        },
+        {
+          "line": 59777,
+          "ticks": 1
+        }
+      ]
+    },
+    {
+      "nodeId": 5,
+      "function": "draw",
+      "url": "http://qa-draw-attribution-20261001.localhost:3340/game.html?webgpu=0",
+      "line0": 49861,
+      "line1": 49862,
+      "column0": 13,
+      "source": "game.html",
+      "positionTicks": [
+        {
+          "line": 50590,
+          "ticks": 1
+        },
+        {
+          "line": 53503,
+          "ticks": 1
+        },
+        {
+          "line": 53492,
+          "ticks": 1
+        },
+        {
+          "line": 51876,
+          "ticks": 1
+        }
+      ]
+    },
+    {
+      "nodeId": 6,
+      "function": "drawP",
+      "url": "http://qa-draw-attribution-20261001.localhost:3340/game.html?webgpu=0",
+      "line0": 53532,
+      "line1": 53533,
+      "column0": 14,
+      "source": "game.html",
+      "positionTicks": []
+    },
+    {
+      "nodeId": 7,
+      "function": "update",
+      "url": "http://qa-draw-attribution-20261001.localhost:3340/game.html?webgpu=0",
+      "line0": 10025,
+      "line1": 10026,
+      "column0": 8,
+      "source": "game.html",
+      "positionTicks": []
+    },
+    {
+      "nodeId": 8,
+      "function": "draw",
+      "url": "http://qa-draw-attribution-20261001.localhost:3340/game.html?webgpu=0",
+      "line0": 10027,
+      "line1": 10028,
+      "column0": 6,
+      "source": "game.html",
+      "positionTicks": []
+    },
+    {
+      "nodeId": 9,
+      "function": "_fr",
+      "url": "http://qa-draw-attribution-20261001.localhost:3340/game.html?webgpu=0",
+      "line0": 10024,
+      "line1": 10025,
+      "column0": 5,
+      "source": "game.html",
+      "positionTicks": []
+    },
+    {
+      "nodeId": 468,
+      "function": "fillText",
+      "url": "http://qa-draw-attribution-20261001.localhost:3340/game.html?webgpu=0",
+      "line0": 6026,
+      "line1": 6027,
+      "column0": 8,
+      "source": "game.html",
+      "positionTicks": []
+    },
+    {
+      "nodeId": 469,
+      "function": "_getAtlasTxt",
+      "url": "http://qa-draw-attribution-20261001.localhost:3340/game.html?webgpu=0",
+      "line0": 5416,
+      "line1": 5417,
+      "column0": 21,
+      "source": "game.html",
+      "positionTicks": [
+        {
+          "line": 5418,
+          "ticks": 1
+        }
+      ]
+    },
+    {
+      "nodeId": 470,
+      "function": "measureText",
+      "url": "",
+      "line0": -1,
+      "line1": null,
+      "column0": -1,
+      "source": null,
+      "positionTicks": [
+        {
+          "line": 5419,
+          "ticks": 3
+        }
+      ]
+    },
+    {
+      "nodeId": 481,
+      "function": "_uploadCanvasTex",
+      "url": "http://qa-draw-attribution-20261001.localhost:3340/game.html?webgpu=0",
+      "line0": 5931,
+      "line1": 5932,
+      "column0": 25,
+      "source": "game.html",
+      "positionTicks": []
+    },
+    {
+      "nodeId": 482,
+      "function": "texImage2D",
+      "url": "",
+      "line0": -1,
+      "line1": null,
+      "column0": -1,
+      "source": null,
+      "positionTicks": [
+        {
+          "line": 5940,
+          "ticks": 4
+        }
+      ]
+    },
+    {
+      "nodeId": 505,
+      "function": "_playerSpriteDirection",
+      "url": "http://qa-draw-attribution-20261001.localhost:3340/game.html?webgpu=0",
+      "line0": 11459,
+      "line1": 11460,
+      "column0": 31,
+      "source": "game.html",
+      "positionTicks": [
+        {
+          "line": 11462,
+          "ticks": 1
+        }
+      ]
+    },
+    {
+      "nodeId": 508,
+      "function": "set globalAlpha",
+      "url": "http://qa-draw-attribution-20261001.localhost:3340/game.html?webgpu=0",
+      "line0": 5944,
+      "line1": 5945,
+      "column0": 45,
+      "source": "game.html",
+      "positionTicks": [
+        {
+          "line": 5945,
+          "ticks": 1
+        }
+      ]
+    },
+    {
+      "nodeId": 19,
+      "function": "_prepEnemyInstanced",
+      "url": "http://qa-draw-attribution-20261001.localhost:3340/game.html?webgpu=0",
+      "line0": 5138,
+      "line1": 5139,
+      "column0": 28,
+      "source": "game.html",
+      "positionTicks": [
+        {
+          "line": 5176,
+          "ticks": 1
+        }
+      ]
+    },
+    {
+      "nodeId": 479,
+      "function": "_drawEnemy8DirInstanced",
+      "url": "http://qa-draw-attribution-20261001.localhost:3340/game.html?webgpu=0",
+      "line0": 5028,
+      "line1": 5029,
+      "column0": 32,
+      "source": "game.html",
+      "positionTicks": []
+    },
+    {
+      "nodeId": 480,
+      "function": "bufferSubData",
+      "url": "",
+      "line0": -1,
+      "line1": null,
+      "column0": -1,
+      "source": null,
+      "positionTicks": [
+        {
+          "line": 5038,
+          "ticks": 1
+        }
+      ]
+    },
+    {
+      "nodeId": 502,
+      "function": "_queueEnemy8DirInstanced",
+      "url": "http://qa-draw-attribution-20261001.localhost:3340/game.html?webgpu=0",
+      "line0": 5014,
+      "line1": 5015,
+      "column0": 33,
+      "source": "game.html",
+      "positionTicks": [
+        {
+          "line": 5018,
+          "ticks": 1
+        }
+      ]
+    },
+    {
+      "nodeId": 20,
+      "function": "drawFront",
+      "url": "http://qa-draw-attribution-20261001.localhost:3340/ch1-border-foreground.js?v=20261001-3",
+      "line0": 239,
+      "line1": 240,
+      "column0": 20,
+      "source": null,
+      "positionTicks": []
+    },
+    {
+      "nodeId": 21,
+      "function": "pass",
+      "url": "http://qa-draw-attribution-20261001.localhost:3340/ch1-border-foreground.js?v=20261001-3",
+      "line0": 209,
+      "line1": 210,
+      "column0": 15,
+      "source": null,
+      "positionTicks": [
+        {
+          "line": 226,
+          "ticks": 1
+        }
+      ]
+    },
+    {
+      "nodeId": 22,
+      "function": "enemyUnderCanopy",
+      "url": "http://qa-draw-attribution-20261001.localhost:3340/ch1-border-foreground.js?v=20261001-3",
+      "line0": 198,
+      "line1": 199,
+      "column0": 27,
+      "source": null,
+      "positionTicks": []
+    },
+    {
+      "nodeId": 23,
+      "function": "drawImage",
+      "url": "http://qa-draw-attribution-20261001.localhost:3340/game.html?webgpu=0",
+      "line0": 6040,
+      "line1": 6041,
+      "column0": 9,
+      "source": "game.html",
+      "positionTicks": []
+    },
+    {
+      "nodeId": 24,
+      "function": "_getTex",
+      "url": "http://qa-draw-attribution-20261001.localhost:3340/game.html?webgpu=0",
+      "line0": 5732,
+      "line1": 5733,
+      "column0": 18,
+      "source": "game.html",
+      "positionTicks": []
+    },
+    {
+      "nodeId": 25,
+      "function": "texImage2D",
+      "url": "",
+      "line0": -1,
+      "line1": null,
+      "column0": -1,
+      "source": null,
+      "positionTicks": [
+        {
+          "line": 5752,
+          "ticks": 2
+        }
+      ]
+    },
+    {
+      "nodeId": 471,
+      "function": "_uploadCanvasTex",
+      "url": "http://qa-draw-attribution-20261001.localhost:3340/game.html?webgpu=0",
+      "line0": 5931,
+      "line1": 5932,
+      "column0": 25,
+      "source": "game.html",
+      "positionTicks": []
+    },
+    {
+      "nodeId": 472,
+      "function": "_setTex",
+      "url": "http://qa-draw-attribution-20261001.localhost:3340/game.html?webgpu=0",
+      "line0": 5765,
+      "line1": 5766,
+      "column0": 18,
+      "source": "game.html",
+      "positionTicks": []
+    },
+    {
+      "nodeId": 473,
+      "function": "_flush",
+      "url": "http://qa-draw-attribution-20261001.localhost:3340/game.html?webgpu=0",
+      "line0": 5759,
+      "line1": 5760,
+      "column0": 17,
+      "source": "game.html",
+      "positionTicks": []
+    },
+    {
+      "nodeId": 474,
+      "function": "bindTexture",
+      "url": "",
+      "line0": -1,
+      "line1": null,
+      "column0": -1,
+      "source": null,
+      "positionTicks": [
+        {
+          "line": 5764,
+          "ticks": 1
+        }
+      ]
+    },
+    {
+      "nodeId": 486,
+      "function": "drawElements",
+      "url": "",
+      "line0": -1,
+      "line1": null,
+      "column0": -1,
+      "source": null,
+      "positionTicks": [
+        {
+          "line": 5765,
+          "ticks": 1
+        }
+      ]
+    },
+    {
+      "nodeId": 511,
+      "function": "_setTex",
+      "url": "http://qa-draw-attribution-20261001.localhost:3340/game.html?webgpu=0",
+      "line0": 5765,
+      "line1": 5766,
+      "column0": 18,
+      "source": "game.html",
+      "positionTicks": []
+    },
+    {
+      "nodeId": 512,
+      "function": "_flush",
+      "url": "http://qa-draw-attribution-20261001.localhost:3340/game.html?webgpu=0",
+      "line0": 5759,
+      "line1": 5760,
+      "column0": 17,
+      "source": "game.html",
+      "positionTicks": []
+    },
+    {
+      "nodeId": 513,
+      "function": "bindTexture",
+      "url": "",
+      "line0": -1,
+      "line1": null,
+      "column0": -1,
+      "source": null,
+      "positionTicks": [
+        {
+          "line": 5764,
+          "ticks": 1
+        }
+      ]
+    },
+    {
+      "nodeId": 29,
+      "function": "pass",
+      "url": "http://qa-draw-attribution-20261001.localhost:3340/ch1-border-foreground.js?v=20261001-3",
+      "line0": 209,
+      "line1": 210,
+      "column0": 15,
+      "source": null,
+      "positionTicks": [
+        {
+          "line": 210,
+          "ticks": 1
+        }
+      ]
+    },
+    {
+      "nodeId": 30,
+      "function": "draw",
+      "url": "http://qa-draw-attribution-20261001.localhost:3340/ch1-boundary-edge.js?v=20261001-5",
+      "line0": 75,
+      "line1": 76,
+      "column0": 15,
+      "source": null,
+      "positionTicks": []
+    },
+    {
+      "nodeId": 31,
+      "function": "drawImage",
+      "url": "http://qa-draw-attribution-20261001.localhost:3340/game.html?webgpu=0",
+      "line0": 6040,
+      "line1": 6041,
+      "column0": 9,
+      "source": "game.html",
+      "positionTicks": []
+    },
+    {
+      "nodeId": 32,
+      "function": "_uploadCanvasTex",
+      "url": "http://qa-draw-attribution-20261001.localhost:3340/game.html?webgpu=0",
+      "line0": 5931,
+      "line1": 5932,
+      "column0": 25,
+      "source": "game.html",
+      "positionTicks": []
+    },
+    {
+      "nodeId": 33,
+      "function": "_getTex",
+      "url": "http://qa-draw-attribution-20261001.localhost:3340/game.html?webgpu=0",
+      "line0": 5732,
+      "line1": 5733,
+      "column0": 18,
+      "source": "game.html",
+      "positionTicks": [
+        {
+          "line": 5733,
+          "ticks": 1
+        }
+      ]
+    },
+    {
+      "nodeId": 35,
+      "function": "_renderLighting",
+      "url": "http://qa-draw-attribution-20261001.localhost:3340/game.html?webgpu=0",
+      "line0": 4640,
+      "line1": 4641,
+      "column0": 24,
+      "source": "game.html",
+      "positionTicks": []
+    },
+    {
+      "nodeId": 36,
+      "function": "CanvasRenderingContext2D.drawImage",
+      "url": "http://qa-draw-attribution-20261001.localhost:3340/game.html?webgpu=0",
+      "line0": 22388,
+      "line1": 22389,
+      "column0": 55,
+      "source": "game.html",
+      "positionTicks": []
+    },
+    {
+      "nodeId": 37,
+      "function": "drawImage",
+      "url": "",
+      "line0": -1,
+      "line1": null,
+      "column0": -1,
+      "source": null,
+      "positionTicks": [
+        {
+          "line": 22391,
+          "ticks": 1
+        }
+      ]
+    },
+    {
+      "nodeId": 484,
+      "function": "fillRect",
+      "url": "http://qa-draw-attribution-20261001.localhost:3340/game.html?webgpu=0",
+      "line0": 5963,
+      "line1": 5964,
+      "column0": 8,
+      "source": "game.html",
+      "positionTicks": [
+        {
+          "line": 5966,
+          "ticks": 1
+        }
+      ]
+    },
+    {
+      "nodeId": 487,
+      "function": "_drawRegionArrow",
+      "url": "http://qa-draw-attribution-20261001.localhost:3340/game.html?webgpu=0",
+      "line0": 58887,
+      "line1": 58888,
+      "column0": 25,
+      "source": "game.html",
+      "positionTicks": []
+    },
+    {
+      "nodeId": 488,
+      "function": "_raMeasureSafe",
+      "url": "http://qa-draw-attribution-20261001.localhost:3340/game.html?webgpu=0",
+      "line0": 58861,
+      "line1": 58862,
+      "column0": 23,
+      "source": "game.html",
+      "positionTicks": []
+    },
+    {
+      "nodeId": 489,
+      "function": "rect",
+      "url": "http://qa-draw-attribution-20261001.localhost:3340/game.html?webgpu=0",
+      "line0": 58873,
+      "line1": 58874,
+      "column0": 13,
+      "source": "game.html",
+      "positionTicks": []
+    },
+    {
+      "nodeId": 490,
+      "function": "getBoundingClientRect",
+      "url": "",
+      "line0": -1,
+      "line1": null,
+      "column0": -1,
+      "source": null,
+      "positionTicks": [
+        {
+          "line": 58874,
+          "ticks": 1
+        }
+      ]
+    },
+    {
+      "nodeId": 492,
+      "function": "fill",
+      "url": "http://qa-draw-attribution-20261001.localhost:3340/game.html?webgpu=0",
+      "line0": 5980,
+      "line1": 5981,
+      "column0": 4,
+      "source": "game.html",
+      "positionTicks": []
+    },
+    {
+      "nodeId": 493,
+      "function": "_quad",
+      "url": "http://qa-draw-attribution-20261001.localhost:3340/game.html?webgpu=0",
+      "line0": 5433,
+      "line1": 5434,
+      "column0": 14,
+      "source": "game.html",
+      "positionTicks": [
+        {
+          "line": 5434,
+          "ticks": 1
+        }
+      ]
+    },
+    {
+      "nodeId": 498,
+      "function": "_renderBloom",
+      "url": "http://qa-draw-attribution-20261001.localhost:3340/game.html?webgpu=0",
+      "line0": 4428,
+      "line1": 4429,
+      "column0": 21,
+      "source": "game.html",
+      "positionTicks": []
+    },
+    {
+      "nodeId": 499,
+      "function": "CanvasRenderingContext2D.drawImage",
+      "url": "http://qa-draw-attribution-20261001.localhost:3340/game.html?webgpu=0",
+      "line0": 22388,
+      "line1": 22389,
+      "column0": 55,
+      "source": "game.html",
+      "positionTicks": []
+    },
+    {
+      "nodeId": 500,
+      "function": "drawImage",
+      "url": "",
+      "line0": -1,
+      "line1": null,
+      "column0": -1,
+      "source": null,
+      "positionTicks": [
+        {
+          "line": 22391,
+          "ticks": 1
+        }
+      ]
+    },
+    {
+      "nodeId": 510,
+      "function": "poolRender",
+      "url": "http://qa-draw-attribution-20261001.localhost:3340/game.html?webgpu=0",
+      "line0": 18648,
+      "line1": 18649,
+      "column0": 19,
+      "source": "game.html",
+      "positionTicks": [
+        {
+          "line": 18671,
+          "ticks": 1
+        }
+      ]
+    },
+    {
+      "nodeId": 514,
+      "function": "_dsDrawFrontPass",
+      "url": "http://qa-draw-attribution-20261001.localhost:3340/game.html?webgpu=0",
+      "line0": 17631,
+      "line1": 17632,
+      "column0": 25,
+      "source": "game.html",
+      "positionTicks": []
+    },
+    {
+      "nodeId": 515,
+      "function": "_dsFootY",
+      "url": "http://qa-draw-attribution-20261001.localhost:3340/game.html?webgpu=0",
+      "line0": 17583,
+      "line1": 17584,
+      "column0": 17,
+      "source": "game.html",
+      "positionTicks": [
+        {
+          "line": 17584,
+          "ticks": 1
+        }
+      ]
+    },
+    {
+      "nodeId": 517,
+      "function": "_drawCh1BakedSpike",
+      "url": "http://qa-draw-attribution-20261001.localhost:3340/game.html?webgpu=0",
+      "line0": 11341,
+      "line1": 11342,
+      "column0": 27,
+      "source": "game.html",
+      "positionTicks": []
+    },
+    {
+      "nodeId": 518,
+      "function": "_drawCh1StartOuter",
+      "url": "http://qa-draw-attribution-20261001.localhost:3340/game.html?webgpu=0",
+      "line0": 11226,
+      "line1": 11227,
+      "column0": 27,
+      "source": "game.html",
+      "positionTicks": []
+    },
+    {
+      "nodeId": 519,
+      "function": "drawImage",
+      "url": "http://qa-draw-attribution-20261001.localhost:3340/game.html?webgpu=0",
+      "line0": 6040,
+      "line1": 6041,
+      "column0": 9,
+      "source": "game.html",
+      "positionTicks": [
+        {
+          "line": 6042,
+          "ticks": 1
+        }
+      ]
+    },
+    {
+      "nodeId": 14,
+      "function": "update",
+      "url": "http://qa-draw-attribution-20261001.localhost:3340/game.html?webgpu=0",
+      "line0": 30773,
+      "line1": 30774,
+      "column0": 15,
+      "source": "game.html",
+      "positionTicks": [
+        {
+          "line": 35769,
+          "ticks": 1
+        },
+        {
+          "line": 33767,
+          "ticks": 1
+        },
+        {
+          "line": 35922,
+          "ticks": 1
+        },
+        {
+          "line": 34367,
+          "ticks": 1
+        },
+        {
+          "line": 35725,
+          "ticks": 1
+        },
+        {
+          "line": 34374,
+          "ticks": 1
+        },
+        {
+          "line": 33898,
+          "ticks": 1
+        },
+        {
+          "line": 30818,
+          "ticks": 2
+        }
+      ]
+    },
+    {
+      "nodeId": 15,
+      "function": "tick",
+      "url": "http://qa-draw-attribution-20261001.localhost:3340/parry-lesson.js?v=20261001-kislash-2sec",
+      "line0": 466,
+      "line1": 467,
+      "column0": 6,
+      "source": null,
+      "positionTicks": []
+    },
+    {
+      "nodeId": 16,
+      "function": "dismissed",
+      "url": "http://qa-draw-attribution-20261001.localhost:3340/parry-lesson.js?v=20261001-kislash-2sec",
+      "line0": 15,
+      "line1": 16,
+      "column0": 11,
+      "source": null,
+      "positionTicks": []
+    },
+    {
+      "nodeId": 17,
+      "function": "skipKey",
+      "url": "http://qa-draw-attribution-20261001.localhost:3340/parry-lesson.js?v=20261001-kislash-2sec",
+      "line0": 6,
+      "line1": 7,
+      "column0": 9,
+      "source": null,
+      "positionTicks": [
+        {
+          "line": 8,
+          "ticks": 2
+        }
+      ]
+    },
+    {
+      "nodeId": 475,
+      "function": "URLSearchParams",
+      "url": "",
+      "line0": -1,
+      "line1": null,
+      "column0": -1,
+      "source": null,
+      "positionTicks": [
+        {
+          "line": 8,
+          "ticks": 1
+        }
+      ]
+    },
+    {
+      "nodeId": 18,
+      "function": "_ffBuild",
+      "url": "http://qa-draw-attribution-20261001.localhost:3340/game.html?webgpu=0",
+      "line0": 30521,
+      "line1": 30522,
+      "column0": 17,
+      "source": "game.html",
+      "positionTicks": [
+        {
+          "line": 30536,
+          "ticks": 1
+        },
+        {
+          "line": 30561,
+          "ticks": 1
+        },
+        {
+          "line": 30564,
+          "ticks": 1
+        },
+        {
+          "line": 30564,
+          "ticks": 2
+        },
+        {
+          "line": 30548,
+          "ticks": 1
+        },
+        {
+          "line": 30550,
+          "ticks": 1
+        },
+        {
+          "line": 30555,
+          "ticks": 1
+        },
+        {
+          "line": 30564,
+          "ticks": 1
+        },
+        {
+          "line": 30533,
+          "ticks": 1
+        },
+        {
+          "line": 30564,
+          "ticks": 2
+        },
+        {
+          "line": 30564,
+          "ticks": 1
+        },
+        {
+          "line": 30553,
+          "ticks": 1
+        },
+        {
+          "line": 30565,
+          "ticks": 1
+        },
+        {
+          "line": 30552,
+          "ticks": 3
+        },
+        {
+          "line": 30564,
+          "ticks": 1
+        },
+        {
+          "line": 30551,
+          "ticks": 1
+        },
+        {
+          "line": 30564,
+          "ticks": 2
+        },
+        {
+          "line": 30561,
+          "ticks": 1
+        },
+        {
+          "line": 30548,
+          "ticks": 2
+        },
+        {
+          "line": 30553,
+          "ticks": 1
+        }
+      ]
+    },
+    {
+      "nodeId": 34,
+      "function": "postMessage",
+      "url": "",
+      "line0": -1,
+      "line1": null,
+      "column0": -1,
+      "source": null,
+      "positionTicks": [
+        {
+          "line": 30536,
+          "ticks": 1
+        }
+      ]
+    },
+    {
+      "nodeId": 38,
+      "function": "isDimBreach",
+      "url": "http://qa-draw-attribution-20261001.localhost:3340/game.html?webgpu=0",
+      "line0": 42754,
+      "line1": 42755,
+      "column0": 20,
+      "source": "game.html",
+      "positionTicks": []
+    },
+    {
+      "nodeId": 39,
+      "function": "_isFused",
+      "url": "http://qa-draw-attribution-20261001.localhost:3340/game.html?webgpu=0",
+      "line0": 42920,
+      "line1": 42921,
+      "column0": 17,
+      "source": "game.html",
+      "positionTicks": [
+        {
+          "line": 42921,
+          "ticks": 1
+        }
+      ]
+    },
+    {
+      "nodeId": 463,
+      "function": "updateMmExpVFX",
+      "url": "http://qa-draw-attribution-20261001.localhost:3340/game.html?webgpu=0",
+      "line0": 18001,
+      "line1": 18002,
+      "column0": 23,
+      "source": "game.html",
+      "positionTicks": []
+    },
+    {
+      "nodeId": 464,
+      "function": "_hurtProjectilePlayer",
+      "url": "http://qa-draw-attribution-20261001.localhost:3340/game.html?webgpu=0",
+      "line0": 16078,
+      "line1": 16079,
+      "column0": 30,
+      "source": "game.html",
+      "positionTicks": []
+    },
+    {
+      "nodeId": 465,
+      "function": "hurtP",
+      "url": "http://qa-draw-attribution-20261001.localhost:3340/game.html?webgpu=0",
+      "line0": 41861,
+      "line1": 41862,
+      "column0": 14,
+      "source": "game.html",
+      "positionTicks": []
+    },
+    {
+      "nodeId": 466,
+      "function": "groggy",
+      "url": "http://qa-draw-attribution-20261001.localhost:3340/game.html?webgpu=0",
+      "line0": 12176,
+      "line1": 12177,
+      "column0": 8,
+      "source": "game.html",
+      "positionTicks": []
+    },
+    {
+      "nodeId": 467,
+      "function": "playNoise",
+      "url": "http://qa-draw-attribution-20261001.localhost:3340/game.html?webgpu=0",
+      "line0": 11936,
+      "line1": 11937,
+      "column0": 18,
+      "source": "game.html",
+      "positionTicks": [
+        {
+          "line": 11942,
+          "ticks": 1
+        }
+      ]
+    },
+    {
+      "nodeId": 476,
+      "function": "updatePet",
+      "url": "http://qa-draw-attribution-20261001.localhost:3340/game.html?webgpu=0",
+      "line0": 40004,
+      "line1": 40005,
+      "column0": 18,
+      "source": "game.html",
+      "positionTicks": []
+    },
+    {
+      "nodeId": 477,
+      "function": "_checkPetDialogue",
+      "url": "http://qa-draw-attribution-20261001.localhost:3340/game.html?webgpu=0",
+      "line0": 9101,
+      "line1": 9102,
+      "column0": 26,
+      "source": "game.html",
+      "positionTicks": []
+    },
+    {
+      "nodeId": 507,
+      "function": "_updatePetBubble",
+      "url": "http://qa-draw-attribution-20261001.localhost:3340/game.html?webgpu=0",
+      "line0": 9076,
+      "line1": 9077,
+      "column0": 25,
+      "source": "game.html",
+      "positionTicks": [
+        {
+          "line": 9079,
+          "ticks": 1
+        }
+      ]
+    },
+    {
+      "nodeId": 509,
+      "function": "$",
+      "url": "http://qa-draw-attribution-20261001.localhost:3340/game.html?webgpu=0",
+      "line0": 42436,
+      "line1": 42437,
+      "column0": 10,
+      "source": "game.html",
+      "positionTicks": [
+        {
+          "line": 42437,
+          "ticks": 1
+        }
+      ]
+    },
+    {
+      "nodeId": 483,
+      "function": "_applyColResult",
+      "url": "http://qa-draw-attribution-20261001.localhost:3340/game.html?webgpu=0",
+      "line0": 30509,
+      "line1": 30510,
+      "column0": 24,
+      "source": "game.html",
+      "positionTicks": [
+        {
+          "line": 30514,
+          "ticks": 1
+        }
+      ]
+    },
+    {
+      "nodeId": 494,
+      "function": "updateHUD",
+      "url": "http://qa-draw-attribution-20261001.localhost:3340/game.html?webgpu=0",
+      "line0": 58278,
+      "line1": 58279,
+      "column0": 18,
+      "source": "game.html",
+      "positionTicks": []
+    },
+    {
+      "nodeId": 495,
+      "function": "_hset",
+      "url": "http://qa-draw-attribution-20261001.localhost:3340/game.html?webgpu=0",
+      "line0": 58277,
+      "line1": 58278,
+      "column0": 14,
+      "source": "game.html",
+      "positionTicks": [
+        {
+          "line": 58278,
+          "ticks": 1
+        }
+      ]
+    },
+    {
+      "nodeId": 496,
+      "function": "updateQS",
+      "url": "http://qa-draw-attribution-20261001.localhost:3340/game.html?webgpu=0",
+      "line0": 26967,
+      "line1": 26968,
+      "column0": 17,
+      "source": "game.html",
+      "positionTicks": []
+    },
+    {
+      "nodeId": 497,
+      "function": "_updateActionKeys",
+      "url": "http://qa-draw-attribution-20261001.localhost:3340/game.html?webgpu=0",
+      "line0": 27076,
+      "line1": 27077,
+      "column0": 26,
+      "source": "game.html",
+      "positionTicks": [
+        {
+          "line": 27088,
+          "ticks": 1
+        }
+      ]
+    },
+    {
+      "nodeId": 501,
+      "function": "updateOldBurstVFX",
+      "url": "http://qa-draw-attribution-20261001.localhost:3340/game.html?webgpu=0",
+      "line0": 18221,
+      "line1": 18222,
+      "column0": 26,
+      "source": "game.html",
+      "positionTicks": [
+        {
+          "line": 18222,
+          "ticks": 1
+        }
+      ]
+    },
+    {
+      "nodeId": 506,
+      "function": "updateE",
+      "url": "http://qa-draw-attribution-20261001.localhost:3340/game.html?webgpu=0",
+      "line0": 37119,
+      "line1": 37120,
+      "column0": 16,
+      "source": "game.html",
+      "positionTicks": [
+        {
+          "line": 39306,
+          "ticks": 1
+        },
+        {
+          "line": 38150,
+          "ticks": 1
+        }
+      ]
+    },
+    {
+      "nodeId": 26,
+      "function": "_drCapture",
+      "url": "http://qa-draw-attribution-20261001.localhost:3340/game.html?webgpu=0",
+      "line0": 42057,
+      "line1": 42058,
+      "column0": 19,
+      "source": "game.html",
+      "positionTicks": []
+    },
+    {
+      "nodeId": 27,
+      "function": "CanvasRenderingContext2D.drawImage",
+      "url": "http://qa-draw-attribution-20261001.localhost:3340/game.html?webgpu=0",
+      "line0": 22388,
+      "line1": 22389,
+      "column0": 55,
+      "source": "game.html",
+      "positionTicks": []
+    },
+    {
+      "nodeId": 28,
+      "function": "drawImage",
+      "url": "",
+      "line0": -1,
+      "line1": null,
+      "column0": -1,
+      "source": null,
+      "positionTicks": [
+        {
+          "line": 22391,
+          "ticks": 2
+        }
+      ]
+    },
+    {
+      "nodeId": 40,
+      "function": "wrapped",
+      "url": "",
+      "line0": 47,
+      "line1": 48,
+      "column0": 26,
+      "source": null,
+      "positionTicks": []
+    },
+    {
+      "nodeId": 41,
+      "function": "update",
+      "url": "http://qa-draw-attribution-20261001.localhost:3340/game.html?webgpu=0",
+      "line0": 30773,
+      "line1": 30774,
+      "column0": 15,
+      "source": "game.html",
+      "positionTicks": []
+    },
+    {
+      "nodeId": 42,
+      "function": "_ffBuild",
+      "url": "http://qa-draw-attribution-20261001.localhost:3340/game.html?webgpu=0",
+      "line0": 30521,
+      "line1": 30522,
+      "column0": 17,
+      "source": "game.html",
+      "positionTicks": [
+        {
+          "line": 30548,
+          "ticks": 1
+        }
+      ]
+    },
+    {
+      "nodeId": 478,
+      "function": "_drawEliteAuraTelegraph",
+      "url": "http://qa-draw-attribution-20261001.localhost:3340/game.html?webgpu=0",
+      "line0": 5268,
+      "line1": 5269,
+      "column0": 32,
+      "source": "game.html",
+      "positionTicks": [
+        {
+          "line": 5269,
+          "ticks": 1
+        }
+      ]
+    },
+    {
+      "nodeId": 503,
+      "function": "_sfxFrameReset",
+      "url": "http://qa-draw-attribution-20261001.localhost:3340/game.html?webgpu=0",
+      "line0": 11757,
+      "line1": 11758,
+      "column0": 23,
+      "source": "game.html",
+      "positionTicks": []
+    },
+    {
+      "nodeId": 504,
+      "function": "_playSampleNow",
+      "url": "http://qa-draw-attribution-20261001.localhost:3340/game.html?webgpu=0",
+      "line0": 11717,
+      "line1": 11718,
+      "column0": 23,
+      "source": "game.html",
+      "positionTicks": [
+        {
+          "line": 11741,
+          "ticks": 1
+        }
+      ]
+    },
+    {
+      "nodeId": 10,
+      "function": "skip.onclick",
+      "url": "http://qa-draw-attribution-20261001.localhost:3340/parry-lesson.js?v=20261001-kislash-2sec",
+      "line0": 104,
+      "line1": 105,
+      "column0": 126,
+      "source": null,
+      "positionTicks": []
+    },
+    {
+      "nodeId": 11,
+      "function": "skipAll",
+      "url": "http://qa-draw-attribution-20261001.localhost:3340/parry-lesson.js?v=20261001-kislash-2sec",
+      "line0": 22,
+      "line1": 23,
+      "column0": 9,
+      "source": null,
+      "positionTicks": []
+    },
+    {
+      "nodeId": 12,
+      "function": "finish",
+      "url": "http://qa-draw-attribution-20261001.localhost:3340/parry-lesson.js?v=20261001-kislash-2sec",
+      "line0": 683,
+      "line1": 684,
+      "column0": 8,
+      "source": null,
+      "positionTicks": []
+    },
+    {
+      "nodeId": 13,
+      "function": "remove",
+      "url": "",
+      "line0": -1,
+      "line1": null,
+      "column0": -1,
+      "source": null,
+      "positionTicks": [
+        {
+          "line": 697,
+          "ticks": 1
+        }
+      ]
+    },
+    {
+      "nodeId": 43,
+      "function": "fn",
+      "url": "",
+      "line0": 88,
+      "line1": 89,
+      "column0": 13,
+      "source": null,
+      "positionTicks": [
+        {
+          "line": 89,
+          "ticks": 1
+        },
+        {
+          "line": 90,
+          "ticks": 1
+        },
+        {
+          "line": 89,
+          "ticks": 2
+        },
+        {
+          "line": 90,
+          "ticks": 1
+        },
+        {
+          "line": 89,
+          "ticks": 1
+        }
+      ]
+    },
+    {
+      "nodeId": 44,
+      "function": "wrappedLoop",
+      "url": "",
+      "line0": 62,
+      "line1": 63,
+      "column0": 28,
+      "source": null,
+      "positionTicks": [
+        {
+          "line": 65,
+          "ticks": 1
+        },
+        {
+          "line": 65,
+          "ticks": 1
+        },
+        {
+          "line": 68,
+          "ticks": 4
+        }
+      ]
+    },
+    {
+      "nodeId": 45,
+      "function": "loop",
+      "url": "http://qa-draw-attribution-20261001.localhost:3340/game.html?webgpu=0",
+      "line0": 59652,
+      "line1": 59653,
+      "column0": 13,
+      "source": "game.html",
+      "positionTicks": [
+        {
+          "line": 59664,
+          "ticks": 1
+        },
+        {
+          "line": 59683,
+          "ticks": 1
+        },
+        {
+          "line": 59664,
+          "ticks": 1
+        },
+        {
+          "line": 59745,
+          "ticks": 1
+        }
+      ]
+    },
+    {
+      "nodeId": 46,
+      "function": "wrapped",
+      "url": "",
+      "line0": 47,
+      "line1": 48,
+      "column0": 26,
+      "source": null,
+      "positionTicks": [
+        {
+          "line": 55,
+          "ticks": 2
+        },
+        {
+          "line": 52,
+          "ticks": 94
+        },
+        {
+          "line": 55,
+          "ticks": 1
+        },
+        {
+          "line": 55,
+          "ticks": 1
+        }
+      ]
+    },
+    {
+      "nodeId": 47,
+      "function": "update",
+      "url": "http://qa-draw-attribution-20261001.localhost:3340/game.html?webgpu=0",
+      "line0": 30773,
+      "line1": 30774,
+      "column0": 15,
+      "source": "game.html",
+      "positionTicks": [
+        {
+          "line": 31691,
+          "ticks": 1
+        },
+        {
+          "line": 34366,
+          "ticks": 1
+        },
+        {
+          "line": 35254,
+          "ticks": 1
+        },
+        {
+          "line": 34285,
+          "ticks": 1
+        },
+        {
+          "line": 33288,
+          "ticks": 1
+        },
+        {
+          "line": 33264,
+          "ticks": 1
+        },
+        {
+          "line": 34610,
+          "ticks": 1
+        },
+        {
+          "line": 35152,
+          "ticks": 1
+        },
+        {
+          "line": 33114,
+          "ticks": 1
+        },
+        {
+          "line": 33088,
+          "ticks": 1
+        },
+        {
+          "line": 30783,
+          "ticks": 1
+        },
+        {
+          "line": 31688,
+          "ticks": 1
+        },
+        {
+          "line": 35582,
+          "ticks": 1
+        },
+        {
+          "line": 33026,
+          "ticks": 1
+        },
+        {
+          "line": 35629,
+          "ticks": 1
+        },
+        {
+          "line": 33022,
+          "ticks": 1
+        },
+        {
+          "line": 31427,
+          "ticks": 1
+        },
+        {
+          "line": 33079,
+          "ticks": 2
+        },
+        {
+          "line": 31380,
+          "ticks": 1
+        },
+        {
+          "line": 34367,
+          "ticks": 1
+        },
+        {
+          "line": 34366,
+          "ticks": 1
+        },
+        {
+          "line": 33701,
+          "ticks": 1
+        },
+        {
+          "line": 33108,
+          "ticks": 2
+        },
+        {
+          "line": 31425,
+          "ticks": 1
+        },
+        {
+          "line": 30819,
+          "ticks": 3
+        },
+        {
+          "line": 35296,
+          "ticks": 1
+        },
+        {
+          "line": 34328,
+          "ticks": 1
+        },
+        {
+          "line": 34942,
+          "ticks": 1
+        },
+        {
+          "line": 33235,
+          "ticks": 4
+        },
+        {
+          "line": 34788,
+          "ticks": 1
+        },
+        {
+          "line": 34366,
+          "ticks": 1
+        },
+        {
+          "line": 30809,
+          "ticks": 2
+        },
+        {
+          "line": 33111,
+          "ticks": 1
+        },
+        {
+          "line": 33443,
+          "ticks": 1
+        },
+        {
+          "line": 31363,
+          "ticks": 1
+        },
+        {
+          "line": 34473,
+          "ticks": 2
+        },
+        {
+          "line": 31387,
+          "ticks": 1
+        },
+        {
+          "line": 34385,
+          "ticks": 1
+        },
+        {
+          "line": 33369,
+          "ticks": 1
+        },
+        {
+          "line": 33298,
+          "ticks": 1
+        },
+        {
+          "line": 33019,
+          "ticks": 1
+        },
+        {
+          "line": 36170,
+          "ticks": 1
+        },
+        {
+          "line": 33764,
+          "ticks": 1
+        },
+        {
+          "line": 30781,
+          "ticks": 2
+        },
+        {
+          "line": 33275,
+          "ticks": 1
+        },
+        {
+          "line": 33230,
+          "ticks": 1
+        },
+        {
+          "line": 34470,
+          "ticks": 1
+        },
+        {
+          "line": 36118,
+          "ticks": 1
+        },
+        {
+          "line": 30818,
+          "ticks": 2
+        },
+        {
+          "line": 30803,
+          "ticks": 1
+        },
+        {
+          "line": 34320,
+          "ticks": 1
+        },
+        {
+          "line": 30777,
+          "ticks": 1
+        }
+      ]
+    },
+    {
+      "nodeId": 48,
+      "function": "_ffBuild",
+      "url": "http://qa-draw-attribution-20261001.localhost:3340/game.html?webgpu=0",
+      "line0": 30521,
+      "line1": 30522,
+      "column0": 17,
+      "source": "game.html",
+      "positionTicks": [
+        {
+          "line": 30536,
+          "ticks": 1
+        },
+        {
+          "line": 30561,
+          "ticks": 1
+        },
+        {
+          "line": 30564,
+          "ticks": 1
+        },
+        {
+          "line": 30543,
+          "ticks": 3
+        },
+        {
+          "line": 30553,
+          "ticks": 2
+        },
+        {
+          "line": 30564,
+          "ticks": 2
+        },
+        {
+          "line": 30550,
+          "ticks": 3
+        },
+        {
+          "line": 30533,
+          "ticks": 2
+        },
+        {
+          "line": 30566,
+          "ticks": 1
+        },
+        {
+          "line": 30533,
+          "ticks": 1
+        },
+        {
+          "line": 30559,
+          "ticks": 2
+        },
+        {
+          "line": 30559,
+          "ticks": 5
+        },
+        {
+          "line": 30555,
+          "ticks": 1
+        },
+        {
+          "line": 30564,
+          "ticks": 10
+        },
+        {
+          "line": 30548,
+          "ticks": 7
+        },
+        {
+          "line": 30556,
+          "ticks": 1
+        },
+        {
+          "line": 30560,
+          "ticks": 3
+        },
+        {
+          "line": 30549,
+          "ticks": 20
+        },
+        {
+          "line": 30532,
+          "ticks": 3
+        },
+        {
+          "line": 30547,
+          "ticks": 6
+        },
+        {
+          "line": 30564,
+          "ticks": 8
+        },
+        {
+          "line": 30548,
+          "ticks": 1
+        },
+        {
+          "line": 30556,
+          "ticks": 2
+        },
+        {
+          "line": 30533,
+          "ticks": 2
+        },
+        {
+          "line": 30546,
+          "ticks": 1
+        },
+        {
+          "line": 30542,
+          "ticks": 4
+        },
+        {
+          "line": 30550,
+          "ticks": 11
+        },
+        {
+          "line": 30542,
+          "ticks": 1
+        },
+        {
+          "line": 30560,
+          "ticks": 3
+        },
+        {
+          "line": 30560,
+          "ticks": 1
+        },
+        {
+          "line": 30564,
+          "ticks": 12
+        },
+        {
+          "line": 30552,
+          "ticks": 4
+        },
+        {
+          "line": 30566,
+          "ticks": 1
+        },
+        {
+          "line": 30566,
+          "ticks": 1
+        },
+        {
+          "line": 30566,
+          "ticks": 3
+        },
+        {
+          "line": 30547,
+          "ticks": 2
+        },
+        {
+          "line": 30551,
+          "ticks": 10
+        },
+        {
+          "line": 30555,
+          "ticks": 6
+        },
+        {
+          "line": 30547,
+          "ticks": 3
+        },
+        {
+          "line": 30566,
+          "ticks": 3
+        },
+        {
+          "line": 30532,
+          "ticks": 1
+        },
+        {
+          "line": 30552,
+          "ticks": 9
+        },
+        {
+          "line": 30559,
+          "ticks": 2
+        },
+        {
+          "line": 30564,
+          "ticks": 4
+        },
+        {
+          "line": 30556,
+          "ticks": 3
+        },
+        {
+          "line": 30561,
+          "ticks": 5
+        },
+        {
+          "line": 30533,
+          "ticks": 2
+        },
+        {
+          "line": 30553,
+          "ticks": 6
+        },
+        {
+          "line": 30564,
+          "ticks": 17
+        },
+        {
+          "line": 30554,
+          "ticks": 2
+        },
+        {
+          "line": 30564,
+          "ticks": 13
+        },
+        {
+          "line": 30564,
+          "ticks": 9
+        },
+        {
+          "line": 30566,
+          "ticks": 3
+        },
+        {
+          "line": 30564,
+          "ticks": 22
+        },
+        {
+          "line": 30549,
+          "ticks": 9
+        },
+        {
+          "line": 30564,
+          "ticks": 18
+        },
+        {
+          "line": 30555,
+          "ticks": 3
+        },
+        {
+          "line": 30550,
+          "ticks": 8
+        },
+        {
+          "line": 30564,
+          "ticks": 3
+        },
+        {
+          "line": 30555,
+          "ticks": 5
+        },
+        {
+          "line": 30564,
+          "ticks": 6
+        },
+        {
+          "line": 30561,
+          "ticks": 2
+        },
+        {
+          "line": 30548,
+          "ticks": 7
+        },
+        {
+          "line": 30550,
+          "ticks": 14
+        },
+        {
+          "line": 30551,
+          "ticks": 9
+        }
+      ]
+    },
+    {
+      "nodeId": 98,
+      "function": "postMessage",
+      "url": "",
+      "line0": -1,
+      "line1": null,
+      "column0": -1,
+      "source": null,
+      "positionTicks": [
+        {
+          "line": 30536,
+          "ticks": 3
+        }
+      ]
+    },
+    {
+      "nodeId": 72,
+      "function": "updateHUD",
+      "url": "http://qa-draw-attribution-20261001.localhost:3340/game.html?webgpu=0",
+      "line0": 58278,
+      "line1": 58279,
+      "column0": 18,
+      "source": "game.html",
+      "positionTicks": [
+        {
+          "line": 58358,
+          "ticks": 2
+        },
+        {
+          "line": 58358,
+          "ticks": 1
+        },
+        {
+          "line": 58347,
+          "ticks": 1
+        },
+        {
+          "line": 58355,
+          "ticks": 2
+        }
+      ]
+    },
+    {
+      "nodeId": 73,
+      "function": "_hudPulse",
+      "url": "http://qa-draw-attribution-20261001.localhost:3340/game.html?webgpu=0",
+      "line0": 58272,
+      "line1": 58273,
+      "column0": 18,
+      "source": "game.html",
+      "positionTicks": [
+        {
+          "line": 58273,
+          "ticks": 9
+        },
+        {
+          "line": 58273,
+          "ticks": 1
+        }
+      ]
+    },
+    {
+      "nodeId": 241,
+      "function": "_hset",
+      "url": "http://qa-draw-attribution-20261001.localhost:3340/game.html?webgpu=0",
+      "line0": 58277,
+      "line1": 58278,
+      "column0": 14,
+      "source": "game.html",
+      "positionTicks": [
+        {
+          "line": 58278,
+          "ticks": 3
+        },
+        {
+          "line": 58278,
+          "ticks": 2
+        },
+        {
+          "line": 58278,
+          "ticks": 2
+        },
+        {
+          "line": 58278,
+          "ticks": 1
+        },
+        {
+          "line": 58278,
+          "ticks": 1
+        },
+        {
+          "line": 58278,
+          "ticks": 7
+        }
+      ]
+    },
+    {
+      "nodeId": 287,
+      "function": "_hudReadableNumber",
+      "url": "http://qa-draw-attribution-20261001.localhost:3340/game.html?webgpu=0",
+      "line0": 58271,
+      "line1": 58272,
+      "column0": 27,
+      "source": "game.html",
+      "positionTicks": [
+        {
+          "line": 58272,
+          "ticks": 1
+        }
+      ]
+    },
+    {
+      "nodeId": 429,
+      "function": "calcCP",
+      "url": "http://qa-draw-attribution-20261001.localhost:3340/game.html?webgpu=0",
+      "line0": 47673,
+      "line1": 47674,
+      "column0": 15,
+      "source": "game.html",
+      "positionTicks": [
+        {
+          "line": 47680,
+          "ticks": 1
+        }
+      ]
+    },
+    {
+      "nodeId": 78,
+      "function": "updatePet",
+      "url": "http://qa-draw-attribution-20261001.localhost:3340/game.html?webgpu=0",
+      "line0": 40004,
+      "line1": 40005,
+      "column0": 18,
+      "source": "game.html",
+      "positionTicks": [
+        {
+          "line": 40005,
+          "ticks": 1
+        },
+        {
+          "line": 40012,
+          "ticks": 3
+        }
+      ]
+    },
+    {
+      "nodeId": 79,
+      "function": "_checkPetDialogue",
+      "url": "http://qa-draw-attribution-20261001.localhost:3340/game.html?webgpu=0",
+      "line0": 9101,
+      "line1": 9102,
+      "column0": 26,
+      "source": "game.html",
+      "positionTicks": [
+        {
+          "line": 9192,
+          "ticks": 1
+        },
+        {
+          "line": 9275,
+          "ticks": 1
+        },
+        {
+          "line": 9151,
+          "ticks": 1
+        },
+        {
+          "line": 9104,
+          "ticks": 1
+        },
+        {
+          "line": 9332,
+          "ticks": 1
+        },
+        {
+          "line": 9280,
+          "ticks": 1
+        },
+        {
+          "line": 9177,
+          "ticks": 1
+        },
+        {
+          "line": 9173,
+          "ticks": 1
+        },
+        {
+          "line": 9275,
+          "ticks": 1
+        },
+        {
+          "line": 9215,
+          "ticks": 1
+        },
+        {
+          "line": 9103,
+          "ticks": 1
+        },
+        {
+          "line": 9255,
+          "ticks": 1
+        }
+      ]
+    },
+    {
+      "nodeId": 80,
+      "function": "_updatePetBubble",
+      "url": "http://qa-draw-attribution-20261001.localhost:3340/game.html?webgpu=0",
+      "line0": 9076,
+      "line1": 9077,
+      "column0": 25,
+      "source": "game.html",
+      "positionTicks": [
+        {
+          "line": 9098,
+          "ticks": 2
+        },
+        {
+          "line": 9079,
+          "ticks": 1
+        },
+        {
+          "line": 9095,
+          "ticks": 1
+        }
+      ]
+    },
+    {
+      "nodeId": 383,
+      "function": "$",
+      "url": "http://qa-draw-attribution-20261001.localhost:3340/game.html?webgpu=0",
+      "line0": 42436,
+      "line1": 42437,
+      "column0": 10,
+      "source": "game.html",
+      "positionTicks": []
+    },
+    {
+      "nodeId": 384,
+      "function": "getElementById",
+      "url": "",
+      "line0": -1,
+      "line1": null,
+      "column0": -1,
+      "source": null,
+      "positionTicks": [
+        {
+          "line": 42437,
+          "ticks": 1
+        }
+      ]
+    },
+    {
+      "nodeId": 194,
+      "function": "_petBidCD",
+      "url": "http://qa-draw-attribution-20261001.localhost:3340/game.html?webgpu=0",
+      "line0": 9019,
+      "line1": 9020,
+      "column0": 18,
+      "source": "game.html",
+      "positionTicks": [
+        {
+          "line": 9025,
+          "ticks": 1
+        }
+      ]
+    },
+    {
+      "nodeId": 336,
+      "function": "_petTierOf",
+      "url": "http://qa-draw-attribution-20261001.localhost:3340/game.html?webgpu=0",
+      "line0": 9008,
+      "line1": 9009,
+      "column0": 19,
+      "source": "game.html",
+      "positionTicks": [
+        {
+          "line": 9011,
+          "ticks": 1
+        },
+        {
+          "line": 9011,
+          "ticks": 1
+        }
+      ]
+    },
+    {
+      "nodeId": 301,
+      "function": "_petFireBid",
+      "url": "http://qa-draw-attribution-20261001.localhost:3340/game.html?webgpu=0",
+      "line0": 9043,
+      "line1": 9044,
+      "column0": 20,
+      "source": "game.html",
+      "positionTicks": []
+    },
+    {
+      "nodeId": 250,
+      "function": "_petFireBid",
+      "url": "http://qa-draw-attribution-20261001.localhost:3340/game.html?webgpu=0",
+      "line0": 9043,
+      "line1": 9044,
+      "column0": 20,
+      "source": "game.html",
+      "positionTicks": [
+        {
+          "line": 9045,
+          "ticks": 1
+        }
+      ]
+    },
+    {
+      "nodeId": 279,
+      "function": "_updateGhostXbow",
+      "url": "http://qa-draw-attribution-20261001.localhost:3340/game.html?webgpu=0",
+      "line0": 40014,
+      "line1": 40015,
+      "column0": 25,
+      "source": "game.html",
+      "positionTicks": [
+        {
+          "line": 40029,
+          "ticks": 1
+        }
+      ]
+    },
+    {
+      "nodeId": 87,
+      "function": "_twRecord",
+      "url": "http://qa-draw-attribution-20261001.localhost:3340/game.html?webgpu=0",
+      "line0": 44968,
+      "line1": 44969,
+      "column0": 18,
+      "source": "game.html",
+      "positionTicks": [
+        {
+          "line": 44971,
+          "ticks": 3
+        },
+        {
+          "line": 44971,
+          "ticks": 1
+        }
+      ]
+    },
+    {
+      "nodeId": 96,
+      "function": "updateQS",
+      "url": "http://qa-draw-attribution-20261001.localhost:3340/game.html?webgpu=0",
+      "line0": 26967,
+      "line1": 26968,
+      "column0": 17,
+      "source": "game.html",
+      "positionTicks": [
+        {
+          "line": 27021,
+          "ticks": 1
+        },
+        {
+          "line": 27058,
+          "ticks": 1
+        }
+      ]
+    },
+    {
+      "nodeId": 97,
+      "function": "_isAbsorbed",
+      "url": "http://qa-draw-attribution-20261001.localhost:3340/game.html?webgpu=0",
+      "line0": 43061,
+      "line1": 43062,
+      "column0": 20,
+      "source": "game.html",
+      "positionTicks": [
+        {
+          "line": 43065,
+          "ticks": 1
+        },
+        {
+          "line": 43065,
+          "ticks": 1
+        }
+      ]
+    },
+    {
+      "nodeId": 101,
+      "function": "_skCdSet",
+      "url": "http://qa-draw-attribution-20261001.localhost:3340/game.html?webgpu=0",
+      "line0": 42581,
+      "line1": 42582,
+      "column0": 17,
+      "source": "game.html",
+      "positionTicks": [
+        {
+          "line": 42590,
+          "ticks": 9
+        },
+        {
+          "line": 42588,
+          "ticks": 1
+        },
+        {
+          "line": 42588,
+          "ticks": 4
+        }
+      ]
+    },
+    {
+      "nodeId": 111,
+      "function": "_updateActionKeys",
+      "url": "http://qa-draw-attribution-20261001.localhost:3340/game.html?webgpu=0",
+      "line0": 27076,
+      "line1": 27077,
+      "column0": 26,
+      "source": "game.html",
+      "positionTicks": [
+        {
+          "line": 27171,
+          "ticks": 1
+        },
+        {
+          "line": 27083,
+          "ticks": 1
+        },
+        {
+          "line": 27176,
+          "ticks": 1
+        }
+      ]
+    },
+    {
+      "nodeId": 112,
+      "function": "_skCdSet",
+      "url": "http://qa-draw-attribution-20261001.localhost:3340/game.html?webgpu=0",
+      "line0": 42581,
+      "line1": 42582,
+      "column0": 17,
+      "source": "game.html",
+      "positionTicks": [
+        {
+          "line": 42588,
+          "ticks": 1
+        },
+        {
+          "line": 42590,
+          "ticks": 8
+        }
+      ]
+    },
+    {
+      "nodeId": 173,
+      "function": "_hset",
+      "url": "http://qa-draw-attribution-20261001.localhost:3340/game.html?webgpu=0",
+      "line0": 58277,
+      "line1": 58278,
+      "column0": 14,
+      "source": "game.html",
+      "positionTicks": [
+        {
+          "line": 58278,
+          "ticks": 2
+        }
+      ]
+    },
+    {
+      "nodeId": 246,
+      "function": "_skFuseIcon",
+      "url": "http://qa-draw-attribution-20261001.localhost:3340/game.html?webgpu=0",
+      "line0": 42551,
+      "line1": 42552,
+      "column0": 20,
+      "source": "game.html",
+      "positionTicks": [
+        {
+          "line": 42560,
+          "ticks": 1
+        }
+      ]
+    },
+    {
+      "nodeId": 316,
+      "function": "_updateUltSlot",
+      "url": "http://qa-draw-attribution-20261001.localhost:3340/game.html?webgpu=0",
+      "line0": 27059,
+      "line1": 27060,
+      "column0": 23,
+      "source": "game.html",
+      "positionTicks": [
+        {
+          "line": 27062,
+          "ticks": 1
+        }
+      ]
+    },
+    {
+      "nodeId": 354,
+      "function": "querySelector",
+      "url": "",
+      "line0": -1,
+      "line1": null,
+      "column0": -1,
+      "source": null,
+      "positionTicks": [
+        {
+          "line": 27025,
+          "ticks": 1
+        }
+      ]
+    },
+    {
+      "nodeId": 385,
+      "function": "_skN",
+      "url": "http://qa-draw-attribution-20261001.localhost:3340/game.html?webgpu=0",
+      "line0": 42751,
+      "line1": 42752,
+      "column0": 13,
+      "source": "game.html",
+      "positionTicks": [
+        {
+          "line": 42752,
+          "ticks": 1
+        }
+      ]
+    },
+    {
+      "nodeId": 109,
+      "function": "hurtE",
+      "url": "http://qa-draw-attribution-20261001.localhost:3340/game.html?webgpu=0",
+      "line0": 40626,
+      "line1": 40627,
+      "column0": 14,
+      "source": "game.html",
+      "positionTicks": [
+        {
+          "line": 41557,
+          "ticks": 1
+        }
+      ]
+    },
+    {
+      "nodeId": 110,
+      "function": "shQuery",
+      "url": "http://qa-draw-attribution-20261001.localhost:3340/game.html?webgpu=0",
+      "line0": 17689,
+      "line1": 17690,
+      "column0": 16,
+      "source": "game.html",
+      "positionTicks": []
+    },
+    {
+      "nodeId": 242,
+      "function": "playSample",
+      "url": "http://qa-draw-attribution-20261001.localhost:3340/game.html?webgpu=0",
+      "line0": 11816,
+      "line1": 11817,
+      "column0": 19,
+      "source": "game.html",
+      "positionTicks": [
+        {
+          "line": 11823,
+          "ticks": 1
+        }
+      ]
+    },
+    {
+      "nodeId": 253,
+      "function": "rollDrop",
+      "url": "http://qa-draw-attribution-20261001.localhost:3340/game.html?webgpu=0",
+      "line0": 30676,
+      "line1": 30677,
+      "column0": 17,
+      "source": "game.html",
+      "positionTicks": []
+    },
+    {
+      "nodeId": 254,
+      "function": "_wiPush",
+      "url": "http://qa-draw-attribution-20261001.localhost:3340/game.html?webgpu=0",
+      "line0": 15818,
+      "line1": 15819,
+      "column0": 16,
+      "source": "game.html",
+      "positionTicks": [
+        {
+          "line": 15819,
+          "ticks": 1
+        }
+      ]
+    },
+    {
+      "nodeId": 265,
+      "function": "groggy",
+      "url": "http://qa-draw-attribution-20261001.localhost:3340/game.html?webgpu=0",
+      "line0": 12176,
+      "line1": 12177,
+      "column0": 8,
+      "source": "game.html",
+      "positionTicks": []
+    },
+    {
+      "nodeId": 266,
+      "function": "playNoise",
+      "url": "http://qa-draw-attribution-20261001.localhost:3340/game.html?webgpu=0",
+      "line0": 11936,
+      "line1": 11937,
+      "column0": 18,
+      "source": "game.html",
+      "positionTicks": []
+    },
+    {
+      "nodeId": 360,
+      "function": "shake",
+      "url": "http://qa-draw-attribution-20261001.localhost:3340/game.html?webgpu=0",
+      "line0": 18703,
+      "line1": 18704,
+      "column0": 14,
+      "source": "game.html",
+      "positionTicks": [
+        {
+          "line": 18704,
+          "ticks": 1
+        }
+      ]
+    },
+    {
+      "nodeId": 115,
+      "function": "_addImpact",
+      "url": "http://qa-draw-attribution-20261001.localhost:3340/game.html?webgpu=0",
+      "line0": 24043,
+      "line1": 24044,
+      "column0": 19,
+      "source": "game.html",
+      "positionTicks": [
+        {
+          "line": 24050,
+          "ticks": 1
+        }
+      ]
+    },
+    {
+      "nodeId": 122,
+      "function": "updateMmExpVFX",
+      "url": "http://qa-draw-attribution-20261001.localhost:3340/game.html?webgpu=0",
+      "line0": 18001,
+      "line1": 18002,
+      "column0": 23,
+      "source": "game.html",
+      "positionTicks": []
+    },
+    {
+      "nodeId": 124,
+      "function": "updateOldBurstVFX",
+      "url": "http://qa-draw-attribution-20261001.localhost:3340/game.html?webgpu=0",
+      "line0": 18221,
+      "line1": 18222,
+      "column0": 26,
+      "source": "game.html",
+      "positionTicks": []
+    },
+    {
+      "nodeId": 131,
+      "function": "updateE",
+      "url": "http://qa-draw-attribution-20261001.localhost:3340/game.html?webgpu=0",
+      "line0": 37119,
+      "line1": 37120,
+      "column0": 16,
+      "source": "game.html",
+      "positionTicks": [
+        {
+          "line": 37209,
+          "ticks": 1
+        },
+        {
+          "line": 37818,
+          "ticks": 1
+        },
+        {
+          "line": 37413,
+          "ticks": 1
+        },
+        {
+          "line": 37220,
+          "ticks": 1
+        },
+        {
+          "line": 38195,
+          "ticks": 1
+        },
+        {
+          "line": 37153,
+          "ticks": 2
+        },
+        {
+          "line": 38200,
+          "ticks": 1
+        },
+        {
+          "line": 37120,
+          "ticks": 1
+        },
+        {
+          "line": 39018,
+          "ticks": 1
+        }
+      ]
+    },
+    {
+      "nodeId": 271,
+      "function": "_ffMoveE",
+      "url": "http://qa-draw-attribution-20261001.localhost:3340/game.html?webgpu=0",
+      "line0": 30581,
+      "line1": 30582,
+      "column0": 17,
+      "source": "game.html",
+      "positionTicks": [
+        {
+          "line": 30590,
+          "ticks": 1
+        }
+      ]
+    },
+    {
+      "nodeId": 422,
+      "function": "_spawnBossProjectile",
+      "url": "http://qa-draw-attribution-20261001.localhost:3340/game.html?webgpu=0",
+      "line0": 16024,
+      "line1": 16025,
+      "column0": 29,
+      "source": "game.html",
+      "positionTicks": []
+    },
+    {
+      "nodeId": 423,
+      "function": "spawnProj",
+      "url": "http://qa-draw-attribution-20261001.localhost:3340/game.html?webgpu=0",
+      "line0": 16029,
+      "line1": 16030,
+      "column0": 18,
+      "source": "game.html",
+      "positionTicks": [
+        {
+          "line": 16036,
+          "ticks": 1
+        }
+      ]
+    },
+    {
+      "nodeId": 133,
+      "function": "_pushOutsideBonfire",
+      "url": "http://qa-draw-attribution-20261001.localhost:3340/game.html?webgpu=0",
+      "line0": 30406,
+      "line1": 30407,
+      "column0": 28,
+      "source": "game.html",
+      "positionTicks": []
+    },
+    {
+      "nodeId": 143,
+      "function": "tick",
+      "url": "http://qa-draw-attribution-20261001.localhost:3340/parry-lesson.js?v=20261001-kislash-2sec",
+      "line0": 466,
+      "line1": 467,
+      "column0": 6,
+      "source": null,
+      "positionTicks": [
+        {
+          "line": 469,
+          "ticks": 1
+        }
+      ]
+    },
+    {
+      "nodeId": 144,
+      "function": "dismissed",
+      "url": "http://qa-draw-attribution-20261001.localhost:3340/parry-lesson.js?v=20261001-kislash-2sec",
+      "line0": 15,
+      "line1": 16,
+      "column0": 11,
+      "source": null,
+      "positionTicks": []
+    },
+    {
+      "nodeId": 145,
+      "function": "skipKey",
+      "url": "http://qa-draw-attribution-20261001.localhost:3340/parry-lesson.js?v=20261001-kislash-2sec",
+      "line0": 6,
+      "line1": 7,
+      "column0": 9,
+      "source": null,
+      "positionTicks": [
+        {
+          "line": 8,
+          "ticks": 1
+        },
+        {
+          "line": 8,
+          "ticks": 1
+        }
+      ]
+    },
+    {
+      "nodeId": 413,
+      "function": "URLSearchParams",
+      "url": "",
+      "line0": -1,
+      "line1": null,
+      "column0": -1,
+      "source": null,
+      "positionTicks": [
+        {
+          "line": 8,
+          "ticks": 2
+        }
+      ]
+    },
+    {
+      "nodeId": 438,
+      "function": "get",
+      "url": "",
+      "line0": -1,
+      "line1": null,
+      "column0": -1,
+      "source": null,
+      "positionTicks": [
+        {
+          "line": 9,
+          "ticks": 1
+        }
+      ]
+    },
+    {
+      "nodeId": 146,
+      "function": "isW",
+      "url": "http://qa-draw-attribution-20261001.localhost:3340/game.html?webgpu=0",
+      "line0": 30385,
+      "line1": 30386,
+      "column0": 12,
+      "source": "game.html",
+      "positionTicks": []
+    },
+    {
+      "nodeId": 147,
+      "function": "_ensureColObjs",
+      "url": "http://qa-draw-attribution-20261001.localhost:3340/game.html?webgpu=0",
+      "line0": 30363,
+      "line1": 30364,
+      "column0": 23,
+      "source": "game.html",
+      "positionTicks": []
+    },
+    {
+      "nodeId": 148,
+      "function": "_ch1HillBandBlocks",
+      "url": "http://qa-draw-attribution-20261001.localhost:3340/game.html?webgpu=0",
+      "line0": 30372,
+      "line1": 30373,
+      "column0": 27,
+      "source": "game.html",
+      "positionTicks": []
+    },
+    {
+      "nodeId": 149,
+      "function": "_ch1HillRampAt",
+      "url": "http://qa-draw-attribution-20261001.localhost:3340/game.html?webgpu=0",
+      "line0": 30367,
+      "line1": 30368,
+      "column0": 23,
+      "source": "game.html",
+      "positionTicks": []
+    },
+    {
+      "nodeId": 150,
+      "function": "_tickSkyCrusherRecharge",
+      "url": "http://qa-draw-attribution-20261001.localhost:3340/game.html?webgpu=0",
+      "line0": 43880,
+      "line1": 43881,
+      "column0": 32,
+      "source": "game.html",
+      "positionTicks": [
+        {
+          "line": 43882,
+          "ticks": 1
+        }
+      ]
+    },
+    {
+      "nodeId": 151,
+      "function": "_skyCrusherChargeCount",
+      "url": "http://qa-draw-attribution-20261001.localhost:3340/game.html?webgpu=0",
+      "line0": 43874,
+      "line1": 43875,
+      "column0": 31,
+      "source": "game.html",
+      "positionTicks": [
+        {
+          "line": 43877,
+          "ticks": 1
+        }
+      ]
+    },
+    {
+      "nodeId": 182,
+      "function": "pXbowSpd",
+      "url": "http://qa-draw-attribution-20261001.localhost:3340/game.html?webgpu=0",
+      "line0": 26751,
+      "line1": 26752,
+      "column0": 17,
+      "source": "game.html",
+      "positionTicks": [
+        {
+          "line": 26752,
+          "ticks": 1
+        }
+      ]
+    },
+    {
+      "nodeId": 195,
+      "function": "_dispatchColWorker",
+      "url": "http://qa-draw-attribution-20261001.localhost:3340/game.html?webgpu=0",
+      "line0": 30501,
+      "line1": 30502,
+      "column0": 27,
+      "source": "game.html",
+      "positionTicks": [
+        {
+          "line": 30505,
+          "ticks": 1
+        },
+        {
+          "line": 30505,
+          "ticks": 1
+        },
+        {
+          "line": 30508,
+          "ticks": 1
+        },
+        {
+          "line": 30508,
+          "ticks": 1
+        },
+        {
+          "line": 30508,
+          "ticks": 1
+        }
+      ]
+    },
+    {
+      "nodeId": 310,
+      "function": "postMessage",
+      "url": "",
+      "line0": -1,
+      "line1": null,
+      "column0": -1,
+      "source": null,
+      "positionTicks": [
+        {
+          "line": 30508,
+          "ticks": 6
+        }
+      ]
+    },
+    {
+      "nodeId": 197,
+      "function": "_fdTick",
+      "url": "http://qa-draw-attribution-20261001.localhost:3340/game.html?webgpu=0",
+      "line0": 59501,
+      "line1": 59502,
+      "column0": 16,
+      "source": "game.html",
+      "positionTicks": [
+        {
+          "line": 59503,
+          "ticks": 1
+        }
+      ]
+    },
+    {
+      "nodeId": 203,
+      "function": "updateHitVFX",
+      "url": "http://qa-draw-attribution-20261001.localhost:3340/game.html?webgpu=0",
+      "line0": 18249,
+      "line1": 18250,
+      "column0": 21,
+      "source": "game.html",
+      "positionTicks": [
+        {
+          "line": 18250,
+          "ticks": 1
+        }
+      ]
+    },
+    {
+      "nodeId": 239,
+      "function": "shRebuild",
+      "url": "http://qa-draw-attribution-20261001.localhost:3340/game.html?webgpu=0",
+      "line0": 17657,
+      "line1": 17658,
+      "column0": 18,
+      "source": "game.html",
+      "positionTicks": []
+    },
+    {
+      "nodeId": 240,
+      "function": "rebuildDeadPool",
+      "url": "http://qa-draw-attribution-20261001.localhost:3340/game.html?webgpu=0",
+      "line0": 17843,
+      "line1": 17844,
+      "column0": 24,
+      "source": "game.html",
+      "positionTicks": []
+    },
+    {
+      "nodeId": 264,
+      "function": "pBowRange",
+      "url": "http://qa-draw-attribution-20261001.localhost:3340/game.html?webgpu=0",
+      "line0": 26748,
+      "line1": 26749,
+      "column0": 18,
+      "source": "game.html",
+      "positionTicks": [
+        {
+          "line": 26749,
+          "ticks": 1
+        }
+      ]
+    },
+    {
+      "nodeId": 275,
+      "function": "_applyColResult",
+      "url": "http://qa-draw-attribution-20261001.localhost:3340/game.html?webgpu=0",
+      "line0": 30509,
+      "line1": 30510,
+      "column0": 24,
+      "source": "game.html",
+      "positionTicks": [
+        {
+          "line": 30514,
+          "ticks": 1
+        },
+        {
+          "line": 30517,
+          "ticks": 1
+        },
+        {
+          "line": 30513,
+          "ticks": 1
+        }
+      ]
+    },
+    {
+      "nodeId": 351,
+      "function": "isW",
+      "url": "http://qa-draw-attribution-20261001.localhost:3340/game.html?webgpu=0",
+      "line0": 30385,
+      "line1": 30386,
+      "column0": 12,
+      "source": "game.html",
+      "positionTicks": [
+        {
+          "line": 30386,
+          "ticks": 1
+        },
+        {
+          "line": 30386,
+          "ticks": 1
+        },
+        {
+          "line": 30386,
+          "ticks": 1
+        },
+        {
+          "line": 30386,
+          "ticks": 1
+        },
+        {
+          "line": 30386,
+          "ticks": 1
+        }
+      ]
+    },
+    {
+      "nodeId": 276,
+      "function": "_updateSlimes",
+      "url": "http://qa-draw-attribution-20261001.localhost:3340/game.html?webgpu=0",
+      "line0": 40230,
+      "line1": 40231,
+      "column0": 22,
+      "source": "game.html",
+      "positionTicks": []
+    },
+    {
+      "nodeId": 293,
+      "function": "isAct",
+      "url": "http://qa-draw-attribution-20261001.localhost:3340/game.html?webgpu=0",
+      "line0": 13712,
+      "line1": 13713,
+      "column0": 14,
+      "source": "game.html",
+      "positionTicks": []
+    },
+    {
+      "nodeId": 294,
+      "function": "_chkAct",
+      "url": "http://qa-draw-attribution-20261001.localhost:3340/game.html?webgpu=0",
+      "line0": 13710,
+      "line1": 13711,
+      "column0": 16,
+      "source": "game.html",
+      "positionTicks": [
+        {
+          "line": 13711,
+          "ticks": 1
+        }
+      ]
+    },
+    {
+      "nodeId": 318,
+      "function": "sh",
+      "url": "http://qa-draw-attribution-20261001.localhost:3340/game.html?webgpu=0",
+      "line0": 15710,
+      "line1": 15711,
+      "column0": 11,
+      "source": "game.html",
+      "positionTicks": [
+        {
+          "line": 15711,
+          "ticks": 1
+        }
+      ]
+    },
+    {
+      "nodeId": 322,
+      "function": "updateDarkBurstVFX",
+      "url": "http://qa-draw-attribution-20261001.localhost:3340/game.html?webgpu=0",
+      "line0": 18123,
+      "line1": 18124,
+      "column0": 27,
+      "source": "game.html",
+      "positionTicks": [
+        {
+          "line": 18124,
+          "ticks": 1
+        }
+      ]
+    },
+    {
+      "nodeId": 332,
+      "function": "mergeMatItems",
+      "url": "http://qa-draw-attribution-20261001.localhost:3340/game.html?webgpu=0",
+      "line0": 40156,
+      "line1": 40157,
+      "column0": 22,
+      "source": "game.html",
+      "positionTicks": [
+        {
+          "line": 40161,
+          "ticks": 1
+        }
+      ]
+    },
+    {
+      "nodeId": 340,
+      "function": "_isAbsorbed",
+      "url": "http://qa-draw-attribution-20261001.localhost:3340/game.html?webgpu=0",
+      "line0": 43061,
+      "line1": 43062,
+      "column0": 20,
+      "source": "game.html",
+      "positionTicks": [
+        {
+          "line": 43062,
+          "ticks": 1
+        }
+      ]
+    },
+    {
+      "nodeId": 343,
+      "function": "contains",
+      "url": "",
+      "line0": -1,
+      "line1": null,
+      "column0": -1,
+      "source": null,
+      "positionTicks": [
+        {
+          "line": 34463,
+          "ticks": 2
+        }
+      ]
+    },
+    {
+      "nodeId": 345,
+      "function": "_isPhysicalMouthProjectile",
+      "url": "http://qa-draw-attribution-20261001.localhost:3340/game.html?webgpu=0",
+      "line0": 16122,
+      "line1": 16123,
+      "column0": 35,
+      "source": "game.html",
+      "positionTicks": []
+    },
+    {
+      "nodeId": 350,
+      "function": "playSampleAt",
+      "url": "http://qa-draw-attribution-20261001.localhost:3340/game.html?webgpu=0",
+      "line0": 11830,
+      "line1": 11831,
+      "column0": 21,
+      "source": "game.html",
+      "positionTicks": [
+        {
+          "line": 11832,
+          "ticks": 1
+        }
+      ]
+    },
+    {
+      "nodeId": 355,
+      "function": "_updateIceOrbVfx",
+      "url": "http://qa-draw-attribution-20261001.localhost:3340/game.html?webgpu=0",
+      "line0": 18011,
+      "line1": 18012,
+      "column0": 25,
+      "source": "game.html",
+      "positionTicks": [
+        {
+          "line": 18012,
+          "ticks": 2
+        }
+      ]
+    },
+    {
+      "nodeId": 394,
+      "function": "activateBladeDash",
+      "url": "http://qa-draw-attribution-20261001.localhost:3340/game.html?webgpu=0",
+      "line0": 43836,
+      "line1": 43837,
+      "column0": 26,
+      "source": "game.html",
+      "positionTicks": []
+    },
+    {
+      "nodeId": 395,
+      "function": "charge",
+      "url": "http://qa-draw-attribution-20261001.localhost:3340/game.html?webgpu=0",
+      "line0": 12093,
+      "line1": 12094,
+      "column0": 8,
+      "source": "game.html",
+      "positionTicks": []
+    },
+    {
+      "nodeId": 396,
+      "function": "playTone",
+      "url": "http://qa-draw-attribution-20261001.localhost:3340/game.html?webgpu=0",
+      "line0": 11923,
+      "line1": 11924,
+      "column0": 17,
+      "source": "game.html",
+      "positionTicks": [
+        {
+          "line": 11928,
+          "ticks": 1
+        }
+      ]
+    },
+    {
+      "nodeId": 443,
+      "function": "_addSkProf",
+      "url": "http://qa-draw-attribution-20261001.localhost:3340/game.html?webgpu=0",
+      "line0": 43009,
+      "line1": 43010,
+      "column0": 19,
+      "source": "game.html",
+      "positionTicks": [
+        {
+          "line": 43014,
+          "ticks": 1
+        }
+      ]
+    },
+    {
+      "nodeId": 409,
+      "function": "findBoss",
+      "url": "http://qa-draw-attribution-20261001.localhost:3340/game.html?webgpu=0",
+      "line0": 18746,
+      "line1": 18747,
+      "column0": 17,
+      "source": "game.html",
+      "positionTicks": [
+        {
+          "line": 18747,
+          "ticks": 1
+        }
+      ]
+    },
+    {
+      "nodeId": 418,
+      "function": "isJust",
+      "url": "http://qa-draw-attribution-20261001.localhost:3340/game.html?webgpu=0",
+      "line0": 13713,
+      "line1": 13714,
+      "column0": 15,
+      "source": "game.html",
+      "positionTicks": []
+    },
+    {
+      "nodeId": 419,
+      "function": "_chkJust",
+      "url": "http://qa-draw-attribution-20261001.localhost:3340/game.html?webgpu=0",
+      "line0": 13711,
+      "line1": 13712,
+      "column0": 17,
+      "source": "game.html",
+      "positionTicks": [
+        {
+          "line": 13712,
+          "ticks": 1
+        }
+      ]
+    },
+    {
+      "nodeId": 434,
+      "function": "shQuery",
+      "url": "http://qa-draw-attribution-20261001.localhost:3340/game.html?webgpu=0",
+      "line0": 17689,
+      "line1": 17690,
+      "column0": 16,
+      "source": "game.html",
+      "positionTicks": [
+        {
+          "line": 17696,
+          "ticks": 2
+        }
+      ]
+    },
+    {
+      "nodeId": 435,
+      "function": "poolUpdate",
+      "url": "http://qa-draw-attribution-20261001.localhost:3340/game.html?webgpu=0",
+      "line0": 18629,
+      "line1": 18630,
+      "column0": 19,
+      "source": "game.html",
+      "positionTicks": [
+        {
+          "line": 18638,
+          "ticks": 1
+        }
+      ]
+    },
+    {
+      "nodeId": 440,
+      "function": "isHeld",
+      "url": "http://qa-draw-attribution-20261001.localhost:3340/game.html?webgpu=0",
+      "line0": 13715,
+      "line1": 13716,
+      "column0": 15,
+      "source": "game.html",
+      "positionTicks": []
+    },
+    {
+      "nodeId": 441,
+      "function": "_chkHeld",
+      "url": "http://qa-draw-attribution-20261001.localhost:3340/game.html?webgpu=0",
+      "line0": 13714,
+      "line1": 13715,
+      "column0": 17,
+      "source": "game.html",
+      "positionTicks": [
+        {
+          "line": 13715,
+          "ticks": 1
+        }
+      ]
+    },
+    {
+      "nodeId": 444,
+      "function": "_tickBladeDash",
+      "url": "http://qa-draw-attribution-20261001.localhost:3340/game.html?webgpu=0",
+      "line0": 43773,
+      "line1": 43774,
+      "column0": 23,
+      "source": "game.html",
+      "positionTicks": [
+        {
+          "line": 43810,
+          "ticks": 1
+        }
+      ]
+    },
+    {
+      "nodeId": 456,
+      "function": "canMv",
+      "url": "http://qa-draw-attribution-20261001.localhost:3340/game.html?webgpu=0",
+      "line0": 30386,
+      "line1": 30387,
+      "column0": 14,
+      "source": "game.html",
+      "positionTicks": [
+        {
+          "line": 30387,
+          "ticks": 1
+        }
+      ]
+    },
+    {
+      "nodeId": 59,
+      "function": "draw",
+      "url": "http://qa-draw-attribution-20261001.localhost:3340/game.html?webgpu=0",
+      "line0": 49861,
+      "line1": 49862,
+      "column0": 13,
+      "source": "game.html",
+      "positionTicks": [
+        {
+          "line": 50701,
+          "ticks": 1
+        },
+        {
+          "line": 51016,
+          "ticks": 1
+        },
+        {
+          "line": 49888,
+          "ticks": 1
+        },
+        {
+          "line": 50734,
+          "ticks": 1
+        },
+        {
+          "line": 53496,
+          "ticks": 1
+        },
+        {
+          "line": 51442,
+          "ticks": 1
+        },
+        {
+          "line": 50589,
+          "ticks": 1
+        },
+        {
+          "line": 51874,
+          "ticks": 1
+        },
+        {
+          "line": 53269,
+          "ticks": 1
+        },
+        {
+          "line": 52148,
+          "ticks": 1
+        },
+        {
+          "line": 50698,
+          "ticks": 1
+        },
+        {
+          "line": 50047,
+          "ticks": 1
+        },
+        {
+          "line": 50189,
+          "ticks": 1
+        },
+        {
+          "line": 51539,
+          "ticks": 1
+        },
+        {
+          "line": 52625,
+          "ticks": 1
+        },
+        {
+          "line": 53482,
+          "ticks": 3
+        },
+        {
+          "line": 50203,
+          "ticks": 1
+        },
+        {
+          "line": 52586,
+          "ticks": 3
+        },
+        {
+          "line": 51121,
+          "ticks": 1
+        },
+        {
+          "line": 50163,
+          "ticks": 1
+        },
+        {
+          "line": 50061,
+          "ticks": 1
+        },
+        {
+          "line": 51887,
+          "ticks": 1
+        },
+        {
+          "line": 50810,
+          "ticks": 4
+        },
+        {
+          "line": 52897,
+          "ticks": 1
+        },
+        {
+          "line": 49881,
+          "ticks": 1
+        },
+        {
+          "line": 50581,
+          "ticks": 1
+        },
+        {
+          "line": 52621,
+          "ticks": 1
+        },
+        {
+          "line": 53412,
+          "ticks": 1
+        },
+        {
+          "line": 51293,
+          "ticks": 1
+        },
+        {
+          "line": 51862,
+          "ticks": 1
+        },
+        {
+          "line": 53409,
+          "ticks": 1
+        },
+        {
+          "line": 49874,
+          "ticks": 1
+        },
+        {
+          "line": 52913,
+          "ticks": 1
+        },
+        {
+          "line": 51744,
+          "ticks": 1
+        },
+        {
+          "line": 52810,
+          "ticks": 1
+        },
+        {
+          "line": 50054,
+          "ticks": 1
+        },
+        {
+          "line": 52909,
+          "ticks": 1
+        },
+        {
+          "line": 51920,
+          "ticks": 1
+        },
+        {
+          "line": 52709,
+          "ticks": 2
+        },
+        {
+          "line": 50189,
+          "ticks": 2
+        },
+        {
+          "line": 53434,
+          "ticks": 1
+        },
+        {
+          "line": 51598,
+          "ticks": 1
+        },
+        {
+          "line": 51373,
+          "ticks": 1
+        }
+      ]
+    },
+    {
+      "nodeId": 60,
+      "function": "draw",
+      "url": "http://qa-draw-attribution-20261001.localhost:3340/ch1-living-detail.js?v=20260929-87",
+      "line0": 330,
+      "line1": 331,
+      "column0": 15,
+      "source": "ch1-living-detail.js",
+      "positionTicks": [
+        {
+          "line": 342,
+          "ticks": 1
+        }
+      ]
+    },
+    {
+      "nodeId": 181,
+      "function": "drawImage",
+      "url": "http://qa-draw-attribution-20261001.localhost:3340/game.html?webgpu=0",
+      "line0": 6040,
+      "line1": 6041,
+      "column0": 9,
+      "source": "game.html",
+      "positionTicks": [
+        {
+          "line": 6049,
+          "ticks": 1
+        }
+      ]
+    },
+    {
+      "nodeId": 445,
+      "function": "atlas",
+      "url": "http://qa-draw-attribution-20261001.localhost:3340/ch1-living-detail.js?v=20260929-87",
+      "line0": 311,
+      "line1": 312,
+      "column0": 16,
+      "source": "ch1-living-detail.js",
+      "positionTicks": []
+    },
+    {
+      "nodeId": 446,
+      "function": "paint",
+      "url": "http://qa-draw-attribution-20261001.localhost:3340/ch1-living-detail.js?v=20260929-87",
+      "line0": 172,
+      "line1": 173,
+      "column0": 16,
+      "source": "ch1-living-detail.js",
+      "positionTicks": [
+        {
+          "line": 212,
+          "ticks": 1
+        }
+      ]
+    },
+    {
+      "nodeId": 447,
+      "function": "membrane",
+      "url": "http://qa-draw-attribution-20261001.localhost:3340/ch1-living-detail.js?v=20260929-87",
+      "line0": 119,
+      "line1": 120,
+      "column0": 19,
+      "source": "ch1-living-detail.js",
+      "positionTicks": [
+        {
+          "line": 158,
+          "ticks": 1
+        },
+        {
+          "line": 159,
+          "ticks": 1
+        }
+      ]
+    },
+    {
+      "nodeId": 448,
+      "function": "restore",
+      "url": "",
+      "line0": -1,
+      "line1": null,
+      "column0": -1,
+      "source": null,
+      "positionTicks": [
+        {
+          "line": 146,
+          "ticks": 1
+        }
+      ]
+    },
+    {
+      "nodeId": 449,
+      "function": "getImageData",
+      "url": "",
+      "line0": -1,
+      "line1": null,
+      "column0": -1,
+      "source": null,
+      "positionTicks": [
+        {
+          "line": 155,
+          "ticks": 61
+        }
+      ]
+    },
+    {
+      "nodeId": 61,
+      "function": "stroke",
+      "url": "http://qa-draw-attribution-20261001.localhost:3340/game.html?webgpu=0",
+      "line0": 6001,
+      "line1": 6002,
+      "column0": 6,
+      "source": "game.html",
+      "positionTicks": [
+        {
+          "line": 6014,
+          "ticks": 2
+        }
+      ]
+    },
+    {
+      "nodeId": 305,
+      "function": "_setTex",
+      "url": "http://qa-draw-attribution-20261001.localhost:3340/game.html?webgpu=0",
+      "line0": 5765,
+      "line1": 5766,
+      "column0": 18,
+      "source": "game.html",
+      "positionTicks": []
+    },
+    {
+      "nodeId": 306,
+      "function": "_flush",
+      "url": "http://qa-draw-attribution-20261001.localhost:3340/game.html?webgpu=0",
+      "line0": 5759,
+      "line1": 5760,
+      "column0": 17,
+      "source": "game.html",
+      "positionTicks": []
+    },
+    {
+      "nodeId": 307,
+      "function": "uniform2f",
+      "url": "",
+      "line0": -1,
+      "line1": null,
+      "column0": -1,
+      "source": null,
+      "positionTicks": [
+        {
+          "line": 5764,
+          "ticks": 1
+        }
+      ]
+    },
+    {
+      "nodeId": 62,
+      "function": "arc",
+      "url": "http://qa-draw-attribution-20261001.localhost:3340/game.html?webgpu=0",
+      "line0": 5972,
+      "line1": 5973,
+      "column0": 3,
+      "source": "game.html",
+      "positionTicks": []
+    },
+    {
+      "nodeId": 63,
+      "function": "set fillStyle",
+      "url": "http://qa-draw-attribution-20261001.localhost:3340/game.html?webgpu=0",
+      "line0": 5942,
+      "line1": 5943,
+      "column0": 41,
+      "source": "game.html",
+      "positionTicks": []
+    },
+    {
+      "nodeId": 64,
+      "function": "_parseCol",
+      "url": "http://qa-draw-attribution-20261001.localhost:3340/game.html?webgpu=0",
+      "line0": 5380,
+      "line1": 5381,
+      "column0": 18,
+      "source": "game.html",
+      "positionTicks": []
+    },
+    {
+      "nodeId": 65,
+      "function": "fill",
+      "url": "http://qa-draw-attribution-20261001.localhost:3340/game.html?webgpu=0",
+      "line0": 5980,
+      "line1": 5981,
+      "column0": 4,
+      "source": "game.html",
+      "positionTicks": []
+    },
+    {
+      "nodeId": 319,
+      "function": "_setTex",
+      "url": "http://qa-draw-attribution-20261001.localhost:3340/game.html?webgpu=0",
+      "line0": 5765,
+      "line1": 5766,
+      "column0": 18,
+      "source": "game.html",
+      "positionTicks": []
+    },
+    {
+      "nodeId": 320,
+      "function": "_flush",
+      "url": "http://qa-draw-attribution-20261001.localhost:3340/game.html?webgpu=0",
+      "line0": 5759,
+      "line1": 5760,
+      "column0": 17,
+      "source": "game.html",
+      "positionTicks": []
+    },
+    {
+      "nodeId": 321,
+      "function": "bindTexture",
+      "url": "",
+      "line0": -1,
+      "line1": null,
+      "column0": -1,
+      "source": null,
+      "positionTicks": [
+        {
+          "line": 5764,
+          "ticks": 1
+        }
+      ]
+    },
+    {
+      "nodeId": 66,
+      "function": "drawP",
+      "url": "http://qa-draw-attribution-20261001.localhost:3340/game.html?webgpu=0",
+      "line0": 53532,
+      "line1": 53533,
+      "column0": 14,
+      "source": "game.html",
+      "positionTicks": [
+        {
+          "line": 54982,
+          "ticks": 1
+        },
+        {
+          "line": 57947,
+          "ticks": 1
+        },
+        {
+          "line": 56717,
+          "ticks": 1
+        },
+        {
+          "line": 55226,
+          "ticks": 1
+        },
+        {
+          "line": 55038,
+          "ticks": 1
+        },
+        {
+          "line": 55525,
+          "ticks": 1
+        },
+        {
+          "line": 56519,
+          "ticks": 1
+        },
+        {
+          "line": 54973,
+          "ticks": 1
+        },
+        {
+          "line": 55005,
+          "ticks": 1
+        },
+        {
+          "line": 56518,
+          "ticks": 1
+        },
+        {
+          "line": 53968,
+          "ticks": 1
+        },
+        {
+          "line": 57995,
+          "ticks": 1
+        },
+        {
+          "line": 54902,
+          "ticks": 1
+        },
+        {
+          "line": 56640,
+          "ticks": 1
+        },
+        {
+          "line": 54854,
+          "ticks": 1
+        }
+      ]
+    },
+    {
+      "nodeId": 67,
+      "function": "ellipse",
+      "url": "http://qa-draw-attribution-20261001.localhost:3340/game.html?webgpu=0",
+      "line0": 5973,
+      "line1": 5974,
+      "column0": 7,
+      "source": "game.html",
+      "positionTicks": []
+    },
+    {
+      "nodeId": 68,
+      "function": "save",
+      "url": "http://qa-draw-attribution-20261001.localhost:3340/game.html?webgpu=0",
+      "line0": 5954,
+      "line1": 5955,
+      "column0": 4,
+      "source": "game.html",
+      "positionTicks": []
+    },
+    {
+      "nodeId": 69,
+      "function": "draw",
+      "url": "http://qa-draw-attribution-20261001.localhost:3340/game.html?webgpu=0",
+      "line0": 10027,
+      "line1": 10028,
+      "column0": 6,
+      "source": "game.html",
+      "positionTicks": [
+        {
+          "line": 10031,
+          "ticks": 1
+        }
+      ]
+    },
+    {
+      "nodeId": 70,
+      "function": "restore",
+      "url": "http://qa-draw-attribution-20261001.localhost:3340/game.html?webgpu=0",
+      "line0": 5955,
+      "line1": 5956,
+      "column0": 7,
+      "source": "game.html",
+      "positionTicks": []
+    },
+    {
+      "nodeId": 329,
+      "function": "drawImage",
+      "url": "http://qa-draw-attribution-20261001.localhost:3340/game.html?webgpu=0",
+      "line0": 6040,
+      "line1": 6041,
+      "column0": 9,
+      "source": "game.html",
+      "positionTicks": [
+        {
+          "line": 6042,
+          "ticks": 1
+        }
+      ]
+    },
+    {
+      "nodeId": 77,
+      "function": "_playerSpriteDirection",
+      "url": "http://qa-draw-attribution-20261001.localhost:3340/game.html?webgpu=0",
+      "line0": 11459,
+      "line1": 11460,
+      "column0": 31,
+      "source": "game.html",
+      "positionTicks": []
+    },
+    {
+      "nodeId": 81,
+      "function": "_facingDir8",
+      "url": "http://qa-draw-attribution-20261001.localhost:3340/game.html?webgpu=0",
+      "line0": 11549,
+      "line1": 11550,
+      "column0": 20,
+      "source": "game.html",
+      "positionTicks": []
+    },
+    {
+      "nodeId": 106,
+      "function": "drawImage",
+      "url": "http://qa-draw-attribution-20261001.localhost:3340/game.html?webgpu=0",
+      "line0": 6040,
+      "line1": 6041,
+      "column0": 9,
+      "source": "game.html",
+      "positionTicks": []
+    },
+    {
+      "nodeId": 107,
+      "function": "_getTex",
+      "url": "http://qa-draw-attribution-20261001.localhost:3340/game.html?webgpu=0",
+      "line0": 5732,
+      "line1": 5733,
+      "column0": 18,
+      "source": "game.html",
+      "positionTicks": []
+    },
+    {
+      "nodeId": 108,
+      "function": "texImage2D",
+      "url": "",
+      "line0": -1,
+      "line1": null,
+      "column0": -1,
+      "source": null,
+      "positionTicks": [
+        {
+          "line": 5752,
+          "ticks": 2
+        }
+      ]
+    },
+    {
+      "nodeId": 281,
+      "function": "_physicalImpactSheet",
+      "url": "http://qa-draw-attribution-20261001.localhost:3340/game.html?webgpu=0",
+      "line0": 8538,
+      "line1": 8539,
+      "column0": 29,
+      "source": "game.html",
+      "positionTicks": [
+        {
+          "line": 8542,
+          "ticks": 1
+        }
+      ]
+    },
+    {
+      "nodeId": 282,
+      "function": "_tintHolyDome",
+      "url": "http://qa-draw-attribution-20261001.localhost:3340/game.html?webgpu=0",
+      "line0": 8736,
+      "line1": 8737,
+      "column0": 22,
+      "source": "game.html",
+      "positionTicks": []
+    },
+    {
+      "nodeId": 283,
+      "function": "getImageData",
+      "url": "",
+      "line0": -1,
+      "line1": null,
+      "column0": -1,
+      "source": null,
+      "positionTicks": [
+        {
+          "line": 8737,
+          "ticks": 74
+        }
+      ]
+    },
+    {
+      "nodeId": 331,
+      "function": "fill",
+      "url": "http://qa-draw-attribution-20261001.localhost:3340/game.html?webgpu=0",
+      "line0": 5980,
+      "line1": 5981,
+      "column0": 4,
+      "source": "game.html",
+      "positionTicks": [
+        {
+          "line": 5984,
+          "ticks": 1
+        }
+      ]
+    },
+    {
+      "nodeId": 415,
+      "function": "_setTex",
+      "url": "http://qa-draw-attribution-20261001.localhost:3340/game.html?webgpu=0",
+      "line0": 5765,
+      "line1": 5766,
+      "column0": 18,
+      "source": "game.html",
+      "positionTicks": []
+    },
+    {
+      "nodeId": 416,
+      "function": "_flush",
+      "url": "http://qa-draw-attribution-20261001.localhost:3340/game.html?webgpu=0",
+      "line0": 5759,
+      "line1": 5760,
+      "column0": 17,
+      "source": "game.html",
+      "positionTicks": [
+        {
+          "line": 5764,
+          "ticks": 1
+        }
+      ]
+    },
+    {
+      "nodeId": 74,
+      "function": "drawFront",
+      "url": "http://qa-draw-attribution-20261001.localhost:3340/ch1-border-foreground.js?v=20261001-3",
+      "line0": 239,
+      "line1": 240,
+      "column0": 20,
+      "source": null,
+      "positionTicks": []
+    },
+    {
+      "nodeId": 75,
+      "function": "pass",
+      "url": "http://qa-draw-attribution-20261001.localhost:3340/ch1-border-foreground.js?v=20261001-3",
+      "line0": 209,
+      "line1": 210,
+      "column0": 15,
+      "source": null,
+      "positionTicks": [
+        {
+          "line": 230,
+          "ticks": 1
+        }
+      ]
+    },
+    {
+      "nodeId": 179,
+      "function": "drawImage",
+      "url": "http://qa-draw-attribution-20261001.localhost:3340/game.html?webgpu=0",
+      "line0": 6040,
+      "line1": 6041,
+      "column0": 9,
+      "source": "game.html",
+      "positionTicks": []
+    },
+    {
+      "nodeId": 180,
+      "function": "_quad",
+      "url": "http://qa-draw-attribution-20261001.localhost:3340/game.html?webgpu=0",
+      "line0": 5433,
+      "line1": 5434,
+      "column0": 14,
+      "source": "game.html",
+      "positionTicks": [
+        {
+          "line": 5434,
+          "ticks": 1
+        }
+      ]
+    },
+    {
+      "nodeId": 295,
+      "function": "_uploadCanvasTex",
+      "url": "http://qa-draw-attribution-20261001.localhost:3340/game.html?webgpu=0",
+      "line0": 5931,
+      "line1": 5932,
+      "column0": 25,
+      "source": "game.html",
+      "positionTicks": []
+    },
+    {
+      "nodeId": 296,
+      "function": "_setTex",
+      "url": "http://qa-draw-attribution-20261001.localhost:3340/game.html?webgpu=0",
+      "line0": 5765,
+      "line1": 5766,
+      "column0": 18,
+      "source": "game.html",
+      "positionTicks": []
+    },
+    {
+      "nodeId": 297,
+      "function": "_flush",
+      "url": "http://qa-draw-attribution-20261001.localhost:3340/game.html?webgpu=0",
+      "line0": 5759,
+      "line1": 5760,
+      "column0": 17,
+      "source": "game.html",
+      "positionTicks": []
+    },
+    {
+      "nodeId": 298,
+      "function": "bindVertexArray",
+      "url": "",
+      "line0": -1,
+      "line1": null,
+      "column0": -1,
+      "source": null,
+      "positionTicks": [
+        {
+          "line": 5762,
+          "ticks": 1
+        }
+      ]
+    },
+    {
+      "nodeId": 274,
+      "function": "enemyUnderCanopy",
+      "url": "http://qa-draw-attribution-20261001.localhost:3340/ch1-border-foreground.js?v=20261001-3",
+      "line0": 198,
+      "line1": 199,
+      "column0": 27,
+      "source": null,
+      "positionTicks": [
+        {
+          "line": 202,
+          "ticks": 1
+        }
+      ]
+    },
+    {
+      "nodeId": 371,
+      "function": "drawImage",
+      "url": "http://qa-draw-attribution-20261001.localhost:3340/game.html?webgpu=0",
+      "line0": 6040,
+      "line1": 6041,
+      "column0": 9,
+      "source": "game.html",
+      "positionTicks": [
+        {
+          "line": 6041,
+          "ticks": 1
+        }
+      ]
+    },
+    {
+      "nodeId": 76,
+      "function": "poolRender",
+      "url": "http://qa-draw-attribution-20261001.localhost:3340/game.html?webgpu=0",
+      "line0": 18648,
+      "line1": 18649,
+      "column0": 19,
+      "source": "game.html",
+      "positionTicks": [
+        {
+          "line": 18665,
+          "ticks": 1
+        },
+        {
+          "line": 18665,
+          "ticks": 1
+        },
+        {
+          "line": 18671,
+          "ticks": 1
+        }
+      ]
+    },
+    {
+      "nodeId": 84,
+      "function": "_prepEnemyInstanced",
+      "url": "http://qa-draw-attribution-20261001.localhost:3340/game.html?webgpu=0",
+      "line0": 5138,
+      "line1": 5139,
+      "column0": 28,
+      "source": "game.html",
+      "positionTicks": [
+        {
+          "line": 5174,
+          "ticks": 1
+        },
+        {
+          "line": 5150,
+          "ticks": 3
+        }
+      ]
+    },
+    {
+      "nodeId": 85,
+      "function": "_queueEnemy8DirInstanced",
+      "url": "http://qa-draw-attribution-20261001.localhost:3340/game.html?webgpu=0",
+      "line0": 5014,
+      "line1": 5015,
+      "column0": 33,
+      "source": "game.html",
+      "positionTicks": [
+        {
+          "line": 5018,
+          "ticks": 1
+        }
+      ]
+    },
+    {
+      "nodeId": 267,
+      "function": "_drawEnemy8DirInstanced",
+      "url": "http://qa-draw-attribution-20261001.localhost:3340/game.html?webgpu=0",
+      "line0": 5028,
+      "line1": 5029,
+      "column0": 32,
+      "source": "game.html",
+      "positionTicks": []
+    },
+    {
+      "nodeId": 268,
+      "function": "bufferSubData",
+      "url": "",
+      "line0": -1,
+      "line1": null,
+      "column0": -1,
+      "source": null,
+      "positionTicks": [
+        {
+          "line": 5041,
+          "ticks": 1
+        },
+        {
+          "line": 5038,
+          "ticks": 1
+        }
+      ]
+    },
+    {
+      "nodeId": 309,
+      "function": "uniform1i",
+      "url": "",
+      "line0": -1,
+      "line1": null,
+      "column0": -1,
+      "source": null,
+      "positionTicks": [
+        {
+          "line": 5037,
+          "ticks": 1
+        }
+      ]
+    },
+    {
+      "nodeId": 344,
+      "function": "bindTexture",
+      "url": "",
+      "line0": -1,
+      "line1": null,
+      "column0": -1,
+      "source": null,
+      "positionTicks": [
+        {
+          "line": 5038,
+          "ticks": 1
+        }
+      ]
+    },
+    {
+      "nodeId": 382,
+      "function": "activeTexture",
+      "url": "",
+      "line0": -1,
+      "line1": null,
+      "column0": -1,
+      "source": null,
+      "positionTicks": [
+        {
+          "line": 5038,
+          "ticks": 1
+        }
+      ]
+    },
+    {
+      "nodeId": 459,
+      "function": "enable",
+      "url": "",
+      "line0": -1,
+      "line1": null,
+      "column0": -1,
+      "source": null,
+      "positionTicks": [
+        {
+          "line": 5034,
+          "ticks": 1
+        }
+      ]
+    },
+    {
+      "nodeId": 273,
+      "function": "_dsCmpY",
+      "url": "http://qa-draw-attribution-20261001.localhost:3340/game.html?webgpu=0",
+      "line0": 17595,
+      "line1": 17596,
+      "column0": 16,
+      "source": "game.html",
+      "positionTicks": []
+    },
+    {
+      "nodeId": 88,
+      "function": "_renderBloom",
+      "url": "http://qa-draw-attribution-20261001.localhost:3340/game.html?webgpu=0",
+      "line0": 4428,
+      "line1": 4429,
+      "column0": 21,
+      "source": "game.html",
+      "positionTicks": [
+        {
+          "line": 4431,
+          "ticks": 1
+        }
+      ]
+    },
+    {
+      "nodeId": 89,
+      "function": "CanvasRenderingContext2D.drawImage",
+      "url": "http://qa-draw-attribution-20261001.localhost:3340/game.html?webgpu=0",
+      "line0": 22388,
+      "line1": 22389,
+      "column0": 55,
+      "source": "game.html",
+      "positionTicks": []
+    },
+    {
+      "nodeId": 90,
+      "function": "drawImage",
+      "url": "",
+      "line0": -1,
+      "line1": null,
+      "column0": -1,
+      "source": null,
+      "positionTicks": [
+        {
+          "line": 22391,
+          "ticks": 21
+        }
+      ]
+    },
+    {
+      "nodeId": 134,
+      "function": "drawImage",
+      "url": "http://qa-draw-attribution-20261001.localhost:3340/game.html?webgpu=0",
+      "line0": 6040,
+      "line1": 6041,
+      "column0": 9,
+      "source": "game.html",
+      "positionTicks": []
+    },
+    {
+      "nodeId": 135,
+      "function": "_uploadCanvasTex",
+      "url": "http://qa-draw-attribution-20261001.localhost:3340/game.html?webgpu=0",
+      "line0": 5931,
+      "line1": 5932,
+      "column0": 25,
+      "source": "game.html",
+      "positionTicks": []
+    },
+    {
+      "nodeId": 136,
+      "function": "texImage2D",
+      "url": "",
+      "line0": -1,
+      "line1": null,
+      "column0": -1,
+      "source": null,
+      "positionTicks": [
+        {
+          "line": 5940,
+          "ticks": 5
+        }
+      ]
+    },
+    {
+      "nodeId": 91,
+      "function": "draw",
+      "url": "http://qa-draw-attribution-20261001.localhost:3340/ch1-boundary-edge.js?v=20261001-5",
+      "line0": 75,
+      "line1": 76,
+      "column0": 15,
+      "source": null,
+      "positionTicks": []
+    },
+    {
+      "nodeId": 92,
+      "function": "drawImage",
+      "url": "http://qa-draw-attribution-20261001.localhost:3340/game.html?webgpu=0",
+      "line0": 6040,
+      "line1": 6041,
+      "column0": 9,
+      "source": "game.html",
+      "positionTicks": [
+        {
+          "line": 6043,
+          "ticks": 1
+        },
+        {
+          "line": 6042,
+          "ticks": 1
+        }
+      ]
+    },
+    {
+      "nodeId": 356,
+      "function": "_uploadCanvasTex",
+      "url": "http://qa-draw-attribution-20261001.localhost:3340/game.html?webgpu=0",
+      "line0": 5931,
+      "line1": 5932,
+      "column0": 25,
+      "source": "game.html",
+      "positionTicks": []
+    },
+    {
+      "nodeId": 357,
+      "function": "_setTex",
+      "url": "http://qa-draw-attribution-20261001.localhost:3340/game.html?webgpu=0",
+      "line0": 5765,
+      "line1": 5766,
+      "column0": 18,
+      "source": "game.html",
+      "positionTicks": []
+    },
+    {
+      "nodeId": 358,
+      "function": "_flush",
+      "url": "http://qa-draw-attribution-20261001.localhost:3340/game.html?webgpu=0",
+      "line0": 5759,
+      "line1": 5760,
+      "column0": 17,
+      "source": "game.html",
+      "positionTicks": []
+    },
+    {
+      "nodeId": 359,
+      "function": "drawElements",
+      "url": "",
+      "line0": -1,
+      "line1": null,
+      "column0": -1,
+      "source": null,
+      "positionTicks": [
+        {
+          "line": 5765,
+          "ticks": 1
+        }
+      ]
+    },
+    {
+      "nodeId": 292,
+      "function": "rootVariant",
+      "url": "http://qa-draw-attribution-20261001.localhost:3340/ch1-boundary-edge.js?v=20261001-5",
+      "line0": 74,
+      "line1": 75,
+      "column0": 22,
+      "source": null,
+      "positionTicks": [
+        {
+          "line": 75,
+          "ticks": 1
+        }
+      ]
+    },
+    {
+      "nodeId": 361,
+      "function": "restore",
+      "url": "http://qa-draw-attribution-20261001.localhost:3340/game.html?webgpu=0",
+      "line0": 5955,
+      "line1": 5956,
+      "column0": 7,
+      "source": "game.html",
+      "positionTicks": [
+        {
+          "line": 5956,
+          "ticks": 1
+        }
+      ]
+    },
+    {
+      "nodeId": 103,
+      "function": "_warmupEnsAtlas",
+      "url": "http://qa-draw-attribution-20261001.localhost:3340/game.html?webgpu=0",
+      "line0": 22042,
+      "line1": 22043,
+      "column0": 24,
+      "source": "game.html",
+      "positionTicks": []
+    },
+    {
+      "nodeId": 104,
+      "function": "_queueCombatTextureWarmup",
+      "url": "http://qa-draw-attribution-20261001.localhost:3340/game.html?webgpu=0",
+      "line0": 22020,
+      "line1": 22021,
+      "column0": 34,
+      "source": "game.html",
+      "positionTicks": [
+        {
+          "line": 22038,
+          "ticks": 1
+        }
+      ]
+    },
+    {
+      "nodeId": 116,
+      "function": "renderOldBurstVFX",
+      "url": "http://qa-draw-attribution-20261001.localhost:3340/game.html?webgpu=0",
+      "line0": 18222,
+      "line1": 18223,
+      "column0": 26,
+      "source": "game.html",
+      "positionTicks": []
+    },
+    {
+      "nodeId": 117,
+      "function": "drawImage",
+      "url": "http://qa-draw-attribution-20261001.localhost:3340/game.html?webgpu=0",
+      "line0": 6040,
+      "line1": 6041,
+      "column0": 9,
+      "source": "game.html",
+      "positionTicks": []
+    },
+    {
+      "nodeId": 118,
+      "function": "_getTex",
+      "url": "http://qa-draw-attribution-20261001.localhost:3340/game.html?webgpu=0",
+      "line0": 5732,
+      "line1": 5733,
+      "column0": 18,
+      "source": "game.html",
+      "positionTicks": []
+    },
+    {
+      "nodeId": 119,
+      "function": "texImage2D",
+      "url": "",
+      "line0": -1,
+      "line1": null,
+      "column0": -1,
+      "source": null,
+      "positionTicks": [
+        {
+          "line": 5752,
+          "ticks": 21
+        }
+      ]
+    },
+    {
+      "nodeId": 123,
+      "function": "renderMmExpVFX",
+      "url": "http://qa-draw-attribution-20261001.localhost:3340/game.html?webgpu=0",
+      "line0": 18028,
+      "line1": 18029,
+      "column0": 23,
+      "source": "game.html",
+      "positionTicks": []
+    },
+    {
+      "nodeId": 125,
+      "function": "drawAtmosphere",
+      "url": "http://qa-draw-attribution-20261001.localhost:3340/game.html?webgpu=0",
+      "line0": 49818,
+      "line1": 49819,
+      "column0": 23,
+      "source": "game.html",
+      "positionTicks": []
+    },
+    {
+      "nodeId": 126,
+      "function": "_atmoDraw",
+      "url": "http://qa-draw-attribution-20261001.localhost:3340/game.html?webgpu=0",
+      "line0": 49736,
+      "line1": 49737,
+      "column0": 18,
+      "source": "game.html",
+      "positionTicks": [
+        {
+          "line": 49739,
+          "ticks": 1
+        },
+        {
+          "line": 49747,
+          "ticks": 1
+        }
+      ]
+    },
+    {
+      "nodeId": 127,
+      "function": "fillRect",
+      "url": "http://qa-draw-attribution-20261001.localhost:3340/game.html?webgpu=0",
+      "line0": 5963,
+      "line1": 5964,
+      "column0": 8,
+      "source": "game.html",
+      "positionTicks": [
+        {
+          "line": 5965,
+          "ticks": 1
+        },
+        {
+          "line": 5966,
+          "ticks": 1
+        }
+      ]
+    },
+    {
+      "nodeId": 170,
+      "function": "_tQuad",
+      "url": "http://qa-draw-attribution-20261001.localhost:3340/game.html?webgpu=0",
+      "line0": 5399,
+      "line1": 5400,
+      "column0": 15,
+      "source": "game.html",
+      "positionTicks": [
+        {
+          "line": 5400,
+          "ticks": 2
+        }
+      ]
+    },
+    {
+      "nodeId": 302,
+      "function": "_setTex",
+      "url": "http://qa-draw-attribution-20261001.localhost:3340/game.html?webgpu=0",
+      "line0": 5765,
+      "line1": 5766,
+      "column0": 18,
+      "source": "game.html",
+      "positionTicks": []
+    },
+    {
+      "nodeId": 303,
+      "function": "_flush",
+      "url": "http://qa-draw-attribution-20261001.localhost:3340/game.html?webgpu=0",
+      "line0": 5759,
+      "line1": 5760,
+      "column0": 17,
+      "source": "game.html",
+      "positionTicks": [
+        {
+          "line": 5764,
+          "ticks": 1
+        }
+      ]
+    },
+    {
+      "nodeId": 137,
+      "function": "_drawCh1BakedSpike",
+      "url": "http://qa-draw-attribution-20261001.localhost:3340/game.html?webgpu=0",
+      "line0": 11341,
+      "line1": 11342,
+      "column0": 27,
+      "source": "game.html",
+      "positionTicks": [
+        {
+          "line": 11343,
+          "ticks": 1
+        }
+      ]
+    },
+    {
+      "nodeId": 138,
+      "function": "_drawCh1StartOuter",
+      "url": "http://qa-draw-attribution-20261001.localhost:3340/game.html?webgpu=0",
+      "line0": 11226,
+      "line1": 11227,
+      "column0": 27,
+      "source": "game.html",
+      "positionTicks": [
+        {
+          "line": 11235,
+          "ticks": 1
+        }
+      ]
+    },
+    {
+      "nodeId": 139,
+      "function": "drawImage",
+      "url": "http://qa-draw-attribution-20261001.localhost:3340/game.html?webgpu=0",
+      "line0": 6040,
+      "line1": 6041,
+      "column0": 9,
+      "source": "game.html",
+      "positionTicks": [
+        {
+          "line": 6043,
+          "ticks": 1
+        }
+      ]
+    },
+    {
+      "nodeId": 140,
+      "function": "_setTex",
+      "url": "http://qa-draw-attribution-20261001.localhost:3340/game.html?webgpu=0",
+      "line0": 5765,
+      "line1": 5766,
+      "column0": 18,
+      "source": "game.html",
+      "positionTicks": []
+    },
+    {
+      "nodeId": 141,
+      "function": "_flush",
+      "url": "http://qa-draw-attribution-20261001.localhost:3340/game.html?webgpu=0",
+      "line0": 5759,
+      "line1": 5760,
+      "column0": 17,
+      "source": "game.html",
+      "positionTicks": []
+    },
+    {
+      "nodeId": 142,
+      "function": "bufferSubData",
+      "url": "",
+      "line0": -1,
+      "line1": null,
+      "column0": -1,
+      "source": null,
+      "positionTicks": [
+        {
+          "line": 5763,
+          "ticks": 3
+        }
+      ]
+    },
+    {
+      "nodeId": 420,
+      "function": "bindVertexArray",
+      "url": "",
+      "line0": -1,
+      "line1": null,
+      "column0": -1,
+      "source": null,
+      "positionTicks": [
+        {
+          "line": 5762,
+          "ticks": 2
+        }
+      ]
+    },
+    {
+      "nodeId": 458,
+      "function": "useProgram",
+      "url": "",
+      "line0": -1,
+      "line1": null,
+      "column0": -1,
+      "source": null,
+      "positionTicks": [
+        {
+          "line": 5761,
+          "ticks": 1
+        }
+      ]
+    },
+    {
+      "nodeId": 460,
+      "function": "bindBuffer",
+      "url": "",
+      "line0": -1,
+      "line1": null,
+      "column0": -1,
+      "source": null,
+      "positionTicks": [
+        {
+          "line": 5762,
+          "ticks": 1
+        }
+      ]
+    },
+    {
+      "nodeId": 277,
+      "function": "_quad",
+      "url": "http://qa-draw-attribution-20261001.localhost:3340/game.html?webgpu=0",
+      "line0": 5433,
+      "line1": 5434,
+      "column0": 14,
+      "source": "game.html",
+      "positionTicks": [
+        {
+          "line": 5434,
+          "ticks": 1
+        }
+      ]
+    },
+    {
+      "nodeId": 398,
+      "function": "_preloadCh1StartOuter",
+      "url": "http://qa-draw-attribution-20261001.localhost:3340/game.html?webgpu=0",
+      "line0": 11185,
+      "line1": 11186,
+      "column0": 30,
+      "source": "game.html",
+      "positionTicks": []
+    },
+    {
+      "nodeId": 399,
+      "function": "_requestCh1StartOuter",
+      "url": "http://qa-draw-attribution-20261001.localhost:3340/game.html?webgpu=0",
+      "line0": 11169,
+      "line1": 11170,
+      "column0": 30,
+      "source": "game.html",
+      "positionTicks": []
+    },
+    {
+      "nodeId": 452,
+      "function": "_ch1BakedSpikeEnabled",
+      "url": "http://qa-draw-attribution-20261001.localhost:3340/game.html?webgpu=0",
+      "line0": 11281,
+      "line1": 11282,
+      "column0": 30,
+      "source": "game.html",
+      "positionTicks": [
+        {
+          "line": 11283,
+          "ticks": 1
+        }
+      ]
+    },
+    {
+      "nodeId": 163,
+      "function": "drawImage",
+      "url": "http://qa-draw-attribution-20261001.localhost:3340/game.html?webgpu=0",
+      "line0": 6040,
+      "line1": 6041,
+      "column0": 9,
+      "source": "game.html",
+      "positionTicks": [
+        {
+          "line": 6044,
+          "ticks": 1
+        },
+        {
+          "line": 6050,
+          "ticks": 4
+        },
+        {
+          "line": 6049,
+          "ticks": 2
+        }
+      ]
+    },
+    {
+      "nodeId": 164,
+      "function": "_uploadCanvasTex",
+      "url": "http://qa-draw-attribution-20261001.localhost:3340/game.html?webgpu=0",
+      "line0": 5931,
+      "line1": 5932,
+      "column0": 25,
+      "source": "game.html",
+      "positionTicks": [
+        {
+          "line": 5937,
+          "ticks": 1
+        }
+      ]
+    },
+    {
+      "nodeId": 165,
+      "function": "_setTex",
+      "url": "http://qa-draw-attribution-20261001.localhost:3340/game.html?webgpu=0",
+      "line0": 5765,
+      "line1": 5766,
+      "column0": 18,
+      "source": "game.html",
+      "positionTicks": []
+    },
+    {
+      "nodeId": 166,
+      "function": "_flush",
+      "url": "http://qa-draw-attribution-20261001.localhost:3340/game.html?webgpu=0",
+      "line0": 5759,
+      "line1": 5760,
+      "column0": 17,
+      "source": "game.html",
+      "positionTicks": [
+        {
+          "line": 5762,
+          "ticks": 1
+        }
+      ]
+    },
+    {
+      "nodeId": 167,
+      "function": "bindTexture",
+      "url": "",
+      "line0": -1,
+      "line1": null,
+      "column0": -1,
+      "source": null,
+      "positionTicks": [
+        {
+          "line": 5764,
+          "ticks": 1
+        }
+      ]
+    },
+    {
+      "nodeId": 417,
+      "function": "uniform2f",
+      "url": "",
+      "line0": -1,
+      "line1": null,
+      "column0": -1,
+      "source": null,
+      "positionTicks": [
+        {
+          "line": 5764,
+          "ticks": 1
+        }
+      ]
+    },
+    {
+      "nodeId": 198,
+      "function": "texImage2D",
+      "url": "",
+      "line0": -1,
+      "line1": null,
+      "column0": -1,
+      "source": null,
+      "positionTicks": [
+        {
+          "line": 5940,
+          "ticks": 8
+        }
+      ]
+    },
+    {
+      "nodeId": 261,
+      "function": "_getTex",
+      "url": "http://qa-draw-attribution-20261001.localhost:3340/game.html?webgpu=0",
+      "line0": 5732,
+      "line1": 5733,
+      "column0": 18,
+      "source": "game.html",
+      "positionTicks": []
+    },
+    {
+      "nodeId": 290,
+      "function": "_setTex",
+      "url": "http://qa-draw-attribution-20261001.localhost:3340/game.html?webgpu=0",
+      "line0": 5765,
+      "line1": 5766,
+      "column0": 18,
+      "source": "game.html",
+      "positionTicks": []
+    },
+    {
+      "nodeId": 291,
+      "function": "_flush",
+      "url": "http://qa-draw-attribution-20261001.localhost:3340/game.html?webgpu=0",
+      "line0": 5759,
+      "line1": 5760,
+      "column0": 17,
+      "source": "game.html",
+      "positionTicks": [
+        {
+          "line": 5764,
+          "ticks": 1
+        }
+      ]
+    },
+    {
+      "nodeId": 339,
+      "function": "bufferSubData",
+      "url": "",
+      "line0": -1,
+      "line1": null,
+      "column0": -1,
+      "source": null,
+      "positionTicks": [
+        {
+          "line": 5763,
+          "ticks": 2
+        }
+      ]
+    },
+    {
+      "nodeId": 177,
+      "function": "_renderLighting",
+      "url": "http://qa-draw-attribution-20261001.localhost:3340/game.html?webgpu=0",
+      "line0": 4640,
+      "line1": 4641,
+      "column0": 24,
+      "source": "game.html",
+      "positionTicks": [
+        {
+          "line": 4661,
+          "ticks": 1
+        },
+        {
+          "line": 4651,
+          "ticks": 1
+        }
+      ]
+    },
+    {
+      "nodeId": 178,
+      "function": "clearRect",
+      "url": "",
+      "line0": -1,
+      "line1": null,
+      "column0": -1,
+      "source": null,
+      "positionTicks": [
+        {
+          "line": 4667,
+          "ticks": 1
+        },
+        {
+          "line": 4647,
+          "ticks": 1
+        }
+      ]
+    },
+    {
+      "nodeId": 365,
+      "function": "CanvasRenderingContext2D.drawImage",
+      "url": "http://qa-draw-attribution-20261001.localhost:3340/game.html?webgpu=0",
+      "line0": 22388,
+      "line1": 22389,
+      "column0": 55,
+      "source": "game.html",
+      "positionTicks": []
+    },
+    {
+      "nodeId": 366,
+      "function": "drawImage",
+      "url": "",
+      "line0": -1,
+      "line1": null,
+      "column0": -1,
+      "source": null,
+      "positionTicks": [
+        {
+          "line": 22391,
+          "ticks": 1
+        }
+      ]
+    },
+    {
+      "nodeId": 183,
+      "function": "_drawEnemyShotWarnings",
+      "url": "http://qa-draw-attribution-20261001.localhost:3340/game.html?webgpu=0",
+      "line0": 18867,
+      "line1": 18868,
+      "column0": 31,
+      "source": "game.html",
+      "positionTicks": [
+        {
+          "line": 18873,
+          "ticks": 1
+        }
+      ]
+    },
+    {
+      "nodeId": 184,
+      "function": "_drawProjectileChargeLabel",
+      "url": "http://qa-draw-attribution-20261001.localhost:3340/game.html?webgpu=0",
+      "line0": 22909,
+      "line1": 22910,
+      "column0": 35,
+      "source": "game.html",
+      "positionTicks": []
+    },
+    {
+      "nodeId": 185,
+      "function": "measureText",
+      "url": "http://qa-draw-attribution-20261001.localhost:3340/game.html?webgpu=0",
+      "line0": 6039,
+      "line1": 6040,
+      "column0": 11,
+      "source": "game.html",
+      "positionTicks": []
+    },
+    {
+      "nodeId": 186,
+      "function": "measureText",
+      "url": "",
+      "line0": -1,
+      "line1": null,
+      "column0": -1,
+      "source": null,
+      "positionTicks": [
+        {
+          "line": 6040,
+          "ticks": 2
+        }
+      ]
+    },
+    {
+      "nodeId": 190,
+      "function": "fillRect",
+      "url": "http://qa-draw-attribution-20261001.localhost:3340/game.html?webgpu=0",
+      "line0": 5963,
+      "line1": 5964,
+      "column0": 8,
+      "source": "game.html",
+      "positionTicks": [
+        {
+          "line": 5964,
+          "ticks": 1
+        }
+      ]
+    },
+    {
+      "nodeId": 341,
+      "function": "_drawShootCharge",
+      "url": "http://qa-draw-attribution-20261001.localhost:3340/game.html?webgpu=0",
+      "line0": 22923,
+      "line1": 22924,
+      "column0": 25,
+      "source": "game.html",
+      "positionTicks": []
+    },
+    {
+      "nodeId": 342,
+      "function": "stroke",
+      "url": "http://qa-draw-attribution-20261001.localhost:3340/game.html?webgpu=0",
+      "line0": 6001,
+      "line1": 6002,
+      "column0": 6,
+      "source": "game.html",
+      "positionTicks": [
+        {
+          "line": 6014,
+          "ticks": 1
+        },
+        {
+          "line": 6006,
+          "ticks": 1
+        }
+      ]
+    },
+    {
+      "nodeId": 187,
+      "function": "_flushVfxGL",
+      "url": "http://qa-draw-attribution-20261001.localhost:3340/game.html?webgpu=0",
+      "line0": 5122,
+      "line1": 5123,
+      "column0": 20,
+      "source": "game.html",
+      "positionTicks": [
+        {
+          "line": 5136,
+          "ticks": 1
+        }
+      ]
+    },
+    {
+      "nodeId": 188,
+      "function": "uniform2f",
+      "url": "",
+      "line0": -1,
+      "line1": null,
+      "column0": -1,
+      "source": null,
+      "positionTicks": [
+        {
+          "line": 5131,
+          "ticks": 1
+        }
+      ]
+    },
+    {
+      "nodeId": 192,
+      "function": "draw",
+      "url": "http://qa-draw-attribution-20261001.localhost:3340/ch1-forest-sway.js?v=20260930-90",
+      "line0": 70,
+      "line1": 71,
+      "column0": 15,
+      "source": null,
+      "positionTicks": [
+        {
+          "line": 91,
+          "ticks": 1
+        },
+        {
+          "line": 79,
+          "ticks": 1
+        },
+        {
+          "line": 96,
+          "ticks": 1
+        },
+        {
+          "line": 78,
+          "ticks": 1
+        }
+      ]
+    },
+    {
+      "nodeId": 199,
+      "function": "renderHitVFX",
+      "url": "http://qa-draw-attribution-20261001.localhost:3340/game.html?webgpu=0",
+      "line0": 18250,
+      "line1": 18251,
+      "column0": 21,
+      "source": "game.html",
+      "positionTicks": []
+    },
+    {
+      "nodeId": 200,
+      "function": "drawImage",
+      "url": "http://qa-draw-attribution-20261001.localhost:3340/game.html?webgpu=0",
+      "line0": 6040,
+      "line1": 6041,
+      "column0": 9,
+      "source": "game.html",
+      "positionTicks": []
+    },
+    {
+      "nodeId": 201,
+      "function": "_getTex",
+      "url": "http://qa-draw-attribution-20261001.localhost:3340/game.html?webgpu=0",
+      "line0": 5732,
+      "line1": 5733,
+      "column0": 18,
+      "source": "game.html",
+      "positionTicks": []
+    },
+    {
+      "nodeId": 202,
+      "function": "texImage2D",
+      "url": "",
+      "line0": -1,
+      "line1": null,
+      "column0": -1,
+      "source": null,
+      "positionTicks": [
+        {
+          "line": 5752,
+          "ticks": 1
+        }
+      ]
+    },
+    {
+      "nodeId": 204,
+      "function": "_ch1StartOuterCoversView",
+      "url": "http://qa-draw-attribution-20261001.localhost:3340/game.html?webgpu=0",
+      "line0": 11212,
+      "line1": 11213,
+      "column0": 33,
+      "source": "game.html",
+      "positionTicks": [
+        {
+          "line": 11223,
+          "ticks": 1
+        }
+      ]
+    },
+    {
+      "nodeId": 212,
+      "function": "clearRect",
+      "url": "http://qa-draw-attribution-20261001.localhost:3340/game.html?webgpu=0",
+      "line0": 5961,
+      "line1": 5962,
+      "column0": 9,
+      "source": "game.html",
+      "positionTicks": []
+    },
+    {
+      "nodeId": 213,
+      "function": "_clearFrame",
+      "url": "http://qa-draw-attribution-20261001.localhost:3340/game.html?webgpu=0",
+      "line0": 5770,
+      "line1": 5771,
+      "column0": 22,
+      "source": "game.html",
+      "positionTicks": []
+    },
+    {
+      "nodeId": 214,
+      "function": "clear",
+      "url": "",
+      "line0": -1,
+      "line1": null,
+      "column0": -1,
+      "source": null,
+      "positionTicks": [
+        {
+          "line": 5771,
+          "ticks": 3
+        }
+      ]
+    },
+    {
+      "nodeId": 421,
+      "function": "clearRect",
+      "url": "",
+      "line0": -1,
+      "line1": null,
+      "column0": -1,
+      "source": null,
+      "positionTicks": [
+        {
+          "line": 5962,
+          "ticks": 2
+        }
+      ]
+    },
+    {
+      "nodeId": 215,
+      "function": "_drawRegionArrow",
+      "url": "http://qa-draw-attribution-20261001.localhost:3340/game.html?webgpu=0",
+      "line0": 58887,
+      "line1": 58888,
+      "column0": 25,
+      "source": "game.html",
+      "positionTicks": [
+        {
+          "line": 58938,
+          "ticks": 1
+        },
+        {
+          "line": 58932,
+          "ticks": 1
+        },
+        {
+          "line": 58927,
+          "ticks": 1
+        }
+      ]
+    },
+    {
+      "nodeId": 216,
+      "function": "_raMeasureSafe",
+      "url": "http://qa-draw-attribution-20261001.localhost:3340/game.html?webgpu=0",
+      "line0": 58861,
+      "line1": 58862,
+      "column0": 23,
+      "source": "game.html",
+      "positionTicks": []
+    },
+    {
+      "nodeId": 217,
+      "function": "rect",
+      "url": "http://qa-draw-attribution-20261001.localhost:3340/game.html?webgpu=0",
+      "line0": 58873,
+      "line1": 58874,
+      "column0": 13,
+      "source": "game.html",
+      "positionTicks": []
+    },
+    {
+      "nodeId": 218,
+      "function": "getBoundingClientRect",
+      "url": "",
+      "line0": -1,
+      "line1": null,
+      "column0": -1,
+      "source": null,
+      "positionTicks": [
+        {
+          "line": 58874,
+          "ticks": 12
+        }
+      ]
+    },
+    {
+      "nodeId": 219,
+      "function": "stroke",
+      "url": "http://qa-draw-attribution-20261001.localhost:3340/game.html?webgpu=0",
+      "line0": 6001,
+      "line1": 6002,
+      "column0": 6,
+      "source": "game.html",
+      "positionTicks": []
+    },
+    {
+      "nodeId": 220,
+      "function": "fillText",
+      "url": "http://qa-draw-attribution-20261001.localhost:3340/game.html?webgpu=0",
+      "line0": 6026,
+      "line1": 6027,
+      "column0": 8,
+      "source": "game.html",
+      "positionTicks": []
+    },
+    {
+      "nodeId": 221,
+      "function": "_getAtlasTxt",
+      "url": "http://qa-draw-attribution-20261001.localhost:3340/game.html?webgpu=0",
+      "line0": 5416,
+      "line1": 5417,
+      "column0": 21,
+      "source": "game.html",
+      "positionTicks": [
+        {
+          "line": 5418,
+          "ticks": 2
+        }
+      ]
+    },
+    {
+      "nodeId": 222,
+      "function": "measureText",
+      "url": "",
+      "line0": -1,
+      "line1": null,
+      "column0": -1,
+      "source": null,
+      "positionTicks": [
+        {
+          "line": 5419,
+          "ticks": 1
+        }
+      ]
+    },
+    {
+      "nodeId": 414,
+      "function": "restore",
+      "url": "http://qa-draw-attribution-20261001.localhost:3340/game.html?webgpu=0",
+      "line0": 5955,
+      "line1": 5956,
+      "column0": 7,
+      "source": "game.html",
+      "positionTicks": [
+        {
+          "line": 5956,
+          "ticks": 1
+        }
+      ]
+    },
+    {
+      "nodeId": 226,
+      "function": "shadows",
+      "url": "http://qa-draw-attribution-20261001.localhost:3340/ch1-living-detail.js?v=20260929-87",
+      "line0": 400,
+      "line1": 401,
+      "column0": 18,
+      "source": "ch1-living-detail.js",
+      "positionTicks": [
+        {
+          "line": 478,
+          "ticks": 1
+        },
+        {
+          "line": 410,
+          "ticks": 1
+        }
+      ]
+    },
+    {
+      "nodeId": 227,
+      "function": "drawImage",
+      "url": "http://qa-draw-attribution-20261001.localhost:3340/game.html?webgpu=0",
+      "line0": 6040,
+      "line1": 6041,
+      "column0": 9,
+      "source": "game.html",
+      "positionTicks": []
+    },
+    {
+      "nodeId": 228,
+      "function": "_uploadCanvasTex",
+      "url": "http://qa-draw-attribution-20261001.localhost:3340/game.html?webgpu=0",
+      "line0": 5931,
+      "line1": 5932,
+      "column0": 25,
+      "source": "game.html",
+      "positionTicks": []
+    },
+    {
+      "nodeId": 229,
+      "function": "_setTex",
+      "url": "http://qa-draw-attribution-20261001.localhost:3340/game.html?webgpu=0",
+      "line0": 5765,
+      "line1": 5766,
+      "column0": 18,
+      "source": "game.html",
+      "positionTicks": []
+    },
+    {
+      "nodeId": 230,
+      "function": "_flush",
+      "url": "http://qa-draw-attribution-20261001.localhost:3340/game.html?webgpu=0",
+      "line0": 5759,
+      "line1": 5760,
+      "column0": 17,
+      "source": "game.html",
+      "positionTicks": [
+        {
+          "line": 5764,
+          "ticks": 1
+        }
+      ]
+    },
+    {
+      "nodeId": 410,
+      "function": "_getTex",
+      "url": "http://qa-draw-attribution-20261001.localhost:3340/game.html?webgpu=0",
+      "line0": 5732,
+      "line1": 5733,
+      "column0": 18,
+      "source": "game.html",
+      "positionTicks": []
+    },
+    {
+      "nodeId": 411,
+      "function": "texImage2D",
+      "url": "",
+      "line0": -1,
+      "line1": null,
+      "column0": -1,
+      "source": null,
+      "positionTicks": [
+        {
+          "line": 5752,
+          "ticks": 6
+        }
+      ]
+    },
+    {
+      "nodeId": 397,
+      "function": "isTree",
+      "url": "http://qa-draw-attribution-20261001.localhost:3340/ch1-living-detail.js?v=20260929-87",
+      "line0": 5,
+      "line1": 6,
+      "column0": 17,
+      "source": "ch1-living-detail.js",
+      "positionTicks": [
+        {
+          "line": 6,
+          "ticks": 1
+        }
+      ]
+    },
+    {
+      "nodeId": 231,
+      "function": "_queueVfxGL",
+      "url": "http://qa-draw-attribution-20261001.localhost:3340/game.html?webgpu=0",
+      "line0": 5105,
+      "line1": 5106,
+      "column0": 20,
+      "source": "game.html",
+      "positionTicks": []
+    },
+    {
+      "nodeId": 232,
+      "function": "_getTex",
+      "url": "http://qa-draw-attribution-20261001.localhost:3340/game.html?webgpu=0",
+      "line0": 5732,
+      "line1": 5733,
+      "column0": 18,
+      "source": "game.html",
+      "positionTicks": []
+    },
+    {
+      "nodeId": 233,
+      "function": "texImage2D",
+      "url": "",
+      "line0": -1,
+      "line1": null,
+      "column0": -1,
+      "source": null,
+      "positionTicks": [
+        {
+          "line": 5752,
+          "ticks": 2
+        }
+      ]
+    },
+    {
+      "nodeId": 234,
+      "function": "fillText",
+      "url": "http://qa-draw-attribution-20261001.localhost:3340/game.html?webgpu=0",
+      "line0": 6026,
+      "line1": 6027,
+      "column0": 8,
+      "source": "game.html",
+      "positionTicks": []
+    },
+    {
+      "nodeId": 235,
+      "function": "_getAtlasTxt",
+      "url": "http://qa-draw-attribution-20261001.localhost:3340/game.html?webgpu=0",
+      "line0": 5416,
+      "line1": 5417,
+      "column0": 21,
+      "source": "game.html",
+      "positionTicks": [
+        {
+          "line": 5419,
+          "ticks": 1
+        }
+      ]
+    },
+    {
+      "nodeId": 236,
+      "function": "measureText",
+      "url": "",
+      "line0": -1,
+      "line1": null,
+      "column0": -1,
+      "source": null,
+      "positionTicks": [
+        {
+          "line": 5419,
+          "ticks": 7
+        }
+      ]
+    },
+    {
+      "nodeId": 244,
+      "function": "_uploadCanvasTex",
+      "url": "http://qa-draw-attribution-20261001.localhost:3340/game.html?webgpu=0",
+      "line0": 5931,
+      "line1": 5932,
+      "column0": 25,
+      "source": "game.html",
+      "positionTicks": []
+    },
+    {
+      "nodeId": 245,
+      "function": "texImage2D",
+      "url": "",
+      "line0": -1,
+      "line1": null,
+      "column0": -1,
+      "source": null,
+      "positionTicks": [
+        {
+          "line": 5940,
+          "ticks": 9
+        }
+      ]
+    },
+    {
+      "nodeId": 251,
+      "function": "beginPath",
+      "url": "http://qa-draw-attribution-20261001.localhost:3340/game.html?webgpu=0",
+      "line0": 5971,
+      "line1": 5972,
+      "column0": 9,
+      "source": "game.html",
+      "positionTicks": [
+        {
+          "line": 5972,
+          "ticks": 1
+        },
+        {
+          "line": 5972,
+          "ticks": 1
+        }
+      ]
+    },
+    {
+      "nodeId": 260,
+      "function": "_worldItemSkin",
+      "url": "http://qa-draw-attribution-20261001.localhost:3340/game.html?webgpu=0",
+      "line0": 26575,
+      "line1": 26576,
+      "column0": 23,
+      "source": "game.html",
+      "positionTicks": [
+        {
+          "line": 26582,
+          "ticks": 1
+        },
+        {
+          "line": 26586,
+          "ticks": 1
+        },
+        {
+          "line": 26593,
+          "ticks": 1
+        }
+      ]
+    },
+    {
+      "nodeId": 262,
+      "function": "set globalCompositeOperation",
+      "url": "http://qa-draw-attribution-20261001.localhost:3340/game.html?webgpu=0",
+      "line0": 5950,
+      "line1": 5951,
+      "column0": 80,
+      "source": "game.html",
+      "positionTicks": [
+        {
+          "line": 5951,
+          "ticks": 1
+        }
+      ]
+    },
+    {
+      "nodeId": 263,
+      "function": "_drawMapObjOne",
+      "url": "http://qa-draw-attribution-20261001.localhost:3340/game.html?webgpu=0",
+      "line0": 50413,
+      "line1": 50414,
+      "column0": 25,
+      "source": "game.html",
+      "positionTicks": [
+        {
+          "line": 50489,
+          "ticks": 1
+        },
+        {
+          "line": 50491,
+          "ticks": 1
+        },
+        {
+          "line": 50579,
+          "ticks": 1
+        },
+        {
+          "line": 50501,
+          "ticks": 1
+        }
+      ]
+    },
+    {
+      "nodeId": 280,
+      "function": "pit",
+      "url": "http://qa-draw-attribution-20261001.localhost:3340/ch1-living-detail.js?v=20260929-87",
+      "line0": 700,
+      "line1": 701,
+      "column0": 14,
+      "source": "ch1-living-detail.js",
+      "positionTicks": [
+        {
+          "line": 703,
+          "ticks": 1
+        }
+      ]
+    },
+    {
+      "nodeId": 380,
+      "function": "_ch1StartOuterPropAlpha",
+      "url": "http://qa-draw-attribution-20261001.localhost:3340/game.html?webgpu=0",
+      "line0": 11134,
+      "line1": 11135,
+      "column0": 32,
+      "source": "game.html",
+      "positionTicks": [
+        {
+          "line": 11136,
+          "ticks": 1
+        }
+      ]
+    },
+    {
+      "nodeId": 388,
+      "function": "drawImage",
+      "url": "http://qa-draw-attribution-20261001.localhost:3340/game.html?webgpu=0",
+      "line0": 6040,
+      "line1": 6041,
+      "column0": 9,
+      "source": "game.html",
+      "positionTicks": []
+    },
+    {
+      "nodeId": 389,
+      "function": "_setTex",
+      "url": "http://qa-draw-attribution-20261001.localhost:3340/game.html?webgpu=0",
+      "line0": 5765,
+      "line1": 5766,
+      "column0": 18,
+      "source": "game.html",
+      "positionTicks": []
+    },
+    {
+      "nodeId": 390,
+      "function": "_flush",
+      "url": "http://qa-draw-attribution-20261001.localhost:3340/game.html?webgpu=0",
+      "line0": 5759,
+      "line1": 5760,
+      "column0": 17,
+      "source": "game.html",
+      "positionTicks": []
+    },
+    {
+      "nodeId": 391,
+      "function": "drawElements",
+      "url": "",
+      "line0": -1,
+      "line1": null,
+      "column0": -1,
+      "source": null,
+      "positionTicks": [
+        {
+          "line": 5765,
+          "ticks": 1
+        }
+      ]
+    },
+    {
+      "nodeId": 453,
+      "function": "_getTex",
+      "url": "http://qa-draw-attribution-20261001.localhost:3340/game.html?webgpu=0",
+      "line0": 5732,
+      "line1": 5733,
+      "column0": 18,
+      "source": "game.html",
+      "positionTicks": []
+    },
+    {
+      "nodeId": 454,
+      "function": "texImage2D",
+      "url": "",
+      "line0": -1,
+      "line1": null,
+      "column0": -1,
+      "source": null,
+      "positionTicks": [
+        {
+          "line": 5752,
+          "ticks": 5
+        }
+      ]
+    },
+    {
+      "nodeId": 392,
+      "function": "deform",
+      "url": "http://qa-draw-attribution-20261001.localhost:3340/ch1-living-detail.js?v=20260929-87",
+      "line0": 489,
+      "line1": 490,
+      "column0": 17,
+      "source": "ch1-living-detail.js",
+      "positionTicks": []
+    },
+    {
+      "nodeId": 393,
+      "function": "enabled",
+      "url": "http://qa-draw-attribution-20261001.localhost:3340/ch1-living-detail.js?v=20260929-87",
+      "line0": 7,
+      "line1": 8,
+      "column0": 18,
+      "source": "ch1-living-detail.js",
+      "positionTicks": [
+        {
+          "line": 8,
+          "ticks": 1
+        }
+      ]
+    },
+    {
+      "nodeId": 425,
+      "function": "hideDuplicate",
+      "url": "http://qa-draw-attribution-20261001.localhost:3340/ch1-living-detail.js?v=20260929-87",
+      "line0": 505,
+      "line1": 506,
+      "column0": 24,
+      "source": "ch1-living-detail.js",
+      "positionTicks": []
+    },
+    {
+      "nodeId": 426,
+      "function": "_ch1StartStructureTone",
+      "url": "http://qa-draw-attribution-20261001.localhost:3340/game.html?webgpu=0",
+      "line0": 11152,
+      "line1": 11153,
+      "column0": 31,
+      "source": "game.html",
+      "positionTicks": []
+    },
+    {
+      "nodeId": 272,
+      "function": "draw",
+      "url": "http://qa-draw-attribution-20261001.localhost:3340/ch1-face-life.js?v=20260930-97",
+      "line0": 138,
+      "line1": 139,
+      "column0": 15,
+      "source": null,
+      "positionTicks": []
+    },
+    {
+      "nodeId": 284,
+      "function": "_dsDrawFrontPass",
+      "url": "http://qa-draw-attribution-20261001.localhost:3340/game.html?webgpu=0",
+      "line0": 17631,
+      "line1": 17632,
+      "column0": 25,
+      "source": "game.html",
+      "positionTicks": [
+        {
+          "line": 17634,
+          "ticks": 1
+        }
+      ]
+    },
+    {
+      "nodeId": 285,
+      "function": "_drawMapObjOne",
+      "url": "http://qa-draw-attribution-20261001.localhost:3340/game.html?webgpu=0",
+      "line0": 50413,
+      "line1": 50414,
+      "column0": 25,
+      "source": "game.html",
+      "positionTicks": []
+    },
+    {
+      "nodeId": 286,
+      "function": "swamp",
+      "url": "http://qa-draw-attribution-20261001.localhost:3340/ch1-living-detail.js?v=20260929-87",
+      "line0": 652,
+      "line1": 653,
+      "column0": 16,
+      "source": "ch1-living-detail.js",
+      "positionTicks": [
+        {
+          "line": 654,
+          "ticks": 1
+        }
+      ]
+    },
+    {
+      "nodeId": 436,
+      "function": "deform",
+      "url": "http://qa-draw-attribution-20261001.localhost:3340/ch1-living-detail.js?v=20260929-87",
+      "line0": 489,
+      "line1": 490,
+      "column0": 17,
+      "source": "ch1-living-detail.js",
+      "positionTicks": []
+    },
+    {
+      "nodeId": 437,
+      "function": "save",
+      "url": "http://qa-draw-attribution-20261001.localhost:3340/game.html?webgpu=0",
+      "line0": 5954,
+      "line1": 5955,
+      "column0": 4,
+      "source": "game.html",
+      "positionTicks": [
+        {
+          "line": 5955,
+          "ticks": 1
+        }
+      ]
+    },
+    {
+      "nodeId": 442,
+      "function": "isTree",
+      "url": "http://qa-draw-attribution-20261001.localhost:3340/ch1-living-detail.js?v=20260929-87",
+      "line0": 5,
+      "line1": 6,
+      "column0": 17,
+      "source": "ch1-living-detail.js",
+      "positionTicks": [
+        {
+          "line": 6,
+          "ticks": 1
+        }
+      ]
+    },
+    {
+      "nodeId": 299,
+      "function": "_drawEliteAuraTelegraph",
+      "url": "http://qa-draw-attribution-20261001.localhost:3340/game.html?webgpu=0",
+      "line0": 5268,
+      "line1": 5269,
+      "column0": 32,
+      "source": "game.html",
+      "positionTicks": []
+    },
+    {
+      "nodeId": 300,
+      "function": "drawImage",
+      "url": "http://qa-draw-attribution-20261001.localhost:3340/game.html?webgpu=0",
+      "line0": 6040,
+      "line1": 6041,
+      "column0": 9,
+      "source": "game.html",
+      "positionTicks": [
+        {
+          "line": 6049,
+          "ticks": 1
+        }
+      ]
+    },
+    {
+      "nodeId": 372,
+      "function": "_setTex",
+      "url": "http://qa-draw-attribution-20261001.localhost:3340/game.html?webgpu=0",
+      "line0": 5765,
+      "line1": 5766,
+      "column0": 18,
+      "source": "game.html",
+      "positionTicks": []
+    },
+    {
+      "nodeId": 373,
+      "function": "_flush",
+      "url": "http://qa-draw-attribution-20261001.localhost:3340/game.html?webgpu=0",
+      "line0": 5759,
+      "line1": 5760,
+      "column0": 17,
+      "source": "game.html",
+      "positionTicks": [
+        {
+          "line": 5763,
+          "ticks": 1
+        }
+      ]
+    },
+    {
+      "nodeId": 317,
+      "function": "_mobFacingDir8",
+      "url": "http://qa-draw-attribution-20261001.localhost:3340/game.html?webgpu=0",
+      "line0": 22151,
+      "line1": 22152,
+      "column0": 23,
+      "source": "game.html",
+      "positionTicks": [
+        {
+          "line": 22152,
+          "ticks": 1
+        }
+      ]
+    },
+    {
+      "nodeId": 352,
+      "function": "_drawCh1Hill",
+      "url": "http://qa-draw-attribution-20261001.localhost:3340/game.html?webgpu=0",
+      "line0": 25441,
+      "line1": 25442,
+      "column0": 21,
+      "source": "game.html",
+      "positionTicks": []
+    },
+    {
+      "nodeId": 353,
+      "function": "_ch1StartOuterEnabled",
+      "url": "http://qa-draw-attribution-20261001.localhost:3340/game.html?webgpu=0",
+      "line0": 11128,
+      "line1": 11129,
+      "column0": 30,
+      "source": "game.html",
+      "positionTicks": [
+        {
+          "line": 11131,
+          "ticks": 1
+        }
+      ]
+    },
+    {
+      "nodeId": 368,
+      "function": "drawImage",
+      "url": "http://qa-draw-attribution-20261001.localhost:3340/game.html?webgpu=0",
+      "line0": 6040,
+      "line1": 6041,
+      "column0": 9,
+      "source": "game.html",
+      "positionTicks": []
+    },
+    {
+      "nodeId": 369,
+      "function": "_uploadCanvasTex",
+      "url": "http://qa-draw-attribution-20261001.localhost:3340/game.html?webgpu=0",
+      "line0": 5931,
+      "line1": 5932,
+      "column0": 25,
+      "source": "game.html",
+      "positionTicks": []
+    },
+    {
+      "nodeId": 370,
+      "function": "_setTex",
+      "url": "http://qa-draw-attribution-20261001.localhost:3340/game.html?webgpu=0",
+      "line0": 5765,
+      "line1": 5766,
+      "column0": 18,
+      "source": "game.html",
+      "positionTicks": [
+        {
+          "line": 5766,
+          "ticks": 1
+        }
+      ]
+    },
+    {
+      "nodeId": 362,
+      "function": "_flush",
+      "url": "http://qa-draw-attribution-20261001.localhost:3340/game.html?webgpu=0",
+      "line0": 5759,
+      "line1": 5760,
+      "column0": 17,
+      "source": "game.html",
+      "positionTicks": [
+        {
+          "line": 5760,
+          "ticks": 1
+        }
+      ]
+    },
+    {
+      "nodeId": 374,
+      "function": "_ch1BakedSpikeEnabled",
+      "url": "http://qa-draw-attribution-20261001.localhost:3340/game.html?webgpu=0",
+      "line0": 11281,
+      "line1": 11282,
+      "column0": 30,
+      "source": "game.html",
+      "positionTicks": [
+        {
+          "line": 11283,
+          "ticks": 2
+        }
+      ]
+    },
+    {
+      "nodeId": 375,
+      "function": "drawMM",
+      "url": "http://qa-draw-attribution-20261001.localhost:3340/game.html?webgpu=0",
+      "line0": 58205,
+      "line1": 58206,
+      "column0": 15,
+      "source": "game.html",
+      "positionTicks": []
+    },
+    {
+      "nodeId": 376,
+      "function": "_mmDrawPlayerMarker",
+      "url": "http://qa-draw-attribution-20261001.localhost:3340/game.html?webgpu=0",
+      "line0": 58171,
+      "line1": 58172,
+      "column0": 28,
+      "source": "game.html",
+      "positionTicks": []
+    },
+    {
+      "nodeId": 377,
+      "function": "rotate",
+      "url": "",
+      "line0": -1,
+      "line1": null,
+      "column0": -1,
+      "source": null,
+      "positionTicks": [
+        {
+          "line": 58192,
+          "ticks": 1
+        }
+      ]
+    },
+    {
+      "nodeId": 400,
+      "function": "measureText",
+      "url": "http://qa-draw-attribution-20261001.localhost:3340/game.html?webgpu=0",
+      "line0": 6039,
+      "line1": 6040,
+      "column0": 11,
+      "source": "game.html",
+      "positionTicks": []
+    },
+    {
+      "nodeId": 401,
+      "function": "measureText",
+      "url": "",
+      "line0": -1,
+      "line1": null,
+      "column0": -1,
+      "source": null,
+      "positionTicks": [
+        {
+          "line": 6040,
+          "ticks": 1
+        }
+      ]
+    },
+    {
+      "nodeId": 408,
+      "function": "_getWorldDropBeamTier",
+      "url": "http://qa-draw-attribution-20261001.localhost:3340/game.html?webgpu=0",
+      "line0": 26452,
+      "line1": 26453,
+      "column0": 30,
+      "source": "game.html",
+      "positionTicks": []
+    },
+    {
+      "nodeId": 424,
+      "function": "_dsIsFrontObj",
+      "url": "http://qa-draw-attribution-20261001.localhost:3340/game.html?webgpu=0",
+      "line0": 17588,
+      "line1": 17589,
+      "column0": 22,
+      "source": "game.html",
+      "positionTicks": []
+    },
+    {
+      "nodeId": 427,
+      "function": "_glFlush",
+      "url": "http://qa-draw-attribution-20261001.localhost:3340/game.html?webgpu=0",
+      "line0": 5769,
+      "line1": 5770,
+      "column0": 19,
+      "source": "game.html",
+      "positionTicks": []
+    },
+    {
+      "nodeId": 428,
+      "function": "_flush",
+      "url": "http://qa-draw-attribution-20261001.localhost:3340/game.html?webgpu=0",
+      "line0": 5759,
+      "line1": 5760,
+      "column0": 17,
+      "source": "game.html",
+      "positionTicks": [
+        {
+          "line": 5764,
+          "ticks": 1
+        }
+      ]
+    },
+    {
+      "nodeId": 457,
+      "function": "drawBack",
+      "url": "http://qa-draw-attribution-20261001.localhost:3340/ch1-border-foreground.js?v=20261001-3",
+      "line0": 238,
+      "line1": 239,
+      "column0": 19,
+      "source": null,
+      "positionTicks": [
+        {
+          "line": 239,
+          "ticks": 1
+        }
+      ]
+    },
+    {
+      "nodeId": 191,
+      "function": "tick",
+      "url": "http://qa-draw-attribution-20261001.localhost:3340/system-lesson.js?v=20260912-skip-density1",
+      "line0": 126,
+      "line1": 127,
+      "column0": 6,
+      "source": null,
+      "positionTicks": [
+        {
+          "line": 128,
+          "ticks": 2
+        }
+      ]
+    },
+    {
+      "nodeId": 269,
+      "function": "append",
+      "url": "",
+      "line0": 30,
+      "line1": 31,
+      "column0": 17,
+      "source": null,
+      "positionTicks": []
+    },
+    {
+      "nodeId": 270,
+      "function": "update",
+      "url": "http://qa-draw-attribution-20261001.localhost:3340/game.html?webgpu=0",
+      "line0": 30773,
+      "line1": 30774,
+      "column0": 15,
+      "source": "game.html",
+      "positionTicks": [
+        {
+          "line": 33166,
+          "ticks": 1
+        }
+      ]
+    },
+    {
+      "nodeId": 278,
+      "function": "now",
+      "url": "",
+      "line0": 4,
+      "line1": 5,
+      "column0": 12,
+      "source": null,
+      "positionTicks": [
+        {
+          "line": 5,
+          "ticks": 2
+        }
+      ]
+    },
+    {
+      "nodeId": 308,
+      "function": "_collectLights",
+      "url": "http://qa-draw-attribution-20261001.localhost:3340/game.html?webgpu=0",
+      "line0": 4600,
+      "line1": 4601,
+      "column0": 23,
+      "source": "game.html",
+      "positionTicks": [
+        {
+          "line": 4602,
+          "ticks": 1
+        }
+      ]
+    },
+    {
+      "nodeId": 335,
+      "function": "_eqAffix",
+      "url": "http://qa-draw-attribution-20261001.localhost:3340/game.html?webgpu=0",
+      "line0": 26688,
+      "line1": 26689,
+      "column0": 17,
+      "source": "game.html",
+      "positionTicks": [
+        {
+          "line": 26689,
+          "ticks": 1
+        }
+      ]
+    },
+    {
+      "nodeId": 367,
+      "function": "_resetParryHomingCache",
+      "url": "http://qa-draw-attribution-20261001.localhost:3340/game.html?webgpu=0",
+      "line0": 17832,
+      "line1": 17833,
+      "column0": 31,
+      "source": "game.html",
+      "positionTicks": [
+        {
+          "line": 17833,
+          "ticks": 1
+        }
+      ]
+    },
+    {
+      "nodeId": 381,
+      "function": "_drawDruidFinaleVictory",
+      "url": "http://qa-draw-attribution-20261001.localhost:3340/game.html?webgpu=0",
+      "line0": 16207,
+      "line1": 16208,
+      "column0": 32,
+      "source": "game.html",
+      "positionTicks": [
+        {
+          "line": 16209,
+          "ticks": 1
+        }
+      ]
+    },
+    {
+      "nodeId": 412,
+      "function": "_renderIceOrbVfx",
+      "url": "http://qa-draw-attribution-20261001.localhost:3340/game.html?webgpu=0",
+      "line0": 18012,
+      "line1": 18013,
+      "column0": 25,
+      "source": "game.html",
+      "positionTicks": [
+        {
+          "line": 18013,
+          "ticks": 1
+        }
+      ]
+    },
+    {
+      "nodeId": 455,
+      "function": "wp",
+      "url": "http://qa-draw-attribution-20261001.localhost:3340/game.html?webgpu=0",
+      "line0": 15709,
+      "line1": 15710,
+      "column0": 11,
+      "source": "game.html",
+      "positionTicks": [
+        {
+          "line": 15710,
+          "ticks": 1
+        }
+      ]
+    },
+    {
+      "nodeId": 83,
+      "function": "_sfxFrameReset",
+      "url": "http://qa-draw-attribution-20261001.localhost:3340/game.html?webgpu=0",
+      "line0": 11757,
+      "line1": 11758,
+      "column0": 23,
+      "source": "game.html",
+      "positionTicks": [
+        {
+          "line": 11784,
+          "ticks": 1
+        },
+        {
+          "line": 11783,
+          "ticks": 1
+        },
+        {
+          "line": 11766,
+          "ticks": 1
+        }
+      ]
+    },
+    {
+      "nodeId": 172,
+      "function": "_playSampleNow",
+      "url": "http://qa-draw-attribution-20261001.localhost:3340/game.html?webgpu=0",
+      "line0": 11717,
+      "line1": 11718,
+      "column0": 23,
+      "source": "game.html",
+      "positionTicks": [
+        {
+          "line": 11734,
+          "ticks": 1
+        }
+      ]
+    },
+    {
+      "nodeId": 439,
+      "function": "_sfxPri",
+      "url": "http://qa-draw-attribution-20261001.localhost:3340/game.html?webgpu=0",
+      "line0": 11695,
+      "line1": 11696,
+      "column0": 16,
+      "source": "game.html",
+      "positionTicks": [
+        {
+          "line": 11703,
+          "ticks": 1
+        }
+      ]
+    },
+    {
+      "nodeId": 93,
+      "function": "_drCapture",
+      "url": "http://qa-draw-attribution-20261001.localhost:3340/game.html?webgpu=0",
+      "line0": 42057,
+      "line1": 42058,
+      "column0": 19,
+      "source": "game.html",
+      "positionTicks": []
+    },
+    {
+      "nodeId": 94,
+      "function": "CanvasRenderingContext2D.drawImage",
+      "url": "http://qa-draw-attribution-20261001.localhost:3340/game.html?webgpu=0",
+      "line0": 22388,
+      "line1": 22389,
+      "column0": 55,
+      "source": "game.html",
+      "positionTicks": []
+    },
+    {
+      "nodeId": 95,
+      "function": "drawImage",
+      "url": "",
+      "line0": -1,
+      "line1": null,
+      "column0": -1,
+      "source": null,
+      "positionTicks": [
+        {
+          "line": 22391,
+          "ticks": 15
+        }
+      ]
+    },
+    {
+      "nodeId": 333,
+      "function": "getContext",
+      "url": "",
+      "line0": -1,
+      "line1": null,
+      "column0": -1,
+      "source": null,
+      "positionTicks": [
+        {
+          "line": 42069,
+          "ticks": 1
+        }
+      ]
+    },
+    {
+      "nodeId": 168,
+      "function": "_drawBurst",
+      "url": "http://qa-draw-attribution-20261001.localhost:3340/game.html?webgpu=0",
+      "line0": 5905,
+      "line1": 5906,
+      "column0": 19,
+      "source": "game.html",
+      "positionTicks": []
+    },
+    {
+      "nodeId": 169,
+      "function": "clear",
+      "url": "",
+      "line0": -1,
+      "line1": null,
+      "column0": -1,
+      "source": null,
+      "positionTicks": [
+        {
+          "line": 5908,
+          "ticks": 1
+        }
+      ]
+    },
+    {
+      "nodeId": 328,
+      "function": "draw",
+      "url": "http://qa-draw-attribution-20261001.localhost:3340/game.html?webgpu=0",
+      "line0": 49861,
+      "line1": 49862,
+      "column0": 13,
+      "source": "game.html",
+      "positionTicks": [
+        {
+          "line": 49863,
+          "ticks": 1
+        }
+      ]
+    },
+    {
+      "nodeId": 334,
+      "function": "_fpsUpdate",
+      "url": "http://qa-draw-attribution-20261001.localhost:3340/game.html?webgpu=0",
+      "line0": 58409,
+      "line1": 58410,
+      "column0": 19,
+      "source": "game.html",
+      "positionTicks": []
+    },
+    {
+      "nodeId": 386,
+      "function": "_pollGamepad",
+      "url": "http://qa-draw-attribution-20261001.localhost:3340/game.html?webgpu=0",
+      "line0": 13258,
+      "line1": 13259,
+      "column0": 21,
+      "source": "game.html",
+      "positionTicks": []
+    },
+    {
+      "nodeId": 387,
+      "function": "getGamepads",
+      "url": "",
+      "line0": -1,
+      "line1": null,
+      "column0": -1,
+      "source": null,
+      "positionTicks": [
+        {
+          "line": 13261,
+          "ticks": 1
+        }
+      ]
+    },
+    {
+      "nodeId": 450,
+      "function": "_glFlush",
+      "url": "http://qa-draw-attribution-20261001.localhost:3340/game.html?webgpu=0",
+      "line0": 5769,
+      "line1": 5770,
+      "column0": 19,
+      "source": "game.html",
+      "positionTicks": []
+    },
+    {
+      "nodeId": 451,
+      "function": "_flush",
+      "url": "http://qa-draw-attribution-20261001.localhost:3340/game.html?webgpu=0",
+      "line0": 5759,
+      "line1": 5760,
+      "column0": 17,
+      "source": "game.html",
+      "positionTicks": [
+        {
+          "line": 5763,
+          "ticks": 1
+        }
+      ]
+    },
+    {
+      "nodeId": 461,
+      "function": "update",
+      "url": "http://qa-draw-attribution-20261001.localhost:3340/game.html?webgpu=0",
+      "line0": 30773,
+      "line1": 30774,
+      "column0": 15,
+      "source": "game.html",
+      "positionTicks": []
+    },
+    {
+      "nodeId": 462,
+      "function": "_ffBuild",
+      "url": "http://qa-draw-attribution-20261001.localhost:3340/game.html?webgpu=0",
+      "line0": 30521,
+      "line1": 30522,
+      "column0": 17,
+      "source": "game.html",
+      "positionTicks": [
+        {
+          "line": 30550,
+          "ticks": 1
+        }
+      ]
+    },
+    {
+      "nodeId": 49,
+      "function": "",
+      "url": "http://qa-draw-attribution-20261001.localhost:3340/game.html?webgpu=0",
+      "line0": 12603,
+      "line1": 12604,
+      "column0": 27,
+      "source": "game.html",
+      "positionTicks": []
+    },
+    {
+      "nodeId": 50,
+      "function": "_dispatchSkillSlot",
+      "url": "http://qa-draw-attribution-20261001.localhost:3340/game.html?webgpu=0",
+      "line0": 12352,
+      "line1": 12353,
+      "column0": 27,
+      "source": "game.html",
+      "positionTicks": [
+        {
+          "line": 12448,
+          "ticks": 1
+        }
+      ]
+    },
+    {
+      "nodeId": 51,
+      "function": "activateSpikeTrap",
+      "url": "http://qa-draw-attribution-20261001.localhost:3340/game.html?webgpu=0",
+      "line0": 43910,
+      "line1": 43911,
+      "column0": 26,
+      "source": "game.html",
+      "positionTicks": []
+    },
+    {
+      "nodeId": 52,
+      "function": "_spikeTrapDmg",
+      "url": "http://qa-draw-attribution-20261001.localhost:3340/game.html?webgpu=0",
+      "line0": 43909,
+      "line1": 43910,
+      "column0": 22,
+      "source": "game.html",
+      "positionTicks": []
+    },
+    {
+      "nodeId": 53,
+      "function": "pMagicMul",
+      "url": "http://qa-draw-attribution-20261001.localhost:3340/game.html?webgpu=0",
+      "line0": 26743,
+      "line1": 26744,
+      "column0": 18,
+      "source": "game.html",
+      "positionTicks": []
+    },
+    {
+      "nodeId": 54,
+      "function": "_passDmgSum",
+      "url": "http://qa-draw-attribution-20261001.localhost:3340/game.html?webgpu=0",
+      "line0": 26720,
+      "line1": 26721,
+      "column0": 20,
+      "source": "game.html",
+      "positionTicks": []
+    },
+    {
+      "nodeId": 55,
+      "function": "_eqImplicit",
+      "url": "http://qa-draw-attribution-20261001.localhost:3340/game.html?webgpu=0",
+      "line0": 26709,
+      "line1": 26710,
+      "column0": 20,
+      "source": "game.html",
+      "positionTicks": [
+        {
+          "line": 26710,
+          "ticks": 1
+        }
+      ]
+    },
+    {
+      "nodeId": 56,
+      "function": "activateGiantSlam",
+      "url": "http://qa-draw-attribution-20261001.localhost:3340/game.html?webgpu=0",
+      "line0": 44848,
+      "line1": 44849,
+      "column0": 26,
+      "source": "game.html",
+      "positionTicks": []
+    },
+    {
+      "nodeId": 57,
+      "function": "_gSlamHit",
+      "url": "http://qa-draw-attribution-20261001.localhost:3340/game.html?webgpu=0",
+      "line0": 44921,
+      "line1": 44922,
+      "column0": 18,
+      "source": "game.html",
+      "positionTicks": [
+        {
+          "line": 44934,
+          "ticks": 1
+        }
+      ]
+    },
+    {
+      "nodeId": 58,
+      "function": "hurtE",
+      "url": "http://qa-draw-attribution-20261001.localhost:3340/game.html?webgpu=0",
+      "line0": 40626,
+      "line1": 40627,
+      "column0": 14,
+      "source": "game.html",
+      "positionTicks": [
+        {
+          "line": 40911,
+          "ticks": 1
+        }
+      ]
+    },
+    {
+      "nodeId": 363,
+      "function": "_canAssignSkillSlot",
+      "url": "http://qa-draw-attribution-20261001.localhost:3340/game.html?webgpu=0",
+      "line0": 42664,
+      "line1": 42665,
+      "column0": 28,
+      "source": "game.html",
+      "positionTicks": []
+    },
+    {
+      "nodeId": 364,
+      "function": "_skById",
+      "url": "http://qa-draw-attribution-20261001.localhost:3340/game.html?webgpu=0",
+      "line0": 42659,
+      "line1": 42660,
+      "column0": 16,
+      "source": "game.html",
+      "positionTicks": [
+        {
+          "line": 42660,
+          "ticks": 1
+        }
+      ]
+    },
+    {
+      "nodeId": 71,
+      "function": "u",
+      "url": "",
+      "line0": 0,
+      "line1": 1,
+      "column0": 839,
+      "source": null,
+      "positionTicks": [
+        {
+          "line": 1,
+          "ticks": 1
+        }
+      ]
+    },
+    {
+      "nodeId": 82,
+      "function": "(garbage collector)",
+      "url": "",
+      "line0": -1,
+      "line1": null,
+      "column0": -1,
+      "source": null,
+      "positionTicks": []
+    },
+    {
+      "nodeId": 86,
+      "function": "_dn",
+      "url": "http://qa-draw-attribution-20261001.localhost:3340/game.html?webgpu=0",
+      "line0": 11950,
+      "line1": 11951,
+      "column0": 44,
+      "source": "game.html",
+      "positionTicks": [
+        {
+          "line": 11951,
+          "ticks": 1
+        }
+      ]
+    },
+    {
+      "nodeId": 99,
+      "function": "frame",
+      "url": "",
+      "line0": 99,
+      "line1": 100,
+      "column0": 16,
+      "source": null,
+      "positionTicks": [
+        {
+          "line": 100,
+          "ticks": 1
+        }
+      ]
+    },
+    {
+      "nodeId": 100,
+      "function": "requestAnimationFrame",
+      "url": "",
+      "line0": -1,
+      "line1": null,
+      "column0": -1,
+      "source": null,
+      "positionTicks": [
+        {
+          "line": 100,
+          "ticks": 2
+        }
+      ]
+    },
+    {
+      "nodeId": 102,
+      "function": "",
+      "url": "",
+      "line0": 0,
+      "line1": 1,
+      "column0": 1135,
+      "source": null,
+      "positionTicks": [
+        {
+          "line": 1,
+          "ticks": 1
+        }
+      ]
+    },
+    {
+      "nodeId": 323,
+      "function": "u",
+      "url": "",
+      "line0": 0,
+      "line1": 1,
+      "column0": 839,
+      "source": null,
+      "positionTicks": []
+    },
+    {
+      "nodeId": 324,
+      "function": "f",
+      "url": "",
+      "line0": 0,
+      "line1": 1,
+      "column0": 933,
+      "source": null,
+      "positionTicks": []
+    },
+    {
+      "nodeId": 325,
+      "function": "d",
+      "url": "",
+      "line0": 0,
+      "line1": 1,
+      "column0": 556,
+      "source": null,
+      "positionTicks": []
+    },
+    {
+      "nodeId": 326,
+      "function": "s",
+      "url": "",
+      "line0": 0,
+      "line1": 1,
+      "column0": 439,
+      "source": null,
+      "positionTicks": []
+    },
+    {
+      "nodeId": 327,
+      "function": "getUILanguage",
+      "url": "",
+      "line0": -1,
+      "line1": null,
+      "column0": -1,
+      "source": null,
+      "positionTicks": [
+        {
+          "line": 1,
+          "ticks": 1
+        }
+      ]
+    },
+    {
+      "nodeId": 105,
+      "function": "tick",
+      "url": "http://qa-draw-attribution-20261001.localhost:3340/game.html?webgpu=0",
+      "line0": 63042,
+      "line1": 63043,
+      "column0": 13,
+      "source": "game.html",
+      "positionTicks": [
+        {
+          "line": 63044,
+          "ticks": 1
+        }
+      ]
+    },
+    {
+      "nodeId": 113,
+      "function": "_colWorker.onmessage",
+      "url": "http://qa-draw-attribution-20261001.localhost:3340/game.html?webgpu=0",
+      "line0": 30498,
+      "line1": 30499,
+      "column0": 29,
+      "source": "game.html",
+      "positionTicks": [
+        {
+          "line": 30499,
+          "ticks": 7
+        }
+      ]
+    },
+    {
+      "nodeId": 114,
+      "function": "_ffWorker.onmessage",
+      "url": "http://qa-draw-attribution-20261001.localhost:3340/game.html?webgpu=0",
+      "line0": 30463,
+      "line1": 30464,
+      "column0": 28,
+      "source": "game.html",
+      "positionTicks": [
+        {
+          "line": 30469,
+          "ticks": 6
+        },
+        {
+          "line": 30466,
+          "ticks": 2
+        }
+      ]
+    },
+    {
+      "nodeId": 120,
+      "function": "A",
+      "url": "chrome-extension://ofpnmcalabcbjgholdjcjblkibolbppb/content.js",
+      "line0": 4,
+      "line1": 5,
+      "column0": 39651,
+      "source": null,
+      "positionTicks": []
+    },
+    {
+      "nodeId": 121,
+      "function": "clearTimeout",
+      "url": "",
+      "line0": -1,
+      "line1": null,
+      "column0": -1,
+      "source": null,
+      "positionTicks": [
+        {
+          "line": 5,
+          "ticks": 1
+        }
+      ]
+    },
+    {
+      "nodeId": 128,
+      "function": "_b3animate",
+      "url": "http://qa-draw-attribution-20261001.localhost:3340/game.html?webgpu=0",
+      "line0": 62854,
+      "line1": 62855,
+      "column0": 19,
+      "source": "game.html",
+      "positionTicks": []
+    },
+    {
+      "nodeId": 129,
+      "function": "update",
+      "url": "http://qa-draw-attribution-20261001.localhost:3340/assets/vendor/three-r160/build/three.module.js",
+      "line0": 50590,
+      "line1": 50591,
+      "column0": 7,
+      "source": null,
+      "positionTicks": []
+    },
+    {
+      "nodeId": 130,
+      "function": "_update",
+      "url": "http://qa-draw-attribution-20261001.localhost:3340/assets/vendor/three-r160/build/three.module.js",
+      "line0": 49605,
+      "line1": 49606,
+      "column0": 8,
+      "source": null,
+      "positionTicks": [
+        {
+          "line": 49606,
+          "ticks": 5
+        }
+      ]
+    },
+    {
+      "nodeId": 330,
+      "function": "slerpFlat",
+      "url": "http://qa-draw-attribution-20261001.localhost:3340/assets/vendor/three-r160/build/three.module.js",
+      "line0": 3227,
+      "line1": 3228,
+      "column0": 17,
+      "source": null,
+      "positionTicks": [
+        {
+          "line": 3228,
+          "ticks": 1
+        }
+      ]
+    },
+    {
+      "nodeId": 189,
+      "function": "_updateTimeScale",
+      "url": "http://qa-draw-attribution-20261001.localhost:3340/assets/vendor/three-r160/build/three.module.js",
+      "line0": 49720,
+      "line1": 49721,
+      "column0": 17,
+      "source": null,
+      "positionTicks": [
+        {
+          "line": 49721,
+          "ticks": 1
+        }
+      ]
+    },
+    {
+      "nodeId": 243,
+      "function": "apply",
+      "url": "http://qa-draw-attribution-20261001.localhost:3340/assets/vendor/three-r160/build/three.module.js",
+      "line0": 48009,
+      "line1": 48010,
+      "column0": 6,
+      "source": null,
+      "positionTicks": [
+        {
+          "line": 48010,
+          "ticks": 1
+        }
+      ]
+    },
+    {
+      "nodeId": 252,
+      "function": "setFromRotationMatrix",
+      "url": "http://qa-draw-attribution-20261001.localhost:3340/assets/vendor/three-r160/build/three.module.js",
+      "line0": 6889,
+      "line1": 6890,
+      "column0": 22,
+      "source": null,
+      "positionTicks": [
+        {
+          "line": 6890,
+          "ticks": 1
+        }
+      ]
+    },
+    {
+      "nodeId": 161,
+      "function": "getDelta",
+      "url": "http://qa-draw-attribution-20261001.localhost:3340/assets/vendor/three-r160/build/three.module.js",
+      "line0": 47131,
+      "line1": 47132,
+      "column0": 9,
+      "source": null,
+      "positionTicks": []
+    },
+    {
+      "nodeId": 162,
+      "function": "now",
+      "url": "http://qa-draw-attribution-20261001.localhost:3340/assets/vendor/three-r160/build/three.module.js",
+      "line0": 47159,
+      "line1": 47160,
+      "column0": 12,
+      "source": null,
+      "positionTicks": [
+        {
+          "line": 47162,
+          "ticks": 4
+        }
+      ]
+    },
+    {
+      "nodeId": 132,
+      "function": "$",
+      "url": "http://qa-draw-attribution-20261001.localhost:3340/game.html?webgpu=0",
+      "line0": 42436,
+      "line1": 42437,
+      "column0": 10,
+      "source": "game.html",
+      "positionTicks": [
+        {
+          "line": 42437,
+          "ticks": 2
+        }
+      ]
+    },
+    {
+      "nodeId": 152,
+      "function": "d",
+      "url": "chrome-extension://ofpnmcalabcbjgholdjcjblkibolbppb/content.js",
+      "line0": 4,
+      "line1": 5,
+      "column0": 39428,
+      "source": null,
+      "positionTicks": []
+    },
+    {
+      "nodeId": 153,
+      "function": "g",
+      "url": "chrome-extension://ofpnmcalabcbjgholdjcjblkibolbppb/content.js",
+      "line0": 4,
+      "line1": 5,
+      "column0": 39494,
+      "source": null,
+      "positionTicks": []
+    },
+    {
+      "nodeId": 154,
+      "function": "f",
+      "url": "chrome-extension://ofpnmcalabcbjgholdjcjblkibolbppb/content.js",
+      "line0": 4,
+      "line1": 5,
+      "column0": 39185,
+      "source": null,
+      "positionTicks": []
+    },
+    {
+      "nodeId": 155,
+      "function": "",
+      "url": "chrome-extension://ofpnmcalabcbjgholdjcjblkibolbppb/content.js",
+      "line0": 7220,
+      "line1": 7221,
+      "column0": 8283,
+      "source": null,
+      "positionTicks": []
+    },
+    {
+      "nodeId": 156,
+      "function": "handleSelectionChange",
+      "url": "chrome-extension://ofpnmcalabcbjgholdjcjblkibolbppb/content.js",
+      "line0": 7220,
+      "line1": 7221,
+      "column0": 8602,
+      "source": null,
+      "positionTicks": []
+    },
+    {
+      "nodeId": 157,
+      "function": "markNoSelection",
+      "url": "chrome-extension://ofpnmcalabcbjgholdjcjblkibolbppb/content.js",
+      "line0": 7220,
+      "line1": 7221,
+      "column0": 9889,
+      "source": null,
+      "positionTicks": []
+    },
+    {
+      "nodeId": 158,
+      "function": "set",
+      "url": "chrome-extension://ofpnmcalabcbjgholdjcjblkibolbppb/content.js",
+      "line0": 3803,
+      "line1": 3804,
+      "column0": 46549,
+      "source": null,
+      "positionTicks": []
+    },
+    {
+      "nodeId": 159,
+      "function": "e.setObservablePropValue_",
+      "url": "chrome-extension://ofpnmcalabcbjgholdjcjblkibolbppb/content.js",
+      "line0": 3803,
+      "line1": 3804,
+      "column0": 41644,
+      "source": null,
+      "positionTicks": []
+    },
+    {
+      "nodeId": 160,
+      "function": "r.prepareNewValue_",
+      "url": "chrome-extension://ofpnmcalabcbjgholdjcjblkibolbppb/content.js",
+      "line0": 3803,
+      "line1": 3804,
+      "column0": 7845,
+      "source": null,
+      "positionTicks": [
+        {
+          "line": 3804,
+          "ticks": 1
+        }
+      ]
+    },
+    {
+      "nodeId": 407,
+      "function": "getSelectedNode",
+      "url": "chrome-extension://ofpnmcalabcbjgholdjcjblkibolbppb/content.js",
+      "line0": 7220,
+      "line1": 7221,
+      "column0": 9645,
+      "source": null,
+      "positionTicks": [
+        {
+          "line": 7221,
+          "ticks": 3
+        }
+      ]
+    },
+    {
+      "nodeId": 378,
+      "function": "",
+      "url": "chrome-extension://ofpnmcalabcbjgholdjcjblkibolbppb/content.js",
+      "line0": 4166,
+      "line1": 4167,
+      "column0": 32960,
+      "source": null,
+      "positionTicks": []
+    },
+    {
+      "nodeId": 379,
+      "function": "e.get",
+      "url": "chrome-extension://ofpnmcalabcbjgholdjcjblkibolbppb/content.js",
+      "line0": 3803,
+      "line1": 3804,
+      "column0": 9939,
+      "source": null,
+      "positionTicks": [
+        {
+          "line": 3804,
+          "ticks": 1
+        }
+      ]
+    },
+    {
+      "nodeId": 171,
+      "function": "n",
+      "url": "chrome-extension://ofpnmcalabcbjgholdjcjblkibolbppb/content.js",
+      "line0": 4166,
+      "line1": 4167,
+      "column0": 25251,
+      "source": null,
+      "positionTicks": [
+        {
+          "line": 4167,
+          "ticks": 2
+        }
+      ]
+    },
+    {
+      "nodeId": 196,
+      "function": "",
+      "url": "chrome-extension://ofpnmcalabcbjgholdjcjblkibolbppb/content.js",
+      "line0": 4166,
+      "line1": 4167,
+      "column0": 32840,
+      "source": null,
+      "positionTicks": [
+        {
+          "line": 4167,
+          "ticks": 1
+        },
+        {
+          "line": 4167,
+          "ticks": 2
+        }
+      ]
+    },
+    {
+      "nodeId": 314,
+      "function": "set",
+      "url": "chrome-extension://ofpnmcalabcbjgholdjcjblkibolbppb/content.js",
+      "line0": 3803,
+      "line1": 3804,
+      "column0": 46549,
+      "source": null,
+      "positionTicks": []
+    },
+    {
+      "nodeId": 315,
+      "function": "e.setObservablePropValue_",
+      "url": "chrome-extension://ofpnmcalabcbjgholdjcjblkibolbppb/content.js",
+      "line0": 3803,
+      "line1": 3804,
+      "column0": 41644,
+      "source": null,
+      "positionTicks": [
+        {
+          "line": 3804,
+          "ticks": 1
+        }
+      ]
+    },
+    {
+      "nodeId": 431,
+      "function": "A",
+      "url": "chrome-extension://ofpnmcalabcbjgholdjcjblkibolbppb/content.js",
+      "line0": 4,
+      "line1": 5,
+      "column0": 39651,
+      "source": null,
+      "positionTicks": []
+    },
+    {
+      "nodeId": 432,
+      "function": "l",
+      "url": "chrome-extension://ofpnmcalabcbjgholdjcjblkibolbppb/content.js",
+      "line0": 4,
+      "line1": 5,
+      "column0": 39250,
+      "source": null,
+      "positionTicks": []
+    },
+    {
+      "nodeId": 433,
+      "function": "setTimeout",
+      "url": "",
+      "line0": -1,
+      "line1": null,
+      "column0": -1,
+      "source": null,
+      "positionTicks": [
+        {
+          "line": 5,
+          "ticks": 1
+        }
+      ]
+    },
+    {
+      "nodeId": 174,
+      "function": "",
+      "url": "chrome-extension://ofpnmcalabcbjgholdjcjblkibolbppb/content.js",
+      "line0": 6895,
+      "line1": 6896,
+      "column0": 69166,
+      "source": null,
+      "positionTicks": []
+    },
+    {
+      "nodeId": 175,
+      "function": "findAccessibleDocuments",
+      "url": "chrome-extension://ofpnmcalabcbjgholdjcjblkibolbppb/content.js",
+      "line0": 3998,
+      "line1": 3999,
+      "column0": 3233,
+      "source": null,
+      "positionTicks": []
+    },
+    {
+      "nodeId": 176,
+      "function": "querySelectorAll",
+      "url": "",
+      "line0": -1,
+      "line1": null,
+      "column0": -1,
+      "source": null,
+      "positionTicks": [
+        {
+          "line": 3999,
+          "ticks": 6
+        }
+      ]
+    },
+    {
+      "nodeId": 193,
+      "function": "set dynamicId",
+      "url": "",
+      "line0": -1,
+      "line1": null,
+      "column0": -1,
+      "source": null,
+      "positionTicks": []
+    },
+    {
+      "nodeId": 205,
+      "function": "",
+      "url": "chrome-extension://ofpnmcalabcbjgholdjcjblkibolbppb/content.js",
+      "line0": 7376,
+      "line1": 7377,
+      "column0": 63672,
+      "source": null,
+      "positionTicks": []
+    },
+    {
+      "nodeId": 206,
+      "function": "handleKeyDown",
+      "url": "chrome-extension://ofpnmcalabcbjgholdjcjblkibolbppb/content.js",
+      "line0": 7376,
+      "line1": 7377,
+      "column0": 63977,
+      "source": null,
+      "positionTicks": [
+        {
+          "line": 7377,
+          "ticks": 1
+        }
+      ]
+    },
+    {
+      "nodeId": 207,
+      "function": "getShortcutRecognitionResult",
+      "url": "chrome-extension://ofpnmcalabcbjgholdjcjblkibolbppb/content.js",
+      "line0": 4843,
+      "line1": 4844,
+      "column0": 19347,
+      "source": null,
+      "positionTicks": [
+        {
+          "line": 4844,
+          "ticks": 1
+        }
+      ]
+    },
+    {
+      "nodeId": 208,
+      "function": "get",
+      "url": "chrome-extension://ofpnmcalabcbjgholdjcjblkibolbppb/content.js",
+      "line0": 3803,
+      "line1": 3804,
+      "column0": 46490,
+      "source": null,
+      "positionTicks": []
+    },
+    {
+      "nodeId": 209,
+      "function": "e.get",
+      "url": "chrome-extension://ofpnmcalabcbjgholdjcjblkibolbppb/content.js",
+      "line0": 3803,
+      "line1": 3804,
+      "column0": 9939,
+      "source": null,
+      "positionTicks": []
+    },
+    {
+      "nodeId": 210,
+      "function": "e.computeValue_",
+      "url": "chrome-extension://ofpnmcalabcbjgholdjcjblkibolbppb/content.js",
+      "line0": 3803,
+      "line1": 3804,
+      "column0": 10762,
+      "source": null,
+      "positionTicks": []
+    },
+    {
+      "nodeId": 211,
+      "function": "get canOpenBotsDrawer",
+      "url": "chrome-extension://ofpnmcalabcbjgholdjcjblkibolbppb/content.js",
+      "line0": 4843,
+      "line1": 4844,
+      "column0": 14480,
+      "source": null,
+      "positionTicks": [
+        {
+          "line": 4844,
+          "ticks": 1
+        }
+      ]
+    },
+    {
+      "nodeId": 255,
+      "function": "isShortCutTriggered",
+      "url": "chrome-extension://ofpnmcalabcbjgholdjcjblkibolbppb/content.js",
+      "line0": 4510,
+      "line1": 4511,
+      "column0": 57235,
+      "source": null,
+      "positionTicks": []
+    },
+    {
+      "nodeId": 256,
+      "function": "isHotkey",
+      "url": "chrome-extension://ofpnmcalabcbjgholdjcjblkibolbppb/content.js",
+      "line0": 3997,
+      "line1": 3998,
+      "column0": 7417,
+      "source": null,
+      "positionTicks": []
+    },
+    {
+      "nodeId": 257,
+      "function": "s",
+      "url": "chrome-extension://ofpnmcalabcbjgholdjcjblkibolbppb/content.js",
+      "line0": 11,
+      "line1": 12,
+      "column0": 229213,
+      "source": null,
+      "positionTicks": []
+    },
+    {
+      "nodeId": 258,
+      "function": "",
+      "url": "chrome-extension://ofpnmcalabcbjgholdjcjblkibolbppb/content.js",
+      "line0": 11,
+      "line1": 12,
+      "column0": 229239,
+      "source": null,
+      "positionTicks": []
+    },
+    {
+      "nodeId": 259,
+      "function": "xho",
+      "url": "chrome-extension://ofpnmcalabcbjgholdjcjblkibolbppb/content.js",
+      "line0": 11,
+      "line1": 12,
+      "column0": 229912,
+      "source": null,
+      "positionTicks": [
+        {
+          "line": 12,
+          "ticks": 1
+        }
+      ]
+    },
+    {
+      "nodeId": 311,
+      "function": "hhr",
+      "url": "chrome-extension://ofpnmcalabcbjgholdjcjblkibolbppb/content.js",
+      "line0": 11,
+      "line1": 12,
+      "column0": 229095,
+      "source": null,
+      "positionTicks": []
+    },
+    {
+      "nodeId": 312,
+      "function": "",
+      "url": "chrome-extension://ofpnmcalabcbjgholdjcjblkibolbppb/content.js",
+      "line0": 11,
+      "line1": 12,
+      "column0": 229181,
+      "source": null,
+      "positionTicks": [
+        {
+          "line": 12,
+          "ticks": 2
+        }
+      ]
+    },
+    {
+      "nodeId": 313,
+      "function": "Sho",
+      "url": "chrome-extension://ofpnmcalabcbjgholdjcjblkibolbppb/content.js",
+      "line0": 11,
+      "line1": 12,
+      "column0": 229379,
+      "source": null,
+      "positionTicks": []
+    },
+    {
+      "nodeId": 223,
+      "function": "",
+      "url": "chrome-extension://ofpnmcalabcbjgholdjcjblkibolbppb/content.js",
+      "line0": 4166,
+      "line1": 4167,
+      "column0": 25697,
+      "source": null,
+      "positionTicks": []
+    },
+    {
+      "nodeId": 224,
+      "function": "",
+      "url": "chrome-extension://ofpnmcalabcbjgholdjcjblkibolbppb/content.js",
+      "line0": 4166,
+      "line1": 4167,
+      "column0": 25711,
+      "source": null,
+      "positionTicks": [
+        {
+          "line": 4167,
+          "ticks": 1
+        }
+      ]
+    },
+    {
+      "nodeId": 225,
+      "function": "",
+      "url": "chrome-extension://ofpnmcalabcbjgholdjcjblkibolbppb/content.js",
+      "line0": 4166,
+      "line1": 4167,
+      "column0": 25736,
+      "source": null,
+      "positionTicks": [
+        {
+          "line": 4167,
+          "ticks": 1
+        },
+        {
+          "line": 4167,
+          "ticks": 1
+        }
+      ]
+    },
+    {
+      "nodeId": 237,
+      "function": "",
+      "url": "http://qa-draw-attribution-20261001.localhost:3340/game.html?webgpu=0",
+      "line0": 26949,
+      "line1": 26950,
+      "column0": 24,
+      "source": "game.html",
+      "positionTicks": []
+    },
+    {
+      "nodeId": 238,
+      "function": "updateQS",
+      "url": "http://qa-draw-attribution-20261001.localhost:3340/game.html?webgpu=0",
+      "line0": 26967,
+      "line1": 26968,
+      "column0": 17,
+      "source": "game.html",
+      "positionTicks": []
+    },
+    {
+      "nodeId": 247,
+      "function": "",
+      "url": "",
+      "line0": 40,
+      "line1": 41,
+      "column0": 42,
+      "source": null,
+      "positionTicks": []
+    },
+    {
+      "nodeId": 248,
+      "function": "collect",
+      "url": "",
+      "line0": 31,
+      "line1": 32,
+      "column0": 18,
+      "source": null,
+      "positionTicks": []
+    },
+    {
+      "nodeId": 249,
+      "function": "append",
+      "url": "",
+      "line0": 30,
+      "line1": 31,
+      "column0": 17,
+      "source": null,
+      "positionTicks": []
+    },
+    {
+      "nodeId": 288,
+      "function": "_v3tick",
+      "url": "http://qa-draw-attribution-20261001.localhost:3340/game.html?webgpu=0",
+      "line0": 63267,
+      "line1": 63268,
+      "column0": 16,
+      "source": "game.html",
+      "positionTicks": [
+        {
+          "line": 63269,
+          "ticks": 1
+        }
+      ]
+    },
+    {
+      "nodeId": 289,
+      "function": "requestAnimationFrame",
+      "url": "",
+      "line0": -1,
+      "line1": null,
+      "column0": -1,
+      "source": null,
+      "positionTicks": [
+        {
+          "line": 63269,
+          "ticks": 2
+        }
+      ]
+    },
+    {
+      "nodeId": 304,
+      "function": "",
+      "url": "chrome-extension://ofpnmcalabcbjgholdjcjblkibolbppb/content.js",
+      "line0": 7391,
+      "line1": 7392,
+      "column0": 174960,
+      "source": null,
+      "positionTicks": [
+        {
+          "line": 7392,
+          "ticks": 1
+        }
+      ]
+    },
+    {
+      "nodeId": 485,
+      "function": "getImgEl",
+      "url": "chrome-extension://ofpnmcalabcbjgholdjcjblkibolbppb/content.js",
+      "line0": 7391,
+      "line1": 7392,
+      "column0": 176903,
+      "source": null,
+      "positionTicks": [
+        {
+          "line": 7392,
+          "ticks": 1
+        }
+      ]
+    },
+    {
+      "nodeId": 337,
+      "function": "",
+      "url": "http://qa-draw-attribution-20261001.localhost:3340/game.html?webgpu=0",
+      "line0": 12805,
+      "line1": 12806,
+      "column0": 29,
+      "source": "game.html",
+      "positionTicks": []
+    },
+    {
+      "nodeId": 338,
+      "function": "getModifierState",
+      "url": "",
+      "line0": -1,
+      "line1": null,
+      "column0": -1,
+      "source": null,
+      "positionTicks": [
+        {
+          "line": 12808,
+          "ticks": 1
+        }
+      ]
+    },
+    {
+      "nodeId": 348,
+      "function": "_setMousePosition",
+      "url": "http://qa-draw-attribution-20261001.localhost:3340/game.html?webgpu=0",
+      "line0": 12333,
+      "line1": 12334,
+      "column0": 26,
+      "source": "game.html",
+      "positionTicks": []
+    },
+    {
+      "nodeId": 349,
+      "function": "getBoundingClientRect",
+      "url": "",
+      "line0": -1,
+      "line1": null,
+      "column0": -1,
+      "source": null,
+      "positionTicks": [
+        {
+          "line": 12335,
+          "ticks": 1
+        }
+      ]
+    },
+    {
+      "nodeId": 346,
+      "function": "",
+      "url": "chrome-extension://ofpnmcalabcbjgholdjcjblkibolbppb/content.js",
+      "line0": 7391,
+      "line1": 7392,
+      "column0": 182613,
+      "source": null,
+      "positionTicks": [
+        {
+          "line": 7392,
+          "ticks": 1
+        }
+      ]
+    },
+    {
+      "nodeId": 347,
+      "function": "_endDragBefore",
+      "url": "chrome-extension://ofpnmcalabcbjgholdjcjblkibolbppb/content.js",
+      "line0": 3666,
+      "line1": 3667,
+      "column0": 31388,
+      "source": null,
+      "positionTicks": [
+        {
+          "line": 3667,
+          "ticks": 1
+        }
+      ]
+    },
+    {
+      "nodeId": 402,
+      "function": "",
+      "url": "http://qa-draw-attribution-20261001.localhost:3340/game.html?webgpu=0",
+      "line0": 11161,
+      "line1": 11162,
+      "column0": 19,
+      "source": "game.html",
+      "positionTicks": []
+    },
+    {
+      "nodeId": 403,
+      "function": "_warmImageGpu",
+      "url": "http://qa-draw-attribution-20261001.localhost:3340/game.html?webgpu=0",
+      "line0": 21968,
+      "line1": 21969,
+      "column0": 22,
+      "source": "game.html",
+      "positionTicks": []
+    },
+    {
+      "nodeId": 404,
+      "function": "drawImage",
+      "url": "http://qa-draw-attribution-20261001.localhost:3340/game.html?webgpu=0",
+      "line0": 6040,
+      "line1": 6041,
+      "column0": 9,
+      "source": "game.html",
+      "positionTicks": []
+    },
+    {
+      "nodeId": 405,
+      "function": "_getTex",
+      "url": "http://qa-draw-attribution-20261001.localhost:3340/game.html?webgpu=0",
+      "line0": 5732,
+      "line1": 5733,
+      "column0": 18,
+      "source": "game.html",
+      "positionTicks": []
+    },
+    {
+      "nodeId": 406,
+      "function": "texImage2D",
+      "url": "",
+      "line0": -1,
+      "line1": null,
+      "column0": -1,
+      "source": null,
+      "positionTicks": [
+        {
+          "line": 5752,
+          "ticks": 17
+        }
+      ]
+    },
+    {
+      "nodeId": 430,
+      "function": "",
+      "url": "http://qa-draw-attribution-20261001.localhost:3340/game.html?webgpu=0",
+      "line0": 48135,
+      "line1": 48136,
+      "column0": 44,
+      "source": "game.html",
+      "positionTicks": [
+        {
+          "line": 48137,
+          "ticks": 1
+        }
+      ]
+    },
+    {
+      "nodeId": 491,
+      "function": "_dn",
+      "url": "http://qa-draw-attribution-20261001.localhost:3340/game.html?webgpu=0",
+      "line0": 11968,
+      "line1": 11969,
+      "column0": 44,
+      "source": "game.html",
+      "positionTicks": [
+        {
+          "line": 11969,
+          "ticks": 1
+        }
+      ]
+    },
+    {
+      "nodeId": 516,
+      "function": "",
+      "url": "",
+      "line0": 0,
+      "line1": 1,
+      "column0": 0,
+      "source": null,
+      "positionTicks": [
+        {
+          "line": 1,
+          "ticks": 3
+        }
+      ]
+    }
+  ]
+}

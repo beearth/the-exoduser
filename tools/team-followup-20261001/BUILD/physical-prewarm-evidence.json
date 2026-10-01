@@ -1,0 +1,181 @@
+{
+  "startedAt": "2026-10-01T14:58:17.089Z",
+  "completedAt": "2026-10-01T14:58:17.362Z",
+  "sources": [
+    {
+      "file": "game.html",
+      "sha256": "7c681cfaa592778ab6d7cc5b88c46906b332e4395bb60fda1b837d09ed6ee1de"
+    },
+    {
+      "file": "test/physicalImpactPrewarm.test.mjs",
+      "sha256": "f8bc0b5073a3feb838680017fc1ecd56df707cc1666ab0ba0f6440b369ccc3c2"
+    },
+    {
+      "file": "tools/team-followup-20261001/QA/physical-prewarm-original.js",
+      "sha256": "681989477a37b39bdcc961afa07e9e00af01fe2a3414f0ee3052d9d756a5f5be"
+    },
+    {
+      "file": "tools/team-followup-20261001/BALANCE/physical-prewarm-candidate.js",
+      "sha256": "34524ef90d3549aa60448b2bee0d6a25b04af71e43f20be0823ded8723e5f6ed"
+    },
+    {
+      "file": "outputs/team-review-20261001/draw-attribution/physical-fixture.json",
+      "sha256": "570f7fdcdb6f844f16633053a9dbd9e4eeb88930818556444a9cba480b1acabc"
+    }
+  ],
+  "checks": [
+    {
+      "name": "원 helper/tint 문자열 불변·후보/브라우저fixture 함수 동일",
+      "pass": true,
+      "actual": {
+        "fixtureBytes": 1048576,
+        "fixtureOnly": true
+      }
+    },
+    {
+      "name": "부트 정의/활성화 이후 assets→drop→skins→physical→renderer 1회",
+      "pass": true,
+      "actual": {
+        "positions": [
+          25,
+          98,
+          122,
+          223,
+          322,
+          500
+        ],
+        "missingBootDOM": "showBootLoading 조기return이면outside-boot;실제호출root확인"
+      }
+    },
+    {
+      "name": "microtask 시작 전 epoch 변경·동시 promise·완료후 재호출",
+      "pass": true,
+      "actual": "cancelled→prepared→reused; read1"
+    },
+    {
+      "name": "load 동시 src 변경 stale→lazy",
+      "pass": true,
+      "actual": {
+        "status": "stale",
+        "lazyRead": 1
+      }
+    },
+    {
+      "name": "load 동시 currentSrc 변경 stale→lazy",
+      "pass": true,
+      "actual": {
+        "status": "stale",
+        "lazyRead": 1
+      }
+    },
+    {
+      "name": "load 동시 identity 변경 stale→lazy",
+      "pass": true,
+      "actual": {
+        "status": "stale",
+        "lazyRead": 1
+      }
+    },
+    {
+      "name": "정상 currentSrc 빈값→로드주소도 stale, 다음 명시호출 준비가능",
+      "pass": true,
+      "actual": {
+        "input": "currentSrc=\"\"→src, load512²",
+        "first": "stale",
+        "again": "prepared",
+        "bootAutomaticRetry": false
+      }
+    },
+    {
+      "name": "load 전달 시각 249ms 예산경계",
+      "pass": true,
+      "actual": {
+        "attempts": 1,
+        "reuses": 0,
+        "status": "prepared-over-budget",
+        "syncMs": 5,
+        "totalMs": 254,
+        "pixelBytes": 1048576,
+        "errors": []
+      }
+    },
+    {
+      "name": "load 전달 시각 250ms 예산경계",
+      "pass": true,
+      "actual": {
+        "attempts": 1,
+        "reuses": 0,
+        "status": "timeout",
+        "syncMs": 0,
+        "totalMs": 250,
+        "pixelBytes": 0,
+        "errors": []
+      }
+    },
+    {
+      "name": "load 전달 시각 400ms 예산경계",
+      "pass": true,
+      "actual": {
+        "attempts": 1,
+        "reuses": 0,
+        "status": "timeout",
+        "syncMs": 0,
+        "totalMs": 250,
+        "pixelBytes": 0,
+        "errors": []
+      }
+    },
+    {
+      "name": "취소우선순위·로드 동시 killed",
+      "pass": true,
+      "actual": "cancelled/read0"
+    },
+    {
+      "name": "setTimeout 설치예외 settle 및 pending 해제",
+      "pass": true,
+      "actual": {
+        "attempts": 1,
+        "reuses": 0,
+        "status": "error",
+        "syncMs": 0,
+        "totalMs": 0,
+        "pixelBytes": 0,
+        "errors": [
+          "inspect:schedule fixture"
+        ]
+      }
+    },
+    {
+      "name": "개별 remove 예외도 다른 remove/settle 수행; 잔존listener 명시",
+      "pass": true,
+      "actual": {
+        "stats": {
+          "attempts": 1,
+          "reuses": 0,
+          "status": "load-failed",
+          "syncMs": 0,
+          "totalMs": 0,
+          "pixelBytes": 0,
+          "errors": [
+            "cleanup:remove fixture"
+          ]
+        },
+        "remainingListener": "load",
+        "nativeAPIExceptionOnly": true
+      }
+    },
+    {
+      "name": "가공예외후 원lazy 재시도·캐시 오염0",
+      "pass": true,
+      "actual": "error→lazy read1"
+    },
+    {
+      "name": "검사도중 입력SHA 불변",
+      "pass": true,
+      "actual": true
+    }
+  ],
+  "pass": 15,
+  "fail": 0,
+  "limits": "기존 synthetic Canvas/fake clock 하니스 재사용·독립 경계입력. 실제게임/브라우저 실행0. 성능개선/실제boot 미확인."
+}

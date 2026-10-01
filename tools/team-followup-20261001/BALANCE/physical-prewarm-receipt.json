@@ -1,0 +1,16 @@
+{
+  "taskId": "PHYSICAL-IMPACT-PREWARM-CANDIDATE",
+  "receivedAt": "2026-10-01T14:52:43Z",
+  "firstReadAt": "2026-10-01T14:52:43Z",
+  "firstRead": "배정·총괄18.40·VFX/성능 SSOT·실제원함수/부트/기존준비계약·원자료 clock/raw 구조",
+  "duplicateCheck": "BALANCE physical-prewarm 산출은 지시 파일만 존재",
+  "firstEdit": "전용 영수증 생성",
+  "status": "completed_unapplied_candidate",
+  "firstCodeEdit": "physical-prewarm-candidate.js 및 실제 원함수추출 하니스 작성",
+  "validatedAt": "2026-10-01T14:54:49Z",
+  "validation": "최종12그룹PASS/0FAIL, source동등한함수실행·RNG0·cache재호출0·취소/250ms협력예산/cleanup 검증",
+  "nextAction": "root 실제원화RGBA/부트비용/실전회귀 인수 전 생산미적용 유지",
+  "browserPixelsVerified": false,
+  "combatPerformanceVerified": false,
+  "productionModified": false
+}

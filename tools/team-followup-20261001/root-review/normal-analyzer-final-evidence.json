@@ -1,0 +1,414 @@
+{
+  "startedAt": "2026-10-01T14:53:21.143Z",
+  "completedAt": "2026-10-01T14:53:21.220Z",
+  "sources": [
+    {
+      "file": "outputs/team-review-20261001/support/normal-combat/raw.json",
+      "sha256": "9df8cd85a5634299fa13410475435fcc161d3cffd7dd261610b988edbf6e6413"
+    },
+    {
+      "file": "outputs/team-review-20261001/support/normal-combat/analysis.json",
+      "sha256": "163388bf9b67d5f874e0884dac4e14e942fda36d2214c51f51f285f67a06e607"
+    },
+    {
+      "file": "outputs/team-review-20261001/support/normal-combat/preflight.json",
+      "sha256": "32260488a467b5ba7f6e0ca8427d9ebe2a93b1070e436eba5036ee0f00ac1ecc"
+    },
+    {
+      "file": "tools/team-followup-20261001/QA/analyze-support-normal.mjs",
+      "sha256": "1b2b17e0b3ef0391be43dbacef2120ca00d3b0eb48f8bbbc89fdfeced595025f"
+    },
+    {
+      "file": "docs/0마스터플랜/mac-resume-20261001/vscode-dispatch/SUPPORT-normal-combat.md",
+      "sha256": "0d8de6c9d91dbba27ff6049e55a2bf6cb84505558f68fae03c4627f042b7f3e0"
+    }
+  ],
+  "kind": "small-readonly-JSON-audit-and-in-memory-analyzer",
+  "independent": {
+    "rawCounts": {
+      "rows": 694,
+      "draws": 694,
+      "inputs": 796,
+      "selectedRows": 693
+    },
+    "full": {
+      "start": 45217.59999990463,
+      "end": 70237.39999997616,
+      "durationMs": 25019.800000071526,
+      "rafTimestampIntervals": {
+        "n": 692,
+        "p50": 33.400000000001455,
+        "p95": 42.5,
+        "p99": 50.19999999999709,
+        "max": 133.40000000000146,
+        "over50": 11,
+        "over100": 2
+      },
+      "snapshotWallIntervals": {
+        "n": 692,
+        "p50": 35.699999928474426,
+        "p95": 45.5,
+        "p99": 49.299999952316284,
+        "max": 155.60000002384186,
+        "over50": 5,
+        "over100": 3
+      },
+      "drawStartIntervals": {
+        "n": 692,
+        "p50": 35.699999928474426,
+        "p95": 45.39999997615814,
+        "p99": 49.700000047683716,
+        "max": 132.79999995231628,
+        "over50": 6,
+        "over100": 3
+      },
+      "synchronousDrawCPU": {
+        "n": 693,
+        "p50": 0.5,
+        "p95": 1.7999999523162842,
+        "p99": 6,
+        "max": 129.79999995231628,
+        "over50": 3,
+        "over100": 2
+      }
+    },
+    "firstKillWindow": {
+      "start": 45217.59999990463,
+      "end": 47293.699999928474,
+      "durationMs": 2076.100000023842,
+      "rafTimestampIntervals": {
+        "n": 52,
+        "p50": 41.599999999998545,
+        "p95": 42.5,
+        "p99": 133.40000000000146,
+        "max": 133.40000000000146,
+        "over50": 1,
+        "over100": 1
+      },
+      "snapshotWallIntervals": {
+        "n": 52,
+        "p50": 38.39999997615814,
+        "p95": 44.60000002384186,
+        "p99": 155.60000002384186,
+        "max": 155.60000002384186,
+        "over50": 1,
+        "over100": 1
+      },
+      "drawStartIntervals": {
+        "n": 52,
+        "p50": 38.200000047683716,
+        "p95": 43.700000047683716,
+        "p99": 132.79999995231628,
+        "max": 132.79999995231628,
+        "over50": 1,
+        "over100": 1
+      },
+      "synchronousDrawCPU": {
+        "n": 53,
+        "p50": 0.6000000238418579,
+        "p95": 6.700000047683716,
+        "p99": 129.79999995231628,
+        "max": 129.79999995231628,
+        "over50": 1,
+        "over100": 1
+      }
+    },
+    "denseLongest": {
+      "start": 58797.39999997616,
+      "end": 70237.19999992847,
+      "durationMs": 11439.799999952316,
+      "rafTimestampIntervals": {
+        "n": 313,
+        "p50": 33.400000000001455,
+        "p95": 50,
+        "p99": 50.19999999999709,
+        "max": 50.69999999999709,
+        "over50": 8,
+        "over100": 0
+      },
+      "snapshotWallIntervals": {
+        "n": 313,
+        "p50": 36.10000002384186,
+        "p95": 47.60000002384186,
+        "p99": 49.299999952316284,
+        "max": 52.200000047683716,
+        "over50": 2,
+        "over100": 0
+      },
+      "drawStartIntervals": {
+        "n": 312,
+        "p50": 36,
+        "p95": 47.40000009536743,
+        "p99": 49.700000047683716,
+        "max": 52.200000047683716,
+        "over50": 3,
+        "over100": 0
+      },
+      "synchronousDrawCPU": {
+        "n": 313,
+        "p50": 0.5999999046325684,
+        "p95": 0.8999999761581421,
+        "p99": 2.899999976158142,
+        "max": 11.200000047683716,
+        "over50": 0,
+        "over100": 0
+      }
+    },
+    "firstObservedKill": {
+      "delay": 76.10000002384186,
+      "kills": 2,
+      "timestamp": 45276.3,
+      "previousRow": {
+        "timestamp": 45244.1,
+        "at": 45252.09999990463,
+        "on": true,
+        "paused": false,
+        "kills": 0,
+        "hp": 528,
+        "lv": 1,
+        "x": 4020,
+        "y": 7420,
+        "enemies": 5,
+        "hidden": false,
+        "focus": true,
+        "gl": true,
+        "gpu": false
+      }
+    },
+    "denseRows": 314
+  },
+  "rows": [
+    {
+      "name": "independent nearest-rank full",
+      "status": "PASS"
+    },
+    {
+      "name": "independent nearest-rank firstKillWindow",
+      "status": "PASS"
+    },
+    {
+      "name": "independent nearest-rank denseLongest",
+      "status": "PASS"
+    },
+    {
+      "name": "first input/kill batch cross reference raw rows",
+      "status": "PASS"
+    },
+    {
+      "name": "actual preflight/environment/options and cleanup consistent",
+      "status": "PASS"
+    },
+    {
+      "name": "actual numeric records finite ordered consistent",
+      "status": "PASS"
+    },
+    {
+      "name": "sandboxed actual analyzer exactly matches archived analysis",
+      "status": "PASS"
+    },
+    {
+      "name": "analyzer eligibility counterexample empty rows",
+      "status": "PASS"
+    },
+    {
+      "name": "analyzer eligibility counterexample empty draws",
+      "status": "PASS"
+    },
+    {
+      "name": "analyzer eligibility counterexample empty inputs",
+      "status": "PASS"
+    },
+    {
+      "name": "analyzer eligibility counterexample not stopped",
+      "status": "PASS"
+    },
+    {
+      "name": "analyzer eligibility counterexample firstKill before input",
+      "status": "PASS"
+    },
+    {
+      "name": "analyzer eligibility counterexample firstKill inconsistent batch",
+      "status": "PASS"
+    },
+    {
+      "name": "analyzer eligibility counterexample nonfinite timestamp JSON null",
+      "status": "PASS"
+    },
+    {
+      "name": "analyzer eligibility counterexample backward timestamp",
+      "status": "PASS"
+    },
+    {
+      "name": "analyzer eligibility counterexample negative draw duration",
+      "status": "PASS"
+    },
+    {
+      "name": "analyzer eligibility counterexample untrusted input",
+      "status": "PASS"
+    },
+    {
+      "name": "analyzer eligibility counterexample end unfocused",
+      "status": "PASS"
+    },
+    {
+      "name": "analyzer eligibility counterexample dropped field missing",
+      "status": "PASS"
+    },
+    {
+      "name": "valid exclusion controls for focus/options/cleanup",
+      "status": "PASS"
+    },
+    {
+      "name": "all source input hashes unchanged",
+      "status": "PASS"
+    }
+  ],
+  "counterexamples": [
+    {
+      "input": "empty rows",
+      "expected": "exclude or explicit UNKNOWN for capture consistency",
+      "actual": {
+        "eligible": false,
+        "exclusions": [
+          "insufficient samples",
+          "first kill does not match observed batch",
+          "end kill count mismatch"
+        ]
+      },
+      "classification": "mutated isolated JSON only; actual capture does not contain this anomaly"
+    },
+    {
+      "input": "empty draws",
+      "expected": "exclude or explicit UNKNOWN for capture consistency",
+      "actual": {
+        "eligible": false,
+        "exclusions": [
+          "insufficient samples"
+        ]
+      },
+      "classification": "mutated isolated JSON only; actual capture does not contain this anomaly"
+    },
+    {
+      "input": "empty inputs",
+      "expected": "exclude or explicit UNKNOWN for capture consistency",
+      "actual": {
+        "eligible": false,
+        "exclusions": [
+          "insufficient samples",
+          "first input does not match evidence"
+        ]
+      },
+      "classification": "mutated isolated JSON only; actual capture does not contain this anomaly"
+    },
+    {
+      "input": "not stopped",
+      "expected": "exclude or explicit UNKNOWN for capture consistency",
+      "actual": {
+        "eligible": false,
+        "exclusions": [
+          "capture not complete or missing loss count"
+        ]
+      },
+      "classification": "mutated isolated JSON only; actual capture does not contain this anomaly"
+    },
+    {
+      "input": "firstKill before input",
+      "expected": "exclude or explicit UNKNOWN for capture consistency",
+      "actual": {
+        "eligible": false,
+        "exclusions": [
+          "first kill does not match observed batch"
+        ]
+      },
+      "classification": "mutated isolated JSON only; actual capture does not contain this anomaly"
+    },
+    {
+      "input": "firstKill inconsistent batch",
+      "expected": "exclude or explicit UNKNOWN for capture consistency",
+      "actual": {
+        "eligible": false,
+        "exclusions": [
+          "first kill does not match observed batch"
+        ]
+      },
+      "classification": "mutated isolated JSON only; actual capture does not contain this anomaly"
+    },
+    {
+      "input": "nonfinite timestamp JSON null",
+      "expected": "exclude or explicit UNKNOWN for capture consistency",
+      "actual": {
+        "eligible": false,
+        "exclusions": [
+          "invalid row 5",
+          "nonmonotonic row 5"
+        ]
+      },
+      "classification": "mutated isolated JSON only; actual capture does not contain this anomaly"
+    },
+    {
+      "input": "backward timestamp",
+      "expected": "exclude or explicit UNKNOWN for capture consistency",
+      "actual": {
+        "eligible": false,
+        "exclusions": [
+          "nonmonotonic row 5"
+        ]
+      },
+      "classification": "mutated isolated JSON only; actual capture does not contain this anomaly"
+    },
+    {
+      "input": "negative draw duration",
+      "expected": "exclude or explicit UNKNOWN for capture consistency",
+      "actual": {
+        "eligible": false,
+        "exclusions": [
+          "invalid draw 5"
+        ]
+      },
+      "classification": "mutated isolated JSON only; actual capture does not contain this anomaly"
+    },
+    {
+      "input": "untrusted input",
+      "expected": "exclude or explicit UNKNOWN for capture consistency",
+      "actual": {
+        "eligible": false,
+        "exclusions": [
+          "invalid input evidence",
+          "first input does not match evidence"
+        ]
+      },
+      "classification": "mutated isolated JSON only; actual capture does not contain this anomaly"
+    },
+    {
+      "input": "end unfocused",
+      "expected": "exclude or explicit UNKNOWN for capture consistency",
+      "actual": {
+        "eligible": false,
+        "exclusions": [
+          "invalid endpoint state"
+        ]
+      },
+      "classification": "mutated isolated JSON only; actual capture does not contain this anomaly"
+    },
+    {
+      "input": "dropped field missing",
+      "expected": "exclude or explicit UNKNOWN for capture consistency",
+      "actual": {
+        "eligible": false,
+        "exclusions": [
+          "capture not complete or missing loss count"
+        ]
+      },
+      "classification": "mutated isolated JSON only; actual capture does not contain this anomaly"
+    }
+  ],
+  "pass": 21,
+  "fail": 0,
+  "interpretation": "counterexample PASS confirms invalid capture rejection after root hardening",
+  "limits": [
+    "No CPU/GPU cause attribution",
+    "synchronousDrawCPU is elapsed wrapper wall time, not CPU-only work or GPU completion",
+    "alive>=30 is not onscreen enemy count",
+    "existing Chrome/cache UNKNOWN/observer overhead unmeasured/no A-B or improvement conclusion"
+  ]
+}

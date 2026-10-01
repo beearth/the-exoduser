@@ -1,0 +1,23 @@
+{
+  "taskId": "DRAW-LONG-FRAME-ATTRIBUTION",
+  "status": "analysis_complete_pending_candidate_and_runtime_validation",
+  "receivedAt": null,
+  "firstReadCommandAt": "2026-10-01T14:50:45Z",
+  "sourceReadCompletedBefore": "2026-10-01T14:51:30Z",
+  "duplicateCheck": "배정 task만 있으며 UIUX draw-attribution 분석 산출 없음",
+  "firstEditEvidence": "전용 영수증·분석기·회귀 apply_patch",
+  "firstEditTimeWindow": {"after": "2026-10-01T14:51:30Z", "before": "2026-10-01T14:53:04Z"},
+  "checksCompletedAt": "2026-10-01T14:55:16Z",
+  "completedRecordedAt": "2026-10-01T14:55:16Z",
+  "validation": "분석기 exit0·회귀5PASS0FAIL/exit0·원자료 결정적 replay 동일 SHA·원자료/읽은소스 실행 전후 불변",
+  "inputHashes": {"raw.json": "a50e25e3cc50492d90b819126a98653bd3c80738985e663785442aeee986a4e2", "profile.cpuprofile": "71e15813b68a8235ae264a6eb359e0e5e79de622f984bf9907e6cfd365ae27ba", "clock.json": "1337ff447a77a84652b99baa55e07c21db13694a17d0724064670308f801302d", "preflight.json": "3acddb3b8290a328ad26866f3aa948479818562abb17affcf41b0b480e8c5c7b"},
+  "sourceHashes": {"game.html": "8ebc3b7b52a651c1a3bc5e8c285b00d186c6dacc18429ada7499781acc72b0b9", "ch1-living-detail.js": "e5e7e75b3865a926dfb3f8a5a1cc284a5dc5a976233a591062fa6506fd4a6640"},
+  "analysisSha256": "b0d36a0a1748215ca8669ab9be0be3bf26a6ce7c1fd63bbb494cd978ed3c1526",
+  "analyzerSha256": "a801531dd6dbf179a3d9afd50cff89a9d9e7d5150c0b06515ad330bab611ad27",
+  "testSha256": "dad0f2a376ab0cba9ba8766697b2bf223c980be7214fabc74bec4767ad2305e8",
+  "attribution": "긴draw114.2/99ms의 sampled getImageData 경로111.029/91.387ms 추정. UI/HUD/텍스트 해당창 주근거없음. native/GPU대기 분해미확정",
+  "ownedScope": "tools/team-followup-20261001/UIUX/draw-attribution-*만",
+  "limitations": "기존Chrome·캐시UNKNOWN·1ms profiler요청/3wrapper/Observer 오버헤드미측정·GPU완료미측정·이전 정상표본과 별도",
+  "nextAction": "root 독립파생캐시 준비 후보 검토·별도 픽셀동일성/실제A-B/비계측/GPU trace 승인. 생산수정 없음",
+  "prohibitedRuns": 0
+}

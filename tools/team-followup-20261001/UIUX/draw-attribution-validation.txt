@@ -1,0 +1,13 @@
+✔ microsecond profile times align through NavigationStart seconds and direct Runtime brackets (40.416584ms)
+✔ overlap accounting clips sample deltas to window; self estimates do not double-count callers (1.961375ms)
+✔ clock mismatch and navigation change are not silently rebased (0.181334ms)
+✔ categories require sampled API/helper names and do not attribute readback to HUD or GPU completion (0.039417ms)
+✔ two actual long draw stacks resolve to source-backed readback paths with full-stack evidence (31.726041ms)
+ℹ tests 5
+ℹ suites 0
+ℹ pass 5
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 109.49275

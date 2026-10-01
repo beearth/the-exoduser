@@ -1,0 +1,7 @@
+{
+  "at": "2026-10-01T14:48:23.705267+00:00",
+  "exit": 0,
+  "output": "Queued message 01a0f7f0-1d8c-75c3-8f0e-faf9359feae4 for thread 01a0f6e6-2e4c-7322-92d7-3aa309857856.\n",
+  "error": "",
+  "duplicateCheck": "latest BUILD completed support audit; no normal-combat audit receipt or task before creation; queue inspection unavailable UNKNOWN"
+}

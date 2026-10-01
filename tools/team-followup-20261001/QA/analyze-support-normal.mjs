@@ -1,7 +1,39 @@
 import fs from 'node:fs';
 const dir=new URL('../../../outputs/team-review-20261001/support/normal-combat/',import.meta.url);
 const raw=JSON.parse(fs.readFileSync(new URL('raw.json',dir),'utf8'));
-const good=r=>r.on&&!r.paused&&r.hp>0&&!r.hidden&&r.focus;
+function analyze(raw){
+const good=r=>r?.on===true&&r.paused===false&&Number.isFinite(r.hp)&&r.hp>0&&r.hidden===false&&r.focus===true;
+const errors=[];
+const require=(condition,reason)=>{if(!condition)errors.push(reason);};
+const arrays=['rows','draws','inputs','events','cleanupErrors'];
+for(const key of arrays)require(Array.isArray(raw?.[key]),'missing array '+key);
+if(errors.length)return {eligible:false,exclusions:errors};
+require(raw.schema==='light-normal-v1','unsupported schema');
+require(raw.restored?.draw===true&&raw.restored?.listeners===true,'cleanup incomplete');
+require(raw.initialOptions&&raw.finalOptions&&['quality','resScale','ssaa','fpsCap','parts','diff','atmos','bloom','lighting','postfx','fog','grain'].every(k=>Object.hasOwn(raw.initialOptions,k)&&Object.hasOwn(raw.finalOptions,k)),'missing options evidence');
+require(raw.environment?.profiler===false&&raw.environment?.gpuTiming===false&&Array.isArray(raw.environment?.viewport)&&raw.environment.viewport.length===2&&raw.environment.viewport.every(x=>Number.isFinite(x)&&x>0),'invalid light-observer environment');
+require(raw.rows.length>=2&&raw.draws.length>=2&&raw.inputs.length>0,'insufficient samples');
+require(raw.stopped===true&&raw.dropped===0,'capture not complete or missing loss count');
+require(good(raw.initial)&&good(raw.end),'invalid endpoint state');
+require(Number.isFinite(raw.start)&&Number.isFinite(raw.firstInput?.at)&&Number.isFinite(raw.end?.at)&&raw.start<=raw.firstInput.at&&raw.firstInput.at<raw.end.at,'invalid recording chronology');
+require(raw.initial?.kills===0&&Number.isSafeInteger(raw.end?.kills)&&raw.end.kills>=0,'invalid kill baseline/end');
+for(const [index,row] of raw.rows.entries()){
+  require(row&&['at','timestamp','hp','kills','enemies'].every(k=>Number.isFinite(row[k]))&&Number.isSafeInteger(row.kills)&&row.kills>=0&&Number.isSafeInteger(row.enemies)&&row.enemies>=0,'invalid row '+index);
+  if(index){const prev=raw.rows[index-1];require(row?.at>prev?.at&&row?.timestamp>prev?.timestamp&&row?.kills>=prev?.kills,'nonmonotonic row '+index);}
+  require(row?.at>=raw.start&&row?.at<=raw.end?.at,'row outside recording '+index);
+}
+for(const [index,draw] of raw.draws.entries()){
+  require(Number.isFinite(draw?.at)&&Number.isFinite(draw?.end)&&draw.end>=draw.at&&draw.at>=raw.start&&draw.end<=raw.end?.at,'invalid draw '+index);
+  if(index)require(draw?.at>=raw.draws[index-1]?.end,'overlapping/reversed draw '+index);
+}
+const same=(a,b)=>a&&b&&JSON.stringify(a)===JSON.stringify(b);
+require(raw.inputs.every(i=>i?.trusted===true&&Number.isFinite(i.at)&&i.at>=raw.start&&i.at<=raw.end?.at),'invalid input evidence');
+const firstInput=raw.inputs.find(i=>good(i)&&((i.kind==='keydown'&&i.code==='KeyW')||(i.kind==='mousedown'&&i.target==='CANVAS')));
+require(same(firstInput,raw.firstInput),'first input does not match evidence');
+const firstKill=raw.rows.find(r=>r?.kills>raw.initial?.kills);
+require(same(firstKill,raw.firstKill)&&firstKill?.at>=raw.firstInput?.at&&firstKill?.at<=raw.end?.at,'first kill does not match observed batch');
+require(raw.end?.kills===raw.rows.at(-1)?.kills,'end kill count mismatch');
+if(errors.length)return {eligible:false,exclusions:errors};
 const start=raw.firstInput.at,end=raw.end.at;
 const rows=raw.rows.filter(r=>r.at>=start&&r.at<=end);
 const quantiles=values=>{
@@ -43,6 +75,9 @@ const result={kind:'single normal-play observation, not A/B improvement',eligibl
   full:metrics(start,end),firstKillWindow:metrics(start,Math.min(end,raw.firstKill.at+2000)),
   denseSegments:segments,denseLongest:longest?metrics(longest.start,longest.end,dense):null,
   inputs:{count:raw.inputs.length,trusted:raw.inputs.every(i=>i.trusted),mechanism:'normal CUA key/click events; no held-key timing guarantee'},
-  cleanup:raw.restored,limits:['GL/GPU cost unmeasured','observer overhead not independently measured','existing Chrome profile; cache state unknown','first-kill prehistory is only from first input; first observed batch contains two kills','post-run screenshot is later than measured endpoint; HUD regional counter differs from total G.kills','no comparison or PC329ms resolution claim']};
+  cleanup:raw.restored,limits:['synchronousDrawCPU is a historical field name for synchronous elapsed wall time, not CPU-only work','GL/GPU cost unmeasured','observer overhead not independently measured','existing Chrome profile; cache state unknown','first-kill prehistory is only from first input; first observed batch contains two kills','post-run screenshot is later than measured endpoint; HUD regional counter differs from total G.kills','no comparison or PC329ms resolution claim']};
+return result;
+}
+const result=analyze(raw);
 fs.writeFileSync(new URL('analysis.json',dir),JSON.stringify(result,null,2)+'\n');
 console.log(JSON.stringify(result,null,2));

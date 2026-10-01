@@ -1,0 +1,15 @@
+{
+  "taskId":"PHYSICAL-PREWARM-INTEGRATION-AUDIT",
+  "receivedAt":"2026-10-01T14:57:03Z",
+  "firstReadAt":"2026-10-01T14:57:03Z",
+  "status":"완료: 독립15PASS/회귀17PASS, 실제boot/live성능인수root후속",
+  "validationCompletedAt":"2026-10-01T14:58:17.362Z",
+  "completedAt":"2026-10-01T14:59:36Z",
+  "independent":{"pass":15,"fail":0,"sourceHashesUnchanged":true},
+  "regression":{"pass":17,"fail":0},
+  "limitations":"정상currentSrc빈값→로드도stale가능; 협력예산선점불가; API청소거부잔존listener명시; 실제boot/live미검수",
+  "duplicateCheck":"전용task만존재; 이전normal-combat감사와별도",
+  "firstCommand":"date/범위AGENTS검색/실제game함수위치·task·기존test읽기",
+  "validationCommand":"node tools/team-followup-20261001/BUILD/physical-prewarm-check.mjs",
+  "ownedPaths":"tools/team-followup-20261001/BUILD/physical-prewarm-*"
+}

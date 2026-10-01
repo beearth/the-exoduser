@@ -183,7 +183,6 @@
     "listeners": true
   },
   "limits": [
-    "synchronousDrawCPU is a historical field name for synchronous elapsed wall time, not CPU-only work",
     "GL/GPU cost unmeasured",
     "observer overhead not independently measured",
     "existing Chrome profile; cache state unknown",

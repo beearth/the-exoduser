@@ -1,0 +1,12 @@
+{
+  "at": "2026-10-01T14:49:11.873800+00:00",
+  "head": "d128e3c89e1e9e155ea8606cf1283b02df82c3fa",
+  "sha256": "8ebc3b7b52a651c1a3bc5e8c285b00d186c6dacc18429ada7499781acc72b0b9",
+  "url": "http://qa-draw-attribution-20261001.localhost:3340/game.html?webgpu=0",
+  "profile": "existing Chrome, new origin",
+  "cache": "UNKNOWN",
+  "profilerIntervalUsRequested": 1000,
+  "observer": "QA/gap-attribution-observer.js unchanged",
+  "singleGame": true,
+  "load": "BUILD permitted small read-only JSON audit; no builds/other games"
+}

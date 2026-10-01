@@ -1,0 +1,21 @@
+import { execFileSync } from 'node:child_process';
+import fs from 'node:fs';
+import assert from 'node:assert/strict';
+
+const run = () => JSON.parse(execFileSync(process.execPath, ['tools/team-followup-20261001/ITEM/draw-attribution-analyze.mjs'], { maxBuffer: 4 * 1024 * 1024 }));
+const first = run();
+const second = run();
+const saved = JSON.parse(fs.readFileSync('tools/team-followup-20261001/ITEM/draw-attribution-result.json', 'utf8'));
+for (const result of [first, second, saved]) delete result.generatedAt;
+assert.deepEqual(first, second);
+assert.deepEqual(first, saved);
+assert.equal(first.end.kills, 9);
+assert.equal(first.windows.length, 2);
+assert(first.windows.every(window => window.itemSampleCount === 0 && window.rngSampleCount === 0));
+assert(first.itemProfileSamples.length > 0);
+assert.equal(first.clock.anchor, 34665.821);
+assert.equal(first.sourceVerification.gameMatchesPreflight, true);
+const frames = new Map(first.frames.map(frame => [frame.nodeId, frame]));
+assert(first.windows[0].stacks[0].stack.some(id => frames.get(id).function === '_tintHolyDome'));
+assert(first.windows[1].stacks[0].stack.some(id => frames.get(id).function === 'membrane'));
+console.log('PASS: 원자료 재실행2회 동일, 제출 결과 동일, 2구간/9처치, 전리품 표본 위치, 시간축 및 주스택 검증');

@@ -18,7 +18,7 @@
         "tool": "Read",
         "input": "{'file_path': '/Users/fordeargamers/Projects/exoduser-migration-20261001/tools/team-followup-20261001/QA/NEXT_TASK.md'}"
       },
-      "status": "root 정상25초·15처치·밀집11.44초 관측완료; 성능개선은 미확정",
+      "status": "물리타격 시트 통합17검사·전수픽셀0diff, 실전검수 대기",
       "completedAt": "2026-10-01T11:58:36.004Z",
       "cliState": "idle in fresh seven-Claude inventory; previous evidence retained",
       "rootFollowup": {
@@ -27,7 +27,7 @@
         "status": "INCONCLUSIVE;5excluded samples; all game tabs closed",
         "evidence": "outputs/team-review-20261001/d10/qa-verdict.json"
       },
-      "nextAction": "동기draw129.8/108.3/99.4ms 별도 원인귀속1회",
+      "nextAction": "BUILD 독립검수와원격복구뒤정상전투1회",
       "measurementRunning": false
     },
     {
@@ -43,7 +43,7 @@
       "startedAt": null,
       "blocker": "fresh native getApp Mac locked; permissions unchanged",
       "status": "original Claude idle/native locked; repair still not delivered to original owner; original files read-only",
-      "cliState": "idle in fresh claude agents --json at this checkpoint",
+      "cliState": "새 Claude inventory idle; native Mac locked, 입력미실시",
       "pendingRepair": {
         "dispatch": "not_received",
         "instruction": "/Users/fordeargamers/Projects/exoduser-migration-20261001/tools/team-followup-20261001/ENEMY/NEXT_TASK.md",
@@ -51,7 +51,8 @@
       },
       "supportTeam": "ITEM",
       "supportPath": "tools/team-followup-20261001/ITEM/enemy-support-*",
-      "draftAndQueue": "UNKNOWN because native is locked; no claim queue empty"
+      "draftAndQueue": "UNKNOWN because native is locked; no claim queue empty",
+      "pendingQueueAndDrafts": "UNKNOWN"
     },
     {
       "team": "MAP",
@@ -78,7 +79,8 @@
         "tools/team-followup-20261001/MAP/_source-candidate-MAP.js": "ee72db6d3efae293680a35781ca96e995b59bade995a93f936909bea3d2ca27f",
         "tools/team-followup-20261001/MAP/m5-evidence-gate.test.cjs": "71acfe4b499360c9bbc672cec4a7cd64c71f1dcdda04ac73bf9cf3093f3d96d0"
       },
-      "cliState": "idle in fresh seven-Claude inventory; previous evidence retained"
+      "cliState": "새 Claude inventory idle; native Mac locked, 입력미실시",
+      "pendingQueueAndDrafts": "UNKNOWN"
     },
     {
       "team": "ART",
@@ -104,7 +106,7 @@
         "tools/team-followup-20261001/ART/wa24-observer.cjs": "a7134b053786c0c976ecb65832c20ab7380d4addd6e1341445e3d80567f0b7b3",
         "tools/team-followup-20261001/ART/wa24-observer.test.mjs": "17aba27f029995856ee0dc23651cb46b063ad5b51018477f0f79a3ffdf2664bd"
       },
-      "cliState": "idle in fresh claude agents --json at this checkpoint",
+      "cliState": "새 Claude inventory idle; native Mac locked, 입력미실시",
       "pendingRepair": {
         "dispatch": "not_received",
         "instruction": "/Users/fordeargamers/Projects/exoduser-migration-20261001/tools/team-followup-20261001/ART/FIX_TASK.md",
@@ -113,7 +115,8 @@
       "blocker": "fresh native getApp Mac locked; permissions unchanged",
       "supportTeam": "UIUX",
       "supportPath": "tools/team-followup-20261001/UIUX/art-support-*",
-      "draftAndQueue": "UNKNOWN because native is locked; no claim queue empty"
+      "draftAndQueue": "UNKNOWN because native is locked; no claim queue empty",
+      "pendingQueueAndDrafts": "UNKNOWN"
     },
     {
       "team": "SKILL",
@@ -138,7 +141,7 @@
         "tools/team-followup-20261001/SKILL/ice-cancel-probe.safe.js": "ae7c8e8ad6e874e565c3ee0cb8b635130cefa234c5628bd0ba2922da96481d1b",
         "tools/team-followup-20261001/SKILL/_source-candidate-SKILL.js": "aeded94120a1186da3983a4975efd06ed7c610644bab2ba0c3a11f0a4f756b1f"
       },
-      "cliState": "idle in fresh claude agents --json at this checkpoint",
+      "cliState": "새 Claude inventory idle; native Mac locked, 입력미실시",
       "pendingRepair": {
         "dispatch": "not_received",
         "instruction": "/Users/fordeargamers/Projects/exoduser-migration-20261001/tools/team-followup-20261001/SKILL/FIX_TASK.md",
@@ -147,7 +150,8 @@
       "blocker": "fresh native getApp Mac locked; permissions unchanged",
       "supportTeam": "BALANCE",
       "supportPath": "tools/team-followup-20261001/BALANCE/skill-support-*",
-      "draftAndQueue": "UNKNOWN because native is locked; no claim queue empty"
+      "draftAndQueue": "UNKNOWN because native is locked; no claim queue empty",
+      "pendingQueueAndDrafts": "UNKNOWN"
     },
     {
       "team": "ANIMVFX",
@@ -172,7 +176,8 @@
         "tools/team-followup-20261001/ANIMVFX/animvfx_highhz_lifetime_gate.mjs": "3309238f04d51ccf65af92b90c9aade9edb034e0632a81119d17efa198dfcfd7",
         "tools/team-followup-20261001/ANIMVFX/animvfx_gl_probe.js": "b7ca9939f44f59dca4a67f1853327b61480c61e112d9e88d2df65c55a041ec7c"
       },
-      "cliState": "idle in fresh seven-Claude inventory; previous evidence retained"
+      "cliState": "새 Claude inventory idle; native Mac locked, 입력미실시",
+      "pendingQueueAndDrafts": "UNKNOWN"
     },
     {
       "team": "BUILD",
@@ -183,7 +188,7 @@
       "stateBefore": "idle/completed verified",
       "dispatch": "received",
       "exists": true,
-      "status": "independent audit complete 31PASS2FAIL; root fixed S1/S2 and reran independent33PASS",
+      "status": "physical통합독립15검사·기존17회귀완료",
       "startEvidence": "기존 완료result/receipt/NEXT_TASK 읽기; 동일 조사 산출 부재 확인; Claude 경로 조회",
       "receipt": "/Users/fordeargamers/Projects/exoduser-migration-20261001/docs/0마스터플랜/mac-resume-20261001/vscode-dispatch/BUILD-next-receipt.json",
       "waitReason": "Execution environment denied loopback listen; no bypass/retry. NW gate separate",
@@ -245,7 +250,8 @@
         "outgoingQueue": 0,
         "newSessions": 0
       },
-      "nextAction": "QA completion gate before further load"
+      "nextAction": "root 단독실전검수 결과 인수",
+      "latestDispatch": "receipt14:57:03Z actual Read; completed14:58:17Z"
     },
     {
       "team": "UIUX",
@@ -258,7 +264,7 @@
       "exists": true,
       "receivedAt": "2026-10-01T14:25:37Z",
       "startedAt": "2026-10-01T14:25:37Z",
-      "status": "지원 후보 제출·root 인수 완료; 실제 tick/trace/픽셀 게이트는 별도",
+      "status": "draw분석완료; membrane variant식별근거작업전송",
       "startEvidence": "본 영수증 및 review.html 소비 구현 apply_patch",
       "receipt": "/Users/fordeargamers/Projects/exoduser-migration-20261001/docs/0마스터플랜/mac-resume-20261001/vscode-dispatch/UIUX-review-receipt.json",
       "waitReason": "Effect/art/translation/game/package gates remain",
@@ -369,7 +375,8 @@
         "nextAction": "독립 읽기 포트/실패닫힘 fixture 검사 뒤 ITEM 실제 API 재조회",
         "prohibitedRuns": 0
       },
-      "nextAction": "root normal combat QA; no duplicate dispatch"
+      "nextAction": "map규칙읽기·variant근거없으면관측후보만",
+      "latestDispatch": "공식CLI queue 성공; 새수신/Read는receipt로별도확인"
     },
     {
       "team": "ITEM",
@@ -382,7 +389,7 @@
       "exists": true,
       "receivedAt": "2026-10-01T14:25:02Z",
       "startedAt": "2026-10-01T14:25:02Z",
-      "status": "지원 후보 제출·root 인수 완료; 실제 tick/trace/픽셀 게이트는 별도",
+      "status": "draw분석완료; root의이미수정된자격판정독립재검수전송",
       "startEvidence": "NEXT_TASK.md와 기존 ITEM 결과·후보·현재 생산 함수 읽기",
       "receipt": "/Users/fordeargamers/Projects/exoduser-migration-20261001/docs/0마스터플랜/mac-resume-20261001/vscode-dispatch/ITEM-definition-receipt.json",
       "previous": {
@@ -441,7 +448,8 @@
         "nextAction": "새제안인스턴스의명시버전저장필드·RNG1회·readStoredRoll adapter·JSON회귀 구현",
         "blocker": null
       },
-      "nextAction": "root normal combat QA; no duplicate dispatch"
+      "nextAction": "normal-eligibility 실제Read/수정없는독립검수",
+      "latestDispatch": "공식CLI queue 성공; 새수신/Read는receipt로별도확인"
     },
     {
       "team": "BALANCE",
@@ -454,7 +462,7 @@
       "exists": true,
       "receivedAt": "2026-10-01T14:25:37Z",
       "startedAt": "2026-10-01T14:25:37Z",
-      "status": "지원 후보 제출·root 인수 완료; 실제 tick/trace/픽셀 게이트는 별도",
+      "status": "physical후보12검사완료·root통합17검사·픽셀동일",
       "startEvidence": "배정·팀 최신 MD·정의 모듈·적용 계약·D절22행 실제 읽기",
       "receipt": "/Users/fordeargamers/Projects/exoduser-migration-20261001/docs/0마스터플랜/mac-resume-20261001/vscode-dispatch/BALANCE-roll-receipt.json",
       "waitReason": "Effect/art/translation/game/package gates remain",
@@ -519,7 +527,7 @@
         "runtimeReady": false,
         "forbiddenActions": 0
       },
-      "nextAction": "root normal combat QA; no duplicate dispatch"
+      "nextAction": "BUILD 지적발생시응답대기;중복작성금지"
     },
     {
       "team": "SOUND",
@@ -549,13 +557,14 @@
       "receipt": "/Users/fordeargamers/Projects/exoduser-migration-20261001/docs/0마스터플랜/mac-resume-20261001/vscode-dispatch/SOUND-item-sound-receipt.json",
       "waitReason": "Actual audio/game/package checks remain",
       "instruction": "/Users/fordeargamers/Projects/exoduser-migration-20261001/tools/team-followup-20261001/SOUND/ITEM_SOUND_TEST_TASK.md",
-      "cliState": "idle in fresh seven-Claude inventory; previous evidence retained",
+      "cliState": "새 Claude inventory idle; native Mac locked, 입력미실시",
       "previousTaskSnapshot": {
         "task": "S-11-HOWL-RNG-PRESERVING-CANDIDATE",
         "status": "submitted; corrected8 + independent6 PASS, both context patches valid; production/audio pending",
         "completedAt": "2026-10-01T12:35:18.112Z",
         "receipt": "/Users/fordeargamers/Projects/exoduser-migration-20261001/docs/0마스터플랜/mac-resume-20261001/vscode-dispatch/SOUND-rng-receipt.json"
-      }
+      },
+      "pendingQueueAndDrafts": "UNKNOWN"
     }
   ],
   "remoteCheckpoint": {
@@ -576,11 +585,11 @@
     "scope": "includes BUILD denied loopback and SOUND dedup; later RNG and v2 changes not in this snapshot"
   },
   "nativeCheck": {
-    "atApprox": "2026-10-01T13:44:00Z",
-    "inventoryAccessible": true,
-    "lockState": "unknown",
-    "error": "noWindowsAvailable",
-    "note": "No further native input; later IAB success does not establish native input recovery"
+    "at": "2026-10-01T14:59:21.658084+00:00",
+    "result": "Mac locked; automatic unlock unsuccessful",
+    "attempts": 1,
+    "queueDrafts": "UNKNOWN",
+    "settingsChanged": false
   },
   "uiuxSubmissionRecovery": {
     "sha": "b3ab5be7f0c7a57ec1892cca1d65825549f54d72",
@@ -620,7 +629,8 @@
     "productionD10Active": false,
     "simultaneouslyRunningCount": "UNKNOWN for external CLI; use actual actions and receipts rather than interrupted app flag",
     "normalCombat": "eligible single observation:25.020s/15kills/max41/dense11.440s; CPU draw129.8ms remains",
-    "nextAction": "separate draw cause attribution; no improvement claim"
+    "nextAction": "BUILD physical audit -> remote checkpoint -> root single live regression",
+    "physical": "production candidate integrated;17 tests and full RGBA0diff; live gate pending"
   },
-  "updatedAt": "2026-10-01T14:46:38.177039+00:00"
+  "updatedAt": "2026-10-01T14:59:21.658084+00:00"
 }

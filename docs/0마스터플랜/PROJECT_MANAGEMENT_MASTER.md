@@ -629,3 +629,8 @@ ITEM→ENEMY tick, UIUX→ART 최종crop, BALANCE→SKILL 충전증거 후보를
 ### 18.40 정상 전투 첫 처치·밀집 연속 관측
 
 기본품질 고정·단일게임25.020초/15처치/생존적최대41·연속밀집11.440초 확보. 관측/옵션/전경 게이트충족, 첫처치묶음2를첫입력+76.1ms 관측. 전체RAF p99 50.2/max133.4ms, CPUdraw최대129.8ms 잔여. GL미측정·개선율미확정. draw/listener원복·게임탭종료. 다음은동기draw129.8/108.3/99.4ms 원인귀속1회이며 아직원인확정/생산수정아님. [원자료·환경·한계](mac-resume-20261001/vscode-dispatch/SUPPORT-normal-combat.md).
+
+
+### 18.41 draw실제스택 귀속·물리타격 준비 통합 검수
+
+별도profiler표본9처치에서draw114.2ms의_tintHolyDome/getImageData와99ms의membrane/getImageData를ITEM/UIUX가독립대조했다. 이전129.8ms와다른사건,CPU/GPU대기미분리. BUILD는정상표본수치일치와분석기12반례를확인,root가모두거부하도록수정해21PASS. BALANCE의기존물리512²시트250ms협력준비를본편부트에통합,실제원함수17검사·RGBA전수0diff. 실제부트/전투는아직검수전. BUILD통합독립검수,ITEM자격재검수,UIUX맵variant식별만배정했으며추측맵수정0. 새native Mac잠금/Claude7idle·큐초안UNKNOWN. [근거·단계](mac-resume-20261001/vscode-dispatch/DRAW-attribution-root-review.md).
