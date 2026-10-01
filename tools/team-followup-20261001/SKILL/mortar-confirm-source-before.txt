@@ -1,0 +1,18 @@
+/* game.html fireMaliceMortar 원함수 보존 (patch 미적용 기준). HEAD ae230e74. */
+function fireMaliceMortar(_tx,_ty){
+  P._mmAiming=false;
+  useMp('mortar');
+  const tx=_tx!=null?_tx:P.x+Math.cos(P.facing)*(P._mmDist||150);
+  const ty=_ty!=null?_ty:P.y+Math.sin(P.facing)*(P._mmDist||150);
+  const _mmSlv=P.skills.maliceMortar||1;
+  const _mmR=400+(_mmSlv-1)*18; // 1렙400(×2), 20렙742(+20%)
+  const _iceFuse=P.skills.iceOrb>=1&&_isFused('iceMortar');
+  if(_iceFuse){P._mmCd=660;P._ioCd=600;}else{P._mmCd=660;}
+  G._mmBomb={sx:P.x,sy:P.y,tx:tx,ty:ty,x:P.x,y:P.y,t:0,maxT:40,r:_mmR,phase:'throw',
+    vortex:true,iceFuse:!!_iceFuse,slv:_mmSlv};
+  if(_iceFuse){
+    SFX.magic(EL.I);  }else{
+    SFX.magic(EL.D);  }
+  if(Math.random()<.3)playSample('voice_magic',1,1);else{const _ve=['voice_grunt','male_grunt'];playSample(_ve[~~(Math.random()*2)],1,_r(1,.15))};
+  shake(5);
+}

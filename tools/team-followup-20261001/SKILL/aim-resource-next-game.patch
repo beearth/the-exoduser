@@ -1,0 +1,21 @@
+--- game.html	2026-10-02 01:08:57
++++ /private/tmp/claude-501/-Users-fordeargamers-Projects-exoduser-migration-20261001/203377cc-64c4-47ea-af27-95b66ae829fa/scratchpad/ts/game.html	2026-10-02 01:15:48
+@@ -35230,6 +35230,9 @@
+     if(MBjust[2]||K['Escape']){P._tsAiming=false;MBjust[2]=false;K['Escape']=false}
+     else if(MBjust[0]){
+       MBjust[0]=false;
++      if((P._tsStk||0)<=0){P._tsAiming=false;showPH(_T('충전 중...'),'#ff8844')}
++      else if(P.mp<50){showPH(_T('MP 부족! (50)'),'#4488ff')}
++      else{
+       let _tsx=mouse.x-VW/2+G.cam.x,_tsy=mouse.y-VH/2+G.cam.y;
+       const _tsD=dst(P.x,P.y,_tsx,_tsy);
+       if(_tsD>1000){const _tsA=Math.atan2(_tsy-P.y,_tsx-P.x);_tsx=P.x+Math.cos(_tsA)*1000;_tsy=P.y+Math.sin(_tsA)*1000}
+@@ -35246,7 +35249,7 @@
+       shake(3);
+       _addSkProf('thunderStake');
+       if(Math.random()<.3)playSample('voice_magic',1,1);
+-      P._tsAiming=false;
++      P._tsAiming=false;}
+     }
+   }
+   // ═══ 레인라이트닝 — 전류 폭파 헬퍼 ═══

@@ -1,0 +1,44 @@
+{
+  "taskId": "SKILL-mortar-confirm-source",
+  "title": "fireMaliceMortar 조준-확정 MP 재검사 결함 조사 → RED/patch/회귀",
+  "team": "SKILL",
+  "terminal": 6,
+  "cli": "claude-code",
+  "model": "claude-opus-4-8",
+  "sessionId": "203377cc-64c4-47ea-af27-95b66ae829fa",
+  "head": "ae230e74f7bbcacd523dae987370086046457f5e",
+  "receivedAtUTC": "2026-10-01T16:27:00Z",
+  "firstReadUTC": "2026-10-01T16:28:00Z",
+  "firstCodeEditUTC": "2026-10-01T16:35:00Z",
+  "status": "done_pending_root_apply",
+  "duplicateCheck": "mortar-confirm-source-{receipt,result,test,patch,before} 부재(task.md만) → 신규. iceStorm/hellRay/thunderStake 기수정과 별개 스킬.",
+  "verdict": "REAL_DEFECT",
+  "frozenBeforeSha256_fireMaliceMortar": "cdeeead948d5518c6beeb8f3eee4fbf38eed8cc785165738f7150f8c375f2f49 (game.html·game-easy-test.html 동일, 789chars)",
+  "investigation": {
+    "aimStart": "game.html:12444 — mp>=mpCost('mortar')(50) && _mmCd<=0 요구 후 _mmAiming=true",
+    "confirm": "game.html:35209-35215 — MBjust[0]||_mmRel 시 fireMaliceMortar() 호출(재검사 없음)",
+    "function": "game.html:43757-43773 — P._mmAiming=false; useMp('mortar')(Math.max 클램프 차감); 조건 없이 G._mmBomb 생성·SFX·RNG·shake·_mmCd=660. fireBoneWall(바로 아래)과 달리 내부 MP/자원 게이트 없음",
+    "reachability": "aim-block 목록(31756 _ms/_is/_bw/_eb/_hr/_ts)에 _mmAiming 미포함 → 멀티프레임 홀드-충전 중 다른 MP 소비 가능 → 확정 시 MP<50이어도 무료 발사. 실제 도달 가능",
+    "callers": "fireMaliceMortar 유일 호출부 = 35213 확정",
+    "ssot": "2_1:227 maliceMortar 쿨11초(660f)=_mmCd와 일치. 스택/악의 비용 없음, MP는 mpCost('mortar')=50(game.html:30709). 비용/쿨 불변"
+  },
+  "ownedPaths": [
+    "tools/team-followup-20261001/SKILL/mortar-confirm-source-before.txt",
+    "tools/team-followup-20261001/SKILL/mortar-confirm-source.test.mjs",
+    "tools/team-followup-20261001/SKILL/mortar-confirm-source-game.patch",
+    "tools/team-followup-20261001/SKILL/mortar-confirm-source-easy.patch",
+    "tools/team-followup-20261001/SKILL/mortar-confirm-source-receipt.json",
+    "tools/team-followup-20261001/SKILL/mortar-confirm-source-result.md"
+  ],
+  "nextAction": "frozen before 보존 + RED(MP30 무료발사) + 최소 MP 재검사 patch + GREEN 회귀 작성·실행",
+  "blocker": null,
+  "notes": "새 비용/쿨다운/보호설계 변경 0 — MP<50 재검사 가드만. thunderStake 900/SSOT600 불일치는 유지(임의 수치변경 0). game/easy 생산 적용은 root. Git/queue/새세션/공유docs/production 쓰기 0, 게임탭 입력/리로드/닫기/계측 0, 대형빌드 0.",
+  "completedAtUTC": "2026-10-01T16:41:00Z",
+  "artifacts": {
+    "test": "mortar-confirm-source.test.mjs → 17 PASS / 0 FAIL (exit0)",
+    "patchGame": "mortar-confirm-source-game.patch (1줄 가드, dry-run APPLIES CLEAN)",
+    "patchEasy": "mortar-confirm-source-easy.patch (dry-run APPLIES CLEAN)",
+    "before": "mortar-confirm-source-before.txt (원함수 보존, sha cdeeead9…)"
+  },
+  "translation": "'MP 부족!'(No.0338) 기존 등록·game.html 17회 재사용 → 새 등록 불필요"
+}

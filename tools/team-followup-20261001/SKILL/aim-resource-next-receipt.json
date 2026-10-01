@@ -1,0 +1,46 @@
+{
+  "taskId": "SKILL-20261002-AIM-RESOURCE-NEXT",
+  "title": "thunderStake 확정 경계 — 조준 이후 MP/스택 재검사 RED→patch→GREEN",
+  "team": "SKILL",
+  "terminal": 6,
+  "cli": "claude-code",
+  "model": "claude-opus-4-8",
+  "sessionId": "203377cc-64c4-47ea-af27-95b66ae829fa",
+  "head": "7cb8485de65b2afdf6d3da726aab44bb33c7516f",
+  "receivedAtUTC": "2026-10-01T16:10:00Z",
+  "firstReadUTC": "2026-10-01T16:11:00Z",
+  "firstCodeEditUTC": "2026-10-01T16:16:00Z",
+  "status": "done_pending_root_apply",
+  "duplicateCheck": "aim-resource-next-{receipt,result}·aim-resource-next-*.{js,mjs,patch} 부재(task.md만 존재) → 신규. hellRay/iceStorm/fireBoneWall는 이미 수정, 재패치 금지 준수. 후보 3개 중 1개만 선택.",
+  "surveyed": {
+    "_msAiming(maliceStorm)": "기본 경로 MP/스택 비용 없음(쿨다운 P._msCd만, 성공 후 설정). 합체(boneStorm/elecRepent) 경로는 확정에서 MP50 재검사 있음(35060), 악의12는 Math.max 클램프. → 조준후 자원 재검사 결함 아님",
+    "_mmAiming(maliceMortar)": "확정은 fireMaliceMortar() 호출로 위임(비용은 함수 내부). fireBoneWall류 함수 위임 — 본 과제 결함 재현 블록 아님(함수 내부 검수는 별건)",
+    "_tsAiming(thunderStake)": "선택. 확정 블록(35229-35250)이 조준 시작 후 MP<50/스택0 재검사 없이 P.mp=max(0,mp-50)·P._tsStk=max(0,(_tsStk||1)-1) 후 설치 → MP49/스택0에서도 무료 설치. iceStorm/hellRay와 동일 결함 클래스, 미수정 스킬"
+  },
+  "ssot": "2_1:1321-1337 thunderStake MP50/개, 5스택(720f/1충전, Lv10→6), 지속 600+(Lv-1)×30f. 아임스타트 게이트(12530-12537)는 스택>0·MP>=50 요구.",
+  "readOnlyInputs": [
+    "game.html:35026-35109(_ms), 35204-35251(_mm/_ts), 12443-12537(aim-start), 34864-34868(_ts 리젠)",
+    "game-easy-test.html 대응 블록",
+    "docs/2_1 스킬관리+합체시스템+자원/2_1 스킬관리+합체시스템.md:1321-1337(SSOT)",
+    "test/skillStackConfirmGate.test.js(관례)"
+  ],
+  "ownedPaths": [
+    "tools/team-followup-20261001/SKILL/aim-resource-next-gate.test.mjs",
+    "tools/team-followup-20261001/SKILL/aim-resource-next-game.patch",
+    "tools/team-followup-20261001/SKILL/aim-resource-next-easy.patch",
+    "tools/team-followup-20261001/SKILL/aim-resource-next-receipt.json",
+    "tools/team-followup-20261001/SKILL/aim-resource-next-result.md"
+  ],
+  "nextAction": "thunderStake 양쪽 원블록 RED + 최소 미적용 patch + patched GREEN 작성·실행, 번역/듀레이션 불일치 확인",
+  "blocker": null,
+  "notes": "game/easy 생산 적용은 root. 새 비용/효과 없음, MP50+스택1만 확정 가드. 중복확정/취소/패드 MBjust[0] 공통경로 불변. Git/queue/새세션/공유docs/production 쓰기 0, 게임입력/리로드/계측 0.",
+  "completedAtUTC": "2026-10-01T16:22:00Z",
+  "artifacts": {
+    "test": "aim-resource-next-gate.test.mjs → 23 PASS / 0 FAIL (exit0)",
+    "patchGame": "aim-resource-next-game.patch (dry-run APPLIES CLEAN)",
+    "patchEasy": "aim-resource-next-easy.patch (dry-run APPLIES CLEAN)",
+    "before": "aim-resource-next-before-ts.txt (원블록 보존)"
+  },
+  "translation": "'충전 중...'(No.0342)·'MP 부족! (50)'(No.1601) 기존 등록·27 lang 전수 → 새 등록 불필요",
+  "handoff": "game.html/easy _tsMaxT=900(15초) vs SSOT 2_1:1325 600f(10초) 불일치 — 범위 밖, root/총괄 reconcile 인계"
+}

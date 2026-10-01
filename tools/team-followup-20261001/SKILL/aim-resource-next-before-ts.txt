@@ -1,0 +1,25 @@
+/* game.html 뇌전창(thunderStake) 확정 블록 원문 보존 (patch 미적용 기준). HEAD 7cb8485d. */
+if(P._tsAiming){
+    if(MBjust[2]||K['Escape']){P._tsAiming=false;MBjust[2]=false;K['Escape']=false}
+    else if(MBjust[0]){
+      MBjust[0]=false;
+      let _tsx=mouse.x-VW/2+G.cam.x,_tsy=mouse.y-VH/2+G.cam.y;
+      const _tsD=dst(P.x,P.y,_tsx,_tsy);
+      if(_tsD>1000){const _tsA=Math.atan2(_tsy-P.y,_tsx-P.x);_tsx=P.x+Math.cos(_tsA)*1000;_tsy=P.y+Math.sin(_tsA)*1000}
+      const _tsLv=P.skills.thunderStake||1;
+      const _tsDmg=~~(magicRef()*statInt()*pMagicMul()*_skMul('thunderStake')*_fuseMul('thunderStake'));
+      const _tsMaxT=900+(_tsLv-1)*30; // 15초+Lv당0.5초
+      P.mp=Math.max(0,P.mp-50);
+      P._tsStk=Math.max(0,(P._tsStk||1)-1);
+      if(P._tsStk<((P.skills.thunderStake>=10)?6:5))P._tsRech=720;
+      if(!G._thunderStakes)G._thunderStakes=[];
+      G._thunderStakes.push({x:_tsx,y:_tsy,t:0,maxT:_tsMaxT,dmg:_tsDmg,lv:_tsLv,el:EL.L});
+      SFX.magic(EL.L);
+      addTxt(_tsx,_tsy-20,_T('⚡ 뇌전창!'),'#44ddff',30);
+      shake(3);
+      _addSkProf('thunderStake');
+      if(Math.random()<.3)playSample('voice_magic',1,1);
+      P._tsAiming=false;
+    }
+  }
+  

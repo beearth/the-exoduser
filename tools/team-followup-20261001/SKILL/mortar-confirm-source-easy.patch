@@ -1,0 +1,10 @@
+--- game-easy-test.html	2026-10-02 01:08:57
++++ /private/tmp/claude-501/-Users-fordeargamers-Projects-exoduser-migration-20261001/203377cc-64c4-47ea-af27-95b66ae829fa/scratchpad/mm/game-easy-test.html	2026-10-02 01:31:59
+@@ -42460,6 +42460,7 @@
+ 
+ // ═══ 폭풍소환 발사 (키홀드 거리 → 기원 투척 → 착지 시 소용돌이 전개) ═══
+ function fireMaliceMortar(_tx,_ty){
++  if(P.mp<mpCost('mortar')){showPH(_T('MP 부족!'),'#4488ff');return}
+   P._mmAiming=false;
+   useMp('mortar');
+   const tx=_tx!=null?_tx:P.x+Math.cos(P.facing)*(P._mmDist||150);

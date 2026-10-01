@@ -1,0 +1,40 @@
+{
+  "taskId": "SKILL-20261002-HELLRAY-CONFIRM-GATE",
+  "title": "hellRay 확정 경계 — 조준 이후 MP/스택 재검사 RED→patch→GREEN",
+  "team": "SKILL",
+  "terminal": 6,
+  "cli": "claude-code",
+  "model": "claude-opus-4-8",
+  "sessionId": "203377cc-64c4-47ea-af27-95b66ae829fa",
+  "head": "1c7cdb453c8a9ddaaac401020beb72ac87a74353",
+  "receivedAtKST": "2026-10-02T10:05",
+  "firstReadKST": "2026-10-02T10:06",
+  "firstCodeEditKST": "2026-10-02T10:24",
+  "status": "done_pending_root_apply",
+  "completedAtKST": "2026-10-02T10:41",
+  "artifacts": {
+    "test": "tools/team-followup-20261001/SKILL/hellray-confirm-gate.test.mjs → 25 PASS / 0 FAIL (exit0)",
+    "patchGame": "tools/team-followup-20261001/SKILL/hellray-confirm-game.patch (dry-run APPLIES CLEAN)",
+    "patchEasy": "tools/team-followup-20261001/SKILL/hellray-confirm-easy.patch (dry-run APPLIES CLEAN)"
+  },
+  "translation": "patch 문자열 '충전 중...'(No.0342)·'MP 부족! (100)'(No.1442) 모두 기존 등록·27 lang 전수 보유 → 새 등록 불필요",
+  "duplicateCheck": "hellray-confirm-*·OWNER_IMPL_20261002-{receipt,result} 부재 → 신규. 지난 OWNER_NEXT는 통합 인수(완료)로 별건. 패치/관측기 재생성 아님(이번은 hellRay 확정 게이트).",
+  "ssot": "2_1 스킬관리+합체시스템.md:408 hellRay MP100 / 스택1(elecRepent 합체 2~3) / 10초(600f) 충전 / 범위 200+(Lv-1)×22. 합체 elecRepent는 storm DOT 존 추가.",
+  "defect": "game.html:34989 / game-easy-test.html:33794 'else if(MBjust[0])' 확정에서 조준 시작 후 MP<100·스택0 재검사 없이 즉시 P.mp-=100;P._hrStk-- → MP99면 mp 음수, 스택0이면 stk 음수로 설치. iceStorm SKILL03과 동일 결함 클래스(재검사 부재).",
+  "readOnlyInputs": [
+    "game.html:34974-35013 (hellRay 리젠+확정 블록, 읽기)",
+    "game-easy-test.html:33789-33817 (동일 블록, 읽기)",
+    "test/skillStackConfirmGate.test.js (추출/하니스 관례, 읽기)",
+    "docs/2_1 스킬관리+합체시스템+자원/2_1 스킬관리+합체시스템.md:408 (SSOT, 읽기)"
+  ],
+  "ownedPaths": [
+    "tools/team-followup-20261001/SKILL/hellray-confirm-gate.test.mjs",
+    "tools/team-followup-20261001/SKILL/hellray-confirm-game.patch",
+    "tools/team-followup-20261001/SKILL/hellray-confirm-easy.patch",
+    "tools/team-followup-20261001/SKILL/OWNER_IMPL_20261002-receipt.json",
+    "tools/team-followup-20261001/SKILL/OWNER_IMPL_20261002-result.md"
+  ],
+  "nextAction": "양쪽 원블록 RED(결함 재현) + 최소 미적용 patch + patched GREEN 작성·실행",
+  "blocker": null,
+  "notes": "game/easy 생산 적용은 root. 새 비용/효과/환급/리젠/보호 설계 0. 실패 시 자원/장판/숙련/RNG/음향 호출 0, 성공은 기존 행동/비용 유지. Git/게임/브라우저/서버/빌드/새세션 0. 타팀/공유docs 무수정. 기록은 이 소유폴더에만."
+}
