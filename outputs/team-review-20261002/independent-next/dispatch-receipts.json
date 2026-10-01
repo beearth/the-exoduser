@@ -1,0 +1,203 @@
+{
+  "checkedAt": "2026-10-01T17:54:54.029Z",
+  "rows": [
+    {
+      "id": "01a0f6e6-1fbe-7df0-8d02-a9c2d9df3750",
+      "title": "할당 작업 실행",
+      "status": "interrupted",
+      "startedAt": 1790876998,
+      "completedAt": null,
+      "commands": [
+        {
+          "command": "/bin/zsh -lc 'date -u +%Y-%m-%dT%H:%M:%SZ; cat tools/team-followup-20261001/ITEM/browser-csp-cause-task.md; ls tools/team-followup-20261001/ITEM/browser-csp-cause*; find tools -name AGENTS.md; tail -20 docs/7아이템디자인/ITEM_TEAM_MASTER.md'",
+          "status": "completed",
+          "exitCode": 0
+        },
+        {
+          "command": "/bin/zsh -lc 'cat tools/team-followup-20261001/ITEM/browser-csp-result.md; cat tools/team-followup-20261001/ITEM/browser-host/{index.html,host.js}; cat tools/team-followup-20261001/ITEM/browser-bootstrap-ui.js; rg --files docs | rg FOUR-SUBMISSIONS-HELLRAY; ls tools/team-followup-20261001/ITEM/browser-host*; find tools/team-followup-20261001/ITEM/browser-host -name AGENTS.md'",
+          "status": "completed",
+          "exitCode": 0
+        },
+        {
+          "command": "/bin/zsh -lc \"cat docs/0마스터플랜/mac-resume-20261001/vscode-dispatch/FOUR-SUBMISSIONS-HELLRAY-20261002.md | tail -45; cat tools/team-followup-20261001/ITEM/browser-host-check.mjs; rg -n 'host.js|index.html|writeFile|initializeReviewHost' tools/team-followup-20261001/ITEM/browser-host-transform.mjs; cat tools/team-followup-20261001/ITEM/browser-host/manifest.json | head -26; cat tools/team-followup-20261001/ITEM/browser-host/host.css\"",
+          "status": "completed",
+          "exitCode": 0
+        },
+        {
+          "command": "/bin/zsh -lc \"date -u +%Y-%m-%dT%H:%M:%SZ; sed -n '1,65p' tools/team-followup-20261001/ITEM/browser-host-transform.mjs; rg -n 'httpChecks|files\\\\[' tools/team-followup-20261001/ITEM/browser-host-transform.mjs; cat outputs/team-review-20261002/acceptance/item-browser.json | head -50\"",
+          "status": "completed",
+          "exitCode": 0
+        },
+        {
+          "command": "/bin/zsh -lc \"node --input-type=module -e \\\"import fs from 'node:fs';import crypto from 'node:crypto';const base='tools/team-followup-20261001/ITEM/';const targets=['browser-host/host.js','browser-host/index.html'];const rows=targets.map(file=>({file:base+file,text:fs.readFileSync(base+file,'utf8'),sha256:crypto.createHash('sha256').update(fs.readFileSync(base+file)).digest('hex')}));console.log(JSON.stringify(rows));\\\"\"",
+          "status": "completed",
+          "exitCode": 0
+        },
+        {
+          "command": "/bin/zsh -lc 'node tools/team-followup-20261001/ITEM/browser-host-check.mjs; date -u +%Y-%m-%dT%H:%M:%SZ'",
+          "status": "completed",
+          "exitCode": 0
+        },
+        {
+          "command": "/bin/zsh -lc \"node tools/team-followup-20261001/ITEM/browser-csp-cause-check.mjs; rg -l 'CSP|browser-host|browser-csp' docs/; date -u +%Y-%m-%dT%H:%M:%SZ\"",
+          "status": "completed",
+          "exitCode": 0
+        },
+        {
+          "command": "/bin/zsh -lc 'node tools/team-followup-20261001/ITEM/browser-csp-cause-check.mjs; date -u +%Y-%m-%dT%H:%M:%SZ'",
+          "status": "completed",
+          "exitCode": 0
+        },
+        {
+          "command": "/bin/zsh -lc 'node tools/team-followup-20261001/ITEM/browser-host-check.mjs'",
+          "status": "completed",
+          "exitCode": 0
+        },
+        {
+          "command": "/bin/zsh -lc 'node tools/team-followup-20261001/ITEM/browser-csp-cause-check.mjs; date -u +%Y-%m-%dT%H:%M:%SZ'",
+          "status": "completed",
+          "exitCode": 0
+        },
+        {
+          "command": "/bin/zsh -lc 'node tools/team-followup-20261001/ITEM/browser-host-check.mjs'",
+          "status": "completed",
+          "exitCode": 0
+        }
+      ],
+      "files": [
+        "/Users/fordeargamers/Projects/exoduser-migration-20261001/tools/team-followup-20261001/ITEM/browser-csp-cause-before.json",
+        "/Users/fordeargamers/Projects/exoduser-migration-20261001/tools/team-followup-20261001/ITEM/browser-csp-cause-receipt.json",
+        "/Users/fordeargamers/Projects/exoduser-migration-20261001/tools/team-followup-20261001/ITEM/browser-host/csp-startup.js",
+        "/Users/fordeargamers/Projects/exoduser-migration-20261001/tools/team-followup-20261001/ITEM/browser-host/host.js",
+        "/Users/fordeargamers/Projects/exoduser-migration-20261001/tools/team-followup-20261001/ITEM/browser-host/index.html",
+        "/Users/fordeargamers/Projects/exoduser-migration-20261001/tools/team-followup-20261001/ITEM/browser-csp-cause-check.mjs",
+        "/Users/fordeargamers/Projects/exoduser-migration-20261001/tools/team-followup-20261001/ITEM/browser-csp-cause-check.mjs",
+        "/Users/fordeargamers/Projects/exoduser-migration-20261001/tools/team-followup-20261001/ITEM/browser-csp-cause-evidence.json",
+        "/Users/fordeargamers/Projects/exoduser-migration-20261001/tools/team-followup-20261001/ITEM/browser-csp-cause-qa-plan.md",
+        "/Users/fordeargamers/Projects/exoduser-migration-20261001/tools/team-followup-20261001/ITEM/browser-csp-cause-result.md",
+        "/Users/fordeargamers/Projects/exoduser-migration-20261001/tools/team-followup-20261001/ITEM/browser-host/host.js"
+      ],
+      "lastMessage": [
+        {
+          "type": "agentMessage",
+          "id": "msg_0b9abcfc267a1f0c016abe9e1bb04087d08c28d06c5388bbbe",
+          "text": "진단 11검사와 기존 host 12검사가 통과했습니다. 실브라우저 확인은 QA 게이트입니다.\n",
+          "phase": "commentary"
+        }
+      ]
+    },
+    {
+      "id": "01a0f6e6-2e4c-7322-92d7-3aa309857856",
+      "title": "BUILD-task.md 실행하기",
+      "status": "interrupted",
+      "startedAt": 1790877221,
+      "completedAt": null,
+      "commands": [
+        {
+          "command": "/bin/zsh -lc \"date -u +%Y-%m-%dT%H:%M:%SZ; cat tools/team-followup-20261001/BUILD/media-range-task.md; rg --files tools/team-followup-20261001/BUILD | rg 'media-range'; rg --files tools -g AGENTS.md\"",
+          "status": "failed",
+          "exitCode": 1
+        },
+        {
+          "command": "/bin/zsh -lc \"rg -n 'range|createReadStream|gzip|HEAD|Accept-Ranges' server.cjs; sed -n '1,28p' AGENTS.md; head -20 docs/13출시·마케팅/INTEGRATION_BUILD_TEAM_MASTER.md; cat tools/team-followup-20261001/BUILD/mac-character-media-result.md | head -13; sed -n '1,45p' server.cjs\"",
+          "status": "completed",
+          "exitCode": 0
+        },
+        {
+          "command": "/bin/zsh -lc \"sed -n '235,325p' server.cjs\"",
+          "status": "completed",
+          "exitCode": 0
+        },
+        {
+          "command": "/bin/zsh -lc 'node tools/team-followup-20261001/BUILD/media-range-test.mjs > tools/team-followup-20261001/BUILD/media-range-command.log 2>&1; tail -4 tools/team-followup-20261001/BUILD/media-range-command.log; date -u +%Y-%m-%dT%H:%M:%SZ'",
+          "status": "completed",
+          "exitCode": 0
+        },
+        {
+          "command": "/bin/zsh -lc 'head -30 tools/team-followup-20261001/BUILD/media-range-command.log'",
+          "status": "completed",
+          "exitCode": 0
+        }
+      ],
+      "files": [
+        "/Users/fordeargamers/Projects/exoduser-migration-20261001/tools/team-followup-20261001/BUILD/media-range-candidate.mjs",
+        "/Users/fordeargamers/Projects/exoduser-migration-20261001/tools/team-followup-20261001/BUILD/media-range-receipt.json",
+        "/Users/fordeargamers/Projects/exoduser-migration-20261001/tools/team-followup-20261001/BUILD/media-range-test.mjs"
+      ],
+      "lastMessage": [
+        {
+          "type": "agentMessage",
+          "id": "msg_039848e5f8333ca5016abe9e3f8a6c87d09ef15accac612972",
+          "text": "suffix 결함을 재현하고, 잘못된 Range는 기존 GET 경로로 돌리는 후보를 만들겠습니다.\n",
+          "phase": "commentary"
+        }
+      ]
+    },
+    {
+      "id": "01a0f6e5-8653-7ae2-8b2b-314e275c215c",
+      "title": "UIUX 작업 착수 기록",
+      "status": "interrupted",
+      "startedAt": 1790877259,
+      "completedAt": null,
+      "commands": [
+        {
+          "command": "/bin/zsh -lc \"date -u '+%Y-%m-%dT%H:%M:%SZ'; cat tools/team-followup-20261001/UIUX/filter-focus-task.md; rg --files tools/team-followup-20261001/UIUX | rg 'filter-focus|AGENTS'; sed -n '1,22p' AGENTS.md\"",
+          "status": "completed",
+          "exitCode": 0
+        },
+        {
+          "command": "/bin/zsh -lc \"cat tools/team-followup-20261001/UIUX/production-integration-result.md; cat 'docs/2_7 인벤토리+장비시스템/INVENTORY_KEYBOARD_FOCUS_20261002.md'; rg -n 'UI-04|키보드 상세' 'docs/3.1 ui hud 디자인/UI_UX_IMPROVEMENT_PROJECT_20260930.md'; rg -n 'invFilter|_invChangeCategory|inventory-tab|ossuary|invFilters' ui-panels.js | head -65; rg -n 'invFilter|invFilters|_invCategoryMatches|inventoryPage' game.html | tail -40; cat tools/team-followup-20261001/UIUX/card-removal-focus-candidate.mjs; rg --files -g AGENTS.md tools docs\"",
+          "status": "failed",
+          "exitCode": 1
+        },
+        {
+          "command": "/bin/zsh -lc \"sed -n '145,205p' ui-panels.js; sed -n '47800,47813p' game.html; sed -n '48487,48517p' game.html; sed -n '48572,48610p' game.html; sed -n '48638,48655p' game.html; sed -n '48728,48772p' game.html; sed -n '48048,48069p' game.html; sed -n '48292,48365p' game.html; rg -n '_invChangeCategory|invFilter\\\\[key\\\\]|function _invCategoryMatches' game-easy-test.html; cat tools/team-followup-20261001/UIUX/inventory-dom/node-dom.mjs\"",
+          "status": "completed",
+          "exitCode": 0
+        }
+      ],
+      "files": [],
+      "lastMessage": [
+        {
+          "type": "agentMessage",
+          "id": "msg_06cf962afd8696c6016abe9e4e467887d0ab5ca1ece0525417",
+          "text": "담당 문서와 중복 상태를 확인하고, 새 소유 범위에서만 재현하겠습니다.\n",
+          "phase": "commentary"
+        }
+      ]
+    },
+    {
+      "id": "01a0f6e6-5303-7392-81ba-94c42e349ffc",
+      "title": "Execute assigned task",
+      "status": "interrupted",
+      "startedAt": 1790877259,
+      "completedAt": null,
+      "commands": [
+        {
+          "command": "/bin/zsh -lc \"date -u '+%Y-%m-%dT%H:%M:%SZ'; cat tools/team-followup-20261001/BALANCE/save-write-failure-task.md; rg --files -g AGENTS.md; rg --files tools/team-followup-20261001/BALANCE | rg 'save-write-failure|MASTER';\"",
+          "status": "completed",
+          "exitCode": 0
+        },
+        {
+          "command": "/bin/zsh -lc \"cat AGENTS.md >/dev/null; rg --files docs | rg 'BALANCE.*MASTER|세이브|SAVE'; cat tools/team-followup-20261001/BALANCE/disk-save-restart-result.md; rg -n \\\"api/save|writeFileSync|sanitizeSlot\\\" server.cjs; rg -n '저장|원자|fsync' 'docs/15 세이브+데이터구조' | head -45; rg --files docs | rg 'BALANCE_ECONOMY'\"",
+          "status": "completed",
+          "exitCode": 0
+        },
+        {
+          "command": "/bin/zsh -lc \"sed -n '55,80p' server.cjs; sed -n '120,140p' server.cjs; sed -n '230,255p' server.cjs; head -55 docs/14밸런스+수치테이블/BALANCE_ECONOMY_TEAM_MASTER.md; tail -25 docs/14밸런스+수치테이블/BALANCE_ECONOMY_TEAM_MASTER.md; sed -n '140,185p' 'docs/15 세이브+데이터구조/15 세이브+데이터구조.md'; date -u '+%Y-%m-%dT%H:%M:%SZ'\"",
+          "status": "completed",
+          "exitCode": 0
+        }
+      ],
+      "files": [],
+      "lastMessage": [
+        {
+          "type": "agentMessage",
+          "id": "msg_0070df5b0b729229016abe9e5d627c87d0a1140f1f7a0519dc",
+          "text": "직접 덮어쓰기의 부분 기록 실패를 재현하고, 교체 후보를 검증하겠습니다.\n",
+          "phase": "commentary"
+        }
+      ]
+    }
+  ]
+}

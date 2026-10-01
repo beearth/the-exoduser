@@ -1,0 +1,179 @@
+{
+  "causeChecks": {
+    "utc": "2026-10-01T17:53:02.881Z",
+    "oldFailures": [
+      {
+        "case": "기존 원 host CSP 출처/좌표/이력 손실",
+        "reducedMessage": "CSP style-src-elem inline",
+        "afterLaterError": "스크립트 오류 later-script-error",
+        "verdict": "FAIL 재현",
+        "fixtureKind": "synthetic event; 실제 브라우저 위반 원자료 아님"
+      }
+    ],
+    "pass": 11,
+    "fail": 0,
+    "rows": [
+      {
+        "name": "before 원문/기능함수 SHA 보존",
+        "status": "PASS"
+      },
+      {
+        "name": "CSP byte 동일/초기 self classic 순서/inline0",
+        "status": "PASS"
+      },
+      {
+        "name": "정상 baseline은 위반 관찰0/설치·RNG0",
+        "status": "PASS"
+      },
+      {
+        "name": "초기 사건 원필드·UTC·순서 보존/단일 listener",
+        "status": "PASS"
+      },
+      {
+        "name": "이후 사건 누적/필드0·빈문자열 보존",
+        "status": "PASS"
+      },
+      {
+        "name": "오류/설치실패/해제 후 원자료 지우지 않음",
+        "status": "PASS"
+      },
+      {
+        "name": "실제 포트 Node 설치→생성→JSON복원→해제/원자료·RNG0",
+        "status": "PASS"
+      },
+      {
+        "name": "snapshot 복사/원자료 외부 수정 방지",
+        "status": "PASS"
+      },
+      {
+        "name": "startup 미실행 fallback 전체필드/초기 UNKNOWN",
+        "status": "PASS"
+      },
+      {
+        "name": "actual root 요약과 합성 event 분리/원주입자 UNKNOWN",
+        "status": "PASS"
+      },
+      {
+        "name": "생성 전이·UI 원문 보존/서버 JS MIME 소스",
+        "status": "PASS"
+      }
+    ],
+    "sourceHashes": {
+      "before": {
+        "tools/team-followup-20261001/ITEM/browser-host/host.js": "1acc96fc49d181987fd5a38f316ea99400bd41c85980e65fda6a48c3768964b2",
+        "tools/team-followup-20261001/ITEM/browser-host/index.html": "204ad41705750af0975abfdc4ea3da05b11555e7b1757cb3fbf64e6afa257600"
+      },
+      "after": {
+        "host": "81633cb256f485364bbd404530ada30cae1560d2a4f63a5dd9402fd1677a312d",
+        "index": "ea1c8ded5ab7867c9a03082785fad60d8622d08da9e9f1bf125214f83c37a4e3",
+        "startup": "36ee47b1846f508c1d3bca7741d50ebb481312408344401eff2a1c6a1844cf84"
+      }
+    },
+    "functionHashes": {
+      "beforeInitialize": "7755fb08889e38d5f528b4591b359c955060f724af3ef1d806a2e2048c45c25b",
+      "afterInitialize": "191b4691bea9d5c8f3f1e2f1d0f5b0a235e2625247af4ef7481dd1e3e2878159"
+    },
+    "rootRaw": {
+      "path": "outputs/team-review-20261002/acceptance/item-browser.json",
+      "sha256": "96a56f55f227f6970e7f7f9bdeab98817196133a1aded6347f51c0f15c49d785",
+      "hasFullEventFields": false,
+      "attribution": "UNKNOWN"
+    },
+    "syntheticViolationFixture": {
+      "documentURI": "http://fixture.local/host",
+      "referrer": "",
+      "blockedURI": "inline",
+      "violatedDirective": "style-src-elem",
+      "effectiveDirective": "style-src-elem",
+      "originalPolicy": "default-src 'none'; script-src 'self'; style-src 'self'",
+      "sourceFile": "http://fixture.local/synthetic-injector.js",
+      "sample": "",
+      "disposition": "enforce",
+      "statusCode": 200,
+      "lineNumber": 41,
+      "columnNumber": 7,
+      "timeStamp": 12.25,
+      "isTrusted": false
+    },
+    "actualUI": "UNKNOWN: QA 전용 미실행",
+    "actualHTTP": "UNKNOWN: fixture responses only"
+  },
+  "existingHostRegression": {
+    "checkedAt": "2026-10-01T17:54:15.977Z",
+    "pass": 12,
+    "fail": 0,
+    "rows": [
+      {
+        "name": "변환 재실행/원문역치환·JS산출 byte동일",
+        "status": "PASS"
+      },
+      {
+        "name": "실제 mkItem 의존/원함수 추출과 fixture 제한",
+        "status": "PASS"
+      },
+      {
+        "name": "JS 전이 MIME 소스검사",
+        "status": "PASS"
+      },
+      {
+        "name": "생성 D10 정확1/base별도·전체 JSON/이름/affixes/소켓 보존",
+        "status": "PASS"
+      },
+      {
+        "name": "legacy/missing/invalid 수리/재롤0",
+        "status": "PASS"
+      },
+      {
+        "name": "HTTP 오류/비JS MIME은 읽을수있는 실패",
+        "status": "PASS"
+      },
+      {
+        "name": "HTML CSP·외부JS·자동포트 설치없음",
+        "status": "PASS"
+      },
+      {
+        "name": "호스트 init/opt-in없는 클릭 생성·import0",
+        "status": "PASS"
+      },
+      {
+        "name": "실제 .js 체인 Node import·설치→신규→JSON→해제 UI",
+        "status": "PASS"
+      },
+      {
+        "name": "호스트 import전 HTTP실패 property설치0/CSP표시",
+        "status": "PASS"
+      },
+      {
+        "name": "해제 타property보호",
+        "status": "PASS"
+      },
+      {
+        "name": "원본 byte 보존",
+        "status": "PASS"
+      }
+    ],
+    "protectedSources": {
+      "game.html": "c868284af349c996d42087e93eba47a10614d73cb8f55f4db5ae01dde89da31a",
+      "server.cjs": "339fad6ab51cba92f6ca7a386c8aeb251f68cdb58cdfa55c109f57b1758a42ad",
+      "unique-item-project/definitions.js": "3f04bcc5ac90b039454f32dc9323e60bbe44dda27be7fd439a97633d1f25118a",
+      "unique-item-project/roll-values.js": "103d0460c738c117840586780eaaed7be7ebe0aba61fa50464db9d004b094975",
+      "tools/team-followup-20261001/ITEM/persistence-integration-port.mjs": "39debbda9b23065c026d80861eb397cb59cb2a43b1b1ca7e570621f8242b189a",
+      "tools/team-followup-20261001/ITEM/binding-ports.mjs": "2b6bf07a42edc0336d976105015d2886fd4ef342aa6766131c29fdaf561a49a4",
+      "tools/team-followup-20261001/ITEM/binding-d10.mjs": "b16bb29314e64cc2161f4eadd921678af2303a164e95080fdf879042fa4303f1",
+      "tools/team-followup-20261001/ITEM/d10-consumer.mjs": "6045326868bea6f7c5b1026d9472a02bdba5756cac41a110165e050ba9d4e7fb",
+      "tools/team-followup-20261001/ITEM/browser-bootstrap-api.js": "dcea3ff9722dde2fd200ecf1fb55f6d742f70631918fa7276c089e5e775ae9eb",
+      "tools/team-followup-20261001/ITEM/browser-bootstrap-ui.js": "5c6a17133d39b276f12ebff6e33924b44acf7b122b47821a3730c3026b68634d"
+    },
+    "counters": {
+      "base": 49,
+      "d10": 1,
+      "restoreCalls": 4,
+      "restoreRng": 0
+    },
+    "actualBrowserImport": "UNKNOWN",
+    "actualHTTP": "UNKNOWN: fixture responses only"
+  },
+  "originalPreservation": "browser-csp-cause-before.json에 변경전 host/index 전체원문과 SHA. 기존 CSP/d17 증거 수정0. bootstrap UI 변경0.",
+  "QAActual": "UNKNOWN: 실UI 슬롯 QA 전용, 담당 미실행",
+  "finalVerification": {"cause":{"utc":"2026-10-01T17:54:37.582Z","oldFailures":[{"case":"기존 원 host CSP 출처/좌표/이력 손실","reducedMessage":"CSP style-src-elem inline","afterLaterError":"스크립트 오류 later-script-error","verdict":"FAIL 재현","fixtureKind":"synthetic event; 실제 브라우저 위반 원자료 아님"}],"pass":11,"fail":0,"rows":[{"name":"before 원문/기능함수 SHA 보존","status":"PASS"},{"name":"CSP byte 동일/초기 self classic 순서/inline0","status":"PASS"},{"name":"정상 baseline은 위반 관찰0/설치·RNG0","status":"PASS"},{"name":"초기 사건 원필드·UTC·순서 보존/단일 listener","status":"PASS"},{"name":"이후 사건 누적/필드0·빈문자열 보존","status":"PASS"},{"name":"오류/설치실패/해제 후 원자료 지우지 않음","status":"PASS"},{"name":"실제 포트 Node 설치→생성→JSON복원→해제/원자료·RNG0","status":"PASS"},{"name":"snapshot 복사/원자료 외부 수정 방지","status":"PASS"},{"name":"startup 미실행 fallback 전체필드/초기 UNKNOWN","status":"PASS"},{"name":"actual root 요약과 합성 event 분리/원주입자 UNKNOWN","status":"PASS"},{"name":"생성 전이·UI 원문 보존/서버 JS MIME 소스","status":"PASS"}],"sourceHashes":{"before":{"tools/team-followup-20261001/ITEM/browser-host/host.js":"1acc96fc49d181987fd5a38f316ea99400bd41c85980e65fda6a48c3768964b2","tools/team-followup-20261001/ITEM/browser-host/index.html":"204ad41705750af0975abfdc4ea3da05b11555e7b1757cb3fbf64e6afa257600"},"after":{"host":"2edc45b60c91c6e75358e070f5b4784628a8df55090f13bb8d15508a10f62dc3","index":"ea1c8ded5ab7867c9a03082785fad60d8622d08da9e9f1bf125214f83c37a4e3","startup":"36ee47b1846f508c1d3bca7741d50ebb481312408344401eff2a1c6a1844cf84"}},"functionHashes":{"beforeInitialize":"7755fb08889e38d5f528b4591b359c955060f724af3ef1d806a2e2048c45c25b","afterInitialize":"447816a20b07e17a8359c2b041c6c71172c84ce5067dbe271220b97085a90120"},"rootRaw":{"path":"outputs/team-review-20261002/acceptance/item-browser.json","sha256":"96a56f55f227f6970e7f7f9bdeab98817196133a1aded6347f51c0f15c49d785","hasFullEventFields":false,"attribution":"UNKNOWN"},"syntheticViolationFixture":{"documentURI":"http://fixture.local/host","referrer":"","blockedURI":"inline","violatedDirective":"style-src-elem","effectiveDirective":"style-src-elem","originalPolicy":"default-src 'none'; script-src 'self'; style-src 'self'","sourceFile":"http://fixture.local/synthetic-injector.js","sample":"","disposition":"enforce","statusCode":200,"lineNumber":41,"columnNumber":7,"timeStamp":12.25,"isTrusted":false},"actualUI":"UNKNOWN: QA 전용 미실행","actualHTTP":"UNKNOWN: fixture responses only"},"hostRegression":{"checkedAt":"2026-10-01T17:54:37.733Z","pass":12,"fail":0,"rows":[{"name":"변환 재실행/원문역치환·JS산출 byte동일","status":"PASS"},{"name":"실제 mkItem 의존/원함수 추출과 fixture 제한","status":"PASS"},{"name":"JS 전이 MIME 소스검사","status":"PASS"},{"name":"생성 D10 정확1/base별도·전체 JSON/이름/affixes/소켓 보존","status":"PASS"},{"name":"legacy/missing/invalid 수리/재롤0","status":"PASS"},{"name":"HTTP 오류/비JS MIME은 읽을수있는 실패","status":"PASS"},{"name":"HTML CSP·외부JS·자동포트 설치없음","status":"PASS"},{"name":"호스트 init/opt-in없는 클릭 생성·import0","status":"PASS"},{"name":"실제 .js 체인 Node import·설치→신규→JSON→해제 UI","status":"PASS"},{"name":"호스트 import전 HTTP실패 property설치0/CSP표시","status":"PASS"},{"name":"해제 타property보호","status":"PASS"},{"name":"원본 byte 보존","status":"PASS"}],"protectedSources":{"game.html":"c868284af349c996d42087e93eba47a10614d73cb8f55f4db5ae01dde89da31a","server.cjs":"339fad6ab51cba92f6ca7a386c8aeb251f68cdb58cdfa55c109f57b1758a42ad","unique-item-project/definitions.js":"3f04bcc5ac90b039454f32dc9323e60bbe44dda27be7fd439a97633d1f25118a","unique-item-project/roll-values.js":"103d0460c738c117840586780eaaed7be7ebe0aba61fa50464db9d004b094975","tools/team-followup-20261001/ITEM/persistence-integration-port.mjs":"39debbda9b23065c026d80861eb397cb59cb2a43b1b1ca7e570621f8242b189a","tools/team-followup-20261001/ITEM/binding-ports.mjs":"2b6bf07a42edc0336d976105015d2886fd4ef342aa6766131c29fdaf561a49a4","tools/team-followup-20261001/ITEM/binding-d10.mjs":"b16bb29314e64cc2161f4eadd921678af2303a164e95080fdf879042fa4303f1","tools/team-followup-20261001/ITEM/d10-consumer.mjs":"6045326868bea6f7c5b1026d9472a02bdba5756cac41a110165e050ba9d4e7fb","tools/team-followup-20261001/ITEM/browser-bootstrap-api.js":"dcea3ff9722dde2fd200ecf1fb55f6d742f70631918fa7276c089e5e775ae9eb","tools/team-followup-20261001/ITEM/browser-bootstrap-ui.js":"5c6a17133d39b276f12ebff6e33924b44acf7b122b47821a3730c3026b68634d"},"counters":{"base":49,"d10":1,"restoreCalls":4,"restoreRng":0},"actualBrowserImport":"UNKNOWN","actualHTTP":"UNKNOWN: fixture responses only"}}
+}

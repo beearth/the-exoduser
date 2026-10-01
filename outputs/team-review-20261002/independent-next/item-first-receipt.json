@@ -1,0 +1,30 @@
+{
+  "checkedAt": "2026-10-01T17:50:37.604Z",
+  "threadId": "01a0f6e6-1fbe-7df0-8d02-a9c2d9df3750",
+  "title": "할당 작업 실행",
+  "queueId": "01a0f896-5c13-71b3-996d-0d43ad29376a",
+  "status": "received_and_first_commands_confirmed",
+  "turnStatusAtSnapshot": "interrupted",
+  "startedAt": 1790876998,
+  "firstCommands": [
+    {
+      "type": "commandExecution",
+      "id": "exec-3022c6b3-ab41-4a76-bea2-ef6bdbb6d035",
+      "command": "/bin/zsh -lc 'date -u +%Y-%m-%dT%H:%M:%SZ; cat tools/team-followup-20261001/ITEM/browser-csp-cause-task.md; ls tools/team-followup-20261001/ITEM/browser-csp-cause*; find tools -name AGENTS.md; tail -20 docs/7아이템디자인/ITEM_TEAM_MASTER.md'",
+      "cwd": "/Users/fordeargamers/Projects/exoduser-migration-20261001",
+      "status": "completed",
+      "exitCode": 0,
+      "durationMs": 0
+    },
+    {
+      "type": "commandExecution",
+      "id": "exec-2ed69141-ca7d-4a13-9a99-811ff21f8c84",
+      "command": "/bin/zsh -lc 'cat tools/team-followup-20261001/ITEM/browser-csp-result.md; cat tools/team-followup-20261001/ITEM/browser-host/{index.html,host.js}; cat tools/team-followup-20261001/ITEM/browser-bootstrap-ui.js; rg --files docs | rg FOUR-SUBMISSIONS-HELLRAY; ls tools/team-followup-20261001/ITEM/browser-host*; find tools/team-followup-20261001/ITEM/browser-host -name AGENTS.md'",
+      "cwd": "/Users/fordeargamers/Projects/exoduser-migration-20261001",
+      "status": "completed",
+      "exitCode": 0,
+      "durationMs": 0
+    }
+  ],
+  "note": "Official active-writer failure was not execution proof. One official queue succeeded; new user message and actual task Read commands exit0 are now verified. UI drafts not readable due screenshot/AX mismatch; queue does not replace the draft. Snapshot interrupted is not treated as proof of worker termination."
+}

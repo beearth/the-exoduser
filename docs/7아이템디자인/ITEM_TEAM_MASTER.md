@@ -185,3 +185,7 @@ root가 명시 reviewOnly 설치/해제 후보23그룹을 실제 port·양쪽 mk
 | 남은 게이트 | root 독립검수/백업 및 생산 caller/저장 공급/브라우저/실전 중첩. 미채택 스키마·기본 비활성/runtimeReady=false/드롭·밸런스 변경0 |
 
 원문 SHA·기존 실패·새 PASS·보존 manifest는 소유 `d17-async-boundary-evidence.json`, 구현/한계는 `d17-async-boundary-result.md`에 기록했다. 앞선 초안·인수구역은 보존했다.
+
+### 2026-10-02 CSP 초기 원자료 진단 인수
+
+기존 browser-host의 sourceFile/줄·열·후속 이력 누락을 수정했다. 초기 외부 self 리스너와 누적 원자료를 추가했고 CSP 정책은 동일하다. 담당 완료와 root 별도 11+12=23그룹 Node PASS를 확인했다. 실제 브라우저/원주입자 귀속은 UNKNOWN이며 QA 전용 게이트로 남긴다. startup 실행 전 사건은 미관찰이다. 상세: `tools/team-followup-20261001/ITEM/browser-csp-cause-result.md`, 실제 검수: `browser-csp-cause-qa-plan.md`. 생산 게임/드롭/저장 스키마 변경0.

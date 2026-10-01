@@ -51922,3 +51922,8 @@ QA의 완료 작업을 가리키는 미전송 초안은 그대로 보존했다. 
 - D17 비동기2결함 수정 후보: root58+QA20 PASS, 기본 비활성·생산미연결. SKILL 실제확정19, ANIM source추출12 PASS; 제한된 fixture 검수. 생산 변경0.
 - Mac 잠금해제·새 앱 부분실행, SOUND 기존읽기전용 제출을 반영. Terminal12 미할당·11팀 집계 제외, ITEM Terminal9 완료를 구분. 실제 앱저장/재실행과 화면연결은 미완료.
 - ASYNC-BOUNDARY-20261002.md 및 실제시각 팀snapshot으로 동기화. 기존 상태는 해시붙은 history로 보존.
+
+## 2026-10-02 ITEM CSP 진단 및 독립 후속 배정
+- 원 호스트 초기 외부 self 리스너와 sourceFile/줄·열/단계/순서 원자료를 보존. CSP 정책 불변, root 독립 23그룹 PASS. 실브라우저 및 원주입자 귀속 UNKNOWN.
+- 기존 BUILD Range, UIUX 필터초점, BALANCE 저장실패 과제 수신·Read 확인. 생산 수정0, 기존 서버 EPERM 우회0.
+- 나머지7팀의 CUA 전달 실패와 미전달 다음 작업을 명시, 실행중 오표시 방지. ITEM 팀 MD·INDEPENDENT-NEXT·현황 JSON 동기화.

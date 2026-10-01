@@ -1,0 +1,99 @@
+{
+  "utc": "2026-10-01T17:54:41.347Z",
+  "oldFailures": [
+    {
+      "case": "기존 원 host CSP 출처/좌표/이력 손실",
+      "reducedMessage": "CSP style-src-elem inline",
+      "afterLaterError": "스크립트 오류 later-script-error",
+      "verdict": "FAIL 재현",
+      "fixtureKind": "synthetic event; 실제 브라우저 위반 원자료 아님"
+    }
+  ],
+  "pass": 11,
+  "fail": 0,
+  "rows": [
+    {
+      "name": "before 원문/기능함수 SHA 보존",
+      "status": "PASS"
+    },
+    {
+      "name": "CSP byte 동일/초기 self classic 순서/inline0",
+      "status": "PASS"
+    },
+    {
+      "name": "정상 baseline은 위반 관찰0/설치·RNG0",
+      "status": "PASS"
+    },
+    {
+      "name": "초기 사건 원필드·UTC·순서 보존/단일 listener",
+      "status": "PASS"
+    },
+    {
+      "name": "이후 사건 누적/필드0·빈문자열 보존",
+      "status": "PASS"
+    },
+    {
+      "name": "오류/설치실패/해제 후 원자료 지우지 않음",
+      "status": "PASS"
+    },
+    {
+      "name": "실제 포트 Node 설치→생성→JSON복원→해제/원자료·RNG0",
+      "status": "PASS"
+    },
+    {
+      "name": "snapshot 복사/원자료 외부 수정 방지",
+      "status": "PASS"
+    },
+    {
+      "name": "startup 미실행 fallback 전체필드/초기 UNKNOWN",
+      "status": "PASS"
+    },
+    {
+      "name": "actual root 요약과 합성 event 분리/원주입자 UNKNOWN",
+      "status": "PASS"
+    },
+    {
+      "name": "생성 전이·UI 원문 보존/서버 JS MIME 소스",
+      "status": "PASS"
+    }
+  ],
+  "sourceHashes": {
+    "before": {
+      "tools/team-followup-20261001/ITEM/browser-host/host.js": "1acc96fc49d181987fd5a38f316ea99400bd41c85980e65fda6a48c3768964b2",
+      "tools/team-followup-20261001/ITEM/browser-host/index.html": "204ad41705750af0975abfdc4ea3da05b11555e7b1757cb3fbf64e6afa257600"
+    },
+    "after": {
+      "host": "2edc45b60c91c6e75358e070f5b4784628a8df55090f13bb8d15508a10f62dc3",
+      "index": "ea1c8ded5ab7867c9a03082785fad60d8622d08da9e9f1bf125214f83c37a4e3",
+      "startup": "36ee47b1846f508c1d3bca7741d50ebb481312408344401eff2a1c6a1844cf84"
+    }
+  },
+  "functionHashes": {
+    "beforeInitialize": "7755fb08889e38d5f528b4591b359c955060f724af3ef1d806a2e2048c45c25b",
+    "afterInitialize": "447816a20b07e17a8359c2b041c6c71172c84ce5067dbe271220b97085a90120"
+  },
+  "rootRaw": {
+    "path": "outputs/team-review-20261002/acceptance/item-browser.json",
+    "sha256": "96a56f55f227f6970e7f7f9bdeab98817196133a1aded6347f51c0f15c49d785",
+    "hasFullEventFields": false,
+    "attribution": "UNKNOWN"
+  },
+  "syntheticViolationFixture": {
+    "documentURI": "http://fixture.local/host",
+    "referrer": "",
+    "blockedURI": "inline",
+    "violatedDirective": "style-src-elem",
+    "effectiveDirective": "style-src-elem",
+    "originalPolicy": "default-src 'none'; script-src 'self'; style-src 'self'",
+    "sourceFile": "http://fixture.local/synthetic-injector.js",
+    "sample": "",
+    "disposition": "enforce",
+    "statusCode": 200,
+    "lineNumber": 41,
+    "columnNumber": 7,
+    "timeStamp": 12.25,
+    "isTrusted": false
+  },
+  "actualUI": "UNKNOWN: QA 전용 미실행",
+  "actualHTTP": "UNKNOWN: fixture responses only"
+}
