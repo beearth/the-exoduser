@@ -1,0 +1,20 @@
+{
+  "작업": "UIUX-20261002-INVENTORY-DOM",
+  "수신": "사용자 지시 수신, 메시지 자체 UTC 미제공",
+  "첫ReadUTC": "2026-10-01T15:51:31Z",
+  "실제Read": "지시서·UI-04·인벤토리 SSOT·원 inventory-focus 후보·actual renderInv/_invClearHover/선택복원·DOM 계약",
+  "중복": "기존21검사는 읽기 전용 보존. 소유 prefix에는 task.md만 존재",
+  "첫코드EditUTC": "2026-10-01T15:53:10Z",
+  "Edit시각근거": "TZ=UTC stat의 후보 birthtime. UIUX 파일 최초 apply_patch 생성 시각이며 한국시각을 Z로 잘못 표시하지 않도록 UTC 재대조",
+  "검수UTC": "2026-10-01T15:56:15Z 기존21/공통9 재실행, 2026-10-01T15:58:06Z 최종 파생18PASS·원후보/생산 SHA 전수 불변",
+  "실제검수범위": "실제 full renderInv 및 상세/hover/패널 함수 추출·Node DOM 연결 대역. root용 native DOM host 생성, 실제 브라우저 실행0",
+  "상태": "파생 후보·양쪽 minimal/combined patch·연결회귀·host 완료, root 인계",
+  "완료실제UTC": "2026-10-01T16:00:31.339Z 최종 bytes 재대조 완료 후 결과·영수증 최종 기록",
+  "원증거변화": "inventory-focus-reproduction.json checkedAt15:59:16.354Z 갱신 관측, 주체미확정. 원 코드/patch·생산2개 SHA 불변, checkedAt 제외 payload 동일. 원 증거 덮어쓰기/복원0",
+  "원본SHA": "inventory-dom-provenance.json의 원 inventory-focus 전수·생산2개·함수별 줄번호/SHA",
+  "원검사출력보존": "기존21 import의 after-hook 출력만 inventory-dom-existing-reproduction.json으로 리다이렉트, 원 검사·증거 bytes 변경0",
+  "docs반영안": "inventory-dom-result.md 및 전체검색 inventory-dom-doc-matches.txt, 공유 docs 수정0",
+  "남은게이트": "root native DOM/직접 Tab·키 입력·production CSS computed visibility·크기별 화면·실물 패드 검수",
+  "브라우저게임실행": 0,
+  "생산원후보수정": 0
+}

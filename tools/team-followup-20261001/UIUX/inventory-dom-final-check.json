@@ -1,0 +1,19 @@
+{
+  "completedAt": "2026-10-01T16:00:14.822Z",
+  "originalCodeAndPatchesUnchanged": true,
+  "originalEvidenceChanged": [
+    {
+      "name": "inventory-focus-reproduction.json",
+      "before": "54b6239c325434a981d1df0fa86c5eb33b2e60a897868954072b391180e2f8e4",
+      "after": "9e356e20dbc586879e97546f1b8681e0717ea75c1dc2cdc990d291b924bb56bf"
+    }
+  ],
+  "sourceUnchanged": true,
+  "sourceHashes": {
+    "game.html": "f7212ac287665f831975c47523783967374db4c1219b898e57bca5f97cfa1649",
+    "game-easy-test.html": "34ffa8ae1ff4a4509e695f921eef53e0a236aff63184459d13a915f37434bd04"
+  },
+  "browserRun": 0,
+  "evidencePayloadMatchesRedirected": true,
+  "finalByteReadAt": "2026-10-01T16:00:31.339Z"
+}

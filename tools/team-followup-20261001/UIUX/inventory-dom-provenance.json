@@ -1,0 +1,124 @@
+{
+  "readAt": "2026-10-01T15:58:06.838Z",
+  "originalHashes": {
+    "inventory-focus-artifacts.mjs": "5a443a5d0cf9f3fe9178ade612c40c1d17d24cecba7e9cc27600d50c25c9f4ce",
+    "inventory-focus-candidate.mjs": "324f41ee802f8487cc81dc2d0cfd75f8c70f1cefed2f62d06a109b93bfcc6f56",
+    "inventory-focus-doc-matches.txt": "dfc30c9ff152d0efa913385a5f9f2cc030de8e51c41bbbe914d67bf97ed9ee56",
+    "inventory-focus-easy.patch": "afd4711efd5c0010ffc3c2e779ef08a86723875387d4e7aa222c78848b75f60a",
+    "inventory-focus-existing-validation.txt": "a558bde1c750228cfa61e6266fc60e1c4b514c1a25e69f2c399deb7ea17f2cf8",
+    "inventory-focus-final-check.json": "b440ded98aad61a516bb3a2353066947a906aa901a5fd26414af81b354a310da",
+    "inventory-focus-final-hashes.json": "6b8c57553c91fd6b4457f524cad07944f9de4e3c8cd93fbc5d93f271eec191e6",
+    "inventory-focus-main.patch": "3f80f9a41e3733e8336b9950ef506b10d8972b1bca987b6e8ca62af21df7f43e",
+    "inventory-focus-receipt.json": "a710c9f28d16e0b7ec786670454f504a6c9313ffc4b8c09678f0f44468e5056b",
+    "inventory-focus-reproduction.json": "54b6239c325434a981d1df0fa86c5eb33b2e60a897868954072b391180e2f8e4",
+    "inventory-focus-result.md": "e79770e100a61e125ababbe0c2af598121f5fa8d78c0e4acadd625753c7a232d",
+    "inventory-focus-source-hashes.json": "433c0da928556dfc8dcfca6727e2f16822eaa89d2f632390d313016847fadd24",
+    "inventory-focus-task.md": "68c234159e67b164349056a8c1d2701eb5a0cfd5efbd6dd4e566e133a0e223d9",
+    "inventory-focus-validation.txt": "5d135a6ae01ac7d1b9f973c1e3aaa427d3620c85bd0218603c22d3a589fdb837"
+  },
+  "sourceHashes": {
+    "game.html": "f7212ac287665f831975c47523783967374db4c1219b898e57bca5f97cfa1649",
+    "game-easy-test.html": "34ffa8ae1ff4a4509e695f921eef53e0a236aff63184459d13a915f37434bd04"
+  },
+  "functionEvidence": {
+    "game.html": [
+      {
+        "name": "_invPlaceDetail",
+        "line1": 47781,
+        "sha256": "f6da18a101abc3c9680f0319b0c15337594c01b7bb26e73819892eddd19b5abb"
+      },
+      {
+        "name": "_invRenderDetail",
+        "line1": 47793,
+        "sha256": "397f76a096e3ec61c71a4c13835a7405dd78ef395a551473d45ff3349c9c489c"
+      },
+      {
+        "name": "_invClearHover",
+        "line1": 47967,
+        "sha256": "26f4b80f5883a3dc0b5d8890dda3bff58c10da37e81c24bad6069b810757b156"
+      },
+      {
+        "name": "_invRestoreSelectedActions",
+        "line1": 47973,
+        "sha256": "5f2171efe2b1ddff197a318d7c89b779e796ff5b3c7d9fcb3e19c729fa3ba887"
+      },
+      {
+        "name": "_invCategoryMatches",
+        "line1": 48362,
+        "sha256": "bf6f1ec41adb83e63f2e35d8596c546da2270bb74e936a6aebb9a2030c18d9f7"
+      },
+      {
+        "name": "_invPlacement",
+        "line1": 48375,
+        "sha256": "879d8a804ff8c3394f4aab7251ede02e41acb2a6e0783e91db7d7c549d327389"
+      },
+      {
+        "name": "_invPlacementChanged",
+        "line1": 48378,
+        "sha256": "42242a0857c46616150aa572945a78eb4c68caec058e9576f78d670a19994a54"
+      },
+      {
+        "name": "renderInv",
+        "line1": 48384,
+        "sha256": "b93c963fe8ef4876ec0b9ba319e22eceb29bac2decf01e3c0607981095be1cbd"
+      },
+      {
+        "name": "closePanel",
+        "line1": 42583,
+        "sha256": "f8451b2f938e927e0c07b6bc51157c6f4613ed875ddbdd53cf6ff52adfa71531"
+      },
+      {
+        "name": "_invRenderEmptyDetail",
+        "line1": 47922,
+        "sha256": "ed79b99a87f9d1860d861391b9c4833d932de40a442971fd7ecaa7c591cf47ac"
+      }
+    ],
+    "game-easy-test.html": [
+      {
+        "name": "_invPlaceDetail",
+        "line1": 46375,
+        "sha256": "f6da18a101abc3c9680f0319b0c15337594c01b7bb26e73819892eddd19b5abb"
+      },
+      {
+        "name": "_invRenderDetail",
+        "line1": 46387,
+        "sha256": "5945cb37d12d9019d355af95bdddb6eb1500e10d71745a20af7bf2e04a07485b"
+      },
+      {
+        "name": "_invClearHover",
+        "line1": 46459,
+        "sha256": "26f4b80f5883a3dc0b5d8890dda3bff58c10da37e81c24bad6069b810757b156"
+      },
+      {
+        "name": "_invRestoreSelectedActions",
+        "line1": 46465,
+        "sha256": "ca7794b79eac59952bd691054efbb14af4aaa8a8dabbca36254f5aebb858fc64"
+      },
+      {
+        "name": "_invCategoryMatches",
+        "line1": 46854,
+        "sha256": "f337c7995d2da57d084269483cf27e265a49c4875e6c9155b311a84334dfcefa"
+      },
+      {
+        "name": "_invPlacement",
+        "line1": 46866,
+        "sha256": "879d8a804ff8c3394f4aab7251ede02e41acb2a6e0783e91db7d7c549d327389"
+      },
+      {
+        "name": "_invPlacementChanged",
+        "line1": 46869,
+        "sha256": "42242a0857c46616150aa572945a78eb4c68caec058e9576f78d670a19994a54"
+      },
+      {
+        "name": "renderInv",
+        "line1": 46875,
+        "sha256": "32dcc3ae5139db17de7edc84762a30bf1c841d34da2afa40a201117d546ec1fe"
+      },
+      {
+        "name": "closePanel",
+        "line1": 41380,
+        "sha256": "f8451b2f938e927e0c07b6bc51157c6f4613ed875ddbdd53cf6ff52adfa71531"
+      }
+    ]
+  }
+}

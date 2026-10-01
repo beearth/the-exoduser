@@ -1,0 +1,134 @@
+{
+  "checkedAt": "2026-10-01T16:10:19.326Z",
+  "scope": "Node DOM 연결 대역·실제 소스 함수. 브라우저 미실행",
+  "evidence": [
+    {
+      "path": "game.html",
+      "language": "ko",
+      "version": "baseline",
+      "oldAnchorConnected": false,
+      "inlineVisibility": "hidden",
+      "focusAtDetail": true
+    },
+    {
+      "path": "game.html",
+      "language": "ko",
+      "version": "candidate",
+      "oldAnchorConnected": false,
+      "inlineVisibility": "visible",
+      "focusAtDetail": true
+    },
+    {
+      "path": "game.html",
+      "language": "ko",
+      "version": "baseline",
+      "scenario": "행동 버튼 재구성",
+      "removedActionConnected": false,
+      "focus": "BODY"
+    },
+    {
+      "path": "game.html",
+      "language": "ko",
+      "version": "candidate",
+      "scenario": "행동 버튼 재구성",
+      "removedActionConnected": false,
+      "focus": "현재 연결 카드"
+    },
+    {
+      "path": "game.html",
+      "language": "en",
+      "version": "baseline",
+      "oldAnchorConnected": false,
+      "inlineVisibility": "hidden",
+      "focusAtDetail": true
+    },
+    {
+      "path": "game.html",
+      "language": "en",
+      "version": "candidate",
+      "oldAnchorConnected": false,
+      "inlineVisibility": "visible",
+      "focusAtDetail": true
+    },
+    {
+      "path": "game.html",
+      "language": "en",
+      "version": "baseline",
+      "scenario": "행동 버튼 재구성",
+      "removedActionConnected": false,
+      "focus": "BODY"
+    },
+    {
+      "path": "game.html",
+      "language": "en",
+      "version": "candidate",
+      "scenario": "행동 버튼 재구성",
+      "removedActionConnected": false,
+      "focus": "현재 연결 카드"
+    },
+    {
+      "path": "game-easy-test.html",
+      "language": "ko",
+      "version": "baseline",
+      "oldAnchorConnected": false,
+      "inlineVisibility": "hidden",
+      "focusAtDetail": true
+    },
+    {
+      "path": "game-easy-test.html",
+      "language": "ko",
+      "version": "candidate",
+      "oldAnchorConnected": false,
+      "inlineVisibility": "visible",
+      "focusAtDetail": true
+    },
+    {
+      "path": "game-easy-test.html",
+      "language": "ko",
+      "version": "baseline",
+      "scenario": "행동 버튼 재구성",
+      "removedActionConnected": false,
+      "focus": "BODY"
+    },
+    {
+      "path": "game-easy-test.html",
+      "language": "ko",
+      "version": "candidate",
+      "scenario": "행동 버튼 재구성",
+      "removedActionConnected": false,
+      "focus": "현재 연결 카드"
+    },
+    {
+      "path": "game-easy-test.html",
+      "language": "en",
+      "version": "baseline",
+      "oldAnchorConnected": false,
+      "inlineVisibility": "hidden",
+      "focusAtDetail": true
+    },
+    {
+      "path": "game-easy-test.html",
+      "language": "en",
+      "version": "candidate",
+      "oldAnchorConnected": false,
+      "inlineVisibility": "visible",
+      "focusAtDetail": true
+    },
+    {
+      "path": "game-easy-test.html",
+      "language": "en",
+      "version": "baseline",
+      "scenario": "행동 버튼 재구성",
+      "removedActionConnected": false,
+      "focus": "BODY"
+    },
+    {
+      "path": "game-easy-test.html",
+      "language": "en",
+      "version": "candidate",
+      "scenario": "행동 버튼 재구성",
+      "removedActionConnected": false,
+      "focus": "현재 연결 카드"
+    }
+  ]
+}

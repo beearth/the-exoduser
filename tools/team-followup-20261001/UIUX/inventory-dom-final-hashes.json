@@ -1,0 +1,29 @@
+{
+  "recordedAt": "2026-10-01T16:00:58.224Z",
+  "hashes": {
+    "inventory-dom-candidate.mjs": "3e46ee1493f08b238d85f40ebd455f8c7a9908c6c0eacd4feecab6b448773e46",
+    "inventory-dom-doc-matches.txt": "aec5c93272cd0f90fd65c2004e09aff18ab8012e0d17c938e252d7549e28cb7c",
+    "inventory-dom-easy-combined.patch": "591dc1c7896e7edef86d51b3f7d6b71c8d1dd84afb885802d9568e0d88a984a0",
+    "inventory-dom-easy-minimal.patch": "413d957909c9db1a90f2b2b64807dd7658918cb29d3160a96769963324836a55",
+    "inventory-dom-evidence.json": "75b18e3b5759346f81faafe8202f1a098cbdc0d834b7543e66d811d0604a361c",
+    "inventory-dom-existing-reproduction.json": "98b7cbfc74f7f27e86709fb57fd32ff91e65b1ec89b432d71ed4d6e8df8a9c02",
+    "inventory-dom-existing-validation.txt": "769b3f27bd4f901c207546b1e695e6c4eab389515dab4347b11de67415fb698c",
+    "inventory-dom-existing.test.mjs": "d3894e609c61ee1927dc88ba9aac2225b5e221416db20af585e00bd8cef4eb77",
+    "inventory-dom-final-check.json": "74fcf368cdd52e1eec2c147cee508c344937ff084049bf07d79c41f39f0273b4",
+    "inventory-dom-generate.mjs": "177b59d17ebe84f1962bfddd6946b49f28b5039a7958601bf9d6d2c172e24012",
+    "inventory-dom-main-combined.patch": "ae795f8deba428376469ebc54000ef1ae8dc6f974c08a9d6eba6693712a76d9f",
+    "inventory-dom-main-minimal.patch": "2148e2be09bd97f21eb4c2cd54253ed9f88981d8575cf4ceb551f434ace3c4e8",
+    "inventory-dom-original-drift.json": "f0daa4cf40e0762fe83387db94414694ef60f7d22e61c4476e4099b0fb25d9bf",
+    "inventory-dom-provenance.json": "417d780c21cedf2ceeccfe73c17fd883ff8d40979f7aed863cdbb5a8323cfe1b",
+    "inventory-dom-receipt.json": "c823b2f5c7dd7d4a30b8c2a3b73b0c33218c37d6710cd5359117d7cfcad18f8a",
+    "inventory-dom-result.md": "90759d801b86e49f4839fa1243408b388c4d55876584c6f726961f5f4aace411",
+    "inventory-dom-shared-validation.txt": "548d9e2c30c5de0f295883f4f684bc5aa6a2e7ee54e38d8f786c991f8c233a25",
+    "inventory-dom-task.md": "e459ab0e48fb52932b37a98528ff7348b8c6a43d6bd1db0efc06eca30d95ceab",
+    "inventory-dom-validation.txt": "2f9169872d64a7f90b827172a74866074e61a35c5d43c6b46fdb6898d0951f8a",
+    "inventory-dom.test.mjs": "3608b3fc281b962324e50a1f35784788bbbcac905bbb1be0daddcacc44deac6d",
+    "inventory-dom/harness.mjs": "2c2b73b41c33f4f5b8320bab77daf1c050bc02444ba44e7a937de2486ad21acd",
+    "inventory-dom/host.html": "c088f0836f3acf5dca83884adcd80c550dc50b317a084938674a2f0a36114aa4",
+    "inventory-dom/node-dom.mjs": "b3c6bb3abf74d5b9e464d1db2e5d2441645af3be8eb096f3c30788b7019cfb95",
+    "inventory-dom/source-data.mjs": "a5244bd382f01ad3802f8e5d282ceed6e5cb1fc2c6f0edebd46ae133bf139037"
+  }
+}
