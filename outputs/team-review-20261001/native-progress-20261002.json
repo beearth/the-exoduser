@@ -1,0 +1,155 @@
+{
+  "checkedAt": "2026-10-01T15:26:29.465214+00:00",
+  "teams": [
+    {
+      "team": "ART",
+      "sessionId": "a489cbeb-92d9-449a-a2b7-ba0e2871322f",
+      "receivedAt": "2026-10-01T15:14:09.264Z",
+      "firstRead": [
+        {
+          "at": "2026-10-01T15:14:15.693Z",
+          "tool": "Read",
+          "path": "/Users/fordeargamers/Projects/exoduser-migration-20261001/tools/team-followup-20261001/ART/OWNER_NEXT_20261002.md"
+        }
+      ],
+      "firstEdit": [
+        {
+          "at": "2026-10-01T15:15:22.263Z",
+          "tool": "Write",
+          "path": "/Users/fordeargamers/Projects/exoduser-migration-20261001/docs/0마스터플랜/mac-resume-20261001/vscode-dispatch/OWNER_NEXT_20261002-receipt.json"
+        }
+      ],
+      "lastEdit": [
+        {
+          "at": "2026-10-01T15:21:35.946Z",
+          "tool": "Edit",
+          "path": "/Users/fordeargamers/Projects/exoduser-migration-20261001/tools/team-followup-20261001/ART/OWNER_NEXT_20261002-receipt.json"
+        }
+      ],
+      "lastAssistant": {
+        "at": "2026-10-01T15:22:40.399Z",
+        "text": "r-only `predictWa24Crop`**만 내보내 **Ken Burns 줌(1.08→1.04)·shake·clip을 무시** → 16:9에서 `OK_FULLFRAME`으로 잘못 판정. root 검수 완료된 지원 `UIUX/art-support-finalcrop.mjs`의 `predictFinalCrop`(clip→zoom→shake→cover 전 변환)을 **import만** 해서 원담당 내보내기 표면에 합성 연결했습니다(원본 3개 파일 전부 미수정).\n\n### 산출물 (ART 폴더, owner-integration 접두사)\n- `owner-integration-finalcrop.mjs` (`7854d669…`) — `Object.freeze({...art, predictFinalCrop, predictWa24FinalCrop, compareOwnerBaseVsFinal})`, `correctedSampler` 불일치 시 throw로 시간축 보증.\n- `owner-integration-finalcrop.test.mjs` (`bd38967d…`) — fs 쓰기 없음.\n\n### 회귀 (실제 실행)\n- `owner-integration-finalcrop.test.mjs` → **31 PASS / 0 FAIL / exit=0**\n- 원담당 `wa24-delta-probe.test.mjs` → **38 PASS / 0 FAIL**(무결성 유지)\n- **[A] 4비율×3시각(12행)**: 인수 경로가 실 draw 원문(fixture, game.html VM)과 `fractions/matrix/drawRect/clip` **1e-11 일치**.\n- **[B] 누락 연결 해소**: 16:9 base `OK_FULLFRAME`→final `CROPPED`, 상하손실 6.35/4.76/3.85% root 검수값 재현.\n- **[C] 시간축 보존**: `correctedSampler===art.correctedSampler`, `lineElapsed=now-lineStartMs`(line-index, WA24.t 무관 → seq-time 회귀 아님).\n- **[D]** 눈·발·자막 **UNKNOWN 유지**, fade0=가시성 증거 아님.\n\n### 한계 / 인계\n- **픽셀 가독성 UNKNOWN 유지** — 기하 크롭까지만 확정. 피사체 좌표 LOCK이 없어 눈/발/첨탑 실제 프레임 이탈 판정은 다음 게이트. 실브라우저/게임/서버 미실행, game.html·index·easy·지원 원본·타팀 파일 불변, Git/이미지/빌드/새세션 0.\n- 머지 권고(원담당 `.cjs`에 `predictFinalCrop` 정식 포함)·docs 정정 후보(\"16:9도 줌으로 상하 3.8~6.3% 크롭\")는 `OWNER_NEXT_20261002-result.md §5`에 인계. 본 한 건 종료."
+      }
+    },
+    {
+      "team": "MAP",
+      "sessionId": "d447a49d-ecaa-4b5f-bc56-da5353ebb668",
+      "receivedAt": "2026-10-01T15:14:25.890Z",
+      "firstRead": [
+        {
+          "at": "2026-10-01T15:14:31.975Z",
+          "tool": "Read",
+          "path": "/Users/fordeargamers/Projects/exoduser-migration-20261001/tools/team-followup-20261001/MAP/OWNER_NEXT_20261002.md"
+        }
+      ],
+      "firstEdit": [
+        {
+          "at": "2026-10-01T15:15:09.658Z",
+          "tool": "Write",
+          "path": "/Users/fordeargamers/Projects/exoduser-migration-20261001/tools/team-followup-20261001/MAP/OWNER_NEXT_20261002-receipt.json"
+        }
+      ],
+      "lastEdit": [
+        {
+          "at": "2026-10-01T15:20:44.452Z",
+          "tool": "Edit",
+          "path": "/Users/fordeargamers/Projects/exoduser-migration-20261001/tools/team-followup-20261001/MAP/OWNER_NEXT_20261002-receipt.json"
+        }
+      ],
+      "lastAssistant": {
+        "at": "2026-10-01T15:21:13.642Z",
+        "text": " 중복 점검: `manual-input-*`·`OWNER_NEXT_20261002-*` 없음 → 신규 착수.\n- 필수 선독: 맵 가이드 v0.9(§0 OUTER MASS FIRST·8카메라 QA, §15–19), `_MAP_SSOT_INDEX`, 원 하니스, 게임 실제 심볼(`K={}`, `isW(px,py,skipBone)`, blur/visibilitychange→`_clearHeldInput`).\n\n### 구현 (소유 경로만: `tools/team-followup-20261001/MAP/`)\n**`manual-input-observer.js`** — 상태쓰기0 관측기. 원 하니스(`m5-walk-harness.safe.js`)는 보존.\n- `K[]` 주입·합성 KeyboardEvent·`P` 좌표배치 **전부 제거**. `K[code]`(실제 사용자 입력)·`P.x/P.y`(현재좌표)·`isW(px,py,true)`(전방벽 **원식** 네이티브) 를 **읽기만**.\n- keydown/keyup/blur/visibilitychange 를 **passive:true·비캡처 관측 전용**(preventDefault·`_clearHeldInput` 없음).\n- stop()/abort()/오류 finally에서 **리스너 제거 + interval 정리** 보장. blur/hidden에서 leg를 focus-lost로 분절.\n- 출력은 기존 evidence gate 포맷과 동일 → `toGateBundle()`로 `judge()`에 바로 투입. 미방문 8뷰·미매핑 경계는 UNKNOWN로 자동 보수화.\n\n### 검증 (실행함)\n- Node `--check` 2파일 PASS.\n- **fixture 27 PASS / 0 FAIL (exit 0)**: F1 상태쓰기0(P/K/G.map 미변경), F2 리스너·interval 정리, F3 passive·비캡처, F4 포커스손실 경계, F5 전방벽 원식(gameWallAhead == isW 정확 일치)·실이동 관측, F6 abort 정리, F7 게이트 연결(미매핑·8뷰 미완 → **PASS 금지**).\n- **미수행(이번 금지)**: 실게임/브라우저/서버 기동, 실제 손 입력 관측, 8뷰 촬영, 시각 PASS.\n\n### 미변경 확인\n`game.html`/index/server/다른 팀/생산/공유문서/`map020-evidence` 원자료·Git 미변경. 이미지/청취/권한/새세션/타팀메시지 0.\n\n### 인계 (잔여, root 단독)\n① 실제 사용자 입력 관측 세션 + 8뷰 촬영(6뷰 미방문) ② 관측 leg→SSOT 경계 자동매핑 기준 확정(현재 수동 `boundaryMap`) ③ M5 전체 경로·MAP-020 RETOUCH 유지 ④ SSOT `7000,6900` 좌표 정정은 생산수정 소유자 몫. 이번 한 건 종료, 인계합니다."
+      }
+    },
+    {
+      "team": "SKILL",
+      "sessionId": "203377cc-64c4-47ea-af27-95b66ae829fa",
+      "receivedAt": "2026-10-01T15:14:36.981Z",
+      "firstRead": [
+        {
+          "at": "2026-10-01T15:14:40.867Z",
+          "tool": "Read",
+          "path": "/Users/fordeargamers/Projects/exoduser-migration-20261001/tools/team-followup-20261001/SKILL/OWNER_NEXT_20261002.md"
+        }
+      ],
+      "firstEdit": [
+        {
+          "at": "2026-10-01T15:18:15.631Z",
+          "tool": "Write",
+          "path": "/Users/fordeargamers/Projects/exoduser-migration-20261001/docs/0마스터플랜/mac-resume-20261001/vscode-dispatch/OWNER_NEXT_20261002-receipt.json"
+        }
+      ],
+      "lastEdit": [
+        {
+          "at": "2026-10-01T15:22:18.397Z",
+          "tool": "Edit",
+          "path": "/Users/fordeargamers/Projects/exoduser-migration-20261001/docs/0마스터플랜/mac-resume-20261001/vscode-dispatch/OWNER_NEXT_20261002-receipt.json"
+        }
+      ],
+      "lastAssistant": {
+        "at": "2026-10-01T15:22:53.700Z",
+        "text": ")·N(정상) 20 assertion\n- `owner-integration.patch` — owner→통합본 unified diff (dry-run **clean**)\n\n## 인수한 검수 항목 (재작성 아님)\n- **설치 API**: 리스너/초기read/rAF예약 try 래핑, 부분 실패 시 dispose·UNKNOWN, 실패 probe 미공개\n- **반환(충전) API** `chargeEvidence`: 연속 `updateSeq`+전체 `rechargeTrace`가 game.html:35052-61 원식(1500f·max 2/3)을 완전 재현할 때만 RECHARGE, **trace 없으면 UNKNOWN** (두 끝점으로 충전/환급 확정 금지)\n- **정리 API** `dispose`: 취소 실패 rafId 보존→재시도(S1), remove 실패가 다음 정리 차단 안 함(S2)\n- verdict: errors/unknownCharge/observationGaps 있으면 UNKNOWN\n\n## 회귀 (node, exit0)\nR1~R5가 **원 owner 결함 재현 → 통합본 수정**을 대조합니다: R1 두끝점 recharge 오판→UNKNOWN, R2 설치 throw 리스너3 누수→0·미공개, R3 remove 예외 차단→3시도·실패1만 잔존, R4 cancel 예외 rafId 재시도(S1), R5 getter throw→dispose·UNKNOWN(S2). N1~N7은 trace 완전→RECHARGE, 부분/위반→UNKNOWN, 양성대조+취소→PASS, 공백→UNKNOWN, 리스너 대칭, max=2 완료 afterRech=0을 고정.\n\n## 충전단위·docs\n`chargeEvidence` 스텝식 = game.html 원식 1:1, SSOT `2_1:407`(2스택/25초/1500f)과 일치 → **자원식 변경 0, docs 수치 정정 불필요**. 설계는 `SKILL03:44`·`BALANCE-skill-support-result.md`에 이미 기록됨.\n\n## 인계\n- 통합본을 owner 파일에 실제 적용(patch)·acceptance 재SHA는 **root 소관**(SHA 고정 때문에 본 팀 미적용).\n- 실게임 `defaultReadRaw`는 trace 미공급 → 실측 시 스택 증가 UNKNOWN이 정상. 생산 update hook 추가는 범위 밖.\n\nowner 원본(`ae7c8e8a`)·지원후보(`63006cf9`) SHA 불변, game/easy/index/server/공용마스터/타팀 무수정, Git/게임/브라우저/서버/이미지/새세션 0. 변경은 전부 SKILL `owner-integration-*` + `OWNER_NEXT_20261002-*`로 한정했습니다. (ART/ENEMY/MAP/ANIMVFX의 동명 파일은 타 세션 산출로, 건드리지 않았습니다.)"
+      }
+    },
+    {
+      "team": "ENEMY",
+      "sessionId": "ddbd64be-975a-458e-a020-c09749281f5b",
+      "receivedAt": "2026-10-01T15:14:55.642Z",
+      "firstRead": [
+        {
+          "at": "2026-10-01T15:14:59.363Z",
+          "tool": "Read",
+          "path": "/Users/fordeargamers/Projects/exoduser-migration-20261001/tools/team-followup-20261001/ENEMY/OWNER_NEXT_20261002.md"
+        }
+      ],
+      "firstEdit": [
+        {
+          "at": "2026-10-01T15:17:59.817Z",
+          "tool": "Write",
+          "path": "/Users/fordeargamers/Projects/exoduser-migration-20261001/tools/team-followup-20261001/ENEMY/owner-integration-tick.test.mjs"
+        }
+      ],
+      "lastEdit": [
+        {
+          "at": "2026-10-01T15:19:45.520Z",
+          "tool": "Write",
+          "path": "/Users/fordeargamers/Projects/exoduser-migration-20261001/tools/team-followup-20261001/ENEMY/OWNER_NEXT_20261002-result.md"
+        }
+      ],
+      "lastAssistant": {
+        "at": "2026-10-01T15:20:14.631Z",
+        "text": "026-10-02).\n\n**핵심 확인:**\n- 원본 `ENEMY/et3-probe.fixed.js`와 ITEM 검수본 `enemy-support-probe.js`의 차이는 **tick-health 5개 훅뿐**(diff로 확인). 그대로 인수 → 통합본 sha256 `92cbecd7…`가 검수본과 **바이트 동일**(검수 로직 재작성 0).\n- **핵심 계약 충족:** tick 없는 451 rAF는 `INCONCLUSIVE`(physical_tick_unverified)로 남고 `FAIL_NO_FIRE`로 승격 안 함. rAF 수(rafSamples)와 물리tick 증가분(physicalAdvances)을 분리 집계.\n\n**산출물 (ENEMY 소유, owner-integration-* + OWNER_NEXT_20261002-*):**\n| 파일 | 내용 |\n|---|---|\n| `owner-integration-et3-probe.patch` | 원 경로 `et3-probe.fixed.js`에 적용하는 애셉턴스 patch(97행, `-p1`) |\n| `owner-integration-et3-probe.fixed.js` | patch 적용 미리보기(검수본과 동일) |\n| `owner-integration-tick.test.mjs` | 원담당 경로 회귀 17 시험 |\n| `OWNER_NEXT_20261002-receipt.json` / `-result.md` | 영수증·결과 |\n\n**검증 (실행함):**\n- `node --check` 2/2 exit0\n- `patch --dry-run -p1` → 원 경로에 깨끗이 적용됨 (실제 쓰기 0)\n- `node --test owner-integration-tick.test.mjs` → **17 pass / 0 fail**\n- 통합본 대상 기존 9 mock → **9 PASS / 0 FAIL** (무회귀)\n- 회귀 요지: null tick+451rAF에서 원본=거짓 FAIL_NO_FIRE 재현 vs 통합본=INCONCLUSIVE(물리카운트 0); 정상 단조tick 470+중복rAF 1410은 FAIL_NO_FIRE 유지.\n\n**적용 여부 구분:** 원 probe 파일은 **직접 수정하지 않음**(소유 밖) — patch로만 제출, dry-run으로 적용 가능성만 확인. 실제 반영은 root/총괄이 `patch -p1`로.\n\n**한계·게이트:** 실게임 tick 연결·AI 품질 검수 아님(모의/정적까지). 실화면 verdict 산출은 QA 종료 인계 후. game.html/타팀/공유docs/Git/권한/새 세션·에이전트·타팀 메시지 변경 0. 원본 `et3-probe.fixed.js` sha 불변(`1bf68b09…`) 확인. 중복 실행 아님(owner-integration-* 신규). 이 한 건 종료하고 다음 게이트 인계합니다."
+      }
+    },
+    {
+      "team": "ANIMVFX",
+      "sessionId": "1d2a7253-478c-43aa-8c6f-766a02270432",
+      "receivedAt": "2026-10-01T15:15:02.063Z",
+      "firstRead": [
+        {
+          "at": "2026-10-01T15:15:07.836Z",
+          "tool": "Read",
+          "path": "/Users/fordeargamers/Projects/exoduser-migration-20261001/tools/team-followup-20261001/ANIMVFX/OWNER_NEXT_20261002.md"
+        }
+      ],
+      "firstEdit": [
+        {
+          "at": "2026-10-01T15:19:19.336Z",
+          "tool": "Write",
+          "path": "/Users/fordeargamers/Projects/exoduser-migration-20261001/tools/team-followup-20261001/ANIMVFX/OWNER_NEXT_20261002-receipt.json"
+        }
+      ],
+      "lastEdit": [
+        {
+          "at": "2026-10-01T15:24:22.208Z",
+          "tool": "Edit",
+          "path": "/Users/fordeargamers/Projects/exoduser-migration-20261001/tools/team-followup-20261001/ANIMVFX/sparse-update-c5-gate.mjs"
+        }
+      ],
+      "lastAssistant": {
+        "at": "2026-10-01T15:26:08.399Z",
+        "text": "Patch generated and syntactically valid. Let me verify the **patched prior gate** actually fixes both misjudgments (not just syntax) by running it on the slowmo and draw-step2 cases."
+      }
+    }
+  ]
+}

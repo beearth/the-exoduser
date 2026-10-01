@@ -1,0 +1,23 @@
+{
+  "at": "2026-10-01T15:19:51.804Z",
+  "tabId": "1573846373",
+  "runtime": {
+    "title": "HELL: EXODUSER",
+    "url": "http://mac-play-20261002.localhost:3340/game.html?webgpu=0",
+    "ready": "complete",
+    "on": true,
+    "paused": false,
+    "hp": 520,
+    "level": 1,
+    "canvas": [
+      1352,
+      610
+    ],
+    "visible": true,
+    "focus": true
+  },
+  "keptOpen": true,
+  "kind": "browser source execution; not exe or app package",
+  "server": "existing3340",
+  "saveIsolation": "fresh mac-play-20261002.localhost origin; no user save selection"
+}
