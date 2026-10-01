@@ -66,3 +66,8 @@
 ### 2026-10-02 Mac preflight 인수와 packager 후보
 
 root가 read-only preflight28검사를 재실행해 통과했다. 최신 확인 원격98aedab7·명시 ref·조회시각을 넣은 실제 입력 검사는 복구/입력/고유출력 통과, MAC_RUNTIME_MISSING으로 BLOCKED다. 기존 build-nwjs는 win/x64 고정. 설치 nw-builder의 osx/실제arch·로컬runtime·고유출력·세이브 제외·다운로드 차단을 실제 packager 인자까지 연결하는 후보를 기존 BUILD에 배정해 Read/Edit 확인했다. 실제 .app 생성/실행/다운로드0, 전체에셋/서명/코덱/저장패키지 검수 미완료. [인수 기록](../0마스터플랜/mac-resume-20261001/vscode-dispatch/FOUR-SUBMISSIONS-HELLRAY-20261002.md).
+
+
+### 2026-10-02 Mac arm64 첫 실제 패키지 준비
+
+공식 NW.js0.111.2 arm64 runtime SHA를 재사용한다. ae230e74 원격에 보존된 입력 중 제작용 LFS 포인터/ZIP 정확7경로만 제외한7918개 allowlist를 검수했다. 원본은 유지한다. 유한 맵/투사체524참조와 직접 script/style139 검수, 임의 동적 외부 호출 전체는 UNKNOWN이다. 고유 job59376baf-37c9-4c20-a42f-af67b8d9221a, loopback3381, job내 profile/save 경로 파생. 사용자3340게임/세이브 보존. mac-packager34검사 및 정식plan은 실행과 별도 기록한다. 해당 출력만 .gitignore에 추가하고 필수 에셋 원본은 숨기지 않는다. 다음 단계는 actual execute 및 앱/격리저장 검수이며 이 준비 기록은 완료 선언이 아니다. 상세 outputs/team-review-20261002/mac-app/build-config.json, build-plan.json 및 BUILD/package-input-resolution-result.md.

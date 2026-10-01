@@ -170,3 +170,6 @@ assets/vfx/boss/gen/
 !/assets/vendor/three-r160/build/
 !/assets/vendor/three-r160/build/three.module.js
 /output/warrior_story_remaster_20261001/
+
+# Isolated Mac app build output and temporary profile/save
+/outputs/mac-package-ready/

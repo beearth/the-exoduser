@@ -1,0 +1,44 @@
+{"libraryEvidence":{"entry":"/Users/fordeargamers/Projects/exoduser-migration-20261001/node_modules/nw-builder/src/index.js","buildEntry":"/Users/fordeargamers/Projects/exoduser-migration-20261001/node_modules/nw-builder/src/bld.js","version":"4.17.10","files":[{"name":"index.js","sha256":"75e7a65f378bdc33677eb50d53bf9f6ccb90fceb639cdc9abd81205faeffa03d"},{"name":"bld.js","sha256":"9a52b68223e5dc1b3f59ed504db50dc888c6a4c23708b3307a300e48395f29f9"},{"name":"util.js","sha256":"0e35bc436cdfd26e0ba771748688825bfd6b46a6968915b6e12d3d1d23235844"},{"name":"bld/osx.js","sha256":"9db9b472d4eea79776076d187d5329107de73177d82628f88f006e3eb281968a"}]}}
+{"actualSpyArgs":{"version":"0.111.2","flavor":"normal","platform":"osx","arch":"arm64","srcDir":"/Users/fordeargamers/Projects/exoduser-migration-20261001/tools/team-followup-20261001/BUILD/mac-packager/fixture-8duPdp/destinations/mac-packager-87946881-c02a-4a59-b0e7-38ecece6cd35/stage","cacheDir":"/Users/fordeargamers/Projects/exoduser-migration-20261001/tools/team-followup-20261001/BUILD/mac-packager/fixture-8duPdp/local-cache","outDir":"/Users/fordeargamers/Projects/exoduser-migration-20261001/tools/team-followup-20261001/BUILD/mac-packager/fixture-8duPdp/destinations/mac-packager-87946881-c02a-4a59-b0e7-38ecece6cd35/package","glob":false,"managedManifest":false,"zip":false,"releaseInfo":{"version":"v0.111.2","components":{"chromium":"148.0.0"}},"app":{"name":"EXODUSER-87946881-c02a-4a59-b0e7-38ecece6cd35","CFBundleIdentifier":"com.exoduser.mac.87946881-c02a-4a59-b0e7-38ecece6cd35","CFBundleName":"EXODUSER-87946881-c02a-4a59-b0e7-38ecece6cd35","CFBundleDisplayName":"EXODUSER","CFBundleVersion":"1.0.0","CFBundleShortVersionString":"1.0.0","LSApplicationCategoryType":"public.app-category.games"}},"derivedPackage":{"name":"fixture","version":"1.0.0","main":"http://127.0.0.1:3381/index.html?demo=1","node-main":"node-main.js","node-remote":["http://127.0.0.1:3381","http://localhost:3381"],"chromium-args":"--user-data-dir=\"/Users/fordeargamers/Projects/exoduser-migration-20261001/tools/team-followup-20261001/BUILD/mac-packager/fixture-8duPdp/destinations/mac-packager-87946881-c02a-4a59-b0e7-38ecece6cd35/user-state/profile\" --existing-flag"}}
+✔ 설치라이브러리shape/고정hash index→getter, bld→osx 확인 (2.096875ms)
+✔ import만으로애플리케이션I/O/adapter실행0 (29.291542ms)
+✔ 기본plan 읽기전용·실제spy build 인자·최소파생·원본보존 (33.869041ms)
+✔ 승인없으면예약/호출0 (7.645875ms)
+✔ runtime없음 BLOCKED·execute호출0 (6.921666ms)
+✔ cache없음 BLOCKED·execute호출0 (5.789041ms)
+✔ 출력충돌 BLOCKED·execute호출0 (4.966666ms)
+✔ 입력SHA변경 BLOCKED·execute호출0 (7.1575ms)
+✔ 원격입력SHA다름 BLOCKED·execute호출0 (8.294042ms)
+✔ 원격commit다름 BLOCKED·execute호출0 (8.683709ms)
+✔ 원격ref없음 BLOCKED·execute호출0 (6.633042ms)
+✔ 파일누락 BLOCKED·execute호출0 (5.860542ms)
+✔ 명시목록누락 BLOCKED·execute호출0 (6.834708ms)
+✔ 목록밖asset추가 BLOCKED·execute호출0 (8.02575ms)
+✔ save포함 BLOCKED·execute호출0 (6.724ms)
+✔ profile포함 BLOCKED·execute호출0 (7.206083ms)
+✔ 기존dist포함 BLOCKED·execute호출0 (6.556792ms)
+✔ 기존app포함 BLOCKED·execute호출0 (8.107708ms)
+✔ 입력탈출 BLOCKED·execute호출0 (7.975375ms)
+✔ 입력symlink BLOCKED·execute호출0 (9.108375ms)
+✔ 출력부모symlink BLOCKED·execute호출0 (7.105791ms)
+✔ runtime탈출symlink BLOCKED·execute호출0 (10.837625ms)
+✔ runtimeSHA변경 BLOCKED·execute호출0 (11.511875ms)
+✔ releaseInfo변경 BLOCKED·execute호출0 (8.036334ms)
+✔ arch다름 BLOCKED·execute호출0 (5.999709ms)
+✔ 기존3333 BLOCKED·execute호출0 (5.751583ms)
+✔ 현재3340 BLOCKED·execute호출0 (5.995125ms)
+✔ 파생치환원문변경 BLOCKED·execute호출0 (11.386917ms)
+✔ adapter실패는소유job만정리·기존marker보존 (13.082916ms)
+✔ 라이브러리osx가오류삼켜도출력검증실패·정리 (14.927583ms)
+✔ 두execute충돌·기존job삭제0 (21.353ms)
+✔ 미지정arch는실제process.arch 사용 (12.36075ms)
+✔ 명시x64는로컬runtime헤더검증후osx/x64연결 (12.008ms)
+✔ 부분osx실패·잘못된plist는성공반환금지 (19.476833ms)
+ℹ tests 34
+ℹ suites 0
+ℹ pass 34
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 418.801125
