@@ -1,0 +1,51 @@
+✖ boundary edge: shade covers the inverse-transformed viewport at all supported zooms (2.254333ms)
+✖ boundary edge: visible roots beyond old 1x bounds survive far-zoom culling (0.5725ms)
+ℹ tests 2
+ℹ suites 0
+ℹ pass 0
+ℹ fail 2
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 44.6525
+
+✖ failing tests:
+
+test at ../../Documents/Codex/2026-10-01/dho/work/map020-previous-source-regression.mjs:78:1
+✖ boundary edge: shade covers the inverse-transformed viewport at all supported zooms (2.254333ms)
+  AssertionError [ERR_ASSERTION]: uncovered viewport at 0.62
+      at TestContext.<anonymous> (file:///Users/fordeargamers/Documents/Codex/2026-10-01/dho/work/map020-previous-source-regression.mjs:86:14)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1201:25)
+      at Test.start (node:internal/test_runner/test:1096:17)
+      at startSubtestAfterBootstrap (node:internal/test_runner/harness:385:17) {
+    generatedMessage: false,
+    code: 'ERR_ASSERTION',
+    actual: false,
+    expected: true,
+    operator: '==',
+    diff: 'simple'
+  }
+
+test at ../../Documents/Codex/2026-10-01/dho/work/map020-previous-source-regression.mjs:99:1
+✖ boundary edge: visible roots beyond old 1x bounds survive far-zoom culling (0.5725ms)
+  AssertionError [ERR_ASSERTION]: visible roots culled at 0.62
+
+  0 !== 2
+
+      at TestContext.<anonymous> (file:///Users/fordeargamers/Documents/Codex/2026-10-01/dho/work/map020-previous-source-regression.mjs:104:12)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1201:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:831:18)
+      at Test.postRun (node:internal/test_runner/test:1330:19)
+      at node:internal/test_runner/test:1133:31
+      at node:internal/process/task_queues:150:7
+      at AsyncResource.runInAsyncScope (node:async_hooks:227:14)
+      at AsyncResource.runMicrotask (node:internal/process/task_queues:147:8) {
+    generatedMessage: false,
+    code: 'ERR_ASSERTION',
+    actual: 0,
+    expected: 2,
+    operator: 'strictEqual',
+    diff: 'simple'
+  }

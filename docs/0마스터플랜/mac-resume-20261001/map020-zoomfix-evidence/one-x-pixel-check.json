@@ -1,0 +1,20 @@
+{
+  "after": {
+    "buildMs": 25.4,
+    "built": true,
+    "lastDraws": 16,
+    "mode": "b",
+    "roots": 305,
+    "texPx": 640000
+  },
+  "channelDifferences": 0,
+  "old": {
+    "buildMs": 31.2,
+    "built": true,
+    "lastDraws": 16,
+    "mode": "b",
+    "roots": 305,
+    "texPx": 640000
+  },
+  "pixels": 1024000
+}

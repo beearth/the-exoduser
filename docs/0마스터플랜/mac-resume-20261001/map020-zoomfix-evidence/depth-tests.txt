@@ -1,0 +1,18 @@
+✔ depthSlice: 기본 ON 플래그·끄기 스위치·게이트가 두 빌드에 존재한다 (2.816333ms)
+✔ depthSlice: 밑동 피벗 occ 메타 — 나무 8그루(.45) + 시체나무(몸통 기준선 -.058) + 아치 ring (4.773ms)
+✔ depthSlice: footY 정렬 키 = 밑동 world y (스프라이트 중심 아님) (2.890041ms)
+✔ depthSlice: 프런트/백 분할 — 밑동이 플레이어보다 남쪽인 occ만 프런트 (2.496459ms)
+✔ depthSlice: 시체나무 — 뿌리 치마 위(분할선 남쪽)에서는 가리지 않는다 (2.486333ms)
+✔ depthSlice: 아치 나무 — 고리 개구부 안에서는 가림 없음 (단일 스프라이트 예외) (2.595416ms)
+✔ depthSlice: 가림 판정 AABB — 캐노피가 플레이어를 덮을 때만 참 (2.369458ms)
+✔ depthSlice: 페이드 lerp — 목표 .62, 약 150ms(9프레임)에 90% 진행, OFF 승수는 1 (1.018709ms)
+✔ depthSlice: 가려진 플레이어 엑스레이 고스트 — α.55, 가려진 프레임에만, 렌더 전용 재드로우 (1.869875ms)
+✔ depthSlice: 플래그 OFF 경로 보존 — 기존 그림자 수치와 단일 루프 호출이 그대로 남아 있다 (4.641875ms)
+ℹ tests 10
+ℹ suites 0
+ℹ pass 10
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 84.958208

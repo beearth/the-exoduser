@@ -1,0 +1,37 @@
+{
+  "ambient": [
+    6,
+    16,
+    9,
+    0.38
+  ],
+  "defaultB": {
+    "buildMs": 25.4,
+    "built": true,
+    "lastDraws": 25,
+    "mode": "b",
+    "roots": 305,
+    "texPx": 640000
+  },
+  "enemies": [
+    {
+      "alive": true,
+      "etype": 0,
+      "x": 2330.105851824327,
+      "y": 6536.997429942628
+    },
+    {
+      "alive": true,
+      "etype": 0,
+      "x": 2528.2971897032608,
+      "y": 6533.0070903894275
+    }
+  ],
+  "errors": [],
+  "mapCollisionUnchanged": true,
+  "player": {
+    "hp": 448,
+    "x": 2420,
+    "y": 6600
+  }
+}

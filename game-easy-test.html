@@ -48640,7 +48640,7 @@ function draw(){
   _drawCh1Hill(X);
   if(globalThis.Ch1AltarMoat)Ch1AltarMoat.draw(X,G,_now,_CH1_HILL,T,VW,VH); // 제단 둘레 막힌 띠를 독액 도랑으로 표시 (시각 전용)
   if(globalThis.Ch1BorderForeground)Ch1BorderForeground.drawBack(X,G,_now,VW,VH); // [DEPTH-SLICE2] 분할 군락 백 패스(플레이어가 밑동 남쪽일 때 수관 복원)
-  if(globalThis.Ch1BoundaryEdge)Ch1BoundaryEdge.draw(X,G,_now,VW,VH); // [MAP-020] 경계 접지 그림자·뿌리 띠 (시각 전용)
+  if(globalThis.Ch1BoundaryEdge)Ch1BoundaryEdge.draw(X,G,_now,VW,VH,_tzoom); // [MAP-020] 경계 접지 그림자·뿌리 띠 (시각 전용)
   const _tMap=performance.now();
   if(_fc2d){var _dPara=_PERF_PROF._delta(_snapPara);_PERF_PROF._para_di=_dPara.di}
   if(_DCP.on){_DCP._mark('bg');_DCP._setSource(_DCP_SRC.TILE_FALLBACK)} // [DCPROF] 배경(패럴랙스+검정오버레이+반딧불이) 구간 종료

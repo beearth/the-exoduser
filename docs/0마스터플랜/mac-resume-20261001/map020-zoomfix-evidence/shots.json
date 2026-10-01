@@ -1,0 +1,140 @@
+[
+  {
+    "cam": {
+      "x": 2420,
+      "y": 6600
+    },
+    "focus": true,
+    "gl": false,
+    "gpu": true,
+    "height": 800,
+    "mode": "0",
+    "qa": {
+      "buildMs": 25.4,
+      "built": true,
+      "lastDraws": 0,
+      "mode": "0",
+      "roots": 305,
+      "texPx": 640000
+    },
+    "unchanged": true,
+    "visibility": "visible",
+    "width": 1280,
+    "zoom": 1
+  },
+  {
+    "cam": {
+      "x": 2420,
+      "y": 6600
+    },
+    "focus": true,
+    "gl": false,
+    "gpu": true,
+    "height": 800,
+    "mode": "a",
+    "qa": {
+      "buildMs": 25.4,
+      "built": true,
+      "lastDraws": 1,
+      "mode": "a",
+      "roots": 305,
+      "texPx": 640000
+    },
+    "unchanged": true,
+    "visibility": "visible",
+    "width": 1280,
+    "zoom": 1
+  },
+  {
+    "cam": {
+      "x": 2420,
+      "y": 6600
+    },
+    "focus": true,
+    "gl": false,
+    "gpu": true,
+    "height": 800,
+    "mode": "b",
+    "qa": {
+      "buildMs": 25.4,
+      "built": true,
+      "lastDraws": 16,
+      "mode": "b",
+      "roots": 305,
+      "texPx": 640000
+    },
+    "unchanged": true,
+    "visibility": "visible",
+    "width": 1280,
+    "zoom": 1
+  },
+  {
+    "cam": {
+      "x": 2420,
+      "y": 6600
+    },
+    "focus": true,
+    "gl": false,
+    "gpu": true,
+    "height": 800,
+    "mode": "0",
+    "qa": {
+      "buildMs": 25.4,
+      "built": true,
+      "lastDraws": 0,
+      "mode": "0",
+      "roots": 305,
+      "texPx": 640000
+    },
+    "unchanged": true,
+    "visibility": "visible",
+    "width": 1280,
+    "zoom": 0.62
+  },
+  {
+    "cam": {
+      "x": 2420,
+      "y": 6600
+    },
+    "focus": true,
+    "gl": false,
+    "gpu": true,
+    "height": 800,
+    "mode": "a",
+    "qa": {
+      "buildMs": 25.4,
+      "built": true,
+      "lastDraws": 1,
+      "mode": "a",
+      "roots": 305,
+      "texPx": 640000
+    },
+    "unchanged": true,
+    "visibility": "visible",
+    "width": 1280,
+    "zoom": 0.62
+  },
+  {
+    "cam": {
+      "x": 2420,
+      "y": 6600
+    },
+    "focus": true,
+    "gl": false,
+    "gpu": true,
+    "height": 800,
+    "mode": "b",
+    "qa": {
+      "buildMs": 25.4,
+      "built": true,
+      "lastDraws": 25,
+      "mode": "b",
+      "roots": 305,
+      "texPx": 640000
+    },
+    "unchanged": true,
+    "visibility": "visible",
+    "width": 1280,
+    "zoom": 0.62
+  }
+]

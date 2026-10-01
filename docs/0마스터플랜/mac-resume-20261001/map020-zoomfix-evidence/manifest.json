@@ -1,0 +1,107 @@
+{
+  "base_source": "ad77f30870b84c29bc56651dbaf6a61eb1f3d2ca",
+  "defect_verdict": "PASS",
+  "overall_map_verdict": "RETOUCH",
+  "files": {
+    "invariant-hashes.json": {
+      "bytes": 318,
+      "sha256": "37f249defba6c86d6354e886d0e2b31ac320f82deac513e123d709715327c743"
+    },
+    "after-z1-a.png": {
+      "bytes": 107165,
+      "sha256": "ef989c439586712f3e64abc9713e976e52c69f12237c53f0a0b6accca52c0dcf"
+    },
+    "depth-tests.txt": {
+      "bytes": 1279,
+      "sha256": "e372761f51b4a68da2d504fccd41c2d7820d95abf791b3bc2cd138ee757b6621"
+    },
+    "before-source.json": {
+      "bytes": 487,
+      "sha256": "e280851f97356b38866bb5e935a9a9214bb5f1da08443da44801f7a52819966e"
+    },
+    "one-x-pixel-check.json": {
+      "bytes": 316,
+      "sha256": "569b4c361ad2fcc61b6c4e32b0cacb66bcddc5fc90ceefd19c94e0cc2e74993d"
+    },
+    "after-z1-b.png": {
+      "bytes": 110441,
+      "sha256": "049521e99e2e33c300f25b924a691625182d397dca69eb2cc4d2fb333d5e28f0"
+    },
+    "after-z1-0.png": {
+      "bytes": 113071,
+      "sha256": "0a4ea95a969e69f65191abc2a790bbb00331cc8b56186169cfaa2154714aadc4"
+    },
+    "entity-readability.json": {
+      "bytes": 545,
+      "sha256": "d35678fa2c26762a74cd4d61923683fc29f154012781a808e6c4265c83150ef9"
+    },
+    "SKILL-팀검토.md": {
+      "bytes": 6121,
+      "sha256": "5a549557b1340c44805f50bc342f17114867aee3ba499de766544329c1384546"
+    },
+    "negative-control.txt": {
+      "bytes": 2157,
+      "sha256": "7280a2c001d7f7ab20875f8383920cb6379087822b68ea4725e1298808780fad"
+    },
+    "before-z0.62-b.png": {
+      "bytes": 125564,
+      "sha256": "aa1212510cd811c7aecb089d9b51c838e2e37cc0b797d287cd0af68d843ca74a"
+    },
+    "UIUX-팀검토.md": {
+      "bytes": 3902,
+      "sha256": "4d819ae0bef35f107a170ad0f5b960aecbdebafe6cdc35347fd4e290dc9d0110"
+    },
+    "render-benchmark-raw.json": {
+      "bytes": 92782,
+      "sha256": "e9c9a9245f73b7ddea014cf5eef638c72de2aeefadf423e4474f2c6fbbdcf041"
+    },
+    "browser-console.json": {
+      "bytes": 845,
+      "sha256": "7163dc89f1e40d318225f26f91d169a910f8fdc16c8c256bde0524df7550cac3"
+    },
+    "ANIMVFX-팀검토.md": {
+      "bytes": 7612,
+      "sha256": "61c2b1e72beee908c4f424ed9465436716ae252637d0fdd0be382cf37c6e8411"
+    },
+    "validation.json": {
+      "bytes": 848,
+      "sha256": "7bba0ee32addbdf2eb480d436a2f5ee47618d82f768da312ea12612953c6e9a6"
+    },
+    "after-source.json": {
+      "bytes": 454,
+      "sha256": "65170794636636555753c1ba6626079d32a30cc4304ad6e0592fd1fdd69789fa"
+    },
+    "after-z0.62-b.png": {
+      "bytes": 117500,
+      "sha256": "893e7a1b569905834b92dfaae2c8a9453747639c03177776f2a7cb9b13601633"
+    },
+    "after-z0.62-a.png": {
+      "bytes": 114731,
+      "sha256": "113e6aefd79ca6e56649efe7f7a7266851be4700e648d5597783b925aadf1c2c"
+    },
+    "render-benchmark-summary.json": {
+      "bytes": 3141,
+      "sha256": "2e64531ede5ebccbb7dcb45dbb65c27c68eb2fddfebd3f4236def3110f7d5ebf"
+    },
+    "runtime-contract.json": {
+      "bytes": 279229,
+      "sha256": "f788f2ab0d826db01988bf9afaf25bb3f320892f5ece71316277193d92ddbc10"
+    },
+    "after-entities-z0.62.png": {
+      "bytes": 139833,
+      "sha256": "1982971de5d403c1bcec8233a0927469d79a5803963143f673168f2d015790b5"
+    },
+    "after-z0.62-0.png": {
+      "bytes": 129181,
+      "sha256": "aa83f33bcfbc9acb574566771a6c4606b17d07b3526310389dd1caedf9bc1d25"
+    },
+    "team-receipts.json": {
+      "bytes": 33355,
+      "sha256": "3742d50c10d6b34c94e936877e708613cc19c5a15e3e4d70baaf230ad01dbbe1"
+    },
+    "shots.json": {
+      "bytes": 2305,
+      "sha256": "a16719d1509d2bde35dbe57fca0ca5790580fabaf1ecaf28e4e882f03f3fb448"
+    }
+  }
+}

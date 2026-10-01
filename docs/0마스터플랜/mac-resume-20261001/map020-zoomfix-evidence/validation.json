@@ -1,0 +1,33 @@
+{
+  "related_tests": {
+    "boundary": 8,
+    "altar": 5,
+    "foreground": 11,
+    "hill": 2,
+    "inline_main": 1,
+    "depth": 10,
+    "total": 37,
+    "passed": 37
+  },
+  "inline_syntax": {
+    "game.html": 4,
+    "game-easy-test.html": 4,
+    "module": true
+  },
+  "negative_control": "previous module fails both viewport coverage and visible-root regressions",
+  "html_byte_changes": "exact minimal call/cache-key substitutions; all other bytes identical",
+  "http_checks": [
+    {
+      "file": "game.html",
+      "http_status": 200,
+      "sha256": "03d5be2240d23e7b6848be1264870ce440e32b8f26a9ce503b23d8e685ab59fc",
+      "disk_equal": true
+    },
+    {
+      "file": "ch1-boundary-edge.js",
+      "http_status": 200,
+      "sha256": "6274c941c790ff9ff34494620393a03824bb1a87406c298f97ac022b601423df",
+      "disk_equal": true
+    }
+  ]
+}

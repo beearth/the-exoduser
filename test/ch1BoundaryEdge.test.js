@@ -56,6 +56,61 @@ test('boundary edge: gates draw nothing and never build',()=>{
 test('boundary edge: wiring in both builds and the package list',()=>{
   assert.match(gameSrc,/<script src="ch1-boundary-edge\.js\?v=\d{8}-\d+"><\/script>/);
   for(const s of [gameSrc,easySrc])
-    assert.match(s,/Ch1BorderForeground\.drawBack\(X,G,_now,VW,VH\);[^\n]*\n\s*if\(globalThis\.Ch1BoundaryEdge\)Ch1BoundaryEdge\.draw\(X,G,_now,VW,VH\);/);
+    assert.match(s,/Ch1BorderForeground\.drawBack\(X,G,_now,VW,VH\);[^\n]*\n\s*if\(globalThis\.Ch1BoundaryEdge\)Ch1BoundaryEdge\.draw\(X,G,_now,VW,VH,_tzoom\);/);
   assert.match(buildSrc,/'ch1-boundary-edge\.js'/);
+});
+
+// Seed only the expensive, immutable art cache; exercise the real draw path.
+// No test-only hooks are added to the production API.
+function preparedDraw(zoom,cam={x:4000,y:4000},anchors=[]){
+  const sandbox={performance:{now:()=>0},location:{search:'?edgeShade=b'}};
+  sandbox.globalThis=sandbox;vm.createContext(sandbox);
+  vm.runInContext(src.replace('  function draw(',
+    '  root.seed=(g,list)=>{shade={width:800,height:800};rim={};pool={};roots=list;mapRef=g.map;};\n  function draw('),sandbox);
+  const g={stage:0,map:[[0]],mw:200,mh:200,cam};
+  sandbox.seed(g,anchors);
+  const images=[],translations=[];
+  const ctx={drawImage(...args){images.push(args.slice(1));},translate(...p){translations.push(p);},save(){},restore(){},rotate(){},scale(){}};
+  sandbox.Ch1BoundaryEdge.draw(ctx,g,0,1280,800,zoom);
+  return{images,translations};
+}
+
+test('boundary edge: shade covers the inverse-transformed viewport at all supported zooms',()=>{
+  // .04 is the editor minimum; .3 is the gameplay camera bound.
+  // Product cases protect the complete transform contract if both factors apply.
+  for(const z of [1,.62,.3,.04,4,.5*.62,.04*.3]){
+    for(const cam of [{x:2420,y:6600},{x:4000,y:4000},{x:0,y:0},{x:8000,y:8000}]){
+      const [sx,sy,sw,sh,x,y,w,h]=preparedDraw(z,cam).images[0];
+      const left=Math.max(0,cam.x-640/z),right=Math.min(8000,cam.x+640/z);
+      const top=Math.max(0,cam.y-400/z),bottom=Math.min(8000,cam.y+400/z);
+      assert.ok(x<=left&&x+w>=right&&y<=top&&y+h>=bottom,`uncovered viewport at ${z}`);
+      assert.ok(x>=0&&y>=0&&x+w<=8000&&y+h<=8000,'clip to the map, including extreme zoom');
+      assert.deepStrictEqual([sx,sy,sw,sh],[x*.1,y*.1,w*.1,h*.1],'source and world crop stay aligned');
+    }
+  }
+});
+
+test('boundary edge: omitted/invalid zoom preserves exact 1x draw contract',()=>{
+  const expected=[328,352,144,96,3280,3520,1440,960];
+  for(const z of [undefined,1,0,-1,NaN,Infinity,'0.62'])
+    assert.deepStrictEqual(preparedDraw(z).images[0],expected);
+});
+
+test('boundary edge: visible roots beyond old 1x bounds survive far-zoom culling',()=>{
+  for(const z of [.62,.3,.04,.5*.62]){
+    const cam={x:4000,y:4000},half=Math.min(3900,640/z);
+    const roots=[{x:cam.x-half+10,y:4000,rot:0,s:.42,flip:false},
+      {x:cam.x+half-10,y:4000,rot:0,s:.42,flip:true}];
+    assert.strictEqual(preparedDraw(z,cam,roots).translations.length,2,`visible roots culled at ${z}`);
+  }
+  const outside={x:6200,y:4000,rot:0,s:.42,flip:false};
+  assert.strictEqual(preparedDraw(.62,undefined,[outside]).translations.length,0,'do not draw distant offscreen roots');
+});
+
+test('boundary edge: both callers pass the exact zoom used by the world transform',()=>{
+  for(const s of [gameSrc,easySrc]){
+    assert.match(s,/const _tzoom=_ez\*_cz;/);
+    assert.match(s,/X\.scale\(_tzoom,_tzoom\)/);
+    assert.match(s,/Ch1BoundaryEdge\.draw\(X,G,_now,VW,VH,_tzoom\)/);
+  }
 });

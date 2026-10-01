@@ -1,0 +1,32 @@
+[
+  {
+    "level": "error",
+    "message": "Object",
+    "timestamp": "2026-10-01T05:46:47.033Z",
+    "url": "chrome-extension://ofpnmcalabcbjgholdjcjblkibolbppb/content.js"
+  },
+  {
+    "level": "error",
+    "message": "Object",
+    "timestamp": "2026-10-01T05:46:47.086Z",
+    "url": "http://localhost:3340/game.html"
+  },
+  {
+    "level": "error",
+    "message": "Object",
+    "timestamp": "2026-10-01T05:46:47.086Z",
+    "url": "http://localhost:3340/game.html"
+  },
+  {
+    "level": "error",
+    "message": "Object",
+    "timestamp": "2026-10-01T05:47:06.840Z",
+    "url": "http://localhost:3340/game.html?test=1&testchar=1&slot=map020-zoomfix-qa"
+  },
+  {
+    "level": "error",
+    "message": "Object",
+    "timestamp": "2026-10-01T05:47:06.840Z",
+    "url": "http://localhost:3340/game.html?test=1&testchar=1&slot=map020-zoomfix-qa"
+  }
+]

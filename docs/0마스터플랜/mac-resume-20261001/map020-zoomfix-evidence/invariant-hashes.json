@@ -1,0 +1,14 @@
+{
+  "before_equals_after": true,
+  "canonical_sha256": {
+    "map": "8a5dfe9f1a6c5a283be293a85cedb49509d1db5d317e063fde0b2cd5ff6c65a1",
+    "collision": "a1f9b68480c128c995a0f42733ccac63cf6b349baf829898ebbe59b55a440729"
+  },
+  "root_transforms_305_identical": true,
+  "ambient": [
+    6,
+    16,
+    9,
+    0.38
+  ]
+}

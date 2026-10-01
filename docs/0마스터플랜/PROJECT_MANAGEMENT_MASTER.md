@@ -397,3 +397,14 @@ SOUND aa3ac0ed·ITEM a1c26e3a·BALANCE 1fd751d8은 기존 idle 상태와 마지�
 11팀 상태: QA 원자료 검토 완료, MAP 이번 검수 RETOUCH 종료, SOUND/ITEM/BALANCE 독립 한 건 완료. ART 컷신 4장·SKILL 자원 입력·UIUX UI03·ENEMY 보상 귀속·BUILD 패키지·ANIMVFX GL/부활 검수는 각각 다음 담당 배정 또는 게이트 대기다. inventory의 blocked를 보안 거절이나 작업 완료로 오인하지 않는다. 기존 PC 작업과 전원은 건드리지 않았다.
 
 직전 성능 보고서·마스터 추가분·CHANGELOG의 줄바꿈과 JSON 7개를 실제 바이트/파서로 확인했다. 리터럴 백슬래시n 꼬리는 없고 JSON도 정상이므로 불필요하게 재작성하지 않았다. [MAP 보고서](mac-resume-20261001/MAP020-Mac-실화면-검수.md), [3팀 인수](mac-resume-20261001/3팀-독립검토.md), [원자료/수신 근거](mac-resume-20261001/map020-evidence/팀실행-영수증.json)를 함께 체크포인트한다. 코드·원본 저장·공용 인덱스의 타팀 작업·정규화 22항목을 보존했다.
+
+
+### 18.6 MAP-020 줌 결함 구현·실화면 재검수와 독립 3팀 후속 완료 (2026-10-01)
+
+총괄 인수 ad77f308 원격 확인 후, 현장 총괄 소유로 boundary shade/root 범위에 실제 `_tzoom`을 전달했다. 두 HTML은 호출/캐시 키의 최소 바이트 치환만 했다. 실제 줌1/.62 × 0/A/B 6장, 이전 소스 사각 절단 재현, 수정 후 연속성, 1배 경계 래스터 RGBA 차이0, 305앵커 변환·G.map/정적 충돌 SHA 불변을 확인했다. 기본B·어둠.38·buildRim·베이크·전투·저장 공식 보존. 관련37검사 PASS와 이전 소스 음성 대조2FAIL로 회귀 검사 효용을 확인했다. 최소 .04/복합 줌은 실제 캐시의 draw 범위 검사이며 편집 모드 전체 플레이 PASS가 아니다.
+
+정지 렌더 5초씩6구간: 평균 약8.33ms, 50ms초과0. .62 경계 draw16→25로 기존 조기 소거9개 복구, CPU 제출 약.017~.018→.031~.032ms. 짧은 정지 조건·계측 오버헤드 한계를 명시했다. **이번 줌 결함 PASS / 전체 MAP-020 RETOUCH**. 반복 재질·M5 전체 경로 미확인과 PC329ms 문제를 해결로 바꾸지 않았다. listener0이나 부팅 콘솔 Object/확장프로그램 오류는 남으며 전체 콘솔0이라 하지 않는다.
+
+기존 SKILL b9eeea10·UIUX 4b78d932·ANIMVFX 720a6335의 최근 상태/마지막 수신을 먼저 읽고 같은 세션에 미완료 한 건씩 실제 전송했다. 끊긴 PTY는 공식 attach로 기존 세션만 재연결했다. 세 팀 모두 Read/Glob/Grep 착수·최종 보고 완료, 공용 HTML 수정0. SKILL=확정/취소10시나리오·기존16회귀 대조; UIUX=실제 밀집 캡처·상단 상태 스트립 대비 후보1건; ANIMVFX=플래시4영역·GL60/고주사율/부활6시나리오 대조. 신규 실플레이 완료로 세지 않는다. 최대 활성 총괄 포함4, 게임1개, 신규팀0. SOUND/ITEM/BALANCE 직전 완료 검토는 반복하지 않았다. ART/ENEMY/BUILD 등 다음 게이트 상태는 유지한다.
+
+[구현·MAP PRODUCTION REPORT](mac-resume-20261001/MAP020-줌수정-검수.md), [3팀 인수](mac-resume-20261001/3팀-후속검토.md), [실제 전송·읽기·최종 보고 영수증](mac-resume-20261001/map020-zoomfix-evidence/team-receipts.json)를 코드+증거와 함께 체크포인트한다. 종료 시 수정 모듈·UI·줌 복원, 게임 이탈·viewport 해제. 이전 정규화22항목·공용 인덱스 타팀 상태·원본 Mac/PC 작업·사용자 저장 보존. 최종 원격 SHA는 현장 outputs/map020-zoomfix-20261001/checkpoint.json에 별도 기록한다.

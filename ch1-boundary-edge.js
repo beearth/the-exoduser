@@ -66,7 +66,7 @@
     // Darken toward the forest tone so strips sit in the edge shadow.
     rc.globalCompositeOperation='source-atop';rc.fillStyle='rgba(10,7,8,.12)';rc.fillRect(0,0,440,120);
   }
-  function draw(ctx,g,now,VW,VH){
+  function draw(ctx,g,now,VW,VH,zoom){
     lastDraws=0;
     const v=mode();
     if(v==='0'||!g||g.stage!==0||g._bossArena||!Array.isArray(g.map)||!g.cam)return;
@@ -76,7 +76,10 @@
         if(typeof requestIdleCallback==='function')requestIdleCallback(run,{timeout:1500});else setTimeout(run,0);}
       if(!shade||mapRef!==g.map)return;
     }
-    const cam=g.cam,hw=(VW||1600)*.5+80,hh=(VH||900)*.5+80;
+    // Match the caller's complete world transform (editor zoom * camera zoom).
+    // Keep the existing 80-world-pixel overscan; omitted/invalid zoom stays 1x.
+    const z=Number.isFinite(zoom)&&zoom>0?zoom:1;
+    const cam=g.cam,hw=(VW||1600)*.5/z+80,hh=(VH||900)*.5/z+80;
     const x0=Math.max(0,cam.x-hw),y0=Math.max(0,cam.y-hh),x1=Math.min(g.mw*T,cam.x+hw),y1=Math.min(g.mh*T,cam.y+hh);
     if(x1<=x0||y1<=y0)return;
     const k=S/T;

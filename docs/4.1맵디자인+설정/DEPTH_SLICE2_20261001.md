@@ -96,3 +96,8 @@ placements.json 일치(index·좌표·variant·scale/width/flip) / 분류표(전
 ## CODE CHANGE
 
 신규 `ch1-border-foreground.js`(+`test/ch1BorderForeground.test.js`). `game.html`: 스크립트 태그 1·호출 2줄·고스트 프레임 가드 1줄. `game-easy-test.html`: 호출 2줄·고스트 가드 1줄. `build-nwjs.mjs`: 복사 목록 1줄. 충돌·geometry·베이크·타 스테이지 무변, 기본 OFF(`DEFAULT_ON=false`). QA 스크립트=`tmp/depth_slice2/`(비추적), 촬영=`captures/depth_slice2/`(비추적).
+
+
+### 2026-10-01 MAP-020 후속 줌 범위 수정
+
+이 문서의 과거 와이드 촬영과 별개로, 경계 모듈의 실제 .62줌 사각 절단을 확인하고 draw/cull에 전체 월드 줌을 반영했다. 전경 2차의 배치·170px 띠·가림 계약은 변경하지 않았다. [현행 경계 §7](CH1_BOUNDARY_EDGE_MAP020_20261001.md#7-실제-줌-drawcull-수정--2026-10-01). 전체 MAP-020 RETOUCH와 M5 보행 미확인 유지.
