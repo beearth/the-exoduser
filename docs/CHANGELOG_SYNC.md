@@ -51773,3 +51773,8 @@ FIRE 독립8검사와 URL query17검사 인수, SOUND root canonical 관측기18
 ## 2026-10-01 ITEM/BALANCE 저장·환급 경계 수정
 
 본편/easy uniqueId 이름 보존 가드 및 salvageVal/equipItem 환급 Math.floor 적용(각3줄). 기존 공식/비율/수수료 유지. 인벤토리·아이템·밸런스·저장 SSOT 동기화. 실제 함수 회귀 포함18PASS·guard·inline parse PASS; 기존 SOUND2실패 별도 추적, 실게임 미검수. 근거: docs/0마스터플랜/mac-resume-20261001/vscode-dispatch/ITEM-BALANCE-integration-result.md.
+
+
+## 2026-10-01 UIUX 데모 카드 회귀 정정
+
+전역 문자열 순서를 가정한 demoScope 회귀를 실제 카드 함수/번역 실행으로 대체. 현재6경로·관련23PASS, 3변이 검출. 공개 Lv100/1-1·저장 정책 유지. 데모노트/총괄/docs 검색 및 root 인수 기록 동기화.

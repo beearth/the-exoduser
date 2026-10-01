@@ -1,0 +1,31 @@
+✔ demo lobby uses the browser save path even when an account session exists (0.934791ms)
+✔ demo entry URL never labels the browser-only save as a cloud character (0.741167ms)
+✔ local old lobby completion keeps the newer loading screen (0.8965ms)
+✔ local hidden lobby completion cannot close another loading screen (0.441333ms)
+✔ local current lobby completion closes its loading screen normally (0.376209ms)
+✔ online old lobby completion keeps the newer loading screen (0.422209ms)
+✔ online hidden lobby completion cannot close another loading screen (0.348084ms)
+✔ online current lobby completion closes its loading screen normally (0.3375ms)
+✔ the public demo is capped at level 100 and ends after stage 1-1 (9.273958ms)
+✔ the lobby and demo build notes describe the same 1-1 level 100 scope (31.137042ms)
+✔ current scope documents retain no active 1-4 public-demo contract (0.818708ms)
+✔ demo card switches visible and accessible labels without replacing nodes: null (1.369125ms)
+✔ demo card switches visible and accessible labels without replacing nodes: {"lv":46,"kills":1795} (7.953375ms)
+✔ local character retains its custom name, level, stage and focus while labels change (0.38825ms)
+✔ online character retains its custom name, level, stage and focus while labels change (0.293625ms)
+✔ available creation card translates its text and button description together (0.270583ms)
+✔ full creation card translates without acquiring an interactive control: false (0.250625ms)
+✔ full creation card translates without acquiring an interactive control: true (0.223542ms)
+✔ demo refresh preserves unexpected nested text containers (0.230417ms)
+✔ character refresh preserves unexpected nested text containers (0.441084ms)
+✔ language application is safe before a list or slot state has initialized (0.396583ms)
+✔ existing fixed card labels remain compatible with the shared control helper (0.282583ms)
+✔ the persistent name label translates without changing the typed name or focus (0.320708ms)
+ℹ tests 23
+ℹ suites 0
+ℹ pass 23
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 77.718625

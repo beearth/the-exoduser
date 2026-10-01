@@ -1,0 +1,122 @@
+{
+  "observedAt": "2026-10-01T13:03:53.462Z",
+  "inputHashes": {
+    "index.html": "38f4e0e97ed63014e86ec48a14d9d0a677472ef57b99916f9a48b7b3395e66c8",
+    "game.html": "8ebc3b7b52a651c1a3bc5e8c285b00d186c6dacc18429ada7499781acc72b0b9",
+    "game-easy-test.html": "4c408f1e7b57210900ddfa8a0646502f91b6a0bbc798a24338eb159cb613d874",
+    "test/demoScope.test.js": "2b36beee981411c3a8db3630f304ce03f80e77085de94034cfbe8e94c9ef3ef9",
+    "test/demoSaveRoute.test.js": "fdbb132876dfd1e81fc4f2a00b811a32026f6682d262a86f973a518ed60ad955",
+    "test/lobbyCardLanguage.test.js": "40af5af687e74a0e4a033cce8b52c603b68b3712d5002311019b4e328259ea2b",
+    "docs/0마스터플랜/DEMO/HELL_DEMO_BUILD_NOTES.md": "6080b49ee9561c1b49d78f90d3159e9859b924fedf23755fb6e64a49ee21a179"
+  },
+  "candidateTestSha256": "0f1dc533aae1617988cfc2faea8ec2df5e11ab8138289121b1dd9402b477c908",
+  "contextHunks": 2,
+  "patchReplay": "PASS",
+  "runs": [
+    {
+      "name": "before",
+      "passes": 10,
+      "failures": 1,
+      "exit": 1,
+      "command": [
+        "/Users/fordeargamers/.local/node-runtime/node-v24.15.0-darwin-arm64/bin/node",
+        "--test",
+        "--test-reporter=tap",
+        "tools/team-followup-20261001/UIUX/demo-scope-original.test.mjs",
+        "test/demoSaveRoute.test.js"
+      ]
+    },
+    {
+      "name": "after",
+      "passes": 11,
+      "failures": 0,
+      "exit": 0,
+      "command": [
+        "/Users/fordeargamers/.local/node-runtime/node-v24.15.0-darwin-arm64/bin/node",
+        "--test",
+        "--test-reporter=tap",
+        "tools/team-followup-20261001/UIUX/demo-scope-candidate.test.mjs",
+        "test/demoSaveRoute.test.js"
+      ]
+    },
+    {
+      "name": "lobbyCardLanguage",
+      "passes": 12,
+      "failures": 0,
+      "exit": 0
+    }
+  ],
+  "negativeControls": [
+    {
+      "name": "new-level",
+      "passes": 2,
+      "failures": 1,
+      "exit": 1,
+      "command": [
+        "/Users/fordeargamers/.local/node-runtime/node-v24.15.0-darwin-arm64/bin/node",
+        "--test",
+        "--test-reporter=tap",
+        "tools/team-followup-20261001/UIUX/demo-scope-new-level.test.mjs"
+      ]
+    },
+    {
+      "name": "saved-progress",
+      "passes": 2,
+      "failures": 1,
+      "exit": 1,
+      "command": [
+        "/Users/fordeargamers/.local/node-runtime/node-v24.15.0-darwin-arm64/bin/node",
+        "--test",
+        "--test-reporter=tap",
+        "tools/team-followup-20261001/UIUX/demo-scope-saved-progress.test.mjs"
+      ]
+    },
+    {
+      "name": "english-translation",
+      "passes": 2,
+      "failures": 1,
+      "exit": 1,
+      "command": [
+        "/Users/fordeargamers/.local/node-runtime/node-v24.15.0-darwin-arm64/bin/node",
+        "--test",
+        "--test-reporter=tap",
+        "tools/team-followup-20261001/UIUX/demo-scope-english-translation.test.mjs"
+      ]
+    }
+  ],
+  "functions": [
+    {
+      "name": "_lobbyLang",
+      "text": "function _lobbyLang(){return getCurrentLanguage()}",
+      "line": 2042,
+      "sha256": "1246322d3d120d7589ab52d78f5e236e76fb4956105dfa56b6c073d4d743b866"
+    },
+    {
+      "name": "_TL",
+      "text": "function _TL(s){const lang=_lobbyLang();if(lang==='ko')return s;const tbl=_LOBBY_TABLES[lang]||_LOBBY_EN;return tbl[s]||_LOBBY_EN[s]||s}",
+      "line": 2043,
+      "sha256": "e6437ae4421f69f30364f721999bbe04f2d1d89b59a909f4ae260b3ca2ff1fe2"
+    },
+    {
+      "name": "_lobbyCardLeaf",
+      "text": "function _lobbyCardLeaf(card,selector,text){\n  const el=card.querySelector(selector);if(el&&el.children.length===0)el.textContent=text;\n}",
+      "line": 2966,
+      "sha256": "9bad13378f3cb991b6f0a25579be9ff9372ddd884fd3afd2e3d03c37befc45b7"
+    },
+    {
+      "name": "_lobbyDemoCardLabel",
+      "text": "function _lobbyDemoCardLabel(card,progress){\n  const name=_lobbyDemoCharacterName();\n  const info=progress?'Lv.'+progress.lv+' · Stage 1-1 · '+_TL('처치')+' '+progress.kills.toLocaleString()+' · '+_TL('브라우저 저장'):'Lv.1 START · Stage 1-1 · Lv.100 Cap';\n  _lobbyCardLeaf(card,'.char-name',name);_lobbyCardLeaf(card,'.char-info',info);\n  return name;\n}",
+      "line": 2976,
+      "sha256": "d1f23b252492a88c08e3302f8b78c77ae793e5eda9ebbf95b76cfcd159926172"
+    },
+    {
+      "name": "_lobbyDemoCharacterName",
+      "text": "function _lobbyDemoCharacterName(){return _lobbyLang()==='ko'?'대검전사':'Greatsword Warrior';}",
+      "line": 3075,
+      "sha256": "112d13f05e1c60bc5f9385e519f3c718db8b4d65956d8aa9ac6e92f6791906b2"
+    }
+  ],
+  "productionApplied": false,
+  "sharedTestsModified": false,
+  "visualVerdict": "UNKNOWN"
+}

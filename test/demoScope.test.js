@@ -1,6 +1,8 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import { readFile } from 'node:fs/promises';
+import vm from 'node:vm';
+import { parse } from 'acorn';
 
 const gameUrl = new URL('../game.html', import.meta.url);
 const lobbyUrl = new URL('../index.html', import.meta.url);
@@ -23,7 +25,39 @@ test('the lobby and demo build notes describe the same 1-1 level 100 scope', asy
   ]);
 
   assert.match(lobby, /demo:'Lv\.1 START · Stage 1-1 Only · Lv\.100 Cap · 1~2h'/);
-  assert.match(lobby, /DEMO CHARACTER[\s\S]*Lv\.1 START · Stage 1-1 · Lv\.100 Cap/);
+  const names = ['_lobbyCardLeaf', '_lobbyDemoCardLabel', '_lobbyDemoCharacterName', '_lobbyLang', '_TL'];
+  const functions = new Map();
+  let englishTable;
+  for (const script of lobby.matchAll(/<script\b[^>]*>([\s\S]*?)<\/script>/g)) {
+    for (const node of parse(script[1], { ecmaVersion: 'latest' }).body) {
+      if (node.type === 'FunctionDeclaration' && names.includes(node.id.name)) functions.set(node.id.name, script[1].slice(node.start, node.end));
+      if (node.type === 'VariableDeclaration') {
+        for (const declaration of node.declarations) {
+          if (declaration.id.name === '_LOBBY_EN') englishTable = script[1].slice(declaration.init.start, declaration.init.end);
+        }
+      }
+    }
+  }
+  assert.ok(englishTable);
+  for (const name of names) assert.ok(functions.has(name), name);
+  for (const language of ['ko', 'en']) {
+    const context = vm.createContext({ getCurrentLanguage: () => language });
+    vm.runInContext('const _LOBBY_EN=' + englishTable + ';const _LOBBY_TABLES={en:_LOBBY_EN};' + names.map(name => functions.get(name)).join('\n'), context);
+    for (const progress of [null, Object.freeze({ lv: 46, kills: 1795 }), Object.freeze({ lv: 100, kills: 0 })]) {
+      const leaves = { '.char-name': { children: [], textContent: '' }, '.char-info': { children: [], textContent: '' } };
+      const card = { querySelector: selector => leaves[selector] };
+      const before = JSON.stringify(progress);
+      const expectedName = language === 'ko' ? '대검전사' : 'Greatsword Warrior';
+      assert.equal(context._lobbyDemoCardLabel(card, progress), expectedName);
+      assert.equal(leaves['.char-name'].textContent, expectedName);
+      if (progress) {
+        const expectedInfo = 'Lv.' + progress.lv + ' · Stage 1-1 · ' + (language === 'ko' ? '처치' : 'Kills') + ' ' + progress.kills.toLocaleString() + ' · ' + (language === 'ko' ? '브라우저 저장' : 'Saved in this browser');
+        assert.equal(leaves['.char-info'].textContent, expectedInfo);
+        assert.doesNotMatch(leaves['.char-info'].textContent, /Lv\.1 START|Lv\.100 Cap/);
+      } else assert.equal(leaves['.char-info'].textContent, 'Lv.1 START · Stage 1-1 · Lv.100 Cap');
+      assert.equal(JSON.stringify(progress), before);
+    }
+  }
   assert.match(notes, /\| 레벨 캡 \| 100 \(`_DEMO_LV_CAP=100`\) \|/);
   assert.match(notes, /\| 스테이지 \| 1-1만 \(`_DEMO_LAST_STAGE=0`\) \|/);
 });

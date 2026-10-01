@@ -1,0 +1,17 @@
+[
+  {
+    "case": "new-level",
+    "exit": 1,
+    "exactlyOneFailure": true
+  },
+  {
+    "case": "saved-progress",
+    "exit": 1,
+    "exactlyOneFailure": true
+  },
+  {
+    "case": "english-translation",
+    "exit": 1,
+    "exactlyOneFailure": true
+  }
+]

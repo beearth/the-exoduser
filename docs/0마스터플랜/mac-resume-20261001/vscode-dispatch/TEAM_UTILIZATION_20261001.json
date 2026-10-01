@@ -1,6 +1,6 @@
 {
-  "at": "2026-10-01T13:06:10.526045+00:00",
-  "root": "ITEM/BALANCE minimal production changes integrated; UIUX demo candidate awaiting root review; SOUND regression investigation active",
+  "at": "2026-10-01T13:07:19.249696+00:00",
+  "root": "ITEM/BALANCE production fix backed up; UIUX demo test integrated; SOUND investigation active",
   "teams": [
     {
       "team": "QA",
@@ -218,7 +218,7 @@
       "exists": true,
       "receivedAt": "2026-10-01T12:59:44Z",
       "startedAt": null,
-      "status": "submitted; root integration pending",
+      "status": "shared demo test integrated; root23 PASS and three negative controls; no product UI change",
       "startEvidence": "NEXT_TASK 첫 Read exit0, 이전 완료 산출과 현재 draw 경로·팀 MD 읽기 exit0. 중복 진행 산출 없음",
       "receipt": "/Users/fordeargamers/Projects/exoduser-migration-20261001/docs/0마스터플랜/mac-resume-20261001/vscode-dispatch/UIUX-demo-scope-receipt.json",
       "waitReason": null,
@@ -354,7 +354,7 @@
     }
   ],
   "remoteCheckpoint": {
-    "sha": "696bda0c4476cb3dc60b9f0621c8ba1ef06922e7",
+    "sha": "b043cd7d52e028a51dbd65cbc0d1d9e1214d7c08",
     "branch": "codex/mac-environment-20261001",
     "verified": true
   },

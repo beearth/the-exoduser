@@ -1,0 +1,20 @@
+{
+  "taskId": "UIUX-DEMO-SCOPE-REGRESSION-REPAIR",
+  "status": "completed_with_pending_integration",
+  "completedRecordedAt": "2026-10-01T13:03:53Z",
+  "receivedRecordedAt": "2026-10-01T12:59:49Z",
+  "firstSourceReadRecordedAt": "2026-10-01T12:59:55Z",
+  "timeBasis": "실제 Read 종료 UTC 기록. 최초 메시지 도착/명령 시작의 정확한 초는 UNKNOWN",
+  "receivedEvidence": "DEMO_SCOPE_TASK 및 소유 폴더 실제 Read exit0",
+  "startedEvidence": "현재 demoScope/demoSaveRoute/lobbyCardLanguage·실제 함수 위치·docs·중복·해시 조사 exit0. 이후 실제 함수 본문/번역/데모 노트와 원회귀 실행",
+  "duplicateCheck": "동일 과제 지시 외 demo-scope 산출/진행 영수증 없음",
+  "indexSha256": "38f4e0e97ed63014e86ec48a14d9d0a677472ef57b99916f9a48b7b3395e66c8",
+  "originalScopeTestSha256": "2b36beee981411c3a8db3630f304ce03f80e77085de94034cfbe8e94c9ef3ef9",
+  "diagnosis": "제품 수정 필요 근거 없음. 신규/저장 카드 함수보다 뒤쪽의 호환 문자열을 시작점으로 삼은 전역 regex 가정이 낡음",
+  "validation": {"before": "10PASS1FAIL", "after": "11PASS0FAIL", "lobbyCardLanguage": "12PASS0FAIL", "negativeControls": "3종 모두 의도한 실패 감지", "patchReplay": "PASS", "contextHunks": 2, "protectedFilesUnchanged": 7},
+  "resultPath": "docs/0마스터플랜/mac-resume-20261001/vscode-dispatch/UIUX-demo-scope-result.md",
+  "nextAction": "root가 미적용 표준 diff를 검토·통합하고 공용 회귀를 재실행",
+  "sharedTestsModified": false,
+  "productionApplied": false,
+  "visualVerdict": "UNKNOWN"
+}

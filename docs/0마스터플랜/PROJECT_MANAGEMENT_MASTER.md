@@ -589,3 +589,8 @@ Existing ITEM received the unique-save name preservation candidate at12:54:38Z; 
 ### 18.32 ITEM/BALANCE 실제 최소 수정 통합
 
 사전 원격 d9dd5151 보존 뒤 본편/easy 각 3줄 반영: uniqueId 이름 보존과 강화 환급 signed32 overflow 수정. 관련 18검사·guard·각 6script parse PASS. 기존 SOUND 2실패는 이전 HEAD에서도 재현하여 별도 담당이 실제 Read 후 조사 중이다. UIUX 데모 회귀 후보는 제출 완료·root 인수 대기. 실게임/오디오/패키지는 미검수. [변경·근거·한계](mac-resume-20261001/vscode-dispatch/ITEM-BALANCE-integration-result.md).
+
+
+### 18.33 UIUX 데모 카드 회귀 통합
+
+낡은 전역 문자열 순서 검사만 실제 카드 함수/번역/저장 진행 검사로 대체. 공용23PASS 및 3변이 음성 검출 확인. 제품 소스 추가 변경0, 화면 검수와 별도. ITEM/BALANCE b043cd7d 원격 대조 완료. [검수 기록](mac-resume-20261001/vscode-dispatch/UIUX-demo-scope-root-review.md).

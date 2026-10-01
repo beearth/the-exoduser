@@ -1,0 +1,82 @@
+TAP version 13
+# Subtest: demo card switches visible and accessible labels without replacing nodes: null
+ok 1 - demo card switches visible and accessible labels without replacing nodes: null
+  ---
+  duration_ms: 1.01
+  type: 'test'
+  ...
+# Subtest: demo card switches visible and accessible labels without replacing nodes: {"lv":46,"kills":1795}
+ok 2 - demo card switches visible and accessible labels without replacing nodes: {"lv":46,"kills":1795}
+  ---
+  duration_ms: 7.138583
+  type: 'test'
+  ...
+# Subtest: local character retains its custom name, level, stage and focus while labels change
+ok 3 - local character retains its custom name, level, stage and focus while labels change
+  ---
+  duration_ms: 0.349
+  type: 'test'
+  ...
+# Subtest: online character retains its custom name, level, stage and focus while labels change
+ok 4 - online character retains its custom name, level, stage and focus while labels change
+  ---
+  duration_ms: 0.2725
+  type: 'test'
+  ...
+# Subtest: available creation card translates its text and button description together
+ok 5 - available creation card translates its text and button description together
+  ---
+  duration_ms: 0.250167
+  type: 'test'
+  ...
+# Subtest: full creation card translates without acquiring an interactive control: false
+ok 6 - full creation card translates without acquiring an interactive control: false
+  ---
+  duration_ms: 0.240333
+  type: 'test'
+  ...
+# Subtest: full creation card translates without acquiring an interactive control: true
+ok 7 - full creation card translates without acquiring an interactive control: true
+  ---
+  duration_ms: 0.212042
+  type: 'test'
+  ...
+# Subtest: demo refresh preserves unexpected nested text containers
+ok 8 - demo refresh preserves unexpected nested text containers
+  ---
+  duration_ms: 0.210708
+  type: 'test'
+  ...
+# Subtest: character refresh preserves unexpected nested text containers
+ok 9 - character refresh preserves unexpected nested text containers
+  ---
+  duration_ms: 0.24175
+  type: 'test'
+  ...
+# Subtest: language application is safe before a list or slot state has initialized
+ok 10 - language application is safe before a list or slot state has initialized
+  ---
+  duration_ms: 0.257833
+  type: 'test'
+  ...
+# Subtest: existing fixed card labels remain compatible with the shared control helper
+ok 11 - existing fixed card labels remain compatible with the shared control helper
+  ---
+  duration_ms: 0.222708
+  type: 'test'
+  ...
+# Subtest: the persistent name label translates without changing the typed name or focus
+ok 12 - the persistent name label translates without changing the typed name or focus
+  ---
+  duration_ms: 0.2025
+  type: 'test'
+  ...
+1..12
+# tests 12
+# suites 0
+# pass 12
+# fail 0
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 63.200917

@@ -96,3 +96,8 @@ Native 목록에는 앱이 나왔으나 입력 복구를 뜻하지 않았다. EN
 ## 2026-10-01 ITEM/BALANCE 통합 및 새 회귀 인수
 
 ITEM 12:57:36Z, BALANCE 12:58:36Z 제출 완료. root 독립 검수·사전 원격 d9dd5151 보존 후 양쪽 게임 각 3줄 반영, 관련 18PASS. UIUX-DEMO-SCOPE는 기존 턴 12:59:44Z 시작, 12:59:55Z 소스 읽기 기록, 13:03:53Z 후보 검증 완료로 통합 대기. SOUND-ITEM-EQUIP-PICKUP은 기존 세션 13:02:24.376Z 수신·13:02:29.179Z 실제 지시 Read. 아직 새 결과 인수 전이다. ENEMY/ART/SKILL 새 지시 미수신 및 native 입력 실패를 유지한다.
+
+
+## UIUX 데모 후보 root 통합
+
+제출 완료 후 patch 및 실제 함수를 읽고, 후보23PASS·3개 변이 각1FAIL을 독립 확인했다. 공용 test 반영 후23PASS. 제출 보고의 미적용 상태는 이력이며 현재 test 통합 완료다. 화면·패키지 검수는 미실시. ITEM/BALANCE b043cd7d52e028a51dbd65cbc0d1d9e1214d7c08 원격 SHA 대조 완료.

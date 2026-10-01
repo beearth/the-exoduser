@@ -66,3 +66,8 @@ butler push "G:\hell-DEMO" beearth/exoduser:windows-demo --userversion 0.1.0
 ---
 
 문서 끝. FDG (FOR DEAR GAMERS).
+
+
+### 2026-10-01 카드 표시 회귀 검증
+
+신규 카드는 `Lv.1 START · Stage 1-1 · Lv.100 Cap`, 저장 카드는 실제 레벨·1-1·처치 수·브라우저 저장 안내를 표시한다. 이름은 한글 대검전사/영문 Greatsword Warrior다. 실제 함수와 번역 테이블 실행으로 신규/저장 6경로 및 관련23검사 통과. 실제 화면 검수는 별도이며 공개 데모의 Lv100/1-1 범위·저장 정책은 변경하지 않았다.
