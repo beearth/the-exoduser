@@ -1,6 +1,6 @@
 {
-  "at": "2026-10-01T13:07:19.249696+00:00",
-  "root": "ITEM/BALANCE production fix backed up; UIUX demo test integrated; SOUND investigation active",
+  "at": "2026-10-01T13:10:02.202545+00:00",
+  "root": "ITEM/BALANCE production fix and UIUX test remotely saved; SOUND regression integrated; fresh native check locked",
   "teams": [
     {
       "team": "QA",
@@ -33,13 +33,13 @@
       "exists": true,
       "receivedAt": null,
       "startedAt": null,
-      "blocker": "Native input noWindowsAvailable/clipboard timeout; current lock state unknown.",
-      "status": "new task not received; native input unavailable at last check",
+      "blocker": "13:09Z Mac locked explicitly reported; manual unlock required",
+      "status": "new task not received; current native check locked",
       "cliState": "existing Claude session idle verified this cycle",
       "pendingRepair": {
         "dispatch": "not_received",
         "instruction": "/Users/fordeargamers/Projects/exoduser-migration-20261001/tools/team-followup-20261001/ENEMY/NEXT_TASK.md",
-        "blocker": "Native inventory and AX visible, input noWindowsAvailable/clipboard timeout; no new ENEMY JSONL receipt"
+        "blocker": "13:09Z new native query: Mac locked, no further input attempts"
       }
     },
     {
@@ -97,7 +97,7 @@
       "pendingRepair": {
         "dispatch": "not_received",
         "instruction": "/Users/fordeargamers/Projects/exoduser-migration-20261001/tools/team-followup-20261001/ART/FIX_TASK.md",
-        "blocker": "Native inventory and AX visible, input noWindowsAvailable/clipboard timeout; no new ENEMY JSONL receipt"
+        "blocker": "13:09Z new native query: Mac locked, no further input attempts"
       }
     },
     {
@@ -127,7 +127,7 @@
       "pendingRepair": {
         "dispatch": "not_received",
         "instruction": "/Users/fordeargamers/Projects/exoduser-migration-20261001/tools/team-followup-20261001/SKILL/FIX_TASK.md",
-        "blocker": "Native inventory and AX visible, input noWindowsAvailable/clipboard timeout; no new ENEMY JSONL receipt"
+        "blocker": "13:09Z new native query: Mac locked, no further input attempts"
       }
     },
     {
@@ -255,7 +255,9 @@
         "status": "bounded candidate static accepted: 30 boundary/recovery/embedded + 15 groups/6VM + root600 comparisons; production/visual/FPS pending",
         "completedAt": "2026-10-01T12:45:56Z",
         "receipt": "/Users/fordeargamers/Projects/exoduser-migration-20261001/docs/0마스터플랜/mac-resume-20261001/vscode-dispatch/UIUX-boundary-receipt.json"
-      }
+      },
+      "backlogReevaluatedAt": "2026-10-01T13:10:02.202545+00:00",
+      "backlogDecision": "Demo regression integrated. Bounded coordinate candidate still needs real viewport/zoom/dense performance acceptance."
     },
     {
       "team": "ITEM",
@@ -285,7 +287,9 @@
         "turnId": "01a0f787-f77c-7a50-90aa-003fecd6855a",
         "readRecordedAt": "2026-10-01T12:54:42Z",
         "exitCode": 0
-      }
+      },
+      "backlogReevaluatedAt": "2026-10-01T13:10:02.202545+00:00",
+      "backlogDecision": "Unique save bug integrated. Ring PNG target Chrome acceptance remains; no repeated RGB investigation."
     },
     {
       "team": "BALANCE",
@@ -314,7 +318,9 @@
         "turnId": "01a0f789-8e6a-7403-82f1-52554f0e8e93",
         "readRecordedAt": "2026-10-01T12:56:31Z",
         "exitCode": 0
-      }
+      },
+      "backlogReevaluatedAt": "2026-10-01T13:10:02.202545+00:00",
+      "backlogDecision": "Overflow fixed. Refund policy and proc integration decisions remain; no duplicate blastShot or formula change."
     },
     {
       "team": "SOUND",
@@ -339,12 +345,12 @@
         "tool": "Read",
         "path": "tools/team-followup-20261001/SOUND/ITEM_SOUND_TEST_TASK.md"
       },
-      "status": "actual source and failed tests read; investigating current pickup contract",
-      "completedAt": null,
-      "receipt": null,
-      "waitReason": null,
+      "status": "submitted; root corrected harness and integrated permanent regression, sound15+economy6 PASS",
+      "completedAt": "2026-10-01T13:06:02.382Z",
+      "receipt": "/Users/fordeargamers/Projects/exoduser-migration-20261001/docs/0마스터플랜/mac-resume-20261001/vscode-dispatch/SOUND-item-sound-receipt.json",
+      "waitReason": "Actual audio/game/package checks remain",
       "instruction": "/Users/fordeargamers/Projects/exoduser-migration-20261001/tools/team-followup-20261001/SOUND/ITEM_SOUND_TEST_TASK.md",
-      "cliState": "active at last observed Read",
+      "cliState": "answer submitted; no further assignment",
       "previousTaskSnapshot": {
         "task": "S-11-HOWL-RNG-PRESERVING-CANDIDATE",
         "status": "submitted; corrected8 + independent6 PASS, both context patches valid; production/audio pending",
@@ -354,7 +360,7 @@
     }
   ],
   "remoteCheckpoint": {
-    "sha": "b043cd7d52e028a51dbd65cbc0d1d9e1214d7c08",
+    "sha": "86a5996a00bc0f5af3e5ba43ce85cdb538471bca",
     "branch": "codex/mac-environment-20261001",
     "verified": true
   },
@@ -370,17 +376,15 @@
     "scope": "includes BUILD denied loopback and SOUND dedup; later RNG and v2 changes not in this snapshot"
   },
   "nativeCheck": {
-    "atApprox": "2026-10-01T12:51:59Z",
+    "atApprox": "2026-10-01T13:09:00Z",
     "inventoryChecksThisCycle": 1,
-    "appInventoryAvailable": true,
-    "locked": null,
+    "appInventoryAvailable": false,
+    "locked": true,
     "inputRecovered": false,
     "errors": [
-      "noWindowsAvailable",
-      "clipboard read timeout"
+      "Mac is locked and automatic unlock could not unlock it"
     ],
-    "terminalRenameCommitConfirmed": false,
-    "userDraftSentOrCleared": false,
+    "inputAttempts": 0,
     "unlockOrPowerChanges": false
   },
   "uiuxSubmissionRecovery": {

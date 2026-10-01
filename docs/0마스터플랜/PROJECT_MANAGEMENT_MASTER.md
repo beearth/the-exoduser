@@ -594,3 +594,8 @@ Existing ITEM received the unique-save name preservation candidate at12:54:38Z; 
 ### 18.33 UIUX 데모 카드 회귀 통합
 
 낡은 전역 문자열 순서 검사만 실제 카드 함수/번역/저장 진행 검사로 대체. 공용23PASS 및 3변이 음성 검출 확인. 제품 소스 추가 변경0, 화면 검수와 별도. ITEM/BALANCE b043cd7d 원격 대조 완료. [검수 기록](mac-resume-20261001/vscode-dispatch/UIUX-demo-scope-root-review.md).
+
+
+### 18.34 SOUND 회귀 인수 및 새 native 상태
+
+SOUND 제출을 root 실행하여 후보 인자 오류1건을 교정하고 실제 소스 기반 영구 회귀로 통합했다. 사운드15+저장경제6=21PASS, 생산변경0. easy 빈 슬롯 자동장착과 본편 가방우선 차이를 확인·SSOT에 기록.13:09Z 새 native 조회에서 Mac locked 명시, 후속 입력0. ITEM/BALANCE/UIUX 백로그 재확인 후 Chrome·실전·정책 의존과 완료 항목을 분리했다. [근거와 제한](mac-resume-20261001/vscode-dispatch/SOUND-item-sound-root-review.md).

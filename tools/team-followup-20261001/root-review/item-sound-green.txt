@@ -1,0 +1,29 @@
+✔ item ground drops play a rarity-scaled spatial drop sound with a burst gate (0.803292ms)
+✔ item equipment maps weapon-type equip sounds over a base sound plus a rare rune layer (3.044625ms)
+✔ item pickup plays a random grab/rummage variant for all rarities (2.357458ms)
+✔ game.html: saved unique identity survives the actual name migration; legacy behavior remains (7.610791ms)
+✔ game.html: full equip, save snapshot and drop at refund overflow; affordable=true (38.106125ms)
+✔ game.html: full equip, save snapshot and drop at refund overflow; affordable=false (11.811166ms)
+✔ game-easy-test.html: saved unique identity survives the actual name migration; legacy behavior remains (3.493542ms)
+✔ game-easy-test.html: full equip, save snapshot and drop at refund overflow; affordable=true (28.761375ms)
+✔ game-easy-test.html: full equip, save snapshot and drop at refund overflow; affordable=false (10.425875ms)
+✔ game.html: pickup sound and inventory, occupied=false, full=false (1.124583ms)
+✔ game.html: pickup sound and inventory, occupied=false, full=true (0.244375ms)
+✔ game.html: pickup sound and inventory, occupied=true, full=false (0.206292ms)
+✔ game.html: pickup sound and inventory, occupied=true, full=true (0.305834ms)
+✔ game.html: all pickup variants and rarities play once; equipment layers retain volume and pitch (0.4655ms)
+✔ game.html: negative control detects sound played on full-bag refusal (0.943792ms)
+✔ game-easy-test.html: pickup sound and inventory, occupied=false, full=false (0.336375ms)
+✔ game-easy-test.html: pickup sound and inventory, occupied=false, full=true (0.205708ms)
+✔ game-easy-test.html: pickup sound and inventory, occupied=true, full=false (0.240083ms)
+✔ game-easy-test.html: pickup sound and inventory, occupied=true, full=true (0.255041ms)
+✔ game-easy-test.html: all pickup variants and rarities play once; equipment layers retain volume and pitch (0.2595ms)
+✔ game-easy-test.html: negative control detects sound played on full-bag refusal (0.373417ms)
+ℹ tests 21
+ℹ suites 0
+ℹ pass 21
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 158.461167

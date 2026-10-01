@@ -16,6 +16,6 @@ test('item equipment maps weapon-type equip sounds over a base sound plus a rare
   assert.match(gameHtml, /const _EQUIP_SFX_BY_BTYPE=\{crossbow:'equip_crossbow'\};/);
   assert.match(gameHtml, /function playEquipSfx\(item\)\{if\(!item\)return;const _k=\(item\.wtype&&_EQUIP_SFX_BY_WTYPE\[item\.wtype\]\)\|\|\(item\.btype&&_EQUIP_SFX_BY_BTYPE\[item\.btype\]\)\|\|'equip_base';playSample\(_k,\.42,_r\(1,\.04\)\);if\(item\.rarity>=2\)playSample\('equip_rare',\.28,_r\(1,\.03\)\);\}/);
   assert.match(gameHtml, /recalcSt\(\);\s*playEquipSfx\(item\);\s*notify\(_T\(item\.name\)\+_T\(' 장착!'\)\);/);
-  assert.match(gameHtml, /INV\.equipped\[_autoSlot\]=item;item\.slot=_autoSlot;\s*playItemPickupSfx\(item\);playEquipSfx\(item\);/);
+  // Current pickup behavior and sound counts are executed in itemSoundBehavior.test.js.
   assert.match(gameHtml, /INV\.equipped\[craftSlot\]=item;\s*SFX\.pickup\(\);playEquipSfx\(item\);/);
 });

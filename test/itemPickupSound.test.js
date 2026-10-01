@@ -16,8 +16,7 @@ test('item pickup plays a random grab/rummage variant for all rarities', () => {
   assert.doesNotMatch(gameHtml, /pickup_rare|pickup_legend/);
   // 가방 습득 경로
   assert.match(gameHtml, /playItemPickupSfx\(item\);notify\(`\$\{_rarName\(item\.rarity\)\} \$\{_T\(item\.name\)\} \$\{_T\('획득!'\)\}`\);/);
-  // 픽업 자동 장착 경로: 습득음(계층) + 장착음
-  assert.match(gameHtml, /playItemPickupSfx\(item\);playEquipSfx\(item\);notify\(`\$\{_rarName\(item\.rarity\)\} \$\{_T\(item\.name\)\} \$\{_T\('획득!'\)\} ⚡ \$\{_T\('자동 장착!'\)\}`\);/);
+  // Main pickup sends equipment to the bag; itemSoundBehavior.test.js executes this contract.
   // 월드아이템 습득부의 중복 SFX.pickup() 제거 확인 (pickupItem 내부가 이미 재생)
   assert.match(gameHtml, /if\(pickupItem\(wi\.item\)\)\{wi\.picked=true;addParts\(wi\.x,wi\.y,RARITY_C\[wi\.item\.rarity\]\|\|'#aaa',6\);/);
   assert.doesNotMatch(gameHtml, /if\(pickupItem\(wi\.item\)\)\{wi\.picked=true;SFX\.pickup\(\);/);

@@ -101,3 +101,8 @@ ITEM 12:57:36Z, BALANCE 12:58:36Z 제출 완료. root 독립 검수·사전 원�
 ## UIUX 데모 후보 root 통합
 
 제출 완료 후 patch 및 실제 함수를 읽고, 후보23PASS·3개 변이 각1FAIL을 독립 확인했다. 공용 test 반영 후23PASS. 제출 보고의 미적용 상태는 이력이며 현재 test 통합 완료다. 화면·패키지 검수는 미실시. ITEM/BALANCE b043cd7d52e028a51dbd65cbc0d1d9e1214d7c08 원격 SHA 대조 완료.
+
+
+## SOUND 아이템 회귀 인수 / 새 GUI 조회
+
+13:06:02.382Z 원 답변 회수, root 실제 실행5PASS1FAIL은 하니스 인자 전달 오류였다. Acorn 기반 영구 회귀로 교체·통합하고 사운드15+저장경제6=21PASS. 원문/원실패 보존.13:09Z 지원 native 새 조회1회: Mac locked/automatic unlock failure, 추가 입력0. ENEMY/ART/SKILL 미수신, 새 세션0. UIUX86a5996a00bc0f5af3e5ba43ce85cdb538471bca 원격 대조 완료.

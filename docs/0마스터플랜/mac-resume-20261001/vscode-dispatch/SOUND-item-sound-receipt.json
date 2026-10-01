@@ -1,0 +1,18 @@
+{
+  "task": "SOUND-ITEM-EQUIP-PICKUP-REGRESSION",
+  "sessionId": "aa3ac0ed-f4e5-44ad-a0b2-d4d2da045b84",
+  "receivedAt": "2026-10-01T13:02:24.376Z",
+  "firstReadAt": "2026-10-01T13:02:29.179Z",
+  "submittedAt": "2026-10-01T13:06:02.382Z",
+  "ownerExecuted": false,
+  "rootOriginalCandidate": {
+    "pass": 5,
+    "fail": 1
+  },
+  "rootIntegrated": {
+    "pass": 21,
+    "fail": 0
+  },
+  "productionChanged": false,
+  "actualAudio": "not tested"
+}

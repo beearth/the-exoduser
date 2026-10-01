@@ -1,0 +1,38 @@
+pickupItem bytes=1432
+✔ 증거: 추출 소스에 픽업 자동장착 분기 부재(설계 주석 포함) (0.795792ms)
+✔ 가방 습득 성공: 습득음 1 · 장착음 0 · true (0.523167ms)
+✖ 가방 공간 부족 거부: 무음(습득 0 · 장착 0) · false · bag 롤백 (0.5185ms)
+✔ playItemPickupSfx: 풀에서 1회 재생(계층 랜덤) (1.404041ms)
+✔ playEquipSfx: 기본폴백 + 희귀(≥2) 레이어 (1.257625ms)
+✔ 제작 자동장착/수동장착 라인 보존(구조 증거) (0.827333ms)
+ℹ tests 6
+ℹ suites 0
+ℹ pass 5
+ℹ fail 1
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 47.886792
+
+✖ failing tests:
+
+test at tools/team-followup-20261001/SOUND/item-sound-original.cjs:56:1
+✖ 가방 공간 부족 거부: 무음(습득 0 · 장착 0) · false · bag 롤백 (0.5185ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:
+  
+  1 !== 0
+  
+      at TestContext.<anonymous> (/Users/fordeargamers/Projects/exoduser-migration-20261001/tools/team-followup-20261001/SOUND/item-sound-original.cjs:58:10)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1201:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:831:18)
+      at Test.postRun (node:internal/test_runner/test:1330:19)
+      at Test.run (node:internal/test_runner/test:1258:12)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:831:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: 1,
+    expected: 0,
+    operator: 'strictEqual',
+    diff: 'simple'
+  }
