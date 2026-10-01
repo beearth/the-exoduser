@@ -1,6 +1,6 @@
 {
-  "at": "2026-10-01T12:04:14.699144+00:00",
-  "root": "game closed; native Mac locked; manual unlock requested; scoped fire checkpoint pushed",
+  "at": "2026-10-01T12:11:56.117626+00:00",
+  "root": "static submission review; production unchanged; last native check locked; no repeat UI attempt",
   "teams": [
     {
       "team": "QA",
@@ -45,14 +45,21 @@
       "dispatch": "received",
       "exists": true,
       "receivedAt": "2026-10-01T11:59:00.273Z",
-      "startedAt": null,
+      "startedAt": "2026-10-01T12:00:50.646Z",
       "firstActualAction": {
         "at": "2026-10-01T12:00:50.646Z",
         "tool": "Read",
         "input": "{'file_path': '/Users/fordeargamers/Projects/exoduser-migration-20261001/tools/team-followup-20261001/MAP/NEXT_TASK.md'}"
       },
-      "status": "actual command/read started",
-      "completedAt": null
+      "status": "26 checks pass; eight-view visual acceptance pending",
+      "completedAt": "2026-10-01T12:08:25.715Z",
+      "rootReviewedFileHashes": {
+        "tools/team-followup-20261001/MAP/m5-walk-harness.safe.js": "a8a0a6ce5c2d49c6e7be57f3bcd94fd837fe916d21048217dff2968edae9072a",
+        "tools/team-followup-20261001/MAP/m5-evidence-gate.cjs": "865fd51ec7abb70fe9472cbb3ca758387339d47ce00f9b23c53a33f263519bcb",
+        "tools/team-followup-20261001/MAP/mock-harness-check.cjs": "23c8bf65c7da8daf512b711c0397d6dae03a139bd5b005c2be393650db1dd3b3",
+        "tools/team-followup-20261001/MAP/_source-candidate-MAP.js": "ee72db6d3efae293680a35781ca96e995b59bade995a93f936909bea3d2ca27f",
+        "tools/team-followup-20261001/MAP/m5-evidence-gate.test.cjs": "71acfe4b499360c9bbc672cec4a7cd64c71f1dcdda04ac73bf9cf3093f3d96d0"
+      }
     },
     {
       "team": "ART",
@@ -64,14 +71,20 @@
       "dispatch": "received",
       "exists": true,
       "receivedAt": "2026-10-01T11:56:40.550Z",
-      "startedAt": null,
+      "startedAt": "2026-10-01T11:56:49.754Z",
       "firstActualAction": {
         "at": "2026-10-01T11:56:49.754Z",
         "tool": "Read",
         "input": "{'file_path': '/Users/fordeargamers/Projects/exoduser-migration-20261001/tools/team-followup-20261001/ART/NEXT_TASK.md'}"
       },
-      "status": "actual command/read started",
-      "completedAt": null
+      "status": "38 checks pass; final crop rejected: zoom/clip omitted",
+      "completedAt": "2026-10-01T12:06:04.862Z",
+      "rootReviewedFileHashes": {
+        "tools/team-followup-20261001/ART/wa24-delta-probe.cjs": "79193e10228007bfce1935c633156a208b719d6540b4b3b45b4889d32a1936e9",
+        "tools/team-followup-20261001/ART/wa24-delta-probe.test.mjs": "35ff1e1efabe83fff1e6d4ab6fb35ea82075442291a61c001e1d80cb4c589839",
+        "tools/team-followup-20261001/ART/wa24-observer.cjs": "a7134b053786c0c976ecb65832c20ab7380d4addd6e1341445e3d80567f0b7b3",
+        "tools/team-followup-20261001/ART/wa24-observer.test.mjs": "17aba27f029995856ee0dc23651cb46b063ad5b51018477f0f79a3ffdf2664bd"
+      }
     },
     {
       "team": "SKILL",
@@ -83,14 +96,19 @@
       "dispatch": "received",
       "exists": true,
       "receivedAt": "2026-10-01T11:58:04.859Z",
-      "startedAt": null,
+      "startedAt": "2026-10-01T11:58:13.031Z",
       "firstActualAction": {
         "at": "2026-10-01T11:58:13.031Z",
         "tool": "Read",
         "input": "{'file_path': '/Users/fordeargamers/Projects/exoduser-migration-20261001/tools/team-followup-20261001/SKILL/NEXT_TASK.md'}"
       },
-      "status": "actual command/read started",
-      "completedAt": null
+      "status": "66 checks pass; false recharge and install listener leak reproduced",
+      "completedAt": "2026-10-01T12:06:12.761Z",
+      "rootReviewedFileHashes": {
+        "tools/team-followup-20261001/SKILL/ice-cancel-probe.selftest.mjs": "b536d95f63e633aa526b7951e973b28d1306b72bb6f26390f4b0cf664a5ad5e4",
+        "tools/team-followup-20261001/SKILL/ice-cancel-probe.safe.js": "ae7c8e8ad6e874e565c3ee0cb8b635130cefa234c5628bd0ba2922da96481d1b",
+        "tools/team-followup-20261001/SKILL/_source-candidate-SKILL.js": "aeded94120a1186da3983a4975efd06ed7c610644bab2ba0c3a11f0a4f756b1f"
+      }
     },
     {
       "team": "ANIMVFX",
@@ -102,14 +120,19 @@
       "dispatch": "received",
       "exists": true,
       "receivedAt": "2026-10-01T11:59:42.660Z",
-      "startedAt": null,
+      "startedAt": "2026-10-01T12:00:26.682Z",
       "firstActualAction": {
         "at": "2026-10-01T12:00:26.682Z",
         "tool": "Read",
         "input": "{'file_path': '/Users/fordeargamers/Projects/exoduser-migration-20261001/tools/team-followup-20261001/ANIMVFX/NEXT_TASK.md'}"
       },
-      "status": "actual command/read started",
-      "completedAt": null
+      "status": "submitted; root11 fixtures pass; actual high refresh UNKNOWN",
+      "completedAt": "2026-10-01T12:10:11.423Z",
+      "rootReviewedFileHashes": {
+        "tools/team-followup-20261001/ANIMVFX/animvfx_gl_validator.mjs": "9312a7163706d6a48a108ff26b98deed1025ccc0b4566865ca754f6bcac59365",
+        "tools/team-followup-20261001/ANIMVFX/animvfx_highhz_lifetime_gate.mjs": "3309238f04d51ccf65af92b90c9aade9edb034e0632a81119d17efa198dfcfd7",
+        "tools/team-followup-20261001/ANIMVFX/animvfx_gl_probe.js": "b7ca9939f44f59dca4a67f1853327b61480c61e112d9e88d2df65c55a041ec7c"
+      }
     },
     {
       "team": "BUILD",
@@ -222,8 +245,19 @@
   ],
   "remoteCheckpoint": {
     "branch": "codex/mac-environment-20261001",
-    "sha": "9277a0ca",
-    "verified": true,
-    "scope": "sound observer, independent fire checks, team receipt"
+    "sha": "fb4c21ad83c225aeee3e0dcd581671b6a9691b2d",
+    "verifiedPreviously": true
+  },
+  "wipRecovery": {
+    "sha": "62652a19db3a1ececeb721d202254abfd20c0971",
+    "ref": "refs/heads/codex/backup-review-wip-20261001-211521",
+    "remoteVerified": true,
+    "files": 135,
+    "criticalFollowupsVerified": [
+      "docs/0마스터플랜/mac-resume-20261001/vscode-dispatch/UIUX-next-result.md",
+      "docs/0마스터플랜/mac-resume-20261001/vscode-dispatch/BALANCE-next-result.md",
+      "docs/0마스터플랜/mac-resume-20261001/vscode-dispatch/BUILD-next-result.md",
+      "tools/team-followup-20261001/ITEM/rgb-result.md"
+    ]
   }
 }
