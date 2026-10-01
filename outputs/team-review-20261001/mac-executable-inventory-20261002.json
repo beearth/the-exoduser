@@ -1,0 +1,10 @@
+{
+  "at": "2026-10-01T15:17:02.749915+00:00",
+  "searchedRoot": "/Users/fordeargamers/Projects/exoduser-migration-20261001",
+  "searchDepthLimit": 6,
+  "macApps": [],
+  "windowsExecutables": [],
+  "matchingProcesses": [],
+  "gameBrowser": "root closed own live game tab after 25s QA; no claim current game running",
+  "scope": "read-only inventory, no launch/build"
+}

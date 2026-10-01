@@ -52,3 +52,11 @@ UIUX 식별 결과 dry variant는 0/1/2 중 UNKNOWN이다. 기존99ms 사건을 
 기존 BUILD에 새 로드 경계와 live 증거 독립 검수를, 기존 ITEM에 D10 저장 호출부 최소 통합 후보를 각각 한 번 전송했다. 새 세션0. Mac 네이티브 접근은 다시 가능하며 QA Terminal1에는 이미 완료한 NEXT_TASK를 가리키는 미전송 초안이 보여 중복 실행하지 않고 보존했다. 다른 Claude 팀 전체 재가동으로 세지 않는다.
 
 BUILD 독립 검수는 15:11:30.752Z 완료: 새 경계·원자료 재산출23 PASS, 생산 회귀22 PASS. 코드/fixture 함수 SHA 일치와 모든 분포를 대조했다. 실제 cold 빈 currentSrc→주소 전환은 이번 브라우저 fixture에서 관측되지 않았고 VM 경계검사로만 검증됐다는 한계를 유지한다. ITEM은 15:09:32Z 실제 Read 후 persistence-integration-port.mjs 구현 Edit에 착수했으며 아직 생산 적용·완료 아님.
+
+## 기존 담당 재개 확인 (15:17Z)
+
+물리 타격 실전 인수는 원격 `2e2a3dd0e3df93b4db6fc1dbc7e03c40fc1be429`와 대조 완료했다. 기존 네이티브 5팀 ART/MAP/SKILL/ENEMY/ANIMVFX에 한 건씩 전달하고 각 원세션 JSONL의 실제 Read를 확인했다. ART·SKILL·ENEMY는 검수된 지원 수정의 원담당 호출부 인수, MAP은 상태를 쓰지 않는 수동입력 관측 연결, ANIMVFX는 드문 관측 사이 여러 update 판정 보강이다. 새 세션0·원본/세이브/생산맵 병합0. 단순 전달 성공과 완료를 구분하고 실제 시각은 `outputs/team-review-20261001/native-resume-20261002.json`에 기록했다. ART 영수증이 공용 위치에 작성돼 소유폴더로 기록하라는 위치 정정만 추가 전달했으며 기존 파일은 보존했다.
+
+QA의 완료 작업을 가리키는 미전송 초안은 그대로 보존했다. SOUND는 VS Code에서 기존 창을 특정하지 못했고 Terminal 앱 접근은 Computer Use 안전 규칙으로 거절돼 입력하지 않았다. 잠금 문제로 뭉뚱그리거나 재가동 완료로 세지 않는다. 해당 후속 과제 파일은 준비됐지만 미수신이다.
+
+실행물 읽기 전용 확인: 이 체크아웃 깊이6 이내 Mac .app/대상 Windows .exe 및 NW.js/EXODUSER 프로세스 일치0. 전체 디스크 부재를 뜻하지 않는다. 실제 게임은 이번 Chrome 검수 탭에서 실행하고 종료했으며 현재 게임이 실행 중이라고 주장하지 않는다. 상세 검색범위는 `mac-executable-inventory-20261002.json`.

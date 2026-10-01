@@ -35,16 +35,16 @@
       "team": "ENEMY",
       "sessionId": "ddbd64be-975a-458e-a020-c09749281f5b",
       "location": "T7",
-      "task": "ENEMY-TICK-UNKNOWN-FIX",
-      "instruction": "/Users/fordeargamers/Projects/exoduser-migration-20261001/tools/team-followup-20261001/ENEMY/NEXT_TASK.md",
+      "task": "ENEMY-OWNER-NEXT-20261002",
+      "instruction": "tools/team-followup-20261001/ENEMY/OWNER_NEXT_20261002.md",
       "stateBefore": "idle/completed verified",
-      "dispatch": "not_received",
+      "dispatch": "native existing-session submission confirmed",
       "exists": true,
-      "receivedAt": null,
-      "startedAt": null,
-      "blocker": "historical lock cleared globally; exact terminal draft/queue not yet rechecked",
-      "status": "prior completion retained; no new dispatch in this cycle",
-      "cliState": "last inventory idle at 14:59Z; native now reachable, this session not freshly inspected",
+      "receivedAt": "2026-10-01T15:14:55.642Z",
+      "startedAt": "2026-10-01T15:14:59.363Z",
+      "blocker": null,
+      "status": "actual Read confirmed; in progress",
+      "cliState": "running response confirmed in existing native terminal",
       "pendingRepair": {
         "dispatch": "not_received",
         "instruction": "/Users/fordeargamers/Projects/exoduser-migration-20261001/tools/team-followup-20261001/ENEMY/NEXT_TASK.md",
@@ -53,26 +53,34 @@
       "supportTeam": "ITEM",
       "supportPath": "tools/team-followup-20261001/ITEM/enemy-support-*",
       "draftAndQueue": "UNKNOWN because native is locked; no claim queue empty",
-      "pendingQueueAndDrafts": "UNKNOWN; no blanket empty-queue claim"
+      "pendingQueueAndDrafts": "UNKNOWN; no blanket empty-queue claim",
+      "firstActualAction": {
+        "at": "2026-10-01T15:14:59.363Z",
+        "tool": "Read",
+        "path": "/Users/fordeargamers/Projects/exoduser-migration-20261001/tools/team-followup-20261001/ENEMY/OWNER_NEXT_20261002.md"
+      },
+      "firstEditEvidence": [],
+      "completedAt": null,
+      "nextAction": "complete owned next task and submit evidence"
     },
     {
       "team": "MAP",
       "sessionId": "d447a49d-ecaa-4b5f-bc56-da5353ebb668",
       "location": "T3",
-      "task": "MAP-M5-EVIDENCE-GATE",
-      "instruction": "/Users/fordeargamers/Projects/exoduser-migration-20261001/tools/team-followup-20261001/MAP/NEXT_TASK.md",
+      "task": "MAP-OWNER-NEXT-20261002",
+      "instruction": "tools/team-followup-20261001/MAP/OWNER_NEXT_20261002.md",
       "stateBefore": "idle/completed verified",
-      "dispatch": "received",
+      "dispatch": "native existing-session submission confirmed",
       "exists": true,
-      "receivedAt": "2026-10-01T11:59:00.273Z",
-      "startedAt": "2026-10-01T12:00:50.646Z",
+      "receivedAt": "2026-10-01T15:14:25.890Z",
+      "startedAt": "2026-10-01T15:14:31.975Z",
       "firstActualAction": {
-        "at": "2026-10-01T12:00:50.646Z",
+        "at": "2026-10-01T15:14:31.975Z",
         "tool": "Read",
-        "input": "{'file_path': '/Users/fordeargamers/Projects/exoduser-migration-20261001/tools/team-followup-20261001/MAP/NEXT_TASK.md'}"
+        "path": "/Users/fordeargamers/Projects/exoduser-migration-20261001/tools/team-followup-20261001/MAP/OWNER_NEXT_20261002.md"
       },
-      "status": "prior completion retained; no new dispatch in this cycle",
-      "completedAt": "2026-10-01T12:08:25.715Z",
+      "status": "actual Read confirmed; in progress",
+      "completedAt": null,
       "rootReviewedFileHashes": {
         "tools/team-followup-20261001/MAP/m5-walk-harness.safe.js": "a8a0a6ce5c2d49c6e7be57f3bcd94fd837fe916d21048217dff2968edae9072a",
         "tools/team-followup-20261001/MAP/m5-evidence-gate.cjs": "865fd51ec7abb70fe9472cbb3ca758387339d47ce00f9b23c53a33f263519bcb",
@@ -80,105 +88,127 @@
         "tools/team-followup-20261001/MAP/_source-candidate-MAP.js": "ee72db6d3efae293680a35781ca96e995b59bade995a93f936909bea3d2ca27f",
         "tools/team-followup-20261001/MAP/m5-evidence-gate.test.cjs": "71acfe4b499360c9bbc672cec4a7cd64c71f1dcdda04ac73bf9cf3093f3d96d0"
       },
-      "cliState": "last inventory idle at 14:59Z; native now reachable, this session not freshly inspected",
-      "pendingQueueAndDrafts": "UNKNOWN; no blanket empty-queue claim"
+      "cliState": "running response confirmed in existing native terminal",
+      "pendingQueueAndDrafts": "UNKNOWN; no blanket empty-queue claim",
+      "firstEditEvidence": [
+        {
+          "at": "2026-10-01T15:15:09.658Z",
+          "tool": "Write",
+          "path": "/Users/fordeargamers/Projects/exoduser-migration-20261001/tools/team-followup-20261001/MAP/OWNER_NEXT_20261002-receipt.json"
+        }
+      ],
+      "blocker": null,
+      "nextAction": "complete owned next task and submit evidence"
     },
     {
       "team": "ART",
       "sessionId": "a489cbeb-92d9-449a-a2b7-ba0e2871322f",
       "location": "T2",
-      "task": "ART-WA24-DELTA-CANDIDATE",
-      "instruction": "/Users/fordeargamers/Projects/exoduser-migration-20261001/tools/team-followup-20261001/ART/NEXT_TASK.md",
+      "task": "ART-OWNER-NEXT-20261002",
+      "instruction": "tools/team-followup-20261001/ART/OWNER_NEXT_20261002.md",
       "stateBefore": "idle/completed verified",
-      "dispatch": "received",
+      "dispatch": "native existing-session submission confirmed",
       "exists": true,
-      "receivedAt": "2026-10-01T11:56:40.550Z",
-      "startedAt": "2026-10-01T11:56:49.754Z",
+      "receivedAt": "2026-10-01T15:14:09.264Z",
+      "startedAt": "2026-10-01T15:14:15.693Z",
       "firstActualAction": {
-        "at": "2026-10-01T11:56:49.754Z",
+        "at": "2026-10-01T15:14:15.693Z",
         "tool": "Read",
-        "input": "{'file_path': '/Users/fordeargamers/Projects/exoduser-migration-20261001/tools/team-followup-20261001/ART/NEXT_TASK.md'}"
+        "path": "/Users/fordeargamers/Projects/exoduser-migration-20261001/tools/team-followup-20261001/ART/OWNER_NEXT_20261002.md"
       },
-      "status": "prior completion retained; no new dispatch in this cycle",
-      "completedAt": "2026-10-01T12:06:04.862Z",
+      "status": "actual Read confirmed; in progress",
+      "completedAt": null,
       "rootReviewedFileHashes": {
         "tools/team-followup-20261001/ART/wa24-delta-probe.cjs": "79193e10228007bfce1935c633156a208b719d6540b4b3b45b4889d32a1936e9",
         "tools/team-followup-20261001/ART/wa24-delta-probe.test.mjs": "35ff1e1efabe83fff1e6d4ab6fb35ea82075442291a61c001e1d80cb4c589839",
         "tools/team-followup-20261001/ART/wa24-observer.cjs": "a7134b053786c0c976ecb65832c20ab7380d4addd6e1341445e3d80567f0b7b3",
         "tools/team-followup-20261001/ART/wa24-observer.test.mjs": "17aba27f029995856ee0dc23651cb46b063ad5b51018477f0f79a3ffdf2664bd"
       },
-      "cliState": "last inventory idle at 14:59Z; native now reachable, this session not freshly inspected",
+      "cliState": "running response confirmed in existing native terminal",
       "pendingRepair": {
         "dispatch": "not_received",
         "instruction": "/Users/fordeargamers/Projects/exoduser-migration-20261001/tools/team-followup-20261001/ART/FIX_TASK.md",
         "blocker": "fresh cycle native getApp explicit Mac locked; repair follow-up remains not received"
       },
-      "blocker": "historical lock cleared globally; exact terminal draft/queue not yet rechecked",
+      "blocker": null,
       "supportTeam": "UIUX",
       "supportPath": "tools/team-followup-20261001/UIUX/art-support-*",
       "draftAndQueue": "UNKNOWN because native is locked; no claim queue empty",
-      "pendingQueueAndDrafts": "UNKNOWN; no blanket empty-queue claim"
+      "pendingQueueAndDrafts": "UNKNOWN; no blanket empty-queue claim",
+      "firstEditEvidence": [
+        {
+          "at": "2026-10-01T15:15:22.263Z",
+          "tool": "Write",
+          "path": "/Users/fordeargamers/Projects/exoduser-migration-20261001/docs/0마스터플랜/mac-resume-20261001/vscode-dispatch/OWNER_NEXT_20261002-receipt.json"
+        }
+      ],
+      "nextAction": "complete owned next task and submit evidence"
     },
     {
       "team": "SKILL",
       "sessionId": "203377cc-64c4-47ea-af27-95b66ae829fa",
       "location": "T6",
-      "task": "SKILL-ICE-CANCEL-EDGE",
-      "instruction": "/Users/fordeargamers/Projects/exoduser-migration-20261001/tools/team-followup-20261001/SKILL/NEXT_TASK.md",
+      "task": "SKILL-OWNER-NEXT-20261002",
+      "instruction": "tools/team-followup-20261001/SKILL/OWNER_NEXT_20261002.md",
       "stateBefore": "idle/completed verified",
-      "dispatch": "received",
+      "dispatch": "native existing-session submission confirmed",
       "exists": true,
-      "receivedAt": "2026-10-01T11:58:04.859Z",
-      "startedAt": "2026-10-01T11:58:13.031Z",
+      "receivedAt": "2026-10-01T15:14:36.981Z",
+      "startedAt": "2026-10-01T15:14:40.867Z",
       "firstActualAction": {
-        "at": "2026-10-01T11:58:13.031Z",
+        "at": "2026-10-01T15:14:40.867Z",
         "tool": "Read",
-        "input": "{'file_path': '/Users/fordeargamers/Projects/exoduser-migration-20261001/tools/team-followup-20261001/SKILL/NEXT_TASK.md'}"
+        "path": "/Users/fordeargamers/Projects/exoduser-migration-20261001/tools/team-followup-20261001/SKILL/OWNER_NEXT_20261002.md"
       },
-      "status": "prior completion retained; no new dispatch in this cycle",
-      "completedAt": "2026-10-01T12:06:12.761Z",
+      "status": "actual Read confirmed; in progress",
+      "completedAt": null,
       "rootReviewedFileHashes": {
         "tools/team-followup-20261001/SKILL/ice-cancel-probe.selftest.mjs": "b536d95f63e633aa526b7951e973b28d1306b72bb6f26390f4b0cf664a5ad5e4",
         "tools/team-followup-20261001/SKILL/ice-cancel-probe.safe.js": "ae7c8e8ad6e874e565c3ee0cb8b635130cefa234c5628bd0ba2922da96481d1b",
         "tools/team-followup-20261001/SKILL/_source-candidate-SKILL.js": "aeded94120a1186da3983a4975efd06ed7c610644bab2ba0c3a11f0a4f756b1f"
       },
-      "cliState": "last inventory idle at 14:59Z; native now reachable, this session not freshly inspected",
+      "cliState": "running response confirmed in existing native terminal",
       "pendingRepair": {
         "dispatch": "not_received",
         "instruction": "/Users/fordeargamers/Projects/exoduser-migration-20261001/tools/team-followup-20261001/SKILL/FIX_TASK.md",
         "blocker": "fresh cycle native getApp explicit Mac locked; repair follow-up remains not received"
       },
-      "blocker": "historical lock cleared globally; exact terminal draft/queue not yet rechecked",
+      "blocker": null,
       "supportTeam": "BALANCE",
       "supportPath": "tools/team-followup-20261001/BALANCE/skill-support-*",
       "draftAndQueue": "UNKNOWN because native is locked; no claim queue empty",
-      "pendingQueueAndDrafts": "UNKNOWN; no blanket empty-queue claim"
+      "pendingQueueAndDrafts": "UNKNOWN; no blanket empty-queue claim",
+      "firstEditEvidence": [],
+      "nextAction": "complete owned next task and submit evidence"
     },
     {
       "team": "ANIMVFX",
       "sessionId": "1d2a7253-478c-43aa-8c6f-766a02270432",
       "location": "T8",
-      "task": "ANIM-HIGHHZ-LIFETIME-GATE",
-      "instruction": "/Users/fordeargamers/Projects/exoduser-migration-20261001/tools/team-followup-20261001/ANIMVFX/NEXT_TASK.md",
+      "task": "ANIMVFX-OWNER-NEXT-20261002",
+      "instruction": "tools/team-followup-20261001/ANIMVFX/OWNER_NEXT_20261002.md",
       "stateBefore": "idle/completed verified",
-      "dispatch": "received",
+      "dispatch": "native existing-session submission confirmed",
       "exists": true,
-      "receivedAt": "2026-10-01T11:59:42.660Z",
-      "startedAt": "2026-10-01T12:00:26.682Z",
+      "receivedAt": "2026-10-01T15:15:02.063Z",
+      "startedAt": "2026-10-01T15:15:07.836Z",
       "firstActualAction": {
-        "at": "2026-10-01T12:00:26.682Z",
+        "at": "2026-10-01T15:15:07.836Z",
         "tool": "Read",
-        "input": "{'file_path': '/Users/fordeargamers/Projects/exoduser-migration-20261001/tools/team-followup-20261001/ANIMVFX/NEXT_TASK.md'}"
+        "path": "/Users/fordeargamers/Projects/exoduser-migration-20261001/tools/team-followup-20261001/ANIMVFX/OWNER_NEXT_20261002.md"
       },
-      "status": "prior completion retained; no new dispatch in this cycle",
-      "completedAt": "2026-10-01T12:10:11.423Z",
+      "status": "actual Read confirmed; in progress",
+      "completedAt": null,
       "rootReviewedFileHashes": {
         "tools/team-followup-20261001/ANIMVFX/animvfx_gl_validator.mjs": "9312a7163706d6a48a108ff26b98deed1025ccc0b4566865ca754f6bcac59365",
         "tools/team-followup-20261001/ANIMVFX/animvfx_highhz_lifetime_gate.mjs": "3309238f04d51ccf65af92b90c9aade9edb034e0632a81119d17efa198dfcfd7",
         "tools/team-followup-20261001/ANIMVFX/animvfx_gl_probe.js": "b7ca9939f44f59dca4a67f1853327b61480c61e112d9e88d2df65c55a041ec7c"
       },
-      "cliState": "last inventory idle at 14:59Z; native now reachable, this session not freshly inspected",
-      "pendingQueueAndDrafts": "UNKNOWN; no blanket empty-queue claim"
+      "cliState": "running response confirmed in existing native terminal",
+      "pendingQueueAndDrafts": "UNKNOWN; no blanket empty-queue claim",
+      "firstEditEvidence": [],
+      "blocker": null,
+      "nextAction": "complete owned next task and submit evidence"
     },
     {
       "team": "BUILD",
@@ -393,7 +423,7 @@
       "exists": true,
       "receivedAt": "2026-10-01T15:09:32Z",
       "startedAt": "2026-10-01T15:09:32Z",
-      "status": "actual Read/Edit confirmed; implementation or independent audit running",
+      "status": "persistence integration candidate submitted; root acceptance pending",
       "startEvidence": "NEXT_TASK.md와 기존 ITEM 결과·후보·현재 생산 함수 읽기",
       "receipt": "tools/team-followup-20261001/ITEM/persistence-integration-receipt.json",
       "previous": {
@@ -452,7 +482,7 @@
         "nextAction": "새제안인스턴스의명시버전저장필드·RNG1회·readStoredRoll adapter·JSON회귀 구현",
         "blocker": null
       },
-      "nextAction": "finish owned implementation candidate",
+      "nextAction": "independent acceptance of current integration candidate",
       "latestDispatch": "공식CLI queue 성공; 새수신/Read는receipt로별도확인",
       "pendingQueueAndDrafts": "UNKNOWN; no blanket empty-queue claim",
       "firstEdit": "이 영수증 및 신규 검토 전용 호출부 adapter 작성"
@@ -540,7 +570,7 @@
       "team": "SOUND",
       "sessionId": "aa3ac0ed-f4e5-44ad-a0b2-d4d2da045b84",
       "task": "SOUND-ITEM-EQUIP-PICKUP-REGRESSION",
-      "dispatch": "received",
+      "dispatch": "not_received",
       "firstFileReadAt": "2026-10-01T11:40:49.363Z",
       "exists": true,
       "previous": {
@@ -559,7 +589,7 @@
         "tool": "Read",
         "path": "tools/team-followup-20261001/SOUND/ITEM_SOUND_TEST_TASK.md"
       },
-      "status": "prior completion retained; no new dispatch in this cycle",
+      "status": "next task prepared, not delivered",
       "completedAt": "2026-10-01T13:06:02.382Z",
       "receipt": "/Users/fordeargamers/Projects/exoduser-migration-20261001/docs/0마스터플랜/mac-resume-20261001/vscode-dispatch/SOUND-item-sound-receipt.json",
       "waitReason": "Actual audio/game/package checks remain",
@@ -571,10 +601,12 @@
         "completedAt": "2026-10-01T12:35:18.112Z",
         "receipt": "/Users/fordeargamers/Projects/exoduser-migration-20261001/docs/0마스터플랜/mac-resume-20261001/vscode-dispatch/SOUND-rng-receipt.json"
       },
-      "pendingQueueAndDrafts": "UNKNOWN; no blanket empty-queue claim"
+      "pendingQueueAndDrafts": "UNKNOWN; no blanket empty-queue claim",
+      "blocker": "SOUND absent from visible VS Code terminals; Terminal app access denied by Computer Use safety policy; no alternate input attempted",
+      "nextAction": "locate accessible existing SOUND session; do not create duplicate"
     }
   ],
-  "remoteCheckpoint": "4fb217eaae985b196a9ff0b90fdd1ed1eb02ceca",
+  "remoteCheckpoint": "2e2a3dd0e3df93b4db6fc1dbc7e03c40fc1be429",
   "wipRecovery": {
     "sha": "3921dfc98085ee856accdd1795b5efd9a7589e19",
     "ref": "refs/heads/codex/backup-followup-wip-20261001-213023",
@@ -591,7 +623,8 @@
     "status": "VS Code native reachable, unlocked",
     "QA": "Terminal1 shows completed fire review and unsent duplicate NEXT_TASK draft; preserved, not submitted",
     "otherClaudeSessions": "not freshly inspected; earlier idle inventory only",
-    "securityChanges": false
+    "securityChanges": false,
+    "latestFiveOwnerReadEvidence": "outputs/team-review-20261001/native-resume-20261002.json"
   },
   "uiuxSubmissionRecovery": {
     "sha": "b3ab5be7f0c7a57ec1892cca1d65825549f54d72",
@@ -622,5 +655,5 @@
     "runtimeReady": false
   },
   "currentSummary": "Physical prewarm live:25.007s/19 kills;55 cached calls/0 tint; wrappers restored/game closed; remaining draw156.5ms, no overall FPS claim",
-  "updatedAt": "2026-10-01T15:12:00.458356+00:00"
+  "updatedAt": "2026-10-01T15:16:26.291327+00:00"
 }
