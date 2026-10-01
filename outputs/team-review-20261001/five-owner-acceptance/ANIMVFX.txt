@@ -1,0 +1,24 @@
+sparse-update-* 부정회귀 자가검사 (신규 C5)
+
+[OK ] sparse-update-updateonly-proof: 정상 update 구동(sp=1,30fps,after-update 포함)
+      감쇠모델=PASS(전 에피소드 update 구동=주사율 독립) · 에피소드C5=PASS · overall=UNKNOWN(고주사율 미측정 — 구간증거 기반 감쇠모델만)
+[OK ] sparse-update-slowmo-sp0.5: 슬로모 update 구동 → PASS(선행은 오FAIL)
+      감쇠모델=PASS(전 에피소드 update 구동=주사율 독립) · 에피소드C5=PASS · overall=UNKNOWN(고주사율 미측정 — 구간증거 기반 감쇠모델만)
+[OK ] sparse-update-highrefresh-updateonly: 240fps update 구동(after-update 포함) → PASS
+      감쇠모델=PASS(전 에피소드 update 구동=주사율 독립) · 에피소드C5=PASS · overall=PASS(고주사율 실수명 인증 포함)
+[OK ] sparse-update-drawstep2-falsepass: draw 구동 step2, 30fps after-draw만 → UNKNOWN(선행은 오PASS; 신규는 둘다진행만이라 분리불가=UNKNOWN)
+      감쇠모델=UNKNOWN/MIXED · 에피소드C5=UNKNOWN · overall=UNKNOWN(고주사율 미측정 — 구간증거 기반 감쇠모델만)
+[OK ] sparse-update-drawdriven-highrefresh: draw 구동 240fps after-draw만 → FAIL(draw-only 구간 증명)
+      감쇠모델=FAIL(draw 구동/모순) · 에피소드C5=FAIL · overall=FAIL
+[OK ] sparse-update-afterdraw-only-updatedriven: update 구동이나 after-draw만(둘다진행) → UNKNOWN
+      감쇠모델=UNKNOWN/MIXED · 에피소드C5=UNKNOWN · overall=UNKNOWN(고주사율 미측정 — 구간증거 기반 감쇠모델만)
+[OK ] sparse-update-nocounter: hf 감소하는데 update/draw 미진행 → REJECT
+      감쇠모델=REJECT · 에피소드C5=REJECT · overall=REJECT
+[OK ] sparse-update-conflict: update-only + draw-only 동시 → FAIL(모순)
+      감쇠모델=FAIL(draw 구동/모순) · 에피소드C5=FAIL · overall=FAIL
+
+── 선행 게이트(animvfx_highhz_lifetime_gate) 오판 데모 ──
+[OK ] 슬로모 sp=0.5 (실제 update 구동): 선행=FAIL(draw 구동 회귀) (오판 FAIL 재현✓) → 신규=PASS(전 에피소드 update 구동=주사율 독립) (PASS ✓)
+[OK ] draw step2 + 30fps 드문표본 (실제 draw 구동 회귀): 선행=PASS(전 에피소드 update-tick 구동=주사율 독립) (오판 PASS 재현✓) → 신규=UNKNOWN/MIXED (UNKNOWN ✓)
+
+ALL OK (exit 0)

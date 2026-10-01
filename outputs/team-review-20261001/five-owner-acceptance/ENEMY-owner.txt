@@ -1,0 +1,25 @@
+✔ 인수 무결성: integrated == ITEM 검수본(sha256 동일, 검수 로직 재작성 없음) (0.540917ms)
+✔ 핵심: tick null + 451 rAF — 원본 FAIL_NO_FIRE 재현, 통합본 INCONCLUSIVE + 물리카운트 0 (2.538583ms)
+✔ 비정상 물리tick(missing(undefined)) 451 rAF 는 INCONCLUSIVE(결함 단정 금지) (0.468917ms)
+✔ 비정상 물리tick(NaN) 451 rAF 는 INCONCLUSIVE(결함 단정 금지) (0.397959ms)
+✔ 비정상 물리tick(+Infinity) 451 rAF 는 INCONCLUSIVE(결함 단정 금지) (0.352ms)
+✔ 비정상 물리tick(-Infinity) 451 rAF 는 INCONCLUSIVE(결함 단정 금지) (0.329875ms)
+✔ 비정상 물리tick(string) 451 rAF 는 INCONCLUSIVE(결함 단정 금지) (0.3455ms)
+✔ 비정상 물리tick(negative) 451 rAF 는 INCONCLUSIVE(결함 단정 금지) (0.3695ms)
+✔ 비정상 물리tick(fractional) 451 rAF 는 INCONCLUSIVE(결함 단정 금지) (0.406292ms)
+✔ 비정상 물리tick(constant/stalled) 451 rAF 는 INCONCLUSIVE(결함 단정 금지) (0.393875ms)
+✔ 무회귀: 정상 단조 물리tick + 고주사율 중복 rAF 에서는 FAIL_NO_FIRE 유지 + 정확 카운트 (0.721084ms)
+✔ 정상 진행 후 backward/reset/missing 발생 시 해당 관측 영구 무효(INCONCLUSIVE) (1.167041ms)
+✔ 정상 진행 후 정체(stall) 시 무효 — 정체 rAF 를 추가 물리tick 으로 세지 않음 (0.437792ms)
+✔ 진단된 정체는 같은 probe 안에서 결론 verdict 로 회복 불가 (0.432292ms)
+✔ 물리tick 공백은 누락 residency 를 외삽하지 않고, 진행 없는 보고는 INCONCLUSIVE (0.3675ms)
+✔ 커밋된 발사 증거는 보존하되 tick 없음은 timing PASS 를 만들지 않음 (0.25ms)
+✔ tick getter 예외는 보고 크래시가 아니라 health 이슈 (0.260042ms)
+ℹ tests 17
+ℹ suites 0
+ℹ pass 17
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 43.485875

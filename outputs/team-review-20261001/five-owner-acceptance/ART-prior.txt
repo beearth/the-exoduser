@@ -1,0 +1,48 @@
+
+[A] 크롭 결정적 예측 (wa24 2560×1440, imgR=16/9)
+  PASS 1920×1080 → OK_FULLFRAME (got OK_FULLFRAME)
+  PASS 16:9 cutFrac≈0 (0)
+  PASS 16:9 레터박스 없음
+  PASS 21:9 레터박스 발생
+  PASS 21:9 콘텐츠박스 1920×1080 (1920×1080)
+  PASS 21:9 이미지 무크롭 OK (got OK_FULLFRAME)
+  PASS 16:10 컷 축 = 좌우(X)
+  PASS 16:10 좌우 컷 ≈10% (10.0%)
+  PASS 16:10 → CROP_SIDE_MINOR (got CROP_SIDE_MINOR)
+  PASS 4:3 컷 축 = 좌우(X)
+  PASS 4:3 좌우 컷 ≈25% (25.0%)
+  PASS 4:3 → CROP_SIDE_MAJOR (got CROP_SIDE_MAJOR)
+  PASS wa24 는 좌우컷 분기만 — 상하컷 없음
+  PASS 상/하 손실 0 (전사 발·상단 눈 보존)
+  PASS 좌우 컷 대칭(중앙 정렬)
+
+[B] ★시간축 드리프트 — legacy(관측기) vs corrected(엔진)
+  PASS drift=0: 둘 다 wa24
+  PASS drift=0: lineElapsed 일치 (200=200)
+  PASS drift=0: fadeAlpha 일치
+  PASS drift=600: 엔진 corrected=wa24
+  PASS drift=600: legacy 도 라인은 wa24
+  PASS ★lineElapsed 어긋남 corrected=200 vs legacy=800
+  PASS ★fadeAlpha 어긋남 corrected=0.5(페이드인 중) vs legacy=1(이미 1)
+  PASS ★zoom 어긋남 corrected=1.0736 vs legacy=1.0578
+  PASS drift=1800: 엔진 corrected=wa24 (여전히 재생 중)
+  PASS ★drift=1800: legacy 가 wa25 오판정 (got wa25) — 관측기가 다음 컷으로 착각
+  PASS ★두 축 활성 컷 불일치 증명
+
+[C] fade 곡선 (wa24 fade.in=400, dur=2400, fade.out=0)
+  PASS le=0 → 0
+  PASS le=200 → 0.5 (페이드인 중간)
+  PASS le=400 → 1 (페이드인 완료)
+  PASS le=1200 → 1 (유지)
+  PASS le=2400 → 1 (fade.out 없음)
+
+[D] 자막 — 결정적 기하 + 시각 UNKNOWN
+  PASS wa24 자막색 = 뼈색 #d8d4cc (col 미지정) (got #d8d4cc)
+  PASS 자막 y = ch*0.88 (950.4)
+  PASS ★shake 자막 미적용(소스 검증)
+  PASS wrap 폭 = cw*0.84
+  PASS 시각 가독성 → UNKNOWN (got UNKNOWN)
+  PASS UNKNOWN 은 PASS 전 필요조건 명시
+  PASS 픽셀 증거(가독) 주어지면 PASS 반영
+
+=== 결과: 38 PASS / 0 FAIL ===

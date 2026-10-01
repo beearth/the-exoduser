@@ -246,3 +246,8 @@ QA 판단: GL 경로 **코드 동작은 정규 런타임에서 확인**했다. *
 ### 2026-10-01 — QA-B01 빔 20타일 부트 준비 인수
 
 본편 `_preloadAssets` 뒤·렌더러 전에 기존20타일 캐시를1장씩 yield하며 준비한다. 새5초 협력적 예산/취소/동일Promise/성공cache재사용/기존lazy폴백. 원래가공·색/알파24/72·180ms·60×160·layerLv/rarity·드롭/RNG/저장 불변. 실제20타일 전체픽셀0diff, 관련30테스트·guard·6inline PASS. 정상2표본 빔0으로 보완1회(진단부트사본의wrapper전투전복원) 추가: 자연rarity3 첫 빔·25초620호출 최대0.1ms, 빔마스크0. 모든표본 보존, 조건차이로 전체개선율 없음. 생산부트339.5ms(가공81.5/max34.6), 진단관측시작→로딩숨김10904.3ms/준비372.8ms. RGBA20MiB, 관측JSheap증가 약101.72MiB는다른로딩/GC포함·GPU총량미측정. 획득·저장·재로드는 분리fixture로 확인. worldItemSkin86.7/136.5ms·기타긴프레임 잔여, easy/패키지/배포 미적용. [전체 근거와 한계](../0마스터플랜/mac-resume-20261001/Mac-드롭빔-부트준비-검수.md).
+
+
+### 2026-10-02 sparse C5 추가 반례와 원담당 수정
+
+root가 sparse8+데모2를 재실행했지만 중간 record의 draws 누락을 dD=0처럼 판정해 전체 고주사율 PASS로 승격하는 반례를 재현했다. clockMissing의 draws 누락과 첫 record 검수 경계도 함께 보강할 필요가 있어 기존 patch 통합은 보류했다. 원바이트 before 보존 후 같은 ANIMVFX에 실제 canonical gate 수정·통합 한 건을 전달하고 Read 확인. 실제 >=90Hz 실측은 UNKNOWN, 생산 VFX/GL probe/게임 변경0. [실패 입력·SHA·후속](../0마스터플랜/mac-resume-20261001/vscode-dispatch/FIVE-OWNER-INTEGRATION-20261002.md).

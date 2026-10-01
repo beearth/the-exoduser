@@ -1,0 +1,63 @@
+[
+  {
+    "team": "ART-integration",
+    "command": [
+      "/Users/fordeargamers/.local/node-runtime/node-v24.15.0-darwin-arm64/bin/node",
+      "tools/team-followup-20261001/ART/owner-integration-finalcrop.test.mjs"
+    ],
+    "exitCode": 0,
+    "at": "2026-10-01T15:30:35.441970+00:00",
+    "tail": "er lineElapsed=1200(라인 상대)\n  PASS predictFinalCrop timeBase=line-index (got line-index)\n  PASS lineElapsed=now-lineStartMs=1200 (WA24.t=73600 무관 → seq-time 아님) (got 1200)\n  PASS 드리프트 시각(lineStartMs=80000)에도 실 draw와 일치\n  PASS legacy(seq-time) 는 라인-인덱스와 다른 결과 — 회귀 아님 확인\n\n[D] 눈·발·자막 UNKNOWN + fade0 가시성 증거 아님\n  PASS 눈/발/자막 = UNKNOWN 유지\n  PASS 가시 상태 = GEOMETRY_ONLY(기하만)\n  PASS fade0 → 가시성 증거 아님\n  PASS fade0 에서도 눈 UNKNOWN\n\n=== 결과: 31 PASS / 0 FAIL ===\n"
+  },
+  {
+    "team": "ART-prior",
+    "command": [
+      "/Users/fordeargamers/.local/node-runtime/node-v24.15.0-darwin-arm64/bin/node",
+      "tools/team-followup-20261001/ART/wa24-delta-probe.test.mjs"
+    ],
+    "exitCode": 0,
+    "at": "2026-10-01T15:30:35.462656+00:00",
+    "tail": ", dur=2400, fade.out=0)\n  PASS le=0 → 0\n  PASS le=200 → 0.5 (페이드인 중간)\n  PASS le=400 → 1 (페이드인 완료)\n  PASS le=1200 → 1 (유지)\n  PASS le=2400 → 1 (fade.out 없음)\n\n[D] 자막 — 결정적 기하 + 시각 UNKNOWN\n  PASS wa24 자막색 = 뼈색 #d8d4cc (col 미지정) (got #d8d4cc)\n  PASS 자막 y = ch*0.88 (950.4)\n  PASS ★shake 자막 미적용(소스 검증)\n  PASS wrap 폭 = cw*0.84\n  PASS 시각 가독성 → UNKNOWN (got UNKNOWN)\n  PASS UNKNOWN 은 PASS 전 필요조건 명시\n  PASS 픽셀 증거(가독) 주어지면 PASS 반영\n\n=== 결과: 38 PASS / 0 FAIL ===\n"
+  },
+  {
+    "team": "MAP",
+    "command": [
+      "/Users/fordeargamers/.local/node-runtime/node-v24.15.0-darwin-arm64/bin/node",
+      "tools/team-followup-20261001/MAP/manual-input-fixture.cjs"
+    ],
+    "exitCode": 0,
+    "at": "2026-10-01T15:30:36.485779+00:00",
+    "tail": "6a abort 후 관측 중단\",\"ok\":true},{\"name\":\"F6b abort 후 리스너 0\",\"ok\":true},{\"name\":\"F6c abort 후 interval 정리\",\"ok\":true},{\"name\":\"F6d stopReason=external-abort\",\"ok\":true},{\"name\":\"F7a 미매핑 관측 → verdict≠PASS\",\"ok\":true},{\"name\":\"F7b 4경계 모두 UNKNOWN(미방문)\",\"ok\":true},{\"name\":\"F7c 8뷰 미완 차단\",\"ok\":true},{\"name\":\"F7d 좌표계약 평가(네이티브 isW): 접근=비벽 PASS\",\"ok\":true},{\"name\":\"F7e 매핑 시 A_enter_south 등급 산출(미UNKNOWN)\",\"ok\":true},{\"name\":\"F7f 그래도 8뷰 없어 PASS 금지\",\"ok\":true}]}\n"
+  },
+  {
+    "team": "SKILL",
+    "command": [
+      "/Users/fordeargamers/.local/node-runtime/node-v24.15.0-darwin-arm64/bin/node",
+      "tools/team-followup-20261001/SKILL/owner-integration-regression.mjs"
+    ],
+    "exitCode": 0,
+    "at": "2026-10-01T15:30:36.521686+00:00",
+    "tail": "\nowner-integration 회귀: 20 PASS / 0 FAIL\n"
+  },
+  {
+    "team": "ENEMY",
+    "command": [
+      "/Users/fordeargamers/.local/node-runtime/node-v24.15.0-darwin-arm64/bin/node",
+      "--test",
+      "tools/team-followup-20261001/ENEMY/owner-integration-tick.test.mjs"
+    ],
+    "exitCode": 0,
+    "at": "2026-10-01T15:30:36.591074+00:00",
+    "tail": " 해당 관측 영구 무효(INCONCLUSIVE) (1.258791ms)\n✔ 정상 진행 후 정체(stall) 시 무효 — 정체 rAF 를 추가 물리tick 으로 세지 않음 (0.474667ms)\n✔ 진단된 정체는 같은 probe 안에서 결론 verdict 로 회복 불가 (0.433667ms)\n✔ 물리tick 공백은 누락 residency 를 외삽하지 않고, 진행 없는 보고는 INCONCLUSIVE (0.396167ms)\n✔ 커밋된 발사 증거는 보존하되 tick 없음은 timing PASS 를 만들지 않음 (0.267125ms)\n✔ tick getter 예외는 보고 크래시가 아니라 health 이슈 (0.246958ms)\nℹ tests 17\nℹ suites 0\nℹ pass 17\nℹ fail 0\nℹ cancelled 0\nℹ skipped 0\nℹ todo 0\nℹ duration_ms 46.259583\n"
+  },
+  {
+    "team": "ANIMVFX",
+    "command": [
+      "/Users/fordeargamers/.local/node-runtime/node-v24.15.0-darwin-arm64/bin/node",
+      "tools/team-followup-20261001/ANIMVFX/sparse-update-c5-gate.mjs"
+    ],
+    "exitCode": 0,
+    "at": "2026-10-01T15:30:36.615725+00:00",
+    "tail": "· overall=REJECT\n[OK ] sparse-update-conflict: update-only + draw-only 동시 → FAIL(모순)\n      감쇠모델=FAIL(draw 구동/모순) · 에피소드C5=FAIL · overall=FAIL\n\n── 선행 게이트(animvfx_highhz_lifetime_gate) 오판 데모 ──\n[OK ] 슬로모 sp=0.5 (실제 update 구동): 선행=FAIL(draw 구동 회귀) (오판 FAIL 재현✓) → 신규=PASS(전 에피소드 update 구동=주사율 독립) (PASS ✓)\n[OK ] draw step2 + 30fps 드문표본 (실제 draw 구동 회귀): 선행=PASS(전 에피소드 update-tick 구동=주사율 독립) (오판 PASS 재현✓) → 신규=UNKNOWN/MIXED (UNKNOWN ✓)\n\nALL OK (exit 0)\n"
+  }
+]

@@ -272,3 +272,8 @@ CH1에도 등장 가능. 대표: 90 방랑기사(3연 콤보 st2 18/12/10, d<60 
 ### 2026-10-01 ITEM 지원 tick 관측 후보 인수
 
 유효한 물리tick 증가만 세고 null/비정상/역행/120 rAF 연속정체는 INCONCLUSIVE로 남긴다. 원9 assertion+새17시험 및 BUILD 독립검수 통과. 실게임 tick 연결·AI 결함수정은 미완료. [지원 인수](../0마스터플랜/mac-resume-20261001/vscode-dispatch/SUPPORT-root-review.md).
+
+
+### 2026-10-02 원담당 tick 계약 실제 반영
+
+et3-probe.fixed.js에 검수 지원본 SHA92cbecd7…를 실제 반영하고, root가 실제 owner17+기존9 PASS를 확인했다. 인수 전 원본은 고정 before로 보존했다. tick 없는451rAF는 INCONCLUSIVE이며 물리tick 증가와 rAF 횟수를 혼동하지 않는다. 생산 AI 변경0. 다음 기존 ENEMY-F06은 실제 루프용 round-robin 최소 후보/작은 가상시계 검수이며, 기존 budget/LOD parity 보존·성능 개선 미확정·생산 미적용이다. 원담당 새 Read까지 확인했다. [전체 근거](../0마스터플랜/mac-resume-20261001/vscode-dispatch/FIVE-OWNER-INTEGRATION-20261002.md).

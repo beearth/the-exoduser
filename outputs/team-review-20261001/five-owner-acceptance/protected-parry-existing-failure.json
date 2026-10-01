@@ -1,0 +1,27 @@
+{
+  "at": "2026-10-01T15:37:11.358552+00:00",
+  "baseline": "1c7cdb453c8a9ddaaac401020beb72ac87a74353",
+  "files": [
+    {
+      "file": "game.html",
+      "currentSHA": "21235538c9766a28b04dcf529aed9883a8aa11bdbfef8e9e2ce35d5cc927c5cf",
+      "baselineSHA": "21235538c9766a28b04dcf529aed9883a8aa11bdbfef8e9e2ce35d5cc927c5cf",
+      "identical": true
+    },
+    {
+      "file": "game-easy-test.html",
+      "currentSHA": "4c408f1e7b57210900ddfa8a0646502f91b6a0bbc798a24338eb159cb613d874",
+      "baselineSHA": "4c408f1e7b57210900ddfa8a0646502f91b6a0bbc798a24338eb159cb613d874",
+      "identical": true
+    },
+    {
+      "file": "test/maliceEconomyRegression.test.js",
+      "currentSHA": "83f723f150733df47ed23a297cd153d02ffbdd43dc7dbb7fabe1106592dc9077",
+      "baselineSHA": "83f723f150733df47ed23a297cd153d02ffbdd43dc7dbb7fabe1106592dc9077",
+      "identical": true
+    }
+  ],
+  "exitCode": 1,
+  "summary": "\u2716 parry grants 2000 base malice and applies the optional resource multiplier (4.22ms)\n\u2139 tests 1\n\u2139 suites 0\n\u2139 pass 0\n\u2139 fail 1\n\u2139 cancelled 0\n\u2139 skipped 0\n\u2139 todo 0\n\u2139 duration_ms 57.970291\n\n\u2716 ",
+  "interpretation": "Existing identical game and test inputs before this task; protected parry code unchanged, no policy/design fix attempted"
+}

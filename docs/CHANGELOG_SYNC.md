@@ -51860,3 +51860,11 @@ QA의 완료 작업을 가리키는 미전송 초안은 그대로 보존했다. 
 - root가 ITEM 저장 호출부 후보를 재실행해 42시나리오/84왕복 PASS를 확인했다. 생산 미적용·비활성/legacy/RNG 보존, 실제 브라우저 import와 UI 검수는 후속이다.
 - 별도 사용자 Chrome 게임은 열어둔 채 입력/리로드/계측/닫기0. 새 게임/서버/설치/대형빌드0, 사용자 세이브·타 팀 WIP·QA 초안 보존. SOUND 후속은 미전달이며 전체11팀 완료로 세지 않는다.
 - 상세: docs/0마스터플랜/mac-resume-20261001/vscode-dispatch/FOUR-NEXT-20261002.md 및 최신 TEAM_UTILIZATION_20261001.json. 기록 체크포인트는 실행 .app 완성이나 새 후보 생산 인수를 의미하지 않는다.
+
+
+## 2026-10-02 다섯 원담당 인수와 다음 구현
+
+- ART 정식 geometry export, SKILL 설치/정리·충전 UNKNOWN, ENEMY tick-health를 원담당 도구 경로에 반영. root ART31+38/SKILL20+66/ENEMY17+9 PASS. 이전 원본과 검사 입력 보존.
+- MAP27/ANIM8+2 이후 추가 lifecycle3건·누락draw 전체오PASS를 root 재현해 인수 보류 및 동일 원담당 수정 전달. 다섯 기존 세션 모두 후속 실제 Read 확인, 새세션0.
+- 별도 네 Codex 과제는 제출 완료·다음 인수 대기. 패링 검사1FAIL은 기존1c7cdb45와 game/easy/test SHA 동일, 보호패링 변경0.
+- 현행 자동화5분(PC총괄 전달)과 옛10분/lock 이력 분리. 사용자 게임·QA초안·SOUND 제한 보존. 상세 FIVE-OWNER-INTEGRATION-20261002.md 및 TEAM_UTILIZATION_20261001.json.

@@ -1,0 +1,40 @@
+{
+  "taskId": "SKILL-OWNER-INTEGRATION-20261002",
+  "title": "검수된 지원후보를 owner observer 설치/반환API에 인수",
+  "team": "SKILL",
+  "terminal": 6,
+  "cli": "claude-code",
+  "model": "claude-opus-4-8",
+  "sessionId": "203377cc-64c4-47ea-af27-95b66ae829fa",
+  "head": "1c7cdb453c8a9ddaaac401020beb72ac87a74353",
+  "receivedAtKST": "2026-10-02T09:16",
+  "firstReadKST": "2026-10-02T09:17",
+  "firstEditKST": "2026-10-02T09:35",
+  "status": "done_pending_root_apply",
+  "completedAtKST": "2026-10-02T09:52",
+  "artifacts": {
+    "integrated": "tools/team-followup-20261001/SKILL/owner-integration-ice-cancel-probe.js (sha cba2c471…, 바디=지원후보 바디 동일)",
+    "regression": "tools/team-followup-20261001/SKILL/owner-integration-regression.mjs → 20 PASS / 0 FAIL (exit0)",
+    "patch": "tools/team-followup-20261001/SKILL/owner-integration.patch (owner→통합본 unified diff, dry-run clean)",
+    "syntaxCheck": "node --check → OK"
+  },
+  "duplicateCheck": "OWNER_NEXT_20261002-receipt/result·owner-integration-* 부재. FIX_TASK(SKILL-RECHARGE-EXCEPTION-FIX)의 충전UNKNOWN·S1/S2는 BALANCE 지원후보+root 보강에 이미 구현·검수(SUPPORT-root-review 33PASS/0FAIL)됨 → 재작성 안 함, 인수만. 중복/진행중 아님.",
+  "readOnlyInputs": [
+    "tools/team-followup-20261001/SKILL/ice-cancel-probe.safe.js (owner, sha ae7c8e8a…)",
+    "tools/team-followup-20261001/BALANCE/skill-support-probe.js (검수 지원후보, sha 63006cf9…)",
+    "tools/team-followup-20261001/root-review/support-acceptance-check.mjs",
+    "tools/team-followup-20261001/root-review/support-final-evidence.json",
+    "docs/0마스터플랜/mac-resume-20261001/vscode-dispatch/SUPPORT-root-review.md",
+    "game.html:35052-35090 (리젠/확정 원식, 읽기 전용)"
+  ],
+  "ownedPaths": [
+    "tools/team-followup-20261001/SKILL/owner-integration-ice-cancel-probe.js",
+    "tools/team-followup-20261001/SKILL/owner-integration-regression.mjs",
+    "tools/team-followup-20261001/SKILL/owner-integration.patch",
+    "docs/0마스터플랜/mac-resume-20261001/vscode-dispatch/OWNER_NEXT_20261002-result.md",
+    "docs/0마스터플랜/mac-resume-20261001/vscode-dispatch/OWNER_NEXT_20261002-receipt.json"
+  ],
+  "nextAction": "지원후보 검수본문을 owner 설치/반환API 호출부에 인수한 통합본 생성 + 원실패→수정/정상 회귀 작성·실행, 충전단위 원식 대조, docs 검색",
+  "blocker": null,
+  "notes": "game.html/easy/index/server/공용마스터/타팀/지원후보/owner 원본 무수정(acceptance가 SHA 고정). Git/게임/브라우저/서버/이미지/새세션 0. trace 없으면 충전/환급 확정 금지 원칙 유지."
+}

@@ -1,0 +1,13 @@
+ENEMY-TYPE3-PROBE-FIX 모의 검증
+
+  PASS  F1 lexical: makeBrowserHost().getG() == null (window.G 미노출 재현)
+  PASS  A 실제 발사: idle→차징→커밋 PASS, chargeStart 포착(F2), commit 확인(F3), sim-tick(F4)
+  PASS  F3 커밋실패: 호출만 있고 projs 미증가 → FAIL_PATH (호출만으로 PASS 금지)
+  PASS  F4 dedup: rAF 2×/tick 에도 inRangeTicks ≤ 경과 sim-tick
+  PASS  B 무발사: 장기 사거리 체류·생존·발사0 → FAIL_NO_FIRE
+  PASS  C 대상교체: 포착 etype3 사망 → targetLost INCONCLUSIVE, 2번째 개체와 혼합 안 함
+  PASS  F5 복원: stop 후 _fireChargedProj/_spawnBossProjectile 가 원함수로 복원
+  PASS  F5 재설치: 중복 install 후 stop 해도 wrapper-as-original 저장 안 됨(원함수 복원)
+  PASS  F5 소유권: 외부가 바인딩을 바꿔치면 stop 이 덮어쓰지 않음
+
+결과: 9 PASS / 0 FAIL

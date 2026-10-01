@@ -678,3 +678,12 @@ QA의 완료 작업을 가리키는 미전송 초안은 그대로 보존했다. 
 원격 `1c7cdb453c8a9ddaaac401020beb72ac87a74353` 대조 뒤 완료한 기존 네 팀에 15:26:13Z 한 건씩 전달했다. ITEM은 검토 전용 D10 포트 설치/해제와 UI 호출부, BUILD는 Mac runtime/고유 출력/소스 SHA/save 보존 사전검사 CLI, UIUX는 UI-04 빈 아이템 상세와 초점 오류, BALANCE는 장비 강화 게이트·차감·저장 경계 검수다. 각 독립 prefix에만 구현하며 생산·새 게임·빌드·설치 변경0. 전달과 실제 Read/코드 Edit는 분리 기록한다.
 
 직전 ITEM persistence-integration을 root가 재실행해 실제 함수 기반 42시나리오·84저장 왕복 PASS를 확인했다. 비활성 제안·RNG 보존·미적용 상태이며 실제 브라우저 연결과 제품 검수는 남았다. 기존 Claude 산출은 원담당 완료 보고와 root 독립 인수를 구분한다. QA 중복 미전송 초안은 보존, SOUND는 준비·미수신 상태를 유지한다. 정확한 11팀 상태와 증거는 [네 팀 후속 인수](mac-resume-20261001/vscode-dispatch/FOUR-NEXT-20261002.md)와 동 폴더 `TEAM_UTILIZATION_20261001.json`을 따른다. 자동화 주기는 이번에 변경하지 않았다.
+
+
+### 2026-10-02 다섯 원담당 실제 인수·후속 전달
+
+원격727b095b 이후 ART31+38/SKILL20+66/ENEMY17+9를 root가 재실행하고 ART 정식 export 및 SKILL/ENEMY 원담당 도구 경로에 반영했다. MAP27 및 ANIM sparse8+2는 통과했으나 추가 root반례에서 MAP 부분설치/숨김/중복 수명 오류3건, ANIM draws 누락 전체 고주사율 오PASS가 나와 해당 통합은 보류했다. 실패 원본·최소 입력을 보존하고 같은 원담당에게 실제 파일 수정 과제를 즉시 전달했다.
+
+기존 다섯 팀 ART/MAP/SKILL/ENEMY/ANIMVFX의 다음 한 건은 각각 live 관측기 line-index 연결/수명·포커스 수정/hellRay 확정자원/source 기반 F06 후보/sparse clock canonical 통합이다. 15:35:08~15:36:07Z 수신 및15:35:12~15:36:16Z Read를 실제 원세션에서 확인했다. 새세션0. 앞서 배정한 Codex4팀은 새 결과 제출 완료·다음 독립 인수 대기이며 실행 중으로 세지 않는다. [검사·반영 단계·정확한11팀상태](mac-resume-20261001/vscode-dispatch/FIVE-OWNER-INTEGRATION-20261002.md).
+
+BALANCE의 패링 인접 검사1FAIL은 root도 동일 실패를 확인했다. game/easy/test 입력SHA가1c7cdb45와 동일해 이번 변경 이전 실패임을 확인했고 보호 설계 수정0. 사용자 게임 유지·새 게임/계측/대형빌드0, QA 미전송 초안 보존, SOUND 미전달/접근제한 유지. 현행 관리 주기는 PC 총괄 최신 전달 기준5분 ACTIVE이며 이전10분은 이력으로 구분한다. Mac view는 카드 반환만 확인했으며 설정값을 독립 확인했다는 주장은 하지 않는다. 자동화 생성·수정0.

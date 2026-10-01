@@ -75,22 +75,12 @@
       pendingFire: null,              // orig 호출 직전 스냅샷(커밋 확인 대기)
       edgeFire: null,
       inRangeTicks: 0, aliveTicks: 0, frozenTicks: 0, stunnedTicks: 0,  // F4: _gameFrame 단위
-      tickIssues: [], rafSamples: 0, physicalAdvances: 0, stagnantRafSamples: 0, lastObservedTick: null,
       lastCountedTick: null,          // F4: 같은 tick 중복 집계 방지
       sampleStates: {}, dHistory: [],
       raf: 0, wrapped: {}, done: false, targetLost: false, err: null
     };
 
-    function tickIssue(code) { if (P.tickIssues.indexOf(code) < 0) P.tickIssues.push(code); }
-    function tick() {
-      var value;
-      try { value = host.getTick(); } catch (error) { tickIssue('tick_read_error'); return null; }
-      if (value == null) { tickIssue('missing_tick'); return null; }
-      if (typeof value !== 'number' || !Number.isFinite(value)) { tickIssue('nonfinite_or_invalid_tick'); return null; }
-      if (!Number.isSafeInteger(value) || value < 0) { tickIssue('invalid_tick_counter'); return null; }
-      if (P.lastObservedTick != null && value < P.lastObservedTick) tickIssue('backward_tick');
-      return value;
-    }
+    function tick() { var t = host.getTick(); return (typeof t === 'number') ? t : null; }
     function range3() {
       var R = host.getRange();
       var v = R && R[3];
@@ -136,8 +126,6 @@
 
     P.install = function () {
       P.installedTick = tick();
-      P.lastObservedTick = P.installedTick;
-      P.lastCountedTick = P.installedTick;
       P.prevProjChargeT = null;
 
       // F3: 정상 차징 발사 경로. orig 를 먼저 호출하고 projs 증가로 커밋 확인 후 firstFire 확정.
@@ -180,13 +168,6 @@
       function sample() {
         if (P.done) return;
         try {
-          P.rafSamples++;
-          var observedTick = tick();
-          var advanced = observedTick != null && P.lastObservedTick != null && observedTick > P.lastObservedTick;
-          if (advanced) { P.physicalAdvances++; P.stagnantRafSamples = 0; }
-          else P.stagnantRafSamples++;
-          if (P.stagnantRafSamples >= 120) tickIssue('stalled_tick');
-          if (observedTick != null && (P.lastObservedTick == null || observedTick >= P.lastObservedTick)) P.lastObservedTick = observedTick;
           // F4: 대상 1회 고정. 이미 포착한 대상이 사라지면 섞지 않고 종료 플래그.
           if (!P.target) {
             var e0 = findTargetEt3();
@@ -195,16 +176,16 @@
               P.spawn = { tick: tick(), s: e0.s, projCd: e0.projCd, projT0: e0.projT,
                 st2: e0.st2, el: e0.el, d: distToP(e0), x: e0.x, y: e0.y };
               P.prevProjChargeT = e0._projChargeT || 0;
-              P.lastCountedTick = P.installedTick;
+              P.lastCountedTick = null;
             }
           } else if (!P.target.alive) {
             P.targetLost = true;      // 다른 개체로 갈아타지 않음(혼합 방지)
           }
 
           if (P.target && !P.targetLost) {
-            var tgt = P.target, d = distToP(tgt), tk = observedTick;
+            var tgt = P.target, d = distToP(tgt), tk = tick();
             // F4: _gameFrame 이 실제로 증가한 tick 에서만 residency 집계(rAF 중복 제거)
-            advanced = advanced && P.tickIssues.length === 0 && tk != null && (P.lastCountedTick == null || tk > P.lastCountedTick);
+            var advanced = (tk == null) || (P.lastCountedTick == null) || (tk > P.lastCountedTick);
             if (advanced) {
               P.aliveTicks += tgt.alive ? 1 : 0;
               if (tgt.alive && d < R) P.inRangeTicks++;
@@ -251,16 +232,12 @@
       var R = range3();
       var budget = 300 + 60 + 90;     // F4: _gameFrame(60tps) 기준 sim-tick. projT0 max300 + 차징60 + 여유90
       var nowT = tick();
-      var elapsed = (P.tickIssues.length === 0 && nowT != null && P.installedTick != null && nowT >= P.installedTick) ? (nowT - P.installedTick) : null;
-      var tickHealthy = P.tickIssues.length === 0 && P.physicalAdvances > 0 && P.stagnantRafSamples < 120;
+      var elapsed = (nowT != null && P.installedTick != null) ? (nowT - P.installedTick) : null;
       var v = { verdict: 'INCONCLUSIVE', reasons: [] };
 
       if (P.err) v.reasons.push('probe_error:' + P.err);
 
-      if (P.err || !tickHealthy) {
-        v.verdict = 'INCONCLUSIVE';
-        v.reasons.push('physical_tick_unverified:' + P.tickIssues.join(',') + '; advances=' + P.physicalAdvances + '; stagnantRAF=' + P.stagnantRafSamples);
-      } else if (P.targetLost && !P.firstFire) {
+      if (P.targetLost && !P.firstFire) {
         v.verdict = 'INCONCLUSIVE';
         v.reasons.push('포착한 etype3 대상이 발사 전 사망/소멸 — 혼합 방지로 종료(재관측 필요). 공격전무 단정 아님');
       } else if (!P.target) {
@@ -305,7 +282,6 @@
         key: P.KEY, observedAt: new Date().toISOString(),
         tickSource: (nowT == null ? 'unavailable(_gameFrame)' : '_gameFrame'),
         gameTickNow: nowT, installedTick: P.installedTick, elapsedTicks: elapsed,
-        tickHealth: { healthy: tickHealthy, issues: P.tickIssues.slice(), rafSamples: P.rafSamples, physicalAdvances: P.physicalAdvances, stagnantRafSamples: P.stagnantRafSamples, stalledRafThreshold: 120 },
         range: R, budgetTicks: budget,
         spawnSnapshot: P.spawn,
         chargeStart: P.chargeStartTick == null ? null :

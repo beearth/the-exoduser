@@ -1,0 +1,25 @@
+{
+  "at": "2026-10-01T15:32:27.024090+00:00",
+  "integrated": [
+    {
+      "team": "SKILL",
+      "target": "tools/team-followup-20261001/SKILL/ice-cancel-probe.safe.js",
+      "before": "tools/team-followup-20261001/root-review/five-owner-before-skill.js",
+      "beforeSHA": "ae7c8e8ad6e874e565c3ee0cb8b635130cefa234c5628bd0ba2922da96481d1b",
+      "candidate": "tools/team-followup-20261001/SKILL/owner-integration-ice-cancel-probe.js",
+      "candidateSHA": "cba2c4718ec87a7a85e436a6565d1c07b39c5f55b40f7dd966cc554d4cc2045c",
+      "reviewedSupport": "tools/team-followup-20261001/BALANCE/skill-support-probe.js",
+      "supportSHA": "63006cf9b4714ad038ec5d87a64fb8bfdc8bd65befbe8b26537de8c89a1af223"
+    },
+    {
+      "team": "ENEMY",
+      "target": "tools/team-followup-20261001/ENEMY/et3-probe.fixed.js",
+      "before": "tools/team-followup-20261001/root-review/five-owner-before-enemy.js",
+      "beforeSHA": "1bf68b094b792998abe5a9e0ca1f6c57534ef4ec6d9dbbd28c792450cbfdf489",
+      "candidate": "tools/team-followup-20261001/ENEMY/owner-integration-et3-probe.fixed.js",
+      "candidateSHA": "92cbecd7cb38ad13b83cc5cc00938dcb69e8687de9c36fa38f0046708bd5f1a8",
+      "reviewedSupport": "tools/team-followup-20261001/ITEM/enemy-support-probe.js",
+      "supportSHA": "92cbecd7cb38ad13b83cc5cc00938dcb69e8687de9c36fa38f0046708bd5f1a8"
+    }
+  ]
+}

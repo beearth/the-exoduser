@@ -248,3 +248,8 @@ MagicLight 마지막 조회 59,540 (2026-10-01, emg1 2차 후). 이번 마감 �
 ### 2026-10-01 UIUX 지원 최종crop 기하 후보 인수
 
 wa24의 실제 clip/letterbox/zoom/shake/cover를 4화면비×3시점 대조한 후보16시험과 BUILD 독립검수 통과. 원그림·게임 변경0. fade0 가시성 증거 아님; 눈/발/자막 픽셀 인수 UNKNOWN. [지원 인수](../0마스터플랜/mac-resume-20261001/vscode-dispatch/SUPPORT-root-review.md).
+
+
+### 2026-10-02 원담당 최종 크롭 인수
+
+root가 geometry31+기존38 PASS를 재확인하고 ART/wa24-finalcrop.mjs 정식 export를 연결했다. 실제 clip/zoom/shake/cover 계산이며 16:9도 줌으로 상하 약3.85~6.35% 크롭된다. 눈·발·자막 픽셀은 UNKNOWN. 기존 wa24-observer의 seq-time 소비는 미연결이어서 같은 원담당에게 line-index 호출부 직접 수정 한 건을 전달하고 실제 Read를 확인했다. [범위·증거·반영 단계](../0마스터플랜/mac-resume-20261001/vscode-dispatch/FIVE-OWNER-INTEGRATION-20261002.md).

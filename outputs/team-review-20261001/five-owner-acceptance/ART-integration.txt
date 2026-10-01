@@ -1,0 +1,41 @@
+
+[A] 4비율 × 3시각 — 인수 predictFinalCrop vs 실 draw 원문(fixture)
+  PASS 1920x1080 @400ms: fractions/matrix/drawRect/clip 1e-11 일치 (geo=CROPPED)
+  PASS 1920x1080 @1200ms: fractions/matrix/drawRect/clip 1e-11 일치 (geo=CROPPED)
+  PASS 1920x1080 @2399ms: fractions/matrix/drawRect/clip 1e-11 일치 (geo=CROPPED)
+  PASS 2560x1080 @400ms: fractions/matrix/drawRect/clip 1e-11 일치 (geo=CROPPED)
+  PASS 2560x1080 @1200ms: fractions/matrix/drawRect/clip 1e-11 일치 (geo=CROPPED)
+  PASS 2560x1080 @2399ms: fractions/matrix/drawRect/clip 1e-11 일치 (geo=CROPPED)
+  PASS 1920x1200 @400ms: fractions/matrix/drawRect/clip 1e-11 일치 (geo=CROPPED)
+  PASS 1920x1200 @1200ms: fractions/matrix/drawRect/clip 1e-11 일치 (geo=CROPPED)
+  PASS 1920x1200 @2399ms: fractions/matrix/drawRect/clip 1e-11 일치 (geo=CROPPED)
+  PASS 1024x768 @400ms: fractions/matrix/drawRect/clip 1e-11 일치 (geo=CROPPED)
+  PASS 1024x768 @1200ms: fractions/matrix/drawRect/clip 1e-11 일치 (geo=CROPPED)
+  PASS 1024x768 @2399ms: fractions/matrix/drawRect/clip 1e-11 일치 (geo=CROPPED)
+  PASS 12행(4비율×3시각) 수행 (got 12)
+  PASS predictWa24FinalCrop(WA24 상수) 도 실 draw와 일치
+
+[B] 누락 연결 해소 — cover-only base 가 놓친 줌 크롭 포착
+  PASS 16:9 원담당 cover-only=OK_FULLFRAME (놓침) (got OK_FULLFRAME)
+  PASS 16:9 최종=CROPPED (줌 크롭 포착) (got CROPPED)
+  PASS ★누락 연결 해소 플래그 true
+  PASS 줌 상하 크롭 수직비 > 0
+  PASS 16:9 @400ms 상하손실 6.3476% ≈ 검수값 6.3476%
+  PASS 16:9 @1200ms 상하손실 4.7619% ≈ 검수값 4.7619%
+  PASS 16:9 @2399ms 상하손실 3.8462% ≈ 검수값 3.8462%
+
+[C] 시간축 보존 — line-index(_cutLineIdx+_cutLineStartMs), seq-time 회귀 아님
+  PASS correctedSampler 동일 참조(원담당 시간축 그대로)
+  PASS correctedSampler lineElapsed=1200(라인 상대)
+  PASS predictFinalCrop timeBase=line-index (got line-index)
+  PASS lineElapsed=now-lineStartMs=1200 (WA24.t=73600 무관 → seq-time 아님) (got 1200)
+  PASS 드리프트 시각(lineStartMs=80000)에도 실 draw와 일치
+  PASS legacy(seq-time) 는 라인-인덱스와 다른 결과 — 회귀 아님 확인
+
+[D] 눈·발·자막 UNKNOWN + fade0 가시성 증거 아님
+  PASS 눈/발/자막 = UNKNOWN 유지
+  PASS 가시 상태 = GEOMETRY_ONLY(기하만)
+  PASS fade0 → 가시성 증거 아님
+  PASS fade0 에서도 눈 UNKNOWN
+
+=== 결과: 31 PASS / 0 FAIL ===

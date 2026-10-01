@@ -1,0 +1,27 @@
+[
+  {
+    "source": "tools/team-followup-20261001/MAP/manual-input-observer.js",
+    "preserved": "tools/team-followup-20261001/root-review/five-owner-before/MAP/manual-input-observer.js",
+    "sha256": "83ce70dbbeea88311eb1d2a148c1c6b97891eb95df4701cd68fc63e2f0400df9"
+  },
+  {
+    "source": "tools/team-followup-20261001/MAP/manual-input-fixture.cjs",
+    "preserved": "tools/team-followup-20261001/root-review/five-owner-before/MAP/manual-input-fixture.cjs",
+    "sha256": "5528c1ea779726bac9c9b1693cfb9b84158619b048f24a409eec2897f2da7fa5"
+  },
+  {
+    "source": "tools/team-followup-20261001/MAP/m5-evidence-gate.cjs",
+    "preserved": "tools/team-followup-20261001/root-review/five-owner-before/MAP/m5-evidence-gate.cjs",
+    "sha256": "865fd51ec7abb70fe9472cbb3ca758387339d47ce00f9b23c53a33f263519bcb"
+  },
+  {
+    "source": "tools/team-followup-20261001/ANIMVFX/sparse-update-c5-gate.mjs",
+    "preserved": "tools/team-followup-20261001/root-review/five-owner-before/ANIMVFX/sparse-update-c5-gate.mjs",
+    "sha256": "b11c5a41368c240149ce2813b9613299472406e09d374b73d76fa11779f5b394"
+  },
+  {
+    "source": "tools/team-followup-20261001/ANIMVFX/animvfx_highhz_lifetime_gate.mjs",
+    "preserved": "tools/team-followup-20261001/root-review/five-owner-before/ANIMVFX/animvfx_highhz_lifetime_gate.mjs",
+    "sha256": "3309238f04d51ccf65af92b90c9aade9edb034e0632a81119d17efa198dfcfd7"
+  }
+]

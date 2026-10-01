@@ -1,0 +1,94 @@
+{
+  "kind": "reproduced-unaccepted-boundaries",
+  "results": [
+    {
+      "id": "MAP-install-rollback",
+      "error": "fixture add",
+      "remainingListeners": 1,
+      "expected": 0
+    },
+    {
+      "id": "MAP-hidden-sampling",
+      "hiddenLegs": 1,
+      "hiddenSamples": 2,
+      "expected": 0
+    },
+    {
+      "id": "MAP-duplicate-start",
+      "remainingTimers": 1,
+      "remainingListeners": 3,
+      "expected": 0
+    },
+    {
+      "id": "ANIM-missing-draw-counter",
+      "actual": "PASS",
+      "expected": "UNKNOWN or REJECT"
+    },
+    {
+      "id": "ANIM-missing-middle-draw-record",
+      "actual": "PASS(고주사율 실수명 인증 포함)",
+      "decayModel": "PASS(전 에피소드 update 구동=주사율 독립)",
+      "episodes": [
+        {
+          "verdict": {
+            "sampleCount": "PASS",
+            "clock": "PASS",
+            "pause": "PASS",
+            "background": "PASS",
+            "decayModel": "PASS",
+            "lifetimeEnd": "PASS",
+            "highRefresh": "PASS"
+          },
+          "c5": {
+            "verdict": "PASS",
+            "note": "update 구동(주사율 독립): draw 없이 감소한 구간 1건(sp<1이어도 성립). 둘다진행 2",
+            "counts": {
+              "updateOnly": 1,
+              "drawOnly": 0,
+              "bothAdvance": 2,
+              "noCounter": 0,
+              "decrementIntervals": 3
+            }
+          }
+        }
+      ],
+      "raw": {
+        "records": [
+          {
+            "id": 1,
+            "hf": 3,
+            "updates": 10,
+            "draws": 0,
+            "now": 0,
+            "events": [
+              "flash-start-observed"
+            ]
+          },
+          {
+            "id": 1,
+            "hf": 2,
+            "updates": 11,
+            "now": 5
+          },
+          {
+            "id": 1,
+            "hf": 1,
+            "updates": 12,
+            "draws": 2,
+            "now": 10
+          },
+          {
+            "id": 1,
+            "hf": 0,
+            "updates": 13,
+            "draws": 3,
+            "now": 15,
+            "events": [
+              "flash-zero-observed"
+            ]
+          }
+        ]
+      }
+    }
+  ]
+}

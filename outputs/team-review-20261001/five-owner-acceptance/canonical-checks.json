@@ -1,0 +1,17 @@
+[
+  {
+    "name": "ART-owner",
+    "exitCode": 0,
+    "tail": "raw와 일치\n  PASS legacy(seq-time) 는 라인-인덱스와 다른 결과 — 회귀 아님 확인\n\n[D] 눈·발·자막 UNKNOWN + fade0 가시성 증거 아님\n  PASS 눈/발/자막 = UNKNOWN 유지\n  PASS 가시 상태 = GEOMETRY_ONLY(기하만)\n  PASS fade0 → 가시성 증거 아님\n  PASS fade0 에서도 눈 UNKNOWN\n\n=== 결과: 31 PASS / 0 FAIL ===\n"
+  },
+  {
+    "name": "SKILL-owner",
+    "exitCode": 0,
+    "tail": "\nowner-integration 회귀: 20 PASS / 0 FAIL\n"
+  },
+  {
+    "name": "ENEMY-owner",
+    "exitCode": 0,
+    "tail": "는 보고는 INCONCLUSIVE (0.3675ms)\n✔ 커밋된 발사 증거는 보존하되 tick 없음은 timing PASS 를 만들지 않음 (0.25ms)\n✔ tick getter 예외는 보고 크래시가 아니라 health 이슈 (0.260042ms)\nℹ tests 17\nℹ suites 0\nℹ pass 17\nℹ fail 0\nℹ cancelled 0\nℹ skipped 0\nℹ todo 0\nℹ duration_ms 43.485875\n"
+  }
+]

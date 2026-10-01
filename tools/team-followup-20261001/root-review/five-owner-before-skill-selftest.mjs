@@ -99,8 +99,8 @@ function mkRaw(aim, mp, stk, rech, zones) { return { aim, mp, stk, rech, zones: 
   const d = p.dump();
   eq(d.marks['C'].validSamples, 0, 'T3 구간C 유효표본 0');
   ok(d.marks['C'].nullSamples > 0, 'T3 구간C null표본 집계됨(조용히 버리지 않음)');
-  eq(p.verdict('C').verdict, 'UNKNOWN', 'T3 구간C 표본 부족 UNKNOWN');
-  eq(p.verdict().verdict, 'UNKNOWN', 'T3 전체 표본 부족 UNKNOWN');
+  eq(p.verdict('C').verdict, 'UNDETERMINED', 'T3 구간C verdict UNDETERMINED');
+  eq(p.verdict().verdict, 'UNDETERMINED', 'T3 전체 verdict도 UNDETERMINED(양성대조 없음)');
   p.dispose();
 })();
 
@@ -208,12 +208,12 @@ function withPositiveControl(h) {
   state.cur = mkRaw(false, 60, 1, 1000, [zoneB]); h.step();  // 리젠 진행(dStk=0)
   state.cur = mkRaw(false, 60, 2, 0, [zoneB]); h.step();     // 리젠 완료: dStk=+1, prev.rech=1000>0
   const d = p.dump();
-  eq(d.counts.rechargeTicks, 0, 'T8 trace 없는 증가를 충전으로 확정하지 않음');
+  eq(d.counts.rechargeTicks, 1, 'T8 적법 리젠 완료 1건 집계');
   eq(d.counts.stkRefund, 0, 'T8 환급 0');
   eq(d.flags.length, 0, 'T8 플래그 0(리젠은 정상)');
   const rf = d.recharges[d.recharges.length - 1];
-  ok(!rf && d.counts.unknownCharge === 1, 'T8 trace 없는 스택 증가 UNKNOWN 1건');
-  eq(p.verdict().verdict, 'UNKNOWN', 'T8 전체 충전 근거 부족');
+  ok(rf && rf.legitRecharge && rf.dStk === 1, 'T8 리젠 프레임 legitRecharge=true, dStk=+1');
+  eq(p.verdict().verdict, 'PASS', 'T8 PASS 유지');
   p.dispose();
 })();
 
@@ -225,10 +225,10 @@ function withPositiveControl(h) {
   state.cur = mkRaw(false, 60, 1, 0, [zoneB]); h.step();     // rech 1500→0 (충전기 소거, dStk=0)
   state.cur = mkRaw(false, 60, 2, 0, [zoneB]); h.step();     // dStk=+1 인데 prev.rech=0 → 부적법
   const d = p.dump();
-  eq(d.counts.stkRefund, 0, 'T9 trace 없이 환급 확정0');
-  ok(d.unknownCharges.length === 1, 'T9 불명 스택 증가1건');
+  eq(d.counts.stkRefund, 1, 'T9 스택 환급 1건');
+  ok(d.flags.some(fr => fr.flag === 'STK_REFUND?'), 'T9 STK_REFUND? 플래그 발생');
   eq(d.counts.rechargeTicks, 0, 'T9 적법 리젠 0');
-  eq(p.verdict().verdict, 'UNKNOWN', 'T9 충전 근거 부족 UNKNOWN');
+  eq(p.verdict().verdict, 'SUSPECT', 'T9 SUSPECT');
   p.dispose();
 })();
 
@@ -240,9 +240,9 @@ function withPositiveControl(h) {
   state.cur = mkRaw(false, 60, 1, 1000, [zoneB]); h.step();  // 리젠 진행
   state.cur = mkRaw(false, 60, 3, 0, [zoneB]); h.step();     // dStk=+2 (prev.rech>0이어도 위반)
   const d = p.dump();
-  eq(d.counts.stkRefund, 0, 'T9b dStk>1도 trace 없이 환급 확정0');
+  eq(d.counts.stkRefund, 1, 'T9b dStk>1 환급으로 분류');
   eq(d.counts.rechargeTicks, 0, 'T9b dStk=+2는 적법 리젠 아님');
-  eq(p.verdict().verdict, 'UNKNOWN', 'T9b update 추적 부재는 UNKNOWN');
+  eq(p.verdict().verdict, 'SUSPECT', 'T9b SUSPECT');
   p.dispose();
 })();
 
@@ -272,11 +272,11 @@ function withPositiveControl(h) {
   state.cur = mkRaw(false, 60, 2, 0, [zoneB]); h.step();     // 취소 ∧ 리젠 완료(dStk=+1, prev.rech=200>0)
   const d = p.dump();
   eq(d.counts.cancel, 1, 'T11 취소 1건');
-  eq(d.counts.rechargeTicks, 0, 'T11 trace 없는 증가를 적법 충전으로 세지 않음');
+  eq(d.counts.rechargeTicks, 1, 'T11 적법 리젠 완료 1건');
   eq(d.counts.cancelSideEffect, 0, 'T11 취소 부작용 0(리젠은 매 프레임 독립 실행)');
   eq(d.counts.stkRefund, 0, 'T11 환급 0');
   eq(d.flags.length, 0, 'T11 플래그 0');
-  eq(p.verdict().verdict, 'UNKNOWN', 'T11 충전 불명으로 전체 UNKNOWN');
+  eq(p.verdict().verdict, 'PASS', 'T11 오탐 없이 PASS');
   p.dispose();
 })();
 
@@ -292,8 +292,8 @@ function withPositiveControl(h) {
   eq(d.counts.cancelSideEffect, 1, 'T12 취소 부작용 1건');
   eq(d.counts.residualStk, 1, 'T12 비설치 스택 감소도 잔류소모로 집계');
   const v = p.verdict();
-  eq(v.verdict, 'UNKNOWN', 'T12 부작용 계수는 보존하되 전체 충전 불명');
-  ok(/충전 증거 부족/.test(v.reason), 'T12 verdict 사유에 충전 증거 부족 명시');
+  eq(v.verdict, 'SUSPECT', 'T12 SUSPECT');
+  ok(/취소부작용/.test(v.reason), 'T12 verdict 사유에 취소부작용 명시');
   p.dispose();
 })();
 
