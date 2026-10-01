@@ -1,0 +1,457 @@
+{
+  "window": {
+    "start": 38734.39999997616,
+    "end": 43392.79999995232,
+    "durationMs": 4658.399999976165,
+    "definition": "first world-coordinate left mousedown through automatic first kill +1500ms stop; previous interval endpoint before start excluded",
+    "firstKill": 41866.79999995232,
+    "msFromFirstWorldInput": 3132.3999999761654,
+    "wholeObserverDurationMs": 12470.200000047691
+  },
+  "firstKill": {
+    "alive": 8,
+    "at": 41866.79999995232,
+    "boot": false,
+    "focus": true,
+    "gl": true,
+    "gpu": false,
+    "hidden": false,
+    "hp": 558,
+    "kills": 1,
+    "lv": 1,
+    "on": true,
+    "paused": false,
+    "stage": 0,
+    "warm": true,
+    "x": 4020,
+    "y": 7169.999999999998
+  },
+  "finalKillCount": 1,
+  "environment": {
+    "bindings": {
+      "beam": "mouse2",
+      "bladeToggle": "KeyU",
+      "bow": "Space",
+      "charge": "ShiftLeft",
+      "down": "KeyS",
+      "forge": "KeyG",
+      "interact": "KeyR",
+      "inventory": "Tab",
+      "irisToggle": "KeyY",
+      "left": "KeyA",
+      "parry": "KeyQ",
+      "right": "KeyD",
+      "settings": "Escape",
+      "shield": "KeyE",
+      "skill": "KeyK",
+      "skillCycle": "KeyL",
+      "stats": "KeyJ",
+      "storage": "KeyN",
+      "up": "KeyW",
+      "weapon": "mouse0"
+    },
+    "canvas": [
+      1352,
+      662
+    ],
+    "dpr": 2,
+    "options": {
+      "ambPart": true,
+      "atmos": 1,
+      "autoPotThr": 0.99,
+      "bgmTrack": "auto",
+      "bgmVol": 60,
+      "bloom": true,
+      "bossDebug": false,
+      "bossFog": true,
+      "crAutoEnh": -1,
+      "crAutoFuse": -1,
+      "cursor": 0,
+      "cursorSize": 50,
+      "deathFx": true,
+      "diff": 5,
+      "fog": true,
+      "fpsCap": 0,
+      "grain": true,
+      "hitStop": 0,
+      "lang": "ko",
+      "lighting": true,
+      "minPickLvTier": 0,
+      "minPickRar": 0,
+      "outline": true,
+      "parts": 80,
+      "petAuto": true,
+      "postfx": true,
+      "quality": "high",
+      "resScale": 100,
+      "sfxVol": 60,
+      "shake": 80,
+      "showFps": false,
+      "slash": true,
+      "ssaa": 1,
+      "torch": true,
+      "trail": true
+    },
+    "ua": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/152.0.0.0 Safari/537.36",
+    "url": "http://qa-firstkill-manual-20261001.localhost:3340/game.html?webgpu=0",
+    "viewport": [
+      1352,
+      663
+    ]
+  },
+  "laterOptions": {
+    "ambPart": true,
+    "atmos": 2,
+    "autoPotThr": 0.99,
+    "bgmTrack": "auto",
+    "bgmVol": 60,
+    "bloom": true,
+    "bossDebug": false,
+    "bossFog": true,
+    "crAutoEnh": -1,
+    "crAutoFuse": -1,
+    "cursor": 0,
+    "cursorSize": 50,
+    "deathFx": true,
+    "diff": 5,
+    "fog": true,
+    "fpsCap": 0,
+    "grain": true,
+    "hitStop": 0,
+    "lang": "ko",
+    "lighting": true,
+    "minPickLvTier": 0,
+    "minPickRar": 0,
+    "outline": true,
+    "parts": 80,
+    "petAuto": true,
+    "postfx": true,
+    "quality": "high",
+    "resScale": 100,
+    "sfxVol": 60,
+    "shake": 80,
+    "showFps": false,
+    "slash": true,
+    "ssaa": 1,
+    "torch": true,
+    "trail": true
+  },
+  "optionCaveat": "atmos 1 at observer install, 2 on later retrieval; built-in automatic quality policy, transition not sampled. No options modified by operator.",
+  "inputProof": [
+    {
+      "at": 38312.09999990463,
+      "button": 0,
+      "code": null,
+      "kind": "mousedown",
+      "repeat": false,
+      "trusted": true,
+      "x": 1135,
+      "y": 581
+    },
+    {
+      "at": 38313.199999928474,
+      "button": 0,
+      "code": null,
+      "kind": "mouseup",
+      "repeat": false,
+      "trusted": true,
+      "x": 1135,
+      "y": 581
+    },
+    {
+      "at": 38734.39999997616,
+      "button": 0,
+      "code": null,
+      "kind": "mousedown",
+      "repeat": false,
+      "trusted": true,
+      "x": 675,
+      "y": 245
+    },
+    {
+      "at": 38735.39999997616,
+      "button": 0,
+      "code": null,
+      "kind": "mouseup",
+      "repeat": false,
+      "trusted": true,
+      "x": 675,
+      "y": 245
+    },
+    {
+      "at": 38738.79999995232,
+      "button": null,
+      "code": "KeyW",
+      "kind": "keydown",
+      "repeat": false,
+      "trusted": true,
+      "x": null,
+      "y": null
+    },
+    {
+      "at": 38739.699999928474,
+      "button": null,
+      "code": "KeyW",
+      "kind": "keyup",
+      "repeat": false,
+      "trusted": true,
+      "x": null,
+      "y": null
+    },
+    {
+      "at": 38769,
+      "button": 0,
+      "code": null,
+      "kind": "mousedown",
+      "repeat": false,
+      "trusted": true,
+      "x": 675,
+      "y": 245
+    },
+    {
+      "at": 38770,
+      "button": 0,
+      "code": null,
+      "kind": "mouseup",
+      "repeat": false,
+      "trusted": true,
+      "x": 675,
+      "y": 245
+    },
+    {
+      "at": 38773,
+      "button": null,
+      "code": "KeyW",
+      "kind": "keydown",
+      "repeat": false,
+      "trusted": true,
+      "x": null,
+      "y": null
+    },
+    {
+      "at": 38773.699999928474,
+      "button": null,
+      "code": "KeyW",
+      "kind": "keyup",
+      "repeat": false,
+      "trusted": true,
+      "x": null,
+      "y": null
+    }
+  ],
+  "probeMeta": {
+    "droppedCount": 0,
+    "endedAt": 43392.89999997616,
+    "firstDeathCandidateAt": 41854.79999995232,
+    "missing": [
+      "_worldDropSkin"
+    ],
+    "startedAt": 30917.599999904633,
+    "stopped": true,
+    "totalCalls": 2066,
+    "truncated": false
+  },
+  "metrics": {
+    "wholeObserver": {
+      "raf_dt": {
+        "n": 458,
+        "mean": 27.182532751091706,
+        "p50": 25.099999999998545,
+        "p95": 34.799999999995634,
+        "p99": 58.400000000001455,
+        "max": 216.29999999999927,
+        "over50": 7,
+        "over100": 1
+      },
+      "draw_dt": {
+        "n": 458,
+        "mean": 26.72510917009745,
+        "p50": 24.59999990463257,
+        "p95": 36.29999995231629,
+        "p99": 76.69999992847443,
+        "max": 111.10000002384186,
+        "over50": 7,
+        "over100": 3
+      },
+      "draw_ms": {
+        "n": 459,
+        "mean": 0.5989106766278968,
+        "p50": 0.3999999761581421,
+        "p95": 1.8000000715255735,
+        "p99": 4.600000023841858,
+        "max": 11.700000047683716,
+        "over50": 0,
+        "over100": 0
+      },
+      "update_ms": {
+        "n": 734,
+        "mean": 0.2564032693325011,
+        "p50": 0,
+        "p95": 0.7999999523162842,
+        "p99": 1.2999999523162842,
+        "max": 12.700000047683716,
+        "over50": 0,
+        "over100": 0
+      },
+      "longtasks": [
+        {
+          "at": 32490.39999997616,
+          "kind": "longtask",
+          "ms": 103
+        },
+        {
+          "at": 32604.299999952316,
+          "kind": "longtask",
+          "ms": 77
+        },
+        {
+          "at": 32781.299999952316,
+          "kind": "longtask",
+          "ms": 106
+        },
+        {
+          "at": 32966.09999990463,
+          "kind": "longtask",
+          "ms": 110
+        }
+      ]
+    },
+    "worldInputToStop": {
+      "raf_dt": {
+        "n": 145,
+        "mean": 31.9,
+        "p50": 33.200000000004366,
+        "p95": 41.69999999999709,
+        "p99": 43.30000000000291,
+        "max": 50.599999999998545,
+        "over50": 1,
+        "over100": 0
+      },
+      "draw_dt": {
+        "n": 145,
+        "mean": 31.89103448226534,
+        "p50": 31.5,
+        "p95": 38.60000002384186,
+        "p99": 43.39999997615814,
+        "max": 76.69999992847443,
+        "over50": 1,
+        "over100": 0
+      },
+      "draw_ms": {
+        "n": 146,
+        "mean": 1.1226027444617388,
+        "p50": 0.6999999284744263,
+        "p95": 3.5,
+        "p99": 4.799999952316284,
+        "max": 6.700000047683716,
+        "over50": 0,
+        "over100": 0
+      },
+      "update_ms": {
+        "n": 279,
+        "mean": 0.5831541224619821,
+        "p50": 0.5,
+        "p95": 0.8999999761581421,
+        "p99": 3,
+        "max": 12.700000047683716,
+        "over50": 0,
+        "over100": 0
+      },
+      "longtasks": []
+    },
+    "firstKillPlusMinus500ms": {
+      "raf_dt": {
+        "n": 29,
+        "mean": 33.33793103448286,
+        "p50": 33.299999999995634,
+        "p95": 41.900000000001455,
+        "p99": 42.599999999998545,
+        "max": 42.599999999998545,
+        "over50": 0,
+        "over100": 0
+      },
+      "draw_dt": {
+        "n": 29,
+        "mean": 33.28275862233392,
+        "p50": 32.299999952316284,
+        "p95": 40.60000002384186,
+        "p99": 43.39999997615814,
+        "max": 43.39999997615814,
+        "over50": 0,
+        "over100": 0
+      },
+      "draw_ms": {
+        "n": 30,
+        "mean": 1.2100000023841857,
+        "p50": 0.7999999523162842,
+        "p95": 2.5999999046325684,
+        "p99": 3.5,
+        "max": 3.5,
+        "over50": 0,
+        "over100": 0
+      },
+      "update_ms": {
+        "n": 59,
+        "mean": 0.7118644027386681,
+        "p50": 0.5,
+        "p95": 0.8000000715255737,
+        "p99": 12.700000047683716,
+        "max": 12.700000047683716,
+        "over50": 0,
+        "over100": 0
+      },
+      "longtasks": []
+    }
+  },
+  "killWindowCalls": [
+    {
+      "canvas": [
+        64,
+        64
+      ],
+      "label": "2d.drawImage",
+      "ms": 10.799999952316284,
+      "parent": "_addHeadGib",
+      "selfMs": 10.799999952316284,
+      "source": null,
+      "start": 41855.39999997616
+    },
+    {
+      "canvas": null,
+      "label": "_addHeadGib",
+      "ms": 11.200000047683716,
+      "parent": "_addCorpse",
+      "selfMs": 0.20000004768371585,
+      "source": null,
+      "start": 41855.09999990463
+    },
+    {
+      "canvas": null,
+      "label": "_addCorpse",
+      "ms": 11.5,
+      "parent": null,
+      "selfMs": 0.10000002384185792,
+      "source": null,
+      "start": 41854.79999995232
+    },
+    {
+      "canvas": [
+        1352,
+        662
+      ],
+      "label": "gl.texImage2D",
+      "ms": 1.2000000476837158,
+      "parent": null,
+      "selfMs": 1.2000000476837158,
+      "source": "http://qa-firstkill-manual-20261001.localhost:3340/assets/vfx/Blood_FBF_4x4.png",
+      "start": 41868.29999995232
+    }
+  ],
+  "profile": {
+    "startTime": 791824612756,
+    "endTime": 791868876730,
+    "durationMs": 44263.974,
+    "samples": 29579,
+    "scope": "Profiler includes pre-input and post-observer time. No exact clock alignment; use synchronous wrapper timestamps for kill-window attribution."
+  }
+}

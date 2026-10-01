@@ -1,12 +1,12 @@
 # Mac 에이전트 작업 상태판
 
-조회 시각: **2026-10-01T16:35:36+09:00 (KST)**. 이 문서는 조회 시점 스냅샷이며 실시간 자동 갱신 화면이 아닙니다.
+조회 시각: **2026-10-01T16:53:45+09:00 (KST)**. 이 문서는 조회 시점 스냅샷이며 실시간 자동 갱신 화면이 아닙니다.
 
-조회 당시 코드 HEAD: `738308e135267ea7209316329dda37bfd5d7410b`
+조회 당시 코드 HEAD: `319de39d12e86f5c1965b6a6e7067dd44a934464`
 
-조회 당시 원격: `738308e135267ea7209316329dda37bfd5d7410b	refs/heads/codex/mac-environment-20261001`
+조회 당시 원격: `319de39d12e86f5c1965b6a6e7067dd44a934464	refs/heads/codex/mac-environment-20261001`
 
-현재 실제 작업: **Codex 총괄이 완료된 R/GL 근거와 팀 현황 문서만 인수 정리 중**. 새 측정·빌드·게임 실행은 없다.
+현재 실제 작업: **Codex 총괄이 정상 WebGL 첫 처치 관측을 마치고 문서·원자료 백업을 정리 중**. 게임·관측기·CPU profiler는 종료했다. 채택1회와 제외 선행1회를 구분한다.
 
 실행 중 1명(Codex 총괄), 산출 완료 14명(Claude 11 + Codex 지원 3). Claude 11팀은 모두 `idle/done`이며 마지막 응답 `end_turn`; 아래 후속 의존성 때문에 현재 추가 추론/도구를 실행 중이라고 세지 않습니다. 프로세스 존재와 실제 작업 실행은 다릅니다.
 
@@ -32,7 +32,7 @@
 
 | 실제 에이전트·모델 | 팀/담당 | 현재 작업 | 상태·최근 활동 | 결과/다음 |
 |---|---|---|---|---|
-| /root<br>Codex / 모델 미확인 | 단일 게임 검수·생산 파일·Git 소유 | 단일 게임 검수·생산 파일·Git 소유 | 실행 중 · 조회 시점 목록 확인 | [결과](/Users/fordeargamers/Documents/Codex/2026-10-01/dho/outputs/r-input-20261001/qa/검수.md)<br>기존 근거·문서 인수 마감 |
+| /root<br>Codex / 모델 미확인 | 단일 게임 검수·생산 파일·Git 소유 | 단일 게임 검수·생산 파일·Git 소유 | 실행 중 · 조회 시점 목록 확인 | [결과](/Users/fordeargamers/Documents/Codex/2026-10-01/dho/outputs/r-input-20261001/qa/검수.md)<br>정상 첫 처치 기준점 인수·백업 마감 |
 | /root/build_backlog_review<br>Codex / 모델 미확인 | BUILD 도구 실행·후보5개 정적 검토 | BUILD 도구 실행·후보5개 정적 검토 | 완료 · 조회 시점 목록 확인 | [결과](/Users/fordeargamers/Documents/Codex/2026-10-01/dho/outputs/r-input-20261001/candidates/검증결과.md)<br>후보 실행 전 결함 수정 필요 |
 | /root/map_art_review<br>Codex / 모델 미확인 | BALANCE 하니스·SOUND HTML 구현 | BALANCE 하니스·SOUND HTML 구현 | 완료 · 조회 시점 목록 확인 | [결과](/Users/fordeargamers/Documents/Codex/2026-10-01/dho/outputs/r-input-20261001/sound/페이지-인수.md)<br>기본 UI 인수 완료, 재생·청취 별도 |
 | /root/qa_review<br>Codex / 모델 미확인 | R 진단·GL 원자료 독립 판정 | R 진단·GL 원자료 독립 판정 | 완료 · 조회 시점 목록 확인 | [결과](/Users/fordeargamers/Documents/Codex/2026-10-01/dho/outputs/r-input-20261001/qa/검수.md)<br>고주사율 조건 별도 |
@@ -63,6 +63,10 @@ CLI 조회: `claude agents --json --all --cwd /Users/fordeargamers/Projects/exod
 | R 실제 기록 | 28시행·3317이벤트. native 도구12회 중9누락은0.6–0.9ms·update0, DOM20/50/100ms12/12획득. trusted도 사람 물리 입력이 아니며 일반 사용자 결함 미입증 |
 | GL | 실제 hurtE/update/draw를 쓰되 mkEn type0·방어막0·HP/피해·플레이어무적을 통제한 fixture. 자연조우/사용자 공격 검수와 구분 |
 | GL 인수 범위 | 피격6update감쇠8/8·사망소거8/8·동일객체부활 첫 draw hf0 5/5, 새 구울3건 제외. 실제draw30~31Hz로 고주사율 미충족. GL 관측 플래그는 객체별 GPU 제출/픽셀 readback 검사가 아님 |
-| 소스·백업 | 위 조회 시점 HEAD와 원격이 일치. 이전23파일 체크포인트 완료. 본편/easy SHA 보존, 기존22경로 상태·빈 인덱스 확인. 새 게임 측정/빌드/PC 조작 없음 |
+| 소스·백업 | 위 조회 시점 HEAD와 원격이 일치. 이전23파일 체크포인트 완료. 본편/easy 생산코드 보존, 기존22경로 상태·빈 인덱스 확인. 정상 첫 처치 관측 후 종료, 빌드/PC 조작 없음 |
 
 [체크포인트](/Users/fordeargamers/Documents/Codex/2026-10-01/dho/outputs/r-input-20261001/checkpoint.json) · [R 진단 인수](/Users/fordeargamers/Documents/Codex/2026-10-01/dho/outputs/r-input-20261001/qa/진단-최종인수.md) · [GL 독립 검수](/Users/fordeargamers/Documents/Codex/2026-10-01/dho/outputs/r-input-20261001/qa/검수.md).
+
+## 최신 정상 첫 처치 관측
+
+[정상 WebGL 기준점](mac-resume-20261001/Mac-정상-WebGL-첫처치-관측.md): native 이동·좌클릭 후 자연 kill0→1, 채택4.658초 rAF p95/p99 41.70/43.30ms, draw 최대76.70ms. 사망 시체11.50ms 안에 drawImage10.80ms가 포함된다. 실행2회 중 선행 자동공격 시도는 별도 제외. 막타 피해원·고주사율·PC329ms 해결은 미확인, 품질 옵션 자동변화·계측 오버헤드 한계 포함. 생산 변경0·정리 확인. 터미널 신뢰 승인 질문은 그대로 대기하며 재요청하지 않았다.
