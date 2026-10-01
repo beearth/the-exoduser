@@ -1,0 +1,12 @@
+{
+  "kills": 0,
+  "ms": 8.5,
+  "note": "Post-boot pixel readback; functional regression only, excluded from timing comparison",
+  "on": false,
+  "scratchAllClear": true,
+  "slotActive": false,
+  "slotAllClear": true,
+  "slotLife": 0,
+  "url": "http://qa-corpse-final-20261001.localhost:3340/game.html?webgpu=0",
+  "warm": true
+}

@@ -1,0 +1,1304 @@
+{
+  "headCopies": [
+    {
+      "at": 48095.10000002384,
+      "ms": 8.600000023841858,
+      "sourceID": 1,
+      "target": "_splits[0].c",
+      "targetID": 2,
+      "targetFirstObserved": true,
+      "args": [
+        0,
+        0,
+        48,
+        14,
+        0,
+        0,
+        64,
+        64
+      ],
+      "parentId": 5
+    },
+    {
+      "at": 48888.60000002384,
+      "ms": 0.2999999523162842,
+      "sourceID": 1,
+      "target": "_splits[1].c",
+      "targetID": 3,
+      "targetFirstObserved": true,
+      "args": [
+        0,
+        0,
+        48,
+        14,
+        0,
+        0,
+        64,
+        64
+      ],
+      "parentId": 14
+    },
+    {
+      "at": 49212,
+      "ms": 0.10000002384185792,
+      "sourceID": 1,
+      "target": "_splits[2].c",
+      "targetID": 4,
+      "targetFirstObserved": true,
+      "args": [
+        0,
+        0,
+        48,
+        14,
+        0,
+        0,
+        64,
+        64
+      ],
+      "parentId": 23
+    },
+    {
+      "at": 50533.89999997616,
+      "ms": 0.10000002384185792,
+      "sourceID": 1,
+      "target": "_splits[3].c",
+      "targetID": 5,
+      "targetFirstObserved": true,
+      "args": [
+        0,
+        0,
+        48,
+        14,
+        0,
+        0,
+        64,
+        64
+      ],
+      "parentId": 32
+    },
+    {
+      "at": 50885.89999997616,
+      "ms": 0.30000007152557373,
+      "sourceID": 1,
+      "target": "_splits[4].c",
+      "targetID": 6,
+      "targetFirstObserved": true,
+      "args": [
+        0,
+        0,
+        48,
+        14,
+        0,
+        0,
+        64,
+        64
+      ],
+      "parentId": 41
+    },
+    {
+      "at": 54869.800000071526,
+      "ms": 0.09999990463256836,
+      "sourceID": 1,
+      "target": "_splits[0].c",
+      "targetID": 2,
+      "targetFirstObserved": false,
+      "args": [
+        0,
+        0,
+        48,
+        14,
+        0,
+        0,
+        64,
+        64
+      ],
+      "parentId": 50
+    },
+    {
+      "at": 54870.300000071526,
+      "ms": 0.09999990463256836,
+      "sourceID": 1,
+      "target": "_splits[1].c",
+      "targetID": 3,
+      "targetFirstObserved": false,
+      "args": [
+        0,
+        0,
+        48,
+        14,
+        0,
+        0,
+        64,
+        64
+      ],
+      "parentId": 59
+    }
+  ],
+  "corpseCalls": [
+    {
+      "at": 48094.5,
+      "atmos": 1,
+      "childMs": 8.899999976158142,
+      "enemy": {
+        "alive": false,
+        "boss": false,
+        "col": 4,
+        "etype": 0,
+        "fm": null,
+        "hp": -170,
+        "id": 26,
+        "mobCh": 1,
+        "row": 2
+      },
+      "id": 1,
+      "kills": 1,
+      "kind": "_addCorpse",
+      "ms": 9.200000047683716,
+      "parentId": null,
+      "selfMs": 0.30000007152557373
+    },
+    {
+      "at": 48888.5,
+      "atmos": 1,
+      "childMs": 0.2999999523162842,
+      "enemy": {
+        "alive": false,
+        "boss": false,
+        "col": 7,
+        "etype": 0,
+        "fm": null,
+        "hp": -55,
+        "id": 30,
+        "mobCh": 1,
+        "row": 4
+      },
+      "id": 10,
+      "kills": 2,
+      "kind": "_addCorpse",
+      "ms": 0.3999999761581421,
+      "parentId": null,
+      "selfMs": 0.10000002384185792
+    },
+    {
+      "at": 49211.89999997616,
+      "atmos": 1,
+      "childMs": 0.20000004768371585,
+      "enemy": {
+        "alive": false,
+        "boss": false,
+        "col": 0,
+        "etype": 0,
+        "fm": null,
+        "hp": -170,
+        "id": 33,
+        "mobCh": 1,
+        "row": 0
+      },
+      "id": 19,
+      "kills": 3,
+      "kind": "_addCorpse",
+      "ms": 0.20000004768371585,
+      "parentId": null,
+      "selfMs": 0
+    },
+    {
+      "at": 50533.70000004768,
+      "atmos": 1,
+      "childMs": 0.2999999523162842,
+      "enemy": {
+        "alive": false,
+        "boss": false,
+        "col": 3,
+        "etype": 0,
+        "fm": null,
+        "hp": -65,
+        "id": 36,
+        "mobCh": 1,
+        "row": 1
+      },
+      "id": 28,
+      "kills": 4,
+      "kind": "_addCorpse",
+      "ms": 0.2999999523162842,
+      "parentId": null,
+      "selfMs": 0
+    },
+    {
+      "at": 50885.70000004768,
+      "atmos": 1,
+      "childMs": 0.5,
+      "enemy": {
+        "alive": false,
+        "boss": false,
+        "col": 4,
+        "etype": 0,
+        "fm": null,
+        "hp": -65,
+        "id": 39,
+        "mobCh": 1,
+        "row": 3
+      },
+      "id": 37,
+      "kills": 5,
+      "kind": "_addCorpse",
+      "ms": 0.5,
+      "parentId": null,
+      "selfMs": 0
+    },
+    {
+      "at": 54869.70000004768,
+      "atmos": 1,
+      "childMs": 0.09999990463256836,
+      "enemy": {
+        "alive": false,
+        "boss": false,
+        "col": 1,
+        "etype": 5,
+        "fm": null,
+        "hp": -196,
+        "id": 42,
+        "mobCh": 1,
+        "row": 1
+      },
+      "id": 46,
+      "kills": 6,
+      "kind": "_addCorpse",
+      "ms": 0.19999992847442627,
+      "parentId": null,
+      "selfMs": 0.10000002384185792
+    },
+    {
+      "at": 54870.20000004768,
+      "atmos": 1,
+      "childMs": 0.19999992847442627,
+      "enemy": {
+        "alive": false,
+        "boss": false,
+        "col": 2,
+        "etype": 100,
+        "fm": null,
+        "hp": -37,
+        "id": 45,
+        "row": 2
+      },
+      "id": 55,
+      "kills": 7,
+      "kind": "_addCorpse",
+      "ms": 0.2999999523162842,
+      "parentId": null,
+      "selfMs": 0.10000002384185792
+    }
+  ],
+  "headCalls": [
+    {
+      "at": 48094.800000071526,
+      "atmos": 1,
+      "childMs": 8.899999976158142,
+      "enemy": {
+        "alive": false,
+        "boss": false,
+        "col": 4,
+        "etype": 0,
+        "fm": null,
+        "hp": -170,
+        "id": 26,
+        "mobCh": 1,
+        "row": 2
+      },
+      "id": 5,
+      "kills": 1,
+      "kind": "_addHeadGib",
+      "ms": 8.899999976158142,
+      "parentId": 1,
+      "selfMs": 0
+    },
+    {
+      "at": 48888.60000002384,
+      "atmos": 1,
+      "childMs": 0.2999999523162842,
+      "enemy": {
+        "alive": false,
+        "boss": false,
+        "col": 7,
+        "etype": 0,
+        "fm": null,
+        "hp": -55,
+        "id": 30,
+        "mobCh": 1,
+        "row": 4
+      },
+      "id": 14,
+      "kills": 2,
+      "kind": "_addHeadGib",
+      "ms": 0.2999999523162842,
+      "parentId": 10,
+      "selfMs": 0
+    },
+    {
+      "at": 49211.89999997616,
+      "atmos": 1,
+      "childMs": 0.20000004768371585,
+      "enemy": {
+        "alive": false,
+        "boss": false,
+        "col": 0,
+        "etype": 0,
+        "fm": null,
+        "hp": -170,
+        "id": 33,
+        "mobCh": 1,
+        "row": 0
+      },
+      "id": 23,
+      "kills": 3,
+      "kind": "_addHeadGib",
+      "ms": 0.20000004768371585,
+      "parentId": 19,
+      "selfMs": 0
+    },
+    {
+      "at": 50533.800000071526,
+      "atmos": 1,
+      "childMs": 0.10000002384185792,
+      "enemy": {
+        "alive": false,
+        "boss": false,
+        "col": 3,
+        "etype": 0,
+        "fm": null,
+        "hp": -65,
+        "id": 36,
+        "mobCh": 1,
+        "row": 1
+      },
+      "id": 32,
+      "kills": 4,
+      "kind": "_addHeadGib",
+      "ms": 0.19999992847442627,
+      "parentId": 28,
+      "selfMs": 0.09999990463256836
+    },
+    {
+      "at": 50885.800000071526,
+      "atmos": 1,
+      "childMs": 0.3999999761581421,
+      "enemy": {
+        "alive": false,
+        "boss": false,
+        "col": 4,
+        "etype": 0,
+        "fm": null,
+        "hp": -65,
+        "id": 39,
+        "mobCh": 1,
+        "row": 3
+      },
+      "id": 41,
+      "kills": 5,
+      "kind": "_addHeadGib",
+      "ms": 0.3999999761581421,
+      "parentId": 37,
+      "selfMs": 0
+    },
+    {
+      "at": 54869.800000071526,
+      "atmos": 1,
+      "childMs": 0.09999990463256836,
+      "enemy": {
+        "alive": false,
+        "boss": false,
+        "col": 1,
+        "etype": 5,
+        "fm": null,
+        "hp": -196,
+        "id": 42,
+        "mobCh": 1,
+        "row": 1
+      },
+      "id": 50,
+      "kills": 6,
+      "kind": "_addHeadGib",
+      "ms": 0.09999990463256836,
+      "parentId": 46,
+      "selfMs": 0
+    },
+    {
+      "at": 54870.300000071526,
+      "atmos": 1,
+      "childMs": 0.09999990463256836,
+      "enemy": {
+        "alive": false,
+        "boss": false,
+        "col": 2,
+        "etype": 100,
+        "fm": null,
+        "hp": -37,
+        "id": 45,
+        "row": 2
+      },
+      "id": 59,
+      "kills": 7,
+      "kind": "_addHeadGib",
+      "ms": 0.19999992847442627,
+      "parentId": 55,
+      "selfMs": 0.10000002384185792
+    }
+  ],
+  "sourceAtlas": {
+    "complete": true,
+    "gpuWarmSet": true,
+    "height": 1280,
+    "id": 28,
+    "kind": "HTMLImageElement",
+    "name": null,
+    "naturalWidth": 2048,
+    "url": "http://qa-corpse-capture-20261001.localhost:3340/img/atlas_ch1_8dir_south.png?v=1",
+    "width": 2048
+  },
+  "inputDurationMs": 12612.60000002385,
+  "observerDurationMs": 32317.600000023842,
+  "raf": {
+    "n": 370,
+    "mean": 34.00567567567567,
+    "p95": 41.700000000004366,
+    "p99": 42.700000000004366,
+    "max": 116.69999999999708,
+    "over50": 2,
+    "over100": 2
+  },
+  "killTransitions": [
+    {
+      "at": 48211.20000004768,
+      "atmos": 1,
+      "boot": false,
+      "focus": true,
+      "fpsCap": 0,
+      "hidden": false,
+      "hp": 597,
+      "kills": 1,
+      "kind": "kills",
+      "lv": 1,
+      "on": true,
+      "paused": false,
+      "useGL": true,
+      "useGPU": false,
+      "warm": true,
+      "x": 4020,
+      "y": 7169.999999999998
+    },
+    {
+      "at": 48892.39999997616,
+      "atmos": 1,
+      "boot": false,
+      "focus": true,
+      "fpsCap": 0,
+      "hidden": false,
+      "hp": 597,
+      "kills": 2,
+      "kind": "kills",
+      "lv": 1,
+      "on": true,
+      "paused": false,
+      "useGL": true,
+      "useGPU": false,
+      "warm": true,
+      "x": 4020,
+      "y": 7169.999999999998
+    },
+    {
+      "at": 49215.300000071526,
+      "atmos": 1,
+      "boot": false,
+      "focus": true,
+      "fpsCap": 0,
+      "hidden": false,
+      "hp": 597,
+      "kills": 3,
+      "kind": "kills",
+      "lv": 1,
+      "on": true,
+      "paused": false,
+      "useGL": true,
+      "useGPU": false,
+      "warm": true,
+      "x": 4020,
+      "y": 7169.999999999998
+    },
+    {
+      "at": 50535.300000071526,
+      "atmos": 1,
+      "boot": false,
+      "focus": true,
+      "fpsCap": 0,
+      "hidden": false,
+      "hp": 597,
+      "kills": 4,
+      "kind": "kills",
+      "lv": 1,
+      "on": true,
+      "paused": false,
+      "useGL": true,
+      "useGPU": false,
+      "warm": true,
+      "x": 4025.873462521777,
+      "y": 7169.251682468935
+    },
+    {
+      "at": 50887.70000004768,
+      "atmos": 1,
+      "boot": false,
+      "focus": true,
+      "fpsCap": 0,
+      "hidden": false,
+      "hp": 597,
+      "kills": 5,
+      "kind": "kills",
+      "lv": 1,
+      "on": true,
+      "paused": false,
+      "useGL": true,
+      "useGPU": false,
+      "warm": true,
+      "x": 4025.873462521777,
+      "y": 7169.251682468935
+    },
+    {
+      "at": 54871.70000004768,
+      "atmos": 1,
+      "boot": false,
+      "focus": true,
+      "fpsCap": 0,
+      "hidden": false,
+      "hp": 597,
+      "kills": 7,
+      "kind": "kills",
+      "lv": 1,
+      "on": true,
+      "paused": false,
+      "useGL": true,
+      "useGPU": false,
+      "warm": true,
+      "x": 4025.051528503392,
+      "y": 7170.170470001586
+    }
+  ],
+  "records": 63,
+  "dropped": 0,
+  "initialOptions": {
+    "ambPart": true,
+    "atmos": 1,
+    "autoPotThr": 0.99,
+    "bgmTrack": "auto",
+    "bgmVol": 60,
+    "bloom": true,
+    "bossDebug": false,
+    "bossFog": true,
+    "crAutoEnh": -1,
+    "crAutoFuse": -1,
+    "cursor": 0,
+    "cursorSize": 50,
+    "deathFx": true,
+    "diff": 5,
+    "fog": true,
+    "fpsCap": 0,
+    "grain": true,
+    "hitStop": 0,
+    "lang": "ko",
+    "lighting": true,
+    "minPickLvTier": 0,
+    "minPickRar": 0,
+    "outline": true,
+    "parts": 80,
+    "petAuto": true,
+    "postfx": true,
+    "quality": "high",
+    "resScale": 100,
+    "sfxVol": 60,
+    "shake": 80,
+    "showFps": false,
+    "slash": true,
+    "ssaa": 1,
+    "torch": true,
+    "trail": true
+  },
+  "finalOptions": {
+    "ambPart": true,
+    "atmos": 1,
+    "autoPotThr": 0.99,
+    "bgmTrack": "auto",
+    "bgmVol": 60,
+    "bloom": true,
+    "bossDebug": false,
+    "bossFog": true,
+    "crAutoEnh": -1,
+    "crAutoFuse": -1,
+    "cursor": 0,
+    "cursorSize": 50,
+    "deathFx": true,
+    "diff": 5,
+    "fog": true,
+    "fpsCap": 0,
+    "grain": true,
+    "hitStop": 0,
+    "lang": "ko",
+    "lighting": true,
+    "minPickLvTier": 0,
+    "minPickRar": 0,
+    "outline": true,
+    "parts": 80,
+    "petAuto": true,
+    "postfx": true,
+    "quality": "high",
+    "resScale": 100,
+    "sfxVol": 60,
+    "shake": 80,
+    "showFps": false,
+    "slash": true,
+    "ssaa": 1,
+    "torch": true,
+    "trail": true
+  },
+  "environment": {
+    "activeHeadUses48x14": true,
+    "activeHeadUsesSplits": true,
+    "canvas": [
+      1352,
+      662
+    ],
+    "dpr": 1,
+    "scratch": {
+      "attributes": {
+        "alpha": true,
+        "colorSpace": "srgb",
+        "colorType": "unorm8",
+        "desynchronized": false,
+        "toneMapping": {
+          "mode": "standard"
+        },
+        "willReadFrequently": true
+      },
+      "canvas": {
+        "complete": null,
+        "gpuWarmSet": false,
+        "height": 48,
+        "id": 1,
+        "kind": "HTMLCanvasElement",
+        "name": "_gibC",
+        "naturalWidth": null,
+        "url": null,
+        "width": 48
+      },
+      "smoothing": true,
+      "smoothingQuality": "low"
+    },
+    "splitContexts": [
+      {
+        "attributes": {
+          "alpha": true,
+          "colorSpace": "srgb",
+          "colorType": "unorm8",
+          "desynchronized": false,
+          "toneMapping": {
+            "mode": "standard"
+          },
+          "willReadFrequently": false
+        },
+        "canvas": {
+          "complete": null,
+          "gpuWarmSet": false,
+          "height": 64,
+          "id": 2,
+          "kind": "HTMLCanvasElement",
+          "name": "_splits[0].c",
+          "naturalWidth": null,
+          "url": null,
+          "width": 64
+        },
+        "smoothing": true,
+        "smoothingQuality": "low"
+      },
+      {
+        "attributes": {
+          "alpha": true,
+          "colorSpace": "srgb",
+          "colorType": "unorm8",
+          "desynchronized": false,
+          "toneMapping": {
+            "mode": "standard"
+          },
+          "willReadFrequently": false
+        },
+        "canvas": {
+          "complete": null,
+          "gpuWarmSet": false,
+          "height": 64,
+          "id": 3,
+          "kind": "HTMLCanvasElement",
+          "name": "_splits[1].c",
+          "naturalWidth": null,
+          "url": null,
+          "width": 64
+        },
+        "smoothing": true,
+        "smoothingQuality": "low"
+      },
+      {
+        "attributes": {
+          "alpha": true,
+          "colorSpace": "srgb",
+          "colorType": "unorm8",
+          "desynchronized": false,
+          "toneMapping": {
+            "mode": "standard"
+          },
+          "willReadFrequently": false
+        },
+        "canvas": {
+          "complete": null,
+          "gpuWarmSet": false,
+          "height": 64,
+          "id": 4,
+          "kind": "HTMLCanvasElement",
+          "name": "_splits[2].c",
+          "naturalWidth": null,
+          "url": null,
+          "width": 64
+        },
+        "smoothing": true,
+        "smoothingQuality": "low"
+      },
+      {
+        "attributes": {
+          "alpha": true,
+          "colorSpace": "srgb",
+          "colorType": "unorm8",
+          "desynchronized": false,
+          "toneMapping": {
+            "mode": "standard"
+          },
+          "willReadFrequently": false
+        },
+        "canvas": {
+          "complete": null,
+          "gpuWarmSet": false,
+          "height": 64,
+          "id": 5,
+          "kind": "HTMLCanvasElement",
+          "name": "_splits[3].c",
+          "naturalWidth": null,
+          "url": null,
+          "width": 64
+        },
+        "smoothing": true,
+        "smoothingQuality": "low"
+      },
+      {
+        "attributes": {
+          "alpha": true,
+          "colorSpace": "srgb",
+          "colorType": "unorm8",
+          "desynchronized": false,
+          "toneMapping": {
+            "mode": "standard"
+          },
+          "willReadFrequently": false
+        },
+        "canvas": {
+          "complete": null,
+          "gpuWarmSet": false,
+          "height": 64,
+          "id": 6,
+          "kind": "HTMLCanvasElement",
+          "name": "_splits[4].c",
+          "naturalWidth": null,
+          "url": null,
+          "width": 64
+        },
+        "smoothing": true,
+        "smoothingQuality": "low"
+      },
+      {
+        "attributes": {
+          "alpha": true,
+          "colorSpace": "srgb",
+          "colorType": "unorm8",
+          "desynchronized": false,
+          "toneMapping": {
+            "mode": "standard"
+          },
+          "willReadFrequently": false
+        },
+        "canvas": {
+          "complete": null,
+          "gpuWarmSet": false,
+          "height": 64,
+          "id": 7,
+          "kind": "HTMLCanvasElement",
+          "name": "_splits[5].c",
+          "naturalWidth": null,
+          "url": null,
+          "width": 64
+        },
+        "smoothing": true,
+        "smoothingQuality": "low"
+      },
+      {
+        "attributes": {
+          "alpha": true,
+          "colorSpace": "srgb",
+          "colorType": "unorm8",
+          "desynchronized": false,
+          "toneMapping": {
+            "mode": "standard"
+          },
+          "willReadFrequently": false
+        },
+        "canvas": {
+          "complete": null,
+          "gpuWarmSet": false,
+          "height": 64,
+          "id": 8,
+          "kind": "HTMLCanvasElement",
+          "name": "_splits[6].c",
+          "naturalWidth": null,
+          "url": null,
+          "width": 64
+        },
+        "smoothing": true,
+        "smoothingQuality": "low"
+      },
+      {
+        "attributes": {
+          "alpha": true,
+          "colorSpace": "srgb",
+          "colorType": "unorm8",
+          "desynchronized": false,
+          "toneMapping": {
+            "mode": "standard"
+          },
+          "willReadFrequently": false
+        },
+        "canvas": {
+          "complete": null,
+          "gpuWarmSet": false,
+          "height": 64,
+          "id": 9,
+          "kind": "HTMLCanvasElement",
+          "name": "_splits[7].c",
+          "naturalWidth": null,
+          "url": null,
+          "width": 64
+        },
+        "smoothing": true,
+        "smoothingQuality": "low"
+      },
+      {
+        "attributes": {
+          "alpha": true,
+          "colorSpace": "srgb",
+          "colorType": "unorm8",
+          "desynchronized": false,
+          "toneMapping": {
+            "mode": "standard"
+          },
+          "willReadFrequently": false
+        },
+        "canvas": {
+          "complete": null,
+          "gpuWarmSet": false,
+          "height": 64,
+          "id": 10,
+          "kind": "HTMLCanvasElement",
+          "name": "_splits[8].c",
+          "naturalWidth": null,
+          "url": null,
+          "width": 64
+        },
+        "smoothing": true,
+        "smoothingQuality": "low"
+      },
+      {
+        "attributes": {
+          "alpha": true,
+          "colorSpace": "srgb",
+          "colorType": "unorm8",
+          "desynchronized": false,
+          "toneMapping": {
+            "mode": "standard"
+          },
+          "willReadFrequently": false
+        },
+        "canvas": {
+          "complete": null,
+          "gpuWarmSet": false,
+          "height": 64,
+          "id": 11,
+          "kind": "HTMLCanvasElement",
+          "name": "_splits[9].c",
+          "naturalWidth": null,
+          "url": null,
+          "width": 64
+        },
+        "smoothing": true,
+        "smoothingQuality": "low"
+      },
+      {
+        "attributes": {
+          "alpha": true,
+          "colorSpace": "srgb",
+          "colorType": "unorm8",
+          "desynchronized": false,
+          "toneMapping": {
+            "mode": "standard"
+          },
+          "willReadFrequently": false
+        },
+        "canvas": {
+          "complete": null,
+          "gpuWarmSet": false,
+          "height": 64,
+          "id": 12,
+          "kind": "HTMLCanvasElement",
+          "name": "_splits[10].c",
+          "naturalWidth": null,
+          "url": null,
+          "width": 64
+        },
+        "smoothing": true,
+        "smoothingQuality": "low"
+      },
+      {
+        "attributes": {
+          "alpha": true,
+          "colorSpace": "srgb",
+          "colorType": "unorm8",
+          "desynchronized": false,
+          "toneMapping": {
+            "mode": "standard"
+          },
+          "willReadFrequently": false
+        },
+        "canvas": {
+          "complete": null,
+          "gpuWarmSet": false,
+          "height": 64,
+          "id": 13,
+          "kind": "HTMLCanvasElement",
+          "name": "_splits[11].c",
+          "naturalWidth": null,
+          "url": null,
+          "width": 64
+        },
+        "smoothing": true,
+        "smoothingQuality": "low"
+      },
+      {
+        "attributes": {
+          "alpha": true,
+          "colorSpace": "srgb",
+          "colorType": "unorm8",
+          "desynchronized": false,
+          "toneMapping": {
+            "mode": "standard"
+          },
+          "willReadFrequently": false
+        },
+        "canvas": {
+          "complete": null,
+          "gpuWarmSet": false,
+          "height": 64,
+          "id": 14,
+          "kind": "HTMLCanvasElement",
+          "name": "_splits[12].c",
+          "naturalWidth": null,
+          "url": null,
+          "width": 64
+        },
+        "smoothing": true,
+        "smoothingQuality": "low"
+      },
+      {
+        "attributes": {
+          "alpha": true,
+          "colorSpace": "srgb",
+          "colorType": "unorm8",
+          "desynchronized": false,
+          "toneMapping": {
+            "mode": "standard"
+          },
+          "willReadFrequently": false
+        },
+        "canvas": {
+          "complete": null,
+          "gpuWarmSet": false,
+          "height": 64,
+          "id": 15,
+          "kind": "HTMLCanvasElement",
+          "name": "_splits[13].c",
+          "naturalWidth": null,
+          "url": null,
+          "width": 64
+        },
+        "smoothing": true,
+        "smoothingQuality": "low"
+      },
+      {
+        "attributes": {
+          "alpha": true,
+          "colorSpace": "srgb",
+          "colorType": "unorm8",
+          "desynchronized": false,
+          "toneMapping": {
+            "mode": "standard"
+          },
+          "willReadFrequently": false
+        },
+        "canvas": {
+          "complete": null,
+          "gpuWarmSet": false,
+          "height": 64,
+          "id": 16,
+          "kind": "HTMLCanvasElement",
+          "name": "_splits[14].c",
+          "naturalWidth": null,
+          "url": null,
+          "width": 64
+        },
+        "smoothing": true,
+        "smoothingQuality": "low"
+      },
+      {
+        "attributes": {
+          "alpha": true,
+          "colorSpace": "srgb",
+          "colorType": "unorm8",
+          "desynchronized": false,
+          "toneMapping": {
+            "mode": "standard"
+          },
+          "willReadFrequently": false
+        },
+        "canvas": {
+          "complete": null,
+          "gpuWarmSet": false,
+          "height": 64,
+          "id": 17,
+          "kind": "HTMLCanvasElement",
+          "name": "_splits[15].c",
+          "naturalWidth": null,
+          "url": null,
+          "width": 64
+        },
+        "smoothing": true,
+        "smoothingQuality": "low"
+      },
+      {
+        "attributes": {
+          "alpha": true,
+          "colorSpace": "srgb",
+          "colorType": "unorm8",
+          "desynchronized": false,
+          "toneMapping": {
+            "mode": "standard"
+          },
+          "willReadFrequently": false
+        },
+        "canvas": {
+          "complete": null,
+          "gpuWarmSet": false,
+          "height": 64,
+          "id": 18,
+          "kind": "HTMLCanvasElement",
+          "name": "_splits[16].c",
+          "naturalWidth": null,
+          "url": null,
+          "width": 64
+        },
+        "smoothing": true,
+        "smoothingQuality": "low"
+      },
+      {
+        "attributes": {
+          "alpha": true,
+          "colorSpace": "srgb",
+          "colorType": "unorm8",
+          "desynchronized": false,
+          "toneMapping": {
+            "mode": "standard"
+          },
+          "willReadFrequently": false
+        },
+        "canvas": {
+          "complete": null,
+          "gpuWarmSet": false,
+          "height": 64,
+          "id": 19,
+          "kind": "HTMLCanvasElement",
+          "name": "_splits[17].c",
+          "naturalWidth": null,
+          "url": null,
+          "width": 64
+        },
+        "smoothing": true,
+        "smoothingQuality": "low"
+      },
+      {
+        "attributes": {
+          "alpha": true,
+          "colorSpace": "srgb",
+          "colorType": "unorm8",
+          "desynchronized": false,
+          "toneMapping": {
+            "mode": "standard"
+          },
+          "willReadFrequently": false
+        },
+        "canvas": {
+          "complete": null,
+          "gpuWarmSet": false,
+          "height": 64,
+          "id": 20,
+          "kind": "HTMLCanvasElement",
+          "name": "_splits[18].c",
+          "naturalWidth": null,
+          "url": null,
+          "width": 64
+        },
+        "smoothing": true,
+        "smoothingQuality": "low"
+      },
+      {
+        "attributes": {
+          "alpha": true,
+          "colorSpace": "srgb",
+          "colorType": "unorm8",
+          "desynchronized": false,
+          "toneMapping": {
+            "mode": "standard"
+          },
+          "willReadFrequently": false
+        },
+        "canvas": {
+          "complete": null,
+          "gpuWarmSet": false,
+          "height": 64,
+          "id": 21,
+          "kind": "HTMLCanvasElement",
+          "name": "_splits[19].c",
+          "naturalWidth": null,
+          "url": null,
+          "width": 64
+        },
+        "smoothing": true,
+        "smoothingQuality": "low"
+      },
+      {
+        "attributes": {
+          "alpha": true,
+          "colorSpace": "srgb",
+          "colorType": "unorm8",
+          "desynchronized": false,
+          "toneMapping": {
+            "mode": "standard"
+          },
+          "willReadFrequently": false
+        },
+        "canvas": {
+          "complete": null,
+          "gpuWarmSet": false,
+          "height": 64,
+          "id": 22,
+          "kind": "HTMLCanvasElement",
+          "name": "_splits[20].c",
+          "naturalWidth": null,
+          "url": null,
+          "width": 64
+        },
+        "smoothing": true,
+        "smoothingQuality": "low"
+      },
+      {
+        "attributes": {
+          "alpha": true,
+          "colorSpace": "srgb",
+          "colorType": "unorm8",
+          "desynchronized": false,
+          "toneMapping": {
+            "mode": "standard"
+          },
+          "willReadFrequently": false
+        },
+        "canvas": {
+          "complete": null,
+          "gpuWarmSet": false,
+          "height": 64,
+          "id": 23,
+          "kind": "HTMLCanvasElement",
+          "name": "_splits[21].c",
+          "naturalWidth": null,
+          "url": null,
+          "width": 64
+        },
+        "smoothing": true,
+        "smoothingQuality": "low"
+      },
+      {
+        "attributes": {
+          "alpha": true,
+          "colorSpace": "srgb",
+          "colorType": "unorm8",
+          "desynchronized": false,
+          "toneMapping": {
+            "mode": "standard"
+          },
+          "willReadFrequently": false
+        },
+        "canvas": {
+          "complete": null,
+          "gpuWarmSet": false,
+          "height": 64,
+          "id": 24,
+          "kind": "HTMLCanvasElement",
+          "name": "_splits[22].c",
+          "naturalWidth": null,
+          "url": null,
+          "width": 64
+        },
+        "smoothing": true,
+        "smoothingQuality": "low"
+      },
+      {
+        "attributes": {
+          "alpha": true,
+          "colorSpace": "srgb",
+          "colorType": "unorm8",
+          "desynchronized": false,
+          "toneMapping": {
+            "mode": "standard"
+          },
+          "willReadFrequently": false
+        },
+        "canvas": {
+          "complete": null,
+          "gpuWarmSet": false,
+          "height": 64,
+          "id": 25,
+          "kind": "HTMLCanvasElement",
+          "name": "_splits[23].c",
+          "naturalWidth": null,
+          "url": null,
+          "width": 64
+        },
+        "smoothing": true,
+        "smoothingQuality": "low"
+      }
+    ],
+    "ua": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/152.0.0.0 Safari/537.36",
+    "url": "http://qa-corpse-capture-20261001.localhost:3340/game.html?webgpu=0",
+    "viewport": [
+      1352,
+      663
+    ]
+  },
+  "decision": "Pending independent review; no production change or improvement claim."
+}

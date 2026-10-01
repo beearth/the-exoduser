@@ -1,0 +1,14 @@
+{
+  "baseline": "normal first 7 deaths, raw.json",
+  "excludedPreflight": {
+    "url": "qa-corpse-prewarm-20261001.localhost:3340",
+    "reason": "warmup hook not called before combat",
+    "warm": false,
+    "ms": 0,
+    "kills": 0
+  },
+  "candidate": "candidate-raw.json, boot hook, before cleanup hardening",
+  "finalRegression": "final-boot-pixels.json + final-natural-state.json, cleanup hardened; forced readback excluded from timing",
+  "cleanup": "all observers stopped, wrappers restored to game originals, game blank, viewport reset",
+  "sourceScope": "main only, easy and packaged builds untouched"
+}

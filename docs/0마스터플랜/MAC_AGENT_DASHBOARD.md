@@ -1,14 +1,14 @@
 # Mac 에이전트 작업 상태판
 
-조회 시각: **2026-10-01T16:53:45+09:00 (KST)**. 이 문서는 조회 시점 스냅샷이며 실시간 자동 갱신 화면이 아닙니다.
+조회 시각: **2026-10-01T17:19:00+09:00 (KST)**. 이 문서는 조회 시점 스냅샷이며 실시간 자동 갱신 화면이 아닙니다.
 
-조회 당시 코드 HEAD: `319de39d12e86f5c1965b6a6e7067dd44a934464`
+조회 당시 코드 HEAD: `389f5758d2f2510a10af3e2b7cf5880095191259`
 
-조회 당시 원격: `319de39d12e86f5c1965b6a6e7067dd44a934464	refs/heads/codex/mac-environment-20261001`
+조회 당시 원격: `389f5758d2f2510a10af3e2b7cf5880095191259	refs/heads/codex/mac-environment-20261001`
 
-현재 실제 작업: **Codex 총괄이 정상 WebGL 첫 처치 관측을 마치고 문서·원자료 백업을 정리 중**. 게임·관측기·CPU profiler는 종료했다. 채택1회와 제외 선행1회를 구분한다.
+현재 실제 작업: **Codex 총괄이 첫 시체 캡처 준비 변경의 검수·문서·원격 백업을 마감 중**. 이번 게임4회(수정전1/미실행hook제외1/후보관측1/최종기능회귀1). 게임·관측기 종료, viewport 복구. [결과](mac-resume-20261001/Mac-시체캡처-첫사용-준비.md).
 
-실행 중 1명(Codex 총괄), 산출 완료 14명(Claude 11 + Codex 지원 3). Claude 11팀은 모두 `idle/done`이며 마지막 응답 `end_turn`; 아래 후속 의존성 때문에 현재 추가 추론/도구를 실행 중이라고 세지 않습니다. 프로세스 존재와 실제 작업 실행은 다릅니다.
+실행 중 1명(Codex 총괄), 산출 완료 14명(Claude 11 + Codex 지원 3). Claude 11팀은 모두 `idle/done`이며 마지막 응답 `end_turn`; 아래 후속 의존성 때문에 현재 추가 추론/도구를 실행 중이라고 세지 않습니다. 프로세스 존재와 실제 작업 실행은 다릅니다. 이번 CLI 재조회는 11개 background state=done을 확인했으며 아래 PID·모델·응답 시각은 이전 조회 이력입니다.
 
 ## Claude 11팀 — 검토·후보 작성
 
@@ -32,10 +32,10 @@
 
 | 실제 에이전트·모델 | 팀/담당 | 현재 작업 | 상태·최근 활동 | 결과/다음 |
 |---|---|---|---|---|
-| /root<br>Codex / 모델 미확인 | 단일 게임 검수·생산 파일·Git 소유 | 단일 게임 검수·생산 파일·Git 소유 | 실행 중 · 조회 시점 목록 확인 | [결과](/Users/fordeargamers/Documents/Codex/2026-10-01/dho/outputs/r-input-20261001/qa/검수.md)<br>정상 첫 처치 기준점 인수·백업 마감 |
+| /root<br>Codex / 모델 미확인 | 단일 게임 검수·생산 파일·Git 소유 | 단일 게임 검수·생산 파일·Git 소유 | 실행 중 · 조회 시점 목록 확인 | [결과](/Users/fordeargamers/Documents/Codex/2026-10-01/dho/outputs/r-input-20261001/qa/검수.md)<br>첫 캡처 준비 구현·검수·백업 마감 |
 | /root/build_backlog_review<br>Codex / 모델 미확인 | BUILD 도구 실행·후보5개 정적 검토 | BUILD 도구 실행·후보5개 정적 검토 | 완료 · 조회 시점 목록 확인 | [결과](/Users/fordeargamers/Documents/Codex/2026-10-01/dho/outputs/r-input-20261001/candidates/검증결과.md)<br>후보 실행 전 결함 수정 필요 |
 | /root/map_art_review<br>Codex / 모델 미확인 | BALANCE 하니스·SOUND HTML 구현 | BALANCE 하니스·SOUND HTML 구현 | 완료 · 조회 시점 목록 확인 | [결과](/Users/fordeargamers/Documents/Codex/2026-10-01/dho/outputs/r-input-20261001/sound/페이지-인수.md)<br>기본 UI 인수 완료, 재생·청취 별도 |
-| /root/qa_review<br>Codex / 모델 미확인 | R 진단·GL 원자료 독립 판정 | R 진단·GL 원자료 독립 판정 | 완료 · 조회 시점 목록 확인 | [결과](/Users/fordeargamers/Documents/Codex/2026-10-01/dho/outputs/r-input-20261001/qa/검수.md)<br>고주사율 조건 별도 |
+| /root/qa_review<br>Codex / 모델 미확인 | 첫 캡처 후보·오류격리 독립 판정 | 첫 캡처 후보·오류격리 독립 판정 | 완료 · 조회 시점 목록 확인 | [결과](/Users/fordeargamers/Documents/Codex/2026-10-01/dho/outputs/r-input-20261001/qa/검수.md)<br>고주사율 조건 별도 |
 
 [실제 목록·PID·모델 근거](/Users/fordeargamers/Documents/Codex/2026-10-01/dho/outputs/r-input-20261001/handoff-audit.json) · [R/GL 종합 검수](/Users/fordeargamers/Projects/exoduser-migration-20261001/docs/0마스터플랜/mac-resume-20261001/R-입력과-GL-후속검수.md)
 
@@ -51,7 +51,7 @@ CLI 조회: `claude agents --json --all --cwd /Users/fordeargamers/Projects/exod
 | VS Code에서 연결 완료한 기존 팀 | 0/11 | 프로세스11개와 별개 |
 | VS Code 연결 승인 대기 | 11/11 | 기존 승인 질문 유지, 중복 요청 없음 |
 | Claude 백그라운드 세션·PID | 11/11 | 최신 CLI idle/done·end_turn 및 ps 존재 확인; 현재 추론0 |
-| Codex 지원 | 완료3 | 새 작업 배정 없음; 총괄만 이 문서 정리 |
+| Codex 지원 | 완료3 | 기존 qa_review 재사용 검토 후 완료; 총괄이 백업 마감 |
 
 작업공간 헬퍼는 [EXODUSER-11팀.code-workspace](/Users/fordeargamers/Documents/Codex/2026-10-01/dho/outputs/EXODUSER-11팀.code-workspace)다. 신뢰 승인 후 실행할 작업명은 EXODUSER · 기존 11팀 연결이다. 새 에이전트/게임/빌드를 만드는 작업이 아니다. 앞선 신뢰 창은 승인하지 않고 닫아 탐색기를 보이게 했으며 제한 모드를 유지한다.
 

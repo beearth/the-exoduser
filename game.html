@@ -23832,6 +23832,30 @@ function _addGorePiece(x,y,type,ground){
 const _SPLIT_MAX=24;const _splits=[];
 const _SPLIT_CELL=64; // 각 조각 캔버스 크기
 for(let i=0;i<_SPLIT_MAX;i++){const _sc=document.createElement('canvas');_sc.width=_SPLIT_CELL;_sc.height=_SPLIT_CELL;_splits.push({x:0,y:0,vx:0,vy:0,rot:0,rv:0,life:0,ml:0,sz:0,c:_sc,ctx:_sc.getContext('2d'),active:false})}
+// First scratch→head copy can stall despite the atlas already being GL-warm.
+// Prepare the existing 2D path once outside combat; never touch active debris.
+let _headCaptureWarmDone=false;
+let _headCaptureWarmMs=0; // one-shot boot diagnostic, not per-frame timing
+function _warmHeadCapture2d(){
+  if(_headCaptureWarmDone||!_useGL||G.on||!OPT.deathFx)return false;
+  const a=_ch8Atlas[1],dir=a&&a.dirs&&a.dirs.south,s=_splits[0];
+  const cell=a&&a.meta&&a.meta.cell||256;
+  if(!a||!a.meta||!dir||!dir.ready||!dir.img||!dir.img.complete||dir.img.naturalWidth<cell||dir.img.naturalHeight<cell||!s||s.active)return false;
+  const started=performance.now();let prepared=false;
+  try{
+    _gibX.clearRect(0,0,48,48);
+    _gibX.drawImage(dir.img,0,0,cell,cell,0,0,48,48);
+    s.ctx.clearRect(0,0,_SPLIT_CELL,_SPLIT_CELL);
+    s.ctx.drawImage(_gibC,0,0,48,14,0,0,_SPLIT_CELL,_SPLIT_CELL);
+    prepared=true;
+  }catch(_e){}
+  finally{
+    try{_gibX.clearRect(0,0,48,48);}catch(_e){prepared=false;}
+    try{s.ctx.clearRect(0,0,_SPLIT_CELL,_SPLIT_CELL);}catch(_e){prepared=false;}
+    _headCaptureWarmMs=performance.now()-started;
+  }
+  return _headCaptureWarmDone=prepared;
+}
 function _addSplitGibs(e,killAng){
   if(!OPT.deathFx)return;
   // 스프라이트 캡처 (48x48 임시 캔버스 _gibC 재사용)
@@ -61136,7 +61160,7 @@ function setBootLoading(pct,msg){
   const bar=$('stLoadBar'),name=$('stNextName');
   if(name&&msg) name.textContent=_T(msg);
   if(bar) bar.style.width=Math.max(0,Math.min(100,pct))+'%';
-  if(pct>=100) hideBootLoading();
+  if(pct>=100){try{_warmHeadCapture2d();}catch(_e){}hideBootLoading();} // 선택적 준비 실패도 로딩 종료 유지
 }
 function hideBootLoading(){
   _bootPerfReport();

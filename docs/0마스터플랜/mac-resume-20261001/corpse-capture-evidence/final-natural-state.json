@@ -1,0 +1,22 @@
+{
+  "at": 48305.20000004768,
+  "corpses": 3,
+  "hp": 604,
+  "kills": 3,
+  "ms": 8.5,
+  "on": true,
+  "splits": [
+    {
+      "life": 96,
+      "ml": 180,
+      "sz": 40.34322653494455
+    },
+    {
+      "life": 96,
+      "ml": 180,
+      "sz": 41.40054506906519
+    }
+  ],
+  "url": "http://qa-corpse-final-20261001.localhost:3340/game.html?webgpu=0",
+  "warm": true
+}

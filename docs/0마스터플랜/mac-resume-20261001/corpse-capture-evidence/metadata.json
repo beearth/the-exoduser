@@ -1,0 +1,23 @@
+{
+  "startedAt": "2026-10-01T08:04:44.949752+00:00",
+  "head": "389f5758d2f2510a10af3e2b7cf5880095191259",
+  "sourceSHA": "28a9da122cda65417c015101fb182f68173992646ee0020e4e13793ac243df35",
+  "port": 3340,
+  "url": "http://qa-corpse-capture-20261001.localhost:3340/game.html?webgpu=0",
+  "browserProfile": "existing Chrome profile, new loopback origin storage only",
+  "productionChange": false,
+  "CPUProfiler": false,
+  "GPUtimer": false,
+  "instrumentation": "target function + 2D observer with source identities; no forced pixel readback",
+  "servedSHA": "28a9da122cda65417c015101fb182f68173992646ee0020e4e13793ac243df35",
+  "serverPID": "40609",
+  "viewportOverride": {
+    "requested": [
+      1352,
+      663
+    ],
+    "observedDPR": 1,
+    "resetAfter": true,
+    "comparability": "Previous sample had DPR2; not an A/B performance comparison."
+  }
+}

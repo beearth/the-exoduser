@@ -1,0 +1,54 @@
+{
+  "candidate-summary.json": {
+    "bytes": 26391,
+    "sha256": "ff3b94ef82a84ecc5c75febda8034fd66ac71a9d4477095e1714c13dd4c5c984"
+  },
+  "summary.json": {
+    "bytes": 29091,
+    "sha256": "858e0425e503791c4cc06f06bbaa2b5b82200cdcb61e514bfea3f63f65c79fd1"
+  },
+  "candidate-post-observation.png": {
+    "bytes": 140835,
+    "sha256": "8a3c28b26917a52a4e07d1c831470057c25d1707ee1b2c70f4713374d800f1e1"
+  },
+  "evidence.zip": {
+    "bytes": 25627,
+    "sha256": "c7dbb7689958c7a74af81b3c4812fdcba9b0096cf6e4c1716cf9fe61ce7d582e"
+  },
+  "before-post-observation.png": {
+    "bytes": 93798,
+    "sha256": "f7369f65a8b512f801eee561b2f821b2db69018f8f0fe25b438d36bdc332287b"
+  },
+  "metadata.json": {
+    "bytes": 858,
+    "sha256": "36da2860f612155886b5321fc0ee56b8684c6d1030fb40c5bace1ce1a558542f"
+  },
+  "invariants.json": {
+    "bytes": 365,
+    "sha256": "bbe6474ac3cb373d01fcdc56f70e621678348b872468e4bd25b96831a9eb30da"
+  },
+  "candidate-cleanup.json": {
+    "bytes": 172,
+    "sha256": "152c690ab42184e76c446569057532aa0a659198d620f42fc3bfecdcffe66f53"
+  },
+  "final-natural-combat.png": {
+    "bytes": 106798,
+    "sha256": "ebd2aeae097c56d10eecebe61f4b0e0fc152098e3436a9b637ba6a174dc1e0ca"
+  },
+  "candidate-boot.json": {
+    "bytes": 215,
+    "sha256": "e223904f15c97fb6ca356a0b5af1e83652c61fcf1367eed46f2053a24a28e3c1"
+  },
+  "final-boot-pixels.json": {
+    "bytes": 328,
+    "sha256": "7fab3546b51f3aeb72512a9638dd6203408d3464dc56a08ba2cf54deffe462b6"
+  },
+  "final-natural-state.json": {
+    "bytes": 367,
+    "sha256": "73fcacade83f5cfdbab44419b307cf05a9276e172065faa071dc0e5a0d16ed8a"
+  },
+  "runs.json": {
+    "bytes": 611,
+    "sha256": "bffdfc066fef934be08ba52140f1552e453f83a1a78caa348cb122e855b55259"
+  }
+}

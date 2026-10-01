@@ -1,0 +1,13 @@
+{
+  "atmos": 2,
+  "kills": 0,
+  "ms": 8.900000095367432,
+  "on": false,
+  "url": "http://qa-corpse-prewarm2-20261001.localhost:3340/game.html?webgpu=0",
+  "viewport": [
+    1352,
+    663,
+    1
+  ],
+  "warm": true
+}
