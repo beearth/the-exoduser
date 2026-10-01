@@ -1,0 +1,98 @@
+[
+  {
+    "group": "ITEM-submitted-review",
+    "commit": "2e778fc8a49b8699c57be696119ef3d3344a3697",
+    "files": 47,
+    "remainingCount": 395
+  },
+  {
+    "group": "ANIMVFX-submitted-review",
+    "commit": "5a6454d63cf002296dc10fccc377d039c9cdd4c2",
+    "files": 26,
+    "remainingCount": 369
+  },
+  {
+    "group": "ART-submitted-review",
+    "commit": "f7952ac30bfb76732ed67887a284cf33d901c6d5",
+    "files": 22,
+    "remainingCount": 347
+  },
+  {
+    "group": "BALANCE-submitted-review",
+    "commit": "a9c86d074d2210facc645c035a9b174b7c753bd0",
+    "files": 18,
+    "remainingCount": 329
+  },
+  {
+    "group": "BUILD-submitted-review",
+    "commit": "920fd7a4d8c48b8042c48d983cd8077e41bcd67f",
+    "files": 4,
+    "remainingCount": 325
+  },
+  {
+    "group": "ENEMY-submitted-review",
+    "commit": "596c4bde8e1f9c7ef9ed5a59858b7bb2486f924c",
+    "files": 22,
+    "remainingCount": 303
+  },
+  {
+    "group": "MAP-submitted-review",
+    "commit": "79d7504aca1ab14d1c9fd10faf9983e0678be895",
+    "files": 35,
+    "remainingCount": 268
+  },
+  {
+    "group": "root-review-history",
+    "commit": "3cbc2794e2166402a31e94be378ae6b9313d5b85",
+    "files": 58,
+    "remainingCount": 210
+  },
+  {
+    "group": "SKILL-submitted-review",
+    "commit": "25e755d8265ebd7de8dbf58dd54cb50017ff74d2",
+    "files": 24,
+    "remainingCount": 186
+  },
+  {
+    "group": "QA-submitted-review",
+    "commit": "d19bed767acd096a30236242087015810797f6a8",
+    "files": 2,
+    "remainingCount": 184
+  },
+  {
+    "group": "UIUX-uiux-earlier-review",
+    "commit": "a906b0839e2aaceaeac5eddc71e70edba95e0ffe",
+    "files": 18,
+    "remainingCount": 166
+  },
+  {
+    "group": "UIUX-card-removal-focus",
+    "commit": "15762afe89ebb0be76b61c6d4becfdab7f2b3398",
+    "files": 62,
+    "remainingCount": 104
+  },
+  {
+    "group": "UIUX-inventory-dom",
+    "commit": "b569376cd648a4d20d75a002199bd700e913f507",
+    "files": 22,
+    "remainingCount": 82
+  },
+  {
+    "group": "UIUX-native-focus",
+    "commit": "474e11e6a11396d41d1d4e59a26b98abae2bb75c",
+    "files": 29,
+    "remainingCount": 53
+  },
+  {
+    "group": "UIUX-ossuary-focus",
+    "commit": "8c9f4cef11cdd5007ce64fa8eb3604f763811bbe",
+    "files": 18,
+    "remainingCount": 35
+  },
+  {
+    "group": "root-review-submitted-review",
+    "commit": "a41a7cf638578899d0f8ae54e86a6de8081da13f",
+    "files": 3,
+    "remainingCount": 32
+  }
+]

@@ -1,0 +1,1758 @@
+[
+  {
+    "status": " M",
+    "path": "docs/7아이템디자인/ITEM_TEAM_MASTER.md"
+  },
+  {
+    "status": " M",
+    "path": "docs_backup_before_normalize_20260726/12퍼포먼스·최적화/12퍼포먼스·최적화.md"
+  },
+  {
+    "status": " M",
+    "path": "docs_backup_before_normalize_20260726/14밸런스+수치테이블/스킬_밸런스_리포트.md"
+  },
+  {
+    "status": " M",
+    "path": "docs_backup_before_normalize_20260726/14밸런스+수치테이블/스킬데미지공식표.md"
+  },
+  {
+    "status": " M",
+    "path": "docs_backup_before_normalize_20260726/14밸런스+수치테이블/스킬별_DPS_자원소비표.md"
+  },
+  {
+    "status": " M",
+    "path": "docs_backup_before_normalize_20260726/16번역·로컬라이제이션/번역_가이드.md"
+  },
+  {
+    "status": " M",
+    "path": "docs_backup_before_normalize_20260726/16번역·로컬라이제이션/번역대상_전체목록.md"
+  },
+  {
+    "status": " M",
+    "path": "docs_backup_before_normalize_20260726/16번역·로컬라이제이션/번역대상_펫대사.md"
+  },
+  {
+    "status": " M",
+    "path": "docs_backup_before_normalize_20260726/2_1 스킬관리+합체시스템+자원/2_1 스킬관리+합체시스템.md"
+  },
+  {
+    "status": " M",
+    "path": "docs_backup_before_normalize_20260726/2_1 스킬관리+합체시스템+자원/자원리젠+소모공식.md"
+  },
+  {
+    "status": " M",
+    "path": "docs_backup_before_normalize_20260726/2_1 스킬관리+합체시스템+자원/추천빌드_SKILL_REC_PATH.md"
+  },
+  {
+    "status": " M",
+    "path": "docs_backup_before_normalize_20260726/2_2 무기+활+속성시스템/2_2 무기+활+속성시스템.md"
+  },
+  {
+    "status": " M",
+    "path": "docs_backup_before_normalize_20260726/2_4 펫시스템/대사_스크립트.md"
+  },
+  {
+    "status": " M",
+    "path": "docs_backup_before_normalize_20260726/2게임디자인레벨디자인/2게임디자인레벨디자인.md"
+  },
+  {
+    "status": " M",
+    "path": "docs_backup_before_normalize_20260726/3.1 ui hud 디자인/exoduser-ui-phase2 (1).md"
+  },
+  {
+    "status": " M",
+    "path": "docs_backup_before_normalize_20260726/3.3 키바인딩+설정/3.3 키바인딩+설정.md"
+  },
+  {
+    "status": " M",
+    "path": "docs_backup_before_normalize_20260726/5.1임펙트디자인/VFX_구현가이드.md"
+  },
+  {
+    "status": " M",
+    "path": "docs_backup_before_normalize_20260726/8.0몬스터디자인/몬스터_공격시스템.md"
+  },
+  {
+    "status": " M",
+    "path": "docs_backup_before_normalize_20260726/8.0몬스터디자인/몬스터_총관리.md"
+  },
+  {
+    "status": " M",
+    "path": "docs_backup_before_normalize_20260726/8.0몬스터디자인/탄막시스템_총정리.md"
+  },
+  {
+    "status": " M",
+    "path": "docs_backup_before_normalize_20260726/8.1보스디자인바이블/BOSS_BATTLE_SETTINGS.md"
+  },
+  {
+    "status": " M",
+    "path": "docs_backup_before_normalize_20260726/9적ai패턴디자인/9_적AI패턴디자인.md"
+  },
+  {
+    "status": "??",
+    "path": "docs/0마스터플랜/mac-resume-20261001/vscode-dispatch/ANIMVFX-next-receipt.json"
+  },
+  {
+    "status": "??",
+    "path": "docs/0마스터플랜/mac-resume-20261001/vscode-dispatch/ANIMVFX-next-result.md"
+  },
+  {
+    "status": "??",
+    "path": "docs/0마스터플랜/mac-resume-20261001/vscode-dispatch/ANIMVFX-receipt.json"
+  },
+  {
+    "status": "??",
+    "path": "docs/0마스터플랜/mac-resume-20261001/vscode-dispatch/ANIMVFX-result.md"
+  },
+  {
+    "status": "??",
+    "path": "docs/0마스터플랜/mac-resume-20261001/vscode-dispatch/ART-next-receipt.json"
+  },
+  {
+    "status": "??",
+    "path": "docs/0마스터플랜/mac-resume-20261001/vscode-dispatch/ART-next-result.md"
+  },
+  {
+    "status": "??",
+    "path": "docs/0마스터플랜/mac-resume-20261001/vscode-dispatch/ART-receipt.json"
+  },
+  {
+    "status": "??",
+    "path": "docs/0마스터플랜/mac-resume-20261001/vscode-dispatch/ART-result.md"
+  },
+  {
+    "status": "??",
+    "path": "docs/0마스터플랜/mac-resume-20261001/vscode-dispatch/BALANCE-next-receipt.json"
+  },
+  {
+    "status": "??",
+    "path": "docs/0마스터플랜/mac-resume-20261001/vscode-dispatch/BALANCE-next-result.md"
+  },
+  {
+    "status": "??",
+    "path": "docs/0마스터플랜/mac-resume-20261001/vscode-dispatch/BALANCE-receipt.json"
+  },
+  {
+    "status": "??",
+    "path": "docs/0마스터플랜/mac-resume-20261001/vscode-dispatch/BALANCE-result.md"
+  },
+  {
+    "status": "??",
+    "path": "docs/0마스터플랜/mac-resume-20261001/vscode-dispatch/BUILD-next-receipt.json"
+  },
+  {
+    "status": "??",
+    "path": "docs/0마스터플랜/mac-resume-20261001/vscode-dispatch/BUILD-next-result.md"
+  },
+  {
+    "status": "??",
+    "path": "docs/0마스터플랜/mac-resume-20261001/vscode-dispatch/BUILD-receipt.json"
+  },
+  {
+    "status": "??",
+    "path": "docs/0마스터플랜/mac-resume-20261001/vscode-dispatch/BUILD-result.md"
+  },
+  {
+    "status": "??",
+    "path": "docs/0마스터플랜/mac-resume-20261001/vscode-dispatch/ENEMY-receipt.json"
+  },
+  {
+    "status": "??",
+    "path": "docs/0마스터플랜/mac-resume-20261001/vscode-dispatch/ENEMY-result.md"
+  },
+  {
+    "status": "??",
+    "path": "docs/0마스터플랜/mac-resume-20261001/vscode-dispatch/ITEM-next-receipt.json"
+  },
+  {
+    "status": "??",
+    "path": "docs/0마스터플랜/mac-resume-20261001/vscode-dispatch/ITEM-next-result.md"
+  },
+  {
+    "status": "??",
+    "path": "docs/0마스터플랜/mac-resume-20261001/vscode-dispatch/ITEM-receipt.json"
+  },
+  {
+    "status": "??",
+    "path": "docs/0마스터플랜/mac-resume-20261001/vscode-dispatch/ITEM-result.md"
+  },
+  {
+    "status": "??",
+    "path": "docs/0마스터플랜/mac-resume-20261001/vscode-dispatch/MAP-next-receipt.json"
+  },
+  {
+    "status": "??",
+    "path": "docs/0마스터플랜/mac-resume-20261001/vscode-dispatch/MAP-next-result.md"
+  },
+  {
+    "status": "??",
+    "path": "docs/0마스터플랜/mac-resume-20261001/vscode-dispatch/MAP-receipt.json"
+  },
+  {
+    "status": "??",
+    "path": "docs/0마스터플랜/mac-resume-20261001/vscode-dispatch/MAP-result.md"
+  },
+  {
+    "status": "??",
+    "path": "docs/0마스터플랜/mac-resume-20261001/vscode-dispatch/OWNER_NEXT_20261002-receipt.json"
+  },
+  {
+    "status": "??",
+    "path": "docs/0마스터플랜/mac-resume-20261001/vscode-dispatch/OWNER_NEXT_20261002-result.md"
+  },
+  {
+    "status": "??",
+    "path": "docs/0마스터플랜/mac-resume-20261001/vscode-dispatch/SKILL-next-receipt.json"
+  },
+  {
+    "status": "??",
+    "path": "docs/0마스터플랜/mac-resume-20261001/vscode-dispatch/SKILL-next-result.md"
+  },
+  {
+    "status": "??",
+    "path": "docs/0마스터플랜/mac-resume-20261001/vscode-dispatch/SKILL-receipt.json"
+  },
+  {
+    "status": "??",
+    "path": "docs/0마스터플랜/mac-resume-20261001/vscode-dispatch/SKILL-result.md"
+  },
+  {
+    "status": "??",
+    "path": "docs/0마스터플랜/mac-resume-20261001/vscode-dispatch/UIUX-next-receipt.json"
+  },
+  {
+    "status": "??",
+    "path": "docs/0마스터플랜/mac-resume-20261001/vscode-dispatch/UIUX-next-result.md"
+  },
+  {
+    "status": "??",
+    "path": "docs/0마스터플랜/mac-resume-20261001/vscode-dispatch/UIUX-receipt.json"
+  },
+  {
+    "status": "??",
+    "path": "docs/0마스터플랜/mac-resume-20261001/vscode-dispatch/UIUX-result.md"
+  },
+  {
+    "status": "??",
+    "path": "docs/0마스터플랜/mac-resume-20261001/vscode-dispatch/busy-save-independent-receipt.json"
+  },
+  {
+    "status": "??",
+    "path": "docs/0마스터플랜/mac-resume-20261001/vscode-dispatch/busy-save-independent-result.md"
+  },
+  {
+    "status": "??",
+    "path": "docs/0마스터플랜/mac-resume-20261001/vscode-dispatch/confirm-inventory-review-receipt.json"
+  },
+  {
+    "status": "??",
+    "path": "docs/0마스터플랜/mac-resume-20261001/vscode-dispatch/confirm-inventory-review-result.md"
+  },
+  {
+    "status": "??",
+    "path": "docs_backup_before_normalize_20260726/12퍼포먼스·최적화/맥북_프레임픽스_깜빡임.md"
+  },
+  {
+    "status": "??",
+    "path": "outputs/team-review-20261001/binding-checkpoint.json"
+  },
+  {
+    "status": "??",
+    "path": "outputs/team-review-20261001/binding-stage-manifest.json"
+  },
+  {
+    "status": "??",
+    "path": "outputs/team-review-20261001/d10-checkpoint.json"
+  },
+  {
+    "status": "??",
+    "path": "outputs/team-review-20261001/d10-stage-manifest.json"
+  },
+  {
+    "status": "??",
+    "path": "outputs/team-review-20261001/d10/claude-states.json"
+  },
+  {
+    "status": "??",
+    "path": "outputs/team-review-20261001/definition-checkpoint.json"
+  },
+  {
+    "status": "??",
+    "path": "outputs/team-review-20261001/draw-attribution/BALANCE-load-queue.json"
+  },
+  {
+    "status": "??",
+    "path": "outputs/team-review-20261001/draw-prewarm-checkpoint.json"
+  },
+  {
+    "status": "??",
+    "path": "outputs/team-review-20261001/draw-stage-manifest.json"
+  },
+  {
+    "status": "??",
+    "path": "outputs/team-review-20261001/five-owner-checkpoint.json"
+  },
+  {
+    "status": "??",
+    "path": "outputs/team-review-20261001/four-next-checkpoint.json"
+  },
+  {
+    "status": "??",
+    "path": "outputs/team-review-20261001/four-next-stage-manifest.json"
+  },
+  {
+    "status": "??",
+    "path": "outputs/team-review-20261001/item-demo-sound-checkpoint.json"
+  },
+  {
+    "status": "??",
+    "path": "outputs/team-review-20261001/owner-resume-checkpoint.json"
+  },
+  {
+    "status": "??",
+    "path": "outputs/team-review-20261001/physical-live-checkpoint.json"
+  },
+  {
+    "status": "??",
+    "path": "outputs/team-review-20261001/pm009-checkpoint.json"
+  },
+  {
+    "status": "??",
+    "path": "outputs/team-review-20261001/pm009-stage-manifest.json"
+  },
+  {
+    "status": "??",
+    "path": "outputs/team-review-20261001/support-stage-manifest.json"
+  },
+  {
+    "status": "??",
+    "path": "outputs/team-review-20261002/acceptance/docs-keywords.txt"
+  },
+  {
+    "status": "??",
+    "path": "outputs/team-review-20261002/acceptance/four-session-before.json"
+  },
+  {
+    "status": "??",
+    "path": "outputs/team-review-20261002/acceptance/initial-worktree-status.txt"
+  },
+  {
+    "status": "??",
+    "path": "outputs/team-review-20261002/acceptance/production-skill-tests-fixture-error.txt"
+  },
+  {
+    "status": "??",
+    "path": "outputs/team-review-20261002/acceptance/submitted-enhancement-resource-evidence.json"
+  },
+  {
+    "status": "??",
+    "path": "outputs/team-review-20261002/acceptance/submitted-inventory-focus-reproduction.json"
+  },
+  {
+    "status": "??",
+    "path": "outputs/team-review-20261002/async-boundary/remote-checkpoint-final.json"
+  },
+  {
+    "status": "??",
+    "path": "outputs/team-review-20261002/filter-integration/remote-checkpoint-final.json"
+  },
+  {
+    "status": "??",
+    "path": "outputs/team-review-20261002/followup-dispatch/remote-checkpoint-final.json"
+  },
+  {
+    "status": "??",
+    "path": "outputs/team-review-20261002/independent-next/remote-checkpoint-final.json"
+  },
+  {
+    "status": "??",
+    "path": "outputs/team-review-20261002/mac-app/build-plan.json"
+  },
+  {
+    "status": "??",
+    "path": "outputs/team-review-20261002/mac-app/execute-config.json"
+  },
+  {
+    "status": "??",
+    "path": "outputs/team-review-20261002/mac-app/launch-hang-sample.txt"
+  },
+  {
+    "status": "??",
+    "path": "outputs/team-review-20261002/mac-app/remote-checkpoint.json"
+  },
+  {
+    "status": "??",
+    "path": "outputs/team-review-20261002/persistence/ANIMVFX-initial.txt"
+  },
+  {
+    "status": "??",
+    "path": "outputs/team-review-20261002/persistence/ART-initial.txt"
+  },
+  {
+    "status": "??",
+    "path": "outputs/team-review-20261002/persistence/BALANCE-initial.txt"
+  },
+  {
+    "status": "??",
+    "path": "outputs/team-review-20261002/persistence/BUILD-initial.txt"
+  },
+  {
+    "status": "??",
+    "path": "outputs/team-review-20261002/persistence/ENEMY-initial.txt"
+  },
+  {
+    "status": "??",
+    "path": "outputs/team-review-20261002/persistence/MAP-initial.txt"
+  },
+  {
+    "status": "??",
+    "path": "outputs/team-review-20261002/persistence/UIUX-initial.txt"
+  },
+  {
+    "status": "??",
+    "path": "outputs/team-review-20261002/persistence/build-runtime-handoff.json"
+  },
+  {
+    "status": "??",
+    "path": "outputs/team-review-20261002/persistence/claude-initial.json"
+  },
+  {
+    "status": "??",
+    "path": "outputs/team-review-20261002/persistence/codex-progress.json"
+  },
+  {
+    "status": "??",
+    "path": "outputs/team-review-20261002/persistence/docs-all-keywords.txt"
+  },
+  {
+    "status": "??",
+    "path": "outputs/team-review-20261002/persistence/docs-keywords.txt"
+  },
+  {
+    "status": "??",
+    "path": "outputs/team-review-20261002/persistence/item-csp-browser.jpg"
+  },
+  {
+    "status": "??",
+    "path": "outputs/team-review-20261002/production-integration/remote-checkpoint-final.json"
+  },
+  {
+    "status": "??",
+    "path": "outputs/team-review-20261002/remote-checkpoint.json"
+  },
+  {
+    "status": "??",
+    "path": "outputs/team-review-20261002/server-integration/remote-checkpoint-final.json"
+  },
+  {
+    "status": "??",
+    "path": "tools/team-followup-20261001/ANIMVFX/OWNER_IMPL_20261002-receipt.json"
+  },
+  {
+    "status": "??",
+    "path": "tools/team-followup-20261001/ANIMVFX/OWNER_IMPL_20261002-result.md"
+  },
+  {
+    "status": "??",
+    "path": "tools/team-followup-20261001/ANIMVFX/OWNER_NEXT_20261002-receipt.json"
+  },
+  {
+    "status": "??",
+    "path": "tools/team-followup-20261001/ANIMVFX/OWNER_NEXT_20261002-result.md"
+  },
+  {
+    "status": "??",
+    "path": "tools/team-followup-20261001/ANIMVFX/animvfx_gl_probe.js"
+  },
+  {
+    "status": "??",
+    "path": "tools/team-followup-20261001/ANIMVFX/animvfx_gl_validator.mjs"
+  },
+  {
+    "status": "??",
+    "path": "tools/team-followup-20261001/ANIMVFX/animvfx_highhz_lifetime_gate.mjs"
+  },
+  {
+    "status": "??",
+    "path": "tools/team-followup-20261001/ANIMVFX/flash-revive-reachability-fixture.mjs"
+  },
+  {
+    "status": "??",
+    "path": "tools/team-followup-20261001/ANIMVFX/flash-revive-reachability-receipt.json"
+  },
+  {
+    "status": "??",
+    "path": "tools/team-followup-20261001/ANIMVFX/flash-revive-reachability-result.md"
+  },
+  {
+    "status": "??",
+    "path": "tools/team-followup-20261001/ANIMVFX/flash-revive-reachability-task.md"
+  },
+  {
+    "status": "??",
+    "path": "tools/team-followup-20261001/ANIMVFX/flash-transition-before.md"
+  },
+  {
+    "status": "??",
+    "path": "tools/team-followup-20261001/ANIMVFX/flash-transition-receipt.json"
+  },
+  {
+    "status": "??",
+    "path": "tools/team-followup-20261001/ANIMVFX/flash-transition-result.md"
+  },
+  {
+    "status": "??",
+    "path": "tools/team-followup-20261001/ANIMVFX/flash-transition-source-regression.mjs"
+  },
+  {
+    "status": "??",
+    "path": "tools/team-followup-20261001/ANIMVFX/flash-transition-task.md"
+  },
+  {
+    "status": "??",
+    "path": "tools/team-followup-20261001/ANIMVFX/flash-transition.patch"
+  },
+  {
+    "status": "??",
+    "path": "tools/team-followup-20261001/ANIMVFX/sparse-clock-gate-before.mjs"
+  },
+  {
+    "status": "??",
+    "path": "tools/team-followup-20261001/ANIMVFX/sparse-clock-integration.mjs"
+  },
+  {
+    "status": "??",
+    "path": "tools/team-followup-20261001/ANIMVFX/sparse-update-c5-gate.mjs"
+  },
+  {
+    "status": "??",
+    "path": "tools/team-followup-20261001/ANIMVFX/sparse-update-c5.patch"
+  },
+  {
+    "status": "??",
+    "path": "tools/team-followup-20261001/ANIMVFX/validation-manifest.json"
+  },
+  {
+    "status": "??",
+    "path": "tools/team-followup-20261001/ART/OWNER_IMPL_20261002-receipt.json"
+  },
+  {
+    "status": "??",
+    "path": "tools/team-followup-20261001/ART/OWNER_IMPL_20261002-result.md"
+  },
+  {
+    "status": "??",
+    "path": "tools/team-followup-20261001/ART/OWNER_NEXT_20261002-receipt.json"
+  },
+  {
+    "status": "??",
+    "path": "tools/team-followup-20261001/ART/OWNER_NEXT_20261002-result.md"
+  },
+  {
+    "status": "??",
+    "path": "tools/team-followup-20261001/ART/README.md"
+  },
+  {
+    "status": "??",
+    "path": "tools/team-followup-20261001/ART/live-callsite-canonical.test.mjs"
+  },
+  {
+    "status": "??",
+    "path": "tools/team-followup-20261001/ART/wa24-engine-parity-receipt.json"
+  },
+  {
+    "status": "??",
+    "path": "tools/team-followup-20261001/ART/wa24-engine-parity-result.md"
+  },
+  {
+    "status": "??",
+    "path": "tools/team-followup-20261001/ART/wa24-engine-parity-task.md"
+  },
+  {
+    "status": "??",
+    "path": "tools/team-followup-20261001/ART/wa24-engine-parity/preview.html"
+  },
+  {
+    "status": "??",
+    "path": "tools/team-followup-20261001/ART/wa24-engine-parity/selfcheck.mjs"
+  },
+  {
+    "status": "??",
+    "path": "tools/team-followup-20261001/ART/wa24-observer.cjs"
+  },
+  {
+    "status": "??",
+    "path": "tools/team-followup-20261001/ART/wa24-observer.test.mjs"
+  },
+  {
+    "status": "??",
+    "path": "tools/team-followup-20261001/ART/wa24-preview-receipt.json"
+  },
+  {
+    "status": "??",
+    "path": "tools/team-followup-20261001/ART/wa24-preview-result.md"
+  },
+  {
+    "status": "??",
+    "path": "tools/team-followup-20261001/ART/wa24-preview-task.md"
+  },
+  {
+    "status": "??",
+    "path": "tools/team-followup-20261001/ART/wa24-preview/index.html"
+  },
+  {
+    "status": "??",
+    "path": "tools/team-followup-20261001/ART/wa24-preview/selfcheck.mjs"
+  },
+  {
+    "status": "??",
+    "path": "tools/team-followup-20261001/BALANCE/ai-enhance-persistence.test.mjs"
+  },
+  {
+    "status": "??",
+    "path": "tools/team-followup-20261001/BALANCE/audit-fireball.mjs"
+  },
+  {
+    "status": "??",
+    "path": "tools/team-followup-20261001/BALANCE/audit-raw.json"
+  },
+  {
+    "status": "??",
+    "path": "tools/team-followup-20261001/BALANCE/docs-keywords.txt"
+  },
+  {
+    "status": "??",
+    "path": "tools/team-followup-20261001/BALANCE/enhancement-resource-adjacent-tests.txt"
+  },
+  {
+    "status": "??",
+    "path": "tools/team-followup-20261001/BALANCE/enhancement-resource-doc-search.txt"
+  },
+  {
+    "status": "??",
+    "path": "tools/team-followup-20261001/BALANCE/fireball-contract.mjs"
+  },
+  {
+    "status": "??",
+    "path": "tools/team-followup-20261001/BALANCE/fireball-contract.test.mjs"
+  },
+  {
+    "status": "??",
+    "path": "tools/team-followup-20261001/BALANCE/hit-test.tap"
+  },
+  {
+    "status": "??",
+    "path": "tools/team-followup-20261001/BALANCE/immediate-drain.test.mjs"
+  },
+  {
+    "status": "??",
+    "path": "tools/team-followup-20261001/BALANCE/next-doc-keywords.txt"
+  },
+  {
+    "status": "??",
+    "path": "tools/team-followup-20261001/BALANCE/next-tests.txt"
+  },
+  {
+    "status": "??",
+    "path": "tools/team-followup-20261001/BALANCE/save-inflight.test.mjs"
+  },
+  {
+    "status": "??",
+    "path": "tools/team-followup-20261001/BALANCE/shared-mats-atomic-candidate.mjs"
+  },
+  {
+    "status": "??",
+    "path": "tools/team-followup-20261001/BALANCE/shared-mats-atomic-doc-search.txt"
+  },
+  {
+    "status": "??",
+    "path": "tools/team-followup-20261001/BALANCE/shared-mats-atomic-evidence.json"
+  },
+  {
+    "status": "??",
+    "path": "tools/team-followup-20261001/BALANCE/shared-mats-atomic-integration.patch"
+  },
+  {
+    "status": "??",
+    "path": "tools/team-followup-20261001/BALANCE/shared-mats-atomic-receipt.json"
+  },
+  {
+    "status": "??",
+    "path": "tools/team-followup-20261001/BALANCE/shared-mats-atomic-test.mjs"
+  },
+  {
+    "status": "??",
+    "path": "tools/team-followup-20261001/BALANCE/shared-mats-atomic-tests.txt"
+  },
+  {
+    "status": "??",
+    "path": "tools/team-followup-20261001/BALANCE/unload-save-boundary.test.mjs"
+  },
+  {
+    "status": "??",
+    "path": "tools/team-followup-20261001/ENEMY/OWNER_IMPL_20261002-receipt.json"
+  },
+  {
+    "status": "??",
+    "path": "tools/team-followup-20261001/ENEMY/OWNER_IMPL_20261002-result.md"
+  },
+  {
+    "status": "??",
+    "path": "tools/team-followup-20261001/ENEMY/OWNER_NEXT_20261002-receipt.json"
+  },
+  {
+    "status": "??",
+    "path": "tools/team-followup-20261001/ENEMY/OWNER_NEXT_20261002-result.md"
+  },
+  {
+    "status": "??",
+    "path": "tools/team-followup-20261001/ENEMY/f06-source-roundrobin.fixture.mjs"
+  },
+  {
+    "status": "??",
+    "path": "tools/team-followup-20261001/ENEMY/f06-source-roundrobin.game-easy-test.patch"
+  },
+  {
+    "status": "??",
+    "path": "tools/team-followup-20261001/ENEMY/f06-source-roundrobin.game.patch"
+  },
+  {
+    "status": "??",
+    "path": "tools/team-followup-20261001/ENEMY/owner-integration-et3-probe.fixed.js"
+  },
+  {
+    "status": "??",
+    "path": "tools/team-followup-20261001/ENEMY/owner-integration-et3-probe.patch"
+  },
+  {
+    "status": "??",
+    "path": "tools/team-followup-20261001/ENEMY/roundrobin-boundary-receipt.json"
+  },
+  {
+    "status": "??",
+    "path": "tools/team-followup-20261001/ENEMY/roundrobin-boundary-result.md"
+  },
+  {
+    "status": "??",
+    "path": "tools/team-followup-20261001/ENEMY/roundrobin-boundary-task.md"
+  },
+  {
+    "status": "??",
+    "path": "tools/team-followup-20261001/ENEMY/roundrobin-boundary.before.txt"
+  },
+  {
+    "status": "??",
+    "path": "tools/team-followup-20261001/ENEMY/roundrobin-boundary.fixture.mjs"
+  },
+  {
+    "status": "??",
+    "path": "tools/team-followup-20261001/ENEMY/roundrobin-boundary.game-easy-test.patch"
+  },
+  {
+    "status": "??",
+    "path": "tools/team-followup-20261001/ENEMY/roundrobin-boundary.game.patch"
+  },
+  {
+    "status": "??",
+    "path": "tools/team-followup-20261001/ENEMY/roundrobin-order-effects-receipt.json"
+  },
+  {
+    "status": "??",
+    "path": "tools/team-followup-20261001/ENEMY/roundrobin-order-effects-result.md"
+  },
+  {
+    "status": "??",
+    "path": "tools/team-followup-20261001/ENEMY/roundrobin-order-effects-task.md"
+  },
+  {
+    "status": "??",
+    "path": "tools/team-followup-20261001/ENEMY/roundrobin-order-effects.fixture.mjs"
+  },
+  {
+    "status": "??",
+    "path": "tools/team-followup-20261001/ITEM/browser-bootstrap-docs-all.txt"
+  },
+  {
+    "status": "??",
+    "path": "tools/team-followup-20261001/ITEM/browser-bootstrap-docs-related.txt"
+  },
+  {
+    "status": "??",
+    "path": "tools/team-followup-20261001/ITEM/browser-csp-analysis.mjs"
+  },
+  {
+    "status": "??",
+    "path": "tools/team-followup-20261001/ITEM/browser-csp-check.mjs"
+  },
+  {
+    "status": "??",
+    "path": "tools/team-followup-20261001/ITEM/browser-csp-docs-related.txt"
+  },
+  {
+    "status": "??",
+    "path": "tools/team-followup-20261001/ITEM/browser-csp-evidence.json"
+  },
+  {
+    "status": "??",
+    "path": "tools/team-followup-20261001/ITEM/browser-csp-receipt.json"
+  },
+  {
+    "status": "??",
+    "path": "tools/team-followup-20261001/ITEM/browser-csp-result.md"
+  },
+  {
+    "status": "??",
+    "path": "tools/team-followup-20261001/ITEM/browser-csp-task.md"
+  },
+  {
+    "status": "??",
+    "path": "tools/team-followup-20261001/ITEM/browser-csp/diagnostic.html"
+  },
+  {
+    "status": "??",
+    "path": "tools/team-followup-20261001/ITEM/browser-csp/diagnostic.js"
+  },
+  {
+    "status": "??",
+    "path": "tools/team-followup-20261001/ITEM/browser-host-docs-related.txt"
+  },
+  {
+    "status": "??",
+    "path": "tools/team-followup-20261001/ITEM/d13-deferred-contract-candidate.mjs"
+  },
+  {
+    "status": "??",
+    "path": "tools/team-followup-20261001/ITEM/d13-deferred-contract-check.mjs"
+  },
+  {
+    "status": "??",
+    "path": "tools/team-followup-20261001/ITEM/d13-deferred-contract-evidence.json"
+  },
+  {
+    "status": "??",
+    "path": "tools/team-followup-20261001/ITEM/d13-deferred-contract-fixture.mjs"
+  },
+  {
+    "status": "??",
+    "path": "tools/team-followup-20261001/ITEM/d13-deferred-contract-receipt.json"
+  },
+  {
+    "status": "??",
+    "path": "tools/team-followup-20261001/ITEM/d13-deferred-contract-result.md"
+  },
+  {
+    "status": "??",
+    "path": "tools/team-followup-20261001/ITEM/d17-zone-selection-check.mjs"
+  },
+  {
+    "status": "??",
+    "path": "tools/team-followup-20261001/ITEM/d17-zone-selection-evidence.json"
+  },
+  {
+    "status": "??",
+    "path": "tools/team-followup-20261001/ITEM/d17-zone-selection-receipt.json"
+  },
+  {
+    "status": "??",
+    "path": "tools/team-followup-20261001/ITEM/d17-zone-selection-result.md"
+  },
+  {
+    "status": "??",
+    "path": "tools/team-followup-20261001/ITEM/d17-zone-selection-task.md"
+  },
+  {
+    "status": "??",
+    "path": "tools/team-followup-20261001/ITEM/docs-related.txt"
+  },
+  {
+    "status": "??",
+    "path": "tools/team-followup-20261001/ITEM/integration-bundle-check.mjs"
+  },
+  {
+    "status": "??",
+    "path": "tools/team-followup-20261001/ITEM/integration-validation.txt"
+  },
+  {
+    "status": "??",
+    "path": "tools/team-followup-20261001/ITEM/next-docs-related.txt"
+  },
+  {
+    "status": "??",
+    "path": "tools/team-followup-20261001/ITEM/persistence-integration-check.mjs"
+  },
+  {
+    "status": "??",
+    "path": "tools/team-followup-20261001/ITEM/persistence-integration-docs-related.txt"
+  },
+  {
+    "status": "??",
+    "path": "tools/team-followup-20261001/ITEM/persistence-integration-evidence.json"
+  },
+  {
+    "status": "??",
+    "path": "tools/team-followup-20261001/ITEM/persistence-integration-minimal.patch"
+  },
+  {
+    "status": "??",
+    "path": "tools/team-followup-20261001/ITEM/persistence-integration-receipt.json"
+  },
+  {
+    "status": "??",
+    "path": "tools/team-followup-20261001/ITEM/persistence-integration-result.md"
+  },
+  {
+    "status": "??",
+    "path": "tools/team-followup-20261001/ITEM/rgb-attribution.mjs"
+  },
+  {
+    "status": "??",
+    "path": "tools/team-followup-20261001/ITEM/rgb-docs-related.txt"
+  },
+  {
+    "status": "??",
+    "path": "tools/team-followup-20261001/ITEM/rgb-receipt.json"
+  },
+  {
+    "status": "??",
+    "path": "tools/team-followup-20261001/ITEM/rgb-result.md"
+  },
+  {
+    "status": "??",
+    "path": "tools/team-followup-20261001/ITEM/rgb-stages.json"
+  },
+  {
+    "status": "??",
+    "path": "tools/team-followup-20261001/ITEM/ring-png-candidate.js"
+  },
+  {
+    "status": "??",
+    "path": "tools/team-followup-20261001/ITEM/ring-png-candidate.test.mjs"
+  },
+  {
+    "status": "??",
+    "path": "tools/team-followup-20261001/ITEM/ring-png-minimal.patch"
+  },
+  {
+    "status": "??",
+    "path": "tools/team-followup-20261001/ITEM/ring_phys_native_roundtrip.png"
+  },
+  {
+    "status": "??",
+    "path": "tools/team-followup-20261001/MAP/OWNER_IMPL_20261002-receipt.json"
+  },
+  {
+    "status": "??",
+    "path": "tools/team-followup-20261001/MAP/OWNER_IMPL_20261002-result.md"
+  },
+  {
+    "status": "??",
+    "path": "tools/team-followup-20261001/MAP/OWNER_NEXT_20261002-receipt.json"
+  },
+  {
+    "status": "??",
+    "path": "tools/team-followup-20261001/MAP/OWNER_NEXT_20261002-result.md"
+  },
+  {
+    "status": "??",
+    "path": "tools/team-followup-20261001/MAP/_source-candidate-MAP.js"
+  },
+  {
+    "status": "??",
+    "path": "tools/team-followup-20261001/MAP/_source-검증결과.md"
+  },
+  {
+    "status": "??",
+    "path": "tools/team-followup-20261001/MAP/cleanup-retry-after.json"
+  },
+  {
+    "status": "??",
+    "path": "tools/team-followup-20261001/MAP/cleanup-retry-before-observer.js"
+  },
+  {
+    "status": "??",
+    "path": "tools/team-followup-20261001/MAP/cleanup-retry-fixture-output.txt"
+  },
+  {
+    "status": "??",
+    "path": "tools/team-followup-20261001/MAP/cleanup-retry-fixture.cjs"
+  },
+  {
+    "status": "??",
+    "path": "tools/team-followup-20261001/MAP/cleanup-retry-receipt.json"
+  },
+  {
+    "status": "??",
+    "path": "tools/team-followup-20261001/MAP/cleanup-retry-result.md"
+  },
+  {
+    "status": "??",
+    "path": "tools/team-followup-20261001/MAP/cleanup-retry-task.md"
+  },
+  {
+    "status": "??",
+    "path": "tools/team-followup-20261001/MAP/gate-test-output.txt"
+  },
+  {
+    "status": "??",
+    "path": "tools/team-followup-20261001/MAP/m5-evidence-gate.cjs"
+  },
+  {
+    "status": "??",
+    "path": "tools/team-followup-20261001/MAP/m5-evidence-gate.test.cjs"
+  },
+  {
+    "status": "??",
+    "path": "tools/team-followup-20261001/MAP/m5-walk-harness.safe.js"
+  },
+  {
+    "status": "??",
+    "path": "tools/team-followup-20261001/MAP/manual-input-fixture-output.txt"
+  },
+  {
+    "status": "??",
+    "path": "tools/team-followup-20261001/MAP/manual-input-fixture.cjs"
+  },
+  {
+    "status": "??",
+    "path": "tools/team-followup-20261001/MAP/manual-input-observer.js"
+  },
+  {
+    "status": "??",
+    "path": "tools/team-followup-20261001/MAP/manual-lifecycle-after.json"
+  },
+  {
+    "status": "??",
+    "path": "tools/team-followup-20261001/MAP/manual-lifecycle-fixture-output.txt"
+  },
+  {
+    "status": "??",
+    "path": "tools/team-followup-20261001/MAP/manual-lifecycle-fixture.cjs"
+  },
+  {
+    "status": "??",
+    "path": "tools/team-followup-20261001/MAP/mock-check-output.txt"
+  },
+  {
+    "status": "??",
+    "path": "tools/team-followup-20261001/MAP/mock-harness-check.cjs"
+  },
+  {
+    "status": "??",
+    "path": "tools/team-followup-20261001/MAP/real-evidence-verdict.json"
+  },
+  {
+    "status": "??",
+    "path": "tools/team-followup-20261001/MAP/visual-eight-view-preparation-contact-sheet.html"
+  },
+  {
+    "status": "??",
+    "path": "tools/team-followup-20261001/MAP/visual-eight-view-preparation-manifest.json"
+  },
+  {
+    "status": "??",
+    "path": "tools/team-followup-20261001/MAP/visual-eight-view-preparation-receipt.json"
+  },
+  {
+    "status": "??",
+    "path": "tools/team-followup-20261001/MAP/visual-eight-view-preparation-result.md"
+  },
+  {
+    "status": "??",
+    "path": "tools/team-followup-20261001/MAP/visual-eight-view-preparation-task.md"
+  },
+  {
+    "status": "??",
+    "path": "tools/team-followup-20261001/QA/busy-save-independent-regression.mjs"
+  },
+  {
+    "status": "??",
+    "path": "tools/team-followup-20261001/QA/busy-save-independent-task.md"
+  },
+  {
+    "status": "??",
+    "path": "tools/team-followup-20261001/SKILL/OWNER_IMPL_20261002-receipt.json"
+  },
+  {
+    "status": "??",
+    "path": "tools/team-followup-20261001/SKILL/OWNER_IMPL_20261002-result.md"
+  },
+  {
+    "status": "??",
+    "path": "tools/team-followup-20261001/SKILL/_source-candidate-SKILL.js"
+  },
+  {
+    "status": "??",
+    "path": "tools/team-followup-20261001/SKILL/_source-검증결과.md"
+  },
+  {
+    "status": "??",
+    "path": "tools/team-followup-20261001/SKILL/aim-resource-next-before-ts.txt"
+  },
+  {
+    "status": "??",
+    "path": "tools/team-followup-20261001/SKILL/aim-resource-next-easy.patch"
+  },
+  {
+    "status": "??",
+    "path": "tools/team-followup-20261001/SKILL/aim-resource-next-game.patch"
+  },
+  {
+    "status": "??",
+    "path": "tools/team-followup-20261001/SKILL/aim-resource-next-gate.test.mjs"
+  },
+  {
+    "status": "??",
+    "path": "tools/team-followup-20261001/SKILL/aim-resource-next-receipt.json"
+  },
+  {
+    "status": "??",
+    "path": "tools/team-followup-20261001/SKILL/aim-resource-next-result.md"
+  },
+  {
+    "status": "??",
+    "path": "tools/team-followup-20261001/SKILL/aim-resource-next-task.md"
+  },
+  {
+    "status": "??",
+    "path": "tools/team-followup-20261001/SKILL/mortar-confirm-source-before.txt"
+  },
+  {
+    "status": "??",
+    "path": "tools/team-followup-20261001/SKILL/mortar-confirm-source-easy.patch"
+  },
+  {
+    "status": "??",
+    "path": "tools/team-followup-20261001/SKILL/mortar-confirm-source-game.patch"
+  },
+  {
+    "status": "??",
+    "path": "tools/team-followup-20261001/SKILL/mortar-confirm-source-receipt.json"
+  },
+  {
+    "status": "??",
+    "path": "tools/team-followup-20261001/SKILL/mortar-confirm-source-result.md"
+  },
+  {
+    "status": "??",
+    "path": "tools/team-followup-20261001/SKILL/mortar-confirm-source-task.md"
+  },
+  {
+    "status": "??",
+    "path": "tools/team-followup-20261001/SKILL/mortar-confirm-source.test.mjs"
+  },
+  {
+    "status": "??",
+    "path": "tools/team-followup-20261001/SKILL/owner-integration-ice-cancel-probe.js"
+  },
+  {
+    "status": "??",
+    "path": "tools/team-followup-20261001/SKILL/owner-integration.patch"
+  },
+  {
+    "status": "??",
+    "path": "tools/team-followup-20261001/UIUX/QA-capture-conditions.md"
+  },
+  {
+    "status": "??",
+    "path": "tools/team-followup-20261001/UIUX/audit-dense.mjs"
+  },
+  {
+    "status": "??",
+    "path": "tools/team-followup-20261001/UIUX/build-priority-candidate.mjs"
+  },
+  {
+    "status": "??",
+    "path": "tools/team-followup-20261001/UIUX/card-removal-focus-doc-matches.txt"
+  },
+  {
+    "status": "??",
+    "path": "tools/team-followup-20261001/UIUX/card-removal-focus-easy-combined.patch"
+  },
+  {
+    "status": "??",
+    "path": "tools/team-followup-20261001/UIUX/card-removal-focus-easy-minimal.patch"
+  },
+  {
+    "status": "??",
+    "path": "tools/team-followup-20261001/UIUX/card-removal-focus-final-hashes.json"
+  },
+  {
+    "status": "??",
+    "path": "tools/team-followup-20261001/UIUX/card-removal-focus-generate.mjs"
+  },
+  {
+    "status": "??",
+    "path": "tools/team-followup-20261001/UIUX/card-removal-focus-main-combined.patch"
+  },
+  {
+    "status": "??",
+    "path": "tools/team-followup-20261001/UIUX/card-removal-focus-main-minimal.patch"
+  },
+  {
+    "status": "??",
+    "path": "tools/team-followup-20261001/UIUX/card-removal-focus-provenance.json"
+  },
+  {
+    "status": "??",
+    "path": "tools/team-followup-20261001/UIUX/card-removal-focus-receipt.json"
+  },
+  {
+    "status": "??",
+    "path": "tools/team-followup-20261001/UIUX/card-removal-focus-reproduction.json"
+  },
+  {
+    "status": "??",
+    "path": "tools/team-followup-20261001/UIUX/card-removal-focus-result.md"
+  },
+  {
+    "status": "??",
+    "path": "tools/team-followup-20261001/UIUX/card-removal-focus-task.md"
+  },
+  {
+    "status": "??",
+    "path": "tools/team-followup-20261001/UIUX/card-removal-focus-validation.txt"
+  },
+  {
+    "status": "??",
+    "path": "tools/team-followup-20261001/UIUX/card-removal-focus.test.mjs"
+  },
+  {
+    "status": "??",
+    "path": "tools/team-followup-20261001/UIUX/card-removal-focus/host/before/game-easy-test.html.combined"
+  },
+  {
+    "status": "??",
+    "path": "tools/team-followup-20261001/UIUX/card-removal-focus/host/before/game-easy-test.html.minimal"
+  },
+  {
+    "status": "??",
+    "path": "tools/team-followup-20261001/UIUX/card-removal-focus/host/before/game.html.combined"
+  },
+  {
+    "status": "??",
+    "path": "tools/team-followup-20261001/UIUX/card-removal-focus/host/before/game.html.minimal"
+  },
+  {
+    "status": "??",
+    "path": "tools/team-followup-20261001/UIUX/card-removal-focus/host/before/img__ui__ossuary_socket_hf_v2.png"
+  },
+  {
+    "status": "??",
+    "path": "tools/team-followup-20261001/UIUX/card-removal-focus/host/before/inventory-space.css"
+  },
+  {
+    "status": "??",
+    "path": "tools/team-followup-20261001/UIUX/card-removal-focus/host/before/outputs__team-review-20261002__persistence__uiux-native-focus.jpg"
+  },
+  {
+    "status": "??",
+    "path": "tools/team-followup-20261001/UIUX/card-removal-focus/host/before/outputs__team-review-20261002__persistence__uiux-native-focus.json"
+  },
+  {
+    "status": "??",
+    "path": "tools/team-followup-20261001/UIUX/card-removal-focus/host/before/tools__team-followup-20261001__UIUX__inventory-dom-candidate.mjs"
+  },
+  {
+    "status": "??",
+    "path": "tools/team-followup-20261001/UIUX/card-removal-focus/host/before/tools__team-followup-20261001__UIUX__inventory-dom-easy-minimal.patch"
+  },
+  {
+    "status": "??",
+    "path": "tools/team-followup-20261001/UIUX/card-removal-focus/host/before/tools__team-followup-20261001__UIUX__inventory-dom-main-minimal.patch"
+  },
+  {
+    "status": "??",
+    "path": "tools/team-followup-20261001/UIUX/card-removal-focus/host/before/tools__team-followup-20261001__UIUX__inventory-dom-provenance.json"
+  },
+  {
+    "status": "??",
+    "path": "tools/team-followup-20261001/UIUX/card-removal-focus/host/before/tools__team-followup-20261001__UIUX__inventory-dom__harness.mjs"
+  },
+  {
+    "status": "??",
+    "path": "tools/team-followup-20261001/UIUX/card-removal-focus/host/before/tools__team-followup-20261001__UIUX__inventory-dom__host.html"
+  },
+  {
+    "status": "??",
+    "path": "tools/team-followup-20261001/UIUX/card-removal-focus/host/before/tools__team-followup-20261001__UIUX__inventory-dom__source-data.mjs"
+  },
+  {
+    "status": "??",
+    "path": "tools/team-followup-20261001/UIUX/card-removal-focus/host/before/tools__team-followup-20261001__UIUX__inventory-focus-candidate.mjs"
+  },
+  {
+    "status": "??",
+    "path": "tools/team-followup-20261001/UIUX/card-removal-focus/host/before/tools__team-followup-20261001__UIUX__inventory-focus-easy.patch"
+  },
+  {
+    "status": "??",
+    "path": "tools/team-followup-20261001/UIUX/card-removal-focus/host/before/tools__team-followup-20261001__UIUX__inventory-focus-main.patch"
+  },
+  {
+    "status": "??",
+    "path": "tools/team-followup-20261001/UIUX/card-removal-focus/host/before/tools__team-followup-20261001__UIUX__native-focus-doc-matches.txt"
+  },
+  {
+    "status": "??",
+    "path": "tools/team-followup-20261001/UIUX/card-removal-focus/host/before/tools__team-followup-20261001__UIUX__native-focus-easy-combined.patch"
+  },
+  {
+    "status": "??",
+    "path": "tools/team-followup-20261001/UIUX/card-removal-focus/host/before/tools__team-followup-20261001__UIUX__native-focus-easy-focus.patch"
+  },
+  {
+    "status": "??",
+    "path": "tools/team-followup-20261001/UIUX/card-removal-focus/host/before/tools__team-followup-20261001__UIUX__native-focus-final-hashes.json"
+  },
+  {
+    "status": "??",
+    "path": "tools/team-followup-20261001/UIUX/card-removal-focus/host/before/tools__team-followup-20261001__UIUX__native-focus-generate.mjs"
+  },
+  {
+    "status": "??",
+    "path": "tools/team-followup-20261001/UIUX/card-removal-focus/host/before/tools__team-followup-20261001__UIUX__native-focus-http.json"
+  },
+  {
+    "status": "??",
+    "path": "tools/team-followup-20261001/UIUX/card-removal-focus/host/before/tools__team-followup-20261001__UIUX__native-focus-main-combined.patch"
+  },
+  {
+    "status": "??",
+    "path": "tools/team-followup-20261001/UIUX/card-removal-focus/host/before/tools__team-followup-20261001__UIUX__native-focus-main-focus.patch"
+  },
+  {
+    "status": "??",
+    "path": "tools/team-followup-20261001/UIUX/card-removal-focus/host/before/tools__team-followup-20261001__UIUX__native-focus-manifest.json"
+  },
+  {
+    "status": "??",
+    "path": "tools/team-followup-20261001/UIUX/card-removal-focus/host/before/tools__team-followup-20261001__UIUX__native-focus-receipt.json"
+  },
+  {
+    "status": "??",
+    "path": "tools/team-followup-20261001/UIUX/card-removal-focus/host/before/tools__team-followup-20261001__UIUX__native-focus-result.md"
+  },
+  {
+    "status": "??",
+    "path": "tools/team-followup-20261001/UIUX/card-removal-focus/host/before/tools__team-followup-20261001__UIUX__native-focus-task.md"
+  },
+  {
+    "status": "??",
+    "path": "tools/team-followup-20261001/UIUX/card-removal-focus/host/before/tools__team-followup-20261001__UIUX__native-focus-validation.txt"
+  },
+  {
+    "status": "??",
+    "path": "tools/team-followup-20261001/UIUX/card-removal-focus/host/before/tools__team-followup-20261001__UIUX__native-focus__before__inventory-dom-candidate.mjs"
+  },
+  {
+    "status": "??",
+    "path": "tools/team-followup-20261001/UIUX/card-removal-focus/host/before/tools__team-followup-20261001__UIUX__native-focus__before__inventory-dom-easy-minimal.patch"
+  },
+  {
+    "status": "??",
+    "path": "tools/team-followup-20261001/UIUX/card-removal-focus/host/before/tools__team-followup-20261001__UIUX__native-focus__before__inventory-dom-main-minimal.patch"
+  },
+  {
+    "status": "??",
+    "path": "tools/team-followup-20261001/UIUX/card-removal-focus/host/before/tools__team-followup-20261001__UIUX__native-focus__before__inventory-dom-provenance.json"
+  },
+  {
+    "status": "??",
+    "path": "tools/team-followup-20261001/UIUX/card-removal-focus/host/before/tools__team-followup-20261001__UIUX__native-focus__before__inventory-dom__harness.mjs"
+  },
+  {
+    "status": "??",
+    "path": "tools/team-followup-20261001/UIUX/card-removal-focus/host/before/tools__team-followup-20261001__UIUX__native-focus__before__inventory-dom__host.html"
+  },
+  {
+    "status": "??",
+    "path": "tools/team-followup-20261001/UIUX/card-removal-focus/host/before/tools__team-followup-20261001__UIUX__native-focus__before__inventory-dom__source-data.mjs"
+  },
+  {
+    "status": "??",
+    "path": "tools/team-followup-20261001/UIUX/card-removal-focus/host/before/tools__team-followup-20261001__UIUX__native-focus__before__inventory-focus-candidate.mjs"
+  },
+  {
+    "status": "??",
+    "path": "tools/team-followup-20261001/UIUX/card-removal-focus/host/before/tools__team-followup-20261001__UIUX__native-focus__before__inventory-focus-easy.patch"
+  },
+  {
+    "status": "??",
+    "path": "tools/team-followup-20261001/UIUX/card-removal-focus/host/before/tools__team-followup-20261001__UIUX__native-focus__before__inventory-focus-main.patch"
+  },
+  {
+    "status": "??",
+    "path": "tools/team-followup-20261001/UIUX/card-removal-focus/host/before/tools__team-followup-20261001__UIUX__native-focus__controller.js"
+  },
+  {
+    "status": "??",
+    "path": "tools/team-followup-20261001/UIUX/card-removal-focus/host/before/tools__team-followup-20261001__UIUX__native-focus__current-function-text.json"
+  },
+  {
+    "status": "??",
+    "path": "tools/team-followup-20261001/UIUX/card-removal-focus/host/before/tools__team-followup-20261001__UIUX__native-focus__harness.js"
+  },
+  {
+    "status": "??",
+    "path": "tools/team-followup-20261001/UIUX/card-removal-focus/host/before/tools__team-followup-20261001__UIUX__native-focus__host.html"
+  },
+  {
+    "status": "??",
+    "path": "tools/team-followup-20261001/UIUX/card-removal-focus/host/before/tools__team-followup-20261001__UIUX__native-focus__source-data.js"
+  },
+  {
+    "status": "??",
+    "path": "tools/team-followup-20261001/UIUX/card-removal-focus/host/controller.js"
+  },
+  {
+    "status": "??",
+    "path": "tools/team-followup-20261001/UIUX/card-removal-focus/host/host.html"
+  },
+  {
+    "status": "??",
+    "path": "tools/team-followup-20261001/UIUX/charge-priority.candidate.diff"
+  },
+  {
+    "status": "??",
+    "path": "tools/team-followup-20261001/UIUX/demo-scope-candidate.test.mjs"
+  },
+  {
+    "status": "??",
+    "path": "tools/team-followup-20261001/UIUX/demo-scope-english-translation-index.html"
+  },
+  {
+    "status": "??",
+    "path": "tools/team-followup-20261001/UIUX/demo-scope-english-translation.test.mjs"
+  },
+  {
+    "status": "??",
+    "path": "tools/team-followup-20261001/UIUX/demo-scope-new-level-index.html"
+  },
+  {
+    "status": "??",
+    "path": "tools/team-followup-20261001/UIUX/demo-scope-new-level.test.mjs"
+  },
+  {
+    "status": "??",
+    "path": "tools/team-followup-20261001/UIUX/demo-scope-original.test.mjs"
+  },
+  {
+    "status": "??",
+    "path": "tools/team-followup-20261001/UIUX/demo-scope-saved-progress-index.html"
+  },
+  {
+    "status": "??",
+    "path": "tools/team-followup-20261001/UIUX/demo-scope-saved-progress.test.mjs"
+  },
+  {
+    "status": "??",
+    "path": "tools/team-followup-20261001/UIUX/demo-scope-unapplied.test.js"
+  },
+  {
+    "status": "??",
+    "path": "tools/team-followup-20261001/UIUX/dense-audit.json"
+  },
+  {
+    "status": "??",
+    "path": "tools/team-followup-20261001/UIUX/inventory-dom-doc-matches.txt"
+  },
+  {
+    "status": "??",
+    "path": "tools/team-followup-20261001/UIUX/inventory-dom-easy-combined.patch"
+  },
+  {
+    "status": "??",
+    "path": "tools/team-followup-20261001/UIUX/inventory-dom-easy-minimal.patch"
+  },
+  {
+    "status": "??",
+    "path": "tools/team-followup-20261001/UIUX/inventory-dom-evidence.json"
+  },
+  {
+    "status": "??",
+    "path": "tools/team-followup-20261001/UIUX/inventory-dom-existing-reproduction.json"
+  },
+  {
+    "status": "??",
+    "path": "tools/team-followup-20261001/UIUX/inventory-dom-existing-validation.txt"
+  },
+  {
+    "status": "??",
+    "path": "tools/team-followup-20261001/UIUX/inventory-dom-existing.test.mjs"
+  },
+  {
+    "status": "??",
+    "path": "tools/team-followup-20261001/UIUX/inventory-dom-final-check.json"
+  },
+  {
+    "status": "??",
+    "path": "tools/team-followup-20261001/UIUX/inventory-dom-final-hashes.json"
+  },
+  {
+    "status": "??",
+    "path": "tools/team-followup-20261001/UIUX/inventory-dom-generate.mjs"
+  },
+  {
+    "status": "??",
+    "path": "tools/team-followup-20261001/UIUX/inventory-dom-main-combined.patch"
+  },
+  {
+    "status": "??",
+    "path": "tools/team-followup-20261001/UIUX/inventory-dom-main-minimal.patch"
+  },
+  {
+    "status": "??",
+    "path": "tools/team-followup-20261001/UIUX/inventory-dom-original-drift.json"
+  },
+  {
+    "status": "??",
+    "path": "tools/team-followup-20261001/UIUX/inventory-dom-provenance.json"
+  },
+  {
+    "status": "??",
+    "path": "tools/team-followup-20261001/UIUX/inventory-dom-receipt.json"
+  },
+  {
+    "status": "??",
+    "path": "tools/team-followup-20261001/UIUX/inventory-dom-result.md"
+  },
+  {
+    "status": "??",
+    "path": "tools/team-followup-20261001/UIUX/inventory-dom-shared-validation.txt"
+  },
+  {
+    "status": "??",
+    "path": "tools/team-followup-20261001/UIUX/inventory-dom-validation.txt"
+  },
+  {
+    "status": "??",
+    "path": "tools/team-followup-20261001/UIUX/inventory-dom.test.mjs"
+  },
+  {
+    "status": "??",
+    "path": "tools/team-followup-20261001/UIUX/inventory-dom/harness.mjs"
+  },
+  {
+    "status": "??",
+    "path": "tools/team-followup-20261001/UIUX/inventory-dom/host.html"
+  },
+  {
+    "status": "??",
+    "path": "tools/team-followup-20261001/UIUX/inventory-dom/source-data.mjs"
+  },
+  {
+    "status": "??",
+    "path": "tools/team-followup-20261001/UIUX/inventory-focus-doc-matches.txt"
+  },
+  {
+    "status": "??",
+    "path": "tools/team-followup-20261001/UIUX/layout-validation.txt"
+  },
+  {
+    "status": "??",
+    "path": "tools/team-followup-20261001/UIUX/native-focus-doc-matches.txt"
+  },
+  {
+    "status": "??",
+    "path": "tools/team-followup-20261001/UIUX/native-focus-easy-combined.patch"
+  },
+  {
+    "status": "??",
+    "path": "tools/team-followup-20261001/UIUX/native-focus-easy-focus.patch"
+  },
+  {
+    "status": "??",
+    "path": "tools/team-followup-20261001/UIUX/native-focus-final-hashes.json"
+  },
+  {
+    "status": "??",
+    "path": "tools/team-followup-20261001/UIUX/native-focus-generate.mjs"
+  },
+  {
+    "status": "??",
+    "path": "tools/team-followup-20261001/UIUX/native-focus-http.json"
+  },
+  {
+    "status": "??",
+    "path": "tools/team-followup-20261001/UIUX/native-focus-main-combined.patch"
+  },
+  {
+    "status": "??",
+    "path": "tools/team-followup-20261001/UIUX/native-focus-main-focus.patch"
+  },
+  {
+    "status": "??",
+    "path": "tools/team-followup-20261001/UIUX/native-focus-manifest.json"
+  },
+  {
+    "status": "??",
+    "path": "tools/team-followup-20261001/UIUX/native-focus-receipt.json"
+  },
+  {
+    "status": "??",
+    "path": "tools/team-followup-20261001/UIUX/native-focus-result.md"
+  },
+  {
+    "status": "??",
+    "path": "tools/team-followup-20261001/UIUX/native-focus-task.md"
+  },
+  {
+    "status": "??",
+    "path": "tools/team-followup-20261001/UIUX/native-focus-validation.txt"
+  },
+  {
+    "status": "??",
+    "path": "tools/team-followup-20261001/UIUX/native-focus.test.mjs"
+  },
+  {
+    "status": "??",
+    "path": "tools/team-followup-20261001/UIUX/native-focus/before/inventory-dom-candidate.mjs"
+  },
+  {
+    "status": "??",
+    "path": "tools/team-followup-20261001/UIUX/native-focus/before/inventory-dom-easy-minimal.patch"
+  },
+  {
+    "status": "??",
+    "path": "tools/team-followup-20261001/UIUX/native-focus/before/inventory-dom-main-minimal.patch"
+  },
+  {
+    "status": "??",
+    "path": "tools/team-followup-20261001/UIUX/native-focus/before/inventory-dom-provenance.json"
+  },
+  {
+    "status": "??",
+    "path": "tools/team-followup-20261001/UIUX/native-focus/before/inventory-dom__harness.mjs"
+  },
+  {
+    "status": "??",
+    "path": "tools/team-followup-20261001/UIUX/native-focus/before/inventory-dom__host.html"
+  },
+  {
+    "status": "??",
+    "path": "tools/team-followup-20261001/UIUX/native-focus/before/inventory-dom__source-data.mjs"
+  },
+  {
+    "status": "??",
+    "path": "tools/team-followup-20261001/UIUX/native-focus/before/inventory-focus-candidate.mjs"
+  },
+  {
+    "status": "??",
+    "path": "tools/team-followup-20261001/UIUX/native-focus/before/inventory-focus-easy.patch"
+  },
+  {
+    "status": "??",
+    "path": "tools/team-followup-20261001/UIUX/native-focus/before/inventory-focus-main.patch"
+  },
+  {
+    "status": "??",
+    "path": "tools/team-followup-20261001/UIUX/native-focus/controller.js"
+  },
+  {
+    "status": "??",
+    "path": "tools/team-followup-20261001/UIUX/native-focus/current-function-text.json"
+  },
+  {
+    "status": "??",
+    "path": "tools/team-followup-20261001/UIUX/native-focus/harness.js"
+  },
+  {
+    "status": "??",
+    "path": "tools/team-followup-20261001/UIUX/native-focus/host.html"
+  },
+  {
+    "status": "??",
+    "path": "tools/team-followup-20261001/UIUX/native-focus/source-data.js"
+  },
+  {
+    "status": "??",
+    "path": "tools/team-followup-20261001/UIUX/next-doc-matches.txt"
+  },
+  {
+    "status": "??",
+    "path": "tools/team-followup-20261001/UIUX/ossuary-focus-before.json"
+  },
+  {
+    "status": "??",
+    "path": "tools/team-followup-20261001/UIUX/ossuary-focus-candidate.mjs"
+  },
+  {
+    "status": "??",
+    "path": "tools/team-followup-20261001/UIUX/ossuary-focus-dependencies.json"
+  },
+  {
+    "status": "??",
+    "path": "tools/team-followup-20261001/UIUX/ossuary-focus-doc-matches.txt"
+  },
+  {
+    "status": "??",
+    "path": "tools/team-followup-20261001/UIUX/ossuary-focus-easy.before.html"
+  },
+  {
+    "status": "??",
+    "path": "tools/team-followup-20261001/UIUX/ossuary-focus-easy.patch"
+  },
+  {
+    "status": "??",
+    "path": "tools/team-followup-20261001/UIUX/ossuary-focus-extra-source.json"
+  },
+  {
+    "status": "??",
+    "path": "tools/team-followup-20261001/UIUX/ossuary-focus-final-hashes.json"
+  },
+  {
+    "status": "??",
+    "path": "tools/team-followup-20261001/UIUX/ossuary-focus-fixture.mjs"
+  },
+  {
+    "status": "??",
+    "path": "tools/team-followup-20261001/UIUX/ossuary-focus-main.before.html"
+  },
+  {
+    "status": "??",
+    "path": "tools/team-followup-20261001/UIUX/ossuary-focus-main.patch"
+  },
+  {
+    "status": "??",
+    "path": "tools/team-followup-20261001/UIUX/ossuary-focus-prepare.mjs"
+  },
+  {
+    "status": "??",
+    "path": "tools/team-followup-20261001/UIUX/ossuary-focus-receipt.json"
+  },
+  {
+    "status": "??",
+    "path": "tools/team-followup-20261001/UIUX/ossuary-focus-reproduction.json"
+  },
+  {
+    "status": "??",
+    "path": "tools/team-followup-20261001/UIUX/ossuary-focus-result.md"
+  },
+  {
+    "status": "??",
+    "path": "tools/team-followup-20261001/UIUX/ossuary-focus-ui-panels.before.js"
+  },
+  {
+    "status": "??",
+    "path": "tools/team-followup-20261001/UIUX/ossuary-focus-validation.txt"
+  },
+  {
+    "status": "??",
+    "path": "tools/team-followup-20261001/UIUX/ossuary-focus.test.mjs"
+  },
+  {
+    "status": "??",
+    "path": "tools/team-followup-20261001/UIUX/priority-validation.json"
+  },
+  {
+    "status": "??",
+    "path": "tools/team-followup-20261001/root-review/map-cleanup-acceptance.mjs"
+  },
+  {
+    "status": "??",
+    "path": "tools/team-followup-20261001/root-review/persistence-cycle-counterexamples.mjs"
+  },
+  {
+    "status": "??",
+    "path": "tools/team-followup-20261001/root-review/submission-boundaries.mjs"
+  }
+]
