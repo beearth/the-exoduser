@@ -101,3 +101,9 @@
 
 ### 2026-10-02 UI-04 필터 초점 후속 생산 인수
 필터 버튼 재생성 뒤 BODY로 빠지는32반례를 보존하고 key/value 기반 동일 새 버튼 복귀만 적용했다. 생산55그룹·양쪽 inline 구문 PASS, 저장/경제/전투/ui-panels.js/CSS 변경0. renderOssPanel 세부는 대역이며 실제 UI 게이트는 유지한다. [인수·실패 이력·한계](../0마스터플랜/mac-resume-20261001/vscode-dispatch/FILTER-INTEGRATION-20261002.md).
+
+### 2026-10-02 유골함 행동 비활성화 초점 생산 반영
+
+양쪽 HTML의 focus factory에 releaseOssuaryAction을 추가하고 renderOssPanel 시작의 활성요소 포착 및 take/remove 갱신 뒤 호출만 반영했다. 선택 유골·유골함 해제로 활성 행동이 disabled가 되면 invClose로 이동하고, 숨긴 닫기로 복귀할 수 없으면 내부 disabled 잔류만 blur한다. 외부/다른 활성 컨트롤 초점은 강탈하지 않는다. 저장·유골 생성/등록/해제·장착·경제·RNG·CSS/ui-panels 원문은 보존했다.
+
+현재 생산 실제 함수/조합 검수34+기존filter32=66그룹 PASS, 전체 inline12개/importmap2 구문 통과. 유골함34는 renderOssPanel 원문을 실행했고 filter32의 renderOssPanel 대역 한계를 분리한다. 실제 키보드·패드·픽셀·전체게임·실저장은 미검수로 UI-04 전체 완료가 아니다. 과거 filter-only exact-byte 표는 이력이며 현재는 connectOssuary(connectFilter(original))와 정확 일치. root-review/four-candidate-acceptance.mjs ui --production 및 four-filter-adjacent.mjs --production으로 재현한다.

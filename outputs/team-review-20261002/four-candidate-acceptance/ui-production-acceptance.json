@@ -1,0 +1,17 @@
+{
+  "at": "2026-10-01T18:45:36.344Z",
+  "sources": {
+    "game.html": {
+      "before": "6a8b523a4c91fdeaa300e85c3e5cfe25eb51cd8be705c395f5112d0771f6065b",
+      "candidate": "30ae8544524d7cd710383ebd10f4911bea3247e90b18a46c51c253e73ce9ba3f",
+      "actual": "30ae8544524d7cd710383ebd10f4911bea3247e90b18a46c51c253e73ce9ba3f"
+    },
+    "game-easy-test.html": {
+      "before": "e81a708e97710a7fe8d45c6e4071edba79ff8464116de955bc801552b5746ec2",
+      "candidate": "9c7c25c131f6175a464cffe2e981e946cf2a0af70ed04b969cc5292403799af8",
+      "actual": "9c7c25c131f6175a464cffe2e981e946cf2a0af70ed04b969cc5292403799af8"
+    }
+  },
+  "groups": 34,
+  "limits": "Actual source with Node DOM retain/blur models; native keys/gamepad/pixels/runtime and real saves unverified."
+}

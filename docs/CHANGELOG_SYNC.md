@@ -52038,3 +52038,9 @@ matchesIfNoneMatch helper와 조건식1곳만 반영했다. exact 후보 byte �
 ### BUILD 소스 누락 방지 (2026-10-02)
 
 Mac core.ignorecase=true에서 기존 build/ 규칙이 tools/team-followup-20261001/BUILD 담당 폴더까지 가렸다. 이 정확 디렉터리의 최상위 소스·보고서·fixture 텍스트 확장자만 예외로 공개한다. 하위 폴더·프로필·세이브·캐시·바이너리와 기존 build/ 산출 무시는 유지한다. 새 하위 fixture가 필요하면 용도를 확인해 별도 좁은 예외를 검수한다. Changes 개수만으로 백업을 판단하지 않고 담당 필수 경로의 git ls-files와 git check-ignore -v를 함께 확인한다. 기존 config-draft는 사용자 초안으로 커밋하지 않고 목록에 보존한다.
+
+### 2026-10-02 유골함 행동 비활성화 초점 생산 반영
+
+양쪽 HTML의 focus factory에 releaseOssuaryAction을 추가하고 renderOssPanel 시작의 활성요소 포착 및 take/remove 갱신 뒤 호출만 반영했다. 선택 유골·유골함 해제로 활성 행동이 disabled가 되면 invClose로 이동하고, 숨긴 닫기로 복귀할 수 없으면 내부 disabled 잔류만 blur한다. 외부/다른 활성 컨트롤 초점은 강탈하지 않는다. 저장·유골 생성/등록/해제·장착·경제·RNG·CSS/ui-panels 원문은 보존했다.
+
+현재 생산 실제 함수/조합 검수34+기존filter32=66그룹 PASS, 전체 inline12개/importmap2 구문 통과. 유골함34는 renderOssPanel 원문을 실행했고 filter32의 renderOssPanel 대역 한계를 분리한다. 실제 키보드·패드·픽셀·전체게임·실저장은 미검수로 UI-04 전체 완료가 아니다. 과거 filter-only exact-byte 표는 이력이며 현재는 connectOssuary(connectFilter(original))와 정확 일치. root-review/four-candidate-acceptance.mjs ui --production 및 four-filter-adjacent.mjs --production으로 재현한다.

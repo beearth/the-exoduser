@@ -47910,7 +47910,12 @@ const _inventoryFocus=(function createInventoryFocus({document, get, label}) {
     if (!focus(current)) { focus(get('invClose')); keyboardItem = null; }
     anchor = current || null;
   }
-  return Object.freeze({bind, missing, keepsDetail, beforeRender, afterRender, begin() {
+  function releaseOssuaryAction(node, previousActive) {
+    if (!inside() || previousActive !== node || usable(node)) return;
+    if (document.activeElement !== node && document.activeElement !== document.body) return;
+    if (!focus(get('invClose')) && document.activeElement === node) node.blur();
+  }
+  return Object.freeze({bind, missing, keepsDetail, beforeRender, afterRender, releaseOssuaryAction, begin() {
     if (!get('invPanel')?.contains(document.activeElement) && usable(document.activeElement)) opener = document.activeElement;
     anchor = null;
     keyboardItem = null;
@@ -48385,6 +48390,7 @@ function _ossShowBoneInfo(part,ev){
 // ═══ 유골 콜렉션 — 중앙 유골함과 등급별 4부위 제단 ═══
 function renderOssPanel(){
   const pn=$('invOssuaryPanel');if(!pn)return;
+  const ossuaryFocusBefore=document.activeElement;
   if(!INV.ossCollect||typeof INV.ossCollect!=='object')INV.ossCollect={};
   // Build once. Preserve the panel, child nodes, focus and all attached handlers.
   if(!pn.querySelector('.oss-altar')){
@@ -48471,6 +48477,8 @@ function renderOssPanel(){
   take.disabled=!record;label('oss-withdraw',_L('선택 유골 해제','Remove selected bone'));
   remove.disabled=!oss;label('oss-unequip',_L('유골함 해제','Unequip ossuary'));
   remove.onclick=urn.oncontextmenu;
+  _inventoryFocus.releaseOssuaryAction(take,ossuaryFocusBefore);
+  _inventoryFocus.releaseOssuaryAction(remove,ossuaryFocusBefore);
    label('oss-collection-hint',_L('유골 우클릭 또는 선택 후 해제 · 해제한 유골은 가방으로 이동','Right-click a bone or select Remove · Returns the bone to your bag'));
    const portrait=$('invOssAncestor'),img=$('ossAncestorImage'),fallback=$('ossAncestorFallback');
    if(portrait&&img&&fallback){

@@ -45,4 +45,4 @@ for(const path of ['game.html','game-easy-test.html'])for(const language of ['ko
 }
 test('숨긴 닫기 버튼에 focus0·내부 disabled 잔류 제거',()=>{for(const path of ['game.html','game-easy-test.html']){const ui=setup(path,'ko',connectOssuary);ui.switchTab('ossuary');ui.selectPart('skull');const take=nodeFor(ui,'oss-withdraw');take.focus();ui.nodes.invClose.style.visibility='hidden';take.click();assert.equal(ui.document.activeElement,ui.document.body);}});
 test('root exact candidate and owned bytes',()=>{const manifest=JSON.parse(fs.readFileSync('outputs/team-review-20261002/four-candidate-acceptance/owner-preservation.json'));for(const [file,hash]of Object.entries(manifest))assert.equal(createHash('sha256').update(fs.readFileSync(file)).digest('hex'),hash,file);});
-test.after(()=>fs.writeFileSync('outputs/team-review-20261002/four-candidate-acceptance/ossuary-candidate-reproduction.json',JSON.stringify({evidence},null,2)+'\n'));
+test.after(()=>fs.writeFileSync('outputs/team-review-20261002/four-candidate-acceptance/ossuary-production-reproduction.json',JSON.stringify({evidence},null,2)+'\n'));

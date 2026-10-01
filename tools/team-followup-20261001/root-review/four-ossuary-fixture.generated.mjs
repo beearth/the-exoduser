@@ -6,7 +6,7 @@ import {sourceFactory} from '../UIUX/filter-focus-candidate.mjs';
 export {activate};
 const owned=new URL('../UIUX/',import.meta.url);
 export function setup(path,language='ko',transform=source=>source,disableBlur=false) {
-  const tag=path==='game.html'?'main':'easy',source=transform(fs.readFileSync(new URL('ossuary-focus-'+tag+'.before.html',owned),'utf8'));
+  const tag=path==='game.html'?'main':'easy',source=transform.name==='connectOssuary'?fs.readFileSync(path,'utf8'):fs.readFileSync(new URL('ossuary-focus-'+tag+'.before.html',owned),'utf8');
   const record=JSON.parse(fs.readFileSync(new URL('ossuary-focus-before.json',owned))).sources[path];
   const document=createDocument(),prototype=Object.getPrototypeOf(document.createElement('div'));
   const matches=prototype.matches;

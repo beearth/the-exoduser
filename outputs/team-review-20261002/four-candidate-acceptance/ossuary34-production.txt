@@ -1,0 +1,42 @@
+✔ game.html/ko/disableBlur-false: 실제 수집해제/유골함해제 RED→GREEN (71.878625ms)
+✔ game.html/ko/disableBlur-false: 실제 제단 유지·선택소멸·탭/닫기 (34.114459ms)
+✔ game.html/ko/disableBlur-false: 용량/배치 실패는 등록·유효초점 보존 (62.750542ms)
+✔ game.html/ko/disableBlur-false: 실제 등록/하위거부·외부초점강탈0 (32.393542ms)
+✔ game.html/ko/disableBlur-true: 실제 수집해제/유골함해제 RED→GREEN (68.708875ms)
+✔ game.html/ko/disableBlur-true: 실제 제단 유지·선택소멸·탭/닫기 (31.813375ms)
+✔ game.html/ko/disableBlur-true: 용량/배치 실패는 등록·유효초점 보존 (61.114542ms)
+✔ game.html/ko/disableBlur-true: 실제 등록/하위거부·외부초점강탈0 (32.494458ms)
+✔ game.html/en/disableBlur-false: 실제 수집해제/유골함해제 RED→GREEN (63.766542ms)
+✔ game.html/en/disableBlur-false: 실제 제단 유지·선택소멸·탭/닫기 (31.839417ms)
+✔ game.html/en/disableBlur-false: 용량/배치 실패는 등록·유효초점 보존 (65.452833ms)
+✔ game.html/en/disableBlur-false: 실제 등록/하위거부·외부초점강탈0 (31.328375ms)
+✔ game.html/en/disableBlur-true: 실제 수집해제/유골함해제 RED→GREEN (62.40275ms)
+✔ game.html/en/disableBlur-true: 실제 제단 유지·선택소멸·탭/닫기 (31.769875ms)
+✔ game.html/en/disableBlur-true: 용량/배치 실패는 등록·유효초점 보존 (63.493208ms)
+✔ game.html/en/disableBlur-true: 실제 등록/하위거부·외부초점강탈0 (32.563417ms)
+✔ game-easy-test.html/ko/disableBlur-false: 실제 수집해제/유골함해제 RED→GREEN (69.630583ms)
+✔ game-easy-test.html/ko/disableBlur-false: 실제 제단 유지·선택소멸·탭/닫기 (52.9665ms)
+✔ game-easy-test.html/ko/disableBlur-false: 용량/배치 실패는 등록·유효초점 보존 (62.358333ms)
+✔ game-easy-test.html/ko/disableBlur-false: 실제 등록/하위거부·외부초점강탈0 (33.72375ms)
+✔ game-easy-test.html/ko/disableBlur-true: 실제 수집해제/유골함해제 RED→GREEN (75.629917ms)
+✔ game-easy-test.html/ko/disableBlur-true: 실제 제단 유지·선택소멸·탭/닫기 (33.697708ms)
+✔ game-easy-test.html/ko/disableBlur-true: 용량/배치 실패는 등록·유효초점 보존 (70.302583ms)
+✔ game-easy-test.html/ko/disableBlur-true: 실제 등록/하위거부·외부초점강탈0 (31.701833ms)
+✔ game-easy-test.html/en/disableBlur-false: 실제 수집해제/유골함해제 RED→GREEN (64.131125ms)
+✔ game-easy-test.html/en/disableBlur-false: 실제 제단 유지·선택소멸·탭/닫기 (32.674125ms)
+✔ game-easy-test.html/en/disableBlur-false: 용량/배치 실패는 등록·유효초점 보존 (59.480583ms)
+✔ game-easy-test.html/en/disableBlur-false: 실제 등록/하위거부·외부초점강탈0 (29.857208ms)
+✔ game-easy-test.html/en/disableBlur-true: 실제 수집해제/유골함해제 RED→GREEN (62.965584ms)
+✔ game-easy-test.html/en/disableBlur-true: 실제 제단 유지·선택소멸·탭/닫기 (29.60525ms)
+✔ game-easy-test.html/en/disableBlur-true: 용량/배치 실패는 등록·유효초점 보존 (57.003292ms)
+✔ game-easy-test.html/en/disableBlur-true: 실제 등록/하위거부·외부초점강탈0 (28.95ms)
+✔ 숨긴 닫기 버튼에 focus0·내부 disabled 잔류 제거 (59.9655ms)
+✔ root exact candidate and owned bytes (32.216875ms)
+ℹ tests 34
+ℹ suites 0
+ℹ pass 34
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 1707.230583

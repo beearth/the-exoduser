@@ -2692,3 +2692,9 @@ CSS 캐시 ui-refinement.css?v=20260927-4. 신규 이미지/아이템 데이터 
 | 보호 범위 | CSS·치수·원화·save·장착/분해·RNG·전투 변경 없음. 기존 전체 UI 시각 인수를 이번 초점 검사의 근거로 재사용하지 않음 |
 | 검수 | root 독립 native host8조합 인수, 생산 추출23+before 기존69+인접9=101 PASS. 양쪽 classic4/module2/importmap1씩 구문/JSON 검사. 생산 실게임·OS 입력·레이아웃·물리 패드 미검수 |
 | 상세 SSOT | ../2_7 인벤토리+장비시스템/INVENTORY_KEYBOARD_FOCUS_20261002.md 및 tools/team-followup-20261001/UIUX/production-integration-result.md |
+
+### 2026-10-02 유골함 행동 비활성화 초점 생산 반영
+
+양쪽 HTML의 focus factory에 releaseOssuaryAction을 추가하고 renderOssPanel 시작의 활성요소 포착 및 take/remove 갱신 뒤 호출만 반영했다. 선택 유골·유골함 해제로 활성 행동이 disabled가 되면 invClose로 이동하고, 숨긴 닫기로 복귀할 수 없으면 내부 disabled 잔류만 blur한다. 외부/다른 활성 컨트롤 초점은 강탈하지 않는다. 저장·유골 생성/등록/해제·장착·경제·RNG·CSS/ui-panels 원문은 보존했다.
+
+현재 생산 실제 함수/조합 검수34+기존filter32=66그룹 PASS, 전체 inline12개/importmap2 구문 통과. 유골함34는 renderOssPanel 원문을 실행했고 filter32의 renderOssPanel 대역 한계를 분리한다. 실제 키보드·패드·픽셀·전체게임·실저장은 미검수로 UI-04 전체 완료가 아니다. 과거 filter-only exact-byte 표는 이력이며 현재는 connectOssuary(connectFilter(original))와 정확 일치. root-review/four-candidate-acceptance.mjs ui --production 및 four-filter-adjacent.mjs --production으로 재현한다.
