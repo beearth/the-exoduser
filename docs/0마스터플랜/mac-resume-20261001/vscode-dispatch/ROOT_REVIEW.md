@@ -58,3 +58,10 @@ BUILD failure-entry 후속 실제 수신/착수11:05:52Z·완료11:06:56Z. root�
 기존run2 109.8ms는 최초공격 전/첫처치 관측보다 약5초 전으로 정정했다. 별도진단1회에서 `_warmupNext`의 IdleRequestCallback130.7/135.6/131.0ms를 브라우저scripts로 직접 귀속, 샘플스택 texImage2D 경로와 대조했다. 원래109.8ms의 소급 원인 확정은 하지 않는다. 새진단 무처치/15.216초 자연사, 별도draw103.3ms는 physicalImpactSheet/tint/getImageData 표본과 상관. source불변·프로파일중지·관측기복구·게임종료. [전체 시점·시계오차·한계·좁은 후보와 회귀기준](../Mac-긴간격-루프밖-귀속.md).
 
 BUILD context-probe 기존세션 수신/착수11:10:12Z·완료11:11:26Z. root가 node/page/manifest/README를 읽었고 준비범위 인수. 실제NW.js 실행0·동일process/진입차단 미검수. 제한된 기존경로 검색에서 실행파일 미발견이므로 설치완료/전체미설치로 단정하지 않는다. 현재 대기는 기존 런타임경로 확보와6시나리오 실제검수다. QA는 종료되었지만 root가 NW.js 실행을 시작하지 않았다. 추가 중복지시 없음. ENEMY tick누락 오판정·SOUND easy불일치는 미인수 상태 유지.
+
+
+## QA-WARM-IDLE-01 및 SOUND 후속 인수
+
+[QA 구현·61검사·픽셀·정상플레이](../Mac-일반이미지-비동기준비.md). 실제 게임/fixture 종료.
+
+SOUND 기존aa3ac0ed(별도VSCode Terminal5) idle/blocked 확인. 지원CLI attach로 기존세션에 후속1회 전달, 수신11:30:20Z/착수11:30:37Z/실제Read11:30:39Z/완료11:33:43Z, root가 최종답변 그대로 회수. 새세션·권한확대0. 기존 UI 초안 입력 실패를 완료로 세지 않았다. root소스검색으로 main29474/easy28391 무가드 일치 확인. 정상보스문 A+B2회/재도전·직행 A1회는 정적 예상, 실제청취0. C의120ms howl은 HP phase-up으로 입장과 별개라는 이전 해석 정정. [후속결과](SOUND-howl-result.md)·[영수증](SOUND-howl-receipt.json). 사운드코드 반영0.

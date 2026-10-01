@@ -458,3 +458,10 @@ R28시행·3317이벤트 원자료를 update/rAF/수신 시간으로 분리했�
 ## 2026-10-01 — loop 밖 워밍업 직접 귀속
 
 기존run2 109.8ms는 첫 공격 전·첫처치 관측보다4927.2ms 앞에 끝난다. 별도profiler-on/3wrapper 진단1회에서는 `_warmupNext` idle callback130.7/135.6/131.0ms와 texImage2D표본을 확인했다. 무처치15.216초·시계매핑오차260.5ms·계측/화면/옵션차이로 비교금지. 별도draw103.3ms는physicalImpactSheet/tint/readback표본과상관. 생산수정0. [직접귀속/한계/다음후보](../0마스터플랜/mac-resume-20261001/Mac-긴간격-루프밖-귀속.md).
+
+
+## 2026-10-01 일반 이미지 비동기 준비 후속
+
+QA-WARM-IDLE-01 한정 구현 인수: 일반Image3장 전수픽셀동일/61회귀/실제5처치. 실제 warm0~0.1ms지만 불꽃146.9ms 잔여·전체FPS 판정불가. QA 게임/fixture 종료.
+
+[계약·근거·제한](../0마스터플랜/mac-resume-20261001/Mac-일반이미지-비동기준비.md).

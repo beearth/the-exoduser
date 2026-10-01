@@ -18,14 +18,15 @@ function extractFn(name) {
 test('디코드는 Blob 소스 createImageBitmap(premultiplyAlpha none)로 메인 스레드 밖에서 수행', () => {
   const pump = extractFn('_texPrePump');
   assert.match(pump, /fetch\(abs\)\.then\(r=>\{if\(!r\.ok\)throw 0;return r\.blob\(\)\}\)\.then\(b=>createImageBitmap\(b,\{premultiplyAlpha:'none'\}\)\)/);
-  assert.match(pump, /_texPreBusy<_TEXHOT_INFLIGHT&&_texPreWait\.length&&_texPreQ\.length<_TEXHOT_QMAX/);
+  assert.match(pump, /_texPreBusy<_TEXHOT_INFLIGHT&&_texPreWait\.length&&_texPreQ\.length\+_texPreBusy<_TEXHOT_QMAX/);
 });
 
 test('프레임말 1장 업로드, 동기 경로가 먼저 올린 URL은 비트맵만 폐기, 비트맵은 항상 close', () => {
   const drain = extractFn('_texPreDrain');
   assert.match(drain, /const j=_texPreQ\.shift\(\)/);
   assert.match(drain, /!_texBySrc\.has\(j\.src\)\)_texAdoptBitmap\(j\.src,j\.bmp\)/);
-  assert.match(drain, /j\.bmp\.close\(\)/);
+  assert.match(drain, /finally\{_texPreClose\(j\)\}/);
+  assert.match(extractFn('_texPreClose'), /bmp\.close\(\)/);
   assert.match(gameHtml, /_perfFrameTick\(\);\n  _texPreDrain\(\);/);
 });
 

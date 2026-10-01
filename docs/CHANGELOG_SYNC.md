@@ -51715,3 +51715,10 @@ QA light-normal observer: one draw wrapper and rAF samples, no CPU/GPU profiler.
 ## 2026-10-01 — 루프 밖 워밍업 긴 간격 귀속
 
 109.8ms의 첫처치 인과 혼동을 분리하고 별도1회진단에서 warmup idle130.7/135.6/131.0ms를확인. 프로파일시계오차/무처치/비교금지 명시·생산수정0. BUILD context준비 인수/실행미검수. [근거](0마스터플랜/mac-resume-20261001/Mac-긴간격-루프밖-귀속.md).
+
+
+## 2026-10-01 일반 이미지 비동기 준비 후속
+
+QA-WARM-IDLE-01: game.html 일반Image3장 비동기 warm 연결, 컨텍스트 job/bitmap 정리·예약Q4·2000ms optional 대기. 61회귀·guard·실제GPU 전수93,143,040바이트차이0·정상5처치. 불꽃146.9ms·장기메모리/NW미검수 명시. SOUND 기존세션 후속읽기결과 회수, 생산미적용.
+
+[계약·근거·제한](0마스터플랜/mac-resume-20261001/Mac-일반이미지-비동기준비.md).

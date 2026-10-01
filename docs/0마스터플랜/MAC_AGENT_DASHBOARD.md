@@ -1,3 +1,9 @@
+# 최신 상태 — QA-WARM-IDLE-01 구현 검수
+
+메인 일반Image3장 비동기 준비 완료·61검사·실제GPU 픽셀차이0·5처치. 전체지연해결 아님. SOUND 기존 별도창 aa3ac0ed 재개/새 작업 실제수신·파일읽기·완료 확인, 후보만 회수. 전팀 동시 실행이라고 보고하지 않는다. [QA 상세](mac-resume-20261001/Mac-일반이미지-비동기준비.md) · [SOUND 후속](mac-resume-20261001/vscode-dispatch/SOUND-howl-result.md).
+
+아래는 과거 이력이다.
+
 # 최신 — 긴 간격 귀속 후속 완료
 
 ROOT 진단1회 종료·프로파일중지·생산수정0. loop밖 warmup idle130–136ms 세 건 직접확인, 이전109.8ms 소급원인확정/성능개선 주장은 없음. BUILD19/19후속후 context 하니스준비까지 제출완료; 기존NW.js 경로/실제6시나리오 검수 대기. ENEMY/SOUND 미인수 유지. [증거와 다음 회귀게이트](mac-resume-20261001/Mac-긴간격-루프밖-귀속.md).

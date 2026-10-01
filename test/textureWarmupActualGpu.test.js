@@ -7,7 +7,7 @@ const gameHtml = readFileSync(new URL('../game.html', import.meta.url), 'utf8');
 test('generic warmup images use the active render context so the GPU texture is uploaded before gameplay', () => {
   assert.match(gameHtml, /function _warmImageGpu\(img\)\{/);
   assert.match(gameHtml, /X\.save\(\);X\.resetTransform\(\);X\.globalAlpha=0;\n\s*X\.drawImage\(img,-1,-1,1,1\);\n\s*_flush\(\);X\.restore\(\);/);
-  assert.match(gameHtml, /else if\(img\)\{_wqGpuImages\.add\(img\);_warmImageGpu\(img\)\}/);
+  assert.match(gameHtml, /_warmImageGpu\(img\);_wqGpuImages\.add\(img\)/);
   assert.doesNotMatch(gameHtml, /_wqCtx\.drawImage/);
 });
 

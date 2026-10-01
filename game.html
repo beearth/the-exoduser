@@ -4737,8 +4737,8 @@ const _TEXHOT_SEED=(function(){
 let _texBySrc=null;            // Map<절대 URL,{tex,w,h}> — _initWebGL이 컨텍스트마다 새로 만든다
 let _texAdoptBitmap=null;      // (절대 URL, ImageBitmap) 업로드 — _initWebGL에서 할당
 let _texHot=null,_texHotDirty=false,_texHotScanned=false;
-const _texPreQ=[],_texPreWait=[],_texPreSeen=new Set();
-let _texPreBusy=0,_texPrePx=0;
+const _texPreQ=[],_texPreWait=[],_texPreSeen=new Set(),_texPreJobs=new Map();
+let _texPreBusy=0,_texPrePx=0,_texPreContextLost=false;
 function _texHotLoad(){
   if(_texHot)return _texHot;
   _texHot=new Map();
@@ -4760,20 +4760,42 @@ function _texHotSave(){
   _texHotDirty=false;
   try{localStorage.setItem(_TEXHOT_KEY,JSON.stringify([..._texHot.entries()].sort((x,y)=>y[1].t-x[1].t).slice(0,_TEXHOT_MAX).map(e=>[e[0],e[1].px,e[1].t])))}catch(e){}
 }
+// Job status is the ready/failure signal; context identity prevents stale uploads after restoration.
+function _texPreClose(j){
+  if(!j.bmp)return;
+  const bmp=j.bmp;j.bmp=null;
+  try{bmp.close()}catch(e){}
+}
+function _texPreReset(){
+  for(const j of _texPreJobs.values())j.status='stale';
+  for(const j of _texPreQ)_texPreClose(j);
+  _texPreQ.length=0;_texPreWait.length=0;_texPreJobs.clear();
+  // In-flight old work still owns its concurrency slot until its promise completes.
+}
 function _texPrePump(){
-  while(_texPreBusy<_TEXHOT_INFLIGHT&&_texPreWait.length&&_texPreQ.length<_TEXHOT_QMAX){
-    const abs=_texPreWait.shift();_texPreBusy++;
+  while(_texPreBusy<_TEXHOT_INFLIGHT&&_texPreWait.length&&_texPreQ.length+_texPreBusy<_TEXHOT_QMAX){
+    const abs=_texPreWait.shift(),j=_texPreJobs.get(abs);
+    if(!j||j.status!=='pending'||j.context!==_texBySrc)continue;
+    _texPreBusy++;
     fetch(abs).then(r=>{if(!r.ok)throw 0;return r.blob()}).then(b=>createImageBitmap(b,{premultiplyAlpha:'none'}))
-      .then(bmp=>{_texPreQ.push({src:abs,bmp:bmp})},()=>{})
-      .then(()=>{_texPreBusy--;_texPrePump()});
+      .then(bmp=>{
+        j.bmp=bmp;
+        if(j.status==='stale'||j.context!==_texBySrc){j.status='stale';_texPreClose(j);return}
+        j.status='decoded';_texPreQ.push(j);
+      },()=>{if(j.status!=='stale')j.status='failed'})
+      .finally(()=>{_texPreBusy--;_texPrePump()});
   }
 }
 function _texPrewarmSrc(rel,px){
   if(!_useGL||!_texBySrc||!_texAdoptBitmap||typeof createImageBitmap!=='function'||typeof fetch!=='function')return;
   let abs;try{abs=new URL(rel,location.href).href}catch(e){return}
-  if(abs.lastIndexOf('http',0)!==0||_texPreSeen.has(abs)||_texBySrc.has(abs))return;
+  if(abs.lastIndexOf('http',0)!==0||_texBySrc.has(abs))return;
+  const prior=_texPreJobs.get(abs);if(prior&&prior.context===_texBySrc)return prior;
+  if(_texPreSeen.has(abs)||!Number.isFinite(px)||px<=0)return;
   if(_texPrePx+px>_TEXHOT_BUDGET_PX)return;
-  _texPreSeen.add(abs);_texPrePx+=px;_texPreWait.push(abs);_texPrePump();
+  const j={src:abs,context:_texBySrc,status:'pending',bmp:null};
+  _texPreJobs.set(abs,j);_texPreSeen.add(abs);_texPrePx+=px;_texPreWait.push(abs);_texPrePump();
+  return j;
 }
 // 세션(또는 컨텍스트 복구)마다 1회 목록을 읽어 프리워밍을 건다. 이후 호출은 학습 목록 저장만 한다.
 function _texPrewarmHot(){
@@ -4788,8 +4810,14 @@ function _texPrewarmHot(){
 function _texPreDrain(){
   if(!_texPreQ.length)return;
   const j=_texPreQ.shift();
-  try{if(_useGL&&_texBySrc&&_texAdoptBitmap&&!_texBySrc.has(j.src))_texAdoptBitmap(j.src,j.bmp)}catch(e){}
-  try{j.bmp.close()}catch(e){}
+  try{
+    if(j.context!==_texBySrc||!_useGL||!_texAdoptBitmap){j.status='stale'}
+    else{
+      if(!_texBySrc.has(j.src))_texAdoptBitmap(j.src,j.bmp);
+      j.status=_texBySrc.has(j.src)?'ready':'failed';
+    }
+  }catch(e){j.status='failed'}
+  finally{_texPreClose(j)}
   if(_texPreWait.length)_texPrePump();
 }
 function _drainTexGCQueue(){  // 프레임말(현재 frame 마지막 GL flush 완료 뒤) 결정적 삭제
@@ -5686,16 +5714,20 @@ oC=c;}`;
   //   호출측(buildMapCache/_finalizeBMC)에서 old map 텍스처를 rebuild 직전에 넘긴다.
   _freeMapTex=function(src){const e=src&&_texCache.get(src);if(e&&e.tex){_texGCQueue.push(e.tex);_texCache.delete(src);}};
   // [PM-001] URL 공유 텍스처 + 비동기 프리워밍 업로드 (컨텍스트마다 초기화 → 복구 후 다시 프리워밍)
+  _texPreReset();_texPreContextLost=false;
   _texBySrc=new Map();_texPreSeen.clear();_texPrePx=0;_texHotScanned=false;
   _texAdoptBitmap=function(abs,bmp){
-    const t=GL.createTexture();GL.bindTexture(GL.TEXTURE_2D,t);
+    const t=GL.createTexture();
+    try{
+    GL.bindTexture(GL.TEXTURE_2D,t);
     GL.texParameteri(GL.TEXTURE_2D,GL.TEXTURE_MIN_FILTER,GL.LINEAR);
     GL.texParameteri(GL.TEXTURE_2D,GL.TEXTURE_MAG_FILTER,GL.LINEAR);
     GL.texParameteri(GL.TEXTURE_2D,GL.TEXTURE_WRAP_S,GL.CLAMP_TO_EDGE);
     GL.texParameteri(GL.TEXTURE_2D,GL.TEXTURE_WRAP_T,GL.CLAMP_TO_EDGE);
     GL.texImage2D(GL.TEXTURE_2D,0,GL.RGBA,GL.RGBA,GL.UNSIGNED_BYTE,bmp);
-    GL.bindTexture(GL.TEXTURE_2D,_curTex);
     _texBySrc.set(abs,{tex:t,w:bmp.width,h:bmp.height});
+    }catch(e){GL.deleteTexture(t);throw e}
+    finally{GL.bindTexture(GL.TEXTURE_2D,_curTex)}
   };
 
   _getTex=function(src,_nearestHint){let e=_texCache.get(src);if(e&&e.v===(src._glVer||0))return e.tex;
@@ -5777,7 +5809,9 @@ oC=c;}`;
       _qCnt=0;_bufOff=0;
       // [Track D] context lost → 큐의 텍스처 핸들은 컨텍스트와 함께 무효화. 큐 비우고 free는 no-op.
       _texGCQueue.length=0;_freeMapTex=function(){};
-      _texBySrc=null;_texAdoptBitmap=null; // [PM-001] 손실 컨텍스트의 URL 텍스처 무효화 — 대기 비트맵은 _texPreDrain이 닫는다
+      _texBySrc=null;_texAdoptBitmap=null;_texPreContextLost=true;_texPreReset();
+      // Only the three new general-Image handoffs need a fresh warm attempt after restoration.
+      if(_wqGpuImages)for(const img of _wqGpuImages)if(_warmAsyncTarget(img))_wqGpuImages.delete(img);
       _resetEnemyInstanced();_resetVfxInstanced();
       _flush=function(){_qCnt=0;_bufOff=0};_setTex=function(){};_getTex=function(){return null};
       _setBlend=function(){};_glFlush=function(){_qCnt=0;_bufOff=0};_clearFrame=function(){_qCnt=0;_bufOff=0};
@@ -21943,9 +21977,30 @@ function _queuePlayerAtlasGpuWarmup(){
   if(_playerAtlasGpuWarmDone||_playerAtlasGpuWarmQueued||!X||!_atlasP_img||!_atlasP_img.complete||_atlasP_img.naturalWidth===0)return;
   _playerAtlasGpuWarmQueued=true;_scheduleGpuWarm(()=>{_playerAtlasGpuWarmQueued=false;_warmPlayerAtlasGpu()});
 }
+// QA-WARM-IDLE-01: only the three measured >100ms general Image uploads.
+const _WQ_ASYNC_PATHS=new Set(['/assets/vfx/vfx_magic_burst.png','/assets/vfx/boss/vfx_void_black.png','/assets/vfx/vfx_peace_shield.png']);
+const _WQ_ASYNC_WAIT_MS=2000;
+var _wqAsyncWait=null;
+function _warmAsyncTarget(img){
+  if(!(img instanceof HTMLImageElement)||!img.complete||!img.naturalWidth||!img.naturalHeight)return false;
+  try{const u=new URL(img.src,location.href);return u.origin===location.origin&&_WQ_ASYNC_PATHS.has(u.pathname)}catch(e){return false}
+}
+function _warmAsyncJob(img){
+  if(!_warmAsyncTarget(img))return;
+  return _texPrewarmSrc(img.src,img.naturalWidth*img.naturalHeight);
+}
+function _waitWarmAsync(img){
+  const j=_warmAsyncJob(img);
+  if(!j||j.status==='ready'||j.status==='failed'||j.status==='stale'){_wqAsyncWait=null;return false}
+  if(!_wqAsyncWait||_wqAsyncWait.queue!==_wqQueued||_wqAsyncWait.index!==_wqIdx||_wqAsyncWait.job!==j)
+    _wqAsyncWait={queue:_wqQueued,index:_wqIdx,job:j,start:performance.now()};
+  // Delay optional warm work only. Actual gameplay always retains its synchronous fallback.
+  return performance.now()-_wqAsyncWait.start<_WQ_ASYNC_WAIT_MS;
+}
 function _queueWarmImage(img,cap){
   if(!img||_wqLen>=cap||_wqGpuImages.has(img)||_wqQueued.has(img))return;
   _wqQueued.add(img);_wqBuf[_wqLen++]=img;
+  _warmAsyncJob(img);
 }
 function _queueCombatTextureWarmup(){
   // First projectile/kill/ki hits must not upload their full sheets in draw().
@@ -22020,7 +22075,11 @@ function _warmupNext(){
   if(img===_WQ_SHIELD_AURA){_warmShieldAuraGpu()}
   else if(img===_WQ_BONFIRE_BARRIER){_warmBonfireBarrierGpu()}
   else if(img===_WQ_PLAYER_ATLAS){_warmPlayerAtlasGpu()}
-  else if(img){_wqGpuImages.add(img);_warmImageGpu(img)}
+  else if(img){
+    if(_waitWarmAsync(img)){_scheduleWarmupNext();return}
+    _wqAsyncWait=null;
+    if(!(_texPreContextLost&&_warmAsyncTarget(img))){_warmImageGpu(img);_wqGpuImages.add(img)}
+  }
   _wqBuf[_wqIdx]=null;
   _wqIdx++;
   _scheduleWarmupNext();
