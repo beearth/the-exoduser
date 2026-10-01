@@ -1,0 +1,108 @@
+{
+  "checkedAt": "2026-10-01T18:35:32.340404+00:00",
+  "newlyDelivered": 0,
+  "newReadConfirmed": 0,
+  "teams": [
+    {
+      "team": "QA",
+      "sessionId": "88c3f903-ece5-4640-8b0c-86feaaca0e53",
+      "cliStatus": "idle",
+      "cliState": null,
+      "latestUser": {
+        "timestamp": "2026-10-01T17:29:55.616Z",
+        "text": "Read tools/team-followup-20261001/QA/d17-async-independent-task.md and execute this next task in the existing QA session."
+      },
+      "newTaskDuplicateMessages": [],
+      "delivered": false,
+      "actualReadConfirmed": false,
+      "nativeDraftAndQueueVerified": false
+    },
+    {
+      "team": "MAP",
+      "sessionId": "d447a49d-ecaa-4b5f-bc56-da5353ebb668",
+      "cliStatus": "idle",
+      "cliState": null,
+      "latestUser": {
+        "timestamp": "2026-10-01T16:27:30.173Z",
+        "text": "tools/team-followup-20261001/MAP/visual-eight-view-preparation-task.md       . root     ."
+      },
+      "newTaskDuplicateMessages": [],
+      "delivered": false,
+      "actualReadConfirmed": false,
+      "nativeDraftAndQueueVerified": false
+    },
+    {
+      "team": "ART",
+      "sessionId": "a489cbeb-92d9-449a-a2b7-ba0e2871322f",
+      "cliStatus": "idle",
+      "cliState": null,
+      "latestUser": {
+        "timestamp": "2026-10-01T16:28:02.145Z",
+        "text": "tools/team-followup-20261001/ART/wa24-engine-parity-task.md        ."
+      },
+      "newTaskDuplicateMessages": [],
+      "delivered": false,
+      "actualReadConfirmed": false,
+      "nativeDraftAndQueueVerified": false
+    },
+    {
+      "team": "SKILL",
+      "sessionId": "203377cc-64c4-47ea-af27-95b66ae829fa",
+      "cliStatus": "idle",
+      "cliState": null,
+      "latestUser": {
+        "timestamp": "2026-10-01T17:30:13.986Z",
+        "text": "The previous response failed to produce a valid tool call. Please retry the tool call now."
+      },
+      "newTaskDuplicateMessages": [],
+      "delivered": false,
+      "actualReadConfirmed": false,
+      "nativeDraftAndQueueVerified": false
+    },
+    {
+      "team": "ENEMY",
+      "sessionId": "ddbd64be-975a-458e-a020-c09749281f5b",
+      "cliStatus": "idle",
+      "cliState": null,
+      "latestUser": {
+        "timestamp": "2026-10-01T16:27:35.735Z",
+        "text": "tools/team-followup-20261001/ENEMY/roundrobin-order-effects-task.md       .  8 root ."
+      },
+      "newTaskDuplicateMessages": [],
+      "delivered": false,
+      "actualReadConfirmed": false,
+      "nativeDraftAndQueueVerified": false
+    },
+    {
+      "team": "ANIMVFX",
+      "sessionId": "1d2a7253-478c-43aa-8c6f-766a02270432",
+      "cliStatus": "idle",
+      "cliState": null,
+      "latestUser": {
+        "timestamp": "2026-10-01T17:30:24.765Z",
+        "text": "The previous response failed to produce a valid tool call. Please retry the tool call now."
+      },
+      "newTaskDuplicateMessages": [],
+      "delivered": false,
+      "actualReadConfirmed": false,
+      "nativeDraftAndQueueVerified": false
+    },
+    {
+      "team": "SOUND",
+      "sessionId": "aa3ac0ed-f4e5-44ad-a0b2-d4d2da045b84",
+      "cliStatus": "idle",
+      "cliState": "done",
+      "latestUser": {
+        "timestamp": "2026-10-01T17:28:41.105Z",
+        "text": "Read tools/team-followup-20261001/SOUND/OWNER_NEXT_20261002.md and perform that one approved next task in this existing SOUND session. Preserve current read-only/tool permissions; do not bypass any restriction. If execution or writes are unavailable, provide the concrete regression code and findings in your response and distinguish unexecuted checks. Do not repeat prior completed work."
+      },
+      "newTaskDuplicateMessages": [],
+      "delivered": false,
+      "actualReadConfirmed": false,
+      "nativeDraftAndQueueVerified": false
+    }
+  ],
+  "nativeBlocker": "noWindowsAvailable(-10005), stale screenshot versus AX; prompt/drafts not verified",
+  "pasteCount": 0,
+  "newSessions": 0
+}

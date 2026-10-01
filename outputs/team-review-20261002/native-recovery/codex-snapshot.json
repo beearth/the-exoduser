@@ -1,0 +1,38 @@
+[
+  {
+    "team": "BUILD",
+    "threadId": "01a0f6e6-2e4c-7322-92d7-3aa309857856",
+    "turnId": "01a0f8b5-ba5b-79c2-ae08-acc28e28d6c6",
+    "status": "completed",
+    "completedAt": "2026-10-01T18:26:09.000Z",
+    "commandCount": 6,
+    "final": "root78검사·c2420b0e 체크포인트를 인수하고 독립 검수를 완료했습니다.\n\n- weak·목록·별표 INM 원반례7개를 보존했습니다.\n- 인용 안 쉼표·공백·malformed 정책을 포함한 미적용 후보 **40검사 PASS**.\n- 약한 비교 계약은 [RFC9110](https://www.rfc-editor.org/rfc/rfc9110.html#section-13.1.2)에 대조했습니다.\n- 생산 소스·타팀 변경·초안은 보존했으며 서버 실행0입니다.\n\n결과: `tools/team-followup-20261001/BUILD/inm-matching-result.md:1`\n\nroot 통합 검토를 기다립니다."
+  },
+  {
+    "team": "BALANCE",
+    "threadId": "01a0f6e6-5303-7392-81ba-94c42e349ffc",
+    "turnId": "01a0f8b5-d1dc-7ec1-9b32-dd618e21b5d1",
+    "status": "completed",
+    "completedAt": "2026-10-01T18:26:11.000Z",
+    "commandCount": 5,
+    "final": "양쪽 공유 악의 저장 경로의 손상 반례를 재현하고, 최소 미적용 후보를 제출했습니다.\n\n- 메모리 fs 회귀 **16 PASS**: 실패 시 이전 bytes·악의 값 보존, 임시 파일 정리 확인.\n- production·기존 초안·타팀 변경은 보존했습니다.\n- 실제 디스크·HTTP·fsync·크래시·Windows는 미검수입니다.\n\nroot 인계 결과: `tools/team-followup-20261001/BALANCE/shared-mats-atomic-result.md:1`"
+  },
+  {
+    "team": "UIUX",
+    "threadId": "01a0f6e5-8653-7ae2-8b2b-314e275c215c",
+    "turnId": "01a0f8ac-804e-7cc2-89e1-6ca88614ee82",
+    "status": "completed",
+    "completedAt": "2026-10-01T18:20:30.000Z",
+    "commandCount": 15,
+    "final": "- 실제 유골 해제·유골함 해제 후 초점 복귀 누락을 재현했습니다.\n- 양쪽 최소 미적용 후보 작성: **16반례 RED→GREEN, 34검사 PASS**.\n- 핵심 `renderOssPanel`을 실제 실행했으며 생산·기존 자료 303개를 보존했습니다.\n- native·화면·패드 검수는 미완료로 분리해 인계합니다.\n\n결과: `tools/team-followup-20261001/UIUX/ossuary-focus-result.md:1`"
+  },
+  {
+    "team": "ITEM",
+    "threadId": "01a0f6e6-1fbe-7df0-8d02-a9c2d9df3750",
+    "turnId": "01a0f8ac-80ca-7840-9259-84ad0bf9ac16",
+    "status": "completed",
+    "completedAt": "2026-10-01T18:21:08.000Z",
+    "commandCount": 19,
+    "final": "승인된 U-D13 검토 후보 완료했습니다.\n\n- 실제 원함수·장판 루프 전체 기반 **19검사 PASS**\n- 즉시 push의 같은 tick 처리 재현, 콜백은 압축 종료 뒤 실행\n- 원본·합체·자식 출처 구분, 원 피해·배열·RNG 보존 확인\n- 생산 적용0, 초안·타팀 변경 보존. 자식 수치·전역 cap·중첩은 미결 유지\n\n결과: `tools/team-followup-20261001/ITEM/d13-deferred-contract-result.md:1`"
+  }
+]
