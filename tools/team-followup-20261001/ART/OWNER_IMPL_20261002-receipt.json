@@ -1,0 +1,52 @@
+{
+  "taskId": "ART-20261002-LIVE-CALLSITE",
+  "team": "ART",
+  "continuesSession": "a489cbeb-92d9-449a-a2b7-ba0e2871322f",
+  "terminal": "VS Code Terminal 2 (vscode-dispatch)",
+  "cli": "Claude Code",
+  "model": "claude-opus-4-8",
+  "sessionId": null,
+  "receivedAt": "2026-10-01T15:35:42Z",
+  "firstReadAt": "2026-10-01T15:35:42Z",
+  "firstEditAt": "2026-10-01T15:36:30Z",
+  "startedAt": "2026-10-01T15:36:30Z",
+  "status": "DONE_PENDING_QA_HANDOFF",
+  "completedAt": "2026-10-01T15:43:12Z",
+  "outputs": {
+    "wa24-observer.cjs": "07d287cdca60b863a7006a0f6f01b977551067f655fa9b5110cb38de7a8ea388",
+    "wa24-observer.test.mjs": "39e64351f06b627b8fbefc104568bd721845e3b7272adcc9779468d87a4330d3",
+    "live-callsite-canonical.test.mjs": "f969a5a5a25f02c1c2439d9032589956a3defcde7aa1be898aed4165e0616978",
+    "README.md": "updated (D5 절 추가)"
+  },
+  "verification": {
+    "wa24-observer.test.mjs": "46 PASS/0 FAIL (이전 35→line-index+신규케이스; 설치/cleanup/예외 포함)",
+    "live-callsite-canonical.test.mjs": "11 PASS/0 FAIL (신규, 관측기↔canonical 시간축 일치)",
+    "owner-integration-finalcrop.test.mjs": "31 PASS/0 FAIL (4비율×3시점 geometry 보존)",
+    "wa24-delta-probe.test.mjs": "38 PASS/0 FAIL (보존)",
+    "total": "126 PASS/0 FAIL",
+    "umdFallbackSmoke": "getLines 미주입→PROLOGUE_LINES.ko 폴백, builtin 샘플러, timeBase line-index PASS",
+    "env": "Node v24.15.0 / Darwin 25.6.0, 게임/브라우저/서버 미실행"
+  },
+  "redGreen": "지연시작(wall 75400, now 76100, el700): line-index=wa24(GREEN), seq-time legacySampler=wa25(RED), canonical predictFinalCrop=wa24/el700 관측기와 일치.",
+  "preserved": "game/index/easy/server 미변경, UIUX 지원원본·다른 ART 완료원문 보존, root-review staged 파일 불간섭. 브라우저 UMD/자동설치 불변(ESM require 없음).",
+  "limits": "실브라우저 wa24 verdict 실측·픽셀 가독성(눈/발/자막) UNKNOWN 유지는 QA 종료 인계 후. 추측 시각PASS/패키지완료 없음.",
+  "duplicateCheck": "OWNER_IMPL_20261002-* 및 live-callsite-* 산출 없음 → 신규 착수. 입력초안 없음.",
+  "ownedPaths": [
+    "tools/team-followup-20261001/ART/wa24-observer.cjs",
+    "tools/team-followup-20261001/ART/wa24-observer.test.mjs",
+    "tools/team-followup-20261001/ART/README.md",
+    "tools/team-followup-20261001/ART/live-callsite-*",
+    "tools/team-followup-20261001/ART/OWNER_IMPL_20261002-receipt.json",
+    "tools/team-followup-20261001/ART/OWNER_IMPL_20261002-result.md"
+  ],
+  "readOnlyRefs": [
+    "tools/team-followup-20261001/ART/wa24-finalcrop.mjs (root canonical export)",
+    "tools/team-followup-20261001/ART/wa24-delta-probe.cjs (correctedSampler)",
+    "tools/team-followup-20261001/ART/owner-integration-finalcrop.mjs",
+    "game.html:60704-60807 (라인-인덱스 재생축 _cutLineIdx/_cutLineStartMs/_cutsceneGetLines)"
+  ],
+  "baseHead": "30a204a7aa348a88b90bdc922862c610a7da938f",
+  "defect": "wa24-observer.cjs tick() 가 _cutsceneStartMs+L.t(seq-time)로 activeCut 선택 → 엔진 실제 축(_cutLineIdx+_cutLineStartMs, game.html:60713-60733)과 불일치. 드리프트 시 다른 라인/경과 보고.",
+  "plan": "tick() 를 line-index 축으로 교체, getLines/sampler 의존주입(브라우저 UMD·기본자동실행 불변), 검수 correctedSampler 연결, canonical finalcrop 과 시간축 일치. RED(지연시작 seq-time 오독)→GREEN 회귀 + PRO/비PRO·역행/누락 미확정 + 설치/cleanup/예외 회귀 실제개수 기록. 눈/발/자막 UNKNOWN, 4비율×3시점 geometry 기존31 보존 확인.",
+  "blocker": null
+}

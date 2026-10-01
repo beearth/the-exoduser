@@ -1,0 +1,39 @@
+{
+  "taskId": "ART-WA24-DELTA-CANDIDATE",
+  "team": "ART",
+  "continuesSession": "a489cbeb-92d9-449a-a2b7-ba0e2871322f",
+  "terminal": "VS Code Terminal 2 (vscode-dispatch)",
+  "cli": "Claude Code",
+  "model": "claude-opus-4-8",
+  "sessionId": null,
+  "receivedAt": "2026-10-01T11:57:39Z",
+  "firstReadAt": "2026-10-01T11:57:39Z",
+  "startedAt": "2026-10-01T11:58:30Z",
+  "status": "DONE_PENDING_QA_HANDOFF",
+  "completedAt": "2026-10-01T12:04:14Z",
+  "outputs": {
+    "wa24-delta-probe.cjs": "79193e10228007bfce1935c633156a208b719d6540b4b3b45b4889d32a1936e9",
+    "wa24-delta-probe.test.mjs": "35ff1e1efabe83fff1e6d4ab6fb35ea82075442291a61c001e1d80cb4c589839"
+  },
+  "verification": "node --check 2/2 OK; node wa24-delta-probe.test.mjs → 38 PASS / 0 FAIL / exit=0 (Node v24.15.0). A)크롭 AR별 결정적 판정 B)시간축 드리프트 legacy↔corrected 불일치 증명(600ms:fade 0.5↔1.0·zoom 1.0736↔1.0578; 1800ms:legacy wa25 오판정) C)fade 곡선 D)자막 기하+시각 UNKNOWN.",
+  "primaryDefect": "active-cut 시간축 불일치(_cutsceneStartMs+t vs 엔진 _cutLineIdx+_cutLineStartMs) = 근본 버그. 명시 지정 '크롭' 결함은 예측기+회귀로 신규 구현.",
+  "unknownDimension": "자막 시각 가독성 = 픽셀 렌더 필요 → UNKNOWN 판정 구현(거짓 PASS 방지)",
+  "noRepeatOf35Pass": true,
+  "sourceReadEvidence": {
+    "crop": "game.html:60742-60746 레터박스(16:9 클램프) + 60796-60801 cover draw (imgR>cR→좌우컷 dx=(cw-dw)/2; else 상하컷 dy=(ch-dh)*.1)",
+    "fade": "game.html:60767-60773 lineElapsed 기반 fade (fade.type:'cross'이나 매 프레임 60749 흑색 클리어 후 drawImage → 실제는 fade-from-black)",
+    "activeCutBase": "game.html:60713-60733 엔진은 _cutLineIdx+_cutLineStartMs(60582-60583) 기반, ln.t는 60755 보이스 동기 전용. 관측기/후보의 _cutsceneStartMs+t 기반과 불일치",
+    "shakeOnSubtitle": "game.html:60779-60802 shake는 이미지 save/restore 내부에만 적용, 60810-60843 나레이션은 restore 후 렌더 → 자막 미흔들림(소스 검증)",
+    "cutShake": "game.html:60627 (sin(t*.047)*mag*2)|0 → 정수 ±2",
+    "ease": "game.html:60313 out=t=>1-(1-t)*(1-t)"
+  },
+  "duplicateCheck": "ART-next-* 산출 없음 → 신규 착수(중복대기/진행중 아님)",
+  "ownedPaths": [
+    "tools/team-followup-20261001/ART/",
+    "docs/0마스터플랜/mac-resume-20261001/vscode-dispatch/ART-next-result.md",
+    "docs/0마스터플랜/mac-resume-20261001/vscode-dispatch/ART-next-receipt.json"
+  ],
+  "baseHead": "30a204a7aa348a88b90bdc922862c610a7da938f",
+  "nextAction": "game.html 컷신 크롭/자막/전환 실제 로직을 읽어 '실관측 가능 vs 미관측' 분류 확정 후, 가장 큰 미완료 결함 한 건의 최소 독립 패치+회귀 구현. 근거 부족 차원은 결정적 fixture+UNKNOWN 판정 구현.",
+  "blocker": null
+}

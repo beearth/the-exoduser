@@ -1,0 +1,31 @@
+{
+  "taskId": "ART-WA24-PROBE-FIX",
+  "team": "ART",
+  "terminal": "VS Code Terminal 2 (vscode-dispatch 배정)",
+  "cli": "Claude Code",
+  "model": "claude-opus-4-8",
+  "sessionId": null,
+  "receivedAt": "2026-10-01T10:17:47Z",
+  "startedAt": "2026-10-01T10:17:47Z",
+  "status": "DONE_PENDING_QA_HANDOFF",
+  "completedAt": "2026-10-01T10:25:00Z",
+  "outputs": {
+    "wa24-observer.cjs": "a7134b053786c0c976ecb65832c20ab7380d4addd6e1341445e3d80567f0b7b3",
+    "wa24-observer.test.mjs": "17aba27f029995856ee0dc23651cb46b063ad5b51018477f0f79a3ffdf2664bd"
+  },
+  "verification": "node --check 2/2 OK; node wa24-observer.test.mjs → 35 PASS / 0 FAIL / exit=0 (Node v24.15.0). 케이스: 정상표본 PASS·0표본 INCOMPLETE(within_pm2=false)·재설치 installSeq1→2·취소 멱등+전체정리.",
+  "fixedDefects": ["D1 표본0 within_pm2 오탐→verdict 분리", "D2 cleanup rAF+timeout+namespace 전체정리 멱등", "D3 중복설치 방어 installSeq", "D4 PASS 조건 강화"],
+  "ownedPaths": [
+    "tools/team-followup-20261001/ART/",
+    "docs/0마스터플랜/mac-resume-20261001/vscode-dispatch/ART-result.md",
+    "docs/0마스터플랜/mac-resume-20261001/vscode-dispatch/ART-receipt.json"
+  ],
+  "baseHead": "30a204a7aa348a88b90bdc922862c610a7da938f",
+  "sourceInputs": [
+    "/Users/fordeargamers/Documents/Codex/2026-10-01/dho/outputs/r-input-20261001/candidates/ART.js",
+    "/Users/fordeargamers/Documents/Codex/2026-10-01/dho/outputs/r-input-20261001/검증결과.md"
+  ],
+  "nextAction": "candidates/ART.js의 결함(표본0 within_pm2 오탐·cleanup 미정리 timeout/namespace·중복설치 방어 부재)을 고친 독립 관측기를 tools/team-followup-20261001/ART/에 구현하고, mock 환경에서 정상표본·0표본·재설치·취소 4케이스 정적 검증한다.",
+  "blocker": "실제 컷신 인수(실게임 ?test=1&cutscene=1 PRO 재생)는 QA 종료 인계 전 보류. 게임/브라우저/서버 추가 실행 금지 게이트에 걸림.",
+  "startedActualWork": true
+}

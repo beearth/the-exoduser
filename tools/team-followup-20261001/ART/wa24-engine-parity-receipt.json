@@ -1,0 +1,50 @@
+{
+  "taskId": "ART-20261002-WA24-ENGINE-PARITY",
+  "team": "ART",
+  "continuesSession": "a489cbeb-92d9-449a-a2b7-ba0e2871322f",
+  "terminal": "VS Code Terminal 2 (vscode-dispatch)",
+  "cli": "Claude Code",
+  "model": "claude-opus-4-8",
+  "sessionId": null,
+  "receivedAt": "2026-10-01T16:29:27Z",
+  "firstReadAt": "2026-10-01T16:29:27Z",
+  "firstEditAt": "2026-10-01T16:30:40Z",
+  "startedAt": "2026-10-01T16:30:40Z",
+  "status": "DONE_PENDING_ROOT_NATIVE",
+  "engineConfirmed": "game.html(현재 M, 읽기만): lineElapsed=performance.now()-_cutLineStartMs(:60801), now=performance.now()(:60802), 대사없는컷 자동진행 lineElapsed>=dur(:60805-60807), fade-from-black(:60822 흑클리어), zoom t=lineElapsed/dur(:60856), ★shake _cutShake(mag, now=performance.now())(:60864) — 절대 wall-clock. 라인 shift(+79)뿐 로직 불변.",
+  "diffsFound": [
+    "D-shake: 고정 preview 는 now=el(lineElapsed) → 엔진은 절대 performance.now() 기반 지터(정지 스냅샷이 실제 순간값 아님)",
+    "D-anim: zoom/shake/fade-in 연속 애니메이션을 고정 preview 가 생략(스냅샷만)",
+    "D-transition: wa23(0-5400)→wa24(5400-7800)→wa25(7800-10700) dur 자동진행·라인별 fade-from-black 재생을 고정 preview 가 생략(버튼 단일 표시)"
+  ],
+  "duplicateCheck": "wa24-engine-parity-task.md 외 산출 없음 → 신규 착수. 입력초안 없음.",
+  "ownedPaths": [
+    "tools/team-followup-20261001/ART/wa24-engine-parity/",
+    "tools/team-followup-20261001/ART/wa24-engine-parity-receipt.json",
+    "tools/team-followup-20261001/ART/wa24-engine-parity-result.md"
+  ],
+  "originalFunctionSHA": {
+    "source_game_html_sha256": "7631f5a083672124624e0b8dc22b0716d10c8815dbb1e6aee98a5e2e51299993",
+    "drawSource_sha256": "65c473f734fee4b4de8f84a8d4bac43a462909468d50e9c0d32c6ccef88be812",
+    "executable_sha256": "043cf22ab333ce2eff40eda42f8d14efd50546343d415b65c973a2df7baeb6cb",
+    "cutShake_sha256": "d4d3f5e7d343a8c4a5fdf81650079501ff974764dd7fb85de180d49b85bc3750",
+    "ease_sha256": "81e65520a9fedb8e482fe4a2f0de96995fda051e42e270863fe04ea048a39e2e",
+    "note": "SHA 는 UIUX fixture(art-support-source-fixture.mjs, root-reviewed)가 현재 game.html 에서 추출한 함수 내용. drawStartLine 이 60775→60854 로 이동(다른 세션의 game.html M) — 라인번호만 shift, 함수 내용 불변(shakeSource SHA 동일). game.html 은 M(타세션)이며 읽기만, 편집/스테이징 안 함."
+  },
+  "plan": "고정 preview(index.html)가 생략한 shake(엔진은 절대 now 기반 애니메이션)·fade-in·wa23→24→25 전환(라인별 fade-from-black, dur 자동진행)을 원문 대조로 감사하고, 실차이만 반영한 애니메이션 재생 후보(wa24-engine-parity/preview.html)를 신규 작성(기존 index.html 보존). 새 관측기/생성/다운로드/게임/인코딩 0. 브라우저 시각검수는 root.",
+  "status_final": "DONE_PENDING_ROOT_NATIVE",
+  "completedAt": "2026-10-01T16:33:40Z",
+  "outputs": {
+    "wa24-engine-parity/preview.html": "ce24bcfd2e6e2a8cdf7eaadd510f6d23c42e7c3d7123945dd6ba0a558143f10f",
+    "wa24-engine-parity/selfcheck.mjs": "f7768810802d63c9496a2a124dba3dc0f5959564b04a2baa7dde6eb17ce664f0"
+  },
+  "verification": {
+    "selfcheck": "24 PASS/0 FAIL — [A]시퀀스 타임라인 자동진행 경계 [B]geometry 1e-11(후보==canonical==실엔진 actualDraw, 4비율×3시점) [C]shake 절대-now 보정(고정 preview now=el 과 구분)",
+    "htmlSyntax": "preview.html inline <script> node --check OK",
+    "fixedPreviewPreserved": "wa24-preview/index.html SHA 40bb3e1e 유지(미변경)",
+    "env": "Node v24.15.0 / Darwin 25.6.0, 게임/브라우저/서버/대형빌드 미실행"
+  },
+  "limits": "native 실화면 인수는 root(브라우저 미실행). 눈/발/자막 픽셀 가독성 UNKNOWN 유지. 실컷신 PASS 아님.",
+  "preserved": "game.html(현재 M, 타세션) 읽기만·미편집·미스테이징, index/easy/server/공유docs/타팀/고정preview 미변경, 원화 에셋 read-only, 신규 파일만. Git/queue/새세션/이미지/인코딩/생산영상교체/Mac빌드부하 0.",
+  "blocker": null
+}

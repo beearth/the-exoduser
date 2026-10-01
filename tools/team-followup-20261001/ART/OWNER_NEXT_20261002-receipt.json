@@ -1,0 +1,43 @@
+{
+  "taskId": "ART-OWNER-NEXT-20261002-FINALCROP-INTEGRATION",
+  "team": "ART",
+  "continuesSession": "a489cbeb-92d9-449a-a2b7-ba0e2871322f",
+  "terminal": "VS Code Terminal 2 (vscode-dispatch)",
+  "cli": "Claude Code",
+  "model": "claude-opus-4-8",
+  "sessionId": null,
+  "receivedAt": "2026-10-01T15:14:55Z",
+  "firstReadAt": "2026-10-01T15:14:55Z",
+  "firstEditAt": "2026-10-01T15:17:40Z",
+  "startedAt": "2026-10-01T15:17:40Z",
+  "status": "DONE_PENDING_QA_HANDOFF",
+  "completedAt": "2026-10-01T15:20:18Z",
+  "outputs": {
+    "owner-integration-finalcrop.mjs": "7854d66985beb60a7d561ed82125324519fc60a3bdd305257b35abb04d77eb02",
+    "owner-integration-finalcrop.test.mjs": "bd38967d4a3fd6ef81a169b7a0b1634ba8824c57b020e06f57801a56634d4cd2"
+  },
+  "verification": "node --check 2/2 OK; owner-integration-finalcrop.test.mjs → 31 PASS/0 FAIL/exit=0; 원담당 wa24-delta-probe.test.mjs → 38 PASS/0 FAIL(무결성 유지). 4비율×3시각(12행) 실 draw 1e-11 일치, 누락연결 해소(16:9 OK→CROPPED, 상하 6.35/4.76/3.85% root값 재현), 시간축 보존(line-index, correctedSampler 동일참조), 눈/발/자막 UNKNOWN.",
+  "integratedNotRewritten": "지원 predictFinalCrop import 만; 원담당/지원/ fixture 원본 미변경(해시 유지). 타팀 UIUX·root-review 파일 변경 0.",
+  "limits": "픽셀 가독성 UNKNOWN 유지(기하 크롭까지만). 피사체 좌표 LOCK 없어 실제 프레임 이탈 판정은 다음 게이트. 실브라우저/게임/서버 미실행, game.html 불변.",
+  "pathCorrection": "사용자 턴중 정정: receipt/result는 tools/team-followup-20261001/ART/ 아래(OWNER_NEXT_20261002-receipt.json/-result.md). docs/vscode-dispatch 사본은 제거함.",
+  "duplicateCheck": "owner-integration-* 및 OWNER_NEXT_20261002-receipt/result 산출 없음 → 신규 착수(중복/진행중 아님)",
+  "ownedPaths": [
+    "tools/team-followup-20261001/ART/owner-integration-*",
+    "tools/team-followup-20261001/ART/OWNER_NEXT_20261002-receipt.json",
+    "tools/team-followup-20261001/ART/OWNER_NEXT_20261002-result.md"
+  ],
+  "readOnlyRefs": [
+    "tools/team-followup-20261001/UIUX/art-support-finalcrop.mjs",
+    "tools/team-followup-20261001/UIUX/art-support-finalcrop.test.mjs",
+    "tools/team-followup-20261001/UIUX/art-support-source-fixture.mjs",
+    "tools/team-followup-20261001/UIUX/art-support-final-evidence.json",
+    "tools/team-followup-20261001/root-review/support-final-evidence.json",
+    "docs/0마스터플랜/mac-resume-20261001/vscode-dispatch/SUPPORT-root-review.md",
+    "tools/team-followup-20261001/ART/wa24-delta-probe.cjs"
+  ],
+  "baseHead": "30a204a7aa348a88b90bdc922862c610a7da938f",
+  "ownerModuleHash": "79193e10228007bfce1935c633156a208b719d6540b4b3b45b4889d32a1936e9 (미변경)",
+  "findingSoFar": "원담당 wa24-delta-probe.cjs 는 cover-only predictWa24Crop 만 내보냄 → 줌(Ken Burns 1.08→1.04)·shake·clip을 반영한 최종 크롭 미연결. 지원 predictFinalCrop(검수완료)을 호출부에 인수 연결한다. 재작성 금지.",
+  "plan": "owner-integration-finalcrop.mjs 로 지원 predictFinalCrop 을 원담당 내보내기 표면에 연결. 4비율×3시각(fixture actualDraw 대조) + 시간축 보존 회귀. 눈/발/자막 UNKNOWN 유지. 읽기전용 도구이므로 테스트는 fs 쓰기 없이 실행.",
+  "blocker": null
+}

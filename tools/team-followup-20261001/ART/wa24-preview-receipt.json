@@ -1,0 +1,41 @@
+{
+  "taskId": "ART-20261002-WA24-PREVIEW",
+  "team": "ART",
+  "continuesSession": "a489cbeb-92d9-449a-a2b7-ba0e2871322f",
+  "terminal": "VS Code Terminal 2 (vscode-dispatch)",
+  "cli": "Claude Code",
+  "model": "claude-opus-4-8",
+  "sessionId": null,
+  "receivedAt": "2026-10-01T16:12:51Z",
+  "firstReadAt": "2026-10-01T16:12:51Z",
+  "firstEditAt": "2026-10-01T16:13:30Z",
+  "startedAt": "2026-10-01T16:13:30Z",
+  "status": "DONE_PENDING_ROOT_NATIVE",
+  "completedAt": "2026-10-01T16:16:28Z",
+  "outputs": {
+    "wa24-preview/index.html": "40bb3e1e774d8e2836b143903147e57ad3ec070fc956e572a3b0eca5317b040f",
+    "wa24-preview/selfcheck.mjs": "2cf82ce2a0532cea182af65ae0f7a12096f3899b4fd347da6c7ec1d1985083c5"
+  },
+  "verification": {
+    "selfcheck": "13 PASS/0 FAIL — 미리보기 인라인 수식 == canonical predictFinalCrop == 실 game.html draw(actualDraw), 4비율×3시점 1e-11",
+    "htmlSyntax": "inline <script> node --check OK",
+    "env": "Node v24.15.0 / Darwin 25.6.0, 게임/브라우저/서버 미실행"
+  },
+  "limits": "native 실화면 인수는 root(브라우저 미실행). 눈/발/자막 픽셀 가독성 UNKNOWN 유지. 실제 컷신 PASS 아님(기하/변환까지).",
+  "preserved": "원화 에셋 read-only, game/index/easy/server/공유docs/타팀 미변경, 신규 파일만 생성(원파일 before 보존), 엔진상태변경·생산영상교체 0.",
+  "duplicateCheck": "wa24-preview-task.md 외 산출 없음 → 신규 착수. 입력초안 없음.",
+  "ownedPaths": [
+    "tools/team-followup-20261001/ART/wa24-preview/",
+    "tools/team-followup-20261001/ART/wa24-preview-receipt.json",
+    "tools/team-followup-20261001/ART/wa24-preview-result.md"
+  ],
+  "assetsReadOnly": [
+    "assets/cutscene/warintro/cin_remember.jpg (wa23, 315062 bytes)",
+    "assets/cutscene/warintro/cin_fallhell_custom.jpg (wa24, 598626 bytes)",
+    "wa25: img=null (블랙)"
+  ],
+  "engineRefs": "game.html:60737-60807 (letterbox/clip/zoom/shake/cover/fade/narration), :60627 _cutShake, :60313 _ease",
+  "canonicalRef": "tools/team-followup-20261001/ART/wa24-finalcrop.mjs (predictFinalCrop) — HTML 내 동일 공식 인라인 포팅으로 대조(모듈 import 아님, cjs 혼용 회피)",
+  "plan": "wa24-preview/index.html: 실제 원화 로드, 엔진 변환으로 캔버스 실제 렌더 + canonical fraction 인라인 대조(일치 표시). wa24 진입/중간/출구 3고정버튼 + 뷰포트비 버튼. 캔버스 실좌표/이미지 해상도 표시. 새 관측기 아님. 생성/다운로드/게임/인코딩 0. native 화면 인수는 root.",
+  "blocker": null
+}

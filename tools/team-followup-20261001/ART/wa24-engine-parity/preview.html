@@ -1,0 +1,197 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>wa24 엔진 패리티 재생</title>
+<!--
+  ART-20261002-WA24-ENGINE-PARITY — 애니메이션 재생 후보 (읽기 전용 진단)
+  고정 preview(../wa24-preview/index.html)가 생략한 실엔진 차이를 보정한 "재생" 미리보기.
+  기존 고정 preview 는 보존(이 파일은 신규).
+
+  고정 preview 대비 보정한 실차이 (game.html 원문 대조):
+    D-shake      : 엔진 shake 는 절대 performance.now() 기반(:60864) → 여기선 live performance.now() 로 지터 재현.
+                   (고정 preview 는 now=el 스냅샷 → 순간 실제값 아님)
+    D-anim       : zoom(ease out, el/dur)·fade-in(el/fade.in)·shake 를 rAF 로 연속 재생.
+    D-transition : wa23(dur5400)→wa24(2400)→wa25(2900) 를 dur 자동진행(:60805-60807)·라인별 fade-from-black(:60822)으로 재생.
+
+  * 원화 wa23/wa24 기존 파일 재사용, wa25 는 img=null→검정 유지. 에셋 read-only.
+  * 새 관측기/생성/다운로드/게임/영상인코딩/엔진상태변경 0. native 실화면 인수는 root(실컷신 PASS 아님, 픽셀 가독성 UNKNOWN).
+-->
+<style>
+  :root{--bg:#0c0a09;--panel:rgba(20,16,14,.82);--bone:#dfd6c2;--dim:#9b8f78;--gold:rgba(164,147,115,.5);--hell:#c0392b;--ok:#8fae6b;--warn:#d8a24a;--mono:'SFMono-Regular',Consolas,Menlo,monospace}
+  *{box-sizing:border-box}
+  body{margin:0;background:var(--bg);color:var(--bone);font:14px/1.5 'Noto Sans KR',system-ui,sans-serif;padding:16px}
+  h1{font:600 18px/1.3 Cinzel,serif;letter-spacing:.04em;margin:0 0 4px}
+  .sub{color:var(--dim);font-size:12px;margin-bottom:14px}
+  .bar{display:flex;flex-wrap:wrap;gap:6px;align-items:center;margin-bottom:10px}
+  .bar .lbl{color:var(--dim);font-size:12px;min-width:62px}
+  button{background:#17120f;color:var(--bone);border:1px solid var(--gold);border-radius:4px;padding:6px 11px;font:13px 'Noto Sans KR',sans-serif;cursor:pointer}
+  button:hover{border-color:var(--hell)} button.on{background:#2a1512;border-color:var(--hell);color:#fff}
+  input[type=range]{flex:1 1 220px;min-width:180px;accent-color:#c0392b}
+  .wrap{display:flex;gap:16px;flex-wrap:wrap;align-items:flex-start}
+  .stage{flex:1 1 640px;min-width:320px}
+  canvas{width:100%;height:auto;background:#000;border:1px solid var(--gold);display:block}
+  .cap{color:var(--dim);font-size:11px;margin-top:4px}
+  .info{flex:1 1 300px;min-width:280px;background:var(--panel);border:1px solid var(--gold);border-radius:6px;padding:12px}
+  table{width:100%;border-collapse:collapse;font-family:var(--mono);font-size:12px}
+  td{padding:3px 4px;border-bottom:1px solid rgba(164,147,115,.15);vertical-align:top}
+  td.k{color:var(--dim);white-space:nowrap;width:46%} td.v{color:var(--bone);word-break:break-all}
+  .unk{color:var(--warn)} .note{color:var(--warn);font-size:11px;margin-top:8px;line-height:1.45}
+  .seg{color:var(--ok)}
+</style>
+</head>
+<body>
+  <h1>wa24 엔진 패리티 재생 — wa23 → wa24 → wa25</h1>
+  <div class="sub">고정 preview 가 생략한 shake(절대 now)·연속 애니메이션·라인 전환을 실엔진(game.html) 그대로 재생. 고정 preview 는 보존.</div>
+
+  <div class="bar">
+    <span class="lbl">재생</span>
+    <button id="btnPlay" class="on">▶ 재생</button>
+    <button id="btnRestart">↺ 처음</button>
+    <button id="btnLoop" class="on">반복 ON</button>
+    <button id="btnFade" class="on">fade 적용 ON</button>
+  </div>
+  <div class="bar">
+    <span class="lbl">시퀀스</span>
+    <input type="range" id="seek" min="0" max="10700" value="0" step="1">
+    <span id="seekLbl" class="cap">0 / 10700ms</span>
+  </div>
+  <div class="bar">
+    <span class="lbl">뷰포트</span>
+    <button data-vp="1920x1080" class="on">16:9</button>
+    <button data-vp="2560x1080">21:9</button>
+    <button data-vp="1920x1200">16:10</button>
+    <button data-vp="1024x768">4:3</button>
+    <button id="btnJump24">wa24 진입으로</button>
+  </div>
+
+  <div class="wrap">
+    <div class="stage">
+      <canvas id="cv" width="1920" height="1080"></canvas>
+      <div class="cap" id="cap">—</div>
+    </div>
+    <div class="info"><table id="tbl"></table><div class="note" id="note"></div></div>
+  </div>
+
+<script>
+'use strict';
+// ── 엔진 상수 복제 (game.html _ease :60313, _cutShake :60627) ──
+const EASE={linear:t=>t,in:t=>t*t,out:t=>1-(1-t)*(1-t),inout:t=>t<.5?2*t*t:1-Math.pow(-2*t+2,2)/2};
+function cutShake(mag,t){return mag?{x:(Math.sin(t*0.047)*mag*2)|0,y:(Math.cos(t*0.053)*mag*2)|0}:{x:0,y:0};}
+function fadeAlphaFn(le,dur,fi,fo){fi=fi||400;fo=fo||0;let a=1;if(le<fi)a=le/fi;if(fo&&le>dur-fo)a=Math.min(a,(dur-le)/fo);return Math.max(0,Math.min(1,a));}
+function letterbox(fw,fh){const maxAR=16/9,curAR=fw/fh;let lbX=0,lbY=0,cw=fw,ch=fh;if(curAR>maxAR){cw=~~(fh*maxAR);lbX=~~((fw-cw)/2);}else if(curAR<9/16){ch=~~(fw/(9/16));lbY=~~((fh-ch)/2);}return{cw,ch,lbX,lbY,letterboxed:(cw!==fw||ch!==fh)};}
+
+// ── 라인 데이터 (game.html:60342-60344) + 시퀀스 타임라인 ──
+const SEQ=[
+  {id:'wa23',img:'cin_remember.jpg',dur:5400,narr:1,col:'#ff4422',text:'"그리고 지옥에서도 후회하라."',cam:{zs:1.04,ze:1.04},vfx:{vig:.5},fade:{in:1}},
+  {id:'wa24',img:'cin_fallhell_custom.jpg',dur:2400,narr:1,col:undefined,text:'그리고 지옥에 떨어진다.',cam:{zs:1.08,ze:1.04,ease:'out'},vfx:{vig:.5,shake:1},fade:{in:400}},
+  {id:'wa25',img:null,dur:2900,narr:1,col:undefined,text:'',cam:{zs:1,ze:1},vfx:{vig:.5},fade:{in:400}}
+];
+let acc=0; for(const s of SEQ){s.start=acc;acc+=s.dur;} const TOTAL=acc; // [0,5400),[5400,7800),[7800,10700)
+// 시퀀스 시각 → 활성 라인 + lineElapsed (엔진 자동진행 :60805-60807 등가)
+function sequenceAt(seqMs){
+  if(seqMs>=TOTAL) return {done:true, idx:SEQ.length-1, line:SEQ[SEQ.length-1], lineElapsed:SEQ[SEQ.length-1].dur};
+  for(let i=0;i<SEQ.length;i++){const s=SEQ[i];if(seqMs>=s.start&&seqMs<s.start+s.dur)return {done:false,idx:i,line:s,lineElapsed:seqMs-s.start};}
+  return {done:false,idx:0,line:SEQ[0],lineElapsed:0};
+}
+
+const BASE=new URLSearchParams(location.search).get('assets')||'../../../../assets/cutscene/warintro/';
+const imgCache={};
+function loadImg(file){if(!file)return null;if(imgCache[file])return imgCache[file];const im=new Image();im.onerror=()=>{im.__err=true;};im.src=BASE+file;imgCache[file]=im;return im;}
+SEQ.forEach(s=>s.img&&loadImg(s.img)); // 선로드
+
+const cv=document.getElementById('cv'),cx=cv.getContext('2d');
+const tbl=document.getElementById('tbl'),cap=document.getElementById('cap'),note=document.getElementById('note');
+const seek=document.getElementById('seek'),seekLbl=document.getElementById('seekLbl');
+
+let STATE={vp:[1920,1080],playing:true,loop:true,applyFade:true,seqMs:0,lastPerf:null,lastShake:{x:0,y:0}};
+
+// 엔진 변환 그대로 그림. shakeNow 는 절대 now(엔진 :60864) — live 는 performance.now().
+function drawFrame(fw,fh,line,lineElapsed,shakeNow,applyFade){
+  cv.width=fw;cv.height=fh;
+  const {cw,ch,lbX,lbY,letterboxed}=letterbox(fw,fh);
+  const fA=applyFade?fadeAlphaFn(lineElapsed,line.dur,(line.fade||{}).in,(line.fade||{}).out):1;
+  const cam=line.cam||{zs:1,ze:1};
+  const t=Math.min(1,lineElapsed/(line.dur||1));
+  const zoom=cam.zs+(cam.ze-cam.zs)*((EASE[cam.ease||'linear']||EASE.linear)(t));
+  const sk=cutShake((line.vfx||{}).shake||0,shakeNow);
+  STATE.lastShake=sk;
+  cx.setTransform(1,0,0,1,0,0);cx.clearRect(0,0,fw,fh);
+  cx.fillStyle='#000';cx.fillRect(0,0,fw,fh);
+  cx.save();cx.beginPath();cx.rect(lbX,lbY,cw,ch);cx.clip();cx.translate(lbX,lbY);
+  const im=line.img?loadImg(line.img):null;
+  let natW=0,natH=0,ready=false,drawRect=null,imgErr=false;
+  if(im){imgErr=!!im.__err;ready=im.complete&&im.naturalWidth>0;if(ready){natW=im.naturalWidth;natH=im.naturalHeight;}}
+  if(im&&ready){
+    cx.save();cx.globalAlpha=fA;
+    cx.translate(cw/2+sk.x,ch/2+sk.y);cx.scale(zoom,zoom);cx.translate(-cw/2,-ch/2);
+    const imgR=natW/natH,cR=cw/ch;let dw,dh,dx,dy;
+    if(imgR>cR){dh=ch;dw=ch*imgR;dx=(cw-dw)/2;dy=0;}else{dw=cw;dh=cw/imgR;dx=0;dy=(ch-dh)*.1;}
+    cx.drawImage(im,dx,dy,dw,dh);
+    drawRect={x:(cw/2+sk.x)+zoom*(-cw/2+dx),y:(ch/2+sk.y)+zoom*(-ch/2+dy),w:zoom*dw,h:zoom*dh};
+    cx.restore();
+    const vig=(line.vfx||{}).vig||0;
+    if(vig){const g=cx.createRadialGradient(cw/2,ch/2,cw*.2,cw/2,ch/2,cw*.7);g.addColorStop(0,'rgba(0,0,0,0)');g.addColorStop(1,'rgba(0,0,0,'+vig+')');cx.fillStyle=g;cx.fillRect(0,0,cw,ch);}
+  }
+  if(line.narr&&line.text){
+    cx.fillStyle='rgba(0,0,0,0.35)';cx.fillRect(0,0,cw,ch);
+    cx.save();cx.globalAlpha=fA;cx.textAlign='center';cx.textBaseline='middle';
+    const nFs=Math.max(14,ch*.031);cx.font=(~~nFs)+'px "Noto Sans KR",sans-serif';
+    cx.fillStyle=line.col||'#d8d4cc';cx.shadowColor='#000';cx.shadowBlur=6;cx.shadowOffsetY=1;
+    cx.fillText(line.text,cw*.5,ch*.88);cx.shadowColor='transparent';cx.shadowBlur=0;cx.shadowOffsetY=0;cx.restore();
+  }
+  cx.restore();
+  return {cw,ch,lbX,lbY,letterboxed,zoom,sk,fA,drawRect,natW,natH,ready,imgErr};
+}
+
+function updateInfo(line,lineElapsed,r){
+  const [fw,fh]=STATE.vp;
+  const phase=lineElapsed<((line.fade||{}).in||400)?'fade-in':(lineElapsed>line.dur-((line.fade||{}).out||0)&&((line.fade||{}).out||0)?'fade-out':'hold');
+  const rows=[
+    ['시퀀스 시각',Math.round(STATE.seqMs)+' / '+TOTAL+'ms'],
+    ['활성 라인','<span class="seg">'+line.id+'</span>  el='+Math.round(lineElapsed)+'ms / dur '+line.dur],
+    ['전환 단계',phase],
+    ['뷰포트',fw+'×'+fh+'  (AR '+(fw/fh).toFixed(3)+')'],
+    ['레터박스 박스',r.cw+'×'+r.ch+(r.letterboxed?('  lb '+r.lbX+','+r.lbY):'  (없음)')],
+    ['이미지 해상도',line.img?(r.ready?(r.natW+'×'+r.natH):(r.imgErr?'로드 실패':'로딩중…')):'null(블랙)'],
+    ['zoom (el 기반)',(r.ready?r.zoom.toFixed(4):'—')+'  '+(line.cam.zs)+'→'+(line.cam.ze)+' '+(line.cam.ease||'linear')],
+    ['★shake (절대 now)','('+r.sk.x+', '+r.sk.y+')  ±2 정수 · live performance.now()'],
+    ['fadeAlpha',(STATE.applyFade?r.fA.toFixed(3):'1.000(off)')+'  fade.in='+((line.fade||{}).in||400)],
+    ['자막색',line.col||'#d8d4cc (뼈색)'],
+    ['눈/발/자막 가독성','<span class="unk">UNKNOWN</span> (픽셀 판독 필요)']
+  ];
+  tbl.innerHTML=rows.map(x=>'<tr><td class="k">'+x[0]+'</td><td class="v">'+x[1]+'</td></tr>').join('');
+  seek.value=Math.round(STATE.seqMs);seekLbl.textContent=Math.round(STATE.seqMs)+' / '+TOTAL+'ms';
+  cap.textContent=line.img?('원화 '+line.img+' 재생 ('+phase+')'):'wa25 = img null → 블랙 전환';
+}
+
+function frame(){
+  const [fw,fh]=STATE.vp;
+  const perf=performance.now();
+  if(STATE.playing){
+    if(STATE.lastPerf!=null)STATE.seqMs+=(perf-STATE.lastPerf);
+    STATE.lastPerf=perf;
+    if(STATE.seqMs>=TOTAL){ if(STATE.loop)STATE.seqMs=0; else {STATE.seqMs=TOTAL;STATE.playing=false;document.getElementById('btnPlay').classList.remove('on');document.getElementById('btnPlay').textContent='▶ 재생';} }
+  } else STATE.lastPerf=perf;
+  const at=sequenceAt(STATE.seqMs);
+  const r=drawFrame(fw,fh,at.line,at.lineElapsed,perf,STATE.applyFade); // ★shake=절대 performance.now()
+  updateInfo(at.line,at.lineElapsed,r);
+  requestAnimationFrame(frame);
+}
+
+// 컨트롤
+document.getElementById('btnPlay').addEventListener('click',function(){STATE.playing=!STATE.playing;STATE.lastPerf=null;this.classList.toggle('on',STATE.playing);this.textContent=STATE.playing?'▶ 재생':'❚❚ 일시정지';});
+document.getElementById('btnRestart').addEventListener('click',()=>{STATE.seqMs=0;STATE.lastPerf=null;});
+document.getElementById('btnLoop').addEventListener('click',function(){STATE.loop=!STATE.loop;this.classList.toggle('on',STATE.loop);this.textContent='반복 '+(STATE.loop?'ON':'OFF');});
+document.getElementById('btnFade').addEventListener('click',function(){STATE.applyFade=!STATE.applyFade;this.classList.toggle('on',STATE.applyFade);this.textContent='fade 적용 '+(STATE.applyFade?'ON':'OFF');});
+document.getElementById('btnJump24').addEventListener('click',()=>{STATE.seqMs=SEQ[1].start+400;STATE.playing=false;STATE.lastPerf=null;document.getElementById('btnPlay').classList.remove('on');document.getElementById('btnPlay').textContent='▶ 재생';});
+seek.addEventListener('input',()=>{STATE.seqMs=+seek.value;STATE.playing=false;STATE.lastPerf=null;document.getElementById('btnPlay').classList.remove('on');document.getElementById('btnPlay').textContent='▶ 재생';});
+document.querySelectorAll('button[data-vp]').forEach(b=>b.addEventListener('click',()=>{document.querySelectorAll('button[data-vp]').forEach(x=>x.classList.remove('on'));b.classList.add('on');STATE.vp=b.dataset.vp.split('x').map(Number);}));
+
+note.innerHTML='※ 고정 preview 대비 보정: <b>shake 절대 now</b>(엔진 :60864, 정지가 아닌 live 지터)·<b>연속 애니메이션</b>(zoom/fade-in)·<b>wa23→24→25 전환</b>(dur 자동진행·라인별 fade-from-black). '
+  +'geometry(zoom/cover/letterbox/fade) 공식은 canonical 과 동일(자가검사 1e-11). <b>native 실화면 인수는 root</b> — 실컷신 PASS 아님, 픽셀 가독성 UNKNOWN. 에셋 read-only.';
+requestAnimationFrame(frame);
+</script>
+</body>
+</html>
