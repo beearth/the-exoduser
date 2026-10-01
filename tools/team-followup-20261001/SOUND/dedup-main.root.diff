@@ -1,0 +1,7 @@
+--- a/game.html
++++ b/game.html
+@@ -29490,3 +29490,3 @@
+   G.shake=8*OPT.shake/100;
+-  SFX.groggy();const _bsf=_bossSfx(si);if(_bsf)playSample(_bsf.howl,.6,_r(_bsf.howlP,.15));else playSample(Math.random()<.5?'boss_howl':'boss_howl1',.6,_r(.8,.15)); // 보스 포효
++  SFX.groggy();const _bsf=_bossSfx(si);const _sealKey=_bsf?_bsf.howl:(Math.random()<.5?'boss_howl':'boss_howl1');const _sealRate=_r(_bsf?_bsf.howlP:.8,.15);if(G._bossLoadPhase!==2)playSample(_sealKey,.6,_sealRate); // 보스 포효
+   addTxt(P.x,P.y-50,'\u26A0 '+_T('봉인됨!'),_sCol,70);

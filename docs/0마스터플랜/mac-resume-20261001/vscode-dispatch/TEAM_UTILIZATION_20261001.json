@@ -1,6 +1,6 @@
 {
-  "at": "2026-10-01T12:24:35.602696+00:00",
-  "root": "native checked once: locked; no UI retry. UIUX static candidate reviewed; SOUND/BUILD started existing owners",
+  "at": "2026-10-01T12:31:48.759160+00:00",
+  "root": "SOUND recovery complete; new RNG and UIUX v2 owners actually started; BUILD permission gate preserved",
   "teams": [
     {
       "team": "QA",
@@ -19,7 +19,8 @@
         "input": "{'file_path': '/Users/fordeargamers/Projects/exoduser-migration-20261001/tools/team-followup-20261001/QA/NEXT_TASK.md'}"
       },
       "status": "independent8/root17 PASS; report timing and query/late claims corrected in root receipt",
-      "completedAt": "2026-10-01T11:58:36.004Z"
+      "completedAt": "2026-10-01T11:58:36.004Z",
+      "cliState": "previous task completed; no active implementation verified"
     },
     {
       "team": "ENEMY",
@@ -33,7 +34,8 @@
       "receivedAt": null,
       "startedAt": null,
       "blocker": "Native tool explicitly reported Mac locked; manual unlock required. No new session/hidden IPC used.",
-      "status": "blocked by locked Mac"
+      "status": "blocked by locked Mac",
+      "cliState": "previous task completed; no active implementation verified"
     },
     {
       "team": "MAP",
@@ -59,7 +61,8 @@
         "tools/team-followup-20261001/MAP/mock-harness-check.cjs": "23c8bf65c7da8daf512b711c0397d6dae03a139bd5b005c2be393650db1dd3b3",
         "tools/team-followup-20261001/MAP/_source-candidate-MAP.js": "ee72db6d3efae293680a35781ca96e995b59bade995a93f936909bea3d2ca27f",
         "tools/team-followup-20261001/MAP/m5-evidence-gate.test.cjs": "71acfe4b499360c9bbc672cec4a7cd64c71f1dcdda04ac73bf9cf3093f3d96d0"
-      }
+      },
+      "cliState": "previous task completed; no active implementation verified"
     },
     {
       "team": "ART",
@@ -84,7 +87,8 @@
         "tools/team-followup-20261001/ART/wa24-delta-probe.test.mjs": "35ff1e1efabe83fff1e6d4ab6fb35ea82075442291a61c001e1d80cb4c589839",
         "tools/team-followup-20261001/ART/wa24-observer.cjs": "a7134b053786c0c976ecb65832c20ab7380d4addd6e1341445e3d80567f0b7b3",
         "tools/team-followup-20261001/ART/wa24-observer.test.mjs": "17aba27f029995856ee0dc23651cb46b063ad5b51018477f0f79a3ffdf2664bd"
-      }
+      },
+      "cliState": "previous task completed; no active implementation verified"
     },
     {
       "team": "SKILL",
@@ -108,7 +112,8 @@
         "tools/team-followup-20261001/SKILL/ice-cancel-probe.selftest.mjs": "b536d95f63e633aa526b7951e973b28d1306b72bb6f26390f4b0cf664a5ad5e4",
         "tools/team-followup-20261001/SKILL/ice-cancel-probe.safe.js": "ae7c8e8ad6e874e565c3ee0cb8b635130cefa234c5628bd0ba2922da96481d1b",
         "tools/team-followup-20261001/SKILL/_source-candidate-SKILL.js": "aeded94120a1186da3983a4975efd06ed7c610644bab2ba0c3a11f0a4f756b1f"
-      }
+      },
+      "cliState": "previous task completed; no active implementation verified"
     },
     {
       "team": "ANIMVFX",
@@ -132,7 +137,8 @@
         "tools/team-followup-20261001/ANIMVFX/animvfx_gl_validator.mjs": "9312a7163706d6a48a108ff26b98deed1025ccc0b4566865ca754f6bcac59365",
         "tools/team-followup-20261001/ANIMVFX/animvfx_highhz_lifetime_gate.mjs": "3309238f04d51ccf65af92b90c9aade9edb034e0632a81119d17efa198dfcfd7",
         "tools/team-followup-20261001/ANIMVFX/animvfx_gl_probe.js": "b7ca9939f44f59dca4a67f1853327b61480c61e112d9e88d2df65c55a041ec7c"
-      }
+      },
+      "cliState": "previous task completed; no active implementation verified"
     },
     {
       "team": "BUILD",
@@ -183,47 +189,48 @@
         "error": "listen EPERM 127.0.0.1:0",
         "saveWrites": 0,
         "fixtureCleaned": true
-      }
+      },
+      "cliState": "previous task completed; no active implementation verified"
     },
     {
       "team": "UIUX",
       "sessionId": "01a0f6e5-8653-7ae2-8b2b-314e275c215c",
       "location": "T4",
-      "task": "UIUX-HUD-COORDINATE-ADAPTER",
-      "instruction": "/Users/fordeargamers/Projects/exoduser-migration-20261001/tools/team-followup-20261001/UIUX/COORDINATE_TASK.md",
+      "task": "UIUX-COORDINATE-HOTPATH-CANDIDATE",
+      "instruction": "/Users/fordeargamers/Projects/exoduser-migration-20261001/tools/team-followup-20261001/UIUX/HOTPATH_TASK.md",
       "stateBefore": "idle/completed verified",
       "dispatch": "received",
       "exists": true,
-      "receivedAt": "2026-10-01T12:17:38+00:00",
+      "receivedAt": "2026-10-01T12:28:17+00:00",
       "startedAt": null,
-      "status": "candidate accepted for static handoff; root91+dependency14 pass; production/visual/performance pending",
+      "status": "received; instruction and v1 sources read exit0; v2 implementation in progress",
       "startEvidence": "NEXT_TASK 첫 Read exit0, 이전 완료 산출과 현재 draw 경로·팀 MD 읽기 exit0. 중복 진행 산출 없음",
-      "receipt": "/Users/fordeargamers/Projects/exoduser-migration-20261001/docs/0마스터플랜/mac-resume-20261001/vscode-dispatch/UIUX-coordinate-receipt.json",
+      "receipt": "/Users/fordeargamers/Projects/exoduser-migration-20261001/docs/0마스터플랜/mac-resume-20261001/vscode-dispatch/UIUX-hotpath-receipt.json",
       "waitReason": "No static implementation blocker; real visual and dense performance QA remain later gates",
       "previous": {
-        "task": "UIUX-HUD-OCCLUSION-CANDIDATE",
-        "status": "candidate complete; runtime/integration gates pending",
-        "receivedAt": "2026-10-01T11:45:21Z",
-        "startedAt": "2026-10-01T11:45:21Z"
+        "task": "UIUX-HUD-COORDINATE-ADAPTER",
+        "status": "candidate accepted for static handoff; root91+dependency14 pass; production/visual/performance pending",
+        "completedAt": "2026-10-01T12:22:55Z",
+        "rootValidation": {
+          "checks": 91,
+          "dependencyChecks": 14,
+          "sourceSnippets": 5,
+          "contextPatchCheck": true,
+          "productionApplied": false
+        }
       },
-      "queueMessageId": "01a0f766-197d-7430-94c8-de093b7cb36d",
+      "queueMessageId": "01a0f76f-d79c-7720-abcf-412eba0d2eba",
       "queuedAt": "2026-10-01T12:17:38.698597+00:00",
       "receivedAtBasis": "read_thread new user turn startedAt, not exact command timestamp",
       "firstActualAction": {
-        "command": "cat tools/team-followup-20261001/UIUX/COORDINATE_TASK.md; ls -la tools/team-followup-20261001/UIUX; find tools docs -name AGENTS.md; date -u +%FT%TZ",
+        "command": "Read HOTPATH_TASK and v1 sources, duplicate search, source hashes",
         "exitCode": 0,
-        "observedAt": "2026-10-01T12:18:17.309987+00:00",
-        "source": "read_thread turn 01a0f766-1980-7a62-be96-b03620367404"
+        "turnId": "01a0f76f-d79d-70a1-8150-d317eff84291",
+        "exactCommandStartedAt": null
       },
-      "completedAt": "2026-10-01T12:22:55Z",
+      "completedAt": null,
       "completedAtBasis": "owner final UTC query; not exact final message timestamp",
-      "rootValidation": {
-        "checks": 91,
-        "dependencyChecks": 14,
-        "sourceSnippets": 5,
-        "contextPatchCheck": true,
-        "productionApplied": false
-      }
+      "cliState": "active verified"
     },
     {
       "team": "ITEM",
@@ -236,7 +243,7 @@
       "exists": true,
       "receivedAt": "2026-10-01T11:51:57Z",
       "startedAt": "2026-10-01T11:51:57Z",
-      "status": "completed_attribution_pending_chrome_acceptance",
+      "status": "CLI completed; explicit integration dependency; no new task queued",
       "startEvidence": "NEXT_TASK.md와 기존 ITEM 결과·후보·현재 생산 함수 읽기",
       "receipt": "/Users/fordeargamers/Projects/exoduser-migration-20261001/docs/0마스터플랜/mac-resume-20261001/vscode-dispatch/ITEM-next-receipt.json",
       "previous": {
@@ -244,7 +251,9 @@
         "status": "completed_bundle_pending_runtime_gates"
       },
       "queueMessageId": "01a0f74e-77b9-7bd3-ae28-d54aa6e46cf2",
-      "firstAction": "기존 native Canvas 검사 소스 읽기; 동일 SHA PNG decode와 단계별 비교 설계"
+      "firstAction": "기존 native Canvas 검사 소스 읽기; 동일 SHA PNG decode와 단계별 비교 설계",
+      "currentDependencyReview": "Latest team MD/result/thread read: native RGB attribution completed. Target Chrome backend validation and production integration required; no new independent defect established.",
+      "cliState": "previous task completed; no active implementation verified"
     },
     {
       "team": "BALANCE",
@@ -257,48 +266,59 @@
       "exists": true,
       "receivedAt": "2026-10-01T11:45:16Z",
       "startedAt": "2026-10-01T11:45:16Z",
-      "status": "candidate complete; runtime/integration gates pending",
+      "status": "CLI completed; explicit integration dependency; no new task queued",
       "startEvidence": "NEXT_TASK.md·직전 결과·팀 MD·ITEM SSOT 실제 읽기 완료; 후보 파일 없음 확인",
       "receipt": "/Users/fordeargamers/Projects/exoduser-migration-20261001/docs/0마스터플랜/mac-resume-20261001/vscode-dispatch/BALANCE-next-receipt.json",
-      "waitReason": "damage/source/stack/resource policy not fixed; no fabricated numerical implementation"
+      "waitReason": "damage/source/stack/resource policy not fixed; no fabricated numerical implementation",
+      "currentDependencyReview": "Latest MD/result/thread read: proc damage/resource/source/stack policy missing. Previously listed blastShot gate already uses malCost(5) in both current HTML files; no duplicate repair assigned.",
+      "cliState": "previous task completed; no active implementation verified"
     },
     {
       "team": "SOUND",
       "sessionId": "aa3ac0ed-f4e5-44ad-a0b2-d4d2da045b84",
-      "task": "S-11-HOWL-DEDUP-CANDIDATE",
+      "task": "S-11-HOWL-RNG-PRESERVING-CANDIDATE",
       "dispatch": "received",
       "firstFileReadAt": "2026-10-01T11:40:49.363Z",
       "exists": true,
       "previous": {
-        "task": "S-11-HOWL-OBSERVER-FIX",
-        "status": "corrected submission reviewed; root canonical 18 tests pass; runtime not installed"
+        "task": "S-11-HOWL-DEDUP-CANDIDATE",
+        "status": "submitted and root recovered; static candidate reviewed; production acceptance withheld",
+        "completedAt": "2026-10-01T12:25:57.531Z",
+        "rootValidation": {
+          "submission": 5,
+          "rootSourceFragments": 16,
+          "patchChecks": 2
+        }
       },
-      "receivedAt": "2026-10-01T12:23:14.159Z",
+      "receivedAt": "2026-10-01T12:30:59.837Z",
       "firstActualAction": {
-        "at": "2026-10-01T12:23:17.784Z",
+        "at": "2026-10-01T12:31:04.694Z",
         "tool": "Read",
-        "path": "tools/team-followup-20261001/SOUND/DEDUP_TASK.md"
+        "path": "tools/team-followup-20261001/SOUND/RNG_TASK.md"
       },
-      "status": "received and first Read verified; read-only candidate preparation",
-      "completedAt": null
+      "status": "received; RNG task and actual playSample read verified; independent candidate in progress",
+      "completedAt": null,
+      "receipt": "/Users/fordeargamers/Projects/exoduser-migration-20261001/docs/0마스터플랜/mac-resume-20261001/vscode-dispatch/SOUND-rng-receipt.json",
+      "waitReason": "Candidate implementation active; production/audio/NW acceptance remains later",
+      "instruction": "/Users/fordeargamers/Projects/exoduser-migration-20261001/tools/team-followup-20261001/SOUND/RNG_TASK.md",
+      "cliState": "active verified"
     }
   ],
   "remoteCheckpoint": {
+    "sha": "1bb973d016a4975745db1ed743be0352a080830c",
     "branch": "codex/mac-environment-20261001",
-    "sha": "753bde9d0e66ae3b61e32025373bfe737dd84c3f",
-    "verifiedPreviously": true
+    "verified": true
   },
   "wipRecovery": {
-    "sha": "62652a19db3a1ececeb721d202254abfd20c0971",
-    "ref": "refs/heads/codex/backup-review-wip-20261001-211521",
+    "sha": "3921dfc98085ee856accdd1795b5efd9a7589e19",
+    "ref": "refs/heads/codex/backup-followup-wip-20261001-213023",
+    "files": 149,
     "remoteVerified": true,
-    "files": 135,
-    "criticalFollowupsVerified": [
-      "docs/0마스터플랜/mac-resume-20261001/vscode-dispatch/UIUX-next-result.md",
-      "docs/0마스터플랜/mac-resume-20261001/vscode-dispatch/BALANCE-next-result.md",
-      "docs/0마스터플랜/mac-resume-20261001/vscode-dispatch/BUILD-next-result.md",
-      "tools/team-followup-20261001/ITEM/rgb-result.md"
-    ]
+    "excludedLiveUIUX": [
+      "docs/0마스터플랜/mac-resume-20261001/vscode-dispatch/UIUX-hotpath-receipt.json",
+      "tools/team-followup-20261001/UIUX/coordinate-hotpath-v2.mjs"
+    ],
+    "scope": "includes BUILD denied loopback and SOUND dedup; later RNG and v2 changes not in this snapshot"
   },
   "nativeCheck": {
     "atApprox": "2026-10-01T12:22:20Z",
