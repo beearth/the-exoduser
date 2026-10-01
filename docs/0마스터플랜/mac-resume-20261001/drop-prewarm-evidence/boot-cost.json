@@ -1,0 +1,50 @@
+{
+  "boot": false,
+  "memoryScope": "performance.memory JS heap only; shared/process noise; excludes GPU total",
+  "on": false,
+  "q": {
+    "after": {
+      "at": 5856.100000023842,
+      "heap": 366080876,
+      "on": false
+    },
+    "before": {
+      "at": 5483,
+      "heap": 259415553,
+      "on": false
+    },
+    "hides": [
+      {
+        "at": 11592.899999976158,
+        "on": false
+      },
+      {
+        "at": 11592.899999976158,
+        "on": false
+      }
+    ],
+    "restore": {},
+    "shows": [
+      {
+        "at": 688.6999999284744,
+        "message": "에셋 로딩 중..."
+      },
+      {
+        "at": 5871.199999928474,
+        "message": "DEMO 로딩..."
+      }
+    ],
+    "startedAt": 688.6000000238419,
+    "stats": {
+      "created": 20,
+      "elapsedMs": 372.7999999523163,
+      "maxTileMs": 36.10000002384186,
+      "pixelBytes": 20971520,
+      "processingMs": 84.19999992847443,
+      "reused": 0,
+      "status": "ready",
+      "unavailable": 0
+    }
+  },
+  "timeOrigin": 1790844287484.1
+}

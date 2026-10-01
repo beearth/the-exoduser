@@ -1,0 +1,15 @@
+{
+  "checkedAt": "2026-10-01T17:50:53.152921",
+  "protectedBaselinePaths": 22,
+  "protectedStatusIdentical": true,
+  "indexEmptyBeforeStage": true,
+  "easyDiffEmpty": true,
+  "gameSHA256": "78c3a0c763eb32cb39056835d3eaf30f3402bc054a463028bde783bf4e4f0e28",
+  "browser": "about:blank; viewport reset",
+  "observer": "all3 stopped and restored; separate tile wrappers restored",
+  "productionCodeScope": "45 insertions 2 removals; original lazy/mask/tier functions unchanged",
+  "bootFixtureSHA256": "03ddcce0ba266770281f58def8356f9947a4a8a12e7bc3cdc09a0bd3d935f0b9",
+  "tests": 30,
+  "inlineScripts": 6,
+  "guard": "PASS"
+}

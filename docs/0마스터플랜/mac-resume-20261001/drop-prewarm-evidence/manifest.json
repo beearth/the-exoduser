@@ -1,0 +1,46 @@
+{
+  "plan.json": {
+    "bytes": 718,
+    "sha256": "816befd8d4af58a80f13550ce1c6d11ef0e46a8dfbd604366cfa33c63bc94c00"
+  },
+  "independent-review.md": {
+    "bytes": 1359,
+    "sha256": "fe0a59a3a77f9d59224bf2e932b6ab9a809d7a26707b8a3c3afd69b30037f6bc"
+  },
+  "evidence.zip": {
+    "bytes": 1514612,
+    "sha256": "be78faca1ae66267af7585fa1fc4035b9a816d1e2e15a3e1f34d4fdbbecf7ace"
+  },
+  "pixels.png": {
+    "bytes": 40918,
+    "sha256": "b551512be5dfcdcfea0b8eb284061455f465804907a83c9cc68e2d3eed7453d6"
+  },
+  "normal3-end.png": {
+    "bytes": 91513,
+    "sha256": "b2983f6c1ec2ad61fc145b23c5ffb68ec0fa330239f3a7b6ffb107cf5c73b383"
+  },
+  "boot-cost.json": {
+    "bytes": 1028,
+    "sha256": "d452047a33aaf375b41f54b03c4f1fa18b6e6accaf9c829d8c671c7a61d463a0"
+  },
+  "cleanup.json": {
+    "bytes": 622,
+    "sha256": "fb7e0cfef0b87561200833cc01787a2b995366c9d8e997d9fbcc553c2a5fe2dc"
+  },
+  "normal2-summary.json": {
+    "bytes": 8368,
+    "sha256": "866f2c05f4b1dfa526f7406d5984683b619d7d6bca3f3cd32ba20e670b30a562"
+  },
+  "pixels.json": {
+    "bytes": 3530,
+    "sha256": "0d51c64fd1e640e83a7ef13397a92fba7bf0b059d306cfb61f733b1fd9fa4d01"
+  },
+  "normal-summary.json": {
+    "bytes": 19821,
+    "sha256": "430a13374d94ecd3a6b67c4da38c73ff060e1dac3265d6045facf4a66998d616"
+  },
+  "normal3-summary.json": {
+    "bytes": 34025,
+    "sha256": "fe730c1b374bf50db4ac4ae009e97e052b030d4a9da7c5edde9d6eabc6593c42"
+  }
+}

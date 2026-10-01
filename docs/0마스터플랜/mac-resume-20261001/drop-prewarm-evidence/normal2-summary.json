@@ -1,0 +1,390 @@
+{
+  "window": {
+    "inputAt": 110935,
+    "endAt": 135937.10000002384,
+    "duration": 25002.100000023842,
+    "reason": "25s-after-input",
+    "loops": 1036,
+    "draws": 1036,
+    "updates": 1500,
+    "rateLoop": 41.436519332336566,
+    "rateDraw": 41.436519332336566
+  },
+  "initial": {
+    "atmos": 1,
+    "enemies": 33,
+    "focus": true,
+    "fpsCap": 0,
+    "hidden": false,
+    "hp": 582,
+    "items": 0,
+    "kills": 7,
+    "on": true,
+    "paused": false,
+    "projectiles": 0,
+    "x": 4020,
+    "y": 7420
+  },
+  "end": {
+    "at": 135937.10000002384,
+    "atmos": 1,
+    "enemies": 53,
+    "focus": true,
+    "fpsCap": 0,
+    "hidden": false,
+    "hp": 301.918750000001,
+    "items": 0,
+    "kills": 7,
+    "on": true,
+    "paused": false,
+    "projectiles": 0,
+    "x": 4014.809811837359,
+    "y": 7183.461087195672
+  },
+  "metrics": {
+    "rAFtimestampIntervals": {
+      "n": 1034,
+      "mean": 24.13820116054158,
+      "p95": 32.40000000002328,
+      "p99": 33.39999999999418,
+      "max": 33.69999999999709,
+      "gt50": 0,
+      "gt100": 0
+    },
+    "loopStartIntervals": {
+      "n": 1035,
+      "mean": 24.132173912997406,
+      "p95": 28.0,
+      "p99": 29.5,
+      "max": 51.60000002384186,
+      "gt50": 1,
+      "gt100": 0
+    },
+    "drawStartIntervals": {
+      "n": 1035,
+      "mean": 24.13178743959049,
+      "p95": 28.100000023841858,
+      "p99": 29.5,
+      "max": 51.10000002384186,
+      "gt50": 1,
+      "gt100": 0
+    },
+    "loopDuration": {
+      "n": 1036,
+      "mean": 1.3412162162162162,
+      "p95": 1.8000000715255735,
+      "p99": 2.4000000953674316,
+      "max": 3.100000023841858,
+      "gt50": 0,
+      "gt100": 0
+    },
+    "updateDuration": {
+      "n": 1500,
+      "mean": 0.49713333400090537,
+      "p95": 0.7000000476837158,
+      "p99": 0.8999999761581421,
+      "max": 2.200000047683716,
+      "gt50": 0,
+      "gt100": 0
+    },
+    "drawDuration": {
+      "n": 1036,
+      "mean": 0.5545366778106763,
+      "p95": 0.8000000715255737,
+      "p99": 1.5,
+      "max": 1.899999976158142,
+      "gt50": 0,
+      "gt100": 0
+    }
+  },
+  "skipCounts": {
+    "None": 1036
+  },
+  "updateCountHistogram": {
+    "2": 465,
+    "1": 570,
+    "0": 1
+  },
+  "aggregatesNestedDoNotSum": {
+    "_drawBurst": {
+      "count": 1036,
+      "total": 3.900000095367432,
+      "max": 0.10000002384185792
+    },
+    "_texPreDrain": {
+      "count": 1036,
+      "total": 0.19999992847442627,
+      "max": 0.10000002384185792
+    },
+    "draw": {
+      "count": 1036,
+      "total": 574.4999982118607,
+      "max": 1.899999976158142
+    },
+    "update": {
+      "count": 1500,
+      "total": 745.700001001358,
+      "max": 2.200000047683716
+    },
+    "_drCapture": {
+      "count": 250,
+      "total": 21.20000123977661,
+      "max": 0.30000007152557373
+    },
+    "hurtE": {
+      "count": 13,
+      "total": 0.3000000715255738,
+      "max": 0.10000002384185792
+    }
+  },
+  "longLoopStartIntervals": [
+    {
+      "fromLoop": 8,
+      "toLoop": 9,
+      "start": 111106.79999995232,
+      "end": 111158.39999997616,
+      "interval": 51.60000002384186,
+      "previousLoopCPU": 1.5,
+      "outsidePreviousLoop": 50.10000002384186,
+      "previousUpdate": 0.8000000715255737,
+      "previousDraw": 0.6999999284744263,
+      "previousLoopOther": 0.0,
+      "afterKills": 7,
+      "items": 0,
+      "topEvents": [],
+      "browserEntries": [
+        {
+          "blockingDuration": 0,
+          "duration": 51.800000071525574,
+          "entryType": "long-animation-frame",
+          "firstUIEventTimestamp": 0,
+          "name": "long-animation-frame",
+          "navigationId": 1595,
+          "paintTime": 111160.60000002384,
+          "presentationTime": 111252,
+          "renderStart": 111158.20000004768,
+          "scripts": [],
+          "startTime": 111108.79999995232,
+          "styleAndLayoutStart": 111159.29999995232
+        }
+      ]
+    }
+  ],
+  "longCalls": [],
+  "events": [
+    {
+      "at": 110935,
+      "button": 0,
+      "code": null,
+      "kind": "mousedown",
+      "target": "CANVAS",
+      "trusted": true,
+      "x": 680,
+      "y": 260
+    },
+    {
+      "at": 110935.89999997616,
+      "button": 0,
+      "code": null,
+      "kind": "mouseup",
+      "target": "CANVAS",
+      "trusted": true,
+      "x": 680,
+      "y": 260
+    },
+    {
+      "at": 110940.70000004768,
+      "button": null,
+      "code": "KeyW",
+      "kind": "keydown",
+      "target": "BODY",
+      "trusted": true,
+      "x": null,
+      "y": null
+    },
+    {
+      "at": 110941.60000002384,
+      "button": null,
+      "code": "KeyW",
+      "kind": "keyup",
+      "target": "BODY",
+      "trusted": true,
+      "x": null,
+      "y": null
+    },
+    {
+      "at": 110962.89999997616,
+      "button": 0,
+      "code": null,
+      "kind": "mousedown",
+      "target": "CANVAS",
+      "trusted": true,
+      "x": 690,
+      "y": 250
+    },
+    {
+      "at": 110964.20000004768,
+      "button": 0,
+      "code": null,
+      "kind": "mouseup",
+      "target": "CANVAS",
+      "trusted": true,
+      "x": 690,
+      "y": 250
+    },
+    {
+      "at": 110968.60000002384,
+      "button": null,
+      "code": "KeyW",
+      "kind": "keydown",
+      "target": "BODY",
+      "trusted": true,
+      "x": null,
+      "y": null
+    },
+    {
+      "at": 110969.39999997616,
+      "button": null,
+      "code": "KeyW",
+      "kind": "keyup",
+      "target": "BODY",
+      "trusted": true,
+      "x": null,
+      "y": null
+    }
+  ],
+  "browserEntries": [
+    {
+      "blockingDuration": 0,
+      "duration": 51.800000071525574,
+      "entryType": "long-animation-frame",
+      "firstUIEventTimestamp": 0,
+      "name": "long-animation-frame",
+      "navigationId": 1595,
+      "paintTime": 111160.60000002384,
+      "presentationTime": 111252,
+      "renderStart": 111158.20000004768,
+      "scripts": [],
+      "startTime": 111108.79999995232,
+      "styleAndLayoutStart": 111159.29999995232
+    }
+  ],
+  "environment": {
+    "canvas": [
+      1352,
+      662
+    ],
+    "dpr": 1,
+    "gpuTiming": false,
+    "performanceEntryTypes": [
+      "element",
+      "event",
+      "first-input",
+      "interaction-contentful-paint",
+      "largest-contentful-paint",
+      "layout-shift",
+      "long-animation-frame",
+      "longtask",
+      "mark",
+      "measure",
+      "navigation",
+      "paint",
+      "resource",
+      "soft-navigation",
+      "visibility-state"
+    ],
+    "physicsStep": 16.666666666666668,
+    "profiler": false,
+    "timeOrigin": 1790844067836.9,
+    "ua": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/152.0.0.0 Safari/537.36",
+    "url": "http://qa-drop-prewarm-game-20261001.localhost:3340/game.html?webgpu=0",
+    "useGL": true,
+    "useGPU": false,
+    "viewport": [
+      1352,
+      663
+    ],
+    "warm": true,
+    "warmMs": 8.200000047683716
+  },
+  "options": {
+    "ambPart": true,
+    "atmos": 1,
+    "autoPotThr": 0.99,
+    "bgmTrack": "auto",
+    "bgmVol": 60,
+    "bloom": true,
+    "bossDebug": false,
+    "bossFog": true,
+    "crAutoEnh": -1,
+    "crAutoFuse": -1,
+    "cursor": 0,
+    "cursorSize": 50,
+    "deathFx": true,
+    "diff": 5,
+    "fog": true,
+    "fpsCap": 0,
+    "grain": true,
+    "hitStop": 0,
+    "lang": "ko",
+    "lighting": true,
+    "minPickLvTier": 0,
+    "minPickRar": 0,
+    "outline": true,
+    "parts": 80,
+    "petAuto": true,
+    "postfx": true,
+    "quality": "high",
+    "resScale": 100,
+    "sfxVol": 60,
+    "shake": 80,
+    "showFps": false,
+    "slash": true,
+    "ssaa": 1,
+    "torch": true,
+    "trail": true
+  },
+  "finalOptions": {
+    "ambPart": true,
+    "atmos": 1,
+    "autoPotThr": 0.99,
+    "bgmTrack": "auto",
+    "bgmVol": 60,
+    "bloom": true,
+    "bossDebug": false,
+    "bossFog": true,
+    "crAutoEnh": -1,
+    "crAutoFuse": -1,
+    "cursor": 0,
+    "cursorSize": 50,
+    "deathFx": true,
+    "diff": 5,
+    "fog": true,
+    "fpsCap": 0,
+    "grain": true,
+    "hitStop": 0,
+    "lang": "ko",
+    "lighting": true,
+    "minPickLvTier": 0,
+    "minPickRar": 0,
+    "outline": true,
+    "parts": 80,
+    "petAuto": true,
+    "postfx": true,
+    "quality": "high",
+    "resScale": 100,
+    "sfxVol": 60,
+    "shake": 80,
+    "showFps": false,
+    "slash": true,
+    "ssaa": 1,
+    "torch": true,
+    "trail": true
+  },
+  "restored": {
+    "draw": true,
+    "loop": true,
+    "update": true
+  },
+  "dropped": 0
+}

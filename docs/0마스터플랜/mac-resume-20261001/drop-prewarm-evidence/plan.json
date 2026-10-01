@@ -1,0 +1,11 @@
+{
+  "source": "972477e1995ba6dd3eccf5b28e2dcd7840fbabc2",
+  "time": "2026-10-01T17:38:41.368119",
+  "scope": "QA-B01 existing 20 beam tiles only; production main HTML",
+  "bootBudgetMs": 5000,
+  "normalObservation": "25s native input, early stop natural death, at most 2 attempts; no HP/RNG/quality overrides",
+  "pixelTest": "separate local fixture using original exact function source, all20 bytes",
+  "protectedPaths": 22,
+  "easyPackage": "excluded",
+  "followup": "Two observations had zero beam calls (first common rarity only, retry zero kills). Add one separate 25s normal start with sustained native mouse drag, and a diagnostic boot/functional fixture; retain all attempts and no pooled improvement claim."
+}

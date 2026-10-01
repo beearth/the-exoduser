@@ -1,0 +1,195 @@
+{
+  "crossOriginIsolated": false,
+  "heapAfter": {
+    "totalJSHeapSize": 130336397,
+    "usedJSHeapSize": 101898521
+  },
+  "heapBefore": {
+    "totalJSHeapSize": 82388432,
+    "usedJSHeapSize": 71882972
+  },
+  "pass": true,
+  "prepared": {
+    "created": 20,
+    "elapsedMs": 561.5,
+    "maxTileMs": 53.800000071525574,
+    "pixelBytes": 20971520,
+    "processingMs": 166.60000002384186,
+    "reused": 0,
+    "status": "ready",
+    "unavailable": 0
+  },
+  "repeat": {
+    "created": 0,
+    "elapsedMs": 86.20000004768372,
+    "maxTileMs": 0,
+    "pixelBytes": 0,
+    "processingMs": 0,
+    "reused": 20,
+    "status": "ready",
+    "unavailable": 0
+  },
+  "results": [
+    {
+      "bytes": 1048576,
+      "frame": 0,
+      "maxDelta": 0,
+      "mismatches": 0,
+      "sameObject": true,
+      "tile": 0
+    },
+    {
+      "bytes": 1048576,
+      "frame": 0,
+      "maxDelta": 0,
+      "mismatches": 0,
+      "sameObject": true,
+      "tile": 1
+    },
+    {
+      "bytes": 1048576,
+      "frame": 0,
+      "maxDelta": 0,
+      "mismatches": 0,
+      "sameObject": true,
+      "tile": 2
+    },
+    {
+      "bytes": 1048576,
+      "frame": 0,
+      "maxDelta": 0,
+      "mismatches": 0,
+      "sameObject": true,
+      "tile": 3
+    },
+    {
+      "bytes": 1048576,
+      "frame": 0,
+      "maxDelta": 0,
+      "mismatches": 0,
+      "sameObject": true,
+      "tile": 4
+    },
+    {
+      "bytes": 1048576,
+      "frame": 0,
+      "maxDelta": 0,
+      "mismatches": 0,
+      "sameObject": true,
+      "tile": 5
+    },
+    {
+      "bytes": 1048576,
+      "frame": 0,
+      "maxDelta": 0,
+      "mismatches": 0,
+      "sameObject": true,
+      "tile": 6
+    },
+    {
+      "bytes": 1048576,
+      "frame": 0,
+      "maxDelta": 0,
+      "mismatches": 0,
+      "sameObject": true,
+      "tile": 7
+    },
+    {
+      "bytes": 1048576,
+      "frame": 0,
+      "maxDelta": 0,
+      "mismatches": 0,
+      "sameObject": true,
+      "tile": 8
+    },
+    {
+      "bytes": 1048576,
+      "frame": 0,
+      "maxDelta": 0,
+      "mismatches": 0,
+      "sameObject": true,
+      "tile": 9
+    },
+    {
+      "bytes": 1048576,
+      "frame": 1,
+      "maxDelta": 0,
+      "mismatches": 0,
+      "sameObject": true,
+      "tile": 0
+    },
+    {
+      "bytes": 1048576,
+      "frame": 1,
+      "maxDelta": 0,
+      "mismatches": 0,
+      "sameObject": true,
+      "tile": 1
+    },
+    {
+      "bytes": 1048576,
+      "frame": 1,
+      "maxDelta": 0,
+      "mismatches": 0,
+      "sameObject": true,
+      "tile": 2
+    },
+    {
+      "bytes": 1048576,
+      "frame": 1,
+      "maxDelta": 0,
+      "mismatches": 0,
+      "sameObject": true,
+      "tile": 3
+    },
+    {
+      "bytes": 1048576,
+      "frame": 1,
+      "maxDelta": 0,
+      "mismatches": 0,
+      "sameObject": true,
+      "tile": 4
+    },
+    {
+      "bytes": 1048576,
+      "frame": 1,
+      "maxDelta": 0,
+      "mismatches": 0,
+      "sameObject": true,
+      "tile": 5
+    },
+    {
+      "bytes": 1048576,
+      "frame": 1,
+      "maxDelta": 0,
+      "mismatches": 0,
+      "sameObject": true,
+      "tile": 6
+    },
+    {
+      "bytes": 1048576,
+      "frame": 1,
+      "maxDelta": 0,
+      "mismatches": 0,
+      "sameObject": true,
+      "tile": 7
+    },
+    {
+      "bytes": 1048576,
+      "frame": 1,
+      "maxDelta": 0,
+      "mismatches": 0,
+      "sameObject": true,
+      "tile": 8
+    },
+    {
+      "bytes": 1048576,
+      "frame": 1,
+      "maxDelta": 0,
+      "mismatches": 0,
+      "sameObject": true,
+      "tile": 9
+    }
+  ],
+  "userAgentMemorySupported": false
+}

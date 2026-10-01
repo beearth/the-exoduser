@@ -26407,6 +26407,48 @@ function _worldDropFxTile(frame,tile){
   _worldDropFxTiles[frame][tile]=_maskWorldDropBlack(canvas);
   return _worldDropFxTiles[frame][tile];
 }
+// QA-B01: reuse the lazy cache before the renderer/game starts; never batch during combat.
+let _worldDropFxWarmPromise=null,_worldDropFxWarmStats=null;
+function _prepareWorldDropFx(){
+  if(_worldDropFxWarmPromise)return _worldDropFxWarmPromise;
+  if(G.on||!_bootLoadActive||_bootLoadKilled)return Promise.resolve(null);
+  const epoch=_bootLoadEpoch,started=performance.now(),deadline=started+5000;
+  const stats={status:'preparing',created:0,reused:0,unavailable:0,processingMs:0,maxTileMs:0,elapsedMs:0,pixelBytes:0};
+  _worldDropFxWarmStats=stats;
+  // Promise.resolve defers work until the shared in-flight promise has been assigned.
+  _worldDropFxWarmPromise=Promise.resolve().then(async()=>{
+    const pending=Array.from({length:_worldDropFx.length*10},(_,i)=>i);
+    try{
+      while(pending.length){
+        if(G.on||!_bootLoadActive||_bootLoadKilled||epoch!==_bootLoadEpoch){stats.status='cancelled';break;}
+        if(performance.now()>=deadline){stats.status='timeout';break;}
+        let processed=false;
+        for(let i=0;i<pending.length;i++){
+          const job=pending[i],frame=Math.floor(job/10),tile=job%10,img=_worldDropFx[frame];
+          if(!img.complete)continue; // Other ready frames need not wait for this image.
+          pending.splice(i,1);processed=true;
+          const size=Math.floor(img.naturalWidth/_WORLD_DROP_FX_COLS);
+          if(!size||tile>=Math.floor(img.naturalHeight/size)*_WORLD_DROP_FX_COLS){stats.unavailable++;break;}
+          if(_worldDropFxTiles[frame][tile]){stats.reused++;break;}
+          const tileStarted=performance.now();
+          try{
+            const canvas=_worldDropFxTile(frame,tile);
+            if(canvas){stats.created++;stats.pixelBytes+=canvas.width*canvas.height*4;}
+            else stats.unavailable++;
+          }finally{
+            const ms=performance.now()-tileStarted;stats.processingMs+=ms;stats.maxTileMs=Math.max(stats.maxTileMs,ms);
+          }
+          break; // At most one tile per task, including cache hits and missing tiles.
+        }
+        if(pending.length)await new Promise(resolve=>setTimeout(resolve,processed?0:30));
+      }
+      if(stats.status==='preparing')stats.status=stats.unavailable?'partial':'ready';
+    }catch(_e){stats.status='failed';} // Keep successful tiles and the original lazy fallback.
+    finally{stats.elapsedMs=performance.now()-started;}
+    return stats;
+  }).finally(()=>{_worldDropFxWarmPromise=null;});
+  return _worldDropFxWarmPromise;
+}
 function _worldItemSkin(it){
   if(!it)return null;
   let base=it.wtype||it.btype||it.slot||'';
@@ -61082,7 +61124,7 @@ $('retryBtn').onclick=async()=>{
 // ═══ 스테이지 전환 로딩 ═══
 const _STAGE_TRANSITION_RD=[];
 let _lastTransitionRd=-1;
-let _bootLoadShownAt=0,_bootLoadKilled=false,_bootLoadActive=false,_bootRdPicked=false;
+let _bootLoadShownAt=0,_bootLoadKilled=false,_bootLoadActive=false,_bootRdPicked=false,_bootLoadEpoch=0;
 function _pickTransitionRd(){
   if(_STAGE_TRANSITION_RD.length<=1) return 0;
   let n=~~(Math.random()*_STAGE_TRANSITION_RD.length);
@@ -61142,7 +61184,7 @@ function showBootLoading(msg){
     _bootPerfStart=_bootNow;_bootPerfLast=_bootNow;
     _bootPerfMarks=['8% '+(msg||_T('불러오는 중...'))+':0.0ms'];
   }
-  _bootLoadActive=true;_bootLoadKilled=false;
+  _bootLoadActive=true;_bootLoadKilled=false;_bootLoadEpoch++;
   _bootLoadShownAt=Date.now();
   name.textContent=msg||_T('불러오는 중...');
   // 세션 당 한 장만 — 이미 골랐으면 교체 금지
@@ -61340,6 +61382,7 @@ function _preloadAssets(){
 showBootLoading(_L('에셋 로딩 중...','Loading assets...'));
 _startLoadTips();
 await _preloadAssets();
+await _prepareWorldDropFx(); // Optional, bounded preparation; original lazy path remains available.
 setBootLoading(80,_L('렌더러 초기화...','Initializing renderer...'));
 await _bootRenderer();
 setBootLoading(85,_L('아틀라스 빌드...','Building atlas...'));
