@@ -33,3 +33,11 @@ QA 독립8검사는 예약/예산만 검증한다. 팀의 'query' 항목은 URL 
 [SOUND root 검수](SOUND-observer-root-review.md). ITEM의 native RGBA 차이는 backend별 양자화 차이로 귀속됐지만 실제 Chrome 재검수와 생산 채택은 남았다. UIUX/BUILD/BALANCE 결과를 게임완료로 바꾸지 않는다.
 
 후속 관측 후보·검수·팀 영수증22파일은 `9277a0ca`로 push·원격대조 완료. BUILD는 도움말 조사 완료 후 잠금해제를 기다린다. [지원범위 조사](../../../../tools/team-followup-20261001/BUILD/control-discovery.md).
+
+## UIUX 좌표 연결 후속 — 21:17 KST
+
+기존 `UIUX 작업 착수 기록` 세션 `01a0f6e5-8653-7ae2-8b2b-314e275c215c`의 이전 과제 완료를 실제 채팅·영수증으로 확인했다. 소유 경로와 최근 턴에 동일 좌표 어댑터 과제가 없음을 확인한 뒤 `COORDINATE_TASK.md`를 작성하고 공식 `codex queue`로 한 번 배정했다. queue ID `01a0f766-197d-7430-94c8-de093b7cb36d`.
+
+새 턴 `01a0f766-1980-7a62-be96-b03620367404`에서 사용자 지시 수신과 ‘좌표 어댑터 지시와 중복 여부를 확인한 뒤 착수하겠습니다’ 응답, 해당 지시 파일 `cat`·소유 폴더 조회·AGENTS 검색 명령의 exit0을 확인했다. 턴 시작은12:17:38Z이며 명령 자체의 정확한 시작 초를 뜻하지 않는다. 앱 상태가 notLoaded/interrupted여도 이 실제 CLI 명령 증거를 우선하며 재전송하지 않는다.
+
+작업은 `UIUX-HUD-COORDINATE-ADAPTER`: P2 배치와 실제 world↔논리화면·카메라 round/shake·줌·SSAA/DPR·charge/drawNumStr bbox 연결 코드 및 미적용 hunk다. 소유 UIUX 도구와 coordinate-result/receipt만 수정한다. 생산·게임 실행은 금지하고 문구/개수/수명/알파/전투/저장을 보존한다. **수신·첫 명령 착수 확인이며 구현 완료나 시각·밀집 성능 합격이 아니다.**

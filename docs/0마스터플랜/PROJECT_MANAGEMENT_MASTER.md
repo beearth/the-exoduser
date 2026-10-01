@@ -560,3 +560,7 @@ JSONL 교차확인으로 QA/ART/SKILL/MAP/ANIMVFX 후속 수신과 실제 Read�
 ### 18.26 제출 결과의 경계 검수
 
 ART38/SKILL66/MAP26/ANIMVFX11 검사를 재실행해 exit0을 확인했다. 독립 검증에서 카메라 확대 크롭 누락, 리젠 오분류, 설치 예외의 리스너 잔류를 재현했다. 생산 변경 없이 인수를 보류하고 실제 JSONL 시각과 현재 파일해시로 오래된 제출 메타데이터를 정정했다. [검수 근거·후속 전달 상태](mac-resume-20261001/vscode-dispatch/ROOT_NEXT_REVIEW.md).
+
+### 18.27 UIUX 좌표 어댑터 실제 착수
+
+기존 UIUX 완료·동일 작업 부재 확인 뒤 공식 대기열로 UIUX-HUD-COORDINATE-ADAPTER를 한 번 전달했다. 12:17:38Z 새 턴 수신과 지시 파일 읽기 명령 exit0을 확인했다. 실제 카메라/줌/SSAA/DPR 및 charge/drawNumStr bbox 연결을 소유 경로의 독립 후보로 구현하며 생산·게임 실행은 금지한다. 새 세션 없이 기존 담당자가 진행한다. [수신과 실제 명령 근거](mac-resume-20261001/vscode-dispatch/FOLLOWUP_RECEIPT.md).

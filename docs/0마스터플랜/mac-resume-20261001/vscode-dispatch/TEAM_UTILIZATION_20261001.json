@@ -1,6 +1,6 @@
 {
-  "at": "2026-10-01T12:11:56.117626+00:00",
-  "root": "static submission review; production unchanged; last native check locked; no repeat UI attempt",
+  "at": "2026-10-01T12:18:17.310058+00:00",
+  "root": "UIUX coordinate adapter dispatched to existing owner; first command exit0 verified",
   "teams": [
     {
       "team": "QA",
@@ -171,17 +171,33 @@
       "team": "UIUX",
       "sessionId": "01a0f6e5-8653-7ae2-8b2b-314e275c215c",
       "location": "T4",
-      "task": "UIUX-HUD-OCCLUSION-CANDIDATE",
-      "instruction": "/Users/fordeargamers/Projects/exoduser-migration-20261001/tools/team-followup-20261001/UIUX/NEXT_TASK.md",
+      "task": "UIUX-HUD-COORDINATE-ADAPTER",
+      "instruction": "/Users/fordeargamers/Projects/exoduser-migration-20261001/tools/team-followup-20261001/UIUX/COORDINATE_TASK.md",
       "stateBefore": "idle/completed verified",
       "dispatch": "received",
       "exists": true,
-      "receivedAt": "2026-10-01T11:45:21Z",
-      "startedAt": "2026-10-01T11:45:21Z",
-      "status": "candidate complete; runtime/integration gates pending",
+      "receivedAt": "2026-10-01T12:17:38+00:00",
+      "startedAt": null,
+      "status": "received and first source/instruction read completed; adapter implementation in progress",
       "startEvidence": "NEXT_TASK 첫 Read exit0, 이전 완료 산출과 현재 draw 경로·팀 MD 읽기 exit0. 중복 진행 산출 없음",
-      "receipt": "/Users/fordeargamers/Projects/exoduser-migration-20261001/docs/0마스터플랜/mac-resume-20261001/vscode-dispatch/UIUX-next-receipt.json",
-      "waitReason": "actual Canvas bbox and visual QA integration pending; no duplicate harness task"
+      "receipt": "/Users/fordeargamers/Projects/exoduser-migration-20261001/docs/0마스터플랜/mac-resume-20261001/vscode-dispatch/UIUX-coordinate-receipt.json",
+      "waitReason": "No static implementation blocker; real visual and dense performance QA remain later gates",
+      "previous": {
+        "task": "UIUX-HUD-OCCLUSION-CANDIDATE",
+        "status": "candidate complete; runtime/integration gates pending",
+        "receivedAt": "2026-10-01T11:45:21Z",
+        "startedAt": "2026-10-01T11:45:21Z"
+      },
+      "queueMessageId": "01a0f766-197d-7430-94c8-de093b7cb36d",
+      "queuedAt": "2026-10-01T12:17:38.698597+00:00",
+      "receivedAtBasis": "read_thread new user turn startedAt, not exact command timestamp",
+      "firstActualAction": {
+        "command": "cat tools/team-followup-20261001/UIUX/COORDINATE_TASK.md; ls -la tools/team-followup-20261001/UIUX; find tools docs -name AGENTS.md; date -u +%FT%TZ",
+        "exitCode": 0,
+        "observedAt": "2026-10-01T12:18:17.309987+00:00",
+        "source": "read_thread turn 01a0f766-1980-7a62-be96-b03620367404"
+      },
+      "completedAt": null
     },
     {
       "team": "ITEM",
@@ -245,7 +261,7 @@
   ],
   "remoteCheckpoint": {
     "branch": "codex/mac-environment-20261001",
-    "sha": "fb4c21ad83c225aeee3e0dcd581671b6a9691b2d",
+    "sha": "753bde9d0e66ae3b61e32025373bfe737dd84c3f",
     "verifiedPreviously": true
   },
   "wipRecovery": {
