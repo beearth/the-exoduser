@@ -52098,3 +52098,8 @@ unrestricted/network-enabled 변경 뒤 원격5b8e6ba9 exactHEAD 및 지정127.0
 ## 2026-10-02 Mac continuous 후속 배정 준비
 
 전문15팀 다음 TASK/COMMON과 별도 dispatch registry를 추가했다. BOSS 영수증1건/설계canonical 정정 완료를 기록했다. continuous/BUILD의 TASK/checks/result/evidence4경로만 ignore 예외로 추가하며 다른 빌드 출력은 유지한다. 생산 변경은 이 준비 단계0이다. 기존 사용자23건과 runtime 산출은 보존한다.
+
+
+## 2026-10-02 continuous 후속 Read·문구 정정·ITEM lifecycle 배정
+
+Codex7의 새 TASK 실제 read 명령/exit0를 registry에 기록했다. Claude8의 새TASK 수신0은 native 입력 대기로 구분하고 이전 초기8완료와 합산하지 않았다. ART/MAP/STORY/QUESTNPC/MARKETING의 HEAD 지시를 Git조회0·제공commit 출처로 정렬하고 MAP source지원계약 심사와 실제 visualGate 판정을 분리했다. ITEM 신규3입력/5그룹 메모리 경로 근거를 인수하고 기존산출 보존·미채택플래그false 상태에서 NEXT의 parent lifecycle/payload 한 건을 배정했다. 이번 문구/배정 작업의 production 변경0이다.

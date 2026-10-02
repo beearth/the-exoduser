@@ -857,7 +857,7 @@
     "newAutomation": 0
   },
   "completionBoundary": "Dispatch/Read and actual source outputs are separate; production/runtime/visual/listening acceptance remains pending.",
-  "latestObservedAt": "2026-10-02T05:23:19.224897+00:00",
+  "latestObservedAt": "2026-10-02T05:30:36.221977+00:00",
   "codexExecutionReadReceipts": {
     "schemaVersion": 1,
     "observedAtUTC": "2026-10-02T04:36:28Z",
@@ -2321,8 +2321,12 @@
   },
   "currentContinuousDispatch": {
     "registryPath": "/Users/fordeargamers/Projects/exoduser-migration-20261001/docs/0마스터플랜/mac-resume-20261001/vscode-dispatch/CONTINUOUS-DISPATCH-20261002.json",
-    "status": "prepared_not_sent",
+    "status": "codex7_read_confirmed_claude_native_input_blocked",
     "roles": 15,
-    "recordedAt": "2026-10-02T05:23:19.224897+00:00"
+    "actualPhase2ReadCounts": {
+      "Codex": 7,
+      "Claude Code": 0
+    },
+    "recordedAt": "2026-10-02T05:30:36.221977+00:00"
   }
 }
