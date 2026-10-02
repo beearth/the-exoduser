@@ -36,7 +36,7 @@ Claude TASK Read8/8·claude-opus-4-8/API usage, Codex전문7의 TASK 읽기명�
 - EXODUSER 보스전팀 / 01a0fae0-c5df-70d0-9ab7-751a587bb498
 - EXODUSER 스토리팀 / 01a0fae0-c9ce-7890-b125-b3da65d8b3fa
 
-현재 Codex전문채팅은 UIUX·아이템·통합빌드·밸런스경제·사운드·퀘스트NPC·유튜브스팀페이지7개, 이 총괄을 더해8역할이다. Claude8은 VS Code Terminal14–21이다. 이전15관리채팅 생성·완료 이력은 보존하고, 보관채팅은 새 작업 전달 대상에서 제외한다. 기존 PC팀·프로젝트·Claude 세션·대화/파일 영구삭제0이다.
+현재 Codex전문채팅은 UIUX·아이템·통합빌드·밸런스경제·사운드·퀘스트NPC·유튜브스팀페이지7개, 이 총괄을 더해8역할이다. Claude8은 VS Code Terminal14–21이다. 이전15관리채팅 생성·완료 이력은 보존하고, 보관채팅은 새 작업 전달 대상에서 제외한다. 이번 채팅 정리에서 기존 PC팀·프로젝트·Claude 세션 변경0, 채팅 영구삭제0이다. QA의 별도 경로 삭제 사건은 아래에 기록한다.
 
 ## 소유와 최초 업무
 
@@ -45,6 +45,21 @@ Claude TASK Read8/8·claude-opus-4-8/API usage, Codex전문7의 TASK 읽기명�
 BOSS는 보스/moves 설계↔source 대응, STORY는 세계관·대사·컷신 일관성, QUESTNPC는 기존 인물 흐름 초안, MARKETING은 실제Steam 페이지근거와 설명·영상·일정 초안을 맡는다. YouTube 채널URL/handle은 미확보라 확인 질문을 남겼다. 승인 없는 게시·계정로그인0이다.
 
 ART/MAP/SKILL/QA/ANIMVFX5팀은 source 산출 제출 확인 후 byte 보존 가능 상태다. SKILL의1PASS/2FAIL은 실패 기록을 포함한 제출이며 시스템 해결·생산 채택으로 인수하지 않는다. ENEMY는 제출 인수 미완료다. MAP visual RETOUCH·실제8뷰0/8, 발anchor UNKNOWN·corpse fade 보류, 보호2_3 수정0을 유지한다.
+
+## 스킬·API·MCP 실제 사용 (2026-10-02 13:47:37 KST 조회)
+
+사용자 확인에 따라 도구가 제공되는 상태와 실제 호출된 상태를 구분했다. 이 조회는 현재 native Claude8 세션만 집계했으며 이전 headless7과 총괄 호출은 별도다.
+
+| 구분 | 실제 사용 근거 | 적용 범위·한계 |
+|---|---|---|
+| 총괄 스킬 | 이 대화에서 openai-docs 적용 | Codex 기능·운영 확인. 모든 팀의 모든 스킬 적용을 의미하지 않음 |
+| 총괄 MCP | 공식 채팅 생성·지시·읽기·보관·보관목록 대조 | 현재 Codex8 배치와 중복8 보관 관리 |
+| 총괄 UI·저장 | CUA VS Code 입력, Git commit/push 및 원격 SHA 대조 | native 팀 업무 전달과 문서·산출 보존 |
+| Claude8 모델 호출 | 전원 claude-opus-4-8 응답과 message.usage, 자신의 TASK Read 성공 | 실제 Claude 실행 증거이며 별도 API 요금·남은 할당량으로 환산하지 않음 |
+| Claude8 내부 도구 | Read/Bash/Write 전원, Edit는 ART/QA/ENEMY/ANIMVFX | 소스 조사·각 팀 소유 산출 작성. Skill 및 mcp__* 호출은 이번8 세션에서 관찰되지 않음 |
+| 이미지·음성·영상 생성 MCP | 현재 인수·검토 작업에서 호출0 | 제공되는 도구 목록을 실제 사용 실적으로 계산하지 않음 |
+
+후속 업무에서는 결과물에 도움이 되는 스킬·API·MCP를 선택하고 해당 SKILL.md를 읽어 적용한다. 각 TASK의 쓰기 소유권과 사용자 승인 범위를 유지하며 실제 호출·결과·미확인 연결을 기록한다. 외부 도구 사용 수 자체를 완료 기준으로 삼지 않는다. 자세한 팀별 실제 도구 이름은 JSON의 toolUsageAudit에 있다.
 
 ## QA 경로 오류와 보존
 

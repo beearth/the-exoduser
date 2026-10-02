@@ -52081,3 +52081,9 @@ unrestricted/network-enabled 변경 뒤 원격5b8e6ba9 exactHEAD 및 지정127.0
 - 2026-10-02: Mac case-insensitive build/ 규칙이 새 codex-half/BUILD를 가리는 것을 확인하여 정확한TASK.md/checks.mjs/result.md/evidence.json4경로만공개. 다른출력·하위폴더·개인저장ignore유지. 기존BUILD초안보존.
 
 - 2026-10-02 최신확정: 총괄포함Codex8/Claude8. Claude TASK Read8/8·Codex전문7 TASKRead명령exit0, 신규4팀배정완료. 중복Codex8채팅완료턴확인후복구가능보관·공식archive목록8대조. 역할/실행위치/소유/제출상태/QA삭제UNKNOWN/추가삭제금지를총괄/연속정책/대시보드/등록부에동기화. CHANGELOG기존prefix줄끝바이트복원보존. source6/보호2_3보존·생산/게시0.
+
+
+## 2026-10-02 — 현재 8/8팀 도구 사용 근거
+
+- 현재 담당표 MD/JSON에 총괄의 openai-docs·채팅 MCP·CUA·Git 실제 사용과 native Claude8 모델/도구 호출을 별도 기록했다. Claude8 전원 TASK Read·claude-opus-4-8/usage를 확인했고 Read/Bash/Write 및 일부 Edit가 관찰됐다. 이8세션의 Skill/mcp__* 호출은 미관찰, 현재 이미지·음성·영상 생성 MCP 호출0이다. 제공/활성 도구를 실제 사용으로 계산하지 않는다.
+- 후속 스킬/API/MCP는 결과물에 필요한 경우 해당 스킬과 TASK 소유권·승인 범위에 따라 적용하고 실제 호출 결과를 기록한다. 채팅 보관의 영구삭제0과 별도 QA 경로 삭제 사건의 UNKNOWN을 구분했다. 생산 코드 변경0.

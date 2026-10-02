@@ -2172,5 +2172,116 @@
     "changelogOriginalPrefixBytesPreserved": 3260500,
     "productionRuntimeVisualAcceptance": false,
     "userPendingItemsExcluded": 23
+  },
+  "toolUsageAudit": {
+    "capturedAt": "2026-10-02T04:47:37Z",
+    "scope": "current native eight Claude sessions only; separate root tools and previous headless sessions",
+    "root": {
+      "appliedSkill": "openai-docs",
+      "actualToolCategories": [
+        "Codex chat management MCP",
+        "CUA native VS Code controls",
+        "shell Git and file verification"
+      ]
+    },
+    "claudeNativeEight": [
+      {
+        "role": "ART",
+        "observedAssistantToolUseNames": [
+          "Read",
+          "Bash",
+          "Write",
+          "Edit"
+        ],
+        "observedResponseModel": "claude-opus-4-8",
+        "usagePresent": true,
+        "ownTaskReadSuccess": true
+      },
+      {
+        "role": "MAP",
+        "observedAssistantToolUseNames": [
+          "Read",
+          "Bash",
+          "Write"
+        ],
+        "observedResponseModel": "claude-opus-4-8",
+        "usagePresent": true,
+        "ownTaskReadSuccess": true
+      },
+      {
+        "role": "SKILL",
+        "observedAssistantToolUseNames": [
+          "Read",
+          "Bash",
+          "Write"
+        ],
+        "observedResponseModel": "claude-opus-4-8",
+        "usagePresent": true,
+        "ownTaskReadSuccess": true
+      },
+      {
+        "role": "QA",
+        "observedAssistantToolUseNames": [
+          "Read",
+          "Bash",
+          "Write",
+          "Edit"
+        ],
+        "observedResponseModel": "claude-opus-4-8",
+        "usagePresent": true,
+        "ownTaskReadSuccess": true
+      },
+      {
+        "role": "ENEMY",
+        "observedAssistantToolUseNames": [
+          "Read",
+          "Bash",
+          "Write",
+          "Edit"
+        ],
+        "observedResponseModel": "claude-opus-4-8",
+        "usagePresent": true,
+        "ownTaskReadSuccess": true
+      },
+      {
+        "role": "ANIMVFX",
+        "observedAssistantToolUseNames": [
+          "Read",
+          "Bash",
+          "Write",
+          "Edit"
+        ],
+        "observedResponseModel": "claude-opus-4-8",
+        "usagePresent": true,
+        "ownTaskReadSuccess": true
+      },
+      {
+        "role": "BOSS",
+        "observedAssistantToolUseNames": [
+          "Read",
+          "Bash",
+          "Write"
+        ],
+        "observedResponseModel": "claude-opus-4-8",
+        "usagePresent": true,
+        "ownTaskReadSuccess": true
+      },
+      {
+        "role": "STORY",
+        "observedAssistantToolUseNames": [
+          "Read",
+          "Bash",
+          "Write"
+        ],
+        "observedResponseModel": "claude-opus-4-8",
+        "usagePresent": true,
+        "ownTaskReadSuccess": true
+      }
+    ],
+    "claudeNativeSkillCallsObserved": false,
+    "claudeNativeMcpCallsObserved": false,
+    "creativeGenerationMcpInCurrentTask": "not executed; available tooling is not proof of invocation",
+    "usageMeaning": "response metadata is invocation evidence; not a separate API billing or quota assertion",
+    "policy": "Choose relevant skills/APIs/MCP for the assigned deliverable; read relevant SKILL.md, preserve task ownership and existing authorized scope, and record actual invocation and outcome. Do not count enabled/catalogued tools as used."
   }
 }
