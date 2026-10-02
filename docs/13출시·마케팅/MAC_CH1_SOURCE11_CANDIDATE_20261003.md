@@ -1,4 +1,4 @@
-# Mac CH1 source11 후보 — 실제 앱 생성·잠금 해제 후 native 인수 대기
+# Mac CH1 source11 후보 — 실제 전투·획득·장착 부분 인수
 
 source10 동일 앱 정상 재실행에서 신규 일반 난이도5가10(+5단/+500)으로 바뀌는 결함을 실제 관찰했다. source11은 양판 saveSettings의 직렬화된 opt에 `diffV2:1`만 각9B 추가한다. 실제 writer·loader·슬라이더를 통한36 의미검사와 inline JS12 parse가 통과했으며 구형0→5·5→10·상한10 변환은 보존했다. 코드2/docs5 checkpoint `efb3bb7e02a9ab161e92d9ff3da7229b4cf884cd`의 원격 exact를 총괄이 확인한 뒤 새 앱을 생성했다.
 
@@ -11,7 +11,7 @@ source10 동일 앱 정상 재실행에서 신규 일반 난이도5가10(+5단/+
 | 진입·서버 | `http://127.0.0.1:3390/index.html?demo=1`; original node-main의 PORT3333→3390, SAVE_DIR→고유 saveRoot만 파생. 원서버·python http.server 사용0 |
 | 새 profile/save | 위 고유job의 `user-state/profile`, `user-state/saves` 절대 경로. UTC2026-10-02T21:17:11.105462+00:00 전기동 관측에서 user-state/profile/save 부재·3390 noListener/bind-free |
 | 공식 입력 | 기존 selector7918/runtime340·cached NW0.111.2 arm64/nw-builder4.17.10 재사용. 다운로드·설치·서명0 |
-| sourceBackup | `efb3bb7e02a9ab161e92d9ff3da7229b4cf884cd`; 현재 게임 소스는 이 코드 checkpoint와 동일 |
+| sourceBackup | `efb3bb7e02a9ab161e92d9ff3da7229b4cf884cd`; 이 앱 생성 당시 게임 소스는 이 코드 checkpoint와 동일 |
 
 ## 원문·stage·앱 소스 고정 핀
 
@@ -86,3 +86,35 @@ CUA의 실제 Mac잠금 응답으로 기존source10 정상 Quit 입력도 전달
 | 후속 생산 source12 | 수동 강화 성공 자원 보존 코드만 두 HTML에 반영·26그룹 회귀/12JS+2JSON PASS. 이 source11 실행 앱에 덮어쓰기0/source12 패키징·네이티브 인수0 |
 
 전체 앱 상태는 `PACKAGED_NOT_RUNTIME_ACCEPTED`이며 실제 전투/갑옷 장착의 부분 관찰만 추가한다.
+
+
+## 2026-10-03 source11 실제 신규 드롭·전기 전투화 장착·일반 부활
+
+이전 절의 획득 미인수·잠금 대기는 당시 이력이다. 같은 검수 전용 앱에서 잠금 해제 후 아래 정상 입력을 관찰했고, 마지막 시도 직전에 Mac이 다시 잠겼다. 전체 상태는 계속 `PACKAGED_NOT_RUNTIME_ACCEPTED`다.
+
+| 항목 | 실제 관측·완료 경계 |
+|---|---|
+| 앱·소유 | 동일 source11/3390/job2a937, 전사 `맥검수열하나`. 기존 사용자 게임·save 직접 수정 없음 |
+| 실전 획득 | Lv5·XP15/28·현재 지역38/53에서 실제 “전설 전기 전투화 획득!” 표시. 가방10→11, 신규 전투화 선택 후 정상 장착 |
+| 장착 결과 | CP1859→2257(+398), ATK128 유지, DEF426→585, 추가1305→1544. 장착15/16·보석0/25·가방11·악의6740. 이전 부츠가 가방으로 반환됨 |
+| 비교 미해결 | 장착 전 미리보기 +116, 장착 후 이전 부츠 역비교 −116. 실제 +398과 불일치. Codex UIUX 후보 통합·새 앱 검수 대기 |
+| 전기 전투화 표시값 | DEF47, SPD0, 돌진거리30, 돌진충전−1초, ST27, 추가HP39, STR22/DEX33/INT31, 이동속도6.36%, 결정 슬롯1(빈 슬롯) |
+| 이전 낡은 전투화 | DEF19, SPD0, 돌진거리14, ST11, 추가HP24, 이동속도7.74%, 결정 슬롯1(빈 슬롯) |
+| 후속 전투·사망 | Lv7·XP30/35·현재 지역53/53, HP0/1104, MP549/549, ST277/277, CP2282, SP18+3. 실제 일반 필드 사망 화면102처치·최대콤보87·경험치 손실9 |
+| 정상 일반 부활 | “다시 일어서라”→ESC. Lv7·XP21/35, HP1104/1104, ST277/277, CP2282, 악의11820, 새 필드 현재 지역0/32 후0/53. 새 전투화·CP 유지 |
+| 지역 카운터 | 현재 위치에 해당하는 지역 수치이며 0/32→0/53만으로 맵 버그라고 판단하지 않음. 이번 사망은 보스방 진입 전 일반 사망 |
+| 일반 입력 경계 | F 입력에서29.8초 쿨다운, 1 입력에서7.9초 쿨다운 관측. Ctrl+a에서 얼음보주 활성화·쿨다운 증거 없음. 미전달 입력을 시전 성공으로 계산하지 않음 |
+| 입력 표시 결함 후보 | 실제 controls/dispatcher E=칼등 처내기, RMB=마법. 스킬 UI의 고정 E악의구/칼등우클릭 표기는 실제 바인딩과 불일치; UIUX 독립 작업으로 전달 |
+| 최신 재잠금 | 다음 입력 시도16은 Mac 잠금 응답으로 첫 동작 전에 차단됨. 새 unlock 요청1회 대기, 앱은 설정/조작 화면 일시정지로 보존. 16번 화면 파일 없음 |
+| 코드·앱 구분 | source12 수동 강화·source13 필드 앵글러 기본 악의 보상은 생산 checkout 후속 변경이다. 이 source11 앱에 덮어쓰지 않았으며 해당 수정 native 인수0 |
+| 남은 coregoal | 앵글러4·4지역 정화·보스방 개방·보스 사망 후 열린 문/기존 필드 몬스터 보존·재도전·실청취·카메라 visual. 일반 사망/부활 결과를 보스 사망 검수로 확대하지 않음 |
+
+ignored `tmp/mac-migration-runtime/continued-review-20261003/source11-native-play/` 원화면을 보존한다.
+
+| 실제 화면 | bytes | SHA256 | 의미 |
+|---|---:|---|---|
+| 11-field-pickup-combat.png | 851587 | `4d2800627e54d94a564a23dcbacb17eee7da9a39a0e431fba116d78c9ede580a` | 신규 전설 획득 표시 |
+| 12-legendary-loot-equipped.png | 944598 | `378619e4b837fcc2fe0a57af7fd51712ee8a2978dccc14339798a017c6e42eca` | 전기 전투화 실제 장착·CP2257 |
+| 13-west-approach-legendary-equipped.png | 910300 | `11452ce5b2f1c1d14e53c313375671ab028cb65e841bc9ddc36e83e7095c52a5` | 파일명과 달리 실제 일반 사망 화면. 장착 증거로 사용하지 않음 |
+| 14-normal-field-revive-gear-retained.png | 958816 | `47abb42fec5cf317a873a56bd8a4bcfc21db417036a6655ddd48d9a0ab7aff8f` | 일반 부활·Lv7/CP2282·장비 보존 |
+| 15-control-combination-observation.png | 950005 | `34cd3f8b932d356365211186dffb7679c5d6adcdb00a62760ae17143fe912ee5` | Ctrl 조합 시전 성공 미확정 |

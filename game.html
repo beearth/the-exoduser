@@ -17859,7 +17859,7 @@ function _fmDeathFx(m,isFb,dmg){
   if(isFb){G._flashT=4;G._flashCol=m._fmKind==='fd'?'#ff5522':'#66ddff';G._chromaT=3}
 }
 function _fmApply(m,dmg,isFb){
-  if((m.hitCd||0)>0)return false;
+  if(m.hp<=0||(m.hitCd||0)>0)return false;
   dmg=Math.max(1,~~dmg);
   m.hp-=dmg;m.hitCd=8;
   var p=_fmXY(m,isFb);
@@ -17868,7 +17868,7 @@ function _fmApply(m,dmg,isFb){
   if(m.hp<=0){
     _fmDeathFx(m,isFb,dmg);
     if(m._fmKind==='fd'){showPH(_L('화마귀 처치!','Flame Devil Slain!'),'#ff8844');if(typeof _fdMarkDead==='function')_fdMarkDead(m)}
-    else if(isFb){showPH('필드보스 처치!','#ffcc44');if(typeof _fbMarkDead==='function')_fbMarkDead(m);else{G._fieldBoss=null;G._fbDone=true}}
+    else if(isFb){showPH('필드보스 처치!','#ffcc44');G.mats+=4;if(typeof _fbMarkDead==='function')_fbMarkDead(m);else{G._fieldBoss=null;G._fbDone=true}}
   }
   return true;
 }

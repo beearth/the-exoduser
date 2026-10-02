@@ -52780,3 +52780,12 @@ source11 코드 checkpoint `efb3bb7e02a9ab161e92d9ff3da7229b4cf884cd`의 원격 
 - 양판 `renderForge` 성공 직후 현재HP/MP/ST/쉴드 보관→`applyStats()`→최종최대치 min복원 각204B. 원본의 최대HP·CP stale 및 단순추가의 강인/마력그릇 현재자원 손실을 함께 방지. 실패/부족 재계산0, 기존 비용/확률/효과/펫/저장/기본 강화식 유지.
 - 신규 실제 추출26그룹: 원본17RED/plain18RED/최종26PASS, production 동일26PASS/inline12 JS+2 JSON PASS. UI·FX·펫·저장 leaf 기록 대역, native/전체게임 완료로 확대0. [정확 슬롯·수치·범위](14밸런스+수치테이블/14밸런스+수치테이블.md).
 - source11 앱의 실제14처치/일반 사망/불꽃갑옷 CP1734→1740 관찰과 CP 미리보기−16/실제+6 미해결을 기록. 보스 사망 후 맵 보존 인수0/앱 덮어쓰기0/맥 재잠금으로 실플레이 대기. [별도 native 경계](13출시·마케팅/MAC_CH1_SOURCE11_CANDIDATE_20261003.md).
+
+
+## 2026-10-03 source13 독립 앵글러 기본 처치 악의
+
+- 양판 `_fmApply`에 최초 앵글러 치명타 `G.mats+=4`와 입장 HP≤0 guard를 추가했다(각19B). 4마리 총+16, 죽은 stale참조 hitCd0 재호출 추가 지급0. 기존 hitCd8/화마귀·곰치·VFX·지역·게이트·부활 유지.
+- memory 원본18RED/보상만4RED/최종40PASS와 실제 생산40PASS, 전체12JS+2JSON PASS. easy의 기존 alive 처리 차이를 fixture만 정정한 첫 실패 원자료도 보존. 실제 함수 추출·FX/fdMarkDead 대역 검사이며 native PASS로 확대0. [정확 계약](8.0몬스터디자인/몬스터_총관리.md).
+- 기본+4에 콤보·난이도 배율을 곱한다는 레벨 문구를 실제 `hurtE`의 고정 기본+4/엘리트·보스 추가 악의·XP 계약과 구분하고, 저장diff5=일반/부호 `OPT.diff−5` 기준으로 정정했다. [수치·공식](2게임디자인레벨디자인/2게임디자인레벨디자인.md).
+- source11 실제 전설 드롭 획득·전기전투화 장착 CP1859→2257·일반 부활 Lv7/CP2282/장비 보존을 기록했다. 미리보기+116/실제+398은 미해결 UIUX 후보, 보스 사망 검수0. 새 Mac 재잠금으로 정상 입력 대기이며 검수 앱은 일시정지 보존. [실제 화면·현재 native 경계](13출시·마케팅/MAC_CH1_SOURCE11_CANDIDATE_20261003.md).
+- HTML2/docs5/test1 root완료8경로만 checkpoint. 타인WIP67·공유 index·감독STATE/LOG·기존사용자게임·save·source11앱은 소유 변경에 포함하지 않는다. 관리3+전문15 운영과 생산 통합 완료를 구분한다.

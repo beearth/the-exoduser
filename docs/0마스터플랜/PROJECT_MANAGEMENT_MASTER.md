@@ -1121,3 +1121,25 @@ ITEM2137의 수동 강화 후 최대자원·CP 갱신 누락을 root가 두 HTML
 | 용량 정정 | source3는 clean이었다. root clean8경로(HTML2/docs5/test1)로 baseline71→79 예상, external future8 포함 예약상한87. 예약 수와 실제 변경 수를 구분하며 완료8경로만 즉시checkpoint |
 
 source11 같은 앱/캐릭터에서 실제14처치·지역4/32·일반 필드 사망 및 정상 불꽃갑옷 장착(CP1734→1740)을 관찰했다. 보스 사망/개방 문·필드 몬스터 보존·앵글러4·드롭 획득·재도전은 아직 미인수다. 미리보기−16/실제+6 CP 차이는 UIUX 다음 독립 목표로 감독에 연결했고, 이후 실제 Mac 재잠금으로 새 unlock 질문이 대기 중이다. CLAUDE2143/2145 신규6TASK는 실제peer 이후 성공tool_result가 확인됐으며 종료 역할은 감독 단일송신으로 다음 목표에 연결한다. source12 코드 회귀를 source11 앱 또는 제품 coregoal 완료로 세지 않는다.
+
+
+## 2026-10-03 source13 앵글러 기본 악의·실제 드롭 장착 인수
+
+Claude BOSS2205의 필드 앵글러 기본 처치 악의 누락 후보를 root가 두 게임 파일에 통합했다. 각19B(+4 지급10B/죽은 HP guard9B)만 추가했다. 보상만 추가한 후보는 사망한 stale 참조의 hitCd0 직접 재호출에서+8이 되어, 원함수의 HP≤0 진입을 차단했다. 정상 caller는 이미 사망 대상을 거르므로 자연8프레임 후 정상 중복 지급이 관찰됐다고 주장하지 않는다.
+
+| source13 실제 생산 | 수치·근거 |
+|---|---|
+| 본편 | 4030016→4030035B, SHA `5aedce268fe15d65b5636b7ff5b7d47e12db349dac5f439f9824e18bd3a5833a` |
+| easy | 3907283→3907302B, SHA `8af5aec611490134bf02f5b850a7310e49aa6796c4f4d9ba9f8952e6eeeacff3` |
+| 지급 | 최초 실제 앵글러 치명타+4, 기존4마리 총+16; 화마귀/곰치+0 유지. 새 XP/처치수/콤보/드롭/배율0 |
+| 유지 | 피격간격8, hidden/TP/emergence/hitSet/패링 접촉, 4지역80%·문지기10%·정화 래치·게이트30f/정화15f·보스 부활 코드 불변 |
+| 의미 회귀 | 신규 memory 원본18RED/보상만4RED/최종40PASS. 첫 fixture는 easy의 기존 alive값 차이를 main과 같게 요구해1FAIL; 제품 수정 없이 파일별 기존 계약을 정정하고 원자료 보존 |
+| 실제 생산 검사 | `test/fieldAnglerKillRewardAcceptance.test.cjs` actual extracted 함수40PASS, 전체12JS+2JSON PASS, 원본 역치환 exact. FX leaf·fdMarkDead 대역/합성 상태이며 native 인수와 구분 |
+| 최소 소유 | HTML2/docs5/test1 =8경로. source12 HEAD `b9ba6727789d27b8ba7eb0c0490a5e78c6dc0e1c` 기준 clean소유8 백업; 타인67·운영STATE/LOG·기존앱/profile/save 보존 |
+| 용량 | 기존 actual71+root8=79, external future8 포함 예약상한87. 실제수와 예약수를 구분하고 완료8만checkpoint |
+| 원자료 | ignored `root-field-angler-source13/` before-receipt/patch-plan/production-applied/live-receipt 및 `unit/memory-first-fixture-failure.json`/`unit/memory-receipt.json` |
+| 별도 native 성과 | source11/3390 실제 신규 전설 전기전투화 획득→가방10→11→장착 CP1859→2257. 일반 부활 후 Lv7/CP2282/장비 보존. 보스 사망 후 문·필드 보존 인수0 |
+| 최신 차단 | Mac 재잠금으로 다음 첫 입력 차단. 새 unlock 요청1회 대기·앱 일시정지. 코드/전문팀 작업 계속 |
+| 후속 후보 | BOSS2215 드루이드 잔류 공격4상태는 실제 `retryBtn.onclick` 접점이며 다음 별도 검수. 기존 초기화 선례는 `_enterBossArena`; helper `_retryBossArena`나 initStage로 오기하지 않음 |
+
+Claude7의 실제 새TASK peer·성공 소스 근거를 감독이 확인했고 완료 역할은 독립 후속으로 연결했다. ART1은 기존 직접 인간 입력 요구 대기이며 별도 재시작·대리 승인0. 과거 종료/기존source를 현재TASK 착수로 계산0, 저장된5분 점검을 무중단 보장으로 주장0. 자세한 현재 계약은 몬스터8.0·레벨2·source11 native13 정본에 동기화한다.
