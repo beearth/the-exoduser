@@ -392,3 +392,14 @@ late4 result/evidence SHA는 감독 공식 pin과 동일: STORY `870166cc681937f
 전체 docs 관련키워드검색223행/50경로의 실제변경분류를 근거로 관련현재SSOT3에 prefix보존 작은부록과 `BONEWALL_FOCUS_CANCELLATION_20261002.md`를 추가한다. 기존정상 원가12와 역사raw의 대역 악의12를 임의재작성0, 새실제비용근거로 구분한다. 보호2_3·Q전용패링/어택티켓금지·타인WIP·원자료는 유지한다.
 
 source 인수는 뼈벽 포커스취소에만 한정한다. 합성 패드 버튼/이벤트와 damage/presentation/audio 대역이며 전체poll/update/native/청취/피해·재충전진행은 미검수다. 같은Mac후보의6단계연결플레이는 여전히 미인수이며 활성 CH1-1목표를 이어간다. 기존 사용자게임·세이브 변경0.
+
+## 2026-10-02 CH1-1 사망 SFX 연결정리 후보 분할 보존
+
+새목표13팀 전체문서 actualRead13을 감독이 확인했다(MAP/ENEMY 중복/거부우회0). actualChanges81에서 완료한 SOUND 한팀을 전팀대기 없이 분할 보존한다. formal manifest `hb1014-milestone-SOUND-reviewed-handoff.json` SHA `31255c441dbd08b1421ab0f82bff9bac281c25142669bde966c76d592dfd434b`, 완료ID `01a0fc89-7439-7ab2-bf6c-00c607b4e2f9`의 raw2 exact만 인수하며 root기록2와4파일 scope다. production/source/native 적용0·기존/새 검사재실행0.
+
+| 후보 | 인수 범위·남은 경계 |
+|---|---|
+| actual deathFX→_playSampleNow | source/panner connect 실패3와 정상2의 current/candidate10 source 실행 근거, 같은Error·정상trace/RNG/state2 동등. 등록count/list 정리 후보이며 실제 RAF/upstream kill/native/청취는 미인수. pan.value 예외는 pannercleanup 등록전이라 완전정리로확대0, 저장후 emitter 편의분기 재실행0 |
+| 현재 시연준비 | 기존런타임으로 fresh c927efb0 config/plan READY_PLAN_ONLY, actualbuild/앱/6단계플레이 아직 미인수. 입력source는dd333 뼈벽취소 포함양판이며 새source추가적용으로 빌드입력을바꾸지않음 |
+
+공식 raw 원SHA·byte·완료ID와 부모/원격exact 및 사용자23/타인WIP는 ignored 완료영수증에 기록한다. 원자료 보존2건을게임수정2건으로계산0. root활성목표는 실제Mac후보·연결플레이로 계속한다.
