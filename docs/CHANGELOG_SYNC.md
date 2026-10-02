@@ -52613,3 +52613,11 @@ CH1-1 목표 actual전체Read13/13(기존MAP미소비/ENEMY실거부제외)을�
 - source7는실행중source6앱에덮어쓰지않았으며기존사용자게임/세이브/보호2_3/Q전용패링/타인WIP를보존했다.
 
 검수·예산 영수증: 신규 levelUpResourceRefreshAcceptance17/17 PASS(양판7씩+본편큐3), 첫14PASS/3 VM-array 검사오류를 host 정규화 후 1회 수리 재실행. 실제 UI·음향·저장/native0. root16예약=소스2/test1/docs13 모두소비/rootFutureRemaining0; checkpoint전 actual87/worst95(잔여QUEST2+STORY1+external5), 소비한16중복가산0.
+
+
+## 2026-10-03 source8 Claude ENEMY 특수 탄막 스턴·빙결 취소
+
+- 실제 양판 `updateE` 기존스턴/빙결 취소 뒤 `eShootWind`만 `_swFire/_swChargeEl=null`, `s=idle/st2=0`. 각 guard76B×2/HTML+152B, 역치환source7exact. 일반차징 helper·정상60f·스턴180f·빙결감소/보스300·일반120면역·피해·Q전용무지개·포이즈·티켓·맵/세이브불변. `_hitStun` 선행return에는새취소없음.
+- 관련docs전체키검색후정본동기화, 신규생산코드회귀와동일14경로 checkpoint. [정확핀·recipe·검수](9적ai패턴디자인/SPECIAL_SHOT_CANCELLATION_20261003.md). native앱source6/3387·Mac잠금대기/source8실플레이미검수.
+
+신규 의미회귀22/22 PASS(양판11씩·옛 정상대조4/옛 누락재발사4 포함). 첫21PASS/1easy 일반탄 기존피해 기대값 오류를 테스트에서만 수정해 1회 재실행. 실제 전체updateE/etype42 발사연결 실행이나 spawnProj는 요청 sink·외부status mainloop/native/물리 backend/청취/저장미검수. root14모두소비/rootFutureRemaining0, checkpoint전 actual85/worst93.

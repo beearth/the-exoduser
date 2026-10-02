@@ -241,7 +241,7 @@ CH1에도 등장 가능. 대표: 90 방랑기사(3연 콤보 st2 18/12/10, d<60 
 
 | 연결 | ENEMY가 제공 | 인수 시 확인 |
 |---|---|---|
-| → 스킬팀 | 적 상태 계약: `e.stunned/_hitStun/_frozen>0` 시 AI 정지·예고 취소(`36786`~), poise=HP·`_doPoise`/`_poiseReset`, 패링 `isPWin()`이 보스 대시/찌르기 인터럽트(stunned 60~120). blackBean=Q 패링 전용 | 스킬의 스턴/빙결/넉백이 위 필드로 들어오는지, 패링 클래스 일치 |
+| → 스킬팀 | 적 상태 계약: `e.stunned/_frozen>0` 분기에 도달하면 일반·특수 발사 예약 취소; `_hitStun>0`은 선행 AI 스킵이며 새 취소 없음, poise=HP·`_doPoise`/`_poiseReset`, 패링 `isPWin()`이 보스 대시/찌르기 인터럽트(stunned 60~120). blackBean=Q 패링 전용 | 스킬의 스턴/빙결/넉백이 위 필드로 들어오는지, 패링 클래스 일치 |
 | → 맵팀 | 끼임 판정은 타일벽(`map[][]=1`)만, MAP_OBJS는 `canMv` 실시간. 보스 아레나는 개활 필요(끼임 최후 폴백은 제자리 유지). 스폰 좌표·화톳불 결계 | 아레나 지오메트리에 보스 가둠 없는지, 스폰 좌표 유효 |
 | → 아트팀 | 예고 VFX 계약: 돌진 3파트(START/BODY/END), 탄막 예고링 60f, `_telegraphT` 20f, 텔레포트 연기·번개. etype별 스프라이트 프레임(`ATLAS_ENEMY_LAYOUT` `21467`) | 예고 에셋 규격·가독성, 8방향 프레임 |
 | → 사운드팀 | 트리거: `SFX.detonate`(돌진 적중), 예고/발사/피격/사망 시점. 보스 페이즈 전환 | 예고-발사 싱크, 동시 다발 클리핑 |
@@ -277,3 +277,13 @@ CH1에도 등장 가능. 대표: 90 방랑기사(3연 콤보 st2 18/12/10, d<60 
 ### 2026-10-02 원담당 tick 계약 실제 반영
 
 et3-probe.fixed.js에 검수 지원본 SHA92cbecd7…를 실제 반영하고, root가 실제 owner17+기존9 PASS를 확인했다. 인수 전 원본은 고정 before로 보존했다. tick 없는451rAF는 INCONCLUSIVE이며 물리tick 증가와 rAF 횟수를 혼동하지 않는다. 생산 AI 변경0. 다음 기존 ENEMY-F06은 실제 루프용 round-robin 최소 후보/작은 가상시계 검수이며, 기존 budget/LOD parity 보존·성능 개선 미확정·생산 미적용이다. 원담당 새 Read까지 확인했다. [전체 근거](../0마스터플랜/mac-resume-20261001/vscode-dispatch/FIVE-OWNER-INTEGRATION-20261002.md).
+
+
+## 2026-10-03 source8 특수 탄막 스턴·빙결 취소
+
+| 경계 | 현재 처리 | 적용 위치 |
+|---|---|---|
+| 스턴·빙결 취소 분기 도달 | 일반 `_cancelProjCharge(e)` 뒤 `e.s==='eShootWind'`일 때 `_swFire=null`, `_swChargeEl=null`, `e.s='idle'`, `e.st2=0` | 양판 `updateE`의 기존2분기 |
+| 정상·다른 상태 | 기존60f 특수 발사 완료/일반 차징 helper/피해·패링 유지; 다른 상태의 특수 필드를 새로 변경0 | [정확 변수·수치·검수 계약](SPECIAL_SHOT_CANCELLATION_20261003.md) |
+
+앞선 `_hitStun>0` return은 기존 AI 스킵을 유지한다. 모든 피격경직에서 즉시 예약 취소된다고 확대하지 않는다. 해제 후 이전 특수 예약을 재개하지 않고 기존 idle AI가 새 행동을 결정한다.

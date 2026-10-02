@@ -37276,7 +37276,7 @@ function updateE(e,sp){
   // _stunImmune / _hitStun 은 루프 초반에서 이미 감소됨
   if(e._hitStun>0)return; // 피격 경직: AI 스킵
   if(e.stunned>0){
-    _cancelProjCharge(e);
+    _cancelProjCharge(e);if(e.s==='eShootWind'){e._swFire=null;e._swChargeEl=null;e.s='idle';e.st2=0}
     // 스턴 캡: 보스 3초(180f), 일반 3초(180f)
     if(e.stunned>180) e.stunned=180;
     // _maxStunned = 최초 스턴 시간 (게이지 비율 계산용)
@@ -37303,7 +37303,7 @@ function updateE(e,sp){
   e._prevX=e.x;e._prevY=e.y}
   // ═══ 프리즌(빙결) — 행동불가 + 파란 틴트 ═══
   if(e._frozen>0){
-    _cancelProjCharge(e);
+    _cancelProjCharge(e);if(e.s==='eShootWind'){e._swFire=null;e._swChargeEl=null;e.s='idle';e.st2=0}
     e._frozen-=sp;
     if(e._frozen<=0){e._frozen=0;e._freezeGauge=0;e._frozenImmune=e.ib?300:120} // 해제 후 면역 (보스5초/일반2초)
     return;
