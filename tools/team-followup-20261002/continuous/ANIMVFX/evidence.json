@@ -1,0 +1,378 @@
+{
+  "taskId": "continuous/ANIMVFX/실제-queue-draw-부분실패-rollback",
+  "provider": "VS Code Claude (claude-native, continuous follow-up)",
+  "cwd": "/Users/fordeargamers/Projects/exoduser-migration-20261001",
+  "cwdRealpath": "/Users/fordeargamers/Projects/exoduser-migration-20261001",
+  "node": "v24.15.0",
+  "startedAt": "2026-10-02T05:42:09.246Z",
+  "endedAt": "2026-10-02T05:42:09.265Z",
+  "sourceSHA": {
+    "note": "파일 전체내용 sha256(현재 Read 시점). Git 미호출. 총괄 제공 commit은 독립 관측 HEAD로 표시하지 않음.",
+    "fileContent": {
+      "game.html": "2e45ee0e9ad909b378bf1a7b864818ce442a4c3e17b12360b42e363dc7d0bd94",
+      "game-easy-test.html": "3e5969ca139497c2efb312dc720ab53eb42a8d1912c8288caa2ce858cfd5120a"
+    },
+    "queueSlice": {
+      "game.html": "acbf8ebfdebb079e7196931721e8bdb9dfdbc9201a823ea81d8003c169d7b1a6",
+      "game-easy-test.html": "acbf8ebfdebb079e7196931721e8bdb9dfdbc9201a823ea81d8003c169d7b1a6"
+    },
+    "drawSlice": {
+      "game.html": "4378a60213e9a2ad068b4b735e6a7cb7c617e10c8ade65899ff523b15c7a63e7",
+      "game-easy-test.html": "4378a60213e9a2ad068b4b735e6a7cb7c617e10c8ade65899ff523b15c7a63e7"
+    },
+    "constSlice": {
+      "game.html": "f1191d124595344060dc6d4fd065d84f2809495a37ad5d36b15d99e0c7cbad46",
+      "game-easy-test.html": "f1191d124595344060dc6d4fd065d84f2809495a37ad5d36b15d99e0c7cbad46"
+    },
+    "headInherited": "UNKNOWN (Git 미호출; COMMON 제공 commit 7e69495046323b3120578f67635c20feb48b2a4f 은 총괄 출처, 본 세션 독립 관측 아님)"
+  },
+  "constants": {
+    "ENS_GL_MAX": 512,
+    "ENS8_GL_MAX": 1024,
+    "GROUPS": 16,
+    "STRIDE": 9,
+    "buckets": "idle 0-7 / walk 8-15",
+    "band": "GL=호출/bufferSubData 구간 기록, _getTex=ready/fail, _flush=noop, 2D gate=source 모델링"
+  },
+  "summary": {
+    "total": 18,
+    "pass": 18,
+    "fail": 0
+  },
+  "productionApplied": false,
+  "disclaimer": "source fixture PASS ≠ GPU/runtime/visual PASS. 실제 GL 부트/업로드/픽셀 미검수.",
+  "rows": [
+    {
+      "id": "EX-queue-draw-slice-identical",
+      "status": "PASS"
+    },
+    {
+      "id": "EX-constants",
+      "status": "PASS"
+    },
+    {
+      "id": "A-current-residual-draws-idle[G]",
+      "status": "PASS"
+    },
+    {
+      "id": "A-current-sum-double-idle[G]",
+      "status": "PASS"
+    },
+    {
+      "id": "A-rollback-restores-queue[G]",
+      "status": "PASS"
+    },
+    {
+      "id": "A-rollback-sum-one[G]",
+      "status": "PASS"
+    },
+    {
+      "id": "A-precheck-no-residual[G]",
+      "status": "PASS"
+    },
+    {
+      "id": "A-precheck-sum-one[G]",
+      "status": "PASS"
+    },
+    {
+      "id": "B-walk-tex-fail-draw-skips[G]",
+      "status": "PASS"
+    },
+    {
+      "id": "C-normal-path-equivalent[G]",
+      "status": "PASS"
+    },
+    {
+      "id": "A-current-residual-draws-idle[E]",
+      "status": "PASS"
+    },
+    {
+      "id": "A-current-sum-double-idle[E]",
+      "status": "PASS"
+    },
+    {
+      "id": "A-rollback-restores-queue[E]",
+      "status": "PASS"
+    },
+    {
+      "id": "A-rollback-sum-one[E]",
+      "status": "PASS"
+    },
+    {
+      "id": "A-precheck-no-residual[E]",
+      "status": "PASS"
+    },
+    {
+      "id": "A-precheck-sum-one[E]",
+      "status": "PASS"
+    },
+    {
+      "id": "B-walk-tex-fail-draw-skips[E]",
+      "status": "PASS"
+    },
+    {
+      "id": "C-normal-path-equivalent[E]",
+      "status": "PASS"
+    }
+  ],
+  "scenarios": {
+    "game.html": {
+      "ex": {
+        "ENS_GL_MAX": 512,
+        "STRIDE": 9,
+        "GROUPS": 16,
+        "ENS8_GL_MAX": 1024,
+        "queueSha": "acbf8ebfdebb079e7196931721e8bdb9dfdbc9201a823ea81d8003c169d7b1a6",
+        "drawSha": "4378a60213e9a2ad068b4b735e6a7cb7c617e10c8ade65899ff523b15c7a63e7",
+        "constSha": "f1191d124595344060dc6d4fd065d84f2809495a37ad5d36b15d99e0c7cbad46"
+      },
+      "scen": {
+        "A_current": {
+          "beforeTotal": 1023,
+          "beforeB0": 3,
+          "beforeSum": 1023,
+          "idleOK": true,
+          "afterIdleTotal": 1024,
+          "afterIdleB0": 4,
+          "walkOK": false,
+          "total": 1024,
+          "countSum": 1024,
+          "b0": 4,
+          "b8": 0,
+          "drawn": 1024,
+          "b0Instanced": 4,
+          "testIdleDrawnGL": true,
+          "testWalkDrawnGL": false,
+          "prefixDrawn": true
+        },
+        "A_rollback": {
+          "idleOK": true,
+          "walkOK": false,
+          "rolledBack": true,
+          "total": 1023,
+          "countSum": 1023,
+          "b0": 3,
+          "testIdleDrawnGL": false,
+          "prefixDrawn": true,
+          "b1": 511,
+          "b2": 509,
+          "b1Drawn": true,
+          "b2Drawn": true,
+          "bufPrefix": [
+            1000,
+            1001,
+            1002
+          ]
+        },
+        "A_precheck": {
+          "remain": 1,
+          "willQueueGL": false,
+          "idleOK": false,
+          "walkOK": false,
+          "total": 1023,
+          "countSum": 1023,
+          "b0": 3,
+          "testIdleDrawnGL": false,
+          "prefixDrawn": true,
+          "bufPrefix": [
+            1000,
+            1001,
+            1002
+          ]
+        },
+        "B_walkTexFail": {
+          "idleOK": true,
+          "walkOK": true,
+          "b0": 1,
+          "b8": 1,
+          "testIdleDrawnGL": true,
+          "testWalkDrawnGL": false,
+          "getTexCalls": [
+            {
+              "img": "idle",
+              "ok": true
+            },
+            {
+              "img": "walk",
+              "ok": false
+            }
+          ],
+          "instancedCount": 1,
+          "queueTimeCandidateResolves": false
+        },
+        "C_normal": {
+          "base": {
+            "idleOK": true,
+            "walkOK": true,
+            "total": 12,
+            "b0": 6,
+            "b8": 1,
+            "countSum": 12
+          },
+          "cand": {
+            "idleOK": true,
+            "walkOK": true,
+            "rolledBack": false,
+            "total": 12,
+            "b0": 6,
+            "b8": 1,
+            "countSum": 12
+          },
+          "baseDrawn": 12,
+          "candDrawn": 12,
+          "baseTestDrawn": {
+            "idle": true,
+            "walk": true
+          }
+        }
+      }
+    },
+    "game-easy-test.html": {
+      "ex": {
+        "ENS_GL_MAX": 512,
+        "STRIDE": 9,
+        "GROUPS": 16,
+        "ENS8_GL_MAX": 1024,
+        "queueSha": "acbf8ebfdebb079e7196931721e8bdb9dfdbc9201a823ea81d8003c169d7b1a6",
+        "drawSha": "4378a60213e9a2ad068b4b735e6a7cb7c617e10c8ade65899ff523b15c7a63e7",
+        "constSha": "f1191d124595344060dc6d4fd065d84f2809495a37ad5d36b15d99e0c7cbad46"
+      },
+      "scen": {
+        "A_current": {
+          "beforeTotal": 1023,
+          "beforeB0": 3,
+          "beforeSum": 1023,
+          "idleOK": true,
+          "afterIdleTotal": 1024,
+          "afterIdleB0": 4,
+          "walkOK": false,
+          "total": 1024,
+          "countSum": 1024,
+          "b0": 4,
+          "b8": 0,
+          "drawn": 1024,
+          "b0Instanced": 4,
+          "testIdleDrawnGL": true,
+          "testWalkDrawnGL": false,
+          "prefixDrawn": true
+        },
+        "A_rollback": {
+          "idleOK": true,
+          "walkOK": false,
+          "rolledBack": true,
+          "total": 1023,
+          "countSum": 1023,
+          "b0": 3,
+          "testIdleDrawnGL": false,
+          "prefixDrawn": true,
+          "b1": 511,
+          "b2": 509,
+          "b1Drawn": true,
+          "b2Drawn": true,
+          "bufPrefix": [
+            1000,
+            1001,
+            1002
+          ]
+        },
+        "A_precheck": {
+          "remain": 1,
+          "willQueueGL": false,
+          "idleOK": false,
+          "walkOK": false,
+          "total": 1023,
+          "countSum": 1023,
+          "b0": 3,
+          "testIdleDrawnGL": false,
+          "prefixDrawn": true,
+          "bufPrefix": [
+            1000,
+            1001,
+            1002
+          ]
+        },
+        "B_walkTexFail": {
+          "idleOK": true,
+          "walkOK": true,
+          "b0": 1,
+          "b8": 1,
+          "testIdleDrawnGL": true,
+          "testWalkDrawnGL": false,
+          "getTexCalls": [
+            {
+              "img": "idle",
+              "ok": true
+            },
+            {
+              "img": "walk",
+              "ok": false
+            }
+          ],
+          "instancedCount": 1,
+          "queueTimeCandidateResolves": false
+        },
+        "C_normal": {
+          "base": {
+            "idleOK": true,
+            "walkOK": true,
+            "total": 12,
+            "b0": 6,
+            "b8": 1,
+            "countSum": 12
+          },
+          "cand": {
+            "idleOK": true,
+            "walkOK": true,
+            "rolledBack": false,
+            "total": 12,
+            "b0": 6,
+            "b8": 1,
+            "countSum": 12
+          },
+          "baseDrawn": 12,
+          "candDrawn": 12,
+          "baseTestDrawn": {
+            "idle": true,
+            "walk": true
+          }
+        }
+      }
+    }
+  },
+  "receipts": {
+    "confirmedChatSessionId": "UNKNOWN (피어 Claude 세션 메시지로 전달, 확인된 chat/sessionId 미제공)",
+    "taskReadUTC": "2026-10-02T (continuous/ANIMVFX/TASK.md + COMMON.md Read, 명령 실행 전 완료)",
+    "commandRunUTC": "2026-10-02T05:42:09.246Z",
+    "harnessEndedUTC": "2026-10-02T05:42:09.265Z",
+    "exit": 0,
+    "ownedFiles": [
+      "tools/team-followup-20261002/continuous/ANIMVFX/checks.mjs",
+      "result.md",
+      "evidence.json"
+    ],
+    "gitQueried": false,
+    "note": "COMMON 계약에 따라 Git 호출 0. HEAD는 총괄 제공 commit 인수(독립 관측 아님)."
+  },
+  "docsCorrections": [
+    {
+      "file": "docs/8.0몬스터디자인/몬스터_스킨_렌더링_파이프라인.md",
+      "loc": "§75~80 T1/T4·참조경로",
+      "text": "T1(전역 잔여1) 실행 인수 완료: 실제 queue+draw 결합으로 idle 큐 성공 후 walk 전역거절 시 count/total/CPU buffer에 잔류 idle이 남고 실제 _drawEnemy8DirInstanced가 버킷 count로 그 잔류를 출력함을 확인(버킷 instanced=4, 전송버퍼 sentinel에 test idle 포함). 단순 ensGLMode=0 플래그는 draw가 개체 mode를 보지 않으므로 rollback이 아님. 최소 rollback=거절 시 _ens8GLCounts[bucket]--·_ens8GLTotal--(잔여1 경계에선 이 개체가 마지막 append라 prefix/타버킷 보존 안전), precheck=큐 전 remain>=2 확인 후 미큐. 둘 다 실제 draw에서 잔류 미출력·prefix 보존 확인. T4(walk 텍스처 실패)는 큐시점 후보로 미해결→FAIL/UNKNOWN 유지. 참조경로를 claude-native-6가 아니라 claude-provider/... 로 적은 문안은 실파일 부재이므로 continuous/ANIMVFX 실행 결과로 정정."
+    },
+    {
+      "file": "docs/5.0애니메이션파이프라인/몬스터_스킨_시스템.md",
+      "loc": "§일반 렌더",
+      "text": "부분 walk 실패 시 GL 잔류 큐·실제 draw 동작·최소 rollback/precheck 후보(실제 count/total 복원)·walk-텍스처-실패 미해결 경계 참조 추가. 수치/슬롯 변경 없음."
+    },
+    {
+      "file": "docs/5.1임펙트디자인/ANIMATION_VFX_TEAM_MASTER.md",
+      "loc": "백로그 말미",
+      "text": "continuous: 실제 queue+draw 결합 rollback 검증 18그룹 PASS. 잔류 큐를 실제 draw가 출력함을 증명, 플래그-only rollback의 허위 GREEN 교정, count/total 실복원 rollback과 precheck가 실제 draw/버퍼/카운트로 prefix·타버킷 보존하며 이 개체만 2D 1회가 됨을 확인. walk-텍스처-실패는 큐시점 후보 미해결. body !_ensGLQueued 가드 단독은 제안하지 않음. 미적용·발anchor UNKNOWN·corpse fade 보류."
+    }
+  ],
+  "docsRg": {
+    "when": "2026-10-02T05:43:15.341Z",
+    "keywords": "_queueEnemy8DirInstanced|_drawEnemy8DirInstanced|_ensGLMode|rollback|부분 성공|walk",
+    "note": "스킨_렌더링_파이프라인 §75~80에 provider 논리표 존재, 참조경로 미존재 파일 지적 포함"
+  }
+}

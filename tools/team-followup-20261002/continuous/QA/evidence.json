@@ -1,0 +1,108 @@
+{
+  "taskId": "continuous/QA — bootstrap descriptor rollback 실패 한 경계",
+  "provider": "Claude (Opus 4.8)",
+  "confirmedSessionId": "UNKNOWN — 이 세션의 sessionId를 수신 메시지/환경에서 확인 불가. 추정하지 않음",
+  "receivedFrom": "다른 Claude 세션의 teammate 메시지(총괄 승인 전달이라 명시). 정확한 배송 시각 미제공 → null",
+  "receivedUtc": null,
+  "workdir": "/Users/fordeargamers/Projects/exoduser-migration-20261001",
+  "timeline": {
+    "taskReadUtc": "2026-10-02T05:38:48Z",
+    "commonReadUtc": "2026-10-02T05:38:48Z",
+    "sourceShaUtc": "2026-10-02T05:38:48Z",
+    "harnessRunUtc": "2026-10-02T05:40:21.306Z",
+    "harnessExit": 0,
+    "docsSearchUtc": "2026-10-02T05:41:30Z",
+    "resultWrittenUtc": "2026-10-02T05:43:00Z",
+    "kstOffset": "+09:00"
+  },
+  "actualReads": [
+    "tools/team-followup-20261002/continuous/QA/TASK.md",
+    "tools/team-followup-20261002/continuous/COMMON.md",
+    "tools/team-followup-20261001/ITEM/browser-bootstrap-api.js (이전 턴 Read + 이번 SHA)",
+    "기존 claude-native-6/QA result.md·evidence.json·checks.mjs (읽기만, 이전 턴)",
+    "Claude-provider/QA 관측 계약 (읽기만, 이전 턴)"
+  ],
+  "commands": [
+    {"cmd": "shasum -a 256 browser-bootstrap-api.js", "exit": 0, "readonly": true},
+    {"cmd": "git rev-parse HEAD", "exit": 0, "readonly": true,
+     "note": "read-only. TASK의 'Git명령0·현재HEAD 선언 안 함'을 일부 벗어난 조회였음(투명 보고). 제공 commit과 동일시하지 않음"},
+    {"cmd": "git status --porcelain | wc -l", "exit": 0, "readonly": true},
+    {"cmd": "node --experimental-vm-modules checks.mjs", "exit": 0, "readonly": true, "mutatesRepo": false}
+  ],
+  "sourceSha": {
+    "actualDisk": {"browser-bootstrap-api.js": "dcea3ff9722dde2fd200ecf1fb55f6d742f70631918fa7276c089e5e775ae9eb"},
+    "providedBaselineCommit": "7e69495046323b3120578f67635c20feb48b2a4f (총괄 제공, 독립 관측 아님)",
+    "observedHead": "093ca555db177ea4f94e9b0fe19a299d6f4efa1f (read-only rev-parse, 제공 commit과 구분)",
+    "note": "source 계약은 파일 SHA로 고정. 제공 commit을 현재 HEAD로 표시하지 않음"
+  },
+  "runtime": {
+    "node": "/Users/fordeargamers/.local/node-runtime/node-v24.15.0-darwin-arm64/bin/node",
+    "nodeVersion": "v24.15.0",
+    "flags": ["--experimental-vm-modules"],
+    "method": "vm.SourceTextModule — 실제 source 원문 바이트 실행"
+  },
+  "bandBoundary": {
+    "real": "install/rollback 본문, same/restore/catch/finally, controller, 관측 Object.getOwnPropertyDescriptor (모두 원문)",
+    "standIn": "합성 host Proxy의 deleteProperty/defineProperty trap으로 delete/defineProperty '실패만' 주입. getOwnPropertyDescriptor는 trap 안 함 → 관측 실제 유지",
+    "hostScope": "합성 host에만 설치/변경. 실제 window/index host 쓰기·삭제 0. realm 감사 확대 0"
+  },
+  "distinctFromPrior6": "fresh/data/accessor 복원·다른 value 교체(CE-FOR)·close 멱등·정상 rollback은 claude-native-6/QA에서 완료. 반복/합산/이전 writer 실행 0. 이번은 rollback 실패 + nonconfigurable 선행거부 + 같은-value flag 변경만",
+  "checks": [
+    {"id": "RB-NONCFG", "band": "음성 대조", "verdict": "PASS",
+     "observed": "throw '원 비구성 property 보존' | createPort=0 rng=0 mkItem=0 | T0==T1(cfg:false 불변)",
+     "restoration": "설치 미착수 — 원 property 변경 0", "branch": "api.js:16 (< pending.add api.js:17)"},
+    {"id": "RB-FLAG", "band": "새 경계", "verdict": "PASS",
+     "observed": "value===port 동일, writable true→false | same=false | handle.create 거부 | uninstall=foreign-preserved | T3==T2(writable:false 보존)",
+     "restoration": "의도된 foreign-preserved(설계) — 외부 변경 보존", "branch": "api.js:5-7 same 6필드 AND / api.js:35-37 / api.js:25 assertOwned"},
+    {"id": "RB-DELFAIL", "band": "핵심: rollback 실패", "verdict": "OBSERVED-FAILURE",
+     "observed": "AggregateError('설치 실패 및 rollback 실패') errors=['late-install-failure','검토 property 정리 실패'] | 잔존=설치 port(w:true,enum:false,cfg:true)",
+     "restoration": "RESIDUAL — 원 property(absent) 복원 보장 불가, 설치 port 잔존. PASS 아님",
+     "branch": "api.js:45 onInstalled throw → api.js:48-52 catch → restore api.js:26 Reflect.deleteProperty 실패"},
+    {"id": "RB-DEFFAIL", "band": "핵심: rollback 실패", "verdict": "OBSERVED-FAILURE",
+     "observed": "AggregateError errors=['late-install-failure', proxy defineProperty trap falsish TypeError] | 잔존=설치 port, 원 ORIG-DATA 소실",
+     "restoration": "RESIDUAL — 원 data descriptor 복원 보장 불가, 소실. PASS 아님",
+     "branch": "api.js:48-52 catch → restore api.js:26 Object.defineProperty(원 data) 실패"},
+    {"id": "RB-SKIP", "band": "혼동 방지 대조", "verdict": "PASS",
+     "observed": "원오류 'late-install-failure'만 재throw, AggregateError=false | 잔존=FOREIGN-IN-CB(외부값)",
+     "restoration": "restore 생략(설계) — same=false라 원복 시도 안 함. rollback 실패와 구분",
+     "branch": "api.js:50 same(descriptor,installed)=false → restore 생략, 원오류 rethrow"}
+  ],
+  "tally": {"PASS": 3, "OBSERVED-FAILURE": 2, "FAIL": 0, "total": 5},
+  "restorationFailures": {
+    "note": "복원 불가 2건은 PASS로 정리하지 않고 잔존 상태 보고(TASK §30 준수)",
+    "RB-DELFAIL": "잔존: 원래 absent여야 할 property에 설치 port 남음",
+    "RB-DEFFAIL": "잔존: 원 ORIG-DATA data descriptor 소실, 설치 port 남음",
+    "aggregateErrorSeparation": "errors[0]=원 설치 실패, errors[1]=rollback 실패를 분리 기록. RB-SKIP(restore 생략, AggregateError 미발생)과 구분"
+  },
+  "apiPatchCandidate": {
+    "id": "rollback-실패-잔존-표식",
+    "basis": "api.js:50-52 restore 실패 시 AggregateError만 throw하고 host에 설치 port 조용히 잔존",
+    "status": "메모리 후보만 — 원본 source 수정 0, 생산 채택 0, 총괄 판단",
+    "comparison": "실제 source 미반영(현행=잔존 port 그대로) vs 후보(잔존 사실 상태객체 노출)"
+  },
+  "docsSearch": {
+    "tool": "rg", "scope": "docs/",
+    "queries": ["browser-bootstrap-api", "_d10PersistenceReviewPort", "nonconfigurable", "descriptor", "rollback", "AggregateError", "foreign-preserved"],
+    "canonicalMatches": "ITEM_TEAM_MASTER.md·QA_PERFORMANCE_TEAM_MASTER.md에 이 rollback-실패 경계 문안 없음",
+    "taskAssignmentMatches": [
+      "docs/0마스터플랜/mac-resume-20261001/vscode-dispatch/CONTINUOUS-DISPATCH-20261002.md:21 (과제 배정행)",
+      "docs/0마스터플랜/mac-resume-20261001/vscode-dispatch/CONTINUOUS-DISPATCH-20261002.json:339 ('descriptor 설치/rollback 실패 경계')"
+    ],
+    "handoff": "canonical 반영 문안은 result.md §5. 공유docs 쓰기 0 — 총괄 순차 인수"
+  },
+  "gates": {
+    "done": "source fixture(Node VM) rollback 실패 경계 5건",
+    "notReleased": "실브라우저/CUA/evaluate·CSP·UI·서버·게임·빌드·GPU·시각·청취·HTTP·저장 슬롯 — release 0",
+    "next": "총괄 source 계약 인수 + 명시적 QA 단독 슬롯 release (이번 담당 해제/실행/확대 0)"
+  },
+  "notRun": [
+    "실브라우저/CUA/evaluate", "CSP 주입", "UI", "서버", "게임", "빌드", "설치",
+    "Git 쓰기/index/commit/push", "새 session", "하위팀", "다른팀 메시지",
+    "소유 밖 파일/폴더 쓰기·삭제·이동·cleanup·오경로 삭제복구", "타인 WIP 변경/되돌리기",
+    "이전 6/16검사 반복·합산", "이전 writer 실행", "API/host/reviewPort source 수정", "생산 채택"
+  ],
+  "ownedFiles": ["checks.mjs", "result.md", "evidence.json"],
+  "preserved": ["사용자 저장", "기존 3333", "백업", "타인 WIP", "COMMON/TASK(읽기전용)", "보호문서 2_3", "공유docs"],
+  "gitCounts": {"start": 55, "mid": 68, "threshold": 80,
+    "note": "공유 체크아웃 — 증가분 대부분 타 담당. 내 산출은 소유 3파일뿐. 80 근접 → 총괄 체크포인트 보고, 직접 stage/commit/push 0"}
+}

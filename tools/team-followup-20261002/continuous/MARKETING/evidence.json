@@ -1,0 +1,925 @@
+{
+  "taskId": "continuous-MARKETING-steam-claims",
+  "provider": "Codex / OpenAI",
+  "chatId": "01a0fae0-cff3-78f0-aa73-32b08c6d6055",
+  "sessionId": null,
+  "checkout": "/Users/fordeargamers/Projects/exoduser-migration-20261001",
+  "startedAt": {
+    "utc": "2026-10-02T05:25:01Z",
+    "kst": "2026-10-02T14:25:01+09:00",
+    "meaning": "first local clock observation; exact transport receipt UNKNOWN"
+  },
+  "reportWrittenAt": {
+    "current_time": "2026-10-02 05:31:22 UTC"
+  },
+  "git": {
+    "calls": 0,
+    "head": "UNKNOWN",
+    "changes": "UNKNOWN",
+    "reason": "COMMON forbids Git reads and writes",
+    "providedReferences": [
+      {
+        "commit": "7e69495046323b3120578f67635c20feb48b2a4f",
+        "source": "COMMON / coordinator",
+        "independentlyVerified": false,
+        "providedAt": null
+      },
+      {
+        "commit": "cd675f24",
+        "source": "TASK / coordinator checkpoint",
+        "independentlyVerified": false,
+        "providedAt": null
+      }
+    ]
+  },
+  "scope": {
+    "productionWrites": 0,
+    "sharedDocsWrites": 0,
+    "gitWrites": 0,
+    "testsRun": 0,
+    "fixturesCreated": 0,
+    "serversStarted": 0,
+    "buildsRun": 0,
+    "gamesRun": 0,
+    "uiCalls": 0,
+    "storeChanges": 0,
+    "externalMessages": 0,
+    "accountsOrConnectionsCreated": 0,
+    "mediaGenerationOrUpload": 0,
+    "agentsSpawned": 0,
+    "channelDependency": false
+  },
+  "skills": {
+    "used": [],
+    "reason": "bounded local source audit and explicitly authorized official public web read; no applicable production skill used"
+  },
+  "web": [
+    {
+      "tool": "web__run",
+      "operation": "open",
+      "requestedUrl": "https://store.steampowered.com/app/4749590/",
+      "responseUrl": "https://store.steampowered.com/app/4749590/",
+      "language": "English",
+      "startedUtc": "2026-10-02T05:25:26Z",
+      "finishedUtc": "2026-10-02T05:25:28Z",
+      "startedKst": "2026-10-02T14:25:26+09:00",
+      "finishedKst": "2026-10-02T14:25:28+09:00",
+      "status": "success",
+      "reference": "turn2view0",
+      "lines": 194,
+      "title": "EXODUSER: HELL LORD on Steam",
+      "appId": 4749590,
+      "observations": {
+        "worldCounts": {
+          "line": 142,
+          "paraphrase": "seven chapters; stage and boss quantities exceeding thirty-five"
+        },
+        "archetypesAndBuilds": {
+          "line": 144,
+          "paraphrase": "six archetypes, five rarity levels, fusion quantity exceeding twenty-one"
+        },
+        "service": {
+          "line": 146,
+          "paraphrase": "ongoing service and expanding build/fusion space"
+        },
+        "features": {
+          "line": 59,
+          "paraphrase": "single player and shared remote-play feature displayed"
+        },
+        "interactive": {
+          "line": 102,
+          "paraphrase": "user chat and online interaction labels displayed"
+        },
+        "languages": {
+          "lines": [
+            65,
+            97
+          ],
+          "rows": 29,
+          "interface": true,
+          "subtitles": true,
+          "fullAudioChecked": false,
+          "regionalScope": "Spain and Brazil; no separate Latam or Portugal rows"
+        },
+        "availability": "coming soon display; no present purchase availability inferred"
+      },
+      "differenceFromPreviousReport": "requested five bundles still visible; no removal/change observed",
+      "koreanDescriptionRead": false,
+      "demoStandaloneCurrentStatus": "UNKNOWN"
+    },
+    {
+      "tool": "web__run",
+      "operations": [
+        "open",
+        "find",
+        "open"
+      ],
+      "url": "https://partner.steamgames.com/doc/features/remoteplay",
+      "responseUrl": "https://partner.steamgames.com/doc/features/remoteplay",
+      "language": "English",
+      "observedUtc": {
+        "current_time": "2026-10-02 05:28:34 UTC"
+      },
+      "status": "success",
+      "references": [
+        "turn3view0",
+        "turn4view0",
+        "turn4view1"
+      ],
+      "supportLines": [
+        364,
+        366
+      ],
+      "paraphrase": "Remote shared play lets friends participate as if using the same computer; appropriate-product capability requires verification; policy reading is not runtime QA"
+    }
+  ],
+  "readEvidence": {
+    "initialInventory": [
+      {
+        "path": "/Users/fordeargamers/Projects/exoduser-migration-20261001/AGENTS.md",
+        "exists": true,
+        "sha256": "fd59bef70960bcaf1ab9910051faa860362884e574ac2869fad05c6872ae04e4",
+        "bytes": 26076,
+        "lines": 233
+      },
+      {
+        "path": "/Users/fordeargamers/Projects/exoduser-migration-20261001/tools/team-followup-20261002/continuous/COMMON.md",
+        "exists": true,
+        "sha256": "de5a881270625a7b2d0e854331205e01372a037340a18474c6442b60e668465e",
+        "bytes": 3373,
+        "lines": 13
+      },
+      {
+        "path": "/Users/fordeargamers/Projects/exoduser-migration-20261001/tools/team-followup-20261002/continuous/MARKETING/TASK.md",
+        "exists": true,
+        "sha256": "17b67c0e60341b77ee9e9e2fd3c224814a4e502e8d030482f35fa43065622d1f",
+        "bytes": 7534,
+        "lines": 37
+      },
+      {
+        "path": "/Users/fordeargamers/Projects/exoduser-migration-20261001/docs/0마스터플랜/PROJECT_MANAGEMENT_MASTER.md",
+        "exists": true,
+        "sha256": "4d13244269bf4e5cf99bbb0babc93a7bef6db14bc4168e25c4b3a59e6baa7c92",
+        "bytes": 134099,
+        "lines": 792
+      },
+      {
+        "path": "/Users/fordeargamers/Projects/exoduser-migration-20261001/docs/0마스터플랜/mac-resume-20261001/vscode-dispatch/TEAM_UTILIZATION_20261001.json",
+        "exists": true,
+        "sha256": "c8940720a31c3d64b3170309708cc8e2f397c8028fe5316f2b900cfbba82f5a6",
+        "bytes": 82331,
+        "lines": 1697
+      },
+      {
+        "path": "/Users/fordeargamers/Projects/exoduser-migration-20261001/docs/13출시·마케팅/13출시·마케팅.md",
+        "exists": true,
+        "sha256": "856eac0abbf6bfbdca46da11de682f24f3b31be81f8b58c69cc7212ca8063832",
+        "bytes": 45381,
+        "lines": 514
+      },
+      {
+        "path": "/Users/fordeargamers/Projects/exoduser-migration-20261001/docs/13출시·마케팅/시장포지셔닝_정통루팅ARPG.md",
+        "exists": true,
+        "sha256": "6e85186bdee9319027882bd8e03996e41b20d58511e023478f356a709c9fb278",
+        "bytes": 8575,
+        "lines": 71
+      },
+      {
+        "path": "/Users/fordeargamers/Projects/exoduser-migration-20261001/docs/13출시·마케팅/MARKET_EVIDENCE_20260930.md",
+        "exists": true,
+        "sha256": "808aa666625f2eac7e36414e427282f037ab3d0bde5412b6408d98306bba58b0",
+        "bytes": 4438,
+        "lines": 36
+      },
+      {
+        "path": "/Users/fordeargamers/Projects/exoduser-migration-20261001/docs/13출시·마케팅/STEAM_REVIEW_20260926.md",
+        "exists": true,
+        "sha256": "e1ce6d97671250bdd646c7dba8d26ffd69b962b2bdb6aba0820fcc289e2661f2",
+        "bytes": 14938,
+        "lines": 101
+      },
+      {
+        "path": "/Users/fordeargamers/Projects/exoduser-migration-20261001/docs/13출시·마케팅/STEAM_STORE_LOCALIZATION_20260909.md",
+        "exists": true,
+        "sha256": "ed74773dbe6dc2e9660f1782887ccd41b98fb85098873990d5468b6a70ef1202",
+        "bytes": 11395,
+        "lines": 116
+      },
+      {
+        "path": "/Users/fordeargamers/Projects/exoduser-migration-20261001/docs/13출시·마케팅/STEAM_LANGUAGE_UPLOAD_20260923.md",
+        "exists": true,
+        "sha256": "210f7f867c97afb6da6b2a8a62654a8a5210e0ebbdc8597727daa6da2fe720f6",
+        "bytes": 6150,
+        "lines": 61
+      },
+      {
+        "path": "/Users/fordeargamers/Projects/exoduser-migration-20261001/docs/13출시·마케팅/PC_PACKAGING_20260910.md",
+        "exists": true,
+        "sha256": "434d760b2d7d97f0a817574596ad508d3164a6af1e926eb98b97294d86841a3a",
+        "bytes": 10712,
+        "lines": 93
+      },
+      {
+        "path": "/Users/fordeargamers/Projects/exoduser-migration-20261001/docs/4.1맵디자인+설정/BOSS_CANONICAL_MAPPING.md",
+        "exists": true,
+        "sha256": "eaf369a495ba70cefd5c9116db62f0372a57b7168383a7624a4e893be399d505",
+        "bytes": 9365,
+        "lines": 94
+      },
+      {
+        "path": "/Users/fordeargamers/Projects/exoduser-migration-20261001/tools/team-followup-20261002/new-four/MARKETING/TASK.md",
+        "exists": true,
+        "sha256": "397dfc03ad1f84a27df8a7942f0ca0347331ada0c9a8f583a05fcef1893fc5a8",
+        "bytes": 7106,
+        "lines": 38
+      },
+      {
+        "path": "/Users/fordeargamers/Projects/exoduser-migration-20261001/tools/team-followup-20261002/new-four/MARKETING/result.md",
+        "exists": true,
+        "sha256": "3d88c76ef175d8e9f949f218a97a27edeb4b7e0f504258dff1c25a4db3230029",
+        "bytes": 28780,
+        "lines": 204
+      },
+      {
+        "path": "/Users/fordeargamers/Projects/exoduser-migration-20261001/tools/team-followup-20261002/new-four/MARKETING/evidence.json",
+        "exists": true,
+        "sha256": "4fa239df3deb55a5051b539fc58d801dd8cc59dcb88f7543bb701102735b81b8",
+        "bytes": 105327,
+        "lines": 1637
+      },
+      {
+        "path": "/Users/fordeargamers/Projects/exoduser-migration-20261001/tools/team-followup-20261002/codex-half/BUILD/result.md",
+        "exists": true,
+        "sha256": "d95654bade1981d3a2d9c57be9299584ef15c836cac187ff03e972ab31761016",
+        "bytes": 9843,
+        "lines": 69
+      },
+      {
+        "path": "/Users/fordeargamers/Projects/exoduser-migration-20261001/tools/team-followup-20261002/codex-half/BUILD/evidence.json",
+        "exists": true,
+        "sha256": "40c0ce658141c1d6183829366ea1c1393f6f052000c2f490fc73d1c6f055deac",
+        "bytes": 36045,
+        "lines": 848
+      },
+      {
+        "path": "/Users/fordeargamers/Projects/exoduser-migration-20261001/tools/team-followup-20261002/claude-native-6/QA/result.md",
+        "exists": true,
+        "sha256": "6e4c1c8d9cbd4a68a4cbeac6ce52a993ea5344220ac0106fa05034f8eb667052",
+        "bytes": 10687,
+        "lines": 68
+      },
+      {
+        "path": "/Users/fordeargamers/Projects/exoduser-migration-20261001/tools/team-followup-20261002/claude-native-6/QA/evidence.json",
+        "exists": true,
+        "sha256": "203ff7c4b5c4ad1837f242e014974a587741f986fd07f345c6e9297db0f9691d",
+        "bytes": 8689,
+        "lines": 111
+      },
+      {
+        "path": "/Users/fordeargamers/Projects/exoduser-migration-20261001/game.html",
+        "exists": true,
+        "sha256": "6c77ec6f571f4de9cb199a2ac425eb3f0450205bcf6f1d883ac8d13135ac4b43",
+        "bytes": 4025346,
+        "lines": 63540
+      },
+      {
+        "path": "/Users/fordeargamers/Projects/exoduser-migration-20261001/game-easy-test.html",
+        "exists": true,
+        "sha256": "c40ea16180305a3d0043d1c9dfa9091096820e589e537a893d5d28fff56528d0",
+        "bytes": 3902471,
+        "lines": 61831
+      },
+      {
+        "path": "/Users/fordeargamers/Projects/exoduser-migration-20261001/index.html",
+        "exists": true,
+        "sha256": "38f4e0e97ed63014e86ec48a14d9d0a677472ef57b99916f9a48b7b3395e66c8",
+        "bytes": 342046,
+        "lines": 4577
+      },
+      {
+        "path": "/Users/fordeargamers/Projects/exoduser-migration-20261001/package.json",
+        "exists": true,
+        "sha256": "58d101ca053f29d36d0f9bd8d63639753fde807064d3c957e0bb6db17d4be0e8",
+        "bytes": 2040,
+        "lines": 50
+      },
+      {
+        "path": "/Users/fordeargamers/Projects/exoduser-migration-20261001/build-nwjs.mjs",
+        "exists": true,
+        "sha256": "567a4b2d6761974b8763abe03ac3c50fc5b973c36be6324c7200ac27b445a78f",
+        "bytes": 9233,
+        "lines": 198
+      },
+      {
+        "path": "/Users/fordeargamers/Projects/exoduser-migration-20261001/server.cjs",
+        "exists": true,
+        "sha256": "18cf9aa806d5715788f360debbc2a45c2574a76db952f101b524e2ff77fd517d",
+        "bytes": 16335,
+        "lines": 392
+      },
+      {
+        "path": "/Users/fordeargamers/Projects/exoduser-migration-20261001/node-main.js",
+        "exists": true,
+        "sha256": "541ff8e6f57db862ddbb1b148ee37a3a8e0da1e16293bc8343a0bc4144d80daf",
+        "bytes": 10282,
+        "lines": 209
+      },
+      {
+        "path": "/Users/fordeargamers/Projects/exoduser-migration-20261001/test/nodeMainMats.test.js",
+        "exists": true,
+        "sha256": "08fb8730fed0865447aefa13c8721d29daa59016a3fec945687cf8181d5b3797",
+        "bytes": 4398,
+        "lines": 96
+      },
+      {
+        "ownedOutput": "/Users/fordeargamers/Projects/exoduser-migration-20261001/tools/team-followup-20261002/continuous/MARKETING/result.md",
+        "alreadyExists": false,
+        "resolvedParent": "/Users/fordeargamers/Projects/exoduser-migration-20261001/tools/team-followup-20261002/continuous/MARKETING"
+      },
+      {
+        "ownedOutput": "/Users/fordeargamers/Projects/exoduser-migration-20261001/tools/team-followup-20261002/continuous/MARKETING/evidence.json",
+        "alreadyExists": false,
+        "resolvedParent": "/Users/fordeargamers/Projects/exoduser-migration-20261001/tools/team-followup-20261002/continuous/MARKETING"
+      }
+    ],
+    "additionalInventory": [
+      {
+        "path": "/Users/fordeargamers/Projects/exoduser-migration-20261001/localization-runtime.js",
+        "exists": true,
+        "sha256": "00cdae7b9ea4742d7a905394e62809f8b67869c00f91189781f96988f2074205"
+      },
+      {
+        "path": "/Users/fordeargamers/Projects/exoduser-migration-20261001/localization-data.js",
+        "exists": true,
+        "sha256": "7a8c41960b964928174d336ac7153a5104c57f37cc43ffe62ddbc9a26c91a1d4"
+      },
+      {
+        "path": "/Users/fordeargamers/Projects/exoduser-migration-20261001/docs/최종기획서/build_document.py",
+        "exists": true,
+        "sha256": "3f44c8669292c58bc4b9116e0277a778f7b029187a72f3dad1982be8a268d086"
+      },
+      {
+        "path": "/Users/fordeargamers/Projects/exoduser-migration-20261001/docs/7아이템디자인/어픽스_시스템_현황분석_2026-08-10.md",
+        "exists": true,
+        "sha256": "222dbe375b902296634bc01ff5e433db84d1505d978307d0647244ba6733e230"
+      },
+      {
+        "path": "/Users/fordeargamers/Projects/exoduser-migration-20261001/docs/13출시·마케팅/STEAM_DASHBOARD_AUDIT_20260909.md",
+        "exists": true,
+        "sha256": "846af98f6fbd12f4565c862536d8750b0263595c0f2aebee9fffa129ec87306e"
+      },
+      {
+        "path": "/Users/fordeargamers/Projects/exoduser-migration-20261001/docs/HELL_EXODUSER_WORLDVIEW_v2.md",
+        "exists": true,
+        "sha256": "5b30f50d83fde4d55b10a3f37b9a6b46819832db95c0467f62978ea8c8290233"
+      }
+    ],
+    "completionInventory": [
+      {
+        "path": "/Users/fordeargamers/Projects/exoduser-migration-20261001/AGENTS.md",
+        "exists": true,
+        "sha256": "fd59bef70960bcaf1ab9910051faa860362884e574ac2869fad05c6872ae04e4"
+      },
+      {
+        "path": "/Users/fordeargamers/Projects/exoduser-migration-20261001/tools/team-followup-20261002/continuous/COMMON.md",
+        "exists": true,
+        "sha256": "de5a881270625a7b2d0e854331205e01372a037340a18474c6442b60e668465e"
+      },
+      {
+        "path": "/Users/fordeargamers/Projects/exoduser-migration-20261001/tools/team-followup-20261002/continuous/MARKETING/TASK.md",
+        "exists": true,
+        "sha256": "233d6e2474d752e5f8b2e4f5600e597551bf1e6e86c2b70ed1a838b47d9aef6b"
+      },
+      {
+        "path": "/Users/fordeargamers/Projects/exoduser-migration-20261001/docs/0마스터플랜/PROJECT_MANAGEMENT_MASTER.md",
+        "exists": true,
+        "sha256": "4d13244269bf4e5cf99bbb0babc93a7bef6db14bc4168e25c4b3a59e6baa7c92"
+      },
+      {
+        "path": "/Users/fordeargamers/Projects/exoduser-migration-20261001/docs/0마스터플랜/mac-resume-20261001/vscode-dispatch/TEAM_UTILIZATION_20261001.json",
+        "exists": true,
+        "sha256": "c8940720a31c3d64b3170309708cc8e2f397c8028fe5316f2b900cfbba82f5a6"
+      },
+      {
+        "path": "/Users/fordeargamers/Projects/exoduser-migration-20261001/docs/13출시·마케팅/13출시·마케팅.md",
+        "exists": true,
+        "sha256": "856eac0abbf6bfbdca46da11de682f24f3b31be81f8b58c69cc7212ca8063832"
+      },
+      {
+        "path": "/Users/fordeargamers/Projects/exoduser-migration-20261001/docs/13출시·마케팅/시장포지셔닝_정통루팅ARPG.md",
+        "exists": true,
+        "sha256": "6e85186bdee9319027882bd8e03996e41b20d58511e023478f356a709c9fb278"
+      },
+      {
+        "path": "/Users/fordeargamers/Projects/exoduser-migration-20261001/docs/13출시·마케팅/MARKET_EVIDENCE_20260930.md",
+        "exists": true,
+        "sha256": "808aa666625f2eac7e36414e427282f037ab3d0bde5412b6408d98306bba58b0"
+      },
+      {
+        "path": "/Users/fordeargamers/Projects/exoduser-migration-20261001/docs/13출시·마케팅/STEAM_REVIEW_20260926.md",
+        "exists": true,
+        "sha256": "e1ce6d97671250bdd646c7dba8d26ffd69b962b2bdb6aba0820fcc289e2661f2"
+      },
+      {
+        "path": "/Users/fordeargamers/Projects/exoduser-migration-20261001/docs/13출시·마케팅/STEAM_STORE_LOCALIZATION_20260909.md",
+        "exists": true,
+        "sha256": "ed74773dbe6dc2e9660f1782887ccd41b98fb85098873990d5468b6a70ef1202"
+      },
+      {
+        "path": "/Users/fordeargamers/Projects/exoduser-migration-20261001/docs/13출시·마케팅/STEAM_LANGUAGE_UPLOAD_20260923.md",
+        "exists": true,
+        "sha256": "210f7f867c97afb6da6b2a8a62654a8a5210e0ebbdc8597727daa6da2fe720f6"
+      },
+      {
+        "path": "/Users/fordeargamers/Projects/exoduser-migration-20261001/docs/13출시·마케팅/PC_PACKAGING_20260910.md",
+        "exists": true,
+        "sha256": "434d760b2d7d97f0a817574596ad508d3164a6af1e926eb98b97294d86841a3a"
+      },
+      {
+        "path": "/Users/fordeargamers/Projects/exoduser-migration-20261001/docs/4.1맵디자인+설정/BOSS_CANONICAL_MAPPING.md",
+        "exists": true,
+        "sha256": "eaf369a495ba70cefd5c9116db62f0372a57b7168383a7624a4e893be399d505"
+      },
+      {
+        "path": "/Users/fordeargamers/Projects/exoduser-migration-20261001/tools/team-followup-20261002/new-four/MARKETING/TASK.md",
+        "exists": true,
+        "sha256": "397dfc03ad1f84a27df8a7942f0ca0347331ada0c9a8f583a05fcef1893fc5a8"
+      },
+      {
+        "path": "/Users/fordeargamers/Projects/exoduser-migration-20261001/tools/team-followup-20261002/new-four/MARKETING/result.md",
+        "exists": true,
+        "sha256": "3d88c76ef175d8e9f949f218a97a27edeb4b7e0f504258dff1c25a4db3230029"
+      },
+      {
+        "path": "/Users/fordeargamers/Projects/exoduser-migration-20261001/tools/team-followup-20261002/new-four/MARKETING/evidence.json",
+        "exists": true,
+        "sha256": "4fa239df3deb55a5051b539fc58d801dd8cc59dcb88f7543bb701102735b81b8"
+      },
+      {
+        "path": "/Users/fordeargamers/Projects/exoduser-migration-20261001/tools/team-followup-20261002/codex-half/BUILD/result.md",
+        "exists": true,
+        "sha256": "d95654bade1981d3a2d9c57be9299584ef15c836cac187ff03e972ab31761016"
+      },
+      {
+        "path": "/Users/fordeargamers/Projects/exoduser-migration-20261001/tools/team-followup-20261002/codex-half/BUILD/evidence.json",
+        "exists": true,
+        "sha256": "40c0ce658141c1d6183829366ea1c1393f6f052000c2f490fc73d1c6f055deac"
+      },
+      {
+        "path": "/Users/fordeargamers/Projects/exoduser-migration-20261001/tools/team-followup-20261002/claude-native-6/QA/result.md",
+        "exists": true,
+        "sha256": "6e4c1c8d9cbd4a68a4cbeac6ce52a993ea5344220ac0106fa05034f8eb667052"
+      },
+      {
+        "path": "/Users/fordeargamers/Projects/exoduser-migration-20261001/tools/team-followup-20261002/claude-native-6/QA/evidence.json",
+        "exists": true,
+        "sha256": "203ff7c4b5c4ad1837f242e014974a587741f986fd07f345c6e9297db0f9691d"
+      },
+      {
+        "path": "/Users/fordeargamers/Projects/exoduser-migration-20261001/game.html",
+        "exists": true,
+        "sha256": "6c77ec6f571f4de9cb199a2ac425eb3f0450205bcf6f1d883ac8d13135ac4b43"
+      },
+      {
+        "path": "/Users/fordeargamers/Projects/exoduser-migration-20261001/game-easy-test.html",
+        "exists": true,
+        "sha256": "c40ea16180305a3d0043d1c9dfa9091096820e589e537a893d5d28fff56528d0"
+      },
+      {
+        "path": "/Users/fordeargamers/Projects/exoduser-migration-20261001/index.html",
+        "exists": true,
+        "sha256": "38f4e0e97ed63014e86ec48a14d9d0a677472ef57b99916f9a48b7b3395e66c8"
+      },
+      {
+        "path": "/Users/fordeargamers/Projects/exoduser-migration-20261001/package.json",
+        "exists": true,
+        "sha256": "58d101ca053f29d36d0f9bd8d63639753fde807064d3c957e0bb6db17d4be0e8"
+      },
+      {
+        "path": "/Users/fordeargamers/Projects/exoduser-migration-20261001/build-nwjs.mjs",
+        "exists": true,
+        "sha256": "567a4b2d6761974b8763abe03ac3c50fc5b973c36be6324c7200ac27b445a78f"
+      },
+      {
+        "path": "/Users/fordeargamers/Projects/exoduser-migration-20261001/server.cjs",
+        "exists": true,
+        "sha256": "18cf9aa806d5715788f360debbc2a45c2574a76db952f101b524e2ff77fd517d"
+      },
+      {
+        "path": "/Users/fordeargamers/Projects/exoduser-migration-20261001/node-main.js",
+        "exists": true,
+        "sha256": "541ff8e6f57db862ddbb1b148ee37a3a8e0da1e16293bc8343a0bc4144d80daf"
+      },
+      {
+        "path": "/Users/fordeargamers/Projects/exoduser-migration-20261001/test/nodeMainMats.test.js",
+        "exists": true,
+        "sha256": "08fb8730fed0865447aefa13c8721d29daa59016a3fec945687cf8181d5b3797"
+      },
+      {
+        "path": "/Users/fordeargamers/Projects/exoduser-migration-20261001/localization-runtime.js",
+        "exists": true,
+        "sha256": "00cdae7b9ea4742d7a905394e62809f8b67869c00f91189781f96988f2074205"
+      },
+      {
+        "path": "/Users/fordeargamers/Projects/exoduser-migration-20261001/localization-data.js",
+        "exists": true,
+        "sha256": "7a8c41960b964928174d336ac7153a5104c57f37cc43ffe62ddbc9a26c91a1d4"
+      },
+      {
+        "path": "/Users/fordeargamers/Projects/exoduser-migration-20261001/docs/최종기획서/build_document.py",
+        "exists": true,
+        "sha256": "3f44c8669292c58bc4b9116e0277a778f7b029187a72f3dad1982be8a268d086"
+      },
+      {
+        "path": "/Users/fordeargamers/Projects/exoduser-migration-20261001/docs/7아이템디자인/어픽스_시스템_현황분석_2026-08-10.md",
+        "exists": true,
+        "sha256": "222dbe375b902296634bc01ff5e433db84d1505d978307d0647244ba6733e230"
+      },
+      {
+        "path": "/Users/fordeargamers/Projects/exoduser-migration-20261001/docs/13출시·마케팅/STEAM_DASHBOARD_AUDIT_20260909.md",
+        "exists": true,
+        "sha256": "846af98f6fbd12f4565c862536d8750b0263595c0f2aebee9fffa129ec87306e"
+      },
+      {
+        "path": "/Users/fordeargamers/Projects/exoduser-migration-20261001/docs/HELL_EXODUSER_WORLDVIEW_v2.md",
+        "exists": true,
+        "sha256": "5b30f50d83fde4d55b10a3f37b9a6b46819832db95c0467f62978ea8c8290233"
+      }
+    ],
+    "readingScope": "bounded excerpts, metadata hashes and keyword results; not full repository or full-file comprehension. Some command outputs were truncated.",
+    "concurrentChanges": [
+      {
+        "path": "/Users/fordeargamers/Projects/exoduser-migration-20261001/tools/team-followup-20261002/continuous/MARKETING/TASK.md",
+        "exists": true,
+        "sha256": "233d6e2474d752e5f8b2e4f5600e597551bf1e6e86c2b70ed1a838b47d9aef6b"
+      }
+    ],
+    "concurrentChangesAttribution": "TASK edit notified by coordinator; no TASK write performed by this agent",
+    "productionSourceHashesPreserved": true
+  },
+  "sourceFacts": [
+    {
+      "id": "world",
+      "file": "/Users/fordeargamers/Projects/exoduser-migration-20261001/game.html",
+      "symbols": [
+        "CHAPTER_STAGES",
+        "TOTAL_STAGES",
+        "HELL_BOSSES",
+        "_DEMO_MODE",
+        "_DEMO_LV_CAP",
+        "_DEMO_LAST_STAGE",
+        "nextStage"
+      ],
+      "lines": [
+        15813,
+        15822,
+        15826,
+        15829,
+        15868,
+        42415
+      ],
+      "chapterDefinitions": 7,
+      "stageDefinitions": 35,
+      "bossAssignmentSlots": 35,
+      "designNamedBosses": 19,
+      "designAndSlotsConflict": false,
+      "demoCap": 100,
+      "demoLastStage": 0,
+      "shipping": "UNKNOWN"
+    },
+    {
+      "id": "archetype",
+      "files": [
+        "/Users/fordeargamers/Projects/exoduser-migration-20261001/game.html",
+        "/Users/fordeargamers/Projects/exoduser-migration-20261001/index.html"
+      ],
+      "symbols": [
+        "CHAR_LIST",
+        "CHAR_VISUALS",
+        "comingSoon"
+      ],
+      "gameSpriteEntries": 2,
+      "lobbyEntries": 5,
+      "lobbyLockedEntries": 4,
+      "normalLobbySelectableEntries": 1,
+      "playerSixArchetypeDefinition": "not confirmed in inspected scope",
+      "bossSixTypeDesign": "separate A1-A6 taxonomy in docs/최종기획서/build_document.py",
+      "shipping": "UNKNOWN"
+    },
+    {
+      "id": "rarity",
+      "symbols": [
+        "RARITY",
+        "RARITY_N",
+        "RARITY_N_EN",
+        "RARITY_C",
+        "RARITY_MUL",
+        "mkItem"
+      ],
+      "stringArrayCount": 5,
+      "displayAndMultiplierCount": 6,
+      "ids": [
+        0,
+        1,
+        2,
+        3,
+        4,
+        5
+      ],
+      "publicFiveVsFullSourceContract": "clear mismatch",
+      "shipping": "UNKNOWN"
+    },
+    {
+      "id": "fusion",
+      "symbols": [
+        "_FUSE_PAIRS",
+        "_DEMO_FUSE_ALLOWED",
+        "_canFuse",
+        "_startTestChar"
+      ],
+      "definitionKeys": 32,
+      "mainInitialDemoAllowed": 22,
+      "easyInitialDemoAllowed": 21,
+      "testPathMutatesAllowedSet": true,
+      "normalUseConditions": "allowed, constituents learned, not already fused",
+      "shippingAndExecutionQA": "UNKNOWN"
+    },
+    {
+      "id": "language",
+      "symbols": [
+        "ExoduserI18n.languages",
+        "resolveLanguage",
+        "_LANG_TBL",
+        "_T"
+      ],
+      "resolverLanguages": 29,
+      "translationFallbacks": "original string; story EN/KO fallback; aliases not counted as new languages",
+      "completeCurrentTranslationQA": "UNKNOWN"
+    },
+    {
+      "id": "online",
+      "symbols": [
+        "_saveSharedMatsToServer",
+        "_loadSharedMatsFromServer",
+        "/api/slots",
+        "/api/mats"
+      ],
+      "knownScope": "local save APIs and demo local flow",
+      "coopOrUserChatShippingCallsites": "not confirmed; absence from bounded keyword search does not prove nonimplementation",
+      "shippingAndTwoUserQA": "UNKNOWN"
+    }
+  ],
+  "historicalBuildEvidence": {
+    "macSourceCommit": "6be3a06b4e8d03768a35f4c57d419f45c8efeb39",
+    "macHistoricalMainSha": "30ae8544524d7cd710383ebd10f4911bea3247e90b18a46c51c253e73ce9ba3f",
+    "currentMainSha": "6c77ec6f571f4de9cb199a2ac425eb3f0450205bcf6f1d883ac8d13135ac4b43",
+    "macRuntimeAccepted": false,
+    "macVisualAccepted": false,
+    "rebuildCompleted": false,
+    "currentSteamBuildId": null,
+    "currentSteamManifest": null,
+    "previousDemoBuild": 25550483,
+    "previousDemoDepot": 5337591,
+    "previousDemoManifest": "5366201260107331431",
+    "previousDemoApp": 5337590,
+    "previousIdentifiersAreCurrentApproval": false,
+    "qaDescriptorTests": 6,
+    "qaDescriptorTestsAreGameplayQA": false,
+    "historicalLanguageCases": 273,
+    "historicalLanguageCasesAreCompleteCurrentQA": false
+  },
+  "media": [
+    {
+      "path": "/Users/fordeargamers/Projects/exoduser-migration-20261001/output/indie-live-expo-20261201/submission/EXODUSER_HELL_LORD.mp4",
+      "exists": false,
+      "status": "UNKNOWN_CURRENT_LOCATION"
+    },
+    {
+      "path": "/Users/fordeargamers/Projects/exoduser-migration-20261001/output/indie-live-expo-20261201/submission/EXODUSER_HELL_LORD_full.mp4",
+      "exists": false,
+      "status": "UNKNOWN_CURRENT_LOCATION"
+    },
+    {
+      "path": "/Users/fordeargamers/Projects/exoduser-migration-20261001/output/indie-live-expo-20261201/submission/main.jpg",
+      "exists": false,
+      "status": "UNKNOWN_CURRENT_LOCATION"
+    },
+    {
+      "path": "/Users/fordeargamers/Projects/exoduser-migration-20261001/output/indie-live-expo-20261201/submission/ss1.jpg",
+      "exists": false,
+      "status": "UNKNOWN_CURRENT_LOCATION"
+    },
+    {
+      "path": "/Users/fordeargamers/Projects/exoduser-migration-20261001/output/indie-live-expo-20261201/submission/ss2.jpg",
+      "exists": false,
+      "status": "UNKNOWN_CURRENT_LOCATION"
+    },
+    {
+      "path": "/Users/fordeargamers/Projects/exoduser-migration-20261001/output/indie-live-expo-20261201/submission/ss3.jpg",
+      "exists": false,
+      "status": "UNKNOWN_CURRENT_LOCATION"
+    },
+    {
+      "path": "/Users/fordeargamers/Projects/exoduser-migration-20261001/captures/gameplay_trailer_20260909/EXODUSER_GAMEPLAY_TRAILER_V22_SKILL_MONTAGE_1080P60.mp4",
+      "exists": false,
+      "status": "UNKNOWN_CURRENT_LOCATION"
+    },
+    {
+      "path": "/Users/fordeargamers/Projects/exoduser-migration-20261001/captures/trailer_steam_bossfix_20260902/EXODUSER_STEAM_TRAILER_BOSSFIX_20260902.mp4",
+      "exists": false,
+      "status": "UNKNOWN_CURRENT_LOCATION"
+    }
+  ],
+  "tools": {
+    "commandLog": [
+      {
+        "id": "packaging",
+        "tool": "exec_command",
+        "command": "nl -ba docs/13출시·마케팅/PC_PACKAGING_20260910.md",
+        "exit": 0
+      },
+      {
+        "id": "canonical",
+        "tool": "exec_command",
+        "command": "nl -ba docs/4.1맵디자인+설정/BOSS_CANONICAL_MAPPING.md",
+        "exit": 0
+      },
+      {
+        "id": "team_scope",
+        "tool": "exec_command",
+        "command": "python3 - <<'PY'\nfrom pathlib import Path\nimport json\np=Path('docs/0마스터플랜/mac-resume-20261001/vscode-dispatch/TEAM_UTILIZATION_20261001.json')\nd=json.loads(p.read_text())\nprint(json.dumps({k:d.get(k) for k in ['checkedAt','kind','counts','remoteCheckpoint','remoteCheckpointVerifiedAt','rootGate','currentDispatchGate','currentRuntimeObservation']},ensure_ascii=False,default=str))\nv=d.get('latestProviderHalves20261002')\nif isinstance(v,dict):\n print('latestProviderHalvesKeys:',list(v))\n def walk(o,path='latestProviderHalves20261002'):\n  if isinstance(o,dict):\n   if any('MARKETING' in str(o.get(k,'')) for k in ['role','team','teamId','title','name']):\n    safe={k:v for k,v in o.items() if isinstance(v,(str,int,float,bool)) and not any(s in k.lower() for s in ['prompt','message','input'])}\n    print(json.dumps({'entryPath':path,'entry':safe},ensure_ascii=False))\n   for k,v in o.items():walk(v,path+'.'+k)\n  elif isinstance(o,list):\n   for i,v in enumerate(o):walk(v,path+'['+str(i)+']')\n walk(v)\nPY",
+        "exit": 0
+      },
+      {
+        "id": "docs_claim_search",
+        "tool": "exec_command",
+        "command": "rg -n -i --max-columns 180 --max-columns-preview 'Remote Play Together|In-game chat|Online interactivity|멀티플레이|협동|라이브 서비스|live service|WebSocket|realtime\\.channel' docs/",
+        "exit": 0
+      },
+      {
+        "id": "market_sources",
+        "tool": "exec_command",
+        "command": "python3 - <<'PY'\nfrom pathlib import Path\nreads={'docs/13출시·마케팅/13출시·마케팅.md':[(48,111),(333,364)],'docs/13출시·마케팅/시장포지셔닝_정통루팅ARPG.md':[(7,67)],'docs/13출시·마케팅/MARKET_EVIDENCE_20260930.md':[(20,36)],'docs/13출시·마케팅/STEAM_REVIEW_20260926.md':[(1,78)],'docs/13출시·마케팅/STEAM_STORE_LOCALIZATION_20260909.md':[(1,19),(77,92)],'docs/13출시·마케팅/STEAM_LANGUAGE_UPLOAD_20260923.md':[(5,48)]}\nfor path,ranges in reads.items():\n ls=Path(path).read_text().splitlines()\n print('\\nFILE',str(Path(path).resolve()))\n for a,b in ranges:\n  for i in range(a-1,min(b,len(ls))):print(str(i+1)+'\\t'+ls[i])\nPY",
+        "exit": 0
+      },
+      {
+        "id": "initial_inventory",
+        "tool": "exec_command",
+        "command": "python3 - <<'PY'\nfrom pathlib import Path\nimport hashlib,json\npaths=['AGENTS.md','tools/team-followup-20261002/continuous/COMMON.md','tools/team-followup-20261002/continuous/MARKETING/TASK.md','docs/0마스터플랜/PROJECT_MANAGEMENT_MASTER.md','docs/0마스터플랜/mac-resume-20261001/vscode-dispatch/TEAM_UTILIZATION_20261001.json','docs/13출시·마케팅/13출시·마케팅.md','docs/13출시·마케팅/시장포지셔닝_정통루팅ARPG.md','docs/13출시·마케팅/MARKET_EVIDENCE_20260930.md','docs/13출시·마케팅/STEAM_REVIEW_20260926.md','docs/13출시·마케팅/STEAM_STORE_LOCALIZATION_20260909.md','docs/13출시·마케팅/STEAM_LANGUAGE_UPLOAD_20260923.md','docs/13출시·마케팅/PC_PACKAGING_20260910.md','docs/4.1맵디자인+설정/BOSS_CANONICAL_MAPPING.md','tools/team-followup-20261002/new-four/MARKETING/TASK.md','tools/team-followup-20261002/new-four/MARKETING/result.md','tools/team-followup-20261002/new-four/MARKETING/evidence.json','tools/team-followup-20261002/codex-half/BUILD/result.md','tools/team-followup-20261002/codex-half/BUILD/evidence.json','tools/team-followup-20261002/claude-native-6/QA/result.md','tools/team-followup-20261002/claude-native-6/QA/evidence.json','game.html','game-easy-test.html','index.html','package.json','build-nwjs.mjs','server.cjs','node-main.js','test/nodeMainMats.test.js']\nrows=[]\nfor path in paths:\n p=Path(path);r={'path':str(p.absolute()),'exists':p.is_file()}\n if r['exists']:\n  b=p.read_bytes();r.update(sha256=hashlib.sha256(b).hexdigest(),bytes=len(b),lines=len(b.splitlines()))\n rows.append(r)\nfor path in ['tools/team-followup-20261002/continuous/MARKETING/result.md','tools/team-followup-20261002/continuous/MARKETING/evidence.json']:\n p=Path(path);rows.append({'ownedOutput':str(p.absolute()),'alreadyExists':p.exists(),'resolvedParent':str(p.parent.resolve())})\nprint(json.dumps(rows,ensure_ascii=False))\nPY",
+        "exit": 0
+      },
+      {
+        "id": "archetype_docs",
+        "tool": "exec_command",
+        "command": "rg -n -i --max-columns 220 --max-columns-preview 'archetype|아키타입|6직업|6종.*직업|6개.*직업|캐릭터.*6종' docs/",
+        "exit": 0
+      },
+      {
+        "id": "service_doc_sections",
+        "tool": "exec_command",
+        "command": "python3 - <<'PY'\nfrom pathlib import Path\nreads={'docs/13출시·마케팅/STEAM_DASHBOARD_AUDIT_20260909.md':[(5,22)],'docs/HELL_EXODUSER_WORLDVIEW_v2.md':[(220,230)],'docs/13출시·마케팅/HELL_DIROI_종합확장전략기획서_v2_0.md':[(364,377)],'docs/최종기획서/build_document.py':[(500,512),(575,584)]}\nfor path,rs in reads.items():\n print('\\nFILE',str(Path(path).resolve()));ls=Path(path).read_text().splitlines()\n for a,b in rs:\n  for i in range(a-1,min(b,len(ls))):print(str(i+1)+'\\t'+ls[i])\nPY",
+        "exit": 0
+      },
+      {
+        "id": "prior_reports",
+        "tool": "exec_command",
+        "command": "python3 - <<'PY'\nfrom pathlib import Path\nreads={'tools/team-followup-20261002/new-four/MARKETING/TASK.md':[(1,38)],'tools/team-followup-20261002/new-four/MARKETING/result.md':[(1,62),(81,94),(186,204)],'tools/team-followup-20261002/codex-half/BUILD/result.md':[(1,30),(44,57)],'tools/team-followup-20261002/claude-native-6/QA/result.md':[(1,5),(9,19),(46,50)]}\nfor path,rs in reads.items():\n print('\\nFILE',str(Path(path).resolve()));ls=Path(path).read_text().splitlines()\n for a,b in rs:\n  for i in range(a-1,min(b,len(ls))):print(str(i+1)+'\\t'+ls[i])\nPY",
+        "exit": 0
+      },
+      {
+        "id": "previous_evidence",
+        "tool": "exec_command",
+        "command": "python3 - <<'PY'\nfrom pathlib import Path\nimport json\npaths=['tools/team-followup-20261002/new-four/MARKETING/evidence.json','tools/team-followup-20261002/codex-half/BUILD/evidence.json','tools/team-followup-20261002/claude-native-6/QA/evidence.json']\nfor rel in paths:\n d=json.loads(Path(rel).read_text());print('\\nFILE',str(Path(rel).resolve()));print('topKeys',list(d))\n if '/MARKETING/' in rel:\n  print(json.dumps({k:d.get(k) for k in ['taskId','chatId','completedAt','headCompletion','officialReads','platformIdentity','gates','protectedSourceFilesUnchanged']},ensure_ascii=False))\n else:\n  for k,v in d.items():\n   if any(s in k.lower() for s in ['sha','source','manifest','accept','gate','scope','completed','check','summary']) and not any(s in k.lower() for s in ['prompt','input','thinking','command']):\n    st=json.dumps({k:v},ensure_ascii=False)\n    print(st[:3500]+(' [bounded excerpt]' if len(st)>3500 else ''))\nPY",
+        "exit": 0
+      },
+      {
+        "id": "source_search",
+        "tool": "exec_command",
+        "command": "rg -n --max-columns 220 --max-columns-preview 'ARCHETYPES|ARCHETYPE|CHAR_LIST|GRADES|RARITIES|RARITY|LANG_NAMES|FUSE_ALLOWED|const PAIRS|HELL_BOSSES|TOTAL_STAGES' game.html index.html",
+        "exit": 0
+      },
+      {
+        "id": "focused_docs",
+        "tool": "exec_command",
+        "command": "sed -n '450,480p' docs/최종기획서/build_document.py\nrg -n --max-count 12 '유니크|등급|희귀도' 'docs/7아이템디자인/'\ncat tools/team-followup-20261002/continuous/MARKETING/TASK.md",
+        "exit": 0
+      },
+      {
+        "id": "fuse_runtime",
+        "tool": "exec_command",
+        "command": "sed -n '42960,43012p' game.html\nsed -n '43124,43138p' game.html\nsed -n '60025,60049p' game.html\nrg -n --max-columns 180 --max-columns-preview 'realtime|WebSocket|PeerJS|PETCHAT|/api/slots|/api/mats|leaderboard' game.html index.html server.cjs node-main.js",
+        "exit": 0
+      },
+      {
+        "id": "source_def",
+        "tool": "exec_command",
+        "command": "sed -n '10125,10131p' game.html\nsed -n '13848,13857p' game.html\nsed -n '15813,15836p' game.html\nsed -n '15868,15878p' game.html\nsed -n '3070,3118p' index.html\nrg -n --max-columns 200 --max-columns-preview 'comingSoon|_LOBBY_BUILD|const PAIRS|PAIRS=|_LANGS|LANGS=|localization/|function _T\\(' game.html index.html",
+        "exit": 0
+      },
+      {
+        "id": "source_detail",
+        "tool": "exec_command",
+        "command": "sed -n '8300,8432p' game.html\nsed -n '42972,43006p' game.html\nsed -n '14938,14950p' game-easy-test.html\nsed -n '15116,15136p' game.html\nsed -n '42415,42428p' game.html\nsed -n '1,22p' package.json\nsed -n '20,92p' build-nwjs.mjs\nsed -n '1,65p' 'docs/7아이템디자인/어픽스_시스템_현황분석_2026-08-10.md'\nrg -n --max-columns 180 --max-columns-preview '언어|LANG|locale|localization' game.html | head -45",
+        "exit": 0
+      },
+      {
+        "id": "runtime_docs",
+        "tool": "exec_command",
+        "command": "sed -n '1,145p' localization-runtime.js\nsed -n '15164,15212p' game.html\nsed -n '1,13p' tools/team-followup-20261002/continuous/COMMON.md\nrg -n --max-columns 200 --max-columns-preview '6종|6개|6 아키타입|6아키타입|6 archetype' 'docs/13출시·마케팅/' 'docs/EA/'\nrg -n --max-columns 180 --max-columns-preview '합체.*32|합체.*22|_FUSE_PAIRS|_DEMO_FUSE_ALLOWED' 'docs/2_1 스킬관리+합체시스템+자원/' | head -30",
+        "exit": 0
+      },
+      {
+        "id": "extra_inventory",
+        "tool": "exec_command",
+        "command": "python3 - <<'PY'\nfrom pathlib import Path\nimport hashlib,json\nr=Path('.')\nextra=['localization-runtime.js','localization-data.js','docs/최종기획서/build_document.py','docs/7아이템디자인/어픽스_시스템_현황분석_2026-08-10.md','docs/13출시·마케팅/STEAM_DASHBOARD_AUDIT_20260909.md','docs/0마스터플랜/HELL_EXODUSER_WORLDVIEW_v2.md']\nrows=[]\nfor s in extra:\n p=r/s\n if not p.exists():\n  matches=list(r.glob('docs/**/'+p.name));p=matches[0] if matches else p\n rows.append({'path':str(p.resolve()),'exists':p.exists(),'sha256':hashlib.sha256(p.read_bytes()).hexdigest() if p.is_file() else None})\nmedia=['output/indie-live-expo-20261201/submission/'+x for x in ['EXODUSER_HELL_LORD.mp4','EXODUSER_HELL_LORD_full.mp4','main.jpg','ss1.jpg','ss2.jpg','ss3.jpg']]+['captures/gameplay_trailer_20260909/EXODUSER_GAMEPLAY_TRAILER_V22_SKILL_MONTAGE_1080P60.mp4','captures/trailer_steam_bossfix_20260902/EXODUSER_STEAM_TRAILER_BOSSFIX_20260902.mp4']\nprint(json.dumps({'extra':rows,'media':[{'path':str((r/s).resolve()),'exists':(r/s).exists(),'status':'KNOWN_PATH' if (r/s).exists() else 'UNKNOWN_CURRENT_LOCATION'} for s in media]},ensure_ascii=False))\nPY",
+        "exit": 0
+      },
+      {
+        "id": "docs_global",
+        "tool": "exec_command",
+        "command": "rg -n --max-columns 170 --max-columns-preview 'archetype|아키타입|_FUSE_PAIRS|_DEMO_FUSE_ALLOWED|RARITY_N|29개 언어|29언어|live service|라이브 서비스|Remote Play Together|In-game chat|Online interactivity|TOTAL_STAGES|35\\+|7장' docs/ > /dev/stdout\nsed -n '1,30p' 'docs/13출시·마케팅/LATEST_WINDOWS_BUILD_20260929.md'\nsed -n '1,28p' 'docs/13출시·마케팅/PUBLISHER_LATEST_BUILD_DELIVERY_20260929.md'\nsed -n '1,6p' localization-data.js",
+        "exit": 0
+      },
+      {
+        "id": "handoff_sections",
+        "tool": "exec_command",
+        "command": "sed -n '1,30p' 'docs/13출시·마케팅/LATEST_WINDOWS_BUILD_20260929.md'\nsed -n '1,28p' 'docs/13출시·마케팅/PUBLISHER_LATEST_BUILD_DELIVERY_20260929.md'\nrg -n '^#' 'docs/13출시·마케팅/STEAM_STORE_LOCALIZATION_20260909.md' 'docs/13출시·마케팅/STEAM_LANGUAGE_UPLOAD_20260923.md' 'docs/13출시·마케팅/STEAM_REVIEW_20260926.md' 'docs/13출시·마케팅/PC_PACKAGING_20260910.md' 'docs/13출시·마케팅/13출시·마케팅.md' | tail -30",
+        "exit": 0
+      },
+      {
+        "id": "final_inventory_retry",
+        "tool": "exec_command",
+        "command": "python3 - <<'PY'\nfrom pathlib import Path\nimport json,hashlib\npaths=json.loads('[\"/Users/fordeargamers/Projects/exoduser-migration-20261001/AGENTS.md\",\"/Users/fordeargamers/Projects/exoduser-migration-20261001/tools/team-followup-20261002/continuous/COMMON.md\",\"/Users/fordeargamers/Projects/exoduser-migration-20261001/tools/team-followup-20261002/continuous/MARKETING/TASK.md\",\"/Users/fordeargamers/Projects/exoduser-migration-20261001/docs/0마스터플랜/PROJECT_MANAGEMENT_MASTER.md\",\"/Users/fordeargamers/Projects/exoduser-migration-20261001/docs/0마스터플랜/mac-resume-20261001/vscode-dispatch/TEAM_UTILIZATION_20261001.json\",\"/Users/fordeargamers/Projects/exoduser-migration-20261001/docs/13출시·마케팅/13출시·마케팅.md\",\"/Users/fordeargamers/Projects/exoduser-migration-20261001/docs/13출시·마케팅/시장포지셔닝_정통루팅ARPG.md\",\"/Users/fordeargamers/Projects/exoduser-migration-20261001/docs/13출시·마케팅/MARKET_EVIDENCE_20260930.md\",\"/Users/fordeargamers/Projects/exoduser-migration-20261001/docs/13출시·마케팅/STEAM_REVIEW_20260926.md\",\"/Users/fordeargamers/Projects/exoduser-migration-20261001/docs/13출시·마케팅/STEAM_STORE_LOCALIZATION_20260909.md\",\"/Users/fordeargamers/Projects/exoduser-migration-20261001/docs/13출시·마케팅/STEAM_LANGUAGE_UPLOAD_20260923.md\",\"/Users/fordeargamers/Projects/exoduser-migration-20261001/docs/13출시·마케팅/PC_PACKAGING_20260910.md\",\"/Users/fordeargamers/Projects/exoduser-migration-20261001/docs/4.1맵디자인+설정/BOSS_CANONICAL_MAPPING.md\",\"/Users/fordeargamers/Projects/exoduser-migration-20261001/tools/team-followup-20261002/new-four/MARKETING/TASK.md\",\"/Users/fordeargamers/Projects/exoduser-migration-20261001/tools/team-followup-20261002/new-four/MARKETING/result.md\",\"/Users/fordeargamers/Projects/exoduser-migration-20261001/tools/team-followup-20261002/new-four/MARKETING/evidence.json\",\"/Users/fordeargamers/Projects/exoduser-migration-20261001/tools/team-followup-20261002/codex-half/BUILD/result.md\",\"/Users/fordeargamers/Projects/exoduser-migration-20261001/tools/team-followup-20261002/codex-half/BUILD/evidence.json\",\"/Users/fordeargamers/Projects/exoduser-migration-20261001/tools/team-followup-20261002/claude-native-6/QA/result.md\",\"/Users/fordeargamers/Projects/exoduser-migration-20261001/tools/team-followup-20261002/claude-native-6/QA/evidence.json\",\"/Users/fordeargamers/Projects/exoduser-migration-20261001/game.html\",\"/Users/fordeargamers/Projects/exoduser-migration-20261001/game-easy-test.html\",\"/Users/fordeargamers/Projects/exoduser-migration-20261001/index.html\",\"/Users/fordeargamers/Projects/exoduser-migration-20261001/package.json\",\"/Users/fordeargamers/Projects/exoduser-migration-20261001/build-nwjs.mjs\",\"/Users/fordeargamers/Projects/exoduser-migration-20261001/server.cjs\",\"/Users/fordeargamers/Projects/exoduser-migration-20261001/node-main.js\",\"/Users/fordeargamers/Projects/exoduser-migration-20261001/test/nodeMainMats.test.js\",\"/Users/fordeargamers/Projects/exoduser-migration-20261001/localization-runtime.js\",\"/Users/fordeargamers/Projects/exoduser-migration-20261001/localization-data.js\",\"/Users/fordeargamers/Projects/exoduser-migration-20261001/docs/최종기획서/build_document.py\",\"/Users/fordeargamers/Projects/exoduser-migration-20261001/docs/7아이템디자인/어픽스_시스템_현황분석_2026-08-10.md\",\"/Users/fordeargamers/Projects/exoduser-migration-20261001/docs/13출시·마케팅/STEAM_DASHBOARD_AUDIT_20260909.md\",\"/Users/fordeargamers/Projects/exoduser-migration-20261001/docs/HELL_EXODUSER_WORLDVIEW_v2.md\"]')\nrows=[]\nfor s in paths:\n p=Path(s);rows.append({'path':s,'exists':p.exists(),'sha256':hashlib.sha256(p.read_bytes()).hexdigest() if p.is_file() else None})\nprint(json.dumps(rows,ensure_ascii=False))\nPY",
+        "exit": 0
+      }
+    ],
+    "additionalActuallyUsed": [
+      {
+        "tool": "clock__curr_time",
+        "purpose": "start, web observation bounds, report timestamps"
+      },
+      {
+        "tool": "apply_patch",
+        "operation": "write",
+        "path": "/Users/fordeargamers/Projects/exoduser-migration-20261001/tools/team-followup-20261002/continuous/MARKETING/result.md",
+        "status": "success"
+      },
+      {
+        "tool": "apply_patch",
+        "operation": "write",
+        "path": "/Users/fordeargamers/Projects/exoduser-migration-20261001/tools/team-followup-20261002/continuous/MARKETING/evidence.json",
+        "status": "this creation"
+      },
+      {
+        "tool": "exec_command",
+        "operation": "Python read of owned result.md/evidence.json; JSON parse and SHA256/byte metadata",
+        "exit": 0,
+        "result": "taskId and DOCUMENT_COMPARISON_COMPLETE verified",
+        "paths": [
+          "/Users/fordeargamers/Projects/exoduser-migration-20261001/tools/team-followup-20261002/continuous/MARKETING/result.md",
+          "/Users/fordeargamers/Projects/exoduser-migration-20261001/tools/team-followup-20261002/continuous/MARKETING/evidence.json"
+        ]
+      }
+    ],
+    "errors": [
+      {
+        "tool": "functions.exec",
+        "operation": "completion metadata orchestration",
+        "error": "SyntaxError: Unexpected token T while JSON.parse received Python traceback",
+        "exitCode": null,
+        "scope": "metadata only; no mutation",
+        "resolution": "filtered string paths and retried Python metadata read successfully; original Python failure detail unavailable, no invented exit code"
+      }
+    ],
+    "truncation": [
+      "focused_docs",
+      "market_sources",
+      "archetype_docs",
+      "runtime_docs",
+      "docs_global",
+      "source_detail/fuse_runtime bounded output"
+    ],
+    "privacy": "raw prompts, thinking, authentication values, contact details, raw command outputs and full web contents excluded"
+  },
+  "outputs": [
+    "/Users/fordeargamers/Projects/exoduser-migration-20261001/tools/team-followup-20261002/continuous/MARKETING/result.md",
+    "/Users/fordeargamers/Projects/exoduser-migration-20261001/tools/team-followup-20261002/continuous/MARKETING/evidence.json"
+  ],
+  "gate": {
+    "fiveOfficialBundlesObserved": true,
+    "sourceShippingQaSeparated": true,
+    "unknownsPreserved": true,
+    "koEnCandidatesIncluded": true,
+    "canonicalHandoffIncluded": true,
+    "storeApplied": false,
+    "productAccepted": false,
+    "visualAccepted": false,
+    "status": "DOCUMENT_COMPARISON_COMPLETE"
+  },
+  "outputVerification": {
+    "resultMdSha256": "dbbd81a72b0fbdbb1134ee353a1aacfd5b5cfa7744f1571e862f296a0edb314a",
+    "resultMdBytes": 15735,
+    "evidenceJsonParsed": true,
+    "evidenceSelfHash": "omitted to avoid recursive hash"
+  }
+}

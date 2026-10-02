@@ -1,0 +1,86 @@
+{
+  "taskId": "BOSS-CANONICAL-IMPLEMENTATION-HANDOFF-20261002",
+  "provider": "Claude Code",
+  "role": "BOSS (Claude8/Codex8 role split)",
+  "invokedVia": "peer Claude session relay (총괄 승인 다음 1건)",
+  "sessionId": null,
+  "time": {
+    "receivedUTC": "2026-10-02T05:30:00Z",
+    "startedUTC": "2026-10-02T05:35:00Z",
+    "observedUTC": "2026-10-02T05:37:23Z",
+    "observedKST": "2026-10-02T14:37:23+0900",
+    "completedUTC": "2026-10-02T05:45:00Z"
+  },
+  "cwd": "/Users/fordeargamers/Projects/exoduser-migration-20261001",
+  "cwdMatchesTaskPath": true,
+  "productionApplied": false,
+  "sourceCommitBaseline": {
+    "providedByOverseer": "7e69495046323b3120578f67635c20feb48b2a4f",
+    "providedNote": "총괄 제공 생산 기준(카드 수명·NW.js 실패응답 반영). COMMON.md 지시에 따라 이 commit을 내가 독립 관측한 HEAD로 표시하지 않는다.",
+    "independentHeadObserved": null,
+    "gitQueriesRun": 0,
+    "gitPolicyNote": "COMMON.md: 'Git 조회는 하지 않는다' 준수 — 이번 세션은 git rev-parse/status/hash-object 등 git 명령을 실행하지 않았다. 파일 현재 상태는 비-git sha256으로만 확인."
+  },
+  "ownedPaths": [
+    "tools/team-followup-20261002/continuous/BOSS/result.md",
+    "tools/team-followup-20261002/continuous/BOSS/evidence.json"
+  ],
+  "safetyContract": {
+    "writesOutsideOwned": 0,
+    "newFixtureChecksMjs": 0,
+    "deletesCleanupMoveRename": 0,
+    "gitQueryIndexCommitPush": 0,
+    "productionOrSharedDocsEdited": 0,
+    "serverUiGameBuildInstallAccountPermsPublishExtMsgNewSessionSubagent": 0,
+    "erroneousDatePlaceholderTouched": 0,
+    "revertedOthersChanges": 0,
+    "repeatedPriorAudit": 0,
+    "note": "Read/Grep/Glob + read-only shasum/sed/date/rg only. NO git. 설계 19 ↔ 런타임 35 치환하지 않음(별도 축). 초기 인수의 59 case 전수 감사 미반복. 보호설계·2_3·cageTrap 예약·Q전용 blackBean·어택티켓 금지 유지."
+  },
+  "nonGitContentSHA256": {
+    "method": "shasum -a 256 (NOT git blob, NOT HEAD) — 관측 2026-10-02T05:37Z",
+    "game.html": "2e45ee0e9ad909b378bf1a7b864818ce442a4c3e17b12360b42e363dc7d0bd94",
+    "game-easy-test.html": "3e5969ca139497c2efb312dc720ab53eb42a8d1912c8288caa2ce858cfd5120a",
+    "docs/8.1보스디자인바이블/BOSS_BATTLE_SETTINGS.md": "e2136eaca1936471164f6c772a208011571e44644fe8e5dbd9311776d718cf10",
+    "docs/4.1맵디자인+설정/BOSS_CANONICAL_MAPPING.md": "eaf369a495ba70cefd5c9116db62f0372a57b7168383a7624a4e893be399d505",
+    "docs/4.1맵디자인+설정/CH1_1_DRUID_BOSS_ASSIGNMENT.md": "014e614b16438bb341454b46ce2f102f3bd4d38141e9b1d67b9927944523dacb",
+    "docs/11내러티브·로어디자인/WORLD_CORE.md": "5f29ed67a28e91251223edc14953053f407126978e58d3af0ca16fd180275a56"
+  },
+  "sourceTimepointNote": "game.html sha256(2e45ee0e)는 이전 세션의 git-blob(81bf3d45)과 비교 불가(해시 종류 다름). 총괄이 UI minus-수명 가드를 순차 통합 중이라 내용은 전 세션 이후 변했을 수 있으나, 보스 구역 행(HELL_BOSSES/BOSS_MOVES/_BOSS_MOVESET)은 이전 세션과 동일 행이었다(아래 confirmedLines). 타 세션 변경 되돌림 0.",
+  "readFiles": [
+    { "path": "tools/team-followup-20261002/continuous/BOSS/NEXT.md", "what": "본 과제 지시" },
+    { "path": "tools/team-followup-20261002/continuous/COMMON.md", "what": "공통 계약(git 조회 금지·소유 2파일·source SHA 시점)" },
+    { "path": "docs/4.1맵디자인+설정/BOSS_CANONICAL_MAPPING.md", "what": "LOCKED §0(19 ⊂ 35), §2 매핑표, si0:37/si2:39/si3:40 divergence, §3 관찰" },
+    { "path": "docs/8.1보스디자인바이블/BOSS_BATTLE_SETTINGS.md", "what": "§6 49종 191/204/206, si표 195/197/198, _isLargeBoss 508 (divergence 행 확인)" },
+    { "path": "docs/4.1맵디자인+설정/CH1_1_DRUID_BOSS_ASSIGNMENT.md", "what": "si0/si3 다크드루이드·23종·cageTrap 차단·구자산 보존 (역사 근거, 재검사 아님)" },
+    { "path": "docs/11내러티브·로어디자인/WORLD_CORE.md", "what": "35사연 5×7 서사 축 (별개)" },
+    { "path": "tools/team-followup-20261002/new-four/BOSS/result.md", "what": "역사 근거 읽기 전용(burstCounter §3-A 등). 재작성 안 함" },
+    { "path": "game.html", "whatLines": "HELL_BOSSES 15868-15876(확인), BOSS_MOVES 9497-9557(59), _BOSS_MOVESET 9637-9688, si0/3 druid 9643-9644, burstCounter idx:60 9529, cageTrap delete 9687" },
+    { "path": "game-easy-test.html", "whatLines": "HELL_BOSSES 14985-(동일 내용), BOSS_MOVES 8948-(59), _BOSS_MOVESET 9088-, burstCounter idx:60 8980, cageTrap delete 9138" }
+  ],
+  "confirmedLines": {
+    "note": "narrow 재확인 — 보스 구역 행이 이전 세션과 동일함을 확인(전수 재감사 아님)",
+    "HELL_BOSSES_names": "['다크드루이드','독버섯 거인','지옥기형','다크드루이드'] + ch2~7 — 다크드루이드 si0·si3 중복 → 고유명 34",
+    "BOSS_MOVES_count_both": 59,
+    "cageTrap_delete_all_bosses": "game.html:9687 / easy:9138 (for si<35 delete)"
+  },
+  "commandsRun": [
+    { "cmd": "date -u / TZ=Asia/Seoul date", "exit": 0 },
+    { "cmd": "shasum -a 256 <6 key files>", "exit": 0 },
+    { "cmd": "grep -n const HELL_BOSSES/BOSS_MOVES/_BOSS_MOVESET/burstCounter/delete('cageTrap') both HTML", "exit": 0 },
+    { "cmd": "sed -n HELL_BOSSES range; grep -c '{id:' (=59 both)", "exit": 0 },
+    { "cmd": "rg -n '19보스|49종|HELL_BOSSES|흑요염 파괴자|숲의 사냥꾼|지옥기형|네메시아|BOSS_MOVES' docs (non-backup)", "exit": 0 },
+    { "cmd": "grep -n divergence lines in BOSS_BATTLE_SETTINGS / BOSS_CANONICAL_MAPPING / 맵유형_확장기획", "exit": 0 }
+  ],
+  "toolsUsed": {
+    "skillsApiMcp": "none invoked (해당 결과물에 불필요). 도구 목록 존재를 호출로 계산하지 않음.",
+    "rgKeywordSearch": "docs 전체 관련키워드 rg 1회 수행(§C 인계표 행번호 확보)"
+  },
+  "openUNKNOWN": [
+    "si33 Killu / si34 지옥 군주 ↔ WORLD_CORE 최종보스 네메시아 명칭 통일 (내러티브 공동)",
+    "runtime-only 14종 로어 서사 부여 (디자인/내러티브)",
+    "9적ai패턴디자인/의 BOSS_MOVES 49/59 마스터표 실체 부재",
+    "burstCounter idx60 CD 런타임 실제 발동은 ENEMY 배정, 본 작업 미실행·미재현"
+  ],
+  "verificationBoundary": "source(정적 읽기)만. 전투/runtime/visual/GPU/HTTP/저장/패키지 PASS 아님. productionApplied=false. 설계·구현 두 축 분리 기록, 합산·치환 없음."
+}

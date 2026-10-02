@@ -1,0 +1,2016 @@
+{
+  "schemaVersion": 1,
+  "finalArtifactObservation": {"tool":"exec_command","command":"wc -l tools/team-followup-20261002/continuous/QUESTNPC/result.md tools/team-followup-20261002/continuous/QUESTNPC/evidence.json tools/team-followup-20261002/continuous/QUESTNPC/checks.mjs","exitCode":0,"resultLines":160,"checksLines":267,"evidenceLinesBeforeThisReceipt":2015,"fixtureRerun":false},
+  "taskId": "continuous-QUESTNPC-first-item",
+  "provider": "Codex",
+  "chatId": null,
+  "sessionId": null,
+  "sourcePMChatId": "01a0faa9-b453-7673-be39-98adedb4c2b3",
+  "times": {
+    "startedObservedUTC": "2026-10-02 05:24:41 UTC",
+    "startedObservedKST": "2026-10-02T14:24:41.000+09:00",
+    "completedEvidenceSnapshotUTC": "2026-10-02 05:40:11 UTC",
+    "completedEvidenceSnapshotKST": "2026-10-02T14:40:11.000+09:00",
+    "basis": "tool clock observations, not exact delivery timestamps"
+  },
+  "checkout": {
+    "actualCwd": "/Users/fordeargamers/Projects/exoduser-migration-20261001",
+    "cwdReceipt": "N03",
+    "providedProductionCommit": "7e69495046323b3120578f67635c20feb48b2a4f",
+    "providedTaskCheckpoint": "cd675f24",
+    "providedRefSource": "PM task message and COMMON, observed in initial task read at startedObservedUTC; not independent current HEAD",
+    "observedHeadDuringDeviation": "75b616dc0fe5e0e3daa26f6efe02ee7e16dc8a3f",
+    "changesDuringDeviation": 23,
+    "endChanges": null,
+    "endChangesReason": "COMMON prohibits Git queries; no subsequent query. 80/100 checkpoint managed by PM."
+  },
+  "ownership": {
+    "maximumFiles": 3,
+    "outputs": [
+      "/Users/fordeargamers/Projects/exoduser-migration-20261001/tools/team-followup-20261002/continuous/QUESTNPC/result.md",
+      "/Users/fordeargamers/Projects/exoduser-migration-20261001/tools/team-followup-20261002/continuous/QUESTNPC/evidence.json",
+      "/Users/fordeargamers/Projects/exoduser-migration-20261001/tools/team-followup-20261002/continuous/QUESTNPC/checks.mjs"
+    ],
+    "productionWrites": 0,
+    "sharedDocsWrites": 0,
+    "priorOutputsWrites": 0,
+    "gitWrites": 0,
+    "gitQueriesActual": 2,
+    "gitQueriesAfterContractRead": 0,
+    "rollback": 0,
+    "deletionCleanupMove": 0,
+    "newAgentsSessions": 0,
+    "externalMessages": 0,
+    "serverUIBuildGameSaveAudioHTTPExecutions": 0
+  },
+  "verdict": {
+    "reviewComplete": true,
+    "productionCandidate": "HOLD",
+    "currentDefect": "actual tut_start bubble causes firstItem rejection after flag pre-consumption, suppressing future retry",
+    "candidateRecovery": "consume only after true _petSayCD; one accepted firstItem after normal expiry",
+    "holdReason": "retained unconditional return now repeatedly skips later tutorial/T3/T4 evaluations while pending; omitted dispatcher tail not verified",
+    "pairLimit": "true means crow acceptance and cat pair scheduled; actual T5 interruption removes pair and no firstItem replay",
+    "latestWholeSourceIntegration": "NOT_TESTED; fixture input snapshots differ from final full-file hashes"
+  },
+  "execution": {
+    "commandId": "N46",
+    "command": "/Users/fordeargamers/.local/node-runtime/node-v24.15.0-darwin-arm64/bin/node /Users/fordeargamers/Projects/exoduser-migration-20261001/tools/team-followup-20261002/continuous/QUESTNPC/checks.mjs",
+    "exitCode": 0,
+    "newFixtureRuns": 1,
+    "proofGroups": 8,
+    "passGroups": 8,
+    "previousChecksRuns": 0,
+    "repeats": 0
+  },
+  "fixtureResult": {
+    "taskId": "continuous-QUESTNPC-first-item",
+    "executionCount": 1,
+    "proofGroups": 8,
+    "passGroups": 8,
+    "expectedCurrentDefectCases": 2,
+    "productionApplied": false,
+    "previousChecksRerun": 0,
+    "sources": [
+      {
+        "path": "/Users/fordeargamers/Projects/exoduser-migration-20261001/system-lesson.js",
+        "sha256": "b427b01599c06938a444f315598aac311bcf6d099e40d128541a55470bc57e62"
+      },
+      {
+        "path": "/Users/fordeargamers/Projects/exoduser-migration-20261001/tutorial-badges.js",
+        "sha256": "3177b01590943a9688247b8b504bd3be88afc916cbf9f0e7a54250fa3409670a"
+      },
+      {
+        "path": "/Users/fordeargamers/Projects/exoduser-migration-20261001/game.html",
+        "sha256": "6c77ec6f571f4de9cb199a2ac425eb3f0450205bcf6f1d883ac8d13135ac4b43",
+        "candidatePrefixSha256": "b3f81ffe7785b08da481699116aba681c57fd6c5a335e42d0092f740a97a47f5",
+        "candidateChange": "firstItem assignment moves after true _petSayCD return; unconditional return preserved",
+        "currentLine": "    if(!_petTut.firstItem&&INV.bag.length>=1){_petTut.firstItem=true;_petSayCD('tut_firstItem','crow','TAB을 눌러. 가방을 열고 장비를 입어야 한다.',5,9999,'cat','주웠으면 껴야지! TAB!',4);return}",
+        "candidateLine": "    if(!_petTut.firstItem&&INV.bag.length>=1){if(_petSayCD('tut_firstItem','crow','TAB을 눌러. 가방을 열고 장비를 입어야 한다.',5,9999,'cat','주웠으면 껴야지! TAB!',4))_petTut.firstItem=true;return}"
+      },
+      {
+        "path": "/Users/fordeargamers/Projects/exoduser-migration-20261001/game-easy-test.html",
+        "sha256": "c40ea16180305a3d0043d1c9dfa9091096820e589e537a893d5d28fff56528d0",
+        "candidatePrefixSha256": "b3f81ffe7785b08da481699116aba681c57fd6c5a335e42d0092f740a97a47f5",
+        "candidateChange": "firstItem assignment moves after true _petSayCD return; unconditional return preserved",
+        "currentLine": "    if(!_petTut.firstItem&&INV.bag.length>=1){_petTut.firstItem=true;_petSayCD('tut_firstItem','crow','TAB을 눌러. 가방을 열고 장비를 입어야 한다.',5,9999,'cat','주웠으면 껴야지! TAB!',4);return}",
+        "candidateLine": "    if(!_petTut.firstItem&&INV.bag.length>=1){if(_petSayCD('tut_firstItem','crow','TAB을 눌러. 가방을 열고 장비를 입어야 한다.',5,9999,'cat','주웠으면 껴야지! TAB!',4))_petTut.firstItem=true;return}"
+      }
+    ],
+    "fragments": [
+      {
+        "file": "/Users/fordeargamers/Projects/exoduser-migration-20261001/game.html",
+        "name": "pet initial state",
+        "fromLine": 8980,
+        "toLine": 8987,
+        "sha256": "aa1a58f9b085e195c5f6dd7e5e13f08bebe920f3b9b114a0a08e39c163966d4d"
+      },
+      {
+        "file": "/Users/fordeargamers/Projects/exoduser-migration-20261001/game.html",
+        "name": "priority constants/state",
+        "fromLine": 9085,
+        "toLine": 9089,
+        "sha256": "2dfcd3df763296ca3ff2ce52c6ef5f9a2b3c52f0087899e9315863e939f69960"
+      },
+      {
+        "file": "/Users/fordeargamers/Projects/exoduser-migration-20261001/game.html",
+        "name": "enemy average state",
+        "fromLine": 8995,
+        "toLine": 8995,
+        "sha256": "538ef7800d9fb55f80252c06f4745c7b6b0e0b950c6ae4c0bfce1506465d4be9"
+      },
+      {
+        "file": "/Users/fordeargamers/Projects/exoduser-migration-20261001/game.html",
+        "name": "pet opacity constant",
+        "fromLine": 9045,
+        "toLine": 9045,
+        "sha256": "a7eef8d7e48d24adef18f721ad40f540e9cc128abd86b4d810dfc14e92dbf242"
+      },
+      {
+        "file": "/Users/fordeargamers/Projects/exoduser-migration-20261001/game.html",
+        "name": "_checkPetDialogue through Stage-0 block",
+        "fromLine": 9184,
+        "toLine": 9245,
+        "sha256": "546e32f4422983d90dff99ed3894a28abd849cd7683224d120cfeb2543a0a075"
+      },
+      {
+        "file": "/Users/fordeargamers/Projects/exoduser-migration-20261001/game.html",
+        "name": "update prefix through pause guard",
+        "fromLine": 30857,
+        "toLine": 30881,
+        "sha256": "3e7388ee3a3a695e7e1214fc81fac922a532c0ffe4223faaa93d0a75ced14ee2"
+      },
+      {
+        "file": "/Users/fordeargamers/Projects/exoduser-migration-20261001/game.html",
+        "name": "update pet call",
+        "fromLine": 30910,
+        "toLine": 30910,
+        "sha256": "0f1f605394e18411fed0a213145d2cc2f51175d5cc98ecce45f300de077fc0f2"
+      },
+      {
+        "file": "/Users/fordeargamers/Projects/exoduser-migration-20261001/game.html",
+        "name": "_petTierOf",
+        "fromLine": 9091,
+        "toLine": 9100,
+        "sha256": "f3910551bc3a70f0776527c62b0b76a3b43f460a0bcd9247a055b41a0de09cb9"
+      },
+      {
+        "file": "/Users/fordeargamers/Projects/exoduser-migration-20261001/game.html",
+        "name": "_petSay",
+        "fromLine": 9066,
+        "toLine": 9078,
+        "sha256": "bd56437223a8a5a9d16bce6b0358c8f7a673182b76cdb33cf2745f4661f604fe"
+      },
+      {
+        "file": "/Users/fordeargamers/Projects/exoduser-migration-20261001/game.html",
+        "name": "_petSayCD",
+        "fromLine": 9148,
+        "toLine": 9156,
+        "sha256": "c453435f5581aab6608ea07f420f1b0590affb7b3fb5284a65e4c41217841768"
+      },
+      {
+        "file": "/Users/fordeargamers/Projects/exoduser-migration-20261001/game.html",
+        "name": "_updatePetBubble",
+        "fromLine": 9159,
+        "toLine": 9181,
+        "sha256": "a9a102db61ad844dea0fe59d73f04da476fc4b82c9f7ed146c60e7e352e14b82"
+      },
+      {
+        "file": "/Users/fordeargamers/Projects/exoduser-migration-20261001/game.html",
+        "name": "_petBidCD",
+        "fromLine": 9102,
+        "toLine": 9108,
+        "sha256": "774fe5a3eb3f8c006300fd7f2a7dc4da1825dbcc01575cefcaaa3d3dd2fda24a"
+      },
+      {
+        "file": "/Users/fordeargamers/Projects/exoduser-migration-20261001/game.html",
+        "name": "_petSayUrgent",
+        "fromLine": 9110,
+        "toLine": 9124,
+        "sha256": "6696d4d51ccfa879aae4d5aa7415de8400e8f8b3dd8b9498ba60b89c74332bb3"
+      },
+      {
+        "file": "/Users/fordeargamers/Projects/exoduser-migration-20261001/game.html",
+        "name": "_petFireBid",
+        "fromLine": 9126,
+        "toLine": 9141,
+        "sha256": "5450766696f150b1205d9d19f107ade1c8980c9aa2adde4a1cb5d9b50dd1642e"
+      },
+      {
+        "file": "/Users/fordeargamers/Projects/exoduser-migration-20261001/game.html",
+        "name": "updatePet",
+        "fromLine": 40091,
+        "toLine": 40099,
+        "sha256": "7aa30305fec525743bc12c3273c4fe3fb5666850370e338b3006dcc1417ac5ed"
+      },
+      {
+        "file": "/Users/fordeargamers/Projects/exoduser-migration-20261001/game.html",
+        "name": "pickupItem",
+        "fromLine": 15675,
+        "toLine": 15701,
+        "sha256": "ade09a8fd8d1a11e19348c6783dacd6a44cbcbf2da62ff61bbb458e9608ee92c"
+      },
+      {
+        "file": "/Users/fordeargamers/Projects/exoduser-migration-20261001/game-easy-test.html",
+        "name": "pet initial state",
+        "fromLine": 8435,
+        "toLine": 8442,
+        "sha256": "aa1a58f9b085e195c5f6dd7e5e13f08bebe920f3b9b114a0a08e39c163966d4d"
+      },
+      {
+        "file": "/Users/fordeargamers/Projects/exoduser-migration-20261001/game-easy-test.html",
+        "name": "priority constants/state",
+        "fromLine": 8536,
+        "toLine": 8540,
+        "sha256": "2dfcd3df763296ca3ff2ce52c6ef5f9a2b3c52f0087899e9315863e939f69960"
+      },
+      {
+        "file": "/Users/fordeargamers/Projects/exoduser-migration-20261001/game-easy-test.html",
+        "name": "enemy average state",
+        "fromLine": 8450,
+        "toLine": 8450,
+        "sha256": "538ef7800d9fb55f80252c06f4745c7b6b0e0b950c6ae4c0bfce1506465d4be9"
+      },
+      {
+        "file": "/Users/fordeargamers/Projects/exoduser-migration-20261001/game-easy-test.html",
+        "name": "pet opacity constant",
+        "fromLine": 8500,
+        "toLine": 8500,
+        "sha256": "a7eef8d7e48d24adef18f721ad40f540e9cc128abd86b4d810dfc14e92dbf242"
+      },
+      {
+        "file": "/Users/fordeargamers/Projects/exoduser-migration-20261001/game-easy-test.html",
+        "name": "_checkPetDialogue through Stage-0 block",
+        "fromLine": 8635,
+        "toLine": 8696,
+        "sha256": "546e32f4422983d90dff99ed3894a28abd849cd7683224d120cfeb2543a0a075"
+      },
+      {
+        "file": "/Users/fordeargamers/Projects/exoduser-migration-20261001/game-easy-test.html",
+        "name": "update prefix through pause guard",
+        "fromLine": 29675,
+        "toLine": 29698,
+        "sha256": "7d17b08360f80ef1b13c4becd8901b61332c71331c9d254fb5247798509c1d28"
+      },
+      {
+        "file": "/Users/fordeargamers/Projects/exoduser-migration-20261001/game-easy-test.html",
+        "name": "update pet call",
+        "fromLine": 29727,
+        "toLine": 29727,
+        "sha256": "0f1f605394e18411fed0a213145d2cc2f51175d5cc98ecce45f300de077fc0f2"
+      },
+      {
+        "file": "/Users/fordeargamers/Projects/exoduser-migration-20261001/game-easy-test.html",
+        "name": "_petTierOf",
+        "fromLine": 8542,
+        "toLine": 8551,
+        "sha256": "f3910551bc3a70f0776527c62b0b76a3b43f460a0bcd9247a055b41a0de09cb9"
+      },
+      {
+        "file": "/Users/fordeargamers/Projects/exoduser-migration-20261001/game-easy-test.html",
+        "name": "_petSay",
+        "fromLine": 8521,
+        "toLine": 8533,
+        "sha256": "fd6a4073462290ac189b48a5683c7ad952ce154d4fdb0f803a1beb34dcfe32c1"
+      },
+      {
+        "file": "/Users/fordeargamers/Projects/exoduser-migration-20261001/game-easy-test.html",
+        "name": "_petSayCD",
+        "fromLine": 8599,
+        "toLine": 8607,
+        "sha256": "c453435f5581aab6608ea07f420f1b0590affb7b3fb5284a65e4c41217841768"
+      },
+      {
+        "file": "/Users/fordeargamers/Projects/exoduser-migration-20261001/game-easy-test.html",
+        "name": "_updatePetBubble",
+        "fromLine": 8610,
+        "toLine": 8632,
+        "sha256": "ec177353a6713bbfcc2b487429dceed6120adcc19f375c51907b92e3577821e4"
+      },
+      {
+        "file": "/Users/fordeargamers/Projects/exoduser-migration-20261001/game-easy-test.html",
+        "name": "_petBidCD",
+        "fromLine": 8553,
+        "toLine": 8559,
+        "sha256": "774fe5a3eb3f8c006300fd7f2a7dc4da1825dbcc01575cefcaaa3d3dd2fda24a"
+      },
+      {
+        "file": "/Users/fordeargamers/Projects/exoduser-migration-20261001/game-easy-test.html",
+        "name": "_petSayUrgent",
+        "fromLine": 8561,
+        "toLine": 8575,
+        "sha256": "6696d4d51ccfa879aae4d5aa7415de8400e8f8b3dd8b9498ba60b89c74332bb3"
+      },
+      {
+        "file": "/Users/fordeargamers/Projects/exoduser-migration-20261001/game-easy-test.html",
+        "name": "_petFireBid",
+        "fromLine": 8577,
+        "toLine": 8592,
+        "sha256": "5450766696f150b1205d9d19f107ade1c8980c9aa2adde4a1cb5d9b50dd1642e"
+      },
+      {
+        "file": "/Users/fordeargamers/Projects/exoduser-migration-20261001/game-easy-test.html",
+        "name": "updatePet",
+        "fromLine": 38891,
+        "toLine": 38899,
+        "sha256": "7aa30305fec525743bc12c3273c4fe3fb5666850370e338b3006dcc1417ac5ed"
+      },
+      {
+        "file": "/Users/fordeargamers/Projects/exoduser-migration-20261001/game-easy-test.html",
+        "name": "pickupItem",
+        "fromLine": 14782,
+        "toLine": 14818,
+        "sha256": "b790a6796976fcb6c38fedf7cdbea03337829243141a089a40e524aa170d9146"
+      }
+    ],
+    "stubs": [
+      "VM DOM/speech/SFX sinks; no real UI/audio",
+      "movement functions are no-ops; no map/AI/render/world-spawn simulation",
+      "parry tick/active input states represent completed or blocking practice; original update guards execute",
+      "keyboard queries false; panel shortcuts/editor body not executed",
+      "inventory grid size/space success; ordinary headband rarity1 only; no bone/ring/economy coverage",
+      "pickup SFX/stats/save calls counted only; no save/HTTP/storage/file writes",
+      "systemTutorial=0 uses actual eligible(); original lesson/badge modules loaded; no badge init event",
+      "frame increment and dtSp=1 are harness time; later update and dispatcher tails not executed",
+      "identity translation and deterministic Date; no language/pad/browser promise verification"
+    ],
+    "cases": [
+      {
+        "source": "game.html",
+        "case": "reachable-refusal-and-reentry",
+        "status": "PASS",
+        "currentDesiredBehavior": "FAIL_OBSERVED: consumed-without-accepted-firstItem",
+        "candidateDesiredBehavior": "PASS: rejected flag retained then accepted once",
+        "generatedPriorBubble": {
+          "who": "crow",
+          "t": 300,
+          "tier1CD": 720
+        },
+        "currentAttempts": 1,
+        "candidateAttempts": 720,
+        "candidateAccepted": 1
+      },
+      {
+        "source": "game.html",
+        "case": "normal-path-state-and-dialogue-equivalence",
+        "status": "PASS",
+        "accepted": 1,
+        "firstItemCatShows": 1,
+        "inventoryAndSaveStubCallsEqual": true,
+        "compared": "flags/bubble/pair/CD/tierCD/message/SFX order/pickup objects/guide/badge/sinks"
+      },
+      {
+        "source": "game.html",
+        "case": "accepted-then-urgent-interrupted-no-replay",
+        "status": "PASS",
+        "firstItemAccepted": 1,
+        "firstItemCatShows": 0,
+        "limitation": "success means crow accepted/pair scheduled; does not prove Diroy pair displayed"
+      },
+      {
+        "source": "game.html",
+        "case": "actual-caller-guards",
+        "status": "PASS",
+        "guardsPerVariant": 5,
+        "variants": 2
+      },
+      {
+        "source": "game-easy-test.html",
+        "case": "reachable-refusal-and-reentry",
+        "status": "PASS",
+        "currentDesiredBehavior": "FAIL_OBSERVED: consumed-without-accepted-firstItem",
+        "candidateDesiredBehavior": "PASS: rejected flag retained then accepted once",
+        "generatedPriorBubble": {
+          "who": "crow",
+          "t": 300,
+          "tier1CD": 720
+        },
+        "currentAttempts": 1,
+        "candidateAttempts": 720,
+        "candidateAccepted": 1
+      },
+      {
+        "source": "game-easy-test.html",
+        "case": "normal-path-state-and-dialogue-equivalence",
+        "status": "PASS",
+        "accepted": 1,
+        "firstItemCatShows": 1,
+        "inventoryAndSaveStubCallsEqual": true,
+        "compared": "flags/bubble/pair/CD/tierCD/message/SFX order/pickup objects/guide/badge/sinks"
+      },
+      {
+        "source": "game-easy-test.html",
+        "case": "accepted-then-urgent-interrupted-no-replay",
+        "status": "PASS",
+        "firstItemAccepted": 1,
+        "firstItemCatShows": 0,
+        "limitation": "success means crow accepted/pair scheduled; does not prove Diroy pair displayed"
+      },
+      {
+        "source": "game-easy-test.html",
+        "case": "actual-caller-guards",
+        "status": "PASS",
+        "guardsPerVariant": 5,
+        "variants": 2
+      }
+    ],
+    "limits": [
+      "source fragments/VM only, no actual browser/game/UI/audio/save/HTTP",
+      "dispatcher after Stage-0 and middle gameplay update excluded; lower-priority starvation not proven absent",
+      "accepted firstItem can still lose cat pair; no new cancellation/session/save API"
+    ]
+  },
+  "docsSearch": {
+    "commandId": "N47",
+    "command": "rg -n 'tut_firstItem|_petTut\\.firstItem|_petSayCD|_petTierCD|_PET_TIER_COOL|_checkPetDialogue|_petBubble|건너뛰기는 성공|시스템 7항목|tutorial-badges:v1' docs/",
+    "exitCode": 0,
+    "complete": true,
+    "rawMatches": "docs/2_4 펫시스템/2_4 펫시스템.md:9:| 원문 보존 | `_petSay`가 `_petBubble.sourceTxt`와 이어질 `pair.sourceTxt`를 보존. 기존 txt는 현재 `_T` 결과 |\r\ndocs/2_4 펫시스템/2_4 펫시스템.md:63:- **시스템**: `_petSayCD` (일반, 글로벌쿨 15초) / `_petSayUrgent` (긴급, 모든 쿨 무시)\r\ndocs/2_4 펫시스템/2_4 펫시스템.md:77:> **위치**: `game.html` `_checkPetDialogue()` — mp_warn(`[?]`), 빌드 힌트 블록(`if(!G.bossAlive&&P.lv>=50&&G.frame%300===0)`).\r\ndocs/2_4 펫시스템/2_4 펫시스템.md:88:**검증 (Playwright, before/after 동일 harness, lv60, `_checkPetDialogue` 직접 구동)**:\r\ndocs/2_4 펫시스템/대사_스크립트.md:5:> **피날레 재도전 대사(2026-09-09):** 데모 마지막si3 아레나의 bossAlive 동안 `_petSay`는 bossRef가 아직 null인 첫 프레임도 tier≤2 잡담을 억제한다. 생존 `_PET_SURV_W`는 유지. 재도전 시 이전 `_petBubble.t/pair/_uid`를0/null/null로 초기화한다.\ndocs/2_4 펫시스템/대사_스크립트.md:32:| `_petSayCD(id,...)` | 즉시 대사 | 튜토리얼·이벤트 콜백 전용. 티어별 글로벌쿨(`_petTierCD[]`) 준수 |\r\ndocs/2_4 펫시스템/대사_스크립트.md:35:- **호출 흐름**: `_checkPetDialogue` 시작 시 `_PB.tier=-1;_petInFrame=true` → 생존블록 입찰 → mid `_petFireBid()`(생존 인터럽트) → 경쟁블록 `_petBidCD` 입찰 → 끝에서 `_petFireBid()`(승자 발동).\r\ndocs/2_4 펫시스템/대사_스크립트.md:51:### 표시 함수 `_petBubbleShow(who, txt)` (line ~7524)\r\ndocs/2_4 펫시스템/대사_스크립트.md:64:- **반투명 시작 캡 `_PET_OP_MAX=0.6` (2026-07-27)**: 표시 순간부터 최대 불투명도 0.6으로 시작 — 캐릭터 위에 겹쳐도 게임 화면이 비쳐 보이도록. 게임 시작 직후 탄막 속에서 가이드가 바로 떠야 하므로 0.45는 너무 흐려서 0.6으로 상향. `_petBubbleShow`의 초기 opacity와 매 프레임 페이드 양쪽에 곱해짐. (변천: 1.0 → 0.62 → 0.45 → 0.6)\r\ndocs/2_4 펫시스템/대사_스크립트.md:67:- 티키타카 후발 대사 발동 시 `_petBubbleShow(_petBubble.who, _petBubble.txt)` 재호출\r\ndocs/2_4 펫시스템/대사_스크립트.md:98:| 11 | tut_firstItem | 인벤 1개+ | TAB을 눌러. 가방을 열고 장비를 입어야 한다. | 주웠으면 껴야지! TAB! |\r\ndocs/2_4 펫시스템/대사_스크립트.md:317:> **boss_kill 강제 재생 (2026-06-29)**: 보스 처치 순간 다른 대사(페이즈 경고 등)가 떠 있어도 `_petBubble.t=0`로 **현재 대사를 강제 종료**하고, `_petDlgCD['boss_kill']`을 초기화한 뒤 `_petSay`로 무조건 재생. (기존 `_petSayCD`는 말풍선 표시 중이면 씹혀서 처치 대사가 안 나오던 문제 수정)\r\ndocs/2_4 펫시스템/대사_스크립트.md:497:`tut_gate_locked`는 대사 시간 `5초`, ID 쿨다운 `9999초`인 T1 튜토리얼이다. 문 접촉 판정은 45프레임 주기로 재시도하되 대사가 한 번 성공하면 같은 플레이 세션에서 반복하지 않는다. 영문 키는 `Clear all four regions and the Hell Gate will open.`이다. (2026-09-30 [REGION] 개편: 구 대사 \"구역을 클리어하면 잠긴 지옥문이 열릴 거야.\"/영문 `Clear the area and the sealed Hell Gate will open.` 대체 — 구 키는 lang 테이블에 잔존하나 미사용.) `region_clear`는 대사 4초 / ID 쿨다운 60초, `_petSayCD` 기본 티어.\ndocs/2_4 펫시스템/대사_개편_v7_설계.md:16:- `_checkPetDialogue()`가 매 프레임 `_petSayCD(...)`를 **코드 작성 순서대로** 실행.\ndocs/2_4 펫시스템/대사_개편_v7_설계.md:205:- **내 dispatcher와 무충돌**: death_dual은 `G.on=false` 사망화면 전용, dispatcher는 게임 중(`_checkPetDialogue`)이라 실행 시점 분리.\ndocs/16번역·로컬라이제이션/번역대상_전체목록.md:3460:칼등치기(sBash) 패링 헛침(반사 0 + 200px 내 패링가능 적탄 존재) 시 펫이 핀잔. `_petSayCD('parry_miss', 'cat', …, 'crow', …)` (티어1, cd 10s). _EN + 26개국어 전파(node --check 26/26 PASS).\r\ndocs/CHANGELOG_SYNC.md:48772:- 잠긴 문 안내 텍스트가 갱신되는 45프레임 주기에 `_petSayCD`를 재시도한다. 말풍선이 비면 한 번 출력되고 ID 쿨다운으로 같은 세션의 반복을 막는다.\r\ndocs/16번역·로컬라이제이션/번역대상_펫대사.md:33:| A19 | tut_firstItem | crow | TAB을 눌러. 가방을 열고 장비를 입어야 한다. | ❌ |\r\ndocs/16번역·로컬라이제이션/번역대상_펫대사.md:34:| A20 | tut_firstItem | cat | 주웠으면 껴야지! TAB! | ❌ |\r\ndocs/16번역·로컬라이제이션/LOCALIZATION_RUNTIME_20260909.md:69:| 열린 펫 대사 | `_petBubble.sourceTxt`·`pair.sourceTxt` 보존, `_applyLang`에서 `_refreshPetBubbleLanguage` 호출. 현재 대사·대기 응답을 재번역하되 타이머/음성 재시작 없음 |\ndocs/11내러티브·로어디자인/펫_대사_스크립트.md:7:> `_petSayCD(id, who, txt, durSec, cdSec, pairWho, pairTxt, pairDur)`\r\ndocs/11내러티브·로어디자인/펫_대사_스크립트.md:39:| tut_firstItem | 첫 아이템 습득 (INV.bag>=1) | TAB을 눌러. 가방을 열고 장비를 입어야 한다. | 주웠으면 껴야지! TAB! |\r\ndocs/11내러티브·로어디자인/펫_대사_스크립트.md:90:- **반복 대사**: `_petSayCD(id, who, txt, dur, cdSec)` — cdSec초 쿨다운\r\ndocs/11내러티브·로어디자인/펫_대사_스크립트.md:93:- **우선순위**: 이미 말풍선 표시 중이면 새 대사 무시 (`_petBubble.t > 0`)\r\ndocs/8.1보스디자인바이블/BOSS_00_FOREST_NORMAL_EYE_SENTINEL.md:397:이 대사는 보스 첫 만남에서 한 번씩만 트리거 (반복 금지, _petSayCD 사용)\ndocs/8.1보스디자인바이블/DARK_DRUID_FINALE_PACING_v04.md:32:| 재도전 음악·대사 | `_retryDruidFinale`에서 boss 음악을 명시 재생해 death 트랙 고착 방지. arena retry 시 기존 `_petBubble.t=0/pair=null/_uid=null`로 이전 전투 대사를 종료 |\ndocs/3.3 키바인딩+설정/3.3 키바인딩+설정.md:103:- 펫 대사·튜토리얼 힌트가 패드모드에서 키보드 키 대신 **패드 글리프** 표시. `_petBubbleShow`의 텍스트 세팅에 적용.\r\ndocs/2게임디자인레벨디자인/SYSTEM_TUTORIAL_20260912.md:15:순서는 자유이며 실제 행동으로만 체크한다. 건너뛰기는 성공과 구분한다. 접기·항목 건너뛰기·종료를 제공한다. 키 표시는 현재 바인딩을 따른다. 게임/저장 상태를 바꾸지 않는 관찰 UI이며, 앞선 실습의 해골눈·자원 설명은 반복하지 않는다. JS/CSS는 양쪽 게임 HTML에서 로드하고 update·획득·장착·자동회복 성공 지점에 연결한다.\ndocs/2게임디자인레벨디자인/SYSTEM_TUTORIAL_20260912.md:21:수료 배지 3종을 구현했다. 시스템 7항목 실제 완료 시 지옥의 개척자를 지급하며 건너뛰기는 미지급이다. 브라우저 슬롯별 저장·모음 UI·중복 차단은 [배지 사양](TUTORIAL_BADGES_20260912.md)을 따른다. 별도 챌린지/능력치 보상은 미구현이다.\ndocs/2게임디자인레벨디자인/TUTORIAL_BADGES_20260912.md:16:| 보관 | localStorage `exoduser:tutorial-badges:v1:<slot>`에 획득 시각 기록. URL slot이 없으면 main. 같은 브라우저·같은 슬롯에서 재접속하면 유지 |\ndocs/0마스터플랜/mac-resume-20261001/gap-attribution-evidence/attribution.json:1397:          \"function\": \"_checkPetDialogue\",\n",
+    "matchingLines": 31,
+    "fileCounts": [
+      {
+        "path": "docs/2_4 펫시스템/2_4 펫시스템.md",
+        "count": 4
+      },
+      {
+        "path": "docs/2_4 펫시스템/대사_스크립트.md",
+        "count": 9
+      },
+      {
+        "path": "docs/2_4 펫시스템/대사_개편_v7_설계.md",
+        "count": 2
+      },
+      {
+        "path": "docs/16번역·로컬라이제이션/번역대상_전체목록.md",
+        "count": 1
+      },
+      {
+        "path": "docs/CHANGELOG_SYNC.md",
+        "count": 1
+      },
+      {
+        "path": "docs/16번역·로컬라이제이션/번역대상_펫대사.md",
+        "count": 2
+      },
+      {
+        "path": "docs/16번역·로컬라이제이션/LOCALIZATION_RUNTIME_20260909.md",
+        "count": 1
+      },
+      {
+        "path": "docs/11내러티브·로어디자인/펫_대사_스크립트.md",
+        "count": 4
+      },
+      {
+        "path": "docs/8.1보스디자인바이블/BOSS_00_FOREST_NORMAL_EYE_SENTINEL.md",
+        "count": 1
+      },
+      {
+        "path": "docs/8.1보스디자인바이블/DARK_DRUID_FINALE_PACING_v04.md",
+        "count": 1
+      },
+      {
+        "path": "docs/3.3 키바인딩+설정/3.3 키바인딩+설정.md",
+        "count": 1
+      },
+      {
+        "path": "docs/2게임디자인레벨디자인/SYSTEM_TUTORIAL_20260912.md",
+        "count": 2
+      },
+      {
+        "path": "docs/2게임디자인레벨디자인/TUTORIAL_BADGES_20260912.md",
+        "count": 1
+      },
+      {
+        "path": "docs/0마스터플랜/mac-resume-20261001/gap-attribution-evidence/attribution.json",
+        "count": 1
+      }
+    ]
+  },
+  "canonicalSupplement": {
+    "location": "/Users/fordeargamers/Projects/exoduser-migration-20261001/tools/team-followup-20261002/continuous/QUESTNPC/result.md",
+    "section": "canonical 보충 인계 문안 — 공유 docs 실제 수정0",
+    "rows": 6,
+    "sharedDocsOwner": "PM"
+  },
+  "readReceipts": [
+    {
+      "commandId": "N01",
+      "command": "cat tools/team-followup-20261002/continuous/QUESTNPC/TASK.md",
+      "basis": "whole-file read (N07 truncated, repaired N32–N35)",
+      "outputTruncated": false
+    },
+    {
+      "commandId": "N02",
+      "command": "cat tools/team-followup-20261002/continuous/COMMON.md",
+      "basis": "whole-file read (N07 truncated, repaired N32–N35)",
+      "outputTruncated": false
+    },
+    {
+      "commandId": "N03",
+      "command": "pwd",
+      "basis": "path/hash observation",
+      "outputTruncated": false
+    },
+    {
+      "commandId": "N06",
+      "command": "cat AGENTS.md",
+      "basis": "whole-file read (N07 truncated, repaired N32–N35)",
+      "outputTruncated": false
+    },
+    {
+      "commandId": "N07",
+      "command": "cat 'docs/0마스터플랜/PROJECT_MANAGEMENT_MASTER.md'",
+      "basis": "whole-file read (N07 truncated, repaired N32–N35)",
+      "outputTruncated": true
+    },
+    {
+      "commandId": "N08",
+      "command": "cat 'docs/0마스터플랜/mac-resume-20261001/vscode-dispatch/TEAM_UTILIZATION_20261001.json'",
+      "basis": "whole-file read (N07 truncated, repaired N32–N35)",
+      "outputTruncated": false
+    },
+    {
+      "commandId": "N09",
+      "command": "rg --files tools/team-followup-20261002/continuous/QUESTNPC",
+      "basis": "search only; not whole matched file read",
+      "outputTruncated": false
+    },
+    {
+      "commandId": "N10",
+      "command": "shasum -a 256 game.html game-easy-test.html system-lesson.js tutorial-badges.js AGENTS.md 'docs/0마스터플랜/PROJECT_MANAGEMENT_MASTER.md' 'docs/0마스터플랜/mac-resume-20261001/vscode-dispatch/TEAM_UTILIZATION_20261001.json' tools/team-followup-20261002/continuous/COMMON.md tools/team-followup-20261002/continuous/QUESTNPC/TASK.md tools/team-followup-20261002/new-four/QUESTNPC/TASK.md tools/team-followup-20261002/new-four/QUESTNPC/result.md tools/team-followup-20261002/new-four/QUESTNPC/evidence.json",
+      "basis": "path/hash observation",
+      "outputTruncated": false
+    },
+    {
+      "commandId": "N11",
+      "command": "cat 'docs/11내러티브·로어디자인/펫_대사_스크립트.md' 'docs/11내러티브·로어디자인/PETS_DESIGN_LOCK.md' 'docs/2게임디자인레벨디자인/SYSTEM_TUTORIAL_20260912.md'",
+      "basis": "whole-file read (N07 truncated, repaired N32–N35)",
+      "outputTruncated": false
+    },
+    {
+      "commandId": "N12",
+      "command": "rg -n '디로이|핵터|NPC|동료|충|_petTut|firstItem|_petSay|_checkPetDialogue|cooldown|CD|cutsceneDone|tutorial-badges|배지|skipped|튜토리얼' 'docs/11내러티브·로어디자인/WORLD_CORE.md' 'docs/2_4 펫시스템/2_4 펫시스템.md' 'docs/15 세이브+데이터구조/15 세이브+데이터구조.md'",
+      "basis": "search only; not whole matched file read",
+      "outputTruncated": false
+    },
+    {
+      "commandId": "N13",
+      "command": "nl -ba 'docs/11내러티브·로어디자인/WORLD_CORE.md' | sed -n '163,185p;287,303p;382,386p'",
+      "basis": "numbered source ranges explicitly in command",
+      "outputTruncated": false
+    },
+    {
+      "commandId": "N14",
+      "command": "nl -ba 'docs/2_4 펫시스템/2_4 펫시스템.md' | sed -n '1,74p;200,234p'",
+      "basis": "numbered source ranges explicitly in command",
+      "outputTruncated": false
+    },
+    {
+      "commandId": "N15",
+      "command": "nl -ba 'docs/15 세이브+데이터구조/15 세이브+데이터구조.md' | sed -n '27,45p;170,177p;188,221p;394,420p'",
+      "basis": "numbered source ranges explicitly in command",
+      "outputTruncated": false
+    },
+    {
+      "commandId": "N16",
+      "command": "cat tools/team-followup-20261002/new-four/QUESTNPC/TASK.md tools/team-followup-20261002/new-four/QUESTNPC/result.md",
+      "basis": "whole-file read (N07 truncated, repaired N32–N35)",
+      "outputTruncated": false
+    },
+    {
+      "commandId": "N17",
+      "command": "cat tools/team-followup-20261002/new-four/QUESTNPC/evidence.json",
+      "basis": "whole-file read (N07 truncated, repaired N32–N35)",
+      "outputTruncated": false
+    },
+    {
+      "commandId": "N18",
+      "command": "rg -n --max-columns 260 --max-columns-preview 'function (_petSay|_petSayCD|_checkPetDialogue|updatePet|initStage|nextStage|pickupItem|equipItem)|_petTut|_petGlobalCD|_petBubble|system-lesson|_systemLesson\\.(update|pickedUp|equipped|close)|_petDlgCD' game.html game-easy-test.html",
+      "basis": "search only; not whole matched file read",
+      "outputTruncated": false
+    },
+    {
+      "commandId": "N19",
+      "command": "rg -n --max-columns 260 --max-columns-preview 'function (close|skip|update|start|record)|active|closed|checks|skipped|tutorial-badges|localStorage|_systemLesson|complete|death|reset|G.stage' system-lesson.js tutorial-badges.js",
+      "basis": "search only; not whole matched file read",
+      "outputTruncated": false
+    },
+    {
+      "commandId": "N20",
+      "command": "nl -ba game.html | sed -n '8980,8997p;9058,9082p;9083,9192p;9193,9246p'",
+      "basis": "numbered source ranges explicitly in command",
+      "outputTruncated": false
+    },
+    {
+      "commandId": "N21",
+      "command": "nl -ba game-easy-test.html | sed -n '8430,8454p;8514,8645p;8646,8699p'",
+      "basis": "numbered source ranges explicitly in command",
+      "outputTruncated": false
+    },
+    {
+      "commandId": "N22",
+      "command": "nl -ba game.html | sed -n '40085,40142p;42340,42375p;42410,42435p;30290,30340p;29537,29554p'",
+      "basis": "numbered source ranges explicitly in command",
+      "outputTruncated": false
+    },
+    {
+      "commandId": "N23",
+      "command": "nl -ba system-lesson.js | sed -n '1,35p;60,99p;126,161p'",
+      "basis": "numbered source ranges explicitly in command",
+      "outputTruncated": false
+    },
+    {
+      "commandId": "N24",
+      "command": "nl -ba tutorial-badges.js | sed -n '1,22p;50,66p'",
+      "basis": "numbered source ranges explicitly in command",
+      "outputTruncated": false
+    },
+    {
+      "commandId": "N25",
+      "command": "rg -n --max-columns 220 --max-columns-preview 'updatePet\\(\\)|_petTickDlgCD\\(|function _petTick|_petGCD|_petCurrentTier|_petPriority|function _isDemoFinaleBattle|function update\\(|function _start|for\\(.*_petTut|Object.*_petTut|_petTut\\s*=|_petTut\\.[a-zA-Z]+\\s*=' game.html game-easy-test.html",
+      "basis": "search only; not whole matched file read",
+      "outputTruncated": false
+    },
+    {
+      "commandId": "N26",
+      "command": "nl -ba game.html | sed -n '15629,15646p;15670,15708p;30985,31002p'",
+      "basis": "numbered source ranges explicitly in command",
+      "outputTruncated": false
+    },
+    {
+      "commandId": "N27",
+      "command": "nl -ba game-easy-test.html | sed -n '14735,14755p;14790,14823p'",
+      "basis": "numbered source ranges explicitly in command",
+      "outputTruncated": false
+    },
+    {
+      "commandId": "N28",
+      "command": "nl -ba game.html | sed -n '30854,30915p;31430,31443p;38898,38902p'",
+      "basis": "numbered source ranges explicitly in command",
+      "outputTruncated": false
+    },
+    {
+      "commandId": "N29",
+      "command": "nl -ba game-easy-test.html | sed -n '29672,29731p;38888,38900p'",
+      "basis": "numbered source ranges explicitly in command",
+      "outputTruncated": false
+    },
+    {
+      "commandId": "N30",
+      "command": "rg -n --max-columns 230 --max-columns-preview 'pickupItem\\(|worldItems|BINDS\\.interact|KeyR|function.*[Pp]ickup|G\\.on=false|_deathDlgStart\\(' game.html game-easy-test.html",
+      "basis": "search only; not whole matched file read",
+      "outputTruncated": false
+    },
+    {
+      "commandId": "N31",
+      "command": "rg -n 'firstItem|_petTut|tut_firstItem|_petSayCD|_PET_TIER_COOL|_checkPetDialogue|_petBubble|시스템 7항목|슬롯별.*배지' docs/",
+      "basis": "search only; not whole matched file read",
+      "outputTruncated": false
+    },
+    {
+      "commandId": "N32",
+      "command": "nl -ba 'docs/0마스터플랜/PROJECT_MANAGEMENT_MASTER.md' | sed -n '1,210p'",
+      "basis": "numbered source ranges explicitly in command",
+      "outputTruncated": false
+    },
+    {
+      "commandId": "N33",
+      "command": "nl -ba 'docs/0마스터플랜/PROJECT_MANAGEMENT_MASTER.md' | sed -n '211,410p'",
+      "basis": "numbered source ranges explicitly in command",
+      "outputTruncated": false
+    },
+    {
+      "commandId": "N34",
+      "command": "nl -ba 'docs/0마스터플랜/PROJECT_MANAGEMENT_MASTER.md' | sed -n '411,610p'",
+      "basis": "numbered source ranges explicitly in command",
+      "outputTruncated": false
+    },
+    {
+      "commandId": "N35",
+      "command": "nl -ba 'docs/0마스터플랜/PROJECT_MANAGEMENT_MASTER.md' | sed -n '611,840p'",
+      "basis": "numbered source ranges explicitly in command",
+      "outputTruncated": false
+    },
+    {
+      "commandId": "N36",
+      "command": "nl -ba 'docs/2게임디자인레벨디자인/TUTORIAL_BADGES_20260912.md' | sed -n '1,55p'",
+      "basis": "numbered source ranges explicitly in command",
+      "outputTruncated": false
+    },
+    {
+      "commandId": "N37",
+      "command": "cat tools/team-followup-20261002/continuous/QUESTNPC/TASK.md",
+      "basis": "whole-file read (N07 truncated, repaired N32–N35)",
+      "outputTruncated": false
+    },
+    {
+      "commandId": "N38",
+      "command": "rg -n 'script.*(parry|resource|system-lesson|tutorial-badges)|function doDie|function _.*[Dd]eath|tick\\(' parry-lesson.js game.html game-easy-test.html",
+      "basis": "search only; not whole matched file read",
+      "outputTruncated": false
+    },
+    {
+      "commandId": "N39",
+      "command": "shasum -a 256 'docs/11내러티브·로어디자인/펫_대사_스크립트.md' 'docs/11내러티브·로어디자인/PETS_DESIGN_LOCK.md' 'docs/11내러티브·로어디자인/WORLD_CORE.md' 'docs/2_4 펫시스템/2_4 펫시스템.md' 'docs/2게임디자인레벨디자인/SYSTEM_TUTORIAL_20260912.md' 'docs/2게임디자인레벨디자인/TUTORIAL_BADGES_20260912.md' 'docs/15 세이브+데이터구조/15 세이브+데이터구조.md' tools/team-followup-20261002/continuous/QUESTNPC/TASK.md",
+      "basis": "path/hash observation",
+      "outputTruncated": false
+    },
+    {
+      "commandId": "N40",
+      "command": "rg -n 'const _PET_OP_MAX|function pickupItem|function _petSay\\(|function _checkPetDialogue' game.html game-easy-test.html",
+      "basis": "search only; not whole matched file read",
+      "outputTruncated": false
+    },
+    {
+      "commandId": "N41",
+      "command": "nl -ba parry-lesson.js | sed -n '460,490p'",
+      "basis": "numbered source ranges explicitly in command",
+      "outputTruncated": false
+    },
+    {
+      "commandId": "N42",
+      "command": "nl -ba game.html | sed -n '31643,31695p;42387,42396p;9463,9473p'",
+      "basis": "numbered source ranges explicitly in command",
+      "outputTruncated": false
+    },
+    {
+      "commandId": "N43",
+      "command": "nl -ba game-easy-test.html | sed -n '30460,30512p;41147,41158p;41184,41190p'",
+      "basis": "numbered source ranges explicitly in command",
+      "outputTruncated": false
+    },
+    {
+      "commandId": "N44",
+      "command": "nl -ba 'docs/2_4 펫시스템/대사_스크립트.md' | sed -n '1,40p;90,105p;195,207p'",
+      "basis": "numbered source ranges explicitly in command",
+      "outputTruncated": false
+    },
+    {
+      "commandId": "N45",
+      "command": "shasum -a 256 parry-lesson.js 'docs/2_4 펫시스템/대사_스크립트.md' tools/team-followup-20261002/continuous/QUESTNPC/checks.mjs",
+      "basis": "path/hash observation",
+      "outputTruncated": false
+    },
+    {
+      "commandId": "N47",
+      "command": "rg -n 'tut_firstItem|_petTut\\.firstItem|_petSayCD|_petTierCD|_PET_TIER_COOL|_checkPetDialogue|_petBubble|건너뛰기는 성공|시스템 7항목|tutorial-badges:v1' docs/",
+      "basis": "search only; not whole matched file read",
+      "outputTruncated": false
+    },
+    {
+      "commandId": "N48",
+      "command": "nl -ba game.html | sed -n '9242,9288p;9420,9438p'",
+      "basis": "numbered source ranges explicitly in command",
+      "outputTruncated": false
+    },
+    {
+      "commandId": "N49",
+      "command": "nl -ba game-easy-test.html | sed -n '8693,8736p;8870,8890p'",
+      "basis": "numbered source ranges explicitly in command",
+      "outputTruncated": false
+    },
+    {
+      "commandId": "N50",
+      "command": "rg -n '_petTut\\.firstItem|firstItem:|_systemLesson\\.(closed|seen|active)|_petTut\\s*=|Object\\.(assign|keys).*_petTut|for.*_petTut' game.html game-easy-test.html system-lesson.js tutorial-badges.js",
+      "basis": "search only; not whole matched file read",
+      "outputTruncated": false
+    },
+    {
+      "commandId": "N51",
+      "command": "shasum -a 256 game.html game-easy-test.html system-lesson.js tutorial-badges.js parry-lesson.js 'docs/11내러티브·로어디자인/펫_대사_스크립트.md' 'docs/11내러티브·로어디자인/PETS_DESIGN_LOCK.md' 'docs/11내러티브·로어디자인/WORLD_CORE.md' 'docs/2_4 펫시스템/2_4 펫시스템.md' 'docs/2_4 펫시스템/대사_스크립트.md' 'docs/2게임디자인레벨디자인/SYSTEM_TUTORIAL_20260912.md' 'docs/2게임디자인레벨디자인/TUTORIAL_BADGES_20260912.md' 'docs/15 세이브+데이터구조/15 세이브+데이터구조.md' AGENTS.md 'docs/0마스터플랜/PROJECT_MANAGEMENT_MASTER.md' 'docs/0마스터플랜/mac-resume-20261001/vscode-dispatch/TEAM_UTILIZATION_20261001.json' tools/team-followup-20261002/continuous/COMMON.md tools/team-followup-20261002/continuous/QUESTNPC/TASK.md tools/team-followup-20261002/new-four/QUESTNPC/TASK.md tools/team-followup-20261002/new-four/QUESTNPC/result.md tools/team-followup-20261002/new-four/QUESTNPC/evidence.json tools/team-followup-20261002/continuous/QUESTNPC/checks.mjs",
+      "basis": "path/hash observation",
+      "outputTruncated": false
+    },
+    {
+      "commandId": "N52",
+      "command": "nl -ba game.html | sed -n '9044,9065p'",
+      "basis": "numbered source ranges explicitly in command",
+      "outputTruncated": false
+    },
+    {
+      "commandId": "N53",
+      "command": "nl -ba game-easy-test.html | sed -n '8499,8520p'",
+      "basis": "numbered source ranges explicitly in command",
+      "outputTruncated": false
+    },
+    {
+      "commandId": "N54",
+      "command": "nl -ba game.html | sed -n '31556,31568p;42375,42387p'",
+      "basis": "numbered source ranges explicitly in command",
+      "outputTruncated": false
+    },
+    {
+      "commandId": "N55",
+      "command": "nl -ba game-easy-test.html | sed -n '30373,30385p'",
+      "basis": "numbered source ranges explicitly in command",
+      "outputTruncated": false
+    },
+    {
+      "commandId": "N56",
+      "command": "rg -n \"if\\(isJust\\('interact'\\)\\)\" game.html game-easy-test.html",
+      "basis": "search only; not whole matched file read",
+      "outputTruncated": false
+    },
+    {
+      "commandId": "N57",
+      "command": "nl -ba game.html | sed -n '31537,31549p';",
+      "basis": "numbered source ranges explicitly in command",
+      "outputTruncated": false
+    },
+    {
+      "commandId": "N58",
+      "command": "nl -ba game.html | sed -n '31549,31556p'",
+      "basis": "numbered source ranges explicitly in command",
+      "outputTruncated": false
+    },
+    {
+      "commandId": "N59",
+      "command": "shasum -a 256 game.html game-easy-test.html system-lesson.js tutorial-badges.js parry-lesson.js 'docs/11내러티브·로어디자인/펫_대사_스크립트.md' 'docs/11내러티브·로어디자인/PETS_DESIGN_LOCK.md' 'docs/11내러티브·로어디자인/WORLD_CORE.md' 'docs/2_4 펫시스템/2_4 펫시스템.md' 'docs/2_4 펫시스템/대사_스크립트.md' 'docs/2게임디자인레벨디자인/SYSTEM_TUTORIAL_20260912.md' 'docs/2게임디자인레벨디자인/TUTORIAL_BADGES_20260912.md' 'docs/15 세이브+데이터구조/15 세이브+데이터구조.md' AGENTS.md 'docs/0마스터플랜/PROJECT_MANAGEMENT_MASTER.md' 'docs/0마스터플랜/mac-resume-20261001/vscode-dispatch/TEAM_UTILIZATION_20261001.json' tools/team-followup-20261002/continuous/COMMON.md tools/team-followup-20261002/continuous/QUESTNPC/TASK.md tools/team-followup-20261002/new-four/QUESTNPC/TASK.md tools/team-followup-20261002/new-four/QUESTNPC/result.md tools/team-followup-20261002/new-four/QUESTNPC/evidence.json tools/team-followup-20261002/continuous/QUESTNPC/checks.mjs tools/team-followup-20261002/continuous/QUESTNPC/result.md",
+      "basis": "path/hash observation",
+      "outputTruncated": false
+    },
+    {
+      "commandId": "N60",
+      "command": "cat tools/team-followup-20261002/continuous/QUESTNPC/result.md",
+      "basis": "whole-file read (N07 truncated, repaired N32–N35)",
+      "outputTruncated": false
+    },
+    {
+      "commandId": "N61",
+      "command": "rg --files tools/team-followup-20261002/continuous/QUESTNPC",
+      "basis": "search only; not whole matched file read",
+      "outputTruncated": false
+    },
+    {
+      "commandId": "N62",
+      "command": "rg -n '^function (_checkPetDialogue|_petSayCD|_petSay|updatePet|update|pickupItem)\\(|if\\(!_petTut\\.firstItem|if\\(!G\\.on\\|\\|!G\\.pets\\)|if\\(!G\\.on\\)return;|if\\(G\\.paused\\)return;|if\\(G\\.pets\\)updatePet\\(\\)' game.html game-easy-test.html",
+      "basis": "search only; not whole matched file read",
+      "outputTruncated": false
+    },
+    {
+      "commandId": "N63",
+      "command": "nl -ba 'docs/15 세이브+데이터구조/15 세이브+데이터구조.md' | sed -n '31,41p;170,177p;188,221p'",
+      "basis": "numbered source ranges explicitly in command",
+      "outputTruncated": false
+    },
+    {
+      "commandId": "N64",
+      "command": "nl -ba game.html | sed -n '8980,8995p;9066,9078p;9085,9100p;9148,9156p;9184,9245p;30857,30881p;30910p;40091,40099p'",
+      "basis": "numbered source ranges explicitly in command",
+      "outputTruncated": false
+    },
+    {
+      "commandId": "N65",
+      "command": "nl -ba game-easy-test.html | sed -n '8435,8450p;8521,8533p;8536,8551p;8599,8607p;8635,8696p;29675,29698p;29727p;38891,38899p'",
+      "basis": "numbered source ranges explicitly in command",
+      "outputTruncated": false
+    },
+    {
+      "commandId": "N66",
+      "command": "shasum -a 256 game.html game-easy-test.html system-lesson.js tutorial-badges.js parry-lesson.js 'docs/15 세이브+데이터구조/15 세이브+데이터구조.md' tools/team-followup-20261002/continuous/QUESTNPC/result.md tools/team-followup-20261002/continuous/QUESTNPC/checks.mjs",
+      "basis": "path/hash observation",
+      "outputTruncated": false
+    }
+  ],
+  "sha256Observations": [
+    {
+      "commandId": "N10",
+      "path": "/Users/fordeargamers/Projects/exoduser-migration-20261001/game.html",
+      "sha256": "6c77ec6f571f4de9cb199a2ac425eb3f0450205bcf6f1d883ac8d13135ac4b43"
+    },
+    {
+      "commandId": "N10",
+      "path": "/Users/fordeargamers/Projects/exoduser-migration-20261001/game-easy-test.html",
+      "sha256": "c40ea16180305a3d0043d1c9dfa9091096820e589e537a893d5d28fff56528d0"
+    },
+    {
+      "commandId": "N10",
+      "path": "/Users/fordeargamers/Projects/exoduser-migration-20261001/system-lesson.js",
+      "sha256": "b427b01599c06938a444f315598aac311bcf6d099e40d128541a55470bc57e62"
+    },
+    {
+      "commandId": "N10",
+      "path": "/Users/fordeargamers/Projects/exoduser-migration-20261001/tutorial-badges.js",
+      "sha256": "3177b01590943a9688247b8b504bd3be88afc916cbf9f0e7a54250fa3409670a"
+    },
+    {
+      "commandId": "N10",
+      "path": "/Users/fordeargamers/Projects/exoduser-migration-20261001/AGENTS.md",
+      "sha256": "fd59bef70960bcaf1ab9910051faa860362884e574ac2869fad05c6872ae04e4"
+    },
+    {
+      "commandId": "N10",
+      "path": "/Users/fordeargamers/Projects/exoduser-migration-20261001/docs/0마스터플랜/PROJECT_MANAGEMENT_MASTER.md",
+      "sha256": "4d13244269bf4e5cf99bbb0babc93a7bef6db14bc4168e25c4b3a59e6baa7c92"
+    },
+    {
+      "commandId": "N10",
+      "path": "/Users/fordeargamers/Projects/exoduser-migration-20261001/docs/0마스터플랜/mac-resume-20261001/vscode-dispatch/TEAM_UTILIZATION_20261001.json",
+      "sha256": "c8940720a31c3d64b3170309708cc8e2f397c8028fe5316f2b900cfbba82f5a6"
+    },
+    {
+      "commandId": "N10",
+      "path": "/Users/fordeargamers/Projects/exoduser-migration-20261001/tools/team-followup-20261002/continuous/COMMON.md",
+      "sha256": "de5a881270625a7b2d0e854331205e01372a037340a18474c6442b60e668465e"
+    },
+    {
+      "commandId": "N10",
+      "path": "/Users/fordeargamers/Projects/exoduser-migration-20261001/tools/team-followup-20261002/continuous/QUESTNPC/TASK.md",
+      "sha256": "cda31d0f2cd57801a3d71a7726b05006f17620be79af562a99d7d40bd01252dd"
+    },
+    {
+      "commandId": "N10",
+      "path": "/Users/fordeargamers/Projects/exoduser-migration-20261001/tools/team-followup-20261002/new-four/QUESTNPC/TASK.md",
+      "sha256": "bed5f3aa4c5a37ea3a2f30eb7549b65160fd724309ab227455bfeff3674e1040"
+    },
+    {
+      "commandId": "N10",
+      "path": "/Users/fordeargamers/Projects/exoduser-migration-20261001/tools/team-followup-20261002/new-four/QUESTNPC/result.md",
+      "sha256": "9d332afacde33724487787e60adccb4159cccf1c22a035af3da6ea361f6a8548"
+    },
+    {
+      "commandId": "N10",
+      "path": "/Users/fordeargamers/Projects/exoduser-migration-20261001/tools/team-followup-20261002/new-four/QUESTNPC/evidence.json",
+      "sha256": "f249907539901fe4ff5f73bbf132d61d80901d801c020c84c1faa986b9397814"
+    },
+    {
+      "commandId": "N39",
+      "path": "/Users/fordeargamers/Projects/exoduser-migration-20261001/docs/11내러티브·로어디자인/펫_대사_스크립트.md",
+      "sha256": "81bc579cb6b238099368511666318abf807f9614f1d7c028c03f1cecaae95921"
+    },
+    {
+      "commandId": "N39",
+      "path": "/Users/fordeargamers/Projects/exoduser-migration-20261001/docs/11내러티브·로어디자인/PETS_DESIGN_LOCK.md",
+      "sha256": "e9019fae59bf18d0bfa47408869d2d07442bfd8e468d524da38993ccda4aba3d"
+    },
+    {
+      "commandId": "N39",
+      "path": "/Users/fordeargamers/Projects/exoduser-migration-20261001/docs/11내러티브·로어디자인/WORLD_CORE.md",
+      "sha256": "5f29ed67a28e91251223edc14953053f407126978e58d3af0ca16fd180275a56"
+    },
+    {
+      "commandId": "N39",
+      "path": "/Users/fordeargamers/Projects/exoduser-migration-20261001/docs/2_4 펫시스템/2_4 펫시스템.md",
+      "sha256": "118a703ef82d07b7d0f88f0370d62a34fd4832a7cc291ec2355fd3628ccedae2"
+    },
+    {
+      "commandId": "N39",
+      "path": "/Users/fordeargamers/Projects/exoduser-migration-20261001/docs/2게임디자인레벨디자인/SYSTEM_TUTORIAL_20260912.md",
+      "sha256": "1fb936263e71aa07c8ec8fb3cdccb03c3f8dcf2a40146e80b2d57febd62be078"
+    },
+    {
+      "commandId": "N39",
+      "path": "/Users/fordeargamers/Projects/exoduser-migration-20261001/docs/2게임디자인레벨디자인/TUTORIAL_BADGES_20260912.md",
+      "sha256": "d2dfd6b591875a0857507c460c6e146d57cf153c82a2148e5d792bd8be0413ad"
+    },
+    {
+      "commandId": "N39",
+      "path": "/Users/fordeargamers/Projects/exoduser-migration-20261001/docs/15 세이브+데이터구조/15 세이브+데이터구조.md",
+      "sha256": "146d079c794c86307835ef12ffe4c5566148d2e9ed07c96f80b249dbaaf0f4eb"
+    },
+    {
+      "commandId": "N39",
+      "path": "/Users/fordeargamers/Projects/exoduser-migration-20261001/tools/team-followup-20261002/continuous/QUESTNPC/TASK.md",
+      "sha256": "28aa69438b0547fbcf6f9dd041929492dde0303e64ca92fc9d1aca3d604e4334"
+    },
+    {
+      "commandId": "N45",
+      "path": "/Users/fordeargamers/Projects/exoduser-migration-20261001/parry-lesson.js",
+      "sha256": "628a03f781211637262de0ba9d6105e50e54c886225ff4b7da219992697db381"
+    },
+    {
+      "commandId": "N45",
+      "path": "/Users/fordeargamers/Projects/exoduser-migration-20261001/docs/2_4 펫시스템/대사_스크립트.md",
+      "sha256": "37da4dd1c467a17e1f873e782e35cb78ce9bea778bfcc8306e681159502e0dae"
+    },
+    {
+      "commandId": "N45",
+      "path": "/Users/fordeargamers/Projects/exoduser-migration-20261001/tools/team-followup-20261002/continuous/QUESTNPC/checks.mjs",
+      "sha256": "39856cffd07db3a813f66606142d1ebceb8ddf2281933cd08c92756def60d900"
+    },
+    {
+      "commandId": "N51",
+      "path": "/Users/fordeargamers/Projects/exoduser-migration-20261001/game.html",
+      "sha256": "6c77ec6f571f4de9cb199a2ac425eb3f0450205bcf6f1d883ac8d13135ac4b43"
+    },
+    {
+      "commandId": "N51",
+      "path": "/Users/fordeargamers/Projects/exoduser-migration-20261001/game-easy-test.html",
+      "sha256": "c40ea16180305a3d0043d1c9dfa9091096820e589e537a893d5d28fff56528d0"
+    },
+    {
+      "commandId": "N51",
+      "path": "/Users/fordeargamers/Projects/exoduser-migration-20261001/system-lesson.js",
+      "sha256": "b427b01599c06938a444f315598aac311bcf6d099e40d128541a55470bc57e62"
+    },
+    {
+      "commandId": "N51",
+      "path": "/Users/fordeargamers/Projects/exoduser-migration-20261001/tutorial-badges.js",
+      "sha256": "3177b01590943a9688247b8b504bd3be88afc916cbf9f0e7a54250fa3409670a"
+    },
+    {
+      "commandId": "N51",
+      "path": "/Users/fordeargamers/Projects/exoduser-migration-20261001/parry-lesson.js",
+      "sha256": "628a03f781211637262de0ba9d6105e50e54c886225ff4b7da219992697db381"
+    },
+    {
+      "commandId": "N51",
+      "path": "/Users/fordeargamers/Projects/exoduser-migration-20261001/docs/11내러티브·로어디자인/펫_대사_스크립트.md",
+      "sha256": "81bc579cb6b238099368511666318abf807f9614f1d7c028c03f1cecaae95921"
+    },
+    {
+      "commandId": "N51",
+      "path": "/Users/fordeargamers/Projects/exoduser-migration-20261001/docs/11내러티브·로어디자인/PETS_DESIGN_LOCK.md",
+      "sha256": "e9019fae59bf18d0bfa47408869d2d07442bfd8e468d524da38993ccda4aba3d"
+    },
+    {
+      "commandId": "N51",
+      "path": "/Users/fordeargamers/Projects/exoduser-migration-20261001/docs/11내러티브·로어디자인/WORLD_CORE.md",
+      "sha256": "5f29ed67a28e91251223edc14953053f407126978e58d3af0ca16fd180275a56"
+    },
+    {
+      "commandId": "N51",
+      "path": "/Users/fordeargamers/Projects/exoduser-migration-20261001/docs/2_4 펫시스템/2_4 펫시스템.md",
+      "sha256": "118a703ef82d07b7d0f88f0370d62a34fd4832a7cc291ec2355fd3628ccedae2"
+    },
+    {
+      "commandId": "N51",
+      "path": "/Users/fordeargamers/Projects/exoduser-migration-20261001/docs/2_4 펫시스템/대사_스크립트.md",
+      "sha256": "37da4dd1c467a17e1f873e782e35cb78ce9bea778bfcc8306e681159502e0dae"
+    },
+    {
+      "commandId": "N51",
+      "path": "/Users/fordeargamers/Projects/exoduser-migration-20261001/docs/2게임디자인레벨디자인/SYSTEM_TUTORIAL_20260912.md",
+      "sha256": "1fb936263e71aa07c8ec8fb3cdccb03c3f8dcf2a40146e80b2d57febd62be078"
+    },
+    {
+      "commandId": "N51",
+      "path": "/Users/fordeargamers/Projects/exoduser-migration-20261001/docs/2게임디자인레벨디자인/TUTORIAL_BADGES_20260912.md",
+      "sha256": "d2dfd6b591875a0857507c460c6e146d57cf153c82a2148e5d792bd8be0413ad"
+    },
+    {
+      "commandId": "N51",
+      "path": "/Users/fordeargamers/Projects/exoduser-migration-20261001/docs/15 세이브+데이터구조/15 세이브+데이터구조.md",
+      "sha256": "146d079c794c86307835ef12ffe4c5566148d2e9ed07c96f80b249dbaaf0f4eb"
+    },
+    {
+      "commandId": "N51",
+      "path": "/Users/fordeargamers/Projects/exoduser-migration-20261001/AGENTS.md",
+      "sha256": "fd59bef70960bcaf1ab9910051faa860362884e574ac2869fad05c6872ae04e4"
+    },
+    {
+      "commandId": "N51",
+      "path": "/Users/fordeargamers/Projects/exoduser-migration-20261001/docs/0마스터플랜/PROJECT_MANAGEMENT_MASTER.md",
+      "sha256": "4d13244269bf4e5cf99bbb0babc93a7bef6db14bc4168e25c4b3a59e6baa7c92"
+    },
+    {
+      "commandId": "N51",
+      "path": "/Users/fordeargamers/Projects/exoduser-migration-20261001/docs/0마스터플랜/mac-resume-20261001/vscode-dispatch/TEAM_UTILIZATION_20261001.json",
+      "sha256": "c8940720a31c3d64b3170309708cc8e2f397c8028fe5316f2b900cfbba82f5a6"
+    },
+    {
+      "commandId": "N51",
+      "path": "/Users/fordeargamers/Projects/exoduser-migration-20261001/tools/team-followup-20261002/continuous/COMMON.md",
+      "sha256": "de5a881270625a7b2d0e854331205e01372a037340a18474c6442b60e668465e"
+    },
+    {
+      "commandId": "N51",
+      "path": "/Users/fordeargamers/Projects/exoduser-migration-20261001/tools/team-followup-20261002/continuous/QUESTNPC/TASK.md",
+      "sha256": "28aa69438b0547fbcf6f9dd041929492dde0303e64ca92fc9d1aca3d604e4334"
+    },
+    {
+      "commandId": "N51",
+      "path": "/Users/fordeargamers/Projects/exoduser-migration-20261001/tools/team-followup-20261002/new-four/QUESTNPC/TASK.md",
+      "sha256": "bed5f3aa4c5a37ea3a2f30eb7549b65160fd724309ab227455bfeff3674e1040"
+    },
+    {
+      "commandId": "N51",
+      "path": "/Users/fordeargamers/Projects/exoduser-migration-20261001/tools/team-followup-20261002/new-four/QUESTNPC/result.md",
+      "sha256": "9d332afacde33724487787e60adccb4159cccf1c22a035af3da6ea361f6a8548"
+    },
+    {
+      "commandId": "N51",
+      "path": "/Users/fordeargamers/Projects/exoduser-migration-20261001/tools/team-followup-20261002/new-four/QUESTNPC/evidence.json",
+      "sha256": "f249907539901fe4ff5f73bbf132d61d80901d801c020c84c1faa986b9397814"
+    },
+    {
+      "commandId": "N51",
+      "path": "/Users/fordeargamers/Projects/exoduser-migration-20261001/tools/team-followup-20261002/continuous/QUESTNPC/checks.mjs",
+      "sha256": "39856cffd07db3a813f66606142d1ebceb8ddf2281933cd08c92756def60d900"
+    },
+    {
+      "commandId": "N59",
+      "path": "/Users/fordeargamers/Projects/exoduser-migration-20261001/game.html",
+      "sha256": "2e45ee0e9ad909b378bf1a7b864818ce442a4c3e17b12360b42e363dc7d0bd94"
+    },
+    {
+      "commandId": "N59",
+      "path": "/Users/fordeargamers/Projects/exoduser-migration-20261001/game-easy-test.html",
+      "sha256": "3e5969ca139497c2efb312dc720ab53eb42a8d1912c8288caa2ce858cfd5120a"
+    },
+    {
+      "commandId": "N59",
+      "path": "/Users/fordeargamers/Projects/exoduser-migration-20261001/system-lesson.js",
+      "sha256": "b427b01599c06938a444f315598aac311bcf6d099e40d128541a55470bc57e62"
+    },
+    {
+      "commandId": "N59",
+      "path": "/Users/fordeargamers/Projects/exoduser-migration-20261001/tutorial-badges.js",
+      "sha256": "3177b01590943a9688247b8b504bd3be88afc916cbf9f0e7a54250fa3409670a"
+    },
+    {
+      "commandId": "N59",
+      "path": "/Users/fordeargamers/Projects/exoduser-migration-20261001/parry-lesson.js",
+      "sha256": "628a03f781211637262de0ba9d6105e50e54c886225ff4b7da219992697db381"
+    },
+    {
+      "commandId": "N59",
+      "path": "/Users/fordeargamers/Projects/exoduser-migration-20261001/docs/11내러티브·로어디자인/펫_대사_스크립트.md",
+      "sha256": "81bc579cb6b238099368511666318abf807f9614f1d7c028c03f1cecaae95921"
+    },
+    {
+      "commandId": "N59",
+      "path": "/Users/fordeargamers/Projects/exoduser-migration-20261001/docs/11내러티브·로어디자인/PETS_DESIGN_LOCK.md",
+      "sha256": "e9019fae59bf18d0bfa47408869d2d07442bfd8e468d524da38993ccda4aba3d"
+    },
+    {
+      "commandId": "N59",
+      "path": "/Users/fordeargamers/Projects/exoduser-migration-20261001/docs/11내러티브·로어디자인/WORLD_CORE.md",
+      "sha256": "5f29ed67a28e91251223edc14953053f407126978e58d3af0ca16fd180275a56"
+    },
+    {
+      "commandId": "N59",
+      "path": "/Users/fordeargamers/Projects/exoduser-migration-20261001/docs/2_4 펫시스템/2_4 펫시스템.md",
+      "sha256": "118a703ef82d07b7d0f88f0370d62a34fd4832a7cc291ec2355fd3628ccedae2"
+    },
+    {
+      "commandId": "N59",
+      "path": "/Users/fordeargamers/Projects/exoduser-migration-20261001/docs/2_4 펫시스템/대사_스크립트.md",
+      "sha256": "37da4dd1c467a17e1f873e782e35cb78ce9bea778bfcc8306e681159502e0dae"
+    },
+    {
+      "commandId": "N59",
+      "path": "/Users/fordeargamers/Projects/exoduser-migration-20261001/docs/2게임디자인레벨디자인/SYSTEM_TUTORIAL_20260912.md",
+      "sha256": "1fb936263e71aa07c8ec8fb3cdccb03c3f8dcf2a40146e80b2d57febd62be078"
+    },
+    {
+      "commandId": "N59",
+      "path": "/Users/fordeargamers/Projects/exoduser-migration-20261001/docs/2게임디자인레벨디자인/TUTORIAL_BADGES_20260912.md",
+      "sha256": "d2dfd6b591875a0857507c460c6e146d57cf153c82a2148e5d792bd8be0413ad"
+    },
+    {
+      "commandId": "N59",
+      "path": "/Users/fordeargamers/Projects/exoduser-migration-20261001/docs/15 세이브+데이터구조/15 세이브+데이터구조.md",
+      "sha256": "9c88a0ea27b4d34aeff5a5bc49d05fd75df714a33a1b05739e51ec64584d9d64"
+    },
+    {
+      "commandId": "N59",
+      "path": "/Users/fordeargamers/Projects/exoduser-migration-20261001/AGENTS.md",
+      "sha256": "fd59bef70960bcaf1ab9910051faa860362884e574ac2869fad05c6872ae04e4"
+    },
+    {
+      "commandId": "N59",
+      "path": "/Users/fordeargamers/Projects/exoduser-migration-20261001/docs/0마스터플랜/PROJECT_MANAGEMENT_MASTER.md",
+      "sha256": "4d13244269bf4e5cf99bbb0babc93a7bef6db14bc4168e25c4b3a59e6baa7c92"
+    },
+    {
+      "commandId": "N59",
+      "path": "/Users/fordeargamers/Projects/exoduser-migration-20261001/docs/0마스터플랜/mac-resume-20261001/vscode-dispatch/TEAM_UTILIZATION_20261001.json",
+      "sha256": "c8940720a31c3d64b3170309708cc8e2f397c8028fe5316f2b900cfbba82f5a6"
+    },
+    {
+      "commandId": "N59",
+      "path": "/Users/fordeargamers/Projects/exoduser-migration-20261001/tools/team-followup-20261002/continuous/COMMON.md",
+      "sha256": "de5a881270625a7b2d0e854331205e01372a037340a18474c6442b60e668465e"
+    },
+    {
+      "commandId": "N59",
+      "path": "/Users/fordeargamers/Projects/exoduser-migration-20261001/tools/team-followup-20261002/continuous/QUESTNPC/TASK.md",
+      "sha256": "28aa69438b0547fbcf6f9dd041929492dde0303e64ca92fc9d1aca3d604e4334"
+    },
+    {
+      "commandId": "N59",
+      "path": "/Users/fordeargamers/Projects/exoduser-migration-20261001/tools/team-followup-20261002/new-four/QUESTNPC/TASK.md",
+      "sha256": "bed5f3aa4c5a37ea3a2f30eb7549b65160fd724309ab227455bfeff3674e1040"
+    },
+    {
+      "commandId": "N59",
+      "path": "/Users/fordeargamers/Projects/exoduser-migration-20261001/tools/team-followup-20261002/new-four/QUESTNPC/result.md",
+      "sha256": "9d332afacde33724487787e60adccb4159cccf1c22a035af3da6ea361f6a8548"
+    },
+    {
+      "commandId": "N59",
+      "path": "/Users/fordeargamers/Projects/exoduser-migration-20261001/tools/team-followup-20261002/new-four/QUESTNPC/evidence.json",
+      "sha256": "f249907539901fe4ff5f73bbf132d61d80901d801c020c84c1faa986b9397814"
+    },
+    {
+      "commandId": "N59",
+      "path": "/Users/fordeargamers/Projects/exoduser-migration-20261001/tools/team-followup-20261002/continuous/QUESTNPC/checks.mjs",
+      "sha256": "39856cffd07db3a813f66606142d1ebceb8ddf2281933cd08c92756def60d900"
+    },
+    {
+      "commandId": "N59",
+      "path": "/Users/fordeargamers/Projects/exoduser-migration-20261001/tools/team-followup-20261002/continuous/QUESTNPC/result.md",
+      "sha256": "38d00e30a9642f3b575fed8d5125e47105cee4e639e5629d2742dd3a169af9d2"
+    },
+    {
+      "commandId": "N66",
+      "path": "/Users/fordeargamers/Projects/exoduser-migration-20261001/game.html",
+      "sha256": "2e45ee0e9ad909b378bf1a7b864818ce442a4c3e17b12360b42e363dc7d0bd94"
+    },
+    {
+      "commandId": "N66",
+      "path": "/Users/fordeargamers/Projects/exoduser-migration-20261001/game-easy-test.html",
+      "sha256": "3e5969ca139497c2efb312dc720ab53eb42a8d1912c8288caa2ce858cfd5120a"
+    },
+    {
+      "commandId": "N66",
+      "path": "/Users/fordeargamers/Projects/exoduser-migration-20261001/system-lesson.js",
+      "sha256": "b427b01599c06938a444f315598aac311bcf6d099e40d128541a55470bc57e62"
+    },
+    {
+      "commandId": "N66",
+      "path": "/Users/fordeargamers/Projects/exoduser-migration-20261001/tutorial-badges.js",
+      "sha256": "3177b01590943a9688247b8b504bd3be88afc916cbf9f0e7a54250fa3409670a"
+    },
+    {
+      "commandId": "N66",
+      "path": "/Users/fordeargamers/Projects/exoduser-migration-20261001/parry-lesson.js",
+      "sha256": "628a03f781211637262de0ba9d6105e50e54c886225ff4b7da219992697db381"
+    },
+    {
+      "commandId": "N66",
+      "path": "/Users/fordeargamers/Projects/exoduser-migration-20261001/docs/15 세이브+데이터구조/15 세이브+데이터구조.md",
+      "sha256": "9c88a0ea27b4d34aeff5a5bc49d05fd75df714a33a1b05739e51ec64584d9d64"
+    },
+    {
+      "commandId": "N66",
+      "path": "/Users/fordeargamers/Projects/exoduser-migration-20261001/tools/team-followup-20261002/continuous/QUESTNPC/result.md",
+      "sha256": "e14ae210f0e3717ab1a8ca2098cc51ccc6e62164148727bcb7497f101743d34a"
+    },
+    {
+      "commandId": "N66",
+      "path": "/Users/fordeargamers/Projects/exoduser-migration-20261001/tools/team-followup-20261002/continuous/QUESTNPC/checks.mjs",
+      "sha256": "39856cffd07db3a813f66606142d1ebceb8ddf2281933cd08c92756def60d900"
+    }
+  ],
+  "concurrentChanges": {
+    "observedAtCommand": "N59",
+    "paths": [
+      "/Users/fordeargamers/Projects/exoduser-migration-20261001/game.html",
+      "/Users/fordeargamers/Projects/exoduser-migration-20261001/game-easy-test.html",
+      "/Users/fordeargamers/Projects/exoduser-migration-20261001/docs/15 세이브+데이터구조/15 세이브+데이터구조.md"
+    ],
+    "writerCause": "UNKNOWN; not this task's writes",
+    "preserved": true,
+    "retests": 0,
+    "targetRereadReceipts": [
+      "N62",
+      "N63",
+      "N64",
+      "N65"
+    ],
+    "targetTextComparisons": [
+      {
+        "rereadCommand": "N64",
+        "baselineCommands": [
+          "N20",
+          "N22",
+          "N28"
+        ],
+        "sameLines": 151,
+        "missingBaselineLines": [],
+        "changedLines": [],
+        "basis": "read-only numbered-text comparison; no test rerun"
+      },
+      {
+        "rereadCommand": "N65",
+        "baselineCommands": [
+          "N21",
+          "N29"
+        ],
+        "sameLines": 150,
+        "missingBaselineLines": [],
+        "changedLines": [],
+        "basis": "read-only numbered-text comparison; no test rerun"
+      }
+    ],
+    "finalSnapshotCommand": "N66"
+  },
+  "errors": [
+    {
+      "type": "contract-deviation",
+      "commands": [
+        "N04",
+        "N05"
+      ],
+      "detail": "COMMON 읽기 전에 독립 호출로 묶은 Git readonly 조회 2회. COMMON은 Git 조회도 금지. 이후 Git0, 쓰기/롤백0. 현재 HEAD는 이 이탈 조회의 실제 관측이며 제공 SHA와 혼동하지 않음."
+    }
+  ],
+  "toolReceipts": {
+    "commands": [
+      {
+        "id": "N01",
+        "tool": "exec_command",
+        "workdir": "/Users/fordeargamers/Projects/exoduser-migration-20261001",
+        "command": "cat tools/team-followup-20261002/continuous/QUESTNPC/TASK.md",
+        "purpose": "필수 실행 계약 읽기",
+        "exitCode": 0,
+        "outputTruncated": false,
+        "contractDeviation": false
+      },
+      {
+        "id": "N02",
+        "tool": "exec_command",
+        "workdir": "/Users/fordeargamers/Projects/exoduser-migration-20261001",
+        "command": "cat tools/team-followup-20261002/continuous/COMMON.md",
+        "purpose": "필수 실행 계약 읽기",
+        "exitCode": 0,
+        "outputTruncated": false,
+        "contractDeviation": false
+      },
+      {
+        "id": "N03",
+        "tool": "exec_command",
+        "workdir": "/Users/fordeargamers/Projects/exoduser-migration-20261001",
+        "command": "pwd",
+        "purpose": "실제 cwd",
+        "exitCode": 0,
+        "outputTruncated": false,
+        "contractDeviation": false
+      },
+      {
+        "id": "N04",
+        "tool": "exec_command",
+        "workdir": "/Users/fordeargamers/Projects/exoduser-migration-20261001",
+        "command": "git rev-parse HEAD",
+        "purpose": "COMMON 읽기 전 잘못 수행한 읽기 전용 HEAD 조회",
+        "exitCode": 0,
+        "outputTruncated": false,
+        "contractDeviation": true
+      },
+      {
+        "id": "N05",
+        "tool": "exec_command",
+        "workdir": "/Users/fordeargamers/Projects/exoduser-migration-20261001",
+        "command": "git status --short --untracked-files=all",
+        "purpose": "COMMON 읽기 전 잘못 수행한 읽기 전용 status 조회",
+        "exitCode": 0,
+        "outputTruncated": false,
+        "contractDeviation": true
+      },
+      {
+        "id": "N06",
+        "tool": "exec_command",
+        "workdir": "/Users/fordeargamers/Projects/exoduser-migration-20261001",
+        "command": "cat AGENTS.md",
+        "purpose": "실제 AGENTS 전체",
+        "exitCode": 0,
+        "outputTruncated": false,
+        "contractDeviation": false
+      },
+      {
+        "id": "N07",
+        "tool": "exec_command",
+        "workdir": "/Users/fordeargamers/Projects/exoduser-migration-20261001",
+        "command": "cat 'docs/0마스터플랜/PROJECT_MANAGEMENT_MASTER.md'",
+        "purpose": "현재 총괄 운영 전체",
+        "exitCode": 0,
+        "outputTruncated": true,
+        "contractDeviation": false
+      },
+      {
+        "id": "N08",
+        "tool": "exec_command",
+        "workdir": "/Users/fordeargamers/Projects/exoduser-migration-20261001",
+        "command": "cat 'docs/0마스터플랜/mac-resume-20261001/vscode-dispatch/TEAM_UTILIZATION_20261001.json'",
+        "purpose": "현재 담당표 읽기",
+        "exitCode": 0,
+        "outputTruncated": false,
+        "contractDeviation": false
+      },
+      {
+        "id": "N09",
+        "tool": "exec_command",
+        "workdir": "/Users/fordeargamers/Projects/exoduser-migration-20261001",
+        "command": "rg --files tools/team-followup-20261002/continuous/QUESTNPC",
+        "purpose": "소유 폴더 현존 목록",
+        "exitCode": 0,
+        "outputTruncated": false,
+        "contractDeviation": false
+      },
+      {
+        "id": "N10",
+        "tool": "exec_command",
+        "workdir": "/Users/fordeargamers/Projects/exoduser-migration-20261001",
+        "command": "shasum -a 256 game.html game-easy-test.html system-lesson.js tutorial-badges.js AGENTS.md 'docs/0마스터플랜/PROJECT_MANAGEMENT_MASTER.md' 'docs/0마스터플랜/mac-resume-20261001/vscode-dispatch/TEAM_UTILIZATION_20261001.json' tools/team-followup-20261002/continuous/COMMON.md tools/team-followup-20261002/continuous/QUESTNPC/TASK.md tools/team-followup-20261002/new-four/QUESTNPC/TASK.md tools/team-followup-20261002/new-four/QUESTNPC/result.md tools/team-followup-20261002/new-four/QUESTNPC/evidence.json",
+        "purpose": "현재 생산/계약/이전 산출 SHA",
+        "exitCode": 0,
+        "outputTruncated": false,
+        "contractDeviation": false
+      },
+      {
+        "id": "N11",
+        "tool": "exec_command",
+        "workdir": "/Users/fordeargamers/Projects/exoduser-migration-20261001",
+        "command": "cat 'docs/11내러티브·로어디자인/펫_대사_스크립트.md' 'docs/11내러티브·로어디자인/PETS_DESIGN_LOCK.md' 'docs/2게임디자인레벨디자인/SYSTEM_TUTORIAL_20260912.md'",
+        "purpose": "현재 승인 대사/LOCK/안내 계약",
+        "exitCode": 0,
+        "outputTruncated": false,
+        "contractDeviation": false
+      },
+      {
+        "id": "N12",
+        "tool": "exec_command",
+        "workdir": "/Users/fordeargamers/Projects/exoduser-migration-20261001",
+        "command": "rg -n '디로이|핵터|NPC|동료|충|_petTut|firstItem|_petSay|_checkPetDialogue|cooldown|CD|cutsceneDone|tutorial-badges|배지|skipped|튜토리얼' 'docs/11내러티브·로어디자인/WORLD_CORE.md' 'docs/2_4 펫시스템/2_4 펫시스템.md' 'docs/15 세이브+데이터구조/15 세이브+데이터구조.md'",
+        "purpose": "필수 SSOT 관련 절 위치",
+        "exitCode": 0,
+        "outputTruncated": false,
+        "contractDeviation": false
+      },
+      {
+        "id": "N13",
+        "tool": "exec_command",
+        "workdir": "/Users/fordeargamers/Projects/exoduser-migration-20261001",
+        "command": "nl -ba 'docs/11내러티브·로어디자인/WORLD_CORE.md' | sed -n '163,185p;287,303p;382,386p'",
+        "purpose": "WORLD companion/비중/TBD 절",
+        "exitCode": 0,
+        "outputTruncated": false,
+        "contractDeviation": false
+      },
+      {
+        "id": "N14",
+        "tool": "exec_command",
+        "workdir": "/Users/fordeargamers/Projects/exoduser-migration-20261001",
+        "command": "nl -ba 'docs/2_4 펫시스템/2_4 펫시스템.md' | sed -n '1,74p;200,234p'",
+        "purpose": "펫 역할·CD·현재 표시 UI 절",
+        "exitCode": 0,
+        "outputTruncated": false,
+        "contractDeviation": false
+      },
+      {
+        "id": "N15",
+        "tool": "exec_command",
+        "workdir": "/Users/fordeargamers/Projects/exoduser-migration-20261001",
+        "command": "nl -ba 'docs/15 세이브+데이터구조/15 세이브+데이터구조.md' | sed -n '27,45p;170,177p;188,221p;394,420p'",
+        "purpose": "기존 run/INTRO/튜토리얼 저장 경계",
+        "exitCode": 0,
+        "outputTruncated": false,
+        "contractDeviation": false
+      },
+      {
+        "id": "N16",
+        "tool": "exec_command",
+        "workdir": "/Users/fordeargamers/Projects/exoduser-migration-20261001",
+        "command": "cat tools/team-followup-20261002/new-four/QUESTNPC/TASK.md tools/team-followup-20261002/new-four/QUESTNPC/result.md",
+        "purpose": "이전 지도/초안 입력 읽기(검사 실행 없음)",
+        "exitCode": 0,
+        "outputTruncated": false,
+        "contractDeviation": false
+      },
+      {
+        "id": "N17",
+        "tool": "exec_command",
+        "workdir": "/Users/fordeargamers/Projects/exoduser-migration-20261001",
+        "command": "cat tools/team-followup-20261002/new-four/QUESTNPC/evidence.json",
+        "purpose": "이전 근거 읽기(과거 SHA/조사를 현재로 전용하지 않음)",
+        "exitCode": 0,
+        "outputTruncated": false,
+        "contractDeviation": false
+      },
+      {
+        "id": "N18",
+        "tool": "exec_command",
+        "workdir": "/Users/fordeargamers/Projects/exoduser-migration-20261001",
+        "command": "rg -n --max-columns 260 --max-columns-preview 'function (_petSay|_petSayCD|_checkPetDialogue|updatePet|initStage|nextStage|pickupItem|equipItem)|_petTut|_petGlobalCD|_petBubble|system-lesson|_systemLesson\\.(update|pickedUp|equipped|close)|_petDlgCD' game.html game-easy-test.html",
+        "purpose": "현재 정의/호출/reset 위치",
+        "exitCode": 0,
+        "outputTruncated": false,
+        "contractDeviation": false
+      },
+      {
+        "id": "N19",
+        "tool": "exec_command",
+        "workdir": "/Users/fordeargamers/Projects/exoduser-migration-20261001",
+        "command": "rg -n --max-columns 260 --max-columns-preview 'function (close|skip|update|start|record)|active|closed|checks|skipped|tutorial-badges|localStorage|_systemLesson|complete|death|reset|G.stage' system-lesson.js tutorial-badges.js",
+        "purpose": "실제 import된 안내·배지 수명 인덱스",
+        "exitCode": 0,
+        "outputTruncated": false,
+        "contractDeviation": false
+      },
+      {
+        "id": "N20",
+        "tool": "exec_command",
+        "workdir": "/Users/fordeargamers/Projects/exoduser-migration-20261001",
+        "command": "nl -ba game.html | sed -n '8980,8997p;9058,9082p;9083,9192p;9193,9246p'",
+        "purpose": "현재 main 표시기/CD/선행 guard/firstItem 전체",
+        "exitCode": 0,
+        "outputTruncated": false,
+        "contractDeviation": false
+      },
+      {
+        "id": "N21",
+        "tool": "exec_command",
+        "workdir": "/Users/fordeargamers/Projects/exoduser-migration-20261001",
+        "command": "nl -ba game-easy-test.html | sed -n '8430,8454p;8514,8645p;8646,8699p'",
+        "purpose": "현재 easy 표시기/CD/선행 guard/firstItem 전체",
+        "exitCode": 0,
+        "outputTruncated": false,
+        "contractDeviation": false
+      },
+      {
+        "id": "N22",
+        "tool": "exec_command",
+        "workdir": "/Users/fordeargamers/Projects/exoduser-migration-20261001",
+        "command": "nl -ba game.html | sed -n '40085,40142p;42340,42375p;42410,42435p;30290,30340p;29537,29554p'",
+        "purpose": "updatePet caller와 사망/구역/스테이지 reset 경계",
+        "exitCode": 0,
+        "outputTruncated": false,
+        "contractDeviation": false
+      },
+      {
+        "id": "N23",
+        "tool": "exec_command",
+        "workdir": "/Users/fordeargamers/Projects/exoduser-migration-20261001",
+        "command": "nl -ba system-lesson.js | sed -n '1,35p;60,99p;126,161p'",
+        "purpose": "시스템 안내 close/skip/update/pickup/equip 경계",
+        "exitCode": 0,
+        "outputTruncated": false,
+        "contractDeviation": false
+      },
+      {
+        "id": "N24",
+        "tool": "exec_command",
+        "workdir": "/Users/fordeargamers/Projects/exoduser-migration-20261001",
+        "command": "nl -ba tutorial-badges.js | sed -n '1,22p;50,66p'",
+        "purpose": "배지 메모리/slot localStorage/중복 보호",
+        "exitCode": 0,
+        "outputTruncated": false,
+        "contractDeviation": false
+      },
+      {
+        "id": "N25",
+        "tool": "exec_command",
+        "workdir": "/Users/fordeargamers/Projects/exoduser-migration-20261001",
+        "command": "rg -n --max-columns 220 --max-columns-preview 'updatePet\\(\\)|_petTickDlgCD\\(|function _petTick|_petGCD|_petCurrentTier|_petPriority|function _isDemoFinaleBattle|function update\\(|function _start|for\\(.*_petTut|Object.*_petTut|_petTut\\s*=|_petTut\\.[a-zA-Z]+\\s*=' game.html game-easy-test.html",
+        "purpose": "표시 수명 tick·실제 호출 선행 경로·튜토리얼 reset 쓰기 전체",
+        "exitCode": 0,
+        "outputTruncated": false,
+        "contractDeviation": false
+      },
+      {
+        "id": "N26",
+        "tool": "exec_command",
+        "workdir": "/Users/fordeargamers/Projects/exoduser-migration-20261001",
+        "command": "nl -ba game.html | sed -n '15629,15646p;15670,15708p;30985,31002p'",
+        "purpose": "실제 획득/장착 성공 caller 및 주변",
+        "exitCode": 0,
+        "outputTruncated": false,
+        "contractDeviation": false
+      },
+      {
+        "id": "N27",
+        "tool": "exec_command",
+        "workdir": "/Users/fordeargamers/Projects/exoduser-migration-20261001",
+        "command": "nl -ba game-easy-test.html | sed -n '14735,14755p;14790,14823p'",
+        "purpose": "easy 실제 획득/장착 caller",
+        "exitCode": 0,
+        "outputTruncated": false,
+        "contractDeviation": false
+      },
+      {
+        "id": "N28",
+        "tool": "exec_command",
+        "workdir": "/Users/fordeargamers/Projects/exoduser-migration-20261001",
+        "command": "nl -ba game.html | sed -n '30854,30915p;31430,31443p;38898,38902p'",
+        "purpose": "update 실제 선행 guard와 pet caller",
+        "exitCode": 0,
+        "outputTruncated": false,
+        "contractDeviation": false
+      },
+      {
+        "id": "N29",
+        "tool": "exec_command",
+        "workdir": "/Users/fordeargamers/Projects/exoduser-migration-20261001",
+        "command": "nl -ba game-easy-test.html | sed -n '29672,29731p;38888,38900p'",
+        "purpose": "easy update/펫 caller 실제 guard",
+        "exitCode": 0,
+        "outputTruncated": false,
+        "contractDeviation": false
+      },
+      {
+        "id": "N30",
+        "tool": "exec_command",
+        "workdir": "/Users/fordeargamers/Projects/exoduser-migration-20261001",
+        "command": "rg -n --max-columns 230 --max-columns-preview 'pickupItem\\(|worldItems|BINDS\\.interact|KeyR|function.*[Pp]ickup|G\\.on=false|_deathDlgStart\\(' game.html game-easy-test.html",
+        "purpose": "정상 수거 caller/사망 진입 검색",
+        "exitCode": 0,
+        "outputTruncated": false,
+        "contractDeviation": false
+      },
+      {
+        "id": "N31",
+        "tool": "exec_command",
+        "workdir": "/Users/fordeargamers/Projects/exoduser-migration-20261001",
+        "command": "rg -n 'firstItem|_petTut|tut_firstItem|_petSayCD|_PET_TIER_COOL|_checkPetDialogue|_petBubble|시스템 7항목|슬롯별.*배지' docs/",
+        "purpose": "후속 경계 관련 docs 전체 검색",
+        "exitCode": 0,
+        "outputTruncated": false,
+        "contractDeviation": false
+      },
+      {
+        "id": "N32",
+        "tool": "exec_command",
+        "workdir": "/Users/fordeargamers/Projects/exoduser-migration-20261001",
+        "command": "nl -ba 'docs/0마스터플랜/PROJECT_MANAGEMENT_MASTER.md' | sed -n '1,210p'",
+        "purpose": "잘린 PM 앞 범위 읽기",
+        "exitCode": 0,
+        "outputTruncated": false,
+        "contractDeviation": false
+      },
+      {
+        "id": "N33",
+        "tool": "exec_command",
+        "workdir": "/Users/fordeargamers/Projects/exoduser-migration-20261001",
+        "command": "nl -ba 'docs/0마스터플랜/PROJECT_MANAGEMENT_MASTER.md' | sed -n '211,410p'",
+        "purpose": "잘린 PM 두 번째 범위 읽기",
+        "exitCode": 0,
+        "outputTruncated": false,
+        "contractDeviation": false
+      },
+      {
+        "id": "N34",
+        "tool": "exec_command",
+        "workdir": "/Users/fordeargamers/Projects/exoduser-migration-20261001",
+        "command": "nl -ba 'docs/0마스터플랜/PROJECT_MANAGEMENT_MASTER.md' | sed -n '411,610p'",
+        "purpose": "잘린 PM 세 번째 범위 읽기",
+        "exitCode": 0,
+        "outputTruncated": false,
+        "contractDeviation": false
+      },
+      {
+        "id": "N35",
+        "tool": "exec_command",
+        "workdir": "/Users/fordeargamers/Projects/exoduser-migration-20261001",
+        "command": "nl -ba 'docs/0마스터플랜/PROJECT_MANAGEMENT_MASTER.md' | sed -n '611,840p'",
+        "purpose": "PM 최신 운영 범위 읽기",
+        "exitCode": 0,
+        "outputTruncated": false,
+        "contractDeviation": false
+      },
+      {
+        "id": "N36",
+        "tool": "exec_command",
+        "workdir": "/Users/fordeargamers/Projects/exoduser-migration-20261001",
+        "command": "nl -ba 'docs/2게임디자인레벨디자인/TUTORIAL_BADGES_20260912.md' | sed -n '1,55p'",
+        "purpose": "canonical slot badge·skip·중복 계약",
+        "exitCode": 0,
+        "outputTruncated": false,
+        "contractDeviation": false
+      },
+      {
+        "id": "N37",
+        "tool": "exec_command",
+        "workdir": "/Users/fordeargamers/Projects/exoduser-migration-20261001",
+        "command": "cat tools/team-followup-20261002/continuous/QUESTNPC/TASK.md",
+        "purpose": "총괄 Git조회0 문구 정정 TASK 재독",
+        "exitCode": 0,
+        "outputTruncated": false,
+        "contractDeviation": false
+      },
+      {
+        "id": "N38",
+        "tool": "exec_command",
+        "workdir": "/Users/fordeargamers/Projects/exoduser-migration-20261001",
+        "command": "rg -n 'script.*(parry|resource|system-lesson|tutorial-badges)|function doDie|function _.*[Dd]eath|tick\\(' parry-lesson.js game.html game-easy-test.html",
+        "purpose": "실제 추가 안내 import/교전실습 caller 보충",
+        "exitCode": 0,
+        "outputTruncated": false,
+        "contractDeviation": false
+      },
+      {
+        "id": "N39",
+        "tool": "exec_command",
+        "workdir": "/Users/fordeargamers/Projects/exoduser-migration-20261001",
+        "command": "shasum -a 256 'docs/11내러티브·로어디자인/펫_대사_스크립트.md' 'docs/11내러티브·로어디자인/PETS_DESIGN_LOCK.md' 'docs/11내러티브·로어디자인/WORLD_CORE.md' 'docs/2_4 펫시스템/2_4 펫시스템.md' 'docs/2게임디자인레벨디자인/SYSTEM_TUTORIAL_20260912.md' 'docs/2게임디자인레벨디자인/TUTORIAL_BADGES_20260912.md' 'docs/15 세이브+데이터구조/15 세이브+데이터구조.md' tools/team-followup-20261002/continuous/QUESTNPC/TASK.md",
+        "purpose": "canonical 참조/정정 TASK 최초 SHA",
+        "exitCode": 0,
+        "outputTruncated": false,
+        "contractDeviation": false
+      },
+      {
+        "id": "N40",
+        "tool": "exec_command",
+        "workdir": "/Users/fordeargamers/Projects/exoduser-migration-20261001",
+        "command": "rg -n 'const _PET_OP_MAX|function pickupItem|function _petSay\\(|function _checkPetDialogue' game.html game-easy-test.html",
+        "purpose": "새 fixture 추출 marker 실제 확인",
+        "exitCode": 0,
+        "outputTruncated": false,
+        "contractDeviation": false
+      },
+      {
+        "id": "N41",
+        "tool": "exec_command",
+        "workdir": "/Users/fordeargamers/Projects/exoduser-migration-20261001",
+        "command": "nl -ba parry-lesson.js | sed -n '460,490p'",
+        "purpose": "전투실습 완료 뒤 tick false 반환 실제 계약",
+        "exitCode": 0,
+        "outputTruncated": false,
+        "contractDeviation": false
+      },
+      {
+        "id": "N42",
+        "tool": "exec_command",
+        "workdir": "/Users/fordeargamers/Projects/exoduser-migration-20261001",
+        "command": "nl -ba game.html | sed -n '31643,31695p;42387,42396p;9463,9473p'",
+        "purpose": "R 수거 guard/소유확인·사망 중단 보충",
+        "exitCode": 0,
+        "outputTruncated": false,
+        "contractDeviation": false
+      },
+      {
+        "id": "N43",
+        "tool": "exec_command",
+        "workdir": "/Users/fordeargamers/Projects/exoduser-migration-20261001",
+        "command": "nl -ba game-easy-test.html | sed -n '30460,30512p;41147,41158p;41184,41190p'",
+        "purpose": "easy R 수거/사망 bubble 취소 실제",
+        "exitCode": 0,
+        "outputTruncated": false,
+        "contractDeviation": false
+      },
+      {
+        "id": "N44",
+        "tool": "exec_command",
+        "workdir": "/Users/fordeargamers/Projects/exoduser-migration-20261001",
+        "command": "nl -ba 'docs/2_4 펫시스템/대사_스크립트.md' | sed -n '1,40p;90,105p;195,207p'",
+        "purpose": "v7 우선순위와 firstItem canonical 원문",
+        "exitCode": 0,
+        "outputTruncated": false,
+        "contractDeviation": false
+      },
+      {
+        "id": "N45",
+        "tool": "exec_command",
+        "workdir": "/Users/fordeargamers/Projects/exoduser-migration-20261001",
+        "command": "shasum -a 256 parry-lesson.js 'docs/2_4 펫시스템/대사_스크립트.md' tools/team-followup-20261002/continuous/QUESTNPC/checks.mjs",
+        "purpose": "추가 caller/명세 및 신규 fixture SHA",
+        "exitCode": 0,
+        "outputTruncated": false,
+        "contractDeviation": false
+      },
+      {
+        "id": "N46",
+        "tool": "exec_command",
+        "workdir": "/Users/fordeargamers/Projects/exoduser-migration-20261001",
+        "command": "/Users/fordeargamers/.local/node-runtime/node-v24.15.0-darwin-arm64/bin/node /Users/fordeargamers/Projects/exoduser-migration-20261001/tools/team-followup-20261002/continuous/QUESTNPC/checks.mjs",
+        "purpose": "새 firstItem 실제 caller/source 경계 한 번 실행",
+        "exitCode": 0,
+        "outputTruncated": false,
+        "contractDeviation": false
+      },
+      {
+        "id": "N47",
+        "tool": "exec_command",
+        "workdir": "/Users/fordeargamers/Projects/exoduser-migration-20261001",
+        "command": "rg -n 'tut_firstItem|_petTut\\.firstItem|_petSayCD|_petTierCD|_PET_TIER_COOL|_checkPetDialogue|_petBubble|건너뛰기는 성공|시스템 7항목|tutorial-badges:v1' docs/",
+        "purpose": "신규 fixture 작성 후 docs 전체 canonical 동기화 검색",
+        "exitCode": 0,
+        "outputTruncated": false,
+        "contractDeviation": false
+      },
+      {
+        "id": "N48",
+        "tool": "exec_command",
+        "workdir": "/Users/fordeargamers/Projects/exoduser-migration-20261001",
+        "command": "nl -ba game.html | sed -n '9242,9288p;9420,9438p'",
+        "purpose": "후보 반복 return의 후속 튜토리얼/경쟁 디스패치 영향 읽기",
+        "exitCode": 0,
+        "outputTruncated": false,
+        "contractDeviation": false
+      },
+      {
+        "id": "N49",
+        "tool": "exec_command",
+        "workdir": "/Users/fordeargamers/Projects/exoduser-migration-20261001",
+        "command": "nl -ba game-easy-test.html | sed -n '8693,8736p;8870,8890p'",
+        "purpose": "easy 후속 튜토리얼/경쟁 디스패치 영향 읽기",
+        "exitCode": 0,
+        "outputTruncated": false,
+        "contractDeviation": false
+      },
+      {
+        "id": "N50",
+        "tool": "exec_command",
+        "workdir": "/Users/fordeargamers/Projects/exoduser-migration-20261001",
+        "command": "rg -n '_petTut\\.firstItem|firstItem:|_systemLesson\\.(closed|seen|active)|_petTut\\s*=|Object\\.(assign|keys).*_petTut|for.*_petTut' game.html game-easy-test.html system-lesson.js tutorial-badges.js",
+        "purpose": "직접 firstItem/reset/guide 상태 변경 검색",
+        "exitCode": 0,
+        "outputTruncated": false,
+        "contractDeviation": false
+      },
+      {
+        "id": "N51",
+        "tool": "exec_command",
+        "workdir": "/Users/fordeargamers/Projects/exoduser-migration-20261001",
+        "command": "shasum -a 256 game.html game-easy-test.html system-lesson.js tutorial-badges.js parry-lesson.js 'docs/11내러티브·로어디자인/펫_대사_스크립트.md' 'docs/11내러티브·로어디자인/PETS_DESIGN_LOCK.md' 'docs/11내러티브·로어디자인/WORLD_CORE.md' 'docs/2_4 펫시스템/2_4 펫시스템.md' 'docs/2_4 펫시스템/대사_스크립트.md' 'docs/2게임디자인레벨디자인/SYSTEM_TUTORIAL_20260912.md' 'docs/2게임디자인레벨디자인/TUTORIAL_BADGES_20260912.md' 'docs/15 세이브+데이터구조/15 세이브+데이터구조.md' AGENTS.md 'docs/0마스터플랜/PROJECT_MANAGEMENT_MASTER.md' 'docs/0마스터플랜/mac-resume-20261001/vscode-dispatch/TEAM_UTILIZATION_20261001.json' tools/team-followup-20261002/continuous/COMMON.md tools/team-followup-20261002/continuous/QUESTNPC/TASK.md tools/team-followup-20261002/new-four/QUESTNPC/TASK.md tools/team-followup-20261002/new-four/QUESTNPC/result.md tools/team-followup-20261002/new-four/QUESTNPC/evidence.json tools/team-followup-20261002/continuous/QUESTNPC/checks.mjs",
+        "purpose": "실행 뒤 생산·canonical·기존 산출 보존 SHA",
+        "exitCode": 0,
+        "outputTruncated": false,
+        "contractDeviation": false
+      },
+      {
+        "id": "N52",
+        "tool": "exec_command",
+        "workdir": "/Users/fordeargamers/Projects/exoduser-migration-20261001",
+        "command": "nl -ba game.html | sed -n '9044,9065p'",
+        "purpose": "bool 수락과 실제 자막 DOM 표시의 구분",
+        "exitCode": 0,
+        "outputTruncated": false,
+        "contractDeviation": false
+      },
+      {
+        "id": "N53",
+        "tool": "exec_command",
+        "workdir": "/Users/fordeargamers/Projects/exoduser-migration-20261001",
+        "command": "nl -ba game-easy-test.html | sed -n '8499,8520p'",
+        "purpose": "easy 자막 DOM 부재 시 표시 의미",
+        "exitCode": 0,
+        "outputTruncated": false,
+        "contractDeviation": false
+      },
+      {
+        "id": "N54",
+        "tool": "exec_command",
+        "workdir": "/Users/fordeargamers/Projects/exoduser-migration-20261001",
+        "command": "nl -ba game.html | sed -n '31556,31568p;42375,42387p'",
+        "purpose": "R 수거 진입과 사망 전 환원 범위 보충",
+        "exitCode": 0,
+        "outputTruncated": false,
+        "contractDeviation": false
+      },
+      {
+        "id": "N55",
+        "tool": "exec_command",
+        "workdir": "/Users/fordeargamers/Projects/exoduser-migration-20261001",
+        "command": "nl -ba game-easy-test.html | sed -n '30373,30385p'",
+        "purpose": "easy R 수거 진입",
+        "exitCode": 0,
+        "outputTruncated": false,
+        "contractDeviation": false
+      },
+      {
+        "id": "N56",
+        "tool": "exec_command",
+        "workdir": "/Users/fordeargamers/Projects/exoduser-migration-20261001",
+        "command": "rg -n \"if\\(isJust\\('interact'\\)\\)\" game.html game-easy-test.html",
+        "purpose": "장비 수거 실제 입력 진입 조건",
+        "exitCode": 0,
+        "outputTruncated": false,
+        "contractDeviation": false
+      },
+      {
+        "id": "N57",
+        "tool": "exec_command",
+        "workdir": "/Users/fordeargamers/Projects/exoduser-migration-20261001",
+        "command": "nl -ba game.html | sed -n '31537,31549p';",
+        "purpose": "수거 진입 앞 실제 줄 보충",
+        "exitCode": 0,
+        "outputTruncated": false,
+        "contractDeviation": false
+      },
+      {
+        "id": "N58",
+        "tool": "exec_command",
+        "workdir": "/Users/fordeargamers/Projects/exoduser-migration-20261001",
+        "command": "nl -ba game.html | sed -n '31549,31556p'",
+        "purpose": "main 수거 입력 guard 실제 확인",
+        "exitCode": 0,
+        "outputTruncated": false,
+        "contractDeviation": false
+      },
+      {
+        "id": "N59",
+        "tool": "exec_command",
+        "workdir": "/Users/fordeargamers/Projects/exoduser-migration-20261001",
+        "command": "shasum -a 256 game.html game-easy-test.html system-lesson.js tutorial-badges.js parry-lesson.js 'docs/11내러티브·로어디자인/펫_대사_스크립트.md' 'docs/11내러티브·로어디자인/PETS_DESIGN_LOCK.md' 'docs/11내러티브·로어디자인/WORLD_CORE.md' 'docs/2_4 펫시스템/2_4 펫시스템.md' 'docs/2_4 펫시스템/대사_스크립트.md' 'docs/2게임디자인레벨디자인/SYSTEM_TUTORIAL_20260912.md' 'docs/2게임디자인레벨디자인/TUTORIAL_BADGES_20260912.md' 'docs/15 세이브+데이터구조/15 세이브+데이터구조.md' AGENTS.md 'docs/0마스터플랜/PROJECT_MANAGEMENT_MASTER.md' 'docs/0마스터플랜/mac-resume-20261001/vscode-dispatch/TEAM_UTILIZATION_20261001.json' tools/team-followup-20261002/continuous/COMMON.md tools/team-followup-20261002/continuous/QUESTNPC/TASK.md tools/team-followup-20261002/new-four/QUESTNPC/TASK.md tools/team-followup-20261002/new-four/QUESTNPC/result.md tools/team-followup-20261002/new-four/QUESTNPC/evidence.json tools/team-followup-20261002/continuous/QUESTNPC/checks.mjs tools/team-followup-20261002/continuous/QUESTNPC/result.md",
+        "purpose": "결과 작성 뒤 최종 보존 SHA/소유 result·checks SHA",
+        "exitCode": 0,
+        "outputTruncated": false,
+        "contractDeviation": false
+      },
+      {
+        "id": "N60",
+        "tool": "exec_command",
+        "workdir": "/Users/fordeargamers/Projects/exoduser-migration-20261001",
+        "command": "cat tools/team-followup-20261002/continuous/QUESTNPC/result.md",
+        "purpose": "작성된 한국어 결과 보고서 실제 읽기",
+        "exitCode": 0,
+        "outputTruncated": false,
+        "contractDeviation": false
+      },
+      {
+        "id": "N61",
+        "tool": "exec_command",
+        "workdir": "/Users/fordeargamers/Projects/exoduser-migration-20261001",
+        "command": "rg --files tools/team-followup-20261002/continuous/QUESTNPC",
+        "purpose": "소유 폴더 최종 파일 목록",
+        "exitCode": 0,
+        "outputTruncated": false,
+        "contractDeviation": false
+      },
+      {
+        "id": "N62",
+        "tool": "exec_command",
+        "workdir": "/Users/fordeargamers/Projects/exoduser-migration-20261001",
+        "command": "rg -n '^function (_checkPetDialogue|_petSayCD|_petSay|updatePet|update|pickupItem)\\(|if\\(!_petTut\\.firstItem|if\\(!G\\.on\\|\\|!G\\.pets\\)|if\\(!G\\.on\\)return;|if\\(G\\.paused\\)return;|if\\(G\\.pets\\)updatePet\\(\\)' game.html game-easy-test.html",
+        "purpose": "同時 변경 후 선택 경계·caller 위치 다시 읽기(검사 실행 없음)",
+        "exitCode": 0,
+        "outputTruncated": false,
+        "contractDeviation": false
+      },
+      {
+        "id": "N63",
+        "tool": "exec_command",
+        "workdir": "/Users/fordeargamers/Projects/exoduser-migration-20261001",
+        "command": "nl -ba 'docs/15 세이브+데이터구조/15 세이브+데이터구조.md' | sed -n '31,41p;170,177p;188,221p'",
+        "purpose": "同時 변경된 저장 SSOT 관련 절 다시 읽기",
+        "exitCode": 0,
+        "outputTruncated": false,
+        "contractDeviation": false
+      },
+      {
+        "id": "N64",
+        "tool": "exec_command",
+        "workdir": "/Users/fordeargamers/Projects/exoduser-migration-20261001",
+        "command": "nl -ba game.html | sed -n '8980,8995p;9066,9078p;9085,9100p;9148,9156p;9184,9245p;30857,30881p;30910p;40091,40099p'",
+        "purpose": "동시 source 변경 후 실제 읽었던 경계 조각 재독",
+        "exitCode": 0,
+        "outputTruncated": false,
+        "contractDeviation": false
+      },
+      {
+        "id": "N65",
+        "tool": "exec_command",
+        "workdir": "/Users/fordeargamers/Projects/exoduser-migration-20261001",
+        "command": "nl -ba game-easy-test.html | sed -n '8435,8450p;8521,8533p;8536,8551p;8599,8607p;8635,8696p;29675,29698p;29727p;38891,38899p'",
+        "purpose": "동시 easy 변경 후 실제 경계 조각 재독",
+        "exitCode": 0,
+        "outputTruncated": false,
+        "contractDeviation": false
+      },
+      {
+        "id": "N66",
+        "tool": "exec_command",
+        "workdir": "/Users/fordeargamers/Projects/exoduser-migration-20261001",
+        "command": "shasum -a 256 game.html game-easy-test.html system-lesson.js tutorial-badges.js parry-lesson.js 'docs/15 세이브+데이터구조/15 세이브+데이터구조.md' tools/team-followup-20261002/continuous/QUESTNPC/result.md tools/team-followup-20261002/continuous/QUESTNPC/checks.mjs",
+        "purpose": "보고서 정정 뒤 마지막 source/소유 출력 SHA 관측(검사·Git 없음)",
+        "exitCode": 0,
+        "outputTruncated": false,
+        "contractDeviation": false
+      }
+    ],
+    "mutations": [
+      {
+        "tool": "apply_patch",
+        "operation": "add checks.mjs",
+        "path": "/Users/fordeargamers/Projects/exoduser-migration-20261001/tools/team-followup-20261002/continuous/QUESTNPC/checks.mjs"
+      },
+      {
+        "tool": "apply_patch",
+        "operation": "add result.md then amend preservation row",
+        "path": "/Users/fordeargamers/Projects/exoduser-migration-20261001/tools/team-followup-20261002/continuous/QUESTNPC/result.md"
+      },
+      {
+        "tool": "apply_patch",
+        "operation": "add evidence.json",
+        "path": "/Users/fordeargamers/Projects/exoduser-migration-20261001/tools/team-followup-20261002/continuous/QUESTNPC/evidence.json"
+      }
+    ],
+    "clockTool": "clock__curr_time",
+    "orchestrationTool": "functions.exec",
+    "skillsUsed": [],
+    "externalAPIMCPUsed": [],
+    "nodeInternalAPIs": [
+      "node:fs",
+      "node:vm",
+      "node:crypto",
+      "node:assert/strict",
+      "node:path"
+    ],
+    "notes": "No task/COMMON/PM/prompt originals, thinking, authentication or unrelated status content copied. Command receipts and permitted docs matches retained."
+  },
+  "outputHashes": [
+    {
+      "commandId": "N66",
+      "path": "/Users/fordeargamers/Projects/exoduser-migration-20261001/tools/team-followup-20261002/continuous/QUESTNPC/result.md",
+      "sha256": "e14ae210f0e3717ab1a8ca2098cc51ccc6e62164148727bcb7497f101743d34a"
+    },
+    {
+      "commandId": "N66",
+      "path": "/Users/fordeargamers/Projects/exoduser-migration-20261001/tools/team-followup-20261002/continuous/QUESTNPC/checks.mjs",
+      "sha256": "39856cffd07db3a813f66606142d1ebceb8ddf2281933cd08c92756def60d900"
+    }
+  ],
+  "evidenceSelfHash": null,
+  "evidenceSelfHashReason": "self hash excluded to avoid recursive digest"
+}

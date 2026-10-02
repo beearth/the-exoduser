@@ -1,0 +1,90 @@
+{
+  "taskId": "continuous-ART-cover-failure",
+  "role": "ART",
+  "model": "claude-opus-4-8",
+  "provider": "claude-native (VS Code 직연결 Claude6)",
+  "requestedBy": "peer Claude session (총괄 승인 전달); 사용자 직접 타이핑 아님",
+  "confirmedChatId": null,
+  "confirmedSessionId": null,
+  "taskFile": "tools/team-followup-20261002/continuous/ART/TASK.md",
+  "taskFileSha256": "43a5e3c5f07e084fd712333bf7c6804271b19eb717c3167464168d7879ab5e32",
+  "commonFile": "tools/team-followup-20261002/continuous/COMMON.md",
+  "commonFileSha256": "de5a881270625a7b2d0e854331205e01372a037340a18474c6442b60e668465e",
+  "cwd": "/Users/fordeargamers/Projects/exoduser-migration-20261001",
+  "providedCommitFromPM": {
+    "commit": "7e69495046323b3120578f67635c20feb48b2a4f",
+    "source": "COMMON.md 제공(총괄) — 카드 수명·NW.js 실패 응답 반영",
+    "independentHeadObserved": false,
+    "note": "git 조회 안 함. 제공 commit을 현재 HEAD로 표시하지 않음."
+  },
+  "timeline": {
+    "startUTC": "2026-10-02T05:31:00Z",
+    "startKST": "2026-10-02T14:31:00+09:00",
+    "completedUTC": "2026-10-02T05:38:00Z",
+    "completedKST": "2026-10-02T14:38:00+09:00"
+  },
+  "changesCount": { "start": 42, "observedDuringTask": 54, "note": "읽기전용 관측. 소유 2파일만 추가. 80 임계 미도달, stage/commit/push 0. 증가분은 타 담당/총괄 통합 포함 추정(독립 확인 안 함)" },
+  "ownedOutputs": [
+    { "path": "tools/team-followup-20261002/continuous/ART/result.md", "sha256": "0311dee489f88d7e87629a9193484c44d37a1543cef65b9e968e92b5c420af1d" },
+    { "path": "tools/team-followup-20261002/continuous/ART/evidence.json", "sha256": "self" }
+  ],
+  "newFixtureWritten": false,
+  "newFixtureExecuted": false,
+  "priorChecksRerun": false,
+  "sourceShaFreshThisSession": {
+    "game.html": "2e45ee0e9ad909b378bf1a7b864818ce442a4c3e17b12360b42e363dc7d0bd94",
+    "game-easy-test.html": "3e5969ca139497c2efb312dc720ab53eb42a8d1912c8288caa2ce858cfd5120a",
+    "assets/cutscene/warintro/emg1.jpg": "96e5e41900c60292488bb4cd3a2becf2e98297e522143177143f0be3b31fabf1",
+    "docs/11내러티브·로어디자인/assets/warrior_identity_ref.png": "3bbde9d07e9a88d0b849ef6913a3f2c78ccca57e412461f206864c788c5c7868",
+    "docs/11내러티브·로어디자인/assets/warrior_face_ref.png": "b8aae22efd571298731ebee12061ef9b76ce4542e3c816af97a99d15347f0648",
+    "assets/charselect/warrior_cut.png": "58e68f5f996c31966e9109c2de421185d93d138cec4fd5600da0ca1b58debfd4"
+  },
+  "shaTimepointDistinction": {
+    "game.html_priorTaskRecord": "30ae8544524d7cd710383ebd10f4911bea3247e90b18a46c51c253e73ce9ba3f",
+    "game.html_currentThisSession": "2e45ee0e9ad909b378bf1a7b864818ce442a4c3e17b12360b42e363dc7d0bd94",
+    "changed": true,
+    "interpretation": "총괄 UI 카드수명 가드 순차 통합 시점 차이. 이전 영수증 SHA/PASS 수를 현재값으로 재사용하지 않음.",
+    "cutsceneGuardBytesUnchanged": "game.html:60970/60999/61017/61021 cover·gate·#000 clear 문구 동일 재확인"
+  },
+  "readAbsolutePaths": [
+    "/Users/fordeargamers/Projects/exoduser-migration-20261001/tools/team-followup-20261002/continuous/ART/TASK.md",
+    "/Users/fordeargamers/Projects/exoduser-migration-20261001/tools/team-followup-20261002/continuous/COMMON.md",
+    "/Users/fordeargamers/Projects/exoduser-migration-20261001/game.html (60810-60880, 60925-60972, 60997-61028)",
+    "/Users/fordeargamers/Projects/exoduser-migration-20261001/game-easy-test.html (59146-59153, 59285-59360)",
+    "/Users/fordeargamers/Projects/exoduser-migration-20261001/docs/cinematic/WARINTRO_STILLS_AUDIT_20261001.md (grep)",
+    "/Users/fordeargamers/Projects/exoduser-migration-20261001/docs/17게임아트팀/ART_TEAM_MASTER.md (grep)",
+    "/Users/fordeargamers/Projects/exoduser-migration-20261001/tools/team-followup-20261002/claude-native-6/ART/result.md (과거 입력)",
+    "/Users/fordeargamers/Projects/exoduser-migration-20261001/tools/team-followup-20261002/project-teams/ART/checks.mjs (과거 입력)",
+    "/Users/fordeargamers/Projects/exoduser-migration-20261001/docs/0마스터플랜/PROJECT_MANAGEMENT_MASTER.md (존재/크기 확인)",
+    "/Users/fordeargamers/Projects/exoduser-migration-20261001/docs/0마스터플랜/mac-resume-20261001/vscode-dispatch/TEAM_UTILIZATION_20261001.json (ART 항목 grep)"
+  ],
+  "toolsUsed": [
+    { "tool": "Read", "purpose": "TASK/COMMON/source/docs 읽기" },
+    { "tool": "Bash", "purpose": "shasum/stat/grep/rg/date — 읽기전용 조회", "exit": 0, "errors": "none" },
+    { "tool": "Write", "purpose": "소유 2파일 작성(result.md, evidence.json)" }
+  ],
+  "skillsUsed": [],
+  "mcpUsed": [],
+  "gitWrite": false,
+  "productionApplied": false,
+  "runtimeExecuted": false,
+  "cameraOrVisualPass": false,
+  "scopeConfirmedBySourceOnly": [
+    "컷신 유효성 gate(60999)가 cover 산식/ drawImage 선행 → divide-by-zero 불가",
+    "매 프레임 #000 clear(60970) → 실패 시 fallback은 검정+자막, 직전 이미지 잔상 경로 없음",
+    "_getCutsceneImg(60822) onerror 미처리·실패 Image 영구 캐시(60824) → S5 세션내 검은 배경(런타임 지속 UNKNOWN)",
+    "본편/쉬운판 가드·cover 바이트 동일(59303/59332/59350)"
+  ],
+  "unknownRuntime": [
+    "S5 영구 검은 배경이 실제 네트워크 실패에서 발생/지속되는지 (실게임 미실행)",
+    "검정+자막 fallback의 가독성/연출 허용 여부 (시각 검수 0)",
+    "전사 눈 색·얼굴 문양·방어구 신원 LOCK (새 시각 검수 0 → UNKNOWN 유지)"
+  ],
+  "verdict": "변경 불필요(no-change). 실패 이미지가 COVER 나눗셈/배경 오염에 들어가는 경로 없음. 최소 후보 미제안(재시도·캐시폐기 정책 추가 금지 준수).",
+  "handoffDependencies": [
+    "총괄: §5 docs 2건(WARINTRO_STILLS_AUDIT 신규 '로드 실패 fallback' 행, ART_TEAM_MASTER 각주) 순차 반영",
+    "QA/BUILD: S5 네트워크 실패·검정+자막 fallback 런타임/NW.js 실측 (본 세션 범위 밖)",
+    "ART 후속: emg1 2차 후보 아트 검수·얼굴 LOCK 신원 — 재개 지시 대기(채택 보류 유지)"
+  ],
+  "status": "completed"
+}

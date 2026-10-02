@@ -1,0 +1,89 @@
+{
+  "role": "SKILL",
+  "team": "continuous",
+  "model": "claude-opus-4-8",
+  "taskId": "continuous/SKILL — blur 취소 후보 A 실제 발사·차감 대조",
+  "provider": "총괄 승인 다음 업무(피어 Claude 세션 전달)",
+  "chatSessionId": "abd20f45-953d-47ae-870c-2ce033bbdfab",
+  "taskFile": "tools/team-followup-20261002/continuous/SKILL/TASK.md",
+  "common": "tools/team-followup-20261002/continuous/COMMON.md",
+  "inheritsFrom": "tools/team-followup-20261002/claude-native-6/SKILL/{result.md,evidence.json,checks.mjs}",
+  "inheritedVerdicts": {"C0": "PASS(인수, 미반복)", "MM-B1": "FAIL(인수, 미반복)", "MM-B1b": "FAIL(인수, 미반복)"},
+  "scope": "후보 A의 실제 MP/쿨다운/bomb/음향/RNG 차감 보존 대조(빈칸). 142·C0·MM-B1/B1b 반복0.",
+  "cwd": "/Users/fordeargamers/Projects/exoduser-migration-20261001",
+  "node": "/Users/fordeargamers/.local/node-runtime/node-v24.15.0-darwin-arm64/bin/node (v24.15.0)",
+  "tools": ["Read", "Grep", "Bash(node,git-status-readonly,shasum,date)", "Write"],
+  "permissionMode": "default",
+  "productionApplied": false,
+  "runtimeExecuted": true,
+  "gitWrites": 0,
+  "timesUTC": {
+    "taskRead": "2026-10-02T05:20:00Z",
+    "harnessRun": "2026-10-02T05:38:00Z",
+    "write": "2026-10-02T05:41:00Z",
+    "complete": "2026-10-02T05:42:00Z"
+  },
+  "timesKST": {"complete": "2026-10-02T14:42:00+09:00"},
+  "sourceSha256Current": {
+    "game.html": "2e45ee0e9ad909b378bf1a7b864818ce442a4c3e17b12360b42e363dc7d0bd94",
+    "game-easy-test.html": "3e5969ca139497c2efb312dc720ab53eb42a8d1912c8288caa2ce858cfd5120a"
+  },
+  "sourceShaChangeNote": "직전 claude-native-6 frozen game.html=30ae8544… → 현행 2e45ee0e… 로 변경됨(총괄 순차 통합 추정). Git 조회·되돌림 안 함. 총괄 제공 commit 7e69495046…는 독립 관측 HEAD로 표시하지 않음.",
+  "extractedFragmentsCurrentLines": {
+    "_COST_BASE/_COST_SK/_COST_DPS": "game.html 30718-30738",
+    "_skLv/_dpsCostMul": "30739-30740",
+    "pMagicCost": "26828",
+    "mpCost/useMp/_lastCost": "30717,30750-30754",
+    "_isFused": "43007",
+    "_r": "12004",
+    "EL": "13838",
+    "fireMaliceMortar": "43770-43786",
+    "_clearHeldInput": "12877-12885 (blur 등록 12886)",
+    "mortarAimBlock": "35217-35228",
+    "P_init_null": "15899 let P=null,..."
+  },
+  "harnessSelfHashes": {
+    "fire": "c3f33f87436abfc3eaff72dad89c9b128369eb0aa3bf2dc9fa116b6888ec9c3c",
+    "aim": "85893d2c120e9870cd8acd2edde842ed0955668c8fd55db738b93312d9d22a87",
+    "clearCur": "918640ed97cfae73d08f2fa66ff97e2ad44a32af7384e789ae26af70251ed4b7",
+    "useMp_mpCost": "933fd913dc9995a036f83489fa7d5f9606126b4a933a9bda6143eb755b531d64"
+  },
+  "realVsBand": {
+    "realSource": ["_COST_BASE/_SK/_DPS", "_skLv", "_dpsCostMul", "pMagicCost", "mpCost", "useMp", "_isFused", "_r", "EL", "fireMaliceMortar", "_clearHeldInput(현행+후보A)", "mortarAimBlock"],
+    "band": {
+      "PASSIVES.pMagic=0,_eqAffix=0,_uEq=0": "무장비·무패시브 baseline 입력(실제 pMagicCost 공식 실행, 비용 가짜대입 아님)",
+      "SFX/playSample/shake": "호출 레코더",
+      "Math.random": "mulberry32 seed 0x5EED — 두 변형 동일 스트림으로 호출/RNG 순서 결정적 대조",
+      "G": "실제 그릇 객체"
+    },
+    "playerBaseline": {"mp": 100, "skills.maliceMortar": 1, "_fused": null, "mpCost(mortar)계산": "~~(50*1*1)=50"}
+  },
+  "matrix": [
+    {"variant": "current", "scenario": "normalKeyup", "fired": true, "mpDelta": 50, "lastCost": 50, "cooldownSet": 660, "bombR": 400, "sfxCalls": ["SFX.magic(3)", "playSample(voice_grunt)", "shake(5)"], "rngCount": 3, "aimingAfter": false, "chargingAfter": false},
+    {"variant": "candidateA", "scenario": "normalKeyup", "fired": true, "mpDelta": 50, "lastCost": 50, "cooldownSet": 660, "bombR": 400, "sfxCalls": ["SFX.magic(3)", "playSample(voice_grunt)", "shake(5)"], "rngCount": 3, "aimingAfter": false, "chargingAfter": false},
+    {"variant": "current", "scenario": "blur", "fired": true, "mpDelta": 50, "lastCost": 50, "cooldownSet": 660, "bombR": 400, "sfxCalls": ["SFX.magic(3)", "playSample(voice_grunt)", "shake(5)"], "rngCount": 3, "aimingAfter": false, "chargingAfter": false},
+    {"variant": "candidateA", "scenario": "blur", "fired": false, "mpDelta": 0, "lastCost": 0, "cooldownSet": 0, "bombR": null, "sfxCalls": [], "rngCount": 0, "aimingAfter": false, "chargingAfter": false}
+  ],
+  "verdicts": {
+    "NORMAL_EQUIV": "PASS(정상 발사·실제 차감 −50·쿨660·합체분기 동일·SFX·RNG3 current==candidateA)",
+    "CURRENT_BLUR_GHOSTFIRE": "FAIL(현행 blur 유령발사가 실제 MP차감·쿨다운·bomb·음향·RNG 소비까지 도달)",
+    "CANDIDATEA_BLUR_NOFIRE": "PASS(후보A blur 무발사·MP무차감·bomb/쿨다운/음향/RNG 추가0·조준해제)"
+  },
+  "candidateADef": "_clearHeldInput 12883 기존 P guard 안에 P._mmAiming=false;P._mmCharging=false 2플래그만 추가. 입력배열/beam/dash/cutscene/거리/키/MP식/쿨다운/합체/RNG 불변. checks 안 메모리 변환뿐, 생산 적용0.",
+  "unknownKept": ["MM-B2(alt-tab hidden rAF)", "MM-P1(pause)", "MM-D1/D2(die/revive)", "MM-G1/G2(패드 전환)", "MM-S1(스테이지 이월)", "maliceStorm(_msDist 동일구조)", "실게임 focus 타이밍/실입력장치/GPU·시각·청취"],
+  "policyUnchanged": {"mpFormula": true, "cooldown": true, "fusion": true, "rng": true, "inputArrays": true, "cancelPolicy": true},
+  "docsHandoff": [
+    {"file": "docs/2_1 스킬관리+합체시스템+자원/2_1 스킬관리+합체시스템.md", "lines": [227, 398, 400], "kind": "mortar 수명 경계 각주 보충(미적용)"},
+    {"file": "docs/2_1 스킬관리+합체시스템+자원/2_1 스킬관리+합체시스템.md", "lines": [228, 397], "kind": "maliceStorm 동일구조 QA 조사 등재 경보(미적용)"},
+    {"file": "docs/2_1 스킬관리+합체시스템+자원/SKILL03_설치확정_자원검수_20261001.md", "kind": "실제 차감 대조 결과 추가(미적용)"}
+  ],
+  "sourceFixtureCaveat": "source fixture PASS ≠ runtime/visual/청취/GPU/HTTP/저장/패키지 PASS",
+  "ownedFiles": [
+    {"path": "tools/team-followup-20261002/continuous/SKILL/checks.mjs", "sha256": "942e820dc8c8f6854cb23341f9f178dc4c1f27f22612a90a721edbf9c1954073"},
+    {"path": "tools/team-followup-20261002/continuous/SKILL/result.md"},
+    {"path": "tools/team-followup-20261002/continuous/SKILL/evidence.json"}
+  ],
+  "changesCount": {"start": 54, "mid": 68, "note": "공유 checkout 다팀 동시 작업으로 상승. 80부터 총괄 체크포인트 필요·100 전 새 산출 중단 규칙 준수. 본인 신규 산출은 이 3개로 종료."},
+  "nextGate": "총괄: 현행 SHA 재검증·후보A 적용 결정·docs 반영 / QA: 실게임 focus 타이밍 MM-B1 실측 + UNKNOWN 6경로 + maliceStorm",
+  "status": "completed"
+}

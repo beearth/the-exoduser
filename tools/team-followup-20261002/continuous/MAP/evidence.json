@@ -1,0 +1,126 @@
+{
+  "taskId": "continuous-MAP-easy-contract",
+  "provider": "Claude Code (Opus 4.8) — in-session, peer-dispatched continuous follow-up",
+  "chatId": null,
+  "sessionId": null,
+  "dispatchOrigin": "peer Claude session message (총괄 승인 다음 1건); sessionId 미확인",
+  "time": {
+    "readStartUTC": "2026-10-02T05:30:00Z (approx; 첫 TASK/COMMON Read batch clock)",
+    "reportUTC": "2026-10-02T05:41:21Z",
+    "reportKST": "2026-10-02T14:41:21+09:00"
+  },
+  "executionContract": {
+    "cwd": "/Users/fordeargamers/Projects/exoduser-migration-20261001",
+    "checkoutDate": "20261001 (shared; 다른 담당 동시 작업 중)",
+    "ownedWrites": [
+      "tools/team-followup-20261002/continuous/MAP/result.md",
+      "tools/team-followup-20261002/continuous/MAP/evidence.json"
+    ],
+    "noChecksMjs": "이 TASK는 source 계약 심사이며 fixture/테스트 실행 0 → checks.mjs 미생성",
+    "prohibited_performed": {
+      "productionCodeEdit": false, "sharedDocsWrite": false, "gitWrite": false,
+      "gitLookup": false, "serverStart": false, "build": false, "realGame": false,
+      "ui": false, "cameraQA": false, "newFixtureOrTestRun": false,
+      "priorCheckRerun": false, "fileDelete": false, "newSession": false
+    }
+  },
+  "providedCommits": {
+    "note": "COMMON/총괄 제공 값. 독립 현재 HEAD 관측 아님(Git 조회 0).",
+    "COMMON_commit": "7e69495046323b3120578f67635c20feb48b2a4f",
+    "COMMON_commit_meaning": "총괄이 카드 수명 + NW.js 실패 응답 반영",
+    "TEAM_UTILIZATION_currentRemoteCheck": {
+      "verifiedSha": "5b8e6ba9d952d1148048c2889c588531640698fe",
+      "ref": "refs/heads/codex/mac-environment-20261001",
+      "at": "2026-10-01T23:28:42.652186+00:00"
+    },
+    "peerMessageContext": "총괄이 별도로 UI minus수명 가드를 순차 통합 중 → 공유 소스가 세션 중 변경됨. 타인 변경 되돌리지 않음."
+  },
+  "sourceSHA": {
+    "note": "파일 내용 SHA-256 (shasum, Git 조회 아님). 현재 Read 시점값.",
+    "atRead": {
+      "game.html": "2e45ee0e9ad909b378bf1a7b864818ce442a4c3e17b12360b42e363dc7d0bd94",
+      "game-easy-test.html": "3e5969ca139497c2efb312dc720ab53eb42a8d1912c8288caa2ce858cfd5120a",
+      "index.html": "38f4e0e97ed63014e86ec48a14d9d0a677472ef57b99916f9a48b7b3395e66c8",
+      "package.json": "58d101ca053f29d36d0f9bd8d63639753fde807064d3c957e0bb6db17d4be0e8",
+      "build-nwjs.mjs": "567a4b2d6761974b8763abe03ac3c50fc5b973c36be6324c7200ac27b445a78f",
+      "node-main.js": "541ff8e6f57db862ddbb1b148ee37a3a8e0da1e16293bc8343a0bc4144d80daf",
+      "server.cjs": "18cf9aa806d5715788f360debbc2a45c2574a76db952f101b524e2ff77fd517d"
+    },
+    "priorInputsHistorical": {
+      "note": "과거 입력 SHA — 현재로 재사용 금지. 공유 checkout에서 변경됨.",
+      "claude-native-6/MAP": { "game.html": "30ae8544...", "game-easy-test.html": "9c7c25c1...", "layout.js": "94b974df..." }
+    },
+    "shaTimepointDistinction": "native-6 read(30ae8544/9c7c25c1) != 현재 read(2e45ee0e/3e5969ca). CH1-1 hook/include 사실(main 보유·easy 미보유)은 두 시점 모두 동일 → 계약 결론은 SHA-불변."
+  },
+  "readInputs": [
+    { "path": "tools/team-followup-20261002/continuous/MAP/TASK.md", "range": "1-38" },
+    { "path": "tools/team-followup-20261002/continuous/COMMON.md", "range": "1-14" },
+    { "path": "AGENTS.md", "range": "이전 세션 전체 Read 인수" },
+    { "path": "docs/4.1맵디자인+설정/EXODUSER_MAP_PRODUCTION_GUIDELINE_v0.9.md", "range": "1-1047 (전체)" },
+    { "path": "docs/4.1맵디자인+설정/_MAP_SSOT_INDEX.md", "range": "CH1-1 PRODUCTION 적용 계약절 208-216 확인 (+이전 세션 전체 인수)" },
+    { "path": "docs/13출시·마케팅/PC_PACKAGING_20260910.md", "range": "1-56 (easy 진입/패키징 계약)" },
+    { "path": "docs/0마스터플랜/PROJECT_MANAGEMENT_MASTER.md", "range": "easy/game-easy 라인 110,249,252,261,283,297,492,497,511 grep" },
+    { "path": "docs/0마스터플랜/mac-resume-20261001/vscode-dispatch/TEAM_UTILIZATION_20261001.json", "range": "map section 955-968, currentRemoteCheck" },
+    { "path": "tools/team-followup-20261002/project-teams/MAP/result.md", "range": "과거 입력(S03/S04/M15 명칭·SHA 확인, 재사용 안 함)" },
+    { "path": "tools/team-followup-20261002/claude-native-6/MAP/result.md", "range": "과거 입력(hook 주입 검증 결과 확인, 재실행 안 함)" },
+    { "path": "game.html", "range": "62(layout include),67-68(fg/edge include),28741-28757(_buildCh1StartForestRLE+hook),28818(caller),50272-50273(draw call)" },
+    { "path": "game-easy-test.html", "range": "27578-27593(builder, hook 없음),27654(caller),48795-48796(draw call, inert)" },
+    { "path": "index.html", "range": "game-easy-test 참조 전수(rg) = 0" },
+    { "path": "build-nwjs.mjs", "range": "20-60 (FILES 배열; 37행 game-easy-test.html 포함)" },
+    { "path": "node-main.js", "range": "65-203 (정적 서빙; / -> index.html, generic static)" },
+    { "path": "server.cjs", "range": "127-291 (정적 서빙; /,/game.html 라우트; easy 라우트 없음)" },
+    { "path": "test/ch1StartForestBoundary.test.js", "range": "전체 (GAME=game.html only, easy 참조 0)" },
+    { "path": "test/ch1BorderForeground.test.js", "range": "8-12,125-136 (easy = 호출 줄만, script 태그 doesNotMatch)" },
+    { "path": "test/ch1BoundaryEdge.test.js", "range": "1-90 (draw call both, script 태그 gameSrc only)" }
+  ],
+  "commands": [
+    { "tool": "Bash/shasum -a256", "purpose": "source 내용 SHA", "exit": 0 },
+    { "tool": "Bash/rg,grep,sed", "purpose": "easy 진입/패키징/callsite/테스트 계약 조사", "exit": 0 },
+    { "tool": "Bash/date", "purpose": "UTC/KST 시각", "exit": 0 },
+    { "note": "git·node·server·build·게임 실행·fixture 실행 = 0" }
+  ],
+  "ledger": {
+    "target": "game-easy-test.html + CH1-1 _buildCh1StartForestRLE hook",
+    "currentSourceSHA": "game-easy-test.html 3e5969ca..., game.html 2e45ee0e...",
+    "supportDocsLOCK": "EASY_BALANCE_TEST(델타=밸런스 수치, 'geometry 비수정'); _MAP_SSOT_INDEX CH1-1 PRODUCTION 적용 계약(main STAGES[0] 기준); PM_MASTER standing 'easy/패키지 미적용 유지'",
+    "entryCallChain": "index.html 링크 0; server.cjs/node-main.js generic static(직접 URL만); 호출 _buildCh1StartForestRLE(200,200) @ si0&forestBoundary; easy엔 CH1_1_PRODUCTION hook 없음->legacy bell-curve; fg/edge draw call은 easy에 있으나 script include 없어 inert",
+    "packagingContract": "build-nwjs.mjs FILES 포함(37행); PC_PACKAGING:28 '추가 진입 파일 game-easy-test.html 포함, 기본 진입점 index.html 유지'",
+    "generatorHookSelection": "main: hook(28742)->CH1_1_PRODUCTION.buildRLE(53점 polygon); easy: hook 없음->bell-curve 폴백",
+    "intentEvidence": "ch1StartForestBoundary/ch1ProductionFinish 테스트 = game.html only; ch1BorderForeground.test.js:134 easy script 태그 doesNotMatch('easy-test는 호출 줄만, 다른 CH1 런타임과 동일'); ch1BoundaryEdge script 태그 gameSrc only",
+    "classification": "INTENT 우위 / 계약상 main-easy CH1-1 geometry parity 요구 미확인"
+  },
+  "parityContractVerdict": {
+    "sameContractRequired": false,
+    "reason": "CH1-1 geometry/art(include·hook)의 easy parity를 요구하는 테스트·문서 계약 부재. 오히려 foreground script 태그 omission은 테스트로 강제된 의도. easy 델타는 밸런스 한정. PM_MASTER standing 'easy 미적용'.",
+    "priorThreeFAIL": "계약 확인 전 drift 관찰 (생산 수정 사유 아님). native-6의 hook 주입 parity 해소는 '기계적으로 가능'을 보일 뿐 '계약상 필요'를 뜻하지 않음.",
+    "patchProposed": false,
+    "patchProposalReason": "TASK 조건('동일 계약 적용이 근거로 확인되면')이 충족되지 않음 → 미적용 patch 제안 생략, 결정 대기."
+  },
+  "residualRiskUNKNOWN": [
+    "easy는 패키지 포함 '추가 진입 파일' → 최종 사용자가 game-easy-test.html 직접 열면 CH1-1이 legacy bell-curve + production 아트(fg/edge/layout) 없이 렌더. 출하 품질 허용 여부 = 기획/총괄 결정.",
+    "easy의 실제 지원 의도(개발 밸런스 미러 vs 사용자 노출 보조 진입)는 '추가 진입 파일 포함'까지만 확정; 사용자 QA/지원 범위 UNKNOWN.",
+    "easy 라이브 페이지 실행·script 실제 로딩·활성 여부 미측정(이번 과제 실행 0)."
+  ],
+  "decisionPending": {
+    "q1": "game-easy-test.html = (a) 개발용 밸런스 미러 / (b) 사용자 노출 보조 진입(출하 플레이 표면)?",
+    "ifB": "CH1-1 production geometry/art(layout include+hook+fg+edge) 전파 필요 -> 그 때 '동일 계약' 성립 -> geometry Gate로 처리(MAP+BUILD), 테스트 계약 갱신(QA).",
+    "ifA": "현행 drift = 의도된 테스트 미러 상태로 문서 종결(공유 docs 반영은 총괄).",
+    "owner": { "decision": "총괄/기획", "propagationExec": "MAP+BUILD(패키징)", "testContractUpdate": "QA" }
+  },
+  "docsKeywordSearch": {
+    "cmd": "rg 'game-easy-test|추가 진입|EASY_BALANCE|production_finish/layout|_buildCh1StartForestRLE' docs/",
+    "matches": 374, "files": 174,
+    "sharedDocsWritten": 0
+  },
+  "mapProductionReport": {
+    "stage": "CH1-1 / easy 지원·hook source 계약 심사 (제작 단계 실행 0)",
+    "visualGateExecuted": false,
+    "visualVerdict": null,
+    "note": "source 계약 심사이며 geometry/전투/카메라/TECH 수행 0 → 각 항목 미검수. RETOUCH를 미검수 별칭으로 쓰지 않음."
+  },
+  "changes": { "startApprox": null, "mid": 47, "policy": "80부터 체크포인트, 100 전 중단. stage/commit/push 0." },
+  "outputs": [
+    "tools/team-followup-20261002/continuous/MAP/result.md",
+    "tools/team-followup-20261002/continuous/MAP/evidence.json"
+  ]
+}
