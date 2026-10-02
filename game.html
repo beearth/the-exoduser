@@ -11846,6 +11846,7 @@ function _sfxFrameReset(){
   // 단 키 중복 제거 — 같은 소리 여러개면 1개만
   const _seen={};const _catSeen={};let _cnt=0;
   const c=actx();const _t=c.currentTime;
+  try{
   for(let i=0;i<_sfxQueue.length;i++){
     const q=_sfxQueue[i];
     if(_activeNodeCnt>=_MAX_ACTIVE_NODES&&!q.pri)continue; // 일반음: 노드 한도 시 스킵
@@ -11860,9 +11861,11 @@ function _sfxFrameReset(){
     _playSampleNow(q.key,q.vol*_volMul,q.rate*_pitchMul,_t,q.pan||0);
     _seen[q.key]++;_cnt++;
   }
+  }finally{
   _sfxQueue.length=0;
   for(const k in _sfxFrameCnt)_sfxFrameCnt[k]=0;
   if(SFX._sbSndCd>0)SFX._sbSndCd--;
+  }
   if(_actx&&_actx.state==='suspended')_resumeAudioCtx(false);
 }
 const _SILVERTAIL_VOICE_MAP={

@@ -313,3 +313,21 @@ late4 result/evidence SHA는 감독 공식 pin과 동일: STORY `870166cc681937f
 공식 Claude8 hb1014 검수manifest SHA `dd4c2883ad1878934c4ffb4eefa55041f25af2100b1b73cbeac5cf79a7d3b843`의 완료소유 raw16만 원SHA 그대로 보존한다. ART/MAP NOFIX는 native/시각 PASS가 아니며 SKILL source추출·QA/STORY lifecycle자동연결·ENEMY identity/실제updateE·BOSS partialspawn정책/실제source·ANIMVFX missing caller Gate는 미인수다. 원자료 보존16건을 게임 구현16건으로 계산하지 않는다.
 
 이번 checkpoint는 raw16+운영정책2+원총괄문서2 정확20경로, source/test 적용0·기존검사반복0이다. SOUND 양판 +23B 및 독립12PASS는 별도 소유 WIP이며 이번 stage 대상이 아니다. 기존user23·타인WIP·진행TASK/STATE/LOG를 보존하고 정확 원격SHA로 확인한다.
+
+## SFX dispatch 예외의 프레임 배치 정리 생산 인수 — 2026-10-02
+
+양판 `_sfxFrameReset`에 각23bytes의 `try/finally`만 적용했다. `_playSampleNow` dispatch 실패 때 현재 배치가 남아 성공 prefix가 다음 reset에서 다시 실행되던 경계를 막는다. 실패 시 아직 시도하지 않은 priority tail까지 폐기하는 정책을 총괄이 인수했고, 정상 capped/skipped tail 폐기·우선 처리/노드 수명·동일 Error 전파는 보존했다.
+
+| 항목 | 실제 결과 |
+|---|---|
+| 본편 source | `569e8def89643251cf8670fef26ef2949db72becadbb1579826f2741ee993103`,4,028,201bytes |
+| easy source | `7022aa1cf52b7a9c194a9533109caf5b5fd16e473f891c7b1693df0fe8d9245e`,3,905,648bytes |
+| 정리 | queue0 / frameCnt 각0 / 양수 sbCd 1감소; 기존 상수 PC6/mobile3 frame·PC2/mobile1 category 불변 |
+| 실제 신규 회귀 | `test/soundFrameFlushFinallyAcceptance.test.cjs`: 최종12/12 PASS, 정상 옛접점 대조4개 동등, source16실행=12cases+4controls; 이전 baseline4PASS/8FAIL은 역사로 분리 |
+| 구문 | JS12/importmapJSON2 PASS; 기존 전문팀/총괄 검사 재실행0 |
+| docs | sourceedit 후 전수 관련rg59행/33경로 분류; SOUND/성능 정본2 exact5접점 교정+최소부록 및 새 보고서1. 보호문서·이전start18보고서·원팀원자료 보존 |
+| 근거 | source receipt `936bc8c0bc70aad1c9df0aec105506f4ddfdd0779df62037db9a9c3c661ac4dd`; docs receipt `792a2644d4f8cb9990efd30f1bdcc74554134127629fcd2956f5b20a3f79d573` |
+| 정확 범위 | source2+새test1+canonical2+새보고서1+root2=8경로. 앞선 자율정책/raw16 보존20경로와 별도 commit |
+| 미인수 | actx 선행오류·실제 browser/native audio/청취·실시간timer·실게임/RAF 회복·저장/패키지. reset은 loop crash try와 다음RAF 앞이므로 동일 예외 전파 시 후행RAF에 도달하지 못하며 이 변경은 그 회복을 수정하지 않음 |
+
+전체 HTML +23bytes 역치환으로 원백업을 재현했다. 새 test는 실제 source/backend/helper chain을 추출하며 frameCnt2/5·sbCd3 seed는 합성 fixture, 다음 reset 직접호출은 실제 게임-loop 회복 증거가 아니다. 코드와 docs를 같은 범위 commit/push하고 원격정확SHA를 확인하며 사용자23·타인WIP·활성TASK/STATE/LOG는 보존한다.
