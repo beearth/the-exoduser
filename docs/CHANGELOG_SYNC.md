@@ -52370,3 +52370,28 @@ late4 result/evidence SHA는 감독 공식 pin과 동일: STORY `870166cc681937f
 자율15팀지시 송신과13팀읽기확인은 운영영수증으로 구분한다. MAP queue/ENEMY classifier거부·API대기는 실제Read未이며 중복정책송신0, 거부outcome 우회0이다. 실제untracked전체변경80부터완료소유checkpoint/100전새산출중단을유지한다. 사용자23/타인WIP/활성TASK·STATE·LOG·자율신규산출은이번scope에서제외한다.
 
 원자료 whitespace WARN: MARKETING result.md의 taskId/provider metadata 두줄 끝 공백2는 Markdown hard-break 원문이며 QUESTNPC result.md EOF 빈줄1도 원SHA로 보존했다. 정확3경고만 authenticated raw에 한정; root2·checks.mjs·다른raw의 whitespace는 STRICT PASS. 원자료 경고제거를 위한 재작성0·production/test 입력변경0이다.
+
+## 2026-10-02 CH1-1 연결 시연 목표와 완료12팀 원자료 보존
+
+사용자의 총괄 목표 설정 요청에 따라 시작→전투·획득→보스 게이트 개방→사망·부활→재도전이 같은 Mac 후보에서 이어지는 실행 목표를 활성화했다. `MILESTONE-CH1-1-PLAYABLE-20261002.md` SHA `713aa80c994688820d2eb18ca43377018312ea975f9134968faaefbe77eee7ee`의15팀 실제 산출물·6단계 플레이·인수 기준을 기존 작업감독에 정확 경로/SHA로 전달했다. 감독5분/총괄1분 기존 heartbeat에 같은 목표를 저장하고 실제 저장 prompt/cadence/target 일치를 검증했다. 완료 경계의 실제 목표 Read·착수·결과는 감독 STATE로 따로 확인한다. 모든 팀 착수·시연 완성을 미리 선언하지 않는다.
+
+공식 완료검수 manifest SHA `000ba811edb78ae628791320fb6610047d855dc7846b80549efd8fbfeb60dc3d`의12팀 소유 raw23을 원 SHA로만 보존한다. raw23·Master·목표1·총괄 기록2의27파일 범위이며 source/test 적용과 기존 검사는 이 보존 checkpoint에서0이다. 진행 중인 뼈벽 focus 취소 source/test/docs는 별도 소유 변경으로 제외한다. 원자료 저장23건을 제품 수정23건으로 계산하지 않는다.
+
+| 팀 | 실제 인수 범위·미완료 경계 |
+|---|---|
+| ART | NOFIX actual CHAR_VISUALS5종32refs 실파일/header/suffix. 소비render함수전체/미술LOCK/native未. active1/comingSoon4·4K/1600×900 차이 구분. |
+| BALANCE | 입력이벤트8 NOFIX. 외부JSON enh1e309→Infinity actualrestore대입/renderer prefix4run, finite admission validator만검증. fullrestore/UX거부위치未·저장recipe후작성미실행·신규상한/복구정책0. |
+| BOSS | dynamicactualcase 실행, push뒤addParts throw·fullstub인수/RNG정상trace finallyrecover후보. partialspawn유지/nativethrow도달未·저장CJS→ESMrecipe미재실행. rawhash차이=rootUIguard case변경 주장불가. |
+| BUILD | actual fullplan 기존REQUIRED FILES×HTML media 교집합. titlePNG 선택누락READY→BLOCKED 후보/정상6file plan동등/6PASS. 출력부분잘림·저장recipe미실행, 전체HTML/video/CSS동적assets未. |
+| ITEM | 조건부 retained callback identity 후보. 정상sort/filter 동기renderInv 재생성 control 성공, 실제UI stale dispatch未. result1만저장·stdin 프로그램완전복원없음, 생산HOLD. |
+| MARKETING | NOFIX actual lobby초기query환경10control+고의broken판정 검출. demo입장loader추가NOFIX는memory별도보고, native/배포0. |
+| QA | actualbootstrap3anchor 자동guardrevocation 연결. 실제uninstall/catch cachedCreate postcall0/foreign보존, fixture수동revoke제거. 미채택review framework activation0/runtimeReady0·기존전체회귀未. |
+| QUESTNPC | 실제 HUD/audio 실패4group UID/CD미저장→다음frame재시도, 성공후CD1800/bubble180frame. 실패발화CD소비정책未·새후보0·저장기존성공메모리본재실행0. |
+| SKILL | 동적actual clear/aim/fireBW3slice 양판SHA일치 newFunction실행, boneWall source provenance전진. 저장recipe는scratchpad2script합본·미재실행. hellRay/다른입력/gamepadnative Gate 유지. |
+| SOUND | actual whole게임 _startLoop/loop/actx/flush 양판8run, constructorthrow후RAF0/_loopingtrue/restart막힘 증명. finallycleanup은loop회복아님. 저장ESM recipe미재실행/native0. |
+| STORY | HOLD: fullplayCinematic/_goCinematic 미실행. 실제showImg/hideAll 블록2factory+수작성fixture teardownResetShow/GEN.v++ 모형6PASS. actual자동teardown연결PASS 불가. 현v13 showLine 비활성 latent코드이며 현재제품수정우선도낮음. |
+| UIUX | NOFIX: 실제 key/close/reopen 하니스이지만 CHAR_VISUALS2 대역이므로 현행5종 전체 Tab PASS 아님. 성공stdin 저장본의importpath/comment만 변경·파일재실행0, native0. 5종/Tab9·lock8 docs값은 root실값대조 필요. |
+
+동일 후보의 실제 Mac 빌드·6단계 플레이·카메라/청취 검수는 아직 미인수이며 source fixture/NOFIX 보고서로 대체하지 않는다. 기존 사용자23·타인WIP·활성TASK·감독STATE/LOG·live게임/세이브·보호2_3는 보존한다. 원자료 whitespace가 있으면 정확 원SHA를 보존해 해당 raw 경고만 별도로 기록하고 총괄문서·코드는 엄격 검수한다.
+
+원자료 whitespace 검수: BUILD·ITEM result EOF 각1, MARKETING metadata/목록 Markdown hard-break4·EOF1의 authenticated raw7경고는 원SHA 보존했다. 이7경고 외 source/checks/총괄문서의 엄격 whitespace PASS이며 raw 재작성0이다.

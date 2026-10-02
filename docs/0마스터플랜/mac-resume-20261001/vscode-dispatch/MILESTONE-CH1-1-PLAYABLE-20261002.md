@@ -1,0 +1,73 @@
+# CH1-1 실제 플레이 통합 마일스톤 — 2026-10-02
+
+목표는 **같은 로컬 후보 빌드에서 CH1-1 시작→전투·획득→보스 게이트→보스전 사망→부활→재도전이 끊기지 않는 시연 경로**다. 현재 승인된 콘텐츠·수치·규칙으로 이 경로를 완성하고, 실제 플레이 근거를 남긴다. 보스 처치/클리어 경계도 기존 계약과 일치하는지 확인한다. 팀별 조사·보고서 개수는 playable 완료가 아니다.
+
+기준은 [총괄 마스터 §13](../../PROJECT_MANAGEMENT_MASTER.md#13-투자-검토용-빌드-품질-목표와-아침-회의)의 투자 검토용 플레이 빌드다. 이 문서는 작업 목표·인수 기준이며 새 콘텐츠·밸런스·저장 규칙을 확정하지 않는다. 달성 시각·완성 빌드·AAA/투자 성과는 미리 선언하지 않는다.
+
+## 우선 결과 3개
+
+| 우선 | 끝내야 할 결과 | 인수 조건·주 담당 |
+|---|---|---|
+| 1 | 사망·게이트·필드 상태·기존 저장 경로가 진행을 막지 않음 | BOSS/QA/BUILD 중심. 게이트 개방 전후와 보스전 사망·필드 부활·재도전의 상태가 현행 SSOT와 일치하고, 기존 저장/재진입의 진행 경계가 보존됨. 새 schema·사용자 세이브 변경0 |
+| 2 | 실제 공격·입력·피격·처치·획득·장비 선택이 연결됨 | SKILL/ENEMY/ANIMVFX/UIUX/ITEM/BALANCE/SOUND. 입력 취소·자원 차감·아이템 identity·표시·효과·소리의 실제 흐름을 같은 후보에서 확인 |
+| 3 | CH1-1 길과 전투가 읽히고 기존 서사·가이드·데모가 연결됨 | MAP/ART/STORY/QUESTNPC/MARKETING 및 BUILD. 실제 카메라의 길/전조/피드백과 기존 소개·재도전·데모 반환 경로를 확인하고 로컬 시연 후보를 인수. 설치·게시0 |
+
+## 운영·소유
+
+- 기존 전문팀15 그대로 유지: Codex7(UIUX/ITEM/BUILD/BALANCE/SOUND/QUESTNPC/MARKETING), Claude8(ART/MAP/SKILL/QA/ENEMY/ANIMVFX/BOSS/STORY). 총괄1+전문15+작업감독1=17역할이며 새 팀·세션을 만들지 않는다.
+- 각 전문팀은 기존 TASK/COMMON의 소유 폴더에서 **이번 목표에 필요한 실제 소스 patch/채택 가능한 후보 또는 게임플레이·에셋 산출물 한 건**을 만든다. 반복 검색·기존 통과검사 재실행·보고서만 추가한 결과로 진척을 대신하지 않는다. 필요 검사와 근거는 그 산출물을 인수하기 위해 수행한다.
+- 공용 `game.html`/`game-easy-test.html` 반영, 관련 docs 동기화, 소유 범위 Git/원격 checkpoint는 총괄이 순차 인수한다. 팀은 공용 source·타인WIP를 덮지 않고 후보와 실제 소유 구간을 인계한다. 독립 작업은 다른 팀 source 통합을 기다리며 멈추지 않는다.
+- 완료하면 남은 의존성을 인계하고 같은 목표의 다음 독립 미완료 한 건을 계속한다. 다음 일상 작업마다 사용자 확인을 기다리지 않는다. 작업감독5분 회복 점검은 정체·의존성 조정 수단이며 다음 작업 착수의 허가 대기가 아니다. 공식 배정/수신·Read/완료 확인은 기존 작업감독이 맡는다.
+- 총괄 인계 시점 자율연속 실제 Read는13/15이며 MAP은 큐 대기, ENEMY는 classifier `[Auto-Mode Bypass]` 거절/API 재시도 문제를 보존한 BLOCKED다. 이 기록은15팀 착수·완료 증거가 아니다. 거절된 정책 경로를 새 문서/새 세션/변형 명령으로 재시도하거나 우회하지 않는다.
+
+## 15팀의 이번 산출물과 인수
+
+| 팀 / 공급자 | 유용한 산출물 한 건 | 담당 후보·소유 초점 | 인수 기준 | 의존성 |
+|---|---|---|---|---|
+| QA / Claude | 동일 후보의 아래6단계 실제 플레이 증거와 첫 진행 결함 재현 | 기존 격리된 실행환경의 경로·상태·영상/관측 근거. 실제 사용자 세이브 변경0 | 빌드/소스 SHA, 조건, 단계별 관측·중단 이유를 기록. fixture를 실제 플레이로 표시0 | BUILD 후보 + 총괄 source 통합, MAP/BOSS 경로 |
+| BUILD / Codex | 기존 승인 Mac 입력·runtime을 사용한 로컬 시연 후보와 exact 입력/출력 manifest | 기존 Mac packager/runtime closure·helper pin 후보. 설치/서명/게시 완료 선언0 | 직접 HTML 의존 누락 없이 실제 입력·helper·출력 SHA 연결. plan-only를 실제 앱/기동 PASS로 표시0 | 총괄 인수된 source/docs와 QA의 단일 실행 슬롯 |
+| BOSS / Claude | CH1-1 사망/부활/재도전의 상태 보존 접점 후보 또는 실제 관측 산출 | 기존 gate/unlock·field/arena 복귀·boss retry/clear 경계. 새 보스/규칙0 | 개방 게이트와 필드 진행이 현행 복원 계약대로 유지됨; 자원·EXP·death/time 정책은 SSOT 그대로 | QA 실제 경로, MAP 기존 구조, 총괄 순차 반영 |
+| MAP / Claude | 기존 CH1-1 route/camera의 실제 시연 증거 또는 좁은 가독성 후보 | 승인된 CH1-1 길·전투 공간·카메라/가림. 기존 LOCK·배치 계약 보존 | 공통 맵 가이드/SSOT 순서 적용, §23 보고·실제 VISUAL VERDICT. source PASS로 visual 대체0 | 실행 큐 해소, QA 동일 후보, ART 기존 환경 |
+| ART / Claude | 기존 환경 에셋을 사용한 길·전투·실루엣 가독성 산출 | CH1-1 승인 생체 지옥 팔레트와 현재 에셋. 신규 캐릭터 생성/콘셉트 변경0 | 실제 카메라 비교에서 길/적/전조가 읽히는 근거; 임의 geometry·LOCK 변경0 | MAP route와 QA 실제 화면 |
+| SKILL / Claude | 현재 CH1-1 입력 release/cancel의 실제 연결 후보 한 건 | 기존 스킬·키보드/패드/blur 취소 lifecycle. 이미 채택된 취소 guard 중복검사0 | 정상 발사와 취소의 자원/쿨다운/효과가 기존 규칙에 일치; 소스·대역·실입력 범위 구분 | UIUX 입력, BALANCE 현행 값, QA 실제 입력 |
+| ENEMY / Claude | 기존 CH1 적 상태의 독립 소스 후보 한 건; 허용 경로가 없으면 BLOCKED 의존성 인계 | 기존 spawn/aggro/attack/death 상태. 어택 티켓/새 AI 규칙0 | 허용된 근거로만 상태·멈춤 결함을 인수. 현재 거절/API 실패를 삭제·성공으로 치환0, 실행 우회0 | 정책상 가능한 기존 경로, QA 실제 전투, BOSS 경계 |
+| ANIMVFX / Claude | 기존 명중/전조/효과 수명의 실제 연결 산출 | 현재 hit/telegraph/lifetime 후보. queue-only/body-skip 미채택 Gate 보존 | source-sink 호출을 가시 픽셀·완전 몸 렌더 PASS로 확대0; 실제 화면에서 누락/잔류 여부 관측 | ENEMY/SKILL source, ART 에셋, QA 화면 |
+| UIUX / Codex | HUD→인벤토리→스킬→복귀 실제 흐름 후보 한 건 | 기존 입력·초점·카드 수명/표시. 이미 채택한 minus guards 반복0 | 실제 조작에서 중복 소비·옛 callback·반환 초점 문제 재현/해결범위 명시; 대역 focus는 native PASS 아님 | ITEM/SKILL 데이터, QA 실입력 |
+| ITEM / Codex | 전투 획득→가방→장착의 identity/자원 일관성 후보 | 기존 동일 장착 인스턴스 전승 후보 등 current loot/equip 접점. D13 미채택 schema 유지 | 소유/결정 총량·강화·악의 차감·정상 교체를 실제 source와 연결. alias의 정상 UI 도달은 별도 확인 | UIUX caller, BALANCE 수치, QA 획득/장착 |
+| BALANCE / Codex | 현행 강화·자원 입력의 유한성/정상 차감 후보 | 기존 nonfinite AI 강화 후보 및 현재 구현 값. 새 공식·리밸런싱0 | 기존 수치·거절 조건·정상 trace/표시 정확 대조; VM timeout/대역을 실제 UI 재현과 구분 | ITEM 강화, UIUX 표시, 총괄 SSOT 동기화 |
+| SOUND / Codex | 현재 타격/처치/보스 사운드의 실제 연결·청취 산출 또는 다음 좁은 오류 후보 | 채택된 queue finally 이후 feedback/수명. 이미 통과한 start/flush 검사 반복0 | 호출·배치 정리와 실제 청취를 분리. 실패 tail 폐기/동일Error가 실제 loop·RAF 회복을 보장한다는 선언0 | SKILL/ENEMY/BOSS 트리거, QA 단일 실행 슬롯 |
+| STORY / Claude | 승인된 소개·첫 보스·재도전 lifecycle의 실제 wiring 후보 | 기존 대사/intro/중단·복귀. character text·새 서사 변경0 | 시작/중단/재진입에서 기존 cue가 빠지거나 중복되지 않는 실제 연결 근거 | BOSS/QA 경로, 기존 intro 자원 |
+| QUESTNPC / Codex | 기존 진행/펫 가이드의 one-shot·중복/CD 연결 후보 | 현재 firstItem/urgent/mapQA 등 기존 helper·caller. 새 퀘스트/대사0 | helper 수락과 실제 DOM 발화 완료를 분리, 중복·CD·후속분기 계약 유지. 기존 통과fixture 반복0 | ITEM 획득, STORY/BOSS 진행, QA 실제 경로 |
+| MARKETING / Codex | 현행 로컬 데모 반환·CTA·시연 설명 후보 | 기존 demo route/copy 및 확인된 주장. 외부 서비스/Steam 게시0 | 실제 시연 범위만 설명. source 경로/로컬 app ID 검증을 외부 상품 존재·성공 게시로 확대0 | BUILD 실제 후보, STORY/UIUX 로컬 흐름, QA 증거 |
+
+## QA 실제 경로 6단계
+
+| 단계 | 실제로 관측할 경로 | 남길 근거 |
+|---|---|---|
+| 1 | 기존 로비/캐릭터 선택에서 CH1-1 시작 | 후보 빌드·소스/입력 manifest SHA, 실행 조건, 진입/입력 상태 |
+| 2 | 기존 적과 전투→처치→아이템 획득→가방/장착 | 입력·자원·명중/사망 표시·청취·아이템 identity. 단계별 source/실제 증거 구분 |
+| 3 | 기존 진행으로 보스 게이트 개방·보스전 진입 | gate/unlock, 필드 적/오브젝트/진행 상태 기준값. 임의 새 조건/규칙0 |
+| 4 | 보스전에서 플레이어 사망·기존 중단/복귀 경계 | 사망 직전과 이후 상태·자원/진행 관측. 보스 처치/클리어 분기는 별도 실제 관측 여부 표시 |
+| 5 | 기존 부활 경로로 필드 복귀 | 개방 gate와 보존 대상 필드 상태가 SSOT대로 유지됨. EXP/자원/사망횟수/시간은 현행 계약, 임의 되감기0 |
+| 6 | 보스 재진입·재도전 및 기존 반환/저장·재진입 경계 | 같은 후보에서 연결 성공/실패. 기존 격리 저장의 확인 여부를 명시하고 사용자 세이브/새 schema 변경0 |
+
+실측 중 게임·빌드·인코딩·대형 에셋 작업은 기존 단일 실행 슬롯으로 조정한다. 실제 실행이 막히면 어느 단계/의존성이 BLOCKED인지 남기고 독립 소스·자원 작업을 계속한다. 같은 조건에서 의미 없는 반복 측정을 늘리지 않는다.
+
+## 마일스톤 완료 판단
+
+| 인수 층 | 필요한 증거 | 현재 판단 |
+|---|---|---|
+| source/docs | 실제 생산 접점·좁은 의미회귀·수치/이름/계약 SSOT·소유 범위 원격 checkpoint | 기존 인수된 boss 사망/필드복원 source와 SOUND `72fe` 큐 정리는 출발점. 전체 경로 완료 아님 |
+| 로컬 빌드 | exact input/runtime/helper/output SHA와 실제 실행 가능한 기존 Mac 후보 | 새 완료/기동 시각 선언0. BUILD/QA 실제 산출로 판정 |
+| 연결된 실제 플레이 | 위6단계가 같은 후보에서 진행되고 결함/중단/재도전 상태가 기록됨 | 미인수. 일부 source fixture PASS를 이 Gate로 대체0 |
+| 화면·청취 | 실제 카메라/전투 가독성·입력·UI·효과·청취, MAP §23 실제 판정 | 미인수. source-sink·합성 GL/DOM/오디오 대역을 실게임/native/visual PASS로 표시0 |
+
+진척은 팀별 `산출물 경로 → 제출 → source 인수/미채택 → 실제 플레이·화면·청취 인수/미검수 → 다음 독립 한 건`으로 보고한다. 완성되지 않은 단계에는 BLOCKED/미인수와 원인을 남긴다. 완료 후보/보고서 보존 커밋과 실제 게임 구현 완료를 합산하지 않는다.
+
+## 기존 SSOT·보호 범위
+
+- [팀 연속 진행](../../TEAM_CONTINUATION_POLICY_20261001.md), [맵 SSOT 읽기 순서](../../../4.1맵디자인+설정/_MAP_SSOT_INDEX.md), [맵 제작 가이드](../../../4.1맵디자인+설정/EXODUSER_MAP_PRODUCTION_GUIDELINE_v0.9.md)를 따르며 MAP 담당은 가이드를 처음부터 끝까지 읽는다.
+- [CH1-1 보스 사망·진행 복원](../../../4.1맵디자인+설정/CH1-1_BOSS_RESPAWN_PROGRESS_20261002.md), [SOUND 배치 종료 계약](../../../6사운드디자인/SOUND_FRAME_QUEUE_EXCEPTION_FINALIZATION_20261002.md) 및 각 시스템의 현재 SSOT/LOCK이 source 인수 범위를 정한다. 해당 보고서의 역사 SHA·검사 결과는 당시 snapshot이다.
+- 보호 `2_3 돌진+패링+방패시스템`·기존 LOCK·맵 geometry/배치·승인 콘텐츠·공식/수치·저장 호환은 임의 변경하지 않는다. 새 콘텐츠/규칙/리밸런싱/팀/설치/게시·사용자 세이브 변경0. 기존 TASK 소유 제한과 정책 거절을 이 목표 문서로 해제하지 않는다.
+
+공식 배정·운영 상태·총괄 마스터/CHANGELOG/CONTINUOUS 기록은 총괄과 기존 작업감독의 별도 소유다. 이 문서는 목표와 인수 기준만 새로 추가한다.
