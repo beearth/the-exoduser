@@ -743,3 +743,15 @@ HEAD5b8e6ba9에서 지원3명이 11역할을 묶어 mortar38 PASS·MAP source9 P
 ### 2026-10-02 권한 변경 후 GitHub·3340 응답 회복
 
 원격작업브랜치5b8e6ba9 exactHEAD 확인 및3340 Node서버/격리저장 기동 성공, 실제슬롯API ok=true·기존1슬롯 확인. 새게임/실측0. BUILD 재전달 active writer거절·전달0/중복세션0. 자기검수범위 checkpoint의 최종 commit/push/원격대조는 tmp/mac-migration-runtime/coordination-resume-checkpoint-20261002.json에 기록한다. [후속근거](mac-resume-20261001/vscode-dispatch/MAC-COORDINATION-20261002.md#권한-환경-변경-뒤-후속-확인).
+
+
+### 2026-10-02 사용자 요청으로 프로젝트 팀 관리 채팅11개 추가
+
+사용자가 “체팅도 만들어라 니가”라고 직접 지시해 fdg 프로젝트 아래 ART/MAP/SKILL/UIUX/ITEM/SOUND/QA/ENEMY/BUILD/BALANCE/ANIMVFX 관리 채팅11개를 생성했고, 공식 wait_threads로 전원 한국어 인수 응답·실제 commandExecution 착수를 확인했다. 기존11팀·CLI·등록채팅·PC팀은 삭제/중단0이다. 이전 중복개설금지는 과거 운영 이력이며 이번 개설은 사용자 최신 지시를 따른다. 새 채팅은 기존 역할의 현재 결과·다음 Gate를 인수한다. 공유 함수를 기존 CLI와 중복 변경하지 않는다.
+
+저장된 fdg 기본 cwd는 /Users/fordeargamers/the-exoduser이므로 모든 새 채팅에 실제 운영경로 /Users/fordeargamers/Projects/exoduser-migration-20261001을 명시했다. 인수 시작 local/정확remote680f22c5 일치 확인. 현재3340은 listener 없음/API연결거부이며 과거 응답회복과 구분한다. 원래3333은 보존했다. Terminal12의 초기이력0·세션01a0f734-acfd-7a13-be34-bb25aa35f9fd를 확인하고 총괄 검수보조로 배정했다. 기존 CLI active writer에 공식send가 거절된 뒤 원세션 codex queue로1회 전달했고 TASK Read·실행과 전체 node-main handler18 PASS를 확인했다. 생산적용/새게임/빌드0. UI 입력 실패와 실제 CLI수신을 구분했다. [팀별 채팅ID·근거·다음 인수](mac-resume-20261001/vscode-dispatch/PROJECT-TEAM-CHATS-20261002.md).
+
+
+### 2026-10-02 프로젝트11팀 실제 업무 배정 준비
+
+사용자 각 팀 업무 배정 지시에 따라 tools/team-followup-20261002/project-teams/의 task.md11개에 기존 승인 백로그 한 건씩과 소유 파일·검수 조건을 지정했다. ART emg1 LOCK, MAP M5 도달성, SKILL mortar 생산회귀, UIUX 패널초점, ITEM D13 통합지도, SOUND 실제획득 SFX 연결계약, QA 독립host 실제인수, ENEMY 예고취소, BUILD 패키지source delta, BALANCE 공유악의 생산/오류응답 인수계획, ANIMVFX foot-shadow anchor다. 공유 생산코드 적용은 총괄 순차 인수이며 팀별 소유 새 산출은 최대3개다. BUILD 소유폴더는 build/ 무시 규칙의 Mac 대소문자 영향을 피하도록 BUILD_TEAM을 사용한다. QA 유일UI슬롯은 root3340 기동/응답 확인 뒤 별도 release한다. 실제 전송/Read/착수는 PROJECT-TEAM-CHATS-20261002.json 후속 receipts에 기록한다.

@@ -1,0 +1,37 @@
+{
+  "session": "Terminal 12 / 01a0f734-acfd-7a13-be34-bb25aa35f9fd",
+  "receivedAt": "2026-10-02T03:36:24.664793+00:00",
+  "readCompletedAt": "2026-10-02T03:36:24.664965+00:00",
+  "message": "총괄 검수 보조 이번 한 건 수신. 생산·기존 test·타 팀·Git 쓰기·인덱스·서버·게임 변경0.",
+  "head": "680f22c5c480e44ece4524fe69d6ccedafb85cc7",
+  "changesStart": 24,
+  "inputSha256": {
+    "AGENTS.md": "fd59bef70960bcaf1ab9910051faa860362884e574ac2869fad05c6872ae04e4",
+    "node-main.js": "01b0c1d51f77f500ee0a59185458bf0294edce12544482d6cf7abce4262c91ce",
+    "server.cjs": "18cf9aa806d5715788f360debbc2a45c2574a76db952f101b524e2ff77fd517d",
+    "test/nodeMainMats.test.js": "4b571385a2c20d84f5589fbd54434dd78e73fe3415c768047a524f9d3d94e934",
+    "tools/team-followup-20261002/integration-review/node-main.js.shared-mats.patch": "6716d7710b4d835eb3ba5fafd40a67eef9590f12676b7e27d49bbe9bdf489a7b",
+    "tools/team-followup-20261002/integration-review/node-main.js.shared-mats-candidate": "3b56932b93efabb15718394cd9116604aebcf12e60827bef5abd0d32080f218c",
+    "tools/team-followup-20261001/BALANCE/shared-mats-atomic-candidate.mjs": "75cb158df4a54569603a4a9855369e72a45d7b135ca0bf07d071141e2b19da1b",
+    "tools/team-followup-20261001/BALANCE/shared-mats-atomic-test.mjs": "17ffaff899167d8ed312a1ad9b8571369915110ef346f4609bde6fc3f4fb5d5b"
+  },
+  "executionStartedAt": "2026-10-02T03:37:13.631Z",
+  "changesMiddle": 26,
+  "executionCompletedAt": "2026-10-02T03:37:13.712Z",
+  "status": "검수 완료·생산 미채택",
+  "passed": 18,
+  "failed": 0,
+  "changesFinish": 30,
+  "documentationCompletedAt": "2026-10-02T03:37:36.714344+00:00",
+  "completionAt": "2026-10-02T03:37:36.714434+00:00",
+  "headAtFinish": "680f22c5c480e44ece4524fe69d6ccedafb85cc7",
+  "gitWrites": 0,
+  "ownedOutputs": [
+    "tools/team-followup-20261002/pm-test-support/result.md",
+    "tools/team-followup-20261002/pm-test-support/result.json",
+    "tools/team-followup-20261002/pm-test-support/docs-keywords.txt",
+    "tools/team-followup-20261002/pm-test-support/handler-regression.mjs",
+    "tools/team-followup-20261002/pm-test-support/receipt.json",
+    "docs/0마스터플랜/mac-resume-20261001/vscode-dispatch/PM-TEST-SUPPORT-20261002.md"
+  ]
+}

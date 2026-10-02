@@ -1,0 +1,142 @@
+{
+  "recordedAt": "2026-10-02 03:38:24 UTC",
+  "projectId": "7414374e-1f81-42df-aa7b-de60d134823b",
+  "projectLabel": "fdg",
+  "projectDefaultCwd": "/Users/fordeargamers/the-exoduser",
+  "workdir": "/Users/fordeargamers/Projects/exoduser-migration-20261001",
+  "existingTeamsPreserved": true,
+  "existingSessionsDeleted": 0,
+  "rootThreadId": "01a0faa9-b453-7673-be39-98adedb4c2b3",
+  "teams": [
+    {
+      "team": "ART",
+      "title": "EXODUSER 아트팀",
+      "threadId": "01a0faaf-479e-7143-99d6-4e1fdb5fdde5",
+      "hostId": "local",
+      "initialTask": "read-only team handoff",
+      "initialReadCommandObserved": true,
+      "initialStatus": "inProgress",
+      "productionApplied": false
+    },
+    {
+      "team": "MAP",
+      "title": "EXODUSER 맵팀",
+      "threadId": "01a0faaf-8ab1-7c81-9d2b-d17f15ba25a3",
+      "hostId": "local",
+      "initialTask": "read-only team handoff",
+      "initialReadCommandObserved": true,
+      "initialStatus": "inProgress",
+      "productionApplied": false
+    },
+    {
+      "team": "SKILL",
+      "title": "EXODUSER 스킬팀",
+      "threadId": "01a0faaf-8d1e-7c93-94c0-37b5df8a10eb",
+      "hostId": "local",
+      "initialTask": "read-only team handoff",
+      "initialReadCommandObserved": true,
+      "initialStatus": "inProgress",
+      "productionApplied": false
+    },
+    {
+      "team": "UIUX",
+      "title": "EXODUSER UIUX팀",
+      "threadId": "01a0faaf-8fd2-7083-b174-69c604bd58b0",
+      "hostId": "local",
+      "initialTask": "read-only team handoff",
+      "initialReadCommandObserved": true,
+      "initialStatus": "inProgress",
+      "productionApplied": false
+    },
+    {
+      "team": "ITEM",
+      "title": "EXODUSER 아이템팀",
+      "threadId": "01a0faaf-92a3-7eb1-842d-eb4baa1a2954",
+      "hostId": "local",
+      "initialTask": "read-only team handoff",
+      "initialReadCommandObserved": true,
+      "initialStatus": "inProgress",
+      "productionApplied": false
+    },
+    {
+      "team": "SOUND",
+      "title": "EXODUSER 사운드팀",
+      "threadId": "01a0faaf-956a-74a3-9bf1-77032f124e2d",
+      "hostId": "local",
+      "initialTask": "read-only team handoff",
+      "initialReadCommandObserved": true,
+      "initialStatus": "inProgress",
+      "productionApplied": false
+    },
+    {
+      "team": "QA",
+      "title": "EXODUSER QA 성능팀",
+      "threadId": "01a0faaf-9806-7cc1-8ef3-0783fd03d2f6",
+      "hostId": "local",
+      "initialTask": "read-only team handoff",
+      "initialReadCommandObserved": true,
+      "initialStatus": "inProgress",
+      "productionApplied": false
+    },
+    {
+      "team": "ENEMY",
+      "title": "EXODUSER 몬스터 AI팀",
+      "threadId": "01a0faaf-9ade-74d3-8162-4261329b1ac3",
+      "hostId": "local",
+      "initialTask": "read-only team handoff",
+      "initialReadCommandObserved": true,
+      "initialStatus": "inProgress",
+      "productionApplied": false
+    },
+    {
+      "team": "BUILD",
+      "title": "EXODUSER 통합 빌드팀",
+      "threadId": "01a0faaf-9dd5-7c91-ab09-ee0bcff343b0",
+      "hostId": "local",
+      "initialTask": "read-only team handoff",
+      "initialReadCommandObserved": true,
+      "initialStatus": "inProgress",
+      "productionApplied": false
+    },
+    {
+      "team": "BALANCE",
+      "title": "EXODUSER 밸런스 경제팀",
+      "threadId": "01a0faaf-a06a-79a2-9def-58eb8ad10d65",
+      "hostId": "local",
+      "initialTask": "read-only team handoff",
+      "initialReadCommandObserved": true,
+      "initialStatus": "inProgress",
+      "productionApplied": false
+    },
+    {
+      "team": "ANIMVFX",
+      "title": "EXODUSER 애니메이션 VFX팀",
+      "threadId": "01a0faaf-a2e6-7262-afc1-196ae9a0ab80",
+      "hostId": "local",
+      "initialTask": "read-only team handoff",
+      "initialReadCommandObserved": true,
+      "initialStatus": "inProgress",
+      "productionApplied": false
+    }
+  ],
+  "terminal12": {
+    "threadId": "01a0f734-acfd-7a13-be34-bb25aa35f9fd",
+    "queueId": "01a0faae-c745-7fe3-abd1-155fc7f63c0b",
+    "role": "PM test support",
+    "actualReadObserved": true,
+    "executionObserved": true,
+    "observedPass": 18,
+    "finalAcceptancePending": true
+  },
+  "productionChanges": 0,
+  "sourceChecks": {
+    "mortar": [
+      38,
+      17,
+      19,
+      30
+    ],
+    "sharedMats": 14
+  },
+  "newAutomations": 0
+}

@@ -52058,3 +52058,8 @@ Mac core.ignorecase=true에서 기존 build/ 규칙이 tools/team-followup-20261
 mortar 실제 비용/확정 source38검사 PASS 및 미적용 원후보 헤더 정정, MAP source9검사/과거PNG15 무결성과 정정8뷰, SOUND actual mkItem/등록/획득18그룹·84입력, shared-mats actual-file14 및 현행 양쪽 미적용 context patch를 기록했다. 생산코드 변화0. mortar 비용 canonical3문서는 base50/+35%/최종정수절삭, 할인없는 Lv10 최종207에 맞췄고 피해+15%·역사백업을 보존했다. 코드 도구·필수 합성 fixture·근거와 관련 docs를 함께 보존한다.
 
 unrestricted/network-enabled 변경 뒤 원격5b8e6ba9 exactHEAD 및 지정127.0.0.1:3340/격리SAVE_DIR의 Node서버 기동·실제슬롯API ok=true/기존1슬롯 응답을 확인했다. 기존저장 수정0·새게임/실측/시각/청취/패키지검수0. BUILD 공식 재전달은 active writer거절로 수신0/중복실행0. 이전 권한/DNS차단은 당시이력이며 새로운팀세션/자동화/PC재가동0. 총괄 MAC-COORDINATION-20261002.md와 resume-runtime-receipt.json, 최종 원격대조는 tmp/mac-migration-runtime/coordination-resume-checkpoint-20261002.json을 따른다. 자기검수55파일만 체크포인트하며 기존23보존항목·공용인덱스 소유권을 분리한다.
+
+
+### 2026-10-02 프로젝트11팀 관리 채팅·미배정Terminal12 작업 인수
+
+사용자 직접 요청으로 fdg의 11역할별 관리 채팅을 추가해 전원 실제 문서 Read/command 착수를 확인하고 ID·기본cwd/실제migration경로·원세션 보존을 기록했다. 기존 팀/자료 삭제0, 생산코드 변경0, 자동화 변경0. Terminal12를 총괄검수보조로 배정해 기존 node-main 전체 handler의 atomic 후보 회귀18 PASS를 인수했다. 입력 SHA보존·ACK0·이전mats/slotbytes·소유temp/descriptor정리 검수, fakeFs/VM 한계·오류handler Promise거부/실HTTP 미검수 명시. 총괄/연속진행/대시보드/TEAM_UTILIZATION 및 PROJECT-TEAM-CHATS 기록을 동기화했다. 변경전23기존항목·공용인덱스 보존, source패치 미적용 유지.

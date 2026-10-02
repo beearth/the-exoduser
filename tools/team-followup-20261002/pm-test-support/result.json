@@ -1,0 +1,379 @@
+{
+  "executedAt": "2026-10-02T03:37:13.631Z",
+  "completedAt": "2026-10-02T03:37:13.712Z",
+  "passed": 18,
+  "failed": 0,
+  "checks": [
+    {
+      "name": "현재 소스 + 지정 patch = 후보 byte 일치",
+      "pass": true
+    },
+    {
+      "name": "전체 핸들러 GET 없음·손상·슬롯 분리",
+      "pass": true
+    },
+    {
+      "name": "전체 POST 값 절삭",
+      "pass": true
+    },
+    {
+      "name": "전체 POST 값 음수",
+      "pass": true
+    },
+    {
+      "name": "전체 POST 값 상한",
+      "pass": true
+    },
+    {
+      "name": "전체 POST 값 문자숫자",
+      "pass": true
+    },
+    {
+      "name": "전체 POST 값 잘못된문자",
+      "pass": true
+    },
+    {
+      "name": "전체 POST 값 null",
+      "pass": true
+    },
+    {
+      "name": "전체 POST 값 0",
+      "pass": true
+    },
+    {
+      "name": "전체 POST 값 음의소수",
+      "pass": true
+    },
+    {
+      "name": "신규 파일·연속 요청 temp 고유명과 정리",
+      "pass": true
+    },
+    {
+      "name": "전체 POST open 실패 bytes·ACK0·temp 정리·재조회",
+      "pass": true
+    },
+    {
+      "name": "전체 POST write 실패 bytes·ACK0·temp 정리·재조회",
+      "pass": true
+    },
+    {
+      "name": "전체 POST close 실패 bytes·ACK0·temp 정리·재조회",
+      "pass": true
+    },
+    {
+      "name": "전체 POST rename 실패 bytes·ACK0·temp 정리·재조회",
+      "pass": true
+    },
+    {
+      "name": "exclusive collision 타 소유 temp 보존",
+      "pass": true
+    },
+    {
+      "name": "잘못된 JSON 기존 handler 응답 한계",
+      "pass": true
+    },
+    {
+      "name": "읽기 입력 SHA 전후 보존",
+      "pass": true
+    }
+  ],
+  "failures": [
+    {
+      "mode": "open",
+      "rejectedPromise": "open injected",
+      "responseStatus": null,
+      "responseEndCount": 0,
+      "oldBytesPreserved": true,
+      "slotBytesPreserved": true,
+      "ownedTempRemaining": 0,
+      "liveDescriptors": 0,
+      "events": [
+        [
+          "listen-intercepted"
+        ],
+        [
+          "open",
+          "/synthetic/EXODUSER-HELL/saves/_sharedMats.json.tmp-12002-1",
+          "wx"
+        ],
+        [
+          "headers",
+          200
+        ],
+        [
+          "end"
+        ],
+        [
+          "open",
+          "/synthetic/EXODUSER-HELL/saves/_sharedMats.json.tmp-12002-2",
+          "wx"
+        ],
+        [
+          "write",
+          31
+        ],
+        [
+          "close",
+          31
+        ],
+        [
+          "rename",
+          "/synthetic/EXODUSER-HELL/saves/_sharedMats.json.tmp-12002-2",
+          "/synthetic/EXODUSER-HELL/saves/_sharedMats.json"
+        ],
+        [
+          "headers",
+          200
+        ],
+        [
+          "end"
+        ]
+      ]
+    },
+    {
+      "mode": "write",
+      "rejectedPromise": "write injected",
+      "responseStatus": null,
+      "responseEndCount": 0,
+      "oldBytesPreserved": true,
+      "slotBytesPreserved": true,
+      "ownedTempRemaining": 0,
+      "liveDescriptors": 0,
+      "events": [
+        [
+          "listen-intercepted"
+        ],
+        [
+          "open",
+          "/synthetic/EXODUSER-HELL/saves/_sharedMats.json.tmp-12002-1",
+          "wx"
+        ],
+        [
+          "write",
+          31
+        ],
+        [
+          "close",
+          31
+        ],
+        [
+          "unlink",
+          "/synthetic/EXODUSER-HELL/saves/_sharedMats.json.tmp-12002-1"
+        ],
+        [
+          "headers",
+          200
+        ],
+        [
+          "end"
+        ],
+        [
+          "open",
+          "/synthetic/EXODUSER-HELL/saves/_sharedMats.json.tmp-12002-2",
+          "wx"
+        ],
+        [
+          "write",
+          32
+        ],
+        [
+          "close",
+          32
+        ],
+        [
+          "rename",
+          "/synthetic/EXODUSER-HELL/saves/_sharedMats.json.tmp-12002-2",
+          "/synthetic/EXODUSER-HELL/saves/_sharedMats.json"
+        ],
+        [
+          "headers",
+          200
+        ],
+        [
+          "end"
+        ]
+      ]
+    },
+    {
+      "mode": "close",
+      "rejectedPromise": "close injected",
+      "responseStatus": null,
+      "responseEndCount": 0,
+      "oldBytesPreserved": true,
+      "slotBytesPreserved": true,
+      "ownedTempRemaining": 0,
+      "liveDescriptors": 0,
+      "events": [
+        [
+          "listen-intercepted"
+        ],
+        [
+          "open",
+          "/synthetic/EXODUSER-HELL/saves/_sharedMats.json.tmp-12002-1",
+          "wx"
+        ],
+        [
+          "write",
+          31
+        ],
+        [
+          "close",
+          31
+        ],
+        [
+          "close",
+          31
+        ],
+        [
+          "unlink",
+          "/synthetic/EXODUSER-HELL/saves/_sharedMats.json.tmp-12002-1"
+        ],
+        [
+          "headers",
+          200
+        ],
+        [
+          "end"
+        ],
+        [
+          "open",
+          "/synthetic/EXODUSER-HELL/saves/_sharedMats.json.tmp-12002-2",
+          "wx"
+        ],
+        [
+          "write",
+          32
+        ],
+        [
+          "close",
+          32
+        ],
+        [
+          "rename",
+          "/synthetic/EXODUSER-HELL/saves/_sharedMats.json.tmp-12002-2",
+          "/synthetic/EXODUSER-HELL/saves/_sharedMats.json"
+        ],
+        [
+          "headers",
+          200
+        ],
+        [
+          "end"
+        ]
+      ]
+    },
+    {
+      "mode": "rename",
+      "rejectedPromise": "rename injected",
+      "responseStatus": null,
+      "responseEndCount": 0,
+      "oldBytesPreserved": true,
+      "slotBytesPreserved": true,
+      "ownedTempRemaining": 0,
+      "liveDescriptors": 0,
+      "events": [
+        [
+          "listen-intercepted"
+        ],
+        [
+          "open",
+          "/synthetic/EXODUSER-HELL/saves/_sharedMats.json.tmp-12002-1",
+          "wx"
+        ],
+        [
+          "write",
+          31
+        ],
+        [
+          "close",
+          31
+        ],
+        [
+          "rename",
+          "/synthetic/EXODUSER-HELL/saves/_sharedMats.json.tmp-12002-1",
+          "/synthetic/EXODUSER-HELL/saves/_sharedMats.json"
+        ],
+        [
+          "unlink",
+          "/synthetic/EXODUSER-HELL/saves/_sharedMats.json.tmp-12002-1"
+        ],
+        [
+          "headers",
+          200
+        ],
+        [
+          "end"
+        ],
+        [
+          "open",
+          "/synthetic/EXODUSER-HELL/saves/_sharedMats.json.tmp-12002-2",
+          "wx"
+        ],
+        [
+          "write",
+          32
+        ],
+        [
+          "close",
+          32
+        ],
+        [
+          "rename",
+          "/synthetic/EXODUSER-HELL/saves/_sharedMats.json.tmp-12002-2",
+          "/synthetic/EXODUSER-HELL/saves/_sharedMats.json"
+        ],
+        [
+          "headers",
+          200
+        ],
+        [
+          "end"
+        ]
+      ]
+    }
+  ],
+  "preservation": {
+    "AGENTS.md": {
+      "before": "fd59bef70960bcaf1ab9910051faa860362884e574ac2869fad05c6872ae04e4",
+      "after": "fd59bef70960bcaf1ab9910051faa860362884e574ac2869fad05c6872ae04e4"
+    },
+    "node-main.js": {
+      "before": "01b0c1d51f77f500ee0a59185458bf0294edce12544482d6cf7abce4262c91ce",
+      "after": "01b0c1d51f77f500ee0a59185458bf0294edce12544482d6cf7abce4262c91ce"
+    },
+    "server.cjs": {
+      "before": "18cf9aa806d5715788f360debbc2a45c2574a76db952f101b524e2ff77fd517d",
+      "after": "18cf9aa806d5715788f360debbc2a45c2574a76db952f101b524e2ff77fd517d"
+    },
+    "test/nodeMainMats.test.js": {
+      "before": "4b571385a2c20d84f5589fbd54434dd78e73fe3415c768047a524f9d3d94e934",
+      "after": "4b571385a2c20d84f5589fbd54434dd78e73fe3415c768047a524f9d3d94e934"
+    },
+    "tools/team-followup-20261002/integration-review/node-main.js.shared-mats.patch": {
+      "before": "6716d7710b4d835eb3ba5fafd40a67eef9590f12676b7e27d49bbe9bdf489a7b",
+      "after": "6716d7710b4d835eb3ba5fafd40a67eef9590f12676b7e27d49bbe9bdf489a7b"
+    },
+    "tools/team-followup-20261002/integration-review/node-main.js.shared-mats-candidate": {
+      "before": "3b56932b93efabb15718394cd9116604aebcf12e60827bef5abd0d32080f218c",
+      "after": "3b56932b93efabb15718394cd9116604aebcf12e60827bef5abd0d32080f218c"
+    },
+    "tools/team-followup-20261001/BALANCE/shared-mats-atomic-candidate.mjs": {
+      "before": "75cb158df4a54569603a4a9855369e72a45d7b135ca0bf07d071141e2b19da1b",
+      "after": "75cb158df4a54569603a4a9855369e72a45d7b135ca0bf07d071141e2b19da1b"
+    },
+    "tools/team-followup-20261001/BALANCE/shared-mats-atomic-test.mjs": {
+      "before": "17ffaff899167d8ed312a1ad9b8571369915110ef346f4609bde6fc3f4fb5d5b",
+      "after": "17ffaff899167d8ed312a1ad9b8571369915110ef346f4609bde6fc3f4fb5d5b"
+    }
+  },
+  "sourceSha256": "01b0c1d51f77f500ee0a59185458bf0294edce12544482d6cf7abce4262c91ce",
+  "candidateSha256": "3b56932b93efabb15718394cd9116604aebcf12e60827bef5abd0d32080f218c",
+  "patchSha256": "6716d7710b4d835eb3ba5fafd40a67eef9590f12676b7e27d49bbe9bdf489a7b",
+  "productionApplied": false,
+  "limits": [
+    "전체 source를 VM 실행하고 createServer/listen 가로챔; 실제 HTTP 서버 실행0",
+    "fakeFs 메모리 및 단발 EIO 주입; close 실패는 descriptor가 열린 채 남아 finally 재시도 성공인 모형",
+    "지속 close/unlink 실패와 crash/fsync/concurrency/Windows/실디스크/실HTTP 미검수",
+    "파일 실패 및 JSON 실패는 handler Promise 거부; HTTP 500/end 미구현, 성공 ACK0은 검증했으나 정상 오류 응답 보장 아님"
+  ]
+}
