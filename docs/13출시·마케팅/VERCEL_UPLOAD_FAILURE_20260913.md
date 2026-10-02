@@ -41,3 +41,8 @@
 | 원격 배포 | 수정 커밋 푸시·새 workflow 실행 후 검증 필요. 로컬 테스트 통과를 Vercel 배포 성공으로 취급하지 않음 |
 
 공식 근거: [CLI deploy의 Archive 설명](https://vercel.com/docs/cli/deploy), [tgz의 분할 압축 기본 동작](https://vercel.com/changelog/split-tgz-is-now-the-default-cli-archive-deployment-behavior), [파일 수와 업로드 제한](https://vercel.com/docs/limits).
+
+
+## 2026-10-02 웹 전용 선택·Unicode 전송·총용량 검사
+
+현재 웹 선택은 공통 FILES의 루트 파일과 실제 에셋 참조를 추적하며, 공통 DIRS 전체 복사를 사용하지 않는다. 활성 타이틀은 `video/title_motion_hd_20260929.mp4`이다. 파생 출력에 ASCII 업로드 alias를 자동 적용하여 한글 공개 URL을 유지하고 동일 NFC/NFD 바이트 중복을 합친다. 파일수15,000개·개별100,000,000바이트 검사에 프로젝트 합계 전송 예산4,000,000,000바이트를 추가했다. GitHub Actions만 main 웹 배포를 담당하며 동시 실행1개/작업 제한30분, docs/test/Markdown만 바뀐 push 제외로 반복 대기열을 방지한다. 상세 선택/테스트/원격 완료 근거는 [2026-10-02 복구 기록](WEB_DEPLOYMENT_REPAIR_20261002.md)을 따른다. 이전 날짜의 수치·결과는 당시 이력이다.

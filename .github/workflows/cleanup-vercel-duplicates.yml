@@ -1,0 +1,32 @@
+name: Clear legacy Vercel deployment queues
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  cancel-legacy-duplicates:
+    if: github.ref == 'refs/heads/main'
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    concurrency:
+      group: exoduser-legacy-vercel-cleanup
+      cancel-in-progress: false
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          sparse-checkout: |
+            tools/clear-legacy-vercel-queues.mjs
+            test/vercelQueueCleanup.test.js
+          sparse-checkout-cone-mode: false
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - name: Verify project and state guards
+        run: node --test test/vercelQueueCleanup.test.js
+      - name: Cancel only active hell and hell-build deployments
+        run: node tools/clear-legacy-vercel-queues.mjs --cancel
+        env:
+          VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
