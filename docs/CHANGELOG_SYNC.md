@@ -52310,3 +52310,19 @@ late4 result/evidence SHA는 감독 공식 pin과 동일: STORY `870166cc681937f
 | 보존 기준 | 직전 UIX source checkpoint c881a6a935020b9c0c5e48e3f6cfc495f40008a5 및 실제소스12·test1·새정본6·BOSS정본6·user23 byte보존 |
 
 전문팀 다음TASK·완료감시·피드백은 기존 작업감독의 단일송신 소유로 유지한다. 재개 완료는 실제 새로운 TASK 수신/Read로 판단하며 의사표현만으로 완료 처리하지 않는다. 정확31경로 commit/push·원격SHA·보존pin·Changes 감소는 `tmp/mac-migration-runtime/continued-review-20261002/supervisor-immutable-task-checkpoint/receipt.json`에 기록한다. 이 작업의 게임 입력·재시작·세이브·native/GL/오디오·설치/권한/인증/결제/게시/새채팅·팀/PC·Windows 작업0.
+
+## 2026-10-02 hb1014 Codex 7 후보 원문14 보존 checkpoint
+
+감독 완료검토 manifest `hb1014-codex7-reviewed-handoff.json`(SHA `a60dab80410f37a2aecc1e81e73cfe18540142dfd9e22b31d221ca787642864b`)의 7팀 result.md/checks.mjs 각2개, 총14파일을 원문SHA·바이트·공식 completionId로 보존한다. 이번 범위는 raw14+총괄 기록2=16경로다. **SOURCEAPPLY0 / rootchecks0**: 후보의 생산 채택·최소접점 통합·제품 Gate는 별도이며 이번 완료는 원문 Git 보존 준비만 뜻한다.
+
+| 팀 | 보존된 미적용 후보 | 공식 완료 ID | 검수 경계 |
+|---|---|---|---|
+| UIUX | 비주얼 선택창 반환초점 수명 | `01a0fc30-3609-7751-8ef7-643bff0486c2` | 실제 브라우저 초점·inert/fieldset/ShadowDOM 미검수 |
+| ITEM | 동일 장착 인스턴스 전승 | `01a0fc30-378f-7353-a09f-4d23a8d2af9b` | 동일참조 alias 후보; 정상UI 유입 미입증 |
+| BUILD | 직접 HTML 입력 의존 closure | `01a0fc30-396f-74e2-9b3c-b98e65640245` | plan/fs/runtime 대역; 일반파서·JSimport·실앱 별도 Gate |
+| BALANCE | AI 강화 nonfinite 입력 | `01a0fc30-3b63-7dc3-8442-4120adb55fb2` | VM guard 후보; 실제number input/표시 미검수 |
+| SOUND | 프레임 큐 중간예외 정리 | `01a0fc30-3cbe-7531-b357-178bb2358b5d` | finally 후보; 미처리 tail 폐기 정책 root Gate |
+| QUESTNPC | mapQA urgent 대사 차단 | `01a0fc30-3e6f-7d11-8669-2a08210e58af` | urgent·입찰소비 후보; native/맵시각 미검수 |
+| MARKETING | 데모 CTA·로비 반환 closure | `01a0fc30-4081-7293-a063-feb355d9d3ae` | Steam/데모경로 후보; 외부상품·native·실패키지 미검수 |
+
+14 원자료 변경0·기존 검사 재실행0·코드 변경0·docs 키워드 재검색0. 원사용자23/현재 source12는 직전 `supervisor-immutable-task-checkpoint/receipt.json` pin과 바이트동일임을 확인했다. HEAD `d5c1b62d9e74304a163ddd46bc95d28877de160f` 및 정확16경로/pin/총괄2 prefix·개행 보존 증거는 `tmp/mac-migration-runtime/continued-review-20261002/codex7-candidate-preservation-checkpoint/receipt.json`에 기록한다. supervisor STATE/LOG·재개 TASK·진행 중 새 결과·타인WIP는 제외하고 외부 mutable 파일을 동결하지 않는다. root의 scoped stage/commit/push·원격 인수는 다음 절차다.
